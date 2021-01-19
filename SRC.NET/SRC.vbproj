@@ -1,0 +1,377 @@
+﻿<Project DefaultTargets="Build" ToolsVersion="3.5" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectType>Local</ProjectType>
+    <MyType>WindowsFormsWithCustomSubMain</MyType>
+    <ProductVersion>8.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{44DCFA57-EC59-4853-9BEB-ACFAEA35C16D}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <AssemblyName>Project1</AssemblyName>
+    <OutputType>WinExe</OutputType>
+    <StartupObject>Project1.SRC</StartupObject>
+    <AssemblyMajorVersion>2</AssemblyMajorVersion>
+    <AssemblyMinorVersion>4</AssemblyMinorVersion>
+    <AssemblyRevisionNumber>0</AssemblyRevisionNumber>
+    <GenerateRevisionNumber>False</GenerateRevisionNumber>
+    <AssemblyCompanyName>Kei Sakamoto /縲Inui Tetsuyuki</AssemblyCompanyName>
+    <ApplicationIcon>SRC.ico</ApplicationIcon>
+    <RootNamespace>Project1</RootNamespace>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>.\bin\</OutputPath>
+    <DocumentationFile>Project1.xml</DocumentationFile>
+    <DebugSymbols>True</DebugSymbols>
+    <DefineDebug>True</DefineDebug>
+    <DefineTrace>True</DefineTrace>
+    <DefineConstants>Win32=True</DefineConstants>
+    <PlatformTarget>x86</PlatformTarget>
+    <NoWarn>42016,42017,42018,42019,42032</NoWarn>
+    <DebugType>full</DebugType>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>.\bin\</OutputPath>
+    <DocumentationFile>Project1.xml</DocumentationFile>
+    <DebugSymbols>False</DebugSymbols>
+    <DefineDebug>False</DefineDebug>
+    <DefineTrace>True</DefineTrace>
+    <DefineConstants>Win32=True</DefineConstants>
+    <PlatformTarget>x86</PlatformTarget>
+    <NoWarn>42016,42017,42018,42019,42032</NoWarn>
+    <DebugType>none</DebugType>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.VisualBasic.Compatibility">
+      <Name>Microsoft.VisualBasic.Compatibility</Name>
+    </Reference>
+    <Reference Include="System">
+      <Name>System</Name>
+    </Reference>
+    <Reference Include="System.Data">
+      <Name>System.Data</Name>
+    </Reference>
+    <Reference Include="System.Drawing">
+      <Name>System.Drawing</Name>
+    </Reference>
+    <Reference Include="System.Windows.Forms">
+      <Name>System.Windows.Forms</Name>
+    </Reference>
+    <Reference Include="System.XML">
+      <Name>System.XML</Name>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="Microsoft.VisualBasic.Compatibility" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Data" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Drawing" />
+    <Import Include="System.Windows.Forms" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AbilityData.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AbilityEffect.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AliasData.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AliasDataList.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AssemblyInfo.vb" />
+    <Compile Include="BattleConfigData.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BattleConfigDataList.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BCVariable.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CmdData.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="COM.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Command.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Condition.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Configuration.Designer.vb">
+      <SubType>Code</SubType>
+      <DependentUpon>Configuration.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Configuration.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialog.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DialogData.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DialogDataList.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Effect.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ErrorMessage.Designer.vb">
+      <SubType>Code</SubType>
+      <DependentUpon>ErrorMessage.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ErrorMessage.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Event.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Expression.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="FeatureData.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="FileDialog.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Flash.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="GeneralLib.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Graphics.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="GUI.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Help.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Intermission.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Item.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ItemData.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ItemDataList.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Items.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="LabelData.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ListBox.Designer.vb">
+      <SubType>Code</SubType>
+      <DependentUpon>ListBox.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ListBox.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Main.Designer.vb">
+      <SubType>Code</SubType>
+      <DependentUpon>Main.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Main.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Map.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Message.Designer.vb">
+      <SubType>Code</SubType>
+      <DependentUpon>Message.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Message.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MessageData.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MessageDataList.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MultiColumListBox.Designer.vb">
+      <SubType>Code</SubType>
+      <DependentUpon>MultiColumListBox.vb</DependentUpon>
+    </Compile>
+    <Compile Include="MultiColumListBox.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MultiSelectListBox.Designer.vb">
+      <SubType>Code</SubType>
+      <DependentUpon>MultiSelectListBox.vb</DependentUpon>
+    </Compile>
+    <Compile Include="MultiSelectListBox.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="NonPilotData.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="NonPilotDataList.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="NowLoading.Designer.vb">
+      <SubType>Code</SubType>
+      <DependentUpon>NowLoading.vb</DependentUpon>
+    </Compile>
+    <Compile Include="NowLoading.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Pilot.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PilotData.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PilotDataList.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Pilots.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SafeMain.Designer.vb">
+      <SubType>Code</SubType>
+      <DependentUpon>SafeMain.vb</DependentUpon>
+    </Compile>
+    <Compile Include="SafeMain.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SkillData.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Sound.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SpecialPowerData.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SpecialPowerDataList.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SRC.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Status.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Susie.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Telop.Designer.vb">
+      <SubType>Code</SubType>
+      <DependentUpon>Telop.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Telop.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TerrainData.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TerrainDataList.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Title.Designer.vb">
+      <SubType>Code</SubType>
+      <DependentUpon>Title.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Title.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ToolTip.Designer.vb">
+      <SubType>Code</SubType>
+      <DependentUpon>ToolTip.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ToolTip.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Unit.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UnitData.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UnitDataList.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Units.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="VarData.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="VBMP3.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="WeaponData.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <EmbeddedResource Include="Configuration.resX">
+      <DependentUpon>Configuration.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ErrorMessage.resX">
+      <DependentUpon>ErrorMessage.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ListBox.resX">
+      <DependentUpon>ListBox.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Main.resX">
+      <DependentUpon>Main.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Message.resX">
+      <DependentUpon>Message.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MultiColumListBox.resX">
+      <DependentUpon>MultiColumListBox.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MultiSelectListBox.resX">
+      <DependentUpon>MultiSelectListBox.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NowLoading.resX">
+      <DependentUpon>NowLoading.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SafeMain.resX">
+      <DependentUpon>SafeMain.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Telop.resX">
+      <DependentUpon>Telop.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Title.resX">
+      <DependentUpon>Title.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ToolTip.resX">
+      <DependentUpon>ToolTip.vb</DependentUpon>
+    </EmbeddedResource>
+    <Content Include="SRC.ico" />
+    <None Include="_UpgradeReport.htm">
+      <SubType>Preview</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="My Project\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>
