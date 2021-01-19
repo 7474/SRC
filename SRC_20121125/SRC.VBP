@@ -1,6 +1,4 @@
 Type=Exe
-Reference=*\G{00020430-0000-0000-C000-000000000046}#2.0#0#C:\WINDOWS\system32\stdole2.tlb#OLE Automation
-Reference=*\G{E1211242-8E94-11D1-8808-00C04FC2C602}#1.0#0#C:\WINDOWS\system32\dx7vb.dll#DirectX 7 for Visual Basic Type Library
 Module=SRC; SRC.bas
 Module=GeneralLib; GeneralLib.bas
 Class=Dialog; Dialog.cls
@@ -67,7 +65,6 @@ Class=BattleConfigData; BattleConfigData.cls
 Class=BattleConfigDataList; BattleConfigDataList.cls
 Module=Flash; Flash.bas
 Module=BCVariable; BCVariable.bas
-Object={056DD990-C612-44AF-A674-4B3C157D1360}#6.0#0; FlashControl.ocx
 Form=SafeMain.frm
 IconForm="frmMain"
 Startup="Sub Main"
