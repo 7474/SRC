@@ -10,20 +10,20 @@ Attribute VB_Exposed = False
 Option Explicit
 
 ' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-' –{ƒvƒƒOƒ‰ƒ€‚ÍƒtƒŠ[ƒ\ƒtƒg‚Å‚ ‚èA–³•ÛØ‚Å‚·B
-' –{ƒvƒƒOƒ‰ƒ€‚ÍGNU General Public License(Ver.3‚Ü‚½‚Í‚»‚êˆÈ~)‚ª’è‚ß‚éğŒ‚Ì‰º‚Å
-' Ä”Ğ•z‚Ü‚½‚Í‰ü•Ï‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B
+' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯ãƒ•ãƒªãƒ¼ã‚½ãƒ•ãƒˆã§ã‚ã‚Šã€ç„¡ä¿è¨¼ã§ã™ã€‚
+' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯GNU General Public License(Ver.3ã¾ãŸã¯ãã‚Œä»¥é™)ãŒå®šã‚ã‚‹æ¡ä»¶ã®ä¸‹ã§
+' å†é ’å¸ƒã¾ãŸã¯æ”¹å¤‰ã™ã‚‹ã“ã¨ãŒã§ãã¾ã™ã€‚
 
-'“Áê”\—Í‚ÌƒNƒ‰ƒX
+'ç‰¹æ®Šèƒ½åŠ›ã®ã‚¯ãƒ©ã‚¹
 
-'–¼Ì
+'åç§°
 Public Name As String
-'ƒŒƒxƒ‹
+'ãƒ¬ãƒ™ãƒ«
 Public Level As Double
-'ƒf[ƒ^
+'ãƒ‡ãƒ¼ã‚¿
 Public StrData As String
-'•K—v‹Z”\
+'å¿…è¦æŠ€èƒ½
 Public NecessarySkill As String
-'•K—vğŒ
+'å¿…è¦æ¡ä»¶
 Public NecessaryCondition As String
 

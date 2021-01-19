@@ -2,116 +2,116 @@ Attribute VB_Name = "Event"
 Option Explicit
 
 ' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-' –{ƒvƒƒOƒ‰ƒ€‚ÍƒtƒŠ[ƒ\ƒtƒg‚Å‚ ‚èA–³•ÛØ‚Å‚·B
-' –{ƒvƒƒOƒ‰ƒ€‚ÍGNU General Public License(Ver.3‚Ü‚½‚Í‚»‚êˆÈ~)‚ª’è‚ß‚éğŒ‚Ì‰º‚Å
-' Ä”Ğ•z‚Ü‚½‚Í‰ü•Ï‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B
+' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯ãƒ•ãƒªãƒ¼ã‚½ãƒ•ãƒˆã§ã‚ã‚Šã€ç„¡ä¿è¨¼ã§ã™ã€‚
+' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯GNU General Public License(Ver.3ã¾ãŸã¯ãã‚Œä»¥é™)ãŒå®šã‚ã‚‹æ¡ä»¶ã®ä¸‹ã§
+' å†é ’å¸ƒã¾ãŸã¯æ”¹å¤‰ã™ã‚‹ã“ã¨ãŒã§ãã¾ã™ã€‚
 
-'ƒCƒxƒ“ƒgƒf[ƒ^‚ÌŠeíˆ—‚ğs‚¤ƒ‚ƒWƒ…[ƒ‹
+'ã‚¤ãƒ™ãƒ³ãƒˆãƒ‡ãƒ¼ã‚¿ã®å„ç¨®å‡¦ç†ã‚’è¡Œã†ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«
 
-'ƒCƒxƒ“ƒgƒf[ƒ^
+'ã‚¤ãƒ™ãƒ³ãƒˆãƒ‡ãƒ¼ã‚¿
 Public EventData() As String
-'ƒCƒxƒ“ƒgƒRƒ}ƒ“ƒhƒŠƒXƒg
+'ã‚¤ãƒ™ãƒ³ãƒˆã‚³ãƒãƒ³ãƒ‰ãƒªã‚¹ãƒˆ
 Public EventCmd() As CmdData
-'ŒÂX‚Ìs‚ª‚Ç‚ÌƒCƒxƒ“ƒgƒtƒ@ƒCƒ‹‚É‘®‚µ‚Ä‚¢‚é‚©
+'å€‹ã€…ã®è¡ŒãŒã©ã®ã‚¤ãƒ™ãƒ³ãƒˆãƒ•ã‚¡ã‚¤ãƒ«ã«å±ã—ã¦ã„ã‚‹ã‹
 Public EventFileID() As Integer
-'ŒÂX‚Ìs‚ªƒCƒxƒ“ƒgƒtƒ@ƒCƒ‹‚Ì‰½s–Ú‚ÉˆÊ’u‚·‚é‚©
+'å€‹ã€…ã®è¡ŒãŒã‚¤ãƒ™ãƒ³ãƒˆãƒ•ã‚¡ã‚¤ãƒ«ã®ä½•è¡Œç›®ã«ä½ç½®ã™ã‚‹ã‹
 Public EventLineNum() As Integer
-'ƒCƒxƒ“ƒgƒtƒ@ƒCƒ‹‚Ìƒtƒ@ƒCƒ‹–¼ƒŠƒXƒg
+'ã‚¤ãƒ™ãƒ³ãƒˆãƒ•ã‚¡ã‚¤ãƒ«ã®ãƒ•ã‚¡ã‚¤ãƒ«åãƒªã‚¹ãƒˆ
 Public EventFileNames() As String
-'RequireƒRƒ}ƒ“ƒh‚Å’Ç‰Á‚³‚ê‚½ƒCƒxƒ“ƒgƒtƒ@ƒCƒ‹‚Ìƒtƒ@ƒCƒ‹–¼ƒŠƒXƒg
+'Requireã‚³ãƒãƒ³ãƒ‰ã§è¿½åŠ ã•ã‚ŒãŸã‚¤ãƒ™ãƒ³ãƒˆãƒ•ã‚¡ã‚¤ãƒ«ã®ãƒ•ã‚¡ã‚¤ãƒ«åãƒªã‚¹ãƒˆ
 Public AdditionalEventFileNames() As String
 
-'ƒVƒXƒeƒ€‘¤‚ÌƒCƒxƒ“ƒgƒf[ƒ^‚ÌƒTƒCƒY(s”)
+'ã‚·ã‚¹ãƒ†ãƒ å´ã®ã‚¤ãƒ™ãƒ³ãƒˆãƒ‡ãƒ¼ã‚¿ã®ã‚µã‚¤ã‚º(è¡Œæ•°)
 Private SysEventDataSize As Long
-'ƒVƒXƒeƒ€‘¤‚ÌƒCƒxƒ“ƒgƒtƒ@ƒCƒ‹”
+'ã‚·ã‚¹ãƒ†ãƒ å´ã®ã‚¤ãƒ™ãƒ³ãƒˆãƒ•ã‚¡ã‚¤ãƒ«æ•°
 Private SysEventFileNum As Integer
-'ƒVƒiƒŠƒI“Y•t‚ÌƒVƒXƒeƒ€ƒtƒ@ƒCƒ‹‚ªƒ`ƒFƒbƒN‚³‚ê‚½‚©‚Ç‚¤‚©
+'ã‚·ãƒŠãƒªã‚ªæ·»ä»˜ã®ã‚·ã‚¹ãƒ†ãƒ ãƒ•ã‚¡ã‚¤ãƒ«ãŒãƒã‚§ãƒƒã‚¯ã•ã‚ŒãŸã‹ã©ã†ã‹
 Private ScenarioLibChecked As Boolean
 
-'ƒ‰ƒxƒ‹‚ÌƒŠƒXƒg
+'ãƒ©ãƒ™ãƒ«ã®ãƒªã‚¹ãƒˆ
 Public colEventLabelList As New Collection
 Private colSysNormalLabelList As New Collection
 Private colNormalLabelList As New Collection
 
 
-'•Ï”—p‚ÌƒRƒŒƒNƒVƒ‡ƒ“
+'å¤‰æ•°ç”¨ã®ã‚³ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³
 Public GlobalVariableList As New Collection
 Public LocalVariableList As New Collection
 
-'Œ»İ‚Ìs”Ô†
+'ç¾åœ¨ã®è¡Œç•ªå·
 Public CurrentLineNum As Long
 
-'ƒCƒxƒ“ƒg‚Å‘I‘ğ‚³‚ê‚Ä‚¢‚éƒ†ƒjƒbƒgEƒ^[ƒQƒbƒg
+'ã‚¤ãƒ™ãƒ³ãƒˆã§é¸æŠã•ã‚Œã¦ã„ã‚‹ãƒ¦ãƒ‹ãƒƒãƒˆãƒ»ã‚¿ãƒ¼ã‚²ãƒƒãƒˆ
 Public SelectedUnitForEvent As Unit
 Public SelectedTargetForEvent As Unit
 
-'ƒCƒxƒ“ƒgŒÄ‚Ño‚µ‚ÌƒLƒ…[
+'ã‚¤ãƒ™ãƒ³ãƒˆå‘¼ã³å‡ºã—ã®ã‚­ãƒ¥ãƒ¼
 Public EventQue() As String
-'Œ»İÀs’†‚ÌƒCƒxƒ“ƒgƒ‰ƒxƒ‹
+'ç¾åœ¨å®Ÿè¡Œä¸­ã®ã‚¤ãƒ™ãƒ³ãƒˆãƒ©ãƒ™ãƒ«
 Public CurrentLabel As Long
 
-'AskƒRƒ}ƒ“ƒh‚Å‘I‘ğ‚µ‚½‘I‘ğˆ
+'Askã‚³ãƒãƒ³ãƒ‰ã§é¸æŠã—ãŸé¸æŠè‚¢
 Public SelectedAlternative As String
 
-'ŠÖ”ŒÄ‚Ño‚µ—p•Ï”
+'é–¢æ•°å‘¼ã³å‡ºã—ç”¨å¤‰æ•°
 
-'Å‘åŒÄ‚Ño‚µŠK‘w”
+'æœ€å¤§å‘¼ã³å‡ºã—éšå±¤æ•°
 Public Const MaxCallDepth = 50
-'ˆø”‚ÌÅ‘å”
+'å¼•æ•°ã®æœ€å¤§æ•°
 Public Const MaxArgIndex = 200
-'ƒTƒuƒ‹[ƒ`ƒ“ƒ[ƒJƒ‹•Ï”‚ÌÅ‘å”
+'ã‚µãƒ–ãƒ«ãƒ¼ãƒãƒ³ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ã®æœ€å¤§æ•°
 Public Const MaxVarIndex = 2000
 
-'ŒÄ‚Ño‚µ—š—ğ
+'å‘¼ã³å‡ºã—å±¥æ­´
 Public CallDepth As Integer
 Public CallStack(MaxCallDepth) As Long
-'ˆø”ƒXƒ^ƒbƒN
+'å¼•æ•°ã‚¹ã‚¿ãƒƒã‚¯
 Public ArgIndex As Integer
 Public ArgIndexStack(MaxCallDepth) As Integer
 Public ArgStack(MaxArgIndex) As String
-'UpVarƒRƒ}ƒ“ƒh‚É‚æ‚Á‚Äˆø”‚ª‰½’iŠKƒVƒtƒg‚µ‚Ä‚¢‚é‚©
+'UpVarã‚³ãƒãƒ³ãƒ‰ã«ã‚ˆã£ã¦å¼•æ•°ãŒä½•æ®µéšã‚·ãƒ•ãƒˆã—ã¦ã„ã‚‹ã‹
 Public UpVarLevel As Integer
 Public UpVarLevelStack(MaxCallDepth) As Integer
-'ƒTƒuƒ‹[ƒ`ƒ“ƒ[ƒJƒ‹•Ï”ƒXƒ^ƒbƒN
+'ã‚µãƒ–ãƒ«ãƒ¼ãƒãƒ³ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ã‚¹ã‚¿ãƒƒã‚¯
 Public VarIndex As Integer
 Public VarIndexStack(MaxCallDepth) As Integer
 Public VarStack(MaxVarIndex) As VarData
-'ForƒCƒ“ƒfƒbƒNƒX—pƒXƒ^ƒbƒN
+'Forã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ç”¨ã‚¹ã‚¿ãƒƒã‚¯
 Public ForIndex As Integer
 Public ForIndexStack(MaxCallDepth) As Integer
 Public ForLimitStack(MaxCallDepth) As Long
 
-'ForEachƒRƒ}ƒ“ƒh—p•Ï”
+'ForEachã‚³ãƒãƒ³ãƒ‰ç”¨å¤‰æ•°
 Public ForEachIndex As Integer
 Public ForEachSet() As String
 
-'RideƒRƒ}ƒ“ƒh—pƒpƒCƒƒbƒg“‹æ—š—ğ
+'Rideã‚³ãƒãƒ³ãƒ‰ç”¨ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆæ­ä¹—å±¥æ­´
 Public LastUnitName As String
 Public LastPilotID() As String
 
-'WaitŠJn
+'Waité–‹å§‹æ™‚åˆ»
 Public WaitStartTime As Long
 Public WaitTimeCount As Long
 
-'•`‰æŠî€À•W
+'æç”»åŸºæº–åº§æ¨™
 Public BaseX As Long
 Public BaseY As Long
 Private SavedBaseX(10) As Long
 Private SavedBaseY(10) As Long
 Private BasePointIndex As Long
 
-'ƒIƒuƒWƒFƒNƒg‚ÌF
+'ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®è‰²
 Public ObjColor As Long
-'ƒIƒuƒWƒFƒNƒg‚Ìü‚Ì‘¾‚³
+'ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç·šã®å¤ªã•
 Public ObjDrawWidth As Long
-'ƒIƒuƒWƒFƒNƒg‚Ì”wŒiF
+'ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®èƒŒæ™¯è‰²
 Public ObjFillColor As Long
-'ƒIƒuƒWƒFƒNƒg‚Ì”wŒi•`‰æ•û–@
+'ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®èƒŒæ™¯æç”»æ–¹æ³•
 Public ObjFillStyle As Long
-'ƒIƒuƒWƒFƒNƒg‚Ì•`‰æ•û–@
+'ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®æç”»æ–¹æ³•
 Public ObjDrawOption As String
 
-'ƒzƒbƒgƒ|ƒCƒ“ƒg
+'ãƒ›ãƒƒãƒˆãƒã‚¤ãƒ³ãƒˆ
 Public Type HotPoint
     Name As String
     Left As Integer
@@ -122,14 +122,14 @@ Public Type HotPoint
 End Type
 Public HotPointList() As HotPoint
 
-'ƒCƒxƒ“ƒgƒRƒ}ƒ“ƒhƒGƒ‰[ƒƒbƒZ[ƒW
+'ã‚¤ãƒ™ãƒ³ãƒˆã‚³ãƒãƒ³ãƒ‰ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
 Public EventErrorMessage As String
 
-'ƒ†ƒjƒbƒg‚ªƒZƒ“ƒ^ƒŠƒ“ƒO‚³‚ê‚½‚©H
+'ãƒ¦ãƒ‹ãƒƒãƒˆãŒã‚»ãƒ³ã‚¿ãƒªãƒ³ã‚°ã•ã‚ŒãŸã‹ï¼Ÿ
 Public IsUnitCenter As Boolean
 
 
-'ƒCƒxƒ“ƒgƒRƒ}ƒ“ƒh‚Ìí—Ş
+'ã‚¤ãƒ™ãƒ³ãƒˆã‚³ãƒãƒ³ãƒ‰ã®ç¨®é¡
 Enum CmdType
     NullCmd = 0
     NopCmd
@@ -323,7 +323,7 @@ Enum CmdType
     ClearFlashCmd
 End Enum
 
-'ƒCƒxƒ“ƒgƒ‰ƒxƒ‹‚Ìí—Ş
+'ã‚¤ãƒ™ãƒ³ãƒˆãƒ©ãƒ™ãƒ«ã®ç¨®é¡
 Enum LabelType
     NormalLabel = 0
     PrologueEventLabel
@@ -355,7 +355,7 @@ Enum LabelType
 End Enum
 
 
-'ƒCƒxƒ“ƒgƒf[ƒ^‚ğ‰Šú‰»
+'ã‚¤ãƒ™ãƒ³ãƒˆãƒ‡ãƒ¼ã‚¿ã‚’åˆæœŸåŒ–
 Public Sub InitEventData()
 Dim i As Long
 
@@ -364,18 +364,18 @@ Dim i As Long
     ReDim EventCmd(50000)
     ReDim EventQue(0)
     
-    'ƒIƒuƒWƒFƒNƒg‚Ì¶¬‚É‚ÍŠÔ‚ª‚©‚©‚é‚Ì‚ÅA
-    '‚ ‚ç‚©‚¶‚ßCmdDataƒIƒuƒWƒFƒNƒg‚ğ¶¬‚µ‚Ä‚¨‚­B
+    'ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç”Ÿæˆã«ã¯æ™‚é–“ãŒã‹ã‹ã‚‹ã®ã§ã€
+    'ã‚ã‚‰ã‹ã˜ã‚CmdDataã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç”Ÿæˆã—ã¦ãŠãã€‚
     For i = 1 To UBound(EventCmd)
         Set EventCmd(i) = New CmdData
         EventCmd(i).LineNum = i
     Next
     
-    '–{‘Ì‘¤‚ÌƒVƒiƒŠƒIƒf[ƒ^‚ğƒ`ƒFƒbƒN‚·‚é
-    LoadEventData "", "ƒVƒXƒeƒ€"
+    'æœ¬ä½“å´ã®ã‚·ãƒŠãƒªã‚ªãƒ‡ãƒ¼ã‚¿ã‚’ãƒã‚§ãƒƒã‚¯ã™ã‚‹
+    LoadEventData "", "ã‚·ã‚¹ãƒ†ãƒ "
 End Sub
 
-'ƒCƒxƒ“ƒgƒtƒ@ƒCƒ‹‚Ìƒ[ƒh
+'ã‚¤ãƒ™ãƒ³ãƒˆãƒ•ã‚¡ã‚¤ãƒ«ã®ãƒ­ãƒ¼ãƒ‰
 Public Sub LoadEventData(fname As String, Optional load_mode As String)
 Dim buf As String, buf2 As String
 Dim tname As String, tfolder As String, new_titles() As String
@@ -386,7 +386,7 @@ Dim error_found As Boolean
 Dim sys_event_data_size As Long
 Dim sys_event_file_num As Long
     
-    'ƒf[ƒ^‚Ì‰Šú‰»
+    'ãƒ‡ãƒ¼ã‚¿ã®åˆæœŸåŒ–
     ReDim Preserve EventData(SysEventDataSize)
     ReDim Preserve EventFileID(SysEventDataSize)
     ReDim Preserve EventLineNum(SysEventDataSize)
@@ -411,7 +411,7 @@ Dim sys_event_file_num As Long
     ObjDrawWidth = 1
     ObjDrawOption = ""
     
-    'ƒ‰ƒxƒ‹‚Ì‰Šú‰»
+    'ãƒ©ãƒ™ãƒ«ã®åˆæœŸåŒ–
     With colNormalLabelList
         For i = 1 To .Count
             .Remove 1
@@ -428,61 +428,61 @@ Dim sys_event_file_num As Long
         Loop
     End With
     
-    'ƒfƒoƒbƒOƒ‚[ƒh‚Ìİ’è
+    'ãƒ‡ãƒãƒƒã‚°ãƒ¢ãƒ¼ãƒ‰ã®è¨­å®š
     If LCase$(ReadIni("Option", "DebugMode")) = "on" Then
-        If Not IsOptionDefined("ƒfƒoƒbƒO") Then
-            DefineGlobalVariable "Option(ƒfƒoƒbƒO)"
+        If Not IsOptionDefined("ãƒ‡ãƒãƒƒã‚°") Then
+            DefineGlobalVariable "Option(ãƒ‡ãƒãƒƒã‚°)"
         End If
-        SetVariableAsLong "Option(ƒfƒoƒbƒO)", 1
+        SetVariableAsLong "Option(ãƒ‡ãƒãƒƒã‚°)", 1
     End If
     
-    'ƒVƒXƒeƒ€‘¤‚ÌƒCƒxƒ“ƒgƒf[ƒ^‚Ìƒ[ƒh
-    If load_mode = "ƒVƒXƒeƒ€" Then
-        '–{‘Ì‘¤‚ÌƒVƒXƒeƒ€ƒf[ƒ^‚ğƒ`ƒFƒbƒN
+    'ã‚·ã‚¹ãƒ†ãƒ å´ã®ã‚¤ãƒ™ãƒ³ãƒˆãƒ‡ãƒ¼ã‚¿ã®ãƒ­ãƒ¼ãƒ‰
+    If load_mode = "ã‚·ã‚¹ãƒ†ãƒ " Then
+        'æœ¬ä½“å´ã®ã‚·ã‚¹ãƒ†ãƒ ãƒ‡ãƒ¼ã‚¿ã‚’ãƒã‚§ãƒƒã‚¯
         
-        'ƒXƒyƒVƒƒƒ‹ƒpƒ[ƒAƒjƒ—pƒCƒ“ƒNƒ‹[ƒhƒtƒ@ƒCƒ‹‚ğƒ_ƒEƒ“ƒ[ƒh
-        If FileExists(ExtDataPath & "Lib\ƒXƒyƒVƒƒƒ‹ƒpƒ[.eve") Then
-            LoadEventData2 ExtDataPath & "Lib\ƒXƒyƒVƒƒƒ‹ƒpƒ[.eve"
-        ElseIf FileExists(ExtDataPath2 & "Lib\ƒXƒyƒVƒƒƒ‹ƒpƒ[.eve") Then
-            LoadEventData2 ExtDataPath2 & "Lib\ƒXƒyƒVƒƒƒ‹ƒpƒ[.eve"
-        ElseIf FileExists(AppPath & "Lib\ƒXƒyƒVƒƒƒ‹ƒpƒ[.eve") Then
-            LoadEventData2 AppPath & "Lib\ƒXƒyƒVƒƒƒ‹ƒpƒ[.eve"
-        ElseIf FileExists(ExtDataPath & "Lib\¸_ƒRƒ}ƒ“ƒh.eve") Then
-            LoadEventData2 ExtDataPath & "Lib\¸_ƒRƒ}ƒ“ƒh.eve"
-        ElseIf FileExists(ExtDataPath2 & "Lib\¸_ƒRƒ}ƒ“ƒh.eve") Then
-            LoadEventData2 ExtDataPath2 & "Lib\¸_ƒRƒ}ƒ“ƒh.eve"
-        ElseIf FileExists(AppPath & "Lib\¸_ƒRƒ}ƒ“ƒh.eve") Then
-            LoadEventData2 AppPath & "Lib\¸_ƒRƒ}ƒ“ƒh.eve"
+        'ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼ã‚¢ãƒ‹ãƒ¡ç”¨ã‚¤ãƒ³ã‚¯ãƒ«ãƒ¼ãƒ‰ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰
+        If FileExists(ExtDataPath & "Lib\ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼.eve") Then
+            LoadEventData2 ExtDataPath & "Lib\ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼.eve"
+        ElseIf FileExists(ExtDataPath2 & "Lib\ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼.eve") Then
+            LoadEventData2 ExtDataPath2 & "Lib\ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼.eve"
+        ElseIf FileExists(AppPath & "Lib\ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼.eve") Then
+            LoadEventData2 AppPath & "Lib\ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼.eve"
+        ElseIf FileExists(ExtDataPath & "Lib\ç²¾ç¥ã‚³ãƒãƒ³ãƒ‰.eve") Then
+            LoadEventData2 ExtDataPath & "Lib\ç²¾ç¥ã‚³ãƒãƒ³ãƒ‰.eve"
+        ElseIf FileExists(ExtDataPath2 & "Lib\ç²¾ç¥ã‚³ãƒãƒ³ãƒ‰.eve") Then
+            LoadEventData2 ExtDataPath2 & "Lib\ç²¾ç¥ã‚³ãƒãƒ³ãƒ‰.eve"
+        ElseIf FileExists(AppPath & "Lib\ç²¾ç¥ã‚³ãƒãƒ³ãƒ‰.eve") Then
+            LoadEventData2 AppPath & "Lib\ç²¾ç¥ã‚³ãƒãƒ³ãƒ‰.eve"
         End If
         
-        '”Ä—pí“¬ƒAƒjƒ—pƒCƒ“ƒNƒ‹[ƒhƒtƒ@ƒCƒ‹‚ğƒ_ƒEƒ“ƒ[ƒh
+        'æ±ç”¨æˆ¦é—˜ã‚¢ãƒ‹ãƒ¡ç”¨ã‚¤ãƒ³ã‚¯ãƒ«ãƒ¼ãƒ‰ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰
         If LCase$(ReadIni("Option", "BattleAnimation")) <> "off" Then
             BattleAnimation = True
         End If
-        If FileExists(ExtDataPath & "Lib\”Ä—pí“¬ƒAƒjƒ\include.eve") Then
-            LoadEventData2 ExtDataPath & "Lib\”Ä—pí“¬ƒAƒjƒ\include.eve"
-        ElseIf FileExists(ExtDataPath2 & "Lib\”Ä—pí“¬ƒAƒjƒ\include.eve") Then
-            LoadEventData2 ExtDataPath2 & "Lib\”Ä—pí“¬ƒAƒjƒ\include.eve"
-        ElseIf FileExists(AppPath & "Lib\”Ä—pí“¬ƒAƒjƒ\include.eve") Then
-            LoadEventData2 AppPath & "Lib\”Ä—pí“¬ƒAƒjƒ\include.eve"
+        If FileExists(ExtDataPath & "Lib\æ±ç”¨æˆ¦é—˜ã‚¢ãƒ‹ãƒ¡\include.eve") Then
+            LoadEventData2 ExtDataPath & "Lib\æ±ç”¨æˆ¦é—˜ã‚¢ãƒ‹ãƒ¡\include.eve"
+        ElseIf FileExists(ExtDataPath2 & "Lib\æ±ç”¨æˆ¦é—˜ã‚¢ãƒ‹ãƒ¡\include.eve") Then
+            LoadEventData2 ExtDataPath2 & "Lib\æ±ç”¨æˆ¦é—˜ã‚¢ãƒ‹ãƒ¡\include.eve"
+        ElseIf FileExists(AppPath & "Lib\æ±ç”¨æˆ¦é—˜ã‚¢ãƒ‹ãƒ¡\include.eve") Then
+            LoadEventData2 AppPath & "Lib\æ±ç”¨æˆ¦é—˜ã‚¢ãƒ‹ãƒ¡\include.eve"
         Else
-            'í“¬ƒAƒjƒ•\¦Ø‚è‘Ö‚¦ƒRƒ}ƒ“ƒh‚ğ”ñ•\¦‚É
+            'æˆ¦é—˜ã‚¢ãƒ‹ãƒ¡è¡¨ç¤ºåˆ‡ã‚Šæ›¿ãˆã‚³ãƒãƒ³ãƒ‰ã‚’éè¡¨ç¤ºã«
             BattleAnimation = False
         End If
         
-        'ƒVƒXƒeƒ€‘¤‚ÌƒCƒxƒ“ƒgƒf[ƒ^‚Ì‘s”•ƒtƒ@ƒCƒ‹”‚ğ‹L˜^‚µ‚Ä‚¨‚­
+        'ã‚·ã‚¹ãƒ†ãƒ å´ã®ã‚¤ãƒ™ãƒ³ãƒˆãƒ‡ãƒ¼ã‚¿ã®ç·è¡Œæ•°ï¼†ãƒ•ã‚¡ã‚¤ãƒ«æ•°ã‚’è¨˜éŒ²ã—ã¦ãŠã
         sys_event_data_size = UBound(EventData)
         sys_event_file_num = UBound(EventFileNames)
     ElseIf Not ScenarioLibChecked Then
-        'ƒVƒiƒŠƒI‘¤‚ÌƒVƒXƒeƒ€ƒf[ƒ^‚ğƒ`ƒFƒbƒN
+        'ã‚·ãƒŠãƒªã‚ªå´ã®ã‚·ã‚¹ãƒ†ãƒ ãƒ‡ãƒ¼ã‚¿ã‚’ãƒã‚§ãƒƒã‚¯
         
         ScenarioLibChecked = True
         
-        If FileExists(ScenarioPath & "Lib\ƒXƒyƒVƒƒƒ‹ƒpƒ[.eve") _
-            Or FileExists(ScenarioPath & "Lib\¸_ƒRƒ}ƒ“ƒh.eve") _
-            Or FileExists(ScenarioPath & "Lib\”Ä—pí“¬ƒAƒjƒ\include.eve") _
+        If FileExists(ScenarioPath & "Lib\ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼.eve") _
+            Or FileExists(ScenarioPath & "Lib\ç²¾ç¥ã‚³ãƒãƒ³ãƒ‰.eve") _
+            Or FileExists(ScenarioPath & "Lib\æ±ç”¨æˆ¦é—˜ã‚¢ãƒ‹ãƒ¡\include.eve") _
         Then
-            'ƒVƒXƒeƒ€ƒf[ƒ^‚Ìƒ[ƒh‚ğ‚â‚è’¼‚·
+            'ã‚·ã‚¹ãƒ†ãƒ ãƒ‡ãƒ¼ã‚¿ã®ãƒ­ãƒ¼ãƒ‰ã‚’ã‚„ã‚Šç›´ã™
             ReDim EventData(0)
             ReDim EventFileID(0)
             ReDim EventLineNum(0)
@@ -506,71 +506,71 @@ Dim sys_event_file_num As Long
                 Next
             End With
             
-            'ƒXƒyƒVƒƒƒ‹ƒpƒ[ƒAƒjƒ—pƒCƒ“ƒNƒ‹[ƒhƒtƒ@ƒCƒ‹‚ğƒ_ƒEƒ“ƒ[ƒh
-            If FileExists(ScenarioPath & "Lib\ƒXƒyƒVƒƒƒ‹ƒpƒ[.eve") Then
-                LoadEventData2 ScenarioPath & "Lib\ƒXƒyƒVƒƒƒ‹ƒpƒ[.eve"
-            ElseIf FileExists(ScenarioPath & "Lib\¸_ƒRƒ}ƒ“ƒh.eve") Then
-                LoadEventData2 ScenarioPath & "Lib\¸_ƒRƒ}ƒ“ƒh.eve"
-            ElseIf FileExists(ExtDataPath & "Lib\ƒXƒyƒVƒƒƒ‹ƒpƒ[.eve") Then
-                LoadEventData2 ExtDataPath & "Lib\ƒXƒyƒVƒƒƒ‹ƒpƒ[.eve"
-            ElseIf FileExists(ExtDataPath2 & "Lib\ƒXƒyƒVƒƒƒ‹ƒpƒ[.eve") Then
-                LoadEventData2 ExtDataPath2 & "Lib\ƒXƒyƒVƒƒƒ‹ƒpƒ[.eve"
-            ElseIf FileExists(AppPath & "Lib\ƒXƒyƒVƒƒƒ‹ƒpƒ[.eve") Then
-                LoadEventData2 AppPath & "Lib\ƒXƒyƒVƒƒƒ‹ƒpƒ[.eve"
-            ElseIf FileExists(ExtDataPath & "Lib\¸_ƒRƒ}ƒ“ƒh.eve") Then
-                LoadEventData2 ExtDataPath & "Lib\¸_ƒRƒ}ƒ“ƒh.eve"
-            ElseIf FileExists(ExtDataPath2 & "Lib\¸_ƒRƒ}ƒ“ƒh.eve") Then
-                LoadEventData2 ExtDataPath2 & "Lib\¸_ƒRƒ}ƒ“ƒh.eve"
-            ElseIf FileExists(AppPath & "Lib\¸_ƒRƒ}ƒ“ƒh.eve") Then
-                LoadEventData2 AppPath & "Lib\¸_ƒRƒ}ƒ“ƒh.eve"
+            'ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼ã‚¢ãƒ‹ãƒ¡ç”¨ã‚¤ãƒ³ã‚¯ãƒ«ãƒ¼ãƒ‰ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰
+            If FileExists(ScenarioPath & "Lib\ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼.eve") Then
+                LoadEventData2 ScenarioPath & "Lib\ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼.eve"
+            ElseIf FileExists(ScenarioPath & "Lib\ç²¾ç¥ã‚³ãƒãƒ³ãƒ‰.eve") Then
+                LoadEventData2 ScenarioPath & "Lib\ç²¾ç¥ã‚³ãƒãƒ³ãƒ‰.eve"
+            ElseIf FileExists(ExtDataPath & "Lib\ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼.eve") Then
+                LoadEventData2 ExtDataPath & "Lib\ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼.eve"
+            ElseIf FileExists(ExtDataPath2 & "Lib\ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼.eve") Then
+                LoadEventData2 ExtDataPath2 & "Lib\ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼.eve"
+            ElseIf FileExists(AppPath & "Lib\ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼.eve") Then
+                LoadEventData2 AppPath & "Lib\ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼.eve"
+            ElseIf FileExists(ExtDataPath & "Lib\ç²¾ç¥ã‚³ãƒãƒ³ãƒ‰.eve") Then
+                LoadEventData2 ExtDataPath & "Lib\ç²¾ç¥ã‚³ãƒãƒ³ãƒ‰.eve"
+            ElseIf FileExists(ExtDataPath2 & "Lib\ç²¾ç¥ã‚³ãƒãƒ³ãƒ‰.eve") Then
+                LoadEventData2 ExtDataPath2 & "Lib\ç²¾ç¥ã‚³ãƒãƒ³ãƒ‰.eve"
+            ElseIf FileExists(AppPath & "Lib\ç²¾ç¥ã‚³ãƒãƒ³ãƒ‰.eve") Then
+                LoadEventData2 AppPath & "Lib\ç²¾ç¥ã‚³ãƒãƒ³ãƒ‰.eve"
             End If
             
-            '”Ä—pí“¬ƒAƒjƒ—pƒCƒ“ƒNƒ‹[ƒhƒtƒ@ƒCƒ‹‚ğƒ_ƒEƒ“ƒ[ƒh
+            'æ±ç”¨æˆ¦é—˜ã‚¢ãƒ‹ãƒ¡ç”¨ã‚¤ãƒ³ã‚¯ãƒ«ãƒ¼ãƒ‰ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰
             If LCase$(ReadIni("Option", "BattleAnimation")) <> "off" Then
                 BattleAnimation = True
             End If
-            If FileExists(ScenarioPath & "Lib\”Ä—pí“¬ƒAƒjƒ\include.eve") Then
-                LoadEventData2 ScenarioPath & "Lib\”Ä—pí“¬ƒAƒjƒ\include.eve"
-            ElseIf FileExists(ExtDataPath & "Lib\”Ä—pí“¬ƒAƒjƒ\include.eve") Then
-                LoadEventData2 ExtDataPath & "Lib\”Ä—pí“¬ƒAƒjƒ\include.eve"
-            ElseIf FileExists(ExtDataPath2 & "Lib\”Ä—pí“¬ƒAƒjƒ\include.eve") Then
-                LoadEventData2 ExtDataPath2 & "Lib\”Ä—pí“¬ƒAƒjƒ\include.eve"
-            ElseIf FileExists(AppPath & "Lib\”Ä—pí“¬ƒAƒjƒ\include.eve") Then
-                LoadEventData2 AppPath & "Lib\”Ä—pí“¬ƒAƒjƒ\include.eve"
+            If FileExists(ScenarioPath & "Lib\æ±ç”¨æˆ¦é—˜ã‚¢ãƒ‹ãƒ¡\include.eve") Then
+                LoadEventData2 ScenarioPath & "Lib\æ±ç”¨æˆ¦é—˜ã‚¢ãƒ‹ãƒ¡\include.eve"
+            ElseIf FileExists(ExtDataPath & "Lib\æ±ç”¨æˆ¦é—˜ã‚¢ãƒ‹ãƒ¡\include.eve") Then
+                LoadEventData2 ExtDataPath & "Lib\æ±ç”¨æˆ¦é—˜ã‚¢ãƒ‹ãƒ¡\include.eve"
+            ElseIf FileExists(ExtDataPath2 & "Lib\æ±ç”¨æˆ¦é—˜ã‚¢ãƒ‹ãƒ¡\include.eve") Then
+                LoadEventData2 ExtDataPath2 & "Lib\æ±ç”¨æˆ¦é—˜ã‚¢ãƒ‹ãƒ¡\include.eve"
+            ElseIf FileExists(AppPath & "Lib\æ±ç”¨æˆ¦é—˜ã‚¢ãƒ‹ãƒ¡\include.eve") Then
+                LoadEventData2 AppPath & "Lib\æ±ç”¨æˆ¦é—˜ã‚¢ãƒ‹ãƒ¡\include.eve"
             Else
-                'í“¬ƒAƒjƒ•\¦Ø‚è‘Ö‚¦ƒRƒ}ƒ“ƒh‚ğ”ñ•\¦‚É
+                'æˆ¦é—˜ã‚¢ãƒ‹ãƒ¡è¡¨ç¤ºåˆ‡ã‚Šæ›¿ãˆã‚³ãƒãƒ³ãƒ‰ã‚’éè¡¨ç¤ºã«
                 BattleAnimation = False
             End If
         End If
         
-        'ƒVƒiƒŠƒI“Y•t‚Ì”Ä—pƒCƒ“ƒNƒ‹[ƒhƒtƒ@ƒCƒ‹‚ğƒ_ƒEƒ“ƒ[ƒh
+        'ã‚·ãƒŠãƒªã‚ªæ·»ä»˜ã®æ±ç”¨ã‚¤ãƒ³ã‚¯ãƒ«ãƒ¼ãƒ‰ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰
         If FileExists(ScenarioPath & "Lib\include.eve") Then
             LoadEventData2 ScenarioPath & "Lib\include.eve"
         End If
         
-        'ƒVƒXƒeƒ€‘¤‚ÌƒCƒxƒ“ƒgƒf[ƒ^‚Ì‘s”•ƒtƒ@ƒCƒ‹”‚ğ‹L˜^‚µ‚Ä‚¨‚­
+        'ã‚·ã‚¹ãƒ†ãƒ å´ã®ã‚¤ãƒ™ãƒ³ãƒˆãƒ‡ãƒ¼ã‚¿ã®ç·è¡Œæ•°ï¼†ãƒ•ã‚¡ã‚¤ãƒ«æ•°ã‚’è¨˜éŒ²ã—ã¦ãŠã
         sys_event_data_size = UBound(EventData)
         sys_event_file_num = UBound(EventFileNames)
         
-        'ƒVƒiƒŠƒI‘¤‚ÌƒCƒxƒ“ƒgƒf[ƒ^‚Ìƒ[ƒh
+        'ã‚·ãƒŠãƒªã‚ªå´ã®ã‚¤ãƒ™ãƒ³ãƒˆãƒ‡ãƒ¼ã‚¿ã®ãƒ­ãƒ¼ãƒ‰
         LoadEventData2 fname
     Else
-        'ƒVƒiƒŠƒI‘¤‚ÌƒCƒxƒ“ƒgƒf[ƒ^‚Ìƒ[ƒh
+        'ã‚·ãƒŠãƒªã‚ªå´ã®ã‚¤ãƒ™ãƒ³ãƒˆãƒ‡ãƒ¼ã‚¿ã®ãƒ­ãƒ¼ãƒ‰
         LoadEventData2 fname
     End If
     
-    'ƒGƒ‰[•\¦—p‚ÉƒTƒCƒY‚ğ‘å‚«‚­æ‚Á‚Ä‚¨‚­
+    'ã‚¨ãƒ©ãƒ¼è¡¨ç¤ºç”¨ã«ã‚µã‚¤ã‚ºã‚’å¤§ããå–ã£ã¦ãŠã
     ReDim Preserve EventData(UBound(EventData) + 1)
     ReDim Preserve EventLineNum(UBound(EventData))
     EventData(UBound(EventData)) = ""
     EventLineNum(UBound(EventData)) = EventLineNum(UBound(EventData) - 1) + 1
     
-    'ƒf[ƒ^“Ç‚İ‚±‚İw’è
+    'ãƒ‡ãƒ¼ã‚¿èª­ã¿ã“ã¿æŒ‡å®š
     For i = SysEventDataSize + 1 To UBound(EventData)
         If Left$(EventData(i), 1) = "@" Then
             tname = Mid$(EventData(i), 2)
             
-            'Šù‚É‚»‚Ìƒf[ƒ^‚ª“Ç‚İ‚Ü‚ê‚Ä‚¢‚é‚©ƒ`ƒFƒbƒN
+            'æ—¢ã«ãã®ãƒ‡ãƒ¼ã‚¿ãŒèª­ã¿è¾¼ã¾ã‚Œã¦ã„ã‚‹ã‹ãƒã‚§ãƒƒã‚¯
             For j = 1 To UBound(Titles)
                 If tname = Titles(j) Then
                     Exit For
@@ -578,11 +578,11 @@ Dim sys_event_file_num As Long
             Next
             
             If j > UBound(Titles) Then
-                'ƒtƒHƒ‹ƒ_‚ğŒŸõ
+                'ãƒ•ã‚©ãƒ«ãƒ€ã‚’æ¤œç´¢
                 tfolder = SearchDataFolder(tname)
                 If Len(tfolder) = 0 Then
                     DisplayEventErrorMessage _
-                        i, "ƒf[ƒ^u" & tname & "v‚ÌƒtƒHƒ‹ƒ_‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ"
+                        i, "ãƒ‡ãƒ¼ã‚¿ã€Œ" & tname & "ã€ã®ãƒ•ã‚©ãƒ«ãƒ€ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“"
                 Else
                     ReDim Preserve new_titles(UBound(new_titles) + 1)
                     ReDim Preserve Titles(UBound(Titles) + 1)
@@ -593,9 +593,9 @@ Dim sys_event_file_num As Long
         End If
     Next
     
-    'Šeì•iƒf[ƒ^‚Ìinclude.eve‚ğ“Ç‚İ‚Ş
-    If load_mode <> "ƒVƒXƒeƒ€" Then
-        'ì•i–ˆ‚ÌƒCƒ“ƒNƒ‹[ƒhƒtƒ@ƒCƒ‹
+    'å„ä½œå“ãƒ‡ãƒ¼ã‚¿ã®include.eveã‚’èª­ã¿è¾¼ã‚€
+    If load_mode <> "ã‚·ã‚¹ãƒ†ãƒ " Then
+        'ä½œå“æ¯ã®ã‚¤ãƒ³ã‚¯ãƒ«ãƒ¼ãƒ‰ãƒ•ã‚¡ã‚¤ãƒ«
         For i = 1 To UBound(Titles)
             tfolder = SearchDataFolder(Titles(i))
             If FileExists(tfolder & "\include.eve") Then
@@ -603,7 +603,7 @@ Dim sys_event_file_num As Long
             End If
         Next
         
-        '”Ä—pDataƒCƒ“ƒNƒ‹[ƒhƒtƒ@ƒCƒ‹‚ğƒ[ƒh
+        'æ±ç”¨Dataã‚¤ãƒ³ã‚¯ãƒ«ãƒ¼ãƒ‰ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ãƒ­ãƒ¼ãƒ‰
         If FileExists(ScenarioPath & "Data\include.eve") Then
             LoadEventData2 ScenarioPath & "Data\include.eve"
         ElseIf FileExists(ExtDataPath & "Data\include.eve") Then
@@ -615,7 +615,7 @@ Dim sys_event_file_num As Long
         End If
     End If
     
-    '•¡”s‚É•ªŠ„‚³‚ê‚½ƒRƒ}ƒ“ƒh‚ğŒ‹‡
+    'è¤‡æ•°è¡Œã«åˆ†å‰²ã•ã‚ŒãŸã‚³ãƒãƒ³ãƒ‰ã‚’çµåˆ
     For i = SysEventDataSize + 1 To UBound(EventData) - 1
         If Right$(EventData(i), 1) = "_" Then
             EventData(i + 1) = _
@@ -624,9 +624,9 @@ Dim sys_event_file_num As Long
         End If
     Next
     
-    'ƒ‰ƒxƒ‹‚Ì“o˜^
+    'ãƒ©ãƒ™ãƒ«ã®ç™»éŒ²
     num = CurrentLineNum
-    If load_mode = "ƒVƒXƒeƒ€" Then
+    If load_mode = "ã‚·ã‚¹ãƒ†ãƒ " Then
         For CurrentLineNum = 1 To UBound(EventData)
             buf = EventData(CurrentLineNum)
             If Right$(buf, 1) = ":" Then
@@ -634,14 +634,14 @@ Dim sys_event_file_num As Long
             End If
         Next
     ElseIf sys_event_data_size > 0 Then
-        'ƒVƒXƒeƒ€‘¤‚Ö‚ÌƒCƒxƒ“ƒgƒf[ƒ^‚Ì’Ç‰Á‚ª‚ ‚Á‚½ê‡
+        'ã‚·ã‚¹ãƒ†ãƒ å´ã¸ã®ã‚¤ãƒ™ãƒ³ãƒˆãƒ‡ãƒ¼ã‚¿ã®è¿½åŠ ãŒã‚ã£ãŸå ´åˆ
         For CurrentLineNum = 1 To sys_event_data_size
             buf = EventData(CurrentLineNum)
             Select Case Right$(buf, 1)
                 Case ":"
                     AddSysLabel Left$(buf, Len(buf) - 1), CurrentLineNum
-                Case "F"
-                    DisplayEventErrorMessage CurrentLineNum, "ƒ‰ƒxƒ‹‚Ì––”ö‚ª‘SŠp•¶š‚É‚È‚Á‚Ä‚¢‚Ü‚·"
+                Case "ï¼š"
+                    DisplayEventErrorMessage CurrentLineNum, "ãƒ©ãƒ™ãƒ«ã®æœ«å°¾ãŒå…¨è§’æ–‡å­—ã«ãªã£ã¦ã„ã¾ã™"
                     error_found = True
             End Select
         Next
@@ -650,8 +650,8 @@ Dim sys_event_file_num As Long
             Select Case Right$(buf, 1)
                 Case ":"
                     AddLabel Left$(buf, Len(buf) - 1), CurrentLineNum
-                Case "F"
-                    DisplayEventErrorMessage CurrentLineNum, "ƒ‰ƒxƒ‹‚Ì––”ö‚ª‘SŠp•¶š‚É‚È‚Á‚Ä‚¢‚Ü‚·"
+                Case "ï¼š"
+                    DisplayEventErrorMessage CurrentLineNum, "ãƒ©ãƒ™ãƒ«ã®æœ«å°¾ãŒå…¨è§’æ–‡å­—ã«ãªã£ã¦ã„ã¾ã™"
                     error_found = True
             End Select
         Next
@@ -661,15 +661,15 @@ Dim sys_event_file_num As Long
             Select Case Right$(buf, 1)
                 Case ":"
                     AddLabel Left$(buf, Len(buf) - 1), CurrentLineNum
-                Case "F"
-                    DisplayEventErrorMessage CurrentLineNum, "ƒ‰ƒxƒ‹‚Ì––”ö‚ª‘SŠp•¶š‚É‚È‚Á‚Ä‚¢‚Ü‚·"
+                Case "ï¼š"
+                    DisplayEventErrorMessage CurrentLineNum, "ãƒ©ãƒ™ãƒ«ã®æœ«å°¾ãŒå…¨è§’æ–‡å­—ã«ãªã£ã¦ã„ã¾ã™"
                     error_found = True
             End Select
         Next
     End If
     CurrentLineNum = num
     
-    'ƒRƒ}ƒ“ƒhƒf[ƒ^”z—ñ‚ğİ’è
+    'ã‚³ãƒãƒ³ãƒ‰ãƒ‡ãƒ¼ã‚¿é…åˆ—ã‚’è¨­å®š
     If UBound(EventData) > UBound(EventCmd) Then
         num = UBound(EventCmd)
         ReDim Preserve EventCmd(UBound(EventData))
@@ -679,11 +679,11 @@ Dim sys_event_file_num As Long
         Next
     End If
     
-    '‘®ƒ`ƒFƒbƒN‚ÍƒVƒiƒŠƒI‘¤‚É‚Ì‚İÀ{
-    If load_mode <> "ƒVƒXƒeƒ€" Then
+    'æ›¸å¼ãƒã‚§ãƒƒã‚¯ã¯ã‚·ãƒŠãƒªã‚ªå´ã«ã®ã¿å®Ÿæ–½
+    If load_mode <> "ã‚·ã‚¹ãƒ†ãƒ " Then
     
-    '\•¶‰ğÍ‚Æ‘®ƒ`ƒFƒbƒN‚»‚Ì‚P
-    '§Œä\‘¢
+    'æ§‹æ–‡è§£æã¨æ›¸å¼ãƒã‚§ãƒƒã‚¯ãã®ï¼‘
+    'åˆ¶å¾¡æ§‹é€ 
     CmdStackIdx = 0
     CmdPosStackIdx = 0
     For CurrentLineNum = SysEventDataSize + 1 To UBound(EventData)
@@ -692,28 +692,28 @@ Dim sys_event_file_num As Long
             EventCmd(CurrentLineNum).LineNum = CurrentLineNum
         End If
         With EventCmd(CurrentLineNum)
-            'ƒRƒ}ƒ“ƒh‚Ì\•¶‰ğÍ
+            'ã‚³ãƒãƒ³ãƒ‰ã®æ§‹æ–‡è§£æ
             If Not .Parse(EventData(CurrentLineNum)) Then
                 error_found = True
             End If
             
-            'ƒŠƒXƒg’·‚ªƒ}ƒCƒiƒX‚Ì‚Æ‚«‚ÍŠ‡ŒÊ‚Ì‘Î‰‚ªæ‚ê‚Ä‚¢‚È‚¢
+            'ãƒªã‚¹ãƒˆé•·ãŒãƒã‚¤ãƒŠã‚¹ã®ã¨ãã¯æ‹¬å¼§ã®å¯¾å¿œãŒå–ã‚Œã¦ã„ãªã„
             If .ArgNum = -1 Then
                 Select Case CmdStack(CmdStackIdx)
                     Case AskCmd, AutoTalkCmd, QuestionCmd, TalkCmd
-                        '‚±‚ê‚ç‚ÌƒRƒ}ƒ“ƒh‚Ì“ü—Í‚Ìê‡‚Í–³‹‚·‚é
+                        'ã“ã‚Œã‚‰ã®ã‚³ãƒãƒ³ãƒ‰ã®å…¥åŠ›ã®å ´åˆã¯ç„¡è¦–ã™ã‚‹
                     Case Else
-                        DisplayEventErrorMessage CurrentLineNum, "Š‡ŒÊ‚Ì‘Î‰‚ªæ‚ê‚Ä‚¢‚Ü‚¹‚ñ"
+                        DisplayEventErrorMessage CurrentLineNum, "æ‹¬å¼§ã®å¯¾å¿œãŒå–ã‚Œã¦ã„ã¾ã›ã‚“"
                         error_found = True
                 End Select
             End If
             
-            'ƒRƒ}ƒ“ƒh‚É‰‚¶‚Ä§Œä\‘¢‚ğƒ`ƒFƒbƒN
+            'ã‚³ãƒãƒ³ãƒ‰ã«å¿œã˜ã¦åˆ¶å¾¡æ§‹é€ ã‚’ãƒã‚§ãƒƒã‚¯
             Select Case .Name
                 Case IfCmd
                     If CmdStack(CmdStackIdx) = TalkCmd Then
                         num = CmdPosStack(CmdPosStackIdx)
-                        DisplayEventErrorMessage num, "Talk‚É‘Î‰‚·‚éEnd‚ª‚ ‚è‚Ü‚¹‚ñ"
+                        DisplayEventErrorMessage num, "Talkã«å¯¾å¿œã™ã‚‹EndãŒã‚ã‚Šã¾ã›ã‚“"
                         CmdStackIdx = CmdStackIdx - 1
                         CmdPosStackIdx = CmdPosStackIdx - 1
                         error_found = True
@@ -729,14 +729,14 @@ Dim sys_event_file_num As Long
                 Case ElseIfCmd
                     If CmdStack(CmdStackIdx) = TalkCmd Then
                         num = CmdPosStack(CmdPosStackIdx)
-                        DisplayEventErrorMessage num, "Talk‚É‘Î‰‚·‚éEnd‚ª‚ ‚è‚Ü‚¹‚ñ"
+                        DisplayEventErrorMessage num, "Talkã«å¯¾å¿œã™ã‚‹EndãŒã‚ã‚Šã¾ã›ã‚“"
                         CmdStackIdx = CmdStackIdx - 1
                         CmdPosStackIdx = CmdPosStackIdx - 1
                         error_found = True
                     End If
                     
                     If CmdStack(CmdStackIdx) <> IfCmd Then
-                        DisplayEventErrorMessage CurrentLineNum, "ElseIf‚É‘Î‰‚·‚éIf‚ª‚ ‚è‚Ü‚¹‚ñ"
+                        DisplayEventErrorMessage CurrentLineNum, "ElseIfã«å¯¾å¿œã™ã‚‹IfãŒã‚ã‚Šã¾ã›ã‚“"
                         error_found = True
                         
                         CmdStackIdx = CmdStackIdx + 1
@@ -748,14 +748,14 @@ Dim sys_event_file_num As Long
                 Case ElseCmd
                     If CmdStack(CmdStackIdx) = TalkCmd Then
                         num = CmdPosStack(CmdPosStackIdx)
-                        DisplayEventErrorMessage num, "Talk‚É‘Î‰‚·‚éEnd‚ª‚ ‚è‚Ü‚¹‚ñ"
+                        DisplayEventErrorMessage num, "Talkã«å¯¾å¿œã™ã‚‹EndãŒã‚ã‚Šã¾ã›ã‚“"
                         CmdStackIdx = CmdStackIdx - 1
                         CmdPosStackIdx = CmdPosStackIdx - 1
                         error_found = True
                     End If
                     
                     If CmdStack(CmdStackIdx) = TalkCmd Then
-                        DisplayEventErrorMessage CurrentLineNum, "Else‚É‘Î‰‚·‚éIf‚ª‚ ‚è‚Ü‚¹‚ñ"
+                        DisplayEventErrorMessage CurrentLineNum, "Elseã«å¯¾å¿œã™ã‚‹IfãŒã‚ã‚Šã¾ã›ã‚“"
                         error_found = True
                         
                         CmdStackIdx = CmdStackIdx + 1
@@ -767,7 +767,7 @@ Dim sys_event_file_num As Long
                 Case EndIfCmd
                     If CmdStack(CmdStackIdx) = TalkCmd Then
                         num = CmdPosStack(CmdPosStackIdx)
-                        DisplayEventErrorMessage num, "Talk‚É‘Î‰‚·‚éEnd‚ª‚ ‚è‚Ü‚¹‚ñ"
+                        DisplayEventErrorMessage num, "Talkã«å¯¾å¿œã™ã‚‹EndãŒã‚ã‚Šã¾ã›ã‚“"
                         CmdStackIdx = CmdStackIdx - 1
                         CmdPosStackIdx = CmdPosStackIdx - 1
                         error_found = True
@@ -777,14 +777,14 @@ Dim sys_event_file_num As Long
                         CmdStackIdx = CmdStackIdx - 1
                         CmdPosStackIdx = CmdPosStackIdx - 1
                     Else
-                        DisplayEventErrorMessage CurrentLineNum, "EndIf‚É‘Î‰‚·‚éIf‚ª‚ ‚è‚Ü‚¹‚ñ"
+                        DisplayEventErrorMessage CurrentLineNum, "EndIfã«å¯¾å¿œã™ã‚‹IfãŒã‚ã‚Šã¾ã›ã‚“"
                         error_found = True
                     End If
                     
                 Case DoCmd
                     If CmdStack(CmdStackIdx) = TalkCmd Then
                         num = CmdPosStack(CmdPosStackIdx)
-                        DisplayEventErrorMessage num, "Talk‚É‘Î‰‚·‚éEnd‚ª‚ ‚è‚Ü‚¹‚ñ"
+                        DisplayEventErrorMessage num, "Talkã«å¯¾å¿œã™ã‚‹EndãŒã‚ã‚Šã¾ã›ã‚“"
                         CmdStackIdx = CmdStackIdx - 1
                         CmdPosStackIdx = CmdPosStackIdx - 1
                         error_found = True
@@ -798,7 +798,7 @@ Dim sys_event_file_num As Long
                 Case LoopCmd
                     If CmdStack(CmdStackIdx) = TalkCmd Then
                         num = CmdPosStack(CmdPosStackIdx)
-                        DisplayEventErrorMessage num, "Talk‚É‘Î‰‚·‚éEnd‚ª‚ ‚è‚Ü‚¹‚ñ"
+                        DisplayEventErrorMessage num, "Talkã«å¯¾å¿œã™ã‚‹EndãŒã‚ã‚Šã¾ã›ã‚“"
                         CmdStackIdx = CmdStackIdx - 1
                         CmdPosStackIdx = CmdPosStackIdx - 1
                         error_found = True
@@ -808,7 +808,7 @@ Dim sys_event_file_num As Long
                         CmdStackIdx = CmdStackIdx - 1
                         CmdPosStackIdx = CmdPosStackIdx - 1
                     Else
-                        DisplayEventErrorMessage CurrentLineNum, "Loop‚É‘Î‰‚·‚éDo‚ª‚ ‚è‚Ü‚¹‚ñ"
+                        DisplayEventErrorMessage CurrentLineNum, "Loopã«å¯¾å¿œã™ã‚‹DoãŒã‚ã‚Šã¾ã›ã‚“"
                         error_found = True
                     End If
                     
@@ -816,7 +816,7 @@ Dim sys_event_file_num As Long
                     If CmdStack(CmdStackIdx) = TalkCmd Then
                         num = CmdPosStack(CmdPosStackIdx)
                         DisplayEventErrorMessage _
-                            num, "Talk‚É‘Î‰‚·‚éEnd‚ª‚ ‚è‚Ü‚¹‚ñ"
+                            num, "Talkã«å¯¾å¿œã™ã‚‹EndãŒã‚ã‚Šã¾ã›ã‚“"
                         CmdStackIdx = CmdStackIdx - 1
                         CmdPosStackIdx = CmdPosStackIdx - 1
                         error_found = True
@@ -832,7 +832,7 @@ Dim sys_event_file_num As Long
                         If CmdStack(CmdStackIdx) = TalkCmd Then
                             num = CmdPosStack(CmdPosStackIdx)
                             DisplayEventErrorMessage _
-                                num, "Talk‚É‘Î‰‚·‚éEnd‚ª‚ ‚è‚Ü‚¹‚ñ"
+                                num, "Talkã«å¯¾å¿œã™ã‚‹EndãŒã‚ã‚Šã¾ã›ã‚“"
                             CmdStackIdx = CmdStackIdx - 1
                             CmdPosStackIdx = CmdPosStackIdx - 1
                             error_found = True
@@ -844,7 +844,7 @@ Dim sys_event_file_num As Long
                                 CmdPosStackIdx = CmdPosStackIdx - 1
                             Case Else
                                 DisplayEventErrorMessage CurrentLineNum, _
-                                    "Next‚É‘Î‰‚·‚éƒRƒ}ƒ“ƒh‚ª‚ ‚è‚Ü‚¹‚ñ"
+                                    "Nextã«å¯¾å¿œã™ã‚‹ã‚³ãƒãƒ³ãƒ‰ãŒã‚ã‚Šã¾ã›ã‚“"
                                 error_found = True
                         End Select
                     Else
@@ -855,7 +855,7 @@ Dim sys_event_file_num As Long
                                     CmdPosStackIdx = CmdPosStackIdx - 1
                                 Case Else
                                     DisplayEventErrorMessage CurrentLineNum, _
-                                        "Next‚É‘Î‰‚·‚éƒRƒ}ƒ“ƒh‚ª‚ ‚è‚Ü‚¹‚ñ"
+                                        "Nextã«å¯¾å¿œã™ã‚‹ã‚³ãƒãƒ³ãƒ‰ãŒã‚ã‚Šã¾ã›ã‚“"
                                     error_found = True
                             End Select
                         End If
@@ -865,7 +865,7 @@ Dim sys_event_file_num As Long
                     If CmdStack(CmdStackIdx) = TalkCmd Then
                         num = CmdPosStack(CmdPosStackIdx)
                         DisplayEventErrorMessage _
-                            num, "Talk‚É‘Î‰‚·‚éEnd‚ª‚ ‚è‚Ü‚¹‚ñ"
+                            num, "Talkã«å¯¾å¿œã™ã‚‹EndãŒã‚ã‚Šã¾ã›ã‚“"
                         error_found = True
                     End If
                     
@@ -878,7 +878,7 @@ Dim sys_event_file_num As Long
                     If CmdStack(CmdStackIdx) = TalkCmd Then
                         num = CmdPosStack(CmdPosStackIdx)
                         DisplayEventErrorMessage _
-                            num, "Talk‚É‘Î‰‚·‚éEnd‚ª‚ ‚è‚Ü‚¹‚ñ"
+                            num, "Talkã«å¯¾å¿œã™ã‚‹EndãŒã‚ã‚Šã¾ã›ã‚“"
                         CmdStackIdx = CmdStackIdx - 1
                         CmdPosStackIdx = CmdPosStackIdx - 1
                         error_found = True
@@ -886,7 +886,7 @@ Dim sys_event_file_num As Long
                     
                     If CmdStack(CmdStackIdx) <> SwitchCmd Then
                         DisplayEventErrorMessage _
-                            CurrentLineNum, "Case‚É‘Î‰‚·‚éSwitch‚ª‚ ‚è‚Ü‚¹‚ñ"
+                            CurrentLineNum, "Caseã«å¯¾å¿œã™ã‚‹SwitchãŒã‚ã‚Šã¾ã›ã‚“"
                         error_found = True
                         
                         CmdStackIdx = CmdStackIdx + 1
@@ -899,7 +899,7 @@ Dim sys_event_file_num As Long
                     If CmdStack(CmdStackIdx) = TalkCmd Then
                         num = CmdPosStack(CmdPosStackIdx)
                         DisplayEventErrorMessage _
-                            num, "Talk‚É‘Î‰‚·‚éEnd‚ª‚ ‚è‚Ü‚¹‚ñ"
+                            num, "Talkã«å¯¾å¿œã™ã‚‹EndãŒã‚ã‚Šã¾ã›ã‚“"
                         CmdStackIdx = CmdStackIdx - 1
                         CmdPosStackIdx = CmdPosStackIdx - 1
                         error_found = True
@@ -910,7 +910,7 @@ Dim sys_event_file_num As Long
                         CmdPosStackIdx = CmdPosStackIdx - 1
                     Else
                         DisplayEventErrorMessage _
-                            CurrentLineNum, "EndSw‚É‘Î‰‚·‚éSwitch‚ª‚ ‚è‚Ü‚¹‚ñ"
+                            CurrentLineNum, "EndSwã«å¯¾å¿œã™ã‚‹SwitchãŒã‚ã‚Šã¾ã›ã‚“"
                         error_found = True
                     End If
                     
@@ -926,7 +926,7 @@ Dim sys_event_file_num As Long
                     If CmdStack(CmdStackIdx) = TalkCmd Then
                         num = CmdPosStack(CmdPosStackIdx)
                         DisplayEventErrorMessage _
-                            num, "Talk‚É‘Î‰‚·‚éEnd‚ª‚ ‚è‚Ü‚¹‚ñ"
+                            num, "Talkã«å¯¾å¿œã™ã‚‹EndãŒã‚ã‚Šã¾ã›ã‚“"
                         CmdStackIdx = CmdStackIdx - 1
                         CmdPosStackIdx = CmdPosStackIdx - 1
                         error_found = True
@@ -935,11 +935,11 @@ Dim sys_event_file_num As Long
                     i = .ArgNum
                     Do While i > 1
                         Select Case .GetArg(i)
-                            Case "’Êí"
-                            Case "Šg‘å"
-                            Case "˜A‘±•\¦"
-                            Case "ƒLƒƒƒ“ƒZƒ‹‰Â"
-                            Case "I—¹"
+                            Case "é€šå¸¸"
+                            Case "æ‹¡å¤§"
+                            Case "é€£ç¶šè¡¨ç¤º"
+                            Case "ã‚­ãƒ£ãƒ³ã‚»ãƒ«å¯"
+                            Case "çµ‚äº†"
                                 i = 3
                                 Exit Do
                             Case Else
@@ -958,7 +958,7 @@ Dim sys_event_file_num As Long
                     If CmdStack(CmdStackIdx) = TalkCmd Then
                         num = CmdPosStack(CmdPosStackIdx)
                         DisplayEventErrorMessage _
-                            num, "Talk‚É‘Î‰‚·‚éEnd‚ª‚ ‚è‚Ü‚¹‚ñ"
+                            num, "Talkã«å¯¾å¿œã™ã‚‹EndãŒã‚ã‚Šã¾ã›ã‚“"
                         CmdStackIdx = CmdStackIdx - 1
                         CmdPosStackIdx = CmdPosStackIdx - 1
                         error_found = True
@@ -967,11 +967,11 @@ Dim sys_event_file_num As Long
                     i = .ArgNum
                     Do While i > 1
                         Select Case .GetArg(.ArgNum)
-                            Case "’Êí"
-                            Case "Šg‘å"
-                            Case "˜A‘±•\¦"
-                            Case "ƒLƒƒƒ“ƒZƒ‹‰Â"
-                            Case "I—¹"
+                            Case "é€šå¸¸"
+                            Case "æ‹¡å¤§"
+                            Case "é€£ç¶šè¡¨ç¤º"
+                            Case "ã‚­ãƒ£ãƒ³ã‚»ãƒ«å¯"
+                            Case "çµ‚äº†"
                                 i = 4
                                 Exit Do
                             Case Else
@@ -993,7 +993,7 @@ Dim sys_event_file_num As Long
                             CmdPosStackIdx = CmdPosStackIdx - 1
                         Case Else
                             DisplayEventErrorMessage _
-                                CurrentLineNum, "End‚É‘Î‰‚·‚éTalk‚ª‚ ‚è‚Ü‚¹‚ñ"
+                                CurrentLineNum, "Endã«å¯¾å¿œã™ã‚‹TalkãŒã‚ã‚Šã¾ã›ã‚“"
                             error_found = True
                     End Select
                     
@@ -1004,7 +1004,7 @@ Dim sys_event_file_num As Long
                             CmdPosStackIdx = CmdPosStackIdx - 1
                         Case Else
                             DisplayEventErrorMessage _
-                                CurrentLineNum, "Suspend‚É‘Î‰‚·‚éTalk‚ª‚ ‚è‚Ü‚¹‚ñ"
+                                CurrentLineNum, "Suspendã«å¯¾å¿œã™ã‚‹TalkãŒã‚ã‚Šã¾ã›ã‚“"
                             error_found = True
                     End Select
                     
@@ -1013,7 +1013,7 @@ Dim sys_event_file_num As Long
                         Case TalkCmd, AutoTalkCmd, AskCmd, QuestionCmd
                             num = CmdPosStack(CmdPosStackIdx)
                             DisplayEventErrorMessage _
-                                num, "Talk‚É‘Î‰‚·‚éEnd‚ª‚ ‚è‚Ü‚¹‚ñ"
+                                num, "Talkã«å¯¾å¿œã™ã‚‹EndãŒã‚ã‚Šã¾ã›ã‚“"
                             CmdStackIdx = CmdStackIdx - 1
                             CmdPosStackIdx = CmdPosStackIdx - 1
                             error_found = True
@@ -1021,7 +1021,7 @@ Dim sys_event_file_num As Long
                     
                 Case NopCmd
                     If EventData(CurrentLineNum) = " " Then
-                        '"_"‚ÅÁ‹‚³‚ê‚½sBTalk’†‚Ì‰üs‚É‘Î‰‚·‚é‚½‚ß‚Ìƒ_ƒ~[‚Ì‹ó”’
+                        '"_"ã§æ¶ˆå»ã•ã‚ŒãŸè¡Œã€‚Talkä¸­ã®æ”¹è¡Œã«å¯¾å¿œã™ã‚‹ãŸã‚ã®ãƒ€ãƒŸãƒ¼ã®ç©ºç™½
                         EventData(CurrentLineNum) = ""
                     Else
                         Select Case CmdStack(CmdStackIdx)
@@ -1029,7 +1029,7 @@ Dim sys_event_file_num As Long
                                 If CurrentLineNum = UBound(EventData) Then
                                     num = CmdPosStack(CmdPosStackIdx)
                                     DisplayEventErrorMessage _
-                                        num, "Talk‚É‘Î‰‚·‚éEnd‚ª‚ ‚è‚Ü‚¹‚ñ"
+                                        num, "Talkã«å¯¾å¿œã™ã‚‹EndãŒã‚ã‚Šã¾ã›ã‚“"
                                     CmdStackIdx = CmdStackIdx - 1
                                     CmdPosStackIdx = CmdPosStackIdx - 1
                                     error_found = True
@@ -1052,7 +1052,7 @@ Dim sys_event_file_num As Long
                                     Then
                                         num = CmdPosStack(CmdPosStackIdx)
                                         DisplayEventErrorMessage _
-                                            num, "Talk‚É‘Î‰‚·‚éEnd‚ª‚ ‚è‚Ü‚¹‚ñ"
+                                            num, "Talkã«å¯¾å¿œã™ã‚‹EndãŒã‚ã‚Šã¾ã›ã‚“"
                                         CmdStackIdx = CmdStackIdx - 1
                                         CmdPosStackIdx = CmdPosStackIdx - 1
                                         error_found = True
@@ -1065,75 +1065,75 @@ Dim sys_event_file_num As Long
         End With
     Next
     
-    'ƒtƒ@ƒCƒ‹‚Ì––”ö‚Ü‚Å“Ç‚ñ‚Å‚àƒRƒ}ƒ“ƒh‚ÌI‚í‚è‚ª‚È‚©‚Á‚½H
+    'ãƒ•ã‚¡ã‚¤ãƒ«ã®æœ«å°¾ã¾ã§èª­ã‚“ã§ã‚‚ã‚³ãƒãƒ³ãƒ‰ã®çµ‚ã‚ã‚ŠãŒãªã‹ã£ãŸï¼Ÿ
     If CmdStackIdx > 0 Then
         num = CmdPosStack(CmdPosStackIdx)
         Select Case CmdStack(CmdStackIdx)
             Case AskCmd
-                DisplayEventErrorMessage num, "Ask‚É‘Î‰‚·‚éEnd‚ª‚ ‚è‚Ü‚¹‚ñ"
+                DisplayEventErrorMessage num, "Askã«å¯¾å¿œã™ã‚‹EndãŒã‚ã‚Šã¾ã›ã‚“"
             Case AutoTalkCmd
-                DisplayEventErrorMessage num, "AutoTalk‚É‘Î‰‚·‚éEnd‚ª‚ ‚è‚Ü‚¹‚ñ"
+                DisplayEventErrorMessage num, "AutoTalkã«å¯¾å¿œã™ã‚‹EndãŒã‚ã‚Šã¾ã›ã‚“"
             Case DoCmd
-                DisplayEventErrorMessage num, "Do‚É‘Î‰‚·‚éLoop‚ª‚ ‚è‚Ü‚¹‚ñ"
+                DisplayEventErrorMessage num, "Doã«å¯¾å¿œã™ã‚‹LoopãŒã‚ã‚Šã¾ã›ã‚“"
             Case ForCmd
-                DisplayEventErrorMessage num, "For‚É‘Î‰‚·‚éNext‚ª‚ ‚è‚Ü‚¹‚ñ"
+                DisplayEventErrorMessage num, "Forã«å¯¾å¿œã™ã‚‹NextãŒã‚ã‚Šã¾ã›ã‚“"
             Case ForEachCmd
-                DisplayEventErrorMessage num, "ForEach‚É‘Î‰‚·‚éNext‚ª‚ ‚è‚Ü‚¹‚ñ"
+                DisplayEventErrorMessage num, "ForEachã«å¯¾å¿œã™ã‚‹NextãŒã‚ã‚Šã¾ã›ã‚“"
             Case IfCmd
-                DisplayEventErrorMessage num, "If‚É‘Î‰‚·‚éEndIf‚ª‚ ‚è‚Ü‚¹‚ñ"
+                DisplayEventErrorMessage num, "Ifã«å¯¾å¿œã™ã‚‹EndIfãŒã‚ã‚Šã¾ã›ã‚“"
             Case QuestionCmd
-                DisplayEventErrorMessage num, "Question‚É‘Î‰‚·‚éEnd‚ª‚ ‚è‚Ü‚¹‚ñ"
+                DisplayEventErrorMessage num, "Questionã«å¯¾å¿œã™ã‚‹EndãŒã‚ã‚Šã¾ã›ã‚“"
             Case SwitchCmd
-                DisplayEventErrorMessage num, "Switch‚É‘Î‰‚·‚éEndSw‚ª‚ ‚è‚Ü‚¹‚ñ"
+                DisplayEventErrorMessage num, "Switchã«å¯¾å¿œã™ã‚‹EndSwãŒã‚ã‚Šã¾ã›ã‚“"
             Case TalkCmd
-                DisplayEventErrorMessage num, "Talk‚É‘Î‰‚·‚éEnd‚ª‚ ‚è‚Ü‚¹‚ñ"
+                DisplayEventErrorMessage num, "Talkã«å¯¾å¿œã™ã‚‹EndãŒã‚ã‚Šã¾ã›ã‚“"
         End Select
         error_found = True
     End If
     
-    '‘®ƒGƒ‰[‚ªŒ©‚Â‚©‚Á‚½ê‡‚ÍSRC‚ğI—¹
+    'æ›¸å¼ã‚¨ãƒ©ãƒ¼ãŒè¦‹ã¤ã‹ã£ãŸå ´åˆã¯SRCã‚’çµ‚äº†
     If error_found Then
         TerminateSRC
     End If
     
-    '‘®ƒ`ƒFƒbƒN‚»‚Ì‚Q
-    'å‚ÈƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ğƒ`ƒFƒbƒN
+    'æ›¸å¼ãƒã‚§ãƒƒã‚¯ãã®ï¼’
+    'ä¸»ãªã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ã‚’ãƒã‚§ãƒƒã‚¯
     For CurrentLineNum = SysEventDataSize + 1 To UBound(EventData)
         With EventCmd(CurrentLineNum)
             Select Case .Name
                 Case CreateCmd
                     If .ArgNum < 8 Then
                         DisplayEventErrorMessage _
-                            CurrentLineNum, "CreateƒRƒ}ƒ“ƒh‚Ìƒpƒ‰ƒ[ƒ^”‚ªˆá‚¢‚Ü‚·"
+                            CurrentLineNum, "Createã‚³ãƒãƒ³ãƒ‰ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿æ•°ãŒé•ã„ã¾ã™"
                         error_found = True
                     End If
                 Case PilotCmd
                     If .ArgNum < 3 Then
                         DisplayEventErrorMessage _
-                            CurrentLineNum, "PilotƒRƒ}ƒ“ƒh‚Ìƒpƒ‰ƒ[ƒ^”‚ªˆá‚¢‚Ü‚·"
+                            CurrentLineNum, "Pilotã‚³ãƒãƒ³ãƒ‰ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿æ•°ãŒé•ã„ã¾ã™"
                         error_found = True
                     End If
                 Case UnitCmd
                     If .ArgNum <> 3 Then
                         DisplayEventErrorMessage _
-                            CurrentLineNum, "UnitƒRƒ}ƒ“ƒh‚Ìƒpƒ‰ƒ[ƒ^”‚ªˆá‚¢‚Ü‚·"
+                            CurrentLineNum, "Unitã‚³ãƒãƒ³ãƒ‰ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿æ•°ãŒé•ã„ã¾ã™"
                         error_found = True
                     End If
             End Select
         End With
     Next
     
-    '‘®ƒGƒ‰[‚ªŒ©‚Â‚©‚Á‚½ê‡‚ÍSRC‚ğI—¹
+    'æ›¸å¼ã‚¨ãƒ©ãƒ¼ãŒè¦‹ã¤ã‹ã£ãŸå ´åˆã¯SRCã‚’çµ‚äº†
     If error_found Then
         TerminateSRC
     End If
     
-    'ƒVƒiƒŠƒI‘¤‚ÌƒCƒxƒ“ƒgƒf[ƒ^‚Ìê‡‚Í‚±‚±‚Ü‚ÅƒXƒLƒbƒv
+    'ã‚·ãƒŠãƒªã‚ªå´ã®ã‚¤ãƒ™ãƒ³ãƒˆãƒ‡ãƒ¼ã‚¿ã®å ´åˆã¯ã“ã“ã¾ã§ã‚¹ã‚­ãƒƒãƒ—
     Else
     
-    'ƒVƒXƒeƒ€‘¤‚ÌƒCƒxƒ“ƒgƒf[ƒ^‚Ìê‡‚Ìˆ—
+    'ã‚·ã‚¹ãƒ†ãƒ å´ã®ã‚¤ãƒ™ãƒ³ãƒˆãƒ‡ãƒ¼ã‚¿ã®å ´åˆã®å‡¦ç†
     
-    'CmdDataƒNƒ‰ƒX‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚Ì¶¬‚Ì‚İs‚Á‚Ä‚¨‚­
+    'CmdDataã‚¯ãƒ©ã‚¹ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã®ç”Ÿæˆã®ã¿è¡Œã£ã¦ãŠã
     If CurrentLineNum > UBound(EventCmd) Then
         ReDim Preserve EventCmd(CurrentLineNum)
         i = CurrentLineNum
@@ -1146,28 +1146,28 @@ Dim sys_event_file_num As Long
     
     End If
     
-    'ƒCƒxƒ“ƒgƒf[ƒ^‚Ì“Ç‚İ‚İ‚ªI—¹‚µ‚½‚Ì‚ÅƒVƒXƒeƒ€‘¤ƒCƒxƒ“ƒgƒf[ƒ^‚ÌƒTƒCƒY‚ğŒˆ’èB
-    'ƒVƒXƒeƒ€‘¤ƒCƒxƒ“ƒgƒf[ƒ^‚Í“Ç‚İ‚İ‚ğˆê“x‚¾‚¯‚â‚ê‚Î‚æ‚¢B
+    'ã‚¤ãƒ™ãƒ³ãƒˆãƒ‡ãƒ¼ã‚¿ã®èª­ã¿è¾¼ã¿ãŒçµ‚äº†ã—ãŸã®ã§ã‚·ã‚¹ãƒ†ãƒ å´ã‚¤ãƒ™ãƒ³ãƒˆãƒ‡ãƒ¼ã‚¿ã®ã‚µã‚¤ã‚ºã‚’æ±ºå®šã€‚
+    'ã‚·ã‚¹ãƒ†ãƒ å´ã‚¤ãƒ™ãƒ³ãƒˆãƒ‡ãƒ¼ã‚¿ã¯èª­ã¿è¾¼ã¿ã‚’ä¸€åº¦ã ã‘ã‚„ã‚Œã°ã‚ˆã„ã€‚
     If sys_event_data_size > 0 Then
         SysEventDataSize = sys_event_data_size
         SysEventFileNum = sys_event_file_num
     End If
     
-    'ƒNƒCƒbƒNƒ[ƒh‚âƒŠƒXƒ^[ƒg‚Ìê‡‚ÍƒVƒiƒŠƒIƒf[ƒ^‚ÌÄƒ[ƒh‚Ì‚İ
+    'ã‚¯ã‚¤ãƒƒã‚¯ãƒ­ãƒ¼ãƒ‰ã‚„ãƒªã‚¹ã‚¿ãƒ¼ãƒˆã®å ´åˆã¯ã‚·ãƒŠãƒªã‚ªãƒ‡ãƒ¼ã‚¿ã®å†ãƒ­ãƒ¼ãƒ‰ã®ã¿
     Select Case load_mode
-        Case "ƒŠƒXƒgƒA"
+        Case "ãƒªã‚¹ãƒˆã‚¢"
             ADList.AddDefaultAnimation
             Exit Sub
-        Case "ƒVƒXƒeƒ€", "ƒNƒCƒbƒNƒ[ƒh", "ƒŠƒXƒ^[ƒg"
+        Case "ã‚·ã‚¹ãƒ†ãƒ ", "ã‚¯ã‚¤ãƒƒã‚¯ãƒ­ãƒ¼ãƒ‰", "ãƒªã‚¹ã‚¿ãƒ¼ãƒˆ"
             Exit Sub
     End Select
     
-    '’Ç‰Á‚³‚ê‚½ƒVƒXƒeƒ€‘¤ƒCƒxƒ“ƒgƒf[ƒ^‚ğƒ`ƒFƒbƒN‚·‚éê‡‚Í‚±‚±‚ÅI—¹
+    'è¿½åŠ ã•ã‚ŒãŸã‚·ã‚¹ãƒ†ãƒ å´ã‚¤ãƒ™ãƒ³ãƒˆãƒ‡ãƒ¼ã‚¿ã‚’ãƒã‚§ãƒƒã‚¯ã™ã‚‹å ´åˆã¯ã“ã“ã§çµ‚äº†
     If fname = "" Then
         Exit Sub
     End If
     
-    'ƒ[ƒh‚·‚éƒf[ƒ^”‚ğƒJƒEƒ“ƒg
+    'ãƒ­ãƒ¼ãƒ‰ã™ã‚‹ãƒ‡ãƒ¼ã‚¿æ•°ã‚’ã‚«ã‚¦ãƒ³ãƒˆ
     num = 2 * UBound(new_titles)
     If IsLocalDataLoaded Then
         If num > 0 Then
@@ -1180,23 +1180,23 @@ Dim sys_event_file_num As Long
         num = num + 1
     End If
     If num = 0 And IsLocalDataLoaded Then
-        'ƒfƒtƒHƒ‹ƒg‚Ìí“¬ƒAƒjƒƒf[ƒ^‚ğİ’è
+        'ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®æˆ¦é—˜ã‚¢ãƒ‹ãƒ¡ãƒ‡ãƒ¼ã‚¿ã‚’è¨­å®š
         ADList.AddDefaultAnimation
         Exit Sub
     End If
     
-    'ƒ[ƒh‰æ–Ê‚ğ•\¦
+    'ãƒ­ãƒ¼ãƒ‰ç”»é¢ã‚’è¡¨ç¤º
     OpenNowLoadingForm
     
-    'ƒ[ƒhƒTƒCƒY‚ğİ’è
+    'ãƒ­ãƒ¼ãƒ‰ã‚µã‚¤ã‚ºã‚’è¨­å®š
     SetLoadImageSize num
     
-    'g—p‚µ‚Ä‚¢‚éƒ^ƒCƒgƒ‹‚Ìƒf[ƒ^‚ğƒ[ƒh
+    'ä½¿ç”¨ã—ã¦ã„ã‚‹ã‚¿ã‚¤ãƒˆãƒ«ã®ãƒ‡ãƒ¼ã‚¿ã‚’ãƒ­ãƒ¼ãƒ‰
     For i = 1 To UBound(new_titles)
         IncludeData new_titles(i)
     Next
     
-    'ƒ[ƒJƒ‹ƒf[ƒ^‚Ì“Ç‚İ‚±‚İ
+    'ãƒ­ãƒ¼ã‚«ãƒ«ãƒ‡ãƒ¼ã‚¿ã®èª­ã¿ã“ã¿
     If Not IsLocalDataLoaded Or UBound(new_titles) > 0 Then
         If FileExists(ScenarioPath & "Data\alias.txt") Then
             ALDList.Load ScenarioPath & "Data\alias.txt"
@@ -1245,10 +1245,10 @@ Dim sys_event_file_num As Long
         IsLocalDataLoaded = True
     End If
     
-    'ƒfƒtƒHƒ‹ƒg‚Ìí“¬ƒAƒjƒƒf[ƒ^‚ğİ’è
+    'ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®æˆ¦é—˜ã‚¢ãƒ‹ãƒ¡ãƒ‡ãƒ¼ã‚¿ã‚’è¨­å®š
     ADList.AddDefaultAnimation
     
-    'ƒ}ƒbƒvƒf[ƒ^‚ğƒ[ƒh
+    'ãƒãƒƒãƒ—ãƒ‡ãƒ¼ã‚¿ã‚’ãƒ­ãƒ¼ãƒ‰
     If FileExists(Left$(fname, Len(fname) - 4) & ".map") Then
         LoadMapData Left$(fname, Len(fname) - 4) & ".map"
         SetupBackground
@@ -1256,11 +1256,11 @@ Dim sys_event_file_num As Long
         DisplayLoadingProgress
     End If
     
-    'ƒ[ƒh‰æ–Ê‚ğ•Â‚¶‚é
+    'ãƒ­ãƒ¼ãƒ‰ç”»é¢ã‚’é–‰ã˜ã‚‹
     CloseNowLoadingForm
 End Sub
 
-'ƒCƒxƒ“ƒgƒtƒ@ƒCƒ‹‚Ì“Ç‚İ‚İ
+'ã‚¤ãƒ™ãƒ³ãƒˆãƒ•ã‚¡ã‚¤ãƒ«ã®èª­ã¿è¾¼ã¿
 Public Sub LoadEventData2(fname As String, Optional ByVal lnum As Long)
 Dim FileNumber As Integer, CurrentLineNum2 As Integer
 Dim i As Integer
@@ -1272,38 +1272,38 @@ Dim in_single_quote As Boolean, in_double_quote As Boolean
         Exit Sub
     End If
     
-    'ƒCƒxƒ“ƒgƒtƒ@ƒCƒ‹–¼‚ğ‹L˜^‚µ‚Ä‚¨‚­ (ƒGƒ‰[•\¦—p)
+    'ã‚¤ãƒ™ãƒ³ãƒˆãƒ•ã‚¡ã‚¤ãƒ«åã‚’è¨˜éŒ²ã—ã¦ãŠã (ã‚¨ãƒ©ãƒ¼è¡¨ç¤ºç”¨)
     ReDim Preserve EventFileNames(UBound(EventFileNames) + 1)
     EventFileNames(UBound(EventFileNames)) = fname
     fid = UBound(EventFileNames)
     
     On Error GoTo ErrorHandler
     
-    'ƒtƒ@ƒCƒ‹‚ğŠJ‚­
+    'ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ã
     FileNumber = FreeFile
     Open fname For Input Access Read As #FileNumber
     
-    's”Ô†‚Ìİ’è
+    'è¡Œç•ªå·ã®è¨­å®š
     If lnum > 0 Then
         CurrentLineNum = lnum
     End If
     CurrentLineNum2 = 0
     
-    'Šes‚Ì“Ç‚İ‚İ
+    'å„è¡Œã®èª­ã¿è¾¼ã¿
     Do Until EOF(FileNumber)
         CurrentLineNum = CurrentLineNum + 1
         CurrentLineNum2 = CurrentLineNum2 + 1
         
-        'ƒf[ƒ^—ÌˆæŠm•Û
+        'ãƒ‡ãƒ¼ã‚¿é ˜åŸŸç¢ºä¿
         ReDim Preserve EventData(CurrentLineNum)
         ReDim Preserve EventFileID(CurrentLineNum)
         ReDim Preserve EventLineNum(CurrentLineNum)
         
-        's‚Ì“Ç‚İ‚İ
+        'è¡Œã®èª­ã¿è¾¼ã¿
         Line Input #FileNumber, buf
         TrimString buf
         
-        'ƒRƒƒ“ƒg‚ğíœ
+        'ã‚³ãƒ¡ãƒ³ãƒˆã‚’å‰Šé™¤
         If Left$(buf, 1) = "#" Then
             buf = " "
         ElseIf InStr(buf, "//") > 0 Then
@@ -1312,17 +1312,17 @@ Dim in_single_quote As Boolean, in_double_quote As Boolean
             For i = 1 To Len(buf)
                 Select Case Mid$(buf, i, 1)
                     Case "`"
-                        'ƒVƒ“ƒOƒ‹ƒNƒI[ƒg
+                        'ã‚·ãƒ³ã‚°ãƒ«ã‚¯ã‚ªãƒ¼ãƒˆ
                         If Not in_double_quote Then
                             in_single_quote = Not in_single_quote
                         End If
                     Case """"
-                        'ƒ_ƒuƒ‹ƒNƒI[ƒg
+                        'ãƒ€ãƒ–ãƒ«ã‚¯ã‚ªãƒ¼ãƒˆ
                         If Not in_single_quote Then
                             in_double_quote = Not in_double_quote
                         End If
                     Case "/"
-                        'ƒRƒƒ“ƒgH
+                        'ã‚³ãƒ¡ãƒ³ãƒˆï¼Ÿ
                         If Not in_double_quote And Not in_single_quote Then
                             If i > 1 Then
                                 If Mid$(buf, i - 1, 1) = "/" Then
@@ -1338,18 +1338,18 @@ Dim in_single_quote As Boolean, in_double_quote As Boolean
             Next
         End If
         
-        's‚ğ•Û‘¶
+        'è¡Œã‚’ä¿å­˜
         EventData(CurrentLineNum) = buf
         EventFileID(CurrentLineNum) = fid
         EventLineNum(CurrentLineNum) = CurrentLineNum2
         
-        '‘¼‚ÌƒCƒxƒ“ƒgƒtƒ@ƒCƒ‹‚Ì“Ç‚İ‚İ
+        'ä»–ã®ã‚¤ãƒ™ãƒ³ãƒˆãƒ•ã‚¡ã‚¤ãƒ«ã®èª­ã¿è¾¼ã¿
         If Left$(buf, 1) = "<" Then
             If InStr(buf, ">") = Len(buf) And buf <> "<>" Then
                 CurrentLineNum = CurrentLineNum - 1
                 fname2 = Mid$(buf, 2, Len(buf) - 2)
-                If fname2 <> "Lib\ƒXƒyƒVƒƒƒ‹ƒpƒ[.eve" _
-                    And fname2 <> "Lib\”Ä—pí“¬ƒAƒjƒ\include.eve" _
+                If fname2 <> "Lib\ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼.eve" _
+                    And fname2 <> "Lib\æ±ç”¨æˆ¦é—˜ã‚¢ãƒ‹ãƒ¡\include.eve" _
                     And fname2 <> "Lib\include.eve" _
                 Then
                     If Len(Dir$(ScenarioPath & fname2)) > 0 Then
@@ -1366,23 +1366,23 @@ Dim in_single_quote As Boolean, in_double_quote As Boolean
         End If
     Loop
     
-    'ƒtƒ@ƒCƒ‹‚ğ•Â‚¶‚é
+    'ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‰ã˜ã‚‹
     Close #FileNumber
     
     Exit Sub
     
 ErrorHandler:
     If Len(buf) = 0 Then
-        ErrorMessage fname & "‚ªŠJ‚¯‚Ü‚¹‚ñ"
+        ErrorMessage fname & "ãŒé–‹ã‘ã¾ã›ã‚“"
     Else
-        ErrorMessage fname & "‚Ìƒ[ƒh’†‚ÉƒGƒ‰[‚ª”­¶‚µ‚Ü‚µ‚½" & vbCr _
-            & Format$(CurrentLineNum2) & "s–Ú‚ÌƒCƒxƒ“ƒgƒf[ƒ^‚ª•s³‚Å‚·"
+        ErrorMessage fname & "ã®ãƒ­ãƒ¼ãƒ‰ä¸­ã«ã‚¨ãƒ©ãƒ¼ãŒç™ºç”Ÿã—ã¾ã—ãŸ" & vbCr _
+            & Format$(CurrentLineNum2) & "è¡Œç›®ã®ã‚¤ãƒ™ãƒ³ãƒˆãƒ‡ãƒ¼ã‚¿ãŒä¸æ­£ã§ã™"
     End If
     TerminateSRC
 End Sub
 
 
-'ƒCƒxƒ“ƒg‚ÌÀs
+'ã‚¤ãƒ™ãƒ³ãƒˆã®å®Ÿè¡Œ
 Public Sub HandleEvent(ParamArray Args() As Variant)
 Dim event_que_idx As Integer
 Dim ret As Long, i As Integer
@@ -1393,16 +1393,16 @@ Dim uparty As String
 Dim u As Unit
 Dim main_event_done As Boolean
     
-    '‰æ–Ê“ü—Í‚ğƒƒbƒN
+    'ç”»é¢å…¥åŠ›ã‚’ãƒ­ãƒƒã‚¯
     prev_is_gui_locked = IsGUILocked
     If Not IsGUILocked Then
         LockGUI
     End If
     
-    'Œ»İ‘I‘ğ‚³‚ê‚Ä‚¢‚éƒ†ƒjƒbƒg•ƒ^[ƒQƒbƒg‚ğƒCƒxƒ“ƒg—p‚Éİ’è
-    '(SearchLabel()Às‚Ì®ŒvZ—p‚É‚ ‚ç‚©‚¶‚ßİ’è‚µ‚Ä‚¨‚­)
+    'ç¾åœ¨é¸æŠã•ã‚Œã¦ã„ã‚‹ãƒ¦ãƒ‹ãƒƒãƒˆï¼†ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’ã‚¤ãƒ™ãƒ³ãƒˆç”¨ã«è¨­å®š
+    '(SearchLabel()å®Ÿè¡Œæ™‚ã®å¼è¨ˆç®—ç”¨ã«ã‚ã‚‰ã‹ã˜ã‚è¨­å®šã—ã¦ãŠã)
     Set SelectedUnitForEvent = SelectedUnit
-    'ˆø”‚Éw’è‚³‚ê‚½ƒ†ƒjƒbƒg‚ğ—Dæ
+    'å¼•æ•°ã«æŒ‡å®šã•ã‚ŒãŸãƒ¦ãƒ‹ãƒƒãƒˆã‚’å„ªå…ˆ
     If UBound(Args) > 0 Then
         If PList.IsDefined(Args(1)) Then
             With PList.Item(Args(1))
@@ -1414,41 +1414,41 @@ Dim main_event_done As Boolean
     End If
     Set SelectedTargetForEvent = SelectedTarget
     
-    'ƒCƒxƒ“ƒgƒLƒ…[‚ğì¬
+    'ã‚¤ãƒ™ãƒ³ãƒˆã‚­ãƒ¥ãƒ¼ã‚’ä½œæˆ
     ReDim Preserve EventQue(UBound(EventQue) + 1)
     event_que_idx = UBound(EventQue)
     Select Case Args(0)
-        Case "ƒvƒƒ[ƒO"
-            EventQue(UBound(EventQue)) = "ƒvƒƒ[ƒO"
-            Stage = "ƒvƒƒ[ƒO"
-        Case "ƒGƒsƒ[ƒO"
-            EventQue(UBound(EventQue)) = "ƒGƒsƒ[ƒO"
-            Stage = "ƒGƒsƒ[ƒO"
-        Case "”j‰ó"
-            EventQue(UBound(EventQue)) = "”j‰ó " & Args(1)
+        Case "ãƒ—ãƒ­ãƒ­ãƒ¼ã‚°"
+            EventQue(UBound(EventQue)) = "ãƒ—ãƒ­ãƒ­ãƒ¼ã‚°"
+            Stage = "ãƒ—ãƒ­ãƒ­ãƒ¼ã‚°"
+        Case "ã‚¨ãƒ”ãƒ­ãƒ¼ã‚°"
+            EventQue(UBound(EventQue)) = "ã‚¨ãƒ”ãƒ­ãƒ¼ã‚°"
+            Stage = "ã‚¨ãƒ”ãƒ­ãƒ¼ã‚°"
+        Case "ç ´å£Š"
+            EventQue(UBound(EventQue)) = "ç ´å£Š " & Args(1)
             With PList.Item(Args(1))
                 uparty = .Party
                 If Not .Unit Is Nothing Then
                     With .Unit
-                        'Ši”[‚³‚ê‚Ä‚¢‚½ƒ†ƒjƒbƒg‚à”j‰ó‚µ‚Ä‚¨‚­
+                        'æ ¼ç´ã•ã‚Œã¦ã„ãŸãƒ¦ãƒ‹ãƒƒãƒˆã‚‚ç ´å£Šã—ã¦ãŠã
 ' MOD START MARGE
 '                        For i = 1 To .CountUnitOnBoard
 '                            Set u = .UnitOnBoard(1)
 '                            .UnloadUnit u.ID
-'                            u.Status = "”j‰ó"
+'                            u.Status = "ç ´å£Š"
 '                            u.HP = 0
 '                            ReDim Preserve EventQue(UBound(EventQue) + 1)
 '                            EventQue(UBound(EventQue)) = _
-'                                "”j‰ó " & u.MainPilot.ID
+'                                "ç ´å£Š " & u.MainPilot.ID
 '                        Next
                         Do While .CountUnitOnBoard > 0
                             Set u = .UnitOnBoard(1)
                             .UnloadUnit u.ID
-                            u.Status = "”j‰ó"
+                            u.Status = "ç ´å£Š"
                             u.HP = 0
                             ReDim Preserve EventQue(UBound(EventQue) + 1)
                             EventQue(UBound(EventQue)) = _
-                                "ƒ}ƒbƒvUŒ‚”j‰ó " & u.MainPilot.ID
+                                "ãƒãƒƒãƒ—æ”»æ’ƒç ´å£Š " & u.MainPilot.ID
                         Loop
 ' MOD END MARGE
                         uparty = .Party0
@@ -1456,13 +1456,13 @@ Dim main_event_done As Boolean
                 End If
             End With
             
-            '‘S–Å‚Ì”»’è
+            'å…¨æ»…ã®åˆ¤å®š
             flag = False
             For Each u In UList
                 With u
                     If .Party0 = uparty _
-                        And .Status = "oŒ‚" _
-                        And Not .IsConditionSatisfied("œßˆË") _
+                        And .Status = "å‡ºæ’ƒ" _
+                        And Not .IsConditionSatisfied("æ†‘ä¾") _
                     Then
                         flag = True
                         Exit For
@@ -1471,74 +1471,74 @@ Dim main_event_done As Boolean
             Next
             If Not flag Then
                 ReDim Preserve EventQue(UBound(EventQue) + 1)
-                EventQue(UBound(EventQue)) = "‘S–Å " & uparty
+                EventQue(UBound(EventQue)) = "å…¨æ»… " & uparty
             End If
-        Case "ƒ}ƒbƒvUŒ‚”j‰ó"
-            EventQue(UBound(EventQue)) = "ƒ}ƒbƒvUŒ‚”j‰ó " & Args(1)
+        Case "ãƒãƒƒãƒ—æ”»æ’ƒç ´å£Š"
+            EventQue(UBound(EventQue)) = "ãƒãƒƒãƒ—æ”»æ’ƒç ´å£Š " & Args(1)
             With PList.Item(Args(1))
                 uparty = .Party
                 If Not .Unit Is Nothing Then
                     With .Unit
-                        'Ši”[‚³‚ê‚Ä‚¢‚½ƒ†ƒjƒbƒg‚à”j‰ó‚µ‚Ä‚¨‚­
+                        'æ ¼ç´ã•ã‚Œã¦ã„ãŸãƒ¦ãƒ‹ãƒƒãƒˆã‚‚ç ´å£Šã—ã¦ãŠã
                         For i = 1 To .CountUnitOnBoard
                             Set u = .UnitOnBoard(i)
                             .UnloadUnit u.ID
-                            u.Status = "”j‰ó"
+                            u.Status = "ç ´å£Š"
                             u.HP = 0
                             ReDim Preserve EventQue(UBound(EventQue) + 1)
                             EventQue(UBound(EventQue)) = _
-                                "ƒ}ƒbƒvUŒ‚”j‰ó " & u.MainPilot.ID
+                                "ãƒãƒƒãƒ—æ”»æ’ƒç ´å£Š " & u.MainPilot.ID
                         Next
                         uparty = .Party0
                     End With
                 End If
             End With
-        Case "ƒ^[ƒ“"
-            EventQue(UBound(EventQue)) = "ƒ^[ƒ“ ‘S " & Args(2)
+        Case "ã‚¿ãƒ¼ãƒ³"
+            EventQue(UBound(EventQue)) = "ã‚¿ãƒ¼ãƒ³ å…¨ " & Args(2)
             ReDim Preserve EventQue(UBound(EventQue) + 1)
-            EventQue(UBound(EventQue)) = "ƒ^[ƒ“ " & Format$(Args(1)) & " " & Args(2)
-        Case "‘¹—¦"
-            EventQue(UBound(EventQue)) = "‘¹—¦ " & Args(1) & " " & Format$(Args(2))
-        Case "UŒ‚"
-            EventQue(UBound(EventQue)) = "UŒ‚ " & Args(1) & " " & Args(2)
-        Case "UŒ‚Œã"
-            EventQue(UBound(EventQue)) = "UŒ‚Œã " & Args(1) & " " & Args(2)
-        Case "‰ï˜b"
-            EventQue(UBound(EventQue)) = "‰ï˜b " & Args(1) & " " & Args(2)
-        Case "ÚG"
-            EventQue(UBound(EventQue)) = "ÚG " & Args(1) & " " & Args(2)
-        Case "i“ü"
-            EventQue(UBound(EventQue)) = "i“ü " & Args(1) & " " _
+            EventQue(UBound(EventQue)) = "ã‚¿ãƒ¼ãƒ³ " & Format$(Args(1)) & " " & Args(2)
+        Case "æå‚·ç‡"
+            EventQue(UBound(EventQue)) = "æå‚·ç‡ " & Args(1) & " " & Format$(Args(2))
+        Case "æ”»æ’ƒ"
+            EventQue(UBound(EventQue)) = "æ”»æ’ƒ " & Args(1) & " " & Args(2)
+        Case "æ”»æ’ƒå¾Œ"
+            EventQue(UBound(EventQue)) = "æ”»æ’ƒå¾Œ " & Args(1) & " " & Args(2)
+        Case "ä¼šè©±"
+            EventQue(UBound(EventQue)) = "ä¼šè©± " & Args(1) & " " & Args(2)
+        Case "æ¥è§¦"
+            EventQue(UBound(EventQue)) = "æ¥è§¦ " & Args(1) & " " & Args(2)
+        Case "é€²å…¥"
+            EventQue(UBound(EventQue)) = "é€²å…¥ " & Args(1) & " " _
                 & Format$(Args(2)) & " " & Format$(Args(3))
             ReDim Preserve EventQue(UBound(EventQue) + 1)
-            EventQue(UBound(EventQue)) = "i“ü " & Args(1) & " " _
+            EventQue(UBound(EventQue)) = "é€²å…¥ " & Args(1) & " " _
                 & TerrainName(CInt(Args(2)), CInt(Args(3)))
             If Args(2) = 1 Then
                 ReDim Preserve EventQue(UBound(EventQue) + 1)
-                EventQue(UBound(EventQue)) = "’Eo " & Args(1) & " W"
+                EventQue(UBound(EventQue)) = "è„±å‡º " & Args(1) & " W"
             ElseIf Args(2) = MapWidth Then
                 ReDim Preserve EventQue(UBound(EventQue) + 1)
-                EventQue(UBound(EventQue)) = "’Eo " & Args(1) & " E"
+                EventQue(UBound(EventQue)) = "è„±å‡º " & Args(1) & " E"
             End If
             If Args(3) = 1 Then
                 ReDim Preserve EventQue(UBound(EventQue) + 1)
-                EventQue(UBound(EventQue)) = "’Eo " & Args(1) & " N"
+                EventQue(UBound(EventQue)) = "è„±å‡º " & Args(1) & " N"
             ElseIf Args(3) = MapHeight Then
                 ReDim Preserve EventQue(UBound(EventQue) + 1)
-                EventQue(UBound(EventQue)) = "’Eo " & Args(1) & " S"
+                EventQue(UBound(EventQue)) = "è„±å‡º " & Args(1) & " S"
             End If
-        Case "û”["
-            EventQue(UBound(EventQue)) = "û”[ " & Args(1)
-        Case "g—p"
-            EventQue(UBound(EventQue)) = "g—p " & Args(1) & " " & Args(2)
-        Case "g—pŒã"
-            EventQue(UBound(EventQue)) = "g—pŒã " & Args(1) & " " & Args(2)
-        Case "s“®I—¹"
-            EventQue(UBound(EventQue)) = "s“®I—¹ " & Args(1)
-        Case "ƒ†ƒjƒbƒgƒRƒ}ƒ“ƒh"
-            EventQue(UBound(EventQue)) = "ƒ†ƒjƒbƒgƒRƒ}ƒ“ƒh " & Args(1) & " " & Args(2)
+        Case "åç´"
+            EventQue(UBound(EventQue)) = "åç´ " & Args(1)
+        Case "ä½¿ç”¨"
+            EventQue(UBound(EventQue)) = "ä½¿ç”¨ " & Args(1) & " " & Args(2)
+        Case "ä½¿ç”¨å¾Œ"
+            EventQue(UBound(EventQue)) = "ä½¿ç”¨å¾Œ " & Args(1) & " " & Args(2)
+        Case "è¡Œå‹•çµ‚äº†"
+            EventQue(UBound(EventQue)) = "è¡Œå‹•çµ‚äº† " & Args(1)
+        Case "ãƒ¦ãƒ‹ãƒƒãƒˆã‚³ãƒãƒ³ãƒ‰"
+            EventQue(UBound(EventQue)) = "ãƒ¦ãƒ‹ãƒƒãƒˆã‚³ãƒãƒ³ãƒ‰ " & Args(1) & " " & Args(2)
             If Not IsEventDefined(EventQue(UBound(EventQue))) Then
-                EventQue(UBound(EventQue)) = "ƒ†ƒjƒbƒgƒRƒ}ƒ“ƒh " & Args(1) & " " _
+                EventQue(UBound(EventQue)) = "ãƒ¦ãƒ‹ãƒƒãƒˆã‚³ãƒãƒ³ãƒ‰ " & Args(1) & " " _
                     & PList.Item(Args(2)).Unit.Name
             End If
         Case Else
@@ -1549,37 +1549,37 @@ Dim main_event_done As Boolean
     End Select
     
     If CallDepth > MaxCallDepth Then
-        ErrorMessage "ƒTƒuƒ‹[ƒ`ƒ“‚ÌŒÄ‚Ño‚µŠK‘w‚ª" & Format$(MaxCallDepth) & _
-            "‚ğ’´‚¦‚Ä‚¢‚é‚½‚ßAƒCƒxƒ“ƒg‚Ìˆ—‚ªo—ˆ‚Ü‚¹‚ñ"
+        ErrorMessage "ã‚µãƒ–ãƒ«ãƒ¼ãƒãƒ³ã®å‘¼ã³å‡ºã—éšå±¤ãŒ" & Format$(MaxCallDepth) & _
+            "ã‚’è¶…ãˆã¦ã„ã‚‹ãŸã‚ã€ã‚¤ãƒ™ãƒ³ãƒˆã®å‡¦ç†ãŒå‡ºæ¥ã¾ã›ã‚“"
         CallDepth = MaxCallDepth
         Exit Sub
     End If
     
-    'Œ»İ‚Ìó‘Ô‚ğ•Û‘¶
+    'ç¾åœ¨ã®çŠ¶æ…‹ã‚’ä¿å­˜
     ArgIndexStack(CallDepth) = ArgIndex
     VarIndexStack(CallDepth) = VarIndex
     ForIndexStack(CallDepth) = ForIndex
     SaveBasePoint
     
-    'ŒÄ‚Ño‚µŠK‘w”‚ğƒCƒ“ƒNƒŠƒƒ“ƒg
+    'å‘¼ã³å‡ºã—éšå±¤æ•°ã‚’ã‚¤ãƒ³ã‚¯ãƒªãƒ¡ãƒ³ãƒˆ
     prev_call_depth = CallDepth
     CallDepth = CallDepth + 1
     
-    'ŠeƒCƒxƒ“ƒg‚ğ”­¶‚³‚¹‚é
+    'å„ã‚¤ãƒ™ãƒ³ãƒˆã‚’ç™ºç”Ÿã•ã›ã‚‹
     i = event_que_idx
     IsCanceled = False
     Do
         'Debug.Print "HandleEvent (" & EventQue(i) & ")"
         
-        '‘O‚ÌƒCƒxƒ“ƒg‚Å‘¼‚Ìƒ†ƒjƒbƒg‚ªoŒ»‚µ‚Ä‚¢‚é‰Â”\«‚ª‚ ‚é‚Ì‚Å
-        '–{“–‚É‘S–Å‚µ‚½‚Ì‚©”»’è
-        If LIndex(EventQue(i), 1) = "‘S–Å" Then
+        'å‰ã®ã‚¤ãƒ™ãƒ³ãƒˆã§ä»–ã®ãƒ¦ãƒ‹ãƒƒãƒˆãŒå‡ºç¾ã—ã¦ã„ã‚‹å¯èƒ½æ€§ãŒã‚ã‚‹ã®ã§
+        'æœ¬å½“ã«å…¨æ»…ã—ãŸã®ã‹åˆ¤å®š
+        If LIndex(EventQue(i), 1) = "å…¨æ»…" Then
             uparty = LIndex(EventQue(i), 2)
             For Each u In UList
                 With u
                     If .Party0 = uparty _
-                        And .Status = "oŒ‚" _
-                        And Not .IsConditionSatisfied("œßˆË") _
+                        And .Status = "å‡ºæ’ƒ" _
+                        And Not .IsConditionSatisfied("æ†‘ä¾") _
                     Then
                         GoTo NextLoop
                     End If
@@ -1590,10 +1590,10 @@ Dim main_event_done As Boolean
         CurrentLabel = 0
         main_event_done = False
         Do While True
-            'Œ»İ‘I‘ğ‚³‚ê‚Ä‚¢‚éƒ†ƒjƒbƒg•ƒ^[ƒQƒbƒg‚ğƒCƒxƒ“ƒg—p‚Éİ’è
-            'SearchLabel()‚Å“ü‚ê‘Ö‚¦‚ç‚ê‚é‰Â”\«‚ª‚ ‚é‚Ì‚ÅA–ˆ‰ñİ’è‚µ’¼‚·•K—v‚ ‚è
+            'ç¾åœ¨é¸æŠã•ã‚Œã¦ã„ã‚‹ãƒ¦ãƒ‹ãƒƒãƒˆï¼†ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’ã‚¤ãƒ™ãƒ³ãƒˆç”¨ã«è¨­å®š
+            'SearchLabel()ã§å…¥ã‚Œæ›¿ãˆã‚‰ã‚Œã‚‹å¯èƒ½æ€§ãŒã‚ã‚‹ã®ã§ã€æ¯å›è¨­å®šã—ç›´ã™å¿…è¦ã‚ã‚Š
             Set SelectedUnitForEvent = SelectedUnit
-            'ˆø”‚Éw’è‚³‚ê‚½ƒ†ƒjƒbƒg‚ğ—Dæ
+            'å¼•æ•°ã«æŒ‡å®šã•ã‚ŒãŸãƒ¦ãƒ‹ãƒƒãƒˆã‚’å„ªå…ˆ
             If UBound(Args) > 0 Then
                 If PList.IsDefined(Args(1)) Then
                     With PList.Item(Args(1))
@@ -1605,7 +1605,7 @@ Dim main_event_done As Boolean
             End If
             Set SelectedTargetForEvent = SelectedTarget
             
-            'Às‚·‚éƒCƒxƒ“ƒgƒ‰ƒxƒ‹‚ğ’T‚·
+            'å®Ÿè¡Œã™ã‚‹ã‚¤ãƒ™ãƒ³ãƒˆãƒ©ãƒ™ãƒ«ã‚’æ¢ã™
             Do
                 If IsNumeric(EventQue(i)) Then
                     If CurrentLabel = 0 Then
@@ -1623,7 +1623,7 @@ Dim main_event_done As Boolean
                 CurrentLabel = ret
                 
                 If Asc(EventData(ret)) <> 42 Then '*
-                    'íƒCƒxƒ“ƒg‚Å‚Í‚È‚¢ƒCƒxƒ“ƒg‚Í‚P“x‚µ‚©Às‚µ‚È‚¢
+                    'å¸¸æ™‚ã‚¤ãƒ™ãƒ³ãƒˆã§ã¯ãªã„ã‚¤ãƒ™ãƒ³ãƒˆã¯ï¼‘åº¦ã—ã‹å®Ÿè¡Œã—ãªã„
                     If main_event_done Then
                         ret = 0
                     Else
@@ -1632,32 +1632,32 @@ Dim main_event_done As Boolean
                 End If
             Loop While ret = 0
             
-            'í“¬Œã‚ÌƒCƒxƒ“ƒgÀs‘O‚É‚Í‚¢‚­‚Â‚©‚ÌŒãn––‚ª•K—v
+            'æˆ¦é—˜å¾Œã®ã‚¤ãƒ™ãƒ³ãƒˆå®Ÿè¡Œå‰ã«ã¯ã„ãã¤ã‹ã®å¾Œå§‹æœ«ãŒå¿…è¦
             If Left$(EventData(ret), 1) <> "*" Then
-                If Args(0) = "”j‰ó" _
-                    Or Args(0) = "‘¹—¦" _
-                    Or Args(0) = "UŒ‚Œã" _
-                    Or Args(0) = "‘S–Å" _
+                If Args(0) = "ç ´å£Š" _
+                    Or Args(0) = "æå‚·ç‡" _
+                    Or Args(0) = "æ”»æ’ƒå¾Œ" _
+                    Or Args(0) = "å…¨æ»…" _
                 Then
-                    '‰æ–Ê‚ğƒNƒŠƒA
+                    'ç”»é¢ã‚’ã‚¯ãƒªã‚¢
                     If MainForm.Visible = True Then
                         ClearUnitStatus
                         RedrawScreen
                     End If
                     
-                    'ƒƒbƒZ[ƒWƒEƒBƒ“ƒhƒE‚ğ•Â‚¶‚é
+                    'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’é–‰ã˜ã‚‹
                     If frmMessage.Visible = True Then
                         CloseMessageForm
                     End If
                 End If
             End If
             
-            'ƒ‰ƒxƒ‹‚Ìs‚ÍÀs‚µ‚Ä‚à–³‘Ê‚È‚Ì‚Å
+            'ãƒ©ãƒ™ãƒ«ã®è¡Œã¯å®Ÿè¡Œã—ã¦ã‚‚ç„¡é§„ãªã®ã§
             ret = ret + 1
             
             DoEvents
             
-            'ƒCƒxƒ“ƒg‚ÌŠeƒRƒ}ƒ“ƒh‚ğÀs
+            'ã‚¤ãƒ™ãƒ³ãƒˆã®å„ã‚³ãƒãƒ³ãƒ‰ã‚’å®Ÿè¡Œ
             Do
                 CurrentLineNum = ret
                 If CurrentLineNum > UBound(EventCmd) Then
@@ -1666,7 +1666,7 @@ Dim main_event_done As Boolean
                 ret = EventCmd(CurrentLineNum).Exec
             Loop While ret > 0
             
-            'ƒXƒe[ƒW‚ªI—¹ or ƒLƒƒƒ“ƒZƒ‹H
+            'ã‚¹ãƒ†ãƒ¼ã‚¸ãŒçµ‚äº† or ã‚­ãƒ£ãƒ³ã‚»ãƒ«ï¼Ÿ
             If IsScenarioFinished Or IsCanceled Then
                 GoTo ExitLoop
             End If
@@ -1677,11 +1677,11 @@ NextLoop:
 ExitLoop:
     
     If CallDepth >= 0 Then
-        'ŒÄ‚Ño‚µŠK‘w”‚ğŒ³‚É–ß‚·
-        'iƒTƒuƒ‹[ƒ`ƒ““à‚ÅExit‚ªŒÄ‚Î‚ê‚é‚±‚Æ‚ª‚ ‚é‚Ì‚Å’Pƒ‚É-1o—ˆ‚È‚¢j
+        'å‘¼ã³å‡ºã—éšå±¤æ•°ã‚’å…ƒã«æˆ»ã™
+        'ï¼ˆã‚µãƒ–ãƒ«ãƒ¼ãƒãƒ³å†…ã§ExitãŒå‘¼ã°ã‚Œã‚‹ã“ã¨ãŒã‚ã‚‹ã®ã§å˜ç´”ã«-1å‡ºæ¥ãªã„ï¼‰
         CallDepth = prev_call_depth
         
-        'ƒCƒxƒ“ƒgÀs‘O‚Ìó‘Ô‚É•œ‹A
+        'ã‚¤ãƒ™ãƒ³ãƒˆå®Ÿè¡Œå‰ã®çŠ¶æ…‹ã«å¾©å¸°
         ArgIndex = ArgIndexStack(CallDepth)
         VarIndex = VarIndexStack(CallDepth)
         ForIndex = ForIndexStack(CallDepth)
@@ -1691,15 +1691,15 @@ ExitLoop:
         ForIndex = 0
     End If
     
-    'ƒCƒxƒ“ƒgƒLƒ…[‚ğŒ³‚É–ß‚·
+    'ã‚¤ãƒ™ãƒ³ãƒˆã‚­ãƒ¥ãƒ¼ã‚’å…ƒã«æˆ»ã™
     ReDim Preserve EventQue(MinLng(event_que_idx - 1, UBound(EventQue)))
     
-    'ƒtƒHƒ“ƒgİ’è‚ğƒfƒtƒHƒ‹ƒg‚É–ß‚·
+    'ãƒ•ã‚©ãƒ³ãƒˆè¨­å®šã‚’ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã«æˆ»ã™
     With MainForm.picMain(0)
         .ForeColor = rgb(255, 255, 255)
         With .Font
             .Size = 16
-            .Name = "‚l‚r ‚o–¾’©"
+            .Name = "ï¼­ï¼³ ï¼°æ˜æœ"
             .Bold = True
             .Italic = False
         End With
@@ -1707,23 +1707,23 @@ ExitLoop:
         KeepStringMode = False
     End With
     
-    'ƒIƒuƒWƒFƒNƒgF‚ğƒfƒtƒHƒ‹ƒg‚É–ß‚·
+    'ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆè‰²ã‚’ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã«æˆ»ã™
     ObjColor = vbWhite
     ObjFillColor = vbWhite
     ObjFillStyle = vbFSTransparent
     ObjDrawWidth = 1
     ObjDrawOption = ""
     
-    '•`‰æ‚ÌŠî€À•WˆÊ’u‚ğŒ³‚É–ß‚·
+    'æç”»ã®åŸºæº–åº§æ¨™ä½ç½®ã‚’å…ƒã«æˆ»ã™
     RestoreBasePoint
     
-    '‰æ–Ê“ü—Í‚ÌƒƒbƒN‚ğ‰ğœ
+    'ç”»é¢å…¥åŠ›ã®ãƒ­ãƒƒã‚¯ã‚’è§£é™¤
     If Not prev_is_gui_locked Then
         UnlockGUI
     End If
 End Sub
 
-'ƒCƒxƒ“ƒg‚ğ“o˜^‚µ‚Ä‚¨‚«AŒã‚ÅÀs
+'ã‚¤ãƒ™ãƒ³ãƒˆã‚’ç™»éŒ²ã—ã¦ãŠãã€å¾Œã§å®Ÿè¡Œ
 Public Sub RegisterEvent(ParamArray Args() As Variant)
 Dim i As Integer
 
@@ -1735,7 +1735,7 @@ Dim i As Integer
 End Sub
 
 
-'ƒ‰ƒxƒ‹‚ÌŒŸõ
+'ãƒ©ãƒ™ãƒ«ã®æ¤œç´¢
 Public Function SearchLabel(lname As String, Optional ByVal start As Long) As Long
 Dim ltype As LabelType, llen As Integer, litem() As String, lnum(4) As String
 Dim is_unit(4) As Boolean, is_num(4) As Boolean, is_condition(4) As Boolean
@@ -1743,53 +1743,53 @@ Dim str1 As String, str2 As String, lname2 As String
 Dim i As Long, lab As LabelData, tmp_u As Unit
 Dim revrersible As Boolean, reversed As Boolean
     
-    'ƒ‰ƒxƒ‹‚ÌŠe—v‘f‚ğ‚ ‚ç‚©‚¶‚ß‰ğÍ
+    'ãƒ©ãƒ™ãƒ«ã®å„è¦ç´ ã‚’ã‚ã‚‰ã‹ã˜ã‚è§£æ
     llen = ListSplit(lname, litem)
     
-    'ƒ‰ƒxƒ‹‚Ìí—Ş‚ğ”»’è
+    'ãƒ©ãƒ™ãƒ«ã®ç¨®é¡ã‚’åˆ¤å®š
     Select Case litem(1)
-        Case "ƒvƒƒ[ƒO"
+        Case "ãƒ—ãƒ­ãƒ­ãƒ¼ã‚°"
             ltype = PrologueEventLabel
-        Case "ƒXƒ^[ƒg"
+        Case "ã‚¹ã‚¿ãƒ¼ãƒˆ"
             ltype = StartEventLabel
-        Case "ƒGƒsƒ[ƒO"
+        Case "ã‚¨ãƒ”ãƒ­ãƒ¼ã‚°"
             ltype = EpilogueEventLabel
-        Case "ƒ^[ƒ“"
+        Case "ã‚¿ãƒ¼ãƒ³"
             ltype = TurnEventLabel
             If IsNumeric(litem(2)) Then
                 is_num(2) = True
             End If
             lnum(2) = StrToLng(litem(2))
-        Case "‘¹—¦"
+        Case "æå‚·ç‡"
             ltype = DamageEventLabel
             is_unit(2) = True
             is_num(3) = True
             lnum(3) = StrToLng(litem(3))
-        Case "”j‰ó", "ƒ}ƒbƒvUŒ‚”j‰ó"
+        Case "ç ´å£Š", "ãƒãƒƒãƒ—æ”»æ’ƒç ´å£Š"
             ltype = DestructionEventLabel
             is_unit(2) = True
-        Case "‘S–Å"
+        Case "å…¨æ»…"
             ltype = TotalDestructionEventLabel
-        Case "UŒ‚"
+        Case "æ”»æ’ƒ"
             ltype = AttackEventLabel
             revrersible = True
             is_unit(2) = True
             is_unit(3) = True
-        Case "UŒ‚Œã"
+        Case "æ”»æ’ƒå¾Œ"
             ltype = AfterAttackEventLabel
             revrersible = True
             is_unit(2) = True
             is_unit(3) = True
-        Case "‰ï˜b"
+        Case "ä¼šè©±"
             ltype = TalkEventLabel
             is_unit(2) = True
             is_unit(3) = True
-        Case "ÚG"
+        Case "æ¥è§¦"
             ltype = ContactEventLabel
             revrersible = True
             is_unit(2) = True
             is_unit(3) = True
-        Case "i“ü"
+        Case "é€²å…¥"
             ltype = EnterEventLabel
             is_unit(2) = True
             If llen = 4 Then
@@ -1798,68 +1798,68 @@ Dim revrersible As Boolean, reversed As Boolean
                 lnum(3) = StrToLng(litem(3))
                 lnum(4) = StrToLng(litem(4))
             End If
-        Case "’Eo"
+        Case "è„±å‡º"
             ltype = EscapeEventLabel
             is_unit(2) = True
-        Case "û”["
+        Case "åç´"
             ltype = LandEventLabel
             is_unit(2) = True
-        Case "g—p"
+        Case "ä½¿ç”¨"
             ltype = UseEventLabel
             is_unit(2) = True
-        Case "g—pŒã"
+        Case "ä½¿ç”¨å¾Œ"
             ltype = AfterUseEventLabel
             is_unit(2) = True
-        Case "•ÏŒ`"
+        Case "å¤‰å½¢"
             ltype = TransformEventLabel
             is_unit(2) = True
-        Case "‡‘Ì"
+        Case "åˆä½“"
             ltype = CombineEventLabel
             is_unit(2) = True
-        Case "•ª—£"
+        Case "åˆ†é›¢"
             ltype = SplitEventLabel
             is_unit(2) = True
-        Case "s“®I—¹"
+        Case "è¡Œå‹•çµ‚äº†"
             ltype = FinishEventLabel
             is_unit(2) = True
-        Case "ƒŒƒxƒ‹ƒAƒbƒv"
+        Case "ãƒ¬ãƒ™ãƒ«ã‚¢ãƒƒãƒ—"
             ltype = LevelUpEventLabel
             is_unit(2) = True
-        Case "Ÿ—˜ğŒ"
+        Case "å‹åˆ©æ¡ä»¶"
             ltype = RequirementEventLabel
-        Case "ÄŠJ"
+        Case "å†é–‹"
             ltype = ResumeEventLabel
-        Case "ƒ}ƒbƒvƒRƒ}ƒ“ƒh"
+        Case "ãƒãƒƒãƒ—ã‚³ãƒãƒ³ãƒ‰"
             ltype = MapCommandEventLabel
             is_condition(3) = True
-        Case "ƒ†ƒjƒbƒgƒRƒ}ƒ“ƒh"
+        Case "ãƒ¦ãƒ‹ãƒƒãƒˆã‚³ãƒãƒ³ãƒ‰"
             ltype = UnitCommandEventLabel
             is_condition(4) = True
-        Case "“ÁêŒø‰Ê"
+        Case "ç‰¹æ®ŠåŠ¹æœ"
             ltype = EffectEventLabel
         Case Else
             ltype = NormalLabel
     End Select
     
-    'Šeƒ‰ƒxƒ‹‚É‚Â‚¢‚Äˆê’v‚µ‚Ä‚¢‚é‚©ƒ`ƒFƒbƒN
+    'å„ãƒ©ãƒ™ãƒ«ã«ã¤ã„ã¦ä¸€è‡´ã—ã¦ã„ã‚‹ã‹ãƒã‚§ãƒƒã‚¯
     For Each lab In colEventLabelList
         With lab
-            'ƒ‰ƒxƒ‹‚Ìí—Ş‚ªˆê’v‚µ‚Ä‚¢‚éH
+            'ãƒ©ãƒ™ãƒ«ã®ç¨®é¡ãŒä¸€è‡´ã—ã¦ã„ã‚‹ï¼Ÿ
             If ltype <> .Name Then
                 GoTo NextLabel
             End If
             
-            'ClearEvent‚³‚ê‚Ä‚¢‚È‚¢H
+            'ClearEventã•ã‚Œã¦ã„ãªã„ï¼Ÿ
             If Not .Enable Then
                 GoTo NextLabel
             End If
             
-            'ŒŸõŠJns‚æ‚èŒã‚ëH
+            'æ¤œç´¢é–‹å§‹è¡Œã‚ˆã‚Šå¾Œã‚ï¼Ÿ
             If .LineNum < start Then
                 GoTo NextLabel
             End If
             
-            'ƒpƒ‰ƒ[ƒ^”‚ªˆê’v‚µ‚Ä‚¢‚éH
+            'ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿æ•°ãŒä¸€è‡´ã—ã¦ã„ã‚‹ï¼Ÿ
             If llen <> .CountPara Then
                 If ltype <> MapCommandEventLabel _
                     And ltype <> UnitCommandEventLabel _
@@ -1868,16 +1868,16 @@ Dim revrersible As Boolean, reversed As Boolean
                 End If
             End If
             
-            'Šeƒpƒ‰ƒ[ƒ^‚ªˆê’v‚µ‚Ä‚¢‚éH
+            'å„ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ãŒä¸€è‡´ã—ã¦ã„ã‚‹ï¼Ÿ
             reversed = False
 CheckPara:
             For i = 2 To llen
-                'ƒRƒ}ƒ“ƒhŠÖ˜Aƒ‰ƒxƒ‹‚ÌÅŒã‚Ìƒpƒ‰ƒ[ƒ^‚ÍğŒ®‚È‚Ì‚Åƒ`ƒFƒbƒN‚ğÈ‚­
+                'ã‚³ãƒãƒ³ãƒ‰é–¢é€£ãƒ©ãƒ™ãƒ«ã®æœ€å¾Œã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã¯æ¡ä»¶å¼ãªã®ã§ãƒã‚§ãƒƒã‚¯ã‚’çœã
                 If is_condition(i) Then
                     Exit For
                 End If
                 
-                '”äŠr‚·‚éƒpƒ‰ƒ[ƒ^
+                'æ¯”è¼ƒã™ã‚‹ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿
                 str1 = litem(i)
                 If reversed Then
                     str2 = .Para(5 - i)
@@ -1885,21 +1885,21 @@ CheckPara:
                     str2 = .Para(i)
                 End If
                 
-                'u‘Sv‚Í‘S‚Ä‚Éˆê’v
-                If str2 = "‘S" Then
-                    '‚¾‚¾‚µAuƒ^[ƒ“ ‘Sv‚ª‚Q‰ñÀs‚³‚ê‚é‚Ì‚Í–h‚®
+                'ã€Œå…¨ã€ã¯å…¨ã¦ã«ä¸€è‡´
+                If str2 = "å…¨" Then
+                    'ã ã ã—ã€ã€Œã‚¿ãƒ¼ãƒ³ å…¨ã€ãŒï¼’å›å®Ÿè¡Œã•ã‚Œã‚‹ã®ã¯é˜²ã
                     If ltype <> TurnEventLabel Or i <> 2 Then
                         GoTo NextPara
                     End If
                 End If
                 
-                '”’l‚Æ‚µ‚Ä”äŠrH
+                'æ•°å€¤ã¨ã—ã¦æ¯”è¼ƒï¼Ÿ
                 If is_num(i) Then
                     If IsNumeric(str2) Then
                         If lnum(i) = CLng(str2) Then
                             GoTo NextPara
                         ElseIf ltype = DamageEventLabel Then
-                            '‘¹—¦ƒ‰ƒxƒ‹‚Ìˆ—
+                            'æå‚·ç‡ãƒ©ãƒ™ãƒ«ã®å‡¦ç†
                             If lnum(i) > CLng(str2) Then
                                 Exit For
                             End If
@@ -1908,32 +1908,32 @@ CheckPara:
                     GoTo NextLabel
                 End If
                 
-                'ƒ†ƒjƒbƒgw’è‚Æ‚µ‚Ä”äŠrH
+                'ãƒ¦ãƒ‹ãƒƒãƒˆæŒ‡å®šã¨ã—ã¦æ¯”è¼ƒï¼Ÿ
                 If is_unit(i) Then
-                    If str2 = "–¡•û" Or str2 = "‚m‚o‚b" _
-                        Or str2 = "“G" Or str2 = "’†—§" _
+                    If str2 = "å‘³æ–¹" Or str2 = "ï¼®ï¼°ï¼£" _
+                        Or str2 = "æ•µ" Or str2 = "ä¸­ç«‹" _
                     Then
-                        'w‰c–¼‚Å”äŠr
-                        If str1 <> "–¡•û" And str1 <> "‚m‚o‚b" _
-                            And str1 <> "“G" And str1 <> "’†—§" _
+                        'é™£å–¶åã§æ¯”è¼ƒ
+                        If str1 <> "å‘³æ–¹" And str1 <> "ï¼®ï¼°ï¼£" _
+                            And str1 <> "æ•µ" And str1 <> "ä¸­ç«‹" _
                         Then
                             If PList.IsDefined(str1) Then
                                 str1 = PList.Item(str1).Party
                             End If
                         End If
                     ElseIf PList.IsDefined(str2) Then
-                        'ƒpƒCƒƒbƒg‚Å”äŠr
+                        'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã§æ¯”è¼ƒ
                         With PList.Item(str2)
                             If str2 = .Data.Name Or str2 = .Data.Nickname Then
-                                'ƒOƒ‹[ƒv‚h‚c‚ª•t‚¯‚ç‚ê‚Ä‚¢‚È‚¢ê‡‚Í
-                                'ƒpƒCƒƒbƒg–¼‚Å”äŠr
+                                'ã‚°ãƒ«ãƒ¼ãƒ—ï¼©ï¼¤ãŒä»˜ã‘ã‚‰ã‚Œã¦ã„ãªã„å ´åˆã¯
+                                'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆåã§æ¯”è¼ƒ
                                 str2 = .Name
                                 If PList.IsDefined(str1) Then
                                     str1 = PList.Item(str1).Name
                                 End If
                             Else
-                                'ƒOƒ‹[ƒv‚h‚c‚ª•t‚¯‚ç‚ê‚Ä‚¢‚éê‡‚Í
-                                'ƒOƒ‹[ƒv‚h‚c‚Å”äŠr
+                                'ã‚°ãƒ«ãƒ¼ãƒ—ï¼©ï¼¤ãŒä»˜ã‘ã‚‰ã‚Œã¦ã„ã‚‹å ´åˆã¯
+                                'ã‚°ãƒ«ãƒ¼ãƒ—ï¼©ï¼¤ã§æ¯”è¼ƒ
                                 If PList.IsDefined(str1) Then
                                     str1 = PList.Item(str1).ID
                                 End If
@@ -1943,13 +1943,13 @@ CheckPara:
                             End If
                         End With
                     ElseIf PDList.IsDefined(str2) Then
-                        'ƒpƒCƒƒbƒg–¼‚Å”äŠr
+                        'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆåã§æ¯”è¼ƒ
                         str2 = PDList.Item(str2).Name
                         If PList.IsDefined(str1) Then
                             str1 = PList.Item(str1).Name
                         End If
                     ElseIf UDList.IsDefined(str2) Then
-                        'ƒ†ƒjƒbƒg–¼‚Å”äŠr
+                        'ãƒ¦ãƒ‹ãƒƒãƒˆåã§æ¯”è¼ƒ
                         If PList.IsDefined(str1) Then
                             With PList.Item(str1)
                                 If Not .Unit Is Nothing Then
@@ -1958,8 +1958,8 @@ CheckPara:
                             End With
                         End If
                     Else
-                        'ƒOƒ‹[ƒv‚h‚c‚ª•t‚¯‚ç‚ê‚Ä‚¢‚é‚¨‚èA‚È‚¨‚©‚Â“¯‚¶‚h‚c‚Ì
-                        '‚Q”Ô–ÚˆÈ~‚Ìƒ†ƒjƒbƒg‚Ìê‡‚ÍƒOƒ‹[ƒv‚h‚c‚Å”äŠr
+                        'ã‚°ãƒ«ãƒ¼ãƒ—ï¼©ï¼¤ãŒä»˜ã‘ã‚‰ã‚Œã¦ã„ã‚‹ãŠã‚Šã€ãªãŠã‹ã¤åŒã˜ï¼©ï¼¤ã®
+                        'ï¼’ç•ªç›®ä»¥é™ã®ãƒ¦ãƒ‹ãƒƒãƒˆã®å ´åˆã¯ã‚°ãƒ«ãƒ¼ãƒ—ï¼©ï¼¤ã§æ¯”è¼ƒ
                         If PList.IsDefined(str1) Then
                             str1 = PList.Item(str1).ID
                         End If
@@ -1972,10 +1972,10 @@ CheckPara:
                     End If
                 End If
                 
-                'ˆê’v‚µ‚½‚©H
+                'ä¸€è‡´ã—ãŸã‹ï¼Ÿ
                 If str1 <> str2 Then
                     If revrersible And Not reversed Then
-                        '‘ÎÛ‚Æ‘Šè‚ğ“ü‚ê‘Ö‚¦‚½ƒCƒxƒ“ƒgƒ‰ƒxƒ‹‚ª‘¶İ‚·‚é‚©”»’è
+                        'å¯¾è±¡ã¨ç›¸æ‰‹ã‚’å…¥ã‚Œæ›¿ãˆãŸã‚¤ãƒ™ãƒ³ãƒˆãƒ©ãƒ™ãƒ«ãŒå­˜åœ¨ã™ã‚‹ã‹åˆ¤å®š
                         lname2 = litem(1) & _
                             " " & ListIndex(.Data, 3) & _
                             " " & ListIndex(.Data, 2)
@@ -1983,7 +1983,7 @@ CheckPara:
                             lname2 = "*" & lname2
                         End If
                         If FindLabel(lname2) = 0 Then
-                            '‘ÎÛ‚Æ‘Šè‚ğ“ü‚ê‘Ö‚¦‚Ä”»’è‚µ’¼‚·
+                            'å¯¾è±¡ã¨ç›¸æ‰‹ã‚’å…¥ã‚Œæ›¿ãˆã¦åˆ¤å®šã—ç›´ã™
                             reversed = True
                             GoTo CheckPara
                         End If
@@ -1993,10 +1993,10 @@ CheckPara:
 NextPara:
             Next
             
-            '‚±‚±‚Ü‚Å‚½‚Ç‚è•t‚¯‚Îƒ‰ƒxƒ‹‚Íˆê’v‚µ‚Ä‚¢‚é
+            'ã“ã“ã¾ã§ãŸã©ã‚Šä»˜ã‘ã°ãƒ©ãƒ™ãƒ«ã¯ä¸€è‡´ã—ã¦ã„ã‚‹
             SearchLabel = .LineNum
             
-            '‘ÎÛ‚Æ‘Šè‚ğ“ü‚ê‘Ö‚¦‚Äˆê’v‚µ‚½ê‡‚ÍƒOƒ[ƒoƒ‹•Ï”‚à“ü‚ê‘Ö‚¦
+            'å¯¾è±¡ã¨ç›¸æ‰‹ã‚’å…¥ã‚Œæ›¿ãˆã¦ä¸€è‡´ã—ãŸå ´åˆã¯ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°ã‚‚å…¥ã‚Œæ›¿ãˆ
             If reversed Then
                 Set tmp_u = SelectedUnitForEvent
                 Set SelectedUnitForEvent = SelectedTargetForEvent
@@ -2010,14 +2010,14 @@ NextLabel:
     SearchLabel = 0
 End Function
 
-'w’è‚µ‚½ƒCƒxƒ“ƒg‚Ö‚ÌƒCƒxƒ“ƒgƒ‰ƒxƒ‹‚ª’è‹`‚³‚ê‚Ä‚¢‚é‚©
-'íƒCƒxƒ“ƒg‚Å‚Í‚È‚¢’ÊíƒCƒxƒ“ƒg‚Ì‚İ‚ğ’T‚·ê‡‚Í
-' normal_event_only = True ‚ğw’è‚·‚é
+'æŒ‡å®šã—ãŸã‚¤ãƒ™ãƒ³ãƒˆã¸ã®ã‚¤ãƒ™ãƒ³ãƒˆãƒ©ãƒ™ãƒ«ãŒå®šç¾©ã•ã‚Œã¦ã„ã‚‹ã‹
+'å¸¸æ™‚ã‚¤ãƒ™ãƒ³ãƒˆã§ã¯ãªã„é€šå¸¸ã‚¤ãƒ™ãƒ³ãƒˆã®ã¿ã‚’æ¢ã™å ´åˆã¯
+' normal_event_only = True ã‚’æŒ‡å®šã™ã‚‹
 Public Function IsEventDefined(lname As String, _
     Optional ByVal normal_event_only As Boolean) As Boolean
 Dim i As Long, ret As Long
 
-    'ƒCƒxƒ“ƒgƒ‰ƒxƒ‹‚ğ’T‚·
+    'ã‚¤ãƒ™ãƒ³ãƒˆãƒ©ãƒ™ãƒ«ã‚’æ¢ã™
     i = 0
     Do While 1
         ret = SearchLabel(lname, i + 1)
@@ -2026,7 +2026,7 @@ Dim i As Long, ret As Long
         End If
         
         If normal_event_only Then
-            'íƒCƒxƒ“ƒg‚Å‚Í‚È‚¢’ÊíƒCƒxƒ“ƒg‚Ì‚İ‚ğ’T‚·ê‡
+            'å¸¸æ™‚ã‚¤ãƒ™ãƒ³ãƒˆã§ã¯ãªã„é€šå¸¸ã‚¤ãƒ™ãƒ³ãƒˆã®ã¿ã‚’æ¢ã™å ´åˆ
             If Asc(EventData(ret)) <> 42 Then '*
                 IsEventDefined = True
                 Exit Function
@@ -2039,7 +2039,7 @@ Dim i As Long, ret As Long
     Loop
 End Function
 
-'ƒ‰ƒxƒ‹‚ª’è‹`‚³‚ê‚Ä‚¢‚é‚©
+'ãƒ©ãƒ™ãƒ«ãŒå®šç¾©ã•ã‚Œã¦ã„ã‚‹ã‹
 Public Function IsLabelDefined(Index As Variant) As Boolean
 Dim lab As LabelData
 
@@ -2052,7 +2052,7 @@ ErrorHandler:
     IsLabelDefined = False
 End Function
 
-'ƒ‰ƒxƒ‹‚ğ’Ç‰Á
+'ãƒ©ãƒ™ãƒ«ã‚’è¿½åŠ 
 Public Sub AddLabel(lname As String, ByVal lnum As Long)
 Dim new_label As New LabelData
 Dim lname2 As String
@@ -2066,15 +2066,15 @@ Dim i As Integer
         .Enable = True
         
         If .Name = NormalLabel Then
-            '’Êíƒ‰ƒxƒ‹‚ğ’Ç‰Á
+            'é€šå¸¸ãƒ©ãƒ™ãƒ«ã‚’è¿½åŠ 
             If FindNormalLabel0(lname) = 0 Then
                 colNormalLabelList.Add new_label, lname
             End If
         Else
-            'ƒCƒxƒ“ƒgƒ‰ƒxƒ‹‚ğ’Ç‰Á
+            'ã‚¤ãƒ™ãƒ³ãƒˆãƒ©ãƒ™ãƒ«ã‚’è¿½åŠ 
             
-            'ƒpƒ‰ƒ[ƒ^ŠÔ‚Ì•¶š—ñ‚Ìˆá‚¢‚É‚æ‚é•sˆê’v‚ğ‚È‚­‚·‚½‚ßA
-            '•¶š—ñ‚ğ”¼ŠpƒXƒy[ƒXˆê•¶š‚É’¼‚µ‚Ä‚¨‚­
+            'ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿é–“ã®æ–‡å­—åˆ—ã®é•ã„ã«ã‚ˆã‚‹ä¸ä¸€è‡´ã‚’ãªãã™ãŸã‚ã€
+            'æ–‡å­—åˆ—ã‚’åŠè§’ã‚¹ãƒšãƒ¼ã‚¹ä¸€æ–‡å­—ã«ç›´ã—ã¦ãŠã
             lname2 = ListIndex(lname, 1)
             For i = 2 To ListLength(lname)
                 lname2 = lname2 & " " & ListIndex(lname, i)
@@ -2092,10 +2092,10 @@ Dim i As Integer
     Exit Sub
     
 ErrorHandler:
-    '’Êíƒ‰ƒxƒ‹‚ªd•¡’è‹`‚³‚ê‚Ä‚¢‚éê‡‚Í–³‹
+    'é€šå¸¸ãƒ©ãƒ™ãƒ«ãŒé‡è¤‡å®šç¾©ã•ã‚Œã¦ã„ã‚‹å ´åˆã¯ç„¡è¦–
 End Sub
 
-'ƒVƒXƒeƒ€‘¤‚Ìƒ‰ƒxƒ‹‚ğ’Ç‰Á
+'ã‚·ã‚¹ãƒ†ãƒ å´ã®ãƒ©ãƒ™ãƒ«ã‚’è¿½åŠ 
 Public Sub AddSysLabel(lname As String, ByVal lnum As Long)
 Dim new_label As New LabelData
 Dim lname2 As String
@@ -2109,17 +2109,17 @@ Dim i As Integer
         .Enable = True
         
         If .Name = NormalLabel Then
-            '’Êíƒ‰ƒxƒ‹‚ğ’Ç‰Á
+            'é€šå¸¸ãƒ©ãƒ™ãƒ«ã‚’è¿½åŠ 
             If FindSysNormalLabel(lname) = 0 Then
                 colSysNormalLabelList.Add new_label, lname
             Else
                 colSysNormalLabelList.Item(lname).LineNum = lnum
             End If
         Else
-            'ƒCƒxƒ“ƒgƒ‰ƒxƒ‹‚ğ’Ç‰Á
+            'ã‚¤ãƒ™ãƒ³ãƒˆãƒ©ãƒ™ãƒ«ã‚’è¿½åŠ 
             
-            'ƒpƒ‰ƒ[ƒ^ŠÔ‚Ì•¶š—ñ‚Ìˆá‚¢‚É‚æ‚é•sˆê’v‚ğ‚È‚­‚·‚½‚ßA
-            '•¶š—ñ‚ğ”¼ŠpƒXƒy[ƒXˆê•¶š‚É’¼‚µ‚Ä‚¨‚­
+            'ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿é–“ã®æ–‡å­—åˆ—ã®é•ã„ã«ã‚ˆã‚‹ä¸ä¸€è‡´ã‚’ãªãã™ãŸã‚ã€
+            'æ–‡å­—åˆ—ã‚’åŠè§’ã‚¹ãƒšãƒ¼ã‚¹ä¸€æ–‡å­—ã«ç›´ã—ã¦ãŠã
             lname2 = ListIndex(lname, 1)
             For i = 2 To ListLength(lname)
                 lname2 = lname2 & " " & ListIndex(lname, i)
@@ -2137,14 +2137,14 @@ Dim i As Integer
     Exit Sub
     
 ErrorHandler:
-    '’Êíƒ‰ƒxƒ‹‚ªd•¡’è‹`‚³‚ê‚Ä‚¢‚éê‡‚Í–³‹
+    'é€šå¸¸ãƒ©ãƒ™ãƒ«ãŒé‡è¤‡å®šç¾©ã•ã‚Œã¦ã„ã‚‹å ´åˆã¯ç„¡è¦–
 End Sub
 
-'ƒ‰ƒxƒ‹‚ğÁ‹
+'ãƒ©ãƒ™ãƒ«ã‚’æ¶ˆå»
 Public Sub ClearLabel(ByVal lnum As Long)
 Dim lab As LabelData, i As Integer
     
-    's”Ô†lnum‚É‚ ‚éƒ‰ƒxƒ‹‚ğ’T‚·
+    'è¡Œç•ªå·lnumã«ã‚ã‚‹ãƒ©ãƒ™ãƒ«ã‚’æ¢ã™
     For Each lab In colEventLabelList
         With lab
             If .LineNum = lnum Then
@@ -2154,7 +2154,7 @@ Dim lab As LabelData, i As Integer
         End With
     Next
     
-    'lnums–Ú‚É‚È‚¯‚ê‚Î‚»‚Ìü‚è‚ğ’T‚·
+    'lnumè¡Œç›®ã«ãªã‘ã‚Œã°ãã®å‘¨ã‚Šã‚’æ¢ã™
     For i = 1 To 10
         For Each lab In colEventLabelList
             With lab
@@ -2167,7 +2167,7 @@ Dim lab As LabelData, i As Integer
     Next
 End Sub
 
-'ƒ‰ƒxƒ‹‚ğ•œŠˆ
+'ãƒ©ãƒ™ãƒ«ã‚’å¾©æ´»
 Public Sub RestoreLabel(lname As String)
 Dim lab As LabelData
     
@@ -2181,35 +2181,35 @@ Dim lab As LabelData
     Next
 End Sub
 
-'ƒ‰ƒxƒ‹‚ğ’T‚·
+'ãƒ©ãƒ™ãƒ«ã‚’æ¢ã™
 Public Function FindLabel(lname As String) As Long
 Dim lname2 As String
 Dim i As Integer
 
-    '’Êíƒ‰ƒxƒ‹‚©‚çŒŸõ
+    'é€šå¸¸ãƒ©ãƒ™ãƒ«ã‹ã‚‰æ¤œç´¢
     FindLabel = FindNormalLabel(lname)
     If FindLabel > 0 Then
         Exit Function
     End If
     
-    'ƒCƒxƒ“ƒgƒ‰ƒxƒ‹‚©‚çŒŸõ
+    'ã‚¤ãƒ™ãƒ³ãƒˆãƒ©ãƒ™ãƒ«ã‹ã‚‰æ¤œç´¢
     FindLabel = FindEventLabel(lname)
     If FindLabel > 0 Then
         Exit Function
     End If
     
-    'ƒpƒ‰ƒ[ƒ^ŠÔ‚Ì•¶š—ñ‚Ìˆá‚¢‚Åˆê’v‚µ‚È‚©‚Á‚½‰Â”\«‚ª‚ ‚é‚Ì‚Å
-    '•¶š—ñ‚ğ”¼ŠpƒXƒy[ƒXˆê•¶š‚Ì‚İ‚É‚µ‚ÄŒŸõ‚µ‚Ä‚İ‚é
+    'ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿é–“ã®æ–‡å­—åˆ—ã®é•ã„ã§ä¸€è‡´ã—ãªã‹ã£ãŸå¯èƒ½æ€§ãŒã‚ã‚‹ã®ã§
+    'æ–‡å­—åˆ—ã‚’åŠè§’ã‚¹ãƒšãƒ¼ã‚¹ä¸€æ–‡å­—ã®ã¿ã«ã—ã¦æ¤œç´¢ã—ã¦ã¿ã‚‹
     lname2 = ListIndex(lname, 1)
     For i = 2 To ListLength(lname)
         lname2 = lname2 & " " & ListIndex(lname, i)
     Next
     
-    'ƒCƒxƒ“ƒgƒ‰ƒxƒ‹‚©‚çŒŸõ
+    'ã‚¤ãƒ™ãƒ³ãƒˆãƒ©ãƒ™ãƒ«ã‹ã‚‰æ¤œç´¢
     FindLabel = FindEventLabel(lname2)
 End Function
 
-'ƒCƒxƒ“ƒgƒ‰ƒxƒ‹‚ğ’T‚·
+'ã‚¤ãƒ™ãƒ³ãƒˆãƒ©ãƒ™ãƒ«ã‚’æ¢ã™
 Public Function FindEventLabel(lname As String) As Long
 Dim lab As LabelData
 
@@ -2222,7 +2222,7 @@ NotFound:
     FindEventLabel = 0
 End Function
 
-'’Êíƒ‰ƒxƒ‹‚ğ’T‚·
+'é€šå¸¸ãƒ©ãƒ™ãƒ«ã‚’æ¢ã™
 Public Function FindNormalLabel(lname As String) As Long
     FindNormalLabel = FindNormalLabel0(lname)
     If FindNormalLabel = 0 Then
@@ -2230,7 +2230,7 @@ Public Function FindNormalLabel(lname As String) As Long
     End If
 End Function
 
-'ƒVƒiƒŠƒI‘¤‚Ì’Êíƒ‰ƒxƒ‹‚ğ’T‚·
+'ã‚·ãƒŠãƒªã‚ªå´ã®é€šå¸¸ãƒ©ãƒ™ãƒ«ã‚’æ¢ã™
 Private Function FindNormalLabel0(lname As String) As Long
 Dim lab As LabelData
 
@@ -2243,7 +2243,7 @@ NotFound:
     FindNormalLabel0 = 0
 End Function
 
-'ƒVƒXƒeƒ€‘¤‚Ì’Êíƒ‰ƒxƒ‹‚ğ’T‚·
+'ã‚·ã‚¹ãƒ†ãƒ å´ã®é€šå¸¸ãƒ©ãƒ™ãƒ«ã‚’æ¢ã™
 Private Function FindSysNormalLabel(lname As String) As Long
 Dim lab As LabelData
 
@@ -2257,8 +2257,8 @@ NotFound:
 End Function
 
 
-'ƒCƒxƒ“ƒgƒf[ƒ^‚ÌÁ‹
-'‚½‚¾‚µƒOƒ[ƒoƒ‹•Ï”‚Ìƒf[ƒ^‚Íc‚µ‚Ä‚¨‚­
+'ã‚¤ãƒ™ãƒ³ãƒˆãƒ‡ãƒ¼ã‚¿ã®æ¶ˆå»
+'ãŸã ã—ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°ã®ãƒ‡ãƒ¼ã‚¿ã¯æ®‹ã—ã¦ãŠã
 Public Sub ClearEventData()
 Dim i As Integer
 
@@ -2312,7 +2312,7 @@ Dim i As Integer
     End With
 End Sub
 
-'ƒOƒ[ƒoƒ‹•Ï”‚ğŠÜ‚ß‚½ƒCƒxƒ“ƒgƒf[ƒ^‚Ì‘SÁ‹
+'ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°ã‚’å«ã‚ãŸã‚¤ãƒ™ãƒ³ãƒˆãƒ‡ãƒ¼ã‚¿ã®å…¨æ¶ˆå»
 Public Sub ClearAllEventData()
 Dim i As Integer
 
@@ -2324,46 +2324,46 @@ Dim i As Integer
         Next
     End With
     
-    DefineGlobalVariable "ŸƒXƒe[ƒW"
-    DefineGlobalVariable "ƒZ[ƒuƒf[ƒ^ƒtƒ@ƒCƒ‹–¼"
+    DefineGlobalVariable "æ¬¡ã‚¹ãƒ†ãƒ¼ã‚¸"
+    DefineGlobalVariable "ã‚»ãƒ¼ãƒ–ãƒ‡ãƒ¼ã‚¿ãƒ•ã‚¡ã‚¤ãƒ«å"
 End Sub
 
 
-'ˆê’†’f—pƒf[ƒ^‚ğƒtƒ@ƒCƒ‹‚ÉƒZ[ƒu‚·‚é
+'ä¸€æ™‚ä¸­æ–­ç”¨ãƒ‡ãƒ¼ã‚¿ã‚’ãƒ•ã‚¡ã‚¤ãƒ«ã«ã‚»ãƒ¼ãƒ–ã™ã‚‹
 Public Sub DumpEventData()
 Dim lab As LabelData, i As Integer
 
-    'ƒOƒ[ƒoƒ‹•Ï”
+    'ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°
     SaveGlobalVariables
-    'ƒ[ƒJƒ‹•Ï”
+    'ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°
     SaveLocalVariables
     
-    'ƒCƒxƒ“ƒg—pƒ‰ƒxƒ‹
+    'ã‚¤ãƒ™ãƒ³ãƒˆç”¨ãƒ©ãƒ™ãƒ«
     Write #SaveDataFileNumber, colEventLabelList.Count
     For Each lab In colEventLabelList
         Write #SaveDataFileNumber, lab.Enable
     Next
     
-    'RequireƒRƒ}ƒ“ƒh‚Å’Ç‰Á‚³‚ê‚½ƒCƒxƒ“ƒgƒtƒ@ƒCƒ‹
+    'Requireã‚³ãƒãƒ³ãƒ‰ã§è¿½åŠ ã•ã‚ŒãŸã‚¤ãƒ™ãƒ³ãƒˆãƒ•ã‚¡ã‚¤ãƒ«
     Write #SaveDataFileNumber, UBound(AdditionalEventFileNames)
     For i = 1 To UBound(AdditionalEventFileNames)
         Write #SaveDataFileNumber, AdditionalEventFileNames(i)
     Next
 End Sub
 
-'ˆê’†’f—pƒf[ƒ^‚ğƒtƒ@ƒCƒ‹‚©‚çƒ[ƒh‚·‚é
+'ä¸€æ™‚ä¸­æ–­ç”¨ãƒ‡ãƒ¼ã‚¿ã‚’ãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ãƒ­ãƒ¼ãƒ‰ã™ã‚‹
 Public Sub RestoreEventData()
 Dim lab As LabelData
 Dim num As Integer, lenable As Boolean
 Dim fname As String, file_head As Long
 Dim i As Long, j As Integer, buf As String
 
-    'ƒOƒ[ƒoƒ‹•Ï”
+    'ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°
     LoadGlobalVariables
-    'ƒ[ƒJƒ‹•Ï”
+    'ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°
     LoadLocalVariables
     
-    'ƒCƒxƒ“ƒg—pƒ‰ƒxƒ‹
+    'ã‚¤ãƒ™ãƒ³ãƒˆç”¨ãƒ©ãƒ™ãƒ«
     Input #SaveDataFileNumber, num
 ' MOD START MARGE
 '    i = 1
@@ -2386,12 +2386,12 @@ Dim i As Long, j As Integer, buf As String
     Next
 ' MOD END MARGE
     
-    'RequireƒRƒ}ƒ“ƒh‚Å’Ç‰Á‚³‚ê‚½ƒCƒxƒ“ƒgƒtƒ@ƒCƒ‹
+    'Requireã‚³ãƒãƒ³ãƒ‰ã§è¿½åŠ ã•ã‚ŒãŸã‚¤ãƒ™ãƒ³ãƒˆãƒ•ã‚¡ã‚¤ãƒ«
     If SaveDataVersion > 20003 Then
         file_head = UBound(EventData) + 1
         
 ' MOD START MARGE
-'        'ƒCƒxƒ“ƒgƒtƒ@ƒCƒ‹‚ğƒ[ƒh
+'        'ã‚¤ãƒ™ãƒ³ãƒˆãƒ•ã‚¡ã‚¤ãƒ«ã‚’ãƒ­ãƒ¼ãƒ‰
 '        Input #SaveDataFileNumber, num
 '        If num = 0 Then
 '            Exit Sub
@@ -2404,7 +2404,7 @@ Dim i As Long, j As Integer, buf As String
 '                fname = ScenarioPath & fname
 '            End If
 '
-'            'Šù‚É“Ç‚İ‚Ü‚ê‚Ä‚¢‚éê‡‚ÍƒXƒLƒbƒv
+'            'æ—¢ã«èª­ã¿è¾¼ã¾ã‚Œã¦ã„ã‚‹å ´åˆã¯ã‚¹ã‚­ãƒƒãƒ—
 '            For j = 1 To UBound(EventFileNames)
 '               If fname = EventFileNames(j) Then
 '                   GoTo NextEventFile
@@ -2415,13 +2415,13 @@ Dim i As Long, j As Integer, buf As String
 'NextEventFile:
 '        Next
 '
-'        'ƒGƒ‰[•\¦—p‚ÉƒTƒCƒY‚ğ‘å‚«‚­æ‚Á‚Ä‚¨‚­
+'        'ã‚¨ãƒ©ãƒ¼è¡¨ç¤ºç”¨ã«ã‚µã‚¤ã‚ºã‚’å¤§ããå–ã£ã¦ãŠã
 '        ReDim Preserve EventData(UBound(EventData) + 1)
 '        ReDim Preserve EventLineNum(UBound(EventData))
 '        EventData(UBound(EventData)) = ""
 '        EventLineNum(UBound(EventData)) = EventLineNum(UBound(EventData) - 1) + 1
 '
-'        '•¡”s‚É•ªŠ„‚³‚ê‚½ƒRƒ}ƒ“ƒh‚ğŒ‹‡
+'        'è¤‡æ•°è¡Œã«åˆ†å‰²ã•ã‚ŒãŸã‚³ãƒãƒ³ãƒ‰ã‚’çµåˆ
 '        For i = file_head To UBound(EventData) - 1
 '            If Right$(EventData(i), 1) = "_" Then
 '                EventData(i + 1) = _
@@ -2430,7 +2430,7 @@ Dim i As Long, j As Integer, buf As String
 '            End If
 '        Next
 '
-'        'ƒ‰ƒxƒ‹‚ğ“o˜^
+'        'ãƒ©ãƒ™ãƒ«ã‚’ç™»éŒ²
 '        For i = file_head To UBound(EventData)
 '            buf = EventData(i)
 '            If Right$(buf, 1) = ":" Then
@@ -2438,7 +2438,7 @@ Dim i As Long, j As Integer, buf As String
 '            End If
 '        Next
 '
-'        'ƒRƒ}ƒ“ƒhƒf[ƒ^”z—ñ‚ğİ’è
+'        'ã‚³ãƒãƒ³ãƒ‰ãƒ‡ãƒ¼ã‚¿é…åˆ—ã‚’è¨­å®š
 '        If UBound(EventData) > UBound(EventCmd) Then
 '            ReDim Preserve EventCmd(UBound(EventData))
 '            i = UBound(EventData)
@@ -2452,11 +2452,11 @@ Dim i As Long, j As Integer, buf As String
 '            EventCmd(i).Name = NullCmd
 '        Next
 '    End If
-        '’Ç‰Á‚·‚éƒCƒxƒ“ƒgƒtƒ@ƒCƒ‹”
+        'è¿½åŠ ã™ã‚‹ã‚¤ãƒ™ãƒ³ãƒˆãƒ•ã‚¡ã‚¤ãƒ«æ•°
         Input #SaveDataFileNumber, num
         
         If num > 0 Then
-            'ƒCƒxƒ“ƒgƒtƒ@ƒCƒ‹‚ğƒ[ƒh
+            'ã‚¤ãƒ™ãƒ³ãƒˆãƒ•ã‚¡ã‚¤ãƒ«ã‚’ãƒ­ãƒ¼ãƒ‰
             ReDim AdditionalEventFileNames(num)
             For i = 1 To num
                 Input #SaveDataFileNumber, fname
@@ -2465,7 +2465,7 @@ Dim i As Long, j As Integer, buf As String
                     fname = ScenarioPath & fname
                 End If
                 
-                'Šù‚É“Ç‚İ‚Ü‚ê‚Ä‚¢‚éê‡‚ÍƒXƒLƒbƒv
+                'æ—¢ã«èª­ã¿è¾¼ã¾ã‚Œã¦ã„ã‚‹å ´åˆã¯ã‚¹ã‚­ãƒƒãƒ—
                 For j = 1 To UBound(EventFileNames)
                    If fname = EventFileNames(j) Then
                        GoTo NextEventFile
@@ -2476,13 +2476,13 @@ Dim i As Long, j As Integer, buf As String
 NextEventFile:
             Next
             
-            'ƒGƒ‰[•\¦—p‚ÉƒTƒCƒY‚ğ‘å‚«‚­æ‚Á‚Ä‚¨‚­
+            'ã‚¨ãƒ©ãƒ¼è¡¨ç¤ºç”¨ã«ã‚µã‚¤ã‚ºã‚’å¤§ããå–ã£ã¦ãŠã
             ReDim Preserve EventData(UBound(EventData) + 1)
             ReDim Preserve EventLineNum(UBound(EventData))
             EventData(UBound(EventData)) = ""
             EventLineNum(UBound(EventData)) = EventLineNum(UBound(EventData) - 1) + 1
             
-            '•¡”s‚É•ªŠ„‚³‚ê‚½ƒRƒ}ƒ“ƒh‚ğŒ‹‡
+            'è¤‡æ•°è¡Œã«åˆ†å‰²ã•ã‚ŒãŸã‚³ãƒãƒ³ãƒ‰ã‚’çµåˆ
             For i = file_head To UBound(EventData) - 1
                 If Right$(EventData(i), 1) = "_" Then
                     EventData(i + 1) = _
@@ -2491,7 +2491,7 @@ NextEventFile:
                 End If
             Next
             
-            'ƒ‰ƒxƒ‹‚ğ“o˜^
+            'ãƒ©ãƒ™ãƒ«ã‚’ç™»éŒ²
             For i = file_head To UBound(EventData)
                 buf = EventData(i)
                 If Right$(buf, 1) = ":" Then
@@ -2499,7 +2499,7 @@ NextEventFile:
                 End If
             Next
             
-            'ƒRƒ}ƒ“ƒhƒf[ƒ^”z—ñ‚ğİ’è
+            'ã‚³ãƒãƒ³ãƒ‰ãƒ‡ãƒ¼ã‚¿é…åˆ—ã‚’è¨­å®š
             If UBound(EventData) > UBound(EventCmd) Then
                 ReDim Preserve EventCmd(UBound(EventData))
                 i = UBound(EventData)
@@ -2515,7 +2515,7 @@ NextEventFile:
         End If
     End If
     
-    'ƒCƒxƒ“ƒg—pƒ‰ƒxƒ‹‚ğİ’è
+    'ã‚¤ãƒ™ãƒ³ãƒˆç”¨ãƒ©ãƒ™ãƒ«ã‚’è¨­å®š
     i = 1
     num = UBound(label_enabled)
     For Each lab In colEventLabelList
@@ -2529,29 +2529,29 @@ NextEventFile:
 ' MOD END MARGE
 End Sub
 
-'ˆê’†’f—pƒf[ƒ^‚ÌƒCƒxƒ“ƒgƒf[ƒ^•”•ª‚ğ“Ç‚İ”ò‚Î‚·
+'ä¸€æ™‚ä¸­æ–­ç”¨ãƒ‡ãƒ¼ã‚¿ã®ã‚¤ãƒ™ãƒ³ãƒˆãƒ‡ãƒ¼ã‚¿éƒ¨åˆ†ã‚’èª­ã¿é£›ã°ã™
 Public Sub SkipEventData()
 Dim i As Integer, num As Integer
 Dim dummy As String
 
-    'ƒOƒ[ƒoƒ‹•Ï”
+    'ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°
     Input #SaveDataFileNumber, num
     For i = 1 To num
         Line Input #SaveDataFileNumber, dummy
     Next
-    'ƒ[ƒJƒ‹•Ï”
-    Input #SaveDataFileNumber, num
-    For i = 1 To num
-        Line Input #SaveDataFileNumber, dummy
-    Next
-    
-    'ƒ‰ƒxƒ‹î•ñ
+    'ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°
     Input #SaveDataFileNumber, num
     For i = 1 To num
         Line Input #SaveDataFileNumber, dummy
     Next
     
-    'RequireƒRƒ}ƒ“ƒh‚Å“Ç‚İ‚ñ‚¾ƒCƒxƒ“ƒgƒf[ƒ^
+    'ãƒ©ãƒ™ãƒ«æƒ…å ±
+    Input #SaveDataFileNumber, num
+    For i = 1 To num
+        Line Input #SaveDataFileNumber, dummy
+    Next
+    
+    'Requireã‚³ãƒãƒ³ãƒ‰ã§èª­ã¿è¾¼ã‚“ã ã‚¤ãƒ™ãƒ³ãƒˆãƒ‡ãƒ¼ã‚¿
     If SaveDataVersion > 20003 Then
         Input #SaveDataFileNumber, num
         For i = 1 To num
@@ -2560,7 +2560,7 @@ Dim dummy As String
     End If
 End Sub
 
-'ƒOƒ[ƒoƒ‹•Ï”‚ğƒtƒ@ƒCƒ‹‚ÉƒZ[ƒu
+'ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°ã‚’ãƒ•ã‚¡ã‚¤ãƒ«ã«ã‚»ãƒ¼ãƒ–
 Public Sub SaveGlobalVariables()
 Dim var As VarData
     
@@ -2576,7 +2576,7 @@ Dim var As VarData
     Next
 End Sub
 
-'ƒOƒ[ƒoƒ‹•Ï”‚ğƒtƒ@ƒCƒ‹‚©‚çƒ[ƒh
+'ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°ã‚’ãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ãƒ­ãƒ¼ãƒ‰
 Public Sub LoadGlobalVariables()
 Dim i As Integer, j As Integer, k As Integer, num As Integer, idx As Integer
 Dim vname As String, vvalue As String, buf As String
@@ -2584,17 +2584,17 @@ Dim aname As String
 ' ADD START MARGE
 Dim is_number As Boolean
 ' ADD END MARGE
-    'ƒOƒ[ƒoƒ‹•Ï”‚ğ‘Síœ
+    'ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°ã‚’å…¨å‰Šé™¤
     With GlobalVariableList
         For i = 1 To .Count
             .Remove 1
         Next
     End With
     
-    'ƒOƒ[ƒoƒ‹•Ï”‚Ì‘”‚ğ“Ç‚İo‚µ
+    'ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°ã®ç·æ•°ã‚’èª­ã¿å‡ºã—
     Input #SaveDataFileNumber, num
     
-    'Še•Ï”‚Ì’l‚ğ“Ç‚İo‚µ
+    'å„å¤‰æ•°ã®å€¤ã‚’èª­ã¿å‡ºã—
     For i = 1 To num
         Input #SaveDataFileNumber, vname
         Line Input #SaveDataFileNumber, buf
@@ -2612,11 +2612,11 @@ Dim is_number As Boolean
 ' MOD END MARGE
         
         If SaveDataVersion < 10724 Then
-            'SetSkillƒRƒ}ƒ“ƒh‚ÌƒZ[ƒuƒf[ƒ^‚ğƒGƒŠƒAƒX‚É‘Î‰‚³‚¹‚é
+            'SetSkillã‚³ãƒãƒ³ãƒ‰ã®ã‚»ãƒ¼ãƒ–ãƒ‡ãƒ¼ã‚¿ã‚’ã‚¨ãƒªã‚¢ã‚¹ã«å¯¾å¿œã•ã›ã‚‹
             If Left$(vname, 8) = "Ability(" Then
                 idx = InStr(vname, ",")
                 If idx > 0 Then
-                    'ŒÂX‚Ì”\—Í’è‹`
+                    'å€‹ã€…ã®èƒ½åŠ›å®šç¾©
                     aname = Mid$(vname, idx + 1, Len(vname) - idx - 1)
                     If ALDList.IsDefined(aname) Then
                         vname = Left$(vname, idx) & ALDList.Item(aname).AliasType(1) & ")"
@@ -2625,7 +2625,7 @@ Dim is_number As Boolean
                         End If
                     End If
                 Else
-                    '•K—v‹Z”\—p‚Ì”\—Íˆê——
+                    'å¿…è¦æŠ€èƒ½ç”¨ã®èƒ½åŠ›ä¸€è¦§
                     buf = ""
                     For j = 1 To LLength(vvalue)
                         aname = LIndex(vvalue, j)
@@ -2640,7 +2640,7 @@ Dim is_number As Boolean
         End If
         
         If SaveDataVersion < 10730 Then
-            'ƒ‰[ƒjƒ“ƒO‚µ‚½“Áê”\—Í‚ªg‚¦‚È‚¢ƒoƒO‚É‘Î‰
+            'ãƒ©ãƒ¼ãƒ‹ãƒ³ã‚°ã—ãŸç‰¹æ®Šèƒ½åŠ›ãŒä½¿ãˆãªã„ãƒã‚°ã«å¯¾å¿œ
             If Left$(vname, 8) = "Ability(" Then
                 idx = InStr(vname, ",")
                 If idx > 0 Then
@@ -2656,22 +2656,22 @@ Dim is_number As Boolean
         End If
         
         If SaveDataVersion < 10731 Then
-            '•s•K—v‚È”ñ•\¦”\—Í‚É‘Î‚·‚éSetSkill‚ğíœ
+            'ä¸å¿…è¦ãªéè¡¨ç¤ºèƒ½åŠ›ã«å¯¾ã™ã‚‹SetSkillã‚’å‰Šé™¤
             If Left$(vname, 8) = "Ability(" Then
-                If Right$(vname, 5) = ",”ñ•\¦)" Then
+                If Right$(vname, 5) = ",éè¡¨ç¤º)" Then
                     GoTo NextVariable
                 End If
             End If
         End If
         
         If SaveDataVersion < 10732 Then
-            '•s•K—v‚È”ñ•\¦”\—Í‚É‘Î‚·‚éSetSkill‚Æ”\—Í–¼‚Ìƒ_ƒu‚è‚ğíœ
+            'ä¸å¿…è¦ãªéè¡¨ç¤ºèƒ½åŠ›ã«å¯¾ã™ã‚‹SetSkillã¨èƒ½åŠ›åã®ãƒ€ãƒ–ã‚Šã‚’å‰Šé™¤
             If Left$(vname, 8) = "Ability(" Then
                 If InStr(vname, ",") = 0 Then
                     buf = ""
                     For j = 1 To LLength(vvalue)
                         aname = LIndex(vvalue, j)
-                        If aname <> "”ñ•\¦" Then
+                        If aname <> "éè¡¨ç¤º" Then
                             For k = 1 To LLength(buf)
                                 If LIndex(buf, k) = aname Then
                                     Exit For
@@ -2688,11 +2688,11 @@ Dim is_number As Boolean
         End If
         
         If SaveDataVersion < 20027 Then
-            'ƒGƒŠƒAƒX‚³‚ê‚½”\—Í‚ğSetSkill‚µ‚½Û‚ÉƒGƒŠƒAƒX‚ÉŠÜ‚Ü‚ê‚é‰ğà‚ª–³Œø‚É‚È‚éƒoƒO‚Ö‚Ì‘Îˆ
+            'ã‚¨ãƒªã‚¢ã‚¹ã•ã‚ŒãŸèƒ½åŠ›ã‚’SetSkillã—ãŸéš›ã«ã‚¨ãƒªã‚¢ã‚¹ã«å«ã¾ã‚Œã‚‹è§£èª¬ãŒç„¡åŠ¹ã«ãªã‚‹ãƒã‚°ã¸ã®å¯¾å‡¦
             If Left$(vname, 8) = "Ability(" Then
                 If LIndex(vvalue, 1) = "0" Then
-                    If LIndex(vvalue, 2) = "‰ğà" Then
-                        vvalue = Format$(DEFAULT_LEVEL) & " ‰ğà " & ListTail(vvalue, 3)
+                    If LIndex(vvalue, 2) = "è§£èª¬" Then
+                        vvalue = Format$(DEFAULT_LEVEL) & " è§£èª¬ " & ListTail(vvalue, 3)
                     End If
                 End If
             End If
@@ -2716,12 +2716,12 @@ Dim is_number As Boolean
 NextVariable:
     Next
 'ADD START 240a
-    'Option‚ğ‘S‚Ä“Ç‚İ‚ñ‚¾‚çAV‚f‚t‚h‚ª—LŒø‚É‚È‚Á‚Ä‚¢‚é‚©Šm”F‚·‚é
+    'Optionã‚’å…¨ã¦èª­ã¿è¾¼ã‚“ã ã‚‰ã€æ–°ï¼§ï¼µï¼©ãŒæœ‰åŠ¹ã«ãªã£ã¦ã„ã‚‹ã‹ç¢ºèªã™ã‚‹
     SetNewGUIMode
 'ADD  END  240a
 End Sub
 
-'ƒ[ƒJƒ‹•Ï”‚ğƒtƒ@ƒCƒ‹‚ÉƒZ[ƒu
+'ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ã‚’ãƒ•ã‚¡ã‚¤ãƒ«ã«ã‚»ãƒ¼ãƒ–
 Public Sub SaveLocalVariables()
 Dim var As VarData
     
@@ -2740,7 +2740,7 @@ Dim var As VarData
     Next
 End Sub
 
-'ƒ[ƒJƒ‹•Ï”‚ğƒtƒ@ƒCƒ‹‚©‚çƒ[ƒh
+'ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ã‚’ãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ãƒ­ãƒ¼ãƒ‰
 Public Sub LoadLocalVariables()
 Dim i As Integer, num As Integer
 ' MOD START MARGE
@@ -2748,18 +2748,18 @@ Dim i As Integer, num As Integer
 Dim vname As String, vvalue As String, buf As String
 Dim is_number As Boolean
 ' MOD END MARGE
-    'ƒ[ƒJƒ‹•Ï”‚ğ‘Síœ
+    'ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ã‚’å…¨å‰Šé™¤
     With LocalVariableList
         For i = 1 To .Count
             .Remove 1
         Next
     End With
     
-    'ƒ[ƒJƒ‹•Ï”‚Ì‘”‚ğ“Ç‚İo‚µ
+    'ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ã®ç·æ•°ã‚’èª­ã¿å‡ºã—
     Input #SaveDataFileNumber, num
     
     For i = 1 To num
-        '•Ï”‚Ì’l‚ğ“Ç‚İo‚µ
+        'å¤‰æ•°ã®å€¤ã‚’èª­ã¿å‡ºã—
 ' MOD START MARGE
 '        Input #SaveDataFileNumber, vname, vvalue
         Input #SaveDataFileNumber, vname
@@ -2775,7 +2775,7 @@ Dim is_number As Boolean
 ' MOD END MARGE
         
         If SaveDataVersion < 10731 Then
-            'ClearSkill‚ÌƒoƒO‚Åİ’è‚³‚ê‚½•Ï”‚ğíœ
+            'ClearSkillã®ãƒã‚°ã§è¨­å®šã•ã‚ŒãŸå¤‰æ•°ã‚’å‰Šé™¤
             If Left$(vname, 8) = "Ability(" Then
                 If vname = vvalue Then
                     GoTo NextVariable
@@ -2783,7 +2783,7 @@ Dim is_number As Boolean
             End If
         End If
         
-        '•Ï”‚Ì’l‚ğİ’è
+        'å¤‰æ•°ã®å€¤ã‚’è¨­å®š
         If Not IsLocalVariableDefined(vname) Then
             DefineLocalVariable vname
         End If
@@ -2804,16 +2804,16 @@ NextVariable:
 End Sub
 
 
-'ƒCƒxƒ“ƒgƒGƒ‰[•\¦
+'ã‚¤ãƒ™ãƒ³ãƒˆã‚¨ãƒ©ãƒ¼è¡¨ç¤º
 Public Sub DisplayEventErrorMessage(ByVal lnum As Long, ByVal msg As String)
 Dim buf As String
     
-    'ƒGƒ‰[‚ª‹N‚±‚Á‚½ƒtƒ@ƒCƒ‹As”Ô†AƒGƒ‰[ƒƒbƒZ[ƒW‚ğ•\¦
-    buf = EventFileNames(EventFileID(lnum)) & "F" _
-        & EventLineNum(lnum) & "s–Ú" & vbCr & vbLf _
+    'ã‚¨ãƒ©ãƒ¼ãŒèµ·ã“ã£ãŸãƒ•ã‚¡ã‚¤ãƒ«ã€è¡Œç•ªå·ã€ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’è¡¨ç¤º
+    buf = EventFileNames(EventFileID(lnum)) & "ï¼š" _
+        & EventLineNum(lnum) & "è¡Œç›®" & vbCr & vbLf _
         & msg & vbCr & vbLf
     
-    'ƒGƒ‰[‚ª‹N‚±‚Á‚½s‚Æ‚»‚Ì‘OŒã‚Ìs‚Ì“à—e‚ğ•\¦
+    'ã‚¨ãƒ©ãƒ¼ãŒèµ·ã“ã£ãŸè¡Œã¨ãã®å‰å¾Œã®è¡Œã®å†…å®¹ã‚’è¡¨ç¤º
     If lnum > 1 Then
         buf = buf & EventLineNum(lnum - 1) & ": " & EventData(lnum - 1) & vbCr & vbLf
     End If
@@ -2825,7 +2825,7 @@ Dim buf As String
     ErrorMessage buf
 End Sub
 
-'ƒCƒ“ƒ^[ƒ~ƒbƒVƒ‡ƒ“ƒRƒ}ƒ“ƒhuƒ†ƒjƒbƒgƒŠƒXƒgv‚É‚¨‚¯‚éƒ†ƒjƒbƒgƒŠƒXƒg‚ğì¬‚·‚é
+'ã‚¤ãƒ³ã‚¿ãƒ¼ãƒŸãƒƒã‚·ãƒ§ãƒ³ã‚³ãƒãƒ³ãƒ‰ã€Œãƒ¦ãƒ‹ãƒƒãƒˆãƒªã‚¹ãƒˆã€ã«ãŠã‘ã‚‹ãƒ¦ãƒ‹ãƒƒãƒˆãƒªã‚¹ãƒˆã‚’ä½œæˆã™ã‚‹
 Public Sub MakeUnitList(Optional smode As String)
 Dim u As Unit, p As Pilot
 Dim xx As Integer, yy As Integer
@@ -2836,93 +2836,93 @@ Dim unit_list() As Unit
 Dim i As Integer, j As Integer
 Static key_type As String
     
-    'ƒŠƒXƒg‚Ìƒ\[ƒg€–Ú‚ğİ’è
+    'ãƒªã‚¹ãƒˆã®ã‚½ãƒ¼ãƒˆé …ç›®ã‚’è¨­å®š
     If smode <> "" Then
         key_type = smode
     End If
     If key_type = "" Then
-        key_type = "‚g‚o"
+        key_type = "ï¼¨ï¼°"
     End If
     
-    'ƒ}ƒEƒXƒJ[ƒ\ƒ‹‚ğ»Œv‚É
+    'ãƒã‚¦ã‚¹ã‚«ãƒ¼ã‚½ãƒ«ã‚’ç ‚æ™‚è¨ˆã«
     Screen.MousePointer = vbHourglass
     
-    '‚ ‚ç‚©‚¶‚ß“P‘Ş‚³‚¹‚Ä‚¨‚­
+    'ã‚ã‚‰ã‹ã˜ã‚æ’¤é€€ã•ã›ã¦ãŠã
     For Each u In UList
         With u
-            If .Status = "oŒ‚" Then
+            If .Status = "å‡ºæ’ƒ" Then
                 .Escape
             End If
         End With
     Next
     
-    'ƒ}ƒbƒv‚ğƒNƒŠƒA
+    'ãƒãƒƒãƒ—ã‚’ã‚¯ãƒªã‚¢
     LoadMapData ""
-    SetupBackground "", "ƒXƒe[ƒ^ƒX"
+    SetupBackground "", "ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹"
     
-    'ƒ†ƒjƒbƒgˆê——‚ğì¬
-    If key_type <> "–¼Ì" Then
-        '”z—ñì¬
+    'ãƒ¦ãƒ‹ãƒƒãƒˆä¸€è¦§ã‚’ä½œæˆ
+    If key_type <> "åç§°" Then
+        'é…åˆ—ä½œæˆ
         ReDim unit_list(UList.Count)
         ReDim key_list(UList.Count)
         i = 0
         For Each u In UList
             With u
-                If .Status = "oŒ‚" Or .Status = "‘Ò‹@" Then
+                If .Status = "å‡ºæ’ƒ" Or .Status = "å¾…æ©Ÿ" Then
                     i = i + 1
                     Set unit_list(i) = u
                     
-                    'ƒ\[ƒg‚·‚é€–Ú‚É‚ ‚í‚¹‚Äƒ\[ƒg‚ÌÛ‚Ì—Dæ“x‚ğŒˆ’è
+                    'ã‚½ãƒ¼ãƒˆã™ã‚‹é …ç›®ã«ã‚ã‚ã›ã¦ã‚½ãƒ¼ãƒˆã®éš›ã®å„ªå…ˆåº¦ã‚’æ±ºå®š
                     Select Case key_type
-                        Case "ƒ‰ƒ“ƒN"
+                        Case "ãƒ©ãƒ³ã‚¯"
                             key_list(i) = .Rank
-                        Case "‚g‚o"
+                        Case "ï¼¨ï¼°"
                             key_list(i) = .HP
-                        Case "‚d‚m"
+                        Case "ï¼¥ï¼®"
                             key_list(i) = .EN
-                        Case "‘•b"
+                        Case "è£…ç”²"
                             key_list(i) = .Armor
-                        Case "‰^“®«"
+                        Case "é‹å‹•æ€§"
                             key_list(i) = .Mobility
-                        Case "ˆÚ“®—Í"
+                        Case "ç§»å‹•åŠ›"
                             key_list(i) = .Speed
-                        Case "Å‘åUŒ‚—Í"
+                        Case "æœ€å¤§æ”»æ’ƒåŠ›"
                             For j = 1 To .CountWeapon
                                 If .IsWeaponMastered(j) _
                                     And Not .IsDisabled(.Weapon(j).Name) _
-                                    And Not .IsWeaponClassifiedAs(j, "‡") _
+                                    And Not .IsWeaponClassifiedAs(j, "åˆ") _
                                 Then
                                     If .WeaponPower(j, "") > key_list(i) Then
                                         key_list(i) = .WeaponPower(j, "")
                                     End If
                                 End If
                             Next
-                        Case "Å’·Ë’ö"
+                        Case "æœ€é•·å°„ç¨‹"
                             For j = 1 To .CountWeapon
                                 If .IsWeaponMastered(j) _
                                     And Not .IsDisabled(.Weapon(j).Name) _
-                                    And Not .IsWeaponClassifiedAs(j, "‡") _
+                                    And Not .IsWeaponClassifiedAs(j, "åˆ") _
                                 Then
                                     If .WeaponMaxRange(j) > key_list(i) Then
                                         key_list(i) = .WeaponMaxRange(j)
                                     End If
                                 End If
                             Next
-                        Case "ƒŒƒxƒ‹"
+                        Case "ãƒ¬ãƒ™ãƒ«"
                             key_list(i) = .MainPilot.Level
-                        Case "‚r‚o"
+                        Case "ï¼³ï¼°"
                             key_list(i) = .MainPilot.MaxSP
-                        Case "Ši“¬"
+                        Case "æ ¼é—˜"
                             key_list(i) = .MainPilot.Infight
-                        Case "ËŒ‚"
+                        Case "å°„æ’ƒ"
                             key_list(i) = .MainPilot.Shooting
-                        Case "–½’†"
+                        Case "å‘½ä¸­"
                             key_list(i) = .MainPilot.Hit
-                        Case "‰ñ”ğ"
+                        Case "å›é¿"
                             key_list(i) = .MainPilot.Dodge
-                        Case "‹Z—Ê"
+                        Case "æŠ€é‡"
                             key_list(i) = .MainPilot.Technique
-                        Case "”½‰"
+                        Case "åå¿œ"
                             key_list(i) = .MainPilot.Intuition
                     End Select
                 End If
@@ -2931,7 +2931,7 @@ Static key_type As String
         ReDim Preserve unit_list(i)
         ReDim Preserve key_list(i)
         
-        'ƒ\[ƒg
+        'ã‚½ãƒ¼ãƒˆ
         For i = 1 To UBound(key_list) - 1
             max_item = i
             max_value = key_list(i)
@@ -2952,16 +2952,16 @@ Static key_type As String
             End If
         Next
     Else
-        '”z—ñì¬
+        'é…åˆ—ä½œæˆ
         ReDim unit_list(UList.Count)
         ReDim strkey_list(UList.Count)
         i = 0
         For Each u In UList
             With u
-                If .Status = "oŒ‚" Or .Status = "‘Ò‹@" Then
+                If .Status = "å‡ºæ’ƒ" Or .Status = "å¾…æ©Ÿ" Then
                     i = i + 1
                     Set unit_list(i) = u
-                    If IsOptionDefined("“™g‘åŠî€") Then
+                    If IsOptionDefined("ç­‰èº«å¤§åŸºæº–") Then
                         strkey_list(i) = .MainPilot.KanaName
                     Else
                         strkey_list(i) = .KanaName
@@ -2972,7 +2972,7 @@ Static key_type As String
         ReDim Preserve unit_list(i)
         ReDim Preserve strkey_list(i)
         
-        'ƒ\[ƒg
+        'ã‚½ãƒ¼ãƒˆ
         For i = 1 To UBound(strkey_list) - 1
             max_item = i
             max_str = strkey_list(i)
@@ -2992,7 +2992,7 @@ Static key_type As String
         Next
     End If
     
-    'Font Regular 9pt ”wŒi
+    'Font Regular 9pt èƒŒæ™¯
     With MainForm.picMain(0).Font
         .Size = 9
         .Bold = False
@@ -3002,101 +3002,101 @@ Static key_type As String
     HCentering = False
     VCentering = False
     
-    'ƒ†ƒjƒbƒg‚ÌƒŠƒXƒg‚ğì¬
+    'ãƒ¦ãƒ‹ãƒƒãƒˆã®ãƒªã‚¹ãƒˆã‚’ä½œæˆ
     xx = 1
     yy = 1
     For i = 1 To UBound(unit_list)
         Set u = unit_list(i)
         With u
-            'ƒ†ƒjƒbƒgoŒ‚ˆÊ’u‚ğÜ‚è•Ô‚·
+            'ãƒ¦ãƒ‹ãƒƒãƒˆå‡ºæ’ƒä½ç½®ã‚’æŠ˜ã‚Šè¿”ã™
             If xx > 15 Then
                 xx = 1
                 yy = yy + 1
                 If yy > 40 Then
-                    'ƒ†ƒjƒbƒg”‚ª‘½‚·‚¬‚é‚½‚ßAˆê•”‚ÌƒpƒCƒƒbƒg‚ª•\¦o—ˆ‚Ü‚¹‚ñ
+                    'ãƒ¦ãƒ‹ãƒƒãƒˆæ•°ãŒå¤šã™ãã‚‹ãŸã‚ã€ä¸€éƒ¨ã®ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆãŒè¡¨ç¤ºå‡ºæ¥ã¾ã›ã‚“
                     Exit For
                 End If
             End If
             
-            'ƒpƒCƒƒbƒg‚ªæ‚Á‚Ä‚¢‚È‚¢ê‡‚Íƒ_ƒ~[ƒpƒCƒƒbƒg‚ğæ‚¹‚é
+            'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆãŒä¹—ã£ã¦ã„ãªã„å ´åˆã¯ãƒ€ãƒŸãƒ¼ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‚’ä¹—ã›ã‚‹
             If .CountPilot = 0 Then
-                Set p = PList.Add("ƒXƒe[ƒ^ƒX•\¦—pƒ_ƒ~[ƒpƒCƒƒbƒg(ƒUƒR)", 1, "–¡•û")
+                Set p = PList.Add("ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹è¡¨ç¤ºç”¨ãƒ€ãƒŸãƒ¼ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆ(ã‚¶ã‚³)", 1, "å‘³æ–¹")
                 p.Ride u
             End If
             
-            'oŒ‚
+            'å‡ºæ’ƒ
             .UsedAction = 0
             .StandBy xx, yy
             
-            'ƒvƒŒƒCƒ„[‚ª‘€ì‚Å‚«‚È‚¢‚æ‚¤‚É
-            .AddCondition "”ñ‘€ì", -1
+            'ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒæ“ä½œã§ããªã„ã‚ˆã†ã«
+            .AddCondition "éæ“ä½œ", -1
             
-            'ƒ†ƒjƒbƒg‚Ìˆ¤Ì‚ğ•\¦
+            'ãƒ¦ãƒ‹ãƒƒãƒˆã®æ„›ç§°ã‚’è¡¨ç¤º
             DrawString .Nickname, 32 * xx + 2, 32 * yy - 31
             
-            'ƒ\[ƒg€–Ú‚É‚ ‚í‚¹‚Äƒ†ƒjƒbƒg‚ÌƒXƒe[ƒ^ƒX‚ğ•\¦
+            'ã‚½ãƒ¼ãƒˆé …ç›®ã«ã‚ã‚ã›ã¦ãƒ¦ãƒ‹ãƒƒãƒˆã®ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚’è¡¨ç¤º
             Select Case key_type
-                Case "ƒ‰ƒ“ƒN"
+                Case "ãƒ©ãƒ³ã‚¯"
                     DrawString _
                         "RK" & Format$(key_list(i)) & " " & Term("HP", u) & Format$(.HP) _
                             & " " & Term("EN", u) & Format$(.EN), _
                         32 * xx + 2, 32 * yy - 15
-                Case "‚g‚o", "‚d‚m", "–¼Ì"
+                Case "ï¼¨ï¼°", "ï¼¥ï¼®", "åç§°"
                     DrawString _
                         Term("HP", u) & Format$(.HP) & " " & Term("EN", u) & Format$(.EN), _
                         32 * xx + 2, 32 * yy - 15
-                Case "‘•b"
-                    DrawString Term("‘•b", u) & Format$(key_list(i)), _
+                Case "è£…ç”²"
+                    DrawString Term("è£…ç”²", u) & Format$(key_list(i)), _
                         32 * xx + 2, 32 * yy - 15
-                Case "‰^“®«"
-                    DrawString Term("‰^“®«", u) & Format$(key_list(i)), _
+                Case "é‹å‹•æ€§"
+                    DrawString Term("é‹å‹•æ€§", u) & Format$(key_list(i)), _
                         32 * xx + 2, 32 * yy - 15
-                Case "ˆÚ“®—Í"
-                    DrawString Term("ˆÚ“®—Í", u) & Format$(key_list(i)), _
+                Case "ç§»å‹•åŠ›"
+                    DrawString Term("ç§»å‹•åŠ›", u) & Format$(key_list(i)), _
                         32 * xx + 2, 32 * yy - 15
-                Case "Å‘åUŒ‚—Í"
-                    DrawString "UŒ‚—Í" & Format$(key_list(i)), _
+                Case "æœ€å¤§æ”»æ’ƒåŠ›"
+                    DrawString "æ”»æ’ƒåŠ›" & Format$(key_list(i)), _
                         32 * xx + 2, 32 * yy - 15
-                Case "Å’·Ë’ö"
-                    DrawString "Ë’ö" & Format$(key_list(i)), _
+                Case "æœ€é•·å°„ç¨‹"
+                    DrawString "å°„ç¨‹" & Format$(key_list(i)), _
                         32 * xx + 2, 32 * yy - 15
-                Case "ƒŒƒxƒ‹"
+                Case "ãƒ¬ãƒ™ãƒ«"
                     DrawString "Lv" & Format$(key_list(i)), _
                         32 * xx + 2, 32 * yy - 15
-                Case "‚r‚o"
+                Case "ï¼³ï¼°"
                     DrawString Term("SP", u) & Format$(key_list(i)), _
                         32 * xx + 2, 32 * yy - 15
-                Case "Ši“¬"
-                    DrawString Term("Ši“¬", u) & Format$(key_list(i)), _
+                Case "æ ¼é—˜"
+                    DrawString Term("æ ¼é—˜", u) & Format$(key_list(i)), _
                         32 * xx + 2, 32 * yy - 15
-                Case "ËŒ‚"
+                Case "å°„æ’ƒ"
                     If .MainPilot.HasMana() Then
-                        DrawString Term("–‚—Í", u) & Format$(key_list(i)), _
+                        DrawString Term("é­”åŠ›", u) & Format$(key_list(i)), _
                             32 * xx + 2, 32 * yy - 15
                     Else
-                        DrawString Term("ËŒ‚", u) & Format$(key_list(i)), _
+                        DrawString Term("å°„æ’ƒ", u) & Format$(key_list(i)), _
                             32 * xx + 2, 32 * yy - 15
                     End If
-                Case "–½’†"
-                    DrawString Term("–½’†", u) & Format$(key_list(i)), _
+                Case "å‘½ä¸­"
+                    DrawString Term("å‘½ä¸­", u) & Format$(key_list(i)), _
                         32 * xx + 2, 32 * yy - 15
-                Case "‰ñ”ğ"
-                    DrawString Term("‰ñ”ğ", u) & Format$(key_list(i)), _
+                Case "å›é¿"
+                    DrawString Term("å›é¿", u) & Format$(key_list(i)), _
                         32 * xx + 2, 32 * yy - 15
-                Case "‹Z—Ê"
-                    DrawString Term("‹Z—Ê", u) & Format$(key_list(i)), _
+                Case "æŠ€é‡"
+                    DrawString Term("æŠ€é‡", u) & Format$(key_list(i)), _
                         32 * xx + 2, 32 * yy - 15
-                Case "”½‰"
-                    DrawString Term("”½‰", u) & Format$(key_list(i)), _
+                Case "åå¿œ"
+                    DrawString Term("åå¿œ", u) & Format$(key_list(i)), _
                         32 * xx + 2, 32 * yy - 15
             End Select
             
-            '•\¦ˆÊ’u‚ğ‰E‚É5ƒ}ƒX‚¸‚ç‚·
+            'è¡¨ç¤ºä½ç½®ã‚’å³ã«5ãƒã‚¹ãšã‚‰ã™
             xx = xx + 5
         End With
     Next
     
-    'ƒtƒHƒ“ƒg‚Ìİ’è‚ğ–ß‚µ‚Ä‚¨‚­
+    'ãƒ•ã‚©ãƒ³ãƒˆã®è¨­å®šã‚’æˆ»ã—ã¦ãŠã
     With MainForm.picMain(0).Font
         .Size = 16
         .Bold = True
@@ -3106,12 +3106,12 @@ Static key_type As String
     
     RedrawScreen
     
-    'ƒ}ƒEƒXƒJ[ƒ\ƒ‹‚ğŒ³‚É–ß‚·
+    'ãƒã‚¦ã‚¹ã‚«ãƒ¼ã‚½ãƒ«ã‚’å…ƒã«æˆ»ã™
     Screen.MousePointer = 0
 End Sub
 
 
-'•`‰æ‚ÌŠî€À•WˆÊ’u‚ğ•Û‘¶
+'æç”»ã®åŸºæº–åº§æ¨™ä½ç½®ã‚’ä¿å­˜
 Public Sub SaveBasePoint()
     BasePointIndex = BasePointIndex + 1
     If BasePointIndex > UBound(SavedBaseX) Then
@@ -3121,7 +3121,7 @@ Public Sub SaveBasePoint()
     SavedBaseY(BasePointIndex) = BaseY
 End Sub
 
-'•`‰æ‚ÌŠî€À•WˆÊ’u‚ğ•œŒ³
+'æç”»ã®åŸºæº–åº§æ¨™ä½ç½®ã‚’å¾©å…ƒ
 Public Sub RestoreBasePoint()
     If BasePointIndex <= 0 Then
         BasePointIndex = UBound(SavedBaseX)
@@ -3131,7 +3131,7 @@ Public Sub RestoreBasePoint()
     BasePointIndex = BasePointIndex - 1
 End Sub
 
-'•`‰æ‚ÌŠî€À•WˆÊ’u‚ğƒŠƒZƒbƒg
+'æç”»ã®åŸºæº–åº§æ¨™ä½ç½®ã‚’ãƒªã‚»ãƒƒãƒˆ
 Public Sub ResetBasePoint()
 Dim i As Integer
 

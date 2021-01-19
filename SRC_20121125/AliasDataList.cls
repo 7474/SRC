@@ -10,18 +10,18 @@ Attribute VB_Exposed = False
 Option Explicit
 
 ' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-' –{ƒvƒƒOƒ‰ƒ€‚ÍƒtƒŠ[ƒ\ƒtƒg‚Å‚ ‚èA–³•ÛØ‚Å‚·B
-' –{ƒvƒƒOƒ‰ƒ€‚ÍGNU General Public License(Ver.3‚Ü‚½‚Í‚»‚êˆÈ~)‚ª’è‚ß‚éğŒ‚Ì‰º‚Å
-' Ä”Ğ•z‚Ü‚½‚Í‰ü•Ï‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B
+' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯ãƒ•ãƒªãƒ¼ã‚½ãƒ•ãƒˆã§ã‚ã‚Šã€ç„¡ä¿è¨¼ã§ã™ã€‚
+' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯GNU General Public License(Ver.3ã¾ãŸã¯ãã‚Œä»¥é™)ãŒå®šã‚ã‚‹æ¡ä»¶ã®ä¸‹ã§
+' å†é ’å¸ƒã¾ãŸã¯æ”¹å¤‰ã™ã‚‹ã“ã¨ãŒã§ãã¾ã™ã€‚
 
-'‘SƒGƒŠƒAƒXƒf[ƒ^‚ğŠÇ—‚·‚éƒŠƒXƒg‚ÌƒNƒ‰ƒX
+'å…¨ã‚¨ãƒªã‚¢ã‚¹ãƒ‡ãƒ¼ã‚¿ã‚’ç®¡ç†ã™ã‚‹ãƒªã‚¹ãƒˆã®ã‚¯ãƒ©ã‚¹
 
 
-'ƒGƒŠƒAƒXƒf[ƒ^‚ÌƒRƒŒƒNƒVƒ‡ƒ“
+'ã‚¨ãƒªã‚¢ã‚¹ãƒ‡ãƒ¼ã‚¿ã®ã‚³ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³
 Private colAliasDataList As New Collection
 
 
-'ƒNƒ‰ƒX‚Ì‰ğ•ú
+'ã‚¯ãƒ©ã‚¹ã®è§£æ”¾
 Private Sub Class_Terminate()
 Dim i As Integer
 
@@ -33,7 +33,7 @@ Dim i As Integer
     Set colAliasDataList = Nothing
 End Sub
 
-'ƒGƒŠƒAƒXƒf[ƒ^ƒŠƒXƒg‚Éƒf[ƒ^‚ğ’Ç‰Á
+'ã‚¨ãƒªã‚¢ã‚¹ãƒ‡ãƒ¼ã‚¿ãƒªã‚¹ãƒˆã«ãƒ‡ãƒ¼ã‚¿ã‚’è¿½åŠ 
 Public Function Add(aname As String) As AliasData
 Dim ad As New AliasData
 
@@ -42,22 +42,22 @@ Dim ad As New AliasData
     Set Add = ad
 End Function
 
-'ƒGƒŠƒAƒXƒf[ƒ^ƒŠƒXƒg‚É“o˜^‚³‚ê‚Ä‚¢‚éƒf[ƒ^‚Ì‘”
+'ã‚¨ãƒªã‚¢ã‚¹ãƒ‡ãƒ¼ã‚¿ãƒªã‚¹ãƒˆã«ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ãƒ‡ãƒ¼ã‚¿ã®ç·æ•°
 Public Function Count() As Integer
     Count = colAliasDataList.Count
 End Function
 
-'ƒGƒŠƒAƒXƒf[ƒ^ƒŠƒXƒg‚©‚çƒf[ƒ^‚ğíœ
+'ã‚¨ãƒªã‚¢ã‚¹ãƒ‡ãƒ¼ã‚¿ãƒªã‚¹ãƒˆã‹ã‚‰ãƒ‡ãƒ¼ã‚¿ã‚’å‰Šé™¤
 Public Sub Delete(Index As Variant)
     colAliasDataList.Remove Index
 End Sub
 
-'ƒGƒŠƒAƒXƒf[ƒ^ƒŠƒXƒg‚©‚çƒf[ƒ^‚ğæ‚èo‚·
+'ã‚¨ãƒªã‚¢ã‚¹ãƒ‡ãƒ¼ã‚¿ãƒªã‚¹ãƒˆã‹ã‚‰ãƒ‡ãƒ¼ã‚¿ã‚’å–ã‚Šå‡ºã™
 Public Function Item(Index As Variant) As AliasData
     Set Item = colAliasDataList.Item(Index)
 End Function
 
-'ƒGƒŠƒAƒXƒf[ƒ^ƒŠƒXƒg‚Éw’è‚µ‚½ƒf[ƒ^‚ª’è‹`‚³‚ê‚Ä‚¢‚é‚©H
+'ã‚¨ãƒªã‚¢ã‚¹ãƒ‡ãƒ¼ã‚¿ãƒªã‚¹ãƒˆã«æŒ‡å®šã—ãŸãƒ‡ãƒ¼ã‚¿ãŒå®šç¾©ã•ã‚Œã¦ã„ã‚‹ã‹ï¼Ÿ
 Public Function IsDefined(Index As Variant) As Boolean
 Dim ad As AliasData
 
@@ -70,7 +70,7 @@ ErrorHandler:
     IsDefined = False
 End Function
 
-'ƒf[ƒ^ƒtƒ@ƒCƒ‹ fname ‚©‚çƒf[ƒ^‚ğƒ[ƒh
+'ãƒ‡ãƒ¼ã‚¿ãƒ•ã‚¡ã‚¤ãƒ« fname ã‹ã‚‰ãƒ‡ãƒ¼ã‚¿ã‚’ãƒ­ãƒ¼ãƒ‰
 Public Sub Load(fname As String)
 Dim FileNumber As Integer
 Dim line_num As Long
@@ -98,27 +98,27 @@ Dim err_msg As String
         Loop While Len(line_buf) = 0
         
         If InStr(line_buf, ",") > 0 Then
-            err_msg = "–¼Ì‚Ìİ’è‚ª”²‚¯‚Ä‚¢‚Ü‚·B"
+            err_msg = "åç§°ã®è¨­å®šãŒæŠœã‘ã¦ã„ã¾ã™ã€‚"
             Error 0
         End If
         
         data_name = line_buf
         
         If InStr(data_name, " ") > 0 Then
-            err_msg = "–¼Ì‚É”¼ŠpƒXƒy[ƒX‚Íg—po—ˆ‚Ü‚¹‚ñB"
+            err_msg = "åç§°ã«åŠè§’ã‚¹ãƒšãƒ¼ã‚¹ã¯ä½¿ç”¨å‡ºæ¥ã¾ã›ã‚“ã€‚"
             Error 0
         End If
-        If InStr(data_name, "i") > 0 Or InStr(data_name, "j") > 0 Then
-            err_msg = "–¼Ì‚É‘SŠpŠ‡ŒÊ‚Íg—po—ˆ‚Ü‚¹‚ñB"
+        If InStr(data_name, "ï¼ˆ") > 0 Or InStr(data_name, "ï¼‰") > 0 Then
+            err_msg = "åç§°ã«å…¨è§’æ‹¬å¼§ã¯ä½¿ç”¨å‡ºæ¥ã¾ã›ã‚“ã€‚"
             Error 0
         End If
         If InStr(data_name, """") > 0 Then
-            err_msg = "–¼Ì‚É""‚Íg—po—ˆ‚Ü‚¹‚ñB"
+            err_msg = "åç§°ã«""ã¯ä½¿ç”¨å‡ºæ¥ã¾ã›ã‚“ã€‚"
             Error 0
         End If
         
         If IsDefined(data_name) Then
-            '‚·‚Å‚É’è‹`‚³‚ê‚Ä‚¢‚éƒGƒŠƒAƒX‚Ìƒf[ƒ^‚Å‚ ‚ê‚Î’u‚«Š·‚¦‚é
+            'ã™ã§ã«å®šç¾©ã•ã‚Œã¦ã„ã‚‹ã‚¨ãƒªã‚¢ã‚¹ã®ãƒ‡ãƒ¼ã‚¿ã§ã‚ã‚Œã°ç½®ãæ›ãˆã‚‹
             Delete data_name
         End If
         Set ad = Add(data_name)
@@ -139,16 +139,16 @@ Dim err_msg As String
                 .AddAlias line_buf
             Loop
             If .Count = 0 Then
-                err_msg = "ƒGƒŠƒAƒX‘ÎÛ‚Ìƒf[ƒ^‚ª’è‹`‚³‚ê‚Ä‚¢‚Ü‚¹‚ñB"
+                err_msg = "ã‚¨ãƒªã‚¢ã‚¹å¯¾è±¡ã®ãƒ‡ãƒ¼ã‚¿ãŒå®šç¾©ã•ã‚Œã¦ã„ã¾ã›ã‚“ã€‚"
                 Error 0
             End If
         End With
     Loop
     
 ErrorHandler:
-    'ƒGƒ‰[ˆ—
+    'ã‚¨ãƒ©ãƒ¼å‡¦ç†
     If line_num = 0 Then
-        ErrorMessage fname & "‚ªŠJ‚¯‚Ü‚¹‚ñB"
+        ErrorMessage fname & "ãŒé–‹ã‘ã¾ã›ã‚“ã€‚"
     Else
         Close #FileNumber
         DataErrorMessage err_msg, fname, line_num, line_buf, data_name
@@ -156,7 +156,7 @@ ErrorHandler:
     TerminateSRC
 End Sub
 
-'ForEach—pŠÖ”
+'ForEachç”¨é–¢æ•°
 Public Function NewEnum() As IUnknown
     Set NewEnum = colAliasDataList.[_NewEnum]
 End Function

@@ -10,24 +10,24 @@ Attribute VB_Exposed = False
 Option Explicit
 
 ' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-' –{ƒvƒƒOƒ‰ƒ€‚ÍƒtƒŠ[ƒ\ƒtƒg‚Å‚ ‚èA–³•ÛØ‚Å‚·B
-' –{ƒvƒƒOƒ‰ƒ€‚ÍGNU General Public License(Ver.3‚Ü‚½‚Í‚»‚êˆÈ~)‚ª’è‚ß‚éğŒ‚Ì‰º‚Å
-' Ä”Ğ•z‚Ü‚½‚Í‰ü•Ï‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B
+' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯ãƒ•ãƒªãƒ¼ã‚½ãƒ•ãƒˆã§ã‚ã‚Šã€ç„¡ä¿è¨¼ã§ã™ã€‚
+' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯GNU General Public License(Ver.3ã¾ãŸã¯ãã‚Œä»¥é™)ãŒå®šã‚ã‚‹æ¡ä»¶ã®ä¸‹ã§
+' å†é ’å¸ƒã¾ãŸã¯æ”¹å¤‰ã™ã‚‹ã“ã¨ãŒã§ãã¾ã™ã€‚
 
-'‘Sƒ†ƒjƒbƒg‚Ìƒf[ƒ^‚ğŠÇ—‚·‚éƒŠƒXƒg‚ÌƒNƒ‰ƒX
+'å…¨ãƒ¦ãƒ‹ãƒƒãƒˆã®ãƒ‡ãƒ¼ã‚¿ã‚’ç®¡ç†ã™ã‚‹ãƒªã‚¹ãƒˆã®ã‚¯ãƒ©ã‚¹
 
-'ƒ†ƒjƒbƒg‚h‚cì¬—pƒJƒEƒ“ƒ^
+'ãƒ¦ãƒ‹ãƒƒãƒˆï¼©ï¼¤ä½œæˆç”¨ã‚«ã‚¦ãƒ³ã‚¿
 Public IDCount As Long
 
-'ƒ†ƒjƒbƒgˆê——
+'ãƒ¦ãƒ‹ãƒƒãƒˆä¸€è¦§
 Private colUnits As New Collection
 
-'ƒNƒ‰ƒX‚Ì‰Šú‰»
+'ã‚¯ãƒ©ã‚¹ã®åˆæœŸåŒ–
 Private Sub Class_Initialize()
     IDCount = 0
 End Sub
 
-'ƒNƒ‰ƒX‚Ì‰ğ•ú
+'ã‚¯ãƒ©ã‚¹ã®è§£æ”¾
 Private Sub Class_Terminate()
 Dim i As Integer
     
@@ -39,7 +39,7 @@ Dim i As Integer
     Set colUnits = Nothing
 End Sub
 
-'ForEach—pŠÖ”
+'ForEachç”¨é–¢æ•°
 Public Function NewEnum() As IUnknown
 Attribute NewEnum.VB_UserMemId = -4
 Attribute NewEnum.VB_MemberFlags = "40"
@@ -47,7 +47,7 @@ Attribute NewEnum.VB_MemberFlags = "40"
 End Function
 
 
-'ƒ†ƒjƒbƒgƒŠƒXƒg‚ÉV‚µ‚¢ƒ†ƒjƒbƒg‚ğ’Ç‰Á
+'ãƒ¦ãƒ‹ãƒƒãƒˆãƒªã‚¹ãƒˆã«æ–°ã—ã„ãƒ¦ãƒ‹ãƒƒãƒˆã‚’è¿½åŠ 
 Public Function Add(uname As String, ByVal urank As Integer, uparty As String) As Unit
 Dim new_unit As Unit
 Dim new_form As Unit
@@ -56,7 +56,7 @@ Dim uname2 As String
 Dim other_forms() As String
 Dim i As Integer, j As Integer, list As String
     
-    'ƒ†ƒjƒbƒgƒf[ƒ^‚ª’è‹`‚³‚ê‚Ä‚¢‚éH
+    'ãƒ¦ãƒ‹ãƒƒãƒˆãƒ‡ãƒ¼ã‚¿ãŒå®šç¾©ã•ã‚Œã¦ã„ã‚‹ï¼Ÿ
     If Not UDList.IsDefined(uname) Then
         Set Add = Nothing
         Exit Function
@@ -75,16 +75,16 @@ Dim i As Integer, j As Integer, list As String
     End With
     colUnits.Add new_unit, new_unit.ID
     
-    '‚±‚êˆÈ~‚Í–{‘ÌˆÈŠO‚ÌŒ`‘Ô‚Ì’Ç‰Á
+    'ã“ã‚Œä»¥é™ã¯æœ¬ä½“ä»¥å¤–ã®å½¢æ…‹ã®è¿½åŠ 
     ReDim other_forms(0)
     
-    '•ÏŒ`æ‚ÌŒ`‘Ô
-    list = ud.FeatureData("•ÏŒ`")
+    'å¤‰å½¢å…ˆã®å½¢æ…‹
+    list = ud.FeatureData("å¤‰å½¢")
     For i = 2 To LLength(list)
         uname2 = LIndex(list, i)
         If Not UDList.IsDefined(uname2) Then
-            ErrorMessage "ƒ†ƒjƒbƒgƒf[ƒ^u" & uname & "v‚Ì•ÏŒ`æŒ`‘Ôu" _
-                & uname2 & "v‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ"
+            ErrorMessage "ãƒ¦ãƒ‹ãƒƒãƒˆãƒ‡ãƒ¼ã‚¿ã€Œ" & uname & "ã€ã®å¤‰å½¢å…ˆå½¢æ…‹ã€Œ" _
+                & uname2 & "ã€ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“"
             Set Add = Nothing
             Exit Function
         End If
@@ -92,17 +92,17 @@ Dim i As Integer, j As Integer, list As String
         other_forms(UBound(other_forms)) = uname2
     Next
     
-    'ƒnƒCƒp[ƒ‚[ƒhæ‚ÌŒ`‘Ô
-    If ud.IsFeatureAvailable("ƒnƒCƒp[ƒ‚[ƒh") Then
-        list = ud.FeatureData("ƒnƒCƒp[ƒ‚[ƒh")
+    'ãƒã‚¤ãƒ‘ãƒ¼ãƒ¢ãƒ¼ãƒ‰å…ˆã®å½¢æ…‹
+    If ud.IsFeatureAvailable("ãƒã‚¤ãƒ‘ãƒ¼ãƒ¢ãƒ¼ãƒ‰") Then
+        list = ud.FeatureData("ãƒã‚¤ãƒ‘ãƒ¼ãƒ¢ãƒ¼ãƒ‰")
         uname2 = LIndex(list, 2)
         If Not UDList.IsDefined(uname2) Then
             If uname = "" Then
-                ErrorMessage "ƒ†ƒjƒbƒgƒf[ƒ^u" & uname & _
-                    "v‚ÌƒnƒCƒp[ƒ‚[ƒhæŒ`‘Ô‚ªw’è‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ"
+                ErrorMessage "ãƒ¦ãƒ‹ãƒƒãƒˆãƒ‡ãƒ¼ã‚¿ã€Œ" & uname & _
+                    "ã€ã®ãƒã‚¤ãƒ‘ãƒ¼ãƒ¢ãƒ¼ãƒ‰å…ˆå½¢æ…‹ãŒæŒ‡å®šã•ã‚Œã¦ã„ã¾ã›ã‚“"
             Else
-                ErrorMessage "ƒ†ƒjƒbƒgƒf[ƒ^u" & uname & "v‚ÌƒnƒCƒp[ƒ‚[ƒhæŒ`‘Ôu" _
-                    & uname2 & "v‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ"
+                ErrorMessage "ãƒ¦ãƒ‹ãƒƒãƒˆãƒ‡ãƒ¼ã‚¿ã€Œ" & uname & "ã€ã®ãƒã‚¤ãƒ‘ãƒ¼ãƒ¢ãƒ¼ãƒ‰å…ˆå½¢æ…‹ã€Œ" _
+                    & uname2 & "ã€ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“"
             End If
             Set Add = Nothing
             Exit Function
@@ -111,17 +111,17 @@ Dim i As Integer, j As Integer, list As String
         other_forms(UBound(other_forms)) = uname2
     End If
     
-    'ƒm[ƒ}ƒ‹ƒ‚[ƒhæ‚ÌŒ`‘Ô
-    If ud.IsFeatureAvailable("ƒm[ƒ}ƒ‹ƒ‚[ƒh") Then
-        list = ud.FeatureData("ƒm[ƒ}ƒ‹ƒ‚[ƒh")
+    'ãƒãƒ¼ãƒãƒ«ãƒ¢ãƒ¼ãƒ‰å…ˆã®å½¢æ…‹
+    If ud.IsFeatureAvailable("ãƒãƒ¼ãƒãƒ«ãƒ¢ãƒ¼ãƒ‰") Then
+        list = ud.FeatureData("ãƒãƒ¼ãƒãƒ«ãƒ¢ãƒ¼ãƒ‰")
         uname2 = LIndex(list, 1)
         If Not UDList.IsDefined(uname2) Then
             If uname2 = "" Then
-                ErrorMessage "ƒ†ƒjƒbƒgƒf[ƒ^u" & uname & _
-                    "v‚Ìƒm[ƒ}ƒ‹ƒ‚[ƒhæŒ`‘Ô‚ªw’è‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ"
+                ErrorMessage "ãƒ¦ãƒ‹ãƒƒãƒˆãƒ‡ãƒ¼ã‚¿ã€Œ" & uname & _
+                    "ã€ã®ãƒãƒ¼ãƒãƒ«ãƒ¢ãƒ¼ãƒ‰å…ˆå½¢æ…‹ãŒæŒ‡å®šã•ã‚Œã¦ã„ã¾ã›ã‚“"
             Else
-                ErrorMessage "ƒ†ƒjƒbƒgƒf[ƒ^u" & uname & "v‚Ìƒm[ƒ}ƒ‹ƒ‚[ƒhæŒ`‘Ôu" _
-                    & uname2 & "v‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ"
+                ErrorMessage "ãƒ¦ãƒ‹ãƒƒãƒˆãƒ‡ãƒ¼ã‚¿ã€Œ" & uname & "ã€ã®ãƒãƒ¼ãƒãƒ«ãƒ¢ãƒ¼ãƒ‰å…ˆå½¢æ…‹ã€Œ" _
+                    & uname2 & "ã€ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“"
             End If
             Set Add = Nothing
             Exit Function
@@ -130,16 +130,16 @@ Dim i As Integer, j As Integer, list As String
         other_forms(UBound(other_forms)) = uname2
     End If
     
-    'ƒp[ƒc•ª—£æ‚ÌŒ`‘Ô
-    If ud.IsFeatureAvailable("ƒp[ƒc•ª—£") Then
-        uname2 = LIndex(ud.FeatureData("ƒp[ƒc•ª—£"), 2)
+    'ãƒ‘ãƒ¼ãƒ„åˆ†é›¢å…ˆã®å½¢æ…‹
+    If ud.IsFeatureAvailable("ãƒ‘ãƒ¼ãƒ„åˆ†é›¢") Then
+        uname2 = LIndex(ud.FeatureData("ãƒ‘ãƒ¼ãƒ„åˆ†é›¢"), 2)
         If Not UDList.IsDefined(uname2) Then
             If uname2 = "" Then
-                ErrorMessage "ƒ†ƒjƒbƒgƒf[ƒ^u" & uname & _
-                    "v‚Ìƒp[ƒc•ª—£æŒ`‘Ô‚ªw’è‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ"
+                ErrorMessage "ãƒ¦ãƒ‹ãƒƒãƒˆãƒ‡ãƒ¼ã‚¿ã€Œ" & uname & _
+                    "ã€ã®ãƒ‘ãƒ¼ãƒ„åˆ†é›¢å…ˆå½¢æ…‹ãŒæŒ‡å®šã•ã‚Œã¦ã„ã¾ã›ã‚“"
             Else
-                ErrorMessage "ƒ†ƒjƒbƒgƒf[ƒ^u" & uname & "v‚Ìƒp[ƒc•ª—£æŒ`‘Ôu" _
-                    & uname2 & "v‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ"
+                ErrorMessage "ãƒ¦ãƒ‹ãƒƒãƒˆãƒ‡ãƒ¼ã‚¿ã€Œ" & uname & "ã€ã®ãƒ‘ãƒ¼ãƒ„åˆ†é›¢å…ˆå½¢æ…‹ã€Œ" _
+                    & uname2 & "ã€ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“"
             End If
             Set Add = Nothing
             Exit Function
@@ -148,16 +148,16 @@ Dim i As Integer, j As Integer, list As String
         other_forms(UBound(other_forms)) = uname2
     End If
     
-    'ƒp[ƒc‡‘Ìæ‚ÌŒ`‘Ô
-    If ud.IsFeatureAvailable("ƒp[ƒc‡‘Ì") Then
-        uname2 = ud.FeatureData("ƒp[ƒc‡‘Ì")
+    'ãƒ‘ãƒ¼ãƒ„åˆä½“å…ˆã®å½¢æ…‹
+    If ud.IsFeatureAvailable("ãƒ‘ãƒ¼ãƒ„åˆä½“") Then
+        uname2 = ud.FeatureData("ãƒ‘ãƒ¼ãƒ„åˆä½“")
         If Not UDList.IsDefined(uname2) Then
             If uname = "" Then
-                ErrorMessage "ƒ†ƒjƒbƒgƒf[ƒ^u" & uname & _
-                    "v‚Ìƒp[ƒc‡‘ÌæŒ`‘Ô‚ªw’è‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ"
+                ErrorMessage "ãƒ¦ãƒ‹ãƒƒãƒˆãƒ‡ãƒ¼ã‚¿ã€Œ" & uname & _
+                    "ã€ã®ãƒ‘ãƒ¼ãƒ„åˆä½“å…ˆå½¢æ…‹ãŒæŒ‡å®šã•ã‚Œã¦ã„ã¾ã›ã‚“"
             Else
-                ErrorMessage "ƒ†ƒjƒbƒgƒf[ƒ^u" & uname & "v‚Ìƒp[ƒc‡‘ÌæŒ`‘Ôu" _
-                    & uname2 & "v‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ"
+                ErrorMessage "ãƒ¦ãƒ‹ãƒƒãƒˆãƒ‡ãƒ¼ã‚¿ã€Œ" & uname & "ã€ã®ãƒ‘ãƒ¼ãƒ„åˆä½“å…ˆå½¢æ…‹ã€Œ" _
+                    & uname2 & "ã€ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“"
             End If
             Set Add = Nothing
             Exit Function
@@ -166,20 +166,20 @@ Dim i As Integer, j As Integer, list As String
         other_forms(UBound(other_forms)) = uname2
     End If
     
-    '•ÏŒ`‹Z‚Ì•ÏŒ`æ‚ÌŒ`‘Ô
+    'å¤‰å½¢æŠ€ã®å¤‰å½¢å…ˆã®å½¢æ…‹
     With ud
-        If .IsFeatureAvailable("•ÏŒ`‹Z") Then
+        If .IsFeatureAvailable("å¤‰å½¢æŠ€") Then
             For i = 1 To .CountFeature
-                If .Feature(i) = "•ÏŒ`‹Z" Then
+                If .Feature(i) = "å¤‰å½¢æŠ€" Then
                     uname2 = LIndex(.FeatureData(i), 2)
                     If Not UDList.IsDefined(uname2) Then
                         If uname2 = "" Then
-                            ErrorMessage "ƒ†ƒjƒbƒgƒf[ƒ^u" & uname & _
-                                "v‚Ì•ÏŒ`‹Zg—pŒãŒ`‘Ô‚ªw’è‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ"
+                            ErrorMessage "ãƒ¦ãƒ‹ãƒƒãƒˆãƒ‡ãƒ¼ã‚¿ã€Œ" & uname & _
+                                "ã€ã®å¤‰å½¢æŠ€ä½¿ç”¨å¾Œå½¢æ…‹ãŒæŒ‡å®šã•ã‚Œã¦ã„ã¾ã›ã‚“"
                         Else
-                            ErrorMessage "ƒ†ƒjƒbƒgƒf[ƒ^u" & uname & _
-                                "v‚Ì•ÏŒ`‹Zg—pŒãŒ`‘Ôu" & _
-                                uname2 & "v‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ"
+                            ErrorMessage "ãƒ¦ãƒ‹ãƒƒãƒˆãƒ‡ãƒ¼ã‚¿ã€Œ" & uname & _
+                                "ã€ã®å¤‰å½¢æŠ€ä½¿ç”¨å¾Œå½¢æ…‹ã€Œ" & _
+                                uname2 & "ã€ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“"
                         End If
                         Set Add = Nothing
                         Exit Function
@@ -191,13 +191,13 @@ Dim i As Integer, j As Integer, list As String
         End If
     End With
     
-    'Š·‘•æ‚ÌŒ`‘Ô
-    list = ud.FeatureData("Š·‘•")
+    'æ›è£…å…ˆã®å½¢æ…‹
+    list = ud.FeatureData("æ›è£…")
     For i = 1 To LLength(list)
         uname2 = LIndex(list, i)
         If Not UDList.IsDefined(uname2) Then
-            ErrorMessage "ƒ†ƒjƒbƒgƒf[ƒ^u" & uname & "v‚ÌŠ·‘•æŒ`‘Ôu" _
-                & uname2 & "v‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ"
+            ErrorMessage "ãƒ¦ãƒ‹ãƒƒãƒˆãƒ‡ãƒ¼ã‚¿ã€Œ" & uname & "ã€ã®æ›è£…å…ˆå½¢æ…‹ã€Œ" _
+                & uname2 & "ã€ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“"
             Set Add = Nothing
             Exit Function
         End If
@@ -205,13 +205,13 @@ Dim i As Integer, j As Integer, list As String
         other_forms(UBound(other_forms)) = uname2
     Next
     
-    '‘¼Œ`‘Ô‚Åw’è‚³‚ê‚½Œ`‘Ô
-    list = ud.FeatureData("‘¼Œ`‘Ô")
+    'ä»–å½¢æ…‹ã§æŒ‡å®šã•ã‚ŒãŸå½¢æ…‹
+    list = ud.FeatureData("ä»–å½¢æ…‹")
     For i = 1 To LLength(list)
         uname2 = LIndex(list, i)
         If Not UDList.IsDefined(uname2) Then
-            ErrorMessage "ƒ†ƒjƒbƒgƒf[ƒ^u" & uname & "v‚Ì‘¼Œ`‘Ôu" _
-                & uname2 & "v‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ"
+            ErrorMessage "ãƒ¦ãƒ‹ãƒƒãƒˆãƒ‡ãƒ¼ã‚¿ã€Œ" & uname & "ã€ã®ä»–å½¢æ…‹ã€Œ" _
+                & uname2 & "ã€ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“"
             Set Add = Nothing
             Exit Function
         End If
@@ -219,7 +219,7 @@ Dim i As Integer, j As Integer, list As String
         other_forms(UBound(other_forms)) = uname2
     Next
     
-    'Œ`‘Ô‚ğ’Ç‰Á
+    'å½¢æ…‹ã‚’è¿½åŠ 
     For i = 1 To UBound(other_forms)
         If Not new_unit.IsOtherFormDefined(other_forms(i)) Then
             Set new_form = New Unit
@@ -229,14 +229,14 @@ Dim i As Integer, j As Integer, list As String
                 .Party = uparty
                 .ID = CreateID(ud.Name)
                 .FullRecover
-                .Status = "‘¼Œ`‘Ô"
+                .Status = "ä»–å½¢æ…‹"
             End With
             colUnits.Add new_form, new_form.ID
             new_unit.AddOtherForm new_form
         End If
     Next
     
-    '’Ç‰Á‚µ‚½Œ`‘Ô‚É‘Î‚µ‚Ä©•ª©g‚ğ’Ç‰Á‚µ‚Ä‚¨‚­
+    'è¿½åŠ ã—ãŸå½¢æ…‹ã«å¯¾ã—ã¦è‡ªåˆ†è‡ªèº«ã‚’è¿½åŠ ã—ã¦ãŠã
     For i = 1 To new_unit.CountOtherForm
         new_unit.OtherForm(i).AddOtherForm new_unit
         For j = 1 To new_unit.CountOtherForm
@@ -247,19 +247,19 @@ Dim i As Integer, j As Integer, list As String
         Next
     Next
     
-    'Šù‚É‡‘Ìæ or •ª—£æ‚Ìƒ†ƒjƒbƒg‚ªì¬‚³‚ê‚Ä‚¢‚ê‚Î©•ª‚Í‘¼Œ`‘Ô
+    'æ—¢ã«åˆä½“å…ˆ or åˆ†é›¢å…ˆã®ãƒ¦ãƒ‹ãƒƒãƒˆãŒä½œæˆã•ã‚Œã¦ã„ã‚Œã°è‡ªåˆ†ã¯ä»–å½¢æ…‹
     With ud
         For i = 1 To .CountFeature
-            If .Feature(i) = "‡‘Ì" Then
+            If .Feature(i) = "åˆä½“" Then
                 If UList.IsDefined(LIndex(.FeatureData(i), 2)) Then
-                    new_unit.Status = "‘¼Œ`‘Ô"
+                    new_unit.Status = "ä»–å½¢æ…‹"
                     Exit Function
                 End If
             End If
-            If .Feature(i) = "•ª—£" Then
+            If .Feature(i) = "åˆ†é›¢" Then
                 For j = 2 To LLength(.FeatureData(i))
                     If UList.IsDefined(LIndex(.FeatureData(i), j)) Then
-                        new_unit.Status = "‘¼Œ`‘Ô"
+                        new_unit.Status = "ä»–å½¢æ…‹"
                         Exit Function
                     End If
                 Next
@@ -268,12 +268,12 @@ Dim i As Integer, j As Integer, list As String
     End With
 End Function
 
-'ƒ†ƒjƒbƒgƒŠƒXƒg‚Éƒ†ƒjƒbƒg u ‚ğ’Ç‰Á
+'ãƒ¦ãƒ‹ãƒƒãƒˆãƒªã‚¹ãƒˆã«ãƒ¦ãƒ‹ãƒƒãƒˆ u ã‚’è¿½åŠ 
 Public Sub Add2(u As Unit)
     colUnits.Add u, u.ID
 End Sub
 
-'V‹Kƒ†ƒjƒbƒgID‚ğì¬
+'æ–°è¦ãƒ¦ãƒ‹ãƒƒãƒˆIDã‚’ä½œæˆ
 Public Function CreateID(uname As String) As String
     Do
         IDCount = IDCount + 1
@@ -281,17 +281,17 @@ Public Function CreateID(uname As String) As String
     CreateID = uname & ":" & Format$(IDCount)
 End Function
 
-'ƒ†ƒjƒbƒgƒŠƒXƒg‚É“o˜^‚³‚ê‚Ä‚¢‚éƒ†ƒjƒbƒg”‚ğ•Ô‚·
+'ãƒ¦ãƒ‹ãƒƒãƒˆãƒªã‚¹ãƒˆã«ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ãƒ¦ãƒ‹ãƒƒãƒˆæ•°ã‚’è¿”ã™
 Public Function Count() As Integer
     Count = colUnits.Count
 End Function
 
-'ƒ†ƒjƒbƒgƒŠƒXƒg‚©‚çƒ†ƒjƒbƒg‚ğíœ
+'ãƒ¦ãƒ‹ãƒƒãƒˆãƒªã‚¹ãƒˆã‹ã‚‰ãƒ¦ãƒ‹ãƒƒãƒˆã‚’å‰Šé™¤
 Public Sub Delete(Index As Variant)
     colUnits.Remove Index
 End Sub
 
-'ƒ†ƒjƒbƒgƒŠƒXƒg‚©‚çw’è‚³‚ê‚½ƒ†ƒjƒbƒg‚ğ•Ô‚·
+'ãƒ¦ãƒ‹ãƒƒãƒˆãƒªã‚¹ãƒˆã‹ã‚‰æŒ‡å®šã•ã‚ŒãŸãƒ¦ãƒ‹ãƒƒãƒˆã‚’è¿”ã™
 Public Function Item(Index As Variant) As Unit
 Dim u As Unit
 Dim uname As String
@@ -301,12 +301,12 @@ Dim uname As String
     Exit Function
 
 ErrorHandler:
-    'ID‚ÅŒ©‚Â‚©‚ç‚È‚¯‚ê‚Îƒ†ƒjƒbƒg–¼‚ÅŒŸõ
+    'IDã§è¦‹ã¤ã‹ã‚‰ãªã‘ã‚Œã°ãƒ¦ãƒ‹ãƒƒãƒˆåã§æ¤œç´¢
     uname = CStr(Index)
     For Each u In colUnits
         With u
             If .Name = uname Then
-                If .Status <> "”jŠü" Then
+                If .Status <> "ç ´æ£„" Then
                     Set Item = u
                     Exit Function
                 End If
@@ -316,7 +316,7 @@ ErrorHandler:
     Set Item = Nothing
 End Function
 
-'ƒ†ƒjƒbƒgƒŠƒXƒg‚©‚çƒ†ƒjƒbƒg‚ğŒŸõ (ID‚Ì‚İ)
+'ãƒ¦ãƒ‹ãƒƒãƒˆãƒªã‚¹ãƒˆã‹ã‚‰ãƒ¦ãƒ‹ãƒƒãƒˆã‚’æ¤œç´¢ (IDã®ã¿)
 Public Function Item2(Index As Variant) As Unit
     On Error GoTo ErrorHandler
     Set Item2 = colUnits.Item(Index)
@@ -326,7 +326,7 @@ ErrorHandler:
     Set Item2 = Nothing
 End Function
 
-'ƒ†ƒjƒbƒgƒŠƒXƒg‚Éw’è‚³‚ê‚½ƒ†ƒjƒbƒg‚ª’è‹`‚³‚ê‚Ä‚¢‚é‚©H
+'ãƒ¦ãƒ‹ãƒƒãƒˆãƒªã‚¹ãƒˆã«æŒ‡å®šã•ã‚ŒãŸãƒ¦ãƒ‹ãƒƒãƒˆãŒå®šç¾©ã•ã‚Œã¦ã„ã‚‹ã‹ï¼Ÿ
 Public Function IsDefined(Index As Variant) As Boolean
 Dim u As Unit
 Dim uname As String
@@ -337,12 +337,12 @@ Dim uname As String
     Exit Function
     
 ErrorHandler:
-    'ID‚ÅŒ©‚Â‚©‚ç‚È‚¯‚ê‚Îƒ†ƒjƒbƒg–¼‚ÅŒŸõ
+    'IDã§è¦‹ã¤ã‹ã‚‰ãªã‘ã‚Œã°ãƒ¦ãƒ‹ãƒƒãƒˆåã§æ¤œç´¢
     uname = CStr(Index)
     For Each u In colUnits
         With u
             If .Name = uname Then
-                If .Status <> "”jŠü" Then
+                If .Status <> "ç ´æ£„" Then
                     IsDefined = True
                     Exit Function
                 End If
@@ -352,7 +352,7 @@ ErrorHandler:
     IsDefined = False
 End Function
 
-'ƒ†ƒjƒbƒgƒŠƒXƒg‚Éw’è‚³‚ê‚½ƒ†ƒjƒbƒg‚ª’è‹`‚³‚ê‚Ä‚¢‚é‚©H (ID‚Ì‚İ)
+'ãƒ¦ãƒ‹ãƒƒãƒˆãƒªã‚¹ãƒˆã«æŒ‡å®šã•ã‚ŒãŸãƒ¦ãƒ‹ãƒƒãƒˆãŒå®šç¾©ã•ã‚Œã¦ã„ã‚‹ã‹ï¼Ÿ (IDã®ã¿)
 Public Function IsDefined2(Index As Variant) As Boolean
 Dim u As Unit
 
@@ -365,14 +365,14 @@ ErrorHandler:
     IsDefined2 = False
 End Function
 
-'ƒ†ƒjƒbƒgƒŠƒXƒg‚ğƒAƒbƒvƒf[ƒg
+'ãƒ¦ãƒ‹ãƒƒãƒˆãƒªã‚¹ãƒˆã‚’ã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ãƒˆ
 Public Sub Update()
 Dim u As Unit
 Dim i As Integer, j As Integer, k As Integer, n As Integer
 Dim prev_money As Long, flag As Boolean
 Dim uname As String, uname2 As String, pname As String, buf As String
 
-    '•êŠÍ‚ÉŠi”[‚³‚ê‚½ƒ†ƒjƒbƒg‚ğ~‚ë‚·
+    'æ¯è‰¦ã«æ ¼ç´ã•ã‚ŒãŸãƒ¦ãƒ‹ãƒƒãƒˆã‚’é™ã‚ã™
     For Each u In colUnits
         With u
             For i = 1 To .CountUnitOnBoard
@@ -381,18 +381,18 @@ Dim uname As String, uname2 As String, pname As String, buf As String
         End With
     Next
     
-    '”j‰ó‚³‚ê‚½–¡•ûƒ†ƒjƒbƒg‚ª‚ ‚é‚©ŒŸõ
+    'ç ´å£Šã•ã‚ŒãŸå‘³æ–¹ãƒ¦ãƒ‹ãƒƒãƒˆãŒã‚ã‚‹ã‹æ¤œç´¢
     For Each u In colUnits
         With u
-            If .Party0 = "–¡•û" Then
-                If .Status = "”j‰ó" Then
+            If .Party0 = "å‘³æ–¹" Then
+                If .Status = "ç ´å£Š" Then
                     flag = True
                     Exit For
                 End If
-            ElseIf .Party0 = "‚m‚o‚b" Then
-                If .Status = "”j‰ó" Then
+            ElseIf .Party0 = "ï¼®ï¼°ï¼£" Then
+                If .Status = "ç ´å£Š" Then
                     If Not .Summoner Is Nothing Then
-                        If .Summoner.Party0 = "–¡•û" Then
+                        If .Summoner.Party0 = "å‘³æ–¹" Then
                             flag = True
                             Exit For
                         End If
@@ -402,24 +402,24 @@ Dim uname As String, uname2 As String, pname As String, buf As String
         End With
     Next
     
-    '”j‰ó‚³‚ê‚½–¡•ûƒ†ƒjƒbƒg‚ª‚ ‚ê‚ÎC—
+    'ç ´å£Šã•ã‚ŒãŸå‘³æ–¹ãƒ¦ãƒ‹ãƒƒãƒˆãŒã‚ã‚Œã°ä¿®ç†
     If flag Then
         OpenMessageForm
         prev_money = Money
         For Each u In colUnits
             With u
-                If .Status <> "”j‰ó" Then
+                If .Status <> "ç ´å£Š" Then
                     GoTo NextDestroyedUnit
                 End If
-                If .IsFeatureAvailable("¢Š«ƒ†ƒjƒbƒg") Then
+                If .IsFeatureAvailable("å¬å–šãƒ¦ãƒ‹ãƒƒãƒˆ") Then
                     GoTo NextDestroyedUnit
                 End If
                 Select Case .Party0
-                    Case "–¡•û"
-                    Case "‚m‚o‚b"
+                    Case "å‘³æ–¹"
+                    Case "ï¼®ï¼°ï¼£"
                         If .Summoner Is Nothing Then
                             GoTo NextDestroyedUnit
-                        ElseIf .Summoner.Party0 <> "–¡•û" Then
+                        ElseIf .Summoner.Party0 <> "å‘³æ–¹" Then
                             GoTo NextDestroyedUnit
                         End If
                     Case Else
@@ -427,93 +427,93 @@ Dim uname As String, uname2 As String, pname As String, buf As String
                 End Select
                 
                 IncrMoney -.Value
-                .Status = "‘Ò‹@"
+                .Status = "å¾…æ©Ÿ"
                 If Not .IsHero Then
-                    DisplayMessage "ƒVƒXƒeƒ€", .Nickname & "‚ğC—‚µ‚½;C—”ï = " _
+                    DisplayMessage "ã‚·ã‚¹ãƒ†ãƒ ", .Nickname & "ã‚’ä¿®ç†ã—ãŸ;ä¿®ç†è²» = " _
                         & Format$(.Value)
                 Else
-                    DisplayMessage "ƒVƒXƒeƒ€", .Nickname & "‚ğ¡—Ã‚µ‚½;¡—Ã”ï = " _
+                    DisplayMessage "ã‚·ã‚¹ãƒ†ãƒ ", .Nickname & "ã‚’æ²»ç™‚ã—ãŸ;æ²»ç™‚è²» = " _
                         & Format$(.Value)
                 End If
             End With
 NextDestroyedUnit:
         Next
-        DisplayMessage "ƒVƒXƒeƒ€", "‡Œv = " & Format$(prev_money - Money)
+        DisplayMessage "ã‚·ã‚¹ãƒ†ãƒ ", "åˆè¨ˆ = " & Format$(prev_money - Money)
         CloseMessageForm
     End If
     
-    '‘Sƒ†ƒjƒbƒg‚ğ‘Ò‹@ó‘Ô‚É•ÏX
+    'å…¨ãƒ¦ãƒ‹ãƒƒãƒˆã‚’å¾…æ©ŸçŠ¶æ…‹ã«å¤‰æ›´
     For Each u In colUnits
         With u
             Select Case .Status
-                Case "oŒ‚", "Ši”["
-                    .Status = "‘Ò‹@"
+                Case "å‡ºæ’ƒ", "æ ¼ç´"
+                    .Status = "å¾…æ©Ÿ"
             End Select
         End With
     Next
     
-    '‚R’iŠK‚Ü‚Å‚Ì•ÏŒ`E‡‘Ì‚É‘Î‰
+    'ï¼“æ®µéšã¾ã§ã®å¤‰å½¢ãƒ»åˆä½“ã«å¯¾å¿œ
     For i = 1 To 3
-        'ƒm[ƒ}ƒ‹ƒ‚[ƒhEƒp[ƒc‡‘Ì‚ğs‚¤
+        'ãƒãƒ¼ãƒãƒ«ãƒ¢ãƒ¼ãƒ‰ãƒ»ãƒ‘ãƒ¼ãƒ„åˆä½“ã‚’è¡Œã†
         For Each u In colUnits
             With u
-                If .Party0 = "–¡•û" _
-                    And .Status <> "‘¼Œ`‘Ô" _
-                    And .Status <> "‹ŒåŒ`‘Ô" _
-                    And .Status <> "‹ŒŒ`‘Ô" _
+                If .Party0 = "å‘³æ–¹" _
+                    And .Status <> "ä»–å½¢æ…‹" _
+                    And .Status <> "æ—§ä¸»å½¢æ…‹" _
+                    And .Status <> "æ—§å½¢æ…‹" _
                 Then
-                    If .IsFeatureAvailable("ƒm[ƒ}ƒ‹ƒ‚[ƒh") Then
-                        .Transform LIndex(.FeatureData("ƒm[ƒ}ƒ‹ƒ‚[ƒh"), 1)
-                    ElseIf .IsFeatureAvailable("ƒp[ƒc‡‘Ì") Then
-                        If LLength(.FeatureData("ƒp[ƒc‡‘Ì")) = 2 Then
-                            .Transform LIndex(.FeatureData("ƒp[ƒc‡‘Ì"), 2)
+                    If .IsFeatureAvailable("ãƒãƒ¼ãƒãƒ«ãƒ¢ãƒ¼ãƒ‰") Then
+                        .Transform LIndex(.FeatureData("ãƒãƒ¼ãƒãƒ«ãƒ¢ãƒ¼ãƒ‰"), 1)
+                    ElseIf .IsFeatureAvailable("ãƒ‘ãƒ¼ãƒ„åˆä½“") Then
+                        If LLength(.FeatureData("ãƒ‘ãƒ¼ãƒ„åˆä½“")) = 2 Then
+                            .Transform LIndex(.FeatureData("ãƒ‘ãƒ¼ãƒ„åˆä½“"), 2)
                         Else
-                            .Transform LIndex(.FeatureData("ƒp[ƒc‡‘Ì"), 1)
+                            .Transform LIndex(.FeatureData("ãƒ‘ãƒ¼ãƒ„åˆä½“"), 1)
                         End If
                     End If
                 End If
             End With
         Next
         
-        '•ª—£‚ğs‚¤
+        'åˆ†é›¢ã‚’è¡Œã†
         For Each u In colUnits
             With u
-                If Not .IsFeatureAvailable("•ª—£") Then
+                If Not .IsFeatureAvailable("åˆ†é›¢") Then
                     GoTo NextLoop1
                 End If
-                If .Party0 <> "–¡•û" _
-                    Or .Status = "‘¼Œ`‘Ô" _
-                    Or .Status = "‹ŒåŒ`‘Ô" _
-                    Or .Status = "‹ŒŒ`‘Ô" _
+                If .Party0 <> "å‘³æ–¹" _
+                    Or .Status = "ä»–å½¢æ…‹" _
+                    Or .Status = "æ—§ä¸»å½¢æ…‹" _
+                    Or .Status = "æ—§å½¢æ…‹" _
                 Then
                     GoTo NextLoop1
                 End If
                 
-                If .Status = "”jŠü" Then
+                If .Status = "ç ´æ£„" Then
                     If .CountPilot = 0 Then
                         GoTo NextLoop1
                     End If
                 End If
                 
-                '‡‘ÌŒ`‘Ô‚ªåŒ`‘Ô‚È‚ç•ª—£‚ğs‚í‚È‚¢
+                'åˆä½“å½¢æ…‹ãŒä¸»å½¢æ…‹ãªã‚‰åˆ†é›¢ã‚’è¡Œã‚ãªã„
                 
-                If LLength(.FeatureData("•ª—£")) > 3 _
-                    And Not .IsFeatureAvailable("§ŒÀŠÔ") _
+                If LLength(.FeatureData("åˆ†é›¢")) > 3 _
+                    And Not .IsFeatureAvailable("åˆ¶é™æ™‚é–“") _
                 Then
                     GoTo NextLoop1
                 End If
                 
-                If .IsFeatureAvailable("åŒ`‘Ô") Then
+                If .IsFeatureAvailable("ä¸»å½¢æ…‹") Then
                     GoTo NextLoop1
                 End If
                 
-                'ƒpƒCƒƒbƒg‚ª‘«‚ç‚È‚¢ê‡‚Í•ª—£‚ğs‚í‚È‚¢
+                'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆãŒè¶³ã‚‰ãªã„å ´åˆã¯åˆ†é›¢ã‚’è¡Œã‚ãªã„
                 n = 0
-                For j = 2 To LLength(.FeatureData("•ª—£"))
-                    uname = LIndex(.FeatureData("•ª—£"), j)
+                For j = 2 To LLength(.FeatureData("åˆ†é›¢"))
+                    uname = LIndex(.FeatureData("åˆ†é›¢"), j)
                     If UDList.IsDefined(uname) Then
                         With UDList.Item(uname)
-                            If Not .IsFeatureAvailable("¢Š«ƒ†ƒjƒbƒg") Then
+                            If Not .IsFeatureAvailable("å¬å–šãƒ¦ãƒ‹ãƒƒãƒˆ") Then
                                 n = n + .PilotNum
                             End If
                         End With
@@ -523,76 +523,76 @@ NextDestroyedUnit:
                     GoTo NextLoop1
                 End If
                 
-                '•ª—£æ‚ÌŒ`‘Ô‚ª—˜—p‰Â”\H
-                For j = 2 To LLength(.FeatureData("•ª—£"))
-                    uname = LIndex(.FeatureData("•ª—£"), j)
+                'åˆ†é›¢å…ˆã®å½¢æ…‹ãŒåˆ©ç”¨å¯èƒ½ï¼Ÿ
+                For j = 2 To LLength(.FeatureData("åˆ†é›¢"))
+                    uname = LIndex(.FeatureData("åˆ†é›¢"), j)
                     If Not UList.IsDefined(uname) Then
                         GoTo NextLoop1
                     End If
-                    If UList.Item(uname).CurrentForm.Status = "‘Ò‹@" Then
+                    If UList.Item(uname).CurrentForm.Status = "å¾…æ©Ÿ" Then
                         GoTo NextLoop1
                     End If
                 Next
                 
-                '•ª—£‚ğÀ{
+                'åˆ†é›¢ã‚’å®Ÿæ–½
                 .Split
             End With
 NextLoop1:
         Next
         
-        '‡‘Ì‚ğs‚¤
+        'åˆä½“ã‚’è¡Œã†
         For Each u In colUnits
             With u
-                If .Party0 = "–¡•û" _
-                    And .Status <> "‘¼Œ`‘Ô" _
-                    And .Status <> "‹ŒåŒ`‘Ô" _
-                    And .Status <> "‹ŒŒ`‘Ô" _
+                If .Party0 = "å‘³æ–¹" _
+                    And .Status <> "ä»–å½¢æ…‹" _
+                    And .Status <> "æ—§ä¸»å½¢æ…‹" _
+                    And .Status <> "æ—§å½¢æ…‹" _
                 Then
-                    If .IsFeatureAvailable("‡‘Ì") Then
+                    If .IsFeatureAvailable("åˆä½“") Then
                         For j = 1 To .CountFeature
-                            If .Feature(j) <> "‡‘Ì" Then
+                            If .Feature(j) <> "åˆä½“" Then
                                 GoTo NextLoop2
                             End If
                             
-                            '‡‘ÌŒã‚ÌŒ`‘Ô‚ª—˜—p‰Â”\H
+                            'åˆä½“å¾Œã®å½¢æ…‹ãŒåˆ©ç”¨å¯èƒ½ï¼Ÿ
                             uname = LIndex(.FeatureData(j), 2)
                             If Not UList.IsDefined(uname) Then
                                 GoTo NextLoop2
                             End If
                             With UList.Item(uname)
-                                If u.Status = "‘Ò‹@" And .CurrentForm.Status = "—£’E" Then
+                                If u.Status = "å¾…æ©Ÿ" And .CurrentForm.Status = "é›¢è„±" Then
                                     GoTo NextLoop2
                                 End If
-                                If .IsFeatureAvailable("§ŒÀŠÔ") Then
+                                If .IsFeatureAvailable("åˆ¶é™æ™‚é–“") Then
                                     GoTo NextLoop2
                                 End If
-                                If Not .IsFeatureAvailable("åŒ`‘Ô") _
+                                If Not .IsFeatureAvailable("ä¸»å½¢æ…‹") _
                                     And LLength(u.FeatureData(j)) = 3 _
                                 Then
                                     GoTo NextLoop2
                                 End If
                             End With
                             
-                            '‡‘Ì‚Ìƒp[ƒgƒi[‚ª—˜—p‰Â”\H
+                            'åˆä½“ã®ãƒ‘ãƒ¼ãƒˆãƒŠãƒ¼ãŒåˆ©ç”¨å¯èƒ½ï¼Ÿ
                             For k = 3 To LLength(.FeatureData(j))
                                 uname = LIndex(.FeatureData(j), k)
                                 If Not UList.IsDefined(uname) Then
                                     GoTo NextLoop2
                                 End If
                                 With UList.Item(uname)
-                                    If u.Status = "‘Ò‹@" Then
-                                        If .CurrentForm.Status <> "‘Ò‹@" Then
+                                    If u.Status = "å¾…æ©Ÿ" Then
+                                        If .CurrentForm.Status <> "å¾…æ©Ÿ" Then
                                             GoTo NextLoop2
                                         End If
                                     Else
-                                        If .CurrentForm.Status <> "—£’E" Then
+                                        If .CurrentForm.Status <> "é›¢è„±" Then
                                             GoTo NextLoop2
                                         End If
                                     End If
                                 End With
                             Next
                             
-                            '‡‘Ì‚ğÀ{
+                            'åˆä½“ã‚’å®Ÿæ–½
                             .Combine LIndex(.FeatureData(j), 2)
                             Exit For
 NextLoop2:
@@ -602,17 +602,17 @@ NextLoop2:
             End With
         Next
         
-        '•W€Œ`‘Ô‚É•ÏŒ`
+        'æ¨™æº–å½¢æ…‹ã«å¤‰å½¢
         For Each u In colUnits
             With u
-                If .Party0 = "–¡•û" _
-                    And .Status <> "‘¼Œ`‘Ô" _
-                    And .Status <> "‹ŒåŒ`‘Ô" _
-                    And .Status <> "‹ŒŒ`‘Ô" _
+                If .Party0 = "å‘³æ–¹" _
+                    And .Status <> "ä»–å½¢æ…‹" _
+                    And .Status <> "æ—§ä¸»å½¢æ…‹" _
+                    And .Status <> "æ—§å½¢æ…‹" _
                 Then
-                    If .IsFeatureAvailable("•ÏŒ`") Then
+                    If .IsFeatureAvailable("å¤‰å½¢") Then
                         uname = .Name
-                        buf = .FeatureData("•ÏŒ`")
+                        buf = .FeatureData("å¤‰å½¢")
                         For j = 2 To LLength(buf)
                             uname2 = LIndex(buf, j)
                             If UDList.IsDefined(uname2) Then
@@ -620,8 +620,8 @@ NextLoop2:
                                     uname = uname2
                                 End If
                             Else
-                                ErrorMessage uname & "‚Ì•ÏŒ`æƒ†ƒjƒbƒgu" _
-                                    & uname2 & "v‚Ìƒf[ƒ^‚ª’è‹`‚³‚ê‚Ä‚¢‚Ü‚¹‚ñB"
+                                ErrorMessage uname & "ã®å¤‰å½¢å…ˆãƒ¦ãƒ‹ãƒƒãƒˆã€Œ" _
+                                    & uname2 & "ã€ã®ãƒ‡ãƒ¼ã‚¿ãŒå®šç¾©ã•ã‚Œã¦ã„ã¾ã›ã‚“ã€‚"
                             End If
                         Next
                         
@@ -634,52 +634,52 @@ NextLoop2:
         Next
     Next
     
-    '–\‘–ƒpƒCƒƒbƒg‚ğíœ
+    'æš´èµ°æ™‚ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‚’å‰Šé™¤
     For Each u In colUnits
         With u
-            If .IsFeatureAvailable("–\‘–ƒpƒCƒƒbƒg") Then
-                If PList.IsDefined(.FeatureData("–\‘–ƒpƒCƒƒbƒg")) Then
-                    PList.Delete .FeatureData("–\‘–ƒpƒCƒƒbƒg")
+            If .IsFeatureAvailable("æš´èµ°æ™‚ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆ") Then
+                If PList.IsDefined(.FeatureData("æš´èµ°æ™‚ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆ")) Then
+                    PList.Delete .FeatureData("æš´èµ°æ™‚ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆ")
                 End If
             End If
         End With
     Next
     
-    'ƒ_ƒ~[ƒpƒCƒƒbƒg‚ğíœ
+    'ãƒ€ãƒŸãƒ¼ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‚’å‰Šé™¤
     For Each u In colUnits
         With u
             If .CountPilot > 0 Then
-                If .Pilot(1).Nickname0 = "ƒpƒCƒƒbƒg•sİ" Then
+                If .Pilot(1).Nickname0 = "ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆä¸åœ¨" Then
                     .DeletePilot 1
                 End If
             End If
         End With
     Next
     
-    '•Ïgæ‚ÌŒ`‘Ô“™Aˆê“I‚ÈŒ`‘Ô‚ğíœ
+    'å¤‰èº«å…ˆã®å½¢æ…‹ç­‰ã€ä¸€æ™‚çš„ãªå½¢æ…‹ã‚’å‰Šé™¤
     For Each u In colUnits
         With u
-            If .Status = "‘Ò‹@" Then
+            If .Status = "å¾…æ©Ÿ" Then
                 .DeleteTemporaryOtherForm
             End If
         End With
     Next
     
-    '”jŠü‚³‚ê‚½ƒ†ƒjƒbƒg‚ğíœ
+    'ç ´æ£„ã•ã‚ŒãŸãƒ¦ãƒ‹ãƒƒãƒˆã‚’å‰Šé™¤
     For Each u In colUnits
         With u
-            '¢Š«ƒ†ƒjƒbƒg‚Í•K‚¸”jŠü
-            If .IsFeatureAvailable("¢Š«ƒ†ƒjƒbƒg") Then
-                .Status = "”jŠü"
+            'å¬å–šãƒ¦ãƒ‹ãƒƒãƒˆã¯å¿…ãšç ´æ£„
+            If .IsFeatureAvailable("å¬å–šãƒ¦ãƒ‹ãƒƒãƒˆ") Then
+                .Status = "ç ´æ£„"
             End If
-            'ƒ_ƒ~[ƒ†ƒjƒbƒg‚ğ”jŠü
-            If .IsFeatureAvailable("ƒ_ƒ~[ƒ†ƒjƒbƒg") Then
-                .Status = "”jŠü"
+            'ãƒ€ãƒŸãƒ¼ãƒ¦ãƒ‹ãƒƒãƒˆã‚’ç ´æ£„
+            If .IsFeatureAvailable("ãƒ€ãƒŸãƒ¼ãƒ¦ãƒ‹ãƒƒãƒˆ") Then
+                .Status = "ç ´æ£„"
             End If
             
-            '–¡•ûƒ†ƒjƒbƒgˆÈŠO‚Ìƒ†ƒjƒbƒg‚Æ”jŠü‚³‚ê‚½ƒ†ƒjƒbƒg‚ğíœ
-            If .Party0 <> "–¡•û" Or .Status = "”jŠü" Then
-                'ƒ†ƒjƒbƒg‚ª‘•”õ‚µ‚Ä‚¢‚éƒAƒCƒeƒ€‚à”jŠü
+            'å‘³æ–¹ãƒ¦ãƒ‹ãƒƒãƒˆä»¥å¤–ã®ãƒ¦ãƒ‹ãƒƒãƒˆã¨ç ´æ£„ã•ã‚ŒãŸãƒ¦ãƒ‹ãƒƒãƒˆã‚’å‰Šé™¤
+            If .Party0 <> "å‘³æ–¹" Or .Status = "ç ´æ£„" Then
+                'ãƒ¦ãƒ‹ãƒƒãƒˆãŒè£…å‚™ã—ã¦ã„ã‚‹ã‚¢ã‚¤ãƒ†ãƒ ã‚‚ç ´æ£„
                 For i = 1 To .CountItem
                     .Item(i).Exist = False
                 Next
@@ -688,19 +688,19 @@ NextLoop2:
         End With
     Next
     
-    'ƒ†ƒjƒbƒg‚Ìó‘Ô‚ğ‰ñ•œ
+    'ãƒ¦ãƒ‹ãƒƒãƒˆã®çŠ¶æ…‹ã‚’å›å¾©
     For Each u In colUnits
         u.Reset
     Next
     
-    'ƒXƒe[ƒ^ƒX‚ğƒAƒbƒvƒf[ƒg
+    'ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚’ã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ãƒˆ
     For Each u In colUnits
         u.Update True
     Next
 End Sub
 
 
-'ƒ†ƒjƒbƒgƒŠƒXƒg‚É“o˜^‚³‚ê‚½ƒ†ƒjƒbƒg‚Ìî•ñ‚ğƒZ[ƒu
+'ãƒ¦ãƒ‹ãƒƒãƒˆãƒªã‚¹ãƒˆã«ç™»éŒ²ã•ã‚ŒãŸãƒ¦ãƒ‹ãƒƒãƒˆã®æƒ…å ±ã‚’ã‚»ãƒ¼ãƒ–
 Public Sub Save()
 Dim i As Integer
 Dim u As Unit
@@ -735,8 +735,8 @@ Dim u As Unit
     Next
 End Sub
 
-'ƒ†ƒjƒbƒgƒŠƒXƒg‚Éƒ†ƒjƒbƒg‚Ìî•ñ‚ğƒ[ƒh
-'(ƒŠƒ“ƒN‚ÍŒã‚Ås‚¤)
+'ãƒ¦ãƒ‹ãƒƒãƒˆãƒªã‚¹ãƒˆã«ãƒ¦ãƒ‹ãƒƒãƒˆã®æƒ…å ±ã‚’ãƒ­ãƒ¼ãƒ‰
+'(ãƒªãƒ³ã‚¯ã¯å¾Œã§è¡Œã†)
 Public Sub Load()
 Dim num As Integer, num2 As Integer
 Dim new_unit As Unit
@@ -754,7 +754,7 @@ Dim dummy As String
             Input #SaveDataFileNumber, Name
             
             If Not UDList.IsDefined(Name) Then
-                ErrorMessage Name & "‚Ìƒf[ƒ^‚ª’è‹`‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ"
+                ErrorMessage Name & "ã®ãƒ‡ãƒ¼ã‚¿ãŒå®šç¾©ã•ã‚Œã¦ã„ã¾ã›ã‚“"
                 TerminateSRC
                 End
             End If
@@ -762,7 +762,7 @@ Dim dummy As String
             'ID, Rank, Status
             Input #SaveDataFileNumber, ID, Rank, Status
             
-            '‹ŒŒ`®‚Ìƒ†ƒjƒbƒg‚h‚c‚ğVŒ`®‚É•ÏŠ·
+            'æ—§å½¢å¼ã®ãƒ¦ãƒ‹ãƒƒãƒˆï¼©ï¼¤ã‚’æ–°å½¢å¼ã«å¤‰æ›
             If SaveDataVersion < 10700 Then
                 ConvertUnitID ID
             End If
@@ -770,7 +770,7 @@ Dim dummy As String
             .Name = Name
             .ID = ID
             .Rank = Rank
-            .Party = "–¡•û"
+            .Party = "å‘³æ–¹"
             .Status = Status
             .FullRecover
         End With
@@ -802,7 +802,7 @@ Dim dummy As String
     Next
 End Sub
 
-'ƒ†ƒjƒbƒgƒŠƒXƒg‚Éƒ†ƒjƒbƒg‚Ìî•ñ‚ğƒ[ƒh‚µAƒŠƒ“ƒN‚ğs‚¤
+'ãƒ¦ãƒ‹ãƒƒãƒˆãƒªã‚¹ãƒˆã«ãƒ¦ãƒ‹ãƒƒãƒˆã®æƒ…å ±ã‚’ãƒ­ãƒ¼ãƒ‰ã—ã€ãƒªãƒ³ã‚¯ã‚’è¡Œã†
 Public Sub LoadLinkInfo()
 Dim num As Integer, num2 As Integer
 Dim ID As String, ID2 As String
@@ -820,7 +820,7 @@ Dim u As Unit
         'ID, Rank, Status
         Input #SaveDataFileNumber, ID, int_dummy, str_dummy
         
-        '‹ŒŒ`®‚Ìƒ†ƒjƒbƒg‚h‚c‚ğVŒ`®‚É•ÏŠ·
+        'æ—§å½¢å¼ã®ãƒ¦ãƒ‹ãƒƒãƒˆï¼©ï¼¤ã‚’æ–°å½¢å¼ã«å¤‰æ›
         If SaveDataVersion < 10700 Then
             ConvertUnitID ID
         End If
@@ -842,14 +842,14 @@ Dim u As Unit
                 Input #SaveDataFileNumber, ID2
                 If PList.IsDefined(ID2) Then
                     .AddPilot PList.Item(ID2)
-                    If .Status = "—£’E" Then
+                    If .Status = "é›¢è„±" Then
                         PList.Item(ID2).Away = True
                     End If
                 Else
                     ID2 = Left$(ID2, InStr(ID2, "(") - 1)
                     If PList.IsDefined(ID2) Then
                         .AddPilot PList.Item(ID2)
-                        If .Status = "—£’E" Then
+                        If .Status = "é›¢è„±" Then
                             PList.Item(ID2).Away = True
                         End If
                     End If
@@ -862,7 +862,7 @@ Dim u As Unit
                 Input #SaveDataFileNumber, ID2
                 If PList.IsDefined(ID2) Then
                     .AddSupport PList.Item(ID2)
-                    If .Status = "—£’E" Then
+                    If .Status = "é›¢è„±" Then
                         PList.Item(ID2).Away = True
                     End If
                 End If
@@ -889,7 +889,7 @@ Dim u As Unit
 End Sub
 
 
-'ˆê’†’f—pƒf[ƒ^‚ğƒtƒ@ƒCƒ‹‚ÉƒZ[ƒu‚·‚é
+'ä¸€æ™‚ä¸­æ–­ç”¨ãƒ‡ãƒ¼ã‚¿ã‚’ãƒ•ã‚¡ã‚¤ãƒ«ã«ã‚»ãƒ¼ãƒ–ã™ã‚‹
 Public Sub Dump()
 Dim u As Unit
 
@@ -900,7 +900,7 @@ Dim u As Unit
     Next
 End Sub
 
-'ˆê’†’f—pƒf[ƒ^‚ğƒtƒ@ƒCƒ‹‚©‚çƒ[ƒh‚·‚é
+'ä¸€æ™‚ä¸­æ–­ç”¨ãƒ‡ãƒ¼ã‚¿ã‚’ãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ãƒ­ãƒ¼ãƒ‰ã™ã‚‹
 Public Sub Restore()
 Dim i As Integer, num As Integer
 Dim u As Unit
@@ -922,7 +922,7 @@ Dim u As Unit
     Next
 End Sub
 
-'ˆê’†’f—pƒf[ƒ^‚ÌƒŠƒ“ƒNî•ñ‚ğƒtƒ@ƒCƒ‹‚©‚çƒ[ƒh‚·‚é
+'ä¸€æ™‚ä¸­æ–­ç”¨ãƒ‡ãƒ¼ã‚¿ã®ãƒªãƒ³ã‚¯æƒ…å ±ã‚’ãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ãƒ­ãƒ¼ãƒ‰ã™ã‚‹
 Public Sub RestoreLinkInfo()
 Dim u As Unit
 Dim num As Integer
@@ -934,7 +934,7 @@ Dim num As Integer
     Next
 End Sub
 
-'ˆê’†’f—pƒf[ƒ^‚Ìƒpƒ‰ƒ[ƒ^î•ñ‚ğƒtƒ@ƒCƒ‹‚©‚çƒ[ƒh‚·‚é
+'ä¸€æ™‚ä¸­æ–­ç”¨ãƒ‡ãƒ¼ã‚¿ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿æƒ…å ±ã‚’ãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ãƒ­ãƒ¼ãƒ‰ã™ã‚‹
 Public Sub RestoreParameter()
 Dim u As Unit
 Dim num As Integer
@@ -947,7 +947,7 @@ Dim num As Integer
 End Sub
 
 
-'ƒ†ƒjƒbƒgƒŠƒXƒg‚ğƒNƒŠƒA
+'ãƒ¦ãƒ‹ãƒƒãƒˆãƒªã‚¹ãƒˆã‚’ã‚¯ãƒªã‚¢
 Public Sub Clear()
 Dim i As Integer
     
@@ -956,29 +956,29 @@ Dim i As Integer
     Next
 End Sub
 
-'ƒ†ƒjƒbƒgƒŠƒXƒg‚É“o˜^‚³‚ê‚½ƒ†ƒjƒbƒg‚Ìƒrƒbƒgƒ}ƒbƒvID‚ğƒNƒŠƒA
+'ãƒ¦ãƒ‹ãƒƒãƒˆãƒªã‚¹ãƒˆã«ç™»éŒ²ã•ã‚ŒãŸãƒ¦ãƒ‹ãƒƒãƒˆã®ãƒ“ãƒƒãƒˆãƒãƒƒãƒ—IDã‚’ã‚¯ãƒªã‚¢
 Public Sub ClearUnitBitmap()
 Dim u As Unit
     
     With MainForm.picUnitBitmap
       If .Width = 32 Then
-          'Šù‚ÉƒNƒŠƒA‚³‚ê‚Ä‚¢‚ê‚Î‚»‚Ì‚Ü‚ÜI—¹
+          'æ—¢ã«ã‚¯ãƒªã‚¢ã•ã‚Œã¦ã„ã‚Œã°ãã®ã¾ã¾çµ‚äº†
           Exit Sub
       End If
       
-      '‰æ‘œ‚ğƒNƒŠƒA
+      'ç”»åƒã‚’ã‚¯ãƒªã‚¢
       .Picture = LoadPicture("")
       .Move 0, 0, 32, 96
     End With
     
-    'BitmapID‚ğƒNƒŠƒA
+    'BitmapIDã‚’ã‚¯ãƒªã‚¢
     For Each u In colUnits
         u.BitmapID = 0
     Next
 End Sub
 
 
-'ƒnƒCƒp[ƒ‚[ƒh‚Ì©“®”­“®ƒ`ƒFƒbƒN
+'ãƒã‚¤ãƒ‘ãƒ¼ãƒ¢ãƒ¼ãƒ‰ã®è‡ªå‹•ç™ºå‹•ãƒã‚§ãƒƒã‚¯
 Public Sub CheckAutoHyperMode()
 Dim u As Unit
 
@@ -987,7 +987,7 @@ Dim u As Unit
     Next
 End Sub
 
-'ƒm[ƒ}ƒ‹ƒ‚[ƒh‚Ì©“®”­“®ƒ`ƒFƒbƒN
+'ãƒãƒ¼ãƒãƒ«ãƒ¢ãƒ¼ãƒ‰ã®è‡ªå‹•ç™ºå‹•ãƒã‚§ãƒƒã‚¯
 Public Sub CheckAutoNormalMode()
 Dim u As Unit
 Dim is_redraw_necessary As Boolean
@@ -998,25 +998,25 @@ Dim is_redraw_necessary As Boolean
         End If
     Next
     
-    '‰æ–Ê‚ÌÄ•`‰æ‚ª•K—vH
+    'ç”»é¢ã®å†æç”»ãŒå¿…è¦ï¼Ÿ
     If is_redraw_necessary Then
         RedrawScreen
     End If
 End Sub
 
-'”jŠü‚³‚ê‚½ƒ†ƒjƒbƒg‚ğíœ
+'ç ´æ£„ã•ã‚ŒãŸãƒ¦ãƒ‹ãƒƒãƒˆã‚’å‰Šé™¤
 Public Sub Clean()
 Dim u As Unit
 Dim i As Integer
 
     For Each u In colUnits
         With u
-            'oŒ‚‚µ‚Ä‚¢‚È‚¢ƒ†ƒjƒbƒg‚Í–¡•ûƒ†ƒjƒbƒgˆÈŠO‘S‚Äíœ
-            If .Party0 <> "–¡•û" Then
-                If .Status = "‘Ò‹@" Or .Status = "”j‰ó" Then
-                    .Status = "”jŠü"
+            'å‡ºæ’ƒã—ã¦ã„ãªã„ãƒ¦ãƒ‹ãƒƒãƒˆã¯å‘³æ–¹ãƒ¦ãƒ‹ãƒƒãƒˆä»¥å¤–å…¨ã¦å‰Šé™¤
+            If .Party0 <> "å‘³æ–¹" Then
+                If .Status = "å¾…æ©Ÿ" Or .Status = "ç ´å£Š" Then
+                    .Status = "ç ´æ£„"
                     For i = 1 To .CountOtherForm
-                        .OtherForm(i).Status = "”jŠü"
+                        .OtherForm(i).Status = "ç ´æ£„"
                     Next
                 End If
             End If
@@ -1025,9 +1025,9 @@ Dim i As Integer
     
     For Each u In colUnits
         With u
-            '”jŠü‚³‚ê‚½ƒ†ƒjƒbƒg‚ğíœ
-            If .Status = "”jŠü" Then
-                'ƒ†ƒjƒbƒg‚Éæ‚Á‚Ä‚¢‚éƒpƒCƒƒbƒg‚à”jŠü
+            'ç ´æ£„ã•ã‚ŒãŸãƒ¦ãƒ‹ãƒƒãƒˆã‚’å‰Šé™¤
+            If .Status = "ç ´æ£„" Then
+                'ãƒ¦ãƒ‹ãƒƒãƒˆã«ä¹—ã£ã¦ã„ã‚‹ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‚‚ç ´æ£„
                 For i = 1 To .CountPilot
                     .Pilot(i).Alive = False
                 Next
@@ -1035,7 +1035,7 @@ Dim i As Integer
                     .Support(i).Alive = False
                 Next
                 
-                'ƒ†ƒjƒbƒg‚ª‘•”õ‚µ‚Ä‚¢‚éƒAƒCƒeƒ€‚à”jŠü
+                'ãƒ¦ãƒ‹ãƒƒãƒˆãŒè£…å‚™ã—ã¦ã„ã‚‹ã‚¢ã‚¤ãƒ†ãƒ ã‚‚ç ´æ£„
                 For i = 1 To .CountItem
                     .Item(i).Exist = False
                 Next

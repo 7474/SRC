@@ -10,51 +10,51 @@ Attribute VB_Exposed = False
 Option Explicit
 
 ' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-' –{ƒvƒƒOƒ‰ƒ€‚ÍƒtƒŠ[ƒ\ƒtƒg‚Å‚ ‚èA–³•ÛØ‚Å‚·B
-' –{ƒvƒƒOƒ‰ƒ€‚ÍGNU General Public License(Ver.3‚Ü‚½‚Í‚»‚êˆÈ~)‚ª’è‚ß‚éğŒ‚Ì‰º‚Å
-' Ä”Ğ•z‚Ü‚½‚Í‰ü•Ï‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B
+' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯ãƒ•ãƒªãƒ¼ã‚½ãƒ•ãƒˆã§ã‚ã‚Šã€ç„¡ä¿è¨¼ã§ã™ã€‚
+' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯GNU General Public License(Ver.3ã¾ãŸã¯ãã‚Œä»¥é™)ãŒå®šã‚ã‚‹æ¡ä»¶ã®ä¸‹ã§
+' å†é ’å¸ƒã¾ãŸã¯æ”¹å¤‰ã™ã‚‹ã“ã¨ãŒã§ãã¾ã™ã€‚
 
-'ì¬‚³‚ê‚½ƒpƒCƒƒbƒg‚ÌƒNƒ‰ƒX
+'ä½œæˆã•ã‚ŒãŸãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®ã‚¯ãƒ©ã‚¹
 
-'ƒpƒCƒƒbƒgƒf[ƒ^‚Ö‚Ìƒ|ƒCƒ“ƒ^
+'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆãƒ‡ãƒ¼ã‚¿ã¸ã®ãƒã‚¤ãƒ³ã‚¿
 Public Data As PilotData
 
-'¯•Ê—p‚h‚c
+'è­˜åˆ¥ç”¨ï¼©ï¼¤
 Public ID As String
-'Š‘®w‰c
+'æ‰€å±é™£å–¶
 Public Party As String
-'“‹æ‚µ‚Ä‚¢‚éƒ†ƒjƒbƒg
-'–¢“‹æ‚Í Nothing
+'æ­ä¹—ã—ã¦ã„ã‚‹ãƒ¦ãƒ‹ãƒƒãƒˆ
+'æœªæ­ä¹—æ™‚ã¯ Nothing
 Public Unit As Unit
 
-'¶‚«‚Ä‚¢‚é‚©‚Ç‚¤‚©
+'ç”Ÿãã¦ã„ã‚‹ã‹ã©ã†ã‹
 Public Alive As Boolean
 
-'Leave‚µ‚Ä‚¢‚é‚©‚Ç‚¤‚©
+'Leaveã—ã¦ã„ã‚‹ã‹ã©ã†ã‹
 Public Away As Boolean
 
-'’Ç‰ÁƒpƒCƒƒbƒg‚©‚Ç‚¤‚©
+'è¿½åŠ ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‹ã©ã†ã‹
 Public IsAdditionalPilot As Boolean
 
-'’Ç‰ÁƒTƒ|[ƒg‚©‚Ç‚¤‚©
+'è¿½åŠ ã‚µãƒãƒ¼ãƒˆã‹ã©ã†ã‹
 Public IsAdditionalSupport As Boolean
 
-'ƒTƒ|[ƒgƒpƒCƒƒbƒg‚Æ‚µ‚Äæ‚è‚ñ‚¾‚Ì‡”Ô
+'ã‚µãƒãƒ¼ãƒˆãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã¨ã—ã¦ä¹—ã‚Šè¾¼ã‚“ã æ™‚ã®é †ç•ª
 Public SupportIndex As Integer
 
-'ƒŒƒxƒ‹
+'ãƒ¬ãƒ™ãƒ«
 Private proLevel As Integer
 
-'ŒoŒ±’l
+'çµŒé¨“å€¤
 Private proEXP As Integer
-'‚r‚o
+'ï¼³ï¼°
 Private proSP As Integer
-'‹C—Í
+'æ°—åŠ›
 Private proMorale As Integer
-'—ì—Í
+'éœŠåŠ›
 Private proPlana As Integer
 
-'”\—Í’l
+'èƒ½åŠ›å€¤
 Public Infight As Integer
 Public Shooting As Integer
 Public Hit As Integer
@@ -63,7 +63,7 @@ Public Technique As Integer
 Public Intuition As Integer
 Public Adaption As String
 
-'”\—Í’l‚ÌŠî–{’l
+'èƒ½åŠ›å€¤ã®åŸºæœ¬å€¤
 Public InfightBase As Integer
 Public ShootingBase As Integer
 Public HitBase As Integer
@@ -71,9 +71,9 @@ Public DodgeBase As Integer
 Public TechniqueBase As Integer
 Public IntuitionBase As Integer
 
-'”\—Í’l‚ÌC³’l
+'èƒ½åŠ›å€¤ã®ä¿®æ­£å€¤
 
-'“Áê”\—Í•©ƒ†ƒjƒbƒg‚É‚æ‚éC³
+'ç‰¹æ®Šèƒ½åŠ›ï¼†è‡ªãƒ¦ãƒ‹ãƒƒãƒˆã«ã‚ˆã‚‹ä¿®æ­£
 Public InfightMod As Integer
 Public ShootingMod As Integer
 Public HitMod As Integer
@@ -81,7 +81,7 @@ Public DodgeMod As Integer
 Public TechniqueMod As Integer
 Public IntuitionMod As Integer
 
-'‘¼ƒ†ƒjƒbƒg‚É‚æ‚éx‰‡C³
+'ä»–ãƒ¦ãƒ‹ãƒƒãƒˆã«ã‚ˆã‚‹æ”¯æ´ä¿®æ­£
 Public InfightMod2 As Integer
 Public ShootingMod2 As Integer
 Public HitMod2 As Integer
@@ -89,10 +89,10 @@ Public DodgeMod2 As Integer
 Public TechniqueMod2 As Integer
 Public IntuitionMod2 As Integer
 
-'‹C—ÍC³’l
+'æ°—åŠ›ä¿®æ­£å€¤
 Public MoraleMod As Integer
 
-'“Áê”\—Í
+'ç‰¹æ®Šèƒ½åŠ›
 Private colSkill As New Collection
 
 
@@ -110,7 +110,7 @@ Dim i As Integer
     Set colSkill = Nothing
 End Sub
 
-'–¼Ì
+'åç§°
 Public Property Get Name() As String
     Name = Data.Name
 End Property
@@ -120,7 +120,7 @@ Public Property Let Name(new_name As String)
     Update
 End Property
 
-'ˆ¤Ì
+'æ„›ç§°
 Public Property Get Nickname0() As String
     Nickname0 = Data.Nickname
 End Property
@@ -131,7 +131,7 @@ Dim u As Unit, uname As String, vname As String
     
     Nickname = Nickname0
     
-    'ˆ¤Ì•ÏX
+    'æ„›ç§°å¤‰æ›´
     If Unit Is Nothing Then
         ReplaceSubExpression Nickname
         Exit Property
@@ -146,10 +146,10 @@ Dim u As Unit, uname As String, vname As String
         
         Set u = Unit
         
-        'ƒpƒCƒƒbƒgƒXƒe[ƒ^ƒXƒRƒ}ƒ“ƒh’†‚Ìê‡‚Íƒ†ƒjƒbƒg‚ğŒŸõ‚·‚é•K—v‚ª‚ ‚é
-        If .Name = "ƒXƒe[ƒ^ƒX•\¦—pƒ_ƒ~[ƒ†ƒjƒbƒg" Then
-            'ƒƒCƒ“ƒpƒCƒƒbƒg‚©‚Ç‚¤‚©ƒ`ƒFƒbƒN
-            vname = "“‹æ‡”Ô[" & ID & "]"
+        'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚³ãƒãƒ³ãƒ‰ä¸­ã®å ´åˆã¯ãƒ¦ãƒ‹ãƒƒãƒˆã‚’æ¤œç´¢ã™ã‚‹å¿…è¦ãŒã‚ã‚‹
+        If .Name = "ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹è¡¨ç¤ºç”¨ãƒ€ãƒŸãƒ¼ãƒ¦ãƒ‹ãƒƒãƒˆ" Then
+            'ãƒ¡ã‚¤ãƒ³ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‹ã©ã†ã‹ãƒã‚§ãƒƒã‚¯
+            vname = "æ­ä¹—é †ç•ª[" & ID & "]"
             If IsLocalVariableDefined(vname) Then
                 If LocalVariableList.Item(vname).NumericValue <> 1 Then
                     Exit Property
@@ -158,7 +158,7 @@ Dim u As Unit, uname As String, vname As String
                 Exit Property
             End If
             
-            vname = "“‹æƒ†ƒjƒbƒg[" & ID & "]"
+            vname = "æ­ä¹—ãƒ¦ãƒ‹ãƒƒãƒˆ[" & ID & "]"
             If IsLocalVariableDefined(vname) Then
                 uname = LocalVariableList.Item(vname).StringValue
             End If
@@ -170,9 +170,9 @@ Dim u As Unit, uname As String, vname As String
         End If
         
         With u
-            If .IsFeatureAvailable("ƒpƒCƒƒbƒgˆ¤Ì") Then
-                Nickname = .FeatureData("ƒpƒCƒƒbƒgˆ¤Ì")
-                idx = InStr(Nickname, "$(ˆ¤Ì)")
+            If .IsFeatureAvailable("ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆæ„›ç§°") Then
+                Nickname = .FeatureData("ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆæ„›ç§°")
+                idx = InStr(Nickname, "$(æ„›ç§°)")
                 If idx > 0 Then
                     Nickname = Left$(Nickname, idx - 1) _
                         & Data.Nickname & Mid$(Nickname, idx + 5)
@@ -181,28 +181,28 @@ Dim u As Unit, uname As String, vname As String
         End With
     End With
     
-    'Pilot‚ÌNickname()‚ÆUnit‚ÌNickname()‚ÌŒÄ‚Ño‚µ‚ª–³ŒÀ‚É‘±‚©‚È‚¢‚æ‚¤‚É
-    'Nickname()‚Ö‚ÌŒÄ‚Ño‚µ‚Í–³Œø‰»
+    'Pilotã®Nickname()ã¨Unitã®Nickname()ã®å‘¼ã³å‡ºã—ãŒç„¡é™ã«ç¶šã‹ãªã„ã‚ˆã†ã«
+    'Nickname()ã¸ã®å‘¼ã³å‡ºã—ã¯ç„¡åŠ¹åŒ–
     If dont_call_unit_nickname Then
         ReplaceString Nickname, "Nickname()", ""
         ReplaceString Nickname, "nickname()", ""
     End If
     
-    'ˆ¤Ì“à‚Ì®’uŠ·‚Ì‚½‚ßAƒfƒtƒHƒ‹ƒgƒ†ƒjƒbƒg‚ğˆê“I‚É•ÏX‚·‚é
+    'æ„›ç§°å†…ã®å¼ç½®æ›ã®ãŸã‚ã€ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆãƒ¦ãƒ‹ãƒƒãƒˆã‚’ä¸€æ™‚çš„ã«å¤‰æ›´ã™ã‚‹
     Set u = SelectedUnitForEvent
     Set SelectedUnitForEvent = Unit
     ReplaceSubExpression Nickname
     Set SelectedUnitForEvent = u
 End Property
 
-'“Ç‚İ‰¼–¼
+'èª­ã¿ä»®å
 Public Property Get KanaName() As String
 Dim idx As Integer
 Dim u As Unit, uname As String, vname As String
     
     KanaName = Data.KanaName
     
-    'ˆ¤Ì•ÏX
+    'æ„›ç§°å¤‰æ›´
     If Unit Is Nothing Then
         ReplaceSubExpression KanaName
         Exit Property
@@ -217,10 +217,10 @@ Dim u As Unit, uname As String, vname As String
         
         Set u = Unit
         
-        'ƒpƒCƒƒbƒgƒXƒe[ƒ^ƒXƒRƒ}ƒ“ƒh’†‚Ìê‡‚Íƒ†ƒjƒbƒg‚ğŒŸõ‚·‚é•K—v‚ª‚ ‚é
-        If .Name = "ƒXƒe[ƒ^ƒX•\¦—pƒ_ƒ~[ƒ†ƒjƒbƒg" Then
-            'ƒƒCƒ“ƒpƒCƒƒbƒg‚©‚Ç‚¤‚©ƒ`ƒFƒbƒN
-            vname = "“‹æ‡”Ô[" & ID & "]"
+        'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚³ãƒãƒ³ãƒ‰ä¸­ã®å ´åˆã¯ãƒ¦ãƒ‹ãƒƒãƒˆã‚’æ¤œç´¢ã™ã‚‹å¿…è¦ãŒã‚ã‚‹
+        If .Name = "ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹è¡¨ç¤ºç”¨ãƒ€ãƒŸãƒ¼ãƒ¦ãƒ‹ãƒƒãƒˆ" Then
+            'ãƒ¡ã‚¤ãƒ³ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‹ã©ã†ã‹ãƒã‚§ãƒƒã‚¯
+            vname = "æ­ä¹—é †ç•ª[" & ID & "]"
             If IsLocalVariableDefined(vname) Then
                 If LocalVariableList.Item(vname).NumericValue <> 1 Then
                     Exit Property
@@ -229,7 +229,7 @@ Dim u As Unit, uname As String, vname As String
                 Exit Property
             End If
             
-            vname = "“‹æƒ†ƒjƒbƒg[" & ID & "]"
+            vname = "æ­ä¹—ãƒ¦ãƒ‹ãƒƒãƒˆ[" & ID & "]"
             If IsLocalVariableDefined(vname) Then
                 uname = LocalVariableList.Item(vname).StringValue
             End If
@@ -241,16 +241,16 @@ Dim u As Unit, uname As String, vname As String
         End If
         
         With u
-            If .IsFeatureAvailable("ƒpƒCƒƒbƒg“Ç‚İ‰¼–¼") Then
-                KanaName = .FeatureData("ƒpƒCƒƒbƒg“Ç‚İ‰¼–¼")
-                idx = InStr(KanaName, "$(“Ç‚İ‰¼–¼)")
+            If .IsFeatureAvailable("ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆèª­ã¿ä»®å") Then
+                KanaName = .FeatureData("ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆèª­ã¿ä»®å")
+                idx = InStr(KanaName, "$(èª­ã¿ä»®å)")
                 If idx > 0 Then
                     KanaName = Left$(KanaName, idx - 1) _
                         & Data.KanaName & Mid$(KanaName, idx + 5)
                 End If
-            ElseIf .IsFeatureAvailable("ƒpƒCƒƒbƒgˆ¤Ì") Then
-                KanaName = .FeatureData("ƒpƒCƒƒbƒgˆ¤Ì")
-                idx = InStr(KanaName, "$(ˆ¤Ì)")
+            ElseIf .IsFeatureAvailable("ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆæ„›ç§°") Then
+                KanaName = .FeatureData("ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆæ„›ç§°")
+                idx = InStr(KanaName, "$(æ„›ç§°)")
                 If idx > 0 Then
                     KanaName = Left$(KanaName, idx - 1) _
                         & Data.Nickname & Mid$(KanaName, idx + 5)
@@ -260,52 +260,52 @@ Dim u As Unit, uname As String, vname As String
         End With
     End With
     
-    '“Ç‚İ‰¼–¼“à‚Ì®’uŠ·‚Ì‚½‚ßAƒfƒtƒHƒ‹ƒgƒ†ƒjƒbƒg‚ğˆê“I‚É•ÏX‚·‚é
+    'èª­ã¿ä»®åå†…ã®å¼ç½®æ›ã®ãŸã‚ã€ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆãƒ¦ãƒ‹ãƒƒãƒˆã‚’ä¸€æ™‚çš„ã«å¤‰æ›´ã™ã‚‹
     Set u = SelectedUnitForEvent
     Set SelectedUnitForEvent = Unit
     ReplaceSubExpression KanaName
     Set SelectedUnitForEvent = u
 End Property
 
-'«•Ê
+'æ€§åˆ¥
 Public Property Get Sex() As String
     Sex = Data.Sex
     If Not Unit Is Nothing Then
         With Unit
-            If .IsFeatureAvailable("«•Ê") Then
-                Sex = .FeatureData("«•Ê")
+            If .IsFeatureAvailable("æ€§åˆ¥") Then
+                Sex = .FeatureData("æ€§åˆ¥")
             End If
         End With
     End If
 End Property
 
-'“‹æ‚·‚éƒ†ƒjƒbƒg‚ÌƒNƒ‰ƒX
+'æ­ä¹—ã™ã‚‹ãƒ¦ãƒ‹ãƒƒãƒˆã®ã‚¯ãƒ©ã‚¹
 Public Property Get Class() As String
     Class = Data.Class
 End Property
 
-'“|‚µ‚½‚Æ‚«‚É“¾‚ç‚ê‚éŒoŒ±’l
+'å€’ã—ãŸã¨ãã«å¾—ã‚‰ã‚Œã‚‹çµŒé¨“å€¤
 Public Property Get ExpValue() As Integer
     ExpValue = Data.ExpValue
 End Property
 
-'«Ši
+'æ€§æ ¼
 Public Property Get Personality() As String
     Personality = Data.Personality
     
-    'ƒ†ƒjƒbƒg‚Éæ‚Á‚Ä‚¢‚éH
+    'ãƒ¦ãƒ‹ãƒƒãƒˆã«ä¹—ã£ã¦ã„ã‚‹ï¼Ÿ
     If Unit Is Nothing Then
         Exit Property
     End If
     
     With Unit
-        'ƒAƒCƒeƒ€—p“Áê”\—Íu«Ši•ÏXv
-        If .IsFeatureAvailable("«Ši•ÏX") Then
-            Personality = .FeatureData("«Ši•ÏX")
+        'ã‚¢ã‚¤ãƒ†ãƒ ç”¨ç‰¹æ®Šèƒ½åŠ›ã€Œæ€§æ ¼å¤‰æ›´ã€
+        If .IsFeatureAvailable("æ€§æ ¼å¤‰æ›´") Then
+            Personality = .FeatureData("æ€§æ ¼å¤‰æ›´")
             Exit Property
         End If
         
-        '’Ç‰ÁƒpƒCƒƒbƒg‚Ì«Ši‚ğ—Dæ‚³‚¹‚é
+        'è¿½åŠ ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®æ€§æ ¼ã‚’å„ªå…ˆã•ã›ã‚‹
         If Not IsAdditionalPilot Then
             If .CountPilot > 0 Then
                 If .Pilot(1) Is Me Then
@@ -316,7 +316,7 @@ Public Property Get Personality() As String
     End With
 End Property
 
-'ƒrƒbƒgƒ}ƒbƒv
+'ãƒ“ãƒƒãƒˆãƒãƒƒãƒ—
 Public Property Get Bitmap(Optional ByVal use_orig As Boolean) As String
 Dim u As Unit, uname As String, vname As String
 
@@ -326,7 +326,7 @@ Dim u As Unit, uname As String, vname As String
         Bitmap = Data.Bitmap
     End If
     
-    'ƒpƒCƒƒbƒg‰æ‘œ•ÏX
+    'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆç”»åƒå¤‰æ›´
     If Unit Is Nothing Then
         Exit Property
     End If
@@ -339,10 +339,10 @@ Dim u As Unit, uname As String, vname As String
         
         Set u = Unit
         
-        'ƒpƒCƒƒbƒgƒXƒe[ƒ^ƒXƒRƒ}ƒ“ƒh’†‚Ìê‡‚Íƒ†ƒjƒbƒg‚ğŒŸõ‚·‚é•K—v‚ª‚ ‚é
-        If .Name = "ƒXƒe[ƒ^ƒX•\¦—pƒ_ƒ~[ƒ†ƒjƒbƒg" Then
-            'ƒƒCƒ“ƒpƒCƒƒbƒg‚©‚Ç‚¤‚©ƒ`ƒFƒbƒN
-            vname = "“‹æ‡”Ô[" & ID & "]"
+        'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚³ãƒãƒ³ãƒ‰ä¸­ã®å ´åˆã¯ãƒ¦ãƒ‹ãƒƒãƒˆã‚’æ¤œç´¢ã™ã‚‹å¿…è¦ãŒã‚ã‚‹
+        If .Name = "ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹è¡¨ç¤ºç”¨ãƒ€ãƒŸãƒ¼ãƒ¦ãƒ‹ãƒƒãƒˆ" Then
+            'ãƒ¡ã‚¤ãƒ³ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‹ã©ã†ã‹ãƒã‚§ãƒƒã‚¯
+            vname = "æ­ä¹—é †ç•ª[" & ID & "]"
             If IsLocalVariableDefined(vname) Then
                 If LocalVariableList.Item(vname).NumericValue <> 1 Then
                     Exit Property
@@ -351,7 +351,7 @@ Dim u As Unit, uname As String, vname As String
                 Exit Property
             End If
             
-            vname = "“‹æƒ†ƒjƒbƒg[" & ID & "]"
+            vname = "æ­ä¹—ãƒ¦ãƒ‹ãƒƒãƒˆ[" & ID & "]"
             If IsLocalVariableDefined(vname) Then
                 uname = LocalVariableList.Item(vname).StringValue
             End If
@@ -363,59 +363,59 @@ Dim u As Unit, uname As String, vname As String
         End If
         
         With u
-            If .IsConditionSatisfied("ƒpƒCƒƒbƒg‰æ‘œ") Then
-                Bitmap = LIndex(.ConditionData("ƒpƒCƒƒbƒg‰æ‘œ"), 2)
+            If .IsConditionSatisfied("ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆç”»åƒ") Then
+                Bitmap = LIndex(.ConditionData("ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆç”»åƒ"), 2)
             End If
-            If .IsFeatureAvailable("ƒpƒCƒƒbƒg‰æ‘œ") Then
-                Bitmap = .FeatureData("ƒpƒCƒƒbƒg‰æ‘œ")
+            If .IsFeatureAvailable("ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆç”»åƒ") Then
+                Bitmap = .FeatureData("ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆç”»åƒ")
             End If
         End With
     End With
 End Property
 
-'‚a‚f‚l
+'ï¼¢ï¼§ï¼­
 Public Property Get BGM() As String
     BGM = Data.BGM
 End Property
 
-'ƒƒbƒZ[ƒWƒ^ƒCƒv
+'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚¿ã‚¤ãƒ—
 Public Property Get MessageType() As String
     MessageType = Name
     
-    'ƒpƒCƒƒbƒg”\—ÍuƒƒbƒZ[ƒWv
-    If IsSkillAvailable("ƒƒbƒZ[ƒW") Then
-        MessageType = SkillData("ƒƒbƒZ[ƒW")
+    'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆèƒ½åŠ›ã€Œãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã€
+    If IsSkillAvailable("ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸") Then
+        MessageType = SkillData("ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸")
     End If
     
-    '”\—ÍƒRƒs[‚Å•Ïg‚µ‚½ê‡‚ÍƒƒbƒZ[ƒW‚àƒRƒs[Œ³ƒpƒCƒƒbƒg‚Ì‚à‚Ì‚ğg‚¤
+    'èƒ½åŠ›ã‚³ãƒ”ãƒ¼ã§å¤‰èº«ã—ãŸå ´åˆã¯ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚‚ã‚³ãƒ”ãƒ¼å…ƒãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®ã‚‚ã®ã‚’ä½¿ã†
     If Not Unit Is Nothing Then
         With Unit
-            If .IsConditionSatisfied("ƒƒbƒZ[ƒW") Then
-                MessageType = LIndex(.ConditionData("ƒƒbƒZ[ƒW"), 2)
+            If .IsConditionSatisfied("ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸") Then
+                MessageType = LIndex(.ConditionData("ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸"), 2)
             End If
         End With
     End If
 End Property
 
 
-'–hŒä—Í
+'é˜²å¾¡åŠ›
 Public Property Get Defense() As Integer
-    If IsOptionDefined("–hŒä—Í¬’·") _
-        Or IsOptionDefined("–hŒä—ÍƒŒƒxƒ‹ƒAƒbƒv") _
+    If IsOptionDefined("é˜²å¾¡åŠ›æˆé•·") _
+        Or IsOptionDefined("é˜²å¾¡åŠ›ãƒ¬ãƒ™ãƒ«ã‚¢ãƒƒãƒ—") _
     Then
-        Defense = 100 + 5 * SkillLevel("‘Ï‹v")
-        If IsOptionDefined("–hŒä—Í’á¬’·") Then
-            Defense = Defense + (Level * (1 + 2 * SkillLevel("–hŒä¬’·"))) \ 2
+        Defense = 100 + 5 * SkillLevel("è€ä¹…")
+        If IsOptionDefined("é˜²å¾¡åŠ›ä½æˆé•·") Then
+            Defense = Defense + (Level * (1 + 2 * SkillLevel("é˜²å¾¡æˆé•·"))) \ 2
         Else
-            Defense = Defense + Int(Level * (1 + SkillLevel("–hŒä¬’·")))
+            Defense = Defense + Int(Level * (1 + SkillLevel("é˜²å¾¡æˆé•·")))
         End If
     Else
-        Defense = 100 + 5 * SkillLevel("‘Ï‹v")
+        Defense = 100 + 5 * SkillLevel("è€ä¹…")
     End If
 End Property
 
 
-'”\—Í’l‚ğXV
+'èƒ½åŠ›å€¤ã‚’æ›´æ–°
 Public Sub Update()
 Dim skill_num As Integer
 Dim skill_name(64) As String
@@ -423,30 +423,30 @@ Dim skill_data(64) As SkillData
 Dim i As Integer, j As Integer, lv As Double
 Dim sd As SkillData
 
-    'Œ»İ‚ÌƒŒƒxƒ‹‚Åg—p‰Â”\‚È“Áê”\—Í‚Ìˆê——‚ğì¬
+    'ç¾åœ¨ã®ãƒ¬ãƒ™ãƒ«ã§ä½¿ç”¨å¯èƒ½ãªç‰¹æ®Šèƒ½åŠ›ã®ä¸€è¦§ã‚’ä½œæˆ
     
-    'ˆÈ‘O‚Ìˆê——‚ğíœ
+    'ä»¥å‰ã®ä¸€è¦§ã‚’å‰Šé™¤
     With colSkill
         For i = 1 To .Count
             .Remove 1
         Next
     End With
     
-    'ƒpƒCƒƒbƒgƒf[ƒ^‚ğQÆ‚µ‚È‚ª‚çg—p‰Â”\‚È“Áê”\—Í‚ğŒŸõ
+    'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆãƒ‡ãƒ¼ã‚¿ã‚’å‚ç…§ã—ãªãŒã‚‰ä½¿ç”¨å¯èƒ½ãªç‰¹æ®Šèƒ½åŠ›ã‚’æ¤œç´¢
     skill_num = 0
     For Each sd In Data.colSkill
         With sd
             If Level >= .NecessaryLevel Then
-                'Šù‚É“o˜^Ï‚İH
-                If .Name = "‚r‚oÁ”ïŒ¸­" _
-                    Or .Name = "ƒXƒyƒVƒƒƒ‹ƒpƒ[©“®”­“®" _
-                    Or .Name = "ƒnƒ“ƒ^[" _
+                'æ—¢ã«ç™»éŒ²æ¸ˆã¿ï¼Ÿ
+                If .Name = "ï¼³ï¼°æ¶ˆè²»æ¸›å°‘" _
+                    Or .Name = "ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼è‡ªå‹•ç™ºå‹•" _
+                    Or .Name = "ãƒãƒ³ã‚¿ãƒ¼" _
                 Then
-                    '‚±‚ê‚ç‚Ì“Áê”\—Í‚Í“¯í‚Ì”\—Í‚ğ•¡”‚Â‚±‚Æ‚ªo—ˆ‚é
+                    'ã“ã‚Œã‚‰ã®ç‰¹æ®Šèƒ½åŠ›ã¯åŒç¨®ã®èƒ½åŠ›ã‚’è¤‡æ•°æŒã¤ã“ã¨ãŒå‡ºæ¥ã‚‹
                     For i = 1 To skill_num
                         If .Name = skill_name(i) Then
                            If .StrData = skill_data(i).StrData Then
-                               '‚½‚¾‚µƒf[ƒ^w’è‚Ü‚Å“¯ˆê‚Å‚ ‚ê‚Î“¯‚¶”\—Í‚ÆŒ©‚È‚·
+                               'ãŸã ã—ãƒ‡ãƒ¼ã‚¿æŒ‡å®šã¾ã§åŒä¸€ã§ã‚ã‚Œã°åŒã˜èƒ½åŠ›ã¨è¦‹ãªã™
                                Exit For
                            End If
                         End If
@@ -460,19 +460,19 @@ Dim sd As SkillData
                 End If
                 
                 If i > skill_num Then
-                    '–¢“o˜^
+                    'æœªç™»éŒ²
                     skill_num = skill_num + 1
                     skill_name(skill_num) = .Name
                     Set skill_data(skill_num) = sd
                 ElseIf .NecessaryLevel > skill_data(i).NecessaryLevel Then
-                    '“o˜^Ï‚İ‚Å‚ ‚éê‡‚ÍK“¾ƒŒƒxƒ‹‚ª‚‚¢‚à‚Ì‚ğ—Dæ
+                    'ç™»éŒ²æ¸ˆã¿ã§ã‚ã‚‹å ´åˆã¯ç¿’å¾—ãƒ¬ãƒ™ãƒ«ãŒé«˜ã„ã‚‚ã®ã‚’å„ªå…ˆ
                     Set skill_data(i) = sd
                 End If
             End If
         End With
     Next
     
-    'SetSkillƒRƒ}ƒ“ƒh‚Å•t‰Á‚³‚ê‚½“Áê”\—Í‚ğŒŸõ
+    'SetSkillã‚³ãƒãƒ³ãƒ‰ã§ä»˜åŠ ã•ã‚ŒãŸç‰¹æ®Šèƒ½åŠ›ã‚’æ¤œç´¢
     If IsGlobalVariableDefined("Ability(" & ID & ")") Then
         Dim alist As String, sname As String, sdata As String
         Dim buf As String
@@ -483,16 +483,16 @@ Dim sd As SkillData
             buf = GlobalVariableList.Item("Ability(" & ID & "," & sname & ")").StringValue
             sdata = ListTail(buf, 2)
             
-            'Šù‚É“o˜^Ï‚İH
-            If sname = "‚r‚oÁ”ïŒ¸­" _
-                Or sname = "ƒXƒyƒVƒƒƒ‹ƒpƒ[©“®”­“®" _
-                Or sname = "ƒnƒ“ƒ^[" _
+            'æ—¢ã«ç™»éŒ²æ¸ˆã¿ï¼Ÿ
+            If sname = "ï¼³ï¼°æ¶ˆè²»æ¸›å°‘" _
+                Or sname = "ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼è‡ªå‹•ç™ºå‹•" _
+                Or sname = "ãƒãƒ³ã‚¿ãƒ¼" _
             Then
-                '‚±‚ê‚ç‚Ì“Áê”\—Í‚Í“¯í‚Ì”\—Í‚ğ•¡”‚Â‚±‚Æ‚ªo—ˆ‚é
+                'ã“ã‚Œã‚‰ã®ç‰¹æ®Šèƒ½åŠ›ã¯åŒç¨®ã®èƒ½åŠ›ã‚’è¤‡æ•°æŒã¤ã“ã¨ãŒå‡ºæ¥ã‚‹
                 For j = 1 To skill_num
                     If sname = skill_name(j) Then
                         If sdata = skill_data(j).StrData Then
-                            '‚½‚¾‚µƒf[ƒ^w’è‚Ü‚Å“¯ˆê‚Å‚ ‚ê‚Î“¯‚¶”\—Í‚ÆŒ©‚È‚·
+                            'ãŸã ã—ãƒ‡ãƒ¼ã‚¿æŒ‡å®šã¾ã§åŒä¸€ã§ã‚ã‚Œã°åŒã˜èƒ½åŠ›ã¨è¦‹ãªã™
                             Exit For
                         End If
                     End If
@@ -506,17 +506,17 @@ Dim sd As SkillData
             End If
             
             If j > skill_num Then
-                '–¢“o˜^
+                'æœªç™»éŒ²
                 skill_num = j
                 skill_name(j) = sname
             End If
             
             If StrToDbl(LIndex(buf, 1)) = 0 Then
-                'ƒŒƒxƒ‹0‚Ìê‡‚Í”\—Í‚ğ••ˆó
+                'ãƒ¬ãƒ™ãƒ«0ã®å ´åˆã¯èƒ½åŠ›ã‚’å°å°
                 Set skill_data(j) = Nothing
             Else
-                'PDList‚Ìƒf[ƒ^‚ğ‘‚«Š·‚¦‚é‚í‚¯‚É‚Í‚¢‚©‚È‚¢‚Ì‚Å
-                'ƒAƒrƒŠƒeƒBƒf[ƒ^‚ğV‹K‚Éì¬
+                'PDListã®ãƒ‡ãƒ¼ã‚¿ã‚’æ›¸ãæ›ãˆã‚‹ã‚ã‘ã«ã¯ã„ã‹ãªã„ã®ã§
+                'ã‚¢ãƒ“ãƒªãƒ†ã‚£ãƒ‡ãƒ¼ã‚¿ã‚’æ–°è¦ã«ä½œæˆ
                 Set sd = New SkillData
                 With sd
                     .Name = sname
@@ -531,23 +531,23 @@ Dim sd As SkillData
         Next
     End If
     
-    '‘®«g—p•s”\ó‘Ô‚ÌÛA‘Î‰‚·‚é‹Z”\‚ğ••ˆó‚·‚éB
+    'å±æ€§ä½¿ç”¨ä¸èƒ½çŠ¶æ…‹ã®éš›ã€å¯¾å¿œã™ã‚‹æŠ€èƒ½ã‚’å°å°ã™ã‚‹ã€‚
     If Not Unit Is Nothing Then
         For j = 1 To skill_num
             If Not skill_data(j) Is Nothing Then
-                If Unit.ConditionLifetime(skill_data(j).Name & "g—p•s”\") > 0 Then
+                If Unit.ConditionLifetime(skill_data(j).Name & "ä½¿ç”¨ä¸èƒ½") > 0 Then
                     Set skill_data(j) = Nothing
                 End If
             End If
         Next
     End If
     
-    'g—p‰Â”\‚È“Áê”\—Í‚ğ“o˜^
+    'ä½¿ç”¨å¯èƒ½ãªç‰¹æ®Šèƒ½åŠ›ã‚’ç™»éŒ²
     With colSkill
         For i = 1 To skill_num
             If Not skill_data(i) Is Nothing Then
                 Select Case skill_name(i)
-                    Case "‚r‚oÁ”ïŒ¸­", "ƒXƒyƒVƒƒƒ‹ƒpƒ[©“®”­“®", "ƒnƒ“ƒ^["
+                    Case "ï¼³ï¼°æ¶ˆè²»æ¸›å°‘", "ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼è‡ªå‹•ç™ºå‹•", "ãƒãƒ³ã‚¿ãƒ¼"
                         For j = 1 To i - 1
                             If skill_name(i) = skill_name(j) Then
                                 Exit For
@@ -565,9 +565,9 @@ Dim sd As SkillData
         Next
     End With
     
-    '‚±‚ê‚©‚ç‰º‚Í”\—Í’l‚ÌŒvZ
+    'ã“ã‚Œã‹ã‚‰ä¸‹ã¯èƒ½åŠ›å€¤ã®è¨ˆç®—
     
-    'Šî–{’l
+    'åŸºæœ¬å€¤
     With Data
         InfightBase = .Infight
         ShootingBase = .Shooting
@@ -578,37 +578,37 @@ Dim sd As SkillData
         Adaption = .Adaption
     End With
     
-    'ƒŒƒxƒ‹‚É‚æ‚é’Ç‰Á•ª
-    lv = Level + SkillLevel("’Ç‰ÁƒŒƒxƒ‹")
-    If IsOptionDefined("UŒ‚—Í’á¬’·") Then
-        InfightBase = InfightBase + (lv * (1 + 2 * SkillLevel("Ši“¬¬’·"))) \ 2
-        ShootingBase = ShootingBase + (lv * (1 + 2 * SkillLevel("ËŒ‚¬’·"))) \ 2
+    'ãƒ¬ãƒ™ãƒ«ã«ã‚ˆã‚‹è¿½åŠ åˆ†
+    lv = Level + SkillLevel("è¿½åŠ ãƒ¬ãƒ™ãƒ«")
+    If IsOptionDefined("æ”»æ’ƒåŠ›ä½æˆé•·") Then
+        InfightBase = InfightBase + (lv * (1 + 2 * SkillLevel("æ ¼é—˜æˆé•·"))) \ 2
+        ShootingBase = ShootingBase + (lv * (1 + 2 * SkillLevel("å°„æ’ƒæˆé•·"))) \ 2
     Else
-        InfightBase = InfightBase + Int(lv * (1 + SkillLevel("Ši“¬¬’·")))
-        ShootingBase = ShootingBase + Int(lv * (1 + SkillLevel("ËŒ‚¬’·")))
+        InfightBase = InfightBase + Int(lv * (1 + SkillLevel("æ ¼é—˜æˆé•·")))
+        ShootingBase = ShootingBase + Int(lv * (1 + SkillLevel("å°„æ’ƒæˆé•·")))
     End If
-    HitBase = HitBase + Int(lv * (2 + SkillLevel("–½’†¬’·")))
-    DodgeBase = DodgeBase + Int(lv * (2 + SkillLevel("‰ñ”ğ¬’·")))
-    TechniqueBase = TechniqueBase + Int(lv * (1 + SkillLevel("‹Z—Ê¬’·")))
-    IntuitionBase = IntuitionBase + Int(lv * (1 + SkillLevel("”½‰¬’·")))
+    HitBase = HitBase + Int(lv * (2 + SkillLevel("å‘½ä¸­æˆé•·")))
+    DodgeBase = DodgeBase + Int(lv * (2 + SkillLevel("å›é¿æˆé•·")))
+    TechniqueBase = TechniqueBase + Int(lv * (1 + SkillLevel("æŠ€é‡æˆé•·")))
+    IntuitionBase = IntuitionBase + Int(lv * (1 + SkillLevel("åå¿œæˆé•·")))
     
-    '”\—Í‚t‚o
-    InfightBase = InfightBase + SkillLevel("Ši“¬‚t‚o")
-    ShootingBase = ShootingBase + SkillLevel("ËŒ‚‚t‚o")
-    HitBase = HitBase + SkillLevel("–½’†‚t‚o")
-    DodgeBase = DodgeBase + SkillLevel("‰ñ”ğ‚t‚o")
-    TechniqueBase = TechniqueBase + SkillLevel("‹Z—Ê‚t‚o")
-    IntuitionBase = IntuitionBase + SkillLevel("”½‰‚t‚o")
+    'èƒ½åŠ›ï¼µï¼°
+    InfightBase = InfightBase + SkillLevel("æ ¼é—˜ï¼µï¼°")
+    ShootingBase = ShootingBase + SkillLevel("å°„æ’ƒï¼µï¼°")
+    HitBase = HitBase + SkillLevel("å‘½ä¸­ï¼µï¼°")
+    DodgeBase = DodgeBase + SkillLevel("å›é¿ï¼µï¼°")
+    TechniqueBase = TechniqueBase + SkillLevel("æŠ€é‡ï¼µï¼°")
+    IntuitionBase = IntuitionBase + SkillLevel("åå¿œï¼µï¼°")
     
-    '”\—Í‚c‚n‚v‚m
-    InfightBase = InfightBase - SkillLevel("Ši“¬‚c‚n‚v‚m")
-    ShootingBase = ShootingBase - SkillLevel("ËŒ‚‚c‚n‚v‚m")
-    HitBase = HitBase - SkillLevel("–½’†‚c‚n‚v‚m")
-    DodgeBase = DodgeBase - SkillLevel("‰ñ”ğ‚c‚n‚v‚m")
-    TechniqueBase = TechniqueBase - SkillLevel("‹Z—Ê‚c‚n‚v‚m")
-    IntuitionBase = IntuitionBase - SkillLevel("”½‰‚c‚n‚v‚m")
+    'èƒ½åŠ›ï¼¤ï¼¯ï¼·ï¼®
+    InfightBase = InfightBase - SkillLevel("æ ¼é—˜ï¼¤ï¼¯ï¼·ï¼®")
+    ShootingBase = ShootingBase - SkillLevel("å°„æ’ƒï¼¤ï¼¯ï¼·ï¼®")
+    HitBase = HitBase - SkillLevel("å‘½ä¸­ï¼¤ï¼¯ï¼·ï¼®")
+    DodgeBase = DodgeBase - SkillLevel("å›é¿ï¼¤ï¼¯ï¼·ï¼®")
+    TechniqueBase = TechniqueBase - SkillLevel("æŠ€é‡ï¼¤ï¼¯ï¼·ï¼®")
+    IntuitionBase = IntuitionBase - SkillLevel("åå¿œï¼¤ï¼¯ï¼·ï¼®")
     
-    'ãŒÀ‚ğ’´‚¦‚È‚¢‚æ‚¤‚É
+    'ä¸Šé™ã‚’è¶…ãˆãªã„ã‚ˆã†ã«
     InfightBase = MinLng(InfightBase, 9999)
     ShootingBase = MinLng(ShootingBase, 9999)
     HitBase = MinLng(HitBase, 9999)
@@ -616,9 +616,9 @@ Dim sd As SkillData
     TechniqueBase = MinLng(TechniqueBase, 9999)
     IntuitionBase = MinLng(IntuitionBase, 9999)
     
-    '‚±‚ê‚©‚ç‰º‚Í“Áê”\—Í‚É‚æ‚éC³’l‚ÌŒvZ
+    'ã“ã‚Œã‹ã‚‰ä¸‹ã¯ç‰¹æ®Šèƒ½åŠ›ã«ã‚ˆã‚‹ä¿®æ­£å€¤ã®è¨ˆç®—
     
-    '‚Ü‚¸‚ÍC³’l‚ğ‰Šú‰»
+    'ã¾ãšã¯ä¿®æ­£å€¤ã‚’åˆæœŸåŒ–
     InfightMod = 0
     ShootingMod = 0
     HitMod = 0
@@ -626,140 +626,140 @@ Dim sd As SkillData
     TechniqueMod = 0
     IntuitionMod = 0
     
-    'ƒpƒCƒƒbƒg—p“Áê”\—Í‚É‚æ‚éC³
+    'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆç”¨ç‰¹æ®Šèƒ½åŠ›ã«ã‚ˆã‚‹ä¿®æ­£
     
-    lv = SkillLevel("’´Š´Šo")
+    lv = SkillLevel("è¶…æ„Ÿè¦š")
     If lv > 0 Then
         HitMod = HitMod + 2 * lv + 3
         DodgeMod = DodgeMod + 2 * lv + 3
     End If
     
-    lv = SkillLevel("’mŠo‹­‰»")
+    lv = SkillLevel("çŸ¥è¦šå¼·åŒ–")
     If lv > 0 Then
         HitMod = HitMod + 2 * lv + 3
         DodgeMod = DodgeMod + 2 * lv + 3
     End If
     
-    lv = SkillLevel("”O—Í")
+    lv = SkillLevel("å¿µåŠ›")
     If lv > 0 Then
         HitMod = HitMod + 2 * lv + 3
         DodgeMod = DodgeMod + 2 * lv + 3
     End If
     
-    lv = SkillLevel("’´”½‰")
+    lv = SkillLevel("è¶…åå¿œ")
     HitMod = HitMod + 2 * lv
     DodgeMod = DodgeMod + 2 * lv
     
-    If IsSkillAvailable("ƒTƒCƒ{[ƒO") Then
+    If IsSkillAvailable("ã‚µã‚¤ãƒœãƒ¼ã‚°") Then
         HitMod = HitMod + 5
         DodgeMod = DodgeMod + 5
     End If
-    If IsSkillAvailable("Œå‚è") Then
+    If IsSkillAvailable("æ‚Ÿã‚Š") Then
         HitMod = HitMod + 10
         DodgeMod = DodgeMod + 10
     End If
-    If IsSkillAvailable("’´”\—Í") Then
+    If IsSkillAvailable("è¶…èƒ½åŠ›") Then
         HitMod = HitMod + 5
         DodgeMod = DodgeMod + 5
     End If
     
-    '‚±‚ê‚©‚ç‰º‚Íƒ†ƒjƒbƒg‚É‚æ‚éC³’l‚ÌŒvZ
+    'ã“ã‚Œã‹ã‚‰ä¸‹ã¯ãƒ¦ãƒ‹ãƒƒãƒˆã«ã‚ˆã‚‹ä¿®æ­£å€¤ã®è¨ˆç®—
     
-    'ƒ†ƒjƒbƒg‚Éæ‚Á‚Ä‚¢‚È‚¢H
+    'ãƒ¦ãƒ‹ãƒƒãƒˆã«ä¹—ã£ã¦ã„ãªã„ï¼Ÿ
     If Unit Is Nothing Then
         GoTo SkipUnitMod
     End If
     
     With Unit
-        'ƒNƒCƒbƒNƒZ[ƒuˆ—‚È‚Ç‚ÅÀÛ‚É‚Íæ‚Á‚Ä‚¢‚È‚¢ê‡
+        'ã‚¯ã‚¤ãƒƒã‚¯ã‚»ãƒ¼ãƒ–å‡¦ç†ãªã©ã§å®Ÿéš›ã«ã¯ä¹—ã£ã¦ã„ãªã„å ´åˆ
         If .CountPilot = 0 Then
             Exit Sub
         End If
         
-        'ƒTƒuƒpƒCƒƒbƒg•ƒTƒ|[ƒgƒpƒCƒƒbƒg‚É‚æ‚éƒTƒ|[ƒg
-        If Me Is .MainPilot And .Status = "oŒ‚" Then
+        'ã‚µãƒ–ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆï¼†ã‚µãƒãƒ¼ãƒˆãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã«ã‚ˆã‚‹ã‚µãƒãƒ¼ãƒˆ
+        If Me Is .MainPilot And .Status = "å‡ºæ’ƒ" Then
             For i = 2 To .CountPilot
                 With .Pilot(i)
-                    InfightMod = InfightMod + 2 * .SkillLevel("Ši“¬ƒTƒ|[ƒg")
+                    InfightMod = InfightMod + 2 * .SkillLevel("æ ¼é—˜ã‚µãƒãƒ¼ãƒˆ")
                     If HasMana() Then
-                        ShootingMod = ShootingMod + 2 * .SkillLevel("–‚—ÍƒTƒ|[ƒg")
+                        ShootingMod = ShootingMod + 2 * .SkillLevel("é­”åŠ›ã‚µãƒãƒ¼ãƒˆ")
                     Else
-                        ShootingMod = ShootingMod + 2 * .SkillLevel("ËŒ‚ƒTƒ|[ƒg")
+                        ShootingMod = ShootingMod + 2 * .SkillLevel("å°„æ’ƒã‚µãƒãƒ¼ãƒˆ")
                     End If
-                    HitMod = HitMod + 3 * .SkillLevel("ƒTƒ|[ƒg")
-                    HitMod = HitMod + 2 * .SkillLevel("–½’†ƒTƒ|[ƒg")
-                    DodgeMod = DodgeMod + 3 * .SkillLevel("ƒTƒ|[ƒg")
-                    DodgeMod = DodgeMod + 2 * .SkillLevel("‰ñ”ğƒTƒ|[ƒg")
-                    TechniqueMod = TechniqueMod + 2 * .SkillLevel("‹Z—ÊƒTƒ|[ƒg")
-                    IntuitionMod = IntuitionMod + 2 * .SkillLevel("”½‰ƒTƒ|[ƒg")
+                    HitMod = HitMod + 3 * .SkillLevel("ã‚µãƒãƒ¼ãƒˆ")
+                    HitMod = HitMod + 2 * .SkillLevel("å‘½ä¸­ã‚µãƒãƒ¼ãƒˆ")
+                    DodgeMod = DodgeMod + 3 * .SkillLevel("ã‚µãƒãƒ¼ãƒˆ")
+                    DodgeMod = DodgeMod + 2 * .SkillLevel("å›é¿ã‚µãƒãƒ¼ãƒˆ")
+                    TechniqueMod = TechniqueMod + 2 * .SkillLevel("æŠ€é‡ã‚µãƒãƒ¼ãƒˆ")
+                    IntuitionMod = IntuitionMod + 2 * .SkillLevel("åå¿œã‚µãƒãƒ¼ãƒˆ")
                 End With
             Next
             For i = 1 To .CountSupport
                 With .Support(i)
-                    InfightMod = InfightMod + 2 * .SkillLevel("Ši“¬ƒTƒ|[ƒg")
+                    InfightMod = InfightMod + 2 * .SkillLevel("æ ¼é—˜ã‚µãƒãƒ¼ãƒˆ")
                     If HasMana() Then
-                        ShootingMod = ShootingMod + 2 * .SkillLevel("–‚—ÍƒTƒ|[ƒg")
+                        ShootingMod = ShootingMod + 2 * .SkillLevel("é­”åŠ›ã‚µãƒãƒ¼ãƒˆ")
                     Else
-                        ShootingMod = ShootingMod + 2 * .SkillLevel("ËŒ‚ƒTƒ|[ƒg")
+                        ShootingMod = ShootingMod + 2 * .SkillLevel("å°„æ’ƒã‚µãƒãƒ¼ãƒˆ")
                     End If
-                    HitMod = HitMod + 3 * .SkillLevel("ƒTƒ|[ƒg")
-                    HitMod = HitMod + 2 * .SkillLevel("–½’†ƒTƒ|[ƒg")
-                    DodgeMod = DodgeMod + 3 * .SkillLevel("ƒTƒ|[ƒg")
-                    DodgeMod = DodgeMod + 2 * .SkillLevel("‰ñ”ğƒTƒ|[ƒg")
-                    TechniqueMod = TechniqueMod + 2 * .SkillLevel("‹Z—ÊƒTƒ|[ƒg")
-                    IntuitionMod = IntuitionMod + 2 * .SkillLevel("”½‰ƒTƒ|[ƒg")
+                    HitMod = HitMod + 3 * .SkillLevel("ã‚µãƒãƒ¼ãƒˆ")
+                    HitMod = HitMod + 2 * .SkillLevel("å‘½ä¸­ã‚µãƒãƒ¼ãƒˆ")
+                    DodgeMod = DodgeMod + 3 * .SkillLevel("ã‚µãƒãƒ¼ãƒˆ")
+                    DodgeMod = DodgeMod + 2 * .SkillLevel("å›é¿ã‚µãƒãƒ¼ãƒˆ")
+                    TechniqueMod = TechniqueMod + 2 * .SkillLevel("æŠ€é‡ã‚µãƒãƒ¼ãƒˆ")
+                    IntuitionMod = IntuitionMod + 2 * .SkillLevel("åå¿œã‚µãƒãƒ¼ãƒˆ")
                 End With
             Next
-            If .IsFeatureAvailable("’Ç‰ÁƒTƒ|[ƒg") Then
+            If .IsFeatureAvailable("è¿½åŠ ã‚µãƒãƒ¼ãƒˆ") Then
                 With .AdditionalSupport
-                    InfightMod = InfightMod + 2 * .SkillLevel("Ši“¬ƒTƒ|[ƒg")
+                    InfightMod = InfightMod + 2 * .SkillLevel("æ ¼é—˜ã‚µãƒãƒ¼ãƒˆ")
                     If HasMana() Then
-                        ShootingMod = ShootingMod + 2 * .SkillLevel("–‚—ÍƒTƒ|[ƒg")
+                        ShootingMod = ShootingMod + 2 * .SkillLevel("é­”åŠ›ã‚µãƒãƒ¼ãƒˆ")
                     Else
-                        ShootingMod = ShootingMod + 2 * .SkillLevel("ËŒ‚ƒTƒ|[ƒg")
+                        ShootingMod = ShootingMod + 2 * .SkillLevel("å°„æ’ƒã‚µãƒãƒ¼ãƒˆ")
                     End If
-                    HitMod = HitMod + 3 * .SkillLevel("ƒTƒ|[ƒg")
-                    HitMod = HitMod + 2 * .SkillLevel("–½’†ƒTƒ|[ƒg")
-                    DodgeMod = DodgeMod + 3 * .SkillLevel("ƒTƒ|[ƒg")
-                    DodgeMod = DodgeMod + 2 * .SkillLevel("‰ñ”ğƒTƒ|[ƒg")
-                    TechniqueMod = TechniqueMod + 2 * .SkillLevel("‹Z—ÊƒTƒ|[ƒg")
-                    IntuitionMod = IntuitionMod + 2 * .SkillLevel("”½‰ƒTƒ|[ƒg")
+                    HitMod = HitMod + 3 * .SkillLevel("ã‚µãƒãƒ¼ãƒˆ")
+                    HitMod = HitMod + 2 * .SkillLevel("å‘½ä¸­ã‚µãƒãƒ¼ãƒˆ")
+                    DodgeMod = DodgeMod + 3 * .SkillLevel("ã‚µãƒãƒ¼ãƒˆ")
+                    DodgeMod = DodgeMod + 2 * .SkillLevel("å›é¿ã‚µãƒãƒ¼ãƒˆ")
+                    TechniqueMod = TechniqueMod + 2 * .SkillLevel("æŠ€é‡ã‚µãƒãƒ¼ãƒˆ")
+                    IntuitionMod = IntuitionMod + 2 * .SkillLevel("åå¿œã‚µãƒãƒ¼ãƒˆ")
                 End With
             End If
         End If
         
-        'ƒ†ƒjƒbƒg•ƒAƒCƒeƒ€‚É‚æ‚é‹­‰»
+        'ãƒ¦ãƒ‹ãƒƒãƒˆï¼†ã‚¢ã‚¤ãƒ†ãƒ ã«ã‚ˆã‚‹å¼·åŒ–
         For i = 1 To .CountFeature
             Select Case .Feature(i)
-                Case "Ši“¬‹­‰»"
+                Case "æ ¼é—˜å¼·åŒ–"
                     If Morale >= StrToLng(LIndex(.FeatureData(i), 2)) Then
                         InfightMod = InfightMod + 5 * .FeatureLevel(i)
                     End If
-                Case "ËŒ‚‹­‰»"
+                Case "å°„æ’ƒå¼·åŒ–"
                     If Morale >= StrToLng(LIndex(.FeatureData(i), 2)) Then
                         ShootingMod = ShootingMod + 5 * .FeatureLevel(i)
                     End If
-                Case "–½’†‹­‰»"
+                Case "å‘½ä¸­å¼·åŒ–"
                     If Morale >= StrToLng(LIndex(.FeatureData(i), 2)) Then
                         HitMod = HitMod + 5 * .FeatureLevel(i)
                     End If
-                Case "‰ñ”ğ‹­‰»"
+                Case "å›é¿å¼·åŒ–"
                     If Morale >= StrToLng(LIndex(.FeatureData(i), 2)) Then
                         DodgeMod = DodgeMod + 5 * .FeatureLevel(i)
                     End If
-                Case "‹Z—Ê‹­‰»"
+                Case "æŠ€é‡å¼·åŒ–"
                     If Morale >= StrToLng(LIndex(.FeatureData(i), 2)) Then
                         TechniqueMod = TechniqueMod + 5 * .FeatureLevel(i)
                     End If
-                Case "”½‰‹­‰»"
+                Case "åå¿œå¼·åŒ–"
                     If Morale >= StrToLng(LIndex(.FeatureData(i), 2)) Then
                         IntuitionMod = IntuitionMod + 5 * .FeatureLevel(i)
                     End If
             End Select
         Next
         
-        '’nŒ`“K‰•ÏX
-        If .IsFeatureAvailable("ƒpƒCƒƒbƒg’nŒ`“K‰•ÏX") Then
+        'åœ°å½¢é©å¿œå¤‰æ›´
+        If .IsFeatureAvailable("ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆåœ°å½¢é©å¿œå¤‰æ›´") Then
             Dim padaption(4) As Integer
             
             For i = 1 To 4
@@ -779,21 +779,21 @@ Dim sd As SkillData
                 End Select
             Next
             
-            '’nŒ`“K‰•ÏX”\—Í‚É‚æ‚éC³
+            'åœ°å½¢é©å¿œå¤‰æ›´èƒ½åŠ›ã«ã‚ˆã‚‹ä¿®æ­£
             For i = 1 To .CountFeature
-                If .Feature(i) = "ƒpƒCƒƒbƒg’nŒ`“K‰•ÏX" Then
+                If .Feature(i) = "ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆåœ°å½¢é©å¿œå¤‰æ›´" Then
                     For j = 1 To 4
                         If StrToLng(LIndex(.FeatureData(i), j)) >= 0 Then
-                            'C³’l‚ªƒvƒ‰ƒX‚Ì‚Æ‚«
+                            'ä¿®æ­£å€¤ãŒãƒ—ãƒ©ã‚¹ã®ã¨ã
                             If padaption(j) < 4 Then
                                 padaption(j) = padaption(j) + StrToLng(LIndex(.FeatureData(i), j))
-                                '’nŒ`“K‰‚ÍA‚æ‚è‚‚­‚Í‚È‚ç‚È‚¢
+                                'åœ°å½¢é©å¿œã¯Aã‚ˆã‚Šé«˜ãã¯ãªã‚‰ãªã„
                                 If padaption(j) > 4 Then
                                     padaption(j) = 4
                                 End If
                             End If
                         Else
-                            'C³’l‚ªƒ}ƒCƒiƒX‚Ì‚Æ‚«‚Í–{—ˆ‚Ì’nŒ`“K‰‚ª"A"ˆÈã‚Å‚àˆ—‚ğs‚È‚¤
+                            'ä¿®æ­£å€¤ãŒãƒã‚¤ãƒŠã‚¹ã®ã¨ãã¯æœ¬æ¥ã®åœ°å½¢é©å¿œãŒ"A"ä»¥ä¸Šã§ã‚‚å‡¦ç†ã‚’è¡Œãªã†
                             padaption(j) = padaption(j) + StrToLng(LIndex(.FeatureData(i), j))
                         End If
                     Next
@@ -820,12 +820,12 @@ Dim sd As SkillData
         End If
     End With
     
-    '‹C—Í‚Ì’l‚ğ‹C—ÍãŒÀE‹C—Í‰ºŒÀ‚Ì”ÍˆÍ‚É‚·‚é
+    'æ°—åŠ›ã®å€¤ã‚’æ°—åŠ›ä¸Šé™ãƒ»æ°—åŠ›ä¸‹é™ã®ç¯„å›²ã«ã™ã‚‹
     SetMorale Morale
 
 SkipUnitMod:
     
-    'Šî–{’l‚ÆC³’l‚Ì‡Œv‚©‚çÀÛ‚Ì”\—Í’l‚ğZo
+    'åŸºæœ¬å€¤ã¨ä¿®æ­£å€¤ã®åˆè¨ˆã‹ã‚‰å®Ÿéš›ã®èƒ½åŠ›å€¤ã‚’ç®—å‡º
     Infight = MinLng(InfightBase + InfightMod + InfightMod2, 9999)
     Shooting = MinLng(ShootingBase + ShootingMod + ShootingMod2, 9999)
     Hit = MinLng(HitBase + HitMod + HitMod2, 9999)
@@ -834,7 +834,7 @@ SkipUnitMod:
     Intuition = MinLng(IntuitionBase + IntuitionMod + IntuitionMod2, 9999)
 End Sub
 
-'ü‚è‚Ìƒ†ƒjƒbƒg‚É‚æ‚éx‰‡Œø‰Ê‚ğXV
+'å‘¨ã‚Šã®ãƒ¦ãƒ‹ãƒƒãƒˆã«ã‚ˆã‚‹æ”¯æ´åŠ¹æœã‚’æ›´æ–°
 Public Sub UpdateSupportMod()
 Dim u As Unit, my_unit As Unit, my_party As String
 Dim my_cmd_rank As Integer
@@ -845,7 +845,7 @@ Dim mod_stack As Boolean, rel_lv As Integer
 Dim team As String, uteam As String
 Dim i As Integer, j As Integer, k As Integer
 
-    'x‰‡Œø‰Ê‚É‚æ‚éC³’l‚ğ‰Šú‰»
+    'æ”¯æ´åŠ¹æœã«ã‚ˆã‚‹ä¿®æ­£å€¤ã‚’åˆæœŸåŒ–
     
     Infight = InfightBase + InfightMod
     Shooting = ShootingBase + ShootingMod
@@ -863,29 +863,29 @@ Dim i As Integer, j As Integer, k As Integer
     
     MoraleMod = 0
     
-    'ƒXƒe[ƒ^ƒX•\¦‚É‚Íx‰‡Œø‰Ê‚ğ–³‹
+    'ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹è¡¨ç¤ºæ™‚ã«ã¯æ”¯æ´åŠ¹æœã‚’ç„¡è¦–
     If MapFileName = "" Then
         Exit Sub
     End If
     
-    'ƒ†ƒjƒbƒg‚Éæ‚Á‚Ä‚¢‚È‚¯‚ê‚Î‚±‚±‚ÅI—¹
+    'ãƒ¦ãƒ‹ãƒƒãƒˆã«ä¹—ã£ã¦ã„ãªã‘ã‚Œã°ã“ã“ã§çµ‚äº†
     If Unit Is Nothing Then
         Exit Sub
     End If
     
-    'ˆê’Uæ‚Á‚Ä‚¢‚éƒ†ƒjƒbƒg‚ğ‹L˜^‚µ‚Ä‚¨‚­
+    'ä¸€æ—¦ä¹—ã£ã¦ã„ã‚‹ãƒ¦ãƒ‹ãƒƒãƒˆã‚’è¨˜éŒ²ã—ã¦ãŠã
     Set my_unit = Unit
     
     With Unit
-        'ƒ†ƒjƒbƒg‚ªoŒ‚‚µ‚Ä‚¢‚È‚¯‚ê‚Î‚±‚±‚ÅI—¹
-        If .Status <> "oŒ‚" Then
+        'ãƒ¦ãƒ‹ãƒƒãƒˆãŒå‡ºæ’ƒã—ã¦ã„ãªã‘ã‚Œã°ã“ã“ã§çµ‚äº†
+        If .Status <> "å‡ºæ’ƒ" Then
             Exit Sub
         End If
         If Not Unit Is MapDataForUnit(.X, .Y) Then
             Exit Sub
         End If
         
-        'ƒƒCƒ“ƒpƒCƒƒbƒg‚Å‚È‚¯‚ê‚Î‚±‚±‚ÅI—¹
+        'ãƒ¡ã‚¤ãƒ³ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã§ãªã‘ã‚Œã°ã“ã“ã§çµ‚äº†
         If .CountPilot = 0 Then
             Exit Sub
         End If
@@ -893,23 +893,23 @@ Dim i As Integer, j As Integer, k As Integer
             Exit Sub
         End If
         
-        '³í‚È”»’f‚ªo—ˆ‚È‚¢ƒ†ƒjƒbƒg‚Íx‰‡‚ğó‚¯‚ç‚ê‚È‚¢
-        If .IsConditionSatisfied("–\‘–") Then
+        'æ­£å¸¸ãªåˆ¤æ–­ãŒå‡ºæ¥ãªã„ãƒ¦ãƒ‹ãƒƒãƒˆã¯æ”¯æ´ã‚’å—ã‘ã‚‰ã‚Œãªã„
+        If .IsConditionSatisfied("æš´èµ°") Then
             Exit Sub
         End If
-        If .IsConditionSatisfied("¬—") Then
+        If .IsConditionSatisfied("æ··ä¹±") Then
             Exit Sub
         End If
         
-        'x‰‡‚ğó‚¯‚ç‚ê‚é‚©‚Ç‚¤‚©‚Ì”»’è—p‚Éw‰c‚ğQÆ‚µ‚Ä‚¨‚­
+        'æ”¯æ´ã‚’å—ã‘ã‚‰ã‚Œã‚‹ã‹ã©ã†ã‹ã®åˆ¤å®šç”¨ã«é™£å–¶ã‚’å‚ç…§ã—ã¦ãŠã
         my_party = .Party
         
-        'wŠöŒø‰Ê”»’è—p‚É©•ª‚ÌŠK‹‰ƒŒƒxƒ‹‚ğZo
-        If IsSkillAvailable("ŠK‹‰") Then
-            my_cmd_rank = SkillLevel("ŠK‹‰")
+        'æŒ‡æ®åŠ¹æœåˆ¤å®šç”¨ã«è‡ªåˆ†ã®éšç´šãƒ¬ãƒ™ãƒ«ã‚’ç®—å‡º
+        If IsSkillAvailable("éšç´š") Then
+            my_cmd_rank = SkillLevel("éšç´š")
             cmd_rank = my_cmd_rank
         Else
-            If InStr(Name, "(ƒUƒR)") = 0 And InStr(Name, "(”Ä—p)") = 0 Then
+            If InStr(Name, "(ã‚¶ã‚³)") = 0 And InStr(Name, "(æ±ç”¨)") = 0 Then
                 my_cmd_rank = DEFAULT_LEVEL
             Else
                 my_cmd_rank = 0
@@ -917,15 +917,15 @@ Dim i As Integer, j As Integer, k As Integer
             cmd_rank = 0
         End If
         
-        '©•ª‚ªŠ‘®‚µ‚Ä‚¢‚éƒ`[ƒ€–¼
-        team = SkillData("ƒ`[ƒ€")
+        'è‡ªåˆ†ãŒæ‰€å±ã—ã¦ã„ã‚‹ãƒãƒ¼ãƒ å
+        team = SkillData("ãƒãƒ¼ãƒ ")
         
-        'ü‚è‚Ìƒ†ƒjƒbƒg‚ğ’²‚×‚é
+        'å‘¨ã‚Šã®ãƒ¦ãƒ‹ãƒƒãƒˆã‚’èª¿ã¹ã‚‹
         cs_level = DEFAULT_LEVEL
         max_range = 5
         For i = MaxLng(.X - max_range, 1) To MinLng(.X + max_range, MapWidth)
             For j = MaxLng(.Y - max_range, 1) To MinLng(.Y + max_range, MapHeight)
-                'ƒ†ƒjƒbƒgŠÔ‚Ì‹——£‚ª”ÍˆÍ“àH
+                'ãƒ¦ãƒ‹ãƒƒãƒˆé–“ã®è·é›¢ãŒç¯„å›²å†…ï¼Ÿ
                 range = Abs(.X - i) + Abs(.Y - j)
                 If range > max_range Then
                     GoTo NextUnit
@@ -941,16 +941,16 @@ Dim i As Integer, j As Integer, k As Integer
                 End If
                 
                 With u
-                    'ƒ†ƒjƒbƒg‚ÉƒpƒCƒƒbƒg‚ªæ‚Á‚Ä‚¢‚È‚¯‚ê‚Î–³‹
+                    'ãƒ¦ãƒ‹ãƒƒãƒˆã«ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆãŒä¹—ã£ã¦ã„ãªã‘ã‚Œã°ç„¡è¦–
                     If .CountPilot = 0 Then
                         GoTo NextUnit
                     End If
                     
-                    'w‰c‚ªˆê’v‚µ‚Ä‚¢‚È‚¢‚Æx‰‡‚Íó‚¯‚ç‚ê‚È‚¢
+                    'é™£å–¶ãŒä¸€è‡´ã—ã¦ã„ãªã„ã¨æ”¯æ´ã¯å—ã‘ã‚‰ã‚Œãªã„
                     Select Case my_party
-                        Case "–¡•û", "‚m‚o‚b"
+                        Case "å‘³æ–¹", "ï¼®ï¼°ï¼£"
                             Select Case .Party
-                                Case "“G", "’†—§"
+                                Case "æ•µ", "ä¸­ç«‹"
                                     GoTo NextUnit
                             End Select
                         Case Else
@@ -959,39 +959,39 @@ Dim i As Integer, j As Integer, k As Integer
                             End If
                     End Select
                     
-                    '‘Šè‚ª³í‚È”»’f”\—Í‚ğ‚Á‚Ä‚¢‚È‚¢ê‡‚àx‰‡‚Íó‚¯‚ç‚ê‚È‚¢
-                    If .IsConditionSatisfied("–\‘–") Then
+                    'ç›¸æ‰‹ãŒæ­£å¸¸ãªåˆ¤æ–­èƒ½åŠ›ã‚’æŒã£ã¦ã„ãªã„å ´åˆã‚‚æ”¯æ´ã¯å—ã‘ã‚‰ã‚Œãªã„
+                    If .IsConditionSatisfied("æš´èµ°") Then
                         GoTo NextUnit
                     End If
-                    If .IsConditionSatisfied("¬—") Then
+                    If .IsConditionSatisfied("æ··ä¹±") Then
                         GoTo NextUnit
                     End If
                 End With
                 
                 With u.MainPilot(True)
-                    '“¯‚¶ƒ`[ƒ€‚ÉŠ‘®‚µ‚Ä‚¢‚éH
-                    uteam = .SkillData("ƒ`[ƒ€")
+                    'åŒã˜ãƒãƒ¼ãƒ ã«æ‰€å±ã—ã¦ã„ã‚‹ï¼Ÿ
+                    uteam = .SkillData("ãƒãƒ¼ãƒ ")
                     If team <> uteam And uteam <> "" Then
                         GoTo NextUnit
                     End If
                     
-                    'LˆæƒTƒ|[ƒg
+                    'åºƒåŸŸã‚µãƒãƒ¼ãƒˆ
                     If range <= 2 Then
-                        cs_level = MaxDbl(cs_level, .SkillLevel("LˆæƒTƒ|[ƒg"))
+                        cs_level = MaxDbl(cs_level, .SkillLevel("åºƒåŸŸã‚µãƒãƒ¼ãƒˆ"))
                     End If
                     
-                    'wŠöŒø‰Ê
+                    'æŒ‡æ®åŠ¹æœ
                     If my_cmd_rank >= 0 Then
                         If range > .CommandRange Then
                             GoTo NextUnit
                         End If
                         
-                        cmd_rank2 = .SkillLevel("ŠK‹‰")
+                        cmd_rank2 = .SkillLevel("éšç´š")
                         If cmd_rank2 > cmd_rank Then
                             cmd_rank = cmd_rank2
-                            cmd_level = .SkillLevel("wŠö")
+                            cmd_level = .SkillLevel("æŒ‡æ®")
                         ElseIf cmd_rank2 = cmd_rank Then
-                            cmd_level = MaxDbl(cmd_level, .SkillLevel("wŠö"))
+                            cmd_level = MaxDbl(cmd_level, .SkillLevel("æŒ‡æ®"))
                         End If
                     End If
                 End With
@@ -999,35 +999,35 @@ NextUnit:
             Next
         Next
         
-        '’Ç‰ÁƒpƒCƒƒbƒg‚Ìê‡‚Íæ‚Á‚Ä‚¢‚éƒ†ƒjƒbƒg‚ª•Ï‰»‚µ‚Ä‚µ‚Ü‚¤‚±‚Æ‚ª‚ ‚é‚Ì‚Å
-        '•Ï‰»‚µ‚Ä‚µ‚Ü‚Á‚½ê‡‚ÍŒ³‚É–ß‚µ‚Ä‚¨‚­
+        'è¿½åŠ ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®å ´åˆã¯ä¹—ã£ã¦ã„ã‚‹ãƒ¦ãƒ‹ãƒƒãƒˆãŒå¤‰åŒ–ã—ã¦ã—ã¾ã†ã“ã¨ãŒã‚ã‚‹ã®ã§
+        'å¤‰åŒ–ã—ã¦ã—ã¾ã£ãŸå ´åˆã¯å…ƒã«æˆ»ã—ã¦ãŠã
         If Not my_unit Is Unit Then
             my_unit.MainPilot
         End If
         
-        'LˆæƒTƒ|[ƒg‚É‚æ‚éC³
+        'åºƒåŸŸã‚µãƒãƒ¼ãƒˆã«ã‚ˆã‚‹ä¿®æ­£
         If cs_level <> DEFAULT_LEVEL Then
             HitMod2 = HitMod2 + 5 * cs_level
             DodgeMod2 = DodgeMod2 + 5 * cs_level
         End If
         
-        'wŠö”\—Í‚É‚æ‚éC³
+        'æŒ‡æ®èƒ½åŠ›ã«ã‚ˆã‚‹ä¿®æ­£
         Select Case my_cmd_rank
             Case DEFAULT_LEVEL
-                'C³‚È‚µ
+                'ä¿®æ­£ãªã—
             Case 0
                 HitMod2 = HitMod2 + 5 * cmd_level
                 DodgeMod2 = DodgeMod2 + 5 * cmd_level
             Case Else
-                '©•ª‚ªŠK‹‰ƒŒƒxƒ‹‚ğ‚Á‚Ä‚¢‚éê‡‚Í‚æ‚è‚‚¢ŠK‹‰ƒŒƒxƒ‹‚ğ
-                '‚ÂƒpƒCƒƒbƒg‚ÌwŠöŒø‰Ê‚Ì‚İ‚ğó‚¯‚é
+                'è‡ªåˆ†ãŒéšç´šãƒ¬ãƒ™ãƒ«ã‚’æŒã£ã¦ã„ã‚‹å ´åˆã¯ã‚ˆã‚Šé«˜ã„éšç´šãƒ¬ãƒ™ãƒ«ã‚’
+                'æŒã¤ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®æŒ‡æ®åŠ¹æœã®ã¿ã‚’å—ã‘ã‚‹
                 If cmd_rank > my_cmd_rank Then
                     HitMod2 = HitMod2 + 5 * cmd_level
                     DodgeMod2 = DodgeMod2 + 5 * cmd_level
                 End If
         End Select
         
-        'x‰‡Œø‰Ê‚É‚æ‚éC³‚ğ”\—Í’l‚É‰ÁZ
+        'æ”¯æ´åŠ¹æœã«ã‚ˆã‚‹ä¿®æ­£ã‚’èƒ½åŠ›å€¤ã«åŠ ç®—
         Infight = Infight + InfightMod2
         Shooting = Shooting + ShootingMod2
         Hit = Hit + HitMod2
@@ -1035,43 +1035,43 @@ NextUnit:
         Technique = Technique + TechniqueMod2
         Intuition = Intuition + IntuitionMod2
         
-        'M—Š•â³
-        If Not IsOptionDefined("M—Š•â³") Then
+        'ä¿¡é ¼è£œæ­£
+        If Not IsOptionDefined("ä¿¡é ¼è£œæ­£") Then
             Exit Sub
         End If
-        If InStr(Name, "(ƒUƒR)") > 0 Then
+        If InStr(Name, "(ã‚¶ã‚³)") > 0 Then
             Exit Sub
         End If
         
-        'M—Š•â³‚ªd•¡‚·‚éH
-        mod_stack = IsOptionDefined("M—Š•â³d•¡")
+        'ä¿¡é ¼è£œæ­£ãŒé‡è¤‡ã™ã‚‹ï¼Ÿ
+        mod_stack = IsOptionDefined("ä¿¡é ¼è£œæ­£é‡è¤‡")
         
-        '“¯‚¶ƒ†ƒjƒbƒg‚Éæ‚Á‚Ä‚¢‚éƒTƒ|[ƒgƒpƒCƒƒbƒg‚©‚ç‚Ì•â³
+        'åŒã˜ãƒ¦ãƒ‹ãƒƒãƒˆã«ä¹—ã£ã¦ã„ã‚‹ã‚µãƒãƒ¼ãƒˆãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‹ã‚‰ã®è£œæ­£
         If mod_stack Then
             For i = 1 To .CountSupport
                 rel_lv = rel_lv + Relation(.Support(i))
             Next
-            If .IsFeatureAvailable("’Ç‰ÁƒTƒ|[ƒg") Then
+            If .IsFeatureAvailable("è¿½åŠ ã‚µãƒãƒ¼ãƒˆ") Then
                 rel_lv = rel_lv + Relation(.AdditionalSupport)
             End If
         Else
             For i = 1 To .CountSupport
                 rel_lv = MaxLng(Relation(.Support(i)), rel_lv)
             Next
-            If .IsFeatureAvailable("’Ç‰ÁƒTƒ|[ƒg") Then
+            If .IsFeatureAvailable("è¿½åŠ ã‚µãƒãƒ¼ãƒˆ") Then
                 rel_lv = MaxLng(Relation(.AdditionalSupport), rel_lv)
             End If
         End If
         
-        'üˆÍ‚Ìƒ†ƒjƒbƒg‚©‚ç‚Ì•â³
-        If IsOptionDefined("M—Š•â³”ÍˆÍŠg‘å") Then
+        'å‘¨å›²ã®ãƒ¦ãƒ‹ãƒƒãƒˆã‹ã‚‰ã®è£œæ­£
+        If IsOptionDefined("ä¿¡é ¼è£œæ­£ç¯„å›²æ‹¡å¤§") Then
             max_range = 2
         Else
             max_range = 1
         End If
         For i = MaxLng(.X - max_range, 1) To MinLng(.X + max_range, MapWidth)
             For j = MaxLng(.Y - max_range, 1) To MinLng(.Y + max_range, MapHeight)
-                'ƒ†ƒjƒbƒgŠÔ‚Ì‹——£‚ª”ÍˆÍ“àH
+                'ãƒ¦ãƒ‹ãƒƒãƒˆé–“ã®è·é›¢ãŒç¯„å›²å†…ï¼Ÿ
                 range = Abs(.X - i) + Abs(.Y - j)
                 If range > max_range Then
                     GoTo NextUnit2
@@ -1087,16 +1087,16 @@ NextUnit:
                 End If
                 
                 With u
-                    'ƒ†ƒjƒbƒg‚ÉƒpƒCƒƒbƒg‚ªæ‚Á‚Ä‚¢‚È‚¯‚ê‚Î–³‹
+                    'ãƒ¦ãƒ‹ãƒƒãƒˆã«ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆãŒä¹—ã£ã¦ã„ãªã‘ã‚Œã°ç„¡è¦–
                     If .CountPilot = 0 Then
                         GoTo NextUnit2
                     End If
                     
-                    '–¡•û‚©‚Ç‚¤‚©”»’è
+                    'å‘³æ–¹ã‹ã©ã†ã‹åˆ¤å®š
                     Select Case my_party
-                        Case "–¡•û", "‚m‚o‚b"
+                        Case "å‘³æ–¹", "ï¼®ï¼°ï¼£"
                             Select Case .Party
-                                Case "“G", "’†—§"
+                                Case "æ•µ", "ä¸­ç«‹"
                                     GoTo NextUnit2
                             End Select
                         Case Else
@@ -1113,7 +1113,7 @@ NextUnit:
                         For k = 1 To .CountSupport
                             rel_lv = rel_lv + Relation(.Support(k))
                         Next
-                        If .IsFeatureAvailable("’Ç‰ÁƒTƒ|[ƒg") Then
+                        If .IsFeatureAvailable("è¿½åŠ ã‚µãƒãƒ¼ãƒˆ") Then
                             rel_lv = rel_lv + Relation(.AdditionalSupport)
                         End If
                     Else
@@ -1124,7 +1124,7 @@ NextUnit:
                         For k = 1 To .CountSupport
                             rel_lv = MaxLng(Relation(.Support(k)), rel_lv)
                         Next
-                        If .IsFeatureAvailable("’Ç‰ÁƒTƒ|[ƒg") Then
+                        If .IsFeatureAvailable("è¿½åŠ ã‚µãƒãƒ¼ãƒˆ") Then
                             rel_lv = MaxLng(Relation(.AdditionalSupport), rel_lv)
                         End If
                     End If
@@ -1133,13 +1133,13 @@ NextUnit2:
             Next
         Next
         
-        '’Ç‰ÁƒpƒCƒƒbƒg‚Ìê‡‚Íæ‚Á‚Ä‚¢‚éƒ†ƒjƒbƒg‚ª•Ï‰»‚µ‚Ä‚µ‚Ü‚¤‚±‚Æ‚ª‚ ‚é‚Ì‚Å
-        '•Ï‰»‚µ‚Ä‚µ‚Ü‚Á‚½ê‡‚ÍŒ³‚É–ß‚µ‚Ä‚¨‚­
+        'è¿½åŠ ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®å ´åˆã¯ä¹—ã£ã¦ã„ã‚‹ãƒ¦ãƒ‹ãƒƒãƒˆãŒå¤‰åŒ–ã—ã¦ã—ã¾ã†ã“ã¨ãŒã‚ã‚‹ã®ã§
+        'å¤‰åŒ–ã—ã¦ã—ã¾ã£ãŸå ´åˆã¯å…ƒã«æˆ»ã—ã¦ãŠã
         If Not my_unit Is Unit Then
             my_unit.MainPilot
         End If
         
-        'M—Š•â³‚ğİ’è
+        'ä¿¡é ¼è£œæ­£ã‚’è¨­å®š
         Select Case rel_lv
             Case 1
                 MoraleMod = MoraleMod + 5
@@ -1152,16 +1152,16 @@ NextUnit2:
 End Sub
 
 
-' === ƒŒƒxƒ‹•ŒoŒ±’lŠÖ˜Aˆ— ===
+' === ãƒ¬ãƒ™ãƒ«ï¼†çµŒé¨“å€¤é–¢é€£å‡¦ç† ===
 
-'ƒŒƒxƒ‹
+'ãƒ¬ãƒ™ãƒ«
 Public Property Get Level() As Integer
     Level = proLevel
 End Property
 
 Public Property Let Level(ByVal lv As Integer)
     If proLevel = lv Then
-        '•Ï‰»‚È‚µ
+        'å¤‰åŒ–ãªã—
         Exit Property
     End If
     
@@ -1169,7 +1169,7 @@ Public Property Let Level(ByVal lv As Integer)
     Update
 End Property
 
-'ŒoŒ±’l
+'çµŒé¨“å€¤
 Public Property Get Exp() As Long
     Exp = proEXP
 End Property
@@ -1179,30 +1179,30 @@ Dim prev_level As Integer
 
     prev_level = proLevel
     
-    '500‚²‚Æ‚ÉƒŒƒxƒ‹ƒAƒbƒv
+    '500ã”ã¨ã«ãƒ¬ãƒ™ãƒ«ã‚¢ãƒƒãƒ—
     proEXP = new_exp Mod 500
     proLevel = proLevel + new_exp \ 500
     
-    'ŒoŒ±’l‚ª‰º‚ª‚éê‡‚ÍƒŒƒxƒ‹‚ğ‰º‚°‚é
+    'çµŒé¨“å€¤ãŒä¸‹ãŒã‚‹å ´åˆã¯ãƒ¬ãƒ™ãƒ«ã‚’ä¸‹ã’ã‚‹
     If proEXP < 0 Then
         If proLevel > 1 Then
             proEXP = proEXP + 500
             proLevel = proLevel - 1
         Else
-            '‚±‚êˆÈã‚ÍƒŒƒxƒ‹‚ğ‰º‚°‚ç‚ê‚È‚¢‚Ì‚Å
+            'ã“ã‚Œä»¥ä¸Šã¯ãƒ¬ãƒ™ãƒ«ã‚’ä¸‹ã’ã‚‰ã‚Œãªã„ã®ã§
             proEXP = 0
         End If
     End If
     
-    'ƒŒƒxƒ‹ãŒÀƒ`ƒFƒbƒN
+    'ãƒ¬ãƒ™ãƒ«ä¸Šé™ãƒã‚§ãƒƒã‚¯
     If new_exp \ 500 > 0 Then
-        If IsOptionDefined("ƒŒƒxƒ‹ŒÀŠE“Ë”j") Then
-            If proLevel > 999 Then 'ƒŒƒxƒ‹999‚Å‘Å‚¿~‚ß
+        If IsOptionDefined("ãƒ¬ãƒ™ãƒ«é™ç•Œçªç ´") Then
+            If proLevel > 999 Then 'ãƒ¬ãƒ™ãƒ«999ã§æ‰“ã¡æ­¢ã‚
                 proLevel = 999
                 proEXP = 500
             End If
         Else
-            If proLevel > 99 Then 'ƒŒƒxƒ‹99‚Å‘Å‚¿~‚ß
+            If proLevel > 99 Then 'ãƒ¬ãƒ™ãƒ«99ã§æ‰“ã¡æ­¢ã‚
                 proLevel = 99
                 proEXP = 500
             End If
@@ -1215,7 +1215,7 @@ Dim prev_level As Integer
 End Property
 
 
-'‹C—Í
+'æ°—åŠ›
 Public Property Get Morale() As Integer
     Morale = proMorale
 End Property
@@ -1242,33 +1242,33 @@ End Sub
 
 Public Property Get MaxMorale() As Integer
     MaxMorale = 150
-    If IsSkillAvailable("‹C—ÍãŒÀ") Then
-        If IsSkillLevelSpecified("‹C—ÍãŒÀ") Then
-            MaxMorale = MaxLng(SkillLevel("‹C—ÍãŒÀ"), 0)
+    If IsSkillAvailable("æ°—åŠ›ä¸Šé™") Then
+        If IsSkillLevelSpecified("æ°—åŠ›ä¸Šé™") Then
+            MaxMorale = MaxLng(SkillLevel("æ°—åŠ›ä¸Šé™"), 0)
         End If
     End If
 End Property
 
 Public Property Get MinMorale() As Integer
     MinMorale = 50
-    If IsSkillAvailable("‹C—Í‰ºŒÀ") Then
-        If IsSkillLevelSpecified("‹C—Í‰ºŒÀ") Then
-            MinMorale = MaxLng(SkillLevel("‹C—Í‰ºŒÀ"), 0)
+    If IsSkillAvailable("æ°—åŠ›ä¸‹é™") Then
+        If IsSkillLevelSpecified("æ°—åŠ›ä¸‹é™") Then
+            MinMorale = MaxLng(SkillLevel("æ°—åŠ›ä¸‹é™"), 0)
         End If
     End If
 End Property
 
 
-' === ‚r‚o’lŠÖ˜Aˆ— ===
+' === ï¼³ï¼°å€¤é–¢é€£å‡¦ç† ===
 
-'Å‘å‚r‚o
+'æœ€å¤§ï¼³ï¼°
 Public Property Get MaxSP() As Long
 Dim lv As Integer
 
-    '‚r‚o‚È‚µ‚Ìê‡‚ÍƒŒƒxƒ‹‚ÉŠÖ‚í‚ç‚¸0
+    'ï¼³ï¼°ãªã—ã®å ´åˆã¯ãƒ¬ãƒ™ãƒ«ã«é–¢ã‚ã‚‰ãš0
     If Data.SP <= 0 Then
         MaxSP = 0
-        '‚½‚¾‚µ’Ç‰ÁƒpƒCƒƒbƒg‚Ìê‡‚Í‘æ‚PƒpƒCƒƒbƒg‚ÌÅ‘å‚r‚o‚ğg—p
+        'ãŸã ã—è¿½åŠ ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®å ´åˆã¯ç¬¬ï¼‘ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®æœ€å¤§ï¼³ï¼°ã‚’ä½¿ç”¨
         If Not Unit Is Nothing Then
             With Unit
                 If .CountPilot > 0 Then
@@ -1283,46 +1283,46 @@ Dim lv As Integer
         Exit Property
     End If
     
-    'ƒŒƒxƒ‹‚É‚æ‚éã¸’l
+    'ãƒ¬ãƒ™ãƒ«ã«ã‚ˆã‚‹ä¸Šæ˜‡å€¤
     lv = Level
     If lv > 99 Then
         lv = 100
     End If
-    lv = lv + SkillLevel("’Ç‰ÁƒŒƒxƒ‹")
+    lv = lv + SkillLevel("è¿½åŠ ãƒ¬ãƒ™ãƒ«")
     If lv > 40 Then
         MaxSP = lv + 40
     Else
         MaxSP = 2 * lv
     End If
-    If IsSkillAvailable("‚r‚o’á¬’·") Then
+    If IsSkillAvailable("ï¼³ï¼°ä½æˆé•·") Then
         MaxSP = MaxSP \ 2
-    ElseIf IsSkillAvailable("‚r‚o‚¬’·") Then
+    ElseIf IsSkillAvailable("ï¼³ï¼°é«˜æˆé•·") Then
         MaxSP = 1.5 * MaxSP
     End If
-    If IsOptionDefined("‚r‚o’á¬’·") Then
+    If IsOptionDefined("ï¼³ï¼°ä½æˆé•·") Then
         MaxSP = MaxSP \ 2
     End If
     
-    'Šî–{’l‚ğ’Ç‰Á
+    'åŸºæœ¬å€¤ã‚’è¿½åŠ 
     MaxSP = MaxSP + Data.SP
     
-    '”\—Í‚t‚o
-    MaxSP = MaxSP + SkillLevel("‚r‚o‚t‚o")
+    'èƒ½åŠ›ï¼µï¼°
+    MaxSP = MaxSP + SkillLevel("ï¼³ï¼°ï¼µï¼°")
     
-    '”\—Í‚c‚n‚v‚m
-    MaxSP = MaxSP - SkillLevel("‚r‚o‚c‚n‚v‚m")
+    'èƒ½åŠ›ï¼¤ï¼¯ï¼·ï¼®
+    MaxSP = MaxSP - SkillLevel("ï¼³ï¼°ï¼¤ï¼¯ï¼·ï¼®")
     
-    'ãŒÀ‚ğ’´‚¦‚È‚¢‚æ‚¤‚É
+    'ä¸Šé™ã‚’è¶…ãˆãªã„ã‚ˆã†ã«
     If MaxSP > 9999 Then
         MaxSP = 9999
     End If
 End Property
 
-'‚r‚o’l
+'ï¼³ï¼°å€¤
 Public Property Get SP() As Long
     SP = proSP
     
-    '’Ç‰ÁƒpƒCƒƒbƒg‚©‚Ç‚¤‚©”»’è
+    'è¿½åŠ ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‹ã©ã†ã‹åˆ¤å®š
     
     If Unit Is Nothing Then
         Exit Property
@@ -1340,9 +1340,9 @@ Public Property Get SP() As Long
             Exit Property
         End If
         
-        '’Ç‰ÁƒpƒCƒƒbƒg‚¾‚Á‚½‚Ì‚Å‘æ‚PƒpƒCƒƒbƒg‚Ì‚r‚o’l‚ğ‘ã‚í‚è‚Ég‚¤
+        'è¿½åŠ ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã ã£ãŸã®ã§ç¬¬ï¼‘ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®ï¼³ï¼°å€¤ã‚’ä»£ã‚ã‚Šã«ä½¿ã†
         If Data.SP > 0 Then
-            '‚r‚o‚ğ‚Âê‡‚ÍÁ”ï—Ê‚ğˆê’v‚³‚¹‚é
+            'ï¼³ï¼°ã‚’æŒã¤å ´åˆã¯æ¶ˆè²»é‡ã‚’ä¸€è‡´ã•ã›ã‚‹
             With .Pilot(1)
                 If .MaxSP > 0 Then
                     proSP = MaxSP * .SP0 \ .MaxSP
@@ -1350,7 +1350,7 @@ Public Property Get SP() As Long
                 End If
             End With
         Else
-            '‚r‚o‚ğ‚½‚È‚¢ê‡‚Í‚»‚Ì‚Ü‚Üg‚¤
+            'ï¼³ï¼°ã‚’æŒãŸãªã„å ´åˆã¯ãã®ã¾ã¾ä½¿ã†
             SP = .Pilot(1).SP0
         End If
     End With
@@ -1368,7 +1368,7 @@ Dim prev_sp As Long
         proSP = new_sp
     End If
     
-    '’Ç‰ÁƒpƒCƒƒbƒg‚©‚Ç‚¤‚©”»’è
+    'è¿½åŠ ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‹ã©ã†ã‹åˆ¤å®š
     
     If Unit Is Nothing Then
         Exit Property
@@ -1386,16 +1386,16 @@ Dim prev_sp As Long
             Exit Property
         End If
         
-        '’Ç‰ÁƒpƒCƒƒbƒg‚¾‚Á‚½‚Ì‚Å‘æ‚PƒpƒCƒƒbƒg‚Ì‚r‚o’l‚ğ‘ã‚í‚è‚Ég‚¤
+        'è¿½åŠ ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã ã£ãŸã®ã§ç¬¬ï¼‘ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®ï¼³ï¼°å€¤ã‚’ä»£ã‚ã‚Šã«ä½¿ã†
         With .Pilot(1)
             If Data.SP > 0 Then
-                '’Ç‰ÁƒpƒCƒƒbƒg‚ª‚r‚o‚ğ‚Âê‡‚Í‘æ‚PƒpƒCƒƒbƒg‚ÆÁ”ï—¦‚ğˆê’v‚³‚¹‚é
+                'è¿½åŠ ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆãŒï¼³ï¼°ã‚’æŒã¤å ´åˆã¯ç¬¬ï¼‘ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã¨æ¶ˆè²»ç‡ã‚’ä¸€è‡´ã•ã›ã‚‹
                 If .MaxSP > 0 Then
                     .SP0 = .MaxSP * proSP \ MaxSP
                     proSP = MaxSP * .SP0 \ .MaxSP
                 End If
             Else
-                '’Ç‰ÁƒpƒCƒƒbƒg‚ª‚r‚o‚ğ‚½‚È‚¢ê‡‚Í‘æ‚PƒpƒCƒƒbƒg‚Ì‚r‚o’l‚ğ‚»‚Ì‚Ü‚Üg‚¤
+                'è¿½åŠ ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆãŒï¼³ï¼°ã‚’æŒãŸãªã„å ´åˆã¯ç¬¬ï¼‘ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®ï¼³ï¼°å€¤ã‚’ãã®ã¾ã¾ä½¿ã†
                 If new_sp > .MaxSP Then
                     .SP0 = .MaxSP
                 ElseIf new_sp < 0 Then
@@ -1417,17 +1417,17 @@ Public Property Let SP0(ByVal new_sp As Long)
 End Property
 
 
-' === —ì—ÍŠÖ˜Aˆ— ===
+' === éœŠåŠ›é–¢é€£å‡¦ç† ===
 
-'—ì—ÍÅ‘å’l
+'éœŠåŠ›æœ€å¤§å€¤
 Public Function MaxPlana() As Long
 Dim lv As Integer
 
-    If Not IsSkillAvailable("—ì—Í") Then
-        '—ì—Í”\—Í‚ğ‚½‚È‚¢ê‡
+    If Not IsSkillAvailable("éœŠåŠ›") Then
+        'éœŠåŠ›èƒ½åŠ›ã‚’æŒãŸãªã„å ´åˆ
         MaxPlana = 0
         
-        '’Ç‰ÁƒpƒCƒƒbƒg‚Ìê‡‚Í‘æ‚PƒpƒCƒƒbƒg‚Ì—ì—Í‚ğ‘ã‚í‚è‚Ég‚¤
+        'è¿½åŠ ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®å ´åˆã¯ç¬¬ï¼‘ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®éœŠåŠ›ã‚’ä»£ã‚ã‚Šã«ä½¿ã†
         If Not Unit Is Nothing Then
             With Unit
                 If .CountPilot > 0 Then
@@ -1443,25 +1443,25 @@ Dim lv As Integer
         Exit Function
     End If
     
-    '—ì—ÍŠî–{’l
-    MaxPlana = SkillLevel("—ì—Í")
+    'éœŠåŠ›åŸºæœ¬å€¤
+    MaxPlana = SkillLevel("éœŠåŠ›")
     
-    'ƒŒƒxƒ‹‚É‚æ‚é‘‰Á•ª
+    'ãƒ¬ãƒ™ãƒ«ã«ã‚ˆã‚‹å¢—åŠ åˆ†
     lv = MinLng(Level, 100)
-    If IsSkillAvailable("—ì—Í¬’·") Then
-        MaxPlana = MaxPlana + 1.5 * lv * (10 + SkillLevel("—ì—Í¬’·")) \ 10
+    If IsSkillAvailable("éœŠåŠ›æˆé•·") Then
+        MaxPlana = MaxPlana + 1.5 * lv * (10 + SkillLevel("éœŠåŠ›æˆé•·")) \ 10
     Else
         MaxPlana = MaxPlana + 1.5 * lv
     End If
 End Function
 
-'—ì—Í
+'éœŠåŠ›
 Public Property Get Plana() As Long
-    If IsSkillAvailable("—ì—Í") Then
+    If IsSkillAvailable("éœŠåŠ›") Then
         Plana = proPlana
     End If
     
-    '’Ç‰ÁƒpƒCƒƒbƒg‚©‚Ç‚¤‚©”»’è
+    'è¿½åŠ ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‹ã©ã†ã‹åˆ¤å®š
     
     If Unit Is Nothing Then
         Exit Property
@@ -1479,8 +1479,8 @@ Public Property Get Plana() As Long
             Exit Property
         End If
         
-        '’Ç‰ÁƒpƒCƒƒbƒg‚¾‚Á‚½‚Ì‚Å‘æ‚PƒpƒCƒƒbƒg‚Ì—ì—Í‚ğ‘ã‚í‚è‚Ég‚¤
-        If IsSkillAvailable("—ì—Í") Then
+        'è¿½åŠ ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã ã£ãŸã®ã§ç¬¬ï¼‘ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®éœŠåŠ›ã‚’ä»£ã‚ã‚Šã«ä½¿ã†
+        If IsSkillAvailable("éœŠåŠ›") Then
             With .Pilot(1)
                 If .MaxPlana > 0 Then
                     proPlana = MaxPlana * .Plana0 \ .MaxPlana
@@ -1505,7 +1505,7 @@ Dim prev_plana As Long
         proPlana = new_plana
     End If
     
-    '’Ç‰ÁƒpƒCƒƒbƒg‚©‚Ç‚¤‚©”»’è
+    'è¿½åŠ ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‹ã©ã†ã‹åˆ¤å®š
     
     If Unit Is Nothing Then
         Exit Property
@@ -1523,16 +1523,16 @@ Dim prev_plana As Long
             Exit Property
         End If
         
-        '’Ç‰ÁƒpƒCƒƒbƒg‚¾‚Á‚½‚Ì‚Å‘æ‚PƒpƒCƒƒbƒg‚Ì—ì—Í’l‚ğ‘ã‚í‚è‚Ég‚¤
+        'è¿½åŠ ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã ã£ãŸã®ã§ç¬¬ï¼‘ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®éœŠåŠ›å€¤ã‚’ä»£ã‚ã‚Šã«ä½¿ã†
         With .Pilot(1)
-            If IsSkillAvailable("—ì—Í") Then
-                '’Ç‰ÁƒpƒCƒƒbƒg‚ª—ì—Í‚ğ‚Âê‡‚Í‘æ‚PƒpƒCƒƒbƒg‚ÆÁ”ï—¦‚ğˆê’v‚³‚¹‚é
+            If IsSkillAvailable("éœŠåŠ›") Then
+                'è¿½åŠ ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆãŒéœŠåŠ›ã‚’æŒã¤å ´åˆã¯ç¬¬ï¼‘ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã¨æ¶ˆè²»ç‡ã‚’ä¸€è‡´ã•ã›ã‚‹
                 If .MaxSP > 0 Then
                     .Plana0 = .MaxPlana * proPlana \ MaxPlana
                     proPlana = MaxPlana * .Plana0 \ .MaxPlana
                 End If
             Else
-                '’Ç‰ÁƒpƒCƒƒbƒg‚ª—ì—Í‚ğ‚½‚È‚¢ê‡‚Í‘æ‚PƒpƒCƒƒbƒg‚Ì—ì—Í’l‚ğ‚»‚Ì‚Ü‚Üg‚¤
+                'è¿½åŠ ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆãŒéœŠåŠ›ã‚’æŒãŸãªã„å ´åˆã¯ç¬¬ï¼‘ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®éœŠåŠ›å€¤ã‚’ãã®ã¾ã¾ä½¿ã†
                 If new_plana > .MaxPlana Then
                     .Plana0 = .MaxPlana
                 ElseIf new_plana < 0 Then
@@ -1554,14 +1554,14 @@ Public Property Let Plana0(ByVal new_plana As Long)
 End Property
 
 
-' === “Áê”\—ÍŠÖ˜Aˆ— ===
+' === ç‰¹æ®Šèƒ½åŠ›é–¢é€£å‡¦ç† ===
 
-'“Áê”\—Í‚Ì‘”
+'ç‰¹æ®Šèƒ½åŠ›ã®ç·æ•°
 Public Function CountSkill() As Integer
     CountSkill = colSkill.Count
 End Function
 
-'“Áê”\—Í
+'ç‰¹æ®Šèƒ½åŠ›
 Public Function Skill(Index As Variant) As String
 Dim sd As SkillData
 
@@ -1569,7 +1569,7 @@ Dim sd As SkillData
     Skill = sd.Name
 End Function
 
-'Œ»İ‚ÌƒŒƒxƒ‹‚É‚¨‚¢‚Ä“Áê”\—Í sname ‚ªg—p‰Â”\‚©
+'ç¾åœ¨ã®ãƒ¬ãƒ™ãƒ«ã«ãŠã„ã¦ç‰¹æ®Šèƒ½åŠ› sname ãŒä½¿ç”¨å¯èƒ½ã‹
 Public Function IsSkillAvailable(sname As String) As Boolean
 Dim sd As SkillData
 
@@ -1580,7 +1580,7 @@ Dim sd As SkillData
     
 ErrorHandler:
     
-    '“Áê”\—Í•t‰Á•‹­‰»‚É‚æ‚éC³
+    'ç‰¹æ®Šèƒ½åŠ›ä»˜åŠ ï¼†å¼·åŒ–ã«ã‚ˆã‚‹ä¿®æ­£
     If Not Unit Is Nothing Then
         With Unit
             If .CountCondition = 0 Then
@@ -1594,22 +1594,22 @@ ErrorHandler:
                 Exit Function
             End If
 
-            If .IsConditionSatisfied(sname & "•t‰Á") Then
+            If .IsConditionSatisfied(sname & "ä»˜åŠ ") Then
                 IsSkillAvailable = True
                 Exit Function
-            ElseIf .IsConditionSatisfied(sname & "•t‰Á‚Q") Then
+            ElseIf .IsConditionSatisfied(sname & "ä»˜åŠ ï¼’") Then
                 IsSkillAvailable = True
                 Exit Function
             End If
             
-            If .IsConditionSatisfied(sname & "‹­‰»") Then
-                If .ConditionLevel(sname & "‹­‰»") > 0 Then
+            If .IsConditionSatisfied(sname & "å¼·åŒ–") Then
+                If .ConditionLevel(sname & "å¼·åŒ–") > 0 Then
                     IsSkillAvailable = True
                     Exit Function
                 End If
             End If
-            If .IsConditionSatisfied(sname & "‹­‰»‚Q") Then
-                If .ConditionLevel(sname & "‹­‰»‚Q") > 0 Then
+            If .IsConditionSatisfied(sname & "å¼·åŒ–ï¼’") Then
+                If .ConditionLevel(sname & "å¼·åŒ–ï¼’") > 0 Then
                     IsSkillAvailable = True
                     Exit Function
                 End If
@@ -1620,8 +1620,8 @@ ErrorHandler:
     IsSkillAvailable = False
 End Function
 
-'Œ»İ‚ÌƒŒƒxƒ‹‚É‚¨‚¢‚Ä“Áê”\—Í sname ‚ªg—p‰Â”\‚©
-'(•t‰Á‚É‚æ‚é‰e‹¿‚ğ–³‹‚µ‚½ê‡)
+'ç¾åœ¨ã®ãƒ¬ãƒ™ãƒ«ã«ãŠã„ã¦ç‰¹æ®Šèƒ½åŠ› sname ãŒä½¿ç”¨å¯èƒ½ã‹
+'(ä»˜åŠ ã«ã‚ˆã‚‹å½±éŸ¿ã‚’ç„¡è¦–ã—ãŸå ´åˆ)
 Public Function IsSkillAvailable2(sname As String) As Boolean
 Dim sd As SkillData
 
@@ -1634,9 +1634,9 @@ ErrorHandler:
     IsSkillAvailable2 = False
 End Function
 
-'Œ»İ‚ÌƒŒƒxƒ‹‚É‚¨‚¯‚é“Áê”\—Í Index ‚ÌƒŒƒxƒ‹
-'ƒf[ƒ^‚ÅƒŒƒxƒ‹w’è‚ª‚È‚¢ê‡‚ÍƒŒƒxƒ‹ 1
-'“Áê”\—Í‚ªg—p•s”\‚Ìê‡‚ÍƒŒƒxƒ‹ 0
+'ç¾åœ¨ã®ãƒ¬ãƒ™ãƒ«ã«ãŠã‘ã‚‹ç‰¹æ®Šèƒ½åŠ› Index ã®ãƒ¬ãƒ™ãƒ«
+'ãƒ‡ãƒ¼ã‚¿ã§ãƒ¬ãƒ™ãƒ«æŒ‡å®šãŒãªã„å ´åˆã¯ãƒ¬ãƒ™ãƒ« 1
+'ç‰¹æ®Šèƒ½åŠ›ãŒä½¿ç”¨ä¸èƒ½ã®å ´åˆã¯ãƒ¬ãƒ™ãƒ« 0
 Public Function SkillLevel(Index As Variant, Optional ref_mode As String) As Double
 Dim sname As String, sd As SkillData
 
@@ -1660,21 +1660,21 @@ ErrorHandler:
         End If
     End If
     
-    If ref_mode = "C³’l" Then
+    If ref_mode = "ä¿®æ­£å€¤" Then
         SkillLevel = 0
-    ElseIf ref_mode = "Šî–{’l" Then
+    ElseIf ref_mode = "åŸºæœ¬å€¤" Then
         Exit Function
     End If
     
-    'd•¡‰Â”\‚È”\—Í‚Í“Áê”\—Í•t‰Á‚Å’u‚«Š·‚¦‚ç‚ê‚±‚Æ‚Í‚È‚¢
+    'é‡è¤‡å¯èƒ½ãªèƒ½åŠ›ã¯ç‰¹æ®Šèƒ½åŠ›ä»˜åŠ ã§ç½®ãæ›ãˆã‚‰ã‚Œã“ã¨ã¯ãªã„
     Select Case sname
-        Case "ƒnƒ“ƒ^[", "‚r‚oÁ”ïŒ¸­", "ƒXƒyƒVƒƒƒ‹ƒpƒ[©“®”­“®"
+        Case "ãƒãƒ³ã‚¿ãƒ¼", "ï¼³ï¼°æ¶ˆè²»æ¸›å°‘", "ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼è‡ªå‹•ç™ºå‹•"
             If IsNumeric(Index) Then
                 Exit Function
             End If
     End Select
     
-    '“Áê”\—Í•t‰Á•‹­‰»‚É‚æ‚éC³
+    'ç‰¹æ®Šèƒ½åŠ›ä»˜åŠ ï¼†å¼·åŒ–ã«ã‚ˆã‚‹ä¿®æ­£
     If Unit Is Nothing Then
         Exit Function
     End If
@@ -1690,28 +1690,28 @@ ErrorHandler:
             Exit Function
         End If
         
-        If .IsConditionSatisfied(sname & "•t‰Á") Then
-            SkillLevel = .ConditionLevel(sname & "•t‰Á")
+        If .IsConditionSatisfied(sname & "ä»˜åŠ ") Then
+            SkillLevel = .ConditionLevel(sname & "ä»˜åŠ ")
             If SkillLevel = DEFAULT_LEVEL Then
                 SkillLevel = 1
             End If
-        ElseIf .IsConditionSatisfied(sname & "•t‰Á‚Q") Then
-            SkillLevel = .ConditionLevel(sname & "•t‰Á‚Q")
+        ElseIf .IsConditionSatisfied(sname & "ä»˜åŠ ï¼’") Then
+            SkillLevel = .ConditionLevel(sname & "ä»˜åŠ ï¼’")
             If SkillLevel = DEFAULT_LEVEL Then
                 SkillLevel = 1
             End If
         End If
         
-        If .IsConditionSatisfied(sname & "‹­‰»") Then
-            SkillLevel = SkillLevel + .ConditionLevel(sname & "‹­‰»")
+        If .IsConditionSatisfied(sname & "å¼·åŒ–") Then
+            SkillLevel = SkillLevel + .ConditionLevel(sname & "å¼·åŒ–")
         End If
-        If .IsConditionSatisfied(sname & "‹­‰»‚Q") Then
-            SkillLevel = SkillLevel + .ConditionLevel(sname & "‹­‰»‚Q")
+        If .IsConditionSatisfied(sname & "å¼·åŒ–ï¼’") Then
+            SkillLevel = SkillLevel + .ConditionLevel(sname & "å¼·åŒ–ï¼’")
         End If
     End With
 End Function
 
-'“Áê”\—Í Index ‚ÉƒŒƒxƒ‹w’è‚ª‚È‚³‚ê‚Ä‚¢‚é‚©”»’è
+'ç‰¹æ®Šèƒ½åŠ› Index ã«ãƒ¬ãƒ™ãƒ«æŒ‡å®šãŒãªã•ã‚Œã¦ã„ã‚‹ã‹åˆ¤å®š
 Public Function IsSkillLevelSpecified(Index As Variant) As Boolean
 Dim sname As String, sd As SkillData
 
@@ -1736,7 +1736,7 @@ ErrorHandler:
         End If
     End If
     
-    '“Áê”\—Í•t‰Á•‹­‰»‚É‚æ‚éC³
+    'ç‰¹æ®Šèƒ½åŠ›ä»˜åŠ ï¼†å¼·åŒ–ã«ã‚ˆã‚‹ä¿®æ­£
     If Unit Is Nothing Then
         Exit Function
     End If
@@ -1752,24 +1752,24 @@ ErrorHandler:
             Exit Function
         End If
         
-        If .IsConditionSatisfied(sname & "•t‰Á") Then
-            If .ConditionLevel(sname & "•t‰Á") <> DEFAULT_LEVEL Then
+        If .IsConditionSatisfied(sname & "ä»˜åŠ ") Then
+            If .ConditionLevel(sname & "ä»˜åŠ ") <> DEFAULT_LEVEL Then
                 IsSkillLevelSpecified = True
             End If
-        ElseIf .IsConditionSatisfied(sname & "•t‰Á‚Q") Then
-            If .ConditionLevel(sname & "•t‰Á‚Q") <> DEFAULT_LEVEL Then
+        ElseIf .IsConditionSatisfied(sname & "ä»˜åŠ ï¼’") Then
+            If .ConditionLevel(sname & "ä»˜åŠ ï¼’") <> DEFAULT_LEVEL Then
                 IsSkillLevelSpecified = True
             End If
         End If
-        If .IsConditionSatisfied(sname & "‹­‰»") Then
+        If .IsConditionSatisfied(sname & "å¼·åŒ–") Then
             IsSkillLevelSpecified = True
-        ElseIf .IsConditionSatisfied(sname & "‹­‰»‚Q") Then
+        ElseIf .IsConditionSatisfied(sname & "å¼·åŒ–ï¼’") Then
             IsSkillLevelSpecified = True
         End If
     End With
 End Function
 
-'“Áê”\—Í‚Ìƒf[ƒ^
+'ç‰¹æ®Šèƒ½åŠ›ã®ãƒ‡ãƒ¼ã‚¿
 Public Function SkillData(Index As Variant) As String
 Dim sname As String, sd As SkillData
 
@@ -1790,15 +1790,15 @@ ErrorHandler:
         End If
     End If
     
-    'd•¡‰Â”\‚È”\—Í‚Í“Áê”\—Í•t‰Á‚Å’u‚«Š·‚¦‚ç‚ê‚±‚Æ‚Í‚È‚¢
+    'é‡è¤‡å¯èƒ½ãªèƒ½åŠ›ã¯ç‰¹æ®Šèƒ½åŠ›ä»˜åŠ ã§ç½®ãæ›ãˆã‚‰ã‚Œã“ã¨ã¯ãªã„
     Select Case sname
-        Case "ƒnƒ“ƒ^[", "‚r‚oÁ”ïŒ¸­", "ƒXƒyƒVƒƒƒ‹ƒpƒ[©“®”­“®"
+        Case "ãƒãƒ³ã‚¿ãƒ¼", "ï¼³ï¼°æ¶ˆè²»æ¸›å°‘", "ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼è‡ªå‹•ç™ºå‹•"
             If IsNumeric(Index) Then
                 Exit Function
             End If
     End Select
     
-    '“Áê”\—Í•t‰Á•‹­‰»‚É‚æ‚éC³
+    'ç‰¹æ®Šèƒ½åŠ›ä»˜åŠ ï¼†å¼·åŒ–ã«ã‚ˆã‚‹ä¿®æ­£
     If Unit Is Nothing Then
         Exit Function
     End If
@@ -1814,49 +1814,49 @@ ErrorHandler:
             Exit Function
         End If
         
-        If .IsConditionSatisfied(sname & "•t‰Á") Then
-            SkillData = .ConditionData(sname & "•t‰Á")
-        ElseIf .IsConditionSatisfied(sname & "•t‰Á‚Q") Then
-            SkillData = .ConditionData(sname & "•t‰Á‚Q")
+        If .IsConditionSatisfied(sname & "ä»˜åŠ ") Then
+            SkillData = .ConditionData(sname & "ä»˜åŠ ")
+        ElseIf .IsConditionSatisfied(sname & "ä»˜åŠ ï¼’") Then
+            SkillData = .ConditionData(sname & "ä»˜åŠ ï¼’")
         End If
         
-        If .IsConditionSatisfied(sname & "‹­‰»") Then
-            If Len(.ConditionData(sname & "‹­‰»")) > 0 Then
-                SkillData = .ConditionData(sname & "‹­‰»")
+        If .IsConditionSatisfied(sname & "å¼·åŒ–") Then
+            If Len(.ConditionData(sname & "å¼·åŒ–")) > 0 Then
+                SkillData = .ConditionData(sname & "å¼·åŒ–")
             End If
         End If
-        If .IsConditionSatisfied(sname & "‹­‰»‚Q") Then
-            If Len(.ConditionData(sname & "‹­‰»‚Q")) > 0 Then
-                SkillData = .ConditionData(sname & "‹­‰»‚Q")
+        If .IsConditionSatisfied(sname & "å¼·åŒ–ï¼’") Then
+            If Len(.ConditionData(sname & "å¼·åŒ–ï¼’")) > 0 Then
+                SkillData = .ConditionData(sname & "å¼·åŒ–ï¼’")
             End If
         End If
     End With
 End Function
 
-'“Áê”\—Í‚Ì–¼Ì
+'ç‰¹æ®Šèƒ½åŠ›ã®åç§°
 Public Function SkillName(Index As Variant) As String
 Dim sd As SkillData, sname As String
 Dim buf As String, i As Integer
 
-    'ƒpƒCƒƒbƒg‚ªŠ—L‚µ‚Ä‚¢‚é“Áê”\—Í‚Ì’†‚©‚çŒŸõ
+    'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆãŒæ‰€æœ‰ã—ã¦ã„ã‚‹ç‰¹æ®Šèƒ½åŠ›ã®ä¸­ã‹ã‚‰æ¤œç´¢
     On Error GoTo ErrorHandler
     Set sd = colSkill.Item(Index)
     With sd
         sname = .Name
         
-        '”\—Í‹­‰»Œn‚Í”ñ•\¦
-        If Right$(sname, 2) = "‚t‚o" Or Right$(sname, 4) = "‚c‚n‚v‚m" Then
-            SkillName = "”ñ•\¦"
+        'èƒ½åŠ›å¼·åŒ–ç³»ã¯éè¡¨ç¤º
+        If Right$(sname, 2) = "ï¼µï¼°" Or Right$(sname, 4) = "ï¼¤ï¼¯ï¼·ï¼®" Then
+            SkillName = "éè¡¨ç¤º"
             Exit Function
         End If
         
         Select Case sname
-            Case "’Ç‰ÁƒŒƒxƒ‹", "ƒƒbƒZ[ƒW", "–‚—ÍŠ—L"
-                '”ñ•\¦‚Ì”\—Í
-                SkillName = "”ñ•\¦"
+            Case "è¿½åŠ ãƒ¬ãƒ™ãƒ«", "ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸", "é­”åŠ›æ‰€æœ‰"
+                'éè¡¨ç¤ºã®èƒ½åŠ›
+                SkillName = "éè¡¨ç¤º"
                 Exit Function
-            Case "“¾ˆÓ‹Z", "•s“¾è"
-                '•Ê–¼w’è‚ª‘¶İ‚µ‚È‚¢”\—Í
+            Case "å¾—æ„æŠ€", "ä¸å¾—æ‰‹"
+                'åˆ¥åæŒ‡å®šãŒå­˜åœ¨ã—ãªã„èƒ½åŠ›
                 SkillName = sname
                 Exit Function
         End Select
@@ -1864,17 +1864,17 @@ Dim buf As String, i As Integer
         If Len(.StrData) > 0 Then
             SkillName = LIndex(.StrData, 1)
             Select Case SkillName
-                Case "”ñ•\¦"
+                Case "éè¡¨ç¤º"
                     Exit Function
-                Case "‰ğà"
-                    SkillName = "”ñ•\¦"
+                Case "è§£èª¬"
+                    SkillName = "éè¡¨ç¤º"
                     Exit Function
             End Select
         Else
             SkillName = sname
         End If
         
-        'ƒŒƒxƒ‹w’è
+        'ãƒ¬ãƒ™ãƒ«æŒ‡å®š
         If .Level <> DEFAULT_LEVEL _
             And InStr(SkillName, "Lv") = 0 _
             And Left$(SkillName, 1) <> "(" _
@@ -1893,39 +1893,39 @@ ErrorHandler:
         End If
     End If
     
-    If sname = "‘Ï‹v" Then
-        If IsOptionDefined("–hŒä—Í¬’·") _
-            Or IsOptionDefined("–hŒä—ÍƒŒƒxƒ‹ƒAƒbƒv") _
+    If sname = "è€ä¹…" Then
+        If IsOptionDefined("é˜²å¾¡åŠ›æˆé•·") _
+            Or IsOptionDefined("é˜²å¾¡åŠ›ãƒ¬ãƒ™ãƒ«ã‚¢ãƒƒãƒ—") _
         Then
-            '–hŒä—Í¬’·ƒIƒvƒVƒ‡ƒ“g—p‚É‚Í‘Ï‹v”\—Í‚ğ”ñ•\¦
-            SkillName = "”ñ•\¦"
+            'é˜²å¾¡åŠ›æˆé•·ã‚ªãƒ—ã‚·ãƒ§ãƒ³ä½¿ç”¨æ™‚ã«ã¯è€ä¹…èƒ½åŠ›ã‚’éè¡¨ç¤º
+            SkillName = "éè¡¨ç¤º"
             Exit Function
         End If
     End If
     
-    '“¾ˆÓ‹Z••s“¾è‚Í–¼Ì•ÏX‚³‚ê‚È‚¢
+    'å¾—æ„æŠ€ï¼†ä¸å¾—æ‰‹ã¯åç§°å¤‰æ›´ã•ã‚Œãªã„
     Select Case sname
-        Case "“¾ˆÓ‹Z", "•s“¾è"
+        Case "å¾—æ„æŠ€", "ä¸å¾—æ‰‹"
             SkillName = sname
             Exit Function
     End Select
     
-    'SetSkillƒRƒ}ƒ“ƒh‚Å••ˆó‚³‚ê‚Ä‚¢‚éê‡
+    'SetSkillã‚³ãƒãƒ³ãƒ‰ã§å°å°ã•ã‚Œã¦ã„ã‚‹å ´åˆ
     If SkillName = "" Then
         If IsGlobalVariableDefined("Ability(" & ID & "," & sname & ")") Then
-            'ƒIƒŠƒWƒiƒ‹‚Ì–¼Ì‚ğg—p
+            'ã‚ªãƒªã‚¸ãƒŠãƒ«ã®åç§°ã‚’ä½¿ç”¨
             SkillName = Data.SkillName(Level, sname)
             
-            If InStr(SkillName, "”ñ•\¦") > 0 Then
-                SkillName = "”ñ•\¦"
+            If InStr(SkillName, "éè¡¨ç¤º") > 0 Then
+                SkillName = "éè¡¨ç¤º"
                 Exit Function
             End If
         End If
     End If
     
-    'd•¡‰Â”\‚È”\—Í‚Í“Áê”\—Í•t‰Á‚Å–¼Ì‚ª’u‚«Š·‚¦‚ç‚ê‚±‚Æ‚Í‚È‚¢
+    'é‡è¤‡å¯èƒ½ãªèƒ½åŠ›ã¯ç‰¹æ®Šèƒ½åŠ›ä»˜åŠ ã§åç§°ãŒç½®ãæ›ãˆã‚‰ã‚Œã“ã¨ã¯ãªã„
     Select Case sname
-        Case "ƒnƒ“ƒ^[", "ƒXƒyƒVƒƒƒ‹ƒpƒ[©“®”­“®"
+        Case "ãƒãƒ³ã‚¿ãƒ¼", "ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼è‡ªå‹•ç™ºå‹•"
             If IsNumeric(Index) Then
                 If Left$(SkillName, 1) = "(" Then
                     SkillName = Mid$(SkillName, 2)
@@ -1933,7 +1933,7 @@ ErrorHandler:
                 End If
                 Exit Function
             End If
-        Case "‚r‚oÁ”ïŒ¸­"
+        Case "ï¼³ï¼°æ¶ˆè²»æ¸›å°‘"
             If IsNumeric(Index) Then
                 If Left$(SkillName, 1) = "(" Then
                     SkillName = Mid$(SkillName, 2)
@@ -1947,14 +1947,14 @@ ErrorHandler:
             End If
     End Select
     
-    '“Áê”\—Í•t‰Á•‹­‰»‚É‚æ‚éC³
+    'ç‰¹æ®Šèƒ½åŠ›ä»˜åŠ ï¼†å¼·åŒ–ã«ã‚ˆã‚‹ä¿®æ­£
     If Not Unit Is Nothing Then
         With Unit
             If .CountCondition > 0 And .CountPilot > 0 Then
                 If .MainPilot Is Me Or .Pilot(1) Is Me Then
-                    'ƒ†ƒjƒbƒg—p“Áê”\—Í‚É‚æ‚é•t‰Á
-                    If .IsConditionSatisfied(sname & "•t‰Á‚Q") Then
-                        buf = LIndex(.ConditionData(sname & "•t‰Á‚Q"), 1)
+                    'ãƒ¦ãƒ‹ãƒƒãƒˆç”¨ç‰¹æ®Šèƒ½åŠ›ã«ã‚ˆã‚‹ä»˜åŠ 
+                    If .IsConditionSatisfied(sname & "ä»˜åŠ ï¼’") Then
+                        buf = LIndex(.ConditionData(sname & "ä»˜åŠ ï¼’"), 1)
                         
                         If buf <> "" Then
                             SkillName = buf
@@ -1962,23 +1962,23 @@ ErrorHandler:
                             SkillName = sname
                         End If
                         
-                        If InStr(SkillName, "”ñ•\¦") > 0 Then
-                            SkillName = "”ñ•\¦"
+                        If InStr(SkillName, "éè¡¨ç¤º") > 0 Then
+                            SkillName = "éè¡¨ç¤º"
                             Exit Function
                         End If
                         
-                        'ƒŒƒxƒ‹w’è
-                        If .ConditionLevel(sname & "•t‰Á‚Q") <> DEFAULT_LEVEL Then
+                        'ãƒ¬ãƒ™ãƒ«æŒ‡å®š
+                        If .ConditionLevel(sname & "ä»˜åŠ ï¼’") <> DEFAULT_LEVEL Then
                             If InStr(SkillName, "Lv") > 0 Then
                                 SkillName = Left$(SkillName, InStr(SkillName, "Lv") - 1)
                             End If
-                            SkillName = SkillName & "Lv" & Format$(.ConditionLevel(sname & "•t‰Á‚Q"))
+                            SkillName = SkillName & "Lv" & Format$(.ConditionLevel(sname & "ä»˜åŠ ï¼’"))
                         End If
                     End If
                     
-                    'ƒAƒrƒŠƒeƒB‚É‚æ‚é•t‰Á
-                    If .IsConditionSatisfied(sname & "•t‰Á") Then
-                        buf = LIndex(.ConditionData(sname & "•t‰Á"), 1)
+                    'ã‚¢ãƒ“ãƒªãƒ†ã‚£ã«ã‚ˆã‚‹ä»˜åŠ 
+                    If .IsConditionSatisfied(sname & "ä»˜åŠ ") Then
+                        buf = LIndex(.ConditionData(sname & "ä»˜åŠ "), 1)
                         
                         If buf <> "" Then
                             SkillName = buf
@@ -1986,78 +1986,78 @@ ErrorHandler:
                             SkillName = sname
                         End If
                         
-                        If InStr(SkillName, "”ñ•\¦") > 0 Then
-                            SkillName = "”ñ•\¦"
+                        If InStr(SkillName, "éè¡¨ç¤º") > 0 Then
+                            SkillName = "éè¡¨ç¤º"
                             Exit Function
                         End If
                         
-                        'ƒŒƒxƒ‹w’è
-                        If .ConditionLevel(sname & "•t‰Á") <> DEFAULT_LEVEL Then
+                        'ãƒ¬ãƒ™ãƒ«æŒ‡å®š
+                        If .ConditionLevel(sname & "ä»˜åŠ ") <> DEFAULT_LEVEL Then
                             If InStr(SkillName, "Lv") > 0 Then
                                 SkillName = Left$(SkillName, InStr(SkillName, "Lv") - 1)
                             End If
-                            SkillName = SkillName & "Lv" & Format$(.ConditionLevel(sname & "•t‰Á"))
+                            SkillName = SkillName & "Lv" & Format$(.ConditionLevel(sname & "ä»˜åŠ "))
                         End If
                     End If
                     
-                    'ƒ†ƒjƒbƒg—p“Áê”\—Í‚É‚æ‚é‹­‰»
-                    If .IsConditionSatisfied(sname & "‹­‰»‚Q") Then
+                    'ãƒ¦ãƒ‹ãƒƒãƒˆç”¨ç‰¹æ®Šèƒ½åŠ›ã«ã‚ˆã‚‹å¼·åŒ–
+                    If .IsConditionSatisfied(sname & "å¼·åŒ–ï¼’") Then
                         If SkillName = "" Then
-                            '‹­‰»‚³‚ê‚é”\—Í‚ğƒpƒCƒƒbƒg‚ª‚Á‚Ä‚¢‚È‚©‚Á‚½ê‡
-                            SkillName = LIndex(.ConditionData(sname & "‹­‰»‚Q"), 1)
+                            'å¼·åŒ–ã•ã‚Œã‚‹èƒ½åŠ›ã‚’ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆãŒæŒã£ã¦ã„ãªã‹ã£ãŸå ´åˆ
+                            SkillName = LIndex(.ConditionData(sname & "å¼·åŒ–ï¼’"), 1)
                             
                             If SkillName = "" Then
                                 SkillName = sname
                             End If
                             
-                            If InStr(SkillName, "”ñ•\¦") > 0 Then
-                                SkillName = "”ñ•\¦"
+                            If InStr(SkillName, "éè¡¨ç¤º") > 0 Then
+                                SkillName = "éè¡¨ç¤º"
                                 Exit Function
                             End If
                             
                             SkillName = SkillName & "Lv0"
                         End If
                         
-                        If sname <> "“¯’²—¦" _
-                            And sname <> "—ì—Í" _
+                        If sname <> "åŒèª¿ç‡" _
+                            And sname <> "éœŠåŠ›" _
                         Then
-                            If .ConditionLevel(sname & "‹­‰»‚Q") >= 0 Then
+                            If .ConditionLevel(sname & "å¼·åŒ–ï¼’") >= 0 Then
                                 SkillName = SkillName & "+" & _
-                                    Format$(.ConditionLevel(sname & "‹­‰»‚Q"))
+                                    Format$(.ConditionLevel(sname & "å¼·åŒ–ï¼’"))
                             Else
                                 SkillName = SkillName & _
-                                    Format$(.ConditionLevel(sname & "‹­‰»‚Q"))
+                                    Format$(.ConditionLevel(sname & "å¼·åŒ–ï¼’"))
                             End If
                         End If
                     End If
                     
-                    'ƒAƒrƒŠƒeƒB‚É‚æ‚é‹­‰»
-                    If .IsConditionSatisfied(sname & "‹­‰»") Then
+                    'ã‚¢ãƒ“ãƒªãƒ†ã‚£ã«ã‚ˆã‚‹å¼·åŒ–
+                    If .IsConditionSatisfied(sname & "å¼·åŒ–") Then
                         If SkillName = "" Then
-                            '‹­‰»‚³‚ê‚é”\—Í‚ğƒpƒCƒƒbƒg‚ª‚Á‚Ä‚¢‚È‚©‚Á‚½ê‡
-                            SkillName = LIndex(.ConditionData(sname & "‹­‰»"), 1)
+                            'å¼·åŒ–ã•ã‚Œã‚‹èƒ½åŠ›ã‚’ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆãŒæŒã£ã¦ã„ãªã‹ã£ãŸå ´åˆ
+                            SkillName = LIndex(.ConditionData(sname & "å¼·åŒ–"), 1)
                             
                             If SkillName = "" Then
                                 SkillName = sname
                             End If
                             
-                            If InStr(SkillName, "”ñ•\¦") > 0 Then
-                                SkillName = "”ñ•\¦"
+                            If InStr(SkillName, "éè¡¨ç¤º") > 0 Then
+                                SkillName = "éè¡¨ç¤º"
                                 Exit Function
                             End If
                             
                             SkillName = SkillName & "Lv0"
                         End If
                         
-                        If sname <> "“¯’²—¦" _
-                            And sname <> "—ì—Í" _
+                        If sname <> "åŒèª¿ç‡" _
+                            And sname <> "éœŠåŠ›" _
                         Then
-                            If .ConditionLevel(sname & "‹­‰»") >= 0 Then
+                            If .ConditionLevel(sname & "å¼·åŒ–") >= 0 Then
                                 SkillName = SkillName & "+" & _
-                                    Format$(.ConditionLevel(sname & "‹­‰»"))
+                                    Format$(.ConditionLevel(sname & "å¼·åŒ–"))
                             Else
                                 SkillName = SkillName & _
-                                    Format$(.ConditionLevel(sname & "‹­‰»"))
+                                    Format$(.ConditionLevel(sname & "å¼·åŒ–"))
                             End If
                         End If
                     End If
@@ -2066,37 +2066,37 @@ ErrorHandler:
         End With
     End If
     
-    '”\—Í‹­‰»Œn‚Í”ñ•\¦
-    If Right$(sname, 2) = "‚t‚o" Or Right$(sname, 4) = "‚c‚n‚v‚m" Then
-        SkillName = "”ñ•\¦"
+    'èƒ½åŠ›å¼·åŒ–ç³»ã¯éè¡¨ç¤º
+    If Right$(sname, 2) = "ï¼µï¼°" Or Right$(sname, 4) = "ï¼¤ï¼¯ï¼·ï¼®" Then
+        SkillName = "éè¡¨ç¤º"
         Exit Function
     End If
     
     Select Case sname
-        Case "’Ç‰ÁƒŒƒxƒ‹", "ƒƒbƒZ[ƒW", "–‚—ÍŠ—L"
-            '”ñ•\¦‚Ì”\—Í
-            SkillName = "”ñ•\¦"
+        Case "è¿½åŠ ãƒ¬ãƒ™ãƒ«", "ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸", "é­”åŠ›æ‰€æœ‰"
+            'éè¡¨ç¤ºã®èƒ½åŠ›
+            SkillName = "éè¡¨ç¤º"
             Exit Function
-        Case "‘Ï‹v"
-            If IsOptionDefined("–hŒä—Í¬’·") _
-                Or IsOptionDefined("–hŒä—ÍƒŒƒxƒ‹ƒAƒbƒv") _
+        Case "è€ä¹…"
+            If IsOptionDefined("é˜²å¾¡åŠ›æˆé•·") _
+                Or IsOptionDefined("é˜²å¾¡åŠ›ãƒ¬ãƒ™ãƒ«ã‚¢ãƒƒãƒ—") _
             Then
-                '–hŒä—Í¬’·ƒIƒvƒVƒ‡ƒ“g—p‚É‚Í‘Ï‹v”\—Í‚ğ”ñ•\¦
-                SkillName = "”ñ•\¦"
+                'é˜²å¾¡åŠ›æˆé•·ã‚ªãƒ—ã‚·ãƒ§ãƒ³ä½¿ç”¨æ™‚ã«ã¯è€ä¹…èƒ½åŠ›ã‚’éè¡¨ç¤º
+                SkillName = "éè¡¨ç¤º"
                 Exit Function
             End If
     End Select
     
-    '‚±‚ê‚ç‚Ì”\—Í‚©‚ç‚ÍƒŒƒxƒ‹w’è‚ğœ‚­
+    'ã“ã‚Œã‚‰ã®èƒ½åŠ›ã‹ã‚‰ã¯ãƒ¬ãƒ™ãƒ«æŒ‡å®šã‚’é™¤ã
     Select Case sname
-        Case "ŠK‹‰", "“¯’²—¦", "—ì—Í", "‚r‚oÁ”ïŒ¸­"
+        Case "éšç´š", "åŒèª¿ç‡", "éœŠåŠ›", "ï¼³ï¼°æ¶ˆè²»æ¸›å°‘"
             i = InStr(SkillName, "Lv")
             If i > 0 Then
                 SkillName = Left$(SkillName, i - 1)
             End If
     End Select
     
-    'ƒŒƒxƒ‹”ñ•\¦—p‚ÌŠ‡ŒÊ‚ğíœ
+    'ãƒ¬ãƒ™ãƒ«éè¡¨ç¤ºç”¨ã®æ‹¬å¼§ã‚’å‰Šé™¤
     If Left$(SkillName, 1) = "(" Then
         SkillName = Mid$(SkillName, 2)
         SkillName = Left$(SkillName, InStr2(SkillName, ")") - 1)
@@ -2107,30 +2107,30 @@ ErrorHandler:
     End If
 End Function
 
-'“Áê”\—Í–¼ÌiƒŒƒxƒ‹•\¦”²‚«j
+'ç‰¹æ®Šèƒ½åŠ›åç§°ï¼ˆãƒ¬ãƒ™ãƒ«è¡¨ç¤ºæŠœãï¼‰
 Public Function SkillName0(Index As Variant) As String
 Dim sd As SkillData, sname As String
 Dim buf As String, i As Integer
 
-    'ƒpƒCƒƒbƒg‚ªŠ—L‚µ‚Ä‚¢‚é“Áê”\—Í‚Ì’†‚©‚çŒŸõ
+    'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆãŒæ‰€æœ‰ã—ã¦ã„ã‚‹ç‰¹æ®Šèƒ½åŠ›ã®ä¸­ã‹ã‚‰æ¤œç´¢
     On Error GoTo ErrorHandler
     Set sd = colSkill.Item(Index)
     With sd
         sname = .Name
         
-        '”\—Í‹­‰»Œn‚Í”ñ•\¦
-        If Right$(sname, 2) = "‚t‚o" Or Right$(sname, 4) = "‚c‚n‚v‚m" Then
-            SkillName0 = "”ñ•\¦"
+        'èƒ½åŠ›å¼·åŒ–ç³»ã¯éè¡¨ç¤º
+        If Right$(sname, 2) = "ï¼µï¼°" Or Right$(sname, 4) = "ï¼¤ï¼¯ï¼·ï¼®" Then
+            SkillName0 = "éè¡¨ç¤º"
             Exit Function
         End If
         
         Select Case sname
-            Case "’Ç‰ÁƒŒƒxƒ‹", "ƒƒbƒZ[ƒW", "–‚—ÍŠ—L"
-                '”ñ•\¦‚Ì”\—Í
-                SkillName0 = "”ñ•\¦"
+            Case "è¿½åŠ ãƒ¬ãƒ™ãƒ«", "ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸", "é­”åŠ›æ‰€æœ‰"
+                'éè¡¨ç¤ºã®èƒ½åŠ›
+                SkillName0 = "éè¡¨ç¤º"
                 Exit Function
-            Case "“¾ˆÓ‹Z", "•s“¾è"
-                '•Ê–¼w’è‚ª‘¶İ‚µ‚È‚¢”\—Í
+            Case "å¾—æ„æŠ€", "ä¸å¾—æ‰‹"
+                'åˆ¥åæŒ‡å®šãŒå­˜åœ¨ã—ãªã„èƒ½åŠ›
                 SkillName0 = sname
                 Exit Function
         End Select
@@ -2138,7 +2138,7 @@ Dim buf As String, i As Integer
         If Len(.StrData) > 0 Then
             SkillName0 = LIndex(.StrData, 1)
             
-            If SkillName0 = "”ñ•\¦" Then
+            If SkillName0 = "éè¡¨ç¤º" Then
                 Exit Function
             End If
         Else
@@ -2156,52 +2156,52 @@ ErrorHandler:
         End If
     End If
     
-    If sname = "‘Ï‹v" Then
-        If IsOptionDefined("–hŒä—Í¬’·") _
-            Or IsOptionDefined("–hŒä—ÍƒŒƒxƒ‹ƒAƒbƒv") _
+    If sname = "è€ä¹…" Then
+        If IsOptionDefined("é˜²å¾¡åŠ›æˆé•·") _
+            Or IsOptionDefined("é˜²å¾¡åŠ›ãƒ¬ãƒ™ãƒ«ã‚¢ãƒƒãƒ—") _
         Then
-            '–hŒä—Í¬’·ƒIƒvƒVƒ‡ƒ“g—p‚É‚Í‘Ï‹v”\—Í‚ğ”ñ•\¦
-            SkillName0 = "”ñ•\¦"
+            'é˜²å¾¡åŠ›æˆé•·ã‚ªãƒ—ã‚·ãƒ§ãƒ³ä½¿ç”¨æ™‚ã«ã¯è€ä¹…èƒ½åŠ›ã‚’éè¡¨ç¤º
+            SkillName0 = "éè¡¨ç¤º"
             Exit Function
         End If
     End If
     
-    '“¾ˆÓ‹Z••s“¾è‚Í–¼Ì•ÏX‚³‚ê‚È‚¢
+    'å¾—æ„æŠ€ï¼†ä¸å¾—æ‰‹ã¯åç§°å¤‰æ›´ã•ã‚Œãªã„
     Select Case sname
-        Case "“¾ˆÓ‹Z", "•s“¾è"
+        Case "å¾—æ„æŠ€", "ä¸å¾—æ‰‹"
             SkillName0 = sname
             Exit Function
     End Select
     
-    'SetSkillƒRƒ}ƒ“ƒh‚Å••ˆó‚³‚ê‚Ä‚¢‚éê‡
+    'SetSkillã‚³ãƒãƒ³ãƒ‰ã§å°å°ã•ã‚Œã¦ã„ã‚‹å ´åˆ
     If SkillName0 = "" Then
         If IsGlobalVariableDefined("Ability(" & ID & "," & sname & ")") Then
-            'ƒIƒŠƒWƒiƒ‹‚Ì–¼Ì‚ğg—p
+            'ã‚ªãƒªã‚¸ãƒŠãƒ«ã®åç§°ã‚’ä½¿ç”¨
             SkillName0 = Data.SkillName(Level, sname)
             
-            If InStr(SkillName0, "”ñ•\¦") > 0 Then
-                SkillName0 = "”ñ•\¦"
+            If InStr(SkillName0, "éè¡¨ç¤º") > 0 Then
+                SkillName0 = "éè¡¨ç¤º"
                 Exit Function
             End If
         End If
     End If
     
-    'd•¡‰Â”\‚È”\—Í‚Í“Áê”\—Í•t‰Á‚Å–¼Ì‚ª’u‚«Š·‚¦‚ç‚ê‚±‚Æ‚Í‚È‚¢
+    'é‡è¤‡å¯èƒ½ãªèƒ½åŠ›ã¯ç‰¹æ®Šèƒ½åŠ›ä»˜åŠ ã§åç§°ãŒç½®ãæ›ãˆã‚‰ã‚Œã“ã¨ã¯ãªã„
     Select Case sname
-        Case "ƒnƒ“ƒ^[", "‚r‚oÁ”ïŒ¸­", "ƒXƒyƒVƒƒƒ‹ƒpƒ[©“®”­“®"
+        Case "ãƒãƒ³ã‚¿ãƒ¼", "ï¼³ï¼°æ¶ˆè²»æ¸›å°‘", "ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼è‡ªå‹•ç™ºå‹•"
             If IsNumeric(Index) Then
                 Exit Function
             End If
     End Select
     
-    '“Áê”\—Í•t‰Á•‹­‰»‚É‚æ‚éC³
+    'ç‰¹æ®Šèƒ½åŠ›ä»˜åŠ ï¼†å¼·åŒ–ã«ã‚ˆã‚‹ä¿®æ­£
     If Not Unit Is Nothing Then
         With Unit
             If .CountCondition > 0 And .CountPilot > 0 Then
                 If .MainPilot Is Me Or .Pilot(1) Is Me Then
-                    'ƒ†ƒjƒbƒg—p“Áê”\—Í‚É‚æ‚é•t‰Á
-                    If .IsConditionSatisfied(sname & "•t‰Á‚Q") Then
-                        buf = LIndex(.ConditionData(sname & "•t‰Á‚Q"), 1)
+                    'ãƒ¦ãƒ‹ãƒƒãƒˆç”¨ç‰¹æ®Šèƒ½åŠ›ã«ã‚ˆã‚‹ä»˜åŠ 
+                    If .IsConditionSatisfied(sname & "ä»˜åŠ ï¼’") Then
+                        buf = LIndex(.ConditionData(sname & "ä»˜åŠ ï¼’"), 1)
                         
                         If buf <> "" Then
                             SkillName0 = buf
@@ -2209,15 +2209,15 @@ ErrorHandler:
                             SkillName0 = sname
                         End If
                         
-                        If InStr(SkillName0, "”ñ•\¦") > 0 Then
-                            SkillName0 = "”ñ•\¦"
+                        If InStr(SkillName0, "éè¡¨ç¤º") > 0 Then
+                            SkillName0 = "éè¡¨ç¤º"
                             Exit Function
                         End If
                     End If
                     
-                    'ƒAƒrƒŠƒeƒB‚É‚æ‚é•t‰Á
-                    If .IsConditionSatisfied(sname & "•t‰Á") Then
-                        buf = LIndex(.ConditionData(sname & "•t‰Á"), 1)
+                    'ã‚¢ãƒ“ãƒªãƒ†ã‚£ã«ã‚ˆã‚‹ä»˜åŠ 
+                    If .IsConditionSatisfied(sname & "ä»˜åŠ ") Then
+                        buf = LIndex(.ConditionData(sname & "ä»˜åŠ "), 1)
                         
                         If buf <> "" Then
                             SkillName0 = buf
@@ -2225,39 +2225,39 @@ ErrorHandler:
                             SkillName0 = sname
                         End If
                         
-                        If InStr(SkillName0, "”ñ•\¦") > 0 Then
-                            SkillName0 = "”ñ•\¦"
+                        If InStr(SkillName0, "éè¡¨ç¤º") > 0 Then
+                            SkillName0 = "éè¡¨ç¤º"
                             Exit Function
                         End If
                     End If
                     
-                    'ƒ†ƒjƒbƒg—p“Áê”\—Í‚É‚æ‚é‹­‰»
+                    'ãƒ¦ãƒ‹ãƒƒãƒˆç”¨ç‰¹æ®Šèƒ½åŠ›ã«ã‚ˆã‚‹å¼·åŒ–
                     If SkillName0 = "" Then
-                        If .IsConditionSatisfied(sname & "‹­‰»‚Q") Then
-                            SkillName0 = LIndex(.ConditionData(sname & "‹­‰»‚Q"), 1)
+                        If .IsConditionSatisfied(sname & "å¼·åŒ–ï¼’") Then
+                            SkillName0 = LIndex(.ConditionData(sname & "å¼·åŒ–ï¼’"), 1)
                             
                             If SkillName0 = "" Then
                                 SkillName0 = sname
                             End If
                             
-                            If InStr(SkillName0, "”ñ•\¦") > 0 Then
-                                SkillName0 = "”ñ•\¦"
+                            If InStr(SkillName0, "éè¡¨ç¤º") > 0 Then
+                                SkillName0 = "éè¡¨ç¤º"
                                 Exit Function
                             End If
                         End If
                     End If
                     
-                    'ƒAƒrƒŠƒeƒB‚É‚æ‚é‹­‰»
+                    'ã‚¢ãƒ“ãƒªãƒ†ã‚£ã«ã‚ˆã‚‹å¼·åŒ–
                     If SkillName0 = "" Then
-                        If .IsConditionSatisfied(sname & "‹­‰»") Then
-                            SkillName0 = LIndex(.ConditionData(sname & "‹­‰»"), 1)
+                        If .IsConditionSatisfied(sname & "å¼·åŒ–") Then
+                            SkillName0 = LIndex(.ConditionData(sname & "å¼·åŒ–"), 1)
                             
                             If SkillName0 = "" Then
                                 SkillName0 = sname
                             End If
                             
-                            If InStr(SkillName0, "”ñ•\¦") > 0 Then
-                                SkillName0 = "”ñ•\¦"
+                            If InStr(SkillName0, "éè¡¨ç¤º") > 0 Then
+                                SkillName0 = "éè¡¨ç¤º"
                                 Exit Function
                             End If
                         End If
@@ -2267,7 +2267,7 @@ ErrorHandler:
         End With
     End If
     
-    'ŠY“–‚·‚é‚à‚Ì‚ª–³‚¯‚ê‚ÎƒGƒŠƒAƒX‚©‚çŒŸõ
+    'è©²å½“ã™ã‚‹ã‚‚ã®ãŒç„¡ã‘ã‚Œã°ã‚¨ãƒªã‚¢ã‚¹ã‹ã‚‰æ¤œç´¢
     If SkillName0 = "" Then
         With ALDList
             For i = 1 To .Count
@@ -2282,60 +2282,60 @@ ErrorHandler:
         SkillName0 = sname
     End If
     
-    '”\—Í‹­‰»Œn‚Í”ñ•\¦
-    If Right$(sname, 2) = "‚t‚o" Or Right$(sname, 4) = "‚c‚n‚v‚m" Then
-        SkillName0 = "”ñ•\¦"
+    'èƒ½åŠ›å¼·åŒ–ç³»ã¯éè¡¨ç¤º
+    If Right$(sname, 2) = "ï¼µï¼°" Or Right$(sname, 4) = "ï¼¤ï¼¯ï¼·ï¼®" Then
+        SkillName0 = "éè¡¨ç¤º"
         Exit Function
     End If
     
     Select Case sname
-        Case "’Ç‰ÁƒŒƒxƒ‹", "ƒƒbƒZ[ƒW", "–‚—ÍŠ—L"
-            '”ñ•\¦‚Ì”\—Í
-            SkillName0 = "”ñ•\¦"
+        Case "è¿½åŠ ãƒ¬ãƒ™ãƒ«", "ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸", "é­”åŠ›æ‰€æœ‰"
+            'éè¡¨ç¤ºã®èƒ½åŠ›
+            SkillName0 = "éè¡¨ç¤º"
             Exit Function
-        Case "‘Ï‹v"
-            If IsOptionDefined("–hŒä—Í¬’·") _
-                Or IsOptionDefined("–hŒä—ÍƒŒƒxƒ‹ƒAƒbƒv") _
+        Case "è€ä¹…"
+            If IsOptionDefined("é˜²å¾¡åŠ›æˆé•·") _
+                Or IsOptionDefined("é˜²å¾¡åŠ›ãƒ¬ãƒ™ãƒ«ã‚¢ãƒƒãƒ—") _
             Then
-                '–hŒä—Í¬’·ƒIƒvƒVƒ‡ƒ“g—p‚É‚Í‘Ï‹v”\—Í‚ğ”ñ•\¦
-                SkillName0 = "”ñ•\¦"
+                'é˜²å¾¡åŠ›æˆé•·ã‚ªãƒ—ã‚·ãƒ§ãƒ³ä½¿ç”¨æ™‚ã«ã¯è€ä¹…èƒ½åŠ›ã‚’éè¡¨ç¤º
+                SkillName0 = "éè¡¨ç¤º"
                 Exit Function
             End If
     End Select
     
-    'ƒŒƒxƒ‹”ñ•\¦—p‚ÌŠ‡ŒÊ‚ğíœ
+    'ãƒ¬ãƒ™ãƒ«éè¡¨ç¤ºç”¨ã®æ‹¬å¼§ã‚’å‰Šé™¤
     If Left$(SkillName0, 1) = "(" Then
         SkillName0 = Mid$(SkillName0, 2)
         SkillName0 = Left$(SkillName0, InStr2(SkillName0, ")") - 1)
     End If
     
-    'ƒŒƒxƒ‹w’è‚ğíœ
+    'ãƒ¬ãƒ™ãƒ«æŒ‡å®šã‚’å‰Šé™¤
     i = InStr(SkillName0, "Lv")
     If i > 0 Then
         SkillName0 = Left$(SkillName0, i - 1)
     End If
 End Function
 
-'“Áê”\—Í–¼Ìi•K—v‹Z”\”»’è—pj
-'–¼Ì‚©‚çƒŒƒxƒ‹w’è‚ğíœ‚µA–¼Ì‚ª”ñ•\¦‚É‚³‚ê‚Ä‚¢‚éê‡‚ÍŒ³‚Ì“Áê”\—Í–¼
-'‚à‚µ‚­‚ÍƒGƒŠƒAƒX–¼‚ğg—p‚·‚éB
+'ç‰¹æ®Šèƒ½åŠ›åç§°ï¼ˆå¿…è¦æŠ€èƒ½åˆ¤å®šç”¨ï¼‰
+'åç§°ã‹ã‚‰ãƒ¬ãƒ™ãƒ«æŒ‡å®šã‚’å‰Šé™¤ã—ã€åç§°ãŒéè¡¨ç¤ºã«ã•ã‚Œã¦ã„ã‚‹å ´åˆã¯å…ƒã®ç‰¹æ®Šèƒ½åŠ›å
+'ã‚‚ã—ãã¯ã‚¨ãƒªã‚¢ã‚¹åã‚’ä½¿ç”¨ã™ã‚‹ã€‚
 Public Function SkillNameForNS(stype As String) As String
 Dim sd As SkillData
 Dim buf As String, i As Integer
 
-    '”ñ•\¦‚Ì“Áê”\—Í
-    If Right$(stype, 2) = "‚t‚o" _
-        Or Right$(stype, 4) = "‚c‚n‚v‚m" _
+    'éè¡¨ç¤ºã®ç‰¹æ®Šèƒ½åŠ›
+    If Right$(stype, 2) = "ï¼µï¼°" _
+        Or Right$(stype, 4) = "ï¼¤ï¼¯ï¼·ï¼®" _
     Then
         SkillNameForNS = stype
         Exit Function
     End If
-    If stype = "ƒƒbƒZ[ƒW" Then
+    If stype = "ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸" Then
         SkillNameForNS = stype
         Exit Function
     End If
     
-    'ƒpƒCƒƒbƒg‚ªŠ—L‚µ‚Ä‚¢‚é“Áê”\—Í‚Ì’†‚©‚çŒŸõ
+    'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆãŒæ‰€æœ‰ã—ã¦ã„ã‚‹ç‰¹æ®Šèƒ½åŠ›ã®ä¸­ã‹ã‚‰æ¤œç´¢
     On Error GoTo ErrorHandler
     Set sd = colSkill.Item(stype)
     With sd
@@ -2348,26 +2348,26 @@ Dim buf As String, i As Integer
     
 ErrorHandler:
     
-    'SetSkillƒRƒ}ƒ“ƒh‚Å••ˆó‚³‚ê‚Ä‚¢‚éê‡
+    'SetSkillã‚³ãƒãƒ³ãƒ‰ã§å°å°ã•ã‚Œã¦ã„ã‚‹å ´åˆ
     If SkillNameForNS = "" Then
         If IsGlobalVariableDefined("Ability(" & ID & "," & stype & ")") Then
-            'ƒIƒŠƒWƒiƒ‹‚Ì–¼Ì‚ğg—p
+            'ã‚ªãƒªã‚¸ãƒŠãƒ«ã®åç§°ã‚’ä½¿ç”¨
             SkillNameForNS = Data.SkillName(Level, stype)
             
-            If InStr(SkillNameForNS, "”ñ•\¦") > 0 Then
-                SkillNameForNS = "”ñ•\¦"
+            If InStr(SkillNameForNS, "éè¡¨ç¤º") > 0 Then
+                SkillNameForNS = "éè¡¨ç¤º"
             End If
         End If
     End If
     
-    '“Áê”\—Í•t‰Á•‹­‰»‚É‚æ‚éC³
+    'ç‰¹æ®Šèƒ½åŠ›ä»˜åŠ ï¼†å¼·åŒ–ã«ã‚ˆã‚‹ä¿®æ­£
     If Not Unit Is Nothing Then
         With Unit
             If .CountCondition > 0 And .CountPilot > 0 Then
                 If Me Is .MainPilot Or Me Is .Pilot(1) Then
-                    'ƒ†ƒjƒbƒg—p“Áê”\—Í‚É‚æ‚é•t‰Á
-                    If .IsConditionSatisfied(stype & "•t‰Á‚Q") Then
-                        buf = LIndex(.ConditionData(stype & "•t‰Á‚Q"), 1)
+                    'ãƒ¦ãƒ‹ãƒƒãƒˆç”¨ç‰¹æ®Šèƒ½åŠ›ã«ã‚ˆã‚‹ä»˜åŠ 
+                    If .IsConditionSatisfied(stype & "ä»˜åŠ ï¼’") Then
+                        buf = LIndex(.ConditionData(stype & "ä»˜åŠ ï¼’"), 1)
                         
                         If buf <> "" Then
                             SkillNameForNS = buf
@@ -2375,14 +2375,14 @@ ErrorHandler:
                             SkillNameForNS = stype
                         End If
                         
-                        If InStr(SkillNameForNS, "”ñ•\¦") > 0 Then
-                            SkillNameForNS = "”ñ•\¦"
+                        If InStr(SkillNameForNS, "éè¡¨ç¤º") > 0 Then
+                            SkillNameForNS = "éè¡¨ç¤º"
                         End If
                     End If
                     
-                    'ƒAƒrƒŠƒeƒB‚É‚æ‚é•t‰Á
-                    If .IsConditionSatisfied(stype & "•t‰Á") Then
-                        buf = LIndex(.ConditionData(stype & "•t‰Á"), 1)
+                    'ã‚¢ãƒ“ãƒªãƒ†ã‚£ã«ã‚ˆã‚‹ä»˜åŠ 
+                    If .IsConditionSatisfied(stype & "ä»˜åŠ ") Then
+                        buf = LIndex(.ConditionData(stype & "ä»˜åŠ "), 1)
                         
                         If buf <> "" Then
                             SkillNameForNS = buf
@@ -2390,37 +2390,37 @@ ErrorHandler:
                             SkillNameForNS = stype
                         End If
                         
-                        If InStr(SkillNameForNS, "”ñ•\¦") > 0 Then
-                            SkillNameForNS = "”ñ•\¦"
+                        If InStr(SkillNameForNS, "éè¡¨ç¤º") > 0 Then
+                            SkillNameForNS = "éè¡¨ç¤º"
                         End If
                     End If
                     
-                    'ƒ†ƒjƒbƒg—p“Áê”\—Í‚É‚æ‚é‹­‰»
+                    'ãƒ¦ãƒ‹ãƒƒãƒˆç”¨ç‰¹æ®Šèƒ½åŠ›ã«ã‚ˆã‚‹å¼·åŒ–
                     If SkillNameForNS = "" Then
-                        If .IsConditionSatisfied(stype & "‹­‰»‚Q") Then
-                            SkillNameForNS = LIndex(.ConditionData(stype & "‹­‰»‚Q"), 1)
+                        If .IsConditionSatisfied(stype & "å¼·åŒ–ï¼’") Then
+                            SkillNameForNS = LIndex(.ConditionData(stype & "å¼·åŒ–ï¼’"), 1)
                             
                             If SkillNameForNS = "" Then
                                 SkillNameForNS = stype
                             End If
                             
-                            If InStr(SkillNameForNS, "”ñ•\¦") > 0 Then
-                                SkillNameForNS = "”ñ•\¦"
+                            If InStr(SkillNameForNS, "éè¡¨ç¤º") > 0 Then
+                                SkillNameForNS = "éè¡¨ç¤º"
                             End If
                         End If
                     End If
                     
-                    'ƒAƒrƒŠƒeƒB‚É‚æ‚é‹­‰»
+                    'ã‚¢ãƒ“ãƒªãƒ†ã‚£ã«ã‚ˆã‚‹å¼·åŒ–
                     If SkillNameForNS = "" Then
-                        If .IsConditionSatisfied(stype & "‹­‰»") Then
-                            SkillNameForNS = LIndex(.ConditionData(stype & "‹­‰»"), 1)
+                        If .IsConditionSatisfied(stype & "å¼·åŒ–") Then
+                            SkillNameForNS = LIndex(.ConditionData(stype & "å¼·åŒ–"), 1)
                             
                             If SkillNameForNS = "" Then
                                 SkillNameForNS = stype
                             End If
                             
-                            If InStr(SkillNameForNS, "”ñ•\¦") > 0 Then
-                                SkillNameForNS = "”ñ•\¦"
+                            If InStr(SkillNameForNS, "éè¡¨ç¤º") > 0 Then
+                                SkillNameForNS = "éè¡¨ç¤º"
                             End If
                         End If
                     End If
@@ -2429,8 +2429,8 @@ ErrorHandler:
         End With
     End If
     
-    'ŠY“–‚·‚é‚à‚Ì‚ª–³‚¯‚ê‚ÎƒGƒŠƒAƒX‚©‚çŒŸõ
-    If SkillNameForNS = "" Or SkillNameForNS = "”ñ•\¦" Then
+    'è©²å½“ã™ã‚‹ã‚‚ã®ãŒç„¡ã‘ã‚Œã°ã‚¨ãƒªã‚¢ã‚¹ã‹ã‚‰æ¤œç´¢
+    If SkillNameForNS = "" Or SkillNameForNS = "éè¡¨ç¤º" Then
         With ALDList
             For i = 1 To .Count
                 With .Item(i)
@@ -2444,20 +2444,20 @@ ErrorHandler:
         SkillNameForNS = stype
     End If
     
-    'ƒŒƒxƒ‹”ñ•\¦—p‚ÌŠ‡ŒÊ‚ğíœ
+    'ãƒ¬ãƒ™ãƒ«éè¡¨ç¤ºç”¨ã®æ‹¬å¼§ã‚’å‰Šé™¤
     If Left$(SkillNameForNS, 1) = "(" Then
         SkillNameForNS = Mid$(SkillNameForNS, 2)
         SkillNameForNS = Left$(SkillNameForNS, InStr2(SkillNameForNS, ")") - 1)
     End If
     
-    'ƒŒƒxƒ‹•\¦‚ğíœ
+    'ãƒ¬ãƒ™ãƒ«è¡¨ç¤ºã‚’å‰Šé™¤
     i = InStr(SkillNameForNS, "Lv")
     If i > 0 Then
         SkillNameForNS = Left$(SkillNameForNS, i - 1)
     End If
 End Function
 
-'“Áê”\—Í‚Ìí—Ş
+'ç‰¹æ®Šèƒ½åŠ›ã®ç¨®é¡
 Public Function SkillType(sname As String) As String
 Dim i As Integer, sd As SkillData
 Dim sname0 As String, sname2 As String
@@ -2473,7 +2473,7 @@ Dim sname0 As String, sname2 As String
         sname0 = sname
     End If
     
-    'ƒGƒŠƒAƒXƒf[ƒ^‚ª’è‹`‚³‚ê‚Ä‚¢‚éH
+    'ã‚¨ãƒªã‚¢ã‚¹ãƒ‡ãƒ¼ã‚¿ãŒå®šç¾©ã•ã‚Œã¦ã„ã‚‹ï¼Ÿ
     If ALDList.IsDefined(sname0) Then
         With ALDList.Item(sname0)
             SkillType = .AliasType(1)
@@ -2481,7 +2481,7 @@ Dim sname0 As String, sname2 As String
         End With
     End If
         
-    '“Áê”\—Íˆê——‚©‚çŒŸõ
+    'ç‰¹æ®Šèƒ½åŠ›ä¸€è¦§ã‹ã‚‰æ¤œç´¢
     For Each sd In colSkill
         With sd
             If sname0 = .Name Then
@@ -2507,22 +2507,22 @@ Dim sname0 As String, sname2 As String
         End With
     Next
     
-    '‚»‚Ì”\—Í‚ğC“¾‚µ‚Ä‚¢‚È‚¢
+    'ãã®èƒ½åŠ›ã‚’ä¿®å¾—ã—ã¦ã„ãªã„
     SkillType = sname0
     
-    '“Áê”\—Í•t‰Á‚É‚æ‚éC³
+    'ç‰¹æ®Šèƒ½åŠ›ä»˜åŠ ã«ã‚ˆã‚‹ä¿®æ­£
     If Not Unit Is Nothing Then
         With Unit
             If .CountCondition And .CountPilot > 0 Then
                 If Me Is .MainPilot Or Me Is .Pilot(1) Then
                     For i = 1 To .CountCondition
-                        If Right$(.Condition(i), 2) = "•t‰Á" Then
+                        If Right$(.Condition(i), 2) = "ä»˜åŠ " Then
                             If LIndex(.ConditionData(i), 1) = sname0 Then
                                 SkillType = .Condition(i)
                                 SkillType = Left$(SkillType, Len(SkillType) - 2)
                                 Exit For
                             End If
-                        ElseIf Right$(.Condition(i), 3) = "•t‰Á‚Q" Then
+                        ElseIf Right$(.Condition(i), 3) = "ä»˜åŠ ï¼’" Then
                             If LIndex(.ConditionData(i), 1) = sname0 Then
                                 SkillType = .Condition(i)
                                 SkillType = Left$(SkillType, Len(SkillType) - 3)
@@ -2537,12 +2537,12 @@ Dim sname0 As String, sname2 As String
 End Function
 
 
-' === ƒXƒyƒVƒƒƒ‹ƒpƒ[ŠÖ˜Aˆ— ===
+' === ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼é–¢é€£å‡¦ç† ===
 
-'ƒXƒyƒVƒƒƒ‹ƒpƒ[‚ÌŒÂ”
+'ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼ã®å€‹æ•°
 Public Property Get CountSpecialPower() As Integer
     If Data.SP <= 0 Then
-        '‚r‚o‚ğ‚½‚È‚¢’Ç‰ÁƒpƒCƒƒbƒg‚Ìê‡‚Í‚P”Ô–Ú‚ÌƒpƒCƒƒbƒg‚Ìƒf[ƒ^‚ğg‚¤
+        'ï¼³ï¼°ã‚’æŒãŸãªã„è¿½åŠ ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®å ´åˆã¯ï¼‘ç•ªç›®ã®ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®ãƒ‡ãƒ¼ã‚¿ã‚’ä½¿ã†
         If Not Unit Is Nothing Then
             With Unit
                 If .CountPilot > 0 Then
@@ -2560,10 +2560,10 @@ Public Property Get CountSpecialPower() As Integer
     CountSpecialPower = Data.CountSpecialPower(Level)
 End Property
 
-'idx”Ô–Ú‚ÌƒXƒyƒVƒƒƒ‹ƒpƒ[
+'idxç•ªç›®ã®ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼
 Public Property Get SpecialPower(ByVal idx As Integer) As String
     If Data.SP <= 0 Then
-        '‚r‚o‚ğ‚½‚È‚¢’Ç‰ÁƒpƒCƒƒbƒg‚Ìê‡‚Í‚P”Ô–Ú‚ÌƒpƒCƒƒbƒg‚Ìƒf[ƒ^‚ğg‚¤
+        'ï¼³ï¼°ã‚’æŒãŸãªã„è¿½åŠ ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®å ´åˆã¯ï¼‘ç•ªç›®ã®ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®ãƒ‡ãƒ¼ã‚¿ã‚’ä½¿ã†
         If Not Unit Is Nothing Then
             With Unit
                 If .CountPilot > 0 Then
@@ -2581,10 +2581,10 @@ Public Property Get SpecialPower(ByVal idx As Integer) As String
     SpecialPower = Data.SpecialPower(Level, idx)
 End Property
 
-'ƒXƒyƒVƒƒƒ‹ƒpƒ[ sname ‚ğC“¾‚µ‚Ä‚¢‚é‚©H
+'ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼ sname ã‚’ä¿®å¾—ã—ã¦ã„ã‚‹ã‹ï¼Ÿ
 Public Function IsSpecialPowerAvailable(sname As String) As Boolean
     If Data.SP <= 0 Then
-        '‚r‚o‚ğ‚½‚È‚¢’Ç‰ÁƒpƒCƒƒbƒg‚Ìê‡‚Í‚P”Ô–Ú‚ÌƒpƒCƒƒbƒg‚Ìƒf[ƒ^‚ğg‚¤
+        'ï¼³ï¼°ã‚’æŒãŸãªã„è¿½åŠ ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®å ´åˆã¯ï¼‘ç•ªç›®ã®ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®ãƒ‡ãƒ¼ã‚¿ã‚’ä½¿ã†
         If Not Unit Is Nothing Then
             With Unit
                 If .CountPilot > 0 Then
@@ -2603,18 +2603,18 @@ Public Function IsSpecialPowerAvailable(sname As String) As Boolean
     IsSpecialPowerAvailable = Data.IsSpecialPowerAvailable(Level, sname)
 End Function
 
-'ƒXƒyƒVƒƒƒ‹ƒpƒ[ sname ‚ª—L—p‚©H
+'ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼ sname ãŒæœ‰ç”¨ã‹ï¼Ÿ
 Public Function IsSpecialPowerUseful(sname As String) As Boolean
     IsSpecialPowerUseful = SPDList.Item(sname).Useful(Me)
 End Function
 
-'ƒXƒyƒVƒƒƒ‹ƒpƒ[ sname ‚É•K—v‚È‚r‚o’l
+'ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼ sname ã«å¿…è¦ãªï¼³ï¼°å€¤
 Public Function SpecialPowerCost(sname As String) As Integer
 Dim i As Integer, j As Integer
 Dim adata As String
 
     If Data.SP <= 0 Then
-        '‚r‚o‚ğ‚½‚È‚¢’Ç‰ÁƒpƒCƒƒbƒg‚Ìê‡‚Í‚P”Ô–Ú‚ÌƒpƒCƒƒbƒg‚Ìƒf[ƒ^‚ğg‚¤
+        'ï¼³ï¼°ã‚’æŒãŸãªã„è¿½åŠ ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®å ´åˆã¯ï¼‘ç•ªç›®ã®ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®ãƒ‡ãƒ¼ã‚¿ã‚’ä½¿ã†
         If Not Unit Is Nothing Then
             With Unit
                 If .CountPilot > 0 Then
@@ -2629,32 +2629,32 @@ Dim adata As String
         End If
     End If
     
-    'Šî–{Á”ï‚r‚o’l
+    'åŸºæœ¬æ¶ˆè²»ï¼³ï¼°å€¤
     SpecialPowerCost = Data.SpecialPowerCost(sname)
     
-    '“Áê”\—Í‚É‚æ‚éÁ”ï‚r‚o’lC³
-    If IsSkillAvailable("’´”\—Í") _
-        Or IsSkillAvailable("W’†—Í") _
+    'ç‰¹æ®Šèƒ½åŠ›ã«ã‚ˆã‚‹æ¶ˆè²»ï¼³ï¼°å€¤ä¿®æ­£
+    If IsSkillAvailable("è¶…èƒ½åŠ›") _
+        Or IsSkillAvailable("é›†ä¸­åŠ›") _
     Then
         SpecialPowerCost = 0.8 * SpecialPowerCost
     End If
-    If IsSkillAvailable("’mŠo‹­‰»") Then
+    If IsSkillAvailable("çŸ¥è¦šå¼·åŒ–") Then
         SpecialPowerCost = 1.2 * SpecialPowerCost
     End If
     
-    '‚r‚oÁ”ïŒ¸­”\—Í
+    'ï¼³ï¼°æ¶ˆè²»æ¸›å°‘èƒ½åŠ›
     If Not Unit Is Nothing Then
         With Unit
             If .CountPilot > 0 Then
                 If .MainPilot Is Me Then
-                    If .IsConditionSatisfied("‚r‚oÁ”ïŒ¸­•t‰Á") _
-                        Or .IsConditionSatisfied("‚r‚oÁ”ïŒ¸­•t‰Á‚Q") _
+                    If .IsConditionSatisfied("ï¼³ï¼°æ¶ˆè²»æ¸›å°‘ä»˜åŠ ") _
+                        Or .IsConditionSatisfied("ï¼³ï¼°æ¶ˆè²»æ¸›å°‘ä»˜åŠ ï¼’") _
                     Then
-                        adata = SkillData("‚r‚oÁ”ïŒ¸­")
+                        adata = SkillData("ï¼³ï¼°æ¶ˆè²»æ¸›å°‘")
                         For i = 2 To LLength(adata)
                             If sname = LIndex(adata, i) Then
                                 SpecialPowerCost = _
-                                    (10 - SkillLevel("‚r‚oÁ”ïŒ¸­")) * SpecialPowerCost \ 10
+                                    (10 - SkillLevel("ï¼³ï¼°æ¶ˆè²»æ¸›å°‘")) * SpecialPowerCost \ 10
                                 Exit Function
                             End If
                         Next
@@ -2664,7 +2664,7 @@ Dim adata As String
         End With
     End If
     For i = 1 To CountSkill
-        If Skill(i) = "‚r‚oÁ”ïŒ¸­" Then
+        If Skill(i) = "ï¼³ï¼°æ¶ˆè²»æ¸›å°‘" Then
             adata = SkillData(i)
             For j = 2 To LLength(adata)
                 If sname = LIndex(adata, j) Then
@@ -2676,7 +2676,7 @@ Dim adata As String
     Next
 End Function
 
-'ƒXƒyƒVƒƒƒ‹ƒpƒ[ sname ‚ğÀs‚·‚é
+'ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼ sname ã‚’å®Ÿè¡Œã™ã‚‹
 Public Sub UseSpecialPower(sname As String, Optional ByVal sp_mod As Double = 1)
 Dim my_unit As Unit
 
@@ -2688,10 +2688,10 @@ Dim my_unit As Unit
     
     Set SelectedPilot = Me
     
-    'ƒXƒyƒVƒƒƒ‹ƒpƒ[g—pƒƒbƒZ[ƒW
+    'ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼ä½¿ç”¨ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
     If sp_mod <> 2 _
-        And Not SPDList.Item(sname).IsEffectAvailable("•œŠˆ") _
-        And Not SPDList.Item(sname).IsEffectAvailable("©”š") _
+        And Not SPDList.Item(sname).IsEffectAvailable("å¾©æ´»") _
+        And Not SPDList.Item(sname).IsEffectAvailable("è‡ªçˆ†") _
     Then
         If Unit.IsMessageDefined(sname) Then
             OpenMessageForm
@@ -2700,26 +2700,26 @@ Dim my_unit As Unit
         End If
     End If
     
-    '“¯‚¶’Ç‰ÁƒpƒCƒƒbƒg‚ğ‚Âƒ†ƒjƒbƒg‚ª•¡”‚¢‚éê‡AƒpƒCƒƒbƒg‚ÌUnit‚ª
-    '•Ï‰»‚µ‚Ä‚µ‚Ü‚¤‚±‚Æ‚ª‚ ‚é‚½‚ßAŒ³‚ÌUnit‚ğ‹L˜^‚µ‚Ä‚¨‚­
+    'åŒã˜è¿½åŠ ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‚’æŒã¤ãƒ¦ãƒ‹ãƒƒãƒˆãŒè¤‡æ•°ã„ã‚‹å ´åˆã€ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®UnitãŒ
+    'å¤‰åŒ–ã—ã¦ã—ã¾ã†ã“ã¨ãŒã‚ã‚‹ãŸã‚ã€å…ƒã®Unitã‚’è¨˜éŒ²ã—ã¦ãŠã
     Set my_unit = Unit
     
-    'ƒXƒyƒVƒƒƒ‹ƒpƒ[ƒAƒjƒ‚ğ•\¦
+    'ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼ã‚¢ãƒ‹ãƒ¡ã‚’è¡¨ç¤º
     If Not SPDList.Item(sname).PlayAnimation Then
-        'ƒƒbƒZ[ƒW•\¦‚Ì‚İ
+        'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸è¡¨ç¤ºã®ã¿
         OpenMessageForm Unit
-        DisplaySysMessage Nickname & "‚Í" & sname & "‚ğg‚Á‚½B"
+        DisplaySysMessage Nickname & "ã¯" & sname & "ã‚’ä½¿ã£ãŸã€‚"
     End If
     
-    'Unit‚ª•Ï‰»‚µ‚½ê‡‚ÉŒ³‚É–ß‚·
+    'UnitãŒå¤‰åŒ–ã—ãŸå ´åˆã«å…ƒã«æˆ»ã™
     If Not my_unit Is Unit Then
         my_unit.MainPilot
     End If
     
-    'ƒXƒyƒVƒƒƒ‹ƒpƒ[‚ğÀs
+    'ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼ã‚’å®Ÿè¡Œ
     SPDList.Item(sname).Execute Me
     
-    'Unit‚ª•Ï‰»‚µ‚½ê‡‚ÉŒ³‚É–ß‚·
+    'UnitãŒå¤‰åŒ–ã—ãŸå ´åˆã«å…ƒã«æˆ»ã™
     If Not my_unit Is Unit Then
         my_unit.CurrentForm.MainPilot
     End If
@@ -2730,14 +2730,14 @@ Dim my_unit As Unit
 End Sub
 
 
-' === ƒ†ƒjƒbƒg“‹æ•‰ºæŠÖ˜Aˆ— ===
+' === ãƒ¦ãƒ‹ãƒƒãƒˆæ­ä¹—ï¼†ä¸‹ä¹—é–¢é€£å‡¦ç† ===
 
-'ƒ†ƒjƒbƒg u ‚É“‹æ
+'ãƒ¦ãƒ‹ãƒƒãƒˆ u ã«æ­ä¹—
 Public Sub Ride(u As Unit, Optional ByVal is_support As Boolean)
 Dim hp_ratio As Double, en_ratio As Double
 Dim plana_ratio As Double
 
-    'Šù‚Éæ‚Á‚Ä‚¢‚ê‚Î‚È‚É‚à‚µ‚È‚¢
+    'æ—¢ã«ä¹—ã£ã¦ã„ã‚Œã°ãªã«ã‚‚ã—ãªã„
     If Unit Is u Then
         Exit Sub
     End If
@@ -2746,7 +2746,7 @@ Dim plana_ratio As Double
         hp_ratio = 100 * .HP / .MaxHP
         en_ratio = 100 * .EN / .MaxEN
         
-        'Œ»İ‚Ì—ì—Í’l‚ğ‹L˜^
+        'ç¾åœ¨ã®éœŠåŠ›å€¤ã‚’è¨˜éŒ²
         If MaxPlana > 0 Then
             plana_ratio = 100 * Plana / MaxPlana
         Else
@@ -2755,15 +2755,15 @@ Dim plana_ratio As Double
         
         Set Unit = u
         
-        If InStrNotNest(Class, "ƒTƒ|[ƒg)") > 0 _
+        If InStrNotNest(Class, "ã‚µãƒãƒ¼ãƒˆ)") > 0 _
             And LLength(Class) = 1 _
-            And Not .IsFeatureAvailable("ƒ_ƒ~[ƒ†ƒjƒbƒg") _
+            And Not .IsFeatureAvailable("ãƒ€ãƒŸãƒ¼ãƒ¦ãƒ‹ãƒƒãƒˆ") _
         Then
-            'ƒTƒ|[ƒg‚É‚µ‚©‚È‚ê‚È‚¢ƒpƒCƒƒbƒg‚Ìê‡
+            'ã‚µãƒãƒ¼ãƒˆã«ã—ã‹ãªã‚Œãªã„ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®å ´åˆ
             .AddSupport Me
         ElseIf IsSupport(u) Then
-            '“¯‚¶ƒ†ƒjƒbƒgƒNƒ‰ƒX‚É‘Î‚µ‚Ä’ÊíƒpƒCƒƒbƒg‚ÆƒTƒ|[ƒg‚Ì—¼•û‚Ìƒpƒ^[ƒ“
-            '‚ª‚¢‚¯‚éê‡‚Í’ÊíƒpƒCƒƒbƒg‚ğ—Dæ
+            'åŒã˜ãƒ¦ãƒ‹ãƒƒãƒˆã‚¯ãƒ©ã‚¹ã«å¯¾ã—ã¦é€šå¸¸ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã¨ã‚µãƒãƒ¼ãƒˆã®ä¸¡æ–¹ã®ãƒ‘ã‚¿ãƒ¼ãƒ³
+            'ãŒã„ã‘ã‚‹å ´åˆã¯é€šå¸¸ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‚’å„ªå…ˆ
             If .CountPilot < Abs(.Data.PilotNum) _
                 And InStrNotNest(Class, u.Class0 & " ") > 0 _
                 And Not is_support _
@@ -2773,37 +2773,37 @@ Dim plana_ratio As Double
                 .AddSupport Me
             End If
         Else
-            'ƒpƒCƒƒbƒg‚ªŠù‚É‹K’è”‚Ìê‡‚Í‘SƒpƒCƒƒbƒg‚ğ~‚ë‚·
+            'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆãŒæ—¢ã«è¦å®šæ•°ã®å ´åˆã¯å…¨ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‚’é™ã‚ã™
             If .CountPilot = Abs(.Data.PilotNum) Then
                 .Pilot(1).GetOff
             End If
             .AddPilot Me
         End If
         
-        'PilotƒRƒ}ƒ“ƒh‚Åì¬‚³‚ê‚½ƒpƒCƒƒbƒg‚Í‘S‚Ä–¡•û‚È‚Ì‚Å“‹æ‚É•ÏX‚ª•K—v
+        'Pilotã‚³ãƒãƒ³ãƒ‰ã§ä½œæˆã•ã‚ŒãŸãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã¯å…¨ã¦å‘³æ–¹ãªã®ã§æ­ä¹—æ™‚ã«å¤‰æ›´ãŒå¿…è¦
         Party = .Party0
         
-        'ƒ†ƒjƒbƒg‚ÌƒXƒe[ƒ^ƒX‚ğƒAƒbƒvƒf[ƒg
+        'ãƒ¦ãƒ‹ãƒƒãƒˆã®ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚’ã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ãƒˆ
         .Update
         
-        '—ì—Í’l‚ÌƒAƒbƒvƒf[ƒg
+        'éœŠåŠ›å€¤ã®ã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ãƒˆ
         If plana_ratio >= 0 Then
             Plana = MaxPlana * plana_ratio \ 100
         Else
             Plana = MaxPlana
         End If
         
-        'ƒpƒCƒƒbƒg‚ªæ‚è‚Ş‚±‚Æ‚É‚æ‚é‚g‚o•‚d‚m‚Ì‘Œ¸‚É‘Î‰
+        'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆãŒä¹—ã‚Šè¾¼ã‚€ã“ã¨ã«ã‚ˆã‚‹ï¼¨ï¼°ï¼†ï¼¥ï¼®ã®å¢—æ¸›ã«å¯¾å¿œ
         .HP = .MaxHP * hp_ratio \ 100
         .EN = .MaxEN * en_ratio \ 100
     End With
 End Sub
 
-'ƒpƒCƒƒbƒg‚ğƒ†ƒjƒbƒg‚©‚ç~‚ë‚·
+'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‚’ãƒ¦ãƒ‹ãƒƒãƒˆã‹ã‚‰é™ã‚ã™
 Public Sub GetOff(Optional ByVal without_leave As Boolean)
 Dim i As Integer
     
-    'Šù‚É~‚è‚Ä‚¢‚éH
+    'æ—¢ã«é™ã‚Šã¦ã„ã‚‹ï¼Ÿ
     If Unit Is Nothing Then
         Exit Sub
     End If
@@ -2811,7 +2811,7 @@ Dim i As Integer
     With Unit
         For i = 1 To .CountSupport
             If .Support(i) Is Me Then
-                'ƒTƒ|[ƒgƒpƒCƒƒbƒg‚Æ‚µ‚Äæ‚è‚ñ‚Å‚¢‚éê‡
+                'ã‚µãƒãƒ¼ãƒˆãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã¨ã—ã¦ä¹—ã‚Šè¾¼ã‚“ã§ã„ã‚‹å ´åˆ
                 .DeleteSupport i
                 .Update
                 Set Unit = Nothing
@@ -2820,16 +2820,16 @@ Dim i As Integer
             End If
         Next
         
-        'oŒ‚‚µ‚Ä‚¢‚½ê‡‚Í‘Ş‹p
+        'å‡ºæ’ƒã—ã¦ã„ãŸå ´åˆã¯é€€å´
         If Not without_leave Then
-            If .Status = "oŒ‚" Then
-                .Status = "‘Ò‹@"
+            If .Status = "å‡ºæ’ƒ" Then
+                .Status = "å¾…æ©Ÿ"
                 Set MapDataForUnit(.X, .Y) = Nothing
                 EraseUnitBitmap .X, .Y, False
             End If
         End If
         
-        '’Êí‚ÌƒpƒCƒƒbƒg‚Ìê‡‚ÍA‚»‚Ìƒ†ƒjƒbƒg‚Éæ‚Á‚Ä‚¢‚½‘¼‚ÌƒpƒCƒƒbƒg‚à~‚ë‚³‚ê‚é
+        'é€šå¸¸ã®ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®å ´åˆã¯ã€ãã®ãƒ¦ãƒ‹ãƒƒãƒˆã«ä¹—ã£ã¦ã„ãŸä»–ã®ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‚‚é™ã‚ã•ã‚Œã‚‹
         For i = 1 To .CountPilot
             Set .Pilot(1).Unit = Nothing
             .DeletePilot 1
@@ -2847,40 +2847,40 @@ Dim i As Integer
     Update
 End Sub
 
-'ƒpƒCƒƒbƒg‚ªƒ†ƒjƒbƒg u ‚ÌƒTƒ|[ƒg‚©‚Ç‚¤‚©
+'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆãŒãƒ¦ãƒ‹ãƒƒãƒˆ u ã®ã‚µãƒãƒ¼ãƒˆã‹ã©ã†ã‹
 Public Function IsSupport(u As Unit) As Boolean
 Dim uclass As String, pclass As String
 Dim i As Integer, j As Integer
 
     With u
-        If .IsFeatureAvailable("ƒ_ƒ~[ƒ†ƒjƒbƒg") Then
-            'ƒ_ƒ~[ƒ†ƒjƒbƒg‚Ìê‡‚ÍƒTƒ|[ƒgƒpƒCƒƒbƒg‚à’Êí‚ÌƒpƒCƒƒbƒg‚Æ‚µ‚Äˆµ‚¤
+        If .IsFeatureAvailable("ãƒ€ãƒŸãƒ¼ãƒ¦ãƒ‹ãƒƒãƒˆ") Then
+            'ãƒ€ãƒŸãƒ¼ãƒ¦ãƒ‹ãƒƒãƒˆã®å ´åˆã¯ã‚µãƒãƒ¼ãƒˆãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‚‚é€šå¸¸ã®ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã¨ã—ã¦æ‰±ã†
             IsSupport = False
             Exit Function
         End If
         
-        'ƒTƒ|[ƒgw’è‚ª‘¶İ‚·‚éH
-        If InStrNotNest(Class, "ƒTƒ|[ƒg)") = 0 Then
+        'ã‚µãƒãƒ¼ãƒˆæŒ‡å®šãŒå­˜åœ¨ã™ã‚‹ï¼Ÿ
+        If InStrNotNest(Class, "ã‚µãƒãƒ¼ãƒˆ)") = 0 Then
             IsSupport = False
             Exit Function
         End If
         
         If .CountPilot = 0 Then
-            'ƒpƒCƒƒbƒg‚ªæ‚Á‚Ä‚¢‚È‚¢ƒ†ƒjƒbƒg‚Ìê‡‚Í’ÊíƒpƒCƒƒbƒg‚ğ—Dæ
+            'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆãŒä¹—ã£ã¦ã„ãªã„ãƒ¦ãƒ‹ãƒƒãƒˆã®å ´åˆã¯é€šå¸¸ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‚’å„ªå…ˆ
             For i = 1 To LLength(Class)
                 pclass = LIndex(Class, i)
                 If .Class = pclass _
-                    Or .Class = pclass & "(" & Name & "ê—p)" _
-                    Or .Class = pclass & "(" & Nickname & "ê—p)" _
-                    Or .Class = pclass & "(" & Sex & "ê—p)" _
+                    Or .Class = pclass & "(" & Name & "å°‚ç”¨)" _
+                    Or .Class = pclass & "(" & Nickname & "å°‚ç”¨)" _
+                    Or .Class = pclass & "(" & Sex & "å°‚ç”¨)" _
                 Then
-                    '’Êí‚ÌƒpƒCƒƒbƒg‚Æ‚µ‚Ä“‹æ‰Â”\‚Å‚ ‚ê‚ÎƒTƒ|[ƒg‚Å‚È‚¢‚Æ‚İ‚È‚·
+                    'é€šå¸¸ã®ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã¨ã—ã¦æ­ä¹—å¯èƒ½ã§ã‚ã‚Œã°ã‚µãƒãƒ¼ãƒˆã§ãªã„ã¨ã¿ãªã™
                     IsSupport = False
                     Exit Function
                 End If
             Next
         Else
-            '’Êí‚ÌƒpƒCƒƒbƒg‚Æ‚µ‚Ä“‹æ‚µ‚Ä‚¢‚éH
+            'é€šå¸¸ã®ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã¨ã—ã¦æ­ä¹—ã—ã¦ã„ã‚‹ï¼Ÿ
             For i = 1 To .CountPilot
                 If .Pilot(i) Is Me Then
                     IsSupport = False
@@ -2891,34 +2891,34 @@ Dim i As Integer, j As Integer
         
         uclass = .Class0
         
-        '’Êí‚ÌƒTƒ|[ƒgH
+        'é€šå¸¸ã®ã‚µãƒãƒ¼ãƒˆï¼Ÿ
         For i = 1 To LLength(Class)
-            If uclass & "(ƒTƒ|[ƒg)" = LIndex(Class, i) Then
+            If uclass & "(ã‚µãƒãƒ¼ãƒˆ)" = LIndex(Class, i) Then
                 IsSupport = True
                 Exit Function
             End If
         Next
         
-        'ƒpƒCƒƒbƒg‚ªæ‚Á‚Ä‚¢‚È‚¢ƒ†ƒjƒbƒg‚Ìê‡‚Í‚±‚±‚ÅI—¹
+        'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆãŒä¹—ã£ã¦ã„ãªã„ãƒ¦ãƒ‹ãƒƒãƒˆã®å ´åˆã¯ã“ã“ã§çµ‚äº†
         If .CountPilot = 0 Then
             IsSupport = False
             Exit Function
         End If
         
-        'ê‘®ƒTƒ|[ƒgH
+        'å°‚å±ã‚µãƒãƒ¼ãƒˆï¼Ÿ
         With .MainPilot
             For i = 1 To LLength(Class)
                 pclass = LIndex(Class, i)
-                If pclass = uclass & "(" & .Name & "ê‘®ƒTƒ|[ƒg)" _
-                    Or pclass = uclass & "(" & .Nickname & "ê‘®ƒTƒ|[ƒg)" _
-                    Or pclass = uclass & "(" & .Sex & "ê‘®ƒTƒ|[ƒg)" _
+                If pclass = uclass & "(" & .Name & "å°‚å±ã‚µãƒãƒ¼ãƒˆ)" _
+                    Or pclass = uclass & "(" & .Nickname & "å°‚å±ã‚µãƒãƒ¼ãƒˆ)" _
+                    Or pclass = uclass & "(" & .Sex & "å°‚å±ã‚µãƒãƒ¼ãƒˆ)" _
                 Then
                     IsSupport = True
                     Exit Function
                 End If
                 
                 For j = 1 To .CountSkill
-                    If pclass = uclass & "(" & .Skill(j) & "ê‘®ƒTƒ|[ƒg)" Then
+                    If pclass = uclass & "(" & .Skill(j) & "å°‚å±ã‚µãƒãƒ¼ãƒˆ)" Then
                         IsSupport = True
                         Exit Function
                     End If
@@ -2930,67 +2930,67 @@ Dim i As Integer, j As Integer
     IsSupport = False
 End Function
 
-'ƒ†ƒjƒbƒg u ‚Éæ‚é‚±‚Æ‚ª‚Å‚«‚é‚©‚Ç‚¤‚©
+'ãƒ¦ãƒ‹ãƒƒãƒˆ u ã«ä¹—ã‚‹ã“ã¨ãŒã§ãã‚‹ã‹ã©ã†ã‹
 Public Function IsAbleToRide(u As Unit) As Boolean
 Dim uclass As String, pclass As String
 Dim i As Integer
 
     With u
-        '”Ä—pƒ†ƒjƒbƒg‚Í•K—v‹Z”\‚ğ–‚½‚¹‚Î‚n‚j
-        If .Class = "”Ä—p" Then
+        'æ±ç”¨ãƒ¦ãƒ‹ãƒƒãƒˆã¯å¿…è¦æŠ€èƒ½ã‚’æº€ãŸã›ã°ï¼¯ï¼«
+        If .Class = "æ±ç”¨" Then
             IsAbleToRide = True
             GoTo CheckNecessarySkill
         End If
         
-        'lŠÔƒ†ƒjƒbƒgw’è‚ğœ‚¢‚Ä”»’è
+        'äººé–“ãƒ¦ãƒ‹ãƒƒãƒˆæŒ‡å®šã‚’é™¤ã„ã¦åˆ¤å®š
         If Left$(.Class, 1) = "(" And Right$(.Class, 1) = ")" Then
             uclass = Mid$(.Class, 2, Len(.Class) - 2)
         Else
             uclass = .Class
         End If
         
-        'ƒTƒ|[ƒg‚©‚Ç‚¤‚©‚ğ‚Ü‚¸”»’è‚µ‚Ä‚¨‚­
+        'ã‚µãƒãƒ¼ãƒˆã‹ã©ã†ã‹ã‚’ã¾ãšåˆ¤å®šã—ã¦ãŠã
         If IsSupport(u) Then
             IsAbleToRide = True
-            '•K—v‹Z”\‚ğƒ`ƒFƒbƒN‚·‚é
+            'å¿…è¦æŠ€èƒ½ã‚’ãƒã‚§ãƒƒã‚¯ã™ã‚‹
             GoTo CheckNecessarySkill
         End If
         
-        For i = 1 To LLength(Class) 'ƒ†ƒjƒbƒgƒNƒ‰ƒX‚Í•¡”İ’è‰Â”\
+        For i = 1 To LLength(Class) 'ãƒ¦ãƒ‹ãƒƒãƒˆã‚¯ãƒ©ã‚¹ã¯è¤‡æ•°è¨­å®šå¯èƒ½
             pclass = LIndex(Class, i)
             If uclass = pclass _
-                Or uclass = pclass & "(" & Nickname & "ê—p)" _
-                Or uclass = pclass & "(" & Name & "ê—p)" _
-                Or uclass = pclass & "(" & Sex & "ê—p)" _
+                Or uclass = pclass & "(" & Nickname & "å°‚ç”¨)" _
+                Or uclass = pclass & "(" & Name & "å°‚ç”¨)" _
+                Or uclass = pclass & "(" & Sex & "å°‚ç”¨)" _
             Then
                 IsAbleToRide = True
-                '•K—v‹Z”\‚ğƒ`ƒFƒbƒN‚·‚é
+                'å¿…è¦æŠ€èƒ½ã‚’ãƒã‚§ãƒƒã‚¯ã™ã‚‹
                 GoTo CheckNecessarySkill
             End If
         Next
         
-        'ƒNƒ‰ƒX‚ª‡‚í‚È‚¢
+        'ã‚¯ãƒ©ã‚¹ãŒåˆã‚ãªã„
         IsAbleToRide = False
         Exit Function
         
 CheckNecessarySkill:
         
-        '•K—v‹Z”\••s•K—v‹Z”\‚ğƒ`ƒFƒbƒN
+        'å¿…è¦æŠ€èƒ½ï¼†ä¸å¿…è¦æŠ€èƒ½ã‚’ãƒã‚§ãƒƒã‚¯
         
-        '—¼”\—Í‚ğ‚Á‚Ä‚¢‚È‚¢ê‡‚Íƒ`ƒFƒbƒN•s—v
-        If Not .IsFeatureAvailable("•K—v‹Z”\") _
-            And Not .IsFeatureAvailable("•s•K—v‹Z”\") _
+        'ä¸¡èƒ½åŠ›ã‚’æŒã£ã¦ã„ãªã„å ´åˆã¯ãƒã‚§ãƒƒã‚¯ä¸è¦
+        If Not .IsFeatureAvailable("å¿…è¦æŠ€èƒ½") _
+            And Not .IsFeatureAvailable("ä¸å¿…è¦æŠ€èƒ½") _
         Then
             Exit Function
         End If
         
         For i = 1 To .CountFeature
-            If .Feature(i) = "•K—v‹Z”\" Then
+            If .Feature(i) = "å¿…è¦æŠ€èƒ½" Then
                 If Not .IsNecessarySkillSatisfied(.FeatureData(i), Me) Then
                     IsAbleToRide = False
                     Exit Function
                 End If
-            ElseIf .Feature(i) = "•s•K—v‹Z”\" Then
+            ElseIf .Feature(i) = "ä¸å¿…è¦æŠ€èƒ½" Then
                 If .IsNecessarySkillSatisfied(.FeatureData(i), Me) Then
                     IsAbleToRide = False
                     Exit Function
@@ -3001,9 +3001,9 @@ CheckNecessarySkill:
 End Function
 
 
-' === ˆê’†’fŠÖ˜Aˆ— ===
+' === ä¸€æ™‚ä¸­æ–­é–¢é€£å‡¦ç† ===
 
-'ˆê’†’f—pƒf[ƒ^‚ğƒtƒ@ƒCƒ‹‚ÉƒZ[ƒu‚·‚é
+'ä¸€æ™‚ä¸­æ–­ç”¨ãƒ‡ãƒ¼ã‚¿ã‚’ãƒ•ã‚¡ã‚¤ãƒ«ã«ã‚»ãƒ¼ãƒ–ã™ã‚‹
 Public Sub Dump()
     Write #SaveDataFileNumber, Name, ID, Party
     Write #SaveDataFileNumber, Level, Exp
@@ -3016,7 +3016,7 @@ Public Sub Dump()
     End If
 End Sub
 
-'ˆê’†’f—pƒf[ƒ^‚ğƒtƒ@ƒCƒ‹‚©‚çƒ[ƒh‚·‚é
+'ä¸€æ™‚ä¸­æ–­ç”¨ãƒ‡ãƒ¼ã‚¿ã‚’ãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ãƒ­ãƒ¼ãƒ‰ã™ã‚‹
 Public Sub Restore()
 Dim sbuf As String, ibuf As Integer, bbuf As Boolean
 
@@ -3054,7 +3054,7 @@ Dim sbuf As String, ibuf As Integer, bbuf As Boolean
     Line Input #SaveDataFileNumber, sbuf
 End Sub
 
-'ˆê’†’f—pƒf[ƒ^‚ÌƒŠƒ“ƒNî•ñ‚ğƒtƒ@ƒCƒ‹‚©‚çƒ[ƒh‚·‚é
+'ä¸€æ™‚ä¸­æ–­ç”¨ãƒ‡ãƒ¼ã‚¿ã®ãƒªãƒ³ã‚¯æƒ…å ±ã‚’ãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ãƒ­ãƒ¼ãƒ‰ã™ã‚‹
 Public Sub RestoreLinkInfo()
 Dim sbuf As String, ibuf As Integer
 
@@ -3075,7 +3075,7 @@ Dim sbuf As String, ibuf As Integer
     Set Unit = UList.Item(sbuf)
 End Sub
 
-'ˆê’†’f—pƒf[ƒ^‚Ìƒpƒ‰ƒ[ƒ^î•ñ‚ğƒtƒ@ƒCƒ‹‚©‚çƒ[ƒh‚·‚é
+'ä¸€æ™‚ä¸­æ–­ç”¨ãƒ‡ãƒ¼ã‚¿ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿æƒ…å ±ã‚’ãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ãƒ­ãƒ¼ãƒ‰ã™ã‚‹
 Public Sub RestoreParameter()
 Dim sbuf As String, ibuf As Integer
 
@@ -3101,16 +3101,16 @@ Dim sbuf As String, ibuf As Integer
 End Sub
 
 
-' === ‚»‚Ì‘¼ ===
+' === ãã®ä»– ===
 
-'‘S‰ñ•œ
+'å…¨å›å¾©
 Public Sub FullRecover()
-    '“¬‘ˆ–{”\‚É‚æ‚Á‚Ä‰Šú‹C—Í‚Í•Ï‰»‚·‚é
-    If IsSkillAvailable("“¬‘ˆ–{”\") Then
+    'é—˜äº‰æœ¬èƒ½ã«ã‚ˆã£ã¦åˆæœŸæ°—åŠ›ã¯å¤‰åŒ–ã™ã‚‹
+    If IsSkillAvailable("é—˜äº‰æœ¬èƒ½") Then
         If MinMorale > 100 Then
-            SetMorale MinMorale + 5 * SkillLevel("“¬‘ˆ–{”\")
+            SetMorale MinMorale + 5 * SkillLevel("é—˜äº‰æœ¬èƒ½")
         Else
-            SetMorale 100 + 5 * SkillLevel("“¬‘ˆ–{”\")
+            SetMorale 100 + 5 * SkillLevel("é—˜äº‰æœ¬èƒ½")
         End If
     Else
         SetMorale 100
@@ -3120,36 +3120,36 @@ Public Sub FullRecover()
     Plana = MaxPlana
 End Sub
 
-'“¯’²—¦
+'åŒèª¿ç‡
 Public Function SynchroRate() As Integer
 Dim lv As Integer
 
-    If Not IsSkillAvailable("“¯’²—¦") Then
+    If Not IsSkillAvailable("åŒèª¿ç‡") Then
         Exit Function
     End If
     
-    '“¯’²—¦Šî–{’l
-    SynchroRate = SkillLevel("“¯’²—¦")
+    'åŒèª¿ç‡åŸºæœ¬å€¤
+    SynchroRate = SkillLevel("åŒèª¿ç‡")
     
-    'ƒŒƒxƒ‹‚É‚æ‚é‘‰Á•ª
+    'ãƒ¬ãƒ™ãƒ«ã«ã‚ˆã‚‹å¢—åŠ åˆ†
     lv = MinLng(Level, 100)
-    If IsSkillAvailable("“¯’²—¦¬’·") Then
-        SynchroRate = SynchroRate + lv * (10 + SkillLevel("“¯’²—¦¬’·")) \ 10
+    If IsSkillAvailable("åŒèª¿ç‡æˆé•·") Then
+        SynchroRate = SynchroRate + lv * (10 + SkillLevel("åŒèª¿ç‡æˆé•·")) \ 10
     Else
         SynchroRate = SynchroRate + lv
     End If
 End Function
 
-'wŠö”ÍˆÍ
+'æŒ‡æ®ç¯„å›²
 Public Function CommandRange() As Integer
-    'wŠö”\—Í‚ğ‚Á‚Ä‚¢‚È‚¯‚ê‚Î”ÍˆÍ‚Í0
-    If Not IsSkillAvailable("wŠö") Then
+    'æŒ‡æ®èƒ½åŠ›ã‚’æŒã£ã¦ã„ãªã‘ã‚Œã°ç¯„å›²ã¯0
+    If Not IsSkillAvailable("æŒ‡æ®") Then
         CommandRange = 0
         Exit Function
     End If
     
-    'wŠö”\—Í‚ğ‚Á‚Ä‚¢‚éê‡‚ÍŠK‹‰ƒŒƒxƒ‹‚ÉˆË‘¶
-    Select Case SkillLevel("ŠK‹‰")
+    'æŒ‡æ®èƒ½åŠ›ã‚’æŒã£ã¦ã„ã‚‹å ´åˆã¯éšç´šãƒ¬ãƒ™ãƒ«ã«ä¾å­˜
+    Select Case SkillLevel("éšç´š")
         Case 0 To 6
             CommandRange = 2
         Case 7 To 9
@@ -3161,18 +3161,18 @@ Public Function CommandRange() As Integer
     End Select
 End Function
 
-'s“®Œˆ’è‚É—p‚¢‚ç‚ê‚éí“¬”»’f—Í
+'è¡Œå‹•æ±ºå®šã«ç”¨ã„ã‚‰ã‚Œã‚‹æˆ¦é—˜åˆ¤æ–­åŠ›
 Public Function TacticalTechnique0() As Integer
-    TacticalTechnique0 = TechniqueBase - Level + 10 * SkillLevel("íp")
+    TacticalTechnique0 = TechniqueBase - Level + 10 * SkillLevel("æˆ¦è¡“")
 End Function
 
 Public Function TacticalTechnique() As Integer
-    '³í‚È”»’f”\—Í‚ª‚ ‚éH
+    'æ­£å¸¸ãªåˆ¤æ–­èƒ½åŠ›ãŒã‚ã‚‹ï¼Ÿ
     If Not Unit Is Nothing Then
         With Unit
-            If .IsConditionSatisfied("¬—") _
-                Or .IsConditionSatisfied("–\‘–") _
-                Or .IsConditionSatisfied("‹¶ím") _
+            If .IsConditionSatisfied("æ··ä¹±") _
+                Or .IsConditionSatisfied("æš´èµ°") _
+                Or .IsConditionSatisfied("ç‹‚æˆ¦å£«") _
             Then
                 Exit Function
             End If
@@ -3182,19 +3182,19 @@ Public Function TacticalTechnique() As Integer
     TacticalTechnique = TacticalTechnique0
 End Function
 
-'ƒCƒxƒ“ƒgƒRƒ}ƒ“ƒh SetRelation ‚Åİ’è‚µ‚½’l‚ğ•Ô‚·
+'ã‚¤ãƒ™ãƒ³ãƒˆã‚³ãƒãƒ³ãƒ‰ SetRelation ã§è¨­å®šã—ãŸå€¤ã‚’è¿”ã™
 Public Function Relation(t As Pilot) As Integer
-    Relation = GetValueAsLong("ŠÖŒW:" & Name & ":" & t.Name)
+    Relation = GetValueAsLong("é–¢ä¿‚:" & Name & ":" & t.Name)
 End Function
 
-'ËŒ‚”\—Í‚ªu–‚—Ív‚Æ•\¦‚³‚ê‚é‚©‚Ç‚¤‚©
+'å°„æ’ƒèƒ½åŠ›ãŒã€Œé­”åŠ›ã€ã¨è¡¨ç¤ºã•ã‚Œã‚‹ã‹ã©ã†ã‹
 Public Function HasMana() As Boolean
-    If IsSkillAvailable("p") Or IsSkillAvailable("–‚—ÍŠ—L") Then
+    If IsSkillAvailable("è¡“") Or IsSkillAvailable("é­”åŠ›æ‰€æœ‰") Then
         HasMana = True
         Exit Function
     End If
     
-    If IsOptionDefined("–‚—Íg—p") Then
+    If IsOptionDefined("é­”åŠ›ä½¿ç”¨") Then
         HasMana = True
         Exit Function
     End If

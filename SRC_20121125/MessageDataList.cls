@@ -10,16 +10,16 @@ Attribute VB_Exposed = False
 Option Explicit
 
 ' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-' –{ƒvƒƒOƒ‰ƒ€‚ÍƒtƒŠ[ƒ\ƒtƒg‚Å‚ ‚èA–³•ÛØ‚Å‚·B
-' –{ƒvƒƒOƒ‰ƒ€‚ÍGNU General Public License(Ver.3‚Ü‚½‚Í‚»‚êˆÈ~)‚ª’è‚ß‚éðŒ‚Ì‰º‚Å
-' Ä”Ð•z‚Ü‚½‚Í‰ü•Ï‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B
+' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯ãƒ•ãƒªãƒ¼ã‚½ãƒ•ãƒˆã§ã‚ã‚Šã€ç„¡ä¿è¨¼ã§ã™ã€‚
+' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯GNU General Public License(Ver.3ã¾ãŸã¯ãã‚Œä»¥é™)ãŒå®šã‚ã‚‹æ¡ä»¶ã®ä¸‹ã§
+' å†é ’å¸ƒã¾ãŸã¯æ”¹å¤‰ã™ã‚‹ã“ã¨ãŒã§ãã¾ã™ã€‚
 
-'‘SƒƒbƒZ[ƒWƒf[ƒ^(‚Ü‚½‚Í“ÁŽêŒø‰Êƒf[ƒ^)‚ðŠÇ—‚·‚éƒRƒŒƒNƒVƒ‡ƒ“ƒNƒ‰ƒX
+'å…¨ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãƒ‡ãƒ¼ã‚¿(ã¾ãŸã¯ç‰¹æ®ŠåŠ¹æžœãƒ‡ãƒ¼ã‚¿)ã‚’ç®¡ç†ã™ã‚‹ã‚³ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³ã‚¯ãƒ©ã‚¹
 
-'ƒƒbƒZ[ƒWƒf[ƒ^(‚Ü‚½‚Í“ÁŽêŒø‰Êƒf[ƒ^)ˆê——
+'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãƒ‡ãƒ¼ã‚¿(ã¾ãŸã¯ç‰¹æ®ŠåŠ¹æžœãƒ‡ãƒ¼ã‚¿)ä¸€è¦§
 Private colMessageDataList As New Collection
 
-'ƒNƒ‰ƒX‚Ì‰ð•ú
+'ã‚¯ãƒ©ã‚¹ã®è§£æ”¾
 Private Sub Class_Terminate()
 Dim i As Integer
     
@@ -31,7 +31,7 @@ Dim i As Integer
     Set colMessageDataList = Nothing
 End Sub
 
-'ƒƒbƒZ[ƒWƒf[ƒ^‚Ì’Ç‰Á
+'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãƒ‡ãƒ¼ã‚¿ã®è¿½åŠ 
 Public Function Add(mname As String) As MessageData
 Dim new_md As New MessageData
 
@@ -40,7 +40,7 @@ Dim new_md As New MessageData
     Set Add = new_md
 End Function
 
-'ƒƒbƒZ[ƒWƒf[ƒ^‚Ì‘”
+'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãƒ‡ãƒ¼ã‚¿ã®ç·æ•°
 Public Function Count() As Integer
     Count = colMessageDataList.Count
 End Function
@@ -49,7 +49,7 @@ Public Sub Delete(Index As Variant)
     colMessageDataList.Remove Index
 End Sub
 
-'ƒƒbƒZ[ƒWƒf[ƒ^‚ÌŒŸõ
+'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãƒ‡ãƒ¼ã‚¿ã®æ¤œç´¢
 Public Function Item(Index As Variant) As MessageData
     On Error GoTo ErrorHandler
     
@@ -60,7 +60,7 @@ ErrorHandler:
     Set Item = Nothing
 End Function
 
-'ƒƒbƒZ[ƒWƒf[ƒ^‚ª“o˜^‚³‚ê‚Ä‚¢‚é‚©H
+'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãƒ‡ãƒ¼ã‚¿ãŒç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ã‹ï¼Ÿ
 Public Function IsDefined(Index As Variant) As Boolean
 Dim md As MessageData
 
@@ -73,7 +73,7 @@ ErrorHandler:
     IsDefined = False
 End Function
 
-'ƒƒbƒZ[ƒWƒf[ƒ^‚ðƒtƒ@ƒCƒ‹‚©‚çƒ[ƒh
+'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãƒ‡ãƒ¼ã‚¿ã‚’ãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ãƒ­ãƒ¼ãƒ‰
 Public Sub Load(fname As String)
 Dim FileNumber As Integer
 Dim ret As Integer, line_num As Long
@@ -83,7 +83,7 @@ Dim sname As String, msg As String
 Dim data_name As String
 Dim err_msg As String
 
-    '“ÁŽêŒø‰Êƒf[ƒ^orí“¬ƒAƒjƒƒf[ƒ^‚©H
+    'ç‰¹æ®ŠåŠ¹æžœãƒ‡ãƒ¼ã‚¿oræˆ¦é—˜ã‚¢ãƒ‹ãƒ¡ãƒ‡ãƒ¼ã‚¿ã‹ï¼Ÿ
     If InStr(LCase$(fname), "effect.txt") > 0 _
         Or InStr(LCase$(fname), "animation.txt") > 0 _
     Then
@@ -109,33 +109,33 @@ Dim err_msg As String
         Loop While Len(line_buf) = 0
         
         If InStr(line_buf, ",") > 0 Then
-            err_msg = "–¼Ì‚ÌÝ’è‚ª”²‚¯‚Ä‚¢‚Ü‚·B"
+            err_msg = "åç§°ã®è¨­å®šãŒæŠœã‘ã¦ã„ã¾ã™ã€‚"
             Error 0
         End If
         
         data_name = line_buf
         
         If InStr(data_name, " ") > 0 Then
-            err_msg = "–¼Ì‚É”¼ŠpƒXƒy[ƒX‚ÍŽg—po—ˆ‚Ü‚¹‚ñB"
+            err_msg = "åç§°ã«åŠè§’ã‚¹ãƒšãƒ¼ã‚¹ã¯ä½¿ç”¨å‡ºæ¥ã¾ã›ã‚“ã€‚"
             Error 0
         End If
-        If InStr(data_name, "i") > 0 Or InStr(data_name, "j") > 0 Then
-            err_msg = "–¼Ì‚É‘SŠpŠ‡ŒÊ‚ÍŽg—po—ˆ‚Ü‚¹‚ñB"
+        If InStr(data_name, "ï¼ˆ") > 0 Or InStr(data_name, "ï¼‰") > 0 Then
+            err_msg = "åç§°ã«å…¨è§’æ‹¬å¼§ã¯ä½¿ç”¨å‡ºæ¥ã¾ã›ã‚“ã€‚"
             Error 0
         End If
         If InStr(data_name, """") > 0 Then
-            err_msg = "–¼Ì‚É""‚ÍŽg—po—ˆ‚Ü‚¹‚ñB"
+            err_msg = "åç§°ã«""ã¯ä½¿ç”¨å‡ºæ¥ã¾ã›ã‚“ã€‚"
             Error 0
         End If
         
-        'd•¡‚µ‚Ä’è‹`‚³‚ê‚½ƒf[ƒ^‚Ìê‡
+        'é‡è¤‡ã—ã¦å®šç¾©ã•ã‚ŒãŸãƒ‡ãƒ¼ã‚¿ã®å ´åˆ
         If IsDefined(data_name) Then
             If Not is_effect Then
-                'ƒpƒCƒƒbƒgƒƒbƒZ[ƒW‚Ìê‡‚ÍŒã‚©‚ç’è‹`‚³‚ê‚½‚à‚Ì‚ð—Dæ
+                'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã®å ´åˆã¯å¾Œã‹ã‚‰å®šç¾©ã•ã‚ŒãŸã‚‚ã®ã‚’å„ªå…ˆ
                 Delete data_name
                 Set md = Add(data_name)
             Else
-                '“ÁŽêŒø‰Êƒf[ƒ^‚Ìê‡‚ÍŠù‘¶‚Ì‚à‚Ì‚É’Ç‰Á
+                'ç‰¹æ®ŠåŠ¹æžœãƒ‡ãƒ¼ã‚¿ã®å ´åˆã¯æ—¢å­˜ã®ã‚‚ã®ã«è¿½åŠ 
                 Set md = Item(data_name)
             End If
         Else
@@ -155,7 +155,7 @@ Dim err_msg As String
                 msg = Trim$(Mid$(line_buf, ret + 1))
                 
                 If Len(sname) = 0 Then
-                    err_msg = "ƒVƒ`ƒ…ƒG[ƒVƒ‡ƒ“‚ÌŽw’è‚ª”²‚¯‚Ä‚¢‚Ü‚·B"
+                    err_msg = "ã‚·ãƒãƒ¥ã‚¨ãƒ¼ã‚·ãƒ§ãƒ³ã®æŒ‡å®šãŒæŠœã‘ã¦ã„ã¾ã™ã€‚"
                     Error 0
                 End If
                 
@@ -172,9 +172,9 @@ Dim err_msg As String
     Loop
     
 ErrorHandler:
-    'ƒGƒ‰[ˆ—
+    'ã‚¨ãƒ©ãƒ¼å‡¦ç†
     If line_num = 0 Then
-        ErrorMessage fname & "‚ªŠJ‚¯‚Ü‚¹‚ñB"
+        ErrorMessage fname & "ãŒé–‹ã‘ã¾ã›ã‚“ã€‚"
     Else
         Close #FileNumber
         DataErrorMessage "", fname, line_num, line_buf, data_name
@@ -182,57 +182,57 @@ ErrorHandler:
     TerminateSRC
 End Sub
 
-'ƒfƒtƒHƒ‹ƒg‚Ìí“¬ƒAƒjƒƒf[ƒ^‚ð’è‹`
+'ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®æˆ¦é—˜ã‚¢ãƒ‹ãƒ¡ãƒ‡ãƒ¼ã‚¿ã‚’å®šç¾©
 Public Sub AddDefaultAnimation()
 Dim md As MessageData
     
-    'ƒAƒjƒƒf[ƒ^‚ª—pˆÓ‚³‚ê‚Ä‚¢‚È‚¢ê‡‚Í Data\System\animation.txt ‚ð“Ç‚Ýž‚Þ
+    'ã‚¢ãƒ‹ãƒ¡ãƒ‡ãƒ¼ã‚¿ãŒç”¨æ„ã•ã‚Œã¦ã„ãªã„å ´åˆã¯ Data\System\animation.txt ã‚’èª­ã¿è¾¼ã‚€
     If Count() = 0 Then
         If FileExists(AppPath & "Data\System\animation.txt") Then
             Load AppPath & "Data\System\animation.txt"
         End If
     End If
     
-    If IsDefined("”Ä—p") Then
-        Set md = Item("”Ä—p")
+    If IsDefined("æ±Žç”¨") Then
+        Set md = Item("æ±Žç”¨")
     Else
-        Set md = Add("”Ä—p")
+        Set md = Add("æ±Žç”¨")
     End If
     
     With md
-        If FindNormalLabel("í“¬ƒAƒjƒ_‰ñ”ð”­“®") > 0 Then
-            If .SelectMessage("‰ñ”ð") = "" Then
-                .AddMessage "‰ñ”ð", "‰ñ”ð"
+        If FindNormalLabel("æˆ¦é—˜ã‚¢ãƒ‹ãƒ¡_å›žé¿ç™ºå‹•") > 0 Then
+            If .SelectMessage("å›žé¿") = "" Then
+                .AddMessage "å›žé¿", "å›žé¿"
             End If
         End If
-        If FindNormalLabel("í“¬ƒAƒjƒ_Ø‚è•¥‚¢”­“®") > 0 Then
-            If .SelectMessage("Ø‚è•¥‚¢") = "" Then
-                .AddMessage "Ø‚è•¥‚¢", "Ø‚è•¥‚¢"
+        If FindNormalLabel("æˆ¦é—˜ã‚¢ãƒ‹ãƒ¡_åˆ‡ã‚Šæ‰•ã„ç™ºå‹•") > 0 Then
+            If .SelectMessage("åˆ‡ã‚Šæ‰•ã„") = "" Then
+                .AddMessage "åˆ‡ã‚Šæ‰•ã„", "åˆ‡ã‚Šæ‰•ã„"
             End If
         End If
-        If FindNormalLabel("í“¬ƒAƒjƒ_Œ}Œ‚”­“®") > 0 Then
-            If .SelectMessage("Œ}Œ‚") = "" Then
-                .AddMessage "Œ}Œ‚", "Œ}Œ‚"
+        If FindNormalLabel("æˆ¦é—˜ã‚¢ãƒ‹ãƒ¡_è¿Žæ’ƒç™ºå‹•") > 0 Then
+            If .SelectMessage("è¿Žæ’ƒ") = "" Then
+                .AddMessage "è¿Žæ’ƒ", "è¿Žæ’ƒ"
             End If
         End If
-        If FindNormalLabel("í“¬ƒAƒjƒ_ƒ_ƒ~[”­“®") > 0 Then
-            If .SelectMessage("ƒ_ƒ~[") = "" Then
-                .AddMessage "ƒ_ƒ~[", "ƒ_ƒ~["
+        If FindNormalLabel("æˆ¦é—˜ã‚¢ãƒ‹ãƒ¡_ãƒ€ãƒŸãƒ¼ç™ºå‹•") > 0 Then
+            If .SelectMessage("ãƒ€ãƒŸãƒ¼") = "" Then
+                .AddMessage "ãƒ€ãƒŸãƒ¼", "ãƒ€ãƒŸãƒ¼"
             End If
         End If
-        If FindNormalLabel("í“¬ƒAƒjƒ_C—‘•’u”­“®") > 0 Then
-            If .SelectMessage("C—") = "" Then
-                .AddMessage "C—", "C—‘•’u"
+        If FindNormalLabel("æˆ¦é—˜ã‚¢ãƒ‹ãƒ¡_ä¿®ç†è£…ç½®ç™ºå‹•") > 0 Then
+            If .SelectMessage("ä¿®ç†") = "" Then
+                .AddMessage "ä¿®ç†", "ä¿®ç†è£…ç½®"
             End If
         End If
-        If FindNormalLabel("í“¬ƒAƒjƒ_•â‹‹‘•’u”­“®") > 0 Then
-            If .SelectMessage("•â‹‹") = "" Then
-                .AddMessage "•â‹‹", "•â‹‹‘•’u"
+        If FindNormalLabel("æˆ¦é—˜ã‚¢ãƒ‹ãƒ¡_è£œçµ¦è£…ç½®ç™ºå‹•") > 0 Then
+            If .SelectMessage("è£œçµ¦") = "" Then
+                .AddMessage "è£œçµ¦", "è£œçµ¦è£…ç½®"
             End If
         End If
-        If FindNormalLabel("í“¬ƒAƒjƒ_I—¹”­“®") > 0 Then
-            If .SelectMessage("I—¹") = "" Then
-                .AddMessage "I—¹", "I—¹"
+        If FindNormalLabel("æˆ¦é—˜ã‚¢ãƒ‹ãƒ¡_çµ‚äº†ç™ºå‹•") > 0 Then
+            If .SelectMessage("çµ‚äº†") = "" Then
+                .AddMessage "çµ‚äº†", "çµ‚äº†"
             End If
         End If
     End With

@@ -10,17 +10,17 @@ Attribute VB_Exposed = False
 Option Explicit
 
 ' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-' –{ƒvƒƒOƒ‰ƒ€‚ÍƒtƒŠ[ƒ\ƒtƒg‚Å‚ ‚èA–³•ÛØ‚Å‚·B
-' –{ƒvƒƒOƒ‰ƒ€‚ÍGNU General Public License(Ver.3‚Ü‚½‚Í‚»‚êˆÈ~)‚ª’è‚ß‚éğŒ‚Ì‰º‚Å
-' Ä”Ğ•z‚Ü‚½‚Í‰ü•Ï‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B
+' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯ãƒ•ãƒªãƒ¼ã‚½ãƒ•ãƒˆã§ã‚ã‚Šã€ç„¡ä¿è¨¼ã§ã™ã€‚
+' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯GNU General Public License(Ver.3ã¾ãŸã¯ãã‚Œä»¥é™)ãŒå®šã‚ã‚‹æ¡ä»¶ã®ä¸‹ã§
+' å†é ’å¸ƒã¾ãŸã¯æ”¹å¤‰ã™ã‚‹ã“ã¨ãŒã§ãã¾ã™ã€‚
 
-'‘SƒAƒCƒeƒ€ƒf[ƒ^‚ğŠÇ—‚·‚éƒŠƒXƒg‚ÌƒNƒ‰ƒX
+'å…¨ã‚¢ã‚¤ãƒ†ãƒ ãƒ‡ãƒ¼ã‚¿ã‚’ç®¡ç†ã™ã‚‹ãƒªã‚¹ãƒˆã®ã‚¯ãƒ©ã‚¹
 
-'ƒAƒCƒeƒ€ƒf[ƒ^‚ÌƒRƒŒƒNƒVƒ‡ƒ“
+'ã‚¢ã‚¤ãƒ†ãƒ ãƒ‡ãƒ¼ã‚¿ã®ã‚³ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³
 Private colItemDataList As New Collection
 
 
-'ƒNƒ‰ƒX‚Ì‰ğ•ú
+'ã‚¯ãƒ©ã‚¹ã®è§£æ”¾
 Private Sub Class_Terminate()
 Dim i As Integer
     
@@ -32,7 +32,7 @@ Dim i As Integer
     Set colItemDataList = Nothing
 End Sub
 
-'ƒAƒCƒeƒ€ƒf[ƒ^ƒŠƒXƒg‚Éƒf[ƒ^‚ğ’Ç‰Á
+'ã‚¢ã‚¤ãƒ†ãƒ ãƒ‡ãƒ¼ã‚¿ãƒªã‚¹ãƒˆã«ãƒ‡ãƒ¼ã‚¿ã‚’è¿½åŠ 
 Public Function Add(new_name As String) As ItemData
 Dim new_Item_data As New ItemData
 
@@ -41,17 +41,17 @@ Dim new_Item_data As New ItemData
     Set Add = new_Item_data
 End Function
 
-'ƒAƒCƒeƒ€ƒf[ƒ^ƒŠƒXƒg‚É“o˜^‚³‚ê‚Ä‚¢‚éƒf[ƒ^‚Ì‘”
+'ã‚¢ã‚¤ãƒ†ãƒ ãƒ‡ãƒ¼ã‚¿ãƒªã‚¹ãƒˆã«ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ãƒ‡ãƒ¼ã‚¿ã®ç·æ•°
 Public Function Count() As Integer
     Count = colItemDataList.Count
 End Function
 
-'ƒAƒCƒeƒ€ƒf[ƒ^ƒŠƒXƒg‚©‚çw’è‚µ‚½ƒf[ƒ^‚ğíœ
+'ã‚¢ã‚¤ãƒ†ãƒ ãƒ‡ãƒ¼ã‚¿ãƒªã‚¹ãƒˆã‹ã‚‰æŒ‡å®šã—ãŸãƒ‡ãƒ¼ã‚¿ã‚’å‰Šé™¤
 Public Sub Delete(Index As Variant)
     colItemDataList.Remove Index
 End Sub
 
-'ƒAƒCƒeƒ€ƒf[ƒ^ƒŠƒXƒg‚©‚çw’è‚µ‚½ƒf[ƒ^‚ğæ‚èo‚·
+'ã‚¢ã‚¤ãƒ†ãƒ ãƒ‡ãƒ¼ã‚¿ãƒªã‚¹ãƒˆã‹ã‚‰æŒ‡å®šã—ãŸãƒ‡ãƒ¼ã‚¿ã‚’å–ã‚Šå‡ºã™
 Public Function Item(Index As Variant) As ItemData
     On Error GoTo ErrorHandler
     
@@ -62,7 +62,7 @@ ErrorHandler:
     Set Item = Nothing
 End Function
 
-'ƒAƒCƒeƒ€ƒf[ƒ^ƒŠƒXƒg‚Éw’è‚µ‚½ƒf[ƒ^‚ª“o˜^‚³‚ê‚Ä‚¢‚é‚©H
+'ã‚¢ã‚¤ãƒ†ãƒ ãƒ‡ãƒ¼ã‚¿ãƒªã‚¹ãƒˆã«æŒ‡å®šã—ãŸãƒ‡ãƒ¼ã‚¿ãŒç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ã‹ï¼Ÿ
 Public Function IsDefined(Index As Variant) As Boolean
 Dim dummy As ItemData
 
@@ -75,7 +75,7 @@ ErrorHandler:
     IsDefined = False
 End Function
 
-'ƒf[ƒ^ƒtƒ@ƒCƒ‹ fname ‚©‚çƒf[ƒ^‚ğƒ[ƒh
+'ãƒ‡ãƒ¼ã‚¿ãƒ•ã‚¡ã‚¤ãƒ« fname ã‹ã‚‰ãƒ‡ãƒ¼ã‚¿ã‚’ãƒ­ãƒ¼ãƒ‰
 Public Sub Load(fname As String)
 Dim FileNumber As Integer
 Dim i As Integer, j As Integer, n As Long, line_num As Long
@@ -96,7 +96,7 @@ Dim comma_num As Integer
     line_num = 0
     
     Do While True
-        '‹ós‚ğƒXƒLƒbƒv
+        'ç©ºè¡Œã‚’ã‚¹ã‚­ãƒƒãƒ—
         Do
             If EOF(FileNumber) Then
                 Close #FileNumber
@@ -106,23 +106,23 @@ Dim comma_num As Integer
         Loop While Len(line_buf) = 0
         
         If InStr(line_buf, ",") > 0 Then
-            err_msg = "–¼Ì‚Ìİ’è‚ª”²‚¯‚Ä‚¢‚Ü‚·B"
+            err_msg = "åç§°ã®è¨­å®šãŒæŠœã‘ã¦ã„ã¾ã™ã€‚"
             Error 0
         End If
         
-        '–¼Ì
+        'åç§°
         data_name = line_buf
         
         If InStr(data_name, " ") > 0 Then
-            err_msg = "–¼Ì‚É”¼ŠpƒXƒy[ƒX‚Íg—po—ˆ‚Ü‚¹‚ñB"
+            err_msg = "åç§°ã«åŠè§’ã‚¹ãƒšãƒ¼ã‚¹ã¯ä½¿ç”¨å‡ºæ¥ã¾ã›ã‚“ã€‚"
             Error 0
         End If
-        If InStr(data_name, "i") > 0 Or InStr(data_name, "j") > 0 Then
-            err_msg = "–¼Ì‚É‘SŠpŠ‡ŒÊ‚Íg—po—ˆ‚Ü‚¹‚ñB"
+        If InStr(data_name, "ï¼ˆ") > 0 Or InStr(data_name, "ï¼‰") > 0 Then
+            err_msg = "åç§°ã«å…¨è§’æ‹¬å¼§ã¯ä½¿ç”¨å‡ºæ¥ã¾ã›ã‚“ã€‚"
             Error 0
         End If
         If InStr(data_name, """") > 0 Then
-            err_msg = "–¼Ì‚É""‚Íg—po—ˆ‚Ü‚¹‚ñB"
+            err_msg = "åç§°ã«""ã¯ä½¿ç”¨å‡ºæ¥ã¾ã›ã‚“ã€‚"
             Error 0
         End If
         
@@ -132,10 +132,10 @@ Dim comma_num As Integer
         Set nd = Add(data_name)
         
         With nd
-            'ˆ¤ÌA“Ç‚İ‰¼–¼AƒAƒCƒeƒ€ƒNƒ‰ƒXA‘•”õŒÂŠ
+            'æ„›ç§°ã€èª­ã¿ä»®åã€ã‚¢ã‚¤ãƒ†ãƒ ã‚¯ãƒ©ã‚¹ã€è£…å‚™å€‹æ‰€
             GetLine FileNumber, line_buf, line_num
             
-            '‘®ƒ`ƒFƒbƒN‚Ì‚½‚ßAƒRƒ“ƒ}‚Ì”‚ğ”‚¦‚Ä‚¨‚­
+            'æ›¸å¼ãƒã‚§ãƒƒã‚¯ã®ãŸã‚ã€ã‚³ãƒ³ãƒã®æ•°ã‚’æ•°ãˆã¦ãŠã
             comma_num = 0
             For i = 1 To Len(line_buf)
                 If Mid$(line_buf, i, 1) = "," Then
@@ -144,16 +144,16 @@ Dim comma_num As Integer
             Next
             
             If comma_num < 2 Then
-                err_msg = "İ’è‚É”²‚¯‚ª‚ ‚è‚Ü‚·B"
+                err_msg = "è¨­å®šã«æŠœã‘ãŒã‚ã‚Šã¾ã™ã€‚"
                 Error 0
             ElseIf comma_num > 3 Then
-                err_msg = "—]•ª‚Èu,v‚ª‚ ‚è‚Ü‚·B"
+                err_msg = "ä½™åˆ†ãªã€Œ,ã€ãŒã‚ã‚Šã¾ã™ã€‚"
                 Error 0
             End If
             
-            'ˆ¤Ì
+            'æ„›ç§°
             If Len(line_buf) = 0 Then
-                err_msg = "ˆ¤Ì‚Ìİ’è‚ª”²‚¯‚Ä‚¢‚Ü‚·B"
+                err_msg = "æ„›ç§°ã®è¨­å®šãŒæŠœã‘ã¦ã„ã¾ã™ã€‚"
                 Error 0
             End If
             ret = InStr(line_buf, ",")
@@ -161,7 +161,7 @@ Dim comma_num As Integer
             buf = Mid$(line_buf, ret + 1)
             .Nickname = buf2
             
-            '“Ç‚İ‰¼–¼
+            'èª­ã¿ä»®å
             If comma_num = 3 Then
                 ret = InStr(buf, ",")
                 buf2 = Trim$(Left$(buf, ret - 1))
@@ -171,26 +171,26 @@ Dim comma_num As Integer
                 .KanaName = StrToHiragana(.Nickname)
             End If
             
-            'ƒAƒCƒeƒ€ƒNƒ‰ƒX
+            'ã‚¢ã‚¤ãƒ†ãƒ ã‚¯ãƒ©ã‚¹
             ret = InStr(buf, ",")
             buf2 = Trim$(Left$(buf, ret - 1))
             buf = Mid$(buf, ret + 1)
             .Class = buf2
             
-            '‘•”õŒÂŠ
+            'è£…å‚™å€‹æ‰€
             buf2 = Trim$(buf)
             If Len(buf2) = 0 Then
-                err_msg = "‘•”õŒÂŠ‚Ìİ’è‚ª”²‚¯‚Ä‚¢‚Ü‚·B"
+                err_msg = "è£…å‚™å€‹æ‰€ã®è¨­å®šãŒæŠœã‘ã¦ã„ã¾ã™ã€‚"
                 Error 0
             End If
             .Part = buf2
             
-            '“Áê”\—Íƒf[ƒ^
+            'ç‰¹æ®Šèƒ½åŠ›ãƒ‡ãƒ¼ã‚¿
             GetLine FileNumber, line_buf, line_num
-            If line_buf = "“Áê”\—Í‚È‚µ" Then
+            If line_buf = "ç‰¹æ®Šèƒ½åŠ›ãªã—" Then
                 GetLine FileNumber, line_buf, line_num
-            ElseIf line_buf = "“Áê”\—Í" Then
-                'VŒ`®‚É‚æ‚é“Áê”\—Í•\‹L
+            ElseIf line_buf = "ç‰¹æ®Šèƒ½åŠ›" Then
+                'æ–°å½¢å¼ã«ã‚ˆã‚‹ç‰¹æ®Šèƒ½åŠ›è¡¨è¨˜
                 GetLine FileNumber, line_buf, line_num
                 
                 buf = line_buf
@@ -230,8 +230,8 @@ Dim comma_num As Integer
                     If buf2 <> "" Then
                         .AddFeature buf2
                     Else
-                        DataErrorMessage "s“ª‚©‚ç" & Format$(i) & _
-                            "”Ô–Ú‚Ì“Áê”\—Í‚Ìİ’è‚ªŠÔˆá‚Á‚Ä‚¢‚Ü‚·B", _
+                        DataErrorMessage "è¡Œé ­ã‹ã‚‰" & Format$(i) & _
+                            "ç•ªç›®ã®ç‰¹æ®Šèƒ½åŠ›ã®è¨­å®šãŒé–“é•ã£ã¦ã„ã¾ã™ã€‚", _
                             fname, line_num, line_buf, data_name
                     End If
                     
@@ -241,8 +241,8 @@ Dim comma_num As Integer
                         i = 0
                     End If
                 Loop
-            ElseIf InStr(line_buf, "“Áê”\—Í,") = 1 Then
-                '‹ŒŒ`®‚É‚æ‚é“Áê”\—Í•\‹L
+            ElseIf InStr(line_buf, "ç‰¹æ®Šèƒ½åŠ›,") = 1 Then
+                'æ—§å½¢å¼ã«ã‚ˆã‚‹ç‰¹æ®Šèƒ½åŠ›è¡¨è¨˜
                 buf = Mid$(line_buf, 6)
                 
                 ret = 0
@@ -268,7 +268,7 @@ Dim comma_num As Integer
                     If buf2 <> "" Then
                         .AddFeature buf2
                     Else
-                        DataErrorMessage Format$(i) & "”Ô–Ú‚Ì“Áê”\—Í‚Ìİ’è‚ªŠÔˆá‚Á‚Ä‚¢‚Ü‚·B", _
+                        DataErrorMessage Format$(i) & "ç•ªç›®ã®ç‰¹æ®Šèƒ½åŠ›ã®è¨­å®šãŒé–“é•ã£ã¦ã„ã¾ã™ã€‚", _
                             fname, line_num, line_buf, data_name
                     End If
                 Loop
@@ -278,22 +278,22 @@ Dim comma_num As Integer
                 If buf2 <> "" Then
                     .AddFeature buf2
                 Else
-                    DataErrorMessage Format$(i) & "”Ô–Ú‚Ì“Áê”\—Í‚Ìİ’è‚ªŠÔˆá‚Á‚Ä‚¢‚Ü‚·B", _
+                    DataErrorMessage Format$(i) & "ç•ªç›®ã®ç‰¹æ®Šèƒ½åŠ›ã®è¨­å®šãŒé–“é•ã£ã¦ã„ã¾ã™ã€‚", _
                         fname, line_num, line_buf, data_name
                 End If
                 
                 GetLine FileNumber, line_buf, line_num
             Else
-                err_msg = "“Áê”\—Í‚Ìİ’è‚ª”²‚¯‚Ä‚¢‚Ü‚·B"
+                err_msg = "ç‰¹æ®Šèƒ½åŠ›ã®è¨­å®šãŒæŠœã‘ã¦ã„ã¾ã™ã€‚"
                 Error 0
             End If
             
-            'Å‘å‚g‚oC³’l, Å‘å‚d‚mC³’l, ‘•bC³’l, ‰^“®«C³’l, ˆÚ“®—ÍC³’l
+            'æœ€å¤§ï¼¨ï¼°ä¿®æ­£å€¤, æœ€å¤§ï¼¥ï¼®ä¿®æ­£å€¤, è£…ç”²ä¿®æ­£å€¤, é‹å‹•æ€§ä¿®æ­£å€¤, ç§»å‹•åŠ›ä¿®æ­£å€¤
             
-            'Å‘å‚g‚oC³’l
+            'æœ€å¤§ï¼¨ï¼°ä¿®æ­£å€¤
             ret = InStr(line_buf, ",")
             If ret = 0 Then
-                err_msg = "Å‘å‚d‚mC³’l‚Ìİ’è‚ª”²‚¯‚Ä‚¢‚Ü‚·B"
+                err_msg = "æœ€å¤§ï¼¥ï¼®ä¿®æ­£å€¤ã®è¨­å®šãŒæŠœã‘ã¦ã„ã¾ã™ã€‚"
                 Error 0
             End If
             buf2 = Trim$(Left$(line_buf, ret - 1))
@@ -301,14 +301,14 @@ Dim comma_num As Integer
             If IsNumeric(buf2) Then
                 .HP = CLng(buf2)
             Else
-                DataErrorMessage "Å‘å‚g‚oC³’l‚Ìİ’è‚ªŠÔˆá‚Á‚Ä‚¢‚Ü‚·B", _
+                DataErrorMessage "æœ€å¤§ï¼¨ï¼°ä¿®æ­£å€¤ã®è¨­å®šãŒé–“é•ã£ã¦ã„ã¾ã™ã€‚", _
                     fname, line_num, line_buf, data_name
             End If
             
-            'Å‘å‚d‚mC³’l
+            'æœ€å¤§ï¼¥ï¼®ä¿®æ­£å€¤
             ret = InStr(buf, ",")
             If ret = 0 Then
-                err_msg = "‘•bC³’l‚Ìİ’è‚ª”²‚¯‚Ä‚¢‚Ü‚·B"
+                err_msg = "è£…ç”²ä¿®æ­£å€¤ã®è¨­å®šãŒæŠœã‘ã¦ã„ã¾ã™ã€‚"
                 Error 0
             End If
             buf2 = Trim$(Left$(buf, ret - 1))
@@ -316,14 +316,14 @@ Dim comma_num As Integer
             If IsNumeric(buf2) Then
                 .EN = CLng(buf2)
             Else
-                DataErrorMessage "Å‘å‚d‚mC³’l‚Ìİ’è‚ªŠÔˆá‚Á‚Ä‚¢‚Ü‚·B", _
+                DataErrorMessage "æœ€å¤§ï¼¥ï¼®ä¿®æ­£å€¤ã®è¨­å®šãŒé–“é•ã£ã¦ã„ã¾ã™ã€‚", _
                     fname, line_num, line_buf, data_name
             End If
             
-            '‘•bC³’l
+            'è£…ç”²ä¿®æ­£å€¤
             ret = InStr(buf, ",")
             If ret = 0 Then
-                err_msg = "‰^“®«C³’l‚Ìİ’è‚ª”²‚¯‚Ä‚¢‚Ü‚·B"
+                err_msg = "é‹å‹•æ€§ä¿®æ­£å€¤ã®è¨­å®šãŒæŠœã‘ã¦ã„ã¾ã™ã€‚"
                 Error 0
             End If
             buf2 = Trim$(Left$(buf, ret - 1))
@@ -331,14 +331,14 @@ Dim comma_num As Integer
             If IsNumeric(buf2) Then
                 .Armor = CLng(buf2)
             Else
-                DataErrorMessage "‘•bC³’l‚Ìİ’è‚ªŠÔˆá‚Á‚Ä‚¢‚Ü‚·B", _
+                DataErrorMessage "è£…ç”²ä¿®æ­£å€¤ã®è¨­å®šãŒé–“é•ã£ã¦ã„ã¾ã™ã€‚", _
                     fname, line_num, line_buf, data_name
             End If
             
-            '‰^“®«C³’l
+            'é‹å‹•æ€§ä¿®æ­£å€¤
             ret = InStr(buf, ",")
             If ret = 0 Then
-                err_msg = "ˆÚ“®—ÍC³’l‚Ìİ’è‚ª”²‚¯‚Ä‚¢‚Ü‚·B"
+                err_msg = "ç§»å‹•åŠ›ä¿®æ­£å€¤ã®è¨­å®šãŒæŠœã‘ã¦ã„ã¾ã™ã€‚"
                 Error 0
             End If
             buf2 = Trim$(Left$(buf, ret - 1))
@@ -346,20 +346,20 @@ Dim comma_num As Integer
             If IsNumeric(buf2) Then
                 .Mobility = CLng(buf2)
             Else
-                DataErrorMessage "‰^“®«C³’l‚Ìİ’è‚ªŠÔˆá‚Á‚Ä‚¢‚Ü‚·B", _
+                DataErrorMessage "é‹å‹•æ€§ä¿®æ­£å€¤ã®è¨­å®šãŒé–“é•ã£ã¦ã„ã¾ã™ã€‚", _
                     fname, line_num, line_buf, data_name
             End If
             
-            'ˆÚ“®—ÍC³’l
+            'ç§»å‹•åŠ›ä¿®æ­£å€¤
             buf2 = Trim$(buf)
             If Len(buf2) = 0 Then
-                err_msg = "ˆÚ“®—ÍC³’l‚Ìİ’è‚ª”²‚¯‚Ä‚¢‚Ü‚·B"
+                err_msg = "ç§»å‹•åŠ›ä¿®æ­£å€¤ã®è¨­å®šãŒæŠœã‘ã¦ã„ã¾ã™ã€‚"
                 Error 0
             End If
             If IsNumeric(buf2) Then
                 .Speed = CLng(buf2)
             Else
-                DataErrorMessage "ˆÚ“®—ÍC³’l‚Ìİ’è‚ªŠÔˆá‚Á‚Ä‚¢‚Ü‚·B", _
+                DataErrorMessage "ç§»å‹•åŠ›ä¿®æ­£å€¤ã®è¨­å®šãŒé–“é•ã£ã¦ã„ã¾ã™ã€‚", _
                     fname, line_num, line_buf, data_name
             End If
             
@@ -368,30 +368,30 @@ Dim comma_num As Integer
                 Exit Sub
             End If
             
-            '•Šíƒf[ƒ^
+            'æ­¦å™¨ãƒ‡ãƒ¼ã‚¿
             GetLine FileNumber, line_buf, line_num
             Do While Len(line_buf) > 0 And Left$(line_buf, 1) <> "*" And line_buf <> "==="
-                '•Ší–¼
+                'æ­¦å™¨å
                 ret = InStr(line_buf, ",")
                 If ret = 0 Then
-                    err_msg = "•Šíƒf[ƒ^‚ÌI‚è‚É‚Í‹ós‚ğ’u‚¢‚Ä‚­‚¾‚³‚¢B"
+                    err_msg = "æ­¦å™¨ãƒ‡ãƒ¼ã‚¿ã®çµ‚ã‚Šã«ã¯ç©ºè¡Œã‚’ç½®ã„ã¦ãã ã•ã„ã€‚"
                     Error 0
                 End If
                 wname = Trim$(Left$(line_buf, ret - 1))
                 buf = Mid$(line_buf, ret + 1)
                 
                 If wname = "" Then
-                    err_msg = "•Ší–¼‚Ìİ’è‚ªŠÔˆá‚Á‚Ä‚¢‚Ü‚·B"
+                    err_msg = "æ­¦å™¨åã®è¨­å®šãŒé–“é•ã£ã¦ã„ã¾ã™ã€‚"
                     Error 0
                 End If
                 
-                '•Ší‚ğ“o˜^
+                'æ­¦å™¨ã‚’ç™»éŒ²
                 Set wd = .AddWeapon(wname)
                 
-                'UŒ‚—Í
+                'æ”»æ’ƒåŠ›
                 ret = InStr(buf, ",")
                 If ret = 0 Then
-                    err_msg = wname & "‚ÌÅ¬Ë’ö‚ª”²‚¯‚Ä‚¢‚Ü‚·B"
+                    err_msg = wname & "ã®æœ€å°å°„ç¨‹ãŒæŠœã‘ã¦ã„ã¾ã™ã€‚"
                     Error 0
                 End If
                 buf2 = Trim$(Left$(buf, ret - 1))
@@ -401,7 +401,7 @@ Dim comma_num As Integer
                 ElseIf buf = "-" Then
                     wd.Power = 0
                 Else
-                    DataErrorMessage wname & "‚ÌUŒ‚—Í‚Ìİ’è‚ªŠÔˆá‚Á‚Ä‚¢‚Ü‚·B", _
+                    DataErrorMessage wname & "ã®æ”»æ’ƒåŠ›ã®è¨­å®šãŒé–“é•ã£ã¦ã„ã¾ã™ã€‚", _
                         fname, line_num, line_buf, data_name
                     If LLength(buf2) > 1 Then
                         buf = LIndex(buf2, 2) & "," & buf
@@ -409,10 +409,10 @@ Dim comma_num As Integer
                     End If
                 End If
                 
-                'Å¬Ë’ö
+                'æœ€å°å°„ç¨‹
                 ret = InStr(buf, ",")
                 If ret = 0 Then
-                    err_msg = wname & "‚ÌÅ‘åË’ö‚Ìİ’è‚ª”²‚¯‚Ä‚¢‚Ü‚·B"
+                    err_msg = wname & "ã®æœ€å¤§å°„ç¨‹ã®è¨­å®šãŒæŠœã‘ã¦ã„ã¾ã™ã€‚"
                     Error 0
                 End If
                 buf2 = Trim$(Left$(buf, ret - 1))
@@ -420,7 +420,7 @@ Dim comma_num As Integer
                 If IsNumeric(buf2) Then
                     wd.MinRange = MinLng(CLng(buf2), 99)
                 Else
-                    DataErrorMessage wname & "‚ÌÅ¬Ë’ö‚Ìİ’è‚ªŠÔˆá‚Á‚Ä‚¢‚Ü‚·B", _
+                    DataErrorMessage wname & "ã®æœ€å°å°„ç¨‹ã®è¨­å®šãŒé–“é•ã£ã¦ã„ã¾ã™ã€‚", _
                         fname, line_num, line_buf, data_name
                     wd.MinRange = 1
                     If LLength(buf2) > 1 Then
@@ -429,10 +429,10 @@ Dim comma_num As Integer
                     End If
                 End If
                 
-                'Å‘åË’ö
+                'æœ€å¤§å°„ç¨‹
                 ret = InStr(buf, ",")
                 If ret = 0 Then
-                    err_msg = wname & "‚Ì–½’†—¦‚Ìİ’è‚ª”²‚¯‚Ä‚¢‚Ü‚·B"
+                    err_msg = wname & "ã®å‘½ä¸­ç‡ã®è¨­å®šãŒæŠœã‘ã¦ã„ã¾ã™ã€‚"
                     Error 0
                 End If
                 buf2 = Trim$(Left$(buf, ret - 1))
@@ -440,7 +440,7 @@ Dim comma_num As Integer
                 If IsNumeric(buf2) Then
                     wd.MaxRange = MinLng(CLng(buf2), 99)
                 Else
-                    DataErrorMessage wname & "‚ÌÅ‘åË’ö‚Ìİ’è‚ªŠÔˆá‚Á‚Ä‚¢‚Ü‚·B", _
+                    DataErrorMessage wname & "ã®æœ€å¤§å°„ç¨‹ã®è¨­å®šãŒé–“é•ã£ã¦ã„ã¾ã™ã€‚", _
                         fname, line_num, line_buf, data_name
                     wd.MaxRange = 1
                     If LLength(buf2) > 1 Then
@@ -449,10 +449,10 @@ Dim comma_num As Integer
                     End If
                 End If
                 
-                '–½’†—¦
+                'å‘½ä¸­ç‡
                 ret = InStr(buf, ",")
                 If ret = 0 Then
-                    err_msg = wname & "‚Ì’e”‚Ìİ’è‚ª”²‚¯‚Ä‚¢‚Ü‚·B"
+                    err_msg = wname & "ã®å¼¾æ•°ã®è¨­å®šãŒæŠœã‘ã¦ã„ã¾ã™ã€‚"
                     Error 0
                 End If
                 buf2 = Trim$(Left$(buf, ret - 1))
@@ -466,7 +466,7 @@ Dim comma_num As Integer
                     End If
                     wd.Precision = n
                 Else
-                    DataErrorMessage wname & "‚Ì–½’†—¦‚Ìİ’è‚ªŠÔˆá‚Á‚Ä‚¢‚Ü‚·B", _
+                    DataErrorMessage wname & "ã®å‘½ä¸­ç‡ã®è¨­å®šãŒé–“é•ã£ã¦ã„ã¾ã™ã€‚", _
                         fname, line_num, line_buf, data_name
                     If LLength(buf2) > 1 Then
                         buf = LIndex(buf2, 2) & "," & buf
@@ -474,10 +474,10 @@ Dim comma_num As Integer
                     End If
                 End If
                 
-                '’e”
+                'å¼¾æ•°
                 ret = InStr(buf, ",")
                 If ret = 0 Then
-                    err_msg = wname & "‚ÌÁ”ï‚d‚m‚Ìİ’è‚ª”²‚¯‚Ä‚¢‚Ü‚·B"
+                    err_msg = wname & "ã®æ¶ˆè²»ï¼¥ï¼®ã®è¨­å®šãŒæŠœã‘ã¦ã„ã¾ã™ã€‚"
                     Error 0
                 End If
                 buf2 = Trim$(Left$(buf, ret - 1))
@@ -486,7 +486,7 @@ Dim comma_num As Integer
                     If IsNumeric(buf2) Then
                         wd.Bullet = MinLng(CLng(buf2), 99)
                     Else
-                        DataErrorMessage wname & "‚Ì’e”‚Ìİ’è‚ªŠÔˆá‚Á‚Ä‚¢‚Ü‚·B", _
+                        DataErrorMessage wname & "ã®å¼¾æ•°ã®è¨­å®šãŒé–“é•ã£ã¦ã„ã¾ã™ã€‚", _
                             fname, line_num, line_buf, data_name
                         If LLength(buf2) > 1 Then
                             buf = LIndex(buf2, 2) & "," & buf
@@ -495,10 +495,10 @@ Dim comma_num As Integer
                     End If
                 End If
                 
-                'Á”ï‚d‚m
+                'æ¶ˆè²»ï¼¥ï¼®
                 ret = InStr(buf, ",")
                 If ret = 0 Then
-                    err_msg = wname & "‚Ì•K—v‹C—Í‚ª”²‚¯‚Ä‚¢‚Ü‚·B"
+                    err_msg = wname & "ã®å¿…è¦æ°—åŠ›ãŒæŠœã‘ã¦ã„ã¾ã™ã€‚"
                     Error 0
                 End If
                 buf2 = Trim$(Left$(buf, ret - 1))
@@ -507,7 +507,7 @@ Dim comma_num As Integer
                     If IsNumeric(buf2) Then
                         wd.ENConsumption = MinLng(CLng(buf2), 999)
                     Else
-                        DataErrorMessage wname & "‚ÌÁ”ï‚d‚m‚Ìİ’è‚ªŠÔˆá‚Á‚Ä‚¢‚Ü‚·B", _
+                        DataErrorMessage wname & "ã®æ¶ˆè²»ï¼¥ï¼®ã®è¨­å®šãŒé–“é•ã£ã¦ã„ã¾ã™ã€‚", _
                             fname, line_num, line_buf, data_name
                         If LLength(buf2) > 1 Then
                             buf = LIndex(buf2, 2) & "," & buf
@@ -516,10 +516,10 @@ Dim comma_num As Integer
                     End If
                 End If
                 
-                '•K—v‹C—Í
+                'å¿…è¦æ°—åŠ›
                 ret = InStr(buf, ",")
                 If ret = 0 Then
-                    err_msg = wname & "‚Ì’nŒ`“K‰‚ª”²‚¯‚Ä‚¢‚Ü‚·B"
+                    err_msg = wname & "ã®åœ°å½¢é©å¿œãŒæŠœã‘ã¦ã„ã¾ã™ã€‚"
                     Error 0
                 End If
                 buf2 = Trim$(Left$(buf, ret - 1))
@@ -534,7 +534,7 @@ Dim comma_num As Integer
                         End If
                         wd.NecessaryMorale = n
                     Else
-                        DataErrorMessage wname & "‚Ì•K—v‹C—Í‚Ìİ’è‚ªŠÔˆá‚Á‚Ä‚¢‚Ü‚·B", _
+                        DataErrorMessage wname & "ã®å¿…è¦æ°—åŠ›ã®è¨­å®šãŒé–“é•ã£ã¦ã„ã¾ã™ã€‚", _
                             fname, line_num, line_buf, data_name
                         If LLength(buf2) > 1 Then
                             buf = LIndex(buf2, 2) & "," & buf
@@ -543,10 +543,10 @@ Dim comma_num As Integer
                     End If
                 End If
                 
-                '’nŒ`“K‰
+                'åœ°å½¢é©å¿œ
                 ret = InStr(buf, ",")
                 If ret = 0 Then
-                    err_msg = wname & "‚ÌƒNƒŠƒeƒBƒJƒ‹—¦‚ª”²‚¯‚Ä‚¢‚Ü‚·B"
+                    err_msg = wname & "ã®ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ç‡ãŒæŠœã‘ã¦ã„ã¾ã™ã€‚"
                     Error 0
                 End If
                 buf2 = Trim$(Left$(buf, ret - 1))
@@ -554,7 +554,7 @@ Dim comma_num As Integer
                 If Len(buf2) = 4 Then
                     wd.Adaption = buf2
                 Else
-                    DataErrorMessage wname & "‚Ì’nŒ`“K‰‚Ìİ’è‚ªŠÔˆá‚Á‚Ä‚¢‚Ü‚·B", _
+                    DataErrorMessage wname & "ã®åœ°å½¢é©å¿œã®è¨­å®šãŒé–“é•ã£ã¦ã„ã¾ã™ã€‚", _
                         fname, line_num, line_buf, data_name
                     wd.Adaption = "----"
                     If LLength(buf2) > 1 Then
@@ -563,10 +563,10 @@ Dim comma_num As Integer
                     End If
                 End If
                 
-                'ƒNƒŠƒeƒBƒJƒ‹—¦
+                'ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ç‡
                 ret = InStr(buf, ",")
                 If ret = 0 Then
-                    err_msg = wname & "‚Ì•Ší‘®«‚ª”²‚¯‚Ä‚¢‚Ü‚·B"
+                    err_msg = wname & "ã®æ­¦å™¨å±æ€§ãŒæŠœã‘ã¦ã„ã¾ã™ã€‚"
                     Error 0
                 End If
                 buf2 = Trim$(Left$(buf, ret - 1))
@@ -580,7 +580,7 @@ Dim comma_num As Integer
                     End If
                     wd.Critical = n
                 Else
-                    DataErrorMessage wname & "‚ÌƒNƒŠƒeƒBƒJƒ‹—¦‚Ìİ’è‚ªŠÔˆá‚Á‚Ä‚¢‚Ü‚·B", _
+                    DataErrorMessage wname & "ã®ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ç‡ã®è¨­å®šãŒé–“é•ã£ã¦ã„ã¾ã™ã€‚", _
                         fname, line_num, line_buf, data_name
                     If LLength(buf2) > 1 Then
                         buf = LIndex(buf2, 2) & "," & buf
@@ -588,14 +588,14 @@ Dim comma_num As Integer
                     End If
                 End If
                 
-                '•Ší‘®«
+                'æ­¦å™¨å±æ€§
                 buf = Trim$(buf)
                 If Len(buf) = 0 Then
-                    DataErrorMessage wname & "‚Ì•Ší‘®«‚Ìİ’è‚ªŠÔˆá‚Á‚Ä‚¢‚Ü‚·B", _
+                    DataErrorMessage wname & "ã®æ­¦å™¨å±æ€§ã®è¨­å®šãŒé–“é•ã£ã¦ã„ã¾ã™ã€‚", _
                         fname, line_num, line_buf, data_name
                 End If
                 If Right$(buf, 1) = ")" Then
-                    '•K—v‹Z”\
+                    'å¿…è¦æŠ€èƒ½
                     ret = InStr(buf, "> ")
                     If ret > 0 Then
                         If ret > 0 Then
@@ -614,7 +614,7 @@ Dim comma_num As Integer
                     End If
                 End If
                 If Right$(buf, 1) = ">" Then
-                    '•K—vğŒ
+                    'å¿…è¦æ¡ä»¶
                     ret = InStr(buf, "<")
                     If ret > 0 Then
                         wd.NecessaryCondition = Trim$(Mid$(buf, ret + 1, Len(buf) - ret - 1))
@@ -626,7 +626,7 @@ Dim comma_num As Integer
                     wd.Class = ""
                 End If
                 If InStr(wd.Class, "Lv") > 0 Then
-                    DataErrorMessage wname & "‚Ì‘®«‚ÌƒŒƒxƒ‹w’è‚ªŠÔˆá‚Á‚Ä‚¢‚Ü‚·B", _
+                    DataErrorMessage wname & "ã®å±æ€§ã®ãƒ¬ãƒ™ãƒ«æŒ‡å®šãŒé–“é•ã£ã¦ã„ã¾ã™ã€‚", _
                         fname, line_num, line_buf, data_name
                 End If
                 
@@ -642,41 +642,41 @@ Dim comma_num As Integer
                 GoTo SkipRest
             End If
             
-            'ƒAƒrƒŠƒeƒBƒf[ƒ^
+            'ã‚¢ãƒ“ãƒªãƒ†ã‚£ãƒ‡ãƒ¼ã‚¿
             GetLine FileNumber, line_buf, line_num
             Do While Len(line_buf) > 0 And Left$(line_buf, 1) <> "*"
-                'ƒAƒrƒŠƒeƒB–¼
+                'ã‚¢ãƒ“ãƒªãƒ†ã‚£å
                 ret = InStr(line_buf, ",")
                 If ret = 0 Then
-                    err_msg = "ƒAƒrƒŠƒeƒBƒf[ƒ^‚ÌI‚è‚É‚Í‹ós‚ğ’u‚¢‚Ä‚­‚¾‚³‚¢B"
+                    err_msg = "ã‚¢ãƒ“ãƒªãƒ†ã‚£ãƒ‡ãƒ¼ã‚¿ã®çµ‚ã‚Šã«ã¯ç©ºè¡Œã‚’ç½®ã„ã¦ãã ã•ã„ã€‚"
                     Error 0
                 End If
                 sname = Trim$(Left$(line_buf, ret - 1))
                 buf = Mid$(line_buf, ret + 1)
                 
                 If sname = "" Then
-                    err_msg = "ƒAƒrƒŠƒeƒB–¼‚Ìİ’è‚ªŠÔˆá‚Á‚Ä‚¢‚Ü‚·B"
+                    err_msg = "ã‚¢ãƒ“ãƒªãƒ†ã‚£åã®è¨­å®šãŒé–“é•ã£ã¦ã„ã¾ã™ã€‚"
                     Error 0
                 End If
                 
-                'ƒAƒrƒŠƒeƒB‚ğ“o˜^
+                'ã‚¢ãƒ“ãƒªãƒ†ã‚£ã‚’ç™»éŒ²
                 Set sd = .AddAbility(sname)
                 
-                'Œø‰Ê
+                'åŠ¹æœ
                 ret = InStr(buf, ",")
                 If ret = 0 Then
-                    err_msg = sname & "‚ÌË’ö‚Ìİ’è‚ª”²‚¯‚Ä‚¢‚Ü‚·B"
+                    err_msg = sname & "ã®å°„ç¨‹ã®è¨­å®šãŒæŠœã‘ã¦ã„ã¾ã™ã€‚"
                     Error 0
                 End If
                 buf2 = Trim$(Left$(buf, ret - 1))
                 buf = Mid$(buf, ret + 1)
                 sd.SetEffect buf2
                 
-                'Ë’ö
+                'å°„ç¨‹
                 sd.MinRange = 0
                 ret = InStr(buf, ",")
                 If ret = 0 Then
-                    err_msg = sname & "‚Ì‰ñ”‚Ìİ’è‚ª”²‚¯‚Ä‚¢‚Ü‚·B"
+                    err_msg = sname & "ã®å›æ•°ã®è¨­å®šãŒæŠœã‘ã¦ã„ã¾ã™ã€‚"
                     Error 0
                 End If
                 buf2 = Trim$(Left$(buf, ret - 1))
@@ -686,7 +686,7 @@ Dim comma_num As Integer
                 ElseIf buf2 = "-" Then
                     sd.MaxRange = 0
                 Else
-                    DataErrorMessage sname & "‚ÌË’ö‚Ìİ’è‚ªŠÔˆá‚Á‚Ä‚¢‚Ü‚·B", _
+                    DataErrorMessage sname & "ã®å°„ç¨‹ã®è¨­å®šãŒé–“é•ã£ã¦ã„ã¾ã™ã€‚", _
                         fname, line_num, line_buf, data_name
                     If LLength(buf2) > 1 Then
                         buf = LIndex(buf2, 2) & "," & buf
@@ -694,10 +694,10 @@ Dim comma_num As Integer
                     End If
                 End If
                 
-                '‰ñ”
+                'å›æ•°
                 ret = InStr(buf, ",")
                 If ret = 0 Then
-                    err_msg = sname & "‚ÌÁ”ï‚d‚m‚Ìİ’è‚ª”²‚¯‚Ä‚¢‚Ü‚·B"
+                    err_msg = sname & "ã®æ¶ˆè²»ï¼¥ï¼®ã®è¨­å®šãŒæŠœã‘ã¦ã„ã¾ã™ã€‚"
                     Error 0
                 End If
                 buf2 = Trim$(Left$(buf, ret - 1))
@@ -706,7 +706,7 @@ Dim comma_num As Integer
                     If IsNumeric(buf2) Then
                         sd.Stock = MinLng(CLng(buf2), 99)
                     Else
-                        DataErrorMessage sname & "‚Ì‰ñ”‚Ìİ’è‚ªŠÔˆá‚Á‚Ä‚¢‚Ü‚·B", _
+                        DataErrorMessage sname & "ã®å›æ•°ã®è¨­å®šãŒé–“é•ã£ã¦ã„ã¾ã™ã€‚", _
                             fname, line_num, line_buf, data_name
                         If LLength(buf2) > 1 Then
                             buf = LIndex(buf2, 2) & "," & buf
@@ -715,10 +715,10 @@ Dim comma_num As Integer
                     End If
                 End If
                 
-                'Á”ï‚d‚m
+                'æ¶ˆè²»ï¼¥ï¼®
                 ret = InStr(buf, ",")
                 If ret = 0 Then
-                    err_msg = sname & "‚Ì•K—v‹C—Í‚Ìİ’è‚ª”²‚¯‚Ä‚¢‚Ü‚·B"
+                    err_msg = sname & "ã®å¿…è¦æ°—åŠ›ã®è¨­å®šãŒæŠœã‘ã¦ã„ã¾ã™ã€‚"
                     Error 0
                 End If
                 buf2 = Trim$(Left$(buf, ret - 1))
@@ -727,7 +727,7 @@ Dim comma_num As Integer
                     If IsNumeric(buf2) Then
                         sd.ENConsumption = MinLng(CLng(buf2), 999)
                     Else
-                        DataErrorMessage sname & "‚ÌÁ”ï‚d‚m‚Ìİ’è‚ªŠÔˆá‚Á‚Ä‚¢‚Ü‚·B", _
+                        DataErrorMessage sname & "ã®æ¶ˆè²»ï¼¥ï¼®ã®è¨­å®šãŒé–“é•ã£ã¦ã„ã¾ã™ã€‚", _
                             fname, line_num, line_buf, data_name
                         If LLength(buf2) > 1 Then
                             buf = LIndex(buf2, 2) & "," & buf
@@ -736,10 +736,10 @@ Dim comma_num As Integer
                     End If
                 End If
                 
-                '•K—v‹C—Í
+                'å¿…è¦æ°—åŠ›
                 ret = InStr(buf, ",")
                 If ret = 0 Then
-                    err_msg = sname & "‚ÌƒAƒrƒŠƒeƒB‘®«‚Ìİ’è‚ª”²‚¯‚Ä‚¢‚Ü‚·B"
+                    err_msg = sname & "ã®ã‚¢ãƒ“ãƒªãƒ†ã‚£å±æ€§ã®è¨­å®šãŒæŠœã‘ã¦ã„ã¾ã™ã€‚"
                     Error 0
                 End If
                 buf2 = Trim$(Left$(buf, ret - 1))
@@ -754,7 +754,7 @@ Dim comma_num As Integer
                         End If
                         sd.NecessaryMorale = n
                     Else
-                        DataErrorMessage sname & "‚Ì•K—v‹C—Í‚Ìİ’è‚ªŠÔˆá‚Á‚Ä‚¢‚Ü‚·B", _
+                        DataErrorMessage sname & "ã®å¿…è¦æ°—åŠ›ã®è¨­å®šãŒé–“é•ã£ã¦ã„ã¾ã™ã€‚", _
                             fname, line_num, line_buf, data_name
                         If LLength(buf2) > 1 Then
                             buf = LIndex(buf2, 2) & "," & buf
@@ -763,14 +763,14 @@ Dim comma_num As Integer
                     End If
                 End If
                 
-                'ƒAƒrƒŠƒeƒB‘®«
+                'ã‚¢ãƒ“ãƒªãƒ†ã‚£å±æ€§
                 buf = Trim$(buf)
                 If Len(buf) = 0 Then
-                    DataErrorMessage sname & "‚ÌƒAƒrƒŠƒeƒB‘®«‚Ìİ’è‚ªŠÔˆá‚Á‚Ä‚¢‚Ü‚·B", _
+                    DataErrorMessage sname & "ã®ã‚¢ãƒ“ãƒªãƒ†ã‚£å±æ€§ã®è¨­å®šãŒé–“é•ã£ã¦ã„ã¾ã™ã€‚", _
                         fname, line_num, line_buf, data_name
                 End If
                 If Right$(buf, 1) = ")" Then
-                    '•K—v‹Z”\
+                    'å¿…è¦æŠ€èƒ½
                     ret = InStr(buf, "> ")
                     If ret > 0 Then
                         If ret > 0 Then
@@ -789,7 +789,7 @@ Dim comma_num As Integer
                     End If
                 End If
                 If Right$(buf, 1) = ">" Then
-                    '•K—vğŒ
+                    'å¿…è¦æ¡ä»¶
                     ret = InStr(buf, "<")
                     If ret > 0 Then
                         sd.NecessaryCondition = Trim$(Mid$(buf, ret + 1, Len(buf) - ret - 1))
@@ -801,7 +801,7 @@ Dim comma_num As Integer
                     sd.Class = ""
                 End If
                 If InStr(sd.Class, "Lv") > 0 Then
-                    DataErrorMessage sname & "‚Ì‘®«‚ÌƒŒƒxƒ‹w’è‚ªŠÔˆá‚Á‚Ä‚¢‚Ü‚·B", _
+                    DataErrorMessage sname & "ã®å±æ€§ã®ãƒ¬ãƒ™ãƒ«æŒ‡å®šãŒé–“é•ã£ã¦ã„ã¾ã™ã€‚", _
                         fname, line_num, line_buf, data_name
                 End If
                 
@@ -815,7 +815,7 @@ Dim comma_num As Integer
             
 SkipRest:
             
-            '‰ğà
+            'è§£èª¬
             Do While Left$(line_buf, 1) = "*"
                 If Len(.Comment) > 0 Then
                     .Comment = .Comment & vbCr & vbLf
@@ -830,9 +830,9 @@ SkipRest:
     Loop
     
 ErrorHandler:
-    'ƒGƒ‰[ˆ—
+    'ã‚¨ãƒ©ãƒ¼å‡¦ç†
     If line_num = 0 Then
-        ErrorMessage fname & "‚ªŠJ‚¯‚Ü‚¹‚ñB"
+        ErrorMessage fname & "ãŒé–‹ã‘ã¾ã›ã‚“ã€‚"
     Else
         Close #FileNumber
         DataErrorMessage err_msg, fname, line_num, line_buf, data_name

@@ -10,35 +10,35 @@ Attribute VB_Exposed = False
 Option Explicit
 
 ' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-' –{ƒvƒƒOƒ‰ƒ€‚ÍƒtƒŠ[ƒ\ƒtƒg‚Å‚ ‚èA–³•ÛØ‚Å‚·B
-' –{ƒvƒƒOƒ‰ƒ€‚ÍGNU General Public License(Ver.3‚Ü‚½‚Í‚»‚êˆÈ~)‚ª’è‚ß‚éğŒ‚Ì‰º‚Å
-' Ä”Ğ•z‚Ü‚½‚Í‰ü•Ï‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B
+' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯ãƒ•ãƒªãƒ¼ã‚½ãƒ•ãƒˆã§ã‚ã‚Šã€ç„¡ä¿è¨¼ã§ã™ã€‚
+' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯GNU General Public License(Ver.3ã¾ãŸã¯ãã‚Œä»¥é™)ãŒå®šã‚ã‚‹æ¡ä»¶ã®ä¸‹ã§
+' å†é ’å¸ƒã¾ãŸã¯æ”¹å¤‰ã™ã‚‹ã“ã¨ãŒã§ãã¾ã™ã€‚
 
-'ƒAƒrƒŠƒeƒBƒf[ƒ^‚ÌƒNƒ‰ƒX
+'ã‚¢ãƒ“ãƒªãƒ†ã‚£ãƒ‡ãƒ¼ã‚¿ã®ã‚¯ãƒ©ã‚¹
 
-'–¼Ì
+'åç§°
 Public Name As String
-'g—p‰Â”\‰ñ”
+'ä½¿ç”¨å¯èƒ½å›æ•°
 Public Stock As Integer
-'‚d‚mÁ”ï—Ê
+'ï¼¥ï¼®æ¶ˆè²»é‡
 Public ENConsumption As Integer
-'•K—v‹C—Í
+'å¿…è¦æ°—åŠ›
 Public NecessaryMorale As Integer
-'Å¬Ë’ö
+'æœ€å°å°„ç¨‹
 Public MinRange As Integer
-'Å‘åË’ö
+'æœ€å¤§å°„ç¨‹
 Public MaxRange As Integer
-'‘®«
+'å±æ€§
 Public Class As String
-'•K—v‹Z”\
+'å¿…è¦æŠ€èƒ½
 Public NecessarySkill As String
-'•K—vğŒ
+'å¿…è¦æ¡ä»¶
 Public NecessaryCondition As String
 
-'Œø‰Ê
+'åŠ¹æœ
 Private colEffects As New Collection
 
-'ƒNƒ‰ƒX‚Ì‰ğ•ú
+'ã‚¯ãƒ©ã‚¹ã®è§£æ”¾
 Private Sub Class_Terminate()
 Dim i As Integer
     
@@ -50,7 +50,7 @@ Dim i As Integer
     Set colEffects = Nothing
 End Sub
 
-'ƒAƒrƒŠƒeƒBˆ¤Ì
+'ã‚¢ãƒ“ãƒªãƒ†ã‚£æ„›ç§°
 Public Function Nickname() As String
     Nickname = Name
     ReplaceSubExpression Nickname
@@ -59,7 +59,7 @@ Public Function Nickname() As String
     End If
 End Function
 
-'ƒAƒrƒŠƒeƒB‚ÉŒø‰Ê‚ğ’Ç‰Á
+'ã‚¢ãƒ“ãƒªãƒ†ã‚£ã«åŠ¹æœã‚’è¿½åŠ 
 Public Sub SetEffect(elist As String)
 Dim i As Integer, j As Integer, k As Integer
 Dim buf As String
@@ -74,10 +74,10 @@ Dim etype As String, elevel As String, edata As String
             j = InStr(buf, "Lv")
             k = InStr(buf, "=")
             If j > 0 And (k = 0 Or j < k) Then
-                'ƒŒƒxƒ‹w’è‚Ì‚ ‚éŒø‰Ê(ƒf[ƒ^w’è‚ª‚ ‚é‚à‚Ì‚ğŠÜ‚Ş)
+                'ãƒ¬ãƒ™ãƒ«æŒ‡å®šã®ã‚ã‚‹åŠ¹æœ(ãƒ‡ãƒ¼ã‚¿æŒ‡å®šãŒã‚ã‚‹ã‚‚ã®ã‚’å«ã‚€)
                 .Name = Left$(buf, j - 1)
                 If k > 0 Then
-                    'ƒf[ƒ^w’è‚ª‚ ‚é‚à‚Ì
+                    'ãƒ‡ãƒ¼ã‚¿æŒ‡å®šãŒã‚ã‚‹ã‚‚ã®
                     .Level = CDbl(Mid$(buf, j + 2, k - (j + 2)))
                     buf = Mid$(buf, k + 1)
                     If Left$(buf, 1) = """" Then
@@ -88,7 +88,7 @@ Dim etype As String, elevel As String, edata As String
                     k = InStr(buf, "=")
                     
                     If j > 0 And (k = 0 Or j < k) Then
-                        'ƒf[ƒ^w’è“à‚ÉƒŒƒxƒ‹w’è‚ª‚ ‚é
+                        'ãƒ‡ãƒ¼ã‚¿æŒ‡å®šå†…ã«ãƒ¬ãƒ™ãƒ«æŒ‡å®šãŒã‚ã‚‹
                         etype = Left$(buf, j - 1)
                         If k > 0 Then
                             elevel = Mid$(buf, j + 2, k - (j + 2))
@@ -98,28 +98,28 @@ Dim etype As String, elevel As String, edata As String
                             edata = ""
                         End If
                     ElseIf k > 0 Then
-                        'ƒf[ƒ^w’è“à‚Éƒf[ƒ^w’è‚ª‚ ‚é
+                        'ãƒ‡ãƒ¼ã‚¿æŒ‡å®šå†…ã«ãƒ‡ãƒ¼ã‚¿æŒ‡å®šãŒã‚ã‚‹
                         etype = Left$(buf, k - 1)
                         elevel = ""
                         edata = Mid$(buf, k + 1)
                     Else
-                        '’Pƒ‚Èƒf[ƒ^w’è
+                        'å˜ç´”ãªãƒ‡ãƒ¼ã‚¿æŒ‡å®š
                         etype = buf
                         elevel = ""
                         edata = ""
                     End If
                     
-                    If .Name = "•t‰Á" And elevel = "" Then
+                    If .Name = "ä»˜åŠ " And elevel = "" Then
                         elevel = Format$(DEFAULT_LEVEL)
                     End If
                     
                     .Data = Trim$(etype & " " & elevel & " " & edata)
                 Else
-                    'ƒf[ƒ^w’è‚ª‚È‚¢‚à‚Ì
+                    'ãƒ‡ãƒ¼ã‚¿æŒ‡å®šãŒãªã„ã‚‚ã®
                     .Level = CDbl(Mid$(buf, j + 2))
                 End If
             ElseIf k > 0 Then
-                'ƒf[ƒ^w’è‚ğŠÜ‚ŞŒø‰Ê
+                'ãƒ‡ãƒ¼ã‚¿æŒ‡å®šã‚’å«ã‚€åŠ¹æœ
                 .Name = Left$(buf, k - 1)
                 buf = Mid$(buf, k + 1)
                 If Asc(buf) = 34 Then '"
@@ -129,13 +129,13 @@ Dim etype As String, elevel As String, edata As String
                 j = InStr(buf, "Lv")
                 k = InStr(buf, "=")
                 
-                If .Name = "‰ğà" Then
-                    '‰ğà‚Ìw’è
+                If .Name = "è§£èª¬" Then
+                    'è§£èª¬ã®æŒ‡å®š
                     etype = buf
                     elevel = ""
                     edata = ""
                 ElseIf j > 0 Then
-                    'ƒf[ƒ^w’è“à‚ÉƒŒƒxƒ‹w’è‚ª‚ ‚é
+                    'ãƒ‡ãƒ¼ã‚¿æŒ‡å®šå†…ã«ãƒ¬ãƒ™ãƒ«æŒ‡å®šãŒã‚ã‚‹
                     etype = Left$(buf, j - 1)
                     If k > 0 Then
                         elevel = Mid$(buf, j + 2, k - (j + 2))
@@ -145,24 +145,24 @@ Dim etype As String, elevel As String, edata As String
                         edata = ""
                     End If
                 ElseIf k > 0 Then
-                    'ƒf[ƒ^w’è“à‚Éƒf[ƒ^w’è‚ª‚ ‚é
+                    'ãƒ‡ãƒ¼ã‚¿æŒ‡å®šå†…ã«ãƒ‡ãƒ¼ã‚¿æŒ‡å®šãŒã‚ã‚‹
                     etype = Left$(buf, k - 1)
                     elevel = ""
                     edata = Mid$(buf, k + 1)
                 Else
-                    '’Pƒ‚Èƒf[ƒ^w’è
+                    'å˜ç´”ãªãƒ‡ãƒ¼ã‚¿æŒ‡å®š
                     etype = buf
                     elevel = ""
                     edata = ""
                 End If
                 
-                If .Name = "•t‰Á" And elevel = "" Then
+                If .Name = "ä»˜åŠ " And elevel = "" Then
                     elevel = Format$(DEFAULT_LEVEL)
                 End If
                 
                 .Data = Trim$(etype & " " & elevel & " " & edata)
             Else
-                'Œø‰Ê–¼‚Ì‚İ
+                'åŠ¹æœåã®ã¿
                 .Name = buf
             End If
             
@@ -186,27 +186,27 @@ Dim dat As New AbilityEffect
     Set NewAbilityEffect = dat
 End Function
 
-'Œø‰Ê‚Ì‘”
+'åŠ¹æœã®ç·æ•°
 Public Function CountEffect() As Integer
     CountEffect = colEffects.Count
 End Function
 
-'Œø‰Ê‚Ìí—Ş
+'åŠ¹æœã®ç¨®é¡
 Public Function EffectType(Index As Variant) As String
     EffectType = colEffects.Item(Index).Name
 End Function
 
-'Œø‰Ê‚ÌƒŒƒxƒ‹
+'åŠ¹æœã®ãƒ¬ãƒ™ãƒ«
 Public Function EffectLevel(Index As Variant) As Double
     EffectLevel = colEffects.Item(Index).Level
 End Function
 
-'Œø‰Ê‚Ìƒf[ƒ^
+'åŠ¹æœã®ãƒ‡ãƒ¼ã‚¿
 Public Function EffectData(Index As Variant) As String
     EffectData = colEffects.Item(Index).Data
 End Function
 
-'Œø‰Ê“à—e‚Ì‰ğà
+'åŠ¹æœå†…å®¹ã®è§£èª¬
 Public Function EffectName(Index As Variant) As String
 Dim ae As AbilityEffect, elevel As Double, elevel2 As Double
 Dim uname As String, wclass As String, flevel As Double
@@ -216,16 +216,16 @@ Dim cname As String, aname As String
     
     Set ae = colEffects.Item(Index)
     With ae
-        'Œø‰ÊƒŒƒxƒ‹‚ª‰ñ•œE‘‰Á—Ê‚ğˆÓ–¡‚·‚éƒAƒrƒŠƒeƒB—p
+        'åŠ¹æœãƒ¬ãƒ™ãƒ«ãŒå›å¾©ãƒ»å¢—åŠ é‡ã‚’æ„å‘³ã™ã‚‹ã‚¢ãƒ“ãƒªãƒ†ã‚£ç”¨
         elevel = .Level
-        'Œø‰ÊƒŒƒxƒ‹‚ªƒ^[ƒ“”‚ğˆÓ–¡‚·‚éƒAƒrƒŠƒeƒB‹y‚Ñ¢Š«ƒAƒrƒŠƒeƒB—p
+        'åŠ¹æœãƒ¬ãƒ™ãƒ«ãŒã‚¿ãƒ¼ãƒ³æ•°ã‚’æ„å‘³ã™ã‚‹ã‚¢ãƒ“ãƒªãƒ†ã‚£åŠã³å¬å–šã‚¢ãƒ“ãƒªãƒ†ã‚£ç”¨
         elevel2 = elevel
         
         If SelectedUnit.CountPilot > 0 Then
             With SelectedUnit.MainPilot
-                '“¾ˆÓ‹Z
-                If .IsSkillAvailable("“¾ˆÓ‹Z") Then
-                    buf = .SkillData("“¾ˆÓ‹Z")
+                'å¾—æ„æŠ€
+                If .IsSkillAvailable("å¾—æ„æŠ€") Then
+                    buf = .SkillData("å¾—æ„æŠ€")
                     For i = 1 To Len(buf)
                         If InStrNotNest(Class, GetClassBundle(buf, i)) > 0 Then
                             elevel = 1.2 * elevel
@@ -235,9 +235,9 @@ Dim cname As String, aname As String
                     Next
                 End If
                 
-                '•s“¾è
-                If .IsSkillAvailable("•s“¾è") Then
-                    buf = .SkillData("•s“¾è")
+                'ä¸å¾—æ‰‹
+                If .IsSkillAvailable("ä¸å¾—æ‰‹") Then
+                    buf = .SkillData("ä¸å¾—æ‰‹")
                     For i = 1 To Len(buf)
                         If InStrNotNest(Class, GetClassBundle(buf, i)) > 0 Then
                             elevel = 0.8 * elevel
@@ -247,175 +247,175 @@ Dim cname As String, aname As String
                     Next
                 End If
                 
-                'pƒAƒrƒŠƒeƒB‚Ìê‡‚Í–‚—Í‚É‚æ‚Á‚ÄŒø‰ÊƒŒƒxƒ‹‚ªC³‚ğó‚¯‚é
-                If InStrNotNest(Class, "p") > 0 Then
+                'è¡“ã‚¢ãƒ“ãƒªãƒ†ã‚£ã®å ´åˆã¯é­”åŠ›ã«ã‚ˆã£ã¦åŠ¹æœãƒ¬ãƒ™ãƒ«ãŒä¿®æ­£ã‚’å—ã‘ã‚‹
+                If InStrNotNest(Class, "è¡“") > 0 Then
                     elevel = elevel * .Shooting / 100
                 Else
                     For i = 1 To LLength(NecessarySkill)
-                        If .SkillType(LIndex(NecessarySkill, i)) = "p" Then
+                        If .SkillType(LIndex(NecessarySkill, i)) = "è¡“" Then
                             elevel = elevel * .Shooting / 100
                             Exit For
                         End If
                     Next
                 End If
                 
-                'C—••â‹‹‹Z”\
-                heal_lv = .SkillLevel("C—")
-                supply_lv = .SkillLevel("•â‹‹")
+                'ä¿®ç†ï¼†è£œçµ¦æŠ€èƒ½
+                heal_lv = .SkillLevel("ä¿®ç†")
+                supply_lv = .SkillLevel("è£œçµ¦")
             End With
         End If
         
-        'ƒAƒrƒŠƒeƒB‚ÌŒø‰Ê‚ÍÅ’á‚Å‚à‚Pƒ^[ƒ“‘±
+        'ã‚¢ãƒ“ãƒªãƒ†ã‚£ã®åŠ¹æœã¯æœ€ä½ã§ã‚‚ï¼‘ã‚¿ãƒ¼ãƒ³æŒç¶š
         If elevel2 <> 0 Then
             elevel2 = MaxLng(elevel2, 1)
         End If
         
         Select Case .Name
-            Case "‰ñ•œ"
-                EffectName = Term("‚g‚o") & "‚ğ"
+            Case "å›å¾©"
+                EffectName = Term("ï¼¨ï¼°") & "ã‚’"
                 If elevel > 0 Then
-                    EffectName = EffectName & Format$(CLng(500 * elevel * (10 + heal_lv) \ 10)) & "‰ñ•œ"
+                    EffectName = EffectName & Format$(CLng(500 * elevel * (10 + heal_lv) \ 10)) & "å›å¾©"
                 ElseIf elevel < 0 Then
-                    EffectName = EffectName & Format$(CLng(-500 * elevel)) & "Œ¸­"
+                    EffectName = EffectName & Format$(CLng(-500 * elevel)) & "æ¸›å°‘"
                 End If
                 
-            Case "•â‹‹"
-                EffectName = Term("‚d‚m") & "‚ğ"
+            Case "è£œçµ¦"
+                EffectName = Term("ï¼¥ï¼®") & "ã‚’"
                 If elevel > 0 Then
-                    EffectName = EffectName & Format$(CLng(50 * elevel * (10 + supply_lv)) \ 10) & "‰ñ•œ"
+                    EffectName = EffectName & Format$(CLng(50 * elevel * (10 + supply_lv)) \ 10) & "å›å¾©"
                 ElseIf elevel < 0 Then
-                    EffectName = EffectName & Format$(CLng(-50 * elevel)) & "Œ¸­"
+                    EffectName = EffectName & Format$(CLng(-50 * elevel)) & "æ¸›å°‘"
                 End If
                 
-            Case "—ì—Í‰ñ•œ", "ƒvƒ‰[ƒi‰ñ•œ"
+            Case "éœŠåŠ›å›å¾©", "ãƒ—ãƒ©ãƒ¼ãƒŠå›å¾©"
                 If SelectedUnit.CountPilot > 0 Then
-                    EffectName = SelectedUnit.MainPilot.SkillName0("—ì—Í")
+                    EffectName = SelectedUnit.MainPilot.SkillName0("éœŠåŠ›")
                 Else
-                    EffectName = "—ì—Í"
+                    EffectName = "éœŠåŠ›"
                 End If
                 If elevel > 0 Then
-                    EffectName = EffectName & "‚ğ" & Format$(CLng(10 * elevel)) & "‰ñ•œ"
+                    EffectName = EffectName & "ã‚’" & Format$(CLng(10 * elevel)) & "å›å¾©"
                 ElseIf elevel < 0 Then
-                    EffectName = EffectName & "‚ğ" & Format$(CLng(-10 * elevel)) & "Œ¸­"
+                    EffectName = EffectName & "ã‚’" & Format$(CLng(-10 * elevel)) & "æ¸›å°‘"
                 End If
                 
-            Case "‚r‚o‰ñ•œ"
-                EffectName = Term("‚r‚o") & "‚ğ"
+            Case "ï¼³ï¼°å›å¾©"
+                EffectName = Term("ï¼³ï¼°") & "ã‚’"
                 If elevel > 0 Then
-                    EffectName = EffectName & Format$(CLng(10 * elevel)) & "‰ñ•œ"
+                    EffectName = EffectName & Format$(CLng(10 * elevel)) & "å›å¾©"
                 ElseIf elevel < 0 Then
-                    EffectName = EffectName & Format$(CLng(-10 * elevel)) & "Œ¸­"
+                    EffectName = EffectName & Format$(CLng(-10 * elevel)) & "æ¸›å°‘"
                 End If
                 
-            Case "‹C—Í‘‰Á"
-                EffectName = Term("‹C—Í") & "‚ğ"
+            Case "æ°—åŠ›å¢—åŠ "
+                EffectName = Term("æ°—åŠ›") & "ã‚’"
                 If elevel > 0 Then
-                    EffectName = EffectName & Format$(CLng(10 * elevel)) & "‘‰Á"
+                    EffectName = EffectName & Format$(CLng(10 * elevel)) & "å¢—åŠ "
                 ElseIf elevel < 0 Then
-                    EffectName = EffectName & Format$(CLng(-10 * elevel)) & "Œ¸­"
+                    EffectName = EffectName & Format$(CLng(-10 * elevel)) & "æ¸›å°‘"
                 End If
                 
-            Case "‘•“U"
+            Case "è£…å¡«"
                 If Len(.Data) = 0 Then
-                    EffectName = "•Ší‚Ì’e”‚ğ‰ñ•œ"
+                    EffectName = "æ­¦å™¨ã®å¼¾æ•°ã‚’å›å¾©"
                 Else
                     For i = 1 To SelectedUnit.CountWeapon
                         If SelectedUnit.WeaponNickname(i) = .Data Then
-                            EffectName = .Data & "‚Ì’e”‚ğ‰ñ•œ"
+                            EffectName = .Data & "ã®å¼¾æ•°ã‚’å›å¾©"
                             Exit Function
                         End If
                     Next
-                    EffectName = .Data & "‘®«‚ğ‚Â•Ší‚Ì’e”‚ğ‰ñ•œ"
+                    EffectName = .Data & "å±æ€§ã‚’æŒã¤æ­¦å™¨ã®å¼¾æ•°ã‚’å›å¾©"
                 End If
                 
-            Case "¡–ü"
+            Case "æ²»ç™’"
                 For i = 1 To LLength(.Data)
                     cname = LIndex(.Data, i)
                     Select Case cname
-                        Case "‘•b—ò‰»"
-                            cname = Term("‘•b") & "—ò‰»"
-                        Case "‰^“®«‚t‚o"
-                            cname = Term("‰^“®«") & "‚t‚o"
-                        Case "‰^“®«‚c‚n‚v‚m"
-                            cname = Term("‰^“®«") & "‚c‚n‚v‚m"
-                        Case "ˆÚ“®—Í‚t‚o"
-                            cname = Term("ˆÚ“®—Í") & "‚t‚o"
-                        Case "ˆÚ“®—Í‚c‚n‚v‚m"
-                            cname = Term("ˆÚ“®—Í") & "‚c‚n‚v‚m"
+                        Case "è£…ç”²åŠ£åŒ–"
+                            cname = Term("è£…ç”²") & "åŠ£åŒ–"
+                        Case "é‹å‹•æ€§ï¼µï¼°"
+                            cname = Term("é‹å‹•æ€§") & "ï¼µï¼°"
+                        Case "é‹å‹•æ€§ï¼¤ï¼¯ï¼·ï¼®"
+                            cname = Term("é‹å‹•æ€§") & "ï¼¤ï¼¯ï¼·ï¼®"
+                        Case "ç§»å‹•åŠ›ï¼µï¼°"
+                            cname = Term("ç§»å‹•åŠ›") & "ï¼µï¼°"
+                        Case "ç§»å‹•åŠ›ï¼¤ï¼¯ï¼·ï¼®"
+                            cname = Term("ç§»å‹•åŠ›") & "ï¼¤ï¼¯ï¼·ï¼®"
                     End Select
                     EffectName = EffectName & " " & cname
                 Next
                 EffectName = Trim$(EffectName)
                 If Len(EffectName) > 0 Then
-                    EffectName = EffectName & "‚ğ‰ñ•œ"
+                    EffectName = EffectName & "ã‚’å›å¾©"
                 Else
-                    EffectName = "ó‘Ô‰ñ•œ"
+                    EffectName = "çŠ¶æ…‹å›å¾©"
                 End If
                 
-            Case "ó‘Ô"
+            Case "çŠ¶æ…‹"
                 cname = LIndex(.Data, 1)
                 Select Case cname
-                    Case "‘•b—ò‰»"
-                        cname = Term("‘•b") & "—ò‰»"
-                    Case "‰^“®«‚t‚o"
-                        cname = Term("‰^“®«") & "‚t‚o"
-                    Case "‰^“®«‚c‚n‚v‚m"
-                        cname = Term("‰^“®«") & "‚c‚n‚v‚m"
-                    Case "ˆÚ“®—Í‚t‚o"
-                        cname = Term("ˆÚ“®—Í") & "‚t‚o"
-                    Case "ˆÚ“®—Í‚c‚n‚v‚m"
-                        cname = Term("ˆÚ“®—Í") & "‚c‚n‚v‚m"
+                    Case "è£…ç”²åŠ£åŒ–"
+                        cname = Term("è£…ç”²") & "åŠ£åŒ–"
+                    Case "é‹å‹•æ€§ï¼µï¼°"
+                        cname = Term("é‹å‹•æ€§") & "ï¼µï¼°"
+                    Case "é‹å‹•æ€§ï¼¤ï¼¯ï¼·ï¼®"
+                        cname = Term("é‹å‹•æ€§") & "ï¼¤ï¼¯ï¼·ï¼®"
+                    Case "ç§»å‹•åŠ›ï¼µï¼°"
+                        cname = Term("ç§»å‹•åŠ›") & "ï¼µï¼°"
+                    Case "ç§»å‹•åŠ›ï¼¤ï¼¯ï¼·ï¼®"
+                        cname = Term("ç§»å‹•åŠ›") & "ï¼¤ï¼¯ï¼·ï¼®"
                 End Select
                 If 0 < elevel2 And elevel2 <= 10 Then
                     EffectName = cname _
-                        & "(" & Format$(CLng(elevel2)) & "ƒ^[ƒ“)"
+                        & "(" & Format$(CLng(elevel2)) & "ã‚¿ãƒ¼ãƒ³)"
                 Else
                     EffectName = cname
                 End If
                 
-            Case "•t‰Á"
+            Case "ä»˜åŠ "
                 Select Case LIndex(.Data, 1)
-                    Case "‘Ï«"
+                    Case "è€æ€§"
                         aname = AttributeName(SelectedUnit, LIndex(.Data, 3))
                         If aname = "" Then
-                            aname = LIndex(.Data, 3) & "UŒ‚"
+                            aname = LIndex(.Data, 3) & "æ”»æ’ƒ"
                         End If
-                        EffectName = aname & "‚Ìƒ_ƒ[ƒW‚ğ”¼Œ¸"
-                    Case "–³Œø‰»"
+                        EffectName = aname & "ã®ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’åŠæ¸›"
+                    Case "ç„¡åŠ¹åŒ–"
                         aname = AttributeName(SelectedUnit, LIndex(.Data, 3))
                         If aname = "" Then
-                            aname = LIndex(.Data, 3) & "UŒ‚"
+                            aname = LIndex(.Data, 3) & "æ”»æ’ƒ"
                         End If
-                        EffectName = aname & "‚ğ–³Œø‰»"
-                    Case "“ÁêŒø‰Ê–³Œø‰»"
+                        EffectName = aname & "ã‚’ç„¡åŠ¹åŒ–"
+                    Case "ç‰¹æ®ŠåŠ¹æœç„¡åŠ¹åŒ–"
                         aname = AttributeName(SelectedUnit, LIndex(.Data, 3))
                         If aname = "" Then
-                            aname = LIndex(.Data, 3) & "UŒ‚"
+                            aname = LIndex(.Data, 3) & "æ”»æ’ƒ"
                         End If
-                        EffectName = aname & "‚Ì“ÁêŒø‰Ê‚ğ–³Œø‰»"
-                    Case "‹zû"
+                        EffectName = aname & "ã®ç‰¹æ®ŠåŠ¹æœã‚’ç„¡åŠ¹åŒ–"
+                    Case "å¸å"
                         aname = AttributeName(SelectedUnit, LIndex(.Data, 3))
                         If aname = "" Then
-                            aname = LIndex(.Data, 3) & "UŒ‚"
+                            aname = LIndex(.Data, 3) & "æ”»æ’ƒ"
                         End If
-                        EffectName = aname & "‚ğ‹zû"
-                    Case "’Ç‰ÁƒpƒCƒƒbƒg"
-                        EffectName = "ƒpƒCƒƒbƒg•Ï‰»"
-                    Case "’Ç‰ÁƒTƒ|[ƒg"
-                        EffectName = "ƒTƒ|[ƒg’Ç‰Á"
-                    Case "«Ši•ÏX"
-                        EffectName = "ƒpƒCƒƒbƒg‚Ì«Ši‚ğ" & LIndex(.Data, 3) & "‚É•ÏX"
-                    Case "‚a‚f‚l"
-                        EffectName = "‚a‚f‚l•ÏX"
-                    Case "UŒ‚‘®«"
+                        EffectName = aname & "ã‚’å¸å"
+                    Case "è¿½åŠ ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆ"
+                        EffectName = "ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆå¤‰åŒ–"
+                    Case "è¿½åŠ ã‚µãƒãƒ¼ãƒˆ"
+                        EffectName = "ã‚µãƒãƒ¼ãƒˆè¿½åŠ "
+                    Case "æ€§æ ¼å¤‰æ›´"
+                        EffectName = "ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®æ€§æ ¼ã‚’" & LIndex(.Data, 3) & "ã«å¤‰æ›´"
+                    Case "ï¼¢ï¼§ï¼­"
+                        EffectName = "ï¼¢ï¼§ï¼­å¤‰æ›´"
+                    Case "æ”»æ’ƒå±æ€§"
                         For i = 4 To LLength(.Data)
                             If InStr(LIndex(.Data, i), "!") = 0 Then
                                 wclass = wclass & LIndex(.Data, i)
                             End If
                         Next
-                        EffectName = WeaponType(wclass) & "‚Ì‘®«‚É" _
-                            & LIndex(.Data, 3) & "‚ğ’Ç‰Á"
-                    Case "•Ší‹­‰»"
+                        EffectName = WeaponType(wclass) & "ã®å±æ€§ã«" _
+                            & LIndex(.Data, 3) & "ã‚’è¿½åŠ "
+                    Case "æ­¦å™¨å¼·åŒ–"
                         For i = 3 To LLength(.Data)
                             If InStr(LIndex(.Data, i), "!") = 0 Then
                                 wclass = wclass & LIndex(.Data, i)
@@ -423,13 +423,13 @@ Dim cname As String, aname As String
                         Next
                         flevel = StrToDbl(LIndex(.Data, 2))
                         If flevel >= 0 Then
-                            EffectName = WeaponType(wclass) & "‚ÌUŒ‚—Í‚ğ+" _
+                            EffectName = WeaponType(wclass) & "ã®æ”»æ’ƒåŠ›ã‚’+" _
                                 & Format$(100 * flevel)
                         Else
-                            EffectName = WeaponType(wclass) & "‚ÌUŒ‚—Í‚ğ" _
+                            EffectName = WeaponType(wclass) & "ã®æ”»æ’ƒåŠ›ã‚’" _
                                 & Format$(100 * flevel)
                         End If
-                    Case "–½’†—¦‹­‰»"
+                    Case "å‘½ä¸­ç‡å¼·åŒ–"
                         For i = 3 To LLength(.Data)
                             If InStr(LIndex(.Data, i), "!") = 0 Then
                                 wclass = wclass & LIndex(.Data, i)
@@ -437,13 +437,13 @@ Dim cname As String, aname As String
                         Next
                         flevel = StrToDbl(LIndex(.Data, 2))
                         If flevel >= 0 Then
-                            EffectName = WeaponType(wclass) & "‚Ì–½’†—¦‚ğ+" _
+                            EffectName = WeaponType(wclass) & "ã®å‘½ä¸­ç‡ã‚’+" _
                                 & Format$(5 * flevel)
                         Else
-                            EffectName = WeaponType(wclass) & "‚Ì–½’†—¦‚ğ" _
+                            EffectName = WeaponType(wclass) & "ã®å‘½ä¸­ç‡ã‚’" _
                                 & Format$(5 * flevel)
                         End If
-                    Case "‚b‚s—¦‹­‰»", "“ÁêŒø‰Ê”­“®—¦‹­‰»"
+                    Case "ï¼£ï¼´ç‡å¼·åŒ–", "ç‰¹æ®ŠåŠ¹æœç™ºå‹•ç‡å¼·åŒ–"
                         For i = 3 To LLength(.Data)
                             If InStr(LIndex(.Data, i), "!") = 0 Then
                                 wclass = wclass & LIndex(.Data, i)
@@ -451,13 +451,13 @@ Dim cname As String, aname As String
                         Next
                         flevel = StrToDbl(LIndex(.Data, 2))
                         If flevel >= 0 Then
-                            EffectName = WeaponType(wclass) & "‚Ì‚b‚s—¦‚ğ+" _
+                            EffectName = WeaponType(wclass) & "ã®ï¼£ï¼´ç‡ã‚’+" _
                                 & Format$(5 * flevel)
                         Else
-                            EffectName = WeaponType(wclass) & "‚Ì‚b‚s—¦‚ğ" _
+                            EffectName = WeaponType(wclass) & "ã®ï¼£ï¼´ç‡ã‚’" _
                                 & Format$(5 * flevel)
                         End If
-                    Case "Ë’ö‰„’·"
+                    Case "å°„ç¨‹å»¶é•·"
                         For i = 3 To LLength(.Data)
                             If InStr(LIndex(.Data, i), "!") = 0 Then
                                 wclass = wclass & LIndex(.Data, i)
@@ -465,76 +465,76 @@ Dim cname As String, aname As String
                         Next
                         flevel = StrToLng(LIndex(.Data, 2))
                         If flevel >= 0 Then
-                            EffectName = WeaponType(wclass) & "‚ÌË’ö‚ğ+" _
+                            EffectName = WeaponType(wclass) & "ã®å°„ç¨‹ã‚’+" _
                                 & Format$(flevel)
                         Else
-                            EffectName = WeaponType(wclass) & "‚ÌË’ö‚ğ" _
+                            EffectName = WeaponType(wclass) & "ã®å°„ç¨‹ã‚’" _
                                 & Format$(flevel)
                         End If
-                    Case "ƒTƒCƒY•ÏX"
-                        EffectName = "ƒTƒCƒY‚ª" & LIndex(.Data, 3) & "‚É•Ï‰»"
-                    Case "’nŒ`“K‰•ÏX"
+                    Case "ã‚µã‚¤ã‚ºå¤‰æ›´"
+                        EffectName = "ã‚µã‚¤ã‚ºãŒ" & LIndex(.Data, 3) & "ã«å¤‰åŒ–"
+                    Case "åœ°å½¢é©å¿œå¤‰æ›´"
                         If StrToLng(LIndex(.Data, 3)) > 0 Then
-                            EffectName = "‹ó‚Ö‚Ì“K‰‚ğ‹­‰»"
+                            EffectName = "ç©ºã¸ã®é©å¿œã‚’å¼·åŒ–"
                         ElseIf StrToLng(LIndex(.Data, 4)) > 0 Then
-                            EffectName = "—¤‚Ö‚Ì“K‰‚ğ‹­‰»"
+                            EffectName = "é™¸ã¸ã®é©å¿œã‚’å¼·åŒ–"
                         ElseIf StrToLng(LIndex(.Data, 5)) > 0 Then
-                            EffectName = "…’†‚Ö‚Ì“K‰‚ğ‹­‰»"
+                            EffectName = "æ°´ä¸­ã¸ã®é©å¿œã‚’å¼·åŒ–"
                         ElseIf StrToLng(LIndex(.Data, 6)) > 0 Then
-                            EffectName = "‰F’ˆ‚Ö‚Ì“K‰‚ğ‹­‰»"
+                            EffectName = "å®‡å®™ã¸ã®é©å¿œã‚’å¼·åŒ–"
                         End If
-                    Case "’nŒ`“K‰ŒÅ’è•ÏX"
+                    Case "åœ°å½¢é©å¿œå›ºå®šå¤‰æ›´"
                         If StrToLng(LIndex(.Data, 3)) <= 5 And StrToLng(LIndex(.Data, 3)) >= 0 Then
-                            If LIndex(.Data, 6) = "‹­§" Then
-                                EffectName = "‹ó‚Ö‚Ì“K‰‚ğ‹­§“I‚É•Ï‰»"
+                            If LIndex(.Data, 6) = "å¼·åˆ¶" Then
+                                EffectName = "ç©ºã¸ã®é©å¿œã‚’å¼·åˆ¶çš„ã«å¤‰åŒ–"
                             Else
-                                EffectName = "‹ó‚Ö‚Ì“K‰‚ğ•Ï‰»"
+                                EffectName = "ç©ºã¸ã®é©å¿œã‚’å¤‰åŒ–"
                             End If
                         ElseIf StrToLng(LIndex(.Data, 4)) <= 5 And StrToLng(LIndex(.Data, 4)) >= 0 Then
-                            If LIndex(.Data, 6) = "‹­§" Then
-                                EffectName = "—¤‚Ö‚Ì“K‰‚ğ‹­§“I‚É•Ï‰»"
+                            If LIndex(.Data, 6) = "å¼·åˆ¶" Then
+                                EffectName = "é™¸ã¸ã®é©å¿œã‚’å¼·åˆ¶çš„ã«å¤‰åŒ–"
                             Else
-                                EffectName = "—¤‚Ö‚Ì“K‰‚ğ•Ï‰»"
+                                EffectName = "é™¸ã¸ã®é©å¿œã‚’å¤‰åŒ–"
                             End If
                         ElseIf StrToLng(LIndex(.Data, 5)) <= 5 And StrToLng(LIndex(.Data, 5)) >= 0 Then
-                            If LIndex(.Data, 6) = "‹­§" Then
-                                EffectName = "…’†‚Ö‚Ì“K‰‚ğ‹­§“I‚É•Ï‰»"
+                            If LIndex(.Data, 6) = "å¼·åˆ¶" Then
+                                EffectName = "æ°´ä¸­ã¸ã®é©å¿œã‚’å¼·åˆ¶çš„ã«å¤‰åŒ–"
                             Else
-                                EffectName = "…’†‚Ö‚Ì“K‰‚ğ•Ï‰»"
+                                EffectName = "æ°´ä¸­ã¸ã®é©å¿œã‚’å¤‰åŒ–"
                             End If
                         ElseIf StrToLng(LIndex(.Data, 6)) <= 5 And StrToLng(LIndex(.Data, 6)) >= 0 Then
-                            If LIndex(.Data, 6) = "‹­§" Then
-                                EffectName = "‰F’ˆ‚Ö‚Ì“K‰‚ğ‹­§“I‚É•Ï‰»"
+                            If LIndex(.Data, 6) = "å¼·åˆ¶" Then
+                                EffectName = "å®‡å®™ã¸ã®é©å¿œã‚’å¼·åˆ¶çš„ã«å¤‰åŒ–"
                             Else
-                                EffectName = "‰F’ˆ‚Ö‚Ì“K‰‚ğ•Ï‰»"
+                                EffectName = "å®‡å®™ã¸ã®é©å¿œã‚’å¤‰åŒ–"
                             End If
                         End If
-                    Case "‚u|‚t‚o"
+                    Case "ï¼¶ï¼ï¼µï¼°"
                         Select Case LIndex(.Data, 3)
-                            Case "•Ší"
-                                EffectName = "•ŠíUŒ‚—Í‚ğ‹­‰»"
-                            Case "ƒ†ƒjƒbƒg"
-                                EffectName = "Šeƒpƒ‰ƒ[ƒ^‚ğ‹­‰»"
+                            Case "æ­¦å™¨"
+                                EffectName = "æ­¦å™¨æ”»æ’ƒåŠ›ã‚’å¼·åŒ–"
+                            Case "ãƒ¦ãƒ‹ãƒƒãƒˆ"
+                                EffectName = "å„ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã‚’å¼·åŒ–"
                             Case Else
-                                EffectName = "ƒ†ƒjƒbƒg‚ğ‹­‰»"
+                                EffectName = "ãƒ¦ãƒ‹ãƒƒãƒˆã‚’å¼·åŒ–"
                         End Select
-                    Case "Ši“¬•Ší", "Œ}Œ‚•Ší", "§ŒÀŠÔ"
-                        EffectName = EffectName & "•t‰Á"
-                    Case "ƒpƒCƒƒbƒgˆ¤Ì", "ƒpƒCƒƒbƒg‰æ‘œ", "ˆ¤Ì•ÏX", "ƒ†ƒjƒbƒg‰æ‘œ"
+                    Case "æ ¼é—˜æ­¦å™¨", "è¿æ’ƒæ­¦å™¨", "åˆ¶é™æ™‚é–“"
+                        EffectName = EffectName & "ä»˜åŠ "
+                    Case "ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆæ„›ç§°", "ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆç”»åƒ", "æ„›ç§°å¤‰æ›´", "ãƒ¦ãƒ‹ãƒƒãƒˆç”»åƒ"
                         EffectName = ""
                     Case Else
                         EffectName = ListIndex(.Data, 3)
                         If Left$(EffectName, 1) = """" Then
                             EffectName = ListIndex(Mid$(EffectName, 2, Len(EffectName) - 2), 1)
                         End If
-                        If EffectName = "" Or EffectName = "”ñ•\¦" Then
+                        If EffectName = "" Or EffectName = "éè¡¨ç¤º" Then
                             If LIndex(.Data, 2) <> Format$(DEFAULT_LEVEL) _
                                 And LLength(.Data) <= 3 _
                             Then
                                 EffectName = LIndex(.Data, 1) & "Lv" _
-                                    & LIndex(.Data, 2) & "•t‰Á"
+                                    & LIndex(.Data, 2) & "ä»˜åŠ "
                             Else
-                                EffectName = LIndex(.Data, 1) & "•t‰Á"
+                                EffectName = LIndex(.Data, 1) & "ä»˜åŠ "
                             End If
                         Else
                             If LIndex(.Data, 2) <> Format$(DEFAULT_LEVEL) _
@@ -542,18 +542,18 @@ Dim cname As String, aname As String
                             Then
                                 EffectName = EffectName & "Lv" & LIndex(.Data, 2)
                             End If
-                            EffectName = EffectName & "•t‰Á"
+                            EffectName = EffectName & "ä»˜åŠ "
                         End If
                 End Select
                 If EffectName <> "" Then
                     If 0 < elevel2 And elevel2 <= 10 Then
-                        EffectName = EffectName & "(" & Format$(CLng(elevel2)) & "ƒ^[ƒ“)"
+                        EffectName = EffectName & "(" & Format$(CLng(elevel2)) & "ã‚¿ãƒ¼ãƒ³)"
                     End If
                 End If
                 
-            Case "‹­‰»"
+            Case "å¼·åŒ–"
                 EffectName = ListIndex(.Data, 3)
-                If EffectName = "" Or EffectName = "”ñ•\¦" Then
+                If EffectName = "" Or EffectName = "éè¡¨ç¤º" Then
                     If StrToLng(LIndex(.Data, 2)) > 0 Then
                         EffectName = LIndex(.Data, 1) & "Lv" & LIndex(.Data, 2)
                     Else
@@ -561,75 +561,75 @@ Dim cname As String, aname As String
                     End If
                 End If
                 If 0 < elevel2 And elevel2 <= 10 Then
-                    EffectName = EffectName & "‹­‰»(" & Format$(CLng(elevel2)) & "ƒ^[ƒ“)"
+                    EffectName = EffectName & "å¼·åŒ–(" & Format$(CLng(elevel2)) & "ã‚¿ãƒ¼ãƒ³)"
                 End If
                 
-            Case "¢Š«"
+            Case "å¬å–š"
                 If Not UDList.IsDefined(.Data) Then
-                    ErrorMessage "¢Š«ƒ†ƒjƒbƒgu" & .Data & "v‚ª’è‹`‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ"
+                    ErrorMessage "å¬å–šãƒ¦ãƒ‹ãƒƒãƒˆã€Œ" & .Data & "ã€ãŒå®šç¾©ã•ã‚Œã¦ã„ã¾ã›ã‚“"
                     Exit Function
                 End If
                 If elevel2 > 1 Then
-                    EffectName = UDList.Item(.Data).Nickname & "‚ğ" _
-                        & StrConv(Format$(CLng(elevel2)), vbWide) & "‘Ì¢Š«"
+                    EffectName = UDList.Item(.Data).Nickname & "ã‚’" _
+                        & StrConv(Format$(CLng(elevel2)), vbWide) & "ä½“å¬å–š"
                 Else
-                    EffectName = UDList.Item(.Data).Nickname & "‚ğ¢Š«"
+                    EffectName = UDList.Item(.Data).Nickname & "ã‚’å¬å–š"
                 End If
                 
-            Case "•Ïg"
+            Case "å¤‰èº«"
                 uname = LIndex(.Data, 1)
                 If Not UDList.IsDefined(uname) Then
-                    ErrorMessage "•Ïgæ‚Ìƒf[ƒ^u" & uname & "v‚ª’è‹`‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ"
+                    ErrorMessage "å¤‰èº«å…ˆã®ãƒ‡ãƒ¼ã‚¿ã€Œ" & uname & "ã€ãŒå®šç¾©ã•ã‚Œã¦ã„ã¾ã›ã‚“"
                     Exit Function
                 End If
                 If 0 < elevel2 And elevel2 <= 10 Then
-                    EffectName = UDList.Item(uname).Nickname & "‚É•Ïg" _
-                        & "(" & Format$(CLng(elevel2)) & "ƒ^[ƒ“)"
+                    EffectName = UDList.Item(uname).Nickname & "ã«å¤‰èº«" _
+                        & "(" & Format$(CLng(elevel2)) & "ã‚¿ãƒ¼ãƒ³)"
                 Else
-                    EffectName = UDList.Item(uname).Nickname & "‚É•Ïg"
+                    EffectName = UDList.Item(uname).Nickname & "ã«å¤‰èº«"
                 End If
                 
-            Case "”\—ÍƒRƒs["
+            Case "èƒ½åŠ›ã‚³ãƒ”ãƒ¼"
                 If 0 < elevel2 And elevel2 <= 10 Then
-                    EffectName = "”CˆÓ‚Ì–¡•ûƒ†ƒjƒbƒg‚É•Ïg" _
-                        & "(" & Format$(CLng(elevel2)) & "ƒ^[ƒ“)"
+                    EffectName = "ä»»æ„ã®å‘³æ–¹ãƒ¦ãƒ‹ãƒƒãƒˆã«å¤‰èº«" _
+                        & "(" & Format$(CLng(elevel2)) & "ã‚¿ãƒ¼ãƒ³)"
                 Else
-                    EffectName = "”CˆÓ‚Ì–¡•ûƒ†ƒjƒbƒg‚É•Ïg"
+                    EffectName = "ä»»æ„ã®å‘³æ–¹ãƒ¦ãƒ‹ãƒƒãƒˆã«å¤‰èº«"
                 End If
                 
-            Case "Äs“®"
+            Case "å†è¡Œå‹•"
                 If MaxRange <> 0 Then
-                    EffectName = "s“®Ï‚İƒ†ƒjƒbƒg‚ğÄs“®"
+                    EffectName = "è¡Œå‹•æ¸ˆã¿ãƒ¦ãƒ‹ãƒƒãƒˆã‚’å†è¡Œå‹•"
                 Else
-                    EffectName = "s“®”ñÁ”ï"
+                    EffectName = "è¡Œå‹•éæ¶ˆè²»"
                 End If
                 
-            Case "‰ğà"
+            Case "è§£èª¬"
                 EffectName = .Data
                 
         End Select
     End With
 End Function
 
-'•t‰Á‚·‚é•Ší‹­‰»Œn”\—Í‚Ì‘ÎÛ•\¦—p‚É•Ší‚Ìí—Ş‚ğ”»’è
+'ä»˜åŠ ã™ã‚‹æ­¦å™¨å¼·åŒ–ç³»èƒ½åŠ›ã®å¯¾è±¡è¡¨ç¤ºç”¨ã«æ­¦å™¨ã®ç¨®é¡ã‚’åˆ¤å®š
 Private Function WeaponType(wclass As String) As String
-    If wclass = "‘S" Or wclass = "" Then
-        WeaponType = "•Ší"
+    If wclass = "å…¨" Or wclass = "" Then
+        WeaponType = "æ­¦å™¨"
     ElseIf Len(wclass) = 1 Then
         WeaponType = AttributeName(Nothing, wclass)
-    ElseIf Right$(wclass, 2) = "‘•”õ" Then
+    ElseIf Right$(wclass, 2) = "è£…å‚™" Then
         WeaponType = Left$(wclass, Len(wclass) - 2)
     Else
-        WeaponType = wclass & "‘®«UŒ‚"
+        WeaponType = wclass & "å±æ€§æ”»æ’ƒ"
     End If
 End Function
 
-'g‚¢Ì‚ÄƒAƒCƒeƒ€‚É‚æ‚éƒAƒrƒŠƒeƒB‚©‚Ç‚¤‚©‚ğ•Ô‚·
+'ä½¿ã„æ¨ã¦ã‚¢ã‚¤ãƒ†ãƒ ã«ã‚ˆã‚‹ã‚¢ãƒ“ãƒªãƒ†ã‚£ã‹ã©ã†ã‹ã‚’è¿”ã™
 Public Function IsItem() As Boolean
 Dim i As Integer
     
     For i = 1 To LLength(NecessarySkill)
-        If LIndex(NecessarySkill, i) = "ƒAƒCƒeƒ€" Then
+        If LIndex(NecessarySkill, i) = "ã‚¢ã‚¤ãƒ†ãƒ " Then
             IsItem = True
             Exit Function
         End If

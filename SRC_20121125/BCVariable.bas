@@ -2,57 +2,57 @@ Attribute VB_Name = "BCVariable"
 Option Explicit
 
 ' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-' �{�v���O�����̓t���[�\�t�g�ł���A���ۏ؂ł��B
-' �{�v���O������GNU General Public License(Ver.3�܂��͂���ȍ~)����߂�����̉���
-' �ĔЕz�܂��͉��ς��邱�Ƃ��ł��܂��B
+' 本プログラムはフリーソフトであり、無保証です。
+' 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
+' 再頒布または改変することができます。
 
-' �o�g���R���t�B�O�f�[�^���L�����H
+' バトルコンフィグデータが有効か？
 Public IsConfig As Boolean
 
-' �o�g���R���t�B�O�f�[�^�̊e��ϐ����`����
+' バトルコンフィグデータの各種変数を定義する
 
-' �o�g���R���t�B�O�f�[�^�Ώے��S���j�b�g��`
-' ---------���Ȃ炸��`�����f�[�^
+' バトルコンフィグデータ対象中心ユニット定義
+' ---------かならず定義されるデータ
 Public MeUnit As Unit
 
-' �U�������j�b�g��`
+' 攻撃側ユニット定義
 Public AtkUnit As Unit
 
-' �h�䑤���j�b�g��`
+' 防御側ユニット定義
 Public DefUnit As Unit
 
-' ����ԍ�
+' 武器番号
 Public WeaponNumber As Integer
 
-' ---------��`����Ȃ��ꍇ������(�v�Z��Ƀ��Z�b�g�����)�f�[�^
-' �U���l
+' ---------定義されない場合もある(計算後にリセットされる)データ
+' 攻撃値
 Public AttackExp As Long
 
-' �U������`�ϐ�
+' 攻撃側定義変数
 Public AttackVariable As Long
 
-' �h�䑤��`�ϐ�
+' 防御側定義変数
 Public DffenceVariable As Long
 
-' �n�`�␳
+' 地形補正
 Public TerrainAdaption As Double
 
-' �T�C�Y�␳
+' サイズ補正
 Public SizeMod As Double
 
-' �ŏI�l
+' 最終値
 Public LastVariable As Long
 
-' ����U����
+' 武器攻撃力
 Public WeaponPower As Long
 
-' ���b�l
+' 装甲値
 Public Armor As Long
 
-' �U�R�␳
+' ザコ補正
 Public CommonEnemy As Long
 
-'��`����Ȃ����Ƃ�����f�[�^�������Ń��Z�b�g����
+'定義されないこともあるデータをここでリセットする
 Public Sub DataReset()
     AttackExp = 0
     AttackVariable = 0

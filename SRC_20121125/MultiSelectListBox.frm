@@ -1,7 +1,7 @@
 VERSION 5.00
 Begin VB.Form frmMultiSelectListBox 
    BackColor       =   &H00C0C0C0&
-   BorderStyle     =   3  'ŒÅ’èÀŞ²±Û¸Ş
+   BorderStyle     =   3  'å›ºå®šï¾€ï¾ï½²ï½±ï¾›ï½¸ï¾
    Caption         =   "MultiSelectListBox"
    ClientHeight    =   4965
    ClientLeft      =   900
@@ -9,7 +9,7 @@ Begin VB.Form frmMultiSelectListBox
    ClientWidth     =   7455
    ClipControls    =   0   'False
    BeginProperty Font 
-      Name            =   "‚l‚r ƒSƒVƒbƒN"
+      Name            =   "ï¼­ï¼³ ã‚´ã‚·ãƒƒã‚¯"
       Size            =   12
       Charset         =   128
       Weight          =   400
@@ -20,15 +20,15 @@ Begin VB.Form frmMultiSelectListBox
    Icon            =   "MultiSelectListBox.frx":0000
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
-   PaletteMode     =   1  'Z µ°ÀŞ°
+   PaletteMode     =   1  'Z ï½µï½°ï¾€ï¾ï½°
    ScaleHeight     =   331
-   ScaleMode       =   3  'Ëß¸¾Ù
+   ScaleMode       =   3  'ï¾‹ï¾Ÿï½¸ï½¾ï¾™
    ScaleWidth      =   497
    Begin VB.CommandButton cmdResume 
       BackColor       =   &H00C0C0C0&
-      Caption         =   "ƒ}ƒbƒv‚ğŒ©‚é"
+      Caption         =   "ãƒãƒƒãƒ—ã‚’è¦‹ã‚‹"
       BeginProperty Font 
-         Name            =   "‚l‚r ‚oƒSƒVƒbƒN"
+         Name            =   "ï¼­ï¼³ ï¼°ã‚´ã‚·ãƒƒã‚¯"
          Size            =   9.75
          Charset         =   128
          Weight          =   400
@@ -45,9 +45,9 @@ Begin VB.Form frmMultiSelectListBox
    End
    Begin VB.CommandButton cmdSort 
       BackColor       =   &H00C0C0C0&
-      Caption         =   "–¼Ì‡‚É•À‚×‘Ö‚¦"
+      Caption         =   "åç§°é †ã«ä¸¦ã¹æ›¿ãˆ"
       BeginProperty Font 
-         Name            =   "‚l‚r ‚oƒSƒVƒbƒN"
+         Name            =   "ï¼­ï¼³ ï¼°ã‚´ã‚·ãƒƒã‚¯"
          Size            =   9.75
          Charset         =   128
          Weight          =   400
@@ -64,9 +64,9 @@ Begin VB.Form frmMultiSelectListBox
    End
    Begin VB.CommandButton cmdSelectAll2 
       BackColor       =   &H00C0C0C0&
-      Caption         =   "ÅŒã‚©‚ç‘I‘ğ"
+      Caption         =   "æœ€å¾Œã‹ã‚‰é¸æŠ"
       BeginProperty Font 
-         Name            =   "‚l‚r ‚oƒSƒVƒbƒN"
+         Name            =   "ï¼­ï¼³ ï¼°ã‚´ã‚·ãƒƒã‚¯"
          Size            =   9.75
          Charset         =   128
          Weight          =   400
@@ -76,7 +76,7 @@ Begin VB.Form frmMultiSelectListBox
       EndProperty
       Height          =   435
       Left            =   2520
-      Style           =   1  '¸Ş×Ì¨¯¸½
+      Style           =   1  'ï½¸ï¾ï¾—ï¾Œï½¨ï½¯ï½¸ï½½
       TabIndex        =   5
       TabStop         =   0   'False
       Top             =   3960
@@ -84,9 +84,9 @@ Begin VB.Form frmMultiSelectListBox
    End
    Begin VB.CommandButton cmdSelectAll 
       BackColor       =   &H00C0C0C0&
-      Caption         =   "æ“ª‚©‚ç‘I‘ğ"
+      Caption         =   "å…ˆé ­ã‹ã‚‰é¸æŠ"
       BeginProperty Font 
-         Name            =   "‚l‚r ‚oƒSƒVƒbƒN"
+         Name            =   "ï¼­ï¼³ ï¼°ã‚´ã‚·ãƒƒã‚¯"
          Size            =   9.75
          Charset         =   128
          Weight          =   400
@@ -96,7 +96,7 @@ Begin VB.Form frmMultiSelectListBox
       EndProperty
       Height          =   435
       Left            =   120
-      Style           =   1  '¸Ş×Ì¨¯¸½
+      Style           =   1  'ï½¸ï¾ï¾—ï¾Œï½¨ï½¯ï½¸ï½½
       TabIndex        =   4
       TabStop         =   0   'False
       Top             =   3960
@@ -109,10 +109,10 @@ Begin VB.Form frmMultiSelectListBox
    End
    Begin VB.CommandButton cmdFinish 
       BackColor       =   &H00C0C0C0&
-      Caption         =   "I—¹"
+      Caption         =   "çµ‚äº†"
       Enabled         =   0   'False
       BeginProperty Font 
-         Name            =   "‚l‚r ‚oƒSƒVƒbƒN"
+         Name            =   "ï¼­ï¼³ ï¼°ã‚´ã‚·ãƒƒã‚¯"
          Size            =   9.75
          Charset         =   128
          Weight          =   700
@@ -122,7 +122,7 @@ Begin VB.Form frmMultiSelectListBox
       EndProperty
       Height          =   435
       Left            =   3960
-      Style           =   1  '¸Ş×Ì¨¯¸½
+      Style           =   1  'ï½¸ï¾ï¾—ï¾Œï½¨ï½¯ï½¸ï½½
       TabIndex        =   1
       TabStop         =   0   'False
       Top             =   4440
@@ -131,7 +131,7 @@ Begin VB.Form frmMultiSelectListBox
    Begin VB.ListBox lstItems 
       BackColor       =   &H00FFFFFF&
       BeginProperty Font 
-         Name            =   "‚l‚r –¾’©"
+         Name            =   "ï¼­ï¼³ æ˜æœ"
          Size            =   12
          Charset         =   128
          Weight          =   400
@@ -147,12 +147,12 @@ Begin VB.Form frmMultiSelectListBox
       Width           =   7185
    End
    Begin VB.Label lblNumber 
-      Alignment       =   2  '’†‰›‘µ‚¦
+      Alignment       =   2  'ä¸­å¤®æƒãˆ
       BackColor       =   &H00FFFFFF&
-      BorderStyle     =   1  'Àü
+      BorderStyle     =   1  'å®Ÿç·š
       Caption         =   "Label1"
       BeginProperty Font 
-         Name            =   "‚l‚r –¾’©"
+         Name            =   "ï¼­ï¼³ æ˜æœ"
          Size            =   15.75
          Charset         =   128
          Weight          =   400
@@ -169,10 +169,10 @@ Begin VB.Form frmMultiSelectListBox
    End
    Begin VB.Label lblCaption 
       BackColor       =   &H00FFFFFF&
-      BorderStyle     =   1  'Àü
+      BorderStyle     =   1  'å®Ÿç·š
       Caption         =   "Label1"
       BeginProperty Font 
-         Name            =   "‚l‚r –¾’©"
+         Name            =   "ï¼­ï¼³ æ˜æœ"
          Size            =   12
          Charset         =   128
          Weight          =   400
@@ -196,18 +196,18 @@ Attribute VB_Exposed = False
 Option Explicit
 
 ' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-' –{ƒvƒƒOƒ‰ƒ€‚ÍƒtƒŠ[ƒ\ƒtƒg‚Å‚ ‚èA–³•ÛØ‚Å‚·B
-' –{ƒvƒƒOƒ‰ƒ€‚ÍGNU General Public License(Ver.3‚Ü‚½‚Í‚»‚êˆÈ~)‚ª’è‚ß‚éğŒ‚Ì‰º‚Å
-' Ä”Ğ•z‚Ü‚½‚Í‰ü•Ï‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B
+' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯ãƒ•ãƒªãƒ¼ã‚½ãƒ•ãƒˆã§ã‚ã‚Šã€ç„¡ä¿è¨¼ã§ã™ã€‚
+' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯GNU General Public License(Ver.3ã¾ãŸã¯ãã‚Œä»¥é™)ãŒå®šã‚ã‚‹æ¡ä»¶ã®ä¸‹ã§
+' å†é ’å¸ƒã¾ãŸã¯æ”¹å¤‰ã™ã‚‹ã“ã¨ãŒã§ãã¾ã™ã€‚
 
-'oŒ‚ƒ†ƒjƒbƒg‘I‘ğ—pƒŠƒXƒgƒ{ƒbƒNƒX‚ÌƒtƒH[ƒ€
+'å‡ºæ’ƒãƒ¦ãƒ‹ãƒƒãƒˆé¸æŠç”¨ãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹ã®ãƒ•ã‚©ãƒ¼ãƒ 
 
-'‘I‘ğ‚³‚ê‚½ƒ†ƒjƒbƒg‚Ì”
+'é¸æŠã•ã‚ŒãŸãƒ¦ãƒ‹ãƒƒãƒˆã®æ•°
 Private SelectedItemNum As Integer
-'ƒ†ƒjƒbƒg‚ª‘I‘ğ‚³‚ê‚½‚©‚Ç‚¤‚©‚ğ¦‚·ƒtƒ‰ƒO
+'ãƒ¦ãƒ‹ãƒƒãƒˆãŒé¸æŠã•ã‚ŒãŸã‹ã©ã†ã‹ã‚’ç¤ºã™ãƒ•ãƒ©ã‚°
 Private ItemFlag() As Boolean
 
-'‘I‘ğI—¹ƒ{ƒ^ƒ“‚ğƒNƒŠƒbƒN
+'é¸æŠçµ‚äº†ãƒœã‚¿ãƒ³ã‚’ã‚¯ãƒªãƒƒã‚¯
 Private Sub cmdFinish_Click()
 Dim i As Integer
 
@@ -218,7 +218,7 @@ Dim i As Integer
     Unload frmMultiSelectListBox
 End Sub
 
-'ƒ}ƒbƒv‚ğŒ©‚éƒ{ƒ^ƒ“‚ğƒNƒŠƒbƒN
+'ãƒãƒƒãƒ—ã‚’è¦‹ã‚‹ãƒœã‚¿ãƒ³ã‚’ã‚¯ãƒªãƒƒã‚¯
 Private Sub cmdResume_Click()
 Dim i As Integer
 
@@ -229,19 +229,19 @@ Dim i As Integer
     Unload frmMultiSelectListBox
 End Sub
 
-'uæ“ª‚©‚ç‘I‘ğvƒ{ƒ^ƒ“‚ğƒNƒŠƒbƒN
+'ã€Œå…ˆé ­ã‹ã‚‰é¸æŠã€ãƒœã‚¿ãƒ³ã‚’ã‚¯ãƒªãƒƒã‚¯
 Private Sub cmdSelectAll_Click()
 Dim i As Integer
 
     lstItems.Visible = False
     For i = 1 To lstItems.ListCount
         ItemFlag(i - 1) = False
-        lstItems.list(i - 1) = "@" & Mid$(lstItems.list(i - 1), 2)
+        lstItems.list(i - 1) = "ã€€" & Mid$(lstItems.list(i - 1), 2)
     Next
     For i = 1 To MinLng(MaxListItem, lstItems.ListCount)
         If Not ItemFlag(i - 1) Then
             ItemFlag(i - 1) = True
-            lstItems.list(i - 1) = "›" & Mid$(lstItems.list(i - 1), 2)
+            lstItems.list(i - 1) = "â—‹" & Mid$(lstItems.list(i - 1), 2)
         End If
     Next
     lstItems.TopIndex = 0
@@ -268,20 +268,20 @@ Dim i As Integer
     End If
 End Sub
 
-'uÅŒã‚©‚ç‘I‘ğvƒ{ƒ^ƒ“‚ğƒNƒŠƒbƒN
+'ã€Œæœ€å¾Œã‹ã‚‰é¸æŠã€ãƒœã‚¿ãƒ³ã‚’ã‚¯ãƒªãƒƒã‚¯
 Private Sub cmdSelectAll2_Click()
 Dim i As Integer
 
     lstItems.Visible = False
     For i = 1 To lstItems.ListCount
         ItemFlag(i - 1) = False
-        lstItems.list(i - 1) = "@" & Mid$(lstItems.list(i - 1), 2)
+        lstItems.list(i - 1) = "ã€€" & Mid$(lstItems.list(i - 1), 2)
     Next
     For i = 1 To MinLng(MaxListItem, lstItems.ListCount)
         If Not ItemFlag(lstItems.ListCount - i) Then
             ItemFlag(lstItems.ListCount - i) = True
             lstItems.list(lstItems.ListCount - i) = _
-                "›" & Mid$(lstItems.list(lstItems.ListCount - i), 2)
+                "â—‹" & Mid$(lstItems.list(lstItems.ListCount - i), 2)
         End If
     Next
     lstItems.TopIndex = MaxLng(lstItems.ListCount - 14, 0)
@@ -308,13 +308,13 @@ Dim i As Integer
     End If
 End Sub
 
-'u`‡vƒ{ƒ^ƒ“‚ğƒNƒŠƒbƒN
+'ã€Œï½é †ã€ãƒœã‚¿ãƒ³ã‚’ã‚¯ãƒªãƒƒã‚¯
 Private Sub cmdSort_Click()
 Dim item_list() As String, key_list() As Long, strkey_list() As String
 Dim max_item As Integer, max_value As Long, max_str As String
 Dim i As Integer, j As Integer, buf As String, flag As Boolean
     
-    'Œ»İ‚ÌƒŠƒXƒg•\¦“à—e‚ğƒRƒs[
+    'ç¾åœ¨ã®ãƒªã‚¹ãƒˆè¡¨ç¤ºå†…å®¹ã‚’ã‚³ãƒ”ãƒ¼
     With lstItems
         ReDim item_list(.ListCount)
         For i = 1 To .ListCount
@@ -322,8 +322,8 @@ Dim i As Integer, j As Integer, buf As String, flag As Boolean
         Next
     End With
     
-    If cmdSort.Caption = "ƒŒƒxƒ‹‡‚É•À‚×‘Ö‚¦" Then
-        'ƒƒCƒ“ƒpƒCƒƒbƒg‚ÌƒŒƒxƒ‹‡‚É•À‚×‘Ö‚¦
+    If cmdSort.Caption = "ãƒ¬ãƒ™ãƒ«é †ã«ä¸¦ã¹æ›¿ãˆ" Then
+        'ãƒ¡ã‚¤ãƒ³ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®ãƒ¬ãƒ™ãƒ«é †ã«ä¸¦ã¹æ›¿ãˆ
         ReDim key_list(UBound(item_list))
         With UList
             For i = 1 To UBound(item_list)
@@ -357,10 +357,10 @@ Dim i As Integer, j As Integer, buf As String, flag As Boolean
                 key_list(max_item) = key_list(i)
             End If
         Next
-        '•À‚×‘Ö‚¦•û–@‚ğƒgƒOƒ‹‚ÅØ‚è‘Ö‚¦
-        cmdSort.Caption = "–¼Ì‡‚É•À‚×‘Ö‚¦"
+        'ä¸¦ã¹æ›¿ãˆæ–¹æ³•ã‚’ãƒˆã‚°ãƒ«ã§åˆ‡ã‚Šæ›¿ãˆ
+        cmdSort.Caption = "åç§°é †ã«ä¸¦ã¹æ›¿ãˆ"
     Else
-        'ƒ†ƒjƒbƒg‚Ì–¼Ì‡‚É•À‚×‘Ö‚¦
+        'ãƒ¦ãƒ‹ãƒƒãƒˆã®åç§°é †ã«ä¸¦ã¹æ›¿ãˆ
         ReDim strkey_list(UBound(item_list))
         With UList
             For i = 1 To UBound(item_list)
@@ -392,11 +392,11 @@ Dim i As Integer, j As Integer, buf As String, flag As Boolean
                 strkey_list(max_item) = strkey_list(i)
             End If
         Next
-        '•À‚×‘Ö‚¦•û–@‚ğƒgƒOƒ‹‚ÅØ‚è‘Ö‚¦
-        cmdSort.Caption = "ƒŒƒxƒ‹‡‚É•À‚×‘Ö‚¦"
+        'ä¸¦ã¹æ›¿ãˆæ–¹æ³•ã‚’ãƒˆã‚°ãƒ«ã§åˆ‡ã‚Šæ›¿ãˆ
+        cmdSort.Caption = "ãƒ¬ãƒ™ãƒ«é †ã«ä¸¦ã¹æ›¿ãˆ"
     End If
     
-    'ƒŠƒXƒg•\¦‚ğXV‚·‚é
+    'ãƒªã‚¹ãƒˆè¡¨ç¤ºã‚’æ›´æ–°ã™ã‚‹
     With lstItems
         .Visible = False
         For i = 1 To .ListCount
@@ -407,7 +407,7 @@ Dim i As Integer, j As Integer, buf As String, flag As Boolean
     End With
 End Sub
 
-'ƒtƒH[ƒ€‚ğ•\¦
+'ãƒ•ã‚©ãƒ¼ãƒ ã‚’è¡¨ç¤º
 Private Sub Form_Activate()
     SelectedItemNum = 0
     lblNumber = "0/" & Format$(MaxListItem)
@@ -417,24 +417,24 @@ Private Sub Form_Activate()
     End If
 End Sub
 
-'ƒŠƒXƒgƒ{ƒbƒNƒXã‚Åƒ_ƒuƒ‹ƒNƒŠƒbƒN
+'ãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹ä¸Šã§ãƒ€ãƒ–ãƒ«ã‚¯ãƒªãƒƒã‚¯
 Private Sub lstItems_DblClick()
 Dim i As Integer
 
     i = lstItems.ListIndex
     If i >= 0 Then
         If ItemFlag(i) Then
-            '‘I‘ğæ‚èÁ‚µ
+            'é¸æŠå–ã‚Šæ¶ˆã—
             
-            '‘I‘ğ‚³‚ê‚½ƒ†ƒjƒbƒg”‚ğŒ¸‚ç‚·
+            'é¸æŠã•ã‚ŒãŸãƒ¦ãƒ‹ãƒƒãƒˆæ•°ã‚’æ¸›ã‚‰ã™
             SelectedItemNum = SelectedItemNum - 1
             lblNumber = Format$(SelectedItemNum) & "/" & Format$(MaxListItem)
             ItemFlag(i) = False
             
-            '‘I‘ğó‘Ô‚Ì•\¦‚ğXV
-            lstItems.list(i) = "@" & Mid$(lstItems.list(i), 2)
+            'é¸æŠçŠ¶æ…‹ã®è¡¨ç¤ºã‚’æ›´æ–°
+            lstItems.list(i) = "ã€€" & Mid$(lstItems.list(i), 2)
             
-            '‘I‘ğI—¹‚ª‰Â”\‚©”»’è
+            'é¸æŠçµ‚äº†ãŒå¯èƒ½ã‹åˆ¤å®š
             If SelectedItemNum > 0 _
                 And SelectedItemNum <= MaxListItem _
             Then
@@ -447,17 +447,17 @@ Dim i As Integer
                 End If
             End If
         Else
-            '‘I‘ğ
+            'é¸æŠ
             
-            '‘I‘ğ‚³‚ê‚½ƒ†ƒjƒbƒg”‚ğ‘‚â‚·
+            'é¸æŠã•ã‚ŒãŸãƒ¦ãƒ‹ãƒƒãƒˆæ•°ã‚’å¢—ã‚„ã™
             SelectedItemNum = SelectedItemNum + 1
             lblNumber = Format$(SelectedItemNum) & "/" & Format$(MaxListItem)
             ItemFlag(i) = True
             
-            '‘I‘ğó‘Ô‚Ì•\¦‚ğXV
-            lstItems.list(i) = "›" & Mid$(lstItems.list(i), 2)
+            'é¸æŠçŠ¶æ…‹ã®è¡¨ç¤ºã‚’æ›´æ–°
+            lstItems.list(i) = "â—‹" & Mid$(lstItems.list(i), 2)
             
-            '‘I‘ğI—¹‚ª‰Â”\‚©”»’è
+            'é¸æŠçµ‚äº†ãŒå¯èƒ½ã‹åˆ¤å®š
             If SelectedItemNum > 0 _
                 And SelectedItemNum <= MaxListItem _
             Then
@@ -473,11 +473,11 @@ Dim i As Integer
     End If
 End Sub
 
-'ƒŠƒXƒgƒ{ƒbƒNƒXã‚Åƒ}ƒEƒXƒ{ƒ^ƒ“‚ğ‰Ÿ‚·
+'ãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹ä¸Šã§ãƒã‚¦ã‚¹ãƒœã‚¿ãƒ³ã‚’æŠ¼ã™
 Private Sub lstItems_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
 Dim i As Integer
     
-    '¶ƒNƒŠƒbƒNˆÈŠO‚Í–³‹
+    'å·¦ã‚¯ãƒªãƒƒã‚¯ä»¥å¤–ã¯ç„¡è¦–
     If Button <> 1 Then
         Exit Sub
     End If
@@ -485,17 +485,17 @@ Dim i As Integer
     i = lstItems.ListIndex
     If i >= 0 Then
         If ItemFlag(i) Then
-            '‘I‘ğæ‚èÁ‚µ
+            'é¸æŠå–ã‚Šæ¶ˆã—
             
-            '‘I‘ğ‚³‚ê‚½ƒ†ƒjƒbƒg”‚ğŒ¸‚ç‚·
+            'é¸æŠã•ã‚ŒãŸãƒ¦ãƒ‹ãƒƒãƒˆæ•°ã‚’æ¸›ã‚‰ã™
             SelectedItemNum = SelectedItemNum - 1
             lblNumber = Format$(SelectedItemNum) & "/" & Format$(MaxListItem)
             ItemFlag(i) = False
             
-            '‘I‘ğó‘Ô‚Ì•\¦‚ğXV
-            lstItems.list(i) = "@" & Mid$(lstItems.list(i), 2)
+            'é¸æŠçŠ¶æ…‹ã®è¡¨ç¤ºã‚’æ›´æ–°
+            lstItems.list(i) = "ã€€" & Mid$(lstItems.list(i), 2)
             
-            '‘I‘ğI—¹‚ª‰Â”\‚©”»’è
+            'é¸æŠçµ‚äº†ãŒå¯èƒ½ã‹åˆ¤å®š
             If SelectedItemNum > 0 _
                 And SelectedItemNum <= MaxListItem _
             Then
@@ -508,17 +508,17 @@ Dim i As Integer
                 End If
             End If
         Else
-            '‘I‘ğ
+            'é¸æŠ
             
-            '‘I‘ğ‚³‚ê‚½ƒ†ƒjƒbƒg”‚ğ‘‚â‚·
+            'é¸æŠã•ã‚ŒãŸãƒ¦ãƒ‹ãƒƒãƒˆæ•°ã‚’å¢—ã‚„ã™
             SelectedItemNum = SelectedItemNum + 1
             lblNumber = Format$(SelectedItemNum) & "/" & Format$(MaxListItem)
             ItemFlag(i) = True
             
-            '‘I‘ğó‘Ô‚Ì•\¦‚ğXV
-            lstItems.list(i) = "›" & Mid$(lstItems.list(i), 2)
+            'é¸æŠçŠ¶æ…‹ã®è¡¨ç¤ºã‚’æ›´æ–°
+            lstItems.list(i) = "â—‹" & Mid$(lstItems.list(i), 2)
             
-            '‘I‘ğI—¹‚ª‰Â”\‚©”»’è
+            'é¸æŠçµ‚äº†ãŒå¯èƒ½ã‹åˆ¤å®š
             If SelectedItemNum > 0 _
                 And SelectedItemNum <= MaxListItem _
             Then
@@ -534,15 +534,15 @@ Dim i As Integer
     End If
 End Sub
 
-'ƒŠƒXƒgƒ{ƒbƒNƒXã‚Åƒ}ƒEƒXƒJ[ƒ\ƒ‹‚ğˆÚ“®
+'ãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹ä¸Šã§ãƒã‚¦ã‚¹ã‚«ãƒ¼ã‚½ãƒ«ã‚’ç§»å‹•
 Private Sub lstItems_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     Dim itm As Integer
     
-    'ƒJ[ƒ\ƒ‹‚ª‚ ‚éƒAƒCƒeƒ€‚ğZo
+    'ã‚«ãƒ¼ã‚½ãƒ«ãŒã‚ã‚‹ã‚¢ã‚¤ãƒ†ãƒ ã‚’ç®—å‡º
     itm = ((Y * ScaleWidth) \ Width + 1) \ 16
     itm = itm + lstItems.TopIndex
     
-    'ƒJ[ƒ\ƒ‹‚ª‚ ‚éƒAƒCƒeƒ€‚ğƒnƒCƒ‰ƒCƒg•\¦
+    'ã‚«ãƒ¼ã‚½ãƒ«ãŒã‚ã‚‹ã‚¢ã‚¤ãƒ†ãƒ ã‚’ãƒã‚¤ãƒ©ã‚¤ãƒˆè¡¨ç¤º
     If itm < 0 Or itm >= lstItems.ListCount Then
         lstItems.ListIndex = -1
         Exit Sub
@@ -553,7 +553,7 @@ Private Sub lstItems_MouseMove(Button As Integer, Shift As Integer, X As Single,
     lstItems.ListIndex = itm
 End Sub
 
-'ƒJ[ƒ\ƒ‹‚ªw‚·ƒ†ƒjƒbƒg‚ğˆê’èŠÔ‚²‚Æ‚É’²‚×‚ÄƒXƒe[ƒ^ƒXƒEƒBƒ“ƒhƒE‚É•\¦
+'ã‚«ãƒ¼ã‚½ãƒ«ãŒæŒ‡ã™ãƒ¦ãƒ‹ãƒƒãƒˆã‚’ä¸€å®šæ™‚é–“ã”ã¨ã«èª¿ã¹ã¦ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã«è¡¨ç¤º
 Private Sub Timer1_Timer()
 Dim u As Unit
 
@@ -568,8 +568,8 @@ Dim u As Unit
     Set u = UList.Item(ListItemID(lstItems.ListIndex + 1))
     
     If Not DisplayedUnit Is u Then
-'ƒ†ƒjƒbƒg‘I‘ğ’†‚¾‚¯
-        If CommandState = "ƒ†ƒjƒbƒg‘I‘ğ" Then
+'ãƒ¦ãƒ‹ãƒƒãƒˆé¸æŠä¸­ã ã‘
+        If CommandState = "ãƒ¦ãƒ‹ãƒƒãƒˆé¸æŠ" Then
            DisplayUnitStatus u
         End If
     End If

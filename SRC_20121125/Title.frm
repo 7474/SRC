@@ -1,6 +1,6 @@
 VERSION 5.00
 Begin VB.Form frmTitle 
-   BorderStyle     =   0  '‚È‚µ
+   BorderStyle     =   0  'ãªã—
    Caption         =   "SRC"
    ClientHeight    =   3495
    ClientLeft      =   2700
@@ -11,14 +11,14 @@ Begin VB.Form frmTitle
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   PaletteMode     =   1  'Z µ°ÀŞ°
+   PaletteMode     =   1  'Z ï½µï½°ï¾€ï¾ï½°
    ScaleHeight     =   233
-   ScaleMode       =   3  'Ëß¸¾Ù
+   ScaleMode       =   3  'ï¾‹ï¾Ÿï½¸ï½¾ï¾™
    ScaleWidth      =   386
    ShowInTaskbar   =   0   'False
    Begin VB.PictureBox Picture1 
       AutoSize        =   -1  'True
-      BorderStyle     =   0  '‚È‚µ
+      BorderStyle     =   0  'ãªã—
       Height          =   600
       Left            =   2520
       Picture         =   "Title.frx":030A
@@ -43,7 +43,7 @@ Begin VB.Form frmTitle
          Width           =   1440
       End
       Begin VB.Label labAuthor 
-         Alignment       =   1  '‰E‘µ‚¦
+         Alignment       =   1  'å³æƒãˆ
          Caption         =   "Kei Sakamoto / Inui Tetsuyuki"
          BeginProperty Font 
             Name            =   "Times New Roman"
@@ -61,7 +61,7 @@ Begin VB.Form frmTitle
          Width           =   2895
       End
       Begin VB.Label labVersion 
-         Alignment       =   1  '‰E‘µ‚¦
+         Alignment       =   1  'å³æƒãˆ
          Caption         =   "Ver 1.7.*"
          BeginProperty Font 
             Name            =   "Times New Roman"
@@ -80,7 +80,7 @@ Begin VB.Form frmTitle
       End
    End
    Begin VB.Label labLicense 
-      Alignment       =   2  '’†‰›‘µ‚¦
+      Alignment       =   2  'ä¸­å¤®æƒãˆ
       Caption         =   "This program is distributed under the terms of GPL"
       Height          =   255
       Left            =   120
@@ -97,11 +97,11 @@ Attribute VB_Exposed = False
 Option Explicit
 
 ' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-' –{ƒvƒƒOƒ‰ƒ€‚ÍƒtƒŠ[ƒ\ƒtƒg‚Å‚ ‚èA–³•ÛØ‚Å‚·B
-' –{ƒvƒƒOƒ‰ƒ€‚ÍGNU General Public License(Ver.3‚Ü‚½‚Í‚»‚êˆÈ~)‚ª’è‚ß‚éğŒ‚Ì‰º‚Å
-' Ä”Ğ•z‚Ü‚½‚Í‰ü•Ï‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B
+' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯ãƒ•ãƒªãƒ¼ã‚½ãƒ•ãƒˆã§ã‚ã‚Šã€ç„¡ä¿è¨¼ã§ã™ã€‚
+' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯GNU General Public License(Ver.3ã¾ãŸã¯ãã‚Œä»¥é™)ãŒå®šã‚ã‚‹æ¡ä»¶ã®ä¸‹ã§
+' å†é ’å¸ƒã¾ãŸã¯æ”¹å¤‰ã™ã‚‹ã“ã¨ãŒã§ãã¾ã™ã€‚
 
-'ƒ^ƒCƒgƒ‹‰æ–Ê—pƒtƒH[ƒ€
+'ã‚¿ã‚¤ãƒˆãƒ«ç”»é¢ç”¨ãƒ•ã‚©ãƒ¼ãƒ 
 
 Private Sub Form_Load()
     With App

@@ -2,37 +2,37 @@ Attribute VB_Name = "GeneralLib"
 Option Explicit
 
 ' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-' –{ƒvƒƒOƒ‰ƒ€‚ÍƒtƒŠ[ƒ\ƒtƒg‚Å‚ ‚èA–³•ÛØ‚Å‚·B
-' –{ƒvƒƒOƒ‰ƒ€‚ÍGNU General Public License(Ver.3‚Ü‚½‚Í‚»‚êˆÈ~)‚ª’è‚ß‚éğŒ‚Ì‰º‚Å
-' Ä”Ğ•z‚Ü‚½‚Í‰ü•Ï‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B
+' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯ãƒ•ãƒªãƒ¼ã‚½ãƒ•ãƒˆã§ã‚ã‚Šã€ç„¡ä¿è¨¼ã§ã™ã€‚
+' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯GNU General Public License(Ver.3ã¾ãŸã¯ãã‚Œä»¥é™)ãŒå®šã‚ã‚‹æ¡ä»¶ã®ä¸‹ã§
+' å†é ’å¸ƒã¾ãŸã¯æ”¹å¤‰ã™ã‚‹ã“ã¨ãŒã§ãã¾ã™ã€‚
 
-'”Ä—p“I‚Èˆ—‚ğs‚¤ƒ‚ƒWƒ…[ƒ‹
+'æ±ç”¨çš„ãªå‡¦ç†ã‚’è¡Œã†ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«
 
-'iniƒtƒ@ƒCƒ‹‚Ì“Ç‚İo‚µ
+'iniãƒ•ã‚¡ã‚¤ãƒ«ã®èª­ã¿å‡ºã—
 Declare Function GetPrivateProfileString Lib "kernel32" _
     Alias "GetPrivateProfileStringA" (ByVal lpApplicationName As String, _
     ByVal lpKeyName As Any, ByVal lpDefault As String, _
     ByVal lpReturnedString As String, ByVal nSize As Long, _
     ByVal lpFileName As String) As Long
 
-'iniƒtƒ@ƒCƒ‹‚Ö‚Ì‘‚«‚İ
+'iniãƒ•ã‚¡ã‚¤ãƒ«ã¸ã®æ›¸ãè¾¼ã¿
 Declare Function WritePrivateProfileString Lib "kernel32" _
     Alias "WritePrivateProfileStringA" _
     (ByVal lpApplicationName As String, ByVal lpKeyName As Any, _
     ByVal lpString As String, ByVal lpFileName As String) As Long
 
-'Windows‚ª‹N“®‚µ‚Ä‚©‚ç‚ÌŠÔ‚ğ•Ô‚·(ƒ~ƒŠ•b)
+'WindowsãŒèµ·å‹•ã—ã¦ã‹ã‚‰ã®æ™‚é–“ã‚’è¿”ã™(ãƒŸãƒªç§’)
 Declare Function timeGetTime Lib "winmm.dll" () As Long
 
-'ŠÔˆ—‚Ì‰ğ‘œ“x‚ğ•ÏX‚·‚é
+'æ™‚é–“å‡¦ç†ã®è§£åƒåº¦ã‚’å¤‰æ›´ã™ã‚‹
 Declare Function timeBeginPeriod Lib "winmm.dll" (ByVal uPeriod As Long) As Long
 Declare Function timeEndPeriod Lib "winmm.dll" (ByVal uPeriod As Long) As Long
 
-'ƒtƒ@ƒCƒ‹‘®«‚ğ•Ô‚·
+'ãƒ•ã‚¡ã‚¤ãƒ«å±æ€§ã‚’è¿”ã™
 Declare Function GetFileAttributes Lib "kernel32" Alias "GetFileAttributesA" _
     (ByVal lpFileName As String) As Long
 
-'OS‚Ìƒo[ƒWƒ‡ƒ“î•ñ‚ğ•Ô‚·
+'OSã®ãƒãƒ¼ã‚¸ãƒ§ãƒ³æƒ…å ±ã‚’è¿”ã™
 Type OSVERSIONINFO
     dwOSVersionInfoSize As Long
     dwMajorVersion      As Long
@@ -47,23 +47,23 @@ Declare Function GetVersionEx Lib "kernel32" Alias "GetVersionExA" _
 Const VER_PLATFORM_WIN32_NT = 2
 
 
-'—””­¶—pƒV[ƒh’l
+'ä¹±æ•°ç™ºç”Ÿç”¨ã‚·ãƒ¼ãƒ‰å€¤
 Public RndSeed As Long
 
-'—”Œn—ñ
+'ä¹±æ•°ç³»åˆ—
 Private RndHistory(4096) As Single
 
-'—”Œn—ñ‚Ì’†‚ÅŒ»İg—p‚µ‚Ä‚¢‚é’l‚ÌƒCƒ“ƒfƒbƒNƒX
+'ä¹±æ•°ç³»åˆ—ã®ä¸­ã§ç¾åœ¨ä½¿ç”¨ã—ã¦ã„ã‚‹å€¤ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹
 Public RndIndex As Integer
 
-'—”Œn—ñ‚ÌƒŠƒZƒbƒg
+'ä¹±æ•°ç³»åˆ—ã®ãƒªã‚»ãƒƒãƒˆ
 Public Sub RndReset()
 Dim i As Integer
 
     Randomize RndSeed
     
-    '—”Œn—ñ‚ÌƒZ[ƒu•ƒ[ƒh‚ªo—ˆ‚é‚æ‚¤—”Œn—ñ‚ğ‚ ‚ç‚©‚¶‚ß
-    '”z—ñ‚É•Û‘¶‚µ‚ÄŠm’è‚³‚¹‚é
+    'ä¹±æ•°ç³»åˆ—ã®ã‚»ãƒ¼ãƒ–ï¼†ãƒ­ãƒ¼ãƒ‰ãŒå‡ºæ¥ã‚‹ã‚ˆã†ä¹±æ•°ç³»åˆ—ã‚’ã‚ã‚‰ã‹ã˜ã‚
+    'é…åˆ—ã«ä¿å­˜ã—ã¦ç¢ºå®šã•ã›ã‚‹
     For i = 1 To UBound(RndHistory)
         RndHistory(i) = Rnd
     Next
@@ -71,14 +71,14 @@ Dim i As Integer
     RndIndex = 0
 End Sub
 
-' 1`max ‚Ì—”‚ğ•Ô‚·
+' 1ï½max ã®ä¹±æ•°ã‚’è¿”ã™
 Public Function Dice(ByVal max As Long) As Long
     If max <= 1 Then
         Dice = max
         Exit Function
     End If
     
-    If IsOptionDefined("—”Œn—ñ”ñ•Û‘¶") Then
+    If IsOptionDefined("ä¹±æ•°ç³»åˆ—éä¿å­˜") Then
         Dice = Int((max * Rnd) + 1)
         Exit Function
     End If
@@ -92,24 +92,24 @@ Public Function Dice(ByVal max As Long) As Long
 End Function
 
 
-' ƒŠƒXƒg list ‚©‚ç idx ”Ô–Ú‚Ì—v‘f‚ğ•Ô‚·
+' ãƒªã‚¹ãƒˆ list ã‹ã‚‰ idx ç•ªç›®ã®è¦ç´ ã‚’è¿”ã™
 Public Function LIndex(list As String, ByVal idx As Integer) As String
 Dim i As Integer, n As Integer
 Dim list_len As Integer
 Dim begin As Integer
 
-    'idx‚ª³‚Ì”‚Å‚È‚¯‚ê‚Î‹ó•¶š—ñ‚ğ•Ô‚·
+    'idxãŒæ­£ã®æ•°ã§ãªã‘ã‚Œã°ç©ºæ–‡å­—åˆ—ã‚’è¿”ã™
     If idx < 1 Then
         Exit Function
     End If
     
     list_len = Len(list)
     
-    'idx”Ô–Ú‚Ì—v‘f‚Ü‚Å“Ç‚İ”ò‚Î‚·
+    'idxç•ªç›®ã®è¦ç´ ã¾ã§èª­ã¿é£›ã°ã™
     n = 0
     i = 0
     Do While True
-        '‹ó”’‚ğ“Ç‚İ”ò‚Î‚·
+        'ç©ºç™½ã‚’èª­ã¿é£›ã°ã™
         Do
             i = i + 1
             If i > list_len Then
@@ -117,15 +117,15 @@ Dim begin As Integer
             End If
         Loop While Mid$(list, i, 1) = " "
         
-        '—v‘f”‚ğ‚P‚Â‘‚â‚·
+        'è¦ç´ æ•°ã‚’ï¼‘ã¤å¢—ã‚„ã™
         n = n + 1
         
-        '‹‚ß‚é—v‘fH
+        'æ±‚ã‚ã‚‹è¦ç´ ï¼Ÿ
         If n = idx Then
             Exit Do
         End If
         
-        '—v‘f‚ğ“Ç‚İ”ò‚Î‚·
+        'è¦ç´ ã‚’èª­ã¿é£›ã°ã™
         Do
             i = i + 1
             If i > list_len Then
@@ -134,7 +134,7 @@ Dim begin As Integer
         Loop Until Mid$(list, i, 1) = " "
     Loop
     
-    '‹‚ß‚é—v‘f‚ğ“Ç‚İ‚Ş
+    'æ±‚ã‚ã‚‹è¦ç´ ã‚’èª­ã¿è¾¼ã‚€
     begin = i
     Do
         i = i + 1
@@ -147,7 +147,7 @@ Dim begin As Integer
     LIndex = Mid$(list, begin, i - begin)
 End Function
 
-' ƒŠƒXƒg list ‚Ì—v‘f”‚ğ•Ô‚·
+' ãƒªã‚¹ãƒˆ list ã®è¦ç´ æ•°ã‚’è¿”ã™
 Public Function LLength(list As String) As Integer
 Dim i As Integer
 Dim list_len As Integer
@@ -157,7 +157,7 @@ Dim list_len As Integer
     
     i = 0
     Do While True
-        '‹ó”’‚ğ“Ç‚İ”ò‚Î‚·
+        'ç©ºç™½ã‚’èª­ã¿é£›ã°ã™
         Do
             i = i + 1
             If i > list_len Then
@@ -165,10 +165,10 @@ Dim list_len As Integer
             End If
         Loop While Mid$(list, i, 1) = " "
         
-        '—v‘f”‚ğ‚P‚Â‘‚â‚·
+        'è¦ç´ æ•°ã‚’ï¼‘ã¤å¢—ã‚„ã™
         LLength = LLength + 1
         
-        '—v‘f‚ğ“Ç‚İ”ò‚Î‚·
+        'è¦ç´ ã‚’èª­ã¿é£›ã°ã™
         Do
             i = i + 1
             If i > list_len Then
@@ -178,8 +178,8 @@ Dim list_len As Integer
     Loop
 End Function
 
-' ƒŠƒXƒg list ‚©‚çAƒŠƒXƒg‚Ì—v‘f‚Ì”z—ñ larray ‚ğì¬‚µA
-' ƒŠƒXƒg‚Ì—v‘f”‚ğ•Ô‚·
+' ãƒªã‚¹ãƒˆ list ã‹ã‚‰ã€ãƒªã‚¹ãƒˆã®è¦ç´ ã®é…åˆ— larray ã‚’ä½œæˆã—ã€
+' ãƒªã‚¹ãƒˆã®è¦ç´ æ•°ã‚’è¿”ã™
 Public Function LSplit(list As String, larray() As String) As Integer
 Dim i As Integer
 Dim list_len As Integer
@@ -191,7 +191,7 @@ Dim begin As Integer
     ReDim larray(0)
     i = 0
     Do While True
-        '‹ó”’‚ğ“Ç‚İ”ò‚Î‚·
+        'ç©ºç™½ã‚’èª­ã¿é£›ã°ã™
         Do
             i = i + 1
             If i > list_len Then
@@ -199,10 +199,10 @@ Dim begin As Integer
             End If
         Loop While Mid$(list, i, 1) = " "
         
-        '—v‘f”‚ğ‚P‚Â‘‚â‚·
+        'è¦ç´ æ•°ã‚’ï¼‘ã¤å¢—ã‚„ã™
         LSplit = LSplit + 1
         
-        '—v‘f‚ğ“Ç‚İ‚Ş
+        'è¦ç´ ã‚’èª­ã¿è¾¼ã‚€
         ReDim Preserve larray(LSplit)
         begin = i
         Do
@@ -216,7 +216,7 @@ Dim begin As Integer
     Loop
 End Function
 
-'•¶š—ñ ch ‚ª‹ó”’‚©‚Ç‚¤‚©’²‚×‚é
+'æ–‡å­—åˆ— ch ãŒç©ºç™½ã‹ã©ã†ã‹èª¿ã¹ã‚‹
 Public Function IsSpace(ch As String) As Boolean
     If Len(ch) = 0 Then
         IsSpace = True
@@ -229,7 +229,7 @@ Public Function IsSpace(ch As String) As Boolean
     End Select
 End Function
 
-'ƒŠƒXƒg list ‚É—v‘f str ‚ğ’Ç‰Á
+'ãƒªã‚¹ãƒˆ list ã«è¦ç´  str ã‚’è¿½åŠ 
 Public Sub LAppend(list As String, str As String)
     list = Trim$(list)
     str = Trim$(str)
@@ -244,7 +244,7 @@ Public Sub LAppend(list As String, str As String)
     End If
 End Sub
 
-'ƒŠƒXƒg list ‚É str ‚ª“oê‚·‚éˆÊ’u‚ğ•Ô‚·
+'ãƒªã‚¹ãƒˆ list ã« str ãŒç™»å ´ã™ã‚‹ä½ç½®ã‚’è¿”ã™
 Public Function SearchList(list As String, str As String) As Integer
 Dim i As Integer
     
@@ -259,53 +259,53 @@ Dim i As Integer
 End Function
 
 
-' ƒŠƒXƒg list ‚©‚ç idx ”Ô–Ú‚Ì—v‘f‚ğ•Ô‚· (Š‡ŒÊ‚ğl—¶)
+' ãƒªã‚¹ãƒˆ list ã‹ã‚‰ idx ç•ªç›®ã®è¦ç´ ã‚’è¿”ã™ (æ‹¬å¼§ã‚’è€ƒæ…®)
 Public Function ListIndex(list As String, ByVal idx As Integer) As String
 Dim i As Integer, n As Integer, ch As Integer
 Dim list_len As Integer, paren As Integer, begin As Integer
 Dim in_single_quote As Boolean, in_double_quote As Boolean
 
-    'idx‚ª³‚Ì”‚Å‚È‚¯‚ê‚Î‹ó•¶š—ñ‚ğ•Ô‚·
+    'idxãŒæ­£ã®æ•°ã§ãªã‘ã‚Œã°ç©ºæ–‡å­—åˆ—ã‚’è¿”ã™
     If idx < 1 Then
         Exit Function
     End If
     
     list_len = Len(list)
     
-    'idx”Ô–Ú‚Ì—v‘f‚Ü‚Å“Ç‚İ”ò‚Î‚·
+    'idxç•ªç›®ã®è¦ç´ ã¾ã§èª­ã¿é£›ã°ã™
     n = 0
     i = 0
     Do While True
-        '‹ó”’‚ğ“Ç‚İ”ò‚Î‚·
+        'ç©ºç™½ã‚’èª­ã¿é£›ã°ã™
         Do While True
             i = i + 1
             
-            '•¶š—ñ‚ÌI‚èH
+            'æ–‡å­—åˆ—ã®çµ‚ã‚Šï¼Ÿ
             If i > list_len Then
                 Exit Function
             End If
             
-            'Ÿ‚Ì•¶š
+            'æ¬¡ã®æ–‡å­—
             ch = Asc(Mid$(list, i, 1))
             
-            '‹ó”’‚Å‚È‚¢H
+            'ç©ºç™½ã§ãªã„ï¼Ÿ
             Select Case ch
                 Case 9, 32
-                    'ƒXƒLƒbƒv
+                    'ã‚¹ã‚­ãƒƒãƒ—
                 Case Else
                     Exit Do
             End Select
         Loop
         
-        '—v‘f”‚ğ‚P‚Â‘‚â‚·
+        'è¦ç´ æ•°ã‚’ï¼‘ã¤å¢—ã‚„ã™
         n = n + 1
         
-        '‹‚ß‚é—v‘fH
+        'æ±‚ã‚ã‚‹è¦ç´ ï¼Ÿ
         If n = idx Then
             Exit Do
         End If
         
-        '—v‘f‚ğ“Ç‚İ”ò‚Î‚·
+        'è¦ç´ ã‚’èª­ã¿é£›ã°ã™
         Do While True
             If in_single_quote Then
                 If ch = 96 Then ' "`"
@@ -322,7 +322,7 @@ Dim in_single_quote As Boolean, in_double_quote As Boolean
                     Case 41, 93 ' ")", "]"
                         paren = paren - 1
                         If paren < 0 Then
-                            'Š‡ŒÊ‚Ì‘Î‰‚ªæ‚ê‚Ä‚¢‚È‚¢
+                            'æ‹¬å¼§ã®å¯¾å¿œãŒå–ã‚Œã¦ã„ãªã„
                             Exit Function
                         End If
                     Case 96 ' "`"
@@ -334,20 +334,20 @@ Dim in_single_quote As Boolean, in_double_quote As Boolean
             
             i = i + 1
             
-            '•¶š—ñ‚ÌI‚èH
+            'æ–‡å­—åˆ—ã®çµ‚ã‚Šï¼Ÿ
             If i > list_len Then
                 Exit Function
             End If
             
-            'Ÿ‚Ì•¶š
+            'æ¬¡ã®æ–‡å­—
             ch = Asc(Mid$(list, i, 1))
             
-            '—v‘f‚Ì––”ö‚©”»’è
+            'è¦ç´ ã®æœ«å°¾ã‹åˆ¤å®š
             If Not in_single_quote _
                 And Not in_double_quote _
                 And paren = 0 _
             Then
-                '‹ó”’H
+                'ç©ºç™½ï¼Ÿ
                 Select Case ch
                     Case 9, 32
                         Exit Do
@@ -356,7 +356,7 @@ Dim in_single_quote As Boolean, in_double_quote As Boolean
         Loop
     Loop
     
-    '‹‚ß‚é—v‘f‚ğ“Ç‚İ‚Ş
+    'æ±‚ã‚ã‚‹è¦ç´ ã‚’èª­ã¿è¾¼ã‚€
     begin = i
     Do While True
         If in_single_quote Then
@@ -374,7 +374,7 @@ Dim in_single_quote As Boolean, in_double_quote As Boolean
                 Case 41, 93 ' ")", "]"
                     paren = paren - 1
                     If paren < 0 Then
-                        'Š‡ŒÊ‚Ì‘Î‰‚ªæ‚ê‚Ä‚¢‚È‚¢
+                        'æ‹¬å¼§ã®å¯¾å¿œãŒå–ã‚Œã¦ã„ãªã„
                         Exit Function
                     End If
                 Case 96 ' "`"
@@ -386,21 +386,21 @@ Dim in_single_quote As Boolean, in_double_quote As Boolean
         
         i = i + 1
         
-        '•¶š—ñ‚ÌI‚èH
+        'æ–‡å­—åˆ—ã®çµ‚ã‚Šï¼Ÿ
         If i > list_len Then
             ListIndex = Mid$(list, begin)
             Exit Function
         End If
         
-        'Ÿ‚Ì•¶š
+        'æ¬¡ã®æ–‡å­—
         ch = Asc(Mid$(list, i, 1))
         
-        '—v‘f‚Ì––”ö‚©”»’è
+        'è¦ç´ ã®æœ«å°¾ã‹åˆ¤å®š
         If Not in_single_quote _
             And Not in_double_quote _
             And paren = 0 _
         Then
-            '‹ó”’H
+            'ç©ºç™½ï¼Ÿ
             Select Case ch
                 Case 9, 32
                     Exit Do
@@ -411,7 +411,7 @@ Dim in_single_quote As Boolean, in_double_quote As Boolean
     ListIndex = Mid$(list, begin, i - begin)
 End Function
 
-' ƒŠƒXƒg list ‚Ì—v‘f”‚ğ•Ô‚· (Š‡ŒÊ‚ğl—¶)
+' ãƒªã‚¹ãƒˆ list ã®è¦ç´ æ•°ã‚’è¿”ã™ (æ‹¬å¼§ã‚’è€ƒæ…®)
 Public Function ListLength(list As String) As Integer
 Dim i As Integer, ch As Integer
 Dim list_len As Integer, paren As Integer
@@ -422,31 +422,31 @@ Dim in_single_quote As Boolean, in_double_quote As Boolean
     
     i = 0
     Do While True
-        '‹ó”’‚ğ“Ç‚İ”ò‚Î‚·
+        'ç©ºç™½ã‚’èª­ã¿é£›ã°ã™
         Do While True
             i = i + 1
             
-            '•¶š—ñ‚ÌI‚èH
+            'æ–‡å­—åˆ—ã®çµ‚ã‚Šï¼Ÿ
             If i > list_len Then
                 Exit Function
             End If
             
-            'Ÿ‚Ì•¶š
+            'æ¬¡ã®æ–‡å­—
             ch = Asc(Mid$(list, i, 1))
             
-            '‹ó”’‚Å‚È‚¢H
+            'ç©ºç™½ã§ãªã„ï¼Ÿ
             Select Case ch
                 Case 9, 32
-                    'ƒXƒLƒbƒv
+                    'ã‚¹ã‚­ãƒƒãƒ—
                 Case Else
                     Exit Do
             End Select
         Loop
         
-        '—v‘f”‚ğ‚P‚Â‘‚â‚·
+        'è¦ç´ æ•°ã‚’ï¼‘ã¤å¢—ã‚„ã™
         ListLength = ListLength + 1
         
-        '—v‘f‚ğ“Ç‚İ”ò‚Î‚·
+        'è¦ç´ ã‚’èª­ã¿é£›ã°ã™
         Do While True
             If in_single_quote Then
                 If ch = 96 Then ' "`"
@@ -463,7 +463,7 @@ Dim in_single_quote As Boolean, in_double_quote As Boolean
                     Case 41, 93 ' ")", "]"
                         paren = paren - 1
                         If paren < 0 Then
-                            'Š‡ŒÊ‚Ì‘Î‰‚ªæ‚ê‚Ä‚¢‚È‚¢
+                            'æ‹¬å¼§ã®å¯¾å¿œãŒå–ã‚Œã¦ã„ãªã„
                             ListLength = -1
                             Exit Function
                         End If
@@ -476,9 +476,9 @@ Dim in_single_quote As Boolean, in_double_quote As Boolean
             
             i = i + 1
             
-            '•¶š—ñ‚ÌI‚èH
+            'æ–‡å­—åˆ—ã®çµ‚ã‚Šï¼Ÿ
             If i > list_len Then
-                'ƒNƒH[ƒg‚âŠ‡ŒÊ‚Ì‘Î‰‚ªæ‚ê‚Ä‚¢‚éH
+                'ã‚¯ã‚©ãƒ¼ãƒˆã‚„æ‹¬å¼§ã®å¯¾å¿œãŒå–ã‚Œã¦ã„ã‚‹ï¼Ÿ
                 If in_single_quote _
                     Or in_double_quote _
                     Or paren <> 0 _
@@ -488,15 +488,15 @@ Dim in_single_quote As Boolean, in_double_quote As Boolean
                 Exit Function
             End If
             
-            'Ÿ‚Ì•¶š
+            'æ¬¡ã®æ–‡å­—
             ch = Asc(Mid$(list, i, 1))
             
-            '—v‘f‚Ì––”ö‚©”»’è
+            'è¦ç´ ã®æœ«å°¾ã‹åˆ¤å®š
             If Not in_single_quote _
                 And Not in_double_quote _
                 And paren = 0 _
             Then
-                '‹ó”’H
+                'ç©ºç™½ï¼Ÿ
                 Select Case ch
                     Case 9, 32
                         Exit Do
@@ -506,8 +506,8 @@ Dim in_single_quote As Boolean, in_double_quote As Boolean
     Loop
 End Function
 
-' ƒŠƒXƒg list ‚©‚çAƒŠƒXƒg‚Ì—v‘f‚Ì”z—ñ larray ‚ğì¬‚µA
-' ƒŠƒXƒg‚Ì—v‘f”‚ğ•Ô‚· (Š‡ŒÊ‚ğl—¶)
+' ãƒªã‚¹ãƒˆ list ã‹ã‚‰ã€ãƒªã‚¹ãƒˆã®è¦ç´ ã®é…åˆ— larray ã‚’ä½œæˆã—ã€
+' ãƒªã‚¹ãƒˆã®è¦ç´ æ•°ã‚’è¿”ã™ (æ‹¬å¼§ã‚’è€ƒæ…®)
 Public Function ListSplit(list As String, larray() As String) As Integer
 Dim i As Integer, n As Integer, ch As Integer
 Dim list_len As Integer, paren As Integer, begin As Integer
@@ -520,32 +520,32 @@ Dim in_single_quote As Boolean, in_double_quote As Boolean
     n = 0
     i = 0
     Do While True
-        '‹ó”’‚ğ“Ç‚İ”ò‚Î‚·
+        'ç©ºç™½ã‚’èª­ã¿é£›ã°ã™
         Do While True
             i = i + 1
             
-            '•¶š—ñ‚ÌI‚èH
+            'æ–‡å­—åˆ—ã®çµ‚ã‚Šï¼Ÿ
             If i > list_len Then
                 ListSplit = n
                 Exit Function
             End If
             
-            'Ÿ‚Ì•¶š
+            'æ¬¡ã®æ–‡å­—
             ch = Asc(Mid$(list, i, 1))
             
-            '‹ó”’‚Å‚È‚¢H
+            'ç©ºç™½ã§ãªã„ï¼Ÿ
             Select Case ch
                 Case 9, 32
-                    'ƒXƒLƒbƒv
+                    'ã‚¹ã‚­ãƒƒãƒ—
                 Case Else
                     Exit Do
             End Select
         Loop
         
-        '—v‘f”‚ğ‚P‚Â‘‚â‚·
+        'è¦ç´ æ•°ã‚’ï¼‘ã¤å¢—ã‚„ã™
         n = n + 1
         
-        '—v‘f‚ğ“Ç‚İ‚Ş
+        'è¦ç´ ã‚’èª­ã¿è¾¼ã‚€
         ReDim Preserve larray(n)
         begin = i
         Do While True
@@ -564,7 +564,7 @@ Dim in_single_quote As Boolean, in_double_quote As Boolean
                     Case 41, 93 ' ")", "]"
                         paren = paren - 1
                         If paren < 0 Then
-                            'Š‡ŒÊ‚Ì‘Î‰‚ªæ‚ê‚Ä‚¢‚È‚¢
+                            'æ‹¬å¼§ã®å¯¾å¿œãŒå–ã‚Œã¦ã„ãªã„
                             larray(n) = Mid$(list, begin)
                             Exit Function
                         End If
@@ -577,10 +577,10 @@ Dim in_single_quote As Boolean, in_double_quote As Boolean
             
             i = i + 1
             
-            '•¶š—ñ‚ÌI‚èH
+            'æ–‡å­—åˆ—ã®çµ‚ã‚Šï¼Ÿ
             If i > list_len Then
                 larray(n) = Mid$(list, begin)
-                'ƒNƒH[ƒg‚âŠ‡ŒÊ‚Ì‘Î‰‚ªæ‚ê‚Ä‚¢‚éH
+                'ã‚¯ã‚©ãƒ¼ãƒˆã‚„æ‹¬å¼§ã®å¯¾å¿œãŒå–ã‚Œã¦ã„ã‚‹ï¼Ÿ
                 If Not in_single_quote _
                     And Not in_double_quote _
                     And paren = 0 _
@@ -590,15 +590,15 @@ Dim in_single_quote As Boolean, in_double_quote As Boolean
                 Exit Function
             End If
             
-            'Ÿ‚Ì•¶š
+            'æ¬¡ã®æ–‡å­—
             ch = Asc(Mid$(list, i, 1))
             
-            '—v‘f‚Ì––”ö‚©”»’è
+            'è¦ç´ ã®æœ«å°¾ã‹åˆ¤å®š
             If Not in_single_quote _
                 And Not in_double_quote _
                 And paren = 0 _
             Then
-                '‹ó”’H
+                'ç©ºç™½ï¼Ÿ
                 Select Case ch
                     Case 9, 32
                         Exit Do
@@ -609,53 +609,53 @@ Dim in_single_quote As Boolean, in_double_quote As Boolean
     Loop
 End Function
 
-' ƒŠƒXƒg list ‚©‚ç idx ”Ô–ÚˆÈ~‚Ì‘S—v‘f‚ğ•Ô‚· (Š‡ŒÊ‚ğl—¶)
+' ãƒªã‚¹ãƒˆ list ã‹ã‚‰ idx ç•ªç›®ä»¥é™ã®å…¨è¦ç´ ã‚’è¿”ã™ (æ‹¬å¼§ã‚’è€ƒæ…®)
 Public Function ListTail(list As String, ByVal idx As Integer) As String
 Dim i As Integer, n As Integer, ch As Integer
 Dim list_len As Integer, paren As Integer
 Dim in_single_quote As Boolean, in_double_quote As Boolean
 
-    'idx‚ª³‚Ì”‚Å‚È‚¯‚ê‚Î‹ó•¶š—ñ‚ğ•Ô‚·
+    'idxãŒæ­£ã®æ•°ã§ãªã‘ã‚Œã°ç©ºæ–‡å­—åˆ—ã‚’è¿”ã™
     If idx < 1 Then
         Exit Function
     End If
     
     list_len = Len(list)
     
-    'idx”Ô–Ú‚Ì—v‘f‚Ü‚Å“Ç‚İ”ò‚Î‚·
+    'idxç•ªç›®ã®è¦ç´ ã¾ã§èª­ã¿é£›ã°ã™
     n = 0
     i = 0
     Do While True
-        '‹ó”’‚ğ“Ç‚İ”ò‚Î‚·
+        'ç©ºç™½ã‚’èª­ã¿é£›ã°ã™
         Do While True
             i = i + 1
             
-            '•¶š—ñ‚ÌI‚èH
+            'æ–‡å­—åˆ—ã®çµ‚ã‚Šï¼Ÿ
             If i > list_len Then
                 Exit Function
             End If
             
-            'Ÿ‚Ì•¶š
+            'æ¬¡ã®æ–‡å­—
             ch = Asc(Mid$(list, i, 1))
             
-            '‹ó”’‚Å‚È‚¢H
+            'ç©ºç™½ã§ãªã„ï¼Ÿ
             Select Case ch
                 Case 9, 32
-                    'ƒXƒLƒbƒv
+                    'ã‚¹ã‚­ãƒƒãƒ—
                 Case Else
                     Exit Do
             End Select
         Loop
         
-        '—v‘f”‚ğ‚P‚Â‘‚â‚·
+        'è¦ç´ æ•°ã‚’ï¼‘ã¤å¢—ã‚„ã™
         n = n + 1
         
-        '‹‚ß‚é—v‘fH
+        'æ±‚ã‚ã‚‹è¦ç´ ï¼Ÿ
         If n = idx Then
             Exit Do
         End If
         
-        '—v‘f‚ğ“Ç‚İ”ò‚Î‚·
+        'è¦ç´ ã‚’èª­ã¿é£›ã°ã™
         Do While True
             If in_single_quote Then
                 If ch = 96 Then ' "`"
@@ -672,7 +672,7 @@ Dim in_single_quote As Boolean, in_double_quote As Boolean
                     Case 41, 93 ' ")", "]"
                         paren = paren - 1
                         If paren < 0 Then
-                            'Š‡ŒÊ‚Ì‘Î‰‚ªæ‚ê‚Ä‚¢‚È‚¢
+                            'æ‹¬å¼§ã®å¯¾å¿œãŒå–ã‚Œã¦ã„ãªã„
                             Exit Function
                         End If
                     Case 96 ' "`"
@@ -684,20 +684,20 @@ Dim in_single_quote As Boolean, in_double_quote As Boolean
             
             i = i + 1
             
-            '•¶š—ñ‚ÌI‚èH
+            'æ–‡å­—åˆ—ã®çµ‚ã‚Šï¼Ÿ
             If i > list_len Then
                 Exit Function
             End If
             
-            'Ÿ‚Ì•¶š
+            'æ¬¡ã®æ–‡å­—
             ch = Asc(Mid$(list, i, 1))
             
-            '—v‘f‚Ì––”ö‚©”»’è
+            'è¦ç´ ã®æœ«å°¾ã‹åˆ¤å®š
             If Not in_single_quote _
                 And Not in_double_quote _
                 And paren = 0 _
             Then
-                '‹ó”’H
+                'ç©ºç™½ï¼Ÿ
                 Select Case ch
                     Case 9, 32
                         Exit Do
@@ -710,7 +710,7 @@ Dim in_single_quote As Boolean, in_double_quote As Boolean
 End Function
 
 
-'ƒ^ƒu‚ğl—¶‚µ‚½Trim
+'ã‚¿ãƒ–ã‚’è€ƒæ…®ã—ãŸTrim
 Public Sub TrimString(str As String)
 Dim i As Integer, j As Integer, lstr As Integer
     
@@ -718,7 +718,7 @@ Dim i As Integer, j As Integer, lstr As Integer
     i = 1
     j = lstr
     
-    'æ“ª‚Ì‹ó”’‚ğŒŸõ
+    'å…ˆé ­ã®ç©ºç™½ã‚’æ¤œç´¢
     Do While i <= j
         Select Case Asc(Mid$(str, i))
             Case 9, 32, -32448
@@ -728,7 +728,7 @@ Dim i As Integer, j As Integer, lstr As Integer
         End Select
     Loop
     
-    '––”ö‚Ì‹ó”’‚ğŒŸõ
+    'æœ«å°¾ã®ç©ºç™½ã‚’æ¤œç´¢
     Do While i < j
         Select Case Asc(Mid$(str, j))
             Case 9, 32, -32448
@@ -738,13 +738,13 @@ Dim i As Integer, j As Integer, lstr As Integer
         End Select
     Loop
     
-    '‹ó”’‚ª‚ ‚ê‚Î’u‚«Š·‚¦
+    'ç©ºç™½ãŒã‚ã‚Œã°ç½®ãæ›ãˆ
     If i <> 1 Or j <> lstr Then
         str = Mid$(str, i, j - i + 1)
     End If
 End Sub
 
-'•¶š—ñ str ’†‚É str2 ‚ªoŒ»‚·‚éˆÊ’u‚ğ––”ö‚©‚çŒŸõ
+'æ–‡å­—åˆ— str ä¸­ã« str2 ãŒå‡ºç¾ã™ã‚‹ä½ç½®ã‚’æœ«å°¾ã‹ã‚‰æ¤œç´¢
 Public Function InStr2(str As String, str2 As String) As Integer
 Dim slen As Integer, i As Integer
     
@@ -760,14 +760,14 @@ Dim slen As Integer, i As Integer
 End Function
 
 
-'•¶š—ñ‚ğDouble‚É•ÏŠ·
+'æ–‡å­—åˆ—ã‚’Doubleã«å¤‰æ›
 Public Function StrToDbl(expr As String) As Double
     If IsNumeric(expr) Then
         StrToDbl = CDbl(expr)
     End If
 End Function
 
-'•¶š—ñ‚ğLong‚É•ÏŠ·
+'æ–‡å­—åˆ—ã‚’Longã«å¤‰æ›
 Public Function StrToLng(expr As String) As Long
     On Error GoTo ErrorHandler
     If IsNumeric(expr) Then
@@ -777,9 +777,9 @@ Public Function StrToLng(expr As String) As Long
 ErrorHandler:
 End Function
 
-'•¶š—ñ‚ğ‚Ğ‚ç‚ª‚È‚É•ÏŠ·
-'‚Ğ‚ç‚ª‚È‚Ö‚Ì•ÏŠ·‚Í“ú–{ŒêˆÈŠO‚ÌOS‚ğg‚¤‚ÆƒGƒ‰[‚ª”­¶‚·‚é‚æ‚¤‚È‚Ì‚Å
-'ƒGƒ‰[‚ğƒgƒ‰ƒbƒv‚·‚é•K—v‚ª‚ ‚é
+'æ–‡å­—åˆ—ã‚’ã²ã‚‰ãŒãªã«å¤‰æ›
+'ã²ã‚‰ãŒãªã¸ã®å¤‰æ›ã¯æ—¥æœ¬èªä»¥å¤–ã®OSã‚’ä½¿ã†ã¨ã‚¨ãƒ©ãƒ¼ãŒç™ºç”Ÿã™ã‚‹ã‚ˆã†ãªã®ã§
+'ã‚¨ãƒ©ãƒ¼ã‚’ãƒˆãƒ©ãƒƒãƒ—ã™ã‚‹å¿…è¦ãŒã‚ã‚‹
 Public Function StrToHiragana(str As String) As String
     On Error GoTo ErrorHandler
     
@@ -793,7 +793,7 @@ ErrorHandler:
 End Function
 
 
-'a‚Æb‚ÌÅ‘å’l‚ğ•Ô‚·
+'aã¨bã®æœ€å¤§å€¤ã‚’è¿”ã™
 Public Function MaxLng(ByVal a As Long, ByVal b As Long) As Long
     If a > b Then
         MaxLng = a
@@ -802,7 +802,7 @@ Public Function MaxLng(ByVal a As Long, ByVal b As Long) As Long
     End If
 End Function
 
-'a‚Æb‚ÌÅ¬’l‚ğ•Ô‚·
+'aã¨bã®æœ€å°å€¤ã‚’è¿”ã™
 Public Function MinLng(ByVal a As Long, ByVal b As Long) As Long
     If a < b Then
         MinLng = a
@@ -811,7 +811,7 @@ Public Function MinLng(ByVal a As Long, ByVal b As Long) As Long
     End If
 End Function
 
-'a‚Æb‚ÌÅ‘å’l‚ğ•Ô‚· (Double)
+'aã¨bã®æœ€å¤§å€¤ã‚’è¿”ã™ (Double)
 Public Function MaxDbl(ByVal a As Double, ByVal b As Double) As Double
     If a > b Then
         MaxDbl = a
@@ -820,7 +820,7 @@ Public Function MaxDbl(ByVal a As Double, ByVal b As Double) As Double
     End If
 End Function
 
-'a‚Æb‚ÌÅ¬’l‚ğ•Ô‚· (Double)
+'aã¨bã®æœ€å°å€¤ã‚’è¿”ã™ (Double)
 Public Function MinDbl(ByVal a As Double, ByVal b As Double) As Double
     If a < b Then
         MinDbl = a
@@ -830,54 +830,54 @@ Public Function MinDbl(ByVal a As Double, ByVal b As Double) As Double
 End Function
 
 
-'•¶š—ñ buf ‚Ì’·‚³‚ª length ‚É‚È‚é‚æ‚¤‚É¶‘¤‚ÉƒXƒy[ƒX‚ğ•t‰Á‚·‚é
+'æ–‡å­—åˆ— buf ã®é•·ã•ãŒ length ã«ãªã‚‹ã‚ˆã†ã«å·¦å´ã«ã‚¹ãƒšãƒ¼ã‚¹ã‚’ä»˜åŠ ã™ã‚‹
 Public Function LeftPaddedString(buf As String, ByVal length As Integer) As String
     LeftPaddedString = Space$(MaxLng(length - LenB(StrConv(buf, vbFromUnicode)), 0)) & buf
 End Function
 
-'•¶š—ñ buf ‚Ì’·‚³‚ª length ‚É‚È‚é‚æ‚¤‚É‰E‘¤‚ÉƒXƒy[ƒX‚ğ•t‰Á‚·‚é
+'æ–‡å­—åˆ— buf ã®é•·ã•ãŒ length ã«ãªã‚‹ã‚ˆã†ã«å³å´ã«ã‚¹ãƒšãƒ¼ã‚¹ã‚’ä»˜åŠ ã™ã‚‹
 Public Function RightPaddedString(buf As String, ByVal length As Integer) As String
     RightPaddedString = buf & Space$(MaxLng(length - LenB(StrConv(buf, vbFromUnicode)), 0))
 End Function
 
 
-' Src.ini ƒtƒ@ƒCƒ‹‚Ì ini_section ‚©‚ç ini_entry ‚Ì’l‚ğ“Ç‚İo‚·
+' Src.ini ãƒ•ã‚¡ã‚¤ãƒ«ã® ini_section ã‹ã‚‰ ini_entry ã®å€¤ã‚’èª­ã¿å‡ºã™
 Public Function ReadIni(ini_section As String, ini_entry As String) As String
 Dim s As String * 1024
 Dim ret As Long
     
-    'ƒVƒiƒŠƒI‘¤‚É Src.ini ƒtƒ@ƒCƒ‹‚ª‚ ‚ê‚Î‚»‚¿‚ç‚ğ—Dæ
+    'ã‚·ãƒŠãƒªã‚ªå´ã« Src.ini ãƒ•ã‚¡ã‚¤ãƒ«ãŒã‚ã‚Œã°ãã¡ã‚‰ã‚’å„ªå…ˆ
     If FileExists(ScenarioPath & "Src.ini") Then
         ret = GetPrivateProfileString(ini_section, ini_entry, _
             "", s, 1024, ScenarioPath & "Src.ini")
     End If
     
-    'ƒVƒiƒŠƒI‘¤ Src.ini ‚ÉƒGƒ“ƒgƒŠ‚ª–³‚¯‚ê‚Î–{‘Ì‘¤‚©‚ç“Ç‚İo‚µ
+    'ã‚·ãƒŠãƒªã‚ªå´ Src.ini ã«ã‚¨ãƒ³ãƒˆãƒªãŒç„¡ã‘ã‚Œã°æœ¬ä½“å´ã‹ã‚‰èª­ã¿å‡ºã—
     If ret = 0 Then
         ret = GetPrivateProfileString(ini_section, ini_entry, _
             "", s, 1024, AppPath & "Src.ini")
     End If
     
-    '•s—v•”•ª‚ğíœ
+    'ä¸è¦éƒ¨åˆ†ã‚’å‰Šé™¤
     ReadIni = Left$(s, InStr(s, vbNullChar) - 1)
 End Function
 
 
-' Src.ini ƒtƒ@ƒCƒ‹‚Ì ini_section ‚Ì ini_entry ‚É’l ini_data ‚ğ‘‚«‚Ş
+' Src.ini ãƒ•ã‚¡ã‚¤ãƒ«ã® ini_section ã® ini_entry ã«å€¤ ini_data ã‚’æ›¸ãè¾¼ã‚€
 Public Sub WriteIni(ini_section As String, ini_entry As String, ini_data As String)
 Dim s As String * 1024
 Dim ret As Long
 
-    'LastFolder‚Ìİ’è‚Ì‚İ‚Í•K‚¸–{‘Ì‘¤‚Ì Src.ini ‚É‘‚«‚Ş
+    'LastFolderã®è¨­å®šã®ã¿ã¯å¿…ãšæœ¬ä½“å´ã® Src.ini ã«æ›¸ãè¾¼ã‚€
     If ini_entry = "LastFolder" Then
         ret = WritePrivateProfileString(ini_section, ini_entry, _
             ini_data, AppPath & "Src.ini")
         Exit Sub
     End If
     
-    'ƒVƒiƒŠƒI‘¤‚É Src.ini ƒtƒ@ƒCƒ‹‚ª‚ ‚ê‚Î‚»‚¿‚ç‚ğ—Dæ
+    'ã‚·ãƒŠãƒªã‚ªå´ã« Src.ini ãƒ•ã‚¡ã‚¤ãƒ«ãŒã‚ã‚Œã°ãã¡ã‚‰ã‚’å„ªå…ˆ
     If Len(ScenarioPath) > 0 And FileExists(ScenarioPath & "Src.ini") Then
-        'ƒGƒ“ƒgƒŠ‚ª‘¶İ‚·‚é‚©ƒ`ƒFƒbƒN
+        'ã‚¨ãƒ³ãƒˆãƒªãŒå­˜åœ¨ã™ã‚‹ã‹ãƒã‚§ãƒƒã‚¯
         ret = GetPrivateProfileString(ini_section, ini_entry, _
             "", s, 1024, ScenarioPath & "Src.ini")
         If ret > 1 Then
@@ -886,7 +886,7 @@ Dim ret As Long
         End If
     End If
     
-    'ƒVƒiƒŠƒI‘¤ Src.ini ‚ÉƒGƒ“ƒgƒŠ‚ª–³‚¯‚ê‚Î–{‘Ì‘¤‚©‚ç“Ç‚İo‚µ
+    'ã‚·ãƒŠãƒªã‚ªå´ Src.ini ã«ã‚¨ãƒ³ãƒˆãƒªãŒç„¡ã‘ã‚Œã°æœ¬ä½“å´ã‹ã‚‰èª­ã¿å‡ºã—
     If ret = 0 Then
         ret = WritePrivateProfileString(ini_section, ini_entry, _
             ini_data, AppPath & "Src.ini")
@@ -894,8 +894,8 @@ Dim ret As Long
 End Sub
 
 
-'•¶š—ñ s1 ’†‚Ì s2 ‚ğ s3 ‚É’uŠ·
-'’uŠ·‚ğs‚Á‚½‚Æ‚«‚É‚ÍTrue‚ğ•Ô‚·
+'æ–‡å­—åˆ— s1 ä¸­ã® s2 ã‚’ s3 ã«ç½®æ›
+'ç½®æ›ã‚’è¡Œã£ãŸã¨ãã«ã¯Trueã‚’è¿”ã™
 Public Function ReplaceString(s1 As String, s2 As String, s3 As String) As Boolean
 Dim buf As String
 Dim len2 As Integer, len3 As Integer
@@ -903,7 +903,7 @@ Dim idx As Integer
 
     idx = InStr(s1, s2)
     
-    '’uŠ·‚ª•K—vH
+    'ç½®æ›ãŒå¿…è¦ï¼Ÿ
     If idx = 0 Then
        Exit Function
     End If
@@ -911,7 +911,7 @@ Dim idx As Integer
     len2 = Len(s2)
     len3 = Len(s3)
     
-    '&‚Í’x‚¢‚Ì‚Åo—ˆ‚é‚¾‚¯Mid‚ğg‚¤
+    '&ã¯é…ã„ã®ã§å‡ºæ¥ã‚‹ã ã‘Midã‚’ä½¿ã†
     If len2 = len3 Then
         Do
             Mid(s1, idx, len2) = s3
@@ -932,7 +932,7 @@ Dim idx As Integer
 End Function
 
 
-'ƒtƒ@ƒCƒ‹ fname ‚ª‘¶İ‚·‚é‚©”»’è
+'ãƒ•ã‚¡ã‚¤ãƒ« fname ãŒå­˜åœ¨ã™ã‚‹ã‹åˆ¤å®š
 Public Function FileExists(fname As String) As Boolean
     If GetFileAttributes(fname) <> -1 Then
         FileExists = True
@@ -940,11 +940,11 @@ Public Function FileExists(fname As String) As Boolean
 End Function
 
 
-'ƒf[ƒ^ƒtƒ@ƒCƒ‹fnum‚©‚çƒf[ƒ^‚ğˆês“Ç‚İ‚İAline_buf‚ÉŠi”[‚·‚é‚Æ‚Æ‚à‚É
-'s”Ô†line_num‚ğXV‚·‚éB
-'s“ª‚Éu#v‚ª‚ ‚éê‡‚Ís‚Ì“Ç‚İ”ò‚Î‚µ‚ğs‚¤B
-'s’†‚Éu//v‚ª‚ ‚éê‡A‚»‚±‚©‚ç‚ÍƒRƒƒ“ƒg‚ÆŒ©‚È‚µ‚Ä–³‹‚·‚éB
-'s––‚Éu_v‚ª‚ ‚éê‡‚Ís‚ÌŒ‹‡‚ğs‚¤B
+'ãƒ‡ãƒ¼ã‚¿ãƒ•ã‚¡ã‚¤ãƒ«fnumã‹ã‚‰ãƒ‡ãƒ¼ã‚¿ã‚’ä¸€è¡Œèª­ã¿è¾¼ã¿ã€line_bufã«æ ¼ç´ã™ã‚‹ã¨ã¨ã‚‚ã«
+'è¡Œç•ªå·line_numã‚’æ›´æ–°ã™ã‚‹ã€‚
+'è¡Œé ­ã«ã€Œ#ã€ãŒã‚ã‚‹å ´åˆã¯è¡Œã®èª­ã¿é£›ã°ã—ã‚’è¡Œã†ã€‚
+'è¡Œä¸­ã«ã€Œ//ã€ãŒã‚ã‚‹å ´åˆã€ãã“ã‹ã‚‰ã¯ã‚³ãƒ¡ãƒ³ãƒˆã¨è¦‹ãªã—ã¦ç„¡è¦–ã™ã‚‹ã€‚
+'è¡Œæœ«ã«ã€Œ_ã€ãŒã‚ã‚‹å ´åˆã¯è¡Œã®çµåˆã‚’è¡Œã†ã€‚
 Public Sub GetLine(fnum As Integer, line_buf As String, line_num As Long)
 Dim buf As String, idx As Integer
 
@@ -953,45 +953,45 @@ Dim buf As String, idx As Integer
         line_num = line_num + 1
         Line Input #fnum, buf
         
-        'ƒRƒƒ“ƒgs‚ÍƒXƒLƒbƒv
+        'ã‚³ãƒ¡ãƒ³ãƒˆè¡Œã¯ã‚¹ã‚­ãƒƒãƒ—
         If Left$(buf, 1) = "#" Then
             GoTo NextLine
         End If
         
-        'ƒRƒƒ“ƒg•”•ª‚ğíœ
+        'ã‚³ãƒ¡ãƒ³ãƒˆéƒ¨åˆ†ã‚’å‰Šé™¤
         idx = InStr(buf, "//")
         If idx > 0 Then
             buf = Left$(buf, idx - 1)
         End If
         
-        's––‚ªu_v‚Å‚È‚¯‚ê‚Îs‚Ì“Ç‚İ‚İ‚ğŠ®—¹
+        'è¡Œæœ«ãŒã€Œ_ã€ã§ãªã‘ã‚Œã°è¡Œã®èª­ã¿è¾¼ã¿ã‚’å®Œäº†
         If Right$(buf, 1) <> "_" Then
             TrimString buf
             line_buf = line_buf & buf
             Exit Do
         End If
         
-        's––‚ªu_v‚Ìê‡‚Ís‚ğŒ‹‡
+        'è¡Œæœ«ãŒã€Œ_ã€ã®å ´åˆã¯è¡Œã‚’çµåˆ
         TrimString buf
         line_buf = line_buf & Left$(buf, Len(buf) - 1)
         
 NextLine:
     Loop
     
-    ReplaceString line_buf, "C", ", "
+    ReplaceString line_buf, "ï¼Œ", ", "
 End Sub
 
 
-'Windows‚Ìƒo[ƒWƒ‡ƒ“‚ğ”»’è‚·‚é
+'Windowsã®ãƒãƒ¼ã‚¸ãƒ§ãƒ³ã‚’åˆ¤å®šã™ã‚‹
 Public Function GetWinVersion() As Integer
 Dim vinfo As OSVERSIONINFO
 Dim ret As Long
     
     With vinfo
-        ' dwOSVersionInfoSize‚É\‘¢‘Ì‚ÌƒTƒCƒY‚ğƒZƒbƒg‚·‚éB
+        ' dwOSVersionInfoSizeã«æ§‹é€ ä½“ã®ã‚µã‚¤ã‚ºã‚’ã‚»ãƒƒãƒˆã™ã‚‹ã€‚
         .dwOSVersionInfoSize = Len(vinfo)
         
-        ' OS‚Ìƒo[ƒWƒ‡ƒ“î•ñ‚ğ“¾‚éB
+        ' OSã®ãƒãƒ¼ã‚¸ãƒ§ãƒ³æƒ…å ±ã‚’å¾—ã‚‹ã€‚
         ret = GetVersionEx(vinfo)
         If ret = 0 Then
             Exit Function
@@ -1002,7 +1002,7 @@ Dim ret As Long
 End Function
 
 
-'”’l‚ğw”•\‹L‚ğg‚í‚¸‚É•¶š—ñ•\‹L‚·‚é
+'æ•°å€¤ã‚’æŒ‡æ•°è¡¨è¨˜ã‚’ä½¿ã‚ãšã«æ–‡å­—åˆ—è¡¨è¨˜ã™ã‚‹
 Public Function FormatNum(ByVal n As Double) As String
     If n = Int(n) Then
         FormatNum = Format$(n, "0")
@@ -1012,13 +1012,13 @@ Public Function FormatNum(ByVal n As Double) As String
 End Function
 
 
-'•¶š—ñ str ‚ª”’l‚©‚Ç‚¤‚©’²‚×‚é
+'æ–‡å­—åˆ— str ãŒæ•°å€¤ã‹ã©ã†ã‹èª¿ã¹ã‚‹
 Public Function IsNumber(str As String) As Boolean
     If Not IsNumeric(str) Then
         Exit Function
     End If
     
-    '"(1)"‚Ì‚æ‚¤‚È•¶š—ñ‚ª”’l‚Æ”»’è‚³‚ê‚Ä‚µ‚Ü‚¤‚Ì‚ğ–h‚®
+    '"(1)"ã®ã‚ˆã†ãªæ–‡å­—åˆ—ãŒæ•°å€¤ã¨åˆ¤å®šã•ã‚Œã¦ã—ã¾ã†ã®ã‚’é˜²ã
     If Asc(str) = 40 Then
         Exit Function
     End If
@@ -1027,36 +1027,36 @@ Public Function IsNumber(str As String) As Boolean
 End Function
 
 
-'•Ší‘®«ˆ——p‚ÌŠÖ”ŒQB
+'æ­¦å™¨å±æ€§å‡¦ç†ç”¨ã®é–¢æ•°ç¾¤ã€‚
 
-'‘®«‚ğˆê‚Âæ“¾‚·‚éB•¡”•¶š‚Ì‘®«‚à‚Ğ‚Æ‚Â‚Æ‚µ‚Äæ“¾‚·‚éB
-'‚½‚¾‚µ‚l‚Í–hŒä“Á«‚É‚¨‚¢‚Ä’P‘Ì•¶š‚Æ‚µ‚Äˆµ‚í‚ê‚é‚½‚ß‚Éœ‚­B
-'ŒŸõ•¶š—ñ aname
-'ŒŸõˆÊ’u idx (ŒŸõI—¹ˆÊ’u‚ğ•Ô‚·)
-'æ“¾•¶š’· length (“ÁêŒø‰Ê”ƒJƒEƒ“ƒg—pBŠî–{“I‚É0(‘®«æ“¾)‚©1(‘®«“ª•¶šæ“¾))
+'å±æ€§ã‚’ä¸€ã¤å–å¾—ã™ã‚‹ã€‚è¤‡æ•°æ–‡å­—ã®å±æ€§ã‚‚ã²ã¨ã¤ã¨ã—ã¦å–å¾—ã™ã‚‹ã€‚
+'ãŸã ã—ï¼­ã¯é˜²å¾¡ç‰¹æ€§ã«ãŠã„ã¦å˜ä½“æ–‡å­—ã¨ã—ã¦æ‰±ã‚ã‚Œã‚‹ãŸã‚ã«é™¤ãã€‚
+'æ¤œç´¢æ–‡å­—åˆ— aname
+'æ¤œç´¢ä½ç½® idx (æ¤œç´¢çµ‚äº†ä½ç½®ã‚’è¿”ã™)
+'å–å¾—æ–‡å­—é•· length (ç‰¹æ®ŠåŠ¹æœæ•°ã‚«ã‚¦ãƒ³ãƒˆç”¨ã€‚åŸºæœ¬çš„ã«0(å±æ€§å–å¾—)ã‹1(å±æ€§é ­æ–‡å­—å–å¾—))
 Public Function GetClassBundle(aname As String, idx As Integer, _
     Optional ByVal length As Integer = 0) As String
 Dim i As Integer, ch As String
     
     i = idx
     ch = Mid$(aname, i, 1)
-    'ãAŒøA™‚ª‚ ‚ê‚Î‚»‚ÌŸ‚Ì•¶š‚Ü‚Åˆê‚Éæ“¾‚·‚éB
-    '“ü‚êq‰Â”\‚È‚½‚ßãAŒøA™‚ª‘±‚­ŒÀ‚èƒ‹[ƒv
-    Do While ch = "ã" Or ch = "Œø" Or ch = "™"
-        '‘®«w’è‚ÌÅŒã‚Ì•¶š‚ªãŒø™‚¾‚Á‚½ê‡A‘®«‚È‚µ
+    'å¼±ã€åŠ¹ã€å‰‹ãŒã‚ã‚Œã°ãã®æ¬¡ã®æ–‡å­—ã¾ã§ä¸€ç·’ã«å–å¾—ã™ã‚‹ã€‚
+    'å…¥ã‚Œå­å¯èƒ½ãªãŸã‚å¼±ã€åŠ¹ã€å‰‹ãŒç¶šãé™ã‚Šãƒ«ãƒ¼ãƒ—
+    Do While ch = "å¼±" Or ch = "åŠ¹" Or ch = "å‰‹"
+        'å±æ€§æŒ‡å®šã®æœ€å¾Œã®æ–‡å­—ãŒå¼±åŠ¹å‰‹ã ã£ãŸå ´åˆã€å±æ€§ãªã—
         If i >= Len(aname) Then GoTo NotFoundClass
         i = i + 1
         ch = Mid$(aname, i, 1)
     Loop
-    '’á‚ª‚ ‚ê‚Î‚»‚ÌŸ‚Ì•¶š‚Ü‚Åˆê‚Éæ“¾‚·‚éB
-    If ch = "’á" Then
+    'ä½ãŒã‚ã‚Œã°ãã®æ¬¡ã®æ–‡å­—ã¾ã§ä¸€ç·’ã«å–å¾—ã™ã‚‹ã€‚
+    If ch = "ä½" Then
         i = i + 1
-        'mid‚ÌŠJnˆÊ’uw’è‚Í•¶š”‚ğ’´‚¦‚Ä‚¢‚Ä‚à‘åä•v‚È‚Í‚¸‚Å‚·‚ª”O‚Ìˆ×
+        'midã®é–‹å§‹ä½ç½®æŒ‡å®šã¯æ–‡å­—æ•°ã‚’è¶…ãˆã¦ã„ã¦ã‚‚å¤§ä¸ˆå¤«ãªã¯ãšã§ã™ãŒå¿µã®ç‚º
         If i > Len(aname) Then
             GoTo NotFoundClass
         End If
         ch = Mid$(aname, i, 1)
-        If ch <> "U" And ch <> "–h" And ch <> "‰^" And ch <> "ˆÚ" Then
+        If ch <> "æ”»" And ch <> "é˜²" And ch <> "é‹" And ch <> "ç§»" Then
             GoTo NotFoundClass
         End If
     End If
@@ -1070,23 +1070,23 @@ NotFoundClass:
     idx = i
 End Function
 
-'InStr‚Æ“¯‚¶“®ìB‚½‚¾‚µŒ©‚Â‚©‚Á‚½•¶š‚Ì‘O‚ÉuãvuŒøvu™v‚ª‚ ‚Á‚½ê‡A•Ê‘®«‚Æ”»’è‚·‚é)
+'InStrã¨åŒã˜å‹•ä½œã€‚ãŸã ã—è¦‹ã¤ã‹ã£ãŸæ–‡å­—ã®å‰ã«ã€Œå¼±ã€ã€ŒåŠ¹ã€ã€Œå‰‹ã€ãŒã‚ã£ãŸå ´åˆã€åˆ¥å±æ€§ã¨åˆ¤å®šã™ã‚‹)
 Public Function InStrNotNest(string1 As String, string2 As String, _
     Optional ByVal start As Integer = 1) As Integer
 Dim i As Integer, c As String
 
     i = InStr(start, string1, string2)
-    'æ“ªˆê’v‚©Aˆê’v‚È‚µ‚Ì‚Æ‚«A‚±‚±‚Åæ“¾
+    'å…ˆé ­ä¸€è‡´ã‹ã€ä¸€è‡´ãªã—ã®ã¨ãã€ã“ã“ã§å–å¾—
     If i <= 1 Then
         InStrNotNest = i
     Else
         Do While i > 0
             c = Mid$(string1, i - 1, 1)
-            'ŒŸ’m‚µ‚½•¶š‚Ì‘O‚Ì•¶š‚ªãŒø™‚Å‚È‚©‚Á‚½‚çAInStr‚ÌŒ‹‰Ê‚ğ•Ô‚·
-            If c <> "ã" And c <> "Œø" And c <> "™" Then
+            'æ¤œçŸ¥ã—ãŸæ–‡å­—ã®å‰ã®æ–‡å­—ãŒå¼±åŠ¹å‰‹ã§ãªã‹ã£ãŸã‚‰ã€InStrã®çµæœã‚’è¿”ã™
+            If c <> "å¼±" And c <> "åŠ¹" And c <> "å‰‹" Then
                 Exit Do
             End If
-            'ŒŸ’m‚µ‚½•¶š‚Ì‘O‚Ì•¶š‚ªãŒø™‚¾‚Á‚½‚çAÄ“x•¶š—ñ‚ğ’Tõ‚·‚é
+            'æ¤œçŸ¥ã—ãŸæ–‡å­—ã®å‰ã®æ–‡å­—ãŒå¼±åŠ¹å‰‹ã ã£ãŸã‚‰ã€å†åº¦æ–‡å­—åˆ—ã‚’æ¢ç´¢ã™ã‚‹
             If i < Len(string1) Then
                 i = InStr(i + 1, string1, string2)
             Else
