@@ -1,0 +1,385 @@
+﻿<Project DefaultTargets="Build" ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectType>Local</ProjectType>
+    <MyType>WindowsFormsWithCustomSubMain</MyType>
+    <ProductVersion>8.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{38EC872F-D023-000D-0AB7-A8775044D31A}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <AssemblyName>Project1</AssemblyName>
+    <OutputType>WinExe</OutputType>
+    <StartupObject>Project1.SRC</StartupObject>
+    <AssemblyMajorVersion>2</AssemblyMajorVersion>
+    <AssemblyMinorVersion>4</AssemblyMinorVersion>
+    <AssemblyRevisionNumber>0</AssemblyRevisionNumber>
+    <GenerateRevisionNumber>False</GenerateRevisionNumber>
+    <AssemblyCompanyName>Kei Sakamoto /　Inui Tetsuyuki</AssemblyCompanyName>
+    <ApplicationIcon>SRC.ico</ApplicationIcon>
+    <RootNamespace>Project1</RootNamespace>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <DefaultItemExcludes>$(DefaultItemExcludes);$(ProjectDir)**\*.vb</DefaultItemExcludes>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>.\bin\</OutputPath>
+    <DocumentationFile>.\bin\Project1.xml</DocumentationFile>
+    <DebugSymbols>True</DebugSymbols>
+    <DefineDebug>True</DefineDebug>
+    <DefineTrace>True</DefineTrace>
+    <DefineConstants>Win32=True</DefineConstants>
+    <PlatformTarget>x86</PlatformTarget>
+    <NoWarn>42016,42017,42018,42019,42032,42353,42354,42355</NoWarn>
+    <DebugType>full</DebugType>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>.\bin\</OutputPath>
+    <DocumentationFile>.\bin\Project1.xml</DocumentationFile>
+    <DebugSymbols>False</DebugSymbols>
+    <DefineDebug>False</DefineDebug>
+    <DefineTrace>True</DefineTrace>
+    <DefineConstants>Win32=True</DefineConstants>
+    <PlatformTarget>x86</PlatformTarget>
+    <NoWarn>42016,42017,42018,42019,42032,42353,42354,42355</NoWarn>
+    <DebugType>none</DebugType>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="Microsoft.VisualBasic.Compatibility">
+      <Name>Microsoft.VisualBasic.Compatibility</Name>
+    </Reference>
+    <Reference Include="System">
+      <Name>System</Name>
+    </Reference>
+    <Reference Include="System.Data">
+      <Name>System.Data</Name>
+    </Reference>
+    <Reference Include="System.Drawing">
+      <Name>System.Drawing</Name>
+    </Reference>
+    <Reference Include="System.Windows.Forms">
+      <Name>System.Windows.Forms</Name>
+    </Reference>
+    <Reference Include="System.XML">
+      <Name>System.XML</Name>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="Microsoft.VisualBasic.Compatibility" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Data" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Drawing" />
+    <Import Include="System.Windows.Forms" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="My Project\MyNamespace.Dynamic.Designer.cs" />
+    <Compile Include="My Project\MyNamespace.Static.1.Designer.cs" />
+    <Compile Include="AbilityData.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AbilityEffect.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AliasData.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AliasDataList.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="BattleConfigData.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BattleConfigDataList.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BCVariable.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CmdData.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="COM.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Command.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Condition.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Configuration.Designer.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>Configuration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Configuration.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialog.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DialogData.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DialogDataList.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Effect.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ErrorMessage.Designer.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>ErrorMessage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ErrorMessage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Event.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Expression.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="FeatureData.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="FileDialog.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Flash.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="GeneralLib.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Graphics.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="GUI.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Help.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Intermission.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Item.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ItemData.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ItemDataList.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Items.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="LabelData.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ListBox.Designer.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>ListBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ListBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Main.Designer.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>Main.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Main.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Map.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Message.Designer.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>Message.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Message.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MessageData.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MessageDataList.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MultiColumListBox.Designer.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>MultiColumListBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MultiColumListBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MultiSelectListBox.Designer.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>MultiSelectListBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MultiSelectListBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="NonPilotData.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="NonPilotDataList.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="NowLoading.Designer.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>NowLoading.cs</DependentUpon>
+    </Compile>
+    <Compile Include="NowLoading.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Pilot.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PilotData.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PilotDataList.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Pilots.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SafeMain.Designer.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>SafeMain.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SafeMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SkillData.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Sound.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SpecialPowerData.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SpecialPowerDataList.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SRC.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Status.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Susie.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Telop.Designer.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>Telop.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Telop.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TerrainData.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TerrainDataList.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Title.Designer.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>Title.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Title.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ToolTip.Designer.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>ToolTip.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ToolTip.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Unit.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UnitData.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UnitDataList.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Units.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="VarData.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="VBMP3.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="WeaponData.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <EmbeddedResource Include="Configuration.resX">
+      <DependentUpon>Configuration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ErrorMessage.resX">
+      <DependentUpon>ErrorMessage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ListBox.resX">
+      <DependentUpon>ListBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Main.resX">
+      <DependentUpon>Main.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Message.resX">
+      <DependentUpon>Message.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MultiColumListBox.resX">
+      <DependentUpon>MultiColumListBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MultiSelectListBox.resX">
+      <DependentUpon>MultiSelectListBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NowLoading.resX">
+      <DependentUpon>NowLoading.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SafeMain.resX">
+      <DependentUpon>SafeMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Telop.resX">
+      <DependentUpon>Telop.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Title.resX">
+      <DependentUpon>Title.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ToolTip.resX">
+      <DependentUpon>ToolTip.cs</DependentUpon>
+    </EmbeddedResource>
+    <Content Include="SRC.ico" />
+    <None Include="_UpgradeReport.htm">
+      <SubType>Preview</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="My Project\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>
