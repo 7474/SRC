@@ -10,17 +10,17 @@ Attribute VB_Exposed = False
 Option Explicit
 
 ' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯ãƒ•ãƒªãƒ¼ã‚½ãƒ•ãƒˆã§ã‚ã‚Šã€ç„¡ä¿è¨¼ã§ã™ã€‚
-' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯GNU General Public License(Ver.3ã¾ãŸã¯ãã‚Œä»¥é™)ãŒå®šã‚ã‚‹æ¡ä»¶ã®ä¸‹ã§
-' å†é ’å¸ƒã¾ãŸã¯æ”¹å¤‰ã™ã‚‹ã“ã¨ãŒã§ãã¾ã™ã€‚
+' –{ƒvƒƒOƒ‰ƒ€‚ÍƒtƒŠ[ƒ\ƒtƒg‚Å‚ ‚èA–³•ÛØ‚Å‚·B
+' –{ƒvƒƒOƒ‰ƒ€‚ÍGNU General Public License(Ver.3‚Ü‚½‚Í‚»‚êˆÈ~)‚ª’è‚ß‚éğŒ‚Ì‰º‚Å
+' Ä”Ğ•z‚Ü‚½‚Í‰ü•Ï‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B
 
-'å…¨ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼ãƒ‡ãƒ¼ã‚¿ã‚’ç®¡ç†ã™ã‚‹ãƒªã‚¹ãƒˆã®ã‚¯ãƒ©ã‚¹
+'‘SƒXƒyƒVƒƒƒ‹ƒpƒ[ƒf[ƒ^‚ğŠÇ—‚·‚éƒŠƒXƒg‚ÌƒNƒ‰ƒX
 
-'ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼ãƒ‡ãƒ¼ã‚¿ã®ã‚³ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³
+'ƒXƒyƒVƒƒƒ‹ƒpƒ[ƒf[ƒ^‚ÌƒRƒŒƒNƒVƒ‡ƒ“
 Private colSpecialPowerDataList As New Collection
 
 
-'ã‚¯ãƒ©ã‚¹ã®è§£æ”¾
+'ƒNƒ‰ƒX‚Ì‰ğ•ú
 Private Sub Class_Terminate()
 Dim i As Integer
     
@@ -32,7 +32,7 @@ Dim i As Integer
     Set colSpecialPowerDataList = Nothing
 End Sub
 
-'ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼ãƒ‡ãƒ¼ã‚¿ãƒªã‚¹ãƒˆã«ãƒ‡ãƒ¼ã‚¿ã‚’è¿½åŠ 
+'ƒXƒyƒVƒƒƒ‹ƒpƒ[ƒf[ƒ^ƒŠƒXƒg‚Éƒf[ƒ^‚ğ’Ç‰Á
 Public Function Add(sname As String) As SpecialPowerData
 Dim new_data As New SpecialPowerData
 
@@ -41,17 +41,17 @@ Dim new_data As New SpecialPowerData
     Set Add = new_data
 End Function
 
-'ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼ãƒ‡ãƒ¼ã‚¿ãƒªã‚¹ãƒˆã«ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ãƒ‡ãƒ¼ã‚¿ã®ç·æ•°
+'ƒXƒyƒVƒƒƒ‹ƒpƒ[ƒf[ƒ^ƒŠƒXƒg‚É“o˜^‚³‚ê‚Ä‚¢‚éƒf[ƒ^‚Ì‘”
 Public Function Count() As Integer
     Count = colSpecialPowerDataList.Count
 End Function
 
-'ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼ãƒ‡ãƒ¼ã‚¿ãƒªã‚¹ãƒˆã‹ã‚‰æŒ‡å®šã—ãŸãƒ‡ãƒ¼ã‚¿ã‚’å‰Šé™¤
+'ƒXƒyƒVƒƒƒ‹ƒpƒ[ƒf[ƒ^ƒŠƒXƒg‚©‚çw’è‚µ‚½ƒf[ƒ^‚ğíœ
 Public Sub Delete(Index As Variant)
     colSpecialPowerDataList.Remove Index
 End Sub
 
-'ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼ãƒ‡ãƒ¼ã‚¿ãƒªã‚¹ãƒˆã‹ã‚‰æŒ‡å®šã—ãŸãƒ‡ãƒ¼ã‚¿ã‚’å–ã‚Šå‡ºã™
+'ƒXƒyƒVƒƒƒ‹ƒpƒ[ƒf[ƒ^ƒŠƒXƒg‚©‚çw’è‚µ‚½ƒf[ƒ^‚ğæ‚èo‚·
 Public Function Item(Index As Variant) As SpecialPowerData
     On Error GoTo ErrorHandler
     
@@ -62,7 +62,7 @@ ErrorHandler:
     Set Item = Nothing
 End Function
 
-'ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼ãƒ‡ãƒ¼ã‚¿ãƒªã‚¹ãƒˆã«æŒ‡å®šã—ãŸãƒ‡ãƒ¼ã‚¿ãŒç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ã‹ï¼Ÿ
+'ƒXƒyƒVƒƒƒ‹ƒpƒ[ƒf[ƒ^ƒŠƒXƒg‚Éw’è‚µ‚½ƒf[ƒ^‚ª“o˜^‚³‚ê‚Ä‚¢‚é‚©H
 Public Function IsDefined(Index As Variant) As Boolean
 Dim dummy As SpecialPowerData
 
@@ -75,7 +75,7 @@ ErrorHandler:
     IsDefined = False
 End Function
 
-'ãƒ‡ãƒ¼ã‚¿ãƒ•ã‚¡ã‚¤ãƒ« fname ã‹ã‚‰ãƒ‡ãƒ¼ã‚¿ã‚’ãƒ­ãƒ¼ãƒ‰
+'ƒf[ƒ^ƒtƒ@ƒCƒ‹ fname ‚©‚çƒf[ƒ^‚ğƒ[ƒh
 Public Sub Load(fname As String)
 Dim FileNumber As Integer
 Dim ret As Integer, line_num As Long
@@ -102,7 +102,7 @@ Dim err_msg As String
             GetLine FileNumber, line_buf, line_num
         Loop While Len(line_buf) = 0
         
-        'åç§°
+        '–¼Ì
         ret = InStr(line_buf, ",")
         If ret > 0 Then
             data_name = Trim$(Left$(line_buf, ret - 1))
@@ -113,15 +113,15 @@ Dim err_msg As String
         End If
         
         If InStr(data_name, " ") > 0 Then
-            err_msg = "åç§°ã«åŠè§’ã‚¹ãƒšãƒ¼ã‚¹ã¯ä½¿ç”¨å‡ºæ¥ã¾ã›ã‚“ã€‚"
+            err_msg = "–¼Ì‚É”¼ŠpƒXƒy[ƒX‚Íg—po—ˆ‚Ü‚¹‚ñB"
             Error 0
         End If
-        If InStr(data_name, "ï¼ˆ") > 0 Or InStr(data_name, "ï¼‰") > 0 Then
-            err_msg = "åç§°ã«å…¨è§’æ‹¬å¼§ã¯ä½¿ç”¨å‡ºæ¥ã¾ã›ã‚“ã€‚"
+        If InStr(data_name, "i") > 0 Or InStr(data_name, "j") > 0 Then
+            err_msg = "–¼Ì‚É‘SŠpŠ‡ŒÊ‚Íg—po—ˆ‚Ü‚¹‚ñB"
             Error 0
         End If
         If InStr(data_name, """") > 0 Then
-            err_msg = "åç§°ã«""ã¯ä½¿ç”¨å‡ºæ¥ã¾ã›ã‚“ã€‚"
+            err_msg = "–¼Ì‚É""‚Íg—po—ˆ‚Ü‚¹‚ñB"
             Error 0
         End If
         
@@ -131,10 +131,10 @@ Dim err_msg As String
         Set sd = Add(data_name)
         
         With sd
-            'èª­ã¿ä»®å
+            '“Ç‚İ‰¼–¼
             ret = InStr(buf, ",")
             If ret > 0 Then
-                err_msg = "èª­ã¿ä»®åã®å¾Œã«ä½™åˆ†ãªãƒ‡ãƒ¼ã‚¿ãŒæŒ‡å®šã•ã‚Œã¦ã„ã¾ã™ã€‚"
+                err_msg = "“Ç‚İ‰¼–¼‚ÌŒã‚É—]•ª‚Èƒf[ƒ^‚ªw’è‚³‚ê‚Ä‚¢‚Ü‚·B"
                 Error 0
             End If
             .KanaName = Trim$(buf)
@@ -142,23 +142,23 @@ Dim err_msg As String
                 .KanaName = StrToHiragana(data_name)
             End If
             
-            'çŸ­ç¸®å½¢, æ¶ˆè²»ï¼³ï¼°, å¯¾è±¡, åŠ¹æœæ™‚é–“, é©ç”¨æ¡ä»¶, ä½¿ç”¨æ¡ä»¶, ã‚¢ãƒ‹ãƒ¡
+            '’ZkŒ`, Á”ï‚r‚o, ‘ÎÛ, Œø‰ÊŠÔ, “K—pğŒ, g—pğŒ, ƒAƒjƒ
             GetLine FileNumber, line_buf, line_num
             
-            'çŸ­ç¸®å½¢
+            '’ZkŒ`
             ret = InStr(line_buf, ",")
             If ret = 0 Then
-                err_msg = "æ¶ˆè²»ï¼³ï¼°ãŒæŠœã‘ã¦ã„ã¾ã™ã€‚"
+                err_msg = "Á”ï‚r‚o‚ª”²‚¯‚Ä‚¢‚Ü‚·B"
                 Error 0
             End If
             buf2 = Trim$(Left$(line_buf, ret - 1))
             buf = Mid$(line_buf, ret + 1)
             .ShortName = buf2
             
-            'æ¶ˆè²»ï¼³ï¼°
+            'Á”ï‚r‚o
             ret = InStr(buf, ",")
             If ret = 0 Then
-                err_msg = "å¯¾è±¡ãŒæŠœã‘ã¦ã„ã¾ã™ã€‚"
+                err_msg = "‘ÎÛ‚ª”²‚¯‚Ä‚¢‚Ü‚·B"
                 Error 0
             End If
             buf2 = Trim$(Left$(buf, ret - 1))
@@ -166,53 +166,53 @@ Dim err_msg As String
             If IsNumeric(buf2) Then
                 .SPConsumption = CInt(buf2)
             Else
-                DataErrorMessage "æ¶ˆè²»ï¼³ï¼°ã®è¨­å®šãŒé–“é•ã£ã¦ã„ã¾ã™ã€‚", _
+                DataErrorMessage "Á”ï‚r‚o‚Ìİ’è‚ªŠÔˆá‚Á‚Ä‚¢‚Ü‚·B", _
                     fname, line_num, line_buf, data_name
             End If
             
-            'å¯¾è±¡
+            '‘ÎÛ
             ret = InStr(buf, ",")
             If ret = 0 Then
-                err_msg = "åŠ¹æœæ™‚é–“ãŒæŠœã‘ã¦ã„ã¾ã™ã€‚"
+                err_msg = "Œø‰ÊŠÔ‚ª”²‚¯‚Ä‚¢‚Ü‚·B"
                 Error 0
             End If
             buf2 = Trim$(Left$(buf, ret - 1))
             buf = Mid$(buf, ret + 1)
             If IsNumeric(buf2) Then
-                err_msg = "å¯¾è±¡ãŒé–“é•ã£ã¦ã„ã¾ã™ã€‚"
+                err_msg = "‘ÎÛ‚ªŠÔˆá‚Á‚Ä‚¢‚Ü‚·B"
                 Error 0
             End If
             .TargetType = buf2
             
-            'åŠ¹æœæ™‚é–“
+            'Œø‰ÊŠÔ
             ret = InStr(buf, ",")
             If ret = 0 Then
-                err_msg = "åŠ¹æœæ™‚é–“ãŒæŠœã‘ã¦ã„ã¾ã™ã€‚"
+                err_msg = "Œø‰ÊŠÔ‚ª”²‚¯‚Ä‚¢‚Ü‚·B"
                 Error 0
             End If
             buf2 = Trim$(Left$(buf, ret - 1))
             buf = Mid$(buf, ret + 1)
             If IsNumeric(buf2) Then
-                err_msg = "åŠ¹æœæ™‚é–“ãŒé–“é•ã£ã¦ã„ã¾ã™ã€‚"
+                err_msg = "Œø‰ÊŠÔ‚ªŠÔˆá‚Á‚Ä‚¢‚Ü‚·B"
                 Error 0
             End If
             .Duration = buf2
             
-            'é©ç”¨æ¡ä»¶
+            '“K—pğŒ
             ret = InStr(buf, ",")
             If ret = 0 Then
-                err_msg = "ä½¿ç”¨æ¡ä»¶ãŒæŠœã‘ã¦ã„ã¾ã™ã€‚"
+                err_msg = "g—pğŒ‚ª”²‚¯‚Ä‚¢‚Ü‚·B"
                 Error 0
             End If
             buf2 = Trim$(Left$(buf, ret - 1))
             buf = Mid$(buf, ret + 1)
             If IsNumeric(buf2) Then
-                err_msg = "é©ç”¨æ¡ä»¶ãŒé–“é•ã£ã¦ã„ã¾ã™ã€‚"
+                err_msg = "“K—pğŒ‚ªŠÔˆá‚Á‚Ä‚¢‚Ü‚·B"
                 Error 0
             End If
             .NecessaryCondition = buf2
             
-            'ä½¿ç”¨æ¡ä»¶, ã‚¢ãƒ‹ãƒ¡
+            'g—pğŒ, ƒAƒjƒ
             ret = InStr(buf, ",")
             If ret > 0 Then
                 .Animation = Trim$(Mid$(buf, InStr(buf, ",") + 1))
@@ -220,18 +220,18 @@ Dim err_msg As String
                 .Animation = .Name
             End If
             
-            'åŠ¹æœ
+            'Œø‰Ê
             GetLine FileNumber, line_buf, line_num
             If Len(line_buf) = 0 Then
-                err_msg = "åŠ¹æœãŒæŒ‡å®šã•ã‚Œã¦ã„ã¾ã›ã‚“ã€‚"
+                err_msg = "Œø‰Ê‚ªw’è‚³‚ê‚Ä‚¢‚Ü‚¹‚ñB"
                 Error 0
             End If
             .SetEffect line_buf
             
-            'è§£èª¬
+            '‰ğà
             GetLine FileNumber, line_buf, line_num
             If Len(line_buf) = 0 Then
-                err_msg = "è§£èª¬ãŒæŒ‡å®šã•ã‚Œã¦ã„ã¾ã›ã‚“ã€‚"
+                err_msg = "‰ğà‚ªw’è‚³‚ê‚Ä‚¢‚Ü‚¹‚ñB"
                 Error 0
             End If
             .Comment = line_buf
@@ -239,9 +239,9 @@ Dim err_msg As String
     Loop
     
 ErrorHandler:
-    'ã‚¨ãƒ©ãƒ¼å‡¦ç†
+    'ƒGƒ‰[ˆ—
     If line_num = 0 Then
-        ErrorMessage fname & "ãŒé–‹ã‘ã¾ã›ã‚“ã€‚"
+        ErrorMessage fname & "‚ªŠJ‚¯‚Ü‚¹‚ñB"
     Else
         Close #FileNumber
         DataErrorMessage err_msg, fname, line_num, line_buf, data_name

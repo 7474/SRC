@@ -4,17 +4,17 @@ Friend Class Items
 	Implements System.Collections.IEnumerable
 	
 	' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
+	' 本プログラムはフリーソフトであり、無保証です。
+	' 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
+	' 再頒布または改変することができます。
 	
-	'Invalid_string_refer_to_original_code
+	'アイテムＩＤ作成用カウンタ
 	Private IDCount As Integer
 	
-	'Invalid_string_refer_to_original_code
+	'アイテム一覧
 	Private colItems As New Collection
 	
-	'繧ｯ繝ｩ繧ｹ縺ｮ隗｣謾ｾ
+	'クラスの解放
 	'UPGRADE_NOTE: Class_Terminate は Class_Terminate_Renamed にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
 	Private Sub Class_Terminate_Renamed()
 		Dim i As Short
@@ -32,7 +32,7 @@ Friend Class Items
 		MyBase.Finalize()
 	End Sub
 	
-	'ForEach逕ｨ髢｢謨ｰ
+	'ForEach用関数
 	'UPGRADE_NOTE: NewEnum プロパティがコメント アウトされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="B3FC1610-34F3-43F5-86B7-16C984F0E88E"' をクリックしてください。
 	'Public Function NewEnum() As stdole.IUnknown
 		'NewEnum = colItems.GetEnumerator
@@ -44,7 +44,7 @@ Friend Class Items
 	End Function
 	
 	
-	'Invalid_string_refer_to_original_code
+	'リストにアイテムを追加
 	Public Function Add(ByRef Name As String) As Item
 		Dim new_item As Item
 		
@@ -63,7 +63,7 @@ Friend Class Items
 		colItems.Add(new_item, new_item.ID)
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'新しいアイテムＩＤを作成
 	Private Function CreateID(ByRef iname As String) As String
 		Do 
 			IDCount = IDCount + 1
@@ -71,17 +71,17 @@ Friend Class Items
 		CreateID = iname & "_" & VB6.Format(IDCount)
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'リストに登録されているアイテムの総数
 	Public Function Count() As Short
 		Count = colItems.Count()
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'リストからアイテムを削除
 	Public Sub Delete(ByRef Index As Object)
 		colItems.Remove(Index)
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'指定されたアイテムを検索
 	Public Function Item(ByRef Index As Object) As Item
 		Dim it As Item
 		Dim iname As String
@@ -89,13 +89,13 @@ Friend Class Items
 		On Error GoTo ErrorHandler
 		Item = colItems.Item(Index)
 		
-		'Invalid_string_refer_to_original_code
+		'破棄されていない？
 		If Item.Exist Then
 			Exit Function
 		End If
 		
 ErrorHandler: 
-		'Invalid_string_refer_to_original_code
+		'見つからなければアイテム名で検索
 		'UPGRADE_WARNING: オブジェクト Index の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
 		iname = CStr(Index)
 		For	Each it In colItems
@@ -110,7 +110,7 @@ ErrorHandler:
 		Item = Nothing
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'指定されたアイテムが登録されているか？
 	Public Function IsDefined(ByRef Index As Object) As Boolean
 		Dim it As Item
 		Dim iname As String
@@ -118,14 +118,14 @@ ErrorHandler:
 		On Error GoTo ErrorHandler
 		it = colItems.Item(Index)
 		
-		'Invalid_string_refer_to_original_code
+		'破棄されたアイテムは登録されていないとみなす
 		If it.Exist Then
 			IsDefined = True
 			Exit Function
 		End If
 		
 ErrorHandler: 
-		'Invalid_string_refer_to_original_code
+		'見つからなければアイテム名で検索
 		'UPGRADE_WARNING: オブジェクト Index の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
 		iname = CStr(Index)
 		For	Each it In colItems
@@ -139,7 +139,7 @@ ErrorHandler:
 		IsDefined = False
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'アイテム名とExitフラグを無視してアイテムを検索
 	Public Function IsDefined2(ByRef Index As Object) As Boolean
 		Dim it As Item
 		
@@ -152,11 +152,11 @@ ErrorHandler:
 		IsDefined2 = False
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'リストに登録されたアイテムをアップデート
 	Public Sub Update()
 		Dim it As Item
 		
-		'Invalid_string_refer_to_original_code
+		'破棄されたアイテムを削除
 		For	Each it In colItems
 			With it
 				If Not .Exist Then
@@ -165,7 +165,7 @@ ErrorHandler:
 			End With
 		Next it
 		
-		'Invalid_string_refer_to_original_code
+		'リンクデータの整合性を取る
 		For	Each it In colItems
 			With it
 				If Not .Unit_Renamed Is Nothing Then
@@ -176,7 +176,7 @@ ErrorHandler:
 	End Sub
 	
 	
-	'Invalid_string_refer_to_original_code
+	'データをファイルにセーブ
 	Public Sub Save()
 		Dim i As Short
 		
@@ -194,7 +194,7 @@ ErrorHandler:
 		Next 
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'データをファイルからロード
 	Public Sub Load()
 		Dim num As Short
 		Dim new_item As Item
@@ -219,7 +219,7 @@ ErrorHandler:
 				Input(SaveDataFileNumber, dummy)
 				
 				If Not IDList.IsDefined(iname) Then
-					ErrorMessage(iname & "Invalid_string_refer_to_original_code")
+					ErrorMessage(iname & "のデータが定義されていません")
 					StopBGM()
 					End
 				End If
@@ -231,7 +231,7 @@ ErrorHandler:
 		Next 
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'リンク情報をファイルからロード
 	Public Sub LoadLinkInfo()
 		Dim num, i As Short
 		Dim dummy As String
@@ -253,7 +253,7 @@ ErrorHandler:
 	End Sub
 	
 	
-	'Invalid_string_refer_to_original_code
+	'一時中断用データをファイルにセーブする
 	Public Sub Dump()
 		Dim it As Item
 		
@@ -263,7 +263,7 @@ ErrorHandler:
 		Next it
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'一時中断用データをファイルからロードする
 	Public Sub Restore()
 		Dim i, num As Short
 		Dim it As Item
@@ -285,7 +285,7 @@ ErrorHandler:
 		Next 
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'一時中断用データのリンク情報をファイルからロードする
 	Public Sub RestoreLinkInfo()
 		Dim it As Item
 		Dim num As Short
@@ -297,7 +297,7 @@ ErrorHandler:
 		Next it
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'一時中断用データのパラメータ情報をファイルからロードする
 	Public Sub RestoreParameter()
 		Dim it As Item
 		Dim num As Short
@@ -310,7 +310,7 @@ ErrorHandler:
 	End Sub
 	
 	
-	'繝ｪ繧ｹ繝医ｒ繧ｯ繝ｪ繧｢
+	'リストをクリア
 	Public Sub Clear()
 		Dim i As Short
 		

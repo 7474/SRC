@@ -4,22 +4,22 @@ Friend Class frmSafeMain
 	Inherits System.Windows.Forms.Form
 	
 	' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
+	' 本プログラムはフリーソフトであり、無保証です。
+	' 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
+	' 再頒布または改変することができます。
 	
-	'Invalid_string_refer_to_original_code
+	'メインウィンドウのフォーム (Flash機能が使えない環境用)
 	
-	'Invalid_string_refer_to_original_code
+	'マップウィンドウがドラッグされているか？
 	Private IsDragging As Boolean
 	
-	'Invalid_string_refer_to_original_code
+	'フォーム上でキーを押す
 	Private Sub frmSafeMain_KeyDown(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyEventArgs) Handles MyBase.KeyDown
 		Dim KeyCode As Short = eventArgs.KeyCode
 		Dim Shift As Short = eventArgs.KeyData \ &H10000
-		'Invalid_string_refer_to_original_code
+		'ＧＵＩをロック中？
 		If IsGUILocked Then
-			'Invalid_string_refer_to_original_code
+			'リストボックス表示中はキャンセル動作とみなす
 			If frmListBox.Visible Then
 				SelectedItem = 0
 				TopItem = frmListBox.lstItems.TopIndex + 1
@@ -29,12 +29,12 @@ Friend Class frmSafeMain
 				IsFormClicked = True
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'メッセージ表示中はメッセージ送りとみなす
 			If frmMessage.Visible Then
 				IsFormClicked = True
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'クリック待ちであれば待ちを解除
 			If WaitClickMode Then
 				IsFormClicked = True
 			End If
@@ -42,7 +42,7 @@ Friend Class frmSafeMain
 		End If
 		
 		If Shift = 0 Then
-			'Invalid_string_refer_to_original_code
+			'方向キーを押した場合はマップを動かす
 			Select Case KeyCode
 				Case System.Windows.Forms.Keys.Left
 					If MapX > 1 Then
@@ -72,13 +72,13 @@ Friend Class frmSafeMain
 		End If
 	End Sub
 	
-	'繝輔か繝ｼ繝荳翫〒繝槭え繧ｹ繧貞虚縺九☆
+	'フォーム上でマウスを動かす
 	Private Sub frmSafeMain_MouseMove(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.MouseEventArgs) Handles MyBase.MouseMove
 		Dim Button As Short = eventArgs.Button \ &H100000
 		Dim Shift As Short = System.Windows.Forms.Control.ModifierKeys \ &H10000
 		Dim X As Single = eventArgs.X
 		Dim Y As Single = eventArgs.Y
-		'Invalid_string_refer_to_original_code
+		'ツールチップを消す
 		frmToolTip.Hide()
 		'UPGRADE_ISSUE: 定数 vbCustom はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="55B59875-9A95-4B71-9D6A-7C294BF7139D"' をクリックしてください。
 		If picMain(0).Cursor Is vbCustom Then
@@ -86,12 +86,12 @@ Friend Class frmSafeMain
 		End If
 	End Sub
 	
-	'繝輔か繝ｼ繝繧帝哩縺倥ｋ
+	'フォームを閉じる
 	Private Sub frmSafeMain_FormClosed(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.FormClosedEventArgs) Handles Me.FormClosed
 		Dim ret As Short
 		Dim IsErrorMessageVisible As Boolean
 		
-		'Invalid_string_refer_to_original_code
+		'エラーメッセージのダイアログは一番上に重ねられるため消去する必要がある
 		If Not frmErrorMessage Is Nothing Then
 			IsErrorMessageVisible = frmErrorMessage.Visible
 		End If
@@ -99,80 +99,78 @@ Friend Class frmSafeMain
 			frmErrorMessage.Hide()
 		End If
 		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+		'SRCの終了を確認
+		ret = MsgBox("SRCを終了しますか？", MsgBoxStyle.OKCancel + MsgBoxStyle.Question, "終了")
 		
 		Select Case ret
 			Case 1
-				'Invalid_string_refer_to_original_code
+				'SRCを終了
 				TerminateSRC()
 			Case 2
-				'Invalid_string_refer_to_original_code
+				'終了をキャンセル
 				'UPGRADE_ISSUE: Event パラメータ Cancel はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="FB723E3C-1C06-4D2B-B083-E6CD0D334DA8"' をクリックしてください。
 				Cancel = 1
 		End Select
 		
-		'Invalid_string_refer_to_original_code
+		'エラーメッセージを表示
 		If IsErrorMessageVisible Then
 			frmErrorMessage.Show()
 		End If
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'マップ画面の横スクロールバーを操作
 	'UPGRADE_NOTE: HScroll.Change はイベントからプロシージャに変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="4E2DC008-5EDA-4547-8317-C9316952674F"' をクリックしてください。
 	'UPGRADE_WARNING: HScrollBar イベント HScroll.Change には新しい動作が含まれます。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6BA9B8D2-2A32-4B6E-8D36-44949974A5B4"' をクリックしてください。
 	Private Sub HScroll_Change(ByVal newScrollValue As Integer)
 		MapX = HScroll_Renamed.Value
 		
-		'Invalid_string_refer_to_original_code
+		'ステータス表示中はスクロールバーを中央に固定
 		If MapFileName = "" Then
 			MapX = 8
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'画面書き換え
 		If Me.Visible Then
 			RefreshScreen()
 		End If
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'マップコマンドメニューをクリック
 	Public Sub mnuMapCommandItem_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuMapCommandItem.Click
 		Dim Index As Short = mnuMapCommandItem.GetIndex(eventSender)
 		If GetAsyncKeyState(RButtonID) = 1 Then
-			'蜿ｳ繝懊ち繝ｳ縺ｧ繧ｭ繝｣繝ｳ繧ｻ繝ｫ
+			'右ボタンでキャンセル
 			CancelCommand()
 			Exit Sub
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'マップコマンドを実行
 		MapCommand(Index)
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'ユニットコマンドメニューをクリック
 	Public Sub mnuUnitCommandItem_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles mnuUnitCommandItem.Click
 		Dim Index As Short = mnuUnitCommandItem.GetIndex(eventSender)
 		If GetAsyncKeyState(RButtonID) = 1 Then
-			'蜿ｳ繝懊ち繝ｳ縺ｧ繧ｭ繝｣繝ｳ繧ｻ繝ｫ
+			'右ボタンでキャンセル
 			CancelCommand()
 			Exit Sub
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'ユニットコマンドを実行
 		UnitCommand(Index)
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'ステータスウィンドウのパイロット画像上をクリック
 	Private Sub picFace_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles picFace.Click
 		Dim n As Short
 		
-		'Invalid_string_refer_to_original_code
+		'ＧＵＩのロック中は無視
 		If IsGUILocked Then
 			Exit Sub
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'ステータスウィンドウで表示しているパイロットを変更
 		If DisplayedUnit Is Nothing Then
 			Exit Sub
 		End If
@@ -184,10 +182,9 @@ Friend Class frmSafeMain
 			DisplayedPilotInd = DisplayedPilotInd + 1
 			
 			n = .CountPilot + .CountSupport
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			n = n + 1
-			'End If
+			If .IsFeatureAvailable("追加サポート") Then
+				n = n + 1
+			End If
 			If DisplayedPilotInd > n Then
 				DisplayedPilotInd = 1
 			End If
@@ -196,14 +193,14 @@ Friend Class frmSafeMain
 		End With
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'ステータスウィンドウのパイロット画像上をダブルクリック
 	Private Sub picFace_DoubleClick(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles picFace.DoubleClick
-		'Invalid_string_refer_to_original_code
+		'ＧＵＩのロック中は無視
 		If IsGUILocked Then
 			Exit Sub
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'ステータスウィンドウで表示しているパイロットを変更
 		If Not DisplayedUnit Is Nothing Then
 			DisplayedPilotInd = DisplayedPilotInd + 1
 			If DisplayedPilotInd > DisplayedUnit.CountPilot + DisplayedUnit.CountSupport Then
@@ -213,11 +210,11 @@ Friend Class frmSafeMain
 		End If
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'マップ画面上でダブルクリック
 	Private Sub picMain_DoubleClick(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles picMain.DoubleClick
 		Dim Index As Short = picMain.GetIndex(eventSender)
 		If IsGUILocked Then
-			'Invalid_string_refer_to_original_code
+			'ＧＵＩクロック中は単なるクリックとみなす
 			If frmMessage.Visible Then
 				IsFormClicked = True
 			End If
@@ -226,12 +223,12 @@ Friend Class frmSafeMain
 			End If
 			Exit Sub
 		Else
-			'Invalid_string_refer_to_original_code
+			'キャンセルの場合はキャンセルを連続実行
 			If MouseButton = 2 Then
 				Select Case CommandState
-					Case "Invalid_string_refer_to_original_code"
-						CommandState = "Invalid_string_refer_to_original_code"
-					Case "Invalid_string_refer_to_original_code"
+					Case "マップコマンド"
+						CommandState = "ユニット選択"
+					Case "ユニット選択"
 						ProceedCommand(True)
 					Case Else
 						CancelCommand()
@@ -240,7 +237,7 @@ Friend Class frmSafeMain
 		End If
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'マップ画面上でマウスをクリック
 	Private Sub picMain_MouseDown(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.MouseEventArgs) Handles picMain.MouseDown
 		Dim Button As Short = eventArgs.Button \ &H100000
 		Dim Shift As Short = System.Windows.Forms.Control.ModifierKeys \ &H10000
@@ -249,12 +246,12 @@ Friend Class frmSafeMain
 		Dim Index As Short = picMain.GetIndex(eventSender)
 		Dim xx, yy As Short
 		
-		'Invalid_string_refer_to_original_code
+		'押されたマウスボタンの種類＆カーソルの座標を記録
 		MouseButton = Button
 		MouseX = X
 		MouseY = Y
 		
-		'Invalid_string_refer_to_original_code
+		'ＧＵＩロック中は単なるクリックとして処理
 		If IsGUILocked Then
 			If frmMessage.Visible Then
 				IsFormClicked = True
@@ -267,15 +264,15 @@ Friend Class frmSafeMain
 		
 		Select Case Button
 			Case 1
-				'Invalid_string_refer_to_original_code
+				'左クリック
 				PrevMapX = MapX
 				PrevMapY = MapY
 				PrevMouseX = X
 				PrevMouseY = Y
 				Select Case CommandState
-					Case "Invalid_string_refer_to_original_code"
-						CommandState = "Invalid_string_refer_to_original_code"
-					Case "Invalid_string_refer_to_original_code"
+					Case "マップコマンド"
+						CommandState = "ユニット選択"
+					Case "ユニット選択"
 						xx = PixelToMapX(X)
 						yy = PixelToMapY(Y)
 						If xx < 1 Or MapWidth < xx Or yy < 1 Or MapHeight < yy Then
@@ -285,9 +282,7 @@ Friend Class frmSafeMain
 						Else
 							IsDragging = True
 						End If
-					Case "Invalid_string_refer_to_original_code"
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+					Case "ターゲット選択", "移動後ターゲット選択"
 						xx = PixelToMapX(X)
 						yy = PixelToMapY(Y)
 						If xx < 1 Or MapWidth < xx Or yy < 1 Or MapHeight < yy Then
@@ -297,19 +292,17 @@ Friend Class frmSafeMain
 						Else
 							IsDragging = True
 						End If
-					Case "Invalid_string_refer_to_original_code"
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+					Case "コマンド選択", "移動後コマンド選択"
 						CancelCommand()
 					Case Else
 						ProceedCommand()
 				End Select
 			Case 2
-				'Invalid_string_refer_to_original_code
+				'右クリック
 				Select Case CommandState
-					Case "Invalid_string_refer_to_original_code"
-						CommandState = "Invalid_string_refer_to_original_code"
-					Case "Invalid_string_refer_to_original_code"
+					Case "マップコマンド"
+						CommandState = "ユニット選択"
+					Case "ユニット選択"
 						ProceedCommand(True)
 					Case Else
 						CancelCommand()
@@ -317,7 +310,7 @@ Friend Class frmSafeMain
 		End Select
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'マップ画面上でマウスカーソルを移動
 	Private Sub picMain_MouseMove(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.MouseEventArgs) Handles picMain.MouseMove
 		Dim Button As Short = eventArgs.Button \ &H100000
 		Dim Shift As Short = System.Windows.Forms.Control.ModifierKeys \ &H10000
@@ -330,25 +323,25 @@ Friend Class frmSafeMain
 		Dim xx, yy As Short
 		Dim i As Short
 		
-		'蜑榊屓縺ｮ繝槭え繧ｹ菴咲ｽｮ繧定ｨ倬鹸
+		'前回のマウス位置を記録
 		LastMouseX = MouseX
 		LastMouseY = MouseY
 		
-		'迴ｾ蝨ｨ縺ｮ繝槭え繧ｹ菴咲ｽｮ繧定ｨ倬鹸
+		'現在のマウス位置を記録
 		MouseX = X
 		MouseY = Y
 		
-		'Invalid_string_refer_to_original_code
+		'ＧＵＩロック中？
 		If IsGUILocked Then
 			If Not WaitClickMode Then
 				Exit Sub
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'ホットポイントが定義されている場合はツールチップを変更
 			For i = 1 To UBound(HotPointList)
 				With HotPointList(i)
 					If .Left_Renamed <= MouseX And MouseX < .Left_Renamed + .Width And .Top <= MouseY And MouseY < .Top + .Height Then
-						If .Caption = "髱櫁｡ｨ遉ｺ" Or .Caption = "" Then
+						If .Caption = "非表示" Or .Caption = "" Then
 							Exit For
 						End If
 						
@@ -356,7 +349,7 @@ Friend Class frmSafeMain
 							Exit For
 						End If
 						
-						'Invalid_string_refer_to_original_code
+						'ツールチップの表示
 						frmToolTip.ShowToolTip(.Caption)
 						
 						With picMain(0)
@@ -374,19 +367,19 @@ Friend Class frmSafeMain
 				End With
 			Next 
 			
-			'Invalid_string_refer_to_original_code
+			'ホットポイント上にカーソルがなければツールチップを消す
 			frmToolTip.Hide()
 			LastHostSpot = ""
 			picMain(0).Cursor = System.Windows.Forms.Cursors.Default
 			Exit Sub
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'マップが設定されていない場合はこれ以降の判定は不要
 		If MapWidth < 15 Or MapHeight < 15 Then
 			Exit Sub
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'カーソル上にユニットがいればステータスウィンドウにそのユニットを表示
 		xx = PixelToMapX(X)
 		yy = PixelToMapY(Y)
 		If MainWidth = 15 Then
@@ -396,13 +389,20 @@ Friend Class frmSafeMain
 				End If
 			End If
 		Else
-			ClearUnitStatus()
+			If (CommandState = "ターゲット選択" Or CommandState = "移動後ターゲット選択") And (SelectedCommand <> "移動" And SelectedCommand <> "テレポート" And SelectedCommand <> "ジャンプ") Then
+				If 1 <= xx And xx <= MapWidth And 1 <= yy And yy <= MapHeight Then
+					If Not MapDataForUnit(xx, yy) Is Nothing Then
+						InstantUnitStatusDisplay(xx, yy)
+					End If
+				End If
+			ElseIf MouseX <> LastMouseX Or MouseY <> LastMouseY Then 
+				ClearUnitStatus()
+			End If
 		End If
-		'End If
 		
-		'Invalid_string_refer_to_original_code
+		'マップをドラッグ中？
 		If IsDragging And Button = 1 Then
-			'Invalid_string_refer_to_original_code
+			'Ｘ軸の移動量を算出
 			MapX = PrevMapX - (X - PrevMouseX) \ 32
 			If MapX < 1 Then
 				MapX = 1
@@ -410,7 +410,7 @@ Friend Class frmSafeMain
 				MapX = (HScroll_Renamed.Maximum - HScroll_Renamed.LargeChange + 1)
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'Ｙ軸の移動量を算出
 			MapY = PrevMapY - (Y - PrevMouseY) \ 32
 			If MapY < 1 Then
 				MapY = 1
@@ -419,7 +419,7 @@ Friend Class frmSafeMain
 			End If
 			
 			If MapFileName = "" Then
-				'Invalid_string_refer_to_original_code
+				'ステータス画面の場合は移動量を限定
 				MapX = 8
 				If MapY < 8 Then
 					MapY = 8
@@ -428,14 +428,14 @@ Friend Class frmSafeMain
 				End If
 			End If
 			
-			'繝槭ャ繝礼判髱｢繧呈眠縺励＞蠎ｧ讓吶〒譖ｴ譁ｰ
+			'マップ画面を新しい座標で更新
 			If Not MapX = LastMapX Or Not MapY = LastMapY Then
 				RefreshScreen()
 			End If
 		End If
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'マップ画面上でマウスボタンを離す
 	Private Sub picMain_MouseUp(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.MouseEventArgs) Handles picMain.MouseUp
 		Dim Button As Short = eventArgs.Button \ &H100000
 		Dim Shift As Short = System.Windows.Forms.Control.ModifierKeys \ &H10000
@@ -446,11 +446,11 @@ Friend Class frmSafeMain
 		If IsGUILocked Then
 			Exit Sub
 		End If
-		'Invalid_string_refer_to_original_code
+		'マップ画面のドラッグを解除
 		IsDragging = False
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'ＢＧＭ連続再生用タイマー
 	Private Sub Timer1_Tick(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles Timer1.Tick
 		If BGMFileName <> "" Then
 			If RepeatMode Then
@@ -459,14 +459,14 @@ Friend Class frmSafeMain
 		End If
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'マップウィンドウの縦スクロールを操作
 	'UPGRADE_NOTE: VScroll.Change はイベントからプロシージャに変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="4E2DC008-5EDA-4547-8317-C9316952674F"' をクリックしてください。
 	'UPGRADE_WARNING: VScrollBar イベント VScroll.Change には新しい動作が含まれます。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6BA9B8D2-2A32-4B6E-8D36-44949974A5B4"' をクリックしてください。
 	Private Sub VScroll_Change(ByVal newScrollValue As Integer)
 		MapY = VScroll_Renamed.Value
 		
 		If MapFileName = "" Then
-			'Invalid_string_refer_to_original_code
+			'ステータス画面の場合は移動量を制限
 			If MapY < 8 Then
 				MapY = 8
 			ElseIf MapY > MapHeight - 7 Then 
@@ -474,7 +474,7 @@ Friend Class frmSafeMain
 			End If
 		End If
 		
-		'繝槭ャ繝礼判髱｢繧呈峩譁ｰ
+		'マップ画面を更新
 		If Me.Visible Then
 			RefreshScreen()
 		End If

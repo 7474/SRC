@@ -1,16 +1,16 @@
 VERSION 5.00
 Begin VB.Form frmMessage 
    BackColor       =   &H00C0C0C0&
-   BorderStyle     =   1  'å›ºå®š(å®Ÿç·š)
-   Caption         =   "ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸"
+   BorderStyle     =   1  'ŒÅ’è(Àü)
+   Caption         =   "ƒƒbƒZ[ƒW"
    ClientHeight    =   1770
    ClientLeft      =   1395
    ClientTop       =   1515
    ClientWidth     =   7620
    ClipControls    =   0   'False
-   FillStyle       =   0  'å¡—ã‚Šã¤ã¶ã—
+   FillStyle       =   0  '“h‚è‚Â‚Ô‚µ
    BeginProperty Font 
-      Name            =   "ï¼­ï¼³ ï¼°æ˜æœ"
+      Name            =   "‚l‚r ‚o–¾’©"
       Size            =   12
       Charset         =   128
       Weight          =   700
@@ -24,9 +24,9 @@ Begin VB.Form frmMessage
    KeyPreview      =   -1  'True
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
-   PaletteMode     =   1  'Z ï½µï½°ï¾€ï¾ï½°
+   PaletteMode     =   1  'Z µ°ÀŞ°
    ScaleHeight     =   118
-   ScaleMode       =   3  'ï¾‹ï¾Ÿï½¸ï½¾ï¾™
+   ScaleMode       =   3  'Ëß¸¾Ù
    ScaleWidth      =   508
    Begin VB.PictureBox picFace 
       AutoRedraw      =   -1  'True
@@ -35,23 +35,23 @@ Begin VB.Form frmMessage
       Height          =   1020
       Left            =   120
       ScaleHeight     =   64
-      ScaleMode       =   3  'ï¾‹ï¾Ÿï½¸ï½¾ï¾™
+      ScaleMode       =   3  'Ëß¸¾Ù
       ScaleWidth      =   64
       TabIndex        =   15
       Top             =   645
       Width           =   1020
    End
    Begin VB.PictureBox picUnit1 
-      Appearance      =   0  'ï¾Œï¾—ï½¯ï¾„
+      Appearance      =   0  'Ì×¯Ä
       AutoRedraw      =   -1  'True
       BackColor       =   &H80000005&
-      BorderStyle     =   0  'ãªã—
+      BorderStyle     =   0  '‚È‚µ
       ClipControls    =   0   'False
       ForeColor       =   &H80000008&
       Height          =   480
       Left            =   120
       ScaleHeight     =   32
-      ScaleMode       =   3  'ï¾‹ï¾Ÿï½¸ï½¾ï¾™
+      ScaleMode       =   3  'Ëß¸¾Ù
       ScaleWidth      =   32
       TabIndex        =   14
       Top             =   60
@@ -59,16 +59,16 @@ Begin VB.Form frmMessage
       Width           =   480
    End
    Begin VB.PictureBox picUnit2 
-      Appearance      =   0  'ï¾Œï¾—ï½¯ï¾„
+      Appearance      =   0  'Ì×¯Ä
       AutoRedraw      =   -1  'True
       BackColor       =   &H80000005&
-      BorderStyle     =   0  'ãªã—
+      BorderStyle     =   0  '‚È‚µ
       ClipControls    =   0   'False
       ForeColor       =   &H80000008&
       Height          =   480
       Left            =   3900
       ScaleHeight     =   32
-      ScaleMode       =   3  'ï¾‹ï¾Ÿï½¸ï½¾ï¾™
+      ScaleMode       =   3  'Ëß¸¾Ù
       ScaleWidth      =   32
       TabIndex        =   13
       Top             =   75
@@ -76,11 +76,11 @@ Begin VB.Form frmMessage
       Width           =   480
    End
    Begin VB.TextBox txtHP2 
-      Appearance      =   0  'ï¾Œï¾—ï½¯ï¾„
+      Appearance      =   0  'Ì×¯Ä
       BackColor       =   &H00C0C0C0&
-      BorderStyle     =   0  'ãªã—
+      BorderStyle     =   0  '‚È‚µ
       BeginProperty Font 
-         Name            =   "ï¼­ï¼³ æ˜æœ"
+         Name            =   "‚l‚r –¾’©"
          Size            =   9.75
          Charset         =   128
          Weight          =   700
@@ -104,7 +104,7 @@ Begin VB.Form frmMessage
       Height          =   120
       Left            =   4455
       ScaleHeight     =   4
-      ScaleMode       =   3  'ï¾‹ï¾Ÿï½¸ï½¾ï¾™
+      ScaleMode       =   3  'Ëß¸¾Ù
       ScaleWidth      =   112
       TabIndex        =   9
       Top             =   420
@@ -118,18 +118,18 @@ Begin VB.Form frmMessage
       Height          =   120
       Left            =   6270
       ScaleHeight     =   4
-      ScaleMode       =   3  'ï¾‹ï¾Ÿï½¸ï½¾ï¾™
+      ScaleMode       =   3  'Ëß¸¾Ù
       ScaleWidth      =   78
       TabIndex        =   8
       Top             =   420
       Width           =   1230
    End
    Begin VB.TextBox txtEN2 
-      Appearance      =   0  'ï¾Œï¾—ï½¯ï¾„
+      Appearance      =   0  'Ì×¯Ä
       BackColor       =   &H00C0C0C0&
-      BorderStyle     =   0  'ãªã—
+      BorderStyle     =   0  '‚È‚µ
       BeginProperty Font 
-         Name            =   "ï¼­ï¼³ æ˜æœ"
+         Name            =   "‚l‚r –¾’©"
          Size            =   9.75
          Charset         =   128
          Weight          =   700
@@ -146,11 +146,11 @@ Begin VB.Form frmMessage
       Width           =   855
    End
    Begin VB.TextBox txtEN1 
-      Appearance      =   0  'ï¾Œï¾—ï½¯ï¾„
+      Appearance      =   0  'Ì×¯Ä
       BackColor       =   &H00C0C0C0&
-      BorderStyle     =   0  'ãªã—
+      BorderStyle     =   0  '‚È‚µ
       BeginProperty Font 
-         Name            =   "ï¼­ï¼³ æ˜æœ"
+         Name            =   "‚l‚r –¾’©"
          Size            =   9.75
          Charset         =   128
          Weight          =   700
@@ -174,7 +174,7 @@ Begin VB.Form frmMessage
       Height          =   120
       Left            =   2490
       ScaleHeight     =   4
-      ScaleMode       =   3  'ï¾‹ï¾Ÿï½¸ï½¾ï¾™
+      ScaleMode       =   3  'Ëß¸¾Ù
       ScaleWidth      =   79
       TabIndex        =   5
       Top             =   420
@@ -188,18 +188,18 @@ Begin VB.Form frmMessage
       Height          =   120
       Left            =   675
       ScaleHeight     =   4
-      ScaleMode       =   3  'ï¾‹ï¾Ÿï½¸ï½¾ï¾™
+      ScaleMode       =   3  'Ëß¸¾Ù
       ScaleWidth      =   112
       TabIndex        =   3
       Top             =   420
       Width           =   1740
    End
    Begin VB.TextBox txtHP1 
-      Appearance      =   0  'ï¾Œï¾—ï½¯ï¾„
+      Appearance      =   0  'Ì×¯Ä
       BackColor       =   &H00C0C0C0&
-      BorderStyle     =   0  'ãªã—
+      BorderStyle     =   0  '‚È‚µ
       BeginProperty Font 
-         Name            =   "ï¼­ï¼³ æ˜æœ"
+         Name            =   "‚l‚r –¾’©"
          Size            =   9.75
          Charset         =   128
          Weight          =   700
@@ -220,7 +220,7 @@ Begin VB.Form frmMessage
       BackColor       =   &H00FFFFFF&
       ClipControls    =   0   'False
       BeginProperty Font 
-         Name            =   "ï¼­ï¼³ ï¼°æ˜æœ"
+         Name            =   "‚l‚r ‚o–¾’©"
          Size            =   12
          Charset         =   128
          Weight          =   400
@@ -232,7 +232,7 @@ Begin VB.Form frmMessage
       Height          =   1050
       Left            =   1260
       ScaleHeight     =   66
-      ScaleMode       =   3  'ï¾‹ï¾Ÿï½¸ï½¾ï¾™
+      ScaleMode       =   3  'Ëß¸¾Ù
       ScaleWidth      =   413
       TabIndex        =   0
       Top             =   630
@@ -287,66 +287,66 @@ Attribute VB_Exposed = False
 Option Explicit
 
 ' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯ãƒ•ãƒªãƒ¼ã‚½ãƒ•ãƒˆã§ã‚ã‚Šã€ç„¡ä¿è¨¼ã§ã™ã€‚
-' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯GNU General Public License(Ver.3ã¾ãŸã¯ãã‚Œä»¥é™)ãŒå®šã‚ã‚‹æ¡ä»¶ã®ä¸‹ã§
-' å†é ’å¸ƒã¾ãŸã¯æ”¹å¤‰ã™ã‚‹ã“ã¨ãŒã§ãã¾ã™ã€‚
+' –{ƒvƒƒOƒ‰ƒ€‚ÍƒtƒŠ[ƒ\ƒtƒg‚Å‚ ‚èA–³•ÛØ‚Å‚·B
+' –{ƒvƒƒOƒ‰ƒ€‚ÍGNU General Public License(Ver.3‚Ü‚½‚Í‚»‚êˆÈ~)‚ª’è‚ß‚éğŒ‚Ì‰º‚Å
+' Ä”Ğ•z‚Ü‚½‚Í‰ü•Ï‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B
 
-'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ãƒ•ã‚©ãƒ¼ãƒ 
+'ƒƒbƒZ[ƒWƒEƒBƒ“ƒhƒE‚ÌƒtƒH[ƒ€
 
-'ãƒ•ã‚©ãƒ¼ãƒ ä¸Šã‚’ã‚¯ãƒªãƒƒã‚¯
+'ƒtƒH[ƒ€ã‚ğƒNƒŠƒbƒN
 Private Sub Form_Click()
     IsFormClicked = True
 End Sub
 
-'ãƒ•ã‚©ãƒ¼ãƒ ä¸Šã‚’ãƒ€ãƒ–ãƒ«ã‚¯ãƒªãƒƒã‚¯
+'ƒtƒH[ƒ€ã‚ğƒ_ƒuƒ‹ƒNƒŠƒbƒN
 Private Sub Form_DblClick()
     IsFormClicked = True
 End Sub
 
-'ãƒ•ã‚©ãƒ¼ãƒ ä¸Šã§ã‚­ãƒ¼ã‚’æŠ¼ã™
+'ƒtƒH[ƒ€ã‚ÅƒL[‚ğ‰Ÿ‚·
 Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
     IsFormClicked = True
 End Sub
 
-'ãƒ•ã‚©ãƒ¼ãƒ ä¸Šã§ãƒã‚¦ã‚¹ãƒœã‚¿ãƒ³ã‚’æŠ¼ã™
+'ƒtƒH[ƒ€ã‚Åƒ}ƒEƒXƒ{ƒ^ƒ“‚ğ‰Ÿ‚·
 Private Sub Form_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
     IsFormClicked = True
 End Sub
 
-'ãƒ•ã‚©ãƒ¼ãƒ ã‚’é–‰ã˜ã‚‹
+'ƒtƒH[ƒ€‚ğ•Â‚¶‚é
 Private Sub Form_Unload(Cancel As Integer)
 Dim ret As Integer
     
-    'SRCã‚’çµ‚äº†ã™ã‚‹ã‹ç¢ºèª
-    ret = MsgBox("SRCã‚’çµ‚äº†ã—ã¾ã™ã‹ï¼Ÿ", _
-        vbOKCancel + vbQuestion, "çµ‚äº†")
+    'SRC‚ğI—¹‚·‚é‚©Šm”F
+    ret = MsgBox("SRC‚ğI—¹‚µ‚Ü‚·‚©H", _
+        vbOKCancel + vbQuestion, "I—¹")
     
     Select Case ret
         Case 1
-            'SRCã‚’çµ‚äº†
+            'SRC‚ğI—¹
             Hide
             TerminateSRC
         Case 2
-            'çµ‚äº†ã‚’ã‚­ãƒ£ãƒ³ã‚»ãƒ«
+            'I—¹‚ğƒLƒƒƒ“ƒZƒ‹
             Cancel = 1
     End Select
 End Sub
 
-'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆç”»é¢ä¸Šã§ã‚¯ãƒªãƒƒã‚¯
+'ƒpƒCƒƒbƒg‰æ–Êã‚ÅƒNƒŠƒbƒN
 Private Sub picFace_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
-    'è‡ªå‹•ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸é€ã‚Šãƒ¢ãƒ¼ãƒ‰ã«ç§»è¡Œ
+    '©“®ƒƒbƒZ[ƒW‘—‚èƒ‚[ƒh‚ÉˆÚs
     If MessageWait < 10000 Then
         AutoMessageMode = Not AutoMessageMode
     End If
     IsFormClicked = True
 End Sub
 
-'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸æ¬„ä¸Šã§ãƒ€ãƒ–ãƒ«ã‚¯ãƒªãƒƒã‚¯
+'ƒƒbƒZ[ƒW—“ã‚Åƒ_ƒuƒ‹ƒNƒŠƒbƒN
 Private Sub picMessage_DblClick()
     IsFormClicked = True
 End Sub
 
-'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸æ¬„ä¸Šã§ãƒã‚¦ã‚¹ãƒœã‚¿ãƒ³ã‚’æŠ¼ã™
+'ƒƒbƒZ[ƒW—“ã‚Åƒ}ƒEƒXƒ{ƒ^ƒ“‚ğ‰Ÿ‚·
 Private Sub picMessage_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
     IsFormClicked = True
 End Sub

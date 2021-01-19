@@ -4,21 +4,21 @@ Friend Class frmToolTip
 	Inherits System.Windows.Forms.Form
 	
 	' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
+	' 本プログラムはフリーソフトであり、無保証です。
+	' 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
+	' 再頒布または改変することができます。
 	
-	'Invalid_string_refer_to_original_code
+	'ツールチップ用フォーム
 	
-	'Invalid_string_refer_to_original_code
+	'フォームをロード
 	Private Sub frmToolTip_Load(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles MyBase.Load
 		Dim ret As Integer
 		
-		'蟶ｸ縺ｫ謇句燕縺ｫ陦ｨ遉ｺ
+		'常に手前に表示
 		ret = SetWindowPos(Me.Handle.ToInt32, -1, 0, 0, 0, 0, &H3)
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'ツールチップを表示
 	Public Sub ShowToolTip(ByRef msg As String)
 		Dim ret As Integer
 		Dim PT As POINTAPI
@@ -30,7 +30,7 @@ Friend Class frmToolTip
 		If msg <> cur_msg Then
 			cur_msg = msg
 			With Me.picMessage
-				'Invalid_string_refer_to_original_code
+				'メッセージ長にサイズを合わせる
 				'UPGRADE_ISSUE: PictureBox メソッド picMessage.TextWidth はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 				.Width = VB6.TwipsToPixelsX((.TextWidth(msg) + 6) * tw)
 				'UPGRADE_ISSUE: PictureBox メソッド picMessage.TextHeight はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
@@ -52,7 +52,7 @@ Friend Class frmToolTip
 				'UPGRADE_ISSUE: PictureBox メソッド picMessage.Line はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 				frmToolTip.picMessage.Line ((VB6.PixelsToTwipsX(.Width) - 1) \ tw, 0) - ((VB6.PixelsToTwipsX(.Width) - 1) \ tw, VB6.PixelsToTwipsY(.Height) \ tw)
 				
-				'Invalid_string_refer_to_original_code
+				'メッセージを書き込み
 				'UPGRADE_ISSUE: PictureBox プロパティ picMessage.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 				.CurrentX = 3
 				'UPGRADE_ISSUE: PictureBox プロパティ picMessage.CurrentY はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
@@ -65,12 +65,12 @@ Friend Class frmToolTip
 			End With
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'フォームの位置を設定
 		ret = GetCursorPos(PT)
 		Me.Left = VB6.TwipsToPixelsX(PT.X * tw + 0)
 		Me.Top = VB6.TwipsToPixelsY((PT.Y + 24) * tw)
 		
-		'Invalid_string_refer_to_original_code
+		'フォームを非アクティブで表示
 		ret = ShowWindow(Me.Handle.ToInt32, SW_SHOWNA)
 	End Sub
 End Class

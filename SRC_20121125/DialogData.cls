@@ -10,30 +10,30 @@ Attribute VB_Exposed = False
 Option Explicit
 
 ' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯ãƒ•ãƒªãƒ¼ã‚½ãƒ•ãƒˆã§ã‚ã‚Šã€ç„¡ä¿è¨¼ã§ã™ã€‚
-' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯GNU General Public License(Ver.3ã¾ãŸã¯ãã‚Œä»¥é™)ãŒå®šã‚ã‚‹æ¡ä»¶ã®ä¸‹ã§
-' å†é ’å¸ƒã¾ãŸã¯æ”¹å¤‰ã™ã‚‹ã“ã¨ãŒã§ãã¾ã™ã€‚
+' –{ƒvƒƒOƒ‰ƒ€‚ÍƒtƒŠ[ƒ\ƒtƒg‚Å‚ ‚èA–³•ÛØ‚Å‚·B
+' –{ƒvƒƒOƒ‰ƒ€‚ÍGNU General Public License(Ver.3‚Ü‚½‚Í‚»‚êˆÈ~)‚ª’è‚ß‚éğŒ‚Ì‰º‚Å
+' Ä”Ğ•z‚Ü‚½‚Í‰ü•Ï‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B
 
-'ç‰¹å®šã®ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã«æŒ‡å®šã•ã‚ŒãŸå…¨ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã®ã‚¯ãƒ©ã‚¹
+'“Á’è‚ÌƒpƒCƒƒbƒg‚Éw’è‚³‚ê‚½‘Sƒ_ƒCƒAƒƒO‚ÌƒNƒ‰ƒX
 
-'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆä¸€è¦§
+'ƒpƒCƒƒbƒgˆê——
 Public Name As String
 
-'ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ç·æ•°
+'ƒ_ƒCƒAƒƒO‘”
 Private intDialogNum As Integer
-'ã‚·ãƒãƒ¥ã‚¨ãƒ¼ã‚·ãƒ§ãƒ³ä¸€è¦§
+'ƒVƒ`ƒ…ƒG[ƒVƒ‡ƒ“ˆê——
 Private strSituation() As String
-'ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ä¸€è¦§
+'ƒ_ƒCƒAƒƒOˆê——
 Private Dialoges() As Dialog
 
-'ã‚¯ãƒ©ã‚¹ã®åˆæœŸåŒ–
+'ƒNƒ‰ƒX‚Ì‰Šú‰»
 Private Sub Class_Initialize()
     intDialogNum = 0
     ReDim strSituation(0)
     ReDim Dialoges(0)
 End Sub
 
-'ã‚¯ãƒ©ã‚¹ã®è§£æ”¾
+'ƒNƒ‰ƒX‚Ì‰ğ•ú
 Private Sub Class_Terminate()
 Dim i As Integer
     
@@ -45,7 +45,7 @@ Dim i As Integer
 '    ReDim Dialoges(0)
 End Sub
 
-'ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã‚’è¿½åŠ 
+'ƒ_ƒCƒAƒƒO‚ğ’Ç‰Á
 Public Function AddDialog(msg_situation As String) As Dialog
 Dim new_dialog As New Dialog
 
@@ -57,22 +57,22 @@ Dim new_dialog As New Dialog
     Set AddDialog = new_dialog
 End Function
 
-'ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã®ç·æ•°
+'ƒ_ƒCƒAƒƒO‚Ì‘”
 Public Function CountDialog() As Long
     CountDialog = intDialogNum
 End Function
 
-'idxç•ªç›®ã®ã‚·ãƒãƒ¥ã‚¨ãƒ¼ã‚·ãƒ§ãƒ³
+'idx”Ô–Ú‚ÌƒVƒ`ƒ…ƒG[ƒVƒ‡ƒ“
 Public Function Situation(ByVal idx As Long) As String
     Situation = strSituation(idx)
 End Function
 
-'idxç•ªç›®ã®ãƒ€ã‚¤ã‚¢ãƒ­ã‚°
+'idx”Ô–Ú‚Ìƒ_ƒCƒAƒƒO
 Public Function Dialog(ByVal idx As Long) As Dialog
     Set Dialog = Dialoges(idx)
 End Function
 
-'ãƒ¦ãƒ‹ãƒƒãƒˆ u ã®ã‚·ãƒãƒ¥ã‚¨ãƒ¼ã‚·ãƒ§ãƒ³ msg_situation ã«ãŠã‘ã‚‹ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã‚’é¸æŠ
+'ƒ†ƒjƒbƒg u ‚ÌƒVƒ`ƒ…ƒG[ƒVƒ‡ƒ“ msg_situation ‚É‚¨‚¯‚éƒ_ƒCƒAƒƒO‚ğ‘I‘ğ
 Public Function SelectDialog(msg_situation As String, u As Unit, _
     Optional ByVal ignore_condition As Boolean) As Dialog
 Dim situations() As String, sub_situations() As String
@@ -82,49 +82,49 @@ Dim list() As Integer, list_num As Integer
 Dim i As Integer, j As Integer, k As Integer, found As Boolean
 Dim t As Unit, w As Integer, tw As Integer
 
-    'é…åˆ—é ˜åŸŸç¢ºä¿
+    '”z—ñ—ÌˆæŠm•Û
     ReDim list0(300)
     ReDim tlist(100)
     ReDim list(200)
     
-    'ã‚·ãƒãƒ¥ã‚¨ãƒ¼ã‚·ãƒ§ãƒ³ã‚’è¨­å®š
+    'ƒVƒ`ƒ…ƒG[ƒVƒ‡ƒ“‚ğİ’è
     Select Case msg_situation
-        Case "æ ¼é—˜", "å°„æ’ƒ"
+        Case "Ši“¬", "ËŒ‚"
             ReDim situations(2)
-            situations(2) = "æ”»æ’ƒ"
-        Case "æ ¼é—˜(å‘½ä¸­)", "å°„æ’ƒ(å‘½ä¸­)"
+            situations(2) = "UŒ‚"
+        Case "Ši“¬(–½’†)", "ËŒ‚(–½’†)"
             ReDim situations(2)
-            situations(2) = "æ”»æ’ƒ(å‘½ä¸­)"
-        Case "æ ¼é—˜(å›é¿)", "å°„æ’ƒ(å›é¿)"
+            situations(2) = "UŒ‚(–½’†)"
+        Case "Ši“¬(‰ñ”ğ)", "ËŒ‚(‰ñ”ğ)"
             ReDim situations(2)
-            situations(2) = "æ”»æ’ƒ(å›é¿)"
-        Case "æ ¼é—˜(ã¨ã©ã‚)", "å°„æ’ƒ(ã¨ã©ã‚)"
+            situations(2) = "UŒ‚(‰ñ”ğ)"
+        Case "Ši“¬(‚Æ‚Ç‚ß)", "ËŒ‚(‚Æ‚Ç‚ß)"
             ReDim situations(2)
-            situations(2) = "æ”»æ’ƒ(ã¨ã©ã‚)"
-        Case "æ ¼é—˜(ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«)", "å°„æ’ƒ(ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«)"
+            situations(2) = "UŒ‚(‚Æ‚Ç‚ß)"
+        Case "Ši“¬(ƒNƒŠƒeƒBƒJƒ‹)", "ËŒ‚(ƒNƒŠƒeƒBƒJƒ‹)"
             ReDim situations(2)
-            situations(2) = "æ”»æ’ƒ(ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«)"
-        Case "æ ¼é—˜(åæ’ƒ)", "å°„æ’ƒ(åæ’ƒ)"
+            situations(2) = "UŒ‚(ƒNƒŠƒeƒBƒJƒ‹)"
+        Case "Ši“¬(”½Œ‚)", "ËŒ‚(”½Œ‚)"
             ReDim situations(2)
-            situations(2) = "æ”»æ’ƒ(åæ’ƒ)"
-        Case "æ ¼é—˜(å‘½ä¸­)(åæ’ƒ)", "å°„æ’ƒ(å‘½ä¸­)(åæ’ƒ)"
+            situations(2) = "UŒ‚(”½Œ‚)"
+        Case "Ši“¬(–½’†)(”½Œ‚)", "ËŒ‚(–½’†)(”½Œ‚)"
             ReDim situations(2)
-            situations(2) = "æ”»æ’ƒ(å‘½ä¸­)(åæ’ƒ)"
-        Case "æ ¼é—˜(å›é¿)(åæ’ƒ)", "å°„æ’ƒ(å›é¿)(åæ’ƒ)"
+            situations(2) = "UŒ‚(–½’†)(”½Œ‚)"
+        Case "Ši“¬(‰ñ”ğ)(”½Œ‚)", "ËŒ‚(‰ñ”ğ)(”½Œ‚)"
             ReDim situations(2)
-            situations(2) = "æ”»æ’ƒ(å›é¿)(åæ’ƒ)"
-        Case "æ ¼é—˜(ã¨ã©ã‚)(åæ’ƒ)", "å°„æ’ƒ(ã¨ã©ã‚)(åæ’ƒ)"
+            situations(2) = "UŒ‚(‰ñ”ğ)(”½Œ‚)"
+        Case "Ši“¬(‚Æ‚Ç‚ß)(”½Œ‚)", "ËŒ‚(‚Æ‚Ç‚ß)(”½Œ‚)"
             ReDim situations(2)
-            situations(2) = "æ”»æ’ƒ(ã¨ã©ã‚)(åæ’ƒ)"
-        Case "æ ¼é—˜(ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«)(åæ’ƒ)", "å°„æ’ƒ(ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«)(åæ’ƒ)"
+            situations(2) = "UŒ‚(‚Æ‚Ç‚ß)(”½Œ‚)"
+        Case "Ši“¬(ƒNƒŠƒeƒBƒJƒ‹)(”½Œ‚)", "ËŒ‚(ƒNƒŠƒeƒBƒJƒ‹)(”½Œ‚)"
             ReDim situations(2)
-            situations(2) = "æ”»æ’ƒ(ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«)(åæ’ƒ)"
+            situations(2) = "UŒ‚(ƒNƒŠƒeƒBƒJƒ‹)(”½Œ‚)"
         Case Else
             ReDim situations(1)
     End Select
     situations(1) = msg_situation
     
-    'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã®å€™è£œãƒªã‚¹ãƒˆç¬¬ä¸€æ¬¡å¯©æŸ»
+    'ƒƒbƒZ[ƒW‚ÌŒó•âƒŠƒXƒg‘æˆêŸR¸
     list0_num = 0
     For i = 1 To intDialogNum
         For j = 1 To UBound(situations)
@@ -144,7 +144,7 @@ Dim t As Unit, w As Integer, tw As Integer
         Exit Function
     End If
     
-    'æœ€åˆã«ç›¸æ‰‹é™å®šã®ã‚·ãƒãƒ¥ã‚¨ãƒ¼ã‚·ãƒ§ãƒ³ã®ã¿ã§æ¤œç´¢
+    'Å‰‚É‘ŠèŒÀ’è‚ÌƒVƒ`ƒ…ƒG[ƒVƒ‡ƒ“‚Ì‚İ‚ÅŒŸõ
     If u Is SelectedUnit Then
         Set t = SelectedTarget
     ElseIf u Is SelectedTarget Then
@@ -154,10 +154,10 @@ Dim t As Unit, w As Integer, tw As Integer
         GoTo SkipMessagesWithTarget
     End If
     
-    'ç›¸æ‰‹é™å®šãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã®ãƒªã‚¹ãƒˆã‚’ä½œæˆ
+    '‘ŠèŒÀ’èƒƒbƒZ[ƒW‚ÌƒŠƒXƒg‚ğì¬
     tlist_num = 0
     For i = 1 To list0_num
-        If InStr(strSituation(list0(i)), "(å¯¾") > 0 Then
+        If InStr(strSituation(list0(i)), "(‘Î") > 0 Then
             tlist_num = tlist_num + 1
             If tlist_num > UBound(tlist) Then
                 ReDim Preserve tlist(tlist_num)
@@ -166,16 +166,16 @@ Dim t As Unit, w As Integer, tw As Integer
         End If
     Next
     If tlist_num = 0 Then
-        'ç›¸æ‰‹é™å®šãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãŒãªã„
+        '‘ŠèŒÀ’èƒƒbƒZ[ƒW‚ª‚È‚¢
         GoTo SkipMessagesWithTarget
     End If
     
-    'è‡ªåˆ†è‡ªèº«ã«ã‚¢ãƒ“ãƒªãƒ†ã‚£ã‚’ä½¿ã†å ´åˆã¯å¿…ãšã€Œ(å¯¾è‡ªåˆ†)ã€ã‚’å„ªå…ˆ
+    '©•ª©g‚ÉƒAƒrƒŠƒeƒB‚ğg‚¤ê‡‚Í•K‚¸u(‘Î©•ª)v‚ğ—Dæ
     If t Is u Then
         list_num = 0
         For i = 1 To tlist_num
             For j = 1 To UBound(situations)
-                If strSituation(tlist(i)) = situations(j) & "(å¯¾è‡ªåˆ†)" Then
+                If strSituation(tlist(i)) = situations(j) & "(‘Î©•ª)" Then
                     list_num = list_num + 1
                     If list_num > UBound(list) Then
                         ReDim Preserve list(list_num)
@@ -192,103 +192,103 @@ Dim t As Unit, w As Integer, tw As Integer
     End If
     
     With t
-        If .Status <> "å‡ºæ’ƒ" Then
+        If .Status <> "oŒ‚" Then
             GoTo SkipMessagesWithTarget
         End If
         
         ReDim sub_situations(8)
-        'å¯¾ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆåç§°
-        sub_situations(1) = "(å¯¾" & .MainPilot.Name & ")"
-        'å¯¾ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆæ„›ç§°
-        sub_situations(2) = "(å¯¾" & .MainPilot.Nickname & ")"
-        'å¯¾ãƒ¦ãƒ‹ãƒƒãƒˆåç§°
-        sub_situations(3) = "(å¯¾" & .Name & ")"
-        'å¯¾ãƒ¦ãƒ‹ãƒƒãƒˆæ„›ç§°
-        sub_situations(4) = "(å¯¾" & .Nickname & ")"
-        'å¯¾ãƒ¦ãƒ‹ãƒƒãƒˆã‚¯ãƒ©ã‚¹
-        sub_situations(5) = "(å¯¾" & .Class0 & ")"
-        'å¯¾ãƒ¦ãƒ‹ãƒƒãƒˆã‚µã‚¤ã‚º
-        sub_situations(6) = "(å¯¾" & .Size & ")"
-        'å¯¾åœ°å½¢å
-        sub_situations(7) = "(å¯¾" & TerrainName(.X, .Y) & ")"
-        'å¯¾ã‚¨ãƒªã‚¢
-        sub_situations(8) = "(å¯¾" & .Area & ")"
+        '‘ÎƒpƒCƒƒbƒg–¼Ì
+        sub_situations(1) = "(‘Î" & .MainPilot.Name & ")"
+        '‘ÎƒpƒCƒƒbƒgˆ¤Ì
+        sub_situations(2) = "(‘Î" & .MainPilot.Nickname & ")"
+        '‘Îƒ†ƒjƒbƒg–¼Ì
+        sub_situations(3) = "(‘Î" & .Name & ")"
+        '‘Îƒ†ƒjƒbƒgˆ¤Ì
+        sub_situations(4) = "(‘Î" & .Nickname & ")"
+        '‘Îƒ†ƒjƒbƒgƒNƒ‰ƒX
+        sub_situations(5) = "(‘Î" & .Class0 & ")"
+        '‘Îƒ†ƒjƒbƒgƒTƒCƒY
+        sub_situations(6) = "(‘Î" & .Size & ")"
+        '‘Î’nŒ`–¼
+        sub_situations(7) = "(‘Î" & TerrainName(.X, .Y) & ")"
+        '‘ÎƒGƒŠƒA
+        sub_situations(8) = "(‘Î" & .Area & ")"
         
-        'å¯¾ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚¯ãƒ©ã‚¹
-        If .IsFeatureAvailable("ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚¯ãƒ©ã‚¹") Then
+        '‘ÎƒƒbƒZ[ƒWƒNƒ‰ƒX
+        If .IsFeatureAvailable("ƒƒbƒZ[ƒWƒNƒ‰ƒX") Then
             ReDim Preserve sub_situations(UBound(sub_situations) + 1)
             sub_situations(UBound(sub_situations)) = _
-                "(å¯¾" & .FeatureData("ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚¯ãƒ©ã‚¹") & ")"
+                "(‘Î" & .FeatureData("ƒƒbƒZ[ƒWƒNƒ‰ƒX") & ")"
         End If
         
-        'å¯¾æ€§åˆ¥
+        '‘Î«•Ê
         Select Case .MainPilot.Sex
-            Case "ç”·æ€§"
+            Case "’j«"
                 ReDim Preserve sub_situations(UBound(sub_situations) + 1)
-                sub_situations(UBound(sub_situations)) = "(å¯¾ç”·æ€§)"
-            Case "å¥³æ€§"
+                sub_situations(UBound(sub_situations)) = "(‘Î’j«)"
+            Case "—«"
                 ReDim Preserve sub_situations(UBound(sub_situations) + 1)
-                sub_situations(UBound(sub_situations)) = "(å¯¾å¥³æ€§)"
+                sub_situations(UBound(sub_situations)) = "(‘Î—«)"
         End Select
         
-        'å¯¾ç‰¹æ®Šèƒ½åŠ›
+        '‘Î“Áê”\—Í
         With .MainPilot
             For i = 1 To .CountSkill
                 ReDim Preserve sub_situations(UBound(sub_situations) + 1)
                 sub_situations(UBound(sub_situations)) _
-                    = "(å¯¾" & .SkillName0(i) & ")"
-                If sub_situations(UBound(sub_situations)) = "(å¯¾éè¡¨ç¤º)" Then
+                    = "(‘Î" & .SkillName0(i) & ")"
+                If sub_situations(UBound(sub_situations)) = "(‘Î”ñ•\¦)" Then
                     sub_situations(UBound(sub_situations)) _
-                        = "(å¯¾" & .Skill(i) & ")"
+                        = "(‘Î" & .Skill(i) & ")"
                 End If
             Next
         End With
         For i = 1 To .CountFeature
             ReDim Preserve sub_situations(UBound(sub_situations) + 1)
-            sub_situations(UBound(sub_situations)) = "(å¯¾" & .FeatureName0(i) & ")"
-            If sub_situations(UBound(sub_situations)) = "(å¯¾)" Then
+            sub_situations(UBound(sub_situations)) = "(‘Î" & .FeatureName0(i) & ")"
+            If sub_situations(UBound(sub_situations)) = "(‘Î)" Then
                 sub_situations(UBound(sub_situations)) _
-                    = "(å¯¾" & .Feature(i) & ")"
+                    = "(‘Î" & .Feature(i) & ")"
             End If
         Next
         
-        'å¯¾å¼±ç‚¹
+        '‘Îã“_
         If Len(.strWeakness) > 0 Then
             For i = 1 To Len(.strWeakness)
                 ReDim Preserve sub_situations(UBound(sub_situations) + 1)
                 sub_situations(UBound(sub_situations)) = _
-                    "(å¯¾å¼±ç‚¹=" & Mid(.strWeakness, i, 1) & ")"
+                    "(‘Îã“_=" & Mid(.strWeakness, i, 1) & ")"
             Next
         End If
         
-        'å¯¾æœ‰åŠ¹
+        '‘Î—LŒø
         If Len(.strEffective) > 0 Then
             For i = 1 To Len(.strEffective)
                 ReDim Preserve sub_situations(UBound(sub_situations) + 1)
                 sub_situations(UBound(sub_situations)) = _
-                    "(å¯¾å¼±ç‚¹=" & Mid(.strEffective, i, 1) & ")"
+                    "(‘Îã“_=" & Mid(.strEffective, i, 1) & ")"
             Next
         End If
         
-        'å¯¾ã‚¶ã‚³
-        If InStr(.MainPilot.Name, "(ã‚¶ã‚³)") > 0 _
+        '‘ÎƒUƒR
+        If InStr(.MainPilot.Name, "(ƒUƒR)") > 0 _
             And (u.MainPilot.Technique > .MainPilot.Technique _
                 Or u.HP > .HP \ 2) _
         Then
             ReDim Preserve sub_situations(UBound(sub_situations) + 1)
-            sub_situations(UBound(sub_situations)) = "(å¯¾ã‚¶ã‚³)"
+            sub_situations(UBound(sub_situations)) = "(‘ÎƒUƒR)"
         End If
         
-        'å¯¾å¼·æ•µ
+        '‘Î‹­“G
         If .BossRank >= 0 _
-            Or (InStr(.MainPilot.Name, "(ã‚¶ã‚³)") = 0 _
+            Or (InStr(.MainPilot.Name, "(ƒUƒR)") = 0 _
                 And u.MainPilot.Technique <= .MainPilot.Technique) _
         Then
             ReDim Preserve sub_situations(UBound(sub_situations) + 1)
-            sub_situations(UBound(sub_situations)) = "(å¯¾å¼·æ•µ)"
+            sub_situations(UBound(sub_situations)) = "(‘Î‹­“G)"
         End If
         
-        'è‡ªåˆ†ãŒä½¿ç”¨ã™ã‚‹æ­¦å™¨ã‚’ãƒã‚§ãƒƒã‚¯
+        '©•ª‚ªg—p‚·‚é•Ší‚ğƒ`ƒFƒbƒN
         w = 0
         If SelectedUnit Is u Then
             If 0 < SelectedWeapon And SelectedWeapon <= u.CountWeapon Then
@@ -301,25 +301,25 @@ Dim t As Unit, w As Integer, tw As Integer
         End If
         
         If w > 0 Then
-            'å¯¾ç€•æ­»
-            If .HP <= u.Damage(w, t, u.Party = "å‘³æ–¹") Then
+            '‘Î•m€
+            If .HP <= u.Damage(w, t, u.Party = "–¡•û") Then
                 ReDim Preserve sub_situations(UBound(sub_situations) + 1)
-                sub_situations(UBound(sub_situations)) = "(å¯¾ç€•æ­»)"
+                sub_situations(UBound(sub_situations)) = "(‘Î•m€)"
             End If
             
-            Select Case u.HitProbability(w, t, u.Party = "å‘³æ–¹")
+            Select Case u.HitProbability(w, t, u.Party = "–¡•û")
                 Case Is < 50
-                    'å¯¾é«˜å›é¿ç‡
+                    '‘Î‚‰ñ”ğ—¦
                     ReDim Preserve sub_situations(UBound(sub_situations) + 1)
-                    sub_situations(UBound(sub_situations)) = "(å¯¾é«˜å›é¿ç‡)"
+                    sub_situations(UBound(sub_situations)) = "(‘Î‚‰ñ”ğ—¦)"
                 Case Is >= 100
-                    'å¯¾ä½å›é¿ç‡
+                    '‘Î’á‰ñ”ğ—¦
                     ReDim Preserve sub_situations(UBound(sub_situations) + 1)
-                    sub_situations(UBound(sub_situations)) = "(å¯¾ä½å›é¿ç‡)"
+                    sub_situations(UBound(sub_situations)) = "(‘Î’á‰ñ”ğ—¦)"
              End Select
         End If
         
-        'ç›¸æ‰‹ãŒä½¿ç”¨ã™ã‚‹æ­¦å™¨ã‚’ãƒã‚§ãƒƒã‚¯
+        '‘Šè‚ªg—p‚·‚é•Ší‚ğƒ`ƒFƒbƒN
         tw = 0
         If SelectedUnit Is t Then
             If 0 < SelectedWeapon And SelectedWeapon <= .CountWeapon Then
@@ -333,11 +333,11 @@ Dim t As Unit, w As Integer, tw As Integer
         
         If tw > 0 Then
             Dim wclass As String, ch As String
-            'å¯¾æ­¦å™¨å
+            '‘Î•Ší–¼
             ReDim Preserve sub_situations(UBound(sub_situations) + 1)
-            sub_situations(UBound(sub_situations)) = "(å¯¾" & .Weapon(tw).Name & ")"
+            sub_situations(UBound(sub_situations)) = "(‘Î" & .Weapon(tw).Name & ")"
             
-            'å¯¾æ­¦å™¨å±æ€§
+            '‘Î•Ší‘®«
             wclass = .WeaponClass(tw)
             For i = 1 To Len(wclass)
                 ch = Mid$(wclass, i, 1)
@@ -345,24 +345,24 @@ Dim t As Unit, w As Integer, tw As Integer
                     Case 0 To 127
                     Case Else
                         ReDim Preserve sub_situations(UBound(sub_situations) + 1)
-                        sub_situations(UBound(sub_situations)) = "(å¯¾" & ch & "å±æ€§)"
+                        sub_situations(UBound(sub_situations)) = "(‘Î" & ch & "‘®«)"
                 End Select
             Next
             
-            Select Case .HitProbability(tw, u, .Party = "å‘³æ–¹")
+            Select Case .HitProbability(tw, u, .Party = "–¡•û")
                 Case Is > 75
-                    'å¯¾é«˜å‘½ä¸­ç‡
+                    '‘Î‚–½’†—¦
                     ReDim Preserve sub_situations(UBound(sub_situations) + 1)
-                    sub_situations(UBound(sub_situations)) = "(å¯¾é«˜å‘½ä¸­ç‡)"
+                    sub_situations(UBound(sub_situations)) = "(‘Î‚–½’†—¦)"
                 Case Is < 25
-                    'å¯¾ä½å‘½ä¸­ç‡
+                    '‘Î’á–½’†—¦
                     ReDim Preserve sub_situations(UBound(sub_situations) + 1)
-                    sub_situations(UBound(sub_situations)) = "(å¯¾ä½å‘½ä¸­ç‡)"
+                    sub_situations(UBound(sub_situations)) = "(‘Î’á–½’†—¦)"
              End Select
         End If
     End With
     
-    'å®šç¾©ã•ã‚Œã¦ã„ã‚‹ç›¸æ‰‹é™å®šãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã®ã†ã¡ã€çŠ¶æ³ã«åˆã£ãŸãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’æŠœãå‡ºã™
+    '’è‹`‚³‚ê‚Ä‚¢‚é‘ŠèŒÀ’èƒƒbƒZ[ƒW‚Ì‚¤‚¿Aó‹µ‚É‡‚Á‚½ƒƒbƒZ[ƒW‚ğ”²‚«o‚·
     list_num = 0
     For i = 1 To tlist_num
         found = False
@@ -386,15 +386,15 @@ Dim t As Unit, w As Integer, tw As Integer
         End If
     Next
     
-    'çŠ¶æ³ã«åˆã£ãŸç›¸æ‰‹é™å®šãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãŒä¸€ã¤ã§ã‚‚ã‚ã‚Œã°ã€ãã®ä¸­ã‹ã‚‰ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’é¸æŠ
+    'ó‹µ‚É‡‚Á‚½‘ŠèŒÀ’èƒƒbƒZ[ƒW‚ªˆê‚Â‚Å‚à‚ ‚ê‚ÎA‚»‚Ì’†‚©‚çƒƒbƒZ[ƒW‚ğ‘I‘ğ
     If list_num > 0 Then
         Set SelectDialog = Dialoges(list(Dice(list_num)))
         If Dice(2) = 1 _
-            Or InStr(msg_situation, "(ã¨ã©ã‚)") > 0 _
-            Or msg_situation = "æŒ‘ç™º" _
-            Or msg_situation = "è„±åŠ›" _
-            Or msg_situation = "é­…æƒ‘" _
-            Or msg_situation = "å¨åœ§" _
+            Or InStr(msg_situation, "(‚Æ‚Ç‚ß)") > 0 _
+            Or msg_situation = "’§”­" _
+            Or msg_situation = "’E—Í" _
+            Or msg_situation = "–£˜f" _
+            Or msg_situation = "ˆĞˆ³" _
             Or u.Party = t.Party _
         Then
             Exit Function
@@ -403,7 +403,7 @@ Dim t As Unit, w As Integer, tw As Integer
     
 SkipMessagesWithTarget:
     
-    'æ¬¡ã«ã‚µãƒ–ã‚·ãƒãƒ¥ã‚¨ãƒ¼ã‚·ãƒ§ãƒ³ãªã—ã¨ãƒ¦ãƒ‹ãƒƒãƒˆé™å®šã®ã‚µãƒ–ã‚·ãƒãƒ¥ã‚¨ãƒ¼ã‚·ãƒ§ãƒ³ã§æ¤œç´¢
+    'Ÿ‚ÉƒTƒuƒVƒ`ƒ…ƒG[ƒVƒ‡ƒ“‚È‚µ‚Æƒ†ƒjƒbƒgŒÀ’è‚ÌƒTƒuƒVƒ`ƒ…ƒG[ƒVƒ‡ƒ“‚ÅŒŸõ
     If Not u Is Nothing Then
         ReDim sub_situations(3)
         With u
@@ -411,26 +411,26 @@ SkipMessagesWithTarget:
             sub_situations(2) = "(" & .Nickname0 & ")"
             sub_situations(3) = "(" & .Class0 & ")"
             Select Case msg_situation
-                Case "æ ¼é—˜", "å°„æ’ƒ", "æ ¼é—˜(åæ’ƒ)", "å°„æ’ƒ(åæ’ƒ)"
+                Case "Ši“¬", "ËŒ‚", "Ši“¬(”½Œ‚)", "ËŒ‚(”½Œ‚)"
                     If SelectedUnit Is u Then
-                        'è‡ªåˆ†ãŒä½¿ç”¨ã™ã‚‹æ­¦å™¨ã‚’ãƒã‚§ãƒƒã‚¯
+                        '©•ª‚ªg—p‚·‚é•Ší‚ğƒ`ƒFƒbƒN
                         If 0 < SelectedWeapon And SelectedWeapon <= u.CountWeapon Then
                             ReDim Preserve sub_situations(4)
                             sub_situations(4) = "(" & .WeaponNickname(SelectedWeapon) & ")"
                         End If
                     End If
             End Select
-            If .IsFeatureAvailable("ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚¯ãƒ©ã‚¹") Then
+            If .IsFeatureAvailable("ƒƒbƒZ[ƒWƒNƒ‰ƒX") Then
                 ReDim Preserve sub_situations(UBound(sub_situations) + 1)
                 sub_situations(UBound(sub_situations)) = _
-                    "(" & .FeatureData("ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚¯ãƒ©ã‚¹") & ")"
+                    "(" & .FeatureData("ƒƒbƒZ[ƒWƒNƒ‰ƒX") & ")"
             End If
         End With
     Else
         ReDim sub_situations(0)
     End If
     
-    'ä¸Šã§è¦‹ã¤ã‹ã£ãŸãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãƒªã‚¹ãƒˆã®ä¸­ã‹ã‚‰ã‚·ãƒãƒ¥ã‚¨ãƒ¼ã‚·ãƒ§ãƒ³ã«åˆã£ãŸãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’æŠœãå‡ºã™
+    'ã‚ÅŒ©‚Â‚©‚Á‚½ƒƒbƒZ[ƒWƒŠƒXƒg‚Ì’†‚©‚çƒVƒ`ƒ…ƒG[ƒVƒ‡ƒ“‚É‡‚Á‚½ƒƒbƒZ[ƒW‚ğ”²‚«o‚·
     list_num = 0
     For i = 1 To list0_num
         found = False
@@ -458,7 +458,7 @@ SkipMessagesWithTarget:
         End If
     Next
     
-    'ã‚·ãƒãƒ¥ã‚¨ãƒ¼ã‚·ãƒ§ãƒ³ã«åˆã£ãŸãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãŒè¦‹ã¤ã‹ã‚Œã°ã€ãã®ä¸­ã‹ã‚‰ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’é¸æŠ
+    'ƒVƒ`ƒ…ƒG[ƒVƒ‡ƒ“‚É‡‚Á‚½ƒƒbƒZ[ƒW‚ªŒ©‚Â‚©‚ê‚ÎA‚»‚Ì’†‚©‚çƒƒbƒZ[ƒW‚ğ‘I‘ğ
     If list_num > 0 Then
         Set SelectDialog = Dialoges(list(Dice(list_num)))
     End If

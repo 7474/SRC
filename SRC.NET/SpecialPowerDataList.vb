@@ -3,17 +3,17 @@ Option Explicit On
 Friend Class SpecialPowerDataList
 	
 	' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
+	' 本プログラムはフリーソフトであり、無保証です。
+	' 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
+	' 再頒布または改変することができます。
 	
-	'Invalid_string_refer_to_original_code
+	'全スペシャルパワーデータを管理するリストのクラス
 	
-	'Invalid_string_refer_to_original_code
+	'スペシャルパワーデータのコレクション
 	Private colSpecialPowerDataList As New Collection
 	
 	
-	'繧ｯ繝ｩ繧ｹ縺ｮ隗｣謾ｾ
+	'クラスの解放
 	'UPGRADE_NOTE: Class_Terminate は Class_Terminate_Renamed にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
 	Private Sub Class_Terminate_Renamed()
 		Dim i As Short
@@ -31,7 +31,7 @@ Friend Class SpecialPowerDataList
 		MyBase.Finalize()
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'スペシャルパワーデータリストにデータを追加
 	Public Function Add(ByRef sname As String) As SpecialPowerData
 		Dim new_data As New SpecialPowerData
 		
@@ -40,17 +40,17 @@ Friend Class SpecialPowerDataList
 		Add = new_data
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'スペシャルパワーデータリストに登録されているデータの総数
 	Public Function Count() As Short
 		Count = colSpecialPowerDataList.Count()
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'スペシャルパワーデータリストから指定したデータを削除
 	Public Sub Delete(ByRef Index As Object)
 		colSpecialPowerDataList.Remove(Index)
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'スペシャルパワーデータリストから指定したデータを取り出す
 	Public Function Item(ByRef Index As Object) As SpecialPowerData
 		On Error GoTo ErrorHandler
 		
@@ -62,7 +62,7 @@ ErrorHandler:
 		Item = Nothing
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'スペシャルパワーデータリストに指定したデータが登録されているか？
 	Public Function IsDefined(ByRef Index As Object) As Boolean
 		Dim dummy As SpecialPowerData
 		
@@ -75,7 +75,7 @@ ErrorHandler:
 		IsDefined = False
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'データファイル fname からデータをロード
 	Public Sub Load(ByRef fname As String)
 		Dim FileNumber As Short
 		Dim ret As Short
@@ -103,7 +103,7 @@ ErrorHandler:
 				GetLine(FileNumber, line_buf, line_num)
 			Loop While Len(line_buf) = 0
 			
-			'蜷咲ｧｰ
+			'名称
 			ret = InStr(line_buf, ",")
 			If ret > 0 Then
 				data_name = Trim(Left(line_buf, ret - 1))
@@ -114,16 +114,15 @@ ErrorHandler:
 			End If
 			
 			If InStr(data_name, " ") > 0 Then
-				err_msg = "Invalid_string_refer_to_original_code"
+				err_msg = "名称に半角スペースは使用出来ません。"
 				Error(0)
 			End If
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			err_msg = "Invalid_string_refer_to_original_code"
-			Error(0)
-			'End If
+			If InStr(data_name, "（") > 0 Or InStr(data_name, "）") > 0 Then
+				err_msg = "名称に全角括弧は使用出来ません。"
+				Error(0)
+			End If
 			If InStr(data_name, """") > 0 Then
-				err_msg = "Invalid_string_refer_to_original_code"
+				err_msg = "名称に""は使用出来ません。"
 				Error(0)
 			End If
 			
@@ -133,10 +132,10 @@ ErrorHandler:
 			sd = Add(data_name)
 			
 			With sd
-				'Invalid_string_refer_to_original_code
+				'読み仮名
 				ret = InStr(buf, ",")
 				If ret > 0 Then
-					err_msg = "Invalid_string_refer_to_original_code"
+					err_msg = "読み仮名の後に余分なデータが指定されています。"
 					Error(0)
 				End If
 				.KanaName = Trim(buf)
@@ -144,23 +143,23 @@ ErrorHandler:
 					.KanaName = StrToHiragana(data_name)
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'短縮形, 消費ＳＰ, 対象, 効果時間, 適用条件, 使用条件, アニメ
 				GetLine(FileNumber, line_buf, line_num)
 				
-				'遏ｭ邵ｮ蠖｢
+				'短縮形
 				ret = InStr(line_buf, ",")
 				If ret = 0 Then
-					err_msg = "Invalid_string_refer_to_original_code"
+					err_msg = "消費ＳＰが抜けています。"
 					Error(0)
 				End If
 				buf2 = Trim(Left(line_buf, ret - 1))
 				buf = Mid(line_buf, ret + 1)
 				.ShortName = buf2
 				
-				'Invalid_string_refer_to_original_code
+				'消費ＳＰ
 				ret = InStr(buf, ",")
 				If ret = 0 Then
-					err_msg = "Invalid_string_refer_to_original_code"
+					err_msg = "対象が抜けています。"
 					Error(0)
 				End If
 				buf2 = Trim(Left(buf, ret - 1))
@@ -168,53 +167,52 @@ ErrorHandler:
 				If IsNumeric(buf2) Then
 					.SPConsumption = CShort(buf2)
 				Else
-					DataErrorMessage("Invalid_string_refer_to_original_code")
-					fname( , line_num, line_buf, data_name)
+					DataErrorMessage("消費ＳＰの設定が間違っています。", fname, line_num, line_buf, data_name)
 				End If
 				
-				'蟇ｾ雎｡
+				'対象
 				ret = InStr(buf, ",")
 				If ret = 0 Then
-					err_msg = "Invalid_string_refer_to_original_code"
+					err_msg = "効果時間が抜けています。"
 					Error(0)
 				End If
 				buf2 = Trim(Left(buf, ret - 1))
 				buf = Mid(buf, ret + 1)
 				If IsNumeric(buf2) Then
-					err_msg = "Invalid_string_refer_to_original_code"
+					err_msg = "対象が間違っています。"
 					Error(0)
 				End If
 				.TargetType = buf2
 				
-				'Invalid_string_refer_to_original_code
+				'効果時間
 				ret = InStr(buf, ",")
 				If ret = 0 Then
-					err_msg = "Invalid_string_refer_to_original_code"
+					err_msg = "効果時間が抜けています。"
 					Error(0)
 				End If
 				buf2 = Trim(Left(buf, ret - 1))
 				buf = Mid(buf, ret + 1)
 				If IsNumeric(buf2) Then
-					err_msg = "Invalid_string_refer_to_original_code"
+					err_msg = "効果時間が間違っています。"
 					Error(0)
 				End If
 				.Duration = buf2
 				
-				'驕ｩ逕ｨ譚｡莉ｶ
+				'適用条件
 				ret = InStr(buf, ",")
 				If ret = 0 Then
-					err_msg = "Invalid_string_refer_to_original_code"
+					err_msg = "使用条件が抜けています。"
 					Error(0)
 				End If
 				buf2 = Trim(Left(buf, ret - 1))
 				buf = Mid(buf, ret + 1)
 				If IsNumeric(buf2) Then
-					err_msg = "Invalid_string_refer_to_original_code"
+					err_msg = "適用条件が間違っています。"
 					Error(0)
 				End If
 				.NecessaryCondition = buf2
 				
-				'菴ｿ逕ｨ譚｡莉ｶ, 繧｢繝九Γ
+				'使用条件, アニメ
 				ret = InStr(buf, ",")
 				If ret > 0 Then
 					.Animation = Trim(Mid(buf, InStr(buf, ",") + 1))
@@ -222,18 +220,18 @@ ErrorHandler:
 					.Animation = .Name
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'効果
 				GetLine(FileNumber, line_buf, line_num)
 				If Len(line_buf) = 0 Then
-					err_msg = "Invalid_string_refer_to_original_code"
+					err_msg = "効果が指定されていません。"
 					Error(0)
 				End If
 				.SetEffect(line_buf)
 				
-				'隗｣隱ｬ
+				'解説
 				GetLine(FileNumber, line_buf, line_num)
 				If Len(line_buf) = 0 Then
-					err_msg = "Invalid_string_refer_to_original_code"
+					err_msg = "解説が指定されていません。"
 					Error(0)
 				End If
 				.Comment = line_buf
@@ -241,9 +239,9 @@ ErrorHandler:
 		Loop 
 		
 ErrorHandler: 
-		'Invalid_string_refer_to_original_code
+		'エラー処理
 		If line_num = 0 Then
-			ErrorMessage(fname & "Invalid_string_refer_to_original_code")
+			ErrorMessage(fname & "が開けません。")
 		Else
 			FileClose(FileNumber)
 			DataErrorMessage(err_msg, fname, line_num, line_buf, data_name)

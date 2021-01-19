@@ -3,24 +3,24 @@ Option Explicit On
 Friend Class PilotDataList
 	
 	' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
+	' 本プログラムはフリーソフトであり、無保証です。
+	' 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
+	' 再頒布または改変することができます。
 	
-	'Invalid_string_refer_to_original_code
+	'全パイロットデータを管理するリストのクラス
 	
-	'Invalid_string_refer_to_original_code
+	'パイロットデータのコレクション
 	Private colPilotDataList As New Collection
 	
-	'Invalid_string_refer_to_original_code
+	'クラスの初期化
 	'UPGRADE_NOTE: Class_Initialize は Class_Initialize_Renamed にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
 	Private Sub Class_Initialize_Renamed()
 		Dim pd As New PilotData
 		
-		'Invalid_string_refer_to_original_code
+		'ユニットステータスコマンドの無人ユニット用
 		With pd
-			.Name = "Invalid_string_refer_to_original_code"
-			.Nickname = "Invalid_string_refer_to_original_code"
+			.Name = "ステータス表示用ダミーパイロット(ザコ)"
+			.Nickname = "パイロット不在"
 			.Adaption = "AAAA"
 			.Bitmap = ".bmp"
 		End With
@@ -31,7 +31,7 @@ Friend Class PilotDataList
 		Class_Initialize_Renamed()
 	End Sub
 	
-	'繧ｯ繝ｩ繧ｹ縺ｮ隗｣謾ｾ
+	'クラスの解放
 	'UPGRADE_NOTE: Class_Terminate は Class_Terminate_Renamed にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
 	Private Sub Class_Terminate_Renamed()
 		Dim i As Short
@@ -49,7 +49,7 @@ Friend Class PilotDataList
 		MyBase.Finalize()
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'パイロットデータリストにデータを追加
 	Public Function Add(ByRef pname As String) As PilotData
 		Dim new_pilot_data As New PilotData
 		
@@ -58,17 +58,17 @@ Friend Class PilotDataList
 		Add = new_pilot_data
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'パイロットデータリストに登録されているデータの総数
 	Public Function Count() As Short
 		Count = colPilotDataList.Count()
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'パイロットデータリストから指定したデータを消去
 	Public Sub Delete(ByRef Index As Object)
 		colPilotDataList.Remove(Index)
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'パイロットデータリストから指定したデータを取り出す
 	Public Function Item(ByRef Index As Object) As PilotData
 		Dim pd As PilotData
 		Dim pname As String
@@ -88,7 +88,7 @@ ErrorHandler:
 		Next pd
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'パイロットデータリストに指定したデータが登録されているか？
 	Public Function IsDefined(ByRef Index As Object) As Boolean
 		Dim pd As PilotData
 		Dim pname As String
@@ -110,7 +110,7 @@ ErrorHandler:
 		IsDefined = False
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'パイロットデータリストに指定したデータが登録されているか？ (愛称は見ない)
 	Public Function IsDefined2(ByRef Index As Object) As Boolean
 		Dim pd As PilotData
 		
@@ -123,7 +123,7 @@ ErrorHandler:
 		IsDefined2 = False
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'データファイル fname からデータをロード
 	Public Sub Load(ByRef fname As String)
 		Dim FileNumber As Short
 		Dim line_num As Integer
@@ -161,29 +161,28 @@ ErrorHandler:
 			Loop While Len(line_buf) = 0
 			
 			If InStr(line_buf, ",") > 0 Then
-				err_msg = "Invalid_string_refer_to_original_code"
+				err_msg = "名称の設定が抜けています。"
 				Error(0)
 			End If
 			
-			'蜷咲ｧｰ
+			'名称
 			data_name = line_buf
 			
 			If InStr(data_name, " ") > 0 Then
-				err_msg = "Invalid_string_refer_to_original_code"
+				err_msg = "名称に半角スペースは使用出来ません。"
 				Error(0)
 			End If
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			err_msg = "蜷咲ｧｰ縺ｫ蜈ｨ隗呈峡蠑ｧ縺ｯ菴ｿ逕ｨ蜃ｺ譚･縺ｾ縺帙ｓ"
-			Error(0)
-			'End If
+			If InStr(data_name, "（") > 0 Or InStr(data_name, "）") > 0 Then
+				err_msg = "名称に全角括弧は使用出来ません"
+				Error(0)
+			End If
 			If InStr(data_name, """") > 0 Then
-				err_msg = "Invalid_string_refer_to_original_code"
+				err_msg = "名称に""は使用出来ません。"
 				Error(0)
 			End If
 			
 			If IsDefined(data_name) Then
-				'Invalid_string_refer_to_original_code
+				'すでに定義済みのパイロットの場合はデータを置き換え
 				If Item(data_name).Name = data_name Then
 					pd = Item(data_name)
 					pd.Clear()
@@ -195,10 +194,10 @@ ErrorHandler:
 			End If
 			
 			With pd
-				'Invalid_string_refer_to_original_code
+				'愛称, 読み仮名, 性別, クラス, 地形適応, 経験値
 				GetLine(FileNumber, line_buf, line_num)
 				
-				'Invalid_string_refer_to_original_code
+				'書式チェックのため、コンマの数を数えておく
 				comma_num = 0
 				For i = 1 To Len(line_buf)
 					If Mid(line_buf, i, 1) = "," Then
@@ -207,432 +206,378 @@ ErrorHandler:
 				Next 
 				
 				If comma_num < 3 Then
-					err_msg = "Invalid_string_refer_to_original_code"
+					err_msg = "設定に抜けがあります。"
 					Error(0)
 				ElseIf comma_num > 5 Then 
-					err_msg = "Invalid_string_refer_to_original_code"
+					err_msg = "余分な「,」があります。"
 					Error(0)
 				End If
 				
-				'諢帷ｧｰ
+				'愛称
 				ret = InStr(line_buf, ",")
 				buf2 = Trim(Left(line_buf, ret - 1))
 				buf = Mid(line_buf, ret + 1)
 				If Len(buf2) = 0 Then
-					err_msg = "Invalid_string_refer_to_original_code"
+					err_msg = "愛称の設定が抜けています。"
 					Error(0)
 				End If
 				.Nickname = buf2
 				
 				Select Case comma_num
 					Case 4
-						'Invalid_string_refer_to_original_code
+						'読み仮名 or 性別
 						ret = InStr(buf, ",")
 						buf2 = Trim(Left(buf, ret - 1))
 						buf = Mid(buf, ret + 1)
 						Select Case buf2
-							Case "逕ｷ諤ｧ", "螂ｳ諤ｧ", "-"
+							Case "男性", "女性", "-"
 								.KanaName = StrToHiragana(.Nickname)
 								.Sex = buf2
 							Case Else
 								.KanaName = buf2
 						End Select
 					Case 5
-						'Invalid_string_refer_to_original_code
+						'読み仮名
 						ret = InStr(buf, ",")
 						buf2 = Trim(Left(buf, ret - 1))
 						buf = Mid(buf, ret + 1)
 						Select Case buf2
-							Case "逕ｷ諤ｧ", "螂ｳ諤ｧ", "-"
-								DataErrorMessage("Invalid_string_refer_to_original_code")
-								fname( , line_num, line_buf, data_name)
+							Case "男性", "女性", "-"
+								DataErrorMessage("読み仮名の設定が抜けています。", fname, line_num, line_buf, data_name)
 								.KanaName = StrToHiragana(.Nickname)
 							Case Else
 								.KanaName = buf2
 						End Select
 						
-						'諤ｧ蛻･
+						'性別
 						ret = InStr(buf, ",")
 						buf2 = Trim(Left(buf, ret - 1))
 						buf = Mid(buf, ret + 1)
 						Select Case buf2
-							Case "逕ｷ諤ｧ", "螂ｳ諤ｧ", "-"
+							Case "男性", "女性", "-"
 								.Sex = buf2
 							Case Else
-								DataErrorMessage("Invalid_string_refer_to_original_code")
-								fname( , line_num, line_buf, data_name)
+								DataErrorMessage("性別の設定が間違っています。", fname, line_num, line_buf, data_name)
 						End Select
 					Case Else
 						.KanaName = StrToHiragana(.Nickname)
 				End Select
 				
-				'繧ｯ繝ｩ繧ｹ
+				'クラス
 				ret = InStr(buf, ",")
 				buf2 = Trim(Left(buf, ret - 1))
 				buf = Mid(buf, ret + 1)
 				If Not IsNumeric(buf2) Then
 					.Class_Renamed = buf2
 				Else
-					DataErrorMessage("Invalid_string_refer_to_original_code")
-					fname( , line_num, line_buf, data_name)
+					DataErrorMessage("クラスの設定が間違っています。", fname, line_num, line_buf, data_name)
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'地形適応
 				ret = InStr(buf, ",")
 				buf2 = Trim(Left(buf, ret - 1))
 				buf = Mid(buf, ret + 1)
 				If Len(buf2) = 4 Then
 					.Adaption = buf2
 				Else
-					DataErrorMessage("Invalid_string_refer_to_original_code")
-					fname( , line_num, line_buf, data_name)
+					DataErrorMessage("地形適応の設定が間違っています。", fname, line_num, line_buf, data_name)
 					.Adaption = "AAAA"
 				End If
 				
-				'邨碁ｨ灘､
+				'経験値
 				buf2 = Trim(buf)
 				If IsNumeric(buf2) Then
 					.ExpValue = MinLng(CInt(buf2), 9999)
 				Else
-					DataErrorMessage("Invalid_string_refer_to_original_code")
-					fname( , line_num, line_buf, data_name)
+					DataErrorMessage("経験値の設定が間違っています。", fname, line_num, line_buf, data_name)
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'特殊能力データ
 				GetLine(FileNumber, line_buf, line_num)
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				GetLine(FileNumber, line_buf, line_num)
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				'Invalid_string_refer_to_original_code
-				GetLine(FileNumber, line_buf, line_num)
-				buf = line_buf
-				
-				i = 0
-				aname = ""
-				Do While True
-					i = i + 1
+				If line_buf = "特殊能力なし" Then
+					GetLine(FileNumber, line_buf, line_num)
+				ElseIf line_buf = "特殊能力" Then 
+					'新形式による特殊能力表記
+					GetLine(FileNumber, line_buf, line_num)
+					buf = line_buf
 					
-					'Invalid_string_refer_to_original_code
-					ret = InStr(buf, ",")
-					'Invalid_string_refer_to_original_code
-					ret2 = InStr(buf, """")
-					
-					If ret2 < ret And ret2 > 0 Then
-						'Invalid_string_refer_to_original_code
-						in_quote = True
-						j = ret2 + 1
-						Do While j <= Len(buf)
-							Select Case Mid(buf, j, 1)
-								Case """"
-									in_quote = Not in_quote
-								Case ","
-									If Not in_quote Then
-										buf2 = Left(buf, j - 1)
-										buf = Mid(buf, j + 1)
-									End If
-							End Select
-							j = j + 1
-						Loop 
-						If j = Len(buf) Then
+					i = 0
+					aname = ""
+					Do While True
+						i = i + 1
+						
+						'コンマの位置を検索
+						ret = InStr(buf, ",")
+						'「"」が使われているか検索
+						ret2 = InStr(buf, """")
+						
+						If ret2 < ret And ret2 > 0 Then
+							'「"」が見つかった場合、次の「"」後のコンマを検索
+							in_quote = True
+							j = ret2 + 1
+							Do While j <= Len(buf)
+								Select Case Mid(buf, j, 1)
+									Case """"
+										in_quote = Not in_quote
+									Case ","
+										If Not in_quote Then
+											buf2 = Left(buf, j - 1)
+											buf = Mid(buf, j + 1)
+										End If
+								End Select
+								j = j + 1
+							Loop 
+							If j = Len(buf) Then
+								buf2 = buf
+								buf = ""
+							End If
+							in_quote = False
+						ElseIf ret > 0 Then 
+							'コンマが見つかったらコンマまでの文字列を切り出す
+							buf2 = Trim(Left(buf, ret - 1))
+							buf = Trim(Mid(buf, ret + 1))
+							
+							'コンマの後ろの文字列が空白の場合
+							If buf = "" Then
+								If i Mod 2 = 1 Then
+									err_msg = "行末の「,」の後に特殊能力指定が抜けています。"
+								Else
+									err_msg = "行末の「,」の後に特殊能力レベル指定が抜けています。"
+								End If
+								Error(0)
+							End If
+						Else
+							'行末の文字列
 							buf2 = buf
 							buf = ""
 						End If
-						in_quote = False
-					ElseIf ret > 0 Then 
-						'Invalid_string_refer_to_original_code
-						buf2 = Trim(Left(buf, ret - 1))
-						buf = Trim(Mid(buf, ret + 1))
 						
-						'Invalid_string_refer_to_original_code
-						If buf = "" Then
-							If i Mod 2 = 1 Then
-								err_msg = "Invalid_string_refer_to_original_code"
-							Else
-								err_msg = "Invalid_string_refer_to_original_code"
-							End If
-							Error(0)
-						End If
-					Else
-						'Invalid_string_refer_to_original_code
-						buf2 = buf
-						buf = ""
-					End If
-					
-					If i Mod 2 = 1 Then
-						'Invalid_string_refer_to_original_code
-						
-						If IsNumeric(buf2) Then
-							If i = 1 Then
-								'Invalid_string_refer_to_original_code
-								buf = buf2 & ", " & buf
-								Exit Do
-							Else
-								DataErrorMessage("陦碁ｭ縺九ｉ" & VB6.Format((i + 1) \ 2) & "Invalid_string_refer_to_original_code")
-								fname( , line_num, line_buf, data_name)
-							End If
-						End If
-						
-						If InStr(buf2, " ") > 0 Then
-							'Invalid_string_refer_to_original_code_
-							'Invalid_string_refer_to_original_code_
-							'And Left$(buf2, 4) <> "繝上Φ繧ｿ繝ｼ" _
-							'And InStr(buf2, "=隗｣隱ｬ ") = 0 _
-							'Then
-							'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-							If aname = "" Then
-								err_msg = "陦碁ｭ縺九ｉ" & VB6.Format((i + 1) \ 2) & "Invalid_string_refer_to_original_code"
-								'Invalid_string_refer_to_original_code_
-								'Invalid_string_refer_to_original_code
-								'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-							Else
-								err_msg = "Invalid_string_refer_to_original_code"
-								'Invalid_string_refer_to_original_code
-								'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-							End If
-							Error(0)
-						End If
-					End If
-					
-					'Invalid_string_refer_to_original_code
-					j = InStr(buf2, "=")
-					If j > 0 Then
-						adata = Mid(buf2, j + 1)
-						buf2 = Left(buf2, j - 1)
-					Else
-						adata = ""
-					End If
-					
-					'Invalid_string_refer_to_original_code
-					j = InStr(buf2, "Lv")
-					Select Case j
-						Case 0
-							'Invalid_string_refer_to_original_code
-							aname = buf2
-							alevel = DEFAULT_LEVEL
-						Case 1
-							'Invalid_string_refer_to_original_code
-							If Not IsNumeric(Mid(buf2, j + 2)) Then
-								DataErrorMessage("Invalid_string_refer_to_original_code")
-								'Invalid_string_refer_to_original_code_
-								'fname, line_num, line_buf, data_name
-								'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+						If i Mod 2 = 1 Then
+							'特殊能力名＆レベル
+							
+							If IsNumeric(buf2) Then
+								If i = 1 Then
+									'特殊能力の指定は終り。能力値の指定へ
+									buf = buf2 & ", " & buf
+									Exit Do
+								Else
+									DataErrorMessage("行頭から" & VB6.Format((i + 1) \ 2) & "番目の特殊能力名の設定が間違っています。", fname, line_num, line_buf, data_name)
+								End If
 							End If
 							
-							alevel = CShort(Mid(buf2, j + 2))
-							If aname = "" Then
-								DataErrorMessage("陦碁ｭ縺九ｉ" & VB6.Format((i + 1) \ 2) & "Invalid_string_refer_to_original_code")
-								fname( , line_num, line_buf, data_name)
-							End If
-						Case Else
-							'Invalid_string_refer_to_original_code
-							aname = Left(buf2, j - 1)
-							alevel = CDbl(Mid(buf2, j + 2))
-					End Select
-					'Invalid_string_refer_to_original_code
-					If IsNumeric(buf2) Then
-						.AddSkill(aname, alevel, adata, CShort(buf2))
-					Else
-						If alevel > 0 Then
-							DataErrorMessage("Invalid_string_refer_to_original_code")
-							aname & "Lv" & Format$(alevel) _
-							Invalid_string_refer_to_original_code_
-							fname, line_num, line_buf, data_name
-							'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-						Else
-							DataErrorMessage("Invalid_string_refer_to_original_code")
-							'Invalid_string_refer_to_original_code_
-							'fname, line_num, line_buf, data_name
-							'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-						End If
-						.AddSkill(aname, alevel, adata, 1)
-					End If
-					'End If
-					
-					If buf = "" Then
-						'Invalid_string_refer_to_original_code
-						
-						'Invalid_string_refer_to_original_code
-						If i Mod 2 = 1 Then
-							If alevel > 0 Then
-								DataErrorMessage("Invalid_string_refer_to_original_code")
-								aname & "Lv" & Format$(alevel) _
-								Invalid_string_refer_to_original_code_
-								fname, line_num, line_buf, data_name
-								'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-							Else
-								DataErrorMessage("Invalid_string_refer_to_original_code")
-								'Invalid_string_refer_to_original_code_
-								'fname, line_num, line_buf, data_name
-								'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-							End If
-						End If
-						
-						GetLine(FileNumber, line_buf, line_num)
-						buf = line_buf
-						
-						i = 0
-						aname = ""
-					End If
-				Loop 
-				'UPGRADE_WARNING: Load に変換されていないステートメントがあります。ソース コードを確認してください。
-				'Invalid_string_refer_to_original_code
-				buf = Mid(line_buf, 6)
-				
-				i = 0
-				aname = ""
-				Do 
-					i = i + 1
-					
-					'Invalid_string_refer_to_original_code
-					ret = InStr(buf, ",")
-					'Invalid_string_refer_to_original_code
-					ret2 = InStr(buf, """")
-					
-					If ret2 < ret And ret2 > 0 Then
-						'Invalid_string_refer_to_original_code
-						in_quote = True
-						j = ret2 + 1
-						Do While j <= Len(buf)
-							Select Case Mid(buf, j, 1)
-								Case """"
-									in_quote = Not in_quote
-								Case ","
-									If Not in_quote Then
-										buf2 = Left(buf, j - 1)
-										buf = Mid(buf, j + 1)
+							If InStr(buf2, " ") > 0 Then
+								If Left(buf2, 4) <> "先手必勝" And Left(buf2, 6) <> "ＳＰ消費減少" And Left(buf2, 12) <> "スペシャルパワー自動発動" And Left(buf2, 4) <> "ハンター" And InStr(buf2, "=解説 ") = 0 Then
+									If aname = "" Then
+										err_msg = "行頭から" & VB6.Format((i + 1) \ 2) & "番目の特殊能力「" & Trim(Left(buf2, InStr(buf2, " "))) & "」の指定の後に「,」が抜けています。"
+									Else
+										err_msg = "特殊能力「" & aname & "」のレベル指定の後に「,」が抜けています。"
 									End If
+									Error(0)
+								End If
+							End If
+							
+							'特殊能力の別名指定がある？
+							j = InStr(buf2, "=")
+							If j > 0 Then
+								adata = Mid(buf2, j + 1)
+								buf2 = Left(buf2, j - 1)
+							Else
+								adata = ""
+							End If
+							
+							'特殊能力のレベル指定を切り出す
+							j = InStr(buf2, "Lv")
+							Select Case j
+								Case 0
+									'指定なし
+									aname = buf2
+									alevel = DEFAULT_LEVEL
+								Case 1
+									'レベル指定のみあり
+									If Not IsNumeric(Mid(buf2, j + 2)) Then
+										DataErrorMessage("特殊能力「" & aname & "」のレベル指定が不正です。", fname, line_num, line_buf, data_name)
+									End If
+									
+									alevel = CShort(Mid(buf2, j + 2))
+									If aname = "" Then
+										DataErrorMessage("行頭から" & VB6.Format((i + 1) \ 2) & "番目の特殊能力名の設定が間違っています。", fname, line_num, line_buf, data_name)
+									End If
+								Case Else
+									'特殊能力名とレベルの両方が指定されている
+									aname = Left(buf2, j - 1)
+									alevel = CDbl(Mid(buf2, j + 2))
 							End Select
-							j = j + 1
-						Loop 
-						If j = Len(buf) Then
+						Else
+							'特殊能力修得レベル
+							If IsNumeric(buf2) Then
+								.AddSkill(aname, alevel, adata, CShort(buf2))
+							Else
+								If alevel > 0 Then
+									DataErrorMessage("特殊能力「" & aname & "Lv" & VB6.Format(alevel) & "」の修得レベルが間違っています。", fname, line_num, line_buf, data_name)
+								Else
+									DataErrorMessage("特殊能力「" & aname & "」の修得レベルが間違っています。", fname, line_num, line_buf, data_name)
+								End If
+								.AddSkill(aname, alevel, adata, 1)
+							End If
+						End If
+						
+						If buf = "" Then
+							'ここでこの行は終り
+							
+							'iが奇数の場合は修得レベルが抜けている
+							If i Mod 2 = 1 Then
+								If alevel > 0 Then
+									DataErrorMessage("特殊能力「" & aname & "Lv" & VB6.Format(alevel) & "」の修得レベルが間違っています。", fname, line_num, line_buf, data_name)
+								Else
+									DataErrorMessage("特殊能力「" & aname & "」の修得レベルが間違っています。", fname, line_num, line_buf, data_name)
+								End If
+							End If
+							
+							GetLine(FileNumber, line_buf, line_num)
+							buf = line_buf
+							
+							i = 0
+							aname = ""
+						End If
+					Loop 
+				ElseIf InStr(line_buf, "特殊能力,") = 1 Then 
+					'旧形式による特殊能力表記
+					buf = Mid(line_buf, 6)
+					
+					i = 0
+					aname = ""
+					Do 
+						i = i + 1
+						
+						'コンマの位置を検索
+						ret = InStr(buf, ",")
+						'「"」が使われているか検索
+						ret2 = InStr(buf, """")
+						
+						If ret2 < ret And ret2 > 0 Then
+							'「"」が見つかった場合、次の「"」後のコンマを検索
+							in_quote = True
+							j = ret2 + 1
+							Do While j <= Len(buf)
+								Select Case Mid(buf, j, 1)
+									Case """"
+										in_quote = Not in_quote
+									Case ","
+										If Not in_quote Then
+											buf2 = Left(buf, j - 1)
+											buf = Mid(buf, j + 1)
+										End If
+								End Select
+								j = j + 1
+							Loop 
+							If j = Len(buf) Then
+								buf2 = buf
+								buf = ""
+							End If
+							in_quote = False
+						ElseIf ret > 0 Then 
+							'コンマが見つかったらコンマまでの文字列を切り出す
+							buf2 = Trim(Left(buf, ret - 1))
+							buf = Mid(buf, ret + 1)
+							
+							'コンマの後ろの文字列が空白の場合
+							If buf = "" Then
+								If i Mod 2 = 1 Then
+									err_msg = "行末の「,」の後に特殊能力指定が抜けています。"
+								Else
+									err_msg = "行末の「,」の後に特殊能力レベル指定が抜けています。"
+								End If
+								Error(0)
+							End If
+						Else
+							'行末の文字列
 							buf2 = buf
 							buf = ""
 						End If
-						in_quote = False
-					ElseIf ret > 0 Then 
-						'Invalid_string_refer_to_original_code
-						buf2 = Trim(Left(buf, ret - 1))
-						buf = Mid(buf, ret + 1)
 						
-						'Invalid_string_refer_to_original_code
-						If buf = "" Then
-							If i Mod 2 = 1 Then
-								err_msg = "Invalid_string_refer_to_original_code"
-							Else
-								err_msg = "Invalid_string_refer_to_original_code"
+						If i Mod 2 = 1 Then
+							'特殊能力名＆レベル
+							
+							If InStr(buf2, " ") > 0 Then
+								If aname = "" Then
+									err_msg = "行頭から" & VB6.Format((i + 1) \ 2) & "番目の特殊能力の指定の後に「,」が抜けています。"
+								Else
+									err_msg = "特殊能力「" & aname & "」のレベル指定の後に「,」が抜けています。"
+								End If
+								Error(0)
 							End If
-							Error(0)
+							
+							'特殊能力の別名指定がある？
+							j = InStr(buf2, "=")
+							If j > 0 Then
+								adata = Mid(buf2, j + 1)
+								buf2 = Left(buf2, j - 1)
+							Else
+								adata = ""
+							End If
+							
+							'特殊能力のレベル指定を切り出す
+							j = InStr(buf2, "Lv")
+							Select Case j
+								Case 0
+									'指定なし
+									aname = buf2
+									alevel = DEFAULT_LEVEL
+								Case 1
+									'レベル指定のみあり
+									If Not IsNumeric(Mid(buf2, j + 2)) Then
+										err_msg = "特殊能力「" & aname & "」のレベル指定が不正です"
+										Error(0)
+									End If
+									
+									alevel = CDbl(Mid(buf2, j + 2))
+									If aname = "" Then
+										err_msg = "行頭から" & VB6.Format((i + 1) \ 2) & "番目の特殊能力の名前「" & buf2 & "」が不正です"
+										Error(0)
+									End If
+								Case Else
+									'特殊能力名とレベルの両方が指定されている
+									aname = Left(buf2, j - 1)
+									alevel = CDbl(Mid(buf2, j + 2))
+							End Select
+						Else
+							'特殊能力修得レベル
+							If IsNumeric(buf2) Then
+								.AddSkill(aname, alevel, adata, CShort(buf2))
+							Else
+								If alevel > 0 Then
+									DataErrorMessage("特殊能力「" & aname & "Lv" & VB6.Format(alevel) & "」の修得レベルが間違っています。", fname, line_num, line_buf, data_name)
+								Else
+									DataErrorMessage("特殊能力「" & aname & "」の修得レベルが間違っています。", fname, line_num, line_buf, data_name)
+								End If
+								.AddSkill(aname, alevel, adata, 1)
+							End If
 						End If
-					Else
-						'Invalid_string_refer_to_original_code
-						buf2 = buf
-						buf = ""
+					Loop While ret > 0
+					
+					'iが奇数の場合は修得レベルが抜けている
+					If i Mod 2 = 1 Then
+						If alevel > 0 Then
+							DataErrorMessage("特殊能力「" & aname & "Lv" & VB6.Format(alevel) & "」の修得レベルが間違っています。", fname, line_num, line_buf, data_name)
+						Else
+							DataErrorMessage("特殊能力「" & aname & "」の修得レベルが間違っています。", fname, line_num, line_buf, data_name)
+						End If
 					End If
 					
-					If i Mod 2 = 1 Then
-						'Invalid_string_refer_to_original_code
-						
-						If InStr(buf2, " ") > 0 Then
-							If aname = "" Then
-								err_msg = "陦碁ｭ縺九ｉ" & VB6.Format((i + 1) \ 2) & "Invalid_string_refer_to_original_code"
-							Else
-								err_msg = "Invalid_string_refer_to_original_code"
-								'Invalid_string_refer_to_original_code
-								'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-							End If
-							Error(0)
-						End If
-						
-						'Invalid_string_refer_to_original_code
-						j = InStr(buf2, "=")
-						If j > 0 Then
-							adata = Mid(buf2, j + 1)
-							buf2 = Left(buf2, j - 1)
-						Else
-							adata = ""
-						End If
-						
-						'Invalid_string_refer_to_original_code
-						j = InStr(buf2, "Lv")
-						Select Case j
-							Case 0
-								'Invalid_string_refer_to_original_code
-								aname = buf2
-								alevel = DEFAULT_LEVEL
-							Case 1
-								'Invalid_string_refer_to_original_code
-								If Not IsNumeric(Mid(buf2, j + 2)) Then
-									err_msg = "Invalid_string_refer_to_original_code"
-									'Invalid_string_refer_to_original_code
-									'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-									Error(0)
-								End If
-								
-								alevel = CDbl(Mid(buf2, j + 2))
-								If aname = "" Then
-									err_msg = "陦碁ｭ縺九ｉ" & VB6.Format((i + 1) \ 2) & "Invalid_string_refer_to_original_code"
-									'Invalid_string_refer_to_original_code
-									'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-									Error(0)
-								End If
-							Case Else
-								'Invalid_string_refer_to_original_code
-								aname = Left(buf2, j - 1)
-								alevel = CDbl(Mid(buf2, j + 2))
-						End Select
-					Else
-						'Invalid_string_refer_to_original_code
-						If IsNumeric(buf2) Then
-							.AddSkill(aname, alevel, adata, CShort(buf2))
-						Else
-							If alevel > 0 Then
-								DataErrorMessage("Invalid_string_refer_to_original_code")
-								aname & "Lv" & Format$(alevel) _
-								Invalid_string_refer_to_original_code_
-								fname, line_num, line_buf, data_name
-								'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-							Else
-								DataErrorMessage("Invalid_string_refer_to_original_code")
-								'Invalid_string_refer_to_original_code_
-								'fname, line_num, line_buf, data_name
-								'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-							End If
-							.AddSkill(aname, alevel, adata, 1)
-						End If
-					End If
-				Loop While ret > 0
-				
-				'Invalid_string_refer_to_original_code
-				If i Mod 2 = 1 Then
-					If alevel > 0 Then
-						DataErrorMessage("Invalid_string_refer_to_original_code")
-						aname & "Lv" & Format$(alevel) _
-						Invalid_string_refer_to_original_code_
-						fname, line_num, line_buf, data_name
-						'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-					Else
-						DataErrorMessage("Invalid_string_refer_to_original_code")
-						'Invalid_string_refer_to_original_code_
-						'fname, line_num, line_buf, data_name
-						'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-					End If
+					GetLine(FileNumber, line_buf, line_num)
+				Else
+					err_msg = "特殊能力の設定が抜けています。"
+					Error(0)
 				End If
 				
-				GetLine(FileNumber, line_buf, line_num)
-				err_msg = "Invalid_string_refer_to_original_code"
-				Error(0)
-				'End If
-				
-				'Invalid_string_refer_to_original_code
+				'格闘
 				If Len(line_buf) = 0 Then
-					err_msg = "Invalid_string_refer_to_original_code"
+					err_msg = "格闘攻撃力の設定が抜けています。"
 					Error(0)
 				End If
 				ret = InStr(line_buf, ",")
 				If ret = 0 Then
-					err_msg = "Invalid_string_refer_to_original_code"
+					err_msg = "射撃攻撃力の設定が抜けています。"
 					Error(0)
 				End If
 				buf2 = Trim(Left(line_buf, ret - 1))
@@ -640,14 +585,13 @@ ErrorHandler:
 				If IsNumeric(buf2) Then
 					.Infight = MinLng(CInt(buf2), 9999)
 				Else
-					DataErrorMessage("Invalid_string_refer_to_original_code")
-					fname( , line_num, line_buf, data_name)
+					DataErrorMessage("格闘攻撃力の設定が間違っています。", fname, line_num, line_buf, data_name)
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'射撃
 				ret = InStr(buf, ",")
 				If ret = 0 Then
-					err_msg = "Invalid_string_refer_to_original_code"
+					err_msg = "命中の設定が抜けています。"
 					Error(0)
 				End If
 				buf2 = Trim(Left(buf, ret - 1))
@@ -655,14 +599,13 @@ ErrorHandler:
 				If IsNumeric(buf2) Then
 					.Shooting = MinLng(CInt(buf2), 9999)
 				Else
-					DataErrorMessage("Invalid_string_refer_to_original_code")
-					fname( , line_num, line_buf, data_name)
+					DataErrorMessage("射撃攻撃力の設定が間違っています。", fname, line_num, line_buf, data_name)
 				End If
 				
-				'蜻ｽ荳ｭ
+				'命中
 				ret = InStr(buf, ",")
 				If ret = 0 Then
-					err_msg = "Invalid_string_refer_to_original_code"
+					err_msg = "回避の設定が抜けています。"
 					Error(0)
 				End If
 				buf2 = Trim(Left(buf, ret - 1))
@@ -670,14 +613,13 @@ ErrorHandler:
 				If IsNumeric(buf2) Then
 					.Hit = MinLng(CInt(buf2), 9999)
 				Else
-					DataErrorMessage("Invalid_string_refer_to_original_code")
-					fname( , line_num, line_buf, data_name)
+					DataErrorMessage("命中の設定が間違っています。", fname, line_num, line_buf, data_name)
 				End If
 				
-				'蝗樣∩
+				'回避
 				ret = InStr(buf, ",")
 				If ret = 0 Then
-					err_msg = "Invalid_string_refer_to_original_code"
+					err_msg = "技量の設定が抜けています。"
 					Error(0)
 				End If
 				buf2 = Trim(Left(buf, ret - 1))
@@ -685,14 +627,13 @@ ErrorHandler:
 				If IsNumeric(buf2) Then
 					.Dodge = MinLng(CInt(buf2), 9999)
 				Else
-					DataErrorMessage("Invalid_string_refer_to_original_code")
-					fname( , line_num, line_buf, data_name)
+					DataErrorMessage("回避の設定が間違っています。", fname, line_num, line_buf, data_name)
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'技量
 				ret = InStr(buf, ",")
 				If ret = 0 Then
-					err_msg = "Invalid_string_refer_to_original_code"
+					err_msg = "反応の設定が抜けています。"
 					Error(0)
 				End If
 				buf2 = Trim(Left(buf, ret - 1))
@@ -700,14 +641,13 @@ ErrorHandler:
 				If IsNumeric(buf2) Then
 					.Technique = MinLng(CInt(buf2), 9999)
 				Else
-					DataErrorMessage("Invalid_string_refer_to_original_code")
-					fname( , line_num, line_buf, data_name)
+					DataErrorMessage("技量の設定が間違っています。", fname, line_num, line_buf, data_name)
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'反応
 				ret = InStr(buf, ",")
 				If ret = 0 Then
-					err_msg = "Invalid_string_refer_to_original_code"
+					err_msg = "性格の設定が抜けています。"
 					Error(0)
 				End If
 				buf2 = Trim(Left(buf, ret - 1))
@@ -715,53 +655,47 @@ ErrorHandler:
 				If IsNumeric(buf2) Then
 					.Intuition = MinLng(CInt(buf2), 9999)
 				Else
-					DataErrorMessage("Invalid_string_refer_to_original_code")
-					fname( , line_num, line_buf, data_name)
+					DataErrorMessage("反応の設定が間違っています。", fname, line_num, line_buf, data_name)
 				End If
 				
-				'諤ｧ譬ｼ
+				'性格
 				buf2 = Trim(buf)
 				If Len(buf2) = 0 Then
-					err_msg = "Invalid_string_refer_to_original_code"
+					err_msg = "性格の設定が抜けています。"
 					Error(0)
 				End If
 				If InStr(buf2, ",") > 0 Then
-					DataErrorMessage("Invalid_string_refer_to_original_code")
-					fname( , line_num, line_buf, data_name)
+					DataErrorMessage("行末に余分なコンマが付けられています。", fname, line_num, line_buf, data_name)
 					buf2 = Trim(Left(buf2, InStr(buf2, ",") - 1))
 				End If
 				If Not IsNumeric(buf2) Then
 					.Personality = buf2
 				Else
-					DataErrorMessage("Invalid_string_refer_to_original_code")
-					fname( , line_num, line_buf, data_name)
+					DataErrorMessage("性格の設定が間違っています。", fname, line_num, line_buf, data_name)
 				End If
 				
-				'繧ｹ繝壹す繝｣繝ｫ繝代Ρ繝ｼ
+				'スペシャルパワー
 				GetLine(FileNumber, line_buf, line_num)
 				Select Case line_buf
-					Case "Invalid_string_refer_to_original_code"
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-						'Invalid_string_refer_to_original_code
+					Case "ＳＰなし", "精神なし"
+						'スペシャルパワーを持っていない
 					Case ""
-						err_msg = "Invalid_string_refer_to_original_code"
+						err_msg = "スペシャルパワーの設定が抜けています。"
 						Error(0)
 					Case Else
 						ret = InStr(line_buf, ",")
 						If ret = 0 Then
-							err_msg = "Invalid_string_refer_to_original_code"
+							err_msg = "ＳＰ値の設定が抜けています。"
 							Error(0)
 						End If
 						buf2 = Trim(Left(line_buf, ret - 1))
 						buf = Mid(line_buf, ret + 1)
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-						err_msg = "Invalid_string_refer_to_original_code"
-						Error(0)
-						'End If
+						If buf2 <> "ＳＰ" And buf2 <> "精神" Then
+							err_msg = "スペシャルパワーの設定が抜けています。"
+							Error(0)
+						End If
 						
-						'Invalid_string_refer_to_original_code
+						'ＳＰ値
 						ret = InStr(buf, ",")
 						If ret > 0 Then
 							buf2 = Trim(Left(buf, ret - 1))
@@ -773,18 +707,17 @@ ErrorHandler:
 						If IsNumeric(buf2) Then
 							.SP = MinLng(CInt(buf2), 9999)
 						Else
-							DataErrorMessage("Invalid_string_refer_to_original_code")
-							fname( , line_num, line_buf, data_name)
+							DataErrorMessage("ＳＰの設定が間違っています。", fname, line_num, line_buf, data_name)
 							.SP = 1
 						End If
 						
-						'繧ｹ繝壹す繝｣繝ｫ繝代Ρ繝ｼ縺ｨ迯ｲ蠕励Ξ繝吶Ν
+						'スペシャルパワーと獲得レベル
 						ret = InStr(buf, ",")
 						Do While ret > 0
 							sname = Trim(Left(buf, ret - 1))
 							buf = Mid(buf, ret + 1)
 							
-							'Invalid_string_refer_to_original_code
+							'ＳＰ消費量
 							If InStr(sname, "=") > 0 Then
 								sp_cost = StrToLng(Mid(sname, InStr(sname, "=") + 1))
 								sname = Left(sname, InStr(sname, "=") - 1)
@@ -802,16 +735,11 @@ ErrorHandler:
 							End If
 							
 							If sname = "" Then
-								DataErrorMessage("Invalid_string_refer_to_original_code")
-								fname( , line_num, line_buf, data_name)
+								DataErrorMessage("スペシャルパワーの指定が抜けています。", fname, line_num, line_buf, data_name)
 							ElseIf Not SPDList.IsDefined(sname) Then 
-								DataErrorMessage(sname & "Invalid_string_refer_to_original_code")
-								fname( , line_num, line_buf, data_name)
+								DataErrorMessage(sname & "というスペシャルパワーは存在しません。", fname, line_num, line_buf, data_name)
 							ElseIf Not IsNumeric(buf2) Then 
-								DataErrorMessage("Invalid_string_refer_to_original_code")
-								'Invalid_string_refer_to_original_code_
-								'fname, line_num, line_buf, data_name
-								'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+								DataErrorMessage("スペシャルパワー「" & sname & "」の獲得レベルが間違っています。", fname, line_num, line_buf, data_name)
 								.AddSpecialPower(sname, 1, sp_cost)
 							Else
 								.AddSpecialPower(sname, CShort(buf2), sp_cost)
@@ -821,24 +749,21 @@ ErrorHandler:
 						Loop 
 						
 						If buf <> "" Then
-							DataErrorMessage("Invalid_string_refer_to_original_code")
-							'Invalid_string_refer_to_original_code_
-							'fname, line_num, line_buf, data_name
-							'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+							DataErrorMessage("スペシャルパワー「" & Trim(sname) & "」の獲得レベル指定が抜けています。", fname, line_num, line_buf, data_name)
 						End If
 				End Select
 				
-				'Invalid_string_refer_to_original_code
+				'ビットマップ, ＭＩＤＩ
 				GetLine(FileNumber, line_buf, line_num)
 				
-				'Invalid_string_refer_to_original_code
+				'ビットマップ
 				If Len(line_buf) = 0 Then
-					err_msg = "Invalid_string_refer_to_original_code"
+					err_msg = "ビットマップの設定が抜けています。"
 					Error(0)
 				End If
 				ret = InStr(line_buf, ",")
 				If ret = 0 Then
-					err_msg = "Invalid_string_refer_to_original_code"
+					err_msg = "ＭＩＤＩの設定が抜けています。"
 					Error(0)
 				End If
 				buf2 = Trim(Left(line_buf, ret - 1))
@@ -846,12 +771,11 @@ ErrorHandler:
 				If LCase(Right(buf2, 4)) = ".bmp" Then
 					.Bitmap = buf2
 				Else
-					DataErrorMessage("Invalid_string_refer_to_original_code")
-					fname( , line_num, line_buf, data_name)
+					DataErrorMessage("ビットマップの設定が間違っています。", fname, line_num, line_buf, data_name)
 					.IsBitmapMissing = True
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'ＭＩＤＩ
 				buf = Trim(buf)
 				buf2 = buf
 				Do While Right(buf2, 1) = ")"
@@ -861,12 +785,10 @@ ErrorHandler:
 					Case ".mid", ".mp3", ".wav", "-"
 						.BGM = buf
 					Case ""
-						DataErrorMessage("Invalid_string_refer_to_original_code")
-						fname( , line_num, line_buf, data_name)
+						DataErrorMessage("ＭＩＤＩの設定が抜けています。", fname, line_num, line_buf, data_name)
 						.Bitmap = "-.mid"
 					Case Else
-						DataErrorMessage("Invalid_string_refer_to_original_code")
-						fname( , line_num, line_buf, data_name)
+						DataErrorMessage("ＭＩＤＩの設定が間違っています。", fname, line_num, line_buf, data_name)
 						.Bitmap = "-.mid"
 				End Select
 				
@@ -881,7 +803,7 @@ ErrorHandler:
 					GoTo SkipRest
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'特殊能力データ
 				GetLine(FileNumber, line_buf, line_num)
 				
 				buf = line_buf
@@ -912,8 +834,7 @@ ErrorHandler:
 					End If
 					
 					If buf2 = "" Or IsNumeric(buf2) Then
-						DataErrorMessage("陦碁ｭ縺九ｉ" & VB6.Format(i) & "Invalid_string_refer_to_original_code")
-						fname( , line_num, line_buf, data_name)
+						DataErrorMessage("行頭から" & VB6.Format(i) & "番目の特殊能力の設定が間違っています。", fname, line_num, line_buf, data_name)
 					Else
 						.AddFeature(buf2)
 					End If
@@ -938,30 +859,30 @@ ErrorHandler:
 					GoTo SkipRest
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'武器データ
 				GetLine(FileNumber, line_buf, line_num)
 				Do While Len(line_buf) > 0 And line_buf <> "==="
-					'Invalid_string_refer_to_original_code
+					'武器名
 					ret = InStr(line_buf, ",")
 					If ret = 0 Then
-						err_msg = "Invalid_string_refer_to_original_code"
+						err_msg = "武器データの終りには空行を置いてください。"
 						Error(0)
 					End If
 					wname = Trim(Left(line_buf, ret - 1))
 					buf = Mid(line_buf, ret + 1)
 					
 					If wname = "" Then
-						err_msg = "Invalid_string_refer_to_original_code"
+						err_msg = "武器名の設定が間違っています。"
 						Error(0)
 					End If
 					
-					'豁ｦ蝎ｨ繧堤匳骭ｲ
+					'武器を登録
 					wd = .AddWeapon(wname)
 					
-					'Invalid_string_refer_to_original_code
+					'攻撃力
 					ret = InStr(buf, ",")
 					If ret = 0 Then
-						err_msg = wname & "Invalid_string_refer_to_original_code"
+						err_msg = wname & "の最小射程が抜けています。"
 						Error(0)
 					End If
 					buf2 = Trim(Left(buf, ret - 1))
@@ -971,18 +892,17 @@ ErrorHandler:
 					ElseIf buf = "-" Then 
 						wd.Power = 0
 					Else
-						DataErrorMessage(wname & "Invalid_string_refer_to_original_code")
-						fname( , line_num, line_buf, data_name)
+						DataErrorMessage(wname & "の攻撃力の設定が間違っています。", fname, line_num, line_buf, data_name)
 						If LLength(buf2) > 1 Then
 							buf = LIndex(buf2, 2) & "," & buf
 							wd.Power = StrToLng(LIndex(buf2, 1))
 						End If
 					End If
 					
-					'Invalid_string_refer_to_original_code
+					'最小射程
 					ret = InStr(buf, ",")
 					If ret = 0 Then
-						err_msg = wname & "Invalid_string_refer_to_original_code"
+						err_msg = wname & "の最大射程の設定が抜けています。"
 						Error(0)
 					End If
 					buf2 = Trim(Left(buf, ret - 1))
@@ -990,8 +910,7 @@ ErrorHandler:
 					If IsNumeric(buf2) Then
 						wd.MinRange = CShort(buf2)
 					Else
-						DataErrorMessage(wname & "Invalid_string_refer_to_original_code")
-						fname( , line_num, line_buf, data_name)
+						DataErrorMessage(wname & "の最小射程の設定が間違っています。", fname, line_num, line_buf, data_name)
 						wd.MinRange = 1
 						If LLength(buf2) > 1 Then
 							buf = LIndex(buf2, 2) & "," & buf
@@ -999,10 +918,10 @@ ErrorHandler:
 						End If
 					End If
 					
-					'Invalid_string_refer_to_original_code
+					'最大射程
 					ret = InStr(buf, ",")
 					If ret = 0 Then
-						err_msg = wname & "Invalid_string_refer_to_original_code"
+						err_msg = wname & "の命中率の設定が抜けています。"
 						Error(0)
 					End If
 					buf2 = Trim(Left(buf, ret - 1))
@@ -1010,8 +929,7 @@ ErrorHandler:
 					If IsNumeric(buf2) Then
 						wd.MaxRange = MinLng(CInt(buf2), 99)
 					Else
-						DataErrorMessage(wname & "Invalid_string_refer_to_original_code")
-						fname( , line_num, line_buf, data_name)
+						DataErrorMessage(wname & "の最大射程の設定が間違っています。", fname, line_num, line_buf, data_name)
 						wd.MaxRange = 1
 						If LLength(buf2) > 1 Then
 							buf = LIndex(buf2, 2) & "," & buf
@@ -1019,10 +937,10 @@ ErrorHandler:
 						End If
 					End If
 					
-					'Invalid_string_refer_to_original_code
+					'命中率
 					ret = InStr(buf, ",")
 					If ret = 0 Then
-						err_msg = wname & "Invalid_string_refer_to_original_code"
+						err_msg = wname & "の弾数の設定が抜けています。"
 						Error(0)
 					End If
 					buf2 = Trim(Left(buf, ret - 1))
@@ -1036,18 +954,17 @@ ErrorHandler:
 						End If
 						wd.Precision = n
 					Else
-						DataErrorMessage(wname & "Invalid_string_refer_to_original_code")
-						fname( , line_num, line_buf, data_name)
+						DataErrorMessage(wname & "の命中率の設定が間違っています。", fname, line_num, line_buf, data_name)
 						If LLength(buf2) > 1 Then
 							buf = LIndex(buf2, 2) & "," & buf
 							wd.Precision = StrToLng(LIndex(buf2, 1))
 						End If
 					End If
 					
-					'蠑ｾ謨ｰ
+					'弾数
 					ret = InStr(buf, ",")
 					If ret = 0 Then
-						err_msg = wname & "Invalid_string_refer_to_original_code"
+						err_msg = wname & "の消費ＥＮの設定が抜けています。"
 						Error(0)
 					End If
 					buf2 = Trim(Left(buf, ret - 1))
@@ -1056,8 +973,7 @@ ErrorHandler:
 						If IsNumeric(buf2) Then
 							wd.Bullet = MinLng(CInt(buf2), 99)
 						Else
-							DataErrorMessage(wname & "Invalid_string_refer_to_original_code")
-							fname( , line_num, line_buf, data_name)
+							DataErrorMessage(wname & "の弾数の設定が間違っています。", fname, line_num, line_buf, data_name)
 							If LLength(buf2) > 1 Then
 								buf = LIndex(buf2, 2) & "," & buf
 								wd.Bullet = StrToLng(LIndex(buf2, 1))
@@ -1065,10 +981,10 @@ ErrorHandler:
 						End If
 					End If
 					
-					'Invalid_string_refer_to_original_code
+					'消費ＥＮ
 					ret = InStr(buf, ",")
 					If ret = 0 Then
-						err_msg = wname & "Invalid_string_refer_to_original_code"
+						err_msg = wname & "の必要気力が抜けています。"
 						Error(0)
 					End If
 					buf2 = Trim(Left(buf, ret - 1))
@@ -1077,8 +993,7 @@ ErrorHandler:
 						If IsNumeric(buf2) Then
 							wd.ENConsumption = MinLng(CInt(buf2), 999)
 						Else
-							DataErrorMessage(wname & "Invalid_string_refer_to_original_code")
-							fname( , line_num, line_buf, data_name)
+							DataErrorMessage(wname & "の消費ＥＮの設定が間違っています。", fname, line_num, line_buf, data_name)
 							If LLength(buf2) > 1 Then
 								buf = LIndex(buf2, 2) & "," & buf
 								wd.ENConsumption = StrToLng(LIndex(buf2, 1))
@@ -1086,10 +1001,10 @@ ErrorHandler:
 						End If
 					End If
 					
-					'Invalid_string_refer_to_original_code
+					'必要気力
 					ret = InStr(buf, ",")
 					If ret = 0 Then
-						err_msg = wname & "Invalid_string_refer_to_original_code"
+						err_msg = wname & "の地形適応が抜けています。"
 						Error(0)
 					End If
 					buf2 = Trim(Left(buf, ret - 1))
@@ -1104,8 +1019,7 @@ ErrorHandler:
 							End If
 							wd.NecessaryMorale = n
 						Else
-							DataErrorMessage(wname & "Invalid_string_refer_to_original_code")
-							fname( , line_num, line_buf, data_name)
+							DataErrorMessage(wname & "の必要気力の設定が間違っています。", fname, line_num, line_buf, data_name)
 							If LLength(buf2) > 1 Then
 								buf = LIndex(buf2, 2) & "," & buf
 								wd.NecessaryMorale = StrToLng(LIndex(buf2, 1))
@@ -1113,10 +1027,10 @@ ErrorHandler:
 						End If
 					End If
 					
-					'Invalid_string_refer_to_original_code
+					'地形適応
 					ret = InStr(buf, ",")
 					If ret = 0 Then
-						err_msg = wname & "Invalid_string_refer_to_original_code"
+						err_msg = wname & "のクリティカル率が抜けています。"
 						Error(0)
 					End If
 					buf2 = Trim(Left(buf, ret - 1))
@@ -1124,8 +1038,7 @@ ErrorHandler:
 					If Len(buf2) = 4 Then
 						wd.Adaption = buf2
 					Else
-						DataErrorMessage(wname & "Invalid_string_refer_to_original_code")
-						fname( , line_num, line_buf, data_name)
+						DataErrorMessage(wname & "の地形適応の設定が間違っています。", fname, line_num, line_buf, data_name)
 						wd.Adaption = "----"
 						If LLength(buf2) > 1 Then
 							buf = LIndex(buf2, 2) & "," & buf
@@ -1133,10 +1046,10 @@ ErrorHandler:
 						End If
 					End If
 					
-					'Invalid_string_refer_to_original_code
+					'クリティカル率
 					ret = InStr(buf, ",")
 					If ret = 0 Then
-						err_msg = wname & "Invalid_string_refer_to_original_code"
+						err_msg = wname & "の武器属性が抜けています。"
 						Error(0)
 					End If
 					buf2 = Trim(Left(buf, ret - 1))
@@ -1150,22 +1063,20 @@ ErrorHandler:
 						End If
 						wd.Critical = n
 					Else
-						DataErrorMessage(wname & "Invalid_string_refer_to_original_code")
-						fname( , line_num, line_buf, data_name)
+						DataErrorMessage(wname & "のクリティカル率の設定が間違っています。", fname, line_num, line_buf, data_name)
 						If LLength(buf2) > 1 Then
 							buf = LIndex(buf2, 2) & "," & buf
 							wd.Critical = StrToLng(LIndex(buf2, 1))
 						End If
 					End If
 					
-					'豁ｦ蝎ｨ螻樊ｧ
+					'武器属性
 					buf = Trim(buf)
 					If Len(buf) = 0 Then
-						DataErrorMessage(wname & "Invalid_string_refer_to_original_code")
-						fname( , line_num, line_buf, data_name)
+						DataErrorMessage(wname & "の武器属性の設定が間違っています。", fname, line_num, line_buf, data_name)
 					End If
 					If Right(buf, 1) = ")" Then
-						'Invalid_string_refer_to_original_code
+						'必要技能
 						ret = InStr(buf, "> ")
 						If ret > 0 Then
 							If ret > 0 Then
@@ -1183,7 +1094,7 @@ ErrorHandler:
 						End If
 					End If
 					If Right(buf, 1) = ">" Then
-						'Invalid_string_refer_to_original_code
+						'必要条件
 						ret = InStr(buf, "<")
 						If ret > 0 Then
 							wd.NecessaryCondition = Trim(Mid(buf, ret + 1, Len(buf) - ret - 1))
@@ -1195,8 +1106,7 @@ ErrorHandler:
 						wd.Class_Renamed = ""
 					End If
 					If InStr(wd.Class_Renamed, "Lv") > 0 Then
-						DataErrorMessage(wname & "Invalid_string_refer_to_original_code")
-						fname( , line_num, line_buf, data_name)
+						DataErrorMessage(wname & "の属性のレベル指定が間違っています。", fname, line_num, line_buf, data_name)
 					End If
 					
 					If EOF(FileNumber) Then
@@ -1211,41 +1121,41 @@ ErrorHandler:
 					GoTo SkipRest
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'アビリティデータ
 				GetLine(FileNumber, line_buf, line_num)
 				Do While Len(line_buf) > 0
-					'Invalid_string_refer_to_original_code
+					'アビリティ名
 					ret = InStr(line_buf, ",")
 					If ret = 0 Then
-						err_msg = "Invalid_string_refer_to_original_code"
+						err_msg = "アビリティデータの終りには空行を置いてください。"
 						Error(0)
 					End If
 					sname = Trim(Left(line_buf, ret - 1))
 					buf = Mid(line_buf, ret + 1)
 					
 					If sname = "" Then
-						err_msg = "Invalid_string_refer_to_original_code"
+						err_msg = "アビリティ名の設定が間違っています。"
 						Error(0)
 					End If
 					
-					'Invalid_string_refer_to_original_code
+					'アビリティを登録
 					sd = .AddAbility(sname)
 					
-					'Invalid_string_refer_to_original_code
+					'効果
 					ret = InStr(buf, ",")
 					If ret = 0 Then
-						err_msg = sname & "Invalid_string_refer_to_original_code"
+						err_msg = sname & "の射程の設定が抜けています。"
 						Error(0)
 					End If
 					buf2 = Trim(Left(buf, ret - 1))
 					buf = Mid(buf, ret + 1)
 					sd.SetEffect(buf2)
 					
-					'Invalid_string_refer_to_original_code
+					'射程
 					sd.MinRange = 0
 					ret = InStr(buf, ",")
 					If ret = 0 Then
-						err_msg = sname & "Invalid_string_refer_to_original_code"
+						err_msg = sname & "の回数の設定が抜けています。"
 						Error(0)
 					End If
 					buf2 = Trim(Left(buf, ret - 1))
@@ -1255,18 +1165,17 @@ ErrorHandler:
 					ElseIf buf2 = "-" Then 
 						sd.MaxRange = 0
 					Else
-						DataErrorMessage(sname & "Invalid_string_refer_to_original_code")
-						fname( , line_num, line_buf, data_name)
+						DataErrorMessage(sname & "の射程の設定が間違っています。", fname, line_num, line_buf, data_name)
 						If LLength(buf2) > 1 Then
 							buf = LIndex(buf2, 2) & "," & buf
 							sd.MaxRange = StrToLng(LIndex(buf2, 1))
 						End If
 					End If
 					
-					'蝗樊焚
+					'回数
 					ret = InStr(buf, ",")
 					If ret = 0 Then
-						err_msg = sname & "Invalid_string_refer_to_original_code"
+						err_msg = sname & "の消費ＥＮの設定が抜けています。"
 						Error(0)
 					End If
 					buf2 = Trim(Left(buf, ret - 1))
@@ -1275,8 +1184,7 @@ ErrorHandler:
 						If IsNumeric(buf2) Then
 							sd.Stock = MinLng(CInt(buf2), 99)
 						Else
-							DataErrorMessage(sname & "Invalid_string_refer_to_original_code")
-							fname( , line_num, line_buf, data_name)
+							DataErrorMessage(sname & "の回数の設定が間違っています。", fname, line_num, line_buf, data_name)
 							If LLength(buf2) > 1 Then
 								buf = LIndex(buf2, 2) & "," & buf
 								sd.Stock = StrToLng(LIndex(buf2, 1))
@@ -1284,10 +1192,10 @@ ErrorHandler:
 						End If
 					End If
 					
-					'Invalid_string_refer_to_original_code
+					'消費ＥＮ
 					ret = InStr(buf, ",")
 					If ret = 0 Then
-						err_msg = sname & "Invalid_string_refer_to_original_code"
+						err_msg = sname & "の必要気力の設定が抜けています。"
 						Error(0)
 					End If
 					buf2 = Trim(Left(buf, ret - 1))
@@ -1296,8 +1204,7 @@ ErrorHandler:
 						If IsNumeric(buf2) Then
 							sd.ENConsumption = MinLng(CInt(buf2), 999)
 						Else
-							DataErrorMessage(sname & "Invalid_string_refer_to_original_code")
-							fname( , line_num, line_buf, data_name)
+							DataErrorMessage(sname & "の消費ＥＮの設定が間違っています。", fname, line_num, line_buf, data_name)
 							If LLength(buf2) > 1 Then
 								buf = LIndex(buf2, 2) & "," & buf
 								sd.ENConsumption = StrToLng(LIndex(buf2, 1))
@@ -1305,10 +1212,10 @@ ErrorHandler:
 						End If
 					End If
 					
-					'Invalid_string_refer_to_original_code
+					'必要気力
 					ret = InStr(buf, ",")
 					If ret = 0 Then
-						err_msg = sname & "Invalid_string_refer_to_original_code"
+						err_msg = sname & "のアビリティ属性の設定が抜けています。"
 						Error(0)
 					End If
 					buf2 = Trim(Left(buf, ret - 1))
@@ -1323,8 +1230,7 @@ ErrorHandler:
 							End If
 							sd.NecessaryMorale = n
 						Else
-							DataErrorMessage(sname & "Invalid_string_refer_to_original_code")
-							fname( , line_num, line_buf, data_name)
+							DataErrorMessage(sname & "の必要気力の設定が間違っています。", fname, line_num, line_buf, data_name)
 							If LLength(buf2) > 1 Then
 								buf = LIndex(buf2, 2) & "," & buf
 								sd.NecessaryMorale = StrToLng(LIndex(buf2, 1))
@@ -1332,14 +1238,13 @@ ErrorHandler:
 						End If
 					End If
 					
-					'Invalid_string_refer_to_original_code
+					'アビリティ属性
 					buf = Trim(buf)
 					If Len(buf) = 0 Then
-						DataErrorMessage(sname & "Invalid_string_refer_to_original_code")
-						fname( , line_num, line_buf, data_name)
+						DataErrorMessage(sname & "のアビリティ属性の設定が間違っています。", fname, line_num, line_buf, data_name)
 					End If
 					If Right(buf, 1) = ")" Then
-						'Invalid_string_refer_to_original_code
+						'必要技能
 						ret = InStr(buf, "> ")
 						If ret > 0 Then
 							If ret > 0 Then
@@ -1357,7 +1262,7 @@ ErrorHandler:
 						End If
 					End If
 					If Right(buf, 1) = ">" Then
-						'Invalid_string_refer_to_original_code
+						'必要条件
 						ret = InStr(buf, "<")
 						If ret > 0 Then
 							sd.NecessaryCondition = Trim(Mid(buf, ret + 1, Len(buf) - ret - 1))
@@ -1369,8 +1274,7 @@ ErrorHandler:
 						sd.Class_Renamed = ""
 					End If
 					If InStr(sd.Class_Renamed, "Lv") > 0 Then
-						DataErrorMessage(sname & "Invalid_string_refer_to_original_code")
-						fname( , line_num, line_buf, data_name)
+						DataErrorMessage(sname & "の属性のレベル指定が間違っています。", fname, line_num, line_buf, data_name)
 					End If
 					
 					If EOF(FileNumber) Then
@@ -1385,9 +1289,9 @@ SkipRest:
 		Loop 
 		
 ErrorHandler: 
-		'Invalid_string_refer_to_original_code
+		'エラー処理
 		If line_num = 0 Then
-			ErrorMessage(fname & "縺碁幕縺代∪縺帙ｓ")
+			ErrorMessage(fname & "が開けません")
 		Else
 			FileClose(FileNumber)
 			DataErrorMessage(err_msg, fname, line_num, line_buf, data_name)

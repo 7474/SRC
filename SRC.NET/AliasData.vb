@@ -3,13 +3,13 @@ Option Explicit On
 Friend Class AliasData
 	
 	' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
+	' 本プログラムはフリーソフトであり、無保証です。
+	' 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
+	' 再頒布または改変することができます。
 	
-	'Invalid_string_refer_to_original_code
+	'エリアスデータのクラス
 	
-	'蜷咲ｧｰ
+	'名称
 	Public Name As String
 	
 	Private strAliasType() As String
@@ -22,7 +22,7 @@ Friend Class AliasData
 	
 	
 	
-	'Invalid_string_refer_to_original_code
+	'クラスの初期化
 	'UPGRADE_NOTE: Class_Initialize は Class_Initialize_Renamed にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
 	Private Sub Class_Initialize_Renamed()
 		ReDim strAliasType(0)
@@ -39,70 +39,70 @@ Friend Class AliasData
 	End Sub
 	
 	
-	'繧ｨ繝ｪ繧｢繧ｹ縺ｮ蛟区焚
+	'エリアスの個数
 	Public ReadOnly Property Count() As Short
 		Get
 			Count = UBound(strAliasType)
 		End Get
 	End Property
 	
-	'Invalid_string_refer_to_original_code
+	'エリアスの種類
 	Public ReadOnly Property AliasType(ByVal idx As Short) As String
 		Get
 			AliasType = strAliasType(idx)
 		End Get
 	End Property
 	
-	'繧ｨ繝ｪ繧｢繧ｹ縺ｮ繝ｬ繝吶Ν
+	'エリアスのレベル
 	Public ReadOnly Property AliasLevel(ByVal idx As Short) As Double
 		Get
 			AliasLevel = dblAliasLevel(idx)
 		End Get
 	End Property
 	
-	'Invalid_string_refer_to_original_code
+	'エリアスのレベルが＋修正値かどうか
 	Public ReadOnly Property AliasLevelIsPlusMod(ByVal idx As Short) As Boolean
 		Get
 			AliasLevelIsPlusMod = blnAliasLevelIsPlusMod(idx)
 		End Get
 	End Property
 	
-	'Invalid_string_refer_to_original_code
+	'エリアスのレベルが×修正値かどうか
 	Public ReadOnly Property AliasLevelIsMultMod(ByVal idx As Short) As Boolean
 		Get
 			AliasLevelIsMultMod = blnAliasLevelIsMultMod(idx)
 		End Get
 	End Property
 	
-	'Invalid_string_refer_to_original_code
+	'エリアスのデータ
 	Public ReadOnly Property AliasData(ByVal idx As Short) As String
 		Get
 			AliasData = strAliasData(idx)
 		End Get
 	End Property
 	
-	'Invalid_string_refer_to_original_code
+	'エリアスの必要技能
 	Public ReadOnly Property AliasNecessarySkill(ByVal idx As Short) As String
 		Get
 			AliasNecessarySkill = strAliasNecessarySkill(idx)
 		End Get
 	End Property
 	
-	'Invalid_string_refer_to_original_code
+	'エリアスの必要条件
 	Public ReadOnly Property AliasNecessaryCondition(ByVal idx As Short) As String
 		Get
 			AliasNecessaryCondition = strAliasNecessaryCondition(idx)
 		End Get
 	End Property
 	
-	'繧ｨ繝ｪ繧｢繧ｹ繧堤匳骭ｲ
+	'エリアスを登録
 	Public Sub AddAlias(ByVal adef As String)
 		Dim atype, adata As String
 		Dim alevel As Double
 		Dim j, i, n As Short
 		Dim buf As String
 		
-		'Invalid_string_refer_to_original_code
+		'エリアスの領域を確保
 		n = UBound(strAliasType) + 1
 		ReDim Preserve strAliasType(n)
 		ReDim Preserve dblAliasLevel(n)
@@ -112,7 +112,7 @@ Friend Class AliasData
 		ReDim Preserve strAliasNecessarySkill(n)
 		ReDim Preserve strAliasNecessaryCondition(n)
 		
-		'Invalid_string_refer_to_original_code
+		'必要技能の切り出し
 		If Right(adef, 1) = ")" Then
 			i = InStr(adef, " (")
 			If i > 0 Then
@@ -128,7 +128,7 @@ Friend Class AliasData
 			buf = adef
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'必要条件の切り出し
 		If Right(buf, 1) = ">" Then
 			i = InStr(adef, " <")
 			If i > 0 Then
@@ -140,14 +140,14 @@ Friend Class AliasData
 			End If
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'レベル指定が修正値か？
 		If ReplaceString(buf, "Lv+", "Lv") Then
 			blnAliasLevelIsPlusMod(n) = True
 		ElseIf ReplaceString(buf, "Lv*", "Lv") Then 
 			blnAliasLevelIsMultMod(n) = True
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'エリアスの種類、レベル、データを切り出し
 		alevel = DEFAULT_LEVEL
 		i = InStr(buf, "Lv")
 		j = InStr(buf, "=")
@@ -169,7 +169,7 @@ Friend Class AliasData
 			atype = buf
 		End If
 		
-		'繧ｨ繝ｪ繧｢繧ｹ繧堤匳骭ｲ
+		'エリアスを登録
 		strAliasType(n) = atype
 		dblAliasLevel(n) = alevel
 		strAliasData(n) = adata

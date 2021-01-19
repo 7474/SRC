@@ -4,19 +4,19 @@ Friend Class Units
 	Implements System.Collections.IEnumerable
 	
 	' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
+	' –{ƒvƒƒOƒ‰ƒ€‚ÍƒtƒŠ[ƒ\ƒtƒg‚Å‚ ‚èA–³•ÛØ‚Å‚·B
+	' –{ƒvƒƒOƒ‰ƒ€‚ÍGNU General Public License(Ver.3‚Ü‚½‚Í‚»‚êˆÈ~)‚ª’è‚ß‚éğŒ‚Ì‰º‚Å
+	' Ä”Ğ•z‚Ü‚½‚Í‰ü•Ï‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B
 	
-	'Invalid_string_refer_to_original_code
+	'‘Sƒ†ƒjƒbƒg‚Ìƒf[ƒ^‚ğŠÇ—‚·‚éƒŠƒXƒg‚ÌƒNƒ‰ƒX
 	
-	'Invalid_string_refer_to_original_code
+	'ƒ†ƒjƒbƒg‚h‚cì¬—pƒJƒEƒ“ƒ^
 	Public IDCount As Integer
 	
-	'ãƒ¦ãƒ‹ãƒƒãƒˆä¸€è¦§
+	'ƒ†ƒjƒbƒgˆê——
 	Private colUnits As New Collection
 	
-	'Invalid_string_refer_to_original_code
+	'ƒNƒ‰ƒX‚Ì‰Šú‰»
 	'UPGRADE_NOTE: Class_Initialize ‚Í Class_Initialize_Renamed ‚ÉƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 	Private Sub Class_Initialize_Renamed()
 		IDCount = 0
@@ -26,7 +26,7 @@ Friend Class Units
 		Class_Initialize_Renamed()
 	End Sub
 	
-	'ã‚¯ãƒ©ã‚¹ã®è§£æ”¾
+	'ƒNƒ‰ƒX‚Ì‰ğ•ú
 	'UPGRADE_NOTE: Class_Terminate ‚Í Class_Terminate_Renamed ‚ÉƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 	Private Sub Class_Terminate_Renamed()
 		Dim i As Short
@@ -44,7 +44,7 @@ Friend Class Units
 		MyBase.Finalize()
 	End Sub
 	
-	'ForEachç”¨é–¢æ•°
+	'ForEach—pŠÖ”
 	'UPGRADE_NOTE: NewEnum ƒvƒƒpƒeƒB‚ªƒRƒƒ“ƒg ƒAƒEƒg‚³‚ê‚Ü‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="B3FC1610-34F3-43F5-86B7-16C984F0E88E"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 	'Public Function NewEnum() As stdole.IUnknown
 		'NewEnum = colUnits.GetEnumerator
@@ -56,7 +56,7 @@ Friend Class Units
 	End Function
 	
 	
-	'ãƒ¦ãƒ‹ãƒƒãƒˆãƒªã‚¹ãƒˆã«æ–°ã—ã„ãƒ¦ãƒ‹ãƒƒãƒˆã‚’è¿½åŠ 
+	'ƒ†ƒjƒbƒgƒŠƒXƒg‚ÉV‚µ‚¢ƒ†ƒjƒbƒg‚ğ’Ç‰Á
 	Public Function Add(ByRef uname As String, ByVal urank As Short, ByRef uparty As String) As Unit
 		Dim new_unit As Unit
 		Dim new_form As Unit
@@ -66,7 +66,7 @@ Friend Class Units
 		Dim i, j As Short
 		Dim list As String
 		
-		'Invalid_string_refer_to_original_code
+		'ƒ†ƒjƒbƒgƒf[ƒ^‚ª’è‹`‚³‚ê‚Ä‚¢‚éH
 		If Not UDList.IsDefined(uname) Then
 			'UPGRADE_NOTE: ƒIƒuƒWƒFƒNƒg Add ‚ğƒKƒx[ƒW ƒRƒŒƒNƒg‚·‚é‚Ü‚Å‚±‚ÌƒIƒuƒWƒFƒNƒg‚ğ”jŠü‚·‚é‚±‚Æ‚Í‚Å‚«‚Ü‚¹‚ñB Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 			Add = Nothing
@@ -86,18 +86,15 @@ Friend Class Units
 		End With
 		colUnits.Add(new_unit, new_unit.ID)
 		
-		'Invalid_string_refer_to_original_code
+		'‚±‚êˆÈ~‚Í–{‘ÌˆÈŠO‚ÌŒ`‘Ô‚Ì’Ç‰Á
 		ReDim other_forms(0)
 		
-		'Invalid_string_refer_to_original_code
-		list = ud.FeatureData("å¤‰å½¢")
+		'•ÏŒ`æ‚ÌŒ`‘Ô
+		list = ud.FeatureData("•ÏŒ`")
 		For i = 2 To LLength(list)
 			uname2 = LIndex(list, i)
 			If Not UDList.IsDefined(uname2) Then
-				ErrorMessage("Invalid_string_refer_to_original_code")
-				'Invalid_string_refer_to_original_code_
-				'& uname2 & "ã€ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“"
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				ErrorMessage("ƒ†ƒjƒbƒgƒf[ƒ^u" & uname & "v‚Ì•ÏŒ`æŒ`‘Ôu" & uname2 & "v‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ")
 				'UPGRADE_NOTE: ƒIƒuƒWƒFƒNƒg Add ‚ğƒKƒx[ƒW ƒRƒŒƒNƒg‚·‚é‚Ü‚Å‚±‚ÌƒIƒuƒWƒFƒNƒg‚ğ”jŠü‚·‚é‚±‚Æ‚Í‚Å‚«‚Ü‚¹‚ñB Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 				Add = Nothing
 				Exit Function
@@ -106,69 +103,15 @@ Friend Class Units
 			other_forms(UBound(other_forms)) = uname2
 		Next 
 		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		uname2 = LIndex(list, 2)
-		If Not UDList.IsDefined(uname2) Then
-			If uname = "" Then
-				ErrorMessage("Invalid_string_refer_to_original_code")
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			Else
-				ErrorMessage("Invalid_string_refer_to_original_code")
-				'Invalid_string_refer_to_original_code_
-				'& uname2 & "ã€ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“"
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			End If
-			'UPGRADE_NOTE: ƒIƒuƒWƒFƒNƒg Add ‚ğƒKƒx[ƒW ƒRƒŒƒNƒg‚·‚é‚Ü‚Å‚±‚ÌƒIƒuƒWƒFƒNƒg‚ğ”jŠü‚·‚é‚±‚Æ‚Í‚Å‚«‚Ü‚¹‚ñB Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			Add = Nothing
-			Exit Function
-		End If
-		ReDim Preserve other_forms(UBound(other_forms) + 1)
-		other_forms(UBound(other_forms)) = uname2
-		'End If
-		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		uname2 = LIndex(list, 1)
-		If Not UDList.IsDefined(uname2) Then
-			If uname2 = "" Then
-				ErrorMessage("Invalid_string_refer_to_original_code")
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			Else
-				ErrorMessage("Invalid_string_refer_to_original_code")
-				'Invalid_string_refer_to_original_code_
-				'& uname2 & "ã€ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“"
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			End If
-			'UPGRADE_NOTE: ƒIƒuƒWƒFƒNƒg Add ‚ğƒKƒx[ƒW ƒRƒŒƒNƒg‚·‚é‚Ü‚Å‚±‚ÌƒIƒuƒWƒFƒNƒg‚ğ”jŠü‚·‚é‚±‚Æ‚Í‚Å‚«‚Ü‚¹‚ñB Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			Add = Nothing
-			Exit Function
-		End If
-		ReDim Preserve other_forms(UBound(other_forms) + 1)
-		other_forms(UBound(other_forms)) = uname2
-		'End If
-		
-		'Invalid_string_refer_to_original_code
-		If ud.IsFeatureAvailable("Invalid_string_refer_to_original_code") Then
-			uname2 = LIndex(ud.FeatureData("Invalid_string_refer_to_original_code"), 2)
+		'ƒnƒCƒp[ƒ‚[ƒhæ‚ÌŒ`‘Ô
+		If ud.IsFeatureAvailable("ƒnƒCƒp[ƒ‚[ƒh") Then
+			list = ud.FeatureData("ƒnƒCƒp[ƒ‚[ƒh")
+			uname2 = LIndex(list, 2)
 			If Not UDList.IsDefined(uname2) Then
-				If uname2 = "" Then
-					ErrorMessage("Invalid_string_refer_to_original_code")
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				If uname = "" Then
+					ErrorMessage("ƒ†ƒjƒbƒgƒf[ƒ^u" & uname & "v‚ÌƒnƒCƒp[ƒ‚[ƒhæŒ`‘Ô‚ªw’è‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ")
 				Else
-					ErrorMessage("Invalid_string_refer_to_original_code")
-					'Invalid_string_refer_to_original_code_
-					'& uname2 & "ã€ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“"
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					ErrorMessage("ƒ†ƒjƒbƒgƒf[ƒ^u" & uname & "v‚ÌƒnƒCƒp[ƒ‚[ƒhæŒ`‘Ôu" & uname2 & "v‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ")
 				End If
 				'UPGRADE_NOTE: ƒIƒuƒWƒFƒNƒg Add ‚ğƒKƒx[ƒW ƒRƒŒƒNƒg‚·‚é‚Ü‚Å‚±‚ÌƒIƒuƒWƒFƒNƒg‚ğ”jŠü‚·‚é‚±‚Æ‚Í‚Å‚«‚Ü‚¹‚ñB Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 				Add = Nothing
@@ -178,46 +121,69 @@ Friend Class Units
 			other_forms(UBound(other_forms)) = uname2
 		End If
 		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		If Not UDList.IsDefined(uname2) Then
-			If uname = "" Then
-				ErrorMessage("Invalid_string_refer_to_original_code")
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			Else
-				ErrorMessage("Invalid_string_refer_to_original_code")
-				'Invalid_string_refer_to_original_code_
-				'& uname2 & "ã€ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“"
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+		'ƒm[ƒ}ƒ‹ƒ‚[ƒhæ‚ÌŒ`‘Ô
+		If ud.IsFeatureAvailable("ƒm[ƒ}ƒ‹ƒ‚[ƒh") Then
+			list = ud.FeatureData("ƒm[ƒ}ƒ‹ƒ‚[ƒh")
+			uname2 = LIndex(list, 1)
+			If Not UDList.IsDefined(uname2) Then
+				If uname2 = "" Then
+					ErrorMessage("ƒ†ƒjƒbƒgƒf[ƒ^u" & uname & "v‚Ìƒm[ƒ}ƒ‹ƒ‚[ƒhæŒ`‘Ô‚ªw’è‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ")
+				Else
+					ErrorMessage("ƒ†ƒjƒbƒgƒf[ƒ^u" & uname & "v‚Ìƒm[ƒ}ƒ‹ƒ‚[ƒhæŒ`‘Ôu" & uname2 & "v‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ")
+				End If
+				'UPGRADE_NOTE: ƒIƒuƒWƒFƒNƒg Add ‚ğƒKƒx[ƒW ƒRƒŒƒNƒg‚·‚é‚Ü‚Å‚±‚ÌƒIƒuƒWƒFƒNƒg‚ğ”jŠü‚·‚é‚±‚Æ‚Í‚Å‚«‚Ü‚¹‚ñB Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				Add = Nothing
+				Exit Function
 			End If
-			'UPGRADE_NOTE: ƒIƒuƒWƒFƒNƒg Add ‚ğƒKƒx[ƒW ƒRƒŒƒNƒg‚·‚é‚Ü‚Å‚±‚ÌƒIƒuƒWƒFƒNƒg‚ğ”jŠü‚·‚é‚±‚Æ‚Í‚Å‚«‚Ü‚¹‚ñB Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			Add = Nothing
-			Exit Function
+			ReDim Preserve other_forms(UBound(other_forms) + 1)
+			other_forms(UBound(other_forms)) = uname2
 		End If
-		ReDim Preserve other_forms(UBound(other_forms) + 1)
-		other_forms(UBound(other_forms)) = uname2
-		'End If
 		
-		'Invalid_string_refer_to_original_code
+		'ƒp[ƒc•ª—£æ‚ÌŒ`‘Ô
+		If ud.IsFeatureAvailable("ƒp[ƒc•ª—£") Then
+			uname2 = LIndex(ud.FeatureData("ƒp[ƒc•ª—£"), 2)
+			If Not UDList.IsDefined(uname2) Then
+				If uname2 = "" Then
+					ErrorMessage("ƒ†ƒjƒbƒgƒf[ƒ^u" & uname & "v‚Ìƒp[ƒc•ª—£æŒ`‘Ô‚ªw’è‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ")
+				Else
+					ErrorMessage("ƒ†ƒjƒbƒgƒf[ƒ^u" & uname & "v‚Ìƒp[ƒc•ª—£æŒ`‘Ôu" & uname2 & "v‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ")
+				End If
+				'UPGRADE_NOTE: ƒIƒuƒWƒFƒNƒg Add ‚ğƒKƒx[ƒW ƒRƒŒƒNƒg‚·‚é‚Ü‚Å‚±‚ÌƒIƒuƒWƒFƒNƒg‚ğ”jŠü‚·‚é‚±‚Æ‚Í‚Å‚«‚Ü‚¹‚ñB Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				Add = Nothing
+				Exit Function
+			End If
+			ReDim Preserve other_forms(UBound(other_forms) + 1)
+			other_forms(UBound(other_forms)) = uname2
+		End If
+		
+		'ƒp[ƒc‡‘Ìæ‚ÌŒ`‘Ô
+		If ud.IsFeatureAvailable("ƒp[ƒc‡‘Ì") Then
+			uname2 = ud.FeatureData("ƒp[ƒc‡‘Ì")
+			If Not UDList.IsDefined(uname2) Then
+				If uname = "" Then
+					ErrorMessage("ƒ†ƒjƒbƒgƒf[ƒ^u" & uname & "v‚Ìƒp[ƒc‡‘ÌæŒ`‘Ô‚ªw’è‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ")
+				Else
+					ErrorMessage("ƒ†ƒjƒbƒgƒf[ƒ^u" & uname & "v‚Ìƒp[ƒc‡‘ÌæŒ`‘Ôu" & uname2 & "v‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ")
+				End If
+				'UPGRADE_NOTE: ƒIƒuƒWƒFƒNƒg Add ‚ğƒKƒx[ƒW ƒRƒŒƒNƒg‚·‚é‚Ü‚Å‚±‚ÌƒIƒuƒWƒFƒNƒg‚ğ”jŠü‚·‚é‚±‚Æ‚Í‚Å‚«‚Ü‚¹‚ñB Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				Add = Nothing
+				Exit Function
+			End If
+			ReDim Preserve other_forms(UBound(other_forms) + 1)
+			other_forms(UBound(other_forms)) = uname2
+		End If
+		
+		'•ÏŒ`‹Z‚Ì•ÏŒ`æ‚ÌŒ`‘Ô
 		With ud
-			If .IsFeatureAvailable("å¤‰å½¢æŠ€") Then
+			If .IsFeatureAvailable("•ÏŒ`‹Z") Then
 				For i = 1 To .CountFeature
-					If .Feature(i) = "å¤‰å½¢æŠ€" Then
+					If .Feature(i) = "•ÏŒ`‹Z" Then
 						uname2 = LIndex(.FeatureData(i), 2)
 						If Not UDList.IsDefined(uname2) Then
 							If uname2 = "" Then
-								ErrorMessage("Invalid_string_refer_to_original_code")
-								'Invalid_string_refer_to_original_code
-								'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+								ErrorMessage("ƒ†ƒjƒbƒgƒf[ƒ^u" & uname & "v‚Ì•ÏŒ`‹Zg—pŒãŒ`‘Ô‚ªw’è‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ")
 							Else
-								ErrorMessage("Invalid_string_refer_to_original_code")
-								'Invalid_string_refer_to_original_code_
-								'uname2 & "ã€ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“"
-								'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+								ErrorMessage("ƒ†ƒjƒbƒgƒf[ƒ^u" & uname & "v‚Ì•ÏŒ`‹Zg—pŒãŒ`‘Ôu" & uname2 & "v‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ")
 							End If
 							'UPGRADE_NOTE: ƒIƒuƒWƒFƒNƒg Add ‚ğƒKƒx[ƒW ƒRƒŒƒNƒg‚·‚é‚Ü‚Å‚±‚ÌƒIƒuƒWƒFƒNƒg‚ğ”jŠü‚·‚é‚±‚Æ‚Í‚Å‚«‚Ü‚¹‚ñB Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 							Add = Nothing
@@ -230,16 +196,12 @@ Friend Class Units
 			End If
 		End With
 		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+		'Š·‘•æ‚ÌŒ`‘Ô
+		list = ud.FeatureData("Š·‘•")
 		For i = 1 To LLength(list)
 			uname2 = LIndex(list, i)
 			If Not UDList.IsDefined(uname2) Then
-				ErrorMessage("Invalid_string_refer_to_original_code")
-				'Invalid_string_refer_to_original_code_
-				'& uname2 & "ã€ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“"
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				ErrorMessage("ƒ†ƒjƒbƒgƒf[ƒ^u" & uname & "v‚ÌŠ·‘•æŒ`‘Ôu" & uname2 & "v‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ")
 				'UPGRADE_NOTE: ƒIƒuƒWƒFƒNƒg Add ‚ğƒKƒx[ƒW ƒRƒŒƒNƒg‚·‚é‚Ü‚Å‚±‚ÌƒIƒuƒWƒFƒNƒg‚ğ”jŠü‚·‚é‚±‚Æ‚Í‚Å‚«‚Ü‚¹‚ñB Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 				Add = Nothing
 				Exit Function
@@ -248,16 +210,12 @@ Friend Class Units
 			other_forms(UBound(other_forms)) = uname2
 		Next 
 		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+		'‘¼Œ`‘Ô‚Åw’è‚³‚ê‚½Œ`‘Ô
+		list = ud.FeatureData("‘¼Œ`‘Ô")
 		For i = 1 To LLength(list)
 			uname2 = LIndex(list, i)
 			If Not UDList.IsDefined(uname2) Then
-				ErrorMessage("Invalid_string_refer_to_original_code")
-				'Invalid_string_refer_to_original_code_
-				'& uname2 & "ã€ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“"
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				ErrorMessage("ƒ†ƒjƒbƒgƒf[ƒ^u" & uname & "v‚Ì‘¼Œ`‘Ôu" & uname2 & "v‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ")
 				'UPGRADE_NOTE: ƒIƒuƒWƒFƒNƒg Add ‚ğƒKƒx[ƒW ƒRƒŒƒNƒg‚·‚é‚Ü‚Å‚±‚ÌƒIƒuƒWƒFƒNƒg‚ğ”jŠü‚·‚é‚±‚Æ‚Í‚Å‚«‚Ü‚¹‚ñB Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 				Add = Nothing
 				Exit Function
@@ -266,7 +224,7 @@ Friend Class Units
 			other_forms(UBound(other_forms)) = uname2
 		Next 
 		
-		'å½¢æ…‹ã‚’è¿½åŠ 
+		'Œ`‘Ô‚ğ’Ç‰Á
 		For i = 1 To UBound(other_forms)
 			If Not new_unit.IsOtherFormDefined(other_forms(i)) Then
 				new_form = New Unit
@@ -276,14 +234,14 @@ Friend Class Units
 					.Party = uparty
 					.ID = CreateID((ud.Name))
 					.FullRecover()
-					.Status_Renamed = "Invalid_string_refer_to_original_code"
+					.Status_Renamed = "‘¼Œ`‘Ô"
 				End With
 				colUnits.Add(new_form, new_form.ID)
 				new_unit.AddOtherForm(new_form)
 			End If
 		Next 
 		
-		'Invalid_string_refer_to_original_code
+		'’Ç‰Á‚µ‚½Œ`‘Ô‚É‘Î‚µ‚Ä©•ª©g‚ğ’Ç‰Á‚µ‚Ä‚¨‚­
 		For i = 1 To new_unit.CountOtherForm
 			new_unit.OtherForm(i).AddOtherForm(new_unit)
 			For j = 1 To new_unit.CountOtherForm
@@ -293,20 +251,19 @@ Friend Class Units
 			Next 
 		Next 
 		
-		'Invalid_string_refer_to_original_code
+		'Šù‚É‡‘Ìæ or •ª—£æ‚Ìƒ†ƒjƒbƒg‚ªì¬‚³‚ê‚Ä‚¢‚ê‚Î©•ª‚Í‘¼Œ`‘Ô
 		With ud
 			For i = 1 To .CountFeature
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				If UList.IsDefined(LIndex(.FeatureData(i), 2)) Then
-					new_unit.Status_Renamed = "Invalid_string_refer_to_original_code"
-					Exit Function
+				If .Feature(i) = "‡‘Ì" Then
+					If UList.IsDefined(LIndex(.FeatureData(i), 2)) Then
+						new_unit.Status_Renamed = "‘¼Œ`‘Ô"
+						Exit Function
+					End If
 				End If
-				'End If
-				If .Feature(i) = "Invalid_string_refer_to_original_code" Then
+				If .Feature(i) = "•ª—£" Then
 					For j = 2 To LLength(.FeatureData(i))
 						If UList.IsDefined(LIndex(.FeatureData(i), j)) Then
-							new_unit.Status_Renamed = "Invalid_string_refer_to_original_code"
+							new_unit.Status_Renamed = "‘¼Œ`‘Ô"
 							Exit Function
 						End If
 					Next 
@@ -315,12 +272,12 @@ Friend Class Units
 		End With
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'ƒ†ƒjƒbƒgƒŠƒXƒg‚Éƒ†ƒjƒbƒg u ‚ğ’Ç‰Á
 	Public Sub Add2(ByRef u As Unit)
 		colUnits.Add(u, u.ID)
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'V‹Kƒ†ƒjƒbƒgID‚ğì¬
 	Public Function CreateID(ByRef uname As String) As String
 		Do 
 			IDCount = IDCount + 1
@@ -328,17 +285,17 @@ Friend Class Units
 		CreateID = uname & ":" & VB6.Format(IDCount)
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'ƒ†ƒjƒbƒgƒŠƒXƒg‚É“o˜^‚³‚ê‚Ä‚¢‚éƒ†ƒjƒbƒg”‚ğ•Ô‚·
 	Public Function Count() As Short
 		Count = colUnits.Count()
 	End Function
 	
-	'ãƒ¦ãƒ‹ãƒƒãƒˆãƒªã‚¹ãƒˆã‹ã‚‰ãƒ¦ãƒ‹ãƒƒãƒˆã‚’å‰Šé™¤
+	'ƒ†ƒjƒbƒgƒŠƒXƒg‚©‚çƒ†ƒjƒbƒg‚ğíœ
 	Public Sub Delete(ByRef Index As Object)
 		colUnits.Remove(Index)
 	End Sub
 	
-	'ãƒ¦ãƒ‹ãƒƒãƒˆãƒªã‚¹ãƒˆã‹ã‚‰æŒ‡å®šã•ã‚ŒãŸãƒ¦ãƒ‹ãƒƒãƒˆã‚’è¿”ã™
+	'ƒ†ƒjƒbƒgƒŠƒXƒg‚©‚çw’è‚³‚ê‚½ƒ†ƒjƒbƒg‚ğ•Ô‚·
 	Public Function Item(ByRef Index As Object) As Unit
 		Dim u As Unit
 		Dim uname As String
@@ -348,25 +305,24 @@ Friend Class Units
 		Exit Function
 		
 ErrorHandler: 
-		'IDã§è¦‹ã¤ã‹ã‚‰ãªã‘ã‚Œã°ãƒ¦ãƒ‹ãƒƒãƒˆåã§æ¤œç´¢
+		'ID‚ÅŒ©‚Â‚©‚ç‚È‚¯‚ê‚Îƒ†ƒjƒbƒg–¼‚ÅŒŸõ
 		'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg Index ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 		uname = CStr(Index)
 		For	Each u In colUnits
 			With u
 				If .Name = uname Then
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					Item = u
-					Exit Function
+					If .Status_Renamed <> "”jŠü" Then
+						Item = u
+						Exit Function
+					End If
 				End If
-				'End If
 			End With
 		Next u
 		'UPGRADE_NOTE: ƒIƒuƒWƒFƒNƒg Item ‚ğƒKƒx[ƒW ƒRƒŒƒNƒg‚·‚é‚Ü‚Å‚±‚ÌƒIƒuƒWƒFƒNƒg‚ğ”jŠü‚·‚é‚±‚Æ‚Í‚Å‚«‚Ü‚¹‚ñB Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 		Item = Nothing
 	End Function
 	
-	'ãƒ¦ãƒ‹ãƒƒãƒˆãƒªã‚¹ãƒˆã‹ã‚‰ãƒ¦ãƒ‹ãƒƒãƒˆã‚’æ¤œç´¢ (IDã®ã¿)
+	'ƒ†ƒjƒbƒgƒŠƒXƒg‚©‚çƒ†ƒjƒbƒg‚ğŒŸõ (ID‚Ì‚İ)
 	Public Function Item2(ByRef Index As Object) As Unit
 		On Error GoTo ErrorHandler
 		Item2 = colUnits.Item(Index)
@@ -377,7 +333,7 @@ ErrorHandler:
 		Item2 = Nothing
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'ƒ†ƒjƒbƒgƒŠƒXƒg‚Éw’è‚³‚ê‚½ƒ†ƒjƒbƒg‚ª’è‹`‚³‚ê‚Ä‚¢‚é‚©H
 	Public Function IsDefined(ByRef Index As Object) As Boolean
 		Dim u As Unit
 		Dim uname As String
@@ -388,24 +344,23 @@ ErrorHandler:
 		Exit Function
 		
 ErrorHandler: 
-		'IDã§è¦‹ã¤ã‹ã‚‰ãªã‘ã‚Œã°ãƒ¦ãƒ‹ãƒƒãƒˆåã§æ¤œç´¢
+		'ID‚ÅŒ©‚Â‚©‚ç‚È‚¯‚ê‚Îƒ†ƒjƒbƒg–¼‚ÅŒŸõ
 		'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg Index ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 		uname = CStr(Index)
 		For	Each u In colUnits
 			With u
 				If .Name = uname Then
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					IsDefined = True
-					Exit Function
+					If .Status_Renamed <> "”jŠü" Then
+						IsDefined = True
+						Exit Function
+					End If
 				End If
-				'End If
 			End With
 		Next u
 		IsDefined = False
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'ƒ†ƒjƒbƒgƒŠƒXƒg‚Éw’è‚³‚ê‚½ƒ†ƒjƒbƒg‚ª’è‹`‚³‚ê‚Ä‚¢‚é‚©H (ID‚Ì‚İ)
 	Public Function IsDefined2(ByRef Index As Object) As Boolean
 		Dim u As Unit
 		
@@ -418,7 +373,7 @@ ErrorHandler:
 		IsDefined2 = False
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'ƒ†ƒjƒbƒgƒŠƒXƒg‚ğƒAƒbƒvƒf[ƒg
 	Public Sub Update()
 		Dim u As Unit
 		Dim k, i, j, n As Short
@@ -426,7 +381,7 @@ ErrorHandler:
 		Dim flag As Boolean
 		Dim pname, uname, uname2, buf As String
 		
-		'Invalid_string_refer_to_original_code
+		'•êŠÍ‚ÉŠi”[‚³‚ê‚½ƒ†ƒjƒbƒg‚ğ~‚ë‚·
 		For	Each u In colUnits
 			With u
 				For i = 1 To .CountUnitOnBoard
@@ -435,329 +390,303 @@ ErrorHandler:
 			End With
 		Next u
 		
-		'ç ´å£Šã•ã‚ŒãŸå‘³æ–¹ãƒ¦ãƒ‹ãƒƒãƒˆãŒã‚ã‚‹ã‹æ¤œç´¢
+		'”j‰ó‚³‚ê‚½–¡•ûƒ†ƒjƒbƒg‚ª‚ ‚é‚©ŒŸõ
 		For	Each u In colUnits
 			With u
-				If .Party0 = "å‘³æ–¹" Then
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					flag = True
-					Exit For
-				End If
-				'UPGRADE_WARNING: Update ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				If Not .Summoner Is Nothing Then
-					If .Summoner.Party0 = "å‘³æ–¹" Then
+				If .Party0 = "–¡•û" Then
+					If .Status_Renamed = "”j‰ó" Then
 						flag = True
 						Exit For
 					End If
+				ElseIf .Party0 = "‚m‚o‚b" Then 
+					If .Status_Renamed = "”j‰ó" Then
+						If Not .Summoner Is Nothing Then
+							If .Summoner.Party0 = "–¡•û" Then
+								flag = True
+								Exit For
+							End If
+						End If
+					End If
 				End If
-				'End If
-				'End If
 			End With
 		Next u
 		
-		'Invalid_string_refer_to_original_code
+		'”j‰ó‚³‚ê‚½–¡•ûƒ†ƒjƒbƒg‚ª‚ ‚ê‚ÎC—
 		If flag Then
 			OpenMessageForm()
 			prev_money = Money
 			For	Each u In colUnits
 				With u
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					GoTo NextDestroyedUnit
+					If .Status_Renamed <> "”j‰ó" Then
+						GoTo NextDestroyedUnit
+					End If
+					If .IsFeatureAvailable("¢Š«ƒ†ƒjƒbƒg") Then
+						GoTo NextDestroyedUnit
+					End If
+					Select Case .Party0
+						Case "–¡•û"
+						Case "‚m‚o‚b"
+							If .Summoner Is Nothing Then
+								GoTo NextDestroyedUnit
+							ElseIf .Summoner.Party0 <> "–¡•û" Then 
+								GoTo NextDestroyedUnit
+							End If
+						Case Else
+							GoTo NextDestroyedUnit
+					End Select
+					
+					IncrMoney(-.Value)
+					.Status_Renamed = "‘Ò‹@"
+					If Not .IsHero Then
+						DisplayMessage("ƒVƒXƒeƒ€", .Nickname & "‚ğC—‚µ‚½;C—”ï = " & VB6.Format(.Value))
+					Else
+						DisplayMessage("ƒVƒXƒeƒ€", .Nickname & "‚ğ¡—Ã‚µ‚½;¡—Ã”ï = " & VB6.Format(.Value))
+					End If
 				End With
-			Next u
-		End If
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		GoTo NextDestroyedUnit
-		'End If
-		'UPGRADE_WARNING: Update ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		
-		'UPGRADE_WARNING: Update ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		'UPGRADE_WARNING: Update ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		'UPGRADE_WARNING: Update ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		'End With
 NextDestroyedUnit: 
-		'Next
-		DisplayMessage("Invalid_string_refer_to_original_code", "Invalid_string_refer_to_original_code" & VB6.Format(prev_money - Money))
-		CloseMessageForm()
-		'End If
+			Next u
+			DisplayMessage("ƒVƒXƒeƒ€", "‡Œv = " & VB6.Format(prev_money - Money))
+			CloseMessageForm()
+		End If
 		
-		'Invalid_string_refer_to_original_code
+		'‘Sƒ†ƒjƒbƒg‚ğ‘Ò‹@ó‘Ô‚É•ÏX
 		For	Each u In colUnits
 			With u
 				Select Case .Status_Renamed
-					Case "Invalid_string_refer_to_original_code"
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-						.Status_Renamed = "Invalid_string_refer_to_original_code"
+					Case "oŒ‚", "Ši”["
+						.Status_Renamed = "‘Ò‹@"
 				End Select
 			End With
 		Next u
 		
-		'Invalid_string_refer_to_original_code
+		'‚R’iŠK‚Ü‚Å‚Ì•ÏŒ`E‡‘Ì‚É‘Î‰
 		For i = 1 To 3
-			'Invalid_string_refer_to_original_code
+			'ƒm[ƒ}ƒ‹ƒ‚[ƒhEƒp[ƒc‡‘Ì‚ğs‚¤
 			For	Each u In colUnits
 				With u
-					'Invalid_string_refer_to_original_code_
-					'Invalid_string_refer_to_original_code_
-					'Invalid_string_refer_to_original_code_
-					'Then
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					'End If
-					'End If
-					'End If
+					If .Party0 = "–¡•û" And .Status_Renamed <> "‘¼Œ`‘Ô" And .Status_Renamed <> "‹ŒåŒ`‘Ô" And .Status_Renamed <> "‹ŒŒ`‘Ô" Then
+						If .IsFeatureAvailable("ƒm[ƒ}ƒ‹ƒ‚[ƒh") Then
+							.Transform(LIndex(.FeatureData("ƒm[ƒ}ƒ‹ƒ‚[ƒh"), 1))
+						ElseIf .IsFeatureAvailable("ƒp[ƒc‡‘Ì") Then 
+							If LLength(.FeatureData("ƒp[ƒc‡‘Ì")) = 2 Then
+								.Transform(LIndex(.FeatureData("ƒp[ƒc‡‘Ì"), 2))
+							Else
+								.Transform(LIndex(.FeatureData("ƒp[ƒc‡‘Ì"), 1))
+							End If
+						End If
+					End If
 				End With
 			Next u
 			
-			'Invalid_string_refer_to_original_code
+			'•ª—£‚ğs‚¤
 			For	Each u In colUnits
 				With u
-					If Not .IsFeatureAvailable("Invalid_string_refer_to_original_code") Then
+					If Not .IsFeatureAvailable("•ª—£") Then
 						GoTo NextLoop1
 					End If
-					'Invalid_string_refer_to_original_code_
-					'Invalid_string_refer_to_original_code_
-					'Invalid_string_refer_to_original_code_
-					'Then
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					GoTo NextLoop1
-					'End If
-					
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					If .CountPilot = 0 Then
+					If .Party0 <> "–¡•û" Or .Status_Renamed = "‘¼Œ`‘Ô" Or .Status_Renamed = "‹ŒåŒ`‘Ô" Or .Status_Renamed = "‹ŒŒ`‘Ô" Then
 						GoTo NextLoop1
 					End If
-					'End If
 					
-					'Invalid_string_refer_to_original_code
+					If .Status_Renamed = "”jŠü" Then
+						If .CountPilot = 0 Then
+							GoTo NextLoop1
+						End If
+					End If
 					
-					'Invalid_string_refer_to_original_code_
-					'Then
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					GoTo NextLoop1
-					'End If
+					'‡‘ÌŒ`‘Ô‚ªåŒ`‘Ô‚È‚ç•ª—£‚ğs‚í‚È‚¢
 					
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					GoTo NextLoop1
-					'End If
+					If LLength(.FeatureData("•ª—£")) > 3 And Not .IsFeatureAvailable("§ŒÀŠÔ") Then
+						GoTo NextLoop1
+					End If
 					
-					'Invalid_string_refer_to_original_code
+					If .IsFeatureAvailable("åŒ`‘Ô") Then
+						GoTo NextLoop1
+					End If
+					
+					'ƒpƒCƒƒbƒg‚ª‘«‚ç‚È‚¢ê‡‚Í•ª—£‚ğs‚í‚È‚¢
 					n = 0
-					For j = 2 To LLength(.FeatureData("Invalid_string_refer_to_original_code"))
-						uname = LIndex(.FeatureData("Invalid_string_refer_to_original_code"), j)
+					For j = 2 To LLength(.FeatureData("•ª—£"))
+						uname = LIndex(.FeatureData("•ª—£"), j)
 						If UDList.IsDefined(uname) Then
 							With UDList.Item(uname)
-								'Invalid_string_refer_to_original_code
-								'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-								n = n + .PilotNum
+								If Not .IsFeatureAvailable("¢Š«ƒ†ƒjƒbƒg") Then
+									n = n + .PilotNum
+								End If
 							End With
 						End If
 					Next 
+					If .CountPilot < n Then
+						GoTo NextLoop1
+					End If
+					
+					'•ª—£æ‚ÌŒ`‘Ô‚ª—˜—p‰Â”\H
+					For j = 2 To LLength(.FeatureData("•ª—£"))
+						uname = LIndex(.FeatureData("•ª—£"), j)
+						If Not UList.IsDefined(uname) Then
+							GoTo NextLoop1
+						End If
+						If UList.Item(uname).CurrentForm.Status_Renamed = "‘Ò‹@" Then
+							GoTo NextLoop1
+						End If
+					Next 
+					
+					'•ª—£‚ğÀ{
+					.Split_Renamed()
 				End With
-				'End If
-			Next u
-			'UPGRADE_WARNING: Update ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-			
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_WARNING: Update ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-			
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_WARNING: Update ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-			'End With
 NextLoop1: 
+			Next u
+			
+			'‡‘Ì‚ğs‚¤
+			For	Each u In colUnits
+				With u
+					If .Party0 = "–¡•û" And .Status_Renamed <> "‘¼Œ`‘Ô" And .Status_Renamed <> "‹ŒåŒ`‘Ô" And .Status_Renamed <> "‹ŒŒ`‘Ô" Then
+						If .IsFeatureAvailable("‡‘Ì") Then
+							For j = 1 To .CountFeature
+								If .Feature(j) <> "‡‘Ì" Then
+									GoTo NextLoop2
+								End If
+								
+								'‡‘ÌŒã‚ÌŒ`‘Ô‚ª—˜—p‰Â”\H
+								uname = LIndex(.FeatureData(j), 2)
+								If Not UList.IsDefined(uname) Then
+									GoTo NextLoop2
+								End If
+								With UList.Item(uname)
+									If u.Status_Renamed = "‘Ò‹@" And .CurrentForm.Status_Renamed = "—£’E" Then
+										GoTo NextLoop2
+									End If
+									If .IsFeatureAvailable("§ŒÀŠÔ") Then
+										GoTo NextLoop2
+									End If
+									If Not .IsFeatureAvailable("åŒ`‘Ô") And LLength(u.FeatureData(j)) = 3 Then
+										GoTo NextLoop2
+									End If
+								End With
+								
+								'‡‘Ì‚Ìƒp[ƒgƒi[‚ª—˜—p‰Â”\H
+								For k = 3 To LLength(.FeatureData(j))
+									uname = LIndex(.FeatureData(j), k)
+									If Not UList.IsDefined(uname) Then
+										GoTo NextLoop2
+									End If
+									With UList.Item(uname)
+										If u.Status_Renamed = "‘Ò‹@" Then
+											If .CurrentForm.Status_Renamed <> "‘Ò‹@" Then
+												GoTo NextLoop2
+											End If
+										Else
+											If .CurrentForm.Status_Renamed <> "—£’E" Then
+												GoTo NextLoop2
+											End If
+										End If
+									End With
+								Next 
+								
+								'‡‘Ì‚ğÀ{
+								.Combine(LIndex(.FeatureData(j), 2))
+								Exit For
+NextLoop2: 
+							Next 
+						End If
+					End If
+				End With
+			Next u
+			
+			'•W€Œ`‘Ô‚É•ÏŒ`
+			For	Each u In colUnits
+				With u
+					If .Party0 = "–¡•û" And .Status_Renamed <> "‘¼Œ`‘Ô" And .Status_Renamed <> "‹ŒåŒ`‘Ô" And .Status_Renamed <> "‹ŒŒ`‘Ô" Then
+						If .IsFeatureAvailable("•ÏŒ`") Then
+							uname = .Name
+							buf = .FeatureData("•ÏŒ`")
+							For j = 2 To LLength(buf)
+								uname2 = LIndex(buf, j)
+								If UDList.IsDefined(uname2) Then
+									If UDList.Item(uname2).ID < UDList.Item(uname).ID Then
+										uname = uname2
+									End If
+								Else
+									ErrorMessage(uname & "‚Ì•ÏŒ`æƒ†ƒjƒbƒgu" & uname2 & "v‚Ìƒf[ƒ^‚ª’è‹`‚³‚ê‚Ä‚¢‚Ü‚¹‚ñB")
+								End If
+							Next 
+							
+							If uname <> .Name Then
+								.Transform(uname)
+							End If
+						End If
+					End If
+				End With
+			Next u
 		Next 
 		
-		'åˆä½“ã‚’è¡Œã†
+		'–\‘–ƒpƒCƒƒbƒg‚ğíœ
 		For	Each u In colUnits
 			With u
-				'Invalid_string_refer_to_original_code_
-				'Invalid_string_refer_to_original_code_
-				'Invalid_string_refer_to_original_code_
-				'Then
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				For j = 1 To .CountFeature
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					GoTo NextLoop2
-					'End If
-					
-					'Invalid_string_refer_to_original_code
-					uname = LIndex(.FeatureData(j), 2)
-					If Not UList.IsDefined(uname) Then
-						GoTo NextLoop2
-					End If
-					With UList.Item(uname)
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-						GoTo NextLoop2
-						'End If
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-						GoTo NextLoop2
-						'End If
-						'Invalid_string_refer_to_original_code_
-						'And LLength(u.FeatureData(j)) = 3 _
-						'Then
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-						GoTo NextLoop2
-						'End If
-					End With
-					
-					'Invalid_string_refer_to_original_code
-					For k = 3 To LLength(.FeatureData(j))
-						uname = LIndex(.FeatureData(j), k)
-						If Not UList.IsDefined(uname) Then
-							GoTo NextLoop2
-						End If
-						With UList.Item(uname)
-							'Invalid_string_refer_to_original_code
-							'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-							'Invalid_string_refer_to_original_code
-							'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-							GoTo NextLoop2
-							'End If
-							If .CurrentForm.Status_Renamed <> "é›¢è„±" Then
-								GoTo NextLoop2
-							End If
-							'End If
-						End With
-					Next 
-					
-					'åˆä½“ã‚’å®Ÿæ–½
-					.Combine(LIndex(.FeatureData(j), 2))
-					Exit For
-NextLoop2: 
-				Next 
-				'End If
-				'End If
-			End With
-		Next u
-		
-		'æ¨™æº–å½¢æ…‹ã«å¤‰å½¢
-		For	Each u In colUnits
-			With u
-				'Invalid_string_refer_to_original_code_
-				'Invalid_string_refer_to_original_code_
-				'Invalid_string_refer_to_original_code_
-				'Then
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				If .IsFeatureAvailable("å¤‰å½¢") Then
-					uname = .Name
-					buf = .FeatureData("å¤‰å½¢")
-					For j = 2 To LLength(buf)
-						uname2 = LIndex(buf, j)
-						If UDList.IsDefined(uname2) Then
-							If UDList.Item(uname2).ID < UDList.Item(uname).ID Then
-								uname = uname2
-							End If
-						Else
-							ErrorMessage(uname & "Invalid_string_refer_to_original_code")
-							'Invalid_string_refer_to_original_code
-							'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-						End If
-					Next 
-					
-					If uname <> .Name Then
-						.Transform(uname)
-					End If
-				End If
-				'End If
-			End With
-		Next u
-		'Next
-		
-		'Invalid_string_refer_to_original_code
-		For	Each u In colUnits
-			With u
-				If .IsFeatureAvailable("Invalid_string_refer_to_original_code") Then
-					If PList.IsDefined(.FeatureData("Invalid_string_refer_to_original_code")) Then
-						PList.Delete(.FeatureData("Invalid_string_refer_to_original_code"))
+				If .IsFeatureAvailable("–\‘–ƒpƒCƒƒbƒg") Then
+					If PList.IsDefined(.FeatureData("–\‘–ƒpƒCƒƒbƒg")) Then
+						PList.Delete(.FeatureData("–\‘–ƒpƒCƒƒbƒg"))
 					End If
 				End If
 			End With
 		Next u
 		
-		'Invalid_string_refer_to_original_code
+		'ƒ_ƒ~[ƒpƒCƒƒbƒg‚ğíœ
 		For	Each u In colUnits
 			With u
 				If .CountPilot > 0 Then
-					If .Pilot(1).Nickname0 = "Invalid_string_refer_to_original_code" Then
+					If .Pilot(1).Nickname0 = "ƒpƒCƒƒbƒg•sİ" Then
 						.DeletePilot(1)
 					End If
 				End If
 			End With
 		Next u
 		
-		'Invalid_string_refer_to_original_code
+		'•Ïgæ‚ÌŒ`‘Ô“™Aˆê“I‚ÈŒ`‘Ô‚ğíœ
 		For	Each u In colUnits
 			With u
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				.DeleteTemporaryOtherForm()
-				'End If
+				If .Status_Renamed = "‘Ò‹@" Then
+					.DeleteTemporaryOtherForm()
+				End If
 			End With
 		Next u
 		
-		'Invalid_string_refer_to_original_code
+		'”jŠü‚³‚ê‚½ƒ†ƒjƒbƒg‚ğíœ
 		For	Each u In colUnits
 			With u
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				.Status_Renamed = "Invalid_string_refer_to_original_code"
-				'End If
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				.Status_Renamed = "Invalid_string_refer_to_original_code"
-				'End If
+				'¢Š«ƒ†ƒjƒbƒg‚Í•K‚¸”jŠü
+				If .IsFeatureAvailable("¢Š«ƒ†ƒjƒbƒg") Then
+					.Status_Renamed = "”jŠü"
+				End If
+				'ƒ_ƒ~[ƒ†ƒjƒbƒg‚ğ”jŠü
+				If .IsFeatureAvailable("ƒ_ƒ~[ƒ†ƒjƒbƒg") Then
+					.Status_Renamed = "”jŠü"
+				End If
 				
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				'Invalid_string_refer_to_original_code
-				For i = 1 To .CountItem
-					.Item(i).Exist = False
-				Next 
-				Delete(.ID)
-				'End If
+				'–¡•ûƒ†ƒjƒbƒgˆÈŠO‚Ìƒ†ƒjƒbƒg‚Æ”jŠü‚³‚ê‚½ƒ†ƒjƒbƒg‚ğíœ
+				If .Party0 <> "–¡•û" Or .Status_Renamed = "”jŠü" Then
+					'ƒ†ƒjƒbƒg‚ª‘•”õ‚µ‚Ä‚¢‚éƒAƒCƒeƒ€‚à”jŠü
+					For i = 1 To .CountItem
+						.Item(i).Exist = False
+					Next 
+					Delete(.ID)
+				End If
 			End With
 		Next u
 		
-		'Invalid_string_refer_to_original_code
+		'ƒ†ƒjƒbƒg‚Ìó‘Ô‚ğ‰ñ•œ
 		For	Each u In colUnits
 			u.Reset_Renamed()
 		Next u
 		
-		'Invalid_string_refer_to_original_code
+		'ƒXƒe[ƒ^ƒX‚ğƒAƒbƒvƒf[ƒg
 		For	Each u In colUnits
 			u.Update(True)
 		Next u
 	End Sub
 	
 	
-	'Invalid_string_refer_to_original_code
+	'ƒ†ƒjƒbƒgƒŠƒXƒg‚É“o˜^‚³‚ê‚½ƒ†ƒjƒbƒg‚Ìî•ñ‚ğƒZ[ƒu
 	Public Sub Save()
 		Dim i As Short
 		Dim u As Unit
@@ -792,8 +721,8 @@ NextLoop2:
 		Next u
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
-	'(ãƒªãƒ³ã‚¯ã¯å¾Œã§è¡Œã†)
+	'ƒ†ƒjƒbƒgƒŠƒXƒg‚Éƒ†ƒjƒbƒg‚Ìî•ñ‚ğƒ[ƒh
+	'(ƒŠƒ“ƒN‚ÍŒã‚Ås‚¤)
 	Public Sub Load()
 		Dim num, num2 As Short
 		Dim new_unit As Unit
@@ -813,7 +742,7 @@ NextLoop2:
 				Input(SaveDataFileNumber, Name)
 				
 				If Not UDList.IsDefined(Name) Then
-					ErrorMessage(Name & "Invalid_string_refer_to_original_code")
+					ErrorMessage(Name & "‚Ìƒf[ƒ^‚ª’è‹`‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ")
 					TerminateSRC()
 					End
 				End If
@@ -823,7 +752,7 @@ NextLoop2:
 				Input(SaveDataFileNumber, Rank)
 				Input(SaveDataFileNumber, Status_Renamed)
 				
-				'Invalid_string_refer_to_original_code
+				'‹ŒŒ`®‚Ìƒ†ƒjƒbƒg‚h‚c‚ğVŒ`®‚É•ÏŠ·
 				If SaveDataVersion < 10700 Then
 					ConvertUnitID(ID)
 				End If
@@ -831,7 +760,7 @@ NextLoop2:
 				.Name = Name
 				.ID = ID
 				.Rank = Rank
-				.Party = "å‘³æ–¹"
+				.Party = "–¡•û"
 				.Status_Renamed = Status_Renamed
 				.FullRecover()
 			End With
@@ -863,7 +792,7 @@ NextLoop2:
 		Next 
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'ƒ†ƒjƒbƒgƒŠƒXƒg‚Éƒ†ƒjƒbƒg‚Ìî•ñ‚ğƒ[ƒh‚µAƒŠƒ“ƒN‚ğs‚¤
 	Public Sub LoadLinkInfo()
 		Dim num, num2 As Short
 		Dim ID, ID2 As String
@@ -883,7 +812,7 @@ NextLoop2:
 			Input(SaveDataFileNumber, int_dummy)
 			Input(SaveDataFileNumber, str_dummy)
 			
-			'Invalid_string_refer_to_original_code
+			'‹ŒŒ`®‚Ìƒ†ƒjƒbƒg‚h‚c‚ğVŒ`®‚É•ÏŠ·
 			If SaveDataVersion < 10700 Then
 				ConvertUnitID(ID)
 			End If
@@ -905,14 +834,14 @@ NextLoop2:
 					Input(SaveDataFileNumber, ID2)
 					If PList.IsDefined(ID2) Then
 						.AddPilot(PList.Item(ID2))
-						If .Status_Renamed = "é›¢è„±" Then
+						If .Status_Renamed = "—£’E" Then
 							PList.Item(ID2).Away = True
 						End If
 					Else
 						ID2 = Left(ID2, InStr(ID2, "(") - 1)
 						If PList.IsDefined(ID2) Then
 							.AddPilot(PList.Item(ID2))
-							If .Status_Renamed = "é›¢è„±" Then
+							If .Status_Renamed = "—£’E" Then
 								PList.Item(ID2).Away = True
 							End If
 						End If
@@ -925,7 +854,7 @@ NextLoop2:
 					Input(SaveDataFileNumber, ID2)
 					If PList.IsDefined(ID2) Then
 						.AddSupport(PList.Item(ID2))
-						If .Status_Renamed = "é›¢è„±" Then
+						If .Status_Renamed = "—£’E" Then
 							PList.Item(ID2).Away = True
 						End If
 					End If
@@ -952,7 +881,7 @@ NextLoop2:
 	End Sub
 	
 	
-	'Invalid_string_refer_to_original_code
+	'ˆê’†’f—pƒf[ƒ^‚ğƒtƒ@ƒCƒ‹‚ÉƒZ[ƒu‚·‚é
 	Public Sub Dump()
 		Dim u As Unit
 		
@@ -963,7 +892,7 @@ NextLoop2:
 		Next u
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'ˆê’†’f—pƒf[ƒ^‚ğƒtƒ@ƒCƒ‹‚©‚çƒ[ƒh‚·‚é
 	Public Sub Restore()
 		Dim i, num As Short
 		Dim u As Unit
@@ -985,7 +914,7 @@ NextLoop2:
 		Next 
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'ˆê’†’f—pƒf[ƒ^‚ÌƒŠƒ“ƒNî•ñ‚ğƒtƒ@ƒCƒ‹‚©‚çƒ[ƒh‚·‚é
 	Public Sub RestoreLinkInfo()
 		Dim u As Unit
 		Dim num As Short
@@ -997,7 +926,7 @@ NextLoop2:
 		Next u
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'ˆê’†’f—pƒf[ƒ^‚Ìƒpƒ‰ƒ[ƒ^î•ñ‚ğƒtƒ@ƒCƒ‹‚©‚çƒ[ƒh‚·‚é
 	Public Sub RestoreParameter()
 		Dim u As Unit
 		Dim num As Short
@@ -1010,7 +939,7 @@ NextLoop2:
 	End Sub
 	
 	
-	'ãƒ¦ãƒ‹ãƒƒãƒˆãƒªã‚¹ãƒˆã‚’ã‚¯ãƒªã‚¢
+	'ƒ†ƒjƒbƒgƒŠƒXƒg‚ğƒNƒŠƒA
 	Public Sub Clear()
 		Dim i As Short
 		
@@ -1019,7 +948,7 @@ NextLoop2:
 		Next 
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'ƒ†ƒjƒbƒgƒŠƒXƒg‚É“o˜^‚³‚ê‚½ƒ†ƒjƒbƒg‚Ìƒrƒbƒgƒ}ƒbƒvID‚ğƒNƒŠƒA
 	Public Sub ClearUnitBitmap()
 		Dim u As Unit
 		
@@ -1027,25 +956,25 @@ NextLoop2:
 		With MainForm.picUnitBitmap
 			'UPGRADE_ISSUE: Control picUnitBitmap ‚ÍA”Ä—p–¼‘O‹óŠÔ Form “à‚É‚ ‚é‚½‚ßA‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 			If .Width = 32 Then
-				'Invalid_string_refer_to_original_code
+				'Šù‚ÉƒNƒŠƒA‚³‚ê‚Ä‚¢‚ê‚Î‚»‚Ì‚Ü‚ÜI—¹
 				Exit Sub
 			End If
 			
-			'ç”»åƒã‚’ã‚¯ãƒªã‚¢
+			'‰æ‘œ‚ğƒNƒŠƒA
 			'UPGRADE_ISSUE: Control picUnitBitmap ‚ÍA”Ä—p–¼‘O‹óŠÔ Form “à‚É‚ ‚é‚½‚ßA‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 			.Picture = System.Drawing.Image.FromFile("")
 			'UPGRADE_ISSUE: Control picUnitBitmap ‚ÍA”Ä—p–¼‘O‹óŠÔ Form “à‚É‚ ‚é‚½‚ßA‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 			.Move(0, 0, 32, 96)
 		End With
 		
-		'BitmapIDã‚’ã‚¯ãƒªã‚¢
+		'BitmapID‚ğƒNƒŠƒA
 		For	Each u In colUnits
 			u.BitmapID = 0
 		Next u
 	End Sub
 	
 	
-	'Invalid_string_refer_to_original_code
+	'ƒnƒCƒp[ƒ‚[ƒh‚Ì©“®”­“®ƒ`ƒFƒbƒN
 	Public Sub CheckAutoHyperMode()
 		Dim u As Unit
 		
@@ -1054,7 +983,7 @@ NextLoop2:
 		Next u
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'ƒm[ƒ}ƒ‹ƒ‚[ƒh‚Ì©“®”­“®ƒ`ƒFƒbƒN
 	Public Sub CheckAutoNormalMode()
 		Dim u As Unit
 		Dim is_redraw_necessary As Boolean
@@ -1065,52 +994,50 @@ NextLoop2:
 			End If
 		Next u
 		
-		'Invalid_string_refer_to_original_code
+		'‰æ–Ê‚ÌÄ•`‰æ‚ª•K—vH
 		If is_redraw_necessary Then
 			RedrawScreen()
 		End If
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'”jŠü‚³‚ê‚½ƒ†ƒjƒbƒg‚ğíœ
 	Public Sub Clean()
 		Dim u As Unit
 		Dim i As Short
 		
 		For	Each u In colUnits
 			With u
-				'Invalid_string_refer_to_original_code
-				If .Party0 <> "å‘³æ–¹" Then
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					.Status_Renamed = "Invalid_string_refer_to_original_code"
-					For i = 1 To .CountOtherForm
-						.OtherForm(i).Status_Renamed = "Invalid_string_refer_to_original_code"
-					Next 
+				'oŒ‚‚µ‚Ä‚¢‚È‚¢ƒ†ƒjƒbƒg‚Í–¡•ûƒ†ƒjƒbƒgˆÈŠO‘S‚Äíœ
+				If .Party0 <> "–¡•û" Then
+					If .Status_Renamed = "‘Ò‹@" Or .Status_Renamed = "”j‰ó" Then
+						.Status_Renamed = "”jŠü"
+						For i = 1 To .CountOtherForm
+							.OtherForm(i).Status_Renamed = "”jŠü"
+						Next 
+					End If
 				End If
-				'End If
 			End With
 		Next u
 		
 		For	Each u In colUnits
 			With u
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				'Invalid_string_refer_to_original_code
-				For i = 1 To .CountPilot
-					.Pilot(i).Alive = False
-				Next 
-				For i = 1 To .CountSupport
-					.Support(i).Alive = False
-				Next 
-				
-				'Invalid_string_refer_to_original_code
-				For i = 1 To .CountItem
-					.Item(i).Exist = False
-				Next 
-				
-				Delete(.ID)
-				'End If
+				'”jŠü‚³‚ê‚½ƒ†ƒjƒbƒg‚ğíœ
+				If .Status_Renamed = "”jŠü" Then
+					'ƒ†ƒjƒbƒg‚Éæ‚Á‚Ä‚¢‚éƒpƒCƒƒbƒg‚à”jŠü
+					For i = 1 To .CountPilot
+						.Pilot(i).Alive = False
+					Next 
+					For i = 1 To .CountSupport
+						.Support(i).Alive = False
+					Next 
+					
+					'ƒ†ƒjƒbƒg‚ª‘•”õ‚µ‚Ä‚¢‚éƒAƒCƒeƒ€‚à”jŠü
+					For i = 1 To .CountItem
+						.Item(i).Exist = False
+					Next 
+					
+					Delete(.ID)
+				End If
 			End With
 		Next u
 	End Sub

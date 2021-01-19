@@ -3,52 +3,52 @@ Option Explicit On
 Friend Class Pilot
 	
 	' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
+	' –{ƒvƒƒOƒ‰ƒ€‚ÍƒtƒŠ[ƒ\ƒtƒg‚Å‚ ‚èA–³•ÛØ‚Å‚·B
+	' –{ƒvƒƒOƒ‰ƒ€‚ÍGNU General Public License(Ver.3‚Ü‚½‚Í‚»‚êˆÈ~)‚ª’è‚ß‚éğŒ‚Ì‰º‚Å
+	' Ä”Ğ•z‚Ü‚½‚Í‰ü•Ï‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B
 	
-	'Invalid_string_refer_to_original_code
+	'ì¬‚³‚ê‚½ƒpƒCƒƒbƒg‚ÌƒNƒ‰ƒX
 	
-	'Invalid_string_refer_to_original_code
+	'ƒpƒCƒƒbƒgƒf[ƒ^‚Ö‚Ìƒ|ƒCƒ“ƒ^
 	Public Data As PilotData
 	
-	'Invalid_string_refer_to_original_code
+	'¯•Ê—p‚h‚c
 	Public ID As String
-	'æ‰€å±é™£å–¶
+	'Š‘®w‰c
 	Public Party As String
-	'Invalid_string_refer_to_original_code
-	'æœªæ­ä¹—æ™‚ã¯ Nothing
+	'“‹æ‚µ‚Ä‚¢‚éƒ†ƒjƒbƒg
+	'–¢“‹æ‚Í Nothing
 	'UPGRADE_NOTE: Unit ‚Í Unit_Renamed ‚ÉƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 	Public Unit_Renamed As Unit
 	
-	'Invalid_string_refer_to_original_code
+	'¶‚«‚Ä‚¢‚é‚©‚Ç‚¤‚©
 	Public Alive As Boolean
 	
-	'Invalid_string_refer_to_original_code
+	'Leave‚µ‚Ä‚¢‚é‚©‚Ç‚¤‚©
 	Public Away As Boolean
 	
-	'Invalid_string_refer_to_original_code
+	'’Ç‰ÁƒpƒCƒƒbƒg‚©‚Ç‚¤‚©
 	Public IsAdditionalPilot As Boolean
 	
-	'Invalid_string_refer_to_original_code
+	'’Ç‰ÁƒTƒ|[ƒg‚©‚Ç‚¤‚©
 	Public IsAdditionalSupport As Boolean
 	
-	'Invalid_string_refer_to_original_code
+	'ƒTƒ|[ƒgƒpƒCƒƒbƒg‚Æ‚µ‚Äæ‚è‚ñ‚¾‚Ì‡”Ô
 	Public SupportIndex As Short
 	
-	'ãƒ¬ãƒ™ãƒ«
+	'ƒŒƒxƒ‹
 	Private proLevel As Short
 	
-	'çµŒé¨“å€¤
+	'ŒoŒ±’l
 	Private proEXP As Short
-	'Invalid_string_refer_to_original_code
+	'‚r‚o
 	Private proSP As Short
-	'æ°—åŠ›
+	'‹C—Í
 	Private proMorale As Short
-	'éœŠåŠ›
+	'—ì—Í
 	Private proPlana As Short
 	
-	'èƒ½åŠ›å€¤
+	'”\—Í’l
 	Public Infight As Short
 	Public Shooting As Short
 	Public Hit As Short
@@ -57,7 +57,7 @@ Friend Class Pilot
 	Public Intuition As Short
 	Public Adaption As String
 	
-	'èƒ½åŠ›å€¤ã®åŸºæœ¬å€¤
+	'”\—Í’l‚ÌŠî–{’l
 	Public InfightBase As Short
 	Public ShootingBase As Short
 	Public HitBase As Short
@@ -65,9 +65,9 @@ Friend Class Pilot
 	Public TechniqueBase As Short
 	Public IntuitionBase As Short
 	
-	'èƒ½åŠ›å€¤ã®ä¿®æ­£å€¤
+	'”\—Í’l‚ÌC³’l
 	
-	'Invalid_string_refer_to_original_code
+	'“Áê”\—Í•©ƒ†ƒjƒbƒg‚É‚æ‚éC³
 	Public InfightMod As Short
 	Public ShootingMod As Short
 	Public HitMod As Short
@@ -75,7 +75,7 @@ Friend Class Pilot
 	Public TechniqueMod As Short
 	Public IntuitionMod As Short
 	
-	'ä»–ãƒ¦ãƒ‹ãƒƒãƒˆã«ã‚ˆã‚‹æ”¯æ´ä¿®æ­£
+	'‘¼ƒ†ƒjƒbƒg‚É‚æ‚éx‰‡C³
 	Public InfightMod2 As Short
 	Public ShootingMod2 As Short
 	Public HitMod2 As Short
@@ -83,10 +83,10 @@ Friend Class Pilot
 	Public TechniqueMod2 As Short
 	Public IntuitionMod2 As Short
 	
-	'æ°—åŠ›ä¿®æ­£å€¤
+	'‹C—ÍC³’l
 	Public MoraleMod As Short
 	
-	'Invalid_string_refer_to_original_code
+	'“Áê”\—Í
 	Private colSkill As New Collection
 	
 	
@@ -112,7 +112,7 @@ Friend Class Pilot
 		MyBase.Finalize()
 	End Sub
 	
-	'åç§°
+	'–¼Ì
 	
 	Public Property Name() As String
 		Get
@@ -124,7 +124,7 @@ Friend Class Pilot
 		End Set
 	End Property
 	
-	'æ„›ç§°
+	'ˆ¤Ì
 	Public ReadOnly Property Nickname0() As String
 		Get
 			Nickname0 = Data.Nickname
@@ -139,7 +139,7 @@ Friend Class Pilot
 			
 			Nickname = Nickname0
 			
-			'æ„›ç§°å¤‰æ›´
+			'ˆ¤Ì•ÏX
 			If Unit_Renamed Is Nothing Then
 				ReplaceSubExpression(Nickname)
 				Exit Property
@@ -154,36 +154,35 @@ Friend Class Pilot
 				
 				u = Unit_Renamed
 				
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				'Invalid_string_refer_to_original_code
-				vname = "Invalid_string_refer_to_original_code" & ID & "]"
-				If IsLocalVariableDefined(vname) Then
-					'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg LocalVariableList.Item(vname).NumericValue ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					If LocalVariableList.Item(vname).NumericValue <> 1 Then
+				'ƒpƒCƒƒbƒgƒXƒe[ƒ^ƒXƒRƒ}ƒ“ƒh’†‚Ìê‡‚Íƒ†ƒjƒbƒg‚ğŒŸõ‚·‚é•K—v‚ª‚ ‚é
+				If .Name = "ƒXƒe[ƒ^ƒX•\¦—pƒ_ƒ~[ƒ†ƒjƒbƒg" Then
+					'ƒƒCƒ“ƒpƒCƒƒbƒg‚©‚Ç‚¤‚©ƒ`ƒFƒbƒN
+					vname = "“‹æ‡”Ô[" & ID & "]"
+					If IsLocalVariableDefined(vname) Then
+						'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg LocalVariableList.Item(vname).NumericValue ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						If LocalVariableList.Item(vname).NumericValue <> 1 Then
+							Exit Property
+						End If
+					Else
 						Exit Property
 					End If
-				Else
-					Exit Property
+					
+					vname = "“‹æƒ†ƒjƒbƒg[" & ID & "]"
+					If IsLocalVariableDefined(vname) Then
+						'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg LocalVariableList.Item().StringValue ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						uname = LocalVariableList.Item(vname).StringValue
+					End If
+					If uname = "" Then
+						Exit Property
+					End If
+					
+					u = UList.Item(uname)
 				End If
-				
-				vname = "Invalid_string_refer_to_original_code" & ID & "]"
-				If IsLocalVariableDefined(vname) Then
-					'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg LocalVariableList.Item().StringValue ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					uname = LocalVariableList.Item(vname).StringValue
-				End If
-				If uname = "" Then
-					Exit Property
-				End If
-				
-				u = UList.Item(uname)
-				'End If
 				
 				With u
-					If .IsFeatureAvailable("Invalid_string_refer_to_original_code") Then
-						Nickname = .FeatureData("Invalid_string_refer_to_original_code")
-						idx = InStr(Nickname, "$(æ„›ç§°)")
+					If .IsFeatureAvailable("ƒpƒCƒƒbƒgˆ¤Ì") Then
+						Nickname = .FeatureData("ƒpƒCƒƒbƒgˆ¤Ì")
+						idx = InStr(Nickname, "$(ˆ¤Ì)")
 						If idx > 0 Then
 							Nickname = Left(Nickname, idx - 1) & Data.Nickname & Mid(Nickname, idx + 5)
 						End If
@@ -191,14 +190,14 @@ Friend Class Pilot
 				End With
 			End With
 			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
+			'Pilot‚ÌNickname()‚ÆUnit‚ÌNickname()‚ÌŒÄ‚Ño‚µ‚ª–³ŒÀ‚É‘±‚©‚È‚¢‚æ‚¤‚É
+			'Nickname()‚Ö‚ÌŒÄ‚Ño‚µ‚Í–³Œø‰»
 			If dont_call_unit_nickname Then
 				ReplaceString(Nickname, "Nickname()", "")
 				ReplaceString(Nickname, "nickname()", "")
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'ˆ¤Ì“à‚Ì®’uŠ·‚Ì‚½‚ßAƒfƒtƒHƒ‹ƒgƒ†ƒjƒbƒg‚ğˆê“I‚É•ÏX‚·‚é
 			u = SelectedUnitForEvent
 			SelectedUnitForEvent = Unit_Renamed
 			ReplaceSubExpression(Nickname)
@@ -206,7 +205,7 @@ Friend Class Pilot
 		End Get
 	End Property
 	
-	'Invalid_string_refer_to_original_code
+	'“Ç‚İ‰¼–¼
 	Public ReadOnly Property KanaName() As String
 		Get
 			Dim idx As Short
@@ -215,7 +214,7 @@ Friend Class Pilot
 			
 			KanaName = Data.KanaName
 			
-			'æ„›ç§°å¤‰æ›´
+			'ˆ¤Ì•ÏX
 			If Unit_Renamed Is Nothing Then
 				ReplaceSubExpression(KanaName)
 				Exit Property
@@ -230,53 +229,50 @@ Friend Class Pilot
 				
 				u = Unit_Renamed
 				
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				'Invalid_string_refer_to_original_code
-				vname = "Invalid_string_refer_to_original_code" & ID & "]"
-				If IsLocalVariableDefined(vname) Then
-					'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg LocalVariableList.Item(vname).NumericValue ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					If LocalVariableList.Item(vname).NumericValue <> 1 Then
+				'ƒpƒCƒƒbƒgƒXƒe[ƒ^ƒXƒRƒ}ƒ“ƒh’†‚Ìê‡‚Íƒ†ƒjƒbƒg‚ğŒŸõ‚·‚é•K—v‚ª‚ ‚é
+				If .Name = "ƒXƒe[ƒ^ƒX•\¦—pƒ_ƒ~[ƒ†ƒjƒbƒg" Then
+					'ƒƒCƒ“ƒpƒCƒƒbƒg‚©‚Ç‚¤‚©ƒ`ƒFƒbƒN
+					vname = "“‹æ‡”Ô[" & ID & "]"
+					If IsLocalVariableDefined(vname) Then
+						'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg LocalVariableList.Item(vname).NumericValue ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						If LocalVariableList.Item(vname).NumericValue <> 1 Then
+							Exit Property
+						End If
+					Else
 						Exit Property
 					End If
-				Else
-					Exit Property
+					
+					vname = "“‹æƒ†ƒjƒbƒg[" & ID & "]"
+					If IsLocalVariableDefined(vname) Then
+						'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg LocalVariableList.Item().StringValue ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						uname = LocalVariableList.Item(vname).StringValue
+					End If
+					If uname = "" Then
+						Exit Property
+					End If
+					
+					u = UList.Item(uname)
 				End If
-				
-				vname = "Invalid_string_refer_to_original_code" & ID & "]"
-				If IsLocalVariableDefined(vname) Then
-					'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg LocalVariableList.Item().StringValue ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					uname = LocalVariableList.Item(vname).StringValue
-				End If
-				If uname = "" Then
-					Exit Property
-				End If
-				
-				u = UList.Item(uname)
-				'End If
 				
 				With u
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					idx = InStr(KanaName, "Invalid_string_refer_to_original_code")
-					If idx > 0 Then
-						KanaName = Left(KanaName, idx - 1) & Data.KanaName & Mid(KanaName, idx + 5)
+					If .IsFeatureAvailable("ƒpƒCƒƒbƒg“Ç‚İ‰¼–¼") Then
+						KanaName = .FeatureData("ƒpƒCƒƒbƒg“Ç‚İ‰¼–¼")
+						idx = InStr(KanaName, "$(“Ç‚İ‰¼–¼)")
+						If idx > 0 Then
+							KanaName = Left(KanaName, idx - 1) & Data.KanaName & Mid(KanaName, idx + 5)
+						End If
+					ElseIf .IsFeatureAvailable("ƒpƒCƒƒbƒgˆ¤Ì") Then 
+						KanaName = .FeatureData("ƒpƒCƒƒbƒgˆ¤Ì")
+						idx = InStr(KanaName, "$(ˆ¤Ì)")
+						If idx > 0 Then
+							KanaName = Left(KanaName, idx - 1) & Data.Nickname & Mid(KanaName, idx + 5)
+						End If
+						KanaName = StrToHiragana(KanaName)
 					End If
-					.IsFeatureAvailable("Invalid_string_refer_to_original_code")
-					KanaName = .FeatureData("Invalid_string_refer_to_original_code")
-					idx = InStr(KanaName, "$(æ„›ç§°)")
-					If idx > 0 Then
-						KanaName = Left(KanaName, idx - 1) & Data.Nickname & Mid(KanaName, idx + 5)
-					End If
-					KanaName = StrToHiragana(KanaName)
-					'End If
 				End With
 			End With
 			
-			'Invalid_string_refer_to_original_code
+			'“Ç‚İ‰¼–¼“à‚Ì®’uŠ·‚Ì‚½‚ßAƒfƒtƒHƒ‹ƒgƒ†ƒjƒbƒg‚ğˆê“I‚É•ÏX‚·‚é
 			u = SelectedUnitForEvent
 			SelectedUnitForEvent = Unit_Renamed
 			ReplaceSubExpression(KanaName)
@@ -284,21 +280,21 @@ Friend Class Pilot
 		End Get
 	End Property
 	
-	'æ€§åˆ¥
+	'«•Ê
 	Public ReadOnly Property Sex() As String
 		Get
 			Sex = Data.Sex
 			If Not Unit_Renamed Is Nothing Then
 				With Unit_Renamed
-					If .IsFeatureAvailable("æ€§åˆ¥") Then
-						Sex = .FeatureData("æ€§åˆ¥")
+					If .IsFeatureAvailable("«•Ê") Then
+						Sex = .FeatureData("«•Ê")
 					End If
 				End With
 			End If
 		End Get
 	End Property
 	
-	'Invalid_string_refer_to_original_code
+	'“‹æ‚·‚éƒ†ƒjƒbƒg‚ÌƒNƒ‰ƒX
 	'UPGRADE_NOTE: Class ‚Í Class_Renamed ‚ÉƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 	Public ReadOnly Property Class_Renamed() As String
 		Get
@@ -306,31 +302,31 @@ Friend Class Pilot
 		End Get
 	End Property
 	
-	'å€’ã—ãŸã¨ãã«å¾—ã‚‰ã‚Œã‚‹çµŒé¨“å€¤
+	'“|‚µ‚½‚Æ‚«‚É“¾‚ç‚ê‚éŒoŒ±’l
 	Public ReadOnly Property ExpValue() As Short
 		Get
 			ExpValue = Data.ExpValue
 		End Get
 	End Property
 	
-	'æ€§æ ¼
+	'«Ši
 	Public ReadOnly Property Personality() As String
 		Get
 			Personality = Data.Personality
 			
-			'Invalid_string_refer_to_original_code
+			'ƒ†ƒjƒbƒg‚Éæ‚Á‚Ä‚¢‚éH
 			If Unit_Renamed Is Nothing Then
 				Exit Property
 			End If
 			
 			With Unit_Renamed
-				'Invalid_string_refer_to_original_code
-				If .IsFeatureAvailable("æ€§æ ¼å¤‰æ›´") Then
-					Personality = .FeatureData("æ€§æ ¼å¤‰æ›´")
+				'ƒAƒCƒeƒ€—p“Áê”\—Íu«Ši•ÏXv
+				If .IsFeatureAvailable("«Ši•ÏX") Then
+					Personality = .FeatureData("«Ši•ÏX")
 					Exit Property
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'’Ç‰ÁƒpƒCƒƒbƒg‚Ì«Ši‚ğ—Dæ‚³‚¹‚é
 				If Not IsAdditionalPilot Then
 					If .CountPilot > 0 Then
 						If .Pilot(1) Is Me Then
@@ -342,7 +338,7 @@ Friend Class Pilot
 		End Get
 	End Property
 	
-	'Invalid_string_refer_to_original_code
+	'ƒrƒbƒgƒ}ƒbƒv
 	Public ReadOnly Property Bitmap(Optional ByVal use_orig As Boolean = False) As String
 		Get
 			Dim u As Unit
@@ -354,7 +350,7 @@ Friend Class Pilot
 				Bitmap = Data.Bitmap
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'ƒpƒCƒƒbƒg‰æ‘œ•ÏX
 			If Unit_Renamed Is Nothing Then
 				Exit Property
 			End If
@@ -367,70 +363,65 @@ Friend Class Pilot
 				
 				u = Unit_Renamed
 				
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				'Invalid_string_refer_to_original_code
-				vname = "Invalid_string_refer_to_original_code" & ID & "]"
-				If IsLocalVariableDefined(vname) Then
-					'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg LocalVariableList.Item(vname).NumericValue ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					If LocalVariableList.Item(vname).NumericValue <> 1 Then
+				'ƒpƒCƒƒbƒgƒXƒe[ƒ^ƒXƒRƒ}ƒ“ƒh’†‚Ìê‡‚Íƒ†ƒjƒbƒg‚ğŒŸõ‚·‚é•K—v‚ª‚ ‚é
+				If .Name = "ƒXƒe[ƒ^ƒX•\¦—pƒ_ƒ~[ƒ†ƒjƒbƒg" Then
+					'ƒƒCƒ“ƒpƒCƒƒbƒg‚©‚Ç‚¤‚©ƒ`ƒFƒbƒN
+					vname = "“‹æ‡”Ô[" & ID & "]"
+					If IsLocalVariableDefined(vname) Then
+						'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg LocalVariableList.Item(vname).NumericValue ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						If LocalVariableList.Item(vname).NumericValue <> 1 Then
+							Exit Property
+						End If
+					Else
 						Exit Property
 					End If
-				Else
-					Exit Property
+					
+					vname = "“‹æƒ†ƒjƒbƒg[" & ID & "]"
+					If IsLocalVariableDefined(vname) Then
+						'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg LocalVariableList.Item().StringValue ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						uname = LocalVariableList.Item(vname).StringValue
+					End If
+					If uname = "" Then
+						Exit Property
+					End If
+					
+					u = UList.Item(uname)
 				End If
-				
-				vname = "Invalid_string_refer_to_original_code" & ID & "]"
-				If IsLocalVariableDefined(vname) Then
-					'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg LocalVariableList.Item().StringValue ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					uname = LocalVariableList.Item(vname).StringValue
-				End If
-				If uname = "" Then
-					Exit Property
-				End If
-				
-				u = UList.Item(uname)
-				'End If
 				
 				With u
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					'End If
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					'End If
+					If .IsConditionSatisfied("ƒpƒCƒƒbƒg‰æ‘œ") Then
+						Bitmap = LIndex(.ConditionData("ƒpƒCƒƒbƒg‰æ‘œ"), 2)
+					End If
+					If .IsFeatureAvailable("ƒpƒCƒƒbƒg‰æ‘œ") Then
+						Bitmap = .FeatureData("ƒpƒCƒƒbƒg‰æ‘œ")
+					End If
 				End With
 			End With
 		End Get
 	End Property
 	
-	'Invalid_string_refer_to_original_code
+	'‚a‚f‚l
 	Public ReadOnly Property BGM() As String
 		Get
 			BGM = Data.BGM
 		End Get
 	End Property
 	
-	'Invalid_string_refer_to_original_code
+	'ƒƒbƒZ[ƒWƒ^ƒCƒv
 	Public ReadOnly Property MessageType() As String
 		Get
 			MessageType = Name
 			
-			'Invalid_string_refer_to_original_code
-			If IsSkillAvailable("Invalid_string_refer_to_original_code") Then
-				MessageType = SkillData("Invalid_string_refer_to_original_code")
+			'ƒpƒCƒƒbƒg”\—ÍuƒƒbƒZ[ƒWv
+			If IsSkillAvailable("ƒƒbƒZ[ƒW") Then
+				MessageType = SkillData("ƒƒbƒZ[ƒW")
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'”\—ÍƒRƒs[‚Å•Ïg‚µ‚½ê‡‚ÍƒƒbƒZ[ƒW‚àƒRƒs[Œ³ƒpƒCƒƒbƒg‚Ì‚à‚Ì‚ğg‚¤
 			If Not Unit_Renamed Is Nothing Then
 				With Unit_Renamed
-					If .IsConditionSatisfied("Invalid_string_refer_to_original_code") Then
-						MessageType = LIndex(.ConditionData("Invalid_string_refer_to_original_code"), 2)
+					If .IsConditionSatisfied("ƒƒbƒZ[ƒW") Then
+						MessageType = LIndex(.ConditionData("ƒƒbƒZ[ƒW"), 2)
 					End If
 				End With
 			End If
@@ -438,28 +429,26 @@ Friend Class Pilot
 	End Property
 	
 	
-	'Invalid_string_refer_to_original_code
+	'–hŒä—Í
 	Public ReadOnly Property Defense() As Short
 		Get
-			If IsOptionDefined("Invalid_string_refer_to_original_code") Or IsOptionDefined("Invalid_string_refer_to_original_code") Then
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				If IsOptionDefined("Invalid_string_refer_to_original_code") Then
-					Defense = Defense + (Level * (1 + 2 * SkillLevel("é˜²å¾¡æˆé•·"))) \ 2
+			If IsOptionDefined("–hŒä—Í¬’·") Or IsOptionDefined("–hŒä—ÍƒŒƒxƒ‹ƒAƒbƒv") Then
+				Defense = 100 + 5 * SkillLevel("‘Ï‹v")
+				If IsOptionDefined("–hŒä—Í’á¬’·") Then
+					Defense = Defense + (Level * (1 + 2 * SkillLevel("–hŒä¬’·"))) \ 2
 				Else
-					Defense = Defense + Int(Level * (1 + SkillLevel("é˜²å¾¡æˆé•·")))
+					Defense = Defense + Int(Level * (1 + SkillLevel("–hŒä¬’·")))
 				End If
 			Else
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				Defense = 100 + 5 * SkillLevel("‘Ï‹v")
 			End If
 		End Get
 	End Property
 	
 	
-	'Invalid_string_refer_to_original_code
+	' === ƒŒƒxƒ‹•ŒoŒ±’lŠÖ˜Aˆ— ===
 	
-	'ãƒ¬ãƒ™ãƒ«
+	'ƒŒƒxƒ‹
 	
 	Public Property Level() As Short
 		Get
@@ -467,7 +456,7 @@ Friend Class Pilot
 		End Get
 		Set(ByVal Value As Short)
 			If proLevel = Value Then
-				'Invalid_string_refer_to_original_code
+				'•Ï‰»‚È‚µ
 				Exit Property
 			End If
 			
@@ -476,7 +465,7 @@ Friend Class Pilot
 		End Set
 	End Property
 	
-	'çµŒé¨“å€¤
+	'ŒoŒ±’l
 	
 	Public Property Exp() As Integer
 		Get
@@ -487,30 +476,30 @@ Friend Class Pilot
 			
 			prev_level = proLevel
 			
-			'Invalid_string_refer_to_original_code
+			'500‚²‚Æ‚ÉƒŒƒxƒ‹ƒAƒbƒv
 			proEXP = Value Mod 500
 			proLevel = proLevel + Value \ 500
 			
-			'Invalid_string_refer_to_original_code
+			'ŒoŒ±’l‚ª‰º‚ª‚éê‡‚ÍƒŒƒxƒ‹‚ğ‰º‚°‚é
 			If proEXP < 0 Then
 				If proLevel > 1 Then
 					proEXP = proEXP + 500
 					proLevel = proLevel - 1
 				Else
-					'Invalid_string_refer_to_original_code
+					'‚±‚êˆÈã‚ÍƒŒƒxƒ‹‚ğ‰º‚°‚ç‚ê‚È‚¢‚Ì‚Å
 					proEXP = 0
 				End If
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'ƒŒƒxƒ‹ãŒÀƒ`ƒFƒbƒN
 			If Value \ 500 > 0 Then
-				If IsOptionDefined("ãƒ¬ãƒ™ãƒ«é™ç•Œçªç ´") Then
-					If proLevel > 999 Then 'Invalid_string_refer_to_original_code
+				If IsOptionDefined("ƒŒƒxƒ‹ŒÀŠE“Ë”j") Then
+					If proLevel > 999 Then 'ƒŒƒxƒ‹999‚Å‘Å‚¿~‚ß
 						proLevel = 999
 						proEXP = 500
 					End If
 				Else
-					If proLevel > 99 Then 'Invalid_string_refer_to_original_code
+					If proLevel > 99 Then 'ƒŒƒxƒ‹99‚Å‘Å‚¿~‚ß
 						proLevel = 99
 						proEXP = 500
 					End If
@@ -524,7 +513,7 @@ Friend Class Pilot
 	End Property
 	
 	
-	'æ°—åŠ›
+	'‹C—Í
 	
 	Public Property Morale() As Short
 		Get
@@ -538,9 +527,9 @@ Friend Class Pilot
 	Public ReadOnly Property MaxMorale() As Short
 		Get
 			MaxMorale = 150
-			If IsSkillAvailable("æ°—åŠ›ä¸Šé™") Then
-				If IsSkillLevelSpecified("æ°—åŠ›ä¸Šé™") Then
-					MaxMorale = MaxLng(SkillLevel("æ°—åŠ›ä¸Šé™"), 0)
+			If IsSkillAvailable("‹C—ÍãŒÀ") Then
+				If IsSkillLevelSpecified("‹C—ÍãŒÀ") Then
+					MaxMorale = MaxLng(SkillLevel("‹C—ÍãŒÀ"), 0)
 				End If
 			End If
 		End Get
@@ -549,26 +538,26 @@ Friend Class Pilot
 	Public ReadOnly Property MinMorale() As Short
 		Get
 			MinMorale = 50
-			If IsSkillAvailable("æ°—åŠ›ä¸‹é™") Then
-				If IsSkillLevelSpecified("æ°—åŠ›ä¸‹é™") Then
-					MinMorale = MaxLng(SkillLevel("æ°—åŠ›ä¸‹é™"), 0)
+			If IsSkillAvailable("‹C—Í‰ºŒÀ") Then
+				If IsSkillLevelSpecified("‹C—Í‰ºŒÀ") Then
+					MinMorale = MaxLng(SkillLevel("‹C—Í‰ºŒÀ"), 0)
 				End If
 			End If
 		End Get
 	End Property
 	
 	
-	'Invalid_string_refer_to_original_code
+	' === ‚r‚o’lŠÖ˜Aˆ— ===
 	
-	'Invalid_string_refer_to_original_code
+	'Å‘å‚r‚o
 	Public ReadOnly Property MaxSP() As Integer
 		Get
 			Dim lv As Short
 			
-			'Invalid_string_refer_to_original_code
+			'‚r‚o‚È‚µ‚Ìê‡‚ÍƒŒƒxƒ‹‚ÉŠÖ‚í‚ç‚¸0
 			If Data.SP <= 0 Then
 				MaxSP = 0
-				'Invalid_string_refer_to_original_code
+				'‚½‚¾‚µ’Ç‰ÁƒpƒCƒƒbƒg‚Ìê‡‚Í‘æ‚PƒpƒCƒƒbƒg‚ÌÅ‘å‚r‚o‚ğg—p
 				If Not Unit_Renamed Is Nothing Then
 					With Unit_Renamed
 						If .CountPilot > 0 Then
@@ -583,49 +572,49 @@ Friend Class Pilot
 				Exit Property
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'ƒŒƒxƒ‹‚É‚æ‚éã¸’l
 			lv = Level
 			If lv > 99 Then
 				lv = 100
 			End If
-			lv = lv + SkillLevel("è¿½åŠ ãƒ¬ãƒ™ãƒ«")
+			lv = lv + SkillLevel("’Ç‰ÁƒŒƒxƒ‹")
 			If lv > 40 Then
 				MaxSP = lv + 40
 			Else
 				MaxSP = 2 * lv
 			End If
-			If IsSkillAvailable("Invalid_string_refer_to_original_code") Then
+			If IsSkillAvailable("‚r‚o’á¬’·") Then
 				MaxSP = MaxSP \ 2
-			ElseIf IsSkillAvailable("Invalid_string_refer_to_original_code") Then 
+			ElseIf IsSkillAvailable("‚r‚o‚¬’·") Then 
 				MaxSP = 1.5 * MaxSP
 			End If
-			If IsOptionDefined("Invalid_string_refer_to_original_code") Then
+			If IsOptionDefined("‚r‚o’á¬’·") Then
 				MaxSP = MaxSP \ 2
 			End If
 			
-			'åŸºæœ¬å€¤ã‚’è¿½åŠ 
+			'Šî–{’l‚ğ’Ç‰Á
 			MaxSP = MaxSP + Data.SP
 			
-			'Invalid_string_refer_to_original_code
-			MaxSP = MaxSP + SkillLevel("Invalid_string_refer_to_original_code")
+			'”\—Í‚t‚o
+			MaxSP = MaxSP + SkillLevel("‚r‚o‚t‚o")
 			
-			'Invalid_string_refer_to_original_code
-			MaxSP = MaxSP - SkillLevel("Invalid_string_refer_to_original_code")
+			'”\—Í‚c‚n‚v‚m
+			MaxSP = MaxSP - SkillLevel("‚r‚o‚c‚n‚v‚m")
 			
-			'Invalid_string_refer_to_original_code
+			'ãŒÀ‚ğ’´‚¦‚È‚¢‚æ‚¤‚É
 			If MaxSP > 9999 Then
 				MaxSP = 9999
 			End If
 		End Get
 	End Property
 	
-	'Invalid_string_refer_to_original_code
+	'‚r‚o’l
 	
 	Public Property SP() As Integer
 		Get
 			SP = proSP
 			
-			'Invalid_string_refer_to_original_code
+			'’Ç‰ÁƒpƒCƒƒbƒg‚©‚Ç‚¤‚©”»’è
 			
 			If Unit_Renamed Is Nothing Then
 				Exit Property
@@ -643,9 +632,9 @@ Friend Class Pilot
 					Exit Property
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'’Ç‰ÁƒpƒCƒƒbƒg‚¾‚Á‚½‚Ì‚Å‘æ‚PƒpƒCƒƒbƒg‚Ì‚r‚o’l‚ğ‘ã‚í‚è‚Ég‚¤
 				If Data.SP > 0 Then
-					'Invalid_string_refer_to_original_code
+					'‚r‚o‚ğ‚Âê‡‚ÍÁ”ï—Ê‚ğˆê’v‚³‚¹‚é
 					With .Pilot(1)
 						If .MaxSP > 0 Then
 							proSP = MaxSP * .SP0 \ .MaxSP
@@ -653,7 +642,7 @@ Friend Class Pilot
 						End If
 					End With
 				Else
-					'Invalid_string_refer_to_original_code
+					'‚r‚o‚ğ‚½‚È‚¢ê‡‚Í‚»‚Ì‚Ü‚Üg‚¤
 					SP = .Pilot(1).SP0
 				End If
 			End With
@@ -670,7 +659,7 @@ Friend Class Pilot
 				proSP = Value
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'’Ç‰ÁƒpƒCƒƒbƒg‚©‚Ç‚¤‚©”»’è
 			
 			If Unit_Renamed Is Nothing Then
 				Exit Property
@@ -688,16 +677,16 @@ Friend Class Pilot
 					Exit Property
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'’Ç‰ÁƒpƒCƒƒbƒg‚¾‚Á‚½‚Ì‚Å‘æ‚PƒpƒCƒƒbƒg‚Ì‚r‚o’l‚ğ‘ã‚í‚è‚Ég‚¤
 				With .Pilot(1)
 					If Data.SP > 0 Then
-						'Invalid_string_refer_to_original_code
+						'’Ç‰ÁƒpƒCƒƒbƒg‚ª‚r‚o‚ğ‚Âê‡‚Í‘æ‚PƒpƒCƒƒbƒg‚ÆÁ”ï—¦‚ğˆê’v‚³‚¹‚é
 						If .MaxSP > 0 Then
 							.SP0 = .MaxSP * proSP \ MaxSP
 							proSP = MaxSP * .SP0 \ .MaxSP
 						End If
 					Else
-						'Invalid_string_refer_to_original_code
+						'’Ç‰ÁƒpƒCƒƒbƒg‚ª‚r‚o‚ğ‚½‚È‚¢ê‡‚Í‘æ‚PƒpƒCƒƒbƒg‚Ì‚r‚o’l‚ğ‚»‚Ì‚Ü‚Üg‚¤
 						If Value > .MaxSP Then
 							.SP0 = .MaxSP
 						ElseIf Value < 0 Then 
@@ -721,15 +710,15 @@ Friend Class Pilot
 		End Set
 	End Property
 	
-	'éœŠåŠ›
+	'—ì—Í
 	
 	Public Property Plana() As Integer
 		Get
-			If IsSkillAvailable("éœŠåŠ›") Then
+			If IsSkillAvailable("—ì—Í") Then
 				Plana = proPlana
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'’Ç‰ÁƒpƒCƒƒbƒg‚©‚Ç‚¤‚©”»’è
 			
 			If Unit_Renamed Is Nothing Then
 				Exit Property
@@ -747,8 +736,8 @@ Friend Class Pilot
 					Exit Property
 				End If
 				
-				'Invalid_string_refer_to_original_code
-				If IsSkillAvailable("éœŠåŠ›") Then
+				'’Ç‰ÁƒpƒCƒƒbƒg‚¾‚Á‚½‚Ì‚Å‘æ‚PƒpƒCƒƒbƒg‚Ì—ì—Í‚ğ‘ã‚í‚è‚Ég‚¤
+				If IsSkillAvailable("—ì—Í") Then
 					With .Pilot(1)
 						If .MaxPlana > 0 Then
 							proPlana = MaxPlana * .Plana0 \ .MaxPlana
@@ -772,7 +761,7 @@ Friend Class Pilot
 				proPlana = Value
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'’Ç‰ÁƒpƒCƒƒbƒg‚©‚Ç‚¤‚©”»’è
 			
 			If Unit_Renamed Is Nothing Then
 				Exit Property
@@ -790,16 +779,16 @@ Friend Class Pilot
 					Exit Property
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'’Ç‰ÁƒpƒCƒƒbƒg‚¾‚Á‚½‚Ì‚Å‘æ‚PƒpƒCƒƒbƒg‚Ì—ì—Í’l‚ğ‘ã‚í‚è‚Ég‚¤
 				With .Pilot(1)
-					If IsSkillAvailable("éœŠåŠ›") Then
-						'Invalid_string_refer_to_original_code
+					If IsSkillAvailable("—ì—Í") Then
+						'’Ç‰ÁƒpƒCƒƒbƒg‚ª—ì—Í‚ğ‚Âê‡‚Í‘æ‚PƒpƒCƒƒbƒg‚ÆÁ”ï—¦‚ğˆê’v‚³‚¹‚é
 						If .MaxSP > 0 Then
 							.Plana0 = .MaxPlana * proPlana \ MaxPlana
 							proPlana = MaxPlana * .Plana0 \ .MaxPlana
 						End If
 					Else
-						'Invalid_string_refer_to_original_code
+						'’Ç‰ÁƒpƒCƒƒbƒg‚ª—ì—Í‚ğ‚½‚È‚¢ê‡‚Í‘æ‚PƒpƒCƒƒbƒg‚Ì—ì—Í’l‚ğ‚»‚Ì‚Ü‚Üg‚¤
 						If Value > .MaxPlana Then
 							.Plana0 = .MaxPlana
 						ElseIf Value < 0 Then 
@@ -824,13 +813,13 @@ Friend Class Pilot
 	End Property
 	
 	
-	'Invalid_string_refer_to_original_code
+	' === ƒXƒyƒVƒƒƒ‹ƒpƒ[ŠÖ˜Aˆ— ===
 	
-	'ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼ã®å€‹æ•°
+	'ƒXƒyƒVƒƒƒ‹ƒpƒ[‚ÌŒÂ”
 	Public ReadOnly Property CountSpecialPower() As Short
 		Get
 			If Data.SP <= 0 Then
-				'Invalid_string_refer_to_original_code
+				'‚r‚o‚ğ‚½‚È‚¢’Ç‰ÁƒpƒCƒƒbƒg‚Ìê‡‚Í‚P”Ô–Ú‚ÌƒpƒCƒƒbƒg‚Ìƒf[ƒ^‚ğg‚¤
 				If Not Unit_Renamed Is Nothing Then
 					With Unit_Renamed
 						If .CountPilot > 0 Then
@@ -849,11 +838,11 @@ Friend Class Pilot
 		End Get
 	End Property
 	
-	'idxç•ªç›®ã®ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼
+	'idx”Ô–Ú‚ÌƒXƒyƒVƒƒƒ‹ƒpƒ[
 	Public ReadOnly Property SpecialPower(ByVal idx As Short) As String
 		Get
 			If Data.SP <= 0 Then
-				'Invalid_string_refer_to_original_code
+				'‚r‚o‚ğ‚½‚È‚¢’Ç‰ÁƒpƒCƒƒbƒg‚Ìê‡‚Í‚P”Ô–Ú‚ÌƒpƒCƒƒbƒg‚Ìƒf[ƒ^‚ğg‚¤
 				If Not Unit_Renamed Is Nothing Then
 					With Unit_Renamed
 						If .CountPilot > 0 Then
@@ -873,7 +862,7 @@ Friend Class Pilot
 	End Property
 	
 	
-	'èƒ½åŠ›å€¤ã‚’æ›´æ–°
+	'”\—Í’l‚ğXV
 	Public Sub Update()
 		Dim skill_num As Short
 		Dim skill_name(64) As String
@@ -882,57 +871,53 @@ Friend Class Pilot
 		Dim lv As Double
 		Dim sd As SkillData
 		
-		'Invalid_string_refer_to_original_code
+		'Œ»İ‚ÌƒŒƒxƒ‹‚Åg—p‰Â”\‚È“Áê”\—Í‚Ìˆê——‚ğì¬
 		
-		'Invalid_string_refer_to_original_code
+		'ˆÈ‘O‚Ìˆê——‚ğíœ
 		With colSkill
 			For i = 1 To .Count()
 				.Remove(1)
 			Next 
 		End With
 		
-		'Invalid_string_refer_to_original_code
+		'ƒpƒCƒƒbƒgƒf[ƒ^‚ğQÆ‚µ‚È‚ª‚çg—p‰Â”\‚È“Áê”\—Í‚ğŒŸõ
 		skill_num = 0
 		For	Each sd In Data.colSkill
 			With sd
 				If Level >= .NecessaryLevel Then
-					'Invalid_string_refer_to_original_code
-					'Invalid_string_refer_to_original_code_
-					'Invalid_string_refer_to_original_code_
-					'Or .Name = "ãƒãƒ³ã‚¿ãƒ¼" _
-					'Then
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					'Invalid_string_refer_to_original_code
-					For i = 1 To skill_num
-						If .Name = skill_name(i) Then
-							If .StrData = skill_data(i).StrData Then
-								'Invalid_string_refer_to_original_code
+					'Šù‚É“o˜^Ï‚İH
+					If .Name = "‚r‚oÁ”ïŒ¸­" Or .Name = "ƒXƒyƒVƒƒƒ‹ƒpƒ[©“®”­“®" Or .Name = "ƒnƒ“ƒ^[" Then
+						'‚±‚ê‚ç‚Ì“Áê”\—Í‚Í“¯í‚Ì”\—Í‚ğ•¡”‚Â‚±‚Æ‚ªo—ˆ‚é
+						For i = 1 To skill_num
+							If .Name = skill_name(i) Then
+								If .StrData = skill_data(i).StrData Then
+									'‚½‚¾‚µƒf[ƒ^w’è‚Ü‚Å“¯ˆê‚Å‚ ‚ê‚Î“¯‚¶”\—Í‚ÆŒ©‚È‚·
+									Exit For
+								End If
+							End If
+						Next 
+					Else
+						For i = 1 To skill_num
+							If .Name = skill_name(i) Then
 								Exit For
 							End If
-						End If
-					Next 
-				Else
-					For i = 1 To skill_num
-						If .Name = skill_name(i) Then
-							Exit For
-						End If
-					Next 
+						Next 
+					End If
+					
+					If i > skill_num Then
+						'–¢“o˜^
+						skill_num = skill_num + 1
+						skill_name(skill_num) = .Name
+						skill_data(skill_num) = sd
+					ElseIf .NecessaryLevel > skill_data(i).NecessaryLevel Then 
+						'“o˜^Ï‚İ‚Å‚ ‚éê‡‚ÍK“¾ƒŒƒxƒ‹‚ª‚‚¢‚à‚Ì‚ğ—Dæ
+						skill_data(i) = sd
+					End If
 				End If
-				
-				If i > skill_num Then
-					'æœªç™»éŒ²
-					skill_num = skill_num + 1
-					skill_name(skill_num) = .Name
-					skill_data(skill_num) = sd
-				ElseIf .NecessaryLevel > skill_data(i).NecessaryLevel Then 
-					'Invalid_string_refer_to_original_code
-					skill_data(i) = sd
-				End If
-				'End If
 			End With
 		Next sd
 		
-		'Invalid_string_refer_to_original_code
+		'SetSkillƒRƒ}ƒ“ƒh‚Å•t‰Á‚³‚ê‚½“Áê”\—Í‚ğŒŸõ
 		Dim sname, alist, sdata As String
 		Dim buf As String
 		If IsGlobalVariableDefined("Ability(" & ID & ")") Then
@@ -945,62 +930,57 @@ Friend Class Pilot
 				buf = GlobalVariableList.Item("Ability(" & ID & "," & sname & ")").StringValue
 				sdata = ListTail(buf, 2)
 				
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code_
-				'Invalid_string_refer_to_original_code_
-				'Or sname = "ãƒãƒ³ã‚¿ãƒ¼" _
-				'Then
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				'Invalid_string_refer_to_original_code
-				For j = 1 To skill_num
-					If sname = skill_name(j) Then
-						If sdata = skill_data(j).StrData Then
-							'Invalid_string_refer_to_original_code
+				'Šù‚É“o˜^Ï‚İH
+				If sname = "‚r‚oÁ”ïŒ¸­" Or sname = "ƒXƒyƒVƒƒƒ‹ƒpƒ[©“®”­“®" Or sname = "ƒnƒ“ƒ^[" Then
+					'‚±‚ê‚ç‚Ì“Áê”\—Í‚Í“¯í‚Ì”\—Í‚ğ•¡”‚Â‚±‚Æ‚ªo—ˆ‚é
+					For j = 1 To skill_num
+						If sname = skill_name(j) Then
+							If sdata = skill_data(j).StrData Then
+								'‚½‚¾‚µƒf[ƒ^w’è‚Ü‚Å“¯ˆê‚Å‚ ‚ê‚Î“¯‚¶”\—Í‚ÆŒ©‚È‚·
+								Exit For
+							End If
+						End If
+					Next 
+				Else
+					For j = 1 To skill_num
+						If sname = skill_name(j) Then
 							Exit For
 						End If
-					End If
-				Next 
-			Next 
-		Else
-			For j = 1 To skill_num
-				If sname = skill_name(j) Then
-					Exit For
+					Next 
+				End If
+				
+				If j > skill_num Then
+					'–¢“o˜^
+					skill_num = j
+					skill_name(j) = sname
+				End If
+				
+				If StrToDbl(LIndex(buf, 1)) = 0 Then
+					'ƒŒƒxƒ‹0‚Ìê‡‚Í”\—Í‚ğ••ˆó
+					'UPGRADE_NOTE: ƒIƒuƒWƒFƒNƒg skill_data() ‚ğƒKƒx[ƒW ƒRƒŒƒNƒg‚·‚é‚Ü‚Å‚±‚ÌƒIƒuƒWƒFƒNƒg‚ğ”jŠü‚·‚é‚±‚Æ‚Í‚Å‚«‚Ü‚¹‚ñB Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					skill_data(j) = Nothing
+				Else
+					'PDList‚Ìƒf[ƒ^‚ğ‘‚«Š·‚¦‚é‚í‚¯‚É‚Í‚¢‚©‚È‚¢‚Ì‚Å
+					'ƒAƒrƒŠƒeƒBƒf[ƒ^‚ğV‹K‚Éì¬
+					sd = New SkillData
+					With sd
+						.Name = sname
+						.Level = StrToDbl(LIndex(buf, 1))
+						If .Level = -1 Then
+							.Level = DEFAULT_LEVEL
+						End If
+						.StrData = ListTail(buf, 2)
+					End With
+					skill_data(j) = sd
 				End If
 			Next 
 		End If
 		
-		If j > skill_num Then
-			'æœªç™»éŒ²
-			skill_num = j
-			skill_name(j) = sname
-		End If
-		
-		If StrToDbl(LIndex(buf, 1)) = 0 Then
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_NOTE: ƒIƒuƒWƒFƒNƒg skill_data() ‚ğƒKƒx[ƒW ƒRƒŒƒNƒg‚·‚é‚Ü‚Å‚±‚ÌƒIƒuƒWƒFƒNƒg‚ğ”jŠü‚·‚é‚±‚Æ‚Í‚Å‚«‚Ü‚¹‚ñB Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			skill_data(j) = Nothing
-		Else
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
-			sd = New SkillData
-			With sd
-				.Name = sname
-				.Level = StrToDbl(LIndex(buf, 1))
-				If .Level = -1 Then
-					.Level = DEFAULT_LEVEL
-				End If
-				.StrData = ListTail(buf, 2)
-			End With
-			skill_data(j) = sd
-		End If
-		'Next
-		'End If
-		
-		'Invalid_string_refer_to_original_code
+		'‘®«g—p•s”\ó‘Ô‚ÌÛA‘Î‰‚·‚é‹Z”\‚ğ••ˆó‚·‚éB
 		If Not Unit_Renamed Is Nothing Then
 			For j = 1 To skill_num
 				If Not skill_data(j) Is Nothing Then
-					If Unit_Renamed.ConditionLifetime(skill_data(j).Name & "Invalid_string_refer_to_original_code") > 0 Then
+					If Unit_Renamed.ConditionLifetime(skill_data(j).Name & "g—p•s”\") > 0 Then
 						'UPGRADE_NOTE: ƒIƒuƒWƒFƒNƒg skill_data() ‚ğƒKƒx[ƒW ƒRƒŒƒNƒg‚·‚é‚Ü‚Å‚±‚ÌƒIƒuƒWƒFƒNƒg‚ğ”jŠü‚·‚é‚±‚Æ‚Í‚Å‚«‚Ü‚¹‚ñB Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 						skill_data(j) = Nothing
 					End If
@@ -1008,14 +988,12 @@ Friend Class Pilot
 			Next 
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'g—p‰Â”\‚È“Áê”\—Í‚ğ“o˜^
 		With colSkill
 			For i = 1 To skill_num
 				If Not skill_data(i) Is Nothing Then
 					Select Case skill_name(i)
-						Case "Invalid_string_refer_to_original_code"
-							'Invalid_string_refer_to_original_code
-							'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						Case "‚r‚oÁ”ïŒ¸­", "ƒXƒyƒVƒƒƒ‹ƒpƒ[©“®”­“®", "ƒnƒ“ƒ^["
 							For j = 1 To i - 1
 								If skill_name(i) = skill_name(j) Then
 									Exit For
@@ -1033,9 +1011,9 @@ Friend Class Pilot
 			Next 
 		End With
 		
-		'Invalid_string_refer_to_original_code
+		'‚±‚ê‚©‚ç‰º‚Í”\—Í’l‚ÌŒvZ
 		
-		'åŸºæœ¬å€¤
+		'Šî–{’l
 		With Data
 			InfightBase = .Infight
 			ShootingBase = .Shooting
@@ -1046,37 +1024,37 @@ Friend Class Pilot
 			Adaption = .Adaption
 		End With
 		
-		'Invalid_string_refer_to_original_code
-		lv = Level + SkillLevel("è¿½åŠ ãƒ¬ãƒ™ãƒ«")
-		If IsOptionDefined("Invalid_string_refer_to_original_code") Then
-			InfightBase = InfightBase + (lv * (1 + 2 * SkillLevel("Invalid_string_refer_to_original_code"))) \ 2
-			ShootingBase = ShootingBase + (lv * (1 + 2 * SkillLevel("Invalid_string_refer_to_original_code"))) \ 2
+		'ƒŒƒxƒ‹‚É‚æ‚é’Ç‰Á•ª
+		lv = Level + SkillLevel("’Ç‰ÁƒŒƒxƒ‹")
+		If IsOptionDefined("UŒ‚—Í’á¬’·") Then
+			InfightBase = InfightBase + (lv * (1 + 2 * SkillLevel("Ši“¬¬’·"))) \ 2
+			ShootingBase = ShootingBase + (lv * (1 + 2 * SkillLevel("ËŒ‚¬’·"))) \ 2
 		Else
-			InfightBase = InfightBase + Int(lv * (1 + SkillLevel("Invalid_string_refer_to_original_code")))
-			ShootingBase = ShootingBase + Int(lv * (1 + SkillLevel("Invalid_string_refer_to_original_code")))
+			InfightBase = InfightBase + Int(lv * (1 + SkillLevel("Ši“¬¬’·")))
+			ShootingBase = ShootingBase + Int(lv * (1 + SkillLevel("ËŒ‚¬’·")))
 		End If
-		HitBase = HitBase + Int(lv * (2 + SkillLevel("å‘½ä¸­æˆé•·")))
-		DodgeBase = DodgeBase + Int(lv * (2 + SkillLevel("å›é¿æˆé•·")))
-		TechniqueBase = TechniqueBase + Int(lv * (1 + SkillLevel("Invalid_string_refer_to_original_code")))
-		IntuitionBase = IntuitionBase + Int(lv * (1 + SkillLevel("Invalid_string_refer_to_original_code")))
+		HitBase = HitBase + Int(lv * (2 + SkillLevel("–½’†¬’·")))
+		DodgeBase = DodgeBase + Int(lv * (2 + SkillLevel("‰ñ”ğ¬’·")))
+		TechniqueBase = TechniqueBase + Int(lv * (1 + SkillLevel("‹Z—Ê¬’·")))
+		IntuitionBase = IntuitionBase + Int(lv * (1 + SkillLevel("”½‰¬’·")))
 		
-		'Invalid_string_refer_to_original_code
-		InfightBase = InfightBase + SkillLevel("Invalid_string_refer_to_original_code")
-		ShootingBase = ShootingBase + SkillLevel("Invalid_string_refer_to_original_code")
-		HitBase = HitBase + SkillLevel("Invalid_string_refer_to_original_code")
-		DodgeBase = DodgeBase + SkillLevel("Invalid_string_refer_to_original_code")
-		TechniqueBase = TechniqueBase + SkillLevel("Invalid_string_refer_to_original_code")
-		IntuitionBase = IntuitionBase + SkillLevel("Invalid_string_refer_to_original_code")
+		'”\—Í‚t‚o
+		InfightBase = InfightBase + SkillLevel("Ši“¬‚t‚o")
+		ShootingBase = ShootingBase + SkillLevel("ËŒ‚‚t‚o")
+		HitBase = HitBase + SkillLevel("–½’†‚t‚o")
+		DodgeBase = DodgeBase + SkillLevel("‰ñ”ğ‚t‚o")
+		TechniqueBase = TechniqueBase + SkillLevel("‹Z—Ê‚t‚o")
+		IntuitionBase = IntuitionBase + SkillLevel("”½‰‚t‚o")
 		
-		'Invalid_string_refer_to_original_code
-		InfightBase = InfightBase - SkillLevel("Invalid_string_refer_to_original_code")
-		ShootingBase = ShootingBase - SkillLevel("Invalid_string_refer_to_original_code")
-		HitBase = HitBase - SkillLevel("Invalid_string_refer_to_original_code")
-		DodgeBase = DodgeBase - SkillLevel("Invalid_string_refer_to_original_code")
-		TechniqueBase = TechniqueBase - SkillLevel("Invalid_string_refer_to_original_code")
-		IntuitionBase = IntuitionBase - SkillLevel("Invalid_string_refer_to_original_code")
+		'”\—Í‚c‚n‚v‚m
+		InfightBase = InfightBase - SkillLevel("Ši“¬‚c‚n‚v‚m")
+		ShootingBase = ShootingBase - SkillLevel("ËŒ‚‚c‚n‚v‚m")
+		HitBase = HitBase - SkillLevel("–½’†‚c‚n‚v‚m")
+		DodgeBase = DodgeBase - SkillLevel("‰ñ”ğ‚c‚n‚v‚m")
+		TechniqueBase = TechniqueBase - SkillLevel("‹Z—Ê‚c‚n‚v‚m")
+		IntuitionBase = IntuitionBase - SkillLevel("”½‰‚c‚n‚v‚m")
 		
-		'Invalid_string_refer_to_original_code
+		'ãŒÀ‚ğ’´‚¦‚È‚¢‚æ‚¤‚É
 		InfightBase = MinLng(InfightBase, 9999)
 		ShootingBase = MinLng(ShootingBase, 9999)
 		HitBase = MinLng(HitBase, 9999)
@@ -1084,9 +1062,9 @@ Friend Class Pilot
 		TechniqueBase = MinLng(TechniqueBase, 9999)
 		IntuitionBase = MinLng(IntuitionBase, 9999)
 		
-		'Invalid_string_refer_to_original_code
+		'‚±‚ê‚©‚ç‰º‚Í“Áê”\—Í‚É‚æ‚éC³’l‚ÌŒvZ
 		
-		'Invalid_string_refer_to_original_code
+		'‚Ü‚¸‚ÍC³’l‚ğ‰Šú‰»
 		InfightMod = 0
 		ShootingMod = 0
 		HitMod = 0
@@ -1094,175 +1072,141 @@ Friend Class Pilot
 		TechniqueMod = 0
 		IntuitionMod = 0
 		
-		'Invalid_string_refer_to_original_code
+		'ƒpƒCƒƒbƒg—p“Áê”\—Í‚É‚æ‚éC³
 		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+		lv = SkillLevel("’´Š´Šo")
 		If lv > 0 Then
 			HitMod = HitMod + 2 * lv + 3
 			DodgeMod = DodgeMod + 2 * lv + 3
 		End If
 		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+		lv = SkillLevel("’mŠo‹­‰»")
 		If lv > 0 Then
 			HitMod = HitMod + 2 * lv + 3
 			DodgeMod = DodgeMod + 2 * lv + 3
 		End If
 		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+		lv = SkillLevel("”O—Í")
 		If lv > 0 Then
 			HitMod = HitMod + 2 * lv + 3
 			DodgeMod = DodgeMod + 2 * lv + 3
 		End If
 		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+		lv = SkillLevel("’´”½‰")
 		HitMod = HitMod + 2 * lv
 		DodgeMod = DodgeMod + 2 * lv
 		
-		If IsSkillAvailable("Invalid_string_refer_to_original_code") Then
+		If IsSkillAvailable("ƒTƒCƒ{[ƒO") Then
 			HitMod = HitMod + 5
 			DodgeMod = DodgeMod + 5
 		End If
-		If IsSkillAvailable("æ‚Ÿã‚Š") Then
+		If IsSkillAvailable("Œå‚è") Then
 			HitMod = HitMod + 10
 			DodgeMod = DodgeMod + 10
 		End If
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		HitMod = HitMod + 5
-		DodgeMod = DodgeMod + 5
-		'End If
+		If IsSkillAvailable("’´”\—Í") Then
+			HitMod = HitMod + 5
+			DodgeMod = DodgeMod + 5
+		End If
 		
-		'Invalid_string_refer_to_original_code
+		'‚±‚ê‚©‚ç‰º‚Íƒ†ƒjƒbƒg‚É‚æ‚éC³’l‚ÌŒvZ
 		
-		'Invalid_string_refer_to_original_code
+		'ƒ†ƒjƒbƒg‚Éæ‚Á‚Ä‚¢‚È‚¢H
 		If Unit_Renamed Is Nothing Then
 			GoTo SkipUnitMod
 		End If
 		
 		Dim padaption(4) As Short
 		With Unit_Renamed
-			'Invalid_string_refer_to_original_code
+			'ƒNƒCƒbƒNƒZ[ƒuˆ—‚È‚Ç‚ÅÀÛ‚É‚Íæ‚Á‚Ä‚¢‚È‚¢ê‡
 			If .CountPilot = 0 Then
 				Exit Sub
 			End If
 			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			For i = 2 To .CountPilot
-				With .Pilot(i)
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					If HasMana() Then
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					Else
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					End If
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				End With
-			Next 
-			For i = 1 To .CountSupport
-				With .Support(i)
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					If HasMana() Then
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					Else
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					End If
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				End With
-			Next 
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			With .AdditionalSupport
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				If HasMana() Then
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				Else
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			'ƒTƒuƒpƒCƒƒbƒg•ƒTƒ|[ƒgƒpƒCƒƒbƒg‚É‚æ‚éƒTƒ|[ƒg
+			If Me Is .MainPilot And .Status = "oŒ‚" Then
+				For i = 2 To .CountPilot
+					With .Pilot(i)
+						InfightMod = InfightMod + 2 * .SkillLevel("Ši“¬ƒTƒ|[ƒg")
+						If HasMana() Then
+							ShootingMod = ShootingMod + 2 * .SkillLevel("–‚—ÍƒTƒ|[ƒg")
+						Else
+							ShootingMod = ShootingMod + 2 * .SkillLevel("ËŒ‚ƒTƒ|[ƒg")
+						End If
+						HitMod = HitMod + 3 * .SkillLevel("ƒTƒ|[ƒg")
+						HitMod = HitMod + 2 * .SkillLevel("–½’†ƒTƒ|[ƒg")
+						DodgeMod = DodgeMod + 3 * .SkillLevel("ƒTƒ|[ƒg")
+						DodgeMod = DodgeMod + 2 * .SkillLevel("‰ñ”ğƒTƒ|[ƒg")
+						TechniqueMod = TechniqueMod + 2 * .SkillLevel("‹Z—ÊƒTƒ|[ƒg")
+						IntuitionMod = IntuitionMod + 2 * .SkillLevel("”½‰ƒTƒ|[ƒg")
+					End With
+				Next 
+				For i = 1 To .CountSupport
+					With .Support(i)
+						InfightMod = InfightMod + 2 * .SkillLevel("Ši“¬ƒTƒ|[ƒg")
+						If HasMana() Then
+							ShootingMod = ShootingMod + 2 * .SkillLevel("–‚—ÍƒTƒ|[ƒg")
+						Else
+							ShootingMod = ShootingMod + 2 * .SkillLevel("ËŒ‚ƒTƒ|[ƒg")
+						End If
+						HitMod = HitMod + 3 * .SkillLevel("ƒTƒ|[ƒg")
+						HitMod = HitMod + 2 * .SkillLevel("–½’†ƒTƒ|[ƒg")
+						DodgeMod = DodgeMod + 3 * .SkillLevel("ƒTƒ|[ƒg")
+						DodgeMod = DodgeMod + 2 * .SkillLevel("‰ñ”ğƒTƒ|[ƒg")
+						TechniqueMod = TechniqueMod + 2 * .SkillLevel("‹Z—ÊƒTƒ|[ƒg")
+						IntuitionMod = IntuitionMod + 2 * .SkillLevel("”½‰ƒTƒ|[ƒg")
+					End With
+				Next 
+				If .IsFeatureAvailable("’Ç‰ÁƒTƒ|[ƒg") Then
+					With .AdditionalSupport
+						InfightMod = InfightMod + 2 * .SkillLevel("Ši“¬ƒTƒ|[ƒg")
+						If HasMana() Then
+							ShootingMod = ShootingMod + 2 * .SkillLevel("–‚—ÍƒTƒ|[ƒg")
+						Else
+							ShootingMod = ShootingMod + 2 * .SkillLevel("ËŒ‚ƒTƒ|[ƒg")
+						End If
+						HitMod = HitMod + 3 * .SkillLevel("ƒTƒ|[ƒg")
+						HitMod = HitMod + 2 * .SkillLevel("–½’†ƒTƒ|[ƒg")
+						DodgeMod = DodgeMod + 3 * .SkillLevel("ƒTƒ|[ƒg")
+						DodgeMod = DodgeMod + 2 * .SkillLevel("‰ñ”ğƒTƒ|[ƒg")
+						TechniqueMod = TechniqueMod + 2 * .SkillLevel("‹Z—ÊƒTƒ|[ƒg")
+						IntuitionMod = IntuitionMod + 2 * .SkillLevel("”½‰ƒTƒ|[ƒg")
+					End With
 				End If
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			End With
-			'End If
-			'End If
+			End If
 			
-			'Invalid_string_refer_to_original_code
+			'ƒ†ƒjƒbƒg•ƒAƒCƒeƒ€‚É‚æ‚é‹­‰»
 			For i = 1 To .CountFeature
 				Select Case .Feature(i)
-					Case "Invalid_string_refer_to_original_code"
+					Case "Ši“¬‹­‰»"
 						If Morale >= StrToLng(LIndex(.FeatureData(i), 2)) Then
 							InfightMod = InfightMod + 5 * .FeatureLevel(i)
 						End If
-					Case "Invalid_string_refer_to_original_code"
+					Case "ËŒ‚‹­‰»"
 						If Morale >= StrToLng(LIndex(.FeatureData(i), 2)) Then
 							ShootingMod = ShootingMod + 5 * .FeatureLevel(i)
 						End If
-					Case "Invalid_string_refer_to_original_code"
+					Case "–½’†‹­‰»"
 						If Morale >= StrToLng(LIndex(.FeatureData(i), 2)) Then
 							HitMod = HitMod + 5 * .FeatureLevel(i)
 						End If
-					Case "Invalid_string_refer_to_original_code"
+					Case "‰ñ”ğ‹­‰»"
 						If Morale >= StrToLng(LIndex(.FeatureData(i), 2)) Then
 							DodgeMod = DodgeMod + 5 * .FeatureLevel(i)
 						End If
-					Case "Invalid_string_refer_to_original_code"
+					Case "‹Z—Ê‹­‰»"
 						If Morale >= StrToLng(LIndex(.FeatureData(i), 2)) Then
 							TechniqueMod = TechniqueMod + 5 * .FeatureLevel(i)
 						End If
-					Case "Invalid_string_refer_to_original_code"
+					Case "”½‰‹­‰»"
 						If Morale >= StrToLng(LIndex(.FeatureData(i), 2)) Then
 							IntuitionMod = IntuitionMod + 5 * .FeatureLevel(i)
 						End If
 				End Select
 			Next 
 			
-			'åœ°å½¢é©å¿œå¤‰æ›´
-			If .IsFeatureAvailable("Invalid_string_refer_to_original_code") Then
+			'’nŒ`“K‰•ÏX
+			If .IsFeatureAvailable("ƒpƒCƒƒbƒg’nŒ`“K‰•ÏX") Then
 				
 				For i = 1 To 4
 					Select Case Mid(Adaption, i, 1)
@@ -1281,21 +1225,21 @@ Friend Class Pilot
 					End Select
 				Next 
 				
-				'åœ°å½¢é©å¿œå¤‰æ›´èƒ½åŠ›ã«ã‚ˆã‚‹ä¿®æ­£
+				'’nŒ`“K‰•ÏX”\—Í‚É‚æ‚éC³
 				For i = 1 To .CountFeature
-					If .Feature(i) = "Invalid_string_refer_to_original_code" Then
+					If .Feature(i) = "ƒpƒCƒƒbƒg’nŒ`“K‰•ÏX" Then
 						For j = 1 To 4
 							If StrToLng(LIndex(.FeatureData(i), j)) >= 0 Then
-								'Invalid_string_refer_to_original_code
+								'C³’l‚ªƒvƒ‰ƒX‚Ì‚Æ‚«
 								If padaption(j) < 4 Then
 									padaption(j) = padaption(j) + StrToLng(LIndex(.FeatureData(i), j))
-									'Invalid_string_refer_to_original_code
+									'’nŒ`“K‰‚ÍA‚æ‚è‚‚­‚Í‚È‚ç‚È‚¢
 									If padaption(j) > 4 Then
 										padaption(j) = 4
 									End If
 								End If
 							Else
-								'Invalid_string_refer_to_original_code
+								'C³’l‚ªƒ}ƒCƒiƒX‚Ì‚Æ‚«‚Í–{—ˆ‚Ì’nŒ`“K‰‚ª"A"ˆÈã‚Å‚àˆ—‚ğs‚È‚¤
 								padaption(j) = padaption(j) + StrToLng(LIndex(.FeatureData(i), j))
 							End If
 						Next 
@@ -1322,12 +1266,12 @@ Friend Class Pilot
 			End If
 		End With
 		
-		'Invalid_string_refer_to_original_code
+		'‹C—Í‚Ì’l‚ğ‹C—ÍãŒÀE‹C—Í‰ºŒÀ‚Ì”ÍˆÍ‚É‚·‚é
 		SetMorale(Morale)
 		
 SkipUnitMod: 
 		
-		'Invalid_string_refer_to_original_code
+		'Šî–{’l‚ÆC³’l‚Ì‡Œv‚©‚çÀÛ‚Ì”\—Í’l‚ğZo
 		Infight = MinLng(InfightBase + InfightMod + InfightMod2, 9999)
 		Shooting = MinLng(ShootingBase + ShootingMod + ShootingMod2, 9999)
 		Hit = MinLng(HitBase + HitMod + HitMod2, 9999)
@@ -1336,7 +1280,7 @@ SkipUnitMod:
 		Intuition = MinLng(IntuitionBase + IntuitionMod + IntuitionMod2, 9999)
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'ü‚è‚Ìƒ†ƒjƒbƒg‚É‚æ‚éx‰‡Œø‰Ê‚ğXV
 	Public Sub UpdateSupportMod()
 		Dim u, my_unit As Unit
 		Dim my_party As String
@@ -1350,7 +1294,7 @@ SkipUnitMod:
 		Dim team, uteam As String
 		Dim j, i, k As Short
 		
-		'Invalid_string_refer_to_original_code
+		'x‰‡Œø‰Ê‚É‚æ‚éC³’l‚ğ‰Šú‰»
 		
 		Infight = InfightBase + InfightMod
 		Shooting = ShootingBase + ShootingMod
@@ -1368,30 +1312,29 @@ SkipUnitMod:
 		
 		MoraleMod = 0
 		
-		'Invalid_string_refer_to_original_code
+		'ƒXƒe[ƒ^ƒX•\¦‚É‚Íx‰‡Œø‰Ê‚ğ–³‹
 		If MapFileName = "" Then
 			Exit Sub
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'ƒ†ƒjƒbƒg‚Éæ‚Á‚Ä‚¢‚È‚¯‚ê‚Î‚±‚±‚ÅI—¹
 		If Unit_Renamed Is Nothing Then
 			Exit Sub
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'ˆê’Uæ‚Á‚Ä‚¢‚éƒ†ƒjƒbƒg‚ğ‹L˜^‚µ‚Ä‚¨‚­
 		my_unit = Unit_Renamed
 		
 		With Unit_Renamed
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			Exit Sub
-			'End If
+			'ƒ†ƒjƒbƒg‚ªoŒ‚‚µ‚Ä‚¢‚È‚¯‚ê‚Î‚±‚±‚ÅI—¹
+			If .Status <> "oŒ‚" Then
+				Exit Sub
+			End If
 			If Not Unit_Renamed Is MapDataForUnit(.X, .Y) Then
 				Exit Sub
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'ƒƒCƒ“ƒpƒCƒƒbƒg‚Å‚È‚¯‚ê‚Î‚±‚±‚ÅI—¹
 			If .CountPilot = 0 Then
 				Exit Sub
 			End If
@@ -1399,40 +1342,39 @@ SkipUnitMod:
 				Exit Sub
 			End If
 			
-			'Invalid_string_refer_to_original_code
-			If .IsConditionSatisfied("æš´èµ°") Then
+			'³í‚È”»’f‚ªo—ˆ‚È‚¢ƒ†ƒjƒbƒg‚Íx‰‡‚ğó‚¯‚ç‚ê‚È‚¢
+			If .IsConditionSatisfied("–\‘–") Then
 				Exit Sub
 			End If
-			If .IsConditionSatisfied("æ··ä¹±") Then
+			If .IsConditionSatisfied("¬—") Then
 				Exit Sub
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'x‰‡‚ğó‚¯‚ç‚ê‚é‚©‚Ç‚¤‚©‚Ì”»’è—p‚Éw‰c‚ğQÆ‚µ‚Ä‚¨‚­
 			my_party = .Party
 			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			cmd_rank = my_cmd_rank
-			If InStr(Name, "(ã‚¶ã‚³)") = 0 And InStr(Name, "(æ±ç”¨)") = 0 Then
-				my_cmd_rank = DEFAULT_LEVEL
+			'wŠöŒø‰Ê”»’è—p‚É©•ª‚ÌŠK‹‰ƒŒƒxƒ‹‚ğZo
+			If IsSkillAvailable("ŠK‹‰") Then
+				my_cmd_rank = SkillLevel("ŠK‹‰")
+				cmd_rank = my_cmd_rank
 			Else
-				my_cmd_rank = 0
+				If InStr(Name, "(ƒUƒR)") = 0 And InStr(Name, "(”Ä—p)") = 0 Then
+					my_cmd_rank = DEFAULT_LEVEL
+				Else
+					my_cmd_rank = 0
+				End If
+				cmd_rank = 0
 			End If
-			cmd_rank = 0
-			'End If
 			
-			'Invalid_string_refer_to_original_code
-			team = SkillData("Invalid_string_refer_to_original_code")
+			'©•ª‚ªŠ‘®‚µ‚Ä‚¢‚éƒ`[ƒ€–¼
+			team = SkillData("ƒ`[ƒ€")
 			
-			'Invalid_string_refer_to_original_code
+			'ü‚è‚Ìƒ†ƒjƒbƒg‚ğ’²‚×‚é
 			cs_level = DEFAULT_LEVEL
 			max_range = 5
 			For i = MaxLng(.X - max_range, 1) To MinLng(.X + max_range, MapWidth)
 				For j = MaxLng(.Y - max_range, 1) To MinLng(.Y + max_range, MapHeight)
-					'Invalid_string_refer_to_original_code
+					'ƒ†ƒjƒbƒgŠÔ‚Ì‹——£‚ª”ÍˆÍ“àH
 					range = System.Math.Abs(.X - i) + System.Math.Abs(.Y - j)
 					If range > max_range Then
 						GoTo NextUnit
@@ -1448,16 +1390,16 @@ SkipUnitMod:
 					End If
 					
 					With u
-						'Invalid_string_refer_to_original_code
+						'ƒ†ƒjƒbƒg‚ÉƒpƒCƒƒbƒg‚ªæ‚Á‚Ä‚¢‚È‚¯‚ê‚Î–³‹
 						If .CountPilot = 0 Then
 							GoTo NextUnit
 						End If
 						
-						'Invalid_string_refer_to_original_code
+						'w‰c‚ªˆê’v‚µ‚Ä‚¢‚È‚¢‚Æx‰‡‚Íó‚¯‚ç‚ê‚È‚¢
 						Select Case my_party
-							Case "å‘³æ–¹", "Invalid_string_refer_to_original_code"
+							Case "–¡•û", "‚m‚o‚b"
 								Select Case .Party
-									Case "æ•µ", "Invalid_string_refer_to_original_code"
+									Case "“G", "’†—§"
 										GoTo NextUnit
 								End Select
 							Case Else
@@ -1466,41 +1408,39 @@ SkipUnitMod:
 								End If
 						End Select
 						
-						'Invalid_string_refer_to_original_code
-						If .IsConditionSatisfied("æš´èµ°") Then
+						'‘Šè‚ª³í‚È”»’f”\—Í‚ğ‚Á‚Ä‚¢‚È‚¢ê‡‚àx‰‡‚Íó‚¯‚ç‚ê‚È‚¢
+						If .IsConditionSatisfied("–\‘–") Then
 							GoTo NextUnit
 						End If
-						If .IsConditionSatisfied("æ··ä¹±") Then
+						If .IsConditionSatisfied("¬—") Then
 							GoTo NextUnit
 						End If
 					End With
 					
 					With u.MainPilot(True)
-						'Invalid_string_refer_to_original_code
-						uteam = .SkillData("Invalid_string_refer_to_original_code")
+						'“¯‚¶ƒ`[ƒ€‚ÉŠ‘®‚µ‚Ä‚¢‚éH
+						uteam = .SkillData("ƒ`[ƒ€")
 						If team <> uteam And uteam <> "" Then
 							GoTo NextUnit
 						End If
 						
-						'Invalid_string_refer_to_original_code
+						'LˆæƒTƒ|[ƒg
 						If range <= 2 Then
-							'Invalid_string_refer_to_original_code
-							'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+							cs_level = MaxDbl(cs_level, .SkillLevel("LˆæƒTƒ|[ƒg"))
 						End If
 						
-						'Invalid_string_refer_to_original_code
+						'wŠöŒø‰Ê
 						If my_cmd_rank >= 0 Then
 							If range > .CommandRange Then
 								GoTo NextUnit
 							End If
 							
-							'Invalid_string_refer_to_original_code
-							'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+							cmd_rank2 = .SkillLevel("ŠK‹‰")
 							If cmd_rank2 > cmd_rank Then
 								cmd_rank = cmd_rank2
-								cmd_level = .SkillLevel("Invalid_string_refer_to_original_code")
+								cmd_level = .SkillLevel("wŠö")
 							ElseIf cmd_rank2 = cmd_rank Then 
-								cmd_level = MaxDbl(cmd_level, .SkillLevel("Invalid_string_refer_to_original_code"))
+								cmd_level = MaxDbl(cmd_level, .SkillLevel("wŠö"))
 							End If
 						End If
 					End With
@@ -1508,35 +1448,35 @@ NextUnit:
 				Next 
 			Next 
 			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
+			'’Ç‰ÁƒpƒCƒƒbƒg‚Ìê‡‚Íæ‚Á‚Ä‚¢‚éƒ†ƒjƒbƒg‚ª•Ï‰»‚µ‚Ä‚µ‚Ü‚¤‚±‚Æ‚ª‚ ‚é‚Ì‚Å
+			'•Ï‰»‚µ‚Ä‚µ‚Ü‚Á‚½ê‡‚ÍŒ³‚É–ß‚µ‚Ä‚¨‚­
 			If Not my_unit Is Unit_Renamed Then
 				my_unit.MainPilot()
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'LˆæƒTƒ|[ƒg‚É‚æ‚éC³
 			If cs_level <> DEFAULT_LEVEL Then
 				HitMod2 = HitMod2 + 5 * cs_level
 				DodgeMod2 = DodgeMod2 + 5 * cs_level
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'wŠö”\—Í‚É‚æ‚éC³
 			Select Case my_cmd_rank
 				Case DEFAULT_LEVEL
-					'Invalid_string_refer_to_original_code
+					'C³‚È‚µ
 				Case 0
 					HitMod2 = HitMod2 + 5 * cmd_level
 					DodgeMod2 = DodgeMod2 + 5 * cmd_level
 				Case Else
-					'Invalid_string_refer_to_original_code
-					'Invalid_string_refer_to_original_code
+					'©•ª‚ªŠK‹‰ƒŒƒxƒ‹‚ğ‚Á‚Ä‚¢‚éê‡‚Í‚æ‚è‚‚¢ŠK‹‰ƒŒƒxƒ‹‚ğ
+					'‚ÂƒpƒCƒƒbƒg‚ÌwŠöŒø‰Ê‚Ì‚İ‚ğó‚¯‚é
 					If cmd_rank > my_cmd_rank Then
 						HitMod2 = HitMod2 + 5 * cmd_level
 						DodgeMod2 = DodgeMod2 + 5 * cmd_level
 					End If
 			End Select
 			
-			'Invalid_string_refer_to_original_code
+			'x‰‡Œø‰Ê‚É‚æ‚éC³‚ğ”\—Í’l‚É‰ÁZ
 			Infight = Infight + InfightMod2
 			Shooting = Shooting + ShootingMod2
 			Hit = Hit + HitMod2
@@ -1544,45 +1484,43 @@ NextUnit:
 			Technique = Technique + TechniqueMod2
 			Intuition = Intuition + IntuitionMod2
 			
-			'ä¿¡é ¼è£œæ­£
-			If Not IsOptionDefined("ä¿¡é ¼è£œæ­£") Then
+			'M—Š•â³
+			If Not IsOptionDefined("M—Š•â³") Then
 				Exit Sub
 			End If
-			If InStr(Name, "(ã‚¶ã‚³)") > 0 Then
+			If InStr(Name, "(ƒUƒR)") > 0 Then
 				Exit Sub
 			End If
 			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			'M—Š•â³‚ªd•¡‚·‚éH
+			mod_stack = IsOptionDefined("M—Š•â³d•¡")
 			
-			'Invalid_string_refer_to_original_code
+			'“¯‚¶ƒ†ƒjƒbƒg‚Éæ‚Á‚Ä‚¢‚éƒTƒ|[ƒgƒpƒCƒƒbƒg‚©‚ç‚Ì•â³
 			If mod_stack Then
 				For i = 1 To .CountSupport
 					rel_lv = rel_lv + Relation(.Support(i))
 				Next 
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				rel_lv = rel_lv + Relation(.AdditionalSupport)
+				If .IsFeatureAvailable("’Ç‰ÁƒTƒ|[ƒg") Then
+					rel_lv = rel_lv + Relation(.AdditionalSupport)
+				End If
+			Else
+				For i = 1 To .CountSupport
+					rel_lv = MaxLng(Relation(.Support(i)), rel_lv)
+				Next 
+				If .IsFeatureAvailable("’Ç‰ÁƒTƒ|[ƒg") Then
+					rel_lv = MaxLng(Relation(.AdditionalSupport), rel_lv)
+				End If
 			End If
-			For i = 1 To .CountSupport
-				rel_lv = MaxLng(Relation(.Support(i)), rel_lv)
-			Next 
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			rel_lv = MaxLng(Relation(.AdditionalSupport), rel_lv)
-			'End If
-			'End If
 			
-			'Invalid_string_refer_to_original_code
-			If IsOptionDefined("Invalid_string_refer_to_original_code") Then
+			'üˆÍ‚Ìƒ†ƒjƒbƒg‚©‚ç‚Ì•â³
+			If IsOptionDefined("M—Š•â³”ÍˆÍŠg‘å") Then
 				max_range = 2
 			Else
 				max_range = 1
 			End If
 			For i = MaxLng(.X - max_range, 1) To MinLng(.X + max_range, MapWidth)
 				For j = MaxLng(.Y - max_range, 1) To MinLng(.Y + max_range, MapHeight)
-					'Invalid_string_refer_to_original_code
+					'ƒ†ƒjƒbƒgŠÔ‚Ì‹——£‚ª”ÍˆÍ“àH
 					range = System.Math.Abs(.X - i) + System.Math.Abs(.Y - j)
 					If range > max_range Then
 						GoTo NextUnit2
@@ -1598,16 +1536,16 @@ NextUnit:
 					End If
 					
 					With u
-						'Invalid_string_refer_to_original_code
+						'ƒ†ƒjƒbƒg‚ÉƒpƒCƒƒbƒg‚ªæ‚Á‚Ä‚¢‚È‚¯‚ê‚Î–³‹
 						If .CountPilot = 0 Then
 							GoTo NextUnit2
 						End If
 						
-						'Invalid_string_refer_to_original_code
+						'–¡•û‚©‚Ç‚¤‚©”»’è
 						Select Case my_party
-							Case "å‘³æ–¹", "Invalid_string_refer_to_original_code"
+							Case "–¡•û", "‚m‚o‚b"
 								Select Case .Party
-									Case "æ•µ", "Invalid_string_refer_to_original_code"
+									Case "“G", "’†—§"
 										GoTo NextUnit2
 								End Select
 							Case Else
@@ -1624,34 +1562,33 @@ NextUnit:
 							For k = 1 To .CountSupport
 								rel_lv = rel_lv + Relation(.Support(k))
 							Next 
-							'Invalid_string_refer_to_original_code
-							'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-							rel_lv = rel_lv + Relation(.AdditionalSupport)
+							If .IsFeatureAvailable("’Ç‰ÁƒTƒ|[ƒg") Then
+								rel_lv = rel_lv + Relation(.AdditionalSupport)
+							End If
+						Else
+							rel_lv = MaxLng(Relation(.MainPilot(True)), rel_lv)
+							For k = 2 To .CountPilot
+								rel_lv = MaxLng(Relation(.Pilot(k)), rel_lv)
+							Next 
+							For k = 1 To .CountSupport
+								rel_lv = MaxLng(Relation(.Support(k)), rel_lv)
+							Next 
+							If .IsFeatureAvailable("’Ç‰ÁƒTƒ|[ƒg") Then
+								rel_lv = MaxLng(Relation(.AdditionalSupport), rel_lv)
+							End If
 						End If
-						rel_lv = MaxLng(Relation(.MainPilot(True)), rel_lv)
-						For k = 2 To .CountPilot
-							rel_lv = MaxLng(Relation(.Pilot(k)), rel_lv)
-						Next 
-						For k = 1 To .CountSupport
-							rel_lv = MaxLng(Relation(.Support(k)), rel_lv)
-						Next 
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-						rel_lv = MaxLng(Relation(.AdditionalSupport), rel_lv)
-						'End If
-						'End If
 					End With
 NextUnit2: 
 				Next 
 			Next 
 			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
+			'’Ç‰ÁƒpƒCƒƒbƒg‚Ìê‡‚Íæ‚Á‚Ä‚¢‚éƒ†ƒjƒbƒg‚ª•Ï‰»‚µ‚Ä‚µ‚Ü‚¤‚±‚Æ‚ª‚ ‚é‚Ì‚Å
+			'•Ï‰»‚µ‚Ä‚µ‚Ü‚Á‚½ê‡‚ÍŒ³‚É–ß‚µ‚Ä‚¨‚­
 			If Not my_unit Is Unit_Renamed Then
 				my_unit.MainPilot()
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'M—Š•â³‚ğİ’è
 			Select Case rel_lv
 				Case 1
 					MoraleMod = MoraleMod + 5
@@ -1680,17 +1617,17 @@ NextUnit2:
 	End Sub
 	
 	
-	'Invalid_string_refer_to_original_code
+	' === —ì—ÍŠÖ˜Aˆ— ===
 	
-	'éœŠåŠ›æœ€å¤§å€¤
+	'—ì—ÍÅ‘å’l
 	Public Function MaxPlana() As Integer
 		Dim lv As Short
 		
-		If Not IsSkillAvailable("éœŠåŠ›") Then
-			'Invalid_string_refer_to_original_code
+		If Not IsSkillAvailable("—ì—Í") Then
+			'—ì—Í”\—Í‚ğ‚½‚È‚¢ê‡
 			MaxPlana = 0
 			
-			'Invalid_string_refer_to_original_code
+			'’Ç‰ÁƒpƒCƒƒbƒg‚Ìê‡‚Í‘æ‚PƒpƒCƒƒbƒg‚Ì—ì—Í‚ğ‘ã‚í‚è‚Ég‚¤
 			If Not Unit_Renamed Is Nothing Then
 				With Unit_Renamed
 					If .CountPilot > 0 Then
@@ -1706,27 +1643,27 @@ NextUnit2:
 			Exit Function
 		End If
 		
-		'éœŠåŠ›åŸºæœ¬å€¤
-		MaxPlana = SkillLevel("éœŠåŠ›")
+		'—ì—ÍŠî–{’l
+		MaxPlana = SkillLevel("—ì—Í")
 		
-		'Invalid_string_refer_to_original_code
+		'ƒŒƒxƒ‹‚É‚æ‚é‘‰Á•ª
 		lv = MinLng(Level, 100)
-		If IsSkillAvailable("éœŠåŠ›æˆé•·") Then
-			MaxPlana = MaxPlana + 1.5 * lv * (10 + SkillLevel("éœŠåŠ›æˆé•·")) \ 10
+		If IsSkillAvailable("—ì—Í¬’·") Then
+			MaxPlana = MaxPlana + 1.5 * lv * (10 + SkillLevel("—ì—Í¬’·")) \ 10
 		Else
 			MaxPlana = MaxPlana + 1.5 * lv
 		End If
 	End Function
 	
 	
-	'Invalid_string_refer_to_original_code
+	' === “Áê”\—ÍŠÖ˜Aˆ— ===
 	
-	'Invalid_string_refer_to_original_code
+	'“Áê”\—Í‚Ì‘”
 	Public Function CountSkill() As Short
 		CountSkill = colSkill.Count()
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'“Áê”\—Í
 	Public Function Skill(ByRef Index As Object) As String
 		Dim sd As SkillData
 		
@@ -1734,7 +1671,7 @@ NextUnit2:
 		Skill = sd.Name
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'Œ»İ‚ÌƒŒƒxƒ‹‚É‚¨‚¢‚Ä“Áê”\—Í sname ‚ªg—p‰Â”\‚©
 	Public Function IsSkillAvailable(ByRef sname As String) As Boolean
 		Dim sd As SkillData
 		
@@ -1745,7 +1682,7 @@ NextUnit2:
 		
 ErrorHandler: 
 		
-		'Invalid_string_refer_to_original_code
+		'“Áê”\—Í•t‰Á•‹­‰»‚É‚æ‚éC³
 		If Not Unit_Renamed Is Nothing Then
 			With Unit_Renamed
 				If .CountCondition = 0 Then
@@ -1759,40 +1696,34 @@ ErrorHandler:
 					Exit Function
 				End If
 				
-				If .IsConditionSatisfied(sname & "ä»˜åŠ ") Then
+				If .IsConditionSatisfied(sname & "•t‰Á") Then
 					IsSkillAvailable = True
 					Exit Function
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				ElseIf .IsConditionSatisfied(sname & "•t‰Á‚Q") Then 
 					IsSkillAvailable = True
 					Exit Function
 				End If
 				
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				IsSkillAvailable = True
-				Exit Function
+				If .IsConditionSatisfied(sname & "‹­‰»") Then
+					If .ConditionLevel(sname & "‹­‰»") > 0 Then
+						IsSkillAvailable = True
+						Exit Function
+					End If
+				End If
+				If .IsConditionSatisfied(sname & "‹­‰»‚Q") Then
+					If .ConditionLevel(sname & "‹­‰»‚Q") > 0 Then
+						IsSkillAvailable = True
+						Exit Function
+					End If
+				End If
 			End With
 		End If
-		'End If
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		IsSkillAvailable = True
-		Exit Function
-		'End If
-		'End If
-		'End With
-		'End If
 		
 		IsSkillAvailable = False
 	End Function
 	
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
+	'Œ»İ‚ÌƒŒƒxƒ‹‚É‚¨‚¢‚Ä“Áê”\—Í sname ‚ªg—p‰Â”\‚©
+	'(•t‰Á‚É‚æ‚é‰e‹¿‚ğ–³‹‚µ‚½ê‡)
 	Public Function IsSkillAvailable2(ByRef sname As String) As Boolean
 		Dim sd As SkillData
 		
@@ -1805,9 +1736,9 @@ ErrorHandler:
 		IsSkillAvailable2 = False
 	End Function
 	
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
+	'Œ»İ‚ÌƒŒƒxƒ‹‚É‚¨‚¯‚é“Áê”\—Í Index ‚ÌƒŒƒxƒ‹
+	'ƒf[ƒ^‚ÅƒŒƒxƒ‹w’è‚ª‚È‚¢ê‡‚ÍƒŒƒxƒ‹ 1
+	'“Áê”\—Í‚ªg—p•s”\‚Ìê‡‚ÍƒŒƒxƒ‹ 0
 	Public Function SkillLevel(ByRef Index As Object, Optional ByRef ref_mode As String = "") As Double
 		Dim sname As String
 		Dim sd As SkillData
@@ -1833,23 +1764,21 @@ ErrorHandler:
 			End If
 		End If
 		
-		If ref_mode = "ä¿®æ­£å€¤" Then
+		If ref_mode = "C³’l" Then
 			SkillLevel = 0
-		ElseIf ref_mode = "åŸºæœ¬å€¤" Then 
+		ElseIf ref_mode = "Šî–{’l" Then 
 			Exit Function
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'd•¡‰Â”\‚È”\—Í‚Í“Áê”\—Í•t‰Á‚Å’u‚«Š·‚¦‚ç‚ê‚±‚Æ‚Í‚È‚¢
 		Select Case sname
-			Case "ãƒãƒ³ã‚¿ãƒ¼", "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			Case "ƒnƒ“ƒ^[", "‚r‚oÁ”ïŒ¸­", "ƒXƒyƒVƒƒƒ‹ƒpƒ[©“®”­“®"
 				If IsNumeric(Index) Then
 					Exit Function
 				End If
 		End Select
 		
-		'Invalid_string_refer_to_original_code
+		'“Áê”\—Í•t‰Á•‹­‰»‚É‚æ‚éC³
 		If Unit_Renamed Is Nothing Then
 			Exit Function
 		End If
@@ -1865,34 +1794,28 @@ ErrorHandler:
 				Exit Function
 			End If
 			
-			If .IsConditionSatisfied(sname & "ä»˜åŠ ") Then
-				SkillLevel = .ConditionLevel(sname & "ä»˜åŠ ")
+			If .IsConditionSatisfied(sname & "•t‰Á") Then
+				SkillLevel = .ConditionLevel(sname & "•t‰Á")
 				If SkillLevel = DEFAULT_LEVEL Then
 					SkillLevel = 1
 				End If
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			ElseIf .IsConditionSatisfied(sname & "•t‰Á‚Q") Then 
+				SkillLevel = .ConditionLevel(sname & "•t‰Á‚Q")
 				If SkillLevel = DEFAULT_LEVEL Then
 					SkillLevel = 1
 				End If
 			End If
 			
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			'End If
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			'End If
+			If .IsConditionSatisfied(sname & "‹­‰»") Then
+				SkillLevel = SkillLevel + .ConditionLevel(sname & "‹­‰»")
+			End If
+			If .IsConditionSatisfied(sname & "‹­‰»‚Q") Then
+				SkillLevel = SkillLevel + .ConditionLevel(sname & "‹­‰»‚Q")
+			End If
 		End With
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'“Áê”\—Í Index ‚ÉƒŒƒxƒ‹w’è‚ª‚È‚³‚ê‚Ä‚¢‚é‚©”»’è
 	Public Function IsSkillLevelSpecified(ByRef Index As Object) As Boolean
 		Dim sname As String
 		Dim sd As SkillData
@@ -1919,7 +1842,7 @@ ErrorHandler:
 			End If
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'“Áê”\—Í•t‰Á•‹­‰»‚É‚æ‚éC³
 		If Unit_Renamed Is Nothing Then
 			Exit Function
 		End If
@@ -1935,28 +1858,24 @@ ErrorHandler:
 				Exit Function
 			End If
 			
-			If .IsConditionSatisfied(sname & "ä»˜åŠ ") Then
-				If .ConditionLevel(sname & "ä»˜åŠ ") <> DEFAULT_LEVEL Then
+			If .IsConditionSatisfied(sname & "•t‰Á") Then
+				If .ConditionLevel(sname & "•t‰Á") <> DEFAULT_LEVEL Then
 					IsSkillLevelSpecified = True
 				End If
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			ElseIf .IsConditionSatisfied(sname & "•t‰Á‚Q") Then 
+				If .ConditionLevel(sname & "•t‰Á‚Q") <> DEFAULT_LEVEL Then
+					IsSkillLevelSpecified = True
+				End If
+			End If
+			If .IsConditionSatisfied(sname & "‹­‰»") Then
+				IsSkillLevelSpecified = True
+			ElseIf .IsConditionSatisfied(sname & "‹­‰»‚Q") Then 
 				IsSkillLevelSpecified = True
 			End If
-			'End If
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			IsSkillLevelSpecified = True
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			IsSkillLevelSpecified = True
-			'End If
 		End With
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'“Áê”\—Í‚Ìƒf[ƒ^
 	Public Function SkillData(ByRef Index As Object) As String
 		Dim sname As String
 		Dim sd As SkillData
@@ -1979,17 +1898,15 @@ ErrorHandler:
 			End If
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'd•¡‰Â”\‚È”\—Í‚Í“Áê”\—Í•t‰Á‚Å’u‚«Š·‚¦‚ç‚ê‚±‚Æ‚Í‚È‚¢
 		Select Case sname
-			Case "ãƒãƒ³ã‚¿ãƒ¼", "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			Case "ƒnƒ“ƒ^[", "‚r‚oÁ”ïŒ¸­", "ƒXƒyƒVƒƒƒ‹ƒpƒ[©“®”­“®"
 				If IsNumeric(Index) Then
 					Exit Function
 				End If
 		End Select
 		
-		'Invalid_string_refer_to_original_code
+		'“Áê”\—Í•t‰Á•‹­‰»‚É‚æ‚éC³
 		If Unit_Renamed Is Nothing Then
 			Exit Function
 		End If
@@ -2005,59 +1922,51 @@ ErrorHandler:
 				Exit Function
 			End If
 			
-			If .IsConditionSatisfied(sname & "ä»˜åŠ ") Then
-				SkillData = .ConditionData(sname & "ä»˜åŠ ")
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			If .IsConditionSatisfied(sname & "•t‰Á") Then
+				SkillData = .ConditionData(sname & "•t‰Á")
+			ElseIf .IsConditionSatisfied(sname & "•t‰Á‚Q") Then 
+				SkillData = .ConditionData(sname & "•t‰Á‚Q")
 			End If
 			
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			'End If
-			'End If
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			'End If
-			'End If
+			If .IsConditionSatisfied(sname & "‹­‰»") Then
+				If Len(.ConditionData(sname & "‹­‰»")) > 0 Then
+					SkillData = .ConditionData(sname & "‹­‰»")
+				End If
+			End If
+			If .IsConditionSatisfied(sname & "‹­‰»‚Q") Then
+				If Len(.ConditionData(sname & "‹­‰»‚Q")) > 0 Then
+					SkillData = .ConditionData(sname & "‹­‰»‚Q")
+				End If
+			End If
 		End With
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'“Áê”\—Í‚Ì–¼Ì
 	Public Function SkillName(ByRef Index As Object) As String
 		Dim sd As SkillData
 		Dim sname As String
 		Dim buf As String
 		Dim i As Short
 		
-		'Invalid_string_refer_to_original_code
+		'ƒpƒCƒƒbƒg‚ªŠ—L‚µ‚Ä‚¢‚é“Áê”\—Í‚Ì’†‚©‚çŒŸõ
 		On Error GoTo ErrorHandler
 		sd = colSkill.Item(Index)
 		With sd
 			sname = .Name
 			
-			'èƒ½åŠ›å¼·åŒ–ç³»ã¯éè¡¨ç¤º
-			If Right(sname, 2) = "Invalid_string_refer_to_original_code" Or Right(sname, 4) = "Invalid_string_refer_to_original_code" Then
-				SkillName = "éè¡¨ç¤º"
+			'”\—Í‹­‰»Œn‚Í”ñ•\¦
+			If Right(sname, 2) = "‚t‚o" Or Right(sname, 4) = "‚c‚n‚v‚m" Then
+				SkillName = "”ñ•\¦"
 				Exit Function
 			End If
 			
 			Select Case sname
-				Case "è¿½åŠ ãƒ¬ãƒ™ãƒ«", "Invalid_string_refer_to_original_code", "Invalid_string_refer_to_original_code"
-					'Invalid_string_refer_to_original_code
-					SkillName = "éè¡¨ç¤º"
+				Case "’Ç‰ÁƒŒƒxƒ‹", "ƒƒbƒZ[ƒW", "–‚—ÍŠ—L"
+					'”ñ•\¦‚Ì”\—Í
+					SkillName = "”ñ•\¦"
 					Exit Function
-				Case "å¾—æ„æŠ€", "ä¸å¾—æ‰‹"
-					'Invalid_string_refer_to_original_code
+				Case "“¾ˆÓ‹Z", "•s“¾è"
+					'•Ê–¼w’è‚ª‘¶İ‚µ‚È‚¢”\—Í
 					SkillName = sname
 					Exit Function
 			End Select
@@ -2065,17 +1974,17 @@ ErrorHandler:
 			If Len(.StrData) > 0 Then
 				SkillName = LIndex(.StrData, 1)
 				Select Case SkillName
-					Case "éè¡¨ç¤º"
+					Case "”ñ•\¦"
 						Exit Function
-					Case "è§£èª¬"
-						SkillName = "éè¡¨ç¤º"
+					Case "‰ğà"
+						SkillName = "”ñ•\¦"
 						Exit Function
 				End Select
 			Else
 				SkillName = sname
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'ƒŒƒxƒ‹w’è
 			If .Level <> DEFAULT_LEVEL And InStr(SkillName, "Lv") = 0 And Left(SkillName, 1) <> "(" Then
 				SkillName = SkillName & "Lv" & VB6.Format(.Level)
 			End If
@@ -2092,38 +2001,37 @@ ErrorHandler:
 			End If
 		End If
 		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		If IsOptionDefined("Invalid_string_refer_to_original_code") Or IsOptionDefined("Invalid_string_refer_to_original_code") Then
-			'Invalid_string_refer_to_original_code
-			SkillName = "éè¡¨ç¤º"
-			Exit Function
+		If sname = "‘Ï‹v" Then
+			If IsOptionDefined("–hŒä—Í¬’·") Or IsOptionDefined("–hŒä—ÍƒŒƒxƒ‹ƒAƒbƒv") Then
+				'–hŒä—Í¬’·ƒIƒvƒVƒ‡ƒ“g—p‚É‚Í‘Ï‹v”\—Í‚ğ”ñ•\¦
+				SkillName = "”ñ•\¦"
+				Exit Function
+			End If
 		End If
-		'End If
 		
-		'Invalid_string_refer_to_original_code
+		'“¾ˆÓ‹Z••s“¾è‚Í–¼Ì•ÏX‚³‚ê‚È‚¢
 		Select Case sname
-			Case "å¾—æ„æŠ€", "ä¸å¾—æ‰‹"
+			Case "“¾ˆÓ‹Z", "•s“¾è"
 				SkillName = sname
 				Exit Function
 		End Select
 		
-		'Invalid_string_refer_to_original_code
+		'SetSkillƒRƒ}ƒ“ƒh‚Å••ˆó‚³‚ê‚Ä‚¢‚éê‡
 		If SkillName = "" Then
 			If IsGlobalVariableDefined("Ability(" & ID & "," & sname & ")") Then
-				'ã‚ªãƒªã‚¸ãƒŠãƒ«ã®åç§°ã‚’ä½¿ç”¨
+				'ƒIƒŠƒWƒiƒ‹‚Ì–¼Ì‚ğg—p
 				SkillName = Data.SkillName(Level, sname)
 				
-				If InStr(SkillName, "éè¡¨ç¤º") > 0 Then
-					SkillName = "éè¡¨ç¤º"
+				If InStr(SkillName, "”ñ•\¦") > 0 Then
+					SkillName = "”ñ•\¦"
 					Exit Function
 				End If
 			End If
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'd•¡‰Â”\‚È”\—Í‚Í“Áê”\—Í•t‰Á‚Å–¼Ì‚ª’u‚«Š·‚¦‚ç‚ê‚±‚Æ‚Í‚È‚¢
 		Select Case sname
-			Case "ãƒãƒ³ã‚¿ãƒ¼", "Invalid_string_refer_to_original_code"
+			Case "ƒnƒ“ƒ^[", "ƒXƒyƒVƒƒƒ‹ƒpƒ[©“®”­“®"
 				If IsNumeric(Index) Then
 					If Left(SkillName, 1) = "(" Then
 						SkillName = Mid(SkillName, 2)
@@ -2131,7 +2039,7 @@ ErrorHandler:
 					End If
 					Exit Function
 				End If
-			Case "Invalid_string_refer_to_original_code"
+			Case "‚r‚oÁ”ïŒ¸­"
 				If IsNumeric(Index) Then
 					If Left(SkillName, 1) = "(" Then
 						SkillName = Mid(SkillName, 2)
@@ -2145,168 +2053,146 @@ ErrorHandler:
 				End If
 		End Select
 		
-		'Invalid_string_refer_to_original_code
+		'“Áê”\—Í•t‰Á•‹­‰»‚É‚æ‚éC³
 		If Not Unit_Renamed Is Nothing Then
 			With Unit_Renamed
 				If .CountCondition > 0 And .CountPilot > 0 Then
 					If .MainPilot Is Me Or .Pilot(1) Is Me Then
-						'Invalid_string_refer_to_original_code
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-						
-						If buf <> "" Then
-							SkillName = buf
-						ElseIf SkillName = "" Then 
-							SkillName = sname
+						'ƒ†ƒjƒbƒg—p“Áê”\—Í‚É‚æ‚é•t‰Á
+						If .IsConditionSatisfied(sname & "•t‰Á‚Q") Then
+							buf = LIndex(.ConditionData(sname & "•t‰Á‚Q"), 1)
+							
+							If buf <> "" Then
+								SkillName = buf
+							ElseIf SkillName = "" Then 
+								SkillName = sname
+							End If
+							
+							If InStr(SkillName, "”ñ•\¦") > 0 Then
+								SkillName = "”ñ•\¦"
+								Exit Function
+							End If
+							
+							'ƒŒƒxƒ‹w’è
+							If .ConditionLevel(sname & "•t‰Á‚Q") <> DEFAULT_LEVEL Then
+								If InStr(SkillName, "Lv") > 0 Then
+									SkillName = Left(SkillName, InStr(SkillName, "Lv") - 1)
+								End If
+								SkillName = SkillName & "Lv" & VB6.Format(.ConditionLevel(sname & "•t‰Á‚Q"))
+							End If
 						End If
 						
-						If InStr(SkillName, "éè¡¨ç¤º") > 0 Then
-							SkillName = "éè¡¨ç¤º"
-							Exit Function
+						'ƒAƒrƒŠƒeƒB‚É‚æ‚é•t‰Á
+						If .IsConditionSatisfied(sname & "•t‰Á") Then
+							buf = LIndex(.ConditionData(sname & "•t‰Á"), 1)
+							
+							If buf <> "" Then
+								SkillName = buf
+							ElseIf SkillName = "" Then 
+								SkillName = sname
+							End If
+							
+							If InStr(SkillName, "”ñ•\¦") > 0 Then
+								SkillName = "”ñ•\¦"
+								Exit Function
+							End If
+							
+							'ƒŒƒxƒ‹w’è
+							If .ConditionLevel(sname & "•t‰Á") <> DEFAULT_LEVEL Then
+								If InStr(SkillName, "Lv") > 0 Then
+									SkillName = Left(SkillName, InStr(SkillName, "Lv") - 1)
+								End If
+								SkillName = SkillName & "Lv" & VB6.Format(.ConditionLevel(sname & "•t‰Á"))
+							End If
 						End If
 						
-						'Invalid_string_refer_to_original_code
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-						If InStr(SkillName, "Lv") > 0 Then
-							SkillName = Left(SkillName, InStr(SkillName, "Lv") - 1)
+						'ƒ†ƒjƒbƒg—p“Áê”\—Í‚É‚æ‚é‹­‰»
+						If .IsConditionSatisfied(sname & "‹­‰»‚Q") Then
+							If SkillName = "" Then
+								'‹­‰»‚³‚ê‚é”\—Í‚ğƒpƒCƒƒbƒg‚ª‚Á‚Ä‚¢‚È‚©‚Á‚½ê‡
+								SkillName = LIndex(.ConditionData(sname & "‹­‰»‚Q"), 1)
+								
+								If SkillName = "" Then
+									SkillName = sname
+								End If
+								
+								If InStr(SkillName, "”ñ•\¦") > 0 Then
+									SkillName = "”ñ•\¦"
+									Exit Function
+								End If
+								
+								SkillName = SkillName & "Lv0"
+							End If
+							
+							If sname <> "“¯’²—¦" And sname <> "—ì—Í" Then
+								If .ConditionLevel(sname & "‹­‰»‚Q") >= 0 Then
+									SkillName = SkillName & "+" & VB6.Format(.ConditionLevel(sname & "‹­‰»‚Q"))
+								Else
+									SkillName = SkillName & VB6.Format(.ConditionLevel(sname & "‹­‰»‚Q"))
+								End If
+							End If
 						End If
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					End If
-				End If
-				
-				'Invalid_string_refer_to_original_code
-				If .IsConditionSatisfied(sname & "ä»˜åŠ ") Then
-					buf = LIndex(.ConditionData(sname & "ä»˜åŠ "), 1)
-					
-					If buf <> "" Then
-						SkillName = buf
-					ElseIf SkillName = "" Then 
-						SkillName = sname
-					End If
-					
-					If InStr(SkillName, "éè¡¨ç¤º") > 0 Then
-						SkillName = "éè¡¨ç¤º"
-						Exit Function
-					End If
-					
-					'Invalid_string_refer_to_original_code
-					If .ConditionLevel(sname & "ä»˜åŠ ") <> DEFAULT_LEVEL Then
-						If InStr(SkillName, "Lv") > 0 Then
-							SkillName = Left(SkillName, InStr(SkillName, "Lv") - 1)
+						
+						'ƒAƒrƒŠƒeƒB‚É‚æ‚é‹­‰»
+						If .IsConditionSatisfied(sname & "‹­‰»") Then
+							If SkillName = "" Then
+								'‹­‰»‚³‚ê‚é”\—Í‚ğƒpƒCƒƒbƒg‚ª‚Á‚Ä‚¢‚È‚©‚Á‚½ê‡
+								SkillName = LIndex(.ConditionData(sname & "‹­‰»"), 1)
+								
+								If SkillName = "" Then
+									SkillName = sname
+								End If
+								
+								If InStr(SkillName, "”ñ•\¦") > 0 Then
+									SkillName = "”ñ•\¦"
+									Exit Function
+								End If
+								
+								SkillName = SkillName & "Lv0"
+							End If
+							
+							If sname <> "“¯’²—¦" And sname <> "—ì—Í" Then
+								If .ConditionLevel(sname & "‹­‰»") >= 0 Then
+									SkillName = SkillName & "+" & VB6.Format(.ConditionLevel(sname & "‹­‰»"))
+								Else
+									SkillName = SkillName & VB6.Format(.ConditionLevel(sname & "‹­‰»"))
+								End If
+							End If
 						End If
-						SkillName = SkillName & "Lv" & VB6.Format(.ConditionLevel(sname & "ä»˜åŠ "))
 					End If
 				End If
-				
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				If SkillName = "" Then
-					'Invalid_string_refer_to_original_code
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					
-					If SkillName = "" Then
-						SkillName = sname
-					End If
-					
-					If InStr(SkillName, "éè¡¨ç¤º") > 0 Then
-						SkillName = "éè¡¨ç¤º"
-						Exit Function
-					End If
-					
-					SkillName = SkillName & "Lv0"
-				End If
-				
-				'Invalid_string_refer_to_original_code_
-				'And sname <> "éœŠåŠ›" _
-				'Then
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 			End With
-		Else
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		End If
-		'End If
-		'End If
-		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		If SkillName = "" Then
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			
-			If SkillName = "" Then
-				SkillName = sname
-			End If
-			
-			If InStr(SkillName, "éè¡¨ç¤º") > 0 Then
-				SkillName = "éè¡¨ç¤º"
-				Exit Function
-			End If
-			
-			SkillName = SkillName & "Lv0"
 		End If
 		
-		'Invalid_string_refer_to_original_code_
-		'And sname <> "éœŠåŠ›" _
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		'End If
-		'End If
-		'End If
-		'End If
-		'End If
-		'End With
-		'End If
-		
-		'èƒ½åŠ›å¼·åŒ–ç³»ã¯éè¡¨ç¤º
-		If Right(sname, 2) = "Invalid_string_refer_to_original_code" Or Right(sname, 4) = "Invalid_string_refer_to_original_code" Then
-			SkillName = "éè¡¨ç¤º"
+		'”\—Í‹­‰»Œn‚Í”ñ•\¦
+		If Right(sname, 2) = "‚t‚o" Or Right(sname, 4) = "‚c‚n‚v‚m" Then
+			SkillName = "”ñ•\¦"
 			Exit Function
 		End If
 		
 		Select Case sname
-			Case "è¿½åŠ ãƒ¬ãƒ™ãƒ«", "Invalid_string_refer_to_original_code", "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code
-				SkillName = "éè¡¨ç¤º"
+			Case "’Ç‰ÁƒŒƒxƒ‹", "ƒƒbƒZ[ƒW", "–‚—ÍŠ—L"
+				'”ñ•\¦‚Ì”\—Í
+				SkillName = "”ñ•\¦"
 				Exit Function
-			Case "Invalid_string_refer_to_original_code"
-				If IsOptionDefined("Invalid_string_refer_to_original_code") Or IsOptionDefined("Invalid_string_refer_to_original_code") Then
-					'Invalid_string_refer_to_original_code
-					SkillName = "éè¡¨ç¤º"
+			Case "‘Ï‹v"
+				If IsOptionDefined("–hŒä—Í¬’·") Or IsOptionDefined("–hŒä—ÍƒŒƒxƒ‹ƒAƒbƒv") Then
+					'–hŒä—Í¬’·ƒIƒvƒVƒ‡ƒ“g—p‚É‚Í‘Ï‹v”\—Í‚ğ”ñ•\¦
+					SkillName = "”ñ•\¦"
 					Exit Function
 				End If
 		End Select
 		
-		'Invalid_string_refer_to_original_code
+		'‚±‚ê‚ç‚Ì”\—Í‚©‚ç‚ÍƒŒƒxƒ‹w’è‚ğœ‚­
 		Select Case sname
-			Case "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			Case "ŠK‹‰", "“¯’²—¦", "—ì—Í", "‚r‚oÁ”ïŒ¸­"
 				i = InStr(SkillName, "Lv")
 				If i > 0 Then
 					SkillName = Left(SkillName, i - 1)
 				End If
 		End Select
 		
-		'ãƒ¬ãƒ™ãƒ«éè¡¨ç¤ºç”¨ã®æ‹¬å¼§ã‚’å‰Šé™¤
+		'ƒŒƒxƒ‹”ñ•\¦—p‚ÌŠ‡ŒÊ‚ğíœ
 		If Left(SkillName, 1) = "(" Then
 			SkillName = Mid(SkillName, 2)
 			SkillName = Left(SkillName, InStr2(SkillName, ")") - 1)
@@ -2317,32 +2203,32 @@ ErrorHandler:
 		End If
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'“Áê”\—Í–¼ÌiƒŒƒxƒ‹•\¦”²‚«j
 	Public Function SkillName0(ByRef Index As Object) As String
 		Dim sd As SkillData
 		Dim sname As String
 		Dim buf As String
 		Dim i As Short
 		
-		'Invalid_string_refer_to_original_code
+		'ƒpƒCƒƒbƒg‚ªŠ—L‚µ‚Ä‚¢‚é“Áê”\—Í‚Ì’†‚©‚çŒŸõ
 		On Error GoTo ErrorHandler
 		sd = colSkill.Item(Index)
 		With sd
 			sname = .Name
 			
-			'èƒ½åŠ›å¼·åŒ–ç³»ã¯éè¡¨ç¤º
-			If Right(sname, 2) = "Invalid_string_refer_to_original_code" Or Right(sname, 4) = "Invalid_string_refer_to_original_code" Then
-				SkillName0 = "éè¡¨ç¤º"
+			'”\—Í‹­‰»Œn‚Í”ñ•\¦
+			If Right(sname, 2) = "‚t‚o" Or Right(sname, 4) = "‚c‚n‚v‚m" Then
+				SkillName0 = "”ñ•\¦"
 				Exit Function
 			End If
 			
 			Select Case sname
-				Case "è¿½åŠ ãƒ¬ãƒ™ãƒ«", "Invalid_string_refer_to_original_code", "Invalid_string_refer_to_original_code"
-					'Invalid_string_refer_to_original_code
-					SkillName0 = "éè¡¨ç¤º"
+				Case "’Ç‰ÁƒŒƒxƒ‹", "ƒƒbƒZ[ƒW", "–‚—ÍŠ—L"
+					'”ñ•\¦‚Ì”\—Í
+					SkillName0 = "”ñ•\¦"
 					Exit Function
-				Case "å¾—æ„æŠ€", "ä¸å¾—æ‰‹"
-					'Invalid_string_refer_to_original_code
+				Case "“¾ˆÓ‹Z", "•s“¾è"
+					'•Ê–¼w’è‚ª‘¶İ‚µ‚È‚¢”\—Í
 					SkillName0 = sname
 					Exit Function
 			End Select
@@ -2350,7 +2236,7 @@ ErrorHandler:
 			If Len(.StrData) > 0 Then
 				SkillName0 = LIndex(.StrData, 1)
 				
-				If SkillName0 = "éè¡¨ç¤º" Then
+				If SkillName0 = "”ñ•\¦" Then
 					Exit Function
 				End If
 			Else
@@ -2369,126 +2255,116 @@ ErrorHandler:
 			End If
 		End If
 		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		If IsOptionDefined("Invalid_string_refer_to_original_code") Or IsOptionDefined("Invalid_string_refer_to_original_code") Then
-			'Invalid_string_refer_to_original_code
-			SkillName0 = "éè¡¨ç¤º"
-			Exit Function
+		If sname = "‘Ï‹v" Then
+			If IsOptionDefined("–hŒä—Í¬’·") Or IsOptionDefined("–hŒä—ÍƒŒƒxƒ‹ƒAƒbƒv") Then
+				'–hŒä—Í¬’·ƒIƒvƒVƒ‡ƒ“g—p‚É‚Í‘Ï‹v”\—Í‚ğ”ñ•\¦
+				SkillName0 = "”ñ•\¦"
+				Exit Function
+			End If
 		End If
-		'End If
 		
-		'Invalid_string_refer_to_original_code
+		'“¾ˆÓ‹Z••s“¾è‚Í–¼Ì•ÏX‚³‚ê‚È‚¢
 		Select Case sname
-			Case "å¾—æ„æŠ€", "ä¸å¾—æ‰‹"
+			Case "“¾ˆÓ‹Z", "•s“¾è"
 				SkillName0 = sname
 				Exit Function
 		End Select
 		
-		'Invalid_string_refer_to_original_code
+		'SetSkillƒRƒ}ƒ“ƒh‚Å••ˆó‚³‚ê‚Ä‚¢‚éê‡
 		If SkillName0 = "" Then
 			If IsGlobalVariableDefined("Ability(" & ID & "," & sname & ")") Then
-				'ã‚ªãƒªã‚¸ãƒŠãƒ«ã®åç§°ã‚’ä½¿ç”¨
+				'ƒIƒŠƒWƒiƒ‹‚Ì–¼Ì‚ğg—p
 				SkillName0 = Data.SkillName(Level, sname)
 				
-				If InStr(SkillName0, "éè¡¨ç¤º") > 0 Then
-					SkillName0 = "éè¡¨ç¤º"
+				If InStr(SkillName0, "”ñ•\¦") > 0 Then
+					SkillName0 = "”ñ•\¦"
 					Exit Function
 				End If
 			End If
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'd•¡‰Â”\‚È”\—Í‚Í“Áê”\—Í•t‰Á‚Å–¼Ì‚ª’u‚«Š·‚¦‚ç‚ê‚±‚Æ‚Í‚È‚¢
 		Select Case sname
-			Case "ãƒãƒ³ã‚¿ãƒ¼", "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			Case "ƒnƒ“ƒ^[", "‚r‚oÁ”ïŒ¸­", "ƒXƒyƒVƒƒƒ‹ƒpƒ[©“®”­“®"
 				If IsNumeric(Index) Then
 					Exit Function
 				End If
 		End Select
 		
-		'Invalid_string_refer_to_original_code
+		'“Áê”\—Í•t‰Á•‹­‰»‚É‚æ‚éC³
 		If Not Unit_Renamed Is Nothing Then
 			With Unit_Renamed
 				If .CountCondition > 0 And .CountPilot > 0 Then
 					If .MainPilot Is Me Or .Pilot(1) Is Me Then
-						'Invalid_string_refer_to_original_code
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-						
-						If buf <> "" Then
-							SkillName0 = buf
-						ElseIf SkillName0 = "" Then 
-							SkillName0 = sname
+						'ƒ†ƒjƒbƒg—p“Áê”\—Í‚É‚æ‚é•t‰Á
+						If .IsConditionSatisfied(sname & "•t‰Á‚Q") Then
+							buf = LIndex(.ConditionData(sname & "•t‰Á‚Q"), 1)
+							
+							If buf <> "" Then
+								SkillName0 = buf
+							ElseIf SkillName0 = "" Then 
+								SkillName0 = sname
+							End If
+							
+							If InStr(SkillName0, "”ñ•\¦") > 0 Then
+								SkillName0 = "”ñ•\¦"
+								Exit Function
+							End If
 						End If
 						
-						If InStr(SkillName0, "éè¡¨ç¤º") > 0 Then
-							SkillName0 = "éè¡¨ç¤º"
-							Exit Function
+						'ƒAƒrƒŠƒeƒB‚É‚æ‚é•t‰Á
+						If .IsConditionSatisfied(sname & "•t‰Á") Then
+							buf = LIndex(.ConditionData(sname & "•t‰Á"), 1)
+							
+							If buf <> "" Then
+								SkillName0 = buf
+							ElseIf SkillName0 = "" Then 
+								SkillName0 = sname
+							End If
+							
+							If InStr(SkillName0, "”ñ•\¦") > 0 Then
+								SkillName0 = "”ñ•\¦"
+								Exit Function
+							End If
 						End If
-					End If
-					
-					'Invalid_string_refer_to_original_code
-					If .IsConditionSatisfied(sname & "ä»˜åŠ ") Then
-						buf = LIndex(.ConditionData(sname & "ä»˜åŠ "), 1)
 						
-						If buf <> "" Then
-							SkillName0 = buf
-						ElseIf SkillName0 = "" Then 
-							SkillName0 = sname
-						End If
-						
-						If InStr(SkillName0, "éè¡¨ç¤º") > 0 Then
-							SkillName0 = "éè¡¨ç¤º"
-							Exit Function
-						End If
-					End If
-					
-					'Invalid_string_refer_to_original_code
-					If SkillName0 = "" Then
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-						
+						'ƒ†ƒjƒbƒg—p“Áê”\—Í‚É‚æ‚é‹­‰»
 						If SkillName0 = "" Then
-							SkillName0 = sname
+							If .IsConditionSatisfied(sname & "‹­‰»‚Q") Then
+								SkillName0 = LIndex(.ConditionData(sname & "‹­‰»‚Q"), 1)
+								
+								If SkillName0 = "" Then
+									SkillName0 = sname
+								End If
+								
+								If InStr(SkillName0, "”ñ•\¦") > 0 Then
+									SkillName0 = "”ñ•\¦"
+									Exit Function
+								End If
+							End If
 						End If
 						
-						If InStr(SkillName0, "éè¡¨ç¤º") > 0 Then
-							SkillName0 = "éè¡¨ç¤º"
-							Exit Function
+						'ƒAƒrƒŠƒeƒB‚É‚æ‚é‹­‰»
+						If SkillName0 = "" Then
+							If .IsConditionSatisfied(sname & "‹­‰»") Then
+								SkillName0 = LIndex(.ConditionData(sname & "‹­‰»"), 1)
+								
+								If SkillName0 = "" Then
+									SkillName0 = sname
+								End If
+								
+								If InStr(SkillName0, "”ñ•\¦") > 0 Then
+									SkillName0 = "”ñ•\¦"
+									Exit Function
+								End If
+							End If
 						End If
-					End If
-				End If
-				
-				'Invalid_string_refer_to_original_code
-				If SkillName0 = "" Then
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					
-					If SkillName0 = "" Then
-						SkillName0 = sname
-					End If
-					
-					If InStr(SkillName0, "éè¡¨ç¤º") > 0 Then
-						SkillName0 = "éè¡¨ç¤º"
-						Exit Function
 					End If
 				End If
 			End With
 		End If
-		'End If
-		'End If
-		'End With
-		'End If
 		
-		'è©²å½“ã™ã‚‹ã‚‚ã®ãŒç„¡ã‘ã‚Œã°ã‚¨ãƒªã‚¢ã‚¹ã‹ã‚‰æ¤œç´¢
+		'ŠY“–‚·‚é‚à‚Ì‚ª–³‚¯‚ê‚ÎƒGƒŠƒAƒX‚©‚çŒŸõ
 		If SkillName0 = "" Then
 			With ALDList
 				For i = 1 To .Count
@@ -2503,57 +2379,57 @@ ErrorHandler:
 			SkillName0 = sname
 		End If
 		
-		'èƒ½åŠ›å¼·åŒ–ç³»ã¯éè¡¨ç¤º
-		If Right(sname, 2) = "Invalid_string_refer_to_original_code" Or Right(sname, 4) = "Invalid_string_refer_to_original_code" Then
-			SkillName0 = "éè¡¨ç¤º"
+		'”\—Í‹­‰»Œn‚Í”ñ•\¦
+		If Right(sname, 2) = "‚t‚o" Or Right(sname, 4) = "‚c‚n‚v‚m" Then
+			SkillName0 = "”ñ•\¦"
 			Exit Function
 		End If
 		
 		Select Case sname
-			Case "è¿½åŠ ãƒ¬ãƒ™ãƒ«", "Invalid_string_refer_to_original_code", "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code
-				SkillName0 = "éè¡¨ç¤º"
+			Case "’Ç‰ÁƒŒƒxƒ‹", "ƒƒbƒZ[ƒW", "–‚—ÍŠ—L"
+				'”ñ•\¦‚Ì”\—Í
+				SkillName0 = "”ñ•\¦"
 				Exit Function
-			Case "Invalid_string_refer_to_original_code"
-				If IsOptionDefined("Invalid_string_refer_to_original_code") Or IsOptionDefined("Invalid_string_refer_to_original_code") Then
-					'Invalid_string_refer_to_original_code
-					SkillName0 = "éè¡¨ç¤º"
+			Case "‘Ï‹v"
+				If IsOptionDefined("–hŒä—Í¬’·") Or IsOptionDefined("–hŒä—ÍƒŒƒxƒ‹ƒAƒbƒv") Then
+					'–hŒä—Í¬’·ƒIƒvƒVƒ‡ƒ“g—p‚É‚Í‘Ï‹v”\—Í‚ğ”ñ•\¦
+					SkillName0 = "”ñ•\¦"
 					Exit Function
 				End If
 		End Select
 		
-		'ãƒ¬ãƒ™ãƒ«éè¡¨ç¤ºç”¨ã®æ‹¬å¼§ã‚’å‰Šé™¤
+		'ƒŒƒxƒ‹”ñ•\¦—p‚ÌŠ‡ŒÊ‚ğíœ
 		If Left(SkillName0, 1) = "(" Then
 			SkillName0 = Mid(SkillName0, 2)
 			SkillName0 = Left(SkillName0, InStr2(SkillName0, ")") - 1)
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'ƒŒƒxƒ‹w’è‚ğíœ
 		i = InStr(SkillName0, "Lv")
 		If i > 0 Then
 			SkillName0 = Left(SkillName0, i - 1)
 		End If
 	End Function
 	
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
+	'“Áê”\—Í–¼Ìi•K—v‹Z”\”»’è—pj
+	'–¼Ì‚©‚çƒŒƒxƒ‹w’è‚ğíœ‚µA–¼Ì‚ª”ñ•\¦‚É‚³‚ê‚Ä‚¢‚éê‡‚ÍŒ³‚Ì“Áê”\—Í–¼
+	'‚à‚µ‚­‚ÍƒGƒŠƒAƒX–¼‚ğg—p‚·‚éB
 	Public Function SkillNameForNS(ByRef stype As String) As String
 		Dim sd As SkillData
 		Dim buf As String
 		Dim i As Short
 		
-		'Invalid_string_refer_to_original_code
-		If Right(stype, 2) = "Invalid_string_refer_to_original_code" Or Right(stype, 4) = "Invalid_string_refer_to_original_code" Then
+		'”ñ•\¦‚Ì“Áê”\—Í
+		If Right(stype, 2) = "‚t‚o" Or Right(stype, 4) = "‚c‚n‚v‚m" Then
 			SkillNameForNS = stype
 			Exit Function
 		End If
-		If stype = "Invalid_string_refer_to_original_code" Then
+		If stype = "ƒƒbƒZ[ƒW" Then
 			SkillNameForNS = stype
 			Exit Function
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'ƒpƒCƒƒbƒg‚ªŠ—L‚µ‚Ä‚¢‚é“Áê”\—Í‚Ì’†‚©‚çŒŸõ
 		On Error GoTo ErrorHandler
 		sd = colSkill.Item(stype)
 		With sd
@@ -2566,96 +2442,89 @@ ErrorHandler:
 		
 ErrorHandler: 
 		
-		'Invalid_string_refer_to_original_code
+		'SetSkillƒRƒ}ƒ“ƒh‚Å••ˆó‚³‚ê‚Ä‚¢‚éê‡
 		If SkillNameForNS = "" Then
 			If IsGlobalVariableDefined("Ability(" & ID & "," & stype & ")") Then
-				'ã‚ªãƒªã‚¸ãƒŠãƒ«ã®åç§°ã‚’ä½¿ç”¨
+				'ƒIƒŠƒWƒiƒ‹‚Ì–¼Ì‚ğg—p
 				SkillNameForNS = Data.SkillName(Level, stype)
 				
-				If InStr(SkillNameForNS, "éè¡¨ç¤º") > 0 Then
-					SkillNameForNS = "éè¡¨ç¤º"
+				If InStr(SkillNameForNS, "”ñ•\¦") > 0 Then
+					SkillNameForNS = "”ñ•\¦"
 				End If
 			End If
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'“Áê”\—Í•t‰Á•‹­‰»‚É‚æ‚éC³
 		If Not Unit_Renamed Is Nothing Then
 			With Unit_Renamed
 				If .CountCondition > 0 And .CountPilot > 0 Then
 					If Me Is .MainPilot Or Me Is .Pilot(1) Then
-						'Invalid_string_refer_to_original_code
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-						
-						If buf <> "" Then
-							SkillNameForNS = buf
-						ElseIf SkillNameForNS = "" Then 
-							SkillNameForNS = stype
+						'ƒ†ƒjƒbƒg—p“Áê”\—Í‚É‚æ‚é•t‰Á
+						If .IsConditionSatisfied(stype & "•t‰Á‚Q") Then
+							buf = LIndex(.ConditionData(stype & "•t‰Á‚Q"), 1)
+							
+							If buf <> "" Then
+								SkillNameForNS = buf
+							ElseIf SkillNameForNS = "" Then 
+								SkillNameForNS = stype
+							End If
+							
+							If InStr(SkillNameForNS, "”ñ•\¦") > 0 Then
+								SkillNameForNS = "”ñ•\¦"
+							End If
 						End If
 						
-						If InStr(SkillNameForNS, "éè¡¨ç¤º") > 0 Then
-							SkillNameForNS = "éè¡¨ç¤º"
+						'ƒAƒrƒŠƒeƒB‚É‚æ‚é•t‰Á
+						If .IsConditionSatisfied(stype & "•t‰Á") Then
+							buf = LIndex(.ConditionData(stype & "•t‰Á"), 1)
+							
+							If buf <> "" Then
+								SkillNameForNS = buf
+							ElseIf SkillNameForNS = "" Then 
+								SkillNameForNS = stype
+							End If
+							
+							If InStr(SkillNameForNS, "”ñ•\¦") > 0 Then
+								SkillNameForNS = "”ñ•\¦"
+							End If
 						End If
-					End If
-					
-					'Invalid_string_refer_to_original_code
-					If .IsConditionSatisfied(stype & "ä»˜åŠ ") Then
-						buf = LIndex(.ConditionData(stype & "ä»˜åŠ "), 1)
 						
-						If buf <> "" Then
-							SkillNameForNS = buf
-						ElseIf SkillNameForNS = "" Then 
-							SkillNameForNS = stype
-						End If
-						
-						If InStr(SkillNameForNS, "éè¡¨ç¤º") > 0 Then
-							SkillNameForNS = "éè¡¨ç¤º"
-						End If
-					End If
-					
-					'Invalid_string_refer_to_original_code
-					If SkillNameForNS = "" Then
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-						
+						'ƒ†ƒjƒbƒg—p“Áê”\—Í‚É‚æ‚é‹­‰»
 						If SkillNameForNS = "" Then
-							SkillNameForNS = stype
+							If .IsConditionSatisfied(stype & "‹­‰»‚Q") Then
+								SkillNameForNS = LIndex(.ConditionData(stype & "‹­‰»‚Q"), 1)
+								
+								If SkillNameForNS = "" Then
+									SkillNameForNS = stype
+								End If
+								
+								If InStr(SkillNameForNS, "”ñ•\¦") > 0 Then
+									SkillNameForNS = "”ñ•\¦"
+								End If
+							End If
 						End If
 						
-						If InStr(SkillNameForNS, "éè¡¨ç¤º") > 0 Then
-							SkillNameForNS = "éè¡¨ç¤º"
+						'ƒAƒrƒŠƒeƒB‚É‚æ‚é‹­‰»
+						If SkillNameForNS = "" Then
+							If .IsConditionSatisfied(stype & "‹­‰»") Then
+								SkillNameForNS = LIndex(.ConditionData(stype & "‹­‰»"), 1)
+								
+								If SkillNameForNS = "" Then
+									SkillNameForNS = stype
+								End If
+								
+								If InStr(SkillNameForNS, "”ñ•\¦") > 0 Then
+									SkillNameForNS = "”ñ•\¦"
+								End If
+							End If
 						End If
-					End If
-				End If
-				
-				'Invalid_string_refer_to_original_code
-				If SkillNameForNS = "" Then
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					
-					If SkillNameForNS = "" Then
-						SkillNameForNS = stype
-					End If
-					
-					If InStr(SkillNameForNS, "éè¡¨ç¤º") > 0 Then
-						SkillNameForNS = "éè¡¨ç¤º"
 					End If
 				End If
 			End With
 		End If
-		'End If
-		'End If
-		'End With
-		'End If
 		
-		'è©²å½“ã™ã‚‹ã‚‚ã®ãŒç„¡ã‘ã‚Œã°ã‚¨ãƒªã‚¢ã‚¹ã‹ã‚‰æ¤œç´¢
-		If SkillNameForNS = "" Or SkillNameForNS = "éè¡¨ç¤º" Then
+		'ŠY“–‚·‚é‚à‚Ì‚ª–³‚¯‚ê‚ÎƒGƒŠƒAƒX‚©‚çŒŸõ
+		If SkillNameForNS = "" Or SkillNameForNS = "”ñ•\¦" Then
 			With ALDList
 				For i = 1 To .Count
 					With .Item(i)
@@ -2669,20 +2538,20 @@ ErrorHandler:
 			SkillNameForNS = stype
 		End If
 		
-		'ãƒ¬ãƒ™ãƒ«éè¡¨ç¤ºç”¨ã®æ‹¬å¼§ã‚’å‰Šé™¤
+		'ƒŒƒxƒ‹”ñ•\¦—p‚ÌŠ‡ŒÊ‚ğíœ
 		If Left(SkillNameForNS, 1) = "(" Then
 			SkillNameForNS = Mid(SkillNameForNS, 2)
 			SkillNameForNS = Left(SkillNameForNS, InStr2(SkillNameForNS, ")") - 1)
 		End If
 		
-		'ãƒ¬ãƒ™ãƒ«è¡¨ç¤ºã‚’å‰Šé™¤
+		'ƒŒƒxƒ‹•\¦‚ğíœ
 		i = InStr(SkillNameForNS, "Lv")
 		If i > 0 Then
 			SkillNameForNS = Left(SkillNameForNS, i - 1)
 		End If
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'“Áê”\—Í‚Ìí—Ş
 	Public Function SkillType(ByRef sname As String) As String
 		Dim i As Short
 		Dim sd As SkillData
@@ -2699,7 +2568,7 @@ ErrorHandler:
 			sname0 = sname
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'ƒGƒŠƒAƒXƒf[ƒ^‚ª’è‹`‚³‚ê‚Ä‚¢‚éH
 		If ALDList.IsDefined(sname0) Then
 			With ALDList.Item(sname0)
 				SkillType = .AliasType(1)
@@ -2707,7 +2576,7 @@ ErrorHandler:
 			End With
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'“Áê”\—Íˆê——‚©‚çŒŸõ
 		For	Each sd In colSkill
 			With sd
 				If sname0 = .Name Then
@@ -2733,23 +2602,22 @@ ErrorHandler:
 			End With
 		Next sd
 		
-		'Invalid_string_refer_to_original_code
+		'‚»‚Ì”\—Í‚ğC“¾‚µ‚Ä‚¢‚È‚¢
 		SkillType = sname0
 		
-		'Invalid_string_refer_to_original_code
+		'“Áê”\—Í•t‰Á‚É‚æ‚éC³
 		If Not Unit_Renamed Is Nothing Then
 			With Unit_Renamed
 				If .CountCondition And .CountPilot > 0 Then
 					If Me Is .MainPilot Or Me Is .Pilot(1) Then
 						For i = 1 To .CountCondition
-							If Right(.Condition(i), 2) = "ä»˜åŠ " Then
+							If Right(.Condition(i), 2) = "•t‰Á" Then
 								If LIndex(.ConditionData(i), 1) = sname0 Then
 									SkillType = .Condition(i)
 									SkillType = Left(SkillType, Len(SkillType) - 2)
 									Exit For
 								End If
-								'Invalid_string_refer_to_original_code
-								'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+							ElseIf Right(.Condition(i), 3) = "•t‰Á‚Q" Then 
 								If LIndex(.ConditionData(i), 1) = sname0 Then
 									SkillType = .Condition(i)
 									SkillType = Left(SkillType, Len(SkillType) - 3)
@@ -2763,10 +2631,10 @@ ErrorHandler:
 		End If
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'ƒXƒyƒVƒƒƒ‹ƒpƒ[ sname ‚ğC“¾‚µ‚Ä‚¢‚é‚©H
 	Public Function IsSpecialPowerAvailable(ByRef sname As String) As Boolean
 		If Data.SP <= 0 Then
-			'Invalid_string_refer_to_original_code
+			'‚r‚o‚ğ‚½‚È‚¢’Ç‰ÁƒpƒCƒƒbƒg‚Ìê‡‚Í‚P”Ô–Ú‚ÌƒpƒCƒƒbƒg‚Ìƒf[ƒ^‚ğg‚¤
 			If Not Unit_Renamed Is Nothing Then
 				With Unit_Renamed
 					If .CountPilot > 0 Then
@@ -2784,18 +2652,18 @@ ErrorHandler:
 		IsSpecialPowerAvailable = Data.IsSpecialPowerAvailable(Level, sname)
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'ƒXƒyƒVƒƒƒ‹ƒpƒ[ sname ‚ª—L—p‚©H
 	Public Function IsSpecialPowerUseful(ByRef sname As String) As Boolean
 		IsSpecialPowerUseful = SPDList.Item(sname).Useful(Me)
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'ƒXƒyƒVƒƒƒ‹ƒpƒ[ sname ‚É•K—v‚È‚r‚o’l
 	Public Function SpecialPowerCost(ByRef sname As String) As Short
 		Dim i, j As Short
 		Dim adata As String
 		
 		If Data.SP <= 0 Then
-			'Invalid_string_refer_to_original_code
+			'‚r‚o‚ğ‚½‚È‚¢’Ç‰ÁƒpƒCƒƒbƒg‚Ìê‡‚Í‚P”Ô–Ú‚ÌƒpƒCƒƒbƒg‚Ìƒf[ƒ^‚ğg‚¤
 			If Not Unit_Renamed Is Nothing Then
 				With Unit_Renamed
 					If .CountPilot > 0 Then
@@ -2810,59 +2678,49 @@ ErrorHandler:
 			End If
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'Šî–{Á”ï‚r‚o’l
 		SpecialPowerCost = Data.SpecialPowerCost(sname)
 		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		SpecialPowerCost = 0.8 * SpecialPowerCost
-		'End If
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		SpecialPowerCost = 1.2 * SpecialPowerCost
-		'End If
+		'“Áê”\—Í‚É‚æ‚éÁ”ï‚r‚o’lC³
+		If IsSkillAvailable("’´”\—Í") Or IsSkillAvailable("W’†—Í") Then
+			SpecialPowerCost = 0.8 * SpecialPowerCost
+		End If
+		If IsSkillAvailable("’mŠo‹­‰»") Then
+			SpecialPowerCost = 1.2 * SpecialPowerCost
+		End If
 		
-		'Invalid_string_refer_to_original_code
+		'‚r‚oÁ”ïŒ¸­”\—Í
 		If Not Unit_Renamed Is Nothing Then
 			With Unit_Renamed
 				If .CountPilot > 0 Then
 					If .MainPilot Is Me Then
-						'Invalid_string_refer_to_original_code_
-						'Then
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-						For i = 2 To LLength(adata)
-							If sname = LIndex(adata, i) Then
-								'Invalid_string_refer_to_original_code
-								'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-								Exit Function
-							End If
-						Next 
+						If .IsConditionSatisfied("‚r‚oÁ”ïŒ¸­•t‰Á") Or .IsConditionSatisfied("‚r‚oÁ”ïŒ¸­•t‰Á‚Q") Then
+							adata = SkillData("‚r‚oÁ”ïŒ¸­")
+							For i = 2 To LLength(adata)
+								If sname = LIndex(adata, i) Then
+									SpecialPowerCost = (10 - SkillLevel("‚r‚oÁ”ïŒ¸­")) * SpecialPowerCost \ 10
+									Exit Function
+								End If
+							Next 
+						End If
 					End If
 				End If
 			End With
 		End If
-		'End With
-		'End If
 		For i = 1 To CountSkill
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			adata = SkillData(i)
-			For j = 2 To LLength(adata)
-				If sname = LIndex(adata, j) Then
-					SpecialPowerCost = (10 - SkillLevel(i)) * SpecialPowerCost \ 10
-					Exit Function
-				End If
-			Next 
-			'End If
+			If Skill(i) = "‚r‚oÁ”ïŒ¸­" Then
+				adata = SkillData(i)
+				For j = 2 To LLength(adata)
+					If sname = LIndex(adata, j) Then
+						SpecialPowerCost = (10 - SkillLevel(i)) * SpecialPowerCost \ 10
+						Exit Function
+					End If
+				Next 
+			End If
 		Next 
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'ƒXƒyƒVƒƒƒ‹ƒpƒ[ sname ‚ğÀs‚·‚é
 	Public Sub UseSpecialPower(ByRef sname As String, Optional ByVal sp_mod As Double = 1)
 		Dim my_unit As Unit
 		
@@ -2874,37 +2732,35 @@ ErrorHandler:
 		
 		SelectedPilot = Me
 		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		If Unit_Renamed.IsMessageDefined(sname) Then
-			OpenMessageForm()
-			Unit_Renamed.PilotMessage(sname)
-			CloseMessageForm()
+		'ƒXƒyƒVƒƒƒ‹ƒpƒ[g—pƒƒbƒZ[ƒW
+		If sp_mod <> 2 And Not SPDList.Item(sname).IsEffectAvailable("•œŠˆ") And Not SPDList.Item(sname).IsEffectAvailable("©”š") Then
+			If Unit_Renamed.IsMessageDefined(sname) Then
+				OpenMessageForm()
+				Unit_Renamed.PilotMessage(sname)
+				CloseMessageForm()
+			End If
 		End If
-		'End If
 		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
+		'“¯‚¶’Ç‰ÁƒpƒCƒƒbƒg‚ğ‚Âƒ†ƒjƒbƒg‚ª•¡”‚¢‚éê‡AƒpƒCƒƒbƒg‚ÌUnit‚ª
+		'•Ï‰»‚µ‚Ä‚µ‚Ü‚¤‚±‚Æ‚ª‚ ‚é‚½‚ßAŒ³‚ÌUnit‚ğ‹L˜^‚µ‚Ä‚¨‚­
 		my_unit = Unit_Renamed
 		
-		'ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼ã‚¢ãƒ‹ãƒ¡ã‚’è¡¨ç¤º
+		'ƒXƒyƒVƒƒƒ‹ƒpƒ[ƒAƒjƒ‚ğ•\¦
 		If Not SPDList.Item(sname).PlayAnimation Then
-			'Invalid_string_refer_to_original_code
+			'ƒƒbƒZ[ƒW•\¦‚Ì‚İ
 			OpenMessageForm(Unit_Renamed)
-			DisplaySysMessage(Nickname & "ã¯" & sname & "Invalid_string_refer_to_original_code")
+			DisplaySysMessage(Nickname & "‚Í" & sname & "‚ğg‚Á‚½B")
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'Unit‚ª•Ï‰»‚µ‚½ê‡‚ÉŒ³‚É–ß‚·
 		If Not my_unit Is Unit_Renamed Then
 			my_unit.MainPilot()
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'ƒXƒyƒVƒƒƒ‹ƒpƒ[‚ğÀs
 		SPDList.Item(sname).Execute(Me)
 		
-		'Invalid_string_refer_to_original_code
+		'Unit‚ª•Ï‰»‚µ‚½ê‡‚ÉŒ³‚É–ß‚·
 		If Not my_unit Is Unit_Renamed Then
 			my_unit.CurrentForm.MainPilot()
 		End If
@@ -2915,14 +2771,14 @@ ErrorHandler:
 	End Sub
 	
 	
-	'Invalid_string_refer_to_original_code
+	' === ƒ†ƒjƒbƒg“‹æ•‰ºæŠÖ˜Aˆ— ===
 	
-	'Invalid_string_refer_to_original_code
+	'ƒ†ƒjƒbƒg u ‚É“‹æ
 	Public Sub Ride(ByRef u As Unit, Optional ByVal is_support As Boolean = False)
 		Dim hp_ratio, en_ratio As Double
 		Dim plana_ratio As Double
 		
-		'Invalid_string_refer_to_original_code
+		'Šù‚Éæ‚Á‚Ä‚¢‚ê‚Î‚È‚É‚à‚µ‚È‚¢
 		If Unit_Renamed Is u Then
 			Exit Sub
 		End If
@@ -2931,7 +2787,7 @@ ErrorHandler:
 			hp_ratio = 100 * .HP / .MaxHP
 			en_ratio = 100 * .EN / .MaxEN
 			
-			'ç¾åœ¨ã®éœŠåŠ›å€¤ã‚’è¨˜éŒ²
+			'Œ»İ‚Ì—ì—Í’l‚ğ‹L˜^
 			If MaxPlana > 0 Then
 				plana_ratio = 100 * Plana / MaxPlana
 			Else
@@ -2940,50 +2796,49 @@ ErrorHandler:
 			
 			Unit_Renamed = u
 			
-			'Invalid_string_refer_to_original_code_
-			'Then
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			'Invalid_string_refer_to_original_code
-			.AddSupport(Me)
-			IsSupport(u)
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
-			If .CountPilot < System.Math.Abs(.Data.PilotNum) And InStrNotNest(Class_Renamed, u.Class0 & " ") > 0 And Not is_support Then
-				.AddPilot(Me)
-			Else
+			If InStrNotNest(Class_Renamed, "ƒTƒ|[ƒg)") > 0 And LLength(Class_Renamed) = 1 And Not .IsFeatureAvailable("ƒ_ƒ~[ƒ†ƒjƒbƒg") Then
+				'ƒTƒ|[ƒg‚É‚µ‚©‚È‚ê‚È‚¢ƒpƒCƒƒbƒg‚Ìê‡
 				.AddSupport(Me)
+			ElseIf IsSupport(u) Then 
+				'“¯‚¶ƒ†ƒjƒbƒgƒNƒ‰ƒX‚É‘Î‚µ‚Ä’ÊíƒpƒCƒƒbƒg‚ÆƒTƒ|[ƒg‚Ì—¼•û‚Ìƒpƒ^[ƒ“
+				'‚ª‚¢‚¯‚éê‡‚Í’ÊíƒpƒCƒƒbƒg‚ğ—Dæ
+				If .CountPilot < System.Math.Abs(.Data.PilotNum) And InStrNotNest(Class_Renamed, u.Class0 & " ") > 0 And Not is_support Then
+					.AddPilot(Me)
+				Else
+					.AddSupport(Me)
+				End If
+			Else
+				'ƒpƒCƒƒbƒg‚ªŠù‚É‹K’è”‚Ìê‡‚Í‘SƒpƒCƒƒbƒg‚ğ~‚ë‚·
+				If .CountPilot = System.Math.Abs(.Data.PilotNum) Then
+					.Pilot(1).GetOff()
+				End If
+				.AddPilot(Me)
 			End If
-			'Invalid_string_refer_to_original_code
-			If .CountPilot = System.Math.Abs(.Data.PilotNum) Then
-				.Pilot(1).GetOff()
-			End If
-			.AddPilot(Me)
-			'End If
 			
-			'Invalid_string_refer_to_original_code
+			'PilotƒRƒ}ƒ“ƒh‚Åì¬‚³‚ê‚½ƒpƒCƒƒbƒg‚Í‘S‚Ä–¡•û‚È‚Ì‚Å“‹æ‚É•ÏX‚ª•K—v
 			Party = .Party0
 			
-			'Invalid_string_refer_to_original_code
+			'ƒ†ƒjƒbƒg‚ÌƒXƒe[ƒ^ƒX‚ğƒAƒbƒvƒf[ƒg
 			.Update()
 			
-			'Invalid_string_refer_to_original_code
+			'—ì—Í’l‚ÌƒAƒbƒvƒf[ƒg
 			If plana_ratio >= 0 Then
 				Plana = MaxPlana * plana_ratio \ 100
 			Else
 				Plana = MaxPlana
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'ƒpƒCƒƒbƒg‚ªæ‚è‚Ş‚±‚Æ‚É‚æ‚é‚g‚o•‚d‚m‚Ì‘Œ¸‚É‘Î‰
 			.HP = .MaxHP * hp_ratio \ 100
 			.EN = .MaxEN * en_ratio \ 100
 		End With
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'ƒpƒCƒƒbƒg‚ğƒ†ƒjƒbƒg‚©‚ç~‚ë‚·
 	Public Sub GetOff(Optional ByVal without_leave As Boolean = False)
 		Dim i As Short
 		
-		'Invalid_string_refer_to_original_code
+		'Šù‚É~‚è‚Ä‚¢‚éH
 		If Unit_Renamed Is Nothing Then
 			Exit Sub
 		End If
@@ -2991,7 +2846,7 @@ ErrorHandler:
 		With Unit_Renamed
 			For i = 1 To .CountSupport
 				If .Support(i) Is Me Then
-					'Invalid_string_refer_to_original_code
+					'ƒTƒ|[ƒgƒpƒCƒƒbƒg‚Æ‚µ‚Äæ‚è‚ñ‚Å‚¢‚éê‡
 					.DeleteSupport(i)
 					.Update()
 					'UPGRADE_NOTE: ƒIƒuƒWƒFƒNƒg Unit_Renamed ‚ğƒKƒx[ƒW ƒRƒŒƒNƒg‚·‚é‚Ü‚Å‚±‚ÌƒIƒuƒWƒFƒNƒg‚ğ”jŠü‚·‚é‚±‚Æ‚Í‚Å‚«‚Ü‚¹‚ñB Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
@@ -3001,18 +2856,17 @@ ErrorHandler:
 				End If
 			Next 
 			
-			'Invalid_string_refer_to_original_code
+			'oŒ‚‚µ‚Ä‚¢‚½ê‡‚Í‘Ş‹p
 			If Not without_leave Then
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				.Status = "Invalid_string_refer_to_original_code"
-				'UPGRADE_NOTE: ƒIƒuƒWƒFƒNƒg MapDataForUnit() ‚ğƒKƒx[ƒW ƒRƒŒƒNƒg‚·‚é‚Ü‚Å‚±‚ÌƒIƒuƒWƒFƒNƒg‚ğ”jŠü‚·‚é‚±‚Æ‚Í‚Å‚«‚Ü‚¹‚ñB Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				MapDataForUnit(.X, .Y) = Nothing
-				EraseUnitBitmap(.X, .Y, False)
+				If .Status = "oŒ‚" Then
+					.Status = "‘Ò‹@"
+					'UPGRADE_NOTE: ƒIƒuƒWƒFƒNƒg MapDataForUnit() ‚ğƒKƒx[ƒW ƒRƒŒƒNƒg‚·‚é‚Ü‚Å‚±‚ÌƒIƒuƒWƒFƒNƒg‚ğ”jŠü‚·‚é‚±‚Æ‚Í‚Å‚«‚Ü‚¹‚ñB Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					MapDataForUnit(.X, .Y) = Nothing
+					EraseUnitBitmap(.X, .Y, False)
+				End If
 			End If
-			'End If
 			
-			'Invalid_string_refer_to_original_code
+			'’Êí‚ÌƒpƒCƒƒbƒg‚Ìê‡‚ÍA‚»‚Ìƒ†ƒjƒbƒg‚Éæ‚Á‚Ä‚¢‚½‘¼‚ÌƒpƒCƒƒbƒg‚à~‚ë‚³‚ê‚é
 			For i = 1 To .CountPilot
 				'UPGRADE_NOTE: ƒIƒuƒWƒFƒNƒg Unit_Renamed.Pilot().Unit ‚ğƒKƒx[ƒW ƒRƒŒƒNƒg‚·‚é‚Ü‚Å‚±‚ÌƒIƒuƒWƒFƒNƒg‚ğ”jŠü‚·‚é‚±‚Æ‚Í‚Å‚«‚Ü‚¹‚ñB Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 				.Pilot(1).Unit_Renamed = Nothing
@@ -3033,37 +2887,36 @@ ErrorHandler:
 		Update()
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'ƒpƒCƒƒbƒg‚ªƒ†ƒjƒbƒg u ‚ÌƒTƒ|[ƒg‚©‚Ç‚¤‚©
 	Public Function IsSupport(ByRef u As Unit) As Boolean
 		Dim uclass, pclass As String
 		Dim i, j As Short
 		
 		With u
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			'Invalid_string_refer_to_original_code
-			IsSupport = False
-			Exit Function
-			'End If
+			If .IsFeatureAvailable("ƒ_ƒ~[ƒ†ƒjƒbƒg") Then
+				'ƒ_ƒ~[ƒ†ƒjƒbƒg‚Ìê‡‚ÍƒTƒ|[ƒgƒpƒCƒƒbƒg‚à’Êí‚ÌƒpƒCƒƒbƒg‚Æ‚µ‚Äˆµ‚¤
+				IsSupport = False
+				Exit Function
+			End If
 			
-			'Invalid_string_refer_to_original_code
-			If InStrNotNest(Class_Renamed, "Invalid_string_refer_to_original_code") = 0 Then
+			'ƒTƒ|[ƒgw’è‚ª‘¶İ‚·‚éH
+			If InStrNotNest(Class_Renamed, "ƒTƒ|[ƒg)") = 0 Then
 				IsSupport = False
 				Exit Function
 			End If
 			
 			If .CountPilot = 0 Then
-				'Invalid_string_refer_to_original_code
+				'ƒpƒCƒƒbƒg‚ªæ‚Á‚Ä‚¢‚È‚¢ƒ†ƒjƒbƒg‚Ìê‡‚Í’ÊíƒpƒCƒƒbƒg‚ğ—Dæ
 				For i = 1 To LLength(Class_Renamed)
 					pclass = LIndex(Class_Renamed, i)
-					If .Class_Renamed = pclass Or .Class_Renamed = pclass & "(" & Name & "å°‚ç”¨)" Or .Class_Renamed = pclass & "(" & Nickname & "å°‚ç”¨)" Or .Class_Renamed = pclass & "(" & Sex & "å°‚ç”¨)" Then
-						'Invalid_string_refer_to_original_code
+					If .Class_Renamed = pclass Or .Class_Renamed = pclass & "(" & Name & "ê—p)" Or .Class_Renamed = pclass & "(" & Nickname & "ê—p)" Or .Class_Renamed = pclass & "(" & Sex & "ê—p)" Then
+						'’Êí‚ÌƒpƒCƒƒbƒg‚Æ‚µ‚Ä“‹æ‰Â”\‚Å‚ ‚ê‚ÎƒTƒ|[ƒg‚Å‚È‚¢‚Æ‚İ‚È‚·
 						IsSupport = False
 						Exit Function
 					End If
 				Next 
 			Else
-				'Invalid_string_refer_to_original_code
+				'’Êí‚ÌƒpƒCƒƒbƒg‚Æ‚µ‚Ä“‹æ‚µ‚Ä‚¢‚éH
 				For i = 1 To .CountPilot
 					If .Pilot(i) Is Me Then
 						IsSupport = False
@@ -3074,31 +2927,31 @@ ErrorHandler:
 			
 			uclass = .Class0
 			
-			'Invalid_string_refer_to_original_code
+			'’Êí‚ÌƒTƒ|[ƒgH
 			For i = 1 To LLength(Class_Renamed)
-				If uclass & "Invalid_string_refer_to_original_code" = LIndex(Class_Renamed, i) Then
+				If uclass & "(ƒTƒ|[ƒg)" = LIndex(Class_Renamed, i) Then
 					IsSupport = True
 					Exit Function
 				End If
 			Next 
 			
-			'Invalid_string_refer_to_original_code
+			'ƒpƒCƒƒbƒg‚ªæ‚Á‚Ä‚¢‚È‚¢ƒ†ƒjƒbƒg‚Ìê‡‚Í‚±‚±‚ÅI—¹
 			If .CountPilot = 0 Then
 				IsSupport = False
 				Exit Function
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'ê‘®ƒTƒ|[ƒgH
 			With .MainPilot
 				For i = 1 To LLength(Class_Renamed)
 					pclass = LIndex(Class_Renamed, i)
-					If pclass = uclass & "(" & .Name & "Invalid_string_refer_to_original_code" Or pclass = uclass & "(" & .Nickname & "Invalid_string_refer_to_original_code" Or pclass = uclass & "(" & .Sex & "Invalid_string_refer_to_original_code" Then
+					If pclass = uclass & "(" & .Name & "ê‘®ƒTƒ|[ƒg)" Or pclass = uclass & "(" & .Nickname & "ê‘®ƒTƒ|[ƒg)" Or pclass = uclass & "(" & .Sex & "ê‘®ƒTƒ|[ƒg)" Then
 						IsSupport = True
 						Exit Function
 					End If
 					
 					For j = 1 To .CountSkill
-						If pclass = uclass & "(" & .Skill(j) & "Invalid_string_refer_to_original_code" Then
+						If pclass = uclass & "(" & .Skill(j) & "ê‘®ƒTƒ|[ƒg)" Then
 							IsSupport = True
 							Exit Function
 						End If
@@ -3110,61 +2963,61 @@ ErrorHandler:
 		IsSupport = False
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'ƒ†ƒjƒbƒg u ‚Éæ‚é‚±‚Æ‚ª‚Å‚«‚é‚©‚Ç‚¤‚©
 	Public Function IsAbleToRide(ByRef u As Unit) As Boolean
 		Dim uclass, pclass As String
 		Dim i As Short
 		
 		With u
-			'Invalid_string_refer_to_original_code
-			If .Class_Renamed = "æ±ç”¨" Then
+			'”Ä—pƒ†ƒjƒbƒg‚Í•K—v‹Z”\‚ğ–‚½‚¹‚Î‚n‚j
+			If .Class_Renamed = "”Ä—p" Then
 				IsAbleToRide = True
 				GoTo CheckNecessarySkill
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'lŠÔƒ†ƒjƒbƒgw’è‚ğœ‚¢‚Ä”»’è
 			If Left(.Class_Renamed, 1) = "(" And Right(.Class_Renamed, 1) = ")" Then
 				uclass = Mid(.Class_Renamed, 2, Len(.Class_Renamed) - 2)
 			Else
 				uclass = .Class_Renamed
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'ƒTƒ|[ƒg‚©‚Ç‚¤‚©‚ğ‚Ü‚¸”»’è‚µ‚Ä‚¨‚­
 			If IsSupport(u) Then
 				IsAbleToRide = True
-				'Invalid_string_refer_to_original_code
+				'•K—v‹Z”\‚ğƒ`ƒFƒbƒN‚·‚é
 				GoTo CheckNecessarySkill
 			End If
 			
-			For i = 1 To LLength(Class_Renamed) 'Invalid_string_refer_to_original_code
+			For i = 1 To LLength(Class_Renamed) 'ƒ†ƒjƒbƒgƒNƒ‰ƒX‚Í•¡”İ’è‰Â”\
 				pclass = LIndex(Class_Renamed, i)
-				If uclass = pclass Or uclass = pclass & "(" & Nickname & "å°‚ç”¨)" Or uclass = pclass & "(" & Name & "å°‚ç”¨)" Or uclass = pclass & "(" & Sex & "å°‚ç”¨)" Then
+				If uclass = pclass Or uclass = pclass & "(" & Nickname & "ê—p)" Or uclass = pclass & "(" & Name & "ê—p)" Or uclass = pclass & "(" & Sex & "ê—p)" Then
 					IsAbleToRide = True
-					'Invalid_string_refer_to_original_code
+					'•K—v‹Z”\‚ğƒ`ƒFƒbƒN‚·‚é
 					GoTo CheckNecessarySkill
 				End If
 			Next 
 			
-			'Invalid_string_refer_to_original_code
+			'ƒNƒ‰ƒX‚ª‡‚í‚È‚¢
 			IsAbleToRide = False
 			Exit Function
 			
 CheckNecessarySkill: 
 			
-			'Invalid_string_refer_to_original_code
+			'•K—v‹Z”\••s•K—v‹Z”\‚ğƒ`ƒFƒbƒN
 			
-			'Invalid_string_refer_to_original_code
-			If Not .IsFeatureAvailable("Invalid_string_refer_to_original_code") And Not .IsFeatureAvailable("Invalid_string_refer_to_original_code") Then
+			'—¼”\—Í‚ğ‚Á‚Ä‚¢‚È‚¢ê‡‚Íƒ`ƒFƒbƒN•s—v
+			If Not .IsFeatureAvailable("•K—v‹Z”\") And Not .IsFeatureAvailable("•s•K—v‹Z”\") Then
 				Exit Function
 			End If
 			
 			For i = 1 To .CountFeature
-				If .Feature(i) = "Invalid_string_refer_to_original_code" Then
+				If .Feature(i) = "•K—v‹Z”\" Then
 					If Not .IsNecessarySkillSatisfied(.FeatureData(i), Me) Then
 						IsAbleToRide = False
 						Exit Function
 					End If
-				ElseIf .Feature(i) = "Invalid_string_refer_to_original_code" Then 
+				ElseIf .Feature(i) = "•s•K—v‹Z”\" Then 
 					If .IsNecessarySkillSatisfied(.FeatureData(i), Me) Then
 						IsAbleToRide = False
 						Exit Function
@@ -3175,9 +3028,9 @@ CheckNecessarySkill:
 	End Function
 	
 	
-	'Invalid_string_refer_to_original_code
+	' === ˆê’†’fŠÖ˜Aˆ— ===
 	
-	'Invalid_string_refer_to_original_code
+	'ˆê’†’f—pƒf[ƒ^‚ğƒtƒ@ƒCƒ‹‚ÉƒZ[ƒu‚·‚é
 	Public Sub Dump()
 		WriteLine(SaveDataFileNumber, Name, ID, Party)
 		WriteLine(SaveDataFileNumber, Level, Exp)
@@ -3190,7 +3043,7 @@ CheckNecessarySkill:
 		End If
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'ˆê’†’f—pƒf[ƒ^‚ğƒtƒ@ƒCƒ‹‚©‚çƒ[ƒh‚·‚é
 	Public Sub Restore()
 		Dim sbuf As String
 		Dim ibuf As Short
@@ -3230,7 +3083,7 @@ CheckNecessarySkill:
 		sbuf = LineInput(SaveDataFileNumber)
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'ˆê’†’f—pƒf[ƒ^‚ÌƒŠƒ“ƒNî•ñ‚ğƒtƒ@ƒCƒ‹‚©‚çƒ[ƒh‚·‚é
 	Public Sub RestoreLinkInfo()
 		Dim sbuf As String
 		Dim ibuf As Short
@@ -3252,7 +3105,7 @@ CheckNecessarySkill:
 		Unit_Renamed = UList.Item(sbuf)
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'ˆê’†’f—pƒf[ƒ^‚Ìƒpƒ‰ƒ[ƒ^î•ñ‚ğƒtƒ@ƒCƒ‹‚©‚çƒ[ƒh‚·‚é
 	Public Sub RestoreParameter()
 		Dim sbuf As String
 		Dim ibuf As Short
@@ -3279,16 +3132,16 @@ CheckNecessarySkill:
 	End Sub
 	
 	
-	'Invalid_string_refer_to_original_code
+	' === ‚»‚Ì‘¼ ===
 	
-	'å…¨å›å¾©
+	'‘S‰ñ•œ
 	Public Sub FullRecover()
-		'é—˜äº‰æœ¬èƒ½ã«ã‚ˆã£ã¦åˆæœŸæ°—åŠ›ã¯å¤‰åŒ–ã™ã‚‹
-		If IsSkillAvailable("é—˜äº‰æœ¬èƒ½") Then
+		'“¬‘ˆ–{”\‚É‚æ‚Á‚Ä‰Šú‹C—Í‚Í•Ï‰»‚·‚é
+		If IsSkillAvailable("“¬‘ˆ–{”\") Then
 			If MinMorale > 100 Then
-				SetMorale(MinMorale + 5 * SkillLevel("é—˜äº‰æœ¬èƒ½"))
+				SetMorale(MinMorale + 5 * SkillLevel("“¬‘ˆ–{”\"))
 			Else
-				SetMorale(100 + 5 * SkillLevel("é—˜äº‰æœ¬èƒ½"))
+				SetMorale(100 + 5 * SkillLevel("“¬‘ˆ–{”\"))
 			End If
 		Else
 			SetMorale(100)
@@ -3298,62 +3151,57 @@ CheckNecessarySkill:
 		Plana = MaxPlana
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'“¯’²—¦
 	Public Function SynchroRate() As Short
 		Dim lv As Short
 		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		Exit Function
-		'End If
+		If Not IsSkillAvailable("“¯’²—¦") Then
+			Exit Function
+		End If
 		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+		'“¯’²—¦Šî–{’l
+		SynchroRate = SkillLevel("“¯’²—¦")
 		
-		'Invalid_string_refer_to_original_code
+		'ƒŒƒxƒ‹‚É‚æ‚é‘‰Á•ª
 		lv = MinLng(Level, 100)
-		If IsSkillAvailable("Invalid_string_refer_to_original_code") Then
-			SynchroRate = SynchroRate + lv * (10 + SkillLevel("Invalid_string_refer_to_original_code")) \ 10
+		If IsSkillAvailable("“¯’²—¦¬’·") Then
+			SynchroRate = SynchroRate + lv * (10 + SkillLevel("“¯’²—¦¬’·")) \ 10
 		Else
 			SynchroRate = SynchroRate + lv
 		End If
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'wŠö”ÍˆÍ
 	Public Function CommandRange() As Short
-		'Invalid_string_refer_to_original_code
-		If Not IsSkillAvailable("Invalid_string_refer_to_original_code") Then
+		'wŠö”\—Í‚ğ‚Á‚Ä‚¢‚È‚¯‚ê‚Î”ÍˆÍ‚Í0
+		If Not IsSkillAvailable("wŠö") Then
 			CommandRange = 0
 			Exit Function
 		End If
 		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		'UPGRADE_WARNING: CommandRange ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		'Case CStr(0 To 6)
-			'CommandRange = 2
-			''UPGRADE_WARNING: CommandRange ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-			'Case CStr(7 To 9)
-				'CommandRange = 3
-				''UPGRADE_WARNING: CommandRange ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-				'Case CStr(10 To 12)
-					'CommandRange = 4
-					''UPGRADE_WARNING: CommandRange ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
+		'wŠö”\—Í‚ğ‚Á‚Ä‚¢‚éê‡‚ÍŠK‹‰ƒŒƒxƒ‹‚ÉˆË‘¶
+		Select Case SkillLevel("ŠK‹‰")
+			Case 0 To 6
+				CommandRange = 2
+			Case 7 To 9
+				CommandRange = 3
+			Case 10 To 12
+				CommandRange = 4
+			Case Else
+				CommandRange = 5
+		End Select
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	's“®Œˆ’è‚É—p‚¢‚ç‚ê‚éí“¬”»’f—Í
 	Public Function TacticalTechnique0() As Short
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+		TacticalTechnique0 = TechniqueBase - Level + 10 * SkillLevel("íp")
 	End Function
 	
 	Public Function TacticalTechnique() As Short
-		'Invalid_string_refer_to_original_code
+		'³í‚È”»’f”\—Í‚ª‚ ‚éH
 		If Not Unit_Renamed Is Nothing Then
 			With Unit_Renamed
-				If .IsConditionSatisfied("æ··ä¹±") Or .IsConditionSatisfied("æš´èµ°") Or .IsConditionSatisfied("ç‹‚æˆ¦å£«") Then
+				If .IsConditionSatisfied("¬—") Or .IsConditionSatisfied("–\‘–") Or .IsConditionSatisfied("‹¶ím") Then
 					Exit Function
 				End If
 			End With
@@ -3362,20 +3210,19 @@ CheckNecessarySkill:
 		TacticalTechnique = TacticalTechnique0
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'ƒCƒxƒ“ƒgƒRƒ}ƒ“ƒh SetRelation ‚Åİ’è‚µ‚½’l‚ğ•Ô‚·
 	Public Function Relation(ByRef t As Pilot) As Short
-		Relation = GetValueAsLong("Invalid_string_refer_to_original_code" & Name & ":" & t.Name)
+		Relation = GetValueAsLong("ŠÖŒW:" & Name & ":" & t.Name)
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'ËŒ‚”\—Í‚ªu–‚—Ív‚Æ•\¦‚³‚ê‚é‚©‚Ç‚¤‚©
 	Public Function HasMana() As Boolean
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		HasMana = True
-		Exit Function
-		'End If
+		If IsSkillAvailable("p") Or IsSkillAvailable("–‚—ÍŠ—L") Then
+			HasMana = True
+			Exit Function
+		End If
 		
-		If IsOptionDefined("é­”åŠ›ä½¿ç”¨") Then
+		If IsOptionDefined("–‚—Íg—p") Then
 			HasMana = True
 			Exit Function
 		End If

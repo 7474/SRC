@@ -1,8 +1,8 @@
 VERSION 5.00
 Begin VB.Form frmConfiguration 
    BackColor       =   &H00C0C0C0&
-   BorderStyle     =   3  'å›ºå®šï¾€ï¾ï½²ï½±ï¾›ï½¸ï¾
-   Caption         =   "è¨­å®šå¤‰æ›´"
+   BorderStyle     =   3  'ŒÅ’èÀŞ²±Û¸Ş
+   Caption         =   "İ’è•ÏX"
    ClientHeight    =   6075
    ClientLeft      =   45
    ClientTop       =   435
@@ -15,10 +15,10 @@ Begin VB.Form frmConfiguration
    ScaleHeight     =   6075
    ScaleWidth      =   5190
    ShowInTaskbar   =   0   'False
-   StartUpPosition =   3  'Windows ã®æ—¢å®šå€¤
+   StartUpPosition =   3  'Windows ‚ÌŠù’è’l
    Begin VB.CheckBox chkExtendedAnimation 
       BackColor       =   &H00C0C0C0&
-      Caption         =   "æˆ¦é—˜ã‚¢ãƒ‹ãƒ¡ã®æ‹¡å¼µæ©Ÿèƒ½ã‚’ä½¿ç”¨ã™ã‚‹"
+      Caption         =   "í“¬ƒAƒjƒ‚ÌŠg’£‹@”\‚ğg—p‚·‚é"
       ForeColor       =   &H00000000&
       Height          =   495
       Left            =   720
@@ -28,7 +28,7 @@ Begin VB.Form frmConfiguration
    End
    Begin VB.CheckBox chkMoveAnimation 
       BackColor       =   &H00C0C0C0&
-      Caption         =   "ç§»å‹•ã‚¢ãƒ‹ãƒ¡ã‚’è¡¨ç¤ºã™ã‚‹"
+      Caption         =   "ˆÚ“®ƒAƒjƒ‚ğ•\¦‚·‚é"
       ForeColor       =   &H00000000&
       Height          =   375
       Left            =   480
@@ -38,7 +38,7 @@ Begin VB.Form frmConfiguration
    End
    Begin VB.CheckBox chkWeaponAnimation 
       BackColor       =   &H00C0C0C0&
-      Caption         =   "æ­¦å™¨æº–å‚™ã‚¢ãƒ‹ãƒ¡ã‚’è‡ªå‹•é¸æŠè¡¨ç¤ºã™ã‚‹"
+      Caption         =   "•Ší€”õƒAƒjƒ‚ğ©“®‘I‘ğ•\¦‚·‚é"
       ForeColor       =   &H00000000&
       Height          =   495
       Left            =   720
@@ -47,10 +47,10 @@ Begin VB.Form frmConfiguration
       Width           =   3495
    End
    Begin VB.TextBox txtMP3Volume 
-      Alignment       =   2  'ä¸­å¤®æƒãˆ
+      Alignment       =   2  '’†‰›‘µ‚¦
       BackColor       =   &H00FFFFFF&
       BeginProperty Font 
-         Name            =   "ï¼­ï¼³ ï¼°ã‚´ã‚·ãƒƒã‚¯"
+         Name            =   "‚l‚r ‚oƒSƒVƒbƒN"
          Size            =   9.75
          Charset         =   128
          Weight          =   400
@@ -87,7 +87,7 @@ Begin VB.Form frmConfiguration
    End
    Begin VB.CheckBox chkUseDirectMusic 
       BackColor       =   &H00C0C0C0&
-      Caption         =   "MIDIæ¼”å¥ã«DirectMusicã‚’ä½¿ç”¨ã™ã‚‹ (è¦å†èµ·å‹•)"
+      Caption         =   "MIDI‰‰‘t‚ÉDirectMusic‚ğg—p‚·‚é (—vÄ‹N“®)"
       ForeColor       =   &H00000000&
       Height          =   375
       Left            =   480
@@ -96,30 +96,30 @@ Begin VB.Form frmConfiguration
       Width           =   4215
    End
    Begin VB.CommandButton cmdCancel 
-      Appearance      =   0  'ï¾Œï¾—ï½¯ï¾„
+      Appearance      =   0  'Ì×¯Ä
       BackColor       =   &H00C0C0C0&
-      Caption         =   "ã‚­ãƒ£ãƒ³ã‚»ãƒ«"
+      Caption         =   "ƒLƒƒƒ“ƒZƒ‹"
       Height          =   375
       Left            =   3240
-      Style           =   1  'ï½¸ï¾ï¾—ï¾Œï½¨ï½¯ï½¸ï½½
+      Style           =   1  '¸Ş×Ì¨¯¸½
       TabIndex        =   14
       Top             =   5400
       Width           =   1455
    End
    Begin VB.CommandButton cmdOK 
-      Appearance      =   0  'ï¾Œï¾—ï½¯ï¾„
+      Appearance      =   0  'Ì×¯Ä
       BackColor       =   &H00C0C0C0&
       Caption         =   "OK"
       Height          =   375
       Left            =   1680
-      Style           =   1  'ï½¸ï¾ï¾—ï¾Œï½¨ï½¯ï½¸ï½½
+      Style           =   1  '¸Ş×Ì¨¯¸½
       TabIndex        =   13
       Top             =   5400
       Width           =   1455
    End
    Begin VB.CheckBox chkKeepEnemyBGM 
       BackColor       =   &H00C0C0C0&
-      Caption         =   "æ•µãƒ•ã‚§ã‚¤ã‚ºä¸­ã«ï¼¢ï¼§ï¼­ã‚’å¤‰æ›´ã—ãªã„"
+      Caption         =   "“GƒtƒFƒCƒY’†‚É‚a‚f‚l‚ğ•ÏX‚µ‚È‚¢"
       ForeColor       =   &H00000000&
       Height          =   375
       Left            =   480
@@ -138,7 +138,7 @@ Begin VB.Form frmConfiguration
    End
    Begin VB.CheckBox chkAutoMoveCursor 
       BackColor       =   &H00C0C0C0&
-      Caption         =   "ãƒã‚¦ã‚¹ã‚«ãƒ¼ã‚½ãƒ«ã‚’è‡ªå‹•çš„ã«ç§»å‹•ã™ã‚‹"
+      Caption         =   "ƒ}ƒEƒXƒJ[ƒ\ƒ‹‚ğ©“®“I‚ÉˆÚ“®‚·‚é"
       ForeColor       =   &H00000000&
       Height          =   375
       Left            =   480
@@ -148,7 +148,7 @@ Begin VB.Form frmConfiguration
    End
    Begin VB.CheckBox chkShowSquareLine 
       BackColor       =   &H00C0C0C0&
-      Caption         =   "ãƒã‚¹ç›®ã‚’è¡¨ç¤ºã™ã‚‹ (è¦å†èµ·å‹•)"
+      Caption         =   "ƒ}ƒX–Ú‚ğ•\¦‚·‚é (—vÄ‹N“®)"
       ForeColor       =   &H00000000&
       Height          =   375
       Left            =   480
@@ -158,7 +158,7 @@ Begin VB.Form frmConfiguration
    End
    Begin VB.CheckBox chkShowTurn 
       BackColor       =   &H00C0C0C0&
-      Caption         =   "å‘³æ–¹ãƒ•ã‚§ã‚¤ã‚ºé–‹å§‹æ™‚ã«ã‚¿ãƒ¼ãƒ³è¡¨ç¤ºã‚’è¡Œã†"
+      Caption         =   "–¡•ûƒtƒFƒCƒYŠJn‚Éƒ^[ƒ“•\¦‚ğs‚¤"
       ForeColor       =   &H00000000&
       Height          =   375
       Left            =   480
@@ -168,7 +168,7 @@ Begin VB.Form frmConfiguration
    End
    Begin VB.CheckBox chkSpecialPowerAnimation 
       BackColor       =   &H00C0C0C0&
-      Caption         =   "ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼ã‚¢ãƒ‹ãƒ¡ã‚’è¡¨ç¤ºã™ã‚‹"
+      Caption         =   "ƒXƒyƒVƒƒƒ‹ƒpƒ[ƒAƒjƒ‚ğ•\¦‚·‚é"
       ForeColor       =   &H00000000&
       Height          =   375
       Left            =   480
@@ -178,7 +178,7 @@ Begin VB.Form frmConfiguration
    End
    Begin VB.CheckBox chkBattleAnimation 
       BackColor       =   &H00C0C0C0&
-      Caption         =   "æˆ¦é—˜ã‚¢ãƒ‹ãƒ¡ã‚’è¡¨ç¤ºã™ã‚‹"
+      Caption         =   "í“¬ƒAƒjƒ‚ğ•\¦‚·‚é"
       ForeColor       =   &H00000000&
       Height          =   375
       Left            =   480
@@ -187,8 +187,8 @@ Begin VB.Form frmConfiguration
       Width           =   3735
    End
    Begin VB.Label labMP3Volume 
-      BackStyle       =   0  'é€æ˜
-      Caption         =   "MP3éŸ³é‡"
+      BackStyle       =   0  '“§–¾
+      Caption         =   "MP3‰¹—Ê"
       ForeColor       =   &H00000000&
       Height          =   255
       Left            =   495
@@ -197,8 +197,8 @@ Begin VB.Form frmConfiguration
       Width           =   735
    End
    Begin VB.Label labMidiReset 
-      BackStyle       =   0  'é€æ˜
-      Caption         =   "MIDIéŸ³æºãƒªã‚»ãƒƒãƒˆã®ç¨®é¡"
+      BackStyle       =   0  '“§–¾
+      Caption         =   "MIDI‰¹Œ¹ƒŠƒZƒbƒg‚Ìí—Ş"
       ForeColor       =   &H00000000&
       Height          =   255
       Left            =   495
@@ -207,10 +207,10 @@ Begin VB.Form frmConfiguration
       Width           =   2880
    End
    Begin VB.Label labMessageSpeed 
-      BackStyle       =   0  'é€æ˜
-      Caption         =   "ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚¹ãƒ”ãƒ¼ãƒ‰"
+      BackStyle       =   0  '“§–¾
+      Caption         =   "ƒƒbƒZ[ƒWƒXƒs[ƒh"
       BeginProperty Font 
-         Name            =   "ï¼­ï¼³ ï¼°ã‚´ã‚·ãƒƒã‚¯"
+         Name            =   "‚l‚r ‚oƒSƒVƒbƒN"
          Size            =   9.75
          Charset         =   128
          Weight          =   400
@@ -233,19 +233,19 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 
 ' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯ãƒ•ãƒªãƒ¼ã‚½ãƒ•ãƒˆã§ã‚ã‚Šã€ç„¡ä¿è¨¼ã§ã™ã€‚
-' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯GNU General Public License(Ver.3ã¾ãŸã¯ãã‚Œä»¥é™)ãŒå®šã‚ã‚‹æ¡ä»¶ã®ä¸‹ã§
-' å†é ’å¸ƒã¾ãŸã¯æ”¹å¤‰ã™ã‚‹ã“ã¨ãŒã§ãã¾ã™ã€‚
+' –{ƒvƒƒOƒ‰ƒ€‚ÍƒtƒŠ[ƒ\ƒtƒg‚Å‚ ‚èA–³•ÛØ‚Å‚·B
+' –{ƒvƒƒOƒ‰ƒ€‚ÍGNU General Public License(Ver.3‚Ü‚½‚Í‚»‚êˆÈ~)‚ª’è‚ß‚éğŒ‚Ì‰º‚Å
+' Ä”Ğ•z‚Ü‚½‚Í‰ü•Ï‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B
 
-'ãƒãƒƒãƒ—ã‚³ãƒãƒ³ãƒ‰ã€Œè¨­å®šå¤‰æ›´ã€ç”¨ãƒ€ã‚¤ã‚¢ãƒ­ã‚°
+'ƒ}ƒbƒvƒRƒ}ƒ“ƒhuİ’è•ÏXv—pƒ_ƒCƒAƒƒO
 
 
-'MP3Volumeã‚’è¨˜éŒ²
+'MP3Volume‚ğ‹L˜^
 Private SavedMP3Volume As Integer
 
-'æˆ¦é—˜ã‚¢ãƒ‹ãƒ¡Onãƒ»Offåˆ‡ã‚Šæ›¿ãˆ
+'í“¬ƒAƒjƒOnEOffØ‚è‘Ö‚¦
 Private Sub chkBattleAnimation_Click()
-    'æˆ¦é—˜ã‚¢ãƒ‹ãƒ¡ã‚’è¡¨ç¤ºã—ãªã„å ´åˆã¯æ‹¡å¼µæˆ¦é—˜ã‚¢ãƒ‹ãƒ¡ã€æ­¦å™¨ã‚¢ãƒ‹ãƒ¡é¸æŠã®é …ç›®ã‚’é¸æŠä¸èƒ½ã«ã™ã‚‹
+    'í“¬ƒAƒjƒ‚ğ•\¦‚µ‚È‚¢ê‡‚ÍŠg’£í“¬ƒAƒjƒA•ŠíƒAƒjƒ‘I‘ğ‚Ì€–Ú‚ğ‘I‘ğ•s”\‚É‚·‚é
     If chkBattleAnimation.Value = 1 Then
         chkExtendedAnimation.Enabled = True
         chkWeaponAnimation.Enabled = True
@@ -255,40 +255,40 @@ Private Sub chkBattleAnimation_Click()
     End If
 End Sub
 
-'ã‚­ãƒ£ãƒ³ã‚»ãƒ«ãƒœã‚¿ãƒ³ãŒæŠ¼ã•ã‚ŒãŸ
+'ƒLƒƒƒ“ƒZƒ‹ƒ{ƒ^ƒ“‚ª‰Ÿ‚³‚ê‚½
 Private Sub cmdCancel_Click()
-    'ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã‚’é–‰ã˜ã‚‹
+    'ƒ_ƒCƒAƒƒO‚ğ•Â‚¶‚é
     Hide
     
-    'MP3éŸ³é‡ã®ã¿ãã®å ´ã§å¤‰æ›´ã—ã¦ã„ã‚‹ã®ã§å…ƒã«æˆ»ã™å¿…è¦ãŒã‚ã‚‹
+    'MP3‰¹—Ê‚Ì‚İ‚»‚Ìê‚Å•ÏX‚µ‚Ä‚¢‚é‚Ì‚ÅŒ³‚É–ß‚·•K—v‚ª‚ ‚é
     MP3Volume = SavedMP3Volume
     If IsMP3Supported Then
         Call vbmp3_setVolume(MP3Volume, MP3Volume)
     End If
 End Sub
 
-'OKãƒœã‚¿ãƒ³ãŒæŠ¼ã•ã‚ŒãŸ
+'OKƒ{ƒ^ƒ“‚ª‰Ÿ‚³‚ê‚½
 Private Sub cmdOK_Click()
-    'å„ç¨®è¨­å®šã‚’å¤‰æ›´
+    'Šeíİ’è‚ğ•ÏX
     
-    'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚¹ãƒ”ãƒ¼ãƒ‰
+    'ƒƒbƒZ[ƒWƒXƒs[ƒh
     Select Case cboMessageSpeed.Text
-        Case "ç¥ã®é ˜åŸŸ"
+        Case "_‚Ì—Ìˆæ"
             MessageWait = 0
-        Case "è¶…é«˜é€Ÿ"
+        Case "’´‚‘¬"
             MessageWait = 200
-        Case "é«˜é€Ÿ"
+        Case "‚‘¬"
             MessageWait = 400
-        Case "æ™®é€š"
+        Case "•’Ê"
             MessageWait = 700
-        Case "ä½é€Ÿ"
+        Case "’á‘¬"
             MessageWait = 1000
-        Case "æ‰‹å‹•é€ã‚Š"
+        Case "è“®‘—‚è"
             MessageWait = 10000000
     End Select
     WriteIni "Option", "MessageWait", Format$(MessageWait)
     
-    'æˆ¦é—˜ã‚¢ãƒ‹ãƒ¡è¡¨ç¤º
+    'í“¬ƒAƒjƒ•\¦
     If chkBattleAnimation.Value = 1 Then
         BattleAnimation = True
         WriteIni "Option", "BattleAnimation", "On"
@@ -297,7 +297,7 @@ Private Sub cmdOK_Click()
         WriteIni "Option", "BattleAnimation", "Off"
     End If
     
-    'æ‹¡å¤§æˆ¦é—˜ã‚¢ãƒ‹ãƒ¡è¡¨ç¤º
+    'Šg‘åí“¬ƒAƒjƒ•\¦
     If chkExtendedAnimation.Value = 1 Then
         ExtendedAnimation = True
         WriteIni "Option", "ExtendedAnimation", "On"
@@ -306,7 +306,7 @@ Private Sub cmdOK_Click()
         WriteIni "Option", "Extendednimation", "Off"
     End If
     
-    'æ­¦å™¨æº–å‚™ã‚¢ãƒ‹ãƒ¡è¡¨ç¤º
+    '•Ší€”õƒAƒjƒ•\¦
     If chkWeaponAnimation.Value = 1 Then
         WeaponAnimation = True
         WriteIni "Option", "WeaponAnimation", "On"
@@ -315,7 +315,7 @@ Private Sub cmdOK_Click()
         WriteIni "Option", "WeaponAnimation", "Off"
     End If
     
-    'ç§»å‹•ã‚¢ãƒ‹ãƒ¡è¡¨ç¤º
+    'ˆÚ“®ƒAƒjƒ•\¦
     If chkMoveAnimation.Value = 1 Then
         MoveAnimation = True
         WriteIni "Option", "MoveAnimation", "On"
@@ -324,7 +324,7 @@ Private Sub cmdOK_Click()
         WriteIni "Option", "MoveAnimation", "Off"
     End If
     
-    'ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼ã‚¢ãƒ‹ãƒ¡è¡¨ç¤º
+    'ƒXƒyƒVƒƒƒ‹ƒpƒ[ƒAƒjƒ•\¦
     If chkSpecialPowerAnimation.Value = 1 Then
         SpecialPowerAnimation = True
         WriteIni "Option", "SpecialPowerAnimation", "On"
@@ -333,7 +333,7 @@ Private Sub cmdOK_Click()
         WriteIni "Option", "SpecialPowerAnimation", "Off"
     End If
     
-    'ãƒã‚¦ã‚¹ã‚«ãƒ¼ã‚½ãƒ«ã®è‡ªå‹•ç§»å‹•
+    'ƒ}ƒEƒXƒJ[ƒ\ƒ‹‚Ì©“®ˆÚ“®
     If chkAutoMoveCursor.Value Then
         AutoMoveCursor = True
         WriteIni "Option", "AutoMoveCursor", "On"
@@ -342,7 +342,7 @@ Private Sub cmdOK_Click()
         WriteIni "Option", "AutoMoveCursor", "Off"
     End If
     
-    'ãƒã‚¹ç›®ã®è¡¨ç¤º
+    'ƒ}ƒX–Ú‚Ì•\¦
     If chkShowSquareLine.Value Then
         ShowSquareLine = True
         WriteIni "Option", "Square", "On"
@@ -351,14 +351,14 @@ Private Sub cmdOK_Click()
         WriteIni "Option", "Square", "Off"
     End If
     
-    'å‘³æ–¹ãƒ•ã‚§ã‚¤ã‚ºé–‹å§‹æ™‚ã®ã‚¿ãƒ¼ãƒ³è¡¨ç¤º
+    '–¡•ûƒtƒFƒCƒYŠJn‚Ìƒ^[ƒ“•\¦
     If chkShowTurn.Value Then
         WriteIni "Option", "Turn", "On"
     Else
         WriteIni "Option", "Turn", "Off"
     End If
     
-    'æ•µãƒ•ã‚§ã‚¤ã‚ºä¸­ã«ï¼¢ï¼§ï¼­ã‚’å¤‰æ›´ã—ãªã„
+    '“GƒtƒFƒCƒY’†‚É‚a‚f‚l‚ğ•ÏX‚µ‚È‚¢
     If chkKeepEnemyBGM.Value Then
         KeepEnemyBGM = True
         WriteIni "Option", "KeepEnemyBGM", "On"
@@ -367,60 +367,60 @@ Private Sub cmdOK_Click()
         WriteIni "Option", "KeepEnemyBGM", "Off"
     End If
     
-    'MIDIæ¼”å¥ã«DirectMusicã‚’ä½¿ç”¨ã™ã‚‹
+    'MIDI‰‰‘t‚ÉDirectMusic‚ğg—p‚·‚é
     If chkUseDirectMusic.Value Then
         WriteIni "Option", "UseDirectMusic", "On"
     Else
         WriteIni "Option", "UseDirectMusic", "Off"
     End If
     
-    'MIDIéŸ³æºãƒªã‚»ãƒƒãƒˆã®ç¨®é¡
+    'MIDI‰¹Œ¹ƒŠƒZƒbƒg‚Ìí—Ş
     MidiResetType = cboMidiReset.Text
     WriteIni "Option", "MidiReset", cboMidiReset.Text
     
-    'MP3å†ç”ŸéŸ³é‡
+    'MP3Ä¶‰¹—Ê
     WriteIni "Option", "MP3Volume", Format$(MP3Volume)
     
-    'ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã‚’é–‰ã˜ã‚‹
+    'ƒ_ƒCƒAƒƒO‚ğ•Â‚¶‚é
     Hide
 End Sub
 
 Private Sub Form_Load()
-    'ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã‚’åˆæœŸåŒ–
+    'ƒ_ƒCƒAƒƒO‚ğ‰Šú‰»
     
-    'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚¹ãƒ”ãƒ¼ãƒ‰
-    cboMessageSpeed.AddItem "æ‰‹å‹•é€ã‚Š"
-    cboMessageSpeed.AddItem "ä½é€Ÿ"
-    cboMessageSpeed.AddItem "æ™®é€š"
-    cboMessageSpeed.AddItem "é«˜é€Ÿ"
-    cboMessageSpeed.AddItem "è¶…é«˜é€Ÿ"
-    cboMessageSpeed.AddItem "ç¥ã®é ˜åŸŸ"
+    'ƒƒbƒZ[ƒWƒXƒs[ƒh
+    cboMessageSpeed.AddItem "è“®‘—‚è"
+    cboMessageSpeed.AddItem "’á‘¬"
+    cboMessageSpeed.AddItem "•’Ê"
+    cboMessageSpeed.AddItem "‚‘¬"
+    cboMessageSpeed.AddItem "’´‚‘¬"
+    cboMessageSpeed.AddItem "_‚Ì—Ìˆæ"
     Select Case MessageWait
         Case 0
-            cboMessageSpeed.Text = "ç¥ã®é ˜åŸŸ"
+            cboMessageSpeed.Text = "_‚Ì—Ìˆæ"
         Case 200
-            cboMessageSpeed.Text = "è¶…é«˜é€Ÿ"
+            cboMessageSpeed.Text = "’´‚‘¬"
         Case 400
-            cboMessageSpeed.Text = "é«˜é€Ÿ"
+            cboMessageSpeed.Text = "‚‘¬"
         Case 700
-            cboMessageSpeed.Text = "æ™®é€š"
+            cboMessageSpeed.Text = "•’Ê"
         Case 1000
-            cboMessageSpeed.Text = "ä½é€Ÿ"
+            cboMessageSpeed.Text = "’á‘¬"
         Case 10000000
-            cboMessageSpeed.Text = "æ‰‹å‹•é€ã‚Š"
+            cboMessageSpeed.Text = "è“®‘—‚è"
     End Select
     
-    'æˆ¦é—˜ã‚¢ãƒ‹ãƒ¡è¡¨ç¤º
+    'í“¬ƒAƒjƒ•\¦
     If BattleAnimation Then
         chkBattleAnimation.Value = 1
     Else
         chkBattleAnimation.Value = 0
     End If
-    If Not FileExists(AppPath & "Lib\æ±ç”¨æˆ¦é—˜ã‚¢ãƒ‹ãƒ¡\include.eve") Then
-        chkBattleAnimation.Value = 2 'ç„¡åŠ¹
+    If Not FileExists(AppPath & "Lib\”Ä—pí“¬ƒAƒjƒ\include.eve") Then
+        chkBattleAnimation.Value = 2 '–³Œø
     End If
     
-    'æ‹¡å¼µæˆ¦é—˜ã‚¢ãƒ‹ãƒ¡è¡¨ç¤º
+    'Šg’£í“¬ƒAƒjƒ•\¦
     If ExtendedAnimation Then
         chkExtendedAnimation.Value = 1
     Else
@@ -432,7 +432,7 @@ Private Sub Form_Load()
         chkExtendedAnimation.Enabled = False
     End If
     
-    'æ­¦å™¨æº–å‚™ã‚¢ãƒ‹ãƒ¡è¡¨ç¤º
+    '•Ší€”õƒAƒjƒ•\¦
     If WeaponAnimation Then
         chkWeaponAnimation.Value = 1
     Else
@@ -444,68 +444,68 @@ Private Sub Form_Load()
         chkWeaponAnimation.Enabled = False
     End If
     
-    'ç§»å‹•ã‚¢ãƒ‹ãƒ¡è¡¨ç¤º
+    'ˆÚ“®ƒAƒjƒ•\¦
     If MoveAnimation Then
         chkMoveAnimation.Value = 1
     Else
         chkMoveAnimation.Value = 0
     End If
     
-    'ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼ã‚¢ãƒ‹ãƒ¡è¡¨ç¤º
+    'ƒXƒyƒVƒƒƒ‹ƒpƒ[ƒAƒjƒ•\¦
     If SpecialPowerAnimation Then
         chkSpecialPowerAnimation.Value = 1
     Else
         chkSpecialPowerAnimation.Value = 0
     End If
     
-    'ãƒã‚¦ã‚¹ã‚«ãƒ¼ã‚½ãƒ«ã®è‡ªå‹•ç§»å‹•
+    'ƒ}ƒEƒXƒJ[ƒ\ƒ‹‚Ì©“®ˆÚ“®
     If AutoMoveCursor Then
         chkAutoMoveCursor.Value = 1
     Else
         chkAutoMoveCursor.Value = 0
     End If
     
-    'ãƒã‚¹ç›®ã®è¡¨ç¤º
+    'ƒ}ƒX–Ú‚Ì•\¦
     If ShowSquareLine Then
         chkShowSquareLine.Value = 1
     Else
         chkShowSquareLine.Value = 0
     End If
     
-    'å‘³æ–¹ãƒ•ã‚§ã‚¤ã‚ºé–‹å§‹æ™‚ã®ã‚¿ãƒ¼ãƒ³è¡¨ç¤º
+    '–¡•ûƒtƒFƒCƒYŠJn‚Ìƒ^[ƒ“•\¦
     If LCase$(ReadIni("Option", "Turn")) = "on" Then
         chkShowTurn.Value = 1
     Else
         chkShowTurn.Value = 0
     End If
     
-    'æ•µãƒ•ã‚§ã‚¤ã‚ºä¸­ã«ï¼¢ï¼§ï¼­ã‚’å¤‰æ›´ã—ãªã„
+    '“GƒtƒFƒCƒY’†‚É‚a‚f‚l‚ğ•ÏX‚µ‚È‚¢
     If KeepEnemyBGM Then
         chkKeepEnemyBGM.Value = 1
     Else
         chkKeepEnemyBGM.Value = 0
     End If
     
-    'MIDIæ¼”å¥ã«DirectMusicã‚’ä½¿ç”¨ã™ã‚‹
+    'MIDI‰‰‘t‚ÉDirectMusic‚ğg—p‚·‚é
     If LCase$(ReadIni("Option", "UseDirectMusic")) = "on" Then
         chkUseDirectMusic.Value = 1
     Else
         chkUseDirectMusic.Value = 0
     End If
     
-    'MIDIéŸ³æºãƒªã‚»ãƒƒãƒˆã®ç¨®é¡
+    'MIDI‰¹Œ¹ƒŠƒZƒbƒg‚Ìí—Ş
     cboMidiReset.AddItem "None"
     cboMidiReset.AddItem "GM"
     cboMidiReset.AddItem "GS"
     cboMidiReset.AddItem "XG"
     cboMidiReset.Text = MidiResetType
     
-    'MP3éŸ³é‡
+    'MP3‰¹—Ê
     SavedMP3Volume = MP3Volume
     txtMP3Volume = Format$(MP3Volume)
 End Sub
 
-'MP3éŸ³é‡å¤‰æ›´
+'MP3‰¹—Ê•ÏX
 Private Sub hscMP3Volume_Change()
     MP3Volume = hscMP3Volume.Value
     txtMP3Volume.Text = Format$(MP3Volume)

@@ -46,8 +46,8 @@
 		Me.WindowState = System.Windows.Forms.FormWindowState.Normal
 		Me.Name = "frmTelop"
 		Me.Label1.TextAlign = System.Drawing.ContentAlignment.TopCenter
-		Me.Label1.Text = "繧ｷ繝翫Μ繧ｪ繧ｿ繧､繝医Ν"
-		Me.Label1.Font = New System.Drawing.Font("Invalid_string_refer_to_original_code", 15.75!, System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Italic Or System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
+		Me.Label1.Text = "シナリオタイトル"
+		Me.Label1.Font = New System.Drawing.Font("ＭＳ Ｐ明朝", 15.75!, System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Italic Or System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
 		Me.Label1.ForeColor = System.Drawing.Color.Black
 		Me.Label1.Size = New System.Drawing.Size(357, 57)
 		Me.Label1.Location = New System.Drawing.Point(8, 16)

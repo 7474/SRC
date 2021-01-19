@@ -3,47 +3,47 @@ Option Explicit On
 Module Map
 	
 	' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
+	' 本プログラムはフリーソフトであり、無保証です。
+	' 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
+	' 再頒布または改変することができます。
 	
-	'Invalid_string_refer_to_original_code
+	'マップデータに関する各種処理を行うモジュール
 	
-	'Invalid_string_refer_to_original_code
+	'管理可能な地形データの総数
 	Public Const MAX_TERRAIN_DATA_NUM As Short = 2000
 	
 	'ADD START 240a
-	'Invalid_string_refer_to_original_code
+	'レイヤー無しの固定値
 	Public Const NO_LAYER_NUM As Short = 10000
 	'ADD  END  240a
 	
-	'Invalid_string_refer_to_original_code
+	'マップファイル名
 	Public MapFileName As String
-	'Invalid_string_refer_to_original_code
+	'マップの横サイズ
 	Public MapWidth As Short
-	'Invalid_string_refer_to_original_code
+	'マップの縦サイズ
 	Public MapHeight As Short
 	
-	'Invalid_string_refer_to_original_code
+	'マップの描画モード
 	Public MapDrawMode As String
-	'繝輔ぅ繝ｫ繧ｿ濶ｲ
+	'フィルタ色
 	Public MapDrawFilterColor As Integer
-	'繝輔ぅ繝ｫ繧ｿ縺ｮ騾城℃蠎ｦ
+	'フィルタの透過度
 	Public MapDrawFilterTransPercent As Double
-	'Invalid_string_refer_to_original_code
+	'フィルタやSepiaコマンドなどでユニットの色を変更するか
 	Public MapDrawIsMapOnly As Boolean
 	
-	'Invalid_string_refer_to_original_code
+	'マップに画像の書き込みがなされたか
 	Public IsMapDirty As Boolean
 	
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
+	'マップデータを記録する配列
+	' MapData(*,*,0)は地形の種類
+	' MapData(*,*,1)はビットマップの番号
 	'ADD START 240a
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
+	'2～3はマップ上層レイヤーデータ
+	' MapData(*,*,2)は地形の種類。未設定はNO_LAYER_NUM
+	' MapData(*,*,3)はビットマップの番号。未設定はNO_LAYER_NUM
+	' MapData(*,*,4)はマスのデータタイプ。1:下層 2:上層 3:上層データのみ 4:上層見た目のみ
 	'ADD  END  240a
 	Public MapData() As Short
 	
@@ -63,28 +63,28 @@ Module Map
 	End Enum
 	'ADD  END  240a
 	
-	'Invalid_string_refer_to_original_code
+	'マップの画像ファイルの格納形式
 	Enum MapImageFileType
-		OldMapImageFileType 'Invalid_string_refer_to_original_code
-		FourFiguresMapImageFileType 'Invalid_string_refer_to_original_code
-		SeparateDirMapImageFileType 'Invalid_string_refer_to_original_code
+		OldMapImageFileType '旧形式 (plain0.bmp)
+		FourFiguresMapImageFileType '４桁の数値 (plain0000.bmp)
+		SeparateDirMapImageFileType 'ディレクトリ分割 (plain\plain0000.bmp)
 	End Enum
 	Public MapImageFileTypeData() As MapImageFileType
 	
-	'Invalid_string_refer_to_original_code
+	'マップ上に存在するユニットを記録する配列
 	Public MapDataForUnit() As Unit
 	
-	'Invalid_string_refer_to_original_code
+	'マップ上でターゲットを選択する際のマスク情報
 	Public MaskData() As Boolean
 	
-	'Invalid_string_refer_to_original_code
+	'現在地点からその地点まで移動するのに必要な移動力の配列
 	Public TotalMoveCost() As Integer
 	
-	'Invalid_string_refer_to_original_code
+	'各地点がＺＯＣの影響下にあるかどうか
 	Public PointInZOC() As Integer
 	
 	
-	'Invalid_string_refer_to_original_code
+	'地形情報テーブルを初期化
 	Public Sub InitMap()
 		Dim i, j As Short
 		
@@ -105,176 +105,174 @@ Module Map
 		Next 
 	End Sub
 	
-	'(X,Y)蝨ｰ轤ｹ縺ｮ蜻ｽ荳ｭ菫ｮ豁｣
+	'(X,Y)地点の命中修正
 	Public Function TerrainEffectForHit(ByVal X As Short, ByVal Y As Short) As Short
 		'MOD START 240a
 		'    TerrainEffectForHit = TDList.HitMod(MapData(X, Y, 0))
 		Select Case MapData(X, Y, MapDataIndex.BoxType)
 			Case BoxTypes.Under, BoxTypes.UpperBmpOnly
-				'Invalid_string_refer_to_original_code
+				'上層レイヤが無い場合と上層が画像情報しか持っていない場合は下層のデータを返す
 				TerrainEffectForHit = TDList.HitMod(MapData(X, Y, MapDataIndex.TerrainType))
 			Case Else
-				'Invalid_string_refer_to_original_code
+				'上層レイヤが両方持っている場合と情報のみ持っている場合は上層のデータを返す
 				TerrainEffectForHit = TDList.HitMod(MapData(X, Y, MapDataIndex.LayerType))
 		End Select
 		'MOD  END  240a
 	End Function
 	
-	'(X,Y)蝨ｰ轤ｹ縺ｮ繝繝｡繝ｼ繧ｸ菫ｮ豁｣
+	'(X,Y)地点のダメージ修正
 	Public Function TerrainEffectForDamage(ByVal X As Short, ByVal Y As Short) As Short
 		'MOD START 240a
 		'    TerrainEffectForDamage = TDList.DamageMod(MapData(X, Y, 0))
 		Select Case MapData(X, Y, MapDataIndex.BoxType)
 			Case BoxTypes.Under, BoxTypes.UpperBmpOnly
-				'Invalid_string_refer_to_original_code
+				'上層レイヤが無い場合と上層が画像情報しか持っていない場合は下層のデータを返す
 				TerrainEffectForDamage = TDList.DamageMod(MapData(X, Y, MapDataIndex.TerrainType))
 			Case Else
-				'Invalid_string_refer_to_original_code
+				'上層レイヤが両方持っている場合と情報のみ持っている場合は上層のデータを返す
 				TerrainEffectForDamage = TDList.DamageMod(MapData(X, Y, MapDataIndex.LayerType))
 		End Select
 		'MOD  END  240a
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'(X,Y)地点のＨＰ回復率
 	Public Function TerrainEffectForHPRecover(ByVal X As Short, ByVal Y As Short) As Short
 		'MOD START 240a
-		'Invalid_string_refer_to_original_code
+		'    TerrainEffectForHPRecover = 10 * TDList.FeatureLevel(MapData(X, Y, 0), "ＨＰ回復")
 		Select Case MapData(X, Y, MapDataIndex.BoxType)
 			Case BoxTypes.Under, BoxTypes.UpperBmpOnly
-				'Invalid_string_refer_to_original_code
-				TerrainEffectForHPRecover = 10 * TDList.FeatureLevel(MapData(X, Y, MapDataIndex.TerrainType), "Invalid_string_refer_to_original_code")
+				'上層レイヤが無い場合と上層が画像情報しか持っていない場合は下層のデータを返す
+				TerrainEffectForHPRecover = 10 * TDList.FeatureLevel(MapData(X, Y, MapDataIndex.TerrainType), "ＨＰ回復")
 			Case Else
-				'Invalid_string_refer_to_original_code
-				TerrainEffectForHPRecover = 10 * TDList.FeatureLevel(MapData(X, Y, MapDataIndex.LayerType), "Invalid_string_refer_to_original_code")
+				'上層レイヤが両方持っている場合と情報のみ持っている場合は上層のデータを返す
+				TerrainEffectForHPRecover = 10 * TDList.FeatureLevel(MapData(X, Y, MapDataIndex.LayerType), "ＨＰ回復")
 		End Select
 		'MOD  END  240a
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'(X,Y)地点のＥＮ回復率
 	Public Function TerrainEffectForENRecover(ByVal X As Short, ByVal Y As Short) As Short
 		'MOD START 240a
-		'Invalid_string_refer_to_original_code
+		'    TerrainEffectForENRecover = 10 * TDList.FeatureLevel(MapData(X, Y, 0), "ＥＮ回復")
 		Select Case MapData(X, Y, MapDataIndex.BoxType)
 			Case BoxTypes.Under, BoxTypes.UpperBmpOnly
-				'Invalid_string_refer_to_original_code
-				TerrainEffectForENRecover = 10 * TDList.FeatureLevel(MapData(X, Y, MapDataIndex.TerrainType), "Invalid_string_refer_to_original_code")
+				'上層レイヤが無い場合と上層が画像情報しか持っていない場合は下層のデータを返す
+				TerrainEffectForENRecover = 10 * TDList.FeatureLevel(MapData(X, Y, MapDataIndex.TerrainType), "ＥＮ回復")
 			Case Else
-				'Invalid_string_refer_to_original_code
-				TerrainEffectForENRecover = 10 * TDList.FeatureLevel(MapData(X, Y, MapDataIndex.LayerType), "Invalid_string_refer_to_original_code")
+				'上層レイヤが両方持っている場合と情報のみ持っている場合は上層のデータを返す
+				TerrainEffectForENRecover = 10 * TDList.FeatureLevel(MapData(X, Y, MapDataIndex.LayerType), "ＥＮ回復")
 		End Select
 		'MOD  END  240a
 	End Function
 	
-	'(X,Y)蝨ｰ轤ｹ縺ｮ蝨ｰ蠖｢蜷咲ｧｰ
+	'(X,Y)地点の地形名称
 	Public Function TerrainName(ByVal X As Short, ByVal Y As Short) As String
 		'MOD START 240a
 		'    TerrainName = TDList.Name(MapData(X, Y, 0))
 		Select Case MapData(X, Y, MapDataIndex.BoxType)
 			Case BoxTypes.Under, BoxTypes.UpperBmpOnly
-				'Invalid_string_refer_to_original_code
+				'上層レイヤが無い場合と上層が画像情報しか持っていない場合は下層のデータを返す
 				TerrainName = TDList.Name(MapData(X, Y, MapDataIndex.TerrainType))
 			Case Else
-				'Invalid_string_refer_to_original_code
+				'上層レイヤが両方持っている場合と情報のみ持っている場合は上層のデータを返す
 				TerrainName = TDList.Name(MapData(X, Y, MapDataIndex.LayerType))
 		End Select
 		'MOD  END  240a
 	End Function
 	
-	'(X,Y)蝨ｰ轤ｹ縺ｮ蝨ｰ蠖｢繧ｯ繝ｩ繧ｹ
+	'(X,Y)地点の地形クラス
 	Public Function TerrainClass(ByVal X As Short, ByVal Y As Short) As String
 		'MOD START 240a
 		'    TerrainClass = TDList.Class(MapData(X, Y, 0))
 		Select Case MapData(X, Y, MapDataIndex.BoxType)
 			Case BoxTypes.Under, BoxTypes.UpperBmpOnly
-				'Invalid_string_refer_to_original_code
+				'上層レイヤが無い場合と上層が画像情報しか持っていない場合は下層のデータを返す
 				TerrainClass = TDList.Class_Renamed(MapData(X, Y, MapDataIndex.TerrainType))
 			Case Else
-				'Invalid_string_refer_to_original_code
+				'上層レイヤが両方持っている場合と情報のみ持っている場合は上層のデータを返す
 				TerrainClass = TDList.Class_Renamed(MapData(X, Y, MapDataIndex.LayerType))
 		End Select
 		'MOD  END  240a
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'(X,Y)地点の移動コスト
 	Public Function TerrainMoveCost(ByVal X As Short, ByVal Y As Short) As Short
 		'MOD START 240a
 		'    TerrainMoveCost = TDList.MoveCost(MapData(X, Y, 0))
 		Select Case MapData(X, Y, MapDataIndex.BoxType)
 			Case BoxTypes.Under, BoxTypes.UpperBmpOnly
-				'Invalid_string_refer_to_original_code
+				'上層レイヤが無い場合と上層が画像情報しか持っていない場合は下層のデータを返す
 				TerrainMoveCost = TDList.MoveCost(MapData(X, Y, MapDataIndex.TerrainType))
 			Case Else
-				'Invalid_string_refer_to_original_code
+				'上層レイヤが両方持っている場合と情報のみ持っている場合は上層のデータを返す
 				TerrainMoveCost = TDList.MoveCost(MapData(X, Y, MapDataIndex.LayerType))
 		End Select
 		'MOD  END  240a
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'(X,Y)地点に障害物があるか (吹き飛ばし時に衝突するか)
 	Public Function TerrainHasObstacle(ByVal X As Short, ByVal Y As Short) As Boolean
 		'MOD START 240a
-		'Invalid_string_refer_to_original_code
+		'    TerrainHasObstacle = TDList.IsFeatureAvailable(MapData(X, Y, 0), "衝突")
 		Select Case MapData(X, Y, MapDataIndex.BoxType)
 			Case BoxTypes.Under, BoxTypes.UpperBmpOnly
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+				'上層レイヤが無い場合と上層が画像情報しか持っていない場合は下層のデータを返す
+				TerrainHasObstacle = TDList.IsFeatureAvailable(MapData(X, Y, MapDataIndex.TerrainType), "衝突")
 			Case Else
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+				'上層レイヤが両方持っている場合と情報のみ持っている場合は上層のデータを返す
+				TerrainHasObstacle = TDList.IsFeatureAvailable(MapData(X, Y, MapDataIndex.LayerType), "衝突")
 		End Select
 		'MOD  END  240a
 	End Function
 	
 	'ADD START 240a
-	'Invalid_string_refer_to_original_code
+	'(X,Y)地点が移動停止か
 	Public Function TerrainHasMoveStop(ByVal X As Short, ByVal Y As Short) As Boolean
 		Select Case MapData(X, Y, MapDataIndex.BoxType)
 			Case BoxTypes.Under, BoxTypes.UpperBmpOnly
-				'Invalid_string_refer_to_original_code
-				TerrainHasMoveStop = TDList.IsFeatureAvailable(MapData(X, Y, MapDataIndex.TerrainType), "遘ｻ蜍募●豁｢")
+				'上層レイヤが無い場合と上層が画像情報しか持っていない場合は下層のデータを返す
+				TerrainHasMoveStop = TDList.IsFeatureAvailable(MapData(X, Y, MapDataIndex.TerrainType), "移動停止")
 			Case Else
-				'Invalid_string_refer_to_original_code
-				TerrainHasMoveStop = TDList.IsFeatureAvailable(MapData(X, Y, MapDataIndex.LayerType), "遘ｻ蜍募●豁｢")
+				'上層レイヤが両方持っている場合と情報のみ持っている場合は上層のデータを返す
+				TerrainHasMoveStop = TDList.IsFeatureAvailable(MapData(X, Y, MapDataIndex.LayerType), "移動停止")
 		End Select
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'(X,Y)地点が進入禁止か
 	Public Function TerrainDoNotEnter(ByVal X As Short, ByVal Y As Short) As Boolean
 		Dim ret As Boolean
 		Select Case MapData(X, Y, MapDataIndex.BoxType)
 			Case BoxTypes.Under, BoxTypes.UpperBmpOnly
-				'Invalid_string_refer_to_original_code
-				ret = TDList.IsFeatureAvailable(MapData(X, Y, MapDataIndex.TerrainType), "騾ｲ蜈･遖∵ｭ｢")
+				'上層レイヤが無い場合と上層が画像情報しか持っていない場合は下層のデータを返す
+				ret = TDList.IsFeatureAvailable(MapData(X, Y, MapDataIndex.TerrainType), "進入禁止")
 				If Not ret Then
-					'Invalid_string_refer_to_original_code
-					ret = TDList.IsFeatureAvailable(MapData(X, Y, MapDataIndex.TerrainType), "萓ｵ蜈･遖∵ｭ｢")
+					'互換性維持のため残している
+					ret = TDList.IsFeatureAvailable(MapData(X, Y, MapDataIndex.TerrainType), "侵入禁止")
 				End If
 			Case Else
-				'Invalid_string_refer_to_original_code
-				ret = TDList.IsFeatureAvailable(MapData(X, Y, MapDataIndex.LayerType), "騾ｲ蜈･遖∵ｭ｢")
+				'上層レイヤが両方持っている場合と情報のみ持っている場合は上層のデータを返す
+				ret = TDList.IsFeatureAvailable(MapData(X, Y, MapDataIndex.LayerType), "進入禁止")
 				If Not ret Then
-					'Invalid_string_refer_to_original_code
-					ret = TDList.IsFeatureAvailable(MapData(X, Y, MapDataIndex.LayerType), "萓ｵ蜈･遖∵ｭ｢")
+					'互換性維持のため残している
+					ret = TDList.IsFeatureAvailable(MapData(X, Y, MapDataIndex.LayerType), "侵入禁止")
 				End If
 		End Select
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'(X,Y)地点が指定した能力を持っているか
 	Public Function TerrainHasFeature(ByVal X As Short, ByVal Y As Short, ByRef Feature As String) As Boolean
 		Select Case MapData(X, Y, MapDataIndex.BoxType)
 			Case BoxTypes.Under, BoxTypes.UpperBmpOnly
-				'Invalid_string_refer_to_original_code
+				'上層レイヤが無い場合と上層が画像情報しか持っていない場合は下層のデータを返す
 				TerrainHasFeature = TDList.IsFeatureAvailable(MapData(X, Y, MapDataIndex.TerrainType), Feature)
 			Case Else
-				'Invalid_string_refer_to_original_code
+				'上層レイヤが両方持っている場合と情報のみ持っている場合は上層のデータを返す
 				TerrainHasFeature = TDList.IsFeatureAvailable(MapData(X, Y, MapDataIndex.LayerType), Feature)
 		End Select
 	End Function
 	'ADD  END  240a
 	
-	'Invalid_string_refer_to_original_code
+	'(X,Y)地点にいるユニット
 	Public Function UnitAtPoint(ByVal X As Short, ByVal Y As Short) As Unit
 		If X < 1 Or MapWidth < X Then
 			'UPGRADE_NOTE: オブジェクト UnitAtPoint をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
@@ -289,7 +287,7 @@ Module Map
 		UnitAtPoint = MapDataForUnit(X, Y)
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'指定したマップ画像を検索する
 	Public Function SearchTerrainImageFile(ByVal tid As Short, ByVal tbitmap As Short, ByVal tx As Short, ByVal ty As Short) As String
 		Dim tbmpname As String
 		Dim fname2, fname1, fname3 As String
@@ -299,7 +297,7 @@ Module Map
 		Static extdata2_map_dir_exists As Boolean
 		
 		'ADD START 240a
-		'Invalid_string_refer_to_original_code
+		'画像無が確定してるなら処理しない
 		If tid = NO_LAYER_NUM Then
 			Exit Function
 		ElseIf tbitmap = NO_LAYER_NUM Then 
@@ -307,7 +305,7 @@ Module Map
 		End If
 		'ADD  END  240a
 		
-		'Invalid_string_refer_to_original_code
+		'初めて実行する際に、各フォルダにBitmap\Mapフォルダがあるかチェック
 		If Not init_setup_background Then
 			'UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
 			If Len(Dir(ScenarioPath & "Bitmap\Map", FileAttribute.Directory)) > 0 Then
@@ -324,13 +322,13 @@ Module Map
 			init_setup_background = True
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'マップ画像のファイル名を作成
 		tbmpname = TDList.Bitmap(tid)
 		fname1 = "\Bitmap\Map\" & tbmpname & "\" & tbmpname & VB6.Format(tbitmap, "0000") & ".bmp"
 		fname2 = "\Bitmap\Map\" & tbmpname & VB6.Format(tbitmap, "0000") & ".bmp"
 		fname3 = "\Bitmap\Map\" & tbmpname & VB6.Format(tbitmap) & ".bmp"
 		
-		'Invalid_string_refer_to_original_code
+		'ビットマップを探す
 		If scenario_map_dir_exists Then
 			If FileExists(ScenarioPath & fname1) Then
 				SearchTerrainImageFile = ScenarioPath & fname1
@@ -400,16 +398,16 @@ Module Map
 	End Function
 	
 	
-	'Invalid_string_refer_to_original_code
+	'マップファイル fname のデータをロード
 	Public Sub LoadMapData(ByRef fname As String)
 		Dim FileNumber As Short
 		Dim i, j As Short
 		Dim buf As String
 		
-		'Invalid_string_refer_to_original_code
+		'ファイルが存在しない場合
 		If fname = "" Or Not FileExists(fname) Then
 			MapFileName = ""
-			If InStr(ScenarioFileName, "Invalid_string_refer_to_original_code") > 0 Or InStr(ScenarioFileName, "繝ｩ繝ｳ繧ｭ繝ｳ繧ｰ.") > 0 Then
+			If InStr(ScenarioFileName, "ステータス表示.") > 0 Or InStr(ScenarioFileName, "ランキング.") > 0 Then
 				SetMapSize(MainWidth, 40)
 			Else
 				SetMapSize(MainWidth, MainHeight)
@@ -419,7 +417,7 @@ Module Map
 					'MOD START 240a
 					'                MapData(i, j, 0) = MAX_TERRAIN_DATA_NUM
 					'                MapData(i, j, 1) = 0
-					'Invalid_string_refer_to_original_code
+					'ファイルが無い場合
 					MapData(i, j, MapDataIndex.TerrainType) = MAX_TERRAIN_DATA_NUM
 					MapData(i, j, MapDataIndex.BitmapNo) = 0
 					MapData(i, j, MapDataIndex.LayerType) = NO_LAYER_NUM
@@ -433,17 +431,17 @@ Module Map
 		
 		On Error GoTo ErrorHandler
 		
-		'Invalid_string_refer_to_original_code
+		'ファイルを開く
 		FileNumber = FreeFile
 		FileOpen(FileNumber, fname, OpenMode.Input)
 		
-		'繝輔ぃ繧､繝ｫ蜷阪ｒ險倬鹸縺励※縺翫￥
+		'ファイル名を記録しておく
 		MapFileName = fname
 		
-		'Invalid_string_refer_to_original_code
+		'ファイルの先頭にあるマップサイズ情報を収得
 		Input(FileNumber, buf)
 		If buf <> "MapData" Then
-			'Invalid_string_refer_to_original_code
+			'旧形式のマップデータ
 			SetMapSize(20, 20)
 			FileClose(FileNumber)
 			
@@ -456,20 +454,18 @@ Module Map
 			SetMapSize(i, j)
 		End If
 		
-		'繝槭ャ繝励ョ繝ｼ繧ｿ繧定ｪｭ縺ｿ霎ｼ縺ｿ
+		'マップデータを読み込み
 		For i = 1 To MapWidth
 			For j = 1 To MapHeight
 				'MOD START 240a
 				'            Input #FileNumber, MapData(i, j, 0), MapData(i, j, 1)
 				'            If Not TDList.IsDefined(MapData(i, j, 0)) Then
-				'Invalid_string_refer_to_original_code_
-				'Invalid_string_refer_to_original_code
+				'                MsgBox "定義されていない" & Format$(MapData(i, j, 0)) _
+				''                    & "番の地形データが使われています"
 				Input(FileNumber, MapData(i, j, MapDataIndex.TerrainType))
 				Input(FileNumber, MapData(i, j, MapDataIndex.BitmapNo))
 				If Not TDList.IsDefined(MapData(i, j, MapDataIndex.TerrainType)) Then
-					MsgBox("Invalid_string_refer_to_original_code")
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+					MsgBox("定義されていない" & VB6.Format(MapData(i, j, MapDataIndex.TerrainType)) & "番の地形データが使われています")
 					'MOD  END  240a
 					FileClose(FileNumber)
 					End
@@ -478,7 +474,7 @@ Module Map
 		Next 
 		
 		'ADD START 240a
-		'Invalid_string_refer_to_original_code
+		'レイヤーデータ読み込み
 		If Not EOF(FileNumber) Then
 			Input(FileNumber, buf)
 			If buf = "Layer" Then
@@ -487,18 +483,16 @@ Module Map
 						Input(FileNumber, MapData(i, j, MapDataIndex.LayerType))
 						Input(FileNumber, MapData(i, j, MapDataIndex.LayerBitmapNo))
 						If (MapData(i, j, MapDataIndex.LayerType) <> NO_LAYER_NUM) Then
-							'Invalid_string_refer_to_original_code
+							'定義されていたらデータの妥当性チェック
 							If Not TDList.IsDefined(MapData(i, j, MapDataIndex.LayerType)) Then
-								MsgBox("Invalid_string_refer_to_original_code")
-								'Invalid_string_refer_to_original_code
-								'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+								MsgBox("定義されていない" & VB6.Format(MapData(i, j, MapDataIndex.LayerType)) & "番の地形データが使われています")
 								FileClose(FileNumber)
 								End
 							End If
-							'繝槭せ縺ｮ繧ｿ繧､繝励ｒ荳雁ｱ､縺ｫ
+							'マスのタイプを上層に
 							MapData(i, j, MapDataIndex.BoxType) = BoxTypes.Upper
 						Else
-							'Invalid_string_refer_to_original_code
+							'マスのタイプを下層に（初期化時下層だが、再度明示的に設定する）
 							MapData(i, j, MapDataIndex.BoxType) = BoxTypes.Under
 						End If
 					Next 
@@ -511,14 +505,12 @@ Module Map
 		Exit Sub
 		
 ErrorHandler: 
-		ErrorMessage("Invalid_string_refer_to_original_code")
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+		ErrorMessage("マップファイル「" & fname & "」のデータが不正です")
 		FileClose(FileNumber)
 		End
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'マップサイズを設定
 	Public Sub SetMapSize(ByVal w As Short, ByVal h As Short)
 		Dim i, j As Short
 		Dim ret As Integer
@@ -530,7 +522,7 @@ ErrorHandler:
 		MapX = (MainWidth + 1) \ 2
 		MapY = (MainHeight + 1) \ 2
 		
-		'Invalid_string_refer_to_original_code
+		'マップ画像サイズを決定
 		'UPGRADE_ISSUE: Control picBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 		With MainForm.picBack
 			'UPGRADE_ISSUE: Control picBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
@@ -548,7 +540,7 @@ ErrorHandler:
 			.Move(0, 0, MapPWidth, MapPHeight)
 		End With
 		
-		'Invalid_string_refer_to_original_code
+		'スクロールバーの移動範囲を決定
 		'UPGRADE_ISSUE: Control HScroll は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 		With MainForm.HScroll
 			'UPGRADE_ISSUE: Control HScroll は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
@@ -584,7 +576,7 @@ ErrorHandler:
 			End If
 		End With
 		
-		'Invalid_string_refer_to_original_code
+		'マップデータ用配列の領域確保
 		'MOD START 240a
 		'    ReDim MapData(1 To MapWidth, 1 To MapHeight, 1)
 		'UPGRADE_WARNING: 配列 MapData の下限が 1,1,0 から 0,0,0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
@@ -599,7 +591,7 @@ ErrorHandler:
 		'UPGRADE_WARNING: 配列 MapImageFileTypeData の下限が 1,1 から 0,0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
 		ReDim MapImageFileTypeData(MapWidth, MapHeight)
 		
-		'Invalid_string_refer_to_original_code
+		'マップデータ配列の初期化
 		For i = 1 To MapWidth
 			For j = 1 To MapHeight
 				'MOD START 240a
@@ -618,7 +610,7 @@ ErrorHandler:
 		Next 
 	End Sub
 	
-	'繝槭ャ繝励ョ繝ｼ繧ｿ繧偵け繝ｪ繧｢
+	'マップデータをクリア
 	Public Sub ClearMap()
 		Dim ret As Integer
 		
@@ -645,7 +637,7 @@ ErrorHandler:
 		'UPGRADE_NOTE: オブジェクト MapDataForUnit() をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
 		MapDataForUnit(1, 1) = Nothing
 		
-		'繝槭ャ繝礼判髱｢繧呈ｶ亥悉
+		'マップ画面を消去
 		'UPGRADE_ISSUE: Control picBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 		With MainForm.picBack
 			'UPGRADE_ISSUE: Control picBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
@@ -657,7 +649,7 @@ ErrorHandler:
 			ret = PatBlt(.hDC, 0, 0, .width, .Height, BLACKNESS)
 		End With
 		
-		'Invalid_string_refer_to_original_code
+		'ユニット画像をリセット
 		If MapDrawMode <> "" And Not MapDrawIsMapOnly Then
 			UList.ClearUnitBitmap()
 		End If
@@ -669,7 +661,7 @@ ErrorHandler:
 	End Sub
 	
 	
-	'Invalid_string_refer_to_original_code
+	'中断用セーブデータにマップデータをセーブ
 	Public Sub DumpMapData()
 		Dim i, j As Short
 		Dim fname As String
@@ -682,7 +674,7 @@ ErrorHandler:
 		
 		
 		If MapDrawIsMapOnly Then
-			WriteLine(SaveDataFileNumber, fname, MapDrawMode & "Invalid_string_refer_to_original_code")
+			WriteLine(SaveDataFileNumber, fname, MapDrawMode & "(マップ限定)")
 		Else
 			WriteLine(SaveDataFileNumber, fname, MapDrawMode)
 		End If
@@ -700,7 +692,7 @@ ErrorHandler:
 		WriteLine(SaveDataFileNumber, MapX, MapY)
 		
 		'ADD START 240a
-		'Invalid_string_refer_to_original_code
+		'レイヤ情報を書き込む
 		WriteLine(SaveDataFileNumber, "Layer")
 		For i = 1 To MapWidth
 			For j = 1 To MapHeight
@@ -711,9 +703,9 @@ ErrorHandler:
 		
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'中断用セーブデータからマップデータをロード
 	'MOD START 240a
-	'Sub竊巽unction縺ｫ
+	'Sub→Functionに
 	'Public Sub RestoreMapData() As String
 	Public Function RestoreMapData() As String
 		'MOD  END  240a
@@ -727,7 +719,7 @@ ErrorHandler:
 		Dim is_map_changed As Boolean
 		Dim u As Unit
 		
-		'Invalid_string_refer_to_original_code
+		'マップファイル名, マップ描画方法
 		Input(SaveDataFileNumber, sbuf1)
 		Input(SaveDataFileNumber, sbuf2)
 		If InStr(sbuf1, ":") = 0 Then
@@ -738,8 +730,8 @@ ErrorHandler:
 			is_map_changed = True
 		End If
 		If MapDrawIsMapOnly Then
-			If sbuf2 <> MapDrawMode & "Invalid_string_refer_to_original_code" Then
-				If Right(sbuf2, 7) = "Invalid_string_refer_to_original_code" Then
+			If sbuf2 <> MapDrawMode & "(マップ限定)" Then
+				If Right(sbuf2, 7) = "(マップ限定)" Then
 					MapDrawMode = Left(sbuf2, Len(sbuf2) - 7)
 					MapDrawIsMapOnly = True
 				Else
@@ -751,7 +743,7 @@ ErrorHandler:
 			End If
 		Else
 			If sbuf2 <> MapDrawMode Then
-				If Right(sbuf2, 7) = "Invalid_string_refer_to_original_code" Then
+				If Right(sbuf2, 7) = "(マップ限定)" Then
 					MapDrawMode = Left(sbuf2, Len(sbuf2) - 7)
 					MapDrawIsMapOnly = True
 				Else
@@ -763,14 +755,14 @@ ErrorHandler:
 			End If
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'マップ幅, マップ高さ
 		Input(SaveDataFileNumber, ibuf1)
 		Input(SaveDataFileNumber, ibuf2)
 		If ibuf1 <> MapWidth Or ibuf2 <> MapHeight Then
 			SetMapSize(ibuf1, ibuf2)
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'各地形
 		For i = 1 To MapWidth
 			For j = 1 To MapHeight
 				Input(SaveDataFileNumber, ibuf1)
@@ -797,22 +789,22 @@ ErrorHandler:
 		Next 
 		
 		'MOV START 240a
-		'Invalid_string_refer_to_original_code
+		'    '背景書き換えの必要有り？
 		'    If is_map_changed Then
 		'        IsMapDirty = True
 		'    End If
 		'MOV  END  240a
 		
-		'陦ｨ遉ｺ菴咲ｽｮ
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
+		'表示位置
+		'SetupBackgroundでMapX,MapYが書き換えられてしまうため、この位置で
+		'値を参照する必要がある。
 		Input(SaveDataFileNumber, MapX)
 		Input(SaveDataFileNumber, MapY)
 		
 		'ADD START 240a
 		Input(SaveDataFileNumber, buf)
 		If "Layer" = buf Then
-			'Invalid_string_refer_to_original_code
+			'各レイヤ
 			For i = 1 To MapWidth
 				For j = 1 To MapHeight
 					Input(SaveDataFileNumber, ibuf1)
@@ -832,17 +824,17 @@ ErrorHandler:
 					End If
 				Next 
 			Next 
-			'Invalid_string_refer_to_original_code
+			'ＢＧＭ関連情報の1行目を読み込む
 			Input(SaveDataFileNumber, buf)
 		End If
 		RestoreMapData = buf
-		'Invalid_string_refer_to_original_code
+		'背景書き換えの必要有り？
 		If is_map_changed Then
 			IsMapDirty = True
 		End If
 		'ADD  END  240a
 		
-		'Invalid_string_refer_to_original_code
+		'ユニット配置
 		For i = 1 To MapWidth
 			For j = 1 To MapHeight
 				'UPGRADE_NOTE: オブジェクト MapDataForUnit() をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
@@ -851,24 +843,23 @@ ErrorHandler:
 		Next 
 		For	Each u In UList
 			With u
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				MapDataForUnit(.X, .Y) = u
-				'End If
+				If .Status = "出撃" Then
+					MapDataForUnit(.X, .Y) = u
+				End If
 			End With
 		Next u
 	End Function
 	
 	
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
+	'(X,Y)を中心とする min_range - max_range のエリアを選択
+	'エリア内のユニットは uparty の指示に従い選択
 	Public Sub AreaInRange(ByVal X As Short, ByVal Y As Short, ByVal max_range As Short, ByVal min_range As Short, ByRef uparty As String)
 		Dim x1, y1 As Short
 		Dim x2, y2 As Short
 		Dim i, j As Short
 		Dim n As Short
 		
-		'驕ｸ謚樊ュ蝣ｱ繧偵け繝ｪ繧｢
+		'選択情報をクリア
 		For i = 1 To MapWidth
 			For j = 1 To MapHeight
 				MaskData(i, j) = True
@@ -880,7 +871,7 @@ ErrorHandler:
 		y1 = MaxLng(Y - max_range, 1)
 		y2 = MinLng(Y + max_range, MapHeight)
 		
-		'Invalid_string_refer_to_original_code
+		'max_range内かつmin_range外のエリアを選択
 		For i = x1 To x2
 			For j = y1 To y2
 				n = System.Math.Abs(X - i) + System.Math.Abs(Y - j)
@@ -892,59 +883,27 @@ ErrorHandler:
 			Next 
 		Next 
 		
-		'Invalid_string_refer_to_original_code
+		'エリア内のユニットを選択するかそれぞれ判定
 		Select Case uparty
-			Case "蜻ｳ譁ｹ", "Invalid_string_refer_to_original_code"
+			Case "味方", "ＮＰＣ"
 				For i = x1 To x2
 					For j = y1 To y2
 						If Not MaskData(i, j) Then
 							If Not MapDataForUnit(i, j) Is Nothing Then
-								If Not MapDataForUnit(i, j).Party = "蜻ｳ譁ｹ" And Not MapDataForUnit(i, j).Party = "Invalid_string_refer_to_original_code" Then
+								If Not MapDataForUnit(i, j).Party = "味方" And Not MapDataForUnit(i, j).Party = "ＮＰＣ" Then
 									MaskData(i, j) = True
 								End If
 							End If
 						End If
 					Next 
 				Next 
-			Case "蜻ｳ譁ｹ縺ｮ謨ｵ", "Invalid_string_refer_to_original_code"
+			Case "味方の敵", "ＮＰＣの敵"
 				For i = x1 To x2
 					For j = y1 To y2
 						If Not MaskData(i, j) Then
 							If Not MapDataForUnit(i, j) Is Nothing Then
 								With MapDataForUnit(i, j)
-									'Invalid_string_refer_to_original_code_
-									'And Not .IsConditionSatisfied("豺ｷ荵ｱ") _
-									'Invalid_string_refer_to_original_code_
-									'And Not .IsConditionSatisfied("逹｡逵") _
-									'Then
-									'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-									MaskData(i, j) = True
-								End With
-							End If
-							'End With
-						End If
-						'End If
-					Next 
-				Next 
-			Case "謨ｵ"
-				For i = x1 To x2
-					For j = y1 To y2
-						If Not MaskData(i, j) Then
-							If Not MapDataForUnit(i, j) Is Nothing Then
-								If Not MapDataForUnit(i, j).Party = "謨ｵ" Then
-									MaskData(i, j) = True
-								End If
-							End If
-						End If
-					Next 
-				Next 
-			Case "謨ｵ縺ｮ謨ｵ"
-				For i = x1 To x2
-					For j = y1 To y2
-						If Not MaskData(i, j) Then
-							If Not MapDataForUnit(i, j) Is Nothing Then
-								With MapDataForUnit(i, j)
-									If .Party = "謨ｵ" Then
+									If (.Party = "味方" Or .Party = "ＮＰＣ") And Not .IsConditionSatisfied("暴走") And Not .IsConditionSatisfied("魅了") And Not .IsConditionSatisfied("混乱") And Not .IsConditionSatisfied("憑依") And Not .IsConditionSatisfied("睡眠") Then
 										MaskData(i, j) = True
 									End If
 								End With
@@ -952,36 +911,59 @@ ErrorHandler:
 						End If
 					Next 
 				Next 
-			Case "Invalid_string_refer_to_original_code"
+			Case "敵"
 				For i = x1 To x2
 					For j = y1 To y2
 						If Not MaskData(i, j) Then
 							If Not MapDataForUnit(i, j) Is Nothing Then
-								'Invalid_string_refer_to_original_code
-								'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-								MaskData(i, j) = True
+								If Not MapDataForUnit(i, j).Party = "敵" Then
+									MaskData(i, j) = True
+								End If
 							End If
 						End If
-						'End If
 					Next 
 				Next 
-			Case "Invalid_string_refer_to_original_code"
+			Case "敵の敵"
 				For i = x1 To x2
 					For j = y1 To y2
 						If Not MaskData(i, j) Then
 							If Not MapDataForUnit(i, j) Is Nothing Then
 								With MapDataForUnit(i, j)
-									'Invalid_string_refer_to_original_code
-									'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-									MaskData(i, j) = True
+									If .Party = "敵" Then
+										MaskData(i, j) = True
+									End If
 								End With
 							End If
-							'End With
 						End If
-						'End If
 					Next 
 				Next 
-			Case "Invalid_string_refer_to_original_code"
+			Case "中立"
+				For i = x1 To x2
+					For j = y1 To y2
+						If Not MaskData(i, j) Then
+							If Not MapDataForUnit(i, j) Is Nothing Then
+								If Not MapDataForUnit(i, j).Party = "中立" Then
+									MaskData(i, j) = True
+								End If
+							End If
+						End If
+					Next 
+				Next 
+			Case "中立の敵"
+				For i = x1 To x2
+					For j = y1 To y2
+						If Not MaskData(i, j) Then
+							If Not MapDataForUnit(i, j) Is Nothing Then
+								With MapDataForUnit(i, j)
+									If .Party = "中立" Then
+										MaskData(i, j) = True
+									End If
+								End With
+							End If
+						End If
+					Next 
+				Next 
+			Case "空間"
 				For i = x1 To x2
 					For j = y1 To y2
 						If Not MaskData(i, j) Then
@@ -991,23 +973,23 @@ ErrorHandler:
 						End If
 					Next 
 				Next 
-			Case "蜈ｨ縺ｦ", "辟｡蟾ｮ蛻･"
+			Case "全て", "無差別"
 		End Select
 		
-		'Invalid_string_refer_to_original_code
+		'エリアの中心は常に選択
 		MaskData(X, Y) = False
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
+	'ユニット u から移動後使用可能な射程 max_range の武器／アビリティを使う場合の効果範囲
+	'エリア内のユニットは Party の指示に従い選択
 	Public Sub AreaInReachable(ByRef u As Unit, ByVal max_range As Short, ByRef uparty As String)
 		Dim tmp_mask_data() As Boolean
 		Dim j, i, k As Short
 		
-		'Invalid_string_refer_to_original_code
+		'まずは移動範囲を選択
 		AreaInSpeed(u)
 		
-		'Invalid_string_refer_to_original_code
+		'選択範囲をmax_rangeぶんだけ拡大
 		ReDim tmp_mask_data(MapWidth + 1, MapHeight + 1)
 		For i = 0 To MapWidth + 1
 			For j = 0 To MapHeight + 1
@@ -1027,57 +1009,27 @@ ErrorHandler:
 			Next 
 		Next 
 		
-		'Invalid_string_refer_to_original_code
+		'エリア内のユニットを選択するかそれぞれ判定
 		Select Case uparty
-			Case "蜻ｳ譁ｹ", "Invalid_string_refer_to_original_code"
+			Case "味方", "ＮＰＣ"
 				For i = 1 To MapWidth
 					For j = 1 To MapHeight
 						If Not MaskData(i, j) Then
 							If Not MapDataForUnit(i, j) Is Nothing Then
-								If Not MapDataForUnit(i, j).Party = "蜻ｳ譁ｹ" And Not MapDataForUnit(i, j).Party = "Invalid_string_refer_to_original_code" Then
+								If Not MapDataForUnit(i, j).Party = "味方" And Not MapDataForUnit(i, j).Party = "ＮＰＣ" Then
 									MaskData(i, j) = True
 								End If
 							End If
 						End If
 					Next 
 				Next 
-			Case "蜻ｳ譁ｹ縺ｮ謨ｵ", "Invalid_string_refer_to_original_code"
+			Case "味方の敵", "ＮＰＣの敵"
 				For i = 1 To MapWidth
 					For j = 1 To MapHeight
 						If Not MaskData(i, j) Then
 							If Not MapDataForUnit(i, j) Is Nothing Then
 								With MapDataForUnit(i, j)
-									'Invalid_string_refer_to_original_code_
-									'Invalid_string_refer_to_original_code_
-									'Then
-									'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-									MaskData(i, j) = True
-								End With
-							End If
-							'End With
-						End If
-						'End If
-					Next 
-				Next 
-			Case "謨ｵ"
-				For i = 1 To MapWidth
-					For j = 1 To MapHeight
-						If Not MaskData(i, j) Then
-							If Not MapDataForUnit(i, j) Is Nothing Then
-								If Not MapDataForUnit(i, j).Party = "謨ｵ" Then
-									MaskData(i, j) = True
-								End If
-							End If
-						End If
-					Next 
-				Next 
-			Case "謨ｵ縺ｮ謨ｵ"
-				For i = 1 To MapWidth
-					For j = 1 To MapHeight
-						If Not MaskData(i, j) Then
-							If Not MapDataForUnit(i, j) Is Nothing Then
-								With MapDataForUnit(i, j)
-									If .Party = "謨ｵ" Then
+									If (.Party = "味方" Or .Party = "ＮＰＣ") And Not .IsConditionSatisfied("暴走") And Not .IsConditionSatisfied("魅了") And Not .IsConditionSatisfied("憑依") Then
 										MaskData(i, j) = True
 									End If
 								End With
@@ -1085,36 +1037,59 @@ ErrorHandler:
 						End If
 					Next 
 				Next 
-			Case "Invalid_string_refer_to_original_code"
+			Case "敵"
 				For i = 1 To MapWidth
 					For j = 1 To MapHeight
 						If Not MaskData(i, j) Then
 							If Not MapDataForUnit(i, j) Is Nothing Then
-								'Invalid_string_refer_to_original_code
-								'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-								MaskData(i, j) = True
+								If Not MapDataForUnit(i, j).Party = "敵" Then
+									MaskData(i, j) = True
+								End If
 							End If
 						End If
-						'End If
 					Next 
 				Next 
-			Case "Invalid_string_refer_to_original_code"
+			Case "敵の敵"
 				For i = 1 To MapWidth
 					For j = 1 To MapHeight
 						If Not MaskData(i, j) Then
 							If Not MapDataForUnit(i, j) Is Nothing Then
 								With MapDataForUnit(i, j)
-									'Invalid_string_refer_to_original_code
-									'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-									MaskData(i, j) = True
+									If .Party = "敵" Then
+										MaskData(i, j) = True
+									End If
 								End With
 							End If
-							'End With
 						End If
-						'End If
 					Next 
 				Next 
-			Case "Invalid_string_refer_to_original_code"
+			Case "中立"
+				For i = 1 To MapWidth
+					For j = 1 To MapHeight
+						If Not MaskData(i, j) Then
+							If Not MapDataForUnit(i, j) Is Nothing Then
+								If Not MapDataForUnit(i, j).Party = "中立" Then
+									MaskData(i, j) = True
+								End If
+							End If
+						End If
+					Next 
+				Next 
+			Case "中立の敵"
+				For i = 1 To MapWidth
+					For j = 1 To MapHeight
+						If Not MaskData(i, j) Then
+							If Not MapDataForUnit(i, j) Is Nothing Then
+								With MapDataForUnit(i, j)
+									If .Party = "中立" Then
+										MaskData(i, j) = True
+									End If
+								End With
+							End If
+						End If
+					Next 
+				Next 
+			Case "空間"
 				For i = 1 To MapWidth
 					For j = 1 To MapHeight
 						If Not MaskData(i, j) Then
@@ -1124,14 +1099,14 @@ ErrorHandler:
 						End If
 					Next 
 				Next 
-			Case "蜈ｨ縺ｦ", "辟｡蟾ｮ蛻･"
+			Case "全て", "無差別"
 		End Select
 		
-		'Invalid_string_refer_to_original_code
+		'エリアの中心は常に選択
 		MaskData(u.X, u.Y) = False
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'マップ全域に渡ってupartyに属するユニットが存在する場所を選択
 	Public Sub AreaWithUnit(ByRef uparty As String)
 		Dim i, j As Short
 		Dim u As Unit
@@ -1151,32 +1126,30 @@ ErrorHandler:
 				
 				With u
 					Select Case uparty
-						Case "蜻ｳ譁ｹ"
-							If .Party = "蜻ｳ譁ｹ" Or .Party = "Invalid_string_refer_to_original_code" Then
+						Case "味方"
+							If .Party = "味方" Or .Party = "ＮＰＣ" Then
 								MaskData(i, j) = False
 							End If
-						Case "蜻ｳ譁ｹ縺ｮ謨ｵ"
-							If .Party <> "蜻ｳ譁ｹ" And .Party <> "Invalid_string_refer_to_original_code" Then
+						Case "味方の敵"
+							If .Party <> "味方" And .Party <> "ＮＰＣ" Then
 								MaskData(i, j) = False
 							End If
-						Case "謨ｵ"
-							If .Party = "謨ｵ" Then
+						Case "敵"
+							If .Party = "敵" Then
 								MaskData(i, j) = False
 							End If
-						Case "謨ｵ縺ｮ謨ｵ"
-							If .Party <> "謨ｵ" Then
+						Case "敵の敵"
+							If .Party <> "敵" Then
 								MaskData(i, j) = False
 							End If
-						Case "Invalid_string_refer_to_original_code"
-							'Invalid_string_refer_to_original_code
-							'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-							MaskData(i, j) = False
-							'End If
-						Case "Invalid_string_refer_to_original_code"
-							'Invalid_string_refer_to_original_code
-							'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-							MaskData(i, j) = False
-							'End If
+						Case "中立"
+							If .Party = "中立" Then
+								MaskData(i, j) = False
+							End If
+						Case "中立の敵"
+							If .Party <> "中立" Then
+								MaskData(i, j) = False
+							End If
 						Case Else
 							MaskData(i, j) = False
 					End Select
@@ -1186,7 +1159,7 @@ NextLoop:
 		Next 
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'十字状のエリアを選択 (Ｍ直の攻撃方向選択用)
 	Public Sub AreaInCross(ByVal X As Short, ByVal Y As Short, ByVal min_range As Short, ByRef max_range As Short)
 		Dim i, j As Short
 		
@@ -1219,7 +1192,7 @@ NextLoop:
 		MaskData(X, Y) = False
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'直線状のエリアを選択 (Ｍ直の攻撃範囲設定用)
 	Public Sub AreaInLine(ByVal X As Short, ByVal Y As Short, ByVal min_range As Short, ByRef max_range As Short, ByRef direction As String)
 		Dim i, j As Short
 		
@@ -1258,7 +1231,7 @@ NextLoop:
 		MaskData(X, Y) = False
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'幅３マスの十字状のエリアを選択 (Ｍ拡の攻撃方向選択用)
 	Public Sub AreaInWideCross(ByVal X As Short, ByVal Y As Short, ByVal min_range As Short, ByRef max_range As Short)
 		Dim i, j As Short
 		
@@ -1335,7 +1308,7 @@ NextLoop:
 		MaskData(X, Y) = False
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'幅３マスの直線状のエリアを選択 (Ｍ拡の攻撃範囲設定用)
 	Public Sub AreaInCone(ByVal X As Short, ByVal Y As Short, ByVal min_range As Short, ByRef max_range As Short, ByRef direction As String)
 		Dim i, j As Short
 		
@@ -1418,7 +1391,7 @@ NextLoop:
 		MaskData(X, Y) = False
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'扇状のエリアを選択 (Ｍ扇の攻撃範囲設定用)
 	Public Sub AreaInSector(ByVal X As Short, ByVal Y As Short, ByVal min_range As Short, ByRef max_range As Short, ByRef direction As String, ByVal lv As Short, Optional ByVal without_refresh As Boolean = False)
 		Dim xx, i, yy As Short
 		
@@ -1539,7 +1512,7 @@ NextLoop:
 		MaskData(X, Y) = False
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'十字状の扇状のエリアを選択 (Ｍ扇の攻撃方向選択用)
 	Public Sub AreaInSectorCross(ByVal X As Short, ByVal Y As Short, ByVal min_range As Short, ByRef max_range As Short, ByVal lv As Short)
 		Dim xx, yy As Short
 		
@@ -1555,18 +1528,18 @@ NextLoop:
 		AreaInSector(X, Y, min_range, max_range, "E", lv, True)
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'２点間を結ぶ直線状のエリアを選択 (Ｍ線の範囲設定用)
 	Public Sub AreaInPointToPoint(ByVal x1 As Short, ByVal y1 As Short, ByVal x2 As Short, ByVal y2 As Short)
 		Dim xx, yy As Short
 		
-		'Invalid_string_refer_to_original_code
+		'まず全領域をマスク
 		For xx = 1 To MapWidth
 			For yy = 1 To MapHeight
 				MaskData(xx, yy) = True
 			Next 
 		Next 
 		
-		'襍ｷ轤ｹ縺ｮ繝槭せ繧ｯ繧定ｧ｣髯､
+		'起点のマスクを解除
 		MaskData(x1, y1) = False
 		
 		xx = x1
@@ -1596,8 +1569,8 @@ NextLoop:
 		End If
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
+	'ユニット u の移動範囲を選択
+	'ジャンプする場合は ByJump = True
 	Public Sub AreaInSpeed(ByRef u As Unit, Optional ByVal ByJump As Boolean = False)
 		Dim l, j, i, k, n As Short
 		Dim cur_cost(51, 51) As Integer
@@ -1630,96 +1603,82 @@ NextLoop:
 		
 		Dim blocked As Boolean
 		With u
-			'遘ｻ蜍墓凾縺ｫ菴ｿ逕ｨ縺吶ｋ繧ｨ繝ｪ繧｢
+			'移動時に使用するエリア
 			If ByJump Then
-				move_area = "遨ｺ荳ｭ"
+				move_area = "空中"
 			Else
 				move_area = .Area
 			End If
 			
-			'Invalid_string_refer_to_original_code
-			is_trans_available_on_ground = .IsTransAvailable("髯ｸ") And .Adaption(2) <> 0
-			is_trans_available_in_water = .IsTransAvailable("豌ｴ") And .Adaption(3) <> 0
-			is_trans_available_in_sky = .IsTransAvailable("遨ｺ") And .Adaption(1) <> 0
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			'Invalid_string_refer_to_original_code_
-			'Then
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			is_adaptable_in_water = True
-			'End If
-			'Invalid_string_refer_to_original_code_
-			'Then
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			is_adaptable_in_space = True
-			'End If
-			'Invalid_string_refer_to_original_code_
-			'Invalid_string_refer_to_original_code_
-			'Then
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			is_trans_available_on_water = True
-			'End If
-			If .IsFeatureAvailable("豌ｴ豕ｳ") Then
+			'移動能力の可否を調べておく
+			is_trans_available_on_ground = .IsTransAvailable("陸") And .Adaption(2) <> 0
+			is_trans_available_in_water = .IsTransAvailable("水") And .Adaption(3) <> 0
+			is_trans_available_in_sky = .IsTransAvailable("空") And .Adaption(1) <> 0
+			is_trans_available_in_moon_sky = (.IsTransAvailable("空") And .Adaption(1) <> 0) Or (.IsTransAvailable("宇宙") And .Adaption(4) <> 0)
+			If Mid(.Data.Adaption, 3, 1) <> "-" Or .IsFeatureAvailable("水中移動") Then
+				is_adaptable_in_water = True
+			End If
+			If Mid(.Data.Adaption, 4, 1) <> "-" Or .IsFeatureAvailable("宇宙移動") Then
+				is_adaptable_in_space = True
+			End If
+			If .IsFeatureAvailable("水上移動") Or .IsFeatureAvailable("ホバー移動") Then
+				is_trans_available_on_water = True
+			End If
+			If .IsFeatureAvailable("水泳") Then
 				is_swimable = True
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'地形適応のある地形のリストを作成
 			ReDim adopted_terrain(0)
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			For i = 1 To .CountFeature
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				buf = .FeatureData(i)
-				If LLength(buf) = 0 Then
-					ErrorMessage("Invalid_string_refer_to_original_code")
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-					TerminateSRC()
-				End If
-				n = LLength(buf)
-				ReDim Preserve adopted_terrain(UBound(adopted_terrain) + n - 1)
-				For j = 2 To n
-					adopted_terrain(UBound(adopted_terrain) - j + 2) = LIndex(buf, j)
+			If .IsFeatureAvailable("地形適応") Then
+				For i = 1 To .CountFeature
+					If .Feature(i) = "地形適応" Then
+						buf = .FeatureData(i)
+						If LLength(buf) = 0 Then
+							ErrorMessage("ユニット「" & .Name & "」の地形適応能力に対応地形が指定されていません")
+							TerminateSRC()
+						End If
+						n = LLength(buf)
+						ReDim Preserve adopted_terrain(UBound(adopted_terrain) + n - 1)
+						For j = 2 To n
+							adopted_terrain(UBound(adopted_terrain) - j + 2) = LIndex(buf, j)
+						Next 
+					End If
 				Next 
-				'End If
-			Next 
-			'End If
+			End If
 			
-			'遘ｻ蜍募鴨
+			'移動力
 			If ByJump Then
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+				uspeed = .Speed + .FeatureLevel("ジャンプ")
 			Else
 				uspeed = .Speed
 			End If
-			If .IsConditionSatisfied("Invalid_string_refer_to_original_code") Then
+			If .IsConditionSatisfied("移動不能") Then
 				uspeed = 0
 			End If
 			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
+			'移動コストは実際の２倍の値で記録されているため、移動力もそれに合わせて
+			'２倍にして移動範囲を計算する
 			uspeed = 2 * uspeed
 			
 			' ADD START MARGE
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			uspeed = uspeed - SelectedUnitMoveCost
-			'End If
+			'再移動時は最初の移動の分だけ移動力を減少させる
+			If SelectedCommand = "再移動" Then
+				uspeed = uspeed - SelectedUnitMoveCost
+			End If
 			
-			If .IsConditionSatisfied("Invalid_string_refer_to_original_code") Then
+			If .IsConditionSatisfied("移動不能") Then
 				uspeed = 0
 			End If
 			' ADD END MARGE
 			
-			'Invalid_string_refer_to_original_code
+			'移動範囲をチェックすべき領域
 			x1 = MaxLng(1, .X - uspeed)
 			y1 = MaxLng(1, .Y - uspeed)
 			x2 = MinLng(.X + uspeed, MapWidth)
 			y2 = MinLng(.Y + uspeed, MapHeight)
 			
-			'Invalid_string_refer_to_original_code
+			'移動コストとＺＯＣをリセット
 			For i = 0 To MapWidth + 1
 				For j = 0 To MapHeight + 1
 					move_cost(i, j) = 1000000
@@ -1727,15 +1686,15 @@ NextLoop:
 				Next 
 			Next 
 			
-			'Invalid_string_refer_to_original_code
+			'各地形の移動コストを算出しておく
 			Select Case move_area
-				Case "遨ｺ荳ｭ"
+				Case "空中"
 					For i = x1 To x2
 						For j = y1 To y2
 							Select Case TerrainClass(i, j)
-								Case "遨ｺ"
+								Case "空"
 									move_cost(i, j) = TerrainMoveCost(i, j)
-								Case "Invalid_string_refer_to_original_code"
+								Case "宇宙"
 									If is_adaptable_in_space Then
 										move_cost(i, j) = TerrainMoveCost(i, j)
 										For k = 1 To UBound(adopted_terrain)
@@ -1752,11 +1711,11 @@ NextLoop:
 							End Select
 						Next 
 					Next 
-				Case "Invalid_string_refer_to_original_code"
+				Case "地上"
 					For i = x1 To x2
 						For j = y1 To y2
 							Select Case TerrainClass(i, j)
-								Case "髯ｸ", "Invalid_string_refer_to_original_code", "譛磯擇"
+								Case "陸", "屋内", "月面"
 									If is_trans_available_on_ground Then
 										move_cost(i, j) = TerrainMoveCost(i, j)
 										For k = 1 To UBound(adopted_terrain)
@@ -1768,7 +1727,7 @@ NextLoop:
 									Else
 										move_cost(i, j) = 1000000
 									End If
-								Case "豌ｴ"
+								Case "水"
 									If is_trans_available_in_water Or is_trans_available_on_water Then
 										move_cost(i, j) = 2
 									ElseIf is_adaptable_in_water Then 
@@ -1782,7 +1741,7 @@ NextLoop:
 									Else
 										move_cost(i, j) = 1000000
 									End If
-								Case "豺ｱ豌ｴ"
+								Case "深水"
 									If is_trans_available_in_water Or is_trans_available_on_water Then
 										move_cost(i, j) = 2
 									ElseIf is_swimable Then 
@@ -1790,9 +1749,9 @@ NextLoop:
 									Else
 										move_cost(i, j) = 1000000
 									End If
-								Case "遨ｺ"
+								Case "空"
 									move_cost(i, j) = 1000000
-								Case "Invalid_string_refer_to_original_code"
+								Case "宇宙"
 									If is_adaptable_in_space Then
 										move_cost(i, j) = TerrainMoveCost(i, j)
 										For k = 1 To UBound(adopted_terrain)
@@ -1807,11 +1766,11 @@ NextLoop:
 							End Select
 						Next 
 					Next 
-				Case "Invalid_string_refer_to_original_code"
+				Case "水上"
 					For i = x1 To x2
 						For j = y1 To y2
 							Select Case TerrainClass(i, j)
-								Case "髯ｸ", "Invalid_string_refer_to_original_code", "譛磯擇"
+								Case "陸", "屋内", "月面"
 									If is_trans_available_on_ground Then
 										move_cost(i, j) = TerrainMoveCost(i, j)
 										For k = 1 To UBound(adopted_terrain)
@@ -1823,11 +1782,11 @@ NextLoop:
 									Else
 										move_cost(i, j) = 1000000
 									End If
-								Case "豌ｴ", "豺ｱ豌ｴ"
+								Case "水", "深水"
 									move_cost(i, j) = 2
-								Case "遨ｺ"
+								Case "空"
 									move_cost(i, j) = 1000000
-								Case "Invalid_string_refer_to_original_code"
+								Case "宇宙"
 									If is_adaptable_in_space Then
 										move_cost(i, j) = TerrainMoveCost(i, j)
 										For k = 1 To UBound(adopted_terrain)
@@ -1842,11 +1801,11 @@ NextLoop:
 							End Select
 						Next 
 					Next 
-				Case "豌ｴ荳ｭ"
+				Case "水中"
 					For i = x1 To x2
 						For j = y1 To y2
 							Select Case TerrainClass(i, j)
-								Case "髯ｸ", "Invalid_string_refer_to_original_code", "譛磯擇"
+								Case "陸", "屋内", "月面"
 									If is_trans_available_on_ground Then
 										move_cost(i, j) = TerrainMoveCost(i, j)
 										For k = 1 To UBound(adopted_terrain)
@@ -1858,7 +1817,7 @@ NextLoop:
 									Else
 										move_cost(i, j) = 1000000
 									End If
-								Case "豌ｴ"
+								Case "水"
 									If is_trans_available_in_water Then
 										move_cost(i, j) = 2
 									Else
@@ -1870,7 +1829,7 @@ NextLoop:
 											End If
 										Next 
 									End If
-								Case "豺ｱ豌ｴ"
+								Case "深水"
 									If is_trans_available_in_water Then
 										move_cost(i, j) = 2
 									ElseIf is_swimable Then 
@@ -1878,9 +1837,9 @@ NextLoop:
 									Else
 										move_cost(i, j) = 1000000
 									End If
-								Case "遨ｺ"
+								Case "空"
 									move_cost(i, j) = 1000000
-								Case "Invalid_string_refer_to_original_code"
+								Case "宇宙"
 									If is_adaptable_in_space Then
 										move_cost(i, j) = TerrainMoveCost(i, j)
 										For k = 1 To UBound(adopted_terrain)
@@ -1895,11 +1854,11 @@ NextLoop:
 							End Select
 						Next 
 					Next 
-				Case "Invalid_string_refer_to_original_code"
+				Case "宇宙"
 					For i = x1 To x2
 						For j = y1 To y2
 							Select Case TerrainClass(i, j)
-								Case "Invalid_string_refer_to_original_code"
+								Case "宇宙"
 									move_cost(i, j) = TerrainMoveCost(i, j)
 									For k = 1 To UBound(adopted_terrain)
 										If TerrainName(i, j) = adopted_terrain(k) Then
@@ -1907,7 +1866,7 @@ NextLoop:
 											Exit For
 										End If
 									Next 
-								Case "髯ｸ", "Invalid_string_refer_to_original_code"
+								Case "陸", "屋内"
 									If is_trans_available_in_sky Then
 										move_cost(i, j) = 2
 									ElseIf is_trans_available_on_ground Then 
@@ -1921,7 +1880,7 @@ NextLoop:
 									Else
 										move_cost(i, j) = 1000000
 									End If
-								Case "譛磯擇"
+								Case "月面"
 									If is_trans_available_in_moon_sky Then
 										move_cost(i, j) = 2
 									ElseIf is_trans_available_on_ground Then 
@@ -1935,7 +1894,7 @@ NextLoop:
 									Else
 										move_cost(i, j) = 1000000
 									End If
-								Case "豌ｴ"
+								Case "水"
 									If is_trans_available_in_water Or is_trans_available_on_water Then
 										move_cost(i, j) = 2
 									ElseIf is_adaptable_in_water Then 
@@ -1949,7 +1908,7 @@ NextLoop:
 									Else
 										move_cost(i, j) = 1000000
 									End If
-								Case "豺ｱ豌ｴ"
+								Case "深水"
 									If is_trans_available_in_water Or is_trans_available_on_water Then
 										move_cost(i, j) = 2
 									ElseIf is_swimable Then 
@@ -1957,7 +1916,7 @@ NextLoop:
 									Else
 										move_cost(i, j) = 1000000
 									End If
-								Case "遨ｺ"
+								Case "空"
 									If is_trans_available_in_sky Then
 										move_cost(i, j) = TerrainMoveCost(i, j)
 										For k = 1 To UBound(adopted_terrain)
@@ -1972,11 +1931,11 @@ NextLoop:
 							End Select
 						Next 
 					Next 
-				Case "蝨ｰ荳ｭ"
+				Case "地中"
 					For i = x1 To x2
 						For j = y1 To y2
 							Select Case TerrainClass(i, j)
-								Case "髯ｸ", "譛磯擇"
+								Case "陸", "月面"
 									move_cost(i, j) = 2
 								Case Else
 									move_cost(i, j) = 1000000
@@ -1985,60 +1944,55 @@ NextLoop:
 					Next 
 			End Select
 			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			For i = x1 To x2
-				For j = y1 To y2
-					If TerrainName(i, j) = "邱夊ｷｯ" Then
-						move_cost(i, j) = 2
-					Else
-						move_cost(i, j) = 1000000
-					End If
-				Next 
-			Next 
-			'End If
-			'End If
-			
-			'Invalid_string_refer_to_original_code
-			ReDim allowed_terrains(0)
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			If .Area <> "遨ｺ荳ｭ" And .Area <> "蝨ｰ荳ｭ" Then
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				ReDim allowed_terrains(n)
-				For i = 2 To n
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				Next 
-				If Not ByJump Then
+			'線路移動
+			If .IsFeatureAvailable("線路移動") Then
+				If .Area = "地上" And Not ByJump Then
 					For i = x1 To x2
 						For j = y1 To y2
-							For k = 2 To n
-								If TerrainName(i, j) = allowed_terrains(k) Then
-									Exit For
-								End If
-							Next 
-							If k > n Then
+							If TerrainName(i, j) = "線路" Then
+								move_cost(i, j) = 2
+							Else
 								move_cost(i, j) = 1000000
 							End If
 						Next 
 					Next 
 				End If
 			End If
-			'End If
 			
-			'騾ｲ蜈･荳榊庄
+			'移動制限
+			ReDim allowed_terrains(0)
+			If .IsFeatureAvailable("移動制限") Then
+				If .Area <> "空中" And .Area <> "地中" Then
+					n = LLength(.FeatureData("移動制限"))
+					ReDim allowed_terrains(n)
+					For i = 2 To n
+						allowed_terrains(i) = LIndex(.FeatureData("移動制限"), i)
+					Next 
+					If Not ByJump Then
+						For i = x1 To x2
+							For j = y1 To y2
+								For k = 2 To n
+									If TerrainName(i, j) = allowed_terrains(k) Then
+										Exit For
+									End If
+								Next 
+								If k > n Then
+									move_cost(i, j) = 1000000
+								End If
+							Next 
+						Next 
+					End If
+				End If
+			End If
+			
+			'進入不可
 			ReDim prohibited_terrains(0)
-			If .IsFeatureAvailable("騾ｲ蜈･荳榊庄") Then
-				If .Area <> "遨ｺ荳ｭ" And .Area <> "蝨ｰ荳ｭ" Then
-					n = LLength(.FeatureData("騾ｲ蜈･荳榊庄"))
+			If .IsFeatureAvailable("進入不可") Then
+				If .Area <> "空中" And .Area <> "地中" Then
+					n = LLength(.FeatureData("進入不可"))
 					ReDim prohibited_terrains(n)
 					For i = 2 To n
-						prohibited_terrains(i) = LIndex(.FeatureData("騾ｲ蜈･荳榊庄"), i)
+						prohibited_terrains(i) = LIndex(.FeatureData("進入不可"), i)
 					Next 
 					If Not ByJump Then
 						For i = x1 To x2
@@ -2055,247 +2009,233 @@ NextLoop:
 				End If
 			End If
 			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			For i = x1 To x2
-				For j = y1 To y2
-					Select Case TerrainName(i, j)
-						Case "遐よｼ", "Invalid_string_refer_to_original_code"
-							move_cost(i, j) = 2
-					End Select
-				Next 
-			Next 
-			'End If
-			'End If
+			'ホバー移動
+			If .IsFeatureAvailable("ホバー移動") Then
+				If move_area = "地上" Or move_area = "水上" Then
+					For i = x1 To x2
+						For j = y1 To y2
+							Select Case TerrainName(i, j)
+								Case "砂漠", "雪原"
+									move_cost(i, j) = 2
+							End Select
+						Next 
+					Next 
+				End If
+			End If
 			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code_
-			'Invalid_string_refer_to_original_code_
-			'Then
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			For i = x1 To x2
-				For j = y1 To y2
-					move_cost(i, j) = 2
+			'透過移動
+			If .IsFeatureAvailable("透過移動") Or .IsUnderSpecialPowerEffect("透過移動") Then
+				For i = x1 To x2
+					For j = y1 To y2
+						move_cost(i, j) = 2
+					Next 
 				Next 
-			Next 
-			'End If
+			End If
 			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code_
-			'Invalid_string_refer_to_original_code_
-			'Then
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			For	Each u2 In UList
-				With u2
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-					
-					blocked = False
-					
-					'Invalid_string_refer_to_original_code
-					If .IsEnemy(u, True) Then
-						blocked = True
-					End If
-					
-					'Invalid_string_refer_to_original_code
-					Select Case .Party0
-						Case "蜻ｳ譁ｹ", "Invalid_string_refer_to_original_code"
-							If u.Party0 <> "蜻ｳ譁ｹ" And u.Party0 <> "Invalid_string_refer_to_original_code" Then
+			'ユニットがいるため通り抜け出来ない場所をチェック
+			If Not .IsFeatureAvailable("すり抜け移動") And Not .IsUnderSpecialPowerEffect("すり抜け移動") Then
+				For	Each u2 In UList
+					With u2
+						If .Status = "出撃" Then
+							
+							blocked = False
+							
+							'敵対する場合は通り抜け不可
+							If .IsEnemy(u, True) Then
 								blocked = True
 							End If
-						Case Else
-							If .Party0 <> u.Party0 Then
-								blocked = True
+							
+							'陣営が合わない場合も通り抜け不可
+							Select Case .Party0
+								Case "味方", "ＮＰＣ"
+									If u.Party0 <> "味方" And u.Party0 <> "ＮＰＣ" Then
+										blocked = True
+									End If
+								Case Else
+									If .Party0 <> u.Party0 Then
+										blocked = True
+									End If
+							End Select
+							
+							'通り抜けられない場合
+							If blocked Then
+								move_cost(.X, .Y) = 1000000
 							End If
-					End Select
-					
-					'Invalid_string_refer_to_original_code
-					If blocked Then
-						move_cost(.X, .Y) = 1000000
-					End If
-					
-					'Invalid_string_refer_to_original_code
-					If blocked And Not ByJump Then
-						is_zoc = False
-						zarea = 0
-						If .IsFeatureAvailable("Invalid_string_refer_to_original_code") Or IsOptionDefined("Invalid_string_refer_to_original_code") Then
-							is_zoc = True
-							zarea = 1
 							
-							'Invalid_string_refer_to_original_code
-							n = .FeatureLevel("Invalid_string_refer_to_original_code")
-							If n = 1 Then n = 10000
-							
-							'Invalid_string_refer_to_original_code
-							n = MaxLng(1, n)
-							
-							'Invalid_string_refer_to_original_code
-							'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-							'Invalid_string_refer_to_original_code
-							'Invalid_string_refer_to_original_code
-							'Invalid_string_refer_to_original_code
-							'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-							If l = 1 Then l = 10000
-							
-							'Invalid_string_refer_to_original_code
-							'Invalid_string_refer_to_original_code
-							If l >= n Then
+							'ＺＯＣ
+							If blocked And Not ByJump Then
 								is_zoc = False
-							End If
-						End If
-						
-						'Invalid_string_refer_to_original_code
-						If is_zoc Then
-							For i = -1 To 1
-								For j = System.Math.Abs(i) - 1 To System.Math.Abs(System.Math.Abs(i) - 1)
-									If (i <> 0 Or j <> 0) And ((.X + i) >= 1 And (.X + i) <= MapWidth And (.Y + j) >= 1 And (.Y + j) <= MapHeight) Then
-										'Invalid_string_refer_to_original_code
-										If Not MapDataForUnit(.X + i, .Y + j) Is Nothing Then
-											buf = .Party0
-											With MapDataForUnit(.X + i, .Y + j)
-												'Invalid_string_refer_to_original_code
-												Select Case .Party0
-													Case "蜻ｳ譁ｹ", "Invalid_string_refer_to_original_code"
-														If buf = "蜻ｳ譁ｹ" Or buf = "Invalid_string_refer_to_original_code" Then
-															Exit For
-														End If
-													Case Else
-														If .Party0 = buf Then
-															Exit For
-														End If
-												End Select
-												
-												'Invalid_string_refer_to_original_code
-												'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-												If l = 1 Then l = 10000
-												
-												'Invalid_string_refer_to_original_code
-												'Invalid_string_refer_to_original_code
-												If l >= n Then
-													is_zoc = False
-													Exit For
+								zarea = 0
+								If .IsFeatureAvailable("ＺＯＣ") Or IsOptionDefined("ＺＯＣ") Then
+									is_zoc = True
+									zarea = 1
+									
+									'ＺＯＣ側のＺＯＣレベル
+									n = .FeatureLevel("ＺＯＣ")
+									If n = 1 Then n = 10000
+									
+									'Option「ＺＯＣ」が指定されている
+									n = MaxLng(1, n)
+									
+									If u.IsFeatureAvailable("ＺＯＣ無効化") Then
+										'移動側のＺＯＣ無効化レベル
+										'レベル指定なし、またはLv1はLv10000として扱う
+										l = u.FeatureLevel("ＺＯＣ無効化")
+										If l = 1 Then l = 10000
+										
+										'移動側のＺＯＣ無効化レベルの方が高い場合、
+										'ＺＯＣ不可能
+										If l >= n Then
+											is_zoc = False
+										End If
+									End If
+									
+									'隣接するユニットが「隣接ユニットＺＯＣ無効化」を持っている場合
+									If is_zoc Then
+										For i = -1 To 1
+											For j = System.Math.Abs(i) - 1 To System.Math.Abs(System.Math.Abs(i) - 1)
+												If (i <> 0 Or j <> 0) And ((.X + i) >= 1 And (.X + i) <= MapWidth And (.Y + j) >= 1 And (.Y + j) <= MapHeight) Then
+													'隣接ユニットが存在する？
+													If Not MapDataForUnit(.X + i, .Y + j) Is Nothing Then
+														buf = .Party0
+														With MapDataForUnit(.X + i, .Y + j)
+															'敵対陣営？
+															Select Case .Party0
+																Case "味方", "ＮＰＣ"
+																	If buf = "味方" Or buf = "ＮＰＣ" Then
+																		Exit For
+																	End If
+																Case Else
+																	If .Party0 = buf Then
+																		Exit For
+																	End If
+															End Select
+															
+															l = .FeatureLevel("隣接ユニットＺＯＣ無効化")
+															If l = 1 Then l = 10000
+															
+															'移動側のＺＯＣ無効化レベルの方が高い場合、
+															'ＺＯＣ不可能
+															If l >= n Then
+																is_zoc = False
+																Exit For
+															End If
+														End With
+													End If
 												End If
-											End With
-										End If
+											Next 
+										Next 
 									End If
-								Next 
-							Next 
-						End If
-					End If
-					
-					If is_zoc Then
-						'Invalid_string_refer_to_original_code
-						'Invalid_string_refer_to_original_code
-						'Invalid_string_refer_to_original_code
-						If LLength(.FeatureData("Invalid_string_refer_to_original_code")) >= 2 Then
-							zarea = MaxLng(CInt(LIndex(.FeatureData("Invalid_string_refer_to_original_code"), 2)), 0)
-						End If
-						
-						'Invalid_string_refer_to_original_code
-						If System.Math.Abs(u.X - .X) + System.Math.Abs(u.Y - .Y) - zarea <= uspeed Then
-							'Invalid_string_refer_to_original_code
-							is_hzoc = False
-							is_vzoc = False
-							'Invalid_string_refer_to_original_code
-							'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-							is_hzoc = True
-							is_vzoc = True
-						Else
-							If InStr(.FeatureData("Invalid_string_refer_to_original_code"), "豌ｴ蟷ｳ") Then
-								is_hzoc = True
-							End If
-							If InStr(.FeatureData("Invalid_string_refer_to_original_code"), "蝙ら峩") Then
-								is_vzoc = True
-							End If
-						End If
-						
-						If is_hzoc Or is_vzoc Then
-							For i = (zarea * -1) To zarea
-								If i = 0 Then
-									If PointInZOC(.X, .Y) < 0 Then
-										If n > System.Math.Abs(PointInZOC(.X, .Y)) Then
-											PointInZOC(.X, .Y) = n
-										End If
-									Else
-										PointInZOC(.X, .Y) = MaxLng(n, PointInZOC(.X, .Y))
+								End If
+								
+								If is_zoc Then
+									'特殊能力「ＺＯＣ」が指定されているなら、そのデータの2つ目の値をＺＯＣの範囲に設定
+									'2つ目の値が省略されている場合は1を設定
+									'ＺＯＣLvが0以下の場合、オプション「ＺＯＣ」が指定されていても範囲を0に設定
+									If LLength(.FeatureData("ＺＯＣ")) >= 2 Then
+										zarea = MaxLng(CInt(LIndex(.FeatureData("ＺＯＣ"), 2)), 0)
 									End If
-								Else
-									'Invalid_string_refer_to_original_code
-									If is_hzoc And (.X + i) >= 1 And (.X + i) <= MapWidth Then
-										If PointInZOC(.X + i, .Y) < 0 Then
-											If n > System.Math.Abs(PointInZOC(.X + i, .Y)) Then
-												PointInZOC(.X + i, .Y) = n
-											End If
+									
+									'相対距離＋ＺＯＣの範囲が移動力以内のとき、ＺＯＣを設定
+									If System.Math.Abs(u.X - .X) + System.Math.Abs(u.Y - .Y) - zarea <= uspeed Then
+										'水平・垂直方向のみのＺＯＣかどうかを判断
+										is_hzoc = False
+										is_vzoc = False
+										If InStr(.FeatureData("ＺＯＣ"), "直線") Then
+											is_hzoc = True
+											is_vzoc = True
 										Else
-											PointInZOC(.X + i, .Y) = MaxLng(n, PointInZOC(.X + i, .Y))
-										End If
-									End If
-									'Invalid_string_refer_to_original_code
-									If is_vzoc And (.Y + i) >= 1 And (.Y + i) <= MapHeight Then
-										If PointInZOC(.X, .Y + i) < 0 Then
-											If n > System.Math.Abs(PointInZOC(.X, .Y + i)) Then
-												PointInZOC(.X, .Y + i) = n
+											If InStr(.FeatureData("ＺＯＣ"), "水平") Then
+												is_hzoc = True
 											End If
+											If InStr(.FeatureData("ＺＯＣ"), "垂直") Then
+												is_vzoc = True
+											End If
+										End If
+										
+										If is_hzoc Or is_vzoc Then
+											For i = (zarea * -1) To zarea
+												If i = 0 Then
+													If PointInZOC(.X, .Y) < 0 Then
+														If n > System.Math.Abs(PointInZOC(.X, .Y)) Then
+															PointInZOC(.X, .Y) = n
+														End If
+													Else
+														PointInZOC(.X, .Y) = MaxLng(n, PointInZOC(.X, .Y))
+													End If
+												Else
+													'水平ＺＯＣ
+													If is_hzoc And (.X + i) >= 1 And (.X + i) <= MapWidth Then
+														If PointInZOC(.X + i, .Y) < 0 Then
+															If n > System.Math.Abs(PointInZOC(.X + i, .Y)) Then
+																PointInZOC(.X + i, .Y) = n
+															End If
+														Else
+															PointInZOC(.X + i, .Y) = MaxLng(n, PointInZOC(.X + i, .Y))
+														End If
+													End If
+													'垂直ＺＯＣ
+													If is_vzoc And (.Y + i) >= 1 And (.Y + i) <= MapHeight Then
+														If PointInZOC(.X, .Y + i) < 0 Then
+															If n > System.Math.Abs(PointInZOC(.X, .Y + i)) Then
+																PointInZOC(.X, .Y + i) = n
+															End If
+														Else
+															PointInZOC(.X, .Y + i) = MaxLng(n, PointInZOC(.X, .Y + i))
+														End If
+													End If
+												End If
+											Next 
 										Else
-											PointInZOC(.X, .Y + i) = MaxLng(n, PointInZOC(.X, .Y + i))
+											'全方位ＺＯＣ
+											For i = (zarea * -1) To zarea
+												For j = (System.Math.Abs(i) - zarea) To System.Math.Abs(System.Math.Abs(i) - zarea)
+													If (.X + i) >= 1 And (.X + i) <= MapWidth And (.Y + j) >= 1 And (.Y + j) <= MapHeight Then
+														If PointInZOC(.X + i, .Y + j) < 0 Then
+															If n > System.Math.Abs(PointInZOC(.X + i, .Y + j)) Then
+																PointInZOC(.X + i, .Y + j) = n
+															End If
+														Else
+															PointInZOC(.X + i, .Y + j) = MaxLng(n, PointInZOC(.X + i, .Y + j))
+														End If
+													End If
+												Next 
+											Next 
 										End If
 									End If
 								End If
-							Next 
-						Else
-							'Invalid_string_refer_to_original_code
-							For i = (zarea * -1) To zarea
-								For j = (System.Math.Abs(i) - zarea) To System.Math.Abs(System.Math.Abs(i) - zarea)
-									If (.X + i) >= 1 And (.X + i) <= MapWidth And (.Y + j) >= 1 And (.Y + j) <= MapHeight Then
-										If PointInZOC(.X + i, .Y + j) < 0 Then
-											If n > System.Math.Abs(PointInZOC(.X + i, .Y + j)) Then
-												PointInZOC(.X + i, .Y + j) = n
-											End If
-										Else
-											PointInZOC(.X + i, .Y + j) = MaxLng(n, PointInZOC(.X + i, .Y + j))
-										End If
+							Else
+								'「広域ＺＯＣ無効化」を所持している場合の処理
+								If System.Math.Abs(u.X - .X) + System.Math.Abs(u.Y - .Y) - zarea <= uspeed Then
+									'レベル指定なし、またはLv1はLv10000として扱う
+									l = .FeatureLevel("広域ＺＯＣ無効化")
+									If l = 1 Then l = 10000
+									
+									If l > 0 Then
+										n = MaxLng(StrToLng(LIndex(.FeatureData("広域ＺＯＣ無効化"), 2)), 1)
+										
+										For i = (n * -1) To n
+											For j = (System.Math.Abs(i) - n) To System.Math.Abs(System.Math.Abs(i) - n)
+												If (.X + i) >= 1 And (.X + i) <= MapWidth And (.Y + j) >= 1 And (.Y + j) <= MapHeight Then
+													PointInZOC(.X + i, .Y + j) = PointInZOC(.X + i, .Y + j) - l
+												End If
+											Next 
+										Next 
 									End If
-								Next 
-							Next 
+								End If
+							End If
 						End If
-					End If
-					'End If
-					'Invalid_string_refer_to_original_code
-					If System.Math.Abs(u.X - .X) + System.Math.Abs(u.Y - .Y) - zarea <= uspeed Then
-						'Invalid_string_refer_to_original_code
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-						If l = 1 Then l = 10000
-						
-						If l > 0 Then
-							'Invalid_string_refer_to_original_code
-							'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-							
-							For i = (n * -1) To n
-								For j = (System.Math.Abs(i) - n) To System.Math.Abs(System.Math.Abs(i) - n)
-									If (.X + i) >= 1 And (.X + i) <= MapWidth And (.Y + j) >= 1 And (.Y + j) <= MapHeight Then
-										PointInZOC(.X + i, .Y + j) = PointInZOC(.X + i, .Y + j) - l
-									End If
-								Next 
-							Next 
-						End If
-					End If
-					'End If
-					'End If
-				End With
-			Next u2
-			'End If
+					End With
+				Next u2
+			End If
 			
-			'Invalid_string_refer_to_original_code
+			'移動停止地形はＺＯＣして扱う
 			If Not ByJump Then
 				With TDList
 					For i = x1 To x2
 						For j = y1 To y2
 							'MOD START 240a
-							'                        If .IsFeatureAvailable(MapData(i, j, 0), "遘ｻ蜍募●豁｢") Then
+							'                        If .IsFeatureAvailable(MapData(i, j, 0), "移動停止") Then
 							'                            PointInZOC(i, j) = 20000
 							'                        End If
 							If TerrainHasMoveStop(i, j) Then
@@ -2307,21 +2247,21 @@ NextLoop:
 				End With
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'マップ上の各地点に到達するのに必要な移動力を計算する
 			
-			'Invalid_string_refer_to_original_code
+			'まず移動コスト計算用の配列を初期化
 			For i = 0 To MapWidth + 1
 				For j = 0 To MapHeight + 1
 					TotalMoveCost(i, j) = 1000000
 				Next 
 			Next 
 			
-			'Invalid_string_refer_to_original_code
+			'現在いる場所は移動する必要がないため、必要移動力が0
 			TotalMoveCost(.X, .Y) = 0
 			
-			'Invalid_string_refer_to_original_code
+			'必要移動力の計算
 			For i = 1 To uspeed
-				'Invalid_string_refer_to_original_code
+				'現在の必要移動力を保存
 				For j = MaxLng(0, .X - i - 1) To MinLng(.X + i + 1, MapWidth + 1)
 					For k = MaxLng(0, .Y - i - 1) To MinLng(.Y + i + 1, MapHeight + 1)
 						cur_cost(j, k) = TotalMoveCost(j, k)
@@ -2329,7 +2269,7 @@ NextLoop:
 				Next 
 				For j = MaxLng(1, .X - i) To MinLng(.X + i, MapWidth)
 					For k = MaxLng(1, .Y - i) To MinLng(.Y + i, MapHeight)
-						'Invalid_string_refer_to_original_code
+						'隣接する地点と比較して最も低い必要移動力を求める
 						tmp = cur_cost(j, k)
 						If i > 1 Then
 							With TDList
@@ -2344,150 +2284,225 @@ NextLoop:
 							tmp = MinLng(tmp, cur_cost(j, k - 1))
 							tmp = MinLng(tmp, cur_cost(j, k + 1))
 						End If
-						'Invalid_string_refer_to_original_code
+						'地形に進入するのに必要な移動力を加算
 						tmp = tmp + move_cost(j, k)
-						'Invalid_string_refer_to_original_code
+						'前回の値とどちらが低い？
 						TotalMoveCost(j, k) = MinLng(tmp, cur_cost(j, k))
 					Next 
 				Next 
 			Next 
 			
-			'Invalid_string_refer_to_original_code
+			'算出された必要移動力を元に進入可能か判定
 			For i = 1 To MapWidth
 				For j = 1 To MapHeight
 					MaskData(i, j) = True
 					
-					'Invalid_string_refer_to_original_code
+					'必要移動力が移動力以内？
 					If TotalMoveCost(i, j) > uspeed Then
 						GoTo NextLoop
 					End If
 					
 					u2 = MapDataForUnit(i, j)
 					
-					'Invalid_string_refer_to_original_code
+					'ユニットが存在？
 					If u2 Is Nothing Then
 						MaskData(i, j) = False
 						GoTo NextLoop
 					End If
 					
-					'Invalid_string_refer_to_original_code
-					If .Party0 <> "蜻ｳ譁ｹ" Then
+					'合体＆着艦するのは味方のみ
+					If .Party0 <> "味方" Then
 						GoTo NextLoop
 					End If
 					
 					Select Case u2.Party0
-						Case "蜻ｳ譁ｹ"
-							If u2.IsFeatureAvailable("豈崎襖") Then
-								'Invalid_string_refer_to_original_code
-								If Not .IsFeatureAvailable("豈崎襖") And u2.Area <> "蝨ｰ荳ｭ" Then
-									If Not .IsFeatureAvailable("譬ｼ邏堺ｸ榊庄") Then
+						Case "味方"
+							If u2.IsFeatureAvailable("母艦") Then
+								'母艦に着艦？
+								If Not .IsFeatureAvailable("母艦") And u2.Area <> "地中" Then
+									If Not .IsFeatureAvailable("格納不可") Then
 										MaskData(i, j) = False
 									End If
 								End If
-								'Invalid_string_refer_to_original_code_
-								'Invalid_string_refer_to_original_code_
-								'Then
-								'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-								'Invalid_string_refer_to_original_code
+							ElseIf .IsFeatureAvailable("合体") And u2.IsFeatureAvailable("合体") Then 
+								'２体合体？
 								MaskData(i, j) = True
 								For k = 1 To .CountFeature
-									'Invalid_string_refer_to_original_code
-									'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-									buf = .FeatureData(k)
-									If LLength(buf) = 3 And UList.IsDefined(LIndex(buf, 2)) And UList.IsDefined(LIndex(buf, 3)) Then
-										With UList.Item(LIndex(buf, 2))
-											If .IsConditionSatisfied("Invalid_string_refer_to_original_code") Then
+									If .Feature(k) = "合体" And .FeatureName(k) <> "" Then
+										buf = .FeatureData(k)
+										If LLength(buf) = 3 And UList.IsDefined(LIndex(buf, 2)) And UList.IsDefined(LIndex(buf, 3)) Then
+											With UList.Item(LIndex(buf, 2))
+												If .IsConditionSatisfied("行動不能") Then
+													Exit For
+												End If
+												If .Status = "破棄" Then
+													Exit For
+												End If
+											End With
+											If u2.Name = LIndex(buf, 3) Then
+												MaskData(i, j) = False
+												Exit For
+											ElseIf u2.Name = UList.Item(LIndex(buf, 3)).CurrentForm.Name And Not u2.IsFeatureAvailable("合体制限") Then 
+												MaskData(i, j) = False
 												Exit For
 											End If
-											'Invalid_string_refer_to_original_code
-											'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-											Exit For
-										End With
+										End If
+									End If
+								Next 
+							End If
+						Case "ＮＰＣ"
+							If .IsFeatureAvailable("合体") And u2.IsFeatureAvailable("合体") Then
+								'２体合体？
+								MaskData(i, j) = True
+								For k = 1 To .CountFeature
+									If .Feature(k) = "合体" Then
+										buf = .FeatureData(k)
+										If LLength(buf) = 3 And UList.IsDefined(LIndex(buf, 2)) And UList.IsDefined(LIndex(buf, 3)) Then
+											With UList.Item(LIndex(buf, 2))
+												If .IsConditionSatisfied("行動不能") Then
+													Exit For
+												End If
+												If .Status = "破棄" Then
+													Exit For
+												End If
+											End With
+											If u2.Name = LIndex(buf, 3) Then
+												MaskData(i, j) = False
+												Exit For
+											ElseIf u2.Name = UList.Item(LIndex(buf, 3)).CurrentForm.Name And Not u2.IsFeatureAvailable("合体制限") Then 
+												MaskData(i, j) = False
+												Exit For
+											End If
+										End If
 									End If
 								Next 
 							End If
 					End Select
+NextLoop: 
 				Next 
 			Next 
+			
+			'ジャンプ＆透過移動先は進入可能？
+			If ByJump Or .IsFeatureAvailable("透過移動") Or .IsUnderSpecialPowerEffect("透過移動") Then
+				For i = x1 To x2
+					For j = y1 To y2
+						If MaskData(i, j) Then
+							GoTo NextLoop2
+						End If
+						
+						'ユニットがいる地形に進入出来るということは
+						'合体or着艦可能ということなので地形は無視
+						If Not MapDataForUnit(i, j) Is Nothing Then
+							GoTo NextLoop2
+						End If
+						
+						Select Case .Area
+							Case "地上"
+								Select Case TerrainClass(i, j)
+									Case "空"
+										MaskData(i, j) = True
+									Case "水"
+										If Not is_adaptable_in_water And Not is_trans_available_on_water And Not is_trans_available_in_water Then
+											MaskData(i, j) = True
+										End If
+									Case "深水"
+										If Not is_trans_available_on_water And Not is_trans_available_in_water Then
+											MaskData(i, j) = True
+										End If
+									Case "宇宙"
+										If Not is_adaptable_in_space Then
+											MaskData(i, j) = True
+										End If
+								End Select
+							Case "水上"
+								Select Case TerrainClass(i, j)
+									Case "空"
+										MaskData(i, j) = True
+									Case "宇宙"
+										If Not is_adaptable_in_space Then
+											MaskData(i, j) = True
+										End If
+								End Select
+							Case "水中"
+								Select Case TerrainClass(i, j)
+									Case "空"
+										MaskData(i, j) = True
+									Case "深水"
+										If Not is_trans_available_on_water And Not is_trans_available_in_water Then
+											MaskData(i, j) = True
+										End If
+									Case "宇宙"
+										If Not is_adaptable_in_space Then
+											MaskData(i, j) = True
+										End If
+								End Select
+							Case "空中"
+								Select Case TerrainClass(i, j)
+									Case "空"
+										If TerrainMoveCost(i, j) > 100 Then
+											MaskData(i, j) = True
+										End If
+									Case "宇宙"
+										If Not is_adaptable_in_space Then
+											MaskData(i, j) = True
+										End If
+								End Select
+							Case "地中"
+								If TerrainClass(i, j) <> "陸" Then
+									MaskData(i, j) = True
+								End If
+							Case "宇宙"
+								Select Case TerrainClass(i, j)
+									Case "陸", "屋内"
+										If Not is_trans_available_in_sky And Not is_trans_available_on_ground Then
+											MaskData(i, j) = True
+										End If
+									Case "空"
+										If Not is_trans_available_in_sky Or TerrainMoveCost(i, j) > 10 Then
+											MaskData(i, j) = True
+										End If
+									Case "水"
+										If Not is_trans_available_in_water And Not is_trans_available_on_water And Not is_adaptable_in_water Then
+											MaskData(i, j) = True
+										End If
+									Case "深水"
+										If Not is_trans_available_on_water And Not is_trans_available_in_water Then
+											MaskData(i, j) = True
+										End If
+								End Select
+						End Select
+						
+						'移動制限
+						If UBound(allowed_terrains) > 0 Then
+							For k = 2 To UBound(allowed_terrains)
+								If TerrainName(i, j) = allowed_terrains(k) Then
+									Exit For
+								End If
+							Next 
+							If k > UBound(allowed_terrains) Then
+								MaskData(i, j) = True
+							End If
+						End If
+						
+						'進入不可
+						For k = 2 To UBound(prohibited_terrains)
+							If TerrainName(i, j) = prohibited_terrains(k) Then
+								MaskData(i, j) = True
+								Exit For
+							End If
+						Next 
+NextLoop2: 
+					Next 
+				Next 
+			End If
+			
+			'現在いる場所は常に進入可能
+			MaskData(.X, .Y) = False
 		End With
-		If u2.Name = LIndex(buf, 3) Then
-			MaskData(i, j) = False
-			Exit For
-			'Invalid_string_refer_to_original_code_
-			'Then
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			MaskData(i, j) = False
-			Exit For
-		End If
-		'End If
-		'End If
-		'Next
-		'End If
-		'UPGRADE_WARNING: AreaInSpeed に変換されていないステートメントがあります。ソース コードを確認してください。
-		'Case "Invalid_string_refer_to_original_code"
-			'Invalid_string_refer_to_original_code_
-			'Invalid_string_refer_to_original_code_
-			'Then
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			'Invalid_string_refer_to_original_code
-			'MaskData(i, j) = True
-			''UPGRADE_WARNING: AreaInSpeed に変換されていないステートメントがあります。ソース コードを確認してください。
-			'End If
-			'End Select
-'NextLoop: '
-			'Next
-			'Next
-			'
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code_
-			'Invalid_string_refer_to_original_code_
-			'Then
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			'For 'i = x1 To x2
-				'For 'j = y1 To y2
-					'If MaskData(i, j) Then
-						'GoTo NextLoop2
-					'End If
-					'
-					'Invalid_string_refer_to_original_code
-					'Invalid_string_refer_to_original_code
-					'If Not MapDataForUnit(i, j) Is Nothing Then
-						'GoTo NextLoop2
-					'End If
-					'
-					''UPGRADE_WARNING: AreaInSpeed に変換されていないステートメントがあります。ソース コードを確認してください。
-					'
-					'Invalid_string_refer_to_original_code
-					'If UBound(allowed_terrains) > 0 Then
-						'For 'k = 2 To UBound(allowed_terrains)
-							'If TerrainName(i, j) = allowed_terrains(k) Then
-								'Exit For
-							'End If
-						'Next 
-						'If k > UBound(allowed_terrains) Then
-							'MaskData(i, j) = True
-						'End If
-					'End If
-					'
-					'騾ｲ蜈･荳榊庄
-					'For 'k = 2 To UBound(prohibited_terrains)
-						'If TerrainName(i, j) = prohibited_terrains(k) Then
-							'MaskData(i, j) = True
-							'Exit For
-						'End If
-					'Next 
-'NextLoop2: '
-				'Next 
-			'Next 
-			'End If
-			'
-			'Invalid_string_refer_to_original_code
-			''UPGRADE_WARNING: AreaInSpeed に変換されていないステートメントがあります。ソース コードを確認してください。
-			'End With
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
+	'ユニット u がテレポートして移動できる範囲を選択
+	'最大距離 lv を指定可能。(省略時は移動力＋テレポートレベル)
 	Public Sub AreaInTeleport(ByRef u As Unit, Optional ByVal lv As Short = 0)
 		Dim is_trans_available_on_ground As Boolean
 		Dim is_trans_available_in_water As Boolean
@@ -2502,76 +2517,65 @@ NextLoop:
 		Dim u2 As Unit
 		
 		With u
-			'Invalid_string_refer_to_original_code
-			is_trans_available_on_ground = .IsTransAvailable("髯ｸ") And .Adaption(2) <> 0
-			is_trans_available_in_water = .IsTransAvailable("豌ｴ") And .Adaption(3) <> 0
-			is_trans_available_in_sky = .IsTransAvailable("遨ｺ") And .Adaption(1) <> 0
-			'Invalid_string_refer_to_original_code_
-			'Then
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			is_adaptable_in_water = True
-			'End If
-			'Invalid_string_refer_to_original_code_
-			'Then
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			is_adaptable_in_space = True
-			'End If
-			'Invalid_string_refer_to_original_code_
-			'Invalid_string_refer_to_original_code_
-			'Then
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			is_trans_available_on_water = True
-			'End If
-			
-			'Invalid_string_refer_to_original_code
-			ReDim allowed_terrains(0)
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			If .Area <> "遨ｺ荳ｭ" And .Area <> "蝨ｰ荳ｭ" Then
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				ReDim allowed_terrains(n)
-				For i = 2 To n
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				Next 
+			'移動能力の可否を調べておく
+			is_trans_available_on_ground = .IsTransAvailable("陸") And .Adaption(2) <> 0
+			is_trans_available_in_water = .IsTransAvailable("水") And .Adaption(3) <> 0
+			is_trans_available_in_sky = .IsTransAvailable("空") And .Adaption(1) <> 0
+			If Mid(.Data.Adaption, 3, 1) <> "-" Or .IsFeatureAvailable("水中移動") Then
+				is_adaptable_in_water = True
 			End If
-			'End If
+			If Mid(.Data.Adaption, 4, 1) <> "-" Or .IsFeatureAvailable("宇宙移動") Then
+				is_adaptable_in_space = True
+			End If
+			If .IsFeatureAvailable("水上移動") Or .IsFeatureAvailable("ホバー移動") Then
+				is_trans_available_on_water = True
+			End If
 			
-			'騾ｲ蜈･荳榊庄
-			ReDim prohibited_terrains(0)
-			If .IsFeatureAvailable("騾ｲ蜈･荳榊庄") Then
-				If .Area <> "遨ｺ荳ｭ" And .Area <> "蝨ｰ荳ｭ" Then
-					n = LLength(.FeatureData("騾ｲ蜈･荳榊庄"))
-					ReDim prohibited_terrains(n)
+			'移動制限
+			ReDim allowed_terrains(0)
+			If .IsFeatureAvailable("移動制限") Then
+				If .Area <> "空中" And .Area <> "地中" Then
+					n = LLength(.FeatureData("移動制限"))
+					ReDim allowed_terrains(n)
 					For i = 2 To n
-						prohibited_terrains(i) = LIndex(.FeatureData("騾ｲ蜈･荳榊庄"), i)
+						allowed_terrains(i) = LIndex(.FeatureData("移動制限"), i)
 					Next 
 				End If
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'進入不可
+			ReDim prohibited_terrains(0)
+			If .IsFeatureAvailable("進入不可") Then
+				If .Area <> "空中" And .Area <> "地中" Then
+					n = LLength(.FeatureData("進入不可"))
+					ReDim prohibited_terrains(n)
+					For i = 2 To n
+						prohibited_terrains(i) = LIndex(.FeatureData("進入不可"), i)
+					Next 
+				End If
+			End If
+			
+			'テレポートによる移動距離を算出
 			If lv > 0 Then
 				r = lv
 			Else
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+				r = .Speed + .FeatureLevel("テレポート")
 			End If
-			If .IsConditionSatisfied("Invalid_string_refer_to_original_code") Then
+			If .IsConditionSatisfied("移動不能") Then
 				r = 0
 			End If
 			
-			'驕ｸ謚櫁ｧ｣髯､
+			'選択解除
 			For i = 1 To MapWidth
 				For j = 1 To MapHeight
 					MaskData(i, j) = True
 				Next 
 			Next 
 			
-			'Invalid_string_refer_to_original_code
+			'移動可能な地点を調べる
 			For i = MaxLng(1, .X - r) To MinLng(MapWidth, .X + r)
 				For j = MaxLng(1, .Y - r) To MinLng(MapHeight, .Y + r)
-					'Invalid_string_refer_to_original_code
+					'移動範囲内？
 					If System.Math.Abs(.X - i) + System.Math.Abs(.Y - j) > r Then
 						GoTo NextLoop
 					End If
@@ -2579,76 +2583,76 @@ NextLoop:
 					u2 = MapDataForUnit(i, j)
 					
 					If u2 Is Nothing Then
-						'Invalid_string_refer_to_original_code
+						'ユニットがいない地点は地形から進入可能かチェック
 						MaskData(i, j) = False
 						Select Case .Area
-							Case "Invalid_string_refer_to_original_code"
+							Case "地上"
 								Select Case TerrainClass(i, j)
-									Case "遨ｺ"
+									Case "空"
 										MaskData(i, j) = True
-									Case "豌ｴ"
+									Case "水"
 										If Not is_adaptable_in_water And Not is_trans_available_on_water And Not is_trans_available_in_water Then
 											MaskData(i, j) = True
 										End If
-									Case "豺ｱ豌ｴ"
+									Case "深水"
 										If Not is_trans_available_on_water And Not is_trans_available_in_water Then
 											MaskData(i, j) = True
 										End If
-									Case "Invalid_string_refer_to_original_code"
+									Case "宇宙"
 										If Not is_adaptable_in_space Then
 											MaskData(i, j) = True
 										End If
 								End Select
-							Case "豌ｴ荳ｭ"
+							Case "水中"
 								Select Case TerrainClass(i, j)
-									Case "遨ｺ"
+									Case "空"
 										MaskData(i, j) = True
-									Case "豺ｱ豌ｴ"
+									Case "深水"
 										If Not is_trans_available_on_water And Not is_trans_available_in_water Then
 											MaskData(i, j) = True
 										End If
-									Case "Invalid_string_refer_to_original_code"
+									Case "宇宙"
 										If Not is_adaptable_in_space Then
 											MaskData(i, j) = True
 										End If
 								End Select
-							Case "遨ｺ荳ｭ"
+							Case "空中"
 								Select Case TerrainClass(i, j)
-									Case "遨ｺ"
+									Case "空"
 										If TerrainMoveCost(i, j) > 100 Then
 											MaskData(i, j) = True
 										End If
-									Case "Invalid_string_refer_to_original_code"
+									Case "宇宙"
 										If Not is_adaptable_in_space Then
 											MaskData(i, j) = True
 										End If
 								End Select
-							Case "蝨ｰ荳ｭ"
-								If TerrainClass(i, j) <> "髯ｸ" Then
+							Case "地中"
+								If TerrainClass(i, j) <> "陸" Then
 									MaskData(i, j) = True
 								End If
-							Case "Invalid_string_refer_to_original_code"
+							Case "宇宙"
 								Select Case TerrainClass(i, j)
-									Case "髯ｸ", "Invalid_string_refer_to_original_code"
+									Case "陸", "屋内"
 										If Not is_trans_available_in_sky And Not is_trans_available_on_ground Then
 											MaskData(i, j) = True
 										End If
-									Case "遨ｺ"
+									Case "空"
 										If Not is_trans_available_in_sky Or TerrainMoveCost(i, j) > 100 Then
 											MaskData(i, j) = True
 										End If
-									Case "豌ｴ"
+									Case "水"
 										If Not is_trans_available_in_water And Not is_trans_available_on_water And Not is_adaptable_in_water Then
 											MaskData(i, j) = True
 										End If
-									Case "豺ｱ豌ｴ"
+									Case "深水"
 										If Not is_trans_available_on_water And Not is_trans_available_in_water Then
 											MaskData(i, j) = True
 										End If
 								End Select
 						End Select
 						
-						'Invalid_string_refer_to_original_code
+						'移動制限
 						If UBound(allowed_terrains) > 0 Then
 							For k = 2 To UBound(allowed_terrains)
 								If TerrainName(i, j) = allowed_terrains(k) Then
@@ -2660,7 +2664,7 @@ NextLoop:
 							End If
 						End If
 						
-						'騾ｲ蜈･荳榊庄
+						'進入不可
 						For k = 2 To UBound(prohibited_terrains)
 							If TerrainName(i, j) = prohibited_terrains(k) Then
 								MaskData(i, j) = True
@@ -2671,78 +2675,82 @@ NextLoop:
 						GoTo NextLoop
 					End If
 					
-					'Invalid_string_refer_to_original_code
-					If .Party0 <> "蜻ｳ譁ｹ" Then
+					'合体＆着艦するのは味方のみ
+					If .Party0 <> "味方" Then
 						GoTo NextLoop
 					End If
 					
 					Select Case u2.Party0
-						Case "蜻ｳ譁ｹ"
-							If u2.IsFeatureAvailable("豈崎襖") Then
-								'Invalid_string_refer_to_original_code
-								If Not .IsFeatureAvailable("豈崎襖") And Not .IsFeatureAvailable("譬ｼ邏堺ｸ榊庄") And u2.Area <> "蝨ｰ荳ｭ" And Not u2.IsDisabled("豈崎襖") Then
+						Case "味方"
+							If u2.IsFeatureAvailable("母艦") Then
+								'母艦に着艦？
+								If Not .IsFeatureAvailable("母艦") And Not .IsFeatureAvailable("格納不可") And u2.Area <> "地中" And Not u2.IsDisabled("母艦") Then
 									MaskData(i, j) = False
 								End If
-								'Invalid_string_refer_to_original_code_
-								'Invalid_string_refer_to_original_code_
-								'Then
-								'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-								'Invalid_string_refer_to_original_code
+							ElseIf .IsFeatureAvailable("合体") And u2.IsFeatureAvailable("合体") Then 
+								'２体合体？
 								MaskData(i, j) = True
 								For k = 1 To .CountFeature
-									'Invalid_string_refer_to_original_code
-									'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-									buf = .FeatureData(k)
-									If LLength(buf) = 3 And UList.IsDefined(LIndex(buf, 2)) And UList.IsDefined(LIndex(buf, 3)) Then
-										With UList.Item(LIndex(buf, 2))
-											If .IsConditionSatisfied("Invalid_string_refer_to_original_code") Then
+									If .Feature(k) = "合体" And .FeatureName(k) <> "" Then
+										buf = .FeatureData(k)
+										If LLength(buf) = 3 And UList.IsDefined(LIndex(buf, 2)) And UList.IsDefined(LIndex(buf, 3)) Then
+											With UList.Item(LIndex(buf, 2))
+												If .IsConditionSatisfied("行動不能") Then
+													Exit For
+												End If
+												If .Status = "破棄" Then
+													Exit For
+												End If
+											End With
+											If u2.Name = LIndex(buf, 3) Then
+												MaskData(i, j) = False
+												Exit For
+											ElseIf u2.Name = UList.Item(LIndex(buf, 3)).CurrentForm.Name And Not u2.IsFeatureAvailable("合体制限") Then 
+												MaskData(i, j) = False
 												Exit For
 											End If
-											'Invalid_string_refer_to_original_code
-											'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-											Exit For
-										End With
+										End If
+									End If
+								Next 
+							End If
+						Case "ＮＰＣ"
+							If .IsFeatureAvailable("合体") And u2.IsFeatureAvailable("合体") Then
+								'２体合体？
+								MaskData(i, j) = True
+								For k = 1 To .CountFeature
+									If .Feature(k) = "合体" Then
+										buf = .FeatureData(k)
+										If LLength(buf) = 3 And UList.IsDefined(LIndex(buf, 2)) And UList.IsDefined(LIndex(buf, 3)) Then
+											With UList.Item(LIndex(buf, 2))
+												If .IsConditionSatisfied("行動不能") Then
+													Exit For
+												End If
+												If .Status = "破棄" Then
+													Exit For
+												End If
+											End With
+											If u2.Name = LIndex(buf, 3) Then
+												MaskData(i, j) = False
+												Exit For
+											ElseIf u2.Name = UList.Item(LIndex(buf, 3)).CurrentForm.Name And Not u2.IsFeatureAvailable("合体制限") Then 
+												MaskData(i, j) = False
+												Exit For
+											End If
+										End If
 									End If
 								Next 
 							End If
 					End Select
+NextLoop: 
 				Next 
 			Next 
+			
+			'現在いる場所は常に進入可能
+			MaskData(.X, .Y) = False
 		End With
-		If u2.Name = LIndex(buf, 3) Then
-			MaskData(i, j) = False
-			Exit For
-			'Invalid_string_refer_to_original_code_
-			'Then
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			MaskData(i, j) = False
-			Exit For
-		End If
-		'End If
-		'End If
-		'Next
-		'End If
-		'UPGRADE_WARNING: AreaInTeleport に変換されていないステートメントがあります。ソース コードを確認してください。
-		'Case "Invalid_string_refer_to_original_code"
-			'Invalid_string_refer_to_original_code_
-			'Invalid_string_refer_to_original_code_
-			'Then
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			'Invalid_string_refer_to_original_code
-			'MaskData(i, j) = True
-			''UPGRADE_WARNING: AreaInTeleport に変換されていないステートメントがあります。ソース コードを確認してください。
-			'End If
-			'End Select
-'NextLoop: '
-			'Next
-			'Next
-			'
-			'Invalid_string_refer_to_original_code
-			''UPGRADE_WARNING: AreaInTeleport に変換されていないステートメントがあります。ソース コードを確認してください。
-			'End With
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'ユニット u のＭ移武器、アビリティのターゲット座標選択用
 	Public Sub AreaInMoveAction(ByRef u As Unit, ByVal max_range As Short)
 		Dim k, i, j, n As Short
 		' ADD START MARGE
@@ -2767,179 +2775,162 @@ NextLoop:
 		' ADD END MARGE
 		
 		With u
-			'蜈ｨ鬆伜沺繝槭せ繧ｯ
+			'全領域マスク
 			For i = 1 To MapWidth
 				For j = 1 To MapHeight
 					MaskData(i, j) = True
 				Next 
 			Next 
 			
-			'Invalid_string_refer_to_original_code
-			is_trans_available_on_ground = .IsTransAvailable("髯ｸ") And .Adaption(2) <> 0
-			is_trans_available_in_water = .IsTransAvailable("豌ｴ") And .Adaption(3) <> 0
-			is_trans_available_in_sky = .IsTransAvailable("遨ｺ") And .Adaption(1) <> 0
-			'Invalid_string_refer_to_original_code_
-			'Then
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			is_adaptable_in_water = True
-			'End If
-			'Invalid_string_refer_to_original_code_
-			'Then
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			is_adaptable_in_space = True
-			'End If
-			'Invalid_string_refer_to_original_code_
-			'Invalid_string_refer_to_original_code_
-			'Then
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			is_trans_available_on_water = True
-			'End If
-			'Invalid_string_refer_to_original_code_
-			'Invalid_string_refer_to_original_code_
-			'Then
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			is_able_to_penetrate = True
-			'End If
+			'移動能力の可否を調べておく
+			is_trans_available_on_ground = .IsTransAvailable("陸") And .Adaption(2) <> 0
+			is_trans_available_in_water = .IsTransAvailable("水") And .Adaption(3) <> 0
+			is_trans_available_in_sky = .IsTransAvailable("空") And .Adaption(1) <> 0
+			If Mid(.Data.Adaption, 3, 1) <> "-" Or .IsFeatureAvailable("水中移動") Then
+				is_adaptable_in_water = True
+			End If
+			If Mid(.Data.Adaption, 4, 1) <> "-" Or .IsFeatureAvailable("宇宙移動") Then
+				is_adaptable_in_space = True
+			End If
+			If .IsFeatureAvailable("水上移動") Or .IsFeatureAvailable("ホバー移動") Then
+				is_trans_available_on_water = True
+			End If
+			If .IsFeatureAvailable("透過移動") Or .IsUnderSpecialPowerEffect("透過移動") Then
+				is_able_to_penetrate = True
+			End If
 			
 			' ADD START MARGE
-			'Invalid_string_refer_to_original_code
+			'地形適応のある地形のリストを作成
 			ReDim adopted_terrain(0)
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			For i = 1 To .CountFeature
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				buf = .FeatureData(i)
-				If LLength(buf) = 0 Then
-					ErrorMessage("Invalid_string_refer_to_original_code")
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-					TerminateSRC()
-				End If
-				n = LLength(buf)
-				ReDim Preserve adopted_terrain(UBound(adopted_terrain) + n - 1)
-				For j = 2 To n
-					adopted_terrain(UBound(adopted_terrain) - j + 2) = LIndex(buf, j)
-				Next 
-				'End If
-			Next 
-			'End If
-			' ADD END MARGE
-			
-			'Invalid_string_refer_to_original_code
-			ReDim allowed_terrains(0)
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			If .Area <> "遨ｺ荳ｭ" And .Area <> "蝨ｰ荳ｭ" Then
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				ReDim allowed_terrains(n)
-				For i = 2 To n
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+			If .IsFeatureAvailable("地形適応") Then
+				For i = 1 To .CountFeature
+					If .Feature(i) = "地形適応" Then
+						buf = .FeatureData(i)
+						If LLength(buf) = 0 Then
+							ErrorMessage("ユニット「" & .Name & "」の地形適応能力に対応地形が指定されていません")
+							TerminateSRC()
+						End If
+						n = LLength(buf)
+						ReDim Preserve adopted_terrain(UBound(adopted_terrain) + n - 1)
+						For j = 2 To n
+							adopted_terrain(UBound(adopted_terrain) - j + 2) = LIndex(buf, j)
+						Next 
+					End If
 				Next 
 			End If
-			'End If
+			' ADD END MARGE
 			
-			'騾ｲ蜈･荳榊庄
-			ReDim prohibited_terrains(0)
-			If .IsFeatureAvailable("騾ｲ蜈･荳榊庄") Then
-				If .Area <> "遨ｺ荳ｭ" And .Area <> "蝨ｰ荳ｭ" Then
-					n = LLength(.FeatureData("騾ｲ蜈･荳榊庄"))
-					ReDim prohibited_terrains(n)
+			'移動制限
+			ReDim allowed_terrains(0)
+			If .IsFeatureAvailable("移動制限") Then
+				If .Area <> "空中" And .Area <> "地中" Then
+					n = LLength(.FeatureData("移動制限"))
+					ReDim allowed_terrains(n)
 					For i = 2 To n
-						prohibited_terrains(i) = LIndex(.FeatureData("騾ｲ蜈･荳榊庄"), i)
+						allowed_terrains(i) = LIndex(.FeatureData("移動制限"), i)
 					Next 
 				End If
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'進入不可
+			ReDim prohibited_terrains(0)
+			If .IsFeatureAvailable("進入不可") Then
+				If .Area <> "空中" And .Area <> "地中" Then
+					n = LLength(.FeatureData("進入不可"))
+					ReDim prohibited_terrains(n)
+					For i = 2 To n
+						prohibited_terrains(i) = LIndex(.FeatureData("進入不可"), i)
+					Next 
+				End If
+			End If
+			
+			'移動範囲をチェックすべき領域
 			x1 = MaxLng(1, .X - max_range)
 			y1 = MaxLng(1, .Y - max_range)
 			x2 = MinLng(.X + max_range, MapWidth)
 			y2 = MinLng(.Y + max_range, MapHeight)
 			
-			'Invalid_string_refer_to_original_code
+			'進入可能か判定
 			For i = x1 To x2
 				For j = y1 To y2
-					'Invalid_string_refer_to_original_code
+					'移動力の範囲内？
 					If System.Math.Abs(.X - i) + System.Math.Abs(.Y - j) > max_range Then
 						GoTo NextLoop
 					End If
 					
-					'Invalid_string_refer_to_original_code
+					'ユニットが存在？
 					If Not MapDataForUnit(i, j) Is Nothing Then
 						GoTo NextLoop
 					End If
 					
-					'Invalid_string_refer_to_original_code
+					'適応あり？
 					Select Case .Area
-						Case "Invalid_string_refer_to_original_code"
+						Case "地上"
 							Select Case TerrainClass(i, j)
-								Case "遨ｺ"
+								Case "空"
 									GoTo NextLoop
-								Case "豌ｴ"
+								Case "水"
 									If Not is_adaptable_in_water And Not is_trans_available_on_water And Not is_trans_available_in_water Then
 										GoTo NextLoop
 									End If
-								Case "豺ｱ豌ｴ"
+								Case "深水"
 									If Not is_trans_available_on_water And Not is_trans_available_in_water Then
 										GoTo NextLoop
 									End If
-								Case "Invalid_string_refer_to_original_code"
+								Case "宇宙"
 									If Not is_adaptable_in_space Then
 										GoTo NextLoop
 									End If
 							End Select
-						Case "豌ｴ荳ｭ"
+						Case "水中"
 							Select Case TerrainClass(i, j)
-								Case "遨ｺ"
+								Case "空"
 									GoTo NextLoop
-								Case "豺ｱ豌ｴ"
+								Case "深水"
 									If Not is_trans_available_on_water And Not is_trans_available_in_water Then
 										GoTo NextLoop
 									End If
-								Case "Invalid_string_refer_to_original_code"
+								Case "宇宙"
 									If Not is_adaptable_in_space Then
 										GoTo NextLoop
 									End If
 							End Select
-						Case "遨ｺ荳ｭ"
+						Case "空中"
 							Select Case TerrainClass(i, j)
-								Case "遨ｺ"
+								Case "空"
 									If TerrainMoveCost(i, j) > 100 Then
 										GoTo NextLoop
 									End If
-								Case "Invalid_string_refer_to_original_code"
+								Case "宇宙"
 									If Not is_adaptable_in_space Then
 										GoTo NextLoop
 									End If
 							End Select
-						Case "蝨ｰ荳ｭ"
-							If TerrainClass(i, j) <> "髯ｸ" Then
+						Case "地中"
+							If TerrainClass(i, j) <> "陸" Then
 								GoTo NextLoop
 							End If
-						Case "Invalid_string_refer_to_original_code"
+						Case "宇宙"
 							Select Case TerrainClass(i, j)
-								Case "髯ｸ", "Invalid_string_refer_to_original_code"
+								Case "陸", "屋内"
 									If Not is_trans_available_in_sky And Not is_trans_available_on_ground Then
 										GoTo NextLoop
 									End If
-								Case "遨ｺ"
+								Case "空"
 									If Not is_trans_available_in_sky Or TerrainMoveCost(i, j) > 100 Then
 										GoTo NextLoop
 									End If
-								Case "豌ｴ"
+								Case "水"
 									If Not is_trans_available_in_water And Not is_trans_available_on_water And Not is_adaptable_in_water Then
 										GoTo NextLoop
 									End If
-								Case "豺ｱ豌ｴ"
+								Case "深水"
 									If Not is_trans_available_on_water And Not is_trans_available_in_water Then
 										GoTo NextLoop
 									End If
 							End Select
 							
-							'Invalid_string_refer_to_original_code
+							'移動制限
 							If UBound(allowed_terrains) > 0 Then
 								For k = 2 To UBound(allowed_terrains)
 									If TerrainName(i, j) = allowed_terrains(k) Then
@@ -2951,7 +2942,7 @@ NextLoop:
 								End If
 							End If
 							
-							'騾ｲ蜈･荳榊庄
+							'進入不可
 							For k = 2 To UBound(prohibited_terrains)
 								If TerrainName(i, j) = prohibited_terrains(k) Then
 									GoTo NextLoop
@@ -2959,11 +2950,11 @@ NextLoop:
 							Next 
 					End Select
 					
-					'Invalid_string_refer_to_original_code
+					'侵入（進入）禁止地形？
 					'MOD START 240a
 					'                Set td = TDList.Item(MapData(i, j, 0))
 					'                With td
-					'                    If .IsFeatureAvailable("萓ｵ蜈･遖∵ｭ｢") Then
+					'                    If .IsFeatureAvailable("侵入禁止") Then
 					'                        For k = 1 To UBound(adopted_terrain)
 					'                            If .Name = adopted_terrain(k) Then
 					'                                Exit For
@@ -2986,25 +2977,25 @@ NextLoop:
 					End If
 					'MOD START 240a
 					
-					'Invalid_string_refer_to_original_code
+					'進路上に壁がある？
 					If Not is_able_to_penetrate Then
-						If IsLineBlocked(.X, .Y, i, j, .Area = "遨ｺ荳ｭ") Then
+						If IsLineBlocked(.X, .Y, i, j, .Area = "空中") Then
 							GoTo NextLoop
 						End If
 					End If
 					
-					'繝槭せ繧ｯ隗｣髯､
+					'マスク解除
 					MaskData(i, j) = False
 NextLoop: 
 				Next 
 			Next 
 			
-			'Invalid_string_refer_to_original_code
+			'現在いる場所は常に進入可能
 			MaskData(.X, .Y) = False
 		End With
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'２点間を結ぶ直線が壁でブロックされているか判定
 	Public Function IsLineBlocked(ByVal x1 As Short, ByVal y1 As Short, ByVal x2 As Short, ByVal y2 As Short, Optional ByVal is_flying As Boolean = False) As Boolean
 		Dim xx, yy As Short
 		Dim xx2, yy2 As Short
@@ -3021,74 +3012,60 @@ NextLoop:
 				yy2 = yy
 				yy = y1 + (y2 - y1) * (x1 - xx + 0#) / (x1 - x2)
 				
-				'Invalid_string_refer_to_original_code
+				'壁？
 				If is_flying Then
-					'Invalid_string_refer_to_original_code_
-					'Invalid_string_refer_to_original_code_
-					'Then
-					'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-					IsLineBlocked = True
-					Exit Function
+					If TerrainName(xx, yy) = "壁" Or TerrainName(xx, yy2) = "壁" Then
+						IsLineBlocked = True
+						Exit Function
+					End If
+				Else
+					Select Case TerrainName(xx, yy)
+						Case "壁", "防壁"
+							IsLineBlocked = True
+							Exit Function
+					End Select
+					Select Case TerrainName(xx, yy2)
+						Case "壁", "防壁"
+							IsLineBlocked = True
+							Exit Function
+					End Select
 				End If
-			Loop 
+			Loop Until xx = x2
 		Else
-			Select Case TerrainName(xx, yy)
-				Case "Invalid_string_refer_to_original_code"
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-					IsLineBlocked = True
-					Exit Function
-			End Select
-			Select Case TerrainName(xx, yy2)
-				Case "Invalid_string_refer_to_original_code"
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-					IsLineBlocked = True
-					Exit Function
-			End Select
+			Do 
+				If y1 > y2 Then
+					yy = yy - 1
+				Else
+					yy = yy + 1
+				End If
+				xx2 = xx
+				xx = x1 + (x2 - x1) * (y1 - yy + 0#) / (y1 - y2)
+				
+				'壁？
+				If is_flying Then
+					If TerrainName(xx, yy) = "壁" Or TerrainName(xx2, yy) = "壁" Then
+						IsLineBlocked = True
+						Exit Function
+					End If
+				Else
+					Select Case TerrainName(xx, yy)
+						Case "壁", "防壁"
+							IsLineBlocked = True
+							Exit Function
+					End Select
+					Select Case TerrainName(xx2, yy)
+						Case "壁", "防壁"
+							IsLineBlocked = True
+							Exit Function
+					End Select
+				End If
+			Loop Until yy = y2
 		End If
-		'UPGRADE_WARNING: IsLineBlocked に変換されていないステートメントがあります。ソース コードを確認してください。
-		'Loop
-		Do 
-			If y1 > y2 Then
-				yy = yy - 1
-			Else
-				yy = yy + 1
-			End If
-			xx2 = xx
-			xx = x1 + (x2 - x1) * (y1 - yy + 0#) / (y1 - y2)
-			
-			'Invalid_string_refer_to_original_code
-			If is_flying Then
-				'Invalid_string_refer_to_original_code_
-				'Invalid_string_refer_to_original_code_
-				'Then
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				IsLineBlocked = True
-				Exit Function
-			End If
-			Select Case TerrainName(xx, yy)
-				Case "Invalid_string_refer_to_original_code"
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-					IsLineBlocked = True
-					Exit Function
-			End Select
-			Select Case TerrainName(xx2, yy)
-				Case "Invalid_string_refer_to_original_code"
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-					IsLineBlocked = True
-					Exit Function
-			End Select
-			'End If
-		Loop Until yy = y2
-		'End If
 		
 		IsLineBlocked = False
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'ユニット u が (dst_x,dst_y) に行くのに最も近い移動範囲内の場所 (X,Y) はどこか検索
 	Public Sub NearestPoint(ByRef u As Unit, ByVal dst_x As Short, ByVal dst_y As Short, ByRef X As Short, ByRef Y As Short)
 		Dim k, i, j, n As Short
 		Dim total_cost(51, 51) As Integer
@@ -3106,43 +3083,36 @@ NextLoop:
 		Dim min_x, max_x As Short
 		Dim min_y, max_y As Short
 		
-		'Invalid_string_refer_to_original_code
+		'目的地がマップ外にならないように
 		dst_x = MaxLng(MinLng(dst_x, MapWidth), 1)
 		dst_y = MaxLng(MinLng(dst_y, MapHeight), 1)
 		
-		'Invalid_string_refer_to_original_code
+		'移動能力の可否を調べておく
 		With u
 			X = .X
 			Y = .Y
 			
-			is_trans_available_on_ground = .IsTransAvailable("髯ｸ") And .Adaption(2) <> 0
-			is_trans_available_in_water = .IsTransAvailable("豌ｴ") And .Adaption(3) <> 0
-			'Invalid_string_refer_to_original_code_
-			'Then
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			is_adaptable_in_water = True
-			'End If
-			'Invalid_string_refer_to_original_code_
-			'Invalid_string_refer_to_original_code_
-			'Then
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			is_trans_available_on_water = True
-			'End If
+			is_trans_available_on_ground = .IsTransAvailable("陸") And .Adaption(2) <> 0
+			is_trans_available_in_water = .IsTransAvailable("水") And .Adaption(3) <> 0
+			If Mid(.Data.Adaption, 3, 1) <> "-" Or .IsFeatureAvailable("水中移動") Then
+				is_adaptable_in_water = True
+			End If
+			If .IsFeatureAvailable("水上移動") Or .IsFeatureAvailable("ホバー移動") Then
+				is_trans_available_on_water = True
+			End If
 			
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+			ReDim adopted_terrain(LLength(.FeatureData("地形適応")))
 			For i = 2 To UBound(adopted_terrain)
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+				adopted_terrain(i) = LIndex(.FeatureData("地形適応"), i)
 			Next 
 		End With
 		
-		'Invalid_string_refer_to_original_code
+		'各地形の移動コストを算出しておく
 		Select Case u.Area
-			Case "遨ｺ荳ｭ"
+			Case "空中"
 				For i = 1 To MapWidth
 					For j = 1 To MapHeight
-						If TerrainClass(i, j) = "遨ｺ" Then
+						If TerrainClass(i, j) = "空" Then
 							move_cost(i, j) = TerrainMoveCost(i, j)
 							For k = 2 To UBound(adopted_terrain)
 								If TerrainName(i, j) = adopted_terrain(k) Then
@@ -3156,11 +3126,11 @@ NextLoop:
 					Next 
 				Next 
 				
-			Case "Invalid_string_refer_to_original_code"
+			Case "地上"
 				For i = 1 To MapWidth
 					For j = 1 To MapHeight
 						Select Case TerrainClass(i, j)
-							Case "髯ｸ", "Invalid_string_refer_to_original_code", "譛磯擇"
+							Case "陸", "屋内", "月面"
 								If is_trans_available_on_ground Then
 									move_cost(i, j) = TerrainMoveCost(i, j)
 									For k = 2 To UBound(adopted_terrain)
@@ -3172,7 +3142,7 @@ NextLoop:
 								Else
 									move_cost(i, j) = 1000000
 								End If
-							Case "豌ｴ"
+							Case "水"
 								If is_trans_available_in_water Then
 									move_cost(i, j) = 2
 								ElseIf is_adaptable_in_water Then 
@@ -3186,23 +3156,23 @@ NextLoop:
 								Else
 									move_cost(i, j) = 1000000
 								End If
-							Case "豺ｱ豌ｴ"
+							Case "深水"
 								If is_trans_available_in_water Then
 									move_cost(i, j) = 1
 								Else
 									move_cost(i, j) = 1000000
 								End If
-							Case "遨ｺ"
+							Case "空"
 								move_cost(i, j) = 1000000
 						End Select
 					Next 
 				Next 
 				
-			Case "Invalid_string_refer_to_original_code"
+			Case "水上"
 				For i = 1 To MapWidth
 					For j = 1 To MapHeight
 						Select Case TerrainClass(i, j)
-							Case "髯ｸ", "Invalid_string_refer_to_original_code", "譛磯擇"
+							Case "陸", "屋内", "月面"
 								If is_trans_available_on_ground Then
 									move_cost(i, j) = TerrainMoveCost(i, j)
 									For k = 2 To UBound(adopted_terrain)
@@ -3214,19 +3184,19 @@ NextLoop:
 								Else
 									move_cost(i, j) = 1000000
 								End If
-							Case "豌ｴ", "豺ｱ豌ｴ"
+							Case "水", "深水"
 								move_cost(i, j) = 2
-							Case "遨ｺ"
+							Case "空"
 								move_cost(i, j) = 1000000
 						End Select
 					Next 
 				Next 
 				
-			Case "豌ｴ荳ｭ"
+			Case "水中"
 				For i = 1 To MapWidth
 					For j = 1 To MapHeight
 						Select Case TerrainClass(i, j)
-							Case "髯ｸ", "Invalid_string_refer_to_original_code", "譛磯擇"
+							Case "陸", "屋内", "月面"
 								If is_trans_available_on_ground Then
 									move_cost(i, j) = TerrainMoveCost(i, j)
 									For k = 2 To UBound(adopted_terrain)
@@ -3238,7 +3208,7 @@ NextLoop:
 								Else
 									move_cost(i, j) = 1000000
 								End If
-							Case "豌ｴ"
+							Case "水"
 								If is_trans_available_in_water Then
 									move_cost(i, j) = 2
 								Else
@@ -3250,19 +3220,19 @@ NextLoop:
 										End If
 									Next 
 								End If
-							Case "豺ｱ豌ｴ"
+							Case "深水"
 								If is_trans_available_in_water Then
 									move_cost(i, j) = 1
 								Else
 									move_cost(i, j) = 1000000
 								End If
-							Case "遨ｺ"
+							Case "空"
 								move_cost(i, j) = 1000000
 						End Select
 					Next 
 				Next 
 				
-			Case "Invalid_string_refer_to_original_code"
+			Case "宇宙"
 				For i = 1 To MapWidth
 					For j = 1 To MapHeight
 						move_cost(i, j) = TerrainMoveCost(i, j)
@@ -3275,10 +3245,10 @@ NextLoop:
 					Next 
 				Next 
 				
-			Case "蝨ｰ荳ｭ"
+			Case "地中"
 				For i = 1 To MapWidth
 					For j = 1 To MapHeight
-						If TerrainClass(i, j) = "髯ｸ" Then
+						If TerrainClass(i, j) = "陸" Then
 							move_cost(i, j) = 2
 						Else
 							move_cost(i, j) = 1000000
@@ -3288,58 +3258,53 @@ NextLoop:
 		End Select
 		
 		With u
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			For i = 1 To MapWidth
-				For j = 1 To MapHeight
-					If TerrainName(i, j) = "邱夊ｷｯ" Then
-						move_cost(i, j) = 1
-					Else
-						move_cost(i, j) = 1000000
-					End If
-				Next 
-			Next 
-			'End If
-			'End If
-			
-			'Invalid_string_refer_to_original_code
-			ReDim allowed_terrains(0)
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			If .Area <> "遨ｺ荳ｭ" And .Area <> "蝨ｰ荳ｭ" Then
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				ReDim allowed_terrains(n)
-				For i = 2 To n
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				Next 
-				For i = 1 To MapWidth
-					For j = 1 To MapHeight
-						For k = 2 To n
-							If TerrainName(i, j) = allowed_terrains(k) Then
-								Exit For
+			'線路移動
+			If .IsFeatureAvailable("線路移動") Then
+				If .Area = "地上" Then
+					For i = 1 To MapWidth
+						For j = 1 To MapHeight
+							If TerrainName(i, j) = "線路" Then
+								move_cost(i, j) = 1
+							Else
+								move_cost(i, j) = 1000000
 							End If
 						Next 
-						If k > n Then
-							move_cost(i, j) = 1000000
-						End If
 					Next 
-				Next 
+				End If
 			End If
-			'End If
 			
-			'騾ｲ蜈･荳榊庄
+			'移動制限
+			ReDim allowed_terrains(0)
+			If .IsFeatureAvailable("移動制限") Then
+				If .Area <> "空中" And .Area <> "地中" Then
+					n = LLength(.FeatureData("移動制限"))
+					ReDim allowed_terrains(n)
+					For i = 2 To n
+						allowed_terrains(i) = LIndex(.FeatureData("移動制限"), i)
+					Next 
+					For i = 1 To MapWidth
+						For j = 1 To MapHeight
+							For k = 2 To n
+								If TerrainName(i, j) = allowed_terrains(k) Then
+									Exit For
+								End If
+							Next 
+							If k > n Then
+								move_cost(i, j) = 1000000
+							End If
+						Next 
+					Next 
+				End If
+			End If
+			
+			'進入不可
 			ReDim prohibited_terrains(0)
-			If .IsFeatureAvailable("騾ｲ蜈･荳榊庄") Then
-				If .Area <> "遨ｺ荳ｭ" And .Area <> "蝨ｰ荳ｭ" Then
-					n = LLength(.FeatureData("騾ｲ蜈･荳榊庄"))
+			If .IsFeatureAvailable("進入不可") Then
+				If .Area <> "空中" And .Area <> "地中" Then
+					n = LLength(.FeatureData("進入不可"))
 					ReDim prohibited_terrains(n)
 					For i = 2 To n
-						prohibited_terrains(i) = LIndex(.FeatureData("騾ｲ蜈･荳榊庄"), i)
+						prohibited_terrains(i) = LIndex(.FeatureData("進入不可"), i)
 					Next 
 					For i = 1 To MapWidth
 						For j = 1 To MapHeight
@@ -3354,37 +3319,33 @@ NextLoop:
 				End If
 			End If
 			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			For i = 1 To MapWidth
-				For j = 1 To MapHeight
-					Select Case TerrainName(i, j)
-						Case "遐よｼ", "譛磯擇"
-							move_cost(i, j) = 1
-					End Select
-				Next 
-			Next 
-			'End If
-			'End If
+			'ホバー移動
+			If .IsFeatureAvailable("ホバー移動") Then
+				If .Area = "地上" Or .Area = "水上" Then
+					For i = 1 To MapWidth
+						For j = 1 To MapHeight
+							Select Case TerrainName(i, j)
+								Case "砂漠", "月面"
+									move_cost(i, j) = 1
+							End Select
+						Next 
+					Next 
+				End If
+			End If
 			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			For i = 1 To MapWidth
-				For j = 1 To MapHeight
-					Select Case TerrainClass(i, j)
-						Case "髯ｸ", "譛磯擇"
-							move_cost(i, j) = 1
-					End Select
-				Next 
-			Next 
-			'End If
-			'End If
+			'ジャンプ移動
+			If .IsFeatureAvailable("ジャンプ移動") Then
+				If .Area = "地上" Or .Area = "水上" Or .Area = "水中" Then
+					For i = 1 To MapWidth
+						For j = 1 To MapHeight
+							Select Case TerrainClass(i, j)
+								Case "陸", "月面"
+									move_cost(i, j) = 1
+							End Select
+						Next 
+					Next 
+				End If
+			End If
 		End With
 		
 		For i = 0 To MapWidth + 1
@@ -3394,12 +3355,12 @@ NextLoop:
 		Next 
 		total_cost(dst_x, dst_y) = 0
 		
-		'Invalid_string_refer_to_original_code
+		'目的地から各地点に到達するのにかかる移動力を計算
 		i = 0
 		Do 
 			i = i + 1
 			
-			'Invalid_string_refer_to_original_code
+			'タイムアウト
 			If i > 3 * (MapWidth + MapHeight) Then
 				Exit Do
 			End If
@@ -3430,13 +3391,13 @@ NextLoop:
 				Next 
 			Next 
 			
-			'Invalid_string_refer_to_original_code
+			'最短経路を発見した
 			If total_cost(X, Y) <= System.Math.Abs(dst_x - X) + System.Math.Abs(dst_y - Y) + 2 Then
 				Exit Do
 			End If
 		Loop While is_changed
 		
-		'Invalid_string_refer_to_original_code
+		'移動可能範囲内で目的地に最も近い場所を見付ける
 		tmp = total_cost(X, Y)
 		For i = 1 To MapWidth
 			For j = 1 To MapHeight
@@ -3458,7 +3419,7 @@ NextLoop:
 		Next 
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'ユニット u が敵から最も遠くなる場所(X,Y)を検索
 	Public Sub SafetyPoint(ByRef u As Unit, ByRef X As Short, ByRef Y As Short)
 		Dim i, j As Short
 		Dim total_cost(51, 51) As Integer
@@ -3467,7 +3428,7 @@ NextLoop:
 		Dim t As Unit
 		Dim is_changed As Boolean
 		
-		'Invalid_string_refer_to_original_code
+		'作業用配列を初期化
 		For i = 0 To MapWidth + 1
 			For j = 0 To MapHeight + 1
 				total_cost(i, j) = 1000000
@@ -3479,7 +3440,7 @@ NextLoop:
 			End If
 		Next t
 		
-		'Invalid_string_refer_to_original_code
+		'各地点の敵からの距離を計算
 		Do 
 			is_changed = False
 			
@@ -3504,7 +3465,7 @@ NextLoop:
 			Next 
 		Loop While is_changed
 		
-		'Invalid_string_refer_to_original_code
+		'移動可能範囲内で敵から最も遠い場所を見付ける
 		tmp = 0
 		For i = 1 To MapWidth
 			For j = 1 To MapHeight
@@ -3526,8 +3487,8 @@ NextLoop:
 		Next 
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
+	'現在位置から指定した場所までの移動経路を調べる
+	'事前にAreaInSpeedを実行しておく事が必要
 	Public Sub SearchMoveRoute(ByRef tx As Short, ByRef ty As Short, ByRef move_route_x() As Short, ByRef move_route_y() As Short)
 		Dim xx, yy As Short
 		Dim nx, ny As Short
@@ -3543,7 +3504,7 @@ NextLoop:
 		move_route_x(1) = tx
 		move_route_y(1) = ty
 		
-		'Invalid_string_refer_to_original_code
+		'現在位置を調べる
 		For xx = 1 To MapWidth
 			For yy = 1 To MapHeight
 				If TotalMoveCost(xx, yy) = 0 Then
@@ -3553,7 +3514,7 @@ NextLoop:
 			Next 
 		Next 
 		
-		'Invalid_string_refer_to_original_code
+		'現在位置のＺＯＣは無効化する
 		PointInZOC(ox, oy) = 0
 		
 		xx = tx
@@ -3564,9 +3525,9 @@ NextLoop:
 		Do While TotalMoveCost(xx, yy) > 0
 			tmp = TotalMoveCost(xx, yy)
 			
-			'Invalid_string_refer_to_original_code
+			'周りの場所から最も必要移動力が低い場所を探す
 			
-			'縺ｪ繧九∋縺冗峩邱壽婿蜷代↓遘ｻ蜍輔＆縺帙ｋ縺溘ａ縲∝燕蝗槭→蜷後§遘ｻ蜍墓婿蜷代ｒ蜆ｪ蜈医＆縺帙ｋ
+			'なるべく直線方向に移動させるため、前回と同じ移動方向を優先させる
 			Select Case prev_direction
 				Case "N"
 					If TotalMoveCost(xx, yy - 1) < tmp And PointInZOC(xx, yy - 1) <= 0 Then
@@ -3598,8 +3559,8 @@ NextLoop:
 					End If
 			End Select
 			
-			'Invalid_string_refer_to_original_code
-			'蠎ｧ讓呵ｻｸ譁ｹ蜷代↓蜆ｪ蜈医＠縺ｦ遘ｻ蜍輔＆縺帙ｋ
+			'なるべく目標位置付近で直進させるため、目標位置との距離差の小さい
+			'座標軸方向に優先して移動させる
 			If System.Math.Abs(xx - ox) <= System.Math.Abs(yy - oy) Then
 				If TotalMoveCost(xx, yy - 1) < tmp And PointInZOC(xx, yy - 1) <= 0 Then
 					tmp = TotalMoveCost(xx, yy - 1)
@@ -3653,28 +3614,28 @@ NextLoop:
 			End If
 			
 			If nx = xx And ny = yy Then
-				'Invalid_string_refer_to_original_code
+				'これ以上必要移動力が低い場所が見つからなかったので終了
 				Exit Do
 			End If
 			
-			'隕九▽縺九▲縺溷ｴ謇繧定ｨ倬鹸
+			'見つかった場所を記録
 			ReDim Preserve move_route_x(UBound(move_route_x) + 1)
 			ReDim Preserve move_route_y(UBound(move_route_y) + 1)
 			move_route_x(UBound(move_route_x)) = nx
 			move_route_y(UBound(move_route_y)) = ny
 			
-			'遘ｻ蜍墓婿蜷代ｒ險倬鹸
+			'移動方向を記録
 			ReDim Preserve move_direction(UBound(move_direction) + 1)
 			'UPGRADE_WARNING: オブジェクト move_direction(UBound()) の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
 			move_direction(UBound(move_direction)) = direction
 			prev_direction = direction
 			
-			'Invalid_string_refer_to_original_code
+			'次回は今回見つかった場所を起点に検索する
 			xx = nx
 			yy = ny
 		Loop 
 		
-		'Invalid_string_refer_to_original_code
+		'直線を走った距離を計算
 		MovedUnitSpeed = 1
 		For i = 2 To UBound(move_direction) - 1
 			'UPGRADE_WARNING: オブジェクト move_direction(i + 1) の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。

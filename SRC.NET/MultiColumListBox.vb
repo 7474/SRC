@@ -4,28 +4,28 @@ Friend Class frmMultiColumnListBox
 	Inherits System.Windows.Forms.Form
 	
 	' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
+	' 本プログラムはフリーソフトであり、無保証です。
+	' 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
+	' 再頒布または改変することができます。
 	
-	'Invalid_string_refer_to_original_code
+	'多段のリストボックスのフォーム
 	
-	'繝輔か繝ｼ繝繧定｡ｨ遉ｺ
+	'フォームを表示
 	'UPGRADE_WARNING: Form イベント frmMultiColumnListBox.Activate には新しい動作が含まれます。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6BA9B8D2-2A32-4B6E-8D36-44949974A5B4"' をクリックしてください。
 	Private Sub frmMultiColumnListBox_Activated(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles MyBase.Activated
 		SelectedItem = 0
 		labCaption.Text = ""
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'フォームをロード
 	Private Sub frmMultiColumnListBox_Load(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles MyBase.Load
 		Dim ret As Integer
 		
-		'蟶ｸ縺ｫ謇句燕縺ｫ陦ｨ遉ｺ
+		'常に手前に表示
 		ret = SetWindowPos(Handle.ToInt32, -1, 0, 0, 0, 0, &H3)
 	End Sub
 	
-	'繝輔か繝ｼ繝繧帝哩縺倥ｋ
+	'フォームを閉じる
 	Private Sub frmMultiColumnListBox_FormClosed(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.FormClosedEventArgs) Handles Me.FormClosed
 		TopItem = lstItems.TopIndex + 1
 		IsFormClicked = True
@@ -36,7 +36,7 @@ Friend Class frmMultiColumnListBox
 		Hide()
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'フォーム上でマウスボタンを押す
 	Private Sub lstItems_MouseDown(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.MouseEventArgs) Handles lstItems.MouseDown
 		Dim Button As Short = eventArgs.Button \ &H100000
 		Dim Shift As Short = System.Windows.Forms.Control.ModifierKeys \ &H10000
@@ -44,7 +44,7 @@ Friend Class frmMultiColumnListBox
 		Dim Y As Single = VB6.PixelsToTwipsY(eventArgs.Y)
 		Select Case Button
 			Case 1
-				'Invalid_string_refer_to_original_code
+				'選択
 				If Not Visible Then
 					Exit Sub
 				End If
@@ -58,7 +58,7 @@ Friend Class frmMultiColumnListBox
 				End If
 				IsFormClicked = True
 			Case 2
-				'繧ｭ繝｣繝ｳ繧ｻ繝ｫ
+				'キャンセル
 				SelectedItem = 0
 				TopItem = lstItems.TopIndex + 1
 				If IsFormClicked Then
@@ -68,14 +68,14 @@ Friend Class frmMultiColumnListBox
 		End Select
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'フォーム上でマウスボタンを押す
 	Private Sub frmMultiColumnListBox_MouseDown(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.MouseEventArgs) Handles MyBase.MouseDown
 		Dim Button As Short = eventArgs.Button \ &H100000
 		Dim Shift As Short = System.Windows.Forms.Control.ModifierKeys \ &H10000
 		Dim X As Single = eventArgs.X
 		Dim Y As Single = eventArgs.Y
 		If Button = 2 Then
-			'繧ｭ繝｣繝ｳ繧ｻ繝ｫ縺ｮ縺ｿ蜿励￠莉倥￠
+			'キャンセルのみ受け付け
 			SelectedItem = 0
 			TopItem = lstItems.TopIndex
 			If IsFormClicked Then
@@ -85,7 +85,7 @@ Friend Class frmMultiColumnListBox
 		End If
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'リストボックス上でマウスカーソルを移動
 	Private Sub lstItems_MouseMove(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.MouseEventArgs) Handles lstItems.MouseMove
 		Dim Button As Short = eventArgs.Button \ &H100000
 		Dim Shift As Short = System.Windows.Forms.Control.ModifierKeys \ &H10000
@@ -95,20 +95,20 @@ Friend Class frmMultiColumnListBox
 		Dim lines As Short
 		
 		With lstItems
-			'Invalid_string_refer_to_original_code
+			'リストボックスの行数
 			lines = 25
 			'UPGRADE_ISSUE: ListBox プロパティ lstItems.Columns はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 			If .Items.Count > lines * .Columns Then
 				lines = lines - 1
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'マウスカーソルがあるアイテムを算出
 			'UPGRADE_ISSUE: ListBox プロパティ lstItems.Columns はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 			itm = (((X * ClientRectangle.Width) \ VB6.PixelsToTwipsX(Width)) \ (.Width \ .Columns)) * lines
 			itm = itm + ((Y * ClientRectangle.Width) \ VB6.PixelsToTwipsX(Width) + 1) \ 16
 			itm = itm + .TopIndex
 			
-			'Invalid_string_refer_to_original_code
+			'カーソル上のアイテムをハイライト表示
 			If itm < 0 Or itm >= .Items.Count Then
 				.SelectedIndex = -1
 				Exit Sub
@@ -118,7 +118,7 @@ Friend Class frmMultiColumnListBox
 			End If
 			.SelectedIndex = itm
 			
-			'隗｣隱ｬ縺ｮ陦ｨ遉ｺ
+			'解説の表示
 			labCaption.Text = ListItemComment(itm + 1)
 		End With
 	End Sub

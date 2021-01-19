@@ -50,7 +50,7 @@
 		Me.Text = "MultiSelectListBox"
 		Me.ClientSize = New System.Drawing.Size(497, 331)
 		Me.Location = New System.Drawing.Point(60, 165)
-		Me.Font = New System.Drawing.Font("Invalid_string_refer_to_original_code", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
+		Me.Font = New System.Drawing.Font("ÇlÇr ÉSÉVÉbÉN", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
 		Me.Icon = CType(resources.GetObject("frmMultiSelectListBox.Icon"), System.Drawing.Icon)
 		Me.MaximizeBox = False
 		Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
@@ -66,8 +66,8 @@
 		Me.Name = "frmMultiSelectListBox"
 		Me.cmdResume.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
 		Me.cmdResume.BackColor = System.Drawing.SystemColors.Control
-		Me.cmdResume.Text = "„Éû„ÉÉ„Éó„ÇíË¶ã„Çã"
-		Me.cmdResume.Font = New System.Drawing.Font("Invalid_string_refer_to_original_code", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
+		Me.cmdResume.Text = "É}ÉbÉvÇå©ÇÈ"
+		Me.cmdResume.Font = New System.Drawing.Font("ÇlÇr ÇoÉSÉVÉbÉN", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
 		Me.cmdResume.Size = New System.Drawing.Size(137, 29)
 		Me.cmdResume.Location = New System.Drawing.Point(96, 296)
 		Me.cmdResume.TabIndex = 7
@@ -80,8 +80,8 @@
 		Me.cmdResume.Name = "cmdResume"
 		Me.cmdSort.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
 		Me.cmdSort.BackColor = System.Drawing.SystemColors.Control
-		Me.cmdSort.Text = "Invalid_string_refer_to_original_code"
-		Me.cmdSort.Font = New System.Drawing.Font("Invalid_string_refer_to_original_code", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
+		Me.cmdSort.Text = "ñºèÃèáÇ…ï¿Ç◊ë÷Ç¶"
+		Me.cmdSort.Font = New System.Drawing.Font("ÇlÇr ÇoÉSÉVÉbÉN", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
 		Me.cmdSort.Size = New System.Drawing.Size(145, 29)
 		Me.cmdSort.Location = New System.Drawing.Point(336, 264)
 		Me.cmdSort.TabIndex = 6
@@ -94,8 +94,8 @@
 		Me.cmdSort.Name = "cmdSort"
 		Me.cmdSelectAll2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
 		Me.cmdSelectAll2.BackColor = System.Drawing.Color.FromARGB(192, 192, 192)
-		Me.cmdSelectAll2.Text = "Invalid_string_refer_to_original_code"
-		Me.cmdSelectAll2.Font = New System.Drawing.Font("Invalid_string_refer_to_original_code", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
+		Me.cmdSelectAll2.Text = "ç≈å„Ç©ÇÁëIë"
+		Me.cmdSelectAll2.Font = New System.Drawing.Font("ÇlÇr ÇoÉSÉVÉbÉN", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
 		Me.cmdSelectAll2.Size = New System.Drawing.Size(161, 29)
 		Me.cmdSelectAll2.Location = New System.Drawing.Point(168, 264)
 		Me.cmdSelectAll2.TabIndex = 5
@@ -108,8 +108,8 @@
 		Me.cmdSelectAll2.Name = "cmdSelectAll2"
 		Me.cmdSelectAll.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
 		Me.cmdSelectAll.BackColor = System.Drawing.Color.FromARGB(192, 192, 192)
-		Me.cmdSelectAll.Text = "Invalid_string_refer_to_original_code"
-		Me.cmdSelectAll.Font = New System.Drawing.Font("Invalid_string_refer_to_original_code", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
+		Me.cmdSelectAll.Text = "êÊì™Ç©ÇÁëIë"
+		Me.cmdSelectAll.Font = New System.Drawing.Font("ÇlÇr ÇoÉSÉVÉbÉN", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
 		Me.cmdSelectAll.Size = New System.Drawing.Size(153, 29)
 		Me.cmdSelectAll.Location = New System.Drawing.Point(8, 264)
 		Me.cmdSelectAll.TabIndex = 4
@@ -124,9 +124,9 @@
 		Me.Timer1.Enabled = True
 		Me.cmdFinish.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
 		Me.cmdFinish.BackColor = System.Drawing.Color.FromARGB(192, 192, 192)
-		Me.cmdFinish.Text = "Invalid_string_refer_to_original_code"
+		Me.cmdFinish.Text = "èIóπ"
 		Me.cmdFinish.Enabled = False
-		Me.cmdFinish.Font = New System.Drawing.Font("Invalid_string_refer_to_original_code", 9.75!, System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
+		Me.cmdFinish.Font = New System.Drawing.Font("ÇlÇr ÇoÉSÉVÉbÉN", 9.75!, System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
 		Me.cmdFinish.Size = New System.Drawing.Size(137, 29)
 		Me.cmdFinish.Location = New System.Drawing.Point(264, 296)
 		Me.cmdFinish.TabIndex = 1
@@ -137,7 +137,7 @@
 		Me.cmdFinish.RightToLeft = System.Windows.Forms.RightToLeft.No
 		Me.cmdFinish.Name = "cmdFinish"
 		Me.lstItems.BackColor = System.Drawing.Color.White
-		Me.lstItems.Font = New System.Drawing.Font("Invalid_string_refer_to_original_code", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
+		Me.lstItems.Font = New System.Drawing.Font("ÇlÇr ñæí©", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
 		Me.lstItems.ForeColor = System.Drawing.Color.Black
 		Me.lstItems.Size = New System.Drawing.Size(479, 231)
 		Me.lstItems.Location = New System.Drawing.Point(8, 32)
@@ -157,7 +157,7 @@
 		Me.lblNumber.TextAlign = System.Drawing.ContentAlignment.TopCenter
 		Me.lblNumber.BackColor = System.Drawing.Color.White
 		Me.lblNumber.Text = "Label1"
-		Me.lblNumber.Font = New System.Drawing.Font("Invalid_string_refer_to_original_code", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
+		Me.lblNumber.Font = New System.Drawing.Font("ÇlÇr ñæí©", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
 		Me.lblNumber.ForeColor = System.Drawing.Color.Black
 		Me.lblNumber.Size = New System.Drawing.Size(57, 29)
 		Me.lblNumber.Location = New System.Drawing.Point(424, 296)
@@ -172,7 +172,7 @@
 		Me.lblNumber.Name = "lblNumber"
 		Me.lblCaption.BackColor = System.Drawing.Color.White
 		Me.lblCaption.Text = "Label1"
-		Me.lblCaption.Font = New System.Drawing.Font("Invalid_string_refer_to_original_code", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
+		Me.lblCaption.Font = New System.Drawing.Font("ÇlÇr ñæí©", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
 		Me.lblCaption.ForeColor = System.Drawing.Color.Black
 		Me.lblCaption.Size = New System.Drawing.Size(479, 22)
 		Me.lblCaption.Location = New System.Drawing.Point(8, 6)

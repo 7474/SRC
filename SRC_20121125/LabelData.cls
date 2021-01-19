@@ -10,36 +10,36 @@ Attribute VB_Exposed = False
 Option Explicit
 
 ' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯ãƒ•ãƒªãƒ¼ã‚½ãƒ•ãƒˆã§ã‚ã‚Šã€ç„¡ä¿è¨¼ã§ã™ã€‚
-' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯GNU General Public License(Ver.3ã¾ãŸã¯ãã‚Œä»¥é™)ãŒå®šã‚ã‚‹æ¡ä»¶ã®ä¸‹ã§
-' å†é ’å¸ƒã¾ãŸã¯æ”¹å¤‰ã™ã‚‹ã“ã¨ãŒã§ãã¾ã™ã€‚
+' –{ƒvƒƒOƒ‰ƒ€‚ÍƒtƒŠ[ƒ\ƒtƒg‚Å‚ ‚èA–³•ÛØ‚Å‚·B
+' –{ƒvƒƒOƒ‰ƒ€‚ÍGNU General Public License(Ver.3‚Ü‚½‚Í‚»‚êˆÈ~)‚ª’è‚ß‚éğŒ‚Ì‰º‚Å
+' Ä”Ğ•z‚Ü‚½‚Í‰ü•Ï‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B
 
-'ã‚¤ãƒ™ãƒ³ãƒˆãƒ‡ãƒ¼ã‚¿ã®ãƒ©ãƒ™ãƒ«ã®ã‚¯ãƒ©ã‚¹
+'ƒCƒxƒ“ƒgƒf[ƒ^‚Ìƒ‰ƒxƒ‹‚ÌƒNƒ‰ƒX
 
-'ãƒ©ãƒ™ãƒ«å
+'ƒ‰ƒxƒ‹–¼
 Public Name As LabelType
-'è¡Œç•ªå·
+'s”Ô†
 Public LineNum As Long
-'ãƒ©ãƒ™ãƒ«ãŒæœ‰åŠ¹ã‹ï¼Ÿ
+'ƒ‰ƒxƒ‹‚ª—LŒø‚©H
 Public Enable As Boolean
-'ã‚¢ã‚¹ã‚¿ãƒªã‚¹ã‚¯ã®æŒ‡å®šçŠ¶æ³
+'ƒAƒXƒ^ƒŠƒXƒN‚Ìw’èó‹µ
 Public AsterNum As Integer
 
-'ãƒ©ãƒ™ãƒ«å…¨ä½“
+'ƒ‰ƒxƒ‹‘S‘Ì
 Private StrData As String
-'ãƒ©ãƒ™ãƒ«ã®å€‹æ•°
+'ƒ‰ƒxƒ‹‚ÌŒÂ”
 Private intParaNum As Integer
-'ãƒ©ãƒ™ãƒ«ã®å„ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿
+'ƒ‰ƒxƒ‹‚ÌŠeƒpƒ‰ƒ[ƒ^
 Private strParas() As String
-'ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ãŒå›ºå®šå€¤ï¼Ÿ
+'ƒpƒ‰ƒ[ƒ^‚ªŒÅ’è’lH
 Private blnConst() As Boolean
 
-'ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®å€‹æ•°
+'ƒpƒ‰ƒ[ƒ^‚ÌŒÂ”
 Public Function CountPara() As Integer
     CountPara = intParaNum
 End Function
 
-'ãƒ©ãƒ™ãƒ«ã® idx ç•ªç›®ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿
+'ƒ‰ƒxƒ‹‚Ì idx ”Ô–Ú‚Ìƒpƒ‰ƒ[ƒ^
 Public Function Para(ByVal idx As Integer) As String
     If idx <= intParaNum Then
         If blnConst(idx) Then
@@ -50,21 +50,21 @@ Public Function Para(ByVal idx As Integer) As String
     End If
 End Function
 
-'ãƒ©ãƒ™ãƒ«å…¨ä½“ã‚’å–ã‚Šå‡ºã™
+'ƒ‰ƒxƒ‹‘S‘Ì‚ğæ‚èo‚·
 Public Property Get Data() As String
     Data = StrData
 End Property
 
-'ãƒ©ãƒ™ãƒ«å…¨ä½“ã‚’è¨­å®š
+'ƒ‰ƒxƒ‹‘S‘Ì‚ğİ’è
 Public Property Let Data(new_data As String)
 Dim i As Long, lname As String
     
-    'ãƒ©ãƒ™ãƒ«å…¨ä½“
+    'ƒ‰ƒxƒ‹‘S‘Ì
     StrData = new_data
     
-    'ãƒ©ãƒ™ãƒ«å
+    'ƒ‰ƒxƒ‹–¼
     lname = ListIndex(new_data, 1)
-    'ã€Œ*ã€ã¯çœã
+    'u*v‚ÍÈ‚­
     Select Case Asc(lname)
         Case 42 '*
             lname = Mid$(lname, 2)
@@ -89,78 +89,78 @@ Dim i As Long, lname As String
             End Select
     End Select
     Select Case lname
-        Case "ãƒ—ãƒ­ãƒ­ãƒ¼ã‚°"
+        Case "ƒvƒƒ[ƒO"
             Name = PrologueEventLabel
-        Case "ã‚¹ã‚¿ãƒ¼ãƒˆ"
+        Case "ƒXƒ^[ƒg"
             Name = StartEventLabel
-        Case "ã‚¨ãƒ”ãƒ­ãƒ¼ã‚°"
+        Case "ƒGƒsƒ[ƒO"
             Name = EpilogueEventLabel
-        Case "ã‚¿ãƒ¼ãƒ³"
+        Case "ƒ^[ƒ“"
             Name = TurnEventLabel
-        Case "æå‚·ç‡"
+        Case "‘¹—¦"
             Name = DamageEventLabel
-        Case "ç ´å£Š"
+        Case "”j‰ó"
             Name = DestructionEventLabel
-        Case "å…¨æ»…"
+        Case "‘S–Å"
             Name = TotalDestructionEventLabel
-        Case "æ”»æ’ƒ"
+        Case "UŒ‚"
             Name = AttackEventLabel
-        Case "æ”»æ’ƒå¾Œ"
+        Case "UŒ‚Œã"
             Name = AfterAttackEventLabel
-        Case "ä¼šè©±"
+        Case "‰ï˜b"
             Name = TalkEventLabel
-        Case "æ¥è§¦"
+        Case "ÚG"
             Name = ContactEventLabel
-        Case "é€²å…¥"
+        Case "i“ü"
             Name = EnterEventLabel
-        Case "è„±å‡º"
+        Case "’Eo"
             Name = EscapeEventLabel
-        Case "åç´"
+        Case "û”["
             Name = LandEventLabel
-        Case "ä½¿ç”¨"
+        Case "g—p"
             Name = UseEventLabel
-        Case "ä½¿ç”¨å¾Œ"
+        Case "g—pŒã"
             Name = AfterUseEventLabel
-        Case "å¤‰å½¢"
+        Case "•ÏŒ`"
             Name = TransformEventLabel
-        Case "åˆä½“"
+        Case "‡‘Ì"
             Name = CombineEventLabel
-        Case "åˆ†é›¢"
+        Case "•ª—£"
             Name = SplitEventLabel
-        Case "è¡Œå‹•çµ‚äº†"
+        Case "s“®I—¹"
             Name = FinishEventLabel
-        Case "ãƒ¬ãƒ™ãƒ«ã‚¢ãƒƒãƒ—"
+        Case "ƒŒƒxƒ‹ƒAƒbƒv"
             Name = LevelUpEventLabel
-        Case "å‹åˆ©æ¡ä»¶"
+        Case "Ÿ—˜ğŒ"
             Name = RequirementEventLabel
-        Case "å†é–‹"
+        Case "ÄŠJ"
             Name = ResumeEventLabel
-        Case "ãƒãƒƒãƒ—ã‚³ãƒãƒ³ãƒ‰"
+        Case "ƒ}ƒbƒvƒRƒ}ƒ“ƒh"
             Name = MapCommandEventLabel
-        Case "ãƒ¦ãƒ‹ãƒƒãƒˆã‚³ãƒãƒ³ãƒ‰"
+        Case "ƒ†ƒjƒbƒgƒRƒ}ƒ“ƒh"
             Name = UnitCommandEventLabel
-        Case "ç‰¹æ®ŠåŠ¹æœ"
+        Case "“ÁêŒø‰Ê"
             Name = EffectEventLabel
         Case Else
             Name = NormalLabel
     End Select
     
-    'ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿
+    'ƒpƒ‰ƒ[ƒ^
     intParaNum = ListLength(new_data)
     If intParaNum = -1 Then
-        DisplayEventErrorMessage CurrentLineNum, "ãƒ©ãƒ™ãƒ«ã®å¼•æ•°ã®æ‹¬å¼§ã®å¯¾å¿œãŒå–ã‚Œã¦ã„ã¾ã›ã‚“"
+        DisplayEventErrorMessage CurrentLineNum, "ƒ‰ƒxƒ‹‚Ìˆø”‚ÌŠ‡ŒÊ‚Ì‘Î‰‚ªæ‚ê‚Ä‚¢‚Ü‚¹‚ñ"
         Exit Property
     End If
     ReDim strParas(intParaNum)
     ReDim blnConst(intParaNum)
     For i = 2 To intParaNum
         strParas(i) = ListIndex(new_data, i)
-        'ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ãŒå›ºå®šå€¤ã‹ã©ã†ã‹åˆ¤å®š
+        'ƒpƒ‰ƒ[ƒ^‚ªŒÅ’è’l‚©‚Ç‚¤‚©”»’è
         If IsNumeric(strParas(i)) Then
             blnConst(i) = True
         ElseIf PDList.IsDefined(strParas(i)) Then
-            If InStr(strParas(i), "ä¸»äººå…¬") <> 1 _
-                And InStr(strParas(i), "ãƒ’ãƒ­ã‚¤ãƒ³") <> 1 _
+            If InStr(strParas(i), "ålŒö") <> 1 _
+                And InStr(strParas(i), "ƒqƒƒCƒ“") <> 1 _
             Then
                 blnConst(i) = True
             End If
@@ -170,7 +170,7 @@ Dim i As Long, lname As String
             blnConst(i) = True
         Else
             Select Case strParas(i)
-                Case "å‘³æ–¹", "ï¼®ï¼°ï¼£", "æ•µ", "ä¸­ç«‹", "å…¨"
+                Case "–¡•û", "‚m‚o‚b", "“G", "’†—§", "‘S"
                     blnConst(i) = True
                 Case "N", "W", "S", "E"
                     If Name = EscapeEventLabel Then

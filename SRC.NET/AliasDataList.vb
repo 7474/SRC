@@ -4,18 +4,18 @@ Friend Class AliasDataList
 	Implements System.Collections.IEnumerable
 	
 	' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
+	' 本プログラムはフリーソフトであり、無保証です。
+	' 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
+	' 再頒布または改変することができます。
 	
-	'Invalid_string_refer_to_original_code
+	'全エリアスデータを管理するリストのクラス
 	
 	
-	'Invalid_string_refer_to_original_code
+	'エリアスデータのコレクション
 	Private colAliasDataList As New Collection
 	
 	
-	'繧ｯ繝ｩ繧ｹ縺ｮ隗｣謾ｾ
+	'クラスの解放
 	'UPGRADE_NOTE: Class_Terminate は Class_Terminate_Renamed にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
 	Private Sub Class_Terminate_Renamed()
 		Dim i As Short
@@ -33,7 +33,7 @@ Friend Class AliasDataList
 		MyBase.Finalize()
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'エリアスデータリストにデータを追加
 	Public Function Add(ByRef aname As String) As AliasData
 		Dim ad As New AliasData
 		
@@ -42,22 +42,22 @@ Friend Class AliasDataList
 		Add = ad
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'エリアスデータリストに登録されているデータの総数
 	Public Function Count() As Short
 		Count = colAliasDataList.Count()
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'エリアスデータリストからデータを削除
 	Public Sub Delete(ByRef Index As Object)
 		colAliasDataList.Remove(Index)
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'エリアスデータリストからデータを取り出す
 	Public Function Item(ByRef Index As Object) As AliasData
 		Item = colAliasDataList.Item(Index)
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'エリアスデータリストに指定したデータが定義されているか？
 	Public Function IsDefined(ByRef Index As Object) As Boolean
 		Dim ad As AliasData
 		
@@ -70,7 +70,7 @@ ErrorHandler:
 		IsDefined = False
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'データファイル fname からデータをロード
 	Public Sub Load(ByRef fname As String)
 		Dim FileNumber As Short
 		Dim line_num As Integer
@@ -98,28 +98,27 @@ ErrorHandler:
 			Loop While Len(line_buf) = 0
 			
 			If InStr(line_buf, ",") > 0 Then
-				err_msg = "Invalid_string_refer_to_original_code"
+				err_msg = "名称の設定が抜けています。"
 				Error(0)
 			End If
 			
 			data_name = line_buf
 			
 			If InStr(data_name, " ") > 0 Then
-				err_msg = "Invalid_string_refer_to_original_code"
+				err_msg = "名称に半角スペースは使用出来ません。"
 				Error(0)
 			End If
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			err_msg = "Invalid_string_refer_to_original_code"
-			Error(0)
-			'End If
+			If InStr(data_name, "（") > 0 Or InStr(data_name, "）") > 0 Then
+				err_msg = "名称に全角括弧は使用出来ません。"
+				Error(0)
+			End If
 			If InStr(data_name, """") > 0 Then
-				err_msg = "Invalid_string_refer_to_original_code"
+				err_msg = "名称に""は使用出来ません。"
 				Error(0)
 			End If
 			
 			If IsDefined(data_name) Then
-				'Invalid_string_refer_to_original_code
+				'すでに定義されているエリアスのデータであれば置き換える
 				Delete(data_name)
 			End If
 			ad = Add(data_name)
@@ -140,16 +139,16 @@ ErrorHandler:
 					.AddAlias(line_buf)
 				Loop 
 				If .Count = 0 Then
-					err_msg = "Invalid_string_refer_to_original_code"
+					err_msg = "エリアス対象のデータが定義されていません。"
 					Error(0)
 				End If
 			End With
 		Loop 
 		
 ErrorHandler: 
-		'Invalid_string_refer_to_original_code
+		'エラー処理
 		If line_num = 0 Then
-			ErrorMessage(fname & "Invalid_string_refer_to_original_code")
+			ErrorMessage(fname & "が開けません。")
 		Else
 			FileClose(FileNumber)
 			DataErrorMessage(err_msg, fname, line_num, line_buf, data_name)
@@ -157,7 +156,7 @@ ErrorHandler:
 		TerminateSRC()
 	End Sub
 	
-	'ForEach逕ｨ髢｢謨ｰ
+	'ForEach用関数
 	'UPGRADE_NOTE: NewEnum プロパティがコメント アウトされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="B3FC1610-34F3-43F5-86B7-16C984F0E88E"' をクリックしてください。
 	'Public Function NewEnum() As stdole.IUnknown
 		'NewEnum = colAliasDataList.GetEnumerator

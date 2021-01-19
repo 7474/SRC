@@ -1,7 +1,7 @@
 VERSION 5.00
 Begin VB.Form frmMapSize 
-   BorderStyle     =   3  'å›ºå®šï¾€ï¾ï½²ï½±ï¾›ï½¸ï¾
-   Caption         =   "ãƒãƒƒãƒ—ã‚µã‚¤ã‚º"
+   BorderStyle     =   3  'ŒÅ’èÀŞ²±Û¸Ş
+   Caption         =   "ƒ}ƒbƒvƒTƒCƒY"
    ClientHeight    =   1545
    ClientLeft      =   2835
    ClientTop       =   3480
@@ -11,10 +11,10 @@ Begin VB.Form frmMapSize
    MaxButton       =   0   'False
    MinButton       =   0   'False
    ScaleHeight     =   103
-   ScaleMode       =   3  'ï¾‹ï¾Ÿï½¸ï½¾ï¾™
+   ScaleMode       =   3  'Ëß¸¾Ù
    ScaleWidth      =   250
    ShowInTaskbar   =   0   'False
-   StartUpPosition =   2  'ç”»é¢ã®ä¸­å¤®
+   StartUpPosition =   2  '‰æ–Ê‚Ì’†‰›
    Begin VB.TextBox txtMapWidth 
       Height          =   345
       Left            =   1275
@@ -33,7 +33,7 @@ Begin VB.Form frmMapSize
    End
    Begin VB.CommandButton cmdCancel 
       Cancel          =   -1  'True
-      Caption         =   "ï½·ï½¬ï¾ï½¾ï¾™"
+      Caption         =   "·¬İ¾Ù"
       Height          =   390
       Left            =   2100
       TabIndex        =   5
@@ -42,16 +42,16 @@ Begin VB.Form frmMapSize
    End
    Begin VB.TextBox txtMapHeight 
       Height          =   345
-      IMEMode         =   3  'ï½µï¾Œå›ºå®š
+      IMEMode         =   3  'µÌŒÅ’è
       Left            =   1275
       TabIndex        =   3
       Top             =   540
       Width           =   2325
    End
    Begin VB.Label lblLabels 
-      Caption         =   "ãƒãƒƒãƒ—ã®å¹…"
+      Caption         =   "ƒ}ƒbƒv‚Ì•"
       BeginProperty Font 
-         Name            =   "ï¼­ï¼³ ï¼°ã‚´ã‚·ãƒƒã‚¯"
+         Name            =   "‚l‚r ‚oƒSƒVƒbƒN"
          Size            =   9.75
          Charset         =   128
          Weight          =   400
@@ -67,9 +67,9 @@ Begin VB.Form frmMapSize
       Width           =   1080
    End
    Begin VB.Label lblLabels 
-      Caption         =   "ãƒãƒƒãƒ—ã®é«˜ã•"
+      Caption         =   "ƒ}ƒbƒv‚Ì‚‚³"
       BeginProperty Font 
-         Name            =   "ï¼­ï¼³ ï¼°ã‚´ã‚·ãƒƒã‚¯"
+         Name            =   "‚l‚r ‚oƒSƒVƒbƒN"
          Size            =   9.75
          Charset         =   128
          Weight          =   400
@@ -93,11 +93,11 @@ Attribute VB_Exposed = False
 Option Explicit
 
 ' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯ãƒ•ãƒªãƒ¼ã‚½ãƒ•ãƒˆã§ã‚ã‚Šã€ç„¡ä¿è¨¼ã§ã™ã€‚
-' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯GNU General Public License(Ver.3ã¾ãŸã¯ãã‚Œä»¥é™)ãŒå®šã‚ã‚‹æ¡ä»¶ã®ä¸‹ã§
-' å†é ’å¸ƒã¾ãŸã¯æ”¹å¤‰ã™ã‚‹ã“ã¨ãŒã§ãã¾ã™ã€‚
+' –{ƒvƒƒOƒ‰ƒ€‚ÍƒtƒŠ[ƒ\ƒtƒg‚Å‚ ‚èA–³•ÛØ‚Å‚·B
+' –{ƒvƒƒOƒ‰ƒ€‚ÍGNU General Public License(Ver.3‚Ü‚½‚Í‚»‚êˆÈ~)‚ª’è‚ß‚éğŒ‚Ì‰º‚Å
+' Ä”Ğ•z‚Ü‚½‚Í‰ü•Ï‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B
 
-'ãƒãƒƒãƒ—ã‚µã‚¤ã‚ºã®å…¥åŠ›ç”¨ãƒ•ã‚©ãƒ¼ãƒ 
+'ƒ}ƒbƒvƒTƒCƒY‚Ì“ü—Í—pƒtƒH[ƒ€
 
 Private Sub cmdCancel_Click()
     Me.Hide
@@ -114,7 +114,7 @@ Private Sub cmdOK_Click()
         End If
     End If
         
-    MsgBox "ãƒãƒƒãƒ—ã‚µã‚¤ã‚ºãŒæ­£ã—ãã‚ã‚Šã¾ã›ã‚“ã€‚ã‚‚ã†ä¸€åº¦å…¥åŠ›ã—ã¦ãã ã•ã„", , "ãƒãƒƒãƒ—ã‚µã‚¤ã‚º"
+    MsgBox "ƒ}ƒbƒvƒTƒCƒY‚ª³‚µ‚­‚ ‚è‚Ü‚¹‚ñB‚à‚¤ˆê“x“ü—Í‚µ‚Ä‚­‚¾‚³‚¢", , "ƒ}ƒbƒvƒTƒCƒY"
     txtMapWidth.SetFocus
 End Sub
 

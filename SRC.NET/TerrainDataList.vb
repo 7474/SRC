@@ -3,26 +3,26 @@ Option Explicit On
 Friend Class TerrainDataList
 	
 	' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
+	' 本プログラムはフリーソフトであり、無保証です。
+	' 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
+	' 再頒布または改変することができます。
 	
-	'Invalid_string_refer_to_original_code
+	'全地形データを管理するリストのクラス
 	
-	'Invalid_string_refer_to_original_code
+	'地形データの登録数
 	Public Count As Short
 	
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
+	'地形データの配列
+	'他のリスト管理用クラスと異なり配列を使っているのはアクセスを高速化するため
 	'UPGRADE_NOTE: TerrainDataList は TerrainDataList_Renamed にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
 	Private TerrainDataList_Renamed(MAX_TERRAIN_DATA_NUM) As TerrainData
 	
-	'Invalid_string_refer_to_original_code
+	'地形データの登録順を記録するための配列
 	'UPGRADE_WARNING: 配列 OrderList の下限が 1 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
 	Private OrderList(MAX_TERRAIN_DATA_NUM) As Short
 	
 	
-	'Invalid_string_refer_to_original_code
+	'クラスの初期化
 	'UPGRADE_NOTE: Class_Initialize は Class_Initialize_Renamed にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
 	Private Sub Class_Initialize_Renamed()
 		Dim i As Short
@@ -36,7 +36,7 @@ Friend Class TerrainDataList
 		Class_Initialize_Renamed()
 	End Sub
 	
-	'繧ｯ繝ｩ繧ｹ縺ｮ隗｣謾ｾ
+	'クラスの解放
 	'UPGRADE_NOTE: Class_Terminate は Class_Terminate_Renamed にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
 	Private Sub Class_Terminate_Renamed()
 		Dim i As Short
@@ -52,7 +52,7 @@ Friend Class TerrainDataList
 	End Sub
 	
 	
-	'Invalid_string_refer_to_original_code
+	'指定したデータは登録されているか？
 	Public Function IsDefined(ByVal ID As Short) As Boolean
 		If TerrainDataList_Renamed(ID).ID >= 0 Then
 			IsDefined = True
@@ -62,44 +62,44 @@ Friend Class TerrainDataList
 	End Function
 	
 	
-	'Invalid_string_refer_to_original_code
+	'地形データリストから指定したデータを取り出す
 	Public Function Item(ByVal ID As Short) As TerrainData
 		Item = TerrainDataList_Renamed(ID)
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'指定したデータの名称
 	Public Function Name(ByVal ID As Short) As String
 		Name = TerrainDataList_Renamed(ID).Name
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'指定したデータの画像ファイル名
 	Public Function Bitmap(ByVal ID As Short) As String
 		Bitmap = TerrainDataList_Renamed(ID).Bitmap_Renamed
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'指定したデータのクラス
 	'UPGRADE_NOTE: Class は Class_Renamed にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
 	Public Function Class_Renamed(ByVal ID As Short) As String
 		Class_Renamed = TerrainDataList_Renamed(ID).Class_Renamed
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'指定したデータの移動コスト
 	Public Function MoveCost(ByVal ID As Short) As Short
 		MoveCost = TerrainDataList_Renamed(ID).MoveCost
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'指定したデータの命中修正
 	Public Function HitMod(ByVal ID As Short) As Short
 		HitMod = TerrainDataList_Renamed(ID).HitMod
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'指定したデータのダメージ修正
 	Public Function DamageMod(ByVal ID As Short) As Short
 		DamageMod = TerrainDataList_Renamed(ID).DamageMod
 	End Function
 	
 	
-	'Invalid_string_refer_to_original_code
+	'指定したデータの特殊能力
 	
 	Public Function IsFeatureAvailable(ByVal ID As Short, ByRef ftype As String) As Boolean
 		IsFeatureAvailable = TerrainDataList_Renamed(ID).IsFeatureAvailable(ftype)
@@ -114,13 +114,13 @@ Friend Class TerrainDataList
 	End Function
 	
 	
-	'Invalid_string_refer_to_original_code
+	'Ｎ番目に登録したデータの番号
 	Public Function OrderedID(ByVal n As Short) As Short
 		OrderedID = OrderList(n)
 	End Function
 	
 	
-	'Invalid_string_refer_to_original_code
+	'データファイル fname からデータをロード
 	Public Sub Load(ByRef fname As String)
 		Dim FileNumber As Short
 		Dim ret As Short
@@ -151,22 +151,22 @@ Friend Class TerrainDataList
 				GetLine(FileNumber, line_buf, line_num)
 			Loop While Len(line_buf) = 0
 			
-			'逡ｪ蜿ｷ
+			'番号
 			If IsNumeric(line_buf) Then
 				data_id = CShort(line_buf)
 			Else
-				err_msg = "Invalid_string_refer_to_original_code"
+				err_msg = "番号の設定が間違っています。"
 				Error(0)
 			End If
 			If data_id < 0 Or data_id >= MAX_TERRAIN_DATA_NUM Then
-				err_msg = "Invalid_string_refer_to_original_code"
+				err_msg = "番号の設定が間違っています。"
 				Error(0)
 			End If
 			
 			td = TerrainDataList_Renamed(data_id)
 			
 			With td
-				'Invalid_string_refer_to_original_code
+				'新規登録？
 				If .ID < 0 Then
 					Count = Count + 1
 					OrderList(Count) = data_id
@@ -175,43 +175,43 @@ Friend Class TerrainDataList
 				End If
 				.ID = data_id
 				
-				'Invalid_string_refer_to_original_code
+				'名称, 画像ファイル名
 				GetLine(FileNumber, line_buf, line_num)
 				
-				'蜷咲ｧｰ
+				'名称
 				ret = InStr(line_buf, ",")
 				If ret = 0 Then
-					err_msg = "Invalid_string_refer_to_original_code"
+					err_msg = "画像ファイル名が抜けています。"
 					Error(0)
 				End If
 				data_name = Trim(Left(line_buf, ret - 1))
 				.Name = data_name
 				buf = Mid(line_buf, ret + 1)
 				
-				'Invalid_string_refer_to_original_code
+				'画像ファイル名
 				.Bitmap_Renamed = Trim(buf)
 				If Len(.Bitmap_Renamed) = 0 Then
-					err_msg = "Invalid_string_refer_to_original_code"
+					err_msg = "画像ファイル名が指定されていません。"
 					Error(0)
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'地形タイプ, 移動コスト, 命中修正, ダメージ修正
 				GetLine(FileNumber, line_buf, line_num)
 				
-				'Invalid_string_refer_to_original_code
+				'地形タイプ
 				ret = InStr(line_buf, ",")
 				If ret = 0 Then
-					err_msg = "Invalid_string_refer_to_original_code"
+					err_msg = "移動コストが抜けています。"
 					Error(0)
 				End If
 				buf2 = Trim(Left(line_buf, ret - 1))
 				buf = Mid(line_buf, ret + 1)
 				.Class_Renamed = buf2
 				
-				'Invalid_string_refer_to_original_code
+				'移動コスト
 				ret = InStr(buf, ",")
 				If ret = 0 Then
-					err_msg = "Invalid_string_refer_to_original_code"
+					err_msg = "命中修正が抜けています。"
 					Error(0)
 				End If
 				buf2 = Trim(Left(buf, ret - 1))
@@ -219,18 +219,17 @@ Friend Class TerrainDataList
 				If buf2 = "-" Then
 					.MoveCost = 1000
 				ElseIf IsNumeric(buf2) Then 
-					'Invalid_string_refer_to_original_code
+					'0.5刻みの移動コストを使えるようにするため、実際の２倍の値で記録する
 					.MoveCost = CShort(2 * CDbl(buf2))
 				End If
 				If .MoveCost <= 0 Then
-					DataErrorMessage("Invalid_string_refer_to_original_code")
-					fname( , line_num, line_buf, data_name)
+					DataErrorMessage("移動コストの設定が間違っています。", fname, line_num, line_buf, data_name)
 				End If
 				
-				'蜻ｽ荳ｭ菫ｮ豁｣
+				'命中修正
 				ret = InStr(buf, ",")
 				If ret = 0 Then
-					err_msg = "Invalid_string_refer_to_original_code"
+					err_msg = "ダメージ修正が抜けています。"
 					Error(0)
 				End If
 				buf2 = Trim(Left(buf, ret - 1))
@@ -238,25 +237,23 @@ Friend Class TerrainDataList
 				If IsNumeric(buf2) Then
 					.HitMod = CShort(buf2)
 				Else
-					DataErrorMessage("Invalid_string_refer_to_original_code")
-					fname( , line_num, line_buf, data_name)
+					DataErrorMessage("命中修正の設定が間違っています。", fname, line_num, line_buf, data_name)
 				End If
 				
-				'繝繝｡繝ｼ繧ｸ菫ｮ豁｣
+				'ダメージ修正
 				ret = InStr(buf, ",")
 				If ret > 0 Then
-					err_msg = "Invalid_string_refer_to_original_code"
+					err_msg = "余分な「,」が指定されています。"
 					Error(0)
 				End If
 				buf2 = Trim(buf)
 				If IsNumeric(buf2) Then
 					.DamageMod = CShort(buf2)
 				Else
-					DataErrorMessage("Invalid_string_refer_to_original_code")
-					fname( , line_num, line_buf, data_name)
+					DataErrorMessage("ダメージ修正の設定が間違っています。", fname, line_num, line_buf, data_name)
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'地形効果
 				GetLine(FileNumber, line_buf, line_num)
 				Do While Len(line_buf) > 0
 					buf = line_buf
@@ -289,8 +286,7 @@ Friend Class TerrainDataList
 						If buf2 <> "" Then
 							.AddFeature(buf2)
 						Else
-							DataErrorMessage("陦碁ｭ縺九ｉ" & VB6.Format(i) & "Invalid_string_refer_to_original_code")
-							fname( , line_num, line_buf, data_name)
+							DataErrorMessage("行頭から" & VB6.Format(i) & "番目の地形効果の設定が間違っています。", fname, line_num, line_buf, data_name)
 						End If
 					Loop 
 					
@@ -305,9 +301,9 @@ Friend Class TerrainDataList
 		Loop 
 		
 ErrorHandler: 
-		'Invalid_string_refer_to_original_code
+		'エラー処理
 		If line_num = 0 Then
-			ErrorMessage(fname & "Invalid_string_refer_to_original_code")
+			ErrorMessage(fname & "が開けません。")
 		Else
 			FileClose(FileNumber)
 			DataErrorMessage(err_msg, fname, line_num, line_buf, data_name)
@@ -316,7 +312,7 @@ ErrorHandler:
 		End
 	End Sub
 	
-	'繝ｪ繧ｹ繝医ｒ繧ｯ繝ｪ繧｢
+	'リストをクリア
 	Public Sub Clear()
 		Dim i As Short
 		

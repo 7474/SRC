@@ -2,24 +2,24 @@ Attribute VB_Name = "Help"
 Option Explicit
 
 ' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯ãƒ•ãƒªãƒ¼ã‚½ãƒ•ãƒˆã§ã‚ã‚Šã€ç„¡ä¿è¨¼ã§ã™ã€‚
-' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯GNU General Public License(Ver.3ã¾ãŸã¯ãã‚Œä»¥é™)ãŒå®šã‚ã‚‹æ¡ä»¶ã®ä¸‹ã§
-' å†é ’å¸ƒã¾ãŸã¯æ”¹å¤‰ã™ã‚‹ã“ã¨ãŒã§ãã¾ã™ã€‚
+' –{ƒvƒƒOƒ‰ƒ€‚ÍƒtƒŠ[ƒ\ƒtƒg‚Å‚ ‚èA–³•ÛØ‚Å‚·B
+' –{ƒvƒƒOƒ‰ƒ€‚ÍGNU General Public License(Ver.3‚Ü‚½‚Í‚»‚êˆÈ~)‚ª’è‚ß‚éğŒ‚Ì‰º‚Å
+' Ä”Ğ•z‚Ü‚½‚Í‰ü•Ï‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B
 
-'ç‰¹æ®Šèƒ½åŠ›ï¼†æ­¦å™¨å±æ€§ã®è§£èª¬è¡¨ç¤ºã‚’è¡Œã†ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«
+'“Áê”\—Í••Ší‘®«‚Ì‰ğà•\¦‚ğs‚¤ƒ‚ƒWƒ…[ƒ‹
 
 
-'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆ p ã®ç‰¹æ®Šèƒ½åŠ›ã®è§£èª¬ã‚’è¡¨ç¤º
+'ƒpƒCƒƒbƒg p ‚Ì“Áê”\—Í‚Ì‰ğà‚ğ•\¦
 Public Sub SkillHelp(p As Pilot, sindex As String)
 Dim stype As String, sname As String
 Dim msg As String
 Dim prev_mode As Boolean
 
-    'ç‰¹æ®Šèƒ½åŠ›ã®åç§°ã‚’èª¿ã¹ã‚‹
+    '“Áê”\—Í‚Ì–¼Ì‚ğ’²‚×‚é
     If IsNumeric(sindex) Then
         sname = p.SkillName(CInt(sindex))
     Else
-        'ä»˜åŠ ã•ã‚ŒãŸãƒ‘ã‚¤ãƒ­ãƒƒãƒˆç”¨ç‰¹æ®Šèƒ½åŠ›
+        '•t‰Á‚³‚ê‚½ƒpƒCƒƒbƒg—p“Áê”\—Í
         If InStr(sindex, "Lv") > 0 Then
             stype = Left$(sindex, InStr(sindex, "Lv") - 1)
         Else
@@ -30,23 +30,23 @@ Dim prev_mode As Boolean
     
     msg = SkillHelpMessage(p, sindex)
     
-    'è§£èª¬ã®è¡¨ç¤º
+    '‰ğà‚Ì•\¦
     If Len(msg) > 0 Then
         prev_mode = AutoMessageMode
         AutoMessageMode = False
         
         OpenMessageForm
         If AutoMoveCursor Then
-            MoveCursorPos "ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦"
+            MoveCursorPos "ƒƒbƒZ[ƒWƒEƒBƒ“ƒhƒE"
         End If
-        DisplayMessage "ã‚·ã‚¹ãƒ†ãƒ ", "<b>" & sname & "</b>;" & msg
+        DisplayMessage "ƒVƒXƒeƒ€", "<b>" & sname & "</b>;" & msg
         CloseMessageForm
         
         AutoMessageMode = prev_mode
     End If
 End Sub
 
-'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆ p ã®ç‰¹æ®Šèƒ½åŠ›ã®è§£èª¬
+'ƒpƒCƒƒbƒg p ‚Ì“Áê”\—Í‚Ì‰ğà
 Public Function SkillHelpMessage(p As Pilot, sindex As String) As String
 Dim stype As String, sname As String, sname0 As String
 Dim slevel As Double, sdata As String, is_level_specified As Boolean
@@ -54,7 +54,7 @@ Dim msg As String
 Dim u As Unit, u2 As Unit, uname As String, fdata As String
 Dim i As Integer
 
-    'ç‰¹æ®Šèƒ½åŠ›ã®åç§°ã€ãƒ¬ãƒ™ãƒ«ã€ãƒ‡ãƒ¼ã‚¿ã‚’èª¿ã¹ã‚‹
+    '“Áê”\—Í‚Ì–¼ÌAƒŒƒxƒ‹Aƒf[ƒ^‚ğ’²‚×‚é
     With p
         If IsNumeric(sindex) Then
             stype = .Skill(CInt(sindex))
@@ -64,7 +64,7 @@ Dim i As Integer
             sname0 = .SkillName0(CInt(sindex))
             is_level_specified = .IsSkillLevelSpecified(CInt(sindex))
         Else
-            'ä»˜åŠ ã•ã‚ŒãŸãƒ‘ã‚¤ãƒ­ãƒƒãƒˆç”¨ç‰¹æ®Šèƒ½åŠ›
+            '•t‰Á‚³‚ê‚½ƒpƒCƒƒbƒg—p“Áê”\—Í
             If InStr(sindex, "Lv") > 0 Then
                 stype = Left$(sindex, InStr(sindex, "Lv") - 1)
             Else
@@ -78,11 +78,11 @@ Dim i As Integer
             is_level_specified = .IsSkillLevelSpecified(stype)
         End If
         
-        'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆãŒä¹—ã£ã¦ã„ã‚‹ãƒ¦ãƒ‹ãƒƒãƒˆ
+        'ƒpƒCƒƒbƒg‚ªæ‚Á‚Ä‚¢‚éƒ†ƒjƒbƒg
         Set u = .Unit
-        If u.Name = "ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹è¡¨ç¤ºç”¨ãƒ€ãƒŸãƒ¼ãƒ¦ãƒ‹ãƒƒãƒˆ" Then
-            If IsLocalVariableDefined("æ­ä¹—ãƒ¦ãƒ‹ãƒƒãƒˆ[" & .ID & "]") Then
-                uname = LocalVariableList.Item("æ­ä¹—ãƒ¦ãƒ‹ãƒƒãƒˆ[" & .ID & "]").StringValue
+        If u.Name = "ƒXƒe[ƒ^ƒX•\¦—pƒ_ƒ~[ƒ†ƒjƒbƒg" Then
+            If IsLocalVariableDefined("“‹æƒ†ƒjƒbƒg[" & .ID & "]") Then
+                uname = LocalVariableList.Item("“‹æƒ†ƒjƒbƒg[" & .ID & "]").StringValue
                 If uname <> "" Then
                     Set u2 = u
                     Set u = UList.Item(uname)
@@ -92,175 +92,175 @@ Dim i As Integer
     End With
     
     Select Case stype
-        Case "ã‚ªãƒ¼ãƒ©"
-            If u.FeatureName0("ãƒãƒªã‚¢") = "ã‚ªãƒ¼ãƒ©ãƒãƒªã‚¢" Then
-                msg = "ã‚ªãƒ¼ãƒ©æŠ€ã€Œã‚ªã€ã®æ”»æ’ƒåŠ›ã¨" & u.FeatureName0("ã‚ªãƒ¼ãƒ©ãƒãƒªã‚¢") & _
-                    "ã®å¼·åº¦ã«" & Format$(CLng(100 * slevel)) & "ã®ä¿®æ­£ã‚’ä¸ãˆã‚‹ã€‚"
+        Case "ƒI[ƒ‰"
+            If u.FeatureName0("ƒoƒŠƒA") = "ƒI[ƒ‰ƒoƒŠƒA" Then
+                msg = "ƒI[ƒ‰‹ZuƒIv‚ÌUŒ‚—Í‚Æ" & u.FeatureName0("ƒI[ƒ‰ƒoƒŠƒA") & _
+                    "‚Ì‹­“x‚É" & Format$(CLng(100 * slevel)) & "‚ÌC³‚ğ—^‚¦‚éB"
             Else
-                msg = "ã‚ªãƒ¼ãƒ©æŠ€ã€Œã‚ªã€ã®æ”»æ’ƒåŠ›ã®å¼·åº¦ã«" & Format$(CLng(100 * slevel)) & _
-                    "ã®ä¿®æ­£ã‚’ä¸ãˆã‚‹ã€‚"
+                msg = "ƒI[ƒ‰‹ZuƒIv‚ÌUŒ‚—Í‚Ì‹­“x‚É" & Format$(CLng(100 * slevel)) & _
+                    "‚ÌC³‚ğ—^‚¦‚éB"
             End If
-            If u.IsFeatureAvailable("ã‚ªãƒ¼ãƒ©å¤‰æ›å™¨") Then
+            If u.IsFeatureAvailable("ƒI[ƒ‰•ÏŠ·Ší") Then
                 msg = msg & _
-                    "ã¾ãŸã€" & Term("ï¼¨ï¼°", u) & "ã€" & Term("ï¼¥ï¼®", u) & "ã€" & _
-                    Term("è£…ç”²", u) & "ã€" & Term("é‹å‹•æ€§") & _
-                    "ãŒãƒ¬ãƒ™ãƒ«ã«åˆã‚ã›ã¦ãã‚Œãã‚Œå¢—åŠ ã™ã‚‹ã€‚"
+                    "‚Ü‚½A" & Term("‚g‚o", u) & "A" & Term("‚d‚m", u) & "A" & _
+                    Term("‘•b", u) & "A" & Term("‰^“®«") & _
+                    "‚ªƒŒƒxƒ‹‚É‡‚í‚¹‚Ä‚»‚ê‚¼‚ê‘‰Á‚·‚éB"
             End If
             
-        Case "åˆ†èº«"
-            msg = Format$(CLng(100 * slevel \ 16)) & "% ã®ç¢ºç‡ã§åˆ†èº«ã—ã€æ”»æ’ƒã‚’å›é¿ã™ã‚‹ã€‚"
+        Case "•ªg"
+            msg = Format$(CLng(100 * slevel \ 16)) & "% ‚ÌŠm—¦‚Å•ªg‚µAUŒ‚‚ğ‰ñ”ğ‚·‚éB"
             
-        Case "è¶…æ„Ÿè¦š"
-            msg = Term("å‘½ä¸­", u) & "ãƒ»" & Term("å›é¿", u)
+        Case "’´Š´Šo"
+            msg = Term("–½’†", u) & "E" & Term("‰ñ”ğ", u)
             If slevel > 0 Then
-                msg = msg & "ã« +" & Format$(CLng(2 * slevel + 3)) & " ã®ä¿®æ­£ã‚’ä¸ãˆã‚‹ã€‚"
+                msg = msg & "‚É +" & Format$(CLng(2 * slevel + 3)) & " ‚ÌC³‚ğ—^‚¦‚éB"
             Else
-                msg = msg & "ã« +0 ã®ä¿®æ­£ã‚’ä¸ãˆã‚‹ã€‚"
+                msg = msg & "‚É +0 ‚ÌC³‚ğ—^‚¦‚éB"
             End If
             If slevel > 3 Then
                 msg = msg & _
-                    ";æ€å¿µèª˜å°æ”»æ’ƒ(ã‚µ)ã®å°„ç¨‹ã‚’" & Format$(CLng(slevel \ 4)) & "ã ã‘å»¶é•·ã™ã‚‹ã€‚"
+                    ";v”O—U“±UŒ‚(ƒT)‚ÌË’ö‚ğ" & Format$(CLng(slevel \ 4)) & "‚¾‚¯‰„’·‚·‚éB"
             End If
             
-        Case "çŸ¥è¦šå¼·åŒ–"
-            msg = Term("å‘½ä¸­", u) & "ãƒ»" & Term("å›é¿", u)
+        Case "’mŠo‹­‰»"
+            msg = Term("–½’†", u) & "E" & Term("‰ñ”ğ", u)
             If slevel > 0 Then
-                msg = msg & "ã« +" & Format$(CLng(2 * slevel + 3)) & " ã®ä¿®æ­£ã‚’ä¸ãˆã‚‹ã€‚;"
+                msg = msg & "‚É +" & Format$(CLng(2 * slevel + 3)) & " ‚ÌC³‚ğ—^‚¦‚éB;"
             Else
-                msg = msg & "ã« +0 ã®ä¿®æ­£ã‚’ä¸ãˆã‚‹ã€‚;"
+                msg = msg & "‚É +0 ‚ÌC³‚ğ—^‚¦‚éB;"
             End If
             If slevel > 3 Then
                 msg = msg & _
-                    "æ€å¿µèª˜å°æ”»æ’ƒ(ã‚µ)ã®å°„ç¨‹ã‚’" & Format$(CLng(slevel \ 4)) & "ã ã‘å»¶é•·ã™ã‚‹ã€‚"
+                    "v”O—U“±UŒ‚(ƒT)‚ÌË’ö‚ğ" & Format$(CLng(slevel \ 4)) & "‚¾‚¯‰„’·‚·‚éB"
             End If
             msg = msg & _
-                "ç²¾ç¥ä¸å®‰å®šã«ã‚ˆã‚Š" & Term("ï¼³ï¼°", u) & "æ¶ˆè²»é‡ãŒ20%å¢—åŠ ã™ã‚‹"
+                "¸_•sˆÀ’è‚É‚æ‚è" & Term("‚r‚o", u) & "Á”ï—Ê‚ª20%‘‰Á‚·‚é"
             
-        Case "å¿µåŠ›"
-            msg = Term("å‘½ä¸­", u) & "ãƒ»" & Term("å›é¿", u)
+        Case "”O—Í"
+            msg = Term("–½’†", u) & "E" & Term("‰ñ”ğ", u)
             If slevel > 0 Then
-                msg = msg & "ã« +" & Format$(CLng(2 * slevel + 3)) & " ã®ä¿®æ­£ã‚’ä¸ãˆã‚‹ã€‚"
+                msg = msg & "‚É +" & Format$(CLng(2 * slevel + 3)) & " ‚ÌC³‚ğ—^‚¦‚éB"
             Else
-                msg = msg & "ã« +0 ã®ä¿®æ­£ã‚’ä¸ãˆã‚‹ã€‚"
+                msg = msg & "‚É +0 ‚ÌC³‚ğ—^‚¦‚éB"
             End If
             
-        Case "åˆ‡ã‚Šæ‰•ã„"
-            msg = "æ ¼é—˜æ­¦å™¨(æ­¦)ã€çªé€²æŠ€(çª)ã€å®Ÿå¼¾æ”»æ’ƒ(å®Ÿ)ã«ã‚ˆã‚‹æ”»æ’ƒã‚’ " & _
-                Format$(CLng(100 * slevel \ 16)) & "% ã®ç¢ºç‡ã§åˆ‡ã‚Šæ‰•ã£ã¦å›é¿ã™ã‚‹ã€‚"
+        Case "Ø‚è•¥‚¢"
+            msg = "Ši“¬•Ší(•)A“Ëi‹Z(“Ë)AÀ’eUŒ‚(À)‚É‚æ‚éUŒ‚‚ğ " & _
+                Format$(CLng(100 * slevel \ 16)) & "% ‚ÌŠm—¦‚ÅØ‚è•¥‚Á‚Ä‰ñ”ğ‚·‚éB"
                 
-        Case "è¿æ’ƒ"
-            msg = "å®Ÿå¼¾æ”»æ’ƒ(å®Ÿ)ã«ã‚ˆã‚‹æ”»æ’ƒã‚’ " & _
-                Format$(CLng(100 * slevel \ 16)) & "% ã®ç¢ºç‡ã§è¿æ’ƒã™ã‚‹ã€‚"
+        Case "Œ}Œ‚"
+            msg = "À’eUŒ‚(À)‚É‚æ‚éUŒ‚‚ğ " & _
+                Format$(CLng(100 * slevel \ 16)) & "% ‚ÌŠm—¦‚ÅŒ}Œ‚‚·‚éB"
             
-        Case "ã‚µã‚¤ãƒœãƒ¼ã‚°"
-            msg = Term("å‘½ä¸­", u) & "ãƒ»" & Term("å›é¿", u)
-            msg = msg & "ã« +5 ã®ä¿®æ­£ã‚’ä¸ãˆã‚‹ã€‚"
+        Case "ƒTƒCƒ{[ƒO"
+            msg = Term("–½’†", u) & "E" & Term("‰ñ”ğ", u)
+            msg = msg & "‚É +5 ‚ÌC³‚ğ—^‚¦‚éB"
             
-        Case "ï¼³é˜²å¾¡"
-            If u.IsFeatureAvailable("ç›¾") Then
-                msg = "ã‚·ãƒ¼ãƒ«ãƒ‰é˜²å¾¡ã‚’è¡Œã„ã€ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’" & _
-                    Format$(CLng(100 * slevel + 400)) & "æ¸›å°‘ã•ã›ã‚‹ã€‚"
+        Case "‚r–hŒä"
+            If u.IsFeatureAvailable("‚") Then
+                msg = "ƒV[ƒ‹ƒh–hŒä‚ğs‚¢Aƒ_ƒ[ƒW‚ğ" & _
+                    Format$(CLng(100 * slevel + 400)) & "Œ¸­‚³‚¹‚éB"
             Else
-                msg = Format$(CLng(100 * slevel \ 16)) & "% ã®ç¢ºç‡ã§ã‚·ãƒ¼ãƒ«ãƒ‰é˜²å¾¡ã‚’è¡Œã†ã€‚"
+                msg = Format$(CLng(100 * slevel \ 16)) & "% ‚ÌŠm—¦‚ÅƒV[ƒ‹ƒh–hŒä‚ğs‚¤B"
             End If
             
-        Case "è³‡é‡‘ç²å¾—"
-             msg = "æ•µã‚’å€’ã—ãŸæ™‚ã«å¾—ã‚‰ã‚Œã‚‹" & Term("è³‡é‡‘")
+        Case "‘‹àŠl“¾"
+             msg = "“G‚ğ“|‚µ‚½‚É“¾‚ç‚ê‚é" & Term("‘‹à")
             If Not is_level_specified Then
-                msg = msg & "ãŒ 50% å¢—åŠ ã™ã‚‹ã€‚"
+                msg = msg & "‚ª 50% ‘‰Á‚·‚éB"
             ElseIf slevel >= 0 Then
-                msg = msg & "ãŒ " & Format$(10 * slevel) & "% å¢—åŠ ã™ã‚‹ã€‚"
+                msg = msg & "‚ª " & Format$(10 * slevel) & "% ‘‰Á‚·‚éB"
             Else
-                msg = msg & "ãŒ " & Format$(-10 * slevel) & "% æ¸›å°‘ã™ã‚‹ã€‚"
+                msg = msg & "‚ª " & Format$(-10 * slevel) & "% Œ¸­‚·‚éB"
             End If
             
-        Case "æµ„åŒ–"
-            msg = "æµ„åŒ–æŠ€(æµ„)ã‚’ä½¿ã†ã“ã¨ã§æ•µã®" & _
-                p.SkillName0("å†ç”Ÿ") & "èƒ½åŠ›ã‚’ç„¡åŠ¹åŒ–ã€‚"
+        Case "ò‰»"
+            msg = "ò‰»‹Z(ò)‚ğg‚¤‚±‚Æ‚Å“G‚Ì" & _
+                p.SkillName0("Ä¶") & "”\—Í‚ğ–³Œø‰»B"
             
-        Case "åŒèª¿ç‡"
+        Case "“¯’²—¦"
             If u.IsHero Then
-                msg = "åŒèª¿ã«ã‚ˆã‚Š"
+                msg = "“¯’²‚É‚æ‚è"
             Else
-                msg = "æ©Ÿä½“ã«åŒèª¿ã—"
+                msg = "‹@‘Ì‚É“¯’²‚µ"
             End If
-            msg = msg & Term("é‹å‹•æ€§", u) & "ãƒ»æ”»æ’ƒåŠ›ã‚’å¼·åŒ–ã™ã‚‹ã€‚"
+            msg = msg & Term("‰^“®«", u) & "EUŒ‚—Í‚ğ‹­‰»‚·‚éB"
             
-        Case "åŒèª¿ç‡æˆé•·"
+        Case "“¯’²—¦¬’·"
             If slevel >= 0 Then
-                msg = p.SkillName0("åŒèª¿ç‡") & "ã®æˆé•·ç‡ãŒ " & Format$(10 * slevel) & "% å¢—åŠ ã™ã‚‹ã€‚"
+                msg = p.SkillName0("“¯’²—¦") & "‚Ì¬’·—¦‚ª " & Format$(10 * slevel) & "% ‘‰Á‚·‚éB"
             Else
-                msg = p.SkillName0("åŒèª¿ç‡") & "ã®æˆé•·ç‡ãŒ " & Format$(-10 * slevel) & "% æ¸›å°‘ã™ã‚‹ã€‚"
+                msg = p.SkillName0("“¯’²—¦") & "‚Ì¬’·—¦‚ª " & Format$(-10 * slevel) & "% Œ¸­‚·‚éB"
             End If
             
-        Case "éœŠåŠ›"
-            msg = "ç¾åœ¨ã®" & sname0 & "å€¤ã«ã‚ã‚ã›ã¦" & Term("ï¼¨ï¼°", u) & "ãƒ»" & _
-                Term("ï¼¥ï¼®", u) & "ãƒ»" & Term("è£…ç”²", u) & "ãƒ»" & Term("ç§»å‹•åŠ›", u) & _
-                "ã‚’å¼·åŒ–ã™ã‚‹ã€‚"
+        Case "—ì—Í"
+            msg = "Œ»İ‚Ì" & sname0 & "’l‚É‚ ‚í‚¹‚Ä" & Term("‚g‚o", u) & "E" & _
+                Term("‚d‚m", u) & "E" & Term("‘•b", u) & "E" & Term("ˆÚ“®—Í", u) & _
+                "‚ğ‹­‰»‚·‚éB"
             
-        Case "éœŠåŠ›æˆé•·"
+        Case "—ì—Í¬’·"
             If slevel >= 0 Then
-                msg = p.SkillName0("éœŠåŠ›") & "ã®æˆé•·ç‡ãŒ " & Format$(10 * slevel) & "% å¢—åŠ ã™ã‚‹ã€‚"
+                msg = p.SkillName0("—ì—Í") & "‚Ì¬’·—¦‚ª " & Format$(10 * slevel) & "% ‘‰Á‚·‚éB"
             Else
-                msg = p.SkillName0("éœŠåŠ›") & "ã®æˆé•·ç‡ãŒ " & Format$(-10 * slevel) & "% æ¸›å°‘ã™ã‚‹ã€‚"
+                msg = p.SkillName0("—ì—Í") & "‚Ì¬’·—¦‚ª " & Format$(-10 * slevel) & "% Œ¸­‚·‚éB"
             End If
             
-        Case "åº•åŠ›"
-            msg = Term("ï¼¨ï¼°", u) & "ãŒæœ€å¤§" & Term("ï¼¨ï¼°", u) & "ã®1/4ä»¥ä¸‹ã®æ™‚ã«ç™ºå‹•ã€‚;" & _
-                "å‘½ä¸­ï¼†å›é¿ +30%ã€ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ç™ºç”Ÿç‡ +50%ã€‚"
+        Case "’ê—Í"
+            msg = Term("‚g‚o", u) & "‚ªÅ‘å" & Term("‚g‚o", u) & "‚Ì1/4ˆÈ‰º‚Ì‚É”­“®B;" & _
+                "–½’†•‰ñ”ğ +30%AƒNƒŠƒeƒBƒJƒ‹”­¶—¦ +50%B"
             
-        Case "è¶…åº•åŠ›"
-            msg = Term("ï¼¨ï¼°", u) & "ãŒæœ€å¤§" & Term("ï¼¨ï¼°", u) & "ã®1/4ä»¥ä¸‹ã®æ™‚ã«ç™ºå‹•ã€‚;" & _
-                "å‘½ä¸­ï¼†å›é¿ +50%ã€ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ç™ºç”Ÿç‡ +50%ã€‚"
+        Case "’´’ê—Í"
+            msg = Term("‚g‚o", u) & "‚ªÅ‘å" & Term("‚g‚o", u) & "‚Ì1/4ˆÈ‰º‚Ì‚É”­“®B;" & _
+                "–½’†•‰ñ”ğ +50%AƒNƒŠƒeƒBƒJƒ‹”­¶—¦ +50%B"
             
-        Case "è¦šæ‚Ÿ"
-            msg = Term("ï¼¨ï¼°", u) & "ãŒæœ€å¤§" & Term("ï¼¨ï¼°", u) & "ã®1/4ä»¥ä¸‹ã®æ™‚ã«ç™ºå‹•ã€‚;"
-            If IsOptionDefined("ãƒ€ãƒ¡ãƒ¼ã‚¸å€ç‡ä½ä¸‹") Then
-                msg = msg & "æ”»æ’ƒåŠ›10%ã‚¢ãƒƒãƒ—ã€ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ç™ºç”Ÿç‡ +50%ã€‚"
+        Case "ŠoŒå"
+            msg = Term("‚g‚o", u) & "‚ªÅ‘å" & Term("‚g‚o", u) & "‚Ì1/4ˆÈ‰º‚Ì‚É”­“®B;"
+            If IsOptionDefined("ƒ_ƒ[ƒW”{—¦’á‰º") Then
+                msg = msg & "UŒ‚—Í10%ƒAƒbƒvAƒNƒŠƒeƒBƒJƒ‹”­¶—¦ +50%B"
             Else
-                msg = msg & "æ”»æ’ƒåŠ›1.2å€ã€ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ç™ºç”Ÿç‡ +50%ã€‚"
+                msg = msg & "UŒ‚—Í1.2”{AƒNƒŠƒeƒBƒJƒ‹”­¶—¦ +50%B"
             End If
             
-        Case "ä¸å±ˆ"
-            msg = Term("ï¼¨ï¼°", u) & "ãŒæœ€å¤§" & Term("ï¼¨ï¼°", u) & "ã®1/2ä»¥ä¸‹ã®æ™‚ã«ç™ºå‹•ã€‚;" & _
-                "æå‚·ç‡ã«å¿œã˜ã¦é˜²å¾¡åŠ›ãŒå¢—åŠ ã™ã‚‹ã€‚"
+        Case "•s‹ü"
+            msg = Term("‚g‚o", u) & "‚ªÅ‘å" & Term("‚g‚o", u) & "‚Ì1/2ˆÈ‰º‚Ì‚É”­“®B;" & _
+                "‘¹—¦‚É‰‚¶‚Ä–hŒä—Í‚ª‘‰Á‚·‚éB"
             
-        Case "ç´ è³ª"
+        Case "‘f¿"
             If Not is_level_specified Then
-                msg = "å…¥æ‰‹ã™ã‚‹çµŒé¨“å€¤ãŒ50%å¢—åŠ ã™ã‚‹ã€‚"
+                msg = "“üè‚·‚éŒoŒ±’l‚ª50%‘‰Á‚·‚éB"
             ElseIf slevel >= 0 Then
-                msg = "å…¥æ‰‹ã™ã‚‹çµŒé¨“å€¤ãŒ " & Format$(10 * slevel) & "% å¢—åŠ ã™ã‚‹ã€‚"
+                msg = "“üè‚·‚éŒoŒ±’l‚ª " & Format$(10 * slevel) & "% ‘‰Á‚·‚éB"
             Else
-                msg = "å…¥æ‰‹ã™ã‚‹çµŒé¨“å€¤ãŒ " & Format$(-10 * slevel) & "% æ¸›å°‘ã™ã‚‹ã€‚"
+                msg = "“üè‚·‚éŒoŒ±’l‚ª " & Format$(-10 * slevel) & "% Œ¸­‚·‚éB"
             End If
             
-        Case "é…æˆé•·"
-            msg = "å…¥æ‰‹ã™ã‚‹çµŒé¨“å€¤ãŒåŠæ¸›ã™ã‚‹ã€‚"
+        Case "’x¬’·"
+            msg = "“üè‚·‚éŒoŒ±’l‚ª”¼Œ¸‚·‚éB"
                 
-        Case "å†ç”Ÿ", "è‹±é›„"
-            msg = Term("ï¼¨ï¼°", u) & "ãŒï¼ã«ãªã£ãŸæ™‚ã«" & Format$(CLng(100 * slevel \ 16)) & _
-                "%ã®ç¢ºç‡ã§å¾©æ´»ã™ã‚‹ã€‚"
+        Case "Ä¶", "‰p—Y"
+            msg = Term("‚g‚o", u) & "‚ª‚O‚É‚È‚Á‚½‚É" & Format$(CLng(100 * slevel \ 16)) & _
+                "%‚ÌŠm—¦‚Å•œŠˆ‚·‚éB"
             
-        Case "è¶…èƒ½åŠ›"
-            msg = Term("å‘½ä¸­", u) & "ãƒ»" & Term("å›é¿", u) & "ãƒ»" & Term("ï¼£ï¼´ç‡", u) & _
-                "ã«ãã‚Œãã‚Œ +5ã€‚;" & _
-                "ã‚µã‚¤ã‚­ãƒƒã‚¯æ”»æ’ƒ(è¶…)ã®æ”»æ’ƒåŠ›ã« +" & Format$(CLng(100 * slevel)) & "ã€‚;" & _
-                Term("ï¼³ï¼°", u) & "æ¶ˆè²»é‡ã‚’20%å‰Šæ¸›ã™ã‚‹ã€‚"
+        Case "’´”\—Í"
+            msg = Term("–½’†", u) & "E" & Term("‰ñ”ğ", u) & "E" & Term("‚b‚s—¦", u) & _
+                "‚É‚»‚ê‚¼‚ê +5B;" & _
+                "ƒTƒCƒLƒbƒNUŒ‚(’´)‚ÌUŒ‚—Í‚É +" & Format$(CLng(100 * slevel)) & "B;" & _
+                Term("‚r‚o", u) & "Á”ï—Ê‚ğ20%íŒ¸‚·‚éB"
             
-        Case "æ‚Ÿã‚Š"
-            msg = Term("å‘½ä¸­", u) & "ãƒ»" & Term("å›é¿", u) & "ã« +10 ã®ä¿®æ­£ã‚’ä¸ãˆã‚‹ã€‚"
+        Case "Œå‚è"
+            msg = Term("–½’†", u) & "E" & Term("‰ñ”ğ", u) & "‚É +10 ‚ÌC³‚ğ—^‚¦‚éB"
             
-        Case "è¶…åå¿œ"
-            msg = Term("å‘½ä¸­", u) & "ãƒ»" & Term("å›é¿", u) & "ãƒ»" & Term("ï¼£ï¼´ç‡", u)
+        Case "’´”½‰"
+            msg = Term("–½’†", u) & "E" & Term("‰ñ”ğ", u) & "E" & Term("‚b‚s—¦", u)
             If slevel >= 0 Then
-                msg = msg & "ã«ãã‚Œãã‚Œ +" & _
-                    Format$(CLng(2 * slevel)) & " ã®ä¿®æ­£ã‚’ä¸ãˆã‚‹ã€‚"
+                msg = msg & "‚É‚»‚ê‚¼‚ê +" & _
+                    Format$(CLng(2 * slevel)) & " ‚ÌC³‚ğ—^‚¦‚éB"
             Else
-                msg = msg & "ã«ãã‚Œãã‚Œ " & _
-                    Format$(CLng(2 * slevel)) & " ã®ä¿®æ­£ã‚’ä¸ãˆã‚‹ã€‚"
+                msg = msg & "‚É‚»‚ê‚¼‚ê " & _
+                    Format$(CLng(2 * slevel)) & " ‚ÌC³‚ğ—^‚¦‚éB"
             End If
             
-        Case "è¡“"
+        Case "p"
             Select Case slevel
                 Case 1
                     i = 0
@@ -285,11 +285,11 @@ Dim i As Integer
                 Case Else
                     i = 0
             End Select
-            msg = "è¡“å±æ€§ã‚’æŒã¤æ­¦è£…ãƒ»" & Term("ã‚¢ãƒ“ãƒªãƒ†ã‚£", u) & "åŠã³å¿…è¦æŠ€èƒ½ãŒ" & _
-                sname0 & "ã®æ­¦è£…ãƒ»" & Term("ã‚¢ãƒ“ãƒªãƒ†ã‚£", u) & "ã®æ¶ˆè²»" & Term("ï¼¥ï¼®", u) & _
-                "ã‚’" & Format$(i) & "%æ¸›å°‘ã•ã›ã‚‹ã€‚"
+            msg = "p‘®«‚ğ‚Â•‘•E" & Term("ƒAƒrƒŠƒeƒB", u) & "‹y‚Ñ•K—v‹Z”\‚ª" & _
+                sname0 & "‚Ì•‘•E" & Term("ƒAƒrƒŠƒeƒB", u) & "‚ÌÁ”ï" & Term("‚d‚m", u) & _
+                "‚ğ" & Format$(i) & "%Œ¸­‚³‚¹‚éB"
             
-        Case "æŠ€"
+        Case "‹Z"
             Select Case slevel
                 Case 1
                     i = 0
@@ -314,386 +314,386 @@ Dim i As Integer
                 Case Else
                     i = 0
             End Select
-            msg = "æŠ€å±æ€§ã‚’æŒã¤æ­¦è£…ãƒ»" & Term("ã‚¢ãƒ“ãƒªãƒ†ã‚£", u) & "åŠã³å¿…è¦æŠ€èƒ½ãŒ" & _
-                 sname0 & "ã®æ­¦è£…ãƒ»" & Term("ã‚¢ãƒ“ãƒªãƒ†ã‚£", u) & "ã®æ¶ˆè²»" & Term("ï¼¥ï¼®", u) & _
-                 "ã‚’" & Format$(i) & "%æ¸›å°‘ã•ã›ã‚‹ã€‚"
+            msg = "‹Z‘®«‚ğ‚Â•‘•E" & Term("ƒAƒrƒŠƒeƒB", u) & "‹y‚Ñ•K—v‹Z”\‚ª" & _
+                 sname0 & "‚Ì•‘•E" & Term("ƒAƒrƒŠƒeƒB", u) & "‚ÌÁ”ï" & Term("‚d‚m", u) & _
+                 "‚ğ" & Format$(i) & "%Œ¸­‚³‚¹‚éB"
             
-        Case "é›†ä¸­åŠ›"
-            msg = Term("ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼", u) & "ã®" & Term("ï¼³ï¼°", u) & _
-                "æ¶ˆè²»é‡ãŒå…ƒã®80%ã«æ¸›å°‘ã™ã‚‹ã€‚"
+        Case "W’†—Í"
+            msg = Term("ƒXƒyƒVƒƒƒ‹ƒpƒ[", u) & "‚Ì" & Term("‚r‚o", u) & _
+                "Á”ï—Ê‚ªŒ³‚Ì80%‚ÉŒ¸­‚·‚éB"
             
-        Case "é—˜äº‰æœ¬èƒ½"
+        Case "“¬‘ˆ–{”\"
             If p.MinMorale > 100 Then
-                If Not p.IsSkillLevelSpecified("é—˜äº‰æœ¬èƒ½") Then
-                    msg = "å‡ºæ’ƒæ™‚ã®" & Term("æ°—åŠ›", u) & "ãŒ" & _
-                        Format$(p.MinMorale + 5 * slevel) & "ã«å¢—åŠ ã™ã‚‹ã€‚"
+                If Not p.IsSkillLevelSpecified("“¬‘ˆ–{”\") Then
+                    msg = "oŒ‚‚Ì" & Term("‹C—Í", u) & "‚ª" & _
+                        Format$(p.MinMorale + 5 * slevel) & "‚É‘‰Á‚·‚éB"
                 ElseIf slevel >= 0 Then
-                    msg = "å‡ºæ’ƒæ™‚ã®" & Term("æ°—åŠ›", u) & "ãŒ" & _
-                        Format$(p.MinMorale + 5 * slevel) & "ã«å¢—åŠ ã™ã‚‹ã€‚"
+                    msg = "oŒ‚‚Ì" & Term("‹C—Í", u) & "‚ª" & _
+                        Format$(p.MinMorale + 5 * slevel) & "‚É‘‰Á‚·‚éB"
                 Else
-                    msg = "å‡ºæ’ƒæ™‚ã®" & Term("æ°—åŠ›", u) & "ãŒ" & _
-                        Format$(p.MinMorale + 5 * slevel) & "ã«æ¸›å°‘ã™ã‚‹ã€‚"
+                    msg = "oŒ‚‚Ì" & Term("‹C—Í", u) & "‚ª" & _
+                        Format$(p.MinMorale + 5 * slevel) & "‚ÉŒ¸­‚·‚éB"
                 End If
             Else
-                If Not p.IsSkillLevelSpecified("é—˜äº‰æœ¬èƒ½") Then
-                    msg = "å‡ºæ’ƒæ™‚ã®" & Term("æ°—åŠ›", u) & "ãŒ105ã«å¢—åŠ ã™ã‚‹ã€‚"
+                If Not p.IsSkillLevelSpecified("“¬‘ˆ–{”\") Then
+                    msg = "oŒ‚‚Ì" & Term("‹C—Í", u) & "‚ª105‚É‘‰Á‚·‚éB"
                 ElseIf slevel >= 0 Then
-                    msg = "å‡ºæ’ƒæ™‚ã®" & Term("æ°—åŠ›", u) & "ãŒ" & _
-                        Format$(100 + 5 * slevel) & "ã«å¢—åŠ ã™ã‚‹ã€‚"
+                    msg = "oŒ‚‚Ì" & Term("‹C—Í", u) & "‚ª" & _
+                        Format$(100 + 5 * slevel) & "‚É‘‰Á‚·‚éB"
                 Else
-                    msg = "å‡ºæ’ƒæ™‚ã®" & Term("æ°—åŠ›", u) & "ãŒ" & _
-                        Format$(100 + 5 * slevel) & "ã«æ¸›å°‘ã™ã‚‹ã€‚"
+                    msg = "oŒ‚‚Ì" & Term("‹C—Í", u) & "‚ª" & _
+                        Format$(100 + 5 * slevel) & "‚ÉŒ¸­‚·‚éB"
                 End If
             End If
             
-        Case "æ½œåœ¨åŠ›é–‹æ”¾"
-            If IsOptionDefined("ãƒ€ãƒ¡ãƒ¼ã‚¸å€ç‡ä½ä¸‹") Then
-                msg = Term("æ°—åŠ›", u) & "130ä»¥ä¸Šã§ç™ºå‹•ã—ã€ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ 20% å¢—åŠ ã•ã›ã‚‹ã€‚"
+        Case "öİ—ÍŠJ•ú"
+            If IsOptionDefined("ƒ_ƒ[ƒW”{—¦’á‰º") Then
+                msg = Term("‹C—Í", u) & "130ˆÈã‚Å”­“®‚µAƒ_ƒ[ƒW‚ğ 20% ‘‰Á‚³‚¹‚éB"
             Else
-                msg = Term("æ°—åŠ›", u) & "130ä»¥ä¸Šã§ç™ºå‹•ã—ã€ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ 25% å¢—åŠ ã•ã›ã‚‹ã€‚"
+                msg = Term("‹C—Í", u) & "130ˆÈã‚Å”­“®‚µAƒ_ƒ[ƒW‚ğ 25% ‘‰Á‚³‚¹‚éB"
             End If
                 
-        Case "æŒ‡æ®"
-            msg = "åŠå¾„" & StrConv(Format$(p.CommandRange), vbWide) & _
-                "ãƒã‚¹ä»¥å†…ã«ã„ã‚‹å‘³æ–¹ã‚¶ã‚³ãƒ»æ±ç”¨åŠã³éšç´šæ‰€æœ‰ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & _
-                Term("å‘½ä¸­", u) & "ãƒ»" & Term("å›é¿", u)
+        Case "wŠö"
+            msg = "”¼Œa" & StrConv(Format$(p.CommandRange), vbWide) & _
+                "ƒ}ƒXˆÈ“à‚É‚¢‚é–¡•ûƒUƒRE”Ä—p‹y‚ÑŠK‹‰Š—LƒpƒCƒƒbƒg‚Ì" & _
+                Term("–½’†", u) & "E" & Term("‰ñ”ğ", u)
             If slevel >= 0 Then
-                msg = msg & "ã« +" & Format$(CLng(5 * slevel)) & "ã€‚"
+                msg = msg & "‚É +" & Format$(CLng(5 * slevel)) & "B"
             Else
-                msg = msg & "ã« " & Format$(CLng(5 * slevel)) & "ã€‚"
+                msg = msg & "‚É " & Format$(CLng(5 * slevel)) & "B"
             End If
             
-        Case "éšç´š"
-            If InStr(sname, "éšç´šLv") = 0 Then
-                msg = "éšç´šãƒ¬ãƒ™ãƒ«" & StrConv(Format$(CLng(slevel)), vbWide) & "ã«ç›¸å½“ã™ã‚‹ã€‚;"
+        Case "ŠK‹‰"
+            If InStr(sname, "ŠK‹‰Lv") = 0 Then
+                msg = "ŠK‹‰ƒŒƒxƒ‹" & StrConv(Format$(CLng(slevel)), vbWide) & "‚É‘Š“–‚·‚éB;"
             End If
             msg = msg & _
-                "åŠå¾„" & StrConv(Format$(p.CommandRange), vbWide) & _
-                "ãƒã‚¹ä»¥å†…ã«ã„ã‚‹ã‚¶ã‚³åŠã³éšç´šæ‰€æœ‰ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã«æŒ‡æ®åŠ¹æœã‚’ä¸ãˆã‚‹ã€‚"
+                "”¼Œa" & StrConv(Format$(p.CommandRange), vbWide) & _
+                "ƒ}ƒXˆÈ“à‚É‚¢‚éƒUƒR‹y‚ÑŠK‹‰Š—LƒpƒCƒƒbƒg‚ÉwŠöŒø‰Ê‚ğ—^‚¦‚éB"
             
-        Case "æ ¼é—˜ã‚µãƒãƒ¼ãƒˆ"
-            msg = "è‡ªåˆ†ãŒã‚µãƒãƒ¼ãƒˆãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®æ™‚ã«ãƒ¡ã‚¤ãƒ³ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & Term("æ ¼é—˜", u)
+        Case "Ši“¬ƒTƒ|[ƒg"
+            msg = "©•ª‚ªƒTƒ|[ƒgƒpƒCƒƒbƒg‚Ì‚ÉƒƒCƒ“ƒpƒCƒƒbƒg‚Ì" & Term("Ši“¬", u)
             If slevel >= 0 Then
-                msg = msg & "ã« +" & Format$(CLng(2 * slevel)) & "ã€‚"
+                msg = msg & "‚É +" & Format$(CLng(2 * slevel)) & "B"
             Else
-                msg = msg & "ã« " & Format$(CLng(2 * slevel)) & "ã€‚"
+                msg = msg & "‚É " & Format$(CLng(2 * slevel)) & "B"
             End If
             
-        Case "å°„æ’ƒã‚µãƒãƒ¼ãƒˆ"
-            msg = "è‡ªåˆ†ãŒã‚µãƒãƒ¼ãƒˆãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®æ™‚ã«ãƒ¡ã‚¤ãƒ³ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & Term("å°„æ’ƒ", u)
+        Case "ËŒ‚ƒTƒ|[ƒg"
+            msg = "©•ª‚ªƒTƒ|[ƒgƒpƒCƒƒbƒg‚Ì‚ÉƒƒCƒ“ƒpƒCƒƒbƒg‚Ì" & Term("ËŒ‚", u)
             If slevel >= 0 Then
-                msg = msg & "ã« +" & Format$(CLng(2 * slevel)) & "ã€‚"
+                msg = msg & "‚É +" & Format$(CLng(2 * slevel)) & "B"
             Else
-                msg = msg & "ã« " & Format$(CLng(2 * slevel)) & "ã€‚"
+                msg = msg & "‚É " & Format$(CLng(2 * slevel)) & "B"
             End If
             
-        Case "é­”åŠ›ã‚µãƒãƒ¼ãƒˆ"
-            msg = "è‡ªåˆ†ãŒã‚µãƒãƒ¼ãƒˆãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®æ™‚ã«ãƒ¡ã‚¤ãƒ³ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & Term("é­”åŠ›", u)
+        Case "–‚—ÍƒTƒ|[ƒg"
+            msg = "©•ª‚ªƒTƒ|[ƒgƒpƒCƒƒbƒg‚Ì‚ÉƒƒCƒ“ƒpƒCƒƒbƒg‚Ì" & Term("–‚—Í", u)
             If slevel >= 0 Then
-                msg = msg & "ã« +" & Format$(CLng(2 * slevel)) & "ã€‚"
+                msg = msg & "‚É +" & Format$(CLng(2 * slevel)) & "B"
             Else
-                msg = msg & "ã« " & Format$(CLng(2 * slevel)) & "ã€‚"
+                msg = msg & "‚É " & Format$(CLng(2 * slevel)) & "B"
             End If
             
-        Case "å‘½ä¸­ã‚µãƒãƒ¼ãƒˆ"
-            msg = "è‡ªåˆ†ãŒã‚µãƒãƒ¼ãƒˆãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®æ™‚ã«ãƒ¡ã‚¤ãƒ³ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & Term("å‘½ä¸­", u)
+        Case "–½’†ƒTƒ|[ƒg"
+            msg = "©•ª‚ªƒTƒ|[ƒgƒpƒCƒƒbƒg‚Ì‚ÉƒƒCƒ“ƒpƒCƒƒbƒg‚Ì" & Term("–½’†", u)
             If slevel >= 0 Then
-                msg = msg & "ã« +" & Format$(CLng(2 * slevel)) & "ã€‚"
+                msg = msg & "‚É +" & Format$(CLng(2 * slevel)) & "B"
             Else
-                msg = msg & "ã« " & Format$(CLng(2 * slevel)) & "ã€‚"
+                msg = msg & "‚É " & Format$(CLng(2 * slevel)) & "B"
             End If
             
-        Case "å›é¿ã‚µãƒãƒ¼ãƒˆ"
-            msg = "è‡ªåˆ†ãŒã‚µãƒãƒ¼ãƒˆãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®æ™‚ã«ãƒ¡ã‚¤ãƒ³ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & Term("å›é¿", u)
+        Case "‰ñ”ğƒTƒ|[ƒg"
+            msg = "©•ª‚ªƒTƒ|[ƒgƒpƒCƒƒbƒg‚Ì‚ÉƒƒCƒ“ƒpƒCƒƒbƒg‚Ì" & Term("‰ñ”ğ", u)
             If slevel >= 0 Then
-                msg = msg & "ã« +" & Format$(CLng(2 * slevel)) & "ã€‚"
+                msg = msg & "‚É +" & Format$(CLng(2 * slevel)) & "B"
             Else
-                msg = msg & "ã« " & Format$(CLng(2 * slevel)) & "ã€‚"
+                msg = msg & "‚É " & Format$(CLng(2 * slevel)) & "B"
             End If
             
-        Case "æŠ€é‡ã‚µãƒãƒ¼ãƒˆ"
-            msg = "è‡ªåˆ†ãŒã‚µãƒãƒ¼ãƒˆãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®æ™‚ã«ãƒ¡ã‚¤ãƒ³ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & Term("æŠ€é‡", u)
+        Case "‹Z—ÊƒTƒ|[ƒg"
+            msg = "©•ª‚ªƒTƒ|[ƒgƒpƒCƒƒbƒg‚Ì‚ÉƒƒCƒ“ƒpƒCƒƒbƒg‚Ì" & Term("‹Z—Ê", u)
             If slevel >= 0 Then
-                msg = msg & "ã« +" & Format$(CLng(2 * slevel)) & "ã€‚"
+                msg = msg & "‚É +" & Format$(CLng(2 * slevel)) & "B"
             Else
-                msg = msg & "ã« " & Format$(CLng(2 * slevel)) & "ã€‚"
+                msg = msg & "‚É " & Format$(CLng(2 * slevel)) & "B"
             End If
             
-        Case "åå¿œã‚µãƒãƒ¼ãƒˆ"
-            msg = "è‡ªåˆ†ãŒã‚µãƒãƒ¼ãƒˆãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®æ™‚ã«ãƒ¡ã‚¤ãƒ³ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & Term("åå¿œ", u)
+        Case "”½‰ƒTƒ|[ƒg"
+            msg = "©•ª‚ªƒTƒ|[ƒgƒpƒCƒƒbƒg‚Ì‚ÉƒƒCƒ“ƒpƒCƒƒbƒg‚Ì" & Term("”½‰", u)
             If slevel >= 0 Then
-                msg = msg & "ã« +" & Format$(CLng(2 * slevel)) & "ã€‚"
+                msg = msg & "‚É +" & Format$(CLng(2 * slevel)) & "B"
             Else
-                msg = msg & "ã« " & Format$(CLng(2 * slevel)) & "ã€‚"
+                msg = msg & "‚É " & Format$(CLng(2 * slevel)) & "B"
             End If
             
-        Case "ã‚µãƒãƒ¼ãƒˆ"
-            msg = "è‡ªåˆ†ãŒã‚µãƒãƒ¼ãƒˆãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®æ™‚ã«ãƒ¡ã‚¤ãƒ³ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & _
-                Term("å‘½ä¸­", u) & "ãƒ»" & Term("å›é¿", u)
+        Case "ƒTƒ|[ƒg"
+            msg = "©•ª‚ªƒTƒ|[ƒgƒpƒCƒƒbƒg‚Ì‚ÉƒƒCƒ“ƒpƒCƒƒbƒg‚Ì" & _
+                Term("–½’†", u) & "E" & Term("‰ñ”ğ", u)
             If slevel >= 0 Then
-                msg = msg & "ã« +" & Format$(CLng(3 * slevel)) & "ã€‚"
+                msg = msg & "‚É +" & Format$(CLng(3 * slevel)) & "B"
             Else
-                msg = msg & "ã« " & Format$(CLng(3 * slevel)) & "ã€‚"
+                msg = msg & "‚É " & Format$(CLng(3 * slevel)) & "B"
             End If
             
-        Case "åºƒåŸŸã‚µãƒãƒ¼ãƒˆ"
-            msg = "åŠå¾„ï¼’ãƒã‚¹ä»¥å†…ã«ã„ã‚‹å‘³æ–¹ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & _
-                Term("å‘½ä¸­", u) & "ãƒ»" & Term("å›é¿", u)
+        Case "LˆæƒTƒ|[ƒg"
+            msg = "”¼Œa‚Qƒ}ƒXˆÈ“à‚É‚¢‚é–¡•ûƒpƒCƒƒbƒg‚Ì" & _
+                Term("–½’†", u) & "E" & Term("‰ñ”ğ", u)
             If slevel >= 0 Then
-                msg = msg & "ã« +" & Format$(CLng(5 * slevel)) & "ã€‚"
+                msg = msg & "‚É +" & Format$(CLng(5 * slevel)) & "B"
             Else
-                msg = msg & "ã« " & Format$(CLng(5 * slevel)) & "ã€‚"
+                msg = msg & "‚É " & Format$(CLng(5 * slevel)) & "B"
             End If
             
-        Case "æ´è­·"
-            msg = "éš£æ¥ã™ã‚‹ãƒ¦ãƒ‹ãƒƒãƒˆã«ã‚µãƒãƒ¼ãƒˆã‚¢ã‚¿ãƒƒã‚¯ã¨ã‚µãƒãƒ¼ãƒˆã‚¬ãƒ¼ãƒ‰ã‚’" & _
-                "ï¼‘ã‚¿ãƒ¼ãƒ³ã«ãã‚Œãã‚Œ" & Format$(CLng(slevel)) & "å›è¡Œã†ã€‚"
+        Case "‰‡Œì"
+            msg = "—×Ú‚·‚éƒ†ƒjƒbƒg‚ÉƒTƒ|[ƒgƒAƒ^ƒbƒN‚ÆƒTƒ|[ƒgƒK[ƒh‚ğ" & _
+                "‚Pƒ^[ƒ“‚É‚»‚ê‚¼‚ê" & Format$(CLng(slevel)) & "‰ñs‚¤B"
             
-        Case "æ´è­·æ”»æ’ƒ"
-            msg = "éš£æ¥ã™ã‚‹ãƒ¦ãƒ‹ãƒƒãƒˆã«ã‚µãƒãƒ¼ãƒˆã‚¢ã‚¿ãƒƒã‚¯ã‚’ï¼‘ã‚¿ãƒ¼ãƒ³ã«" & _
-                Format$(CLng(slevel)) & "å›è¡Œã†ã€‚"
+        Case "‰‡ŒìUŒ‚"
+            msg = "—×Ú‚·‚éƒ†ƒjƒbƒg‚ÉƒTƒ|[ƒgƒAƒ^ƒbƒN‚ğ‚Pƒ^[ƒ“‚É" & _
+                Format$(CLng(slevel)) & "‰ñs‚¤B"
             
-        Case "æ´è­·é˜²å¾¡"
-            msg = "éš£æ¥ã™ã‚‹ãƒ¦ãƒ‹ãƒƒãƒˆã«ã‚µãƒãƒ¼ãƒˆã‚¬ãƒ¼ãƒ‰ã‚’ï¼‘ã‚¿ãƒ¼ãƒ³ã«" & _
-                Format$(CLng(slevel)) & "å›è¡Œã†ã€‚"
+        Case "‰‡Œì–hŒä"
+            msg = "—×Ú‚·‚éƒ†ƒjƒbƒg‚ÉƒTƒ|[ƒgƒK[ƒh‚ğ‚Pƒ^[ƒ“‚É" & _
+                Format$(CLng(slevel)) & "‰ñs‚¤B"
             
-        Case "çµ±ç‡"
-            msg = "è‡ªåˆ†ã‹ã‚‰æ”»æ’ƒã‚’ã‹ã‘ãŸå ´åˆã€" & _
-                "ã‚µãƒãƒ¼ãƒˆã‚¢ã‚¿ãƒƒã‚¯ãŒåŒæ™‚æ´è­·æ”»æ’ƒã«å¤‰æ›´ã•ã‚Œã‚‹ã€‚;" & _
-                "ï¼ˆï¼‘ã‚¿ãƒ¼ãƒ³ã« " & Format$(CLng(slevel)) & "å›ï¼‰"
+        Case "“—¦"
+            msg = "©•ª‚©‚çUŒ‚‚ğ‚©‚¯‚½ê‡A" & _
+                "ƒTƒ|[ƒgƒAƒ^ƒbƒN‚ª“¯‰‡ŒìUŒ‚‚É•ÏX‚³‚ê‚éB;" & _
+                "i‚Pƒ^[ƒ“‚É " & Format$(CLng(slevel)) & "‰ñj"
             
-        Case "ãƒãƒ¼ãƒ "
-            msg = sdata & "ã«æ‰€å±ã™ã‚‹ã€‚" & _
-                "åŒã˜" & sdata & "ã®ãƒ¦ãƒ‹ãƒƒãƒˆã«å¯¾ã—ã¦ã®ã¿æ´è­·ã‚„æŒ‡æ®ã‚’è¡Œã†ã€‚"
+        Case "ƒ`[ƒ€"
+            msg = sdata & "‚ÉŠ‘®‚·‚éB" & _
+                "“¯‚¶" & sdata & "‚Ìƒ†ƒjƒbƒg‚É‘Î‚µ‚Ä‚Ì‚İ‰‡Œì‚âwŠö‚ğs‚¤B"
             
-        Case "ã‚«ã‚¦ãƒ³ã‚¿ãƒ¼"
-            msg = "ï¼‘ã‚¿ãƒ¼ãƒ³ã« " & Format$(CLng(slevel)) & "å›" & _
-                "åæ’ƒãŒã‚«ã‚¦ãƒ³ã‚¿ãƒ¼æ”»æ’ƒã«ãªã‚Šã€ç›¸æ‰‹ã®æ”»æ’ƒã«å…ˆåˆ¶ã—ã¦åæ’ƒã‚’è¡Œã†ã€‚"
+        Case "ƒJƒEƒ“ƒ^["
+            msg = "‚Pƒ^[ƒ“‚É " & Format$(CLng(slevel)) & "‰ñ" & _
+                "”½Œ‚‚ªƒJƒEƒ“ƒ^[UŒ‚‚É‚È‚èA‘Šè‚ÌUŒ‚‚Éæ§‚µ‚Ä”½Œ‚‚ğs‚¤B"
             
-        Case "å…ˆæ‰‹å¿…å‹"
+        Case "æè•KŸ"
             If LLength(sdata) = 2 Then
-                msg = "ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & Term("æ°—åŠ›", u) & "ãŒ" & LIndex(sdata, 2) & "ä»¥ä¸Šã§ç™ºå‹•ã€‚"
+                msg = "ƒpƒCƒƒbƒg‚Ì" & Term("‹C—Í", u) & "‚ª" & LIndex(sdata, 2) & "ˆÈã‚Å”­“®B"
             Else
-                msg = "ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & Term("æ°—åŠ›", u) & "ãŒ120ä»¥ä¸Šã§ç™ºå‹•ã€‚"
+                msg = "ƒpƒCƒƒbƒg‚Ì" & Term("‹C—Í", u) & "‚ª120ˆÈã‚Å”­“®B"
             End If
-            msg = msg & "åæ’ƒãŒå¿…ãšã‚«ã‚¦ãƒ³ã‚¿ãƒ¼æ”»æ’ƒã«ãªã‚Šã€ç›¸æ‰‹ã®æ”»æ’ƒã«å…ˆåˆ¶ã—ã¦åæ’ƒã‚’è¡Œã†ã€‚"
+            msg = msg & "”½Œ‚‚ª•K‚¸ƒJƒEƒ“ƒ^[UŒ‚‚É‚È‚èA‘Šè‚ÌUŒ‚‚Éæ§‚µ‚Ä”½Œ‚‚ğs‚¤B"
             
-        Case "å…ˆèª­ã¿"
-            msg = Format$(CLng(100 * slevel \ 16)) & "%ã®ç¢ºç‡ã§" & _
-                "åæ’ƒãŒã‚«ã‚¦ãƒ³ã‚¿ãƒ¼æ”»æ’ƒã«ãªã‚Šã€ç›¸æ‰‹ã®æ”»æ’ƒã«å…ˆåˆ¶ã—ã¦åæ’ƒã‚’è¡Œã†ã€‚"
+        Case "æ“Ç‚İ"
+            msg = Format$(CLng(100 * slevel \ 16)) & "%‚ÌŠm—¦‚Å" & _
+                "”½Œ‚‚ªƒJƒEƒ“ƒ^[UŒ‚‚É‚È‚èA‘Šè‚ÌUŒ‚‚Éæ§‚µ‚Ä”½Œ‚‚ğs‚¤B"
             
-        Case "å†æ”»æ’ƒ"
-            msg = "è‡ªåˆ†ã®æ”»æ’ƒã®ç›´å¾Œã« " & _
-                Format$(CLng(100 * slevel \ 16)) & "% ã®ç¢ºç‡ã§å†æ”»æ’ƒã‚’è¡Œã†ã€‚" & _
-                "ãŸã ã—ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & Term("åå¿œ", u) & "ãŒç›¸æ‰‹ã‚’ä¸‹å›ã‚‹å ´åˆã€ç¢ºç‡ã¯åŠæ¸›ã€‚"
+        Case "ÄUŒ‚"
+            msg = "©•ª‚ÌUŒ‚‚Ì’¼Œã‚É " & _
+                Format$(CLng(100 * slevel \ 16)) & "% ‚ÌŠm—¦‚ÅÄUŒ‚‚ğs‚¤B" & _
+                "‚½‚¾‚µƒpƒCƒƒbƒg‚Ì" & Term("”½‰", u) & "‚ª‘Šè‚ğ‰º‰ñ‚éê‡AŠm—¦‚Í”¼Œ¸B"
             
-        Case "ï¼’å›è¡Œå‹•"
-            msg = "ï¼‘ã‚¿ãƒ¼ãƒ³ã«ï¼’å›ã€è¡Œå‹•ãŒå¯èƒ½ã«ãªã‚‹ã€‚"
+        Case "‚Q‰ñs“®"
+            msg = "‚Pƒ^[ƒ“‚É‚Q‰ñAs“®‚ª‰Â”\‚É‚È‚éB"
                 
-        Case "è€ä¹…"
+        Case "‘Ï‹v"
             If slevel >= 0 Then
-                msg = "ãƒ€ãƒ¡ãƒ¼ã‚¸è¨ˆç®—ã®éš›ã«" & Term("è£…ç”²", u) & "ã‚’" & _
-                    Format$(CLng(5 * slevel)) & "%å¢—åŠ ã•ã›ã‚‹ã€‚"
+                msg = "ƒ_ƒ[ƒWŒvZ‚ÌÛ‚É" & Term("‘•b", u) & "‚ğ" & _
+                    Format$(CLng(5 * slevel)) & "%‘‰Á‚³‚¹‚éB"
             Else
-                msg = "ãƒ€ãƒ¡ãƒ¼ã‚¸è¨ˆç®—ã®éš›ã«" & Term("è£…ç”²", u) & "ã‚’" & _
-                    Format$(CLng(5 * Abs(slevel))) & "%æ¸›å°‘ã•ã›ã‚‹ã€‚"
+                msg = "ƒ_ƒ[ƒWŒvZ‚ÌÛ‚É" & Term("‘•b", u) & "‚ğ" & _
+                    Format$(CLng(5 * Abs(slevel))) & "%Œ¸­‚³‚¹‚éB"
             End If
             
-        Case "ï¼³ï¼°ä½æˆé•·"
-            msg = "ãƒ¬ãƒ™ãƒ«ã‚¢ãƒƒãƒ—æ™‚ã®æœ€å¤§" & Term("ï¼³ï¼°", u) & "ã®å¢—åŠ é‡ãŒé€šå¸¸ã®åŠåˆ†ã«æ¸›å°‘ã™ã‚‹ã€‚"
+        Case "‚r‚o’á¬’·"
+            msg = "ƒŒƒxƒ‹ƒAƒbƒv‚ÌÅ‘å" & Term("‚r‚o", u) & "‚Ì‘‰Á—Ê‚ª’Êí‚Ì”¼•ª‚ÉŒ¸­‚·‚éB"
             
-        Case "ï¼³ï¼°é«˜æˆé•·"
-            msg = "ãƒ¬ãƒ™ãƒ«ã‚¢ãƒƒãƒ—æ™‚ã®æœ€å¤§" & Term("ï¼³ï¼°", u) & "ã®å¢—åŠ é‡ãŒé€šå¸¸ã®1.5å€ã«å¢—åŠ ã™ã‚‹ã€‚"
+        Case "‚r‚o‚¬’·"
+            msg = "ƒŒƒxƒ‹ƒAƒbƒv‚ÌÅ‘å" & Term("‚r‚o", u) & "‚Ì‘‰Á—Ê‚ª’Êí‚Ì1.5”{‚É‘‰Á‚·‚éB"
             
-        Case "ï¼³ï¼°å›å¾©"
-            msg = "æ¯ã‚¿ãƒ¼ãƒ³" & Term("ï¼³ï¼°", u) & "ãŒãƒ‘ã‚¤ãƒ­ãƒƒãƒˆãƒ¬ãƒ™ãƒ«/8+5å›å¾©ã™ã‚‹(+" & _
-                Format$(p.Level \ 8 + 5) & ")ã€‚"
+        Case "‚r‚o‰ñ•œ"
+            msg = "–ˆƒ^[ƒ“" & Term("‚r‚o", u) & "‚ªƒpƒCƒƒbƒgƒŒƒxƒ‹/8+5‰ñ•œ‚·‚é(+" & _
+                Format$(p.Level \ 8 + 5) & ")B"
             
-        Case "æ ¼é—˜æˆé•·"
-            'æ”»æ’ƒåŠ›ä½æˆé•·ã‚ªãƒ—ã‚·ãƒ§ãƒ³ãŒæŒ‡å®šã•ã‚Œã¦ã„ã‚‹ã‹ã©ã†ã‹ã§è§£èª¬ã‚’å¤‰æ›´ã™ã‚‹ã€‚
-            msg = "ãƒ¬ãƒ™ãƒ«ã‚¢ãƒƒãƒ—æ™‚ã®" & Term("æ ¼é—˜", u) & "ã®å¢—åŠ é‡ãŒ"
-            If IsOptionDefined("æ”»æ’ƒåŠ›ä½æˆé•·") Then
-                msg = msg & Format$(slevel + 0.5) & "ã«ãªã‚‹ã€‚"
+        Case "Ši“¬¬’·"
+            'UŒ‚—Í’á¬’·ƒIƒvƒVƒ‡ƒ“‚ªw’è‚³‚ê‚Ä‚¢‚é‚©‚Ç‚¤‚©‚Å‰ğà‚ğ•ÏX‚·‚éB
+            msg = "ƒŒƒxƒ‹ƒAƒbƒv‚Ì" & Term("Ši“¬", u) & "‚Ì‘‰Á—Ê‚ª"
+            If IsOptionDefined("UŒ‚—Í’á¬’·") Then
+                msg = msg & Format$(slevel + 0.5) & "‚É‚È‚éB"
             Else
-                msg = msg & Format$(slevel + 1) & "ã«ãªã‚‹ã€‚"
+                msg = msg & Format$(slevel + 1) & "‚É‚È‚éB"
             End If
             
-        Case "å°„æ’ƒæˆé•·"
-            'æ”»æ’ƒåŠ›ä½æˆé•·ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã€è¡“æŠ€èƒ½ã®æœ‰ç„¡ã«ã‚ˆã£ã¦ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆè§£èª¬ã‚’å¤‰æ›´ã™ã‚‹ã€‚
+        Case "ËŒ‚¬’·"
+            'UŒ‚—Í’á¬’·ƒIƒvƒVƒ‡ƒ“Ap‹Z”\‚Ì—L–³‚É‚æ‚Á‚ÄƒfƒtƒHƒ‹ƒg‰ğà‚ğ•ÏX‚·‚éB
             If p.HasMana() Then
-                msg = "ãƒ¬ãƒ™ãƒ«ã‚¢ãƒƒãƒ—æ™‚ã®" & Term("é­”åŠ›", u) & "ã®å¢—åŠ é‡ãŒ"
+                msg = "ƒŒƒxƒ‹ƒAƒbƒv‚Ì" & Term("–‚—Í", u) & "‚Ì‘‰Á—Ê‚ª"
             Else
-                msg = "ãƒ¬ãƒ™ãƒ«ã‚¢ãƒƒãƒ—æ™‚ã®" & Term("å°„æ’ƒ", u) & "ã®å¢—åŠ é‡ãŒ"
+                msg = "ƒŒƒxƒ‹ƒAƒbƒv‚Ì" & Term("ËŒ‚", u) & "‚Ì‘‰Á—Ê‚ª"
             End If
-            If IsOptionDefined("æ”»æ’ƒåŠ›ä½æˆé•·") Then
-                msg = msg & Format$(slevel + 0.5) & "ã«ãªã‚‹ã€‚"
+            If IsOptionDefined("UŒ‚—Í’á¬’·") Then
+                msg = msg & Format$(slevel + 0.5) & "‚É‚È‚éB"
             Else
-                msg = msg & Format$(slevel + 1) & "ã«ãªã‚‹ã€‚"
-            End If
-            
-        Case "å‘½ä¸­æˆé•·"
-            msg = "ãƒ¬ãƒ™ãƒ«ã‚¢ãƒƒãƒ—æ™‚ã®" & Term("å‘½ä¸­", u) & "ã®å¢—åŠ é‡ãŒ" & Format$(slevel + 2) & "ã«ãªã‚‹ã€‚"
-            
-        Case "å›é¿æˆé•·"
-            msg = "ãƒ¬ãƒ™ãƒ«ã‚¢ãƒƒãƒ—æ™‚ã®" & Term("å›é¿", u) & "ã®å¢—åŠ é‡ãŒ" & Format$(slevel + 2) & "ã«ãªã‚‹ã€‚"
-            
-        Case "æŠ€é‡æˆé•·"
-            msg = "ãƒ¬ãƒ™ãƒ«ã‚¢ãƒƒãƒ—æ™‚ã®" & Term("æŠ€é‡", u) & "ã®å¢—åŠ é‡ãŒ" & Format$(slevel + 1) & "ã«ãªã‚‹ã€‚"
-            
-        Case "åå¿œæˆé•·"
-            msg = "ãƒ¬ãƒ™ãƒ«ã‚¢ãƒƒãƒ—æ™‚ã®" & Term("åå¿œ", u) & "ã®å¢—åŠ é‡ãŒ" & Format$(slevel + 1) & "ã«ãªã‚‹ã€‚"
-            
-        Case "é˜²å¾¡æˆé•·"
-            'é˜²å¾¡åŠ›ä½æˆé•·ã‚ªãƒ—ã‚·ãƒ§ãƒ³ãŒæŒ‡å®šã•ã‚Œã¦ã„ã‚‹ã‹ã©ã†ã‹ã§è§£èª¬ã‚’å¤‰æ›´ã™ã‚‹ã€‚
-            msg = "ãƒ¬ãƒ™ãƒ«ã‚¢ãƒƒãƒ—æ™‚ã®" & Term("é˜²å¾¡", u) & "ã®å¢—åŠ é‡ãŒ"
-            If IsOptionDefined("é˜²å¾¡åŠ›ä½æˆé•·") Then
-                msg = msg & Format$(slevel + 0.5) & "ã«ãªã‚‹ã€‚"
-            Else
-                msg = msg & Format$(slevel + 1) & "ã«ãªã‚‹ã€‚"
+                msg = msg & Format$(slevel + 1) & "‚É‚È‚éB"
             End If
             
-        Case "ç²¾ç¥çµ±ä¸€"
-            msg = Term("ï¼³ï¼°", u) & "ãŒæœ€å¤§" & Term("ï¼³ï¼°", u) & "ã®20%æœªæº€(" & Format$(p.MaxSP \ 5) & _
-                "æœªæº€)ã®å ´åˆã€" & "ã‚¿ãƒ¼ãƒ³é–‹å§‹æ™‚ã«" & Term("ï¼³ï¼°", u) & "ãŒæœ€å¤§" & Term("ï¼³ï¼°", u) & _
-                "ã®10%åˆ†å›å¾©ã™ã‚‹(+" & Format$(p.MaxSP \ 10) & ")ã€‚"
+        Case "–½’†¬’·"
+            msg = "ƒŒƒxƒ‹ƒAƒbƒv‚Ì" & Term("–½’†", u) & "‚Ì‘‰Á—Ê‚ª" & Format$(slevel + 2) & "‚É‚È‚éB"
             
-        Case "æå‚·æ™‚æ°—åŠ›å¢—åŠ "
+        Case "‰ñ”ğ¬’·"
+            msg = "ƒŒƒxƒ‹ƒAƒbƒv‚Ì" & Term("‰ñ”ğ", u) & "‚Ì‘‰Á—Ê‚ª" & Format$(slevel + 2) & "‚É‚È‚éB"
+            
+        Case "‹Z—Ê¬’·"
+            msg = "ƒŒƒxƒ‹ƒAƒbƒv‚Ì" & Term("‹Z—Ê", u) & "‚Ì‘‰Á—Ê‚ª" & Format$(slevel + 1) & "‚É‚È‚éB"
+            
+        Case "”½‰¬’·"
+            msg = "ƒŒƒxƒ‹ƒAƒbƒv‚Ì" & Term("”½‰", u) & "‚Ì‘‰Á—Ê‚ª" & Format$(slevel + 1) & "‚É‚È‚éB"
+            
+        Case "–hŒä¬’·"
+            '–hŒä—Í’á¬’·ƒIƒvƒVƒ‡ƒ“‚ªw’è‚³‚ê‚Ä‚¢‚é‚©‚Ç‚¤‚©‚Å‰ğà‚ğ•ÏX‚·‚éB
+            msg = "ƒŒƒxƒ‹ƒAƒbƒv‚Ì" & Term("–hŒä", u) & "‚Ì‘‰Á—Ê‚ª"
+            If IsOptionDefined("–hŒä—Í’á¬’·") Then
+                msg = msg & Format$(slevel + 0.5) & "‚É‚È‚éB"
+            Else
+                msg = msg & Format$(slevel + 1) & "‚É‚È‚éB"
+            End If
+            
+        Case "¸_“ˆê"
+            msg = Term("‚r‚o", u) & "‚ªÅ‘å" & Term("‚r‚o", u) & "‚Ì20%–¢–(" & Format$(p.MaxSP \ 5) & _
+                "–¢–)‚Ìê‡A" & "ƒ^[ƒ“ŠJn‚É" & Term("‚r‚o", u) & "‚ªÅ‘å" & Term("‚r‚o", u) & _
+                "‚Ì10%•ª‰ñ•œ‚·‚é(+" & Format$(p.MaxSP \ 10) & ")B"
+            
+        Case "‘¹‹C—Í‘‰Á"
             If slevel >= -1 Then
-                msg = "ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’å—ã‘ãŸéš›ã«" & Term("æ°—åŠ›", u) & "+" & Format$(CLng(slevel + 1)) & "ã€‚"
+                msg = "ƒ_ƒ[ƒW‚ğó‚¯‚½Û‚É" & Term("‹C—Í", u) & "+" & Format$(CLng(slevel + 1)) & "B"
             Else
-                msg = "ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’å—ã‘ãŸéš›ã«" & Term("æ°—åŠ›", u) & Format$(CLng(slevel + 1)) & "ã€‚"
+                msg = "ƒ_ƒ[ƒW‚ğó‚¯‚½Û‚É" & Term("‹C—Í", u) & Format$(CLng(slevel + 1)) & "B"
             End If
             
-        Case "å‘½ä¸­æ™‚æ°—åŠ›å¢—åŠ "
+        Case "–½’†‹C—Í‘‰Á"
             If slevel >= 0 Then
-                msg = "æ”»æ’ƒã‚’å‘½ä¸­ã•ã›ãŸéš›ã«" & Term("æ°—åŠ›", u) & "+" & Format$(CLng(slevel)) & _
-                    "ã€‚(ãƒãƒƒãƒ—æ”»æ’ƒã¯ä¾‹å¤–)"
+                msg = "UŒ‚‚ğ–½’†‚³‚¹‚½Û‚É" & Term("‹C—Í", u) & "+" & Format$(CLng(slevel)) & _
+                    "B(ƒ}ƒbƒvUŒ‚‚Í—áŠO)"
             Else
-                msg = "æ”»æ’ƒã‚’å‘½ä¸­ã•ã›ãŸéš›ã«" & Term("æ°—åŠ›", u) & Format$(CLng(slevel)) & _
-                    "ã€‚(ãƒãƒƒãƒ—æ”»æ’ƒã¯ä¾‹å¤–)"
+                msg = "UŒ‚‚ğ–½’†‚³‚¹‚½Û‚É" & Term("‹C—Í", u) & Format$(CLng(slevel)) & _
+                    "B(ƒ}ƒbƒvUŒ‚‚Í—áŠO)"
             End If
             
-        Case "å¤±æ•—æ™‚æ°—åŠ›å¢—åŠ "
+        Case "¸”s‹C—Í‘‰Á"
             If slevel >= 0 Then
-                msg = "æ”»æ’ƒã‚’å¤–ã—ã¦ã—ã¾ã£ãŸéš›ã«" & Term("æ°—åŠ›", u) & "+" & Format$(CLng(slevel)) & _
-                    "ã€‚(ãƒãƒƒãƒ—æ”»æ’ƒã¯ä¾‹å¤–)"
+                msg = "UŒ‚‚ğŠO‚µ‚Ä‚µ‚Ü‚Á‚½Û‚É" & Term("‹C—Í", u) & "+" & Format$(CLng(slevel)) & _
+                    "B(ƒ}ƒbƒvUŒ‚‚Í—áŠO)"
             Else
-                msg = "æ”»æ’ƒã‚’å¤–ã—ã¦ã—ã¾ã£ãŸéš›ã«" & Term("æ°—åŠ›", u) & Format$(CLng(slevel)) & _
-                    "ã€‚(ãƒãƒƒãƒ—æ”»æ’ƒã¯ä¾‹å¤–)"
+                msg = "UŒ‚‚ğŠO‚µ‚Ä‚µ‚Ü‚Á‚½Û‚É" & Term("‹C—Í", u) & Format$(CLng(slevel)) & _
+                    "B(ƒ}ƒbƒvUŒ‚‚Í—áŠO)"
             End If
             
-        Case "å›é¿æ™‚æ°—åŠ›å¢—åŠ "
+        Case "‰ñ”ğ‹C—Í‘‰Á"
             If slevel >= 0 Then
-                msg = "æ”»æ’ƒã‚’å›é¿ã—ãŸéš›ã«" & Term("æ°—åŠ›", u) & "+" & Format$(CLng(slevel)) & "ã€‚"
+                msg = "UŒ‚‚ğ‰ñ”ğ‚µ‚½Û‚É" & Term("‹C—Í", u) & "+" & Format$(CLng(slevel)) & "B"
             Else
-                msg = "æ”»æ’ƒã‚’å›é¿ã—ãŸéš›ã«" & Term("æ°—åŠ›", u) & Format$(CLng(slevel)) & "ã€‚"
+                msg = "UŒ‚‚ğ‰ñ”ğ‚µ‚½Û‚É" & Term("‹C—Í", u) & Format$(CLng(slevel)) & "B"
             End If
             
-        Case "èµ·æ­»å›ç”Ÿ"
-            msg = Term("ï¼³ï¼°", u) & "ã€" & Term("ï¼¨ï¼°", u) & "ã€" & Term("ï¼¥ï¼®", u) & _
-                "ã®å…¨ã¦ãŒæœ€å¤§å€¤ã®20%ä»¥ä¸‹ã«ãªã‚‹ã¨æ¯ã‚¿ãƒ¼ãƒ³æœ€åˆã«ç™ºå‹•ã€‚" & _
-                Term("ï¼³ï¼°", u) & "ã€" & Term("ï¼¨ï¼°", u) & "ã€" & Term("ï¼¥ï¼®", u) & "ãŒå…¨å¿«ã™ã‚‹ã€‚"
+        Case "‹N€‰ñ¶"
+            msg = Term("‚r‚o", u) & "A" & Term("‚g‚o", u) & "A" & Term("‚d‚m", u) & _
+                "‚Ì‘S‚Ä‚ªÅ‘å’l‚Ì20%ˆÈ‰º‚É‚È‚é‚Æ–ˆƒ^[ƒ“Å‰‚É”­“®B" & _
+                Term("‚r‚o", u) & "A" & Term("‚g‚o", u) & "A" & Term("‚d‚m", u) & "‚ª‘S‰õ‚·‚éB"
             
-        Case "æˆ¦è¡“"
-            msg = "æ€è€ƒãƒ‘ã‚¿ãƒ¼ãƒ³æ±ºå®šã®éš›ã«ç”¨ã„ã‚‰ã‚Œã‚‹" & Term("æŠ€é‡", u)
+        Case "íp"
+            msg = "vlƒpƒ^[ƒ“Œˆ’è‚ÌÛ‚É—p‚¢‚ç‚ê‚é" & Term("‹Z—Ê", u)
             If slevel >= 0 Then
-                msg = msg & "åˆæœŸå€¤ãŒãƒ¬ãƒ™ãƒ«Ã—10å¢—åŠ (+" & Format$(CLng(10 * slevel)) & ")ã€‚"
+                msg = msg & "‰Šú’l‚ªƒŒƒxƒ‹~10‘‰Á(+" & Format$(CLng(10 * slevel)) & ")B"
             Else
-                msg = msg & "åˆæœŸå€¤ãŒãƒ¬ãƒ™ãƒ«Ã—10æ¸›å°‘(" & Format$(CLng(10 * slevel)) & ")ã€‚"
+                msg = msg & "‰Šú’l‚ªƒŒƒxƒ‹~10Œ¸­(" & Format$(CLng(10 * slevel)) & ")B"
             End If
             
-        Case "å¾—æ„æŠ€"
-            msg = "ã€Œ" & p.SkillData(stype) & "ã€å±æ€§ã‚’æŒã¤æ­¦å™¨ãƒ»" & Term("ã‚¢ãƒ“ãƒªãƒ†ã‚£", u) & _
-                "ã«ã‚ˆã‚‹ãƒ€ãƒ¡ãƒ¼ã‚¸ãƒ»åŠ¹æœé‡ãŒ 20% å¢—åŠ ã€‚" & _
-                "ã¾ãŸã€" & Term("ã‚¢ãƒ“ãƒªãƒ†ã‚£", u) & "ã®ç¶™ç¶šæ™‚é–“ãŒ 40% å¢—åŠ ã€‚"
+        Case "“¾ˆÓ‹Z"
+            msg = "u" & p.SkillData(stype) & "v‘®«‚ğ‚Â•ŠíE" & Term("ƒAƒrƒŠƒeƒB", u) & _
+                "‚É‚æ‚éƒ_ƒ[ƒWEŒø‰Ê—Ê‚ª 20% ‘‰ÁB" & _
+                "‚Ü‚½A" & Term("ƒAƒrƒŠƒeƒB", u) & "‚ÌŒp‘±ŠÔ‚ª 40% ‘‰ÁB"
             
-        Case "ä¸å¾—æ‰‹"
-            msg = "ã€Œ" & p.SkillData(stype) & "ã€å±æ€§ã‚’æŒã¤æ­¦å™¨ãƒ»" & Term("ã‚¢ãƒ“ãƒªãƒ†ã‚£", u) & _
-                "ã«ã‚ˆã‚‹ãƒ€ãƒ¡ãƒ¼ã‚¸ãƒ»åŠ¹æœé‡ãŒ 20% æ¸›å°‘ã€‚" & _
-                "ã¾ãŸã€" & Term("ã‚¢ãƒ“ãƒªãƒ†ã‚£", u) & "ã®ç¶™ç¶šæ™‚é–“ãŒ 40% æ¸›å°‘ã€‚"
+        Case "•s“¾è"
+            msg = "u" & p.SkillData(stype) & "v‘®«‚ğ‚Â•ŠíE" & Term("ƒAƒrƒŠƒeƒB", u) & _
+                "‚É‚æ‚éƒ_ƒ[ƒWEŒø‰Ê—Ê‚ª 20% Œ¸­B" & _
+                "‚Ü‚½A" & Term("ƒAƒrƒŠƒeƒB", u) & "‚ÌŒp‘±ŠÔ‚ª 40% Œ¸­B"
             
-        Case "ãƒãƒ³ã‚¿ãƒ¼"
-            msg = "ã‚¿ãƒ¼ã‚²ãƒƒãƒˆãŒ"
+        Case "ƒnƒ“ƒ^["
+            msg = "ƒ^[ƒQƒbƒg‚ª"
             For i = 2 To LLength(sdata)
                 If i = 3 Then
-                    msg = msg & "ã‚„"
+                    msg = msg & "‚â"
                 ElseIf 3 > 2 Then
-                    msg = msg & "ã€"
+                    msg = msg & "A"
                 End If
                 msg = msg & LIndex(sdata, i)
             Next
-            msg = msg & "ã§ã‚ã‚‹å ´åˆã€ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã«ä¸ãˆã‚‹ãƒ€ãƒ¡ãƒ¼ã‚¸ãŒ"
+            msg = msg & "‚Å‚ ‚éê‡Aƒ^[ƒQƒbƒg‚É—^‚¦‚éƒ_ƒ[ƒW‚ª"
             If slevel >= 0 Then
-                msg = msg & Format$(10 * slevel) & "%å¢—åŠ ã™ã‚‹ã€‚"
+                msg = msg & Format$(10 * slevel) & "%‘‰Á‚·‚éB"
             Else
-                msg = msg & Format$(-10 * slevel) & "%æ¸›å°‘ã™ã‚‹ã€‚"
+                msg = msg & Format$(-10 * slevel) & "%Œ¸­‚·‚éB"
             End If
             
-        Case "ï¼³ï¼°æ¶ˆè²»æ¸›å°‘"
-            msg = Term("ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼", u)
+        Case "‚r‚oÁ”ïŒ¸­"
+            msg = Term("ƒXƒyƒVƒƒƒ‹ƒpƒ[", u)
             For i = 2 To LLength(sdata)
-                msg = msg & "ã€Œ" & LIndex(sdata, i) & "ã€"
+                msg = msg & "u" & LIndex(sdata, i) & "v"
             Next
-            msg = msg & "ã®" & Term("ï¼³ï¼°", u) & "æ¶ˆè²»é‡ãŒ"
+            msg = msg & "‚Ì" & Term("‚r‚o", u) & "Á”ï—Ê‚ª"
             If slevel >= 0 Then
-                msg = msg & Format$(10 * slevel) & "%æ¸›å°‘ã™ã‚‹ã€‚"
+                msg = msg & Format$(10 * slevel) & "%Œ¸­‚·‚éB"
             Else
-                msg = msg & Format$(-10 * slevel) & "%å¢—åŠ ã™ã‚‹ã€‚"
+                msg = msg & Format$(-10 * slevel) & "%‘‰Á‚·‚éB"
             End If
             
-        Case "ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼è‡ªå‹•ç™ºå‹•"
-            msg = Term("æ°—åŠ›", u) & "ãŒ" & LIndex(sdata, 3) & "ä»¥ä¸Šã§ç™ºå‹•ã—ã€" & _
-                "æ¯ã‚¿ãƒ¼ãƒ³æœ€åˆã«ã€Œ" & LIndex(sdata, 2) & "ã€ãŒè‡ªå‹•ã§ã‹ã‹ã‚‹ã€‚" & _
-                "ï¼ˆ" & Term("ï¼³ï¼°", u) & "ã¯æ¶ˆè²»ã—ãªã„ï¼‰"
+        Case "ƒXƒyƒVƒƒƒ‹ƒpƒ[©“®”­“®"
+            msg = Term("‹C—Í", u) & "‚ª" & LIndex(sdata, 3) & "ˆÈã‚Å”­“®‚µA" & _
+                "–ˆƒ^[ƒ“Å‰‚Éu" & LIndex(sdata, 2) & "v‚ª©“®‚Å‚©‚©‚éB" & _
+                "i" & Term("‚r‚o", u) & "‚ÍÁ”ï‚µ‚È‚¢j"
             
-        Case "ä¿®ç†"
-            msg = "ä¿®ç†è£…ç½®ã‚„å›å¾©" & Term("ã‚¢ãƒ“ãƒªãƒ†ã‚£", u) & "ã‚’ä½¿ã£ãŸéš›ã®" & _
-                Term("ï¼¨ï¼°", u) & "å›å¾©é‡ãŒ "
+        Case "C—"
+            msg = "C—‘•’u‚â‰ñ•œ" & Term("ƒAƒrƒŠƒeƒB", u) & "‚ğg‚Á‚½Û‚Ì" & _
+                Term("‚g‚o", u) & "‰ñ•œ—Ê‚ª "
             If slevel >= 0 Then
-                msg = msg & Format$(10 * slevel) & "% å¢—åŠ ã™ã‚‹ã€‚"
+                msg = msg & Format$(10 * slevel) & "% ‘‰Á‚·‚éB"
             Else
-                msg = msg & Format$(-10 * slevel) & "% æ¸›å°‘ã™ã‚‹ã€‚"
+                msg = msg & Format$(-10 * slevel) & "% Œ¸­‚·‚éB"
             End If
             
-        Case "è£œçµ¦"
-            If IsOptionDefined("ç§»å‹•å¾Œè£œçµ¦ä¸å¯") Then
-                msg = "ç§»å‹•å¾Œã«è£œçµ¦è£…ç½®ã‚’ä½¿ç”¨ã§ãã‚‹ã‚ˆã†ã«ãªã‚‹ã€‚ã¾ãŸã€"
+        Case "•â‹‹"
+            If IsOptionDefined("ˆÚ“®Œã•â‹‹•s‰Â") Then
+                msg = "ˆÚ“®Œã‚É•â‹‹‘•’u‚ğg—p‚Å‚«‚é‚æ‚¤‚É‚È‚éB‚Ü‚½A"
             End If
-            msg = msg & "è£œçµ¦" & Term("ã‚¢ãƒ“ãƒªãƒ†ã‚£", u) & "ã‚’ä½¿ã£ãŸéš›ã®" & _
-                Term("ï¼¥ï¼®", u) & "å›å¾©é‡ãŒ "
+            msg = msg & "•â‹‹" & Term("ƒAƒrƒŠƒeƒB", u) & "‚ğg‚Á‚½Û‚Ì" & _
+                Term("‚d‚m", u) & "‰ñ•œ—Ê‚ª "
             If slevel >= 0 Then
-                msg = msg & Format$(10 * slevel) & "% å¢—åŠ ã™ã‚‹ã€‚"
+                msg = msg & Format$(10 * slevel) & "% ‘‰Á‚·‚éB"
             Else
-                msg = msg & Format$(-10 * slevel) & "% æ¸›å°‘ã™ã‚‹ã€‚"
+                msg = msg & Format$(-10 * slevel) & "% Œ¸­‚·‚éB"
             End If
             
-        Case "æ°—åŠ›ä¸Šé™"
+        Case "‹C—ÍãŒÀ"
             i = 150
             If slevel <> 0 Then
                 i = MaxLng(slevel, 0)
             End If
-            msg = Term("æ°—åŠ›", u) & "ã®ä¸Šé™ãŒ" & Format$(i) & "ã«ãªã‚‹ã€‚"
+            msg = Term("‹C—Í", u) & "‚ÌãŒÀ‚ª" & Format$(i) & "‚É‚È‚éB"
             
-        Case "æ°—åŠ›ä¸‹é™"
+        Case "‹C—Í‰ºŒÀ"
             i = 50
             If slevel <> 0 Then
                 i = MaxLng(slevel, 0)
             End If
-            msg = Term("æ°—åŠ›", u) & "ã®ä¸‹é™ãŒ" & Format$(i) & "ã«ãªã‚‹ã€‚"
+            msg = Term("‹C—Í", u) & "‚Ì‰ºŒÀ‚ª" & Format$(i) & "‚É‚È‚éB"
         
 ' ADD START MARGE
-        Case "éŠæ’ƒ"
-            msg = "ç§»å‹•å¾Œä½¿ç”¨å¯èƒ½ãªæ­¦å™¨ãƒ»" & Term("ã‚¢ãƒ“ãƒªãƒ†ã‚£", u) & _
-                "ã‚’ä½¿ã£ãŸå¾Œã«ã€æ®‹ã£ãŸç§»å‹•åŠ›ã‚’ä½¿ã£ã¦ç§»å‹•ã§ãã‚‹ã€‚"
+        Case "—VŒ‚"
+            msg = "ˆÚ“®Œãg—p‰Â”\‚È•ŠíE" & Term("ƒAƒrƒŠƒeƒB", u) & _
+                "‚ğg‚Á‚½Œã‚ÉAc‚Á‚½ˆÚ“®—Í‚ğg‚Á‚ÄˆÚ“®‚Å‚«‚éB"
 ' ADD END MARGE
         
         Case Else
-            'ãƒ€ãƒŸãƒ¼èƒ½åŠ›
+            'ƒ_ƒ~[”\—Í
             
-            'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆå´ã§è§£èª¬ã‚’å®šç¾©ã—ã¦ã„ã‚‹ï¼Ÿ
+            'ƒpƒCƒƒbƒg‘¤‚Å‰ğà‚ğ’è‹`‚µ‚Ä‚¢‚éH
             With p
                 sdata = .SkillData(sname0)
-                If ListIndex(sdata, 1) = "è§£èª¬" Then
+                If ListIndex(sdata, 1) = "‰ğà" Then
                     msg = ListIndex(sdata, ListLength(sdata))
                     If Left$(msg, 1) = """" Then
                         msg = Mid$(msg, 2, Len(msg) - 2)
@@ -703,12 +703,12 @@ Dim i As Integer
                 End If
             End With
             
-            'ãƒ¦ãƒ‹ãƒƒãƒˆå´ã§è§£èª¬ã‚’å®šç¾©ã—ã¦ã„ã‚‹ï¼Ÿ
+            'ƒ†ƒjƒbƒg‘¤‚Å‰ğà‚ğ’è‹`‚µ‚Ä‚¢‚éH
             With u
                 For i = 1 To .CountFeature
                     If .Feature(i) = stype Then
                         fdata = .FeatureData(i)
-                        If ListIndex(fdata, 1) = "è§£èª¬" Then
+                        If ListIndex(fdata, 1) = "‰ğà" Then
                             msg = ListIndex(fdata, ListLength(fdata))
                         End If
                     End If
@@ -719,7 +719,7 @@ Dim i As Integer
                     For i = 1 To .CountFeature
                         If .Feature(i) = stype Then
                             fdata = .FeatureData(i)
-                            If ListIndex(fdata, 1) = "è§£èª¬" Then
+                            If ListIndex(fdata, 1) = "‰ğà" Then
                                 msg = ListIndex(fdata, ListLength(fdata))
                             End If
                         End If
@@ -731,16 +731,16 @@ Dim i As Integer
                 Exit Function
             End If
             
-            'ãƒ¦ãƒ‹ãƒƒãƒˆå´ã§è§£èª¬ã‚’å®šç¾©ã—ã¦ã„ã‚‹å ´åˆ
+            'ƒ†ƒjƒbƒg‘¤‚Å‰ğà‚ğ’è‹`‚µ‚Ä‚¢‚éê‡
             If Left$(msg, 1) = """" Then
                 msg = Mid$(msg, 2, Len(msg) - 2)
             End If
     End Select
     
-    'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆå´ã§è§£èª¬ã‚’å®šç¾©ã—ã¦ã„ã‚‹ï¼Ÿ
+    'ƒpƒCƒƒbƒg‘¤‚Å‰ğà‚ğ’è‹`‚µ‚Ä‚¢‚éH
     With p
         sdata = .SkillData(sname0)
-        If ListIndex(sdata, 1) = "è§£èª¬" Then
+        If ListIndex(sdata, 1) = "‰ğà" Then
             msg = ListIndex(sdata, ListLength(sdata))
             If Left$(msg, 1) = """" Then
                 msg = Mid$(msg, 2, Len(msg) - 2)
@@ -748,12 +748,12 @@ Dim i As Integer
         End If
     End With
     
-    'ãƒ¦ãƒ‹ãƒƒãƒˆå´ã§è§£èª¬ã‚’å®šç¾©ã—ã¦ã„ã‚‹ï¼Ÿ
+    'ƒ†ƒjƒbƒg‘¤‚Å‰ğà‚ğ’è‹`‚µ‚Ä‚¢‚éH
     With u
         For i = 1 To .CountFeature
             If .Feature(i) = sname0 Then
                 fdata = .FeatureData(i)
-                If ListIndex(fdata, 1) = "è§£èª¬" Then
+                If ListIndex(fdata, 1) = "‰ğà" Then
                     msg = ListIndex(fdata, ListLength(fdata))
                     If Left$(msg, 1) = """" Then
                         msg = Mid$(msg, 2, Len(msg) - 2)
@@ -767,7 +767,7 @@ Dim i As Integer
             For i = 1 To .CountFeature
                 If .Feature(i) = sname0 Then
                     fdata = .FeatureData(i)
-                    If ListIndex(fdata, 1) = "è§£èª¬" Then
+                    If ListIndex(fdata, 1) = "‰ğà" Then
                         msg = ListIndex(fdata, ListLength(fdata))
                         If Left$(msg, 1) = """" Then
                             msg = Mid$(msg, 2, Len(msg) - 2)
@@ -778,27 +778,27 @@ Dim i As Integer
         End With
     End If
     
-    'ç­‰èº«å¤§åŸºæº–ã®éš›ã¯ã€Œãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã€ã¨ã„ã†èªã‚’ä½¿ã‚ãªã„ã‚ˆã†ã«ã™ã‚‹
-    If IsOptionDefined("ç­‰èº«å¤§åŸºæº–") Then
-        ReplaceString msg, "ãƒ¡ã‚¤ãƒ³ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆ", "ãƒ¦ãƒ‹ãƒƒãƒˆ"
-        ReplaceString msg, "ã‚µãƒãƒ¼ãƒˆãƒ‘ã‚¤ãƒ­ãƒƒãƒˆ", "ã‚µãƒãƒ¼ãƒˆ"
-        ReplaceString msg, "ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆãƒ¬ãƒ™ãƒ«", "ãƒ¬ãƒ™ãƒ«"
-        ReplaceString msg, "ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆ", "ãƒ¦ãƒ‹ãƒƒãƒˆ"
+    '“™g‘åŠî€‚ÌÛ‚ÍuƒpƒCƒƒbƒgv‚Æ‚¢‚¤Œê‚ğg‚í‚È‚¢‚æ‚¤‚É‚·‚é
+    If IsOptionDefined("“™g‘åŠî€") Then
+        ReplaceString msg, "ƒƒCƒ“ƒpƒCƒƒbƒg", "ƒ†ƒjƒbƒg"
+        ReplaceString msg, "ƒTƒ|[ƒgƒpƒCƒƒbƒg", "ƒTƒ|[ƒg"
+        ReplaceString msg, "ƒpƒCƒƒbƒgƒŒƒxƒ‹", "ƒŒƒxƒ‹"
+        ReplaceString msg, "ƒpƒCƒƒbƒg", "ƒ†ƒjƒbƒg"
     End If
     
     SkillHelpMessage = msg
 End Function
 
 
-'ãƒ¦ãƒ‹ãƒƒãƒˆ u ã® findex ç•ªç›®ã®ç‰¹æ®Šèƒ½åŠ›ã®è§£èª¬ã‚’è¡¨ç¤º
+'ƒ†ƒjƒbƒg u ‚Ì findex ”Ô–Ú‚Ì“Áê”\—Í‚Ì‰ğà‚ğ•\¦
 Public Sub FeatureHelp(u As Unit, ByVal findex As Variant, ByVal is_additional As Boolean)
 Dim fname As String
 Dim msg As String
 Dim prev_mode As Boolean
 
     With u
-        'ç‰¹æ®Šèƒ½åŠ›ã®åç§°ã‚’èª¿ã¹ã‚‹
-        If findex = "æ­¦å™¨ãƒ»é˜²å…·ã‚¯ãƒ©ã‚¹" Then
+        '“Áê”\—Í‚Ì–¼Ì‚ğ’²‚×‚é
+        If findex = "•ŠíE–h‹ïƒNƒ‰ƒX" Then
             fname = findex
         ElseIf IsNumeric(findex) Then
             fname = .AllFeatureName(CInt(findex))
@@ -809,23 +809,23 @@ Dim prev_mode As Boolean
     
     msg = FeatureHelpMessage(u, findex, is_additional)
     
-    'è§£èª¬ã®è¡¨ç¤º
+    '‰ğà‚Ì•\¦
     If Len(msg) > 0 Then
         prev_mode = AutoMessageMode
         AutoMessageMode = False
         
         OpenMessageForm
         If AutoMoveCursor Then
-            MoveCursorPos "ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦"
+            MoveCursorPos "ƒƒbƒZ[ƒWƒEƒBƒ“ƒhƒE"
         End If
-        DisplayMessage "ã‚·ã‚¹ãƒ†ãƒ ", "<b>" & fname & "</b>;" & msg
+        DisplayMessage "ƒVƒXƒeƒ€", "<b>" & fname & "</b>;" & msg
         CloseMessageForm
         
         AutoMessageMode = prev_mode
     End If
 End Sub
 
-'ãƒ¦ãƒ‹ãƒƒãƒˆ u ã® findex ç•ªç›®ã®ç‰¹æ®Šèƒ½åŠ›ã®è§£èª¬
+'ƒ†ƒjƒbƒg u ‚Ì findex ”Ô–Ú‚Ì“Áê”\—Í‚Ì‰ğà
 Public Function FeatureHelpMessage(u As Unit, ByVal findex As Variant, _
     ByVal is_additional As Boolean) As String
 Dim fid As Integer
@@ -839,11 +839,11 @@ Dim p As Pilot, sname  As String, slevel As Double
 Dim uname As String
 
     With u
-        'ãƒ¡ã‚¤ãƒ³ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆ
+        'ƒƒCƒ“ƒpƒCƒƒbƒg
         Set p = .MainPilot
         
-        'ç‰¹æ®Šèƒ½åŠ›ã®åç§°ã€ãƒ¬ãƒ™ãƒ«ã€ãƒ‡ãƒ¼ã‚¿ã‚’èª¿ã¹ã‚‹
-        If findex = "æ­¦å™¨ãƒ»é˜²å…·ã‚¯ãƒ©ã‚¹" Then
+        '“Áê”\—Í‚Ì–¼ÌAƒŒƒxƒ‹Aƒf[ƒ^‚ğ’²‚×‚é
+        If findex = "•ŠíE–h‹ïƒNƒ‰ƒX" Then
             ftype = findex
             fname = findex
         ElseIf IsNumeric(findex) Then
@@ -871,9 +871,9 @@ Dim uname As String
             fname0 = fname
         End If
         
-        'é‡è¤‡å¯èƒ½ãªç‰¹æ®Šèƒ½åŠ›ã®å ´åˆã€ãƒ¬ãƒ™ãƒ«ã®ã¿ãŒç•°ãªã‚‹èƒ½åŠ›ã®ãƒ¬ãƒ™ãƒ«ã¯ç´¯ç©ã™ã‚‹
+        'd•¡‰Â”\‚È“Áê”\—Í‚Ìê‡AƒŒƒxƒ‹‚Ì‚İ‚ªˆÙ‚È‚é”\—Í‚ÌƒŒƒxƒ‹‚Í—İÏ‚·‚é
         Select Case ftype
-            Case "ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰", "ã‚¢ãƒ¼ãƒãƒ¼", "ãƒ¬ã‚¸ã‚¹ãƒˆ", "æ”»æ’ƒå›é¿"
+            Case "ƒtƒB[ƒ‹ƒh", "ƒA[ƒ}[", "ƒŒƒWƒXƒg", "UŒ‚‰ñ”ğ"
                 For i = 1 To u.CountAllFeature
                     If i <> fid _
                         And .AllFeature(i) = ftype _
@@ -886,83 +886,83 @@ Dim uname As String
     End With
     
     Select Case ftype
-        Case "ã‚·ãƒ¼ãƒ«ãƒ‰"
-            sname = p.SkillName0("ï¼³é˜²å¾¡")
-            prob = p.SkillLevel("ï¼³é˜²å¾¡") * 100 \ 16
-            msg = sname & "Lv/16ã®ç¢ºç‡(" & Format$(prob) & "%)ã§é˜²å¾¡ã‚’è¡Œã„ã€" & _
-                "ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’åŠæ¸›ã€‚"
+        Case "ƒV[ƒ‹ƒh"
+            sname = p.SkillName0("‚r–hŒä")
+            prob = p.SkillLevel("‚r–hŒä") * 100 \ 16
+            msg = sname & "Lv/16‚ÌŠm—¦(" & Format$(prob) & "%)‚Å–hŒä‚ğs‚¢A" & _
+                "ƒ_ƒ[ƒW‚ğ”¼Œ¸B"
             
-        Case "å¤§å‹ã‚·ãƒ¼ãƒ«ãƒ‰"
-            sname = p.SkillName0("ï¼³é˜²å¾¡")
-            If p.IsSkillAvailable("ï¼³é˜²å¾¡") Then
-                prob = (p.SkillLevel("ï¼³é˜²å¾¡") + 1) * 100 \ 16
+        Case "‘åŒ^ƒV[ƒ‹ƒh"
+            sname = p.SkillName0("‚r–hŒä")
+            If p.IsSkillAvailable("‚r–hŒä") Then
+                prob = (p.SkillLevel("‚r–hŒä") + 1) * 100 \ 16
             End If
-            msg = "(" & sname & "Lv+1)/16ã®ç¢ºç‡(" & Format$(prob) & "%)ã§é˜²å¾¡ã‚’è¡Œã„ã€" & _
-                "ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’åŠæ¸›ã€‚"
+            msg = "(" & sname & "Lv+1)/16‚ÌŠm—¦(" & Format$(prob) & "%)‚Å–hŒä‚ğs‚¢A" & _
+                "ƒ_ƒ[ƒW‚ğ”¼Œ¸B"
             
-        Case "å°å‹ã‚·ãƒ¼ãƒ«ãƒ‰"
-            sname = p.SkillName0("ï¼³é˜²å¾¡")
-            prob = p.SkillLevel("ï¼³é˜²å¾¡") * 100 \ 16
-            msg = sname & "Lv/16ã®ç¢ºç‡(" & Format$(prob) & "%)ã§é˜²å¾¡ã‚’è¡Œã„ã€" & _
-                "ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’2/3ã«æ¸›å°‘ã€‚"
+        Case "¬Œ^ƒV[ƒ‹ƒh"
+            sname = p.SkillName0("‚r–hŒä")
+            prob = p.SkillLevel("‚r–hŒä") * 100 \ 16
+            msg = sname & "Lv/16‚ÌŠm—¦(" & Format$(prob) & "%)‚Å–hŒä‚ğs‚¢A" & _
+                "ƒ_ƒ[ƒW‚ğ2/3‚ÉŒ¸­B"
             
-        Case "ã‚¨ãƒãƒ«ã‚®ãƒ¼ã‚·ãƒ¼ãƒ«ãƒ‰"
-            sname = p.SkillName0("ï¼³é˜²å¾¡")
-            prob = p.SkillLevel("ï¼³é˜²å¾¡") * 100 \ 16
+        Case "ƒGƒlƒ‹ƒM[ƒV[ƒ‹ƒh"
+            sname = p.SkillName0("‚r–hŒä")
+            prob = p.SkillLevel("‚r–hŒä") * 100 \ 16
             If flevel > 0 Then
-                msg = sname & "Lv/16ã®ç¢ºç‡(" & Format$(prob) & "%)ã§é˜²å¾¡ã‚’è¡Œã„ã€" & _
-                    "ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’åŠæ¸›ã—ãŸä¸Šã§æ›´ã«" & Format$(100 * flevel) & "æ¸›å°‘ã€‚"
+                msg = sname & "Lv/16‚ÌŠm—¦(" & Format$(prob) & "%)‚Å–hŒä‚ğs‚¢A" & _
+                    "ƒ_ƒ[ƒW‚ğ”¼Œ¸‚µ‚½ã‚ÅX‚É" & Format$(100 * flevel) & "Œ¸­B"
             Else
-                msg = sname & "Lv/16ã®ç¢ºç‡(" & Format$(prob) & "%)ã§é˜²å¾¡ã‚’è¡Œã„ã€" & _
-                    "ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’åŠæ¸›ã€‚"
+                msg = sname & "Lv/16‚ÌŠm—¦(" & Format$(prob) & "%)‚Å–hŒä‚ğs‚¢A" & _
+                    "ƒ_ƒ[ƒW‚ğ”¼Œ¸B"
             End If
-            msg = msg & "ç™ºå‹•æ™‚ã«5ï¼¥ï¼®æ¶ˆè²»ã€‚ã€Œç„¡ã€å±æ€§ã‚’æŒã¤æ­¦å™¨ã«ã¯ç„¡åŠ¹ã€‚"
+            msg = msg & "”­“®‚É5‚d‚mÁ”ïBu–³v‘®«‚ğ‚Â•Ší‚É‚Í–³ŒøB"
             
-        Case "ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ã‚·ãƒ¼ãƒ«ãƒ‰"
-            sname = p.SkillName0("ï¼³é˜²å¾¡")
-            prob = p.SkillLevel("ï¼³é˜²å¾¡") * 100 \ 16
-            If p.IsSkillAvailable("ï¼³é˜²å¾¡") Then
-                prob = (p.SkillLevel("ï¼³é˜²å¾¡") + 2) * 100 \ 16
+        Case "ƒAƒNƒeƒBƒuƒV[ƒ‹ƒh"
+            sname = p.SkillName0("‚r–hŒä")
+            prob = p.SkillLevel("‚r–hŒä") * 100 \ 16
+            If p.IsSkillAvailable("‚r–hŒä") Then
+                prob = (p.SkillLevel("‚r–hŒä") + 2) * 100 \ 16
             End If
-            msg = "(" & sname & "Lv+2)/16ã®ç¢ºç‡(" & Format$(prob) & "%)ã§é˜²å¾¡ã‚’è¡Œã„ã€" & _
-                "ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’åŠæ¸›ã€‚"
+            msg = "(" & sname & "Lv+2)/16‚ÌŠm—¦(" & Format$(prob) & "%)‚Å–hŒä‚ğs‚¢A" & _
+                "ƒ_ƒ[ƒW‚ğ”¼Œ¸B"
             
-        Case "ç›¾"
-            sname = p.SkillName0("ï¼³é˜²å¾¡")
-            slevel = p.SkillLevel("ï¼³é˜²å¾¡")
+        Case "‚"
+            sname = p.SkillName0("‚r–hŒä")
+            slevel = p.SkillLevel("‚r–hŒä")
             If slevel > 0 Then
                 slevel = 100 * slevel + 400
             End If
-            msg = Format$(flevel) & "å›ã€æ”»æ’ƒã«ã‚ˆã£ã¦è²«é€šã•ã‚Œã‚‹ã¾ã§ã‚·ãƒ¼ãƒ«ãƒ‰é˜²å¾¡ã‚’è¡Œã„ã€" & _
-                "ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’æ¸›å°‘ã•ã›ã‚‹(-" & Format$(CLng(slevel)) & ")ã€‚;" & _
-                "ãŸã ã—æ”»æ’ƒå´ãŒã€Œç ´ã€å±æ€§ã‚’æŒã£ã¦ã„ãŸå ´åˆã€ä¸€åº¦ã«ï¼’å›åˆ†ç ´å£Šã•ã‚Œã‚‹ã€‚;" & _
-                "ãƒ€ãƒ¡ãƒ¼ã‚¸ã®æ¸›å°‘é‡ã¯ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & sname & "ãƒ¬ãƒ™ãƒ«ã«ã‚ˆã£ã¦æ±ºã¾ã‚‹ã€‚"
+            msg = Format$(flevel) & "‰ñAUŒ‚‚É‚æ‚Á‚ÄŠÑ’Ê‚³‚ê‚é‚Ü‚ÅƒV[ƒ‹ƒh–hŒä‚ğs‚¢A" & _
+                "ƒ_ƒ[ƒW‚ğŒ¸­‚³‚¹‚é(-" & Format$(CLng(slevel)) & ")B;" & _
+                "‚½‚¾‚µUŒ‚‘¤‚ªu”jv‘®«‚ğ‚Á‚Ä‚¢‚½ê‡Aˆê“x‚É‚Q‰ñ•ª”j‰ó‚³‚ê‚éB;" & _
+                "ƒ_ƒ[ƒW‚ÌŒ¸­—Ê‚ÍƒpƒCƒƒbƒg‚Ì" & sname & "ƒŒƒxƒ‹‚É‚æ‚Á‚ÄŒˆ‚Ü‚éB"
             
-        Case "ãƒãƒªã‚¢"
-            If LIndex(fdata, 2) <> "" And LIndex(fdata, 2) <> "å…¨" Then
+        Case "ƒoƒŠƒA"
+            If LIndex(fdata, 2) <> "" And LIndex(fdata, 2) <> "‘S" Then
                 If Left$(LIndex(fdata, 2), 1) = "!" Then
-                    msg = "ã€Œ" & Mid$(LIndex(fdata, 2), 2) & "ã€å±æ€§ã‚’æŒãŸãªã„"
+                    msg = "u" & Mid$(LIndex(fdata, 2), 2) & "v‘®«‚ğ‚½‚È‚¢"
                 Else
-                    msg = "ã€Œ" & LIndex(fdata, 2) & "ã€å±æ€§ã‚’æŒã¤"
+                    msg = "u" & LIndex(fdata, 2) & "v‘®«‚ğ‚Â"
                 End If
             End If
             msg = msg & _
-                "ãƒ€ãƒ¡ãƒ¼ã‚¸" & Format$(CLng(1000 * flevel)) & "ä»¥ä¸‹ã®æ”»æ’ƒã‚’ç„¡åŠ¹åŒ–ã€‚"
+                "ƒ_ƒ[ƒW" & Format$(CLng(1000 * flevel)) & "ˆÈ‰º‚ÌUŒ‚‚ğ–³Œø‰»B"
             If IsNumeric(LIndex(fdata, 3)) Then
                 If StrToLng(LIndex(fdata, 3)) > 0 Then
                     msg = msg & _
-                        ";ç™ºå‹•æ™‚ã«" & LIndex(fdata, 3) & Term("ï¼¥ï¼®", u) & "æ¶ˆè²»ã€‚"
+                        ";”­“®‚É" & LIndex(fdata, 3) & Term("‚d‚m", u) & "Á”ïB"
                 ElseIf StrToLng(LIndex(fdata, 3)) < 0 Then
                     msg = msg & _
-                        ";ç™ºå‹•æ™‚ã«" & Mid$(LIndex(fdata, 3), 2) & Term("ï¼¥ï¼®", u) & "å¢—åŠ ã€‚"
+                        ";”­“®‚É" & Mid$(LIndex(fdata, 3), 2) & Term("‚d‚m", u) & "‘‰ÁB"
                 End If
             Else
                 msg = msg & _
-                    ";ç™ºå‹•æ™‚ã«10ï¼¥ï¼®æ¶ˆè²»ã€‚"
+                    ";”­“®‚É10‚d‚mÁ”ïB"
             End If
             If StrToLng(LIndex(fdata, 4)) > 50 Then
                 msg = msg & _
-                    Term("æ°—åŠ›", u) & LIndex(fdata, 4) & "ä»¥ä¸Šã§ä½¿ç”¨å¯èƒ½ã€‚"
+                    Term("‹C—Í", u) & LIndex(fdata, 4) & "ˆÈã‚Åg—p‰Â”\B"
             End If
             For i = 5 To LLength(fdata)
                 opt = LIndex(fdata, i)
@@ -974,103 +974,103 @@ Dim uname As String
                     lv_mod = -1
                 End If
                 Select Case p.SkillType(opt)
-                    Case "ç›¸æ®º"
+                    Case "‘ŠE"
                         msg = msg & _
-                            ";" & fname0 & "ã‚’æŒã¤ãƒ¦ãƒ‹ãƒƒãƒˆåŒå£«ã®å ´åˆã€éš£æ¥æ™‚ã«åŠ¹æœã¯ç›¸æ®ºã€‚"
-                    Case "ä¸­å’Œ"
+                            ";" & fname0 & "‚ğ‚Âƒ†ƒjƒbƒg“¯m‚Ìê‡A—×Ú‚ÉŒø‰Ê‚Í‘ŠEB"
+                    Case "’†˜a"
                         msg = msg & _
-                            ";" & fname0 & "ã‚’æŒã¤ãƒ¦ãƒ‹ãƒƒãƒˆåŒå£«ã®å ´åˆã€" & _
-                            "éš£æ¥æ™‚ã«ãƒ¬ãƒ™ãƒ«åˆ†ã ã‘åŠ¹æœã‚’ä¸­å’Œã€‚"
-                    Case "è¿‘æ¥ç„¡åŠ¹"
+                            ";" & fname0 & "‚ğ‚Âƒ†ƒjƒbƒg“¯m‚Ìê‡A" & _
+                            "—×Ú‚ÉƒŒƒxƒ‹•ª‚¾‚¯Œø‰Ê‚ğ’†˜aB"
+                    Case "‹ßÚ–³Œø"
                         msg = msg & _
-                            ";ã€Œæ­¦ã€ã€Œçªã€ã€Œæ¥ã€ã«ã‚ˆã‚‹æ”»æ’ƒã«ã¯ç„¡åŠ¹ã€‚"
-                    Case "ãƒãƒªã‚¢ç„¡åŠ¹åŒ–ç„¡åŠ¹"
+                            ";u•vu“ËvuÚv‚É‚æ‚éUŒ‚‚É‚Í–³ŒøB"
+                    Case "ƒoƒŠƒA–³Œø‰»–³Œø"
                         msg = msg & _
-                            ";ãƒãƒªã‚¢ç„¡åŠ¹åŒ–ã«ã‚ˆã£ã¦ç„¡åŠ¹åŒ–ã•ã‚Œãªã„ã€‚"
-                    Case "æ‰‹å‹•"
+                            ";ƒoƒŠƒA–³Œø‰»‚É‚æ‚Á‚Ä–³Œø‰»‚³‚ê‚È‚¢B"
+                    Case "è“®"
                         msg = msg & _
-                            ";é˜²å¾¡é¸æŠæ™‚ã«ã®ã¿ç™ºå‹•ã€‚"
-                    Case "èƒ½åŠ›å¿…è¦"
-                        'ã‚¹ã‚­ãƒƒãƒ—
-                    Case "åŒèª¿ç‡"
+                            ";–hŒä‘I‘ğ‚É‚Ì‚İ”­“®B"
+                    Case "”\—Í•K—v"
+                        'ƒXƒLƒbƒv
+                    Case "“¯’²—¦"
                         sname = p.SkillName0(opt)
                         If lv_mod = -1 Then
                             lv_mod = 20
                         End If
                         If u.SyncLevel >= 30 Then
                             msg = msg & _
-                                ";ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¤‰åŒ–(+" & _
-                                Format$(lv_mod * (u.SyncLevel - 30)) & ")ã€‚"
+                                ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª•Ï‰»(+" & _
+                                Format$(lv_mod * (u.SyncLevel - 30)) & ")B"
                         ElseIf u.SyncLevel > 0 Then
                             msg = msg & _
-                                ";ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¤‰åŒ–(" & _
-                                Format$(lv_mod * (u.SyncLevel - 30)) & ")ã€‚"
+                                ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª•Ï‰»(" & _
+                                Format$(lv_mod * (u.SyncLevel - 30)) & ")B"
                         End If
-                    Case "éœŠåŠ›"
+                    Case "—ì—Í"
                         sname = p.SkillName0(opt)
                         If lv_mod = -1 Then
                             lv_mod = 10
                         End If
                         msg = msg & _
-                            ";ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & _
-                            Format$(lv_mod * u.PlanaLevel) & ")ã€‚"
-                    Case "ã‚ªãƒ¼ãƒ©"
+                            ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª‘‰Á(+" & _
+                            Format$(lv_mod * u.PlanaLevel) & ")B"
+                    Case "ƒI[ƒ‰"
                         sname = p.SkillName0(opt)
                         If lv_mod = -1 Then
                             lv_mod = 200
                         End If
                         msg = msg & _
-                            ";ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & _
-                            Format$(lv_mod * u.AuraLevel) & ")ã€‚"
-                    Case "è¶…èƒ½åŠ›"
+                            ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª‘‰Á(+" & _
+                            Format$(lv_mod * u.AuraLevel) & ")B"
+                    Case "’´”\—Í"
                         sname = p.SkillName0(opt)
                         If lv_mod = -1 Then
                             lv_mod = 200
                         End If
                         msg = msg & _
-                            ";ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & _
-                            Format$(lv_mod * u.PsychicLevel) & ")ã€‚"
+                            ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª‘‰Á(+" & _
+                            Format$(lv_mod * u.PsychicLevel) & ")B"
                     Case Else
                         sname = u.SkillName0(opt)
                         If lv_mod = -1 Then
                             lv_mod = 200
                         End If
                         msg = msg & _
-                            ";ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & sname & "ãƒ¬ãƒ™ãƒ«ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & _
-                            Format$(lv_mod * u.SkillLevel(opt)) & ")ã€‚"
+                            ";ƒpƒCƒƒbƒg‚Ì" & sname & "ƒŒƒxƒ‹‚É‚æ‚è‹­“x‚ª‘‰Á(+" & _
+                            Format$(lv_mod * u.SkillLevel(opt)) & ")B"
                 End Select
             Next
             
-        Case "ãƒãƒªã‚¢ã‚·ãƒ¼ãƒ«ãƒ‰"
-            sname = p.SkillName0("ï¼³é˜²å¾¡")
-            prob = p.SkillLevel("ï¼³é˜²å¾¡") * 100 \ 16
-            msg = sname & "Lv/16ã®ç¢ºç‡(" & Format$(prob) & "%)ã§ç™ºå‹•ã—ã€"
-            If LIndex(fdata, 2) <> "" And LIndex(fdata, 2) <> "å…¨" Then
+        Case "ƒoƒŠƒAƒV[ƒ‹ƒh"
+            sname = p.SkillName0("‚r–hŒä")
+            prob = p.SkillLevel("‚r–hŒä") * 100 \ 16
+            msg = sname & "Lv/16‚ÌŠm—¦(" & Format$(prob) & "%)‚Å”­“®‚µA"
+            If LIndex(fdata, 2) <> "" And LIndex(fdata, 2) <> "‘S" Then
                 If Left$(LIndex(fdata, 2), 1) = "!" Then
                     msg = msg & _
-                        "ã€Œ" & Mid$(LIndex(fdata, 2), 2) & "ã€å±æ€§ã‚’æŒãŸãªã„"
+                        "u" & Mid$(LIndex(fdata, 2), 2) & "v‘®«‚ğ‚½‚È‚¢"
                 Else
                     msg = msg & _
-                        "ã€Œ" & LIndex(fdata, 2) & "ã€å±æ€§ã‚’æŒã¤"
+                        "u" & LIndex(fdata, 2) & "v‘®«‚ğ‚Â"
                 End If
             End If
             msg = msg & _
-                "ãƒ€ãƒ¡ãƒ¼ã‚¸" & Format$(CLng(1000 * flevel)) & "ä»¥ä¸‹ã®æ”»æ’ƒã‚’ç„¡åŠ¹åŒ–ã€‚"
+                "ƒ_ƒ[ƒW" & Format$(CLng(1000 * flevel)) & "ˆÈ‰º‚ÌUŒ‚‚ğ–³Œø‰»B"
             If IsNumeric(LIndex(fdata, 3)) Then
                 If StrToLng(LIndex(fdata, 3)) > 0 Then
                     msg = msg & _
-                        "ç™ºå‹•æ™‚ã«" & LIndex(fdata, 3) & Term("ï¼¥ï¼®", u) & "æ¶ˆè²»ã€‚"
+                        "”­“®‚É" & LIndex(fdata, 3) & Term("‚d‚m", u) & "Á”ïB"
                 ElseIf StrToLng(LIndex(fdata, 3)) < 0 Then
                     msg = msg & _
-                        ";ç™ºå‹•æ™‚ã«" & Mid$(LIndex(fdata, 3), 2) & Term("ï¼¥ï¼®", u) & "å¢—åŠ ã€‚"
+                        ";”­“®‚É" & Mid$(LIndex(fdata, 3), 2) & Term("‚d‚m", u) & "‘‰ÁB"
                 End If
             Else
                 msg = msg & _
-                    "ç™ºå‹•æ™‚ã«10" & Term("ï¼¥ï¼®", u) & "æ¶ˆè²»ã€‚"
+                    "”­“®‚É10" & Term("‚d‚m", u) & "Á”ïB"
             End If
             If StrToLng(LIndex(fdata, 4)) > 50 Then
                 msg = msg & _
-                    Term("æ°—åŠ›", u) & LIndex(fdata, 4) & "ä»¥ä¸Šã§ä½¿ç”¨å¯èƒ½ã€‚"
+                    Term("‹C—Í", u) & LIndex(fdata, 4) & "ˆÈã‚Åg—p‰Â”\B"
             End If
             For i = 5 To LLength(fdata)
                 opt = LIndex(fdata, i)
@@ -1082,137 +1082,137 @@ Dim uname As String
                     lv_mod = -1
                 End If
                 Select Case p.SkillType(opt)
-                    Case "ç›¸æ®º"
+                    Case "‘ŠE"
                         msg = msg & _
-                            ";" & fname0 & "ã‚’æŒã¤ãƒ¦ãƒ‹ãƒƒãƒˆåŒå£«ã®å ´åˆã€éš£æ¥æ™‚ã«åŠ¹æœã¯ç›¸æ®ºã€‚"
-                    Case "ä¸­å’Œ"
+                            ";" & fname0 & "‚ğ‚Âƒ†ƒjƒbƒg“¯m‚Ìê‡A—×Ú‚ÉŒø‰Ê‚Í‘ŠEB"
+                    Case "’†˜a"
                         msg = msg & _
-                            ";" & fname0 & "ã‚’æŒã¤ãƒ¦ãƒ‹ãƒƒãƒˆåŒå£«ã®å ´åˆã€" & _
-                            "éš£æ¥æ™‚ã«ãƒ¬ãƒ™ãƒ«åˆ†ã ã‘åŠ¹æœã‚’ä¸­å’Œã€‚"
-                    Case "è¿‘æ¥ç„¡åŠ¹"
+                            ";" & fname0 & "‚ğ‚Âƒ†ƒjƒbƒg“¯m‚Ìê‡A" & _
+                            "—×Ú‚ÉƒŒƒxƒ‹•ª‚¾‚¯Œø‰Ê‚ğ’†˜aB"
+                    Case "‹ßÚ–³Œø"
                         msg = msg & _
-                            ";ã€Œæ­¦ã€ã€Œçªã€ã€Œæ¥ã€ã«ã‚ˆã‚‹æ”»æ’ƒã«ã¯ç„¡åŠ¹ã€‚"
-                    Case "ãƒãƒªã‚¢ç„¡åŠ¹åŒ–ç„¡åŠ¹"
+                            ";u•vu“ËvuÚv‚É‚æ‚éUŒ‚‚É‚Í–³ŒøB"
+                    Case "ƒoƒŠƒA–³Œø‰»–³Œø"
                         msg = msg & _
-                            ";ãƒãƒªã‚¢ç„¡åŠ¹åŒ–ã«ã‚ˆã£ã¦ç„¡åŠ¹åŒ–ã•ã‚Œãªã„ã€‚"
-                    Case "æ‰‹å‹•"
+                            ";ƒoƒŠƒA–³Œø‰»‚É‚æ‚Á‚Ä–³Œø‰»‚³‚ê‚È‚¢B"
+                    Case "è“®"
                         msg = msg & _
-                            ";é˜²å¾¡é¸æŠæ™‚ã«ã®ã¿ç™ºå‹•ã€‚"
-                    Case "èƒ½åŠ›å¿…è¦"
-                        'ã‚¹ã‚­ãƒƒãƒ—
-                    Case "åŒèª¿ç‡"
+                            ";–hŒä‘I‘ğ‚É‚Ì‚İ”­“®B"
+                    Case "”\—Í•K—v"
+                        'ƒXƒLƒbƒv
+                    Case "“¯’²—¦"
                         sname = p.SkillName0(opt)
                         If lv_mod = -1 Then
                             lv_mod = 20
                         End If
                         If u.SyncLevel >= 30 Then
                             msg = msg & _
-                                ";ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¤‰åŒ–(+" & _
-                                Format$(lv_mod * (u.SyncLevel - 30)) & ")ã€‚"
+                                ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª•Ï‰»(+" & _
+                                Format$(lv_mod * (u.SyncLevel - 30)) & ")B"
                         ElseIf u.SyncLevel > 0 Then
                             msg = msg & _
-                                ";ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¤‰åŒ–(" & _
-                                Format$(lv_mod * (u.SyncLevel - 30)) & ")ã€‚"
+                                ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª•Ï‰»(" & _
+                                Format$(lv_mod * (u.SyncLevel - 30)) & ")B"
                         End If
-                    Case "éœŠåŠ›"
+                    Case "—ì—Í"
                         sname = p.SkillName0(opt)
                         If lv_mod = -1 Then
                             lv_mod = 10
                         End If
                         msg = msg & _
-                            ";ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & _
-                            Format$(lv_mod * u.PlanaLevel) & ")ã€‚"
-                    Case "ã‚ªãƒ¼ãƒ©"
+                            ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª‘‰Á(+" & _
+                            Format$(lv_mod * u.PlanaLevel) & ")B"
+                    Case "ƒI[ƒ‰"
                         sname = p.SkillName0(opt)
                         If lv_mod = -1 Then
                             lv_mod = 200
                         End If
                         msg = msg & _
-                            ";ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & _
-                            Format$(lv_mod * u.AuraLevel) & ")ã€‚"
-                    Case "è¶…èƒ½åŠ›"
+                            ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª‘‰Á(+" & _
+                            Format$(lv_mod * u.AuraLevel) & ")B"
+                    Case "’´”\—Í"
                         sname = p.SkillName0(opt)
                         If lv_mod = -1 Then
                             lv_mod = 200
                         End If
                         msg = msg & _
-                            ";ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & _
-                            Format$(lv_mod * u.PsychicLevel) & ")ã€‚"
+                            ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª‘‰Á(+" & _
+                            Format$(lv_mod * u.PsychicLevel) & ")B"
                     Case Else
                         sname = u.SkillName0(opt)
                         If lv_mod = -1 Then
                             lv_mod = 200
                         End If
                         msg = msg & _
-                            ";ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & sname & "ãƒ¬ãƒ™ãƒ«ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & _
-                            Format$(lv_mod * u.SkillLevel(opt)) & ")ã€‚"
+                            ";ƒpƒCƒƒbƒg‚Ì" & sname & "ƒŒƒxƒ‹‚É‚æ‚è‹­“x‚ª‘‰Á(+" & _
+                            Format$(lv_mod * u.SkillLevel(opt)) & ")B"
                 End Select
             Next
             
-        Case "åºƒåŸŸãƒãƒªã‚¢"
+        Case "LˆæƒoƒŠƒA"
             If IsNumeric(LIndex(fdata, 2)) And LIndex(fdata, 2) <> "1" Then
-                msg = "åŠå¾„" & StrConv(LIndex(fdata, 2), vbWide) & _
-                    "ãƒã‚¹ä»¥å†…ã®å‘³æ–¹ãƒ¦ãƒ‹ãƒƒãƒˆã«å¯¾ã™ã‚‹"
+                msg = "”¼Œa" & StrConv(LIndex(fdata, 2), vbWide) & _
+                    "ƒ}ƒXˆÈ“à‚Ì–¡•ûƒ†ƒjƒbƒg‚É‘Î‚·‚é"
                 i = CInt(LIndex(fdata, 2))
             Else
-                msg = "éš£æ¥ã™ã‚‹å‘³æ–¹ãƒ¦ãƒ‹ãƒƒãƒˆã«å¯¾ã™ã‚‹"
+                msg = "—×Ú‚·‚é–¡•ûƒ†ƒjƒbƒg‚É‘Î‚·‚é"
                 i = 1
             End If
-            If LIndex(fdata, 3) <> "" And LIndex(fdata, 3) <> "å…¨" Then
+            If LIndex(fdata, 3) <> "" And LIndex(fdata, 3) <> "‘S" Then
                 If Left$(LIndex(fdata, 3), 1) = "!" Then
                     msg = msg & _
-                        "ã€Œ" & Mid$(LIndex(fdata, 3), 2) & "ã€å±æ€§ã‚’æŒãŸãªã„"
+                        "u" & Mid$(LIndex(fdata, 3), 2) & "v‘®«‚ğ‚½‚È‚¢"
                 Else
                     msg = msg & _
-                        "ã€Œ" & LIndex(fdata, 3) & "ã€å±æ€§ã‚’æŒã¤"
+                        "u" & LIndex(fdata, 3) & "v‘®«‚ğ‚Â"
                 End If
             End If
             msg = msg & _
-                "ãƒ€ãƒ¡ãƒ¼ã‚¸" & Format$(CLng(1000 * flevel)) & "ä»¥ä¸‹ã®æ”»æ’ƒã‚’ç„¡åŠ¹åŒ–ã€‚"
+                "ƒ_ƒ[ƒW" & Format$(CLng(1000 * flevel)) & "ˆÈ‰º‚ÌUŒ‚‚ğ–³Œø‰»B"
             If IsNumeric(LIndex(fdata, 4)) Then
                 If StrToLng(LIndex(fdata, 4)) > 0 Then
                     msg = msg & _
-                        ";ç™ºå‹•æ™‚ã«" & LIndex(fdata, 4) & Term("ï¼¥ï¼®", u) & "æ¶ˆè²»ã€‚"
+                        ";”­“®‚É" & LIndex(fdata, 4) & Term("‚d‚m", u) & "Á”ïB"
                 ElseIf StrToLng(LIndex(fdata, 4)) < 0 Then
                     msg = msg & _
-                        ";ç™ºå‹•æ™‚ã«" & Mid$(LIndex(fdata, 4), 2) & Term("ï¼¥ï¼®", u) & "å¢—åŠ ã€‚"
+                        ";”­“®‚É" & Mid$(LIndex(fdata, 4), 2) & Term("‚d‚m", u) & "‘‰ÁB"
                 End If
             Else
                 msg = msg & _
-                    ";ç™ºå‹•æ™‚ã«" & Format$(20 * i) & Term("ï¼¥ï¼®", u) & "æ¶ˆè²»ã€‚"
+                    ";”­“®‚É" & Format$(20 * i) & Term("‚d‚m", u) & "Á”ïB"
             End If
             If StrToLng(LIndex(fdata, 5)) > 50 Then
                 msg = msg & _
-                    ";" & Term("æ°—åŠ›", u) & LIndex(fdata, 5) & "ä»¥ä¸Šã§ä½¿ç”¨å¯èƒ½ã€‚"
+                    ";" & Term("‹C—Í", u) & LIndex(fdata, 5) & "ˆÈã‚Åg—p‰Â”\B"
             End If
             msg = msg & _
-                ";ãŸã ã—æ”»æ’ƒå´ã‚‚æœ‰åŠ¹ç¯„å›²å†…ã«ã„ã‚‹å ´åˆã¯ç„¡åŠ¹åŒ–ã€‚"
+                ";‚½‚¾‚µUŒ‚‘¤‚à—LŒø”ÍˆÍ“à‚É‚¢‚éê‡‚Í–³Œø‰»B"
             
-        Case "ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰"
-            If LIndex(fdata, 2) <> "" And LIndex(fdata, 2) <> "å…¨" Then
+        Case "ƒtƒB[ƒ‹ƒh"
+            If LIndex(fdata, 2) <> "" And LIndex(fdata, 2) <> "‘S" Then
                 If Left$(LIndex(fdata, 2), 1) = "!" Then
-                    msg = "ã€Œ" & Mid$(LIndex(fdata, 2), 2) & "ã€å±æ€§ã‚’æŒãŸãªã„"
+                    msg = "u" & Mid$(LIndex(fdata, 2), 2) & "v‘®«‚ğ‚½‚È‚¢"
                 Else
-                    msg = "ã€Œ" & LIndex(fdata, 2) & "ã€å±æ€§ã‚’æŒã¤"
+                    msg = "u" & LIndex(fdata, 2) & "v‘®«‚ğ‚Â"
                 End If
             End If
             If flevel >= 0 Then
                 msg = msg & _
-                    "æ”»æ’ƒã®ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’" & Format$(CLng(500 * flevel)) & "æ¸›å°‘ã•ã›ã‚‹ã€‚"
+                    "UŒ‚‚Ìƒ_ƒ[ƒW‚ğ" & Format$(CLng(500 * flevel)) & "Œ¸­‚³‚¹‚éB"
             Else
                 msg = msg & _
-                    "æ”»æ’ƒã®ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’" & Format$(CLng(-500 * flevel)) & "å¢—åŠ ã•ã›ã‚‹ã€‚"
+                    "UŒ‚‚Ìƒ_ƒ[ƒW‚ğ" & Format$(CLng(-500 * flevel)) & "‘‰Á‚³‚¹‚éB"
             End If
             If StrToLng(LIndex(fdata, 3)) > 0 Then
                 msg = msg & _
-                    ";ç™ºå‹•æ™‚ã«" & LIndex(fdata, 3) & Term("ï¼¥ï¼®", u) & "æ¶ˆè²»ã€‚"
+                    ";”­“®‚É" & LIndex(fdata, 3) & Term("‚d‚m", u) & "Á”ïB"
             ElseIf StrToLng(LIndex(fdata, 3)) < 0 Then
                 msg = msg & _
-                    ";ç™ºå‹•æ™‚ã«" & Mid$(LIndex(fdata, 3), 2) & Term("ï¼¥ï¼®", u) & "å¢—åŠ ã€‚"
+                    ";”­“®‚É" & Mid$(LIndex(fdata, 3), 2) & Term("‚d‚m", u) & "‘‰ÁB"
             End If
             If StrToLng(LIndex(fdata, 4)) > 50 Then
                 msg = msg & _
-                    Term("æ°—åŠ›", u) & LIndex(fdata, 4) & "ä»¥ä¸Šã§ä½¿ç”¨å¯èƒ½ã€‚"
+                    Term("‹C—Í", u) & LIndex(fdata, 4) & "ˆÈã‚Åg—p‰Â”\B"
             End If
             For i = 5 To LLength(fdata)
                 opt = LIndex(fdata, i)
@@ -1224,103 +1224,103 @@ Dim uname As String
                     lv_mod = -1
                 End If
                 Select Case p.SkillType(opt)
-                    Case "ç›¸æ®º"
+                    Case "‘ŠE"
                         msg = msg & _
-                            ";" & fname0 & "ã‚’æŒã¤ãƒ¦ãƒ‹ãƒƒãƒˆåŒå£«ã®å ´åˆã€éš£æ¥æ™‚ã«åŠ¹æœã¯ç›¸æ®ºã€‚"
-                    Case "ä¸­å’Œ"
+                            ";" & fname0 & "‚ğ‚Âƒ†ƒjƒbƒg“¯m‚Ìê‡A—×Ú‚ÉŒø‰Ê‚Í‘ŠEB"
+                    Case "’†˜a"
                         msg = msg & _
-                            ";" & fname0 & "ã‚’æŒã¤ãƒ¦ãƒ‹ãƒƒãƒˆåŒå£«ã®å ´åˆã€" & _
-                            "éš£æ¥æ™‚ã«ãƒ¬ãƒ™ãƒ«åˆ†ã ã‘åŠ¹æœã‚’ä¸­å’Œã€‚"
-                    Case "è¿‘æ¥ç„¡åŠ¹"
+                            ";" & fname0 & "‚ğ‚Âƒ†ƒjƒbƒg“¯m‚Ìê‡A" & _
+                            "—×Ú‚ÉƒŒƒxƒ‹•ª‚¾‚¯Œø‰Ê‚ğ’†˜aB"
+                    Case "‹ßÚ–³Œø"
                         msg = msg & _
-                            ";ã€Œæ­¦ã€ã€Œçªã€ã€Œæ¥ã€ã«ã‚ˆã‚‹æ”»æ’ƒã«ã¯ç„¡åŠ¹ã€‚"
-                    Case "ãƒãƒªã‚¢ç„¡åŠ¹åŒ–ç„¡åŠ¹"
+                            ";u•vu“ËvuÚv‚É‚æ‚éUŒ‚‚É‚Í–³ŒøB"
+                    Case "ƒoƒŠƒA–³Œø‰»–³Œø"
                         msg = msg & _
-                            ";ãƒãƒªã‚¢ç„¡åŠ¹åŒ–ã«ã‚ˆã£ã¦ç„¡åŠ¹åŒ–ã•ã‚Œãªã„ã€‚"
-                    Case "æ‰‹å‹•"
+                            ";ƒoƒŠƒA–³Œø‰»‚É‚æ‚Á‚Ä–³Œø‰»‚³‚ê‚È‚¢B"
+                    Case "è“®"
                         msg = msg & _
-                            ";é˜²å¾¡é¸æŠæ™‚ã«ã®ã¿ç™ºå‹•ã€‚"
-                    Case "èƒ½åŠ›å¿…è¦"
-                        'ã‚¹ã‚­ãƒƒãƒ—
-                    Case "åŒèª¿ç‡"
+                            ";–hŒä‘I‘ğ‚É‚Ì‚İ”­“®B"
+                    Case "”\—Í•K—v"
+                        'ƒXƒLƒbƒv
+                    Case "“¯’²—¦"
                         sname = p.SkillName0(opt)
                         If lv_mod = -1 Then
                             lv_mod = 20
                         End If
                         If u.SyncLevel >= 30 Then
                             msg = msg & _
-                                ";ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¤‰åŒ–(+" & _
-                                Format$(lv_mod * (u.SyncLevel - 30)) & ")ã€‚"
+                                ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª•Ï‰»(+" & _
+                                Format$(lv_mod * (u.SyncLevel - 30)) & ")B"
                         ElseIf u.SyncLevel > 0 Then
                             msg = msg & _
-                                ";ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¤‰åŒ–(" & _
-                                Format$(lv_mod * (u.SyncLevel - 30)) & ")ã€‚"
+                                ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª•Ï‰»(" & _
+                                Format$(lv_mod * (u.SyncLevel - 30)) & ")B"
                         End If
-                    Case "éœŠåŠ›"
+                    Case "—ì—Í"
                         sname = p.SkillName0(opt)
                         If lv_mod = -1 Then
                             lv_mod = 10
                         End If
                         msg = msg & _
-                            ";ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & _
-                            Format$(lv_mod * u.PlanaLevel) & ")ã€‚"
-                    Case "ã‚ªãƒ¼ãƒ©"
+                            ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª‘‰Á(+" & _
+                            Format$(lv_mod * u.PlanaLevel) & ")B"
+                    Case "ƒI[ƒ‰"
                         sname = p.SkillName0(opt)
                         If lv_mod = -1 Then
                             lv_mod = 200
                         End If
                         msg = msg & _
-                            ";ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & _
-                            Format$(lv_mod * u.AuraLevel) & ")ã€‚"
-                    Case "è¶…èƒ½åŠ›"
+                            ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª‘‰Á(+" & _
+                            Format$(lv_mod * u.AuraLevel) & ")B"
+                    Case "’´”\—Í"
                         sname = p.SkillName0(opt)
                         If lv_mod = -1 Then
                             lv_mod = 200
                         End If
                         msg = msg & _
-                            ";ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & _
-                            Format$(lv_mod * u.PsychicLevel) & ")ã€‚"
+                            ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª‘‰Á(+" & _
+                            Format$(lv_mod * u.PsychicLevel) & ")B"
                     Case Else
                         sname = u.SkillName0(opt)
                         If lv_mod = -1 Then
                             lv_mod = 200
                         End If
                         msg = msg & _
-                            ";ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & sname & "ãƒ¬ãƒ™ãƒ«ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & _
-                            Format$(lv_mod * u.SkillLevel(opt)) & ")ã€‚"
+                            ";ƒpƒCƒƒbƒg‚Ì" & sname & "ƒŒƒxƒ‹‚É‚æ‚è‹­“x‚ª‘‰Á(+" & _
+                            Format$(lv_mod * u.SkillLevel(opt)) & ")B"
                 End Select
             Next
             
-        Case "ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰"
-            sname = p.SkillName0("ï¼³é˜²å¾¡")
-            prob = p.SkillLevel("ï¼³é˜²å¾¡") * 100 \ 16
-            msg = sname & "Lv/16ã®ç¢ºç‡(" & Format$(prob) & "%)ã§ç™ºå‹•ã—ã€"
-            If LIndex(fdata, 2) <> "" And LIndex(fdata, 2) <> "å…¨" Then
+        Case "ƒAƒNƒeƒBƒuƒtƒB[ƒ‹ƒh"
+            sname = p.SkillName0("‚r–hŒä")
+            prob = p.SkillLevel("‚r–hŒä") * 100 \ 16
+            msg = sname & "Lv/16‚ÌŠm—¦(" & Format$(prob) & "%)‚Å”­“®‚µA"
+            If LIndex(fdata, 2) <> "" And LIndex(fdata, 2) <> "‘S" Then
                 If Left$(LIndex(fdata, 2), 1) = "!" Then
                     msg = msg & _
-                        "ã€Œ" & Mid$(LIndex(fdata, 2), 2) & "ã€å±æ€§ã‚’æŒãŸãªã„"
+                        "u" & Mid$(LIndex(fdata, 2), 2) & "v‘®«‚ğ‚½‚È‚¢"
                 Else
                     msg = msg & _
-                        "ã€Œ" & LIndex(fdata, 2) & "ã€å±æ€§ã‚’æŒã¤"
+                        "u" & LIndex(fdata, 2) & "v‘®«‚ğ‚Â"
                 End If
             End If
             If flevel >= 0 Then
                 msg = msg & _
-                    "æ”»æ’ƒã®ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’" & Format$(CLng(500 * flevel)) & "æ¸›å°‘ã•ã›ã‚‹ã€‚"
+                    "UŒ‚‚Ìƒ_ƒ[ƒW‚ğ" & Format$(CLng(500 * flevel)) & "Œ¸­‚³‚¹‚éB"
             Else
                 msg = msg & _
-                    "æ”»æ’ƒã®ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’" & Format$(CLng(-500 * flevel)) & "å¢—åŠ ã•ã›ã‚‹ã€‚"
+                    "UŒ‚‚Ìƒ_ƒ[ƒW‚ğ" & Format$(CLng(-500 * flevel)) & "‘‰Á‚³‚¹‚éB"
             End If
             If StrToLng(LIndex(fdata, 3)) > 0 Then
                 msg = msg & _
-                    ";ç™ºå‹•æ™‚ã«" & LIndex(fdata, 3) & Term("ï¼¥ï¼®", u) & "æ¶ˆè²»ã€‚"
+                    ";”­“®‚É" & LIndex(fdata, 3) & Term("‚d‚m", u) & "Á”ïB"
             ElseIf StrToLng(LIndex(fdata, 3)) < 0 Then
                 msg = msg & _
-                    ";ç™ºå‹•æ™‚ã«" & Mid$(LIndex(fdata, 3), 2) & Term("ï¼¥ï¼®", u) & "å¢—åŠ ã€‚"
+                    ";”­“®‚É" & Mid$(LIndex(fdata, 3), 2) & Term("‚d‚m", u) & "‘‰ÁB"
             End If
             If StrToLng(LIndex(fdata, 4)) > 50 Then
                 msg = msg & _
-                    Term("æ°—åŠ›", u) & LIndex(fdata, 4) & "ä»¥ä¸Šã§ä½¿ç”¨å¯èƒ½ã€‚"
+                    Term("‹C—Í", u) & LIndex(fdata, 4) & "ˆÈã‚Åg—p‰Â”\B"
             End If
             For i = 5 To LLength(fdata)
                 opt = LIndex(fdata, i)
@@ -1332,148 +1332,148 @@ Dim uname As String
                     lv_mod = -1
                 End If
                 Select Case p.SkillType(opt)
-                    Case "ç›¸æ®º"
+                    Case "‘ŠE"
                         msg = msg & _
-                            ";" & fname0 & "ã‚’æŒã¤ãƒ¦ãƒ‹ãƒƒãƒˆåŒå£«ã®å ´åˆã€éš£æ¥æ™‚ã«åŠ¹æœã¯ç›¸æ®ºã€‚"
-                    Case "ä¸­å’Œ"
+                            ";" & fname0 & "‚ğ‚Âƒ†ƒjƒbƒg“¯m‚Ìê‡A—×Ú‚ÉŒø‰Ê‚Í‘ŠEB"
+                    Case "’†˜a"
                         msg = msg & _
-                            ";" & fname0 & "ã‚’æŒã¤ãƒ¦ãƒ‹ãƒƒãƒˆåŒå£«ã®å ´åˆã€" & _
-                            "éš£æ¥æ™‚ã«ãƒ¬ãƒ™ãƒ«åˆ†ã ã‘åŠ¹æœã‚’ä¸­å’Œã€‚"
-                    Case "è¿‘æ¥ç„¡åŠ¹"
+                            ";" & fname0 & "‚ğ‚Âƒ†ƒjƒbƒg“¯m‚Ìê‡A" & _
+                            "—×Ú‚ÉƒŒƒxƒ‹•ª‚¾‚¯Œø‰Ê‚ğ’†˜aB"
+                    Case "‹ßÚ–³Œø"
                         msg = msg & _
-                            ";ã€Œæ­¦ã€ã€Œçªã€ã€Œæ¥ã€ã«ã‚ˆã‚‹æ”»æ’ƒã«ã¯ç„¡åŠ¹ã€‚"
-                    Case "ãƒãƒªã‚¢ç„¡åŠ¹åŒ–ç„¡åŠ¹"
+                            ";u•vu“ËvuÚv‚É‚æ‚éUŒ‚‚É‚Í–³ŒøB"
+                    Case "ƒoƒŠƒA–³Œø‰»–³Œø"
                         msg = msg & _
-                            ";ãƒãƒªã‚¢ç„¡åŠ¹åŒ–ã«ã‚ˆã£ã¦ç„¡åŠ¹åŒ–ã•ã‚Œãªã„ã€‚"
-                    Case "æ‰‹å‹•"
+                            ";ƒoƒŠƒA–³Œø‰»‚É‚æ‚Á‚Ä–³Œø‰»‚³‚ê‚È‚¢B"
+                    Case "è“®"
                         msg = msg & _
-                            ";é˜²å¾¡é¸æŠæ™‚ã«ã®ã¿ç™ºå‹•ã€‚"
-                    Case "èƒ½åŠ›å¿…è¦"
-                        'ã‚¹ã‚­ãƒƒãƒ—
-                    Case "åŒèª¿ç‡"
+                            ";–hŒä‘I‘ğ‚É‚Ì‚İ”­“®B"
+                    Case "”\—Í•K—v"
+                        'ƒXƒLƒbƒv
+                    Case "“¯’²—¦"
                         sname = p.SkillName0(opt)
                         If lv_mod = -1 Then
                             lv_mod = 20
                         End If
                         If u.SyncLevel >= 30 Then
                             msg = msg & _
-                                ";ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¤‰åŒ–(+" & _
-                                Format$(lv_mod * (u.SyncLevel - 30)) & ")ã€‚"
+                                ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª•Ï‰»(+" & _
+                                Format$(lv_mod * (u.SyncLevel - 30)) & ")B"
                         ElseIf u.SyncLevel > 0 Then
                             msg = msg & _
-                                ";ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¤‰åŒ–(" & _
-                                Format$(lv_mod * (u.SyncLevel - 30)) & ")ã€‚"
+                                ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª•Ï‰»(" & _
+                                Format$(lv_mod * (u.SyncLevel - 30)) & ")B"
                         End If
-                    Case "éœŠåŠ›"
+                    Case "—ì—Í"
                         sname = p.SkillName0(opt)
                         If lv_mod = -1 Then
                             lv_mod = 10
                         End If
                         msg = msg & _
-                            ";ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & _
-                            Format$(lv_mod * u.PlanaLevel) & ")ã€‚"
-                    Case "ã‚ªãƒ¼ãƒ©"
+                            ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª‘‰Á(+" & _
+                            Format$(lv_mod * u.PlanaLevel) & ")B"
+                    Case "ƒI[ƒ‰"
                         sname = p.SkillName0(opt)
                         If lv_mod = -1 Then
                             lv_mod = 200
                         End If
                         msg = msg & _
-                            ";ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & _
-                            Format$(lv_mod * u.AuraLevel) & ")ã€‚"
-                    Case "è¶…èƒ½åŠ›"
+                            ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª‘‰Á(+" & _
+                            Format$(lv_mod * u.AuraLevel) & ")B"
+                    Case "’´”\—Í"
                         sname = p.SkillName0(opt)
                         If lv_mod = -1 Then
                             lv_mod = 200
                         End If
                         msg = msg & _
-                            ";ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & _
-                            Format$(lv_mod * u.PsychicLevel) & ")ã€‚"
+                            ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª‘‰Á(+" & _
+                            Format$(lv_mod * u.PsychicLevel) & ")B"
                     Case Else
                         sname = u.SkillName0(opt)
                         If lv_mod = -1 Then
                             lv_mod = 200
                         End If
                         msg = msg & _
-                            ";ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & sname & "ãƒ¬ãƒ™ãƒ«ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & _
-                            Format$(lv_mod * u.SkillLevel(opt)) & ")ã€‚"
+                            ";ƒpƒCƒƒbƒg‚Ì" & sname & "ƒŒƒxƒ‹‚É‚æ‚è‹­“x‚ª‘‰Á(+" & _
+                            Format$(lv_mod * u.SkillLevel(opt)) & ")B"
                 End Select
             Next
             
-        Case "åºƒåŸŸãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰"
+        Case "LˆæƒtƒB[ƒ‹ƒh"
             If IsNumeric(LIndex(fdata, 2)) And LIndex(fdata, 2) <> "1" Then
-                msg = "åŠå¾„" & StrConv(LIndex(fdata, 2), vbWide) & _
-                    "ãƒã‚¹ä»¥å†…ã®å‘³æ–¹ãƒ¦ãƒ‹ãƒƒãƒˆã«å¯¾ã™ã‚‹"
+                msg = "”¼Œa" & StrConv(LIndex(fdata, 2), vbWide) & _
+                    "ƒ}ƒXˆÈ“à‚Ì–¡•ûƒ†ƒjƒbƒg‚É‘Î‚·‚é"
                 i = CInt(LIndex(fdata, 2))
             Else
-                msg = "éš£æ¥ã™ã‚‹å‘³æ–¹ãƒ¦ãƒ‹ãƒƒãƒˆã«å¯¾ã™ã‚‹"
+                msg = "—×Ú‚·‚é–¡•ûƒ†ƒjƒbƒg‚É‘Î‚·‚é"
                 i = 1
             End If
-            If LIndex(fdata, 3) <> "" And LIndex(fdata, 3) <> "å…¨" Then
+            If LIndex(fdata, 3) <> "" And LIndex(fdata, 3) <> "‘S" Then
                 If Left$(LIndex(fdata, 3), 1) = "!" Then
                     msg = msg & _
-                        "ã€Œ" & Mid$(LIndex(fdata, 3), 2) & "ã€å±æ€§ã‚’æŒãŸãªã„"
+                        "u" & Mid$(LIndex(fdata, 3), 2) & "v‘®«‚ğ‚½‚È‚¢"
                 Else
                     msg = msg & _
-                        "ã€Œ" & LIndex(fdata, 3) & "ã€å±æ€§ã‚’æŒã¤"
+                        "u" & LIndex(fdata, 3) & "v‘®«‚ğ‚Â"
                 End If
             End If
             If flevel >= 0 Then
                 msg = msg & _
-                    "æ”»æ’ƒã®ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’" & Format$(CLng(500 * flevel)) & "æ¸›å°‘ã•ã›ã‚‹ã€‚"
+                    "UŒ‚‚Ìƒ_ƒ[ƒW‚ğ" & Format$(CLng(500 * flevel)) & "Œ¸­‚³‚¹‚éB"
             Else
                 msg = msg & _
-                    "æ”»æ’ƒã®ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’" & Format$(CLng(-500 * flevel)) & "å¢—åŠ ã•ã›ã‚‹ã€‚"
+                    "UŒ‚‚Ìƒ_ƒ[ƒW‚ğ" & Format$(CLng(-500 * flevel)) & "‘‰Á‚³‚¹‚éB"
             End If
             If IsNumeric(LIndex(fdata, 4)) Then
                 If StrToLng(LIndex(fdata, 4)) > 0 Then
                     msg = msg & _
-                        ";ç™ºå‹•æ™‚ã«" & LIndex(fdata, 4) & Term("ï¼¥ï¼®", u) & "æ¶ˆè²»ã€‚"
+                        ";”­“®‚É" & LIndex(fdata, 4) & Term("‚d‚m", u) & "Á”ïB"
                 ElseIf StrToLng(LIndex(fdata, 4)) < 0 Then
                     msg = msg & _
-                        ";ç™ºå‹•æ™‚ã«" & Mid$(LIndex(fdata, 4), 2) & Term("ï¼¥ï¼®", u) & "å¢—åŠ ã€‚"
+                        ";”­“®‚É" & Mid$(LIndex(fdata, 4), 2) & Term("‚d‚m", u) & "‘‰ÁB"
                 End If
             Else
                 msg = msg & _
-                    ";ç™ºå‹•æ™‚ã«" & Format$(20 * i) & Term("ï¼¥ï¼®", u) & "æ¶ˆè²»ã€‚"
+                    ";”­“®‚É" & Format$(20 * i) & Term("‚d‚m", u) & "Á”ïB"
             End If
             If StrToLng(LIndex(fdata, 5)) > 50 Then
                 msg = msg & _
-                    ";" & Term("æ°—åŠ›", u) & LIndex(fdata, 5) & "ä»¥ä¸Šã§ä½¿ç”¨å¯èƒ½ã€‚"
+                    ";" & Term("‹C—Í", u) & LIndex(fdata, 5) & "ˆÈã‚Åg—p‰Â”\B"
             End If
             msg = msg & _
-                ";ãŸã ã—æ”»æ’ƒå´ã‚‚æœ‰åŠ¹ç¯„å›²å†…ã«ã„ã‚‹å ´åˆã¯ç„¡åŠ¹åŒ–ã€‚"
+                ";‚½‚¾‚µUŒ‚‘¤‚à—LŒø”ÍˆÍ“à‚É‚¢‚éê‡‚Í–³Œø‰»B"
             
-        Case "ãƒ—ãƒ­ãƒ†ã‚¯ã‚·ãƒ§ãƒ³"
-            If LIndex(fdata, 2) <> "" And LIndex(fdata, 2) <> "å…¨" Then
+        Case "ƒvƒƒeƒNƒVƒ‡ƒ“"
+            If LIndex(fdata, 2) <> "" And LIndex(fdata, 2) <> "‘S" Then
                 If Left$(LIndex(fdata, 2), 1) = "!" Then
-                    msg = "ã€Œ" & Mid$(LIndex(fdata, 2), 2) & "ã€å±æ€§ã‚’æŒãŸãªã„"
+                    msg = "u" & Mid$(LIndex(fdata, 2), 2) & "v‘®«‚ğ‚½‚È‚¢"
                 Else
-                    msg = "ã€Œ" & LIndex(fdata, 2) & "ã€å±æ€§ã‚’æŒã¤"
+                    msg = "u" & LIndex(fdata, 2) & "v‘®«‚ğ‚Â"
                 End If
             End If
             If flevel > 10 Then
                 msg = msg & _
-                    "æ”»æ’ƒã®ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’" & Format$(CLng(10 * flevel - 100)) & "%å¸åã™ã‚‹ã€‚"
+                    "UŒ‚‚Ìƒ_ƒ[ƒW‚ğ" & Format$(CLng(10 * flevel - 100)) & "%‹zû‚·‚éB"
             ElseIf flevel >= 0 Then
                 msg = msg & _
-                    "æ”»æ’ƒã®ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’" & Format$(CLng(10 * flevel)) & "%æ¸›å°‘ã•ã›ã‚‹ã€‚"
+                    "UŒ‚‚Ìƒ_ƒ[ƒW‚ğ" & Format$(CLng(10 * flevel)) & "%Œ¸­‚³‚¹‚éB"
             Else
                 msg = msg & _
-                    "æ”»æ’ƒã®ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’" & Format$(CLng(-10 * flevel)) & "%å¢—åŠ ã•ã›ã‚‹ã€‚"
+                    "UŒ‚‚Ìƒ_ƒ[ƒW‚ğ" & Format$(CLng(-10 * flevel)) & "%‘‰Á‚³‚¹‚éB"
             End If
             If Not IsNumeric(LIndex(fdata, 3)) Then
                 msg = msg & _
-                    ";ç™ºå‹•æ™‚ã«10" & Term("ï¼¥ï¼®", u) & "å¢—åŠ ã€‚"
+                    ";”­“®‚É10" & Term("‚d‚m", u) & "‘‰ÁB"
             ElseIf StrToLng(LIndex(fdata, 3)) > 0 Then
                 msg = msg & _
-                    ";ç™ºå‹•æ™‚ã«" & LIndex(fdata, 3) & Term("ï¼¥ï¼®", u) & "æ¶ˆè²»ã€‚"
+                    ";”­“®‚É" & LIndex(fdata, 3) & Term("‚d‚m", u) & "Á”ïB"
             ElseIf StrToLng(LIndex(fdata, 3)) < 0 Then
                 msg = msg & _
-                    ";ç™ºå‹•æ™‚ã«" & Mid$(LIndex(fdata, 3), 2) & Term("ï¼¥ï¼®", u) & "å¢—åŠ ã€‚"
+                    ";”­“®‚É" & Mid$(LIndex(fdata, 3), 2) & Term("‚d‚m", u) & "‘‰ÁB"
             End If
             If StrToLng(LIndex(fdata, 4)) > 50 Then
                 msg = msg & _
-                    Term("æ°—åŠ›", u) & LIndex(fdata, 4) & "ä»¥ä¸Šã§ä½¿ç”¨å¯èƒ½ã€‚"
+                    Term("‹C—Í", u) & LIndex(fdata, 4) & "ˆÈã‚Åg—p‰Â”\B"
             End If
             For i = 5 To LLength(fdata)
                 opt = LIndex(fdata, i)
@@ -1485,109 +1485,109 @@ Dim uname As String
                     lv_mod = -1
                 End If
                 Select Case p.SkillType(opt)
-                    Case "ç›¸æ®º"
+                    Case "‘ŠE"
                         msg = msg & _
-                            ";" & fname0 & "ã‚’æŒã¤ãƒ¦ãƒ‹ãƒƒãƒˆåŒå£«ã®å ´åˆã€éš£æ¥æ™‚ã«åŠ¹æœã¯ç›¸æ®ºã€‚"
-                    Case "ä¸­å’Œ"
+                            ";" & fname0 & "‚ğ‚Âƒ†ƒjƒbƒg“¯m‚Ìê‡A—×Ú‚ÉŒø‰Ê‚Í‘ŠEB"
+                    Case "’†˜a"
                         msg = msg & _
-                            ";" & fname0 & "ã‚’æŒã¤ãƒ¦ãƒ‹ãƒƒãƒˆåŒå£«ã®å ´åˆã€" & _
-                            "éš£æ¥æ™‚ã«ãƒ¬ãƒ™ãƒ«åˆ†ã ã‘åŠ¹æœã‚’ä¸­å’Œã€‚"
-                    Case "è¿‘æ¥ç„¡åŠ¹"
+                            ";" & fname0 & "‚ğ‚Âƒ†ƒjƒbƒg“¯m‚Ìê‡A" & _
+                            "—×Ú‚ÉƒŒƒxƒ‹•ª‚¾‚¯Œø‰Ê‚ğ’†˜aB"
+                    Case "‹ßÚ–³Œø"
                         msg = msg & _
-                            ";ã€Œæ­¦ã€ã€Œçªã€ã€Œæ¥ã€ã«ã‚ˆã‚‹æ”»æ’ƒã«ã¯ç„¡åŠ¹ã€‚"
-                    Case "ãƒãƒªã‚¢ç„¡åŠ¹åŒ–ç„¡åŠ¹"
+                            ";u•vu“ËvuÚv‚É‚æ‚éUŒ‚‚É‚Í–³ŒøB"
+                    Case "ƒoƒŠƒA–³Œø‰»–³Œø"
                         msg = msg & _
-                            ";ãƒãƒªã‚¢ç„¡åŠ¹åŒ–ã«ã‚ˆã£ã¦ç„¡åŠ¹åŒ–ã•ã‚Œãªã„ã€‚"
-                    Case "æ‰‹å‹•"
+                            ";ƒoƒŠƒA–³Œø‰»‚É‚æ‚Á‚Ä–³Œø‰»‚³‚ê‚È‚¢B"
+                    Case "è“®"
                         msg = msg & _
-                            ";é˜²å¾¡é¸æŠæ™‚ã«ã®ã¿ç™ºå‹•ã€‚"
-                    Case "èƒ½åŠ›å¿…è¦"
-                        'ã‚¹ã‚­ãƒƒãƒ—
-                    Case "åŒèª¿ç‡"
+                            ";–hŒä‘I‘ğ‚É‚Ì‚İ”­“®B"
+                    Case "”\—Í•K—v"
+                        'ƒXƒLƒbƒv
+                    Case "“¯’²—¦"
                         sname = p.SkillName0(opt)
                         If lv_mod = -1 Then
                             lv_mod = 0.5
                         End If
                         If u.SyncLevel >= 30 Then
                             msg = msg & _
-                                ";ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¤‰åŒ–(+" & _
-                                Format$(lv_mod * (u.SyncLevel - 30)) & ")ã€‚"
+                                ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª•Ï‰»(+" & _
+                                Format$(lv_mod * (u.SyncLevel - 30)) & ")B"
                         ElseIf u.SyncLevel > 0 Then
                             msg = msg & _
-                                ";ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¤‰åŒ–(" & _
-                                Format$(lv_mod * (u.SyncLevel - 30)) & ")ã€‚"
+                                ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª•Ï‰»(" & _
+                                Format$(lv_mod * (u.SyncLevel - 30)) & ")B"
                         End If
-                    Case "éœŠåŠ›"
+                    Case "—ì—Í"
                         sname = p.SkillName0(opt)
                         If lv_mod = -1 Then
                             lv_mod = 0.2
                         End If
                         msg = msg & _
-                            ";ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & _
-                            Format$(lv_mod * u.PlanaLevel) & ")ã€‚"
-                    Case "ã‚ªãƒ¼ãƒ©"
+                            ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª‘‰Á(+" & _
+                            Format$(lv_mod * u.PlanaLevel) & ")B"
+                    Case "ƒI[ƒ‰"
                         sname = p.SkillName0(opt)
                         If lv_mod = -1 Then
                             lv_mod = 5
                         End If
                         msg = msg & _
-                            ";ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & _
-                            Format$(lv_mod * u.AuraLevel) & ")ã€‚"
-                    Case "è¶…èƒ½åŠ›"
+                            ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª‘‰Á(+" & _
+                            Format$(lv_mod * u.AuraLevel) & ")B"
+                    Case "’´”\—Í"
                         sname = p.SkillName0(opt)
                         If lv_mod = -1 Then
                             lv_mod = 5
                         End If
                         msg = msg & _
-                            ";ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & _
-                            Format$(lv_mod * u.PsychicLevel) & ")ã€‚"
+                            ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª‘‰Á(+" & _
+                            Format$(lv_mod * u.PsychicLevel) & ")B"
                     Case Else
                         sname = u.SkillName0(opt)
                         If lv_mod = -1 Then
                             lv_mod = 5
                         End If
                         msg = msg & _
-                            ";ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & sname & "ãƒ¬ãƒ™ãƒ«ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & _
-                            Format$(lv_mod * u.SkillLevel(opt)) & ")ã€‚"
+                            ";ƒpƒCƒƒbƒg‚Ì" & sname & "ƒŒƒxƒ‹‚É‚æ‚è‹­“x‚ª‘‰Á(+" & _
+                            Format$(lv_mod * u.SkillLevel(opt)) & ")B"
                 End Select
             Next
             
-        Case "ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ãƒ—ãƒ­ãƒ†ã‚¯ã‚·ãƒ§ãƒ³"
-            sname = p.SkillName0("ï¼³é˜²å¾¡")
-            prob = p.SkillLevel("ï¼³é˜²å¾¡") * 100 \ 16
-            msg = sname & "Lv/16ã®ç¢ºç‡(" & Format$(prob) & "%)ã§ç™ºå‹•ã—ã€"
-            If LIndex(fdata, 2) <> "" And LIndex(fdata, 2) <> "å…¨" Then
+        Case "ƒAƒNƒeƒBƒuƒvƒƒeƒNƒVƒ‡ƒ“"
+            sname = p.SkillName0("‚r–hŒä")
+            prob = p.SkillLevel("‚r–hŒä") * 100 \ 16
+            msg = sname & "Lv/16‚ÌŠm—¦(" & Format$(prob) & "%)‚Å”­“®‚µA"
+            If LIndex(fdata, 2) <> "" And LIndex(fdata, 2) <> "‘S" Then
                 If Left$(LIndex(fdata, 2), 1) = "!" Then
                     msg = msg & _
-                        "ã€Œ" & Mid$(LIndex(fdata, 2), 2) & "ã€å±æ€§ã‚’æŒãŸãªã„"
+                        "u" & Mid$(LIndex(fdata, 2), 2) & "v‘®«‚ğ‚½‚È‚¢"
                 Else
                     msg = msg & _
-                        "ã€Œ" & LIndex(fdata, 2) & "ã€å±æ€§ã‚’æŒã¤"
+                        "u" & LIndex(fdata, 2) & "v‘®«‚ğ‚Â"
                 End If
             End If
             If flevel > 10 Then
                 msg = msg & _
-                    "æ”»æ’ƒã®ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’" & Format$(CLng(10 * flevel - 100)) & "%å¸åã™ã‚‹ã€‚"
+                    "UŒ‚‚Ìƒ_ƒ[ƒW‚ğ" & Format$(CLng(10 * flevel - 100)) & "%‹zû‚·‚éB"
             ElseIf flevel >= 0 Then
                 msg = msg & _
-                    "æ”»æ’ƒã®ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’" & Format$(CLng(10 * flevel)) & "%æ¸›å°‘ã•ã›ã‚‹ã€‚"
+                    "UŒ‚‚Ìƒ_ƒ[ƒW‚ğ" & Format$(CLng(10 * flevel)) & "%Œ¸­‚³‚¹‚éB"
             Else
                 msg = msg & _
-                    "æ”»æ’ƒã®ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’" & Format$(CLng(-10 * flevel)) & "%å¢—åŠ ã•ã›ã‚‹ã€‚"
+                    "UŒ‚‚Ìƒ_ƒ[ƒW‚ğ" & Format$(CLng(-10 * flevel)) & "%‘‰Á‚³‚¹‚éB"
             End If
             If Not IsNumeric(LIndex(fdata, 3)) Then
                 msg = msg & _
-                    ";ç™ºå‹•æ™‚ã«10" & Term("ï¼¥ï¼®", u) & "å¢—åŠ ã€‚"
+                    ";”­“®‚É10" & Term("‚d‚m", u) & "‘‰ÁB"
             ElseIf StrToLng(LIndex(fdata, 3)) > 0 Then
                 msg = msg & _
-                    ";ç™ºå‹•æ™‚ã«" & LIndex(fdata, 3) & Term("ï¼¥ï¼®", u) & "æ¶ˆè²»ã€‚"
+                    ";”­“®‚É" & LIndex(fdata, 3) & Term("‚d‚m", u) & "Á”ïB"
             ElseIf StrToLng(LIndex(fdata, 3)) < 0 Then
                 msg = msg & _
-                    ";ç™ºå‹•æ™‚ã«" & Mid$(LIndex(fdata, 3), 2) & Term("ï¼¥ï¼®", u) & "å¢—åŠ ã€‚"
+                    ";”­“®‚É" & Mid$(LIndex(fdata, 3), 2) & Term("‚d‚m", u) & "‘‰ÁB"
             End If
             If StrToLng(LIndex(fdata, 4)) > 50 Then
                 msg = msg & _
-                    Term("æ°—åŠ›", u) & LIndex(fdata, 4) & "ä»¥ä¸Šã§ä½¿ç”¨å¯èƒ½ã€‚"
+                    Term("‹C—Í", u) & LIndex(fdata, 4) & "ˆÈã‚Åg—p‰Â”\B"
             End If
             For i = 5 To LLength(fdata)
                 opt = LIndex(fdata, i)
@@ -1599,138 +1599,138 @@ Dim uname As String
                     lv_mod = -1
                 End If
                 Select Case p.SkillType(opt)
-                    Case "ç›¸æ®º"
+                    Case "‘ŠE"
                         msg = msg & _
-                            ";" & fname0 & "ã‚’æŒã¤ãƒ¦ãƒ‹ãƒƒãƒˆåŒå£«ã®å ´åˆã€éš£æ¥æ™‚ã«åŠ¹æœã¯ç›¸æ®ºã€‚"
-                    Case "ä¸­å’Œ"
+                            ";" & fname0 & "‚ğ‚Âƒ†ƒjƒbƒg“¯m‚Ìê‡A—×Ú‚ÉŒø‰Ê‚Í‘ŠEB"
+                    Case "’†˜a"
                         msg = msg & _
-                            ";" & fname0 & "ã‚’æŒã¤ãƒ¦ãƒ‹ãƒƒãƒˆåŒå£«ã®å ´åˆã€" & _
-                            "éš£æ¥æ™‚ã«ãƒ¬ãƒ™ãƒ«åˆ†ã ã‘åŠ¹æœã‚’ä¸­å’Œã€‚"
-                    Case "è¿‘æ¥ç„¡åŠ¹"
+                            ";" & fname0 & "‚ğ‚Âƒ†ƒjƒbƒg“¯m‚Ìê‡A" & _
+                            "—×Ú‚ÉƒŒƒxƒ‹•ª‚¾‚¯Œø‰Ê‚ğ’†˜aB"
+                    Case "‹ßÚ–³Œø"
                         msg = msg & _
-                            ";ã€Œæ­¦ã€ã€Œçªã€ã€Œæ¥ã€ã«ã‚ˆã‚‹æ”»æ’ƒã«ã¯ç„¡åŠ¹ã€‚"
-                    Case "ãƒãƒªã‚¢ç„¡åŠ¹åŒ–ç„¡åŠ¹"
+                            ";u•vu“ËvuÚv‚É‚æ‚éUŒ‚‚É‚Í–³ŒøB"
+                    Case "ƒoƒŠƒA–³Œø‰»–³Œø"
                         msg = msg & _
-                            ";ãƒãƒªã‚¢ç„¡åŠ¹åŒ–ã«ã‚ˆã£ã¦ç„¡åŠ¹åŒ–ã•ã‚Œãªã„ã€‚"
-                    Case "æ‰‹å‹•"
+                            ";ƒoƒŠƒA–³Œø‰»‚É‚æ‚Á‚Ä–³Œø‰»‚³‚ê‚È‚¢B"
+                    Case "è“®"
                         msg = msg & _
-                            ";é˜²å¾¡é¸æŠæ™‚ã«ã®ã¿ç™ºå‹•ã€‚"
-                    Case "èƒ½åŠ›å¿…è¦"
-                        'ã‚¹ã‚­ãƒƒãƒ—
-                    Case "åŒèª¿ç‡"
+                            ";–hŒä‘I‘ğ‚É‚Ì‚İ”­“®B"
+                    Case "”\—Í•K—v"
+                        'ƒXƒLƒbƒv
+                    Case "“¯’²—¦"
                         sname = p.SkillName0(opt)
                         If lv_mod = -1 Then
                             lv_mod = 0.5
                         End If
                         If u.SyncLevel >= 30 Then
                             msg = msg & _
-                                ";ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¤‰åŒ–(+" & _
-                                Format$(lv_mod * (u.SyncLevel - 30)) & "%)ã€‚"
+                                ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª•Ï‰»(+" & _
+                                Format$(lv_mod * (u.SyncLevel - 30)) & "%)B"
                         ElseIf u.SyncLevel > 0 Then
                             msg = msg & _
-                                ";ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¤‰åŒ–(" & _
-                                Format$(lv_mod * (u.SyncLevel - 30)) & "%)ã€‚"
+                                ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª•Ï‰»(" & _
+                                Format$(lv_mod * (u.SyncLevel - 30)) & "%)B"
                         End If
-                    Case "éœŠåŠ›"
+                    Case "—ì—Í"
                         sname = p.SkillName0(opt)
                         If lv_mod = -1 Then
                             lv_mod = 0.2
                         End If
                         msg = msg & _
-                            ";ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & _
-                            Format$(lv_mod * u.PlanaLevel) & "%)ã€‚"
-                    Case "ã‚ªãƒ¼ãƒ©"
+                            ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª‘‰Á(+" & _
+                            Format$(lv_mod * u.PlanaLevel) & "%)B"
+                    Case "ƒI[ƒ‰"
                         sname = p.SkillName0(opt)
                         If lv_mod = -1 Then
                             lv_mod = 5
                         End If
                         msg = msg & _
-                            ";ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & _
-                            Format$(lv_mod * u.AuraLevel) & "%)ã€‚"
-                    Case "è¶…èƒ½åŠ›"
+                            ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª‘‰Á(+" & _
+                            Format$(lv_mod * u.AuraLevel) & "%)B"
+                    Case "’´”\—Í"
                         sname = p.SkillName0(opt)
                         If lv_mod = -1 Then
                             lv_mod = 5
                         End If
                         msg = msg & _
-                            ";ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & _
-                            Format$(lv_mod * u.PsychicLevel) & "%)ã€‚"
+                            ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª‘‰Á(+" & _
+                            Format$(lv_mod * u.PsychicLevel) & "%)B"
                     Case Else
                         sname = u.SkillName0(opt)
                         If lv_mod = -1 Then
                             lv_mod = 5
                         End If
                         msg = msg & _
-                            ";ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & sname & "ãƒ¬ãƒ™ãƒ«ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & _
-                            Format$(lv_mod * u.SkillLevel(opt)) & "%)ã€‚"
+                            ";ƒpƒCƒƒbƒg‚Ì" & sname & "ƒŒƒxƒ‹‚É‚æ‚è‹­“x‚ª‘‰Á(+" & _
+                            Format$(lv_mod * u.SkillLevel(opt)) & "%)B"
                 End Select
             Next
             
-        Case "åºƒåŸŸãƒ—ãƒ­ãƒ†ã‚¯ã‚·ãƒ§ãƒ³"
+        Case "LˆæƒvƒƒeƒNƒVƒ‡ƒ“"
             If IsNumeric(LIndex(fdata, 2)) And LIndex(fdata, 2) <> "1" Then
-                msg = "åŠå¾„" & StrConv(LIndex(fdata, 2), vbWide) & _
-                    "ãƒã‚¹ä»¥å†…ã®å‘³æ–¹ãƒ¦ãƒ‹ãƒƒãƒˆã«å¯¾ã™ã‚‹"
+                msg = "”¼Œa" & StrConv(LIndex(fdata, 2), vbWide) & _
+                    "ƒ}ƒXˆÈ“à‚Ì–¡•ûƒ†ƒjƒbƒg‚É‘Î‚·‚é"
                 i = CInt(LIndex(fdata, 2))
             Else
-                msg = "éš£æ¥ã™ã‚‹å‘³æ–¹ãƒ¦ãƒ‹ãƒƒãƒˆã«å¯¾ã™ã‚‹"
+                msg = "—×Ú‚·‚é–¡•ûƒ†ƒjƒbƒg‚É‘Î‚·‚é"
                 i = 1
             End If
-            If LIndex(fdata, 3) <> "" And LIndex(fdata, 3) <> "å…¨" Then
+            If LIndex(fdata, 3) <> "" And LIndex(fdata, 3) <> "‘S" Then
                 If Left$(LIndex(fdata, 3), 1) = "!" Then
                     msg = msg & _
-                        "ã€Œ" & Mid$(LIndex(fdata, 3), 2) & "ã€å±æ€§ã‚’æŒãŸãªã„"
+                        "u" & Mid$(LIndex(fdata, 3), 2) & "v‘®«‚ğ‚½‚È‚¢"
                 Else
                     msg = msg & _
-                        "ã€Œ" & LIndex(fdata, 3) & "ã€å±æ€§ã‚’æŒã¤"
+                        "u" & LIndex(fdata, 3) & "v‘®«‚ğ‚Â"
                 End If
             End If
             If flevel > 10 Then
                 msg = msg & _
-                    "æ”»æ’ƒã®ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’" & Format$(CLng(10 * flevel - 100)) & "%å¸åã™ã‚‹ã€‚"
+                    "UŒ‚‚Ìƒ_ƒ[ƒW‚ğ" & Format$(CLng(10 * flevel - 100)) & "%‹zû‚·‚éB"
             ElseIf flevel >= 0 Then
                 msg = msg & _
-                    "æ”»æ’ƒã®ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’" & Format$(CLng(10 * flevel)) & "%æ¸›å°‘ã•ã›ã‚‹ã€‚"
+                    "UŒ‚‚Ìƒ_ƒ[ƒW‚ğ" & Format$(CLng(10 * flevel)) & "%Œ¸­‚³‚¹‚éB"
             Else
                 msg = msg & _
-                    "æ”»æ’ƒã®ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’" & Format$(CLng(-10 * flevel)) & "%å¢—åŠ ã•ã›ã‚‹ã€‚"
+                    "UŒ‚‚Ìƒ_ƒ[ƒW‚ğ" & Format$(CLng(-10 * flevel)) & "%‘‰Á‚³‚¹‚éB"
             End If
             If IsNumeric(LIndex(fdata, 4)) Then
                 If StrToLng(LIndex(fdata, 4)) > 0 Then
                     msg = msg & _
-                        ";ç™ºå‹•æ™‚ã«" & LIndex(fdata, 4) & Term("ï¼¥ï¼®", u) & "æ¶ˆè²»ã€‚"
+                        ";”­“®‚É" & LIndex(fdata, 4) & Term("‚d‚m", u) & "Á”ïB"
                 ElseIf StrToLng(LIndex(fdata, 4)) < 0 Then
                     msg = msg & _
-                        ";ç™ºå‹•æ™‚ã«" & Mid$(LIndex(fdata, 4), 2) & Term("ï¼¥ï¼®", u) & "å¢—åŠ ã€‚"
+                        ";”­“®‚É" & Mid$(LIndex(fdata, 4), 2) & Term("‚d‚m", u) & "‘‰ÁB"
                 End If
             Else
                 msg = msg & _
-                    ";ç™ºå‹•æ™‚ã«" & Format$(20 * i) & Term("ï¼¥ï¼®", u) & "æ¶ˆè²»ã€‚"
+                    ";”­“®‚É" & Format$(20 * i) & Term("‚d‚m", u) & "Á”ïB"
             End If
             If StrToLng(LIndex(fdata, 5)) > 50 Then
                 msg = msg & _
-                    ";" & Term("æ°—åŠ›", u) & LIndex(fdata, 5) & "ä»¥ä¸Šã§ä½¿ç”¨å¯èƒ½ã€‚"
+                    ";" & Term("‹C—Í", u) & LIndex(fdata, 5) & "ˆÈã‚Åg—p‰Â”\B"
             End If
             msg = msg & _
-                ";ãŸã ã—æ”»æ’ƒå´ã‚‚æœ‰åŠ¹ç¯„å›²å†…ã«ã„ã‚‹å ´åˆã¯ç„¡åŠ¹åŒ–ã€‚"
+                ";‚½‚¾‚µUŒ‚‘¤‚à—LŒø”ÍˆÍ“à‚É‚¢‚éê‡‚Í–³Œø‰»B"
             
-        Case "ã‚¢ãƒ¼ãƒãƒ¼"
-            If LIndex(fdata, 2) <> "" And LIndex(fdata, 2) <> "å…¨" Then
+        Case "ƒA[ƒ}["
+            If LIndex(fdata, 2) <> "" And LIndex(fdata, 2) <> "‘S" Then
                 If Left$(LIndex(fdata, 2), 1) = "!" Then
-                    msg = "ã€Œ" & Mid$(LIndex(fdata, 2), 2) & "ã€å±æ€§ã‚’æŒãŸãªã„"
+                    msg = "u" & Mid$(LIndex(fdata, 2), 2) & "v‘®«‚ğ‚½‚È‚¢"
                 Else
-                    msg = "ã€Œ" & LIndex(fdata, 2) & "ã€å±æ€§ã‚’æŒã¤"
+                    msg = "u" & LIndex(fdata, 2) & "v‘®«‚ğ‚Â"
                 End If
             End If
             If flevel >= 0 Then
                 msg = msg & _
-                    "æ”»æ’ƒã«å¯¾ã—ã¦è£…ç”²ã‚’" & Format$(CLng(100 * flevel)) & "å¢—åŠ ã•ã›ã‚‹ã€‚"
+                    "UŒ‚‚É‘Î‚µ‚Ä‘•b‚ğ" & Format$(CLng(100 * flevel)) & "‘‰Á‚³‚¹‚éB"
             Else
                 msg = msg & _
-                    "æ”»æ’ƒã«å¯¾ã—ã¦è£…ç”²ã‚’" & Format$(CLng(-100 * flevel)) & "æ¸›å°‘ã•ã›ã‚‹ã€‚"
+                    "UŒ‚‚É‘Î‚µ‚Ä‘•b‚ğ" & Format$(CLng(-100 * flevel)) & "Œ¸­‚³‚¹‚éB"
             End If
             If StrToLng(LIndex(fdata, 3)) > 50 Then
                 msg = msg & _
-                    Term("æ°—åŠ›", u) & LIndex(fdata, 3) & "ä»¥ä¸Šã§ä½¿ç”¨å¯èƒ½ã€‚"
+                    Term("‹C—Í", u) & LIndex(fdata, 3) & "ˆÈã‚Åg—p‰Â”\B"
             End If
             For i = 4 To LLength(fdata)
                 opt = LIndex(fdata, i)
@@ -1742,78 +1742,78 @@ Dim uname As String
                     lv_mod = -1
                 End If
                 Select Case p.SkillType(opt)
-                    Case "èƒ½åŠ›å¿…è¦"
-                        'ã‚¹ã‚­ãƒƒãƒ—
-                    Case "åŒèª¿ç‡"
+                    Case "”\—Í•K—v"
+                        'ƒXƒLƒbƒv
+                    Case "“¯’²—¦"
                         sname = p.SkillName0(opt)
                         If lv_mod = -1 Then
                             lv_mod = 5
                         End If
                         If u.SyncLevel >= 30 Then
                             msg = msg & _
-                                ";ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¤‰åŒ–(+" & _
-                                Format$(lv_mod * (u.SyncLevel - 30)) & ")ã€‚"
+                                ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª•Ï‰»(+" & _
+                                Format$(lv_mod * (u.SyncLevel - 30)) & ")B"
                         ElseIf u.SyncLevel > 0 Then
                             msg = msg & _
-                                ";ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¤‰åŒ–(" & _
-                                Format$(lv_mod * (u.SyncLevel - 30)) & ")ã€‚"
+                                ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª•Ï‰»(" & _
+                                Format$(lv_mod * (u.SyncLevel - 30)) & ")B"
                         End If
-                    Case "éœŠåŠ›"
+                    Case "—ì—Í"
                         sname = p.SkillName0(opt)
                         If lv_mod = -1 Then
                             lv_mod = 2
                         End If
                         msg = msg & _
-                            ";ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & _
-                            Format$(lv_mod * u.PlanaLevel) & ")ã€‚"
-                    Case "ã‚ªãƒ¼ãƒ©"
+                            ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª‘‰Á(+" & _
+                            Format$(lv_mod * u.PlanaLevel) & ")B"
+                    Case "ƒI[ƒ‰"
                         sname = p.SkillName0(opt)
                         If lv_mod = -1 Then
                             lv_mod = 50
                         End If
                         msg = msg & _
-                            ";ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & _
-                            Format$(lv_mod * u.AuraLevel) & ")ã€‚"
-                    Case "è¶…èƒ½åŠ›"
+                            ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª‘‰Á(+" & _
+                            Format$(lv_mod * u.AuraLevel) & ")B"
+                    Case "’´”\—Í"
                         sname = p.SkillName0(opt)
                         If lv_mod = -1 Then
                             lv_mod = 50
                         End If
                         msg = msg & _
-                            ";ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & _
-                            Format$(lv_mod * u.PsychicLevel) & ")ã€‚"
+                            ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª‘‰Á(+" & _
+                            Format$(lv_mod * u.PsychicLevel) & ")B"
                     Case Else
                         sname = u.SkillName0(opt)
                         If lv_mod = -1 Then
                             lv_mod = 50
                         End If
                         msg = msg & _
-                            ";ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & sname & "ãƒ¬ãƒ™ãƒ«ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & _
-                            Format$(lv_mod * u.SkillLevel(opt)) & ")ã€‚"
+                            ";ƒpƒCƒƒbƒg‚Ì" & sname & "ƒŒƒxƒ‹‚É‚æ‚è‹­“x‚ª‘‰Á(+" & _
+                            Format$(lv_mod * u.SkillLevel(opt)) & ")B"
                 End Select
             Next
             
-        Case "ãƒ¬ã‚¸ã‚¹ãƒˆ"
-            If LIndex(fdata, 2) <> "" And LIndex(fdata, 2) <> "å…¨" Then
+        Case "ƒŒƒWƒXƒg"
+            If LIndex(fdata, 2) <> "" And LIndex(fdata, 2) <> "‘S" Then
                 If Left$(LIndex(fdata, 2), 1) = "!" Then
-                    msg = "ã€Œ" & Mid$(LIndex(fdata, 2), 2) & "ã€å±æ€§ã‚’æŒãŸãªã„"
+                    msg = "u" & Mid$(LIndex(fdata, 2), 2) & "v‘®«‚ğ‚½‚È‚¢"
                 Else
-                    msg = "ã€Œ" & LIndex(fdata, 2) & "ã€å±æ€§ã‚’æŒã¤"
+                    msg = "u" & LIndex(fdata, 2) & "v‘®«‚ğ‚Â"
                 End If
             End If
             If flevel > 10 Then
                 msg = msg & _
-                    "æ”»æ’ƒã«å¯¾ã—ã¦ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’" & Format$(100 - CLng(10 * flevel)) & "%å¸åã™ã‚‹ã€‚"
+                    "UŒ‚‚É‘Î‚µ‚Äƒ_ƒ[ƒW‚ğ" & Format$(100 - CLng(10 * flevel)) & "%‹zû‚·‚éB"
             ElseIf flevel >= 0 Then
                 msg = msg & _
-                    "æ”»æ’ƒã«å¯¾ã—ã¦ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’" & Format$(CLng(10 * flevel)) & "%è»½æ¸›ã•ã›ã‚‹ã€‚"
+                    "UŒ‚‚É‘Î‚µ‚Äƒ_ƒ[ƒW‚ğ" & Format$(CLng(10 * flevel)) & "%ŒyŒ¸‚³‚¹‚éB"
             Else
                 msg = msg & _
-                    "æ”»æ’ƒã«å¯¾ã—ã¦ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’" & Format$(CLng(-10 * flevel)) & "%å¢—åŠ ã•ã›ã‚‹ã€‚"
+                    "UŒ‚‚É‘Î‚µ‚Äƒ_ƒ[ƒW‚ğ" & Format$(CLng(-10 * flevel)) & "%‘‰Á‚³‚¹‚éB"
             End If
             If StrToLng(LIndex(fdata, 3)) > 50 Then
                 msg = msg & _
-                    Term("æ°—åŠ›", u) & LIndex(fdata, 3) & "ä»¥ä¸Šã§ä½¿ç”¨å¯èƒ½ã€‚"
+                    Term("‹C—Í", u) & LIndex(fdata, 3) & "ˆÈã‚Åg—p‰Â”\B"
             End If
             For i = 4 To LLength(fdata)
                 opt = LIndex(fdata, i)
@@ -1825,110 +1825,110 @@ Dim uname As String
                     lv_mod = -1
                 End If
                 Select Case p.SkillType(opt)
-                    Case "èƒ½åŠ›å¿…è¦"
-                        'ã‚¹ã‚­ãƒƒãƒ—
-                    Case "åŒèª¿ç‡"
+                    Case "”\—Í•K—v"
+                        'ƒXƒLƒbƒv
+                    Case "“¯’²—¦"
                         sname = p.SkillName0(opt)
                         If lv_mod = -1 Then
                             lv_mod = 5
                         End If
                         If u.SyncLevel >= 30 Then
                             msg = msg & _
-                                ";ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¤‰åŒ–(+" & _
-                                Format$(lv_mod * (u.SyncLevel - 30)) & "%)ã€‚"
+                                ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª•Ï‰»(+" & _
+                                Format$(lv_mod * (u.SyncLevel - 30)) & "%)B"
                         ElseIf u.SyncLevel > 0 Then
                             msg = msg & _
-                                ";ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¤‰åŒ–(" & _
-                                Format$(lv_mod * (u.SyncLevel - 30)) & "%)ã€‚"
+                                ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª•Ï‰»(" & _
+                                Format$(lv_mod * (u.SyncLevel - 30)) & "%)B"
                         End If
-                    Case "éœŠåŠ›"
+                    Case "—ì—Í"
                         sname = p.SkillName0(opt)
                         If lv_mod = -1 Then
                             lv_mod = 2
                         End If
                         msg = msg & _
-                            ";ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & _
-                            Format$(lv_mod * u.PlanaLevel) & "%)ã€‚"
-                    Case "ã‚ªãƒ¼ãƒ©"
+                            ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª‘‰Á(+" & _
+                            Format$(lv_mod * u.PlanaLevel) & "%)B"
+                    Case "ƒI[ƒ‰"
                         sname = p.SkillName0(opt)
                         If lv_mod = -1 Then
                             lv_mod = 50
                         End If
                         msg = msg & _
-                            ";ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & _
-                            Format$(lv_mod * u.AuraLevel) & "%)ã€‚"
-                    Case "è¶…èƒ½åŠ›"
+                            ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª‘‰Á(+" & _
+                            Format$(lv_mod * u.AuraLevel) & "%)B"
+                    Case "’´”\—Í"
                         sname = p.SkillName0(opt)
                         If lv_mod = -1 Then
                             lv_mod = 50
                         End If
                         msg = msg & _
-                            ";ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & _
-                            Format$(lv_mod * u.PsychicLevel) & "%)ã€‚"
+                            ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª‘‰Á(+" & _
+                            Format$(lv_mod * u.PsychicLevel) & "%)B"
                     Case Else
                         sname = u.SkillName0(opt)
                         If lv_mod = -1 Then
                             lv_mod = 50
                         End If
                         msg = msg & _
-                            ";ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & sname & "ãƒ¬ãƒ™ãƒ«ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & _
-                            Format$(lv_mod * u.SkillLevel(opt)) & "%)ã€‚"
+                            ";ƒpƒCƒƒbƒg‚Ì" & sname & "ƒŒƒxƒ‹‚É‚æ‚è‹­“x‚ª‘‰Á(+" & _
+                            Format$(lv_mod * u.SkillLevel(opt)) & "%)B"
                 End Select
             Next
             
-        Case "å½“ã¦èº«æŠ€"
-            If LIndex(fdata, 3) <> "" And LIndex(fdata, 3) <> "å…¨" Then
+        Case "“–‚Äg‹Z"
+            If LIndex(fdata, 3) <> "" And LIndex(fdata, 3) <> "‘S" Then
                 If Left$(LIndex(fdata, 3), 1) = "!" Then
-                    msg = "ã€Œ" & Mid$(LIndex(fdata, 3), 2) & "ã€å±æ€§ã‚’æŒãŸãªã„"
+                    msg = "u" & Mid$(LIndex(fdata, 3), 2) & "v‘®«‚ğ‚½‚È‚¢"
                 Else
-                    msg = "ã€Œ" & LIndex(fdata, 3) & "ã€å±æ€§ã‚’æŒã¤"
+                    msg = "u" & LIndex(fdata, 3) & "v‘®«‚ğ‚Â"
                 End If
             End If
             
             If flevel <> 1 Then
                 msg = msg & _
-                    "ãƒ€ãƒ¡ãƒ¼ã‚¸" & Format$(CLng(500 * flevel)) & "ã¾ã§ã®"
+                    "ƒ_ƒ[ƒW" & Format$(CLng(500 * flevel)) & "‚Ü‚Å‚Ì"
             End If
             
-            msg = msg & "æ”»æ’ƒã‚’"
+            msg = msg & "UŒ‚‚ğ"
             
             buf = LIndex(fdata, 4)
             If IsNumeric(buf) Then
                 If buf <> "100" Then
-                    msg = msg & buf & "%ã®ç¢ºç‡ã§å—ã‘æ­¢ã‚ã€"
+                    msg = msg & buf & "%‚ÌŠm—¦‚Åó‚¯~‚ßA"
                 Else
-                    msg = msg & "å—ã‘æ­¢ã‚ã€"
+                    msg = msg & "ó‚¯~‚ßA"
                 End If
             ElseIf InStr(buf, "+") > 0 Or InStr(buf, "-") > 0 Then
                 i = MaxLng(InStr(buf, "+"), InStr(buf, "-"))
                 sname = u.SkillName0(Left$(buf, i - 1))
                 prob = (u.SkillLevel(Left$(buf, i - 1)) + CInt(Mid$(buf, i))) * 100 \ 16
                 msg = msg & _
-                    "(" & sname & "Lv" & Mid$(buf, i) & ")/16ã®ç¢ºç‡(" & _
-                    Format$(prob) & "%)ã§å—ã‘æ­¢ã‚ã€"
+                    "(" & sname & "Lv" & Mid$(buf, i) & ")/16‚ÌŠm—¦(" & _
+                    Format$(prob) & "%)‚Åó‚¯~‚ßA"
             Else
                 sname = u.SkillName0(buf)
                 prob = u.SkillLevel(buf) * 100 \ 16
                 msg = msg & _
-                    sname & "Lv/16ã®ç¢ºç‡(" & Format$(prob) & "%)ã§å—ã‘æ­¢ã‚ã€"
+                    sname & "Lv/16‚ÌŠm—¦(" & Format$(prob) & "%)‚Åó‚¯~‚ßA"
             End If
             
             buf = LIndex(fdata, 2)
             If InStr(buf, "(") > 0 Then
                 buf = Left$(buf, InStr(buf, "(") - 1)
             End If
-            msg = msg & buf & "ã§åæ’ƒã€‚"
+            msg = msg & buf & "‚Å”½Œ‚B"
             
             If StrToLng(LIndex(fdata, 5)) > 0 Then
                 msg = msg & _
-                    ";ç™ºå‹•æ™‚ã«" & LIndex(fdata, 5) & Term("ï¼¥ï¼®", u) & "æ¶ˆè²»ã€‚"
+                    ";”­“®‚É" & LIndex(fdata, 5) & Term("‚d‚m", u) & "Á”ïB"
             ElseIf StrToLng(LIndex(fdata, 5)) < 0 Then
                 msg = msg & _
-                    ";ç™ºå‹•æ™‚ã«" & Mid$(LIndex(fdata, 5), 2) & Term("ï¼¥ï¼®", u) & "å¢—åŠ ã€‚"
+                    ";”­“®‚É" & Mid$(LIndex(fdata, 5), 2) & Term("‚d‚m", u) & "‘‰ÁB"
             End If
             If StrToLng(LIndex(fdata, 6)) > 50 Then
                 msg = msg & _
-                    ";" & Term("æ°—åŠ›", u) & LIndex(fdata, 6) & "ä»¥ä¸Šã§ä½¿ç”¨å¯èƒ½ã€‚"
+                    ";" & Term("‹C—Í", u) & LIndex(fdata, 6) & "ˆÈã‚Åg—p‰Â”\B"
             End If
             For i = 7 To LLength(fdata)
                 opt = LIndex(fdata, i)
@@ -1940,117 +1940,117 @@ Dim uname As String
                     lv_mod = -1
                 End If
                 Select Case p.SkillType(opt)
-                    Case "ç›¸æ®º"
+                    Case "‘ŠE"
                         msg = msg & _
-                            ";" & fname0 & "ã‚’æŒã¤ãƒ¦ãƒ‹ãƒƒãƒˆåŒå£«ã®å ´åˆã€éš£æ¥æ™‚ã«åŠ¹æœã¯ç›¸æ®ºã€‚"
-                    Case "ä¸­å’Œ"
+                            ";" & fname0 & "‚ğ‚Âƒ†ƒjƒbƒg“¯m‚Ìê‡A—×Ú‚ÉŒø‰Ê‚Í‘ŠEB"
+                    Case "’†˜a"
                         msg = msg & _
-                            ";" & fname0 & "ã‚’æŒã¤ãƒ¦ãƒ‹ãƒƒãƒˆåŒå£«ã®å ´åˆã€" & _
-                            "éš£æ¥æ™‚ã«ãƒ¬ãƒ™ãƒ«åˆ†ã ã‘åŠ¹æœã‚’ç›¸æ®ºã€‚"
-                    Case "è¿‘æ¥ç„¡åŠ¹"
+                            ";" & fname0 & "‚ğ‚Âƒ†ƒjƒbƒg“¯m‚Ìê‡A" & _
+                            "—×Ú‚ÉƒŒƒxƒ‹•ª‚¾‚¯Œø‰Ê‚ğ‘ŠEB"
+                    Case "‹ßÚ–³Œø"
                         msg = msg & _
-                            ";ã€Œæ­¦ã€ã€Œçªã€ã€Œæ¥ã€ã«ã‚ˆã‚‹æ”»æ’ƒã«ã¯ç„¡åŠ¹ã€‚"
-                    Case "æ‰‹å‹•"
+                            ";u•vu“ËvuÚv‚É‚æ‚éUŒ‚‚É‚Í–³ŒøB"
+                    Case "è“®"
                         msg = msg & _
-                            ";é˜²å¾¡é¸æŠæ™‚ã«ã®ã¿ç™ºå‹•ã€‚"
-                    Case "èƒ½åŠ›å¿…è¦"
-                        'ã‚¹ã‚­ãƒƒãƒ—
-                    Case "åŒèª¿ç‡"
+                            ";–hŒä‘I‘ğ‚É‚Ì‚İ”­“®B"
+                    Case "”\—Í•K—v"
+                        'ƒXƒLƒbƒv
+                    Case "“¯’²—¦"
                         sname = p.SkillName0(opt)
                         If lv_mod = -1 Then
                             lv_mod = 20
                         End If
                         If u.SyncLevel >= 30 Then
                             msg = msg & _
-                                ";ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¤‰åŒ–(+" & _
-                                Format$(lv_mod * (u.SyncLevel - 30)) & ")ã€‚"
+                                ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª•Ï‰»(+" & _
+                                Format$(lv_mod * (u.SyncLevel - 30)) & ")B"
                         ElseIf u.SyncLevel > 0 Then
                             msg = msg & _
-                                ";ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¤‰åŒ–(" & _
-                                Format$(lv_mod * (u.SyncLevel - 30)) & ")ã€‚"
+                                ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª•Ï‰»(" & _
+                                Format$(lv_mod * (u.SyncLevel - 30)) & ")B"
                         End If
-                    Case "éœŠåŠ›"
+                    Case "—ì—Í"
                         sname = p.SkillName0(opt)
                         If lv_mod = -1 Then
                             lv_mod = 10
                         End If
                         msg = msg & _
-                            ";ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & _
-                            Format$(lv_mod * u.PlanaLevel) & ")ã€‚"
-                    Case "ã‚ªãƒ¼ãƒ©"
+                            ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª‘‰Á(+" & _
+                            Format$(lv_mod * u.PlanaLevel) & ")B"
+                    Case "ƒI[ƒ‰"
                         sname = p.SkillName0(opt)
                         If lv_mod = -1 Then
                             lv_mod = 200
                         End If
                         msg = msg & _
-                            ";ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & _
-                            Format$(lv_mod * u.AuraLevel) & ")ã€‚"
-                    Case "è¶…èƒ½åŠ›"
+                            ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª‘‰Á(+" & _
+                            Format$(lv_mod * u.AuraLevel) & ")B"
+                    Case "’´”\—Í"
                         sname = p.SkillName0(opt)
                         If lv_mod = -1 Then
                             lv_mod = 200
                         End If
                         msg = msg & _
-                            ";ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & _
-                            Format$(lv_mod * u.PsychicLevel) & ")ã€‚"
+                            ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª‘‰Á(+" & _
+                            Format$(lv_mod * u.PsychicLevel) & ")B"
                     Case Else
                         sname = u.SkillName0(opt)
                         If lv_mod = -1 Then
                             lv_mod = 200
                         End If
                         msg = msg & _
-                            ";ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & sname & "ãƒ¬ãƒ™ãƒ«ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & _
-                            Format$(lv_mod * u.SkillLevel(opt)) & ")ã€‚"
+                            ";ƒpƒCƒƒbƒg‚Ì" & sname & "ƒŒƒxƒ‹‚É‚æ‚è‹­“x‚ª‘‰Á(+" & _
+                            Format$(lv_mod * u.SkillLevel(opt)) & ")B"
                 End Select
             Next
             
-        Case "åå°„"
-            If LIndex(fdata, 2) <> "" And LIndex(fdata, 2) <> "å…¨" Then
+        Case "”½Ë"
+            If LIndex(fdata, 2) <> "" And LIndex(fdata, 2) <> "‘S" Then
                 If Left$(LIndex(fdata, 2), 1) = "!" Then
-                    msg = "ã€Œ" & Mid$(LIndex(fdata, 2), 2) & "ã€å±æ€§ã‚’æŒãŸãªã„"
+                    msg = "u" & Mid$(LIndex(fdata, 2), 2) & "v‘®«‚ğ‚½‚È‚¢"
                 Else
-                    msg = "ã€Œ" & LIndex(fdata, 2) & "ã€å±æ€§ã‚’æŒã¤"
+                    msg = "u" & LIndex(fdata, 2) & "v‘®«‚ğ‚Â"
                 End If
             End If
             
             If flevel <> 1 Then
                 msg = msg & _
-                    "ãƒ€ãƒ¡ãƒ¼ã‚¸" & Format$(CLng(500 * flevel)) & "ã¾ã§ã®"
+                    "ƒ_ƒ[ƒW" & Format$(CLng(500 * flevel)) & "‚Ü‚Å‚Ì"
             End If
             
-            msg = msg & "æ”»æ’ƒã‚’"
+            msg = msg & "UŒ‚‚ğ"
             
             buf = LIndex(fdata, 3)
             If IsNumeric(buf) Then
                 If buf <> "100" Then
-                    msg = msg & buf & "%ã®ç¢ºç‡ã§åå°„ã€‚"
+                    msg = msg & buf & "%‚ÌŠm—¦‚Å”½ËB"
                 Else
-                    msg = msg & "åå°„ã€‚"
+                    msg = msg & "”½ËB"
                 End If
             ElseIf InStr(buf, "+") > 0 Or InStr(buf, "-") > 0 Then
                 i = MaxLng(InStr(buf, "+"), InStr(buf, "-"))
                 sname = u.SkillName0(Left$(buf, i - 1))
                 prob = (u.SkillLevel(Left$(buf, i - 1)) + CInt(Mid$(buf, i))) * 100 \ 16
                 msg = msg & _
-                    "(" & sname & "Lv" & Mid$(buf, i) & ")/16ã®ç¢ºç‡(" & _
-                    Format$(prob) & "%)ã§åå°„ã€‚"
+                    "(" & sname & "Lv" & Mid$(buf, i) & ")/16‚ÌŠm—¦(" & _
+                    Format$(prob) & "%)‚Å”½ËB"
             Else
                 sname = u.SkillName0(buf)
                 prob = u.SkillLevel(buf) * 100 \ 16
                 msg = msg & _
-                    sname & "Lv/16ã®ç¢ºç‡(" & Format$(prob) & "%)ã§åå°„ã€‚"
+                    sname & "Lv/16‚ÌŠm—¦(" & Format$(prob) & "%)‚Å”½ËB"
             End If
             
             If StrToLng(LIndex(fdata, 4)) > 0 Then
                 msg = msg & _
-                    ";ç™ºå‹•æ™‚ã«" & LIndex(fdata, 4) & Term("ï¼¥ï¼®", u) & "æ¶ˆè²»ã€‚"
+                    ";”­“®‚É" & LIndex(fdata, 4) & Term("‚d‚m", u) & "Á”ïB"
             ElseIf StrToLng(LIndex(fdata, 4)) < 0 Then
                 msg = msg & _
-                    ";ç™ºå‹•æ™‚ã«" & Mid$(LIndex(fdata, 4), 2) & Term("ï¼¥ï¼®", u) & "å¢—åŠ ã€‚"
+                    ";”­“®‚É" & Mid$(LIndex(fdata, 4), 2) & Term("‚d‚m", u) & "‘‰ÁB"
             End If
             If StrToLng(LIndex(fdata, 5)) > 50 Then
                 msg = msg & _
-                    ";" & Term("æ°—åŠ›", u) & LIndex(fdata, 5) & "ä»¥ä¸Šã§ä½¿ç”¨å¯èƒ½ã€‚"
+                    ";" & Term("‹C—Í", u) & LIndex(fdata, 5) & "ˆÈã‚Åg—p‰Â”\B"
             End If
             For i = 6 To LLength(fdata)
                 opt = LIndex(fdata, i)
@@ -2062,92 +2062,92 @@ Dim uname As String
                     lv_mod = -1
                 End If
                 Select Case p.SkillType(opt)
-                    Case "ç›¸æ®º"
+                    Case "‘ŠE"
                         msg = msg & _
-                            ";" & fname0 & "ã‚’æŒã¤ãƒ¦ãƒ‹ãƒƒãƒˆåŒå£«ã®å ´åˆã€éš£æ¥æ™‚ã«åŠ¹æœã¯ç›¸æ®ºã€‚"
-                    Case "ä¸­å’Œ"
+                            ";" & fname0 & "‚ğ‚Âƒ†ƒjƒbƒg“¯m‚Ìê‡A—×Ú‚ÉŒø‰Ê‚Í‘ŠEB"
+                    Case "’†˜a"
                         msg = msg & _
-                            ";" & fname0 & "ã‚’æŒã¤ãƒ¦ãƒ‹ãƒƒãƒˆåŒå£«ã®å ´åˆã€" & _
-                            "éš£æ¥æ™‚ã«ãƒ¬ãƒ™ãƒ«åˆ†ã ã‘åŠ¹æœã‚’ä¸­å’Œã€‚"
-                    Case "è¿‘æ¥ç„¡åŠ¹"
+                            ";" & fname0 & "‚ğ‚Âƒ†ƒjƒbƒg“¯m‚Ìê‡A" & _
+                            "—×Ú‚ÉƒŒƒxƒ‹•ª‚¾‚¯Œø‰Ê‚ğ’†˜aB"
+                    Case "‹ßÚ–³Œø"
                         msg = msg & _
-                            ";ã€Œæ­¦ã€ã€Œçªã€ã€Œæ¥ã€ã«ã‚ˆã‚‹æ”»æ’ƒã«ã¯ç„¡åŠ¹ã€‚"
-                    Case "æ‰‹å‹•"
+                            ";u•vu“ËvuÚv‚É‚æ‚éUŒ‚‚É‚Í–³ŒøB"
+                    Case "è“®"
                         msg = msg & _
-                            ";é˜²å¾¡é¸æŠæ™‚ã«ã®ã¿ç™ºå‹•ã€‚"
-                    Case "èƒ½åŠ›å¿…è¦"
-                        'ã‚¹ã‚­ãƒƒãƒ—
-                    Case "åŒèª¿ç‡"
+                            ";–hŒä‘I‘ğ‚É‚Ì‚İ”­“®B"
+                    Case "”\—Í•K—v"
+                        'ƒXƒLƒbƒv
+                    Case "“¯’²—¦"
                         sname = p.SkillName0(opt)
                         If lv_mod = -1 Then
                             lv_mod = 20
                         End If
                         If u.SyncLevel >= 30 Then
                             msg = msg & _
-                                ";ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¤‰åŒ–(+" & _
-                                Format$(lv_mod * (u.SyncLevel - 30)) & ")ã€‚"
+                                ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª•Ï‰»(+" & _
+                                Format$(lv_mod * (u.SyncLevel - 30)) & ")B"
                         ElseIf u.SyncLevel > 0 Then
                             msg = msg & _
-                                ";ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¤‰åŒ–(" & _
-                                Format$(lv_mod * (u.SyncLevel - 30)) & ")ã€‚"
+                                ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª•Ï‰»(" & _
+                                Format$(lv_mod * (u.SyncLevel - 30)) & ")B"
                         End If
-                    Case "éœŠåŠ›"
+                    Case "—ì—Í"
                         sname = p.SkillName0(opt)
                         If lv_mod = -1 Then
                             lv_mod = 10
                         End If
                         msg = msg & _
-                            ";ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & _
-                            Format$(lv_mod * u.PlanaLevel) & ")ã€‚"
-                    Case "ã‚ªãƒ¼ãƒ©"
+                            ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª‘‰Á(+" & _
+                            Format$(lv_mod * u.PlanaLevel) & ")B"
+                    Case "ƒI[ƒ‰"
                         sname = p.SkillName0(opt)
                         If lv_mod = -1 Then
                             lv_mod = 200
                         End If
                         msg = msg & _
-                            ";ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & _
-                            Format$(lv_mod * u.AuraLevel) & ")ã€‚"
-                    Case "è¶…èƒ½åŠ›"
+                            ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª‘‰Á(+" & _
+                            Format$(lv_mod * u.AuraLevel) & ")B"
+                    Case "’´”\—Í"
                         sname = p.SkillName0(opt)
                         If lv_mod = -1 Then
                             lv_mod = 200
                         End If
                         msg = msg & _
-                            ";ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & _
-                            Format$(lv_mod * u.PsychicLevel) & ")ã€‚"
+                            ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª‘‰Á(+" & _
+                            Format$(lv_mod * u.PsychicLevel) & ")B"
                     Case Else
                         sname = u.SkillName0(opt)
                         If lv_mod = -1 Then
                             lv_mod = 200
                         End If
                         msg = msg & _
-                            ";ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & sname & "ãƒ¬ãƒ™ãƒ«ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & _
-                            Format$(lv_mod * u.SkillLevel(opt)) & ")ã€‚"
+                            ";ƒpƒCƒƒbƒg‚Ì" & sname & "ƒŒƒxƒ‹‚É‚æ‚è‹­“x‚ª‘‰Á(+" & _
+                            Format$(lv_mod * u.SkillLevel(opt)) & ")B"
                 End Select
             Next
             
-        Case "é˜»æ­¢"
-            If LIndex(fdata, 2) <> "" And LIndex(fdata, 2) <> "å…¨" Then
+        Case "‘j~"
+            If LIndex(fdata, 2) <> "" And LIndex(fdata, 2) <> "‘S" Then
                 If Left$(LIndex(fdata, 2), 1) = "!" Then
-                    msg = "ã€Œ" & Mid$(LIndex(fdata, 2), 2) & "ã€å±æ€§ã‚’æŒãŸãªã„"
+                    msg = "u" & Mid$(LIndex(fdata, 2), 2) & "v‘®«‚ğ‚½‚È‚¢"
                 Else
-                    msg = "ã€Œ" & LIndex(fdata, 2) & "ã€å±æ€§ã‚’æŒã¤"
+                    msg = "u" & LIndex(fdata, 2) & "v‘®«‚ğ‚Â"
                 End If
             End If
             If flevel <> 1 Then
                 msg = msg & _
-                    "ãƒ€ãƒ¡ãƒ¼ã‚¸" & Format$(CLng(500 * flevel)) & "ä»¥ä¸‹ã®"
+                    "ƒ_ƒ[ƒW" & Format$(CLng(500 * flevel)) & "ˆÈ‰º‚Ì"
             End If
-            msg = msg & "æ”»æ’ƒã‚’"
+            msg = msg & "UŒ‚‚ğ"
             
             buf = LIndex(fdata, 3)
             If IsNumeric(buf) Then
                 If buf <> "100" Then
-                    msg = msg & buf & "%ã®ç¢ºç‡ã§é˜»æ­¢ã€‚"
+                    msg = msg & buf & "%‚ÌŠm—¦‚Å‘j~B"
                 Else
 ' MOD START MARGE
-'                    msg = msg & buf & "é˜»æ­¢ã€‚"
-                    msg = msg & "é˜»æ­¢ã€‚"
+'                    msg = msg & buf & "‘j~B"
+                    msg = msg & "‘j~B"
 ' MOD END MARGE
                 End If
             ElseIf InStr(buf, "+") > 0 Or InStr(buf, "-") > 0 Then
@@ -2155,25 +2155,25 @@ Dim uname As String
                 sname = u.SkillName0(Left$(buf, i - 1))
                 prob = (u.SkillLevel(Left$(buf, i - 1)) + CInt(Mid$(buf, i))) * 100 \ 16
                 msg = msg & _
-                    "(" & sname & "Lv" & Mid$(buf, i) & ")/16ã®ç¢ºç‡(" & _
-                    Format$(prob) & "%)ã§é˜»æ­¢ã€‚"
+                    "(" & sname & "Lv" & Mid$(buf, i) & ")/16‚ÌŠm—¦(" & _
+                    Format$(prob) & "%)‚Å‘j~B"
             Else
                 sname = u.SkillName0(buf)
                 prob = u.SkillLevel(buf) * 100 \ 16
                 msg = msg & _
-                    sname & "Lv/16ã®ç¢ºç‡(" & Format$(prob) & "%)ã§é˜»æ­¢ã€‚"
+                    sname & "Lv/16‚ÌŠm—¦(" & Format$(prob) & "%)‚Å‘j~B"
             End If
             
             If StrToLng(LIndex(fdata, 4)) > 0 Then
                 msg = msg & _
-                    ";ç™ºå‹•æ™‚ã«" & LIndex(fdata, 4) & Term("ï¼¥ï¼®", u) & "æ¶ˆè²»ã€‚"
+                    ";”­“®‚É" & LIndex(fdata, 4) & Term("‚d‚m", u) & "Á”ïB"
             ElseIf StrToLng(LIndex(fdata, 4)) < 0 Then
                 msg = msg & _
-                    ";ç™ºå‹•æ™‚ã«" & Mid$(LIndex(fdata, 4), 2) & Term("ï¼¥ï¼®", u) & "å¢—åŠ ã€‚"
+                    ";”­“®‚É" & Mid$(LIndex(fdata, 4), 2) & Term("‚d‚m", u) & "‘‰ÁB"
             End If
             If StrToLng(LIndex(fdata, 5)) > 50 Then
                 msg = msg & _
-                    ";" & Term("æ°—åŠ›", u) & LIndex(fdata, 5) & "ä»¥ä¸Šã§ä½¿ç”¨å¯èƒ½ã€‚"
+                    ";" & Term("‹C—Í", u) & LIndex(fdata, 5) & "ˆÈã‚Åg—p‰Â”\B"
             End If
             For i = 6 To LLength(fdata)
                 opt = LIndex(fdata, i)
@@ -2185,205 +2185,205 @@ Dim uname As String
                     lv_mod = -1
                 End If
                 Select Case p.SkillType(opt)
-                    Case "ç›¸æ®º"
+                    Case "‘ŠE"
                         msg = msg & _
-                            ";" & fname0 & "ã‚’æŒã¤ãƒ¦ãƒ‹ãƒƒãƒˆåŒå£«ã®å ´åˆã€éš£æ¥æ™‚ã«åŠ¹æœã¯ç›¸æ®ºã€‚"
-                    Case "ä¸­å’Œ"
+                            ";" & fname0 & "‚ğ‚Âƒ†ƒjƒbƒg“¯m‚Ìê‡A—×Ú‚ÉŒø‰Ê‚Í‘ŠEB"
+                    Case "’†˜a"
                         msg = msg & _
-                            ";" & fname0 & "ã‚’æŒã¤ãƒ¦ãƒ‹ãƒƒãƒˆåŒå£«ã®å ´åˆã€" & _
-                            "éš£æ¥æ™‚ã«ãƒ¬ãƒ™ãƒ«åˆ†ã ã‘åŠ¹æœã‚’ä¸­å’Œã€‚"
-                    Case "è¿‘æ¥ç„¡åŠ¹"
+                            ";" & fname0 & "‚ğ‚Âƒ†ƒjƒbƒg“¯m‚Ìê‡A" & _
+                            "—×Ú‚ÉƒŒƒxƒ‹•ª‚¾‚¯Œø‰Ê‚ğ’†˜aB"
+                    Case "‹ßÚ–³Œø"
                         msg = msg & _
-                            ";ã€Œæ­¦ã€ã€Œçªã€ã€Œæ¥ã€ã«ã‚ˆã‚‹æ”»æ’ƒã«ã¯ç„¡åŠ¹ã€‚"
-                    Case "æ‰‹å‹•"
+                            ";u•vu“ËvuÚv‚É‚æ‚éUŒ‚‚É‚Í–³ŒøB"
+                    Case "è“®"
                         msg = msg & _
-                            ";é˜²å¾¡é¸æŠæ™‚ã«ã®ã¿ç™ºå‹•ã€‚"
-                    Case "èƒ½åŠ›å¿…è¦"
-                        'ã‚¹ã‚­ãƒƒãƒ—
-                    Case "åŒèª¿ç‡"
+                            ";–hŒä‘I‘ğ‚É‚Ì‚İ”­“®B"
+                    Case "”\—Í•K—v"
+                        'ƒXƒLƒbƒv
+                    Case "“¯’²—¦"
                         sname = p.SkillName0(opt)
                         If lv_mod = -1 Then
                             lv_mod = 20
                         End If
                         If u.SyncLevel >= 30 Then
                             msg = msg & _
-                                ";ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¤‰åŒ–(+" & _
-                                Format$(lv_mod * (u.SyncLevel - 30)) & ")ã€‚"
+                                ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª•Ï‰»(+" & _
+                                Format$(lv_mod * (u.SyncLevel - 30)) & ")B"
                         ElseIf u.SyncLevel > 0 Then
                             msg = msg & _
-                                ";ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¤‰åŒ–(" & _
-                                Format$(lv_mod * (u.SyncLevel - 30)) & ")ã€‚"
+                                ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª•Ï‰»(" & _
+                                Format$(lv_mod * (u.SyncLevel - 30)) & ")B"
                         End If
-                    Case "éœŠåŠ›"
+                    Case "—ì—Í"
                         sname = p.SkillName0(opt)
                         If lv_mod = -1 Then
                             lv_mod = 10
                         End If
                         msg = msg & _
-                            ";ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & _
-                            Format$(lv_mod * u.PlanaLevel) & ")ã€‚"
-                    Case "ã‚ªãƒ¼ãƒ©"
+                            ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª‘‰Á(+" & _
+                            Format$(lv_mod * u.PlanaLevel) & ")B"
+                    Case "ƒI[ƒ‰"
                         sname = p.SkillName0(opt)
                         If lv_mod = -1 Then
                             lv_mod = 200
                         End If
                         msg = msg & _
-                            ";ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & _
-                            Format$(lv_mod * u.AuraLevel) & ")ã€‚"
-                    Case "è¶…èƒ½åŠ›"
+                            ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª‘‰Á(+" & _
+                            Format$(lv_mod * u.AuraLevel) & ")B"
+                    Case "’´”\—Í"
                         sname = p.SkillName0(opt)
                         If lv_mod = -1 Then
                             lv_mod = 200
                         End If
                         msg = msg & _
-                            ";ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & _
-                            Format$(lv_mod * u.PsychicLevel) & ")ã€‚"
+                            ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª‘‰Á(+" & _
+                            Format$(lv_mod * u.PsychicLevel) & ")B"
                     Case Else
                         sname = u.SkillName0(opt)
                         If lv_mod = -1 Then
                             lv_mod = 200
                         End If
                         msg = msg & _
-                            ";ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & sname & "ãƒ¬ãƒ™ãƒ«ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & _
-                            Format$(lv_mod * u.SkillLevel(opt)) & ")ã€‚"
+                            ";ƒpƒCƒƒbƒg‚Ì" & sname & "ƒŒƒxƒ‹‚É‚æ‚è‹­“x‚ª‘‰Á(+" & _
+                            Format$(lv_mod * u.SkillLevel(opt)) & ")B"
                 End Select
             Next
             
-        Case "åºƒåŸŸé˜»æ­¢"
+        Case "Lˆæ‘j~"
             If IsNumeric(LIndex(fdata, 2)) And LIndex(fdata, 2) <> "1" Then
-                msg = "åŠå¾„" & StrConv(LIndex(fdata, 2), vbWide) & _
-                    "ãƒã‚¹ä»¥å†…ã®å‘³æ–¹ãƒ¦ãƒ‹ãƒƒãƒˆã«å¯¾ã™ã‚‹"
+                msg = "”¼Œa" & StrConv(LIndex(fdata, 2), vbWide) & _
+                    "ƒ}ƒXˆÈ“à‚Ì–¡•ûƒ†ƒjƒbƒg‚É‘Î‚·‚é"
                 i = CInt(LIndex(fdata, 2))
             Else
-                msg = "éš£æ¥ã™ã‚‹å‘³æ–¹ãƒ¦ãƒ‹ãƒƒãƒˆã«å¯¾ã™ã‚‹"
+                msg = "—×Ú‚·‚é–¡•ûƒ†ƒjƒbƒg‚É‘Î‚·‚é"
                 i = 1
             End If
-            If LIndex(fdata, 3) <> "" And LIndex(fdata, 3) <> "å…¨" Then
+            If LIndex(fdata, 3) <> "" And LIndex(fdata, 3) <> "‘S" Then
                 If Left$(LIndex(fdata, 3), 1) = "!" Then
                     msg = msg & _
-                        "ã€Œ" & Mid$(LIndex(fdata, 3), 2) & "ã€å±æ€§ã‚’æŒãŸãªã„"
+                        "u" & Mid$(LIndex(fdata, 3), 2) & "v‘®«‚ğ‚½‚È‚¢"
                 Else
                     msg = msg & _
-                        "ã€Œ" & LIndex(fdata, 3) & "ã€å±æ€§ã‚’æŒã¤"
+                        "u" & LIndex(fdata, 3) & "v‘®«‚ğ‚Â"
                 End If
             End If
             If flevel <> 1 Then
                 msg = msg & _
-                    "ãƒ€ãƒ¡ãƒ¼ã‚¸" & Format$(CLng(500 * flevel)) & "ä»¥ä¸‹ã®"
+                    "ƒ_ƒ[ƒW" & Format$(CLng(500 * flevel)) & "ˆÈ‰º‚Ì"
             End If
-            msg = msg & "æ”»æ’ƒã‚’"
+            msg = msg & "UŒ‚‚ğ"
             
             buf = LIndex(fdata, 4)
             If IsNumeric(buf) Then
                 If buf <> "100" Then
 ' MOD START MARGE
-'                    msg = msg & "%ã®ç¢ºç‡ã§é˜»æ­¢ã€‚"
-                    msg = msg & buf & "%ã®ç¢ºç‡ã§é˜»æ­¢ã€‚"
+'                    msg = msg & "%‚ÌŠm—¦‚Å‘j~B"
+                    msg = msg & buf & "%‚ÌŠm—¦‚Å‘j~B"
 ' MOD END MARGE
                 Else
-                    msg = msg & "é˜»æ­¢ã€‚"
+                    msg = msg & "‘j~B"
                 End If
             ElseIf InStr(buf, "+") > 0 Or InStr(buf, "-") > 0 Then
                 i = MaxLng(InStr(buf, "+"), InStr(buf, "-"))
                 sname = u.SkillName0(Left$(buf, i - 1))
                 prob = (u.SkillLevel(Left$(buf, i - 1)) + CInt(Mid$(buf, i))) * 100 \ 16
                 msg = msg & _
-                    "(" & sname & "Lv" & Mid$(buf, i) & ")/16ã®ç¢ºç‡(" & _
-                    Format$(prob) & "%)ã§é˜»æ­¢ã€‚"
+                    "(" & sname & "Lv" & Mid$(buf, i) & ")/16‚ÌŠm—¦(" & _
+                    Format$(prob) & "%)‚Å‘j~B"
             Else
                 sname = u.SkillName0(buf)
                 prob = u.SkillLevel(buf) * 100 \ 16
                 msg = msg & _
-                    sname & "Lv/16ã®ç¢ºç‡(" & Format$(prob) & "%)ã§é˜»æ­¢ã€‚"
+                    sname & "Lv/16‚ÌŠm—¦(" & Format$(prob) & "%)‚Å‘j~B"
             End If
             
             If StrToLng(LIndex(fdata, 5)) > 0 Then
                 msg = msg & _
-                    ";ç™ºå‹•æ™‚ã«" & LIndex(fdata, 5) & Term("ï¼¥ï¼®", u) & "æ¶ˆè²»ã€‚"
+                    ";”­“®‚É" & LIndex(fdata, 5) & Term("‚d‚m", u) & "Á”ïB"
             ElseIf StrToLng(LIndex(fdata, 5)) < 0 Then
                 msg = msg & _
-                    ";ç™ºå‹•æ™‚ã«" & Mid$(LIndex(fdata, 5), 2) & Term("ï¼¥ï¼®", u) & "å¢—åŠ ã€‚"
+                    ";”­“®‚É" & Mid$(LIndex(fdata, 5), 2) & Term("‚d‚m", u) & "‘‰ÁB"
             End If
             If StrToLng(LIndex(fdata, 6)) > 50 Then
                 msg = msg & _
-                    Term("æ°—åŠ›", u) & LIndex(fdata, 6) & "ä»¥ä¸Šã§ä½¿ç”¨å¯èƒ½ã€‚"
+                    Term("‹C—Í", u) & LIndex(fdata, 6) & "ˆÈã‚Åg—p‰Â”\B"
             End If
             msg = msg & _
-                ";ãŸã ã—æ”»æ’ƒå´ã‚‚æœ‰åŠ¹ç¯„å›²å†…ã«ã„ã‚‹å ´åˆã¯ç„¡åŠ¹åŒ–ã€‚"
+                ";‚½‚¾‚µUŒ‚‘¤‚à—LŒø”ÍˆÍ“à‚É‚¢‚éê‡‚Í–³Œø‰»B"
             
-        Case "èåˆ"
+        Case "—Z‡"
             prob = flevel * 100 \ 16
-            msg = Format$(flevel) & "/16ã®ç¢ºç‡(" & Format$(prob) & "%)ã§ç™ºå‹•ã—ã€" & _
-                "ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’" & Term("ï¼¨ï¼°", u) & "ã«å¤‰æ›ã€‚;" & _
-                "ãŸã ã—ã€ã€Œæ­¦ã€ã€Œçªã€ã€Œæ¥ã€ã«ã‚ˆã‚‹æ”»æ’ƒã«ã¯ç„¡åŠ¹ã€‚"
+            msg = Format$(flevel) & "/16‚ÌŠm—¦(" & Format$(prob) & "%)‚Å”­“®‚µA" & _
+                "ƒ_ƒ[ƒW‚ğ" & Term("‚g‚o", u) & "‚É•ÏŠ·B;" & _
+                "‚½‚¾‚µAu•vu“ËvuÚv‚É‚æ‚éUŒ‚‚É‚Í–³ŒøB"
             
-        Case "å¤‰æ›"
-            If LIndex(fdata, 2) <> "" And LIndex(fdata, 2) <> "å…¨" Then
+        Case "•ÏŠ·"
+            If LIndex(fdata, 2) <> "" And LIndex(fdata, 2) <> "‘S" Then
                 If Left$(LIndex(fdata, 2), 1) = "!" Then
-                    msg = "ã€Œ" & Mid$(LIndex(fdata, 2), 2) & "ã€å±æ€§ã‚’æŒãŸãªã„"
+                    msg = "u" & Mid$(LIndex(fdata, 2), 2) & "v‘®«‚ğ‚½‚È‚¢"
                 Else
-                    msg = "ã€Œ" & LIndex(fdata, 2) & "ã€å±æ€§ã‚’æŒã¤"
+                    msg = "u" & LIndex(fdata, 2) & "v‘®«‚ğ‚Â"
                 End If
             End If
-            msg = msg + "æ”»æ’ƒã‚’å—ã‘ãŸéš›ã«ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’" & Term("ï¼¥ï¼®", u) & "ã«å¤‰æ›ã€‚;" & _
-                "å¤‰æ›åŠ¹ç‡ã¯ " & Term("ï¼¥ï¼®", u) & "å¢—åŠ  ï¼ "
+            msg = msg + "UŒ‚‚ğó‚¯‚½Û‚Éƒ_ƒ[ƒW‚ğ" & Term("‚d‚m", u) & "‚É•ÏŠ·B;" & _
+                "•ÏŠ·Œø—¦‚Í " & Term("‚d‚m", u) & "‘‰Á  "
             msg = msg + Format$(0.01 * flevel)
-            msg = msg + " Ã— ãƒ€ãƒ¡ãƒ¼ã‚¸"
+            msg = msg + " ~ ƒ_ƒ[ƒW"
             
-        Case "ãƒ“ãƒ¼ãƒ å¸å"
-            msg = "ãƒ“ãƒ¼ãƒ ã«ã‚ˆã‚‹æ”»æ’ƒã®ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ï¼¨ï¼°ã«å¤‰æ›"
+        Case "ƒr[ƒ€‹zû"
+            msg = "ƒr[ƒ€‚É‚æ‚éUŒ‚‚Ìƒ_ƒ[ƒW‚ğ‚g‚o‚É•ÏŠ·"
             
-        Case "è‡ªå‹•åæ’ƒ"
-            If LIndex(fdata, 3) <> "" And LIndex(fdata, 3) <> "å…¨" Then
+        Case "©“®”½Œ‚"
+            If LIndex(fdata, 3) <> "" And LIndex(fdata, 3) <> "‘S" Then
                 If Left$(LIndex(fdata, 3), 1) = "!" Then
-                    msg = "ã€Œ" & Mid$(LIndex(fdata, 3), 2) & "ã€å±æ€§ã‚’æŒãŸãªã„"
+                    msg = "u" & Mid$(LIndex(fdata, 3), 2) & "v‘®«‚ğ‚½‚È‚¢"
                 Else
-                    msg = "ã€Œ" & LIndex(fdata, 3) & "ã€å±æ€§ã‚’æŒã¤"
+                    msg = "u" & LIndex(fdata, 3) & "v‘®«‚ğ‚Â"
                 End If
             End If
             
             If flevel <> 1 Then
                 msg = msg & _
-                    "ãƒ€ãƒ¡ãƒ¼ã‚¸" & Format$(CLng(500 * flevel)) & "ã¾ã§ã®"
+                    "ƒ_ƒ[ƒW" & Format$(CLng(500 * flevel)) & "‚Ü‚Å‚Ì"
             End If
             
-            msg = msg & "æ”»æ’ƒã‚’å—ã‘ãŸéš›ã«"
+            msg = msg & "UŒ‚‚ğó‚¯‚½Û‚É"
             
             buf = LIndex(fdata, 4)
             If IsNumeric(buf) Then
                 If buf <> "100" Then
-                    msg = msg & buf & "%ã®ç¢ºç‡ã§ã€"
+                    msg = msg & buf & "%‚ÌŠm—¦‚ÅA"
                 End If
             ElseIf InStr(buf, "+") > 0 Or InStr(buf, "-") > 0 Then
                 i = MaxLng(InStr(buf, "+"), InStr(buf, "-"))
                 sname = u.SkillName0(Left$(buf, i - 1))
                 prob = (u.SkillLevel(Left$(buf, i - 1)) + CInt(Mid$(buf, i))) * 100 \ 16
                 msg = msg & _
-                    "(" & sname & "Lv" & Mid$(buf, i) & ")/16ã®ç¢ºç‡(" & _
-                    Format$(prob) & "%)ã§ã€"
+                    "(" & sname & "Lv" & Mid$(buf, i) & ")/16‚ÌŠm—¦(" & _
+                    Format$(prob) & "%)‚ÅA"
             Else
                 sname = u.SkillName0(buf)
                 prob = u.SkillLevel(buf) * 100 \ 16
                 msg = msg & _
-                    sname & "Lv/16ã®ç¢ºç‡(" & Format$(prob) & "%)ã§ã€"
+                    sname & "Lv/16‚ÌŠm—¦(" & Format$(prob) & "%)‚ÅA"
             End If
             
             buf = LIndex(fdata, 2)
             If InStr(buf, "(") > 0 Then
                 buf = Left$(buf, InStr(buf, "(") - 1)
             End If
-            msg = msg & buf & "ã«ã‚ˆã‚‹è‡ªå‹•åæ’ƒãŒç™ºå‹•ã™ã‚‹ã€‚"
+            msg = msg & buf & "‚É‚æ‚é©“®”½Œ‚‚ª”­“®‚·‚éB"
             
             If StrToLng(LIndex(fdata, 5)) > 0 Then
                 msg = msg & _
-                    ";ç™ºå‹•æ™‚ã«" & LIndex(fdata, 5) & Term("ï¼¥ï¼®", u) & "æ¶ˆè²»ã€‚"
+                    ";”­“®‚É" & LIndex(fdata, 5) & Term("‚d‚m", u) & "Á”ïB"
             ElseIf StrToLng(LIndex(fdata, 5)) < 0 Then
                 msg = msg & _
-                    ";ç™ºå‹•æ™‚ã«" & Mid$(LIndex(fdata, 5), 2) & Term("ï¼¥ï¼®", u) & "å¢—åŠ ã€‚"
+                    ";”­“®‚É" & Mid$(LIndex(fdata, 5), 2) & Term("‚d‚m", u) & "‘‰ÁB"
             End If
             If StrToLng(LIndex(fdata, 6)) > 50 Then
                 msg = msg & _
-                    ";" & Term("æ°—åŠ›", u) & LIndex(fdata, 6) & "ä»¥ä¸Šã§ä½¿ç”¨å¯èƒ½ã€‚"
+                    ";" & Term("‹C—Í", u) & LIndex(fdata, 6) & "ˆÈã‚Åg—p‰Â”\B"
             End If
             For i = 7 To LLength(fdata)
                 opt = LIndex(fdata, i)
@@ -2395,353 +2395,353 @@ Dim uname As String
                     lv_mod = -1
                 End If
                 Select Case p.SkillType(opt)
-                    Case "ç›¸æ®º"
+                    Case "‘ŠE"
                         msg = msg & _
-                            ";" & fname0 & "ã‚’æŒã¤ãƒ¦ãƒ‹ãƒƒãƒˆåŒå£«ã®å ´åˆã€éš£æ¥æ™‚ã«åŠ¹æœã¯ç›¸æ®ºã€‚"
-                    Case "ä¸­å’Œ"
+                            ";" & fname0 & "‚ğ‚Âƒ†ƒjƒbƒg“¯m‚Ìê‡A—×Ú‚ÉŒø‰Ê‚Í‘ŠEB"
+                    Case "’†˜a"
                         msg = msg & _
-                            ";" & fname0 & "ã‚’æŒã¤ãƒ¦ãƒ‹ãƒƒãƒˆåŒå£«ã®å ´åˆã€" & _
-                            "éš£æ¥æ™‚ã«ãƒ¬ãƒ™ãƒ«åˆ†ã ã‘åŠ¹æœã‚’ç›¸æ®ºã€‚"
-                    Case "è¿‘æ¥ç„¡åŠ¹"
+                            ";" & fname0 & "‚ğ‚Âƒ†ƒjƒbƒg“¯m‚Ìê‡A" & _
+                            "—×Ú‚ÉƒŒƒxƒ‹•ª‚¾‚¯Œø‰Ê‚ğ‘ŠEB"
+                    Case "‹ßÚ–³Œø"
                         msg = msg & _
-                            ";ã€Œæ­¦ã€ã€Œçªã€ã€Œæ¥ã€ã«ã‚ˆã‚‹æ”»æ’ƒã«ã¯ç„¡åŠ¹ã€‚"
-                    Case "æ‰‹å‹•"
+                            ";u•vu“ËvuÚv‚É‚æ‚éUŒ‚‚É‚Í–³ŒøB"
+                    Case "è“®"
                         msg = msg & _
-                            ";é˜²å¾¡é¸æŠæ™‚ã«ã®ã¿ç™ºå‹•ã€‚"
-                    Case "èƒ½åŠ›å¿…è¦"
-                        'ã‚¹ã‚­ãƒƒãƒ—
-                    Case "åŒèª¿ç‡"
+                            ";–hŒä‘I‘ğ‚É‚Ì‚İ”­“®B"
+                    Case "”\—Í•K—v"
+                        'ƒXƒLƒbƒv
+                    Case "“¯’²—¦"
                         sname = p.SkillName0(opt)
                         If lv_mod = -1 Then
                             lv_mod = 20
                         End If
                         If u.SyncLevel >= 30 Then
                             msg = msg & _
-                                ";ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¤‰åŒ–(+" & _
-                                Format$(lv_mod * (u.SyncLevel - 30)) & ")ã€‚"
+                                ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª•Ï‰»(+" & _
+                                Format$(lv_mod * (u.SyncLevel - 30)) & ")B"
                         ElseIf u.SyncLevel > 0 Then
                             msg = msg & _
-                                ";ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¤‰åŒ–(" & _
-                                Format$(lv_mod * (u.SyncLevel - 30)) & ")ã€‚"
+                                ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª•Ï‰»(" & _
+                                Format$(lv_mod * (u.SyncLevel - 30)) & ")B"
                         End If
-                    Case "éœŠåŠ›"
+                    Case "—ì—Í"
                         sname = p.SkillName0(opt)
                         If lv_mod = -1 Then
                             lv_mod = 10
                         End If
                         msg = msg & _
-                            ";ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & _
-                            Format$(lv_mod * u.PlanaLevel) & ")ã€‚"
-                    Case "ã‚ªãƒ¼ãƒ©"
+                            ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª‘‰Á(+" & _
+                            Format$(lv_mod * u.PlanaLevel) & ")B"
+                    Case "ƒI[ƒ‰"
                         sname = p.SkillName0(opt)
                         If lv_mod = -1 Then
                             lv_mod = 200
                         End If
                         msg = msg & _
-                            ";ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & _
-                            Format$(lv_mod * u.AuraLevel) & ")ã€‚"
-                    Case "è¶…èƒ½åŠ›"
+                            ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª‘‰Á(+" & _
+                            Format$(lv_mod * u.AuraLevel) & ")B"
+                    Case "’´”\—Í"
                         sname = p.SkillName0(opt)
                         If lv_mod = -1 Then
                             lv_mod = 200
                         End If
                         msg = msg & _
-                            ";ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & _
-                            Format$(lv_mod * u.PsychicLevel) & ")ã€‚"
+                            ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª‘‰Á(+" & _
+                            Format$(lv_mod * u.PsychicLevel) & ")B"
                     Case Else
                         sname = u.SkillName0(opt)
                         If lv_mod = -1 Then
                             lv_mod = 200
                         End If
                         msg = msg & _
-                            ";ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & sname & "ãƒ¬ãƒ™ãƒ«ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & _
-                            Format$(lv_mod * u.SkillLevel(opt)) & ")ã€‚"
+                            ";ƒpƒCƒƒbƒg‚Ì" & sname & "ƒŒƒxƒ‹‚É‚æ‚è‹­“x‚ª‘‰Á(+" & _
+                            Format$(lv_mod * u.SkillLevel(opt)) & ")B"
                 End Select
             Next
             
-        Case "ï¼¨ï¼°å›å¾©"
-            msg = "æ¯ã‚¿ãƒ¼ãƒ³æœ€å¤§" & Term("ï¼¨ï¼°", u) & "ã®" & Format$(10 * flevel) & "%åˆ†ã®" & _
-                Term("ï¼¨ï¼°", u) & "ã‚’å›å¾©ã€‚"
+        Case "‚g‚o‰ñ•œ"
+            msg = "–ˆƒ^[ƒ“Å‘å" & Term("‚g‚o", u) & "‚Ì" & Format$(10 * flevel) & "%•ª‚Ì" & _
+                Term("‚g‚o", u) & "‚ğ‰ñ•œB"
             
-        Case "ï¼¥ï¼®å›å¾©"
-            msg = "æ¯ã‚¿ãƒ¼ãƒ³æœ€å¤§" & Term("ï¼¥ï¼®", u) & "ã®" & Format$(10 * flevel) & "%åˆ†ã®" & _
-                Term("ï¼¥ï¼®", u) & "ã‚’å›å¾©ã€‚"
+        Case "‚d‚m‰ñ•œ"
+            msg = "–ˆƒ^[ƒ“Å‘å" & Term("‚d‚m", u) & "‚Ì" & Format$(10 * flevel) & "%•ª‚Ì" & _
+                Term("‚d‚m", u) & "‚ğ‰ñ•œB"
             
-        Case "éœŠåŠ›å›å¾©"
-            sname = p.SkillName0("éœŠåŠ›")
-            msg = "æ¯ã‚¿ãƒ¼ãƒ³æœ€å¤§" & sname & "ã®" & Format$(10 * flevel) & "%åˆ†ã®" & _
-                sname & "ã‚’å›å¾©ã€‚"
+        Case "—ì—Í‰ñ•œ"
+            sname = p.SkillName0("—ì—Í")
+            msg = "–ˆƒ^[ƒ“Å‘å" & sname & "‚Ì" & Format$(10 * flevel) & "%•ª‚Ì" & _
+                sname & "‚ğ‰ñ•œB"
             
-        Case "ï¼¨ï¼°æ¶ˆè²»"
-            msg = "æ¯ã‚¿ãƒ¼ãƒ³æœ€å¤§" & Term("ï¼¨ï¼°", u) & "ã®" & Format$(10 * flevel) & "%åˆ†ã®" & _
-                Term("ï¼¨ï¼°", u) & "ã‚’æ¶ˆè²»ã€‚"
+        Case "‚g‚oÁ”ï"
+            msg = "–ˆƒ^[ƒ“Å‘å" & Term("‚g‚o", u) & "‚Ì" & Format$(10 * flevel) & "%•ª‚Ì" & _
+                Term("‚g‚o", u) & "‚ğÁ”ïB"
             
-        Case "ï¼¥ï¼®æ¶ˆè²»"
-            msg = "æ¯ã‚¿ãƒ¼ãƒ³æœ€å¤§" & Term("ï¼¥ï¼®", u) & "ã®" & Format$(10 * flevel) & "%åˆ†ã®" & _
-                Term("ï¼¥ï¼®", u) & "ã‚’æ¶ˆè²»ã€‚"
+        Case "‚d‚mÁ”ï"
+            msg = "–ˆƒ^[ƒ“Å‘å" & Term("‚d‚m", u) & "‚Ì" & Format$(10 * flevel) & "%•ª‚Ì" & _
+                Term("‚d‚m", u) & "‚ğÁ”ïB"
             
-        Case "éœŠåŠ›æ¶ˆè²»"
-            sname = p.SkillName0("éœŠåŠ›")
-            msg = "æ¯ã‚¿ãƒ¼ãƒ³æœ€å¤§" & sname & "ã®" & Format$(10 * flevel) & "%åˆ†ã®" & _
-                sname & "ã‚’æ¶ˆè²»ã€‚"
+        Case "—ì—ÍÁ”ï"
+            sname = p.SkillName0("—ì—Í")
+            msg = "–ˆƒ^[ƒ“Å‘å" & sname & "‚Ì" & Format$(10 * flevel) & "%•ª‚Ì" & _
+                sname & "‚ğÁ”ïB"
             
-        Case "åˆ†èº«"
-            msg = "50%ã®ç¢ºç‡ã§æ”»æ’ƒã‚’å®Œå…¨ã«å›é¿ã€‚;" & _
-                "ç™ºå‹•æ¡ä»¶ï¼š" & Term("æ°—åŠ›", u) & "130ä»¥ä¸Š"
+        Case "•ªg"
+            msg = "50%‚ÌŠm—¦‚ÅUŒ‚‚ğŠ®‘S‚É‰ñ”ğB;" & _
+                "”­“®ğŒF" & Term("‹C—Í", u) & "130ˆÈã"
             
-        Case "è¶…å›é¿"
-            msg = "ã‚ã‚‰ã‚†ã‚‹æ”»æ’ƒã‚’" & Format$(10 * flevel) & "%ã®ç¢ºç‡ã§å›é¿ã€‚"
+        Case "’´‰ñ”ğ"
+            msg = "‚ ‚ç‚ä‚éUŒ‚‚ğ" & Format$(10 * flevel) & "%‚ÌŠm—¦‚Å‰ñ”ğB"
             If IsNumeric(LIndex(fdata, 2)) Then
                 If StrToLng(LIndex(fdata, 2)) > 0 Then
                     msg = msg & _
-                        ";ç™ºå‹•æ™‚ã«" & LIndex(fdata, 2) & Term("ï¼¥ï¼®", u) & "æ¶ˆè²»ã€‚"
+                        ";”­“®‚É" & LIndex(fdata, 2) & Term("‚d‚m", u) & "Á”ïB"
                 ElseIf StrToLng(LIndex(fdata, 2)) < 0 Then
                     msg = msg & _
-                        ";ç™ºå‹•æ™‚ã«" & Mid$(LIndex(fdata, 2), 2) & Term("ï¼¥ï¼®", u) & "å¢—åŠ ã€‚"
+                        ";”­“®‚É" & Mid$(LIndex(fdata, 2), 2) & Term("‚d‚m", u) & "‘‰ÁB"
                 End If
             End If
             If StrToLng(LIndex(fdata, 3)) > 50 Then
                 msg = msg & _
-                    ";" & Term("æ°—åŠ›", u) & LIndex(fdata, 3) & "ä»¥ä¸Šã§ä½¿ç”¨å¯èƒ½ã€‚"
+                    ";" & Term("‹C—Í", u) & LIndex(fdata, 3) & "ˆÈã‚Åg—p‰Â”\B"
             End If
-            If LIndex(fdata, 4) = "æ‰‹å‹•" Then
+            If LIndex(fdata, 4) = "è“®" Then
                 msg = msg & _
-                    ";å›é¿é¸æŠæ™‚ã«ã®ã¿ç™ºå‹•ã€‚"
+                    ";‰ñ”ğ‘I‘ğ‚É‚Ì‚İ”­“®B"
             End If
             
-        Case "ç·Šæ€¥ãƒ†ãƒ¬ãƒãƒ¼ãƒˆ"
-            msg = "æ”»æ’ƒã‚’å—ã‘ãŸéš›ã«" & Format$(10 * flevel) & "%ã®ç¢ºç‡ã§" & _
-                "ãƒ†ãƒ¬ãƒãƒ¼ãƒˆã—ã€æ”»æ’ƒã‚’å›é¿ã€‚;" & _
-                "ãƒ†ãƒ¬ãƒãƒ¼ãƒˆå…ˆã¯" & LIndex(fdata, 2) & "ãƒã‚¹ä»¥å†…ã®ç¯„å›²ã®å†…ã€" & _
-                "æœ€ã‚‚æ•µã‹ã‚‰é ã„åœ°ç‚¹ã‹ã‚‰é¸ã°ã‚Œã‚‹ã€‚"
+        Case "‹Ù‹}ƒeƒŒƒ|[ƒg"
+            msg = "UŒ‚‚ğó‚¯‚½Û‚É" & Format$(10 * flevel) & "%‚ÌŠm—¦‚Å" & _
+                "ƒeƒŒƒ|[ƒg‚µAUŒ‚‚ğ‰ñ”ğB;" & _
+                "ƒeƒŒƒ|[ƒgæ‚Í" & LIndex(fdata, 2) & "ƒ}ƒXˆÈ“à‚Ì”ÍˆÍ‚Ì“àA" & _
+                "Å‚à“G‚©‚ç‰“‚¢’n“_‚©‚ç‘I‚Î‚ê‚éB"
             If IsNumeric(LIndex(fdata, 3)) Then
                 If StrToLng(LIndex(fdata, 3)) > 0 Then
                     msg = msg & _
-                        ";ç™ºå‹•æ™‚ã«" & LIndex(fdata, 3) & Term("ï¼¥ï¼®", u) & "æ¶ˆè²»ã€‚"
+                        ";”­“®‚É" & LIndex(fdata, 3) & Term("‚d‚m", u) & "Á”ïB"
                 ElseIf StrToLng(LIndex(fdata, 3)) < 0 Then
                     msg = msg & _
-                        ";ç™ºå‹•æ™‚ã«" & Mid$(LIndex(fdata, 3), 2) & Term("ï¼¥ï¼®", u) & "å¢—åŠ ã€‚"
+                        ";”­“®‚É" & Mid$(LIndex(fdata, 3), 2) & Term("‚d‚m", u) & "‘‰ÁB"
                 End If
             End If
             If StrToLng(LIndex(fdata, 4)) > 50 Then
                 msg = msg & _
-                    ";" & Term("æ°—åŠ›", u) & LIndex(fdata, 4) & "ä»¥ä¸Šã§ä½¿ç”¨å¯èƒ½ã€‚"
+                    ";" & Term("‹C—Í", u) & LIndex(fdata, 4) & "ˆÈã‚Åg—p‰Â”\B"
             End If
-            If LIndex(fdata, 5) = "æ‰‹å‹•" Then
+            If LIndex(fdata, 5) = "è“®" Then
                 msg = msg & _
-                    ";å›é¿é¸æŠæ™‚ã«ã®ã¿ç™ºå‹•ã€‚"
+                    ";‰ñ”ğ‘I‘ğ‚É‚Ì‚İ”­“®B"
             End If
             
-        Case "ãƒ€ãƒŸãƒ¼"
+        Case "ƒ_ƒ~["
             buf = fname
             If InStr(buf, "Lv") Then
                 buf = Left$(buf, InStr(buf, "Lv") - 1)
             End If
-            msg = buf & "ã‚’èº«ä»£ã‚ã‚Šã«ã—ã¦æ”»æ’ƒã‚’" & Format$(flevel) & "å›ã¾ã§å›é¿ã€‚"
+            msg = buf & "‚ğg‘ã‚í‚è‚É‚µ‚ÄUŒ‚‚ğ" & Format$(flevel) & "‰ñ‚Ü‚Å‰ñ”ğB"
             
-        Case "æ”»æ’ƒå›é¿"
-            If LIndex(fdata, 2) <> "" And LIndex(fdata, 2) <> "å…¨" Then
+        Case "UŒ‚‰ñ”ğ"
+            If LIndex(fdata, 2) <> "" And LIndex(fdata, 2) <> "‘S" Then
                 If Left$(LIndex(fdata, 2), 1) = "!" Then
-                    msg = "ã€Œ" & Mid$(LIndex(fdata, 2), 2) & "ã€å±æ€§ã‚’æŒãŸãªã„"
+                    msg = "u" & Mid$(LIndex(fdata, 2), 2) & "v‘®«‚ğ‚½‚È‚¢"
                 Else
-                    msg = "ã€Œ" & LIndex(fdata, 2) & "ã€å±æ€§ã‚’æŒã¤"
+                    msg = "u" & LIndex(fdata, 2) & "v‘®«‚ğ‚Â"
                 End If
             End If
             If flevel >= 0 Then
                 msg = msg & _
-                    "æ”»æ’ƒã®å‘½ä¸­ç‡ã‚’æœ¬æ¥ã®" & Format$(CLng(100 - 10 * flevel)) & "%ã«æ¸›å°‘ã•ã›ã‚‹ã€‚"
+                    "UŒ‚‚Ì–½’†—¦‚ğ–{—ˆ‚Ì" & Format$(CLng(100 - 10 * flevel)) & "%‚ÉŒ¸­‚³‚¹‚éB"
             Else
                 msg = msg & _
-                    "æ”»æ’ƒã®å‘½ä¸­ç‡ã‚’æœ¬æ¥ã®" & Format$(CLng(100 - 10 * flevel)) & "%ã«å¢—åŠ ã•ã›ã‚‹ã€‚"
+                    "UŒ‚‚Ì–½’†—¦‚ğ–{—ˆ‚Ì" & Format$(CLng(100 - 10 * flevel)) & "%‚É‘‰Á‚³‚¹‚éB"
             End If
             If StrToLng(LIndex(fdata, 3)) > 50 Then
                 msg = msg & _
-                    Term("æ°—åŠ›", u) & LIndex(fdata, 3) & "ä»¥ä¸Šã§ä½¿ç”¨å¯èƒ½ã€‚"
+                    Term("‹C—Í", u) & LIndex(fdata, 3) & "ˆÈã‚Åg—p‰Â”\B"
             End If
             
-        Case "æŠµæŠ—åŠ›"
+        Case "’ïR—Í"
             If flevel >= 0 Then
-                msg = "æ­¦å™¨ã®ç‰¹æ®ŠåŠ¹æœã‚’å—ã‘ã‚‹ç¢ºç‡ã‚’" & Format$(10 * flevel) & "%æ¸›å°‘ã•ã›ã‚‹ã€‚"
+                msg = "•Ší‚Ì“ÁêŒø‰Ê‚ğó‚¯‚éŠm—¦‚ğ" & Format$(10 * flevel) & "%Œ¸­‚³‚¹‚éB"
             Else
-                msg = "æ­¦å™¨ã®ç‰¹æ®ŠåŠ¹æœã‚’å—ã‘ã‚‹ç¢ºç‡ã‚’" & Format$(-10 * flevel) & "%å¢—åŠ ã•ã›ã‚‹ã€‚"
+                msg = "•Ší‚Ì“ÁêŒø‰Ê‚ğó‚¯‚éŠm—¦‚ğ" & Format$(-10 * flevel) & "%‘‰Á‚³‚¹‚éB"
             End If
             
-        Case "ä¿®ç†è£…ç½®"
-            msg = "ä»–ã®ãƒ¦ãƒ‹ãƒƒãƒˆã®" & Term("ï¼¨ï¼°", u)
+        Case "C—‘•’u"
+            msg = "‘¼‚Ìƒ†ƒjƒbƒg‚Ì" & Term("‚g‚o", u)
             Select Case flevel
                 Case 1
-                    msg = msg & "ã‚’æœ€å¤§" & Term("ï¼¨ï¼°", u) & "ã®30%ã ã‘å›å¾©ã€‚"
+                    msg = msg & "‚ğÅ‘å" & Term("‚g‚o", u) & "‚Ì30%‚¾‚¯‰ñ•œB"
                 Case 2
-                    msg = msg & "ã‚’æœ€å¤§" & Term("ï¼¨ï¼°", u) & "ã®50%ã ã‘å›å¾©ã€‚"
+                    msg = msg & "‚ğÅ‘å" & Term("‚g‚o", u) & "‚Ì50%‚¾‚¯‰ñ•œB"
                 Case 3
-                    msg = msg & "ã‚’å…¨å¿«ã€‚"
+                    msg = msg & "‚ğ‘S‰õB"
             End Select
             
-        Case "è£œçµ¦è£…ç½®"
-            msg = "ä»–ã®ãƒ¦ãƒ‹ãƒƒãƒˆã®" & Term("ï¼¥ï¼®", u) & "ã¨å¼¾è–¬ã‚’å…¨å¿«ã€‚;" & _
-                "ãŸã ã—ãƒ¦ãƒ‹ãƒƒãƒˆã®ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & Term("æ°—åŠ›", u) & "ã¯-10ã€‚"
-            If IsOptionDefined("ç§»å‹•å¾Œè£œçµ¦ä¸å¯") Then
-                msg = msg & "ç§»å‹•å¾Œã¯ä½¿ç”¨ä¸å¯ã€‚"
+        Case "•â‹‹‘•’u"
+            msg = "‘¼‚Ìƒ†ƒjƒbƒg‚Ì" & Term("‚d‚m", u) & "‚Æ’e–ò‚ğ‘S‰õB;" & _
+                "‚½‚¾‚µƒ†ƒjƒbƒg‚ÌƒpƒCƒƒbƒg‚Ì" & Term("‹C—Í", u) & "‚Í-10B"
+            If IsOptionDefined("ˆÚ“®Œã•â‹‹•s‰Â") Then
+                msg = msg & "ˆÚ“®Œã‚Íg—p•s‰ÂB"
             End If
             
-        Case "ä¿®ç†ä¸å¯"
+        Case "C—•s‰Â"
             For i = 2 To fdata
                 buf = LIndex(fdata, i)
                 If Left$(buf, 1) = "!" Then
                     buf = Mid$(buf, 2)
-                    msg = msg & buf & "ä»¥å¤–ã§ã¯" & Term("ï¼¨ï¼°", u) & "ã‚’å›å¾©å‡ºæ¥ãªã„ã€‚"
+                    msg = msg & buf & "ˆÈŠO‚Å‚Í" & Term("‚g‚o", u) & "‚ğ‰ñ•œo—ˆ‚È‚¢B"
                 Else
-                    msg = msg & buf & "ã§ã¯" & Term("ï¼¨ï¼°", u) & "ã‚’å›å¾©å‡ºæ¥ãªã„ã€‚"
+                    msg = msg & buf & "‚Å‚Í" & Term("‚g‚o", u) & "‚ğ‰ñ•œo—ˆ‚È‚¢B"
                 End If
             Next
-            msg = msg & buf & ";ãŸã ã—ã€" & Term("ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼", u) & _
-                "ã‚„åœ°å½¢ã€æ¯è‰¦ã«ã‚ˆã‚‹å›å¾©ã¯å¯èƒ½ã€‚"
+            msg = msg & buf & ";‚½‚¾‚µA" & Term("ƒXƒyƒVƒƒƒ‹ƒpƒ[", u) & _
+                "‚â’nŒ`A•êŠÍ‚É‚æ‚é‰ñ•œ‚Í‰Â”\B"
             
-        Case "éœŠåŠ›å¤‰æ›å™¨"
-            sname = p.SkillName0("éœŠåŠ›")
-            msg = sname & "ã«åˆã‚ã›ã¦å„ç¨®èƒ½åŠ›ãŒä¸Šæ˜‡ã™ã‚‹ã€‚"
+        Case "—ì—Í•ÏŠ·Ší"
+            sname = p.SkillName0("—ì—Í")
+            msg = sname & "‚É‡‚í‚¹‚ÄŠeí”\—Í‚ªã¸‚·‚éB"
             If flevel_specified Then
                 msg = msg & _
-                    ";ï¼ˆ" & sname & "ä¸Šé™ = " & Format$(flevel) & "ï¼‰"
+                    ";i" & sname & "ãŒÀ = " & Format$(flevel) & "j"
             End If
             
-        Case "ã‚ªãƒ¼ãƒ©å¤‰æ›å™¨"
-            sname = p.SkillName0("ã‚ªãƒ¼ãƒ©")
-            msg = sname & "ãƒ¬ãƒ™ãƒ«ã«åˆã‚ã›ã¦å„ç¨®èƒ½åŠ›ãŒä¸Šæ˜‡ã™ã‚‹ã€‚"
+        Case "ƒI[ƒ‰•ÏŠ·Ší"
+            sname = p.SkillName0("ƒI[ƒ‰")
+            msg = sname & "ƒŒƒxƒ‹‚É‡‚í‚¹‚ÄŠeí”\—Í‚ªã¸‚·‚éB"
             If flevel_specified Then
                 msg = msg & _
-                    ";ï¼ˆ" & sname & "ä¸Šé™ãƒ¬ãƒ™ãƒ« = " & Format$(flevel) & "ï¼‰"
+                    ";i" & sname & "ãŒÀƒŒƒxƒ‹ = " & Format$(flevel) & "j"
             End If
             
-        Case "ã‚µã‚¤ã‚­ãƒƒã‚¯ãƒ‰ãƒ©ã‚¤ãƒ–"
-            sname = p.SkillName0("è¶…èƒ½åŠ›")
-            msg = sname & "ãƒ¬ãƒ™ãƒ«ã”ã¨ã«" & Term("è£…ç”²", u) & "+100ã€" & Term("é‹å‹•æ€§", u) & "+5"
+        Case "ƒTƒCƒLƒbƒNƒhƒ‰ƒCƒu"
+            sname = p.SkillName0("’´”\—Í")
+            msg = sname & "ƒŒƒxƒ‹‚²‚Æ‚É" & Term("‘•b", u) & "+100A" & Term("‰^“®«", u) & "+5"
             If flevel_specified Then
                 msg = msg & _
-                    ";ï¼ˆ" & sname & "ä¸Šé™ãƒ¬ãƒ™ãƒ« = " & Format$(flevel) & "ï¼‰"
+                    ";i" & sname & "ãŒÀƒŒƒxƒ‹ = " & Format$(flevel) & "j"
             End If
             
-        Case "ã‚·ãƒ³ã‚¯ãƒ­ãƒ‰ãƒ©ã‚¤ãƒ–"
-            sname = p.SkillName0("åŒèª¿ç‡")
-            msg = sname & "ã«åˆã‚ã›ã¦å„ç¨®èƒ½åŠ›ãŒä¸Šæ˜‡ã™ã‚‹ã€‚"
+        Case "ƒVƒ“ƒNƒƒhƒ‰ƒCƒu"
+            sname = p.SkillName0("“¯’²—¦")
+            msg = sname & "‚É‡‚í‚¹‚ÄŠeí”\—Í‚ªã¸‚·‚éB"
             If flevel_specified Then
-                msg = msg & ";ï¼ˆ" & sname & "ä¸Šé™ = " & Format$(flevel) & "%ï¼‰"
+                msg = msg & ";i" & sname & "ãŒÀ = " & Format$(flevel) & "%j"
             End If
             
-        Case "ã‚¹ãƒ†ãƒ«ã‚¹"
+        Case "ƒXƒeƒ‹ƒX"
             If flevel_specified Then
-                msg = "æ•µã‹ã‚‰" & StrConv(Format$(flevel), vbWide) & _
-                    "ãƒã‚¹ä»¥å†…ã«ã„ãªã„é™ã‚Šç™ºè¦‹ã•ã‚Œãªã„ã€‚" & _
-                    "ãŸã ã—è‡ªåˆ†ã‹ã‚‰æ”»æ’ƒã™ã‚‹ã¨ï¼‘ã‚¿ãƒ¼ãƒ³ç„¡åŠ¹ã€‚"
+                msg = "“G‚©‚ç" & StrConv(Format$(flevel), vbWide) & _
+                    "ƒ}ƒXˆÈ“à‚É‚¢‚È‚¢ŒÀ‚è”­Œ©‚³‚ê‚È‚¢B" & _
+                    "‚½‚¾‚µ©•ª‚©‚çUŒ‚‚·‚é‚Æ‚Pƒ^[ƒ“–³ŒøB"
             Else
-                msg = "æ•µã‹ã‚‰ï¼“ãƒã‚¹ä»¥å†…ã«ã„ãªã„é™ã‚Šç™ºè¦‹ã•ã‚Œãªã„ã€‚" & _
-                    "ãŸã ã—è‡ªåˆ†ã‹ã‚‰æ”»æ’ƒã™ã‚‹ã¨ï¼‘ã‚¿ãƒ¼ãƒ³ç„¡åŠ¹ã€‚"
+                msg = "“G‚©‚ç‚Rƒ}ƒXˆÈ“à‚É‚¢‚È‚¢ŒÀ‚è”­Œ©‚³‚ê‚È‚¢B" & _
+                    "‚½‚¾‚µ©•ª‚©‚çUŒ‚‚·‚é‚Æ‚Pƒ^[ƒ“–³ŒøB"
             End If
             
-        Case "ã‚¹ãƒ†ãƒ«ã‚¹ç„¡åŠ¹åŒ–"
-            msg = "æ•µã®ã‚¹ãƒ†ãƒ«ã‚¹èƒ½åŠ›ã‚’ç„¡åŠ¹åŒ–ã™ã‚‹ã€‚"
+        Case "ƒXƒeƒ‹ƒX–³Œø‰»"
+            msg = "“G‚ÌƒXƒeƒ‹ƒX”\—Í‚ğ–³Œø‰»‚·‚éB"
             
-        Case "ãƒ†ãƒ¬ãƒãƒ¼ãƒˆ"
-            msg = "ãƒ†ãƒ¬ãƒãƒ¼ãƒˆã‚’è¡Œã„ã€" & Term("ç§»å‹•åŠ›", u) & Format$(u.Speed + flevel) & _
-                "ã§åœ°å½¢ã‚’ç„¡è¦–ã—ã¦ç§»å‹•ã€‚;"
+        Case "ƒeƒŒƒ|[ƒg"
+            msg = "ƒeƒŒƒ|[ƒg‚ğs‚¢A" & Term("ˆÚ“®—Í", u) & Format$(u.Speed + flevel) & _
+                "‚Å’nŒ`‚ğ–³‹‚µ‚ÄˆÚ“®B;"
             If LLength(fdata) > 1 Then
                 If CInt(LIndex(fdata, 2)) > 0 Then
-                    msg = msg & LIndex(fdata, 2) & Term("ï¼¥ï¼®", u) & "æ¶ˆè²»ã€‚"
+                    msg = msg & LIndex(fdata, 2) & Term("‚d‚m", u) & "Á”ïB"
                 End If
             Else
-                msg = msg & "40" & Term("ï¼¥ï¼®", u) & "æ¶ˆè²»ã€‚"
+                msg = msg & "40" & Term("‚d‚m", u) & "Á”ïB"
             End If
             
-        Case "ã‚¸ãƒ£ãƒ³ãƒ—"
-            msg = Term("ç§»å‹•åŠ›", u) & Format$(u.Speed + flevel) & _
-                "ã§åœ°ä¸Šåœ°å½¢ã‚’ç„¡è¦–ã—ãªãŒã‚‰ã‚¸ãƒ£ãƒ³ãƒ—ç§»å‹•ã€‚"
+        Case "ƒWƒƒƒ“ƒv"
+            msg = Term("ˆÚ“®—Í", u) & Format$(u.Speed + flevel) & _
+                "‚Å’nã’nŒ`‚ğ–³‹‚µ‚È‚ª‚çƒWƒƒƒ“ƒvˆÚ“®B"
             If LLength(fdata) > 1 Then
                 If StrToLng(LIndex(fdata, 2)) > 0 Then
-                    msg = msg & ";" & LIndex(fdata, 2) & Term("ï¼¥ï¼®", u) & "æ¶ˆè²»ã€‚"
+                    msg = msg & ";" & LIndex(fdata, 2) & Term("‚d‚m", u) & "Á”ïB"
                 End If
             End If
             
-        Case "æ°´æ³³"
-            msg = "æ°´ä¸­ã‚’æ³³ã„ã§ç§»å‹•å¯èƒ½ã€‚æ·±æµ·ç­‰ã®æ·±ã„æ°´ã®åœ°å½¢ã«é€²å…¥ã™ã‚‹ã“ã¨ãŒå‡ºæ¥ã‚‹ã€‚" & _
-                "ãŸã ã—æ°´ä¸­ã§ã®ç§»å‹•ã‚³ã‚¹ãƒˆãŒï¼‘ã«ãªã‚‹è¨³ã§ã¯ãªã„ã€‚"
+        Case "…‰j"
+            msg = "…’†‚ğ‰j‚¢‚ÅˆÚ“®‰Â”\B[ŠC“™‚Ì[‚¢…‚Ì’nŒ`‚Éi“ü‚·‚é‚±‚Æ‚ªo—ˆ‚éB" & _
+                "‚½‚¾‚µ…’†‚Å‚ÌˆÚ“®ƒRƒXƒg‚ª‚P‚É‚È‚é–ó‚Å‚Í‚È‚¢B"
             
-        Case "æ°´ä¸Šç§»å‹•"
-            msg = "æ°´ä¸Šã«æµ®ã‹ã‚“ã§ç§»å‹•å¯èƒ½ã€‚"
+        Case "…ãˆÚ“®"
+            msg = "…ã‚É•‚‚©‚ñ‚ÅˆÚ“®‰Â”\B"
             
-        Case "ãƒ›ãƒãƒ¼ç§»å‹•"
-            msg = "ç©ºä¸­ã«æµ®ããªãŒã‚‰ç§»å‹•ã™ã‚‹ã“ã¨ã§ç ‚æ¼ ã¨é›ªåŸã®ç§»å‹•ã‚³ã‚¹ãƒˆãŒï¼‘ã«ãªã‚‹ã€‚" & _
-                "ã¾ãŸã€æ°´ä¸Šç§»å‹•ã‚‚å¯èƒ½ã€‚ãŸã ã—ç§»å‹•æ™‚ã«5" & Term("ï¼¥ï¼®", u) & "æ¶ˆè²»ã€‚"
+        Case "ƒzƒo[ˆÚ“®"
+            msg = "‹ó’†‚É•‚‚«‚È‚ª‚çˆÚ“®‚·‚é‚±‚Æ‚Å»”™‚ÆáŒ´‚ÌˆÚ“®ƒRƒXƒg‚ª‚P‚É‚È‚éB" & _
+                "‚Ü‚½A…ãˆÚ“®‚à‰Â”\B‚½‚¾‚µˆÚ“®‚É5" & Term("‚d‚m", u) & "Á”ïB"
             
-        Case "é€éç§»å‹•"
-            msg = "éšœå®³ç‰©ã‚’ç„¡è¦–ã—ã¦ç§»å‹•ã€‚"
+        Case "“§‰ßˆÚ“®"
+            msg = "áŠQ•¨‚ğ–³‹‚µ‚ÄˆÚ“®B"
             
-        Case "ã™ã‚ŠæŠœã‘ç§»å‹•"
-            msg = "æ•µãƒ¦ãƒ‹ãƒƒãƒˆãŒã„ã‚‹ãƒã‚¹ã‚’é€šéå¯èƒ½ã€‚"
+        Case "‚·‚è”²‚¯ˆÚ“®"
+            msg = "“Gƒ†ƒjƒbƒg‚ª‚¢‚éƒ}ƒX‚ğ’Ê‰ß‰Â”\B"
             
-        Case "ç·šè·¯ç§»å‹•"
-            msg = "ç·šè·¯ä¸Šã®ã¿ã‚’ç§»å‹•å¯èƒ½ã€‚"
+        Case "ü˜HˆÚ“®"
+            msg = "ü˜Hã‚Ì‚İ‚ğˆÚ“®‰Â”\B"
             
-        Case "ç§»å‹•åˆ¶é™"
+        Case "ˆÚ“®§ŒÀ"
             msg = msg & LIndex(fdata, 2)
             For i = 3 To LLength(fdata)
-                msg = msg & "ã€" & LIndex(fdata, i)
+                msg = msg & "A" & LIndex(fdata, i)
             Next
-            msg = msg & "ä¸Šã®ã¿ã‚’ç§»å‹•å¯èƒ½ã€‚"
+            msg = msg & "ã‚Ì‚İ‚ğˆÚ“®‰Â”\B"
             
-        Case "é€²å…¥ä¸å¯"
+        Case "i“ü•s‰Â"
             msg = msg & LIndex(fdata, 2)
             For i = 3 To LLength(fdata)
-                msg = msg & "ã€" & LIndex(fdata, i)
+                msg = msg & "A" & LIndex(fdata, i)
             Next
-            msg = msg & "ã«ã¯é€²å…¥ä¸å¯ã€‚"
+            msg = msg & "‚É‚Íi“ü•s‰ÂB"
             
-        Case "åœ°å½¢é©å¿œ"
+        Case "’nŒ`“K‰"
             msg = msg & LIndex(fdata, 2)
             For i = 3 To LLength(fdata)
-                msg = msg & "ã€" & LIndex(fdata, i)
+                msg = msg & "A" & LIndex(fdata, i)
             Next
-            msg = msg & "ã«ãŠã‘ã‚‹ç§»å‹•ã‚³ã‚¹ãƒˆãŒï¼‘ã«ãªã‚‹ã€‚"
+            msg = msg & "‚É‚¨‚¯‚éˆÚ“®ƒRƒXƒg‚ª‚P‚É‚È‚éB"
             
-        Case "è¿½åŠ ç§»å‹•åŠ›"
-            msg = LIndex(fdata, 2) & "ã«ã„ã‚‹ã¨ã€" & Term("ç§»å‹•åŠ›", u) & "ãŒ"
+        Case "’Ç‰ÁˆÚ“®—Í"
+            msg = LIndex(fdata, 2) & "‚É‚¢‚é‚ÆA" & Term("ˆÚ“®—Í", u) & "‚ª"
             If flevel >= 0 Then
-                msg = msg & Format$(flevel) & "å¢—åŠ ã€‚"
+                msg = msg & Format$(flevel) & "‘‰ÁB"
             Else
-                msg = msg & Format$(-flevel) & "æ¸›å°‘ã€‚"
+                msg = msg & Format$(-flevel) & "Œ¸­B"
             End If
             
-        Case "æ¯è‰¦"
-            msg = "ä»–ã®ãƒ¦ãƒ‹ãƒƒãƒˆã‚’æ ¼ç´ã—ã€ä¿®ç†ãƒ»é‹æ¬å¯èƒ½ã€‚"
+        Case "•êŠÍ"
+            msg = "‘¼‚Ìƒ†ƒjƒbƒg‚ğŠi”[‚µAC—E‰^”À‰Â”\B"
             
-        Case "æ ¼ç´ä¸å¯"
-            msg = "æ¯è‰¦ã«æ ¼ç´ã™ã‚‹ã“ã¨ãŒå‡ºæ¥ãªã„ã€‚"
+        Case "Ši”[•s‰Â"
+            msg = "•êŠÍ‚ÉŠi”[‚·‚é‚±‚Æ‚ªo—ˆ‚È‚¢B"
             
-        Case "ä¸¡æ‰‹åˆ©ã"
-            msg = "ä¸¡æ‰‹ã«æ­¦å™¨ã‚’è£…å‚™å¯èƒ½ã€‚"
+        Case "—¼è—˜‚«"
+            msg = "—¼è‚É•Ší‚ğ‘•”õ‰Â”\B"
             
-        Case "éƒ¨éšŠãƒ¦ãƒ‹ãƒƒãƒˆ"
-            msg = "è¤‡æ•°ã®ãƒ¦ãƒ‹ãƒƒãƒˆã«ã‚ˆã£ã¦æ§‹æˆã•ã‚ŒãŸéƒ¨éšŠãƒ¦ãƒ‹ãƒƒãƒˆã€‚"
+        Case "•”‘àƒ†ƒjƒbƒg"
+            msg = "•¡”‚Ìƒ†ƒjƒbƒg‚É‚æ‚Á‚Ä\¬‚³‚ê‚½•”‘àƒ†ƒjƒbƒgB"
             
-        Case "å¬å–šãƒ¦ãƒ‹ãƒƒãƒˆ"
-            msg = "å¬å–šã•ã‚ŒãŸãƒ¦ãƒ‹ãƒƒãƒˆã€‚"
+        Case "¢Š«ƒ†ƒjƒbƒg"
+            msg = "¢Š«‚³‚ê‚½ƒ†ƒjƒbƒgB"
             
-        Case "å¤‰å½¢"
+        Case "•ÏŒ`"
             If u.IsHero Then
-                buf = "å¤‰åŒ–"
+                buf = "•Ï‰»"
             Else
-                buf = "å¤‰å½¢"
+                buf = "•ÏŒ`"
             End If
             If LLength(fdata) > 2 Then
-                msg = "ä»¥ä¸‹ã®å½¢æ…‹ã«" & buf & "; "
+                msg = "ˆÈ‰º‚ÌŒ`‘Ô‚É" & buf & "; "
                 For i = 2 To LLength(fdata)
                     If u.OtherForm(LIndex(fdata, i)).IsAvailable() Then
                         If u.Nickname = UDList.Item(LIndex(fdata, i)).Nickname Then
                             uname = UDList.Item(LIndex(fdata, i)).Name
-                            If Right$(uname, 5) = "(å‰æœŸå‹)" Then
+                            If Right$(uname, 5) = "(‘OŠúŒ^)" Then
                                 uname = Left$(uname, Len(uname) - 5)
-                            ElseIf Right$(uname, 5) = "ãƒ»å‰æœŸå‹)" Then
+                            ElseIf Right$(uname, 5) = "E‘OŠúŒ^)" Then
                                 uname = Left$(uname, Len(uname) - 5) & ")"
-                            ElseIf Right$(uname, 5) = "(å¾ŒæœŸå‹)" Then
+                            ElseIf Right$(uname, 5) = "(ŒãŠúŒ^)" Then
                                 uname = Left$(uname, Len(uname) - 5)
                             End If
                         Else
@@ -2756,60 +2756,60 @@ Dim uname As String
                 Else
                     uname = UDList.Item(LIndex(fdata, 2)).Nickname
                 End If
-                If Right$(uname, 5) = "(å‰æœŸå‹)" Then
+                If Right$(uname, 5) = "(‘OŠúŒ^)" Then
                     uname = Left$(uname, Len(uname) - 5)
-                ElseIf Right$(uname, 5) = "ãƒ»å‰æœŸå‹)" Then
+                ElseIf Right$(uname, 5) = "E‘OŠúŒ^)" Then
                     uname = Left$(uname, Len(uname) - 5) & ")"
-                ElseIf Right$(uname, 5) = "(å¾ŒæœŸå‹)" Then
+                ElseIf Right$(uname, 5) = "(ŒãŠúŒ^)" Then
                     uname = Left$(uname, Len(uname) - 5)
                 End If
-                msg = "<B>" & uname & "</B>ã«" & buf & "ã€‚"
+                msg = "<B>" & uname & "</B>‚É" & buf & "B"
             End If
             
-        Case "ãƒ‘ãƒ¼ãƒ„åˆ†é›¢"
+        Case "ƒp[ƒc•ª—£"
             If u.Nickname = UDList.Item(LIndex(fdata, 2)).Nickname Then
                 uname = UDList.Item(LIndex(fdata, 2)).Name
             Else
                 uname = UDList.Item(LIndex(fdata, 2)).Nickname
             End If
-            If Right$(uname, 5) = "(å‰æœŸå‹)" Then
+            If Right$(uname, 5) = "(‘OŠúŒ^)" Then
                 uname = Left$(uname, Len(uname) - 5)
-            ElseIf Right$(uname, 5) = "ãƒ»å‰æœŸå‹)" Then
+            ElseIf Right$(uname, 5) = "E‘OŠúŒ^)" Then
                 uname = Left$(uname, Len(uname) - 5) & ")"
-            ElseIf Right$(uname, 5) = "(å¾ŒæœŸå‹)" Then
+            ElseIf Right$(uname, 5) = "(ŒãŠúŒ^)" Then
                 uname = Left$(uname, Len(uname) - 5)
             End If
-            msg = "ãƒ‘ãƒ¼ãƒ„ã‚’åˆ†é›¢ã—" & uname & "ã«å¤‰å½¢ã€‚"
+            msg = "ƒp[ƒc‚ğ•ª—£‚µ" & uname & "‚É•ÏŒ`B"
             If flevel_specified Then
-                msg = msg & ";ãƒ¦ãƒ‹ãƒƒãƒˆç ´å£Šæ™‚ã«" & Format$(10 * flevel) & "%ã®ç¢ºç‡ã§ç™ºå‹•ã€‚"
+                msg = msg & ";ƒ†ƒjƒbƒg”j‰ó‚É" & Format$(10 * flevel) & "%‚ÌŠm—¦‚Å”­“®B"
             End If
             
-        Case "ãƒ‘ãƒ¼ãƒ„åˆä½“"
+        Case "ƒp[ƒc‡‘Ì"
             If u.Nickname = UDList.Item(fdata).Nickname Then
                 uname = UDList.Item(fdata).Name
             Else
                 uname = UDList.Item(fdata).Nickname
             End If
-            If Right$(uname, 5) = "(å‰æœŸå‹)" Then
+            If Right$(uname, 5) = "(‘OŠúŒ^)" Then
                 uname = Left$(uname, Len(uname) - 5)
-            ElseIf Right$(uname, 5) = "ãƒ»å‰æœŸå‹)" Then
+            ElseIf Right$(uname, 5) = "E‘OŠúŒ^)" Then
                 uname = Left$(uname, Len(uname) - 5) & ")"
-            ElseIf Right$(uname, 5) = "(å¾ŒæœŸå‹)" Then
+            ElseIf Right$(uname, 5) = "(ŒãŠúŒ^)" Then
                 uname = Left$(uname, Len(uname) - 5)
             End If
-            msg = "ãƒ‘ãƒ¼ãƒ„ã¨åˆä½“ã—" & uname & "ã«å¤‰å½¢ã€‚"
+            msg = "ƒp[ƒc‚Æ‡‘Ì‚µ" & uname & "‚É•ÏŒ`B"
             
-        Case "ãƒã‚¤ãƒ‘ãƒ¼ãƒ¢ãƒ¼ãƒ‰"
+        Case "ƒnƒCƒp[ƒ‚[ƒh"
             If u.Nickname = UDList.Item(LIndex(fdata, 2)).Nickname Then
                 uname = UDList.Item(LIndex(fdata, 2)).Name
             Else
                 uname = UDList.Item(LIndex(fdata, 2)).Nickname
             End If
-            If Right$(uname, 5) = "(å‰æœŸå‹)" Then
+            If Right$(uname, 5) = "(‘OŠúŒ^)" Then
                 uname = Left$(uname, Len(uname) - 5)
-            ElseIf Right$(uname, 5) = "ãƒ»å‰æœŸå‹)" Then
+            ElseIf Right$(uname, 5) = "E‘OŠúŒ^)" Then
                 uname = Left$(uname, Len(uname) - 5) & ")"
-            ElseIf Right$(uname, 5) = "(å¾ŒæœŸå‹)" Then
+            ElseIf Right$(uname, 5) = "(ŒãŠúŒ^)" Then
                 uname = Left$(uname, Len(uname) - 5)
             End If
             If u.Nickname <> uname Then
@@ -2817,38 +2817,38 @@ Dim uname As String
             Else
                 uname = ""
             End If
-            If InStr(fdata, "æ°—åŠ›ç™ºå‹•") > 0 Then
-                msg = Term("æ°—åŠ›", u) & Format$(100 + 10 * flevel) & "ã§ç‰¹æ®Šå½¢æ…‹" & uname & "ã«"
+            If InStr(fdata, "‹C—Í”­“®") > 0 Then
+                msg = Term("‹C—Í", u) & Format$(100 + 10 * flevel) & "‚Å“ÁêŒ`‘Ô" & uname & "‚É"
             ElseIf flevel <= 5 Then
-                msg = Term("æ°—åŠ›", u) & Format$(100 + 10 * flevel) & "ã€" & _
-                    "ã‚‚ã—ãã¯" & Term("ï¼¨ï¼°", u) & "ãŒæœ€å¤§" & Term("ï¼¨ï¼°", u) & _
-                    "ã®1/4ä»¥ä¸‹ã§ç‰¹æ®Šå½¢æ…‹" & uname & "ã«"
+                msg = Term("‹C—Í", u) & Format$(100 + 10 * flevel) & "A" & _
+                    "‚à‚µ‚­‚Í" & Term("‚g‚o", u) & "‚ªÅ‘å" & Term("‚g‚o", u) & _
+                    "‚Ì1/4ˆÈ‰º‚Å“ÁêŒ`‘Ô" & uname & "‚É"
             Else
-                msg = Term("ï¼¨ï¼°", u) & "ãŒæœ€å¤§" & Term("ï¼¨ï¼°", u) & _
-                    "ã®1/4ä»¥ä¸‹ã§ç‰¹æ®Šå½¢æ…‹" & uname & "ã«"
+                msg = Term("‚g‚o", u) & "‚ªÅ‘å" & Term("‚g‚o", u) & _
+                    "‚Ì1/4ˆÈ‰º‚Å“ÁêŒ`‘Ô" & uname & "‚É"
             End If
-            If InStr(fdata, "è‡ªå‹•ç™ºå‹•") > 0 Then
-                msg = msg & "è‡ªå‹•"
+            If InStr(fdata, "©“®”­“®") > 0 Then
+                msg = msg & "©“®"
             End If
             If u.IsHero Then
-                msg = msg & "å¤‰èº«ã€‚"
+                msg = msg & "•ÏgB"
             Else
-                msg = msg & "å¤‰å½¢ã€‚"
+                msg = msg & "•ÏŒ`B"
             End If
             
-        Case "åˆä½“"
+        Case "‡‘Ì"
             If u.IsHero Then
-                buf = "å¤‰åŒ–ã€‚"
+                buf = "•Ï‰»B"
             Else
-                buf = "å¤‰å½¢ã€‚"
+                buf = "•ÏŒ`B"
             End If
             If LLength(fdata) > 3 Then
                 If UDList.IsDefined(LIndex(fdata, 2)) Then
-                    msg = "ä»¥ä¸‹ã®ãƒ¦ãƒ‹ãƒƒãƒˆã¨åˆä½“ã—<B>" & _
-                        UDList.Item(LIndex(fdata, 2)).Nickname & "</B>ã«" & buf & "; "
+                    msg = "ˆÈ‰º‚Ìƒ†ƒjƒbƒg‚Æ‡‘Ì‚µ<B>" & _
+                        UDList.Item(LIndex(fdata, 2)).Nickname & "</B>‚É" & buf & "; "
                 Else
-                    msg = "ä»¥ä¸‹ã®ãƒ¦ãƒ‹ãƒƒãƒˆã¨åˆä½“ã—<B>" & _
-                        LIndex(fdata, 2) & "</B>ã«" & buf & "; "
+                    msg = "ˆÈ‰º‚Ìƒ†ƒjƒbƒg‚Æ‡‘Ì‚µ<B>" & _
+                        LIndex(fdata, 2) & "</B>‚É" & buf & "; "
                 End If
                 
                 For i = 3 To LLength(fdata)
@@ -2862,21 +2862,21 @@ Dim uname As String
                 Next
             Else
                 If UDList.IsDefined(LIndex(fdata, 3)) Then
-                    msg = UDList.Item(LIndex(fdata, 3)).Nickname & "ã¨åˆä½“ã—"
+                    msg = UDList.Item(LIndex(fdata, 3)).Nickname & "‚Æ‡‘Ì‚µ"
                 Else
-                    msg = LIndex(fdata, 3) & "ã¨åˆä½“ã—"
+                    msg = LIndex(fdata, 3) & "‚Æ‡‘Ì‚µ"
                 End If
                 If UDList.IsDefined(LIndex(fdata, 2)) Then
                     msg = msg & _
-                        UDList.Item(LIndex(fdata, 2)).Nickname & "ã«" & buf
+                        UDList.Item(LIndex(fdata, 2)).Nickname & "‚É" & buf
                 Else
                     msg = msg & _
-                        LIndex(fdata, 2) & "ã«" & buf
+                        LIndex(fdata, 2) & "‚É" & buf
                 End If
             End If
             
-        Case "åˆ†é›¢"
-            msg = "ä»¥ä¸‹ã®ãƒ¦ãƒ‹ãƒƒãƒˆã«åˆ†é›¢ã€‚; "
+        Case "•ª—£"
+            msg = "ˆÈ‰º‚Ìƒ†ƒjƒbƒg‚É•ª—£B; "
             For i = 2 To LLength(fdata)
                 If UDList.IsDefined(LIndex(fdata, i)) Then
                     msg = msg & _
@@ -2887,24 +2887,24 @@ Dim uname As String
                 End If
             Next
             
-        Case "ä¸å®‰å®š"
-            msg = Term("ï¼¨ï¼°", u) & "ãŒæœ€å¤§å€¤ã®1/4ä»¥ä¸‹ã«ãªã‚‹ã¨æš´èµ°ã™ã‚‹ã€‚"
+        Case "•sˆÀ’è"
+            msg = Term("‚g‚o", u) & "‚ªÅ‘å’l‚Ì1/4ˆÈ‰º‚É‚È‚é‚Æ–\‘–‚·‚éB"
             
-        Case "æ”¯é…"
+        Case "x”z"
             If LLength(fdata) = 2 Then
                 If Not PDList.IsDefined(LIndex(fdata, 2)) Then
-                    ErrorMessage "æ”¯é…å¯¾è±¡ã®ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã€Œ" & LIndex(fdata, 2) _
-                        & "ã€ã®ãƒ‡ãƒ¼ã‚¿ãŒå®šç¾©ã•ã‚Œã¦ã„ã¾ã›ã‚“"
+                    ErrorMessage "x”z‘ÎÛ‚ÌƒpƒCƒƒbƒgu" & LIndex(fdata, 2) _
+                        & "v‚Ìƒf[ƒ^‚ª’è‹`‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ"
                     Exit Function
                 End If
                 msg = PDList.Item(LIndex(fdata, 2)).Nickname & _
-                    "ã®å­˜åœ¨ã‚’ç¶­æŒã—ã€ä»•ãˆã•ã›ã¦ã„ã‚‹ã€‚"
+                    "‚Ì‘¶İ‚ğˆÛ‚µAd‚¦‚³‚¹‚Ä‚¢‚éB"
             Else
-                msg = "ä»¥ä¸‹ã®ãƒ¦ãƒ‹ãƒƒãƒˆã®å­˜åœ¨ã‚’ç¶­æŒã—ã€ä»•ãˆã•ã›ã¦ã„ã‚‹ã€‚;"
+                msg = "ˆÈ‰º‚Ìƒ†ƒjƒbƒg‚Ì‘¶İ‚ğˆÛ‚µAd‚¦‚³‚¹‚Ä‚¢‚éB;"
                 For i = 2 To LLength(fdata)
                     If Not PDList.IsDefined(LIndex(fdata, 2)) Then
-                        ErrorMessage "æ”¯é…å¯¾è±¡ã®ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã€Œ" & LIndex(fdata, i) _
-                            & "ã€ã®ãƒ‡ãƒ¼ã‚¿ãŒå®šç¾©ã•ã‚Œã¦ã„ã¾ã›ã‚“"
+                        ErrorMessage "x”z‘ÎÛ‚ÌƒpƒCƒƒbƒgu" & LIndex(fdata, i) _
+                            & "v‚Ìƒf[ƒ^‚ª’è‹`‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ"
                         Exit Function
                     End If
                     msg = msg & _
@@ -2912,260 +2912,260 @@ Dim uname As String
                 Next
             End If
             
-        Case "ï¼¥ï¼£ï¼­"
-            msg = "åŠå¾„ï¼“ãƒã‚¹ä»¥å†…ã®å‘³æ–¹ãƒ¦ãƒ‹ãƒƒãƒˆã«å¯¾ã™ã‚‹æ”»æ’ƒã®å‘½ä¸­ç‡ã‚’å…ƒã®"
+        Case "‚d‚b‚l"
+            msg = "”¼Œa‚Rƒ}ƒXˆÈ“à‚Ì–¡•ûƒ†ƒjƒbƒg‚É‘Î‚·‚éUŒ‚‚Ì–½’†—¦‚ğŒ³‚Ì"
             If flevel >= 0 Then
-                msg = msg & Format$(100 - 5 * flevel) & "%ã«æ¸›å°‘ã•ã›ã‚‹ã€‚"
+                msg = msg & Format$(100 - 5 * flevel) & "%‚ÉŒ¸­‚³‚¹‚éB"
             Else
-                msg = msg & Format$(100 - 5 * flevel) & "%ã«å¢—åŠ ã•ã›ã‚‹ã€‚"
+                msg = msg & Format$(100 - 5 * flevel) & "%‚É‘‰Á‚³‚¹‚éB"
             End If
             buf = fname
             If InStr(buf, "Lv") Then
                 buf = Left$(buf, InStr(buf, "Lv") - 1)
             End If
-            msg = msg & "åŒæ™‚ã«ç›¸æ‰‹ã®" & buf & "èƒ½åŠ›ã®åŠ¹æœã‚’ç„¡åŠ¹åŒ–ã€‚"
-            msg = msg & ";æ€å¿µèª˜å°æ”»æ’ƒã‚„è¿‘æ¥æ”»æ’ƒã«ã¯ç„¡åŠ¹ã€‚"
+            msg = msg & "“¯‚É‘Šè‚Ì" & buf & "”\—Í‚ÌŒø‰Ê‚ğ–³Œø‰»B"
+            msg = msg & ";v”O—U“±UŒ‚‚â‹ßÚUŒ‚‚É‚Í–³ŒøB"
             
-        Case "ãƒ–ãƒ¼ã‚¹ãƒˆ"
-            If IsOptionDefined("ãƒ€ãƒ¡ãƒ¼ã‚¸å€ç‡ä½ä¸‹") Then
-                msg = Term("æ°—åŠ›", u) & "130ä»¥ä¸Šã§ç™ºå‹•ã—ã€ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ 20% ã‚¢ãƒƒãƒ—ã€‚"
+        Case "ƒu[ƒXƒg"
+            If IsOptionDefined("ƒ_ƒ[ƒW”{—¦’á‰º") Then
+                msg = Term("‹C—Í", u) & "130ˆÈã‚Å”­“®‚µAƒ_ƒ[ƒW‚ğ 20% ƒAƒbƒvB"
             Else
-                msg = Term("æ°—åŠ›", u) & "130ä»¥ä¸Šã§ç™ºå‹•ã—ã€ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ 25% ã‚¢ãƒƒãƒ—ã€‚"
+                msg = Term("‹C—Í", u) & "130ˆÈã‚Å”­“®‚µAƒ_ƒ[ƒW‚ğ 25% ƒAƒbƒvB"
             End If
             
-        Case "é˜²å¾¡ä¸å¯"
-            msg = "æ”»æ’ƒã‚’å—ã‘ãŸéš›ã«é˜²å¾¡é‹å‹•ã‚’å–ã‚‹ã“ã¨ãŒå‡ºæ¥ãªã„ã€‚"
+        Case "–hŒä•s‰Â"
+            msg = "UŒ‚‚ğó‚¯‚½Û‚É–hŒä‰^“®‚ğæ‚é‚±‚Æ‚ªo—ˆ‚È‚¢B"
             
-        Case "å›é¿ä¸å¯"
-            msg = "æ”»æ’ƒã‚’å—ã‘ãŸéš›ã«å›é¿é‹å‹•ã‚’å–ã‚‹ã“ã¨ãŒå‡ºæ¥ãªã„ã€‚"
+        Case "‰ñ”ğ•s‰Â"
+            msg = "UŒ‚‚ğó‚¯‚½Û‚É‰ñ”ğ‰^“®‚ğæ‚é‚±‚Æ‚ªo—ˆ‚È‚¢B"
             
-        Case "æ ¼é—˜å¼·åŒ–"
+        Case "Ši“¬‹­‰»"
             If flevel >= 0 Then
-                msg = "ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & Term("æ ¼é—˜", u) & "ã‚’+" & Format$(CInt(5 * flevel)) & "ã€‚"
+                msg = "ƒpƒCƒƒbƒg‚Ì" & Term("Ši“¬", u) & "‚ğ+" & Format$(CInt(5 * flevel)) & "B"
             Else
-                msg = "ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & Term("æ ¼é—˜", u) & "ã‚’" & Format$(CInt(5 * flevel)) & "ã€‚"
+                msg = "ƒpƒCƒƒbƒg‚Ì" & Term("Ši“¬", u) & "‚ğ" & Format$(CInt(5 * flevel)) & "B"
             End If
             If IsNumeric(LIndex(fdata, 2)) Then
-                msg = msg & ";" & Term("æ°—åŠ›", u) & LIndex(fdata, 2) & "ä»¥ä¸Šã§ç™ºå‹•ã€‚"
+                msg = msg & ";" & Term("‹C—Í", u) & LIndex(fdata, 2) & "ˆÈã‚Å”­“®B"
             End If
             
-        Case "å°„æ’ƒå¼·åŒ–"
+        Case "ËŒ‚‹­‰»"
             If p.HasMana() Then
                 If flevel >= 0 Then
-                    msg = "ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & Term("é­”åŠ›", u) & "ã‚’+" & Format$(CInt(5 * flevel)) & "ã€‚"
+                    msg = "ƒpƒCƒƒbƒg‚Ì" & Term("–‚—Í", u) & "‚ğ+" & Format$(CInt(5 * flevel)) & "B"
                 Else
-                    msg = "ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & Term("é­”åŠ›", u) & "ã‚’" & Format$(CInt(5 * flevel)) & "ã€‚"
+                    msg = "ƒpƒCƒƒbƒg‚Ì" & Term("–‚—Í", u) & "‚ğ" & Format$(CInt(5 * flevel)) & "B"
                 End If
             Else
                 If flevel >= 0 Then
-                    msg = "ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & Term("å°„æ’ƒ", u) & "ã‚’+" & Format$(CInt(5 * flevel)) & "ã€‚"
+                    msg = "ƒpƒCƒƒbƒg‚Ì" & Term("ËŒ‚", u) & "‚ğ+" & Format$(CInt(5 * flevel)) & "B"
                 Else
-                    msg = "ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & Term("å°„æ’ƒ", u) & "ã‚’" & Format$(CInt(5 * flevel)) & "ã€‚"
+                    msg = "ƒpƒCƒƒbƒg‚Ì" & Term("ËŒ‚", u) & "‚ğ" & Format$(CInt(5 * flevel)) & "B"
                 End If
             End If
             If IsNumeric(LIndex(fdata, 2)) Then
-                msg = msg & ";" & Term("æ°—åŠ›", u) & LIndex(fdata, 2) & "ä»¥ä¸Šã§ç™ºå‹•ã€‚"
+                msg = msg & ";" & Term("‹C—Í", u) & LIndex(fdata, 2) & "ˆÈã‚Å”­“®B"
             End If
             
-        Case "å‘½ä¸­å¼·åŒ–"
+        Case "–½’†‹­‰»"
             If flevel >= 0 Then
-                msg = "ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & Term("å‘½ä¸­", u) & "ã‚’+" & Format$(CInt(5 * flevel)) & "ã€‚"
+                msg = "ƒpƒCƒƒbƒg‚Ì" & Term("–½’†", u) & "‚ğ+" & Format$(CInt(5 * flevel)) & "B"
             Else
-                msg = "ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & Term("å‘½ä¸­", u) & "ã‚’" & Format$(CInt(5 * flevel)) & "ã€‚"
+                msg = "ƒpƒCƒƒbƒg‚Ì" & Term("–½’†", u) & "‚ğ" & Format$(CInt(5 * flevel)) & "B"
             End If
             If IsNumeric(LIndex(fdata, 2)) Then
                 msg = msg & _
-                    "æ°—åŠ›" & LIndex(fdata, 2) & "ä»¥ä¸Šã§ç™ºå‹•ã€‚"
+                    "‹C—Í" & LIndex(fdata, 2) & "ˆÈã‚Å”­“®B"
             End If
             
-        Case "å›é¿å¼·åŒ–"
+        Case "‰ñ”ğ‹­‰»"
             If flevel >= 0 Then
-                msg = "ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & Term("å›é¿", u) & "ã‚’+" & Format$(CInt(5 * flevel)) & "ã€‚"
+                msg = "ƒpƒCƒƒbƒg‚Ì" & Term("‰ñ”ğ", u) & "‚ğ+" & Format$(CInt(5 * flevel)) & "B"
             Else
-                msg = "ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & Term("å›é¿", u) & "ã‚’" & Format$(CInt(5 * flevel)) & "ã€‚"
+                msg = "ƒpƒCƒƒbƒg‚Ì" & Term("‰ñ”ğ", u) & "‚ğ" & Format$(CInt(5 * flevel)) & "B"
             End If
             If IsNumeric(LIndex(fdata, 2)) Then
-                msg = msg & ";" & Term("æ°—åŠ›", u) & LIndex(fdata, 2) & "ä»¥ä¸Šã§ç™ºå‹•ã€‚"
+                msg = msg & ";" & Term("‹C—Í", u) & LIndex(fdata, 2) & "ˆÈã‚Å”­“®B"
             End If
             
-        Case "æŠ€é‡å¼·åŒ–"
+        Case "‹Z—Ê‹­‰»"
             If flevel >= 0 Then
-                msg = "ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & Term("æŠ€é‡", u) & "ã‚’+" & Format$(CInt(5 * flevel)) & "ã€‚"
+                msg = "ƒpƒCƒƒbƒg‚Ì" & Term("‹Z—Ê", u) & "‚ğ+" & Format$(CInt(5 * flevel)) & "B"
             Else
-                msg = "ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & Term("æŠ€é‡", u) & "ã‚’" & Format$(CInt(5 * flevel)) & "ã€‚"
+                msg = "ƒpƒCƒƒbƒg‚Ì" & Term("‹Z—Ê", u) & "‚ğ" & Format$(CInt(5 * flevel)) & "B"
             End If
             If IsNumeric(LIndex(fdata, 2)) Then
-                msg = msg & ";" & Term("æ°—åŠ›", u) & LIndex(fdata, 2) & "ä»¥ä¸Šã§ç™ºå‹•ã€‚"
+                msg = msg & ";" & Term("‹C—Í", u) & LIndex(fdata, 2) & "ˆÈã‚Å”­“®B"
             End If
             
-        Case "åå¿œå¼·åŒ–"
+        Case "”½‰‹­‰»"
             If flevel >= 0 Then
-                msg = "ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & Term("åå¿œ", u) & "ã‚’+" & Format$(CInt(5 * flevel)) & "ã€‚"
+                msg = "ƒpƒCƒƒbƒg‚Ì" & Term("”½‰", u) & "‚ğ+" & Format$(CInt(5 * flevel)) & "B"
             Else
-                msg = "ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & Term("åå¿œ", u) & "ã‚’" & Format$(CInt(5 * flevel)) & "ã€‚"
+                msg = "ƒpƒCƒƒbƒg‚Ì" & Term("”½‰", u) & "‚ğ" & Format$(CInt(5 * flevel)) & "B"
             End If
             If IsNumeric(LIndex(fdata, 2)) Then
-                msg = msg & ";" & Term("æ°—åŠ›", u) & LIndex(fdata, 2) & "ä»¥ä¸Šã§ç™ºå‹•ã€‚"
+                msg = msg & ";" & Term("‹C—Í", u) & LIndex(fdata, 2) & "ˆÈã‚Å”­“®B"
             End If
             
-        Case "ï¼¨ï¼°å¼·åŒ–"
+        Case "‚g‚o‹­‰»"
             If flevel >= 0 Then
-                msg = "æœ€å¤§" & Term("ï¼¨ï¼°", u) & "ã‚’" & Format$(CInt(200 * flevel)) & "å¢—åŠ ã€‚"
+                msg = "Å‘å" & Term("‚g‚o", u) & "‚ğ" & Format$(CInt(200 * flevel)) & "‘‰ÁB"
             Else
-                msg = "æœ€å¤§" & Term("ï¼¨ï¼°", u) & "ã‚’" & Format$(CInt(-200 * flevel)) & "æ¸›å°‘ã€‚"
+                msg = "Å‘å" & Term("‚g‚o", u) & "‚ğ" & Format$(CInt(-200 * flevel)) & "Œ¸­B"
             End If
             If IsNumeric(LIndex(fdata, 2)) Then
-                msg = msg & ";" & Term("æ°—åŠ›", u) & LIndex(fdata, 2) & "ä»¥ä¸Šã§ç™ºå‹•ã€‚"
+                msg = msg & ";" & Term("‹C—Í", u) & LIndex(fdata, 2) & "ˆÈã‚Å”­“®B"
             End If
             
-        Case "ï¼¥ï¼®å¼·åŒ–"
+        Case "‚d‚m‹­‰»"
             If flevel >= 0 Then
-                msg = "æœ€å¤§" & Term("ï¼¥ï¼®", u) & "ã‚’" & Format$(CInt(10 * flevel)) & "å¢—åŠ ã€‚"
+                msg = "Å‘å" & Term("‚d‚m", u) & "‚ğ" & Format$(CInt(10 * flevel)) & "‘‰ÁB"
             Else
-                msg = "æœ€å¤§" & Term("ï¼¥ï¼®", u) & "ã‚’" & Format$(CInt(-10 * flevel)) & "æ¸›å°‘ã€‚"
+                msg = "Å‘å" & Term("‚d‚m", u) & "‚ğ" & Format$(CInt(-10 * flevel)) & "Œ¸­B"
             End If
             If IsNumeric(LIndex(fdata, 2)) Then
-                msg = msg & ";" & Term("æ°—åŠ›", u) & LIndex(fdata, 2) & "ä»¥ä¸Šã§ç™ºå‹•ã€‚"
+                msg = msg & ";" & Term("‹C—Í", u) & LIndex(fdata, 2) & "ˆÈã‚Å”­“®B"
             End If
             
-        Case "è£…ç”²å¼·åŒ–"
+        Case "‘•b‹­‰»"
             If flevel >= 0 Then
-                msg = Term("è£…ç”²", u) & "ã‚’" & Format$(CInt(100 * flevel)) & "å¢—åŠ ã€‚"
+                msg = Term("‘•b", u) & "‚ğ" & Format$(CInt(100 * flevel)) & "‘‰ÁB"
             Else
-                msg = Term("è£…ç”²", u) & "ã‚’" & Format$(CInt(-100 * flevel)) & "æ¸›å°‘ã€‚"
+                msg = Term("‘•b", u) & "‚ğ" & Format$(CInt(-100 * flevel)) & "Œ¸­B"
             End If
             If IsNumeric(LIndex(fdata, 2)) Then
-                msg = msg & ";" & Term("æ°—åŠ›", u) & LIndex(fdata, 2) & "ä»¥ä¸Šã§ç™ºå‹•ã€‚"
+                msg = msg & ";" & Term("‹C—Í", u) & LIndex(fdata, 2) & "ˆÈã‚Å”­“®B"
             End If
             
-        Case "é‹å‹•æ€§å¼·åŒ–"
+        Case "‰^“®«‹­‰»"
             If flevel >= 0 Then
-                msg = Term("é‹å‹•æ€§", u) & "ã‚’" & Format$(CInt(5 * flevel)) & "å¢—åŠ ã€‚"
+                msg = Term("‰^“®«", u) & "‚ğ" & Format$(CInt(5 * flevel)) & "‘‰ÁB"
             Else
-                msg = Term("é‹å‹•æ€§", u) & "ã‚’" & Format$(CInt(-5 * flevel)) & "æ¸›å°‘ã€‚"
+                msg = Term("‰^“®«", u) & "‚ğ" & Format$(CInt(-5 * flevel)) & "Œ¸­B"
             End If
             If IsNumeric(LIndex(fdata, 2)) Then
-                msg = msg & ";" & Term("æ°—åŠ›", u) & LIndex(fdata, 2) & "ä»¥ä¸Šã§ç™ºå‹•ã€‚"
+                msg = msg & ";" & Term("‹C—Í", u) & LIndex(fdata, 2) & "ˆÈã‚Å”­“®B"
             End If
             
-        Case "ç§»å‹•åŠ›å¼·åŒ–"
+        Case "ˆÚ“®—Í‹­‰»"
             If flevel >= 0 Then
-                msg = Term("ç§»å‹•åŠ›", u) & "ã‚’" & Format$(CInt(flevel)) & "å¢—åŠ ã€‚"
+                msg = Term("ˆÚ“®—Í", u) & "‚ğ" & Format$(CInt(flevel)) & "‘‰ÁB"
             Else
-                msg = Term("ç§»å‹•åŠ›", u) & "ã‚’" & Format$(CInt(flevel)) & "æ¸›å°‘ã€‚"
+                msg = Term("ˆÚ“®—Í", u) & "‚ğ" & Format$(CInt(flevel)) & "Œ¸­B"
             End If
             If IsNumeric(LIndex(fdata, 2)) Then
-                msg = msg & ";" & Term("æ°—åŠ›", u) & LIndex(fdata, 2) & "ä»¥ä¸Šã§ç™ºå‹•ã€‚"
+                msg = msg & ";" & Term("‹C—Í", u) & LIndex(fdata, 2) & "ˆÈã‚Å”­“®B"
             End If
             
-        Case "ï¼¨ï¼°å‰²åˆå¼·åŒ–"
+        Case "‚g‚oŠ„‡‹­‰»"
             If flevel >= 0 Then
-                msg = "æœ€å¤§" & Term("ï¼¨ï¼°", u) & "ã‚’" & Format$(CInt(5 * flevel)) & "%åˆ†å¢—åŠ ã€‚"
+                msg = "Å‘å" & Term("‚g‚o", u) & "‚ğ" & Format$(CInt(5 * flevel)) & "%•ª‘‰ÁB"
             Else
-                msg = "æœ€å¤§" & Term("ï¼¨ï¼°", u) & "ã‚’" & Format$(CInt(-5 * flevel)) & "%åˆ†æ¸›å°‘ã€‚"
+                msg = "Å‘å" & Term("‚g‚o", u) & "‚ğ" & Format$(CInt(-5 * flevel)) & "%•ªŒ¸­B"
             End If
             If IsNumeric(LIndex(fdata, 2)) Then
-                msg = msg & ";" & Term("æ°—åŠ›", u) & LIndex(fdata, 2) & "ä»¥ä¸Šã§ç™ºå‹•ã€‚"
+                msg = msg & ";" & Term("‹C—Í", u) & LIndex(fdata, 2) & "ˆÈã‚Å”­“®B"
             End If
             
-        Case "ï¼¥ï¼®å‰²åˆå¼·åŒ–"
+        Case "‚d‚mŠ„‡‹­‰»"
             If flevel >= 0 Then
-                msg = "æœ€å¤§" & Term("ï¼¥ï¼®", u) & "ã‚’" & Format$(CInt(5 * flevel)) & "%åˆ†å¢—åŠ ã€‚"
+                msg = "Å‘å" & Term("‚d‚m", u) & "‚ğ" & Format$(CInt(5 * flevel)) & "%•ª‘‰ÁB"
             Else
-                msg = "æœ€å¤§" & Term("ï¼¥ï¼®", u) & "ã‚’" & Format$(CInt(-5 * flevel)) & "%åˆ†æ¸›å°‘ã€‚"
+                msg = "Å‘å" & Term("‚d‚m", u) & "‚ğ" & Format$(CInt(-5 * flevel)) & "%•ªŒ¸­B"
             End If
             If IsNumeric(LIndex(fdata, 2)) Then
-                msg = msg & ";" & Term("æ°—åŠ›", u) & LIndex(fdata, 2) & "ä»¥ä¸Šã§ç™ºå‹•ã€‚"
+                msg = msg & ";" & Term("‹C—Í", u) & LIndex(fdata, 2) & "ˆÈã‚Å”­“®B"
             End If
             
-        Case "è£…ç”²å‰²åˆå¼·åŒ–"
+        Case "‘•bŠ„‡‹­‰»"
             If flevel >= 0 Then
-                msg = Term("è£…ç”²", u) & "ã‚’" & Format$(CInt(5 * flevel)) & "%åˆ†å¢—åŠ ã€‚"
+                msg = Term("‘•b", u) & "‚ğ" & Format$(CInt(5 * flevel)) & "%•ª‘‰ÁB"
             Else
-                msg = Term("è£…ç”²", u) & "ã‚’" & Format$(CInt(-5 * flevel)) & "%åˆ†æ¸›å°‘ã€‚"
+                msg = Term("‘•b", u) & "‚ğ" & Format$(CInt(-5 * flevel)) & "%•ªŒ¸­B"
             End If
             If IsNumeric(LIndex(fdata, 2)) Then
-                msg = msg & ";" & Term("æ°—åŠ›", u) & LIndex(fdata, 2) & "ä»¥ä¸Šã§ç™ºå‹•ã€‚"
+                msg = msg & ";" & Term("‹C—Í", u) & LIndex(fdata, 2) & "ˆÈã‚Å”­“®B"
             End If
             
-        Case "é‹å‹•æ€§å‰²åˆå¼·åŒ–"
+        Case "‰^“®«Š„‡‹­‰»"
             If flevel >= 0 Then
-                msg = Term("é‹å‹•æ€§", u) & "ã‚’" & Format$(CInt(5 * flevel)) & "%åˆ†å¢—åŠ ã€‚"
+                msg = Term("‰^“®«", u) & "‚ğ" & Format$(CInt(5 * flevel)) & "%•ª‘‰ÁB"
             Else
-                msg = Term("é‹å‹•æ€§", u) & "ã‚’" & Format$(CInt(-5 * flevel)) & "%åˆ†æ¸›å°‘ã€‚"
+                msg = Term("‰^“®«", u) & "‚ğ" & Format$(CInt(-5 * flevel)) & "%•ªŒ¸­B"
             End If
             If IsNumeric(LIndex(fdata, 2)) Then
-                msg = msg & ";" & Term("æ°—åŠ›", u) & LIndex(fdata, 2) & "ä»¥ä¸Šã§ç™ºå‹•ã€‚"
+                msg = msg & ";" & Term("‹C—Í", u) & LIndex(fdata, 2) & "ˆÈã‚Å”­“®B"
             End If
             
-        Case "æ­¦å™¨ãƒ»é˜²å…·ã‚¯ãƒ©ã‚¹"
+        Case "•ŠíE–h‹ïƒNƒ‰ƒX"
             fdata = Trim$(u.WeaponProficiency)
             If fdata <> "" Then
-                msg = "æ­¦å™¨ã€" & fdata & "ã€‘;"
+                msg = "•Šíy" & fdata & "z;"
             Else
-                msg = "æ­¦å™¨ã€-ã€‘;"
+                msg = "•Šíy-z;"
             End If
             fdata = Trim$(u.ArmorProficiency)
             If fdata <> "" Then
-                msg = msg & "é˜²å…·ã€" & fdata & "ã€‘"
+                msg = msg & "–h‹ïy" & fdata & "z"
             Else
-                msg = msg & "é˜²å…·ã€-ã€‘"
+                msg = msg & "–h‹ïy-z"
             End If
             
-        Case "è¿½åŠ æ”»æ’ƒ"
-            If LIndex(fdata, 3) <> "å…¨" Then
+        Case "’Ç‰ÁUŒ‚"
+            If LIndex(fdata, 3) <> "‘S" Then
                 buf = LIndex(fdata, 3)
                 If Left$(buf, 1) = "@" Then
-                    msg = Mid$(buf, 2) & "ã«ã‚ˆã‚‹"
+                    msg = Mid$(buf, 2) & "‚É‚æ‚é"
                 Else
-                    msg = "ã€Œ" & buf & "ã€å±æ€§ã‚’æŒã¤æ­¦å™¨ã«ã‚ˆã‚‹"
+                    msg = "u" & buf & "v‘®«‚ğ‚Â•Ší‚É‚æ‚é"
                 End If
             End If
             
-            msg = msg & "æ”»æ’ƒã®å¾Œã«ã€"
+            msg = msg & "UŒ‚‚ÌŒã‚ÉA"
             
             buf = LIndex(fdata, 4)
             If IsNumeric(buf) Then
                 If buf <> "100" Then
-                    msg = msg & buf & "%ã®ç¢ºç‡ã§"
+                    msg = msg & buf & "%‚ÌŠm—¦‚Å"
                 End If
             ElseIf InStr(buf, "+") > 0 Or InStr(buf, "-") > 0 Then
                 i = MaxLng(InStr(buf, "+"), InStr(buf, "-"))
                 sname = u.SkillName0(Left$(buf, i - 1))
                 prob = (u.SkillLevel(Left$(buf, i - 1)) + CInt(Mid$(buf, i))) * 100 \ 16
                 msg = msg & _
-                    "(" & sname & "Lv" & Mid$(buf, i) & ")/16ã®ç¢ºç‡(" & _
-                    Format$(prob) & "%)ã§"
+                    "(" & sname & "Lv" & Mid$(buf, i) & ")/16‚ÌŠm—¦(" & _
+                    Format$(prob) & "%)‚Å"
             Else
                 sname = u.SkillName0(buf)
                 prob = u.SkillLevel(buf) * 100 \ 16
                 msg = msg & _
-                    sname & "Lv/16ã®ç¢ºç‡(" & Format$(prob) & "%)ã§"
+                    sname & "Lv/16‚ÌŠm—¦(" & Format$(prob) & "%)‚Å"
             End If
             
             buf = LIndex(fdata, 2)
             If InStr(buf, "(") > 0 Then
                 buf = Left$(buf, InStr(buf, "(") - 1)
             End If
-            msg = msg & buf & "ã«ã‚ˆã‚‹è¿½æ’ƒã‚’è¡Œã†ã€‚"
+            msg = msg & buf & "‚É‚æ‚é’ÇŒ‚‚ğs‚¤B"
             
             If StrToLng(LIndex(fdata, 5)) > 0 Then
-                msg = msg & ";ç™ºå‹•æ™‚ã«" & LIndex(fdata, 5) & "ï¼¥ï¼®æ¶ˆè²»ã€‚"
+                msg = msg & ";”­“®‚É" & LIndex(fdata, 5) & "‚d‚mÁ”ïB"
             ElseIf StrToLng(LIndex(fdata, 5)) < 0 Then
-                msg = msg & ";ç™ºå‹•æ™‚ã«" & Mid$(LIndex(fdata, 5), 2) & "ï¼¥ï¼®å¢—åŠ ã€‚"
+                msg = msg & ";”­“®‚É" & Mid$(LIndex(fdata, 5), 2) & "‚d‚m‘‰ÁB"
             End If
             If StrToLng(LIndex(fdata, 6)) > 50 Then
-                msg = msg & ";" & Term("æ°—åŠ›", u) & LIndex(fdata, 6) & "ä»¥ä¸Šã§ä½¿ç”¨å¯èƒ½ã€‚"
+                msg = msg & ";" & Term("‹C—Í", u) & LIndex(fdata, 6) & "ˆÈã‚Åg—p‰Â”\B"
             End If
-            If InStr(fdata, "é€£é–ä¸å¯") > 0 Then
-                msg = msg & "é€£é–ä¸å¯ã€‚"
+            If InStr(fdata, "˜A½•s‰Â") > 0 Then
+                msg = msg & "˜A½•s‰ÂB"
             End If
             
-        Case "ï¼ºï¼¯ï¼£"
-            If u.FeatureLevel("ï¼ºï¼¯ï¼£") < 0 Then
-                msg = "ã“ã®ãƒ¦ãƒ‹ãƒƒãƒˆã¯ï¼ºï¼¯ï¼£ã«ã‚ˆã‚‹å½±éŸ¿ã‚’ä¸ãˆã‚‹ã“ã¨ãŒå‡ºæ¥ãªã„ã€‚"
+        Case "‚y‚n‚b"
+            If u.FeatureLevel("‚y‚n‚b") < 0 Then
+                msg = "‚±‚Ìƒ†ƒjƒbƒg‚Í‚y‚n‚b‚É‚æ‚é‰e‹¿‚ğ—^‚¦‚é‚±‚Æ‚ªo—ˆ‚È‚¢B"
             Else
-                msg = "ã“ã®ãƒ¦ãƒ‹ãƒƒãƒˆã‹ã‚‰"
+                msg = "‚±‚Ìƒ†ƒjƒbƒg‚©‚ç"
                 If LLength(fdata) < 2 Then
                     buf = "1"
                 Else
@@ -3173,36 +3173,36 @@ Dim uname As String
                 End If
                 
                 opt = LIndex(fdata, 3)
-                If InStr(opt, "ç›´ç·š") > 0 Then
-                    msg = msg & buf & "ãƒã‚¹ä»¥å†…ã®ç›´ç·šä¸Š"
-                ElseIf InStr(opt, " æ°´å¹³") > 0 Then
-                    msg = msg & "å·¦å³" & buf & "ãƒã‚¹ä»¥å†…ã®ç›´ç·šä¸Š"
-                ElseIf InStr(opt, " å‚ç›´") > 0 Then
-                    msg = msg & "ä¸Šä¸‹" & buf & "ãƒã‚¹ä»¥å†…ã®ç›´ç·šä¸Š"
+                If InStr(opt, "’¼ü") > 0 Then
+                    msg = msg & buf & "ƒ}ƒXˆÈ“à‚Ì’¼üã"
+                ElseIf InStr(opt, " …•½") > 0 Then
+                    msg = msg & "¶‰E" & buf & "ƒ}ƒXˆÈ“à‚Ì’¼üã"
+                ElseIf InStr(opt, " ‚’¼") > 0 Then
+                    msg = msg & "ã‰º" & buf & "ƒ}ƒXˆÈ“à‚Ì’¼üã"
                 Else
-                    msg = msg & buf & "ãƒã‚¹ä»¥å†…"
+                    msg = msg & buf & "ƒ}ƒXˆÈ“à"
                 End If
-                msg = msg & "ã‚’é€šéã™ã‚‹æ•µãƒ¦ãƒ‹ãƒƒãƒˆã«ã€ï¼ºï¼¯ï¼£ã«ã‚ˆã‚‹å½±éŸ¿ã‚’ä¸ãˆã‚‹ã€‚"
+                msg = msg & "‚ğ’Ê‰ß‚·‚é“Gƒ†ƒjƒbƒg‚ÉA‚y‚n‚b‚É‚æ‚é‰e‹¿‚ğ—^‚¦‚éB"
             End If
             
-        Case "ï¼ºï¼¯ï¼£ç„¡åŠ¹åŒ–"
+        Case "‚y‚n‚b–³Œø‰»"
             If flevel = 1 Then
-                msg = "ã“ã®ãƒ¦ãƒ‹ãƒƒãƒˆã¯æ•µãƒ¦ãƒ‹ãƒƒãƒˆã«ã‚ˆã‚‹ï¼ºï¼¯ï¼£ã®å½±éŸ¿ã‚’å—ã‘ãªã„ã€‚"
+                msg = "‚±‚Ìƒ†ƒjƒbƒg‚Í“Gƒ†ƒjƒbƒg‚É‚æ‚é‚y‚n‚b‚Ì‰e‹¿‚ğó‚¯‚È‚¢B"
             Else
-                msg = "ã“ã®ãƒ¦ãƒ‹ãƒƒãƒˆã¯æ•µãƒ¦ãƒ‹ãƒƒãƒˆã«ã‚ˆã‚‹" & Format(flevel) _
-                    & "ãƒ¬ãƒ™ãƒ«ä»¥ä¸‹ã®ï¼ºï¼¯ï¼£ã®å½±éŸ¿ã‚’å—ã‘ãªã„ã€‚"
+                msg = "‚±‚Ìƒ†ƒjƒbƒg‚Í“Gƒ†ƒjƒbƒg‚É‚æ‚é" & Format(flevel) _
+                    & "ƒŒƒxƒ‹ˆÈ‰º‚Ì‚y‚n‚b‚Ì‰e‹¿‚ğó‚¯‚È‚¢B"
             End If
             
-        Case "éš£æ¥ãƒ¦ãƒ‹ãƒƒãƒˆï¼ºï¼¯ï¼£ç„¡åŠ¹åŒ–"
+        Case "—×Úƒ†ƒjƒbƒg‚y‚n‚b–³Œø‰»"
             If flevel = 1 Then
-                msg = "ã“ã®ãƒ¦ãƒ‹ãƒƒãƒˆãŒéš£æ¥ã™ã‚‹æ•µãƒ¦ãƒ‹ãƒƒãƒˆã«ã‚ˆã‚‹ï¼ºï¼¯ï¼£ã‚’ç„¡åŠ¹åŒ–ã™ã‚‹ã€‚"
+                msg = "‚±‚Ìƒ†ƒjƒbƒg‚ª—×Ú‚·‚é“Gƒ†ƒjƒbƒg‚É‚æ‚é‚y‚n‚b‚ğ–³Œø‰»‚·‚éB"
             Else
-                msg = "ã“ã®ãƒ¦ãƒ‹ãƒƒãƒˆãŒéš£æ¥ã™ã‚‹æ•µãƒ¦ãƒ‹ãƒƒãƒˆã«ã‚ˆã‚‹" & Format(flevel) _
-                    & "ãƒ¬ãƒ™ãƒ«ä»¥ä¸‹ã®ï¼ºï¼¯ï¼£ã‚’ç„¡åŠ¹åŒ–ã™ã‚‹ã€‚"
+                msg = "‚±‚Ìƒ†ƒjƒbƒg‚ª—×Ú‚·‚é“Gƒ†ƒjƒbƒg‚É‚æ‚é" & Format(flevel) _
+                    & "ƒŒƒxƒ‹ˆÈ‰º‚Ì‚y‚n‚b‚ğ–³Œø‰»‚·‚éB"
             End If
         
-        Case "åºƒåŸŸï¼ºï¼¯ï¼£ç„¡åŠ¹åŒ–"
-            msg = "ã“ã®ãƒ¦ãƒ‹ãƒƒãƒˆã‹ã‚‰"
+        Case "Lˆæ‚y‚n‚b–³Œø‰»"
+            msg = "‚±‚Ìƒ†ƒjƒbƒg‚©‚ç"
             If LLength(fdata) < 2 Then
                 buf = "1"
             Else
@@ -3210,38 +3210,38 @@ Dim uname As String
             End If
             
             If flevel = 1 Then
-                msg = msg & buf & "ãƒã‚¹ä»¥å†…ã«è¨­å®šã•ã‚ŒãŸï¼ºï¼¯ï¼£ã®å½±éŸ¿ã‚’ç„¡åŠ¹åŒ–ã™ã‚‹ã€‚"
+                msg = msg & buf & "ƒ}ƒXˆÈ“à‚Éİ’è‚³‚ê‚½‚y‚n‚b‚Ì‰e‹¿‚ğ–³Œø‰»‚·‚éB"
             Else
-                msg = msg & buf & "ãƒã‚¹ä»¥å†…ã«è¨­å®šã•ã‚ŒãŸ" & Format(flevel) _
-                    & "ãƒ¬ãƒ™ãƒ«ä»¥ä¸‹ã®ï¼ºï¼¯ï¼£ã®å½±éŸ¿ã‚’ç„¡åŠ¹åŒ–ã™ã‚‹ã€‚"
+                msg = msg & buf & "ƒ}ƒXˆÈ“à‚Éİ’è‚³‚ê‚½" & Format(flevel) _
+                    & "ƒŒƒxƒ‹ˆÈ‰º‚Ì‚y‚n‚b‚Ì‰e‹¿‚ğ–³Œø‰»‚·‚éB"
             End If
 
 ' ADD START MARGE
-        Case "åœ°å½¢åŠ¹æœç„¡åŠ¹åŒ–"
+        Case "’nŒ`Œø‰Ê–³Œø‰»"
             If LLength(fdata) > 1 Then
                 For i = 2 To LLength(fdata)
                     If i > 2 Then
-                        msg = msg & "ã€"
+                        msg = msg & "A"
                     End If
                     msg = msg & LIndex(fdata, i)
                 Next
-                msg = msg & "ã®"
+                msg = msg & "‚Ì"
             Else
-                msg = msg & "å…¨åœ°å½¢ã®"
+                msg = msg & "‘S’nŒ`‚Ì"
             End If
-            msg = msg & "ï¼¨ï¼°ãƒ»ï¼¥ï¼®æ¸›å°‘ã‚„çŠ¶æ…‹ä»˜åŠ ç­‰ã®ç‰¹æ®ŠåŠ¹æœã‚’ç„¡åŠ¹åŒ–ã™ã‚‹ã€‚"
+            msg = msg & "‚g‚oE‚d‚mŒ¸­‚âó‘Ô•t‰Á“™‚Ì“ÁêŒø‰Ê‚ğ–³Œø‰»‚·‚éB"
 ' ADD END MARGE
         
         Case Else
             If is_additional Then
-                'ä»˜åŠ ã•ã‚ŒãŸèƒ½åŠ›ã®å ´åˆã€ãƒ¦ãƒ‹ãƒƒãƒˆç”¨ç‰¹æ®Šèƒ½åŠ›ã«è©²å½“ã—ãªã‘ã‚Œã°
-                'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆç”¨ç‰¹æ®Šèƒ½åŠ›ã¨ã¿ãªã™
+                '•t‰Á‚³‚ê‚½”\—Í‚Ìê‡Aƒ†ƒjƒbƒg—p“Áê”\—Í‚ÉŠY“–‚µ‚È‚¯‚ê‚Î
+                'ƒpƒCƒƒbƒg—p“Áê”\—Í‚Æ‚İ‚È‚·
                 msg = SkillHelpMessage(u.MainPilot, ftype)
                 If Len(msg) > 0 Then
                     Exit Function
                 End If
                 
-                'å®Ÿã¯ãƒ€ãƒŸãƒ¼èƒ½åŠ›ï¼Ÿ
+                'À‚Íƒ_ƒ~[”\—ÍH
                 If Len(fdata) > 0 Then
                     msg = ListIndex(fdata, ListLength(fdata))
                     If Left$(msg, 1) = """" Then
@@ -3249,349 +3249,349 @@ Dim uname As String
                     End If
                 End If
                 
-                'è§£èª¬ãŒå­˜åœ¨ã—ãªã„ï¼Ÿ
+                '‰ğà‚ª‘¶İ‚µ‚È‚¢H
                 If Len(msg) = 0 Then
                     Exit Function
                 End If
             ElseIf Len(fdata) > 0 Then
-                'ãƒ€ãƒŸãƒ¼èƒ½åŠ›ã®å ´åˆ
+                'ƒ_ƒ~[”\—Í‚Ìê‡
                 msg = ListIndex(fdata, ListLength(fdata))
                 If Left$(msg, 1) = """" Then
                     msg = Mid$(msg, 2, Len(msg) - 2)
                 End If
-            ElseIf ListIndex(u.AllFeatureData(fname), 1) <> "è§£èª¬" Then
-                'è§£èª¬ãŒãªã„å ´åˆ
+            ElseIf ListIndex(u.AllFeatureData(fname), 1) <> "‰ğà" Then
+                '‰ğà‚ª‚È‚¢ê‡
                 Exit Function
             End If
             
     End Select
     
     fdata = u.AllFeatureData(fname0)
-    If ListIndex(fdata, 1) = "è§£èª¬" Then
-        'è§£èª¬ã‚’å®šç¾©ã—ã¦ã„ã‚‹å ´åˆ
+    If ListIndex(fdata, 1) = "‰ğà" Then
+        '‰ğà‚ğ’è‹`‚µ‚Ä‚¢‚éê‡
         msg = ListTail(fdata, 2)
         If Left$(msg, 1) = """" Then
             msg = Mid$(msg, 2, Len(msg) - 2)
         End If
     End If
     
-    'ç­‰èº«å¤§åŸºæº–ã®éš›ã¯ã€Œãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã€ã¨ã„ã†èªã‚’ä½¿ã‚ãªã„ã‚ˆã†ã«ã™ã‚‹
-    If IsOptionDefined("ç­‰èº«å¤§åŸºæº–") Then
-        ReplaceString msg, "ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆ", "ãƒ¦ãƒ‹ãƒƒãƒˆ"
+    '“™g‘åŠî€‚ÌÛ‚ÍuƒpƒCƒƒbƒgv‚Æ‚¢‚¤Œê‚ğg‚í‚È‚¢‚æ‚¤‚É‚·‚é
+    If IsOptionDefined("“™g‘åŠî€") Then
+        ReplaceString msg, "ƒpƒCƒƒbƒg", "ƒ†ƒjƒbƒg"
     End If
     
     FeatureHelpMessage = msg
 End Function
 
-'ãƒ¦ãƒ‹ãƒƒãƒˆ u ã®æ­¦å™¨ï¼†ã‚¢ãƒ“ãƒªãƒ†ã‚£å±æ€§ atr ã®åç§°
+'ƒ†ƒjƒbƒg u ‚Ì•Ší•ƒAƒrƒŠƒeƒB‘®« atr ‚Ì–¼Ì
 Public Function AttributeName(u As Unit, atr As String, _
     Optional ByVal is_ability As Boolean) As String
 Dim fdata As String
     
     Select Case atr
-        Case "å…¨"
-            AttributeName = "å…¨ã¦ã®æ”»æ’ƒ"
-        Case "æ ¼"
-            AttributeName = "æ ¼é—˜ç³»æ”»æ’ƒ"
-        Case "å°„"
-            AttributeName = "å°„æ’ƒç³»æ”»æ’ƒ"
-        Case "è¤‡"
-            AttributeName = "è¤‡åˆæŠ€"
-        Case "ï¼°"
-            AttributeName = "ç§»å‹•å¾Œä½¿ç”¨å¯èƒ½æ”»æ’ƒ"
-        Case "ï¼±"
-            AttributeName = "ç§»å‹•å¾Œä½¿ç”¨ä¸èƒ½æ”»æ’ƒ"
-        Case "ï¼²"
-            AttributeName = "ä½æ”¹é€ æ­¦å™¨"
-        Case "æ”¹"
-            AttributeName = "ä½æ”¹é€ æ­¦å™¨"
-        Case "æ”»"
-            AttributeName = "æ”»æ’ƒå°‚ç”¨"
-        Case "å"
-            AttributeName = "åæ’ƒå°‚ç”¨"
-        Case "æ­¦"
-            AttributeName = "æ ¼é—˜æ­¦å™¨"
-        Case "çª"
-            AttributeName = "çªé€²æŠ€"
-        Case "æ¥"
-            AttributeName = "æ¥è¿‘æˆ¦æ”»æ’ƒ"
-        Case "ï¼ª"
-            AttributeName = "ã‚¸ãƒ£ãƒ³ãƒ—æ”»æ’ƒ"
-        Case "ï¼¢"
-            AttributeName = "ãƒ“ãƒ¼ãƒ æ”»æ’ƒ"
-        Case "å®Ÿ"
-            AttributeName = "å®Ÿå¼¾æ”»æ’ƒ"
-        Case "ã‚ª"
-            AttributeName = "ã‚ªãƒ¼ãƒ©æŠ€"
-        Case "è¶…"
-            AttributeName = "ã‚µã‚¤ã‚­ãƒƒã‚¯æ”»æ’ƒ"
-        Case "ã‚·"
-            AttributeName = "åŒèª¿ç‡å¯¾è±¡æ”»æ’ƒ"
-        Case "ã‚µ"
-            AttributeName = "æ€å¿µèª˜å°æ”»æ’ƒ"
-        Case "ä½“"
-            AttributeName = "ç”Ÿå‘½åŠ›æ›ç®—æ”»æ’ƒ"
-        Case "å¸"
-            AttributeName = Term("ï¼¨ï¼°", u) & "å¸åæ”»æ’ƒ"
-        Case "æ¸›"
-            AttributeName = Term("ï¼¥ï¼®", u) & "ç ´å£Šæ”»æ’ƒ"
-        Case "å¥ª"
-            AttributeName = Term("ï¼¥ï¼®", u) & "å¸åæ”»æ’ƒ"
-        Case "è²«"
-            AttributeName = "è²«é€šæ”»æ’ƒ"
-        Case "ç„¡"
-            AttributeName = "ãƒãƒªã‚¢ç„¡åŠ¹åŒ–æ”»æ’ƒ"
-        Case "æµ„"
-            AttributeName = "æµ„åŒ–æŠ€"
-        Case "å°"
-            AttributeName = "å°å°æŠ€"
-        Case "é™"
-            AttributeName = "é™å®šæŠ€"
-        Case "æ®º"
-            AttributeName = "æŠ¹æ®ºæ”»æ’ƒ"
-        Case "æµ¸"
-            AttributeName = "æµ¸è•æ”»æ’ƒ"
-        Case "ç ´"
-            AttributeName = "ã‚·ãƒ¼ãƒ«ãƒ‰è²«é€šæ”»æ’ƒ"
-        Case "â™‚"
-            AttributeName = "å¯¾ç”·æ€§ç”¨æ”»æ’ƒ"
-        Case "â™€"
-            AttributeName = "å¯¾å¥³æ€§ç”¨æ”»æ’ƒ"
-        Case "ï¼¡"
-            AttributeName = "è‡ªå‹•å……å¡«å¼æ”»æ’ƒ"
-        Case "ï¼£"
-            AttributeName = "ãƒãƒ£ãƒ¼ã‚¸å¼æ”»æ’ƒ"
-        Case "åˆ"
-            AttributeName = "åˆä½“æŠ€"
-        Case "å…±"
+        Case "‘S"
+            AttributeName = "‘S‚Ä‚ÌUŒ‚"
+        Case "Ši"
+            AttributeName = "Ši“¬ŒnUŒ‚"
+        Case "Ë"
+            AttributeName = "ËŒ‚ŒnUŒ‚"
+        Case "•¡"
+            AttributeName = "•¡‡‹Z"
+        Case "‚o"
+            AttributeName = "ˆÚ“®Œãg—p‰Â”\UŒ‚"
+        Case "‚p"
+            AttributeName = "ˆÚ“®Œãg—p•s”\UŒ‚"
+        Case "‚q"
+            AttributeName = "’á‰ü‘¢•Ší"
+        Case "‰ü"
+            AttributeName = "’á‰ü‘¢•Ší"
+        Case "U"
+            AttributeName = "UŒ‚ê—p"
+        Case "”½"
+            AttributeName = "”½Œ‚ê—p"
+        Case "•"
+            AttributeName = "Ši“¬•Ší"
+        Case "“Ë"
+            AttributeName = "“Ëi‹Z"
+        Case "Ú"
+            AttributeName = "Ú‹ßíUŒ‚"
+        Case "‚i"
+            AttributeName = "ƒWƒƒƒ“ƒvUŒ‚"
+        Case "‚a"
+            AttributeName = "ƒr[ƒ€UŒ‚"
+        Case "À"
+            AttributeName = "À’eUŒ‚"
+        Case "ƒI"
+            AttributeName = "ƒI[ƒ‰‹Z"
+        Case "’´"
+            AttributeName = "ƒTƒCƒLƒbƒNUŒ‚"
+        Case "ƒV"
+            AttributeName = "“¯’²—¦‘ÎÛUŒ‚"
+        Case "ƒT"
+            AttributeName = "v”O—U“±UŒ‚"
+        Case "‘Ì"
+            AttributeName = "¶–½—ÍŠ·ZUŒ‚"
+        Case "‹z"
+            AttributeName = Term("‚g‚o", u) & "‹zûUŒ‚"
+        Case "Œ¸"
+            AttributeName = Term("‚d‚m", u) & "”j‰óUŒ‚"
+        Case "’D"
+            AttributeName = Term("‚d‚m", u) & "‹zûUŒ‚"
+        Case "ŠÑ"
+            AttributeName = "ŠÑ’ÊUŒ‚"
+        Case "–³"
+            AttributeName = "ƒoƒŠƒA–³Œø‰»UŒ‚"
+        Case "ò"
+            AttributeName = "ò‰»‹Z"
+        Case "••"
+            AttributeName = "••ˆó‹Z"
+        Case "ŒÀ"
+            AttributeName = "ŒÀ’è‹Z"
+        Case "E"
+            AttributeName = "–•EUŒ‚"
+        Case "Z"
+            AttributeName = "ZIUŒ‚"
+        Case "”j"
+            AttributeName = "ƒV[ƒ‹ƒhŠÑ’ÊUŒ‚"
+        Case "‰"
+            AttributeName = "‘Î’j«—pUŒ‚"
+        Case "Š"
+            AttributeName = "‘Î—«—pUŒ‚"
+        Case "‚`"
+            AttributeName = "©“®[“U®UŒ‚"
+        Case "‚b"
+            AttributeName = "ƒ`ƒƒ[ƒW®UŒ‚"
+        Case "‡"
+            AttributeName = "‡‘Ì‹Z"
+        Case "‹¤"
             If Not is_ability Then
-                AttributeName = "å¼¾è–¬å…±æœ‰æ­¦å™¨"
+                AttributeName = "’e–ò‹¤—L•Ší"
             Else
-                AttributeName = "ä½¿ç”¨å›æ•°å…±æœ‰" & Term("ã‚¢ãƒ“ãƒªãƒ†ã‚£", u)
+                AttributeName = "g—p‰ñ”‹¤—L" & Term("ƒAƒrƒŠƒeƒB", u)
             End If
-        Case "æ–‰"
-            AttributeName = "ä¸€æ–‰ç™ºå°„"
-        Case "æ°¸"
-            AttributeName = "æ°¸ç¶šæ­¦å™¨"
-        Case "è¡“"
-            AttributeName = "è¡“"
-        Case "æŠ€"
-            AttributeName = "æŠ€"
-        Case "è¦–"
-            AttributeName = "è¦–è¦šæ”»æ’ƒ"
-        Case "éŸ³"
+        Case "Ä"
+            AttributeName = "ˆêÄ”­Ë"
+        Case "‰i"
+            AttributeName = "‰i‘±•Ší"
+        Case "p"
+            AttributeName = "p"
+        Case "‹Z"
+            AttributeName = "‹Z"
+        Case "‹"
+            AttributeName = "‹ŠoUŒ‚"
+        Case "‰¹"
             If Not is_ability Then
-                AttributeName = "éŸ³æ³¢æ”»æ’ƒ"
+                AttributeName = "‰¹”gUŒ‚"
             Else
-                AttributeName = "éŸ³æ³¢" & Term("ã‚¢ãƒ“ãƒªãƒ†ã‚£", u)
+                AttributeName = "‰¹”g" & Term("ƒAƒrƒŠƒeƒB", u)
             End If
-        Case "æ°—"
-            AttributeName = Term("æ°—åŠ›", u) & "æ¶ˆè²»æ”»æ’ƒ"
-        Case "éœŠ", "ãƒ—"
-            AttributeName = "éœŠåŠ›æ¶ˆè²»æ”»æ’ƒ"
-        Case "å¤±"
-            AttributeName = Term("ï¼¨ï¼°", u) & "æ¶ˆè²»æ”»æ’ƒ"
-        Case "éŠ­"
-            AttributeName = Term("è³‡é‡‘", u) & "æ¶ˆè²»æ”»æ’ƒ"
-        Case "æ¶ˆ"
-            AttributeName = "æ¶ˆè€—æŠ€"
-        Case "è‡ª"
-            AttributeName = "è‡ªçˆ†æ”»æ’ƒ"
-        Case "å¤‰"
-            AttributeName = "å¤‰å½¢æŠ€"
-        Case "é–“"
-            AttributeName = "é–“æ¥æ”»æ’ƒ"
-        Case "ï¼­ç›´"
-            AttributeName = "ç›´ç·šå‹ãƒãƒƒãƒ—æ”»æ’ƒ"
-        Case "ï¼­æ‹¡"
-            AttributeName = "æ‹¡æ•£å‹ãƒãƒƒãƒ—æ”»æ’ƒ"
-        Case "ï¼­æ‰‡"
-            AttributeName = "æ‰‡å‹ãƒãƒƒãƒ—æ”»æ’ƒ"
-        Case "ï¼­å…¨"
-            AttributeName = "å…¨æ–¹ä½å‹ãƒãƒƒãƒ—æ”»æ’ƒ"
-        Case "ï¼­æŠ•"
-            AttributeName = "æŠ•ä¸‹å‹ãƒãƒƒãƒ—æ”»æ’ƒ"
-        Case "ï¼­ç§»"
-            AttributeName = "ç§»å‹•å‹ãƒãƒƒãƒ—æ”»æ’ƒ"
-        Case "ï¼­ç·š"
-            AttributeName = "ç·šçŠ¶ãƒãƒƒãƒ—æ”»æ’ƒ"
-        Case "è­˜"
-            AttributeName = "è­˜åˆ¥å‹ãƒãƒƒãƒ—æ”»æ’ƒ"
-        Case "ç¸›"
-            AttributeName = "æ•ç¸›æ”»æ’ƒ"
-        Case "ï¼³"
-            AttributeName = "ã‚·ãƒ§ãƒƒã‚¯æ”»æ’ƒ"
-        Case "åŠ£"
-            AttributeName = "è£…ç”²åŠ£åŒ–æ”»æ’ƒ"
-        Case "ä¸­"
-            AttributeName = "ãƒãƒªã‚¢ä¸­å’Œæ”»æ’ƒ"
-        Case "çŸ³"
-            AttributeName = "çŸ³åŒ–æ”»æ’ƒ"
-        Case "å‡"
-            AttributeName = "å‡çµæ”»æ’ƒ"
-        Case "ç—º"
-            AttributeName = "éº»ç—ºæ”»æ’ƒ"
-        Case "çœ "
-            AttributeName = "å‚¬çœ æ”»æ’ƒ"
-        Case "ä¹±"
-            AttributeName = "æ··ä¹±æ”»æ’ƒ"
-        Case "é­…"
-            AttributeName = "é­…äº†æ”»æ’ƒ"
-        Case "æ†‘"
-            AttributeName = "æ†‘ä¾æ”»æ’ƒ"
-        Case "ç›²"
-            AttributeName = "ç›®æ½°ã—æ”»æ’ƒ"
-        Case "æ¯’"
-            AttributeName = "æ¯’æ”»æ’ƒ"
-        Case "æ’¹"
-            AttributeName = "æ’¹ä¹±æ”»æ’ƒ"
-        Case "æ"
-            AttributeName = "ææ€–æ”»æ’ƒ"
-        Case "ä¸"
-            AttributeName = "æ”»æ’ƒå°å°æ”»æ’ƒ"
-        Case "æ­¢"
-            AttributeName = "è¶³æ­¢ã‚æ”»æ’ƒ"
-        Case "é»™"
-            AttributeName = "æ²ˆé»™æ”»æ’ƒ"
-        Case "é™¤"
-            AttributeName = "ç‰¹æ®ŠåŠ¹æœé™¤å»æ”»æ’ƒ"
-        Case "å³"
-            AttributeName = "å³æ­»æ”»æ’ƒ"
-        Case "å‘Š"
-            AttributeName = "æ­»ã®å®£å‘Š"
-        Case "è„±"
-            AttributeName = Term("æ°—åŠ›", u) & "æ¸›å°‘æ”»æ’ƒ"
-        Case "ï¼¤"
-            AttributeName = Term("æ°—åŠ›", u) & "å¸åæ”»æ’ƒ"
-        Case "ä½æ”»"
-            AttributeName = "æ”»æ’ƒåŠ›ä½ä¸‹æ”»æ’ƒ"
-        Case "ä½é˜²"
-            AttributeName = "é˜²å¾¡åŠ›ä½ä¸‹æ”»æ’ƒ"
-        Case "ä½é‹"
-            AttributeName = Term("é‹å‹•æ€§", u) & "ä½ä¸‹æ”»æ’ƒ"
-        Case "ä½ç§»"
-            AttributeName = Term("ç§»å‹•åŠ›", u) & "ä½ä¸‹æ”»æ’ƒ"
-        Case "ç²¾"
-            AttributeName = "ç²¾ç¥æ”»æ’ƒ"
-        Case "å…ˆ"
-            AttributeName = "å…ˆåˆ¶æ”»æ’ƒ"
-        Case "å¾Œ"
-            AttributeName = "å¾Œæ”»æ”»æ’ƒ"
-        Case "é€£"
-            AttributeName = "é€£ç¶šæ”»æ’ƒ"
-        Case "å†"
-            AttributeName = "å†æ”»æ’ƒ"
-        Case "å¹"
-            AttributeName = "å¹ãé£›ã°ã—æ”»æ’ƒ"
-        Case "ï¼«"
-            AttributeName = "ãƒãƒƒã‚¯ãƒãƒƒã‚¯æ”»æ’ƒ"
-        Case "å¼•"
-            AttributeName = "å¼•ãå¯„ã›æ”»æ’ƒ"
-        Case "è»¢"
-            AttributeName = "å¼·åˆ¶è»¢ç§»æ”»æ’ƒ"
-        Case "å¿"
-            AttributeName = "æš—æ®ºæŠ€"
-        Case "å°½"
-            AttributeName = "å…¨" & Term("ï¼¥ï¼®", u) & "æ¶ˆè²»æ”»æ’ƒ"
-        Case "ç›—"
-            AttributeName = "ç›—ã¿"
-        Case "ï¼¨"
-            AttributeName = "ãƒ›ãƒ¼ãƒŸãƒ³ã‚°æ”»æ’ƒ"
-        Case "è¿½"
-            AttributeName = "è‡ªå·±è¿½å°¾æ”»æ’ƒ"
-        Case "æœ‰"
-            AttributeName = "æœ‰ç·šå¼èª˜å°æ”»æ’ƒ"
-        Case "èª˜"
-            AttributeName = "ç‰¹æ®Šèª˜å°æ”»æ’ƒ"
-        Case "çˆ†"
-            AttributeName = "çˆ†ç™ºæ”»æ’ƒ"
-        Case "ç©º"
-            AttributeName = "å¯¾ç©ºæ”»æ’ƒ"
-        Case "å›º"
-            AttributeName = "ãƒ€ãƒ¡ãƒ¼ã‚¸å›ºå®šæ”»æ’ƒ"
-        Case "è¡°"
-            AttributeName = Term("ï¼¨ï¼°", u) & "æ¸›è¡°æ”»æ’ƒ"
-        Case "æ»…"
-            AttributeName = Term("ï¼¥ï¼®", u) & "æ¸›è¡°æ”»æ’ƒ"
-        Case "è¸Š"
-            AttributeName = "è¸Šã‚‰ã›æ”»æ’ƒ"
-        Case "ç‹‚"
-            AttributeName = "ç‹‚æˆ¦å£«åŒ–æ”»æ’ƒ"
-        Case "ã‚¾"
-            AttributeName = "ã‚¾ãƒ³ãƒ“åŒ–æ”»æ’ƒ"
-        Case "å®³"
-            AttributeName = "å›å¾©èƒ½åŠ›é˜»å®³æ”»æ’ƒ"
-        Case "ç¿’"
-            AttributeName = "ãƒ©ãƒ¼ãƒ‹ãƒ³ã‚°"
-        Case "å†™"
-            AttributeName = "èƒ½åŠ›ã‚³ãƒ”ãƒ¼"
-        Case "åŒ–"
-            AttributeName = "å¤‰åŒ–"
-        Case "ç—›"
-            AttributeName = "ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«"
-        Case "æ´"
-            AttributeName = "æ”¯æ´å°‚ç”¨" & Term("ã‚¢ãƒ“ãƒªãƒ†ã‚£", u)
-        Case "é›£"
-            AttributeName = "é«˜é›£åº¦" & Term("ã‚¢ãƒ“ãƒªãƒ†ã‚£", u)
-        Case "åœ°", "æ°´", "ç«", "é¢¨", "å†·", "é›·", "å…‰", "é—‡", "è–", "æ­»", "æœ¨"
-            AttributeName = atr & "å±æ€§"
-        Case "é­”"
-            AttributeName = "é­”æ³•æ”»æ’ƒ"
-        Case "æ™‚"
-            AttributeName = "æ™‚é–“æ“ä½œæ”»æ’ƒ"
-        Case "é‡"
-            AttributeName = "é‡åŠ›æ”»æ’ƒ"
-        Case "éŠƒ", "å‰£", "åˆ€", "æ§", "æ–§", "å¼“"
-            AttributeName = atr & "æ”»æ’ƒ"
-        Case "éŠƒ"
-        Case "æ©Ÿ"
-            AttributeName = "å¯¾æ©Ÿæ¢°ç”¨æ”»æ’ƒ"
-        Case "æ„Ÿ"
-            AttributeName = "å¯¾ã‚¨ã‚¹ãƒ‘ãƒ¼ç”¨æ”»æ’ƒ"
-        Case "ç«œ"
-            AttributeName = "ç«œæ®ºã—ã®æ­¦å™¨"
-        Case "ç€•"
-            AttributeName = "ç€•æ­»æ™‚é™å®šæ”»æ’ƒ"
-        Case "å¯¾"
-            AttributeName = "ç‰¹å®šãƒ¬ãƒ™ãƒ«é™å®šæ”»æ’ƒ"
-        Case "ãƒ©"
-            AttributeName = "ãƒ©ãƒ¼ãƒ‹ãƒ³ã‚°å¯èƒ½æŠ€"
-        Case "ç¦"
-            AttributeName = "ä½¿ç”¨ç¦æ­¢"
-        Case "å°"
-            AttributeName = "æœ€å°å°„ç¨‹"
-        Case "æ•£"
-            AttributeName = "æ‹¡æ•£æ”»æ’ƒ"
+        Case "‹C"
+            AttributeName = Term("‹C—Í", u) & "Á”ïUŒ‚"
+        Case "—ì", "ƒv"
+            AttributeName = "—ì—ÍÁ”ïUŒ‚"
+        Case "¸"
+            AttributeName = Term("‚g‚o", u) & "Á”ïUŒ‚"
+        Case "‘K"
+            AttributeName = Term("‘‹à", u) & "Á”ïUŒ‚"
+        Case "Á"
+            AttributeName = "Á–Õ‹Z"
+        Case "©"
+            AttributeName = "©”šUŒ‚"
+        Case "•Ï"
+            AttributeName = "•ÏŒ`‹Z"
+        Case "ŠÔ"
+            AttributeName = "ŠÔÚUŒ‚"
+        Case "‚l’¼"
+            AttributeName = "’¼üŒ^ƒ}ƒbƒvUŒ‚"
+        Case "‚lŠg"
+            AttributeName = "ŠgUŒ^ƒ}ƒbƒvUŒ‚"
+        Case "‚lî"
+            AttributeName = "îŒ^ƒ}ƒbƒvUŒ‚"
+        Case "‚l‘S"
+            AttributeName = "‘S•ûˆÊŒ^ƒ}ƒbƒvUŒ‚"
+        Case "‚l“Š"
+            AttributeName = "“Š‰ºŒ^ƒ}ƒbƒvUŒ‚"
+        Case "‚lˆÚ"
+            AttributeName = "ˆÚ“®Œ^ƒ}ƒbƒvUŒ‚"
+        Case "‚lü"
+            AttributeName = "üóƒ}ƒbƒvUŒ‚"
+        Case "¯"
+            AttributeName = "¯•ÊŒ^ƒ}ƒbƒvUŒ‚"
+        Case "”›"
+            AttributeName = "•ß”›UŒ‚"
+        Case "‚r"
+            AttributeName = "ƒVƒ‡ƒbƒNUŒ‚"
+        Case "—ò"
+            AttributeName = "‘•b—ò‰»UŒ‚"
+        Case "’†"
+            AttributeName = "ƒoƒŠƒA’†˜aUŒ‚"
+        Case "Î"
+            AttributeName = "Î‰»UŒ‚"
+        Case "“€"
+            AttributeName = "“€Œ‹UŒ‚"
+        Case "áƒ"
+            AttributeName = "–ƒáƒUŒ‚"
+        Case "–°"
+            AttributeName = "Ã–°UŒ‚"
+        Case "—"
+            AttributeName = "¬—UŒ‚"
+        Case "–£"
+            AttributeName = "–£—¹UŒ‚"
+        Case "œß"
+            AttributeName = "œßˆËUŒ‚"
+        Case "–Ó"
+            AttributeName = "–Ú’×‚µUŒ‚"
+        Case "“Å"
+            AttributeName = "“ÅUŒ‚"
+        Case "Šh"
+            AttributeName = "Šh—UŒ‚"
+        Case "‹°"
+            AttributeName = "‹°•|UŒ‚"
+        Case "•s"
+            AttributeName = "UŒ‚••ˆóUŒ‚"
+        Case "~"
+            AttributeName = "‘«~‚ßUŒ‚"
+        Case "–Ù"
+            AttributeName = "’¾–ÙUŒ‚"
+        Case "œ"
+            AttributeName = "“ÁêŒø‰Êœ‹UŒ‚"
+        Case "‘¦"
+            AttributeName = "‘¦€UŒ‚"
+        Case ""
+            AttributeName = "€‚Ìé"
+        Case "’E"
+            AttributeName = Term("‹C—Í", u) & "Œ¸­UŒ‚"
+        Case "‚c"
+            AttributeName = Term("‹C—Í", u) & "‹zûUŒ‚"
+        Case "’áU"
+            AttributeName = "UŒ‚—Í’á‰ºUŒ‚"
+        Case "’á–h"
+            AttributeName = "–hŒä—Í’á‰ºUŒ‚"
+        Case "’á‰^"
+            AttributeName = Term("‰^“®«", u) & "’á‰ºUŒ‚"
+        Case "’áˆÚ"
+            AttributeName = Term("ˆÚ“®—Í", u) & "’á‰ºUŒ‚"
+        Case "¸"
+            AttributeName = "¸_UŒ‚"
+        Case "æ"
+            AttributeName = "æ§UŒ‚"
+        Case "Œã"
+            AttributeName = "ŒãUUŒ‚"
+        Case "˜A"
+            AttributeName = "˜A‘±UŒ‚"
+        Case "Ä"
+            AttributeName = "ÄUŒ‚"
+        Case ""
+            AttributeName = "‚«”ò‚Î‚µUŒ‚"
+        Case "‚j"
+            AttributeName = "ƒmƒbƒNƒoƒbƒNUŒ‚"
+        Case "ˆø"
+            AttributeName = "ˆø‚«Šñ‚¹UŒ‚"
+        Case "“]"
+            AttributeName = "‹­§“]ˆÚUŒ‚"
+        Case "”E"
+            AttributeName = "ˆÃE‹Z"
+        Case "s"
+            AttributeName = "‘S" & Term("‚d‚m", u) & "Á”ïUŒ‚"
+        Case "“"
+            AttributeName = "“‚İ"
+        Case "‚g"
+            AttributeName = "ƒz[ƒ~ƒ“ƒOUŒ‚"
+        Case "’Ç"
+            AttributeName = "©ŒÈ’Ç”öUŒ‚"
+        Case "—L"
+            AttributeName = "—Lü®—U“±UŒ‚"
+        Case "—U"
+            AttributeName = "“Áê—U“±UŒ‚"
+        Case "”š"
+            AttributeName = "”š”­UŒ‚"
+        Case "‹ó"
+            AttributeName = "‘Î‹óUŒ‚"
+        Case "ŒÅ"
+            AttributeName = "ƒ_ƒ[ƒWŒÅ’èUŒ‚"
+        Case "Š"
+            AttributeName = Term("‚g‚o", u) & "Œ¸ŠUŒ‚"
+        Case "–Å"
+            AttributeName = Term("‚d‚m", u) & "Œ¸ŠUŒ‚"
+        Case "—x"
+            AttributeName = "—x‚ç‚¹UŒ‚"
+        Case "‹¶"
+            AttributeName = "‹¶ím‰»UŒ‚"
+        Case "ƒ]"
+            AttributeName = "ƒ]ƒ“ƒr‰»UŒ‚"
+        Case "ŠQ"
+            AttributeName = "‰ñ•œ”\—Í‘jŠQUŒ‚"
+        Case "K"
+            AttributeName = "ƒ‰[ƒjƒ“ƒO"
+        Case "Ê"
+            AttributeName = "”\—ÍƒRƒs["
+        Case "‰»"
+            AttributeName = "•Ï‰»"
+        Case "’É"
+            AttributeName = "ƒNƒŠƒeƒBƒJƒ‹"
+        Case "‰‡"
+            AttributeName = "x‰‡ê—p" & Term("ƒAƒrƒŠƒeƒB", u)
+        Case "“ï"
+            AttributeName = "‚“ï“x" & Term("ƒAƒrƒŠƒeƒB", u)
+        Case "’n", "…", "‰Î", "•—", "—â", "—‹", "Œõ", "ˆÅ", "¹", "€", "–Ø"
+            AttributeName = atr & "‘®«"
+        Case "–‚"
+            AttributeName = "–‚–@UŒ‚"
+        Case ""
+            AttributeName = "ŠÔ‘€ìUŒ‚"
+        Case "d"
+            AttributeName = "d—ÍUŒ‚"
+        Case "e", "Œ•", "“", "‘„", "•€", "‹|"
+            AttributeName = atr & "UŒ‚"
+        Case "e"
+        Case "‹@"
+            AttributeName = "‘Î‹@ŠB—pUŒ‚"
+        Case "Š´"
+            AttributeName = "‘ÎƒGƒXƒp[—pUŒ‚"
+        Case "—³"
+            AttributeName = "—³E‚µ‚Ì•Ší"
+        Case "•m"
+            AttributeName = "•m€ŒÀ’èUŒ‚"
+        Case "‘Î"
+            AttributeName = "“Á’èƒŒƒxƒ‹ŒÀ’èUŒ‚"
+        Case "ƒ‰"
+            AttributeName = "ƒ‰[ƒjƒ“ƒO‰Â”\‹Z"
+        Case "‹Ö"
+            AttributeName = "g—p‹Ö~"
+        Case "¬"
+            AttributeName = "Å¬Ë’ö"
+        Case "U"
+            AttributeName = "ŠgUUŒ‚"
         Case Else
-            If Left$(atr, 1) = "å¼±" Then
-                AttributeName = Mid$(atr, 2) & "å±æ€§å¼±ç‚¹ä»˜åŠ æ”»æ’ƒ"
-            ElseIf Left$(atr, 1) = "åŠ¹" Then
-                AttributeName = Mid$(atr, 2) & "å±æ€§æœ‰åŠ¹ä»˜åŠ æ”»æ’ƒ"
-            ElseIf Left$(atr, 1) = "å‰‹" Then
-                AttributeName = Mid$(atr, 2) & "å±æ€§ä½¿ç”¨å¦¨å®³æ”»æ’ƒ"
+            If Left$(atr, 1) = "ã" Then
+                AttributeName = Mid$(atr, 2) & "‘®«ã“_•t‰ÁUŒ‚"
+            ElseIf Left$(atr, 1) = "Œø" Then
+                AttributeName = Mid$(atr, 2) & "‘®«—LŒø•t‰ÁUŒ‚"
+            ElseIf Left$(atr, 1) = "™" Then
+                AttributeName = Mid$(atr, 2) & "‘®«g—p–WŠQUŒ‚"
             End If
     End Select
     
     If Not u Is Nothing Then
         fdata = u.FeatureData(atr)
-        If ListIndex(fdata, 1) = "è§£èª¬" Then
-            'è§£èª¬ã‚’å®šç¾©ã—ã¦ã„ã‚‹å ´åˆ
+        If ListIndex(fdata, 1) = "‰ğà" Then
+            '‰ğà‚ğ’è‹`‚µ‚Ä‚¢‚éê‡
             AttributeName = ListIndex(fdata, 2)
             Exit Function
         End If
     End If
     
     If is_ability Then
-        If Right$(AttributeName, 2) = "æ”»æ’ƒ" _
-            Or Right$(AttributeName, 2) = "æ­¦å™¨" _
+        If Right$(AttributeName, 2) = "UŒ‚" _
+            Or Right$(AttributeName, 2) = "•Ší" _
         Then
             AttributeName = Left$(AttributeName, Len(AttributeName) - 2) _
-                & Term("ã‚¢ãƒ“ãƒªãƒ†ã‚£", u)
+                & Term("ƒAƒrƒŠƒeƒB", u)
         End If
     End If
 End Function
 
-'ãƒ¦ãƒ‹ãƒƒãƒˆ u ã® idx ç•ªç›®ã®æ­¦å™¨ï¼†ã‚¢ãƒ“ãƒªãƒ†ã‚£ã®å±æ€§ atr ã®è§£èª¬ã‚’è¡¨ç¤º
+'ƒ†ƒjƒbƒg u ‚Ì idx ”Ô–Ú‚Ì•Ší•ƒAƒrƒŠƒeƒB‚Ì‘®« atr ‚Ì‰ğà‚ğ•\¦
 Public Sub AttributeHelp(u As Unit, atr As String, ByVal idx As Integer, _
     Optional ByVal is_ability As Boolean)
 Dim msg As String, aname As String
@@ -3599,29 +3599,29 @@ Dim prev_mode As Boolean
     
     msg = AttributeHelpMessage(u, atr, idx, is_ability)
     
-    'è§£èª¬ã®è¡¨ç¤º
+    '‰ğà‚Ì•\¦
     If Len(msg) > 0 Then
         prev_mode = AutoMessageMode
         AutoMessageMode = False
         
         OpenMessageForm
         If AutoMoveCursor Then
-            MoveCursorPos "ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦"
+            MoveCursorPos "ƒƒbƒZ[ƒWƒEƒBƒ“ƒhƒE"
         End If
         If InStr(atr, "L") > 0 Then
             aname = AttributeName(u, Left$(atr, InStr(atr, "L") - 1), is_ability) & _
-                "ãƒ¬ãƒ™ãƒ«" & StrConv(Format$(Mid$(atr, InStr(atr, "L") + 1)), vbWide)
+                "ƒŒƒxƒ‹" & StrConv(Format$(Mid$(atr, InStr(atr, "L") + 1)), vbWide)
         Else
             aname = AttributeName(u, atr, is_ability)
         End If
-        DisplayMessage "ã‚·ã‚¹ãƒ†ãƒ ", "<b>" & aname & "</b>;" & msg
+        DisplayMessage "ƒVƒXƒeƒ€", "<b>" & aname & "</b>;" & msg
         CloseMessageForm
         
         AutoMessageMode = prev_mode
     End If
 End Sub
 
-'ãƒ¦ãƒ‹ãƒƒãƒˆ u ã® idx ç•ªç›®ã®æ­¦å™¨ï¼†ã‚¢ãƒ“ãƒªãƒ†ã‚£ã®å±æ€§ atr ã®è§£èª¬ã‚’è¡¨ç¤º
+'ƒ†ƒjƒbƒg u ‚Ì idx ”Ô–Ú‚Ì•Ší•ƒAƒrƒŠƒeƒB‚Ì‘®« atr ‚Ì‰ğà‚ğ•\¦
 Public Function AttributeHelpMessage(u As Unit, atr As String, ByVal idx As Integer, _
     ByVal is_ability As Boolean) As String
 Dim atype As String, alevel As Double
@@ -3631,7 +3631,7 @@ Dim p As Pilot
 Dim i As Integer, j As Integer, buf As String
 Dim fdata As String
     
-    'å±æ€§ãƒ¬ãƒ™ãƒ«ã®åå¾—
+    '‘®«ƒŒƒxƒ‹‚Ìû“¾
     If InStr(atr, "L") > 0 Then
         atype = Left$(atr, InStr(atr, "L") - 1)
         alevel = CDbl(Mid$(atr, InStr(atr, "L") + 1))
@@ -3641,175 +3641,175 @@ Dim fdata As String
     End If
     
     With u
-        'æ­¦å™¨(ã‚¢ãƒ“ãƒªãƒ†ã‚£)å
+        '•Ší(ƒAƒrƒŠƒeƒB)–¼
         If Not is_ability Then
             waname = .Weapon(idx).Name
             wanickname = .WeaponNickname(idx)
-            whatsthis = "æ”»æ’ƒ"
+            whatsthis = "UŒ‚"
         Else
             waname = .Ability(idx).Name
             wanickname = .AbilityNickname(idx)
-            whatsthis = Term("ã‚¢ãƒ“ãƒªãƒ†ã‚£", u)
+            whatsthis = Term("ƒAƒrƒŠƒeƒB", u)
         End If
         
-        'ãƒ¡ã‚¤ãƒ³ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆ
+        'ƒƒCƒ“ƒpƒCƒƒbƒg
         Set p = .MainPilot
     End With
     
     Select Case atype
-        Case "æ ¼"
-            msg = "ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & Term("æ ¼é—˜", u) & "ã‚’ä½¿ã£ã¦æ”»æ’ƒåŠ›ã‚’ç®—å‡ºã€‚"
-        Case "å°„"
+        Case "Ši"
+            msg = "ƒpƒCƒƒbƒg‚Ì" & Term("Ši“¬", u) & "‚ğg‚Á‚ÄUŒ‚—Í‚ğZoB"
+        Case "Ë"
             If p.HasMana() Then
-                msg = "ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & Term("é­”åŠ›", u) & "ã‚’ä½¿ã£ã¦æ”»æ’ƒåŠ›ã‚’ç®—å‡ºã€‚"
+                msg = "ƒpƒCƒƒbƒg‚Ì" & Term("–‚—Í", u) & "‚ğg‚Á‚ÄUŒ‚—Í‚ğZoB"
             Else
-                msg = "ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & Term("å°„æ’ƒ", u) & "ã‚’ä½¿ã£ã¦æ”»æ’ƒåŠ›ã‚’ç®—å‡ºã€‚"
+                msg = "ƒpƒCƒƒbƒg‚Ì" & Term("ËŒ‚", u) & "‚ğg‚Á‚ÄUŒ‚—Í‚ğZoB"
             End If
-        Case "è¤‡"
+        Case "•¡"
             If p.HasMana() Then
-                msg = "æ ¼é—˜ã¨é­”æ³•ã®ä¸¡æ–¹ã‚’ä½¿ã£ãŸæ”»æ’ƒã€‚" & _
-                    "ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & Term("æ ¼é—˜", u) & "ã¨" & Term("é­”åŠ›", u) & "ã®" & _
-                    "å¹³å‡å€¤ã‚’ä½¿ã£ã¦æ”»æ’ƒåŠ›ã‚’ç®—å‡ºã™ã‚‹ã€‚"
+                msg = "Ši“¬‚Æ–‚–@‚Ì—¼•û‚ğg‚Á‚½UŒ‚B" & _
+                    "ƒpƒCƒƒbƒg‚Ì" & Term("Ši“¬", u) & "‚Æ" & Term("–‚—Í", u) & "‚Ì" & _
+                    "•½‹Ï’l‚ğg‚Á‚ÄUŒ‚—Í‚ğZo‚·‚éB"
             Else
-                msg = "æ ¼é—˜ã¨å°„æ’ƒã®ä¸¡æ–¹ã‚’ä½¿ã£ãŸæ”»æ’ƒã€‚" & _
-                    "ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & Term("æ ¼é—˜", u) & "ã¨" & Term("å°„æ’ƒ", u) & "ã®" & _
-                    "å¹³å‡å€¤ã‚’ä½¿ã£ã¦æ”»æ’ƒåŠ›ã‚’ç®—å‡ºã™ã‚‹ã€‚"
+                msg = "Ši“¬‚ÆËŒ‚‚Ì—¼•û‚ğg‚Á‚½UŒ‚B" & _
+                    "ƒpƒCƒƒbƒg‚Ì" & Term("Ši“¬", u) & "‚Æ" & Term("ËŒ‚", u) & "‚Ì" & _
+                    "•½‹Ï’l‚ğg‚Á‚ÄUŒ‚—Í‚ğZo‚·‚éB"
             End If
-        Case "ï¼°"
-            msg = "å°„ç¨‹ã«ã‹ã‹ã‚ã‚‰ãšç§»å‹•å¾Œã«ä½¿ç”¨å¯èƒ½ã€‚"
-        Case "ï¼±"
-            msg = "å°„ç¨‹ã«ã‹ã‹ã‚ã‚‰ãšç§»å‹•å¾Œã¯ä½¿ç”¨ä¸èƒ½ã€‚"
-        Case "æ”»"
-            msg = "æ”»æ’ƒæ™‚ã«ã®ã¿ä½¿ç”¨å¯èƒ½ã€‚"
-        Case "å"
-            msg = "åæ’ƒæ™‚ã«ã®ã¿ä½¿ç”¨å¯èƒ½ã€‚"
-        Case "ï¼²"
+        Case "‚o"
+            msg = "Ë’ö‚É‚©‚©‚í‚ç‚¸ˆÚ“®Œã‚Ég—p‰Â”\B"
+        Case "‚p"
+            msg = "Ë’ö‚É‚©‚©‚í‚ç‚¸ˆÚ“®Œã‚Íg—p•s”\B"
+        Case "U"
+            msg = "UŒ‚‚É‚Ì‚İg—p‰Â”\B"
+        Case "”½"
+            msg = "”½Œ‚‚É‚Ì‚İg—p‰Â”\B"
+        Case "‚q"
             If alevel = DEFAULT_LEVEL Then
-                msg = "ãƒ¦ãƒ‹ãƒƒãƒˆãƒ©ãƒ³ã‚¯ã‚„ç‰¹æ®Šèƒ½åŠ›ã«ã‚ˆã‚‹æ”»æ’ƒåŠ›ä¸Šæ˜‡ãŒé€šå¸¸ã®åŠåˆ†ã€‚"
+                msg = "ƒ†ƒjƒbƒgƒ‰ƒ“ƒN‚â“Áê”\—Í‚É‚æ‚éUŒ‚—Íã¸‚ª’Êí‚Ì”¼•ªB"
             Else
-                msg = "ãƒ¦ãƒ‹ãƒƒãƒˆãƒ©ãƒ³ã‚¯ã‚„ç‰¹æ®Šèƒ½åŠ›ã«ã‚ˆã‚‹æ”»æ’ƒåŠ›ä¸Šæ˜‡ãŒ" & Format$(10 * alevel) & _
-                    "ï¼…ã«ãªã‚‹ã€‚"
+                msg = "ƒ†ƒjƒbƒgƒ‰ƒ“ƒN‚â“Áê”\—Í‚É‚æ‚éUŒ‚—Íã¸‚ª" & Format$(10 * alevel) & _
+                    "“‚É‚È‚éB"
             End If
-            msg = "ãƒ¦ãƒ‹ãƒƒãƒˆãƒ©ãƒ³ã‚¯ã‚„ç‰¹æ®Šèƒ½åŠ›ã«ã‚ˆã‚‹æ”»æ’ƒåŠ›ä¸Šæ˜‡ãŒé€šå¸¸ã®åŠåˆ†ã€‚"
-        Case "æ”¹"
+            msg = "ƒ†ƒjƒbƒgƒ‰ƒ“ƒN‚â“Áê”\—Í‚É‚æ‚éUŒ‚—Íã¸‚ª’Êí‚Ì”¼•ªB"
+        Case "‰ü"
             If alevel = DEFAULT_LEVEL Then
-                msg = "ãƒ¦ãƒ‹ãƒƒãƒˆãƒ©ãƒ³ã‚¯ã«ã‚ˆã‚‹æ”»æ’ƒåŠ›ä¸Šæ˜‡ãŒé€šå¸¸ã®åŠåˆ†ã€‚"
+                msg = "ƒ†ƒjƒbƒgƒ‰ƒ“ƒN‚É‚æ‚éUŒ‚—Íã¸‚ª’Êí‚Ì”¼•ªB"
             Else
-                msg = "ãƒ¦ãƒ‹ãƒƒãƒˆãƒ©ãƒ³ã‚¯ã«ã‚ˆã‚‹æ”»æ’ƒåŠ›ä¸Šæ˜‡ãŒ" & Format$(10 * alevel) & _
-                    "ï¼…ã«ãªã‚‹ã€‚"
+                msg = "ƒ†ƒjƒbƒgƒ‰ƒ“ƒN‚É‚æ‚éUŒ‚—Íã¸‚ª" & Format$(10 * alevel) & _
+                    "“‚É‚È‚éB"
             End If
-        Case "æ­¦"
-            msg = "ã“ã®æ­¦å™¨ã‚’ä½¿ã£ã¦å®Ÿå¼¾æ”»æ’ƒãªã©ã‚’åˆ‡ã‚Šæ‰•ã†ã“ã¨ãŒå¯èƒ½ã€‚" & _
-                "åˆ‡ã‚Šæ‰•ã„ã®å¯¾è±¡ã«ãªã‚‹ã€‚"
-        Case "çª"
-            msg = "åˆ‡ã‚Šæ‰•ã„ã®å¯¾è±¡ã«ãªã‚‹ã€‚"
-        Case "æ¥"
-            msg = "æŠ•ã’æŠ€ç­‰ã€ç›¸æ‰‹ã«å¯†ç€ã—ã¦ç¹°ã‚Šå‡ºã™æ ¼é—˜æˆ¦æ”»æ’ƒã€‚;" & _
-                "åˆ‡ã‚Šæ‰•ã„ç„¡åŠ¹ã€‚"
-        Case "ï¼ª"
-            msg = "ã‚¸ãƒ£ãƒ³ãƒ—æ”»æ’ƒæ™‚ã®åœ°å½¢é©å¿œã‚’æŒ‡å®šã—ãŸãƒ¬ãƒ™ãƒ«ã ã‘ä¸Šã’ã‚‹ã€‚"
-        Case "ï¼¢"
-            msg = "å¯¾ãƒ“ãƒ¼ãƒ ç”¨é˜²å¾¡èƒ½åŠ›ã®å¯¾è±¡ã«ãªã‚‹ã€‚"
-        Case "å®Ÿ"
-            msg = "åˆ‡ã‚Šæ‰•ã„ã¨è¿æ’ƒã®å¯¾è±¡ã«ãªã‚‹ã€‚"
-            If IsOptionDefined("è·é›¢ä¿®æ­£") Then
-                msg = msg & "é•·è·é›¢ã®æ•µã‚’æ”»æ’ƒã™ã‚‹éš›ã‚‚ãƒ€ãƒ¡ãƒ¼ã‚¸ãŒä½ä¸‹ã—ãªã„ã€‚"
+        Case "•"
+            msg = "‚±‚Ì•Ší‚ğg‚Á‚ÄÀ’eUŒ‚‚È‚Ç‚ğØ‚è•¥‚¤‚±‚Æ‚ª‰Â”\B" & _
+                "Ø‚è•¥‚¢‚Ì‘ÎÛ‚É‚È‚éB"
+        Case "“Ë"
+            msg = "Ø‚è•¥‚¢‚Ì‘ÎÛ‚É‚È‚éB"
+        Case "Ú"
+            msg = "“Š‚°‹Z“™A‘Šè‚É–§’…‚µ‚ÄŒJ‚èo‚·Ši“¬íUŒ‚B;" & _
+                "Ø‚è•¥‚¢–³ŒøB"
+        Case "‚i"
+            msg = "ƒWƒƒƒ“ƒvUŒ‚‚Ì’nŒ`“K‰‚ğw’è‚µ‚½ƒŒƒxƒ‹‚¾‚¯ã‚°‚éB"
+        Case "‚a"
+            msg = "‘Îƒr[ƒ€—p–hŒä”\—Í‚Ì‘ÎÛ‚É‚È‚éB"
+        Case "À"
+            msg = "Ø‚è•¥‚¢‚ÆŒ}Œ‚‚Ì‘ÎÛ‚É‚È‚éB"
+            If IsOptionDefined("‹——£C³") Then
+                msg = msg & "’·‹——£‚Ì“G‚ğUŒ‚‚·‚éÛ‚àƒ_ƒ[ƒW‚ª’á‰º‚µ‚È‚¢B"
             End If
-        Case "ã‚ª"
-            msg = "ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & p.SkillName0("ã‚ªãƒ¼ãƒ©") & "ãƒ¬ãƒ™ãƒ«ã«ã‚ˆã£ã¦æ”»æ’ƒåŠ›ãŒå¤‰åŒ–ã€‚"
-        Case "è¶…"
-            msg = "ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & p.SkillName0("è¶…èƒ½åŠ›") & "ãƒ¬ãƒ™ãƒ«ã«ã‚ˆã£ã¦æ”»æ’ƒåŠ›ãŒå¤‰åŒ–ã€‚"
-        Case "ã‚·"
-            msg = "ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & p.SkillName0("åŒèª¿ç‡") & "ã«ã‚ˆã£ã¦æ”»æ’ƒåŠ›ãŒå¤‰åŒ–ã€‚"
-        Case "ã‚µ"
-            msg = "ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & p.SkillName0("è¶…æ„Ÿè¦š") & "ãƒ¬ãƒ™ãƒ«ã«ã‚ˆã£ã¦å°„ç¨‹ãŒå¤‰åŒ–ã€‚"
-            If IsOptionDefined("è·é›¢ä¿®æ­£") Then
-                msg = msg & "è·é›¢ã«ã‚ˆã‚‹å‘½ä¸­ç‡ä½ä¸‹ãŒãªã„ã€‚ã¾ãŸã€"
+        Case "ƒI"
+            msg = "ƒpƒCƒƒbƒg‚Ì" & p.SkillName0("ƒI[ƒ‰") & "ƒŒƒxƒ‹‚É‚æ‚Á‚ÄUŒ‚—Í‚ª•Ï‰»B"
+        Case "’´"
+            msg = "ƒpƒCƒƒbƒg‚Ì" & p.SkillName0("’´”\—Í") & "ƒŒƒxƒ‹‚É‚æ‚Á‚ÄUŒ‚—Í‚ª•Ï‰»B"
+        Case "ƒV"
+            msg = "ƒpƒCƒƒbƒg‚Ì" & p.SkillName0("“¯’²—¦") & "‚É‚æ‚Á‚ÄUŒ‚—Í‚ª•Ï‰»B"
+        Case "ƒT"
+            msg = "ƒpƒCƒƒbƒg‚Ì" & p.SkillName0("’´Š´Šo") & "ƒŒƒxƒ‹‚É‚æ‚Á‚ÄË’ö‚ª•Ï‰»B"
+            If IsOptionDefined("‹——£C³") Then
+                msg = msg & "‹——£‚É‚æ‚é–½’†—¦’á‰º‚ª‚È‚¢B‚Ü‚½A"
             End If
-            msg = msg & "ï¼¥ï¼£ï¼­ã«ã‚ˆã‚‹å½±éŸ¿ã‚’å—ã‘ãªã„ã€‚"
-        Case "ä½“"
-            msg = "ç”Ÿå‘½åŠ›ã‚’æ”»æ’ƒåŠ›ã«æ›ãˆã‚‹æ”»æ’ƒã€‚ãƒ¦ãƒ‹ãƒƒãƒˆã®" & Term("ï¼¨ï¼°", u) & _
-                "ã«ã‚ˆã£ã¦æ”»æ’ƒåŠ›ãŒå¤‰åŒ–ã™ã‚‹ã€‚"
-        Case "å¸"
-            msg = "ä¸ãˆãŸãƒ€ãƒ¡ãƒ¼ã‚¸ã®ï¼‘ï¼ï¼”ã‚’å¸åã—ã€è‡ªåˆ†ã®" & Term("ï¼¨ï¼°", u) & "ã«å¤‰æ›ã€‚"
-        Case "æ¸›"
-            msg = Term("ï¼¨ï¼°", u) & "ã«ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹ã¨åŒæ™‚ã«ç›¸æ‰‹ã®" & _
-                Term("ï¼¥ï¼®", u) & "ã‚’æ¸›å°‘ã•ã›ã‚‹ã€‚"
-        Case "å¥ª"
-            msg = Term("ï¼¨ï¼°", u) & "ã«ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹ã¨åŒæ™‚ã«ç›¸æ‰‹ã®" & _
-                Term("ï¼¥ï¼®", u) & "ã‚’æ¸›å°‘ã•ã›ã€" & _
-                "æ¸›å°‘ã•ã›ãŸ" & Term("ï¼¥ï¼®", u) & "ã®åŠåˆ†ã‚’è‡ªåˆ†ã®ã‚‚ã®ã«ã™ã‚‹ã€‚"
-        Case "è²«"
+            msg = msg & "‚d‚b‚l‚É‚æ‚é‰e‹¿‚ğó‚¯‚È‚¢B"
+        Case "‘Ì"
+            msg = "¶–½—Í‚ğUŒ‚—Í‚ÉŠ·‚¦‚éUŒ‚Bƒ†ƒjƒbƒg‚Ì" & Term("‚g‚o", u) & _
+                "‚É‚æ‚Á‚ÄUŒ‚—Í‚ª•Ï‰»‚·‚éB"
+        Case "‹z"
+            msg = "—^‚¦‚½ƒ_ƒ[ƒW‚Ì‚P^‚S‚ğ‹zû‚µA©•ª‚Ì" & Term("‚g‚o", u) & "‚É•ÏŠ·B"
+        Case "Œ¸"
+            msg = Term("‚g‚o", u) & "‚Éƒ_ƒ[ƒW‚ğ—^‚¦‚é‚Æ“¯‚É‘Šè‚Ì" & _
+                Term("‚d‚m", u) & "‚ğŒ¸­‚³‚¹‚éB"
+        Case "’D"
+            msg = Term("‚g‚o", u) & "‚Éƒ_ƒ[ƒW‚ğ—^‚¦‚é‚Æ“¯‚É‘Šè‚Ì" & _
+                Term("‚d‚m", u) & "‚ğŒ¸­‚³‚¹A" & _
+                "Œ¸­‚³‚¹‚½" & Term("‚d‚m", u) & "‚Ì”¼•ª‚ğ©•ª‚Ì‚à‚Ì‚É‚·‚éB"
+        Case "ŠÑ"
             If alevel > 0 Then
-                msg = "ç›¸æ‰‹ã®" & Term("è£…ç”²", u) & "ã‚’æœ¬æ¥ã®" & Format$(100 - 10 * alevel) & _
-                    "ï¼…ã®å€¤ã¨ã¿ãªã—ã¦ãƒ€ãƒ¡ãƒ¼ã‚¸è¨ˆç®—ã‚’è¡Œã†ã€‚"
+                msg = "‘Šè‚Ì" & Term("‘•b", u) & "‚ğ–{—ˆ‚Ì" & Format$(100 - 10 * alevel) & _
+                    "“‚Ì’l‚Æ‚İ‚È‚µ‚Äƒ_ƒ[ƒWŒvZ‚ğs‚¤B"
             Else
-                msg = "ç›¸æ‰‹ã®" & Term("è£…ç”²", u) & "ã‚’åŠåˆ†ã¨ã¿ãªã—ã¦ãƒ€ãƒ¡ãƒ¼ã‚¸è¨ˆç®—ã‚’è¡Œã†ã€‚"
+                msg = "‘Šè‚Ì" & Term("‘•b", u) & "‚ğ”¼•ª‚Æ‚İ‚È‚µ‚Äƒ_ƒ[ƒWŒvZ‚ğs‚¤B"
             End If
-        Case "ç„¡"
-            msg = "ãƒãƒªã‚¢ã‚„ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ãªã©ã®é˜²å¾¡èƒ½åŠ›ã®åŠ¹æœã‚’ç„¡è¦–ã—ã¦ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹ã€‚"
-        Case "æµ¸"
-            msg = "ã‚·ãƒ¼ãƒ«ãƒ‰é˜²å¾¡ã‚’ç„¡è¦–ã—ã¦ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹ã€‚"
-        Case "ç ´"
-            msg = "ã‚·ãƒ¼ãƒ«ãƒ‰é˜²å¾¡ã®åŠ¹æœã‚’åŠæ¸›ã•ã›ã‚‹ã€‚"
-        Case "æµ„"
-            msg = "æ•µã®" & p.SkillName0("å†ç”Ÿ") & "èƒ½åŠ›ã‚’ç„¡åŠ¹åŒ–ã€‚"
-        Case "å°"
-            msg = "ç‰¹å®šã®å¼±ç‚¹ã‚’æŒã¤æ•µã«ã®ã¿æœ‰åŠ¹ãªæ­¦è£…ã€‚" & _
-                "å¼±ç‚¹ã‚’ã¤ã„ãŸã¨ãã«ã®ã¿ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹ã“ã¨ãŒå‡ºæ¥ã‚‹ã€‚"
-        Case "é™"
-            msg = "ç‰¹å®šã®å¼±ç‚¹ã‚’æŒã¤æ•µã«ã®ã¿æœ‰åŠ¹ãªæ­¦è£…ã€‚" & _
-                "é™å®šå±æ€§ä»¥é™ã«æŒ‡å®šã—ãŸå±æ€§ã§;" & _
-                "å¼±ç‚¹ã‚’ã¤ã„ãŸã¨ãã«ã®ã¿ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹ã“ã¨ãŒå‡ºæ¥ã‚‹ã€‚"
-        Case "æ®º"
-            msg = "ç›¸æ‰‹ã‚’ä¸€æ’ƒã§å€’ã›ã‚‹å ´åˆã«ã®ã¿æœ‰åŠ¹ãªæ”»æ’ƒã€‚;" & _
-                "ç›¸æ‰‹ã¯é˜²å¾¡ï¼†ã‚·ãƒ¼ãƒ«ãƒ‰é˜²å¾¡å‡ºæ¥ãªã„ã€‚"
-        Case "â™‚"
-            msg = "ç”·æ€§ã«ã®ã¿æœ‰åŠ¹ã€‚"
-        Case "â™€"
-            msg = "å¥³æ€§ã«ã®ã¿æœ‰åŠ¹ã€‚"
-        Case "ï¼£"
-            msg = "ãƒãƒ£ãƒ¼ã‚¸ã‚³ãƒãƒ³ãƒ‰ã‚’ä½¿ç”¨ã—ã¦ãƒãƒ£ãƒ¼ã‚¸å®Œäº†ã®çŠ¶æ…‹ã«ãªã‚‰ãªã„ã¨ä½¿ç”¨ä¸èƒ½ã€‚"
-        Case "ï¼¡"
-            msg = "ä½¿ç”¨ã™ã‚‹ã¨" & Format$(alevel) & _
-                "ã‚¿ãƒ¼ãƒ³å¾Œã«å†ãƒãƒ£ãƒ¼ã‚¸ãŒå®Œäº†ã™ã‚‹ã¾ã§ä½¿ç”¨ä¸èƒ½ã€‚"
+        Case "–³"
+            msg = "ƒoƒŠƒA‚âƒtƒB[ƒ‹ƒh‚È‚Ç‚Ì–hŒä”\—Í‚ÌŒø‰Ê‚ğ–³‹‚µ‚Äƒ_ƒ[ƒW‚ğ—^‚¦‚éB"
+        Case "Z"
+            msg = "ƒV[ƒ‹ƒh–hŒä‚ğ–³‹‚µ‚Äƒ_ƒ[ƒW‚ğ—^‚¦‚éB"
+        Case "”j"
+            msg = "ƒV[ƒ‹ƒh–hŒä‚ÌŒø‰Ê‚ğ”¼Œ¸‚³‚¹‚éB"
+        Case "ò"
+            msg = "“G‚Ì" & p.SkillName0("Ä¶") & "”\—Í‚ğ–³Œø‰»B"
+        Case "••"
+            msg = "“Á’è‚Ìã“_‚ğ‚Â“G‚É‚Ì‚İ—LŒø‚È•‘•B" & _
+                "ã“_‚ğ‚Â‚¢‚½‚Æ‚«‚É‚Ì‚İƒ_ƒ[ƒW‚ğ—^‚¦‚é‚±‚Æ‚ªo—ˆ‚éB"
+        Case "ŒÀ"
+            msg = "“Á’è‚Ìã“_‚ğ‚Â“G‚É‚Ì‚İ—LŒø‚È•‘•B" & _
+                "ŒÀ’è‘®«ˆÈ~‚Éw’è‚µ‚½‘®«‚Å;" & _
+                "ã“_‚ğ‚Â‚¢‚½‚Æ‚«‚É‚Ì‚İƒ_ƒ[ƒW‚ğ—^‚¦‚é‚±‚Æ‚ªo—ˆ‚éB"
+        Case "E"
+            msg = "‘Šè‚ğˆêŒ‚‚Å“|‚¹‚éê‡‚É‚Ì‚İ—LŒø‚ÈUŒ‚B;" & _
+                "‘Šè‚Í–hŒä•ƒV[ƒ‹ƒh–hŒäo—ˆ‚È‚¢B"
+        Case "‰"
+            msg = "’j«‚É‚Ì‚İ—LŒøB"
+        Case "Š"
+            msg = "—«‚É‚Ì‚İ—LŒøB"
+        Case "‚b"
+            msg = "ƒ`ƒƒ[ƒWƒRƒ}ƒ“ƒh‚ğg—p‚µ‚Äƒ`ƒƒ[ƒWŠ®—¹‚Ìó‘Ô‚É‚È‚ç‚È‚¢‚Æg—p•s”\B"
+        Case "‚`"
+            msg = "g—p‚·‚é‚Æ" & Format$(alevel) & _
+                "ƒ^[ƒ“Œã‚ÉÄƒ`ƒƒ[ƒW‚ªŠ®—¹‚·‚é‚Ü‚Åg—p•s”\B"
             If Not is_ability Then
                 For i = 1 To u.CountWeapon
                     If i <> idx And wanickname = u.WeaponNickname(i) Then
-                        msg = msg & "åŒåã®æ­¦å™¨ã‚‚é€£å‹•ã—ã¦ä½¿ç”¨ä¸èƒ½ã«ãªã‚‹ã€‚"
+                        msg = msg & "“¯–¼‚Ì•Ší‚à˜A“®‚µ‚Äg—p•s”\‚É‚È‚éB"
                         Exit For
                     End If
                 Next
-                If u.IsWeaponClassifiedAs(idx, "å…±") _
+                If u.IsWeaponClassifiedAs(idx, "‹¤") _
                     And u.Weapon(idx).Bullet = 0 _
                 Then
-                    msg = msg & "åŒãƒ¬ãƒ™ãƒ«ã®å¼¾è–¬å…±æœ‰æ­¦å™¨ã‚‚é€£å‹•ã—ã¦ä½¿ç”¨ä¸èƒ½ã«ãªã‚‹ã€‚"
+                    msg = msg & "“¯ƒŒƒxƒ‹‚Ì’e–ò‹¤—L•Ší‚à˜A“®‚µ‚Äg—p•s”\‚É‚È‚éB"
                 End If
             Else
                 For i = 1 To u.CountAbility
                     If i <> idx And wanickname = u.AbilityNickname(i) Then
-                        msg = msg & "åŒåã®" & Term("ã‚¢ãƒ“ãƒªãƒ†ã‚£", u) & "ã‚‚é€£å‹•ã—ã¦ä½¿ç”¨ä¸èƒ½ã«ãªã‚‹ã€‚"
+                        msg = msg & "“¯–¼‚Ì" & Term("ƒAƒrƒŠƒeƒB", u) & "‚à˜A“®‚µ‚Äg—p•s”\‚É‚È‚éB"
                         Exit For
                     End If
                 Next
-                If u.IsAbilityClassifiedAs(idx, "å…±") _
+                If u.IsAbilityClassifiedAs(idx, "‹¤") _
                     And u.Ability(idx).Stock = 0 _
                 Then
-                    msg = msg & "åŒãƒ¬ãƒ™ãƒ«ã®ä½¿ç”¨å›æ•°å…±æœ‰" & Term("ã‚¢ãƒ“ãƒªãƒ†ã‚£", u) & _
-                         "ã‚‚é€£å‹•ã—ã¦ä½¿ç”¨ä¸èƒ½ã«ãªã‚‹ã€‚"
+                    msg = msg & "“¯ƒŒƒxƒ‹‚Ìg—p‰ñ”‹¤—L" & Term("ƒAƒrƒŠƒeƒB", u) & _
+                         "‚à˜A“®‚µ‚Äg—p•s”\‚É‚È‚éB"
                 End If
             End If
-        Case "åˆ"
+        Case "‡"
             For i = 1 To u.CountFeature
-                If u.Feature(i) = "åˆä½“æŠ€" _
+                If u.Feature(i) = "‡‘Ì‹Z" _
                     And LIndex(u.FeatureData(i), 1) = waname _
                 Then
                     Exit For
                 End If
             Next
             If i > u.CountFeature Then
-                ErrorMessage u.Name & "ã®åˆä½“æŠ€ã€Œ" & waname _
-                    & "ã€ã«å¯¾å¿œã—ãŸåˆä½“æŠ€èƒ½åŠ›ãŒã‚ã‚Šã¾ã›ã‚“"
+                ErrorMessage u.Name & "‚Ì‡‘Ì‹Zu" & waname _
+                    & "v‚É‘Î‰‚µ‚½‡‘Ì‹Z”\—Í‚ª‚ ‚è‚Ü‚¹‚ñ"
                 Exit Function
             End If
             If LLength(u.FeatureData(i)) = 2 Then
@@ -3818,12 +3818,12 @@ Dim fdata As String
                     uname = UDList.Item(uname).Nickname
                 End If
                 If uname = u.Nickname Then
-                    msg = "ä»–ã®" & uname & "ã¨å”åŠ›ã—ã¦è¡Œã†æŠ€ã€‚"
+                    msg = "‘¼‚Ì" & uname & "‚Æ‹¦—Í‚µ‚Äs‚¤‹ZB"
                 Else
-                    msg = uname & "ã¨å”åŠ›ã—ã¦è¡Œã†æŠ€ã€‚"
+                    msg = uname & "‚Æ‹¦—Í‚µ‚Äs‚¤‹ZB"
                 End If
             Else
-                msg = "ä»¥ä¸‹ã®ãƒ¦ãƒ‹ãƒƒãƒˆã¨å”åŠ›ã—ã¦è¡Œã†æŠ€ã€‚;"
+                msg = "ˆÈ‰º‚Ìƒ†ƒjƒbƒg‚Æ‹¦—Í‚µ‚Äs‚¤‹ZB;"
                 For j = 2 To LLength(u.FeatureData(i))
                     uname = LIndex(u.FeatureData(i), j)
                     If UDList.IsDefined(uname) Then
@@ -3832,85 +3832,85 @@ Dim fdata As String
                     msg = msg & uname & "  "
                 Next
             End If
-        Case "å…±"
+        Case "‹¤"
             If Not is_ability Then
-                msg = "è¤‡æ•°ã®æ­¦å™¨ã§å¼¾è–¬ã‚’å…±æœ‰ã—ã¦ã„ã‚‹ã“ã¨ã‚’ç¤ºã™ã€‚"
+                msg = "•¡”‚Ì•Ší‚Å’e–ò‚ğ‹¤—L‚µ‚Ä‚¢‚é‚±‚Æ‚ğ¦‚·B"
                 If alevel > 0 Then
-                    msg = msg & ";åŒãƒ¬ãƒ™ãƒ«ã®å¼¾è–¬å…±æœ‰æ­¦å™¨é–“ã§å¼¾è–¬ã‚’å…±æœ‰ã—ã¦ã„ã‚‹ã€‚"
+                    msg = msg & ";“¯ƒŒƒxƒ‹‚Ì’e–ò‹¤—L•ŠíŠÔ‚Å’e–ò‚ğ‹¤—L‚µ‚Ä‚¢‚éB"
                 End If
             Else
-                msg = "è¤‡æ•°ã®" & Term("ã‚¢ãƒ“ãƒªãƒ†ã‚£", u) & "ã§ä½¿ç”¨å›æ•°ã‚’å…±æœ‰ã—ã¦ã„ã‚‹ã“ã¨ã‚’ç¤ºã™ã€‚"
+                msg = "•¡”‚Ì" & Term("ƒAƒrƒŠƒeƒB", u) & "‚Åg—p‰ñ”‚ğ‹¤—L‚µ‚Ä‚¢‚é‚±‚Æ‚ğ¦‚·B"
                 If alevel > 0 Then
-                    msg = msg & ";åŒãƒ¬ãƒ™ãƒ«ã®ä½¿ç”¨å›æ•°å…±æœ‰" & Term("ã‚¢ãƒ“ãƒªãƒ†ã‚£", u) & _
-                        "é–“ã§ä½¿ç”¨å›æ•°ã‚’å…±æœ‰ã—ã¦ã„ã‚‹ã€‚"
+                    msg = msg & ";“¯ƒŒƒxƒ‹‚Ìg—p‰ñ”‹¤—L" & Term("ƒAƒrƒŠƒeƒB", u) & _
+                        "ŠÔ‚Åg—p‰ñ”‚ğ‹¤—L‚µ‚Ä‚¢‚éB"
                 End If
             End If
-        Case "æ–‰"
+        Case "Ä"
             If Not is_ability Then
-                msg = "å¼¾æ•°åˆ¶ã®æ­¦å™¨å…¨ã¦ã®å¼¾æ•°ã‚’æ¶ˆè²»ã—ã¦æ”»æ’ƒã‚’è¡Œã†ã€‚"
+                msg = "’e”§‚Ì•Ší‘S‚Ä‚Ì’e”‚ğÁ”ï‚µ‚ÄUŒ‚‚ğs‚¤B"
             Else
-                msg = "å›æ•°åˆ¶ã®" & Term("ã‚¢ãƒ“ãƒªãƒ†ã‚£", u) & "å…¨ã¦ã®ä½¿ç”¨å›æ•°ã‚’æ¶ˆè²»ã™ã‚‹ã€‚"
+                msg = "‰ñ”§‚Ì" & Term("ƒAƒrƒŠƒeƒB", u) & "‘S‚Ä‚Ìg—p‰ñ”‚ğÁ”ï‚·‚éB"
             End If
-        Case "æ°¸"
-            msg = "åˆ‡ã‚Šæ‰•ã„ã‚„è¿æ’ƒã•ã‚Œãªã„é™ã‚Šå¼¾æ•°ãŒæ¸›å°‘ã—ãªã„ã€‚"
-        Case "è¡“"
-            buf = p.SkillName0("è¡“")
-            If buf = "éè¡¨ç¤º" Then
-                buf = "è¡“"
+        Case "‰i"
+            msg = "Ø‚è•¥‚¢‚âŒ}Œ‚‚³‚ê‚È‚¢ŒÀ‚è’e”‚ªŒ¸­‚µ‚È‚¢B"
+        Case "p"
+            buf = p.SkillName0("p")
+            If buf = "”ñ•\¦" Then
+                buf = "p"
             End If
-            msg = buf & "æŠ€èƒ½ã«ã‚ˆã£ã¦" & Term("ï¼¥ï¼®", u) & "æ¶ˆè²»é‡ãŒæ¸›å°‘ã€‚"
+            msg = buf & "‹Z”\‚É‚æ‚Á‚Ä" & Term("‚d‚m", u) & "Á”ï—Ê‚ªŒ¸­B"
             If is_ability Then
-                msg = msg & ";ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & Term("é­”åŠ›", u) & "ã«ã‚ˆã£ã¦å¨åŠ›ãŒå¢—æ¸›ã™ã‚‹ã€‚"
+                msg = msg & ";ƒpƒCƒƒbƒg‚Ì" & Term("–‚—Í", u) & "‚É‚æ‚Á‚ÄˆĞ—Í‚ª‘Œ¸‚·‚éB"
             End If
-            msg = msg & ";æ²ˆé»™çŠ¶æ…‹ã®æ™‚ã«ã¯ä½¿ç”¨ä¸èƒ½ï½¡"
-        Case "æŠ€"
-            buf = p.SkillName0("æŠ€")
-            If buf = "éè¡¨ç¤º" Then
-                buf = "æŠ€"
+            msg = msg & ";’¾–Ùó‘Ô‚Ì‚É‚Íg—p•s”\¡"
+        Case "‹Z"
+            buf = p.SkillName0("‹Z")
+            If buf = "”ñ•\¦" Then
+                buf = "‹Z"
             End If
-            msg = buf & "æŠ€èƒ½ã«ã‚ˆã£ã¦" & Term("ï¼¥ï¼®", u) & "æ¶ˆè²»é‡ãŒæ¸›å°‘ã€‚"
-        Case "éŸ³"
+            msg = buf & "‹Z”\‚É‚æ‚Á‚Ä" & Term("‚d‚m", u) & "Á”ï—Ê‚ªŒ¸­B"
+        Case "‰¹"
             If Not is_ability Then
-                msg = "å£°ãªã©ã®éŸ³ã‚’ä½¿ã£ãŸæ”»æ’ƒã§ã‚ã‚‹ã“ã¨ã‚’ç¤ºã™ï½¡"
+                msg = "º‚È‚Ç‚Ì‰¹‚ğg‚Á‚½UŒ‚‚Å‚ ‚é‚±‚Æ‚ğ¦‚·¡"
             Else
-                msg = "å£°ãªã©ã®éŸ³ã‚’ä½¿ã£ãŸ" & Term("ã‚¢ãƒ“ãƒªãƒ†ã‚£", u) & "ã§ã‚ã‚‹ã“ã¨ã‚’ç¤ºã™ï½¡"
+                msg = "º‚È‚Ç‚Ì‰¹‚ğg‚Á‚½" & Term("ƒAƒrƒŠƒeƒB", u) & "‚Å‚ ‚é‚±‚Æ‚ğ¦‚·¡"
             End If
-            msg = msg & "æ²ˆé»™çŠ¶æ…‹ã®æ™‚ã«ã¯ä½¿ç”¨ä¸èƒ½ï½¡ "
-        Case "è¦–"
-            msg = "è¦–è¦šã«åƒãã‹ã‘ã‚‹æ”»æ’ƒã€‚ç›²ç›®çŠ¶æ…‹ã®ãƒ¦ãƒ‹ãƒƒãƒˆã«ã¯åŠ¹ã‹ãªã„ã€‚"
-        Case "æ°—"
-            msg = "ä½¿ç”¨æ™‚ã«æ°—åŠ›" & Format$(5 * alevel) & "ã‚’æ¶ˆè²»ã€‚"
-        Case "éœŠ", "ãƒ—"
-            msg = "ä½¿ç”¨æ™‚ã«" & Format$(5 * alevel) & p.SkillName0("éœŠåŠ›") & "ã‚’æ¶ˆè²»ã€‚"
-        Case "å¤±"
-            msg = "ä½¿ç”¨æ™‚ã«" & Format$(alevel * u.MaxHP \ 10) & "ã®" & Term("ï¼¨ï¼°", u) & "ã‚’å¤±ã†ã€‚"
-        Case "éŠ­"
-            msg = "ä½¿ç”¨æ™‚ã«" & Format$(MaxLng(alevel, 1) * u.Value \ 10) & _
-                "ã®" & Term("è³‡é‡‘", u) & "ãŒå¿…è¦ã€‚;" & _
-                Term("è³‡é‡‘", u) & "ãŒè¶³ã‚Šãªã„å ´åˆã¯ä½¿ç”¨ä¸å¯ã€‚"
-        Case "æ¶ˆ"
-            msg = "ä½¿ç”¨å¾Œã«1ã‚¿ãƒ¼ãƒ³æ¶ˆè€—çŠ¶æ…‹ã«é™¥ã‚Šã€å›é¿ãƒ»åæ’ƒä¸èƒ½ã€‚"
-        Case "å°½"
+            msg = msg & "’¾–Ùó‘Ô‚Ì‚É‚Íg—p•s”\¡ "
+        Case "‹"
+            msg = "‹Šo‚É“­‚«‚©‚¯‚éUŒ‚B–Ó–Úó‘Ô‚Ìƒ†ƒjƒbƒg‚É‚ÍŒø‚©‚È‚¢B"
+        Case "‹C"
+            msg = "g—p‚É‹C—Í" & Format$(5 * alevel) & "‚ğÁ”ïB"
+        Case "—ì", "ƒv"
+            msg = "g—p‚É" & Format$(5 * alevel) & p.SkillName0("—ì—Í") & "‚ğÁ”ïB"
+        Case "¸"
+            msg = "g—p‚É" & Format$(alevel * u.MaxHP \ 10) & "‚Ì" & Term("‚g‚o", u) & "‚ğ¸‚¤B"
+        Case "‘K"
+            msg = "g—p‚É" & Format$(MaxLng(alevel, 1) * u.Value \ 10) & _
+                "‚Ì" & Term("‘‹à", u) & "‚ª•K—vB;" & _
+                Term("‘‹à", u) & "‚ª‘«‚è‚È‚¢ê‡‚Íg—p•s‰ÂB"
+        Case "Á"
+            msg = "g—pŒã‚É1ƒ^[ƒ“Á–Õó‘Ô‚ÉŠ×‚èA‰ñ”ğE”½Œ‚•s”\B"
+        Case "s"
             If Not is_ability Then
                 If alevel > 0 Then
                     msg = _
-                        "å…¨" & Term("ï¼¥ï¼®", u) & "ã‚’ä½¿ã£ã¦æ”»æ’ƒã—ã€ä½¿ç”¨å¾Œã«" & _
-                        Term("ï¼¥ï¼®", u) & "ãŒ0ã«ãªã‚‹ã€‚;" & _
-                        "(æ®‹ã‚Š" & Term("ï¼¥ï¼®", u) & "ï¼å¿…è¦" & Term("ï¼¥ï¼®", u) & _
-                        ")Ã—" & StrConv(Format$(alevel), vbWide) & _
-                        "ã ã‘æ”»æ’ƒåŠ›ãŒä¸Šæ˜‡ã€‚"
+                        "‘S" & Term("‚d‚m", u) & "‚ğg‚Á‚ÄUŒ‚‚µAg—pŒã‚É" & _
+                        Term("‚d‚m", u) & "‚ª0‚É‚È‚éB;" & _
+                        "(c‚è" & Term("‚d‚m", u) & "|•K—v" & Term("‚d‚m", u) & _
+                        ")~" & StrConv(Format$(alevel), vbWide) & _
+                        "‚¾‚¯UŒ‚—Í‚ªã¸B"
                 Else
-                    msg = "å…¨" & Term("ï¼¥ï¼®", u) & "ã‚’ä½¿ã£ã¦æ”»æ’ƒã—ã€ä½¿ç”¨å¾Œã«ï¼¥ï¼®ãŒ0ã«ãªã‚‹ã€‚"
+                    msg = "‘S" & Term("‚d‚m", u) & "‚ğg‚Á‚ÄUŒ‚‚µAg—pŒã‚É‚d‚m‚ª0‚É‚È‚éB"
                 End If
             Else
-                msg = "ä½¿ç”¨å¾Œã«" & Term("ï¼¥ï¼®", u) & "ãŒ0ã«ãªã‚‹ã€‚"
+                msg = "g—pŒã‚É" & Term("‚d‚m", u) & "‚ª0‚É‚È‚éB"
             End If
-        Case "è‡ª"
-            msg = "ä½¿ç”¨å¾Œã«è‡ªçˆ†ã€‚"
-        Case "å¤‰"
-            If u.IsFeatureAvailable("å¤‰å½¢æŠ€") Then
+        Case "©"
+            msg = "g—pŒã‚É©”šB"
+        Case "•Ï"
+            If u.IsFeatureAvailable("•ÏŒ`‹Z") Then
                 For i = 1 To u.CountFeature
-                    If u.Feature(i) = "å¤‰å½¢æŠ€" _
+                    If u.Feature(i) = "•ÏŒ`‹Z" _
                         And LIndex(u.FeatureData(i), 1) = waname _
                     Then
                         uname = LIndex(u.FeatureData(i), 2)
@@ -3919,7 +3919,7 @@ Dim fdata As String
                 Next
             End If
             If uname = "" Then
-                uname = LIndex(u.FeatureData("ãƒãƒ¼ãƒãƒ«ãƒ¢ãƒ¼ãƒ‰"), 1)
+                uname = LIndex(u.FeatureData("ƒm[ƒ}ƒ‹ƒ‚[ƒh"), 1)
             End If
             If UDList.IsDefined(uname) Then
                 With UDList.Item(uname)
@@ -3930,405 +3930,405 @@ Dim fdata As String
                     End If
                 End With
             End If
-            msg = "ä½¿ç”¨å¾Œã«" & uname & "ã¸å¤‰åŒ–ã™ã‚‹ã€‚"
-        Case "é–“"
-            msg = "è¦–ç•Œå¤–ãªã©ã‹ã‚‰é–“æ¥çš„ã«æ”»æ’ƒã‚’è¡Œã†ã“ã¨ã«ã‚ˆã‚Š" & _
-                "ç›¸æ‰‹ã®åæ’ƒã‚’å°ã˜ã‚‹æ­¦å™¨ã€‚"
-        Case "ï¼­ç›´"
-            msg = "ä¸Šä¸‹å·¦å³ã®ä¸€æ–¹å‘ã«å¯¾ã™ã‚‹ç›´ç·šçŠ¶ã®åŠ¹æœç¯„å›²ã‚’æŒã¤ã€‚"
-        Case "ï¼­æ‹¡"
-            msg = "ä¸Šä¸‹å·¦å³ã®ä¸€æ–¹å‘ã«å¯¾ã™ã‚‹å¹…ï¼“ãƒã‚¹ã®ç›´ç·šçŠ¶ã®åŠ¹æœç¯„å›²ã‚’æŒã¤ã€‚"
-        Case "ï¼­æ‰‡"
-            msg = "ä¸Šä¸‹å·¦å³ã®ä¸€æ–¹å‘ã«å¯¾ã™ã‚‹æ‰‡çŠ¶ã®åŠ¹æœç¯„å›²ã‚’æŒã¤ã€‚;" & _
-                "æ‰‡ã®åºƒãŒã‚Šæ–¹ã®åº¦åˆã„ã¯ãƒ¬ãƒ™ãƒ«ã«ã‚ˆã£ã¦ç•°ãªã‚‹ã€‚"
-        Case "ï¼­å…¨"
-            msg = "ãƒ¦ãƒ‹ãƒƒãƒˆã®å‘¨ã‚Šå…¨åŸŸã«å¯¾ã™ã‚‹åŠ¹æœç¯„å›²ã‚’æŒã¤ã€‚"
-        Case "ï¼­æŠ•"
-            msg = "æŒ‡å®šã—ãŸåœ°ç‚¹ã‚’ä¸­å¿ƒã¨ã—ãŸä¸€å®šç¯„å›²ã®åŠ¹æœç¯„å›²ã‚’æŒã¤ã€‚"
-        Case "ï¼­ç§»"
-            msg = "ä½¿ç”¨å¾Œã«æŒ‡å®šã—ãŸåœ°ç‚¹ã¾ã§ãƒ¦ãƒ‹ãƒƒãƒˆãŒç§»å‹•ã—ã€" & _
-                "ãƒ¦ãƒ‹ãƒƒãƒˆãŒé€šéã—ãŸå ´æ‰€ãŒåŠ¹æœç¯„å›²ã«ãªã‚‹ã€‚"
-        Case "ï¼­ç·š"
-            msg = "æŒ‡å®šã—ãŸåœ°ç‚¹ã¨ãƒ¦ãƒ‹ãƒƒãƒˆã‚’çµã¶ç›´ç·šãŒåŠ¹æœç¯„å›²ã«ãªã‚‹ã€‚"
-        Case "è­˜"
-            msg = "åŠ¹æœç¯„å›²å†…ã«ã„ã‚‹å‘³æ–¹ãƒ¦ãƒ‹ãƒƒãƒˆã‚’è‡ªå‹•çš„ã«è­˜åˆ¥ã—ã€æ•µã®ã¿ã«ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹ã€‚"
-        Case "ç¸›"
+            msg = "g—pŒã‚É" & uname & "‚Ö•Ï‰»‚·‚éB"
+        Case "ŠÔ"
+            msg = "‹ŠEŠO‚È‚Ç‚©‚çŠÔÚ“I‚ÉUŒ‚‚ğs‚¤‚±‚Æ‚É‚æ‚è" & _
+                "‘Šè‚Ì”½Œ‚‚ğ••‚¶‚é•ŠíB"
+        Case "‚l’¼"
+            msg = "ã‰º¶‰E‚Ìˆê•ûŒü‚É‘Î‚·‚é’¼üó‚ÌŒø‰Ê”ÍˆÍ‚ğ‚ÂB"
+        Case "‚lŠg"
+            msg = "ã‰º¶‰E‚Ìˆê•ûŒü‚É‘Î‚·‚é•‚Rƒ}ƒX‚Ì’¼üó‚ÌŒø‰Ê”ÍˆÍ‚ğ‚ÂB"
+        Case "‚lî"
+            msg = "ã‰º¶‰E‚Ìˆê•ûŒü‚É‘Î‚·‚éîó‚ÌŒø‰Ê”ÍˆÍ‚ğ‚ÂB;" & _
+                "î‚ÌL‚ª‚è•û‚Ì“x‡‚¢‚ÍƒŒƒxƒ‹‚É‚æ‚Á‚ÄˆÙ‚È‚éB"
+        Case "‚l‘S"
+            msg = "ƒ†ƒjƒbƒg‚Ìü‚è‘Sˆæ‚É‘Î‚·‚éŒø‰Ê”ÍˆÍ‚ğ‚ÂB"
+        Case "‚l“Š"
+            msg = "w’è‚µ‚½’n“_‚ğ’†S‚Æ‚µ‚½ˆê’è”ÍˆÍ‚ÌŒø‰Ê”ÍˆÍ‚ğ‚ÂB"
+        Case "‚lˆÚ"
+            msg = "g—pŒã‚Éw’è‚µ‚½’n“_‚Ü‚Åƒ†ƒjƒbƒg‚ªˆÚ“®‚µA" & _
+                "ƒ†ƒjƒbƒg‚ª’Ê‰ß‚µ‚½êŠ‚ªŒø‰Ê”ÍˆÍ‚É‚È‚éB"
+        Case "‚lü"
+            msg = "w’è‚µ‚½’n“_‚Æƒ†ƒjƒbƒg‚ğŒ‹‚Ô’¼ü‚ªŒø‰Ê”ÍˆÍ‚É‚È‚éB"
+        Case "¯"
+            msg = "Œø‰Ê”ÍˆÍ“à‚É‚¢‚é–¡•ûƒ†ƒjƒbƒg‚ğ©“®“I‚É¯•Ê‚µA“G‚Ì‚İ‚Éƒ_ƒ[ƒW‚ğ—^‚¦‚éB"
+        Case "”›"
             If alevel = DEFAULT_LEVEL Then
                 alevel = 2
             End If
-            msg = "ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ç™ºç”Ÿæ™‚ã«ç›¸æ‰‹ã‚’"
+            msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šè‚ğ"
             If alevel > 0 Then
-                msg = msg & StrConv(Format$(CInt(alevel)), vbWide) & "ã‚¿ãƒ¼ãƒ³"
+                msg = msg & StrConv(Format$(CInt(alevel)), vbWide) & "ƒ^[ƒ“"
             Else
-                msg = msg & "ãã®æˆ¦é—˜ä¸­ã®ã¿"
+                msg = msg & "‚»‚Ìí“¬’†‚Ì‚İ"
             End If
-            msg = msg & "è¡Œå‹•ä¸èƒ½ã«ã™ã‚‹ã€‚"
-        Case "ï¼³"
+            msg = msg & "s“®•s”\‚É‚·‚éB"
+        Case "‚r"
             If alevel = DEFAULT_LEVEL Then
                 alevel = 1
             End If
-            msg = "ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ç™ºç”Ÿæ™‚ã«ç›¸æ‰‹ã‚’"
+            msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šè‚ğ"
             If alevel > 0 Then
-                msg = msg & StrConv(Format$(CInt(alevel)), vbWide) & "ã‚¿ãƒ¼ãƒ³"
+                msg = msg & StrConv(Format$(CInt(alevel)), vbWide) & "ƒ^[ƒ“"
             Else
-                msg = msg & "ãã®æˆ¦é—˜ä¸­ã®ã¿"
+                msg = msg & "‚»‚Ìí“¬’†‚Ì‚İ"
             End If
-            msg = msg & "è¡Œå‹•ä¸èƒ½ã«ã™ã‚‹ã€‚"
-        Case "åŠ£"
+            msg = msg & "s“®•s”\‚É‚·‚éB"
+        Case "—ò"
             If alevel = DEFAULT_LEVEL Then
-                msg = "ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ç™ºç”Ÿæ™‚ã«ç›¸æ‰‹ã®è£…ç”²ã‚’åŠæ¸›ã•ã›ã‚‹ã€‚"
+                msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šè‚Ì‘•b‚ğ”¼Œ¸‚³‚¹‚éB"
             Else
-                msg = "ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ç™ºç”Ÿæ™‚ã«ç›¸æ‰‹ã®è£…ç”²ã‚’"
+                msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šè‚Ì‘•b‚ğ"
                 If alevel > 0 Then
-                    msg = msg & StrConv(Format$(CInt(alevel)), vbWide) & "ã‚¿ãƒ¼ãƒ³"
+                    msg = msg & StrConv(Format$(CInt(alevel)), vbWide) & "ƒ^[ƒ“"
                 Else
-                    msg = msg & "ãã®æˆ¦é—˜ä¸­ã®ã¿"
+                    msg = msg & "‚»‚Ìí“¬’†‚Ì‚İ"
                 End If
-                msg = msg & "åŠæ¸›ã•ã›ã‚‹ã€‚"
+                msg = msg & "”¼Œ¸‚³‚¹‚éB"
             End If
-        Case "ä¸­"
+        Case "’†"
             If alevel = DEFAULT_LEVEL Then
                 alevel = 1
             End If
-            msg = "ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ç™ºç”Ÿæ™‚ã«ç›¸æ‰‹ãŒæŒã¤ãƒãƒªã‚¢ç­‰ã®é˜²å¾¡èƒ½åŠ›ã‚’"
+            msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šè‚ª‚ÂƒoƒŠƒA“™‚Ì–hŒä”\—Í‚ğ"
             If alevel > 0 Then
-                msg = msg & StrConv(Format$(CInt(alevel)), vbWide) & "ã‚¿ãƒ¼ãƒ³"
+                msg = msg & StrConv(Format$(CInt(alevel)), vbWide) & "ƒ^[ƒ“"
             Else
-                msg = msg & "ãã®æˆ¦é—˜ä¸­ã®ã¿"
+                msg = msg & "‚»‚Ìí“¬’†‚Ì‚İ"
             End If
-            msg = msg & "ç„¡åŠ¹åŒ–ã™ã‚‹ã€‚"
-        Case "çŸ³"
+            msg = msg & "–³Œø‰»‚·‚éB"
+        Case "Î"
             If alevel = DEFAULT_LEVEL Then
-                msg = "ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ç™ºç”Ÿæ™‚ã«ç›¸æ‰‹ã‚’çŸ³åŒ–ã•ã›ã‚‹ã€‚"
+                msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šè‚ğÎ‰»‚³‚¹‚éB"
             Else
-                msg = "ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ç™ºç”Ÿæ™‚ã«ç›¸æ‰‹ã‚’"
+                msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šè‚ğ"
                 If alevel > 0 Then
-                    msg = msg & StrConv(Format$(CInt(alevel)), vbWide) & "ã‚¿ãƒ¼ãƒ³"
+                    msg = msg & StrConv(Format$(CInt(alevel)), vbWide) & "ƒ^[ƒ“"
                 Else
-                    msg = msg & "ãã®æˆ¦é—˜ä¸­ã®ã¿"
+                    msg = msg & "‚»‚Ìí“¬’†‚Ì‚İ"
                 End If
-                msg = msg & "çŸ³åŒ–ã•ã›ã‚‹ã€‚"
+                msg = msg & "Î‰»‚³‚¹‚éB"
             End If
-        Case "å‡"
+        Case "“€"
             If alevel = DEFAULT_LEVEL Then
                 alevel = 3
             End If
-            msg = "ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ç™ºç”Ÿæ™‚ã«ç›¸æ‰‹ã‚’"
+            msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šè‚ğ"
             If alevel > 0 Then
-                msg = msg & StrConv(Format$(CInt(alevel)), vbWide) & "ã‚¿ãƒ¼ãƒ³"
+                msg = msg & StrConv(Format$(CInt(alevel)), vbWide) & "ƒ^[ƒ“"
             Else
-                msg = msg & "ãã®æˆ¦é—˜ä¸­ã®ã¿"
+                msg = msg & "‚»‚Ìí“¬’†‚Ì‚İ"
             End If
-            msg = msg & "å‡ã‚‰ã›ã‚‹ã€‚"
-            msg = msg & ";å‡çµã—ãŸç›¸æ‰‹ã¯" & Term("è£…ç”²", u) & "ãŒåŠæ¸›ã™ã‚‹ãŒã€"
-            msg = msg & "ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹ã¨å‡çµã¯è§£é™¤ã•ã‚Œã‚‹ã€‚"
-        Case "ç—º"
+            msg = msg & "“€‚ç‚¹‚éB"
+            msg = msg & ";“€Œ‹‚µ‚½‘Šè‚Í" & Term("‘•b", u) & "‚ª”¼Œ¸‚·‚é‚ªA"
+            msg = msg & "ƒ_ƒ[ƒW‚ğ—^‚¦‚é‚Æ“€Œ‹‚Í‰ğœ‚³‚ê‚éB"
+        Case "áƒ"
             If alevel = DEFAULT_LEVEL Then
                 alevel = 3
             End If
-            msg = "ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ç™ºç”Ÿæ™‚ã«ç›¸æ‰‹ã‚’"
+            msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šè‚ğ"
             If alevel > 0 Then
-                msg = msg & StrConv(Format$(CInt(alevel)), vbWide) & "ã‚¿ãƒ¼ãƒ³"
+                msg = msg & StrConv(Format$(CInt(alevel)), vbWide) & "ƒ^[ƒ“"
             Else
-                msg = msg & "ãã®æˆ¦é—˜ä¸­ã®ã¿"
+                msg = msg & "‚»‚Ìí“¬’†‚Ì‚İ"
             End If
-            msg = msg & "éº»ç—ºã•ã›ã‚‹ã€‚"
-        Case "çœ "
+            msg = msg & "–ƒáƒ‚³‚¹‚éB"
+        Case "–°"
             If alevel = DEFAULT_LEVEL Then
                 alevel = 3
             End If
-            msg = "ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ç™ºç”Ÿæ™‚ã«ç›¸æ‰‹ã‚’"
+            msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šè‚ğ"
             If alevel > 0 Then
-                msg = msg & StrConv(Format$(CInt(alevel)), vbWide) & "ã‚¿ãƒ¼ãƒ³"
+                msg = msg & StrConv(Format$(CInt(alevel)), vbWide) & "ƒ^[ƒ“"
             Else
-                msg = msg & "ãã®æˆ¦é—˜ä¸­ã®ã¿"
+                msg = msg & "‚»‚Ìí“¬’†‚Ì‚İ"
             End If
-            msg = msg & "çœ ã‚‰ã›ã‚‹ã€‚"
-            msg = msg & ";çœ ã£ãŸç›¸æ‰‹ã¸ã®æ”»æ’ƒã®ãƒ€ãƒ¡ãƒ¼ã‚¸ã¯ï¼‘.ï¼•å€ã«ãªã‚‹ãŒã€ç¡çœ ã‚‚è§£é™¤ã•ã‚Œã‚‹ã€‚"
-            msg = msg & ";æ€§æ ¼ãŒæ©Ÿæ¢°ã®æ•µã«ã¯ç„¡åŠ¹ã€‚"
-        Case "ä¹±"
+            msg = msg & "–°‚ç‚¹‚éB"
+            msg = msg & ";–°‚Á‚½‘Šè‚Ö‚ÌUŒ‚‚Ìƒ_ƒ[ƒW‚Í‚P.‚T”{‚É‚È‚é‚ªA‡–°‚à‰ğœ‚³‚ê‚éB"
+            msg = msg & ";«Ši‚ª‹@ŠB‚Ì“G‚É‚Í–³ŒøB"
+        Case "—"
             If alevel = DEFAULT_LEVEL Then
                 alevel = 3
             End If
-            msg = "ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ç™ºç”Ÿæ™‚ã«ç›¸æ‰‹ã‚’"
+            msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šè‚ğ"
             If alevel > 0 Then
-                msg = msg & StrConv(Format$(CInt(alevel)), vbWide) & "ã‚¿ãƒ¼ãƒ³"
+                msg = msg & StrConv(Format$(CInt(alevel)), vbWide) & "ƒ^[ƒ“"
             Else
-                msg = msg & "ãã®æˆ¦é—˜ä¸­ã®ã¿"
+                msg = msg & "‚»‚Ìí“¬’†‚Ì‚İ"
             End If
-            msg = msg & "æ··ä¹±ã•ã›ã‚‹ã€‚"
-        Case "é­…"
+            msg = msg & "¬—‚³‚¹‚éB"
+        Case "–£"
             If alevel = DEFAULT_LEVEL Then
                 alevel = 3
             End If
-            msg = "ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ç™ºç”Ÿæ™‚ã«ç›¸æ‰‹ã‚’"
+            msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šè‚ğ"
             If alevel > 0 Then
-                msg = msg & StrConv(Format$(CInt(alevel)), vbWide) & "ã‚¿ãƒ¼ãƒ³"
+                msg = msg & StrConv(Format$(CInt(alevel)), vbWide) & "ƒ^[ƒ“"
             Else
-                msg = msg & "ãã®æˆ¦é—˜ä¸­ã®ã¿"
+                msg = msg & "‚»‚Ìí“¬’†‚Ì‚İ"
             End If
-            msg = msg & "é­…äº†ã™ã‚‹ã€‚"
-        Case "æ†‘"
+            msg = msg & "–£—¹‚·‚éB"
+        Case "œß"
             If alevel = DEFAULT_LEVEL Then
-                msg = "ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ç™ºç”Ÿæ™‚ã«ç›¸æ‰‹ã‚’ä¹—ã£å–ã£ã¦æ”¯é…ã™ã‚‹ã€‚"
+                msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šè‚ğæ‚Áæ‚Á‚Äx”z‚·‚éB"
             Else
-                msg = "ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ç™ºç”Ÿæ™‚ã«ç›¸æ‰‹ã‚’"
+                msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šè‚ğ"
                 If alevel > 0 Then
-                    msg = msg & StrConv(Format$(CInt(alevel)), vbWide) & "ã‚¿ãƒ¼ãƒ³"
+                    msg = msg & StrConv(Format$(CInt(alevel)), vbWide) & "ƒ^[ƒ“"
                 Else
-                    msg = msg & "ãã®æˆ¦é—˜ä¸­ã®ã¿"
+                    msg = msg & "‚»‚Ìí“¬’†‚Ì‚İ"
                 End If
-                msg = msg & "ä¹—ã£å–ã£ã¦æ”¯é…ã™ã‚‹ã€‚"
+                msg = msg & "æ‚Áæ‚Á‚Äx”z‚·‚éB"
             End If
-        Case "ç›²"
+        Case "–Ó"
             If alevel = DEFAULT_LEVEL Then
                 alevel = 3
             End If
-            msg = "ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ç™ºç”Ÿæ™‚ã«ç›¸æ‰‹ã‚’"
+            msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šè‚ğ"
             If alevel > 0 Then
-                msg = msg & StrConv(Format$(CInt(alevel)), vbWide) & "ã‚¿ãƒ¼ãƒ³"
+                msg = msg & StrConv(Format$(CInt(alevel)), vbWide) & "ƒ^[ƒ“"
             Else
-                msg = msg & "ãã®æˆ¦é—˜ä¸­ã®ã¿"
+                msg = msg & "‚»‚Ìí“¬’†‚Ì‚İ"
             End If
-            msg = msg & "ç›²ç›®ã«ã™ã‚‹ã€‚"
-        Case "æ¯’"
+            msg = msg & "–Ó–Ú‚É‚·‚éB"
+        Case "“Å"
             If alevel = DEFAULT_LEVEL Then
                 alevel = 3
             End If
-            msg = "ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ç™ºç”Ÿæ™‚ã«ç›¸æ‰‹ã‚’"
+            msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šè‚ğ"
             If alevel > 0 Then
-                msg = msg & StrConv(Format$(CInt(alevel)), vbWide) & "ã‚¿ãƒ¼ãƒ³"
+                msg = msg & StrConv(Format$(CInt(alevel)), vbWide) & "ƒ^[ƒ“"
             Else
-                msg = msg & "ãã®æˆ¦é—˜ä¸­ã®ã¿"
+                msg = msg & "‚»‚Ìí“¬’†‚Ì‚İ"
             End If
-            msg = msg & "æ¯’çŠ¶æ…‹ã«ã™ã‚‹ã€‚"
-        Case "æ’¹"
+            msg = msg & "“Åó‘Ô‚É‚·‚éB"
+        Case "Šh"
             If alevel = DEFAULT_LEVEL Then
                 alevel = 2
             End If
-            msg = "ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ç™ºç”Ÿæ™‚ã«ç›¸æ‰‹ã‚’"
+            msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šè‚ğ"
             If alevel > 0 Then
-                msg = msg & StrConv(Format$(CInt(alevel)), vbWide) & "ã‚¿ãƒ¼ãƒ³"
+                msg = msg & StrConv(Format$(CInt(alevel)), vbWide) & "ƒ^[ƒ“"
             Else
-                msg = msg & "ãã®æˆ¦é—˜ä¸­ã®ã¿"
+                msg = msg & "‚»‚Ìí“¬’†‚Ì‚İ"
             End If
-            msg = msg & "æ’¹ä¹±ã™ã‚‹ã€‚"
-        Case "æ"
+            msg = msg & "Šh—‚·‚éB"
+        Case "‹°"
             If alevel = DEFAULT_LEVEL Then
                 alevel = 3
             End If
-            msg = "ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ç™ºç”Ÿæ™‚ã«ç›¸æ‰‹ã‚’"
+            msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šè‚ğ"
             If alevel > 0 Then
-                msg = msg & StrConv(Format$(CInt(alevel)), vbWide) & "ã‚¿ãƒ¼ãƒ³"
+                msg = msg & StrConv(Format$(CInt(alevel)), vbWide) & "ƒ^[ƒ“"
             Else
-                msg = msg & "ãã®æˆ¦é—˜ä¸­ã®ã¿"
+                msg = msg & "‚»‚Ìí“¬’†‚Ì‚İ"
             End If
-            msg = msg & "ææ€–ã«é™¥ã‚Œã‚‹ã€‚"
-        Case "ä¸"
+            msg = msg & "‹°•|‚ÉŠ×‚ê‚éB"
+        Case "•s"
             If alevel = DEFAULT_LEVEL Then
                 alevel = 1
             End If
-            msg = "ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ç™ºç”Ÿæ™‚ã«ç›¸æ‰‹ã‚’"
+            msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šè‚ğ"
             If alevel > 0 Then
-                msg = msg & StrConv(Format$(CInt(alevel)), vbWide) & "ã‚¿ãƒ¼ãƒ³"
+                msg = msg & StrConv(Format$(CInt(alevel)), vbWide) & "ƒ^[ƒ“"
             Else
-                msg = msg & "ãã®æˆ¦é—˜ä¸­ã®ã¿"
+                msg = msg & "‚»‚Ìí“¬’†‚Ì‚İ"
             End If
-            msg = msg & "æ”»æ’ƒä¸èƒ½ã«ã™ã‚‹ã€‚"
-        Case "æ­¢"
+            msg = msg & "UŒ‚•s”\‚É‚·‚éB"
+        Case "~"
             If alevel = DEFAULT_LEVEL Then
                 alevel = 1
             End If
-            msg = "ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ç™ºç”Ÿæ™‚ã«ç›¸æ‰‹ã‚’"
+            msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šè‚ğ"
             If alevel > 0 Then
-                msg = msg & StrConv(Format$(CInt(alevel)), vbWide) & "ã‚¿ãƒ¼ãƒ³"
+                msg = msg & StrConv(Format$(CInt(alevel)), vbWide) & "ƒ^[ƒ“"
             Else
-                msg = msg & "ãã®æˆ¦é—˜ä¸­ã®ã¿"
+                msg = msg & "‚»‚Ìí“¬’†‚Ì‚İ"
             End If
-            msg = msg & "ç§»å‹•ä¸èƒ½ã«ã™ã‚‹ã€‚"
-        Case "é»™"
+            msg = msg & "ˆÚ“®•s”\‚É‚·‚éB"
+        Case "–Ù"
             If alevel = DEFAULT_LEVEL Then
                 alevel = 3
             End If
-            msg = "ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ç™ºç”Ÿæ™‚ã«ç›¸æ‰‹ã‚’"
+            msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šè‚ğ"
             If alevel > 0 Then
-                msg = msg & StrConv(Format$(CInt(alevel)), vbWide) & "ã‚¿ãƒ¼ãƒ³"
+                msg = msg & StrConv(Format$(CInt(alevel)), vbWide) & "ƒ^[ƒ“"
             Else
-                msg = msg & "ãã®æˆ¦é—˜ä¸­ã®ã¿"
+                msg = msg & "‚»‚Ìí“¬’†‚Ì‚İ"
             End If
-            msg = msg & "æ²ˆé»™çŠ¶æ…‹ã«ã™ã‚‹ã€‚"
-        Case "é™¤"
+            msg = msg & "’¾–Ùó‘Ô‚É‚·‚éB"
+        Case "œ"
             If Not is_ability Then
-                msg = "ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ç™ºç”Ÿæ™‚ã«ç›¸æ‰‹ã«ã‹ã‘ã‚‰ã‚ŒãŸ" & Term("ã‚¢ãƒ“ãƒªãƒ†ã‚£", u) & _
-                    "ã«ã‚ˆã‚‹ç‰¹æ®ŠåŠ¹æœã‚’æ‰“ã¡æ¶ˆã™ã€‚"
+                msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šè‚É‚©‚¯‚ç‚ê‚½" & Term("ƒAƒrƒŠƒeƒB", u) & _
+                    "‚É‚æ‚é“ÁêŒø‰Ê‚ğ‘Å‚¿Á‚·B"
             Else
-                msg = Term("ã‚¢ãƒ“ãƒªãƒ†ã‚£", u) & "å®Ÿè¡Œæ™‚ã«ã€ãã‚Œã¾ã§ã«ç›¸æ‰‹ã«ã‹ã‘ã‚‰ã‚Œã¦ã„ãŸ" & _
-                    Term("ã‚¢ãƒ“ãƒªãƒ†ã‚£", u) & "ã«ã‚ˆã‚‹ç‰¹æ®ŠåŠ¹æœãŒè§£é™¤ã•ã‚Œã‚‹ã€‚"
+                msg = Term("ƒAƒrƒŠƒeƒB", u) & "Às‚ÉA‚»‚ê‚Ü‚Å‚É‘Šè‚É‚©‚¯‚ç‚ê‚Ä‚¢‚½" & _
+                    Term("ƒAƒrƒŠƒeƒB", u) & "‚É‚æ‚é“ÁêŒø‰Ê‚ª‰ğœ‚³‚ê‚éB"
             End If
-        Case "å³"
-            msg = "ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ç™ºç”Ÿæ™‚ã«ç›¸æ‰‹ã‚’å³æ­»ã•ã›ã‚‹ã€‚"
-        Case "å‘Š"
+        Case "‘¦"
+            msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šè‚ğ‘¦€‚³‚¹‚éB"
+        Case ""
             If alevel > 0 Then
-                msg = "ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ç™ºç”Ÿæ™‚ã«ç›¸æ‰‹ã‚’ã€Œæ­»ã®å®£å‘Šã€çŠ¶æ…‹ã«ã—ã€" & _
-                    StrConv(Format$(CInt(alevel)), vbWide) & "ã‚¿ãƒ¼ãƒ³å¾Œã«" & _
-                    Term("ï¼¨ï¼°", u) & "ã‚’ï¼‘ã«ã™ã‚‹ã€‚"
+                msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šè‚ğu€‚Ìévó‘Ô‚É‚µA" & _
+                    StrConv(Format$(CInt(alevel)), vbWide) & "ƒ^[ƒ“Œã‚É" & _
+                    Term("‚g‚o", u) & "‚ğ‚P‚É‚·‚éB"
             Else
-                msg = "ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ç™ºç”Ÿæ™‚ã«ç›¸æ‰‹ã®" & Term("ï¼¨ï¼°", u) & "ã‚’ï¼‘ã«ã™ã‚‹ã€‚"
+                msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šè‚Ì" & Term("‚g‚o", u) & "‚ğ‚P‚É‚·‚éB"
             End If
-        Case "è„±"
+        Case "’E"
             If alevel = DEFAULT_LEVEL Then
-                msg = "ç›¸æ‰‹ã®" & Term("æ°—åŠ›", u) & "ã‚’10ä½ä¸‹ã•ã›ã‚‹ã€‚"
+                msg = "‘Šè‚Ì" & Term("‹C—Í", u) & "‚ğ10’á‰º‚³‚¹‚éB"
             ElseIf alevel >= 0 Then
-                msg = "ç›¸æ‰‹ã®" & Term("æ°—åŠ›", u) & "ã‚’" & Format$(CInt(5 * alevel)) & "ä½ä¸‹ã•ã›ã‚‹ã€‚"
+                msg = "‘Šè‚Ì" & Term("‹C—Í", u) & "‚ğ" & Format$(CInt(5 * alevel)) & "’á‰º‚³‚¹‚éB"
             Else
-                msg = "ç›¸æ‰‹ã®" & Term("æ°—åŠ›", u) & "ã‚’" & Format$(CInt(-5 * alevel)) & "å¢—åŠ ã•ã›ã‚‹ã€‚"
+                msg = "‘Šè‚Ì" & Term("‹C—Í", u) & "‚ğ" & Format$(CInt(-5 * alevel)) & "‘‰Á‚³‚¹‚éB"
             End If
-        Case "ï¼¤"
+        Case "‚c"
             If alevel = DEFAULT_LEVEL Then
-                msg = "ç›¸æ‰‹ã®" & Term("æ°—åŠ›", u) & "ã‚’10ä½ä¸‹ã•ã›ã€ãã®åŠåˆ†ã‚’å¸åã™ã‚‹ã€‚"
+                msg = "‘Šè‚Ì" & Term("‹C—Í", u) & "‚ğ10’á‰º‚³‚¹A‚»‚Ì”¼•ª‚ğ‹zû‚·‚éB"
             ElseIf alevel >= 0 Then
-                msg = "ç›¸æ‰‹ã®" & Term("æ°—åŠ›", u) & "ã‚’" & Format$(CInt(5 * alevel)) & "ä½ä¸‹ã•ã›ã€ãã®åŠåˆ†ã‚’å¸åã™ã‚‹ã€‚"
+                msg = "‘Šè‚Ì" & Term("‹C—Í", u) & "‚ğ" & Format$(CInt(5 * alevel)) & "’á‰º‚³‚¹A‚»‚Ì”¼•ª‚ğ‹zû‚·‚éB"
             Else
-                msg = "ç›¸æ‰‹ã®" & Term("æ°—åŠ›", u) & "ã‚’" & Format$(CInt(-5 * alevel)) & "å¢—åŠ ã•ã›ã€ãã®åŠåˆ†ã‚’ä¸ãˆã‚‹ã€‚"
+                msg = "‘Šè‚Ì" & Term("‹C—Í", u) & "‚ğ" & Format$(CInt(-5 * alevel)) & "‘‰Á‚³‚¹A‚»‚Ì”¼•ª‚ğ—^‚¦‚éB"
             End If
-        Case "ä½æ”»"
+        Case "’áU"
             If alevel = DEFAULT_LEVEL Then
                 alevel = 3
             End If
-            msg = "ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ç™ºç”Ÿæ™‚ã«ç›¸æ‰‹ã®æ”»æ’ƒåŠ›ã‚’"
+            msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šè‚ÌUŒ‚—Í‚ğ"
             If alevel > 0 Then
-                msg = msg & StrConv(Format$(CInt(alevel)), vbWide) & "ã‚¿ãƒ¼ãƒ³"
+                msg = msg & StrConv(Format$(CInt(alevel)), vbWide) & "ƒ^[ƒ“"
             Else
-                msg = msg & "ãã®æˆ¦é—˜ä¸­ã®ã¿"
+                msg = msg & "‚»‚Ìí“¬’†‚Ì‚İ"
             End If
-            msg = msg & "ä½ä¸‹ã•ã›ã‚‹ã€‚"
-        Case "ä½é˜²"
+            msg = msg & "’á‰º‚³‚¹‚éB"
+        Case "’á–h"
             If alevel = DEFAULT_LEVEL Then
                 alevel = 3
             End If
-            msg = "ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ç™ºç”Ÿæ™‚ã«ç›¸æ‰‹ã®" & Term("è£…ç”²", u) & "ã‚’"
+            msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šè‚Ì" & Term("‘•b", u) & "‚ğ"
             If alevel > 0 Then
-                msg = msg & StrConv(Format$(CInt(alevel)), vbWide) & "ã‚¿ãƒ¼ãƒ³"
+                msg = msg & StrConv(Format$(CInt(alevel)), vbWide) & "ƒ^[ƒ“"
             Else
-                msg = msg & "ãã®æˆ¦é—˜ä¸­ã®ã¿"
+                msg = msg & "‚»‚Ìí“¬’†‚Ì‚İ"
             End If
-            msg = msg & "ä½ä¸‹ã•ã›ã‚‹ã€‚"
-        Case "ä½é‹"
+            msg = msg & "’á‰º‚³‚¹‚éB"
+        Case "’á‰^"
             If alevel = DEFAULT_LEVEL Then
                 alevel = 3
             End If
-            msg = "ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ç™ºç”Ÿæ™‚ã«ç›¸æ‰‹ã®" & Term("é‹å‹•æ€§", u) & "ã‚’"
+            msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šè‚Ì" & Term("‰^“®«", u) & "‚ğ"
             If alevel > 0 Then
-                msg = msg & StrConv(Format$(CInt(alevel)), vbWide) & "ã‚¿ãƒ¼ãƒ³"
+                msg = msg & StrConv(Format$(CInt(alevel)), vbWide) & "ƒ^[ƒ“"
             Else
-                msg = msg & "ãã®æˆ¦é—˜ä¸­ã®ã¿"
+                msg = msg & "‚»‚Ìí“¬’†‚Ì‚İ"
             End If
-            msg = msg & "ä½ä¸‹ã•ã›ã‚‹ã€‚"
-        Case "ä½ç§»"
+            msg = msg & "’á‰º‚³‚¹‚éB"
+        Case "’áˆÚ"
             If alevel = DEFAULT_LEVEL Then
                 alevel = 3
             End If
-            msg = "ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ç™ºç”Ÿæ™‚ã«ç›¸æ‰‹ã®" & Term("ç§»å‹•åŠ›", u) & "ã‚’"
+            msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šè‚Ì" & Term("ˆÚ“®—Í", u) & "‚ğ"
             If alevel > 0 Then
-                msg = msg & StrConv(Format$(CInt(alevel)), vbWide) & "ã‚¿ãƒ¼ãƒ³"
+                msg = msg & StrConv(Format$(CInt(alevel)), vbWide) & "ƒ^[ƒ“"
             Else
-                msg = msg & "ãã®æˆ¦é—˜ä¸­ã®ã¿"
+                msg = msg & "‚»‚Ìí“¬’†‚Ì‚İ"
             End If
-            msg = msg & "ä½ä¸‹ã•ã›ã‚‹ã€‚ã€‚"
-        Case "å…ˆ"
-            msg = "åæ’ƒæ™‚ã§ã‚‚ç›¸æ‰‹ã‚ˆã‚Šå…ˆã«æ”»æ’ƒã™ã‚‹ã€‚"
-        Case "å¾Œ"
-            msg = "åæ’ƒæ™‚ã§ã¯ãªã„å ´åˆã‚‚ç›¸æ‰‹ã‚ˆã‚Šå¾Œã«æ”»æ’ƒã™ã‚‹ã€‚"
-        Case "å¹"
+            msg = msg & "’á‰º‚³‚¹‚éBB"
+        Case "æ"
+            msg = "”½Œ‚‚Å‚à‘Šè‚æ‚èæ‚ÉUŒ‚‚·‚éB"
+        Case "Œã"
+            msg = "”½Œ‚‚Å‚Í‚È‚¢ê‡‚à‘Šè‚æ‚èŒã‚ÉUŒ‚‚·‚éB"
+        Case ""
             If alevel > 0 Then
-                msg = "ç›¸æ‰‹ãƒ¦ãƒ‹ãƒƒãƒˆã‚’" & StrConv(Format$(CInt(alevel)), vbWide) & _
-                    "ãƒã‚¹å¹ãé£›ã°ã™ã€‚;" & _
-                    "ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ç™ºç”Ÿæ™‚ã¯å¹ãé£›ã°ã—è·é›¢ï¼‹ï¼‘ã€‚"
+                msg = "‘Šèƒ†ƒjƒbƒg‚ğ" & StrConv(Format$(CInt(alevel)), vbWide) & _
+                    "ƒ}ƒX‚«”ò‚Î‚·B;" & _
+                    "ƒNƒŠƒeƒBƒJƒ‹”­¶‚Í‚«”ò‚Î‚µ‹——£{‚PB"
             Else
-                msg = "ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ç™ºç”Ÿæ™‚ã«ç›¸æ‰‹ãƒ¦ãƒ‹ãƒƒãƒˆã‚’ï¼‘ãƒã‚¹å¹ãé£›ã°ã™ã€‚"
+                msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šèƒ†ƒjƒbƒg‚ğ‚Pƒ}ƒX‚«”ò‚Î‚·B"
             End If
-        Case "ï¼«"
+        Case "‚j"
             If alevel > 0 Then
-                msg = "ç›¸æ‰‹ãƒ¦ãƒ‹ãƒƒãƒˆã‚’" & StrConv(Format$(CInt(alevel)), vbWide) & _
-                    "ãƒã‚¹å¹ãé£›ã°ã™ã€‚;" & _
-                    "ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ç™ºç”Ÿæ™‚ã¯å¹ãé£›ã°ã—è·é›¢ï¼‹ï¼‘ã€‚" & _
-                    Term("ã‚µã‚¤ã‚º", u) & "åˆ¶é™ã‚ã‚Šã€‚"
+                msg = "‘Šèƒ†ƒjƒbƒg‚ğ" & StrConv(Format$(CInt(alevel)), vbWide) & _
+                    "ƒ}ƒX‚«”ò‚Î‚·B;" & _
+                    "ƒNƒŠƒeƒBƒJƒ‹”­¶‚Í‚«”ò‚Î‚µ‹——£{‚PB" & _
+                    Term("ƒTƒCƒY", u) & "§ŒÀ‚ ‚èB"
             Else
-                msg = "ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ç™ºç”Ÿæ™‚ã«ç›¸æ‰‹ãƒ¦ãƒ‹ãƒƒãƒˆã‚’ï¼‘ãƒã‚¹å¹ãé£›ã°ã™ã€‚" & _
-                    Term("ã‚µã‚¤ã‚º", u) & "åˆ¶é™ã‚ã‚Šã€‚"
+                msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šèƒ†ƒjƒbƒg‚ğ‚Pƒ}ƒX‚«”ò‚Î‚·B" & _
+                    Term("ƒTƒCƒY", u) & "§ŒÀ‚ ‚èB"
             End If
-        Case "å¼•"
-            msg = "ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ç™ºç”Ÿæ™‚ã«ç›¸æ‰‹ãƒ¦ãƒ‹ãƒƒãƒˆã‚’éš£æ¥ã™ã‚‹ãƒã‚¹ã¾ã§å¼•ãå¯„ã›ã‚‹ã€‚"
-        Case "è»¢"
-            msg = "ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ç™ºç”Ÿæ™‚ã«ç›¸æ‰‹ãƒ¦ãƒ‹ãƒƒãƒˆã‚’" & StrConv(Format$(CInt(alevel)), vbWide) & _
-                "ãƒã‚¹å¼·åˆ¶ãƒ†ãƒ¬ãƒãƒ¼ãƒˆã•ã›ã‚‹ã€‚ãƒ†ãƒ¬ãƒãƒ¼ãƒˆå…ˆã¯ãƒ©ãƒ³ãƒ€ãƒ ã«é¸ã°ã‚Œã‚‹ã€‚"
-        Case "é€£"
-            msg = Format$(alevel) & "å›é€£ç¶šã—ã¦æ”»æ’ƒã‚’è¡Œã†ã€‚;" & _
-                "æ”»æ’ƒã«ã‚ˆã£ã¦ä¸ãˆã‚‹ãƒ€ãƒ¡ãƒ¼ã‚¸ã¯ä¸‹è¨˜ã®å¼ã§è¨ˆç®—ã•ã‚Œã‚‹ã€‚;" & _
-                "  é€šå¸¸ã®ãƒ€ãƒ¡ãƒ¼ã‚¸é‡ Ã— å‘½ä¸­å›æ•° ï¼ æ”»æ’ƒå›æ•°"
-        Case "å†"
-            msg = Format$(100 * alevel \ 16) & "%ã®ç¢ºç‡ã§å†æ”»æ’ƒã€‚"
-        Case "ç²¾"
-            msg = "ç²¾ç¥ã«åƒãã‹ã‘ã‚‹æ”»æ’ƒã€‚æ€§æ ¼ãŒã€Œæ©Ÿæ¢°ã€ã®ãƒ¦ãƒ‹ãƒƒãƒˆã«ã¯åŠ¹ã‹ãªã„ã€‚" & _
-                "ã‚·ãƒ¼ãƒ«ãƒ‰ã‚’ç„¡åŠ¹åŒ–ã€‚"
-        Case "æ´"
-            msg = "è‡ªåˆ†ä»¥å¤–ã®ãƒ¦ãƒ‹ãƒƒãƒˆã«å¯¾ã—ã¦ã®ã¿ä½¿ç”¨å¯èƒ½ã€‚"
-        Case "é›£"
-            msg = Format$(10 * alevel) & "%ã®ç¢ºç‡ã§å¤±æ•—ã™ã‚‹ã€‚"
-        Case "å¿"
-            msg = "ç‰©éŸ³ã‚’ç«‹ã¦ãšã«æ”»æ’ƒã—ã€" & _
-                "ã‚¹ãƒ†ãƒ«ã‚¹çŠ¶æ…‹ã®éš›ã«" & Term("ï¼£ï¼´ç‡", u) & "ã«+10ã®ãƒœãƒ¼ãƒŠã‚¹ã€‚" & _
-                "ä¸€æ’ƒã§ç›¸æ‰‹ã‚’å€’ã—ãŸå ´åˆã¯è‡ªåˆ†ã‹ã‚‰æ”»æ’ƒã‚’ã‹ã‘ã¦ã‚‚ã‚¹ãƒ†ãƒ«ã‚¹çŠ¶æ…‹ãŒç¶­æŒã•ã‚Œã‚‹ã€‚"
-        Case "ç›—"
-            msg = "ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ç™ºç”Ÿæ™‚ã«æ•µã‹ã‚‰æŒã¡ç‰©ã‚’ç›—ã‚€ã€‚;" & _
-                "ç›—ã‚ã‚‹ã‚‚ã®ã¯é€šå¸¸ã¯" & Term("è³‡é‡‘", u) & "(æ™®é€šã«å€’ã—ãŸæ™‚ã®åŠåˆ†ã®é¡)ã ãŒã€" & _
-                "ç›¸æ‰‹ã«ã‚ˆã£ã¦ã¯ã‚¢ã‚¤ãƒ†ãƒ ã‚’å…¥æ‰‹ã™ã‚‹ã“ã¨ã‚‚ã‚ã‚‹ã€‚"
-        Case "ï¼¨"
-            msg = "ãƒ¬ãƒ¼ãƒ€ãƒ¼ç­‰ã§ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’è¿½å°¾ã™ã‚‹æ”»æ’ƒã€‚;"
-            If IsOptionDefined("è·é›¢ä¿®æ­£") Then
-                msg = msg & "é•·è·é›¢ã®æ•µã‚’æ”»æ’ƒã™ã‚‹éš›ã‚‚å‘½ä¸­ç‡ãŒä½ä¸‹ã—ãªã„ãŒã€"
+        Case "ˆø"
+            msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šèƒ†ƒjƒbƒg‚ğ—×Ú‚·‚éƒ}ƒX‚Ü‚Åˆø‚«Šñ‚¹‚éB"
+        Case "“]"
+            msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šèƒ†ƒjƒbƒg‚ğ" & StrConv(Format$(CInt(alevel)), vbWide) & _
+                "ƒ}ƒX‹­§ƒeƒŒƒ|[ƒg‚³‚¹‚éBƒeƒŒƒ|[ƒgæ‚Íƒ‰ƒ“ƒ_ƒ€‚É‘I‚Î‚ê‚éB"
+        Case "˜A"
+            msg = Format$(alevel) & "‰ñ˜A‘±‚µ‚ÄUŒ‚‚ğs‚¤B;" & _
+                "UŒ‚‚É‚æ‚Á‚Ä—^‚¦‚éƒ_ƒ[ƒW‚Í‰º‹L‚Ì®‚ÅŒvZ‚³‚ê‚éB;" & _
+                "  ’Êí‚Ìƒ_ƒ[ƒW—Ê ~ –½’†‰ñ” ^ UŒ‚‰ñ”"
+        Case "Ä"
+            msg = Format$(100 * alevel \ 16) & "%‚ÌŠm—¦‚ÅÄUŒ‚B"
+        Case "¸"
+            msg = "¸_‚É“­‚«‚©‚¯‚éUŒ‚B«Ši‚ªu‹@ŠBv‚Ìƒ†ƒjƒbƒg‚É‚ÍŒø‚©‚È‚¢B" & _
+                "ƒV[ƒ‹ƒh‚ğ–³Œø‰»B"
+        Case "‰‡"
+            msg = "©•ªˆÈŠO‚Ìƒ†ƒjƒbƒg‚É‘Î‚µ‚Ä‚Ì‚İg—p‰Â”\B"
+        Case "“ï"
+            msg = Format$(10 * alevel) & "%‚ÌŠm—¦‚Å¸”s‚·‚éB"
+        Case "”E"
+            msg = "•¨‰¹‚ğ—§‚Ä‚¸‚ÉUŒ‚‚µA" & _
+                "ƒXƒeƒ‹ƒXó‘Ô‚ÌÛ‚É" & Term("‚b‚s—¦", u) & "‚É+10‚Ìƒ{[ƒiƒXB" & _
+                "ˆêŒ‚‚Å‘Šè‚ğ“|‚µ‚½ê‡‚Í©•ª‚©‚çUŒ‚‚ğ‚©‚¯‚Ä‚àƒXƒeƒ‹ƒXó‘Ô‚ªˆÛ‚³‚ê‚éB"
+        Case "“"
+            msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É“G‚©‚ç‚¿•¨‚ğ“‚ŞB;" & _
+                "“‚ß‚é‚à‚Ì‚Í’Êí‚Í" & Term("‘‹à", u) & "(•’Ê‚É“|‚µ‚½‚Ì”¼•ª‚ÌŠz)‚¾‚ªA" & _
+                "‘Šè‚É‚æ‚Á‚Ä‚ÍƒAƒCƒeƒ€‚ğ“üè‚·‚é‚±‚Æ‚à‚ ‚éB"
+        Case "‚g"
+            msg = "ƒŒ[ƒ_[“™‚Åƒ^[ƒQƒbƒg‚ğ’Ç”ö‚·‚éUŒ‚B;"
+            If IsOptionDefined("‹——£C³") Then
+                msg = msg & "’·‹——£‚Ì“G‚ğUŒ‚‚·‚éÛ‚à–½’†—¦‚ª’á‰º‚µ‚È‚¢‚ªA"
             End If
-            msg = msg & "ï¼¥ï¼£ï¼­ã«ã‚ˆã‚‹å½±éŸ¿ã‚’å¼·ãå—ã‘ã‚‹ã€‚"
-            msg = msg & "æ”»æ’ƒå´ãŒæ’¹ä¹±ç­‰ã®çŠ¶æ…‹ã«é™¥ã£ã¦ã‚‚å‘½ä¸­ç‡ãŒä½ä¸‹ã—ãªã„ã€‚"
-        Case "è¿½"
-            msg = "è‡ªå·±åˆ¤æ–­èƒ½åŠ›ã‚’æŒã¡ã€ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’è¿½å°¾ã™ã‚‹æ”»æ’ƒã€‚;"
-            If IsOptionDefined("è·é›¢ä¿®æ­£") Then
-                msg = msg & "é•·è·é›¢ã®æ•µã‚’æ”»æ’ƒã™ã‚‹éš›ã‚‚å‘½ä¸­ç‡ãŒä½ä¸‹ã—ãªã„ã€‚ã¾ãŸã€"
+            msg = msg & "‚d‚b‚l‚É‚æ‚é‰e‹¿‚ğ‹­‚­ó‚¯‚éB"
+            msg = msg & "UŒ‚‘¤‚ªŠh—“™‚Ìó‘Ô‚ÉŠ×‚Á‚Ä‚à–½’†—¦‚ª’á‰º‚µ‚È‚¢B"
+        Case "’Ç"
+            msg = "©ŒÈ”»’f”\—Í‚ğ‚¿Aƒ^[ƒQƒbƒg‚ğ’Ç”ö‚·‚éUŒ‚B;"
+            If IsOptionDefined("‹——£C³") Then
+                msg = msg & "’·‹——£‚Ì“G‚ğUŒ‚‚·‚éÛ‚à–½’†—¦‚ª’á‰º‚µ‚È‚¢B‚Ü‚½A"
             End If
-            msg = msg & "æ”»æ’ƒå´ãŒæ’¹ä¹±ç­‰ã®çŠ¶æ…‹ã«é™¥ã£ã¦ã‚‚å‘½ä¸­ç‡ãŒä½ä¸‹ã—ãªã„ã€‚"
-        Case "æœ‰"
-            msg = "æœ‰ç·šã«ã‚ˆã‚‹èª˜å°ã§ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’è¿½å°¾ã™ã‚‹æ”»æ’ƒã€‚;"
-            If IsOptionDefined("è·é›¢ä¿®æ­£") Then
-                msg = msg & "é•·è·é›¢ã®æ•µã‚’æ”»æ’ƒã™ã‚‹éš›ã‚‚å‘½ä¸­ç‡ãŒä½ä¸‹ã—ãªã„ã€‚ã¾ãŸã€"
+            msg = msg & "UŒ‚‘¤‚ªŠh—“™‚Ìó‘Ô‚ÉŠ×‚Á‚Ä‚à–½’†—¦‚ª’á‰º‚µ‚È‚¢B"
+        Case "—L"
+            msg = "—Lü‚É‚æ‚é—U“±‚Åƒ^[ƒQƒbƒg‚ğ’Ç”ö‚·‚éUŒ‚B;"
+            If IsOptionDefined("‹——£C³") Then
+                msg = msg & "’·‹——£‚Ì“G‚ğUŒ‚‚·‚éÛ‚à–½’†—¦‚ª’á‰º‚µ‚È‚¢B‚Ü‚½A"
             End If
-            msg = msg & "ï¼¥ï¼£ï¼­ã«ã‚ˆã‚‹å½±éŸ¿ã‚’å—ã‘ãªã„ã€‚"
-            msg = msg & "ã—ã‹ã—ã€ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼ã‚„" & _
-                "ã‚¢ã‚¤ãƒ†ãƒ ã®åŠ¹æœã«ã‚ˆã£ã¦å°„ç¨‹ãŒå¢—åŠ ã—ãªã„ã€‚"
-        Case "èª˜"
-            msg = "é›»æ³¢å¦¨å®³ã‚’å—ã‘ãªã„ç‰¹æ®Šãªæ‰‹æ®µã«ã‚ˆã‚‹èª˜å°ã§ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’è¿½å°¾ã™ã‚‹æ”»æ’ƒã€‚;"
-            If IsOptionDefined("è·é›¢ä¿®æ­£") Then
-                msg = msg & "é•·è·é›¢ã®æ•µã‚’æ”»æ’ƒã™ã‚‹éš›ã‚‚å‘½ä¸­ç‡ãŒä½ä¸‹ã—ãªã„ã€‚ã¾ãŸã€"
+            msg = msg & "‚d‚b‚l‚É‚æ‚é‰e‹¿‚ğó‚¯‚È‚¢B"
+            msg = msg & "‚µ‚©‚µAƒXƒyƒVƒƒƒ‹ƒpƒ[‚â" & _
+                "ƒAƒCƒeƒ€‚ÌŒø‰Ê‚É‚æ‚Á‚ÄË’ö‚ª‘‰Á‚µ‚È‚¢B"
+        Case "—U"
+            msg = "“d”g–WŠQ‚ğó‚¯‚È‚¢“Áê‚Èè’i‚É‚æ‚é—U“±‚Åƒ^[ƒQƒbƒg‚ğ’Ç”ö‚·‚éUŒ‚B;"
+            If IsOptionDefined("‹——£C³") Then
+                msg = msg & "’·‹——£‚Ì“G‚ğUŒ‚‚·‚éÛ‚à–½’†—¦‚ª’á‰º‚µ‚È‚¢B‚Ü‚½A"
             End If
-            msg = msg & "ï¼¥ï¼£ï¼­ã«ã‚ˆã‚‹å½±éŸ¿ã‚’å—ã‘ãªã„ã€‚"
-        Case "çˆ†"
-            msg = "çˆ†ç™ºã«ã‚ˆã‚Šãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹æ”»æ’ƒã€‚;"
-            If IsOptionDefined("è·é›¢ä¿®æ­£") Then
-                msg = msg & "é•·è·é›¢ã®æ•µã‚’æ”»æ’ƒã™ã‚‹éš›ã‚‚ãƒ€ãƒ¡ãƒ¼ã‚¸ãŒä½ä¸‹ã—ãªã„ã€‚"
+            msg = msg & "‚d‚b‚l‚É‚æ‚é‰e‹¿‚ğó‚¯‚È‚¢B"
+        Case "”š"
+            msg = "”š”­‚É‚æ‚èƒ_ƒ[ƒW‚ğ—^‚¦‚éUŒ‚B;"
+            If IsOptionDefined("‹——£C³") Then
+                msg = msg & "’·‹——£‚Ì“G‚ğUŒ‚‚·‚éÛ‚àƒ_ƒ[ƒW‚ª’á‰º‚µ‚È‚¢B"
             End If
-        Case "ç©º"
-            msg = "ç©ºä¸­ã«ã„ã‚‹ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’æ”»æ’ƒã™ã‚‹ã“ã¨ã‚’ç›®çš„ã¨ã—ãŸæ”»æ’ƒã€‚"
-            If IsOptionDefined("é«˜åº¦ä¿®æ­£") Then
-                msg = msg & "åœ°ä¸Šã‹ã‚‰ç©ºä¸­ã«ã„ã‚‹æ•µã‚’æ”»æ’ƒã™ã‚‹éš›ã«å‘½ä¸­ç‡ãŒä½ä¸‹ã—ãªã„ã€‚"
+        Case "‹ó"
+            msg = "‹ó’†‚É‚¢‚éƒ^[ƒQƒbƒg‚ğUŒ‚‚·‚é‚±‚Æ‚ğ–Ú“I‚Æ‚µ‚½UŒ‚B"
+            If IsOptionDefined("‚“xC³") Then
+                msg = msg & "’nã‚©‚ç‹ó’†‚É‚¢‚é“G‚ğUŒ‚‚·‚éÛ‚É–½’†—¦‚ª’á‰º‚µ‚È‚¢B"
             End If
-        Case "å›º"
-            msg = "ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®" & Term("æ°—åŠ›", u) & "ã‚„æ”»æ’ƒåŠ›ã€é˜²å¾¡å´ã®" & _
-                Term("è£…ç”²", u) & "ã«ã‹ã‹ã‚ã‚‰ãš" & _
-                "æ­¦å™¨ã®æ”»æ’ƒåŠ›ã¨åŒã˜ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹æ”»æ’ƒã€‚" & _
-                "ãŸã ã—ã€ãƒ¦ãƒ‹ãƒƒãƒˆãƒ©ãƒ³ã‚¯ãŒä¸ŠãŒã£ã¦ã‚‚æ”»æ’ƒåŠ›ã¯å¢—ãˆãªã„ã€‚" & _
-                Term("ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼", u) & "ã‚„" & Term("åœ°å½¢é©å¿œ", u) & _
-                "ã«ã‚ˆã‚‹ãƒ€ãƒ¡ãƒ¼ã‚¸ä¿®æ­£ã¯æœ‰åŠ¹ã€‚"
-        Case "è¡°"
-            msg = "ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ç™ºç”Ÿæ™‚ã«æ•µã®" & Term("ï¼¨ï¼°", u) & "ã‚’ç¾åœ¨å€¤ã® "
+        Case "ŒÅ"
+            msg = "ƒpƒCƒƒbƒg‚Ì" & Term("‹C—Í", u) & "‚âUŒ‚—ÍA–hŒä‘¤‚Ì" & _
+                Term("‘•b", u) & "‚É‚©‚©‚í‚ç‚¸" & _
+                "•Ší‚ÌUŒ‚—Í‚Æ“¯‚¶ƒ_ƒ[ƒW‚ğ—^‚¦‚éUŒ‚B" & _
+                "‚½‚¾‚µAƒ†ƒjƒbƒgƒ‰ƒ“ƒN‚ªã‚ª‚Á‚Ä‚àUŒ‚—Í‚Í‘‚¦‚È‚¢B" & _
+                Term("ƒXƒyƒVƒƒƒ‹ƒpƒ[", u) & "‚â" & Term("’nŒ`“K‰", u) & _
+                "‚É‚æ‚éƒ_ƒ[ƒWC³‚Í—LŒøB"
+        Case "Š"
+            msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É“G‚Ì" & Term("‚g‚o", u) & "‚ğŒ»İ’l‚Ì "
             Select Case CInt(alevel)
                 Case 1
                     msg = msg & "3/4"
@@ -4337,9 +4337,9 @@ Dim fdata As String
                 Case 3
                     msg = msg & "1/4"
             End Select
-            msg = msg & " ã¾ã§æ¸›å°‘ã•ã›ã‚‹ã€‚"
-        Case "æ»…"
-            msg = "ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ç™ºç”Ÿæ™‚ã«æ•µã®" & Term("ï¼¥ï¼®", u) & "ã‚’ç¾åœ¨å€¤ã® "
+            msg = msg & " ‚Ü‚ÅŒ¸­‚³‚¹‚éB"
+        Case "–Å"
+            msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É“G‚Ì" & Term("‚d‚m", u) & "‚ğŒ»İ’l‚Ì "
             Select Case CInt(alevel)
                 Case 1
                     msg = msg & "3/4"
@@ -4348,198 +4348,198 @@ Dim fdata As String
                 Case 3
                     msg = msg & "1/4"
             End Select
-            msg = msg & " ã¾ã§æ¸›å°‘ã•ã›ã‚‹ã€‚"
-        Case "è¸Š"
+            msg = msg & " ‚Ü‚ÅŒ¸­‚³‚¹‚éB"
+        Case "—x"
             If alevel = DEFAULT_LEVEL Then
                 alevel = 3
             End If
-            msg = "ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ç™ºç”Ÿæ™‚ã«ç›¸æ‰‹ã‚’"
+            msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šè‚ğ"
             If alevel > 0 Then
-                msg = msg & StrConv(Format$(CInt(alevel)), vbWide) & "ã‚¿ãƒ¼ãƒ³"
+                msg = msg & StrConv(Format$(CInt(alevel)), vbWide) & "ƒ^[ƒ“"
             Else
-                msg = msg & "ãã®æˆ¦é—˜ä¸­ã®ã¿"
+                msg = msg & "‚»‚Ìí“¬’†‚Ì‚İ"
             End If
-            msg = msg & "è¸Šã‚‰ã›ã‚‹ã€‚"
-        Case "ç‹‚"
+            msg = msg & "—x‚ç‚¹‚éB"
+        Case "‹¶"
             If alevel = DEFAULT_LEVEL Then
                 alevel = 3
             End If
-            msg = "ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ç™ºç”Ÿæ™‚ã«ç›¸æ‰‹ã‚’"
+            msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šè‚ğ"
             If alevel > 0 Then
-                msg = msg & StrConv(Format$(CInt(alevel)), vbWide) & "ã‚¿ãƒ¼ãƒ³"
+                msg = msg & StrConv(Format$(CInt(alevel)), vbWide) & "ƒ^[ƒ“"
             Else
-                msg = msg & "ãã®æˆ¦é—˜ä¸­ã®ã¿"
+                msg = msg & "‚»‚Ìí“¬’†‚Ì‚İ"
             End If
-            msg = msg & "ç‹‚æˆ¦å£«çŠ¶æ…‹ã«ã™ã‚‹ã€‚"
-        Case "ã‚¾"
+            msg = msg & "‹¶ímó‘Ô‚É‚·‚éB"
+        Case "ƒ]"
             If alevel = DEFAULT_LEVEL Then
-                msg = "ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ç™ºç”Ÿæ™‚ã«ç›¸æ‰‹ã‚’ã‚¾ãƒ³ãƒ“çŠ¶æ…‹ã«ã™ã‚‹ã€‚"
+                msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šè‚ğƒ]ƒ“ƒró‘Ô‚É‚·‚éB"
             Else
-                msg = "ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ç™ºç”Ÿæ™‚ã«ç›¸æ‰‹ã‚’"
+                msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šè‚ğ"
                 If alevel > 0 Then
-                    msg = msg & StrConv(Format$(CInt(alevel)), vbWide) & "ã‚¿ãƒ¼ãƒ³"
+                    msg = msg & StrConv(Format$(CInt(alevel)), vbWide) & "ƒ^[ƒ“"
                 Else
-                    msg = msg & "ãã®æˆ¦é—˜ä¸­ã®ã¿"
+                    msg = msg & "‚»‚Ìí“¬’†‚Ì‚İ"
                 End If
-                msg = msg & "ã‚¾ãƒ³ãƒ“çŠ¶æ…‹ã«ã™ã‚‹ã€‚"
+                msg = msg & "ƒ]ƒ“ƒró‘Ô‚É‚·‚éB"
             End If
-        Case "å®³"
+        Case "ŠQ"
             If alevel = DEFAULT_LEVEL Then
-                msg = "ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ç™ºç”Ÿæ™‚ã«ç›¸æ‰‹ã®è‡ªå·±å›å¾©èƒ½åŠ›ã‚’ç ´å£Šã™ã‚‹ã€‚"
+                msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šè‚Ì©ŒÈ‰ñ•œ”\—Í‚ğ”j‰ó‚·‚éB"
             Else
-                msg = "ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ç™ºç”Ÿæ™‚ã«ç›¸æ‰‹ã‚’"
+                msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šè‚ğ"
                 If alevel > 0 Then
-                    msg = msg & StrConv(Format$(CInt(alevel)), vbWide) & "ã‚¿ãƒ¼ãƒ³"
+                    msg = msg & StrConv(Format$(CInt(alevel)), vbWide) & "ƒ^[ƒ“"
                 Else
-                    msg = msg & "ãã®æˆ¦é—˜ä¸­ã®ã¿"
+                    msg = msg & "‚»‚Ìí“¬’†‚Ì‚İ"
                 End If
-                msg = msg & "è‡ªå·±å›å¾©ä¸èƒ½çŠ¶æ…‹ã«ã™ã‚‹ã€‚"
+                msg = msg & "©ŒÈ‰ñ•œ•s”\ó‘Ô‚É‚·‚éB"
             End If
-        Case "ç¿’"
-            msg = "ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ç™ºç”Ÿæ™‚ã«ç›¸æ‰‹ã®æŒã¤æŠ€ã‚’ç¿’å¾—å‡ºæ¥ã‚‹ã€‚;" & _
-                "ãŸã ã—ã€ç¿’å¾—å¯èƒ½ãªæŠ€ã‚’ç›¸æ‰‹ãŒæŒã£ã¦ã„ãªã‘ã‚Œã°ç„¡åŠ¹ã€‚"
-        Case "å†™"
-            msg = "ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ç™ºç”Ÿæ™‚ã«ç›¸æ‰‹ãƒ¦ãƒ‹ãƒƒãƒˆã«å¤‰èº«ã™ã‚‹ã€‚;" & _
-                "ãŸã ã—ã€æ—¢ã«å¤‰èº«ã—ã¦ã„ã‚‹å ´åˆã¯ä½¿ç”¨ã§ããªã„ã€‚" & _
-                "ã¾ãŸã€ç›¸æ‰‹ã¨ï¼’æ®µéšä»¥ä¸Š" & Term("ã‚µã‚¤ã‚º", u) & "ãŒç•°ãªã‚‹å ´åˆã¯ç„¡åŠ¹ã€‚"
-        Case "åŒ–"
-            msg = "ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ç™ºç”Ÿæ™‚ã«ç›¸æ‰‹ãƒ¦ãƒ‹ãƒƒãƒˆã«å¤‰èº«ã™ã‚‹ã€‚;" & _
-                "ãŸã ã—ã€æ—¢ã«å¤‰èº«ã—ã¦ã„ã‚‹å ´åˆã¯ä½¿ç”¨ã§ããªã„ã€‚"
-        Case "ç—›"
-            msg = "ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ç™ºç”Ÿæ™‚ã«é€šå¸¸ã® "
-            If IsOptionDefined("ãƒ€ãƒ¡ãƒ¼ã‚¸å€ç‡ä½ä¸‹") Then
+        Case "K"
+            msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šè‚Ì‚Â‹Z‚ğK“¾o—ˆ‚éB;" & _
+                "‚½‚¾‚µAK“¾‰Â”\‚È‹Z‚ğ‘Šè‚ª‚Á‚Ä‚¢‚È‚¯‚ê‚Î–³ŒøB"
+        Case "Ê"
+            msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šèƒ†ƒjƒbƒg‚É•Ïg‚·‚éB;" & _
+                "‚½‚¾‚µAŠù‚É•Ïg‚µ‚Ä‚¢‚éê‡‚Íg—p‚Å‚«‚È‚¢B" & _
+                "‚Ü‚½A‘Šè‚Æ‚Q’iŠKˆÈã" & Term("ƒTƒCƒY", u) & "‚ªˆÙ‚È‚éê‡‚Í–³ŒøB"
+        Case "‰»"
+            msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šèƒ†ƒjƒbƒg‚É•Ïg‚·‚éB;" & _
+                "‚½‚¾‚µAŠù‚É•Ïg‚µ‚Ä‚¢‚éê‡‚Íg—p‚Å‚«‚È‚¢B"
+        Case "’É"
+            msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É’Êí‚Ì "
+            If IsOptionDefined("ƒ_ƒ[ƒW”{—¦’á‰º") Then
                 msg = msg & Format$(100 + 10 * (alevel + 2))
             Else
                 msg = msg & Format$(100 + 25 * (alevel + 2))
             End If
-            msg = msg & "% ã®ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹ã€‚"
-        Case "åœ°", "æ°´", "ç«", "é¢¨", "å†·", "é›·", "å…‰", "é—‡", "è–", "æ­»", "æœ¨"
+            msg = msg & "% ‚Ìƒ_ƒ[ƒW‚ğ—^‚¦‚éB"
+        Case "’n", "…", "‰Î", "•—", "—â", "—‹", "Œõ", "ˆÅ", "¹", "€", "–Ø"
             Select Case atype
-                Case "æ°´", "ç«", "é¢¨"
-                    msg = atype & "ã‚’ä½¿ã£ãŸ"
-                Case "å…‰", "é—‡", "æ­»"
-                    msg = atype & "ã®åŠ›ã‚’ä½¿ã£ãŸ"
-                Case "åœ°"
-                    msg = "å¤§åœ°ã®åŠ›ã‚’å€Ÿã‚ŠãŸ"
-                Case "å†·"
-                    msg = "å†·æ°—ã«ã‚ˆã‚‹"
-                Case "é›·"
-                    msg = "é›»æ’ƒã«ã‚ˆã‚‹"
-                Case "è–"
-                    msg = "è–ãªã‚‹åŠ›ã‚’å€Ÿã‚ŠãŸ"
-                Case "æœ¨"
-                    msg = "æ¨¹æœ¨ã®åŠ›ã‚’å€Ÿã‚ŠãŸ"
+                Case "…", "‰Î", "•—"
+                    msg = atype & "‚ğg‚Á‚½"
+                Case "Œõ", "ˆÅ", "€"
+                    msg = atype & "‚Ì—Í‚ğg‚Á‚½"
+                Case "’n"
+                    msg = "‘å’n‚Ì—Í‚ğØ‚è‚½"
+                Case "—â"
+                    msg = "—â‹C‚É‚æ‚é"
+                Case "—‹"
+                    msg = "“dŒ‚‚É‚æ‚é"
+                Case "¹"
+                    msg = "¹‚È‚é—Í‚ğØ‚è‚½"
+                Case "–Ø"
+                    msg = "÷–Ø‚Ì—Í‚ğØ‚è‚½"
             End Select
-            msg = msg & whatsthis & "ã€‚"
-        Case "é­”"
+            msg = msg & whatsthis & "B"
+        Case "–‚"
             If Not is_ability Then
-                msg = "é­”åŠ›ã‚’å¸¯ã³ãŸæ”»æ’ƒã€‚"
+                msg = "–‚—Í‚ğ‘Ñ‚Ñ‚½UŒ‚B"
             Else
-                msg = "é­”æ³•ã«ã‚ˆã‚‹" & Term("ã‚¢ãƒ“ãƒªãƒ†ã‚£", u) & "ã€‚"
+                msg = "–‚–@‚É‚æ‚é" & Term("ƒAƒrƒŠƒeƒB", u) & "B"
             End If
-        Case "æ™‚"
-            msg = "æ™‚ã®æµã‚Œã‚’æ“ã‚‹" & whatsthis & "ã€‚"
-        Case "é‡"
-            msg = "é‡åŠ›ã‚’ä½¿ã£ãŸæ”»æ’ƒã€‚"
-        Case "éŠƒ", "å‰£", "åˆ€", "æ§", "æ–§", "å¼“"
-            msg = atype & "ã‚’ä½¿ã£ãŸæ”»æ’ƒã€‚"
-        Case "æ©Ÿ"
-            msg = "æ©Ÿæ¢°(ãƒ­ãƒœãƒƒãƒˆã€ã‚¢ãƒ³ãƒ‰ãƒ­ã‚¤ãƒ‰)ã«å¯¾ã—ç‰¹ã«æœ‰åŠ¹ãªæ”»æ’ƒã€‚"
-        Case "æ„Ÿ"
-            msg = "ã‚¨ã‚¹ãƒ‘ãƒ¼(è¶…èƒ½åŠ›è€…)ã«å¯¾ã—ç‰¹ã«æœ‰åŠ¹ãªæ”»æ’ƒã€‚"
-        Case "ç«œ"
-            msg = "ç«œæ—(ãƒ‰ãƒ©ã‚´ãƒ³)ã«å¯¾ã—ç‰¹ã«æœ‰åŠ¹ãªæ­¦å™¨ã€‚"
-        Case "ç€•"
-            msg = "ç€•æ­»æ™‚ã«ã®ã¿ä½¿ç”¨å¯èƒ½ãª" & whatsthis & "ã€‚"
-        Case "ç¦"
-            msg = "ç¾åœ¨ã®çŠ¶æ³ä¸‹ã§ã¯ä½¿ç”¨ã™ã‚‹ã“ã¨ãŒå‡ºæ¥ã¾ã›ã‚“ã€‚"
-        Case "å¯¾"
+        Case ""
+            msg = "‚Ì—¬‚ê‚ğ‘€‚é" & whatsthis & "B"
+        Case "d"
+            msg = "d—Í‚ğg‚Á‚½UŒ‚B"
+        Case "e", "Œ•", "“", "‘„", "•€", "‹|"
+            msg = atype & "‚ğg‚Á‚½UŒ‚B"
+        Case "‹@"
+            msg = "‹@ŠB(ƒƒ{ƒbƒgAƒAƒ“ƒhƒƒCƒh)‚É‘Î‚µ“Á‚É—LŒø‚ÈUŒ‚B"
+        Case "Š´"
+            msg = "ƒGƒXƒp[(’´”\—ÍÒ)‚É‘Î‚µ“Á‚É—LŒø‚ÈUŒ‚B"
+        Case "—³"
+            msg = "—³‘°(ƒhƒ‰ƒSƒ“)‚É‘Î‚µ“Á‚É—LŒø‚È•ŠíB"
+        Case "•m"
+            msg = "•m€‚É‚Ì‚İg—p‰Â”\‚È" & whatsthis & "B"
+        Case "‹Ö"
+            msg = "Œ»İ‚Ìó‹µ‰º‚Å‚Íg—p‚·‚é‚±‚Æ‚ªo—ˆ‚Ü‚¹‚ñB"
+        Case "‘Î"
             If Not is_ability Then
-                whatsthis = "æ”»æ’ƒ"
+                whatsthis = "UŒ‚"
             End If
-            msg = "ç›¸æ‰‹ã®ãƒ¡ã‚¤ãƒ³ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®ãƒ¬ãƒ™ãƒ«ãŒ" & StrConv(Format$(CInt(alevel)), vbWide) & _
-                "ã®å€æ•°ã®å ´åˆã«ã®ã¿æœ‰åŠ¹ãª" & whatsthis & "ã€‚"
-        Case "ãƒ©"
+            msg = "‘Šè‚ÌƒƒCƒ“ƒpƒCƒƒbƒg‚ÌƒŒƒxƒ‹‚ª" & StrConv(Format$(CInt(alevel)), vbWide) & _
+                "‚Ì”{”‚Ìê‡‚É‚Ì‚İ—LŒø‚È" & whatsthis & "B"
+        Case "ƒ‰"
             If Not is_ability Then
-                whatsthis = "æ”»æ’ƒ"
+                whatsthis = "UŒ‚"
             End If
-            msg = "ãƒ©ãƒ¼ãƒ‹ãƒ³ã‚°ãŒå¯èƒ½ãª" & whatsthis & "ã€‚"
-        Case "å°"
-            msg = "æœ€å°å°„ç¨‹ãŒ" & StrConv(Format$(CInt(alevel)), vbWide) & "ã«ãªã‚‹ã€‚"
-        Case "æ•£"
-            msg = "ç›¸æ‰‹ã‹ã‚‰ï¼’ãƒã‚¹ä»¥ä¸Šé›¢ã‚Œã¦ã„ã‚‹ã¨å‘½ä¸­ç‡ãŒä¸Šæ˜‡ã—ã€ä¸ãˆã‚‹ãƒ€ãƒ¡ãƒ¼ã‚¸ãŒæ¸›å°‘ã™ã‚‹ã€‚"
+            msg = "ƒ‰[ƒjƒ“ƒO‚ª‰Â”\‚È" & whatsthis & "B"
+        Case "¬"
+            msg = "Å¬Ë’ö‚ª" & StrConv(Format$(CInt(alevel)), vbWide) & "‚É‚È‚éB"
+        Case "U"
+            msg = "‘Šè‚©‚ç‚Qƒ}ƒXˆÈã—£‚ê‚Ä‚¢‚é‚Æ–½’†—¦‚ªã¸‚µA—^‚¦‚éƒ_ƒ[ƒW‚ªŒ¸­‚·‚éB"
         Case Else
-            'å¼±ã€åŠ¹ã€å‰‹å±æ€§
+            'ãAŒøA™‘®«
             Select Case Left$(atype, 1)
-                Case "å¼±"
+                Case "ã"
                     If alevel = DEFAULT_LEVEL Then
                         alevel = 3
                     End If
-                    msg = "ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ç™ºç”Ÿæ™‚ã«ç›¸æ‰‹ã«" & Mid$(atype, 2) & "å±æ€§ã«å¯¾ã™ã‚‹å¼±ç‚¹ã‚’"
+                    msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šè‚É" & Mid$(atype, 2) & "‘®«‚É‘Î‚·‚éã“_‚ğ"
                     If alevel > 0 Then
-                        msg = msg & StrConv(Format$(CInt(alevel)), vbWide) & "ã‚¿ãƒ¼ãƒ³"
+                        msg = msg & StrConv(Format$(CInt(alevel)), vbWide) & "ƒ^[ƒ“"
                     Else
-                        msg = msg & "ãã®æˆ¦é—˜ä¸­ã®ã¿"
+                        msg = msg & "‚»‚Ìí“¬’†‚Ì‚İ"
                     End If
-                    msg = msg & "ä»˜åŠ ã™ã‚‹ã€‚"
-                Case "åŠ¹"
+                    msg = msg & "•t‰Á‚·‚éB"
+                Case "Œø"
                     If alevel = DEFAULT_LEVEL Then
                         alevel = 3
                     End If
-                    msg = "ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ç™ºç”Ÿæ™‚ã«ç›¸æ‰‹ã«" & Mid$(atype, 2) & "å±æ€§ã«å¯¾ã™ã‚‹æœ‰åŠ¹ã‚’"
+                    msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šè‚É" & Mid$(atype, 2) & "‘®«‚É‘Î‚·‚é—LŒø‚ğ"
                     If alevel > 0 Then
-                        msg = msg & StrConv(Format$(CInt(alevel)), vbWide) & "ã‚¿ãƒ¼ãƒ³"
+                        msg = msg & StrConv(Format$(CInt(alevel)), vbWide) & "ƒ^[ƒ“"
                     Else
-                        msg = msg & "ãã®æˆ¦é—˜ä¸­ã®ã¿"
+                        msg = msg & "‚»‚Ìí“¬’†‚Ì‚İ"
                     End If
-                    msg = msg & "ä»˜åŠ ã™ã‚‹ã€‚"
-                Case "å‰‹"
+                    msg = msg & "•t‰Á‚·‚éB"
+                Case "™"
                     If alevel = DEFAULT_LEVEL Then
                         alevel = 3
                     End If
-                    msg = "ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ç™ºç”Ÿæ™‚ã«ç›¸æ‰‹ã®"
+                    msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šè‚Ì"
                     Select Case Mid$(atype, 2)
-                        Case "ã‚ª"
-                            msg = msg & "ã‚ªãƒ¼ãƒ©"
-                        Case "è¶…"
-                            msg = msg & "è¶…èƒ½åŠ›"
-                        Case "ã‚·"
-                            msg = msg & "åŒèª¿ç‡"
-                        Case "ã‚µ"
-                            msg = msg & "è¶…æ„Ÿè¦šã€çŸ¥è¦šå¼·åŒ–"
-                        Case "éœŠ"
-                            msg = msg & "éœŠåŠ›"
-                        Case "è¡“"
-                            msg = msg & "è¡“"
-                        Case "æŠ€"
-                            msg = msg & "æŠ€"
+                        Case "ƒI"
+                            msg = msg & "ƒI[ƒ‰"
+                        Case "’´"
+                            msg = msg & "’´”\—Í"
+                        Case "ƒV"
+                            msg = msg & "“¯’²—¦"
+                        Case "ƒT"
+                            msg = msg & "’´Š´ŠoA’mŠo‹­‰»"
+                        Case "—ì"
+                            msg = msg & "—ì—Í"
+                        Case "p"
+                            msg = msg & "p"
+                        Case "‹Z"
+                            msg = msg & "‹Z"
                         Case Else
-                            msg = msg & Mid$(atype, 2) & "å±æ€§ã®æ­¦å™¨ã€ã‚¢ãƒ“ãƒªãƒ†ã‚£"
+                            msg = msg & Mid$(atype, 2) & "‘®«‚Ì•ŠíAƒAƒrƒŠƒeƒB"
                     End Select
-                    msg = msg & "ã‚’"
+                    msg = msg & "‚ğ"
                     If alevel > 0 Then
-                        msg = msg & StrConv(Format$(CInt(alevel)), vbWide) & "ã‚¿ãƒ¼ãƒ³"
+                        msg = msg & StrConv(Format$(CInt(alevel)), vbWide) & "ƒ^[ƒ“"
                     Else
-                        msg = msg & "ãã®æˆ¦é—˜ä¸­ã®ã¿"
+                        msg = msg & "‚»‚Ìí“¬’†‚Ì‚İ"
                     End If
-                    msg = msg & "ä½¿ç”¨ä¸èƒ½ã«ã™ã‚‹ã€‚"
+                    msg = msg & "g—p•s”\‚É‚·‚éB"
             End Select
     End Select
     
     fdata = u.FeatureData(atype)
-    If ListIndex(fdata, 1) = "è§£èª¬" Then
-        'è§£èª¬ã‚’å®šç¾©ã—ã¦ã„ã‚‹å ´åˆ
+    If ListIndex(fdata, 1) = "‰ğà" Then
+        '‰ğà‚ğ’è‹`‚µ‚Ä‚¢‚éê‡
         msg = ListTail(fdata, 3)
         If Left$(msg, 1) = """" Then
             msg = Mid$(msg, 2, Len(msg) - 2)
         End If
     End If
     
-    'ç­‰èº«å¤§åŸºæº–ã®éš›ã¯ã€Œãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã€ã¨ã„ã†èªã‚’ä½¿ã‚ãªã„ã‚ˆã†ã«ã™ã‚‹
-    If IsOptionDefined("ç­‰èº«å¤§åŸºæº–") Then
-        ReplaceString msg, "ãƒ¡ã‚¤ãƒ³ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆ", "ãƒ¦ãƒ‹ãƒƒãƒˆ"
-        ReplaceString msg, "ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆ", "ãƒ¦ãƒ‹ãƒƒãƒˆ"
-        ReplaceString msg, "ç›¸æ‰‹ã®ãƒ¦ãƒ‹ãƒƒãƒˆ", "ç›¸æ‰‹ãƒ¦ãƒ‹ãƒƒãƒˆ"
+    '“™g‘åŠî€‚ÌÛ‚ÍuƒpƒCƒƒbƒgv‚Æ‚¢‚¤Œê‚ğg‚í‚È‚¢‚æ‚¤‚É‚·‚é
+    If IsOptionDefined("“™g‘åŠî€") Then
+        ReplaceString msg, "ƒƒCƒ“ƒpƒCƒƒbƒg", "ƒ†ƒjƒbƒg"
+        ReplaceString msg, "ƒpƒCƒƒbƒg", "ƒ†ƒjƒbƒg"
+        ReplaceString msg, "‘Šè‚Ìƒ†ƒjƒbƒg", "‘Šèƒ†ƒjƒbƒg"
     End If
     
     AttributeHelpMessage = msg

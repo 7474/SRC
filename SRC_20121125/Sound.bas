@@ -2,91 +2,91 @@ Attribute VB_Name = "Sound"
 Option Explicit
 
 ' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯ãƒ•ãƒªãƒ¼ã‚½ãƒ•ãƒˆã§ã‚ã‚Šã€ç„¡ä¿è¨¼ã§ã™ã€‚
-' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯GNU General Public License(Ver.3ã¾ãŸã¯ãã‚Œä»¥é™)ãŒå®šã‚ã‚‹æ¡ä»¶ã®ä¸‹ã§
-' å†é ’å¸ƒã¾ãŸã¯æ”¹å¤‰ã™ã‚‹ã“ã¨ãŒã§ãã¾ã™ã€‚
+' –{ƒvƒƒOƒ‰ƒ€‚ÍƒtƒŠ[ƒ\ƒtƒg‚Å‚ ‚èA–³•ÛØ‚Å‚·B
+' –{ƒvƒƒOƒ‰ƒ€‚ÍGNU General Public License(Ver.3‚Ü‚½‚Í‚»‚êˆÈ~)‚ª’è‚ß‚éğŒ‚Ì‰º‚Å
+' Ä”Ğ•z‚Ü‚½‚Í‰ü•Ï‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B
 
-'ï¼¢ï¼§ï¼­ï¼†åŠ¹æœéŸ³å†ç”Ÿç”¨ã®ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«
+'‚a‚f‚l•Œø‰Ê‰¹Ä¶—p‚Ìƒ‚ƒWƒ…[ƒ‹
 
-'MCIåˆ¶å¾¡ç”¨API
+'MCI§Œä—pAPI
 Declare Function mciSendString Lib "winmm.dll" Alias "mciSendStringA" _
     (ByVal lpstrCommand As String, ByVal lpstrReturnString As String, _
     ByVal uReturnLength As Long, ByVal hwndCallback As Long) As Long
 
-'WAVEå†ç”Ÿç”¨API
+'WAVEÄ¶—pAPI
 Declare Function sndPlaySound Lib "winmm.dll" Alias "sndPlaySoundA" _
     (ByVal lpszSoundName As String, ByVal uFlags As Long) As Long
 
-Public Const SND_SYNC = &H0         'å†ç”Ÿçµ‚äº†å¾Œã€åˆ¶å¾¡ã‚’æˆ»ã™
-Public Const SND_ASYNC = &H1        'é–¢æ•°å®Ÿè¡Œå¾Œã€åˆ¶å¾¡ã‚’æˆ»ã™
-Public Const SND_NODEFAULT = &H2    'æŒ‡å®šã—ãŸWAVEãƒ•ã‚¡ã‚¤ãƒ«ãŒè¦‹ã¤ã‹ã‚‰ãªã‹ã£ãŸå ´åˆã€
-                                    'ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®WAVEãƒ•ã‚¡ã‚¤ãƒ«ã‚’å†ç”Ÿã—ãªã„
-Public Const SND_MEMORY = &H4       'ãƒ¡ãƒ¢ãƒªãƒ•ã‚¡ã‚¤ãƒ«ã®WAVEã‚’å®Ÿè¡Œã™ã‚‹
-Public Const SND_LOOP = &H8         'åœæ­¢ã‚’å‘½ä»¤ã™ã‚‹ã¾ã§å†ç”Ÿã‚’ç¹°ã‚Šè¿”ã™ã€‚
-Public Const SND_NOSTOP = &H10      'ç¾åœ¨Waveãƒ•ã‚¡ã‚¤ãƒ«ãŒå†ç”Ÿä¸­ã®å ´åˆã€å†ç”Ÿã‚’ä¸­æ­¢ã™ã‚‹
+Public Const SND_SYNC = &H0         'Ä¶I—¹ŒãA§Œä‚ğ–ß‚·
+Public Const SND_ASYNC = &H1        'ŠÖ”ÀsŒãA§Œä‚ğ–ß‚·
+Public Const SND_NODEFAULT = &H2    'w’è‚µ‚½WAVEƒtƒ@ƒCƒ‹‚ªŒ©‚Â‚©‚ç‚È‚©‚Á‚½ê‡A
+                                    'ƒfƒtƒHƒ‹ƒg‚ÌWAVEƒtƒ@ƒCƒ‹‚ğÄ¶‚µ‚È‚¢
+Public Const SND_MEMORY = &H4       'ƒƒ‚ƒŠƒtƒ@ƒCƒ‹‚ÌWAVE‚ğÀs‚·‚é
+Public Const SND_LOOP = &H8         '’â~‚ğ–½—ß‚·‚é‚Ü‚ÅÄ¶‚ğŒJ‚è•Ô‚·B
+Public Const SND_NOSTOP = &H10      'Œ»İWaveƒtƒ@ƒCƒ‹‚ªÄ¶’†‚Ìê‡AÄ¶‚ğ’†~‚·‚é
 
 
-'ç¾åœ¨å†ç”Ÿã•ã‚Œã¦ã„ã‚‹ï¼¢ï¼§ï¼­ã®ãƒ•ã‚¡ã‚¤ãƒ«å
+'Œ»İÄ¶‚³‚ê‚Ä‚¢‚é‚a‚f‚l‚Ìƒtƒ@ƒCƒ‹–¼
 Public BGMFileName As String
-'ï¼¢ï¼§ï¼­ã‚’ãƒªãƒ”ãƒ¼ãƒˆå†ç”Ÿã™ã‚‹ï¼Ÿ
+'‚a‚f‚l‚ğƒŠƒs[ƒgÄ¶‚·‚éH
 Public RepeatMode As Boolean
-'æˆ¦é—˜æ™‚ã«ã‚‚ï¼¢ï¼§ï¼­ã‚’å¤‰æ›´ã—ãªã„ï¼Ÿ
+'í“¬‚É‚à‚a‚f‚l‚ğ•ÏX‚µ‚È‚¢H
 Public KeepBGM As Boolean
-'ãƒœã‚¹ç”¨ï¼¢ï¼§ï¼­ã‚’æ¼”å¥ä¸­
+'ƒ{ƒX—p‚a‚f‚l‚ğ‰‰‘t’†
 Public BossBGM As Boolean
 
-'Waveãƒ•ã‚¡ã‚¤ãƒ«ã®å†ç”Ÿã‚’è¡Œã£ãŸï¼Ÿ
+'Waveƒtƒ@ƒCƒ‹‚ÌÄ¶‚ğs‚Á‚½H
 Public IsWavePlayed As Boolean
 
-'MIDIãƒ•ã‚¡ã‚¤ãƒ«ã®ã‚µãƒ¼ãƒãƒ‘ã‚¹ã®åˆæœŸåŒ–ãŒå®Œäº†ã—ã¦ã„ã‚‹ï¼Ÿ
+'MIDIƒtƒ@ƒCƒ‹‚ÌƒT[ƒ`ƒpƒX‚Ì‰Šú‰»‚ªŠ®—¹‚µ‚Ä‚¢‚éH
 Private IsMidiSearchPathInitialized As Boolean
 
-'MIDIå†ç”Ÿæ–¹æ³•ã®æ‰‹æ®µ
+'MIDIÄ¶•û–@‚Ìè’i
 Public UseMCI As Boolean
 Public UseDirectMusic As Boolean
 
-'WAVå†ç”Ÿæ–¹æ³•ã®æ‰‹æ®µ
+'WAVÄ¶•û–@‚Ìè’i
 Public UseDirectSound As Boolean
 
-'MP3å†ç”Ÿæ™‚ã®éŸ³é‡
+'MP3Ä¶‚Ì‰¹—Ê
 Public MP3Volume As Integer
 
-'DirectMusicç”¨å¤‰æ•°
+'DirectMusic—p•Ï”
 Private DXObject As DirectX7
 Private DMLoader As DirectMusicLoader
 Private DMPerformance As DirectMusicPerformance
 Private DMSegment As DirectMusicSegment
 
-'VBMP3.dllã®åˆæœŸåŒ–ãŒå®Œäº†ã—ã¦ã„ã‚‹ï¼Ÿ
+'VBMP3.dll‚Ì‰Šú‰»‚ªŠ®—¹‚µ‚Ä‚¢‚éH
 Private IsMP3Supported As Boolean
 
-'DirectSoundç”¨å¤‰æ•°
+'DirectSound—p•Ï”
 Private DSObject As DirectSound
 Private DSBuffer As DirectSoundBuffer
 
 
-'ï¼¢ï¼§ï¼­ã®å†ç”Ÿã‚’é–‹å§‹ã™ã‚‹
+'‚a‚f‚l‚ÌÄ¶‚ğŠJn‚·‚é
 Public Sub StartBGM(bgm_name As String, Optional ByVal is_repeat_mode As Boolean = True)
 Dim fname As String, fname0 As String, fname2 As String
 Dim i As Integer
 
-    'ï¼¢ï¼§ï¼­ã‚’å›ºå®šä¸­ï¼Ÿ
+    '‚a‚f‚l‚ğŒÅ’è’†H
     If KeepBGM Then
         Exit Sub
     End If
     
-    'ãƒ€ãƒŸãƒ¼ã®ãƒ•ã‚¡ã‚¤ãƒ«åï¼Ÿ
+    'ƒ_ƒ~[‚Ìƒtƒ@ƒCƒ‹–¼H
     If Len(bgm_name) < 5 Then
         Exit Sub
     End If
     
-    'ãƒ•ã‚¡ã‚¤ãƒ«åã®æœ¬ä½“éƒ¨åˆ†ã‚’æŠœãå‡ºã™
+    'ƒtƒ@ƒCƒ‹–¼‚Ì–{‘Ì•”•ª‚ğ”²‚«o‚·
     fname0 = Left$(bgm_name, Len(bgm_name) - 4)
     If InStr2(fname0, "\") > 0 Then
         fname0 = Mid$(fname0, InStr2(fname0, "\") + 1)
     End If
     
-    'åŒã˜ï¼¢ï¼§ï¼­ã‚’æ¼”å¥ä¸­ã§ã‚ã‚Œã°æ¼”å¥ã‚’ç¶™ç¶š
+    '“¯‚¶‚a‚f‚l‚ğ‰‰‘t’†‚Å‚ ‚ê‚Î‰‰‘t‚ğŒp‘±
     If Len(BGMFileName) > 0 Then
         If InStr(BGMFileName, "\" & fname0 & ".") > 0 Then
             If BGMStatus() = "playing" Then
@@ -95,28 +95,28 @@ Dim i As Integer
         End If
     End If
     
-    'ãƒ•ã‚¡ã‚¤ãƒ«ã‚’æ¤œç´¢
+    'ƒtƒ@ƒCƒ‹‚ğŒŸõ
     bgm_name = "(" & bgm_name & ")"
     fname = SearchMidiFile(bgm_name)
     
-    'ãƒ•ã‚¡ã‚¤ãƒ«ãŒè¦‹ã¤ã‹ã£ãŸï¼Ÿ
+    'ƒtƒ@ƒCƒ‹‚ªŒ©‚Â‚©‚Á‚½H
     If Len(fname) = 0 Then
         Exit Sub
     End If
     
-    'æ¼”å¥ã‚’ã‚¹ãƒˆãƒƒãƒ—
+    '‰‰‘t‚ğƒXƒgƒbƒv
     StopBGM
     
-    'åŒã˜ï¼¢ï¼§ï¼­ã«ãƒãƒªã‚¨ãƒ¼ã‚·ãƒ§ãƒ³ãŒã‚ã‚Œã°ãƒ©ãƒ³ãƒ€ãƒ ã§é¸æŠ
+    '“¯‚¶‚a‚f‚l‚ÉƒoƒŠƒG[ƒVƒ‡ƒ“‚ª‚ ‚ê‚Îƒ‰ƒ“ƒ_ƒ€‚Å‘I‘ğ
     i = 1
     If InStr(fname, ScenarioPath) > 0 Then
-        'ã‚·ãƒŠãƒªã‚ªå´ã«ãƒ•ã‚¡ã‚¤ãƒ«ãŒè¦‹ã¤ã‹ã£ãŸå ´åˆã¯ãƒãƒªã‚¨ãƒ¼ã‚·ãƒ§ãƒ³ã‚‚ã‚·ãƒŠãƒªã‚ªå´ã‹ã‚‰ã®ã¿é¸æŠ
+        'ƒVƒiƒŠƒI‘¤‚Éƒtƒ@ƒCƒ‹‚ªŒ©‚Â‚©‚Á‚½ê‡‚ÍƒoƒŠƒG[ƒVƒ‡ƒ“‚àƒVƒiƒŠƒI‘¤‚©‚ç‚Ì‚İ‘I‘ğ
         Do
             i = i + 1
             fname2 = SearchMidiFile("(" & fname0 & "(" & Format$(i) & ")" & Right$(fname, 4) & ")")
         Loop While InStr(fname2, ScenarioPath) > 0
     Else
-        'ãã†ã§ãªã‘ã‚Œã°ä¸¡æ–¹ã‹ã‚‰é¸æŠ
+        '‚»‚¤‚Å‚È‚¯‚ê‚Î—¼•û‚©‚ç‘I‘ğ
         Do
             i = i + 1
             fname2 = SearchMidiFile("(" & fname0 & "(" & Format$(i) & ")" & Right$(fname, 4) & ")")
@@ -128,38 +128,38 @@ Dim i As Integer
         fname = SearchMidiFile("(" & fname0 & "(" & Format$(i) & ")" & Right$(fname, 4) & ")")
     End If
     
-    'ï¼¢ï¼§ï¼­ã‚’é€£ç¶šæ¼”å¥ï¼Ÿ
+    '‚a‚f‚l‚ğ˜A‘±‰‰‘tH
     RepeatMode = is_repeat_mode
     
-    'ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ãƒ­ãƒ¼ãƒ‰ã—ã€æ¼”å¥é–‹å§‹
+    'ƒtƒ@ƒCƒ‹‚ğƒ[ƒh‚µA‰‰‘tŠJn
     LoadBGM fname
     
-    'ãƒªãƒ”ãƒ¼ãƒˆå†ç”Ÿå‡¦ç†ã‚’è¡Œã†ãŸã‚ã®ã‚¿ã‚¤ãƒãƒ¼ã‚’èµ·å‹•
+    'ƒŠƒs[ƒgÄ¶ˆ—‚ğs‚¤‚½‚ß‚Ìƒ^ƒCƒ}[‚ğ‹N“®
     MainForm.Timer1.Enabled = True
 End Sub
 
-'ï¼¢ï¼§ï¼­ã®ãƒ•ã‚¡ã‚¤ãƒ«ã‚’èª­ã¿è¾¼ã‚€
+'‚a‚f‚l‚Ìƒtƒ@ƒCƒ‹‚ğ“Ç‚İ‚Ş
 Private Sub LoadBGM(fname As String)
 Dim ret As Long, cmd As String
 Dim mp3_data As InputInfo
     
-    'ãƒ•ã‚¡ã‚¤ãƒ«ã®ç¨®é¡ã«å¿œã˜ãŸå‡¦ç†ã‚’è¡Œã†
+    'ƒtƒ@ƒCƒ‹‚Ìí—Ş‚É‰‚¶‚½ˆ—‚ğs‚¤
     Select Case LCase$(Right$(fname, 4))
         Case ".mid"
-            'MIDIãƒ•ã‚¡ã‚¤ãƒ«
+            'MIDIƒtƒ@ƒCƒ‹
             
-            'MIDIã‚’æ¼”å¥ã™ã‚‹ã®ãŒåˆã‚ã¦ï¼Ÿ
+            'MIDI‚ğ‰‰‘t‚·‚é‚Ì‚ª‰‚ß‚ÄH
             If Not UseDirectMusic And Not UseMCI Then
-                'DirectMusicã®åˆæœŸåŒ–ã‚’è©¦ã¿ã‚‹
+                'DirectMusic‚Ì‰Šú‰»‚ğ‚İ‚é
                 InitDirectMusic
             End If
             
-            'éŸ³æºãƒªã‚»ãƒƒãƒˆ
+            '‰¹Œ¹ƒŠƒZƒbƒg
             ResetBGM
             
-            'DirectMusicã‚’ä½¿ã†ï¼Ÿ
+            'DirectMusic‚ğg‚¤H
             If UseDirectMusic Then
-                'ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ãƒ­ãƒ¼ãƒ‰
+                'ƒtƒ@ƒCƒ‹‚ğƒ[ƒh
                 On Error GoTo ErrorHandler
                 
                 Set DMSegment = DMLoader.LoadSegment(fname)
@@ -176,13 +176,13 @@ Dim mp3_data As InputInfo
                     ErrorMessage "SetMasterAutoDownload failed (" & Format$(Err.Number) & ")"
                 End If
                 
-                'ãƒ«ãƒ¼ãƒ—æ¼”å¥ã®è¨­å®š
-                'ç¹°ã‚Šè¿”ã—ç¯„å›²ã‚’è¨­å®š
+                'ƒ‹[ƒv‰‰‘t‚Ìİ’è
+                'ŒJ‚è•Ô‚µ”ÍˆÍ‚ğİ’è
                 Call DMSegment.SetLoopPoints(0, 0)
                 If Err.Number <> 0 Then
                     ErrorMessage "SetLoopPoints failed (" & Format$(Err.Number) & ")"
                 End If
-                'ç¹°ã‚Šè¿”ã—å›æ•°ã‚’è¨­å®š
+                'ŒJ‚è•Ô‚µ‰ñ”‚ğİ’è
                 If RepeatMode Then
                     Call DMSegment.SetRepeats(-1)
                 Else
@@ -192,7 +192,7 @@ Dim mp3_data As InputInfo
                     ErrorMessage "SetRepeats failed (" & Format$(Err.Number) & ")"
                 End If
                 
-                'æ¼”å¥é–‹å§‹
+                '‰‰‘tŠJn
                 Call DMPerformance.PlaySegment(DMSegment, 0, 0)
                 If Err.Number <> 0 Then
                     ErrorMessage "PlaySegment failed (" & Format$(Err.Number) & ")"
@@ -209,89 +209,89 @@ Dim mp3_data As InputInfo
             End If
             
         Case ".wav"
-            'WAVEãƒ•ã‚¡ã‚¤ãƒ«
+            'WAVEƒtƒ@ƒCƒ‹
             cmd = " type waveaudio alias bgm wait"
             
         Case ".mp3"
-            'MP3ãƒ•ã‚¡ã‚¤ãƒ«
+            'MP3ƒtƒ@ƒCƒ‹
             
-            'VBMP3.dllã‚’åˆæœŸåŒ–
+            'VBMP3.dll‚ğ‰Šú‰»
             If Not IsMP3Supported Then
                 InitVBMP3
                 
                 If Not IsMP3Supported Then
-                    'VBMP3.dllãŒåˆ©ç”¨ä¸èƒ½
+                    'VBMP3.dll‚ª—˜—p•s”\
                     Exit Sub
                 End If
             End If
             
-            'æ¼”å¥ã‚’åœæ­¢
+            '‰‰‘t‚ğ’â~
             Call vbmp3_stop
-            'ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‰ã˜ã‚‹
+            'ƒtƒ@ƒCƒ‹‚ğ•Â‚¶‚é
             Call vbmp3_close
             
-            'ãƒ•ã‚¡ã‚¤ãƒ«ã‚’èª­ã¿è¾¼ã‚€
+            'ƒtƒ@ƒCƒ‹‚ğ“Ç‚İ‚Ş
             If vbmp3_open(fname, mp3_data) Then
-'                'ç¹°ã‚Šè¿”ã—å†ç”Ÿæ™‚ã¯é›‘éŸ³ãŒå…¥ã‚‰ãªã„ã‚ˆã†ãƒ•ã‚§ãƒ¼ãƒ‰ã‚¢ã‚¦ãƒˆã•ã›ã‚‹
+'                'ŒJ‚è•Ô‚µÄ¶‚ÍG‰¹‚ª“ü‚ç‚È‚¢‚æ‚¤ƒtƒF[ƒhƒAƒEƒg‚³‚¹‚é
 '                If RepeatMode Then
 '                    Call vbmp3_setFadeOut(1)
 '                Else
 '                    Call vbmp3_setFadeOut(0)
 '                End If
                 
-                'æ¼”å¥é–‹å§‹
+                '‰‰‘tŠJn
                 Call vbmp3_play
                 BGMFileName = fname
             End If
             Exit Sub
             
         Case Else
-            'æœªã‚µãƒãƒ¼ãƒˆã®ãƒ•ã‚¡ã‚¤ãƒ«å½¢å¼
+            '–¢ƒTƒ|[ƒg‚Ìƒtƒ@ƒCƒ‹Œ`®
             Exit Sub
     End Select
     
-    'ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ã
+    'ƒtƒ@ƒCƒ‹‚ğŠJ‚­
     cmd = "open " & Chr$(34) & fname & Chr$(34) & cmd
     ret = mciSendString(cmd, vbNullString, 0, 0)
     If ret <> 0 Then
-        'é–‹ã‘ãªã‹ã£ãŸ
+        'ŠJ‚¯‚È‚©‚Á‚½
         Exit Sub
     End If
     
-    'æ¼”å¥é–‹å§‹
+    '‰‰‘tŠJn
     ret = mciSendString("play bgm", vbNullString, 0, 0)
     If ret <> 0 Then
-        'æ¼”å¥ã§ããªã‹ã£ãŸ
+        '‰‰‘t‚Å‚«‚È‚©‚Á‚½
         ret = mciSendString("close bgm wait", vbNullString, 0, 0)
         Exit Sub
     End If
     
-    'æ¼”å¥ã—ã¦ã„ã‚‹BGMã®ãƒ•ã‚¡ã‚¤ãƒ«åã‚’è¨˜éŒ²
+    '‰‰‘t‚µ‚Ä‚¢‚éBGM‚Ìƒtƒ@ƒCƒ‹–¼‚ğ‹L˜^
     BGMFileName = fname
     Exit Sub
     
 ErrorHandler:
     If UseDirectMusic Then
-        'DirectMusicãŒä½¿ç”¨ã§ããªã„å ´åˆã¯MCIã‚’ä½¿ã£ã¦ãƒªãƒˆãƒ©ã‚¤
+        'DirectMusic‚ªg—p‚Å‚«‚È‚¢ê‡‚ÍMCI‚ğg‚Á‚ÄƒŠƒgƒ‰ƒC
         UseDirectMusic = False
         UseMCI = True
         LoadBGM fname
     End If
 End Sub
 
-'ï¼¢ï¼§ï¼­ã‚’ãƒªã‚¹ã‚¿ãƒ¼ãƒˆã•ã›ã‚‹
+'‚a‚f‚l‚ğƒŠƒXƒ^[ƒg‚³‚¹‚é
 Public Sub RestartBGM()
 Dim ret As Long
     
-    'åœæ­¢ä¸­ã§ãªã‘ã‚Œã°ä½•ã‚‚ã—ãªã„
+    '’â~’†‚Å‚È‚¯‚ê‚Î‰½‚à‚µ‚È‚¢
     If BGMStatus() <> "stopped" Then
         Exit Sub
     End If
     
-    'ãƒªã‚¹ã‚¿ãƒ¼ãƒˆ
+    'ƒŠƒXƒ^[ƒg
     Select Case LCase$(Right$(BGMFileName, 4))
         Case ".mid"
-            'MIDIãƒ•ã‚¡ã‚¤ãƒ«
+            'MIDIƒtƒ@ƒCƒ‹
             If UseMCI Then
                 ret = mciSendString("seek bgm to start wait", vbNullString, 0, 0)
                 If ret <> 0 Then
@@ -300,14 +300,14 @@ Dim ret As Long
                 ret = mciSendString("play bgm", vbNullString, 0, 0)
             End If
         Case ".wav"
-            'WAVEãƒ•ã‚¡ã‚¤ãƒ«
+            'WAVEƒtƒ@ƒCƒ‹
             ret = mciSendString("seek bgm to start wait", vbNullString, 0, 0)
             If ret <> 0 Then
                 Exit Sub
             End If
             ret = mciSendString("play bgm", vbNullString, 0, 0)
         Case ".mp3"
-            'MP3ãƒ•ã‚¡ã‚¤ãƒ«
+            'MP3ƒtƒ@ƒCƒ‹
             If vbmp3_getState(ret) = 2 Then
                 Call vbmp3_restart
             Else
@@ -316,67 +316,67 @@ Dim ret As Long
     End Select
 End Sub
 
-'ï¼¢ï¼§ï¼­ã‚’åœæ­¢ã™ã‚‹
+'‚a‚f‚l‚ğ’â~‚·‚é
 Public Sub StopBGM(Optional ByVal by_force As Boolean)
 Dim ret As Long
     
-    'ï¼¢ï¼§ï¼­ã‚’å›ºå®šä¸­ï¼Ÿ
+    '‚a‚f‚l‚ğŒÅ’è’†H
     If Not by_force And KeepBGM Then
         Exit Sub
     End If
     
-    'å¼·åˆ¶çš„ã«åœæ­¢ã™ã‚‹ã®ã§ãªã‘ã‚Œã°æ¼”å¥ä¸­ã§ãªã„é™ã‚Šãªã«ã‚‚ã—ãªã„
+    '‹­§“I‚É’â~‚·‚é‚Ì‚Å‚È‚¯‚ê‚Î‰‰‘t’†‚Å‚È‚¢ŒÀ‚è‚È‚É‚à‚µ‚È‚¢
     If Not by_force And Len(BGMFileName) = 0 Then
         Exit Sub
     End If
     
     Select Case LCase$(Right$(BGMFileName, 4))
         Case ".mid", ""
-            'MIDIãƒ•ã‚¡ã‚¤ãƒ«
+            'MIDIƒtƒ@ƒCƒ‹
             If UseDirectMusic Then
-                'æ¼”å¥ã‚’åœæ­¢
+                '‰‰‘t‚ğ’â~
                 On Local Error Resume Next
                 Call DMPerformance.Stop(DMSegment, Nothing, 0, 0)
                 If Err.Number <> 0 Then
                     ErrorMessage "DMPerformance.Stop failed (" & Format$(Err.Number) & ")"
                 End If
             Else
-                'æ¼”å¥ã‚’åœæ­¢
+                '‰‰‘t‚ğ’â~
                 ret = mciSendString("stop bgm wait", vbNullString, 0, 0)
-                'ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‰ã˜ã‚‹
+                'ƒtƒ@ƒCƒ‹‚ğ•Â‚¶‚é
                 ret = mciSendString("close bgm wait", vbNullString, 0, 0)
             End If
         Case ".wav"
-            'WAVEãƒ•ã‚¡ã‚¤ãƒ«
-            'æ¼”å¥ã‚’åœæ­¢
+            'WAVEƒtƒ@ƒCƒ‹
+            '‰‰‘t‚ğ’â~
             ret = mciSendString("stop bgm wait", vbNullString, 0, 0)
-            'ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‰ã˜ã‚‹
+            'ƒtƒ@ƒCƒ‹‚ğ•Â‚¶‚é
             ret = mciSendString("close bgm wait", vbNullString, 0, 0)
         Case ".mp3"
-            'MP3ãƒ•ã‚¡ã‚¤ãƒ«
-            'æ¼”å¥ã‚’åœæ­¢
+            'MP3ƒtƒ@ƒCƒ‹
+            '‰‰‘t‚ğ’â~
             Call vbmp3_stop
-            'ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‰ã˜ã‚‹
+            'ƒtƒ@ƒCƒ‹‚ğ•Â‚¶‚é
             Call vbmp3_close
     End Select
     
     BGMFileName = ""
     RepeatMode = False
     
-    'ãƒªãƒ”ãƒ¼ãƒˆå†ç”Ÿå‡¦ç†ã‚’è¡Œã†ãŸã‚ã®ã‚¿ã‚¤ãƒãƒ¼ã‚’åœæ­¢
+    'ƒŠƒs[ƒgÄ¶ˆ—‚ğs‚¤‚½‚ß‚Ìƒ^ƒCƒ}[‚ğ’â~
     MainForm.Timer1.Enabled = False
 End Sub
 
-'ï¼­ï¼©ï¼¤ï¼©éŸ³æºã‚’åˆæœŸåŒ–ã™ã‚‹(MCIã‚’ä½¿ç”¨ã™ã‚‹å ´åˆã®ã¿)
+'‚l‚h‚c‚h‰¹Œ¹‚ğ‰Šú‰»‚·‚é(MCI‚ğg—p‚·‚éê‡‚Ì‚İ)
 Private Sub ResetBGM()
 Dim ret As Long
 Dim fname As String, cmd As String
 
-    'éŸ³æºã®ç¨®é¡ã«å¿œã˜ãŸéŸ³æºåˆæœŸåŒ–ç”¨MIDIãƒ•ã‚¡ã‚¤ãƒ«ã‚’é¸æŠ
+    '‰¹Œ¹‚Ìí—Ş‚É‰‚¶‚½‰¹Œ¹‰Šú‰»—pMIDIƒtƒ@ƒCƒ‹‚ğ‘I‘ğ
     Select Case MidiResetType
         Case "GM"
             If UseDirectMusic Then
-                'DirectMusicã‚’ä½¿ãˆã°GMãƒªã‚»ãƒƒãƒˆãŒå¯èƒ½
+                'DirectMusic‚ğg‚¦‚ÎGMƒŠƒZƒbƒg‚ª‰Â”\
                 On Error GoTo ErrorHandler
                 Call DMPerformance.Reset(0)
                 Exit Sub
@@ -390,7 +390,7 @@ Dim fname As String, cmd As String
             Exit Sub
     End Select
     
-    'ãƒ•ã‚¡ã‚¤ãƒ«ãŒã¡ã‚ƒã‚“ã¨ã‚ã‚‹ï¼Ÿ
+    'ƒtƒ@ƒCƒ‹‚ª‚¿‚á‚ñ‚Æ‚ ‚éH
     If Not FileExists(fname) Then
         Exit Sub
     End If
@@ -398,67 +398,67 @@ Dim fname As String, cmd As String
     BGMFileName = ""
     
     If UseDirectMusic Then
-        'DirectMusicã‚’ä½¿ã†å ´åˆ
+        'DirectMusic‚ğg‚¤ê‡
         On Error GoTo ErrorHandler
         
-        'ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ãƒ­ãƒ¼ãƒ‰
+        'ƒtƒ@ƒCƒ‹‚ğƒ[ƒh
         Set DMSegment = DMLoader.LoadSegment(fname)
         
-        'MIDIå†ç”Ÿã®ãŸã‚å„ç¨®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã‚’è¨­å®š
+        'MIDIÄ¶‚Ì‚½‚ßŠeíƒpƒ‰ƒ[ƒ^‚ğİ’è
         Call DMSegment.SetStandardMidiFile
         Call DMPerformance.SetMasterAutoDownload(True)
         Call DMSegment.SetLoopPoints(0, 0)
         Call DMSegment.SetRepeats(0)
         
-        'éŸ³æºãƒªã‚»ãƒƒãƒˆç”¨MIDIãƒ•ã‚¡ã‚¤ãƒ«ã®æ¼”å¥é–‹å§‹
+        '‰¹Œ¹ƒŠƒZƒbƒg—pMIDIƒtƒ@ƒCƒ‹‚Ì‰‰‘tŠJn
         Call DMPerformance.PlaySegment(DMSegment, 0, 0)
         
-        'æ¼”å¥ãŒçµ‚ã‚ã‚‹ã¾ã§å¾…ã¤
+        '‰‰‘t‚ªI‚í‚é‚Ü‚Å‘Ò‚Â
         Do While DMPerformance.IsPlaying(DMSegment, Nothing)
             DoEvents
         Loop
         
-        'æ¼”å¥ã‚’åœæ­¢
+        '‰‰‘t‚ğ’â~
         Call DMPerformance.Stop(DMSegment, Nothing, 0, 0)
     Else
-        'MCIã‚’ä½¿ã†å ´åˆ
+        'MCI‚ğg‚¤ê‡
         
-        'ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ã‚ªãƒ¼ãƒ—ãƒ³
+        'ƒtƒ@ƒCƒ‹‚ğƒI[ƒvƒ“
         cmd = "open " & Chr$(34) & fname & Chr$(34) & " type sequencer alias bgm wait"
         ret = mciSendString(cmd, vbNullString, 0, 0)
         If ret <> 0 Then
             Exit Sub
         End If
         
-        'éŸ³æºãƒªã‚»ãƒƒãƒˆç”¨MIDIãƒ•ã‚¡ã‚¤ãƒ«ã‚’æ¼”å¥
+        '‰¹Œ¹ƒŠƒZƒbƒg—pMIDIƒtƒ@ƒCƒ‹‚ğ‰‰‘t
         ret = mciSendString("play bgm wait", vbNullString, 0, 0)
         
-        'ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ã‚¯ãƒ­ãƒ¼ã‚º
+        'ƒtƒ@ƒCƒ‹‚ğƒNƒ[ƒY
         ret = mciSendString("close bgm wait", vbNullString, 0, 0)
     End If
     
     Exit Sub
     
 ErrorHandler:
-    'DirectMusicä½¿ç”¨æ™‚ã«ã‚¨ãƒ©ãƒ¼ãŒç™ºç”Ÿã—ãŸã®ã§MCIã‚’ä½¿ã†
+    'DirectMusicg—p‚ÉƒGƒ‰[‚ª”­¶‚µ‚½‚Ì‚ÅMCI‚ğg‚¤
     UseDirectMusic = False
     UseMCI = True
 End Sub
 
-'ï¼¢ï¼§ï¼­ã‚’å†ç”Ÿä¸­ï¼Ÿ
+'‚a‚f‚l‚ğÄ¶’†H
 Private Function BGMStatus() As String
 Dim retstr As String, ret As Long, sec As Long
 
-    'ï¼¢ï¼§ï¼­ã‚’æ¼”å¥ä¸­ã§ãªã‘ã‚Œã°ç©ºæ–‡å­—åˆ—ã‚’è¿”ã™
+    '‚a‚f‚l‚ğ‰‰‘t’†‚Å‚È‚¯‚ê‚Î‹ó•¶š—ñ‚ğ•Ô‚·
     If Len(BGMFileName) = 0 Then
         Exit Function
     End If
     
     Select Case LCase$(Right$(BGMFileName, 4))
         Case ".mid", ""
-            'MIDIãƒ•ã‚¡ã‚¤ãƒ«
+            'MIDIƒtƒ@ƒCƒ‹
             If UseDirectMusic Then
-                'DirectMusicã‚’ä½¿ã†å ´åˆ
+                'DirectMusic‚ğg‚¤ê‡
                 On Local Error Resume Next
                 If DMPerformance.IsPlaying(DMSegment, Nothing) Then
                     BGMStatus = "playing"
@@ -469,26 +469,26 @@ Dim retstr As String, ret As Long, sec As Long
                     ErrorMessage "DMPerformance.IsPlaying failed (" & Format$(Err.Number) & ")"
                 End If
             Else
-                'MCIã‚’ä½¿ã†å ´åˆ
+                'MCI‚ğg‚¤ê‡
                 
-                'çµæœã‚’ä¿å­˜ã™ã‚‹é ˜åŸŸã‚’ç¢ºä¿
+                'Œ‹‰Ê‚ğ•Û‘¶‚·‚é—Ìˆæ‚ğŠm•Û
                 retstr = Space$(120)
                 
-                'å†ç”ŸçŠ¶æ³ã‚’å‚ç…§
+                'Ä¶ó‹µ‚ğQÆ
                 ret = mciSendString("status bgm mode", retstr, 120, 0)
                 If ret <> 0 Then
                     Exit Function
                 End If
                 
-                'APIã®çµæœã¯NULLã‚¿ãƒ¼ãƒŸãƒã‚¤ãƒˆ
+                'API‚ÌŒ‹‰Ê‚ÍNULLƒ^[ƒ~ƒlƒCƒg
                 ret = InStr(retstr, Chr$(0))
                 BGMStatus = Left$(retstr, ret - 1)
             End If
             
         Case ".wav"
-            'WAVEãƒ•ã‚¡ã‚¤ãƒ«
+            'WAVEƒtƒ@ƒCƒ‹
             
-            'çµæœã‚’ä¿å­˜ã™ã‚‹é ˜åŸŸã‚’ç¢ºä¿
+            'Œ‹‰Ê‚ğ•Û‘¶‚·‚é—Ìˆæ‚ğŠm•Û
             retstr = Space$(120)
             
             ret = mciSendString("status bgm mode", retstr, 120, 0)
@@ -496,56 +496,56 @@ Dim retstr As String, ret As Long, sec As Long
                 Exit Function
             End If
             
-            'APIã®çµæœã¯NULLã‚¿ãƒ¼ãƒŸãƒã‚¤ãƒˆ
+            'API‚ÌŒ‹‰Ê‚ÍNULLƒ^[ƒ~ƒlƒCƒg
             ret = InStr(retstr, Chr$(0))
             BGMStatus = Left$(retstr, ret - 1)
             
         Case ".mp3"
-            'MP3ã®å†ç”ŸçŠ¶æ…‹ã¨å†ç”Ÿæ™‚é–“ã®å–å¾—
+            'MP3‚ÌÄ¶ó‘Ô‚ÆÄ¶ŠÔ‚Ìæ“¾
             ret = vbmp3_getState(sec)
             
             Select Case ret
                 Case 0
-                    'åœæ­¢ä¸­
+                    '’â~’†
                     BGMStatus = "stopped"
                 Case 1
-                    'å†ç”Ÿä¸­
+                    'Ä¶’†
                     BGMStatus = "playing"
                 Case 2
-                    'ä¸€æ™‚åœæ­¢ä¸­
+                    'ˆê’â~’†
                     BGMStatus = "stopped"
             End Select
     End Select
 End Function
 
-'ï¼¢ï¼§ï¼­ã‚’å¤‰æ›´ã™ã‚‹ (æŒ‡å®šã—ãŸï¼¢ï¼§ï¼­ã‚’ã™ã§ã«æ¼”å¥ä¸­ãªã‚‰ãªã«ã‚‚ã—ãªã„)
+'‚a‚f‚l‚ğ•ÏX‚·‚é (w’è‚µ‚½‚a‚f‚l‚ğ‚·‚Å‚É‰‰‘t’†‚È‚ç‚È‚É‚à‚µ‚È‚¢)
 Public Sub ChangeBGM(bgm_name As String)
 Dim fname As String, fname2 As String
     
-    'ï¼¢ï¼§ï¼­å›ºå®šä¸­ï¼Ÿ
+    '‚a‚f‚lŒÅ’è’†H
     If KeepBGM Or BossBGM Then
         Exit Sub
     End If
     
-    'æ­£ã—ã„ãƒ•ã‚¡ã‚¤ãƒ«åï¼Ÿ
+    '³‚µ‚¢ƒtƒ@ƒCƒ‹–¼H
     If Len(bgm_name) < 5 Then
         Exit Sub
     End If
     
-    'ãƒ•ã‚¡ã‚¤ãƒ«åã®æœ¬ä½“éƒ¨åˆ†ã‚’æŠœãå‡ºã™
+    'ƒtƒ@ƒCƒ‹–¼‚Ì–{‘Ì•”•ª‚ğ”²‚«o‚·
     fname = Left$(bgm_name, Len(bgm_name) - 4)
     If InStr2(fname, "\") > 0 Then
         fname = Mid$(fname, InStr2(fname, "\") + 1)
     End If
     
-    'æ—¢ã«åŒã˜MIDIãŒæ¼”å¥ã•ã‚Œã¦ã„ã‚Œã°ãã®ã¾ã¾æ¼”å¥ã—ç¶šã‘ã‚‹
+    'Šù‚É“¯‚¶MIDI‚ª‰‰‘t‚³‚ê‚Ä‚¢‚ê‚Î‚»‚Ì‚Ü‚Ü‰‰‘t‚µ‘±‚¯‚é
     If Len(BGMFileName) > 0 Then
         If InStr(BGMFileName, "\" & fname & ".") > 0 Then
             Exit Sub
         End If
     End If
     
-    'ç•ªå·é•ã„ï¼Ÿ
+    '”Ô†ˆá‚¢H
     If Len(BGMFileName) > 5 Then
         fname2 = Left$(BGMFileName, Len(BGMFileName) - 4)
         If InStr2(fname2, "\") > 0 Then
@@ -562,15 +562,15 @@ Dim fname As String, fname2 As String
         End If
     End If
     
-    'ç¹°ã‚Šè¿”ã—æ¼”å¥ã«è¨­å®š
+    'ŒJ‚è•Ô‚µ‰‰‘t‚Éİ’è
     RepeatMode = True
     
-    'æ¼”å¥é–‹å§‹
+    '‰‰‘tŠJn
     StartBGM bgm_name
 End Sub
 
 
-'DirectMusicã®åˆæœŸåŒ–
+'DirectMusic‚Ì‰Šú‰»
 Public Sub InitDirectMusic()
 Dim port_id As Integer
 Dim portcaps As DMUS_PORTCAPS
@@ -578,39 +578,39 @@ Dim i As Integer
 
     On Error GoTo ErrorHandler
     
-    'ãƒ•ãƒ©ã‚°ã‚’è¨­å®š
+    'ƒtƒ‰ƒO‚ğİ’è
     UseDirectMusic = True
     UseMCI = False
     
-    'DirectXã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆä½œæˆ
+    'DirectXƒIƒuƒWƒFƒNƒgì¬
     If DXObject Is Nothing Then
         Set DXObject = CreateDirectXObject()
     End If
     
-    'Loaderä½œæˆ
+    'Loaderì¬
     Set DMLoader = DXObject.DirectMusicLoaderCreate
     
-    'ã‚µãƒ¼ãƒãƒ‘ã‚¹è¨­å®š(ä¸è¦ï¼Ÿ)
+    'ƒT[ƒ`ƒpƒXİ’è(•s—vH)
     Call DMLoader.SetSearchDirectory(AppPath & "Midi")
     
-    'Performanceä½œæˆ
+    'Performanceì¬
     Set DMPerformance = DXObject.DirectMusicPerformanceCreate
     
-    'PerformanceåˆæœŸåŒ–
-    'DirectSoundã¨ä½µç”¨ã™ã‚‹æ™‚ã¯ã€æœ€åˆã®å¼•æ•°ã«
-    'DirectSoundã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å…¥ã‚Œã¦ãŠã
+    'Performance‰Šú‰»
+    'DirectSound‚Æ•¹—p‚·‚é‚ÍAÅ‰‚Ìˆø”‚É
+    'DirectSound‚ÌƒIƒuƒWƒFƒNƒg‚ğ“ü‚ê‚Ä‚¨‚­
     Call DMPerformance.Init(DSObject, MainForm.hwnd)
     
-    'MIDIéŸ³æºä¸€è¦§ã‚’ä½œæˆ
+    'MIDI‰¹Œ¹ˆê——‚ğì¬
     CreateMIDIPortListFile
     
-    'ãƒãƒ¼ãƒˆè¨­å®š
+    'ƒ|[ƒgİ’è
     port_id = StrToLng(ReadIni("Option", "MIDIPortID"))
     
-    'ä½¿ç”¨ãƒãƒ¼ãƒˆç•ªå·ã‚’æŒ‡å®šã•ã‚Œã¦ã„ãŸå ´åˆ
+    'g—pƒ|[ƒg”Ô†‚ğw’è‚³‚ê‚Ä‚¢‚½ê‡
     If port_id > 0 Then
         If port_id > DMPerformance.GetPortCount Then
-            ErrorMessage "MIDIPortIDã«æ­£ã—ã„MIDIãƒãƒ¼ãƒˆãŒè¨­å®šã•ã‚Œã¦ã„ã¾ã›ã‚“ã€‚"
+            ErrorMessage "MIDIPortID‚É³‚µ‚¢MIDIƒ|[ƒg‚ªİ’è‚³‚ê‚Ä‚¢‚Ü‚¹‚ñB"
             End
         End If
         
@@ -618,11 +618,11 @@ Dim i As Integer
         Exit Sub
     End If
     
-    'æŒ‡å®šãŒãªã„ã®ã§SRCå´ã§æ¤œç´¢ã™ã‚‹
+    'w’è‚ª‚È‚¢‚Ì‚ÅSRC‘¤‚ÅŒŸõ‚·‚é
     
-    'MIDIãƒãƒƒãƒ‘ãƒ¼ãŒã‚ã‚Œã°ãã‚Œã‚’ä½¿ã†
+    'MIDIƒ}ƒbƒp[‚ª‚ ‚ê‚Î‚»‚ê‚ğg‚¤
     For i = 1 To DMPerformance.GetPortCount
-        If InStr(DMPerformance.GetPortName(i), "MIDI ãƒãƒƒãƒ‘ãƒ¼") > 0 _
+        If InStr(DMPerformance.GetPortName(i), "MIDI ƒ}ƒbƒp[") > 0 _
            Or InStr(DMPerformance.GetPortName(i), "MIDI Mapper") > 0 _
         Then
             Call DMPerformance.SetPort(i, 1)
@@ -630,7 +630,7 @@ Dim i As Integer
         End If
     Next
     
-    'ã¾ãšã¯å¤–éƒ¨MIDIéŸ³æºã‚’æœã™
+    '‚Ü‚¸‚ÍŠO•”MIDI‰¹Œ¹‚ğ‘{‚·
     For i = 1 To DMPerformance.GetPortCount
         Call DMPerformance.GetPortCaps(i, portcaps)
         If portcaps.lFlags And DMUS_PC_EXTERNAL Then
@@ -639,7 +639,7 @@ Dim i As Integer
         End If
     Next
     
-    'æ¬¡ã«XGå¯¾å¿œãƒãƒ¼ãƒ‰éŸ³æºã‚’æœã™
+    'Ÿ‚ÉXG‘Î‰ƒn[ƒh‰¹Œ¹‚ğ‘{‚·
     For i = 1 To DMPerformance.GetPortCount
         Call DMPerformance.GetPortCaps(i, portcaps)
         If portcaps.lFlags And DMUS_PC_XGINHARDWARE Then
@@ -648,7 +648,7 @@ Dim i As Integer
         End If
     Next
     
-    'æ¬¡ã«GSå¯¾å¿œãƒãƒ¼ãƒ‰éŸ³æºã‚’æœã™
+    'Ÿ‚ÉGS‘Î‰ƒn[ƒh‰¹Œ¹‚ğ‘{‚·
     For i = 1 To DMPerformance.GetPortCount
         Call DMPerformance.GetPortCaps(i, portcaps)
         If portcaps.lFlags And DMUS_PC_GSINHARDWARE Then
@@ -657,7 +657,7 @@ Dim i As Integer
         End If
     Next
     
-    'æ¬¡ã«XGå¯¾å¿œã‚½ãƒ•ãƒˆéŸ³æºã‚’æœã™
+    'Ÿ‚ÉXG‘Î‰ƒ\ƒtƒg‰¹Œ¹‚ğ‘{‚·
     For i = 1 To DMPerformance.GetPortCount
         If InStr(DMPerformance.GetPortName(i), "XG ") > 0 Then
             Call DMPerformance.SetPort(i, 1)
@@ -665,7 +665,7 @@ Dim i As Integer
         End If
     Next
     
-    'æ¬¡ã«GSå¯¾å¿œã‚½ãƒ•ãƒˆéŸ³æºã‚’æœã™
+    'Ÿ‚ÉGS‘Î‰ƒ\ƒtƒg‰¹Œ¹‚ğ‘{‚·
     For i = 1 To DMPerformance.GetPortCount
         If InStr(DMPerformance.GetPortName(i), "GS ") > 0 Then
             Call DMPerformance.SetPort(i, 1)
@@ -673,7 +673,7 @@ Dim i As Integer
         End If
     Next
     
-    'æ¬¡ã«GMå¯¾å¿œãƒãƒ¼ãƒ‰éŸ³æºã‚’æœã™
+    'Ÿ‚ÉGM‘Î‰ƒn[ƒh‰¹Œ¹‚ğ‘{‚·
     For i = 1 To DMPerformance.GetPortCount
         Call DMPerformance.GetPortCaps(i, portcaps)
         If portcaps.lFlags And DMUS_PC_GMINHARDWARE Then
@@ -682,26 +682,26 @@ Dim i As Integer
         End If
     Next
     
-    'ã‚ãã‚‰ã‚ã¦ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆãƒãƒ¼ãƒˆã‚’ä½¿ã†
+    '‚ ‚«‚ç‚ß‚ÄƒfƒtƒHƒ‹ƒgƒ|[ƒg‚ğg‚¤
     Call DMPerformance.SetPort(-1, 1)
     
     Exit Sub
     
 ErrorHandler:
     
-    'DirectMusicåˆæœŸåŒ–æ™‚ã«ã‚¨ãƒ©ãƒ¼ãŒç™ºç”Ÿã—ãŸã®ã§MCIã‚’ä½¿ã†
+    'DirectMusic‰Šú‰»‚ÉƒGƒ‰[‚ª”­¶‚µ‚½‚Ì‚ÅMCI‚ğg‚¤
     UseDirectMusic = False
     UseMCI = True
 End Sub
 
-'DirectXã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ä½œæˆã™ã‚‹
+'DirectXƒIƒuƒWƒFƒNƒg‚ğì¬‚·‚é
 Private Function CreateDirectXObject() As DirectX7
 Dim new_obj As New DirectX7
 
     Set CreateDirectXObject = new_obj
 End Function
 
-'åˆ©ç”¨å¯èƒ½ãªMIDIéŸ³æºã®ä¸€è¦§ã‚’ä½œæˆã™ã‚‹
+'—˜—p‰Â”\‚ÈMIDI‰¹Œ¹‚Ìˆê——‚ğì¬‚·‚é
 Private Sub CreateMIDIPortListFile()
 Dim f As Integer, i As Integer
 Dim pname As String
@@ -709,13 +709,13 @@ Dim pname As String
     On Error GoTo ErrorHandler
     
     f = FreeFile
-    Open AppPath & "Midi\MIDIéŸ³æºãƒªã‚¹ãƒˆ.txt" For Output Access Write As #f
+    Open AppPath & "Midi\MIDI‰¹Œ¹ƒŠƒXƒg.txt" For Output Access Write As #f
     
-    Print #f, ";DirectMusicã§åˆ©ç”¨å¯èƒ½ãªMIDIéŸ³æºã®ãƒªã‚¹ãƒˆã§ã™ã€‚"
-    Print #f, ";Src.iniã®MIDIPortIDã«ä½¿ç”¨ã—ãŸã„éŸ³æºã®ç•ªå·ã‚’æŒ‡å®šã—ã¦ä¸‹ã•ã„ã€‚"
+    Print #f, ";DirectMusic‚Å—˜—p‰Â”\‚ÈMIDI‰¹Œ¹‚ÌƒŠƒXƒg‚Å‚·B"
+    Print #f, ";Src.ini‚ÌMIDIPortID‚Ég—p‚µ‚½‚¢‰¹Œ¹‚Ì”Ô†‚ğw’è‚µ‚Ä‰º‚³‚¢B"
     Print #f, ""
     
-    'å„ãƒãƒ¼ãƒˆã®åç§°ã‚’å‚ç…§
+    'Šeƒ|[ƒg‚Ì–¼Ì‚ğQÆ
     For i = 1 To DMPerformance.GetPortCount
         pname = DMPerformance.GetPortName(i)
         If InStr(pname, "[") > 0 Then
@@ -727,11 +727,11 @@ Dim pname As String
     Close #f
     
 ErrorHandler:
-    'ã‚¨ãƒ©ãƒ¼ç™ºç”Ÿ
+    'ƒGƒ‰[”­¶
 End Sub
 
 
-'VBMP3ã‚’åˆæœŸåŒ–
+'VBMP3‚ğ‰Šú‰»
 Private Sub InitVBMP3()
 Dim opt As VBMP3_OPTION
 Dim buf As String
@@ -758,7 +758,7 @@ Dim buf As String
 End Sub
 
 
-'å„Midiãƒ•ã‚©ãƒ«ãƒ€ã‹ã‚‰æŒ‡å®šã•ã‚ŒãŸMIDIãƒ•ã‚¡ã‚¤ãƒ«ã‚’æ¤œç´¢ã™ã‚‹
+'ŠeMidiƒtƒHƒ‹ƒ_‚©‚çw’è‚³‚ê‚½MIDIƒtƒ@ƒCƒ‹‚ğŒŸõ‚·‚é
 Public Function SearchMidiFile(midi_name As String) As String
 Dim fname As String, fname_mp3 As String
 Static scenario_midi_dir_exists As Boolean
@@ -770,7 +770,7 @@ Dim i As Integer, j As Integer, num As Integer
 Dim buf As String, buf2 As String
 Dim sub_folder As String
     
-    'åˆã‚ã¦å®Ÿè¡Œã™ã‚‹éš›ã«ã€å„ãƒ•ã‚©ãƒ«ãƒ€ã«Midiãƒ•ã‚©ãƒ«ãƒ€ãŒã‚ã‚‹ã‹ãƒã‚§ãƒƒã‚¯
+    '‰‚ß‚ÄÀs‚·‚éÛ‚ÉAŠeƒtƒHƒ‹ƒ_‚ÉMidiƒtƒHƒ‹ƒ_‚ª‚ ‚é‚©ƒ`ƒFƒbƒN
     If Not IsMidiSearchPathInitialized Then
         If Len(ScenarioPath) > 0 Then
             If Len(Dir$(ScenarioPath & "Midi", vbDirectory)) > 0 Then
@@ -788,7 +788,7 @@ Dim sub_folder As String
             End If
         End If
         
-        'MP3ãŒæ¼”å¥å¯èƒ½ã‹ã©ã†ã‹ã‚‚èª¿ã¹ã¦ãŠã
+        'MP3‚ª‰‰‘t‰Â”\‚©‚Ç‚¤‚©‚à’²‚×‚Ä‚¨‚­
         If FileExists(AppPath & "VBMP3.dll") Then
             is_mp3_available = True
         End If
@@ -796,21 +796,21 @@ Dim sub_folder As String
         IsMidiSearchPathInitialized = True
     End If
     
-    'ãƒ€ãƒŸãƒ¼ã®ãƒ•ã‚¡ã‚¤ãƒ«åï¼Ÿ
+    'ƒ_ƒ~[‚Ìƒtƒ@ƒCƒ‹–¼H
     If Len(midi_name) < 5 Then
         Exit Function
     End If
     
-    'å¼•æ•°1ã¨ã—ã¦æ¸¡ã•ã‚ŒãŸæ–‡å­—åˆ—ã‚’ãƒªã‚¹ãƒˆã¨ã—ã¦æ‰±ã„ã€å·¦ã‹ã‚‰é †ã«MIDIã‚’æ¤œç´¢
+    'ˆø”1‚Æ‚µ‚Ä“n‚³‚ê‚½•¶š—ñ‚ğƒŠƒXƒg‚Æ‚µ‚Äˆµ‚¢A¶‚©‚ç‡‚ÉMIDI‚ğŒŸõ
     num = ListLength(midi_name)
     i = 1
     Do While i <= num
-        'ã‚¹ãƒšãƒ¼ã‚¹ã‚’å«ã‚€ãƒ•ã‚¡ã‚¤ãƒ«åã¸ã®å¯¾å¿œ
+        'ƒXƒy[ƒX‚ğŠÜ‚Şƒtƒ@ƒCƒ‹–¼‚Ö‚Ì‘Î‰
         buf = ""
         For j = i To num
             buf2 = LCase(ListIndex(midi_name, j))
             
-            'å…¨ä½“ãŒ()ã§å›²ã¾ã‚Œã¦ã„ã‚‹å ´åˆã¯()ã‚’å¤–ã™
+            '‘S‘Ì‚ª()‚ÅˆÍ‚Ü‚ê‚Ä‚¢‚éê‡‚Í()‚ğŠO‚·
             If Left$(buf2, 1) = "(" _
                 And Right$(buf2, 1) = ")" _
             Then
@@ -825,12 +825,12 @@ Dim sub_folder As String
         Next
         buf = Trim$(buf)
         
-        'åŒåã®MP3ãƒ•ã‚¡ã‚¤ãƒ«ãŒã‚ã‚‹å ´åˆã¯MIDIãƒ•ã‚¡ã‚¤ãƒ«ã®ä»£ã‚ã‚Šã«MP3ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ä½¿ã†
+        '“¯–¼‚ÌMP3ƒtƒ@ƒCƒ‹‚ª‚ ‚éê‡‚ÍMIDIƒtƒ@ƒCƒ‹‚Ì‘ã‚í‚è‚ÉMP3ƒtƒ@ƒCƒ‹‚ğg‚¤
         If is_mp3_available Then
             fname_mp3 = Left$(buf, Len(buf) - 4) & ".mp3"
         End If
         
-        'ãƒ•ãƒ«ãƒ‘ã‚¹ã§ã®æŒ‡å®šï¼Ÿ
+        'ƒtƒ‹ƒpƒX‚Å‚Ìw’èH
         If InStr(buf, ":") = 2 Then
             If is_mp3_available Then
                 If FileExists(fname_mp3) Then
@@ -845,25 +845,25 @@ Dim sub_folder As String
         End If
         
 ' DEL START MARGE
-'        'å±¥æ­´ã‚’æ¤œç´¢ã—ã¦ã¿ã‚‹
+'        '—š—ğ‚ğŒŸõ‚µ‚Ä‚İ‚é
 '        On Error GoTo NotFound
 '        fname = fpath_history.Item(buf)
 '
-'        'å±¥æ­´ä¸Šã«ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ç™ºè¦‹
+'        '—š—ğã‚Éƒtƒ@ƒCƒ‹‚ğ”­Œ©
 '        SearchMidiFile = fname
 '        Exit Function
         
 'NotFound:
-'        'å±¥æ­´ã«ãªã‹ã£ãŸ
+'        '—š—ğ‚É‚È‚©‚Á‚½
 '        On Error GoTo 0
 ' DEL END MARGE
         
-        'ã‚µãƒ–ãƒ•ã‚©ãƒ«ãƒ€æŒ‡å®šã‚ã‚Šï¼Ÿ
+        'ƒTƒuƒtƒHƒ‹ƒ_w’è‚ ‚èH
         If InStr(buf, "_") > 0 Then
             sub_folder = Left$(buf, InStr(buf, "_") - 1) & "\"
         End If
         
-        'ã‚·ãƒŠãƒªã‚ªå´ã®Midiãƒ•ã‚©ãƒ«ãƒ€
+        'ƒVƒiƒŠƒI‘¤‚ÌMidiƒtƒHƒ‹ƒ_
         If scenario_midi_dir_exists Then
             If is_mp3_available Then
                 If sub_folder <> "" Then
@@ -900,7 +900,7 @@ Dim sub_folder As String
             End If
         End If
         
-        'ExtDataPathå´ã®Midiãƒ•ã‚©ãƒ«ãƒ€
+        'ExtDataPath‘¤‚ÌMidiƒtƒHƒ‹ƒ_
         If extdata_midi_dir_exists Then
             If is_mp3_available Then
                 If sub_folder <> "" Then
@@ -937,7 +937,7 @@ Dim sub_folder As String
             End If
         End If
         
-        'ExtDataPath2å´ã®Midiãƒ•ã‚©ãƒ«ãƒ€
+        'ExtDataPath2‘¤‚ÌMidiƒtƒHƒ‹ƒ_
         If extdata2_midi_dir_exists Then
             If is_mp3_available Then
                 If sub_folder <> "" Then
@@ -974,7 +974,7 @@ Dim sub_folder As String
             End If
         End If
         
-        'æœ¬ä½“å´ã®Midiãƒ•ã‚©ãƒ«ãƒ€
+        '–{‘Ì‘¤‚ÌMidiƒtƒHƒ‹ƒ_
         If is_mp3_available Then
             If sub_folder <> "" Then
                 fname = AppPath & "Midi\" & sub_folder & fname_mp3
@@ -1013,50 +1013,50 @@ Dim sub_folder As String
     Loop
 End Function
 
-'MIDIãƒ•ã‚¡ã‚¤ãƒ«ã®ã‚µãƒ¼ãƒãƒ‘ã‚¹ã‚’ãƒªã‚»ãƒƒãƒˆã™ã‚‹
+'MIDIƒtƒ@ƒCƒ‹‚ÌƒT[ƒ`ƒpƒX‚ğƒŠƒZƒbƒg‚·‚é
 Public Sub ResetMidiSearchPath()
     IsMidiSearchPathInitialized = False
 End Sub
 
 
-'ï¼¢ï¼§ï¼­ã«å‰²ã‚Šå½“ã¦ã‚‰ã‚ŒãŸMIDIãƒ•ã‚¡ã‚¤ãƒ«åã‚’è¿”ã™
+'‚a‚f‚l‚ÉŠ„‚è“–‚Ä‚ç‚ê‚½MIDIƒtƒ@ƒCƒ‹–¼‚ğ•Ô‚·
 Public Function BGMName(bgm_name As String) As String
 Dim vname As String
 
-    'RenameBGMã‚³ãƒãƒ³ãƒ‰ã§MIDIãƒ•ã‚¡ã‚¤ãƒ«ãŒè¨­å®šã•ã‚Œã¦ã„ã‚Œã°ãã¡ã‚‰ã‚’ä½¿ç”¨
+    'RenameBGMƒRƒ}ƒ“ƒh‚ÅMIDIƒtƒ@ƒCƒ‹‚ªİ’è‚³‚ê‚Ä‚¢‚ê‚Î‚»‚¿‚ç‚ğg—p
     vname = "BGM(" & bgm_name & ")"
     If IsGlobalVariableDefined(vname) Then
         BGMName = GlobalVariableList.Item(vname).StringValue
         Exit Function
     End If
     
-    'ãã†ã§ãªã‘ã‚Œã°Src.iniã§è¨­å®šã•ã‚Œã¦ã„ã‚‹ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ä½¿ç”¨
+    '‚»‚¤‚Å‚È‚¯‚ê‚ÎSrc.ini‚Åİ’è‚³‚ê‚Ä‚¢‚éƒtƒ@ƒCƒ‹‚ğg—p
     BGMName = ReadIni("BGM", bgm_name)
     
-    'Src.iniã§ã‚‚è¨­å®šã•ã‚Œã¦ã„ãªã‘ã‚Œã°æ¨™æº–ã®ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ä½¿ç”¨
+    'Src.ini‚Å‚àİ’è‚³‚ê‚Ä‚¢‚È‚¯‚ê‚Î•W€‚Ìƒtƒ@ƒCƒ‹‚ğg—p
     If BGMName = "" Then
         BGMName = bgm_name & ".mid"
     End If
 End Function
 
 
-'DirectSoundã®åˆæœŸåŒ–
+'DirectSound‚Ì‰Šú‰»
 Public Sub InitDirectSound()
     'On Error GoTo ErrorHandler
     Exit Sub
     
-    'ãƒ•ãƒ©ã‚°ã‚’è¨­å®š
+    'ƒtƒ‰ƒO‚ğİ’è
     UseDirectSound = True
     
-    'DirectXã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆä½œæˆ
+    'DirectXƒIƒuƒWƒFƒNƒgì¬
     If DXObject Is Nothing Then
         Set DXObject = CreateDirectXObject()
     End If
     
-    'DirectSoundã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆä½œæˆ
+    'DirectSoundƒIƒuƒWƒFƒNƒgì¬
     Set DSObject = DXObject.DirectSoundCreate("")
     
-    'ã‚µã‚¦ãƒ³ãƒ‰ãƒ‡ãƒã‚¤ã‚¹ã®å”èª¿ãƒ¬ãƒ™ãƒ«ã‚’è¨­å®š
+    'ƒTƒEƒ“ƒhƒfƒoƒCƒX‚Ì‹¦’²ƒŒƒxƒ‹‚ğİ’è
     DSObject.SetCooperativeLevel MainForm.hwnd, DSSCL_PRIORITY
     
     Exit Sub
@@ -1066,7 +1066,7 @@ ErrorHandler:
     UseDirectSound = False
 End Sub
 
-'Waveãƒ•ã‚¡ã‚¤ãƒ«ã‚’å†ç”Ÿã™ã‚‹
+'Waveƒtƒ@ƒCƒ‹‚ğÄ¶‚·‚é
 Public Sub PlayWave(wave_name As String)
 Dim ret As Long
 Dim fname As String
@@ -1076,7 +1076,7 @@ Static scenario_sound_dir_exists As Boolean
 Static extdata_sound_dir_exists As Boolean
 Static extdata2_sound_dir_exists As Boolean
 
-    'åˆã‚ã¦å®Ÿè¡Œã™ã‚‹éš›ã«ã€å„ãƒ•ã‚©ãƒ«ãƒ€ã«Soundãƒ•ã‚©ãƒ«ãƒ€ãŒã‚ã‚‹ã‹ãƒã‚§ãƒƒã‚¯
+    '‰‚ß‚ÄÀs‚·‚éÛ‚ÉAŠeƒtƒHƒ‹ƒ_‚ÉSoundƒtƒHƒ‹ƒ_‚ª‚ ‚é‚©ƒ`ƒFƒbƒN
     If Not init_play_wave Then
         If Len(Dir$(ScenarioPath & "Sound", vbDirectory)) > 0 Then
             scenario_sound_dir_exists = True
@@ -1094,31 +1094,31 @@ Static extdata2_sound_dir_exists As Boolean
         init_play_wave = True
     End If
     
-    'ç‰¹æ®Šãªãƒ•ã‚¡ã‚¤ãƒ«å
+    '“Áê‚Èƒtƒ@ƒCƒ‹–¼
     Select Case LCase$(wave_name)
         Case "-.wav", "-.mp3"
-            'å†ç”Ÿã‚’ã‚­ãƒ£ãƒ³ã‚»ãƒ«
+            'Ä¶‚ğƒLƒƒƒ“ƒZƒ‹
             Exit Sub
         Case "null.wav"
-            'WAVEå†ç”Ÿã‚’åœæ­¢
+            'WAVEÄ¶‚ğ’â~
             StopWave
             Exit Sub
         Case "null.mp3"
-            'MP3å†ç”Ÿã‚’åœæ­¢
+            'MP3Ä¶‚ğ’â~
             If LCase$(Right$(BGMFileName, 4)) = ".mp3" Then
                 StopBGM True
             Else
-                'æ¼”å¥ã‚’åœæ­¢
+                '‰‰‘t‚ğ’â~
                 Call vbmp3_stop
-                'ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‰ã˜ã‚‹
+                'ƒtƒ@ƒCƒ‹‚ğ•Â‚¶‚é
                 Call vbmp3_close
             End If
             Exit Sub
     End Select
     
-    'å„ãƒ•ã‚©ãƒ«ãƒ€ã‚’ãƒã‚§ãƒƒã‚¯
+    'ŠeƒtƒHƒ‹ƒ_‚ğƒ`ƒFƒbƒN
     
-    'ã‚·ãƒŠãƒªã‚ªå´ã®Soundãƒ•ã‚©ãƒ«ãƒ€
+    'ƒVƒiƒŠƒI‘¤‚ÌSoundƒtƒHƒ‹ƒ_
     If scenario_sound_dir_exists Then
         fname = ScenarioPath & "Sound\" & wave_name
         If FileExists(fname) Then
@@ -1126,7 +1126,7 @@ Static extdata2_sound_dir_exists As Boolean
         End If
     End If
     
-    'ExtDataPathå´ã®Soundãƒ•ã‚©ãƒ«ãƒ€
+    'ExtDataPath‘¤‚ÌSoundƒtƒHƒ‹ƒ_
     If extdata_sound_dir_exists Then
         fname = ExtDataPath & "Sound\" & wave_name
         If FileExists(fname) Then
@@ -1134,7 +1134,7 @@ Static extdata2_sound_dir_exists As Boolean
         End If
     End If
     
-    'ExtDataPath2å´ã®Soundãƒ•ã‚©ãƒ«ãƒ€
+    'ExtDataPath2‘¤‚ÌSoundƒtƒHƒ‹ƒ_
     If extdata2_sound_dir_exists Then
         fname = ExtDataPath2 & "Sound\" & wave_name
         If FileExists(fname) Then
@@ -1142,83 +1142,83 @@ Static extdata2_sound_dir_exists As Boolean
         End If
     End If
     
-    'æœ¬ä½“å´ã®Soundãƒ•ã‚©ãƒ«ãƒ€
+    '–{‘Ì‘¤‚ÌSoundƒtƒHƒ‹ƒ_
     fname = AppPath & "Sound\" & wave_name
     If FileExists(fname) Then
         GoTo FoundWave
     End If
     
-    'çµ¶å¯¾è¡¨è¨˜ï¼Ÿ
+    'â‘Î•\‹LH
     fname = wave_name
     If FileExists(fname) Then
         GoTo FoundWave
     End If
     
-    'è¦‹ã¤ã‹ã‚‰ãªã‹ã£ãŸ
+    'Œ©‚Â‚©‚ç‚È‚©‚Á‚½
     Exit Sub
     
 FoundWave:
     
     If LCase$(Right$(fname, 4)) = ".mp3" Then
-        'åŠ¹æœéŸ³ã¯MP3ãƒ•ã‚¡ã‚¤ãƒ«
+        'Œø‰Ê‰¹‚ÍMP3ƒtƒ@ƒCƒ‹
         
-        'VBMP3.dllã‚’åˆæœŸåŒ–
+        'VBMP3.dll‚ğ‰Šú‰»
         If Not IsMP3Supported Then
             InitVBMP3
             
             If Not IsMP3Supported Then
-                'VBMP3.dllãŒåˆ©ç”¨ä¸èƒ½
+                'VBMP3.dll‚ª—˜—p•s”\
                 Exit Sub
             End If
         End If
         
-        'MP3å†ç”Ÿã‚’åœæ­¢
+        'MP3Ä¶‚ğ’â~
         If LCase$(Right$(BGMFileName, 4)) = ".mp3" Then
             StopBGM True
         Else
-            'æ¼”å¥ã‚’åœæ­¢
+            '‰‰‘t‚ğ’â~
             Call vbmp3_stop
-            'ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‰ã˜ã‚‹
+            'ƒtƒ@ƒCƒ‹‚ğ•Â‚¶‚é
             Call vbmp3_close
         End If
         
-        'ãƒ•ã‚¡ã‚¤ãƒ«ã‚’èª­ã¿è¾¼ã‚€
+        'ƒtƒ@ƒCƒ‹‚ğ“Ç‚İ‚Ş
         If vbmp3_open(fname, mp3_data) Then
-            'å†ç”Ÿé–‹å§‹
+            'Ä¶ŠJn
             Call vbmp3_play
         End If
     ElseIf UseDirectSound Then
-        'DirectSoundã‚’ä½¿ã†å ´åˆ
+        'DirectSound‚ğg‚¤ê‡
         
         Dim dsbd As DSBUFFERDESC
         Dim wf As WAVEFORMATEX
         
-        'å†ç”Ÿä¸­ã®å ´åˆã¯å†ç”Ÿã‚’ã‚¹ãƒˆãƒƒãƒ—
+        'Ä¶’†‚Ìê‡‚ÍÄ¶‚ğƒXƒgƒbƒv
         If Not DSBuffer Is Nothing Then
             DSBuffer.Stop
             Set DSBuffer = Nothing
         End If
         
-        'ã‚µã‚¦ãƒ³ãƒ‰ãƒãƒƒãƒ•ã‚¡ã«WAVãƒ•ã‚¡ã‚¤ãƒ«ã‚’èª­ã¿è¾¼ã‚€
+        'ƒTƒEƒ“ƒhƒoƒbƒtƒ@‚ÉWAVƒtƒ@ƒCƒ‹‚ğ“Ç‚İ‚Ş
         dsbd.lFlags = _
             DSBCAPS_CTRLFREQUENCY Or DSBCAPS_CTRLPAN _
             Or DSBCAPS_CTRLVOLUME Or DSBCAPS_STATIC
         Set DSBuffer = DSObject.CreateSoundBufferFromFile(fname, dsbd, wf)
         
-        'WAVEã‚’å†ç”Ÿ
+        'WAVE‚ğÄ¶
         DSBuffer.Play DSBPLAY_DEFAULT
     Else
-        'APIã‚’ä½¿ã†å ´åˆ
+        'API‚ğg‚¤ê‡
         
-        'WAVEã‚’å†ç”Ÿ
+        'WAVE‚ğÄ¶
         ret = sndPlaySound(fname, SND_ASYNC + SND_NODEFAULT)
     End If
     
-    'åŠ¹æœéŸ³å†ç”Ÿã®ãƒ•ãƒ©ã‚°ã‚’ç«‹ã¦ã‚‹
+    'Œø‰Ê‰¹Ä¶‚Ìƒtƒ‰ƒO‚ğ—§‚Ä‚é
     IsWavePlayed = True
 End Sub
 
-'Waveãƒ•ã‚¡ã‚¤ãƒ«ã®å†ç”Ÿã‚’çµ‚äº†ã™ã‚‹
+'Waveƒtƒ@ƒCƒ‹‚ÌÄ¶‚ğI—¹‚·‚é
 Public Sub StopWave()
 Dim ret As Long
     
@@ -1232,41 +1232,41 @@ Dim ret As Long
 End Sub
 
 
-'æœ¬ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«ã®è§£æ”¾å‡¦ç†ã‚’è¡Œã†
+'–{ƒ‚ƒWƒ…[ƒ‹‚Ì‰ğ•úˆ—‚ğs‚¤
 Public Sub FreeSoundModule()
-    'BGMæ¼”å¥ã®åœæ­¢
+    'BGM‰‰‘t‚Ì’â~
     KeepBGM = False
     BossBGM = False
     StopBGM True
     
-    'éŸ³æºåˆæœŸåŒ–
+    '‰¹Œ¹‰Šú‰»
     ResetBGM
     
-    'WAVEãƒ•ã‚¡ã‚¤ãƒ«å†ç”Ÿã®åœæ­¢
+    'WAVEƒtƒ@ƒCƒ‹Ä¶‚Ì’â~
     StopWave
     
-    'DirectMusicã®è§£æ”¾
+    'DirectMusic‚Ì‰ğ•ú
     If UseDirectMusic Then
-        'æ¼”å¥åœæ­¢
+        '‰‰‘t’â~
         DMPerformance.CloseDown
         
-        'ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®è§£æ”¾
+        'ƒIƒuƒWƒFƒNƒg‚Ì‰ğ•ú
         Set DMLoader = Nothing
         Set DMPerformance = Nothing
         Set DMSegment = Nothing
     End If
     
-    'DirectSoundã®è§£æ”¾
+    'DirectSound‚Ì‰ğ•ú
     If UseDirectSound Then
-        'ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®è§£æ”¾
+        'ƒIƒuƒWƒFƒNƒg‚Ì‰ğ•ú
         Set DSObject = Nothing
         Set DSBuffer = Nothing
     End If
     
-    'DirectXã®è§£æ”¾
+    'DirectX‚Ì‰ğ•ú
     Set DXObject = Nothing
     
-    'VBMP3.DLLã®è§£æ”¾
+    'VBMP3.DLL‚Ì‰ğ•ú
     If IsMP3Supported Then
         Call vbmp3_stop
         Call vbmp3_free

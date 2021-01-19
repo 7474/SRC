@@ -1,7 +1,7 @@
 VERSION 5.00
 Begin VB.Form frmListBox 
    BackColor       =   &H00C0C0C0&
-   BorderStyle     =   1  'å›ºå®š(å®Ÿç·š)
+   BorderStyle     =   1  'ŒÅ’è(Àü)
    Caption         =   "ListBox"
    ClientHeight    =   2055
    ClientLeft      =   1080
@@ -12,9 +12,9 @@ Begin VB.Form frmListBox
    KeyPreview      =   -1  'True
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
-   PaletteMode     =   1  'Z ï½µï½°ï¾€ï¾ï½°
+   PaletteMode     =   1  'Z µ°ÀŞ°
    ScaleHeight     =   137
-   ScaleMode       =   3  'ï¾‹ï¾Ÿï½¸ï½¾ï¾™
+   ScaleMode       =   3  'Ëß¸¾Ù
    ScaleWidth      =   654
    Begin VB.Timer Timer2 
       Interval        =   100
@@ -24,7 +24,7 @@ Begin VB.Form frmListBox
    Begin VB.TextBox txtComment 
       Enabled         =   0   'False
       BeginProperty Font 
-         Name            =   "ï¼­ï¼³ ã‚´ã‚·ãƒƒã‚¯"
+         Name            =   "‚l‚r ƒSƒVƒbƒN"
          Size            =   12
          Charset         =   128
          Weight          =   400
@@ -42,11 +42,11 @@ Begin VB.Form frmListBox
       Width           =   9555
    End
    Begin VB.TextBox txtMorale2 
-      Appearance      =   0  'ï¾Œï¾—ï½¯ï¾„
+      Appearance      =   0  'Ì×¯Ä
       BackColor       =   &H00C0C0C0&
-      BorderStyle     =   0  'ãªã—
+      BorderStyle     =   0  '‚È‚µ
       BeginProperty Font 
-         Name            =   "ï¼­ï¼³ æ˜æœ"
+         Name            =   "‚l‚r –¾’©"
          Size            =   9.75
          Charset         =   128
          Weight          =   700
@@ -63,11 +63,11 @@ Begin VB.Form frmListBox
       Width           =   375
    End
    Begin VB.TextBox txtMorale1 
-      Appearance      =   0  'ï¾Œï¾—ï½¯ï¾„
+      Appearance      =   0  'Ì×¯Ä
       BackColor       =   &H00C0C0C0&
-      BorderStyle     =   0  'ãªã—
+      BorderStyle     =   0  '‚È‚µ
       BeginProperty Font 
-         Name            =   "ï¼­ï¼³ æ˜æœ"
+         Name            =   "‚l‚r –¾’©"
          Size            =   9.75
          Charset         =   128
          Weight          =   700
@@ -84,11 +84,11 @@ Begin VB.Form frmListBox
       Width           =   375
    End
    Begin VB.TextBox txtLevel2 
-      Appearance      =   0  'ï¾Œï¾—ï½¯ï¾„
+      Appearance      =   0  'Ì×¯Ä
       BackColor       =   &H00C0C0C0&
-      BorderStyle     =   0  'ãªã—
+      BorderStyle     =   0  '‚È‚µ
       BeginProperty Font 
-         Name            =   "ï¼­ï¼³ æ˜æœ"
+         Name            =   "‚l‚r –¾’©"
          Size            =   9.75
          Charset         =   128
          Weight          =   700
@@ -105,11 +105,11 @@ Begin VB.Form frmListBox
       Width           =   255
    End
    Begin VB.TextBox txtLevel1 
-      Appearance      =   0  'ï¾Œï¾—ï½¯ï¾„
+      Appearance      =   0  'Ì×¯Ä
       BackColor       =   &H00C0C0C0&
-      BorderStyle     =   0  'ãªã—
+      BorderStyle     =   0  '‚È‚µ
       BeginProperty Font 
-         Name            =   "ï¼­ï¼³ æ˜æœ"
+         Name            =   "‚l‚r –¾’©"
          Size            =   9.75
          Charset         =   128
          Weight          =   700
@@ -126,11 +126,11 @@ Begin VB.Form frmListBox
       Width           =   255
    End
    Begin VB.TextBox txtHP1 
-      Appearance      =   0  'ï¾Œï¾—ï½¯ï¾„
+      Appearance      =   0  'Ì×¯Ä
       BackColor       =   &H00C0C0C0&
-      BorderStyle     =   0  'ãªã—
+      BorderStyle     =   0  '‚È‚µ
       BeginProperty Font 
-         Name            =   "ï¼­ï¼³ æ˜æœ"
+         Name            =   "‚l‚r –¾’©"
          Size            =   9.75
          Charset         =   128
          Weight          =   700
@@ -154,7 +154,7 @@ Begin VB.Form frmListBox
       Height          =   120
       Left            =   1830
       ScaleHeight     =   4
-      ScaleMode       =   3  'ï¾‹ï¾Ÿï½¸ï½¾ï¾™
+      ScaleMode       =   3  'Ëß¸¾Ù
       ScaleWidth      =   110
       TabIndex        =   10
       Top             =   390
@@ -169,7 +169,7 @@ Begin VB.Form frmListBox
       Height          =   120
       Left            =   3600
       ScaleHeight     =   4
-      ScaleMode       =   3  'ï¾‹ï¾Ÿï½¸ï½¾ï¾™
+      ScaleMode       =   3  'Ëß¸¾Ù
       ScaleWidth      =   75
       TabIndex        =   9
       Top             =   390
@@ -177,11 +177,11 @@ Begin VB.Form frmListBox
       Width           =   1185
    End
    Begin VB.TextBox txtEN1 
-      Appearance      =   0  'ï¾Œï¾—ï½¯ï¾„
+      Appearance      =   0  'Ì×¯Ä
       BackColor       =   &H00C0C0C0&
-      BorderStyle     =   0  'ãªã—
+      BorderStyle     =   0  '‚È‚µ
       BeginProperty Font 
-         Name            =   "ï¼­ï¼³ æ˜æœ"
+         Name            =   "‚l‚r –¾’©"
          Size            =   9.75
          Charset         =   128
          Weight          =   700
@@ -198,11 +198,11 @@ Begin VB.Form frmListBox
       Width           =   855
    End
    Begin VB.TextBox txtEN2 
-      Appearance      =   0  'ï¾Œï¾—ï½¯ï¾„
+      Appearance      =   0  'Ì×¯Ä
       BackColor       =   &H00C0C0C0&
-      BorderStyle     =   0  'ãªã—
+      BorderStyle     =   0  '‚È‚µ
       BeginProperty Font 
-         Name            =   "ï¼­ï¼³ æ˜æœ"
+         Name            =   "‚l‚r –¾’©"
          Size            =   9.75
          Charset         =   128
          Weight          =   700
@@ -226,7 +226,7 @@ Begin VB.Form frmListBox
       Height          =   120
       Left            =   8475
       ScaleHeight     =   4
-      ScaleMode       =   3  'ï¾‹ï¾Ÿï½¸ï½¾ï¾™
+      ScaleMode       =   3  'Ëß¸¾Ù
       ScaleWidth      =   74
       TabIndex        =   6
       Top             =   405
@@ -241,7 +241,7 @@ Begin VB.Form frmListBox
       Height          =   120
       Left            =   6735
       ScaleHeight     =   4
-      ScaleMode       =   3  'ï¾‹ï¾Ÿï½¸ï½¾ï¾™
+      ScaleMode       =   3  'Ëß¸¾Ù
       ScaleWidth      =   108
       TabIndex        =   5
       Top             =   405
@@ -249,11 +249,11 @@ Begin VB.Form frmListBox
       Width           =   1680
    End
    Begin VB.TextBox txtHP2 
-      Appearance      =   0  'ï¾Œï¾—ï½¯ï¾„
+      Appearance      =   0  'Ì×¯Ä
       BackColor       =   &H00C0C0C0&
-      BorderStyle     =   0  'ãªã—
+      BorderStyle     =   0  '‚È‚µ
       BeginProperty Font 
-         Name            =   "ï¼­ï¼³ æ˜æœ"
+         Name            =   "‚l‚r –¾’©"
          Size            =   9.75
          Charset         =   128
          Weight          =   700
@@ -270,16 +270,16 @@ Begin VB.Form frmListBox
       Width           =   1320
    End
    Begin VB.PictureBox picUnit2 
-      Appearance      =   0  'ï¾Œï¾—ï½¯ï¾„
+      Appearance      =   0  'Ì×¯Ä
       AutoRedraw      =   -1  'True
       BackColor       =   &H80000005&
-      BorderStyle     =   0  'ãªã—
+      BorderStyle     =   0  '‚È‚µ
       ClipControls    =   0   'False
       ForeColor       =   &H80000008&
       Height          =   480
       Left            =   6180
       ScaleHeight     =   32
-      ScaleMode       =   3  'ï¾‹ï¾Ÿï½¸ï½¾ï¾™
+      ScaleMode       =   3  'Ëß¸¾Ù
       ScaleWidth      =   32
       TabIndex        =   3
       Top             =   75
@@ -287,16 +287,16 @@ Begin VB.Form frmListBox
       Width           =   480
    End
    Begin VB.PictureBox picUnit1 
-      Appearance      =   0  'ï¾Œï¾—ï½¯ï¾„
+      Appearance      =   0  'Ì×¯Ä
       AutoRedraw      =   -1  'True
       BackColor       =   &H80000005&
-      BorderStyle     =   0  'ãªã—
+      BorderStyle     =   0  '‚È‚µ
       ClipControls    =   0   'False
       ForeColor       =   &H80000008&
       Height          =   480
       Left            =   1275
       ScaleHeight     =   32
-      ScaleMode       =   3  'ï¾‹ï¾Ÿï½¸ï½¾ï¾™
+      ScaleMode       =   3  'Ëß¸¾Ù
       ScaleWidth      =   32
       TabIndex        =   2
       Top             =   60
@@ -312,7 +312,7 @@ Begin VB.Form frmListBox
    Begin VB.ListBox lstItems 
       BackColor       =   &H00FFFFFF&
       BeginProperty Font 
-         Name            =   "ï¼­ï¼³ æ˜æœ"
+         Name            =   "‚l‚r –¾’©"
          Size            =   12
          Charset         =   128
          Weight          =   400
@@ -332,12 +332,12 @@ Begin VB.Form frmListBox
       BackColor       =   &H00FFFFFF&
       ClipControls    =   0   'False
       FillColor       =   &H00800000&
-      FillStyle       =   0  'å¡—ã‚Šã¤ã¶ã—
+      FillStyle       =   0  '“h‚è‚Â‚Ô‚µ
       ForeColor       =   &H00800000&
       Height          =   195
       Left            =   90
       ScaleHeight     =   9
-      ScaleMode       =   3  'ï¾‹ï¾Ÿï½¸ï½¾ï¾™
+      ScaleMode       =   3  'Ëß¸¾Ù
       ScaleWidth      =   639
       TabIndex        =   25
       Top             =   1845
@@ -346,9 +346,9 @@ Begin VB.Form frmListBox
    End
    Begin VB.Label labCaption 
       BackColor       =   &H00FFFFFF&
-      BorderStyle     =   1  'å®Ÿç·š
+      BorderStyle     =   1  'Àü
       BeginProperty Font 
-         Name            =   "ï¼­ï¼³ æ˜æœ"
+         Name            =   "‚l‚r –¾’©"
          Size            =   12
          Charset         =   128
          Weight          =   400
@@ -367,7 +367,7 @@ Begin VB.Form frmListBox
       BackColor       =   &H00C0C0C0&
       Caption         =   "M"
       BeginProperty Font 
-         Name            =   "ï¼­ï¼³ ï¼°æ˜æœ"
+         Name            =   "‚l‚r ‚o–¾’©"
          Size            =   11.25
          Charset         =   128
          Weight          =   700
@@ -387,7 +387,7 @@ Begin VB.Form frmListBox
       BackColor       =   &H00C0C0C0&
       Caption         =   "M"
       BeginProperty Font 
-         Name            =   "ï¼­ï¼³ ï¼°æ˜æœ"
+         Name            =   "‚l‚r ‚o–¾’©"
          Size            =   11.25
          Charset         =   128
          Weight          =   700
@@ -407,7 +407,7 @@ Begin VB.Form frmListBox
       BackColor       =   &H00C0C0C0&
       Caption         =   "Lv"
       BeginProperty Font 
-         Name            =   "ï¼­ï¼³ ï¼°æ˜æœ"
+         Name            =   "‚l‚r ‚o–¾’©"
          Size            =   12
          Charset         =   128
          Weight          =   700
@@ -424,7 +424,7 @@ Begin VB.Form frmListBox
       Width           =   300
    End
    Begin VB.Image imgPilot2 
-      BorderStyle     =   1  'å®Ÿç·š
+      BorderStyle     =   1  'Àü
       Height          =   540
       Left            =   4965
       Stretch         =   -1  'True
@@ -436,7 +436,7 @@ Begin VB.Form frmListBox
       BackColor       =   &H00C0C0C0&
       Caption         =   "Lv"
       BeginProperty Font 
-         Name            =   "ï¼­ï¼³ ï¼°æ˜æœ"
+         Name            =   "‚l‚r ‚o–¾’©"
          Size            =   12
          Charset         =   128
          Weight          =   700
@@ -453,7 +453,7 @@ Begin VB.Form frmListBox
       Width           =   300
    End
    Begin VB.Image imgPilot1 
-      BorderStyle     =   1  'å®Ÿç·š
+      BorderStyle     =   1  'Àü
       Height          =   540
       Left            =   90
       Stretch         =   -1  'True
@@ -465,7 +465,7 @@ Begin VB.Form frmListBox
       BackColor       =   &H00C0C0C0&
       Caption         =   "HP"
       BeginProperty Font 
-         Name            =   "ï¼­ï¼³ ï¼°æ˜æœ"
+         Name            =   "‚l‚r ‚o–¾’©"
          Size            =   12
          Charset         =   128
          Weight          =   700
@@ -485,7 +485,7 @@ Begin VB.Form frmListBox
       BackColor       =   &H00C0C0C0&
       Caption         =   "EN"
       BeginProperty Font 
-         Name            =   "ï¼­ï¼³ ï¼°æ˜æœ"
+         Name            =   "‚l‚r ‚o–¾’©"
          Size            =   12
          Charset         =   128
          Weight          =   700
@@ -505,7 +505,7 @@ Begin VB.Form frmListBox
       BackColor       =   &H00C0C0C0&
       Caption         =   "EN"
       BeginProperty Font 
-         Name            =   "ï¼­ï¼³ ï¼°æ˜æœ"
+         Name            =   "‚l‚r ‚o–¾’©"
          Size            =   12
          Charset         =   128
          Weight          =   700
@@ -525,7 +525,7 @@ Begin VB.Form frmListBox
       BackColor       =   &H00C0C0C0&
       Caption         =   "HP"
       BeginProperty Font 
-         Name            =   "ï¼­ï¼³ ï¼°æ˜æœ"
+         Name            =   "‚l‚r ‚o–¾’©"
          Size            =   12
          Charset         =   128
          Weight          =   700
@@ -550,28 +550,28 @@ Attribute VB_Exposed = False
 Option Explicit
 
 ' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯ãƒ•ãƒªãƒ¼ã‚½ãƒ•ãƒˆã§ã‚ã‚Šã€ç„¡ä¿è¨¼ã§ã™ã€‚
-' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯GNU General Public License(Ver.3ã¾ãŸã¯ãã‚Œä»¥é™)ãŒå®šã‚ã‚‹æ¡ä»¶ã®ä¸‹ã§
-' å†é ’å¸ƒã¾ãŸã¯æ”¹å¤‰ã™ã‚‹ã“ã¨ãŒã§ãã¾ã™ã€‚
+' –{ƒvƒƒOƒ‰ƒ€‚ÍƒtƒŠ[ƒ\ƒtƒg‚Å‚ ‚èA–³•ÛØ‚Å‚·B
+' –{ƒvƒƒOƒ‰ƒ€‚ÍGNU General Public License(Ver.3‚Ü‚½‚Í‚»‚êˆÈ~)‚ª’è‚ß‚éğŒ‚Ì‰º‚Å
+' Ä”Ğ•z‚Ü‚½‚Í‰ü•Ï‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B
 
-'ãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹ã®ãƒ•ã‚©ãƒ¼ãƒ 
+'ƒŠƒXƒgƒ{ƒbƒNƒX‚ÌƒtƒH[ƒ€
 
-'ãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹ã®ã‚µã‚¤ã‚º (é€šå¸¸:M å¤§å‹:L)
-'å¹…
+'ƒŠƒXƒgƒ{ƒbƒNƒX‚ÌƒTƒCƒY (’Êí:M ‘åŒ^:L)
+'•
 Public HorizontalSize As String
-'é«˜ã•
+'‚‚³
 Public VerticalSize As String
 
-'Questionã‚³ãƒãƒ³ãƒ‰ç”¨å¤‰æ•°
+'QuestionƒRƒ}ƒ“ƒh—p•Ï”
 Public CurrentTime As Integer
 Public TimeLimit As Integer
 
-'æœ€å¾Œã«é¸æŠã•ã‚ŒãŸã‚¢ã‚¤ãƒ†ãƒ 
+'ÅŒã‚É‘I‘ğ‚³‚ê‚½ƒAƒCƒeƒ€
 Private LastSelectedItem As Integer
 
-'ãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹ã¸ã®ã‚­ãƒ¼å…¥åŠ›
+'ƒŠƒXƒgƒ{ƒbƒNƒX‚Ö‚ÌƒL[“ü—Í
 Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
-    'æ—¢ã«ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãŒéš ã‚Œã¦ã„ã‚‹å ´åˆã¯ç„¡è¦–
+    'Šù‚ÉƒEƒBƒ“ƒhƒE‚ª‰B‚ê‚Ä‚¢‚éê‡‚Í–³‹
     If Not Visible Then
         Exit Sub
     End If
@@ -581,7 +581,7 @@ Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
         Case vbKeyDown
         Case vbKeyLeft, vbKeyRight
         Case vbKeyEscape, vbKeyDelete, vbKeyBack
-            'ã‚­ãƒ£ãƒ³ã‚»ãƒ«
+            'ƒLƒƒƒ“ƒZƒ‹
             SelectedItem = 0
             LastSelectedItem = SelectedItem
             TopItem = lstItems.TopIndex
@@ -590,7 +590,7 @@ Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
             End If
             IsFormClicked = True
         Case Else
-            'é¸æŠ
+            '‘I‘ğ
             If lstItems.ListIndex < 0 Then
                 Exit Sub
             End If
@@ -609,17 +609,17 @@ Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
     End Select
 End Sub
 
-'ãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹ã‚’é–‹ã
+'ƒŠƒXƒgƒ{ƒbƒNƒX‚ğŠJ‚­
 Private Sub Form_Load()
 Dim ret As Long
     
-    'ãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹ã‚’å¸¸ã«æ‰‹å‰ã«è¡¨ç¤º
+    'ƒŠƒXƒgƒ{ƒbƒNƒX‚ğí‚Éè‘O‚É•\¦
     ret = SetWindowPos(hwnd, -1, 0, 0, 0, 0, &H3)
     HorizontalSize = "M"
     VerticalSize = "M"
 End Sub
 
-'ãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹ã‚’é–‰ã˜ã‚‹
+'ƒŠƒXƒgƒ{ƒbƒNƒX‚ğ•Â‚¶‚é
 Private Sub Form_Unload(Cancel As Integer)
     TopItem = lstItems.TopIndex + 1
     IsFormClicked = True
@@ -629,9 +629,9 @@ Private Sub Form_Unload(Cancel As Integer)
     Hide
 End Sub
 
-'é …ç›®ã‚’ãƒ€ãƒ–ãƒ«ã‚¯ãƒªãƒƒã‚¯
+'€–Ú‚ğƒ_ƒuƒ‹ƒNƒŠƒbƒN
 Private Sub lstItems_DblClick()
-    'ç„¡åŠ¹ãªã‚¢ã‚¤ãƒ†ãƒ ãŒé¸æŠã•ã‚Œã¦ã„ã‚‹ï¼Ÿ
+    '–³Œø‚ÈƒAƒCƒeƒ€‚ª‘I‘ğ‚³‚ê‚Ä‚¢‚éH
     If lstItems.ListIndex < 0 Then
         Exit Sub
     End If
@@ -642,7 +642,7 @@ Private Sub lstItems_DblClick()
     End If
     
     If LastSelectedItem <> 0 Then
-        'é€£ç¶šã§é¸æŠ
+        '˜A‘±‚Å‘I‘ğ
         If Not Visible Then
             Exit Sub
         End If
@@ -654,7 +654,7 @@ Private Sub lstItems_DblClick()
         End If
         IsFormClicked = True
     Else
-        'é€£ç¶šã§ã‚­ãƒ£ãƒ³ã‚»ãƒ«
+        '˜A‘±‚ÅƒLƒƒƒ“ƒZƒ‹
         SelectedItem = 0
         LastSelectedItem = SelectedItem
         TopItem = lstItems.TopIndex + 1
@@ -665,16 +665,16 @@ Private Sub lstItems_DblClick()
     End If
 End Sub
 
-'ãƒã‚¦ã‚¹ã§ã‚¯ãƒªãƒƒã‚¯
+'ƒ}ƒEƒX‚ÅƒNƒŠƒbƒN
 Private Sub lstItems_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
     Select Case Button
         Case 1
-            'é¸æŠ
+            '‘I‘ğ
             If Not Visible Then
                 Exit Sub
             End If
             
-            'ç„¡åŠ¹ãªã‚¢ã‚¤ãƒ†ãƒ ãŒé¸æŠã•ã‚Œã¦ã„ã‚‹ï¼Ÿ
+            '–³Œø‚ÈƒAƒCƒeƒ€‚ª‘I‘ğ‚³‚ê‚Ä‚¢‚éH
             If lstItems.ListIndex < 0 Then
                 Exit Sub
             End If
@@ -695,7 +695,7 @@ Private Sub lstItems_MouseDown(Button As Integer, Shift As Integer, X As Single,
             End If
             
         Case 2
-            'ã‚­ãƒ£ãƒ³ã‚»ãƒ«
+            'ƒLƒƒƒ“ƒZƒ‹
             SelectedItem = 0
             LastSelectedItem = SelectedItem
             TopItem = lstItems.TopIndex + 1
@@ -703,11 +703,11 @@ Private Sub lstItems_MouseDown(Button As Integer, Shift As Integer, X As Single,
     End Select
 End Sub
 
-'ã‚­ãƒ£ãƒ—ã‚·ãƒ§ãƒ³éƒ¨åˆ†ã‚’ã‚¯ãƒªãƒƒã‚¯
+'ƒLƒƒƒvƒVƒ‡ƒ“•”•ª‚ğƒNƒŠƒbƒN
 Private Sub labCaption_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
     Select Case Button
         Case 1
-            'ãƒ¦ãƒ‹ãƒƒãƒˆã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚’è¡¨ç¤ºã—ã¦ã„ã‚‹ãƒ¦ãƒ‹ãƒƒãƒˆã‚’å…¥ã‚Œæ›¿ãˆ
+            'ƒ†ƒjƒbƒgƒXƒe[ƒ^ƒX‚ğ•\¦‚µ‚Ä‚¢‚éƒ†ƒjƒbƒg‚ğ“ü‚ê‘Ö‚¦
             If MainForm.Visible Then
                 If Not DisplayedUnit Is Nothing _
                     And Not SelectedUnit Is Nothing _
@@ -721,7 +721,7 @@ Private Sub labCaption_MouseDown(Button As Integer, Shift As Integer, X As Singl
                 End If
             End If
         Case 2
-            'ã‚­ãƒ£ãƒ³ã‚»ãƒ«
+            'ƒLƒƒƒ“ƒZƒ‹
             SelectedItem = 0
             LastSelectedItem = SelectedItem
             TopItem = lstItems.TopIndex
@@ -732,10 +732,10 @@ Private Sub labCaption_MouseDown(Button As Integer, Shift As Integer, X As Singl
     End Select
 End Sub
 
-'ãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹ã®ç«¯ã‚’ã‚¯ãƒªãƒƒã‚¯
+'ƒŠƒXƒgƒ{ƒbƒNƒX‚Ì’[‚ğƒNƒŠƒbƒN
 Private Sub Form_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
     If Button = 2 Then
-        'ã‚­ãƒ£ãƒ³ã‚»ãƒ«
+        'ƒLƒƒƒ“ƒZƒ‹
         SelectedItem = 0
         LastSelectedItem = SelectedItem
         TopItem = lstItems.TopIndex
@@ -746,15 +746,15 @@ Private Sub Form_MouseDown(Button As Integer, Shift As Integer, X As Single, Y A
     End If
 End Sub
 
-'ãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹ä¸Šã§ãƒã‚¦ã‚¹ã‚«ãƒ¼ã‚½ãƒ«ã‚’å‹•ã‹ã™
+'ƒŠƒXƒgƒ{ƒbƒNƒXã‚Åƒ}ƒEƒXƒJ[ƒ\ƒ‹‚ğ“®‚©‚·
 Private Sub lstItems_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
 Dim itm As Integer
     
-    'ã‚«ãƒ¼ã‚½ãƒ«ãŒã‚ã‚‹ã‚¢ã‚¤ãƒ†ãƒ ã‚’ç®—å‡º
+    'ƒJ[ƒ\ƒ‹‚ª‚ ‚éƒAƒCƒeƒ€‚ğZo
     itm = ((Y * ScaleWidth) \ Width + 1) \ 16
     itm = itm + lstItems.TopIndex
     
-    'ã‚«ãƒ¼ã‚½ãƒ«ä¸Šã®ã‚¢ã‚¤ãƒ†ãƒ ã‚’ãƒã‚¤ãƒ©ã‚¤ãƒˆè¡¨ç¤º
+    'ƒJ[ƒ\ƒ‹ã‚ÌƒAƒCƒeƒ€‚ğƒnƒCƒ‰ƒCƒg•\¦
     If itm < 0 Or itm >= lstItems.ListCount Then
         lstItems.ListIndex = -1
         Exit Sub
@@ -764,13 +764,13 @@ Dim itm As Integer
     End If
     lstItems.ListIndex = itm
     
-    'ã‚³ãƒ¡ãƒ³ãƒˆæ¬„ã‚’æ›´æ–°
+    'ƒRƒƒ“ƒg—“‚ğXV
     If txtComment.Enabled Then
         txtComment.Text = ListItemComment(itm + 1)
     End If
 End Sub
 
-'Questionã‚³ãƒãƒ³ãƒ‰å¯¾å¿œ
+'QuestionƒRƒ}ƒ“ƒh‘Î‰
 Private Sub Timer1_Timer()
     CurrentTime = CurrentTime + 1
     picBar.Cls
@@ -786,7 +786,7 @@ Private Sub Timer1_Timer()
     End If
 End Sub
 
-'é¸æŠã•ã‚Œã¦ã„ã‚‹ã‚¢ã‚¤ãƒ†ãƒ ã«å¯¾å¿œã™ã‚‹ãƒ¦ãƒ‹ãƒƒãƒˆã®ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹è¡¨ç¤º
+'‘I‘ğ‚³‚ê‚Ä‚¢‚éƒAƒCƒeƒ€‚É‘Î‰‚·‚éƒ†ƒjƒbƒg‚ÌƒXƒe[ƒ^ƒX•\¦
 Private Sub Timer2_Timer()
 Dim u As Unit
 
@@ -804,24 +804,24 @@ Dim u As Unit
         Exit Sub
     End If
     
-    'é¸æŠã•ã‚ŒãŸãƒ¦ãƒ‹ãƒƒãƒˆãŒå­˜åœ¨ã™ã‚‹ï¼Ÿ
+    '‘I‘ğ‚³‚ê‚½ƒ†ƒjƒbƒg‚ª‘¶İ‚·‚éH
     If Not UList.IsDefined2(ListItemID(lstItems.ListIndex + 1)) Then
         Exit Sub
     End If
     
     Set u = UList.Item2(ListItemID(lstItems.ListIndex + 1))
     
-    'é¸æŠã•ã‚ŒãŸãƒ¦ãƒ‹ãƒƒãƒˆã«ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆãŒä¹—ã£ã¦ã„ã‚‹ï¼Ÿ
+    '‘I‘ğ‚³‚ê‚½ƒ†ƒjƒbƒg‚ÉƒpƒCƒƒbƒg‚ªæ‚Á‚Ä‚¢‚éH
     If u.CountPilot = 0 Then
         Exit Sub
     End If
     
-    'æ—¢ã«è¡¨ç¤ºã—ã¦ã„ã‚‹ï¼Ÿ
+    'Šù‚É•\¦‚µ‚Ä‚¢‚éH
     If DisplayedUnit Is u Then
         Exit Sub
     End If
     
-    'é¸æŠã•ã‚ŒãŸãƒ¦ãƒ‹ãƒƒãƒˆã‚’ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã«è¡¨ç¤º
+    '‘I‘ğ‚³‚ê‚½ƒ†ƒjƒbƒg‚ğƒXƒe[ƒ^ƒXƒEƒBƒ“ƒhƒE‚É•\¦
     DisplayUnitStatus u
     
 ErrorHandler:

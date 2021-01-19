@@ -4,18 +4,18 @@ Friend Class frmMultiSelectListBox
 	Inherits System.Windows.Forms.Form
 	
 	' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
+	' –{ƒvƒƒOƒ‰ƒ€‚ÍƒtƒŠ[ƒ\ƒtƒg‚Å‚ ‚èA–³•ÛØ‚Å‚·B
+	' –{ƒvƒƒOƒ‰ƒ€‚ÍGNU General Public License(Ver.3‚Ü‚½‚Í‚»‚êˆÈ~)‚ª’è‚ß‚éğŒ‚Ì‰º‚Å
+	' Ä”Ğ•z‚Ü‚½‚Í‰ü•Ï‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B
 	
-	'Invalid_string_refer_to_original_code
+	'oŒ‚ƒ†ƒjƒbƒg‘I‘ğ—pƒŠƒXƒgƒ{ƒbƒNƒX‚ÌƒtƒH[ƒ€
 	
-	'Invalid_string_refer_to_original_code
+	'‘I‘ğ‚³‚ê‚½ƒ†ƒjƒbƒg‚Ì”
 	Private SelectedItemNum As Short
-	'Invalid_string_refer_to_original_code
+	'ƒ†ƒjƒbƒg‚ª‘I‘ğ‚³‚ê‚½‚©‚Ç‚¤‚©‚ğ¦‚·ƒtƒ‰ƒO
 	Private ItemFlag() As Boolean
 	
-	'Invalid_string_refer_to_original_code
+	'‘I‘ğI—¹ƒ{ƒ^ƒ“‚ğƒNƒŠƒbƒN
 	Private Sub cmdFinish_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdFinish.Click
 		Dim i As Short
 		
@@ -26,7 +26,7 @@ Friend Class frmMultiSelectListBox
 		Me.Close()
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'ƒ}ƒbƒv‚ğŒ©‚éƒ{ƒ^ƒ“‚ğƒNƒŠƒbƒN
 	Private Sub cmdResume_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdResume.Click
 		Dim i As Short
 		
@@ -37,19 +37,19 @@ Friend Class frmMultiSelectListBox
 		Me.Close()
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'uæ“ª‚©‚ç‘I‘ğvƒ{ƒ^ƒ“‚ğƒNƒŠƒbƒN
 	Private Sub cmdSelectAll_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdSelectAll.Click
 		Dim i As Short
 		
 		lstItems.Visible = False
 		For i = 1 To lstItems.Items.Count
 			ItemFlag(i - 1) = False
-			VB6.SetItemString(lstItems, i - 1, "ã€€" & Mid(VB6.GetItemString(lstItems, i - 1), 2))
+			VB6.SetItemString(lstItems, i - 1, "@" & Mid(VB6.GetItemString(lstItems, i - 1), 2))
 		Next 
 		For i = 1 To MinLng(MaxListItem, lstItems.Items.Count)
 			If Not ItemFlag(i - 1) Then
 				ItemFlag(i - 1) = True
-				VB6.SetItemString(lstItems, i - 1, "Invalid_string_refer_to_original_code")
+				VB6.SetItemString(lstItems, i - 1, "›" & Mid(VB6.GetItemString(lstItems, i - 1), 2))
 			End If
 		Next 
 		lstItems.TopIndex = 0
@@ -74,19 +74,19 @@ Friend Class frmMultiSelectListBox
 		End If
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'uÅŒã‚©‚ç‘I‘ğvƒ{ƒ^ƒ“‚ğƒNƒŠƒbƒN
 	Private Sub cmdSelectAll2_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdSelectAll2.Click
 		Dim i As Short
 		
 		lstItems.Visible = False
 		For i = 1 To lstItems.Items.Count
 			ItemFlag(i - 1) = False
-			VB6.SetItemString(lstItems, i - 1, "ã€€" & Mid(VB6.GetItemString(lstItems, i - 1), 2))
+			VB6.SetItemString(lstItems, i - 1, "@" & Mid(VB6.GetItemString(lstItems, i - 1), 2))
 		Next 
 		For i = 1 To MinLng(MaxListItem, lstItems.Items.Count)
 			If Not ItemFlag(lstItems.Items.Count - i) Then
 				ItemFlag(lstItems.Items.Count - i) = True
-				VB6.SetItemString(lstItems, lstItems.Items.Count - i, "Invalid_string_refer_to_original_code")
+				VB6.SetItemString(lstItems, lstItems.Items.Count - i, "›" & Mid(VB6.GetItemString(lstItems, lstItems.Items.Count - i), 2))
 			End If
 		Next 
 		lstItems.TopIndex = MaxLng(lstItems.Items.Count - 14, 0)
@@ -111,7 +111,7 @@ Friend Class frmMultiSelectListBox
 		End If
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'u`‡vƒ{ƒ^ƒ“‚ğƒNƒŠƒbƒN
 	Private Sub cmdSort_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdSort.Click
 		Dim item_list() As String
 		Dim key_list() As Integer
@@ -123,7 +123,7 @@ Friend Class frmMultiSelectListBox
 		Dim buf As String
 		Dim flag As Boolean
 		
-		'Invalid_string_refer_to_original_code
+		'Œ»İ‚ÌƒŠƒXƒg•\¦“à—e‚ğƒRƒs[
 		With lstItems
 			ReDim item_list(.Items.Count)
 			For i = 1 To .Items.Count
@@ -131,81 +131,81 @@ Friend Class frmMultiSelectListBox
 			Next 
 		End With
 		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		'Invalid_string_refer_to_original_code
-		ReDim key_list(UBound(item_list))
-		With UList
-			For i = 1 To UBound(item_list)
-				With .Item(ListItemID(i)).MainPilot
-					key_list(i) = 500 * CInt(.Level) + CInt(.Exp)
-				End With
-			Next 
-		End With
-		For i = 1 To UBound(item_list) - 1
-			max_item = i
-			max_value = key_list(i)
-			For j = i + 1 To UBound(item_list)
-				If key_list(j) > max_value Then
-					max_item = j
-					max_value = key_list(j)
+		If cmdSort.Text = "ƒŒƒxƒ‹‡‚É•À‚×‘Ö‚¦" Then
+			'ƒƒCƒ“ƒpƒCƒƒbƒg‚ÌƒŒƒxƒ‹‡‚É•À‚×‘Ö‚¦
+			ReDim key_list(UBound(item_list))
+			With UList
+				For i = 1 To UBound(item_list)
+					With .Item(ListItemID(i)).MainPilot
+						key_list(i) = 500 * CInt(.Level) + CInt(.Exp)
+					End With
+				Next 
+			End With
+			For i = 1 To UBound(item_list) - 1
+				max_item = i
+				max_value = key_list(i)
+				For j = i + 1 To UBound(item_list)
+					If key_list(j) > max_value Then
+						max_item = j
+						max_value = key_list(j)
+					End If
+				Next 
+				If max_item <> i Then
+					buf = item_list(i)
+					item_list(i) = item_list(max_item)
+					item_list(max_item) = buf
+					
+					buf = ListItemID(i)
+					ListItemID(i) = ListItemID(max_item)
+					ListItemID(max_item) = buf
+					
+					flag = ItemFlag(i - 1)
+					ItemFlag(i - 1) = ItemFlag(max_item - 1)
+					ItemFlag(max_item - 1) = flag
+					
+					key_list(max_item) = key_list(i)
 				End If
 			Next 
-			If max_item <> i Then
-				buf = item_list(i)
-				item_list(i) = item_list(max_item)
-				item_list(max_item) = buf
-				
-				buf = ListItemID(i)
-				ListItemID(i) = ListItemID(max_item)
-				ListItemID(max_item) = buf
-				
-				flag = ItemFlag(i - 1)
-				ItemFlag(i - 1) = ItemFlag(max_item - 1)
-				ItemFlag(max_item - 1) = flag
-				
-				key_list(max_item) = key_list(i)
-			End If
-		Next 
-		'Invalid_string_refer_to_original_code
-		cmdSort.Text = "Invalid_string_refer_to_original_code"
-		'Invalid_string_refer_to_original_code
-		ReDim strkey_list(UBound(item_list))
-		With UList
-			For i = 1 To UBound(item_list)
-				strkey_list(i) = .Item(ListItemID(i)).KanaName
-			Next 
-		End With
-		For i = 1 To UBound(item_list) - 1
-			max_item = i
-			max_str = strkey_list(i)
-			For j = i + 1 To UBound(item_list)
-				If StrComp(strkey_list(j), max_str, 1) = -1 Then
-					max_item = j
-					max_str = strkey_list(j)
+			'•À‚×‘Ö‚¦•û–@‚ğƒgƒOƒ‹‚ÅØ‚è‘Ö‚¦
+			cmdSort.Text = "–¼Ì‡‚É•À‚×‘Ö‚¦"
+		Else
+			'ƒ†ƒjƒbƒg‚Ì–¼Ì‡‚É•À‚×‘Ö‚¦
+			ReDim strkey_list(UBound(item_list))
+			With UList
+				For i = 1 To UBound(item_list)
+					strkey_list(i) = .Item(ListItemID(i)).KanaName
+				Next 
+			End With
+			For i = 1 To UBound(item_list) - 1
+				max_item = i
+				max_str = strkey_list(i)
+				For j = i + 1 To UBound(item_list)
+					If StrComp(strkey_list(j), max_str, 1) = -1 Then
+						max_item = j
+						max_str = strkey_list(j)
+					End If
+				Next 
+				If max_item <> i Then
+					buf = item_list(i)
+					item_list(i) = item_list(max_item)
+					item_list(max_item) = buf
+					
+					buf = ListItemID(i)
+					ListItemID(i) = ListItemID(max_item)
+					ListItemID(max_item) = buf
+					
+					flag = ItemFlag(i - 1)
+					ItemFlag(i - 1) = ItemFlag(max_item - 1)
+					ItemFlag(max_item - 1) = flag
+					
+					strkey_list(max_item) = strkey_list(i)
 				End If
 			Next 
-			If max_item <> i Then
-				buf = item_list(i)
-				item_list(i) = item_list(max_item)
-				item_list(max_item) = buf
-				
-				buf = ListItemID(i)
-				ListItemID(i) = ListItemID(max_item)
-				ListItemID(max_item) = buf
-				
-				flag = ItemFlag(i - 1)
-				ItemFlag(i - 1) = ItemFlag(max_item - 1)
-				ItemFlag(max_item - 1) = flag
-				
-				strkey_list(max_item) = strkey_list(i)
-			End If
-		Next 
-		'Invalid_string_refer_to_original_code
-		cmdSort.Text = "Invalid_string_refer_to_original_code"
-		'End If
+			'•À‚×‘Ö‚¦•û–@‚ğƒgƒOƒ‹‚ÅØ‚è‘Ö‚¦
+			cmdSort.Text = "ƒŒƒxƒ‹‡‚É•À‚×‘Ö‚¦"
+		End If
 		
-		'ãƒªã‚¹ãƒˆè¡¨ç¤ºã‚’æ›´æ–°ã™ã‚‹
+		'ƒŠƒXƒg•\¦‚ğXV‚·‚é
 		With lstItems
 			.Visible = False
 			For i = 1 To .Items.Count
@@ -216,7 +216,7 @@ Friend Class frmMultiSelectListBox
 		End With
 	End Sub
 	
-	'ãƒ•ã‚©ãƒ¼ãƒ ã‚’è¡¨ç¤º
+	'ƒtƒH[ƒ€‚ğ•\¦
 	'UPGRADE_WARNING: Form ƒCƒxƒ“ƒg frmMultiSelectListBox.Activate ‚É‚ÍV‚µ‚¢“®ì‚ªŠÜ‚Ü‚ê‚Ü‚·B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6BA9B8D2-2A32-4B6E-8D36-44949974A5B4"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 	Private Sub frmMultiSelectListBox_Activated(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles MyBase.Activated
 		SelectedItemNum = 0
@@ -227,24 +227,24 @@ Friend Class frmMultiSelectListBox
 		End If
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'ƒŠƒXƒgƒ{ƒbƒNƒXã‚Åƒ_ƒuƒ‹ƒNƒŠƒbƒN
 	Private Sub lstItems_DoubleClick(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles lstItems.DoubleClick
 		Dim i As Short
 		
 		i = lstItems.SelectedIndex
 		If i >= 0 Then
 			If ItemFlag(i) Then
-				'é¸æŠå–ã‚Šæ¶ˆã—
+				'‘I‘ğæ‚èÁ‚µ
 				
-				'Invalid_string_refer_to_original_code
+				'‘I‘ğ‚³‚ê‚½ƒ†ƒjƒbƒg”‚ğŒ¸‚ç‚·
 				SelectedItemNum = SelectedItemNum - 1
 				lblNumber.Text = VB6.Format(SelectedItemNum) & "/" & VB6.Format(MaxListItem)
 				ItemFlag(i) = False
 				
-				'Invalid_string_refer_to_original_code
-				VB6.SetItemString(lstItems, i, "ã€€" & Mid(VB6.GetItemString(lstItems, i), 2))
+				'‘I‘ğó‘Ô‚Ì•\¦‚ğXV
+				VB6.SetItemString(lstItems, i, "@" & Mid(VB6.GetItemString(lstItems, i), 2))
 				
-				'Invalid_string_refer_to_original_code
+				'‘I‘ğI—¹‚ª‰Â”\‚©”»’è
 				If SelectedItemNum > 0 And SelectedItemNum <= MaxListItem Then
 					If Not cmdFinish.Enabled Then
 						cmdFinish.Enabled = True
@@ -255,17 +255,17 @@ Friend Class frmMultiSelectListBox
 					End If
 				End If
 			Else
-				'Invalid_string_refer_to_original_code
+				'‘I‘ğ
 				
-				'Invalid_string_refer_to_original_code
+				'‘I‘ğ‚³‚ê‚½ƒ†ƒjƒbƒg”‚ğ‘‚â‚·
 				SelectedItemNum = SelectedItemNum + 1
 				lblNumber.Text = VB6.Format(SelectedItemNum) & "/" & VB6.Format(MaxListItem)
 				ItemFlag(i) = True
 				
-				'Invalid_string_refer_to_original_code
-				VB6.SetItemString(lstItems, i, "Invalid_string_refer_to_original_code")
+				'‘I‘ğó‘Ô‚Ì•\¦‚ğXV
+				VB6.SetItemString(lstItems, i, "›" & Mid(VB6.GetItemString(lstItems, i), 2))
 				
-				'Invalid_string_refer_to_original_code
+				'‘I‘ğI—¹‚ª‰Â”\‚©”»’è
 				If SelectedItemNum > 0 And SelectedItemNum <= MaxListItem Then
 					If Not cmdFinish.Enabled Then
 						cmdFinish.Enabled = True
@@ -279,7 +279,7 @@ Friend Class frmMultiSelectListBox
 		End If
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'ƒŠƒXƒgƒ{ƒbƒNƒXã‚Åƒ}ƒEƒXƒ{ƒ^ƒ“‚ğ‰Ÿ‚·
 	Private Sub lstItems_MouseDown(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.MouseEventArgs) Handles lstItems.MouseDown
 		Dim Button As Short = eventArgs.Button \ &H100000
 		Dim Shift As Short = System.Windows.Forms.Control.ModifierKeys \ &H10000
@@ -287,7 +287,7 @@ Friend Class frmMultiSelectListBox
 		Dim Y As Single = VB6.PixelsToTwipsY(eventArgs.Y)
 		Dim i As Short
 		
-		'Invalid_string_refer_to_original_code
+		'¶ƒNƒŠƒbƒNˆÈŠO‚Í–³‹
 		If Button <> 1 Then
 			Exit Sub
 		End If
@@ -295,17 +295,17 @@ Friend Class frmMultiSelectListBox
 		i = lstItems.SelectedIndex
 		If i >= 0 Then
 			If ItemFlag(i) Then
-				'é¸æŠå–ã‚Šæ¶ˆã—
+				'‘I‘ğæ‚èÁ‚µ
 				
-				'Invalid_string_refer_to_original_code
+				'‘I‘ğ‚³‚ê‚½ƒ†ƒjƒbƒg”‚ğŒ¸‚ç‚·
 				SelectedItemNum = SelectedItemNum - 1
 				lblNumber.Text = VB6.Format(SelectedItemNum) & "/" & VB6.Format(MaxListItem)
 				ItemFlag(i) = False
 				
-				'Invalid_string_refer_to_original_code
-				VB6.SetItemString(lstItems, i, "ã€€" & Mid(VB6.GetItemString(lstItems, i), 2))
+				'‘I‘ğó‘Ô‚Ì•\¦‚ğXV
+				VB6.SetItemString(lstItems, i, "@" & Mid(VB6.GetItemString(lstItems, i), 2))
 				
-				'Invalid_string_refer_to_original_code
+				'‘I‘ğI—¹‚ª‰Â”\‚©”»’è
 				If SelectedItemNum > 0 And SelectedItemNum <= MaxListItem Then
 					If Not cmdFinish.Enabled Then
 						cmdFinish.Enabled = True
@@ -316,17 +316,17 @@ Friend Class frmMultiSelectListBox
 					End If
 				End If
 			Else
-				'Invalid_string_refer_to_original_code
+				'‘I‘ğ
 				
-				'Invalid_string_refer_to_original_code
+				'‘I‘ğ‚³‚ê‚½ƒ†ƒjƒbƒg”‚ğ‘‚â‚·
 				SelectedItemNum = SelectedItemNum + 1
 				lblNumber.Text = VB6.Format(SelectedItemNum) & "/" & VB6.Format(MaxListItem)
 				ItemFlag(i) = True
 				
-				'Invalid_string_refer_to_original_code
-				VB6.SetItemString(lstItems, i, "Invalid_string_refer_to_original_code")
+				'‘I‘ğó‘Ô‚Ì•\¦‚ğXV
+				VB6.SetItemString(lstItems, i, "›" & Mid(VB6.GetItemString(lstItems, i), 2))
 				
-				'Invalid_string_refer_to_original_code
+				'‘I‘ğI—¹‚ª‰Â”\‚©”»’è
 				If SelectedItemNum > 0 And SelectedItemNum <= MaxListItem Then
 					If Not cmdFinish.Enabled Then
 						cmdFinish.Enabled = True
@@ -340,7 +340,7 @@ Friend Class frmMultiSelectListBox
 		End If
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'ƒŠƒXƒgƒ{ƒbƒNƒXã‚Åƒ}ƒEƒXƒJ[ƒ\ƒ‹‚ğˆÚ“®
 	Private Sub lstItems_MouseMove(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.MouseEventArgs) Handles lstItems.MouseMove
 		Dim Button As Short = eventArgs.Button \ &H100000
 		Dim Shift As Short = System.Windows.Forms.Control.ModifierKeys \ &H10000
@@ -348,11 +348,11 @@ Friend Class frmMultiSelectListBox
 		Dim Y As Single = VB6.PixelsToTwipsY(eventArgs.Y)
 		Dim itm As Short
 		
-		'Invalid_string_refer_to_original_code
+		'ƒJ[ƒ\ƒ‹‚ª‚ ‚éƒAƒCƒeƒ€‚ğZo
 		itm = ((Y * ClientRectangle.Width) \ VB6.PixelsToTwipsX(Width) + 1) \ 16
 		itm = itm + lstItems.TopIndex
 		
-		'Invalid_string_refer_to_original_code
+		'ƒJ[ƒ\ƒ‹‚ª‚ ‚éƒAƒCƒeƒ€‚ğƒnƒCƒ‰ƒCƒg•\¦
 		If itm < 0 Or itm >= lstItems.Items.Count Then
 			lstItems.SelectedIndex = -1
 			Exit Sub
@@ -363,7 +363,7 @@ Friend Class frmMultiSelectListBox
 		lstItems.SelectedIndex = itm
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'ƒJ[ƒ\ƒ‹‚ªw‚·ƒ†ƒjƒbƒg‚ğˆê’èŠÔ‚²‚Æ‚É’²‚×‚ÄƒXƒe[ƒ^ƒXƒEƒBƒ“ƒhƒE‚É•\¦
 	Private Sub Timer1_Tick(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles Timer1.Tick
 		Dim u As Unit
 		
@@ -378,11 +378,10 @@ Friend Class frmMultiSelectListBox
 		u = UList.Item(ListItemID(lstItems.SelectedIndex + 1))
 		
 		If Not DisplayedUnit Is u Then
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			DisplayUnitStatus(u)
+			'ƒ†ƒjƒbƒg‘I‘ğ’†‚¾‚¯
+			If CommandState = "ƒ†ƒjƒbƒg‘I‘ğ" Then
+				DisplayUnitStatus(u)
+			End If
 		End If
-		'End If
 	End Sub
 End Class

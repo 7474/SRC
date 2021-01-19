@@ -3,25 +3,25 @@ Option Explicit On
 Friend Class MessageData
 	
 	' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
+	' 本プログラムはフリーソフトであり、無保証です。
+	' 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
+	' 再頒布または改変することができます。
 	
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
+	'メッセージデータのクラス
+	'(戦闘アニメデータ及び特殊効果データのクラスも兼用)
 	
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
+	'データのパイロット名
+	'戦闘アニメデータ及び特殊効果データの場合はユニット名またはユニットクラス
 	Public Name As String
 	
-	'Invalid_string_refer_to_original_code
+	'メッセージ総数
 	Private intMessageNum As Short
-	'繧ｷ繝√Η繧ｨ繝ｼ繧ｷ繝ｧ繝ｳ
+	'シチュエーション
 	Private strSituation() As String
-	'Invalid_string_refer_to_original_code
+	'メッセージ
 	Private strMessage() As String
 	
-	'Invalid_string_refer_to_original_code
+	'クラスの初期化
 	'UPGRADE_NOTE: Class_Initialize は Class_Initialize_Renamed にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
 	Private Sub Class_Initialize_Renamed()
 		intMessageNum = 0
@@ -33,7 +33,7 @@ Friend Class MessageData
 		Class_Initialize_Renamed()
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'メッセージを追加
 	Public Sub AddMessage(ByRef sit As String, ByRef msg As String)
 		intMessageNum = intMessageNum + 1
 		ReDim Preserve strSituation(intMessageNum)
@@ -42,22 +42,22 @@ Friend Class MessageData
 		strMessage(intMessageNum) = msg
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'メッセージ総数
 	Public Function CountMessage() As Integer
 		CountMessage = intMessageNum
 	End Function
 	
-	'繧ｷ繝√Η繧ｨ繝ｼ繧ｷ繝ｧ繝ｳ
+	'シチュエーション
 	Public Function Situation(ByVal idx As Integer) As String
 		Situation = strSituation(idx)
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'メッセージ
 	Public Function Message(ByVal idx As Integer) As String
 		Message = strMessage(idx)
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'ユニット u のシチュエーション msg_situation におけるメッセージを選択
 	Public Function SelectMessage(ByRef msg_situation As String, Optional ByRef u As Unit = Nothing) As String
 		Dim situations() As String
 		Dim sub_situations() As String
@@ -72,51 +72,49 @@ Friend Class MessageData
 		Dim t As Unit
 		Dim w, tw As Short
 		
-		'Invalid_string_refer_to_original_code
+		'配列領域確保
 		ReDim list0(300)
 		ReDim tlist(100)
 		ReDim list(200)
 		
-		'Invalid_string_refer_to_original_code
+		'シチュエーションを設定
 		Select Case msg_situation
-			Case "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+			Case "格闘", "射撃"
 				ReDim situations(2)
-				situations(2) = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code", "Invalid_string_refer_to_original_code"
+				situations(2) = "攻撃"
+			Case "格闘(命中)", "射撃(命中)"
 				ReDim situations(2)
-				situations(2) = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code", "Invalid_string_refer_to_original_code"
+				situations(2) = "攻撃(命中)"
+			Case "格闘(回避)", "射撃(回避)"
 				ReDim situations(2)
-				situations(2) = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code", "Invalid_string_refer_to_original_code"
+				situations(2) = "攻撃(回避)"
+			Case "格闘(とどめ)", "射撃(とどめ)"
 				ReDim situations(2)
-				situations(2) = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code", "Invalid_string_refer_to_original_code"
+				situations(2) = "攻撃(とどめ)"
+			Case "格闘(クリティカル)", "射撃(クリティカル)"
 				ReDim situations(2)
-				situations(2) = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code", "Invalid_string_refer_to_original_code"
+				situations(2) = "攻撃(クリティカル)"
+			Case "格闘(反撃)", "射撃(反撃)"
 				ReDim situations(2)
-				situations(2) = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code", "Invalid_string_refer_to_original_code"
+				situations(2) = "攻撃(反撃)"
+			Case "格闘(命中)(反撃)", "射撃(命中)(反撃)"
 				ReDim situations(2)
-				situations(2) = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code", "Invalid_string_refer_to_original_code"
+				situations(2) = "攻撃(命中)(反撃)"
+			Case "格闘(回避)(反撃)", "射撃(回避)(反撃)"
 				ReDim situations(2)
-				situations(2) = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code", "Invalid_string_refer_to_original_code"
+				situations(2) = "攻撃(回避)(反撃)"
+			Case "格闘(とどめ)(反撃)", "射撃(とどめ)(反撃)"
 				ReDim situations(2)
-				situations(2) = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code", "Invalid_string_refer_to_original_code"
+				situations(2) = "攻撃(とどめ)(反撃)"
+			Case "格闘(クリティカル)(反撃)", "射撃(クリティカル)(反撃)"
 				ReDim situations(2)
-				situations(2) = "Invalid_string_refer_to_original_code"
+				situations(2) = "攻撃(クリティカル)(反撃)"
 			Case Else
 				ReDim situations(1)
 		End Select
 		situations(1) = msg_situation
 		
-		'Invalid_string_refer_to_original_code
+		'メッセージの候補リスト第一次審査
 		list0_num = 0
 		For i = 1 To intMessageNum
 			For j = 1 To UBound(situations)
@@ -134,7 +132,7 @@ Friend Class MessageData
 			Exit Function
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'最初に相手限定のシチュエーションのみで検索
 		If u Is Nothing Then
 			GoTo SkipMessagesWithTarget
 		End If
@@ -147,10 +145,10 @@ Friend Class MessageData
 			GoTo SkipMessagesWithTarget
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'相手限定メッセージのリストを作成
 		tlist_num = 0
 		For i = 1 To list0_num
-			If InStr(strSituation(list0(i)), "(蟇ｾ") > 0 Then
+			If InStr(strSituation(list0(i)), "(対") > 0 Then
 				tlist_num = tlist_num + 1
 				If tlist_num > UBound(tlist) Then
 					ReDim Preserve tlist(tlist_num)
@@ -159,16 +157,16 @@ Friend Class MessageData
 			End If
 		Next 
 		If tlist_num = 0 Then
-			'Invalid_string_refer_to_original_code
+			'相手限定メッセージがない
 			GoTo SkipMessagesWithTarget
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'自分自身にアビリティを使う場合は必ず「(対自分)」を優先
 		If t Is u Then
 			list_num = 0
 			For i = 1 To tlist_num
 				For j = 1 To UBound(situations)
-					If strSituation(tlist(i)) = situations(j) & "Invalid_string_refer_to_original_code" Then
+					If strSituation(tlist(i)) = situations(j) & "(対自分)" Then
 						list_num = list_num + 1
 						If list_num > UBound(list) Then
 							ReDim Preserve list(list_num)
@@ -186,92 +184,91 @@ Friend Class MessageData
 		
 		Dim wclass, ch As String
 		With t
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			GoTo SkipMessagesWithTarget
-			'End If
-			
-			ReDim sub_situations(8)
-			'Invalid_string_refer_to_original_code
-			sub_situations(1) = "(蟇ｾ" & .MainPilot.Name & ")"
-			'Invalid_string_refer_to_original_code
-			sub_situations(2) = "(蟇ｾ" & .MainPilot.Nickname & ")"
-			'蟇ｾ繝ｦ繝九ャ繝亥錐遘ｰ
-			sub_situations(3) = "(蟇ｾ" & .Name & ")"
-			'Invalid_string_refer_to_original_code
-			sub_situations(4) = "(蟇ｾ" & .Nickname & ")"
-			'蟇ｾ繝ｦ繝九ャ繝医け繝ｩ繧ｹ
-			sub_situations(5) = "(蟇ｾ" & .Class0 & ")"
-			'蟇ｾ繝ｦ繝九ャ繝医し繧､繧ｺ
-			sub_situations(6) = "(蟇ｾ" & .Size & ")"
-			'Invalid_string_refer_to_original_code
-			sub_situations(7) = "(蟇ｾ" & TerrainName(.X, .Y) & ")"
-			'蟇ｾ繧ｨ繝ｪ繧｢
-			sub_situations(8) = "(蟇ｾ" & .Area & ")"
-			
-			'Invalid_string_refer_to_original_code
-			If .IsFeatureAvailable("Invalid_string_refer_to_original_code") Then
-				ReDim Preserve sub_situations(UBound(sub_situations) + 1)
-				sub_situations(UBound(sub_situations)) = "(蟇ｾ" & .FeatureData("Invalid_string_refer_to_original_code") & ")"
+			If .Status <> "出撃" Then
+				GoTo SkipMessagesWithTarget
 			End If
 			
-			'蟇ｾ諤ｧ蛻･
+			ReDim sub_situations(8)
+			'対パイロット名称
+			sub_situations(1) = "(対" & .MainPilot.Name & ")"
+			'対パイロット愛称
+			sub_situations(2) = "(対" & .MainPilot.Nickname & ")"
+			'対ユニット名称
+			sub_situations(3) = "(対" & .Name & ")"
+			'対ユニット愛称
+			sub_situations(4) = "(対" & .Nickname & ")"
+			'対ユニットクラス
+			sub_situations(5) = "(対" & .Class0 & ")"
+			'対ユニットサイズ
+			sub_situations(6) = "(対" & .Size & ")"
+			'対地形名
+			sub_situations(7) = "(対" & TerrainName(.X, .Y) & ")"
+			'対エリア
+			sub_situations(8) = "(対" & .Area & ")"
+			
+			'対メッセージクラス
+			If .IsFeatureAvailable("メッセージクラス") Then
+				ReDim Preserve sub_situations(UBound(sub_situations) + 1)
+				sub_situations(UBound(sub_situations)) = "(対" & .FeatureData("メッセージクラス") & ")"
+			End If
+			
+			'対性別
 			Select Case .MainPilot.Sex
-				Case "逕ｷ諤ｧ"
+				Case "男性"
 					ReDim Preserve sub_situations(UBound(sub_situations) + 1)
-					sub_situations(UBound(sub_situations)) = "(蟇ｾ逕ｷ諤ｧ)"
-				Case "螂ｳ諤ｧ"
+					sub_situations(UBound(sub_situations)) = "(対男性)"
+				Case "女性"
 					ReDim Preserve sub_situations(UBound(sub_situations) + 1)
-					sub_situations(UBound(sub_situations)) = "(蟇ｾ螂ｳ諤ｧ)"
+					sub_situations(UBound(sub_situations)) = "(対女性)"
 			End Select
 			
-			'Invalid_string_refer_to_original_code
+			'対特殊能力
 			With .MainPilot
 				For i = 1 To .CountSkill
 					ReDim Preserve sub_situations(UBound(sub_situations) + 1)
-					sub_situations(UBound(sub_situations)) = "(蟇ｾ" & .SkillName0(i) & ")"
-					If sub_situations(UBound(sub_situations)) = "(蟇ｾ髱櫁｡ｨ遉ｺ)" Then
-						sub_situations(UBound(sub_situations)) = "(蟇ｾ" & .Skill(i) & ")"
+					sub_situations(UBound(sub_situations)) = "(対" & .SkillName0(i) & ")"
+					If sub_situations(UBound(sub_situations)) = "(対非表示)" Then
+						sub_situations(UBound(sub_situations)) = "(対" & .Skill(i) & ")"
 					End If
 				Next 
 			End With
 			For i = 1 To .CountFeature
 				ReDim Preserve sub_situations(UBound(sub_situations) + 1)
-				sub_situations(UBound(sub_situations)) = "(蟇ｾ" & .FeatureName0(i) & ")"
-				If sub_situations(UBound(sub_situations)) = "(蟇ｾ)" Then
-					sub_situations(UBound(sub_situations)) = "(蟇ｾ" & .Feature(i) & ")"
+				sub_situations(UBound(sub_situations)) = "(対" & .FeatureName0(i) & ")"
+				If sub_situations(UBound(sub_situations)) = "(対)" Then
+					sub_situations(UBound(sub_situations)) = "(対" & .Feature(i) & ")"
 				End If
 			Next 
 			
-			'蟇ｾ蠑ｱ轤ｹ
+			'対弱点
 			If Len(.strWeakness) > 0 Then
 				For i = 1 To Len(.strWeakness)
 					ReDim Preserve sub_situations(UBound(sub_situations) + 1)
-					sub_situations(UBound(sub_situations)) = "(蟇ｾ蠑ｱ轤ｹ=" & GetClassBundle(.strWeakness, i) & ")"
+					sub_situations(UBound(sub_situations)) = "(対弱点=" & GetClassBundle(.strWeakness, i) & ")"
 				Next 
 			End If
 			
-			'蟇ｾ譛牙柑
+			'対有効
 			If Len(.strEffective) > 0 Then
 				For i = 1 To Len(.strEffective)
 					ReDim Preserve sub_situations(UBound(sub_situations) + 1)
-					sub_situations(UBound(sub_situations)) = "(蟇ｾ譛牙柑=" & GetClassBundle(.strEffective, i) & ")"
+					sub_situations(UBound(sub_situations)) = "(対有効=" & GetClassBundle(.strEffective, i) & ")"
 				Next 
 			End If
 			
-			'蟇ｾ繧ｶ繧ｳ
-			If InStr(.MainPilot.Name, "(繧ｶ繧ｳ)") > 0 And (u.MainPilot.Technique > .MainPilot.Technique Or u.HP > .HP \ 2) Then
+			'対ザコ
+			If InStr(.MainPilot.Name, "(ザコ)") > 0 And (u.MainPilot.Technique > .MainPilot.Technique Or u.HP > .HP \ 2) Then
 				ReDim Preserve sub_situations(UBound(sub_situations) + 1)
-				sub_situations(UBound(sub_situations)) = "(蟇ｾ繧ｶ繧ｳ)"
+				sub_situations(UBound(sub_situations)) = "(対ザコ)"
 			End If
 			
-			'蟇ｾ蠑ｷ謨ｵ
-			If .BossRank >= 0 Or (InStr(.MainPilot.Name, "(繧ｶ繧ｳ)") = 0 And u.MainPilot.Technique <= .MainPilot.Technique) Then
+			'対強敵
+			If .BossRank >= 0 Or (InStr(.MainPilot.Name, "(ザコ)") = 0 And u.MainPilot.Technique <= .MainPilot.Technique) Then
 				ReDim Preserve sub_situations(UBound(sub_situations) + 1)
-				sub_situations(UBound(sub_situations)) = "(蟇ｾ蠑ｷ謨ｵ)"
+				sub_situations(UBound(sub_situations)) = "(対強敵)"
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'自分が使用する武器をチェック
 			w = 0
 			If SelectedUnit Is u Then
 				If 0 < SelectedWeapon And SelectedWeapon <= u.CountWeapon Then
@@ -284,25 +281,25 @@ Friend Class MessageData
 			End If
 			
 			If w > 0 Then
-				'蟇ｾ轢墓ｭｻ
-				If .HP <= u.Damage(w, t, u.Party = "蜻ｳ譁ｹ") Then
+				'対瀕死
+				If .HP <= u.Damage(w, t, u.Party = "味方") Then
 					ReDim Preserve sub_situations(UBound(sub_situations) + 1)
-					sub_situations(UBound(sub_situations)) = "(蟇ｾ轢墓ｭｻ)"
+					sub_situations(UBound(sub_situations)) = "(対瀕死)"
 				End If
 				
-				Select Case u.HitProbability(w, t, u.Party = "蜻ｳ譁ｹ")
+				Select Case u.HitProbability(w, t, u.Party = "味方")
 					Case Is < 50
-						'Invalid_string_refer_to_original_code
+						'対高回避率
 						ReDim Preserve sub_situations(UBound(sub_situations) + 1)
-						sub_situations(UBound(sub_situations)) = "Invalid_string_refer_to_original_code"
+						sub_situations(UBound(sub_situations)) = "(対高回避率)"
 					Case Is >= 100
-						'Invalid_string_refer_to_original_code
+						'対低回避率
 						ReDim Preserve sub_situations(UBound(sub_situations) + 1)
-						sub_situations(UBound(sub_situations)) = "Invalid_string_refer_to_original_code"
+						sub_situations(UBound(sub_situations)) = "(対低回避率)"
 				End Select
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'相手が使用する武器をチェック
 			tw = 0
 			If SelectedUnit Is t Then
 				If 0 < SelectedWeapon And SelectedWeapon <= .CountWeapon Then
@@ -315,11 +312,11 @@ Friend Class MessageData
 			End If
 			
 			If tw > 0 Then
-				'Invalid_string_refer_to_original_code
+				'対武器名
 				ReDim Preserve sub_situations(UBound(sub_situations) + 1)
-				sub_situations(UBound(sub_situations)) = "(蟇ｾ" & .Weapon(tw).Name & ")"
+				sub_situations(UBound(sub_situations)) = "(対" & .Weapon(tw).Name & ")"
 				
-				'蟇ｾ豁ｦ蝎ｨ螻樊ｧ
+				'対武器属性
 				wclass = .WeaponClass(tw)
 				For i = 1 To Len(wclass)
 					ch = GetClassBundle(wclass, i)
@@ -327,24 +324,24 @@ Friend Class MessageData
 						Case CStr(0) To CStr(127)
 						Case Else
 							ReDim Preserve sub_situations(UBound(sub_situations) + 1)
-							sub_situations(UBound(sub_situations)) = "(蟇ｾ" & ch & "螻樊ｧ)"
+							sub_situations(UBound(sub_situations)) = "(対" & ch & "属性)"
 					End Select
 				Next 
 				
-				Select Case .HitProbability(tw, u, .Party = "蜻ｳ譁ｹ")
+				Select Case .HitProbability(tw, u, .Party = "味方")
 					Case Is > 75
-						'Invalid_string_refer_to_original_code
+						'対高命中率
 						ReDim Preserve sub_situations(UBound(sub_situations) + 1)
-						sub_situations(UBound(sub_situations)) = "Invalid_string_refer_to_original_code"
+						sub_situations(UBound(sub_situations)) = "(対高命中率)"
 					Case Is < 25
-						'Invalid_string_refer_to_original_code
+						'対低命中率
 						ReDim Preserve sub_situations(UBound(sub_situations) + 1)
-						sub_situations(UBound(sub_situations)) = "Invalid_string_refer_to_original_code"
+						sub_situations(UBound(sub_situations)) = "(対低命中率)"
 				End Select
 			End If
 		End With
 		
-		'Invalid_string_refer_to_original_code
+		'定義されている相手限定メッセージのうち、状況に合ったメッセージを抜き出す
 		list_num = 0
 		For i = 1 To tlist_num
 			found = False
@@ -368,22 +365,17 @@ Friend Class MessageData
 			End If
 		Next 
 		
-		'Invalid_string_refer_to_original_code
+		'状況に合った相手限定メッセージが一つでもあれば、その中からメッセージを選択
 		If list_num > 0 Then
 			SelectMessage = strMessage(list(Dice(list_num)))
-			'Invalid_string_refer_to_original_code_
-			'Invalid_string_refer_to_original_code_
-			'Or msg_situation = "螽∝悸" _
-			'Or u.Party = t.Party _
-			'Then
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			Exit Function
+			If Dice(2) = 1 Or InStr(msg_situation, "(とどめ)") > 0 Or msg_situation = "挑発" Or msg_situation = "脱力" Or msg_situation = "魅惑" Or msg_situation = "威圧" Or u.Party = t.Party Then
+				Exit Function
+			End If
 		End If
-		'End If
 		
 SkipMessagesWithTarget: 
 		
-		'Invalid_string_refer_to_original_code
+		'次にサブシチュエーションなしとユニット限定のサブシチュエーションで検索
 		If Not u Is Nothing Then
 			ReDim sub_situations(3)
 			With u
@@ -391,27 +383,25 @@ SkipMessagesWithTarget:
 				sub_situations(2) = "(" & .Nickname0 & ")"
 				sub_situations(3) = "(" & .Class0 & ")"
 				Select Case msg_situation
-					Case "Invalid_string_refer_to_original_code"
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+					Case "格闘", "射撃", "格闘(反撃)", "射撃(反撃)"
 						If SelectedUnit Is u Then
-							'Invalid_string_refer_to_original_code
+							'自分が使用する武器をチェック
 							If 0 < SelectedWeapon And SelectedWeapon <= u.CountWeapon Then
 								ReDim Preserve sub_situations(4)
 								sub_situations(4) = "(" & .WeaponNickname(SelectedWeapon) & ")"
 							End If
 						End If
 				End Select
-				If .IsFeatureAvailable("Invalid_string_refer_to_original_code") Then
+				If .IsFeatureAvailable("メッセージクラス") Then
 					ReDim Preserve sub_situations(UBound(sub_situations) + 1)
-					sub_situations(UBound(sub_situations)) = "(" & .FeatureData("Invalid_string_refer_to_original_code") & ")"
+					sub_situations(UBound(sub_situations)) = "(" & .FeatureData("メッセージクラス") & ")"
 				End If
 			End With
 		Else
 			ReDim sub_situations(0)
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'上で見つかったメッセージリストの中からシチュエーションに合ったメッセージを抜き出す
 		list_num = 0
 		For i = 1 To list0_num
 			found = False
@@ -439,7 +429,7 @@ SkipMessagesWithTarget:
 			End If
 		Next 
 		
-		'Invalid_string_refer_to_original_code
+		'シチュエーションに合ったメッセージが見つかれば、その中からメッセージを選択
 		If list_num > 0 Then
 			SelectMessage = strMessage(list(Dice(list_num)))
 		End If

@@ -66,7 +66,7 @@
 		Me.ToolTip1.Active = True
 		Me.BackColor = System.Drawing.Color.FromARGB(192, 192, 192)
 		Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
-		Me.Text = "險ｭ螳壼､画峩"
+		Me.Text = "設定変更"
 		Me.ClientSize = New System.Drawing.Size(346, 405)
 		Me.Location = New System.Drawing.Point(3, 29)
 		Me.ForeColor = System.Drawing.Color.Black
@@ -85,7 +85,7 @@
 		Me.WindowState = System.Windows.Forms.FormWindowState.Normal
 		Me.Name = "frmConfiguration"
 		Me.chkExtendedAnimation.BackColor = System.Drawing.Color.FromARGB(192, 192, 192)
-		Me.chkExtendedAnimation.Text = "Invalid_string_refer_to_original_code"
+		Me.chkExtendedAnimation.Text = "戦闘アニメの拡張機能を使用する"
 		Me.chkExtendedAnimation.ForeColor = System.Drawing.Color.Black
 		Me.chkExtendedAnimation.Size = New System.Drawing.Size(233, 33)
 		Me.chkExtendedAnimation.Location = New System.Drawing.Point(48, 64)
@@ -102,7 +102,7 @@
 		Me.chkExtendedAnimation.Visible = True
 		Me.chkExtendedAnimation.Name = "chkExtendedAnimation"
 		Me.chkMoveAnimation.BackColor = System.Drawing.Color.FromARGB(192, 192, 192)
-		Me.chkMoveAnimation.Text = "遘ｻ蜍輔い繝九Γ繧定｡ｨ遉ｺ縺吶ｋ"
+		Me.chkMoveAnimation.Text = "移動アニメを表示する"
 		Me.chkMoveAnimation.ForeColor = System.Drawing.Color.Black
 		Me.chkMoveAnimation.Size = New System.Drawing.Size(249, 25)
 		Me.chkMoveAnimation.Location = New System.Drawing.Point(32, 152)
@@ -119,7 +119,7 @@
 		Me.chkMoveAnimation.Visible = True
 		Me.chkMoveAnimation.Name = "chkMoveAnimation"
 		Me.chkWeaponAnimation.BackColor = System.Drawing.Color.FromARGB(192, 192, 192)
-		Me.chkWeaponAnimation.Text = "Invalid_string_refer_to_original_code"
+		Me.chkWeaponAnimation.Text = "武器準備アニメを自動選択表示する"
 		Me.chkWeaponAnimation.ForeColor = System.Drawing.Color.Black
 		Me.chkWeaponAnimation.Size = New System.Drawing.Size(233, 33)
 		Me.chkWeaponAnimation.Location = New System.Drawing.Point(48, 96)
@@ -138,7 +138,7 @@
 		Me.txtMP3Volume.AutoSize = False
 		Me.txtMP3Volume.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
 		Me.txtMP3Volume.BackColor = System.Drawing.Color.White
-		Me.txtMP3Volume.Font = New System.Drawing.Font("Invalid_string_refer_to_original_code", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
+		Me.txtMP3Volume.Font = New System.Drawing.Font("ＭＳ Ｐゴシック", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
 		Me.txtMP3Volume.ForeColor = System.Drawing.Color.Black
 		Me.txtMP3Volume.Size = New System.Drawing.Size(33, 19)
 		Me.txtMP3Volume.Location = New System.Drawing.Point(87, 327)
@@ -189,7 +189,7 @@
 		Me.cboMidiReset.Visible = True
 		Me.cboMidiReset.Name = "cboMidiReset"
 		Me.chkUseDirectMusic.BackColor = System.Drawing.Color.FromARGB(192, 192, 192)
-		Me.chkUseDirectMusic.Text = "Invalid_string_refer_to_original_code"
+		Me.chkUseDirectMusic.Text = "MIDI演奏にDirectMusicを使用する (要再起動)"
 		Me.chkUseDirectMusic.ForeColor = System.Drawing.Color.Black
 		Me.chkUseDirectMusic.Size = New System.Drawing.Size(281, 25)
 		Me.chkUseDirectMusic.Location = New System.Drawing.Point(32, 272)
@@ -207,7 +207,7 @@
 		Me.chkUseDirectMusic.Name = "chkUseDirectMusic"
 		Me.cmdCancel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
 		Me.cmdCancel.BackColor = System.Drawing.Color.FromARGB(192, 192, 192)
-		Me.cmdCancel.Text = "繧ｭ繝｣繝ｳ繧ｻ繝ｫ"
+		Me.cmdCancel.Text = "キャンセル"
 		Me.cmdCancel.Size = New System.Drawing.Size(97, 25)
 		Me.cmdCancel.Location = New System.Drawing.Point(216, 360)
 		Me.cmdCancel.TabIndex = 14
@@ -232,7 +232,7 @@
 		Me.cmdOK.TabStop = True
 		Me.cmdOK.Name = "cmdOK"
 		Me.chkKeepEnemyBGM.BackColor = System.Drawing.Color.FromARGB(192, 192, 192)
-		Me.chkKeepEnemyBGM.Text = "Invalid_string_refer_to_original_code"
+		Me.chkKeepEnemyBGM.Text = "敵フェイズ中にＢＧＭを変更しない"
 		Me.chkKeepEnemyBGM.ForeColor = System.Drawing.Color.Black
 		Me.chkKeepEnemyBGM.Size = New System.Drawing.Size(249, 25)
 		Me.chkKeepEnemyBGM.Location = New System.Drawing.Point(32, 248)
@@ -264,7 +264,7 @@
 		Me.cboMessageSpeed.Visible = True
 		Me.cboMessageSpeed.Name = "cboMessageSpeed"
 		Me.chkAutoMoveCursor.BackColor = System.Drawing.Color.FromARGB(192, 192, 192)
-		Me.chkAutoMoveCursor.Text = "Invalid_string_refer_to_original_code"
+		Me.chkAutoMoveCursor.Text = "マウスカーソルを自動的に移動する"
 		Me.chkAutoMoveCursor.ForeColor = System.Drawing.Color.Black
 		Me.chkAutoMoveCursor.Size = New System.Drawing.Size(249, 25)
 		Me.chkAutoMoveCursor.Location = New System.Drawing.Point(32, 176)
@@ -281,7 +281,7 @@
 		Me.chkAutoMoveCursor.Visible = True
 		Me.chkAutoMoveCursor.Name = "chkAutoMoveCursor"
 		Me.chkShowSquareLine.BackColor = System.Drawing.Color.FromARGB(192, 192, 192)
-		Me.chkShowSquareLine.Text = "Invalid_string_refer_to_original_code"
+		Me.chkShowSquareLine.Text = "マス目を表示する (要再起動)"
 		Me.chkShowSquareLine.ForeColor = System.Drawing.Color.Black
 		Me.chkShowSquareLine.Size = New System.Drawing.Size(265, 25)
 		Me.chkShowSquareLine.Location = New System.Drawing.Point(32, 200)
@@ -298,7 +298,7 @@
 		Me.chkShowSquareLine.Visible = True
 		Me.chkShowSquareLine.Name = "chkShowSquareLine"
 		Me.chkShowTurn.BackColor = System.Drawing.Color.FromARGB(192, 192, 192)
-		Me.chkShowTurn.Text = "蜻ｳ譁ｹ繝輔ぉ繧､繧ｺ髢句ｧ区凾縺ｫ繧ｿ繝ｼ繝ｳ陦ｨ遉ｺ繧定｡後≧"
+		Me.chkShowTurn.Text = "味方フェイズ開始時にターン表示を行う"
 		Me.chkShowTurn.ForeColor = System.Drawing.Color.Black
 		Me.chkShowTurn.Size = New System.Drawing.Size(249, 25)
 		Me.chkShowTurn.Location = New System.Drawing.Point(32, 224)
@@ -315,7 +315,7 @@
 		Me.chkShowTurn.Visible = True
 		Me.chkShowTurn.Name = "chkShowTurn"
 		Me.chkSpecialPowerAnimation.BackColor = System.Drawing.Color.FromARGB(192, 192, 192)
-		Me.chkSpecialPowerAnimation.Text = "繧ｹ繝壹す繝｣繝ｫ繝代Ρ繝ｼ繧｢繝九Γ繧定｡ｨ遉ｺ縺吶ｋ"
+		Me.chkSpecialPowerAnimation.Text = "スペシャルパワーアニメを表示する"
 		Me.chkSpecialPowerAnimation.ForeColor = System.Drawing.Color.Black
 		Me.chkSpecialPowerAnimation.Size = New System.Drawing.Size(249, 25)
 		Me.chkSpecialPowerAnimation.Location = New System.Drawing.Point(32, 128)
@@ -332,7 +332,7 @@
 		Me.chkSpecialPowerAnimation.Visible = True
 		Me.chkSpecialPowerAnimation.Name = "chkSpecialPowerAnimation"
 		Me.chkBattleAnimation.BackColor = System.Drawing.Color.FromARGB(192, 192, 192)
-		Me.chkBattleAnimation.Text = "謌ｦ髣倥い繝九Γ繧定｡ｨ遉ｺ縺吶ｋ"
+		Me.chkBattleAnimation.Text = "戦闘アニメを表示する"
 		Me.chkBattleAnimation.ForeColor = System.Drawing.Color.Black
 		Me.chkBattleAnimation.Size = New System.Drawing.Size(249, 25)
 		Me.chkBattleAnimation.Location = New System.Drawing.Point(32, 40)
@@ -348,7 +348,7 @@
 		Me.chkBattleAnimation.CheckState = System.Windows.Forms.CheckState.Unchecked
 		Me.chkBattleAnimation.Visible = True
 		Me.chkBattleAnimation.Name = "chkBattleAnimation"
-		Me.labMP3Volume.Text = "Invalid_string_refer_to_original_code"
+		Me.labMP3Volume.Text = "MP3音量"
 		Me.labMP3Volume.ForeColor = System.Drawing.Color.Black
 		Me.labMP3Volume.Size = New System.Drawing.Size(49, 17)
 		Me.labMP3Volume.Location = New System.Drawing.Point(33, 330)
@@ -363,7 +363,7 @@
 		Me.labMP3Volume.AutoSize = False
 		Me.labMP3Volume.BorderStyle = System.Windows.Forms.BorderStyle.None
 		Me.labMP3Volume.Name = "labMP3Volume"
-		Me.labMidiReset.Text = "Invalid_string_refer_to_original_code"
+		Me.labMidiReset.Text = "MIDI音源リセットの種類"
 		Me.labMidiReset.ForeColor = System.Drawing.Color.Black
 		Me.labMidiReset.Size = New System.Drawing.Size(192, 17)
 		Me.labMidiReset.Location = New System.Drawing.Point(33, 301)
@@ -378,8 +378,8 @@
 		Me.labMidiReset.AutoSize = False
 		Me.labMidiReset.BorderStyle = System.Windows.Forms.BorderStyle.None
 		Me.labMidiReset.Name = "labMidiReset"
-		Me.labMessageSpeed.Text = "Invalid_string_refer_to_original_code"
-		Me.labMessageSpeed.Font = New System.Drawing.Font("Invalid_string_refer_to_original_code", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
+		Me.labMessageSpeed.Text = "メッセージスピード"
+		Me.labMessageSpeed.Font = New System.Drawing.Font("ＭＳ Ｐゴシック", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
 		Me.labMessageSpeed.ForeColor = System.Drawing.Color.Black
 		Me.labMessageSpeed.Size = New System.Drawing.Size(129, 17)
 		Me.labMessageSpeed.Location = New System.Drawing.Point(33, 20)

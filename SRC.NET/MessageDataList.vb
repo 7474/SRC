@@ -3,16 +3,16 @@ Option Explicit On
 Friend Class MessageDataList
 	
 	' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
+	' 本プログラムはフリーソフトであり、無保証です。
+	' 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
+	' 再頒布または改変することができます。
 	
-	'Invalid_string_refer_to_original_code
+	'全メッセージデータ(または特殊効果データ)を管理するコレクションクラス
 	
-	'Invalid_string_refer_to_original_code
+	'メッセージデータ(または特殊効果データ)一覧
 	Private colMessageDataList As New Collection
 	
-	'繧ｯ繝ｩ繧ｹ縺ｮ隗｣謾ｾ
+	'クラスの解放
 	'UPGRADE_NOTE: Class_Terminate は Class_Terminate_Renamed にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
 	Private Sub Class_Terminate_Renamed()
 		Dim i As Short
@@ -30,7 +30,7 @@ Friend Class MessageDataList
 		MyBase.Finalize()
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'メッセージデータの追加
 	Public Function Add(ByRef mname As String) As MessageData
 		Dim new_md As New MessageData
 		
@@ -39,7 +39,7 @@ Friend Class MessageDataList
 		Add = new_md
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'メッセージデータの総数
 	Public Function Count() As Short
 		Count = colMessageDataList.Count()
 	End Function
@@ -48,7 +48,7 @@ Friend Class MessageDataList
 		colMessageDataList.Remove(Index)
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'メッセージデータの検索
 	Public Function Item(ByRef Index As Object) As MessageData
 		On Error GoTo ErrorHandler
 		
@@ -60,7 +60,7 @@ ErrorHandler:
 		Item = Nothing
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'メッセージデータが登録されているか？
 	Public Function IsDefined(ByRef Index As Object) As Boolean
 		Dim md As MessageData
 		
@@ -73,7 +73,7 @@ ErrorHandler:
 		IsDefined = False
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'メッセージデータをファイルからロード
 	Public Sub Load(ByRef fname As String)
 		Dim FileNumber As Short
 		Dim ret As Short
@@ -85,7 +85,7 @@ ErrorHandler:
 		Dim data_name As String
 		Dim err_msg As String
 		
-		'Invalid_string_refer_to_original_code
+		'特殊効果データor戦闘アニメデータか？
 		If InStr(LCase(fname), "effect.txt") > 0 Or InStr(LCase(fname), "animation.txt") > 0 Then
 			is_effect = True
 		End If
@@ -109,34 +109,33 @@ ErrorHandler:
 			Loop While Len(line_buf) = 0
 			
 			If InStr(line_buf, ",") > 0 Then
-				err_msg = "Invalid_string_refer_to_original_code"
+				err_msg = "名称の設定が抜けています。"
 				Error(0)
 			End If
 			
 			data_name = line_buf
 			
 			If InStr(data_name, " ") > 0 Then
-				err_msg = "Invalid_string_refer_to_original_code"
+				err_msg = "名称に半角スペースは使用出来ません。"
 				Error(0)
 			End If
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			err_msg = "Invalid_string_refer_to_original_code"
-			Error(0)
-			'End If
+			If InStr(data_name, "（") > 0 Or InStr(data_name, "）") > 0 Then
+				err_msg = "名称に全角括弧は使用出来ません。"
+				Error(0)
+			End If
 			If InStr(data_name, """") > 0 Then
-				err_msg = "Invalid_string_refer_to_original_code"
+				err_msg = "名称に""は使用出来ません。"
 				Error(0)
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'重複して定義されたデータの場合
 			If IsDefined(data_name) Then
 				If Not is_effect Then
-					'Invalid_string_refer_to_original_code
+					'パイロットメッセージの場合は後から定義されたものを優先
 					Delete(data_name)
 					md = Add(data_name)
 				Else
-					'Invalid_string_refer_to_original_code
+					'特殊効果データの場合は既存のものに追加
 					md = Item(data_name)
 				End If
 			Else
@@ -156,7 +155,7 @@ ErrorHandler:
 					msg = Trim(Mid(line_buf, ret + 1))
 					
 					If Len(sname) = 0 Then
-						err_msg = "Invalid_string_refer_to_original_code"
+						err_msg = "シチュエーションの指定が抜けています。"
 						Error(0)
 					End If
 					
@@ -173,9 +172,9 @@ ErrorHandler:
 		Loop 
 		
 ErrorHandler: 
-		'Invalid_string_refer_to_original_code
+		'エラー処理
 		If line_num = 0 Then
-			ErrorMessage(fname & "Invalid_string_refer_to_original_code")
+			ErrorMessage(fname & "が開けません。")
 		Else
 			FileClose(FileNumber)
 			DataErrorMessage("", fname, line_num, line_buf, data_name)
@@ -183,72 +182,59 @@ ErrorHandler:
 		TerminateSRC()
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'デフォルトの戦闘アニメデータを定義
 	Public Sub AddDefaultAnimation()
 		Dim md As MessageData
 		
-		'Invalid_string_refer_to_original_code
+		'アニメデータが用意されていない場合は Data\System\animation.txt を読み込む
 		If Count() = 0 Then
 			If FileExists(AppPath & "Data\System\animation.txt") Then
 				Load(AppPath & "Data\System\animation.txt")
 			End If
 		End If
 		
-		If IsDefined("豎守畑") Then
-			md = Item("豎守畑")
+		If IsDefined("汎用") Then
+			md = Item("汎用")
 		Else
-			md = Add("豎守畑")
+			md = Add("汎用")
 		End If
 		
 		With md
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			If .SelectMessage("蝗樣∩") = "" Then
-				.AddMessage("蝗樣∩", "蝗樣∩")
+			If FindNormalLabel("戦闘アニメ_回避発動") > 0 Then
+				If .SelectMessage("回避") = "" Then
+					.AddMessage("回避", "回避")
+				End If
 			End If
-			'End If
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			If .SelectMessage("Invalid_string_refer_to_original_code") = "" Then
-				.AddMessage("Invalid_string_refer_to_original_code", "Invalid_string_refer_to_original_code")
+			If FindNormalLabel("戦闘アニメ_切り払い発動") > 0 Then
+				If .SelectMessage("切り払い") = "" Then
+					.AddMessage("切り払い", "切り払い")
+				End If
 			End If
-			'End If
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			If .SelectMessage("霑取茶") = "" Then
-				.AddMessage("霑取茶", "霑取茶")
+			If FindNormalLabel("戦闘アニメ_迎撃発動") > 0 Then
+				If .SelectMessage("迎撃") = "" Then
+					.AddMessage("迎撃", "迎撃")
+				End If
 			End If
-			'End If
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			If .SelectMessage("Invalid_string_refer_to_original_code") = "" Then
-				.AddMessage("Invalid_string_refer_to_original_code", "Invalid_string_refer_to_original_code")
+			If FindNormalLabel("戦闘アニメ_ダミー発動") > 0 Then
+				If .SelectMessage("ダミー") = "" Then
+					.AddMessage("ダミー", "ダミー")
+				End If
 			End If
-			'End If
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			.AddMessage("Invalid_string_refer_to_original_code")
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			'End If
-			'End If
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			If .SelectMessage("陬懃ｵｦ") = "" Then
-				.AddMessage("陬懃ｵｦ", "Invalid_string_refer_to_original_code")
+			If FindNormalLabel("戦闘アニメ_修理装置発動") > 0 Then
+				If .SelectMessage("修理") = "" Then
+					.AddMessage("修理", "修理装置")
+				End If
 			End If
-			'End If
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			.AddMessage("Invalid_string_refer_to_original_code")
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			'End If
-			'End If
+			If FindNormalLabel("戦闘アニメ_補給装置発動") > 0 Then
+				If .SelectMessage("補給") = "" Then
+					.AddMessage("補給", "補給装置")
+				End If
+			End If
+			If FindNormalLabel("戦闘アニメ_終了発動") > 0 Then
+				If .SelectMessage("終了") = "" Then
+					.AddMessage("終了", "終了")
+				End If
+			End If
 		End With
 	End Sub
 End Class

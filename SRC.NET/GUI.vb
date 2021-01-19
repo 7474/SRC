@@ -3,88 +3,88 @@ Option Explicit On
 Module GUI
 	
 	' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
+	' 本プログラムはフリーソフトであり、無保証です。
+	' 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
+	' 再頒布または改変することができます。
 	
-	'Invalid_string_refer_to_original_code
+	'ユーザーインターフェースと画面描画の処理を行うモジュール
 	
-	'Main縺ｮForm
+	'MainのForm
 	Public MainForm As System.Windows.Forms.Form
 	Public IsFlashAvailable As Boolean
 	
 	' ADD START MARGE
-	'Invalid_string_refer_to_original_code
+	'GUIが新バージョンか
 	Public NewGUIMode As Boolean
 	' ADD END
 	
-	'Invalid_string_refer_to_original_code
+	'マップ画面に表示できるマップのサイズ
 	Public MainWidth As Short
 	Public MainHeight As Short
 	
-	'Invalid_string_refer_to_original_code
+	'マップ画面のサイズ（ピクセル）
 	Public MainPWidth As Short
 	Public MainPHeight As Short
 	
-	'Invalid_string_refer_to_original_code
+	'マップのサイズ（ピクセル）
 	Public MapPWidth As Short
 	Public MapPHeight As Short
 	
-	'Invalid_string_refer_to_original_code
+	'ＨＰ・ＥＮのゲージの幅（ピクセル）
 	Public Const GauageWidth As Short = 88
 	
-	'Invalid_string_refer_to_original_code
+	'現在マップウィンドウがマスク表示されているか
 	Public ScreenIsMasked As Boolean
-	'Invalid_string_refer_to_original_code
+	'現在マップウィンドウが保存されているか
 	Public ScreenIsSaved As Boolean
 	
-	'Invalid_string_refer_to_original_code
+	'現在表示されているマップの座標
 	Public MapX As Short
 	Public MapY As Short
 	
-	'Invalid_string_refer_to_original_code
+	'ドラッグ前のマップの座標
 	Public PrevMapX As Short
 	Public PrevMapY As Short
 	
-	'Invalid_string_refer_to_original_code
+	'最後に押されたマウスボタン
 	Public MouseButton As Short
 	
-	'Invalid_string_refer_to_original_code
+	'現在のマウスの座標
 	Public MouseX As Single
 	Public MouseY As Single
 	
-	'Invalid_string_refer_to_original_code
+	'ドラッグ前のマウスの座標
 	Public PrevMouseX As Single
 	Public PrevMouseY As Single
 	
-	'Invalid_string_refer_to_original_code
+	'カーソル位置自動変更前のマウスカーソルの座標
 	Private PrevCursorX As Short
 	Private PrevCursorY As Short
-	'Invalid_string_refer_to_original_code
+	'カーソル位置自動変更後のマウスカーソルの座標
 	Private NewCursorX As Short
 	Private NewCursorY As Short
 	
-	'Invalid_string_refer_to_original_code
+	'移動前のユニットの情報
 	Public PrevUnitX As Short
 	Public PrevUnitY As Short
 	Public PrevUnitArea As String
 	Public PrevCommand As String
 	
-	'Invalid_string_refer_to_original_code
+	'PaintPictureで画像が描き込まれたか
 	Public IsPictureDrawn As Boolean
-	'Invalid_string_refer_to_original_code
+	'PaintPictureで画像が描かれているか
 	Public IsPictureVisible As Boolean
-	'PaintPicture縺ｧ謠冗判縺励◆逕ｻ蜒城伜沺
+	'PaintPictureで描画した画像領域
 	Public PaintedAreaX1 As Short
 	Public PaintedAreaY1 As Short
 	Public PaintedAreaX2 As Short
 	Public PaintedAreaY2 As Short
-	'Invalid_string_refer_to_original_code
+	'カーソル画像が表示されているか
 	Public IsCursorVisible As Boolean
-	'閭梧勹濶ｲ
+	'背景色
 	Public BGColor As Integer
 	
-	'Invalid_string_refer_to_original_code
+	'画像バッファ管理用変数
 	Private PicBufDateCount As Integer
 	Private PicBufDate() As Integer
 	Private PicBufSize() As Integer
@@ -100,13 +100,13 @@ Module GUI
 	Private PicBufIsMask() As Boolean
 	
 	
-	'Invalid_string_refer_to_original_code
+	'GUIから入力可能かどうか
 	Public IsGUILocked As Boolean
 	
-	'Invalid_string_refer_to_original_code
+	'リストボックス内で表示位置
 	Public TopItem As Short
 	
-	'Invalid_string_refer_to_original_code
+	'メッセージウインドウにに関する情報
 	Private DisplayedPilot As String
 	Private DisplayMode As String
 	Private RightUnit As Unit
@@ -117,39 +117,39 @@ Module GUI
 	Private LeftUnitENRatio As Double
 	Public MessageWindowIsOut As Boolean
 	
-	'Invalid_string_refer_to_original_code
+	'メッセージウィンドウの状態を保持するための変数
 	Private IsMessageFormVisible As Boolean
 	Private SavedLeftUnit As Unit
 	Private SavedRightUnit As Unit
 	
-	'Invalid_string_refer_to_original_code
+	'フォームがクリックされたか
 	Public IsFormClicked As Boolean
-	'Invalid_string_refer_to_original_code
+	'フォームがモーダルか
 	Public IsMordal As Boolean
 	
-	'Invalid_string_refer_to_original_code
+	'メッセージ表示のウェイト
 	Public MessageWait As Integer
 	
-	'Invalid_string_refer_to_original_code
+	'メッセージが自働送りかどうか
 	Public AutoMessageMode As Boolean
 	
-	'Invalid_string_refer_to_original_code
+	'PaintStringの中央表示の設定
 	Public HCentering As Boolean
 	Public VCentering As Boolean
-	'Invalid_string_refer_to_original_code
+	'PaintStringの書きこみが背景に行われるかどうか
 	Public PermanentStringMode As Boolean
-	'Invalid_string_refer_to_original_code
+	'PaintStringの書きこみが持続性かどうか
 	Public KeepStringMode As Boolean
 	
 	
-	'ListBox逕ｨ螟画焚
+	'ListBox用変数
 	Public ListItemFlag() As Boolean
 	Public ListItemComment() As String
 	Public ListItemID() As String
 	Public MaxListItem As Short
 	
 	
-	'API髢｢謨ｰ縺ｮ螳夂ｾｩ
+	'API関数の定義
 	
 	Declare Function BitBlt Lib "gdi32" (ByVal hDestDC As Integer, ByVal X As Integer, ByVal Y As Integer, ByVal nWidth As Integer, ByVal nHeight As Integer, ByVal hSrcDC As Integer, ByVal xsrc As Integer, ByVal ysrc As Integer, ByVal dwRop As Integer) As Integer
 	
@@ -176,7 +176,7 @@ Module GUI
 	Public Const STATUSBACK As Integer = &HC0C0C0
 	'ADD START 240a
 	
-	'StretchBlt縺ｮ繝｢繝ｼ繝芽ｨｭ螳壹ｒ陦後≧
+	'StretchBltのモード設定を行う
 	Declare Function GetStretchBltMode Lib "gdi32" (ByVal hDC As Integer) As Integer
 	Declare Function SetStretchBltMode Lib "gdi32" (ByVal hDC As Integer, ByVal nStretchMode As Integer) As Integer
 	
@@ -185,57 +185,57 @@ Module GUI
 	Public Const STRETCH_DELETESCANS As Short = 3
 	Public Const STRETCH_HALFTONE As Short = 4
 	
-	'騾城℃謠冗判
+	'透過描画
 	Declare Function TransparentBlt Lib "msimg32.dll" (ByVal hDC As Integer, ByVal X As Integer, ByVal Y As Integer, ByVal nWidth As Integer, ByVal nHeight As Integer, ByVal hSrcDC As Integer, ByVal xsrc As Integer, ByVal ysrc As Integer, ByVal nSrcWidth As Integer, ByVal nSrcHeight As Integer, ByVal crTransparent As Integer) As Integer
 	
-	'Invalid_string_refer_to_original_code
+	'ウィンドウ位置の設定
 	Declare Function SetWindowPos Lib "user32" (ByVal hwnd As Integer, ByVal hWndInsertAfter As Integer, ByVal X As Integer, ByVal Y As Integer, ByVal cx As Integer, ByVal cy As Integer, ByVal wFlags As Integer) As Integer
 	
-	Public Const SW_SHOWNA As Short = 8 'Invalid_string_refer_to_original_code
+	Public Const SW_SHOWNA As Short = 8 '非アクティブで表示
 	
-	'Invalid_string_refer_to_original_code
+	'フォームをアクティブにしないで表示
 	Declare Function ShowWindow Lib "user32" (ByVal hwnd As Integer, ByVal nCmdShow As Integer) As Integer
 	
 	Declare Sub Sleep Lib "kernel32" (ByVal dwMilliseconds As Integer)
 	
-	'Invalid_string_refer_to_original_code
+	'カーソル位置取得
 	'UPGRADE_WARNING: 構造体 POINTAPI に、この Declare ステートメントの引数としてマーシャリング属性を渡す必要があります。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="C429C3A5-5D47-4CD9-8F51-74A1616405DC"' をクリックしてください。
 	Declare Function GetCursorPos Lib "user32" (ByRef lpPoint As POINTAPI) As Integer
 	
-	'Invalid_string_refer_to_original_code
+	'ポイント構造体
 	Structure POINTAPI
 		Dim X As Integer
 		Dim Y As Integer
 	End Structure
 	
-	'Invalid_string_refer_to_original_code
+	'カーソル位置設定
 	Declare Function SetCursorPos Lib "user32" (ByVal X As Integer, ByVal Y As Integer) As Integer
 	
-	'Invalid_string_refer_to_original_code
+	'キーの情報を得る
 	Declare Function GetAsyncKeyState Lib "user32" (ByVal vKey As Integer) As Short
 	
 	Public RButtonID As Integer
 	Public LButtonID As Integer
 	
-	'Invalid_string_refer_to_original_code
+	'システムメトリックスを取得するAPI
 	Declare Function GetSystemMetrics Lib "user32" (ByVal nIndex As Integer) As Integer
 	
-	Public Const SM_SWAPBUTTON As Short = 23 'Invalid_string_refer_to_original_code
+	Public Const SM_SWAPBUTTON As Short = 23 '左右のボタンが交換されているか否か
 	
-	'Invalid_string_refer_to_original_code
+	'現在アクティブなウィンドウを取得するAPI
 	Public Declare Function GetForegroundWindow Lib "user32" () As Integer
 	
-	'逶ｴ邱壹ｒ謠冗判縺吶ｋ縺溘ａ縺ｮAPI
+	'直線を描画するためのAPI
 	'UPGRADE_WARNING: 構造体 POINTAPI に、この Declare ステートメントの引数としてマーシャリング属性を渡す必要があります。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="C429C3A5-5D47-4CD9-8F51-74A1616405DC"' をクリックしてください。
 	Declare Function MoveToEx Lib "gdi32" (ByVal hDC As Integer, ByVal X As Integer, ByVal Y As Integer, ByRef lpPoint As POINTAPI) As Integer
 	Declare Function LineTo Lib "gdi32" (ByVal hDC As Integer, ByVal X As Integer, ByVal Y As Integer) As Integer
 	
-	'螟夊ｧ貞ｽ｢繧呈緒逕ｻ縺吶ｋAPI
+	'多角形を描画するAPI
 	'UPGRADE_WARNING: 構造体 POINTAPI に、この Declare ステートメントの引数としてマーシャリング属性を渡す必要があります。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="C429C3A5-5D47-4CD9-8F51-74A1616405DC"' をクリックしてください。
 	Public Declare Function Polygon Lib "gdi32.dll" (ByVal hDC As Integer, ByRef lpPoint As POINTAPI, ByVal nCount As Integer) As Integer
 	
 	
-	'Invalid_string_refer_to_original_code
+	'ディスプレイの設定を参照するAPI
 	Public Structure DEVMODE
 		'UPGRADE_WARNING: 固定長文字列のサイズはバッファに合わせる必要があります。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="3C1E4426-0B80-443E-B943-0627CD55D48B"' をクリックしてください。
 		<VBFixedString(32),System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.ByValArray,SizeConst:=32)> Public dmDeviceName() As Char
@@ -280,7 +280,7 @@ Module GUI
 	
 	Public Const ENUM_CURRENT_SETTINGS As Short = -1
 	
-	'Invalid_string_refer_to_original_code
+	'ディスプレイの設定を変更するためのAPI
 	'UPGRADE_ISSUE: パラメータ 'As Any' の宣言はサポートされません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="FAE78A8D-8978-4FD4-8208-5B7324A8F795"' をクリックしてください。
 	Public Declare Function ChangeDisplaySettings Lib "user32.dll"  Alias "ChangeDisplaySettingsA"(ByRef lpDevMode As Any, ByVal dwFlags As Integer) As Integer
 	
@@ -290,36 +290,36 @@ Module GUI
 	Public Const DISP_CHANGE_SUCCESSFUL As Short = 0
 	Public Const DISP_CHANGE_RESTART As Short = 1
 	
-	'Invalid_string_refer_to_original_code
+	'デバイスの設定を参照するためのAPI
 	Public Declare Function GetDeviceCaps Lib "gdi32" (ByVal hDC As Integer, ByVal nIndex As Integer) As Integer
 	
-	'Invalid_string_refer_to_original_code
+	'ピクセル当たりのカラービット数
 	Private Const BITSPIXEL As Short = 12
 	
 	
-	'Invalid_string_refer_to_original_code
+	'システムパラメータを変更するためのAPI
 	Declare Function SetSystemParametersInfo Lib "user32.dll"  Alias "SystemParametersInfoA"(ByVal uiAction As Integer, ByVal uiParam As Integer, ByVal pvParam As Integer, ByVal fWinIni As Integer) As Integer
 	
 	Declare Function GetSystemParametersInfo Lib "user32.dll"  Alias "SystemParametersInfoA"(ByVal uiAction As Integer, ByVal uiParam As Integer, ByRef pvParam As Integer, ByVal fWinIni As Integer) As Integer
 	
-	'Invalid_string_refer_to_original_code
+	'フォントのスムージング処理関連の定数
 	Public Const SPI_GETFONTSMOOTHING As Short = 74
 	Public Const SPI_SETFONTSMOOTHING As Short = 75
 	
-	'Invalid_string_refer_to_original_code
+	'ユーザープロファイルの更新を指定
 	Public Const SPIF_UPDATEINIFILE As Integer = &H1
-	'縺吶∋縺ｦ縺ｮ繝医ャ繝励Ξ繝吶Ν繧ｦ繧｣繝ｳ繝峨え縺ｫ螟画峩繧帝夂衍
+	'すべてのトップレベルウィンドウに変更を通知
 	Public Const SPIF_SENDWININICHANGE As Integer = &H2
 	
 	
-	'繝｡繧､繝ｳ繧ｦ繧｣繝ｳ繝峨え縺ｮ繝ｭ繝ｼ繝峨→Flash縺ｮ逋ｻ骭ｲ繧定｡後≧
+	'メインウィンドウのロードとFlashの登録を行う
 	Public Sub LoadMainFormAndRegisterFlash()
 		Dim WSHShell As Object
 		
 		On Error GoTo ErrorHandler
 		
-		'繧ｷ繧ｧ繝ｫ縺九ｉregsvr32.exe繧貞茜逕ｨ縺励※縲∬ｵｷ蜍輔＃縺ｨ縺ｫSRC.exe縺ｨ蜷後§繝代せ縺ｫ縺ゅｋ
-		'Invalid_string_refer_to_original_code
+		'シェルからregsvr32.exeを利用して、起動ごとにSRC.exeと同じパスにある
+		'FlashControl.ocxを再登録する。
 		WSHShell = CreateObject("WScript.Shell")
 		'UPGRADE_WARNING: オブジェクト WSHShell.Run の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
 		WSHShell.Run("regsvr32.exe /s """ & AppPath & "FlashControl.ocx""", 0, True)
@@ -336,14 +336,14 @@ Module GUI
 		
 ErrorHandler: 
 		
-		'Invalid_string_refer_to_original_code
+		'Flashが使えないのでFlash無しのメインウィンドウを使用する
 		'UPGRADE_ISSUE: Load ステートメント はサポートされていません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="B530EFF2-3132-48F8-B8BC-D88AF543D321"' をクリックしてください。
 		Load(frmSafeMain)
 		MainForm = frmSafeMain
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
-	'縺溘□縺励Γ繧､繝ｳ繧ｦ繧｣繝ｳ繝峨え縺ｯ縺ゅｉ縺九§繧´oadMainFormAndRegisterFlash縺ｧ繝ｭ繝ｼ繝峨＠縺ｦ縺翫￥縺薙→
+	'各ウィンドウをロード
+	'ただしメインウィンドウはあらかじめLoadMainFormAndRegisterFlashでロードしておくこと
 	Public Sub LoadForms()
 		Dim X, Y As Short
 		
@@ -355,9 +355,9 @@ ErrorHandler:
 		Load(frmListBox)
 		
 		LockGUI()
-		CommandState = "Invalid_string_refer_to_original_code"
+		CommandState = "ユニット選択"
 		
-		'Invalid_string_refer_to_original_code
+		'マップ画面に表示できるマップのサイズ
 		Select Case LCase(ReadIni("Option", "NewGUI"))
 			Case "on"
 				' MOD START MARGE
@@ -371,20 +371,20 @@ ErrorHandler:
 				WriteIni("Option", "NewGUI", "Off")
 		End Select
 		' ADD START MARGE
-		'Invalid_string_refer_to_original_code
-		If IsOptionDefined("Invalid_string_refer_to_original_code") Then
+		' Optionで定義されていればそちらを優先する
+		If IsOptionDefined("新ＧＵＩ") Then
 			NewGUIMode = True
 			MainWidth = 20
 		End If
 		' ADD END MARGE
 		MainHeight = 15
 		
-		'Invalid_string_refer_to_original_code
+		'マップ画面のサイズ（ピクセル）
 		MainPWidth = MainWidth * 32
 		MainPHeight = MainHeight * 32
 		
 		With MainForm
-			'Invalid_string_refer_to_original_code
+			'メインウィンドウの位置＆サイズを設定
 			X = VB6.TwipsPerPixelX
 			Y = VB6.TwipsPerPixelY
 			' MOD START MARGE
@@ -400,7 +400,7 @@ ErrorHandler:
 			.Left = VB6.TwipsToPixelsX((VB6.PixelsToTwipsX(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width) - VB6.PixelsToTwipsX(.Width)) / 2)
 			.Top = VB6.TwipsToPixelsY((VB6.PixelsToTwipsY(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height) - VB6.PixelsToTwipsY(.Height)) / 2)
 			
-			'Invalid_string_refer_to_original_code
+			'スクロールバーの位置を設定
 			' MOD START MARGE
 			'        If MainWidth = 15 Then
 			If Not NewGUIMode Then
@@ -416,7 +416,7 @@ ErrorHandler:
 				.HScroll.Visible = False
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'ステータスウィンドウを設置
 			' MOD START MARGE
 			'        If MainWidth = 15 Then
 			'            .picFace.Move MainPWidth + 24, 4
@@ -457,7 +457,7 @@ ErrorHandler:
 			End If
 			' MOD END MARGE
 			
-			'Invalid_string_refer_to_original_code
+			'マップウィンドウのサイズを設定
 			' MOD START MARGE
 			'        If MainWidth = 15 Then
 			If Not NewGUIMode Then
@@ -476,19 +476,19 @@ ErrorHandler:
 	End Sub
 	
 	' ADD START MARGE
-	'Invalid_string_refer_to_original_code
+	'Optionによる新ＧＵＩが有効かどうかを再設定する
 	Public Sub SetNewGUIMode()
-		'Invalid_string_refer_to_original_code
-		If IsOptionDefined("Invalid_string_refer_to_original_code") And Not NewGUIMode Then
+		' Optionで定義されているのにNewGUIModeがfalseの場合、LoadFormsを呼ぶ
+		If IsOptionDefined("新ＧＵＩ") And Not NewGUIMode Then
 			LoadForms()
 		End If
 	End Sub
 	' ADD  END  MARGE
 	
-	'Invalid_string_refer_to_original_code
+	' === メッセージウィンドウに関する処理 ===
 	
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
+	'メッセージウィンドウを開く
+	'戦闘メッセージ画面など、ユニット表示を行う場合は u1, u2 に指定
 	Public Sub OpenMessageForm(Optional ByRef u1 As Unit = Nothing, Optional ByRef u2 As Unit = Nothing)
 		Dim tppx, tppy As Short
 		Dim ret As Integer
@@ -505,14 +505,14 @@ ErrorHandler:
 		'UPGRADE_ISSUE: Load ステートメント はサポートされていません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="B530EFF2-3132-48F8-B8BC-D88AF543D321"' をクリックしてください。
 		Load(frmMessage)
 		With frmMessage
-			'Invalid_string_refer_to_original_code
+			'ユニット表示を伴う場合はキャプションから「(自動送り)」を削除
 			If Not u1 Is Nothing Then
-				If .Text = "Invalid_string_refer_to_original_code" Then
-					.Text = "Invalid_string_refer_to_original_code"
+				If .Text = "メッセージ (自動送り)" Then
+					.Text = "メッセージ"
 				End If
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'メッセージウィンドウを強制的に最小化解除
 			If .WindowState <> System.Windows.Forms.FormWindowState.Normal Then
 				.WindowState = System.Windows.Forms.FormWindowState.Normal
 				.Show()
@@ -520,7 +520,7 @@ ErrorHandler:
 			End If
 			
 			If u1 Is Nothing Then
-				'Invalid_string_refer_to_original_code
+				'ユニット表示なし
 				.labHP1.Visible = False
 				.labHP2.Visible = False
 				.labEN1.Visible = False
@@ -544,8 +544,8 @@ ErrorHandler:
 				.picMessage.Top = 7
 				.picMessage.Left = 84
 			ElseIf u2 Is Nothing Then 
-				'Invalid_string_refer_to_original_code
-				If u1.Party = "蜻ｳ譁ｹ" Or u1.Party = "Invalid_string_refer_to_original_code" Then
+				'ユニット表示１体のみ
+				If u1.Party = "味方" Or u1.Party = "ＮＰＣ" Then
 					.labHP1.Visible = False
 					.labEN1.Visible = False
 					.picHP1.Visible = False
@@ -587,7 +587,7 @@ ErrorHandler:
 				.picMessage.Top = 41
 				.picMessage.Left = 84
 			Else
-				'Invalid_string_refer_to_original_code
+				'ユニットを２体表示
 				.labHP1.Visible = True
 				.labHP2.Visible = True
 				.labEN1.Visible = True
@@ -614,9 +614,9 @@ ErrorHandler:
 				.picMessage.Left = 84
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'メッセージウィンドウの位置設定
 			If MainForm.Visible And Not MainForm.WindowState = 1 Then
-				'Invalid_string_refer_to_original_code
+				'メインウィンドウが表示されていればメインウィンドウの下端に合わせて表示
 				If Not frmMessage.Visible Then
 					If MainWidth = 15 Then
 						.Left = VB6.TwipsToPixelsX(VB6.PixelsToTwipsX(MainForm.Left))
@@ -630,28 +630,28 @@ ErrorHandler:
 					End If
 				End If
 			Else
-				'Invalid_string_refer_to_original_code
+				'メインウィンドウが表示されていない場合は画面中央に表示
 				.Left = VB6.TwipsToPixelsX((VB6.PixelsToTwipsX(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width) - VB6.PixelsToTwipsX(.Width)) / 2)
 				.Top = VB6.TwipsToPixelsY((VB6.PixelsToTwipsY(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height) - VB6.PixelsToTwipsY(.Height)) / 2)
 			End If
 			
-			'繧ｦ繧｣繝ｳ繝峨え繧偵け繝ｪ繧｢縺励※縺翫￥
+			'ウィンドウをクリアしておく
 			.picFace.Image = System.Drawing.Image.FromFile("")
 			DisplayedPilot = ""
 			'UPGRADE_ISSUE: PictureBox メソッド picMessage.Cls はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 			.picMessage.Cls()
 			
-			'繧ｦ繧｣繝ｳ繝峨え繧定｡ｨ遉ｺ
+			'ウィンドウを表示
 			.Show()
 			
-			'蟶ｸ縺ｫ謇句燕縺ｫ陦ｨ遉ｺ縺吶ｋ
+			'常に手前に表示する
 			ret = SetWindowPos(.Handle.ToInt32, -1, 0, 0, 0, 0, &H3)
 		End With
 		
 		System.Windows.Forms.Application.DoEvents()
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'メッセージウィンドウを閉じる
 	Public Sub CloseMessageForm()
 		If Not frmMessage.Visible Then
 			Exit Sub
@@ -660,7 +660,7 @@ ErrorHandler:
 		System.Windows.Forms.Application.DoEvents()
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'メッセージウィンドウをクリア
 	Public Sub ClearMessageForm()
 		With frmMessage
 			.picFace.Image = System.Drawing.Image.FromFile("")
@@ -675,7 +675,7 @@ ErrorHandler:
 		System.Windows.Forms.Application.DoEvents()
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'メッセージウィンドウに表示しているユニット情報を更新
 	Public Sub UpdateMessageForm(ByRef u1 As Unit, Optional ByRef u2 As Object = Nothing)
 		Dim lu, ru As Unit
 		Dim ret As Integer
@@ -685,18 +685,18 @@ ErrorHandler:
 		Dim tmp As Integer
 		
 		With frmMessage
-			'Invalid_string_refer_to_original_code
+			'ウィンドウにユニット情報が表示されていない場合はそのまま終了
 			If .Visible Then
 				If Not .picUnit1.Visible And Not .picUnit2.Visible Then
 					Exit Sub
 				End If
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'luを左に表示するユニット、ruを右に表示するユニットに設定
 			'UPGRADE_NOTE: IsMissing() は IsNothing() に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="8AE1CB93-37AB-439A-A4FF-BE3B6760BB23"' をクリックしてください。
 			If IsNothing(u2) Then
-				'Invalid_string_refer_to_original_code
-				If u1.Party = "蜻ｳ譁ｹ" Or u1.Party = "Invalid_string_refer_to_original_code" Then
+				'１体のユニットのみ表示
+				If u1.Party = "味方" Or u1.Party = "ＮＰＣ" Then
 					'UPGRADE_NOTE: オブジェクト lu をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
 					lu = Nothing
 					ru = u1
@@ -706,8 +706,8 @@ ErrorHandler:
 					ru = Nothing
 				End If
 			ElseIf u2 Is Nothing Then 
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code
+				'反射攻撃
+				'前回表示されたユニットをそのまま使用
 				lu = LeftUnit
 				ru = RightUnit
 			ElseIf (u2 Is LeftUnit Or u1 Is RightUnit) And Not LeftUnit Is RightUnit Then 
@@ -718,13 +718,13 @@ ErrorHandler:
 				ru = u2
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'現在表示されている順番に応じてユニットの入れ替え
 			If lu Is RightUnit And ru Is LeftUnit And Not LeftUnit Is RightUnit Then
 				lu = LeftUnit
 				ru = RightUnit
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'表示するユニットのＧＵＩ部品を表示
 			If Not lu Is Nothing Then
 				If Not .labHP1.Visible Then
 					.labHP1.Visible = True
@@ -748,11 +748,11 @@ ErrorHandler:
 				End If
 			End If
 			
-			'譛ｪ陦ｨ遉ｺ縺ｮ繝ｦ繝九ャ繝医ｒ陦ｨ遉ｺ縺吶ｋ
+			'未表示のユニットを表示する
 			If Not lu Is Nothing And Not lu Is LeftUnit Then
-				'蟾ｦ縺ｮ繝ｦ繝九ャ繝医′譛ｪ陦ｨ遉ｺ縺ｪ縺ｮ縺ｧ陦ｨ遉ｺ縺吶ｋ
+				'左のユニットが未表示なので表示する
 				
-				'Invalid_string_refer_to_original_code
+				'ユニット画像
 				If lu.BitmapID > 0 Then
 					If MapDrawMode = "" Then
 						'UPGRADE_ISSUE: Control picUnitBitmap は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
@@ -762,22 +762,22 @@ ErrorHandler:
 						LoadUnitBitmap(lu, .picUnit1, 0, 0, True)
 					End If
 				Else
-					'Invalid_string_refer_to_original_code
+					'非表示のユニットの場合はユニットのいる地形タイルを表示
 					'UPGRADE_ISSUE: Control picBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 					'UPGRADE_ISSUE: PictureBox プロパティ picUnit1.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 					ret = BitBlt(.picUnit1.hDC, 0, 0, 32, 32, MainForm.picBack.hDC, 32 * (lu.X - 1), 32 * (lu.Y - 1), SRCCOPY)
 				End If
 				.picUnit1.Refresh()
 				
-				'Invalid_string_refer_to_original_code
-				If lu.IsConditionSatisfied("Invalid_string_refer_to_original_code") Then
+				'ＨＰ名称
+				If lu.IsConditionSatisfied("データ不明") Then
 					.labHP1.Text = Term("HP")
 				Else
 					.labHP1.Text = Term("HP", lu)
 				End If
 				
-				'Invalid_string_refer_to_original_code
-				If lu.IsConditionSatisfied("Invalid_string_refer_to_original_code") Then
+				'ＨＰ数値
+				If lu.IsConditionSatisfied("データ不明") Then
 					.txtHP1.Text = "?????/?????"
 				Else
 					If lu.HP < 100000 Then
@@ -793,7 +793,7 @@ ErrorHandler:
 					.txtHP1.Text = buf
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'ＨＰゲージ
 				'UPGRADE_ISSUE: PictureBox メソッド picHP1.Cls はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 				.picHP1.Cls()
 				If lu.HP > 0 Or i < num Then
@@ -801,15 +801,15 @@ ErrorHandler:
 					.picHP1.Line (0, 0) - ((.picHP1.Width - 4) * lu.HP \ lu.MaxHP - 1, 4), BF
 				End If
 				
-				'Invalid_string_refer_to_original_code
-				If lu.IsConditionSatisfied("Invalid_string_refer_to_original_code") Then
+				'ＥＮ名称
+				If lu.IsConditionSatisfied("データ不明") Then
 					.labEN1.Text = Term("EN")
 				Else
 					.labEN1.Text = Term("EN", lu)
 				End If
 				
-				'Invalid_string_refer_to_original_code
-				If lu.IsConditionSatisfied("Invalid_string_refer_to_original_code") Then
+				'ＥＮ数値
+				If lu.IsConditionSatisfied("データ不明") Then
 					.txtEN1.Text = "???/???"
 				Else
 					If lu.EN < 1000 Then
@@ -825,7 +825,7 @@ ErrorHandler:
 					.txtEN1.Text = buf
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'ＥＮゲージ
 				'UPGRADE_ISSUE: PictureBox メソッド picEN1.Cls はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 				.picEN1.Cls()
 				If lu.EN > 0 Or i < num Then
@@ -833,16 +833,16 @@ ErrorHandler:
 					.picEN1.Line (0, 0) - ((.picEN1.Width - 4) * lu.EN \ lu.MaxEN - 1, 4), BF
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'表示内容を記録
 				LeftUnit = lu
 				LeftUnitHPRatio = lu.HP / lu.MaxHP
 				LeftUnitENRatio = lu.EN / lu.MaxEN
 			End If
 			
 			If Not ru Is Nothing And Not RightUnit Is ru Then
-				'蜿ｳ縺ｮ繝ｦ繝九ャ繝医′譛ｪ陦ｨ遉ｺ縺ｪ縺ｮ縺ｧ陦ｨ遉ｺ縺吶ｋ
+				'右のユニットが未表示なので表示する
 				
-				'Invalid_string_refer_to_original_code
+				'ユニット画像
 				If ru.BitmapID > 0 Then
 					If MapDrawMode = "" Then
 						'UPGRADE_ISSUE: Control picUnitBitmap は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
@@ -852,22 +852,22 @@ ErrorHandler:
 						LoadUnitBitmap(ru, .picUnit2, 0, 0, True)
 					End If
 				Else
-					'Invalid_string_refer_to_original_code
+					'非表示のユニットの場合はユニットのいる地形タイルを表示
 					'UPGRADE_ISSUE: Control picBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 					'UPGRADE_ISSUE: PictureBox プロパティ picUnit2.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 					ret = BitBlt(.picUnit2.hDC, 0, 0, 32, 32, MainForm.picBack.hDC, 32 * (ru.X - 1), 32 * (ru.Y - 1), SRCCOPY)
 				End If
 				.picUnit2.Refresh()
 				
-				'Invalid_string_refer_to_original_code
-				If ru.IsConditionSatisfied("Invalid_string_refer_to_original_code") Then
+				'ＨＰ数値
+				If ru.IsConditionSatisfied("データ不明") Then
 					.labHP2.Text = Term("HP")
 				Else
 					.labHP2.Text = Term("HP", ru)
 				End If
 				
-				'Invalid_string_refer_to_original_code
-				If ru.IsConditionSatisfied("Invalid_string_refer_to_original_code") Then
+				'ＨＰ数値
+				If ru.IsConditionSatisfied("データ不明") Then
 					.txtHP2.Text = "?????/?????"
 				Else
 					If ru.HP < 100000 Then
@@ -883,7 +883,7 @@ ErrorHandler:
 					.txtHP2.Text = buf
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'ＨＰゲージ
 				'UPGRADE_ISSUE: PictureBox メソッド picHP2.Cls はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 				.picHP2.Cls()
 				If ru.HP > 0 Or i < num Then
@@ -891,15 +891,15 @@ ErrorHandler:
 					.picHP2.Line (0, 0) - ((.picHP2.Width - 4) * ru.HP \ ru.MaxHP - 1, 4), BF
 				End If
 				
-				'Invalid_string_refer_to_original_code
-				If ru.IsConditionSatisfied("Invalid_string_refer_to_original_code") Then
+				'ＥＮ名称
+				If ru.IsConditionSatisfied("データ不明") Then
 					.labEN2.Text = Term("EN")
 				Else
 					.labEN2.Text = Term("EN", ru)
 				End If
 				
-				'Invalid_string_refer_to_original_code
-				If ru.IsConditionSatisfied("Invalid_string_refer_to_original_code") Then
+				'ＥＮ数値
+				If ru.IsConditionSatisfied("データ不明") Then
 					.txtEN2.Text = "???/???"
 				Else
 					If ru.EN < 1000 Then
@@ -915,7 +915,7 @@ ErrorHandler:
 					.txtEN2.Text = buf
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'ＥＮゲージ
 				'UPGRADE_ISSUE: PictureBox メソッド picEN2.Cls はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 				.picEN2.Cls()
 				If ru.EN > 0 Or i < num Then
@@ -923,15 +923,15 @@ ErrorHandler:
 					.picEN2.Line (0, 0) - ((.picEN2.Width - 4) * ru.EN \ ru.MaxEN - 1, 4), BF
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'表示内容を記録
 				RightUnit = ru
 				RightUnitHPRatio = ru.HP / ru.MaxHP
 				RightUnitENRatio = ru.EN / ru.MaxEN
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'前回の表示からのＨＰ、ＥＮの変化をアニメ表示
 			
-			'Invalid_string_refer_to_original_code
+			'変化がない場合はアニメ表示の必要がないのでチェックしておく
 			num = 0
 			If Not lu Is Nothing Then
 				If lu.HP / lu.MaxHP <> LeftUnitHPRatio Or lu.EN / lu.MaxEN <> LeftUnitENRatio Then
@@ -944,7 +944,7 @@ ErrorHandler:
 				End If
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'右ボタンが押されている場合はアニメーション表示を短縮化
 			If num > 0 Then
 				If IsRButtonPressed() Then
 					num = 2
@@ -952,13 +952,13 @@ ErrorHandler:
 			End If
 			
 			For i = 1 To num
-				'Invalid_string_refer_to_original_code
+				'左側のユニット
 				If Not lu Is Nothing Then
-					'Invalid_string_refer_to_original_code
+					'ＨＰ
 					If lu.HP / lu.MaxHP <> LeftUnitHPRatio Then
 						tmp = (lu.MaxHP * LeftUnitHPRatio * (num - i) + lu.HP * i) \ num
 						
-						If lu.IsConditionSatisfied("Invalid_string_refer_to_original_code") Then
+						If lu.IsConditionSatisfied("データ不明") Then
 							.txtHP1.Text = "?????/?????"
 						Else
 							If lu.HP < 100000 Then
@@ -982,11 +982,11 @@ ErrorHandler:
 						End If
 					End If
 					
-					'Invalid_string_refer_to_original_code
+					'ＥＮ
 					If lu.EN / lu.MaxEN <> LeftUnitENRatio Then
 						tmp = (lu.MaxEN * LeftUnitENRatio * (num - i) + lu.EN * i) \ num
 						
-						If lu.IsConditionSatisfied("Invalid_string_refer_to_original_code") Then
+						If lu.IsConditionSatisfied("データ不明") Then
 							.txtEN1.Text = "???/???"
 						Else
 							If lu.EN < 1000 Then
@@ -1011,13 +1011,13 @@ ErrorHandler:
 					End If
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'右側のユニット
 				If Not ru Is Nothing Then
-					'Invalid_string_refer_to_original_code
+					'ＨＰ
 					If ru.HP / ru.MaxHP <> RightUnitHPRatio Then
 						tmp = (ru.MaxHP * RightUnitHPRatio * (num - i) + ru.HP * i) \ num
 						
-						If ru.IsConditionSatisfied("Invalid_string_refer_to_original_code") Then
+						If ru.IsConditionSatisfied("データ不明") Then
 							.txtHP2.Text = "?????/?????"
 						Else
 							If ru.HP < 100000 Then
@@ -1041,10 +1041,10 @@ ErrorHandler:
 						End If
 					End If
 					
-					'Invalid_string_refer_to_original_code
+					'ＥＮ
 					If ru.EN / ru.MaxEN <> RightUnitENRatio Then
 						tmp = (ru.MaxEN * RightUnitENRatio * (num - i) + ru.EN * i) \ num
-						If ru.IsConditionSatisfied("Invalid_string_refer_to_original_code") Then
+						If ru.IsConditionSatisfied("データ不明") Then
 							.txtEN2.Text = "???/???"
 						Else
 							If ru.EN < 1000 Then
@@ -1069,7 +1069,7 @@ ErrorHandler:
 					End If
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'リフレッシュ
 				If Not lu Is Nothing Then
 					If lu.HP / lu.MaxHP <> LeftUnitHPRatio Then
 						.picHP1.Refresh()
@@ -1094,7 +1094,7 @@ ErrorHandler:
 				Sleep(20)
 			Next 
 			
-			'Invalid_string_refer_to_original_code
+			'表示内容を記録
 			If Not lu Is Nothing Then
 				LeftUnitHPRatio = lu.HP / lu.MaxHP
 				LeftUnitENRatio = lu.EN / lu.MaxEN
@@ -1108,35 +1108,35 @@ ErrorHandler:
 		End With
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'メッセージウィンドウの状態を記録する
 	Public Sub SaveMessageFormStatus()
 		IsMessageFormVisible = frmMessage.Visible
 		SavedLeftUnit = LeftUnit
 		SavedRightUnit = RightUnit
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'メッセージウィンドウの状態を記録した状態に保つ
 	Public Sub KeepMessageFormStatus()
 		If Not IsMessageFormVisible Then
-			'Invalid_string_refer_to_original_code
+			'記録した時点でメッセージウィンドウが表示されていなければ
 			If frmMessage.Visible Then
-				'Invalid_string_refer_to_original_code
+				'開いているメッセージウィンドウを強制的に閉じる
 				CloseMessageForm()
 			End If
 		ElseIf Not frmMessage.Visible Then 
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
+			'記録した時点ではメッセージウィンドウが表示されていたので、
+			'メッセージウィンドウが表示されていない場合は表示する
 			OpenMessageForm(SavedLeftUnit, SavedRightUnit)
 		ElseIf LeftUnit Is Nothing And RightUnit Is Nothing And (Not SavedLeftUnit Is Nothing Or Not SavedRightUnit Is Nothing) Then 
-			'Invalid_string_refer_to_original_code
+			'メッセージウィンドウからユニット表示が消えてしまった場合は再表示
 			OpenMessageForm(SavedLeftUnit, SavedRightUnit)
 		End If
 	End Sub
 	
 	
-	'Invalid_string_refer_to_original_code
+	' === メッセージ表示に関する処理 ===
 	
-	'Invalid_string_refer_to_original_code
+	'メッセージウィンドウにメッセージを表示
 	Public Sub DisplayMessage(ByRef pname As String, ByVal msg As String, Optional ByVal msg_mode As String = "")
 		Dim messages() As String
 		Dim msg_head, line_head As Short
@@ -1154,15 +1154,15 @@ ErrorHandler:
 		Dim cl_margin(2) As Single
 		Dim left_margin As String
 		
-		'繧ｭ繝｣繝ｩ陦ｨ遉ｺ縺ｮ謠上″謠帙∴
-		If pname = "Invalid_string_refer_to_original_code" Then
-			'Invalid_string_refer_to_original_code
+		'キャラ表示の描き換え
+		If pname = "システム" Then
+			'「システム」
 			frmMessage.picFace.Image = System.Drawing.Image.FromFile("")
 			frmMessage.picFace.Refresh()
 			DisplayedPilot = ""
 			left_margin = ""
 		ElseIf pname <> "" Then 
-			'Invalid_string_refer_to_original_code
+			'どのキャラ画像を使うか？
 			If PList.IsDefined(pname) Then
 				pnickname = PList.Item(pname).Nickname
 				fname = PList.Item(pname).Bitmap
@@ -1176,11 +1176,11 @@ ErrorHandler:
 				fname = "-.bmp"
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'キャラ画像の表示
 			If fname <> "-.bmp" Then
 				fname = "Pilot\" & fname
 				If DisplayedPilot <> fname Or DisplayMode <> msg_mode Then
-					If DrawPicture(fname, 0, 0, 64, 64, 0, 0, 0, 0, "Invalid_string_refer_to_original_code" & msg_mode) Then
+					If DrawPicture(fname, 0, 0, 64, 64, 0, 0, 0, 0, "メッセージ " & msg_mode) Then
 						frmMessage.picFace.Refresh()
 						DisplayedPilot = fname
 						DisplayMode = msg_mode
@@ -1190,7 +1190,7 @@ ErrorHandler:
 						DisplayedPilot = ""
 						DisplayMode = ""
 						
-						'Invalid_string_refer_to_original_code
+						'パイロット画像が存在しないことを記録しておく
 						If PList.IsDefined(pname) Then
 							With PList.Item(pname)
 								If .Bitmap = .Data.Bitmap Then
@@ -1211,95 +1211,79 @@ ErrorHandler:
 				DisplayMode = ""
 			End If
 			
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			left_margin = " "
-		Else
-			left_margin = "  "
+			If IsOptionDefined("会話パイロット名改行") Then
+				left_margin = " "
+			Else
+				left_margin = "  "
+			End If
 		End If
-		'End If
 		
-		'Invalid_string_refer_to_original_code
+		'メッセージ中の式置換を処理
 		FormatMessage(msg)
 		msg = Trim(msg)
 		
-		'Invalid_string_refer_to_original_code
+		'末尾に強制改行が入っている場合は取り除く
 		Do While Right(msg, 1) = ";"
 			msg = Left(msg, Len(msg) - 1)
 		Loop 
 		
-		'Invalid_string_refer_to_original_code
+		'メッセージが空の場合はキャラ表示の描き換えのみ行う
 		If msg = "" Then
 			Exit Sub
 		End If
 		
 		Select Case pname
-			Case "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code
+			Case "システム"
+				'そのまま使用
 			Case ""
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code
+				'基本的にはそのまま使用するが、せりふ表示の代用の場合は
+				'せりふ表示用の処理を行う
 				i = 0
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				'UPGRADE_WARNING: DisplayMessage に変換されていないステートメントがあります。ソース コードを確認してください。
-				i = InStr(msg, "(")
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				'End If
+				If (InStr(msg, "「") > 0 And Right(msg, 1) = "」") Then
+					i = InStr(msg, "「")
+				ElseIf (InStr(msg, "『") > 0 And Right(msg, 1) = "』") Then 
+					i = InStr(msg, "『")
+				ElseIf (InStr(msg, "(") > 0 And Right(msg, 1) = ")") Then 
+					i = InStr(msg, "(")
+				ElseIf (InStr(msg, "（") > 0 And Right(msg, 1) = "）") Then 
+					i = InStr(msg, "（")
+				End If
 				If i > 1 Then
 					If i < 8 Or PDList.IsDefined(Trim(Left(msg, i - 1))) Or NPDList.IsDefined(Trim(Left(msg, i - 1))) Then
 						is_character_message = True
 						If Not IsSpace(Mid(msg, i - 1, 1)) Then
-							'Invalid_string_refer_to_original_code
+							'"「"の前に半角スペースを挿入
 							msg = Left(msg, i - 1) & " " & Mid(msg, i)
 						End If
 					End If
 				End If
 			Case Else
 				is_character_message = True
-				'Invalid_string_refer_to_original_code_
-				'Invalid_string_refer_to_original_code_
-				'Then
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				'繝｢繝弱Ο繝ｼ繧ｰ
-				msg = Mid(msg, 2, Len(msg) - 2)
-				'Invalid_string_refer_to_original_code_
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				msg = Mid(msg, 2, Len(msg) - 2)
-				'Invalid_string_refer_to_original_code_
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				'縺帙ｊ縺ｵ
-				'Invalid_string_refer_to_original_code_
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				'End If
+				If (Left(msg, 1) = "(" Or Left(msg, 1) = "（") And (Right(msg, 1) = ")" Or Right(msg, 1) = "）") Then
+					'モノローグ
+					msg = Mid(msg, 2, Len(msg) - 2)
+					msg = pnickname & IIf(IsOptionDefined("会話パイロット名改行"), ";", " ") & "（" & msg & "）"
+				ElseIf Left(msg, 1) = "『" And Right(msg, 1) = "』" Then 
+					msg = Mid(msg, 2, Len(msg) - 2)
+					msg = pnickname & IIf(IsOptionDefined("会話パイロット名改行"), ";", " ") & "『" & msg & "』"
+				Else
+					'せりふ
+					msg = pnickname & IIf(IsOptionDefined("会話パイロット名改行"), ";", " ") & "「" & msg & "」"
+				End If
 		End Select
 		
-		'Invalid_string_refer_to_original_code
-		If IsOptionDefined("謾ｹ陦梧凾菴咏區遏ｭ邵ｮ") Then
-			cl_margin(0) = 0.94 'Invalid_string_refer_to_original_code
-			cl_margin(1) = 0.7 'Invalid_string_refer_to_original_code
-			cl_margin(2) = 0.85 'Invalid_string_refer_to_original_code
+		'強制改行の位置を設定
+		If IsOptionDefined("改行時余白短縮") Then
+			cl_margin(0) = 0.94 'メッセージ長の超過による改行の位置
+			cl_margin(1) = 0.7 '"。"," "による改行の位置
+			cl_margin(2) = 0.85 '"、"による改行の位置
 		Else
 			cl_margin(0) = 0.8
 			cl_margin(1) = 0.6
 			cl_margin(2) = 0.75
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'メッセージを分割
 		ReDim messages(1)
 		msg_head = 1
 		buf = ""
@@ -1313,13 +1297,13 @@ ErrorHandler:
 		Next 
 		messages(UBound(messages)) = buf & Mid(msg, msg_head)
 		
-		'Invalid_string_refer_to_original_code
+		'メッセージ長判定のため、元のメッセージを再構築
 		msg = ""
 		For i = 1 To UBound(messages)
 			msg = msg & messages(i)
 		Next 
 		
-		'Invalid_string_refer_to_original_code
+		'メッセージの表示
 		p = frmMessage.picMessage
 		msg_head = 1
 		prev_lnum = 0
@@ -1339,17 +1323,16 @@ ErrorHandler:
 			p.CurrentX = 1
 			
 			If msg_head = 1 Then
-				'Invalid_string_refer_to_original_code
+				'フォント設定を初期化
 				With p
 					.Font = VB6.FontChangeBold(.Font, False)
 					.Font = VB6.FontChangeItalic(.Font, False)
-					'UPGRADE_WARNING: Windows フォームでは、TrueType および OpenType フォントのみがサポートされます。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="971F4DF4-254E-44F4-861D-3AA0031FE361"' をクリックしてください。
-					.Font = VB6.FontChangeName(.Font, "Invalid_string_refer_to_original_code")
+					.Font = VB6.FontChangeName(.Font, "ＭＳ Ｐ明朝")
 					.Font = VB6.FontChangeSize(.Font, 12)
 					.ForeColor = System.Drawing.Color.Black
 				End With
 			Else
-				'Invalid_string_refer_to_original_code
+				'メッセージの途中から表示
 				If is_character_message Then
 					'UPGRADE_ISSUE: PictureBox メソッド p.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 					p.Print("  ")
@@ -1360,24 +1343,21 @@ ErrorHandler:
 			For j = counter To Len(buf)
 				ch = Mid(buf, j, 1)
 				
-				'Invalid_string_refer_to_original_code
+				'";"では必ず改行
 				If ch = ";" Then
 					If j <> line_head Then
 						PrintMessage(Mid(buf, line_head, j - line_head))
 						lnum = lnum + 1
-						'Invalid_string_refer_to_original_code_
-						'Invalid_string_refer_to_original_code_
-						'Then
-						'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-						'UPGRADE_ISSUE: PictureBox メソッド p.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-						p.Print(left_margin)
+						If is_character_message And ((lnum > 1 And IsOptionDefined("会話パイロット名改行")) Or (lnum > 0 And Not IsOptionDefined("会話パイロット名改行"))) Then
+							'UPGRADE_ISSUE: PictureBox メソッド p.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+							p.Print(left_margin)
+						End If
 					End If
+					line_head = j + 1
+					GoTo NextLoop
 				End If
-				line_head = j + 1
-				GoTo NextLoop
-				'End If
 				
-				'Invalid_string_refer_to_original_code
+				'タグ内では改行しない
 				If ch = "<" Then
 					in_tag = True
 					GoTo NextLoop
@@ -1387,124 +1367,94 @@ ErrorHandler:
 					GoTo NextLoop
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'メッセージが途切れてしまう場合は必ず改行
 				If MessageLen(Mid(buf, line_head, j - line_head)) > 0.95 * VB6.PixelsToTwipsX(p.Width) Then
 					PrintMessage(Mid(buf, line_head, j - line_head + 1))
 					lnum = lnum + 1
-					'Invalid_string_refer_to_original_code_
-					'Invalid_string_refer_to_original_code_
-					'Then
-					'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-					'UPGRADE_ISSUE: PictureBox メソッド p.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-					p.Print(left_margin)
+					If is_character_message And ((lnum > 1 And IsOptionDefined("会話パイロット名改行")) Or (lnum > 0 And Not IsOptionDefined("会話パイロット名改行"))) Then
+						'UPGRADE_ISSUE: PictureBox メソッド p.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+						p.Print(left_margin)
+					End If
+					line_head = j + 1
+					GoTo NextLoop
 				End If
-				line_head = j + 1
-				GoTo NextLoop
-				'End If
 				
-				'Invalid_string_refer_to_original_code
+				'禁則処理
 				Select Case Mid(buf, j + 1, 1)
-					Case "Invalid_string_refer_to_original_code"
-						'Invalid_string_refer_to_original_code_
-						'Invalid_string_refer_to_original_code_
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+					Case "。", "、", "…", "‥", "・", "･", "～", "ー", "－", "！", "？", "」", "』", "）", ")", " ", ";"
 						GoTo NextLoop
 				End Select
 				Select Case Mid(buf, j + 2, 1)
-					Case "Invalid_string_refer_to_original_code"
-						'Invalid_string_refer_to_original_code_
-						'Invalid_string_refer_to_original_code_
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+					Case "。", "、", "…", "‥", "・", "･", "～", "ー", "－", "！", "？", "」", "』", "）", ")", " ", ";"
 						GoTo NextLoop
 				End Select
 				If Mid(buf, j + 3, 1) = ";" Then
 					GoTo NextLoop
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'改行の判定
 				If MessageLen(Mid(messages(i), line_head)) < 0.95 * VB6.PixelsToTwipsX(p.Width) Then
-					'Invalid_string_refer_to_original_code
+					'全体が一行に収まる場合
 					GoTo NextLoop
 				End If
 				Select Case ch
-					Case "Invalid_string_refer_to_original_code"
+					Case "。"
 						If MessageLen(Mid(buf, line_head, j - line_head)) > cl_margin(1) * VB6.PixelsToTwipsX(p.Width) Then
 							PrintMessage(Mid(buf, line_head, j - line_head + 1))
 							lnum = lnum + 1
-							'Invalid_string_refer_to_original_code_
-							'Invalid_string_refer_to_original_code_
-							'Then
-							'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-							'UPGRADE_ISSUE: PictureBox メソッド p.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-							p.Print(left_margin)
+							If is_character_message And ((lnum > 1 And IsOptionDefined("会話パイロット名改行")) Or (lnum > 0 And Not IsOptionDefined("会話パイロット名改行"))) Then
+								'UPGRADE_ISSUE: PictureBox メソッド p.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+								p.Print(left_margin)
+							End If
+							line_head = j + 1
 						End If
-						line_head = j + 1
-						'End If
-					Case "Invalid_string_refer_to_original_code"
+					Case "、"
 						If MessageLen(Mid(buf, line_head, j - line_head)) > cl_margin(2) * VB6.PixelsToTwipsX(p.Width) Then
 							PrintMessage(Mid(buf, line_head, j - line_head + 1))
 							lnum = lnum + 1
-							'Invalid_string_refer_to_original_code_
-							'Invalid_string_refer_to_original_code_
-							'Then
-							'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-							'UPGRADE_ISSUE: PictureBox メソッド p.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-							p.Print(left_margin)
+							If is_character_message And ((lnum > 1 And IsOptionDefined("会話パイロット名改行")) Or (lnum > 0 And Not IsOptionDefined("会話パイロット名改行"))) Then
+								'UPGRADE_ISSUE: PictureBox メソッド p.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+								p.Print(left_margin)
+							End If
+							line_head = j + 1
 						End If
-						line_head = j + 1
-						'End If
 					Case " "
 						ch = Mid(buf, j - 1, 1)
-						'Invalid_string_refer_to_original_code
-						'Invalid_string_refer_to_original_code_
-						'Or ch = "窶ｦ" Or ch = "窶･" _
-						'Invalid_string_refer_to_original_code_
-						'Invalid_string_refer_to_original_code_
-						'Then
-						'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-						'Invalid_string_refer_to_original_code
-						If MessageLen(Mid(buf, line_head, j - line_head)) > cl_margin(1) * VB6.PixelsToTwipsX(p.Width) Then
-							PrintMessage(Mid(buf, line_head, j - line_head + 1))
-							lnum = lnum + 1
-							'Invalid_string_refer_to_original_code_
-							'Invalid_string_refer_to_original_code_
-							'Then
-							'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-							'UPGRADE_ISSUE: PictureBox メソッド p.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-							p.Print(left_margin)
+						'スペースが文の区切りに使われているかどうか判定
+						If pname <> "システム" And (ch = "！" Or ch = "？" Or ch = "…" Or ch = "‥" Or ch = "・" Or ch = "･" Or ch = "～") Then
+							'文の区切り
+							If MessageLen(Mid(buf, line_head, j - line_head)) > cl_margin(1) * VB6.PixelsToTwipsX(p.Width) Then
+								PrintMessage(Mid(buf, line_head, j - line_head + 1))
+								lnum = lnum + 1
+								If is_character_message And ((lnum > 1 And IsOptionDefined("会話パイロット名改行")) Or (lnum > 0 And Not IsOptionDefined("会話パイロット名改行"))) Then
+									'UPGRADE_ISSUE: PictureBox メソッド p.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+									p.Print(left_margin)
+								End If
+								line_head = j + 1
+							End If
+						Else
+							'単なる空白
+							If MessageLen(Mid(buf, line_head, j - line_head)) > cl_margin(0) * VB6.PixelsToTwipsX(p.Width) Then
+								PrintMessage(Mid(buf, line_head, j - line_head + 1))
+								lnum = lnum + 1
+								If is_character_message And ((lnum > 1 And IsOptionDefined("会話パイロット名改行")) Or (lnum > 0 And Not IsOptionDefined("会話パイロット名改行"))) Then
+									'UPGRADE_ISSUE: PictureBox メソッド p.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+									p.Print(left_margin)
+								End If
+								line_head = j + 1
+							End If
 						End If
-						line_head = j + 1
-						'End If
-						'蜊倥↑繧狗ｩｺ逋ｽ
-						If MessageLen(Mid(buf, line_head, j - line_head)) > cl_margin(0) * VB6.PixelsToTwipsX(p.Width) Then
-							PrintMessage(Mid(buf, line_head, j - line_head + 1))
-							lnum = lnum + 1
-							'Invalid_string_refer_to_original_code_
-							'Invalid_string_refer_to_original_code_
-							'Then
-							'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-							'UPGRADE_ISSUE: PictureBox メソッド p.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-							p.Print(left_margin)
-						End If
-						line_head = j + 1
-						'End If
-						'End If
 					Case Else
 						
 						If MessageLen(Mid(buf, line_head, j - line_head)) > cl_margin(0) * VB6.PixelsToTwipsX(p.Width) Then
 							PrintMessage(Mid(buf, line_head, j - line_head + 1))
 							lnum = lnum + 1
-							'Invalid_string_refer_to_original_code_
-							'Invalid_string_refer_to_original_code_
-							'Then
-							'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-							'UPGRADE_ISSUE: PictureBox メソッド p.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-							p.Print(left_margin)
+							If is_character_message And ((lnum > 1 And IsOptionDefined("会話パイロット名改行")) Or (lnum > 0 And Not IsOptionDefined("会話パイロット名改行"))) Then
+								'UPGRADE_ISSUE: PictureBox メソッド p.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+								p.Print(left_margin)
+							End If
+							line_head = j + 1
 						End If
-						line_head = j + 1
-						'End If
 				End Select
 NextLoop: 
 				If lnum = 4 Then
@@ -1515,7 +1465,7 @@ NextLoop:
 					End If
 				End If
 			Next 
-			'Invalid_string_refer_to_original_code
+			'残りの部分を表示
 			If lnum < 4 Then
 				If Len(buf) >= line_head Then
 					PrintMessage(Mid(buf, line_head))
@@ -1528,22 +1478,22 @@ NextLoop:
 				AutoMessageMode = False
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'ウィンドウのキャプションを設定
 			If AutoMessageMode Then
-				If frmMessage.Text = "Invalid_string_refer_to_original_code" Then
-					frmMessage.Text = "Invalid_string_refer_to_original_code"
+				If frmMessage.Text = "メッセージ" Then
+					frmMessage.Text = "メッセージ (自動送り)"
 				End If
 			Else
-				If frmMessage.Text = "Invalid_string_refer_to_original_code" Then
-					frmMessage.Text = "Invalid_string_refer_to_original_code"
+				If frmMessage.Text = "メッセージ (自動送り)" Then
+					frmMessage.Text = "メッセージ"
 				End If
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'次のメッセージ表示までの時間を設定(自動メッセージ送り用)
 			start_time = timeGetTime()
 			wait_time = (lnum - prev_lnum + 2) * (MessageWait + 250)
 			
-			'Invalid_string_refer_to_original_code
+			'次のメッセージ待ち
 			IsFormClicked = False
 			is_automode = AutoMessageMode
 			Do Until IsFormClicked
@@ -1555,7 +1505,7 @@ NextLoop:
 				
 				GetCursorPos(PT)
 				
-				'Invalid_string_refer_to_original_code
+				'メッセージウインドウ上でマウスボタンを押した場合
 				If System.Windows.Forms.Form.ActiveForm Is frmMessage Then
 					With frmMessage
 						If VB6.PixelsToTwipsX(.Left) \ VB6.TwipsPerPixelX <= PT.X And PT.X <= (VB6.PixelsToTwipsX(.Left) + VB6.PixelsToTwipsX(.Width)) \ VB6.TwipsPerPixelX And VB6.PixelsToTwipsY(.Top) \ VB6.TwipsPerPixelY <= PT.Y And PT.Y <= (VB6.PixelsToTwipsY(.Top) + VB6.PixelsToTwipsY(.Height)) \ VB6.TwipsPerPixelY Then
@@ -1563,18 +1513,18 @@ NextLoop:
 							rstate = GetAsyncKeyState(RButtonID)
 							If (lstate And &H8000) <> 0 Then
 								If start_time + wait_time < timeGetTime Then
-									'Invalid_string_refer_to_original_code
+									'左ボタンでメッセージの自動送り
 									Exit Do
 								End If
 							ElseIf (rstate And &H8000) <> 0 Then 
-								'Invalid_string_refer_to_original_code
+								'右ボタンでメッセージの早送り
 								Exit Do
 							End If
 						End If
 					End With
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'メインウインドウ上でマウスボタンを押した場合
 				If System.Windows.Forms.Form.ActiveForm Is MainForm Then
 					With MainForm
 						If VB6.PixelsToTwipsX(.Left) \ VB6.TwipsPerPixelX <= PT.X And PT.X <= (VB6.PixelsToTwipsX(.Left) + VB6.PixelsToTwipsX(.Width)) \ VB6.TwipsPerPixelX And VB6.PixelsToTwipsY(.Top) \ VB6.TwipsPerPixelY <= PT.Y And PT.Y <= (VB6.PixelsToTwipsY(.Top) + VB6.PixelsToTwipsY(.Height)) \ VB6.TwipsPerPixelY Then
@@ -1582,11 +1532,11 @@ NextLoop:
 							rstate = GetAsyncKeyState(RButtonID)
 							If (lstate And &H8000) <> 0 Then
 								If start_time + wait_time < timeGetTime Then
-									'Invalid_string_refer_to_original_code
+									'左ボタンでメッセージの自動送り
 									Exit Do
 								End If
 							ElseIf (rstate And &H8000) <> 0 Then 
-								'Invalid_string_refer_to_original_code
+								'右ボタンでメッセージの早送り
 								Exit Do
 							End If
 						End If
@@ -1596,21 +1546,21 @@ NextLoop:
 				Sleep(100)
 				System.Windows.Forms.Application.DoEvents()
 				
-				'Invalid_string_refer_to_original_code
+				'自動送りモードが切り替えられた場合
 				If is_automode <> AutoMessageMode Then
 					IsFormClicked = False
 					is_automode = AutoMessageMode
 					If AutoMessageMode Then
-						frmMessage.Text = "Invalid_string_refer_to_original_code"
+						frmMessage.Text = "メッセージ (自動送り)"
 						start_time = timeGetTime()
 						wait_time = (lnum - prev_lnum + 2) * (MessageWait + 250)
 					Else
-						frmMessage.Text = "Invalid_string_refer_to_original_code"
+						frmMessage.Text = "メッセージ"
 					End If
 				End If
 			Loop 
 			
-			'繧ｦ繧ｧ繧､繝郁ｨ育ｮ礼畑縺ｫ譌｢縺ｫ陦ｨ遉ｺ縺励◆陦梧焚繧定ｨ倬鹸
+			'ウェイト計算用に既に表示した行数を記録
 			If lnum < 4 Then
 				prev_lnum = lnum
 			Else
@@ -1618,12 +1568,11 @@ NextLoop:
 			End If
 		Loop 
 		
-		'Invalid_string_refer_to_original_code
+		'フォント設定を元に戻す
 		With p
 			.Font = VB6.FontChangeBold(.Font, False)
 			.Font = VB6.FontChangeItalic(.Font, False)
-			'UPGRADE_WARNING: Windows フォームでは、TrueType および OpenType フォントのみがサポートされます。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="971F4DF4-254E-44F4-861D-3AA0031FE361"' をクリックしてください。
-			.Font = VB6.FontChangeName(.Font, "Invalid_string_refer_to_original_code")
+			.Font = VB6.FontChangeName(.Font, "ＭＳ Ｐ明朝")
 			.Font = VB6.FontChangeSize(.Font, 12)
 			.ForeColor = System.Drawing.Color.Black
 		End With
@@ -1631,12 +1580,10 @@ NextLoop:
 		Exit Sub
 		
 ErrorHandler: 
-		ErrorMessage("Invalid_string_refer_to_original_code" & vbCr & vbLf & DisplayedPilot & vbCr & vbLf & "Invalid_string_refer_to_original_code")
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+		ErrorMessage("パイロット用画像ファイル" & vbCr & vbLf & DisplayedPilot & vbCr & vbLf & "の読み込み中にエラーが発生しました。" & vbCr & vbLf & "画像ファイルが壊れていないか確認して下さい。")
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'メッセージウィンドウに文字列を書き込む
 	Public Sub PrintMessage(ByRef msg As String, Optional ByVal is_sys_msg As Boolean = False)
 		Dim buf, tag, ch As String
 		Dim p As System.Windows.Forms.PictureBox
@@ -1652,14 +1599,14 @@ ErrorHandler:
 		For i = 1 To Len(msg)
 			ch = Mid(msg, i, 1)
 			
-			'Invalid_string_refer_to_original_code
+			'システムメッセージの時のみエスケープシーケンスの処理を行う
 			If is_sys_msg Then
 				Select Case ch
 					Case "["
 						escape_depth = escape_depth + 1
 						If escape_depth = 1 Then
-							'Invalid_string_refer_to_original_code
-							'Invalid_string_refer_to_original_code
+							'エスケープシーケンス開始
+							'それまでの文字列を出力
 							'UPGRADE_ISSUE: PictureBox メソッド p.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 							p.Print(Mid(msg, head, i - head))
 							head = i + 1
@@ -1668,8 +1615,8 @@ ErrorHandler:
 					Case "]"
 						escape_depth = escape_depth - 1
 						If escape_depth = 0 Then
-							'Invalid_string_refer_to_original_code
-							'Invalid_string_refer_to_original_code
+							'エスケープシーケンス終了
+							'エスケープシーケンスを出力
 							'UPGRADE_ISSUE: PictureBox メソッド p.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 							p.Print(Mid(msg, head, i - head))
 							head = i + 1
@@ -1678,13 +1625,13 @@ ErrorHandler:
 				End Select
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'タグの処理
 			Select Case ch
 				Case "<"
 					If Not in_tag And escape_depth = 0 Then
-						'Invalid_string_refer_to_original_code
+						'タグ開始
 						in_tag = True
-						'Invalid_string_refer_to_original_code
+						'それまでの文字列を出力
 						'UPGRADE_ISSUE: PictureBox メソッド p.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 						p.Print(Mid(msg, head, i - head))
 						head = i + 1
@@ -1692,13 +1639,13 @@ ErrorHandler:
 					End If
 				Case ">"
 					If in_tag Then
-						'Invalid_string_refer_to_original_code
+						'タグ終了
 						in_tag = False
 						
-						'Invalid_string_refer_to_original_code
+						'タグの切り出し
 						tag = LCase(Mid(msg, head, i - head))
 						
-						'Invalid_string_refer_to_original_code
+						'タグに合わせて各種処理を行う
 						Select Case tag
 							Case "b"
 								p.Font = VB6.FontChangeBold(p.Font, True)
@@ -1758,7 +1705,7 @@ ErrorHandler:
 								p.Print(">")
 							Case Else
 								If InStr(tag, "color=") = 1 Then
-									'Invalid_string_refer_to_original_code
+									'色設定
 									cname = GetValueAsString(Mid(tag, 7))
 									Select Case cname
 										Case "black"
@@ -1806,7 +1753,7 @@ ErrorHandler:
 											End If
 									End Select
 								ElseIf InStr(tag, "size=") = 1 Then 
-									'Invalid_string_refer_to_original_code
+									'サイズ設定
 									If IsNumeric(Mid(tag, 6)) Then
 										p.Font = VB6.FontChangeSize(p.Font, CInt(Mid(tag, 6)))
 										'UPGRADE_ISSUE: PictureBox プロパティ p.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
@@ -1826,7 +1773,7 @@ ErrorHandler:
 										p.CurrentY = last_y
 									End If
 								Else
-									'Invalid_string_refer_to_original_code
+									'タグではないのでそのまま書き出す
 									'UPGRADE_ISSUE: PictureBox メソッド p.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 									p.Print(Mid(msg, head - 1, i - head + 2))
 								End If
@@ -1839,48 +1786,48 @@ ErrorHandler:
 NextChar: 
 		Next 
 		
-		'Invalid_string_refer_to_original_code
+		'終了していないタグ、もしくはエスケープシーケンスはただの文字列と見なす
 		If in_tag Or escape_depth > 0 Then
 			head = head - 1
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'未出力の文字列を出力する
 		If head <= Len(msg) Then
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: PictureBox メソッド p.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-			p.Print(Mid(msg, head, Len(msg) - head))
-			
-			'UPGRADE_ISSUE: PictureBox プロパティ p.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-			last_x = p.CurrentX
-			'UPGRADE_ISSUE: PictureBox プロパティ p.CurrentY はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-			last_y = p.CurrentY
+			If Right(msg, 1) = "」" Then
+				'最後の括弧の位置は一番大きなサイズの文字に合わせる
+				'UPGRADE_ISSUE: PictureBox メソッド p.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+				p.Print(Mid(msg, head, Len(msg) - head))
+				
+				'UPGRADE_ISSUE: PictureBox プロパティ p.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+				last_x = p.CurrentX
+				'UPGRADE_ISSUE: PictureBox プロパティ p.CurrentY はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+				last_y = p.CurrentY
+				'UPGRADE_ISSUE: PictureBox メソッド p.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+				p.Print()
+				'UPGRADE_ISSUE: PictureBox プロパティ p.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+				p.CurrentX = last_x
+				'UPGRADE_ISSUE: PictureBox プロパティ p.CurrentY はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+				If p.CurrentY > max_y Then
+					'UPGRADE_ISSUE: PictureBox プロパティ p.CurrentY はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+					p.CurrentY = last_y
+				Else
+					'UPGRADE_ISSUE: PictureBox プロパティ p.CurrentY はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+					p.CurrentY = last_y + max_y - p.CurrentY
+				End If
+				
+				'UPGRADE_ISSUE: PictureBox メソッド p.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+				p.Print(Right(msg, 1))
+			Else
+				'UPGRADE_ISSUE: PictureBox メソッド p.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+				p.Print(Mid(msg, head))
+			End If
+		Else
+			'未出力の文字列がない場合は改行のみ
 			'UPGRADE_ISSUE: PictureBox メソッド p.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 			p.Print()
-			'UPGRADE_ISSUE: PictureBox プロパティ p.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-			p.CurrentX = last_x
-			'UPGRADE_ISSUE: PictureBox プロパティ p.CurrentY はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-			If p.CurrentY > max_y Then
-				'UPGRADE_ISSUE: PictureBox プロパティ p.CurrentY はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-				p.CurrentY = last_y
-			Else
-				'UPGRADE_ISSUE: PictureBox プロパティ p.CurrentY はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-				p.CurrentY = last_y + max_y - p.CurrentY
-			End If
-			
-			'UPGRADE_ISSUE: PictureBox メソッド p.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-			p.Print(Right(msg, 1))
-		Else
-			'UPGRADE_ISSUE: PictureBox メソッド p.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-			p.Print(Mid(msg, head))
 		End If
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: PictureBox メソッド p.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-		p.Print()
-		'End If
 		
-		'Invalid_string_refer_to_original_code
+		'改行後の位置は一番大きなサイズの文字に合わせる
 		'UPGRADE_ISSUE: PictureBox プロパティ p.CurrentY はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 		If max_y > p.CurrentY Then
 			'UPGRADE_ISSUE: PictureBox プロパティ p.CurrentY はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
@@ -1893,12 +1840,12 @@ NextChar:
 		p.CurrentX = 1
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'メッセージ幅を計算(タグを無視して)
 	Public Function MessageLen(ByVal msg As String) As Short
 		Dim buf As String
 		Dim ret As Short
 		
-		'Invalid_string_refer_to_original_code
+		'タグが存在する？
 		ret = InStr(msg, "<")
 		If ret = 0 Then
 			'UPGRADE_ISSUE: PictureBox メソッド picMessage.TextWidth はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
@@ -1906,7 +1853,7 @@ NextChar:
 			Exit Function
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'タグを除いたメッセージを作成
 		Do While ret > 0
 			buf = buf & Left(msg, ret - 1)
 			msg = Mid(msg, ret + 1)
@@ -1922,12 +1869,12 @@ NextChar:
 		Loop 
 		buf = buf & msg
 		
-		'Invalid_string_refer_to_original_code
+		'タグ抜きメッセージのピクセル幅を計算
 		'UPGRADE_ISSUE: PictureBox メソッド picMessage.TextWidth はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 		MessageLen = frmMessage.picMessage.TextWidth(buf)
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'メッセージウィンドウに戦闘メッセージを表示
 	Public Sub DisplayBattleMessage(ByRef pname As String, ByVal msg As String, Optional ByRef msg_mode As String = "")
 		Dim messages() As String
 		Dim i, j As Short
@@ -1951,7 +1898,7 @@ NextChar:
 		Static last_path As String
 		Dim cl_margin(2) As Single
 		
-		'Invalid_string_refer_to_original_code
+		'初めて実行する際に、各フォルダにBitmapフォルダがあるかチェック
 		If Not init_display_battle_message Then
 			'UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
 			If Len(Dir(ExtDataPath & "Bitmap", FileAttribute.Directory)) > 0 Then
@@ -1964,24 +1911,24 @@ NextChar:
 			init_display_battle_message = True
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'メッセージウィンドウが閉じられていれば表示しない
 		If frmMessage.WindowState = 1 Then
 			Exit Sub
 		End If
 		
-		'Invalid_string_refer_to_original_code
-		If frmMessage.Text = "Invalid_string_refer_to_original_code" Then
-			frmMessage.Text = "Invalid_string_refer_to_original_code"
+		'ウィンドウのキャプションを設定
+		If frmMessage.Text = "メッセージ (自動送り)" Then
+			frmMessage.Text = "メッセージ"
 		End If
 		
-		'繧ｭ繝｣繝ｩ陦ｨ遉ｺ縺ｮ謠上″謠帙∴
-		If pname = "Invalid_string_refer_to_original_code" Then
-			'Invalid_string_refer_to_original_code
+		'キャラ表示の描き換え
+		If pname = "システム" Then
+			'「システム」
 			frmMessage.picFace.Image = System.Drawing.Image.FromFile("")
 			frmMessage.picFace.Refresh()
 			DisplayedPilot = ""
 		ElseIf pname <> "" And pname <> "-" Then 
-			'Invalid_string_refer_to_original_code
+			'どのキャラ画像を使うか？
 			If PList.IsDefined(pname) Then
 				pnickname = PList.Item(pname).Nickname
 				fname = PList.Item(pname).Bitmap
@@ -1995,11 +1942,11 @@ NextChar:
 				fname = "-.bmp"
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'キャラ画像の表示
 			If fname <> "-.bmp" Then
 				fname = "Pilot\" & fname
 				If DisplayedPilot <> fname Or DisplayMode <> msg_mode Then
-					If DrawPicture(fname, 0, 0, 64, 64, 0, 0, 0, 0, "Invalid_string_refer_to_original_code" & msg_mode) Then
+					If DrawPicture(fname, 0, 0, 64, 64, 0, 0, 0, 0, "メッセージ " & msg_mode) Then
 						frmMessage.picFace.Refresh()
 						DisplayedPilot = fname
 						DisplayMode = msg_mode
@@ -2009,7 +1956,7 @@ NextChar:
 						DisplayedPilot = ""
 						DisplayMode = ""
 						
-						'Invalid_string_refer_to_original_code
+						'パイロット画像が存在しないことを記録しておく
 						If PList.IsDefined(pname) Then
 							With PList.Item(pname)
 								If .Bitmap = .Data.Bitmap Then
@@ -2031,17 +1978,17 @@ NextChar:
 			End If
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'メッセージが空なら表示は止める
 		If msg = "" Then
 			Exit Sub
 		End If
 		
 		p = frmMessage.picMessage
 		
-		'Invalid_string_refer_to_original_code
+		'メッセージウィンドウの状態を記録
 		SaveMessageFormStatus()
 		
-		'Invalid_string_refer_to_original_code
+		'メッセージを分割
 		ReDim messages(1)
 		line_head = 1
 		buf = ""
@@ -2064,18 +2011,18 @@ NextChar:
 		
 		wait_time = DEFAULT_LEVEL
 		
-		'Invalid_string_refer_to_original_code
-		If IsOptionDefined("謾ｹ陦梧凾菴咏區遏ｭ邵ｮ") Then
-			cl_margin(0) = 0.94 'Invalid_string_refer_to_original_code
-			cl_margin(1) = 0.7 'Invalid_string_refer_to_original_code
-			cl_margin(2) = 0.85 'Invalid_string_refer_to_original_code
+		'強制改行の位置を設定
+		If IsOptionDefined("改行時余白短縮") Then
+			cl_margin(0) = 0.94 'メッセージ長の超過による改行の位置
+			cl_margin(1) = 0.7 '"。"," "による改行の位置
+			cl_margin(2) = 0.85 '"、"による改行の位置
 		Else
 			cl_margin(0) = 0.8
 			cl_margin(1) = 0.6
 			cl_margin(2) = 0.75
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'各メッセージを表示
 		Dim fsuffix, fname0, fpath As String
 		Dim first_id, last_id As Short
 		Dim wait_time2 As Integer
@@ -2083,24 +2030,24 @@ NextChar:
 		For i = 1 To UBound(messages)
 			buf = messages(i)
 			
-			'Invalid_string_refer_to_original_code
+			'メッセージ内の式置換を処理
 			SaveBasePoint()
 			FormatMessage(buf)
 			RestoreBasePoint()
 			
-			'Invalid_string_refer_to_original_code
+			'特殊効果
 			Select Case LCase(Right(LIndex(buf, 1), 4))
 				Case ".bmp", ".jpg", ".gif", ".png"
 					
-					'Invalid_string_refer_to_original_code
+					'右ボタンを押されていたらスキップ
 					If IsRButtonPressed() Then
 						GoTo NextMessage
 					End If
 					
-					'Invalid_string_refer_to_original_code
+					'カットインの表示
 					fname = LIndex(buf, 1)
 					
-					'Invalid_string_refer_to_original_code
+					'アニメ指定かどうか判定
 					j = InStr(fname, "[")
 					If j > 0 And InStr(fname, "].") = Len(fname) - 4 Then
 						fname0 = Left(fname, j - 1)
@@ -2113,7 +2060,7 @@ NextChar:
 						first_id = -1
 					End If
 					
-					'逕ｻ蜒剰｡ｨ遉ｺ縺ｮ繧ｪ繝励す繝ｧ繝ｳ
+					'画像表示のオプション
 					options = ""
 					n = LLength(buf)
 					j = 2
@@ -2121,29 +2068,22 @@ NextChar:
 					Do While j <= n
 						buf2 = LIndex(buf, j)
 						Select Case buf2
-							Case "騾城℃", "閭梧勹", "Invalid_string_refer_to_original_code"
-								'Invalid_string_refer_to_original_code_
-								'Invalid_string_refer_to_original_code_
-								'Invalid_string_refer_to_original_code_
-								'Invalid_string_refer_to_original_code_
-								'Invalid_string_refer_to_original_code_
-								'Invalid_string_refer_to_original_code
-								'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+							Case "透過", "背景", "白黒", "セピア", "明", "暗", "上下反転", "左右反転", "上半分", "下半分", "右半分", "左半分", "右上", "左上", "右下", "左下", "ネガポジ反転", "シルエット", "夕焼け", "水中", "保持"
 								options = options & buf2 & " "
-							Case "豸亥悉"
+							Case "消去"
 								clear_every_time = True
-							Case "蜿ｳ蝗櫁ｻ｢"
+							Case "右回転"
 								j = j + 1
-								options = options & "蜿ｳ蝗櫁ｻ｢ " & LIndex(buf, j) & " "
-							Case "蟾ｦ蝗櫁ｻ｢"
+								options = options & "右回転 " & LIndex(buf, j) & " "
+							Case "左回転"
 								j = j + 1
-								options = options & "蟾ｦ蝗櫁ｻ｢ " & LIndex(buf, j) & " "
+								options = options & "左回転 " & LIndex(buf, j) & " "
 							Case "-"
-								'Invalid_string_refer_to_original_code
+								'スキップ
 								opt_n = j + 1
 							Case Else
 								If Asc(buf2) = 35 And Len(buf2) = 7 Then
-									'Invalid_string_refer_to_original_code
+									'透過色設定
 									cname = New String(vbNullChar, 8)
 									Mid(cname, 1, 2) = "&H"
 									Mid(cname, 3, 2) = Mid(buf2, 6, 2)
@@ -2155,7 +2095,7 @@ NextChar:
 										End If
 									End If
 								ElseIf IsNumeric(buf2) Then 
-									'Invalid_string_refer_to_original_code
+									'スキップ
 									opt_n = j + 1
 								End If
 						End Select
@@ -2163,7 +2103,7 @@ NextChar:
 					Loop 
 					
 					If Asc(fname) = 64 Then '@
-						'Invalid_string_refer_to_original_code
+						'パイロット画像切り替えの場合
 						
 						If first_id = -1 Then
 							fname = Mid(fname, 2)
@@ -2172,7 +2112,7 @@ NextChar:
 							fname = fname0 & VB6.Format(first_id, "00") & fsuffix
 						End If
 						
-						'Invalid_string_refer_to_original_code
+						'ウィンドウが表示されていなければ表示
 						If Not frmMessage.Visible Then
 							OpenMessageForm()
 						End If
@@ -2181,15 +2121,15 @@ NextChar:
 							start_time = timeGetTime()
 						End If
 						
-						'逕ｻ蜒剰｡ｨ遉ｺ縺ｮ繧ｪ繝励す繝ｧ繝ｳ
-						options = options & "Invalid_string_refer_to_original_code"
+						'画像表示のオプション
+						options = options & " メッセージ"
 						Select Case MapDrawMode
-							Case "繧ｻ繝斐い", "Invalid_string_refer_to_original_code"
+							Case "セピア", "白黒"
 								options = options & " " & MapDrawMode
 						End Select
 						
 						If first_id = -1 Then
-							'Invalid_string_refer_to_original_code
+							'１枚画像の場合
 							DrawPicture(fname, 0, 0, 64, 64, 0, 0, 0, 0, options)
 							frmMessage.picFace.Refresh()
 							
@@ -2199,7 +2139,7 @@ NextChar:
 								Loop 
 							End If
 						Else
-							'Invalid_string_refer_to_original_code
+							'アニメーションの場合
 							For j = first_id To last_id
 								fname = fpath & fname0 & VB6.Format(j, "00") & fsuffix
 								
@@ -2222,7 +2162,7 @@ NextChar:
 						GoTo NextMessage
 					End If
 					
-					'Invalid_string_refer_to_original_code
+					'表示画像のサイズ
 					If opt_n > 2 Then
 						buf2 = LIndex(buf, 2)
 						If buf2 = "-" Then
@@ -2241,7 +2181,7 @@ NextChar:
 						dh = CStr(DEFAULT_LEVEL)
 					End If
 					
-					'Invalid_string_refer_to_original_code
+					'表示画像の位置
 					If opt_n > 4 Then
 						buf2 = LIndex(buf, 4)
 						If buf2 = "-" Then
@@ -2265,7 +2205,7 @@ NextChar:
 					End If
 					
 					If first_id = -1 Then
-						'Invalid_string_refer_to_original_code
+						'１枚絵の場合
 						If clear_every_time Then
 							ClearPicture()
 						End If
@@ -2285,7 +2225,7 @@ NextChar:
 							wait_time = DEFAULT_LEVEL
 						End If
 					Else
-						'Invalid_string_refer_to_original_code
+						'アニメーションの場合
 						For j = first_id To last_id
 							fname = fname0 & VB6.Format(j, "00") & fsuffix
 							
@@ -2312,12 +2252,12 @@ NextChar:
 					GoTo NextMessage
 					
 				Case ".wav", ".mp3"
-					'Invalid_string_refer_to_original_code
+					'右ボタンを押されていたらスキップ
 					If IsRButtonPressed() Then
 						GoTo NextMessage
 					End If
 					
-					'Invalid_string_refer_to_original_code
+					'効果音の演奏
 					PlayWave(buf)
 					If wait_time > 0 Then
 						If need_refresh Then
@@ -2331,138 +2271,123 @@ NextChar:
 					GoTo NextMessage
 			End Select
 			
-			'Invalid_string_refer_to_original_code
+			'戦闘アニメ呼び出し
 			If Left(buf, 1) = "@" Then
 				ShowAnimation(Mid(buf, 2))
 				GoTo NextMessage
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'特殊コマンド
 			Select Case LCase(LIndex(buf, 1))
 				Case "clear"
-					'Invalid_string_refer_to_original_code
+					'カットインの消去
 					ClearPicture()
 					need_refresh = True
 					GoTo NextMessage
 					
 				Case "keep"
-					'Invalid_string_refer_to_original_code
+					'カットインの保存
 					IsPictureDrawn = False
 					GoTo NextMessage
 			End Select
 			
-			'Invalid_string_refer_to_original_code
+			'ウェイト
 			If IsNumeric(buf) Then
 				wait_time = 100 * CDbl(buf)
 				GoTo NextMessage
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'これよりメッセージの表示
 			
-			'Invalid_string_refer_to_original_code
+			'空メッセージの場合は表示しない
 			If buf = "" Then
 				GoTo NextMessage
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'メッセージウィンドウの状態が変化している場合は復元
 			KeepMessageFormStatus()
 			
 			With p
-				'繧ｦ繧｣繝ｳ繝峨え繧偵け繝ｪ繧｢
+				'ウィンドウをクリア
 				'UPGRADE_ISSUE: PictureBox メソッド p.Cls はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 				.Cls()
 				'UPGRADE_ISSUE: PictureBox プロパティ p.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 				.CurrentX = 1
 				
-				'Invalid_string_refer_to_original_code
+				'フォント設定を初期化
 				.Font = VB6.FontChangeBold(.Font, False)
 				.Font = VB6.FontChangeItalic(.Font, False)
-				'UPGRADE_WARNING: Windows フォームでは、TrueType および OpenType フォントのみがサポートされます。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="971F4DF4-254E-44F4-861D-3AA0031FE361"' をクリックしてください。
-				.Font = VB6.FontChangeName(.Font, "Invalid_string_refer_to_original_code")
+				.Font = VB6.FontChangeName(.Font, "ＭＳ Ｐ明朝")
 				.Font = VB6.FontChangeSize(.Font, 12)
 				.ForeColor = System.Drawing.Color.Black
 			End With
 			
-			'Invalid_string_refer_to_original_code
+			'話者名と括弧の表示処理
 			is_char_message = False
-			'Invalid_string_refer_to_original_code_
-			'Invalid_string_refer_to_original_code_
-			'Then
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			
-			is_char_message = True
-			
-			'Invalid_string_refer_to_original_code
-			If pname = "-" And Not SelectedUnit Is Nothing Then
-				If SelectedUnit.CountPilot > 0 Then
-					fname = SelectedUnit.MainPilot.Bitmap
-					If DrawPicture(fname, 0, 0, 64, 64, 0, 0, 0, 0, "Invalid_string_refer_to_original_code" & msg_mode) Then
-						frmMessage.picFace.Refresh()
-						DisplayedPilot = fname
-						DisplayMode = msg_mode
+			If pname <> "システム" And ((pname <> "" And pname <> "-") Or ((Left(buf, 1) = "「" And Right(buf, 1) = "」")) Or ((Left(buf, 1) = "『" And Right(buf, 1) = "』"))) Then
+				
+				is_char_message = True
+				
+				'話者のグラフィックを表示
+				If pname = "-" And Not SelectedUnit Is Nothing Then
+					If SelectedUnit.CountPilot > 0 Then
+						fname = SelectedUnit.MainPilot.Bitmap
+						If DrawPicture(fname, 0, 0, 64, 64, 0, 0, 0, 0, "メッセージ " & msg_mode) Then
+							frmMessage.picFace.Refresh()
+							DisplayedPilot = fname
+							DisplayMode = msg_mode
+						End If
 					End If
 				End If
-			End If
-			
-			'Invalid_string_refer_to_original_code
-			If pnickname = "" And pname = "-" And Not SelectedUnit Is Nothing Then
-				If SelectedUnit.CountPilot > 0 Then
+				
+				'話者名を表示
+				If pnickname = "" And pname = "-" And Not SelectedUnit Is Nothing Then
+					If SelectedUnit.CountPilot > 0 Then
+						'UPGRADE_ISSUE: PictureBox メソッド p.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+						p.Print(SelectedUnit.MainPilot.Nickname)
+					End If
+				ElseIf pnickname <> "" Then 
 					'UPGRADE_ISSUE: PictureBox メソッド p.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-					p.Print(SelectedUnit.MainPilot.Nickname)
+					p.Print(pnickname)
 				End If
-			ElseIf pnickname <> "" Then 
-				'UPGRADE_ISSUE: PictureBox メソッド p.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-				p.Print(pnickname)
-			End If
-			
-			'Invalid_string_refer_to_original_code
-			If Right(buf, 1) <> ":" Then
-				with_footer = True
+				
+				'メッセージが途中で終わっているか判定
+				If Right(buf, 1) <> ":" Then
+					with_footer = True
+				Else
+					with_footer = False
+					prev_lnum = lnum
+					buf = Left(buf, Len(buf) - 1)
+				End If
+				
+				'括弧を付加
+				If (Left(buf, 1) = "(" Or Left(buf, 1) = "（") And (Not with_footer Or (Right(buf, 1) = ")" Or Right(buf, 1) = "）")) Then
+					'モノローグ
+					If with_footer Then
+						buf = Mid(buf, 2, Len(buf) - 2)
+						buf = "（" & buf & "）"
+					Else
+						buf = Mid(buf, 2)
+						buf = "（" & buf
+					End If
+				ElseIf Left(buf, 1) = "「" And (Not with_footer Or Right(buf, 1) = "」") Then 
+					'「」の括弧が既にあるので変更しない
+				ElseIf Left(buf, 1) = "『" And (Not with_footer Or Right(buf, 1) = "』") Then 
+					'『』の括弧が既にあるので変更しない
+				Else
+					If with_footer Then
+						buf = "「" & buf & "」"
+					Else
+						buf = "「" & buf
+					End If
+				End If
 			Else
-				with_footer = False
-				prev_lnum = lnum
-				buf = Left(buf, Len(buf) - 1)
+				'メッセージが途中で終わっているか判定
+				If Right(buf, 1) = ":" Then
+					prev_lnum = lnum
+					buf = Left(buf, Len(buf) - 1)
+				End If
 			End If
-			
-			'諡ｬ蠑ｧ繧剃ｻ伜刈
-			'Invalid_string_refer_to_original_code_
-			'Invalid_string_refer_to_original_code_
-			'Then
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			'繝｢繝弱Ο繝ｼ繧ｰ
-			If with_footer Then
-				buf = Mid(buf, 2, Len(buf) - 2)
-				buf = "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			Else
-				buf = Mid(buf, 2)
-				buf = "Invalid_string_refer_to_original_code"
-			End If
-			'Invalid_string_refer_to_original_code_
-			'Invalid_string_refer_to_original_code_
-			'Then
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code_
-			'Invalid_string_refer_to_original_code_
-			'Then
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			'Invalid_string_refer_to_original_code
-			If with_footer Then
-				buf = "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			Else
-				buf = "Invalid_string_refer_to_original_code"
-			End If
-			'End If
-			'Invalid_string_refer_to_original_code
-			If Right(buf, 1) = ":" Then
-				prev_lnum = lnum
-				buf = Left(buf, Len(buf) - 1)
-			End If
-			'End If
 			prev_lnum = MaxLng(prev_lnum, 1)
 			
 			lnum = 0
@@ -2470,7 +2395,7 @@ NextChar:
 			For j = 1 To Len(buf)
 				ch = Mid(buf, j, 1)
 				
-				'Invalid_string_refer_to_original_code
+				'「.」の場合は必ず改行
 				If ch = "." Then
 					If j <> line_head Then
 						PrintMessage(Mid(buf, line_head, j - line_head), Not is_char_message)
@@ -2484,7 +2409,7 @@ NextChar:
 					GoTo NextLoop
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'タグ内では改行しない
 				If ch = "<" Then
 					in_tag = True
 					GoTo NextLoop
@@ -2494,7 +2419,7 @@ NextChar:
 					GoTo NextLoop
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'メッセージが途切れてしまう場合は必ず改行
 				If MessageLen(Mid(buf, line_head, j - line_head)) > 0.95 * VB6.PixelsToTwipsX(p.Width) Then
 					PrintMessage(Mid(buf, line_head, j - line_head + 1), Not is_char_message)
 					If is_char_message Then
@@ -2506,34 +2431,26 @@ NextChar:
 					GoTo NextLoop
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'禁則処理
 				Select Case Mid(buf, j + 1, 1)
-					Case "Invalid_string_refer_to_original_code"
-						'Invalid_string_refer_to_original_code_
-						'Invalid_string_refer_to_original_code_
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+					Case "。", "、", "…", "‥", "・", "･", "～", "ー", "－", "！", "？", "」", "』", "）", ")", " ", "."
 						GoTo NextLoop
 				End Select
 				Select Case Mid(buf, j + 2, 1)
-					Case "Invalid_string_refer_to_original_code"
-						'Invalid_string_refer_to_original_code_
-						'Invalid_string_refer_to_original_code_
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+					Case "。", "、", "…", "‥", "・", "･", "～", "ー", "－", "！", "？", "」", "』", "）", ")", " ", "."
 						GoTo NextLoop
 				End Select
 				If Mid(buf, j + 3, 1) = "." Then
 					GoTo NextLoop
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'改行の判定
 				If MessageLen(Mid(messages(i), line_head)) < 0.95 * VB6.PixelsToTwipsX(p.Width) Then
-					'Invalid_string_refer_to_original_code
+					'全体が一行に収まる場合
 					GoTo NextLoop
 				End If
 				Select Case ch
-					Case "Invalid_string_refer_to_original_code"
+					Case "。"
 						If MessageLen(Mid(buf, line_head, j - line_head)) > cl_margin(1) * VB6.PixelsToTwipsX(p.Width) Then
 							PrintMessage(Mid(buf, line_head, j - line_head + 1), Not is_char_message)
 							If is_char_message Then
@@ -2553,7 +2470,7 @@ NextChar:
 							line_head = j + 1
 							lnum = lnum + 1
 						End If
-					Case "Invalid_string_refer_to_original_code"
+					Case "、"
 						If MessageLen(Mid(buf, line_head, j - line_head)) > cl_margin(2) * VB6.PixelsToTwipsX(p.Width) Then
 							PrintMessage(Mid(buf, line_head, j - line_head + 1), Not is_char_message)
 							If is_char_message Then
@@ -2576,32 +2493,30 @@ NextChar:
 				End Select
 NextLoop: 
 			Next 
-			'Invalid_string_refer_to_original_code
+			'メッセージの残りを表示しておく
 			If Len(buf) >= line_head Then
 				PrintMessage(Mid(buf, line_head), Not is_char_message)
 				lnum = lnum + 1
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'フォント設定を元に戻す
 			With p
 				.Font = VB6.FontChangeBold(.Font, False)
 				.Font = VB6.FontChangeItalic(.Font, False)
-				'UPGRADE_WARNING: Windows フォームでは、TrueType および OpenType フォントのみがサポートされます。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="971F4DF4-254E-44F4-861D-3AA0031FE361"' をクリックしてください。
-				.Font = VB6.FontChangeName(.Font, "Invalid_string_refer_to_original_code")
+				.Font = VB6.FontChangeName(.Font, "ＭＳ Ｐ明朝")
 				.Font = VB6.FontChangeSize(.Font, 12)
 				.ForeColor = System.Drawing.Color.Black
 			End With
 			
-			'Invalid_string_refer_to_original_code
+			'デフォルトのウェイト
 			If wait_time = DEFAULT_LEVEL Then
 				wait_time = (lnum - prev_lnum + 1) * MessageWait
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				wait_time = wait_time \ 2
+				If msg_mode = "高速" Then
+					wait_time = wait_time \ 2
+				End If
 			End If
-			'End If
 			
-			'逕ｻ髱｢繧呈峩譁ｰ
+			'画面を更新
 			If need_refresh Then
 				'UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 				MainForm.picMain(0).Refresh()
@@ -2609,16 +2524,16 @@ NextLoop:
 			End If
 			System.Windows.Forms.Application.DoEvents()
 			
-			'Invalid_string_refer_to_original_code
+			'待ち時間が切れるまで待機
 			start_time = timeGetTime()
 			IsFormClicked = False
 			Do While (start_time + wait_time > timeGetTime())
-				'Invalid_string_refer_to_original_code
+				'左ボタンが押されたらメッセージ送り
 				If IsFormClicked Then
 					Exit Do
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'右ボタンを押されていたら早送り
 				If IsRButtonPressed() Then
 					Exit Do
 				End If
@@ -2630,29 +2545,29 @@ NextLoop:
 NextMessage: 
 		Next 
 		
-		'Invalid_string_refer_to_original_code
+		'戦闘アニメデータのカットイン表示？
 		If pname = "-" Then
 			Exit Sub
 		End If
 		
-		'逕ｻ髱｢繧呈峩譁ｰ
+		'画面を更新
 		If need_refresh Then
 			'UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 			MainForm.picMain(0).Refresh()
 			need_refresh = False
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'メッセージデータの最後にウェイトの指定が行われていた場合
 		If wait_time > 0 Then
 			start_time = timeGetTime()
 			IsFormClicked = False
 			Do While (start_time + wait_time > timeGetTime())
-				'Invalid_string_refer_to_original_code
+				'左ボタンが押されたらメッセージ送り
 				If IsFormClicked Then
 					Exit Do
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'右ボタンを押されていたら早送り
 				If IsRButtonPressed() Then
 					Exit Do
 				End If
@@ -2662,7 +2577,7 @@ NextMessage:
 			Loop 
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'メッセージウィンドウの状態が変化している場合は復元
 		KeepMessageFormStatus()
 		
 		System.Windows.Forms.Application.DoEvents()
@@ -2670,12 +2585,10 @@ NextMessage:
 		Exit Sub
 		
 ErrorHandler: 
-		ErrorMessage("逕ｻ蜒上ヵ繧｡繧､繝ｫ" & vbCr & vbLf & fname & vbCr & vbLf & "Invalid_string_refer_to_original_code")
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+		ErrorMessage("画像ファイル" & vbCr & vbLf & fname & vbCr & vbLf & "の読み込み中にエラーが発生しました。" & vbCr & vbLf & "画像ファイルが壊れていないか確認して下さい。")
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'システムによるメッセージを表示
 	Public Sub DisplaySysMessage(ByVal msg As String, Optional ByVal short_wait As Boolean = False)
 		Dim j, i, line_head As Short
 		Dim ch, buf As String
@@ -2684,44 +2597,43 @@ ErrorHandler:
 		Dim start_time, wait_time As Integer
 		Dim in_tag As Boolean
 		
-		'Invalid_string_refer_to_original_code
+		'メッセージウィンドウが表示されていない場合は表示をキャンセル
 		If frmMessage.WindowState = 1 Then
 			Exit Sub
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'メッセージ内の式を置換
 		FormatMessage(msg)
 		
-		'Invalid_string_refer_to_original_code
-		If frmMessage.Text = "Invalid_string_refer_to_original_code" Then
-			frmMessage.Text = "Invalid_string_refer_to_original_code"
+		'ウィンドウのキャプションを設定
+		If frmMessage.Text = "メッセージ (自動送り)" Then
+			frmMessage.Text = "メッセージ"
 		End If
 		
 		p = frmMessage.picMessage
 		
 		With p
-			'Invalid_string_refer_to_original_code
+			'メッセージウィンドウをクリア
 			'UPGRADE_ISSUE: PictureBox メソッド p.Cls はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 			.Cls()
 			'UPGRADE_ISSUE: PictureBox プロパティ p.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 			.CurrentX = 1
 			
-			'Invalid_string_refer_to_original_code
+			'フォント設定を初期化
 			.Font = VB6.FontChangeBold(.Font, False)
 			.Font = VB6.FontChangeItalic(.Font, False)
-			'UPGRADE_WARNING: Windows フォームでは、TrueType および OpenType フォントのみがサポートされます。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="971F4DF4-254E-44F4-861D-3AA0031FE361"' をクリックしてください。
-			.Font = VB6.FontChangeName(.Font, "Invalid_string_refer_to_original_code")
+			.Font = VB6.FontChangeName(.Font, "ＭＳ Ｐ明朝")
 			.Font = VB6.FontChangeSize(.Font, 12)
 			.ForeColor = System.Drawing.Color.Black
 		End With
 		
-		'Invalid_string_refer_to_original_code
+		'メッセージを表示
 		lnum = 0
 		line_head = 1
 		For i = 1 To Len(msg)
 			ch = Mid(msg, i, 1)
 			
-			'Invalid_string_refer_to_original_code
+			'「;」の場合は必ず改行
 			If ch = ";" Then
 				If line_head <> i Then
 					buf = Mid(msg, line_head, i - line_head)
@@ -2732,7 +2644,7 @@ ErrorHandler:
 				GoTo NextLoop
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'タグ内では改行しない
 			If ch = "<" Then
 				in_tag = True
 				GoTo NextLoop
@@ -2742,20 +2654,18 @@ ErrorHandler:
 				GoTo NextLoop
 			End If
 			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			GoTo NextLoop
-			'End If
-			If i < Len(msg) Then
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+			'禁則処理
+			If ch = "。" Or ch = "、" Then
 				GoTo NextLoop
 			End If
-			'End If
+			If i < Len(msg) Then
+				If Mid(msg, i + 1, 1) = "。" Or Mid(msg, i + 1, 1) = "、" Then
+					GoTo NextLoop
+				End If
+			End If
 			
 			If MessageLen(Mid(msg, line_head)) < VB6.PixelsToTwipsX(p.Width) Then
-				'Invalid_string_refer_to_original_code
+				'全体が一行に収まる場合
 				GoTo NextLoop
 			End If
 			
@@ -2770,7 +2680,7 @@ ErrorHandler:
 				lnum = lnum + 1
 				line_head = i + 1
 			ElseIf ch = "[" Then 
-				'Invalid_string_refer_to_original_code
+				'[]で囲まれた文字列内では改行しない
 				For j = i To Len(msg)
 					If Mid(msg, j, 1) = "]" Then
 						Exit For
@@ -2789,17 +2699,16 @@ NextLoop:
 		PrintMessage(buf, True)
 		lnum = lnum + 1
 		
-		'Invalid_string_refer_to_original_code
+		'フォント設定を元に戻す
 		With p
 			.Font = VB6.FontChangeBold(.Font, False)
 			.Font = VB6.FontChangeItalic(.Font, False)
-			'UPGRADE_WARNING: Windows フォームでは、TrueType および OpenType フォントのみがサポートされます。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="971F4DF4-254E-44F4-861D-3AA0031FE361"' をクリックしてください。
-			.Font = VB6.FontChangeName(.Font, "Invalid_string_refer_to_original_code")
+			.Font = VB6.FontChangeName(.Font, "ＭＳ Ｐ明朝")
 			.Font = VB6.FontChangeSize(.Font, 12)
 			.ForeColor = System.Drawing.Color.Black
 		End With
 		
-		'Invalid_string_refer_to_original_code
+		'ウェイトを計算
 		wait_time = (0.8 + 0.5 * lnum) * MessageWait
 		If short_wait Then
 			wait_time = wait_time \ 2
@@ -2807,16 +2716,16 @@ NextLoop:
 		
 		System.Windows.Forms.Application.DoEvents()
 		
-		'Invalid_string_refer_to_original_code
+		'待ち時間が切れるまで待機
 		IsFormClicked = False
 		start_time = timeGetTime()
 		Do While (start_time + wait_time > timeGetTime())
-			'Invalid_string_refer_to_original_code
+			'左ボタンが押されたらメッセージ送り
 			If IsFormClicked Then
 				Exit Do
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'右ボタンを押されていたら早送り
 			If IsRButtonPressed() Then
 				Exit Do
 			End If
@@ -2827,9 +2736,9 @@ NextLoop:
 	End Sub
 	
 	
-	'Invalid_string_refer_to_original_code
+	' === マップウィンドウに関する処理 ===
 	
-	'Invalid_string_refer_to_original_code
+	'マップ画面背景の設定
 	Public Sub SetupBackground(Optional ByRef draw_mode As String = "", Optional ByRef draw_option As String = "", Optional ByRef filter_color As Integer = 0, Optional ByRef filter_trans_par As Double = 0)
 		Dim B As Object
 		Dim k, i, j, ret As Short
@@ -2845,23 +2754,23 @@ NextLoop:
 		IsPictureVisible = False
 		IsCursorVisible = False
 		
-		'Invalid_string_refer_to_original_code
+		'ユニット画像色を変更しないといけない場合
 		If MapDrawMode <> draw_mode Then
 			UList.ClearUnitBitmap()
 			MapDrawMode = draw_mode
 			MapDrawFilterColor = filter_color
 			MapDrawFilterTransPercent = filter_trans_par
-		ElseIf draw_mode = "繝輔ぅ繝ｫ繧ｿ" And (MapDrawFilterColor <> filter_color Or MapDrawFilterTransPercent <> filter_trans_par) Then 
+		ElseIf draw_mode = "フィルタ" And (MapDrawFilterColor <> filter_color Or MapDrawFilterTransPercent <> filter_trans_par) Then 
 			UList.ClearUnitBitmap()
 			MapDrawMode = draw_mode
 			MapDrawFilterColor = filter_color
 			MapDrawFilterTransPercent = filter_trans_par
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'マップ背景の設定
 		With MainForm
 			Select Case draw_option
-				Case "Invalid_string_refer_to_original_code"
+				Case "ステータス"
 					'UPGRADE_ISSUE: Control picBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 					With .picBack
 						'UPGRADE_ISSUE: Control picBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
@@ -2873,14 +2782,14 @@ NextLoop:
 					MapY = MainHeight \ 2 + 1
 			End Select
 			
-			'Invalid_string_refer_to_original_code
+			'各マスのマップ画像を表示
 			For i = 1 To MapWidth
 				For j = 1 To MapHeight
 					xx = 32 * (i - 1)
 					yy = 32 * (j - 1)
 					
 					'DEL START 240a
-					'Invalid_string_refer_to_original_code
+					'                'マップ画像が既に読み込まれているか判定
 					'                For k = 1 To terrain_bmp_count
 					'                    If terrain_bmp_type(k) = MapData(i, j, 0) _
 					''                        And terrain_bmp_num(k) = MapData(i, j, 1) _
@@ -2890,22 +2799,22 @@ NextLoop:
 					'                Next
 					
 					'                If k <= terrain_bmp_count Then
-					'Invalid_string_refer_to_original_code
+					'                    '既に描画済みの画像は描画した個所から転送
 					'                    ret = BitBlt(.picBack.hDC, _
 					''                        xx, yy, 32, 32, _
 					''                        .picBack.hDC, terrain_bmp_x(k), terrain_bmp_y(k), SRCCOPY)
 					'                    MapImageFileTypeData(i, j) = _
 					''                        MapImageFileTypeData(terrain_bmp_x(k) \ 32 + 1, terrain_bmp_y(k) \ 32 + 1)
 					'                Else
-					'Invalid_string_refer_to_original_code
+					'                    '新規の画像の場合
 					'DEL  END  240a
-					'Invalid_string_refer_to_original_code
+					'画像ファイルを探す
 					'MOD START 240a
 					'                fname = SearchTerrainImageFile(MapData(i, j, 0), MapData(i, j, 1), i, j)
 					fname = SearchTerrainImageFile(MapData(i, j, Map.MapDataIndex.TerrainType), MapData(i, j, Map.MapDataIndex.BitmapNo), i, j)
 					'MOD  END  240a
 					
-					'逕ｻ蜒上ｒ蜿悶ｊ霎ｼ縺ｿ
+					'画像を取り込み
 					If fname <> "" Then
 						On Error GoTo ErrorHandler
 						'UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
@@ -2916,39 +2825,39 @@ NextLoop:
 						ret = PatBlt(.picTmp32(0).hDC, 0, 0, 32, 32, BLACKNESS)
 					End If
 					
-					'繝槭ャ繝苓ｨｭ螳壹↓繧医▲縺ｦ陦ｨ遉ｺ濶ｲ繧貞､画峩
+					'マップ設定によって表示色を変更
 					Select Case draw_mode
-						Case "Invalid_string_refer_to_original_code"
+						Case "夜"
 							'UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 							GetImage(.picTmp32(0))
 							Dark()
 							'UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 							SetImage(.picTmp32(0))
-						Case "繧ｻ繝斐い"
+						Case "セピア"
 							'UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 							GetImage(.picTmp32(0))
 							Sepia()
 							'UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 							SetImage(.picTmp32(0))
-						Case "Invalid_string_refer_to_original_code"
+						Case "白黒"
 							'UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 							GetImage(.picTmp32(0))
 							Monotone()
 							'UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 							SetImage(.picTmp32(0))
-						Case "Invalid_string_refer_to_original_code"
+						Case "夕焼け"
 							'UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 							GetImage(.picTmp32(0))
 							Sunset()
 							'UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 							SetImage(.picTmp32(0))
-						Case "豌ｴ荳ｭ"
+						Case "水中"
 							'UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 							GetImage(.picTmp32(0))
 							Water()
 							'UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 							SetImage(.picTmp32(0))
-						Case "繝輔ぅ繝ｫ繧ｿ"
+						Case "フィルタ"
 							'UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 							GetImage(.picTmp32(0))
 							ColorFilter(MapDrawFilterColor, MapDrawFilterTransPercent)
@@ -2956,12 +2865,12 @@ NextLoop:
 							SetImage(.picTmp32(0))
 					End Select
 					
-					'逕ｻ蜒上ｒ謠上″霎ｼ縺ｿ
+					'画像を描き込み
 					'UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 					'UPGRADE_ISSUE: Control picBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 					ret = BitBlt(.picBack.hDC, xx, yy, 32, 32, .picTmp32(0).hDC, 0, 0, SRCCOPY)
 					'DEL START 240a
-					'                    '逕ｻ蜒上ｒ逋ｻ骭ｲ
+					'                    '画像を登録
 					'                    terrain_bmp_count = terrain_bmp_count + 1
 					'                    ReDim Preserve terrain_bmp_type(terrain_bmp_count)
 					'                    ReDim Preserve terrain_bmp_num(terrain_bmp_count)
@@ -2974,51 +2883,51 @@ NextLoop:
 					'                End If
 					'DEL  END  240a
 					'ADD START 240a
-					'Invalid_string_refer_to_original_code
+					'レイヤー描画する必要がある場合は描画する
 					If Map.BoxTypes.Upper = MapData(i, j, Map.MapDataIndex.BoxType) Or Map.BoxTypes.UpperBmpOnly = MapData(i, j, Map.MapDataIndex.BoxType) Then
-						'Invalid_string_refer_to_original_code
+						'画像ファイルを探す
 						fname = SearchTerrainImageFile(MapData(i, j, Map.MapDataIndex.LayerType), MapData(i, j, Map.MapDataIndex.LayerBitmapNo), i, j)
 						
-						'逕ｻ蜒上ｒ蜿悶ｊ霎ｼ縺ｿ
+						'画像を取り込み
 						If fname <> "" Then
 							On Error GoTo ErrorHandler
 							'UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 							.picTmp32(0) = System.Drawing.Image.FromFile(fname)
 							On Error GoTo 0
 							BGColor = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.White)
-							'繝槭ャ繝苓ｨｭ螳壹↓繧医▲縺ｦ陦ｨ遉ｺ濶ｲ繧貞､画峩
+							'マップ設定によって表示色を変更
 							Select Case draw_mode
-								Case "Invalid_string_refer_to_original_code"
+								Case "夜"
 									'UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 									GetImage(.picTmp32(0))
 									Dark(True)
 									'UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 									SetImage(.picTmp32(0))
-								Case "繧ｻ繝斐い"
+								Case "セピア"
 									'UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 									GetImage(.picTmp32(0))
 									Sepia(True)
 									'UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 									SetImage(.picTmp32(0))
-								Case "Invalid_string_refer_to_original_code"
+								Case "白黒"
 									'UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 									GetImage(.picTmp32(0))
 									Monotone(True)
 									'UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 									SetImage(.picTmp32(0))
-								Case "Invalid_string_refer_to_original_code"
+								Case "夕焼け"
 									'UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 									GetImage(.picTmp32(0))
 									Sunset(True)
 									'UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 									SetImage(.picTmp32(0))
-								Case "豌ｴ荳ｭ"
+								Case "水中"
 									'UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 									GetImage(.picTmp32(0))
 									Water(True)
 									'UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 									SetImage(.picTmp32(0))
-								Case "繝輔ぅ繝ｫ繧ｿ"
+								Case "フィルタ"
 									'UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 									GetImage(.picTmp32(0))
 									ColorFilter(MapDrawFilterColor, MapDrawFilterTransPercent, True)
@@ -3026,7 +2935,7 @@ NextLoop:
 									SetImage(.picTmp32(0))
 							End Select
 							
-							'逕ｻ蜒上ｒ騾城℃謠上″霎ｼ縺ｿ
+							'画像を透過描き込み
 							'UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 							'UPGRADE_ISSUE: Control picBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 							ret = TransparentBlt(.picBack.hDC, xx, yy, 32, 32, .picTmp32(0).hDC, 0, 0, 32, 32, BGColor)
@@ -3036,9 +2945,9 @@ NextLoop:
 					'ADD  END  240a
 				Next 
 			Next 
-			'Invalid_string_refer_to_original_code
+			'MapDrawn:  '使用されていないラベルなので削除
 			
-			'繝槭せ逶ｮ縺ｮ陦ｨ遉ｺ
+			'マス目の表示
 			If ShowSquareLine Then
 				'UPGRADE_ISSUE: Control picBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 				MainForm.picBack.Line((0, 0) - (MapPWidth - 1, MapPHeight - 1), RGB(100, 100, 100), B)
@@ -3052,7 +2961,7 @@ NextLoop:
 				Next 
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'マスク入り背景画面を作成
 			'UPGRADE_ISSUE: Control picBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 			'UPGRADE_ISSUE: Control picMaskedBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 			ret = BitBlt(.picMaskedBack.hDC, 0, 0, MapPWidth, MapPHeight, .picBack.hDC, 0, 0, SRCCOPY)
@@ -3070,7 +2979,7 @@ NextLoop:
 			Next 
 		End With
 		
-		'逕ｻ髱｢繧呈峩譁ｰ
+		'画面を更新
 		If MapFileName <> "" And draw_option = "" Then
 			RefreshScreen()
 		End If
@@ -3078,37 +2987,35 @@ NextLoop:
 		Exit Sub
 		
 ErrorHandler: 
-		ErrorMessage("Invalid_string_refer_to_original_code" & vbCr & vbLf & fname & vbCr & vbLf & "Invalid_string_refer_to_original_code")
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+		ErrorMessage("マップ用ビットマップファイル" & vbCr & vbLf & fname & vbCr & vbLf & "の読み込み中にエラーが発生しました。" & vbCr & vbLf & "画像ファイルが壊れていないか確認して下さい。")
 		TerminateSRC()
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'画面の書き換え (ユニット表示からやり直し)
 	Public Sub RedrawScreen(Optional ByVal late_refresh As Boolean = False)
 		Dim PT As POINTAPI
 		Dim ret As Integer
 		
 		ScreenIsMasked = False
 		
-		'逕ｻ髱｢繧呈峩譁ｰ
+		'画面を更新
 		RefreshScreen(False, late_refresh)
 		
-		'Invalid_string_refer_to_original_code
+		'カーソルを再描画
 		GetCursorPos(PT)
 		ret = SetCursorPos(PT.X, PT.Y)
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'画面をマスクがけして再表示
 	Public Sub MaskScreen()
 		ScreenIsMasked = True
 		
-		'逕ｻ髱｢繧呈峩譁ｰ
+		'画面を更新
 		RefreshScreen()
 	End Sub
 	
 	' ADD START MARGE
-	'Invalid_string_refer_to_original_code
+	'画面の書き換え
 	Public Sub RefreshScreen(Optional ByVal without_refresh As Boolean = False, Optional ByVal delay_refresh As Boolean = False)
 		
 		If NewGUIMode Then
@@ -3120,7 +3027,7 @@ ErrorHandler:
 	' ADD END MARGE
 	
 	
-	'Invalid_string_refer_to_original_code
+	'画面の書き換え (旧GUI)
 	' MOD START MARGE
 	'Public Sub RefreshScreen(Optional ByVal without_refresh As Boolean, _
 	''    Optional ByVal delay_refresh As Boolean)
@@ -3139,12 +3046,12 @@ ErrorHandler:
 		Dim PT As POINTAPI
 		Dim prev_color As Integer
 		
-		'Invalid_string_refer_to_original_code
+		'マップデータが設定されていなければ画面書き換えを行わない
 		If MapWidth = 1 Then
 			Exit Sub
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'表示位置がマップ外にある場合はマップ内に合わせる
 		If MapX < 1 Then
 			MapX = 1
 		ElseIf MapX > MapWidth Then 
@@ -3169,7 +3076,7 @@ ErrorHandler:
 				PaintedAreaX2 = -1
 				PaintedAreaY2 = -1
 				
-				'Invalid_string_refer_to_original_code
+				'マップウィンドウのスクロールバーの位置を変更
 				If Not IsGUILocked Then
 					'UPGRADE_ISSUE: Control HScroll は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 					If .HScroll.Value <> MapX Then
@@ -3185,7 +3092,7 @@ ErrorHandler:
 					End If
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'一旦マップウィンドウの内容を消去
 				'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 				ret = PatBlt(pic.hDC, 0, 0, MainPWidth, MainPHeight, BLACKNESS)
 			End If
@@ -3193,7 +3100,7 @@ ErrorHandler:
 			mx = MapX - (MainWidth + 1) \ 2 + 1
 			my_Renamed = MapY - (MainHeight + 1) \ 2 + 1
 			
-			'Invalid_string_refer_to_original_code
+			'マップ画像の転送元と転送先を計算する
 			
 			If mx < 1 Then
 				sx = 1
@@ -3229,13 +3136,13 @@ ErrorHandler:
 				dh = MainHeight
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'直線を描画する際の描画色を黒に変更
 			prev_color = System.Drawing.ColorTranslator.ToOle(pic.ForeColor)
 			pic.ForeColor = System.Drawing.Color.Black
 			
-			'Invalid_string_refer_to_original_code
+			'表示内容を更新
 			If Not ScreenIsMasked Then
-				'騾壼ｸｸ陦ｨ遉ｺ
+				'通常表示
 				For i = 0 To dw - 1
 					xx = 32 * (dx + i - 1)
 					For j = 0 To dh - 1
@@ -3247,129 +3154,41 @@ ErrorHandler:
 						
 						u = MapDataForUnit(sx + i, sy + j)
 						If u Is Nothing Then
-							'蝨ｰ蠖｢
+							'地形
 							'UPGRADE_ISSUE: Control picBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 							'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 							ret = BitBlt(pic.hDC, xx, yy, 32, 32, .picBack.hDC, 32 * (sx + i - 1), 32 * (sy + j - 1), SRCCOPY)
 						ElseIf u.BitmapID = -1 Then 
-							'Invalid_string_refer_to_original_code
+							'非表示のユニット
 							'UPGRADE_ISSUE: Control picBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 							'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 							ret = BitBlt(pic.hDC, xx, yy, 32, 32, .picBack.hDC, 32 * (sx + i - 1), 32 * (sy + j - 1), SRCCOPY)
-						End If
-						
-						'Invalid_string_refer_to_original_code
-						Select Case u.Area
-							Case "遨ｺ荳ｭ"
+						Else
+							If u.Action > 0 Or u.IsFeatureAvailable("地形ユニット") Then
+								'ユニット
+								'UPGRADE_ISSUE: Control picUnitBitmap は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 								'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-								ret = MoveToEx(pic.hDC, xx, yy + 28, PT)
+								ret = BitBlt(pic.hDC, xx, yy, 32, 32, .picUnitBitmap.hDC, 32 * (u.BitmapID Mod 15), 96 * (u.BitmapID \ 15), SRCCOPY)
+							Else
+								'行動済のユニット
+								'UPGRADE_ISSUE: Control picUnitBitmap は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 								'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-								ret = LineTo(pic.hDC, xx + 31, yy + 28)
-							Case "豌ｴ荳ｭ"
-								'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-								ret = MoveToEx(pic.hDC, xx, yy + 3, PT)
-								'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-								ret = LineTo(pic.hDC, xx + 31, yy + 3)
-							Case "蝨ｰ荳ｭ"
-								'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-								ret = MoveToEx(pic.hDC, xx, yy + 28, PT)
-								'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-								ret = LineTo(pic.hDC, xx + 31, yy + 28)
-								'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-								ret = MoveToEx(pic.hDC, xx, yy + 3, PT)
-								'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-								ret = LineTo(pic.hDC, xx + 31, yy + 3)
-							Case "Invalid_string_refer_to_original_code"
-								If TerrainClass(sx + i, sy + j) = "譛磯擇" Then
+								ret = BitBlt(pic.hDC, xx, yy, 32, 32, .picUnitBitmap.hDC, 32 * (u.BitmapID Mod 15), 96 * (u.BitmapID \ 15) + 32, SRCCOPY)
+							End If
+							
+							'ユニットのいる場所に合わせて表示を変更
+							Select Case u.Area
+								Case "空中"
 									'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 									ret = MoveToEx(pic.hDC, xx, yy + 28, PT)
 									'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 									ret = LineTo(pic.hDC, xx + 31, yy + 28)
-								End If
-						End Select
-					Next 
-				Next 
-			End If
-			
-NextLoop: 
-			'Next
-			'Next
-			'繝槭せ繧ｯ陦ｨ遉ｺ
-			For i = 0 To dw - 1
-				xx = 32 * (dx + i - 1)
-				For j = 0 To dh - 1
-					If sx + i < 1 Or sx + i > MapWidth Or sy + j < 1 Or sy + j > MapHeight Then
-						GoTo NextLoop2
-					End If
-					
-					yy = 32 * (dy + j - 1)
-					
-					u = MapDataForUnit(sx + i, sy + j)
-					If u Is Nothing Then
-						If MaskData(sx + i, sy + j) Then
-							'繝槭せ繧ｯ縺輔ｌ縺溷慍蠖｢
-							'UPGRADE_ISSUE: Control picMaskedBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-							'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-							ret = BitBlt(pic.hDC, xx, yy, 32, 32, .picMaskedBack.hDC, 32 * (sx + i - 1), 32 * (sy + j - 1), SRCCOPY)
-						Else
-							'蝨ｰ蠖｢
-							'UPGRADE_ISSUE: Control picBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-							'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-							ret = BitBlt(pic.hDC, xx, yy, 32, 32, .picBack.hDC, 32 * (sx + i - 1), 32 * (sy + j - 1), SRCCOPY)
-						End If
-					ElseIf u.BitmapID = -1 Then 
-						'Invalid_string_refer_to_original_code
-						If MaskData(sx + i, sy + j) Then
-							'繝槭せ繧ｯ縺輔ｌ縺溷慍蠖｢
-							'UPGRADE_ISSUE: Control picMaskedBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-							'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-							ret = BitBlt(pic.hDC, xx, yy, 32, 32, .picMaskedBack.hDC, 32 * (sx + i - 1), 32 * (sy + j - 1), SRCCOPY)
-						Else
-							'蝨ｰ蠖｢
-							'UPGRADE_ISSUE: Control picBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-							'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-							ret = BitBlt(pic.hDC, xx, yy, 32, 32, .picBack.hDC, 32 * (sx + i - 1), 32 * (sy + j - 1), SRCCOPY)
-						End If
-					Else
-						If MaskData(sx + i, sy + j) Then
-							'Invalid_string_refer_to_original_code
-							'UPGRADE_ISSUE: Control picUnitBitmap は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-							'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-							ret = BitBlt(pic.hDC, xx, yy, 32, 32, .picUnitBitmap.hDC, 32 * (u.BitmapID Mod 15), 96 * (u.BitmapID \ 15) + 64, SRCCOPY)
-							
-							'Invalid_string_refer_to_original_code
-							Select Case u.Area
-								Case "遨ｺ荳ｭ"
-									DottedLine(xx, yy + 28)
-								Case "豌ｴ荳ｭ"
-									DottedLine(xx, yy + 3)
-								Case "蝨ｰ荳ｭ"
-									DottedLine(xx, yy + 28)
-									DottedLine(xx, yy + 3)
-								Case "Invalid_string_refer_to_original_code"
-									If TerrainClass(sx + i, sy + j) = "譛磯擇" Then
-										DottedLine(xx, yy + 28)
-									End If
-							End Select
-						Else
-							'Invalid_string_refer_to_original_code
-							'UPGRADE_ISSUE: Control picUnitBitmap は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-							'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-							ret = BitBlt(pic.hDC, xx, yy, 32, 32, .picUnitBitmap.hDC, 32 * (u.BitmapID Mod 15), 96 * (u.BitmapID \ 15), SRCCOPY)
-							
-							'Invalid_string_refer_to_original_code
-							Select Case u.Area
-								Case "遨ｺ荳ｭ"
-									'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-									ret = MoveToEx(pic.hDC, xx, yy + 28, PT)
-									'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-									ret = LineTo(pic.hDC, xx + 31, yy + 28)
-								Case "豌ｴ荳ｭ"
+								Case "水中"
 									'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 									ret = MoveToEx(pic.hDC, xx, yy + 3, PT)
 									'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 									ret = LineTo(pic.hDC, xx + 31, yy + 3)
-								Case "蝨ｰ荳ｭ"
+								Case "地中"
 									'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 									ret = MoveToEx(pic.hDC, xx, yy + 28, PT)
 									'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
@@ -3378,8 +3197,8 @@ NextLoop:
 									ret = MoveToEx(pic.hDC, xx, yy + 3, PT)
 									'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 									ret = LineTo(pic.hDC, xx + 31, yy + 3)
-								Case "Invalid_string_refer_to_original_code"
-									If TerrainClass(sx + i, sy + j) = "譛磯擇" Then
+								Case "宇宙"
+									If TerrainClass(sx + i, sy + j) = "月面" Then
 										'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 										ret = MoveToEx(pic.hDC, xx, yy + 28, PT)
 										'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
@@ -3387,17 +3206,115 @@ NextLoop:
 									End If
 							End Select
 						End If
-					End If
-					
-NextLoop2: 
+						
+NextLoop: 
+					Next 
 				Next 
-			Next 
-			'End If
+			Else
+				'マスク表示
+				For i = 0 To dw - 1
+					xx = 32 * (dx + i - 1)
+					For j = 0 To dh - 1
+						If sx + i < 1 Or sx + i > MapWidth Or sy + j < 1 Or sy + j > MapHeight Then
+							GoTo NextLoop2
+						End If
+						
+						yy = 32 * (dy + j - 1)
+						
+						u = MapDataForUnit(sx + i, sy + j)
+						If u Is Nothing Then
+							If MaskData(sx + i, sy + j) Then
+								'マスクされた地形
+								'UPGRADE_ISSUE: Control picMaskedBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+								'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+								ret = BitBlt(pic.hDC, xx, yy, 32, 32, .picMaskedBack.hDC, 32 * (sx + i - 1), 32 * (sy + j - 1), SRCCOPY)
+							Else
+								'地形
+								'UPGRADE_ISSUE: Control picBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+								'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+								ret = BitBlt(pic.hDC, xx, yy, 32, 32, .picBack.hDC, 32 * (sx + i - 1), 32 * (sy + j - 1), SRCCOPY)
+							End If
+						ElseIf u.BitmapID = -1 Then 
+							'非表示のユニット
+							If MaskData(sx + i, sy + j) Then
+								'マスクされた地形
+								'UPGRADE_ISSUE: Control picMaskedBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+								'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+								ret = BitBlt(pic.hDC, xx, yy, 32, 32, .picMaskedBack.hDC, 32 * (sx + i - 1), 32 * (sy + j - 1), SRCCOPY)
+							Else
+								'地形
+								'UPGRADE_ISSUE: Control picBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+								'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+								ret = BitBlt(pic.hDC, xx, yy, 32, 32, .picBack.hDC, 32 * (sx + i - 1), 32 * (sy + j - 1), SRCCOPY)
+							End If
+						Else
+							If MaskData(sx + i, sy + j) Then
+								'マスクされたユニット
+								'UPGRADE_ISSUE: Control picUnitBitmap は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+								'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+								ret = BitBlt(pic.hDC, xx, yy, 32, 32, .picUnitBitmap.hDC, 32 * (u.BitmapID Mod 15), 96 * (u.BitmapID \ 15) + 64, SRCCOPY)
+								
+								'ユニットのいる場所に合わせて表示を変更
+								Select Case u.Area
+									Case "空中"
+										DottedLine(xx, yy + 28)
+									Case "水中"
+										DottedLine(xx, yy + 3)
+									Case "地中"
+										DottedLine(xx, yy + 28)
+										DottedLine(xx, yy + 3)
+									Case "宇宙"
+										If TerrainClass(sx + i, sy + j) = "月面" Then
+											DottedLine(xx, yy + 28)
+										End If
+								End Select
+							Else
+								'ユニット
+								'UPGRADE_ISSUE: Control picUnitBitmap は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+								'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+								ret = BitBlt(pic.hDC, xx, yy, 32, 32, .picUnitBitmap.hDC, 32 * (u.BitmapID Mod 15), 96 * (u.BitmapID \ 15), SRCCOPY)
+								
+								'ユニットのいる場所に合わせて表示を変更
+								Select Case u.Area
+									Case "空中"
+										'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+										ret = MoveToEx(pic.hDC, xx, yy + 28, PT)
+										'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+										ret = LineTo(pic.hDC, xx + 31, yy + 28)
+									Case "水中"
+										'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+										ret = MoveToEx(pic.hDC, xx, yy + 3, PT)
+										'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+										ret = LineTo(pic.hDC, xx + 31, yy + 3)
+									Case "地中"
+										'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+										ret = MoveToEx(pic.hDC, xx, yy + 28, PT)
+										'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+										ret = LineTo(pic.hDC, xx + 31, yy + 28)
+										'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+										ret = MoveToEx(pic.hDC, xx, yy + 3, PT)
+										'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+										ret = LineTo(pic.hDC, xx + 31, yy + 3)
+									Case "宇宙"
+										If TerrainClass(sx + i, sy + j) = "月面" Then
+											'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+											ret = MoveToEx(pic.hDC, xx, yy + 28, PT)
+											'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+											ret = LineTo(pic.hDC, xx + 31, yy + 28)
+										End If
+								End Select
+							End If
+						End If
+						
+NextLoop2: 
+					Next 
+				Next 
+			End If
 			
-			'Invalid_string_refer_to_original_code
+			'描画色を元に戻しておく
 			pic.ForeColor = System.Drawing.ColorTranslator.FromOle(prev_color)
 			
-			'逕ｻ髱｢縺梧嶌縺肴鋤縺医ｉ繧後◆縺薙→繧定ｨ倬鹸
+			'画面が書き換えられたことを記録
 			ScreenIsSaved = False
 			
 			If Not without_refresh And Not delay_refresh Then
@@ -3408,7 +3325,7 @@ NextLoop2:
 	End Sub
 	
 	' ADD START MARGE
-	'Invalid_string_refer_to_original_code
+	'画面の書き換え (新GUI)
 	Private Sub RefreshScreenNew(Optional ByVal without_refresh As Boolean = False, Optional ByVal delay_refresh As Boolean = False)
 		Dim pic As System.Windows.Forms.PictureBox
 		'UPGRADE_NOTE: my は my_Renamed にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
@@ -3423,12 +3340,12 @@ NextLoop2:
 		Dim PT As POINTAPI
 		Dim prev_color As Integer
 		
-		'Invalid_string_refer_to_original_code
+		'マップデータが設定されていなければ画面書き換えを行わない
 		If MapWidth = 1 Then
 			Exit Sub
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'表示位置がマップ外にある場合はマップ内に合わせる
 		If MapX < 1 Then
 			MapX = 1
 		ElseIf MapX > MapWidth Then 
@@ -3453,7 +3370,7 @@ NextLoop2:
 				PaintedAreaX2 = -1
 				PaintedAreaY2 = -1
 				
-				'Invalid_string_refer_to_original_code
+				'マップウィンドウのスクロールバーの位置を変更
 				If Not IsGUILocked Then
 					'UPGRADE_ISSUE: Control HScroll は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 					If .HScroll.Value <> MapX Then
@@ -3469,7 +3386,7 @@ NextLoop2:
 					End If
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'一旦マップウィンドウの内容を消去
 				'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 				ret = PatBlt(pic.hDC, 0, 0, MainPWidth, MainPHeight, BLACKNESS)
 			End If
@@ -3477,7 +3394,7 @@ NextLoop2:
 			mx = MapX - (MainWidth + 1) \ 2 + 1
 			my_Renamed = MapY - (MainHeight + 1) \ 2 + 1
 			
-			'Invalid_string_refer_to_original_code
+			'マップ画像の転送元と転送先を計算する
 			
 			If mx < 1 Then
 				sx = 1
@@ -3513,13 +3430,13 @@ NextLoop2:
 				dh = MainHeight
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'直線を描画する際の描画色を黒に変更
 			prev_color = System.Drawing.ColorTranslator.ToOle(pic.ForeColor)
 			pic.ForeColor = System.Drawing.Color.Black
 			
-			'Invalid_string_refer_to_original_code
+			'表示内容を更新
 			If Not ScreenIsMasked Then
-				'騾壼ｸｸ陦ｨ遉ｺ
+				'通常表示
 				For i = -1 To dw - 1
 					xx = 32 * (dx + i - 0.5)
 					For j = 0 To dh - 1
@@ -3532,178 +3449,43 @@ NextLoop2:
 						u = MapDataForUnit(sx + i, sy + j)
 						
 						If i = -1 Then
-							'Invalid_string_refer_to_original_code
+							'画面左端は16ピクセル幅分だけ表示
 							If u Is Nothing Then
-								'蝨ｰ蠖｢
+								'地形
 								'UPGRADE_ISSUE: Control picBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 								'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 								ret = BitBlt(pic.hDC, 0, yy, 16, 32, .picBack.hDC, 32 * (sx - 1.5), 32 * (sy + j - 1), SRCCOPY)
 							ElseIf u.BitmapID = -1 Then 
-								'Invalid_string_refer_to_original_code
+								'非表示のユニット
 								'UPGRADE_ISSUE: Control picBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 								'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 								ret = BitBlt(pic.hDC, 0, yy, 16, 32, .picBack.hDC, 32 * (sx - 1.5), 32 * (sy + j - 1), SRCCOPY)
-							End If
-							
-							'Invalid_string_refer_to_original_code
-							Select Case u.Area
-								Case "遨ｺ荳ｭ"
+							Else
+								If u.Action > 0 Or u.IsFeatureAvailable("地形ユニット") Then
+									'ユニット
+									'UPGRADE_ISSUE: Control picUnitBitmap は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 									'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-									ret = MoveToEx(pic.hDC, 0, yy + 28, PT)
+									ret = BitBlt(pic.hDC, 0, yy, 16, 32, .picUnitBitmap.hDC, 32 * (u.BitmapID Mod 15) + 16, 96 * (u.BitmapID \ 15), SRCCOPY)
+								Else
+									'行動済のユニット
+									'UPGRADE_ISSUE: Control picUnitBitmap は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 									'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-									ret = LineTo(pic.hDC, 0 + 15, yy + 28)
-								Case "豌ｴ荳ｭ"
-									'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-									ret = MoveToEx(pic.hDC, 0, yy + 3, PT)
-									'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-									ret = LineTo(pic.hDC, 0 + 15, yy + 3)
-								Case "蝨ｰ荳ｭ"
-									'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-									ret = MoveToEx(pic.hDC, 0, yy + 28, PT)
-									'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-									ret = LineTo(pic.hDC, 0 + 15, yy + 28)
-									'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-									ret = MoveToEx(pic.hDC, 0, yy + 3, PT)
-									'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-									ret = LineTo(pic.hDC, 0 + 15, yy + 3)
-								Case "Invalid_string_refer_to_original_code"
-									If TerrainClass(sx + i, sy + j) = "譛磯擇" Then
+									ret = BitBlt(pic.hDC, 0, yy, 16, 32, .picUnitBitmap.hDC, 32 * (u.BitmapID Mod 15) + 16, 96 * (u.BitmapID \ 15) + 32, SRCCOPY)
+								End If
+								
+								'ユニットのいる場所に合わせて表示を変更
+								Select Case u.Area
+									Case "空中"
 										'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 										ret = MoveToEx(pic.hDC, 0, yy + 28, PT)
 										'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 										ret = LineTo(pic.hDC, 0 + 15, yy + 28)
-									End If
-							End Select
-						End If
-					Next 
-				Next 
-			Else
-				'Invalid_string_refer_to_original_code
-				If u Is Nothing Then
-					'蝨ｰ蠖｢
-					'UPGRADE_ISSUE: Control picBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-					'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-					ret = BitBlt(pic.hDC, xx, yy, 32, 32, .picBack.hDC, 32 * (sx + i - 1), 32 * (sy + j - 1), SRCCOPY)
-				ElseIf u.BitmapID = -1 Then 
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: Control picBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-					'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-					ret = BitBlt(pic.hDC, xx, yy, 32, 32, .picBack.hDC, 32 * (sx + i - 1), 32 * (sy + j - 1), SRCCOPY)
-				End If
-				
-				'Invalid_string_refer_to_original_code
-				Select Case u.Area
-					Case "遨ｺ荳ｭ"
-						'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-						ret = MoveToEx(pic.hDC, xx, yy + 28, PT)
-						'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-						ret = LineTo(pic.hDC, xx + 31, yy + 28)
-					Case "豌ｴ荳ｭ"
-						'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-						ret = MoveToEx(pic.hDC, xx, yy + 3, PT)
-						'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-						ret = LineTo(pic.hDC, xx + 31, yy + 3)
-					Case "蝨ｰ荳ｭ"
-						'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-						ret = MoveToEx(pic.hDC, xx, yy + 28, PT)
-						'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-						ret = LineTo(pic.hDC, xx + 31, yy + 28)
-						'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-						ret = MoveToEx(pic.hDC, xx, yy + 3, PT)
-						'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-						ret = LineTo(pic.hDC, xx + 31, yy + 3)
-					Case "Invalid_string_refer_to_original_code"
-						If TerrainClass(sx + i, sy + j) = "譛磯擇" Then
-							'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-							ret = MoveToEx(pic.hDC, xx, yy + 28, PT)
-							'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-							ret = LineTo(pic.hDC, xx + 31, yy + 28)
-						End If
-				End Select
-			End If
-			'End If
-NextLoop: 
-			'Next
-			'Next
-			'繝槭せ繧ｯ陦ｨ遉ｺ
-			For i = -1 To dw - 1
-				xx = 32 * (dx + i - 0.5)
-				For j = 0 To dh - 1
-					yy = 32 * (dy + j - 1)
-					
-					If sx + i < 1 Or sx + i > MapWidth Or sy + j < 1 Or sy + j > MapHeight Then
-						GoTo NextLoop2
-					End If
-					
-					u = MapDataForUnit(sx + i, sy + j)
-					
-					If i = -1 Then
-						'Invalid_string_refer_to_original_code
-						If u Is Nothing Then
-							If MaskData(sx + i, sy + j) Then
-								'繝槭せ繧ｯ縺輔ｌ縺溷慍蠖｢
-								'UPGRADE_ISSUE: Control picMaskedBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-								'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-								ret = BitBlt(pic.hDC, 0, yy, 16, 32, .picMaskedBack.hDC, 32 * (sx - 1.5), 32 * (sy + j - 1), SRCCOPY)
-							Else
-								'蝨ｰ蠖｢
-								'UPGRADE_ISSUE: Control picBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-								'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-								ret = BitBlt(pic.hDC, 0, yy, 16, 32, .picBack.hDC, 32 * (sx - 1.5), 32 * (sy + j - 1), SRCCOPY)
-							End If
-						ElseIf u.BitmapID = -1 Then 
-							'Invalid_string_refer_to_original_code
-							If MaskData(sx + i, sy + j) Then
-								'繝槭せ繧ｯ縺輔ｌ縺溷慍蠖｢
-								'UPGRADE_ISSUE: Control picMaskedBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-								'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-								ret = BitBlt(pic.hDC, 0, yy, 16, 32, .picMaskedBack.hDC, 32 * (sx - 1.5), 32 * (sy + j - 1), SRCCOPY)
-							Else
-								'蝨ｰ蠖｢
-								'UPGRADE_ISSUE: Control picBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-								'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-								ret = BitBlt(pic.hDC, 0, yy, 16, 32, .picBack.hDC, 32 * (sx - 1.5), 32 * (sy + j - 1), SRCCOPY)
-							End If
-						Else
-							If MaskData(sx + i, sy + j) Then
-								'Invalid_string_refer_to_original_code
-								'UPGRADE_ISSUE: Control picUnitBitmap は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-								'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-								ret = BitBlt(pic.hDC, 0, yy, 16, 32, .picUnitBitmap.hDC, 32 * (u.BitmapID Mod 15) + 16, 96 * (u.BitmapID \ 15) + 64, SRCCOPY)
-								
-								'Invalid_string_refer_to_original_code
-								Select Case u.Area
-									Case "遨ｺ荳ｭ"
-										DottedLine(0, yy + 28, True)
-									Case "豌ｴ荳ｭ"
-										DottedLine(0, yy + 3, True)
-									Case "蝨ｰ荳ｭ"
-										DottedLine(0, yy + 28, True)
-										DottedLine(0, yy + 3, True)
-									Case "Invalid_string_refer_to_original_code"
-										If TerrainClass(sx + i, sy + j) = "譛磯擇" Then
-											DottedLine(0, yy + 28, True)
-										End If
-								End Select
-							Else
-								'Invalid_string_refer_to_original_code
-								'UPGRADE_ISSUE: Control picUnitBitmap は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-								'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-								ret = BitBlt(pic.hDC, 0, yy, 16, 32, .picUnitBitmap.hDC, 32 * (u.BitmapID Mod 15) + 16, 96 * (u.BitmapID \ 15), SRCCOPY)
-								
-								'Invalid_string_refer_to_original_code
-								Select Case u.Area
-									Case "遨ｺ荳ｭ"
-										'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-										ret = MoveToEx(pic.hDC, 0, yy + 28, PT)
-										'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-										ret = LineTo(pic.hDC, 0 + 15, yy + 28)
-									Case "豌ｴ荳ｭ"
+									Case "水中"
 										'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 										ret = MoveToEx(pic.hDC, 0, yy + 3, PT)
 										'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 										ret = LineTo(pic.hDC, 0 + 15, yy + 3)
-									Case "蝨ｰ荳ｭ"
+									Case "地中"
 										'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 										ret = MoveToEx(pic.hDC, 0, yy + 28, PT)
 										'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
@@ -3712,8 +3494,8 @@ NextLoop:
 										ret = MoveToEx(pic.hDC, 0, yy + 3, PT)
 										'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 										ret = LineTo(pic.hDC, 0 + 15, yy + 3)
-									Case "Invalid_string_refer_to_original_code"
-										If TerrainClass(sx + i, sy + j) = "譛磯擇" Then
+									Case "宇宙"
+										If TerrainClass(sx + i, sy + j) = "月面" Then
 											'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 											ret = MoveToEx(pic.hDC, 0, yy + 28, PT)
 											'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
@@ -3721,74 +3503,44 @@ NextLoop:
 										End If
 								End Select
 							End If
-						End If
-					Else
-						'Invalid_string_refer_to_original_code
-						If u Is Nothing Then
-							If MaskData(sx + i, sy + j) Then
-								'繝槭せ繧ｯ縺輔ｌ縺溷慍蠖｢
-								'UPGRADE_ISSUE: Control picMaskedBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-								'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-								ret = BitBlt(pic.hDC, xx, yy, 32, 32, .picMaskedBack.hDC, 32 * (sx + i - 1), 32 * (sy + j - 1), SRCCOPY)
-							Else
-								'蝨ｰ蠖｢
-								'UPGRADE_ISSUE: Control picBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-								'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-								ret = BitBlt(pic.hDC, xx, yy, 32, 32, .picBack.hDC, 32 * (sx + i - 1), 32 * (sy + j - 1), SRCCOPY)
-							End If
-						ElseIf u.BitmapID = -1 Then 
-							'Invalid_string_refer_to_original_code
-							If MaskData(sx + i, sy + j) Then
-								'繝槭せ繧ｯ縺輔ｌ縺溷慍蠖｢
-								'UPGRADE_ISSUE: Control picMaskedBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-								'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-								ret = BitBlt(pic.hDC, xx, yy, 32, 32, .picMaskedBack.hDC, 32 * (sx + i - 1), 32 * (sy + j - 1), SRCCOPY)
-							Else
-								'蝨ｰ蠖｢
-								'UPGRADE_ISSUE: Control picBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-								'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-								ret = BitBlt(pic.hDC, xx, yy, 32, 32, .picBack.hDC, 32 * (sx + i - 1), 32 * (sy + j - 1), SRCCOPY)
-							End If
 						Else
-							If MaskData(sx + i, sy + j) Then
-								'Invalid_string_refer_to_original_code
-								'UPGRADE_ISSUE: Control picUnitBitmap は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+							'画面左端以外は全32ピクセル幅分だけ表示
+							If u Is Nothing Then
+								'地形
+								'UPGRADE_ISSUE: Control picBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 								'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-								ret = BitBlt(pic.hDC, xx, yy, 32, 32, .picUnitBitmap.hDC, 32 * (u.BitmapID Mod 15), 96 * (u.BitmapID \ 15) + 64, SRCCOPY)
-								
-								'Invalid_string_refer_to_original_code
-								Select Case u.Area
-									Case "遨ｺ荳ｭ"
-										DottedLine(xx, yy + 28)
-									Case "豌ｴ荳ｭ"
-										DottedLine(xx, yy + 3)
-									Case "蝨ｰ荳ｭ"
-										DottedLine(xx, yy + 28)
-										DottedLine(xx, yy + 3)
-									Case "Invalid_string_refer_to_original_code"
-										If TerrainClass(sx + i, sy + j) = "譛磯擇" Then
-											DottedLine(xx, yy + 28)
-										End If
-								End Select
+								ret = BitBlt(pic.hDC, xx, yy, 32, 32, .picBack.hDC, 32 * (sx + i - 1), 32 * (sy + j - 1), SRCCOPY)
+							ElseIf u.BitmapID = -1 Then 
+								'非表示のユニット
+								'UPGRADE_ISSUE: Control picBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+								'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+								ret = BitBlt(pic.hDC, xx, yy, 32, 32, .picBack.hDC, 32 * (sx + i - 1), 32 * (sy + j - 1), SRCCOPY)
 							Else
-								'Invalid_string_refer_to_original_code
-								'UPGRADE_ISSUE: Control picUnitBitmap は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-								'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-								ret = BitBlt(pic.hDC, xx, yy, 32, 32, .picUnitBitmap.hDC, 32 * (u.BitmapID Mod 15), 96 * (u.BitmapID \ 15), SRCCOPY)
+								If u.Action > 0 Or u.IsFeatureAvailable("地形ユニット") Then
+									'ユニット
+									'UPGRADE_ISSUE: Control picUnitBitmap は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+									'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+									ret = BitBlt(pic.hDC, xx, yy, 32, 32, .picUnitBitmap.hDC, 32 * (u.BitmapID Mod 15), 96 * (u.BitmapID \ 15), SRCCOPY)
+								Else
+									'行動済のユニット
+									'UPGRADE_ISSUE: Control picUnitBitmap は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+									'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+									ret = BitBlt(pic.hDC, xx, yy, 32, 32, .picUnitBitmap.hDC, 32 * (u.BitmapID Mod 15), 96 * (u.BitmapID \ 15) + 32, SRCCOPY)
+								End If
 								
-								'Invalid_string_refer_to_original_code
+								'ユニットのいる場所に合わせて表示を変更
 								Select Case u.Area
-									Case "遨ｺ荳ｭ"
+									Case "空中"
 										'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 										ret = MoveToEx(pic.hDC, xx, yy + 28, PT)
 										'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 										ret = LineTo(pic.hDC, xx + 31, yy + 28)
-									Case "豌ｴ荳ｭ"
+									Case "水中"
 										'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 										ret = MoveToEx(pic.hDC, xx, yy + 3, PT)
 										'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 										ret = LineTo(pic.hDC, xx + 31, yy + 3)
-									Case "蝨ｰ荳ｭ"
+									Case "地中"
 										'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 										ret = MoveToEx(pic.hDC, xx, yy + 28, PT)
 										'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
@@ -3797,8 +3549,8 @@ NextLoop:
 										ret = MoveToEx(pic.hDC, xx, yy + 3, PT)
 										'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 										ret = LineTo(pic.hDC, xx + 31, yy + 3)
-									Case "Invalid_string_refer_to_original_code"
-										If TerrainClass(sx + i, sy + j) = "譛磯擇" Then
+									Case "宇宙"
+										If TerrainClass(sx + i, sy + j) = "月面" Then
 											'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 											ret = MoveToEx(pic.hDC, xx, yy + 28, PT)
 											'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
@@ -3807,16 +3559,202 @@ NextLoop:
 								End Select
 							End If
 						End If
-					End If
-NextLoop2: 
+NextLoop: 
+					Next 
 				Next 
-			Next 
-			'End If
+			Else
+				'マスク表示
+				For i = -1 To dw - 1
+					xx = 32 * (dx + i - 0.5)
+					For j = 0 To dh - 1
+						yy = 32 * (dy + j - 1)
+						
+						If sx + i < 1 Or sx + i > MapWidth Or sy + j < 1 Or sy + j > MapHeight Then
+							GoTo NextLoop2
+						End If
+						
+						u = MapDataForUnit(sx + i, sy + j)
+						
+						If i = -1 Then
+							'画面左端は16ピクセル幅分だけ表示
+							If u Is Nothing Then
+								If MaskData(sx + i, sy + j) Then
+									'マスクされた地形
+									'UPGRADE_ISSUE: Control picMaskedBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+									'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+									ret = BitBlt(pic.hDC, 0, yy, 16, 32, .picMaskedBack.hDC, 32 * (sx - 1.5), 32 * (sy + j - 1), SRCCOPY)
+								Else
+									'地形
+									'UPGRADE_ISSUE: Control picBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+									'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+									ret = BitBlt(pic.hDC, 0, yy, 16, 32, .picBack.hDC, 32 * (sx - 1.5), 32 * (sy + j - 1), SRCCOPY)
+								End If
+							ElseIf u.BitmapID = -1 Then 
+								'非表示のユニット
+								If MaskData(sx + i, sy + j) Then
+									'マスクされた地形
+									'UPGRADE_ISSUE: Control picMaskedBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+									'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+									ret = BitBlt(pic.hDC, 0, yy, 16, 32, .picMaskedBack.hDC, 32 * (sx - 1.5), 32 * (sy + j - 1), SRCCOPY)
+								Else
+									'地形
+									'UPGRADE_ISSUE: Control picBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+									'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+									ret = BitBlt(pic.hDC, 0, yy, 16, 32, .picBack.hDC, 32 * (sx - 1.5), 32 * (sy + j - 1), SRCCOPY)
+								End If
+							Else
+								If MaskData(sx + i, sy + j) Then
+									'マスクされたユニット
+									'UPGRADE_ISSUE: Control picUnitBitmap は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+									'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+									ret = BitBlt(pic.hDC, 0, yy, 16, 32, .picUnitBitmap.hDC, 32 * (u.BitmapID Mod 15) + 16, 96 * (u.BitmapID \ 15) + 64, SRCCOPY)
+									
+									'ユニットのいる場所に合わせて表示を変更
+									Select Case u.Area
+										Case "空中"
+											DottedLine(0, yy + 28, True)
+										Case "水中"
+											DottedLine(0, yy + 3, True)
+										Case "地中"
+											DottedLine(0, yy + 28, True)
+											DottedLine(0, yy + 3, True)
+										Case "宇宙"
+											If TerrainClass(sx + i, sy + j) = "月面" Then
+												DottedLine(0, yy + 28, True)
+											End If
+									End Select
+								Else
+									'ユニット
+									'UPGRADE_ISSUE: Control picUnitBitmap は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+									'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+									ret = BitBlt(pic.hDC, 0, yy, 16, 32, .picUnitBitmap.hDC, 32 * (u.BitmapID Mod 15) + 16, 96 * (u.BitmapID \ 15), SRCCOPY)
+									
+									'ユニットのいる場所に合わせて表示を変更
+									Select Case u.Area
+										Case "空中"
+											'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+											ret = MoveToEx(pic.hDC, 0, yy + 28, PT)
+											'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+											ret = LineTo(pic.hDC, 0 + 15, yy + 28)
+										Case "水中"
+											'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+											ret = MoveToEx(pic.hDC, 0, yy + 3, PT)
+											'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+											ret = LineTo(pic.hDC, 0 + 15, yy + 3)
+										Case "地中"
+											'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+											ret = MoveToEx(pic.hDC, 0, yy + 28, PT)
+											'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+											ret = LineTo(pic.hDC, 0 + 15, yy + 28)
+											'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+											ret = MoveToEx(pic.hDC, 0, yy + 3, PT)
+											'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+											ret = LineTo(pic.hDC, 0 + 15, yy + 3)
+										Case "宇宙"
+											If TerrainClass(sx + i, sy + j) = "月面" Then
+												'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+												ret = MoveToEx(pic.hDC, 0, yy + 28, PT)
+												'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+												ret = LineTo(pic.hDC, 0 + 15, yy + 28)
+											End If
+									End Select
+								End If
+							End If
+						Else
+							'画面左端以外は全32ピクセル幅分だけ表示
+							If u Is Nothing Then
+								If MaskData(sx + i, sy + j) Then
+									'マスクされた地形
+									'UPGRADE_ISSUE: Control picMaskedBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+									'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+									ret = BitBlt(pic.hDC, xx, yy, 32, 32, .picMaskedBack.hDC, 32 * (sx + i - 1), 32 * (sy + j - 1), SRCCOPY)
+								Else
+									'地形
+									'UPGRADE_ISSUE: Control picBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+									'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+									ret = BitBlt(pic.hDC, xx, yy, 32, 32, .picBack.hDC, 32 * (sx + i - 1), 32 * (sy + j - 1), SRCCOPY)
+								End If
+							ElseIf u.BitmapID = -1 Then 
+								'非表示のユニット
+								If MaskData(sx + i, sy + j) Then
+									'マスクされた地形
+									'UPGRADE_ISSUE: Control picMaskedBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+									'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+									ret = BitBlt(pic.hDC, xx, yy, 32, 32, .picMaskedBack.hDC, 32 * (sx + i - 1), 32 * (sy + j - 1), SRCCOPY)
+								Else
+									'地形
+									'UPGRADE_ISSUE: Control picBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+									'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+									ret = BitBlt(pic.hDC, xx, yy, 32, 32, .picBack.hDC, 32 * (sx + i - 1), 32 * (sy + j - 1), SRCCOPY)
+								End If
+							Else
+								If MaskData(sx + i, sy + j) Then
+									'マスクされたユニット
+									'UPGRADE_ISSUE: Control picUnitBitmap は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+									'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+									ret = BitBlt(pic.hDC, xx, yy, 32, 32, .picUnitBitmap.hDC, 32 * (u.BitmapID Mod 15), 96 * (u.BitmapID \ 15) + 64, SRCCOPY)
+									
+									'ユニットのいる場所に合わせて表示を変更
+									Select Case u.Area
+										Case "空中"
+											DottedLine(xx, yy + 28)
+										Case "水中"
+											DottedLine(xx, yy + 3)
+										Case "地中"
+											DottedLine(xx, yy + 28)
+											DottedLine(xx, yy + 3)
+										Case "宇宙"
+											If TerrainClass(sx + i, sy + j) = "月面" Then
+												DottedLine(xx, yy + 28)
+											End If
+									End Select
+								Else
+									'ユニット
+									'UPGRADE_ISSUE: Control picUnitBitmap は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+									'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+									ret = BitBlt(pic.hDC, xx, yy, 32, 32, .picUnitBitmap.hDC, 32 * (u.BitmapID Mod 15), 96 * (u.BitmapID \ 15), SRCCOPY)
+									
+									'ユニットのいる場所に合わせて表示を変更
+									Select Case u.Area
+										Case "空中"
+											'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+											ret = MoveToEx(pic.hDC, xx, yy + 28, PT)
+											'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+											ret = LineTo(pic.hDC, xx + 31, yy + 28)
+										Case "水中"
+											'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+											ret = MoveToEx(pic.hDC, xx, yy + 3, PT)
+											'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+											ret = LineTo(pic.hDC, xx + 31, yy + 3)
+										Case "地中"
+											'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+											ret = MoveToEx(pic.hDC, xx, yy + 28, PT)
+											'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+											ret = LineTo(pic.hDC, xx + 31, yy + 28)
+											'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+											ret = MoveToEx(pic.hDC, xx, yy + 3, PT)
+											'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+											ret = LineTo(pic.hDC, xx + 31, yy + 3)
+										Case "宇宙"
+											If TerrainClass(sx + i, sy + j) = "月面" Then
+												'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+												ret = MoveToEx(pic.hDC, xx, yy + 28, PT)
+												'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+												ret = LineTo(pic.hDC, xx + 31, yy + 28)
+											End If
+									End Select
+								End If
+							End If
+						End If
+NextLoop2: 
+					Next 
+				Next 
+			End If
 			
-			'Invalid_string_refer_to_original_code
+			'描画色を元に戻しておく
 			pic.ForeColor = System.Drawing.ColorTranslator.FromOle(prev_color)
 			
-			'逕ｻ髱｢縺梧嶌縺肴鋤縺医ｉ繧後◆縺薙→繧定ｨ倬鹸
+			'画面が書き換えられたことを記録
 			ScreenIsSaved = False
 			
 			If Not without_refresh And Not delay_refresh Then
@@ -3854,7 +3792,7 @@ NextLoop2:
 		End With
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'指定されたマップ座標を画面の中央に表示
 	Public Sub Center(ByVal new_x As Short, ByVal new_y As Short)
 		If MapFileName = "" Then
 			new_x = (MainWidth + 1) \ 2
@@ -3885,9 +3823,9 @@ NextLoop2:
 	End Sub
 	
 	
-	' === 蠎ｧ讓吝､画鋤 ===
+	' === 座標変換 ===
 	
-	'繝槭ャ繝嶺ｸ翫〒縺ｮ蠎ｧ讓吶′繝槭ャ繝礼判髱｢縺ｮ縺ｩ縺ｮ菴咲ｽｮ縺ｫ縺上ｋ縺九ｒ霑斐☆
+	'マップ上での座標がマップ画面のどの位置にくるかを返す
 	Public Function MapToPixelX(ByVal X As Short) As Short
 		' MOD START MARGE
 		'    MapToPixelX = 32 * ((MainWidth + 1) \ 2 - 1 - (MapX - X))
@@ -3903,7 +3841,7 @@ NextLoop2:
 		MapToPixelY = 32 * ((MainHeight + 1) \ 2 - 1 - (MapY - Y))
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'マップ画面でのピクセルがマップの座標のどの位置にくるかを返す
 	Public Function PixelToMapX(ByVal X As Short) As Short
 		If X < 0 Then
 			X = 0
@@ -3932,117 +3870,114 @@ NextLoop2:
 	End Function
 	
 	
-	'Invalid_string_refer_to_original_code
+	' === ユニット画像表示に関する処理 ===
 	
-	'繝ｦ繝九ャ繝育判蜒上ヵ繧｡繧､繝ｫ繧呈､懃ｴ｢
+	'ユニット画像ファイルを検索
 	Private Function FindUnitBitmap(ByRef u As Unit) As String
 		Dim fname, uname As String
 		Dim tnum, tname, tdir As String
 		Dim i, j As Short
 		
 		With u
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code_
-			'Invalid_string_refer_to_original_code_
-			'Then
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			If .CountPilot = 0 Then
+			'インターミッションでのパイロットステータス表示の場合は
+			'特殊な処理が必要
+			If .IsFeatureAvailable("ダミーユニット") And InStr(.Name, "ステータス表示用ユニット") = 0 Then
+				If .CountPilot = 0 Then
+					Exit Function
+				End If
+				
+				If .FeatureData("ダミーユニット") = "ユニット画像使用" Then
+					'ユニット画像を使って表示
+					uname = "搭乗ユニット[" & .MainPilot.ID & "]"
+					'UPGRADE_WARNING: オブジェクト LocalVariableList.Item().StringValue の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
+					uname = LocalVariableList.Item(uname).StringValue
+					fname = "\Bitmap\Unit\" & UList.Item(uname).Bitmap
+				Else
+					'パイロット画像を使って表示
+					fname = "\Bitmap\Pilot\" & .MainPilot.Bitmap
+				End If
+				
+				'画像を検索
+				If InStr(fname, "\-.bmp") > 0 Then
+					fname = ""
+				ElseIf FileExists(ScenarioPath & fname) Then 
+					fname = ScenarioPath & fname
+				ElseIf FileExists(ExtDataPath & fname) Then 
+					fname = ExtDataPath & fname
+				ElseIf FileExists(ExtDataPath2 & fname) Then 
+					fname = ExtDataPath2 & fname
+				ElseIf FileExists(AppPath & fname) Then 
+					fname = AppPath & fname
+				Else
+					fname = ""
+				End If
+				
+				FindUnitBitmap = fname
 				Exit Function
 			End If
 			
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			'繝ｦ繝九ャ繝育判蜒上ｒ菴ｿ縺｣縺ｦ陦ｨ遉ｺ
-			uname = "Invalid_string_refer_to_original_code" & .MainPilot.ID & "]"
-			'UPGRADE_WARNING: オブジェクト LocalVariableList.Item().StringValue の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-			uname = LocalVariableList.Item(uname).StringValue
-			fname = "\Bitmap\Unit\" & UList.Item(uname).Bitmap
-			'Invalid_string_refer_to_original_code
-			fname = "\Bitmap\Pilot\" & .MainPilot.Bitmap
-			'End If
-			
-			'逕ｻ蜒上ｒ讀懃ｴ｢
-			If InStr(fname, "\-.bmp") > 0 Then
-				fname = ""
-			ElseIf FileExists(ScenarioPath & fname) Then 
-				fname = ScenarioPath & fname
-			ElseIf FileExists(ExtDataPath & fname) Then 
-				fname = ExtDataPath & fname
-			ElseIf FileExists(ExtDataPath2 & fname) Then 
-				fname = ExtDataPath2 & fname
-			ElseIf FileExists(AppPath & fname) Then 
-				fname = AppPath & fname
-			Else
-				fname = ""
-			End If
-			
-			FindUnitBitmap = fname
-			Exit Function
-			'End If
-			
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			'Invalid_string_refer_to_original_code
-			fname = .Bitmap
-			If FileExists(AppPath & "Bitmap\Map\" & fname) Or FileExists(ScenarioPath & "Bitmap\Map\" & fname) Then
-				fname = "Bitmap\Map\" & fname
-			Else
-				'Invalid_string_refer_to_original_code
-				i = Len(fname) - 5
-				Do While i > 0
-					If Mid(fname, i, 1) Like "[!-0-9]" Then
-						Exit Do
-					End If
-					i = i - 1
-				Loop 
-				If i > 0 Then
-					tdir = Left(fname, i)
-					With TDList
-						For j = 1 To .Count
-							If tdir = .Item(.OrderedID(j)).Bitmap Then
-								tnum = Mid(fname, i + 1, Len(fname) - i - 4)
-								tname = Left(fname, i) & VB6.Format(StrToLng(tnum), "0000") & ".bmp"
-								Exit For
-							End If
-						Next 
-						If j <= .Count Then
-							tdir = tdir & "\"
-						Else
-							tdir = ""
-						End If
-					End With
-				End If
-				If tdir <> "" Then
-					If FileExists(AppPath & "Bitmap\Map\" & tname) Or FileExists(ScenarioPath & "Bitmap\Map\" & tname) Then
-						fname = "Bitmap\Map\" & tname
-					Else
-						fname = "Bitmap\Map\" & tdir & "\" & tname
-					End If
+			If .IsFeatureAvailable("地形ユニット") Then
+				'地形ユニット
+				fname = .Bitmap
+				If FileExists(AppPath & "Bitmap\Map\" & fname) Or FileExists(ScenarioPath & "Bitmap\Map\" & fname) Then
+					fname = "Bitmap\Map\" & fname
 				Else
-					If InStr(fname, "\") > 0 Then
-						'Invalid_string_refer_to_original_code
-						fname = "Bitmap\" & fname
+					'地形画像検索用の地形画像ディレクトリ名と4桁ファイル名を作成
+					i = Len(fname) - 5
+					Do While i > 0
+						If Mid(fname, i, 1) Like "[!-0-9]" Then
+							Exit Do
+						End If
+						i = i - 1
+					Loop 
+					If i > 0 Then
+						tdir = Left(fname, i)
+						With TDList
+							For j = 1 To .Count
+								If tdir = .Item(.OrderedID(j)).Bitmap Then
+									tnum = Mid(fname, i + 1, Len(fname) - i - 4)
+									tname = Left(fname, i) & VB6.Format(StrToLng(tnum), "0000") & ".bmp"
+									Exit For
+								End If
+							Next 
+							If j <= .Count Then
+								tdir = tdir & "\"
+							Else
+								tdir = ""
+							End If
+						End With
+					End If
+					If tdir <> "" Then
+						If FileExists(AppPath & "Bitmap\Map\" & tname) Or FileExists(ScenarioPath & "Bitmap\Map\" & tname) Then
+							fname = "Bitmap\Map\" & tname
+						Else
+							fname = "Bitmap\Map\" & tdir & "\" & tname
+						End If
 					Else
-						'Invalid_string_refer_to_original_code
-						fname = "Bitmap\Unit\" & fname
+						If InStr(fname, "\") > 0 Then
+							'フォルダ指定あり
+							fname = "Bitmap\" & fname
+						Else
+							'通常のユニット画像
+							fname = "Bitmap\Unit\" & fname
+						End If
 					End If
 				End If
-			End If
-			'騾壼ｸｸ縺ｮ繝ｦ繝九ャ繝域緒逕ｻ
-			fname = .Bitmap
-			If InStr(fname, ":") = 2 Then
-				'Invalid_string_refer_to_original_code
-			ElseIf InStr(fname, "\") > 0 Then 
-				'Invalid_string_refer_to_original_code
-				fname = "Bitmap\" & fname
 			Else
-				'Invalid_string_refer_to_original_code
-				fname = "Bitmap\Unit\" & fname
+				'通常のユニット描画
+				fname = .Bitmap
+				If InStr(fname, ":") = 2 Then
+					'フルパス指定
+				ElseIf InStr(fname, "\") > 0 Then 
+					'フォルダ指定あり
+					fname = "Bitmap\" & fname
+				Else
+					'通常のユニット画像
+					fname = "Bitmap\Unit\" & fname
+				End If
 			End If
-			'End If
 			
-			'Invalid_string_refer_to_original_code
+			'画像の検索
 			If InStr(fname, "\-.bmp") > 0 Then
 				fname = ""
 			ElseIf FileExists(ScenarioPath & fname) Then 
@@ -4056,7 +3991,7 @@ NextLoop2:
 			ElseIf Not FileExists(fname) Then 
 				fname = ""
 				
-				'逕ｻ蜒上′隕九▽縺九ｉ縺ｪ縺九▲縺溘％縺ｨ繧定ｨ倬鹸
+				'画像が見つからなかったことを記録
 				If .Bitmap = .Data.Bitmap Then
 					.Data.IsBitmapMissing = True
 				End If
@@ -4066,7 +4001,7 @@ NextLoop2:
 		End With
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'ユニットのビットマップを作成
 	Public Function MakeUnitBitmap(ByRef u As Unit) As Short
 		Dim fname, uparty As String
 		Dim i As Short
@@ -4077,59 +4012,59 @@ NextLoop2:
 		Static party_list() As String
 		
 		With MainForm
-			If u.IsFeatureAvailable("髱櫁｡ｨ遉ｺ") Then
+			If u.IsFeatureAvailable("非表示") Then
 				MakeUnitBitmap = -1
 				Exit Function
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'画像がクリアされている？
 			'UPGRADE_ISSUE: Control picUnitBitmap は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 			If .picUnitBitmap.width = 32 Then
 				bitmap_num = 0
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'今までにロードされているユニット画像数
 			ReDim Preserve fname_list(bitmap_num)
 			ReDim Preserve party_list(bitmap_num)
 			
-			'Invalid_string_refer_to_original_code
+			'以前ロードしたユニット画像と一致している？
 			fname = FindUnitBitmap(u)
 			uparty = u.Party0
 			For i = 1 To bitmap_num
 				If fname = fname_list(i) And uparty = party_list(i) Then
-					'Invalid_string_refer_to_original_code
+					'一致したものが見つかった
 					MakeUnitBitmap = i
 					Exit Function
 				End If
 			Next 
 			
-			'譁ｰ縺溘↓逕ｻ蜒上ｒ逋ｻ骭ｲ
+			'新たに画像を登録
 			bitmap_num = bitmap_num + 1
 			ReDim Preserve fname_list(bitmap_num)
 			ReDim Preserve party_list(bitmap_num)
 			fname_list(bitmap_num) = fname
 			party_list(bitmap_num) = uparty
 			
-			'Invalid_string_refer_to_original_code
+			'画像バッファの大きさを変更
 			'UPGRADE_ISSUE: Control picUnitBitmap は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 			.picUnitBitmap.Move(0, 0, 480, 96 * (bitmap_num \ 15 + 1))
 			
-			'Invalid_string_refer_to_original_code
+			'画像の書き込み位置
 			xx = 32 * (bitmap_num Mod 15)
 			yy = 96 * (bitmap_num \ 15)
 			
-			'Invalid_string_refer_to_original_code
+			'ファイルをロードする
 			'UPGRADE_ISSUE: Control picUnitBitmap は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 			LoadUnitBitmap(u, .picUnitBitmap, xx, yy, False, fname)
 			
-			'Invalid_string_refer_to_original_code
+			'行動済みの際の画像を作成
 			'UPGRADE_ISSUE: Control picUnitBitmap は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 			ret = BitBlt(.picUnitBitmap.hDC, xx, yy + 32, 32, 32, .picUnitBitmap.hDC, xx, yy, SRCCOPY)
 			'UPGRADE_ISSUE: Control picMask は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 			'UPGRADE_ISSUE: Control picUnitBitmap は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 			ret = BitBlt(.picUnitBitmap.hDC, xx, yy + 32, 32, 32, .picMask.hDC, 0, 0, SRCAND)
 			
-			'Invalid_string_refer_to_original_code
+			'マスク入りの画像を作成
 			'UPGRADE_ISSUE: Control picUnitBitmap は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 			ret = BitBlt(.picUnitBitmap.hDC, xx, yy + 64, 32, 32, .picUnitBitmap.hDC, xx, yy + 32, SRCCOPY)
 			'UPGRADE_ISSUE: Control picMask2 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
@@ -4137,57 +4072,50 @@ NextLoop2:
 			ret = BitBlt(.picUnitBitmap.hDC, xx, yy + 64, 32, 32, .picMask2.hDC, 0, 0, SRCINVERT)
 		End With
 		
-		'繝ｦ繝九ャ繝育判蜒冗分蜿ｷ繧定ｿ斐☆
+		'ユニット画像番号を返す
 		MakeUnitBitmap = bitmap_num
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'ユニットのビットマップをロード
 	Public Sub LoadUnitBitmap(ByRef u As Unit, ByRef pic As System.Windows.Forms.PictureBox, ByVal dx As Short, ByVal dy As Short, Optional ByVal use_orig_color As Boolean = False, Optional ByRef fname As String = "")
 		Dim ret As Integer
 		Dim emit_light As Boolean
 		
 		With MainForm
-			'逕ｻ蜒上ヵ繧｡繧､繝ｫ繧呈､懃ｴ｢
+			'画像ファイルを検索
 			If fname = "" Then
 				fname = FindUnitBitmap(u)
 			End If
 			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code_
-			'Then
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			'Invalid_string_refer_to_original_code
-			On Error GoTo ErrorHandler
-			'UPGRADE_ISSUE: Control picTmp は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-			.picTmp = System.Drawing.Image.FromFile(fname)
-			On Error GoTo 0
+			'画像をそのまま使用する場合
+			If InStr(fname, "\Pilot\") > 0 Or u.FeatureData("ダミーユニット") = "ユニット画像使用" Then
+				'画像の読み込み
+				On Error GoTo ErrorHandler
+				'UPGRADE_ISSUE: Control picTmp は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+				.picTmp = System.Drawing.Image.FromFile(fname)
+				On Error GoTo 0
+				
+				'画面に描画
+				'UPGRADE_ISSUE: Control picTmp は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+				'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+				ret = StretchBlt(pic.hDC, dx, dy, 32, 32, .picTmp.hDC, 0, 0, .picTmp.width, .picTmp.Height, SRCCOPY)
+				
+				Exit Sub
+			End If
 			
-			'逕ｻ髱｢縺ｫ謠冗判
-			'UPGRADE_ISSUE: Control picTmp は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-			'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-			ret = StretchBlt(pic.hDC, dx, dy, 32, 32, .picTmp.hDC, 0, 0, .picTmp.width, .picTmp.Height, SRCCOPY)
-			
-			Exit Sub
-			'End If
-			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code_
-			'And Not MapDrawIsMapOnly _
-			'And Not use_orig_color _
-			'Invalid_string_refer_to_original_code_
-			'Then
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			emit_light = True
-			'End If
+			'ユニットが自分で発光しているかをあらかじめチェック
+			If MapDrawMode = "夜" And Not MapDrawIsMapOnly And Not use_orig_color And u.IsFeatureAvailable("発光") Then
+				emit_light = True
+			End If
 			
 			If fname <> "" Then
-				'Invalid_string_refer_to_original_code
+				'画像が見つかった場合は画像を読み込み
 				On Error GoTo ErrorHandler
 				'UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 				.picTmp32(0) = System.Drawing.Image.FromFile(fname)
 				On Error GoTo 0
 				
-				'Invalid_string_refer_to_original_code
+				'画像のサイズが正しいかチェック
 				'UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 				If .picTmp32(0).width <> 32 Or .picTmp32(0).Height <> 32 Then
 					'UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
@@ -4199,100 +4127,100 @@ NextLoop2:
 						'UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 						.Height = 32
 					End With
-					ErrorMessage(u.Name & "Invalid_string_refer_to_original_code")
+					ErrorMessage(u.Name & "のユニット画像が32x32の大きさになっていません")
 					Exit Sub
 				End If
 				
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-				ret = BitBlt(.picTmp32(1).hDC, 0, 0, 32, 32, .picTmp32(0).hDC, 0, 0, SRCCOPY)
-			ElseIf UseTransparentBlt Then 
-				'TransparentBlt繧剃ｽｿ縺｣縺ｦ繝ｦ繝九ャ繝育判蜒上→繧ｿ繧､繝ｫ繧帝㍾縺ｭ蜷医ｏ縺帙ｋ
-				
-				'繧ｿ繧､繝ｫ
-				Select Case u.Party0
-					Case "蜻ｳ譁ｹ", "Invalid_string_refer_to_original_code"
-						'UPGRADE_ISSUE: Control picUnit は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-						'UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-						ret = BitBlt(.picTmp32(1).hDC, 0, 0, 32, 32, .picUnit.hDC, 0, 0, SRCCOPY)
-					Case "謨ｵ"
-						'UPGRADE_ISSUE: Control picEnemy は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-						'UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-						ret = BitBlt(.picTmp32(1).hDC, 0, 0, 32, 32, .picEnemy.hDC, 0, 0, SRCCOPY)
-					Case "Invalid_string_refer_to_original_code"
-						'UPGRADE_ISSUE: Control picNeautral は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-						'UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-						ret = BitBlt(.picTmp32(1).hDC, 0, 0, 32, 32, .picNeautral.hDC, 0, 0, SRCCOPY)
-				End Select
-				
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code
-				If Not emit_light Then
+				If u.IsFeatureAvailable("地形ユニット") Then
+					'地形ユニットの場合は画像をそのまま使う
 					'UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-					ret = TransparentBlt(.picTmp32(1).hDC, 0, 0, 32, 32, .picTmp32(0).hDC, 0, 0, 32, 32, System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.White))
+					ret = BitBlt(.picTmp32(1).hDC, 0, 0, 32, 32, .picTmp32(0).hDC, 0, 0, SRCCOPY)
+				ElseIf UseTransparentBlt Then 
+					'TransparentBltを使ってユニット画像とタイルを重ね合わせる
+					
+					'タイル
+					Select Case u.Party0
+						Case "味方", "ＮＰＣ"
+							'UPGRADE_ISSUE: Control picUnit は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+							'UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+							ret = BitBlt(.picTmp32(1).hDC, 0, 0, 32, 32, .picUnit.hDC, 0, 0, SRCCOPY)
+						Case "敵"
+							'UPGRADE_ISSUE: Control picEnemy は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+							'UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+							ret = BitBlt(.picTmp32(1).hDC, 0, 0, 32, 32, .picEnemy.hDC, 0, 0, SRCCOPY)
+						Case "中立"
+							'UPGRADE_ISSUE: Control picNeautral は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+							'UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+							ret = BitBlt(.picTmp32(1).hDC, 0, 0, 32, 32, .picNeautral.hDC, 0, 0, SRCCOPY)
+					End Select
+					
+					'画像の重ね合わせ
+					'(発光している場合は２度塗りを防ぐため描画しない)
+					If Not emit_light Then
+						'UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+						ret = TransparentBlt(.picTmp32(1).hDC, 0, 0, 32, 32, .picTmp32(0).hDC, 0, 0, 32, 32, System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.White))
+					End If
+				Else
+					'BitBltを使ってユニット画像とタイルを重ね合わせる
+					
+					'マスクを作成
+					'UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+					MakeMask(.picTmp32(0).hDC, .picTmp32(2).hDC, 32, 32, System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.White))
+					
+					'タイル
+					Select Case u.Party0
+						Case "味方", "ＮＰＣ"
+							'UPGRADE_ISSUE: Control picUnit は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+							'UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+							ret = BitBlt(.picTmp32(1).hDC, 0, 0, 32, 32, .picUnit.hDC, 0, 0, SRCCOPY)
+						Case "敵"
+							'UPGRADE_ISSUE: Control picEnemy は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+							'UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+							ret = BitBlt(.picTmp32(1).hDC, 0, 0, 32, 32, .picEnemy.hDC, 0, 0, SRCCOPY)
+						Case "中立"
+							'UPGRADE_ISSUE: Control picNeautral は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+							'UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+							ret = BitBlt(.picTmp32(1).hDC, 0, 0, 32, 32, .picNeautral.hDC, 0, 0, SRCCOPY)
+					End Select
+					
+					'画像の重ね合わせ
+					'(発光している場合は２度塗りを防ぐため描画しない)
+					If Not emit_light Then
+						'UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+						ret = BitBlt(.picTmp32(1).hDC, 0, 0, 32, 32, .picTmp32(2).hDC, 0, 0, SRCERASE)
+						'UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+						ret = BitBlt(.picTmp32(1).hDC, 0, 0, 32, 32, .picTmp32(0).hDC, 0, 0, SRCINVERT)
+					End If
 				End If
 			Else
-				'BitBlt繧剃ｽｿ縺｣縺ｦ繝ｦ繝九ャ繝育判蜒上→繧ｿ繧､繝ｫ繧帝㍾縺ｭ蜷医ｏ縺帙ｋ
-				
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-				MakeMask(.picTmp32(0).hDC, .picTmp32(2).hDC, 32, 32, System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.White))
-				
-				'繧ｿ繧､繝ｫ
+				'画像が見つからなかった場合はタイルのみでユニット画像を作成
 				Select Case u.Party0
-					Case "蜻ｳ譁ｹ", "Invalid_string_refer_to_original_code"
+					Case "味方", "ＮＰＣ"
 						'UPGRADE_ISSUE: Control picUnit は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 						'UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 						ret = BitBlt(.picTmp32(1).hDC, 0, 0, 32, 32, .picUnit.hDC, 0, 0, SRCCOPY)
-					Case "謨ｵ"
+					Case "敵"
 						'UPGRADE_ISSUE: Control picEnemy は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 						'UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 						ret = BitBlt(.picTmp32(1).hDC, 0, 0, 32, 32, .picEnemy.hDC, 0, 0, SRCCOPY)
-					Case "Invalid_string_refer_to_original_code"
+					Case "中立"
 						'UPGRADE_ISSUE: Control picNeautral は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 						'UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 						ret = BitBlt(.picTmp32(1).hDC, 0, 0, 32, 32, .picNeautral.hDC, 0, 0, SRCCOPY)
 				End Select
-				
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code
-				If Not emit_light Then
-					'UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-					ret = BitBlt(.picTmp32(1).hDC, 0, 0, 32, 32, .picTmp32(2).hDC, 0, 0, SRCERASE)
-					'UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-					ret = BitBlt(.picTmp32(1).hDC, 0, 0, 32, 32, .picTmp32(0).hDC, 0, 0, SRCINVERT)
-				End If
 			End If
-			'Invalid_string_refer_to_original_code
-			Select Case u.Party0
-				Case "蜻ｳ譁ｹ", "Invalid_string_refer_to_original_code"
-					'UPGRADE_ISSUE: Control picUnit は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-					'UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-					ret = BitBlt(.picTmp32(1).hDC, 0, 0, 32, 32, .picUnit.hDC, 0, 0, SRCCOPY)
-				Case "謨ｵ"
-					'UPGRADE_ISSUE: Control picEnemy は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-					'UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-					ret = BitBlt(.picTmp32(1).hDC, 0, 0, 32, 32, .picEnemy.hDC, 0, 0, SRCCOPY)
-				Case "Invalid_string_refer_to_original_code"
-					'UPGRADE_ISSUE: Control picNeautral は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-					'UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-					ret = BitBlt(.picTmp32(1).hDC, 0, 0, 32, 32, .picNeautral.hDC, 0, 0, SRCCOPY)
-			End Select
-			'End If
 			
-			'Invalid_string_refer_to_original_code
+			'色をステージの状況に合わせて変更
 			If Not use_orig_color And Not MapDrawIsMapOnly Then
 				Select Case MapDrawMode
-					Case "Invalid_string_refer_to_original_code"
+					Case "夜"
 						'UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 						GetImage(.picTmp32(1))
 						Dark()
 						'UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 						SetImage(.picTmp32(1))
-						'Invalid_string_refer_to_original_code
-						'Invalid_string_refer_to_original_code
+						'ユニットが"発光"の特殊能力を持つ場合、
+						'ユニット画像を、暗くしたタイル画像の上に描画する。
 						If emit_light Then
 							If UseTransparentBlt Then
 								'UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
@@ -4304,31 +4232,31 @@ NextLoop2:
 								ret = BitBlt(.picTmp32(1).hDC, 0, 0, 32, 32, .picTmp32(0).hDC, 0, 0, SRCINVERT)
 							End If
 						End If
-					Case "繧ｻ繝斐い"
+					Case "セピア"
 						'UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 						GetImage(.picTmp32(1))
 						Sepia()
 						'UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 						SetImage(.picTmp32(1))
-					Case "Invalid_string_refer_to_original_code"
+					Case "白黒"
 						'UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 						GetImage(.picTmp32(1))
 						Monotone()
 						'UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 						SetImage(.picTmp32(1))
-					Case "Invalid_string_refer_to_original_code"
+					Case "夕焼け"
 						'UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 						GetImage(.picTmp32(1))
 						Sunset()
 						'UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 						SetImage(.picTmp32(1))
-					Case "豌ｴ荳ｭ"
+					Case "水中"
 						'UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 						GetImage(.picTmp32(1))
 						Water()
 						'UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 						SetImage(.picTmp32(1))
-					Case "繝輔ぅ繝ｫ繧ｿ"
+					Case "フィルタ"
 						'UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 						GetImage(.picTmp32(1))
 						ColorFilter(MapDrawFilterColor, MapDrawFilterTransPercent)
@@ -4337,7 +4265,7 @@ NextLoop2:
 				End Select
 			End If
 			
-			'逕ｻ髱｢縺ｫ謠冗判
+			'画面に描画
 			'UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 			'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 			ret = BitBlt(pic.hDC, dx, dy, 32, 32, .picTmp32(1).hDC, 0, 0, SRCCOPY)
@@ -4346,12 +4274,10 @@ NextLoop2:
 		Exit Sub
 		
 ErrorHandler: 
-		ErrorMessage("Invalid_string_refer_to_original_code" & vbCr & vbLf & fname & vbCr & vbLf & "Invalid_string_refer_to_original_code")
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+		ErrorMessage("ユニット用ビットマップファイル" & vbCr & vbLf & fname & vbCr & vbLf & "の読み込み中にエラーが発生しました。" & vbCr & vbLf & "画像ファイルが壊れていないか確認して下さい。")
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'ユニット画像の描画
 	Public Sub PaintUnitBitmap(ByRef u As Unit, Optional ByVal smode As String = "")
 		Dim xx, yy As Short
 		Dim pic As System.Windows.Forms.PictureBox
@@ -4359,64 +4285,64 @@ ErrorHandler:
 		Dim PT As POINTAPI
 		
 		With u
-			'Invalid_string_refer_to_original_code
+			'非表示？
 			If .BitmapID = -1 Then
 				Exit Sub
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'画面外？
 			If .X < MapX - (MainWidth + 1) \ 2 Or MapX + (MainWidth + 1) \ 2 < .X Or .Y < MapY - (MainHeight + 1) \ 2 Or MapY + (MainHeight + 1) \ 2 < .Y Then
 				Exit Sub
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'描き込み先の座標を設定
 			xx = MapToPixelX(.X)
 			yy = MapToPixelY(.Y)
 		End With
 		
 		With MainForm
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			'UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-			pic = .picMain(1)
-			'Invalid_string_refer_to_original_code
-			PaintedAreaX1 = MinLng(PaintedAreaX1, MaxLng(xx, 0))
-			PaintedAreaY1 = MinLng(PaintedAreaY1, MaxLng(yy, 0))
-			PaintedAreaX2 = MaxLng(PaintedAreaX2, MinLng(xx + 32, MainPWidth - 1))
-			PaintedAreaY2 = MaxLng(PaintedAreaY2, MinLng(yy + 32, MainPHeight - 1))
-			'UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-			pic = .picMain(0)
-			'End If
+			If smode = "リフレッシュ無し" And ScreenIsSaved Then
+				'UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+				pic = .picMain(1)
+				'表示画像を消去する際に使う描画領域を設定
+				PaintedAreaX1 = MinLng(PaintedAreaX1, MaxLng(xx, 0))
+				PaintedAreaY1 = MinLng(PaintedAreaY1, MaxLng(yy, 0))
+				PaintedAreaX2 = MaxLng(PaintedAreaX2, MinLng(xx + 32, MainPWidth - 1))
+				PaintedAreaY2 = MaxLng(PaintedAreaY2, MinLng(yy + 32, MainPHeight - 1))
+			Else
+				'UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+				pic = .picMain(0)
+			End If
 			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			'騾壼ｸｸ縺ｮ陦ｨ遉ｺ
-			'UPGRADE_ISSUE: Control picUnitBitmap は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-			'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-			ret = BitBlt(pic.hDC, xx, yy, 32, 32, .picUnitBitmap.hDC, 32 * (u.BitmapID Mod 15), 96 * (u.BitmapID \ 15), SRCCOPY)
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: Control picUnitBitmap は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-			'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-			ret = BitBlt(pic.hDC, xx, yy, 32, 32, .picUnitBitmap.hDC, 32 * (u.BitmapID Mod 15), 96 * (u.BitmapID \ 15) + 32, SRCCOPY)
-			'End If
+			'ユニット画像の書き込み
+			If u.Action > 0 Or u.IsFeatureAvailable("地形ユニット") Then
+				'通常の表示
+				'UPGRADE_ISSUE: Control picUnitBitmap は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+				'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+				ret = BitBlt(pic.hDC, xx, yy, 32, 32, .picUnitBitmap.hDC, 32 * (u.BitmapID Mod 15), 96 * (u.BitmapID \ 15), SRCCOPY)
+			Else
+				'行動済の場合は網掛け
+				'UPGRADE_ISSUE: Control picUnitBitmap は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+				'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+				ret = BitBlt(pic.hDC, xx, yy, 32, 32, .picUnitBitmap.hDC, 32 * (u.BitmapID Mod 15), 96 * (u.BitmapID \ 15) + 32, SRCCOPY)
+			End If
 			
-			'Invalid_string_refer_to_original_code
+			'直線を描画する際の描画色を設定
 			pic.ForeColor = System.Drawing.Color.Black
 			
-			'Invalid_string_refer_to_original_code
+			'ユニットのいる場所に合わせて表示を変更
 			Select Case u.Area
-				Case "遨ｺ荳ｭ"
+				Case "空中"
 					'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 					ret = MoveToEx(pic.hDC, xx, yy + 28, PT)
 					'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 					ret = LineTo(pic.hDC, xx + 31, yy + 28)
-				Case "豌ｴ荳ｭ"
+				Case "水中"
 					'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 					ret = MoveToEx(pic.hDC, xx, yy + 3, PT)
 					'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 					ret = LineTo(pic.hDC, xx + 31, yy + 3)
-				Case "蝨ｰ荳ｭ"
+				Case "地中"
 					'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 					ret = MoveToEx(pic.hDC, xx, yy + 28, PT)
 					'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
@@ -4425,8 +4351,8 @@ ErrorHandler:
 					ret = MoveToEx(pic.hDC, xx, yy + 3, PT)
 					'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 					ret = LineTo(pic.hDC, xx + 31, yy + 3)
-				Case "Invalid_string_refer_to_original_code"
-					If TerrainClass(u.X, u.Y) = "譛磯擇" Then
+				Case "宇宙"
+					If TerrainClass(u.X, u.Y) = "月面" Then
 						'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 						ret = MoveToEx(pic.hDC, xx, yy + 28, PT)
 						'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
@@ -4434,32 +4360,31 @@ ErrorHandler:
 					End If
 			End Select
 			
-			'謠冗判濶ｲ繧堤區縺ｫ謌ｻ縺励※縺翫￥
+			'描画色を白に戻しておく
 			pic.ForeColor = System.Drawing.Color.White
 			
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			'逕ｻ髱｢縺梧嶌縺肴鋤縺医ｉ繧後◆縺薙→繧定ｨ倬鹸
-			ScreenIsSaved = False
-			
-			If .Visible Then
-				pic.Refresh()
+			If smode <> "リフレッシュ無し" Then
+				'画面が書き換えられたことを記録
+				ScreenIsSaved = False
+				
+				If .Visible Then
+					pic.Refresh()
+				End If
 			End If
-			'End If
 		End With
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'ユニット画像の表示を消す
 	Public Sub EraseUnitBitmap(ByVal X As Short, ByVal Y As Short, Optional ByVal do_refresh As Boolean = True)
 		Dim xx, yy As Short
 		Dim ret As Integer
 		
-		'Invalid_string_refer_to_original_code
+		'画面外？
 		If X < MapX - (MainWidth + 1) \ 2 Or MapX + (MainWidth + 1) \ 2 < X Or Y < MapY - (MainHeight + 1) \ 2 Or MapY + (MainHeight + 1) \ 2 < Y Then
 			Exit Sub
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'画面が乱れるので書き換えない？
 		If IsPictureVisible Then
 			Exit Sub
 		End If
@@ -4470,7 +4395,7 @@ ErrorHandler:
 		With MainForm
 			SaveScreen()
 			
-			'逕ｻ髱｢陦ｨ遉ｺ螟画峩
+			'画面表示変更
 			'UPGRADE_ISSUE: Control picBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 			'UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 			ret = BitBlt(.picMain(0).hDC, xx, yy, 32, 32, .picBack.hDC, 32 * (X - 1), 32 * (Y - 1), SRCCOPY)
@@ -4479,7 +4404,7 @@ ErrorHandler:
 			ret = BitBlt(.picMain(1).hDC, xx, yy, 32, 32, .picBack.hDC, 32 * (X - 1), 32 * (Y - 1), SRCCOPY)
 			
 			If do_refresh Then
-				'逕ｻ髱｢縺梧嶌縺肴鋤縺医ｉ繧後◆縺薙→繧定ｨ倬鹸
+				'画面が書き換えられたことを記録
 				ScreenIsSaved = False
 				
 				If .Visible Then
@@ -4490,7 +4415,7 @@ ErrorHandler:
 		End With
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'ユニット画像の表示位置を移動 (アニメーション)
 	Public Sub MoveUnitBitmap(ByRef u As Unit, ByVal x1 As Short, ByVal y1 As Short, ByVal x2 As Short, ByVal y2 As Short, ByVal wait_time0 As Integer, Optional ByVal division As Short = 2)
 		Dim xx, yy As Short
 		Dim vx, vy As Short
@@ -4508,24 +4433,24 @@ ErrorHandler:
 			'UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 			pic = .picTmp32(0)
 			
-			'Invalid_string_refer_to_original_code
+			'ユニット画像を作成
 			'UPGRADE_ISSUE: Control picUnitBitmap は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 			'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 			ret = BitBlt(pic.hDC, 0, 0, 32, 32, .picUnitBitmap.hDC, 32 * (u.BitmapID Mod 15), 96 * (u.BitmapID \ 15), SRCCOPY)
 			
-			'Invalid_string_refer_to_original_code
+			'ユニットのいる場所に合わせて表示を変更
 			Select Case u.Area
-				Case "遨ｺ荳ｭ"
+				Case "空中"
 					'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 					ret = MoveToEx(pic.hDC, 0, 28, PT)
 					'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 					ret = LineTo(pic.hDC, 31, 28)
-				Case "豌ｴ荳ｭ"
+				Case "水中"
 					'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 					ret = MoveToEx(pic.hDC, 0, 3, PT)
 					'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 					ret = LineTo(pic.hDC, 31, 3)
-				Case "蝨ｰ荳ｭ"
+				Case "地中"
 					'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 					ret = MoveToEx(pic.hDC, 0, 28, PT)
 					'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
@@ -4534,8 +4459,8 @@ ErrorHandler:
 					ret = MoveToEx(pic.hDC, 0, 3, PT)
 					'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 					ret = LineTo(pic.hDC, 31, 3)
-				Case "Invalid_string_refer_to_original_code"
-					If TerrainClass(u.X, u.Y) = "譛磯擇" Then
+				Case "宇宙"
+					If TerrainClass(u.X, u.Y) = "月面" Then
 						'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 						ret = MoveToEx(pic.hDC, 0, 28, PT)
 						'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
@@ -4543,12 +4468,12 @@ ErrorHandler:
 					End If
 			End Select
 			
-			'Invalid_string_refer_to_original_code
+			'移動の始点を設定
 			xx = MapToPixelX(x1)
 			yy = MapToPixelY(y1)
 			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
+			'背景上の画像をまず消去
+			'(既に移動している場合を除く)
 			If u Is MapDataForUnit(x1, y1) Then
 				'UPGRADE_ISSUE: Control picBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 				'UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
@@ -4558,7 +4483,7 @@ ErrorHandler:
 				ret = BitBlt(.picMain(1).hDC, xx, yy, 32, 32, .picBack.hDC, 32 * (x1 - 1), 32 * (y1 - 1), SRCCOPY)
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'最初の移動方向を設定
 			If System.Math.Abs(x2 - x1) > System.Math.Abs(y2 - y1) Then
 				If x2 > x1 Then
 					vx = 1
@@ -4579,17 +4504,17 @@ ErrorHandler:
 				start_time = timeGetTime()
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'移動の描画
 			For i = 1 To division * MaxLng(System.Math.Abs(x2 - x1), System.Math.Abs(y2 - y1))
-				'逕ｻ蜒上ｒ豸亥悉
+				'画像を消去
 				'UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 				ret = BitBlt(.picMain(0).hDC, xx, yy, 32, 32, .picMain(1).hDC, xx, yy, SRCCOPY)
 				
-				'Invalid_string_refer_to_original_code
+				'座標を移動
 				xx = xx + 32 * vx \ division
 				yy = yy + 32 * vy \ division
 				
-				'逕ｻ蜒上ｒ謠冗判
+				'画像を描画
 				'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 				'UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 				ret = BitBlt(.picMain(0).hDC, xx, yy, 32, 32, pic.hDC, 0, 0, SRCCOPY)
@@ -4606,7 +4531,7 @@ ErrorHandler:
 				End If
 			Next 
 			
-			'Invalid_string_refer_to_original_code
+			'２回目の移動方向を設定
 			If System.Math.Abs(x2 - x1) > System.Math.Abs(y2 - y1) Then
 				If y2 > y1 Then
 					vy = 1
@@ -4623,17 +4548,17 @@ ErrorHandler:
 				vy = 0
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'移動の描画
 			For i = 1 To division * MinLng(System.Math.Abs(x2 - x1), System.Math.Abs(y2 - y1))
-				'逕ｻ蜒上ｒ豸亥悉
+				'画像を消去
 				'UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 				ret = BitBlt(.picMain(0).hDC, xx, yy, 32, 32, .picMain(1).hDC, xx, yy, SRCCOPY)
 				
-				'Invalid_string_refer_to_original_code
+				'座標を移動
 				xx = xx + 32 * vx \ division
 				yy = yy + 32 * vy \ division
 				
-				'逕ｻ蜒上ｒ謠冗判
+				'画像を描画
 				'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 				'UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 				ret = BitBlt(.picMain(0).hDC, xx, yy, 32, 32, pic.hDC, 0, 0, SRCCOPY)
@@ -4651,12 +4576,12 @@ ErrorHandler:
 			Next 
 		End With
 		
-		'逕ｻ髱｢縺梧嶌縺肴鋤縺医ｉ繧後◆縺薙→繧定ｨ倬鹸
+		'画面が書き換えられたことを記録
 		ScreenIsSaved = False
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
+	'ユニット画像の表示位置を移動 (アニメーション)
+	'画像の経路を実際の移動経路にあわせる
 	Public Sub MoveUnitBitmap2(ByRef u As Unit, ByVal wait_time0 As Integer, Optional ByVal division As Short = 2)
 		Dim xx, yy As Short
 		Dim vx, vy As Short
@@ -4676,24 +4601,24 @@ ErrorHandler:
 			'UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 			pic = .picTmp32(0)
 			
-			'Invalid_string_refer_to_original_code
+			'ユニット画像を作成
 			'UPGRADE_ISSUE: Control picUnitBitmap は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 			'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 			ret = BitBlt(pic.hDC, 0, 0, 32, 32, .picUnitBitmap.hDC, 32 * (u.BitmapID Mod 15), 96 * (u.BitmapID \ 15), SRCCOPY)
 			
-			'Invalid_string_refer_to_original_code
+			'ユニットのいる場所に合わせて表示を変更
 			Select Case u.Area
-				Case "遨ｺ荳ｭ"
+				Case "空中"
 					'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 					ret = MoveToEx(pic.hDC, 0, 28, PT)
 					'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 					ret = LineTo(pic.hDC, 31, 28)
-				Case "豌ｴ荳ｭ"
+				Case "水中"
 					'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 					ret = MoveToEx(pic.hDC, 0, 3, PT)
 					'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 					ret = LineTo(pic.hDC, 31, 3)
-				Case "蝨ｰ荳ｭ"
+				Case "地中"
 					'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 					ret = MoveToEx(pic.hDC, 0, 28, PT)
 					'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
@@ -4702,8 +4627,8 @@ ErrorHandler:
 					ret = MoveToEx(pic.hDC, 0, 3, PT)
 					'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 					ret = LineTo(pic.hDC, 31, 3)
-				Case "Invalid_string_refer_to_original_code"
-					If TerrainClass(u.X, u.Y) = "譛磯擇" Then
+				Case "宇宙"
+					If TerrainClass(u.X, u.Y) = "月面" Then
 						'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 						ret = MoveToEx(pic.hDC, 0, 28, PT)
 						'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
@@ -4711,14 +4636,14 @@ ErrorHandler:
 					End If
 			End Select
 			
-			'遘ｻ蜍慕ｵ瑚ｷｯ繧呈､懃ｴ｢
+			'移動経路を検索
 			SearchMoveRoute((u.X), (u.Y), move_route_x, move_route_y)
 			
 			If wait_time > 0 Then
 				start_time = timeGetTime()
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'移動の始点
 			xx = MapToPixelX(move_route_x(UBound(move_route_x)))
 			yy = MapToPixelY(move_route_y(UBound(move_route_y)))
 			
@@ -4727,17 +4652,17 @@ ErrorHandler:
 				vx = MapToPixelX(move_route_x(i)) - xx
 				vy = MapToPixelY(move_route_y(i)) - yy
 				
-				'Invalid_string_refer_to_original_code
+				'移動の描画
 				For j = 1 To division
-					'逕ｻ蜒上ｒ豸亥悉
+					'画像を消去
 					'UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 					ret = BitBlt(.picMain(0).hDC, xx, yy, 32, 32, .picMain(1).hDC, xx, yy, SRCCOPY)
 					
-					'Invalid_string_refer_to_original_code
+					'座標を移動
 					xx = xx + vx \ division
 					yy = yy + vy \ division
 					
-					'逕ｻ蜒上ｒ謠冗判
+					'画像を描画
 					'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 					'UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 					ret = BitBlt(.picMain(0).hDC, xx, yy, 32, 32, pic.hDC, 0, 0, SRCCOPY)
@@ -4758,14 +4683,14 @@ ErrorHandler:
 			Loop 
 		End With
 		
-		'逕ｻ髱｢縺梧嶌縺肴鋤縺医ｉ繧後◆縺薙→繧定ｨ倬鹸
+		'画面が書き換えられたことを記録
 		ScreenIsSaved = False
 	End Sub
 	
 	
-	'Invalid_string_refer_to_original_code
+	' === 各種リストボックスに関する処理 ===
 	
-	'Invalid_string_refer_to_original_code
+	'リストボックスを表示
 	Public Function ListBox(ByRef lb_caption As String, ByRef list() As String, ByRef lb_info As String, Optional ByRef lb_mode As String = "") As Short
 		Dim i As Short
 		Dim is_rbutton_released As Boolean
@@ -4775,25 +4700,25 @@ ErrorHandler:
 		With frmListBox
 			.WindowState = System.Windows.Forms.FormWindowState.Normal
 			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			If Not .txtComment.Enabled Then
-				.txtComment.Enabled = True
-				.txtComment.Visible = True
-				.txtComment.Width = .labCaption.Width
-				.txtComment.Text = ""
-				.txtComment.Top = .lstItems.Top + .lstItems.Height + 5
-				.Height = VB6.TwipsToPixelsY(VB6.PixelsToTwipsY(.Height) + 600)
+			'コメントウィンドウの処理
+			If InStr(lb_mode, "コメント") > 0 Then
+				If Not .txtComment.Enabled Then
+					.txtComment.Enabled = True
+					.txtComment.Visible = True
+					.txtComment.Width = .labCaption.Width
+					.txtComment.Text = ""
+					.txtComment.Top = .lstItems.Top + .lstItems.Height + 5
+					.Height = VB6.TwipsToPixelsY(VB6.PixelsToTwipsY(.Height) + 600)
+				End If
+			Else
+				If .txtComment.Enabled Then
+					.txtComment.Enabled = False
+					.txtComment.Visible = False
+					.Height = VB6.TwipsToPixelsY(VB6.PixelsToTwipsY(.Height) - 600)
+				End If
 			End If
-			If .txtComment.Enabled Then
-				.txtComment.Enabled = False
-				.txtComment.Visible = False
-				.Height = VB6.TwipsToPixelsY(VB6.PixelsToTwipsY(.Height) - 600)
-			End If
-			'End If
 			
-			'繧ｭ繝｣繝励す繝ｧ繝ｳ
+			'キャプション
 			.Text = lb_caption
 			If UBound(ListItemFlag) > 0 Then
 				.labCaption.Text = "  " & lb_info
@@ -4801,13 +4726,13 @@ ErrorHandler:
 				.labCaption.Text = lb_info
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'リストボックスにアイテムを追加
 			.lstItems.Visible = False
 			.lstItems.Items.Clear()
 			If UBound(ListItemFlag) > 0 Then
 				For i = 1 To UBound(list)
 					If ListItemFlag(i) Then
-						.lstItems.Items.Add("Invalid_string_refer_to_original_code")
+						.lstItems.Items.Add("×" & list(i))
 					Else
 						.lstItems.Items.Add("  " & list(i))
 					End If
@@ -4828,30 +4753,30 @@ ErrorHandler:
 			.lstItems.SelectedIndex = -1
 			.lstItems.Visible = True
 			
-			'Invalid_string_refer_to_original_code
+			'コメント付きのアイテム？
 			If UBound(ListItemComment) <> UBound(list) Then
 				ReDim Preserve ListItemComment(UBound(list))
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'最小化されている場合は戻しておく
 			If .WindowState <> System.Windows.Forms.FormWindowState.Normal Then
 				.WindowState = System.Windows.Forms.FormWindowState.Normal
 				.Show()
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'表示位置を設定
 			If MainForm.Visible And .HorizontalSize = "S" Then
 				.Left = VB6.TwipsToPixelsX(VB6.PixelsToTwipsX(MainForm.Left))
 			Else
 				.Left = VB6.TwipsToPixelsX((VB6.PixelsToTwipsX(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width) - VB6.PixelsToTwipsX(.Width)) / 2)
 			End If
-			If MainForm.Visible And Not MainForm.WindowState = 1 And .VerticalSize = "M" And InStr(lb_mode, "荳ｭ螟ｮ陦ｨ遉ｺ") = 0 Then
+			If MainForm.Visible And Not MainForm.WindowState = 1 And .VerticalSize = "M" And InStr(lb_mode, "中央表示") = 0 Then
 				.Top = VB6.TwipsToPixelsY(VB6.PixelsToTwipsY(MainForm.Top) + VB6.PixelsToTwipsY(MainForm.Height) - VB6.PixelsToTwipsY(.Height))
 			Else
 				.Top = VB6.TwipsToPixelsY((VB6.PixelsToTwipsY(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height) - VB6.PixelsToTwipsY(.Height)) / 2)
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'先頭のアイテムを設定
 			If TopItem > 0 Then
 				If .lstItems.TopIndex <> TopItem - 1 Then
 					.lstItems.TopIndex = MaxLng(MinLng(TopItem - 1, .lstItems.Items.Count - 1), 0)
@@ -4867,7 +4792,7 @@ ErrorHandler:
 				End If
 			End If
 			
-			'繧ｳ繝｡繝ｳ繝医え繧｣繝ｳ繝峨え縺ｮ陦ｨ遉ｺ
+			'コメントウィンドウの表示
 			If .txtComment.Enabled Then
 				.txtComment.Text = ListItemComment(.lstItems.SelectedIndex + 1)
 			End If
@@ -4877,17 +4802,17 @@ ErrorHandler:
 			IsFormClicked = False
 			System.Windows.Forms.Application.DoEvents()
 			
-			'Invalid_string_refer_to_original_code
-			If InStr(lb_mode, "陦ｨ遉ｺ縺ｮ縺ｿ") > 0 Then
-				'陦ｨ遉ｺ縺ｮ縺ｿ繧定｡後≧
+			'リストボックスを表示
+			If InStr(lb_mode, "表示のみ") > 0 Then
+				'表示のみを行う
 				IsMordal = False
 				.Show()
 				.lstItems.Focus()
 				Call SetWindowPos(.Handle.ToInt32, -1, 0, 0, 0, 0, &H3)
 				.Refresh()
 				Exit Function
-			ElseIf InStr(lb_mode, "騾｣邯夊｡ｨ遉ｺ") > 0 Then 
-				'Invalid_string_refer_to_original_code
+			ElseIf InStr(lb_mode, "連続表示") > 0 Then 
+				'選択が行われてもリストボックスを閉じない
 				IsMordal = False
 				If Not .Visible Then
 					.Show()
@@ -4895,74 +4820,70 @@ ErrorHandler:
 					.lstItems.Focus()
 				End If
 				
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				If AutoMoveCursor Then
-					MoveCursorPos("繝繧､繧｢繝ｭ繧ｰ")
-				End If
-			End If
-			
-			Do Until IsFormClicked
-				System.Windows.Forms.Application.DoEvents()
-				'Invalid_string_refer_to_original_code
-				If (GetAsyncKeyState(RButtonID) And &H8000) = 0 Then
-					is_rbutton_released = True
-				Else
-					If is_rbutton_released Then
-						IsFormClicked = True
+				If InStr(lb_mode, "カーソル移動") > 0 Then
+					If AutoMoveCursor Then
+						MoveCursorPos("ダイアログ")
 					End If
 				End If
-				Sleep(50)
-			Loop 
-			'Invalid_string_refer_to_original_code
-			IsMordal = False
-			.Show()
-			Call SetWindowPos(.Handle.ToInt32, -1, 0, 0, 0, 0, &H3)
-			.lstItems.Focus()
-			
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			If AutoMoveCursor Then
-				MoveCursorPos("繝繧､繧｢繝ｭ繧ｰ")
-			End If
-			'End If
-			
-			Do Until IsFormClicked
-				System.Windows.Forms.Application.DoEvents()
-				'Invalid_string_refer_to_original_code
-				If (GetAsyncKeyState(RButtonID) And &H8000) = 0 Then
-					is_rbutton_released = True
-				Else
-					If is_rbutton_released Then
-						IsFormClicked = True
+				
+				Do Until IsFormClicked
+					System.Windows.Forms.Application.DoEvents()
+					'右ボタンでのダブルクリックの実現
+					If (GetAsyncKeyState(RButtonID) And &H8000) = 0 Then
+						is_rbutton_released = True
+					Else
+						If is_rbutton_released Then
+							IsFormClicked = True
+						End If
+					End If
+					Sleep(50)
+				Loop 
+			Else
+				'選択が行われた時点でリストボックスを閉じる
+				IsMordal = False
+				.Show()
+				Call SetWindowPos(.Handle.ToInt32, -1, 0, 0, 0, 0, &H3)
+				.lstItems.Focus()
+				
+				If InStr(lb_mode, "カーソル移動") > 0 Then
+					If AutoMoveCursor Then
+						MoveCursorPos("ダイアログ")
 					End If
 				End If
-				Sleep(50)
-			Loop 
-			.Hide()
-			
-			'Invalid_string_refer_to_original_code_
-			'Invalid_string_refer_to_original_code_
-			'Then
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			If AutoMoveCursor Then
-				RestoreCursorPos()
+				
+				Do Until IsFormClicked
+					System.Windows.Forms.Application.DoEvents()
+					'右ボタンでのダブルクリックの実現
+					If (GetAsyncKeyState(RButtonID) And &H8000) = 0 Then
+						is_rbutton_released = True
+					Else
+						If is_rbutton_released Then
+							IsFormClicked = True
+						End If
+					End If
+					Sleep(50)
+				Loop 
+				.Hide()
+				
+				If InStr(lb_mode, "カーソル移動") > 0 And InStr(lb_mode, "カーソル移動(行きのみ)") = 0 Then
+					If AutoMoveCursor Then
+						RestoreCursorPos()
+					End If
+				End If
+				
+				If .txtComment.Enabled Then
+					.txtComment.Enabled = False
+					.txtComment.Visible = False
+					.Height = VB6.TwipsToPixelsY(VB6.PixelsToTwipsY(.Height) - 600)
+				End If
 			End If
-			'End If
-			
-			If .txtComment.Enabled Then
-				.txtComment.Enabled = False
-				.txtComment.Visible = False
-				.Height = VB6.TwipsToPixelsY(VB6.PixelsToTwipsY(.Height) - 600)
-			End If
-			'End If
 			
 			ListBox = SelectedItem
 			System.Windows.Forms.Application.DoEvents()
 		End With
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'リストボックスの高さを大きくする
 	Public Sub EnlargeListBoxHeight()
 		With frmListBox
 			Select Case .VerticalSize
@@ -4979,7 +4900,7 @@ ErrorHandler:
 		End With
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'リストボックスの高さを小さくする
 	Public Sub ReduceListBoxHeight()
 		With frmListBox
 			Select Case .VerticalSize
@@ -4996,7 +4917,7 @@ ErrorHandler:
 		End With
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'リストボックスの幅を大きくする
 	Public Sub EnlargeListBoxWidth()
 		With frmListBox
 			Select Case .HorizontalSize
@@ -5014,7 +4935,7 @@ ErrorHandler:
 		End With
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'リストボックスの幅を小さくする
 	Public Sub ReduceListBoxWidth()
 		With frmListBox
 			Select Case .HorizontalSize
@@ -5032,7 +4953,7 @@ ErrorHandler:
 		End With
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'武器選択用にリストボックスを切り替え
 	Public Sub AddPartsToListBox()
 		Dim ret As Integer
 		Dim fname As String
@@ -5042,7 +4963,7 @@ ErrorHandler:
 		t = SelectedTarget
 		
 		With frmListBox
-			'Invalid_string_refer_to_original_code
+			'リストボックスにユニットやＨＰのゲージを追加
 			.Height = VB6.TwipsToPixelsY(VB6.PixelsToTwipsY(.Height) + 535)
 			.labCaption.Top = 42
 			.lstItems.Top = 69
@@ -5071,7 +4992,7 @@ ErrorHandler:
 			.txtEN2.Visible = True
 			.picEN2.Visible = True
 			
-			'Invalid_string_refer_to_original_code
+			'ユニット側の表示
 			fname = "Bitmap\Pilot\" & u.MainPilot.Bitmap
 			If FileExists(ScenarioPath & fname) Then
 				.imgPilot1.Image = System.Drawing.Image.FromFile(ScenarioPath & fname)
@@ -5094,7 +5015,7 @@ ErrorHandler:
 					'UPGRADE_ISSUE: PictureBox プロパティ picUnit1.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 					ret = BitBlt(.picUnit1.hDC, 0, 0, 32, 32, MainForm.picUnitBitmap.hDC, 32 * (u.BitmapID Mod 15), 96 * (u.BitmapID \ 15), SRCCOPY)
 				Else
-					'Invalid_string_refer_to_original_code
+					'非表示のユニットの場合はユニットのいる地形タイルを表示
 					'UPGRADE_ISSUE: Control picBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 					'UPGRADE_ISSUE: PictureBox プロパティ picUnit1.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 					ret = BitBlt(.picUnit1.hDC, 0, 0, 32, 32, MainForm.picBack.hDC, 32 * (u.X - 1), 32 * (u.Y - 1), SRCCOPY)
@@ -5104,7 +5025,7 @@ ErrorHandler:
 			End If
 			.picUnit1.Refresh()
 			
-			If u.IsConditionSatisfied("Invalid_string_refer_to_original_code") Then
+			If u.IsConditionSatisfied("データ不明") Then
 				.labHP1.Text = Term("HP")
 				.txtHP1.Text = "?????/?????"
 			Else
@@ -5127,7 +5048,7 @@ ErrorHandler:
 		frmListBox.picHP1.Line (0, 0) - ((frmListBox.picHP1.Width - 4) * u.HP \ u.MaxHP - 1, 4), BF
 		
 		With frmListBox
-			If u.IsConditionSatisfied("Invalid_string_refer_to_original_code") Then
+			If u.IsConditionSatisfied("データ不明") Then
 				.labEN1.Text = Term("EN")
 				.txtEN1.Text = "???/???"
 			Else
@@ -5150,7 +5071,7 @@ ErrorHandler:
 		frmListBox.picEN1.Line (0, 0) - ((frmListBox.picEN1.Width - 4) * u.EN \ u.MaxEN - 1, 4), BF
 		
 		With frmListBox
-			'Invalid_string_refer_to_original_code
+			'ターゲット側の表示
 			fname = "Bitmap\Pilot\" & t.MainPilot.Bitmap
 			If FileExists(ScenarioPath & fname) Then
 				.imgPilot2.Image = System.Drawing.Image.FromFile(ScenarioPath & fname)
@@ -5173,7 +5094,7 @@ ErrorHandler:
 					'UPGRADE_ISSUE: PictureBox プロパティ picUnit2.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 					ret = BitBlt(.picUnit2.hDC, 0, 0, 32, 32, MainForm.picUnitBitmap.hDC, 32 * (t.BitmapID Mod 15), 96 * (t.BitmapID \ 15), SRCCOPY)
 				Else
-					'Invalid_string_refer_to_original_code
+					'非表示のユニットの場合はユニットのいる地形タイルを表示
 					'UPGRADE_ISSUE: Control picBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 					'UPGRADE_ISSUE: PictureBox プロパティ picUnit2.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 					ret = BitBlt(.picUnit2.hDC, 0, 0, 32, 32, MainForm.picBack.hDC, 32 * (t.X - 1), 32 * (t.Y - 1), SRCCOPY)
@@ -5183,7 +5104,7 @@ ErrorHandler:
 			End If
 			.picUnit2.Refresh()
 			
-			If t.IsConditionSatisfied("Invalid_string_refer_to_original_code") Then
+			If t.IsConditionSatisfied("データ不明") Then
 				.labHP2.Text = Term("HP")
 				.txtHP2.Text = "?????/?????"
 			Else
@@ -5206,7 +5127,7 @@ ErrorHandler:
 		frmListBox.picHP2.Line (0, 0) - ((frmListBox.picHP2.Width - 4) * t.HP \ t.MaxHP - 1, 4), BF
 		
 		With frmListBox
-			If t.IsConditionSatisfied("Invalid_string_refer_to_original_code") Then
+			If t.IsConditionSatisfied("データ不明") Then
 				.labEN2.Text = Term("EN")
 				.txtEN2.Text = "???/???"
 			Else
@@ -5229,7 +5150,7 @@ ErrorHandler:
 		frmListBox.picEN2.Line (0, 0) - ((frmListBox.picEN2.Width - 4) * t.EN \ t.MaxEN - 1, 4), BF
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'武器選択用リストボックスを通常のものに切り替え
 	Public Sub RemovePartsOnListBox()
 		With frmListBox
 			.Height = VB6.TwipsToPixelsY(VB6.PixelsToTwipsY(.Height) - 535)
@@ -5263,7 +5184,7 @@ ErrorHandler:
 		End With
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'武器選択用リストボックス
 	Public Function WeaponListBox(ByRef u As Unit, ByRef caption_msg As String, ByRef lb_mode As String, Optional ByRef BGM As String = "") As Short
 		Dim ret, j, i, k, w As Short
 		Dim list() As String
@@ -5283,7 +5204,7 @@ ErrorHandler:
 				wpower(i) = .WeaponPower(i, "")
 			Next 
 			
-			'Invalid_string_refer_to_original_code
+			'攻撃力でソート
 			For i = 1 To .CountWeapon
 				For j = 1 To i - 1
 					If wpower(i) > wpower(warray(i - j)) Then
@@ -5313,308 +5234,297 @@ ErrorHandler:
 		
 		ReDim list(0)
 		ReDim wlist(0)
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-		'騾壼ｸｸ縺ｮ豁ｦ蝎ｨ驕ｸ謚樊凾縺ｮ陦ｨ遉ｺ
-		For i = 1 To u.CountWeapon
-			w = warray(i)
-			
-			With u
-				If lb_mode = "荳隕ｧ" Then
-					If Not .IsWeaponAvailable(w, "Invalid_string_refer_to_original_code") Then
-						'Invalid_string_refer_to_original_code
-						'Invalid_string_refer_to_original_code
-						If .IsDisabled((.Weapon(w).Name)) Then
-							GoTo NextLoop1
+		If lb_mode = "移動前" Or lb_mode = "移動後" Or lb_mode = "一覧" Then
+			'通常の武器選択時の表示
+			For i = 1 To u.CountWeapon
+				w = warray(i)
+				
+				With u
+					If lb_mode = "一覧" Then
+						If Not .IsWeaponAvailable(w, "ステータス") Then
+							'Disableコマンドで使用不可にされた武器と使用できない合体技
+							'は表示しない
+							If .IsDisabled((.Weapon(w).Name)) Then
+								GoTo NextLoop1
+							End If
+							If Not .IsWeaponMastered(w) Then
+								GoTo NextLoop1
+							End If
+							If .IsWeaponClassifiedAs(w, "合") Then
+								If Not .IsCombinationAttackAvailable(w, True) Then
+									GoTo NextLoop1
+								End If
+							End If
 						End If
-						If Not .IsWeaponMastered(w) Then
-							GoTo NextLoop1
+						ListItemFlag(UBound(list) + 1) = False
+					Else
+						If .IsWeaponUseful(w, lb_mode) Then
+							ListItemFlag(UBound(list) + 1) = False
+						Else
+							'Disableコマンドで使用不可にされた武器と使用できない合体技
+							'は表示しない
+							If .IsDisabled((.Weapon(w).Name)) Then
+								GoTo NextLoop1
+							End If
+							If Not .IsWeaponMastered(w) Then
+								GoTo NextLoop1
+							End If
+							If .IsWeaponClassifiedAs(w, "合") Then
+								If Not .IsCombinationAttackAvailable(w, True) Then
+									GoTo NextLoop1
+								End If
+							End If
+							ListItemFlag(UBound(list) + 1) = True
 						End If
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-						If Not .IsCombinationAttackAvailable(w, True) Then
-							GoTo NextLoop1
-						End If
 					End If
-				End If
-				ListItemFlag(UBound(list) + 1) = False
-				If .IsWeaponUseful(w, lb_mode) Then
-					ListItemFlag(UBound(list) + 1) = False
-				Else
-					'Invalid_string_refer_to_original_code
-					'Invalid_string_refer_to_original_code
-					If .IsDisabled((.Weapon(w).Name)) Then
-						GoTo NextLoop1
+				End With
+				
+				ReDim Preserve list(UBound(list) + 1)
+				ReDim Preserve wlist(UBound(list))
+				wlist(UBound(list)) = w
+				
+				'各武器の表示内容の設定
+				With u.Weapon(w)
+					'攻撃力
+					If wpower(w) < 10000 Then
+						list(UBound(list)) = RightPaddedString(.Nickname, 27) & LeftPaddedString(VB6.Format(wpower(w)), 4)
+					Else
+						list(UBound(list)) = RightPaddedString(.Nickname, 26) & LeftPaddedString(VB6.Format(wpower(w)), 5)
 					End If
-					If Not .IsWeaponMastered(w) Then
-						GoTo NextLoop1
+					
+					'最大射程
+					If u.WeaponMaxRange(w) > 1 Then
+						buf = VB6.Format(.MinRange) & "-" & VB6.Format(u.WeaponMaxRange(w))
+						list(UBound(list)) = list(UBound(list)) & LeftPaddedString(buf, 5)
+					Else
+						list(UBound(list)) = list(UBound(list)) & "    1"
 					End If
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-					If Not .IsCombinationAttackAvailable(w, True) Then
-						GoTo NextLoop1
+					
+					'命中率修正
+					If u.WeaponPrecision(w) >= 0 Then
+						list(UBound(list)) = list(UBound(list)) & LeftPaddedString("+" & VB6.Format(u.WeaponPrecision(w)), 4)
+					Else
+						list(UBound(list)) = list(UBound(list)) & LeftPaddedString(VB6.Format(u.WeaponPrecision(w)), 4)
 					End If
-				End If
-				ListItemFlag(UBound(list) + 1) = True
-				'End If
-				'End If
-			End With
-			
-			ReDim Preserve list(UBound(list) + 1)
-			ReDim Preserve wlist(UBound(list))
-			wlist(UBound(list)) = w
-			
-			'Invalid_string_refer_to_original_code
-			With u.Weapon(w)
-				'Invalid_string_refer_to_original_code
-				If wpower(w) < 10000 Then
-					list(UBound(list)) = RightPaddedString(.Nickname, 27) & LeftPaddedString(VB6.Format(wpower(w)), 4)
-				Else
-					list(UBound(list)) = RightPaddedString(.Nickname, 26) & LeftPaddedString(VB6.Format(wpower(w)), 5)
-				End If
-				
-				'Invalid_string_refer_to_original_code
-				If u.WeaponMaxRange(w) > 1 Then
-					buf = VB6.Format(.MinRange) & "-" & VB6.Format(u.WeaponMaxRange(w))
-					list(UBound(list)) = list(UBound(list)) & LeftPaddedString(buf, 5)
-				Else
-					list(UBound(list)) = list(UBound(list)) & "    1"
-				End If
-				
-				'Invalid_string_refer_to_original_code
-				If u.WeaponPrecision(w) >= 0 Then
-					list(UBound(list)) = list(UBound(list)) & LeftPaddedString("+" & VB6.Format(u.WeaponPrecision(w)), 4)
-				Else
-					list(UBound(list)) = list(UBound(list)) & LeftPaddedString(VB6.Format(u.WeaponPrecision(w)), 4)
-				End If
-				
-				'谿九ｊ蠑ｾ謨ｰ
-				If .Bullet > 0 Then
-					list(UBound(list)) = list(UBound(list)) & LeftPaddedString(VB6.Format(u.Bullet(w)), 3)
-				Else
-					list(UBound(list)) = list(UBound(list)) & "  -"
-				End If
-				
-				'Invalid_string_refer_to_original_code
-				If .ENConsumption > 0 Then
-					list(UBound(list)) = list(UBound(list)) & LeftPaddedString(VB6.Format(u.WeaponENConsumption(w)), 4)
-				Else
-					list(UBound(list)) = list(UBound(list)) & "   -"
-				End If
-				
-				'Invalid_string_refer_to_original_code
-				If u.WeaponCritical(w) >= 0 Then
-					list(UBound(list)) = list(UBound(list)) & LeftPaddedString("+" & VB6.Format(u.WeaponCritical(w)), 4)
-				Else
-					list(UBound(list)) = list(UBound(list)) & LeftPaddedString(VB6.Format(u.WeaponCritical(w)), 4)
-				End If
-				
-				'Invalid_string_refer_to_original_code
-				list(UBound(list)) = list(UBound(list)) & " " & .Adaption
-				
-				'Invalid_string_refer_to_original_code
-				If .NecessaryMorale > 0 Then
-					list(UBound(list)) = list(UBound(list)) & "Invalid_string_refer_to_original_code"
-				End If
-				
-				'螻樊ｧ
-				wclass = u.WeaponClass(w)
-				If InStrNotNest(wclass, "|") > 0 Then
-					wclass = Left(wclass, InStrNotNest(wclass, "|") - 1)
-				End If
-				list(UBound(list)) = list(UBound(list)) & " " & wclass
-			End With
+					
+					'残り弾数
+					If .Bullet > 0 Then
+						list(UBound(list)) = list(UBound(list)) & LeftPaddedString(VB6.Format(u.Bullet(w)), 3)
+					Else
+						list(UBound(list)) = list(UBound(list)) & "  -"
+					End If
+					
+					'ＥＮ消費量
+					If .ENConsumption > 0 Then
+						list(UBound(list)) = list(UBound(list)) & LeftPaddedString(VB6.Format(u.WeaponENConsumption(w)), 4)
+					Else
+						list(UBound(list)) = list(UBound(list)) & "   -"
+					End If
+					
+					'クリティカル率修正
+					If u.WeaponCritical(w) >= 0 Then
+						list(UBound(list)) = list(UBound(list)) & LeftPaddedString("+" & VB6.Format(u.WeaponCritical(w)), 4)
+					Else
+						list(UBound(list)) = list(UBound(list)) & LeftPaddedString(VB6.Format(u.WeaponCritical(w)), 4)
+					End If
+					
+					'地形適応
+					list(UBound(list)) = list(UBound(list)) & " " & .Adaption
+					
+					'必要気力
+					If .NecessaryMorale > 0 Then
+						list(UBound(list)) = list(UBound(list)) & " 気" & .NecessaryMorale
+					End If
+					
+					'属性
+					wclass = u.WeaponClass(w)
+					If InStrNotNest(wclass, "|") > 0 Then
+						wclass = Left(wclass, InStrNotNest(wclass, "|") - 1)
+					End If
+					list(UBound(list)) = list(UBound(list)) & " " & wclass
+				End With
 NextLoop1: 
-		Next 
-		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-		If Not u.LookForSupportAttack(Nothing) Is Nothing Then
-			'Invalid_string_refer_to_original_code
-			UseSupportAttack = True
-			ReDim Preserve list(UBound(list) + 1)
-			ReDim Preserve ListItemFlag(UBound(list))
-			list(UBound(list)) = "Invalid_string_refer_to_original_code"
-		End If
-		'End If
-		
-		'Invalid_string_refer_to_original_code
-		TopItem = -1
-		'Invalid_string_refer_to_original_code_
-		'"陦ｨ遉ｺ縺ｮ縺ｿ")
-		'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-		
-		If AutoMoveCursor Then
-			If lb_mode <> "荳隕ｧ" Then
-				MoveCursorPos("Invalid_string_refer_to_original_code")
-			Else
-				MoveCursorPos("繝繧､繧｢繝ｭ繧ｰ")
+			Next 
+			
+			If lb_mode = "移動前" Or lb_mode = "移動後" Then
+				If Not u.LookForSupportAttack(Nothing) Is Nothing Then
+					'援護攻撃を使うかどうか選択
+					UseSupportAttack = True
+					ReDim Preserve list(UBound(list) + 1)
+					ReDim Preserve ListItemFlag(UBound(list))
+					list(UBound(list)) = "援護攻撃：使用する"
+				End If
 			End If
-		End If
-		If BGM <> "" Then
-			ChangeBGM(BGM)
-		End If
-		
-		Do While True
-			Do Until IsFormClicked
-				System.Windows.Forms.Application.DoEvents()
-				'Invalid_string_refer_to_original_code
-				If (GetAsyncKeyState(RButtonID) And &H8000) = 0 Then
-					is_rbutton_released = True
+			
+			'リストボックスを表示
+			TopItem = -1
+			ret = ListBox(caption_msg, list, "名称                       攻撃 射程  命 弾  " & Term("EN", u, 2) & "  " & Term("CT", u, 2) & " 適応 分類", "表示のみ")
+			
+			If AutoMoveCursor Then
+				If lb_mode <> "一覧" Then
+					MoveCursorPos("武器選択")
 				Else
-					If is_rbutton_released Then
-						IsFormClicked = True
+					MoveCursorPos("ダイアログ")
+				End If
+			End If
+			If BGM <> "" Then
+				ChangeBGM(BGM)
+			End If
+			
+			Do While True
+				Do Until IsFormClicked
+					System.Windows.Forms.Application.DoEvents()
+					'右ボタンでのダブルクリックの実現
+					If (GetAsyncKeyState(RButtonID) And &H8000) = 0 Then
+						is_rbutton_released = True
+					Else
+						If is_rbutton_released Then
+							IsFormClicked = True
+						End If
 					End If
+				Loop 
+				
+				If SelectedItem <= UBound(wlist) Then
+					Exit Do
+				Else
+					'援護攻撃のオン/オフ切り替え
+					UseSupportAttack = Not UseSupportAttack
+					If UseSupportAttack Then
+						list(UBound(list)) = "援護攻撃：使用する"
+					Else
+						list(UBound(list)) = "援護攻撃：使用しない"
+					End If
+					
+					SelectedItem = ListBox(caption_msg, list, "名称                       攻撃 射程  命 弾  " & Term("EN", u, 2) & "  " & Term("CT", u, 2) & " 適応 分類", "表示のみ")
 				End If
 			Loop 
 			
-			If SelectedItem <= UBound(wlist) Then
-				Exit Do
-			Else
-				'Invalid_string_refer_to_original_code
-				UseSupportAttack = Not UseSupportAttack
-				If UseSupportAttack Then
-					list(UBound(list)) = "Invalid_string_refer_to_original_code"
-				Else
-					list(UBound(list)) = "Invalid_string_refer_to_original_code"
-				End If
-				
-				'Invalid_string_refer_to_original_code_
-				'"陦ｨ遉ｺ縺ｮ縺ｿ")
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+			If lb_mode <> "一覧" Then
+				frmListBox.Hide()
 			End If
-		Loop 
-		
-		If lb_mode <> "荳隕ｧ" Then
-			frmListBox.Hide()
-		End If
-		ReDim ListItemComment(0)
-		WeaponListBox = wlist(SelectedItem)
-		
-		'UPGRADE_WARNING: WeaponListBox に変換されていないステートメントがあります。ソース コードを確認してください。
-		'蜿肴茶豁ｦ蝎ｨ驕ｸ謚樊凾縺ｮ陦ｨ遉ｺ
-		
-		For i = 1 To u.CountWeapon
-			w = warray(i)
+			ReDim ListItemComment(0)
+			WeaponListBox = wlist(SelectedItem)
 			
-			With u
-				'Invalid_string_refer_to_original_code
-				If .IsDisabled((.Weapon(w).Name)) Then
-					GoTo NextLoop2
-				End If
-				
-				'Invalid_string_refer_to_original_code
-				If Not .IsWeaponMastered(w) Then
-					GoTo NextLoop2
-				End If
-				
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				If Not .IsCombinationAttackAvailable(w, True) Then
-					GoTo NextLoop2
-				End If
-				'End If
-				
-				If Not .IsWeaponAvailable(w, "遘ｻ蜍募燕") Then
-					'Invalid_string_refer_to_original_code
-					ListItemFlag(UBound(list) + 1) = True
-				ElseIf Not .IsTargetWithinRange(w, SelectedUnit) Then 
-					'Invalid_string_refer_to_original_code
-					ListItemFlag(UBound(list) + 1) = True
-				ElseIf .IsWeaponClassifiedAs(w, "Invalid_string_refer_to_original_code") Then 
-					'Invalid_string_refer_to_original_code
-					ListItemFlag(UBound(list) + 1) = True
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-					'Invalid_string_refer_to_original_code
-					ListItemFlag(UBound(list) + 1) = True
-				ElseIf .Damage(w, SelectedUnit, True) > 0 Then 
-					'Invalid_string_refer_to_original_code
-					ListItemFlag(UBound(list) + 1) = False
-				ElseIf Not .IsNormalWeapon(w) And .CriticalProbability(w, SelectedUnit) > 0 Then 
-					'Invalid_string_refer_to_original_code
-					ListItemFlag(UBound(list) + 1) = False
-				Else
-					'Invalid_string_refer_to_original_code
-					ListItemFlag(UBound(list) + 1) = True
-				End If
-			End With
+		ElseIf lb_mode = "反撃" Then 
+			'反撃武器選択時の表示
 			
-			ReDim Preserve list(UBound(list) + 1)
-			ReDim Preserve wlist(UBound(list))
-			wlist(UBound(list)) = w
-			
-			'Invalid_string_refer_to_original_code
-			With u.Weapon(w)
-				'Invalid_string_refer_to_original_code
-				list(UBound(list)) = RightPaddedString(.Nickname, 29) & LeftPaddedString(VB6.Format(wpower(w)), 4)
+			For i = 1 To u.CountWeapon
+				w = warray(i)
 				
-				'Invalid_string_refer_to_original_code
-				If Not IsOptionDefined("Invalid_string_refer_to_original_code") Then
-					buf = VB6.Format(MinLng(u.HitProbability(w, SelectedUnit, True), 100)) & "%"
-					list(UBound(list)) = list(UBound(list)) & LeftPaddedString(buf, 5)
-				ElseIf u.WeaponPrecision(w) >= 0 Then 
-					list(UBound(list)) = list(UBound(list)) & LeftPaddedString("+" & VB6.Format(u.WeaponPrecision(w)), 5)
-				Else
-					list(UBound(list)) = list(UBound(list)) & LeftPaddedString(VB6.Format(u.WeaponPrecision(w)), 5)
-				End If
+				With u
+					'Disableコマンドで使用不可にされた武器は表示しない
+					If .IsDisabled((.Weapon(w).Name)) Then
+						GoTo NextLoop2
+					End If
+					
+					'必要技能を満たさない武器は表示しない
+					If Not .IsWeaponMastered(w) Then
+						GoTo NextLoop2
+					End If
+					
+					'使用できない合体技は表示しない
+					If .IsWeaponClassifiedAs(w, "合") Then
+						If Not .IsCombinationAttackAvailable(w, True) Then
+							GoTo NextLoop2
+						End If
+					End If
+					
+					If Not .IsWeaponAvailable(w, "移動前") Then
+						'この武器は使用不能
+						ListItemFlag(UBound(list) + 1) = True
+					ElseIf Not .IsTargetWithinRange(w, SelectedUnit) Then 
+						'ターゲットが射程外
+						ListItemFlag(UBound(list) + 1) = True
+					ElseIf .IsWeaponClassifiedAs(w, "Ｍ") Then 
+						'マップ攻撃は武器選定外
+						ListItemFlag(UBound(list) + 1) = True
+					ElseIf .IsWeaponClassifiedAs(w, "合") Then 
+						'合体技は自分から攻撃をかける場合にのみ使用
+						ListItemFlag(UBound(list) + 1) = True
+					ElseIf .Damage(w, SelectedUnit, True) > 0 Then 
+						'ダメージを与えられる
+						ListItemFlag(UBound(list) + 1) = False
+					ElseIf Not .IsNormalWeapon(w) And .CriticalProbability(w, SelectedUnit) > 0 Then 
+						'特殊効果を与えられる
+						ListItemFlag(UBound(list) + 1) = False
+					Else
+						'この武器は効果が無い
+						ListItemFlag(UBound(list) + 1) = True
+					End If
+				End With
 				
+				ReDim Preserve list(UBound(list) + 1)
+				ReDim Preserve wlist(UBound(list))
+				wlist(UBound(list)) = w
 				
-				'Invalid_string_refer_to_original_code
-				If Not IsOptionDefined("Invalid_string_refer_to_original_code") Then
-					buf = VB6.Format(MinLng(u.CriticalProbability(w, SelectedUnit), 100)) & "%"
-					list(UBound(list)) = list(UBound(list)) & LeftPaddedString(buf, 5)
-				ElseIf u.WeaponCritical(w) >= 0 Then 
-					list(UBound(list)) = list(UBound(list)) & LeftPaddedString("+" & VB6.Format(u.WeaponCritical(w)), 5)
-				Else
-					list(UBound(list)) = list(UBound(list)) & LeftPaddedString(VB6.Format(u.WeaponCritical(w)), 5)
-				End If
-				
-				'谿九ｊ蠑ｾ謨ｰ
-				If .Bullet > 0 Then
-					list(UBound(list)) = list(UBound(list)) & LeftPaddedString(VB6.Format(u.Bullet(w)), 3)
-				Else
-					list(UBound(list)) = list(UBound(list)) & "  -"
-				End If
-				
-				'Invalid_string_refer_to_original_code
-				If .ENConsumption > 0 Then
-					list(UBound(list)) = list(UBound(list)) & LeftPaddedString(VB6.Format(u.WeaponENConsumption(w)), 4)
-				Else
-					list(UBound(list)) = list(UBound(list)) & "   -"
-				End If
-				
-				'Invalid_string_refer_to_original_code
-				list(UBound(list)) = list(UBound(list)) & " " & .Adaption
-				
-				'Invalid_string_refer_to_original_code
-				If .NecessaryMorale > 0 Then
-					list(UBound(list)) = list(UBound(list)) & "Invalid_string_refer_to_original_code"
-				End If
-				
-				'螻樊ｧ
-				wclass = u.WeaponClass(w)
-				If InStrNotNest(wclass, "|") > 0 Then
-					wclass = Left(wclass, InStrNotNest(wclass, "|") - 1)
-				End If
-				list(UBound(list)) = list(UBound(list)) & " " & wclass
-			End With
+				'各武器の表示内容の設定
+				With u.Weapon(w)
+					'攻撃力
+					list(UBound(list)) = RightPaddedString(.Nickname, 29) & LeftPaddedString(VB6.Format(wpower(w)), 4)
+					
+					'命中率
+					If Not IsOptionDefined("予測命中率非表示") Then
+						buf = VB6.Format(MinLng(u.HitProbability(w, SelectedUnit, True), 100)) & "%"
+						list(UBound(list)) = list(UBound(list)) & LeftPaddedString(buf, 5)
+					ElseIf u.WeaponPrecision(w) >= 0 Then 
+						list(UBound(list)) = list(UBound(list)) & LeftPaddedString("+" & VB6.Format(u.WeaponPrecision(w)), 5)
+					Else
+						list(UBound(list)) = list(UBound(list)) & LeftPaddedString(VB6.Format(u.WeaponPrecision(w)), 5)
+					End If
+					
+					
+					'クリティカル率
+					If Not IsOptionDefined("予測命中率非表示") Then
+						buf = VB6.Format(MinLng(u.CriticalProbability(w, SelectedUnit), 100)) & "%"
+						list(UBound(list)) = list(UBound(list)) & LeftPaddedString(buf, 5)
+					ElseIf u.WeaponCritical(w) >= 0 Then 
+						list(UBound(list)) = list(UBound(list)) & LeftPaddedString("+" & VB6.Format(u.WeaponCritical(w)), 5)
+					Else
+						list(UBound(list)) = list(UBound(list)) & LeftPaddedString(VB6.Format(u.WeaponCritical(w)), 5)
+					End If
+					
+					'残り弾数
+					If .Bullet > 0 Then
+						list(UBound(list)) = list(UBound(list)) & LeftPaddedString(VB6.Format(u.Bullet(w)), 3)
+					Else
+						list(UBound(list)) = list(UBound(list)) & "  -"
+					End If
+					
+					'ＥＮ消費量
+					If .ENConsumption > 0 Then
+						list(UBound(list)) = list(UBound(list)) & LeftPaddedString(VB6.Format(u.WeaponENConsumption(w)), 4)
+					Else
+						list(UBound(list)) = list(UBound(list)) & "   -"
+					End If
+					
+					'地形適応
+					list(UBound(list)) = list(UBound(list)) & " " & .Adaption
+					
+					'必要気力
+					If .NecessaryMorale > 0 Then
+						list(UBound(list)) = list(UBound(list)) & " 気" & .NecessaryMorale
+					End If
+					
+					'属性
+					wclass = u.WeaponClass(w)
+					If InStrNotNest(wclass, "|") > 0 Then
+						wclass = Left(wclass, InStrNotNest(wclass, "|") - 1)
+					End If
+					list(UBound(list)) = list(UBound(list)) & " " & wclass
+				End With
 NextLoop2: 
-		Next 
-		
-		'Invalid_string_refer_to_original_code
-		TopItem = -1
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-		WeaponListBox = wlist(ret)
-		'End If
+			Next 
+			
+			'リストボックスを表示
+			TopItem = -1
+			ret = ListBox(caption_msg, list, "名称                         攻撃 命中 " & Term("CT", u, 2) & "   弾  " & Term("EN", u, 2) & " 適応 分類", "連続表示,カーソル移動")
+			WeaponListBox = wlist(ret)
+		End If
 		
 		System.Windows.Forms.Application.DoEvents()
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'アビリティ選択用リストボックス
 	Public Function AbilityListBox(ByRef u As Unit, ByRef caption_msg As String, ByRef lb_mode As String, Optional ByVal is_item As Boolean = False) As Short
 		Dim j, i, k As Short
 		Dim ret As Short
@@ -5625,10 +5535,10 @@ NextLoop2:
 		Dim is_rbutton_released As Boolean
 		
 		With u
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
+			'アビリティが一つしかない場合は自動的にそのアビリティを選択する。
+			'リストボックスの表示は行わない。
 			'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-			If lb_mode <> "荳隕ｧ" And Not is_item And MainForm.mnuUnitCommandItem(AbilityCmdID).Caption <> Term("Invalid_string_refer_to_original_code", u) Then
+			If lb_mode <> "一覧" And Not is_item And MainForm.mnuUnitCommandItem(AbilityCmdID).Caption <> Term("アビリティ", u) Then
 				For i = 1 To .CountAbility
 					If Not .Ability(i).IsItem And .IsAbilityMastered(i) Then
 						AbilityListBox = i
@@ -5643,9 +5553,9 @@ NextLoop2:
 			
 			For i = 1 To .CountAbility
 				is_available = True
-				If lb_mode = "荳隕ｧ" Then
-					If .IsAbilityAvailable(i, "Invalid_string_refer_to_original_code") Then
-						'Invalid_string_refer_to_original_code
+				If lb_mode = "一覧" Then
+					If .IsAbilityAvailable(i, "ステータス") Then
+						'アイテムの使用効果かどうか
 						With .Ability(i)
 							If is_item Then
 								If Not .IsItem Then
@@ -5658,51 +5568,50 @@ NextLoop2:
 							End If
 						End With
 					Else
-						'Invalid_string_refer_to_original_code
-						'Invalid_string_refer_to_original_code
+						'Disableコマンドで使用不可にされたアビリティと使用できない合体技
+						'は表示しない
 						If .IsDisabled((.Ability(i).Name)) Then
 							GoTo NextLoop
 						End If
 						If Not .IsAbilityMastered(i) Then
 							GoTo NextLoop
 						End If
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-						If Not .IsCombinationAbilityAvailable(i, True) Then
+						If .IsAbilityClassifiedAs(i, "合") Then
+							If Not .IsCombinationAbilityAvailable(i, True) Then
+								GoTo NextLoop
+							End If
+						End If
+					End If
+				Else
+					'アイテムの使用効果かどうか
+					With .Ability(i)
+						If is_item Then
+							If Not .IsItem Then
+								GoTo NextLoop
+							End If
+						Else
+							If .IsItem Then
+								GoTo NextLoop
+							End If
+						End If
+					End With
+					If Not .IsAbilityUseful(i, lb_mode) Then
+						'Disableコマンドで使用不可にされた武器と使用できない合体技
+						'は表示しない
+						If .IsDisabled((.Ability(i).Name)) Then
 							GoTo NextLoop
 						End If
+						If Not .IsAbilityMastered(i) Then
+							GoTo NextLoop
+						End If
+						If .IsAbilityClassifiedAs(i, "合") Then
+							If Not .IsCombinationAbilityAvailable(i, True) Then
+								GoTo NextLoop
+							End If
+						End If
+						is_available = False
 					End If
 				End If
-				'Invalid_string_refer_to_original_code
-				With .Ability(i)
-					If is_item Then
-						If Not .IsItem Then
-							GoTo NextLoop
-						End If
-					Else
-						If .IsItem Then
-							GoTo NextLoop
-						End If
-					End If
-				End With
-				If Not .IsAbilityUseful(i, lb_mode) Then
-					'Invalid_string_refer_to_original_code
-					'Invalid_string_refer_to_original_code
-					If .IsDisabled((.Ability(i).Name)) Then
-						GoTo NextLoop
-					End If
-					If Not .IsAbilityMastered(i) Then
-						GoTo NextLoop
-					End If
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-					If Not .IsCombinationAbilityAvailable(i, True) Then
-						GoTo NextLoop
-					End If
-				End If
-				is_available = False
-				'End If
-				'End If
 				
 				ReDim Preserve list(UBound(list) + 1)
 				ReDim Preserve alist(UBound(list))
@@ -5716,17 +5625,14 @@ NextLoop2:
 					msg = ""
 					rest_msg = ""
 					For j = 1 To .CountEffect
-						If .EffectType(j) = "隗｣隱ｬ" Then
+						If .EffectType(j) = "解説" Then
 							msg = .EffectName(j)
 							Exit For
-						ElseIf InStr(.EffectName(j), "繧ｿ繝ｼ繝ｳ)") > 0 Then 
-							'Invalid_string_refer_to_original_code
+						ElseIf InStr(.EffectName(j), "ターン)") > 0 Then 
+							'持続時間が同じ能力はターン数をまとめて表示
 							k = InStr(msg, Mid(.EffectName(j), InStr(.EffectName(j), "(")))
 							If k > 0 Then
-								msg = Left(msg, k - 1) & "Invalid_string_refer_to_original_code"
-								& Left$(.EffectName(j), InStr(.EffectName(j), "(") - 1) _
-								& Mid$(msg, k)
-								'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+								msg = Left(msg, k - 1) & "、" & Left(.EffectName(j), InStr(.EffectName(j), "(") - 1) & Mid(msg, k)
 							Else
 								msg = msg & " " & .EffectName(j)
 							End If
@@ -5736,7 +5642,7 @@ NextLoop2:
 					Next 
 					msg = Trim(msg)
 					
-					'Invalid_string_refer_to_original_code
+					'効果解説が長すぎる場合は改行
 					'UPGRADE_ISSUE: 定数 vbFromUnicode はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="55B59875-9A95-4B71-9D6A-7C294BF7139D"' をクリックしてください。
 					buf = StrConv(msg, vbFromUnicode)
 					'UPGRADE_ISSUE: LenB 関数はサポートされません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="367764E5-F3F8-4E43-AC3E-7FE0B5E074E2"' をクリックしてください。
@@ -5764,7 +5670,7 @@ NextLoop2:
 					
 					list(UBound(list)) = RightPaddedString(list(UBound(list)) & " " & msg, 53)
 					
-					'Invalid_string_refer_to_original_code
+					'最大射程
 					If u.AbilityMaxRange(i) > 1 Then
 						list(UBound(list)) = list(UBound(list)) & LeftPaddedString(VB6.Format(u.AbilityMinRange(i)) & "-" & VB6.Format(u.AbilityMaxRange(i)), 4)
 					ElseIf u.AbilityMaxRange(i) = 1 Then 
@@ -5773,26 +5679,26 @@ NextLoop2:
 						list(UBound(list)) = list(UBound(list)) & "   -"
 					End If
 					
-					'谿九ｊ菴ｿ逕ｨ蝗樊焚
+					'残り使用回数
 					If .Stock > 0 Then
 						list(UBound(list)) = list(UBound(list)) & LeftPaddedString(VB6.Format(u.Stock(i)), 3)
 					Else
 						list(UBound(list)) = list(UBound(list)) & "  -"
 					End If
 					
-					'Invalid_string_refer_to_original_code
+					'ＥＮ消費量
 					If .ENConsumption > 0 Then
 						list(UBound(list)) = list(UBound(list)) & LeftPaddedString(VB6.Format(u.AbilityENConsumption(i)), 4)
 					Else
 						list(UBound(list)) = list(UBound(list)) & "   -"
 					End If
 					
-					'Invalid_string_refer_to_original_code
+					'必要気力
 					If .NecessaryMorale > 0 Then
-						list(UBound(list)) = list(UBound(list)) & "Invalid_string_refer_to_original_code"
+						list(UBound(list)) = list(UBound(list)) & " 気" & .NecessaryMorale
 					End If
 					
-					'螻樊ｧ
+					'属性
 					If InStrNotNest(.Class_Renamed, "|") > 0 Then
 						list(UBound(list)) = list(UBound(list)) & " " & Left(.Class_Renamed, InStrNotNest(.Class_Renamed, "|") - 1)
 					Else
@@ -5817,19 +5723,17 @@ NextLoop:
 			Exit Function
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'リストボックスを表示
 		TopItem = -1
-		'Invalid_string_refer_to_original_code_
-		'"陦ｨ遉ｺ縺ｮ縺ｿ")
-		'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+		ret = ListBox(caption_msg, list, "名称                 効果                            射程 数  " & Term("EN", u, 2) & " 分類", "表示のみ")
 		
 		If AutoMoveCursor Then
-			MoveCursorPos("繝繧､繧｢繝ｭ繧ｰ")
+			MoveCursorPos("ダイアログ")
 		End If
 		
 		Do Until IsFormClicked
 			System.Windows.Forms.Application.DoEvents()
-			'Invalid_string_refer_to_original_code
+			'右ボタンでのダブルクリックの実現
 			If (GetAsyncKeyState(RButtonID) And &H8000) = 0 Then
 				is_rbutton_released = True
 			Else
@@ -5838,7 +5742,7 @@ NextLoop:
 				End If
 			End If
 		Loop 
-		If lb_mode <> "荳隕ｧ" Then
+		If lb_mode <> "一覧" Then
 			frmListBox.Hide()
 		End If
 		ReDim ListItemComment(0)
@@ -5847,14 +5751,14 @@ NextLoop:
 		System.Windows.Forms.Application.DoEvents()
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'入力時間制限付きのリストボックスを表示
 	Public Function LIPS(ByRef lb_caption As String, ByRef list() As String, ByRef lb_info As String, ByVal time_limit As Short) As Short
 		Dim i As Short
 		
 		'UPGRADE_ISSUE: Load ステートメント はサポートされていません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="B530EFF2-3132-48F8-B8BC-D88AF543D321"' をクリックしてください。
 		Load(frmListBox)
 		With frmListBox
-			'Invalid_string_refer_to_original_code
+			'表示内容を設定
 			.Text = lb_caption
 			.labCaption.Text = "  " & lb_info
 			.lstItems.Items.Clear()
@@ -5864,7 +5768,7 @@ NextLoop:
 			.lstItems.SelectedIndex = 0
 			.lstItems.Height = 86
 			
-			'Invalid_string_refer_to_original_code
+			'表示位置を設定
 			.Left = VB6.TwipsToPixelsX((VB6.PixelsToTwipsX(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width) - VB6.PixelsToTwipsX(.Width)) / 2)
 			If MainForm.Visible = True And Not MainForm.WindowState = 1 Then
 				.Top = VB6.TwipsToPixelsY(VB6.PixelsToTwipsY(MainForm.Top) + VB6.PixelsToTwipsY(MainForm.Height) - VB6.PixelsToTwipsY(.Height))
@@ -5872,27 +5776,27 @@ NextLoop:
 				.Top = VB6.TwipsToPixelsY((VB6.PixelsToTwipsY(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height) - VB6.PixelsToTwipsY(.Height)) / 2)
 			End If
 			
-			'蜈･蜉帛宛髯先凾髢薙↓髢｢縺吶ｋ險ｭ螳壹ｒ陦後≧
+			'入力制限時間に関する設定を行う
 			.CurrentTime = 0
 			.TimeLimit = time_limit
 			.picBar.Visible = True
 			.Timer1.Enabled = True
 			
-			'Invalid_string_refer_to_original_code
+			'リストボックスを表示し、プレイヤーからの入力を待つ
 			SelectedItem = 0
 			IsFormClicked = False
 			.ShowDialog()
 			.CurrentTime = 0
 			LIPS = SelectedItem
 			
-			'Invalid_string_refer_to_original_code
+			'リストボックスを消去
 			.lstItems.Height = 100
 			.picBar.Visible = False
 			.Timer1.Enabled = False
 		End With
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'複数段のリストボックスを表示
 	Public Function MultiColumnListBox(ByRef lb_caption As String, ByRef list() As String, ByVal is_center As Boolean) As Short
 		Dim i As Short
 		
@@ -5903,10 +5807,10 @@ NextLoop:
 			.lstItems.Visible = False
 			.lstItems.Items.Clear()
 			
-			'Invalid_string_refer_to_original_code
+			'アイテムを追加
 			For i = 1 To UBound(list)
 				If ListItemFlag(i) Then
-					.lstItems.Items.Add("Invalid_string_refer_to_original_code")
+					.lstItems.Items.Add("×" & list(i))
 				Else
 					.lstItems.Items.Add("  " & list(i))
 				End If
@@ -5926,7 +5830,7 @@ NextLoop:
 				ReDim Preserve ListItemComment(UBound(list))
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'表示位置を設定
 			.Left = VB6.TwipsToPixelsX((VB6.PixelsToTwipsX(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width) - VB6.PixelsToTwipsX(.Width)) / 2)
 			If MainForm.Visible = True And Not MainForm.WindowState = 1 And Not is_center Then
 				.Top = VB6.TwipsToPixelsY(VB6.PixelsToTwipsY(MainForm.Top) + VB6.PixelsToTwipsY(MainForm.Height) - VB6.PixelsToTwipsY(.Height))
@@ -5934,7 +5838,7 @@ NextLoop:
 				.Top = VB6.TwipsToPixelsY((VB6.PixelsToTwipsY(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height) - VB6.PixelsToTwipsY(.Height)) / 2)
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'先頭に表示するアイテムを設定
 			If TopItem > 0 Then
 				If .lstItems.TopIndex <> TopItem - 1 Then
 					.lstItems.TopIndex = MinLng(TopItem, .lstItems.Items.Count) - 1
@@ -5946,7 +5850,7 @@ NextLoop:
 			System.Windows.Forms.Application.DoEvents()
 			IsFormClicked = False
 			
-			'Invalid_string_refer_to_original_code
+			'リストボックスを表示
 			IsMordal = False
 			.Show()
 			Do Until IsFormClicked
@@ -5960,30 +5864,30 @@ NextLoop:
 		End With
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'複数のアイテム選択可能なリストボックスを表示
 	Public Function MultiSelectListBox(ByVal lb_caption As String, ByRef list() As String, ByVal lb_info As String, ByVal max_num As Short) As Short
 		Dim i, j As Short
 		
-		'Invalid_string_refer_to_original_code
-		CommandState = "Invalid_string_refer_to_original_code"
+		'ステータスウィンドウに攻撃の命中率などを表示させないようにする
+		CommandState = "ユニット選択"
 		
-		'Invalid_string_refer_to_original_code
+		'リストボックスを作成して表示
 		'UPGRADE_ISSUE: Load ステートメント はサポートされていません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="B530EFF2-3132-48F8-B8BC-D88AF543D321"' をクリックしてください。
 		Load(frmMultiSelectListBox)
 		With frmMultiSelectListBox
 			.Text = lb_caption
-			.lblCaption.Text = "縲" & lb_info
+			.lblCaption.Text = "　" & lb_info
 			MaxListItem = max_num
 			For i = 1 To UBound(list)
-				.lstItems.Items.Add("縲" & list(i))
+				.lstItems.Items.Add("　" & list(i))
 			Next 
-			.cmdSort.Text = "Invalid_string_refer_to_original_code"
+			.cmdSort.Text = "名称順に並べ替え"
 			.Left = VB6.TwipsToPixelsX(VB6.PixelsToTwipsX(MainForm.Left))
 			.Top = VB6.TwipsToPixelsY((VB6.PixelsToTwipsY(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height) - VB6.PixelsToTwipsY(.Height)) / 2)
 			.ShowDialog()
 		End With
 		
-		'Invalid_string_refer_to_original_code
+		'選択された項目数を返す
 		j = 0
 		For i = 1 To UBound(list)
 			If ListItemFlag(i) Then
@@ -5992,16 +5896,16 @@ NextLoop:
 		Next 
 		MultiSelectListBox = j
 		
-		'Invalid_string_refer_to_original_code
+		'リストボックスを消去
 		frmMultiSelectListBox.Close()
 		'UPGRADE_NOTE: オブジェクト frmMultiSelectListBox をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
 		frmMultiSelectListBox = Nothing
 	End Function
 	
 	
-	'Invalid_string_refer_to_original_code
+	' === 画像描画に関する処理 ===
 	
-	'逕ｻ蜒上ｒ繧ｦ繧｣繝ｳ繝峨え縺ｫ謠冗判
+	'画像をウィンドウに描画
 	Public Function DrawPicture(ByRef fname As String, ByVal dx As Integer, ByVal dy As Integer, ByVal dw As Integer, ByVal dh As Integer, ByVal sx As Integer, ByVal sy As Integer, ByVal sw As Integer, ByVal sh As Integer, ByRef draw_option As String) As Boolean
 		Dim pic_option, opt, pic_option2 As String
 		Dim permanent, transparent As Boolean
@@ -6061,9 +5965,9 @@ NextLoop:
 		Static last_angle As Integer
 		Static fpath_history As New Collection
 		
-		'Invalid_string_refer_to_original_code
+		'初回実行時に各種情報の初期化を行う
 		If Not init_draw_pitcure Then
-			'Invalid_string_refer_to_original_code
+			'各フォルダにBitmapフォルダがあるかチェック
 			'UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
 			If Len(Dir(ScenarioPath & "Bitmap", FileAttribute.Directory)) > 0 Then
 				scenario_bitmap_dir_exists = True
@@ -6167,14 +6071,14 @@ NextLoop:
 				extdata2_map_bitmap_dir_exists = True
 			End If
 			
-			'逕ｻ髱｢縺ｮ濶ｲ謨ｰ繧貞盾辣ｧ
+			'画面の色数を参照
 			'UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 			display_byte_pixel = GetDeviceCaps(MainForm.picMain(0).hDC, BITSPIXEL) \ 8
 			
 			init_draw_pitcure = True
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'ダミーのファイル名？
 		Select Case fname
 			Case "", "-.bmp", "EFFECT_Void.bmp"
 				Exit Function
@@ -6182,123 +6086,123 @@ NextLoop:
 		
 		'Debug.Print fname, draw_option
 		
-		'Invalid_string_refer_to_original_code
+		'オプションの解析
 		BGColor = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.White)
-		'Invalid_string_refer_to_original_code
+		'マスク画像に影響しないオプション
 		pic_option = ""
-		'繝槭せ繧ｯ逕ｻ蜒上↓蠖ｱ髻ｿ縺吶ｋ繧ｪ繝励す繝ｧ繝ｳ
+		'マスク画像に影響するオプション
 		pic_option2 = ""
-		'Invalid_string_refer_to_original_code
+		'フィルタ時の透過度を初期化
 		trans_par = -1
 		i = 1
 		Do While i <= LLength(draw_option)
 			opt = LIndex(draw_option, i)
 			Select Case opt
-				Case "閭梧勹"
+				Case "背景"
 					permanent = True
-					'Invalid_string_refer_to_original_code
+					'背景書き込みで夜やセピア色のマップの場合は指定がなくても特殊効果を付ける
 					Select Case MapDrawMode
-						Case "Invalid_string_refer_to_original_code"
+						Case "夜"
 							dark_count = dark_count + 1
-							pic_option = pic_option & "Invalid_string_refer_to_original_code"
-						Case "Invalid_string_refer_to_original_code"
+							pic_option = pic_option & " 暗"
+						Case "白黒"
 							is_monotone = True
-							pic_option = pic_option & "Invalid_string_refer_to_original_code"
-						Case "繧ｻ繝斐い"
+							pic_option = pic_option & " 白黒"
+						Case "セピア"
 							is_sepia = True
-							pic_option = pic_option & " 繧ｻ繝斐い"
-						Case "Invalid_string_refer_to_original_code"
+							pic_option = pic_option & " セピア"
+						Case "夕焼け"
 							is_sunset = True
-							pic_option = pic_option & "Invalid_string_refer_to_original_code"
-						Case "豌ｴ荳ｭ"
+							pic_option = pic_option & " 夕焼け"
+						Case "水中"
 							is_water = True
-							pic_option = pic_option & " 豌ｴ荳ｭ"
-						Case "繝輔ぅ繝ｫ繧ｿ"
+							pic_option = pic_option & " 水中"
+						Case "フィルタ"
 							is_colorfilter = True
 							fcolor = MapDrawFilterColor
-							pic_option2 = pic_option2 & " 繝輔ぅ繝ｫ繧ｿ=" & CStr(MapDrawFilterColor)
+							pic_option2 = pic_option2 & " フィルタ=" & CStr(MapDrawFilterColor)
 					End Select
-				Case "騾城℃"
+				Case "透過"
 					transparent = True
 					pic_option = pic_option & " " & opt
-				Case "Invalid_string_refer_to_original_code"
+				Case "白黒"
 					is_monotone = True
 					pic_option = pic_option & " " & opt
-				Case "繧ｻ繝斐い"
+				Case "セピア"
 					is_sepia = True
 					pic_option = pic_option & " " & opt
-				Case "Invalid_string_refer_to_original_code"
+				Case "夕焼け"
 					is_sunset = True
 					pic_option = pic_option & " " & opt
-				Case "豌ｴ荳ｭ"
+				Case "水中"
 					is_water = True
 					pic_option = pic_option & " " & opt
-				Case "Invalid_string_refer_to_original_code"
+				Case "明"
 					bright_count = bright_count + 1
 					pic_option = pic_option & " " & opt
-				Case "Invalid_string_refer_to_original_code"
+				Case "暗"
 					dark_count = dark_count + 1
 					pic_option = pic_option & " " & opt
-				Case "蟾ｦ蜿ｳ蜿崎ｻ｢"
+				Case "左右反転"
 					hrev = True
 					pic_option2 = pic_option2 & " " & opt
-				Case "荳贋ｸ句渚霆｢"
+				Case "上下反転"
 					vrev = True
 					pic_option2 = pic_option2 & " " & opt
-				Case "繝阪ぎ繝昴ず蜿崎ｻ｢"
+				Case "ネガポジ反転"
 					negpos = True
 					pic_option = pic_option & " " & opt
-				Case "Invalid_string_refer_to_original_code"
+				Case "シルエット"
 					is_sil = True
 					pic_option = pic_option & " " & opt
-				Case "Invalid_string_refer_to_original_code"
+				Case "上半分"
 					top_part = True
 					pic_option2 = pic_option2 & " " & opt
-				Case "Invalid_string_refer_to_original_code"
+				Case "下半分"
 					bottom_part = True
 					pic_option2 = pic_option2 & " " & opt
-				Case "Invalid_string_refer_to_original_code"
+				Case "右半分"
 					right_part = True
 					pic_option2 = pic_option2 & " " & opt
-				Case "Invalid_string_refer_to_original_code"
+				Case "左半分"
 					left_part = True
 					pic_option2 = pic_option2 & " " & opt
-				Case "Invalid_string_refer_to_original_code"
+				Case "右上"
 					tright_part = True
 					pic_option2 = pic_option2 & " " & opt
-				Case "Invalid_string_refer_to_original_code"
+				Case "左上"
 					tleft_part = True
 					pic_option2 = pic_option2 & " " & opt
-				Case "Invalid_string_refer_to_original_code"
+				Case "右下"
 					bright_part = True
 					pic_option2 = pic_option2 & " " & opt
-				Case "Invalid_string_refer_to_original_code"
+				Case "左下"
 					bleft_part = True
 					pic_option2 = pic_option2 & " " & opt
-				Case "Invalid_string_refer_to_original_code"
+				Case "メッセージ"
 					on_msg_window = True
-				Case "Invalid_string_refer_to_original_code"
+				Case "ステータス"
 					on_status_window = True
-				Case "菫晄戟"
+				Case "保持"
 					keep_picture = True
-				Case "蜿ｳ蝗櫁ｻ｢"
+				Case "右回転"
 					i = i + 1
 					angle = StrToLng(LIndex(draw_option, i))
-					pic_option2 = pic_option2 & " 蜿ｳ蝗櫁ｻ｢=" & VB6.Format(angle Mod 360)
-				Case "蟾ｦ蝗櫁ｻ｢"
+					pic_option2 = pic_option2 & " 右回転=" & VB6.Format(angle Mod 360)
+				Case "左回転"
 					i = i + 1
 					angle = -StrToLng(LIndex(draw_option, i))
-					pic_option2 = pic_option2 & " 蜿ｳ蝗櫁ｻ｢=" & VB6.Format(angle Mod 360)
-				Case "繝輔ぅ繝ｫ繧ｿ"
+					pic_option2 = pic_option2 & " 右回転=" & VB6.Format(angle Mod 360)
+				Case "フィルタ"
 					is_colorfilter = True
 				Case Else
 					If Right(opt, 1) = "%" And IsNumeric(Left(opt, Len(opt) - 1)) Then
 						trans_par = MaxDbl(0, MinDbl(1, CDbl(Left(opt, Len(opt) - 1)) / 100))
-						pic_option2 = pic_option2 & " 繝輔ぅ繝ｫ繧ｿ騾城℃蠎ｦ=" & opt
+						pic_option2 = pic_option2 & " フィルタ透過度=" & opt
 					Else
 						If is_colorfilter Then
 							fcolor = CInt(opt)
-							pic_option2 = pic_option2 & " 繝輔ぅ繝ｫ繧ｿ=" & opt
+							pic_option2 = pic_option2 & " フィルタ=" & opt
 						Else
 							BGColor = CInt(opt)
 							pic_option2 = pic_option2 & " " & opt
@@ -6310,46 +6214,46 @@ NextLoop:
 		pic_option = Trim(pic_option)
 		pic_option2 = Trim(pic_option2)
 		
-		'Invalid_string_refer_to_original_code
+		'描画先を設定
 		If on_msg_window Then
-			'Invalid_string_refer_to_original_code
+			'メッセージウィンドウへのパイロット画像の描画
 			pic = frmMessage.picFace
 			permanent = False
 		ElseIf on_status_window Then 
-			'Invalid_string_refer_to_original_code
+			'ステータスウィンドウへのパイロット画像の描画
 			'UPGRADE_ISSUE: Control picUnitStatus は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 			pic = MainForm.picUnitStatus
 		ElseIf permanent Then 
-			'閭梧勹縺ｸ縺ｮ謠冗判
+			'背景への描画
 			'UPGRADE_ISSUE: Control picBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 			pic = MainForm.picBack
 		Else
-			'繝槭ャ繝励え繧｣繝ｳ繝峨え縺ｸ縺ｮ騾壼ｸｸ縺ｮ謠冗判
+			'マップウィンドウへの通常の描画
 			'UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 			pic = MainForm.picMain(0)
 			SaveScreen()
 		End If
 		
-		'隱ｭ縺ｿ霎ｼ繧繝輔ぃ繧､繝ｫ縺ｮ謗｢邏｢
+		'読み込むファイルの探索
 		
-		'Invalid_string_refer_to_original_code
+		'前回の画像ファイルと同じ？
 		If fname = last_fname Then
-			'Invalid_string_refer_to_original_code
+			'前回ファイルは見つかっていたのか？
 			If Not last_exists Then
 				DrawPicture = False
 				Exit Function
 			End If
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'以前表示した拡大画像が利用可能？
 		For i = 0 To ImageBufferSize - 1
-			'Invalid_string_refer_to_original_code
+			'同じファイル？
 			If PicBufFname(i) = fname Then
-				'Invalid_string_refer_to_original_code
+				'オプションも同じ？
 				If PicBufOption(i) = pic_option And PicBufOption2(i) = pic_option2 And Not PicBufIsMask(i) And PicBufDW(i) = dw And PicBufDH(i) = dh And PicBufSX(i) = sx And PicBufSY(i) = sy And PicBufSW(i) = sw And PicBufSH(i) = sh Then
-					'Invalid_string_refer_to_original_code
+					'同じファイル、オプションによる画像が見つかった
 					
-					'Invalid_string_refer_to_original_code
+					'以前表示した画像をそのまま利用
 					UsePicBuf(i)
 					'UPGRADE_ISSUE: Control picBuf は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 					orig_pic = MainForm.picBuf(i)
@@ -6363,15 +6267,15 @@ NextLoop:
 			End If
 		Next 
 		
-		'Invalid_string_refer_to_original_code
+		'以前表示した画像が利用可能？
 		For i = 0 To ImageBufferSize - 1
-			'Invalid_string_refer_to_original_code
+			'同じファイル？
 			If PicBufFname(i) = fname Then
-				'Invalid_string_refer_to_original_code
+				'オプションも同じ？
 				If PicBufOption(i) = pic_option And PicBufOption2(i) = pic_option2 And Not PicBufIsMask(i) And PicBufDW(i) = DEFAULT_LEVEL And PicBufDH(i) = DEFAULT_LEVEL And PicBufSX(i) = sx And PicBufSY(i) = sy And PicBufSW(i) = sw And PicBufSH(i) = sh Then
-					'Invalid_string_refer_to_original_code
+					'同じファイル、オプションによる画像が見つかった
 					
-					'Invalid_string_refer_to_original_code
+					'以前表示した画像をそのまま利用
 					UsePicBuf(i)
 					'UPGRADE_ISSUE: Control picBuf は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 					orig_pic = MainForm.picBuf(i)
@@ -6386,13 +6290,13 @@ NextLoop:
 			End If
 		Next 
 		
-		'Invalid_string_refer_to_original_code
+		'以前使用した部分画像が利用可能？
 		If sw <> 0 Then
 			For i = 0 To ImageBufferSize - 1
-				'Invalid_string_refer_to_original_code
+				'同じファイル？
 				If PicBufFname(i) = fname Then
 					If PicBufOption(i) = "" And PicBufOption2(i) = "" And Not PicBufIsMask(i) And PicBufDW(i) = DEFAULT_LEVEL And PicBufDH(i) = DEFAULT_LEVEL And PicBufSX(i) = sx And PicBufSY(i) = sy And PicBufSW(i) = sw And PicBufSH(i) = sh Then
-						'Invalid_string_refer_to_original_code
+						'以前使用した部分画像をそのまま利用
 						UsePicBuf(i)
 						'UPGRADE_ISSUE: Control picBuf は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 						orig_pic = MainForm.picBuf(i)
@@ -6407,12 +6311,12 @@ NextLoop:
 			Next 
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'以前使用した原画像が利用可能？
 		For i = 0 To ImageBufferSize - 1
-			'Invalid_string_refer_to_original_code
+			'同じファイル？
 			If PicBufFname(i) = fname Then
 				If PicBufOption(i) = "" And PicBufOption2(i) = "" And Not PicBufIsMask(i) And PicBufDW(i) = DEFAULT_LEVEL And PicBufDH(i) = DEFAULT_LEVEL And PicBufSW(i) = 0 Then
-					'Invalid_string_refer_to_original_code
+					'以前使用した原画像をそのまま利用
 					UsePicBuf(i)
 					'UPGRADE_ISSUE: Control picBuf は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 					orig_pic = MainForm.picBuf(i)
@@ -6426,10 +6330,10 @@ NextLoop:
 			End If
 		Next 
 		
-		'Invalid_string_refer_to_original_code
+		'特殊なファイル名
 		Select Case LCase(fname)
 			Case "black.bmp", "event\black.bmp"
-				'Invalid_string_refer_to_original_code
+				'黒で塗りつぶし
 				With pic
 					If dx = DEFAULT_LEVEL Then
 						dx = (VB6.PixelsToTwipsX(.Width) - dw) \ 2
@@ -6442,7 +6346,7 @@ NextLoop:
 				End With
 				GoTo DrewPicture
 			Case "white.bmp", "event\white.bmp"
-				'Invalid_string_refer_to_original_code
+				'白で塗りつぶし
 				With pic
 					If dx = DEFAULT_LEVEL Then
 						dx = (VB6.PixelsToTwipsX(.Width) - dw) \ 2
@@ -6455,21 +6359,21 @@ NextLoop:
 				End With
 				GoTo DrewPicture
 			Case "common\effect_tile(ally).bmp", "anime\common\effect_tile(ally).bmp"
-				'蜻ｳ譁ｹ繝ｦ繝九ャ繝医ち繧､繝ｫ
+				'味方ユニットタイル
 				'UPGRADE_ISSUE: Control picUnit は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 				orig_pic = MainForm.picUnit
 				orig_width = 32
 				orig_height = 32
 				GoTo LoadedOrigPicture
 			Case "common\effect_tile(enemy).bmp", "anime\common\effect_tile(enemy).bmp"
-				'謨ｵ繝ｦ繝九ャ繝医ち繧､繝ｫ
+				'敵ユニットタイル
 				'UPGRADE_ISSUE: Control picEnemy は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 				orig_pic = MainForm.picEnemy
 				orig_width = 32
 				orig_height = 32
 				GoTo LoadedOrigPicture
 			Case "common\effect_tile(neutral).bmp", "anime\common\effect_tile(neutral).bmp"
-				'荳ｭ遶九Θ繝九ャ繝医ち繧､繝ｫ
+				'中立ユニットタイル
 				'UPGRADE_ISSUE: Control picNeautral は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 				orig_pic = MainForm.picNeautral
 				orig_width = 32
@@ -6477,25 +6381,25 @@ NextLoop:
 				GoTo LoadedOrigPicture
 		End Select
 		
-		'Invalid_string_refer_to_original_code
+		'フルパスで指定されている？
 		If InStr(fname, ":") = 2 Then
 			fpath = ""
 			last_path = ""
-			'逋ｻ骭ｲ繧帝∩縺代ｋ縺溘ａ
+			'登録を避けるため
 			in_history = True
 			GoTo FoundPicture
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'履歴を検索してみる
 		On Error GoTo NotFound
 		'UPGRADE_WARNING: オブジェクト fpath_history.Item() の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
 		fpath = fpath_history.Item(fname)
 		last_path = ""
 		
-		'Invalid_string_refer_to_original_code
+		'履歴上にファイルを発見
 		On Error GoTo 0
 		If fpath = "" Then
-			'Invalid_string_refer_to_original_code
+			'ファイルは存在しない
 			last_fname = fname
 			last_exists = False
 			DrawPicture = False
@@ -6506,10 +6410,10 @@ NextLoop:
 		
 NotFound: 
 		
-		'Invalid_string_refer_to_original_code
+		'履歴になかった
 		On Error GoTo 0
 		
-		'Invalid_string_refer_to_original_code
+		'戦闘アニメ用？
 		If InStr(fname, "\EFFECT_") > 0 Then
 			If scenario_anime_bitmap_dir_exists Then
 				If FileExists(ScenarioPath & "Bitmap\Anime\" & fname) Then
@@ -6539,7 +6443,7 @@ NotFound:
 			End If
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'前回と同じパス？
 		If Len(last_path) > 0 Then
 			If FileExists(last_path & fname) Then
 				fpath = last_path
@@ -6547,7 +6451,7 @@ NotFound:
 			End If
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'パス名入り？
 		If InStr(fname, "Bitmap\") > 0 Then
 			If scenario_bitmap_dir_exists Then
 				If FileExists(ScenarioPath & fname) Then
@@ -6568,7 +6472,7 @@ NotFound:
 			End If
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'フォルダ指定あり？
 		If InStr(fname, "\") > 0 Then
 			If scenario_bitmap_dir_exists Then
 				If FileExists(ScenarioPath & "Bitmap\" & fname) Then
@@ -6615,7 +6519,7 @@ NotFound:
 				End If
 			End If
 		Else
-			'Invalid_string_refer_to_original_code
+			'地形画像検索用の地形画像ディレクトリ名と4桁ファイル名を作成
 			If fname Like "*#.bmp" And Left(fname, 1) Like "[a-z]" Then
 				i = Len(fname) - 5
 				Do While i > 0
@@ -6644,9 +6548,9 @@ NotFound:
 			End If
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'各フォルダを検索する
 		
-		'Invalid_string_refer_to_original_code
+		'Bitmapフォルダに直置き
 		If scenario_map_bitmap_dir_exists Then
 			If FileExists(ScenarioPath & "Bitmap\" & fname) Then
 				fpath = ScenarioPath & "Bitmap\"
@@ -6660,7 +6564,7 @@ NotFound:
 			GoTo FoundPicture
 		End If
 		
-		'繧ｷ繝翫Μ繧ｪ繝輔か繝ｫ繝
+		'シナリオフォルダ
 		If scenario_bitmap_dir_exists Then
 			If scenario_anime_bitmap_dir_exists Then
 				If FileExists(ScenarioPath & "Bitmap\Anime\" & fname) Then
@@ -6708,7 +6612,7 @@ NotFound:
 						fname = tname
 						fpath = ScenarioPath & "Bitmap\Map\" & tdir
 						last_path = fpath
-						'逋ｻ骭ｲ繧帝∩縺代ｋ縺溘ａ
+						'登録を避けるため
 						in_history = True
 						GoTo FoundPicture
 					End If
@@ -6716,7 +6620,7 @@ NotFound:
 						fname = tname
 						fpath = ScenarioPath & "Bitmap\Map\"
 						last_path = fpath
-						'逋ｻ骭ｲ繧帝∩縺代ｋ縺溘ａ
+						'登録を避けるため
 						in_history = True
 						GoTo FoundPicture
 					End If
@@ -6777,7 +6681,7 @@ NotFound:
 						fname = tname
 						fpath = ExtDataPath & "Bitmap\Map\" & tdir
 						last_path = ""
-						'逋ｻ骭ｲ繧帝∩縺代ｋ縺溘ａ
+						'登録を避けるため
 						in_history = True
 						GoTo FoundPicture
 					End If
@@ -6785,7 +6689,7 @@ NotFound:
 						fname = tname
 						fpath = ExtDataPath & "Bitmap\Map\"
 						last_path = ""
-						'逋ｻ骭ｲ繧帝∩縺代ｋ縺溘ａ
+						'登録を避けるため
 						in_history = True
 						GoTo FoundPicture
 					End If
@@ -6846,7 +6750,7 @@ NotFound:
 						fname = tname
 						fpath = ExtDataPath2 & "Bitmap\Map\" & tdir
 						last_path = ""
-						'逋ｻ骭ｲ繧帝∩縺代ｋ縺溘ａ
+						'登録を避けるため
 						in_history = True
 						GoTo FoundPicture
 					End If
@@ -6854,7 +6758,7 @@ NotFound:
 						fname = tname
 						fpath = ExtDataPath2 & "Bitmap\Map\"
 						last_path = ""
-						'逋ｻ骭ｲ繧帝∩縺代ｋ縺溘ａ
+						'登録を避けるため
 						in_history = True
 						GoTo FoundPicture
 					End If
@@ -6867,7 +6771,7 @@ NotFound:
 			End If
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'本体側フォルダ
 		If FileExists(AppPath & "Bitmap\Anime\" & fname) Then
 			fpath = AppPath & "Bitmap\Anime\"
 			last_path = ""
@@ -6909,7 +6813,7 @@ NotFound:
 				fname = tname
 				fpath = AppPath & "Bitmap\Map\" & tdir
 				last_path = ""
-				'逋ｻ骭ｲ繧帝∩縺代ｋ縺溘ａ
+				'登録を避けるため
 				in_history = True
 				GoTo FoundPicture
 			End If
@@ -6917,7 +6821,7 @@ NotFound:
 				fname = tname
 				fpath = AppPath & "Bitmap\Map\"
 				last_path = ""
-				'逋ｻ骭ｲ繧帝∩縺代ｋ縺溘ａ
+				'登録を避けるため
 				in_history = True
 				GoTo FoundPicture
 			End If
@@ -6928,12 +6832,12 @@ NotFound:
 			GoTo FoundPicture
 		End If
 		
-		'隕九▽縺九ｉ縺ｪ縺九▲縺溪ｦ窶ｦ
+		'見つからなかった……
 		
-		'螻･豁ｴ縺ｫ險倬鹸縺励※縺翫￥
+		'履歴に記録しておく
 		fpath_history.Add("", fname)
 		
-		'陦ｨ遉ｺ繧剃ｸｭ豁｢
+		'表示を中止
 		last_fname = fname
 		last_exists = False
 		DrawPicture = False
@@ -6941,10 +6845,10 @@ NotFound:
 		
 FoundPicture: 
 		
-		'繝輔ぃ繧､繝ｫ蜷阪ｒ險倬鹸縺励※縺翫￥
+		'ファイル名を記録しておく
 		last_fname = fname
 		
-		'螻･豁ｴ縺ｫ險倬鹸縺励※縺翫￥
+		'履歴に記録しておく
 		If Not in_history Then
 			fpath_history.Add(fpath, fname)
 		End If
@@ -6952,7 +6856,7 @@ FoundPicture:
 		last_exists = True
 		pfname = fpath & fname
 		
-		'Invalid_string_refer_to_original_code
+		'使用するバッファを選択
 		i = GetPicBuf()
 		'UPGRADE_ISSUE: Control picBuf は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 		orig_pic = MainForm.picBuf(i)
@@ -6970,7 +6874,7 @@ FoundPicture:
 		
 		LoadPicture2(orig_pic, pfname)
 		
-		'Invalid_string_refer_to_original_code
+		'読み込んだ画像のサイズ(バイト数)をバッファ情報に記録しておく
 		With orig_pic
 			PicBufSize(i) = display_byte_pixel * VB6.PixelsToTwipsX(.Width) * VB6.PixelsToTwipsY(.Height)
 		End With
@@ -6982,10 +6886,10 @@ LoadedOrigPicture:
 			orig_height = VB6.PixelsToTwipsY(.Height)
 		End With
 		
-		'Invalid_string_refer_to_original_code
+		'原画像の一部のみを描画？
 		If sw <> 0 Then
 			If sw <> orig_width Or sh <> orig_height Then
-				'Invalid_string_refer_to_original_code
+				'使用するpicBufを選択
 				i = GetPicBuf(display_byte_pixel * sw * sh)
 				PicBufFname(i) = fname
 				PicBufOption(i) = ""
@@ -6999,7 +6903,7 @@ LoadedOrigPicture:
 				PicBufIsMask(i) = False
 				'Debug.Print "Use " & Format$(i) & " As Partial"
 				
-				'Invalid_string_refer_to_original_code
+				'原画像から描画部分をコピー
 				'UPGRADE_ISSUE: Control picBuf は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 				With MainForm.picBuf(i)
 					'UPGRADE_ISSUE: Control picBuf は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
@@ -7028,9 +6932,9 @@ LoadedOrigPicture:
 		
 LoadedPicture: 
 		
-		'Invalid_string_refer_to_original_code
+		'原画像を修正して使う場合は原画像を別のpicBufにコピーして修正する
 		If top_part Or bottom_part Or left_part Or right_part Or tleft_part Or tright_part Or bleft_part Or bright_part Or is_monotone Or is_sepia Or is_sunset Or is_water Or negpos Or is_sil Or vrev Or hrev Or bright_count > 0 Or dark_count > 0 Or angle Mod 360 <> 0 Or is_colorfilter Then
-			'Invalid_string_refer_to_original_code
+			'使用するpicBufを選択
 			i = GetPicBuf(display_byte_pixel * orig_width * orig_height)
 			PicBufFname(i) = fname
 			PicBufOption(i) = pic_option
@@ -7044,7 +6948,7 @@ LoadedPicture:
 			PicBufIsMask(i) = False
 			'Debug.Print "Use " & Format$(i) & " As Edited"
 			
-			'Invalid_string_refer_to_original_code
+			'画像をコピー
 			'UPGRADE_ISSUE: Control picBuf は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 			With MainForm.picBuf(i)
 				'UPGRADE_ISSUE: Control picBuf は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
@@ -7061,98 +6965,98 @@ LoadedPicture:
 			orig_pic = MainForm.picBuf(i)
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'画像の一部を塗りつぶして描画する場合
 		If top_part Then
-			'Invalid_string_refer_to_original_code
+			'上半分
 			'UPGRADE_ISSUE: PictureBox メソッド orig_pic.Line はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 			orig_pic.Line (0, orig_height \ 2) - (orig_width - 1, orig_height - 1), BGColor, BF
 		End If
 		If bottom_part Then
-			'Invalid_string_refer_to_original_code
+			'下半分
 			'UPGRADE_ISSUE: PictureBox メソッド orig_pic.Line はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 			orig_pic.Line (0, 0) - (orig_width - 1, orig_height \ 2 - 1), BGColor, BF
 		End If
 		If left_part Then
-			'Invalid_string_refer_to_original_code
+			'左半分
 			'UPGRADE_ISSUE: PictureBox メソッド orig_pic.Line はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 			orig_pic.Line (orig_width \ 2, 0) - (orig_width - 1, orig_height - 1), BGColor, BF
 		End If
 		If right_part Then
-			'Invalid_string_refer_to_original_code
+			'右半分
 			'UPGRADE_ISSUE: PictureBox メソッド orig_pic.Line はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 			orig_pic.Line (0, 0) - (orig_width \ 2 - 1, orig_height - 1), BGColor, BF
 		End If
 		If tleft_part Then
-			'Invalid_string_refer_to_original_code
+			'左上
 			For i = 0 To orig_width - 1
 				'UPGRADE_ISSUE: PictureBox メソッド orig_pic.Line はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 				orig_pic.Line (i, orig_height - 1 - i) - (i, orig_height - 1), BGColor, B
 			Next 
 		End If
 		If tright_part Then
-			'Invalid_string_refer_to_original_code
+			'右上
 			For i = 0 To orig_width - 1
 				'UPGRADE_ISSUE: PictureBox メソッド orig_pic.Line はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 				orig_pic.Line (i, i) - (i, orig_height - 1), BGColor, B
 			Next 
 		End If
 		If bleft_part Then
-			'Invalid_string_refer_to_original_code
+			'左下
 			For i = 0 To orig_width - 1
 				'UPGRADE_ISSUE: PictureBox メソッド orig_pic.Line はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 				orig_pic.Line (i, 0) - (i, i), BGColor, B
 			Next 
 		End If
 		If bright_part Then
-			'Invalid_string_refer_to_original_code
+			'右下
 			For i = 0 To orig_width - 1
 				'UPGRADE_ISSUE: PictureBox メソッド orig_pic.Line はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 				orig_pic.Line (i, 0) - (i, orig_height - 1 - i), BGColor, B
 			Next 
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'特殊効果
 		If is_monotone Or is_sepia Or is_sunset Or is_water Or is_colorfilter Or bright_count > 0 Or dark_count > 0 Or negpos Or is_sil Or vrev Or hrev Or angle <> 0 Then
-			'Invalid_string_refer_to_original_code
+			'画像のサイズをチェック
 			If orig_width * orig_height Mod 4 <> 0 Then
-				ErrorMessage(fname & "Invalid_string_refer_to_original_code")
+				ErrorMessage(fname & "の画像サイズが4の倍数になっていません")
 				Exit Function
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'イメージをバッファに取り込み
 			GetImage(orig_pic)
 			
-			'Invalid_string_refer_to_original_code
+			'白黒
 			If is_monotone Then
 				Monotone(transparent)
 			End If
 			
-			'繧ｻ繝斐い
+			'セピア
 			If is_sepia Then
 				Sepia(transparent)
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'夕焼け
 			If is_sunset Then
 				Sunset(transparent)
 			End If
 			
-			'豌ｴ荳ｭ
+			'水中
 			If is_water Then
 				Water(transparent)
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'シルエット
 			If is_sil Then
 				Silhouette()
 			End If
 			
-			'繝阪ぎ繝昴ず蜿崎ｻ｢
+			'ネガポジ反転
 			If negpos Then
 				NegPosReverse(transparent)
 			End If
 			
-			'繝輔ぅ繝ｫ繧ｿ
+			'フィルタ
 			If is_colorfilter Then
 				If trans_par < 0 Then
 					trans_par = 0.5
@@ -7160,44 +7064,44 @@ LoadedPicture:
 				ColorFilter(fcolor, trans_par, transparent)
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'明 (多段指定可能)
 			For i = 1 To bright_count
 				Bright(transparent)
 			Next 
 			
-			'Invalid_string_refer_to_original_code
+			'暗 (多段指定可能)
 			For i = 1 To dark_count
 				Dark(transparent)
 			Next 
 			
-			'蟾ｦ蜿ｳ蜿崎ｻ｢
+			'左右反転
 			If vrev Then
 				VReverse()
 			End If
 			
-			'荳贋ｸ句渚霆｢
+			'上下反転
 			If hrev Then
 				HReverse()
 			End If
 			
-			'蝗櫁ｻ｢
+			'回転
 			If angle <> 0 Then
-				'Invalid_string_refer_to_original_code
-				'(騾｣邯壹〒蝗櫁ｻ｢縺輔○繧句ｴ蜷医↓謠冗判騾溷ｺｦ繧剃ｸ螳壹↓縺吶ｋ縺溘ａ)
+				'前回の回転角が90度の倍数かどうかで描画の際の最適化使用可否を決める
+				'(連続で回転させる場合に描画速度を一定にするため)
 				Rotate(angle, last_angle Mod 90 <> 0)
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'変更した内容をイメージに変換
 			SetImage(orig_pic)
 			
-			'Invalid_string_refer_to_original_code
+			'バッファを破棄
 			ClearImage()
 		End If
 		last_angle = angle
 		
 EditedPicture: 
 		
-		'Invalid_string_refer_to_original_code
+		'クリッピング処理
 		If dw = DEFAULT_LEVEL Then
 			dw = orig_width
 		End If
@@ -7205,7 +7109,7 @@ EditedPicture:
 			dh = orig_height
 		End If
 		If permanent Then
-			'閭梧勹謠冗判縺ｮ蝣ｴ蜷医√そ繝ｳ繧ｿ繝ｪ繝ｳ繧ｰ縺ｯ繝槭ャ繝嶺ｸｭ螟ｮ縺ｫ
+			'背景描画の場合、センタリングはマップ中央に
 			If dx = DEFAULT_LEVEL Then
 				dx = (MapPWidth - dw) \ 2
 			End If
@@ -7217,9 +7121,9 @@ EditedPicture:
 				End If
 			End If
 		Else
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
-			If InStr(fname, "EFFECT_") > 0 Or InStr(fname, "繧ｹ繝壹す繝｣繝ｫ繝代Ρ繝ｼ\") > 0 Or InStr(fname, "邊ｾ逾槭さ繝槭Φ繝噂") > 0 Then
+			'ユニット上で画像のセンタリングを行うことを意図している
+			'場合は修正が必要
+			If InStr(fname, "EFFECT_") > 0 Or InStr(fname, "スペシャルパワー\") > 0 Or InStr(fname, "精神コマンド\") > 0 Then
 				If dx = DEFAULT_LEVEL Then
 					dx = (MainPWidth - dw) \ 2
 					If MainWidth Mod 2 = 0 Then
@@ -7233,7 +7137,7 @@ EditedPicture:
 					End If
 				End If
 			Else
-				'騾壼ｸｸ謠冗判縺ｮ蝣ｴ蜷医√そ繝ｳ繧ｿ繝ｪ繝ｳ繧ｰ縺ｯ逕ｻ髱｢荳ｭ螟ｮ縺ｫ
+				'通常描画の場合、センタリングは画面中央に
 				If dx = DEFAULT_LEVEL Then
 					dx = (MainPWidth - dw) \ 2
 				End If
@@ -7243,42 +7147,42 @@ EditedPicture:
 			End If
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'描画先が画面外の場合や描画サイズが0の場合は画像のロードのみを行う
 		With pic
 			If dx >= VB6.PixelsToTwipsX(.Width) Or dy >= VB6.PixelsToTwipsY(.Height) Or dx + dw <= 0 Or dy + dh <= 0 Or dw <= 0 Or dh <= 0 Then
 				load_only = True
 			End If
 		End With
 		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
+		'描画を最適化するため、描画方法を細かく分けている。
+		'描画方法は以下の通り。
+		'(1) BitBltでそのまま描画 (拡大処理なし、透過処理なし)
+		'(2) 拡大画像を作ってからバッファリングして描画 (拡大処理あり、透過処理なし)
+		'(3) 拡大画像を作らずにStretchBltで直接拡大描画 (拡大処理あり、透過処理なし)
+		'(4) TransparentBltで拡大透過描画 (拡大処理あり、透過処理あり)
+		'(5) 原画像をそのまま透過描画 (拡大処理なし、透過処理あり)
+		'(6) 拡大画像を作ってからバッファリングして透過描画 (拡大処理あり、透過処理あり)
+		'(7) 拡大画像を作ってからバッファリングせずに透過描画 (拡大処理あり、透過処理あり)
+		'(8) 拡大画像を作らずにStretchBltで直接拡大透過描画 (拡大処理あり、透過処理あり)
 		
-		'逕ｻ髱｢縺ｫ謠冗判縺吶ｋ
+		'画面に描画する
 		If Not transparent And dw = orig_width And dh = orig_height Then
-			'Invalid_string_refer_to_original_code
+			'原画像をそのまま描画
 			
-			'Invalid_string_refer_to_original_code
+			'描画をキャンセル？
 			If load_only Then
 				DrawPicture = True
 				Exit Function
 			End If
 			
-			'逕ｻ蜒上ｒ謠冗判蜈医↓謠冗判
+			'画像を描画先に描画
 			'UPGRADE_ISSUE: PictureBox プロパティ orig_pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 			'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 			ret = BitBlt(pic.hDC, dx, dy, dw, dh, orig_pic.hDC, 0, 0, SRCCOPY)
 		ElseIf KeepStretchedImage And Not transparent And (Not found_orig Or load_only) And dw <= 480 And dh <= 480 Then 
-			'Invalid_string_refer_to_original_code
+			'拡大画像を作成し、バッファリングして描画
 			
-			'Invalid_string_refer_to_original_code
+			'拡大画像に使用するpicBufを選択
 			i = GetPicBuf(display_byte_pixel * dw * dh)
 			PicBufFname(i) = fname
 			PicBufIsMask(i) = False
@@ -7292,7 +7196,7 @@ EditedPicture:
 			PicBufSH(i) = sh
 			'Debug.Print "Use " & Format$(i) & " As Stretched"
 			
-			'Invalid_string_refer_to_original_code
+			'バッファの初期化
 			'UPGRADE_ISSUE: Control picBuf は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 			stretched_pic = MainForm.picBuf(i)
 			With stretched_pic
@@ -7301,60 +7205,60 @@ EditedPicture:
 				.Height = VB6.TwipsToPixelsY(dh)
 			End With
 			
-			'Invalid_string_refer_to_original_code
+			'バッファに拡大した画像を保存
 			'UPGRADE_ISSUE: PictureBox プロパティ orig_pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 			'UPGRADE_ISSUE: PictureBox プロパティ stretched_pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 			ret = StretchBlt(stretched_pic.hDC, 0, 0, dw, dh, orig_pic.hDC, 0, 0, orig_width, orig_height, SRCCOPY)
 			
-			'Invalid_string_refer_to_original_code
+			'描画をキャンセル？
 			If load_only Then
 				DrawPicture = True
 				Exit Function
 			End If
 			
-			'諡｡螟ｧ縺励◆逕ｻ蜒上ｒ謠冗判蜈医↓謠冗判
+			'拡大した画像を描画先に描画
 			'UPGRADE_ISSUE: PictureBox プロパティ stretched_pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 			'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 			ret = BitBlt(pic.hDC, dx, dy, dw, dh, stretched_pic.hDC, 0, 0, SRCCOPY)
 		ElseIf Not transparent Then 
-			'諡｡螟ｧ逕ｻ蜒上ｒ菴懊ｉ縺壹↓StretchBlt縺ｧ逶ｴ謗･諡｡螟ｧ謠冗判
+			'拡大画像を作らずにStretchBltで直接拡大描画
 			
-			'Invalid_string_refer_to_original_code
+			'描画をキャンセル？
 			If load_only Then
 				DrawPicture = True
 				Exit Function
 			End If
 			
-			'諡｡螟ｧ縺励◆逕ｻ蜒上ｒ謠冗判蜈医↓謠冗判
+			'拡大した画像を描画先に描画
 			'UPGRADE_ISSUE: PictureBox プロパティ orig_pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 			'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 			ret = StretchBlt(pic.hDC, dx, dy, dw, dh, orig_pic.hDC, 0, 0, orig_width, orig_height, SRCCOPY)
 		ElseIf UseTransparentBlt And (dw <> orig_width Or dh <> orig_height) And found_orig And Not load_only And (dw * dh < 40000 Or orig_width * orig_height > 40000) Then 
-			'TransparentBlt縺ｮ譁ｹ縺碁ｫ倬溘↓謠冗判縺ｧ縺阪ｋ蝣ｴ蜷医↓髯舌ｊ
-			'TransparentBlt繧剃ｽｿ縺｣縺ｦ諡｡螟ｧ騾城℃謠冗判
+			'TransparentBltの方が高速に描画できる場合に限り
+			'TransparentBltを使って拡大透過描画
 			
-			'Invalid_string_refer_to_original_code
+			'描画をキャンセル？
 			If load_only Then
 				DrawPicture = True
 				Exit Function
 			End If
 			
-			'逕ｻ蜒上ｒ謠冗判蜈医↓騾城℃謠冗判
+			'画像を描画先に透過描画
 			'UPGRADE_ISSUE: PictureBox プロパティ orig_pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 			'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 			ret = TransparentBlt(pic.hDC, dx, dy, dw, dh, orig_pic.hDC, 0, 0, orig_width, orig_height, BGColor)
 		ElseIf dw = orig_width And dh = orig_height Then 
-			'Invalid_string_refer_to_original_code
+			'原画像をそのまま透過描画
 			
-			'Invalid_string_refer_to_original_code
+			'以前使用したマスク画像が利用可能？
 			'UPGRADE_NOTE: オブジェクト mask_pic をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
 			mask_pic.Image = Nothing
 			For i = 0 To ImageBufferSize - 1
-				'Invalid_string_refer_to_original_code
+				'同じファイル？
 				If PicBufFname(i) = fname Then
-					'Invalid_string_refer_to_original_code
+					'オプションも同じ？
 					If PicBufIsMask(i) And PicBufOption2(i) = pic_option2 And PicBufDW(i) = orig_width And PicBufDH(i) = orig_height And PicBufSX(i) = sx And PicBufSX(i) = sy And PicBufSW(i) = sw And PicBufSH(i) = sh Then
-						'Invalid_string_refer_to_original_code
+						'以前使用したマスク画像をそのまま利用
 						UsePicBuf(i)
 						'UPGRADE_ISSUE: Control picBuf は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 						mask_pic = MainForm.picBuf(i)
@@ -7365,9 +7269,9 @@ EditedPicture:
 			Next 
 			
 			If mask_pic Is Nothing Then
-				'Invalid_string_refer_to_original_code
+				'マスク画像を新規に作成
 				
-				'Invalid_string_refer_to_original_code
+				'マスク画像に使用するpicBufを選択
 				i = GetPicBuf(display_byte_pixel * dw * dh)
 				PicBufFname(i) = fname
 				PicBufIsMask(i) = True
@@ -7381,7 +7285,7 @@ EditedPicture:
 				PicBufSH(i) = sh
 				'Debug.Print "Use " & Format$(i) & " As Mask"
 				
-				'Invalid_string_refer_to_original_code
+				'バッファの初期化
 				'UPGRADE_ISSUE: Control picBuf は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 				mask_pic = MainForm.picBuf(i)
 				With mask_pic
@@ -7390,21 +7294,21 @@ EditedPicture:
 					.Height = VB6.TwipsToPixelsY(orig_height)
 				End With
 				
-				'Invalid_string_refer_to_original_code
+				'マスク画像を作成
 				'UPGRADE_ISSUE: PictureBox プロパティ mask_pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 				'UPGRADE_ISSUE: PictureBox プロパティ orig_pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 				MakeMask((orig_pic.hDC), (mask_pic.hDC), orig_width, orig_height, BGColor)
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'描画をキャンセル？
 			If load_only Then
 				DrawPicture = True
 				Exit Function
 			End If
 			
-			'逕ｻ蜒上ｒ騾城℃謠冗判
+			'画像を透過描画
 			If BGColor = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.White) Then
-				'閭梧勹濶ｲ縺檎區
+				'背景色が白
 				'UPGRADE_ISSUE: PictureBox プロパティ mask_pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 				'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 				ret = BitBlt(pic.hDC, dx, dy, dw, dh, mask_pic.hDC, 0, 0, SRCERASE)
@@ -7413,7 +7317,7 @@ EditedPicture:
 				'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 				ret = BitBlt(pic.hDC, dx, dy, dw, dh, orig_pic.hDC, 0, 0, SRCINVERT)
 			Else
-				'Invalid_string_refer_to_original_code
+				'背景色が白以外
 				'UPGRADE_ISSUE: PictureBox プロパティ mask_pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 				'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 				ret = BitBlt(pic.hDC, dx, dy, dw, dh, mask_pic.hDC, 0, 0, SRCAND)
@@ -7426,13 +7330,13 @@ EditedPicture:
 				'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 				ret = BitBlt(pic.hDC, dx, dy, dw, dh, mask_pic.hDC, 0, 0, SRCINVERT)
 				
-				'Invalid_string_refer_to_original_code
+				'マスク画像が再利用できないのでバッファを開放
 				ReleasePicBuf(i)
 			End If
 		ElseIf KeepStretchedImage And (Not found_orig Or load_only) And dw <= 480 And dh <= 480 Then 
-			'Invalid_string_refer_to_original_code
+			'拡大画像を作成し、バッファリングして透過描画
 			
-			'Invalid_string_refer_to_original_code
+			'拡大画像用に使用するpicBufを選択
 			i = GetPicBuf(display_byte_pixel * dw * dh)
 			PicBufFname(i) = fname
 			PicBufIsMask(i) = False
@@ -7446,7 +7350,7 @@ EditedPicture:
 			PicBufSH(i) = sh
 			'Debug.Print "Use " & Format$(i) & " As Stretched"
 			
-			'Invalid_string_refer_to_original_code
+			'バッファの初期化
 			'UPGRADE_ISSUE: Control picBuf は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 			stretched_pic = MainForm.picBuf(i)
 			With stretched_pic
@@ -7455,20 +7359,20 @@ EditedPicture:
 				.Height = VB6.TwipsToPixelsY(dh)
 			End With
 			
-			'Invalid_string_refer_to_original_code
+			'バッファに拡大した画像を保存
 			'UPGRADE_ISSUE: PictureBox プロパティ orig_pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 			'UPGRADE_ISSUE: PictureBox プロパティ stretched_pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 			ret = StretchBlt(stretched_pic.hDC, 0, 0, dw, dh, orig_pic.hDC, 0, 0, orig_width, orig_height, SRCCOPY)
 			
-			'Invalid_string_refer_to_original_code
+			'以前使用した拡大マスク画像が利用可能？
 			'UPGRADE_NOTE: オブジェクト stretched_mask_pic をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
 			stretched_mask_pic.Image = Nothing
 			For i = 0 To ImageBufferSize - 1
-				'Invalid_string_refer_to_original_code
+				'同じファイル？
 				If PicBufFname(i) = fname Then
-					'Invalid_string_refer_to_original_code
+					'オプションも同じ？
 					If PicBufIsMask(i) And PicBufOption2(i) = pic_option2 And PicBufDW(i) = dw And PicBufDH(i) = dh And PicBufSX(i) = sx And PicBufSY(i) = sy And PicBufSW(i) = sw And PicBufSH(i) = sh Then
-						'Invalid_string_refer_to_original_code
+						'以前使用した拡大マスク画像をそのまま利用
 						UsePicBuf(i)
 						'UPGRADE_ISSUE: Control picBuf は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 						stretched_mask_pic = MainForm.picBuf(i)
@@ -7479,9 +7383,9 @@ EditedPicture:
 			Next 
 			
 			If stretched_mask_pic Is Nothing Then
-				'Invalid_string_refer_to_original_code
+				'拡大マスク画像を新規に作成
 				
-				'Invalid_string_refer_to_original_code
+				'マスク画像用の領域を初期化
 				'UPGRADE_ISSUE: Control picTmp は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 				mask_pic = MainForm.picTmp
 				With mask_pic
@@ -7490,12 +7394,12 @@ EditedPicture:
 					.Height = VB6.TwipsToPixelsY(orig_height)
 				End With
 				
-				'Invalid_string_refer_to_original_code
+				'マスク画像を作成
 				'UPGRADE_ISSUE: PictureBox プロパティ mask_pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 				'UPGRADE_ISSUE: PictureBox プロパティ orig_pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 				MakeMask((orig_pic.hDC), (mask_pic.hDC), orig_width, orig_height, BGColor)
 				
-				'Invalid_string_refer_to_original_code
+				'拡大マスク画像に使用するpicBufを選択
 				i = GetPicBuf(display_byte_pixel * orig_width * orig_height)
 				PicBufFname(i) = fname
 				PicBufIsMask(i) = True
@@ -7509,7 +7413,7 @@ EditedPicture:
 				PicBufSH(i) = sh
 				'Debug.Print "Use " & Format$(i) & " As StretchedMask"
 				
-				'Invalid_string_refer_to_original_code
+				'バッファを初期化
 				'UPGRADE_ISSUE: Control picBuf は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 				stretched_mask_pic = MainForm.picBuf(i)
 				With stretched_mask_pic
@@ -7518,21 +7422,21 @@ EditedPicture:
 					.Height = VB6.TwipsToPixelsY(dh)
 				End With
 				
-				'Invalid_string_refer_to_original_code
+				'バッファに拡大したマスク画像を保存
 				'UPGRADE_ISSUE: PictureBox プロパティ mask_pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 				'UPGRADE_ISSUE: PictureBox プロパティ stretched_mask_pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 				ret = StretchBlt(stretched_mask_pic.hDC, 0, 0, dw, dh, mask_pic.hDC, 0, 0, orig_width, orig_height, SRCCOPY)
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'描画をキャンセル？
 			If load_only Then
 				DrawPicture = True
 				Exit Function
 			End If
 			
-			'逕ｻ蜒上ｒ騾城℃謠冗判
+			'画像を透過描画
 			If BGColor = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.White) Then
-				'閭梧勹濶ｲ縺檎區
+				'背景色が白
 				'UPGRADE_ISSUE: PictureBox プロパティ stretched_mask_pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 				'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 				ret = BitBlt(pic.hDC, dx, dy, dw, dh, stretched_mask_pic.hDC, 0, 0, SRCERASE)
@@ -7541,7 +7445,7 @@ EditedPicture:
 				'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 				ret = BitBlt(pic.hDC, dx, dy, dw, dh, stretched_pic.hDC, 0, 0, SRCINVERT)
 			Else
-				'Invalid_string_refer_to_original_code
+				'背景色が白以外
 				'UPGRADE_ISSUE: PictureBox プロパティ stretched_mask_pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 				'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 				ret = BitBlt(pic.hDC, dx, dy, dw, dh, stretched_mask_pic.hDC, 0, 0, SRCAND)
@@ -7554,13 +7458,13 @@ EditedPicture:
 				'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 				ret = BitBlt(pic.hDC, dx, dy, dw, dh, stretched_mask_pic.hDC, 0, 0, SRCINVERT)
 				
-				'Invalid_string_refer_to_original_code
+				'拡大マスク画像が再利用できないのでバッファを開放
 				ReleasePicBuf(i)
 			End If
 		ElseIf dw <= 480 And dh <= 480 Then 
-			'Invalid_string_refer_to_original_code
+			'拡大画像を作成した後、バッファリングせずに透過描画
 			
-			'Invalid_string_refer_to_original_code
+			'拡大画像用の領域を作成
 			'UPGRADE_ISSUE: Control picStretchedTmp は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 			stretched_pic = MainForm.picStretchedTmp(0)
 			With stretched_pic
@@ -7568,20 +7472,20 @@ EditedPicture:
 				.Height = VB6.TwipsToPixelsY(dh)
 			End With
 			
-			'Invalid_string_refer_to_original_code
+			'バッファに拡大した画像を保存
 			'UPGRADE_ISSUE: PictureBox プロパティ orig_pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 			'UPGRADE_ISSUE: PictureBox プロパティ stretched_pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 			ret = StretchBlt(stretched_pic.hDC, 0, 0, dw, dh, orig_pic.hDC, 0, 0, orig_width, orig_height, SRCCOPY)
 			
-			'Invalid_string_refer_to_original_code
+			'以前使用したマスク画像が利用可能？
 			'UPGRADE_NOTE: オブジェクト mask_pic をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
 			mask_pic.Image = Nothing
 			For i = 0 To ImageBufferSize - 1
-				'Invalid_string_refer_to_original_code
+				'同じファイル？
 				If PicBufFname(i) = fname Then
-					'Invalid_string_refer_to_original_code
+					'オプションも同じ？
 					If PicBufIsMask(i) And PicBufOption2(i) = pic_option2 And PicBufDW(i) = orig_width And PicBufDH(i) = orig_height And PicBufSX(i) = sx And PicBufSX(i) = sy And PicBufSW(i) = sw And PicBufSH(i) = sh Then
-						'Invalid_string_refer_to_original_code
+						'以前使用したマスク画像をそのまま利用
 						UsePicBuf(i)
 						'UPGRADE_ISSUE: Control picBuf は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 						mask_pic = MainForm.picBuf(i)
@@ -7592,9 +7496,9 @@ EditedPicture:
 			Next 
 			
 			If mask_pic Is Nothing Then
-				'Invalid_string_refer_to_original_code
+				'新規にマスク画像作成
 				
-				'Invalid_string_refer_to_original_code
+				'マスク画像に使用するpicBufを選択
 				i = GetPicBuf(display_byte_pixel * orig_width * orig_height)
 				PicBufFname(i) = fname
 				PicBufIsMask(i) = True
@@ -7608,7 +7512,7 @@ EditedPicture:
 				PicBufSH(i) = sh
 				'Debug.Print "Use " & Format$(i) & " As Mask"
 				
-				'Invalid_string_refer_to_original_code
+				'バッファを初期化
 				'UPGRADE_ISSUE: Control picBuf は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 				mask_pic = MainForm.picBuf(i)
 				With mask_pic
@@ -7616,13 +7520,13 @@ EditedPicture:
 					.Height = VB6.TwipsToPixelsY(orig_height)
 				End With
 				
-				'Invalid_string_refer_to_original_code
+				'マスク画像を作成
 				'UPGRADE_ISSUE: PictureBox プロパティ mask_pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 				'UPGRADE_ISSUE: PictureBox プロパティ orig_pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 				MakeMask((orig_pic.hDC), (mask_pic.hDC), orig_width, orig_height, BGColor)
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'拡大マスク画像用の領域を作成
 			'UPGRADE_ISSUE: Control picStretchedTmp は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 			stretched_mask_pic = MainForm.picStretchedTmp(1)
 			With stretched_mask_pic
@@ -7631,20 +7535,20 @@ EditedPicture:
 				.Height = VB6.TwipsToPixelsY(dh)
 			End With
 			
-			'Invalid_string_refer_to_original_code
+			'マスク画像を拡大して拡大マスク画像を作成
 			'UPGRADE_ISSUE: PictureBox プロパティ mask_pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 			'UPGRADE_ISSUE: PictureBox プロパティ stretched_mask_pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 			ret = StretchBlt(stretched_mask_pic.hDC, 0, 0, dw, dh, mask_pic.hDC, 0, 0, orig_width, orig_height, SRCCOPY)
 			
-			'Invalid_string_refer_to_original_code
+			'描画をキャンセル？
 			If load_only Then
 				DrawPicture = True
 				Exit Function
 			End If
 			
-			'逕ｻ蜒上ｒ騾城℃謠冗判
+			'画像を透過描画
 			If BGColor = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.White) Then
-				'閭梧勹濶ｲ縺檎區
+				'背景色が白
 				'UPGRADE_ISSUE: PictureBox プロパティ stretched_mask_pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 				'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 				ret = BitBlt(pic.hDC, dx, dy, dw, dh, stretched_mask_pic.hDC, 0, 0, SRCERASE)
@@ -7653,7 +7557,7 @@ EditedPicture:
 				'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 				ret = BitBlt(pic.hDC, dx, dy, dw, dh, stretched_pic.hDC, 0, 0, SRCINVERT)
 			Else
-				'Invalid_string_refer_to_original_code
+				'背景色が白以外
 				'UPGRADE_ISSUE: PictureBox プロパティ stretched_mask_pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 				'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 				ret = BitBlt(pic.hDC, dx, dy, dw, dh, stretched_mask_pic.hDC, 0, 0, SRCAND)
@@ -7667,7 +7571,7 @@ EditedPicture:
 				ret = BitBlt(pic.hDC, dx, dy, dw, dh, stretched_mask_pic.hDC, 0, 0, SRCINVERT)
 			End If
 			
-			'菴ｿ逕ｨ縺励◆荳譎ら判蜒城伜沺繧帝幕謾ｾ
+			'使用した一時画像領域を開放
 			'UPGRADE_ISSUE: Control picStretchedTmp は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 			With MainForm.picStretchedTmp(0)
 				'UPGRADE_ISSUE: Control picStretchedTmp は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
@@ -7687,17 +7591,17 @@ EditedPicture:
 				.Height = 32
 			End With
 		Else
-			'Invalid_string_refer_to_original_code
+			'拡大画像を作成せず、StretchBltで直接拡大透過描画
 			
-			'Invalid_string_refer_to_original_code
+			'以前使用したマスク画像が利用可能？
 			'UPGRADE_NOTE: オブジェクト mask_pic をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
 			mask_pic.Image = Nothing
 			For i = 0 To ImageBufferSize - 1
-				'Invalid_string_refer_to_original_code
+				'同じファイル？
 				If PicBufFname(i) = fname Then
-					'Invalid_string_refer_to_original_code
+					'オプションも同じ？
 					If PicBufIsMask(i) And PicBufOption2(i) = pic_option2 And PicBufDW(i) = orig_width And PicBufDH(i) = orig_height And PicBufSX(i) = sx And PicBufSX(i) = sy And PicBufSW(i) = sw And PicBufSH(i) = sh Then
-						'Invalid_string_refer_to_original_code
+						'以前使用したマスク画像をそのまま利用
 						UsePicBuf(i)
 						'UPGRADE_ISSUE: Control picBuf は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 						mask_pic = MainForm.picBuf(i)
@@ -7708,9 +7612,9 @@ EditedPicture:
 			Next 
 			
 			If mask_pic Is Nothing Then
-				'Invalid_string_refer_to_original_code
+				'新規にマスク画像作成
 				
-				'Invalid_string_refer_to_original_code
+				'マスク画像に使用するpicBufを選択
 				i = GetPicBuf(display_byte_pixel * orig_width * orig_height)
 				PicBufFname(i) = fname
 				PicBufIsMask(i) = True
@@ -7724,7 +7628,7 @@ EditedPicture:
 				PicBufSH(i) = sh
 				'Debug.Print "Use " & Format$(i) & " As Mask"
 				
-				'Invalid_string_refer_to_original_code
+				'バッファを初期化
 				'UPGRADE_ISSUE: Control picBuf は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 				mask_pic = MainForm.picBuf(i)
 				With mask_pic
@@ -7732,21 +7636,21 @@ EditedPicture:
 					.Height = VB6.TwipsToPixelsY(orig_height)
 				End With
 				
-				'Invalid_string_refer_to_original_code
+				'マスク画像を作成
 				'UPGRADE_ISSUE: PictureBox プロパティ mask_pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 				'UPGRADE_ISSUE: PictureBox プロパティ orig_pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 				MakeMask((orig_pic.hDC), (mask_pic.hDC), orig_width, orig_height, BGColor)
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'描画をキャンセル？
 			If load_only Then
 				DrawPicture = True
 				Exit Function
 			End If
 			
-			'逕ｻ蜒上ｒ騾城℃謠冗判
+			'画像を透過描画
 			If BGColor = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.White) Then
-				'閭梧勹濶ｲ縺檎區
+				'背景色が白
 				'UPGRADE_ISSUE: PictureBox プロパティ mask_pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 				'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 				ret = StretchBlt(pic.hDC, dx, dy, dw, dh, mask_pic.hDC, 0, 0, orig_width, orig_height, SRCERASE)
@@ -7755,7 +7659,7 @@ EditedPicture:
 				'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 				ret = StretchBlt(pic.hDC, dx, dy, dw, dh, orig_pic.hDC, 0, 0, orig_width, orig_height, SRCINVERT)
 			Else
-				'Invalid_string_refer_to_original_code
+				'背景色が白以外
 				'UPGRADE_ISSUE: PictureBox プロパティ mask_pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 				'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 				ret = StretchBlt(pic.hDC, dx, dy, dw, dh, mask_pic.hDC, 0, 0, orig_width, orig_height, SRCAND)
@@ -7768,7 +7672,7 @@ EditedPicture:
 				'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 				ret = StretchBlt(pic.hDC, dx, dy, dw, dh, mask_pic.hDC, 0, 0, orig_width, orig_height, SRCINVERT)
 				
-				'Invalid_string_refer_to_original_code
+				'マスク画像が再利用できないのでバッファを開放
 				ReleasePicBuf(i)
 			End If
 		End If
@@ -7776,10 +7680,10 @@ EditedPicture:
 DrewPicture: 
 		
 		If permanent Then
-			'閭梧勹縺ｸ縺ｮ謠上″霎ｼ縺ｿ
+			'背景への描き込み
 			IsMapDirty = True
 			With MainForm
-				'繝槭せ繧ｯ蜈･繧願レ譎ｯ逕ｻ蜒冗判髱｢縺ｫ繧ら判蜒上ｒ謠上″霎ｼ繧
+				'マスク入り背景画像画面にも画像を描き込む
 				'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 				'UPGRADE_ISSUE: Control picMaskedBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 				ret = BitBlt(.picMaskedBack.hDC, dx, dy, dw, dh, pic.hDC, dx, dy, SRCCOPY)
@@ -7795,7 +7699,7 @@ DrewPicture:
 				Next 
 			End With
 		ElseIf Not on_msg_window And Not on_status_window Then 
-			'Invalid_string_refer_to_original_code
+			'表示画像を消去する際に使う描画領域を設定
 			PaintedAreaX1 = MinLng(PaintedAreaX1, MaxLng(dx, 0))
 			PaintedAreaY1 = MinLng(PaintedAreaY1, MaxLng(dy, 0))
 			PaintedAreaX2 = MaxLng(PaintedAreaX2, MinLng(dx + dw, MainPWidth - 1))
@@ -7806,7 +7710,7 @@ DrewPicture:
 			IsCursorVisible = False
 			
 			If keep_picture Then
-				'picMain(1)縺ｫ繧よ緒逕ｻ
+				'picMain(1)にも描画
 				'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 				'UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 				ret = BitBlt(MainForm.picMain(1).hDC, dx, dy, dw, dh, pic.hDC, dx, dy, SRCCOPY)
@@ -7816,11 +7720,11 @@ DrewPicture:
 		DrawPicture = True
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'画像バッファを作成
 	Public Sub MakePicBuf()
 		Dim i As Short
 		
-		'Invalid_string_refer_to_original_code
+		'画像バッファ用のPictureBoxを動的に生成する
 		With MainForm
 			For i = 1 To ImageBufferSize - 1
 				'UPGRADE_ISSUE: Control picBuf は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
@@ -7829,7 +7733,7 @@ DrewPicture:
 			Next 
 		End With
 		
-		'Invalid_string_refer_to_original_code
+		'画像バッファ管理用配列を初期化
 		ReDim PicBufDate(ImageBufferSize)
 		ReDim PicBufSize(ImageBufferSize)
 		ReDim PicBufFname(ImageBufferSize - 1)
@@ -7844,14 +7748,14 @@ DrewPicture:
 		ReDim PicBufIsMask(ImageBufferSize - 1)
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'使用可能な画像バッファを検索
 	Private Function GetPicBuf(Optional ByVal buf_size As Integer = 0) As Short
 		Dim total_size As Integer
 		Dim oldest_buf, used_buf_num As Short
 		Dim i As Short
 		Dim tmp As Integer
 		
-		'Invalid_string_refer_to_original_code
+		'画像バッファの総サイズ及び使用されているバッファ数を調べる
 		total_size = buf_size
 		For i = 0 To ImageBufferSize - 1
 			total_size = total_size + PicBufSize(i)
@@ -7860,12 +7764,12 @@ DrewPicture:
 			End If
 		Next 
 		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
+		'総サイズがMaxImageBufferByteSizeを超えてしまう場合は総サイズが
+		'MaxImageBufferByteSize以下になるまでバッファを開放する。
+		'ただし一度の描画で最大で5枚のバッファが使われるため、最新の4つの
+		'バッファはキープしておく。
 		Do While total_size > MaxImageBufferByteSize And used_buf_num > 4
-			'Invalid_string_refer_to_original_code
+			'最も長い間使われていないバッファを探す
 			tmp = 100000000
 			For i = 0 To ImageBufferSize - 1
 				If PicBufFname(i) <> "" Then
@@ -7876,16 +7780,16 @@ DrewPicture:
 				End If
 			Next 
 			
-			'繝舌ャ繝輔ぃ繧帝幕謾ｾ
+			'バッファを開放
 			ReleasePicBuf(oldest_buf)
 			used_buf_num = used_buf_num - 1
 			
-			'邱上し繧､繧ｺ謨ｰ繧呈ｸ帛ｰ代＆縺帙ｋ
+			'総サイズ数を減少させる
 			total_size = total_size - PicBufSize(oldest_buf)
 			PicBufSize(oldest_buf) = 0
 		Loop 
 		
-		'Invalid_string_refer_to_original_code
+		'最も長い間使われていないバッファを探す
 		GetPicBuf = 0
 		For i = 1 To ImageBufferSize - 1
 			If PicBufDate(i) < PicBufDate(GetPicBuf) Then
@@ -7893,14 +7797,14 @@ DrewPicture:
 			End If
 		Next 
 		
-		'Invalid_string_refer_to_original_code
+		'画像のサイズを記録しておく
 		PicBufSize(GetPicBuf) = buf_size
 		
-		'菴ｿ逕ｨ縺吶ｋ縺薙→繧定ｨ倬鹸縺吶ｋ
+		'使用することを記録する
 		UsePicBuf(GetPicBuf)
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'画像バッファを開放する
 	Private Sub ReleasePicBuf(ByVal idx As Short)
 		PicBufFname(idx) = ""
 		'UPGRADE_ISSUE: Control picBuf は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
@@ -7914,16 +7818,16 @@ DrewPicture:
 		End With
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'画像バッファの使用記録をつける
 	Private Sub UsePicBuf(ByVal idx As Short)
 		PicBufDateCount = PicBufDateCount + 1
 		PicBufDate(idx) = PicBufDateCount
 	End Sub
 	
 	
-	'Invalid_string_refer_to_original_code
+	' === 文字列描画に関する処理 ===
 	
-	'Invalid_string_refer_to_original_code
+	'メインウィンドウに文字列を表示する
 	Public Sub DrawString(ByRef msg As String, ByVal X As Integer, ByVal Y As Integer, Optional ByVal without_cr As Boolean = False)
 		Dim tx, ty As Short
 		Dim prev_cx As Short
@@ -7933,10 +7837,10 @@ DrewPicture:
 		Static init_draw_string As Boolean
 		
 		If PermanentStringMode Then
-			'閭梧勹譖ｸ縺崎ｾｼ縺ｿ
+			'背景書き込み
 			'UPGRADE_ISSUE: Control picBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 			pic = MainForm.picBack
-			'繝輔か繝ｳ繝郁ｨｭ螳壹ｒ螟画峩
+			'フォント設定を変更
 			'UPGRADE_ISSUE: Control picBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 			With MainForm.picBack
 				'UPGRADE_ISSUE: Control picBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
@@ -7986,29 +7890,29 @@ DrewPicture:
 				.Font.Italic = MainForm.picMain(0).Font.Italic
 			End With
 		Else
-			'騾壼ｸｸ縺ｮ譖ｸ縺崎ｾｼ縺ｿ
+			'通常の書き込み
 			'UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 			pic = MainForm.picMain(0)
 			SaveScreen()
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'フォントがスムージング表示されているか参照
 		If Not init_draw_string Then
 			Call GetSystemParametersInfo(SPI_GETFONTSMOOTHING, 0, font_smoothing, 0)
 			init_draw_string = True
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'フォントをスムージングするように設定
 		If font_smoothing = 0 Then
 			Call SetSystemParametersInfo(SPI_SETFONTSMOOTHING, 1, 0, 0)
 		End If
 		
 		With pic
-			'迴ｾ蝨ｨ縺ｮX菴咲ｽｮ繧定ｨ倬鹸縺励※縺翫￥
+			'現在のX位置を記録しておく
 			'UPGRADE_ISSUE: PictureBox プロパティ pic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 			prev_cx = .CurrentX
 			
-			'Invalid_string_refer_to_original_code
+			'書き込み先の座標を求める
 			If HCentering Then
 				'UPGRADE_ISSUE: PictureBox メソッド pic.TextWidth はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 				'UPGRADE_ISSUE: PictureBox プロパティ pic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
@@ -8035,11 +7939,11 @@ DrewPicture:
 			ty = .CurrentY
 			
 			If Not without_cr Then
-				'Invalid_string_refer_to_original_code
+				'改行あり
 				'UPGRADE_ISSUE: PictureBox メソッド pic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 				pic.Print(msg)
 				
-				'Invalid_string_refer_to_original_code
+				'背景書き込みの場合
 				If PermanentStringMode Then
 					'UPGRADE_ISSUE: Control picMaskedBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 					With MainForm.picMaskedBack
@@ -8053,7 +7957,7 @@ DrewPicture:
 					IsMapDirty = True
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'保持オプション使用時
 				If KeepStringMode Then
 					'UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 					With MainForm.picMain(1)
@@ -8081,7 +7985,7 @@ DrewPicture:
 					MainForm.picMain(1).Print(msg)
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'次回の書き込みのため、X座標位置を設定し直す
 				If X <> DEFAULT_LEVEL Then
 					'UPGRADE_ISSUE: PictureBox プロパティ pic.CurrentX はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 					.CurrentX = X
@@ -8090,11 +7994,11 @@ DrewPicture:
 					.CurrentX = prev_cx
 				End If
 			Else
-				'Invalid_string_refer_to_original_code
+				'改行なし
 				'UPGRADE_ISSUE: PictureBox メソッド pic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 				pic.Print(msg)
 				
-				'Invalid_string_refer_to_original_code
+				'背景書き込みの場合
 				If PermanentStringMode Then
 					'UPGRADE_ISSUE: Control picMaskedBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 					With MainForm.picMaskedBack
@@ -8108,7 +8012,7 @@ DrewPicture:
 					IsMapDirty = True
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'保持オプション使用時
 				If KeepStringMode Then
 					'UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 					With MainForm.picMain(1)
@@ -8123,7 +8027,7 @@ DrewPicture:
 			End If
 		End With
 		
-		'Invalid_string_refer_to_original_code
+		'フォントのスムージングに関する設定を元に戻す
 		If font_smoothing = 0 Then
 			Call SetSystemParametersInfo(SPI_SETFONTSMOOTHING, 0, 0, 0)
 		End If
@@ -8138,7 +8042,7 @@ DrewPicture:
 		End If
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'メインウィンドウに文字列を表示 (システムメッセージ)
 	Public Sub DrawSysString(ByVal X As Short, ByVal Y As Short, ByRef msg As String, Optional ByVal without_refresh As Boolean = False)
 		Dim prev_color As Integer
 		Dim prev_name As String
@@ -8147,7 +8051,7 @@ DrewPicture:
 		Dim is_italic As Boolean
 		Dim sf As System.Drawing.Font
 		
-		'Invalid_string_refer_to_original_code
+		'表示位置が画面外？
 		If X < MapX - MainWidth \ 2 Or MapX + MainWidth \ 2 < X Or Y < MapY - MainHeight \ 2 Or MapY + MainHeight \ 2 < Y Then
 			Exit Sub
 		End If
@@ -8156,7 +8060,7 @@ DrewPicture:
 		
 		'UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 		With MainForm.picMain(0)
-			'Invalid_string_refer_to_original_code
+			'現在のフォント設定を保存
 			'UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 			prev_color = .ForeColor
 			'UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
@@ -8168,16 +8072,15 @@ DrewPicture:
 			'UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 			is_italic = .Font.Italic
 			
-			'Invalid_string_refer_to_original_code
+			'フォント設定をシステム用に切り替え
 			'UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 			.ForeColor = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Black)
 			'UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 			.FontTransparent = False
 			'UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-			If .Font.Name <> "Invalid_string_refer_to_original_code" Then
+			If .Font.Name <> "ＭＳ Ｐ明朝" Then
 				sf = System.Windows.Forms.Control.DefaultFont.Clone()
-				'UPGRADE_WARNING: Windows フォームでは、TrueType および OpenType フォントのみがサポートされます。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="971F4DF4-254E-44F4-861D-3AA0031FE361"' をクリックしてください。
-				sf = VB6.FontChangeName(sf, "Invalid_string_refer_to_original_code")
+				sf = VB6.FontChangeName(sf, "ＭＳ Ｐ明朝")
 				'UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 				.Font = sf
 			End If
@@ -8198,7 +8101,7 @@ DrewPicture:
 				.Italic = False
 			End With
 			
-			'Invalid_string_refer_to_original_code
+			'メッセージの書き込み
 			'UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 			.CurrentX = MapToPixelX(X) + (32 - .TextWidth(msg)) \ 2 - 1
 			'UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
@@ -8206,7 +8109,7 @@ DrewPicture:
 			'UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 			MainForm.picMain(0).Print(msg)
 			
-			'Invalid_string_refer_to_original_code
+			'フォント設定を元に戻す
 			'UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 			.ForeColor = prev_color
 			'UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
@@ -8228,7 +8131,7 @@ DrewPicture:
 				.Italic = is_italic
 			End With
 			
-			'陦ｨ遉ｺ繧呈峩譁ｰ
+			'表示を更新
 			If Not without_refresh Then
 				'UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 				.Refresh()
@@ -8242,14 +8145,14 @@ DrewPicture:
 	End Sub
 	
 	
-	'Invalid_string_refer_to_original_code
+	' === 画像消去に関する処理 ===
 	
-	'Invalid_string_refer_to_original_code
+	'描画した画像を消去できるように元画像を保存する
 	Public Sub SaveScreen()
 		Dim ret As Integer
 		
 		If Not ScreenIsSaved Then
-			'Invalid_string_refer_to_original_code
+			'画像をpicMain(1)に保存
 			With MainForm
 				'UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 				ret = BitBlt(.picMain(1).hDC, 0, 0, MainPWidth, MainPHeight, .picMain(0).hDC, 0, 0, SRCCOPY)
@@ -8258,7 +8161,7 @@ DrewPicture:
 		End If
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'描画したグラフィックを消去
 	Public Sub ClearPicture()
 		Dim pawidth, paheight As Short
 		Dim ret As Integer
@@ -8283,7 +8186,7 @@ DrewPicture:
 		End With
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'描画したグラフィックの一部を消去
 	Public Sub ClearPicture2(ByVal x1 As Integer, ByVal y1 As Integer, ByVal x2 As Integer, ByVal y2 As Integer)
 		Dim ret As Integer
 		
@@ -8298,9 +8201,9 @@ DrewPicture:
 	End Sub
 	
 	
-	'Invalid_string_refer_to_original_code
+	' === 画面ロックに関する処理 ===
 	
-	'Invalid_string_refer_to_original_code
+	'ＧＵＩをロックし、プレイヤーからの入力を無効にする
 	Public Sub LockGUI()
 		IsGUILocked = True
 		With MainForm
@@ -8311,7 +8214,7 @@ DrewPicture:
 		End With
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'ＧＵＩのロックを解除し、プレイヤーからの入力を有効にする
 	Public Sub UnlockGUI()
 		IsGUILocked = False
 		With MainForm
@@ -8323,9 +8226,9 @@ DrewPicture:
 	End Sub
 	
 	
-	'Invalid_string_refer_to_original_code
+	' === マウスカーソルの自動移動に関する処理 ===
 	
-	'迴ｾ蝨ｨ縺ｮ繝槭え繧ｹ繧ｫ繝ｼ繧ｽ繝ｫ縺ｮ菴咲ｽｮ繧定ｨ倬鹸
+	'現在のマウスカーソルの位置を記録
 	Public Sub SaveCursorPos()
 		Dim PT As POINTAPI
 		
@@ -8336,25 +8239,25 @@ DrewPicture:
 		NewCursorY = 0
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'マウスカーソルを移動する
 	Public Sub MoveCursorPos(ByRef cursor_mode As String, Optional ByVal t As Unit = Nothing)
 		Dim i, tx, ty, num As Integer
 		Dim ret As Integer
 		Dim prev_lock As Boolean
 		Dim PT As POINTAPI
 		
-		'Invalid_string_refer_to_original_code
+		'マウスカーソルの位置を収得
 		GetCursorPos(PT)
 		
-		'迴ｾ蝨ｨ縺ｮ菴咲ｽｮ繧定ｨ倬鹸縺励※縺翫￥
-		If PrevCursorX = 0 And cursor_mode <> "Invalid_string_refer_to_original_code" Then
+		'現在の位置を記録しておく
+		If PrevCursorX = 0 And cursor_mode <> "メッセージウィンドウ" Then
 			SaveCursorPos()
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'カーソル自動移動
 		If t Is Nothing Then
-			If cursor_mode = "Invalid_string_refer_to_original_code" Then
-				'Invalid_string_refer_to_original_code
+			If cursor_mode = "メッセージウィンドウ" Then
+				'メッセージウィンドウまで移動
 				With frmMessage
 					If PT.X < (VB6.PixelsToTwipsX(.Left) + 0.05 * VB6.PixelsToTwipsX(.Width)) \ VB6.TwipsPerPixelX Then
 						tx = (VB6.PixelsToTwipsX(.Left) + 0.05 * VB6.PixelsToTwipsX(.Width)) \ VB6.TwipsPerPixelX
@@ -8373,7 +8276,7 @@ DrewPicture:
 					End If
 				End With
 			Else
-				'Invalid_string_refer_to_original_code
+				'リストボックスまで移動
 				With frmListBox
 					If PT.X < (VB6.PixelsToTwipsX(.Left) + 0.1 * VB6.PixelsToTwipsX(.Width)) \ VB6.TwipsPerPixelX Then
 						tx = (VB6.PixelsToTwipsX(.Left) + 0.1 * VB6.PixelsToTwipsX(.Width)) \ VB6.TwipsPerPixelX
@@ -8383,60 +8286,56 @@ DrewPicture:
 						tx = PT.X
 					End If
 					
-					'Invalid_string_refer_to_original_code
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-					'Invalid_string_refer_to_original_code
-					i = .lstItems.Items.Count
-					Do 
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-						Exit Do
-					Loop 
+					'選択するアイテム
+					If cursor_mode = "武器選択" Then
+						'武器選択の場合は選択可能な最後のアイテムに
+						i = .lstItems.Items.Count
+						Do 
+							If Not ListItemFlag(i) And InStr(VB6.GetItemString(.lstItems, i), "援護攻撃：") = 0 Then
+								Exit Do
+							End If
+							i = i - 1
+						Loop While i > 1
+					Else
+						'そうでなければ最初のアイテムに
+						i = .lstItems.TopIndex + 1
+					End If
+					
+					ty = VB6.PixelsToTwipsY(.Top) \ VB6.TwipsPerPixelY + VB6.PixelsToTwipsY(.Height) \ VB6.TwipsPerPixelY - .ClientRectangle.Height + .lstItems.Top + 16 * (i - .lstItems.TopIndex) - 8
 				End With
 			End If
-			i = i - 1
-			'UPGRADE_WARNING: MoveCursorPos に変換されていないステートメントがあります。ソース コードを確認してください。
-			'Loop
 		Else
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_WARNING: MoveCursorPos に変換されていないステートメントがあります。ソース コードを確認してください。
+			'ユニット上まで移動
+			With MainForm
+				'MOD START 240a
+				'            If MainWidth = 15 Then
+				'                tx = .Left \ Screen.TwipsPerPixelX _
+				''                    + 32 * (t.X - (MapX - MainWidth \ 2)) + 24
+				'                ty = .Top \ Screen.TwipsPerPixelY _
+				''                    + .Height \ Screen.TwipsPerPixelY - .ScaleHeight _
+				''                    + 32 * (t.Y - (MapY - MainHeight \ 2)) + 20
+				'            Else
+				'                tx = .Left \ Screen.TwipsPerPixelX _
+				''                    + 32 * (t.X - (MapX - MainWidth \ 2)) - 14
+				'                ty = .Top \ Screen.TwipsPerPixelY _
+				''                    + .Height \ Screen.TwipsPerPixelY - .ScaleHeight _
+				''                    + 32 * (t.Y - (MapY - MainHeight \ 2)) + 16
+				'            End If
+				If NewGUIMode Then
+					tx = VB6.PixelsToTwipsX(.Left) \ VB6.TwipsPerPixelX + 32 * (t.X - (MapX - MainWidth \ 2)) + 4
+					ty = VB6.PixelsToTwipsY(.Top) \ VB6.TwipsPerPixelY + VB6.PixelsToTwipsY(.Height) \ VB6.TwipsPerPixelY - VB6.PixelsToTwipsY(.ClientRectangle.Height) + 32 * (t.Y - (MapY - MainHeight \ 2)) + 16
+				Else
+					tx = VB6.PixelsToTwipsX(.Left) \ VB6.TwipsPerPixelX + 32 * (t.X - (MapX - MainWidth \ 2)) + 24
+					ty = VB6.PixelsToTwipsY(.Top) \ VB6.TwipsPerPixelY + VB6.PixelsToTwipsY(.Height) \ VB6.TwipsPerPixelY - VB6.PixelsToTwipsY(.ClientRectangle.Height) + 32 * (t.Y - (MapY - MainHeight \ 2)) + 20
+				End If
+				'MOD  END  240a
+			End With
 		End If
 		
-		'UPGRADE_WARNING: MoveCursorPos に変換されていないステートメントがあります。ソース コードを確認してください。
-		'End With
-		'End If
-		'Invalid_string_refer_to_original_code
-		With MainForm
-			'MOD START 240a
-			'            If MainWidth = 15 Then
-			'                tx = .Left \ Screen.TwipsPerPixelX _
-			''                    + 32 * (t.X - (MapX - MainWidth \ 2)) + 24
-			'                ty = .Top \ Screen.TwipsPerPixelY _
-			''                    + .Height \ Screen.TwipsPerPixelY - .ScaleHeight _
-			''                    + 32 * (t.Y - (MapY - MainHeight \ 2)) + 20
-			'            Else
-			'                tx = .Left \ Screen.TwipsPerPixelX _
-			''                    + 32 * (t.X - (MapX - MainWidth \ 2)) - 14
-			'                ty = .Top \ Screen.TwipsPerPixelY _
-			''                    + .Height \ Screen.TwipsPerPixelY - .ScaleHeight _
-			''                    + 32 * (t.Y - (MapY - MainHeight \ 2)) + 16
-			'            End If
-			If NewGUIMode Then
-				tx = VB6.PixelsToTwipsX(.Left) \ VB6.TwipsPerPixelX + 32 * (t.X - (MapX - MainWidth \ 2)) + 4
-				ty = VB6.PixelsToTwipsY(.Top) \ VB6.TwipsPerPixelY + VB6.PixelsToTwipsY(.Height) \ VB6.TwipsPerPixelY - VB6.PixelsToTwipsY(.ClientRectangle.Height) + 32 * (t.Y - (MapY - MainHeight \ 2)) + 16
-			Else
-				tx = VB6.PixelsToTwipsX(.Left) \ VB6.TwipsPerPixelX + 32 * (t.X - (MapX - MainWidth \ 2)) + 24
-				ty = VB6.PixelsToTwipsY(.Top) \ VB6.TwipsPerPixelY + VB6.PixelsToTwipsY(.Height) \ VB6.TwipsPerPixelY - VB6.PixelsToTwipsY(.ClientRectangle.Height) + 32 * (t.Y - (MapY - MainHeight \ 2)) + 20
-			End If
-			'MOD  END  240a
-		End With
-		'End If
-		
-		'Invalid_string_refer_to_original_code
+		'何回に分けて移動するか計算
 		num = System.Math.Sqrt((tx - PT.X) ^ 2 + (ty - PT.Y) ^ 2) \ 25 + 1
 		
-		'Invalid_string_refer_to_original_code
+		'カーソルを移動
 		prev_lock = IsGUILocked
 		IsGUILocked = True
 		IsStatusWindowDisabled = True
@@ -8448,37 +8347,36 @@ DrewPicture:
 		IsStatusWindowDisabled = False
 		IsGUILocked = prev_lock
 		
-		'譁ｰ縺励＞繧ｫ繝ｼ繧ｽ繝ｫ菴咲ｽｮ繧定ｨ倬鹸
+		'新しいカーソル位置を記録
 		If NewCursorX = 0 Then
 			NewCursorX = tx
 			NewCursorY = ty
 		End If
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'マウスカーソルを元の位置に戻す
 	Public Sub RestoreCursorPos()
 		Dim i, tx, ty, num As Short
 		Dim ret As Integer
 		Dim PT As POINTAPI
 		
-		'Invalid_string_refer_to_original_code
+		'ユニットが選択されていればその場所まで戻す
 		If Not SelectedUnit Is Nothing Then
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			MoveCursorPos("Invalid_string_refer_to_original_code")
-			Exit Sub
+			If SelectedUnit.Status = "出撃" Then
+				MoveCursorPos("ユニット選択", SelectedUnit)
+				Exit Sub
+			End If
 		End If
-		'End If
 		
-		'Invalid_string_refer_to_original_code
+		'戻るべき位置が設定されていない？
 		If PrevCursorX = 0 And PrevCursorY = 0 Then
 			Exit Sub
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'現在のカーソル位置収得
 		GetCursorPos(PT)
 		
-		'Invalid_string_refer_to_original_code
+		'以前の位置までカーソル自動移動
 		With frmListBox
 			tx = PrevCursorX
 			ty = PrevCursorY
@@ -8492,15 +8390,15 @@ DrewPicture:
 			Next 
 		End With
 		
-		'Invalid_string_refer_to_original_code
+		'戻り位置を初期化
 		PrevCursorX = 0
 		PrevCursorY = 0
 	End Sub
 	
 	
-	'Invalid_string_refer_to_original_code
+	' === タイトル画面表示に関する処理 ===
 	
-	'繧ｿ繧､繝医Ν逕ｻ髱｢繧定｡ｨ遉ｺ
+	'タイトル画面を表示
 	Public Sub OpenTitleForm()
 		'UPGRADE_ISSUE: Load ステートメント はサポートされていません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="B530EFF2-3132-48F8-B8BC-D88AF543D321"' をクリックしてください。
 		Load(frmTitle)
@@ -8512,7 +8410,7 @@ DrewPicture:
 		frmTitle.Refresh()
 	End Sub
 	
-	'繧ｿ繧､繝医Ν逕ｻ髱｢繧帝哩縺倥ｋ
+	'タイトル画面を閉じる
 	Public Sub CloseTitleForm()
 		frmTitle.Close()
 		'UPGRADE_NOTE: オブジェクト frmTitle をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
@@ -8520,9 +8418,9 @@ DrewPicture:
 	End Sub
 	
 	
-	'Invalid_string_refer_to_original_code
+	' === 「Now Loading...」表示に関する処理 ===
 	
-	'Invalid_string_refer_to_original_code
+	'「Now Loading...」の画面を表示
 	Public Sub OpenNowLoadingForm()
 		'UPGRADE_WARNING: Screen プロパティ Screen.MousePointer には新しい動作が含まれます。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6BA9B8D2-2A32-4B6E-8D36-44949974A5B4"' をクリックしてください。
 		System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.WaitCursor
@@ -8536,7 +8434,7 @@ DrewPicture:
 		End With
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'「Now Loading...」の画面を消去
 	Public Sub CloseNowLoadingForm()
 		frmNowLoading.Close()
 		'UPGRADE_NOTE: オブジェクト frmNowLoading をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
@@ -8545,13 +8443,13 @@ DrewPicture:
 		System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.Default
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'「Now Loading...」のバーを１段階進行させる
 	Public Sub DisplayLoadingProgress()
 		frmNowLoading.Progress()
 		System.Windows.Forms.Application.DoEvents()
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'「Now Loading...」のバーの長さを設定
 	Public Sub SetLoadImageSize(ByVal new_size As Short)
 		With frmNowLoading
 			.Value = 0
@@ -8560,60 +8458,60 @@ DrewPicture:
 	End Sub
 	
 	
-	' === 逕ｻ髱｢縺ｮ隗｣蜒丞ｺｦ螟画峩 ===
+	' === 画面の解像度変更 ===
 	
 	Public Sub ChangeDisplaySize(ByVal w As Short, ByVal h As Short)
 		Dim dm As DEVMODE
 		Dim ret As Integer
 		Static orig_width, orig_height As Short
 		
-		'Invalid_string_refer_to_original_code
+		'DEVMODE構造体を初期化
 		dm.dmSize = Len(dm)
 		
-		'Invalid_string_refer_to_original_code
+		'現在のディスプレイ設定を参照
 		ret = EnumDisplaySettings(vbNullString, ENUM_CURRENT_SETTINGS, dm)
 		
 		If w <> 0 And h <> 0 Then
-			'Invalid_string_refer_to_original_code
+			'画面の解像度を w x h に変更する場合
 			
-			'迴ｾ蝨ｨ縺ｮ隗｣蜒丞ｺｦ繧定ｨ倬鹸縺励※縺翫￥
+			'現在の解像度を記録しておく
 			orig_width = dm.dmPelsWidth
 			orig_height = dm.dmPelsHeight
 			
 			If dm.dmPelsWidth = w And dm.dmPelsHeight = h Then
-				'Invalid_string_refer_to_original_code
+				'既に使用したい解像度になっていればそのまま終了
 				Exit Sub
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'画面の解像度を w x h に変更
 			dm.dmPelsWidth = w
 			dm.dmPelsHeight = h
 		Else
-			'Invalid_string_refer_to_original_code
+			'画面の解像度を元の解像度に戻す場合
 			
 			If orig_width = 0 And orig_height Then
-				'Invalid_string_refer_to_original_code
+				'解像度を変更していなければ終了
 				Exit Sub
 			End If
 			
 			If dm.dmPelsWidth = orig_width And dm.dmPelsHeight = orig_width Then
-				'Invalid_string_refer_to_original_code
+				'解像度が変化していなければそのまま終了
 				Exit Sub
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'画面の解像度を元に戻す
 			ret = ChangeDisplaySettings(VariantType.Null, 0)
 			Exit Sub
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'解像度を変更可能かどうか調べる
 		'UPGRADE_WARNING: オブジェクト dm の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
 		ret = ChangeDisplaySettings(dm, CDS_TEST)
 		If ret <> DISP_CHANGE_SUCCESSFUL Then
 			Exit Sub
 		End If
 		
-		'隗｣蜒丞ｺｦ繧貞ｮ滄圀縺ｫ螟画峩縺吶ｋ
+		'解像度を実際に変更する
 		' MOD START MARGE
 		'    If GetWinVersion() >= 5 Then
 		If GetWinVersion() >= 501 Then
@@ -8626,18 +8524,18 @@ DrewPicture:
 		End If
 		Select Case ret
 			Case DISP_CHANGE_SUCCESSFUL
-				'Invalid_string_refer_to_original_code
+				'成功！
 				Exit Sub
 			Case DISP_CHANGE_RESTART
-				'Invalid_string_refer_to_original_code
+				'再起動が必要な場合はあきらめてもとの解像度に戻す
 				ret = ChangeDisplaySettings(VariantType.Null, 0)
 		End Select
 	End Sub
 	
 	
-	'Invalid_string_refer_to_original_code
+	' === その他 ===
 	
-	'Invalid_string_refer_to_original_code
+	'エラーメッセージを表示
 	Public Sub ErrorMessage(ByRef msg As String)
 		Dim ret As Integer
 		
@@ -8652,7 +8550,7 @@ DrewPicture:
 			.Show()
 		End With
 		
-		'Invalid_string_refer_to_original_code
+		'メインウィンドウのクローズが行えるようにモーダルモードは使用しない
 		Do While frmErrorMessage.Visible
 			System.Windows.Forms.Application.DoEvents()
 			Sleep(200)
@@ -8663,67 +8561,65 @@ DrewPicture:
 		frmErrorMessage = Nothing
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'データ読み込み時のエラーメッセージを表示する
 	Public Sub DataErrorMessage(ByRef msg As String, ByRef fname As String, ByVal line_num As Short, ByRef line_buf As String, ByRef dname As String)
 		Dim err_msg As String
 		
-		'繧ｨ繝ｩ繝ｼ縺檎匱逕溘＠縺溘ヵ繧｡繧､繝ｫ蜷阪→陦檎分蜿ｷ
-		err_msg = fname & "Invalid_string_refer_to_original_code"
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+		'エラーが発生したファイル名と行番号
+		err_msg = fname & "：" & line_num & "行目" & vbCr & vbLf
 		
-		'Invalid_string_refer_to_original_code
+		'エラーが発生したデータ名
 		If Len(dname) > 0 Then
-			err_msg = err_msg & dname & "Invalid_string_refer_to_original_code"
+			err_msg = err_msg & dname & "のデータが不正です。" & vbCr & vbLf
 		End If
 		
-		'繧ｨ繝ｩ繝ｼ縺ｮ蜴溷屏
+		'エラーの原因
 		If Len(msg) > 0 Then
 			err_msg = err_msg & msg & vbCr & vbLf
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'なにも指定されていない？
 		If dname = "" And msg = "" Then
-			err_msg = err_msg & "Invalid_string_refer_to_original_code"
+			err_msg = err_msg & "データが不正です。" & vbCr & vbLf
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'エラーが発生したデータ行
 		err_msg = err_msg & line_buf
 		
-		'Invalid_string_refer_to_original_code
+		'エラーメッセージを表示
 		ErrorMessage(err_msg)
 	End Sub
 	
 	
-	'Invalid_string_refer_to_original_code
+	'マウスの右ボタンが押されているか(キャンセル)判定
 	Public Function IsRButtonPressed(Optional ByVal ignore_message_wait As Boolean = False) As Boolean
 		Dim PT As POINTAPI
 		
-		'Invalid_string_refer_to_original_code
+		'メッセージがウエイト無しならスキップ
 		If Not ignore_message_wait And MessageWait = 0 Then
 			IsRButtonPressed = True
 			Exit Function
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'メインウインドウ上でマウスボタンを押した場合
 		If MainForm.Handle.ToInt32 = GetForegroundWindow Then
 			GetCursorPos(PT)
 			With MainForm
 				If VB6.PixelsToTwipsX(.Left) \ VB6.TwipsPerPixelX <= PT.X And PT.X <= (VB6.PixelsToTwipsX(.Left) + VB6.PixelsToTwipsX(.Width)) \ VB6.TwipsPerPixelX And VB6.PixelsToTwipsY(.Top) \ VB6.TwipsPerPixelY <= PT.Y And PT.Y <= (VB6.PixelsToTwipsY(.Top) + VB6.PixelsToTwipsY(.Height)) \ VB6.TwipsPerPixelY Then
 					If (GetAsyncKeyState(RButtonID) And &H8000) <> 0 Then
-						'Invalid_string_refer_to_original_code
+						'右ボタンでスキップ
 						IsRButtonPressed = True
 						Exit Function
 					End If
 				End If
 			End With
-			'Invalid_string_refer_to_original_code
+			'メッセージウインドウ上でマウスボタンを押した場合
 		ElseIf frmMessage.Handle.ToInt32 = GetForegroundWindow Then 
 			GetCursorPos(PT)
 			With frmMessage
 				If VB6.PixelsToTwipsX(.Left) \ VB6.TwipsPerPixelX <= PT.X And PT.X <= (VB6.PixelsToTwipsX(.Left) + VB6.PixelsToTwipsX(.Width)) \ VB6.TwipsPerPixelX And VB6.PixelsToTwipsY(.Top) \ VB6.TwipsPerPixelY <= PT.Y And PT.Y <= (VB6.PixelsToTwipsY(.Top) + VB6.PixelsToTwipsY(.Height)) \ VB6.TwipsPerPixelY Then
 					If (GetAsyncKeyState(RButtonID) And &H8000) <> 0 Then
-						'Invalid_string_refer_to_original_code
+						'右ボタンでスキップ
 						IsRButtonPressed = True
 						Exit Function
 					End If
@@ -8733,7 +8629,7 @@ DrewPicture:
 	End Function
 	
 	
-	'Telop繧ｳ繝槭Φ繝臥畑謠冗判繝ｫ繝ｼ繝√Φ
+	'Telopコマンド用描画ルーチン
 	Public Sub DisplayTelop(ByRef msg As String)
 		'UPGRADE_ISSUE: Load ステートメント はサポートされていません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="B530EFF2-3132-48F8-B8BC-D88AF543D321"' をクリックしてください。
 		Load(frmTelop)

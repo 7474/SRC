@@ -3,53 +3,53 @@ Option Explicit On
 Module Sound
 	
 	' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
+	' –{ƒvƒƒOƒ‰ƒ€‚ÍƒtƒŠ[ƒ\ƒtƒg‚Å‚ ‚èA–³•ÛØ‚Å‚·B
+	' –{ƒvƒƒOƒ‰ƒ€‚ÍGNU General Public License(Ver.3‚Ü‚½‚Í‚»‚êˆÈ~)‚ª’è‚ß‚éğŒ‚Ì‰º‚Å
+	' Ä”Ğ•z‚Ü‚½‚Í‰ü•Ï‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B
 	
-	'Invalid_string_refer_to_original_code
+	'‚a‚f‚l•Œø‰Ê‰¹Ä¶—p‚Ìƒ‚ƒWƒ…[ƒ‹
 	
-	'MCIåˆ¶å¾¡ç”¨API
+	'MCI§Œä—pAPI
 	Declare Function mciSendString Lib "winmm.dll"  Alias "mciSendStringA"(ByVal lpstrCommand As String, ByVal lpstrReturnString As String, ByVal uReturnLength As Integer, ByVal hwndCallback As Integer) As Integer
 	
-	'WAVEå†ç”Ÿç”¨API
+	'WAVEÄ¶—pAPI
 	Declare Function sndPlaySound Lib "winmm.dll"  Alias "sndPlaySoundA"(ByVal lpszSoundName As String, ByVal uFlags As Integer) As Integer
 	
-	Public Const SND_SYNC As Integer = &H0 'Invalid_string_refer_to_original_code
-	Public Const SND_ASYNC As Integer = &H1 'Invalid_string_refer_to_original_code
-	Public Const SND_NODEFAULT As Integer = &H2 'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
-	Public Const SND_MEMORY As Integer = &H4 'Invalid_string_refer_to_original_code
-	Public Const SND_LOOP As Integer = &H8 'Invalid_string_refer_to_original_code
-	Public Const SND_NOSTOP As Integer = &H10 'Invalid_string_refer_to_original_code
+	Public Const SND_SYNC As Integer = &H0 'Ä¶I—¹ŒãA§Œä‚ğ–ß‚·
+	Public Const SND_ASYNC As Integer = &H1 'ŠÖ”ÀsŒãA§Œä‚ğ–ß‚·
+	Public Const SND_NODEFAULT As Integer = &H2 'w’è‚µ‚½WAVEƒtƒ@ƒCƒ‹‚ªŒ©‚Â‚©‚ç‚È‚©‚Á‚½ê‡A
+	'ƒfƒtƒHƒ‹ƒg‚ÌWAVEƒtƒ@ƒCƒ‹‚ğÄ¶‚µ‚È‚¢
+	Public Const SND_MEMORY As Integer = &H4 'ƒƒ‚ƒŠƒtƒ@ƒCƒ‹‚ÌWAVE‚ğÀs‚·‚é
+	Public Const SND_LOOP As Integer = &H8 '’â~‚ğ–½—ß‚·‚é‚Ü‚ÅÄ¶‚ğŒJ‚è•Ô‚·B
+	Public Const SND_NOSTOP As Integer = &H10 'Œ»İWaveƒtƒ@ƒCƒ‹‚ªÄ¶’†‚Ìê‡AÄ¶‚ğ’†~‚·‚é
 	
 	
-	'Invalid_string_refer_to_original_code
+	'Œ»İÄ¶‚³‚ê‚Ä‚¢‚é‚a‚f‚l‚Ìƒtƒ@ƒCƒ‹–¼
 	Public BGMFileName As String
-	'Invalid_string_refer_to_original_code
+	'‚a‚f‚l‚ğƒŠƒs[ƒgÄ¶‚·‚éH
 	Public RepeatMode As Boolean
-	'Invalid_string_refer_to_original_code
+	'í“¬‚É‚à‚a‚f‚l‚ğ•ÏX‚µ‚È‚¢H
 	Public KeepBGM As Boolean
-	'Invalid_string_refer_to_original_code
+	'ƒ{ƒX—p‚a‚f‚l‚ğ‰‰‘t’†
 	Public BossBGM As Boolean
 	
-	'Invalid_string_refer_to_original_code
+	'Waveƒtƒ@ƒCƒ‹‚ÌÄ¶‚ğs‚Á‚½H
 	Public IsWavePlayed As Boolean
 	
-	'Invalid_string_refer_to_original_code
+	'MIDIƒtƒ@ƒCƒ‹‚ÌƒT[ƒ`ƒpƒX‚Ì‰Šú‰»‚ªŠ®—¹‚µ‚Ä‚¢‚éH
 	Private IsMidiSearchPathInitialized As Boolean
 	
-	'Invalid_string_refer_to_original_code
+	'MIDIÄ¶•û–@‚Ìè’i
 	Public UseMCI As Boolean
 	Public UseDirectMusic As Boolean
 	
-	'Invalid_string_refer_to_original_code
+	'WAVÄ¶•û–@‚Ìè’i
 	Public UseDirectSound As Boolean
 	
-	'Invalid_string_refer_to_original_code
+	'MP3Ä¶‚Ì‰¹—Ê
 	Public MP3Volume As Short
 	
-	'DirectMusicç”¨å¤‰æ•°
+	'DirectMusic—p•Ï”
 	'UPGRADE_ISSUE: DirectX7 ƒIƒuƒWƒFƒNƒg ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6B85A2A7-FE9F-4FBE-AA0C-CF11AC86A305"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 	Private DXObject As DirectX7
 	'UPGRADE_ISSUE: DirectMusicLoader ƒIƒuƒWƒFƒNƒg ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6B85A2A7-FE9F-4FBE-AA0C-CF11AC86A305"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
@@ -59,38 +59,38 @@ Module Sound
 	'UPGRADE_ISSUE: DirectMusicSegment ƒIƒuƒWƒFƒNƒg ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6B85A2A7-FE9F-4FBE-AA0C-CF11AC86A305"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 	Private DMSegment As DirectMusicSegment
 	
-	'Invalid_string_refer_to_original_code
+	'VBMP3.dll‚Ì‰Šú‰»‚ªŠ®—¹‚µ‚Ä‚¢‚éH
 	Private IsMP3Supported As Boolean
 	
-	'DirectSoundç”¨å¤‰æ•°
+	'DirectSound—p•Ï”
 	'UPGRADE_ISSUE: DirectSound ƒIƒuƒWƒFƒNƒg ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6B85A2A7-FE9F-4FBE-AA0C-CF11AC86A305"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 	Private DSObject As DirectSound
 	'UPGRADE_ISSUE: DirectSoundBuffer ƒIƒuƒWƒFƒNƒg ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6B85A2A7-FE9F-4FBE-AA0C-CF11AC86A305"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 	Private DSBuffer As DirectSoundBuffer
 	
 	
-	'Invalid_string_refer_to_original_code
+	'‚a‚f‚l‚ÌÄ¶‚ğŠJn‚·‚é
 	Public Sub StartBGM(ByRef bgm_name As String, Optional ByVal is_repeat_mode As Boolean = True)
 		Dim fname0, fname, fname2 As String
 		Dim i As Short
 		
-		'Invalid_string_refer_to_original_code
+		'‚a‚f‚l‚ğŒÅ’è’†H
 		If KeepBGM Then
 			Exit Sub
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'ƒ_ƒ~[‚Ìƒtƒ@ƒCƒ‹–¼H
 		If Len(bgm_name) < 5 Then
 			Exit Sub
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'ƒtƒ@ƒCƒ‹–¼‚Ì–{‘Ì•”•ª‚ğ”²‚«o‚·
 		fname0 = Left(bgm_name, Len(bgm_name) - 4)
 		If InStr2(fname0, "\") > 0 Then
 			fname0 = Mid(fname0, InStr2(fname0, "\") + 1)
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'“¯‚¶‚a‚f‚l‚ğ‰‰‘t’†‚Å‚ ‚ê‚Î‰‰‘t‚ğŒp‘±
 		If Len(BGMFileName) > 0 Then
 			If InStr(BGMFileName, "\" & fname0 & ".") > 0 Then
 				If BGMStatus() = "playing" Then
@@ -99,28 +99,28 @@ Module Sound
 			End If
 		End If
 		
-		'ãƒ•ã‚¡ã‚¤ãƒ«ã‚’æ¤œç´¢
+		'ƒtƒ@ƒCƒ‹‚ğŒŸõ
 		bgm_name = "(" & bgm_name & ")"
 		fname = SearchMidiFile(bgm_name)
 		
-		'Invalid_string_refer_to_original_code
+		'ƒtƒ@ƒCƒ‹‚ªŒ©‚Â‚©‚Á‚½H
 		If Len(fname) = 0 Then
 			Exit Sub
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'‰‰‘t‚ğƒXƒgƒbƒv
 		StopBGM()
 		
-		'Invalid_string_refer_to_original_code
+		'“¯‚¶‚a‚f‚l‚ÉƒoƒŠƒG[ƒVƒ‡ƒ“‚ª‚ ‚ê‚Îƒ‰ƒ“ƒ_ƒ€‚Å‘I‘ğ
 		i = 1
 		If InStr(fname, ScenarioPath) > 0 Then
-			'Invalid_string_refer_to_original_code
+			'ƒVƒiƒŠƒI‘¤‚Éƒtƒ@ƒCƒ‹‚ªŒ©‚Â‚©‚Á‚½ê‡‚ÍƒoƒŠƒG[ƒVƒ‡ƒ“‚àƒVƒiƒŠƒI‘¤‚©‚ç‚Ì‚İ‘I‘ğ
 			Do 
 				i = i + 1
 				fname2 = SearchMidiFile("(" & fname0 & "(" & VB6.Format(i) & ")" & Right(fname, 4) & ")")
 			Loop While InStr(fname2, ScenarioPath) > 0
 		Else
-			'Invalid_string_refer_to_original_code
+			'‚»‚¤‚Å‚È‚¯‚ê‚Î—¼•û‚©‚ç‘I‘ğ
 			Do 
 				i = i + 1
 				fname2 = SearchMidiFile("(" & fname0 & "(" & VB6.Format(i) & ")" & Right(fname, 4) & ")")
@@ -132,40 +132,40 @@ Module Sound
 			fname = SearchMidiFile("(" & fname0 & "(" & VB6.Format(i) & ")" & Right(fname, 4) & ")")
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'‚a‚f‚l‚ğ˜A‘±‰‰‘tH
 		RepeatMode = is_repeat_mode
 		
-		'Invalid_string_refer_to_original_code
+		'ƒtƒ@ƒCƒ‹‚ğƒ[ƒh‚µA‰‰‘tŠJn
 		LoadBGM(fname)
 		
-		'Invalid_string_refer_to_original_code
+		'ƒŠƒs[ƒgÄ¶ˆ—‚ğs‚¤‚½‚ß‚Ìƒ^ƒCƒ}[‚ğ‹N“®
 		'UPGRADE_ISSUE: Control Timer1 ‚ÍA”Ä—p–¼‘O‹óŠÔ Form “à‚É‚ ‚é‚½‚ßA‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 		MainForm.Timer1.Enabled = True
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'‚a‚f‚l‚Ìƒtƒ@ƒCƒ‹‚ğ“Ç‚İ‚Ş
 	Private Sub LoadBGM(ByRef fname As String)
 		Dim ret As Integer
 		Dim cmd As String
 		Dim mp3_data As InputInfo
 		
-		'Invalid_string_refer_to_original_code
+		'ƒtƒ@ƒCƒ‹‚Ìí—Ş‚É‰‚¶‚½ˆ—‚ğs‚¤
 		Select Case LCase(Right(fname, 4))
 			Case ".mid"
-				'MIDIãƒ•ã‚¡ã‚¤ãƒ«
+				'MIDIƒtƒ@ƒCƒ‹
 				
-				'Invalid_string_refer_to_original_code
+				'MIDI‚ğ‰‰‘t‚·‚é‚Ì‚ª‰‚ß‚ÄH
 				If Not UseDirectMusic And Not UseMCI Then
-					'Invalid_string_refer_to_original_code
+					'DirectMusic‚Ì‰Šú‰»‚ğ‚İ‚é
 					InitDirectMusic()
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'‰¹Œ¹ƒŠƒZƒbƒg
 				ResetBGM()
 				
-				'Invalid_string_refer_to_original_code
+				'DirectMusic‚ğg‚¤H
 				If UseDirectMusic Then
-					'Invalid_string_refer_to_original_code
+					'ƒtƒ@ƒCƒ‹‚ğƒ[ƒh
 					On Error GoTo ErrorHandler
 					
 					'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg DMLoader.LoadSegment ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
@@ -185,14 +185,14 @@ Module Sound
 						ErrorMessage("SetMasterAutoDownload failed (" & VB6.Format(Err.Number) & ")")
 					End If
 					
-					'Invalid_string_refer_to_original_code
-					'Invalid_string_refer_to_original_code
+					'ƒ‹[ƒv‰‰‘t‚Ìİ’è
+					'ŒJ‚è•Ô‚µ”ÍˆÍ‚ğİ’è
 					'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg DMSegment.SetLoopPoints ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 					Call DMSegment.SetLoopPoints(0, 0)
 					If Err.Number <> 0 Then
 						ErrorMessage("SetLoopPoints failed (" & VB6.Format(Err.Number) & ")")
 					End If
-					'Invalid_string_refer_to_original_code
+					'ŒJ‚è•Ô‚µ‰ñ”‚ğİ’è
 					If RepeatMode Then
 						'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg DMSegment.SetRepeats ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 						Call DMSegment.SetRepeats(-1)
@@ -204,7 +204,7 @@ Module Sound
 						ErrorMessage("SetRepeats failed (" & VB6.Format(Err.Number) & ")")
 					End If
 					
-					'Invalid_string_refer_to_original_code
+					'‰‰‘tŠJn
 					'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg DMPerformance.PlaySegment ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 					Call DMPerformance.PlaySegment(DMSegment, 0, 0)
 					If Err.Number <> 0 Then
@@ -222,89 +222,89 @@ Module Sound
 				End If
 				
 			Case ".wav"
-				'WAVEãƒ•ã‚¡ã‚¤ãƒ«
+				'WAVEƒtƒ@ƒCƒ‹
 				cmd = " type waveaudio alias bgm wait"
 				
 			Case ".mp3"
-				'MP3ãƒ•ã‚¡ã‚¤ãƒ«
+				'MP3ƒtƒ@ƒCƒ‹
 				
-				'Invalid_string_refer_to_original_code
+				'VBMP3.dll‚ğ‰Šú‰»
 				If Not IsMP3Supported Then
 					InitVBMP3()
 					
 					If Not IsMP3Supported Then
-						'Invalid_string_refer_to_original_code
+						'VBMP3.dll‚ª—˜—p•s”\
 						Exit Sub
 					End If
 				End If
 				
-				'æ¼”å¥ã‚’åœæ­¢
+				'‰‰‘t‚ğ’â~
 				Call vbmp3_stop()
-				'ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‰ã˜ã‚‹
+				'ƒtƒ@ƒCƒ‹‚ğ•Â‚¶‚é
 				Call vbmp3_close()
 				
-				'ãƒ•ã‚¡ã‚¤ãƒ«ã‚’èª­ã¿è¾¼ã‚€
+				'ƒtƒ@ƒCƒ‹‚ğ“Ç‚İ‚Ş
 				If vbmp3_open(fname, mp3_data) Then
-					'Invalid_string_refer_to_original_code
+					'                'ŒJ‚è•Ô‚µÄ¶‚ÍG‰¹‚ª“ü‚ç‚È‚¢‚æ‚¤ƒtƒF[ƒhƒAƒEƒg‚³‚¹‚é
 					'                If RepeatMode Then
 					'                    Call vbmp3_setFadeOut(1)
 					'                Else
 					'                    Call vbmp3_setFadeOut(0)
 					'                End If
 					
-					'Invalid_string_refer_to_original_code
+					'‰‰‘tŠJn
 					Call vbmp3_play()
 					BGMFileName = fname
 				End If
 				Exit Sub
 				
 			Case Else
-				'Invalid_string_refer_to_original_code
+				'–¢ƒTƒ|[ƒg‚Ìƒtƒ@ƒCƒ‹Œ`®
 				Exit Sub
 		End Select
 		
-		'Invalid_string_refer_to_original_code
+		'ƒtƒ@ƒCƒ‹‚ğŠJ‚­
 		cmd = "open " & Chr(34) & fname & Chr(34) & cmd
 		ret = mciSendString(cmd, vbNullString, 0, 0)
 		If ret <> 0 Then
-			'Invalid_string_refer_to_original_code
+			'ŠJ‚¯‚È‚©‚Á‚½
 			Exit Sub
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'‰‰‘tŠJn
 		ret = mciSendString("play bgm", vbNullString, 0, 0)
 		If ret <> 0 Then
-			'Invalid_string_refer_to_original_code
+			'‰‰‘t‚Å‚«‚È‚©‚Á‚½
 			ret = mciSendString("close bgm wait", vbNullString, 0, 0)
 			Exit Sub
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'‰‰‘t‚µ‚Ä‚¢‚éBGM‚Ìƒtƒ@ƒCƒ‹–¼‚ğ‹L˜^
 		BGMFileName = fname
 		Exit Sub
 		
 ErrorHandler: 
 		If UseDirectMusic Then
-			'Invalid_string_refer_to_original_code
+			'DirectMusic‚ªg—p‚Å‚«‚È‚¢ê‡‚ÍMCI‚ğg‚Á‚ÄƒŠƒgƒ‰ƒC
 			UseDirectMusic = False
 			UseMCI = True
 			LoadBGM(fname)
 		End If
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'‚a‚f‚l‚ğƒŠƒXƒ^[ƒg‚³‚¹‚é
 	Public Sub RestartBGM()
 		Dim ret As Integer
 		
-		'Invalid_string_refer_to_original_code
+		'’â~’†‚Å‚È‚¯‚ê‚Î‰½‚à‚µ‚È‚¢
 		If BGMStatus() <> "stopped" Then
 			Exit Sub
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'ƒŠƒXƒ^[ƒg
 		Select Case LCase(Right(BGMFileName, 4))
 			Case ".mid"
-				'MIDIãƒ•ã‚¡ã‚¤ãƒ«
+				'MIDIƒtƒ@ƒCƒ‹
 				If UseMCI Then
 					ret = mciSendString("seek bgm to start wait", vbNullString, 0, 0)
 					If ret <> 0 Then
@@ -313,14 +313,14 @@ ErrorHandler:
 					ret = mciSendString("play bgm", vbNullString, 0, 0)
 				End If
 			Case ".wav"
-				'WAVEãƒ•ã‚¡ã‚¤ãƒ«
+				'WAVEƒtƒ@ƒCƒ‹
 				ret = mciSendString("seek bgm to start wait", vbNullString, 0, 0)
 				If ret <> 0 Then
 					Exit Sub
 				End If
 				ret = mciSendString("play bgm", vbNullString, 0, 0)
 			Case ".mp3"
-				'MP3ãƒ•ã‚¡ã‚¤ãƒ«
+				'MP3ƒtƒ@ƒCƒ‹
 				If vbmp3_getState(ret) = 2 Then
 					Call vbmp3_restart()
 				Else
@@ -329,25 +329,25 @@ ErrorHandler:
 		End Select
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'‚a‚f‚l‚ğ’â~‚·‚é
 	Public Sub StopBGM(Optional ByVal by_force As Boolean = False)
 		Dim ret As Integer
 		
-		'Invalid_string_refer_to_original_code
+		'‚a‚f‚l‚ğŒÅ’è’†H
 		If Not by_force And KeepBGM Then
 			Exit Sub
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'‹­§“I‚É’â~‚·‚é‚Ì‚Å‚È‚¯‚ê‚Î‰‰‘t’†‚Å‚È‚¢ŒÀ‚è‚È‚É‚à‚µ‚È‚¢
 		If Not by_force And Len(BGMFileName) = 0 Then
 			Exit Sub
 		End If
 		
 		Select Case LCase(Right(BGMFileName, 4))
 			Case ".mid", ""
-				'MIDIãƒ•ã‚¡ã‚¤ãƒ«
+				'MIDIƒtƒ@ƒCƒ‹
 				If UseDirectMusic Then
-					'æ¼”å¥ã‚’åœæ­¢
+					'‰‰‘t‚ğ’â~
 					On Error Resume Next
 					'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg DMPerformance.Stop ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 					Call DMPerformance.Stop(DMSegment, Nothing, 0, 0)
@@ -355,43 +355,43 @@ ErrorHandler:
 						ErrorMessage("DMPerformance.Stop failed (" & VB6.Format(Err.Number) & ")")
 					End If
 				Else
-					'æ¼”å¥ã‚’åœæ­¢
+					'‰‰‘t‚ğ’â~
 					ret = mciSendString("stop bgm wait", vbNullString, 0, 0)
-					'ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‰ã˜ã‚‹
+					'ƒtƒ@ƒCƒ‹‚ğ•Â‚¶‚é
 					ret = mciSendString("close bgm wait", vbNullString, 0, 0)
 				End If
 			Case ".wav"
-				'WAVEãƒ•ã‚¡ã‚¤ãƒ«
-				'æ¼”å¥ã‚’åœæ­¢
+				'WAVEƒtƒ@ƒCƒ‹
+				'‰‰‘t‚ğ’â~
 				ret = mciSendString("stop bgm wait", vbNullString, 0, 0)
-				'ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‰ã˜ã‚‹
+				'ƒtƒ@ƒCƒ‹‚ğ•Â‚¶‚é
 				ret = mciSendString("close bgm wait", vbNullString, 0, 0)
 			Case ".mp3"
-				'MP3ãƒ•ã‚¡ã‚¤ãƒ«
-				'æ¼”å¥ã‚’åœæ­¢
+				'MP3ƒtƒ@ƒCƒ‹
+				'‰‰‘t‚ğ’â~
 				Call vbmp3_stop()
-				'ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‰ã˜ã‚‹
+				'ƒtƒ@ƒCƒ‹‚ğ•Â‚¶‚é
 				Call vbmp3_close()
 		End Select
 		
 		BGMFileName = ""
 		RepeatMode = False
 		
-		'Invalid_string_refer_to_original_code
+		'ƒŠƒs[ƒgÄ¶ˆ—‚ğs‚¤‚½‚ß‚Ìƒ^ƒCƒ}[‚ğ’â~
 		'UPGRADE_ISSUE: Control Timer1 ‚ÍA”Ä—p–¼‘O‹óŠÔ Form “à‚É‚ ‚é‚½‚ßA‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 		MainForm.Timer1.Enabled = False
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'‚l‚h‚c‚h‰¹Œ¹‚ğ‰Šú‰»‚·‚é(MCI‚ğg—p‚·‚éê‡‚Ì‚İ)
 	Private Sub ResetBGM()
 		Dim ret As Integer
 		Dim fname, cmd As String
 		
-		'Invalid_string_refer_to_original_code
+		'‰¹Œ¹‚Ìí—Ş‚É‰‚¶‚½‰¹Œ¹‰Šú‰»—pMIDIƒtƒ@ƒCƒ‹‚ğ‘I‘ğ
 		Select Case MidiResetType
 			Case "GM"
 				If UseDirectMusic Then
-					'Invalid_string_refer_to_original_code
+					'DirectMusic‚ğg‚¦‚ÎGMƒŠƒZƒbƒg‚ª‰Â”\
 					On Error GoTo ErrorHandler
 					'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg DMPerformance.Reset ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 					Call DMPerformance.Reset(0)
@@ -406,7 +406,7 @@ ErrorHandler:
 				Exit Sub
 		End Select
 		
-		'Invalid_string_refer_to_original_code
+		'ƒtƒ@ƒCƒ‹‚ª‚¿‚á‚ñ‚Æ‚ ‚éH
 		If Not FileExists(fname) Then
 			Exit Sub
 		End If
@@ -414,14 +414,14 @@ ErrorHandler:
 		BGMFileName = ""
 		
 		If UseDirectMusic Then
-			'Invalid_string_refer_to_original_code
+			'DirectMusic‚ğg‚¤ê‡
 			On Error GoTo ErrorHandler
 			
-			'Invalid_string_refer_to_original_code
+			'ƒtƒ@ƒCƒ‹‚ğƒ[ƒh
 			'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg DMLoader.LoadSegment ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 			DMSegment = DMLoader.LoadSegment(fname)
 			
-			'Invalid_string_refer_to_original_code
+			'MIDIÄ¶‚Ì‚½‚ßŠeíƒpƒ‰ƒ[ƒ^‚ğİ’è
 			'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg DMSegment.SetStandardMidiFile ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 			Call DMSegment.SetStandardMidiFile()
 			'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg DMPerformance.SetMasterAutoDownload ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
@@ -431,59 +431,59 @@ ErrorHandler:
 			'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg DMSegment.SetRepeats ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 			Call DMSegment.SetRepeats(0)
 			
-			'Invalid_string_refer_to_original_code
+			'‰¹Œ¹ƒŠƒZƒbƒg—pMIDIƒtƒ@ƒCƒ‹‚Ì‰‰‘tŠJn
 			'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg DMPerformance.PlaySegment ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 			Call DMPerformance.PlaySegment(DMSegment, 0, 0)
 			
-			'Invalid_string_refer_to_original_code
+			'‰‰‘t‚ªI‚í‚é‚Ü‚Å‘Ò‚Â
 			'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg DMPerformance.IsPlaying ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 			Do While DMPerformance.IsPlaying(DMSegment, Nothing)
 				System.Windows.Forms.Application.DoEvents()
 			Loop 
 			
-			'æ¼”å¥ã‚’åœæ­¢
+			'‰‰‘t‚ğ’â~
 			'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg DMPerformance.Stop ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 			Call DMPerformance.Stop(DMSegment, Nothing, 0, 0)
 		Else
-			'Invalid_string_refer_to_original_code
+			'MCI‚ğg‚¤ê‡
 			
-			'ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ã‚ªãƒ¼ãƒ—ãƒ³
+			'ƒtƒ@ƒCƒ‹‚ğƒI[ƒvƒ“
 			cmd = "open " & Chr(34) & fname & Chr(34) & " type sequencer alias bgm wait"
 			ret = mciSendString(cmd, vbNullString, 0, 0)
 			If ret <> 0 Then
 				Exit Sub
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'‰¹Œ¹ƒŠƒZƒbƒg—pMIDIƒtƒ@ƒCƒ‹‚ğ‰‰‘t
 			ret = mciSendString("play bgm wait", vbNullString, 0, 0)
 			
-			'ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ã‚¯ãƒ­ãƒ¼ã‚º
+			'ƒtƒ@ƒCƒ‹‚ğƒNƒ[ƒY
 			ret = mciSendString("close bgm wait", vbNullString, 0, 0)
 		End If
 		
 		Exit Sub
 		
 ErrorHandler: 
-		'Invalid_string_refer_to_original_code
+		'DirectMusicg—p‚ÉƒGƒ‰[‚ª”­¶‚µ‚½‚Ì‚ÅMCI‚ğg‚¤
 		UseDirectMusic = False
 		UseMCI = True
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'‚a‚f‚l‚ğÄ¶’†H
 	Private Function BGMStatus() As String
 		Dim retstr As String
 		Dim ret, sec As Integer
 		
-		'Invalid_string_refer_to_original_code
+		'‚a‚f‚l‚ğ‰‰‘t’†‚Å‚È‚¯‚ê‚Î‹ó•¶š—ñ‚ğ•Ô‚·
 		If Len(BGMFileName) = 0 Then
 			Exit Function
 		End If
 		
 		Select Case LCase(Right(BGMFileName, 4))
 			Case ".mid", ""
-				'MIDIãƒ•ã‚¡ã‚¤ãƒ«
+				'MIDIƒtƒ@ƒCƒ‹
 				If UseDirectMusic Then
-					'Invalid_string_refer_to_original_code
+					'DirectMusic‚ğg‚¤ê‡
 					On Error Resume Next
 					'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg DMPerformance.IsPlaying ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 					If DMPerformance.IsPlaying(DMSegment, Nothing) Then
@@ -495,26 +495,26 @@ ErrorHandler:
 						ErrorMessage("DMPerformance.IsPlaying failed (" & VB6.Format(Err.Number) & ")")
 					End If
 				Else
-					'Invalid_string_refer_to_original_code
+					'MCI‚ğg‚¤ê‡
 					
-					'Invalid_string_refer_to_original_code
+					'Œ‹‰Ê‚ğ•Û‘¶‚·‚é—Ìˆæ‚ğŠm•Û
 					retstr = Space(120)
 					
-					'Invalid_string_refer_to_original_code
+					'Ä¶ó‹µ‚ğQÆ
 					ret = mciSendString("status bgm mode", retstr, 120, 0)
 					If ret <> 0 Then
 						Exit Function
 					End If
 					
-					'Invalid_string_refer_to_original_code
+					'API‚ÌŒ‹‰Ê‚ÍNULLƒ^[ƒ~ƒlƒCƒg
 					ret = InStr(retstr, Chr(0))
 					BGMStatus = Left(retstr, ret - 1)
 				End If
 				
 			Case ".wav"
-				'WAVEãƒ•ã‚¡ã‚¤ãƒ«
+				'WAVEƒtƒ@ƒCƒ‹
 				
-				'Invalid_string_refer_to_original_code
+				'Œ‹‰Ê‚ğ•Û‘¶‚·‚é—Ìˆæ‚ğŠm•Û
 				retstr = Space(120)
 				
 				ret = mciSendString("status bgm mode", retstr, 120, 0)
@@ -522,56 +522,56 @@ ErrorHandler:
 					Exit Function
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'API‚ÌŒ‹‰Ê‚ÍNULLƒ^[ƒ~ƒlƒCƒg
 				ret = InStr(retstr, Chr(0))
 				BGMStatus = Left(retstr, ret - 1)
 				
 			Case ".mp3"
-				'Invalid_string_refer_to_original_code
+				'MP3‚ÌÄ¶ó‘Ô‚ÆÄ¶ŠÔ‚Ìæ“¾
 				ret = vbmp3_getState(sec)
 				
 				Select Case ret
 					Case 0
-						'åœæ­¢ä¸­
+						'’â~’†
 						BGMStatus = "stopped"
 					Case 1
-						'å†ç”Ÿä¸­
+						'Ä¶’†
 						BGMStatus = "playing"
 					Case 2
-						'ä¸€æ™‚åœæ­¢ä¸­
+						'ˆê’â~’†
 						BGMStatus = "stopped"
 				End Select
 		End Select
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'‚a‚f‚l‚ğ•ÏX‚·‚é (w’è‚µ‚½‚a‚f‚l‚ğ‚·‚Å‚É‰‰‘t’†‚È‚ç‚È‚É‚à‚µ‚È‚¢)
 	Public Sub ChangeBGM(ByRef bgm_name As String)
 		Dim fname, fname2 As String
 		
-		'Invalid_string_refer_to_original_code
+		'‚a‚f‚lŒÅ’è’†H
 		If KeepBGM Or BossBGM Then
 			Exit Sub
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'³‚µ‚¢ƒtƒ@ƒCƒ‹–¼H
 		If Len(bgm_name) < 5 Then
 			Exit Sub
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'ƒtƒ@ƒCƒ‹–¼‚Ì–{‘Ì•”•ª‚ğ”²‚«o‚·
 		fname = Left(bgm_name, Len(bgm_name) - 4)
 		If InStr2(fname, "\") > 0 Then
 			fname = Mid(fname, InStr2(fname, "\") + 1)
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'Šù‚É“¯‚¶MIDI‚ª‰‰‘t‚³‚ê‚Ä‚¢‚ê‚Î‚»‚Ì‚Ü‚Ü‰‰‘t‚µ‘±‚¯‚é
 		If Len(BGMFileName) > 0 Then
 			If InStr(BGMFileName, "\" & fname & ".") > 0 Then
 				Exit Sub
 			End If
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'”Ô†ˆá‚¢H
 		If Len(BGMFileName) > 5 Then
 			fname2 = Left(BGMFileName, Len(BGMFileName) - 4)
 			If InStr2(fname2, "\") > 0 Then
@@ -588,15 +588,15 @@ ErrorHandler:
 			End If
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'ŒJ‚è•Ô‚µ‰‰‘t‚Éİ’è
 		RepeatMode = True
 		
-		'Invalid_string_refer_to_original_code
+		'‰‰‘tŠJn
 		StartBGM(bgm_name)
 	End Sub
 	
 	
-	'Invalid_string_refer_to_original_code
+	'DirectMusic‚Ì‰Šú‰»
 	Public Sub InitDirectMusic()
 		Dim DMUS_PC_GMINHARDWARE As Object
 		Dim DMUS_PC_GSINHARDWARE As Object
@@ -609,44 +609,44 @@ ErrorHandler:
 		
 		On Error GoTo ErrorHandler
 		
-		'Invalid_string_refer_to_original_code
+		'ƒtƒ‰ƒO‚ğİ’è
 		UseDirectMusic = True
 		UseMCI = False
 		
-		'Invalid_string_refer_to_original_code
+		'DirectXƒIƒuƒWƒFƒNƒgì¬
 		If DXObject Is Nothing Then
 			DXObject = CreateDirectXObject()
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'Loaderì¬
 		'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg DXObject.DirectMusicLoaderCreate ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 		DMLoader = DXObject.DirectMusicLoaderCreate
 		
-		'Invalid_string_refer_to_original_code
+		'ƒT[ƒ`ƒpƒXİ’è(•s—vH)
 		'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg DMLoader.SetSearchDirectory ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 		Call DMLoader.SetSearchDirectory(AppPath & "Midi")
 		
-		'Invalid_string_refer_to_original_code
+		'Performanceì¬
 		'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg DXObject.DirectMusicPerformanceCreate ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 		DMPerformance = DXObject.DirectMusicPerformanceCreate
 		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
-		'DirectSoundã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å…¥ã‚Œã¦ãŠã
+		'Performance‰Šú‰»
+		'DirectSound‚Æ•¹—p‚·‚é‚ÍAÅ‰‚Ìˆø”‚É
+		'DirectSound‚ÌƒIƒuƒWƒFƒNƒg‚ğ“ü‚ê‚Ä‚¨‚­
 		'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg DMPerformance.Init ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 		Call DMPerformance.Init(DSObject, MainForm.Handle.ToInt32)
 		
-		'Invalid_string_refer_to_original_code
+		'MIDI‰¹Œ¹ˆê——‚ğì¬
 		CreateMIDIPortListFile()
 		
-		'Invalid_string_refer_to_original_code
+		'ƒ|[ƒgİ’è
 		port_id = StrToLng(ReadIni("Option", "MIDIPortID"))
 		
-		'Invalid_string_refer_to_original_code
+		'g—pƒ|[ƒg”Ô†‚ğw’è‚³‚ê‚Ä‚¢‚½ê‡
 		If port_id > 0 Then
 			'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg DMPerformance.GetPortCount ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 			If port_id > DMPerformance.GetPortCount Then
-				ErrorMessage("Invalid_string_refer_to_original_code")
+				ErrorMessage("MIDIPortID‚É³‚µ‚¢MIDIƒ|[ƒg‚ªİ’è‚³‚ê‚Ä‚¢‚Ü‚¹‚ñB")
 				End
 			End If
 			
@@ -655,20 +655,20 @@ ErrorHandler:
 			Exit Sub
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'w’è‚ª‚È‚¢‚Ì‚ÅSRC‘¤‚ÅŒŸõ‚·‚é
 		
-		'Invalid_string_refer_to_original_code
+		'MIDIƒ}ƒbƒp[‚ª‚ ‚ê‚Î‚»‚ê‚ğg‚¤
 		'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg DMPerformance.GetPortCount ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 		For i = 1 To DMPerformance.GetPortCount
 			'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg DMPerformance.GetPortName ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			If InStr(DMPerformance.GetPortName(i), "Invalid_string_refer_to_original_code") > 0 Or InStr(DMPerformance.GetPortName(i), "MIDI Mapper") > 0 Then
+			If InStr(DMPerformance.GetPortName(i), "MIDI ƒ}ƒbƒp[") > 0 Or InStr(DMPerformance.GetPortName(i), "MIDI Mapper") > 0 Then
 				'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg DMPerformance.SetPort ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 				Call DMPerformance.SetPort(i, 1)
 				Exit Sub
 			End If
 		Next 
 		
-		'Invalid_string_refer_to_original_code
+		'‚Ü‚¸‚ÍŠO•”MIDI‰¹Œ¹‚ğ‘{‚·
 		'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg DMPerformance.GetPortCount ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 		For i = 1 To DMPerformance.GetPortCount
 			'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg DMPerformance.GetPortCaps ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
@@ -681,7 +681,7 @@ ErrorHandler:
 			End If
 		Next 
 		
-		'æ¬¡ã«XGå¯¾å¿œãƒãƒ¼ãƒ‰éŸ³æºã‚’æœã™
+		'Ÿ‚ÉXG‘Î‰ƒn[ƒh‰¹Œ¹‚ğ‘{‚·
 		'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg DMPerformance.GetPortCount ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 		For i = 1 To DMPerformance.GetPortCount
 			'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg DMPerformance.GetPortCaps ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
@@ -694,7 +694,7 @@ ErrorHandler:
 			End If
 		Next 
 		
-		'æ¬¡ã«GSå¯¾å¿œãƒãƒ¼ãƒ‰éŸ³æºã‚’æœã™
+		'Ÿ‚ÉGS‘Î‰ƒn[ƒh‰¹Œ¹‚ğ‘{‚·
 		'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg DMPerformance.GetPortCount ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 		For i = 1 To DMPerformance.GetPortCount
 			'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg DMPerformance.GetPortCaps ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
@@ -707,7 +707,7 @@ ErrorHandler:
 			End If
 		Next 
 		
-		'æ¬¡ã«XGå¯¾å¿œã‚½ãƒ•ãƒˆéŸ³æºã‚’æœã™
+		'Ÿ‚ÉXG‘Î‰ƒ\ƒtƒg‰¹Œ¹‚ğ‘{‚·
 		'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg DMPerformance.GetPortCount ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 		For i = 1 To DMPerformance.GetPortCount
 			'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg DMPerformance.GetPortName ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
@@ -718,7 +718,7 @@ ErrorHandler:
 			End If
 		Next 
 		
-		'æ¬¡ã«GSå¯¾å¿œã‚½ãƒ•ãƒˆéŸ³æºã‚’æœã™
+		'Ÿ‚ÉGS‘Î‰ƒ\ƒtƒg‰¹Œ¹‚ğ‘{‚·
 		'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg DMPerformance.GetPortCount ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 		For i = 1 To DMPerformance.GetPortCount
 			'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg DMPerformance.GetPortName ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
@@ -729,7 +729,7 @@ ErrorHandler:
 			End If
 		Next 
 		
-		'æ¬¡ã«GMå¯¾å¿œãƒãƒ¼ãƒ‰éŸ³æºã‚’æœã™
+		'Ÿ‚ÉGM‘Î‰ƒn[ƒh‰¹Œ¹‚ğ‘{‚·
 		'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg DMPerformance.GetPortCount ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 		For i = 1 To DMPerformance.GetPortCount
 			'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg DMPerformance.GetPortCaps ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
@@ -742,7 +742,7 @@ ErrorHandler:
 			End If
 		Next 
 		
-		'Invalid_string_refer_to_original_code
+		'‚ ‚«‚ç‚ß‚ÄƒfƒtƒHƒ‹ƒgƒ|[ƒg‚ğg‚¤
 		'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg DMPerformance.SetPort ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 		Call DMPerformance.SetPort(-1, 1)
 		
@@ -750,12 +750,12 @@ ErrorHandler:
 		
 ErrorHandler: 
 		
-		'Invalid_string_refer_to_original_code
+		'DirectMusic‰Šú‰»‚ÉƒGƒ‰[‚ª”­¶‚µ‚½‚Ì‚ÅMCI‚ğg‚¤
 		UseDirectMusic = False
 		UseMCI = True
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'DirectXƒIƒuƒWƒFƒNƒg‚ğì¬‚·‚é
 	Private Function CreateDirectXObject() As DirectX7
 		'UPGRADE_ISSUE: DirectX7 ƒIƒuƒWƒFƒNƒg ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6B85A2A7-FE9F-4FBE-AA0C-CF11AC86A305"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 		Dim new_obj As New DirectX7
@@ -763,7 +763,7 @@ ErrorHandler:
 		CreateDirectXObject = new_obj
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'—˜—p‰Â”\‚ÈMIDI‰¹Œ¹‚Ìˆê——‚ğì¬‚·‚é
 	Private Sub CreateMIDIPortListFile()
 		Dim f, i As Short
 		Dim pname As String
@@ -771,13 +771,13 @@ ErrorHandler:
 		On Error GoTo ErrorHandler
 		
 		f = FreeFile
-		FileOpen(f, AppPath & "Invalid_string_refer_to_original_code", OpenMode.Output, OpenAccess.Write)
+		FileOpen(f, AppPath & "Midi\MIDI‰¹Œ¹ƒŠƒXƒg.txt", OpenMode.Output, OpenAccess.Write)
 		
-		PrintLine(f, "Invalid_string_refer_to_original_code")
-		PrintLine(f, "Invalid_string_refer_to_original_code")
+		PrintLine(f, ";DirectMusic‚Å—˜—p‰Â”\‚ÈMIDI‰¹Œ¹‚ÌƒŠƒXƒg‚Å‚·B")
+		PrintLine(f, ";Src.ini‚ÌMIDIPortID‚Ég—p‚µ‚½‚¢‰¹Œ¹‚Ì”Ô†‚ğw’è‚µ‚Ä‰º‚³‚¢B")
 		PrintLine(f, "")
 		
-		'Invalid_string_refer_to_original_code
+		'Šeƒ|[ƒg‚Ì–¼Ì‚ğQÆ
 		'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg DMPerformance.GetPortCount ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 		For i = 1 To DMPerformance.GetPortCount
 			'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg DMPerformance.GetPortName ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
@@ -791,11 +791,11 @@ ErrorHandler:
 		FileClose(f)
 		
 ErrorHandler: 
-		'Invalid_string_refer_to_original_code
+		'ƒGƒ‰[”­¶
 	End Sub
 	
 	
-	'Invalid_string_refer_to_original_code
+	'VBMP3‚ğ‰Šú‰»
 	Private Sub InitVBMP3()
 		Dim opt As VBMP3_OPTION
 		Dim buf As String
@@ -822,7 +822,7 @@ ErrorHandler:
 	End Sub
 	
 	
-	'Invalid_string_refer_to_original_code
+	'ŠeMidiƒtƒHƒ‹ƒ_‚©‚çw’è‚³‚ê‚½MIDIƒtƒ@ƒCƒ‹‚ğŒŸõ‚·‚é
 	Public Function SearchMidiFile(ByRef midi_name As String) As String
 		Dim fname, fname_mp3 As String
 		Static scenario_midi_dir_exists As Boolean
@@ -834,7 +834,7 @@ ErrorHandler:
 		Dim buf, buf2 As String
 		Dim sub_folder As String
 		
-		'Invalid_string_refer_to_original_code
+		'‰‚ß‚ÄÀs‚·‚éÛ‚ÉAŠeƒtƒHƒ‹ƒ_‚ÉMidiƒtƒHƒ‹ƒ_‚ª‚ ‚é‚©ƒ`ƒFƒbƒN
 		If Not IsMidiSearchPathInitialized Then
 			If Len(ScenarioPath) > 0 Then
 				'UPGRADE_WARNING: Dir ‚ÉV‚µ‚¢“®ì‚ªw’è‚³‚ê‚Ä‚¢‚Ü‚·B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
@@ -855,7 +855,7 @@ ErrorHandler:
 				End If
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'MP3‚ª‰‰‘t‰Â”\‚©‚Ç‚¤‚©‚à’²‚×‚Ä‚¨‚­
 			If FileExists(AppPath & "VBMP3.dll") Then
 				is_mp3_available = True
 			End If
@@ -863,21 +863,21 @@ ErrorHandler:
 			IsMidiSearchPathInitialized = True
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'ƒ_ƒ~[‚Ìƒtƒ@ƒCƒ‹–¼H
 		If Len(midi_name) < 5 Then
 			Exit Function
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'ˆø”1‚Æ‚µ‚Ä“n‚³‚ê‚½•¶š—ñ‚ğƒŠƒXƒg‚Æ‚µ‚Äˆµ‚¢A¶‚©‚ç‡‚ÉMIDI‚ğŒŸõ
 		num = ListLength(midi_name)
 		i = 1
 		Do While i <= num
-			'Invalid_string_refer_to_original_code
+			'ƒXƒy[ƒX‚ğŠÜ‚Şƒtƒ@ƒCƒ‹–¼‚Ö‚Ì‘Î‰
 			buf = ""
 			For j = i To num
 				buf2 = LCase(ListIndex(midi_name, j))
 				
-				'Invalid_string_refer_to_original_code
+				'‘S‘Ì‚ª()‚ÅˆÍ‚Ü‚ê‚Ä‚¢‚éê‡‚Í()‚ğŠO‚·
 				If Left(buf2, 1) = "(" And Right(buf2, 1) = ")" Then
 					buf2 = Mid(buf2, 2, Len(buf2) - 2)
 				End If
@@ -890,12 +890,12 @@ ErrorHandler:
 			Next 
 			buf = Trim(buf)
 			
-			'Invalid_string_refer_to_original_code
+			'“¯–¼‚ÌMP3ƒtƒ@ƒCƒ‹‚ª‚ ‚éê‡‚ÍMIDIƒtƒ@ƒCƒ‹‚Ì‘ã‚í‚è‚ÉMP3ƒtƒ@ƒCƒ‹‚ğg‚¤
 			If is_mp3_available Then
 				fname_mp3 = Left(buf, Len(buf) - 4) & ".mp3"
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'ƒtƒ‹ƒpƒX‚Å‚Ìw’èH
 			If InStr(buf, ":") = 2 Then
 				If is_mp3_available Then
 					If FileExists(fname_mp3) Then
@@ -910,25 +910,25 @@ ErrorHandler:
 			End If
 			
 			' DEL START MARGE
-			'Invalid_string_refer_to_original_code
+			'        '—š—ğ‚ğŒŸõ‚µ‚Ä‚İ‚é
 			'        On Error GoTo NotFound
 			'        fname = fpath_history.Item(buf)
 			'
-			'Invalid_string_refer_to_original_code
+			'        '—š—ğã‚Éƒtƒ@ƒCƒ‹‚ğ”­Œ©
 			'        SearchMidiFile = fname
 			'        Exit Function
 			
 			'NotFound:
-			'Invalid_string_refer_to_original_code
+			'        '—š—ğ‚É‚È‚©‚Á‚½
 			'        On Error GoTo 0
 			' DEL END MARGE
 			
-			'Invalid_string_refer_to_original_code
+			'ƒTƒuƒtƒHƒ‹ƒ_w’è‚ ‚èH
 			If InStr(buf, "_") > 0 Then
 				sub_folder = Left(buf, InStr(buf, "_") - 1) & "\"
 			End If
 			
-			'ã‚·ãƒŠãƒªã‚ªå´ã®Midiãƒ•ã‚©ãƒ«ãƒ€
+			'ƒVƒiƒŠƒI‘¤‚ÌMidiƒtƒHƒ‹ƒ_
 			If scenario_midi_dir_exists Then
 				If is_mp3_available Then
 					If sub_folder <> "" Then
@@ -965,7 +965,7 @@ ErrorHandler:
 				End If
 			End If
 			
-			'ExtDataPathå´ã®Midiãƒ•ã‚©ãƒ«ãƒ€
+			'ExtDataPath‘¤‚ÌMidiƒtƒHƒ‹ƒ_
 			If extdata_midi_dir_exists Then
 				If is_mp3_available Then
 					If sub_folder <> "" Then
@@ -1002,7 +1002,7 @@ ErrorHandler:
 				End If
 			End If
 			
-			'ExtDataPath2å´ã®Midiãƒ•ã‚©ãƒ«ãƒ€
+			'ExtDataPath2‘¤‚ÌMidiƒtƒHƒ‹ƒ_
 			If extdata2_midi_dir_exists Then
 				If is_mp3_available Then
 					If sub_folder <> "" Then
@@ -1039,7 +1039,7 @@ ErrorHandler:
 				End If
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'–{‘Ì‘¤‚ÌMidiƒtƒHƒ‹ƒ_
 			If is_mp3_available Then
 				If sub_folder <> "" Then
 					fname = AppPath & "Midi\" & sub_folder & fname_mp3
@@ -1078,17 +1078,17 @@ ErrorHandler:
 		Loop 
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'MIDIƒtƒ@ƒCƒ‹‚ÌƒT[ƒ`ƒpƒX‚ğƒŠƒZƒbƒg‚·‚é
 	Public Sub ResetMidiSearchPath()
 		IsMidiSearchPathInitialized = False
 	End Sub
 	
 	
-	'Invalid_string_refer_to_original_code
+	'‚a‚f‚l‚ÉŠ„‚è“–‚Ä‚ç‚ê‚½MIDIƒtƒ@ƒCƒ‹–¼‚ğ•Ô‚·
 	Public Function BGMName(ByRef bgm_name As String) As String
 		Dim vname As String
 		
-		'Invalid_string_refer_to_original_code
+		'RenameBGMƒRƒ}ƒ“ƒh‚ÅMIDIƒtƒ@ƒCƒ‹‚ªİ’è‚³‚ê‚Ä‚¢‚ê‚Î‚»‚¿‚ç‚ğg—p
 		vname = "BGM(" & bgm_name & ")"
 		If IsGlobalVariableDefined(vname) Then
 			'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg GlobalVariableList.Item().StringValue ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
@@ -1096,35 +1096,35 @@ ErrorHandler:
 			Exit Function
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'‚»‚¤‚Å‚È‚¯‚ê‚ÎSrc.ini‚Åİ’è‚³‚ê‚Ä‚¢‚éƒtƒ@ƒCƒ‹‚ğg—p
 		BGMName = ReadIni("BGM", bgm_name)
 		
-		'Invalid_string_refer_to_original_code
+		'Src.ini‚Å‚àİ’è‚³‚ê‚Ä‚¢‚È‚¯‚ê‚Î•W€‚Ìƒtƒ@ƒCƒ‹‚ğg—p
 		If BGMName = "" Then
 			BGMName = bgm_name & ".mid"
 		End If
 	End Function
 	
 	
-	'Invalid_string_refer_to_original_code
+	'DirectSound‚Ì‰Šú‰»
 	Public Sub InitDirectSound()
 		Dim DSSCL_PRIORITY As Object
 		'On Error GoTo ErrorHandler
 		Exit Sub
 		
-		'Invalid_string_refer_to_original_code
+		'ƒtƒ‰ƒO‚ğİ’è
 		UseDirectSound = True
 		
-		'Invalid_string_refer_to_original_code
+		'DirectXƒIƒuƒWƒFƒNƒgì¬
 		If DXObject Is Nothing Then
 			DXObject = CreateDirectXObject()
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'DirectSoundƒIƒuƒWƒFƒNƒgì¬
 		'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg DXObject.DirectSoundCreate ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 		DSObject = DXObject.DirectSoundCreate("")
 		
-		'Invalid_string_refer_to_original_code
+		'ƒTƒEƒ“ƒhƒfƒoƒCƒX‚Ì‹¦’²ƒŒƒxƒ‹‚ğİ’è
 		'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg DSObject.SetCooperativeLevel ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 		DSObject.SetCooperativeLevel(MainForm.Handle.ToInt32, DSSCL_PRIORITY)
 		
@@ -1135,7 +1135,7 @@ ErrorHandler:
 		UseDirectSound = False
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'Waveƒtƒ@ƒCƒ‹‚ğÄ¶‚·‚é
 	Public Sub PlayWave(ByRef wave_name As String)
 		Dim DSBPLAY_DEFAULT As Object
 		Dim DSBCAPS_STATIC As Object
@@ -1150,7 +1150,7 @@ ErrorHandler:
 		Static extdata_sound_dir_exists As Boolean
 		Static extdata2_sound_dir_exists As Boolean
 		
-		'Invalid_string_refer_to_original_code
+		'‰‚ß‚ÄÀs‚·‚éÛ‚ÉAŠeƒtƒHƒ‹ƒ_‚ÉSoundƒtƒHƒ‹ƒ_‚ª‚ ‚é‚©ƒ`ƒFƒbƒN
 		If Not init_play_wave Then
 			'UPGRADE_WARNING: Dir ‚ÉV‚µ‚¢“®ì‚ªw’è‚³‚ê‚Ä‚¢‚Ü‚·B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 			If Len(Dir(ScenarioPath & "Sound", FileAttribute.Directory)) > 0 Then
@@ -1171,31 +1171,31 @@ ErrorHandler:
 			init_play_wave = True
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'“Áê‚Èƒtƒ@ƒCƒ‹–¼
 		Select Case LCase(wave_name)
 			Case "-.wav", "-.mp3"
-				'å†ç”Ÿã‚’ã‚­ãƒ£ãƒ³ã‚»ãƒ«
+				'Ä¶‚ğƒLƒƒƒ“ƒZƒ‹
 				Exit Sub
 			Case "null.wav"
-				'WAVEå†ç”Ÿã‚’åœæ­¢
+				'WAVEÄ¶‚ğ’â~
 				StopWave()
 				Exit Sub
 			Case "null.mp3"
-				'MP3å†ç”Ÿã‚’åœæ­¢
+				'MP3Ä¶‚ğ’â~
 				If LCase(Right(BGMFileName, 4)) = ".mp3" Then
 					StopBGM(True)
 				Else
-					'æ¼”å¥ã‚’åœæ­¢
+					'‰‰‘t‚ğ’â~
 					Call vbmp3_stop()
-					'ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‰ã˜ã‚‹
+					'ƒtƒ@ƒCƒ‹‚ğ•Â‚¶‚é
 					Call vbmp3_close()
 				End If
 				Exit Sub
 		End Select
 		
-		'Invalid_string_refer_to_original_code
+		'ŠeƒtƒHƒ‹ƒ_‚ğƒ`ƒFƒbƒN
 		
-		'ã‚·ãƒŠãƒªã‚ªå´ã®Soundãƒ•ã‚©ãƒ«ãƒ€
+		'ƒVƒiƒŠƒI‘¤‚ÌSoundƒtƒHƒ‹ƒ_
 		If scenario_sound_dir_exists Then
 			fname = ScenarioPath & "Sound\" & wave_name
 			If FileExists(fname) Then
@@ -1203,7 +1203,7 @@ ErrorHandler:
 			End If
 		End If
 		
-		'ExtDataPathå´ã®Soundãƒ•ã‚©ãƒ«ãƒ€
+		'ExtDataPath‘¤‚ÌSoundƒtƒHƒ‹ƒ_
 		If extdata_sound_dir_exists Then
 			fname = ExtDataPath & "Sound\" & wave_name
 			If FileExists(fname) Then
@@ -1211,7 +1211,7 @@ ErrorHandler:
 			End If
 		End If
 		
-		'ExtDataPath2å´ã®Soundãƒ•ã‚©ãƒ«ãƒ€
+		'ExtDataPath2‘¤‚ÌSoundƒtƒHƒ‹ƒ_
 		If extdata2_sound_dir_exists Then
 			fname = ExtDataPath2 & "Sound\" & wave_name
 			If FileExists(fname) Then
@@ -1219,19 +1219,19 @@ ErrorHandler:
 			End If
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'–{‘Ì‘¤‚ÌSoundƒtƒHƒ‹ƒ_
 		fname = AppPath & "Sound\" & wave_name
 		If FileExists(fname) Then
 			GoTo FoundWave
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'â‘Î•\‹LH
 		fname = wave_name
 		If FileExists(fname) Then
 			GoTo FoundWave
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'Œ©‚Â‚©‚ç‚È‚©‚Á‚½
 		Exit Sub
 		
 FoundWave: 
@@ -1241,38 +1241,38 @@ FoundWave:
 		'UPGRADE_ISSUE: DSBUFFERDESC ƒIƒuƒWƒFƒNƒg ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6B85A2A7-FE9F-4FBE-AA0C-CF11AC86A305"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 		Dim dsbd As DSBUFFERDESC
 		If LCase(Right(fname, 4)) = ".mp3" Then
-			'åŠ¹æœéŸ³ã¯MP3ãƒ•ã‚¡ã‚¤ãƒ«
+			'Œø‰Ê‰¹‚ÍMP3ƒtƒ@ƒCƒ‹
 			
-			'Invalid_string_refer_to_original_code
+			'VBMP3.dll‚ğ‰Šú‰»
 			If Not IsMP3Supported Then
 				InitVBMP3()
 				
 				If Not IsMP3Supported Then
-					'Invalid_string_refer_to_original_code
+					'VBMP3.dll‚ª—˜—p•s”\
 					Exit Sub
 				End If
 			End If
 			
-			'MP3å†ç”Ÿã‚’åœæ­¢
+			'MP3Ä¶‚ğ’â~
 			If LCase(Right(BGMFileName, 4)) = ".mp3" Then
 				StopBGM(True)
 			Else
-				'æ¼”å¥ã‚’åœæ­¢
+				'‰‰‘t‚ğ’â~
 				Call vbmp3_stop()
-				'ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‰ã˜ã‚‹
+				'ƒtƒ@ƒCƒ‹‚ğ•Â‚¶‚é
 				Call vbmp3_close()
 			End If
 			
-			'ãƒ•ã‚¡ã‚¤ãƒ«ã‚’èª­ã¿è¾¼ã‚€
+			'ƒtƒ@ƒCƒ‹‚ğ“Ç‚İ‚Ş
 			If vbmp3_open(fname, mp3_data) Then
-				'Invalid_string_refer_to_original_code
+				'Ä¶ŠJn
 				Call vbmp3_play()
 			End If
 		ElseIf UseDirectSound Then 
-			'Invalid_string_refer_to_original_code
+			'DirectSound‚ğg‚¤ê‡
 			
 			
-			'Invalid_string_refer_to_original_code
+			'Ä¶’†‚Ìê‡‚ÍÄ¶‚ğƒXƒgƒbƒv
 			If Not DSBuffer Is Nothing Then
 				'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg DSBuffer.Stop ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 				DSBuffer.Stop()
@@ -1280,27 +1280,27 @@ FoundWave:
 				DSBuffer = Nothing
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'ƒTƒEƒ“ƒhƒoƒbƒtƒ@‚ÉWAVƒtƒ@ƒCƒ‹‚ğ“Ç‚İ‚Ş
 			'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg dsbd.lFlags ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 			dsbd.lFlags = DSBCAPS_CTRLFREQUENCY Or DSBCAPS_CTRLPAN Or DSBCAPS_CTRLVOLUME Or DSBCAPS_STATIC
 			'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg DSObject.CreateSoundBufferFromFile ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 			DSBuffer = DSObject.CreateSoundBufferFromFile(fname, dsbd, wf)
 			
-			'Invalid_string_refer_to_original_code
+			'WAVE‚ğÄ¶
 			'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg DSBuffer.Play ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 			DSBuffer.Play(DSBPLAY_DEFAULT)
 		Else
-			'Invalid_string_refer_to_original_code
+			'API‚ğg‚¤ê‡
 			
-			'Invalid_string_refer_to_original_code
+			'WAVE‚ğÄ¶
 			ret = sndPlaySound(fname, SND_ASYNC + SND_NODEFAULT)
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'Œø‰Ê‰¹Ä¶‚Ìƒtƒ‰ƒO‚ğ—§‚Ä‚é
 		IsWavePlayed = True
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'Waveƒtƒ@ƒCƒ‹‚ÌÄ¶‚ğI—¹‚·‚é
 	Public Sub StopWave()
 		Dim ret As Integer
 		
@@ -1315,26 +1315,26 @@ FoundWave:
 	End Sub
 	
 	
-	'Invalid_string_refer_to_original_code
+	'–{ƒ‚ƒWƒ…[ƒ‹‚Ì‰ğ•úˆ—‚ğs‚¤
 	Public Sub FreeSoundModule()
-		'Invalid_string_refer_to_original_code
+		'BGM‰‰‘t‚Ì’â~
 		KeepBGM = False
 		BossBGM = False
 		StopBGM(True)
 		
-		'Invalid_string_refer_to_original_code
+		'‰¹Œ¹‰Šú‰»
 		ResetBGM()
 		
-		'WAVEãƒ•ã‚¡ã‚¤ãƒ«å†ç”Ÿã®åœæ­¢
+		'WAVEƒtƒ@ƒCƒ‹Ä¶‚Ì’â~
 		StopWave()
 		
-		'DirectMusicã®è§£æ”¾
+		'DirectMusic‚Ì‰ğ•ú
 		If UseDirectMusic Then
-			'æ¼”å¥åœæ­¢
+			'‰‰‘t’â~
 			'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg DMPerformance.CloseDown ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 			DMPerformance.CloseDown()
 			
-			'Invalid_string_refer_to_original_code
+			'ƒIƒuƒWƒFƒNƒg‚Ì‰ğ•ú
 			'UPGRADE_NOTE: ƒIƒuƒWƒFƒNƒg DMLoader ‚ğƒKƒx[ƒW ƒRƒŒƒNƒg‚·‚é‚Ü‚Å‚±‚ÌƒIƒuƒWƒFƒNƒg‚ğ”jŠü‚·‚é‚±‚Æ‚Í‚Å‚«‚Ü‚¹‚ñB Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 			DMLoader = Nothing
 			'UPGRADE_NOTE: ƒIƒuƒWƒFƒNƒg DMPerformance ‚ğƒKƒx[ƒW ƒRƒŒƒNƒg‚·‚é‚Ü‚Å‚±‚ÌƒIƒuƒWƒFƒNƒg‚ğ”jŠü‚·‚é‚±‚Æ‚Í‚Å‚«‚Ü‚¹‚ñB Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
@@ -1343,20 +1343,20 @@ FoundWave:
 			DMSegment = Nothing
 		End If
 		
-		'DirectSoundã®è§£æ”¾
+		'DirectSound‚Ì‰ğ•ú
 		If UseDirectSound Then
-			'Invalid_string_refer_to_original_code
+			'ƒIƒuƒWƒFƒNƒg‚Ì‰ğ•ú
 			'UPGRADE_NOTE: ƒIƒuƒWƒFƒNƒg DSObject ‚ğƒKƒx[ƒW ƒRƒŒƒNƒg‚·‚é‚Ü‚Å‚±‚ÌƒIƒuƒWƒFƒNƒg‚ğ”jŠü‚·‚é‚±‚Æ‚Í‚Å‚«‚Ü‚¹‚ñB Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 			DSObject = Nothing
 			'UPGRADE_NOTE: ƒIƒuƒWƒFƒNƒg DSBuffer ‚ğƒKƒx[ƒW ƒRƒŒƒNƒg‚·‚é‚Ü‚Å‚±‚ÌƒIƒuƒWƒFƒNƒg‚ğ”jŠü‚·‚é‚±‚Æ‚Í‚Å‚«‚Ü‚¹‚ñB Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 			DSBuffer = Nothing
 		End If
 		
-		'DirectXã®è§£æ”¾
+		'DirectX‚Ì‰ğ•ú
 		'UPGRADE_NOTE: ƒIƒuƒWƒFƒNƒg DXObject ‚ğƒKƒx[ƒW ƒRƒŒƒNƒg‚·‚é‚Ü‚Å‚±‚ÌƒIƒuƒWƒFƒNƒg‚ğ”jŠü‚·‚é‚±‚Æ‚Í‚Å‚«‚Ü‚¹‚ñB Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 		DXObject = Nothing
 		
-		'VBMP3.DLLã®è§£æ”¾
+		'VBMP3.DLL‚Ì‰ğ•ú
 		If IsMP3Supported Then
 			Call vbmp3_stop()
 			Call vbmp3_free()

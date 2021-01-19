@@ -2,14 +2,14 @@ Attribute VB_Name = "COM"
 Option Explicit
 
 ' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯ãƒ•ãƒªãƒ¼ã‚½ãƒ•ãƒˆã§ã‚ã‚Šã€ç„¡ä¿è¨¼ã§ã™ã€‚
-' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯GNU General Public License(Ver.3ã¾ãŸã¯ãã‚Œä»¥é™)ãŒå®šã‚ã‚‹æ¡ä»¶ã®ä¸‹ã§
-' å†é ’å¸ƒã¾ãŸã¯æ”¹å¤‰ã™ã‚‹ã“ã¨ãŒã§ãã¾ã™ã€‚
+' –{ƒvƒƒOƒ‰ƒ€‚ÍƒtƒŠ[ƒ\ƒtƒg‚Å‚ ‚èA–³•ÛØ‚Å‚·B
+' –{ƒvƒƒOƒ‰ƒ€‚ÍGNU General Public License(Ver.3‚Ü‚½‚Í‚»‚êˆÈ~)‚ª’è‚ß‚éğŒ‚Ì‰º‚Å
+' Ä”Ğ•z‚Ü‚½‚Í‰ü•Ï‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B
 
-'ã‚³ãƒ³ãƒ”ãƒ¥ãƒ¼ã‚¿ãƒ¼ã®æ€è€ƒãƒ«ãƒ¼ãƒãƒ³é–¢é€£ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«
+'ƒRƒ“ƒsƒ…[ƒ^[‚Ìvlƒ‹[ƒ`ƒ“ŠÖ˜Aƒ‚ƒWƒ…[ƒ‹
 
 
-'ã‚³ãƒ³ãƒ”ãƒ¥ãƒ¼ã‚¿ãƒ¼ã«ã‚ˆã‚‹ãƒ¦ãƒ‹ãƒƒãƒˆæ“ä½œ(ï¼‘è¡Œå‹•)
+'ƒRƒ“ƒsƒ…[ƒ^[‚É‚æ‚éƒ†ƒjƒbƒg‘€ì(‚Ps“®)
 Public Sub OperateUnit()
 Dim i As Integer, j As Integer, tmp As Integer
 Dim w As Integer, tw As Integer, wname As String, twname As String
@@ -48,23 +48,23 @@ Dim took_action As Boolean
     SelectedAbility = 0
     SelectedUnitMoveCost = 0
     
-    'ã¾ãšã¯Update
+    '‚Ü‚¸‚ÍUpdate
     SelectedUnit.Update
     
-    'è¡Œå‹•å‡ºæ¥ãªã‘ã‚Œã°ãã®ã¾ã¾çµ‚äº†
+    's“®o—ˆ‚È‚¯‚ê‚Î‚»‚Ì‚Ü‚ÜI—¹
     If SelectedUnit.MaxAction = 0 Then
         Exit Sub
     End If
     
-    'è¸Šã£ã¦ã„ã‚‹ï¼Ÿ
-    If SelectedUnit.IsConditionSatisfied("è¸Šã‚Š") Then
-        'è¸Šã‚Šã«å¿™ã—ã„â€¦â€¦
+    '—x‚Á‚Ä‚¢‚éH
+    If SelectedUnit.IsConditionSatisfied("—x‚è") Then
+        '—x‚è‚É–Z‚µ‚¢cc
         Exit Sub
     End If
     
-    'ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼ã‚’ä½¿ã†ï¼Ÿ
-    If IsOptionDefined("æ•µãƒ¦ãƒ‹ãƒƒãƒˆã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼ä½¿ç”¨") _
-        Or IsOptionDefined("æ•µãƒ¦ãƒ‹ãƒƒãƒˆç²¾ç¥ã‚³ãƒãƒ³ãƒ‰ä½¿ç”¨") _
+    'ƒXƒyƒVƒƒƒ‹ƒpƒ[‚ğg‚¤H
+    If IsOptionDefined("“Gƒ†ƒjƒbƒgƒXƒyƒVƒƒƒ‹ƒpƒ[g—p") _
+        Or IsOptionDefined("“Gƒ†ƒjƒbƒg¸_ƒRƒ}ƒ“ƒhg—p") _
     Then
         TrySpecialPower SelectedUnit.MainPilot
         If IsScenarioFinished Or IsCanceled Then
@@ -82,7 +82,7 @@ Dim took_action As Boolean
                 Exit Sub
             End If
         Next
-        If SelectedUnit.IsFeatureAvailable("è¿½åŠ ã‚µãƒãƒ¼ãƒˆ") Then
+        If SelectedUnit.IsFeatureAvailable("’Ç‰ÁƒTƒ|[ƒg") Then
             TrySpecialPower SelectedUnit.AdditionalSupport
             If IsScenarioFinished Or IsCanceled Then
                 Exit Sub
@@ -90,12 +90,12 @@ Dim took_action As Boolean
         End If
     End If
     
-    'ãƒã‚¤ãƒ‘ãƒ¼ãƒ¢ãƒ¼ãƒ‰ãŒå¯èƒ½ã§ã‚ã‚Œã°ãƒã‚¤ãƒ‘ãƒ¼ãƒ¢ãƒ¼ãƒ‰ç™ºå‹•
+    'ƒnƒCƒp[ƒ‚[ƒh‚ª‰Â”\‚Å‚ ‚ê‚ÎƒnƒCƒp[ƒ‚[ƒh”­“®
     TryHyperMode
     
-    'ç‰¹æ®Šãªæ€è€ƒãƒ¢ãƒ¼ãƒ‰ã®å ´åˆã®å‡¦ç†
+    '“Áê‚Èvlƒ‚[ƒh‚Ìê‡‚Ìˆ—
     With SelectedUnit
-        'æŒ‡å®šã•ã‚ŒãŸåœ°ç‚¹ã‚’ç›®æŒ‡ã™å ´åˆ
+        'w’è‚³‚ê‚½’n“_‚ğ–Úw‚·ê‡
         If LLength(.Mode) = 2 Then
             dst_x = CInt(LIndex(.Mode, 1))
             dst_y = CInt(LIndex(.Mode, 2))
@@ -106,33 +106,33 @@ Dim took_action As Boolean
             End If
         End If
         
-        'é€ƒäº¡ã—ç¶šã‘ã‚‹å ´åˆ
-        If .Mode = "é€ƒäº¡" Then
+        '“¦–S‚µ‘±‚¯‚éê‡
+        If .Mode = "“¦–S" Then
             GoTo Move
         End If
         
-        'æ€è€ƒãƒ¢ãƒ¼ãƒ‰ãŒã€Œãƒ‘ã‚¤ãƒ­ãƒƒãƒˆåã€ã®å ´åˆã®å‡¦ç†
+        'vlƒ‚[ƒh‚ªuƒpƒCƒƒbƒg–¼v‚Ìê‡‚Ìˆ—
         If Not PList.IsDefined(.Mode) Then
             GoTo TryBattleTransform
         End If
         If PList.Item(.Mode).Unit Is Nothing Then
             GoTo TryBattleTransform
         End If
-        If PList.Item(.Mode).Unit.Status <> "å‡ºæ’ƒ" Then
+        If PList.Item(.Mode).Unit.Status <> "oŒ‚" Then
             GoTo TryBattleTransform
         End If
         Set SelectedTarget = PList.Item(.Mode).Unit
         AreaInSpeed SelectedUnit
         If Not .IsAlly(SelectedTarget) Then
-            'ãƒ¦ãƒ‹ãƒƒãƒˆãŒæ•µã®å ´åˆã¯ãã®ãƒ¦ãƒ‹ãƒƒãƒˆã‚’ç‹™ã†
-            w = SelectWeapon(SelectedUnit, SelectedTarget, "ç§»å‹•å¯èƒ½")
+            'ƒ†ƒjƒbƒg‚ª“G‚Ìê‡‚Í‚»‚Ìƒ†ƒjƒbƒg‚ğ‘_‚¤
+            w = SelectWeapon(SelectedUnit, SelectedTarget, "ˆÚ“®‰Â”\")
             If w = 0 Then
                 dst_x = SelectedTarget.X
                 dst_y = SelectedTarget.Y
                 GoTo Move
             End If
         Else
-            'ãƒ¦ãƒ‹ãƒƒãƒˆãŒå‘³æ–¹ã®å ´åˆã¯ãã®ãƒ¦ãƒ‹ãƒƒãƒˆã‚’è­·è¡›
+            'ƒ†ƒjƒbƒg‚ª–¡•û‚Ìê‡‚Í‚»‚Ìƒ†ƒjƒbƒg‚ğŒì‰q
             w = 0
             distance = 1000
             dst_x = SelectedTarget.X
@@ -140,62 +140,62 @@ Dim took_action As Boolean
             max_prob = 0
             max_dmg = 0
             
-            'è­·è¡›å¯¾è±¡ãŒæå‚·ã—ã¦ã„ã‚‹å ´åˆã¯ä¿®ç†è£…ç½®ã‚’ä½¿ã†
+            'Œì‰q‘ÎÛ‚ª‘¹‚µ‚Ä‚¢‚éê‡‚ÍC—‘•’u‚ğg‚¤
             If TryFix(moved, SelectedTarget) Then
                 GoTo EndOfOperation
             End If
             
-            'è­·è¡›å¯¾è±¡ãŒæå‚·ã—ã¦ã„ã‚‹å ´åˆã¯å›å¾©ã‚¢ãƒ“ãƒªãƒ†ã‚£ã‚’ä½¿ã†
+            'Œì‰q‘ÎÛ‚ª‘¹‚µ‚Ä‚¢‚éê‡‚Í‰ñ•œƒAƒrƒŠƒeƒB‚ğg‚¤
             If TryHealing(moved, SelectedTarget) Then
                 GoTo EndOfOperation
             End If
             
-            'åˆä½“æŠ€ã‚„æ´è­·é˜²å¾¡ã‚’æŒã£ã¦ã„ã‚‹å ´åˆã¯ã¨ã«ã‹ãè­·è¡›å¯¾è±¡ã«
-            'éš£æ¥ã™ã‚‹ã“ã¨ã‚’å„ªå…ˆã™ã‚‹
-            If .MainPilot.IsSkillAvailable("æ´è­·") _
-                Or .MainPilot.IsSkillAvailable("æ´è­·é˜²å¾¡") _
+            '‡‘Ì‹Z‚â‰‡Œì–hŒä‚ğ‚Á‚Ä‚¢‚éê‡‚Í‚Æ‚É‚©‚­Œì‰q‘ÎÛ‚É
+            '—×Ú‚·‚é‚±‚Æ‚ğ—Dæ‚·‚é
+            If .MainPilot.IsSkillAvailable("‰‡Œì") _
+                Or .MainPilot.IsSkillAvailable("‰‡Œì–hŒä") _
             Then
                 If Abs(.X - dst_x) + Abs(.Y - dst_y) > 1 Then
                     GoTo Move
                 End If
                 guard_unit_mode = True
             End If
-            If .IsFeatureAvailable("åˆä½“æŠ€") Then
+            If .IsFeatureAvailable("‡‘Ì‹Z") Then
                 If Abs(.X - dst_x) > 1 Or Abs(.Y - dst_y) > 1 Then
                     GoTo Move
                 End If
                 guard_unit_mode = True
             End If
             If guard_unit_mode Then
-                'ã¡ã‚ƒã‚“ã¨éš£æ¥ã—ã¦ã„ã‚‹ã®ã§å‘¨ã‚Šã®æ•µã‚’æ’é™¤
+                '‚¿‚á‚ñ‚Æ—×Ú‚µ‚Ä‚¢‚é‚Ì‚Åü‚è‚Ì“G‚ğ”rœ
                 Set SelectedTarget = Nothing
                 GoTo TryBattleTransform
             End If
             
-            'è­·è¡›ã™ã‚‹ãƒ¦ãƒ‹ãƒƒãƒˆã‚’è„…ã‹ã™ãƒ¦ãƒ‹ãƒƒãƒˆãŒå­˜åœ¨ã™ã‚‹ã‹ãƒã‚§ãƒƒã‚¯
+            'Œì‰q‚·‚éƒ†ƒjƒbƒg‚ğ‹º‚©‚·ƒ†ƒjƒbƒg‚ª‘¶İ‚·‚é‚©ƒ`ƒFƒbƒN
             For Each u In UList
                 With u
-                    If .Status = "å‡ºæ’ƒ" _
+                    If .Status = "oŒ‚" _
                         And SelectedUnit.IsEnemy(u) _
                         And Abs(dst_x - .X) + Abs(dst_y - .Y) <= 5 _
                     Then
-                        tmp_w = SelectWeapon(SelectedUnit, u, "ç§»å‹•å¯èƒ½", prob, dmg)
+                        tmp_w = SelectWeapon(SelectedUnit, u, "ˆÚ“®‰Â”\", prob, dmg)
                     Else
                         tmp_w = 0
                     End If
                     
                     If tmp_w > 0 Then
-                        'è„…å¨ã¨ãªã‚Šå¾—ã‚‹ãƒ¦ãƒ‹ãƒƒãƒˆã¨èªå®š
+                        '‹ºˆĞ‚Æ‚È‚è“¾‚éƒ†ƒjƒbƒg‚Æ”F’è
                         If distance > Abs(dst_x - .X) + Abs(dst_y - .Y) Then
-                            'è¿‘ã„ä½ç½®ã«ã„ã‚‹ãƒ¦ãƒ‹ãƒƒãƒˆã‚’å„ªå…ˆ
+                            '‹ß‚¢ˆÊ’u‚É‚¢‚éƒ†ƒjƒbƒg‚ğ—Dæ
                             Set SelectedTarget = u
                             w = tmp_w
                             distance = Abs(dst_x - .X) + Abs(dst_y - .Y)
                             max_prob = prob
                             max_dmg = dmg
                         ElseIf distance = Abs(dst_x - .X) + Abs(dst_y - .Y) Then
-                            'ä»Šã¾ã§ã«è¦‹ã¤ã‹ã£ãŸãƒ¦ãƒ‹ãƒƒãƒˆã¨ä½ç½®ãŒå¤‰ã‚ã‚‰ãªã‘ã‚Œã°
-                            'ã‚ˆã‚Šå±é™ºåº¦ãŒé«˜ã„ãƒ¦ãƒ‹ãƒƒãƒˆã‚’å„ªå…ˆ
+                            '¡‚Ü‚Å‚ÉŒ©‚Â‚©‚Á‚½ƒ†ƒjƒbƒg‚ÆˆÊ’u‚ª•Ï‚í‚ç‚È‚¯‚ê‚Î
+                            '‚æ‚èŠëŒ¯“x‚ª‚‚¢ƒ†ƒjƒbƒg‚ğ—Dæ
                             If prob > max_prob And prob > 50 Then
                                 Set SelectedTarget = u
                                 w = tmp_w
@@ -211,24 +211,24 @@ Dim took_action As Boolean
             Next
             
             If w = 0 Then
-                'è­·è¡›ã™ã‚‹ãƒ¦ãƒ‹ãƒƒãƒˆã¯å®‰å…¨ã€‚è­·è¡›ã™ã‚‹ãƒ¦ãƒ‹ãƒƒãƒˆã®è¿‘ãã¸ç§»å‹•ã™ã‚‹
+                'Œì‰q‚·‚éƒ†ƒjƒbƒg‚ÍˆÀ‘SBŒì‰q‚·‚éƒ†ƒjƒbƒg‚Ì‹ß‚­‚ÖˆÚ“®‚·‚é
                 GoTo Move
             Else
-                'è­·è¡›ã™ã‚‹ãƒ¦ãƒ‹ãƒƒãƒˆã‚’è„…ã‹ã™ãƒ¦ãƒ‹ãƒƒãƒˆã«æ”»æ’ƒ
+                'Œì‰q‚·‚éƒ†ƒjƒbƒg‚ğ‹º‚©‚·ƒ†ƒjƒbƒg‚ÉUŒ‚
                 GoTo AttackEnemy
             End If
         End If
     End With
     
 TryBattleTransform:
-    'æˆ¦é—˜å½¢æ…‹ã¸ã®å¤‰å½¢ãŒå¯èƒ½ã§ã‚ã‚Œã°å¤‰å½¢
+    'í“¬Œ`‘Ô‚Ö‚Ì•ÏŒ`‚ª‰Â”\‚Å‚ ‚ê‚Î•ÏŒ`
     If TryBattleTransform() Then
         transfered = True
-        'æ—¢ã«ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’é¸æŠã—ã¦ã„ã‚‹å ´åˆã¯æ”»æ’ƒæ–¹æ³•ã‚’å†é¸æŠ
+        'Šù‚Éƒ^[ƒQƒbƒg‚ğ‘I‘ğ‚µ‚Ä‚¢‚éê‡‚ÍUŒ‚•û–@‚ğÄ‘I‘ğ
         If w > 0 Then
-            w = SelectWeapon(SelectedUnit, SelectedTarget, "ç§»å‹•å¯èƒ½")
+            w = SelectWeapon(SelectedUnit, SelectedTarget, "ˆÚ“®‰Â”\")
             If w = 0 Then
-                'å¤‰å½¢ã®çµæœã€æ”»æ’ƒã§ããªããªã£ã¦ã—ã¾ã£ãŸâ€¦â€¦
+                '•ÏŒ`‚ÌŒ‹‰ÊAUŒ‚‚Å‚«‚È‚­‚È‚Á‚Ä‚µ‚Ü‚Á‚½cc
                 dst_x = SelectedTarget.X
                 dst_y = SelectedTarget.Y
                 GoTo Move
@@ -236,7 +236,7 @@ TryBattleTransform:
         End If
     End If
     
-    'å®Ÿè¡Œæ™‚é–“ã‚’æ¶ˆè²»ã—ãªã„ã‚¢ãƒ“ãƒªãƒ†ã‚£ãŒã‚ã‚Œã°ä½¿ã£ã¦ãŠã
+    'ÀsŠÔ‚ğÁ”ï‚µ‚È‚¢ƒAƒrƒŠƒeƒB‚ª‚ ‚ê‚Îg‚Á‚Ä‚¨‚­
     TryInstantAbility
     If IsScenarioFinished Or IsCanceled Then
         Exit Sub
@@ -247,12 +247,12 @@ TryBattleTransform:
         End If
     End With
     
-    'æ—¢ã«ç›®æ¨™ãŒæ±ºã¾ã£ã¦ã„ã‚Œã°ãã®ç›®æ¨™ã‚’æ”»æ’ƒ
+    'Šù‚É–Ú•W‚ªŒˆ‚Ü‚Á‚Ä‚¢‚ê‚Î‚»‚Ì–Ú•W‚ğUŒ‚
     If Not SelectedTarget Is Nothing Then
         GoTo AttackEnemy
     End If
     
-    'å¬å–šãŒå¯èƒ½ã§ã‚ã‚Œã°å¬å–š
+    '¢Š«‚ª‰Â”\‚Å‚ ‚ê‚Î¢Š«
     If TrySummonning() Then
         If IsScenarioFinished Or IsCanceled Then
             Exit Sub
@@ -260,12 +260,12 @@ TryBattleTransform:
         GoTo EndOfOperation
     End If
     
-    'ä¿®ç†ãŒå¯èƒ½ã§ã‚ã‚Œã°ä¿®ç†è£…ç½®ã‚’ä½¿ã†
+    'C—‚ª‰Â”\‚Å‚ ‚ê‚ÎC—‘•’u‚ğg‚¤
     If TryFix(moved) Then
         GoTo EndOfOperation
     End If
     
-    'ãƒãƒƒãƒ—å‹å›å¾©ã‚¢ãƒ“ãƒªãƒ†ã‚£ã‚’ä½¿ã†ï¼Ÿ
+    'ƒ}ƒbƒvŒ^‰ñ•œƒAƒrƒŠƒeƒB‚ğg‚¤H
     If TryMapHealing(moved) Then
         If IsScenarioFinished Or IsCanceled Then
             Exit Sub
@@ -273,7 +273,7 @@ TryBattleTransform:
         GoTo EndOfOperation
     End If
     
-    'å›å¾©ã‚¢ãƒ“ãƒªãƒ†ã‚£ã‚’ä½¿ã†ï¼Ÿ
+    '‰ñ•œƒAƒrƒŠƒeƒB‚ğg‚¤H
     If TryHealing(moved) Then
         If IsScenarioFinished Or IsCanceled Then
             Exit Sub
@@ -282,17 +282,17 @@ TryBattleTransform:
     End If
     
 TryMapAttack:
-    'ãƒãƒƒãƒ—æ”»æ’ƒã‚’ä½¿ã†ï¼Ÿ
+    'ƒ}ƒbƒvUŒ‚‚ğg‚¤H
     If TryMapAttack(moved) Then
         GoTo EndOfOperation
     End If
     
 SearchNearestEnemyWithinRange:
-    'ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã«ã™ã‚‹ãƒ¦ãƒ‹ãƒƒãƒˆã‚’æ¢ã™
+    'ƒ^[ƒQƒbƒg‚É‚·‚éƒ†ƒjƒbƒg‚ğ’T‚·
     With SelectedUnit
         AreaInSpeed SelectedUnit
         
-        'è­·è¡›ã™ã¹ããƒ¦ãƒ‹ãƒƒãƒˆãŒã„ã‚‹å ´åˆã¯ç§»å‹•ç¯„å›²ã‚’é™å®š
+        'Œì‰q‚·‚×‚«ƒ†ƒjƒbƒg‚ª‚¢‚éê‡‚ÍˆÚ“®”ÍˆÍ‚ğŒÀ’è
         If guard_unit_mode Then
             With PList.Item(.Mode).Unit
                 For i = 1 To MapWidth
@@ -307,50 +307,50 @@ SearchNearestEnemyWithinRange:
             End With
         End If
         
-        'å€‹ã€…ã®ãƒ¦ãƒ‹ãƒƒãƒˆã«å¯¾ã—ã¦ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã¨ãªã‚Šå¾—ã‚‹ã‹åˆ¤å®š
+        'ŒÂX‚Ìƒ†ƒjƒbƒg‚É‘Î‚µ‚Äƒ^[ƒQƒbƒg‚Æ‚È‚è“¾‚é‚©”»’è
         Set SelectedTarget = Nothing
         w = 0
         max_prob = 0
         max_dmg = 0
         For Each u In UList
-            If u.Status <> "å‡ºæ’ƒ" Then
+            If u.Status <> "oŒ‚" Then
                 GoTo NextLoop
             End If
             
-            'æ•µã‹ã©ã†ã‹ã‚’åˆ¤å®š
+            '“G‚©‚Ç‚¤‚©‚ğ”»’è
             If .IsAlly(u) Then
                 GoTo NextLoop
             End If
             
-            'ç‰¹å®šã®é™£å–¶ã®ã¿ã‚’ç‹™ã†æ€è€ƒãƒ¢ãƒ¼ãƒ‰ã®å ´åˆ
+            '“Á’è‚Ìw‰c‚Ì‚İ‚ğ‘_‚¤vlƒ‚[ƒh‚Ìê‡
             Select Case .Mode
-                Case "å‘³æ–¹"
-                    If u.Party <> "å‘³æ–¹" And u.Party <> "ï¼®ï¼°ï¼£" Then
+                Case "–¡•û"
+                    If u.Party <> "–¡•û" And u.Party <> "‚m‚o‚b" Then
                         GoTo NextLoop
                     End If
-                Case "ï¼®ï¼°ï¼£", "æ•µ", "ä¸­ç«‹"
+                Case "‚m‚o‚b", "“G", "’†—§"
                     If u.Party <> .Mode Then
                         GoTo NextLoop
                     End If
             End Select
             
-            'è‡ªåˆ†è‡ªèº«ã«ã¯æ”»æ’ƒã—ãªã„
+            '©•ª©g‚É‚ÍUŒ‚‚µ‚È‚¢
             If SelectedUnit.CurrentForm Is u.CurrentForm Then
                 GoTo NextLoop
             End If
             
-            'éš ã‚Œèº«ä¸­
-            If u.IsUnderSpecialPowerEffect("éš ã‚Œèº«") Then
+            '‰B‚êg’†
+            If u.IsUnderSpecialPowerEffect("‰B‚êg") Then
                 GoTo NextLoop
             End If
             
-            'ã‚¹ãƒ†ãƒ«ã‚¹ã®æ•µã¯é è·é›¢ã‹ã‚‰ã¯æ”»æ’ƒã‚’å—ã‘ãªã„
-            If u.IsFeatureAvailable("ã‚¹ãƒ†ãƒ«ã‚¹") _
-                And Not u.IsConditionSatisfied("ã‚¹ãƒ†ãƒ«ã‚¹ç„¡åŠ¹") _
-                And Not .IsFeatureAvailable("ã‚¹ãƒ†ãƒ«ã‚¹ç„¡åŠ¹åŒ–") _
+            'ƒXƒeƒ‹ƒX‚Ì“G‚Í‰“‹——£‚©‚ç‚ÍUŒ‚‚ğó‚¯‚È‚¢
+            If u.IsFeatureAvailable("ƒXƒeƒ‹ƒX") _
+                And Not u.IsConditionSatisfied("ƒXƒeƒ‹ƒX–³Œø") _
+                And Not .IsFeatureAvailable("ƒXƒeƒ‹ƒX–³Œø‰»") _
             Then
-                If u.IsFeatureLevelSpecified("ã‚¹ãƒ†ãƒ«ã‚¹") Then
-                    If Abs(.X - u.X) + Abs(.Y - u.Y) > u.FeatureLevel("ã‚¹ãƒ†ãƒ«ã‚¹") Then
+                If u.IsFeatureLevelSpecified("ƒXƒeƒ‹ƒX") Then
+                    If Abs(.X - u.X) + Abs(.Y - u.Y) > u.FeatureLevel("ƒXƒeƒ‹ƒX") Then
                         GoTo NextLoop
                     End If
                 Else
@@ -360,61 +360,61 @@ SearchNearestEnemyWithinRange:
                 End If
             End If
             
-            'æ”»æ’ƒã«ä½¿ã†æ­¦å™¨ã‚’é¸æŠ
+            'UŒ‚‚Ég‚¤•Ší‚ğ‘I‘ğ
             If moved Then
-                tmp_w = SelectWeapon(SelectedUnit, u, "ç§»å‹•å¾Œ", prob, dmg)
+                tmp_w = SelectWeapon(SelectedUnit, u, "ˆÚ“®Œã", prob, dmg)
             Else
-                tmp_w = SelectWeapon(SelectedUnit, u, "ç§»å‹•å¯èƒ½", prob, dmg)
+                tmp_w = SelectWeapon(SelectedUnit, u, "ˆÚ“®‰Â”\", prob, dmg)
             End If
             If tmp_w <= 0 Then
                 GoTo NextLoop
             End If
             
-            'ã‚µãƒãƒ¼ãƒˆã‚¬ãƒ¼ãƒ‰ã•ã‚Œã‚‹ï¼Ÿ
+            'ƒTƒ|[ƒgƒK[ƒh‚³‚ê‚éH
             If .MainPilot.TacticalTechnique >= 150 Then
                 If Not u.LookForSupportGuard(SelectedUnit, tmp_w) Is Nothing Then
-                    'ç›¸æ‰‹ã‚’ç ´å£Šã™ã‚‹ã“ã¨ã¯å‡ºæ¥ãªã„
+                    '‘Šè‚ğ”j‰ó‚·‚é‚±‚Æ‚Ío—ˆ‚È‚¢
                     prob = 0
-                    'ä»®æƒ³çš„ã«ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’åŠæ¸›ã—ã¦åˆ¤å®š
+                    '‰¼‘z“I‚Éƒ_ƒ[ƒW‚ğ”¼Œ¸‚µ‚Ä”»’è
                     dmg = dmg \ 2
                 End If
             End If
             
-            'é–“æ¥æ”»æ’ƒï¼Ÿ
-            indirect_attack = .IsWeaponClassifiedAs(w, "é–“")
+            'ŠÔÚUŒ‚H
+            indirect_attack = .IsWeaponClassifiedAs(w, "ŠÔ")
             
-            'å¬å–šãƒ¦ãƒ‹ãƒƒãƒˆã¯è‡ªåˆ†ãŒã‚„ã‚‰ã‚Œã¦ã—ã¾ã†ã‚ˆã†ãªæ”»æ’ƒã¯ã‹ã‘ãªã„
-            If .Party = "ï¼®ï¼°ï¼£" _
-                And .IsFeatureAvailable("å¬å–šãƒ¦ãƒ‹ãƒƒãƒˆ") _
-                And Not .IsConditionSatisfied("æš´èµ°") _
-                And Not .IsConditionSatisfied("æ··ä¹±") _
-                And Not .IsConditionSatisfied("ç‹‚æˆ¦å£«") _
+            '¢Š«ƒ†ƒjƒbƒg‚Í©•ª‚ª‚â‚ç‚ê‚Ä‚µ‚Ü‚¤‚æ‚¤‚ÈUŒ‚‚Í‚©‚¯‚È‚¢
+            If .Party = "‚m‚o‚b" _
+                And .IsFeatureAvailable("¢Š«ƒ†ƒjƒbƒg") _
+                And Not .IsConditionSatisfied("–\‘–") _
+                And Not .IsConditionSatisfied("¬—") _
+                And Not .IsConditionSatisfied("‹¶ím") _
                 And Not indirect_attack _
             Then
-                tw = SelectWeapon(u, SelectedUnit, "åæ’ƒ", tprob, tdmg)
+                tw = SelectWeapon(u, SelectedUnit, "”½Œ‚", tprob, tdmg)
                 If prob < 80 And tprob > prob Then
                     GoTo NextLoop
                 End If
             End If
             
-            'ç ´å£Šç¢ºç‡ãŒ50%ä»¥ä¸Šã§ã‚ã‚Œã°ç ´å£Šç¢ºç‡ãŒé«˜ã„ãƒ¦ãƒ‹ãƒƒãƒˆã‚’å„ªå…ˆ
-            'ãã†ã§ãªã‘ã‚Œã°ãƒ€ãƒ¡ãƒ¼ã‚¸ã®æœŸå¾…å€¤ãŒé«˜ã„ãƒ¦ãƒ‹ãƒƒãƒˆã‚’å„ªå…ˆ
+            '”j‰óŠm—¦‚ª50%ˆÈã‚Å‚ ‚ê‚Î”j‰óŠm—¦‚ª‚‚¢ƒ†ƒjƒbƒg‚ğ—Dæ
+            '‚»‚¤‚Å‚È‚¯‚ê‚Îƒ_ƒ[ƒW‚ÌŠú‘Ò’l‚ª‚‚¢ƒ†ƒjƒbƒg‚ğ—Dæ
             If prob > 50 Then
-                'é‡è¦ãªãƒ¦ãƒ‹ãƒƒãƒˆã¯å„ªå…ˆã—ã¦ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã«ã™ã‚‹
+                'd—v‚Èƒ†ƒjƒbƒg‚Í—Dæ‚µ‚Äƒ^[ƒQƒbƒg‚É‚·‚é
                 If .MainPilot.TacticalTechnique >= 150 Then
                     With u
-                        If .MainPilot.IsSkillAvailable("æŒ‡æ®") _
-                            Or .MainPilot.IsSkillAvailable("åºƒåŸŸã‚µãƒãƒ¼ãƒˆ") _
-                            Or .IsFeatureAvailable("ä¿®ç†è£…ç½®") _
+                        If .MainPilot.IsSkillAvailable("wŠö") _
+                            Or .MainPilot.IsSkillAvailable("LˆæƒTƒ|[ƒg") _
+                            Or .IsFeatureAvailable("C—‘•’u") _
                         Then
                             prob = 1.5 * prob
                         Else
-                            'å›å¾©ã‚¢ãƒ“ãƒªãƒ†ã‚£ã‚’æŒã£ã¦ã„ã‚‹ï¼Ÿ
+                            '‰ñ•œƒAƒrƒŠƒeƒB‚ğ‚Á‚Ä‚¢‚éH
                             For i = 1 To .CountAbility
                                 With .Ability(i)
                                     If .MaxRange > 0 Then
                                         If .CountEffect > 0 Then
-                                            If .EffectType(1) = "å›å¾©" Then
+                                            If .EffectType(1) = "‰ñ•œ" Then
                                                 prob = 1.5 * prob
                                                 Exit For
                                             End If
@@ -432,14 +432,14 @@ SearchNearestEnemyWithinRange:
                     max_prob = prob
                 End If
             ElseIf max_prob = 0 Then
-                'ç›¸æ‰‹ã®åæ’ƒæ‰‹æ®µã‚‚ãƒã‚§ãƒƒã‚¯
+                '‘Šè‚Ì”½Œ‚è’i‚àƒ`ƒFƒbƒN
                 tw = 0
                 For i = 1 To u.CountWeapon
-                    If u.IsWeaponAvailable(i, "ç§»å‹•å‰") _
-                        And Not u.IsWeaponClassifiedAs(i, "ï¼­") _
+                    If u.IsWeaponAvailable(i, "ˆÚ“®‘O") _
+                        And Not u.IsWeaponClassifiedAs(i, "‚l") _
                     Then
-                        If Not moved And .Mode <> "å›ºå®š" _
-                            And .IsWeaponClassifiedAs(tmp_w, "ç§»å‹•å¾Œæ”»æ’ƒå¯") _
+                        If Not moved And .Mode <> "ŒÅ’è" _
+                            And .IsWeaponClassifiedAs(tmp_w, "ˆÚ“®ŒãUŒ‚‰Â") _
                         Then
                             If u.WeaponMaxRange(i) >= .WeaponMaxRange(tmp_w) Then
                                 tw = i
@@ -454,38 +454,38 @@ SearchNearestEnemyWithinRange:
                     End If
                 Next
                 
-                'é–“æ¥æ”»æ’ƒã«ã¯åæ’ƒä¸èƒ½
+                'ŠÔÚUŒ‚‚É‚Í”½Œ‚•s”\
                 If indirect_attack Then
                     tw = 0
                 End If
                 
-                'ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ç•°å¸¸ã«ã‚ˆã‚Šåæ’ƒä¸èƒ½ï¼Ÿ
-                If u.MaxAction = 0 Or u.IsConditionSatisfied("æ”»æ’ƒä¸èƒ½") Then
+                'ƒXƒe[ƒ^ƒXˆÙí‚É‚æ‚è”½Œ‚•s”\H
+                If u.MaxAction = 0 Or u.IsConditionSatisfied("UŒ‚•s”\") Then
                     tw = 0
                 End If
                 
-                'åæ’ƒã—ã¦ã“ãªã„ï¼Ÿ
+                '”½Œ‚‚µ‚Ä‚±‚È‚¢H
                 If tw = 0 Then
                     dmg = 1.5 * dmg
                 End If
                 
-                'é‡è¦ãªãƒ¦ãƒ‹ãƒƒãƒˆã¯å„ªå…ˆã—ã¦ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã«ã™ã‚‹
+                'd—v‚Èƒ†ƒjƒbƒg‚Í—Dæ‚µ‚Äƒ^[ƒQƒbƒg‚É‚·‚é
                 If .MainPilot.TacticalTechnique >= 150 Then
                     With u
-                        If .MainPilot.IsSkillAvailable("æŒ‡æ®") _
-                            Or .MainPilot.IsSkillAvailable("åºƒåŸŸã‚µãƒãƒ¼ãƒˆ") _
-                            Or .IsFeatureAvailable("ä¿®ç†è£…ç½®") _
+                        If .MainPilot.IsSkillAvailable("wŠö") _
+                            Or .MainPilot.IsSkillAvailable("LˆæƒTƒ|[ƒg") _
+                            Or .IsFeatureAvailable("C—‘•’u") _
                         Then
-                            'ãƒ¡ã‚¤ãƒ³ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆãŒæŒ‡æ®ã‚„åºƒåŸŸã‚µãƒãƒ¼ãƒˆã‚’æœ‰ã—ã¦ã„ãŸã‚Š
-                            'ä¿®ç†è£…ç½®ã‚’æŒã£ã¦ã„ã‚Œã°é‡è¦ãƒ¦ãƒ‹ãƒƒãƒˆã¨èªå®š
+                            'ƒƒCƒ“ƒpƒCƒƒbƒg‚ªwŠö‚âLˆæƒTƒ|[ƒg‚ğ—L‚µ‚Ä‚¢‚½‚è
+                            'C—‘•’u‚ğ‚Á‚Ä‚¢‚ê‚Îd—vƒ†ƒjƒbƒg‚Æ”F’è
                             dmg = 1.5 * dmg
                         Else
-                            'å›å¾©ã‚¢ãƒ“ãƒªãƒ†ã‚£ã‚’æŒã£ã¦ã„ã‚‹å ´åˆã‚‚é‡è¦ãƒ¦ãƒ‹ãƒƒãƒˆã¨èªå®š
+                            '‰ñ•œƒAƒrƒŠƒeƒB‚ğ‚Á‚Ä‚¢‚éê‡‚àd—vƒ†ƒjƒbƒg‚Æ”F’è
                             For i = 1 To .CountAbility
                                 With .Ability(i)
                                     If .MaxRange > 0 Then
                                         If .CountEffect > 0 Then
-                                            If .EffectType(1) = "å›å¾©" Then
+                                            If .EffectType(1) = "‰ñ•œ" Then
                                                 dmg = 1.5 * dmg
                                                 Exit For
                                             End If
@@ -498,7 +498,7 @@ SearchNearestEnemyWithinRange:
                 End If
                 
                 If dmg >= max_dmg Then
-                    'ç¾åœ¨ã®ãƒ¦ãƒ‹ãƒƒãƒˆã‚’ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã«è¨­å®š
+                    'Œ»İ‚Ìƒ†ƒjƒbƒg‚ğƒ^[ƒQƒbƒg‚Éİ’è
                     Set SelectedTarget = u
                     w = tmp_w
                     max_dmg = dmg
@@ -507,55 +507,55 @@ SearchNearestEnemyWithinRange:
 NextLoop:
         Next
         
-        'å°„ç¨‹å†…ã«æ•µãŒã„ãªã‘ã‚Œã°ç§»å‹•ã€ã‚‚ã—ãã¯å¾…æ©Ÿ
+        'Ë’ö“à‚É“G‚ª‚¢‚È‚¯‚ê‚ÎˆÚ“®A‚à‚µ‚­‚Í‘Ò‹@
         If SelectedTarget Is Nothing Then
-            If .Mode = "å¾…æ©Ÿ" Or .Mode = "å›ºå®š" Or LLength(.Mode) = 2 Then
+            If .Mode = "‘Ò‹@" Or .Mode = "ŒÅ’è" Or LLength(.Mode) = 2 Then
                 GoTo EndOfOperation
             End If
             
             If moved Then
-                'æ—¢ã«ç§»å‹•æ¸ˆã¿ã§ã‚ã‚Œã°ã“ã“ã§çµ‚äº†
+                'Šù‚ÉˆÚ“®Ï‚İ‚Å‚ ‚ê‚Î‚±‚±‚ÅI—¹
                 GoTo EndOfOperation
             End If
             
             If searched_enemy Then
-                'æ—¢ã«ç´¢æ•µæ¸ˆã¿ã§ã‚ã‚Œã°ã“ã“ã§çµ‚äº†
+                'Šù‚Éõ“GÏ‚İ‚Å‚ ‚ê‚Î‚±‚±‚ÅI—¹
                 GoTo EndOfOperation
             End If
             
-            'ä¸€åº¦ç´¢æ•µã‚’ã—ãŸã“ã¨ã‚’è¨˜éŒ²
+            'ˆê“xõ“G‚ğ‚µ‚½‚±‚Æ‚ğ‹L˜^
             searched_enemy = True
             
-            'ä¸€ç•ªè¿‘ã„æ•µã®æ–¹ã¸ç§»å‹•ã™ã‚‹
+            'ˆê”Ô‹ß‚¢“G‚Ì•û‚ÖˆÚ“®‚·‚é
             GoTo SearchNearestEnemy
         End If
         searched_enemy = True
     End With
     
 AttackEnemy:
-    'æ•µã‚’æ”»æ’ƒ
+    '“G‚ğUŒ‚
     
-    'æ•µã‚’Update
+    '“G‚ğUpdate
     SelectedTarget.Update
     
-    'æ•µã®ä½ç½®ã‚’è¨˜éŒ²ã—ã¦ãŠã
+    '“G‚ÌˆÊ’u‚ğ‹L˜^‚µ‚Ä‚¨‚­
     tx = SelectedTarget.X
     ty = SelectedTarget.Y
     
     With SelectedUnit
-        'ç§»å‹•å¾Œæ”»æ’ƒå¯èƒ½ãªæ­¦å™¨ã®å ´åˆã¯æ”»æ’ƒå‰ã«ç§»å‹•ã‚’è¡Œã†
-        'ãŸã ã—åˆä½“æŠ€ã¯ç§»å‹•å¾Œã®ä½ç½®ã«ã‚ˆã£ã¦æ”»æ’ƒã§ããªã„å ´åˆãŒã‚ã‚‹ã®ã§ä¾‹å¤–
-        If .IsWeaponClassifiedAs(w, "ç§»å‹•å¾Œæ”»æ’ƒå¯") _
-            And Not .IsWeaponClassifiedAs(w, "åˆ") _
-            And Not moved And .Mode <> "å›ºå®š" _
+        'ˆÚ“®ŒãUŒ‚‰Â”\‚È•Ší‚Ìê‡‚ÍUŒ‚‘O‚ÉˆÚ“®‚ğs‚¤
+        '‚½‚¾‚µ‡‘Ì‹Z‚ÍˆÚ“®Œã‚ÌˆÊ’u‚É‚æ‚Á‚ÄUŒ‚‚Å‚«‚È‚¢ê‡‚ª‚ ‚é‚Ì‚Å—áŠO
+        If .IsWeaponClassifiedAs(w, "ˆÚ“®ŒãUŒ‚‰Â") _
+            And Not .IsWeaponClassifiedAs(w, "‡") _
+            And Not moved And .Mode <> "ŒÅ’è" _
         Then
-            'ç§»å‹•ã—ãªãã¦ã‚‚æ”»æ’ƒå‡ºæ¥ã‚‹å ´åˆã¯ç¾åœ¨ä½ç½®ã‚’ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®æ”»æ’ƒä½ç½®ã«è¨­å®š
+            'ˆÚ“®‚µ‚È‚­‚Ä‚àUŒ‚o—ˆ‚éê‡‚ÍŒ»İˆÊ’u‚ğƒfƒtƒHƒ‹ƒg‚ÌUŒ‚ˆÊ’u‚Éİ’è
             If .IsTargetWithinRange(w, SelectedTarget) Then
                 new_locations_value = TerrainEffectForHPRecover(.X, .Y) _
                     + TerrainEffectForENRecover(.X, .Y) _
                     + 100 * .LookForSupport(.X, .Y, True)
-                If .Area <> "ç©ºä¸­" Then
-                    'åœ°å½¢ã«ã‚ˆã‚‹é˜²å¾¡åŠ¹æœã¯ç©ºä¸­ã«ã„ã‚‹å ´åˆã¯å—ã‘ã‚‰ã‚Œãªã„
+                If .Area <> "‹ó’†" Then
+                    '’nŒ`‚É‚æ‚é–hŒäŒø‰Ê‚Í‹ó’†‚É‚¢‚éê‡‚Íó‚¯‚ç‚ê‚È‚¢
                     new_locations_value = new_locations_value _
                         + TerrainEffectForHit(.X, .Y) _
                         + TerrainEffectForDamage(.X, .Y)
@@ -568,8 +568,8 @@ AttackEnemy:
                 new_y = 0
             End If
             
-            'æ”»æ’ƒã‚’ã‹ã‘ã‚‰ã‚Œã‚‹ä½ç½®ã®ã†ã¡ã€ã‚‚ã£ã¨ã‚‚åœ°å½¢åŠ¹æœã®é«˜ã„å ´æ‰€ã‚’æ¢ã™
-            'åœ°å½¢åŠ¹æœãŒåŒç­‰ãªã‚‰ã‚‚ã£ã¨ã‚‚è¿‘ã„å ´æ‰€ã‚’å„ªå…ˆ
+            'UŒ‚‚ğ‚©‚¯‚ç‚ê‚éˆÊ’u‚Ì‚¤‚¿A‚à‚Á‚Æ‚à’nŒ`Œø‰Ê‚Ì‚‚¢êŠ‚ğ’T‚·
+            '’nŒ`Œø‰Ê‚ª“¯“™‚È‚ç‚à‚Á‚Æ‚à‹ß‚¢êŠ‚ğ—Dæ
             max_range = .WeaponMaxRange(w)
             min_range = .Weapon(w).MinRange
             For i = MaxLng(1, tx - max_range) _
@@ -584,15 +584,15 @@ AttackEnemy:
                             + TerrainEffectForENRecover(i, j) _
                             + 100 * .LookForSupport(i, j, True)
                         
-                        If .Area <> "ç©ºä¸­" Then
-                            'åœ°å½¢ã«ã‚ˆã‚‹é˜²å¾¡åŠ¹æœã¯ç©ºä¸­ã«ã„ã‚‹å ´åˆã¯å—ã‘ã‚‰ã‚Œãªã„
+                        If .Area <> "‹ó’†" Then
+                            '’nŒ`‚É‚æ‚é–hŒäŒø‰Ê‚Í‹ó’†‚É‚¢‚éê‡‚Íó‚¯‚ç‚ê‚È‚¢
                             tmp = tmp _
                                 + TerrainEffectForHit(i, j) _
                                 + TerrainEffectForDamage(i, j)
                             
-                            'æ°´ä¸­ã¯æ°´ä¸­ç”¨ãƒ¦ãƒ‹ãƒƒãƒˆã§ãªã„é™ã‚Šé¸æŠã—ãªã„
-                            If TerrainClass(i, j) = "æ°´" Then
-                                If .IsTransAvailable("æ°´") Then
+                            '…’†‚Í…’†—pƒ†ƒjƒbƒg‚Å‚È‚¢ŒÀ‚è‘I‘ğ‚µ‚È‚¢
+                            If TerrainClass(i, j) = "…" Then
+                                If .IsTransAvailable("…") Then
                                     tmp = tmp + 100
                                 Else
                                     tmp = -1000
@@ -600,7 +600,7 @@ AttackEnemy:
                             End If
                         End If
                         
-                        'æ¡ä»¶ãŒåŒã˜ã§ã‚ã‚Œã°ç›´ç·šè·é›¢ã§è¿‘ã„å ´æ‰€ã‚’é¸æŠã™ã‚‹
+                        'ğŒ‚ª“¯‚¶‚Å‚ ‚ê‚Î’¼ü‹——£‚Å‹ß‚¢êŠ‚ğ‘I‘ğ‚·‚é
                         tmp = tmp - Sqr(Abs(.X - i) ^ 2 + Abs(.Y - j) ^ 2)
                         
                         If new_locations_value < tmp Then
@@ -613,66 +613,66 @@ AttackEnemy:
             Next
             
             If new_x = 0 And new_y = 0 Then
-                'æ”»æ’ƒã‚’ã‹ã‘ã‚‰ã‚Œã‚‹ä½ç½®ãŒãªã„
+                'UŒ‚‚ğ‚©‚¯‚ç‚ê‚éˆÊ’u‚ª‚È‚¢
                 If searched_nearest_enemy Then
-                    'æ—¢ã«ç´¢æ•µæ¸ˆã¿ã§ã‚ã‚Œã°ã“ã“ã§çµ‚äº†
+                    'Šù‚Éõ“GÏ‚İ‚Å‚ ‚ê‚Î‚±‚±‚ÅI—¹
                     GoTo EndOfOperation
                 End If
                 GoTo SearchNearestEnemy
             End If
             
-            'è¦‹ã¤ã‘ãŸä½ç½®ã«ç§»å‹•
+            'Œ©‚Â‚¯‚½ˆÊ’u‚ÉˆÚ“®
             If new_x <> .X Or new_y <> .Y Then
                 .Move new_x, new_y
                 SelectedUnitMoveCost = TotalMoveCost(new_x, new_y)
                 moved = True
                 
-                'ç§»å‹•ã®ãŸã‚ï¼¥ï¼®åˆ‡ã‚Œï¼Ÿ
+                'ˆÚ“®‚Ì‚½‚ß‚d‚mØ‚êH
                 If .EN = 0 Then
                     If .MaxAction = 0 Then
                         GoTo EndOfOperation
                     End If
                 End If
                 
-                'å®Ÿã¯ãƒãƒƒãƒ—æ”»æ’ƒãŒä½¿ãˆã‚‹ï¼Ÿ
+                'À‚Íƒ}ƒbƒvUŒ‚‚ªg‚¦‚éH
                 If TryMapAttack(True) Then
                     GoTo EndOfOperation
                 End If
                 
-                'ç§»å‹•ã®ãŸã‚ã«é¸æŠã—ã¦ã„ãŸæ­¦å™¨ãŒä½¿ãˆãªããªã£ãŸã‚Šã€åˆä½“æŠ€ãŒä½¿ãˆã‚‹
-                'ã‚ˆã†ã«ãªã£ãŸã‚Šã™ã‚‹ã“ã¨ãŒã‚ã‚‹ã®ã§ã€æ­¦å™¨ã‚’å†åº¦é¸æŠ
-                w = SelectWeapon(SelectedUnit, SelectedTarget, "ç§»å‹•å¾Œ")
+                'ˆÚ“®‚Ì‚½‚ß‚É‘I‘ğ‚µ‚Ä‚¢‚½•Ší‚ªg‚¦‚È‚­‚È‚Á‚½‚èA‡‘Ì‹Z‚ªg‚¦‚é
+                '‚æ‚¤‚É‚È‚Á‚½‚è‚·‚é‚±‚Æ‚ª‚ ‚é‚Ì‚ÅA•Ší‚ğÄ“x‘I‘ğ
+                w = SelectWeapon(SelectedUnit, SelectedTarget, "ˆÚ“®Œã")
                 If w = 0 Then
-                    'æ”»æ’ƒå‡ºæ¥ãªã„ã®ã§è¡Œå‹•çµ‚äº†
+                    'UŒ‚o—ˆ‚È‚¢‚Ì‚Ås“®I—¹
                     GoTo EndOfOperation
                 End If
             End If
         End If
         
-        'ãƒ¦ãƒ‹ãƒƒãƒˆã‚’ä¸­å¤®è¡¨ç¤º
+        'ƒ†ƒjƒbƒg‚ğ’†‰›•\¦
         Center .X, .Y
         
-        'ãƒã‚¤ãƒ©ã‚¤ãƒˆè¡¨ç¤ºã‚’è¡Œã†
+        'ƒnƒCƒ‰ƒCƒg•\¦‚ğs‚¤
         If Not BattleAnimation Then
-            'å°„ç¨‹ç¯„å›²ã‚’ãƒã‚¤ãƒ©ã‚¤ãƒˆ
-' MOD START ãƒãƒ¼ã‚¸
+            'Ë’ö”ÍˆÍ‚ğƒnƒCƒ‰ƒCƒg
+' MOD START ƒ}[ƒW
 '            AreaInRange .X, .Y, _
 '                .Weapon(w).MinRange, _
 '                .WeaponMaxRange(w), _
-'                "ç©ºé–“"
+'                "‹óŠÔ"
             AreaInRange .X, .Y, _
                 .WeaponMaxRange(w), _
                 .Weapon(w).MinRange, _
-                "ç©ºé–“"
-' MOD END ãƒãƒ¼ã‚¸
+                "‹óŠÔ"
+' MOD END ƒ}[ƒW
         End If
-        'åˆä½“æŠ€ã®å ´åˆã¯ãƒ‘ãƒ¼ãƒˆãƒŠãƒ¼ã‚‚ãƒã‚¤ãƒ©ã‚¤ãƒˆè¡¨ç¤º
-        If .IsWeaponClassifiedAs(w, "åˆ") Then
+        '‡‘Ì‹Z‚Ìê‡‚Íƒp[ƒgƒi[‚àƒnƒCƒ‰ƒCƒg•\¦
+        If .IsWeaponClassifiedAs(w, "‡") Then
             If .WeaponMaxRange(w) = 1 Then
-                .CombinationPartner "æ­¦è£…", w, partners, _
+                .CombinationPartner "•‘•", w, partners, _
                     SelectedTarget.X, SelectedTarget.Y
             Else
-                .CombinationPartner "æ­¦è£…", w, partners
+                .CombinationPartner "•‘•", w, partners
             End If
             If Not BattleAnimation Then
                 For i = 1 To UBound(partners)
@@ -686,51 +686,51 @@ AttackEnemy:
             ReDim partners(0)
         End If
         If Not BattleAnimation Then
-            'è‡ªåˆ†è‡ªèº«ã¨ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚‚ãƒã‚¤ãƒ©ã‚¤ãƒˆ
+            '©•ª©g‚Æƒ^[ƒQƒbƒg‚àƒnƒCƒ‰ƒCƒg
             MaskData(.X, .Y) = False
             MaskData(SelectedTarget.X, SelectedTarget.Y) = False
             
-            'ãƒã‚¤ãƒ©ã‚¤ãƒˆè¡¨ç¤ºã‚’å®Ÿæ–½
+            'ƒnƒCƒ‰ƒCƒg•\¦‚ğÀ{
             MaskScreen
         Else
-            'æˆ¦é—˜ã‚¢ãƒ‹ãƒ¡ã‚’è¡¨ç¤ºã™ã‚‹å ´åˆã¯ãƒã‚¤ãƒ©ã‚¤ãƒˆè¡¨ç¤ºã‚’è¡Œã‚ãªã„
+            'í“¬ƒAƒjƒ‚ğ•\¦‚·‚éê‡‚ÍƒnƒCƒ‰ƒCƒg•\¦‚ğs‚í‚È‚¢
             RefreshScreen
         End If
         
-        'ï¼¢ï¼§ï¼­ã‚’å¤‰æ›´
+        '‚a‚f‚l‚ğ•ÏX
         If Not KeepEnemyBGM Then
             BGM = ""
             
-            'ãƒœã‚¹ç”¨ï¼¢ï¼§ï¼­ï¼Ÿ
-            If .IsFeatureAvailable("ï¼¢ï¼§ï¼­") _
-                And InStr(.MainPilot.Name, "(ã‚¶ã‚³)") = 0 _
+            'ƒ{ƒX—p‚a‚f‚lH
+            If .IsFeatureAvailable("‚a‚f‚l") _
+                And InStr(.MainPilot.Name, "(ƒUƒR)") = 0 _
             Then
-                BGM = SearchMidiFile(.FeatureData("ï¼¢ï¼§ï¼­"))
+                BGM = SearchMidiFile(.FeatureData("‚a‚f‚l"))
             End If
             
             BossBGM = False
             If Len(BGM) > 0 Then
-                'ãƒœã‚¹ç”¨ï¼¢ï¼§ï¼­ã‚’æ¼”å¥ã™ã‚‹å ´åˆ
+                'ƒ{ƒX—p‚a‚f‚l‚ğ‰‰‘t‚·‚éê‡
                 ChangeBGM BGM
                 BossBGM = True
             Else
-                'é€šå¸¸ã®æˆ¦é—˜ï¼¢ï¼§ï¼­
+                '’Êí‚Ìí“¬‚a‚f‚l
                 
-                'ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã¯å‘³æ–¹ï¼Ÿ
-                If SelectedTarget.Party = "å‘³æ–¹" _
-                    Or (SelectedTarget.Party = "ï¼®ï¼°ï¼£" And .Party <> "ï¼®ï¼°ï¼£") _
+                'ƒ^[ƒQƒbƒg‚Í–¡•ûH
+                If SelectedTarget.Party = "–¡•û" _
+                    Or (SelectedTarget.Party = "‚m‚o‚b" And .Party <> "‚m‚o‚b") _
                 Then
-                    'ã‚¿ãƒ¼ã‚²ãƒƒãƒˆãŒå‘³æ–¹ãªã®ã§ã‚¿ãƒ¼ã‚²ãƒƒãƒˆå´ã‚’å„ªå…ˆ
-                    If SelectedTarget.IsFeatureAvailable("ï¼¢ï¼§ï¼­") Then
-                        BGM = SearchMidiFile(SelectedTarget.FeatureData("ï¼¢ï¼§ï¼­"))
+                    'ƒ^[ƒQƒbƒg‚ª–¡•û‚È‚Ì‚Åƒ^[ƒQƒbƒg‘¤‚ğ—Dæ
+                    If SelectedTarget.IsFeatureAvailable("‚a‚f‚l") Then
+                        BGM = SearchMidiFile(SelectedTarget.FeatureData("‚a‚f‚l"))
                     End If
                     If Len(BGM) = 0 Then
                         BGM = SearchMidiFile(SelectedTarget.MainPilot.BGM)
                     End If
                 Else
-                    'ã‚¿ãƒ¼ã‚²ãƒƒãƒˆãŒå‘³æ–¹ã§ãªã‘ã‚Œã°æ”»æ’ƒå´ã‚’å„ªå…ˆ
-                    If .IsFeatureAvailable("ï¼¢ï¼§ï¼­") Then
-                        BGM = SearchMidiFile(.FeatureData("ï¼¢ï¼§ï¼­"))
+                    'ƒ^[ƒQƒbƒg‚ª–¡•û‚Å‚È‚¯‚ê‚ÎUŒ‚‘¤‚ğ—Dæ
+                    If .IsFeatureAvailable("‚a‚f‚l") Then
+                        BGM = SearchMidiFile(.FeatureData("‚a‚f‚l"))
                     End If
                     If Len(BGM) = 0 Then
                         BGM = SearchMidiFile(.MainPilot.BGM)
@@ -740,53 +740,53 @@ AttackEnemy:
                     BGM = BGMName("default")
                 End If
                 
-                'ï¼¢ï¼§ï¼­ã‚’å¤‰æ›´
+                '‚a‚f‚l‚ğ•ÏX
                 ChangeBGM BGM
             End If
         End If
         
-        'ç§»å‹•å¾Œæ”»æ’ƒå¯èƒ½ï¼Ÿ
-        is_p_weapon = .IsWeaponClassifiedAs(w, "ç§»å‹•å¾Œæ”»æ’ƒå¯")
+        'ˆÚ“®ŒãUŒ‚‰Â”\H
+        is_p_weapon = .IsWeaponClassifiedAs(w, "ˆÚ“®ŒãUŒ‚‰Â")
         
-        'é–“æ¥æ”»æ’ƒï¼Ÿ
-        indirect_attack = .IsWeaponClassifiedAs(w, "é–“")
+        'ŠÔÚUŒ‚H
+        indirect_attack = .IsWeaponClassifiedAs(w, "ŠÔ")
         
-        'ç›¸æ‰‹ã®åæ’ƒæ‰‹æ®µã‚’è¨­å®š
+        '‘Šè‚Ì”½Œ‚è’i‚ğİ’è
         def_mode = ""
         UseSupportGuard = True
         If SelectedTarget.MaxAction = 0 Then
-            'è¡Œå‹•ä¸èƒ½ã®å ´åˆ
+            's“®•s”\‚Ìê‡
             
             tw = -1
-            'ãƒãƒ£ãƒ¼ã‚¸ä¸­ã¾ãŸã¯æ¶ˆè€—ã—ã¦ã„ã‚‹å ´åˆã¯è‡ªå‹•çš„ã«é˜²å¾¡
-            If SelectedTarget.Party = "å‘³æ–¹" _
-                And (SelectedTarget.IsFeatureAvailable("ãƒãƒ£ãƒ¼ã‚¸") _
-                    Or SelectedTarget.IsFeatureAvailable("æ¶ˆè€—")) _
+            'ƒ`ƒƒ[ƒW’†‚Ü‚½‚ÍÁ–Õ‚µ‚Ä‚¢‚éê‡‚Í©“®“I‚É–hŒä
+            If SelectedTarget.Party = "–¡•û" _
+                And (SelectedTarget.IsFeatureAvailable("ƒ`ƒƒ[ƒW") _
+                    Or SelectedTarget.IsFeatureAvailable("Á–Õ")) _
             Then
-                def_mode = "é˜²å¾¡"
+                def_mode = "–hŒä"
             End If
             
-        ElseIf SelectedTarget.Party = "å‘³æ–¹" _
+        ElseIf SelectedTarget.Party = "–¡•û" _
             And Not MainForm.mnuMapCommandItem(AutoDefenseCmdID).Checked _
         Then
-            'å‘³æ–¹ãƒ¦ãƒ‹ãƒƒãƒˆã«ã‚ˆã‚‹æ‰‹å‹•åæ’ƒã‚’è¡Œã†å ´åˆ
+            '–¡•ûƒ†ƒjƒbƒg‚É‚æ‚éè“®”½Œ‚‚ğs‚¤ê‡
             
-            'æˆ¦é—˜ã‚¢ãƒ‹ãƒ¡ã‚’è¡¨ç¤ºã™ã‚‹å ´åˆã§ã‚‚æ‰‹å‹•åæ’ƒæ™‚ã«ã¯ãƒã‚¤ãƒ©ã‚¤ãƒˆè¡¨ç¤ºã‚’è¡Œã†
+            'í“¬ƒAƒjƒ‚ğ•\¦‚·‚éê‡‚Å‚àè“®”½Œ‚‚É‚ÍƒnƒCƒ‰ƒCƒg•\¦‚ğs‚¤
             If BattleAnimation Then
-                'å°„ç¨‹ç¯„å›²ã‚’ãƒã‚¤ãƒ©ã‚¤ãƒˆ
-' MOD START ãƒãƒ¼ã‚¸
+                'Ë’ö”ÍˆÍ‚ğƒnƒCƒ‰ƒCƒg
+' MOD START ƒ}[ƒW
 '                AreaInRange .X, .Y, _
 '                    .Weapon(w).MinRange, _
 '                    .WeaponMaxRange(w), _
-'                    "ç©ºé–“"
+'                    "‹óŠÔ"
                 AreaInRange .X, .Y, _
                     .WeaponMaxRange(w), _
                     .Weapon(w).MinRange, _
-                    "ç©ºé–“"
-' MOD END ãƒãƒ¼ã‚¸
+                    "‹óŠÔ"
+' MOD END ƒ}[ƒW
                 
-                'åˆä½“æŠ€ã®å ´åˆã¯ãƒ‘ãƒ¼ãƒˆãƒŠãƒ¼ã‚‚ãƒã‚¤ãƒ©ã‚¤ãƒˆè¡¨ç¤º
-                If .IsWeaponClassifiedAs(w, "åˆ") Then
+                '‡‘Ì‹Z‚Ìê‡‚Íƒp[ƒgƒi[‚àƒnƒCƒ‰ƒCƒg•\¦
+                If .IsWeaponClassifiedAs(w, "‡") Then
                     For i = 1 To UBound(partners)
                         With partners(i)
                             MaskData(.X, .Y) = False
@@ -794,11 +794,11 @@ AttackEnemy:
                     Next
                 End If
                 
-                'è‡ªåˆ†è‡ªèº«ã¨ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚‚ãƒã‚¤ãƒ©ã‚¤ãƒˆ
+                '©•ª©g‚Æƒ^[ƒQƒbƒg‚àƒnƒCƒ‰ƒCƒg
                 MaskData(.X, .Y) = False
                 MaskData(SelectedTarget.X, SelectedTarget.Y) = False
                 
-                'ãƒã‚¤ãƒ©ã‚¤ãƒˆè¡¨ç¤ºã‚’å®Ÿæ–½
+                'ƒnƒCƒ‰ƒCƒg•\¦‚ğÀ{
                 MaskScreen
             End If
             
@@ -808,14 +808,14 @@ AttackEnemy:
             
             hit_prob = .HitProbability(w, SelectedTarget, True)
             crit_prob = .CriticalProbability(w, SelectedTarget)
-            caption_msg = "åæ’ƒï¼š" & .WeaponNickname(w) _
-                & " æ”»æ’ƒåŠ›=" _
+            caption_msg = "”½Œ‚F" & .WeaponNickname(w) _
+                & " UŒ‚—Í=" _
                 & Format$(.WeaponPower(w, ""))
-            If Not IsOptionDefined("äºˆæ¸¬å‘½ä¸­ç‡éè¡¨ç¤º") Then
+            If Not IsOptionDefined("—\‘ª–½’†—¦”ñ•\¦") Then
                 caption_msg = caption_msg _
-                    & " å‘½ä¸­ç‡=" _
+                    & " –½’†—¦=" _
                     & Format$(MinLng(hit_prob, 100)) _
-                    & "ï¼…ï¼ˆ" & crit_prob & "ï¼…ï¼‰"
+                    & "“i" & crit_prob & "“j"
             End If
             
             ReDim list(3)
@@ -823,30 +823,30 @@ AttackEnemy:
             If IsAbleToCounterAttack(SelectedTarget, SelectedUnit) _
                 And Not indirect_attack _
             Then
-                list(1) = "åæ’ƒ"
+                list(1) = "”½Œ‚"
             Else
-                list(1) = "åæ’ƒä¸èƒ½"
+                list(1) = "”½Œ‚•s”\"
             End If
-            If Not IsOptionDefined("äºˆæ¸¬å‘½ä¸­ç‡éè¡¨ç¤º") Then
-                list(2) = "é˜²å¾¡ï¼šå‘½ä¸­ç‡ï¼" _
+            If Not IsOptionDefined("—\‘ª–½’†—¦”ñ•\¦") Then
+                list(2) = "–hŒäF–½’†—¦" _
                     & Format$(MinLng(hit_prob, 100)) _
-                    & "ï¼…ï¼ˆ" & .CriticalProbability(w, SelectedTarget, "é˜²å¾¡") & "ï¼…ï¼‰"
-                list(3) = "å›é¿ï¼šå‘½ä¸­ç‡ï¼" _
+                    & "“i" & .CriticalProbability(w, SelectedTarget, "–hŒä") & "“j"
+                list(3) = "‰ñ”ğF–½’†—¦" _
                     & Format$(MinLng(hit_prob \ 2, 100)) _
-                    & "ï¼…ï¼ˆ" & .CriticalProbability(w, SelectedTarget, "å›é¿") & "ï¼…ï¼‰"
+                    & "“i" & .CriticalProbability(w, SelectedTarget, "‰ñ”ğ") & "“j"
             Else
-                list(2) = "é˜²å¾¡"
-                list(3) = "å›é¿"
+                list(2) = "–hŒä"
+                list(3) = "‰ñ”ğ"
             End If
             
-            'æ´è­·é˜²å¾¡ãŒå—ã‘ã‚‰ã‚Œã‚‹ï¼Ÿ
+            '‰‡Œì–hŒä‚ªó‚¯‚ç‚ê‚éH
             Set SupportGuardUnit = SelectedTarget.LookForSupportGuard(SelectedUnit, w)
             If Not SupportGuardUnit Is Nothing Then
                 ReDim Preserve list(4)
-                If IsOptionDefined("ç­‰èº«å¤§åŸºæº–") Then
-                    list(4) = "æ´è­·é˜²å¾¡ï¼šä½¿ç”¨ã™ã‚‹ (" & SupportGuardUnit.Nickname & ")"
+                If IsOptionDefined("“™g‘åŠî€") Then
+                    list(4) = "‰‡Œì–hŒäFg—p‚·‚é (" & SupportGuardUnit.Nickname & ")"
                 Else
-                    list(4) = "æ´è­·é˜²å¾¡ï¼šä½¿ç”¨ã™ã‚‹ (" _
+                    list(4) = "‰‡Œì–hŒäFg—p‚·‚é (" _
                         & SupportGuardUnit.Nickname & "/" _
                         & SupportGuardUnit.MainPilot.Nickname & ")"
                 End If
@@ -855,13 +855,13 @@ AttackEnemy:
             
             AddPartsToListBox
             Do
-                'æ”»æ’ƒã¸ã®å¯¾å¿œæ‰‹æ®µã‚’é¸æŠ
+                'UŒ‚‚Ö‚Ì‘Î‰è’i‚ğ‘I‘ğ
                 With SelectedTarget
                     ReDim ListItemFlag(UBound(list))
-                    'å„å¯¾æŠ—æ‰‹æ®µãŒé¸æŠå¯èƒ½ã‹åˆ¤å®š
+                    'Še‘ÎRè’i‚ª‘I‘ğ‰Â”\‚©”»’è
                     
-                    'åæ’ƒãŒé¸æŠå¯èƒ½ï¼Ÿ
-                    If list(1) = "åæ’ƒ" Then
+                    '”½Œ‚‚ª‘I‘ğ‰Â”\H
+                    If list(1) = "”½Œ‚" Then
                         ListItemFlag(1) = False
                         tw = -1
                     Else
@@ -869,73 +869,73 @@ AttackEnemy:
                         tw = 0
                     End If
                     
-                    'é˜²å¾¡ãŒé¸æŠå¯èƒ½ï¼Ÿ
-                    If .IsFeatureAvailable("é˜²å¾¡ä¸å¯") Then
+                    '–hŒä‚ª‘I‘ğ‰Â”\H
+                    If .IsFeatureAvailable("–hŒä•s‰Â") Then
                         ListItemFlag(2) = True
                     Else
                         ListItemFlag(2) = False
                     End If
                     
-                    'å›é¿ãŒé¸æŠå¯èƒ½ï¼Ÿ
-                    If .IsFeatureAvailable("å›é¿ä¸å¯") _
-                        Or .IsConditionSatisfied("ç§»å‹•ä¸èƒ½") _
+                    '‰ñ”ğ‚ª‘I‘ğ‰Â”\H
+                    If .IsFeatureAvailable("‰ñ”ğ•s‰Â") _
+                        Or .IsConditionSatisfied("ˆÚ“®•s”\") _
                     Then
                         ListItemFlag(3) = True
                     Else
                         ListItemFlag(3) = False
                     End If
                     
-                    'å¯¾å¿œæ‰‹æ®µã‚’é¸æŠ
+                    '‘Î‰è’i‚ğ‘I‘ğ
                     TopItem = 1
                     i = ListBox(caption_msg, list, _
                         .Nickname0 & " " & .MainPilot.Nickname, _
-                        "é€£ç¶šè¡¨ç¤º,ã‚«ãƒ¼ã‚½ãƒ«ç§»å‹•")
+                        "˜A‘±•\¦,ƒJ[ƒ\ƒ‹ˆÚ“®")
                 End With
                 
                 Select Case i
                     Case 1
-                        'åæ’ƒã‚’é¸æŠã—ãŸå ´åˆã¯åæ’ƒã«ä½¿ã†æ­¦å™¨ã‚’é¸æŠ
-                        buf = "åæ’ƒï¼š" & .WeaponNickname(w) _
-                            & " æ”»æ’ƒåŠ›=" _
+                        '”½Œ‚‚ğ‘I‘ğ‚µ‚½ê‡‚Í”½Œ‚‚Ég‚¤•Ší‚ğ‘I‘ğ
+                        buf = "”½Œ‚F" & .WeaponNickname(w) _
+                            & " UŒ‚—Í=" _
                             & Format$(.WeaponPower(w, ""))
-                        If Not IsOptionDefined("äºˆæ¸¬å‘½ä¸­ç‡éè¡¨ç¤º") Then
+                        If Not IsOptionDefined("—\‘ª–½’†—¦”ñ•\¦") Then
                             buf = buf _
-                                & " å‘½ä¸­ç‡=" _
+                                & " –½’†—¦=" _
                                 & Format$(MinLng(hit_prob, 100)) _
-                                & "ï¼…ï¼ˆ" & crit_prob & "ï¼…ï¼‰" _
-                                & " ï¼š "
+                                & "“i" & crit_prob & "“j" _
+                                & " F "
                         End If
                         With SelectedTarget.MainPilot
                             buf = buf _
                                 & .Nickname & " " _
-                                & Term("æ ¼é—˜", SelectedTarget) & Format$(.Infight) & " "
+                                & Term("Ši“¬", SelectedTarget) & Format$(.Infight) & " "
                             If .HasMana() Then
-                                buf = buf & Term("é­”åŠ›", SelectedTarget) & Format$(.Shooting)
+                                buf = buf & Term("–‚—Í", SelectedTarget) & Format$(.Shooting)
                             Else
-                                buf = buf & Term("å°„æ’ƒ", SelectedTarget) & Format$(.Shooting)
+                                buf = buf & Term("ËŒ‚", SelectedTarget) & Format$(.Shooting)
                             End If
                         End With
                         
-                        tw = WeaponListBox(SelectedTarget, buf, "åæ’ƒ")
+                        tw = WeaponListBox(SelectedTarget, buf, "”½Œ‚")
                         
                         If tw = 0 Then
                             i = 0
                         End If
                     Case 2
-                        'é˜²å¾¡ã‚’é¸æŠã—ãŸ
-                        def_mode = "é˜²å¾¡"
+                        '–hŒä‚ğ‘I‘ğ‚µ‚½
+                        def_mode = "–hŒä"
                     Case 3
-                        'å›é¿ã‚’é¸æŠã—ãŸ
-                        def_mode = "å›é¿"
+                        '‰ñ”ğ‚ğ‘I‘ğ‚µ‚½
+                        def_mode = "‰ñ”ğ"
                     Case 4
-                        'æ´è­·é˜²å¾¡ã‚’ä½¿ç”¨ã™ã‚‹ã‹ã©ã†ã‹ã‚’åˆ‡ã‚Šæ›¿ãˆãŸ
+                        '‰‡Œì–hŒä‚ğg—p‚·‚é‚©‚Ç‚¤‚©‚ğØ‚è‘Ö‚¦‚½
                         UseSupportGuard = Not UseSupportGuard
                         If UseSupportGuard Then
-                            list(4) = "æ´è­·é˜²å¾¡ï¼šä½¿ç”¨ã™ã‚‹ ("
+                            list(4) = "‰‡Œì–hŒäFg—p‚·‚é ("
                         Else
-                            list(4) = "æ´è­·é˜²å¾¡ï¼šä½¿ç”¨ã—ãªã„ ("
+                            list(4) = "‰‡Œì–hŒäFg—p‚µ‚È‚¢ ("
                         End If
-                        If IsOptionDefined("ç­‰èº«å¤§åŸºæº–") Then
+                        If IsOptionDefined("“™g‘åŠî€") Then
                             list(4) = list(4) & SupportGuardUnit.Nickname & ")"
                         Else
                             list(4) = list(4) & SupportGuardUnit.Nickname & "/" _
@@ -943,31 +943,31 @@ AttackEnemy:
                         End If
                         i = 0
                     Case Else
-                        'åæ’ƒãƒ»é˜²å¾¡ãƒ»å›é¿ã®å…¨ã¦ãŒé¸æŠå‡ºæ¥ãªã„ï¼Ÿ
+                        '”½Œ‚E–hŒäE‰ñ”ğ‚Ì‘S‚Ä‚ª‘I‘ğo—ˆ‚È‚¢H
                         If ListItemFlag(1) And ListItemFlag(2) And ListItemFlag(3) Then
                             Exit Do
                         End If
                 End Select
             Loop While i = 0
             
-            'åæ’ƒæ‰‹æ®µé¸æŠçµ‚äº†
+            '”½Œ‚è’i‘I‘ğI—¹
             frmListBox.Hide
             RemovePartsOnListBox
             
-            'ãƒã‚¤ãƒ©ã‚¤ãƒˆè¡¨ç¤ºã‚’æ¶ˆå»
+            'ƒnƒCƒ‰ƒCƒg•\¦‚ğÁ‹
             If BattleAnimation Then
                 RefreshScreen
             End If
         Else
-            'ã‚³ãƒ³ãƒ”ãƒ¥ãƒ¼ã‚¿ãƒ¼ãŒæ“ä½œã™ã‚‹ãƒ¦ãƒ‹ãƒƒãƒˆåŠã³è‡ªå‹•åæ’ƒãƒ¢ãƒ¼ãƒ‰ã®å ´åˆ
+            'ƒRƒ“ƒsƒ…[ƒ^[‚ª‘€ì‚·‚éƒ†ƒjƒbƒg‹y‚Ñ©“®”½Œ‚ƒ‚[ƒh‚Ìê‡
             
-            'åæ’ƒã«ä½¿ã†æ­¦å™¨ã‚’é¸æŠ
-            tw = SelectWeapon(SelectedTarget, SelectedUnit, "åæ’ƒ")
+            '”½Œ‚‚Ég‚¤•Ší‚ğ‘I‘ğ
+            tw = SelectWeapon(SelectedTarget, SelectedUnit, "”½Œ‚")
             If indirect_attack Then
                 tw = 0
             End If
             
-            'é˜²å¾¡ã‚’é¸æŠã™ã‚‹ï¼Ÿ
+            '–hŒä‚ğ‘I‘ğ‚·‚éH
             def_mode = SelectDefense(SelectedUnit, w, SelectedTarget, tw)
             If def_mode <> "" Then
                 tw = -1
@@ -975,21 +975,21 @@ AttackEnemy:
         End If
     End With
     
-    'å‘³æ–¹ãƒ¦ãƒ‹ãƒƒãƒˆã®å ´åˆã¯æ­¦å™¨ç”¨ï¼¢ï¼§ï¼­ã‚’æ¼”å¥ã™ã‚‹
+    '–¡•ûƒ†ƒjƒbƒg‚Ìê‡‚Í•Ší—p‚a‚f‚l‚ğ‰‰‘t‚·‚é
     If Not KeepEnemyBGM Then
         With SelectedTarget
-            If .Party = "å‘³æ–¹" And tw > 0 _
-                And .IsFeatureAvailable("æ­¦å™¨ï¼¢ï¼§ï¼­") _
+            If .Party = "–¡•û" And tw > 0 _
+                And .IsFeatureAvailable("•Ší‚a‚f‚l") _
             Then
                 For i = 1 To .CountFeature
-                    If .Feature(i) = "æ­¦å™¨ï¼¢ï¼§ï¼­" _
+                    If .Feature(i) = "•Ší‚a‚f‚l" _
                         And LIndex(.FeatureData(i), 1) = .Weapon(tw).Name _
                     Then
-                        'æ­¦å™¨ç”¨ï¼¢ï¼§ï¼­ãŒæŒ‡å®šã•ã‚Œã¦ã„ãŸ
+                        '•Ší—p‚a‚f‚l‚ªw’è‚³‚ê‚Ä‚¢‚½
                         BGM = SearchMidiFile(Mid$(.FeatureData(i), _
                             InStr(.FeatureData(i), " ") + 1))
                         If Len(BGM) > 0 Then
-                            'æ­¦å™¨ç”¨ï¼¢ï¼§ï¼­ã®MIDIãŒè¦‹ã¤ã‹ã£ãŸã®ã§ï¼¢ï¼§ï¼­ã‚’å¤‰æ›´
+                            '•Ší—p‚a‚f‚l‚ÌMIDI‚ªŒ©‚Â‚©‚Á‚½‚Ì‚Å‚a‚f‚l‚ğ•ÏX
                             BossBGM = False
                             ChangeBGM BGM
                         End If
@@ -1013,15 +1013,15 @@ AttackEnemy:
         SelectedTWeaponName = ""
     End If
     
-' ADD START ãƒãƒ¼ã‚¸
-    'æˆ¦é—˜å‰ã«ä¸€æ—¦ã‚¯ãƒªã‚¢
+' ADD START ƒ}[ƒW
+    'í“¬‘O‚Éˆê’UƒNƒŠƒA
     Set SupportAttackUnit = Nothing
     Set SupportGuardUnit = Nothing
     Set SupportGuardUnit2 = Nothing
-' ADD END ãƒãƒ¼ã‚¸
+' ADD END ƒ}[ƒW
     
-    'æ­¦å™¨ã®ä½¿ç”¨ã‚¤ãƒ™ãƒ³ãƒˆ
-    HandleEvent "ä½¿ç”¨", SelectedUnit.MainPilot.ID, wname
+    '•Ší‚Ìg—pƒCƒxƒ“ƒg
+    HandleEvent "g—p", SelectedUnit.MainPilot.ID, wname
     If IsScenarioFinished Or IsCanceled Then
         Exit Sub
     End If
@@ -1030,65 +1030,65 @@ AttackEnemy:
         twname = SelectedTarget.Weapon(tw).Name
         SaveSelections
         SwapSelections
-        HandleEvent "ä½¿ç”¨", SelectedUnit.MainPilot.ID, twname
+        HandleEvent "g—p", SelectedUnit.MainPilot.ID, twname
         RestoreSelections
         If IsScenarioFinished Or IsCanceled Then
             Exit Sub
         End If
     End If
     
-    'æ”»æ’ƒã‚¤ãƒ™ãƒ³ãƒˆ
-    HandleEvent "æ”»æ’ƒ", SelectedUnit.MainPilot.ID, SelectedTarget.MainPilot.ID
+    'UŒ‚ƒCƒxƒ“ƒg
+    HandleEvent "UŒ‚", SelectedUnit.MainPilot.ID, SelectedTarget.MainPilot.ID
     If IsScenarioFinished Or IsCanceled Then
         Exit Sub
     End If
     
-    'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’é–‹ã
-    If Stage = "ï¼®ï¼°ï¼£" Then
+    'ƒƒbƒZ[ƒWƒEƒBƒ“ƒhƒE‚ğŠJ‚­
+    If Stage = "‚m‚o‚b" Then
         OpenMessageForm SelectedTarget, SelectedUnit
     Else
         OpenMessageForm SelectedUnit, SelectedTarget
     End If
     
-    'ã‚¤ãƒ™ãƒ³ãƒˆç”¨ã«æˆ¦é—˜ã«å‚åŠ ã™ã‚‹ãƒ¦ãƒ‹ãƒƒãƒˆã®æƒ…å ±ã‚’è¨˜éŒ²ã—ã¦ãŠã
+    'ƒCƒxƒ“ƒg—p‚Éí“¬‚ÉQ‰Á‚·‚éƒ†ƒjƒbƒg‚Ìî•ñ‚ğ‹L˜^‚µ‚Ä‚¨‚­
     Set AttackUnit = SelectedUnit
     Set attack_target = SelectedUnit
     attack_target_hp_ratio = SelectedUnit.HP / SelectedUnit.MaxHP
     Set defense_target = SelectedTarget
     defense_target_hp_ratio = SelectedTarget.HP / SelectedTarget.MaxHP
     Set defense_target2 = Nothing
-' DEL START ãƒãƒ¼ã‚¸
+' DEL START ƒ}[ƒW
 '    Set SupportAttackUnit = Nothing
 '    Set SupportGuardUnit = Nothing
-' DEL END ãƒãƒ¼ã‚¸
+' DEL END ƒ}[ƒW
     
-    'ç›¸æ‰‹ã®å…ˆåˆ¶æ”»æ’ƒï¼Ÿ
+    '‘Šè‚Ìæ§UŒ‚H
     With SelectedTarget
-' MOD START ãƒãƒ¼ã‚¸
+' MOD START ƒ}[ƒW
 '        If tw > 0 And .MaxAction > 0 Then
-        ' tw > 0ã®åˆ¤å®šã¯IsWeaponAvailableå†…ã«
-        If .MaxAction > 0 And .IsWeaponAvailable(tw, "ç§»å‹•å‰") Then
-' MOD END ãƒãƒ¼ã‚¸
-            If Not .IsWeaponClassifiedAs(tw, "å¾Œ") Then
-                If SelectedUnit.IsWeaponClassifiedAs(w, "å¾Œ") Then
-                    def_mode = "å…ˆåˆ¶æ”»æ’ƒ"
-                    .Attack tw, SelectedUnit, "å…ˆåˆ¶æ”»æ’ƒ", ""
+        ' tw > 0‚Ì”»’è‚ÍIsWeaponAvailable“à‚É
+        If .MaxAction > 0 And .IsWeaponAvailable(tw, "ˆÚ“®‘O") Then
+' MOD END ƒ}[ƒW
+            If Not .IsWeaponClassifiedAs(tw, "Œã") Then
+                If SelectedUnit.IsWeaponClassifiedAs(w, "Œã") Then
+                    def_mode = "æ§UŒ‚"
+                    .Attack tw, SelectedUnit, "æ§UŒ‚", ""
                     Set SelectedTarget = .CurrentForm
-                ElseIf .IsWeaponClassifiedAs(tw, "å…ˆ") _
-                    Or .MainPilot.SkillLevel("å…ˆèª­ã¿") >= Dice(16) _
-                    Or .IsUnderSpecialPowerEffect("ã‚«ã‚¦ãƒ³ã‚¿ãƒ¼") _
+                ElseIf .IsWeaponClassifiedAs(tw, "æ") _
+                    Or .MainPilot.SkillLevel("æ“Ç‚İ") >= Dice(16) _
+                    Or .IsUnderSpecialPowerEffect("ƒJƒEƒ“ƒ^[") _
                 Then
-                    def_mode = "å…ˆåˆ¶æ”»æ’ƒ"
-                    .Attack tw, SelectedUnit, "ã‚«ã‚¦ãƒ³ã‚¿ãƒ¼", ""
+                    def_mode = "æ§UŒ‚"
+                    .Attack tw, SelectedUnit, "ƒJƒEƒ“ƒ^[", ""
                     Set SelectedTarget = .CurrentForm
                 ElseIf .MaxCounterAttack > .UsedCounterAttack Then
-                    def_mode = "å…ˆåˆ¶æ”»æ’ƒ"
+                    def_mode = "æ§UŒ‚"
                     .UsedCounterAttack = .UsedCounterAttack + 1
-                    .Attack tw, SelectedUnit, "ã‚«ã‚¦ãƒ³ã‚¿ãƒ¼", ""
+                    .Attack tw, SelectedUnit, "ƒJƒEƒ“ƒ^[", ""
                     Set SelectedTarget = .CurrentForm
                 End If
                 
-                'æ”»æ’ƒå´ã®ãƒ¦ãƒ‹ãƒƒãƒˆãŒã‹ã°ã‚ã‚ŒãŸå ´åˆã¯æ”»æ’ƒå´ã®ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’å†è¨­å®š
+                'UŒ‚‘¤‚Ìƒ†ƒjƒbƒg‚ª‚©‚Î‚í‚ê‚½ê‡‚ÍUŒ‚‘¤‚Ìƒ^[ƒQƒbƒg‚ğÄİ’è
                 If Not SupportGuardUnit Is Nothing Then
                     Set attack_target = SupportGuardUnit
                     attack_target_hp_ratio = SupportGuardUnitHPRatio
@@ -1097,61 +1097,61 @@ AttackEnemy:
         End If
     End With
     
-    'ã‚µãƒãƒ¼ãƒˆã‚¢ã‚¿ãƒƒã‚¯ã®ãƒ‘ãƒ¼ãƒˆãƒŠãƒ¼ã‚’æ¢ã™
+    'ƒTƒ|[ƒgƒAƒ^ƒbƒN‚Ìƒp[ƒgƒi[‚ğ’T‚·
     With SelectedUnit
-        If .Status = "å‡ºæ’ƒ" And SelectedTarget.Status = "å‡ºæ’ƒ" Then
+        If .Status = "oŒ‚" And SelectedTarget.Status = "oŒ‚" Then
             Set SupportAttackUnit = .LookForSupportAttack(SelectedTarget)
             
-            'åˆä½“æŠ€ã§ã¯ã‚µãƒãƒ¼ãƒˆã‚¢ã‚¿ãƒƒã‚¯ä¸èƒ½
+            '‡‘Ì‹Z‚Å‚ÍƒTƒ|[ƒgƒAƒ^ƒbƒN•s”\
             If 0 < SelectedWeapon And SelectedWeapon <= .CountWeapon Then
-                If .IsWeaponClassifiedAs(SelectedWeapon, "åˆ") Then
+                If .IsWeaponClassifiedAs(SelectedWeapon, "‡") Then
                     Set SupportAttackUnit = Nothing
                 End If
             End If
             
-            'é­…äº†ã•ã‚ŒãŸå ´åˆ
-            If .IsConditionSatisfied("é­…äº†") And .Master Is SelectedTarget Then
+            '–£—¹‚³‚ê‚½ê‡
+            If .IsConditionSatisfied("–£—¹") And .Master Is SelectedTarget Then
                 Set SupportAttackUnit = Nothing
             End If
             
-            'æ†‘ä¾ã•ã‚ŒãŸå ´åˆ
-            If .IsConditionSatisfied("æ†‘ä¾") Then
+            'œßˆË‚³‚ê‚½ê‡
+            If .IsConditionSatisfied("œßˆË") Then
                 If .Master.Party = SelectedTarget.Party Then
                     Set SupportAttackUnit = Nothing
                 End If
             End If
             
-            'è¸Šã‚‰ã•ã‚ŒãŸå ´åˆ
-            If .IsConditionSatisfied("è¸Šã‚Š") Then
+            '—x‚ç‚³‚ê‚½ê‡
+            If .IsConditionSatisfied("—x‚è") Then
                 Set SupportAttackUnit = Nothing
             End If
         End If
     End With
     
-    'æ”»æ’ƒã®å®Ÿæ–½
+    'UŒ‚‚ÌÀ{
     With SelectedUnit
-' MOD START ãƒãƒ¼ã‚¸
-'        If .Status = "å‡ºæ’ƒ" _
+' MOD START ƒ}[ƒW
+'        If .Status = "oŒ‚" _
 '            And .MaxAction(True) > 0 _
-'            And SelectedTarget.Status = "å‡ºæ’ƒ" _
+'            And SelectedTarget.Status = "oŒ‚" _
 '        Then
-        If .Status = "å‡ºæ’ƒ" _
+        If .Status = "oŒ‚" _
             And .MaxAction(True) > 0 _
-            And Not .IsConditionSatisfied("æ”»æ’ƒä¸èƒ½") _
-            And SelectedTarget.Status = "å‡ºæ’ƒ" _
+            And Not .IsConditionSatisfied("UŒ‚•s”\") _
+            And SelectedTarget.Status = "oŒ‚" _
         Then
-' MOD END ãƒãƒ¼ã‚¸
-            'ã¾ã æ­¦å™¨ã¯ä½¿ç”¨å¯èƒ½ã‹ï¼Ÿ
+' MOD END ƒ}[ƒW
+            '‚Ü‚¾•Ší‚Íg—p‰Â”\‚©H
             If w > .CountWeapon Then
                 w = -1
             ElseIf wname <> .Weapon(w).Name Then
                 w = -1
             ElseIf moved Then
-                If Not .IsWeaponAvailable(w, "ç§»å‹•å¾Œ") Then
+                If Not .IsWeaponAvailable(w, "ˆÚ“®Œã") Then
                     w = -1
                 End If
             Else
-                If Not .IsWeaponAvailable(w, "ç§»å‹•å‰") Then
+                If Not .IsWeaponAvailable(w, "ˆÚ“®‘O") Then
                     w = -1
                 End If
             End If
@@ -1161,69 +1161,69 @@ AttackEnemy:
                 End If
             End If
             
-            'è¡Œå‹•ä¸èƒ½ãªå ´åˆ
+            's“®•s”\‚Èê‡
             If .MaxAction(True) = 0 Then
                 w = -1
             End If
             
-            'é­…äº†ã•ã‚ŒãŸå ´åˆ
-            If .IsConditionSatisfied("é­…äº†") And .Master Is SelectedTarget Then
+            '–£—¹‚³‚ê‚½ê‡
+            If .IsConditionSatisfied("–£—¹") And .Master Is SelectedTarget Then
                 w = -1
             End If
             
-            'æ†‘ä¾ã•ã‚ŒãŸå ´åˆ
-            If .IsConditionSatisfied("æ†‘ä¾") Then
+            'œßˆË‚³‚ê‚½ê‡
+            If .IsConditionSatisfied("œßˆË") Then
                 If .Master.Party = SelectedTarget.Party Then
                     w = -1
                 End If
             End If
             
-            'è¸Šã‚‰ã•ã‚ŒãŸå ´åˆ
-            If .IsConditionSatisfied("è¸Šã‚Š") Then
+            '—x‚ç‚³‚ê‚½ê‡
+            If .IsConditionSatisfied("—x‚è") Then
                 w = -1
             End If
             
             If w > 0 Then
-                'è‡ªçˆ†æ”»æ’ƒï¼Ÿ
-                If .IsWeaponClassifiedAs(w, "è‡ª") Then
+                '©”šUŒ‚H
+                If .IsWeaponClassifiedAs(w, "©") Then
                     is_suiside = True
                 End If
                 
                 If Not SupportAttackUnit Is Nothing _
                     And .MaxSyncAttack > .UsedSyncAttack _
                 Then
-                    'åŒæ™‚æ´è­·æ”»æ’ƒ
-                    .Attack w, SelectedTarget, "çµ±ç‡", def_mode
+                    '“¯‰‡ŒìUŒ‚
+                    .Attack w, SelectedTarget, "“—¦", def_mode
                 Else
-                    'é€šå¸¸æ”»æ’ƒ
+                    '’ÊíUŒ‚
                     .Attack w, SelectedTarget, "", def_mode
                 End If
             ElseIf w = 0 Then
-                'å°„ç¨‹å¤–
-                If .IsAnimationDefined("å°„ç¨‹å¤–") Then
-                    .PlayAnimation "å°„ç¨‹å¤–"
+                'Ë’öŠO
+                If .IsAnimationDefined("Ë’öŠO") Then
+                    .PlayAnimation "Ë’öŠO"
                 Else
-                    .SpecialEffect "å°„ç¨‹å¤–"
+                    .SpecialEffect "Ë’öŠO"
                 End If
-                .PilotMessage "å°„ç¨‹å¤–"
+                .PilotMessage "Ë’öŠO"
             End If
         Else
             w = -1
         End If
         Set SelectedUnit = .CurrentForm
         
-        'é˜²å¾¡å´ã®ãƒ¦ãƒ‹ãƒƒãƒˆãŒã‹ã°ã‚ã‚ŒãŸå ´åˆã¯2ç•ªç›®ã®é˜²å¾¡å´ãƒ¦ãƒ‹ãƒƒãƒˆã¨ã—ã¦è¨˜éŒ²
+        '–hŒä‘¤‚Ìƒ†ƒjƒbƒg‚ª‚©‚Î‚í‚ê‚½ê‡‚Í2”Ô–Ú‚Ì–hŒä‘¤ƒ†ƒjƒbƒg‚Æ‚µ‚Ä‹L˜^
         If Not SupportGuardUnit Is Nothing Then
             Set defense_target2 = SupportGuardUnit
             defense_target2_hp_ratio = SupportGuardUnitHPRatio
         End If
     End With
     
-    'åŒæ™‚æ”»æ’ƒ
+    '“¯UŒ‚
     If Not SupportAttackUnit Is Nothing Then
-        If SupportAttackUnit.Status <> "å‡ºæ’ƒ" _
-            Or SelectedUnit.Status <> "å‡ºæ’ƒ" _
-            Or SelectedTarget.Status <> "å‡ºæ’ƒ" _
+        If SupportAttackUnit.Status <> "oŒ‚" _
+            Or SelectedUnit.Status <> "oŒ‚" _
+            Or SelectedTarget.Status <> "oŒ‚" _
         Then
             Set SupportAttackUnit = Nothing
         End If
@@ -1231,42 +1231,42 @@ AttackEnemy:
     If Not SupportAttackUnit Is Nothing Then
         If SelectedUnit.MaxSyncAttack > SelectedUnit.UsedSyncAttack Then
             With SupportAttackUnit
-                'ã‚µãƒãƒ¼ãƒˆã‚¢ã‚¿ãƒƒã‚¯ã«ä½¿ã†æ­¦å™¨ã‚’æ±ºå®š
-                w2 = SelectWeapon(SupportAttackUnit, SelectedTarget, "ã‚µãƒãƒ¼ãƒˆã‚¢ã‚¿ãƒƒã‚¯")
+                'ƒTƒ|[ƒgƒAƒ^ƒbƒN‚Ég‚¤•Ší‚ğŒˆ’è
+                w2 = SelectWeapon(SupportAttackUnit, SelectedTarget, "ƒTƒ|[ƒgƒAƒ^ƒbƒN")
                 
                 If w2 > 0 Then
-                    'ã‚µãƒãƒ¼ãƒˆã‚¢ã‚¿ãƒƒã‚¯ã‚’å®Ÿæ–½
+                    'ƒTƒ|[ƒgƒAƒ^ƒbƒN‚ğÀ{
                     MaskData(.X, .Y) = False
                     If Not BattleAnimation Then
                         MaskScreen
                     End If
-                    If .IsAnimationDefined("ã‚µãƒãƒ¼ãƒˆã‚¢ã‚¿ãƒƒã‚¯é–‹å§‹") Then
-                        .PlayAnimation "ã‚µãƒãƒ¼ãƒˆã‚¢ã‚¿ãƒƒã‚¯é–‹å§‹"
+                    If .IsAnimationDefined("ƒTƒ|[ƒgƒAƒ^ƒbƒNŠJn") Then
+                        .PlayAnimation "ƒTƒ|[ƒgƒAƒ^ƒbƒNŠJn"
                     End If
                     UpdateMessageForm SelectedTarget, SupportAttackUnit
-                    .Attack w2, SelectedTarget, "åŒæ™‚æ´è­·æ”»æ’ƒ", def_mode
+                    .Attack w2, SelectedTarget, "“¯‰‡ŒìUŒ‚", def_mode
                 End If
             End With
             
-            'å¾Œå§‹æœ«
+            'Œãn––
             With SupportAttackUnit.CurrentForm
                 If w2 > 0 Then
-                    If .IsAnimationDefined("ã‚µãƒãƒ¼ãƒˆã‚¢ã‚¿ãƒƒã‚¯çµ‚äº†") Then
-                        .PlayAnimation "ã‚µãƒãƒ¼ãƒˆã‚¢ã‚¿ãƒƒã‚¯çµ‚äº†"
+                    If .IsAnimationDefined("ƒTƒ|[ƒgƒAƒ^ƒbƒNI—¹") Then
+                        .PlayAnimation "ƒTƒ|[ƒgƒAƒ^ƒbƒNI—¹"
                     End If
                     
-                    'ã‚µãƒãƒ¼ãƒˆã‚¢ã‚¿ãƒƒã‚¯ã®æ®‹ã‚Šå›æ•°ã‚’æ¸›ã‚‰ã™
+                    'ƒTƒ|[ƒgƒAƒ^ƒbƒN‚Ìc‚è‰ñ”‚ğŒ¸‚ç‚·
                     .UsedSupportAttack = .UsedSupportAttack + 1
                     
-                    'åŒæ™‚æ´è­·æ”»æ’ƒã®æ®‹ã‚Šå›æ•°ã‚’æ¸›ã‚‰ã™
+                    '“¯‰‡ŒìUŒ‚‚Ìc‚è‰ñ”‚ğŒ¸‚ç‚·
                     SelectedUnit.UsedSyncAttack = SelectedUnit.UsedSyncAttack + 1
                 End If
             End With
             
             support_attack_done = True
             
-            'é˜²å¾¡å´ã®ãƒ¦ãƒ‹ãƒƒãƒˆãŒã‹ã°ã‚ã‚ŒãŸå ´åˆã¯æœ¬æ¥ã®é˜²å¾¡ãƒ¦ãƒ‹ãƒƒãƒˆãƒ‡ãƒ¼ã‚¿ã¨
-            'å…¥ã‚Œæ›¿ãˆã¦è¨˜éŒ²
+            '–hŒä‘¤‚Ìƒ†ƒjƒbƒg‚ª‚©‚Î‚í‚ê‚½ê‡‚Í–{—ˆ‚Ì–hŒäƒ†ƒjƒbƒgƒf[ƒ^‚Æ
+            '“ü‚ê‘Ö‚¦‚Ä‹L˜^
             If Not SupportGuardUnit Is Nothing Then
                 Set defense_target = SupportGuardUnit
                 defense_target_hp_ratio = SupportGuardUnitHPRatio
@@ -1275,62 +1275,62 @@ AttackEnemy:
     End If
     
     With SelectedTarget
-        'åæ’ƒã®å®Ÿè¡Œ
-        If def_mode <> "å…ˆåˆ¶æ”»æ’ƒ" Then
-            If .Status = "å‡ºæ’ƒ" _
-                And SelectedUnit.Status = "å‡ºæ’ƒ" _
+        '”½Œ‚‚ÌÀs
+        If def_mode <> "æ§UŒ‚" Then
+            If .Status = "oŒ‚" _
+                And SelectedUnit.Status = "oŒ‚" _
             Then
-                'ã¾ã æ­¦å™¨ã¯ä½¿ç”¨å¯èƒ½ã‹ï¼Ÿ
+                '‚Ü‚¾•Ší‚Íg—p‰Â”\‚©H
                 If tw > 0 Then
                     If tw > .CountWeapon Then
                         tw = -1
                     ElseIf twname <> .Weapon(tw).Name _
-                        Or Not .IsWeaponAvailable(tw, "ç§»å‹•å‰") _
+                        Or Not .IsWeaponAvailable(tw, "ˆÚ“®‘O") _
                     Then
                         tw = -1
                     End If
                 End If
                 If tw > 0 Then
                     If Not .IsTargetWithinRange(tw, SelectedUnit) Then
-                        'æ•µãŒå°„ç¨‹å¤–ã«é€ƒã’ã¦ã„ãŸã‚‰æ­¦å™¨ã‚’å†é¸æŠ
+                        '“G‚ªË’öŠO‚É“¦‚°‚Ä‚¢‚½‚ç•Ší‚ğÄ‘I‘ğ
                         tw = 0
                     End If
                 End If
                 
-                'è¡Œå‹•ä¸èƒ½ãªå ´åˆ
+                's“®•s”\‚Èê‡
                 If .MaxAction = 0 Then
                     tw = -1
                 End If
                 
-                'é­…äº†ã•ã‚ŒãŸå ´åˆ
-                If .IsConditionSatisfied("é­…äº†") And .Master Is SelectedUnit Then
+                '–£—¹‚³‚ê‚½ê‡
+                If .IsConditionSatisfied("–£—¹") And .Master Is SelectedUnit Then
                     tw = -1
                 End If
                 
-                'æ†‘ä¾ã•ã‚ŒãŸå ´åˆ
-                If .IsConditionSatisfied("æ†‘ä¾") Then
+                'œßˆË‚³‚ê‚½ê‡
+                If .IsConditionSatisfied("œßˆË") Then
                     If .Master.Party = SelectedUnit.Party Then
                         tw = -1
                     End If
                 End If
                 
-                'è¸Šã‚‰ã•ã‚ŒãŸå ´åˆ
-                If .IsConditionSatisfied("è¸Šã‚Š") Then
+                '—x‚ç‚³‚ê‚½ê‡
+                If .IsConditionSatisfied("—x‚è") Then
                     tw = -1
                 End If
                 
                 If tw > 0 And def_mode = "" Then
-                    'åæ’ƒã‚’å®Ÿæ–½
+                    '”½Œ‚‚ğÀ{
                     .Attack tw, SelectedUnit, "", ""
-                    If .Status = "ä»–å½¢æ…‹" Then
+                    If .Status = "‘¼Œ`‘Ô" Then
                         Set SelectedTarget = .CurrentForm
                     End If
-                    If SelectedUnit.Status = "ä»–å½¢æ…‹" Then
+                    If SelectedUnit.Status = "‘¼Œ`‘Ô" Then
                         Set SelectedUnit = SelectedUnit.CurrentForm
                     End If
                     
-                    'æ”»æ’ƒå´ã®ãƒ¦ãƒ‹ãƒƒãƒˆãŒã‹ã°ã‚ã‚ŒãŸå ´åˆã¯æ”»æ’ƒå´ã®ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’å†è¨­å®š
-' MOD START ãƒãƒ¼ã‚¸
+                    'UŒ‚‘¤‚Ìƒ†ƒjƒbƒg‚ª‚©‚Î‚í‚ê‚½ê‡‚ÍUŒ‚‘¤‚Ìƒ^[ƒQƒbƒg‚ğÄİ’è
+' MOD START ƒ}[ƒW
 '                    If Not SupportGuardUnit Is Nothing Then
 '                        Set attack_target = SupportGuardUnit
 '                        attack_target_hp_ratio = SupportGuardUnitHPRatio
@@ -1339,15 +1339,15 @@ AttackEnemy:
                         Set attack_target = SupportGuardUnit2
                         attack_target_hp_ratio = SupportGuardUnitHPRatio2
                     End If
-' MOD END ãƒãƒ¼ã‚¸
+' MOD END ƒ}[ƒW
                 ElseIf tw = 0 And .X = tx And .Y = ty Then
-                    'åæ’ƒå‡ºæ¥ã‚‹æ­¦å™¨ãŒãªã‹ã£ãŸå ´åˆã¯å°„ç¨‹å¤–ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’è¡¨ç¤º
-                    If .IsAnimationDefined("å°„ç¨‹å¤–") Then
-                        .PlayAnimation "å°„ç¨‹å¤–"
+                    '”½Œ‚o—ˆ‚é•Ší‚ª‚È‚©‚Á‚½ê‡‚ÍË’öŠOƒƒbƒZ[ƒW‚ğ•\¦
+                    If .IsAnimationDefined("Ë’öŠO") Then
+                        .PlayAnimation "Ë’öŠO"
                     Else
-                        .SpecialEffect "å°„ç¨‹å¤–"
+                        .SpecialEffect "Ë’öŠO"
                     End If
-                    .PilotMessage "å°„ç¨‹å¤–"
+                    .PilotMessage "Ë’öŠO"
                 Else
                     tw = -1
                 End If
@@ -1357,11 +1357,11 @@ AttackEnemy:
         End If
     End With
     
-    'ã‚µãƒãƒ¼ãƒˆã‚¢ã‚¿ãƒƒã‚¯
+    'ƒTƒ|[ƒgƒAƒ^ƒbƒN
     If Not SupportAttackUnit Is Nothing Then
-        If SupportAttackUnit.Status <> "å‡ºæ’ƒ" _
-            Or SelectedUnit.Status <> "å‡ºæ’ƒ" _
-            Or SelectedTarget.Status <> "å‡ºæ’ƒ" _
+        If SupportAttackUnit.Status <> "oŒ‚" _
+            Or SelectedUnit.Status <> "oŒ‚" _
+            Or SelectedTarget.Status <> "oŒ‚" _
             Or support_attack_done _
         Then
             Set SupportAttackUnit = Nothing
@@ -1369,166 +1369,166 @@ AttackEnemy:
     End If
     If Not SupportAttackUnit Is Nothing Then
         With SupportAttackUnit
-            'ã‚µãƒãƒ¼ãƒˆã‚¢ã‚¿ãƒƒã‚¯ã«ä½¿ã†æ­¦å™¨ã‚’æ±ºå®š
-            w2 = SelectWeapon(SupportAttackUnit, SelectedTarget, "ã‚µãƒãƒ¼ãƒˆã‚¢ã‚¿ãƒƒã‚¯")
+            'ƒTƒ|[ƒgƒAƒ^ƒbƒN‚Ég‚¤•Ší‚ğŒˆ’è
+            w2 = SelectWeapon(SupportAttackUnit, SelectedTarget, "ƒTƒ|[ƒgƒAƒ^ƒbƒN")
             
             If w2 > 0 Then
-                'ã‚µãƒãƒ¼ãƒˆã‚¢ã‚¿ãƒƒã‚¯ã‚’å®Ÿæ–½
+                'ƒTƒ|[ƒgƒAƒ^ƒbƒN‚ğÀ{
                 MaskData(.X, .Y) = False
                 If Not BattleAnimation Then
                     MaskScreen
                 End If
-                If .IsAnimationDefined("ã‚µãƒãƒ¼ãƒˆã‚¢ã‚¿ãƒƒã‚¯é–‹å§‹") Then
-                    .PlayAnimation "ã‚µãƒãƒ¼ãƒˆã‚¢ã‚¿ãƒƒã‚¯é–‹å§‹"
+                If .IsAnimationDefined("ƒTƒ|[ƒgƒAƒ^ƒbƒNŠJn") Then
+                    .PlayAnimation "ƒTƒ|[ƒgƒAƒ^ƒbƒNŠJn"
                 End If
                 UpdateMessageForm SelectedTarget, SupportAttackUnit
-                .Attack w2, SelectedTarget, "æ´è­·æ”»æ’ƒ", def_mode
+                .Attack w2, SelectedTarget, "‰‡ŒìUŒ‚", def_mode
             End If
         End With
         
-        'å¾Œå§‹æœ«
+        'Œãn––
         With SupportAttackUnit.CurrentForm
-            If .IsAnimationDefined("ã‚µãƒãƒ¼ãƒˆã‚¢ã‚¿ãƒƒã‚¯çµ‚äº†") Then
-                .PlayAnimation "ã‚µãƒãƒ¼ãƒˆã‚¢ã‚¿ãƒƒã‚¯çµ‚äº†"
+            If .IsAnimationDefined("ƒTƒ|[ƒgƒAƒ^ƒbƒNI—¹") Then
+                .PlayAnimation "ƒTƒ|[ƒgƒAƒ^ƒbƒNI—¹"
             End If
             
-            'ã‚µãƒãƒ¼ãƒˆã‚¢ã‚¿ãƒƒã‚¯ã®æ®‹ã‚Šå›æ•°ã‚’æ¸›ã‚‰ã™
+            'ƒTƒ|[ƒgƒAƒ^ƒbƒN‚Ìc‚è‰ñ”‚ğŒ¸‚ç‚·
             If w2 > 0 Then
                 .UsedSupportAttack = .UsedSupportAttack + 1
             End If
         End With
         
-        'é˜²å¾¡å´ã®ãƒ¦ãƒ‹ãƒƒãƒˆãŒã‹ã°ã‚ã‚ŒãŸå ´åˆã¯æœ¬æ¥ã®é˜²å¾¡ãƒ¦ãƒ‹ãƒƒãƒˆãƒ‡ãƒ¼ã‚¿ã¨
-        'å…¥ã‚Œæ›¿ãˆã¦è¨˜éŒ²
+        '–hŒä‘¤‚Ìƒ†ƒjƒbƒg‚ª‚©‚Î‚í‚ê‚½ê‡‚Í–{—ˆ‚Ì–hŒäƒ†ƒjƒbƒgƒf[ƒ^‚Æ
+        '“ü‚ê‘Ö‚¦‚Ä‹L˜^
         If Not SupportGuardUnit Is Nothing Then
             Set defense_target = SupportGuardUnit
             defense_target_hp_ratio = SupportGuardUnitHPRatio
         End If
     End If
     
-    'æ¨™çš„ãŒå‘³æ–¹ã®å ´åˆã®çµŒé¨“å€¤ã¨è³‡é‡‘ç²å¾—å‡¦ç†
-    '(æ¨™çš„ãŒå‘³æ–¹ãŒå‘¼ã³å‡ºã—ãŸå¬å–šãƒ¦ãƒ‹ãƒƒãƒˆã®å ´åˆã‚‚)
+    '•W“I‚ª–¡•û‚Ìê‡‚ÌŒoŒ±’l‚Æ‘‹àŠl“¾ˆ—
+    '(•W“I‚ª–¡•û‚ªŒÄ‚Ño‚µ‚½¢Š«ƒ†ƒjƒbƒg‚Ìê‡‚à)
     Set SelectedUnit = SelectedUnit.CurrentForm
     With SelectedTarget
         Dim get_reward As Boolean
         
-        'çµŒé¨“å€¤ï¼†è³‡é‡‘ãŒç²å¾—ã§ãã‚‹ã‹åˆ¤å®š
-        If .Party = "å‘³æ–¹" And .Status = "å‡ºæ’ƒ" Then
+        'ŒoŒ±’l•‘‹à‚ªŠl“¾‚Å‚«‚é‚©”»’è
+        If .Party = "–¡•û" And .Status = "oŒ‚" Then
             get_reward = True
         ElseIf Not .Summoner Is Nothing Then
-            If .Summoner.Party = "å‘³æ–¹" _
-                And .Party0 = "ï¼®ï¼°ï¼£" And .Status = "å‡ºæ’ƒ" _
-                And .IsFeatureAvailable("å¬å–šãƒ¦ãƒ‹ãƒƒãƒˆ") _
-                And Not .IsConditionSatisfied("æ··ä¹±") _
-                And Not .IsConditionSatisfied("æš´èµ°") _
+            If .Summoner.Party = "–¡•û" _
+                And .Party0 = "‚m‚o‚b" And .Status = "oŒ‚" _
+                And .IsFeatureAvailable("¢Š«ƒ†ƒjƒbƒg") _
+                And Not .IsConditionSatisfied("¬—") _
+                And Not .IsConditionSatisfied("–\‘–") _
             Then
                 get_reward = True
             End If
         End If
         
         If get_reward Then
-            If SelectedUnit.Status = "ç ´å£Š" And Not is_suiside Then
-                'çµŒé¨“å€¤ã‚’ç²å¾—
-                .GetExp SelectedUnit, "ç ´å£Š"
+            If SelectedUnit.Status = "”j‰ó" And Not is_suiside Then
+                'ŒoŒ±’l‚ğŠl“¾
+                .GetExp SelectedUnit, "”j‰ó"
                 
-                'ç¾åœ¨ã®è³‡é‡‘ã‚’è¨˜éŒ²
+                'Œ»İ‚Ì‘‹à‚ğ‹L˜^
                 prev_money = Money
                 
-                'ç²å¾—ã™ã‚‹è³‡é‡‘ã‚’ç®—å‡º
+                'Šl“¾‚·‚é‘‹à‚ğZo
                 earnings = SelectedUnit.Value \ 2
                 
-                'ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼ã«ã‚ˆã‚‹ç²å¾—è³‡é‡‘å¢—åŠ 
-                If .IsUnderSpecialPowerEffect("ç²å¾—è³‡é‡‘å¢—åŠ ") Then
-                    earnings = earnings * (1 + 0.1 * .SpecialPowerEffectLevel("ç²å¾—è³‡é‡‘å¢—åŠ "))
+                'ƒXƒyƒVƒƒƒ‹ƒpƒ[‚É‚æ‚éŠl“¾‘‹à‘‰Á
+                If .IsUnderSpecialPowerEffect("Šl“¾‘‹à‘‰Á") Then
+                    earnings = earnings * (1 + 0.1 * .SpecialPowerEffectLevel("Šl“¾‘‹à‘‰Á"))
                 End If
                 
-                'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆèƒ½åŠ›ã«ã‚ˆã‚‹ç²å¾—è³‡é‡‘å¢—åŠ 
-                If .IsSkillAvailable("è³‡é‡‘ç²å¾—") Then
-                    If Not .IsUnderSpecialPowerEffect("ç²å¾—è³‡é‡‘å¢—åŠ ") _
-                        Or IsOptionDefined("åå¾—åŠ¹æœé‡è¤‡") _
+                'ƒpƒCƒƒbƒg”\—Í‚É‚æ‚éŠl“¾‘‹à‘‰Á
+                If .IsSkillAvailable("‘‹àŠl“¾") Then
+                    If Not .IsUnderSpecialPowerEffect("Šl“¾‘‹à‘‰Á") _
+                        Or IsOptionDefined("û“¾Œø‰Êd•¡") _
                     Then
-                        earnings = MinDbl(earnings * ((10 + .SkillLevel("è³‡é‡‘ç²å¾—", 5)) / 10), 999999999)
+                        earnings = MinDbl(earnings * ((10 + .SkillLevel("‘‹àŠl“¾", 5)) / 10), 999999999)
                     End If
                 End If
                 
-                'è³‡é‡‘ã‚’ç²å¾—
+                '‘‹à‚ğŠl“¾
                 IncrMoney earnings
                 
                 If Money > prev_money Then
                     DisplaySysMessage Format$(Money - prev_money) & _
-                        "ã®" & Term("è³‡é‡‘", SelectedUnit) & "ã‚’å¾—ãŸã€‚"
+                        "‚Ì" & Term("‘‹à", SelectedUnit) & "‚ğ“¾‚½B"
                 End If
             Else
-                .GetExp SelectedUnit, "æ”»æ’ƒ"
+                .GetExp SelectedUnit, "UŒ‚"
             End If
         End If
         
-        'ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼ã€Œç²å¾—è³‡é‡‘å¢—åŠ ã€ã€Œç²å¾—çµŒé¨“å€¤å¢—åŠ ã€ã®åŠ¹æœã¯ã“ã“ã§å‰Šé™¤ã™ã‚‹
-        .RemoveSpecialPowerInEffect "æˆ¦é—˜çµ‚äº†"
+        'ƒXƒyƒVƒƒƒ‹ƒpƒ[uŠl“¾‘‹à‘‰ÁvuŠl“¾ŒoŒ±’l‘‰Áv‚ÌŒø‰Ê‚Í‚±‚±‚Åíœ‚·‚é
+        .RemoveSpecialPowerInEffect "í“¬I—¹"
         If earnings > 0 Then
-            .RemoveSpecialPowerInEffect "æ•µç ´å£Š"
+            .RemoveSpecialPowerInEffect "“G”j‰ó"
         End If
     End With
     
-    'å‘³æ–¹ãŒå‘¼ã³å‡ºã—ãŸå¬å–šãƒ¦ãƒ‹ãƒƒãƒˆã®å ´åˆã¯ï¼®ï¼°ï¼£ã§ã‚‚çµŒé¨“å€¤ã¨è³‡é‡‘ã‚’ç²å¾—
+    '–¡•û‚ªŒÄ‚Ño‚µ‚½¢Š«ƒ†ƒjƒbƒg‚Ìê‡‚Í‚m‚o‚b‚Å‚àŒoŒ±’l‚Æ‘‹à‚ğŠl“¾
     Set SelectedUnit = SelectedUnit.CurrentForm
     With SelectedUnit
         If Not .Summoner Is Nothing Then
-            If .Summoner.Party = "å‘³æ–¹" _
-                And .Party0 = "ï¼®ï¼°ï¼£" And .Status = "å‡ºæ’ƒ" _
-                And .IsFeatureAvailable("å¬å–šãƒ¦ãƒ‹ãƒƒãƒˆ") _
-                And Not .IsConditionSatisfied("æ··ä¹±") _
-                And Not .IsConditionSatisfied("æš´èµ°") _
+            If .Summoner.Party = "–¡•û" _
+                And .Party0 = "‚m‚o‚b" And .Status = "oŒ‚" _
+                And .IsFeatureAvailable("¢Š«ƒ†ƒjƒbƒg") _
+                And Not .IsConditionSatisfied("¬—") _
+                And Not .IsConditionSatisfied("–\‘–") _
             Then
-                If SelectedTarget.Status = "ç ´å£Š" Then
-                    'ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’ç ´å£Šã—ãŸå ´åˆ
+                If SelectedTarget.Status = "”j‰ó" Then
+                    'ƒ^[ƒQƒbƒg‚ğ”j‰ó‚µ‚½ê‡
                     
-                    'çµŒé¨“å€¤ã‚’ç²å¾—
-                    .GetExp SelectedTarget, "ç ´å£Š"
+                    'ŒoŒ±’l‚ğŠl“¾
+                    .GetExp SelectedTarget, "”j‰ó"
                     
-                    'ç²å¾—ã™ã‚‹è³‡é‡‘ã‚’ç®—å‡º
+                    'Šl“¾‚·‚é‘‹à‚ğZo
                     earnings = SelectedTarget.Value \ 2
                     
-                    'ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼ã«ã‚ˆã‚‹ç²å¾—è³‡é‡‘å¢—åŠ 
-                    If .IsUnderSpecialPowerEffect("ç²å¾—è³‡é‡‘å¢—åŠ ") Then
-                        earnings = earnings * (1 + 0.1 * .SpecialPowerEffectLevel("ç²å¾—è³‡é‡‘å¢—åŠ "))
+                    'ƒXƒyƒVƒƒƒ‹ƒpƒ[‚É‚æ‚éŠl“¾‘‹à‘‰Á
+                    If .IsUnderSpecialPowerEffect("Šl“¾‘‹à‘‰Á") Then
+                        earnings = earnings * (1 + 0.1 * .SpecialPowerEffectLevel("Šl“¾‘‹à‘‰Á"))
                     End If
                     
-                    'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆèƒ½åŠ›ã«ã‚ˆã‚‹ç²å¾—è³‡é‡‘å¢—åŠ 
-                    If .IsSkillAvailable("è³‡é‡‘ç²å¾—") Then
-                        If Not .IsUnderSpecialPowerEffect("ç²å¾—è³‡é‡‘å¢—åŠ ") _
-                            Or IsOptionDefined("åå¾—åŠ¹æœé‡è¤‡") _
+                    'ƒpƒCƒƒbƒg”\—Í‚É‚æ‚éŠl“¾‘‹à‘‰Á
+                    If .IsSkillAvailable("‘‹àŠl“¾") Then
+                        If Not .IsUnderSpecialPowerEffect("Šl“¾‘‹à‘‰Á") _
+                            Or IsOptionDefined("û“¾Œø‰Êd•¡") _
                         Then
-                            earnings = earnings * (10 + .SkillLevel("è³‡é‡‘ç²å¾—", 5)) \ 10
+                            earnings = earnings * (10 + .SkillLevel("‘‹àŠl“¾", 5)) \ 10
                         End If
                     End If
                     
-                    'è³‡é‡‘ã‚’ç²å¾—
+                    '‘‹à‚ğŠl“¾
                     IncrMoney earnings
                     If earnings > 0 Then
-                        DisplaySysMessage Format$(earnings) & "ã®" & Term("è³‡é‡‘", SelectedTarget) & "ã‚’å¾—ãŸã€‚"
+                        DisplaySysMessage Format$(earnings) & "‚Ì" & Term("‘‹à", SelectedTarget) & "‚ğ“¾‚½B"
                     End If
                 Else
-                    'ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’ç ´å£Šå‡ºæ¥ãªã‹ã£ãŸå ´åˆ
+                    'ƒ^[ƒQƒbƒg‚ğ”j‰óo—ˆ‚È‚©‚Á‚½ê‡
                     
-                    'çµŒé¨“å€¤ã‚’ç²å¾—
-                    .GetExp SelectedTarget, "æ”»æ’ƒ"
+                    'ŒoŒ±’l‚ğŠl“¾
+                    .GetExp SelectedTarget, "UŒ‚"
                 End If
             End If
         End If
         
-        If .Status = "å‡ºæ’ƒ" Then
-            'ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼åŠ¹æœã€Œæ•µç ´å£Šæ™‚å†è¡Œå‹•ã€
-            If .IsUnderSpecialPowerEffect("æ•µç ´å£Šæ™‚å†è¡Œå‹•") Then
-                If SelectedTarget.Status = "ç ´å£Š" Then
+        If .Status = "oŒ‚" Then
+            'ƒXƒyƒVƒƒƒ‹ƒpƒ[Œø‰Êu“G”j‰óÄs“®v
+            If .IsUnderSpecialPowerEffect("“G”j‰óÄs“®") Then
+                If SelectedTarget.Status = "”j‰ó" Then
                     .UsedAction = .UsedAction - 1
                 End If
             End If
             
-            'æŒç¶šæœŸé–“ãŒã€Œæˆ¦é—˜çµ‚äº†ã€ã®ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼åŠ¹æœã‚’å‰Šé™¤
-            .RemoveSpecialPowerInEffect "æˆ¦é—˜çµ‚äº†"
+            '‘±ŠúŠÔ‚ªuí“¬I—¹v‚ÌƒXƒyƒVƒƒƒ‹ƒpƒ[Œø‰Ê‚ğíœ
+            .RemoveSpecialPowerInEffect "í“¬I—¹"
             If earnings > 0 Then
-                .RemoveSpecialPowerInEffect "æ•µç ´å£Š"
+                .RemoveSpecialPowerInEffect "“G”j‰ó"
             End If
         End If
     End With
@@ -1537,7 +1537,7 @@ AttackEnemy:
     
     RedrawScreen
     
-    'çŠ¶æ…‹ï¼†ãƒ‡ãƒ¼ã‚¿æ›´æ–°
+    'ó‘Ô•ƒf[ƒ^XV
     With attack_target.CurrentForm
         .UpdateCondition
         .Update
@@ -1566,15 +1566,15 @@ AttackEnemy:
         SelectedTWeaponName = ""
     End If
     
-    'ç ´å£Šï¼†æå‚·ç‡ã‚¤ãƒ™ãƒ³ãƒˆç™ºç”Ÿ
+    '”j‰ó•‘¹—¦ƒCƒxƒ“ƒg”­¶
     
-    'æ”»æ’ƒã‚’å—ã‘ãŸæ”»æ’ƒå´ãƒ¦ãƒ‹ãƒƒãƒˆ
+    'UŒ‚‚ğó‚¯‚½UŒ‚‘¤ƒ†ƒjƒbƒg
     With attack_target.CurrentForm
         If .CountPilot > 0 Then
-            If .Status = "ç ´å£Š" Then
-                HandleEvent "ç ´å£Š", .MainPilot.ID
-            ElseIf .Status = "å‡ºæ’ƒ" And .HP / .MaxHP < attack_target_hp_ratio Then
-                HandleEvent "æå‚·ç‡", .MainPilot.ID, 100 * (.MaxHP - .HP) \ .MaxHP
+            If .Status = "”j‰ó" Then
+                HandleEvent "”j‰ó", .MainPilot.ID
+            ElseIf .Status = "oŒ‚" And .HP / .MaxHP < attack_target_hp_ratio Then
+                HandleEvent "‘¹—¦", .MainPilot.ID, 100 * (.MaxHP - .HP) \ .MaxHP
             End If
             If IsScenarioFinished Or IsCanceled Then
                 Exit Sub
@@ -1582,17 +1582,17 @@ AttackEnemy:
         End If
     End With
     
-    'ã‚¿ãƒ¼ã‚²ãƒƒãƒˆå´ã®ã‚¤ãƒ™ãƒ³ãƒˆå‡¦ç†ã‚’è¡Œã†ãŸã‚ã«ãƒ¦ãƒ‹ãƒƒãƒˆã®å…¥ã‚Œæ›¿ãˆã‚’è¡Œã†
+    'ƒ^[ƒQƒbƒg‘¤‚ÌƒCƒxƒ“ƒgˆ—‚ğs‚¤‚½‚ß‚Éƒ†ƒjƒbƒg‚Ì“ü‚ê‘Ö‚¦‚ğs‚¤
     SaveSelections
     SwapSelections
     
-    'æ”»æ’ƒã‚’å—ã‘ãŸé˜²å¾¡å´ãƒ¦ãƒ‹ãƒƒãƒˆ
+    'UŒ‚‚ğó‚¯‚½–hŒä‘¤ƒ†ƒjƒbƒg
     With defense_target.CurrentForm
         If .CountPilot > 0 Then
-            If .Status = "ç ´å£Š" Then
-                HandleEvent "ç ´å£Š", .MainPilot.ID
-            ElseIf .Status = "å‡ºæ’ƒ" And .HP / .MaxHP < defense_target_hp_ratio Then
-                HandleEvent "æå‚·ç‡", .MainPilot.ID, 100 * (.MaxHP - .HP) \ .MaxHP
+            If .Status = "”j‰ó" Then
+                HandleEvent "”j‰ó", .MainPilot.ID
+            ElseIf .Status = "oŒ‚" And .HP / .MaxHP < defense_target_hp_ratio Then
+                HandleEvent "‘¹—¦", .MainPilot.ID, 100 * (.MaxHP - .HP) \ .MaxHP
             End If
         End If
     End With
@@ -1603,22 +1603,22 @@ AttackEnemy:
         Exit Sub
     End If
     
-    'æ”»æ’ƒã‚’å—ã‘ãŸé˜²å¾¡å´ãƒ¦ãƒ‹ãƒƒãƒˆãã®2
+    'UŒ‚‚ğó‚¯‚½–hŒä‘¤ƒ†ƒjƒbƒg‚»‚Ì2
     If Not defense_target2 Is Nothing Then
         If Not defense_target2.CurrentForm Is defense_target.CurrentForm Then
             With defense_target2.CurrentForm
                 If .CountPilot > 0 Then
-                    If .Status = "ç ´å£Š" Then
-                        HandleEvent "ç ´å£Š", .MainPilot.ID
-                    ElseIf .Status = "å‡ºæ’ƒ" And .HP / .MaxHP < defense_target2_hp_ratio Then
-                        HandleEvent "æå‚·ç‡", .MainPilot.ID, 100 * (.MaxHP - .HP) \ .MaxHP
+                    If .Status = "”j‰ó" Then
+                        HandleEvent "”j‰ó", .MainPilot.ID
+                    ElseIf .Status = "oŒ‚" And .HP / .MaxHP < defense_target2_hp_ratio Then
+                        HandleEvent "‘¹—¦", .MainPilot.ID, 100 * (.MaxHP - .HP) \ .MaxHP
                     End If
                 End If
             End With
         End If
     End If
     
-    'å…ƒã«æˆ»ã™
+    'Œ³‚É–ß‚·
     RestoreSelections
     
     If IsScenarioFinished Or IsCanceled Then
@@ -1626,19 +1626,19 @@ AttackEnemy:
         Exit Sub
     End If
     
-    'æ­¦å™¨ã®ä½¿ç”¨å¾Œã‚¤ãƒ™ãƒ³ãƒˆ
-    If SelectedUnit.Status = "å‡ºæ’ƒ" And w > 0 Then
-        HandleEvent "ä½¿ç”¨å¾Œ", SelectedUnit.MainPilot.ID, wname
+    '•Ší‚Ìg—pŒãƒCƒxƒ“ƒg
+    If SelectedUnit.Status = "oŒ‚" And w > 0 Then
+        HandleEvent "g—pŒã", SelectedUnit.MainPilot.ID, wname
         If IsScenarioFinished Or IsCanceled Then
             ReDim SelectedPartners(0)
             Exit Sub
         End If
     End If
     
-    If SelectedTarget.Status = "å‡ºæ’ƒ" And tw > 0 Then
+    If SelectedTarget.Status = "oŒ‚" And tw > 0 Then
         SaveSelections
         SwapSelections
-        HandleEvent "ä½¿ç”¨å¾Œ", SelectedUnit.MainPilot.ID, twname
+        HandleEvent "g—pŒã", SelectedUnit.MainPilot.ID, twname
         RestoreSelections
         If IsScenarioFinished Or IsCanceled Then
             ReDim SelectedPartners(0)
@@ -1646,20 +1646,20 @@ AttackEnemy:
         End If
     End If
     
-    'æ”»æ’ƒå¾Œã‚¤ãƒ™ãƒ³ãƒˆ
-    If SelectedUnit.Status = "å‡ºæ’ƒ" And SelectedTarget.Status = "å‡ºæ’ƒ" Then
-        HandleEvent "æ”»æ’ƒå¾Œ", SelectedUnit.MainPilot.ID, SelectedTarget.MainPilot.ID
+    'UŒ‚ŒãƒCƒxƒ“ƒg
+    If SelectedUnit.Status = "oŒ‚" And SelectedTarget.Status = "oŒ‚" Then
+        HandleEvent "UŒ‚Œã", SelectedUnit.MainPilot.ID, SelectedTarget.MainPilot.ID
         If IsScenarioFinished Or IsCanceled Then
             ReDim SelectedPartners(0)
             Exit Sub
         End If
     End If
     
-    'ã‚‚ã—æ•µãŒç§»å‹•ã—ã¦ã„ã‚Œã°é€²å…¥ã‚¤ãƒ™ãƒ³ãƒˆ
+    '‚à‚µ“G‚ªˆÚ“®‚µ‚Ä‚¢‚ê‚Îi“üƒCƒxƒ“ƒg
     With SelectedTarget
-        If .Status = "å‡ºæ’ƒ" Then
+        If .Status = "oŒ‚" Then
             If .X <> tx Or .Y <> ty Then
-                HandleEvent "é€²å…¥", .MainPilot.ID, .X, .Y
+                HandleEvent "i“ü", .MainPilot.ID, .X, .Y
                 If IsScenarioFinished Or IsCanceled Then
                     ReDim SelectedPartners(0)
                     Exit Sub
@@ -1668,29 +1668,29 @@ AttackEnemy:
         End If
     End With
     
-    'åˆä½“æŠ€ã®ãƒ‘ãƒ¼ãƒˆãƒŠãƒ¼ã®è¡Œå‹•æ•°ã‚’æ¸›ã‚‰ã™
-    If Not IsOptionDefined("åˆä½“æŠ€ãƒ‘ãƒ¼ãƒˆãƒŠãƒ¼è¡Œå‹•æ•°ç„¡æ¶ˆè²»") Then
+    '‡‘Ì‹Z‚Ìƒp[ƒgƒi[‚Ìs“®”‚ğŒ¸‚ç‚·
+    If Not IsOptionDefined("‡‘Ì‹Zƒp[ƒgƒi[s“®”–³Á”ï") Then
         For i = 1 To UBound(partners)
             partners(i).CurrentForm.UseAction
         Next
     End If
     
-    'å†ç§»å‹•
-    If is_p_weapon And SelectedUnit.Status = "å‡ºæ’ƒ" Then
-        If SelectedUnit.MainPilot.IsSkillAvailable("éŠæ’ƒ") _
+    'ÄˆÚ“®
+    If is_p_weapon And SelectedUnit.Status = "oŒ‚" Then
+        If SelectedUnit.MainPilot.IsSkillAvailable("—VŒ‚") _
             And SelectedUnit.Speed * 2 > SelectedUnitMoveCost _
         Then
-            'é€²å…¥ã‚¤ãƒ™ãƒ³ãƒˆ
+            'i“üƒCƒxƒ“ƒg
             If SelectedUnitMoveCost > 0 Then
-                HandleEvent "é€²å…¥", SelectedUnit.MainPilot.ID, _
+                HandleEvent "i“ü", SelectedUnit.MainPilot.ID, _
                     SelectedUnit.X, SelectedUnit.Y
                 If IsScenarioFinished Then
                     Exit Sub
                 End If
             End If
             
-            'ãƒ¦ãƒ‹ãƒƒãƒˆãŒæ—¢ã«å‡ºæ’ƒã—ã¦ã„ãªã„ï¼Ÿ
-            If SelectedUnit.Status <> "å‡ºæ’ƒ" Then
+            'ƒ†ƒjƒbƒg‚ªŠù‚ÉoŒ‚‚µ‚Ä‚¢‚È‚¢H
+            If SelectedUnit.Status <> "oŒ‚" Then
                 Exit Sub
             End If
             
@@ -1698,7 +1698,7 @@ AttackEnemy:
             
             AreaInSpeed SelectedUnit
             
-            'ç›®æ¨™åœ°ç‚¹ãŒè¨­å®šã•ã‚Œã¦ã„ã‚‹ï¼Ÿ
+            '–Ú•W’n“_‚ªİ’è‚³‚ê‚Ä‚¢‚éH
             If LLength(SelectedUnit.Mode) = 2 Then
                 dst_x = CInt(LIndex(SelectedUnit.Mode, 1))
                 dst_y = CInt(LIndex(SelectedUnit.Mode, 2))
@@ -1709,38 +1709,38 @@ AttackEnemy:
                 End If
             End If
             
-            'ãã†ã§ãªã‘ã‚Œã°å®‰å…¨ãªå ´æ‰€ã¸
+            '‚»‚¤‚Å‚È‚¯‚ê‚ÎˆÀ‘S‚ÈêŠ‚Ö
             SafetyPoint SelectedUnit, dst_x, dst_y
             
             GoTo Move
         End If
     End If
     
-    'è¡Œå‹•çµ‚äº†
+    's“®I—¹
     GoTo EndOfOperation
     
 SearchNearestEnemy:
     
-    'ã‚‚ã£ã¨ã‚‚è¿‘ãã«ã„ã‚‹æ•µã‚’æ¢ã™
+    '‚à‚Á‚Æ‚à‹ß‚­‚É‚¢‚é“G‚ğ’T‚·
     searched_nearest_enemy = True
     Set SelectedTarget = SearchNearestEnemy(SelectedUnit)
     
-    'ã‚¿ãƒ¼ã‚²ãƒƒãƒˆãŒè¦‹ã¤ã‹ã‚‰ãªã‘ã‚Œã°ã‚ãã‚‰ã‚ã¦çµ‚äº†
+    'ƒ^[ƒQƒbƒg‚ªŒ©‚Â‚©‚ç‚È‚¯‚ê‚Î‚ ‚«‚ç‚ß‚ÄI—¹
     If SelectedTarget Is Nothing Then
         GoTo EndOfOperation
     End If
     
-    'è¦‹ã¤ã‹ã£ãŸã‚‰ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã®ä½ç½®ã‚’ç›®æ¨™åœ°ç‚¹ã«ã—ã¦ç§»å‹•
+    'Œ©‚Â‚©‚Á‚½‚çƒ^[ƒQƒbƒg‚ÌˆÊ’u‚ğ–Ú•W’n“_‚É‚µ‚ÄˆÚ“®
     dst_x = SelectedTarget.X
     dst_y = SelectedTarget.Y
     
 Move:
     
-    'ç›®æ¨™åœ°ç‚¹
+    '–Ú•W’n“_
     SelectedX = dst_x
     SelectedY = dst_y
     
-    'ç§»å‹•å½¢æ…‹ã¸ã®å¤‰å½¢ãŒå¯èƒ½ã§ã‚ã‚Œã°å¤‰å½¢
+    'ˆÚ“®Œ`‘Ô‚Ö‚Ì•ÏŒ`‚ª‰Â”\‚Å‚ ‚ê‚Î•ÏŒ`
     If Not transfered Then
         If TryMoveTransform() Then
             transfered = True
@@ -1748,49 +1748,49 @@ Move:
     End If
     
     With SelectedUnit
-        'ç§»å‹•å¯èƒ½ç¯„å›²ã‚’è¨­å®š
+        'ˆÚ“®‰Â”\”ÍˆÍ‚ğİ’è
         
-        'ãƒ†ãƒ¬ãƒãƒ¼ãƒˆèƒ½åŠ›ã‚’ä½¿ãˆã‚‹å ´åˆã¯å„ªå…ˆçš„ã«ä½¿ç”¨
-        If LLength(.FeatureData("ãƒ†ãƒ¬ãƒãƒ¼ãƒˆ")) = 2 Then
-            tmp = CInt(LIndex(.FeatureData("ãƒ†ãƒ¬ãƒãƒ¼ãƒˆ"), 2))
+        'ƒeƒŒƒ|[ƒg”\—Í‚ğg‚¦‚éê‡‚Í—Dæ“I‚Ég—p
+        If LLength(.FeatureData("ƒeƒŒƒ|[ƒg")) = 2 Then
+            tmp = CInt(LIndex(.FeatureData("ƒeƒŒƒ|[ƒg"), 2))
         Else
             tmp = 40
         End If
-        If .IsFeatureAvailable("ãƒ†ãƒ¬ãƒãƒ¼ãƒˆ") _
+        If .IsFeatureAvailable("ƒeƒŒƒ|[ƒg") _
             And (.EN > 10 * tmp Or .EN - tmp > .MaxEN \ 2) _
             And SelectedUnitMoveCost = 0 _
         Then
-            mmode = "ãƒ†ãƒ¬ãƒãƒ¼ãƒˆ"
+            mmode = "ƒeƒŒƒ|[ƒg"
             .EN = .EN - tmp
             AreaInTeleport SelectedUnit
             GoTo MoveAreaSelected
         End If
         
-        'ã‚¸ãƒ£ãƒ³ãƒ—èƒ½åŠ›ã‚’ä½¿ã†ï¼Ÿ
-        If LLength(.FeatureData("ã‚¸ãƒ£ãƒ³ãƒ—")) = 2 Then
-            tmp = CInt(LIndex(.FeatureData("ã‚¸ãƒ£ãƒ³ãƒ—"), 2))
+        'ƒWƒƒƒ“ƒv”\—Í‚ğg‚¤H
+        If LLength(.FeatureData("ƒWƒƒƒ“ƒv")) = 2 Then
+            tmp = CInt(LIndex(.FeatureData("ƒWƒƒƒ“ƒv"), 2))
         Else
             tmp = 0
         End If
-        If .IsFeatureAvailable("ã‚¸ãƒ£ãƒ³ãƒ—") _
-            And .Area <> "ç©ºä¸­" _
-            And .Area <> "å®‡å®™" _
+        If .IsFeatureAvailable("ƒWƒƒƒ“ƒv") _
+            And .Area <> "‹ó’†" _
+            And .Area <> "‰F’ˆ" _
             And (.EN > 10 * tmp Or .EN - tmp > .MaxEN \ 2) _
             And SelectedUnitMoveCost = 0 _
         Then
-            mmode = "ã‚¸ãƒ£ãƒ³ãƒ—"
+            mmode = "ƒWƒƒƒ“ƒv"
             .EN = .EN - tmp
             AreaInSpeed SelectedUnit, True
             GoTo MoveAreaSelected
         End If
         
-        'é€šå¸¸ç§»å‹•
+        '’ÊíˆÚ“®
         mmode = ""
         AreaInSpeed SelectedUnit
         
 MoveAreaSelected:
         
-        'è­·è¡›ã™ã¹ããƒ¦ãƒ‹ãƒƒãƒˆãŒã„ã‚‹å ´åˆã¯å‹•ã‘ã‚‹ç¯„å›²ã‚’é™å®š
+        'Œì‰q‚·‚×‚«ƒ†ƒjƒbƒg‚ª‚¢‚éê‡‚Í“®‚¯‚é”ÍˆÍ‚ğŒÀ’è
         If guard_unit_mode Then
             With PList.Item(.Mode).Unit
                 For i = 1 To MapWidth
@@ -1805,21 +1805,21 @@ MoveAreaSelected:
             End With
         End If
         
-        If .Mode = "é€ƒäº¡" Then
-            'ç§»å‹•å¯èƒ½ç¯„å›²å†…ã§æ•µã‹ã‚‰æœ€ã‚‚é ã„å ´æ‰€ã‚’æ¤œç´¢
+        If .Mode = "“¦–S" Then
+            'ˆÚ“®‰Â”\”ÍˆÍ“à‚Å“G‚©‚çÅ‚à‰“‚¢êŠ‚ğŒŸõ
             SafetyPoint SelectedUnit, dst_x, dst_y
             new_x = dst_x
             new_y = dst_y
-        ElseIf .IsConditionSatisfied("æ··ä¹±") Then
-            'ç§»å‹•å¯èƒ½ç¯„å›²å†…ã‹ã‚‰ãƒ©ãƒ³ãƒ€ãƒ ã«è¡Œãå…ˆã‚’é¸æŠ
+        ElseIf .IsConditionSatisfied("¬—") Then
+            'ˆÚ“®‰Â”\”ÍˆÍ“à‚©‚çƒ‰ƒ“ƒ_ƒ€‚És‚«æ‚ğ‘I‘ğ
             dst_x = .X + Dice(.Speed + 1) - Dice(.Speed + 1)
             dst_y = .Y + Dice(.Speed + 1) - Dice(.Speed + 1)
             NearestPoint SelectedUnit, dst_x, dst_y, new_x, new_y
         Else
-            'ç§»å‹•å¯èƒ½ç¯„å›²å†…ã§ç§»å‹•ç›®çš„åœ°ã«æœ€ã‚‚è¿‘ã„å ´æ‰€ã‚’æ¤œç´¢
+            'ˆÚ“®‰Â”\”ÍˆÍ“à‚ÅˆÚ“®–Ú“I’n‚ÉÅ‚à‹ß‚¢êŠ‚ğŒŸõ
             NearestPoint SelectedUnit, dst_x, dst_y, new_x0, new_y0
             
-            'ç§»å‹•å…ˆãŒå±é™ºåœ°åŸŸã‹ã©ã†ã‹åˆ¤å®šã™ã‚‹
+            'ˆÚ“®æ‚ªŠëŒ¯’nˆæ‚©‚Ç‚¤‚©”»’è‚·‚é
             tmp = Abs(dst_x - new_x0) + Abs(dst_y - new_y0)
             If tmp <= 5 Then
                 If Not MapDataForUnit(dst_x, dst_y) Is Nothing Then
@@ -1835,8 +1835,8 @@ MoveAreaSelected:
             new_y = new_y0
             new_locations_value = -1
             If tmp <= 5 Then
-                'ç§»å‹•å…ˆã¯å±é™ºåœ°åŸŸã€‚æ´è­·ã—åˆãˆã‚‹ãƒ¦ãƒ‹ãƒƒãƒˆã¨éš£æ¥ã™ã‚‹ã‹ã€
-                'æœ‰åŠ¹ãªåœ°å½¢åŠ¹æœãŒå¾—ã‚‰ã‚Œã‚‹å ´æ‰€ã‚’æ¢ã™ã€‚
+                'ˆÚ“®æ‚ÍŠëŒ¯’nˆæB‰‡Œì‚µ‡‚¦‚éƒ†ƒjƒbƒg‚Æ—×Ú‚·‚é‚©A
+                '—LŒø‚È’nŒ`Œø‰Ê‚ª“¾‚ç‚ê‚éêŠ‚ğ’T‚·B
                 For i = 0 To 12
                     Select Case i
                         Case 0
@@ -1891,15 +1891,15 @@ MoveAreaSelected:
                                 + TerrainEffectForENRecover(tx, ty) _
                                 + 100 * .LookForSupport(tx, ty)
                             
-                            'åœ°å½¢ã«ã‚ˆã‚‹é˜²å¾¡åŠ¹æœã¯ç©ºä¸­ã«ã„ã‚‹å ´åˆã«ã®ã¿é©ç”¨
-                            If .Area <> "ç©ºä¸­" Then
+                            '’nŒ`‚É‚æ‚é–hŒäŒø‰Ê‚Í‹ó’†‚É‚¢‚éê‡‚É‚Ì‚İ“K—p
+                            If .Area <> "‹ó’†" Then
                                 tmp = tmp _
                                     + TerrainEffectForHit(tx, ty) _
                                     + TerrainEffectForDamage(tx, ty) _
                                 
-                                'æ°´ä¸­ç”¨ãƒ¦ãƒ‹ãƒƒãƒˆã®å ´åˆã¯æ°´ä¸­ã‚’å„ªå…ˆ
-                                If TerrainClass(tx, ty) = "æ°´" Then
-                                    If .IsTransAvailable("æ°´") Then
+                                '…’†—pƒ†ƒjƒbƒg‚Ìê‡‚Í…’†‚ğ—Dæ
+                                If TerrainClass(tx, ty) = "…" Then
+                                    If .IsTransAvailable("…") Then
                                         tmp = tmp + 100
                                     End If
                                 End If
@@ -1914,8 +1914,8 @@ MoveAreaSelected:
                     End If
                 Next
             Else
-                'ç§»å‹•å…ˆã¯å±é™ºåœ°åŸŸã§ã¯ãªã„ã€‚
-                'æ´è­·ã—åˆãˆã‚‹ãƒ¦ãƒ‹ãƒƒãƒˆãŒã„ã‚Œã°éš£æ¥ã™ã‚‹ã€‚
+                'ˆÚ“®æ‚ÍŠëŒ¯’nˆæ‚Å‚Í‚È‚¢B
+                '‰‡Œì‚µ‡‚¦‚éƒ†ƒjƒbƒg‚ª‚¢‚ê‚Î—×Ú‚·‚éB
                 For i = 0 To 4
                     Select Case i
                         Case 0
@@ -1956,41 +1956,41 @@ MoveAreaSelected:
         If new_x < 1 Or MapWidth < new_x _
             Or new_y < 1 Or MapHeight < new_y _
         Then
-            'ç§»å‹•ã§ãã‚‹å ´æ‰€ãŒãªã„â€¦â€¦
+            'ˆÚ“®‚Å‚«‚éêŠ‚ª‚È‚¢cc
             GoTo EndOfOperation
         End If
         
-        'è¦‹ã¤ã‹ã£ãŸå ´æ‰€ãŒã„ã¾ã„ã‚‹å ´æ‰€ã§ãªã‘ã‚Œã°ãã“ã¸ç§»å‹•
+        'Œ©‚Â‚©‚Á‚½êŠ‚ª‚¢‚Ü‚¢‚éêŠ‚Å‚È‚¯‚ê‚Î‚»‚±‚ÖˆÚ“®
         If .X <> new_x Or .Y <> new_y Then
             Select Case mmode
-                Case "ãƒ†ãƒ¬ãƒãƒ¼ãƒˆ"
-                    If .IsMessageDefined("ãƒ†ãƒ¬ãƒãƒ¼ãƒˆ") Then
+                Case "ƒeƒŒƒ|[ƒg"
+                    If .IsMessageDefined("ƒeƒŒƒ|[ƒg") Then
                         OpenMessageForm
-                        .PilotMessage "ãƒ†ãƒ¬ãƒãƒ¼ãƒˆ"
+                        .PilotMessage "ƒeƒŒƒ|[ƒg"
                         CloseMessageForm
                     End If
-                    If .IsAnimationDefined("ãƒ†ãƒ¬ãƒãƒ¼ãƒˆ", .FeatureName("ãƒ†ãƒ¬ãƒãƒ¼ãƒˆ")) Then
-                        .PlayAnimation "ãƒ†ãƒ¬ãƒãƒ¼ãƒˆ", .FeatureName("ãƒ†ãƒ¬ãƒãƒ¼ãƒˆ")
-                    ElseIf .IsSpecialEffectDefined("ãƒ†ãƒ¬ãƒãƒ¼ãƒˆ", .FeatureName("ãƒ†ãƒ¬ãƒãƒ¼ãƒˆ")) Then
-                        .SpecialEffect "ãƒ†ãƒ¬ãƒãƒ¼ãƒˆ", .FeatureName("ãƒ†ãƒ¬ãƒãƒ¼ãƒˆ")
+                    If .IsAnimationDefined("ƒeƒŒƒ|[ƒg", .FeatureName("ƒeƒŒƒ|[ƒg")) Then
+                        .PlayAnimation "ƒeƒŒƒ|[ƒg", .FeatureName("ƒeƒŒƒ|[ƒg")
+                    ElseIf .IsSpecialEffectDefined("ƒeƒŒƒ|[ƒg", .FeatureName("ƒeƒŒƒ|[ƒg")) Then
+                        .SpecialEffect "ƒeƒŒƒ|[ƒg", .FeatureName("ƒeƒŒƒ|[ƒg")
                     ElseIf BattleAnimation Then
-                        ShowAnimation "ãƒ†ãƒ¬ãƒãƒ¼ãƒˆç™ºå‹• Whiz.wav " & .FeatureName0("ãƒ†ãƒ¬ãƒãƒ¼ãƒˆ")
+                        ShowAnimation "ƒeƒŒƒ|[ƒg”­“® Whiz.wav " & .FeatureName0("ƒeƒŒƒ|[ƒg")
                     Else
                         PlayWave "Whiz.wav"
                     End If
                     .Move new_x, new_y, True, False, True
                     SelectedUnitMoveCost = 1000
                     RedrawScreen
-                Case "ã‚¸ãƒ£ãƒ³ãƒ—"
-                    If .IsMessageDefined("ã‚¸ãƒ£ãƒ³ãƒ—") Then
+                Case "ƒWƒƒƒ“ƒv"
+                    If .IsMessageDefined("ƒWƒƒƒ“ƒv") Then
                         OpenMessageForm
-                        .PilotMessage "ã‚¸ãƒ£ãƒ³ãƒ—"
+                        .PilotMessage "ƒWƒƒƒ“ƒv"
                         CloseMessageForm
                     End If
-                    If .IsAnimationDefined("ã‚¸ãƒ£ãƒ³ãƒ—", .FeatureName("ã‚¸ãƒ£ãƒ³ãƒ—")) Then
-                        .PlayAnimation "ã‚¸ãƒ£ãƒ³ãƒ—", .FeatureName("ã‚¸ãƒ£ãƒ³ãƒ—")
-                    ElseIf .IsSpecialEffectDefined("ã‚¸ãƒ£ãƒ³ãƒ—", .FeatureName("ã‚¸ãƒ£ãƒ³ãƒ—")) Then
-                        .SpecialEffect "ã‚¸ãƒ£ãƒ³ãƒ—", .FeatureName("ã‚¸ãƒ£ãƒ³ãƒ—")
+                    If .IsAnimationDefined("ƒWƒƒƒ“ƒv", .FeatureName("ƒWƒƒƒ“ƒv")) Then
+                        .PlayAnimation "ƒWƒƒƒ“ƒv", .FeatureName("ƒWƒƒƒ“ƒv")
+                    ElseIf .IsSpecialEffectDefined("ƒWƒƒƒ“ƒv", .FeatureName("ƒWƒƒƒ“ƒv")) Then
+                        .SpecialEffect "ƒWƒƒƒ“ƒv", .FeatureName("ƒWƒƒƒ“ƒv")
                     Else
                         PlayWave "Swing.wav"
                     End If
@@ -1998,58 +1998,58 @@ MoveAreaSelected:
                     SelectedUnitMoveCost = 1000
                     RedrawScreen
                 Case Else
-                    'é€šå¸¸ç§»å‹•
+                    '’ÊíˆÚ“®
                     .Move new_x, new_y
                     SelectedUnitMoveCost = TotalMoveCost(new_x, new_y)
             End Select
             moved = True
             
-            'æ€è€ƒãƒ¢ãƒ¼ãƒ‰ãŒã€Œ(X,Y)ã«ç§»å‹•ã€ã§ç›®çš„åœ°ã«ã¤ã„ãŸå ´åˆ
+            'vlƒ‚[ƒh‚ªu(X,Y)‚ÉˆÚ“®v‚Å–Ú“I’n‚É‚Â‚¢‚½ê‡
             If LLength(.Mode) = 2 Then
                 If .X = dst_x And .Y = dst_y Then
-                    .Mode = "å¾…æ©Ÿ"
+                    .Mode = "‘Ò‹@"
                 End If
             End If
         End If
         
-        'ã“ã“ã§ï¼¥ï¼®åˆ‡ã‚Œï¼Ÿ
+        '‚±‚±‚Å‚d‚mØ‚êH
         If .EN = 0 Then
             If .MaxAction = 0 Then
                 GoTo EndOfOperation
             End If
         End If
         
-        'é­…äº†ã•ã‚Œã¦ã„ã‚‹å ´åˆ
-        If .IsConditionSatisfied("é­…äº†") Then
+        '–£—¹‚³‚ê‚Ä‚¢‚éê‡
+        If .IsConditionSatisfied("–£—¹") Then
             GoTo EndOfOperation
         End If
         
-        'é€ƒã’ã¦ã„ã‚‹å ´åˆ
-        If .Mode = "é€ƒäº¡" Then
+        '“¦‚°‚Ä‚¢‚éê‡
+        If .Mode = "“¦–S" Then
             GoTo EndOfOperation
         End If
         
-        'æ€è€ƒãƒ¢ãƒ¼ãƒ‰ãŒç‰¹å®šã®ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’ç‹™ã†ã‚ˆã†ã«è¨­å®šã•ã‚Œã¦ã„ã‚‹å ´åˆ
+        'vlƒ‚[ƒh‚ª“Á’è‚Ìƒ^[ƒQƒbƒg‚ğ‘_‚¤‚æ‚¤‚Éİ’è‚³‚ê‚Ä‚¢‚éê‡
         If PList.IsDefined(.Mode) Then
             If PList.Item(.Mode).Unit Is SelectedTarget Then
                 If .IsEnemy(SelectedTarget) Then
                     If moved Then
-                        w = SelectWeapon(SelectedUnit, SelectedTarget, "ç§»å‹•å¾Œ")
+                        w = SelectWeapon(SelectedUnit, SelectedTarget, "ˆÚ“®Œã")
                     Else
-                        w = SelectWeapon(SelectedUnit, SelectedTarget, "ç§»å‹•å¯èƒ½")
+                        w = SelectWeapon(SelectedUnit, SelectedTarget, "ˆÚ“®‰Â”\")
                     End If
                     If w > 0 Then
-                        'ç§»å‹•ã®çµæœã€ã‚¿ãƒ¼ã‚²ãƒƒãƒˆãŒå°„ç¨‹å†…ã«å…¥ã£ãŸ
+                        'ˆÚ“®‚ÌŒ‹‰ÊAƒ^[ƒQƒbƒg‚ªË’ö“à‚É“ü‚Á‚½
                         GoTo AttackEnemy
                     End If
                 Else
-                    'è­·è¡›ã™ã‚‹ãƒ¦ãƒ‹ãƒƒãƒˆã®ã‚‚ã¨ã‚’é›¢ã‚Œã‚‹ã¹ã‹ã‚‰ãš
+                    'Œì‰q‚·‚éƒ†ƒjƒbƒg‚Ì‚à‚Æ‚ğ—£‚ê‚é‚×‚©‚ç‚¸
                     moved = True
                 End If
             End If
         End If
         
-        'ç‰¹å®šã®åœ°ç‚¹ã«ç§»å‹•ä¸­
+        '“Á’è‚Ì’n“_‚ÉˆÚ“®’†
         If LLength(.Mode) = 2 Then
             If 1 <= dst_x And dst_x <= MapWidth _
                 And 1 <= dst_y And dst_y <= MapHeight _
@@ -2057,11 +2057,11 @@ MoveAreaSelected:
                 If Not MapDataForUnit(dst_x, dst_y) Is Nothing Then
                     Set SelectedTarget = MapDataForUnit(dst_x, dst_y)
                     If .IsEnemy(SelectedTarget) Then
-                        'ç§»å‹•å…ˆã®å ´æ‰€ã«ã„ã‚‹æ•µã‚’å„ªå…ˆã—ã¦æ’é™¤
+                        'ˆÚ“®æ‚ÌêŠ‚É‚¢‚é“G‚ğ—Dæ‚µ‚Ä”rœ
                         If moved Then
-                            w = SelectWeapon(SelectedUnit, SelectedTarget, "ç§»å‹•å¾Œ")
+                            w = SelectWeapon(SelectedUnit, SelectedTarget, "ˆÚ“®Œã")
                         Else
-                            w = SelectWeapon(SelectedUnit, SelectedTarget, "ç§»å‹•å¯èƒ½")
+                            w = SelectWeapon(SelectedUnit, SelectedTarget, "ˆÚ“®‰Â”\")
                         End If
                         If w > 0 Then
                             GoTo AttackEnemy
@@ -2072,7 +2072,7 @@ MoveAreaSelected:
             End If
         End If
         
-        'æ”¹ã‚ã¦æ”»æ’ƒã®ã‚·ãƒ¼ã‚±ãƒ³ã‚¹ã«ç§»è¡Œ
+        '‰ü‚ß‚ÄUŒ‚‚ÌƒV[ƒPƒ“ƒX‚ÉˆÚs
         If Not took_action Then
             GoTo TryMapAttack
         End If
@@ -2080,118 +2080,118 @@ MoveAreaSelected:
     
 EndOfOperation:
     
-    'è¡Œå‹•çµ‚äº†
+    's“®I—¹
     
     ReDim SelectedPartners(0)
     
     If moved Then
-        'æŒç¶šæœŸé–“ãŒã€Œç§»å‹•ã€ã®ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼åŠ¹æœã‚’å‰Šé™¤
-        SelectedUnit.RemoveSpecialPowerInEffect "ç§»å‹•"
+        '‘±ŠúŠÔ‚ªuˆÚ“®v‚ÌƒXƒyƒVƒƒƒ‹ƒpƒ[Œø‰Ê‚ğíœ
+        SelectedUnit.RemoveSpecialPowerInEffect "ˆÚ“®"
     End If
 End Sub
 
-'ãƒã‚¤ãƒ‘ãƒ¼ãƒ¢ãƒ¼ãƒ‰ãŒå¯èƒ½ã§ã‚ã‚Œã°ãƒã‚¤ãƒ‘ãƒ¼ãƒ¢ãƒ¼ãƒ‰ç™ºå‹•
+'ƒnƒCƒp[ƒ‚[ƒh‚ª‰Â”\‚Å‚ ‚ê‚ÎƒnƒCƒp[ƒ‚[ƒh”­“®
 Private Sub TryHyperMode()
 Dim uname As String, u As Unit
 Dim fname As String, flevel As Double, fdata As String
 
     With SelectedUnit
-        'ãƒã‚¤ãƒ‘ãƒ¼ãƒ¢ãƒ¼ãƒ‰ã‚’æŒã£ã¦ã„ã‚‹ï¼Ÿ
-        If Not .IsFeatureAvailable("ãƒã‚¤ãƒ‘ãƒ¼ãƒ¢ãƒ¼ãƒ‰") Then
+        'ƒnƒCƒp[ƒ‚[ƒh‚ğ‚Á‚Ä‚¢‚éH
+        If Not .IsFeatureAvailable("ƒnƒCƒp[ƒ‚[ƒh") Then
             Exit Sub
         End If
         
-        fname = .FeatureName("ãƒã‚¤ãƒ‘ãƒ¼ãƒ¢ãƒ¼ãƒ‰")
-        flevel = .FeatureLevel("ãƒã‚¤ãƒ‘ãƒ¼ãƒ¢ãƒ¼ãƒ‰")
-        fdata = .FeatureData("ãƒã‚¤ãƒ‘ãƒ¼ãƒ¢ãƒ¼ãƒ‰")
+        fname = .FeatureName("ƒnƒCƒp[ƒ‚[ƒh")
+        flevel = .FeatureLevel("ƒnƒCƒp[ƒ‚[ƒh")
+        fdata = .FeatureData("ƒnƒCƒp[ƒ‚[ƒh")
         
-        'ç™ºå‹•æ¡ä»¶ã‚’æº€ãŸã™ï¼Ÿ
+        '”­“®ğŒ‚ğ–‚½‚·H
         If .MainPilot.Morale < 100 + CInt(10# * flevel) _
-            And (InStr(fdata, "æ°—åŠ›ç™ºå‹•") > 0 _
+            And (InStr(fdata, "‹C—Í”­“®") > 0 _
                 Or .HP > .MaxHP \ 4) _
         Then
             Exit Sub
         End If
         
-        'ãƒã‚¤ãƒ‘ãƒ¼ãƒ¢ãƒ¼ãƒ‰ãŒç¦æ­¢ã•ã‚Œã¦ã„ã‚‹ï¼Ÿ
-        If .IsConditionSatisfied("å½¢æ…‹å›ºå®š") Then
+        'ƒnƒCƒp[ƒ‚[ƒh‚ª‹Ö~‚³‚ê‚Ä‚¢‚éH
+        If .IsConditionSatisfied("Œ`‘ÔŒÅ’è") Then
             Exit Sub
         End If
-        If .IsConditionSatisfied("æ©Ÿä½“å›ºå®š") Then
-            Exit Sub
-        End If
-        
-        'å¤‰èº«ä¸­ãƒ»èƒ½åŠ›ã‚³ãƒ”ãƒ¼ä¸­ã¯ãƒã‚¤ãƒ‘ãƒ¼ãƒ¢ãƒ¼ãƒ‰ã‚’ä½¿ç”¨ã§ããªã„
-        If .IsConditionSatisfied("ãƒãƒ¼ãƒãƒ«ãƒ¢ãƒ¼ãƒ‰ä»˜åŠ ") Then
+        If .IsConditionSatisfied("‹@‘ÌŒÅ’è") Then
             Exit Sub
         End If
         
-        'ãƒã‚¤ãƒ‘ãƒ¼ãƒ¢ãƒ¼ãƒ‰å…ˆã®å½¢æ…‹ã‚’èª¿ã¹ã‚‹
+        '•Ïg’†E”\—ÍƒRƒs[’†‚ÍƒnƒCƒp[ƒ‚[ƒh‚ğg—p‚Å‚«‚È‚¢
+        If .IsConditionSatisfied("ƒm[ƒ}ƒ‹ƒ‚[ƒh•t‰Á") Then
+            Exit Sub
+        End If
+        
+        'ƒnƒCƒp[ƒ‚[ƒhæ‚ÌŒ`‘Ô‚ğ’²‚×‚é
         uname = LIndex(fdata, 2)
         Set u = .OtherForm(uname)
         
-        'ãƒã‚¤ãƒ‘ãƒ¼ãƒ¢ãƒ¼ãƒ‰å…ˆã®å½¢æ…‹ã¯ä½¿ç”¨å¯èƒ½ï¼Ÿ
-        If u.IsConditionSatisfied("è¡Œå‹•ä¸èƒ½") _
+        'ƒnƒCƒp[ƒ‚[ƒhæ‚ÌŒ`‘Ô‚Íg—p‰Â”\H
+        If u.IsConditionSatisfied("s“®•s”\") _
             Or Not u.IsAbleToEnter(.X, .Y) _
         Then
             Exit Sub
         End If
         
-        'ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã§ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’è¡¨ç¤ºã•ã›ã‚‹ãŸã‚è¿½åŠ ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‚’ã‚ã‚‰ã‹ã˜ã‚ä½œæˆ
-        If u.IsFeatureAvailable("è¿½åŠ ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆ") Then
-            If Not PList.IsDefined(u.FeatureData("è¿½åŠ ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆ")) Then
-                PList.Add u.FeatureData("è¿½åŠ ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆ"), .MainPilot.Level, .Party0
+        'ƒ_ƒCƒAƒƒO‚ÅƒƒbƒZ[ƒW‚ğ•\¦‚³‚¹‚é‚½‚ß’Ç‰ÁƒpƒCƒƒbƒg‚ğ‚ ‚ç‚©‚¶‚ßì¬
+        If u.IsFeatureAvailable("’Ç‰ÁƒpƒCƒƒbƒg") Then
+            If Not PList.IsDefined(u.FeatureData("’Ç‰ÁƒpƒCƒƒbƒg")) Then
+                PList.Add u.FeatureData("’Ç‰ÁƒpƒCƒƒbƒg"), .MainPilot.Level, .Party0
             End If
         End If
         
-        'ãƒã‚¤ãƒ‘ãƒ¼ãƒ¢ãƒ¼ãƒ‰ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
-        If .IsMessageDefined("ãƒã‚¤ãƒ‘ãƒ¼ãƒ¢ãƒ¼ãƒ‰(" & .Name & "=>" & uname & ")") Then
+        'ƒnƒCƒp[ƒ‚[ƒhƒƒbƒZ[ƒW
+        If .IsMessageDefined("ƒnƒCƒp[ƒ‚[ƒh(" & .Name & "=>" & uname & ")") Then
             OpenMessageForm
-            .PilotMessage "ãƒã‚¤ãƒ‘ãƒ¼ãƒ¢ãƒ¼ãƒ‰(" & .Name & "=>" & uname & ")"
+            .PilotMessage "ƒnƒCƒp[ƒ‚[ƒh(" & .Name & "=>" & uname & ")"
             CloseMessageForm
-        ElseIf .IsMessageDefined("ãƒã‚¤ãƒ‘ãƒ¼ãƒ¢ãƒ¼ãƒ‰(" & uname & ")") Then
+        ElseIf .IsMessageDefined("ƒnƒCƒp[ƒ‚[ƒh(" & uname & ")") Then
             OpenMessageForm
-            .PilotMessage "ãƒã‚¤ãƒ‘ãƒ¼ãƒ¢ãƒ¼ãƒ‰(" & uname & ")"
+            .PilotMessage "ƒnƒCƒp[ƒ‚[ƒh(" & uname & ")"
             CloseMessageForm
-        ElseIf .IsMessageDefined("ãƒã‚¤ãƒ‘ãƒ¼ãƒ¢ãƒ¼ãƒ‰(" & fname & ")") Then
+        ElseIf .IsMessageDefined("ƒnƒCƒp[ƒ‚[ƒh(" & fname & ")") Then
             OpenMessageForm
-            .PilotMessage "ãƒã‚¤ãƒ‘ãƒ¼ãƒ¢ãƒ¼ãƒ‰(" & fname & ")"
+            .PilotMessage "ƒnƒCƒp[ƒ‚[ƒh(" & fname & ")"
             CloseMessageForm
-        ElseIf .IsMessageDefined("ãƒã‚¤ãƒ‘ãƒ¼ãƒ¢ãƒ¼ãƒ‰") Then
+        ElseIf .IsMessageDefined("ƒnƒCƒp[ƒ‚[ƒh") Then
             OpenMessageForm
-            .PilotMessage "ãƒã‚¤ãƒ‘ãƒ¼ãƒ¢ãƒ¼ãƒ‰"
+            .PilotMessage "ƒnƒCƒp[ƒ‚[ƒh"
             CloseMessageForm
         End If
         
-        'ã‚¢ãƒ‹ãƒ¡è¡¨ç¤º
-        If .IsAnimationDefined("ãƒã‚¤ãƒ‘ãƒ¼ãƒ¢ãƒ¼ãƒ‰(" & .Name & "=>" & uname & ")") Then
-            .PlayAnimation "ãƒã‚¤ãƒ‘ãƒ¼ãƒ¢ãƒ¼ãƒ‰(" & .Name & "=>" & uname & ")"
-        ElseIf .IsAnimationDefined("ãƒã‚¤ãƒ‘ãƒ¼ãƒ¢ãƒ¼ãƒ‰(" & uname & ")") Then
-            .PlayAnimation "ãƒã‚¤ãƒ‘ãƒ¼ãƒ¢ãƒ¼ãƒ‰(" & uname & ")"
-        ElseIf .IsAnimationDefined("ãƒã‚¤ãƒ‘ãƒ¼ãƒ¢ãƒ¼ãƒ‰(" & fname & ")") Then
-            .PlayAnimation "ãƒã‚¤ãƒ‘ãƒ¼ãƒ¢ãƒ¼ãƒ‰(" & fname & ")"
-        ElseIf .IsAnimationDefined("ãƒã‚¤ãƒ‘ãƒ¼ãƒ¢ãƒ¼ãƒ‰") Then
-            .PlayAnimation "ãƒã‚¤ãƒ‘ãƒ¼ãƒ¢ãƒ¼ãƒ‰"
-        ElseIf .IsSpecialEffectDefined("ãƒã‚¤ãƒ‘ãƒ¼ãƒ¢ãƒ¼ãƒ‰(" & .Name & "=>" & uname & ")") Then
-            .SpecialEffect "ãƒã‚¤ãƒ‘ãƒ¼ãƒ¢ãƒ¼ãƒ‰(" & .Name & "=>" & uname & ")"
-        ElseIf .IsSpecialEffectDefined("ãƒã‚¤ãƒ‘ãƒ¼ãƒ¢ãƒ¼ãƒ‰(" & uname & ")") Then
-            .SpecialEffect "ãƒã‚¤ãƒ‘ãƒ¼ãƒ¢ãƒ¼ãƒ‰(" & uname & ")"
-        ElseIf .IsSpecialEffectDefined("ãƒã‚¤ãƒ‘ãƒ¼ãƒ¢ãƒ¼ãƒ‰(" & fname & ")") Then
-            .SpecialEffect "ãƒã‚¤ãƒ‘ãƒ¼ãƒ¢ãƒ¼ãƒ‰(" & fname & ")"
-        ElseIf .IsSpecialEffectDefined("ãƒã‚¤ãƒ‘ãƒ¼ãƒ¢ãƒ¼ãƒ‰") Then
-            .SpecialEffect "ãƒã‚¤ãƒ‘ãƒ¼ãƒ¢ãƒ¼ãƒ‰"
+        'ƒAƒjƒ•\¦
+        If .IsAnimationDefined("ƒnƒCƒp[ƒ‚[ƒh(" & .Name & "=>" & uname & ")") Then
+            .PlayAnimation "ƒnƒCƒp[ƒ‚[ƒh(" & .Name & "=>" & uname & ")"
+        ElseIf .IsAnimationDefined("ƒnƒCƒp[ƒ‚[ƒh(" & uname & ")") Then
+            .PlayAnimation "ƒnƒCƒp[ƒ‚[ƒh(" & uname & ")"
+        ElseIf .IsAnimationDefined("ƒnƒCƒp[ƒ‚[ƒh(" & fname & ")") Then
+            .PlayAnimation "ƒnƒCƒp[ƒ‚[ƒh(" & fname & ")"
+        ElseIf .IsAnimationDefined("ƒnƒCƒp[ƒ‚[ƒh") Then
+            .PlayAnimation "ƒnƒCƒp[ƒ‚[ƒh"
+        ElseIf .IsSpecialEffectDefined("ƒnƒCƒp[ƒ‚[ƒh(" & .Name & "=>" & uname & ")") Then
+            .SpecialEffect "ƒnƒCƒp[ƒ‚[ƒh(" & .Name & "=>" & uname & ")"
+        ElseIf .IsSpecialEffectDefined("ƒnƒCƒp[ƒ‚[ƒh(" & uname & ")") Then
+            .SpecialEffect "ƒnƒCƒp[ƒ‚[ƒh(" & uname & ")"
+        ElseIf .IsSpecialEffectDefined("ƒnƒCƒp[ƒ‚[ƒh(" & fname & ")") Then
+            .SpecialEffect "ƒnƒCƒp[ƒ‚[ƒh(" & fname & ")"
+        ElseIf .IsSpecialEffectDefined("ƒnƒCƒp[ƒ‚[ƒh") Then
+            .SpecialEffect "ƒnƒCƒp[ƒ‚[ƒh"
         End If
         
-        'ãƒã‚¤ãƒ‘ãƒ¼ãƒ¢ãƒ¼ãƒ‰ç™ºå‹•
+        'ƒnƒCƒp[ƒ‚[ƒh”­“®
         .Transform uname
     End With
     
-    'ãƒã‚¤ãƒ‘ãƒ¼ãƒ¢ãƒ¼ãƒ‰ã‚¤ãƒ™ãƒ³ãƒˆ
+    'ƒnƒCƒp[ƒ‚[ƒhƒCƒxƒ“ƒg
     With u.CurrentForm
-        HandleEvent "ãƒã‚¤ãƒ‘ãƒ¼ãƒ¢ãƒ¼ãƒ‰", .MainPilot.ID, .Name
+        HandleEvent "ƒnƒCƒp[ƒ‚[ƒh", .MainPilot.ID, .Name
     End With
     
-    'ãƒã‚¤ãƒ‘ãƒ¼ãƒ¢ãƒ¼ãƒ‰ï¼†ãƒãƒ¼ãƒãƒ«ãƒ¢ãƒ¼ãƒ‰ã®è‡ªå‹•ç™ºå‹•
+    'ƒnƒCƒp[ƒ‚[ƒh•ƒm[ƒ}ƒ‹ƒ‚[ƒh‚Ì©“®”­“®
     u.CurrentForm.CheckAutoHyperMode
     u.CurrentForm.CheckAutoNormalMode
     
@@ -2199,84 +2199,84 @@ Dim fname As String, flevel As Double, fdata As String
     DisplayUnitStatus SelectedUnit
 End Sub
 
-'æˆ¦é—˜å½¢æ…‹ã¸ã®å¤‰å½¢ãŒå¯èƒ½ã§ã‚ã‚Œã°å¤‰å½¢ã™ã‚‹
+'í“¬Œ`‘Ô‚Ö‚Ì•ÏŒ`‚ª‰Â”\‚Å‚ ‚ê‚Î•ÏŒ`‚·‚é
 Public Function TryBattleTransform() As Boolean
 Dim uname As String, u As Unit
 Dim flag As Boolean, xx As Integer, yy As Integer
 Dim i As Integer, j As Integer
 
     With SelectedUnit
-        'å¤‰å½¢ãŒå¯èƒ½ï¼Ÿ
-        If Not .IsFeatureAvailable("å¤‰å½¢") _
-            Or .IsConditionSatisfied("å½¢æ…‹å›ºå®š") _
-            Or .IsConditionSatisfied("æ©Ÿä½“å›ºå®š") _
+        '•ÏŒ`‚ª‰Â”\H
+        If Not .IsFeatureAvailable("•ÏŒ`") _
+            Or .IsConditionSatisfied("Œ`‘ÔŒÅ’è") _
+            Or .IsConditionSatisfied("‹@‘ÌŒÅ’è") _
         Then
             Exit Function
         End If
         
-        'ï¼•ãƒã‚¹ä»¥å†…ã«æ•µãŒã„ã‚‹ã‹ãƒã‚§ãƒƒã‚¯
+        '‚Tƒ}ƒXˆÈ“à‚É“G‚ª‚¢‚é‚©ƒ`ƒFƒbƒN
         If DistanceFromNearestEnemy(SelectedUnit) > 5 Then
-            'å‘¨ã‚Šã«æ•µã¯ã„ãªã„
+            'ü‚è‚É“G‚Í‚¢‚È‚¢
             Exit Function
         End If
         
-        'æœ€ã‚‚é‹å‹•æ€§ãŒé«˜ã„å½¢æ…‹ã«å¤‰å½¢
+        'Å‚à‰^“®«‚ª‚‚¢Œ`‘Ô‚É•ÏŒ`
         Set u = SelectedUnit
         xx = .X
         yy = .Y
-        For i = 2 To LLength(.FeatureData("å¤‰å½¢"))
-            uname = LIndex(.FeatureData("å¤‰å½¢"), i)
+        For i = 2 To LLength(.FeatureData("•ÏŒ`"))
+            uname = LIndex(.FeatureData("•ÏŒ`"), i)
             With .OtherForm(uname)
-                'ãã®å½¢æ…‹ã«å¤‰å½¢å¯èƒ½ï¼Ÿ
-                If .IsConditionSatisfied("è¡Œå‹•ä¸èƒ½") _
+                '‚»‚ÌŒ`‘Ô‚É•ÏŒ`‰Â”\H
+                If .IsConditionSatisfied("s“®•s”\") _
                     Or Not .IsAbleToEnter(xx, yy) _
                 Then
                     GoTo NextForm
                 End If
                 
-                'é€šå¸¸å½¢æ…‹ã¯å¼±ã„å½¢æ…‹ã§ã‚ã‚‹ã¨ã„ã†ä»®å®šã«åŸºã¥ãã€ãã®å½¢æ…‹ãŒ
-                'ãƒãƒ¼ãƒãƒ«ãƒ¢ãƒ¼ãƒ‰ã§æŒ‡å®šã•ã‚Œã¦ã„ã‚‹å ´åˆã°ç„¡è¦–ã™ã‚‹
-                If uname = LIndex(.FeatureData("ãƒãƒ¼ãƒãƒ«ãƒ¢ãƒ¼ãƒ‰"), 1) Then
+                '’ÊíŒ`‘Ô‚Íã‚¢Œ`‘Ô‚Å‚ ‚é‚Æ‚¢‚¤‰¼’è‚ÉŠî‚Ã‚«A‚»‚ÌŒ`‘Ô‚ª
+                'ƒm[ƒ}ƒ‹ƒ‚[ƒh‚Åw’è‚³‚ê‚Ä‚¢‚éê‡‚Î–³‹‚·‚é
+                If uname = LIndex(.FeatureData("ƒm[ƒ}ƒ‹ƒ‚[ƒh"), 1) Then
                     GoTo NextForm
                 End If
                 
-                'æµ·ã§ã¯æ°´ä¸­ã‚‚ã—ãã¯ç©ºä¸­é©å¿œã‚’æŒã¤ãƒ¦ãƒ‹ãƒƒãƒˆã‚’å„ªå…ˆ
+                'ŠC‚Å‚Í…’†‚à‚µ‚­‚Í‹ó’†“K‰‚ğ‚Âƒ†ƒjƒbƒg‚ğ—Dæ
                 Select Case TerrainClass(xx, yy)
-                    Case "æ°´", "æ·±æµ·"
-                        'æ°´ä¸­é©å¿œã‚’æŒã¤ãƒ¦ãƒ‹ãƒƒãƒˆã‚’æœ€å„ªå…ˆ
-                        If InStr(.Data.Transportation, "æ°´") > 0 Then
-                            If InStr(u.Data.Transportation, "æ°´") = 0 Then
+                    Case "…", "[ŠC"
+                        '…’†“K‰‚ğ‚Âƒ†ƒjƒbƒg‚ğÅ—Dæ
+                        If InStr(.Data.Transportation, "…") > 0 Then
+                            If InStr(u.Data.Transportation, "…") = 0 Then
                                 Set u = .OtherForm(uname)
                                 GoTo NextForm
                             End If
                         End If
-                        If InStr(u.Data.Transportation, "æ°´") > 0 Then
-                            If InStr(.Data.Transportation, "æ°´") = 0 Then
+                        If InStr(u.Data.Transportation, "…") > 0 Then
+                            If InStr(.Data.Transportation, "…") = 0 Then
                                 GoTo NextForm
                             End If
                         End If
                         
-                        'æ¬¡ç‚¹ã§ç©ºä¸­é©å¿œãƒ¦ãƒ‹ãƒƒãƒˆ
-                        If InStr(.Data.Transportation, "ç©º") > 0 Then
-                            If InStr(u.Data.Transportation, "ç©º") = 0 Then
+                        'Ÿ“_‚Å‹ó’†“K‰ƒ†ƒjƒbƒg
+                        If InStr(.Data.Transportation, "‹ó") > 0 Then
+                            If InStr(u.Data.Transportation, "‹ó") = 0 Then
                                 Set u = .OtherForm(uname)
                                 GoTo NextForm
                             End If
                         End If
-                        If InStr(u.Data.Transportation, "ç©º") > 0 Then
-                            If InStr(.Data.Transportation, "ç©º") = 0 Then
+                        If InStr(u.Data.Transportation, "‹ó") > 0 Then
+                            If InStr(.Data.Transportation, "‹ó") = 0 Then
                                 GoTo NextForm
                             End If
                         End If
                 End Select
                 
-                'é‹å‹•æ€§ãŒé«˜ã„ã‚‚ã®ã‚’å„ªå…ˆ
+                '‰^“®«‚ª‚‚¢‚à‚Ì‚ğ—Dæ
                 If .Data.Mobility < u.Data.Mobility Then
                     GoTo NextForm
                 ElseIf .Data.Mobility = u.Data.Mobility Then
-                    'é‹å‹•æ€§ãŒåŒã˜ãªã‚‰æ”»æ’ƒåŠ›ãŒé«˜ã„ã‚‚ã®ã‚’å„ªå…ˆ
+                    '‰^“®«‚ª“¯‚¶‚È‚çUŒ‚—Í‚ª‚‚¢‚à‚Ì‚ğ—Dæ
                     If .Data.CountWeapon = 0 Then
-                        'ã“ã®å½¢æ…‹ã¯æ­¦å™¨ã‚’æŒã£ã¦ã„ãªã„
+                        '‚±‚ÌŒ`‘Ô‚Í•Ší‚ğ‚Á‚Ä‚¢‚È‚¢
                         GoTo NextForm
                     ElseIf u.Data.CountWeapon > 0 Then
                         If .Data.Weapon(.Data.CountWeapon).Power _
@@ -2286,7 +2286,7 @@ Dim i As Integer, j As Integer
                         ElseIf .Data.Weapon(.Data.CountWeapon).Power _
                             = u.Data.Weapon(u.Data.CountWeapon).Power _
                         Then
-                            'æ”»æ’ƒåŠ›ã‚‚åŒã˜ãªã‚‰è£…ç”²ãŒé«˜ã„ã‚‚ã®ã‚’å„ªå…ˆ
+                            'UŒ‚—Í‚à“¯‚¶‚È‚ç‘•b‚ª‚‚¢‚à‚Ì‚ğ—Dæ
                             If .Data.Armor <= u.Data.Armor Then
                                 GoTo NextForm
                             End If
@@ -2298,67 +2298,67 @@ Dim i As Integer, j As Integer
 NextForm:
         Next
         
-        'ç¾åœ¨ã®å½¢æ…‹ãŒæœ€ã‚‚æˆ¦é—˜ã«é©ã—ã¦ã„ã‚‹ï¼Ÿ
+        'Œ»İ‚ÌŒ`‘Ô‚ªÅ‚àí“¬‚É“K‚µ‚Ä‚¢‚éH
         If u Is SelectedUnit Then
             Exit Function
         End If
         
-        'å½¢æ…‹uã«å¤‰å½¢æ±ºå®š
+        'Œ`‘Ôu‚É•ÏŒ`Œˆ’è
         uname = u.Name
         
-        'ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã§ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’è¡¨ç¤ºã•ã›ã‚‹ãŸã‚è¿½åŠ ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‚’ã‚ã‚‰ã‹ã˜ã‚ä½œæˆ
-        If u.IsFeatureAvailable("è¿½åŠ ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆ") Then
-            If Not PList.IsDefined(u.FeatureData("è¿½åŠ ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆ")) Then
-                If Not PDList.IsDefined(u.FeatureData("è¿½åŠ ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆ")) Then
+        'ƒ_ƒCƒAƒƒO‚ÅƒƒbƒZ[ƒW‚ğ•\¦‚³‚¹‚é‚½‚ß’Ç‰ÁƒpƒCƒƒbƒg‚ğ‚ ‚ç‚©‚¶‚ßì¬
+        If u.IsFeatureAvailable("’Ç‰ÁƒpƒCƒƒbƒg") Then
+            If Not PList.IsDefined(u.FeatureData("’Ç‰ÁƒpƒCƒƒbƒg")) Then
+                If Not PDList.IsDefined(u.FeatureData("’Ç‰ÁƒpƒCƒƒbƒg")) Then
                     ErrorMessage _
-                        uname & "ã®è¿½åŠ ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã€Œ" & u.FeatureData("è¿½åŠ ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆ") _
-                        & "ã€ã®ãƒ‡ãƒ¼ã‚¿ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“"
+                        uname & "‚Ì’Ç‰ÁƒpƒCƒƒbƒgu" & u.FeatureData("’Ç‰ÁƒpƒCƒƒbƒg") _
+                        & "v‚Ìƒf[ƒ^‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ"
                     TerminateSRC
                 End If
-                PList.Add u.FeatureData("è¿½åŠ ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆ"), .MainPilot.Level, .Party0
+                PList.Add u.FeatureData("’Ç‰ÁƒpƒCƒƒbƒg"), .MainPilot.Level, .Party0
             End If
         End If
         
-        'å¤‰å½¢ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
-        If .IsMessageDefined("å¤‰å½¢(" & .Name & "=>" & uname & ")") Then
+        '•ÏŒ`ƒƒbƒZ[ƒW
+        If .IsMessageDefined("•ÏŒ`(" & .Name & "=>" & uname & ")") Then
             OpenMessageForm
-            .PilotMessage "å¤‰å½¢(" & .Name & "=>" & uname & ")"
+            .PilotMessage "•ÏŒ`(" & .Name & "=>" & uname & ")"
             CloseMessageForm
-        ElseIf .IsMessageDefined("å¤‰å½¢(" & uname & ")") Then
+        ElseIf .IsMessageDefined("•ÏŒ`(" & uname & ")") Then
             OpenMessageForm
-            .PilotMessage "å¤‰å½¢(" & uname & ")"
+            .PilotMessage "•ÏŒ`(" & uname & ")"
             CloseMessageForm
-        ElseIf .IsMessageDefined("å¤‰å½¢(" & .FeatureName("å¤‰å½¢") & ")") Then
+        ElseIf .IsMessageDefined("•ÏŒ`(" & .FeatureName("•ÏŒ`") & ")") Then
             OpenMessageForm
-            .PilotMessage "å¤‰å½¢(" & .FeatureName("å¤‰å½¢") & ")"
+            .PilotMessage "•ÏŒ`(" & .FeatureName("•ÏŒ`") & ")"
             CloseMessageForm
         End If
         
-        'ã‚¢ãƒ‹ãƒ¡è¡¨ç¤º
-        If .IsAnimationDefined("å¤‰å½¢(" & .Name & "=>" & uname & ")") Then
-            .PlayAnimation "å¤‰å½¢(" & .Name & "=>" & uname & ")"
-        ElseIf .IsAnimationDefined("å¤‰å½¢(" & uname & ")") Then
-            .PlayAnimation "å¤‰å½¢(" & uname & ")"
-        ElseIf .IsAnimationDefined("å¤‰å½¢(" & .FeatureName("å¤‰å½¢") & ")") Then
-            .PlayAnimation "å¤‰å½¢(" & .FeatureName("å¤‰å½¢") & ")"
-        ElseIf .IsSpecialEffectDefined("å¤‰å½¢(" & .Name & "=>" & uname & ")") Then
-            .SpecialEffect "å¤‰å½¢(" & .Name & "=>" & uname & ")"
-        ElseIf .IsSpecialEffectDefined("å¤‰å½¢(" & uname & ")") Then
-            .SpecialEffect "å¤‰å½¢(" & uname & ")"
-        ElseIf .IsSpecialEffectDefined("å¤‰å½¢(" & .FeatureName("å¤‰å½¢") & ")") Then
-            .SpecialEffect "å¤‰å½¢(" & .FeatureName("å¤‰å½¢") & ")"
+        'ƒAƒjƒ•\¦
+        If .IsAnimationDefined("•ÏŒ`(" & .Name & "=>" & uname & ")") Then
+            .PlayAnimation "•ÏŒ`(" & .Name & "=>" & uname & ")"
+        ElseIf .IsAnimationDefined("•ÏŒ`(" & uname & ")") Then
+            .PlayAnimation "•ÏŒ`(" & uname & ")"
+        ElseIf .IsAnimationDefined("•ÏŒ`(" & .FeatureName("•ÏŒ`") & ")") Then
+            .PlayAnimation "•ÏŒ`(" & .FeatureName("•ÏŒ`") & ")"
+        ElseIf .IsSpecialEffectDefined("•ÏŒ`(" & .Name & "=>" & uname & ")") Then
+            .SpecialEffect "•ÏŒ`(" & .Name & "=>" & uname & ")"
+        ElseIf .IsSpecialEffectDefined("•ÏŒ`(" & uname & ")") Then
+            .SpecialEffect "•ÏŒ`(" & uname & ")"
+        ElseIf .IsSpecialEffectDefined("•ÏŒ`(" & .FeatureName("•ÏŒ`") & ")") Then
+            .SpecialEffect "•ÏŒ`(" & .FeatureName("•ÏŒ`") & ")"
         End If
         
-        'å¤‰å½¢
+        '•ÏŒ`
         .Transform uname
     End With
     
-    'å¤‰å½¢ã‚¤ãƒ™ãƒ³ãƒˆ
+    '•ÏŒ`ƒCƒxƒ“ƒg
     With u.CurrentForm
-        HandleEvent "å¤‰å½¢", .MainPilot.ID, .Name
+        HandleEvent "•ÏŒ`", .MainPilot.ID, .Name
     End With
     
-    'ãƒã‚¤ãƒ‘ãƒ¼ãƒ¢ãƒ¼ãƒ‰ï¼†ãƒãƒ¼ãƒãƒ«ãƒ¢ãƒ¼ãƒ‰ã®è‡ªå‹•ç™ºå‹•
+    'ƒnƒCƒp[ƒ‚[ƒh•ƒm[ƒ}ƒ‹ƒ‚[ƒh‚Ì©“®”­“®
     u.CurrentForm.CheckAutoHyperMode
     u.CurrentForm.CheckAutoNormalMode
     
@@ -2368,7 +2368,7 @@ NextForm:
     TryBattleTransform = True
 End Function
 
-'ç§»å‹•å½¢æ…‹ã¸ã®å¤‰å½¢ãŒå¯èƒ½ã§ã‚ã‚Œã°å¤‰å½¢ã™ã‚‹
+'ˆÚ“®Œ`‘Ô‚Ö‚Ì•ÏŒ`‚ª‰Â”\‚Å‚ ‚ê‚Î•ÏŒ`‚·‚é
 Private Function TryMoveTransform() As Boolean
 Dim uname As String, u As Unit
 Dim xx As Integer, yy As Integer
@@ -2377,10 +2377,10 @@ Dim speed1 As Integer, speed2 As Integer
 Dim i As Integer
 
     With SelectedUnit
-        'å¤‰å½¢ãŒå¯èƒ½ï¼Ÿ
-        If Not .IsFeatureAvailable("å¤‰å½¢") _
-            Or .IsConditionSatisfied("å½¢æ…‹å›ºå®š") _
-            Or .IsConditionSatisfied("æ©Ÿä½“å›ºå®š") _
+        '•ÏŒ`‚ª‰Â”\H
+        If Not .IsFeatureAvailable("•ÏŒ`") _
+            Or .IsConditionSatisfied("Œ`‘ÔŒÅ’è") _
+            Or .IsConditionSatisfied("‹@‘ÌŒÅ’è") _
         Then
             Exit Function
         End If
@@ -2388,8 +2388,8 @@ Dim i As Integer
         xx = .X
         yy = .Y
         
-        'åœ°å½¢ã«é‚ªé­”ã•ã‚Œã¦ç§»å‹•ã§ããªããªã‚‰ãªã„ã‹èª¿ã¹ã‚‹ãŸã‚ã€ç›®çš„åœ°ã®æ–¹å‘ã«ã‚ã‚‹
-        'éš£æ¥ã™ã‚‹ãƒã‚¹ã®åº§æ¨™ã‚’èª¿ã¹ã‚‹
+        '’nŒ`‚É×–‚‚³‚ê‚ÄˆÚ“®‚Å‚«‚È‚­‚È‚ç‚È‚¢‚©’²‚×‚é‚½‚ßA–Ú“I’n‚Ì•ûŒü‚É‚ ‚é
+        '—×Ú‚·‚éƒ}ƒX‚ÌÀ•W‚ğ’²‚×‚é
         If Abs(SelectedX - xx) > Abs(SelectedY - yy) Then
             If SelectedX > xx Then
                 tx = xx + 1
@@ -2406,68 +2406,68 @@ Dim i As Integer
             End If
         End If
         
-        'æœ€ã‚‚ç§»å‹•åŠ›ãŒé«˜ã„å½¢æ…‹ã«å¤‰å½¢
+        'Å‚àˆÚ“®—Í‚ª‚‚¢Œ`‘Ô‚É•ÏŒ`
         Set u = SelectedUnit
-        For i = 2 To LLength(.FeatureData("å¤‰å½¢"))
-            uname = LIndex(.FeatureData("å¤‰å½¢"), i)
+        For i = 2 To LLength(.FeatureData("•ÏŒ`"))
+            uname = LIndex(.FeatureData("•ÏŒ`"), i)
             With .OtherForm(uname)
-                'ãã®å½¢æ…‹ã«å¤‰å½¢å¯èƒ½ï¼Ÿ
-                If .IsConditionSatisfied("è¡Œå‹•ä¸èƒ½") _
+                '‚»‚ÌŒ`‘Ô‚É•ÏŒ`‰Â”\H
+                If .IsConditionSatisfied("s“®•s”\") _
                     Or Not .IsAbleToEnter(xx, yy) _
                 Then
                     GoTo NextForm
                 End If
                 
-                'ç›®çš„åœ°æ–¹é¢ã«ç§»å‹•å¯èƒ½ï¼Ÿ
+                '–Ú“I’n•û–Ê‚ÉˆÚ“®‰Â”\H
                 If u.IsAbleToEnter(tx, ty) _
                     And Not .IsAbleToEnter(tx, ty) _
                 Then
                     GoTo NextForm
                 End If
                 
-                'ç§»å‹•åŠ›ãŒé«˜ã„æ–¹ã‚’å„ªå…ˆ
+                'ˆÚ“®—Í‚ª‚‚¢•û‚ğ—Dæ
                 speed1 = .Data.Speed
-                If .Data.IsFeatureAvailable("ãƒ†ãƒ¬ãƒãƒ¼ãƒˆ") Then
-                    speed1 = speed1 + .Data.FeatureLevel("ãƒ†ãƒ¬ãƒãƒ¼ãƒˆ") + 1
+                If .Data.IsFeatureAvailable("ƒeƒŒƒ|[ƒg") Then
+                    speed1 = speed1 + .Data.FeatureLevel("ƒeƒŒƒ|[ƒg") + 1
                 End If
-                If .Data.IsFeatureAvailable("ã‚¸ãƒ£ãƒ³ãƒ—") Then
-                    speed1 = speed1 + .Data.FeatureLevel("ã‚¸ãƒ£ãƒ³ãƒ—") + 1
+                If .Data.IsFeatureAvailable("ƒWƒƒƒ“ƒv") Then
+                    speed1 = speed1 + .Data.FeatureLevel("ƒWƒƒƒ“ƒv") + 1
                 End If
-                'ç§»å‹•å¯èƒ½ãªåœ°å½¢ã‚¿ã‚¤ãƒ—ã‚‚è€ƒæ…®
+                'ˆÚ“®‰Â”\‚È’nŒ`ƒ^ƒCƒv‚àl—¶
                 Select Case TerrainClass(xx, yy)
-                    Case "æ°´", "æ·±æµ·"
-                        If InStr(.Data.Transportation, "æ°´") > 0 _
-                            Or InStr(.Data.Transportation, "ç©º") > 0 _
+                    Case "…", "[ŠC"
+                        If InStr(.Data.Transportation, "…") > 0 _
+                            Or InStr(.Data.Transportation, "‹ó") > 0 _
                         Then
                             speed1 = speed1 + 1
                         End If
-                    Case "å®‡å®™", "å±‹å†…"
-                        'å®‡å®™ã‚„å±‹å†…ã§ã¯å·®ãŒå‡ºãªã„
+                    Case "‰F’ˆ", "‰®“à"
+                        '‰F’ˆ‚â‰®“à‚Å‚Í·‚ªo‚È‚¢
                     Case Else
-                        If InStr(.Data.Transportation, "ç©º") > 0 Then
+                        If InStr(.Data.Transportation, "‹ó") > 0 Then
                             speed1 = speed1 + 1
                         End If
                 End Select
                 
                 speed2 = u.Data.Speed
-                If u.Data.IsFeatureAvailable("ãƒ†ãƒ¬ãƒãƒ¼ãƒˆ") Then
-                    speed2 = speed2 + u.Data.FeatureLevel("ãƒ†ãƒ¬ãƒãƒ¼ãƒˆ") + 1
+                If u.Data.IsFeatureAvailable("ƒeƒŒƒ|[ƒg") Then
+                    speed2 = speed2 + u.Data.FeatureLevel("ƒeƒŒƒ|[ƒg") + 1
                 End If
-                If u.Data.IsFeatureAvailable("ã‚¸ãƒ£ãƒ³ãƒ—") Then
-                    speed2 = speed2 + u.Data.FeatureLevel("ã‚¸ãƒ£ãƒ³ãƒ—") + 1
+                If u.Data.IsFeatureAvailable("ƒWƒƒƒ“ƒv") Then
+                    speed2 = speed2 + u.Data.FeatureLevel("ƒWƒƒƒ“ƒv") + 1
                 End If
-                'ç§»å‹•å¯èƒ½ãªåœ°å½¢ã‚¿ã‚¤ãƒ—ã‚‚è€ƒæ…®
+                'ˆÚ“®‰Â”\‚È’nŒ`ƒ^ƒCƒv‚àl—¶
                 Select Case TerrainClass(xx, yy)
-                    Case "æ°´", "æ·±æµ·"
-                        If InStr(u.Data.Transportation, "æ°´") > 0 _
-                            Or InStr(u.Data.Transportation, "ç©º") > 0 _
+                    Case "…", "[ŠC"
+                        If InStr(u.Data.Transportation, "…") > 0 _
+                            Or InStr(u.Data.Transportation, "‹ó") > 0 _
                         Then
                             speed2 = speed2 + 1
                         End If
-                    Case "å®‡å®™", "å±‹å†…"
-                        'å®‡å®™ã‚„å±‹å†…ã§ã¯å·®ãŒå‡ºãªã„
+                    Case "‰F’ˆ", "‰®“à"
+                        '‰F’ˆ‚â‰®“à‚Å‚Í·‚ªo‚È‚¢
                     Case Else
-                        If InStr(u.Data.Transportation, "ç©º") > 0 Then
+                        If InStr(u.Data.Transportation, "‹ó") > 0 Then
                             speed2 = speed2 + 1
                         End If
                 End Select
@@ -2475,7 +2475,7 @@ Dim i As Integer
                 If speed2 > speed1 Then
                     GoTo NextForm
                 ElseIf speed2 = speed1 Then
-                    'ç§»å‹•åŠ›ãŒåŒã˜ãªã‚‰è£…ç”²ãŒé«˜ã„æ–¹ã‚’å„ªå…ˆ
+                    'ˆÚ“®—Í‚ª“¯‚¶‚È‚ç‘•b‚ª‚‚¢•û‚ğ—Dæ
                     If u.Data.Armor >= .Data.Armor Then
                         GoTo NextForm
                     End If
@@ -2485,67 +2485,67 @@ Dim i As Integer
 NextForm:
         Next
         
-        'ç¾åœ¨ã®å½¢æ…‹ãŒæœ€ã‚‚ç§»å‹•ã«é©ã—ã¦ã„ã‚‹ï¼Ÿ
+        'Œ»İ‚ÌŒ`‘Ô‚ªÅ‚àˆÚ“®‚É“K‚µ‚Ä‚¢‚éH
         If SelectedUnit Is u Then
             Exit Function
         End If
         
-        'å½¢æ…‹uã«å¤‰å½¢æ±ºå®š
+        'Œ`‘Ôu‚É•ÏŒ`Œˆ’è
         uname = u.Name
         
-        'ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã§ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’è¡¨ç¤ºã•ã›ã‚‹ãŸã‚è¿½åŠ ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‚’ã‚ã‚‰ã‹ã˜ã‚ä½œæˆ
-        If u.IsFeatureAvailable("è¿½åŠ ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆ") Then
-            If Not PList.IsDefined(u.FeatureData("è¿½åŠ ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆ")) Then
-                If Not PDList.IsDefined(u.FeatureData("è¿½åŠ ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆ")) Then
+        'ƒ_ƒCƒAƒƒO‚ÅƒƒbƒZ[ƒW‚ğ•\¦‚³‚¹‚é‚½‚ß’Ç‰ÁƒpƒCƒƒbƒg‚ğ‚ ‚ç‚©‚¶‚ßì¬
+        If u.IsFeatureAvailable("’Ç‰ÁƒpƒCƒƒbƒg") Then
+            If Not PList.IsDefined(u.FeatureData("’Ç‰ÁƒpƒCƒƒbƒg")) Then
+                If Not PDList.IsDefined(u.FeatureData("’Ç‰ÁƒpƒCƒƒbƒg")) Then
                     ErrorMessage _
-                        uname & "ã®è¿½åŠ ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã€Œ" & u.FeatureData("è¿½åŠ ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆ") _
-                        & "ã€ã®ãƒ‡ãƒ¼ã‚¿ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“"
+                        uname & "‚Ì’Ç‰ÁƒpƒCƒƒbƒgu" & u.FeatureData("’Ç‰ÁƒpƒCƒƒbƒg") _
+                        & "v‚Ìƒf[ƒ^‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ"
                     TerminateSRC
                 End If
-                PList.Add u.FeatureData("è¿½åŠ ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆ"), .MainPilot.Level, .Party0
+                PList.Add u.FeatureData("’Ç‰ÁƒpƒCƒƒbƒg"), .MainPilot.Level, .Party0
             End If
         End If
         
-        'å¤‰å½¢ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
-        If .IsMessageDefined("å¤‰å½¢(" & .Name & "=>" & uname & ")") Then
+        '•ÏŒ`ƒƒbƒZ[ƒW
+        If .IsMessageDefined("•ÏŒ`(" & .Name & "=>" & uname & ")") Then
             OpenMessageForm
-            .PilotMessage "å¤‰å½¢(" & .Name & "=>" & uname & ")"
+            .PilotMessage "•ÏŒ`(" & .Name & "=>" & uname & ")"
             CloseMessageForm
-        ElseIf .IsMessageDefined("å¤‰å½¢(" & uname & ")") Then
+        ElseIf .IsMessageDefined("•ÏŒ`(" & uname & ")") Then
             OpenMessageForm
-            .PilotMessage "å¤‰å½¢(" & uname & ")"
+            .PilotMessage "•ÏŒ`(" & uname & ")"
             CloseMessageForm
-        ElseIf .IsMessageDefined("å¤‰å½¢(" & .FeatureName("å¤‰å½¢") & ")") Then
+        ElseIf .IsMessageDefined("•ÏŒ`(" & .FeatureName("•ÏŒ`") & ")") Then
             OpenMessageForm
-            .PilotMessage "å¤‰å½¢(" & .FeatureName("å¤‰å½¢") & ")"
+            .PilotMessage "•ÏŒ`(" & .FeatureName("•ÏŒ`") & ")"
             CloseMessageForm
         End If
         
-        'ã‚¢ãƒ‹ãƒ¡è¡¨ç¤º
-        If .IsAnimationDefined("å¤‰å½¢(" & .Name & "=>" & uname & ")") Then
-            .PlayAnimation "å¤‰å½¢(" & .Name & "=>" & uname & ")"
-        ElseIf .IsAnimationDefined("å¤‰å½¢(" & uname & ")") Then
-            .PlayAnimation "å¤‰å½¢(" & uname & ")"
-        ElseIf .IsAnimationDefined("å¤‰å½¢(" & .FeatureName("å¤‰å½¢") & ")") Then
-            .PlayAnimation "å¤‰å½¢(" & .FeatureName("å¤‰å½¢") & ")"
-        ElseIf .IsSpecialEffectDefined("å¤‰å½¢(" & .Name & "=>" & uname & ")") Then
-            .SpecialEffect "å¤‰å½¢(" & .Name & "=>" & uname & ")"
-        ElseIf .IsSpecialEffectDefined("å¤‰å½¢(" & uname & ")") Then
-            .SpecialEffect "å¤‰å½¢(" & uname & ")"
-        ElseIf .IsSpecialEffectDefined("å¤‰å½¢(" & .FeatureName("å¤‰å½¢") & ")") Then
-            .SpecialEffect "å¤‰å½¢(" & .FeatureName("å¤‰å½¢") & ")"
+        'ƒAƒjƒ•\¦
+        If .IsAnimationDefined("•ÏŒ`(" & .Name & "=>" & uname & ")") Then
+            .PlayAnimation "•ÏŒ`(" & .Name & "=>" & uname & ")"
+        ElseIf .IsAnimationDefined("•ÏŒ`(" & uname & ")") Then
+            .PlayAnimation "•ÏŒ`(" & uname & ")"
+        ElseIf .IsAnimationDefined("•ÏŒ`(" & .FeatureName("•ÏŒ`") & ")") Then
+            .PlayAnimation "•ÏŒ`(" & .FeatureName("•ÏŒ`") & ")"
+        ElseIf .IsSpecialEffectDefined("•ÏŒ`(" & .Name & "=>" & uname & ")") Then
+            .SpecialEffect "•ÏŒ`(" & .Name & "=>" & uname & ")"
+        ElseIf .IsSpecialEffectDefined("•ÏŒ`(" & uname & ")") Then
+            .SpecialEffect "•ÏŒ`(" & uname & ")"
+        ElseIf .IsSpecialEffectDefined("•ÏŒ`(" & .FeatureName("•ÏŒ`") & ")") Then
+            .SpecialEffect "•ÏŒ`(" & .FeatureName("•ÏŒ`") & ")"
         End If
         
-        'å¤‰å½¢
+        '•ÏŒ`
         .Transform uname
     End With
     
-    'å¤‰å½¢ã‚¤ãƒ™ãƒ³ãƒˆ
+    '•ÏŒ`ƒCƒxƒ“ƒg
     With u.CurrentForm
-        HandleEvent "å¤‰å½¢", .MainPilot.ID, .Name
+        HandleEvent "•ÏŒ`", .MainPilot.ID, .Name
     End With
     
-    'ãƒã‚¤ãƒ‘ãƒ¼ãƒ¢ãƒ¼ãƒ‰ï¼†ãƒãƒ¼ãƒãƒ«ãƒ¢ãƒ¼ãƒ‰ã®è‡ªå‹•ç™ºå‹•
+    'ƒnƒCƒp[ƒ‚[ƒh•ƒm[ƒ}ƒ‹ƒ‚[ƒh‚Ì©“®”­“®
     u.CurrentForm.CheckAutoHyperMode
     u.CurrentForm.CheckAutoNormalMode
     
@@ -2555,27 +2555,27 @@ NextForm:
     TryMoveTransform = True
 End Function
 
-'å®Ÿè¡Œæ™‚é–“ã‚’å¿…è¦ã¨ã—ãªã„ã‚¢ãƒ“ãƒªãƒ†ã‚£ãŒã‚ã‚Œã°ä½¿ã£ã¦ãŠã
+'ÀsŠÔ‚ğ•K—v‚Æ‚µ‚È‚¢ƒAƒrƒŠƒeƒB‚ª‚ ‚ê‚Îg‚Á‚Ä‚¨‚­
 Public Sub TryInstantAbility()
 Dim i As Integer, j As Integer
 Dim aname As String
 Dim partners() As Unit
 
-    'ï¼•ãƒã‚¹ä»¥å†…ã«æ•µãŒã„ã‚‹ã‹ãƒã‚§ãƒƒã‚¯
+    '‚Tƒ}ƒXˆÈ“à‚É“G‚ª‚¢‚é‚©ƒ`ƒFƒbƒN
     If DistanceFromNearestEnemy(SelectedUnit) > 5 Then
-        'å‘¨ã‚Šã«æ•µã¯ã„ãªã„ã®ã§ã‚¢ãƒ“ãƒªãƒ†ã‚£ã¯ä½¿ã‚ãªã„
+        'ü‚è‚É“G‚Í‚¢‚È‚¢‚Ì‚ÅƒAƒrƒŠƒeƒB‚Íg‚í‚È‚¢
         Exit Sub
     End If
     
     With SelectedUnit
-        'å®Ÿè¡Œæ™‚é–“ã‚’å¿…è¦ã¨ã—ãªã„ã‚¢ãƒ“ãƒªãƒ†ã‚£ã‚’æ¢ã™
+        'ÀsŠÔ‚ğ•K—v‚Æ‚µ‚È‚¢ƒAƒrƒŠƒeƒB‚ğ’T‚·
         For i = 1 To .CountAbility
-            'ä½¿ç”¨å¯èƒ½ï¼†åŠ¹æœã‚ã‚Šï¼Ÿ
-            If Not .IsAbilityUseful(i, "ç§»å‹•å‰") Then
+            'g—p‰Â”\•Œø‰Ê‚ ‚èH
+            If Not .IsAbilityUseful(i, "ˆÚ“®‘O") Then
                 GoTo NextAbility
             End If
             
-            'ï¼¥ï¼®æ¶ˆè²»ãŒå¤šã™ããªã„ï¼Ÿ
+            '‚d‚mÁ”ï‚ª‘½‚·‚¬‚È‚¢H
             If .AbilityENConsumption(i) > 0 Then
                 If .AbilityENConsumption(i) >= .EN \ 2 Then
                     GoTo NextAbility
@@ -2583,14 +2583,14 @@ Dim partners() As Unit
             End If
             
             With .Ability(i)
-                'è‡ªå·±å¼·åŒ–ã®ã‚¢ãƒ“ãƒªãƒ†ã‚£ã®ã¿ãŒå¯¾è±¡
+                '©ŒÈ‹­‰»‚ÌƒAƒrƒŠƒeƒB‚Ì‚İ‚ª‘ÎÛ
                 If .MaxRange <> 0 Then
                     GoTo NextAbility
                 End If
                 
-                'å®Ÿè¡Œæ™‚é–“ã‚’å¿…è¦ã¨ã—ãªã„ï¼Ÿ
+                'ÀsŠÔ‚ğ•K—v‚Æ‚µ‚È‚¢H
                 For j = 1 To .CountEffect
-                    If .EffectType(j) = "å†è¡Œå‹•" Then
+                    If .EffectType(j) = "Äs“®" Then
                         Exit For
                     End If
                 Next
@@ -2598,13 +2598,13 @@ Dim partners() As Unit
                     GoTo NextAbility
                 End If
                 
-                'å¼·åŒ–ç”¨ã‚¢ãƒ“ãƒªãƒ†ã‚£ï¼Ÿ
+                '‹­‰»—pƒAƒrƒŠƒeƒBH
                 For j = 1 To .CountEffect
-                    If .EffectType(j) = "çŠ¶æ…‹" _
-                        Or .EffectType(j) = "ä»˜åŠ " _
-                        Or .EffectType(j) = "å¼·åŒ–" _
+                    If .EffectType(j) = "ó‘Ô" _
+                        Or .EffectType(j) = "•t‰Á" _
+                        Or .EffectType(j) = "‹­‰»" _
                     Then
-                        'å¼·åŒ–ç”¨ã‚¢ãƒ“ãƒªãƒ†ã‚£ãŒè¦‹ã¤ã‹ã£ãŸ
+                        '‹­‰»—pƒAƒrƒŠƒeƒB‚ªŒ©‚Â‚©‚Á‚½
                         SelectedAbility = i
                         GoTo UseInstantAbility
                     End If
@@ -2613,14 +2613,14 @@ Dim partners() As Unit
 NextAbility:
         Next
         
-        'ã“ã“ã«æ¥ã‚‹æ™‚ã¯ä½¿ç”¨ã§ãã‚‹ã‚¢ãƒ“ãƒªãƒ†ã‚£ãŒãªã‹ã£ãŸå ´åˆ
+        '‚±‚±‚É—ˆ‚é‚Íg—p‚Å‚«‚éƒAƒrƒŠƒeƒB‚ª‚È‚©‚Á‚½ê‡
         Exit Sub
         
 UseInstantAbility:
         
-        'åˆä½“æŠ€ãƒ‘ãƒ¼ãƒˆãƒŠãƒ¼ã®è¨­å®š
-        If .IsAbilityClassifiedAs(SelectedAbility, "åˆ") Then
-            .CombinationPartner "ã‚¢ãƒ“ãƒªãƒ†ã‚£", SelectedAbility, partners
+        '‡‘Ì‹Zƒp[ƒgƒi[‚Ìİ’è
+        If .IsAbilityClassifiedAs(SelectedAbility, "‡") Then
+            .CombinationPartner "ƒAƒrƒŠƒeƒB", SelectedAbility, partners
         Else
             ReDim SelectedPartners(0)
             ReDim partners(0)
@@ -2629,40 +2629,40 @@ UseInstantAbility:
         aname = .Ability(SelectedAbility).Name
         SelectedAbilityName = aname
         
-        'ã‚¢ãƒ“ãƒªãƒ†ã‚£ã®ä½¿ç”¨ã‚¤ãƒ™ãƒ³ãƒˆ
-        HandleEvent "ä½¿ç”¨", .MainPilot.ID, aname
+        'ƒAƒrƒŠƒeƒB‚Ìg—pƒCƒxƒ“ƒg
+        HandleEvent "g—p", .MainPilot.ID, aname
         If IsScenarioFinished Or IsCanceled Then
             Exit Sub
         End If
         
-        'ã‚¢ãƒ“ãƒªãƒ†ã‚£ã‚’ä½¿ç”¨
+        'ƒAƒrƒŠƒeƒB‚ğg—p
         OpenMessageForm SelectedUnit
         .ExecuteAbility SelectedAbility, SelectedUnit
         CloseMessageForm
         Set SelectedUnit = .CurrentForm
     End With
     
-    'ã‚¢ãƒ“ãƒªãƒ†ã‚£ã®ä½¿ç”¨å¾Œã‚¤ãƒ™ãƒ³ãƒˆ
-    HandleEvent "ä½¿ç”¨å¾Œ", SelectedUnit.MainPilot.ID, aname
+    'ƒAƒrƒŠƒeƒB‚Ìg—pŒãƒCƒxƒ“ƒg
+    HandleEvent "g—pŒã", SelectedUnit.MainPilot.ID, aname
     If IsScenarioFinished Or IsCanceled Then
         ReDim SelectedPartners(0)
         Exit Sub
     End If
     
-    'è‡ªçˆ†ã‚¢ãƒ“ãƒªãƒ†ã‚£ã®ç ´å£Šã‚¤ãƒ™ãƒ³ãƒˆ
-    If SelectedUnit.Status = "ç ´å£Š" Then
-        HandleEvent "ç ´å£Š", SelectedUnit.MainPilot.ID
+    '©”šƒAƒrƒŠƒeƒB‚Ì”j‰óƒCƒxƒ“ƒg
+    If SelectedUnit.Status = "”j‰ó" Then
+        HandleEvent "”j‰ó", SelectedUnit.MainPilot.ID
         If IsScenarioFinished Or IsCanceled Then
             ReDim SelectedPartners(0)
             Exit Sub
         End If
     End If
     
-    'è¡Œå‹•æ•°ã‚’æ¶ˆè²»ã—ã¦ãŠã
+    's“®”‚ğÁ”ï‚µ‚Ä‚¨‚­
     SelectedUnit.UseAction
     
-    'åˆä½“æŠ€ã®ãƒ‘ãƒ¼ãƒˆãƒŠãƒ¼ã®è¡Œå‹•æ•°ã‚’æ¸›ã‚‰ã™
-    If Not IsOptionDefined("åˆä½“æŠ€ãƒ‘ãƒ¼ãƒˆãƒŠãƒ¼è¡Œå‹•æ•°ç„¡æ¶ˆè²»") Then
+    '‡‘Ì‹Z‚Ìƒp[ƒgƒi[‚Ìs“®”‚ğŒ¸‚ç‚·
+    If Not IsOptionDefined("‡‘Ì‹Zƒp[ƒgƒi[s“®”–³Á”ï") Then
         For i = 1 To UBound(partners)
             partners(i).CurrentForm.UseAction
         Next
@@ -2670,18 +2670,18 @@ UseInstantAbility:
     ReDim SelectedPartners(0)
 End Sub
 
-'å¬å–šãŒå¯èƒ½ã§ã‚ã‚Œã°å¬å–šã™ã‚‹
+'¢Š«‚ª‰Â”\‚Å‚ ‚ê‚Î¢Š«‚·‚é
 Public Function TrySummonning() As Boolean
 Dim i As Integer, j As Integer
 Dim aname As String
 Dim partners() As Unit
 
     With SelectedUnit
-        'å¬å–šã‚¢ãƒ“ãƒªãƒ†ã‚£ã‚’æ¤œç´¢
+        '¢Š«ƒAƒrƒŠƒeƒB‚ğŒŸõ
         For i = 1 To .CountAbility
-            If .IsAbilityAvailable(i, "ç§»å‹•å‰") Then
+            If .IsAbilityAvailable(i, "ˆÚ“®‘O") Then
                 For j = 1 To .Ability(i).CountEffect
-                    If .Ability(i).EffectType(j) = "å¬å–š" Then
+                    If .Ability(i).EffectType(j) = "¢Š«" Then
                         SelectedAbility = i
                         GoTo UseSummonning
                     End If
@@ -2689,7 +2689,7 @@ Dim partners() As Unit
             End If
         Next
         
-        'ä½¿ç”¨å¯èƒ½ãªå¬å–šã‚¢ãƒ“ãƒªãƒ†ã‚£ã‚’æŒã£ã¦ã„ãªã‹ã£ãŸ
+        'g—p‰Â”\‚È¢Š«ƒAƒrƒŠƒeƒB‚ğ‚Á‚Ä‚¢‚È‚©‚Á‚½
         Exit Function
         
 UseSummonning:
@@ -2699,45 +2699,45 @@ UseSummonning:
         aname = .Ability(SelectedAbility).Name
         SelectedAbilityName = aname
         
-        'å¬å–šã‚¢ãƒ“ãƒªãƒ†ã‚£ã®ä½¿ç”¨ã‚¤ãƒ™ãƒ³ãƒˆ
-        HandleEvent "ä½¿ç”¨", .MainPilot.ID, aname
+        '¢Š«ƒAƒrƒŠƒeƒB‚Ìg—pƒCƒxƒ“ƒg
+        HandleEvent "g—p", .MainPilot.ID, aname
         If IsScenarioFinished Or IsCanceled Then
             Exit Function
         End If
         
-        'åˆä½“æŠ€ãƒ‘ãƒ¼ãƒˆãƒŠãƒ¼ã®è¨­å®š
-        If .IsAbilityClassifiedAs(SelectedAbility, "åˆ") Then
-            .CombinationPartner "ã‚¢ãƒ“ãƒªãƒ†ã‚£", SelectedAbility, partners
+        '‡‘Ì‹Zƒp[ƒgƒi[‚Ìİ’è
+        If .IsAbilityClassifiedAs(SelectedAbility, "‡") Then
+            .CombinationPartner "ƒAƒrƒŠƒeƒB", SelectedAbility, partners
         Else
             ReDim SelectedPartners(0)
             ReDim partners(0)
         End If
         
-        'å¬å–šã‚¢ãƒ“ãƒªãƒ†ã‚£ã‚’ä½¿ç”¨
+        '¢Š«ƒAƒrƒŠƒeƒB‚ğg—p
         OpenMessageForm SelectedUnit
         .ExecuteAbility SelectedAbility, SelectedUnit
         CloseMessageForm
         Set SelectedUnit = .CurrentForm
     End With
     
-    'å¬å–šã‚¢ãƒ“ãƒªãƒ†ã‚£ã®ä½¿ç”¨å¾Œã‚¤ãƒ™ãƒ³ãƒˆ
-    HandleEvent "ä½¿ç”¨å¾Œ", SelectedUnit.MainPilot.ID, aname
+    '¢Š«ƒAƒrƒŠƒeƒB‚Ìg—pŒãƒCƒxƒ“ƒg
+    HandleEvent "g—pŒã", SelectedUnit.MainPilot.ID, aname
     If IsScenarioFinished Or IsCanceled Then
         ReDim SelectedPartners(0)
         Exit Function
     End If
     
-    'è‡ªçˆ†ã‚¢ãƒ“ãƒªãƒ†ã‚£ã®ç ´å£Šã‚¤ãƒ™ãƒ³ãƒˆ
-    If SelectedUnit.Status = "ç ´å£Š" Then
-        HandleEvent "ç ´å£Š", SelectedUnit.MainPilot.ID
+    '©”šƒAƒrƒŠƒeƒB‚Ì”j‰óƒCƒxƒ“ƒg
+    If SelectedUnit.Status = "”j‰ó" Then
+        HandleEvent "”j‰ó", SelectedUnit.MainPilot.ID
         If IsScenarioFinished Or IsCanceled Then
             ReDim SelectedPartners(0)
             Exit Function
         End If
     End If
     
-    'åˆä½“æŠ€ã®ãƒ‘ãƒ¼ãƒˆãƒŠãƒ¼ã®è¡Œå‹•æ•°ã‚’æ¸›ã‚‰ã™
-    If Not IsOptionDefined("åˆä½“æŠ€ãƒ‘ãƒ¼ãƒˆãƒŠãƒ¼è¡Œå‹•æ•°ç„¡æ¶ˆè²»") Then
+    '‡‘Ì‹Z‚Ìƒp[ƒgƒi[‚Ìs“®”‚ğŒ¸‚ç‚·
+    If Not IsOptionDefined("‡‘Ì‹Zƒp[ƒgƒi[s“®”–³Á”ï") Then
         For i = 1 To UBound(partners)
             partners(i).CurrentForm.UseAction
         Next
@@ -2745,7 +2745,7 @@ UseSummonning:
     ReDim SelectedPartners(0)
 End Function
 
-'ãƒãƒƒãƒ—å‹å›å¾©ã‚¢ãƒ“ãƒªãƒ†ã‚£ä½¿ç”¨ã«é–¢ã™ã‚‹å‡¦ç†
+'ƒ}ƒbƒvŒ^‰ñ•œƒAƒrƒŠƒeƒBg—p‚ÉŠÖ‚·‚éˆ—
 Public Function TryMapHealing(moved As Boolean) As Boolean
 Dim a As Integer, apower As Long
 Dim max_range As Integer, min_range As Integer
@@ -2760,8 +2760,8 @@ Dim partners() As Unit
     With SelectedUnit
         SelectedAbility = 0
         
-        'ç‹‚æˆ¦å£«çŠ¶æ…‹ã®éš›ã¯å›å¾©ã‚¢ãƒ“ãƒªãƒ†ã‚£ã‚’ä½¿ã‚ãªã„
-        If .IsConditionSatisfied("ç‹‚æˆ¦å£«") Then
+        '‹¶ímó‘Ô‚ÌÛ‚Í‰ñ•œƒAƒrƒŠƒeƒB‚ğg‚í‚È‚¢
+        If .IsConditionSatisfied("‹¶ím") Then
             Exit Function
         End If
         
@@ -2769,26 +2769,26 @@ Dim partners() As Unit
         
         a = .CountAbility()
         Do While a > 0
-            'ãƒãƒƒãƒ—ã‚¢ãƒ“ãƒªãƒ†ã‚£ã‹ã©ã†ã‹
-            If Not .IsAbilityClassifiedAs(a, "ï¼­") Then
+            'ƒ}ƒbƒvƒAƒrƒŠƒeƒB‚©‚Ç‚¤‚©
+            If Not .IsAbilityClassifiedAs(a, "‚l") Then
                 GoTo NextAbility
             End If
             
-            'ã‚¢ãƒ“ãƒªãƒ†ã‚£ã®ä½¿ç”¨å¯å¦ã‚’åˆ¤å®š
+            'ƒAƒrƒŠƒeƒB‚Ìg—p‰Â”Û‚ğ”»’è
             If moved Then
-                If Not .IsAbilityAvailable(a, "ç§»å‹•å¾Œ") Then
+                If Not .IsAbilityAvailable(a, "ˆÚ“®Œã") Then
                     GoTo NextAbility
                 End If
             Else
-                If Not .IsAbilityAvailable(a, "ç§»å‹•å‰") Then
+                If Not .IsAbilityAvailable(a, "ˆÚ“®‘O") Then
                     GoTo NextAbility
                 End If
             End If
             
-            'å›å¾©ã‚¢ãƒ“ãƒªãƒ†ã‚£ã‹ã©ã†ã‹
+            '‰ñ•œƒAƒrƒŠƒeƒB‚©‚Ç‚¤‚©
             For i = 1 To .Ability(a).CountEffect
-                If .Ability(a).EffectType(i) = "å›å¾©" Then
-                    'å›å¾©é‡ã‚’ç®—å‡ºã—ã¦ãŠã
+                If .Ability(a).EffectType(i) = "‰ñ•œ" Then
+                    '‰ñ•œ—Ê‚ğZo‚µ‚Ä‚¨‚­
                     If .IsSpellAbility(a) Then
                         apower = 5 * .Ability(a).EffectLevel(i) * p.Shooting
                     Else
@@ -2798,7 +2798,7 @@ Dim partners() As Unit
                 End If
             Next
             If i > .Ability(a).CountEffect Then
-                'å›å¾©ã‚¢ãƒ“ãƒªãƒ†ã‚£ã§ã¯ãªã‹ã£ãŸ
+                '‰ñ•œƒAƒrƒŠƒeƒB‚Å‚Í‚È‚©‚Á‚½
                 GoTo NextAbility
             End If
             
@@ -2810,21 +2810,21 @@ Dim partners() As Unit
             y1 = MaxLng(.Y - max_range, 1)
             y2 = MinLng(.Y + max_range, MapHeight)
             
-            'ã‚¢ãƒ“ãƒªãƒ†ã‚£ã®åŠ¹æœç¯„å›²ã«å¿œã˜ã¦ã‚¢ãƒ“ãƒªãƒ†ã‚£ãŒæœ‰åŠ¹ã‹ã©ã†ã‹åˆ¤æ–­ã™ã‚‹
+            'ƒAƒrƒŠƒeƒB‚ÌŒø‰Ê”ÍˆÍ‚É‰‚¶‚ÄƒAƒrƒŠƒeƒB‚ª—LŒø‚©‚Ç‚¤‚©”»’f‚·‚é
             num = 0
             score = 0
-            If .IsAbilityClassifiedAs(a, "ï¼­å…¨") Then
-' MOD START ãƒãƒ¼ã‚¸
+            If .IsAbilityClassifiedAs(a, "‚l‘S") Then
+' MOD START ƒ}[ƒW
 '                AreaInRange .X, .Y, min_range, max_range, .Party
                 AreaInRange .X, .Y, max_range, min_range, .Party
-' MOD END ãƒãƒ¼ã‚¸
+' MOD END ƒ}[ƒW
                 
-                'æ”¯æ´å°‚ç”¨ã‚¢ãƒ“ãƒªãƒ†ã‚£ã®å ´åˆã¯è‡ªåˆ†ã«ã¯åŠ¹æœãŒãªã„
-                If .IsAbilityClassifiedAs(a, "æ´") Then
+                'x‰‡ê—pƒAƒrƒŠƒeƒB‚Ìê‡‚Í©•ª‚É‚ÍŒø‰Ê‚ª‚È‚¢
+                If .IsAbilityClassifiedAs(a, "‰‡") Then
                     MaskData(.X, .Y) = True
                 End If
                 
-                'åŠ¹æœç¯„å›²å†…ã«ã„ã‚‹ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’ã‚«ã‚¦ãƒ³ãƒˆ
+                'Œø‰Ê”ÍˆÍ“à‚É‚¢‚éƒ^[ƒQƒbƒg‚ğƒJƒEƒ“ƒg
                 For i = x1 To x2
                     For j = y1 To y2
                         If MaskData(i, j) Then
@@ -2836,14 +2836,14 @@ Dim partners() As Unit
                             GoTo NextUnit1
                         End If
                         
-                        'ã‚¢ãƒ“ãƒªãƒ†ã‚£ãŒé©ç”¨å¯èƒ½ï¼Ÿ
+                        'ƒAƒrƒŠƒeƒB‚ª“K—p‰Â”\H
                         If Not .IsAbilityApplicable(a, t) Then
                             GoTo NextUnit1
                         End If
                         
                         With t
-                            'ã‚¾ãƒ³ãƒ“ï¼Ÿ
-                            If .IsConditionSatisfied("ã‚¾ãƒ³ãƒ“") Then
+                            'ƒ]ƒ“ƒrH
+                            If .IsConditionSatisfied("ƒ]ƒ“ƒr") Then
                                 GoTo NextUnit1
                             End If
                             
@@ -2857,16 +2857,16 @@ NextUnit1:
                     Next
                 Next
                 
-                'ä¸è¦ï¼Ÿ
+                '•s—vH
                 tx = .X
                 ty = .Y
-            ElseIf .IsAbilityClassifiedAs(a, "ï¼­æŠ•") Then
+            ElseIf .IsAbilityClassifiedAs(a, "‚l“Š") Then
                 Dim tmp_num As Integer, tmp_score As Integer
                 Dim mlv As Integer
                 
-                mlv = .AbilityLevel(a, "ï¼­æŠ•")
+                mlv = .AbilityLevel(a, "‚l“Š")
                 
-                'æŠ•ä¸‹ä½ç½®ã‚’å¤‰ãˆãªãŒã‚‰è©¦ã—ã¦ã¿ã‚‹
+                '“Š‰ºˆÊ’u‚ğ•Ï‚¦‚È‚ª‚ç‚µ‚Ä‚İ‚é
                 For xx = x1 To x2
                     For yy = y1 To y2
                         If Abs(.X - xx) + Abs(.Y - yy) > max_range _
@@ -2875,17 +2875,17 @@ NextUnit1:
                             GoTo NextPoint
                         End If
                         
-' MOD START ãƒãƒ¼ã‚¸
+' MOD START ƒ}[ƒW
                         AreaInRange xx, yy, 1, mlv, .Party
                         AreaInRange xx, yy, mlv, 1, .Party
-' MOD END ãƒãƒ¼ã‚¸
+' MOD END ƒ}[ƒW
                         
-                        'æ”¯æ´å°‚ç”¨ã‚¢ãƒ“ãƒªãƒ†ã‚£ã®å ´åˆã¯è‡ªåˆ†ã«ã¯åŠ¹æœãŒãªã„
-                        If .IsAbilityClassifiedAs(a, "æ´") Then
+                        'x‰‡ê—pƒAƒrƒŠƒeƒB‚Ìê‡‚Í©•ª‚É‚ÍŒø‰Ê‚ª‚È‚¢
+                        If .IsAbilityClassifiedAs(a, "‰‡") Then
                             MaskData(.X, .Y) = True
                         End If
                         
-                        'åŠ¹æœç¯„å›²å†…ã«ã„ã‚‹ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’ã‚«ã‚¦ãƒ³ãƒˆ
+                        'Œø‰Ê”ÍˆÍ“à‚É‚¢‚éƒ^[ƒQƒbƒg‚ğƒJƒEƒ“ƒg
                         tmp_num = 0
                         tmp_score = 0
                         For i = MaxLng(xx - mlv, 1) To MinLng(xx + mlv, MapWidth)
@@ -2899,14 +2899,14 @@ NextUnit1:
                                     GoTo NextUnit2
                                 End If
                                 
-                                'ã‚¢ãƒ“ãƒªãƒ†ã‚£ãŒé©ç”¨å¯èƒ½ï¼Ÿ
+                                'ƒAƒrƒŠƒeƒB‚ª“K—p‰Â”\H
                                 If Not .IsAbilityApplicable(a, t) Then
                                     GoTo NextUnit2
                                 End If
                                 
                                 With t
-                                    'ã‚¾ãƒ³ãƒ“ï¼Ÿ
-                                    If .IsConditionSatisfied("ã‚¾ãƒ³ãƒ“") Then
+                                    'ƒ]ƒ“ƒrH
+                                    If .IsConditionSatisfied("ƒ]ƒ“ƒr") Then
                                         GoTo NextUnit2
                                     End If
                                     
@@ -2940,13 +2940,13 @@ NextAbility:
         Loop
         
         If SelectedAbility = 0 Then
-            'æœ‰åŠ¹ãªãƒãƒƒãƒ—ã‚¢ãƒ“ãƒªãƒ†ã‚£ãŒãªã‹ã£ãŸ
+            '—LŒø‚Èƒ}ƒbƒvƒAƒrƒŠƒeƒB‚ª‚È‚©‚Á‚½
             Exit Function
         End If
         
-        'åˆä½“æŠ€ãƒ‘ãƒ¼ãƒˆãƒŠãƒ¼ã®è¨­å®š
-        If .IsAbilityClassifiedAs(SelectedAbility, "åˆ") Then
-            .CombinationPartner "ã‚¢ãƒ“ãƒªãƒ†ã‚£", SelectedAbility, partners
+        '‡‘Ì‹Zƒp[ƒgƒi[‚Ìİ’è
+        If .IsAbilityClassifiedAs(SelectedAbility, "‡") Then
+            .CombinationPartner "ƒAƒrƒŠƒeƒB", SelectedAbility, partners
         Else
             ReDim SelectedPartners(0)
             ReDim partners(0)
@@ -2954,15 +2954,15 @@ NextAbility:
         
         SelectedAbilityName = .Ability(SelectedAbility).Name
         
-        'ã‚¢ãƒ“ãƒªãƒ†ã‚£ã‚’ä½¿ç”¨
+        'ƒAƒrƒŠƒeƒB‚ğg—p
         .ExecuteMapAbility SelectedAbility, tx, ty
         If IsScenarioFinished Or IsCanceled Then
             ReDim SelectedPartners(0)
             Exit Function
         End If
         
-        'åˆä½“æŠ€ã®ãƒ‘ãƒ¼ãƒˆãƒŠãƒ¼ã®è¡Œå‹•æ•°ã‚’æ¸›ã‚‰ã™
-        If Not IsOptionDefined("åˆä½“æŠ€ãƒ‘ãƒ¼ãƒˆãƒŠãƒ¼è¡Œå‹•æ•°ç„¡æ¶ˆè²»") Then
+        '‡‘Ì‹Z‚Ìƒp[ƒgƒi[‚Ìs“®”‚ğŒ¸‚ç‚·
+        If Not IsOptionDefined("‡‘Ì‹Zƒp[ƒgƒi[s“®”–³Á”ï") Then
             For i = 1 To UBound(partners)
                 partners(i).CurrentForm.UseAction
             Next
@@ -2973,7 +2973,7 @@ NextAbility:
     TryMapHealing = True
 End Function
 
-'å¯èƒ½ã§ã‚ã‚Œã°å›å¾©ã‚¢ãƒ“ãƒªãƒ†ã‚£ã‚’ä½¿ã†
+'‰Â”\‚Å‚ ‚ê‚Î‰ñ•œƒAƒrƒŠƒeƒB‚ğg‚¤
 Public Function TryHealing(moved As Boolean, Optional t As Unit) As Boolean
 Dim a As Integer, i As Integer, j As Integer
 Dim aname As String, apower As Long
@@ -2985,45 +2985,45 @@ Dim u As Unit
 Dim partners() As Unit
 
     With SelectedUnit
-        'ç‹‚æˆ¦å£«çŠ¶æ…‹ã®éš›ã¯å›å¾©ã‚¢ãƒ“ãƒªãƒ†ã‚£ã‚’ä½¿ã‚ãªã„
-        If .IsConditionSatisfied("ç‹‚æˆ¦å£«") Then
+        '‹¶ímó‘Ô‚ÌÛ‚Í‰ñ•œƒAƒrƒŠƒeƒB‚ğg‚í‚È‚¢
+        If .IsConditionSatisfied("‹¶ím") Then
             Exit Function
         End If
         
-        'åˆæœŸåŒ–
+        '‰Šú‰»
         Set SelectedTarget = Nothing
         max_dmg = 80
         SelectedAbility = 0
         max_power = 0
         
-        'ç§»å‹•å¯èƒ½ï¼Ÿ
-        dont_move = moved Or .Mode = "å›ºå®š"
+        'ˆÚ“®‰Â”\H
+        dont_move = moved Or .Mode = "ŒÅ’è"
         
-        'ç§»å‹•å¯èƒ½ã§ã‚ã‚‹å ´åˆã¯ç§»å‹•ç¯„å›²ã‚’è¨­å®šã—ã¦ãŠã
+        'ˆÚ“®‰Â”\‚Å‚ ‚éê‡‚ÍˆÚ“®”ÍˆÍ‚ğİ’è‚µ‚Ä‚¨‚­
         If Not dont_move Then
             AreaInSpeed SelectedUnit
         End If
         
         For a = 1 To .CountAbility
-            'ã‚¢ãƒ“ãƒªãƒ†ã‚£ãŒä½¿ç”¨å¯èƒ½ï¼Ÿ
+            'ƒAƒrƒŠƒeƒB‚ªg—p‰Â”\H
             If moved Then
-                If Not .IsAbilityAvailable(a, "ç§»å‹•å¾Œ") Then
+                If Not .IsAbilityAvailable(a, "ˆÚ“®Œã") Then
                     GoTo NextHealingSkill
                 End If
             Else
-                If Not .IsAbilityAvailable(a, "ç§»å‹•å‰") Then
+                If Not .IsAbilityAvailable(a, "ˆÚ“®‘O") Then
                     GoTo NextHealingSkill
                 End If
             End If
             
-            'ãƒãƒƒãƒ—ã‚¢ãƒ“ãƒªãƒ†ã‚£ã¯åˆ¥é–¢æ•°ã§èª¿ã¹ã‚‹
-            If .IsAbilityClassifiedAs(a, "ï¼­") Then
+            'ƒ}ƒbƒvƒAƒrƒŠƒeƒB‚Í•ÊŠÖ”‚Å’²‚×‚é
+            If .IsAbilityClassifiedAs(a, "‚l") Then
                 GoTo NextHealingSkill
             End If
             
-            'ã“ã‚Œã¯å›å¾©ã‚¢ãƒ“ãƒªãƒ†ã‚£ï¼Ÿ
+            '‚±‚ê‚Í‰ñ•œƒAƒrƒŠƒeƒBH
             For i = 1 To .Ability(a).CountEffect
-                If .Ability(a).EffectType(i) = "å›å¾©" Then
+                If .Ability(a).EffectType(i) = "‰ñ•œ" Then
                     Exit For
                 End If
             Next
@@ -3031,74 +3031,74 @@ Dim partners() As Unit
                 GoTo NextHealingSkill
             End If
             
-            'å›å¾©é‡ã‚’ç®—å‡º
+            '‰ñ•œ—Ê‚ğZo
             If .IsSpellAbility(a) Then
                 apower = CLng(5 * .Ability(a).EffectLevel(i) * .MainPilot.Shooting)
             Else
                 apower = 500 * .Ability(a).EffectLevel(i)
             End If
             
-            'å½¹ç«‹ãŸãšï¼Ÿ
+            '–ğ—§‚½‚¸H
             If apower <= 0 Then
                 GoTo NextHealingSkill
             End If
             
-            'ç¾åœ¨ã®å›å¾©ã‚¢ãƒ“ãƒªãƒ†ã‚£ã‚’ä½¿ã£ã¦å›å¾©ã•ã›ã‚‰ã‚Œã‚‹ã‚¿ãƒ¼ã‚²ãƒƒãƒˆãŒã„ã‚‹ã‹æ¤œç´¢
+            'Œ»İ‚Ì‰ñ•œƒAƒrƒŠƒeƒB‚ğg‚Á‚Ä‰ñ•œ‚³‚¹‚ç‚ê‚éƒ^[ƒQƒbƒg‚ª‚¢‚é‚©ŒŸõ
             For Each u In UList
-                If u.Status <> "å‡ºæ’ƒ" Then
+                If u.Status <> "oŒ‚" Then
                     GoTo NextHealingTarget
                 End If
                 
-                'å‘³æ–¹ã‹ã©ã†ã‹ã‚’åˆ¤å®š
+                '–¡•û‚©‚Ç‚¤‚©‚ğ”»’è
                 If Not .IsAlly(u) Then
                     GoTo NextHealingTarget
                 End If
                 
-                'ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®ã‚¿ãƒ¼ã‚²ãƒƒãƒˆãŒæŒ‡å®šã•ã‚Œã¦ã„ã‚‹å ´åˆã¯ãã®ãƒ¦ãƒ‹ãƒƒãƒˆä»¥å¤–ã‚’
-                'ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã«ã¯ã—ãªã„
+                'ƒfƒtƒHƒ‹ƒg‚Ìƒ^[ƒQƒbƒg‚ªw’è‚³‚ê‚Ä‚¢‚éê‡‚Í‚»‚Ìƒ†ƒjƒbƒgˆÈŠO‚ğ
+                'ƒ^[ƒQƒbƒg‚É‚Í‚µ‚È‚¢
                 If Not t Is Nothing Then
                     If Not u Is t Then
                         GoTo NextHealingTarget
                     End If
                 End If
                 
-                'æå‚·åº¦ã¯ï¼Ÿ
+                '‘¹“x‚ÍH
                 dmg = 100 * u.HP \ u.MaxHP
                 
-                'é‡è¦ãªãƒ¦ãƒ‹ãƒƒãƒˆã‚’å„ªå…ˆ
+                'd—v‚Èƒ†ƒjƒbƒg‚ğ—Dæ
                 If Not u Is SelectedUnit Then
                     If u.BossRank >= 0 Then
                         dmg = 100 - 2 * (100 - dmg)
                     End If
                 End If
                 
-                'ç¾åœ¨ã®ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚ˆã‚Šæå‚·åº¦ãŒã²ã©ããªã„ãªã‚‰ç„¡è¦–
+                'Œ»İ‚Ìƒ^[ƒQƒbƒg‚æ‚è‘¹“x‚ª‚Ğ‚Ç‚­‚È‚¢‚È‚ç–³‹
                 If dmg > max_dmg Then
                     GoTo NextHealingTarget
                 End If
                 
-                'ç§»å‹•å¯èƒ½ã‹ï¼Ÿ
+                'ˆÚ“®‰Â”\‚©H
                 If .AbilityMaxRange(a) = 1 _
-                    Or .IsAbilityClassifiedAs(a, "ï¼°") _
+                    Or .IsAbilityClassifiedAs(a, "‚o") _
                 Then
                     is_able_to_move = True
                 Else
                     is_able_to_move = False
                 End If
-                If .IsAbilityClassifiedAs(a, "ï¼±") Then
+                If .IsAbilityClassifiedAs(a, "‚p") Then
                     is_able_to_move = False
                 End If
                 If dont_move Then
                     is_able_to_move = False
                 End If
                 Select Case .Area
-                    Case "ç©ºä¸­", "å®‡å®™"
+                    Case "‹ó’†", "‰F’ˆ"
                         If .EN - .AbilityENConsumption(a) < 5 Then
                             is_able_to_move = False
                         End If
                 End Select
                 
-                'å°„ç¨‹å†…ã«ã„ã‚‹ã‹ï¼Ÿ
+                'Ë’ö“à‚É‚¢‚é‚©H
                 If is_able_to_move Then
                     If Not .IsTargetReachableForAbility(a, u) Then
                         GoTo NextHealingTarget
@@ -3109,36 +3109,36 @@ Dim partners() As Unit
                     End If
                 End If
                 
-                'ã‚¢ãƒ“ãƒªãƒ†ã‚£ãŒé©ç”¨å¯èƒ½ï¼Ÿ
+                'ƒAƒrƒŠƒeƒB‚ª“K—p‰Â”\H
                 If Not .IsAbilityApplicable(a, u) Then
                     GoTo NextHealingTarget
                 End If
                 
-                'ã‚¾ãƒ³ãƒ“ï¼Ÿ
-                If u.IsConditionSatisfied("ã‚¾ãƒ³ãƒ“") Then
+                'ƒ]ƒ“ƒrH
+                If u.IsConditionSatisfied("ƒ]ƒ“ƒr") Then
                     GoTo NextHealingTarget
                 End If
                 
-                'æ–°è¦ã‚¿ãƒ¼ã‚²ãƒƒãƒˆï¼Ÿ
+                'V‹Kƒ^[ƒQƒbƒgH
                 If Not u Is SelectedTarget Then
-                    'ã‚¿ãƒ¼ã‚²ãƒƒãƒˆè¨­å®š
+                    'ƒ^[ƒQƒbƒgİ’è
                     Set SelectedTarget = u
                     max_dmg = dmg
                     
-                    'æ–°è¦ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’å„ªå…ˆã™ã‚‹ãŸã‚ã€ç¾åœ¨é¸æŠã•ã‚Œã¦ã„ã‚‹ã‚¢ãƒ“ãƒªãƒ†ã‚£ã¯ç ´æ£„
+                    'V‹Kƒ^[ƒQƒbƒg‚ğ—Dæ‚·‚é‚½‚ßAŒ»İ‘I‘ğ‚³‚ê‚Ä‚¢‚éƒAƒrƒŠƒeƒB‚Í”jŠü
                     SelectedAbility = 0
                     max_power = 0
                 End If
                 
-                'ç¾åœ¨é¸æŠã•ã‚Œã¦ã„ã‚‹å›å¾©ã‚¢ãƒ“ãƒªãƒ†ã‚£ã¨ãƒã‚§ãƒƒã‚¯ä¸­ã®ã‚¢ãƒ“ãƒªãƒ†ã‚£ã®ã©ã¡ã‚‰ãŒ
-                'å„ªã‚Œã¦ã„ã‚‹ã‹ã‚’åˆ¤å®š
+                'Œ»İ‘I‘ğ‚³‚ê‚Ä‚¢‚é‰ñ•œƒAƒrƒŠƒeƒB‚Æƒ`ƒFƒbƒN’†‚ÌƒAƒrƒŠƒeƒB‚Ì‚Ç‚¿‚ç‚ª
+                '—D‚ê‚Ä‚¢‚é‚©‚ğ”»’è
                 If max_power < u.MaxHP - u.HP Then
-                    'ç¾åœ¨é¸æŠã—ã¦ã„ã‚‹å›å¾©ã‚¢ãƒ“ãƒªãƒ†ã‚£ã§ã¯å…¨ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’å›å¾©ã—ãã‚Œãªã„å ´åˆ
+                    'Œ»İ‘I‘ğ‚µ‚Ä‚¢‚é‰ñ•œƒAƒrƒŠƒeƒB‚Å‚Í‘Sƒ_ƒ[ƒW‚ğ‰ñ•œ‚µ‚«‚ê‚È‚¢ê‡
                     If apower < max_power Then
-                        'å›å¾©é‡ãŒå¤šã„ã»ã†ã‚’å„ªå…ˆ
+                        '‰ñ•œ—Ê‚ª‘½‚¢‚Ù‚¤‚ğ—Dæ
                         GoTo NextHealingTarget
                     ElseIf apower = max_power Then
-                        'å›å¾©é‡ãŒåŒã˜ãªã‚‰ã‚³ã‚¹ãƒˆãŒä½ã„æ–¹ã‚’å„ªå…ˆ
+                        '‰ñ•œ—Ê‚ª“¯‚¶‚È‚çƒRƒXƒg‚ª’á‚¢•û‚ğ—Dæ
                         If .Ability(a).ENConsumption _
                             > .Ability(SelectedAbility).ENConsumption _
                         Then
@@ -3149,12 +3149,12 @@ Dim partners() As Unit
                         End If
                     End If
                 ElseIf SelectedAbility > 0 Then
-                    'ç¾åœ¨é¸æŠã—ã¦ã„ã‚‹å›å¾©ã‚¢ãƒ“ãƒªãƒ†ã‚£ã§å…¨å¿«ã™ã‚‹å ´åˆ
-                    'å…¨å¿«ã™ã‚‹ã“ã¨ãŒå¿…è¦æ¡ä»¶
+                    'Œ»İ‘I‘ğ‚µ‚Ä‚¢‚é‰ñ•œƒAƒrƒŠƒeƒB‚Å‘S‰õ‚·‚éê‡
+                    '‘S‰õ‚·‚é‚±‚Æ‚ª•K—vğŒ
                     If apower >= u.MaxHP - u.HP Then
                         GoTo NextHealingTarget
                     End If
-                    'ã‚³ã‚¹ãƒˆãŒä½ã„æ–¹ã‚’å„ªå…ˆ
+                    'ƒRƒXƒg‚ª’á‚¢•û‚ğ—Dæ
                     If .Ability(a).ENConsumption _
                         > .Ability(SelectedAbility).ENConsumption _
                     Then
@@ -3173,7 +3173,7 @@ NextHealingTarget:
 NextHealingSkill:
         Next
         
-        'æœ‰ç”¨ãªã‚¢ãƒ“ãƒªãƒ†ã‚£ï¼†ã‚¿ãƒ¼ã‚²ãƒƒãƒˆãŒè¦‹ã¤ã‹ã£ãŸï¼Ÿ
+        '—L—p‚ÈƒAƒrƒŠƒeƒB•ƒ^[ƒQƒbƒg‚ªŒ©‚Â‚©‚Á‚½H
         If SelectedAbility = 0 Then
             Exit Function
         End If
@@ -3181,10 +3181,10 @@ NextHealingSkill:
             Exit Function
         End If
         
-        'å›å¾©ã‚¢ãƒ“ãƒªãƒ†ã‚£ã‚’ä½¿ç”¨ã™ã‚‹ã“ã¨ãŒç¢ºå®š
+        '‰ñ•œƒAƒrƒŠƒeƒB‚ğg—p‚·‚é‚±‚Æ‚ªŠm’è
         TryHealing = True
         
-        'é©åˆ‡ãªä½ç½®ã«ç§»å‹•
+        '“KØ‚ÈˆÊ’u‚ÉˆÚ“®
         If Not SelectedTarget Is SelectedUnit _
            And sa_is_able_to_move _
         Then
@@ -3192,14 +3192,14 @@ NextHealingSkill:
             new_y = .Y
             max_range = .AbilityMaxRange(SelectedAbility)
             With SelectedTarget
-                'ç¾åœ¨ä½ç½®ã‹ã‚‰å›å¾©ãŒå¯èƒ½ã§ã‚ã‚Œã°ç¾åœ¨ä½ç½®ã‚’å„ªå…ˆ
+                'Œ»İˆÊ’u‚©‚ç‰ñ•œ‚ª‰Â”\‚Å‚ ‚ê‚ÎŒ»İˆÊ’u‚ğ—Dæ
                 If Abs(.X - new_x) + Abs(.Y - new_y) <= max_range Then
                     distance = Abs(.X - new_x) ^ 2 + Abs(.Y - new_y) ^ 2
                 Else
                     distance = 10000
                 End If
                 
-                'é©åˆ‡ãªä½ç½®ã‚’æ¢ã™
+                '“KØ‚ÈˆÊ’u‚ğ’T‚·
                 For i = MaxLng(.X - max_range, 1) To MinLng(.X + max_range, MapWidth)
                     For j = MaxLng(.Y - max_range, 1) To MinLng(.Y + max_range, MapHeight)
                         If Not MaskData(i, j) _
@@ -3219,7 +3219,7 @@ NextHealingSkill:
             End With
             
             If new_x <> .X Or new_y <> .Y Then
-                'é©åˆ‡ãªå ´æ‰€ãŒè¦‹ã¤ã‹ã£ãŸã®ã§ç§»å‹•
+                '“KØ‚ÈêŠ‚ªŒ©‚Â‚©‚Á‚½‚Ì‚ÅˆÚ“®
                 .Move new_x, new_y
                 moved = True
             End If
@@ -3228,16 +3228,16 @@ NextHealingSkill:
         aname = .Ability(SelectedAbility).Name
         SelectedAbilityName = aname
         
-        'åˆä½“æŠ€ãƒ‘ãƒ¼ãƒˆãƒŠãƒ¼ã®è¨­å®š
-        If .IsAbilityClassifiedAs(SelectedAbility, "åˆ") Then
-            .CombinationPartner "ã‚¢ãƒ“ãƒªãƒ†ã‚£", SelectedAbility, partners
+        '‡‘Ì‹Zƒp[ƒgƒi[‚Ìİ’è
+        If .IsAbilityClassifiedAs(SelectedAbility, "‡") Then
+            .CombinationPartner "ƒAƒrƒŠƒeƒB", SelectedAbility, partners
         Else
             ReDim SelectedPartners(0)
             ReDim partners(0)
         End If
         
-        'ä½¿ç”¨ã‚¤ãƒ™ãƒ³ãƒˆ
-        HandleEvent "ä½¿ç”¨", .MainPilot.ID, aname
+        'g—pƒCƒxƒ“ƒg
+        HandleEvent "g—p", .MainPilot.ID, aname
         If IsScenarioFinished Or IsCanceled Then
             ReDim SelectedPartners(0)
             Exit Function
@@ -3249,42 +3249,42 @@ NextHealingSkill:
             OpenMessageForm SelectedTarget, SelectedUnit
         End If
         
-        'å›å¾©ã‚¢ãƒ“ãƒªãƒ†ã‚£ã‚’å®Ÿè¡Œ
+        '‰ñ•œƒAƒrƒŠƒeƒB‚ğÀs
         .ExecuteAbility SelectedAbility, SelectedTarget
         Set SelectedUnit = .CurrentForm
     End With
     
     CloseMessageForm
     
-    'è‡ªçˆ†ã—ãŸå ´åˆã®ç ´å£Šã‚¤ãƒ™ãƒ³ãƒˆ
-    If SelectedUnit.Status = "ç ´å£Š" Then
+    '©”š‚µ‚½ê‡‚Ì”j‰óƒCƒxƒ“ƒg
+    If SelectedUnit.Status = "”j‰ó" Then
         If SelectedUnit.CountPilot > 0 Then
-            HandleEvent "ç ´å£Š", SelectedUnit.MainPilot.ID
+            HandleEvent "”j‰ó", SelectedUnit.MainPilot.ID
         End If
         ReDim SelectedPartners(0)
         Exit Function
     End If
     
-    'ä½¿ç”¨å¾Œã‚¤ãƒ™ãƒ³ãƒˆ
+    'g—pŒãƒCƒxƒ“ƒg
     If SelectedUnit.CountPilot > 0 Then
-        HandleEvent "ä½¿ç”¨å¾Œ", SelectedUnit.MainPilot.ID, aname
+        HandleEvent "g—pŒã", SelectedUnit.MainPilot.ID, aname
         If IsScenarioFinished Or IsCanceled Then
             ReDim SelectedPartners(0)
             Exit Function
         End If
     End If
     
-    'è‡ªçˆ†ã‚¢ãƒ“ãƒªãƒ†ã‚£ã®ç ´å£Šã‚¤ãƒ™ãƒ³ãƒˆ
-    If SelectedUnit.Status = "ç ´å£Š" Then
-        HandleEvent "ç ´å£Š", SelectedUnit.MainPilot.ID
+    '©”šƒAƒrƒŠƒeƒB‚Ì”j‰óƒCƒxƒ“ƒg
+    If SelectedUnit.Status = "”j‰ó" Then
+        HandleEvent "”j‰ó", SelectedUnit.MainPilot.ID
         If IsScenarioFinished Or IsCanceled Then
             ReDim SelectedPartners(0)
             Exit Function
         End If
     End If
     
-    'åˆä½“æŠ€ã®ãƒ‘ãƒ¼ãƒˆãƒŠãƒ¼ã®è¡Œå‹•æ•°ã‚’æ¸›ã‚‰ã™
-    If Not IsOptionDefined("åˆä½“æŠ€ãƒ‘ãƒ¼ãƒˆãƒŠãƒ¼è¡Œå‹•æ•°ç„¡æ¶ˆè²»") Then
+    '‡‘Ì‹Z‚Ìƒp[ƒgƒi[‚Ìs“®”‚ğŒ¸‚ç‚·
+    If Not IsOptionDefined("‡‘Ì‹Zƒp[ƒgƒi[s“®”–³Á”ï") Then
         For i = 1 To UBound(partners)
             partners(i).CurrentForm.UseAction
         Next
@@ -3292,7 +3292,7 @@ NextHealingSkill:
     ReDim SelectedPartners(0)
 End Function
 
-'ä¿®ç†ãŒå¯èƒ½ã§ã‚ã‚Œã°ä¿®ç†è£…ç½®ã‚’ä½¿ã†
+'C—‚ª‰Â”\‚Å‚ ‚ê‚ÎC—‘•’u‚ğg‚¤
 Public Function TryFix(moved As Boolean, Optional t As Unit) As Boolean
 Dim TmpMaskData() As Boolean
 Dim i As Integer, j As Integer, k As Integer
@@ -3303,21 +3303,21 @@ Dim u As Unit
 Dim fname As String
 
     With SelectedUnit
-        'ä¿®ç†è£…ç½®ã‚’ä½¿ç”¨å¯èƒ½ï¼Ÿ
-        If Not .IsFeatureAvailable("ä¿®ç†è£…ç½®") _
-            Or .Area = "åœ°ä¸­" _
+        'C—‘•’u‚ğg—p‰Â”\H
+        If Not .IsFeatureAvailable("C—‘•’u") _
+            Or .Area = "’n’†" _
         Then
             Exit Function
         End If
         
-        'ç‹‚æˆ¦å£«çŠ¶æ…‹ã®éš›ã¯ä¿®ç†è£…ç½®ã‚’ä½¿ã‚ãªã„
-        If .IsConditionSatisfied("ç‹‚æˆ¦å£«") Then
+        '‹¶ímó‘Ô‚ÌÛ‚ÍC—‘•’u‚ğg‚í‚È‚¢
+        If .IsConditionSatisfied("‹¶ím") Then
             Exit Function
         End If
         
-        'ä¿®ç†è£…ç½®ã‚’ä½¿ç”¨å¯èƒ½ãªé ˜åŸŸã‚’è¨­å®š
-        If moved Or .Mode = "å›ºå®š" Then
-            'ç§»å‹•ã§ãªã„å ´åˆ
+        'C—‘•’u‚ğg—p‰Â”\‚È—Ìˆæ‚ğİ’è
+        If moved Or .Mode = "ŒÅ’è" Then
+            'ˆÚ“®‚Å‚È‚¢ê‡
             For i = 1 To MapWidth
                 For j = 1 To MapHeight
                     MaskData(i, j) = True
@@ -3336,7 +3336,7 @@ Dim fname As String
                 MaskData(.X, .Y + 1) = False
             End If
         Else
-            'ç§»å‹•å¯èƒ½ãªå ´åˆ
+            'ˆÚ“®‰Â”\‚Èê‡
             ReDim TmpMaskData(0 To MapWidth + 1, 0 To MapHeight + 1)
             AreaInSpeed SelectedUnit
             For i = 1 To MapWidth
@@ -3366,7 +3366,7 @@ Dim fname As String
             MaskData(.X, .Y) = True
         End If
         
-        'ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’æ¢ã™
+        'ƒ^[ƒQƒbƒg‚ğ’T‚·
         Set SelectedTarget = Nothing
         max_dmg = 90
         For i = MaxLng(.X - (.Speed + 1), 1) To MinLng(.X + (.Speed + 1), MapWidth)
@@ -3380,40 +3380,40 @@ Dim fname As String
                     GoTo NextFixTarget
                 End If
                 
-                'ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®ã‚¿ãƒ¼ã‚²ãƒƒãƒˆãŒæŒ‡å®šã•ã‚Œã¦ã„ã‚‹å ´åˆã¯ãã®ãƒ¦ãƒ‹ãƒƒãƒˆä»¥å¤–ã‚’
-                'ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã«ã¯ã—ãªã„
+                'ƒfƒtƒHƒ‹ƒg‚Ìƒ^[ƒQƒbƒg‚ªw’è‚³‚ê‚Ä‚¢‚éê‡‚Í‚»‚Ìƒ†ƒjƒbƒgˆÈŠO‚ğ
+                'ƒ^[ƒQƒbƒg‚É‚Í‚µ‚È‚¢
                 If Not t Is Nothing Then
                     If Not u Is t Then
                         GoTo NextFixTarget
                     End If
                 End If
                 
-                'ç¾åœ¨ã®é¸æŠã—ã¦ã„ã‚‹ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚ˆã‚Šãƒ€ãƒ¡ãƒ¼ã‚¸ãŒå°‘ãªã‘ã‚Œã°é¸æŠã—ãªã„
+                'Œ»İ‚Ì‘I‘ğ‚µ‚Ä‚¢‚éƒ^[ƒQƒbƒg‚æ‚èƒ_ƒ[ƒW‚ª­‚È‚¯‚ê‚Î‘I‘ğ‚µ‚È‚¢
                 If 100 * u.HP \ u.MaxHP > max_dmg Then
                     GoTo NextFixTarget
                 End If
                 
-                'å‘³æ–¹ã‹ã©ã†ã‹åˆ¤å®š
+                '–¡•û‚©‚Ç‚¤‚©”»’è
                 If Not .IsAlly(u) Then
                     GoTo NextFixTarget
                 End If
                 
-                'ã‚¾ãƒ³ãƒ“ï¼Ÿ
-                If u.IsConditionSatisfied("ã‚¾ãƒ³ãƒ“") Then
+                'ƒ]ƒ“ƒrH
+                If u.IsConditionSatisfied("ƒ]ƒ“ƒr") Then
                     GoTo NextFixTarget
                 End If
                 
-                'ä¿®ç†ä¸å¯ï¼Ÿ
-                If u.IsFeatureAvailable("ä¿®ç†ä¸å¯") Then
-                    For k = 2 To u.FeatureData("ä¿®ç†ä¸å¯")
-                        fname = LIndex(u.FeatureData("ä¿®ç†ä¸å¯"), k)
+                'C—•s‰ÂH
+                If u.IsFeatureAvailable("C—•s‰Â") Then
+                    For k = 2 To u.FeatureData("C—•s‰Â")
+                        fname = LIndex(u.FeatureData("C—•s‰Â"), k)
                         If Left$(fname, 1) = "!" Then
                             fname = Mid$(fname, 2)
-                            If fname <> .FeatureName0("ä¿®ç†è£…ç½®") Then
+                            If fname <> .FeatureName0("C—‘•’u") Then
                                 GoTo NextFixTarget
                             End If
                         Else
-                            If fname = .FeatureName0("ä¿®ç†è£…ç½®") Then
+                            If fname = .FeatureName0("C—‘•’u") Then
                                 GoTo NextFixTarget
                             End If
                         End If
@@ -3426,17 +3426,17 @@ NextFixTarget:
             Next
         Next
         
-        'ã‚¿ãƒ¼ã‚²ãƒƒãƒˆãŒè¦‹ã¤ã‹ã‚‰ãªã„
+        'ƒ^[ƒQƒbƒg‚ªŒ©‚Â‚©‚ç‚È‚¢
         If SelectedTarget Is Nothing Then
             Exit Function
         End If
         
-        'ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã«éš£æ¥ã™ã‚‹ã‚ˆã†ã«ç§»å‹•
-        If Not moved And .Mode <> "å›ºå®š" Then
+        'ƒ^[ƒQƒbƒg‚É—×Ú‚·‚é‚æ‚¤‚ÉˆÚ“®
+        If Not moved And .Mode <> "ŒÅ’è" Then
             new_x = .X
             new_y = .Y
             With SelectedTarget
-                'ç¾åœ¨ä½ç½®ã‹ã‚‰ä¿®ç†ãŒå¯èƒ½ã§ã‚ã‚Œã°ç¾åœ¨ä½ç½®ã‚’å„ªå…ˆ
+                'Œ»İˆÊ’u‚©‚çC—‚ª‰Â”\‚Å‚ ‚ê‚ÎŒ»İˆÊ’u‚ğ—Dæ
                 If Abs(.X - new_x) + Abs(.Y - new_y) = 1 Then
                     tmp = 1
                 Else
@@ -3449,7 +3449,7 @@ NextFixTarget:
                     Next
                 Next
                 
-                'é©åˆ‡ãªå ´æ‰€ã‚’æ¢ã™
+                '“KØ‚ÈêŠ‚ğ’T‚·
                 For i = MaxLng(.X - 1, 1) To MinLng(.X + 1, MapWidth)
                     For j = MaxLng(.Y - 1, 1) To MinLng(.Y + 1, MapHeight)
                         If Not MaskData(i, j) _
@@ -3469,53 +3469,53 @@ NextFixTarget:
             End With
             
             If new_x <> .X Or new_y <> .Y Then
-                'é©åˆ‡ãªå ´æ‰€ãŒè¦‹ã¤ã‹ã£ãŸã®ã§ç§»å‹•
+                '“KØ‚ÈêŠ‚ªŒ©‚Â‚©‚Á‚½‚Ì‚ÅˆÚ“®
                 .Move new_x, new_y
                 moved = True
             End If
         End If
         
-        'é¸æŠå†…å®¹ã‚’å¤‰æ›´
+        '‘I‘ğ“à—e‚ğ•ÏX
         Set SelectedUnitForEvent = SelectedUnit
         Set SelectedTargetForEvent = SelectedTarget
         
-        'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸è¡¨ç¤º
+        'ƒƒbƒZ[ƒW•\¦
         OpenMessageForm SelectedTarget, SelectedUnit
-        If .IsMessageDefined("ä¿®ç†") Then
-            .PilotMessage "ä¿®ç†"
+        If .IsMessageDefined("C—") Then
+            .PilotMessage "C—"
         End If
         
-        'ã‚¢ãƒ‹ãƒ¡è¡¨ç¤º
-        If .IsAnimationDefined("ä¿®ç†", .FeatureName("ä¿®ç†")) Then
-            .PlayAnimation "ä¿®ç†", .FeatureName("ä¿®ç†")
+        'ƒAƒjƒ•\¦
+        If .IsAnimationDefined("C—", .FeatureName("C—")) Then
+            .PlayAnimation "C—", .FeatureName("C—")
         Else
-            .SpecialEffect "ä¿®ç†", .FeatureName("ä¿®ç†")
+            .SpecialEffect "C—", .FeatureName("C—")
         End If
         
-        DisplaySysMessage .Nickname & "ã¯[" _
-            & SelectedTarget.Nickname & "]ã«[" & .FeatureName0("ä¿®ç†è£…ç½®") & "]ã‚’ä½¿ã£ãŸã€‚"
+        DisplaySysMessage .Nickname & "‚Í[" _
+            & SelectedTarget.Nickname & "]‚É[" & .FeatureName0("C—‘•’u") & "]‚ğg‚Á‚½B"
         
-        'ä¿®ç†å®Ÿè¡Œ
+        'C—Às
         tmp = SelectedTarget.HP
-        Select Case .FeatureLevel("ä¿®ç†è£…ç½®")
+        Select Case .FeatureLevel("C—‘•’u")
             Case 1, -1
                 SelectedTarget.RecoverHP _
-                    30 + 3 * .MainPilot.SkillLevel("ä¿®ç†æŠ€èƒ½")
+                    30 + 3 * .MainPilot.SkillLevel("C—‹Z”\")
             Case 2
                 SelectedTarget.RecoverHP _
-                    50 + 5 * .MainPilot.SkillLevel("ä¿®ç†æŠ€èƒ½")
+                    50 + 5 * .MainPilot.SkillLevel("C—‹Z”\")
             Case 3
                 SelectedTarget.RecoverHP 100
         End Select
         DrawSysString SelectedTarget.X, SelectedTarget.Y, _
             "+" & Format$(SelectedTarget.HP - tmp)
         UpdateMessageForm SelectedTarget, SelectedUnit
-        DisplaySysMessage SelectedTarget.Nickname & "ã®ï¼¨ï¼°ãŒ[" _
-            & Format$(SelectedTarget.HP - tmp) & "]å›å¾©ã—ãŸã€‚"
+        DisplaySysMessage SelectedTarget.Nickname & "‚Ì‚g‚o‚ª[" _
+            & Format$(SelectedTarget.HP - tmp) & "]‰ñ•œ‚µ‚½B"
     End With
     
-    'çµŒé¨“å€¤ç²å¾—
-    SelectedUnit.GetExp SelectedTarget, "ä¿®ç†"
+    'ŒoŒ±’lŠl“¾
+    SelectedUnit.GetExp SelectedTarget, "C—"
     
     If MessageWait < 10000 Then
         Sleep MessageWait
@@ -3523,7 +3523,7 @@ NextFixTarget:
     
     CloseMessageForm
     
-    'å½¢æ…‹å¤‰åŒ–ã®ãƒã‚§ãƒƒã‚¯
+    'Œ`‘Ô•Ï‰»‚Ìƒ`ƒFƒbƒN
     SelectedTarget.Update
     SelectedTarget.CurrentForm.CheckAutoHyperMode
     SelectedTarget.CurrentForm.CheckAutoNormalMode
@@ -3531,7 +3531,7 @@ NextFixTarget:
     TryFix = True
 End Function
 
-'ãƒãƒƒãƒ—æ”»æ’ƒä½¿ç”¨ã«é–¢ã™ã‚‹å‡¦ç†
+'ƒ}ƒbƒvUŒ‚g—p‚ÉŠÖ‚·‚éˆ—
 Public Function TryMapAttack(moved As Boolean) As Boolean
 Dim w As Integer
 Dim tx As Integer, ty As Integer, xx As Integer, yy As Integer
@@ -3547,49 +3547,49 @@ Dim partners() As Unit
     With SelectedUnit
         SaveSelections
         
-        'ãƒãƒƒãƒ—æ”»æ’ƒã‚’ä½¿ç”¨ã™ã‚‹ã‚¿ãƒ¼ã‚²ãƒƒãƒˆæ•°ã®ä¸‹é™ã‚’è¨­å®šã™ã‚‹
+        'ƒ}ƒbƒvUŒ‚‚ğg—p‚·‚éƒ^[ƒQƒbƒg”‚Ì‰ºŒÀ‚ğİ’è‚·‚é
         score_limit = 1
         For i = 1 To .CountWeapon
-            'é€šå¸¸æ”»æ’ƒã‚’æŒã£ã¦ã„ã‚‹å ´åˆã¯å˜ç‹¬ã®æ•µã¸ã®æ”»æ’ƒã®éš›ã«é€šå¸¸æ”»æ’ƒã‚’å„ªå…ˆã™ã‚‹
-            If Not .IsWeaponClassifiedAs(i, "ï¼­") Then
-' MOD START ãƒãƒ¼ã‚¸
+            '’ÊíUŒ‚‚ğ‚Á‚Ä‚¢‚éê‡‚Í’P“Æ‚Ì“G‚Ö‚ÌUŒ‚‚ÌÛ‚É’ÊíUŒ‚‚ğ—Dæ‚·‚é
+            If Not .IsWeaponClassifiedAs(i, "‚l") Then
+' MOD START ƒ}[ƒW
 '                score_limit = 2
 '                Exit For
-                If .IsWeaponAvailable(i, "ç§»å‹•å‰") Then
+                If .IsWeaponAvailable(i, "ˆÚ“®‘O") Then
                     score_limit = 2
                     Exit For
                 End If
-' MOD END ãƒãƒ¼ã‚¸
+' MOD END ƒ}[ƒW
             End If
         Next
         
-        'å¨åŠ›ã®é«˜ã„æ­¦å™¨ã‚’å„ªå…ˆã—ã¦é¸æŠ
+        'ˆĞ—Í‚Ì‚‚¢•Ší‚ğ—Dæ‚µ‚Ä‘I‘ğ
         w = .CountWeapon
         Do While w > 0
             SelectedWeapon = w
             SelectedTWeapon = 0
             
-            'ãƒãƒƒãƒ—æ”»æ’ƒã‹ã©ã†ã‹
-            If Not .IsWeaponClassifiedAs(w, "ï¼­") Then
+            'ƒ}ƒbƒvUŒ‚‚©‚Ç‚¤‚©
+            If Not .IsWeaponClassifiedAs(w, "‚l") Then
                 GoTo NextWeapon
             End If
             
-            'æ­¦å™¨ã®ä½¿ç”¨å¯å¦ã‚’åˆ¤å®š
+            '•Ší‚Ìg—p‰Â”Û‚ğ”»’è
             If moved Then
-                If Not .IsWeaponAvailable(w, "ç§»å‹•å¾Œ") Then
+                If Not .IsWeaponAvailable(w, "ˆÚ“®Œã") Then
                     GoTo NextWeapon
                 End If
             Else
-                If Not .IsWeaponAvailable(w, "ç§»å‹•å‰") Then
+                If Not .IsWeaponAvailable(w, "ˆÚ“®‘O") Then
                     GoTo NextWeapon
                 End If
             End If
             
-            'ãƒœã‚¹ãƒ¦ãƒ‹ãƒƒãƒˆãŒè‡ªçˆ†ï¼†å…¨ï¼¥ï¼®æ¶ˆè²»æ”»æ’ƒç­‰ã‚’ä½¿ã†ã®ã¯éå¸¸æ™‚ã®ã¿
+            'ƒ{ƒXƒ†ƒjƒbƒg‚ª©”š•‘S‚d‚mÁ”ïUŒ‚“™‚ğg‚¤‚Ì‚Í”ñí‚Ì‚İ
             If .BossRank >= 0 Then
-                If .IsWeaponClassifiedAs(w, "è‡ª") _
-                    Or .IsWeaponClassifiedAs(w, "å°½") _
-                    Or .IsWeaponClassifiedAs(w, "æ¶ˆ") _
+                If .IsWeaponClassifiedAs(w, "©") _
+                    Or .IsWeaponClassifiedAs(w, "s") _
+                    Or .IsWeaponClassifiedAs(w, "Á") _
                 Then
                     If .HP > .MaxHP \ 4 Then
                         GoTo NextWeapon
@@ -3605,8 +3605,8 @@ Dim partners() As Unit
             x2 = MinLng(.X + max_range, MapWidth)
             y2 = MinLng(.Y + max_range, MapHeight)
             
-            'ãƒãƒƒãƒ—æ”»æ’ƒã®ç¨®é¡ã«ã—ãŸãŒã£ã¦åŠ¹æœç¯„å›²å†…ã«ã„ã‚‹æ•µã‚’ã‚«ã‚¦ãƒ³ãƒˆ
-            If .IsWeaponClassifiedAs(w, "ï¼­ç›´") Then
+            'ƒ}ƒbƒvUŒ‚‚Ìí—Ş‚É‚µ‚½‚ª‚Á‚ÄŒø‰Ê”ÍˆÍ“à‚É‚¢‚é“G‚ğƒJƒEƒ“ƒg
+            If .IsWeaponClassifiedAs(w, "‚l’¼") Then
                 For i = 1 To 4
                     Select Case i
                         Case 1
@@ -3619,14 +3619,14 @@ Dim partners() As Unit
                             direction = "E"
                     End Select
                     
-                    'åŠ¹æœç¯„å›²ã‚’è¨­å®š
+                    'Œø‰Ê”ÍˆÍ‚ğİ’è
                     AreaInLine .X, .Y, min_range, max_range, direction
                     MaskData(.X, .Y) = True
                     
-                    'åŠ¹æœç¯„å›²å†…ã«ã„ã‚‹ãƒ¦ãƒ‹ãƒƒãƒˆã‚’ã‚«ã‚¦ãƒ³ãƒˆ
+                    'Œø‰Ê”ÍˆÍ“à‚É‚¢‚éƒ†ƒjƒbƒg‚ğƒJƒEƒ“ƒg
                     enemy_num = CountTargetInRange(w, x1, y1, x2, y2)
                     
-                    'ãƒãƒƒãƒ—æ”»æ’ƒãŒæœ€å¼·æ­¦å™¨ã§ã‚ã‚Œã°ã‚¿ãƒ¼ã‚²ãƒƒãƒˆãŒï¼‘ä½“ã§ã‚ã£ã¦ã‚‚ä½¿ç”¨
+                    'ƒ}ƒbƒvUŒ‚‚ªÅ‹­•Ší‚Å‚ ‚ê‚Îƒ^[ƒQƒbƒg‚ª‚P‘Ì‚Å‚ ‚Á‚Ä‚àg—p
                     If enemy_num >= score_limit _
                         Or (enemy_num = 1 And w = .CountWeapon) _
                     Then
@@ -3648,7 +3648,7 @@ Dim partners() As Unit
                     End If
                 Next
                 
-            ElseIf .IsWeaponClassifiedAs(w, "ï¼­æ‹¡") Then
+            ElseIf .IsWeaponClassifiedAs(w, "‚lŠg") Then
                 For i = 1 To 4
                     Select Case i
                         Case 1
@@ -3661,14 +3661,14 @@ Dim partners() As Unit
                             direction = "E"
                     End Select
                     
-                    'åŠ¹æœç¯„å›²ã‚’è¨­å®š
+                    'Œø‰Ê”ÍˆÍ‚ğİ’è
                     AreaInCone .X, .Y, min_range, max_range, direction
                     MaskData(.X, .Y) = True
                     
-                    'åŠ¹æœç¯„å›²å†…ã«ã„ã‚‹ãƒ¦ãƒ‹ãƒƒãƒˆã‚’ã‚«ã‚¦ãƒ³ãƒˆ
+                    'Œø‰Ê”ÍˆÍ“à‚É‚¢‚éƒ†ƒjƒbƒg‚ğƒJƒEƒ“ƒg
                     enemy_num = CountTargetInRange(w, x1, y1, x2, y2)
                     
-                    'ãƒãƒƒãƒ—æ”»æ’ƒãŒæœ€å¼·æ­¦å™¨ã§ã‚ã‚Œã°ã‚¿ãƒ¼ã‚²ãƒƒãƒˆãŒï¼‘ä½“ã§ã‚ã£ã¦ã‚‚ä½¿ç”¨
+                    'ƒ}ƒbƒvUŒ‚‚ªÅ‹­•Ší‚Å‚ ‚ê‚Îƒ^[ƒQƒbƒg‚ª‚P‘Ì‚Å‚ ‚Á‚Ä‚àg—p
                     If enemy_num >= score_limit _
                         Or (enemy_num = 1 And w = .CountWeapon) _
                     Then
@@ -3690,7 +3690,7 @@ Dim partners() As Unit
                     End If
                 Next
                 
-            ElseIf .IsWeaponClassifiedAs(w, "ï¼­æ‰‡") Then
+            ElseIf .IsWeaponClassifiedAs(w, "‚lî") Then
                 For i = 1 To 4
                     Select Case i
                         Case 1
@@ -3703,15 +3703,15 @@ Dim partners() As Unit
                             direction = "E"
                     End Select
                     
-                    'åŠ¹æœç¯„å›²ã‚’è¨­å®š
+                    'Œø‰Ê”ÍˆÍ‚ğİ’è
                     AreaInSector .X, .Y, min_range, _
-                        max_range, direction, .WeaponLevel(w, "ï¼­æ‰‡")
+                        max_range, direction, .WeaponLevel(w, "‚lî")
                     MaskData(.X, .Y) = True
                     
-                    'åŠ¹æœç¯„å›²å†…ã«ã„ã‚‹ãƒ¦ãƒ‹ãƒƒãƒˆã‚’ã‚«ã‚¦ãƒ³ãƒˆ
+                    'Œø‰Ê”ÍˆÍ“à‚É‚¢‚éƒ†ƒjƒbƒg‚ğƒJƒEƒ“ƒg
                     enemy_num = CountTargetInRange(w, x1, y1, x2, y2)
                     
-                    'ãƒãƒƒãƒ—æ”»æ’ƒãŒæœ€å¼·æ­¦å™¨ã§ã‚ã‚Œã°ã‚¿ãƒ¼ã‚²ãƒƒãƒˆãŒï¼‘ä½“ã§ã‚ã£ã¦ã‚‚ä½¿ç”¨
+                    'ƒ}ƒbƒvUŒ‚‚ªÅ‹­•Ší‚Å‚ ‚ê‚Îƒ^[ƒQƒbƒg‚ª‚P‘Ì‚Å‚ ‚Á‚Ä‚àg—p
                     If enemy_num >= score_limit _
                         Or (enemy_num = 1 And w = .CountWeapon) _
                     Then
@@ -3733,18 +3733,18 @@ Dim partners() As Unit
                     End If
                 Next
                 
-            ElseIf .IsWeaponClassifiedAs(w, "ï¼­å…¨") Then
-                'åŠ¹æœç¯„å›²ã‚’è¨­å®š
-' MOD START ãƒãƒ¼ã‚¸
-'                AreaInRange .X, .Y, min_range, max_range, "ã™ã¹ã¦"
-                AreaInRange .X, .Y, max_range, min_range, "ã™ã¹ã¦"
-' MOD END ãƒãƒ¼ã‚¸
+            ElseIf .IsWeaponClassifiedAs(w, "‚l‘S") Then
+                'Œø‰Ê”ÍˆÍ‚ğİ’è
+' MOD START ƒ}[ƒW
+'                AreaInRange .X, .Y, min_range, max_range, "‚·‚×‚Ä"
+                AreaInRange .X, .Y, max_range, min_range, "‚·‚×‚Ä"
+' MOD END ƒ}[ƒW
                 MaskData(.X, .Y) = True
                 
-                'åŠ¹æœç¯„å›²å†…ã«ã„ã‚‹ãƒ¦ãƒ‹ãƒƒãƒˆã‚’ã‚«ã‚¦ãƒ³ãƒˆ
+                'Œø‰Ê”ÍˆÍ“à‚É‚¢‚éƒ†ƒjƒbƒg‚ğƒJƒEƒ“ƒg
                 enemy_num = CountTargetInRange(w, x1, y1, x2, y2)
                 
-                'ãƒãƒƒãƒ—æ”»æ’ƒãŒæœ€å¼·æ­¦å™¨ã§ã‚ã‚Œã°ã‚¿ãƒ¼ã‚²ãƒƒãƒˆãŒï¼‘ä½“ã§ã‚ã£ã¦ã‚‚ä½¿ç”¨
+                'ƒ}ƒbƒvUŒ‚‚ªÅ‹­•Ší‚Å‚ ‚ê‚Îƒ^[ƒQƒbƒg‚ª‚P‘Ì‚Å‚ ‚Á‚Ä‚àg—p
                 If enemy_num >= score_limit _
                     Or (enemy_num = 1 And w = .CountWeapon) _
                 Then
@@ -3753,20 +3753,20 @@ Dim partners() As Unit
                     GoTo FoundWeapon
                 End If
                 
-            ElseIf .IsWeaponClassifiedAs(w, "ï¼­æŠ•") Then
-                lv = .WeaponLevel(w, "ï¼­æŠ•")
+            ElseIf .IsWeaponClassifiedAs(w, "‚l“Š") Then
+                lv = .WeaponLevel(w, "‚l“Š")
                 score = 0
                 For xx = x1 To x2
                     For yy = y1 To y2
                         If Abs(.X - xx) + Abs(.Y - yy) <= max_range _
                             And Abs(.X - xx) + Abs(.Y - yy) >= min_range _
                         Then
-                            'åŠ¹æœç¯„å›²ã‚’è¨­å®š
+                            'Œø‰Ê”ÍˆÍ‚ğİ’è
                             If lv > 0 Then
-' MOD START ãƒãƒ¼ã‚¸
-'                                AreaInRange xx, yy, 1, lv, "ã™ã¹ã¦"
-                                AreaInRange xx, yy, lv, 1, "ã™ã¹ã¦"
-' MOD END ãƒãƒ¼ã‚¸
+' MOD START ƒ}[ƒW
+'                                AreaInRange xx, yy, 1, lv, "‚·‚×‚Ä"
+                                AreaInRange xx, yy, lv, 1, "‚·‚×‚Ä"
+' MOD END ƒ}[ƒW
                             Else
                                 For i = 1 To MapWidth
                                     For j = 1 To MapHeight
@@ -3777,7 +3777,7 @@ Dim partners() As Unit
                             End If
                             MaskData(.X, .Y) = True
                             
-                            'åŠ¹æœç¯„å›²å†…ã«ã„ã‚‹ãƒ¦ãƒ‹ãƒƒãƒˆã‚’ã‚«ã‚¦ãƒ³ãƒˆ
+                            'Œø‰Ê”ÍˆÍ“à‚É‚¢‚éƒ†ƒjƒbƒg‚ğƒJƒEƒ“ƒg
                             enemy_num = CountTargetInRange(w, xx - lv, yy - lv, xx + lv, yy + lv)
                             
                             If enemy_num > score Then
@@ -3789,8 +3789,8 @@ Dim partners() As Unit
                     Next
                 Next
                 
-                'ãƒãƒƒãƒ—æ”»æ’ƒãŒæœ€å¼·æ­¦å™¨ã§ã‚ã‚Œã°ã‚¿ãƒ¼ã‚²ãƒƒãƒˆãŒï¼‘ä½“ã§ã‚ã£ã¦ã‚‚ä½¿ç”¨
-                'ã¾ãŸã€ï¼­æŠ•L0ã®å ´åˆã¯æœ€å¤§ã§ã‚‚ï¼‘ä½“ã®æ•µã—ã‹ç‹™ãˆãªã„
+                'ƒ}ƒbƒvUŒ‚‚ªÅ‹­•Ší‚Å‚ ‚ê‚Îƒ^[ƒQƒbƒg‚ª‚P‘Ì‚Å‚ ‚Á‚Ä‚àg—p
+                '‚Ü‚½A‚l“ŠL0‚Ìê‡‚ÍÅ‘å‚Å‚à‚P‘Ì‚Ì“G‚µ‚©‘_‚¦‚È‚¢
                 If score >= score_limit _
                     Or (score = 1 And w = .CountWeapon) _
                     Or (score = 1 And lv = 0) _
@@ -3798,18 +3798,18 @@ Dim partners() As Unit
                     GoTo FoundWeapon
                 End If
                 
-            ElseIf .IsWeaponClassifiedAs(w, "ï¼­ç·š") Then
+            ElseIf .IsWeaponClassifiedAs(w, "‚lü") Then
                 score = 0
                 For xx = x1 To x2
                     For yy = y1 To y2
                         If Abs(.X - xx) + Abs(.Y - yy) <= max_range _
                             And Abs(.X - xx) + Abs(.Y - yy) >= min_range _
                         Then
-                            'åŠ¹æœç¯„å›²ã‚’è¨­å®š
+                            'Œø‰Ê”ÍˆÍ‚ğİ’è
                             AreaInPointToPoint .X, .Y, xx, yy
                             MaskData(.X, .Y) = True
                             
-                            'åŠ¹æœç¯„å›²å†…ã«ã„ã‚‹ãƒ¦ãƒ‹ãƒƒãƒˆã‚’ã‚«ã‚¦ãƒ³ãƒˆ
+                            'Œø‰Ê”ÍˆÍ“à‚É‚¢‚éƒ†ƒjƒbƒg‚ğƒJƒEƒ“ƒg
                             enemy_num = CountTargetInRange(w, _
                                 MinLng(.X, xx), MinLng(.Y, yy), _
                                 MaxLng(.X, xx), MaxLng(.Y, yy))
@@ -3823,16 +3823,16 @@ Dim partners() As Unit
                     Next
                 Next
                 
-                'ãƒãƒƒãƒ—æ”»æ’ƒãŒæœ€å¼·æ­¦å™¨ã§ã‚ã‚Œã°ã‚¿ãƒ¼ã‚²ãƒƒãƒˆãŒï¼‘ä½“ã§ã‚ã£ã¦ã‚‚ä½¿ç”¨
+                'ƒ}ƒbƒvUŒ‚‚ªÅ‹­•Ší‚Å‚ ‚ê‚Îƒ^[ƒQƒbƒg‚ª‚P‘Ì‚Å‚ ‚Á‚Ä‚àg—p
                 If score >= score_limit _
                     Or (score = 1 And w = .CountWeapon) _
                 Then
                     GoTo FoundWeapon
                 End If
                 
-            ElseIf .IsWeaponClassifiedAs(w, "ï¼­ç§»") Then
-                'ãã®å ´ã‚’å‹•ã‹ãªã„å ´åˆã¯ç§»å‹•å‹ãƒãƒƒãƒ—æ”»æ’ƒã¯é¸è€ƒå¤–
-                If .Mode = "å›ºå®š" Then
+            ElseIf .IsWeaponClassifiedAs(w, "‚lˆÚ") Then
+                '‚»‚Ìê‚ğ“®‚©‚È‚¢ê‡‚ÍˆÚ“®Œ^ƒ}ƒbƒvUŒ‚‚Í‘IlŠO
+                If .Mode = "ŒÅ’è" Then
                     GoTo NextWeapon
                 End If
                 
@@ -3844,17 +3844,17 @@ Dim partners() As Unit
                             And MapDataForUnit(xx, yy) Is Nothing _
                             And .IsAbleToEnter(xx, yy) _
                         Then
-                            'åŠ¹æœç¯„å›²ã‚’è¨­å®š
+                            'Œø‰Ê”ÍˆÍ‚ğİ’è
                             AreaInPointToPoint .X, .Y, xx, yy
                             MaskData(.X, .Y) = True
                             
-                            'åŠ¹æœç¯„å›²å†…ã«ã„ã‚‹ãƒ¦ãƒ‹ãƒƒãƒˆã‚’ã‚«ã‚¦ãƒ³ãƒˆ
+                            'Œø‰Ê”ÍˆÍ“à‚É‚¢‚éƒ†ƒjƒbƒg‚ğƒJƒEƒ“ƒg
                             enemy_num = CountTargetInRange(w, _
                                 MinLng(.X, xx), MinLng(.Y, yy), _
                                 MaxLng(.X, xx), MaxLng(.Y, yy))
                             
                             If enemy_num > score Then
-                                'æœ€çµ‚ãƒã‚§ãƒƒã‚¯ ç›®æ¨™åœ°ç‚¹ã«ãŸã©ã‚Šç€ã‘ã‚‹ã‹ï¼Ÿ
+                                'ÅIƒ`ƒFƒbƒN –Ú•W’n“_‚É‚½‚Ç‚è’…‚¯‚é‚©H
                                 AreaInMoveAction SelectedUnit, max_range
                                 If Not MaskData(xx, yy) Then
                                     score = enemy_num
@@ -3866,8 +3866,8 @@ Dim partners() As Unit
                     Next
                 Next
                 
-                'ãƒãƒƒãƒ—æ”»æ’ƒãŒæœ€å¼·æ­¦å™¨ã§ã‚ã‚Œã°ã‚¿ãƒ¼ã‚²ãƒƒãƒˆãŒï¼‘ä½“ã§ã‚ã£ã¦ã‚‚ä½¿ç”¨
-                'ã¾ãŸã€å°„ç¨‹ãŒï¼’ã®å ´åˆã¯æœ€å¤§ã§ã‚‚ï¼‘ä½“ã®æ•µã—ã‹ç‹™ãˆãªã„
+                'ƒ}ƒbƒvUŒ‚‚ªÅ‹­•Ší‚Å‚ ‚ê‚Îƒ^[ƒQƒbƒg‚ª‚P‘Ì‚Å‚ ‚Á‚Ä‚àg—p
+                '‚Ü‚½AË’ö‚ª‚Q‚Ìê‡‚ÍÅ‘å‚Å‚à‚P‘Ì‚Ì“G‚µ‚©‘_‚¦‚È‚¢
                 If score >= score_limit _
                     Or (score = 1 And w = .CountWeapon) _
                     Or (score = 1 And max_range = 2) _
@@ -3879,7 +3879,7 @@ NextWeapon:
             w = w - 1
         Loop
         
-        'æœ‰åŠ¹ãªãƒãƒƒãƒ—æ”»æ’ƒãŒè¦‹ã¤ã‹ã‚‰ãªã‹ã£ãŸ
+        '—LŒø‚Èƒ}ƒbƒvUŒ‚‚ªŒ©‚Â‚©‚ç‚È‚©‚Á‚½
         
         RestoreSelections
         TryMapAttack = False
@@ -3888,21 +3888,21 @@ NextWeapon:
         
 FoundWeapon:
         
-        'æœ‰åŠ¹ãªãƒãƒƒãƒ—æ”»æ’ƒãŒè¦‹ã¤ã‹ã£ãŸå ´åˆ
+        '—LŒø‚Èƒ}ƒbƒvUŒ‚‚ªŒ©‚Â‚©‚Á‚½ê‡
         
-        'åˆä½“æŠ€ãƒ‘ãƒ¼ãƒˆãƒŠãƒ¼ã®è¨­å®š
-        If .IsWeaponClassifiedAs(w, "åˆ") Then
-            .CombinationPartner "æ­¦è£…", w, partners
+        '‡‘Ì‹Zƒp[ƒgƒi[‚Ìİ’è
+        If .IsWeaponClassifiedAs(w, "‡") Then
+            .CombinationPartner "•‘•", w, partners
         Else
             ReDim SelectedPartners(0)
             ReDim partners(0)
         End If
         
-        'ãƒãƒƒãƒ—æ”»æ’ƒã«ã‚ˆã‚‹æ”»æ’ƒã‚’å®Ÿè¡Œ
+        'ƒ}ƒbƒvUŒ‚‚É‚æ‚éUŒ‚‚ğÀs
         .MapAttack w, tx, ty
         
-        'åˆä½“æŠ€ã®ãƒ‘ãƒ¼ãƒˆãƒŠãƒ¼ã®è¡Œå‹•æ•°ã‚’æ¸›ã‚‰ã™
-        If Not IsOptionDefined("åˆä½“æŠ€ãƒ‘ãƒ¼ãƒˆãƒŠãƒ¼è¡Œå‹•æ•°ç„¡æ¶ˆè²»") Then
+        '‡‘Ì‹Z‚Ìƒp[ƒgƒi[‚Ìs“®”‚ğŒ¸‚ç‚·
+        If Not IsOptionDefined("‡‘Ì‹Zƒp[ƒgƒi[s“®”–³Á”ï") Then
             For i = 1 To UBound(partners)
                 partners(i).CurrentForm.UseAction
             Next
@@ -3914,7 +3914,7 @@ FoundWeapon:
     End With
 End Function
 
-'åŠ¹æœç¯„å›²å†…ã«ã„ã‚‹ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’ã‚«ã‚¦ãƒ³ãƒˆ
+'Œø‰Ê”ÍˆÍ“à‚É‚¢‚éƒ^[ƒQƒbƒg‚ğƒJƒEƒ“ƒg
 Private Function CountTargetInRange(ByVal w As Integer, _
     ByVal x1 As Integer, ByVal y1 As Integer, _
     ByVal x2 As Integer, ByVal y2 As Integer) As Integer
@@ -3923,68 +3923,68 @@ Dim t As Unit
 Dim is_ally_involved As Boolean
 
     With SelectedUnit
-        'åŠ¹æœç¯„å›²å†…ã®ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’æ¤œç´¢
+        'Œø‰Ê”ÍˆÍ“à‚Ìƒ^[ƒQƒbƒg‚ğŒŸõ
         For i = MaxLng(x1, 1) To MinLng(x2, MapWidth)
             For j = MaxLng(y1, 1) To MinLng(y2, MapHeight)
-                'åŠ¹æœç¯„å›²å†…ï¼Ÿ
+                'Œø‰Ê”ÍˆÍ“àH
                 If MaskData(i, j) Then
                     GoTo NextPoint
                 End If
                 
                 Set t = MapDataForUnit(i, j)
                 
-                'ãƒ¦ãƒ‹ãƒƒãƒˆãŒå­˜åœ¨ã™ã‚‹ï¼Ÿ
+                'ƒ†ƒjƒbƒg‚ª‘¶İ‚·‚éH
                 If t Is Nothing Then
                     GoTo NextPoint
                 End If
                 
-                'ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‰ã‚Œã‚‹ï¼Ÿ
+                'ƒ_ƒ[ƒW‚ğ—^‚¦‚ç‚ê‚éH
                 If .HitProbability(w, t, False) = 0 Then
                     GoTo NextPoint
                 ElseIf .ExpDamage(w, t, False) <= 10 Then
                     If .IsNormalWeapon(w) Then
                         GoTo NextPoint
                     ElseIf .CriticalProbability(w, t) <= 1 _
-                        And .WeaponLevel(w, "ï¼«") = 0 _
-                        And .WeaponLevel(w, "å¹") = 0 _
+                        And .WeaponLevel(w, "‚j") = 0 _
+                        And .WeaponLevel(w, "") = 0 _
                     Then
                         GoTo NextPoint
                     End If
                 End If
                 
-                'ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã¯æ•µï¼Ÿ
+                'ƒ^[ƒQƒbƒg‚Í“GH
                 If .IsAlly(t) Then
-                    'å‘³æ–¹ã®å ´åˆã¯åŒå£«è¨ã¡ã®å¯èƒ½æ€§ãŒã‚ã‚‹ã®ã§ãƒã‚§ãƒƒã‚¯ã—ã¦ãŠã
+                    '–¡•û‚Ìê‡‚Í“¯m“¢‚¿‚Ì‰Â”\«‚ª‚ ‚é‚Ì‚Åƒ`ƒFƒbƒN‚µ‚Ä‚¨‚­
                     is_ally_involved = True
                     GoTo NextPoint
                 End If
                 
-                'ç‰¹å®šã®é™£å–¶ã®ã¿ã‚’æ”»æ’ƒã™ã‚‹å ´åˆ
+                '“Á’è‚Ìw‰c‚Ì‚İ‚ğUŒ‚‚·‚éê‡
                 Select Case .Mode
-                    Case "å‘³æ–¹", "ï¼®ï¼°ï¼£"
-                        If t.Party <> "å‘³æ–¹" And t.Party <> "ï¼®ï¼°ï¼£" Then
+                    Case "–¡•û", "‚m‚o‚b"
+                        If t.Party <> "–¡•û" And t.Party <> "‚m‚o‚b" Then
                             GoTo NextPoint
                         End If
-                    Case "æ•µ"
-                        If t.Party <> "æ•µ" Then
+                    Case "“G"
+                        If t.Party <> "“G" Then
                             GoTo NextPoint
                         End If
-                    Case "ä¸­ç«‹"
-                        If t.Party <> "ä¸­ç«‹" Then
+                    Case "’†—§"
+                        If t.Party <> "’†—§" Then
                             GoTo NextPoint
                         End If
                 End Select
                 
-                'ã‚¿ãƒ¼ã‚²ãƒƒãƒˆãŒè¦‹ãˆã‚‹ï¼Ÿ
-                If t.IsUnderSpecialPowerEffect("éš ã‚Œèº«") Then
+                'ƒ^[ƒQƒbƒg‚ªŒ©‚¦‚éH
+                If t.IsUnderSpecialPowerEffect("‰B‚êg") Then
                     GoTo NextPoint
                 End If
-                If t.IsFeatureAvailable("ã‚¹ãƒ†ãƒ«ã‚¹") Then
-                    If Not t.IsConditionSatisfied("ã‚¹ãƒ†ãƒ«ã‚¹ç„¡åŠ¹") _
-                        And Not .IsFeatureAvailable("ã‚¹ãƒ†ãƒ«ã‚¹ç„¡åŠ¹åŒ–") _
+                If t.IsFeatureAvailable("ƒXƒeƒ‹ƒX") Then
+                    If Not t.IsConditionSatisfied("ƒXƒeƒ‹ƒX–³Œø") _
+                        And Not .IsFeatureAvailable("ƒXƒeƒ‹ƒX–³Œø‰»") _
                     Then
-                        If t.IsFeatureLevelSpecified("ã‚¹ãƒ†ãƒ«ã‚¹") Then
-                            If Abs(.X - t.X) + Abs(.Y - t.Y) > t.FeatureLevel("ã‚¹ãƒ†ãƒ«ã‚¹") Then
+                        If t.IsFeatureLevelSpecified("ƒXƒeƒ‹ƒX") Then
+                            If Abs(.X - t.X) + Abs(.Y - t.Y) > t.FeatureLevel("ƒXƒeƒ‹ƒX") Then
                                 GoTo NextPoint
                             End If
                         Else
@@ -3995,68 +3995,68 @@ Dim is_ally_involved As Boolean
                     End If
                 End If
                 
-                'ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã«å«ã‚ã‚‹
+                'ƒ^[ƒQƒbƒg‚ÉŠÜ‚ß‚é
                 CountTargetInRange = CountTargetInRange + 1
 NextPoint:
             Next
         Next
         
-        'å‘³æ–¹ã‚’å·»ãè¾¼ã‚“ã§ã—ã¾ã†å ´åˆã¯æ”»æ’ƒã‚’æ­¢ã‚ã‚‹
+        '–¡•û‚ğŠª‚«‚ñ‚Å‚µ‚Ü‚¤ê‡‚ÍUŒ‚‚ğ~‚ß‚é
         If is_ally_involved _
-            And Not .IsWeaponClassifiedAs(w, "è­˜") _
-            And Not .IsUnderSpecialPowerEffect("è­˜åˆ¥æ”»æ’ƒ") _
+            And Not .IsWeaponClassifiedAs(w, "¯") _
+            And Not .IsUnderSpecialPowerEffect("¯•ÊUŒ‚") _
         Then
             CountTargetInRange = 0
         End If
     End With
 End Function
 
-'ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼ã‚’ä½¿ç”¨ã™ã‚‹
+'ƒXƒyƒVƒƒƒ‹ƒpƒ[‚ğg—p‚·‚é
 Public Sub TrySpecialPower(p As Pilot)
 Dim slist As String, sd As SpecialPowerData
 Dim i As Integer, tnum As Integer
     
     Set SelectedPilot = p
     
-    'ã‚¶ã‚³ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã¯ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼ã‚’ä½¿ã‚ãªã„
-    If InStr(p.Name, "(ã‚¶ã‚³)") > 0 Then
+    'ƒUƒRƒpƒCƒƒbƒg‚ÍƒXƒyƒVƒƒƒ‹ƒpƒ[‚ğg‚í‚È‚¢
+    If InStr(p.Name, "(ƒUƒR)") > 0 Then
         Exit Sub
     End If
     
-    'æŠ€é‡ãŒé«˜ã„ã»ã©ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼ã®ç™ºå‹•ç¢ºç‡ãŒé«˜ã„
+    '‹Z—Ê‚ª‚‚¢‚Ù‚ÇƒXƒyƒVƒƒƒ‹ƒpƒ[‚Ì”­“®Šm—¦‚ª‚‚¢
     If Dice(100) > p.TacticalTechnique0 - 100 Then
         Exit Sub
     End If
     
     With SelectedUnit
-        'æ­£å¸¸ãªåˆ¤æ–­åŠ›ãŒã‚ã‚‹ï¼Ÿ
-        If .IsConditionSatisfied("æ··ä¹±") _
-            Or .IsConditionSatisfied("é­…äº†") _
-            Or .IsConditionSatisfied("æ†‘ä¾") _
-            Or .IsConditionSatisfied("ææ€–") _
-            Or .IsConditionSatisfied("ç‹‚æˆ¦å£«") _
+        '³í‚È”»’f—Í‚ª‚ ‚éH
+        If .IsConditionSatisfied("¬—") _
+            Or .IsConditionSatisfied("–£—¹") _
+            Or .IsConditionSatisfied("œßˆË") _
+            Or .IsConditionSatisfied("‹°•|") _
+            Or .IsConditionSatisfied("‹¶ím") _
         Then
             Exit Sub
         End If
         
-        'ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼ä½¿ç”¨ä¸èƒ½
-        If .IsConditionSatisfied("ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼ä½¿ç”¨ä¸èƒ½") Then
+        'ƒXƒyƒVƒƒƒ‹ƒpƒ[g—p•s”\
+        If .IsConditionSatisfied("ƒXƒyƒVƒƒƒ‹ƒpƒ[g—p•s”\") Then
             Exit Sub
         End If
     End With
     
-    'ä½¿ç”¨ã™ã‚‹å¯èƒ½æ€§ã®ã‚ã‚‹ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼ã®ä¸€è¦§ã‚’ä½œæˆ
+    'g—p‚·‚é‰Â”\«‚Ì‚ ‚éƒXƒyƒVƒƒƒ‹ƒpƒ[‚Ìˆê——‚ğì¬
     slist = ""
     For i = 1 To p.CountSpecialPower
         SelectedSpecialPower = p.SpecialPower(i)
         Set sd = SPDList.Item(SelectedSpecialPower)
         
-        'ï¼³ï¼°ãŒè¶³ã‚Šã¦ã„ã‚‹ï¼Ÿ
+        '‚r‚o‚ª‘«‚è‚Ä‚¢‚éH
         If p.SP < p.SpecialPowerCost(SelectedSpecialPower) Then
             GoTo NextSpecialPower
         End If
         
-        'æ—¢ã«å®Ÿè¡Œæ¸ˆã¿ï¼Ÿ
+        'Šù‚ÉÀsÏ‚İH
         If SelectedUnit.IsSpecialPowerInEffect(SelectedSpecialPower) Then
             GoTo NextSpecialPower
         End If
@@ -4064,56 +4064,56 @@ Dim i As Integer, tnum As Integer
         Set sd = SPDList.Item(SelectedSpecialPower)
         
         With sd
-            'ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’é¸æŠã™ã‚‹å¿…è¦ã®ã‚ã‚‹ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼ã¯åˆ¤æ–­ãŒé›£ã—ã„ã®ã§
-            'ä½¿ç”¨ã—ãªã„
+            'ƒ^[ƒQƒbƒg‚ğ‘I‘ğ‚·‚é•K—v‚Ì‚ ‚éƒXƒyƒVƒƒƒ‹ƒpƒ[‚Í”»’f‚ª“ï‚µ‚¢‚Ì‚Å
+            'g—p‚µ‚È‚¢
             Select Case .TargetType
-                Case "å‘³æ–¹", "æ•µ", "ä»»æ„"
+                Case "–¡•û", "“G", "”CˆÓ"
                     GoTo NextSpecialPower
             End Select
             
-            'ã‚¿ãƒ¼ã‚²ãƒƒãƒˆãŒã„ãªã‘ã‚Œã°ä½¿ç”¨ã—ãªã„
+            'ƒ^[ƒQƒbƒg‚ª‚¢‚È‚¯‚ê‚Îg—p‚µ‚È‚¢
             tnum = .CountTarget(p)
             If tnum = 0 Then
                 GoTo NextSpecialPower
             End If
             
-            'è¤‡æ•°ã®ãƒ¦ãƒ‹ãƒƒãƒˆã‚’ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã«ã™ã‚‹ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼ã¯ã‚¿ãƒ¼ã‚²ãƒƒãƒˆãŒ
-            'å°‘ãªã„å ´åˆã¯ä½¿ç”¨ã—ãªã„
+            '•¡”‚Ìƒ†ƒjƒbƒg‚ğƒ^[ƒQƒbƒg‚É‚·‚éƒXƒyƒVƒƒƒ‹ƒpƒ[‚Íƒ^[ƒQƒbƒg‚ª
+            '­‚È‚¢ê‡‚Íg—p‚µ‚È‚¢
             Select Case .TargetType
-                Case "å…¨å‘³æ–¹", "å…¨æ•µ"
+                Case "‘S–¡•û", "‘S“G"
                     If tnum < 3 Then
                         GoTo NextSpecialPower
                     End If
             End Select
             
-            'ä½¿ç”¨ã«é©ã—ãŸçŠ¶æ³ä¸‹ã«ã‚ã‚‹ï¼Ÿ
+            'g—p‚É“K‚µ‚½ó‹µ‰º‚É‚ ‚éH
             
-            If .IsEffectAvailable("ï¼¨ï¼°å›å¾©") Then
-                If .TargetType = "è‡ªåˆ†" Then
+            If .IsEffectAvailable("‚g‚o‰ñ•œ") Then
+                If .TargetType = "©•ª" Then
                     If SelectedUnit.HP < 0.7 * SelectedUnit.MaxHP Then
                         GoTo AddSpecialPower
                     End If
-                ElseIf .TargetType = "å…¨å‘³æ–¹" Then
+                ElseIf .TargetType = "‘S–¡•û" Then
                     If Turn >= 3 Then
                         GoTo AddSpecialPower
                     End If
                 End If
             End If
             
-            If .IsEffectAvailable("ï¼¥ï¼®å›å¾©") Then
-                If .TargetType = "è‡ªåˆ†" Then
+            If .IsEffectAvailable("‚d‚m‰ñ•œ") Then
+                If .TargetType = "©•ª" Then
                     If SelectedUnit.EN < 0.3 * SelectedUnit.MaxEN Then
                         GoTo AddSpecialPower
                     End If
-                ElseIf .TargetType = "å…¨å‘³æ–¹" Then
+                ElseIf .TargetType = "‘S–¡•û" Then
                     If Turn >= 4 Then
                         GoTo AddSpecialPower
                     End If
                 End If
             End If
             
-            If .IsEffectAvailable("æ°—åŠ›å¢—åŠ ") Then
-                If .TargetType = "è‡ªåˆ†" Then
+            If .IsEffectAvailable("‹C—Í‘‰Á") Then
+                If .TargetType = "©•ª" Then
                     If p.Morale < p.MaxMorale Then
                         If p.CountSpecialPower = 1 _
                             Or p.SP > p.MaxSP \ 2 _
@@ -4121,101 +4121,101 @@ Dim i As Integer, tnum As Integer
                             GoTo AddSpecialPower
                         End If
                     End If
-                ElseIf .TargetType = "å…¨å‘³æ–¹" Then
+                ElseIf .TargetType = "‘S–¡•û" Then
                     GoTo AddSpecialPower
                 End If
             End If
             
-            If .IsEffectAvailable("è¡Œå‹•æ•°å¢—åŠ ") Then
-                If .TargetType = "è‡ªåˆ†" Then
+            If .IsEffectAvailable("s“®”‘‰Á") Then
+                If .TargetType = "©•ª" Then
                     If DistanceFromNearestEnemy(SelectedUnit) <= 5 Then
                         GoTo AddSpecialPower
                     End If
                 End If
             End If
             
-            If .IsEffectAvailable("å¾©æ´»") Then
-                If .TargetType = "è‡ªåˆ†" Then
+            If .IsEffectAvailable("•œŠˆ") Then
+                If .TargetType = "©•ª" Then
                     GoTo AddSpecialPower
                 End If
             End If
             
-            If IsSPEffectUseful(sd, "çµ¶å¯¾å‘½ä¸­") _
-                Or IsSPEffectUseful(sd, "ãƒ€ãƒ¡ãƒ¼ã‚¸å¢—åŠ ") _
-                Or IsSPEffectUseful(sd, "ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ç‡å¢—åŠ ") _
-                Or IsSPEffectUseful(sd, "å‘½ä¸­å¼·åŒ–") _
-                Or IsSPEffectUseful(sd, "è²«é€šæ”»æ’ƒ") _
-                Or IsSPEffectUseful(sd, "å†æ”»æ’ƒ") _
-                Or IsSPEffectUseful(sd, "éš ã‚Œèº«") _
+            If IsSPEffectUseful(sd, "â‘Î–½’†") _
+                Or IsSPEffectUseful(sd, "ƒ_ƒ[ƒW‘‰Á") _
+                Or IsSPEffectUseful(sd, "ƒNƒŠƒeƒBƒJƒ‹—¦‘‰Á") _
+                Or IsSPEffectUseful(sd, "–½’†‹­‰»") _
+                Or IsSPEffectUseful(sd, "ŠÑ’ÊUŒ‚") _
+                Or IsSPEffectUseful(sd, "ÄUŒ‚") _
+                Or IsSPEffectUseful(sd, "‰B‚êg") _
             Then
-                If .TargetType = "è‡ªåˆ†" Then
+                If .TargetType = "©•ª" Then
                     If DistanceFromNearestEnemy(SelectedUnit) <= 5 _
-                        Or .Duration = "æ”»æ’ƒ" _
+                        Or .Duration = "UŒ‚" _
                     Then
                         GoTo AddSpecialPower
                     End If
-                ElseIf .TargetType = "å…¨å‘³æ–¹" Then
+                ElseIf .TargetType = "‘S–¡•û" Then
                     GoTo AddSpecialPower
                 End If
             End If
             
-            If IsSPEffectUseful(sd, "çµ¶å¯¾å›é¿") _
-                Or IsSPEffectUseful(sd, "è¢«ãƒ€ãƒ¡ãƒ¼ã‚¸ä½ä¸‹") _
-                Or IsSPEffectUseful(sd, "è£…ç”²å¼·åŒ–") _
-                Or IsSPEffectUseful(sd, "å›é¿å¼·åŒ–") _
+            If IsSPEffectUseful(sd, "â‘Î‰ñ”ğ") _
+                Or IsSPEffectUseful(sd, "”íƒ_ƒ[ƒW’á‰º") _
+                Or IsSPEffectUseful(sd, "‘•b‹­‰»") _
+                Or IsSPEffectUseful(sd, "‰ñ”ğ‹­‰»") _
             Then
-                If .TargetType = "è‡ªåˆ†" Then
+                If .TargetType = "©•ª" Then
                     If DistanceFromNearestEnemy(SelectedUnit) <= 5 _
-                        Or .Duration = "é˜²å¾¡" _
+                        Or .Duration = "–hŒä" _
                     Then
                         GoTo AddSpecialPower
                     End If
-                ElseIf .TargetType = "å…¨å‘³æ–¹" Then
+                ElseIf .TargetType = "‘S–¡•û" Then
                     GoTo AddSpecialPower
                 End If
             End If
             
-            If IsSPEffectUseful(sd, "ç§»å‹•åŠ›å¼·åŒ–") Then
-                If .TargetType = "è‡ªåˆ†" Then
+            If IsSPEffectUseful(sd, "ˆÚ“®—Í‹­‰»") Then
+                If .TargetType = "©•ª" Then
                     If DistanceFromNearestEnemy(SelectedUnit) > 5 Then
                         GoTo AddSpecialPower
                     End If
-                ElseIf .TargetType = "å…¨å‘³æ–¹" Then
+                ElseIf .TargetType = "‘S–¡•û" Then
                     GoTo AddSpecialPower
                 End If
             End If
             
-            If IsSPEffectUseful(sd, "å°„ç¨‹å»¶é•·") Then
-                If .TargetType = "è‡ªåˆ†" Then
+            If IsSPEffectUseful(sd, "Ë’ö‰„’·") Then
+                If .TargetType = "©•ª" Then
                     Select Case DistanceFromNearestEnemy(SelectedUnit)
                         Case 5, 6
                             GoTo AddSpecialPower
                     End Select
-                ElseIf .TargetType = "å…¨å‘³æ–¹" Then
+                ElseIf .TargetType = "‘S–¡•û" Then
                     GoTo AddSpecialPower
                 End If
             End If
             
-            If .IsEffectAvailable("æ°—åŠ›ä½ä¸‹") _
-                Or .IsEffectAvailable("ãƒ©ãƒ³ãƒ€ãƒ ãƒ€ãƒ¡ãƒ¼ã‚¸") _
-                Or .IsEffectAvailable("ï¼¨ï¼°æ¸›å°‘") _
-                Or .IsEffectAvailable("ï¼¥ï¼®æ¸›å°‘") _
-                Or .IsEffectAvailable("æŒ‘ç™º") _
+            If .IsEffectAvailable("‹C—Í’á‰º") _
+                Or .IsEffectAvailable("ƒ‰ƒ“ƒ_ƒ€ƒ_ƒ[ƒW") _
+                Or .IsEffectAvailable("‚g‚oŒ¸­") _
+                Or .IsEffectAvailable("‚d‚mŒ¸­") _
+                Or .IsEffectAvailable("’§”­") _
             Then
-                If .TargetType = "å…¨æ•µ" Then
+                If .TargetType = "‘S“G" Then
                     GoTo AddSpecialPower
                 End If
             End If
             
-            If .IsEffectAvailable("ãƒ€ãƒ¡ãƒ¼ã‚¸ä½ä¸‹") _
-                Or .IsEffectAvailable("è¢«ãƒ€ãƒ¡ãƒ¼ã‚¸å¢—åŠ ") _
-                Or .IsEffectAvailable("å‘½ä¸­ä½ä¸‹") _
-                Or .IsEffectAvailable("å›é¿ä½ä¸‹") _
-                Or .IsEffectAvailable("å‘½ä¸­ç‡ä½ä¸‹") _
-                Or .IsEffectAvailable("ç§»å‹•åŠ›ä½ä¸‹") _
-                Or .IsEffectAvailable("ã‚µãƒãƒ¼ãƒˆã‚¬ãƒ¼ãƒ‰ä¸èƒ½") _
+            If .IsEffectAvailable("ƒ_ƒ[ƒW’á‰º") _
+                Or .IsEffectAvailable("”íƒ_ƒ[ƒW‘‰Á") _
+                Or .IsEffectAvailable("–½’†’á‰º") _
+                Or .IsEffectAvailable("‰ñ”ğ’á‰º") _
+                Or .IsEffectAvailable("–½’†—¦’á‰º") _
+                Or .IsEffectAvailable("ˆÚ“®—Í’á‰º") _
+                Or .IsEffectAvailable("ƒTƒ|[ƒgƒK[ƒh•s”\") _
             Then
-                If .TargetType = "å…¨æ•µ" Then
+                If .TargetType = "‘S“G" Then
                     If Turn >= 3 Then
                         GoTo AddSpecialPower
                     End If
@@ -4223,43 +4223,43 @@ Dim i As Integer, tnum As Integer
             End If
         End With
         
-        'æœ‰ç”¨ãªåŠ¹æœãŒè¦‹ã¤ã‹ã‚‰ãªã‹ã£ãŸ
+        '—L—p‚ÈŒø‰Ê‚ªŒ©‚Â‚©‚ç‚È‚©‚Á‚½
         GoTo NextSpecialPower
         
 AddSpecialPower:
         
-        'ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼ã‚’å€™è£œãƒªã‚¹ãƒˆã«è¿½åŠ 
+        'ƒXƒyƒVƒƒƒ‹ƒpƒ[‚ğŒó•âƒŠƒXƒg‚É’Ç‰Á
         slist = slist & " " & SelectedSpecialPower
         
 NextSpecialPower:
     Next
     
-    'ä½¿ç”¨å¯èƒ½ãªã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼ã‚’æ‰€æœ‰ã—ã¦ã„ãªã„
+    'g—p‰Â”\‚ÈƒXƒyƒVƒƒƒ‹ƒpƒ[‚ğŠ—L‚µ‚Ä‚¢‚È‚¢
     If slist = "" Then
         SelectedSpecialPower = ""
         Exit Sub
     End If
     
-    'ä½¿ç”¨ã™ã‚‹ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼ã‚’ãƒ©ãƒ³ãƒ€ãƒ ã«é¸æŠ
+    'g—p‚·‚éƒXƒyƒVƒƒƒ‹ƒpƒ[‚ğƒ‰ƒ“ƒ_ƒ€‚É‘I‘ğ
     SelectedSpecialPower = LIndex(slist, Dice(LLength(slist)))
     
-    'ä½¿ç”¨ã‚¤ãƒ™ãƒ³ãƒˆ
-    HandleEvent "ä½¿ç”¨", SelectedUnit.MainPilot.ID, SelectedSpecialPower
+    'g—pƒCƒxƒ“ƒg
+    HandleEvent "g—p", SelectedUnit.MainPilot.ID, SelectedSpecialPower
     If IsScenarioFinished Or IsCanceled Then
         Exit Sub
     End If
     
-    'é¸æŠã—ãŸã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼ã‚’å®Ÿè¡Œã™ã‚‹
+    '‘I‘ğ‚µ‚½ƒXƒyƒVƒƒƒ‹ƒpƒ[‚ğÀs‚·‚é
     p.UseSpecialPower SelectedSpecialPower
     Set SelectedUnit = SelectedUnit.CurrentForm
     
-    'ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦æ›´æ–°
+    'ƒXƒe[ƒ^ƒXƒEƒBƒ“ƒhƒEXV
     If Not IsRButtonPressed Then
         DisplayUnitStatus SelectedUnit
     End If
     
-    'ä½¿ç”¨å¾Œã‚¤ãƒ™ãƒ³ãƒˆ
-    HandleEvent "ä½¿ç”¨å¾Œ", SelectedUnit.MainPilot.ID, SelectedSpecialPower
+    'g—pŒãƒCƒxƒ“ƒg
+    HandleEvent "g—pŒã", SelectedUnit.MainPilot.ID, SelectedSpecialPower
     
     SelectedSpecialPower = ""
 End Sub
@@ -4267,9 +4267,9 @@ End Sub
 Private Function IsSPEffectUseful(sd As SpecialPowerData, ename As String) As Boolean
     With sd
         If .IsEffectAvailable(ename) Then
-             If .TargetType = "è‡ªåˆ†" Then
-                 'è‡ªåˆ†è‡ªèº«ãŒã‚¿ãƒ¼ã‚²ãƒƒãƒˆã§ã‚ã‚‹å ´åˆã€æ—¢ã«åŒã˜åŠ¹æœã‚’æŒã¤ã‚¹ãƒšã‚·ãƒ£ãƒ«
-                 'ãƒ‘ãƒ¯ãƒ¼ã‚’ä½¿ç”¨ã—ã¦ã„ã‚‹å ´åˆã¯ä½¿ç”¨ã—ãªã„ã€‚
+             If .TargetType = "©•ª" Then
+                 '©•ª©g‚ªƒ^[ƒQƒbƒg‚Å‚ ‚éê‡AŠù‚É“¯‚¶Œø‰Ê‚ğ‚ÂƒXƒyƒVƒƒƒ‹
+                 'ƒpƒ[‚ğg—p‚µ‚Ä‚¢‚éê‡‚Íg—p‚µ‚È‚¢B
                  If Not SelectedUnit.IsSpecialPowerInEffect(ename) Then
                      IsSPEffectUseful = True
                  End If
@@ -4280,10 +4280,10 @@ Private Function IsSPEffectUseful(sd As SpecialPowerData, ename As String) As Bo
     End With
 End Function
 
-'ãƒ¦ãƒ‹ãƒƒãƒˆ u ãŒã‚¿ãƒ¼ã‚²ãƒƒãƒˆ t ã‚’æ”»æ’ƒã™ã‚‹ãŸã‚ã®æ­¦å™¨ã‚’é¸æŠ
-'amode:æ”»æ’ƒã®ç¨®é¡
-'max_prob:æ•µã‚’ç ´å£Šã§ãã‚‹ç¢ºç‡
-'max_dmg:ãƒ€ãƒ¡ãƒ¼ã‚¸æœŸå¾…å€¤
+'ƒ†ƒjƒbƒg u ‚ªƒ^[ƒQƒbƒg t ‚ğUŒ‚‚·‚é‚½‚ß‚Ì•Ší‚ğ‘I‘ğ
+'amode:UŒ‚‚Ìí—Ş
+'max_prob:“G‚ğ”j‰ó‚Å‚«‚éŠm—¦
+'max_dmg:ƒ_ƒ[ƒWŠú‘Ò’l
 Public Function SelectWeapon(u As Unit, t As Unit, Optional amode As String, _
     Optional max_prob As Long, Optional max_dmg As Long) As Integer
 Dim smode As String
@@ -4299,55 +4299,55 @@ Dim checku As Unit
 Dim checkwc As String
 
     With u
-        'å¾¡ä¸»äººã•ã¾ã«ã¯ã•ã‹ã‚‰ãˆã¾ã›ã‚“
-        If .IsConditionSatisfied("é­…äº†") Then
+        'Œäål‚³‚Ü‚É‚Í‚³‚©‚ç‚¦‚Ü‚¹‚ñ
+        If .IsConditionSatisfied("–£—¹") Then
             If .Master Is t Then
                 SelectWeapon = -1
                 Exit Function
             End If
         End If
         
-        'è¸Šã‚Šã«å¿™ã—ã„â€¦â€¦
-        If .IsConditionSatisfied("è¸Šã‚Š") Then
+        '—x‚è‚É–Z‚µ‚¢cc
+        If .IsConditionSatisfied("—x‚è") Then
             SelectWeapon = -1
             Exit Function
         End If
         
-        'ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼ç­‰ã®å½±éŸ¿ã‚’è€ƒãˆã¦æ­¦å™¨ã‚’é¸æŠã™ã‚‹ã‹ã‚’åˆ¤å®š
-        If .Party = "å‘³æ–¹" Then
+        'ƒXƒyƒVƒƒƒ‹ƒpƒ[“™‚Ì‰e‹¿‚ğl‚¦‚Ä•Ší‚ğ‘I‘ğ‚·‚é‚©‚ğ”»’è
+        If .Party = "–¡•û" Then
             use_true_value = True
         End If
         
-        'ãƒ¦ãƒ‹ãƒƒãƒˆãŒç§»å‹•å‰ã‹ã©ã†ã‹ã‚’åˆ¤å®š
-        If amode = "ç§»å‹•å¾Œ" Then
-            smode = "ç§»å‹•å¾Œ"
+        'ƒ†ƒjƒbƒg‚ªˆÚ“®‘O‚©‚Ç‚¤‚©‚ğ”»’è
+        If amode = "ˆÚ“®Œã" Then
+            smode = "ˆÚ“®Œã"
         Else
-            smode = "ç§»å‹•å‰"
+            smode = "ˆÚ“®‘O"
         End If
         
-        'ã‚µãƒãƒ¼ãƒˆã‚¢ã‚¿ãƒƒã‚¯ã‚’ã—ã¦ãã‚Œã‚‹ãƒ¦ãƒ‹ãƒƒãƒˆãŒã„ã‚‹ã‹ã©ã†ã‹
-        If InStr(amode, "åæ’ƒ") = 0 _
-            And InStr(amode, "ã‚µãƒãƒ¼ãƒˆ") = 0 _
+        'ƒTƒ|[ƒgƒAƒ^ƒbƒN‚ğ‚µ‚Ä‚­‚ê‚éƒ†ƒjƒbƒg‚ª‚¢‚é‚©‚Ç‚¤‚©
+        If InStr(amode, "”½Œ‚") = 0 _
+            And InStr(amode, "ƒTƒ|[ƒg") = 0 _
         Then
             Set su = .LookForSupportAttack(t)
             If Not su Is Nothing Then
-                w = SelectWeapon(su, t, "ã‚µãƒãƒ¼ãƒˆã‚¢ã‚¿ãƒƒã‚¯", support_prob, support_exp_dmg)
+                w = SelectWeapon(su, t, "ƒTƒ|[ƒgƒAƒ^ƒbƒN", support_prob, support_exp_dmg)
                 If w > 0 Then
                     With su
                         support_prob = MinLng(.HitProbability(w, t, use_true_value), 100)
                         
                         dmg_mod = 1
                         
-                        'ã‚µãƒãƒ¼ãƒˆã‚¢ã‚¿ãƒƒã‚¯ãƒ€ãƒ¡ãƒ¼ã‚¸ä½ä¸‹
-                        If IsOptionDefined("ã‚µãƒãƒ¼ãƒˆã‚¢ã‚¿ãƒƒã‚¯ãƒ€ãƒ¡ãƒ¼ã‚¸ä½ä¸‹") Then
+                        'ƒTƒ|[ƒgƒAƒ^ƒbƒNƒ_ƒ[ƒW’á‰º
+                        If IsOptionDefined("ƒTƒ|[ƒgƒAƒ^ƒbƒNƒ_ƒ[ƒW’á‰º") Then
                             dmg_mod = 0.7
                         End If
                         
-                        'åŒæ™‚æ´è­·æ”»æ’ƒï¼Ÿ
-                        If .MainPilot.IsSkillAvailable("çµ±ç‡") _
+                        '“¯‰‡ŒìUŒ‚H
+                        If .MainPilot.IsSkillAvailable("“—¦") _
                             And .IsNormalWeapon(w) _
                         Then
-                            If IsOptionDefined("ãƒ€ãƒ¡ãƒ¼ã‚¸å€ç‡ä½ä¸‹") Then
+                            If IsOptionDefined("ƒ_ƒ[ƒW”{—¦’á‰º") Then
                                 dmg_mod = 1.2 * dmg_mod
                             Else
                                 dmg_mod = 1.5 * dmg_mod
@@ -4364,69 +4364,69 @@ Dim checkwc As String
         max_destroy_prob = 0
         max_exp_dmg = -1
         
-        'å„æ­¦å™¨ã‚’ä½¿ã£ã¦è©¦è¡Œ
+        'Še•Ší‚ğg‚Á‚Äs
         For w = 1 To .CountWeapon
-            'æ­¦å™¨ãŒä½¿ç”¨å¯èƒ½ï¼Ÿ
+            '•Ší‚ªg—p‰Â”\H
             If Not .IsWeaponAvailable(w, smode) Then
                 GoTo NextWeapon
             End If
             
-            'ãƒãƒƒãƒ—æ”»æ’ƒã¯æ­¦å™¨é¸å®šå¤–
-            If .IsWeaponClassifiedAs(w, "ï¼­") Then
+            'ƒ}ƒbƒvUŒ‚‚Í•Ší‘I’èŠO
+            If .IsWeaponClassifiedAs(w, "‚l") Then
                 GoTo NextWeapon
             End If
             
-            'åˆä½“æŠ€ã¯è‡ªåˆ†ã‹ã‚‰æ”»æ’ƒã‚’ã‹ã‘ã‚‹å ´åˆã«ã®ã¿ä½¿ç”¨
-            If .IsWeaponClassifiedAs(w, "åˆ") Then
-                If InStr(amode, "åæ’ƒ") > 0 _
-                    Or InStr(amode, "ã‚µãƒãƒ¼ãƒˆ") > 0 _
+            '‡‘Ì‹Z‚Í©•ª‚©‚çUŒ‚‚ğ‚©‚¯‚éê‡‚É‚Ì‚İg—p
+            If .IsWeaponClassifiedAs(w, "‡") Then
+                If InStr(amode, "”½Œ‚") > 0 _
+                    Or InStr(amode, "ƒTƒ|[ƒg") > 0 _
                 Then
                     GoTo NextWeapon
                 End If
             End If
             
-            'å°„ç¨‹ç¯„å›²å†…ï¼Ÿ
-            If .IsWeaponClassifiedAs(w, "ç§»å‹•å¾Œæ”»æ’ƒå¯") _
-                And amode = "ç§»å‹•å¯èƒ½" _
-                And .Mode <> "å›ºå®š" _
+            'Ë’ö”ÍˆÍ“àH
+            If .IsWeaponClassifiedAs(w, "ˆÚ“®ŒãUŒ‚‰Â") _
+                And amode = "ˆÚ“®‰Â”\" _
+                And .Mode <> "ŒÅ’è" _
             Then
-                'åˆä½“æŠ€ã¯ç§»å‹•å¾Œæ”»æ’ƒå¯èƒ½ã§ã‚‚ç§»å‹•ã‚’å‰æã«ã—ãªã„
-                '(ç§»å‹•å¾Œã®ä½ç½®ã§ã¯ä½¿ãˆãªã„å±é™ºæ€§ãŒã‚ã‚‹ãŸã‚)
-                If .IsWeaponClassifiedAs(w, "åˆ") _
-                    And .IsWeaponClassifiedAs(w, "ï¼°") _
+                '‡‘Ì‹Z‚ÍˆÚ“®ŒãUŒ‚‰Â”\‚Å‚àˆÚ“®‚ğ‘O’ñ‚É‚µ‚È‚¢
+                '(ˆÚ“®Œã‚ÌˆÊ’u‚Å‚Íg‚¦‚È‚¢ŠëŒ¯«‚ª‚ ‚é‚½‚ß)
+                If .IsWeaponClassifiedAs(w, "‡") _
+                    And .IsWeaponClassifiedAs(w, "‚o") _
                 Then
-                    'ç§»å‹•ã—ã¦æ”»æ’ƒã¯å‡ºæ¥ãªã„
+                    'ˆÚ“®‚µ‚ÄUŒ‚‚Ío—ˆ‚È‚¢
                     If Not .IsTargetWithinRange(w, t) Then
                         GoTo NextWeapon
                     End If
                     is_move_attack = False
                 Else
-                    'ç§»å‹•ã—ã¦æ”»æ’ƒå¯èƒ½
+                    'ˆÚ“®‚µ‚ÄUŒ‚‰Â”\
                     If Not .IsTargetReachable(w, t) Then
                         GoTo NextWeapon
                     End If
                     is_move_attack = True
                 End If
             Else
-                'ç§»å‹•ã—ã¦æ”»æ’ƒã¯å‡ºæ¥ãªã„
+                'ˆÚ“®‚µ‚ÄUŒ‚‚Ío—ˆ‚È‚¢
                 If Not .IsTargetWithinRange(w, t) Then
                     GoTo NextWeapon
                 End If
                 is_move_attack = False
             End If
             
-            'å‘³æ–¹ãƒ¦ãƒ‹ãƒƒãƒˆã®å ´åˆã€æœ€å¾Œã®ä¸€ç™ºã¯ä½¿ç”¨ã—ãªã„
-            If .Party = "å‘³æ–¹" And .Party0 = "å‘³æ–¹" And InStr(amode, "ã‚¤ãƒ™ãƒ³ãƒˆ") = 0 Then
-                'è‡ªçˆ†æ”»æ’ƒã¯æ­¦å™¨ã‚’æ‰‹å‹•é¸æŠã™ã‚‹å ´åˆã«ã®ã¿ä½¿ç”¨
-                If .IsWeaponClassifiedAs(w, "è‡ª") Then
+            '–¡•ûƒ†ƒjƒbƒg‚Ìê‡AÅŒã‚Ìˆê”­‚Íg—p‚µ‚È‚¢
+            If .Party = "–¡•û" And .Party0 = "–¡•û" And InStr(amode, "ƒCƒxƒ“ƒg") = 0 Then
+                '©”šUŒ‚‚Í•Ší‚ğè“®‘I‘ğ‚·‚éê‡‚É‚Ì‚İg—p
+                If .IsWeaponClassifiedAs(w, "©") Then
                     GoTo NextWeapon
                 End If
                 
-                'æ‰‹å‹•åæ’ƒæ™‚ã®ã‚µãƒãƒ¼ãƒˆã‚¢ã‚¿ãƒƒã‚¯ä»¥å¤–ã¯æ®‹å¼¾æ•°ãŒå°‘ãªã„æ­¦å™¨ã‚’ä½¿ç”¨ã—ãªã„
-                If amode <> "ã‚µãƒãƒ¼ãƒˆã‚¢ã‚¿ãƒƒã‚¯" _
+                'è“®”½Œ‚‚ÌƒTƒ|[ƒgƒAƒ^ƒbƒNˆÈŠO‚Íc’e”‚ª­‚È‚¢•Ší‚ğg—p‚µ‚È‚¢
+                If amode <> "ƒTƒ|[ƒgƒAƒ^ƒbƒN" _
                     Or MainForm.mnuMapCommandItem(AutoDefenseCmdID).Checked _
                 Then
-                    If Not .IsWeaponClassifiedAs(w, "æ°¸") Then
+                    If Not .IsWeaponClassifiedAs(w, "‰i") Then
                         If .Bullet(w) = 1 Or .MaxBullet(w) = 2 Or .MaxBullet(w) = 3 Then
                             GoTo NextWeapon
                         End If
@@ -4438,16 +4438,16 @@ Dim checkwc As String
                             GoTo NextWeapon
                         End If
                     End If
-                    If .IsWeaponClassifiedAs(w, "å°½") Then
+                    If .IsWeaponClassifiedAs(w, "s") Then
                         GoTo NextWeapon
                     End If
                 End If
             End If
             
-            'ãƒœã‚¹ãƒ¦ãƒ‹ãƒƒãƒˆãŒè‡ªçˆ†ï¼†å…¨ï¼¥ï¼®æ¶ˆè²»æ”»æ’ƒä½¿ã†ã®ã¯éå¸¸æ™‚ã®ã¿
-            If .BossRank >= 0 And InStr(amode, "ã‚¤ãƒ™ãƒ³ãƒˆ") = 0 Then
-               If .IsWeaponClassifiedAs(w, "è‡ª") _
-                   Or .IsWeaponClassifiedAs(w, "å°½") _
+            'ƒ{ƒXƒ†ƒjƒbƒg‚ª©”š•‘S‚d‚mÁ”ïUŒ‚g‚¤‚Ì‚Í”ñí‚Ì‚İ
+            If .BossRank >= 0 And InStr(amode, "ƒCƒxƒ“ƒg") = 0 Then
+               If .IsWeaponClassifiedAs(w, "©") _
+                   Or .IsWeaponClassifiedAs(w, "s") _
                Then
                    If .HP > .MaxHP \ 4 Then
                        GoTo NextWeapon
@@ -4455,8 +4455,8 @@ Dim checkwc As String
                End If
             End If
             
-            'ç‰¹å®šã®ãƒ¦ãƒ‹ãƒƒãƒˆã‚’ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã«ã—ã¦ã„ã‚‹å ´åˆã€è‡ªçˆ†æ”»æ’ƒã¯ãã®ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã«ã—ã‹ä½¿ã‚ãªã„
-            If .IsWeaponClassifiedAs(w, "è‡ª") Then
+            '“Á’è‚Ìƒ†ƒjƒbƒg‚ğƒ^[ƒQƒbƒg‚É‚µ‚Ä‚¢‚éê‡A©”šUŒ‚‚Í‚»‚Ìƒ^[ƒQƒbƒg‚É‚µ‚©g‚í‚È‚¢
+            If .IsWeaponClassifiedAs(w, "©") Then
                 If PList.IsDefined(.Mode) Then
                     If Not PList.Item(.Mode).Unit Is Nothing Then
                         If .IsEnemy(PList.Item(.Mode).Unit) Then
@@ -4468,21 +4468,21 @@ Dim checkwc As String
                 End If
             End If
             
-            'ãƒ€ãƒ¡ãƒ¼ã‚¸ä¿®æ­£ç‡
+            'ƒ_ƒ[ƒWC³—¦
             dmg_mod = 1
             
-            'ã‚µãƒãƒ¼ãƒˆã‚¢ã‚¿ãƒƒã‚¯ãƒ€ãƒ¡ãƒ¼ã‚¸ä½ä¸‹
-            If InStr(amode, "ã‚µãƒãƒ¼ãƒˆ") > 0 Then
-                If IsOptionDefined("ã‚µãƒãƒ¼ãƒˆã‚¢ã‚¿ãƒƒã‚¯ãƒ€ãƒ¡ãƒ¼ã‚¸ä½ä¸‹") Then
+            'ƒTƒ|[ƒgƒAƒ^ƒbƒNƒ_ƒ[ƒW’á‰º
+            If InStr(amode, "ƒTƒ|[ƒg") > 0 Then
+                If IsOptionDefined("ƒTƒ|[ƒgƒAƒ^ƒbƒNƒ_ƒ[ƒW’á‰º") Then
                     dmg_mod = 0.7
                 End If
             End If
             
-            'ãƒ€ãƒ¡ãƒ¼ã‚¸ç®—å‡º
+            'ƒ_ƒ[ƒWZo
             dmg = .ExpDamage(w, t, use_true_value, dmg_mod)
             
-            'æ”»æ’ƒã®å¯å¦åˆ¤å®šã‚’è¡Œã†å ´åˆã¯ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‰ã‚Œã‚‹æ­¦å™¨ãŒã‚ã‚Œã°ã‚ˆã„
-            If InStr(amode, "å¯å¦åˆ¤å®š") > 0 Then
+            'UŒ‚‚Ì‰Â”Û”»’è‚ğs‚¤ê‡‚Íƒ_ƒ[ƒW‚ğ—^‚¦‚ç‚ê‚é•Ší‚ª‚ ‚ê‚Î‚æ‚¢
+            If InStr(amode, "‰Â”Û”»’è") > 0 Then
                 If dmg > 0 Then
                     SelectWeapon = w
                     Exit Function
@@ -4496,19 +4496,19 @@ Dim checkwc As String
             End If
             
             If dmg = 0 Then
-                'æŠ¹æ®ºæ”»æ’ƒã¯ä¸€æ’ƒã§å€’ã›ã‚‹å ´åˆã§ãªã„ã¨åŠ¹æœãŒç„¡ã„
-                If .IsWeaponClassifiedAs(w, "æ®º") Then
+                '–•EUŒ‚‚ÍˆêŒ‚‚Å“|‚¹‚éê‡‚Å‚È‚¢‚ÆŒø‰Ê‚ª–³‚¢
+                If .IsWeaponClassifiedAs(w, "E") Then
                     GoTo NextWeapon
                 End If
                 
-                'ãƒ€ãƒ¡ãƒ¼ã‚¸å¢—åŠ ã®ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼ã‚’ä½¿ç”¨ã—ã¦ã„ã‚‹å ´åˆã¯ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‰ã‚Œãªã„
-                'æ­¦å™¨ã‚’é¸æŠã—ãªã„
-                If .IsUnderSpecialPowerEffect("ãƒ€ãƒ¡ãƒ¼ã‚¸å¢—åŠ ") Then
+                'ƒ_ƒ[ƒW‘‰Á‚ÌƒXƒyƒVƒƒƒ‹ƒpƒ[‚ğg—p‚µ‚Ä‚¢‚éê‡‚Íƒ_ƒ[ƒW‚ğ—^‚¦‚ç‚ê‚È‚¢
+                '•Ší‚ğ‘I‘ğ‚µ‚È‚¢
+                If .IsUnderSpecialPowerEffect("ƒ_ƒ[ƒW‘‰Á") Then
                     GoTo NextWeapon
                 End If
             End If
             
-            'ç›¸æ‰‹ã®ï¼¨ï¼°ãŒ10ä»¥ä¸‹ã®å ´åˆã¯ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ã‹ã•ä¸Šã’
+            '‘Šè‚Ì‚g‚o‚ª10ˆÈ‰º‚Ìê‡‚Íƒ_ƒ[ƒW‚ğ‚©‚³ã‚°
             If t.HP <= 10 Then
                 If 0 < dmg And dmg < 20 Then
                     If .Weapon(w).Power > 0 Then
@@ -4517,10 +4517,10 @@ Dim checkwc As String
                 End If
             End If
             
-            'å†æ”»æ’ƒãŒå¯èƒ½ãªå ´åˆ
-            If InStr(amode, "ã‚µãƒãƒ¼ãƒˆ") = 0 Then
-                If .IsUnderSpecialPowerEffect("å†æ”»æ’ƒ") Then
-                    'å†æ”»æ’ƒã™ã‚‹æ®‹å¼¾ï¼†ï¼¥ï¼®ãŒã‚ã‚‹ï¼Ÿ
+            'ÄUŒ‚‚ª‰Â”\‚Èê‡
+            If InStr(amode, "ƒTƒ|[ƒg") = 0 Then
+                If .IsUnderSpecialPowerEffect("ÄUŒ‚") Then
+                    'ÄUŒ‚‚·‚éc’e•‚d‚m‚ª‚ ‚éH
                     If .Weapon(w).Bullet > 0 Then
                         If .Bullet(w) < 2 Then
                             GoTo NextWeapon
@@ -4532,32 +4532,32 @@ Dim checkwc As String
                         End If
                     End If
                     dmg = 2 * dmg
-                ElseIf .IsWeaponClassifiedAs(w, "å†") Then
-                    dmg = dmg + dmg * .WeaponLevel(w, "å†") \ 16
+                ElseIf .IsWeaponClassifiedAs(w, "Ä") Then
+                    dmg = dmg + dmg * .WeaponLevel(w, "Ä") \ 16
                 End If
             End If
             
-            'å‘½ä¸­ç‡ç®—å‡º
+            '–½’†—¦Zo
             prob = .HitProbability(w, t, use_true_value)
             
-            'ç‰¹æ®Šèƒ½åŠ›ã«ã‚ˆã‚‹å›é¿ã‚’èªè­˜ã™ã‚‹ï¼Ÿ
-            If (.MainPilot.TacticalTechnique >= 150 Or .Party = "å‘³æ–¹") _
-                And Not .IsUnderSpecialPowerEffect("çµ¶å¯¾å‘½ä¸­") _
+            '“Áê”\—Í‚É‚æ‚é‰ñ”ğ‚ğ”F¯‚·‚éH
+            If (.MainPilot.TacticalTechnique >= 150 Or .Party = "–¡•û") _
+                And Not .IsUnderSpecialPowerEffect("â‘Î–½’†") _
             Then
-                'åˆ‡ã‚Šæ‰•ã„å¯èƒ½ãªå ´åˆã¯å‘½ä¸­ç‡ã‚’ä½ä¸‹
-                If .IsWeaponClassifiedAs(w, "æ­¦") _
-                    Or .IsWeaponClassifiedAs(w, "çª") _
-                    Or .IsWeaponClassifiedAs(w, "å®Ÿ") _
+                'Ø‚è•¥‚¢‰Â”\‚Èê‡‚Í–½’†—¦‚ğ’á‰º
+                If .IsWeaponClassifiedAs(w, "•") _
+                    Or .IsWeaponClassifiedAs(w, "“Ë") _
+                    Or .IsWeaponClassifiedAs(w, "À") _
                 Then
                     Dim flag As Boolean
                     
-                    'åˆ‡ã‚Šæ‰•ã„å¯èƒ½ï¼Ÿ
+                    'Ø‚è•¥‚¢‰Â”\H
                     flag = False
-                    If t.IsFeatureAvailable("æ ¼é—˜æ­¦å™¨") Then
+                    If t.IsFeatureAvailable("Ši“¬•Ší") Then
                         flag = True
                     Else
                         For i = 1 To t.CountWeapon
-                            If t.IsWeaponClassifiedAs(i, "æ­¦") _
+                            If t.IsWeaponClassifiedAs(i, "•") _
                                 And t.IsWeaponMastered(i) _
                                 And t.MainPilot.Morale >= t.Weapon(i).NecessaryMorale _
                                 And Not t.IsDisabled(t.Weapon(i).Name) _
@@ -4567,28 +4567,28 @@ Dim checkwc As String
                             End If
                         Next
                     End If
-                    If Not t.MainPilot.IsSkillAvailable("åˆ‡ã‚Šæ‰•ã„") Then
+                    If Not t.MainPilot.IsSkillAvailable("Ø‚è•¥‚¢") Then
                         flag = False
                     End If
                     
-                    'åˆ‡ã‚Šæ‰•ã„å‡ºæ¥ã‚‹å ´åˆã¯å‘½ä¸­ç‡ã‚’ä½ä¸‹
+                    'Ø‚è•¥‚¢o—ˆ‚éê‡‚Í–½’†—¦‚ğ’á‰º
                     If flag Then
                         Dim parry_prob As Integer
                         
-                        parry_prob = 2 * t.MainPilot.SkillLevel("åˆ‡ã‚Šæ‰•ã„")
-                        If .IsWeaponClassifiedAs(w, "å®Ÿ") Then
-                            If .IsWeaponClassifiedAs(w, "ã‚µ") Then
+                        parry_prob = 2 * t.MainPilot.SkillLevel("Ø‚è•¥‚¢")
+                        If .IsWeaponClassifiedAs(w, "À") Then
+                            If .IsWeaponClassifiedAs(w, "ƒT") Then
                                 parry_prob = parry_prob _
-                                    - .MainPilot.SkillLevel("è¶…æ„Ÿè¦š") _
-                                    - .MainPilot.SkillLevel("çŸ¥è¦šå¼·åŒ–")
+                                    - .MainPilot.SkillLevel("’´Š´Šo") _
+                                    - .MainPilot.SkillLevel("’mŠo‹­‰»")
                                 With t.MainPilot
                                     parry_prob = parry_prob _
-                                        + .SkillLevel("è¶…æ„Ÿè¦š") _
-                                        + .SkillLevel("çŸ¥è¦šå¼·åŒ–")
+                                        + .SkillLevel("’´Š´Šo") _
+                                        + .SkillLevel("’mŠo‹­‰»")
                                 End With
                             End If
                         Else
-                            parry_prob = parry_prob - .MainPilot.SkillLevel("åˆ‡ã‚Šæ‰•ã„")
+                            parry_prob = parry_prob - .MainPilot.SkillLevel("Ø‚è•¥‚¢")
                         End If
                         
                         If parry_prob > 0 Then
@@ -4597,107 +4597,107 @@ Dim checkwc As String
                     End If
                 End If
                 
-                'åˆ†èº«å¯èƒ½ãªå ´åˆã¯å‘½ä¸­ç‡ã‚’ä½ä¸‹
-                If t.IsFeatureAvailable("åˆ†èº«") Then
+                '•ªg‰Â”\‚Èê‡‚Í–½’†—¦‚ğ’á‰º
+                If t.IsFeatureAvailable("•ªg") Then
                     If t.MainPilot.Morale >= 130 Then
                         prob = prob \ 2
                     End If
                 End If
-                If t.MainPilot.SkillLevel("åˆ†èº«") > 0 Then
-                    prob = prob * t.MainPilot.SkillLevel("åˆ†èº«") \ 16
+                If t.MainPilot.SkillLevel("•ªg") > 0 Then
+                    prob = prob * t.MainPilot.SkillLevel("•ªg") \ 16
                 End If
                 
-                'è¶…å›é¿å¯èƒ½ãªå ´åˆã¯å‘½ä¸­ç‡ã‚’ä½ä¸‹
-                If t.IsFeatureAvailable("è¶…å›é¿") Then
+                '’´‰ñ”ğ‰Â”\‚Èê‡‚Í–½’†—¦‚ğ’á‰º
+                If t.IsFeatureAvailable("’´‰ñ”ğ") Then
                     Dim fdata As String
-                    fdata = t.FeatureData("è¶…å›é¿")
+                    fdata = t.FeatureData("’´‰ñ”ğ")
                     If StrToLng(LIndex(fdata, 2)) > t.EN _
                         And StrToLng(LIndex(fdata, 3)) > t.MainPilot.Morale _
                     Then
-                        prob = prob * t.FeatureLevel("è¶…å›é¿") \ 10
+                        prob = prob * t.FeatureLevel("’´‰ñ”ğ") \ 10
                     End If
                 End If
             End If
             
-            'ï¼£ï¼´ç‡ç®—å‡º
+            '‚b‚s—¦Zo
             ct_prob = .CriticalProbability(w, t)
             
-            'ç‰¹æ®ŠåŠ¹æœã‚’ä¸ãˆã‚‹ç¢ºç‡ã‚’è¨ˆç®—
+            '“ÁêŒø‰Ê‚ğ—^‚¦‚éŠm—¦‚ğŒvZ
             sp_prob = 0
             wclass = .WeaponClass(w)
             With t
                 For i = 1 To Len(wclass)
                     wattr = GetClassBundle(wclass, i)
                     
-                    'ç‰¹æ®ŠåŠ¹æœç„¡åŠ¹åŒ–ã«ã‚ˆã£ã¦ç„¡åŠ¹åŒ–ã•ã‚Œã‚‹ï¼Ÿ
+                    '“ÁêŒø‰Ê–³Œø‰»‚É‚æ‚Á‚Ä–³Œø‰»‚³‚ê‚éH
                     If .SpecialEffectImmune(wattr) Then
                         GoTo NextAttribute
                     End If
                     
                     Select Case wattr
-                        Case "ç¸›"
-                            If Not .IsConditionSatisfied("è¡Œå‹•ä¸èƒ½") Then
+                        Case "”›"
+                            If Not .IsConditionSatisfied("s“®•s”\") Then
                                 sp_prob = sp_prob + 0.5
                             End If
-                        Case "ï¼³"
-                            If Not .IsConditionSatisfied("è¡Œå‹•ä¸èƒ½") Then
+                        Case "‚r"
+                            If Not .IsConditionSatisfied("s“®•s”\") Then
                                 sp_prob = sp_prob + 0.3
                             End If
-                        Case "çœ "
-                            If Not .IsConditionSatisfied("ç¡çœ ") Then
+                        Case "–°"
+                            If Not .IsConditionSatisfied("‡–°") Then
                                 sp_prob = sp_prob + 0.3
                             End If
-                        Case "ç—º"
-                            If Not .IsConditionSatisfied("éº»ç—º") Then
+                        Case "áƒ"
+                            If Not .IsConditionSatisfied("–ƒáƒ") Then
                                 sp_prob = sp_prob + 0.7
                             End If
-                        Case "ä¸"
-                            If Not .IsConditionSatisfied("æ”»æ’ƒä¸èƒ½") _
+                        Case "•s"
+                            If Not .IsConditionSatisfied("UŒ‚•s”\") _
                                 And .CountWeapon > 0 _
                             Then
                                 sp_prob = sp_prob + 0.2
                             End If
-                        Case "æ­¢"
-                            If Not .IsConditionSatisfied("ç§»å‹•ä¸èƒ½") _
+                        Case "~"
+                            If Not .IsConditionSatisfied("ˆÚ“®•s”\") _
                                 And .Speed > 0 _
                             Then
                                 sp_prob = sp_prob + 0.2
                             End If
-                        Case "çŸ³"
-                            If Not .IsConditionSatisfied("çŸ³åŒ–") And .BossRank < 0 Then
+                        Case "Î"
+                            If Not .IsConditionSatisfied("Î‰»") And .BossRank < 0 Then
                                 sp_prob = sp_prob + 1
                             End If
-                        Case "å‡"
-                            If Not .IsConditionSatisfied("å‡çµ") Then
+                        Case "“€"
+                            If Not .IsConditionSatisfied("“€Œ‹") Then
                                 sp_prob = sp_prob + 0.5
                             End If
-                        Case "ä¹±"
-                            If Not .IsConditionSatisfied("æ··ä¹±") Then
+                        Case "—"
+                            If Not .IsConditionSatisfied("¬—") Then
                                 sp_prob = sp_prob + 0.5
                             End If
-                        Case "æ’¹"
-                            If Not .IsConditionSatisfied("æ’¹ä¹±") _
+                        Case "Šh"
+                            If Not .IsConditionSatisfied("Šh—") _
                                 And .CountWeapon > 0 _
                             Then
                                 sp_prob = sp_prob + 0.2
                             End If
-                        Case "æ"
-                            If Not .IsConditionSatisfied("ææ€–") Then
+                        Case "‹°"
+                            If Not .IsConditionSatisfied("‹°•|") Then
                                 sp_prob = sp_prob + 0.4
                             End If
-                        Case "é­…"
-                            If Not .IsConditionSatisfied("é­…äº†") Then
+                        Case "–£"
+                            If Not .IsConditionSatisfied("–£—¹") Then
                                 sp_prob = sp_prob + 0.6
                             End If
-                        Case "æ†‘"
+                        Case "œß"
                             If .BossRank < 0 Then
                                 sp_prob = sp_prob + 1
                             End If
-                        Case "é»™"
-                            If Not .IsConditionSatisfied("æ²ˆé»™") Then
+                        Case "–Ù"
+                            If Not .IsConditionSatisfied("’¾–Ù") Then
                                 For j = 1 To .CountWeapon
                                     If .IsSpellWeapon(j) _
-                                        Or .IsWeaponClassifiedAs(j, "éŸ³") _
+                                        Or .IsWeaponClassifiedAs(j, "‰¹") _
                                     Then
                                         sp_prob = sp_prob + 0.3
                                         Exit For
@@ -4706,7 +4706,7 @@ Dim checkwc As String
                                 If j > .CountWeapon Then
                                     For j = 1 To .CountAbility
                                         If .IsSpellAbility(j) _
-                                            Or .IsAbilityClassifiedAs(j, "éŸ³") _
+                                            Or .IsAbilityClassifiedAs(j, "‰¹") _
                                         Then
                                             sp_prob = sp_prob + 0.3
                                             Exit For
@@ -4714,116 +4714,116 @@ Dim checkwc As String
                                     Next
                                 End If
                             End If
-                        Case "ç›²"
-                            If Not .IsConditionSatisfied("ç›²ç›®") Then
+                        Case "–Ó"
+                            If Not .IsConditionSatisfied("–Ó–Ú") Then
                                 sp_prob = sp_prob + 0.3
                             End If
-                        Case "æ¯’"
-                            If Not .IsConditionSatisfied("æ¯’") Then
+                        Case "“Å"
+                            If Not .IsConditionSatisfied("“Å") Then
                                 sp_prob = sp_prob + 0.3
                             End If
-                        Case "è¸Š"
-                            If Not .IsConditionSatisfied("è¸Šã‚Š") Then
+                        Case "—x"
+                            If Not .IsConditionSatisfied("—x‚è") Then
                                 sp_prob = sp_prob + 0.3
                             End If
-                        Case "ç‹‚"
-                            If Not .IsConditionSatisfied("ç‹‚æˆ¦å£«") Then
+                        Case "‹¶"
+                            If Not .IsConditionSatisfied("‹¶ím") Then
                                 sp_prob = sp_prob + 0.3
                             End If
-                        Case "ã‚¾"
-                            If Not .IsConditionSatisfied("ã‚¾ãƒ³ãƒ“") Then
+                        Case "ƒ]"
+                            If Not .IsConditionSatisfied("ƒ]ƒ“ƒr") Then
                                 sp_prob = sp_prob + 0.3
                             End If
-                        Case "å®³"
-                            If Not .IsConditionSatisfied("å›å¾©ä¸èƒ½") Then
-                                If .IsFeatureAvailable("ï¼¨ï¼°å›å¾©") _
-                                    Or .IsFeatureAvailable("ï¼¥ï¼®å›å¾©") _
+                        Case "ŠQ"
+                            If Not .IsConditionSatisfied("‰ñ•œ•s”\") Then
+                                If .IsFeatureAvailable("‚g‚o‰ñ•œ") _
+                                    Or .IsFeatureAvailable("‚d‚m‰ñ•œ") _
                                 Then
                                     sp_prob = sp_prob + 0.4
                                 End If
                             End If
-                        Case "åŠ£"
-                            If Not .IsConditionSatisfied("è£…ç”²åŠ£åŒ–") Then
+                        Case "—ò"
+                            If Not .IsConditionSatisfied("‘•b—ò‰»") Then
                                 sp_prob = sp_prob + 0.3
                             End If
-                        Case "ä¸­"
-                            If Not .IsConditionSatisfied("ãƒãƒªã‚¢ç„¡åŠ¹åŒ–") Then
-                                If .IsFeatureAvailable("ãƒãƒªã‚¢") _
-                                    And InStr(t.FeatureData("ãƒãƒªã‚¢"), "ãƒãƒªã‚¢ç„¡åŠ¹åŒ–ç„¡åŠ¹") = 0 _
+                        Case "’†"
+                            If Not .IsConditionSatisfied("ƒoƒŠƒA–³Œø‰»") Then
+                                If .IsFeatureAvailable("ƒoƒŠƒA") _
+                                    And InStr(t.FeatureData("ƒoƒŠƒA"), "ƒoƒŠƒA–³Œø‰»–³Œø") = 0 _
                                 Then
                                     sp_prob = sp_prob + 0.3
-                                ElseIf .IsFeatureAvailable("åºƒåŸŸãƒãƒªã‚¢") Then
+                                ElseIf .IsFeatureAvailable("LˆæƒoƒŠƒA") Then
                                     sp_prob = sp_prob + 0.3
-                                ElseIf .IsFeatureAvailable("ãƒãƒªã‚¢ã‚·ãƒ¼ãƒ«ãƒ‰") _
-                                    And InStr(t.FeatureData("ãƒãƒªã‚¢ã‚·ãƒ¼ãƒ«ãƒ‰"), "ãƒãƒªã‚¢ç„¡åŠ¹åŒ–ç„¡åŠ¹") = 0 _
+                                ElseIf .IsFeatureAvailable("ƒoƒŠƒAƒV[ƒ‹ƒh") _
+                                    And InStr(t.FeatureData("ƒoƒŠƒAƒV[ƒ‹ƒh"), "ƒoƒŠƒA–³Œø‰»–³Œø") = 0 _
                                 Then
                                     sp_prob = sp_prob + 0.3
-                                ElseIf .IsFeatureAvailable("ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰") _
-                                    And InStr(t.FeatureData("ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰"), "ãƒãƒªã‚¢ç„¡åŠ¹åŒ–ç„¡åŠ¹") = 0 _
+                                ElseIf .IsFeatureAvailable("ƒtƒB[ƒ‹ƒh") _
+                                    And InStr(t.FeatureData("ƒtƒB[ƒ‹ƒh"), "ƒoƒŠƒA–³Œø‰»–³Œø") = 0 _
                                 Then
                                     sp_prob = sp_prob + 0.3
-                                ElseIf .IsFeatureAvailable("åºƒåŸŸãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰") Then
+                                ElseIf .IsFeatureAvailable("LˆæƒtƒB[ƒ‹ƒh") Then
                                     sp_prob = sp_prob + 0.3
-                                ElseIf .IsFeatureAvailable("ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰") _
-                                    And InStr(t.FeatureData("ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰"), "ãƒãƒªã‚¢ç„¡åŠ¹åŒ–ç„¡åŠ¹") = 0 _
+                                ElseIf .IsFeatureAvailable("ƒAƒNƒeƒBƒuƒtƒB[ƒ‹ƒh") _
+                                    And InStr(t.FeatureData("ƒAƒNƒeƒBƒuƒtƒB[ƒ‹ƒh"), "ƒoƒŠƒA–³Œø‰»–³Œø") = 0 _
                                 Then
                                     sp_prob = sp_prob + 0.3
                                 End If
                             End If
-                        Case "é™¤"
+                        Case "œ"
                             For j = 1 To .CountCondition
-                                If (InStr(.Condition(j), "ä»˜åŠ ") > 0 _
-                                        Or InStr(.Condition(j), "å¼·åŒ–") > 0 _
-                                        Or InStr(.Condition(j), "ï¼µï¼°") > 0) _
+                                If (InStr(.Condition(j), "•t‰Á") > 0 _
+                                        Or InStr(.Condition(j), "‹­‰»") > 0 _
+                                        Or InStr(.Condition(j), "‚t‚o") > 0) _
                                     And .ConditionLifetime(j) > 0 _
                                 Then
                                     sp_prob = sp_prob + 0.3
                                     Exit For
                                 End If
                             Next
-                        Case "å³"
+                        Case "‘¦"
                             If .BossRank < 0 Then
                                 sp_prob = sp_prob + 1
                             End If
-                        Case "å‘Š"
+                        Case ""
                             If .BossRank < 0 Then
                                 sp_prob = sp_prob + 0.4
                             End If
-                        Case "è„±"
-                            If .MainPilot.Personality <> "æ©Ÿæ¢°" Then
+                        Case "’E"
+                            If .MainPilot.Personality <> "‹@ŠB" Then
                                 sp_prob = sp_prob + 0.2
                             End If
-                        Case "ï¼¤"
-                            If .MainPilot.Personality <> "æ©Ÿæ¢°" Then
+                        Case "‚c"
+                            If .MainPilot.Personality <> "‹@ŠB" Then
                                 sp_prob = sp_prob + 0.25
                             End If
-                        Case "ä½æ”»"
-                            If Not .IsConditionSatisfied("æ”»æ’ƒåŠ›ï¼¤ï¼¯ï¼·ï¼®") _
+                        Case "’áU"
+                            If Not .IsConditionSatisfied("UŒ‚—Í‚c‚n‚v‚m") _
                                 And .CountWeapon() > 0 _
                             Then
                                 sp_prob = sp_prob + 0.2
                             End If
-                        Case "ä½é˜²"
-                            If Not .IsConditionSatisfied("é˜²å¾¡åŠ›ï¼¤ï¼¯ï¼·ï¼®") Then
+                        Case "’á–h"
+                            If Not .IsConditionSatisfied("–hŒä—Í‚c‚n‚v‚m") Then
                                 sp_prob = sp_prob + 0.2
                             End If
-                        Case "ä½é‹"
-                            If Not .IsConditionSatisfied("é‹å‹•æ€§ï¼¤ï¼¯ï¼·ï¼®") Then
+                        Case "’á‰^"
+                            If Not .IsConditionSatisfied("‰^“®«‚c‚n‚v‚m") Then
                                 sp_prob = sp_prob + 0.1
                             End If
-                        Case "ä½ç§»"
-                            If Not .IsConditionSatisfied("ç§»å‹•åŠ›ï¼¤ï¼¯ï¼·ï¼®") _
+                        Case "’áˆÚ"
+                            If Not .IsConditionSatisfied("ˆÚ“®—Í‚c‚n‚v‚m") _
                                 And .Speed > 0 _
                             Then
                                 sp_prob = sp_prob + 0.1
                             End If
-                        Case "ç›—"
-                            If Not .IsConditionSatisfied("ã™ã‹ã‚“ã´ã‚“") Then
+                        Case "“"
+                            If Not .IsConditionSatisfied("‚·‚©‚ñ‚Ò‚ñ") Then
                                 sp_prob = sp_prob + 0.5
                             End If
-                        Case "å†™"
+                        Case "Ê"
                             If .BossRank >= 0 _
-                                Or u.IsFeatureAvailable("ãƒãƒ¼ãƒãƒ«ãƒ¢ãƒ¼ãƒ‰") _
+                                Or u.IsFeatureAvailable("ƒm[ƒ}ƒ‹ƒ‚[ƒh") _
                             Then
                                 GoTo NextAttribute
                             End If
@@ -4860,15 +4860,15 @@ Dim checkwc As String
                                     End Select
                             End Select
                             sp_prob = sp_prob + 1
-                        Case "åŒ–"
+                        Case "‰»"
                             If .BossRank < 0 _
-                                And Not u.IsFeatureAvailable("ãƒãƒ¼ãƒãƒ«ãƒ¢ãƒ¼ãƒ‰") _
+                                And Not u.IsFeatureAvailable("ƒm[ƒ}ƒ‹ƒ‚[ƒh") _
                             Then
                                 sp_prob = sp_prob + 1
                             End If
-                        Case "è¡°"
+                        Case "Š"
                             If .BossRank >= 0 Then
-                                Select Case CInt(u.WeaponLevel(w, "è¡°"))
+                                Select Case CInt(u.WeaponLevel(w, "Š"))
                                     Case 1
                                         sp_prob = sp_prob + 1 / 8
                                     Case 2
@@ -4877,7 +4877,7 @@ Dim checkwc As String
                                         sp_prob = sp_prob + 1 / 2
                                 End Select
                             Else
-                                Select Case CInt(u.WeaponLevel(w, "è¡°"))
+                                Select Case CInt(u.WeaponLevel(w, "Š"))
                                     Case 1
                                         sp_prob = sp_prob + 1 / 4
                                     Case 2
@@ -4886,9 +4886,9 @@ Dim checkwc As String
                                         sp_prob = sp_prob + 3 / 4
                                 End Select
                             End If
-                        Case "æ»…"
+                        Case "–Å"
                             If .BossRank >= 0 Then
-                                Select Case CInt(u.WeaponLevel(w, "æ»…"))
+                                Select Case CInt(u.WeaponLevel(w, "–Å"))
                                     Case 1
                                         sp_prob = sp_prob + 1 / 16
                                     Case 2
@@ -4897,7 +4897,7 @@ Dim checkwc As String
                                         sp_prob = sp_prob + 1 / 4
                                 End Select
                             Else
-                                Select Case CInt(u.WeaponLevel(w, "æ»…"))
+                                Select Case CInt(u.WeaponLevel(w, "–Å"))
                                     Case 1
                                         sp_prob = sp_prob + 1 / 8
                                     Case 2
@@ -4907,45 +4907,45 @@ Dim checkwc As String
                                 End Select
                             End If
                         Case Else
-                            'å¼±å±æ€§
-                            If Left$(wattr, 1) = "å¼±" Then
-                                'å‘³æ–¹å…¨å“¡ã‚’æ¤œç´¢ã—ã¦ã€ç¾åœ¨å¯¾è±¡ã«æ”»æ’ƒå¯èƒ½ãªãƒ¦ãƒ‹ãƒƒãƒˆãŒ
-                                'ä»˜åŠ ã—ãŸå¼±ç‚¹ã«å¯¾ã™ã‚‹å±æ€§æ”»æ’ƒã‚’æŒã¤å ´åˆã€‚
-                                'ç‰¹æ®ŠåŠ¹æœç™ºå‹•ç‡ã¯ã¨ã‚Šã‚ãˆãšä½é˜²(0.2)ã¨ãã‚ãˆã¦ã¿ãŸ
+                            'ã‘®«
+                            If Left$(wattr, 1) = "ã" Then
+                                '–¡•û‘Sˆõ‚ğŒŸõ‚µ‚ÄAŒ»İ‘ÎÛ‚ÉUŒ‚‰Â”\‚Èƒ†ƒjƒbƒg‚ª
+                                '•t‰Á‚µ‚½ã“_‚É‘Î‚·‚é‘®«UŒ‚‚ğ‚Âê‡B
+                                '“ÁêŒø‰Ê”­“®—¦‚Í‚Æ‚è‚ ‚¦‚¸’á–h(0.2)‚Æ‚»‚ë‚¦‚Ä‚İ‚½
                                 checkwc = Mid$(wattr, 2)
                                 If Not .Weakness(checkwc) Then
                                     For Each checku In UList
                                         With checku
                                             If .Party = .Party _
-                                                And .Status = "å‡ºæ’ƒ" _
+                                                And .Status = "oŒ‚" _
                                             Then
                                                 For j = 1 To .CountWeapon
                                                     If .IsWeaponClassifiedAs(j, checkwc) _
-                                                        And .IsWeaponAvailable(j, "ç§»å‹•å‰") _
+                                                        And .IsWeaponAvailable(j, "ˆÚ“®‘O") _
                                                     Then
-                                                        'å°„ç¨‹ç¯„å›²å†…ï¼Ÿ
-                                                        If .IsWeaponClassifiedAs(j, "ç§»å‹•å¾Œæ”»æ’ƒå¯") _
-                                                            And .Mode <> "å›ºå®š" _
+                                                        'Ë’ö”ÍˆÍ“àH
+                                                        If .IsWeaponClassifiedAs(j, "ˆÚ“®ŒãUŒ‚‰Â") _
+                                                            And .Mode <> "ŒÅ’è" _
                                                         Then
-                                                            'åˆä½“æŠ€ã¯ç§»å‹•å¾Œæ”»æ’ƒå¯èƒ½ã§ã‚‚ç§»å‹•ã‚’å‰æã«ã—ãªã„
-                                                            '(ç§»å‹•å¾Œã®ä½ç½®ã§ã¯ä½¿ãˆãªã„å±é™ºæ€§ãŒã‚ã‚‹ãŸã‚)
-                                                            If .IsWeaponClassifiedAs(j, "åˆ") _
-                                                                And .IsWeaponClassifiedAs(j, "ï¼°") _
+                                                            '‡‘Ì‹Z‚ÍˆÚ“®ŒãUŒ‚‰Â”\‚Å‚àˆÚ“®‚ğ‘O’ñ‚É‚µ‚È‚¢
+                                                            '(ˆÚ“®Œã‚ÌˆÊ’u‚Å‚Íg‚¦‚È‚¢ŠëŒ¯«‚ª‚ ‚é‚½‚ß)
+                                                            If .IsWeaponClassifiedAs(j, "‡") _
+                                                                And .IsWeaponClassifiedAs(j, "‚o") _
                                                             Then
-                                                                'ç§»å‹•ã—ã¦æ”»æ’ƒã¯å‡ºæ¥ãªã„
+                                                                'ˆÚ“®‚µ‚ÄUŒ‚‚Ío—ˆ‚È‚¢
                                                                 If .IsTargetWithinRange(j, t) Then
                                                                     sp_prob = sp_prob + 0.2
                                                                     GoTo NextAttribute
                                                                 End If
                                                             Else
-                                                                'ç§»å‹•ã—ã¦æ”»æ’ƒå¯èƒ½
+                                                                'ˆÚ“®‚µ‚ÄUŒ‚‰Â”\
                                                                 If .IsTargetReachable(j, t) Then
                                                                     sp_prob = sp_prob + 0.2
                                                                     GoTo NextAttribute
                                                                 End If
                                                             End If
                                                         Else
-                                                            'ç§»å‹•ã—ã¦æ”»æ’ƒã¯å‡ºæ¥ãªã„
+                                                            'ˆÚ“®‚µ‚ÄUŒ‚‚Ío—ˆ‚È‚¢
                                                             If .IsTargetWithinRange(j, t) Then
                                                                 sp_prob = sp_prob + 0.2
                                                                 GoTo NextAttribute
@@ -4957,52 +4957,52 @@ Dim checkwc As String
                                         End With
                                     Next
                                 End If
-                            'åŠ¹å±æ€§
-                            ElseIf Left$(wattr, 1) = "åŠ¹" Then
-                                'å‘³æ–¹å…¨å“¡ã‚’æ¤œç´¢ã—ã¦ã€ç¾åœ¨å¯¾è±¡ã«æ”»æ’ƒå¯èƒ½ãªãƒ¦ãƒ‹ãƒƒãƒˆãŒ
-                                'ä»˜åŠ ã—ãŸæœ‰åŠ¹ã«å¯¾ã™ã‚‹å°å°ã€é™å®šæ”»æ’ƒã‚’æŒã¤å ´åˆã€‚
-                                'ç‰¹æ®ŠåŠ¹æœç™ºå‹•ç‡ã¯0.1ã¨ã—ã¦ã¿ãŸ
+                            'Œø‘®«
+                            ElseIf Left$(wattr, 1) = "Œø" Then
+                                '–¡•û‘Sˆõ‚ğŒŸõ‚µ‚ÄAŒ»İ‘ÎÛ‚ÉUŒ‚‰Â”\‚Èƒ†ƒjƒbƒg‚ª
+                                '•t‰Á‚µ‚½—LŒø‚É‘Î‚·‚é••ˆóAŒÀ’èUŒ‚‚ğ‚Âê‡B
+                                '“ÁêŒø‰Ê”­“®—¦‚Í0.1‚Æ‚µ‚Ä‚İ‚½
                                 checkwc = Mid$(wattr, 2)
                                 If Not .Weakness(checkwc) _
                                     And Not .Effective(checkwc) _
                                 Then
                                     For Each checku In UList
                                         If checku.Party = .Party _
-                                            And checku.Status = "å‡ºæ’ƒ" _
+                                            And checku.Status = "oŒ‚" _
                                         Then
                                             For j = 1 To checku.CountWeapon
                                                 With checku
                                                     If .IsWeaponClassifiedAs(j, checkwc) _
-                                                        And .IsWeaponAvailable(j, "ç§»å‹•å‰") _
+                                                        And .IsWeaponAvailable(j, "ˆÚ“®‘O") _
                                                     Then
-                                                        'ä»˜åŠ ã™ã‚‹æœ‰åŠ¹ã«å¯¾å¿œã™ã‚‹å°å°ã€é™å®šæ­¦å™¨ãŒã‚ã‚‹
-                                                        If InStrNotNest(.WeaponClass(j), "å°") > 0 _
-                                                            Or InStrNotNest(.WeaponClass(j), "é™") > 0 _
+                                                        '•t‰Á‚·‚é—LŒø‚É‘Î‰‚·‚é••ˆóAŒÀ’è•Ší‚ª‚ ‚é
+                                                        If InStrNotNest(.WeaponClass(j), "••") > 0 _
+                                                            Or InStrNotNest(.WeaponClass(j), "ŒÀ") > 0 _
                                                         Then
-                                                            If InStrNotNest(.WeaponClass(j), checkwc) > InStrNotNest(checku.WeaponClass(j), "é™") Then
-                                                                'å°„ç¨‹ç¯„å›²å†…ï¼Ÿ
-                                                                If .IsWeaponClassifiedAs(j, "ç§»å‹•å¾Œæ”»æ’ƒå¯") _
-                                                                    And .Mode <> "å›ºå®š" _
+                                                            If InStrNotNest(.WeaponClass(j), checkwc) > InStrNotNest(checku.WeaponClass(j), "ŒÀ") Then
+                                                                'Ë’ö”ÍˆÍ“àH
+                                                                If .IsWeaponClassifiedAs(j, "ˆÚ“®ŒãUŒ‚‰Â") _
+                                                                    And .Mode <> "ŒÅ’è" _
                                                                 Then
-                                                                    'åˆä½“æŠ€ã¯ç§»å‹•å¾Œæ”»æ’ƒå¯èƒ½ã§ã‚‚ç§»å‹•ã‚’å‰æã«ã—ãªã„
-                                                                    '(ç§»å‹•å¾Œã®ä½ç½®ã§ã¯ä½¿ãˆãªã„å±é™ºæ€§ãŒã‚ã‚‹ãŸã‚)
-                                                                    If .IsWeaponClassifiedAs(j, "åˆ") _
-                                                                        And .IsWeaponClassifiedAs(j, "ï¼°") _
+                                                                    '‡‘Ì‹Z‚ÍˆÚ“®ŒãUŒ‚‰Â”\‚Å‚àˆÚ“®‚ğ‘O’ñ‚É‚µ‚È‚¢
+                                                                    '(ˆÚ“®Œã‚ÌˆÊ’u‚Å‚Íg‚¦‚È‚¢ŠëŒ¯«‚ª‚ ‚é‚½‚ß)
+                                                                    If .IsWeaponClassifiedAs(j, "‡") _
+                                                                        And .IsWeaponClassifiedAs(j, "‚o") _
                                                                     Then
-                                                                        'ç§»å‹•ã—ã¦æ”»æ’ƒã¯å‡ºæ¥ãªã„
+                                                                        'ˆÚ“®‚µ‚ÄUŒ‚‚Ío—ˆ‚È‚¢
                                                                         If .IsTargetWithinRange(j, t) Then
                                                                             sp_prob = sp_prob + 0.1
                                                                             GoTo NextAttribute
                                                                         End If
                                                                     Else
-                                                                        'ç§»å‹•ã—ã¦æ”»æ’ƒå¯èƒ½
+                                                                        'ˆÚ“®‚µ‚ÄUŒ‚‰Â”\
                                                                         If .IsTargetReachable(j, t) Then
                                                                             sp_prob = sp_prob + 0.1
                                                                             GoTo NextAttribute
                                                                         End If
                                                                     End If
                                                                 Else
-                                                                    'ç§»å‹•ã—ã¦æ”»æ’ƒã¯å‡ºæ¥ãªã„
+                                                                    'ˆÚ“®‚µ‚ÄUŒ‚‚Ío—ˆ‚È‚¢
                                                                     If .IsTargetWithinRange(j, t) Then
                                                                         sp_prob = sp_prob + 0.1
                                                                         GoTo NextAttribute
@@ -5016,68 +5016,68 @@ Dim checkwc As String
                                         End If
                                     Next
                                 End If
-                            'å‰‹å±æ€§
-                            ElseIf Left$(wattr, 1) = "å‰‹" Then
-                                'ç‰¹æ®ŠåŠ¹æœç™ºå‹•ç‡ã¯é»™å±æ€§æƒãˆã§0.3
+                            '™‘®«
+                            ElseIf Left$(wattr, 1) = "™" Then
+                                '“ÁêŒø‰Ê”­“®—¦‚Í–Ù‘®«‘µ‚¦‚Å0.3
                                 checkwc = Mid$(wattr, 2)
                                 Select Case checkwc
-                                    Case "ã‚ª"
-                                        If Not .IsConditionSatisfied("ã‚ªãƒ¼ãƒ©ä½¿ç”¨ä¸èƒ½") Then
-                                            If .IsSkillAvailable("ã‚ªãƒ¼ãƒ©") Then
+                                    Case "ƒI"
+                                        If Not .IsConditionSatisfied("ƒI[ƒ‰g—p•s”\") Then
+                                            If .IsSkillAvailable("ƒI[ƒ‰") Then
                                                 sp_prob = sp_prob + 0.3
                                             End If
                                         Else
                                             GoTo NextAttribute
                                         End If
-                                    Case "è¶…"
-                                        If Not .IsConditionSatisfied("è¶…èƒ½åŠ›ä½¿ç”¨ä¸èƒ½") Then
-                                            If .IsSkillAvailable("è¶…èƒ½åŠ›") Then
+                                    Case "’´"
+                                        If Not .IsConditionSatisfied("’´”\—Íg—p•s”\") Then
+                                            If .IsSkillAvailable("’´”\—Í") Then
                                                 sp_prob = sp_prob + 0.3
                                             End If
                                         Else
                                             GoTo NextAttribute
                                         End If
-                                    Case "ã‚·"
-                                        If Not .IsConditionSatisfied("åŒèª¿ç‡ä½¿ç”¨ä¸èƒ½") Then
-                                            If .IsSkillAvailable("åŒèª¿ç‡") Then
+                                    Case "ƒV"
+                                        If Not .IsConditionSatisfied("“¯’²—¦g—p•s”\") Then
+                                            If .IsSkillAvailable("“¯’²—¦") Then
                                                 sp_prob = sp_prob + 0.3
                                             End If
                                         Else
                                             GoTo NextAttribute
                                         End If
-                                    Case "ã‚µ"
-                                        If Not .IsConditionSatisfied("è¶…æ„Ÿè¦šä½¿ç”¨ä¸èƒ½") _
-                                            And Not .IsConditionSatisfied("çŸ¥è¦šå¼·åŒ–ä½¿ç”¨ä¸èƒ½") _
+                                    Case "ƒT"
+                                        If Not .IsConditionSatisfied("’´Š´Šog—p•s”\") _
+                                            And Not .IsConditionSatisfied("’mŠo‹­‰»g—p•s”\") _
                                         Then
-                                            If .IsSkillAvailable("è¶…æ„Ÿè¦š") _
-                                                Or .IsSkillAvailable("çŸ¥è¦šå¼·åŒ–") _
+                                            If .IsSkillAvailable("’´Š´Šo") _
+                                                Or .IsSkillAvailable("’mŠo‹­‰»") _
                                             Then
                                                 sp_prob = sp_prob + 0.3
                                             End If
                                         Else
                                             GoTo NextAttribute
                                         End If
-                                    Case "éœŠ"
-                                        If Not .IsConditionSatisfied("éœŠåŠ›ä½¿ç”¨ä¸èƒ½") Then
-                                            If .IsSkillAvailable("éœŠåŠ›") Then
+                                    Case "—ì"
+                                        If Not .IsConditionSatisfied("—ì—Íg—p•s”\") Then
+                                            If .IsSkillAvailable("—ì—Í") Then
                                                 sp_prob = sp_prob + 0.3
                                             End If
                                         Else
                                             GoTo NextAttribute
                                         End If
-                                    Case "è¡“"
-                                        'è¡“ã¯å°„æ’ƒã‚’é­”åŠ›ã¨è¡¨ç¤ºã™ã‚‹ãŸã‚ã ã‘ã«ä»˜ã„ã¦ã„ã‚‹å ´åˆãŒã‚ã‚‹ãŸã‚
-                                        '1ãƒ¬ãƒ™ãƒ«ä»¥ä¸‹ã®å ´åˆã¯æ­¦å™¨ã€ã‚¢ãƒ“ãƒªãƒ†ã‚£ã‚’ç¢ºèª
-                                        If Not .IsConditionSatisfied("è¡“ä½¿ç”¨ä¸èƒ½") Then
-                                            If .SkillLevel("è¡“") > 1 Then
+                                    Case "p"
+                                        'p‚ÍËŒ‚‚ğ–‚—Í‚Æ•\¦‚·‚é‚½‚ß‚¾‚¯‚É•t‚¢‚Ä‚¢‚éê‡‚ª‚ ‚é‚½‚ß
+                                        '1ƒŒƒxƒ‹ˆÈ‰º‚Ìê‡‚Í•ŠíAƒAƒrƒŠƒeƒB‚ğŠm”F
+                                        If Not .IsConditionSatisfied("pg—p•s”\") Then
+                                            If .SkillLevel("p") > 1 Then
                                                 sp_prob = sp_prob + 0.3
                                             End If
                                         Else
                                             GoTo NextAttribute
                                         End If
-                                    Case "æŠ€"
-                                        If Not .IsConditionSatisfied("æŠ€ä½¿ç”¨ä¸èƒ½") Then
-                                            If .IsSkillAvailable("æŠ€") Then
+                                    Case "‹Z"
+                                        If Not .IsConditionSatisfied("‹Zg—p•s”\") Then
+                                            If .IsSkillAvailable("‹Z") Then
                                                 sp_prob = sp_prob + 0.3
                                             End If
                                         Else
@@ -5085,7 +5085,7 @@ Dim checkwc As String
                                         End If
                                 End Select
                    
-                                If Not .IsConditionSatisfied(checkwc & "å±æ€§ä½¿ç”¨ä¸èƒ½") Then
+                                If Not .IsConditionSatisfied(checkwc & "‘®«g—p•s”\") Then
                                     For j = 1 To .CountWeapon
                                         If .IsWeaponClassifiedAs(j, checkwc) Then
                                             sp_prob = sp_prob + 0.3
@@ -5111,30 +5111,30 @@ NextAttribute:
             End If
             sp_prob = sp_prob * ct_prob
             
-            'ãƒãƒªã‚¢ç­‰ã§æ”»æ’ƒãŒé˜²ãŒã‚Œã¦ã—ã¾ã†å ´åˆã¯ç‰¹æ®ŠåŠ¹æœã¯ç™ºå‹•ã—ãªã„
+            'ƒoƒŠƒA“™‚ÅUŒ‚‚ª–h‚ª‚ê‚Ä‚µ‚Ü‚¤ê‡‚Í“ÁêŒø‰Ê‚Í”­“®‚µ‚È‚¢
             If .WeaponPower(w, "") > 0 _
                 And dmg = 0 _
-                And Not .IsWeaponClassifiedAs(w, "ç„¡") _
+                And Not .IsWeaponClassifiedAs(w, "–³") _
             Then
                 sp_prob = 0
             End If
             
-            'å¿…ãšç™ºå‹•ã™ã‚‹ç‰¹æ®ŠåŠ¹æœã‚’è€ƒæ…®
-            If .IsWeaponClassifiedAs(w, "å¸") Then
+            '•K‚¸”­“®‚·‚é“ÁêŒø‰Ê‚ğl—¶
+            If .IsWeaponClassifiedAs(w, "‹z") Then
                 If .HP < .MaxHP Then
                     sp_prob = sp_prob + 25 * dmg \ t.MaxHP
                 End If
             End If
-            If .IsWeaponClassifiedAs(w, "æ¸›") Then
+            If .IsWeaponClassifiedAs(w, "Œ¸") Then
                 sp_prob = sp_prob + 50 * dmg \ t.MaxHP
             End If
-            If .IsWeaponClassifiedAs(w, "å¥ª") Then
+            If .IsWeaponClassifiedAs(w, "’D") Then
                 sp_prob = sp_prob + 50 * dmg \ t.MaxHP
             End If
             
-            'å…ˆåˆ¶æ”»æ’ƒã®å ´åˆã¯ç‰¹æ®ŠåŠ¹æœã‚’æœ‰åˆ©ã«åˆ¤å®š
-            If InStr(amode, "åæ’ƒ") > 0 Then
-                If .IsWeaponClassifiedAs(w, "å…ˆ") _
+            'æ§UŒ‚‚Ìê‡‚Í“ÁêŒø‰Ê‚ğ—L—˜‚É”»’è
+            If InStr(amode, "”½Œ‚") > 0 Then
+                If .IsWeaponClassifiedAs(w, "æ") _
                     Or .UsedCounterAttack < .MaxCounterAttack _
                 Then
                     sp_prob = 1.5 * sp_prob
@@ -5144,31 +5144,31 @@ NextAttribute:
                 sp_prob = 100
             End If
             
-            'ï¼£ï¼´ç‡ãŒä½ã„å ´åˆã¯ç‰¹æ®ŠåŠ¹æœã®ã¿ã®æ”»æ’ƒã‚’é‡è¦–ã—ãªã„
+            '‚b‚s—¦‚ª’á‚¢ê‡‚Í“ÁêŒø‰Ê‚Ì‚İ‚ÌUŒ‚‚ğd‹‚µ‚È‚¢
             If dmg = 0 And ct_prob < 30 Then
                 sp_prob = sp_prob / 5
             End If
             
-            'ãƒ€ãƒ¡ãƒ¼ã‚¸ãŒä¸ãˆã‚‰ã‚Œãªã„æ­¦å™¨ã¯ä½¿ç”¨ã—ãªã„
+            'ƒ_ƒ[ƒW‚ª—^‚¦‚ç‚ê‚È‚¢•Ší‚Íg—p‚µ‚È‚¢
             If dmg = 0 And sp_prob = 0 Then
                 GoTo NextWeapon
             End If
             
             If prob > 0 Then
                 If sp_prob > 0 Then
-                    'ç‰¹æ®ŠåŠ¹æœã®å½±éŸ¿ã‚’åŠ å‘³ã—ã¦ãƒ€ãƒ¡ãƒ¼ã‚¸ã®æœŸå¾…å€¤ã‚’è¨ˆç®—
+                    '“ÁêŒø‰Ê‚Ì‰e‹¿‚ğ‰Á–¡‚µ‚Äƒ_ƒ[ƒW‚ÌŠú‘Ò’l‚ğŒvZ
                     exp_dmg = dmg + MaxLng(t.HP - dmg, 0) * sp_prob \ 100
                 Else
-                    'ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ã®å½±éŸ¿ã‚’åŠ å‘³ã—ã¦ãƒ€ãƒ¡ãƒ¼ã‚¸ã®æœŸå¾…å€¤ã‚’è¨ˆç®—
-                    If IsOptionDefined("ãƒ€ãƒ¡ãƒ¼ã‚¸å€ç‡ä½ä¸‹") Then
-                        If .IsWeaponClassifiedAs(w, "ç—›") Then
-                            exp_dmg = dmg + 0.1 * .WeaponLevel(w, "ç—›") * dmg * ct_prob \ 100
+                    'ƒNƒŠƒeƒBƒJƒ‹‚Ì‰e‹¿‚ğ‰Á–¡‚µ‚Äƒ_ƒ[ƒW‚ÌŠú‘Ò’l‚ğŒvZ
+                    If IsOptionDefined("ƒ_ƒ[ƒW”{—¦’á‰º") Then
+                        If .IsWeaponClassifiedAs(w, "’É") Then
+                            exp_dmg = dmg + 0.1 * .WeaponLevel(w, "’É") * dmg * ct_prob \ 100
                         Else
                             exp_dmg = dmg + 0.2 * dmg * ct_prob \ 100
                         End If
                     Else
-                        If .IsWeaponClassifiedAs(w, "ç—›") Then
-                            exp_dmg = dmg + 0.25 * .WeaponLevel(w, "ç—›") * dmg * ct_prob \ 100
+                        If .IsWeaponClassifiedAs(w, "’É") Then
+                            exp_dmg = dmg + 0.25 * .WeaponLevel(w, "’É") * dmg * ct_prob \ 100
                         Else
                             exp_dmg = dmg + 0.5 * dmg * ct_prob \ 100
                         End If
@@ -5176,24 +5176,24 @@ NextAttribute:
                 End If
                 exp_dmg = exp_dmg * 0.01 * MinLng(prob, 100)
             Else
-                'å‘½ä¸­ãŒå½“ãŸã‚‰ãªã„å ´åˆã¯æœŸå¾…å€¤ã‚’æ€ã„åˆ‡ã‚Šä¸‹ã’ã‚‹
+                '–½’†‚ª“–‚½‚ç‚È‚¢ê‡‚ÍŠú‘Ò’l‚ğv‚¢Ø‚è‰º‚°‚é
                 prob = 1
                 exp_dmg = (dmg \ 10 + MaxLng(t.HP - dmg \ 10, 0) * sp_prob \ 100) \ 10
             End If
             
-            'ã‚µãƒãƒ¼ãƒˆã«ã‚ˆã‚‹ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’æœŸå¾…å€¤ã«è¿½åŠ 
+            'ƒTƒ|[ƒg‚É‚æ‚éƒ_ƒ[ƒW‚ğŠú‘Ò’l‚É’Ç‰Á
             If Not is_move_attack Then
                 exp_dmg = exp_dmg + support_exp_dmg
             End If
             
-            'æ•µã®ç ´å£Šç¢ºç‡ã‚’è¨ˆç®—
+            '“G‚Ì”j‰óŠm—¦‚ğŒvZ
             destroy_prob = 0
             With t
-                If .Party = "å‘³æ–¹" And Not .IsFeatureAvailable("é˜²å¾¡ä¸å¯") Then
+                If .Party = "–¡•û" And Not .IsFeatureAvailable("–hŒä•s‰Â") Then
                     If dmg >= 2 * .HP Then
                         destroy_prob = MinLng(prob, 100)
                     End If
-                    'ã‚µãƒãƒ¼ãƒˆã«ã‚ˆã‚‹ç ´å£Šç¢ºç‡
+                    'ƒTƒ|[ƒg‚É‚æ‚é”j‰óŠm—¦
                     If Not is_move_attack Then
                         If support_dmg >= 2 * .HP Then
                             destroy_prob = destroy_prob _
@@ -5207,7 +5207,7 @@ NextAttribute:
                     If dmg >= .HP Then
                         destroy_prob = MinLng(prob, 100)
                     End If
-                    'ã‚µãƒãƒ¼ãƒˆã«ã‚ˆã‚‹ç ´å£Šç¢ºç‡
+                    'ƒTƒ|[ƒg‚É‚æ‚é”j‰óŠm—¦
                     If Not is_move_attack Then
                         If support_dmg >= .HP Then
                             destroy_prob = destroy_prob _
@@ -5220,24 +5220,24 @@ NextAttribute:
                 End If
             End With
             
-            'å…ˆåˆ¶æ”»æ’ƒã®å ´åˆã¯æ•µã‚’ç ´å£Šå‡ºæ¥ã‚‹æ”»æ’ƒã‚’æœ‰åˆ©ã«åˆ¤å®š
-            If InStr(amode, "åæ’ƒ") > 0 Then
-                If .IsWeaponClassifiedAs(w, "å…ˆ") _
+            'æ§UŒ‚‚Ìê‡‚Í“G‚ğ”j‰óo—ˆ‚éUŒ‚‚ğ—L—˜‚É”»’è
+            If InStr(amode, "”½Œ‚") > 0 Then
+                If .IsWeaponClassifiedAs(w, "æ") _
                     Or .UsedCounterAttack < .MaxCounterAttack _
                 Then
                     destroy_prob = 1.5 * destroy_prob
                 End If
             End If
             
-            'ï¼¥ï¼®æ¶ˆè€—æ”»æ’ƒã®ä½¿ç”¨ã¯æ…é‡ã«
-            If .IsWeaponClassifiedAs(w, "æ¶ˆ") Then
-                If .Party = "å‘³æ–¹" Then
-                    'è‡ªå‹•åæ’ƒãƒ¢ãƒ¼ãƒ‰ã‹ã©ã†ã‹
+            '‚d‚mÁ–ÕUŒ‚‚Ìg—p‚ÍTd‚É
+            If .IsWeaponClassifiedAs(w, "Á") Then
+                If .Party = "–¡•û" Then
+                    '©“®”½Œ‚ƒ‚[ƒh‚©‚Ç‚¤‚©
                     If MainForm.mnuMapCommandItem(AutoDefenseCmdID).Checked Then
                         GoTo NextWeapon
                     End If
                 Else
-                    'æ•µãƒ¦ãƒ‹ãƒƒãƒˆã¯ç›¸æ‰‹ã‚’å€’ã›ã‚‹ã¨ãã«ã—ã‹ï¼¥ï¼®æ¶ˆè€—æ”»æ’ƒã‚’ä½¿ã‚ãªã„
+                    '“Gƒ†ƒjƒbƒg‚Í‘Šè‚ğ“|‚¹‚é‚Æ‚«‚É‚µ‚©‚d‚mÁ–ÕUŒ‚‚ğg‚í‚È‚¢
                     If destroy_prob = 0 And .BossRank < 0 Then
                         GoTo NextWeapon
                     End If
@@ -5245,16 +5245,16 @@ NextAttribute:
             End If
             
             If destroy_prob >= 100 Then
-                'ç ´å£Šç¢ºç‡ãŒ100%ã®å ´åˆã¯ã‚³ã‚¹ãƒˆã®ä½ã•ã‚’å„ªå…ˆ
-                '(ç¢ºç‡ãŒåŒã˜å ´åˆã¯ç•ªå·ãŒä½ã„æ­¦å™¨ã‚’ä½¿ç”¨)
-                If .Party = "å‘³æ–¹" Or .Party = "ï¼®ï¼°ï¼£" Then
+                '”j‰óŠm—¦‚ª100%‚Ìê‡‚ÍƒRƒXƒg‚Ì’á‚³‚ğ—Dæ
+                '(Šm—¦‚ª“¯‚¶ê‡‚Í”Ô†‚ª’á‚¢•Ší‚ğg—p)
+                If .Party = "–¡•û" Or .Party = "‚m‚o‚b" Then
                     If destroy_prob > max_destroy_prob Then
                         SelectWeapon = w
                         max_destroy_prob = destroy_prob
                         max_exp_dmg = exp_dmg
                     End If
                 Else
-                    'æ•µã®å ´åˆã¯ã‚³ã‚¹ãƒˆç„¡è¦–
+                    '“G‚Ìê‡‚ÍƒRƒXƒg–³‹
                     If destroy_prob > max_destroy_prob Then
                         SelectWeapon = w
                         max_destroy_prob = destroy_prob
@@ -5268,7 +5268,7 @@ NextAttribute:
                     End If
                 End If
             ElseIf destroy_prob > 50 Then
-                'ç ´å£Šç¢ºç‡ãŒ50%ã‚ˆã‚Šé«˜ã„å ´åˆã¯ç ´å£Šç¢ºç‡ã®é«˜ã•ã‚’å„ªå…ˆ
+                '”j‰óŠm—¦‚ª50%‚æ‚è‚‚¢ê‡‚Í”j‰óŠm—¦‚Ì‚‚³‚ğ—Dæ
                 If destroy_prob > max_destroy_prob Then
                     SelectWeapon = w
                     max_destroy_prob = destroy_prob
@@ -5281,7 +5281,7 @@ NextAttribute:
                     End If
                 End If
             Else
-                'ç ´å£Šç¢ºç‡ãŒ50%ä»¥ä¸‹ã®å ´åˆã¯ãƒ€ãƒ¡ãƒ¼ã‚¸ã®æœŸå¾…å€¤ã®é«˜ã•ã‚’å„ªå…ˆ
+                '”j‰óŠm—¦‚ª50%ˆÈ‰º‚Ìê‡‚Íƒ_ƒ[ƒW‚ÌŠú‘Ò’l‚Ì‚‚³‚ğ—Dæ
                 If max_destroy_prob <= 50 Then
                     If exp_dmg > max_exp_dmg Then
                         SelectWeapon = w
@@ -5293,14 +5293,14 @@ NextAttribute:
 NextWeapon:
         Next
         
-        'ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‰ã‚Œãªã„æ­¦å™¨ãŒé¸æŠã•ã‚ŒãŸå ´åˆã¯ã‚­ãƒ£ãƒ³ã‚»ãƒ«
+        'ƒ_ƒ[ƒW‚ğ—^‚¦‚ç‚ê‚È‚¢•Ší‚ª‘I‘ğ‚³‚ê‚½ê‡‚ÍƒLƒƒƒ“ƒZƒ‹
         If SelectWeapon > 0 Then
             If .WeaponAdaption(SelectWeapon, t.Area) = 0 Then
                 SelectWeapon = 0
             End If
         End If
         
-        'æ”»æ’ƒçµæœã®æœŸå¾…å€¤ã®æ›¸ãè¾¼ã¿
+        'UŒ‚Œ‹‰Ê‚ÌŠú‘Ò’l‚Ì‘‚«‚İ
         If max_destroy_prob > 50 Then
             max_prob = max_destroy_prob
         Else
@@ -5310,44 +5310,44 @@ NextWeapon:
     End With
 End Function
 
-'ãƒ¦ãƒ‹ãƒƒãƒˆ u ãŒæ­¦å™¨ w ã§æ”»æ’ƒã‚’ã‹ã‘ãŸéš›ã«ã‚¿ãƒ¼ã‚²ãƒƒãƒˆ t ãŒé¸æŠã™ã‚‹é˜²å¾¡è¡Œå‹•ã‚’è¿”ã™
+'ƒ†ƒjƒbƒg u ‚ª•Ší w ‚ÅUŒ‚‚ğ‚©‚¯‚½Û‚Éƒ^[ƒQƒbƒg t ‚ª‘I‘ğ‚·‚é–hŒäs“®‚ğ•Ô‚·
 Public Function SelectDefense(u As Unit, w As Integer, t As Unit, tw As Integer)
 Dim prob As Long, dmg As Long
 Dim tprob As Long, tdmg As Long
 Dim is_target_inferior As Boolean
     
-    'ãƒãƒƒãƒ—æ”»æ’ƒã«å¯¾ã—ã¦ã¯é˜²å¾¡è¡Œå‹•ãŒå–ã‚Œãªã„
-    If u.IsWeaponClassifiedAs(w, "ï¼­") Then
+    'ƒ}ƒbƒvUŒ‚‚É‘Î‚µ‚Ä‚Í–hŒäs“®‚ªæ‚ê‚È‚¢
+    If u.IsWeaponClassifiedAs(w, "‚l") Then
         Exit Function
     End If
     
     With t
-        'è¸Šã£ã¦ã„ã‚‹å ´åˆã¯å›é¿æ‰±ã„
-        If .IsConditionSatisfied("è¸Šã‚Š") Then
-            SelectDefense = "å›é¿"
+        '—x‚Á‚Ä‚¢‚éê‡‚Í‰ñ”ğˆµ‚¢
+        If .IsConditionSatisfied("—x‚è") Then
+            SelectDefense = "‰ñ”ğ"
             Exit Function
         End If
         
-        'ç‹‚æˆ¦å£«çŠ¶æ…‹ã®éš›ã¯é˜²å¾¡è¡Œå‹•ã‚’å–ã‚‰ãªã„
-        If .IsConditionSatisfied("ç‹‚æˆ¦å£«") Then
+        '‹¶ímó‘Ô‚ÌÛ‚Í–hŒäs“®‚ğæ‚ç‚È‚¢
+        If .IsConditionSatisfied("‹¶ím") Then
             Exit Function
         End If
         
-        'ç„¡é˜²å‚™çŠ¶æ…‹ã®ãƒ¦ãƒ‹ãƒƒãƒˆã¯é˜²å¾¡è¡Œå‹•ãŒå–ã‚Œãªã„
-        If .IsUnderSpecialPowerEffect("ç„¡é˜²å‚™") Then
+        '–³–h”õó‘Ô‚Ìƒ†ƒjƒbƒg‚Í–hŒäs“®‚ªæ‚ê‚È‚¢
+        If .IsUnderSpecialPowerEffect("–³–h”õ") Then
             Exit Function
         End If
         
-        If .Party <> "å‘³æ–¹" Then
-            'ã€Œæ•µãƒ¦ãƒ‹ãƒƒãƒˆé˜²å¾¡ä½¿ç”¨ã€ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã‚’é¸æŠã—ã¦ã„ã‚‹å ´åˆã«ã®ã¿æ•µãƒ¦ãƒ‹ãƒƒãƒˆã¯
-            'é˜²å¾¡è¡Œå‹•ã‚’è¡Œã†
-            If Not IsOptionDefined("æ•µãƒ¦ãƒ‹ãƒƒãƒˆé˜²å¾¡ä½¿ç”¨") Then
+        If .Party <> "–¡•û" Then
+            'u“Gƒ†ƒjƒbƒg–hŒäg—pvƒIƒvƒVƒ‡ƒ“‚ğ‘I‘ğ‚µ‚Ä‚¢‚éê‡‚É‚Ì‚İ“Gƒ†ƒjƒbƒg‚Í
+            '–hŒäs“®‚ğs‚¤
+            If Not IsOptionDefined("“Gƒ†ƒjƒbƒg–hŒäg—p") Then
                 Exit Function
             End If
             
-            'é˜²å¾¡è¡Œå‹•ã‚’ä½¿ã£ã¦ãã‚‹ã®ã¯æŠ€é‡ãŒ160ä»¥ä¸Šã®ã‚¶ã‚³ã§ãªã„ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®ã¿
+            '–hŒäs“®‚ğg‚Á‚Ä‚­‚é‚Ì‚Í‹Z—Ê‚ª160ˆÈã‚ÌƒUƒR‚Å‚È‚¢ƒpƒCƒƒbƒg‚Ì‚İ
             With .MainPilot
-                If InStr(.Name, "(ã‚¶ã‚³)") > 0 _
+                If InStr(.Name, "(ƒUƒR)") > 0 _
                     Or .TacticalTechnique < 160 _
                 Then
                     Exit Function
@@ -5355,57 +5355,57 @@ Dim is_target_inferior As Boolean
             End With
         End If
         
-        'è¡Œå‹•ä¸èƒ½ï¼Ÿ
+        's“®•s”\H
         If .MaxAction = 0 Then
-            'ãƒãƒ£ãƒ¼ã‚¸ä¸­ã€æ¶ˆè€—ä¸­ã¯å¸¸ã«é˜²å¾¡ã€ãã‚Œä»¥å¤–ã®å ´åˆã¯é˜²å¾¡è¡Œå‹•ãŒå–ã‚Œãªã„
-            If .IsConditionSatisfied("ãƒãƒ£ãƒ¼ã‚¸") _
-                Or .IsConditionSatisfied("æ¶ˆè€—") _
+            'ƒ`ƒƒ[ƒW’†AÁ–Õ’†‚Íí‚É–hŒäA‚»‚êˆÈŠO‚Ìê‡‚Í–hŒäs“®‚ªæ‚ê‚È‚¢
+            If .IsConditionSatisfied("ƒ`ƒƒ[ƒW") _
+                Or .IsConditionSatisfied("Á–Õ") _
             Then
-                SelectDefense = "é˜²å¾¡"
+                SelectDefense = "–hŒä"
             End If
             Exit Function
         End If
         
-        'ç›¸æ‰‹ã®æ”»æ’ƒã®ãƒ€ãƒ¡ãƒ¼ã‚¸ãƒ»å‘½ä¸­ç‡ã‚’ç®—å‡º
+        '‘Šè‚ÌUŒ‚‚Ìƒ_ƒ[ƒWE–½’†—¦‚ğZo
         dmg = u.ExpDamage(w, t, True)
         prob = MinLng(u.HitProbability(w, t, True), 100)
         
-        'ãƒ€ãƒŸãƒ¼ã‚’æŒã£ã¦ã„ã‚‹å ´åˆã€ç›¸æ‰‹ã®æ”»æ’ƒã¯ç„¡åŠ¹
-        If .IsFeatureAvailable("ãƒ€ãƒŸãƒ¼") _
-            And .ConditionLevel("ãƒ€ãƒŸãƒ¼ç ´å£Š") < .FeatureLevel("ãƒ€ãƒŸãƒ¼") _
+        'ƒ_ƒ~[‚ğ‚Á‚Ä‚¢‚éê‡A‘Šè‚ÌUŒ‚‚Í–³Œø
+        If .IsFeatureAvailable("ƒ_ƒ~[") _
+            And .ConditionLevel("ƒ_ƒ~[”j‰ó") < .FeatureLevel("ƒ_ƒ~[") _
         Then
             prob = 0
         End If
         
-        'ã‚µãƒãƒ¼ãƒˆã‚¬ãƒ¼ãƒ‰ã•ã‚Œã‚‹å ´åˆã‚‚ç›¸æ‰‹ã®æ”»æ’ƒã¯ç„¡åŠ¹
+        'ƒTƒ|[ƒgƒK[ƒh‚³‚ê‚éê‡‚à‘Šè‚ÌUŒ‚‚Í–³Œø
         If Not .LookForSupportGuard(u, w) Is Nothing Then
             prob = 0
         End If
         
-        'åæ’ƒã®ãƒ€ãƒ¡ãƒ¼ã‚¸ãƒ»å‘½ä¸­ç‡ã‚’ç®—å‡º
+        '”½Œ‚‚Ìƒ_ƒ[ƒWE–½’†—¦‚ğZo
         If tw > 0 Then
             tdmg = .ExpDamage(tw, u, True)
             tprob = MinLng(.HitProbability(tw, u, True), 100)
             
-            'ãƒ€ãƒŸãƒ¼ã‚’æŒã£ã¦ã„ã‚‹å ´åˆã¯åæ’ƒã¯ç„¡åŠ¹
-            If u.IsFeatureAvailable("ãƒ€ãƒŸãƒ¼") _
-                And u.ConditionLevel("ãƒ€ãƒŸãƒ¼ç ´å£Š") < u.FeatureLevel("ãƒ€ãƒŸãƒ¼") _
+            'ƒ_ƒ~[‚ğ‚Á‚Ä‚¢‚éê‡‚Í”½Œ‚‚Í–³Œø
+            If u.IsFeatureAvailable("ƒ_ƒ~[") _
+                And u.ConditionLevel("ƒ_ƒ~[”j‰ó") < u.FeatureLevel("ƒ_ƒ~[") _
             Then
                 prob = 0
             End If
         End If
         
-        'ç›¸æ‰‹ã®æ”»æ’ƒã®åŠ¹æœã¨ã“ã¡ã‚‰ã®åæ’ƒã®åŠ¹æœã‚’æ¯”è¼ƒ
-        If .Party = "å‘³æ–¹" Then
-            'å‘³æ–¹ãƒ¦ãƒ‹ãƒƒãƒˆã®å ´åˆã€ç›¸æ‰‹ã®æ”»æ’ƒã«ã‚ˆã‚‹ãƒ€ãƒ¡ãƒ¼ã‚¸ã®æ–¹ãŒå¤šã„å ´åˆã¯é˜²å¾¡
+        '‘Šè‚ÌUŒ‚‚ÌŒø‰Ê‚Æ‚±‚¿‚ç‚Ì”½Œ‚‚ÌŒø‰Ê‚ğ”äŠr
+        If .Party = "–¡•û" Then
+            '–¡•ûƒ†ƒjƒbƒg‚Ìê‡A‘Šè‚ÌUŒ‚‚É‚æ‚éƒ_ƒ[ƒW‚Ì•û‚ª‘½‚¢ê‡‚Í–hŒä
             If dmg * prob > tdmg * tprob _
                 And tdmg < u.HP _
             Then
                 is_target_inferior = True
             End If
             
-            'æ°—åˆã®ä¸€æ’ƒã¯é˜²å¾¡ã‚’å„ªå…ˆã—ã€ã‚„ã‚Šéã”ã™
-            If u.IsUnderSpecialPowerEffect("ãƒ€ãƒ¡ãƒ¼ã‚¸å¢—åŠ ") Then
+            '‹C‡‚ÌˆêŒ‚‚Í–hŒä‚ğ—Dæ‚µA‚â‚è‰ß‚²‚·
+            If u.IsUnderSpecialPowerEffect("ƒ_ƒ[ƒW‘‰Á") Then
                 If 2 * dmg * prob > tdmg * tprob _
                     And tdmg < u.HP _
                 Then
@@ -5413,15 +5413,15 @@ Dim is_target_inferior As Boolean
                 End If
             End If
         Else
-            'æ•µãƒ¦ãƒ‹ãƒƒãƒˆã®å ´åˆã§ã‚‚ç›¸æ‰‹ã®æ”»æ’ƒã«ã‚ˆã‚‹ãƒ€ãƒ¡ãƒ¼ã‚¸ã®æ–¹ãŒï¼’å€ä»¥ä¸Šå¤šã„å ´åˆã¯é˜²å¾¡
+            '“Gƒ†ƒjƒbƒg‚Ìê‡‚Å‚à‘Šè‚ÌUŒ‚‚É‚æ‚éƒ_ƒ[ƒW‚Ì•û‚ª‚Q”{ˆÈã‘½‚¢ê‡‚Í–hŒä
             If dmg * prob \ 2 > tdmg * tprob _
                 And tdmg < u.HP _
             Then
                 is_target_inferior = True
             End If
             
-            'æ°—åˆã®ä¸€æ’ƒã¯é˜²å¾¡ã‚’å„ªå…ˆã—ã€ã‚„ã‚Šéã”ã™
-            If u.IsUnderSpecialPowerEffect("ãƒ€ãƒ¡ãƒ¼ã‚¸å¢—åŠ ") Then
+            '‹C‡‚ÌˆêŒ‚‚Í–hŒä‚ğ—Dæ‚µA‚â‚è‰ß‚²‚·
+            If u.IsUnderSpecialPowerEffect("ƒ_ƒ[ƒW‘‰Á") Then
                 If dmg * prob > tdmg * tprob _
                     And tdmg < u.HP _
                 Then
@@ -5430,137 +5430,137 @@ Dim is_target_inferior As Boolean
             End If
         End If
         
-        'ã‚ã¨ä¸€æ’ƒã§ç ´å£Šã•ã‚Œã¦ã—ã¾ã†å ´åˆã¯å¿…ãšé˜²å¾¡
-        '(å‘½ä¸­ç‡ãŒä½ã„å ´åˆã‚’é™¤ã)
+        '‚ ‚ÆˆêŒ‚‚Å”j‰ó‚³‚ê‚Ä‚µ‚Ü‚¤ê‡‚Í•K‚¸–hŒä
+        '(–½’†—¦‚ª’á‚¢ê‡‚ğœ‚­)
         If dmg >= .HP And prob > 10 Then
             is_target_inferior = True
         End If
         
         If tw > 0 Then
-            'å…ˆåˆ¶æ”»æ’ƒå¯èƒ½ï¼Ÿ
-            If Not .IsWeaponClassifiedAs(tw, "å¾Œ") Then
-                If .IsWeaponClassifiedAs(tw, "å…ˆ") _
-                    Or u.IsWeaponClassifiedAs(w, "å¾Œ") _
+            'æ§UŒ‚‰Â”\H
+            If Not .IsWeaponClassifiedAs(tw, "Œã") Then
+                If .IsWeaponClassifiedAs(tw, "æ") _
+                    Or u.IsWeaponClassifiedAs(w, "Œã") _
                     Or .MaxCounterAttack > .UsedCounterAttack _
                 Then
                     If tdmg >= u.HP _
                         And tprob > 70 _
                     Then
-                        'å…ˆåˆ¶æ”»æ’ƒã§å€’ã›ã‚‹å ´åˆã¯è¿·ã‚ãšåæ’ƒ
+                        'æ§UŒ‚‚Å“|‚¹‚éê‡‚Í–À‚í‚¸”½Œ‚
                         is_target_inferior = False
                     End If
                 End If
             End If
         Else
-            'åæ’ƒã§ããªã„å ´åˆã¯é˜²å¾¡
+            '”½Œ‚‚Å‚«‚È‚¢ê‡‚Í–hŒä
             is_target_inferior = True
         End If
         
         If Not is_target_inferior Then
-            'åæ’ƒã‚’é¸æŠã—ãŸ
+            '”½Œ‚‚ğ‘I‘ğ‚µ‚½
             Exit Function
         End If
         
-        'é˜²å¾¡å´ãŒåŠ£å‹¢ãªã®ã§åæ’ƒã¯è¡Œã‚ãšã€é˜²å¾¡è¡Œå‹•ã‚’é¸æŠ
+        '–hŒä‘¤‚ª—ò¨‚È‚Ì‚Å”½Œ‚‚Ís‚í‚¸A–hŒäs“®‚ğ‘I‘ğ
         
-        'å‘½ä¸­ã™ã‚Œã°ä¸€æ’ƒæ­»ã§ã€é˜²å¾¡ã™ã‚Œã°ç ´å£Šã‚’ã¾ã¬ãŒã‚Œã‚‹æ”»æ’ƒã¯å¿…ãšé˜²å¾¡
+        '–½’†‚·‚ê‚ÎˆêŒ‚€‚ÅA–hŒä‚·‚ê‚Î”j‰ó‚ğ‚Ü‚Ê‚ª‚ê‚éUŒ‚‚Í•K‚¸–hŒä
         If dmg > .HP And dmg \ 2 < .HP _
-            And Not .IsFeatureAvailable("é˜²å¾¡ä¸å¯") _
-            And Not u.IsWeaponClassifiedAs(w, "æ®º") _
+            And Not .IsFeatureAvailable("–hŒä•s‰Â") _
+            And Not u.IsWeaponClassifiedAs(w, "E") _
         Then
-            SelectDefense = "é˜²å¾¡"
+            SelectDefense = "–hŒä"
             Exit Function
         End If
         
-        'ç›¸æ‰‹ã®å‘½ä¸­ç‡ãŒä½ã„å ´åˆã¯å›é¿
+        '‘Šè‚Ì–½’†—¦‚ª’á‚¢ê‡‚Í‰ñ”ğ
         If prob < 50 _
-            And Not .IsFeatureAvailable("å›é¿ä¸å¯") _
-            And Not .IsConditionSatisfied("ç§»å‹•ä¸èƒ½") _
+            And Not .IsFeatureAvailable("‰ñ”ğ•s‰Â") _
+            And Not .IsConditionSatisfied("ˆÚ“®•s”\") _
         Then
-            SelectDefense = "å›é¿"
+            SelectDefense = "‰ñ”ğ"
             Exit Function
         End If
         
-        'é˜²å¾¡ã™ã‚Œã°ä¸€æ’ƒæ­»ã‚’ã¾ã¬ãŒã‚Œã‚‹å ´åˆã¯é˜²å¾¡
+        '–hŒä‚·‚ê‚ÎˆêŒ‚€‚ğ‚Ü‚Ê‚ª‚ê‚éê‡‚Í–hŒä
         If dmg \ 2 < .HP _
-            And Not .IsFeatureAvailable("é˜²å¾¡ä¸å¯") _
-            And Not u.IsWeaponClassifiedAs(w, "æ®º") _
+            And Not .IsFeatureAvailable("–hŒä•s‰Â") _
+            And Not u.IsWeaponClassifiedAs(w, "E") _
         Then
-            SelectDefense = "é˜²å¾¡"
+            SelectDefense = "–hŒä"
             Exit Function
         End If
         
-        'ã©ã†ã—ã‚ˆã†ã‚‚ãªã„ã®ã§ã¨ã‚Šã‚ãˆãšå›é¿
-        If Not .IsFeatureAvailable("å›é¿ä¸å¯") _
-            And Not .IsConditionSatisfied("ç§»å‹•ä¸èƒ½") _
+        '‚Ç‚¤‚µ‚æ‚¤‚à‚È‚¢‚Ì‚Å‚Æ‚è‚ ‚¦‚¸‰ñ”ğ
+        If Not .IsFeatureAvailable("‰ñ”ğ•s‰Â") _
+            And Not .IsConditionSatisfied("ˆÚ“®•s”\") _
         Then
-            SelectDefense = "å›é¿"
+            SelectDefense = "‰ñ”ğ"
             Exit Function
         End If
         
-        'å›é¿ã‚‚å‡ºæ¥ãªã„ã®ã§é˜²å¾¡â€¦â€¦
-        If Not .IsFeatureAvailable("é˜²å¾¡ä¸å¯") Then
-            SelectDefense = "é˜²å¾¡"
+        '‰ñ”ğ‚ào—ˆ‚È‚¢‚Ì‚Å–hŒäcc
+        If Not .IsFeatureAvailable("–hŒä•s‰Â") Then
+            SelectDefense = "–hŒä"
         End If
     End With
 End Function
 
-'ãƒ¦ãƒ‹ãƒƒãƒˆ u ãŒã‚¿ãƒ¼ã‚²ãƒƒãƒˆ t ã«åæ’ƒå¯èƒ½ã‹ï¼Ÿ
+'ƒ†ƒjƒbƒg u ‚ªƒ^[ƒQƒbƒg t ‚É”½Œ‚‰Â”\‚©H
 Public Function IsAbleToCounterAttack(u As Unit, t As Unit) As Boolean
 Dim w As Integer, i As Integer, idx As Integer
 Dim wclass As String, buf As String, ch As String
 
     With u
         For w = 1 To .CountWeapon
-            'æ­¦å™¨ãŒä½¿ç”¨å¯èƒ½ï¼Ÿ
-            If Not .IsWeaponAvailable(w, "ç§»å‹•å‰") Then
+            '•Ší‚ªg—p‰Â”\H
+            If Not .IsWeaponAvailable(w, "ˆÚ“®‘O") Then
                 GoTo NextWeapon
             End If
             
-            'ãƒãƒƒãƒ—æ”»æ’ƒã¯æ­¦å™¨é¸å®šå¤–
-            If .IsWeaponClassifiedAs(w, "ï¼­") Then
+            'ƒ}ƒbƒvUŒ‚‚Í•Ší‘I’èŠO
+            If .IsWeaponClassifiedAs(w, "‚l") Then
                 GoTo NextWeapon
             End If
             
-            'åˆä½“æŠ€ã¯è‡ªåˆ†ã‹ã‚‰æ”»æ’ƒã‚’ã‹ã‘ã‚‹å ´åˆã«ã®ã¿ä½¿ç”¨
-            If .IsWeaponClassifiedAs(w, "åˆ") Then
+            '‡‘Ì‹Z‚Í©•ª‚©‚çUŒ‚‚ğ‚©‚¯‚éê‡‚É‚Ì‚İg—p
+            If .IsWeaponClassifiedAs(w, "‡") Then
                 GoTo NextWeapon
             End If
             
-            'å°„ç¨‹ç¯„å›²å†…ï¼Ÿ
+            'Ë’ö”ÍˆÍ“àH
             If Not .IsTargetWithinRange(w, t) Then
                 GoTo NextWeapon
             End If
 
-' ADD START ãƒãƒ¼ã‚¸
-            'ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‰ã‚Œã‚‹ï¼Ÿ
+' ADD START ƒ}[ƒW
+            'ƒ_ƒ[ƒW‚ğ—^‚¦‚ç‚ê‚éH
             If .Damage(w, t, True) > 0 Then
                 IsAbleToCounterAttack = True
                 Exit Function
             End If
             
-            'ç‰¹æ®ŠåŠ¹æœã‚’ä¸ãˆã‚‰ã‚Œã‚‹ï¼Ÿ
+            '“ÁêŒø‰Ê‚ğ—^‚¦‚ç‚ê‚éH
             If Not .IsNormalWeapon(w) Then
                 If .CriticalProbability(w, t) > 0 Then
                     IsAbleToCounterAttack = True
                     Exit Function
                 End If
             End If
-' ADD END ãƒãƒ¼ã‚¸
+' ADD END ƒ}[ƒW
             
-' DEL START ãƒãƒ¼ã‚¸
-'            'åœ°å½¢é©å¿œã¯ï¼Ÿ
+' DEL START ƒ}[ƒW
+'            '’nŒ`“K‰‚ÍH
 '            If .WeaponAdaption(w, t.Area) = 0 Then
 '                GoTo NextWeapon
 '            End If
 '
-'            'å°å°æ”»æ’ƒã¯å¼±ç‚¹ã€æœ‰åŠ¹ã‚’æŒã¤ãƒ¦ãƒ‹ãƒƒãƒˆä»¥å¤–ã«ã¯åŠ¹ã‹ãªã„
-'            If .IsWeaponClassifiedAs(w, "å°") Then
+'            '••ˆóUŒ‚‚Íã“_A—LŒø‚ğ‚Âƒ†ƒjƒbƒgˆÈŠO‚É‚ÍŒø‚©‚È‚¢
+'            If .IsWeaponClassifiedAs(w, "••") Then
 '                wclass = .WeaponClass(w)
 '                buf = t.strWeakness & t.strEffective
 '                For i = 1 To Len(buf)
 '                    ch = GetClassBundle(buf, i)
-'                    If ch <> "ç‰©" And ch <> "é­”" Then
+'                    If ch <> "•¨" And ch <> "–‚" Then
 '                        If InStrNotNest(wclass, ch) > 0 Then
 '                            Exit For
 '                        End If
@@ -5571,14 +5571,14 @@ Dim wclass As String, buf As String, ch As String
 '                End If
 '            End If
 '
-'            'é™å®šæ”»æ’ƒã¯æŒ‡å®šå±æ€§ã‚’å¼±ç‚¹ã€æœ‰åŠ¹ã‚’æŒã¤ãƒ¦ãƒ‹ãƒƒãƒˆä»¥å¤–ã«ã¯åŠ¹ã‹ãªã„
-'            idx = InStrNotNest(.WeaponClass(w), "é™")
+'            'ŒÀ’èUŒ‚‚Íw’è‘®«‚ğã“_A—LŒø‚ğ‚Âƒ†ƒjƒbƒgˆÈŠO‚É‚ÍŒø‚©‚È‚¢
+'            idx = InStrNotNest(.WeaponClass(w), "ŒÀ")
 '            If idx > 0 Then
 '                wclass = .WeaponClass(w)
 '                buf = t.strWeakness & t.strEffective
 '                For i = 1 To Len(buf)
 '                    ch = GetClassBundle(buf, i)
-'                    If ch <> "ç‰©" And ch <> "é­”" Then
+'                    If ch <> "•¨" And ch <> "–‚" Then
 '                        If InStrNotNest(wclass, ch) > idx Then
 '                            Exit For
 '                        End If
@@ -5589,26 +5589,26 @@ Dim wclass As String, buf As String, ch As String
 '                End If
 '            End If
 '
-'            'ç‰¹å®šãƒ¬ãƒ™ãƒ«é™å®šæ”»æ’ƒ
-'            If .IsWeaponClassifiedAs(w, "å¯¾") Then
-'                If t.MainPilot.Level Mod .WeaponLevel(w, "å¯¾") <> 0 Then
+'            '“Á’èƒŒƒxƒ‹ŒÀ’èUŒ‚
+'            If .IsWeaponClassifiedAs(w, "‘Î") Then
+'                If t.MainPilot.Level Mod .WeaponLevel(w, "‘Î") <> 0 Then
 '                    GoTo NextWeapon
 '                End If
 '            End If
 '
-'            'åæ’ƒã«ä½¿ç”¨ã§ãã‚‹æ­¦å™¨ãŒè¦‹ã¤ã‹ã£ãŸ
+'            '”½Œ‚‚Ég—p‚Å‚«‚é•Ší‚ªŒ©‚Â‚©‚Á‚½
 '            IsAbleToCounterAttack = True
 '            Exit Function
-' DEL END ãƒãƒ¼ã‚¸
+' DEL END ƒ}[ƒW
 NextWeapon:
         Next
     End With
     
-    'åæ’ƒã«ä½¿ç”¨ã§ãã‚‹æ­¦å™¨ãŒãªã‹ã£ãŸ
+    '”½Œ‚‚Ég—p‚Å‚«‚é•Ší‚ª‚È‚©‚Á‚½
     IsAbleToCounterAttack = False
 End Function
 
-'æœ€ã‚‚è¿‘ã„æ•µãƒ¦ãƒ‹ãƒƒãƒˆã‚’æ¢ã™
+'Å‚à‹ß‚¢“Gƒ†ƒjƒbƒg‚ğ’T‚·
 Public Function SearchNearestEnemy(u As Unit) As Unit
 Dim distance As Integer
 Dim i As Integer, j As Integer
@@ -5625,37 +5625,37 @@ Dim t As Unit
                     GoTo NexLoop
                 End If
                 
-                'ã‚‚ã£ã¨è¿‘ãã«ã„ã‚‹æ•µã‚’ç™ºè¦‹æ¸ˆã¿ï¼Ÿ
+                '‚à‚Á‚Æ‹ß‚­‚É‚¢‚é“G‚ğ”­Œ©Ï‚İH
                 If distance <= Abs(.X - t.X) + Abs(.Y - t.Y) Then
                     GoTo NexLoop
                 End If
                 
-                'æ•µï¼Ÿ
+                '“GH
                 If .IsAlly(t) Then
                     GoTo NexLoop
                 End If
                 
-                'ç‰¹å®šã®é™£å–¶ã®ã¿ã‚’ç‹™ã†æ€è€ƒãƒ¢ãƒ¼ãƒ‰ã®å ´åˆ
-                If .Mode = "å‘³æ–¹" Or .Mode = "ï¼®ï¼°ï¼£" _
-                    Or .Mode = "æ•µ" Or .Mode = "ä¸­ç«‹" _
+                '“Á’è‚Ìw‰c‚Ì‚İ‚ğ‘_‚¤vlƒ‚[ƒh‚Ìê‡
+                If .Mode = "–¡•û" Or .Mode = "‚m‚o‚b" _
+                    Or .Mode = "“G" Or .Mode = "’†—§" _
                 Then
                     If t.Party <> .Mode Then
                         GoTo NexLoop
                     End If
                 End If
                 
-                'ç›®è¦–ä¸èƒ½ï¼Ÿ
-                If t.IsUnderSpecialPowerEffect("éš ã‚Œèº«") Or t.Area = "åœ°ä¸­" Then
+                '–Ú‹•s”\H
+                If t.IsUnderSpecialPowerEffect("‰B‚êg") Or t.Area = "’n’†" Then
                     GoTo NexLoop
                 End If
                 
-                'ã‚¹ãƒ†ãƒ«ã‚¹çŠ¶æ…‹ã«ã‚ã‚Œã°é ãã‹ã‚‰ã¯ç™ºè¦‹ã§ããªã„
-                If t.IsFeatureAvailable("ã‚¹ãƒ†ãƒ«ã‚¹") _
-                    And Not t.IsConditionSatisfied("ã‚¹ãƒ†ãƒ«ã‚¹ç„¡åŠ¹") _
-                    And Not .IsFeatureAvailable("ã‚¹ãƒ†ãƒ«ã‚¹ç„¡åŠ¹åŒ–") _
+                'ƒXƒeƒ‹ƒXó‘Ô‚É‚ ‚ê‚Î‰“‚­‚©‚ç‚Í”­Œ©‚Å‚«‚È‚¢
+                If t.IsFeatureAvailable("ƒXƒeƒ‹ƒX") _
+                    And Not t.IsConditionSatisfied("ƒXƒeƒ‹ƒX–³Œø") _
+                    And Not .IsFeatureAvailable("ƒXƒeƒ‹ƒX–³Œø‰»") _
                 Then
-                    If t.IsFeatureLevelSpecified("ã‚¹ãƒ†ãƒ«ã‚¹") Then
-                        If Abs(.X - t.X) + Abs(.Y - t.Y) > t.FeatureLevel("ã‚¹ãƒ†ãƒ«ã‚¹") Then
+                    If t.IsFeatureLevelSpecified("ƒXƒeƒ‹ƒX") Then
+                        If Abs(.X - t.X) + Abs(.Y - t.Y) > t.FeatureLevel("ƒXƒeƒ‹ƒX") Then
                             GoTo NexLoop
                         End If
                     Else
@@ -5665,7 +5665,7 @@ Dim t As Unit
                     End If
                 End If
                 
-                'ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’ç™ºè¦‹
+                'ƒ^[ƒQƒbƒg‚ğ”­Œ©
                 Set SearchNearestEnemy = t
                 distance = Abs(.X - t.X) + Abs(.Y - t.Y)
                 
@@ -5675,7 +5675,7 @@ NexLoop:
     End With
 End Function
 
-'æœ€ã‚‚è¿‘ã„æ•µãƒ¦ãƒ‹ãƒƒãƒˆã¸ã®è·é›¢ã‚’è¿”ã™
+'Å‚à‹ß‚¢“Gƒ†ƒjƒbƒg‚Ö‚Ì‹——£‚ğ•Ô‚·
 Private Function DistanceFromNearestEnemy(u As Unit) As Integer
 Dim t As Unit
 

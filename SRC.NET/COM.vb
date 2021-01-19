@@ -3,14 +3,14 @@ Option Explicit On
 Module COM
 	
 	' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
+	' –{ƒvƒƒOƒ‰ƒ€‚ÍƒtƒŠ[ƒ\ƒtƒg‚Å‚ ‚èA–³•ÛØ‚Å‚·B
+	' –{ƒvƒƒOƒ‰ƒ€‚ÍGNU General Public License(Ver.3‚Ü‚½‚Í‚»‚êˆÈ~)‚ª’è‚ß‚éğŒ‚Ì‰º‚Å
+	' Ä”Ğ•z‚Ü‚½‚Í‰ü•Ï‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B
 	
-	'Invalid_string_refer_to_original_code
+	'ƒRƒ“ƒsƒ…[ƒ^[‚Ìvlƒ‹[ƒ`ƒ“ŠÖ˜Aƒ‚ƒWƒ…[ƒ‹
 	
 	
-	'Invalid_string_refer_to_original_code
+	'ƒRƒ“ƒsƒ…[ƒ^[‚É‚æ‚éƒ†ƒjƒbƒg‘€ì(‚Ps“®)
 	Public Sub OperateUnit()
 		Dim j, i, tmp As Short
 		Dim w, tw As Short
@@ -59,22 +59,22 @@ Module COM
 		SelectedAbility = 0
 		SelectedUnitMoveCost = 0
 		
-		'Invalid_string_refer_to_original_code
+		'‚Ü‚¸‚ÍUpdate
 		SelectedUnit.Update()
 		
-		'Invalid_string_refer_to_original_code
+		's“®o—ˆ‚È‚¯‚ê‚Î‚»‚Ì‚Ü‚ÜI—¹
 		If SelectedUnit.MaxAction = 0 Then
 			Exit Sub
 		End If
 		
-		'Invalid_string_refer_to_original_code
-		If SelectedUnit.IsConditionSatisfied("è¸Šã‚Š") Then
-			'Invalid_string_refer_to_original_code
+		'—x‚Á‚Ä‚¢‚éH
+		If SelectedUnit.IsConditionSatisfied("—x‚è") Then
+			'—x‚è‚É–Z‚µ‚¢cc
 			Exit Sub
 		End If
 		
-		'Invalid_string_refer_to_original_code
-		If IsOptionDefined("æ•µãƒ¦ãƒ‹ãƒƒãƒˆã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼ä½¿ç”¨") Or IsOptionDefined("æ•µãƒ¦ãƒ‹ãƒƒãƒˆç²¾ç¥ã‚³ãƒãƒ³ãƒ‰ä½¿ç”¨") Then
+		'ƒXƒyƒVƒƒƒ‹ƒpƒ[‚ğg‚¤H
+		If IsOptionDefined("“Gƒ†ƒjƒbƒgƒXƒyƒVƒƒƒ‹ƒpƒ[g—p") Or IsOptionDefined("“Gƒ†ƒjƒbƒg¸_ƒRƒ}ƒ“ƒhg—p") Then
 			TrySpecialPower(SelectedUnit.MainPilot)
 			If IsScenarioFinished Or IsCanceled Then
 				Exit Sub
@@ -91,21 +91,20 @@ Module COM
 					Exit Sub
 				End If
 			Next 
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			TrySpecialPower(SelectedUnit.AdditionalSupport)
-			If IsScenarioFinished Or IsCanceled Then
-				Exit Sub
+			If SelectedUnit.IsFeatureAvailable("’Ç‰ÁƒTƒ|[ƒg") Then
+				TrySpecialPower(SelectedUnit.AdditionalSupport)
+				If IsScenarioFinished Or IsCanceled Then
+					Exit Sub
+				End If
 			End If
 		End If
-		'End If
 		
-		'Invalid_string_refer_to_original_code
+		'ƒnƒCƒp[ƒ‚[ƒh‚ª‰Â”\‚Å‚ ‚ê‚ÎƒnƒCƒp[ƒ‚[ƒh”­“®
 		TryHyperMode()
 		
-		'Invalid_string_refer_to_original_code
+		'“Áê‚Èvlƒ‚[ƒh‚Ìê‡‚Ìˆ—
 		With SelectedUnit
-			'Invalid_string_refer_to_original_code
+			'w’è‚³‚ê‚½’n“_‚ğ–Úw‚·ê‡
 			If LLength(.Mode) = 2 Then
 				dst_x = CShort(LIndex(.Mode, 1))
 				dst_y = CShort(LIndex(.Mode, 2))
@@ -114,79 +113,125 @@ Module COM
 				End If
 			End If
 			
-			'Invalid_string_refer_to_original_code
-			If .Mode = "Invalid_string_refer_to_original_code" Then
+			'“¦–S‚µ‘±‚¯‚éê‡
+			If .Mode = "“¦–S" Then
 				GoTo Move
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'vlƒ‚[ƒh‚ªuƒpƒCƒƒbƒg–¼v‚Ìê‡‚Ìˆ—
 			If Not PList.IsDefined(.Mode) Then
 				GoTo TryBattleTransform
 			End If
 			If PList.Item(.Mode).Unit_Renamed Is Nothing Then
 				GoTo TryBattleTransform
 			End If
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			GoTo TryBattleTransform
-			'End If
+			If PList.Item(.Mode).Unit_Renamed.Status_Renamed <> "oŒ‚" Then
+				GoTo TryBattleTransform
+			End If
 			SelectedTarget = PList.Item(.Mode).Unit_Renamed
 			AreaInSpeed(SelectedUnit)
 			If Not .IsAlly(SelectedTarget) Then
-				'Invalid_string_refer_to_original_code
-				w = SelectWeapon(SelectedUnit, SelectedTarget, "ç§»å‹•å¯èƒ½")
+				'ƒ†ƒjƒbƒg‚ª“G‚Ìê‡‚Í‚»‚Ìƒ†ƒjƒbƒg‚ğ‘_‚¤
+				w = SelectWeapon(SelectedUnit, SelectedTarget, "ˆÚ“®‰Â”\")
 				If w = 0 Then
 					dst_x = SelectedTarget.X
 					dst_y = SelectedTarget.Y
 					GoTo Move
 				End If
-			End If
-			
-			If tmp_w > 0 Then
-				'Invalid_string_refer_to_original_code
-				If distance > System.Math.Abs(dst_x - .X) + System.Math.Abs(dst_y - .Y) Then
-					'Invalid_string_refer_to_original_code
-					SelectedTarget = u
-					w = tmp_w
-					distance = System.Math.Abs(dst_x - .X) + System.Math.Abs(dst_y - .Y)
-					max_prob = prob
-					max_dmg = dmg
-				ElseIf distance = System.Math.Abs(dst_x - .X) + System.Math.Abs(dst_y - .Y) Then 
-					'ä»Šã¾ã§ã«è¦‹ã¤ã‹ã£ãŸãƒ¦ãƒ‹ãƒƒãƒˆã¨ä½ç½®ãŒå¤‰ã‚ã‚‰ãªã‘ã‚Œã°
-					'Invalid_string_refer_to_original_code
-					If prob > max_prob And prob > 50 Then
-						SelectedTarget = u
-						w = tmp_w
-						max_prob = prob
-					ElseIf max_prob = 0 And dmg > max_dmg Then 
-						SelectedTarget = u
-						w = tmp_w
-						max_dmg = dmg
+			Else
+				'ƒ†ƒjƒbƒg‚ª–¡•û‚Ìê‡‚Í‚»‚Ìƒ†ƒjƒbƒg‚ğŒì‰q
+				w = 0
+				distance = 1000
+				dst_x = SelectedTarget.X
+				dst_y = SelectedTarget.Y
+				max_prob = 0
+				max_dmg = 0
+				
+				'Œì‰q‘ÎÛ‚ª‘¹‚µ‚Ä‚¢‚éê‡‚ÍC—‘•’u‚ğg‚¤
+				If TryFix(moved, SelectedTarget) Then
+					GoTo EndOfOperation
+				End If
+				
+				'Œì‰q‘ÎÛ‚ª‘¹‚µ‚Ä‚¢‚éê‡‚Í‰ñ•œƒAƒrƒŠƒeƒB‚ğg‚¤
+				If TryHealing(moved, SelectedTarget) Then
+					GoTo EndOfOperation
+				End If
+				
+				'‡‘Ì‹Z‚â‰‡Œì–hŒä‚ğ‚Á‚Ä‚¢‚éê‡‚Í‚Æ‚É‚©‚­Œì‰q‘ÎÛ‚É
+				'—×Ú‚·‚é‚±‚Æ‚ğ—Dæ‚·‚é
+				If .MainPilot.IsSkillAvailable("‰‡Œì") Or .MainPilot.IsSkillAvailable("‰‡Œì–hŒä") Then
+					If System.Math.Abs(.X - dst_x) + System.Math.Abs(.Y - dst_y) > 1 Then
+						GoTo Move
 					End If
+					guard_unit_mode = True
+				End If
+				If .IsFeatureAvailable("‡‘Ì‹Z") Then
+					If System.Math.Abs(.X - dst_x) > 1 Or System.Math.Abs(.Y - dst_y) > 1 Then
+						GoTo Move
+					End If
+					guard_unit_mode = True
+				End If
+				If guard_unit_mode Then
+					'‚¿‚á‚ñ‚Æ—×Ú‚µ‚Ä‚¢‚é‚Ì‚Åü‚è‚Ì“G‚ğ”rœ
+					'UPGRADE_NOTE: ƒIƒuƒWƒFƒNƒg SelectedTarget ‚ğƒKƒx[ƒW ƒRƒŒƒNƒg‚·‚é‚Ü‚Å‚±‚ÌƒIƒuƒWƒFƒNƒg‚ğ”jŠü‚·‚é‚±‚Æ‚Í‚Å‚«‚Ü‚¹‚ñB Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					SelectedTarget = Nothing
+					GoTo TryBattleTransform
+				End If
+				
+				'Œì‰q‚·‚éƒ†ƒjƒbƒg‚ğ‹º‚©‚·ƒ†ƒjƒbƒg‚ª‘¶İ‚·‚é‚©ƒ`ƒFƒbƒN
+				For	Each u In UList
+					With u
+						If .Status_Renamed = "oŒ‚" And SelectedUnit.IsEnemy(u) And System.Math.Abs(dst_x - .X) + System.Math.Abs(dst_y - .Y) <= 5 Then
+							tmp_w = SelectWeapon(SelectedUnit, u, "ˆÚ“®‰Â”\", prob, dmg)
+						Else
+							tmp_w = 0
+						End If
+						
+						If tmp_w > 0 Then
+							'‹ºˆĞ‚Æ‚È‚è“¾‚éƒ†ƒjƒbƒg‚Æ”F’è
+							If distance > System.Math.Abs(dst_x - .X) + System.Math.Abs(dst_y - .Y) Then
+								'‹ß‚¢ˆÊ’u‚É‚¢‚éƒ†ƒjƒbƒg‚ğ—Dæ
+								SelectedTarget = u
+								w = tmp_w
+								distance = System.Math.Abs(dst_x - .X) + System.Math.Abs(dst_y - .Y)
+								max_prob = prob
+								max_dmg = dmg
+							ElseIf distance = System.Math.Abs(dst_x - .X) + System.Math.Abs(dst_y - .Y) Then 
+								'¡‚Ü‚Å‚ÉŒ©‚Â‚©‚Á‚½ƒ†ƒjƒbƒg‚ÆˆÊ’u‚ª•Ï‚í‚ç‚È‚¯‚ê‚Î
+								'‚æ‚èŠëŒ¯“x‚ª‚‚¢ƒ†ƒjƒbƒg‚ğ—Dæ
+								If prob > max_prob And prob > 50 Then
+									SelectedTarget = u
+									w = tmp_w
+									max_prob = prob
+								ElseIf max_prob = 0 And dmg > max_dmg Then 
+									SelectedTarget = u
+									w = tmp_w
+									max_dmg = dmg
+								End If
+							End If
+						End If
+					End With
+				Next u
+				
+				If w = 0 Then
+					'Œì‰q‚·‚éƒ†ƒjƒbƒg‚ÍˆÀ‘SBŒì‰q‚·‚éƒ†ƒjƒbƒg‚Ì‹ß‚­‚ÖˆÚ“®‚·‚é
+					GoTo Move
+				Else
+					'Œì‰q‚·‚éƒ†ƒjƒbƒg‚ğ‹º‚©‚·ƒ†ƒjƒbƒg‚ÉUŒ‚
+					GoTo AttackEnemy
 				End If
 			End If
 		End With
-		'Next
-		
-		If w = 0 Then
-			'Invalid_string_refer_to_original_code
-			GoTo Move
-		Else
-			'Invalid_string_refer_to_original_code
-			GoTo AttackEnemy
-		End If
-		'End If
-		'End With
 		
 TryBattleTransform: 
-		'æˆ¦é—˜å½¢æ…‹ã¸ã®å¤‰å½¢ãŒå¯èƒ½ã§ã‚ã‚Œã°å¤‰å½¢
+		'í“¬Œ`‘Ô‚Ö‚Ì•ÏŒ`‚ª‰Â”\‚Å‚ ‚ê‚Î•ÏŒ`
 		If TryBattleTransform() Then
 			transfered = True
-			'Invalid_string_refer_to_original_code
+			'Šù‚Éƒ^[ƒQƒbƒg‚ğ‘I‘ğ‚µ‚Ä‚¢‚éê‡‚ÍUŒ‚•û–@‚ğÄ‘I‘ğ
 			If w > 0 Then
-				w = SelectWeapon(SelectedUnit, SelectedTarget, "ç§»å‹•å¯èƒ½")
+				w = SelectWeapon(SelectedUnit, SelectedTarget, "ˆÚ“®‰Â”\")
 				If w = 0 Then
-					'Invalid_string_refer_to_original_code
+					'•ÏŒ`‚ÌŒ‹‰ÊAUŒ‚‚Å‚«‚È‚­‚È‚Á‚Ä‚µ‚Ü‚Á‚½cc
 					dst_x = SelectedTarget.X
 					dst_y = SelectedTarget.Y
 					GoTo Move
@@ -194,7 +239,7 @@ TryBattleTransform:
 			End If
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'ÀsŠÔ‚ğÁ”ï‚µ‚È‚¢ƒAƒrƒŠƒeƒB‚ª‚ ‚ê‚Îg‚Á‚Ä‚¨‚­
 		TryInstantAbility()
 		If IsScenarioFinished Or IsCanceled Then
 			Exit Sub
@@ -205,12 +250,12 @@ TryBattleTransform:
 			End If
 		End With
 		
-		'Invalid_string_refer_to_original_code
+		'Šù‚É–Ú•W‚ªŒˆ‚Ü‚Á‚Ä‚¢‚ê‚Î‚»‚Ì–Ú•W‚ğUŒ‚
 		If Not SelectedTarget Is Nothing Then
 			GoTo AttackEnemy
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'¢Š«‚ª‰Â”\‚Å‚ ‚ê‚Î¢Š«
 		If TrySummonning() Then
 			If IsScenarioFinished Or IsCanceled Then
 				Exit Sub
@@ -218,12 +263,12 @@ TryBattleTransform:
 			GoTo EndOfOperation
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'C—‚ª‰Â”\‚Å‚ ‚ê‚ÎC—‘•’u‚ğg‚¤
 		If TryFix(moved) Then
 			GoTo EndOfOperation
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'ƒ}ƒbƒvŒ^‰ñ•œƒAƒrƒŠƒeƒB‚ğg‚¤H
 		If TryMapHealing(moved) Then
 			If IsScenarioFinished Or IsCanceled Then
 				Exit Sub
@@ -231,7 +276,7 @@ TryBattleTransform:
 			GoTo EndOfOperation
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'‰ñ•œƒAƒrƒŠƒeƒB‚ğg‚¤H
 		If TryHealing(moved) Then
 			If IsScenarioFinished Or IsCanceled Then
 				Exit Sub
@@ -240,17 +285,17 @@ TryBattleTransform:
 		End If
 		
 TryMapAttack: 
-		'Invalid_string_refer_to_original_code
+		'ƒ}ƒbƒvUŒ‚‚ğg‚¤H
 		If TryMapAttack(moved) Then
 			GoTo EndOfOperation
 		End If
 		
 SearchNearestEnemyWithinRange: 
-		'Invalid_string_refer_to_original_code
+		'ƒ^[ƒQƒbƒg‚É‚·‚éƒ†ƒjƒbƒg‚ğ’T‚·
 		With SelectedUnit
 			AreaInSpeed(SelectedUnit)
 			
-			'Invalid_string_refer_to_original_code
+			'Œì‰q‚·‚×‚«ƒ†ƒjƒbƒg‚ª‚¢‚éê‡‚ÍˆÚ“®”ÍˆÍ‚ğŒÀ’è
 			If guard_unit_mode Then
 				With PList.Item(.Mode).Unit_Renamed
 					For i = 1 To MapWidth
@@ -265,392 +310,391 @@ SearchNearestEnemyWithinRange:
 				End With
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'ŒÂX‚Ìƒ†ƒjƒbƒg‚É‘Î‚µ‚Äƒ^[ƒQƒbƒg‚Æ‚È‚è“¾‚é‚©”»’è
 			'UPGRADE_NOTE: ƒIƒuƒWƒFƒNƒg SelectedTarget ‚ğƒKƒx[ƒW ƒRƒŒƒNƒg‚·‚é‚Ü‚Å‚±‚ÌƒIƒuƒWƒFƒNƒg‚ğ”jŠü‚·‚é‚±‚Æ‚Í‚Å‚«‚Ü‚¹‚ñB Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 			SelectedTarget = Nothing
 			w = 0
 			max_prob = 0
 			max_dmg = 0
 			For	Each u In UList
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				GoTo NextLoop
-				'End If
+				If u.Status_Renamed <> "oŒ‚" Then
+					GoTo NextLoop
+				End If
 				
-				'Invalid_string_refer_to_original_code
+				'“G‚©‚Ç‚¤‚©‚ğ”»’è
 				If .IsAlly(u) Then
 					GoTo NextLoop
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'“Á’è‚Ìw‰c‚Ì‚İ‚ğ‘_‚¤vlƒ‚[ƒh‚Ìê‡
 				Select Case .Mode
-					Case "å‘³æ–¹"
-						If u.Party <> "å‘³æ–¹" And u.Party <> "Invalid_string_refer_to_original_code" Then
+					Case "–¡•û"
+						If u.Party <> "–¡•û" And u.Party <> "‚m‚o‚b" Then
 							GoTo NextLoop
 						End If
-					Case "Invalid_string_refer_to_original_code", "æ•µ", "Invalid_string_refer_to_original_code"
+					Case "‚m‚o‚b", "“G", "’†—§"
 						If u.Party <> .Mode Then
 							GoTo NextLoop
 						End If
 				End Select
 				
-				'Invalid_string_refer_to_original_code
+				'©•ª©g‚É‚ÍUŒ‚‚µ‚È‚¢
 				If SelectedUnit.CurrentForm Is u.CurrentForm Then
 					GoTo NextLoop
 				End If
 				
-				'éš ã‚Œèº«ä¸­
-				If u.IsUnderSpecialPowerEffect("éš ã‚Œèº«") Then
+				'‰B‚êg’†
+				If u.IsUnderSpecialPowerEffect("‰B‚êg") Then
 					GoTo NextLoop
 				End If
 				
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code_
-				'Then
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				If u.IsFeatureLevelSpecified("Invalid_string_refer_to_original_code") Then
-					If System.Math.Abs(.X - u.X) + System.Math.Abs(.Y - u.Y) > u.FeatureLevel("Invalid_string_refer_to_original_code") Then
-						GoTo NextLoop
-					End If
-				Else
-					If System.Math.Abs(.X - u.X) + System.Math.Abs(.Y - u.Y) > 3 Then
-						GoTo NextLoop
+				'ƒXƒeƒ‹ƒX‚Ì“G‚Í‰“‹——£‚©‚ç‚ÍUŒ‚‚ğó‚¯‚È‚¢
+				If u.IsFeatureAvailable("ƒXƒeƒ‹ƒX") And Not u.IsConditionSatisfied("ƒXƒeƒ‹ƒX–³Œø") And Not .IsFeatureAvailable("ƒXƒeƒ‹ƒX–³Œø‰»") Then
+					If u.IsFeatureLevelSpecified("ƒXƒeƒ‹ƒX") Then
+						If System.Math.Abs(.X - u.X) + System.Math.Abs(.Y - u.Y) > u.FeatureLevel("ƒXƒeƒ‹ƒX") Then
+							GoTo NextLoop
+						End If
+					Else
+						If System.Math.Abs(.X - u.X) + System.Math.Abs(.Y - u.Y) > 3 Then
+							GoTo NextLoop
+						End If
 					End If
 				End If
-				'End If
 				
-				'Invalid_string_refer_to_original_code
+				'UŒ‚‚Ég‚¤•Ší‚ğ‘I‘ğ
 				If moved Then
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					tmp_w = SelectWeapon(SelectedUnit, u, "ˆÚ“®Œã", prob, dmg)
 				Else
-					tmp_w = SelectWeapon(SelectedUnit, u, "ç§»å‹•å¯èƒ½", prob, dmg)
+					tmp_w = SelectWeapon(SelectedUnit, u, "ˆÚ“®‰Â”\", prob, dmg)
 				End If
 				If tmp_w <= 0 Then
 					GoTo NextLoop
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'ƒTƒ|[ƒgƒK[ƒh‚³‚ê‚éH
 				If .MainPilot.TacticalTechnique >= 150 Then
 					If Not u.LookForSupportGuard(SelectedUnit, tmp_w) Is Nothing Then
-						'Invalid_string_refer_to_original_code
+						'‘Šè‚ğ”j‰ó‚·‚é‚±‚Æ‚Ío—ˆ‚È‚¢
 						prob = 0
-						'Invalid_string_refer_to_original_code
+						'‰¼‘z“I‚Éƒ_ƒ[ƒW‚ğ”¼Œ¸‚µ‚Ä”»’è
 						dmg = dmg \ 2
 					End If
 				End If
 				
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				'ŠÔÚUŒ‚H
+				indirect_attack = .IsWeaponClassifiedAs(w, "ŠÔ")
 				
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code_
-				'And Not .IsConditionSatisfied("æš´èµ°") _
-				'And Not .IsConditionSatisfied("æ··ä¹±") _
-				'And Not .IsConditionSatisfied("ç‹‚æˆ¦å£«") _
-				'And Not indirect_attack _
-				'Then
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				tw = SelectWeapon(u, SelectedUnit, "åæ’ƒ", tprob, tdmg)
-				If prob < 80 And tprob > prob Then
-					GoTo NextLoop
-				End If
-				'End If
-				
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code
-				If prob > 50 Then
-					'Invalid_string_refer_to_original_code
-					If .MainPilot.TacticalTechnique >= 150 Then
-						With u
-							'Invalid_string_refer_to_original_code_
-							'Invalid_string_refer_to_original_code_
-							'Then
-							'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-							prob = 1.5 * prob
-						End With
-					Else
-						'Invalid_string_refer_to_original_code
-						For i = 1 To .CountAbility
-							With .Ability(i)
-								If .MaxRange > 0 Then
-									If .CountEffect > 0 Then
-										If .EffectType(1) = "å›å¾©" Then
-											prob = 1.5 * prob
-											Exit For
-										End If
-									End If
-								End If
-							End With
-						Next 
+				'¢Š«ƒ†ƒjƒbƒg‚Í©•ª‚ª‚â‚ç‚ê‚Ä‚µ‚Ü‚¤‚æ‚¤‚ÈUŒ‚‚Í‚©‚¯‚È‚¢
+				If .Party = "‚m‚o‚b" And .IsFeatureAvailable("¢Š«ƒ†ƒjƒbƒg") And Not .IsConditionSatisfied("–\‘–") And Not .IsConditionSatisfied("¬—") And Not .IsConditionSatisfied("‹¶ím") And Not indirect_attack Then
+					tw = SelectWeapon(u, SelectedUnit, "”½Œ‚", tprob, tdmg)
+					If prob < 80 And tprob > prob Then
+						GoTo NextLoop
 					End If
 				End If
-			Next u
-		End With
-		'End If
-		
-		If prob > max_prob Then
-			SelectedTarget = u
-			w = tmp_w
-			max_prob = prob
-		End If
-		'UPGRADE_WARNING: OperateUnit ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		Dim list() As String
-		Dim caption_msg As String
-		Dim hit_prob, crit_prob As Short
-		Dim get_reward As Boolean
-		'Invalid_string_refer_to_original_code
-		tw = 0
-		For i = 1 To u.CountWeapon
-			If u.IsWeaponAvailable(i, "ç§»å‹•å‰") And Not u.IsWeaponClassifiedAs(i, "Invalid_string_refer_to_original_code") Then
-				'Invalid_string_refer_to_original_code_
-				'Invalid_string_refer_to_original_code_
-				'Then
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				'UPGRADE_WARNING: OperateUnit ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-			Else
-				'UPGRADE_WARNING: OperateUnit ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-			End If
-			'End If
-		Next 
-		
-		'Invalid_string_refer_to_original_code
-		If indirect_attack Then
-			tw = 0
-		End If
-		
-		'Invalid_string_refer_to_original_code
-		If u.MaxAction = 0 Or u.IsConditionSatisfied("Invalid_string_refer_to_original_code") Then
-			tw = 0
-		End If
-		
-		'Invalid_string_refer_to_original_code
-		If tw = 0 Then
-			dmg = 1.5 * dmg
-		End If
-		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_WARNING: OperateUnit ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		'End With
-		'End If
-		
-		If dmg >= max_dmg Then
-			'Invalid_string_refer_to_original_code
-			SelectedTarget = u
-			w = tmp_w
-			max_dmg = dmg
-		End If
-		'End If
-NextLoop: 
-		'Next
-		
-		'Invalid_string_refer_to_original_code
-		If SelectedTarget Is Nothing Then
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			GoTo EndOfOperation
-		End If
-		
-		If moved Then
-			'Invalid_string_refer_to_original_code
-			GoTo EndOfOperation
-		End If
-		
-		If searched_enemy Then
-			'Invalid_string_refer_to_original_code
-			GoTo EndOfOperation
-		End If
-		
-		'ä¸€åº¦ç´¢æ•µã‚’ã—ãŸã“ã¨ã‚’è¨˜éŒ²
-		searched_enemy = True
-		
-		'Invalid_string_refer_to_original_code
-		GoTo SearchNearestEnemy
-		'End If
-		searched_enemy = True
-		'End With
-		
-AttackEnemy: 
-		'Invalid_string_refer_to_original_code
-		
-		'æ•µã‚’Update
-		SelectedTarget.Update()
-		
-		'æ•µã®ä½ç½®ã‚’è¨˜éŒ²ã—ã¦ãŠã
-		tx = SelectedTarget.X
-		ty = SelectedTarget.Y
-		
-		With SelectedUnit
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code_
-			'Invalid_string_refer_to_original_code_
-			'Then
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			'Invalid_string_refer_to_original_code
-			If .IsTargetWithinRange(w, SelectedTarget) Then
-				new_locations_value = TerrainEffectForHPRecover(.X, .Y) + TerrainEffectForENRecover(.X, .Y) + 100 * .LookForSupport(.X, .Y, True)
-				If .Area <> "ç©ºä¸­" Then
-					'Invalid_string_refer_to_original_code
-					new_locations_value = new_locations_value + TerrainEffectForHit(.X, .Y) + TerrainEffectForDamage(.X, .Y)
-				End If
-				new_x = .X
-				new_y = .Y
-			Else
-				new_locations_value = -1000
-				new_x = 0
-				new_y = 0
-			End If
-			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
-			max_range = .WeaponMaxRange(w)
-			min_range = .Weapon(w).MinRange
-			For i = MaxLng(1, tx - max_range) To MinLng(tx + max_range, MapWidth)
-				For j = MaxLng(1, ty - (max_range - System.Math.Abs(tx - i))) To MinLng(ty + (max_range - System.Math.Abs(tx - i)), MapHeight)
-					If Not MaskData(i, j) And MapDataForUnit(i, j) Is Nothing And System.Math.Abs(tx - i) + System.Math.Abs(ty - j) >= min_range Then
-						tmp = TerrainEffectForHPRecover(i, j) + TerrainEffectForENRecover(i, j) + 100 * .LookForSupport(i, j, True)
-						
-						If .Area <> "ç©ºä¸­" Then
-							'Invalid_string_refer_to_original_code
-							tmp = tmp + TerrainEffectForHit(i, j) + TerrainEffectForDamage(i, j)
-							
-							'Invalid_string_refer_to_original_code
-							If TerrainClass(i, j) = "æ°´" Then
-								If .IsTransAvailable("æ°´") Then
-									tmp = tmp + 100
-								Else
-									tmp = -1000
+				
+				'”j‰óŠm—¦‚ª50%ˆÈã‚Å‚ ‚ê‚Î”j‰óŠm—¦‚ª‚‚¢ƒ†ƒjƒbƒg‚ğ—Dæ
+				'‚»‚¤‚Å‚È‚¯‚ê‚Îƒ_ƒ[ƒW‚ÌŠú‘Ò’l‚ª‚‚¢ƒ†ƒjƒbƒg‚ğ—Dæ
+				If prob > 50 Then
+					'd—v‚Èƒ†ƒjƒbƒg‚Í—Dæ‚µ‚Äƒ^[ƒQƒbƒg‚É‚·‚é
+					If .MainPilot.TacticalTechnique >= 150 Then
+						With u
+							If .MainPilot.IsSkillAvailable("wŠö") Or .MainPilot.IsSkillAvailable("LˆæƒTƒ|[ƒg") Or .IsFeatureAvailable("C—‘•’u") Then
+								prob = 1.5 * prob
+							Else
+								'‰ñ•œƒAƒrƒŠƒeƒB‚ğ‚Á‚Ä‚¢‚éH
+								For i = 1 To .CountAbility
+									With .Ability(i)
+										If .MaxRange > 0 Then
+											If .CountEffect > 0 Then
+												If .EffectType(1) = "‰ñ•œ" Then
+													prob = 1.5 * prob
+													Exit For
+												End If
+											End If
+										End If
+									End With
+								Next 
+							End If
+						End With
+					End If
+					
+					If prob > max_prob Then
+						SelectedTarget = u
+						w = tmp_w
+						max_prob = prob
+					End If
+				ElseIf max_prob = 0 Then 
+					'‘Šè‚Ì”½Œ‚è’i‚àƒ`ƒFƒbƒN
+					tw = 0
+					For i = 1 To u.CountWeapon
+						If u.IsWeaponAvailable(i, "ˆÚ“®‘O") And Not u.IsWeaponClassifiedAs(i, "‚l") Then
+							If Not moved And .Mode <> "ŒÅ’è" And .IsWeaponClassifiedAs(tmp_w, "ˆÚ“®ŒãUŒ‚‰Â") Then
+								If u.WeaponMaxRange(i) >= .WeaponMaxRange(tmp_w) Then
+									tw = i
+									Exit For
+								End If
+							Else
+								If u.WeaponMaxRange(i) >= System.Math.Abs(.X - u.X) + System.Math.Abs(.Y - u.Y) Then
+									tw = i
+									Exit For
 								End If
 							End If
 						End If
-						
-						'Invalid_string_refer_to_original_code
-						tmp = tmp - System.Math.Sqrt(System.Math.Abs(.X - i) ^ 2 + System.Math.Abs(.Y - j) ^ 2)
-						
-						If new_locations_value < tmp Then
-							new_locations_value = tmp
-							new_x = i
-							new_y = j
-						End If
+					Next 
+					
+					'ŠÔÚUŒ‚‚É‚Í”½Œ‚•s”\
+					If indirect_attack Then
+						tw = 0
 					End If
-				Next 
-			Next 
+					
+					'ƒXƒe[ƒ^ƒXˆÙí‚É‚æ‚è”½Œ‚•s”\H
+					If u.MaxAction = 0 Or u.IsConditionSatisfied("UŒ‚•s”\") Then
+						tw = 0
+					End If
+					
+					'”½Œ‚‚µ‚Ä‚±‚È‚¢H
+					If tw = 0 Then
+						dmg = 1.5 * dmg
+					End If
+					
+					'd—v‚Èƒ†ƒjƒbƒg‚Í—Dæ‚µ‚Äƒ^[ƒQƒbƒg‚É‚·‚é
+					If .MainPilot.TacticalTechnique >= 150 Then
+						With u
+							If .MainPilot.IsSkillAvailable("wŠö") Or .MainPilot.IsSkillAvailable("LˆæƒTƒ|[ƒg") Or .IsFeatureAvailable("C—‘•’u") Then
+								'ƒƒCƒ“ƒpƒCƒƒbƒg‚ªwŠö‚âLˆæƒTƒ|[ƒg‚ğ—L‚µ‚Ä‚¢‚½‚è
+								'C—‘•’u‚ğ‚Á‚Ä‚¢‚ê‚Îd—vƒ†ƒjƒbƒg‚Æ”F’è
+								dmg = 1.5 * dmg
+							Else
+								'‰ñ•œƒAƒrƒŠƒeƒB‚ğ‚Á‚Ä‚¢‚éê‡‚àd—vƒ†ƒjƒbƒg‚Æ”F’è
+								For i = 1 To .CountAbility
+									With .Ability(i)
+										If .MaxRange > 0 Then
+											If .CountEffect > 0 Then
+												If .EffectType(1) = "‰ñ•œ" Then
+													dmg = 1.5 * dmg
+													Exit For
+												End If
+											End If
+										End If
+									End With
+								Next 
+							End If
+						End With
+					End If
+					
+					If dmg >= max_dmg Then
+						'Œ»İ‚Ìƒ†ƒjƒbƒg‚ğƒ^[ƒQƒbƒg‚Éİ’è
+						SelectedTarget = u
+						w = tmp_w
+						max_dmg = dmg
+					End If
+				End If
+NextLoop: 
+			Next u
 			
-			If new_x = 0 And new_y = 0 Then
-				'Invalid_string_refer_to_original_code
-				If searched_nearest_enemy Then
-					'Invalid_string_refer_to_original_code
+			'Ë’ö“à‚É“G‚ª‚¢‚È‚¯‚ê‚ÎˆÚ“®A‚à‚µ‚­‚Í‘Ò‹@
+			If SelectedTarget Is Nothing Then
+				If .Mode = "‘Ò‹@" Or .Mode = "ŒÅ’è" Or LLength(.Mode) = 2 Then
 					GoTo EndOfOperation
 				End If
+				
+				If moved Then
+					'Šù‚ÉˆÚ“®Ï‚İ‚Å‚ ‚ê‚Î‚±‚±‚ÅI—¹
+					GoTo EndOfOperation
+				End If
+				
+				If searched_enemy Then
+					'Šù‚Éõ“GÏ‚İ‚Å‚ ‚ê‚Î‚±‚±‚ÅI—¹
+					GoTo EndOfOperation
+				End If
+				
+				'ˆê“xõ“G‚ğ‚µ‚½‚±‚Æ‚ğ‹L˜^
+				searched_enemy = True
+				
+				'ˆê”Ô‹ß‚¢“G‚Ì•û‚ÖˆÚ“®‚·‚é
 				GoTo SearchNearestEnemy
 			End If
-			
-			'Invalid_string_refer_to_original_code
-			If new_x <> .X Or new_y <> .Y Then
-				.Move(new_x, new_y)
-				SelectedUnitMoveCost = TotalMoveCost(new_x, new_y)
-				moved = True
+			searched_enemy = True
+		End With
+		
+AttackEnemy: 
+		'“G‚ğUŒ‚
+		
+		'“G‚ğUpdate
+		SelectedTarget.Update()
+		
+		'“G‚ÌˆÊ’u‚ğ‹L˜^‚µ‚Ä‚¨‚­
+		tx = SelectedTarget.X
+		ty = SelectedTarget.Y
+		
+		Dim list() As String
+		Dim caption_msg As String
+		Dim hit_prob, crit_prob As Short
+		With SelectedUnit
+			'ˆÚ“®ŒãUŒ‚‰Â”\‚È•Ší‚Ìê‡‚ÍUŒ‚‘O‚ÉˆÚ“®‚ğs‚¤
+			'‚½‚¾‚µ‡‘Ì‹Z‚ÍˆÚ“®Œã‚ÌˆÊ’u‚É‚æ‚Á‚ÄUŒ‚‚Å‚«‚È‚¢ê‡‚ª‚ ‚é‚Ì‚Å—áŠO
+			If .IsWeaponClassifiedAs(w, "ˆÚ“®ŒãUŒ‚‰Â") And Not .IsWeaponClassifiedAs(w, "‡") And Not moved And .Mode <> "ŒÅ’è" Then
+				'ˆÚ“®‚µ‚È‚­‚Ä‚àUŒ‚o—ˆ‚éê‡‚ÍŒ»İˆÊ’u‚ğƒfƒtƒHƒ‹ƒg‚ÌUŒ‚ˆÊ’u‚Éİ’è
+				If .IsTargetWithinRange(w, SelectedTarget) Then
+					new_locations_value = TerrainEffectForHPRecover(.X, .Y) + TerrainEffectForENRecover(.X, .Y) + 100 * .LookForSupport(.X, .Y, True)
+					If .Area <> "‹ó’†" Then
+						'’nŒ`‚É‚æ‚é–hŒäŒø‰Ê‚Í‹ó’†‚É‚¢‚éê‡‚Íó‚¯‚ç‚ê‚È‚¢
+						new_locations_value = new_locations_value + TerrainEffectForHit(.X, .Y) + TerrainEffectForDamage(.X, .Y)
+					End If
+					new_x = .X
+					new_y = .Y
+				Else
+					new_locations_value = -1000
+					new_x = 0
+					new_y = 0
+				End If
 				
-				'Invalid_string_refer_to_original_code
-				If .EN = 0 Then
-					If .MaxAction = 0 Then
+				'UŒ‚‚ğ‚©‚¯‚ç‚ê‚éˆÊ’u‚Ì‚¤‚¿A‚à‚Á‚Æ‚à’nŒ`Œø‰Ê‚Ì‚‚¢êŠ‚ğ’T‚·
+				'’nŒ`Œø‰Ê‚ª“¯“™‚È‚ç‚à‚Á‚Æ‚à‹ß‚¢êŠ‚ğ—Dæ
+				max_range = .WeaponMaxRange(w)
+				min_range = .Weapon(w).MinRange
+				For i = MaxLng(1, tx - max_range) To MinLng(tx + max_range, MapWidth)
+					For j = MaxLng(1, ty - (max_range - System.Math.Abs(tx - i))) To MinLng(ty + (max_range - System.Math.Abs(tx - i)), MapHeight)
+						If Not MaskData(i, j) And MapDataForUnit(i, j) Is Nothing And System.Math.Abs(tx - i) + System.Math.Abs(ty - j) >= min_range Then
+							tmp = TerrainEffectForHPRecover(i, j) + TerrainEffectForENRecover(i, j) + 100 * .LookForSupport(i, j, True)
+							
+							If .Area <> "‹ó’†" Then
+								'’nŒ`‚É‚æ‚é–hŒäŒø‰Ê‚Í‹ó’†‚É‚¢‚éê‡‚Íó‚¯‚ç‚ê‚È‚¢
+								tmp = tmp + TerrainEffectForHit(i, j) + TerrainEffectForDamage(i, j)
+								
+								'…’†‚Í…’†—pƒ†ƒjƒbƒg‚Å‚È‚¢ŒÀ‚è‘I‘ğ‚µ‚È‚¢
+								If TerrainClass(i, j) = "…" Then
+									If .IsTransAvailable("…") Then
+										tmp = tmp + 100
+									Else
+										tmp = -1000
+									End If
+								End If
+							End If
+							
+							'ğŒ‚ª“¯‚¶‚Å‚ ‚ê‚Î’¼ü‹——£‚Å‹ß‚¢êŠ‚ğ‘I‘ğ‚·‚é
+							tmp = tmp - System.Math.Sqrt(System.Math.Abs(.X - i) ^ 2 + System.Math.Abs(.Y - j) ^ 2)
+							
+							If new_locations_value < tmp Then
+								new_locations_value = tmp
+								new_x = i
+								new_y = j
+							End If
+						End If
+					Next 
+				Next 
+				
+				If new_x = 0 And new_y = 0 Then
+					'UŒ‚‚ğ‚©‚¯‚ç‚ê‚éˆÊ’u‚ª‚È‚¢
+					If searched_nearest_enemy Then
+						'Šù‚Éõ“GÏ‚İ‚Å‚ ‚ê‚Î‚±‚±‚ÅI—¹
+						GoTo EndOfOperation
+					End If
+					GoTo SearchNearestEnemy
+				End If
+				
+				'Œ©‚Â‚¯‚½ˆÊ’u‚ÉˆÚ“®
+				If new_x <> .X Or new_y <> .Y Then
+					.Move(new_x, new_y)
+					SelectedUnitMoveCost = TotalMoveCost(new_x, new_y)
+					moved = True
+					
+					'ˆÚ“®‚Ì‚½‚ß‚d‚mØ‚êH
+					If .EN = 0 Then
+						If .MaxAction = 0 Then
+							GoTo EndOfOperation
+						End If
+					End If
+					
+					'À‚Íƒ}ƒbƒvUŒ‚‚ªg‚¦‚éH
+					If TryMapAttack(True) Then
+						GoTo EndOfOperation
+					End If
+					
+					'ˆÚ“®‚Ì‚½‚ß‚É‘I‘ğ‚µ‚Ä‚¢‚½•Ší‚ªg‚¦‚È‚­‚È‚Á‚½‚èA‡‘Ì‹Z‚ªg‚¦‚é
+					'‚æ‚¤‚É‚È‚Á‚½‚è‚·‚é‚±‚Æ‚ª‚ ‚é‚Ì‚ÅA•Ší‚ğÄ“x‘I‘ğ
+					w = SelectWeapon(SelectedUnit, SelectedTarget, "ˆÚ“®Œã")
+					If w = 0 Then
+						'UŒ‚o—ˆ‚È‚¢‚Ì‚Ås“®I—¹
 						GoTo EndOfOperation
 					End If
 				End If
-				
-				'Invalid_string_refer_to_original_code
-				If TryMapAttack(True) Then
-					GoTo EndOfOperation
-				End If
-				
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				If w = 0 Then
-					'Invalid_string_refer_to_original_code
-					GoTo EndOfOperation
-				End If
 			End If
-			'End If
 			
-			'ãƒ¦ãƒ‹ãƒƒãƒˆã‚’ä¸­å¤®è¡¨ç¤º
+			'ƒ†ƒjƒbƒg‚ğ’†‰›•\¦
 			Center(.X, .Y)
 			
-			'ãƒã‚¤ãƒ©ã‚¤ãƒˆè¡¨ç¤ºã‚’è¡Œã†
+			'ƒnƒCƒ‰ƒCƒg•\¦‚ğs‚¤
 			If Not BattleAnimation Then
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code
+				'Ë’ö”ÍˆÍ‚ğƒnƒCƒ‰ƒCƒg
+				' MOD START ƒ}[ƒW
 				'            AreaInRange .X, .Y, _
 				''                .Weapon(w).MinRange, _
 				''                .WeaponMaxRange(w), _
-				'Invalid_string_refer_to_original_code
-				AreaInRange(.X, .Y, .WeaponMaxRange(w), .Weapon(w).MinRange, "Invalid_string_refer_to_original_code")
-				'Invalid_string_refer_to_original_code
+				''                "‹óŠÔ"
+				AreaInRange(.X, .Y, .WeaponMaxRange(w), .Weapon(w).MinRange, "‹óŠÔ")
+				' MOD END ƒ}[ƒW
 			End If
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			If .WeaponMaxRange(w) = 1 Then
-				.CombinationPartner("Invalid_string_refer_to_original_code")
-				SelectedTarget.X( , SelectedTarget.Y)
+			'‡‘Ì‹Z‚Ìê‡‚Íƒp[ƒgƒi[‚àƒnƒCƒ‰ƒCƒg•\¦
+			If .IsWeaponClassifiedAs(w, "‡") Then
+				If .WeaponMaxRange(w) = 1 Then
+					.CombinationPartner("•‘•", w, partners, SelectedTarget.X, SelectedTarget.Y)
+				Else
+					.CombinationPartner("•‘•", w, partners)
+				End If
+				If Not BattleAnimation Then
+					For i = 1 To UBound(partners)
+						With partners(i)
+							MaskData(.X, .Y) = False
+						End With
+					Next 
+				End If
 			Else
-				.CombinationPartner("Invalid_string_refer_to_original_code")
+				ReDim SelectedPartners(0)
+				ReDim partners(0)
 			End If
 			If Not BattleAnimation Then
-				For i = 1 To UBound(partners)
-					With partners(i)
-						MaskData(.X, .Y) = False
-					End With
-				Next 
-			End If
-			ReDim SelectedPartners(0)
-			ReDim partners(0)
-			'End If
-			If Not BattleAnimation Then
-				'Invalid_string_refer_to_original_code
+				'©•ª©g‚Æƒ^[ƒQƒbƒg‚àƒnƒCƒ‰ƒCƒg
 				MaskData(.X, .Y) = False
 				MaskData(SelectedTarget.X, SelectedTarget.Y) = False
 				
-				'ãƒã‚¤ãƒ©ã‚¤ãƒˆè¡¨ç¤ºã‚’å®Ÿæ–½
+				'ƒnƒCƒ‰ƒCƒg•\¦‚ğÀ{
 				MaskScreen()
 			Else
-				'Invalid_string_refer_to_original_code
+				'í“¬ƒAƒjƒ‚ğ•\¦‚·‚éê‡‚ÍƒnƒCƒ‰ƒCƒg•\¦‚ğs‚í‚È‚¢
 				RefreshScreen()
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'‚a‚f‚l‚ğ•ÏX
 			If Not KeepEnemyBGM Then
 				BGM = ""
 				
-				'Invalid_string_refer_to_original_code
-				If .IsFeatureAvailable("Invalid_string_refer_to_original_code") And InStr(.MainPilot.Name, "(ã‚¶ã‚³)") = 0 Then
-					BGM = SearchMidiFile(.FeatureData("Invalid_string_refer_to_original_code"))
+				'ƒ{ƒX—p‚a‚f‚lH
+				If .IsFeatureAvailable("‚a‚f‚l") And InStr(.MainPilot.Name, "(ƒUƒR)") = 0 Then
+					BGM = SearchMidiFile(.FeatureData("‚a‚f‚l"))
 				End If
 				
 				BossBGM = False
 				If Len(BGM) > 0 Then
-					'Invalid_string_refer_to_original_code
+					'ƒ{ƒX—p‚a‚f‚l‚ğ‰‰‘t‚·‚éê‡
 					ChangeBGM(BGM)
 					BossBGM = True
 				Else
-					'Invalid_string_refer_to_original_code
+					'’Êí‚Ìí“¬‚a‚f‚l
 					
-					'Invalid_string_refer_to_original_code
-					If SelectedTarget.Party = "å‘³æ–¹" Or (SelectedTarget.Party = "Invalid_string_refer_to_original_code" And .Party <> "Invalid_string_refer_to_original_code") Then
-						'Invalid_string_refer_to_original_code
-						If SelectedTarget.IsFeatureAvailable("Invalid_string_refer_to_original_code") Then
-							BGM = SearchMidiFile(SelectedTarget.FeatureData("Invalid_string_refer_to_original_code"))
+					'ƒ^[ƒQƒbƒg‚Í–¡•ûH
+					If SelectedTarget.Party = "–¡•û" Or (SelectedTarget.Party = "‚m‚o‚b" And .Party <> "‚m‚o‚b") Then
+						'ƒ^[ƒQƒbƒg‚ª–¡•û‚È‚Ì‚Åƒ^[ƒQƒbƒg‘¤‚ğ—Dæ
+						If SelectedTarget.IsFeatureAvailable("‚a‚f‚l") Then
+							BGM = SearchMidiFile(SelectedTarget.FeatureData("‚a‚f‚l"))
 						End If
 						If Len(BGM) = 0 Then
 							BGM = SearchMidiFile(SelectedTarget.MainPilot.BGM)
 						End If
 					Else
-						'Invalid_string_refer_to_original_code
-						If .IsFeatureAvailable("Invalid_string_refer_to_original_code") Then
-							BGM = SearchMidiFile(.FeatureData("Invalid_string_refer_to_original_code"))
+						'ƒ^[ƒQƒbƒg‚ª–¡•û‚Å‚È‚¯‚ê‚ÎUŒ‚‘¤‚ğ—Dæ
+						If .IsFeatureAvailable("‚a‚f‚l") Then
+							BGM = SearchMidiFile(.FeatureData("‚a‚f‚l"))
 						End If
 						If Len(BGM) = 0 Then
 							BGM = SearchMidiFile(.MainPilot.BGM)
@@ -660,239 +704,216 @@ AttackEnemy:
 						BGM = BGMName("default")
 					End If
 					
-					'Invalid_string_refer_to_original_code
+					'‚a‚f‚l‚ğ•ÏX
 					ChangeBGM(BGM)
 				End If
 			End If
 			
-			'Invalid_string_refer_to_original_code
-			is_p_weapon = .IsWeaponClassifiedAs(w, "Invalid_string_refer_to_original_code")
+			'ˆÚ“®ŒãUŒ‚‰Â”\H
+			is_p_weapon = .IsWeaponClassifiedAs(w, "ˆÚ“®ŒãUŒ‚‰Â")
 			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			'ŠÔÚUŒ‚H
+			indirect_attack = .IsWeaponClassifiedAs(w, "ŠÔ")
 			
-			'Invalid_string_refer_to_original_code
+			'‘Šè‚Ì”½Œ‚è’i‚ğİ’è
 			def_mode = ""
 			UseSupportGuard = True
 			If SelectedTarget.MaxAction = 0 Then
-				'Invalid_string_refer_to_original_code
+				's“®•s”\‚Ìê‡
 				
 				tw = -1
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code_
-				'Then
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				def_mode = "é˜²å¾¡"
-			End If
-			
-			'UPGRADE_ISSUE: Control mnuMapCommandItem ‚ÍA”Ä—p–¼‘O‹óŠÔ Form “à‚É‚ ‚é‚½‚ßA‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			'UPGRADE_WARNING: OperateUnit ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-			'Invalid_string_refer_to_original_code
-			
-			'Invalid_string_refer_to_original_code
-			If BattleAnimation Then
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code
-				'                AreaInRange .X, .Y, _
-				''                    .Weapon(w).MinRange, _
-				''                    .WeaponMaxRange(w), _
-				'Invalid_string_refer_to_original_code
-				AreaInRange(.X, .Y, .WeaponMaxRange(w), .Weapon(w).MinRange, "Invalid_string_refer_to_original_code")
-				'Invalid_string_refer_to_original_code
+				'ƒ`ƒƒ[ƒW’†‚Ü‚½‚ÍÁ–Õ‚µ‚Ä‚¢‚éê‡‚Í©“®“I‚É–hŒä
+				If SelectedTarget.Party = "–¡•û" And (SelectedTarget.IsFeatureAvailable("ƒ`ƒƒ[ƒW") Or SelectedTarget.IsFeatureAvailable("Á–Õ")) Then
+					def_mode = "–hŒä"
+				End If
 				
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				For i = 1 To UBound(partners)
-					With partners(i)
-						MaskData(.X, .Y) = False
-					End With
-				Next 
-			End If
-			
-			'Invalid_string_refer_to_original_code
-			MaskData(.X, .Y) = False
-			MaskData(SelectedTarget.X, SelectedTarget.Y) = False
-			
-			'ãƒã‚¤ãƒ©ã‚¤ãƒˆè¡¨ç¤ºã‚’å®Ÿæ–½
-			MaskScreen()
-			'End If
-			
-			
-			hit_prob = .HitProbability(w, SelectedTarget, True)
-			crit_prob = .CriticalProbability(w, SelectedTarget)
-			caption_msg = "Invalid_string_refer_to_original_code"
-			'Invalid_string_refer_to_original_code_
-			'& Format$(.WeaponPower(w, ""))
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			If Not IsOptionDefined("Invalid_string_refer_to_original_code") Then
-				caption_msg = caption_msg & "Invalid_string_refer_to_original_code" & VB6.Format(MinLng(hit_prob, 100)) & "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			End If
-			
-			ReDim list(3)
-			
-			If IsAbleToCounterAttack(SelectedTarget, SelectedUnit) And Not indirect_attack Then
-				list(1) = "åæ’ƒ"
-			Else
-				list(1) = "Invalid_string_refer_to_original_code"
-			End If
-			If Not IsOptionDefined("Invalid_string_refer_to_original_code") Then
-				list(2) = "Invalid_string_refer_to_original_code"
-				& Format$(MinLng(hit_prob, 100)) _
-				Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				list(3) = "Invalid_string_refer_to_original_code"
-				& Format$(MinLng(hit_prob \ 2, 100)) _
-				Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			Else
-				list(2) = "é˜²å¾¡"
-				list(3) = "å›é¿"
-			End If
-			
-			'Invalid_string_refer_to_original_code
-			SupportGuardUnit = SelectedTarget.LookForSupportGuard(SelectedUnit, w)
-			If Not SupportGuardUnit Is Nothing Then
-				ReDim Preserve list(4)
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				list(4) = "Invalid_string_refer_to_original_code" & SupportGuardUnit.Nickname & ")"
-			Else
-				list(4) = "Invalid_string_refer_to_original_code" & SupportGuardUnit.Nickname & "/" & SupportGuardUnit.MainPilot.Nickname & ")"
-			End If
-			UseSupportGuard = True
-			'End If
-			
-			AddPartsToListBox()
-			Do 
-				'Invalid_string_refer_to_original_code
-				With SelectedTarget
-					ReDim ListItemFlag(UBound(list))
-					'Invalid_string_refer_to_original_code
-					
-					'Invalid_string_refer_to_original_code
-					If list(1) = "åæ’ƒ" Then
-						ListItemFlag(1) = False
-						tw = -1
-					Else
-						ListItemFlag(1) = True
-						tw = 0
-					End If
-					
-					'Invalid_string_refer_to_original_code
-					If .IsFeatureAvailable("é˜²å¾¡ä¸å¯") Then
-						ListItemFlag(2) = True
-					Else
-						ListItemFlag(2) = False
-					End If
-					
-					'Invalid_string_refer_to_original_code
-					If .IsFeatureAvailable("å›é¿ä¸å¯") Or .IsConditionSatisfied("Invalid_string_refer_to_original_code") Then
-						ListItemFlag(3) = True
-					Else
-						ListItemFlag(3) = False
-					End If
-					
-					'Invalid_string_refer_to_original_code
-					TopItem = 1
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				End With
+				'UPGRADE_ISSUE: Control mnuMapCommandItem ‚ÍA”Ä—p–¼‘O‹óŠÔ Form “à‚É‚ ‚é‚½‚ßA‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			ElseIf SelectedTarget.Party = "–¡•û" And Not MainForm.mnuMapCommandItem(AutoDefenseCmdID).Checked Then 
+				'–¡•ûƒ†ƒjƒbƒg‚É‚æ‚éè“®”½Œ‚‚ğs‚¤ê‡
 				
-				Select Case i
-					Case 1
-						'Invalid_string_refer_to_original_code
-						buf = "Invalid_string_refer_to_original_code"
-						'Invalid_string_refer_to_original_code_
-						'& Format$(.WeaponPower(w, ""))
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-						If Not IsOptionDefined("Invalid_string_refer_to_original_code") Then
-							buf = buf & "Invalid_string_refer_to_original_code" & VB6.Format(MinLng(hit_prob, 100)) & "Invalid_string_refer_to_original_code"
-							'Invalid_string_refer_to_original_code_
-							'Invalid_string_refer_to_original_code
-							'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-						End If
-						With SelectedTarget.MainPilot
-							'Invalid_string_refer_to_original_code
-							'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-							If .HasMana() Then
-								buf = buf & Term("é­”åŠ›", SelectedTarget) & VB6.Format(.Shooting)
-							Else
-								buf = buf & Term("Invalid_string_refer_to_original_code", SelectedTarget) & VB6.Format(.Shooting)
-							End If
-						End With
+				'í“¬ƒAƒjƒ‚ğ•\¦‚·‚éê‡‚Å‚àè“®”½Œ‚‚É‚ÍƒnƒCƒ‰ƒCƒg•\¦‚ğs‚¤
+				If BattleAnimation Then
+					'Ë’ö”ÍˆÍ‚ğƒnƒCƒ‰ƒCƒg
+					' MOD START ƒ}[ƒW
+					'                AreaInRange .X, .Y, _
+					''                    .Weapon(w).MinRange, _
+					''                    .WeaponMaxRange(w), _
+					''                    "‹óŠÔ"
+					AreaInRange(.X, .Y, .WeaponMaxRange(w), .Weapon(w).MinRange, "‹óŠÔ")
+					' MOD END ƒ}[ƒW
+					
+					'‡‘Ì‹Z‚Ìê‡‚Íƒp[ƒgƒi[‚àƒnƒCƒ‰ƒCƒg•\¦
+					If .IsWeaponClassifiedAs(w, "‡") Then
+						For i = 1 To UBound(partners)
+							With partners(i)
+								MaskData(.X, .Y) = False
+							End With
+						Next 
+					End If
+					
+					'©•ª©g‚Æƒ^[ƒQƒbƒg‚àƒnƒCƒ‰ƒCƒg
+					MaskData(.X, .Y) = False
+					MaskData(SelectedTarget.X, SelectedTarget.Y) = False
+					
+					'ƒnƒCƒ‰ƒCƒg•\¦‚ğÀ{
+					MaskScreen()
+				End If
+				
+				
+				hit_prob = .HitProbability(w, SelectedTarget, True)
+				crit_prob = .CriticalProbability(w, SelectedTarget)
+				caption_msg = "”½Œ‚F" & .WeaponNickname(w) & " UŒ‚—Í=" & VB6.Format(.WeaponPower(w, ""))
+				If Not IsOptionDefined("—\‘ª–½’†—¦”ñ•\¦") Then
+					caption_msg = caption_msg & " –½’†—¦=" & VB6.Format(MinLng(hit_prob, 100)) & "“i" & crit_prob & "“j"
+				End If
+				
+				ReDim list(3)
+				
+				If IsAbleToCounterAttack(SelectedTarget, SelectedUnit) And Not indirect_attack Then
+					list(1) = "”½Œ‚"
+				Else
+					list(1) = "”½Œ‚•s”\"
+				End If
+				If Not IsOptionDefined("—\‘ª–½’†—¦”ñ•\¦") Then
+					list(2) = "–hŒäF–½’†—¦" & VB6.Format(MinLng(hit_prob, 100)) & "“i" & .CriticalProbability(w, SelectedTarget, "–hŒä") & "“j"
+					list(3) = "‰ñ”ğF–½’†—¦" & VB6.Format(MinLng(hit_prob \ 2, 100)) & "“i" & .CriticalProbability(w, SelectedTarget, "‰ñ”ğ") & "“j"
+				Else
+					list(2) = "–hŒä"
+					list(3) = "‰ñ”ğ"
+				End If
+				
+				'‰‡Œì–hŒä‚ªó‚¯‚ç‚ê‚éH
+				SupportGuardUnit = SelectedTarget.LookForSupportGuard(SelectedUnit, w)
+				If Not SupportGuardUnit Is Nothing Then
+					ReDim Preserve list(4)
+					If IsOptionDefined("“™g‘åŠî€") Then
+						list(4) = "‰‡Œì–hŒäFg—p‚·‚é (" & SupportGuardUnit.Nickname & ")"
+					Else
+						list(4) = "‰‡Œì–hŒäFg—p‚·‚é (" & SupportGuardUnit.Nickname & "/" & SupportGuardUnit.MainPilot.Nickname & ")"
+					End If
+					UseSupportGuard = True
+				End If
+				
+				AddPartsToListBox()
+				Do 
+					'UŒ‚‚Ö‚Ì‘Î‰è’i‚ğ‘I‘ğ
+					With SelectedTarget
+						ReDim ListItemFlag(UBound(list))
+						'Še‘ÎRè’i‚ª‘I‘ğ‰Â”\‚©”»’è
 						
-						tw = WeaponListBox(SelectedTarget, buf, "åæ’ƒ")
-						
-						If tw = 0 Then
-							i = 0
-						End If
-					Case 2
-						'Invalid_string_refer_to_original_code
-						def_mode = "é˜²å¾¡"
-					Case 3
-						'Invalid_string_refer_to_original_code
-						def_mode = "å›é¿"
-					Case 4
-						'Invalid_string_refer_to_original_code
-						UseSupportGuard = Not UseSupportGuard
-						If UseSupportGuard Then
-							list(4) = "Invalid_string_refer_to_original_code"
+						'”½Œ‚‚ª‘I‘ğ‰Â”\H
+						If list(1) = "”½Œ‚" Then
+							ListItemFlag(1) = False
+							tw = -1
 						Else
-							list(4) = "Invalid_string_refer_to_original_code"
+							ListItemFlag(1) = True
+							tw = 0
 						End If
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-						list(4) = list(4) & SupportGuardUnit.Nickname & ")"
-						list(4) = list(4) & SupportGuardUnit.Nickname & "/" & SupportGuardUnit.MainPilot.Nickname & ")"
-						'End If
-						i = 0
-					Case Else
-						'Invalid_string_refer_to_original_code
-						If ListItemFlag(1) And ListItemFlag(2) And ListItemFlag(3) Then
-							Exit Do
+						
+						'–hŒä‚ª‘I‘ğ‰Â”\H
+						If .IsFeatureAvailable("–hŒä•s‰Â") Then
+							ListItemFlag(2) = True
+						Else
+							ListItemFlag(2) = False
 						End If
-				End Select
-			Loop While i = 0
-			
-			'Invalid_string_refer_to_original_code
-			frmListBox.Hide()
-			RemovePartsOnListBox()
-			
-			'ãƒã‚¤ãƒ©ã‚¤ãƒˆè¡¨ç¤ºã‚’æ¶ˆå»
-			If BattleAnimation Then
-				RefreshScreen()
+						
+						'‰ñ”ğ‚ª‘I‘ğ‰Â”\H
+						If .IsFeatureAvailable("‰ñ”ğ•s‰Â") Or .IsConditionSatisfied("ˆÚ“®•s”\") Then
+							ListItemFlag(3) = True
+						Else
+							ListItemFlag(3) = False
+						End If
+						
+						'‘Î‰è’i‚ğ‘I‘ğ
+						TopItem = 1
+						i = ListBox(caption_msg, list, .Nickname0 & " " & .MainPilot.Nickname, "˜A‘±•\¦,ƒJ[ƒ\ƒ‹ˆÚ“®")
+					End With
+					
+					Select Case i
+						Case 1
+							'”½Œ‚‚ğ‘I‘ğ‚µ‚½ê‡‚Í”½Œ‚‚Ég‚¤•Ší‚ğ‘I‘ğ
+							buf = "”½Œ‚F" & .WeaponNickname(w) & " UŒ‚—Í=" & VB6.Format(.WeaponPower(w, ""))
+							If Not IsOptionDefined("—\‘ª–½’†—¦”ñ•\¦") Then
+								buf = buf & " –½’†—¦=" & VB6.Format(MinLng(hit_prob, 100)) & "“i" & crit_prob & "“j" & " F "
+							End If
+							With SelectedTarget.MainPilot
+								buf = buf & .Nickname & " " & Term("Ši“¬", SelectedTarget) & VB6.Format(.Infight) & " "
+								If .HasMana() Then
+									buf = buf & Term("–‚—Í", SelectedTarget) & VB6.Format(.Shooting)
+								Else
+									buf = buf & Term("ËŒ‚", SelectedTarget) & VB6.Format(.Shooting)
+								End If
+							End With
+							
+							tw = WeaponListBox(SelectedTarget, buf, "”½Œ‚")
+							
+							If tw = 0 Then
+								i = 0
+							End If
+						Case 2
+							'–hŒä‚ğ‘I‘ğ‚µ‚½
+							def_mode = "–hŒä"
+						Case 3
+							'‰ñ”ğ‚ğ‘I‘ğ‚µ‚½
+							def_mode = "‰ñ”ğ"
+						Case 4
+							'‰‡Œì–hŒä‚ğg—p‚·‚é‚©‚Ç‚¤‚©‚ğØ‚è‘Ö‚¦‚½
+							UseSupportGuard = Not UseSupportGuard
+							If UseSupportGuard Then
+								list(4) = "‰‡Œì–hŒäFg—p‚·‚é ("
+							Else
+								list(4) = "‰‡Œì–hŒäFg—p‚µ‚È‚¢ ("
+							End If
+							If IsOptionDefined("“™g‘åŠî€") Then
+								list(4) = list(4) & SupportGuardUnit.Nickname & ")"
+							Else
+								list(4) = list(4) & SupportGuardUnit.Nickname & "/" & SupportGuardUnit.MainPilot.Nickname & ")"
+							End If
+							i = 0
+						Case Else
+							'”½Œ‚E–hŒäE‰ñ”ğ‚Ì‘S‚Ä‚ª‘I‘ğo—ˆ‚È‚¢H
+							If ListItemFlag(1) And ListItemFlag(2) And ListItemFlag(3) Then
+								Exit Do
+							End If
+					End Select
+				Loop While i = 0
+				
+				'”½Œ‚è’i‘I‘ğI—¹
+				frmListBox.Hide()
+				RemovePartsOnListBox()
+				
+				'ƒnƒCƒ‰ƒCƒg•\¦‚ğÁ‹
+				If BattleAnimation Then
+					RefreshScreen()
+				End If
+			Else
+				'ƒRƒ“ƒsƒ…[ƒ^[‚ª‘€ì‚·‚éƒ†ƒjƒbƒg‹y‚Ñ©“®”½Œ‚ƒ‚[ƒh‚Ìê‡
+				
+				'”½Œ‚‚Ég‚¤•Ší‚ğ‘I‘ğ
+				tw = SelectWeapon(SelectedTarget, SelectedUnit, "”½Œ‚")
+				If indirect_attack Then
+					tw = 0
+				End If
+				
+				'–hŒä‚ğ‘I‘ğ‚·‚éH
+				'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg SelectDefense() ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				def_mode = SelectDefense(SelectedUnit, w, SelectedTarget, tw)
+				If def_mode <> "" Then
+					tw = -1
+				End If
 			End If
-			'Invalid_string_refer_to_original_code
-			
-			'Invalid_string_refer_to_original_code
-			tw = SelectWeapon(SelectedTarget, SelectedUnit, "åæ’ƒ")
-			If indirect_attack Then
-				tw = 0
-			End If
-			
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg SelectDefense() ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			def_mode = SelectDefense(SelectedUnit, w, SelectedTarget, tw)
-			If def_mode <> "" Then
-				tw = -1
-			End If
-			'End If
 		End With
 		
-		'Invalid_string_refer_to_original_code
+		'–¡•ûƒ†ƒjƒbƒg‚Ìê‡‚Í•Ší—p‚a‚f‚l‚ğ‰‰‘t‚·‚é
 		If Not KeepEnemyBGM Then
 			With SelectedTarget
-				If .Party = "å‘³æ–¹" And tw > 0 And .IsFeatureAvailable("Invalid_string_refer_to_original_code") Then
+				If .Party = "–¡•û" And tw > 0 And .IsFeatureAvailable("•Ší‚a‚f‚l") Then
 					For i = 1 To .CountFeature
-						If .Feature(i) = "Invalid_string_refer_to_original_code" And LIndex(.FeatureData(i), 1) = .Weapon(tw).Name Then
-							'Invalid_string_refer_to_original_code
+						If .Feature(i) = "•Ší‚a‚f‚l" And LIndex(.FeatureData(i), 1) = .Weapon(tw).Name Then
+							'•Ší—p‚a‚f‚l‚ªw’è‚³‚ê‚Ä‚¢‚½
 							BGM = SearchMidiFile(Mid(.FeatureData(i), InStr(.FeatureData(i), " ") + 1))
 							If Len(BGM) > 0 Then
-								'Invalid_string_refer_to_original_code
+								'•Ší—p‚a‚f‚l‚ÌMIDI‚ªŒ©‚Â‚©‚Á‚½‚Ì‚Å‚a‚f‚l‚ğ•ÏX
 								BossBGM = False
 								ChangeBGM(BGM)
 							End If
@@ -916,18 +937,18 @@ AttackEnemy:
 			SelectedTWeaponName = ""
 		End If
 		
-		'Invalid_string_refer_to_original_code
-		'æˆ¦é—˜å‰ã«ä¸€æ—¦ã‚¯ãƒªã‚¢
+		' ADD START ƒ}[ƒW
+		'í“¬‘O‚Éˆê’UƒNƒŠƒA
 		'UPGRADE_NOTE: ƒIƒuƒWƒFƒNƒg SupportAttackUnit ‚ğƒKƒx[ƒW ƒRƒŒƒNƒg‚·‚é‚Ü‚Å‚±‚ÌƒIƒuƒWƒFƒNƒg‚ğ”jŠü‚·‚é‚±‚Æ‚Í‚Å‚«‚Ü‚¹‚ñB Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 		SupportAttackUnit = Nothing
 		'UPGRADE_NOTE: ƒIƒuƒWƒFƒNƒg SupportGuardUnit ‚ğƒKƒx[ƒW ƒRƒŒƒNƒg‚·‚é‚Ü‚Å‚±‚ÌƒIƒuƒWƒFƒNƒg‚ğ”jŠü‚·‚é‚±‚Æ‚Í‚Å‚«‚Ü‚¹‚ñB Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 		SupportGuardUnit = Nothing
 		'UPGRADE_NOTE: ƒIƒuƒWƒFƒNƒg SupportGuardUnit2 ‚ğƒKƒx[ƒW ƒRƒŒƒNƒg‚·‚é‚Ü‚Å‚±‚ÌƒIƒuƒWƒFƒNƒg‚ğ”jŠü‚·‚é‚±‚Æ‚Í‚Å‚«‚Ü‚¹‚ñB Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 		SupportGuardUnit2 = Nothing
-		'Invalid_string_refer_to_original_code
+		' ADD END ƒ}[ƒW
 		
-		'Invalid_string_refer_to_original_code
-		HandleEvent("ä½¿ç”¨", SelectedUnit.MainPilot.ID, wname)
+		'•Ší‚Ìg—pƒCƒxƒ“ƒg
+		HandleEvent("g—p", SelectedUnit.MainPilot.ID, wname)
 		If IsScenarioFinished Or IsCanceled Then
 			Exit Sub
 		End If
@@ -936,27 +957,27 @@ AttackEnemy:
 			twname = SelectedTarget.Weapon(tw).Name
 			SaveSelections()
 			SwapSelections()
-			HandleEvent("ä½¿ç”¨", SelectedUnit.MainPilot.ID, twname)
+			HandleEvent("g—p", SelectedUnit.MainPilot.ID, twname)
 			RestoreSelections()
 			If IsScenarioFinished Or IsCanceled Then
 				Exit Sub
 			End If
 		End If
 		
-		'Invalid_string_refer_to_original_code
-		HandleEvent("Invalid_string_refer_to_original_code")
+		'UŒ‚ƒCƒxƒ“ƒg
+		HandleEvent("UŒ‚", SelectedUnit.MainPilot.ID, SelectedTarget.MainPilot.ID)
 		If IsScenarioFinished Or IsCanceled Then
 			Exit Sub
 		End If
 		
-		'Invalid_string_refer_to_original_code
-		If Stage = "Invalid_string_refer_to_original_code" Then
+		'ƒƒbƒZ[ƒWƒEƒBƒ“ƒhƒE‚ğŠJ‚­
+		If Stage = "‚m‚o‚b" Then
 			OpenMessageForm(SelectedTarget, SelectedUnit)
 		Else
 			OpenMessageForm(SelectedUnit, SelectedTarget)
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'ƒCƒxƒ“ƒg—p‚Éí“¬‚ÉQ‰Á‚·‚éƒ†ƒjƒbƒg‚Ìî•ñ‚ğ‹L˜^‚µ‚Ä‚¨‚­
 		AttackUnit = SelectedUnit
 		attack_target = SelectedUnit
 		attack_target_hp_ratio = SelectedUnit.HP / SelectedUnit.MaxHP
@@ -964,517 +985,458 @@ AttackEnemy:
 		defense_target_hp_ratio = SelectedTarget.HP / SelectedTarget.MaxHP
 		'UPGRADE_NOTE: ƒIƒuƒWƒFƒNƒg defense_target2 ‚ğƒKƒx[ƒW ƒRƒŒƒNƒg‚·‚é‚Ü‚Å‚±‚ÌƒIƒuƒWƒFƒNƒg‚ğ”jŠü‚·‚é‚±‚Æ‚Í‚Å‚«‚Ü‚¹‚ñB Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 		defense_target2 = Nothing
-		'Invalid_string_refer_to_original_code
+		' DEL START ƒ}[ƒW
 		'    Set SupportAttackUnit = Nothing
 		'    Set SupportGuardUnit = Nothing
-		'Invalid_string_refer_to_original_code
+		' DEL END ƒ}[ƒW
 		
-		'Invalid_string_refer_to_original_code
+		'‘Šè‚Ìæ§UŒ‚H
 		With SelectedTarget
-			'Invalid_string_refer_to_original_code
+			' MOD START ƒ}[ƒW
 			'        If tw > 0 And .MaxAction > 0 Then
-			'Invalid_string_refer_to_original_code
-			If .MaxAction > 0 And .IsWeaponAvailable(tw, "ç§»å‹•å‰") Then
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				def_mode = "Invalid_string_refer_to_original_code"
-				.Attack(tw, SelectedUnit, "Invalid_string_refer_to_original_code")
-				SelectedTarget = .CurrentForm
-				'Invalid_string_refer_to_original_code_
-				'Or .MainPilot.SkillLevel("å…ˆèª­ã¿") >= Dice(16) _
-				'Or .IsUnderSpecialPowerEffect("ã‚«ã‚¦ãƒ³ã‚¿ãƒ¼") _
-				'Then
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				def_mode = "Invalid_string_refer_to_original_code"
-				.Attack(tw, SelectedUnit, "ã‚«ã‚¦ãƒ³ã‚¿ãƒ¼", "")
-				SelectedTarget = .CurrentForm
-			ElseIf .MaxCounterAttack > .UsedCounterAttack Then 
-				def_mode = "Invalid_string_refer_to_original_code"
-				.UsedCounterAttack = .UsedCounterAttack + 1
-				.Attack(tw, SelectedUnit, "ã‚«ã‚¦ãƒ³ã‚¿ãƒ¼", "")
-				SelectedTarget = .CurrentForm
-			End If
-			
-			'Invalid_string_refer_to_original_code
-			If Not SupportGuardUnit Is Nothing Then
-				attack_target = SupportGuardUnit
-				attack_target_hp_ratio = SupportGuardUnitHPRatio
-			End If
-			'End If
-			'End If
-		End With
-		
-		'Invalid_string_refer_to_original_code
-		With SelectedUnit
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			SupportAttackUnit = .LookForSupportAttack(SelectedTarget)
-			
-			'Invalid_string_refer_to_original_code
-			If 0 < SelectedWeapon And SelectedWeapon <= .CountWeapon Then
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				'UPGRADE_NOTE: ƒIƒuƒWƒFƒNƒg SupportAttackUnit ‚ğƒKƒx[ƒW ƒRƒŒƒNƒg‚·‚é‚Ü‚Å‚±‚ÌƒIƒuƒWƒFƒNƒg‚ğ”jŠü‚·‚é‚±‚Æ‚Í‚Å‚«‚Ü‚¹‚ñB Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				SupportAttackUnit = Nothing
-			End If
-			'End If
-			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			'UPGRADE_NOTE: ƒIƒuƒWƒFƒNƒg SupportAttackUnit ‚ğƒKƒx[ƒW ƒRƒŒƒNƒg‚·‚é‚Ü‚Å‚±‚ÌƒIƒuƒWƒFƒNƒg‚ğ”jŠü‚·‚é‚±‚Æ‚Í‚Å‚«‚Ü‚¹‚ñB Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			SupportAttackUnit = Nothing
-			'End If
-			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			If .Master.Party = SelectedTarget.Party Then
-				'UPGRADE_NOTE: ƒIƒuƒWƒFƒNƒg SupportAttackUnit ‚ğƒKƒx[ƒW ƒRƒŒƒNƒg‚·‚é‚Ü‚Å‚±‚ÌƒIƒuƒWƒFƒNƒg‚ğ”jŠü‚·‚é‚±‚Æ‚Í‚Å‚«‚Ü‚¹‚ñB Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				SupportAttackUnit = Nothing
-			End If
-			'End If
-			
-			'Invalid_string_refer_to_original_code
-			If .IsConditionSatisfied("è¸Šã‚Š") Then
-				'UPGRADE_NOTE: ƒIƒuƒWƒFƒNƒg SupportAttackUnit ‚ğƒKƒx[ƒW ƒRƒŒƒNƒg‚·‚é‚Ü‚Å‚±‚ÌƒIƒuƒWƒFƒNƒg‚ğ”jŠü‚·‚é‚±‚Æ‚Í‚Å‚«‚Ü‚¹‚ñB Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				SupportAttackUnit = Nothing
-			End If
-			'End If
-		End With
-		
-		'Invalid_string_refer_to_original_code
-		With SelectedUnit
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code_
-			''            And .MaxAction(True) > 0 _
-			'Invalid_string_refer_to_original_code_
-			''        Then
-			'Invalid_string_refer_to_original_code_
-			'And .MaxAction(True) > 0 _
-			'Invalid_string_refer_to_original_code_
-			'Invalid_string_refer_to_original_code_
-			'Then
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
-			If w > .CountWeapon Then
-				w = -1
-			ElseIf wname <> .Weapon(w).Name Then 
-				w = -1
-			ElseIf moved Then 
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				w = -1
-			End If
-			If Not .IsWeaponAvailable(w, "ç§»å‹•å‰") Then
-				w = -1
-			End If
-			'End If
-			If w > 0 Then
-				If Not .IsTargetWithinRange(w, SelectedTarget) Then
-					w = 0
+			' tw > 0‚Ì”»’è‚ÍIsWeaponAvailable“à‚É
+			If .MaxAction > 0 And .IsWeaponAvailable(tw, "ˆÚ“®‘O") Then
+				' MOD END ƒ}[ƒW
+				If Not .IsWeaponClassifiedAs(tw, "Œã") Then
+					If SelectedUnit.IsWeaponClassifiedAs(w, "Œã") Then
+						def_mode = "æ§UŒ‚"
+						.Attack(tw, SelectedUnit, "æ§UŒ‚", "")
+						SelectedTarget = .CurrentForm
+					ElseIf .IsWeaponClassifiedAs(tw, "æ") Or .MainPilot.SkillLevel("æ“Ç‚İ") >= Dice(16) Or .IsUnderSpecialPowerEffect("ƒJƒEƒ“ƒ^[") Then 
+						def_mode = "æ§UŒ‚"
+						.Attack(tw, SelectedUnit, "ƒJƒEƒ“ƒ^[", "")
+						SelectedTarget = .CurrentForm
+					ElseIf .MaxCounterAttack > .UsedCounterAttack Then 
+						def_mode = "æ§UŒ‚"
+						.UsedCounterAttack = .UsedCounterAttack + 1
+						.Attack(tw, SelectedUnit, "ƒJƒEƒ“ƒ^[", "")
+						SelectedTarget = .CurrentForm
+					End If
+					
+					'UŒ‚‘¤‚Ìƒ†ƒjƒbƒg‚ª‚©‚Î‚í‚ê‚½ê‡‚ÍUŒ‚‘¤‚Ìƒ^[ƒQƒbƒg‚ğÄİ’è
+					If Not SupportGuardUnit Is Nothing Then
+						attack_target = SupportGuardUnit
+						attack_target_hp_ratio = SupportGuardUnitHPRatio
+					End If
 				End If
 			End If
-			
-			'Invalid_string_refer_to_original_code
-			If .MaxAction(True) = 0 Then
-				w = -1
-			End If
-			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			w = -1
-			'End If
-			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			If .Master.Party = SelectedTarget.Party Then
-				w = -1
-			End If
-			'End If
-			
-			'Invalid_string_refer_to_original_code
-			If .IsConditionSatisfied("è¸Šã‚Š") Then
-				w = -1
-			End If
-			
-			If w > 0 Then
-				'Invalid_string_refer_to_original_code
-				If .IsWeaponClassifiedAs(w, "è‡ª") Then
-					is_suiside = True
+		End With
+		
+		'ƒTƒ|[ƒgƒAƒ^ƒbƒN‚Ìƒp[ƒgƒi[‚ğ’T‚·
+		With SelectedUnit
+			If .Status_Renamed = "oŒ‚" And SelectedTarget.Status_Renamed = "oŒ‚" Then
+				SupportAttackUnit = .LookForSupportAttack(SelectedTarget)
+				
+				'‡‘Ì‹Z‚Å‚ÍƒTƒ|[ƒgƒAƒ^ƒbƒN•s”\
+				If 0 < SelectedWeapon And SelectedWeapon <= .CountWeapon Then
+					If .IsWeaponClassifiedAs(SelectedWeapon, "‡") Then
+						'UPGRADE_NOTE: ƒIƒuƒWƒFƒNƒg SupportAttackUnit ‚ğƒKƒx[ƒW ƒRƒŒƒNƒg‚·‚é‚Ü‚Å‚±‚ÌƒIƒuƒWƒFƒNƒg‚ğ”jŠü‚·‚é‚±‚Æ‚Í‚Å‚«‚Ü‚¹‚ñB Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						SupportAttackUnit = Nothing
+					End If
 				End If
 				
-				If Not SupportAttackUnit Is Nothing And .MaxSyncAttack > .UsedSyncAttack Then
-					'Invalid_string_refer_to_original_code
-					.Attack(w, SelectedTarget, "Invalid_string_refer_to_original_code")
-				Else
-					'Invalid_string_refer_to_original_code
-					.Attack(w, SelectedTarget, "", def_mode)
+				'–£—¹‚³‚ê‚½ê‡
+				If .IsConditionSatisfied("–£—¹") And .Master Is SelectedTarget Then
+					'UPGRADE_NOTE: ƒIƒuƒWƒFƒNƒg SupportAttackUnit ‚ğƒKƒx[ƒW ƒRƒŒƒNƒg‚·‚é‚Ü‚Å‚±‚ÌƒIƒuƒWƒFƒNƒg‚ğ”jŠü‚·‚é‚±‚Æ‚Í‚Å‚«‚Ü‚¹‚ñB Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					SupportAttackUnit = Nothing
 				End If
-			ElseIf w = 0 Then 
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				.PlayAnimation("Invalid_string_refer_to_original_code")
-			Else
-				.SpecialEffect("Invalid_string_refer_to_original_code")
+				
+				'œßˆË‚³‚ê‚½ê‡
+				If .IsConditionSatisfied("œßˆË") Then
+					If .Master.Party = SelectedTarget.Party Then
+						'UPGRADE_NOTE: ƒIƒuƒWƒFƒNƒg SupportAttackUnit ‚ğƒKƒx[ƒW ƒRƒŒƒNƒg‚·‚é‚Ü‚Å‚±‚ÌƒIƒuƒWƒFƒNƒg‚ğ”jŠü‚·‚é‚±‚Æ‚Í‚Å‚«‚Ü‚¹‚ñB Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						SupportAttackUnit = Nothing
+					End If
+				End If
+				
+				'—x‚ç‚³‚ê‚½ê‡
+				If .IsConditionSatisfied("—x‚è") Then
+					'UPGRADE_NOTE: ƒIƒuƒWƒFƒNƒg SupportAttackUnit ‚ğƒKƒx[ƒW ƒRƒŒƒNƒg‚·‚é‚Ü‚Å‚±‚ÌƒIƒuƒWƒFƒNƒg‚ğ”jŠü‚·‚é‚±‚Æ‚Í‚Å‚«‚Ü‚¹‚ñB Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					SupportAttackUnit = Nothing
+				End If
 			End If
-			.PilotMessage("Invalid_string_refer_to_original_code")
-			'End If
-			w = -1
-			'End If
+		End With
+		
+		'UŒ‚‚ÌÀ{
+		With SelectedUnit
+			' MOD START ƒ}[ƒW
+			'        If .Status = "oŒ‚" _
+			''            And .MaxAction(True) > 0 _
+			''            And SelectedTarget.Status = "oŒ‚" _
+			''        Then
+			If .Status_Renamed = "oŒ‚" And .MaxAction(True) > 0 And Not .IsConditionSatisfied("UŒ‚•s”\") And SelectedTarget.Status_Renamed = "oŒ‚" Then
+				' MOD END ƒ}[ƒW
+				'‚Ü‚¾•Ší‚Íg—p‰Â”\‚©H
+				If w > .CountWeapon Then
+					w = -1
+				ElseIf wname <> .Weapon(w).Name Then 
+					w = -1
+				ElseIf moved Then 
+					If Not .IsWeaponAvailable(w, "ˆÚ“®Œã") Then
+						w = -1
+					End If
+				Else
+					If Not .IsWeaponAvailable(w, "ˆÚ“®‘O") Then
+						w = -1
+					End If
+				End If
+				If w > 0 Then
+					If Not .IsTargetWithinRange(w, SelectedTarget) Then
+						w = 0
+					End If
+				End If
+				
+				's“®•s”\‚Èê‡
+				If .MaxAction(True) = 0 Then
+					w = -1
+				End If
+				
+				'–£—¹‚³‚ê‚½ê‡
+				If .IsConditionSatisfied("–£—¹") And .Master Is SelectedTarget Then
+					w = -1
+				End If
+				
+				'œßˆË‚³‚ê‚½ê‡
+				If .IsConditionSatisfied("œßˆË") Then
+					If .Master.Party = SelectedTarget.Party Then
+						w = -1
+					End If
+				End If
+				
+				'—x‚ç‚³‚ê‚½ê‡
+				If .IsConditionSatisfied("—x‚è") Then
+					w = -1
+				End If
+				
+				If w > 0 Then
+					'©”šUŒ‚H
+					If .IsWeaponClassifiedAs(w, "©") Then
+						is_suiside = True
+					End If
+					
+					If Not SupportAttackUnit Is Nothing And .MaxSyncAttack > .UsedSyncAttack Then
+						'“¯‰‡ŒìUŒ‚
+						.Attack(w, SelectedTarget, "“—¦", def_mode)
+					Else
+						'’ÊíUŒ‚
+						.Attack(w, SelectedTarget, "", def_mode)
+					End If
+				ElseIf w = 0 Then 
+					'Ë’öŠO
+					If .IsAnimationDefined("Ë’öŠO") Then
+						.PlayAnimation("Ë’öŠO")
+					Else
+						.SpecialEffect("Ë’öŠO")
+					End If
+					.PilotMessage("Ë’öŠO")
+				End If
+			Else
+				w = -1
+			End If
 			SelectedUnit = .CurrentForm
 			
-			'Invalid_string_refer_to_original_code
+			'–hŒä‘¤‚Ìƒ†ƒjƒbƒg‚ª‚©‚Î‚í‚ê‚½ê‡‚Í2”Ô–Ú‚Ì–hŒä‘¤ƒ†ƒjƒbƒg‚Æ‚µ‚Ä‹L˜^
 			If Not SupportGuardUnit Is Nothing Then
 				defense_target2 = SupportGuardUnit
 				defense_target2_hp_ratio = SupportGuardUnitHPRatio
 			End If
 		End With
 		
-		'Invalid_string_refer_to_original_code
+		'“¯UŒ‚
 		If Not SupportAttackUnit Is Nothing Then
-			'Invalid_string_refer_to_original_code_
-			'Invalid_string_refer_to_original_code_
-			'Invalid_string_refer_to_original_code_
-			'Then
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			'UPGRADE_NOTE: ƒIƒuƒWƒFƒNƒg SupportAttackUnit ‚ğƒKƒx[ƒW ƒRƒŒƒNƒg‚·‚é‚Ü‚Å‚±‚ÌƒIƒuƒWƒFƒNƒg‚ğ”jŠü‚·‚é‚±‚Æ‚Í‚Å‚«‚Ü‚¹‚ñB Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			SupportAttackUnit = Nothing
+			If SupportAttackUnit.Status_Renamed <> "oŒ‚" Or SelectedUnit.Status_Renamed <> "oŒ‚" Or SelectedTarget.Status_Renamed <> "oŒ‚" Then
+				'UPGRADE_NOTE: ƒIƒuƒWƒFƒNƒg SupportAttackUnit ‚ğƒKƒx[ƒW ƒRƒŒƒNƒg‚·‚é‚Ü‚Å‚±‚ÌƒIƒuƒWƒFƒNƒg‚ğ”jŠü‚·‚é‚±‚Æ‚Í‚Å‚«‚Ü‚¹‚ñB Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				SupportAttackUnit = Nothing
+			End If
 		End If
-		'End If
 		If Not SupportAttackUnit Is Nothing Then
 			If SelectedUnit.MaxSyncAttack > SelectedUnit.UsedSyncAttack Then
 				With SupportAttackUnit
-					'Invalid_string_refer_to_original_code
-					w2 = SelectWeapon(SupportAttackUnit, SelectedTarget, "Invalid_string_refer_to_original_code")
+					'ƒTƒ|[ƒgƒAƒ^ƒbƒN‚Ég‚¤•Ší‚ğŒˆ’è
+					w2 = SelectWeapon(SupportAttackUnit, SelectedTarget, "ƒTƒ|[ƒgƒAƒ^ƒbƒN")
 					
 					If w2 > 0 Then
-						'Invalid_string_refer_to_original_code
+						'ƒTƒ|[ƒgƒAƒ^ƒbƒN‚ğÀ{
 						MaskData(.X, .Y) = False
 						If Not BattleAnimation Then
 							MaskScreen()
 						End If
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-						.PlayAnimation("Invalid_string_refer_to_original_code")
+						If .IsAnimationDefined("ƒTƒ|[ƒgƒAƒ^ƒbƒNŠJn") Then
+							.PlayAnimation("ƒTƒ|[ƒgƒAƒ^ƒbƒNŠJn")
+						End If
+						UpdateMessageForm(SelectedTarget, SupportAttackUnit)
+						.Attack(w2, SelectedTarget, "“¯‰‡ŒìUŒ‚", def_mode)
 					End If
-					UpdateMessageForm(SelectedTarget, SupportAttackUnit)
-					.Attack(w2, SelectedTarget, "Invalid_string_refer_to_original_code")
 				End With
-			End If
-			'End With
-			
-			'å¾Œå§‹æœ«
-			With SupportAttackUnit.CurrentForm
-				If w2 > 0 Then
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					.PlayAnimation("Invalid_string_refer_to_original_code")
+				
+				'Œãn––
+				With SupportAttackUnit.CurrentForm
+					If w2 > 0 Then
+						If .IsAnimationDefined("ƒTƒ|[ƒgƒAƒ^ƒbƒNI—¹") Then
+							.PlayAnimation("ƒTƒ|[ƒgƒAƒ^ƒbƒNI—¹")
+						End If
+						
+						'ƒTƒ|[ƒgƒAƒ^ƒbƒN‚Ìc‚è‰ñ”‚ğŒ¸‚ç‚·
+						.UsedSupportAttack = .UsedSupportAttack + 1
+						
+						'“¯‰‡ŒìUŒ‚‚Ìc‚è‰ñ”‚ğŒ¸‚ç‚·
+						SelectedUnit.UsedSyncAttack = SelectedUnit.UsedSyncAttack + 1
+					End If
+				End With
+				
+				support_attack_done = True
+				
+				'–hŒä‘¤‚Ìƒ†ƒjƒbƒg‚ª‚©‚Î‚í‚ê‚½ê‡‚Í–{—ˆ‚Ì–hŒäƒ†ƒjƒbƒgƒf[ƒ^‚Æ
+				'“ü‚ê‘Ö‚¦‚Ä‹L˜^
+				If Not SupportGuardUnit Is Nothing Then
+					defense_target = SupportGuardUnit
+					defense_target_hp_ratio = SupportGuardUnitHPRatio
 				End If
-				
-				'Invalid_string_refer_to_original_code
-				.UsedSupportAttack = .UsedSupportAttack + 1
-				
-				'Invalid_string_refer_to_original_code
-				SelectedUnit.UsedSyncAttack = SelectedUnit.UsedSyncAttack + 1
-			End With
+			End If
 		End If
-		'End With
-		
-		support_attack_done = True
-		
-		'Invalid_string_refer_to_original_code
-		'å…¥ã‚Œæ›¿ãˆã¦è¨˜éŒ²
-		If Not SupportGuardUnit Is Nothing Then
-			defense_target = SupportGuardUnit
-			defense_target_hp_ratio = SupportGuardUnitHPRatio
-		End If
-		'End If
-		'End If
 		
 		With SelectedTarget
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			'Invalid_string_refer_to_original_code_
-			'Invalid_string_refer_to_original_code_
-			'Then
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			'Invalid_string_refer_to_original_code
-			If tw > 0 Then
-				If tw > .CountWeapon Then
-					tw = -1
-				ElseIf twname <> .Weapon(tw).Name Or Not .IsWeaponAvailable(tw, "ç§»å‹•å‰") Then 
+			'”½Œ‚‚ÌÀs
+			If def_mode <> "æ§UŒ‚" Then
+				If .Status_Renamed = "oŒ‚" And SelectedUnit.Status_Renamed = "oŒ‚" Then
+					'‚Ü‚¾•Ší‚Íg—p‰Â”\‚©H
+					If tw > 0 Then
+						If tw > .CountWeapon Then
+							tw = -1
+						ElseIf twname <> .Weapon(tw).Name Or Not .IsWeaponAvailable(tw, "ˆÚ“®‘O") Then 
+							tw = -1
+						End If
+					End If
+					If tw > 0 Then
+						If Not .IsTargetWithinRange(tw, SelectedUnit) Then
+							'“G‚ªË’öŠO‚É“¦‚°‚Ä‚¢‚½‚ç•Ší‚ğÄ‘I‘ğ
+							tw = 0
+						End If
+					End If
+					
+					's“®•s”\‚Èê‡
+					If .MaxAction = 0 Then
+						tw = -1
+					End If
+					
+					'–£—¹‚³‚ê‚½ê‡
+					If .IsConditionSatisfied("–£—¹") And .Master Is SelectedUnit Then
+						tw = -1
+					End If
+					
+					'œßˆË‚³‚ê‚½ê‡
+					If .IsConditionSatisfied("œßˆË") Then
+						If .Master.Party = SelectedUnit.Party Then
+							tw = -1
+						End If
+					End If
+					
+					'—x‚ç‚³‚ê‚½ê‡
+					If .IsConditionSatisfied("—x‚è") Then
+						tw = -1
+					End If
+					
+					If tw > 0 And def_mode = "" Then
+						'”½Œ‚‚ğÀ{
+						.Attack(tw, SelectedUnit, "", "")
+						If .Status_Renamed = "‘¼Œ`‘Ô" Then
+							SelectedTarget = .CurrentForm
+						End If
+						If SelectedUnit.Status_Renamed = "‘¼Œ`‘Ô" Then
+							SelectedUnit = SelectedUnit.CurrentForm
+						End If
+						
+						'UŒ‚‘¤‚Ìƒ†ƒjƒbƒg‚ª‚©‚Î‚í‚ê‚½ê‡‚ÍUŒ‚‘¤‚Ìƒ^[ƒQƒbƒg‚ğÄİ’è
+						' MOD START ƒ}[ƒW
+						'                    If Not SupportGuardUnit Is Nothing Then
+						'                        Set attack_target = SupportGuardUnit
+						'                        attack_target_hp_ratio = SupportGuardUnitHPRatio
+						'                    End If
+						If Not SupportGuardUnit2 Is Nothing Then
+							attack_target = SupportGuardUnit2
+							attack_target_hp_ratio = SupportGuardUnitHPRatio2
+						End If
+						' MOD END ƒ}[ƒW
+					ElseIf tw = 0 And .X = tx And .Y = ty Then 
+						'”½Œ‚o—ˆ‚é•Ší‚ª‚È‚©‚Á‚½ê‡‚ÍË’öŠOƒƒbƒZ[ƒW‚ğ•\¦
+						If .IsAnimationDefined("Ë’öŠO") Then
+							.PlayAnimation("Ë’öŠO")
+						Else
+							.SpecialEffect("Ë’öŠO")
+						End If
+						.PilotMessage("Ë’öŠO")
+					Else
+						tw = -1
+					End If
+				Else
 					tw = -1
 				End If
 			End If
-			If tw > 0 Then
-				If Not .IsTargetWithinRange(tw, SelectedUnit) Then
-					'Invalid_string_refer_to_original_code
-					tw = 0
-				End If
-			End If
-			
-			'Invalid_string_refer_to_original_code
-			If .MaxAction = 0 Then
-				tw = -1
-			End If
-			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			tw = -1
-			'End If
-			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			If .Master.Party = SelectedUnit.Party Then
-				tw = -1
-			End If
-			'End If
-			
-			'Invalid_string_refer_to_original_code
-			If .IsConditionSatisfied("è¸Šã‚Š") Then
-				tw = -1
-			End If
-			
-			If tw > 0 And def_mode = "" Then
-				'åæ’ƒã‚’å®Ÿæ–½
-				.Attack(tw, SelectedUnit, "", "")
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				SelectedTarget = .CurrentForm
-			End If
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			SelectedUnit = SelectedUnit.CurrentForm
-			'End If
-			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
-			'                    If Not SupportGuardUnit Is Nothing Then
-			'                        Set attack_target = SupportGuardUnit
-			'                        attack_target_hp_ratio = SupportGuardUnitHPRatio
-			'                    End If
-			If Not SupportGuardUnit2 Is Nothing Then
-				attack_target = SupportGuardUnit2
-				attack_target_hp_ratio = SupportGuardUnitHPRatio2
-			End If
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_WARNING: OperateUnit ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			.PlayAnimation("Invalid_string_refer_to_original_code")
-			.SpecialEffect("Invalid_string_refer_to_original_code")
-			'End If
-			.PilotMessage("Invalid_string_refer_to_original_code")
-			tw = -1
-			'End If
-			tw = -1
-			'End If
-			'End If
 		End With
 		
-		'Invalid_string_refer_to_original_code
+		'ƒTƒ|[ƒgƒAƒ^ƒbƒN
 		If Not SupportAttackUnit Is Nothing Then
-			'Invalid_string_refer_to_original_code_
-			'Invalid_string_refer_to_original_code_
-			'Invalid_string_refer_to_original_code_
-			'Or support_attack_done _
-			'Then
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			'UPGRADE_NOTE: ƒIƒuƒWƒFƒNƒg SupportAttackUnit ‚ğƒKƒx[ƒW ƒRƒŒƒNƒg‚·‚é‚Ü‚Å‚±‚ÌƒIƒuƒWƒFƒNƒg‚ğ”jŠü‚·‚é‚±‚Æ‚Í‚Å‚«‚Ü‚¹‚ñB Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			SupportAttackUnit = Nothing
+			If SupportAttackUnit.Status_Renamed <> "oŒ‚" Or SelectedUnit.Status_Renamed <> "oŒ‚" Or SelectedTarget.Status_Renamed <> "oŒ‚" Or support_attack_done Then
+				'UPGRADE_NOTE: ƒIƒuƒWƒFƒNƒg SupportAttackUnit ‚ğƒKƒx[ƒW ƒRƒŒƒNƒg‚·‚é‚Ü‚Å‚±‚ÌƒIƒuƒWƒFƒNƒg‚ğ”jŠü‚·‚é‚±‚Æ‚Í‚Å‚«‚Ü‚¹‚ñB Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				SupportAttackUnit = Nothing
+			End If
 		End If
-		'End If
 		If Not SupportAttackUnit Is Nothing Then
 			With SupportAttackUnit
-				'Invalid_string_refer_to_original_code
-				w2 = SelectWeapon(SupportAttackUnit, SelectedTarget, "Invalid_string_refer_to_original_code")
+				'ƒTƒ|[ƒgƒAƒ^ƒbƒN‚Ég‚¤•Ší‚ğŒˆ’è
+				w2 = SelectWeapon(SupportAttackUnit, SelectedTarget, "ƒTƒ|[ƒgƒAƒ^ƒbƒN")
 				
 				If w2 > 0 Then
-					'Invalid_string_refer_to_original_code
+					'ƒTƒ|[ƒgƒAƒ^ƒbƒN‚ğÀ{
 					MaskData(.X, .Y) = False
 					If Not BattleAnimation Then
 						MaskScreen()
 					End If
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					.PlayAnimation("Invalid_string_refer_to_original_code")
+					If .IsAnimationDefined("ƒTƒ|[ƒgƒAƒ^ƒbƒNŠJn") Then
+						.PlayAnimation("ƒTƒ|[ƒgƒAƒ^ƒbƒNŠJn")
+					End If
+					UpdateMessageForm(SelectedTarget, SupportAttackUnit)
+					.Attack(w2, SelectedTarget, "‰‡ŒìUŒ‚", def_mode)
 				End If
-				UpdateMessageForm(SelectedTarget, SupportAttackUnit)
-				.Attack(w2, SelectedTarget, "Invalid_string_refer_to_original_code")
 			End With
-		End If
-		'End With
-		
-		'å¾Œå§‹æœ«
-		With SupportAttackUnit.CurrentForm
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			.PlayAnimation("Invalid_string_refer_to_original_code")
-			'End If
 			
-			'Invalid_string_refer_to_original_code
-			If w2 > 0 Then
-				.UsedSupportAttack = .UsedSupportAttack + 1
+			'Œãn––
+			With SupportAttackUnit.CurrentForm
+				If .IsAnimationDefined("ƒTƒ|[ƒgƒAƒ^ƒbƒNI—¹") Then
+					.PlayAnimation("ƒTƒ|[ƒgƒAƒ^ƒbƒNI—¹")
+				End If
+				
+				'ƒTƒ|[ƒgƒAƒ^ƒbƒN‚Ìc‚è‰ñ”‚ğŒ¸‚ç‚·
+				If w2 > 0 Then
+					.UsedSupportAttack = .UsedSupportAttack + 1
+				End If
+			End With
+			
+			'–hŒä‘¤‚Ìƒ†ƒjƒbƒg‚ª‚©‚Î‚í‚ê‚½ê‡‚Í–{—ˆ‚Ì–hŒäƒ†ƒjƒbƒgƒf[ƒ^‚Æ
+			'“ü‚ê‘Ö‚¦‚Ä‹L˜^
+			If Not SupportGuardUnit Is Nothing Then
+				defense_target = SupportGuardUnit
+				defense_target_hp_ratio = SupportGuardUnitHPRatio
 			End If
-		End With
-		
-		'Invalid_string_refer_to_original_code
-		'å…¥ã‚Œæ›¿ãˆã¦è¨˜éŒ²
-		If Not SupportGuardUnit Is Nothing Then
-			defense_target = SupportGuardUnit
-			defense_target_hp_ratio = SupportGuardUnitHPRatio
 		End If
-		'End If
 		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
+		'•W“I‚ª–¡•û‚Ìê‡‚ÌŒoŒ±’l‚Æ‘‹àŠl“¾ˆ—
+		'(•W“I‚ª–¡•û‚ªŒÄ‚Ño‚µ‚½¢Š«ƒ†ƒjƒbƒg‚Ìê‡‚à)
 		SelectedUnit = SelectedUnit.CurrentForm
+		Dim get_reward As Boolean
 		With SelectedTarget
 			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			get_reward = True
-			'UPGRADE_WARNING: OperateUnit ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-			'Invalid_string_refer_to_original_code_
-			'Invalid_string_refer_to_original_code_
-			'And Not .IsConditionSatisfied("æ··ä¹±") _
-			'And Not .IsConditionSatisfied("æš´èµ°") _
-			'Then
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			get_reward = True
-			'End If
-			'End If
+			'ŒoŒ±’l•‘‹à‚ªŠl“¾‚Å‚«‚é‚©”»’è
+			If .Party = "–¡•û" And .Status_Renamed = "oŒ‚" Then
+				get_reward = True
+			ElseIf Not .Summoner Is Nothing Then 
+				If .Summoner.Party = "–¡•û" And .Party0 = "‚m‚o‚b" And .Status_Renamed = "oŒ‚" And .IsFeatureAvailable("¢Š«ƒ†ƒjƒbƒg") And Not .IsConditionSatisfied("¬—") And Not .IsConditionSatisfied("–\‘–") Then
+					get_reward = True
+				End If
+			End If
 			
 			If get_reward Then
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				'Invalid_string_refer_to_original_code
-				.GetExp(SelectedUnit, "Invalid_string_refer_to_original_code")
-				
-				'Invalid_string_refer_to_original_code
-				prev_money = Money
-				
-				'Invalid_string_refer_to_original_code
-				earnings = SelectedUnit.Value \ 2
-				
-				'Invalid_string_refer_to_original_code
-				If .IsUnderSpecialPowerEffect("Invalid_string_refer_to_original_code") Then
-					earnings = earnings * (1 + 0.1 * .SpecialPowerEffectLevel("Invalid_string_refer_to_original_code"))
+				If SelectedUnit.Status_Renamed = "”j‰ó" And Not is_suiside Then
+					'ŒoŒ±’l‚ğŠl“¾
+					.GetExp(SelectedUnit, "”j‰ó")
+					
+					'Œ»İ‚Ì‘‹à‚ğ‹L˜^
+					prev_money = Money
+					
+					'Šl“¾‚·‚é‘‹à‚ğZo
+					earnings = SelectedUnit.Value \ 2
+					
+					'ƒXƒyƒVƒƒƒ‹ƒpƒ[‚É‚æ‚éŠl“¾‘‹à‘‰Á
+					If .IsUnderSpecialPowerEffect("Šl“¾‘‹à‘‰Á") Then
+						earnings = earnings * (1 + 0.1 * .SpecialPowerEffectLevel("Šl“¾‘‹à‘‰Á"))
+					End If
+					
+					'ƒpƒCƒƒbƒg”\—Í‚É‚æ‚éŠl“¾‘‹à‘‰Á
+					If .IsSkillAvailable("‘‹àŠl“¾") Then
+						If Not .IsUnderSpecialPowerEffect("Šl“¾‘‹à‘‰Á") Or IsOptionDefined("û“¾Œø‰Êd•¡") Then
+							earnings = MinDbl(earnings * ((10 + .SkillLevel("‘‹àŠl“¾", 5)) / 10), 999999999)
+						End If
+					End If
+					
+					'‘‹à‚ğŠl“¾
+					IncrMoney(earnings)
+					
+					If Money > prev_money Then
+						DisplaySysMessage(VB6.Format(Money - prev_money) & "‚Ì" & Term("‘‹à", SelectedUnit) & "‚ğ“¾‚½B")
+					End If
+				Else
+					.GetExp(SelectedUnit, "UŒ‚")
 				End If
-				
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				'Invalid_string_refer_to_original_code_
-				'Then
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 			End If
-			'End If
 			
-			'Invalid_string_refer_to_original_code
-			IncrMoney(earnings)
-			
-			If Money > prev_money Then
-				DisplaySysMessage(VB6.Format(Money - prev_money) & "ã®" & Term("Invalid_string_refer_to_original_code", SelectedUnit) & "Invalid_string_refer_to_original_code")
-			End If
-			.GetExp(SelectedUnit, "Invalid_string_refer_to_original_code")
-			'End If
-			'End If
-			
-			'Invalid_string_refer_to_original_code
-			.RemoveSpecialPowerInEffect("Invalid_string_refer_to_original_code")
+			'ƒXƒyƒVƒƒƒ‹ƒpƒ[uŠl“¾‘‹à‘‰ÁvuŠl“¾ŒoŒ±’l‘‰Áv‚ÌŒø‰Ê‚Í‚±‚±‚Åíœ‚·‚é
+			.RemoveSpecialPowerInEffect("í“¬I—¹")
 			If earnings > 0 Then
-				.RemoveSpecialPowerInEffect("Invalid_string_refer_to_original_code")
+				.RemoveSpecialPowerInEffect("“G”j‰ó")
 			End If
 		End With
 		
-		'Invalid_string_refer_to_original_code
+		'–¡•û‚ªŒÄ‚Ño‚µ‚½¢Š«ƒ†ƒjƒbƒg‚Ìê‡‚Í‚m‚o‚b‚Å‚àŒoŒ±’l‚Æ‘‹à‚ğŠl“¾
 		SelectedUnit = SelectedUnit.CurrentForm
 		With SelectedUnit
 			If Not .Summoner Is Nothing Then
-				'Invalid_string_refer_to_original_code_
-				'Invalid_string_refer_to_original_code_
-				'And Not .IsConditionSatisfied("æ··ä¹±") _
-				'And Not .IsConditionSatisfied("æš´èµ°") _
-				'Then
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				'Invalid_string_refer_to_original_code
-				
-				'Invalid_string_refer_to_original_code
-				.GetExp(SelectedTarget, "Invalid_string_refer_to_original_code")
-				
-				'Invalid_string_refer_to_original_code
-				earnings = SelectedTarget.Value \ 2
-				
-				'Invalid_string_refer_to_original_code
-				If .IsUnderSpecialPowerEffect("Invalid_string_refer_to_original_code") Then
-					earnings = earnings * (1 + 0.1 * .SpecialPowerEffectLevel("Invalid_string_refer_to_original_code"))
+				If .Summoner.Party = "–¡•û" And .Party0 = "‚m‚o‚b" And .Status_Renamed = "oŒ‚" And .IsFeatureAvailable("¢Š«ƒ†ƒjƒbƒg") And Not .IsConditionSatisfied("¬—") And Not .IsConditionSatisfied("–\‘–") Then
+					If SelectedTarget.Status_Renamed = "”j‰ó" Then
+						'ƒ^[ƒQƒbƒg‚ğ”j‰ó‚µ‚½ê‡
+						
+						'ŒoŒ±’l‚ğŠl“¾
+						.GetExp(SelectedTarget, "”j‰ó")
+						
+						'Šl“¾‚·‚é‘‹à‚ğZo
+						earnings = SelectedTarget.Value \ 2
+						
+						'ƒXƒyƒVƒƒƒ‹ƒpƒ[‚É‚æ‚éŠl“¾‘‹à‘‰Á
+						If .IsUnderSpecialPowerEffect("Šl“¾‘‹à‘‰Á") Then
+							earnings = earnings * (1 + 0.1 * .SpecialPowerEffectLevel("Šl“¾‘‹à‘‰Á"))
+						End If
+						
+						'ƒpƒCƒƒbƒg”\—Í‚É‚æ‚éŠl“¾‘‹à‘‰Á
+						If .IsSkillAvailable("‘‹àŠl“¾") Then
+							If Not .IsUnderSpecialPowerEffect("Šl“¾‘‹à‘‰Á") Or IsOptionDefined("û“¾Œø‰Êd•¡") Then
+								earnings = earnings * (10 + .SkillLevel("‘‹àŠl“¾", 5)) \ 10
+							End If
+						End If
+						
+						'‘‹à‚ğŠl“¾
+						IncrMoney(earnings)
+						If earnings > 0 Then
+							DisplaySysMessage(VB6.Format(earnings) & "‚Ì" & Term("‘‹à", SelectedTarget) & "‚ğ“¾‚½B")
+						End If
+					Else
+						'ƒ^[ƒQƒbƒg‚ğ”j‰óo—ˆ‚È‚©‚Á‚½ê‡
+						
+						'ŒoŒ±’l‚ğŠl“¾
+						.GetExp(SelectedTarget, "UŒ‚")
+					End If
+				End If
+			End If
+			
+			If .Status_Renamed = "oŒ‚" Then
+				'ƒXƒyƒVƒƒƒ‹ƒpƒ[Œø‰Êu“G”j‰óÄs“®v
+				If .IsUnderSpecialPowerEffect("“G”j‰óÄs“®") Then
+					If SelectedTarget.Status_Renamed = "”j‰ó" Then
+						.UsedAction = .UsedAction - 1
+					End If
 				End If
 				
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				'Invalid_string_refer_to_original_code_
-				'Then
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				'‘±ŠúŠÔ‚ªuí“¬I—¹v‚ÌƒXƒyƒVƒƒƒ‹ƒpƒ[Œø‰Ê‚ğíœ
+				.RemoveSpecialPowerInEffect("í“¬I—¹")
+				If earnings > 0 Then
+					.RemoveSpecialPowerInEffect("“G”j‰ó")
+				End If
 			End If
-			'End If
-			
-			'Invalid_string_refer_to_original_code
-			IncrMoney(earnings)
-			If earnings > 0 Then
-				DisplaySysMessage(VB6.Format(earnings) & "ã®" & Term("Invalid_string_refer_to_original_code", SelectedTarget) & "Invalid_string_refer_to_original_code")
-			End If
-			'Invalid_string_refer_to_original_code
-			
-			'Invalid_string_refer_to_original_code
-			.GetExp(SelectedTarget, "Invalid_string_refer_to_original_code")
-			'End If
-			'End If
-			'End If
-			
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			'Invalid_string_refer_to_original_code
-			If .IsUnderSpecialPowerEffect("æ•µç ´å£Šæ™‚å†è¡Œå‹•") Then
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				.UsedAction = .UsedAction - 1
-			End If
-			'End If
-			
-			'Invalid_string_refer_to_original_code
-			.RemoveSpecialPowerInEffect("Invalid_string_refer_to_original_code")
-			If earnings > 0 Then
-				.RemoveSpecialPowerInEffect("Invalid_string_refer_to_original_code")
-			End If
-			'End If
 		End With
 		
 		CloseMessageForm()
 		
 		RedrawScreen()
 		
-		'Invalid_string_refer_to_original_code
+		'ó‘Ô•ƒf[ƒ^XV
 		With attack_target.CurrentForm
 			.UpdateCondition()
 			.Update()
@@ -1503,39 +1465,35 @@ AttackEnemy:
 			SelectedTWeaponName = ""
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'”j‰ó•‘¹—¦ƒCƒxƒ“ƒg”­¶
 		
-		'Invalid_string_refer_to_original_code
+		'UŒ‚‚ğó‚¯‚½UŒ‚‘¤ƒ†ƒjƒbƒg
 		With attack_target.CurrentForm
 			If .CountPilot > 0 Then
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				HandleEvent("Invalid_string_refer_to_original_code")
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				HandleEvent("Invalid_string_refer_to_original_code")
+				If .Status_Renamed = "”j‰ó" Then
+					HandleEvent("”j‰ó", .MainPilot.ID)
+				ElseIf .Status_Renamed = "oŒ‚" And .HP / .MaxHP < attack_target_hp_ratio Then 
+					HandleEvent("‘¹—¦", .MainPilot.ID, 100 * (.MaxHP - .HP) \ .MaxHP)
+				End If
+				If IsScenarioFinished Or IsCanceled Then
+					Exit Sub
+				End If
 			End If
-			If IsScenarioFinished Or IsCanceled Then
-				Exit Sub
-			End If
-			'End If
 		End With
 		
-		'Invalid_string_refer_to_original_code
+		'ƒ^[ƒQƒbƒg‘¤‚ÌƒCƒxƒ“ƒgˆ—‚ğs‚¤‚½‚ß‚Éƒ†ƒjƒbƒg‚Ì“ü‚ê‘Ö‚¦‚ğs‚¤
 		SaveSelections()
 		SwapSelections()
 		
-		'Invalid_string_refer_to_original_code
+		'UŒ‚‚ğó‚¯‚½–hŒä‘¤ƒ†ƒjƒbƒg
 		With defense_target.CurrentForm
 			If .CountPilot > 0 Then
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				HandleEvent("Invalid_string_refer_to_original_code")
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				HandleEvent("Invalid_string_refer_to_original_code")
+				If .Status_Renamed = "”j‰ó" Then
+					HandleEvent("”j‰ó", .MainPilot.ID)
+				ElseIf .Status_Renamed = "oŒ‚" And .HP / .MaxHP < defense_target_hp_ratio Then 
+					HandleEvent("‘¹—¦", .MainPilot.ID, 100 * (.MaxHP - .HP) \ .MaxHP)
+				End If
 			End If
-			'End If
 		End With
 		
 		If IsScenarioFinished Then
@@ -1544,25 +1502,22 @@ AttackEnemy:
 			Exit Sub
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'UŒ‚‚ğó‚¯‚½–hŒä‘¤ƒ†ƒjƒbƒg‚»‚Ì2
 		If Not defense_target2 Is Nothing Then
 			If Not defense_target2.CurrentForm Is defense_target.CurrentForm Then
 				With defense_target2.CurrentForm
 					If .CountPilot > 0 Then
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-						HandleEvent("Invalid_string_refer_to_original_code")
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-						HandleEvent("Invalid_string_refer_to_original_code")
+						If .Status_Renamed = "”j‰ó" Then
+							HandleEvent("”j‰ó", .MainPilot.ID)
+						ElseIf .Status_Renamed = "oŒ‚" And .HP / .MaxHP < defense_target2_hp_ratio Then 
+							HandleEvent("‘¹—¦", .MainPilot.ID, 100 * (.MaxHP - .HP) \ .MaxHP)
+						End If
 					End If
 				End With
 			End If
-			'End With
 		End If
-		'End If
 		
-		'Invalid_string_refer_to_original_code
+		'Œ³‚É–ß‚·
 		RestoreSelections()
 		
 		If IsScenarioFinished Or IsCanceled Then
@@ -1570,122 +1525,116 @@ AttackEnemy:
 			Exit Sub
 		End If
 		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		HandleEvent("Invalid_string_refer_to_original_code")
-		If IsScenarioFinished Or IsCanceled Then
-			ReDim SelectedPartners(0)
-			Exit Sub
+		'•Ší‚Ìg—pŒãƒCƒxƒ“ƒg
+		If SelectedUnit.Status_Renamed = "oŒ‚" And w > 0 Then
+			HandleEvent("g—pŒã", SelectedUnit.MainPilot.ID, wname)
+			If IsScenarioFinished Or IsCanceled Then
+				ReDim SelectedPartners(0)
+				Exit Sub
+			End If
 		End If
-		'End If
 		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		SaveSelections()
-		SwapSelections()
-		HandleEvent("Invalid_string_refer_to_original_code")
-		RestoreSelections()
-		If IsScenarioFinished Or IsCanceled Then
-			ReDim SelectedPartners(0)
-			Exit Sub
+		If SelectedTarget.Status_Renamed = "oŒ‚" And tw > 0 Then
+			SaveSelections()
+			SwapSelections()
+			HandleEvent("g—pŒã", SelectedUnit.MainPilot.ID, twname)
+			RestoreSelections()
+			If IsScenarioFinished Or IsCanceled Then
+				ReDim SelectedPartners(0)
+				Exit Sub
+			End If
 		End If
-		'End If
 		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		HandleEvent("Invalid_string_refer_to_original_code")
-		If IsScenarioFinished Or IsCanceled Then
-			ReDim SelectedPartners(0)
-			Exit Sub
+		'UŒ‚ŒãƒCƒxƒ“ƒg
+		If SelectedUnit.Status_Renamed = "oŒ‚" And SelectedTarget.Status_Renamed = "oŒ‚" Then
+			HandleEvent("UŒ‚Œã", SelectedUnit.MainPilot.ID, SelectedTarget.MainPilot.ID)
+			If IsScenarioFinished Or IsCanceled Then
+				ReDim SelectedPartners(0)
+				Exit Sub
+			End If
 		End If
-		'End If
 		
-		'Invalid_string_refer_to_original_code
+		'‚à‚µ“G‚ªˆÚ“®‚µ‚Ä‚¢‚ê‚Îi“üƒCƒxƒ“ƒg
 		With SelectedTarget
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			If .X <> tx Or .Y <> ty Then
-				HandleEvent("é€²å…¥", .MainPilot.ID, .X, .Y)
-				If IsScenarioFinished Or IsCanceled Then
-					ReDim SelectedPartners(0)
-					Exit Sub
+			If .Status_Renamed = "oŒ‚" Then
+				If .X <> tx Or .Y <> ty Then
+					HandleEvent("i“ü", .MainPilot.ID, .X, .Y)
+					If IsScenarioFinished Or IsCanceled Then
+						ReDim SelectedPartners(0)
+						Exit Sub
+					End If
 				End If
 			End If
-			'End If
 		End With
 		
-		'Invalid_string_refer_to_original_code
-		If Not IsOptionDefined("Invalid_string_refer_to_original_code") Then
+		'‡‘Ì‹Z‚Ìƒp[ƒgƒi[‚Ìs“®”‚ğŒ¸‚ç‚·
+		If Not IsOptionDefined("‡‘Ì‹Zƒp[ƒgƒi[s“®”–³Á”ï") Then
 			For i = 1 To UBound(partners)
 				partners(i).CurrentForm.UseAction()
 			Next 
 		End If
 		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		If SelectedUnit.MainPilot.IsSkillAvailable("éŠæ’ƒ") And SelectedUnit.Speed * 2 > SelectedUnitMoveCost Then
-			'Invalid_string_refer_to_original_code
-			If SelectedUnitMoveCost > 0 Then
-				HandleEvent("é€²å…¥", SelectedUnit.MainPilot.ID, SelectedUnit.X, SelectedUnit.Y)
-				If IsScenarioFinished Then
+		'ÄˆÚ“®
+		If is_p_weapon And SelectedUnit.Status_Renamed = "oŒ‚" Then
+			If SelectedUnit.MainPilot.IsSkillAvailable("—VŒ‚") And SelectedUnit.Speed * 2 > SelectedUnitMoveCost Then
+				'i“üƒCƒxƒ“ƒg
+				If SelectedUnitMoveCost > 0 Then
+					HandleEvent("i“ü", SelectedUnit.MainPilot.ID, SelectedUnit.X, SelectedUnit.Y)
+					If IsScenarioFinished Then
+						Exit Sub
+					End If
+				End If
+				
+				'ƒ†ƒjƒbƒg‚ªŠù‚ÉoŒ‚‚µ‚Ä‚¢‚È‚¢H
+				If SelectedUnit.Status_Renamed <> "oŒ‚" Then
 					Exit Sub
 				End If
-			End If
-			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			Exit Sub
-		End If
-		
-		took_action = True
-		
-		AreaInSpeed(SelectedUnit)
-		
-		'Invalid_string_refer_to_original_code
-		If LLength((SelectedUnit.Mode)) = 2 Then
-			dst_x = CShort(LIndex((SelectedUnit.Mode), 1))
-			dst_y = CShort(LIndex((SelectedUnit.Mode), 2))
-			If 1 <= dst_x And dst_x <= MapWidth And 1 <= dst_y And dst_y <= MapHeight Then
+				
+				took_action = True
+				
+				AreaInSpeed(SelectedUnit)
+				
+				'–Ú•W’n“_‚ªİ’è‚³‚ê‚Ä‚¢‚éH
+				If LLength((SelectedUnit.Mode)) = 2 Then
+					dst_x = CShort(LIndex((SelectedUnit.Mode), 1))
+					dst_y = CShort(LIndex((SelectedUnit.Mode), 2))
+					If 1 <= dst_x And dst_x <= MapWidth And 1 <= dst_y And dst_y <= MapHeight Then
+						GoTo Move
+					End If
+				End If
+				
+				'‚»‚¤‚Å‚È‚¯‚ê‚ÎˆÀ‘S‚ÈêŠ‚Ö
+				SafetyPoint(SelectedUnit, dst_x, dst_y)
+				
 				GoTo Move
 			End If
 		End If
 		
-		'Invalid_string_refer_to_original_code
-		SafetyPoint(SelectedUnit, dst_x, dst_y)
-		
-		GoTo Move
-		'End If
-		'End If
-		
-		'Invalid_string_refer_to_original_code
+		's“®I—¹
 		GoTo EndOfOperation
 		
 SearchNearestEnemy: 
 		
-		'Invalid_string_refer_to_original_code
+		'‚à‚Á‚Æ‚à‹ß‚­‚É‚¢‚é“G‚ğ’T‚·
 		searched_nearest_enemy = True
 		SelectedTarget = SearchNearestEnemy(SelectedUnit)
 		
-		'Invalid_string_refer_to_original_code
+		'ƒ^[ƒQƒbƒg‚ªŒ©‚Â‚©‚ç‚È‚¯‚ê‚Î‚ ‚«‚ç‚ß‚ÄI—¹
 		If SelectedTarget Is Nothing Then
 			GoTo EndOfOperation
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'Œ©‚Â‚©‚Á‚½‚çƒ^[ƒQƒbƒg‚ÌˆÊ’u‚ğ–Ú•W’n“_‚É‚µ‚ÄˆÚ“®
 		dst_x = SelectedTarget.X
 		dst_y = SelectedTarget.Y
 		
 Move: 
 		
-		'ç›®æ¨™åœ°ç‚¹
+		'–Ú•W’n“_
 		SelectedX = dst_x
 		SelectedY = dst_y
 		
-		'ç§»å‹•å½¢æ…‹ã¸ã®å¤‰å½¢ãŒå¯èƒ½ã§ã‚ã‚Œã°å¤‰å½¢
+		'ˆÚ“®Œ`‘Ô‚Ö‚Ì•ÏŒ`‚ª‰Â”\‚Å‚ ‚ê‚Î•ÏŒ`
 		If Not transfered Then
 			If TryMoveTransform() Then
 				transfered = True
@@ -1693,53 +1642,41 @@ Move:
 		End If
 		
 		With SelectedUnit
-			'Invalid_string_refer_to_original_code
+			'ˆÚ“®‰Â”\”ÍˆÍ‚ğİ’è
 			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			tmp = 40
-			'End If
-			'Invalid_string_refer_to_original_code_
-			'And (.EN > 10 * tmp Or .EN - tmp > .MaxEN \ 2) _
-			'And SelectedUnitMoveCost = 0 _
-			'Then
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			mmode = "Invalid_string_refer_to_original_code"
-			.EN = .EN - tmp
-			AreaInTeleport(SelectedUnit)
-			GoTo MoveAreaSelected
-			'End If
+			'ƒeƒŒƒ|[ƒg”\—Í‚ğg‚¦‚éê‡‚Í—Dæ“I‚Ég—p
+			If LLength(.FeatureData("ƒeƒŒƒ|[ƒg")) = 2 Then
+				tmp = CShort(LIndex(.FeatureData("ƒeƒŒƒ|[ƒg"), 2))
+			Else
+				tmp = 40
+			End If
+			If .IsFeatureAvailable("ƒeƒŒƒ|[ƒg") And (.EN > 10 * tmp Or .EN - tmp > .MaxEN \ 2) And SelectedUnitMoveCost = 0 Then
+				mmode = "ƒeƒŒƒ|[ƒg"
+				.EN = .EN - tmp
+				AreaInTeleport(SelectedUnit)
+				GoTo MoveAreaSelected
+			End If
 			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			tmp = 0
-			'End If
-			'Invalid_string_refer_to_original_code_
-			'And .Area <> "ç©ºä¸­" _
-			'Invalid_string_refer_to_original_code_
-			'And (.EN > 10 * tmp Or .EN - tmp > .MaxEN \ 2) _
-			'And SelectedUnitMoveCost = 0 _
-			'Then
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			mmode = "Invalid_string_refer_to_original_code"
-			.EN = .EN - tmp
-			AreaInSpeed(SelectedUnit, True)
-			GoTo MoveAreaSelected
-			'End If
+			'ƒWƒƒƒ“ƒv”\—Í‚ğg‚¤H
+			If LLength(.FeatureData("ƒWƒƒƒ“ƒv")) = 2 Then
+				tmp = CShort(LIndex(.FeatureData("ƒWƒƒƒ“ƒv"), 2))
+			Else
+				tmp = 0
+			End If
+			If .IsFeatureAvailable("ƒWƒƒƒ“ƒv") And .Area <> "‹ó’†" And .Area <> "‰F’ˆ" And (.EN > 10 * tmp Or .EN - tmp > .MaxEN \ 2) And SelectedUnitMoveCost = 0 Then
+				mmode = "ƒWƒƒƒ“ƒv"
+				.EN = .EN - tmp
+				AreaInSpeed(SelectedUnit, True)
+				GoTo MoveAreaSelected
+			End If
 			
-			'Invalid_string_refer_to_original_code
+			'’ÊíˆÚ“®
 			mmode = ""
 			AreaInSpeed(SelectedUnit)
 			
 MoveAreaSelected: 
 			
-			'Invalid_string_refer_to_original_code
+			'Œì‰q‚·‚×‚«ƒ†ƒjƒbƒg‚ª‚¢‚éê‡‚Í“®‚¯‚é”ÍˆÍ‚ğŒÀ’è
 			If guard_unit_mode Then
 				With PList.Item(.Mode).Unit_Renamed
 					For i = 1 To MapWidth
@@ -1754,21 +1691,21 @@ MoveAreaSelected:
 				End With
 			End If
 			
-			If .Mode = "Invalid_string_refer_to_original_code" Then
-				'Invalid_string_refer_to_original_code
+			If .Mode = "“¦–S" Then
+				'ˆÚ“®‰Â”\”ÍˆÍ“à‚Å“G‚©‚çÅ‚à‰“‚¢êŠ‚ğŒŸõ
 				SafetyPoint(SelectedUnit, dst_x, dst_y)
 				new_x = dst_x
 				new_y = dst_y
-			ElseIf .IsConditionSatisfied("æ··ä¹±") Then 
-				'Invalid_string_refer_to_original_code
+			ElseIf .IsConditionSatisfied("¬—") Then 
+				'ˆÚ“®‰Â”\”ÍˆÍ“à‚©‚çƒ‰ƒ“ƒ_ƒ€‚És‚«æ‚ğ‘I‘ğ
 				dst_x = .X + Dice(.Speed + 1) - Dice(.Speed + 1)
 				dst_y = .Y + Dice(.Speed + 1) - Dice(.Speed + 1)
 				NearestPoint(SelectedUnit, dst_x, dst_y, new_x, new_y)
 			Else
-				'Invalid_string_refer_to_original_code
+				'ˆÚ“®‰Â”\”ÍˆÍ“à‚ÅˆÚ“®–Ú“I’n‚ÉÅ‚à‹ß‚¢êŠ‚ğŒŸõ
 				NearestPoint(SelectedUnit, dst_x, dst_y, new_x0, new_y0)
 				
-				'Invalid_string_refer_to_original_code
+				'ˆÚ“®æ‚ªŠëŒ¯’nˆæ‚©‚Ç‚¤‚©”»’è‚·‚é
 				tmp = System.Math.Abs(dst_x - new_x0) + System.Math.Abs(dst_y - new_y0)
 				If tmp <= 5 Then
 					If Not MapDataForUnit(dst_x, dst_y) Is Nothing Then
@@ -1784,8 +1721,8 @@ MoveAreaSelected:
 				new_y = new_y0
 				new_locations_value = -1
 				If tmp <= 5 Then
-					'Invalid_string_refer_to_original_code
-					'Invalid_string_refer_to_original_code
+					'ˆÚ“®æ‚ÍŠëŒ¯’nˆæB‰‡Œì‚µ‡‚¦‚éƒ†ƒjƒbƒg‚Æ—×Ú‚·‚é‚©A
+					'—LŒø‚È’nŒ`Œø‰Ê‚ª“¾‚ç‚ê‚éêŠ‚ğ’T‚·B
 					For i = 0 To 12
 						Select Case i
 							Case 0
@@ -1834,12 +1771,12 @@ MoveAreaSelected:
 							If Not MaskData(tx, ty) And System.Math.Abs(dst_x - tx) + System.Math.Abs(dst_y - ty) < System.Math.Abs(dst_x - .X) + System.Math.Abs(dst_y - .Y) Then
 								tmp = TerrainEffectForHPRecover(tx, ty) + TerrainEffectForENRecover(tx, ty) + 100 * .LookForSupport(tx, ty)
 								
-								'Invalid_string_refer_to_original_code
-								If .Area <> "ç©ºä¸­" Then
+								'’nŒ`‚É‚æ‚é–hŒäŒø‰Ê‚Í‹ó’†‚É‚¢‚éê‡‚É‚Ì‚İ“K—p
+								If .Area <> "‹ó’†" Then
 									tmp = tmp + TerrainEffectForHit(tx, ty) + TerrainEffectForDamage(tx, ty)
-									'Invalid_string_refer_to_original_code
-									If TerrainClass(tx, ty) = "æ°´" Then
-										If .IsTransAvailable("æ°´") Then
+									'…’†—pƒ†ƒjƒbƒg‚Ìê‡‚Í…’†‚ğ—Dæ
+									If TerrainClass(tx, ty) = "…" Then
+										If .IsTransAvailable("…") Then
 											tmp = tmp + 100
 										End If
 									End If
@@ -1854,8 +1791,8 @@ MoveAreaSelected:
 						End If
 					Next 
 				Else
-					'Invalid_string_refer_to_original_code
-					'Invalid_string_refer_to_original_code
+					'ˆÚ“®æ‚ÍŠëŒ¯’nˆæ‚Å‚Í‚È‚¢B
+					'‰‡Œì‚µ‡‚¦‚éƒ†ƒjƒbƒg‚ª‚¢‚ê‚Î—×Ú‚·‚éB
 					For i = 0 To 4
 						Select Case i
 							Case 0
@@ -1890,78 +1827,140 @@ MoveAreaSelected:
 			End If
 			
 			If new_x < 1 Or MapWidth < new_x Or new_y < 1 Or MapHeight < new_y Then
-				'Invalid_string_refer_to_original_code
+				'ˆÚ“®‚Å‚«‚éêŠ‚ª‚È‚¢cc
 				GoTo EndOfOperation
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'Œ©‚Â‚©‚Á‚½êŠ‚ª‚¢‚Ü‚¢‚éêŠ‚Å‚È‚¯‚ê‚Î‚»‚±‚ÖˆÚ“®
 			If .X <> new_x Or .Y <> new_y Then
 				Select Case mmode
-					Case "Invalid_string_refer_to_original_code"
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-						OpenMessageForm()
-						.PilotMessage("Invalid_string_refer_to_original_code")
-						CloseMessageForm()
+					Case "ƒeƒŒƒ|[ƒg"
+						If .IsMessageDefined("ƒeƒŒƒ|[ƒg") Then
+							OpenMessageForm()
+							.PilotMessage("ƒeƒŒƒ|[ƒg")
+							CloseMessageForm()
+						End If
+						If .IsAnimationDefined("ƒeƒŒƒ|[ƒg", .FeatureName("ƒeƒŒƒ|[ƒg")) Then
+							.PlayAnimation("ƒeƒŒƒ|[ƒg", .FeatureName("ƒeƒŒƒ|[ƒg"))
+						ElseIf .IsSpecialEffectDefined("ƒeƒŒƒ|[ƒg", .FeatureName("ƒeƒŒƒ|[ƒg")) Then 
+							.SpecialEffect("ƒeƒŒƒ|[ƒg", .FeatureName("ƒeƒŒƒ|[ƒg"))
+						ElseIf BattleAnimation Then 
+							ShowAnimation("ƒeƒŒƒ|[ƒg”­“® Whiz.wav " & .FeatureName0("ƒeƒŒƒ|[ƒg"))
+						Else
+							PlayWave("Whiz.wav")
+						End If
+						.Move(new_x, new_y, True, False, True)
+						SelectedUnitMoveCost = 1000
+						RedrawScreen()
+					Case "ƒWƒƒƒ“ƒv"
+						If .IsMessageDefined("ƒWƒƒƒ“ƒv") Then
+							OpenMessageForm()
+							.PilotMessage("ƒWƒƒƒ“ƒv")
+							CloseMessageForm()
+						End If
+						If .IsAnimationDefined("ƒWƒƒƒ“ƒv", .FeatureName("ƒWƒƒƒ“ƒv")) Then
+							.PlayAnimation("ƒWƒƒƒ“ƒv", .FeatureName("ƒWƒƒƒ“ƒv"))
+						ElseIf .IsSpecialEffectDefined("ƒWƒƒƒ“ƒv", .FeatureName("ƒWƒƒƒ“ƒv")) Then 
+							.SpecialEffect("ƒWƒƒƒ“ƒv", .FeatureName("ƒWƒƒƒ“ƒv"))
+						Else
+							PlayWave("Swing.wav")
+						End If
+						.Move(new_x, new_y, True, False, True)
+						SelectedUnitMoveCost = 1000
+						RedrawScreen()
+					Case Else
+						'’ÊíˆÚ“®
+						.Move(new_x, new_y)
+						SelectedUnitMoveCost = TotalMoveCost(new_x, new_y)
 				End Select
+				moved = True
+				
+				'vlƒ‚[ƒh‚ªu(X,Y)‚ÉˆÚ“®v‚Å–Ú“I’n‚É‚Â‚¢‚½ê‡
+				If LLength(.Mode) = 2 Then
+					If .X = dst_x And .Y = dst_y Then
+						.Mode = "‘Ò‹@"
+					End If
+				End If
 			End If
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			.PlayAnimation("Invalid_string_refer_to_original_code")
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			.SpecialEffect("Invalid_string_refer_to_original_code")
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			'UPGRADE_WARNING: OperateUnit ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			PlayWave("Whiz.wav")
-			'End If
-			.Move(new_x, new_y, True, False, True)
-			SelectedUnitMoveCost = 1000
-			RedrawScreen()
-			'UPGRADE_WARNING: OperateUnit ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-			'Case "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				'OpenMessageForm()
-				'.PilotMessage("Invalid_string_refer_to_original_code")
-				'CloseMessageForm()
-				'End If
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				'.PlayAnimation("Invalid_string_refer_to_original_code")
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				'.SpecialEffect("Invalid_string_refer_to_original_code")
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				'PlayWave("Swing.wav")
-				'End If
-				'.Move(new_x, new_y, True, False, True)
-				'SelectedUnitMoveCost = 1000
-				'RedrawScreen()
-				''UPGRADE_WARNING: OperateUnit ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
+			
+			'‚±‚±‚Å‚d‚mØ‚êH
+			If .EN = 0 Then
+				If .MaxAction = 0 Then
+					GoTo EndOfOperation
+				End If
+			End If
+			
+			'–£—¹‚³‚ê‚Ä‚¢‚éê‡
+			If .IsConditionSatisfied("–£—¹") Then
+				GoTo EndOfOperation
+			End If
+			
+			'“¦‚°‚Ä‚¢‚éê‡
+			If .Mode = "“¦–S" Then
+				GoTo EndOfOperation
+			End If
+			
+			'vlƒ‚[ƒh‚ª“Á’è‚Ìƒ^[ƒQƒbƒg‚ğ‘_‚¤‚æ‚¤‚Éİ’è‚³‚ê‚Ä‚¢‚éê‡
+			If PList.IsDefined(.Mode) Then
+				If PList.Item(.Mode).Unit_Renamed Is SelectedTarget Then
+					If .IsEnemy(SelectedTarget) Then
+						If moved Then
+							w = SelectWeapon(SelectedUnit, SelectedTarget, "ˆÚ“®Œã")
+						Else
+							w = SelectWeapon(SelectedUnit, SelectedTarget, "ˆÚ“®‰Â”\")
+						End If
+						If w > 0 Then
+							'ˆÚ“®‚ÌŒ‹‰ÊAƒ^[ƒQƒbƒg‚ªË’ö“à‚É“ü‚Á‚½
+							GoTo AttackEnemy
+						End If
+					Else
+						'Œì‰q‚·‚éƒ†ƒjƒbƒg‚Ì‚à‚Æ‚ğ—£‚ê‚é‚×‚©‚ç‚¸
+						moved = True
+					End If
+				End If
+			End If
+			
+			'“Á’è‚Ì’n“_‚ÉˆÚ“®’†
+			If LLength(.Mode) = 2 Then
+				If 1 <= dst_x And dst_x <= MapWidth And 1 <= dst_y And dst_y <= MapHeight Then
+					If Not MapDataForUnit(dst_x, dst_y) Is Nothing Then
+						SelectedTarget = MapDataForUnit(dst_x, dst_y)
+						If .IsEnemy(SelectedTarget) Then
+							'ˆÚ“®æ‚ÌêŠ‚É‚¢‚é“G‚ğ—Dæ‚µ‚Ä”rœ
+							If moved Then
+								w = SelectWeapon(SelectedUnit, SelectedTarget, "ˆÚ“®Œã")
+							Else
+								w = SelectWeapon(SelectedUnit, SelectedTarget, "ˆÚ“®‰Â”\")
+							End If
+							If w > 0 Then
+								GoTo AttackEnemy
+							End If
+						End If
+						'UPGRADE_NOTE: ƒIƒuƒWƒFƒNƒg SelectedTarget ‚ğƒKƒx[ƒW ƒRƒŒƒNƒg‚·‚é‚Ü‚Å‚±‚ÌƒIƒuƒWƒFƒNƒg‚ğ”jŠü‚·‚é‚±‚Æ‚Í‚Å‚«‚Ü‚¹‚ñB Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						SelectedTarget = Nothing
+					End If
+				End If
+			End If
+			
+			'‰ü‚ß‚ÄUŒ‚‚ÌƒV[ƒPƒ“ƒX‚ÉˆÚs
+			If Not took_action Then
+				GoTo TryMapAttack
+			End If
 		End With
 		
 EndOfOperation: 
 		
-		'Invalid_string_refer_to_original_code
+		's“®I—¹
 		
 		ReDim SelectedPartners(0)
 		
 		If moved Then
-			'Invalid_string_refer_to_original_code
-			SelectedUnit.RemoveSpecialPowerInEffect("Invalid_string_refer_to_original_code")
+			'‘±ŠúŠÔ‚ªuˆÚ“®v‚ÌƒXƒyƒVƒƒƒ‹ƒpƒ[Œø‰Ê‚ğíœ
+			SelectedUnit.RemoveSpecialPowerInEffect("ˆÚ“®")
 		End If
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'ƒnƒCƒp[ƒ‚[ƒh‚ª‰Â”\‚Å‚ ‚ê‚ÎƒnƒCƒp[ƒ‚[ƒh”­“®
 	Private Sub TryHyperMode()
 		Dim uname As String
 		Dim u As Unit
@@ -1969,109 +1968,97 @@ EndOfOperation:
 		Dim flevel As Double
 		
 		With SelectedUnit
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			Exit Sub
-			'End If
-			
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code_
-			'Or .HP > .MaxHP \ 4) _
-			'Then
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			Exit Sub
-			'End If
-			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			Exit Sub
-			'End If
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			Exit Sub
-			'End If
-			
-			'Invalid_string_refer_to_original_code
-			If .IsConditionSatisfied("Invalid_string_refer_to_original_code") Then
+			'ƒnƒCƒp[ƒ‚[ƒh‚ğ‚Á‚Ä‚¢‚éH
+			If Not .IsFeatureAvailable("ƒnƒCƒp[ƒ‚[ƒh") Then
 				Exit Sub
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			fname = .FeatureName("ƒnƒCƒp[ƒ‚[ƒh")
+			flevel = .FeatureLevel("ƒnƒCƒp[ƒ‚[ƒh")
+			fdata = .FeatureData("ƒnƒCƒp[ƒ‚[ƒh")
+			
+			'”­“®ğŒ‚ğ–‚½‚·H
+			If .MainPilot.Morale < 100 + CShort(10# * flevel) And (InStr(fdata, "‹C—Í”­“®") > 0 Or .HP > .MaxHP \ 4) Then
+				Exit Sub
+			End If
+			
+			'ƒnƒCƒp[ƒ‚[ƒh‚ª‹Ö~‚³‚ê‚Ä‚¢‚éH
+			If .IsConditionSatisfied("Œ`‘ÔŒÅ’è") Then
+				Exit Sub
+			End If
+			If .IsConditionSatisfied("‹@‘ÌŒÅ’è") Then
+				Exit Sub
+			End If
+			
+			'•Ïg’†E”\—ÍƒRƒs[’†‚ÍƒnƒCƒp[ƒ‚[ƒh‚ğg—p‚Å‚«‚È‚¢
+			If .IsConditionSatisfied("ƒm[ƒ}ƒ‹ƒ‚[ƒh•t‰Á") Then
+				Exit Sub
+			End If
+			
+			'ƒnƒCƒp[ƒ‚[ƒhæ‚ÌŒ`‘Ô‚ğ’²‚×‚é
 			uname = LIndex(fdata, 2)
 			u = .OtherForm(uname)
 			
-			'Invalid_string_refer_to_original_code
-			If u.IsConditionSatisfied("Invalid_string_refer_to_original_code") Or Not u.IsAbleToEnter(.X, .Y) Then
+			'ƒnƒCƒp[ƒ‚[ƒhæ‚ÌŒ`‘Ô‚Íg—p‰Â”\H
+			If u.IsConditionSatisfied("s“®•s”\") Or Not u.IsAbleToEnter(.X, .Y) Then
 				Exit Sub
 			End If
 			
-			'Invalid_string_refer_to_original_code
-			If u.IsFeatureAvailable("Invalid_string_refer_to_original_code") Then
-				If Not PList.IsDefined(u.FeatureData("Invalid_string_refer_to_original_code")) Then
-					PList.Add(u.FeatureData("Invalid_string_refer_to_original_code"), .MainPilot.Level, .Party0)
+			'ƒ_ƒCƒAƒƒO‚ÅƒƒbƒZ[ƒW‚ğ•\¦‚³‚¹‚é‚½‚ß’Ç‰ÁƒpƒCƒƒbƒg‚ğ‚ ‚ç‚©‚¶‚ßì¬
+			If u.IsFeatureAvailable("’Ç‰ÁƒpƒCƒƒbƒg") Then
+				If Not PList.IsDefined(u.FeatureData("’Ç‰ÁƒpƒCƒƒbƒg")) Then
+					PList.Add(u.FeatureData("’Ç‰ÁƒpƒCƒƒbƒg"), .MainPilot.Level, .Party0)
 				End If
 			End If
 			
-			'Invalid_string_refer_to_original_code
-			If .IsMessageDefined("Invalid_string_refer_to_original_code" & .Name & "=>" & uname & ")") Then
+			'ƒnƒCƒp[ƒ‚[ƒhƒƒbƒZ[ƒW
+			If .IsMessageDefined("ƒnƒCƒp[ƒ‚[ƒh(" & .Name & "=>" & uname & ")") Then
 				OpenMessageForm()
-				.PilotMessage("Invalid_string_refer_to_original_code" & .Name & "=>" & uname & ")")
+				.PilotMessage("ƒnƒCƒp[ƒ‚[ƒh(" & .Name & "=>" & uname & ")")
 				CloseMessageForm()
-			ElseIf .IsMessageDefined("Invalid_string_refer_to_original_code" & uname & ")") Then 
+			ElseIf .IsMessageDefined("ƒnƒCƒp[ƒ‚[ƒh(" & uname & ")") Then 
 				OpenMessageForm()
-				.PilotMessage("Invalid_string_refer_to_original_code" & uname & ")")
+				.PilotMessage("ƒnƒCƒp[ƒ‚[ƒh(" & uname & ")")
 				CloseMessageForm()
-			ElseIf .IsMessageDefined("Invalid_string_refer_to_original_code" & fname & ")") Then 
+			ElseIf .IsMessageDefined("ƒnƒCƒp[ƒ‚[ƒh(" & fname & ")") Then 
 				OpenMessageForm()
-				.PilotMessage("Invalid_string_refer_to_original_code" & fname & ")")
+				.PilotMessage("ƒnƒCƒp[ƒ‚[ƒh(" & fname & ")")
 				CloseMessageForm()
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			ElseIf .IsMessageDefined("ƒnƒCƒp[ƒ‚[ƒh") Then 
 				OpenMessageForm()
-				.PilotMessage("Invalid_string_refer_to_original_code")
+				.PilotMessage("ƒnƒCƒp[ƒ‚[ƒh")
 				CloseMessageForm()
 			End If
 			
-			'ã‚¢ãƒ‹ãƒ¡è¡¨ç¤º
-			If .IsAnimationDefined("Invalid_string_refer_to_original_code" & .Name & "=>" & uname & ")") Then
-				.PlayAnimation("Invalid_string_refer_to_original_code" & .Name & "=>" & uname & ")")
-			ElseIf .IsAnimationDefined("Invalid_string_refer_to_original_code" & uname & ")") Then 
-				.PlayAnimation("Invalid_string_refer_to_original_code" & uname & ")")
-			ElseIf .IsAnimationDefined("Invalid_string_refer_to_original_code" & fname & ")") Then 
-				.PlayAnimation("Invalid_string_refer_to_original_code" & fname & ")")
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				.PlayAnimation("Invalid_string_refer_to_original_code")
-			ElseIf .IsSpecialEffectDefined("Invalid_string_refer_to_original_code" & .Name & "=>" & uname & ")") Then 
-				.SpecialEffect("Invalid_string_refer_to_original_code" & .Name & "=>" & uname & ")")
-			ElseIf .IsSpecialEffectDefined("Invalid_string_refer_to_original_code" & uname & ")") Then 
-				.SpecialEffect("Invalid_string_refer_to_original_code" & uname & ")")
-			ElseIf .IsSpecialEffectDefined("Invalid_string_refer_to_original_code" & fname & ")") Then 
-				.SpecialEffect("Invalid_string_refer_to_original_code" & fname & ")")
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				.SpecialEffect("Invalid_string_refer_to_original_code")
+			'ƒAƒjƒ•\¦
+			If .IsAnimationDefined("ƒnƒCƒp[ƒ‚[ƒh(" & .Name & "=>" & uname & ")") Then
+				.PlayAnimation("ƒnƒCƒp[ƒ‚[ƒh(" & .Name & "=>" & uname & ")")
+			ElseIf .IsAnimationDefined("ƒnƒCƒp[ƒ‚[ƒh(" & uname & ")") Then 
+				.PlayAnimation("ƒnƒCƒp[ƒ‚[ƒh(" & uname & ")")
+			ElseIf .IsAnimationDefined("ƒnƒCƒp[ƒ‚[ƒh(" & fname & ")") Then 
+				.PlayAnimation("ƒnƒCƒp[ƒ‚[ƒh(" & fname & ")")
+			ElseIf .IsAnimationDefined("ƒnƒCƒp[ƒ‚[ƒh") Then 
+				.PlayAnimation("ƒnƒCƒp[ƒ‚[ƒh")
+			ElseIf .IsSpecialEffectDefined("ƒnƒCƒp[ƒ‚[ƒh(" & .Name & "=>" & uname & ")") Then 
+				.SpecialEffect("ƒnƒCƒp[ƒ‚[ƒh(" & .Name & "=>" & uname & ")")
+			ElseIf .IsSpecialEffectDefined("ƒnƒCƒp[ƒ‚[ƒh(" & uname & ")") Then 
+				.SpecialEffect("ƒnƒCƒp[ƒ‚[ƒh(" & uname & ")")
+			ElseIf .IsSpecialEffectDefined("ƒnƒCƒp[ƒ‚[ƒh(" & fname & ")") Then 
+				.SpecialEffect("ƒnƒCƒp[ƒ‚[ƒh(" & fname & ")")
+			ElseIf .IsSpecialEffectDefined("ƒnƒCƒp[ƒ‚[ƒh") Then 
+				.SpecialEffect("ƒnƒCƒp[ƒ‚[ƒh")
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'ƒnƒCƒp[ƒ‚[ƒh”­“®
 			.Transform(uname)
 		End With
 		
-		'Invalid_string_refer_to_original_code
+		'ƒnƒCƒp[ƒ‚[ƒhƒCƒxƒ“ƒg
 		With u.CurrentForm
-			HandleEvent("Invalid_string_refer_to_original_code")
+			HandleEvent("ƒnƒCƒp[ƒ‚[ƒh", .MainPilot.ID, .Name)
 		End With
 		
-		'Invalid_string_refer_to_original_code
+		'ƒnƒCƒp[ƒ‚[ƒh•ƒm[ƒ}ƒ‹ƒ‚[ƒh‚Ì©“®”­“®
 		u.CurrentForm.CheckAutoHyperMode()
 		u.CurrentForm.CheckAutoNormalMode()
 		
@@ -2079,7 +2066,7 @@ EndOfOperation:
 		DisplayUnitStatus(SelectedUnit)
 	End Sub
 	
-	'æˆ¦é—˜å½¢æ…‹ã¸ã®å¤‰å½¢ãŒå¯èƒ½ã§ã‚ã‚Œã°å¤‰å½¢ã™ã‚‹
+	'í“¬Œ`‘Ô‚Ö‚Ì•ÏŒ`‚ª‰Â”\‚Å‚ ‚ê‚Î•ÏŒ`‚·‚é
 	Public Function TryBattleTransform() As Boolean
 		Dim uname As String
 		Dim u As Unit
@@ -2088,82 +2075,78 @@ EndOfOperation:
 		Dim i, j As Short
 		
 		With SelectedUnit
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code_
-			'Invalid_string_refer_to_original_code_
-			'Then
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			Exit Function
-			'End If
-			
-			'Invalid_string_refer_to_original_code
-			If DistanceFromNearestEnemy(SelectedUnit) > 5 Then
-				'Invalid_string_refer_to_original_code
+			'•ÏŒ`‚ª‰Â”\H
+			If Not .IsFeatureAvailable("•ÏŒ`") Or .IsConditionSatisfied("Œ`‘ÔŒÅ’è") Or .IsConditionSatisfied("‹@‘ÌŒÅ’è") Then
 				Exit Function
 			End If
 			
-			'æœ€ã‚‚é‹å‹•æ€§ãŒé«˜ã„å½¢æ…‹ã«å¤‰å½¢
+			'‚Tƒ}ƒXˆÈ“à‚É“G‚ª‚¢‚é‚©ƒ`ƒFƒbƒN
+			If DistanceFromNearestEnemy(SelectedUnit) > 5 Then
+				'ü‚è‚É“G‚Í‚¢‚È‚¢
+				Exit Function
+			End If
+			
+			'Å‚à‰^“®«‚ª‚‚¢Œ`‘Ô‚É•ÏŒ`
 			u = SelectedUnit
 			xx = .X
 			yy = .Y
-			For i = 2 To LLength(.FeatureData("å¤‰å½¢"))
-				uname = LIndex(.FeatureData("å¤‰å½¢"), i)
+			For i = 2 To LLength(.FeatureData("•ÏŒ`"))
+				uname = LIndex(.FeatureData("•ÏŒ`"), i)
 				With .OtherForm(uname)
-					'Invalid_string_refer_to_original_code
-					If .IsConditionSatisfied("Invalid_string_refer_to_original_code") Or Not .IsAbleToEnter(xx, yy) Then
+					'‚»‚ÌŒ`‘Ô‚É•ÏŒ`‰Â”\H
+					If .IsConditionSatisfied("s“®•s”\") Or Not .IsAbleToEnter(xx, yy) Then
 						GoTo NextForm
 					End If
 					
-					'Invalid_string_refer_to_original_code
-					'Invalid_string_refer_to_original_code
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					GoTo NextForm
-					'End If
+					'’ÊíŒ`‘Ô‚Íã‚¢Œ`‘Ô‚Å‚ ‚é‚Æ‚¢‚¤‰¼’è‚ÉŠî‚Ã‚«A‚»‚ÌŒ`‘Ô‚ª
+					'ƒm[ƒ}ƒ‹ƒ‚[ƒh‚Åw’è‚³‚ê‚Ä‚¢‚éê‡‚Î–³‹‚·‚é
+					If uname = LIndex(.FeatureData("ƒm[ƒ}ƒ‹ƒ‚[ƒh"), 1) Then
+						GoTo NextForm
+					End If
 					
-					'Invalid_string_refer_to_original_code
+					'ŠC‚Å‚Í…’†‚à‚µ‚­‚Í‹ó’†“K‰‚ğ‚Âƒ†ƒjƒbƒg‚ğ—Dæ
 					Select Case TerrainClass(xx, yy)
-						Case "æ°´", "æ·±æµ·"
-							'Invalid_string_refer_to_original_code
-							If InStr(.Data.Transportation, "æ°´") > 0 Then
-								If InStr(u.Data.Transportation, "æ°´") = 0 Then
+						Case "…", "[ŠC"
+							'…’†“K‰‚ğ‚Âƒ†ƒjƒbƒg‚ğÅ—Dæ
+							If InStr(.Data.Transportation, "…") > 0 Then
+								If InStr(u.Data.Transportation, "…") = 0 Then
 									u = .OtherForm(uname)
 									GoTo NextForm
 								End If
 							End If
-							If InStr(u.Data.Transportation, "æ°´") > 0 Then
-								If InStr(.Data.Transportation, "æ°´") = 0 Then
+							If InStr(u.Data.Transportation, "…") > 0 Then
+								If InStr(.Data.Transportation, "…") = 0 Then
 									GoTo NextForm
 								End If
 							End If
 							
-							'Invalid_string_refer_to_original_code
-							If InStr(.Data.Transportation, "ç©º") > 0 Then
-								If InStr(u.Data.Transportation, "ç©º") = 0 Then
+							'Ÿ“_‚Å‹ó’†“K‰ƒ†ƒjƒbƒg
+							If InStr(.Data.Transportation, "‹ó") > 0 Then
+								If InStr(u.Data.Transportation, "‹ó") = 0 Then
 									u = .OtherForm(uname)
 									GoTo NextForm
 								End If
 							End If
-							If InStr(u.Data.Transportation, "ç©º") > 0 Then
-								If InStr(.Data.Transportation, "ç©º") = 0 Then
+							If InStr(u.Data.Transportation, "‹ó") > 0 Then
+								If InStr(.Data.Transportation, "‹ó") = 0 Then
 									GoTo NextForm
 								End If
 							End If
 					End Select
 					
-					'Invalid_string_refer_to_original_code
+					'‰^“®«‚ª‚‚¢‚à‚Ì‚ğ—Dæ
 					If .Data.Mobility < u.Data.Mobility Then
 						GoTo NextForm
 					ElseIf .Data.Mobility = u.Data.Mobility Then 
-						'Invalid_string_refer_to_original_code
+						'‰^“®«‚ª“¯‚¶‚È‚çUŒ‚—Í‚ª‚‚¢‚à‚Ì‚ğ—Dæ
 						If .Data.CountWeapon = 0 Then
-							'Invalid_string_refer_to_original_code
+							'‚±‚ÌŒ`‘Ô‚Í•Ší‚ğ‚Á‚Ä‚¢‚È‚¢
 							GoTo NextForm
 						ElseIf u.Data.CountWeapon > 0 Then 
 							If .Data.Weapon(.Data.CountWeapon).Power < u.Data.Weapon(u.Data.CountWeapon).Power Then
 								GoTo NextForm
 							ElseIf .Data.Weapon(.Data.CountWeapon).Power = u.Data.Weapon(u.Data.CountWeapon).Power Then 
-								'Invalid_string_refer_to_original_code
+								'UŒ‚—Í‚à“¯‚¶‚È‚ç‘•b‚ª‚‚¢‚à‚Ì‚ğ—Dæ
 								If .Data.Armor <= u.Data.Armor Then
 									GoTo NextForm
 								End If
@@ -2175,68 +2158,65 @@ EndOfOperation:
 NextForm: 
 			Next 
 			
-			'Invalid_string_refer_to_original_code
+			'Œ»İ‚ÌŒ`‘Ô‚ªÅ‚àí“¬‚É“K‚µ‚Ä‚¢‚éH
 			If u Is SelectedUnit Then
 				Exit Function
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'Œ`‘Ôu‚É•ÏŒ`Œˆ’è
 			uname = u.Name
 			
-			'Invalid_string_refer_to_original_code
-			If u.IsFeatureAvailable("Invalid_string_refer_to_original_code") Then
-				If Not PList.IsDefined(u.FeatureData("Invalid_string_refer_to_original_code")) Then
-					If Not PDList.IsDefined(u.FeatureData("Invalid_string_refer_to_original_code")) Then
-						ErrorMessage(uname & "Invalid_string_refer_to_original_code")
-						'Invalid_string_refer_to_original_code_
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			'ƒ_ƒCƒAƒƒO‚ÅƒƒbƒZ[ƒW‚ğ•\¦‚³‚¹‚é‚½‚ß’Ç‰ÁƒpƒCƒƒbƒg‚ğ‚ ‚ç‚©‚¶‚ßì¬
+			If u.IsFeatureAvailable("’Ç‰ÁƒpƒCƒƒbƒg") Then
+				If Not PList.IsDefined(u.FeatureData("’Ç‰ÁƒpƒCƒƒbƒg")) Then
+					If Not PDList.IsDefined(u.FeatureData("’Ç‰ÁƒpƒCƒƒbƒg")) Then
+						ErrorMessage(uname & "‚Ì’Ç‰ÁƒpƒCƒƒbƒgu" & u.FeatureData("’Ç‰ÁƒpƒCƒƒbƒg") & "v‚Ìƒf[ƒ^‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ")
 						TerminateSRC()
 					End If
-					PList.Add(u.FeatureData("Invalid_string_refer_to_original_code"), .MainPilot.Level, .Party0)
+					PList.Add(u.FeatureData("’Ç‰ÁƒpƒCƒƒbƒg"), .MainPilot.Level, .Party0)
 				End If
 			End If
 			
-			'Invalid_string_refer_to_original_code
-			If .IsMessageDefined("å¤‰å½¢(" & .Name & "=>" & uname & ")") Then
+			'•ÏŒ`ƒƒbƒZ[ƒW
+			If .IsMessageDefined("•ÏŒ`(" & .Name & "=>" & uname & ")") Then
 				OpenMessageForm()
-				.PilotMessage("å¤‰å½¢(" & .Name & "=>" & uname & ")")
+				.PilotMessage("•ÏŒ`(" & .Name & "=>" & uname & ")")
 				CloseMessageForm()
-			ElseIf .IsMessageDefined("å¤‰å½¢(" & uname & ")") Then 
+			ElseIf .IsMessageDefined("•ÏŒ`(" & uname & ")") Then 
 				OpenMessageForm()
-				.PilotMessage("å¤‰å½¢(" & uname & ")")
+				.PilotMessage("•ÏŒ`(" & uname & ")")
 				CloseMessageForm()
-			ElseIf .IsMessageDefined("å¤‰å½¢(" & .FeatureName("å¤‰å½¢") & ")") Then 
+			ElseIf .IsMessageDefined("•ÏŒ`(" & .FeatureName("•ÏŒ`") & ")") Then 
 				OpenMessageForm()
-				.PilotMessage("å¤‰å½¢(" & .FeatureName("å¤‰å½¢") & ")")
+				.PilotMessage("•ÏŒ`(" & .FeatureName("•ÏŒ`") & ")")
 				CloseMessageForm()
 			End If
 			
-			'ã‚¢ãƒ‹ãƒ¡è¡¨ç¤º
-			If .IsAnimationDefined("å¤‰å½¢(" & .Name & "=>" & uname & ")") Then
-				.PlayAnimation("å¤‰å½¢(" & .Name & "=>" & uname & ")")
-			ElseIf .IsAnimationDefined("å¤‰å½¢(" & uname & ")") Then 
-				.PlayAnimation("å¤‰å½¢(" & uname & ")")
-			ElseIf .IsAnimationDefined("å¤‰å½¢(" & .FeatureName("å¤‰å½¢") & ")") Then 
-				.PlayAnimation("å¤‰å½¢(" & .FeatureName("å¤‰å½¢") & ")")
-			ElseIf .IsSpecialEffectDefined("å¤‰å½¢(" & .Name & "=>" & uname & ")") Then 
-				.SpecialEffect("å¤‰å½¢(" & .Name & "=>" & uname & ")")
-			ElseIf .IsSpecialEffectDefined("å¤‰å½¢(" & uname & ")") Then 
-				.SpecialEffect("å¤‰å½¢(" & uname & ")")
-			ElseIf .IsSpecialEffectDefined("å¤‰å½¢(" & .FeatureName("å¤‰å½¢") & ")") Then 
-				.SpecialEffect("å¤‰å½¢(" & .FeatureName("å¤‰å½¢") & ")")
+			'ƒAƒjƒ•\¦
+			If .IsAnimationDefined("•ÏŒ`(" & .Name & "=>" & uname & ")") Then
+				.PlayAnimation("•ÏŒ`(" & .Name & "=>" & uname & ")")
+			ElseIf .IsAnimationDefined("•ÏŒ`(" & uname & ")") Then 
+				.PlayAnimation("•ÏŒ`(" & uname & ")")
+			ElseIf .IsAnimationDefined("•ÏŒ`(" & .FeatureName("•ÏŒ`") & ")") Then 
+				.PlayAnimation("•ÏŒ`(" & .FeatureName("•ÏŒ`") & ")")
+			ElseIf .IsSpecialEffectDefined("•ÏŒ`(" & .Name & "=>" & uname & ")") Then 
+				.SpecialEffect("•ÏŒ`(" & .Name & "=>" & uname & ")")
+			ElseIf .IsSpecialEffectDefined("•ÏŒ`(" & uname & ")") Then 
+				.SpecialEffect("•ÏŒ`(" & uname & ")")
+			ElseIf .IsSpecialEffectDefined("•ÏŒ`(" & .FeatureName("•ÏŒ`") & ")") Then 
+				.SpecialEffect("•ÏŒ`(" & .FeatureName("•ÏŒ`") & ")")
 			End If
 			
-			'å¤‰å½¢
+			'•ÏŒ`
 			.Transform(uname)
 		End With
 		
-		'Invalid_string_refer_to_original_code
+		'•ÏŒ`ƒCƒxƒ“ƒg
 		With u.CurrentForm
-			HandleEvent("å¤‰å½¢", .MainPilot.ID, .Name)
+			HandleEvent("•ÏŒ`", .MainPilot.ID, .Name)
 		End With
 		
-		'Invalid_string_refer_to_original_code
+		'ƒnƒCƒp[ƒ‚[ƒh•ƒm[ƒ}ƒ‹ƒ‚[ƒh‚Ì©“®”­“®
 		u.CurrentForm.CheckAutoHyperMode()
 		u.CurrentForm.CheckAutoNormalMode()
 		
@@ -2246,7 +2226,7 @@ NextForm:
 		TryBattleTransform = True
 	End Function
 	
-	'ç§»å‹•å½¢æ…‹ã¸ã®å¤‰å½¢ãŒå¯èƒ½ã§ã‚ã‚Œã°å¤‰å½¢ã™ã‚‹
+	'ˆÚ“®Œ`‘Ô‚Ö‚Ì•ÏŒ`‚ª‰Â”\‚Å‚ ‚ê‚Î•ÏŒ`‚·‚é
 	Private Function TryMoveTransform() As Boolean
 		Dim uname As String
 		Dim u As Unit
@@ -2256,19 +2236,16 @@ NextForm:
 		Dim i As Short
 		
 		With SelectedUnit
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code_
-			'Invalid_string_refer_to_original_code_
-			'Then
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			Exit Function
-			'End If
+			'•ÏŒ`‚ª‰Â”\H
+			If Not .IsFeatureAvailable("•ÏŒ`") Or .IsConditionSatisfied("Œ`‘ÔŒÅ’è") Or .IsConditionSatisfied("‹@‘ÌŒÅ’è") Then
+				Exit Function
+			End If
 			
 			xx = .X
 			yy = .Y
 			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
+			'’nŒ`‚É×–‚‚³‚ê‚ÄˆÚ“®‚Å‚«‚È‚­‚È‚ç‚È‚¢‚©’²‚×‚é‚½‚ßA–Ú“I’n‚Ì•ûŒü‚É‚ ‚é
+			'—×Ú‚·‚éƒ}ƒX‚ÌÀ•W‚ğ’²‚×‚é
 			If System.Math.Abs(SelectedX - xx) > System.Math.Abs(SelectedY - yy) Then
 				If SelectedX > xx Then
 					tx = xx + 1
@@ -2285,72 +2262,60 @@ NextForm:
 				End If
 			End If
 			
-			'æœ€ã‚‚ç§»å‹•åŠ›ãŒé«˜ã„å½¢æ…‹ã«å¤‰å½¢
+			'Å‚àˆÚ“®—Í‚ª‚‚¢Œ`‘Ô‚É•ÏŒ`
 			u = SelectedUnit
-			For i = 2 To LLength(.FeatureData("å¤‰å½¢"))
-				uname = LIndex(.FeatureData("å¤‰å½¢"), i)
+			For i = 2 To LLength(.FeatureData("•ÏŒ`"))
+				uname = LIndex(.FeatureData("•ÏŒ`"), i)
 				With .OtherForm(uname)
-					'Invalid_string_refer_to_original_code
-					If .IsConditionSatisfied("Invalid_string_refer_to_original_code") Or Not .IsAbleToEnter(xx, yy) Then
+					'‚»‚ÌŒ`‘Ô‚É•ÏŒ`‰Â”\H
+					If .IsConditionSatisfied("s“®•s”\") Or Not .IsAbleToEnter(xx, yy) Then
 						GoTo NextForm
 					End If
 					
-					'Invalid_string_refer_to_original_code
+					'–Ú“I’n•û–Ê‚ÉˆÚ“®‰Â”\H
 					If u.IsAbleToEnter(tx, ty) And Not .IsAbleToEnter(tx, ty) Then
 						GoTo NextForm
 					End If
 					
-					'Invalid_string_refer_to_original_code
+					'ˆÚ“®—Í‚ª‚‚¢•û‚ğ—Dæ
 					speed1 = .Data.Speed
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					'End If
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					'End If
-					'Invalid_string_refer_to_original_code
+					If .Data.IsFeatureAvailable("ƒeƒŒƒ|[ƒg") Then
+						speed1 = speed1 + .Data.FeatureLevel("ƒeƒŒƒ|[ƒg") + 1
+					End If
+					If .Data.IsFeatureAvailable("ƒWƒƒƒ“ƒv") Then
+						speed1 = speed1 + .Data.FeatureLevel("ƒWƒƒƒ“ƒv") + 1
+					End If
+					'ˆÚ“®‰Â”\‚È’nŒ`ƒ^ƒCƒv‚àl—¶
 					Select Case TerrainClass(xx, yy)
-						Case "æ°´", "æ·±æµ·"
-							If InStr(.Data.Transportation, "æ°´") > 0 Or InStr(.Data.Transportation, "ç©º") > 0 Then
+						Case "…", "[ŠC"
+							If InStr(.Data.Transportation, "…") > 0 Or InStr(.Data.Transportation, "‹ó") > 0 Then
 								speed1 = speed1 + 1
 							End If
-						Case "Invalid_string_refer_to_original_code"
-							'Invalid_string_refer_to_original_code
-							'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-							'Invalid_string_refer_to_original_code
+						Case "‰F’ˆ", "‰®“à"
+							'‰F’ˆ‚â‰®“à‚Å‚Í·‚ªo‚È‚¢
 						Case Else
-							If InStr(.Data.Transportation, "ç©º") > 0 Then
+							If InStr(.Data.Transportation, "‹ó") > 0 Then
 								speed1 = speed1 + 1
 							End If
 					End Select
 					
 					speed2 = u.Data.Speed
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					'End If
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					'End If
-					'Invalid_string_refer_to_original_code
+					If u.Data.IsFeatureAvailable("ƒeƒŒƒ|[ƒg") Then
+						speed2 = speed2 + u.Data.FeatureLevel("ƒeƒŒƒ|[ƒg") + 1
+					End If
+					If u.Data.IsFeatureAvailable("ƒWƒƒƒ“ƒv") Then
+						speed2 = speed2 + u.Data.FeatureLevel("ƒWƒƒƒ“ƒv") + 1
+					End If
+					'ˆÚ“®‰Â”\‚È’nŒ`ƒ^ƒCƒv‚àl—¶
 					Select Case TerrainClass(xx, yy)
-						Case "æ°´", "æ·±æµ·"
-							If InStr(u.Data.Transportation, "æ°´") > 0 Or InStr(u.Data.Transportation, "ç©º") > 0 Then
+						Case "…", "[ŠC"
+							If InStr(u.Data.Transportation, "…") > 0 Or InStr(u.Data.Transportation, "‹ó") > 0 Then
 								speed2 = speed2 + 1
 							End If
-						Case "Invalid_string_refer_to_original_code"
-							'Invalid_string_refer_to_original_code
-							'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-							'Invalid_string_refer_to_original_code
+						Case "‰F’ˆ", "‰®“à"
+							'‰F’ˆ‚â‰®“à‚Å‚Í·‚ªo‚È‚¢
 						Case Else
-							If InStr(u.Data.Transportation, "ç©º") > 0 Then
+							If InStr(u.Data.Transportation, "‹ó") > 0 Then
 								speed2 = speed2 + 1
 							End If
 					End Select
@@ -2358,7 +2323,7 @@ NextForm:
 					If speed2 > speed1 Then
 						GoTo NextForm
 					ElseIf speed2 = speed1 Then 
-						'Invalid_string_refer_to_original_code
+						'ˆÚ“®—Í‚ª“¯‚¶‚È‚ç‘•b‚ª‚‚¢•û‚ğ—Dæ
 						If u.Data.Armor >= .Data.Armor Then
 							GoTo NextForm
 						End If
@@ -2368,68 +2333,65 @@ NextForm:
 NextForm: 
 			Next 
 			
-			'Invalid_string_refer_to_original_code
+			'Œ»İ‚ÌŒ`‘Ô‚ªÅ‚àˆÚ“®‚É“K‚µ‚Ä‚¢‚éH
 			If SelectedUnit Is u Then
 				Exit Function
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'Œ`‘Ôu‚É•ÏŒ`Œˆ’è
 			uname = u.Name
 			
-			'Invalid_string_refer_to_original_code
-			If u.IsFeatureAvailable("Invalid_string_refer_to_original_code") Then
-				If Not PList.IsDefined(u.FeatureData("Invalid_string_refer_to_original_code")) Then
-					If Not PDList.IsDefined(u.FeatureData("Invalid_string_refer_to_original_code")) Then
-						ErrorMessage(uname & "Invalid_string_refer_to_original_code")
-						'Invalid_string_refer_to_original_code_
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			'ƒ_ƒCƒAƒƒO‚ÅƒƒbƒZ[ƒW‚ğ•\¦‚³‚¹‚é‚½‚ß’Ç‰ÁƒpƒCƒƒbƒg‚ğ‚ ‚ç‚©‚¶‚ßì¬
+			If u.IsFeatureAvailable("’Ç‰ÁƒpƒCƒƒbƒg") Then
+				If Not PList.IsDefined(u.FeatureData("’Ç‰ÁƒpƒCƒƒbƒg")) Then
+					If Not PDList.IsDefined(u.FeatureData("’Ç‰ÁƒpƒCƒƒbƒg")) Then
+						ErrorMessage(uname & "‚Ì’Ç‰ÁƒpƒCƒƒbƒgu" & u.FeatureData("’Ç‰ÁƒpƒCƒƒbƒg") & "v‚Ìƒf[ƒ^‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ")
 						TerminateSRC()
 					End If
-					PList.Add(u.FeatureData("Invalid_string_refer_to_original_code"), .MainPilot.Level, .Party0)
+					PList.Add(u.FeatureData("’Ç‰ÁƒpƒCƒƒbƒg"), .MainPilot.Level, .Party0)
 				End If
 			End If
 			
-			'Invalid_string_refer_to_original_code
-			If .IsMessageDefined("å¤‰å½¢(" & .Name & "=>" & uname & ")") Then
+			'•ÏŒ`ƒƒbƒZ[ƒW
+			If .IsMessageDefined("•ÏŒ`(" & .Name & "=>" & uname & ")") Then
 				OpenMessageForm()
-				.PilotMessage("å¤‰å½¢(" & .Name & "=>" & uname & ")")
+				.PilotMessage("•ÏŒ`(" & .Name & "=>" & uname & ")")
 				CloseMessageForm()
-			ElseIf .IsMessageDefined("å¤‰å½¢(" & uname & ")") Then 
+			ElseIf .IsMessageDefined("•ÏŒ`(" & uname & ")") Then 
 				OpenMessageForm()
-				.PilotMessage("å¤‰å½¢(" & uname & ")")
+				.PilotMessage("•ÏŒ`(" & uname & ")")
 				CloseMessageForm()
-			ElseIf .IsMessageDefined("å¤‰å½¢(" & .FeatureName("å¤‰å½¢") & ")") Then 
+			ElseIf .IsMessageDefined("•ÏŒ`(" & .FeatureName("•ÏŒ`") & ")") Then 
 				OpenMessageForm()
-				.PilotMessage("å¤‰å½¢(" & .FeatureName("å¤‰å½¢") & ")")
+				.PilotMessage("•ÏŒ`(" & .FeatureName("•ÏŒ`") & ")")
 				CloseMessageForm()
 			End If
 			
-			'ã‚¢ãƒ‹ãƒ¡è¡¨ç¤º
-			If .IsAnimationDefined("å¤‰å½¢(" & .Name & "=>" & uname & ")") Then
-				.PlayAnimation("å¤‰å½¢(" & .Name & "=>" & uname & ")")
-			ElseIf .IsAnimationDefined("å¤‰å½¢(" & uname & ")") Then 
-				.PlayAnimation("å¤‰å½¢(" & uname & ")")
-			ElseIf .IsAnimationDefined("å¤‰å½¢(" & .FeatureName("å¤‰å½¢") & ")") Then 
-				.PlayAnimation("å¤‰å½¢(" & .FeatureName("å¤‰å½¢") & ")")
-			ElseIf .IsSpecialEffectDefined("å¤‰å½¢(" & .Name & "=>" & uname & ")") Then 
-				.SpecialEffect("å¤‰å½¢(" & .Name & "=>" & uname & ")")
-			ElseIf .IsSpecialEffectDefined("å¤‰å½¢(" & uname & ")") Then 
-				.SpecialEffect("å¤‰å½¢(" & uname & ")")
-			ElseIf .IsSpecialEffectDefined("å¤‰å½¢(" & .FeatureName("å¤‰å½¢") & ")") Then 
-				.SpecialEffect("å¤‰å½¢(" & .FeatureName("å¤‰å½¢") & ")")
+			'ƒAƒjƒ•\¦
+			If .IsAnimationDefined("•ÏŒ`(" & .Name & "=>" & uname & ")") Then
+				.PlayAnimation("•ÏŒ`(" & .Name & "=>" & uname & ")")
+			ElseIf .IsAnimationDefined("•ÏŒ`(" & uname & ")") Then 
+				.PlayAnimation("•ÏŒ`(" & uname & ")")
+			ElseIf .IsAnimationDefined("•ÏŒ`(" & .FeatureName("•ÏŒ`") & ")") Then 
+				.PlayAnimation("•ÏŒ`(" & .FeatureName("•ÏŒ`") & ")")
+			ElseIf .IsSpecialEffectDefined("•ÏŒ`(" & .Name & "=>" & uname & ")") Then 
+				.SpecialEffect("•ÏŒ`(" & .Name & "=>" & uname & ")")
+			ElseIf .IsSpecialEffectDefined("•ÏŒ`(" & uname & ")") Then 
+				.SpecialEffect("•ÏŒ`(" & uname & ")")
+			ElseIf .IsSpecialEffectDefined("•ÏŒ`(" & .FeatureName("•ÏŒ`") & ")") Then 
+				.SpecialEffect("•ÏŒ`(" & .FeatureName("•ÏŒ`") & ")")
 			End If
 			
-			'å¤‰å½¢
+			'•ÏŒ`
 			.Transform(uname)
 		End With
 		
-		'Invalid_string_refer_to_original_code
+		'•ÏŒ`ƒCƒxƒ“ƒg
 		With u.CurrentForm
-			HandleEvent("å¤‰å½¢", .MainPilot.ID, .Name)
+			HandleEvent("•ÏŒ`", .MainPilot.ID, .Name)
 		End With
 		
-		'Invalid_string_refer_to_original_code
+		'ƒnƒCƒp[ƒ‚[ƒh•ƒm[ƒ}ƒ‹ƒ‚[ƒh‚Ì©“®”­“®
 		u.CurrentForm.CheckAutoHyperMode()
 		u.CurrentForm.CheckAutoNormalMode()
 		
@@ -2439,27 +2401,27 @@ NextForm:
 		TryMoveTransform = True
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'ÀsŠÔ‚ğ•K—v‚Æ‚µ‚È‚¢ƒAƒrƒŠƒeƒB‚ª‚ ‚ê‚Îg‚Á‚Ä‚¨‚­
 	Public Sub TryInstantAbility()
 		Dim i, j As Short
 		Dim aname As String
 		Dim partners() As Unit
 		
-		'Invalid_string_refer_to_original_code
+		'‚Tƒ}ƒXˆÈ“à‚É“G‚ª‚¢‚é‚©ƒ`ƒFƒbƒN
 		If DistanceFromNearestEnemy(SelectedUnit) > 5 Then
-			'Invalid_string_refer_to_original_code
+			'ü‚è‚É“G‚Í‚¢‚È‚¢‚Ì‚ÅƒAƒrƒŠƒeƒB‚Íg‚í‚È‚¢
 			Exit Sub
 		End If
 		
 		With SelectedUnit
-			'Invalid_string_refer_to_original_code
+			'ÀsŠÔ‚ğ•K—v‚Æ‚µ‚È‚¢ƒAƒrƒŠƒeƒB‚ğ’T‚·
 			For i = 1 To .CountAbility
-				'Invalid_string_refer_to_original_code
-				If Not .IsAbilityUseful(i, "ç§»å‹•å‰") Then
+				'g—p‰Â”\•Œø‰Ê‚ ‚èH
+				If Not .IsAbilityUseful(i, "ˆÚ“®‘O") Then
 					GoTo NextAbility
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'‚d‚mÁ”ï‚ª‘½‚·‚¬‚È‚¢H
 				If .AbilityENConsumption(i) > 0 Then
 					If .AbilityENConsumption(i) >= .EN \ 2 Then
 						GoTo NextAbility
@@ -2467,14 +2429,14 @@ NextForm:
 				End If
 				
 				With .Ability(i)
-					'Invalid_string_refer_to_original_code
+					'©ŒÈ‹­‰»‚ÌƒAƒrƒŠƒeƒB‚Ì‚İ‚ª‘ÎÛ
 					If .MaxRange <> 0 Then
 						GoTo NextAbility
 					End If
 					
-					'Invalid_string_refer_to_original_code
+					'ÀsŠÔ‚ğ•K—v‚Æ‚µ‚È‚¢H
 					For j = 1 To .CountEffect
-						If .EffectType(j) = "å†è¡Œå‹•" Then
+						If .EffectType(j) = "Äs“®" Then
 							Exit For
 						End If
 					Next 
@@ -2482,73 +2444,68 @@ NextForm:
 						GoTo NextAbility
 					End If
 					
-					'Invalid_string_refer_to_original_code
+					'‹­‰»—pƒAƒrƒŠƒeƒBH
 					For j = 1 To .CountEffect
-						'Invalid_string_refer_to_original_code_
-						'Or .EffectType(j) = "ä»˜åŠ " _
-						'Invalid_string_refer_to_original_code_
-						'Then
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-						'Invalid_string_refer_to_original_code
-						SelectedAbility = i
-						GoTo UseInstantAbility
-						'End If
+						If .EffectType(j) = "ó‘Ô" Or .EffectType(j) = "•t‰Á" Or .EffectType(j) = "‹­‰»" Then
+							'‹­‰»—pƒAƒrƒŠƒeƒB‚ªŒ©‚Â‚©‚Á‚½
+							SelectedAbility = i
+							GoTo UseInstantAbility
+						End If
 					Next 
 				End With
 NextAbility: 
 			Next 
 			
-			'Invalid_string_refer_to_original_code
+			'‚±‚±‚É—ˆ‚é‚Íg—p‚Å‚«‚éƒAƒrƒŠƒeƒB‚ª‚È‚©‚Á‚½ê‡
 			Exit Sub
 			
 UseInstantAbility: 
 			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			.CombinationPartner("Invalid_string_refer_to_original_code", SelectedAbility, partners)
-			ReDim SelectedPartners(0)
-			ReDim partners(0)
-			'End If
+			'‡‘Ì‹Zƒp[ƒgƒi[‚Ìİ’è
+			If .IsAbilityClassifiedAs(SelectedAbility, "‡") Then
+				.CombinationPartner("ƒAƒrƒŠƒeƒB", SelectedAbility, partners)
+			Else
+				ReDim SelectedPartners(0)
+				ReDim partners(0)
+			End If
 			
 			aname = .Ability(SelectedAbility).Name
 			SelectedAbilityName = aname
 			
-			'Invalid_string_refer_to_original_code
-			HandleEvent("ä½¿ç”¨", .MainPilot.ID, aname)
+			'ƒAƒrƒŠƒeƒB‚Ìg—pƒCƒxƒ“ƒg
+			HandleEvent("g—p", .MainPilot.ID, aname)
 			If IsScenarioFinished Or IsCanceled Then
 				Exit Sub
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'ƒAƒrƒŠƒeƒB‚ğg—p
 			OpenMessageForm(SelectedUnit)
 			.ExecuteAbility(SelectedAbility, SelectedUnit)
 			CloseMessageForm()
 			SelectedUnit = .CurrentForm
 		End With
 		
-		'Invalid_string_refer_to_original_code
-		HandleEvent("Invalid_string_refer_to_original_code")
+		'ƒAƒrƒŠƒeƒB‚Ìg—pŒãƒCƒxƒ“ƒg
+		HandleEvent("g—pŒã", SelectedUnit.MainPilot.ID, aname)
 		If IsScenarioFinished Or IsCanceled Then
 			ReDim SelectedPartners(0)
 			Exit Sub
 		End If
 		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		HandleEvent("Invalid_string_refer_to_original_code")
-		If IsScenarioFinished Or IsCanceled Then
-			ReDim SelectedPartners(0)
-			Exit Sub
+		'©”šƒAƒrƒŠƒeƒB‚Ì”j‰óƒCƒxƒ“ƒg
+		If SelectedUnit.Status_Renamed = "”j‰ó" Then
+			HandleEvent("”j‰ó", SelectedUnit.MainPilot.ID)
+			If IsScenarioFinished Or IsCanceled Then
+				ReDim SelectedPartners(0)
+				Exit Sub
+			End If
 		End If
-		'End If
 		
-		'è¡Œå‹•æ•°ã‚’æ¶ˆè²»ã—ã¦ãŠã
+		's“®”‚ğÁ”ï‚µ‚Ä‚¨‚­
 		SelectedUnit.UseAction()
 		
-		'Invalid_string_refer_to_original_code
-		If Not IsOptionDefined("Invalid_string_refer_to_original_code") Then
+		'‡‘Ì‹Z‚Ìƒp[ƒgƒi[‚Ìs“®”‚ğŒ¸‚ç‚·
+		If Not IsOptionDefined("‡‘Ì‹Zƒp[ƒgƒi[s“®”–³Á”ï") Then
 			For i = 1 To UBound(partners)
 				partners(i).CurrentForm.UseAction()
 			Next 
@@ -2556,28 +2513,26 @@ UseInstantAbility:
 		ReDim SelectedPartners(0)
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'¢Š«‚ª‰Â”\‚Å‚ ‚ê‚Î¢Š«‚·‚é
 	Public Function TrySummonning() As Boolean
 		Dim i, j As Short
 		Dim aname As String
 		Dim partners() As Unit
 		
 		With SelectedUnit
-			'Invalid_string_refer_to_original_code
+			'¢Š«ƒAƒrƒŠƒeƒB‚ğŒŸõ
 			For i = 1 To .CountAbility
-				If .IsAbilityAvailable(i, "ç§»å‹•å‰") Then
+				If .IsAbilityAvailable(i, "ˆÚ“®‘O") Then
 					For j = 1 To .Ability(i).CountEffect
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-						SelectedAbility = i
-						GoTo UseSummonning
+						If .Ability(i).EffectType(j) = "¢Š«" Then
+							SelectedAbility = i
+							GoTo UseSummonning
+						End If
 					Next 
 				End If
 			Next 
-			'End If
-			'Next
 			
-			'Invalid_string_refer_to_original_code
+			'g—p‰Â”\‚È¢Š«ƒAƒrƒŠƒeƒB‚ğ‚Á‚Ä‚¢‚È‚©‚Á‚½
 			Exit Function
 			
 UseSummonning: 
@@ -2587,46 +2542,45 @@ UseSummonning:
 			aname = .Ability(SelectedAbility).Name
 			SelectedAbilityName = aname
 			
-			'Invalid_string_refer_to_original_code
-			HandleEvent("ä½¿ç”¨", .MainPilot.ID, aname)
+			'¢Š«ƒAƒrƒŠƒeƒB‚Ìg—pƒCƒxƒ“ƒg
+			HandleEvent("g—p", .MainPilot.ID, aname)
 			If IsScenarioFinished Or IsCanceled Then
 				Exit Function
 			End If
 			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			.CombinationPartner("Invalid_string_refer_to_original_code", SelectedAbility, partners)
-			ReDim SelectedPartners(0)
-			ReDim partners(0)
-			'End If
+			'‡‘Ì‹Zƒp[ƒgƒi[‚Ìİ’è
+			If .IsAbilityClassifiedAs(SelectedAbility, "‡") Then
+				.CombinationPartner("ƒAƒrƒŠƒeƒB", SelectedAbility, partners)
+			Else
+				ReDim SelectedPartners(0)
+				ReDim partners(0)
+			End If
 			
-			'Invalid_string_refer_to_original_code
+			'¢Š«ƒAƒrƒŠƒeƒB‚ğg—p
 			OpenMessageForm(SelectedUnit)
 			.ExecuteAbility(SelectedAbility, SelectedUnit)
 			CloseMessageForm()
 			SelectedUnit = .CurrentForm
 		End With
 		
-		'Invalid_string_refer_to_original_code
-		HandleEvent("Invalid_string_refer_to_original_code")
+		'¢Š«ƒAƒrƒŠƒeƒB‚Ìg—pŒãƒCƒxƒ“ƒg
+		HandleEvent("g—pŒã", SelectedUnit.MainPilot.ID, aname)
 		If IsScenarioFinished Or IsCanceled Then
 			ReDim SelectedPartners(0)
 			Exit Function
 		End If
 		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		HandleEvent("Invalid_string_refer_to_original_code")
-		If IsScenarioFinished Or IsCanceled Then
-			ReDim SelectedPartners(0)
-			Exit Function
+		'©”šƒAƒrƒŠƒeƒB‚Ì”j‰óƒCƒxƒ“ƒg
+		If SelectedUnit.Status_Renamed = "”j‰ó" Then
+			HandleEvent("”j‰ó", SelectedUnit.MainPilot.ID)
+			If IsScenarioFinished Or IsCanceled Then
+				ReDim SelectedPartners(0)
+				Exit Function
+			End If
 		End If
-		'End If
 		
-		'Invalid_string_refer_to_original_code
-		If Not IsOptionDefined("Invalid_string_refer_to_original_code") Then
+		'‡‘Ì‹Z‚Ìƒp[ƒgƒi[‚Ìs“®”‚ğŒ¸‚ç‚·
+		If Not IsOptionDefined("‡‘Ì‹Zƒp[ƒgƒi[s“®”–³Á”ï") Then
 			For i = 1 To UBound(partners)
 				partners(i).CurrentForm.UseAction()
 			Next 
@@ -2634,7 +2588,7 @@ UseSummonning:
 		ReDim SelectedPartners(0)
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'ƒ}ƒbƒvŒ^‰ñ•œƒAƒrƒŠƒeƒBg—p‚ÉŠÖ‚·‚éˆ—
 	Public Function TryMapHealing(ByRef moved As Boolean) As Boolean
 		Dim a As Short
 		Dim apower As Integer
@@ -2648,11 +2602,13 @@ UseSummonning:
 		Dim t As Unit
 		Dim partners() As Unit
 		
+		Dim tmp_num, tmp_score As Short
+		Dim mlv As Short
 		With SelectedUnit
 			SelectedAbility = 0
 			
-			'Invalid_string_refer_to_original_code
-			If .IsConditionSatisfied("ç‹‚æˆ¦å£«") Then
+			'‹¶ímó‘Ô‚ÌÛ‚Í‰ñ•œƒAƒrƒŠƒeƒB‚ğg‚í‚È‚¢
+			If .IsConditionSatisfied("‹¶ím") Then
 				Exit Function
 			End If
 			
@@ -2660,26 +2616,26 @@ UseSummonning:
 			
 			a = .CountAbility()
 			Do While a > 0
-				'Invalid_string_refer_to_original_code
-				If Not .IsAbilityClassifiedAs(a, "Invalid_string_refer_to_original_code") Then
+				'ƒ}ƒbƒvƒAƒrƒŠƒeƒB‚©‚Ç‚¤‚©
+				If Not .IsAbilityClassifiedAs(a, "‚l") Then
 					GoTo NextAbility
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'ƒAƒrƒŠƒeƒB‚Ìg—p‰Â”Û‚ğ”»’è
 				If moved Then
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					GoTo NextAbility
+					If Not .IsAbilityAvailable(a, "ˆÚ“®Œã") Then
+						GoTo NextAbility
+					End If
+				Else
+					If Not .IsAbilityAvailable(a, "ˆÚ“®‘O") Then
+						GoTo NextAbility
+					End If
 				End If
-				If Not .IsAbilityAvailable(a, "ç§»å‹•å‰") Then
-					GoTo NextAbility
-				End If
-				'End If
 				
-				'Invalid_string_refer_to_original_code
+				'‰ñ•œƒAƒrƒŠƒeƒB‚©‚Ç‚¤‚©
 				For i = 1 To .Ability(a).CountEffect
-					If .Ability(a).EffectType(i) = "å›å¾©" Then
-						'Invalid_string_refer_to_original_code
+					If .Ability(a).EffectType(i) = "‰ñ•œ" Then
+						'‰ñ•œ—Ê‚ğZo‚µ‚Ä‚¨‚­
 						If .IsSpellAbility(a) Then
 							apower = 5 * .Ability(a).EffectLevel(i) * p.Shooting
 						Else
@@ -2689,7 +2645,7 @@ UseSummonning:
 					End If
 				Next 
 				If i > .Ability(a).CountEffect Then
-					'Invalid_string_refer_to_original_code
+					'‰ñ•œƒAƒrƒŠƒeƒB‚Å‚Í‚È‚©‚Á‚½
 					GoTo NextAbility
 				End If
 				
@@ -2701,21 +2657,21 @@ UseSummonning:
 				y1 = MaxLng(.Y - max_range, 1)
 				y2 = MinLng(.Y + max_range, MapHeight)
 				
-				'Invalid_string_refer_to_original_code
+				'ƒAƒrƒŠƒeƒB‚ÌŒø‰Ê”ÍˆÍ‚É‰‚¶‚ÄƒAƒrƒŠƒeƒB‚ª—LŒø‚©‚Ç‚¤‚©”»’f‚·‚é
 				num = 0
 				score = 0
-				If .IsAbilityClassifiedAs(a, "Invalid_string_refer_to_original_code") Then
-					'Invalid_string_refer_to_original_code
+				If .IsAbilityClassifiedAs(a, "‚l‘S") Then
+					' MOD START ƒ}[ƒW
 					'                AreaInRange .X, .Y, min_range, max_range, .Party
 					AreaInRange(.X, .Y, max_range, min_range, .Party)
-					'Invalid_string_refer_to_original_code
+					' MOD END ƒ}[ƒW
 					
-					'Invalid_string_refer_to_original_code
-					If .IsAbilityClassifiedAs(a, "æ´") Then
+					'x‰‡ê—pƒAƒrƒŠƒeƒB‚Ìê‡‚Í©•ª‚É‚ÍŒø‰Ê‚ª‚È‚¢
+					If .IsAbilityClassifiedAs(a, "‰‡") Then
 						MaskData(.X, .Y) = True
 					End If
 					
-					'Invalid_string_refer_to_original_code
+					'Œø‰Ê”ÍˆÍ“à‚É‚¢‚éƒ^[ƒQƒbƒg‚ğƒJƒEƒ“ƒg
 					For i = x1 To x2
 						For j = y1 To y2
 							If MaskData(i, j) Then
@@ -2727,142 +2683,138 @@ UseSummonning:
 								GoTo NextUnit1
 							End If
 							
-							'Invalid_string_refer_to_original_code
+							'ƒAƒrƒŠƒeƒB‚ª“K—p‰Â”\H
 							If Not .IsAbilityApplicable(a, t) Then
 								GoTo NextUnit1
 							End If
 							
 							With t
-								'Invalid_string_refer_to_original_code
-								'Invalid_string_refer_to_original_code
-								'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-								GoTo NextUnit1
+								'ƒ]ƒ“ƒrH
+								If .IsConditionSatisfied("ƒ]ƒ“ƒr") Then
+									GoTo NextUnit1
+								End If
+								
+								If 100 * .HP \ .MaxHP < 90 Then
+									num = num + 1
+								End If
+								score = score + 100 * MinLng(.MaxHP - .HP, apower) \ .MaxHP
 							End With
+NextUnit1: 
+						Next 
+					Next 
+					
+					'•s—vH
+					tx = .X
+					ty = .Y
+				ElseIf .IsAbilityClassifiedAs(a, "‚l“Š") Then 
+					
+					mlv = .AbilityLevel(a, "‚l“Š")
+					
+					'“Š‰ºˆÊ’u‚ğ•Ï‚¦‚È‚ª‚ç‚µ‚Ä‚İ‚é
+					For xx = x1 To x2
+						For yy = y1 To y2
+							If System.Math.Abs(.X - xx) + System.Math.Abs(.Y - yy) > max_range Or System.Math.Abs(.X - xx) + System.Math.Abs(.Y - yy) < min_range Then
+								GoTo NextPoint
+							End If
+							
+							' MOD START ƒ}[ƒW
+							AreaInRange(xx, yy, 1, mlv, .Party)
+							AreaInRange(xx, yy, mlv, 1, .Party)
+							' MOD END ƒ}[ƒW
+							
+							'x‰‡ê—pƒAƒrƒŠƒeƒB‚Ìê‡‚Í©•ª‚É‚ÍŒø‰Ê‚ª‚È‚¢
+							If .IsAbilityClassifiedAs(a, "‰‡") Then
+								MaskData(.X, .Y) = True
+							End If
+							
+							'Œø‰Ê”ÍˆÍ“à‚É‚¢‚éƒ^[ƒQƒbƒg‚ğƒJƒEƒ“ƒg
+							tmp_num = 0
+							tmp_score = 0
+							For i = MaxLng(xx - mlv, 1) To MinLng(xx + mlv, MapWidth)
+								For j = MaxLng(yy - mlv, 1) To MinLng(yy + mlv, MapHeight)
+									If MaskData(i, j) Then
+										GoTo NextUnit2
+									End If
+									
+									t = MapDataForUnit(i, j)
+									If t Is Nothing Then
+										GoTo NextUnit2
+									End If
+									
+									'ƒAƒrƒŠƒeƒB‚ª“K—p‰Â”\H
+									If Not .IsAbilityApplicable(a, t) Then
+										GoTo NextUnit2
+									End If
+									
+									With t
+										'ƒ]ƒ“ƒrH
+										If .IsConditionSatisfied("ƒ]ƒ“ƒr") Then
+											GoTo NextUnit2
+										End If
+										
+										If 100 * .HP \ .MaxHP < 90 Then
+											tmp_num = tmp_num + 1
+										End If
+										tmp_score = tmp_score + 100 * MinLng(.MaxHP - .HP, apower) \ .MaxHP
+									End With
+NextUnit2: 
+								Next 
+							Next 
+							If tmp_num > 2 And tmp_score > score Then
+								num = tmp_num
+								score = tmp_score
+								tx = xx
+								ty = yy
+							End If
+NextPoint: 
 						Next 
 					Next 
 				End If
 				
-				If 100 * .HP \ .MaxHP < 90 Then
-					num = num + 1
+				If num > 1 And score > max_score Then
+					SelectedAbility = a
+					max_score = score
 				End If
-				score = score + 100 * MinLng(.MaxHP - .HP, apower) \ .MaxHP
-			Loop 
-		End With
-NextUnit1: 
-		'Next
-		'Next
-		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_WARNING: TryMapHealing ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		'UPGRADE_WARNING: TryMapHealing ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		Dim tmp_num, tmp_score As Short
-		Dim mlv As Short
-		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		
-		'Invalid_string_refer_to_original_code
-		For xx = x1 To x2
-			For yy = y1 To y2
-				'UPGRADE_WARNING: TryMapHealing ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
 				
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_WARNING: TryMapHealing ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-				'UPGRADE_WARNING: TryMapHealing ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-				'Invalid_string_refer_to_original_code
-				
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_WARNING: TryMapHealing ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-				
-				'Invalid_string_refer_to_original_code
-				tmp_num = 0
-				tmp_score = 0
-				For i = MaxLng(xx - mlv, 1) To MinLng(xx + mlv, MapWidth)
-					For j = MaxLng(yy - mlv, 1) To MinLng(yy + mlv, MapHeight)
-						If MaskData(i, j) Then
-							GoTo NextUnit2
-						End If
-						
-						t = MapDataForUnit(i, j)
-						If t Is Nothing Then
-							GoTo NextUnit2
-						End If
-						
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_WARNING: TryMapHealing ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-						
-						With t
-							'Invalid_string_refer_to_original_code
-							'Invalid_string_refer_to_original_code
-							'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-							GoTo NextUnit2
-							'End If
-							
-							If 100 * .HP \ .MaxHP < 90 Then
-								tmp_num = tmp_num + 1
-							End If
-							tmp_score = tmp_score + 100 * MinLng(.MaxHP - .HP, apower) \ .MaxHP
-						End With
-NextUnit2: 
-					Next 
-				Next 
-				If tmp_num > 2 And tmp_score > score Then
-					num = tmp_num
-					score = tmp_score
-					tx = xx
-					ty = yy
-				End If
-NextPoint: 
-			Next 
-		Next 
-		'End If
-		
-		If num > 1 And score > max_score Then
-			SelectedAbility = a
-			max_score = score
-		End If
-		
 NextAbility: 
-		a = a - 1
-		'Loop
-		
-		If SelectedAbility = 0 Then
-			'Invalid_string_refer_to_original_code
-			Exit Function
-		End If
-		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		'UPGRADE_WARNING: TryMapHealing ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		ReDim SelectedPartners(0)
-		ReDim partners(0)
-		'End If
-		
-		'UPGRADE_WARNING: TryMapHealing ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_WARNING: TryMapHealing ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		If IsScenarioFinished Or IsCanceled Then
+				a = a - 1
+			Loop 
+			
+			If SelectedAbility = 0 Then
+				'—LŒø‚Èƒ}ƒbƒvƒAƒrƒŠƒeƒB‚ª‚È‚©‚Á‚½
+				Exit Function
+			End If
+			
+			'‡‘Ì‹Zƒp[ƒgƒi[‚Ìİ’è
+			If .IsAbilityClassifiedAs(SelectedAbility, "‡") Then
+				.CombinationPartner("ƒAƒrƒŠƒeƒB", SelectedAbility, partners)
+			Else
+				ReDim SelectedPartners(0)
+				ReDim partners(0)
+			End If
+			
+			SelectedAbilityName = .Ability(SelectedAbility).Name
+			
+			'ƒAƒrƒŠƒeƒB‚ğg—p
+			.ExecuteMapAbility(SelectedAbility, tx, ty)
+			If IsScenarioFinished Or IsCanceled Then
+				ReDim SelectedPartners(0)
+				Exit Function
+			End If
+			
+			'‡‘Ì‹Z‚Ìƒp[ƒgƒi[‚Ìs“®”‚ğŒ¸‚ç‚·
+			If Not IsOptionDefined("‡‘Ì‹Zƒp[ƒgƒi[s“®”–³Á”ï") Then
+				For i = 1 To UBound(partners)
+					partners(i).CurrentForm.UseAction()
+				Next 
+			End If
 			ReDim SelectedPartners(0)
-			Exit Function
-		End If
-		
-		'Invalid_string_refer_to_original_code
-		If Not IsOptionDefined("Invalid_string_refer_to_original_code") Then
-			For i = 1 To UBound(partners)
-				partners(i).CurrentForm.UseAction()
-			Next 
-		End If
-		ReDim SelectedPartners(0)
-		'End With
+		End With
 		
 		TryMapHealing = True
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'‰Â”\‚Å‚ ‚ê‚Î‰ñ•œƒAƒrƒŠƒeƒB‚ğg‚¤
 	Public Function TryHealing(ByRef moved As Boolean, Optional ByRef t As Unit = Nothing) As Boolean
 		Dim i, a, j As Short
 		Dim aname As String
@@ -2877,46 +2829,46 @@ NextAbility:
 		Dim partners() As Unit
 		
 		With SelectedUnit
-			'Invalid_string_refer_to_original_code
-			If .IsConditionSatisfied("ç‹‚æˆ¦å£«") Then
+			'‹¶ímó‘Ô‚ÌÛ‚Í‰ñ•œƒAƒrƒŠƒeƒB‚ğg‚í‚È‚¢
+			If .IsConditionSatisfied("‹¶ím") Then
 				Exit Function
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'‰Šú‰»
 			'UPGRADE_NOTE: ƒIƒuƒWƒFƒNƒg SelectedTarget ‚ğƒKƒx[ƒW ƒRƒŒƒNƒg‚·‚é‚Ü‚Å‚±‚ÌƒIƒuƒWƒFƒNƒg‚ğ”jŠü‚·‚é‚±‚Æ‚Í‚Å‚«‚Ü‚¹‚ñB Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 			SelectedTarget = Nothing
 			max_dmg = 80
 			SelectedAbility = 0
 			max_power = 0
 			
-			'Invalid_string_refer_to_original_code
-			dont_move = moved Or .Mode = "Invalid_string_refer_to_original_code"
+			'ˆÚ“®‰Â”\H
+			dont_move = moved Or .Mode = "ŒÅ’è"
 			
-			'Invalid_string_refer_to_original_code
+			'ˆÚ“®‰Â”\‚Å‚ ‚éê‡‚ÍˆÚ“®”ÍˆÍ‚ğİ’è‚µ‚Ä‚¨‚­
 			If Not dont_move Then
 				AreaInSpeed(SelectedUnit)
 			End If
 			
 			For a = 1 To .CountAbility
-				'Invalid_string_refer_to_original_code
+				'ƒAƒrƒŠƒeƒB‚ªg—p‰Â”\H
 				If moved Then
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					GoTo NextHealingSkill
-				End If
-				If Not .IsAbilityAvailable(a, "ç§»å‹•å‰") Then
-					GoTo NextHealingSkill
-				End If
-				'End If
-				
-				'Invalid_string_refer_to_original_code
-				If .IsAbilityClassifiedAs(a, "Invalid_string_refer_to_original_code") Then
-					GoTo NextHealingSkill
+					If Not .IsAbilityAvailable(a, "ˆÚ“®Œã") Then
+						GoTo NextHealingSkill
+					End If
+				Else
+					If Not .IsAbilityAvailable(a, "ˆÚ“®‘O") Then
+						GoTo NextHealingSkill
+					End If
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'ƒ}ƒbƒvƒAƒrƒŠƒeƒB‚Í•ÊŠÖ”‚Å’²‚×‚é
+				If .IsAbilityClassifiedAs(a, "‚l") Then
+					GoTo NextHealingSkill
+				End If
+				
+				'‚±‚ê‚Í‰ñ•œƒAƒrƒŠƒeƒBH
 				For i = 1 To .Ability(a).CountEffect
-					If .Ability(a).EffectType(i) = "å›å¾©" Then
+					If .Ability(a).EffectType(i) = "‰ñ•œ" Then
 						Exit For
 					End If
 				Next 
@@ -2924,73 +2876,72 @@ NextAbility:
 					GoTo NextHealingSkill
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'‰ñ•œ—Ê‚ğZo
 				If .IsSpellAbility(a) Then
 					apower = CInt(5 * .Ability(a).EffectLevel(i) * .MainPilot.Shooting)
 				Else
 					apower = 500 * .Ability(a).EffectLevel(i)
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'–ğ—§‚½‚¸H
 				If apower <= 0 Then
 					GoTo NextHealingSkill
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'Œ»İ‚Ì‰ñ•œƒAƒrƒŠƒeƒB‚ğg‚Á‚Ä‰ñ•œ‚³‚¹‚ç‚ê‚éƒ^[ƒQƒbƒg‚ª‚¢‚é‚©ŒŸõ
 				For	Each u In UList
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					GoTo NextHealingTarget
-					'End If
+					If u.Status_Renamed <> "oŒ‚" Then
+						GoTo NextHealingTarget
+					End If
 					
-					'Invalid_string_refer_to_original_code
+					'–¡•û‚©‚Ç‚¤‚©‚ğ”»’è
 					If Not .IsAlly(u) Then
 						GoTo NextHealingTarget
 					End If
 					
-					'Invalid_string_refer_to_original_code
-					'Invalid_string_refer_to_original_code
+					'ƒfƒtƒHƒ‹ƒg‚Ìƒ^[ƒQƒbƒg‚ªw’è‚³‚ê‚Ä‚¢‚éê‡‚Í‚»‚Ìƒ†ƒjƒbƒgˆÈŠO‚ğ
+					'ƒ^[ƒQƒbƒg‚É‚Í‚µ‚È‚¢
 					If Not t Is Nothing Then
 						If Not u Is t Then
 							GoTo NextHealingTarget
 						End If
 					End If
 					
-					'Invalid_string_refer_to_original_code
+					'‘¹“x‚ÍH
 					dmg = 100 * u.HP \ u.MaxHP
 					
-					'Invalid_string_refer_to_original_code
+					'd—v‚Èƒ†ƒjƒbƒg‚ğ—Dæ
 					If Not u Is SelectedUnit Then
 						If u.BossRank >= 0 Then
 							dmg = 100 - 2 * (100 - dmg)
 						End If
 					End If
 					
-					'Invalid_string_refer_to_original_code
+					'Œ»İ‚Ìƒ^[ƒQƒbƒg‚æ‚è‘¹“x‚ª‚Ğ‚Ç‚­‚È‚¢‚È‚ç–³‹
 					If dmg > max_dmg Then
 						GoTo NextHealingTarget
 					End If
 					
-					'Invalid_string_refer_to_original_code
-					If .AbilityMaxRange(a) = 1 Or .IsAbilityClassifiedAs(a, "Invalid_string_refer_to_original_code") Then
+					'ˆÚ“®‰Â”\‚©H
+					If .AbilityMaxRange(a) = 1 Or .IsAbilityClassifiedAs(a, "‚o") Then
 						is_able_to_move = True
 					Else
 						is_able_to_move = False
 					End If
-					If .IsAbilityClassifiedAs(a, "Invalid_string_refer_to_original_code") Then
+					If .IsAbilityClassifiedAs(a, "‚p") Then
 						is_able_to_move = False
 					End If
 					If dont_move Then
 						is_able_to_move = False
 					End If
 					Select Case .Area
-						Case "ç©ºä¸­", "Invalid_string_refer_to_original_code"
+						Case "‹ó’†", "‰F’ˆ"
 							If .EN - .AbilityENConsumption(a) < 5 Then
 								is_able_to_move = False
 							End If
 					End Select
 					
-					'Invalid_string_refer_to_original_code
+					'Ë’ö“à‚É‚¢‚é‚©H
 					If is_able_to_move Then
 						If Not .IsTargetReachableForAbility(a, u) Then
 							GoTo NextHealingTarget
@@ -3001,37 +2952,36 @@ NextAbility:
 						End If
 					End If
 					
-					'Invalid_string_refer_to_original_code
+					'ƒAƒrƒŠƒeƒB‚ª“K—p‰Â”\H
 					If Not .IsAbilityApplicable(a, u) Then
 						GoTo NextHealingTarget
 					End If
 					
-					'Invalid_string_refer_to_original_code
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					GoTo NextHealingTarget
-					'End If
+					'ƒ]ƒ“ƒrH
+					If u.IsConditionSatisfied("ƒ]ƒ“ƒr") Then
+						GoTo NextHealingTarget
+					End If
 					
-					'Invalid_string_refer_to_original_code
+					'V‹Kƒ^[ƒQƒbƒgH
 					If Not u Is SelectedTarget Then
-						'Invalid_string_refer_to_original_code
+						'ƒ^[ƒQƒbƒgİ’è
 						SelectedTarget = u
 						max_dmg = dmg
 						
-						'Invalid_string_refer_to_original_code
+						'V‹Kƒ^[ƒQƒbƒg‚ğ—Dæ‚·‚é‚½‚ßAŒ»İ‘I‘ğ‚³‚ê‚Ä‚¢‚éƒAƒrƒŠƒeƒB‚Í”jŠü
 						SelectedAbility = 0
 						max_power = 0
 					End If
 					
-					'Invalid_string_refer_to_original_code
-					'Invalid_string_refer_to_original_code
+					'Œ»İ‘I‘ğ‚³‚ê‚Ä‚¢‚é‰ñ•œƒAƒrƒŠƒeƒB‚Æƒ`ƒFƒbƒN’†‚ÌƒAƒrƒŠƒeƒB‚Ì‚Ç‚¿‚ç‚ª
+					'—D‚ê‚Ä‚¢‚é‚©‚ğ”»’è
 					If max_power < u.MaxHP - u.HP Then
-						'Invalid_string_refer_to_original_code
+						'Œ»İ‘I‘ğ‚µ‚Ä‚¢‚é‰ñ•œƒAƒrƒŠƒeƒB‚Å‚Í‘Sƒ_ƒ[ƒW‚ğ‰ñ•œ‚µ‚«‚ê‚È‚¢ê‡
 						If apower < max_power Then
-							'Invalid_string_refer_to_original_code
+							'‰ñ•œ—Ê‚ª‘½‚¢‚Ù‚¤‚ğ—Dæ
 							GoTo NextHealingTarget
 						ElseIf apower = max_power Then 
-							'Invalid_string_refer_to_original_code
+							'‰ñ•œ—Ê‚ª“¯‚¶‚È‚çƒRƒXƒg‚ª’á‚¢•û‚ğ—Dæ
 							If .Ability(a).ENConsumption > .Ability(SelectedAbility).ENConsumption Then
 								GoTo NextHealingTarget
 							End If
@@ -3040,12 +2990,12 @@ NextAbility:
 							End If
 						End If
 					ElseIf SelectedAbility > 0 Then 
-						'Invalid_string_refer_to_original_code
-						'Invalid_string_refer_to_original_code
+						'Œ»İ‘I‘ğ‚µ‚Ä‚¢‚é‰ñ•œƒAƒrƒŠƒeƒB‚Å‘S‰õ‚·‚éê‡
+						'‘S‰õ‚·‚é‚±‚Æ‚ª•K—vğŒ
 						If apower >= u.MaxHP - u.HP Then
 							GoTo NextHealingTarget
 						End If
-						'Invalid_string_refer_to_original_code
+						'ƒRƒXƒg‚ª’á‚¢•û‚ğ—Dæ
 						If .Ability(a).ENConsumption > .Ability(SelectedAbility).ENConsumption Then
 							GoTo NextHealingTarget
 						End If
@@ -3062,7 +3012,7 @@ NextHealingTarget:
 NextHealingSkill: 
 			Next 
 			
-			'Invalid_string_refer_to_original_code
+			'—L—p‚ÈƒAƒrƒŠƒeƒB•ƒ^[ƒQƒbƒg‚ªŒ©‚Â‚©‚Á‚½H
 			If SelectedAbility = 0 Then
 				Exit Function
 			End If
@@ -3070,23 +3020,23 @@ NextHealingSkill:
 				Exit Function
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'‰ñ•œƒAƒrƒŠƒeƒB‚ğg—p‚·‚é‚±‚Æ‚ªŠm’è
 			TryHealing = True
 			
-			'Invalid_string_refer_to_original_code
+			'“KØ‚ÈˆÊ’u‚ÉˆÚ“®
 			If Not SelectedTarget Is SelectedUnit And sa_is_able_to_move Then
 				new_x = .X
 				new_y = .Y
 				max_range = .AbilityMaxRange(SelectedAbility)
 				With SelectedTarget
-					'Invalid_string_refer_to_original_code
+					'Œ»İˆÊ’u‚©‚ç‰ñ•œ‚ª‰Â”\‚Å‚ ‚ê‚ÎŒ»İˆÊ’u‚ğ—Dæ
 					If System.Math.Abs(.X - new_x) + System.Math.Abs(.Y - new_y) <= max_range Then
 						distance = System.Math.Abs(.X - new_x) ^ 2 + System.Math.Abs(.Y - new_y) ^ 2
 					Else
 						distance = 10000
 					End If
 					
-					'Invalid_string_refer_to_original_code
+					'“KØ‚ÈˆÊ’u‚ğ’T‚·
 					For i = MaxLng(.X - max_range, 1) To MinLng(.X + max_range, MapWidth)
 						For j = MaxLng(.Y - max_range, 1) To MinLng(.Y + max_range, MapHeight)
 							If Not MaskData(i, j) And MapDataForUnit(i, j) Is Nothing And System.Math.Abs(.X - i) + System.Math.Abs(.Y - j) <= max_range Then
@@ -3103,7 +3053,7 @@ NextHealingSkill:
 				End With
 				
 				If new_x <> .X Or new_y <> .Y Then
-					'Invalid_string_refer_to_original_code
+					'“KØ‚ÈêŠ‚ªŒ©‚Â‚©‚Á‚½‚Ì‚ÅˆÚ“®
 					.Move(new_x, new_y)
 					moved = True
 				End If
@@ -3112,16 +3062,16 @@ NextHealingSkill:
 			aname = .Ability(SelectedAbility).Name
 			SelectedAbilityName = aname
 			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			.CombinationPartner("Invalid_string_refer_to_original_code", SelectedAbility, partners)
-			ReDim SelectedPartners(0)
-			ReDim partners(0)
-			'End If
+			'‡‘Ì‹Zƒp[ƒgƒi[‚Ìİ’è
+			If .IsAbilityClassifiedAs(SelectedAbility, "‡") Then
+				.CombinationPartner("ƒAƒrƒŠƒeƒB", SelectedAbility, partners)
+			Else
+				ReDim SelectedPartners(0)
+				ReDim partners(0)
+			End If
 			
-			'Invalid_string_refer_to_original_code
-			HandleEvent("ä½¿ç”¨", .MainPilot.ID, aname)
+			'g—pƒCƒxƒ“ƒg
+			HandleEvent("g—p", .MainPilot.ID, aname)
 			If IsScenarioFinished Or IsCanceled Then
 				ReDim SelectedPartners(0)
 				Exit Function
@@ -3133,44 +3083,42 @@ NextHealingSkill:
 				OpenMessageForm(SelectedTarget, SelectedUnit)
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'‰ñ•œƒAƒrƒŠƒeƒB‚ğÀs
 			.ExecuteAbility(SelectedAbility, SelectedTarget)
 			SelectedUnit = .CurrentForm
 		End With
 		
 		CloseMessageForm()
 		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		If SelectedUnit.CountPilot > 0 Then
-			HandleEvent("Invalid_string_refer_to_original_code")
+		'©”š‚µ‚½ê‡‚Ì”j‰óƒCƒxƒ“ƒg
+		If SelectedUnit.Status_Renamed = "”j‰ó" Then
+			If SelectedUnit.CountPilot > 0 Then
+				HandleEvent("”j‰ó", SelectedUnit.MainPilot.ID)
+			End If
+			ReDim SelectedPartners(0)
+			Exit Function
 		End If
-		ReDim SelectedPartners(0)
-		Exit Function
-		'End If
 		
-		'Invalid_string_refer_to_original_code
+		'g—pŒãƒCƒxƒ“ƒg
 		If SelectedUnit.CountPilot > 0 Then
-			HandleEvent("Invalid_string_refer_to_original_code")
+			HandleEvent("g—pŒã", SelectedUnit.MainPilot.ID, aname)
 			If IsScenarioFinished Or IsCanceled Then
 				ReDim SelectedPartners(0)
 				Exit Function
 			End If
 		End If
 		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		HandleEvent("Invalid_string_refer_to_original_code")
-		If IsScenarioFinished Or IsCanceled Then
-			ReDim SelectedPartners(0)
-			Exit Function
+		'©”šƒAƒrƒŠƒeƒB‚Ì”j‰óƒCƒxƒ“ƒg
+		If SelectedUnit.Status_Renamed = "”j‰ó" Then
+			HandleEvent("”j‰ó", SelectedUnit.MainPilot.ID)
+			If IsScenarioFinished Or IsCanceled Then
+				ReDim SelectedPartners(0)
+				Exit Function
+			End If
 		End If
-		'End If
 		
-		'Invalid_string_refer_to_original_code
-		If Not IsOptionDefined("Invalid_string_refer_to_original_code") Then
+		'‡‘Ì‹Z‚Ìƒp[ƒgƒi[‚Ìs“®”‚ğŒ¸‚ç‚·
+		If Not IsOptionDefined("‡‘Ì‹Zƒp[ƒgƒi[s“®”–³Á”ï") Then
 			For i = 1 To UBound(partners)
 				partners(i).CurrentForm.UseAction()
 			Next 
@@ -3178,7 +3126,7 @@ NextHealingSkill:
 		ReDim SelectedPartners(0)
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'C—‚ª‰Â”\‚Å‚ ‚ê‚ÎC—‘•’u‚ğg‚¤
 	Public Function TryFix(ByRef moved As Boolean, Optional ByRef t As Unit = Nothing) As Boolean
 		Dim TmpMaskData() As Boolean
 		Dim j, i, k As Short
@@ -3189,62 +3137,62 @@ NextHealingSkill:
 		Dim fname As String
 		
 		With SelectedUnit
-			'Invalid_string_refer_to_original_code
-			If Not .IsFeatureAvailable("Invalid_string_refer_to_original_code") Or .Area = "åœ°ä¸­" Then
+			'C—‘•’u‚ğg—p‰Â”\H
+			If Not .IsFeatureAvailable("C—‘•’u") Or .Area = "’n’†" Then
 				Exit Function
 			End If
 			
-			'Invalid_string_refer_to_original_code
-			If .IsConditionSatisfied("ç‹‚æˆ¦å£«") Then
+			'‹¶ímó‘Ô‚ÌÛ‚ÍC—‘•’u‚ğg‚í‚È‚¢
+			If .IsConditionSatisfied("‹¶ím") Then
 				Exit Function
 			End If
 			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			'Invalid_string_refer_to_original_code
-			For i = 1 To MapWidth
-				For j = 1 To MapHeight
-					MaskData(i, j) = True
+			'C—‘•’u‚ğg—p‰Â”\‚È—Ìˆæ‚ğİ’è
+			If moved Or .Mode = "ŒÅ’è" Then
+				'ˆÚ“®‚Å‚È‚¢ê‡
+				For i = 1 To MapWidth
+					For j = 1 To MapHeight
+						MaskData(i, j) = True
+					Next 
 				Next 
-			Next 
-			If .X > 1 Then
-				MaskData(.X - 1, .Y) = False
-			End If
-			If .X < MapWidth Then
-				MaskData(.X + 1, .Y) = False
-			End If
-			If .Y > 1 Then
-				MaskData(.X, .Y - 1) = False
-			End If
-			If .Y < MapHeight Then
-				MaskData(.X, .Y + 1) = False
-			End If
-			'Invalid_string_refer_to_original_code
-			ReDim TmpMaskData(MapWidth + 1, MapHeight + 1)
-			AreaInSpeed(SelectedUnit)
-			For i = 1 To MapWidth
-				For j = 1 To MapHeight
-					TmpMaskData(i, j) = MaskData(i, j)
+				If .X > 1 Then
+					MaskData(.X - 1, .Y) = False
+				End If
+				If .X < MapWidth Then
+					MaskData(.X + 1, .Y) = False
+				End If
+				If .Y > 1 Then
+					MaskData(.X, .Y - 1) = False
+				End If
+				If .Y < MapHeight Then
+					MaskData(.X, .Y + 1) = False
+				End If
+			Else
+				'ˆÚ“®‰Â”\‚Èê‡
+				ReDim TmpMaskData(MapWidth + 1, MapHeight + 1)
+				AreaInSpeed(SelectedUnit)
+				For i = 1 To MapWidth
+					For j = 1 To MapHeight
+						TmpMaskData(i, j) = MaskData(i, j)
+					Next 
 				Next 
-			Next 
-			For i = 0 To MapWidth
-				TmpMaskData(i, 0) = True
-				TmpMaskData(i, MapHeight + 1) = True
-			Next 
-			For i = 0 To MapHeight
-				TmpMaskData(0, i) = True
-				TmpMaskData(MapWidth + 1, i) = True
-			Next 
-			For i = MaxLng(.X - (.Speed + 1), 1) To MinLng(.X + (.Speed + 1), MapWidth)
-				For j = MaxLng(.Y - (.Speed + 1), 1) To MinLng(.Y + (.Speed + 1), MapHeight)
-					MaskData(i, j) = TmpMaskData(i, j) And TmpMaskData(i - 1, j) And TmpMaskData(i + 1, j) And TmpMaskData(i, j - 1) And TmpMaskData(i, j + 1)
+				For i = 0 To MapWidth
+					TmpMaskData(i, 0) = True
+					TmpMaskData(i, MapHeight + 1) = True
 				Next 
-			Next 
-			MaskData(.X, .Y) = True
-			'End If
+				For i = 0 To MapHeight
+					TmpMaskData(0, i) = True
+					TmpMaskData(MapWidth + 1, i) = True
+				Next 
+				For i = MaxLng(.X - (.Speed + 1), 1) To MinLng(.X + (.Speed + 1), MapWidth)
+					For j = MaxLng(.Y - (.Speed + 1), 1) To MinLng(.Y + (.Speed + 1), MapHeight)
+						MaskData(i, j) = TmpMaskData(i, j) And TmpMaskData(i - 1, j) And TmpMaskData(i + 1, j) And TmpMaskData(i, j - 1) And TmpMaskData(i, j + 1)
+					Next 
+				Next 
+				MaskData(.X, .Y) = True
+			End If
 			
-			'Invalid_string_refer_to_original_code
+			'ƒ^[ƒQƒbƒg‚ğ’T‚·
 			'UPGRADE_NOTE: ƒIƒuƒWƒFƒNƒg SelectedTarget ‚ğƒKƒx[ƒW ƒRƒŒƒNƒg‚·‚é‚Ü‚Å‚±‚ÌƒIƒuƒWƒFƒNƒg‚ğ”jŠü‚·‚é‚±‚Æ‚Í‚Å‚«‚Ü‚¹‚ñB Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 			SelectedTarget = Nothing
 			max_dmg = 90
@@ -3259,41 +3207,40 @@ NextHealingSkill:
 						GoTo NextFixTarget
 					End If
 					
-					'Invalid_string_refer_to_original_code
-					'Invalid_string_refer_to_original_code
+					'ƒfƒtƒHƒ‹ƒg‚Ìƒ^[ƒQƒbƒg‚ªw’è‚³‚ê‚Ä‚¢‚éê‡‚Í‚»‚Ìƒ†ƒjƒbƒgˆÈŠO‚ğ
+					'ƒ^[ƒQƒbƒg‚É‚Í‚µ‚È‚¢
 					If Not t Is Nothing Then
 						If Not u Is t Then
 							GoTo NextFixTarget
 						End If
 					End If
 					
-					'Invalid_string_refer_to_original_code
+					'Œ»İ‚Ì‘I‘ğ‚µ‚Ä‚¢‚éƒ^[ƒQƒbƒg‚æ‚èƒ_ƒ[ƒW‚ª­‚È‚¯‚ê‚Î‘I‘ğ‚µ‚È‚¢
 					If 100 * u.HP \ u.MaxHP > max_dmg Then
 						GoTo NextFixTarget
 					End If
 					
-					'Invalid_string_refer_to_original_code
+					'–¡•û‚©‚Ç‚¤‚©”»’è
 					If Not .IsAlly(u) Then
 						GoTo NextFixTarget
 					End If
 					
-					'Invalid_string_refer_to_original_code
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					GoTo NextFixTarget
-					'End If
+					'ƒ]ƒ“ƒrH
+					If u.IsConditionSatisfied("ƒ]ƒ“ƒr") Then
+						GoTo NextFixTarget
+					End If
 					
-					'Invalid_string_refer_to_original_code
-					If u.IsFeatureAvailable("Invalid_string_refer_to_original_code") Then
-						For k = 2 To CInt(u.FeatureData("Invalid_string_refer_to_original_code"))
-							fname = LIndex(u.FeatureData("Invalid_string_refer_to_original_code"), k)
+					'C—•s‰ÂH
+					If u.IsFeatureAvailable("C—•s‰Â") Then
+						For k = 2 To CInt(u.FeatureData("C—•s‰Â"))
+							fname = LIndex(u.FeatureData("C—•s‰Â"), k)
 							If Left(fname, 1) = "!" Then
 								fname = Mid(fname, 2)
-								If fname <> .FeatureName0("Invalid_string_refer_to_original_code") Then
+								If fname <> .FeatureName0("C—‘•’u") Then
 									GoTo NextFixTarget
 								End If
 							Else
-								If fname = .FeatureName0("Invalid_string_refer_to_original_code") Then
+								If fname = .FeatureName0("C—‘•’u") Then
 									GoTo NextFixTarget
 								End If
 							End If
@@ -3306,94 +3253,88 @@ NextFixTarget:
 				Next 
 			Next 
 			
-			'Invalid_string_refer_to_original_code
+			'ƒ^[ƒQƒbƒg‚ªŒ©‚Â‚©‚ç‚È‚¢
 			If SelectedTarget Is Nothing Then
 				Exit Function
 			End If
 			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			new_x = .X
-			new_y = .Y
-			With SelectedTarget
-				'Invalid_string_refer_to_original_code
-				If System.Math.Abs(.X - new_x) + System.Math.Abs(.Y - new_y) = 1 Then
-					tmp = 1
-				Else
-					tmp = 10000
+			'ƒ^[ƒQƒbƒg‚É—×Ú‚·‚é‚æ‚¤‚ÉˆÚ“®
+			If Not moved And .Mode <> "ŒÅ’è" Then
+				new_x = .X
+				new_y = .Y
+				With SelectedTarget
+					'Œ»İˆÊ’u‚©‚çC—‚ª‰Â”\‚Å‚ ‚ê‚ÎŒ»İˆÊ’u‚ğ—Dæ
+					If System.Math.Abs(.X - new_x) + System.Math.Abs(.Y - new_y) = 1 Then
+						tmp = 1
+					Else
+						tmp = 10000
+					End If
+					
+					For i = 1 To MapWidth
+						For j = 1 To MapHeight
+							MaskData(i, j) = TmpMaskData(i, j)
+						Next 
+					Next 
+					
+					'“KØ‚ÈêŠ‚ğ’T‚·
+					For i = MaxLng(.X - 1, 1) To MinLng(.X + 1, MapWidth)
+						For j = MaxLng(.Y - 1, 1) To MinLng(.Y + 1, MapHeight)
+							If Not MaskData(i, j) And MapDataForUnit(i, j) Is Nothing And System.Math.Abs(.X - i) + System.Math.Abs(.Y - j) = 1 Then
+								With SelectedUnit
+									If System.Math.Abs(.X - i) ^ 2 + System.Math.Abs(.Y - j) ^ 2 < tmp Then
+										new_x = i
+										new_y = j
+										tmp = System.Math.Abs(.X - new_x) ^ 2 + System.Math.Abs(.Y - new_y) ^ 2
+									End If
+								End With
+							End If
+						Next 
+					Next 
+				End With
+				
+				If new_x <> .X Or new_y <> .Y Then
+					'“KØ‚ÈêŠ‚ªŒ©‚Â‚©‚Á‚½‚Ì‚ÅˆÚ“®
+					.Move(new_x, new_y)
+					moved = True
 				End If
-				
-				For i = 1 To MapWidth
-					For j = 1 To MapHeight
-						MaskData(i, j) = TmpMaskData(i, j)
-					Next 
-				Next 
-				
-				'Invalid_string_refer_to_original_code
-				For i = MaxLng(.X - 1, 1) To MinLng(.X + 1, MapWidth)
-					For j = MaxLng(.Y - 1, 1) To MinLng(.Y + 1, MapHeight)
-						If Not MaskData(i, j) And MapDataForUnit(i, j) Is Nothing And System.Math.Abs(.X - i) + System.Math.Abs(.Y - j) = 1 Then
-							With SelectedUnit
-								If System.Math.Abs(.X - i) ^ 2 + System.Math.Abs(.Y - j) ^ 2 < tmp Then
-									new_x = i
-									new_y = j
-									tmp = System.Math.Abs(.X - new_x) ^ 2 + System.Math.Abs(.Y - new_y) ^ 2
-								End If
-							End With
-						End If
-					Next 
-				Next 
-			End With
-			
-			If new_x <> .X Or new_y <> .Y Then
-				'Invalid_string_refer_to_original_code
-				.Move(new_x, new_y)
-				moved = True
 			End If
-			'End If
 			
-			'Invalid_string_refer_to_original_code
+			'‘I‘ğ“à—e‚ğ•ÏX
 			SelectedUnitForEvent = SelectedUnit
 			SelectedTargetForEvent = SelectedTarget
 			
-			'Invalid_string_refer_to_original_code
+			'ƒƒbƒZ[ƒW•\¦
 			OpenMessageForm(SelectedTarget, SelectedUnit)
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			.PilotMessage("Invalid_string_refer_to_original_code")
-			'End If
+			If .IsMessageDefined("C—") Then
+				.PilotMessage("C—")
+			End If
 			
-			'ã‚¢ãƒ‹ãƒ¡è¡¨ç¤º
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			.PlayAnimation("Invalid_string_refer_to_original_code")
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			.SpecialEffect("Invalid_string_refer_to_original_code")
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			'End If
+			'ƒAƒjƒ•\¦
+			If .IsAnimationDefined("C—", .FeatureName("C—")) Then
+				.PlayAnimation("C—", .FeatureName("C—"))
+			Else
+				.SpecialEffect("C—", .FeatureName("C—"))
+			End If
 			
-			DisplaySysMessage(.Nickname & "ã¯[" & SelectedTarget.Nickname & "]ã«[" & .FeatureName0("Invalid_string_refer_to_original_code") & "Invalid_string_refer_to_original_code")
+			DisplaySysMessage(.Nickname & "‚Í[" & SelectedTarget.Nickname & "]‚É[" & .FeatureName0("C—‘•’u") & "]‚ğg‚Á‚½B")
 			
-			'Invalid_string_refer_to_original_code
+			'C—Às
 			tmp = SelectedTarget.HP
-			Select Case .FeatureLevel("Invalid_string_refer_to_original_code")
+			Select Case .FeatureLevel("C—‘•’u")
 				Case 1, -1
-					SelectedTarget.RecoverHP(30 + 3 * .MainPilot.SkillLevel("Invalid_string_refer_to_original_code"))
+					SelectedTarget.RecoverHP(30 + 3 * .MainPilot.SkillLevel("C—‹Z”\"))
 				Case 2
-					SelectedTarget.RecoverHP(50 + 5 * .MainPilot.SkillLevel("Invalid_string_refer_to_original_code"))
+					SelectedTarget.RecoverHP(50 + 5 * .MainPilot.SkillLevel("C—‹Z”\"))
 				Case 3
 					SelectedTarget.RecoverHP(100)
 			End Select
 			DrawSysString(SelectedTarget.X, SelectedTarget.Y, "+" & VB6.Format(SelectedTarget.HP - tmp))
 			UpdateMessageForm(SelectedTarget, SelectedUnit)
-			DisplaySysMessage(SelectedTarget.Nickname & "Invalid_string_refer_to_original_code" & VB6.Format(SelectedTarget.HP - tmp) & "Invalid_string_refer_to_original_code")
+			DisplaySysMessage(SelectedTarget.Nickname & "‚Ì‚g‚o‚ª[" & VB6.Format(SelectedTarget.HP - tmp) & "]‰ñ•œ‚µ‚½B")
 		End With
 		
-		'Invalid_string_refer_to_original_code
-		SelectedUnit.GetExp(SelectedTarget, "Invalid_string_refer_to_original_code")
+		'ŒoŒ±’lŠl“¾
+		SelectedUnit.GetExp(SelectedTarget, "C—")
 		
 		If MessageWait < 10000 Then
 			Sleep(MessageWait)
@@ -3401,7 +3342,7 @@ NextFixTarget:
 		
 		CloseMessageForm()
 		
-		'Invalid_string_refer_to_original_code
+		'Œ`‘Ô•Ï‰»‚Ìƒ`ƒFƒbƒN
 		SelectedTarget.Update()
 		SelectedTarget.CurrentForm.CheckAutoHyperMode()
 		SelectedTarget.CurrentForm.CheckAutoNormalMode()
@@ -3409,7 +3350,7 @@ NextFixTarget:
 		TryFix = True
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'ƒ}ƒbƒvUŒ‚g—p‚ÉŠÖ‚·‚éˆ—
 	Public Function TryMapAttack(ByRef moved As Boolean) As Boolean
 		Dim w As Short
 		Dim xx, tx, ty, yy As Short
@@ -3425,54 +3366,52 @@ NextFixTarget:
 		With SelectedUnit
 			SaveSelections()
 			
-			'Invalid_string_refer_to_original_code
+			'ƒ}ƒbƒvUŒ‚‚ğg—p‚·‚éƒ^[ƒQƒbƒg”‚Ì‰ºŒÀ‚ğİ’è‚·‚é
 			score_limit = 1
 			For i = 1 To .CountWeapon
-				'Invalid_string_refer_to_original_code
-				If Not .IsWeaponClassifiedAs(i, "Invalid_string_refer_to_original_code") Then
-					'Invalid_string_refer_to_original_code
+				'’ÊíUŒ‚‚ğ‚Á‚Ä‚¢‚éê‡‚Í’P“Æ‚Ì“G‚Ö‚ÌUŒ‚‚ÌÛ‚É’ÊíUŒ‚‚ğ—Dæ‚·‚é
+				If Not .IsWeaponClassifiedAs(i, "‚l") Then
+					' MOD START ƒ}[ƒW
 					'                score_limit = 2
 					'                Exit For
-					If .IsWeaponAvailable(i, "ç§»å‹•å‰") Then
+					If .IsWeaponAvailable(i, "ˆÚ“®‘O") Then
 						score_limit = 2
 						Exit For
 					End If
-					'Invalid_string_refer_to_original_code
+					' MOD END ƒ}[ƒW
 				End If
 			Next 
 			
-			'Invalid_string_refer_to_original_code
+			'ˆĞ—Í‚Ì‚‚¢•Ší‚ğ—Dæ‚µ‚Ä‘I‘ğ
 			w = .CountWeapon
 			Do While w > 0
 				SelectedWeapon = w
 				SelectedTWeapon = 0
 				
-				'Invalid_string_refer_to_original_code
-				If Not .IsWeaponClassifiedAs(w, "Invalid_string_refer_to_original_code") Then
+				'ƒ}ƒbƒvUŒ‚‚©‚Ç‚¤‚©
+				If Not .IsWeaponClassifiedAs(w, "‚l") Then
 					GoTo NextWeapon
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'•Ší‚Ìg—p‰Â”Û‚ğ”»’è
 				If moved Then
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					GoTo NextWeapon
-				End If
-				If Not .IsWeaponAvailable(w, "ç§»å‹•å‰") Then
-					GoTo NextWeapon
-				End If
-				'End If
-				
-				'Invalid_string_refer_to_original_code
-				If .BossRank >= 0 Then
-					'Invalid_string_refer_to_original_code_
-					'Then
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					If .HP > .MaxHP \ 4 Then
+					If Not .IsWeaponAvailable(w, "ˆÚ“®Œã") Then
+						GoTo NextWeapon
+					End If
+				Else
+					If Not .IsWeaponAvailable(w, "ˆÚ“®‘O") Then
 						GoTo NextWeapon
 					End If
 				End If
-				'End If
+				
+				'ƒ{ƒXƒ†ƒjƒbƒg‚ª©”š•‘S‚d‚mÁ”ïUŒ‚“™‚ğg‚¤‚Ì‚Í”ñí‚Ì‚İ
+				If .BossRank >= 0 Then
+					If .IsWeaponClassifiedAs(w, "©") Or .IsWeaponClassifiedAs(w, "s") Or .IsWeaponClassifiedAs(w, "Á") Then
+						If .HP > .MaxHP \ 4 Then
+							GoTo NextWeapon
+						End If
+					End If
+				End If
 				
 				max_range = .WeaponMaxRange(w)
 				min_range = .Weapon(w).MinRange
@@ -3482,8 +3421,8 @@ NextFixTarget:
 				x2 = MinLng(.X + max_range, MapWidth)
 				y2 = MinLng(.Y + max_range, MapHeight)
 				
-				'Invalid_string_refer_to_original_code
-				If .IsWeaponClassifiedAs(w, "Invalid_string_refer_to_original_code") Then
+				'ƒ}ƒbƒvUŒ‚‚Ìí—Ş‚É‚µ‚½‚ª‚Á‚ÄŒø‰Ê”ÍˆÍ“à‚É‚¢‚é“G‚ğƒJƒEƒ“ƒg
+				If .IsWeaponClassifiedAs(w, "‚l’¼") Then
 					For i = 1 To 4
 						Select Case i
 							Case 1
@@ -3496,14 +3435,14 @@ NextFixTarget:
 								direction = "E"
 						End Select
 						
-						'Invalid_string_refer_to_original_code
+						'Œø‰Ê”ÍˆÍ‚ğİ’è
 						AreaInLine(.X, .Y, min_range, max_range, direction)
 						MaskData(.X, .Y) = True
 						
-						'Invalid_string_refer_to_original_code
+						'Œø‰Ê”ÍˆÍ“à‚É‚¢‚éƒ†ƒjƒbƒg‚ğƒJƒEƒ“ƒg
 						enemy_num = CountTargetInRange(w, x1, y1, x2, y2)
 						
-						'Invalid_string_refer_to_original_code
+						'ƒ}ƒbƒvUŒ‚‚ªÅ‹­•Ší‚Å‚ ‚ê‚Îƒ^[ƒQƒbƒg‚ª‚P‘Ì‚Å‚ ‚Á‚Ä‚àg—p
 						If enemy_num >= score_limit Or (enemy_num = 1 And w = .CountWeapon) Then
 							Select Case direction
 								Case "N"
@@ -3523,7 +3462,7 @@ NextFixTarget:
 						End If
 					Next 
 					
-				ElseIf .IsWeaponClassifiedAs(w, "Invalid_string_refer_to_original_code") Then 
+				ElseIf .IsWeaponClassifiedAs(w, "‚lŠg") Then 
 					For i = 1 To 4
 						Select Case i
 							Case 1
@@ -3536,14 +3475,14 @@ NextFixTarget:
 								direction = "E"
 						End Select
 						
-						'Invalid_string_refer_to_original_code
+						'Œø‰Ê”ÍˆÍ‚ğİ’è
 						AreaInCone(.X, .Y, min_range, max_range, direction)
 						MaskData(.X, .Y) = True
 						
-						'Invalid_string_refer_to_original_code
+						'Œø‰Ê”ÍˆÍ“à‚É‚¢‚éƒ†ƒjƒbƒg‚ğƒJƒEƒ“ƒg
 						enemy_num = CountTargetInRange(w, x1, y1, x2, y2)
 						
-						'Invalid_string_refer_to_original_code
+						'ƒ}ƒbƒvUŒ‚‚ªÅ‹­•Ší‚Å‚ ‚ê‚Îƒ^[ƒQƒbƒg‚ª‚P‘Ì‚Å‚ ‚Á‚Ä‚àg—p
 						If enemy_num >= score_limit Or (enemy_num = 1 And w = .CountWeapon) Then
 							Select Case direction
 								Case "N"
@@ -3563,8 +3502,7 @@ NextFixTarget:
 						End If
 					Next 
 					
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				ElseIf .IsWeaponClassifiedAs(w, "‚lî") Then 
 					For i = 1 To 4
 						Select Case i
 							Case 1
@@ -3577,15 +3515,14 @@ NextFixTarget:
 								direction = "E"
 						End Select
 						
-						'Invalid_string_refer_to_original_code
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						'Œø‰Ê”ÍˆÍ‚ğİ’è
+						AreaInSector(.X, .Y, min_range, max_range, direction, .WeaponLevel(w, "‚lî"))
 						MaskData(.X, .Y) = True
 						
-						'Invalid_string_refer_to_original_code
+						'Œø‰Ê”ÍˆÍ“à‚É‚¢‚éƒ†ƒjƒbƒg‚ğƒJƒEƒ“ƒg
 						enemy_num = CountTargetInRange(w, x1, y1, x2, y2)
 						
-						'Invalid_string_refer_to_original_code
+						'ƒ}ƒbƒvUŒ‚‚ªÅ‹­•Ší‚Å‚ ‚ê‚Îƒ^[ƒQƒbƒg‚ª‚P‘Ì‚Å‚ ‚Á‚Ä‚àg—p
 						If enemy_num >= score_limit Or (enemy_num = 1 And w = .CountWeapon) Then
 							Select Case direction
 								Case "N"
@@ -3605,38 +3542,36 @@ NextFixTarget:
 						End If
 					Next 
 					
-				ElseIf .IsWeaponClassifiedAs(w, "Invalid_string_refer_to_original_code") Then 
-					'Invalid_string_refer_to_original_code
-					'Invalid_string_refer_to_original_code
-					'                AreaInRange .X, .Y, min_range, max_range, "ã™ã¹ã¦"
-					AreaInRange(.X, .Y, max_range, min_range, "ã™ã¹ã¦")
-					'Invalid_string_refer_to_original_code
+				ElseIf .IsWeaponClassifiedAs(w, "‚l‘S") Then 
+					'Œø‰Ê”ÍˆÍ‚ğİ’è
+					' MOD START ƒ}[ƒW
+					'                AreaInRange .X, .Y, min_range, max_range, "‚·‚×‚Ä"
+					AreaInRange(.X, .Y, max_range, min_range, "‚·‚×‚Ä")
+					' MOD END ƒ}[ƒW
 					MaskData(.X, .Y) = True
 					
-					'Invalid_string_refer_to_original_code
+					'Œø‰Ê”ÍˆÍ“à‚É‚¢‚éƒ†ƒjƒbƒg‚ğƒJƒEƒ“ƒg
 					enemy_num = CountTargetInRange(w, x1, y1, x2, y2)
 					
-					'Invalid_string_refer_to_original_code
+					'ƒ}ƒbƒvUŒ‚‚ªÅ‹­•Ší‚Å‚ ‚ê‚Îƒ^[ƒQƒbƒg‚ª‚P‘Ì‚Å‚ ‚Á‚Ä‚àg—p
 					If enemy_num >= score_limit Or (enemy_num = 1 And w = .CountWeapon) Then
 						tx = .X
 						ty = .Y
 						GoTo FoundWeapon
 					End If
 					
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				ElseIf .IsWeaponClassifiedAs(w, "‚l“Š") Then 
+					lv = .WeaponLevel(w, "‚l“Š")
 					score = 0
 					For xx = x1 To x2
 						For yy = y1 To y2
 							If System.Math.Abs(.X - xx) + System.Math.Abs(.Y - yy) <= max_range And System.Math.Abs(.X - xx) + System.Math.Abs(.Y - yy) >= min_range Then
-								'Invalid_string_refer_to_original_code
+								'Œø‰Ê”ÍˆÍ‚ğİ’è
 								If lv > 0 Then
-									'Invalid_string_refer_to_original_code
-									'                                AreaInRange xx, yy, 1, lv, "ã™ã¹ã¦"
-									AreaInRange(xx, yy, lv, 1, "ã™ã¹ã¦")
-									'Invalid_string_refer_to_original_code
+									' MOD START ƒ}[ƒW
+									'                                AreaInRange xx, yy, 1, lv, "‚·‚×‚Ä"
+									AreaInRange(xx, yy, lv, 1, "‚·‚×‚Ä")
+									' MOD END ƒ}[ƒW
 								Else
 									For i = 1 To MapWidth
 										For j = 1 To MapHeight
@@ -3647,7 +3582,7 @@ NextFixTarget:
 								End If
 								MaskData(.X, .Y) = True
 								
-								'Invalid_string_refer_to_original_code
+								'Œø‰Ê”ÍˆÍ“à‚É‚¢‚éƒ†ƒjƒbƒg‚ğƒJƒEƒ“ƒg
 								enemy_num = CountTargetInRange(w, xx - lv, yy - lv, xx + lv, yy + lv)
 								
 								If enemy_num > score Then
@@ -3659,23 +3594,22 @@ NextFixTarget:
 						Next 
 					Next 
 					
-					'Invalid_string_refer_to_original_code
-					'Invalid_string_refer_to_original_code
+					'ƒ}ƒbƒvUŒ‚‚ªÅ‹­•Ší‚Å‚ ‚ê‚Îƒ^[ƒQƒbƒg‚ª‚P‘Ì‚Å‚ ‚Á‚Ä‚àg—p
+					'‚Ü‚½A‚l“ŠL0‚Ìê‡‚ÍÅ‘å‚Å‚à‚P‘Ì‚Ì“G‚µ‚©‘_‚¦‚È‚¢
 					If score >= score_limit Or (score = 1 And w = .CountWeapon) Or (score = 1 And lv = 0) Then
 						GoTo FoundWeapon
 					End If
 					
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				ElseIf .IsWeaponClassifiedAs(w, "‚lü") Then 
 					score = 0
 					For xx = x1 To x2
 						For yy = y1 To y2
 							If System.Math.Abs(.X - xx) + System.Math.Abs(.Y - yy) <= max_range And System.Math.Abs(.X - xx) + System.Math.Abs(.Y - yy) >= min_range Then
-								'Invalid_string_refer_to_original_code
+								'Œø‰Ê”ÍˆÍ‚ğİ’è
 								AreaInPointToPoint(.X, .Y, xx, yy)
 								MaskData(.X, .Y) = True
 								
-								'Invalid_string_refer_to_original_code
+								'Œø‰Ê”ÍˆÍ“à‚É‚¢‚éƒ†ƒjƒbƒg‚ğƒJƒEƒ“ƒg
 								enemy_num = CountTargetInRange(w, MinLng(.X, xx), MinLng(.Y, yy), MaxLng(.X, xx), MaxLng(.Y, yy))
 								
 								If enemy_num > score Then
@@ -3687,53 +3621,52 @@ NextFixTarget:
 						Next 
 					Next 
 					
-					'Invalid_string_refer_to_original_code
+					'ƒ}ƒbƒvUŒ‚‚ªÅ‹­•Ší‚Å‚ ‚ê‚Îƒ^[ƒQƒbƒg‚ª‚P‘Ì‚Å‚ ‚Á‚Ä‚àg—p
 					If score >= score_limit Or (score = 1 And w = .CountWeapon) Then
 						GoTo FoundWeapon
 					End If
 					
-				ElseIf .IsWeaponClassifiedAs(w, "Invalid_string_refer_to_original_code") Then 
-					'Invalid_string_refer_to_original_code
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					GoTo NextWeapon
-				End If
-				
-				score = 0
-				For xx = x1 To x2
-					For yy = y1 To y2
-						If System.Math.Abs(.X - xx) + System.Math.Abs(.Y - yy) <= max_range And System.Math.Abs(.X - xx) + System.Math.Abs(.Y - yy) >= min_range And MapDataForUnit(xx, yy) Is Nothing And .IsAbleToEnter(xx, yy) Then
-							'Invalid_string_refer_to_original_code
-							AreaInPointToPoint(.X, .Y, xx, yy)
-							MaskData(.X, .Y) = True
-							
-							'Invalid_string_refer_to_original_code
-							enemy_num = CountTargetInRange(w, MinLng(.X, xx), MinLng(.Y, yy), MaxLng(.X, xx), MaxLng(.Y, yy))
-							
-							If enemy_num > score Then
-								'Invalid_string_refer_to_original_code
-								AreaInMoveAction(SelectedUnit, max_range)
-								If Not MaskData(xx, yy) Then
-									score = enemy_num
-									tx = xx
-									ty = yy
+				ElseIf .IsWeaponClassifiedAs(w, "‚lˆÚ") Then 
+					'‚»‚Ìê‚ğ“®‚©‚È‚¢ê‡‚ÍˆÚ“®Œ^ƒ}ƒbƒvUŒ‚‚Í‘IlŠO
+					If .Mode = "ŒÅ’è" Then
+						GoTo NextWeapon
+					End If
+					
+					score = 0
+					For xx = x1 To x2
+						For yy = y1 To y2
+							If System.Math.Abs(.X - xx) + System.Math.Abs(.Y - yy) <= max_range And System.Math.Abs(.X - xx) + System.Math.Abs(.Y - yy) >= min_range And MapDataForUnit(xx, yy) Is Nothing And .IsAbleToEnter(xx, yy) Then
+								'Œø‰Ê”ÍˆÍ‚ğİ’è
+								AreaInPointToPoint(.X, .Y, xx, yy)
+								MaskData(.X, .Y) = True
+								
+								'Œø‰Ê”ÍˆÍ“à‚É‚¢‚éƒ†ƒjƒbƒg‚ğƒJƒEƒ“ƒg
+								enemy_num = CountTargetInRange(w, MinLng(.X, xx), MinLng(.Y, yy), MaxLng(.X, xx), MaxLng(.Y, yy))
+								
+								If enemy_num > score Then
+									'ÅIƒ`ƒFƒbƒN –Ú•W’n“_‚É‚½‚Ç‚è’…‚¯‚é‚©H
+									AreaInMoveAction(SelectedUnit, max_range)
+									If Not MaskData(xx, yy) Then
+										score = enemy_num
+										tx = xx
+										ty = yy
+									End If
 								End If
 							End If
-						End If
+						Next 
 					Next 
-				Next 
-				
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code
-				If score >= score_limit Or (score = 1 And w = .CountWeapon) Or (score = 1 And max_range = 2) Then
-					GoTo FoundWeapon
+					
+					'ƒ}ƒbƒvUŒ‚‚ªÅ‹­•Ší‚Å‚ ‚ê‚Îƒ^[ƒQƒbƒg‚ª‚P‘Ì‚Å‚ ‚Á‚Ä‚àg—p
+					'‚Ü‚½AË’ö‚ª‚Q‚Ìê‡‚ÍÅ‘å‚Å‚à‚P‘Ì‚Ì“G‚µ‚©‘_‚¦‚È‚¢
+					If score >= score_limit Or (score = 1 And w = .CountWeapon) Or (score = 1 And max_range = 2) Then
+						GoTo FoundWeapon
+					End If
 				End If
-				'End If
 NextWeapon: 
 				w = w - 1
 			Loop 
 			
-			'Invalid_string_refer_to_original_code
+			'—LŒø‚Èƒ}ƒbƒvUŒ‚‚ªŒ©‚Â‚©‚ç‚È‚©‚Á‚½
 			
 			RestoreSelections()
 			TryMapAttack = False
@@ -3742,21 +3675,21 @@ NextWeapon:
 			
 FoundWeapon: 
 			
-			'Invalid_string_refer_to_original_code
+			'—LŒø‚Èƒ}ƒbƒvUŒ‚‚ªŒ©‚Â‚©‚Á‚½ê‡
 			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			.CombinationPartner("Invalid_string_refer_to_original_code")
-			ReDim SelectedPartners(0)
-			ReDim partners(0)
-			'End If
+			'‡‘Ì‹Zƒp[ƒgƒi[‚Ìİ’è
+			If .IsWeaponClassifiedAs(w, "‡") Then
+				.CombinationPartner("•‘•", w, partners)
+			Else
+				ReDim SelectedPartners(0)
+				ReDim partners(0)
+			End If
 			
-			'Invalid_string_refer_to_original_code
+			'ƒ}ƒbƒvUŒ‚‚É‚æ‚éUŒ‚‚ğÀs
 			.MapAttack(w, tx, ty)
 			
-			'Invalid_string_refer_to_original_code
-			If Not IsOptionDefined("Invalid_string_refer_to_original_code") Then
+			'‡‘Ì‹Z‚Ìƒp[ƒgƒi[‚Ìs“®”‚ğŒ¸‚ç‚·
+			If Not IsOptionDefined("‡‘Ì‹Zƒp[ƒgƒi[s“®”–³Á”ï") Then
 				For i = 1 To UBound(partners)
 					partners(i).CurrentForm.UseAction()
 				Next 
@@ -3768,100 +3701,94 @@ FoundWeapon:
 		End With
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'Œø‰Ê”ÍˆÍ“à‚É‚¢‚éƒ^[ƒQƒbƒg‚ğƒJƒEƒ“ƒg
 	Private Function CountTargetInRange(ByVal w As Short, ByVal x1 As Short, ByVal y1 As Short, ByVal x2 As Short, ByVal y2 As Short) As Short
 		Dim i, j As Short
 		Dim t As Unit
 		Dim is_ally_involved As Boolean
 		
 		With SelectedUnit
-			'Invalid_string_refer_to_original_code
+			'Œø‰Ê”ÍˆÍ“à‚Ìƒ^[ƒQƒbƒg‚ğŒŸõ
 			For i = MaxLng(x1, 1) To MinLng(x2, MapWidth)
 				For j = MaxLng(y1, 1) To MinLng(y2, MapHeight)
-					'Invalid_string_refer_to_original_code
+					'Œø‰Ê”ÍˆÍ“àH
 					If MaskData(i, j) Then
 						GoTo NextPoint
 					End If
 					
 					t = MapDataForUnit(i, j)
 					
-					'Invalid_string_refer_to_original_code
+					'ƒ†ƒjƒbƒg‚ª‘¶İ‚·‚éH
 					If t Is Nothing Then
 						GoTo NextPoint
 					End If
 					
-					'Invalid_string_refer_to_original_code
+					'ƒ_ƒ[ƒW‚ğ—^‚¦‚ç‚ê‚éH
 					If .HitProbability(w, t, False) = 0 Then
 						GoTo NextPoint
 					ElseIf .ExpDamage(w, t, False) <= 10 Then 
 						If .IsNormalWeapon(w) Then
 							GoTo NextPoint
-						ElseIf .CriticalProbability(w, t) <= 1 And .WeaponLevel(w, "Invalid_string_refer_to_original_code") = 0 And .WeaponLevel(w, "å¹") = 0 Then 
+						ElseIf .CriticalProbability(w, t) <= 1 And .WeaponLevel(w, "‚j") = 0 And .WeaponLevel(w, "") = 0 Then 
 							GoTo NextPoint
 						End If
 					End If
 					
-					'Invalid_string_refer_to_original_code
+					'ƒ^[ƒQƒbƒg‚Í“GH
 					If .IsAlly(t) Then
-						'Invalid_string_refer_to_original_code
+						'–¡•û‚Ìê‡‚Í“¯m“¢‚¿‚Ì‰Â”\«‚ª‚ ‚é‚Ì‚Åƒ`ƒFƒbƒN‚µ‚Ä‚¨‚­
 						is_ally_involved = True
 						GoTo NextPoint
 					End If
 					
-					'Invalid_string_refer_to_original_code
+					'“Á’è‚Ìw‰c‚Ì‚İ‚ğUŒ‚‚·‚éê‡
 					Select Case .Mode
-						Case "å‘³æ–¹", "Invalid_string_refer_to_original_code"
-							If t.Party <> "å‘³æ–¹" And t.Party <> "Invalid_string_refer_to_original_code" Then
+						Case "–¡•û", "‚m‚o‚b"
+							If t.Party <> "–¡•û" And t.Party <> "‚m‚o‚b" Then
 								GoTo NextPoint
 							End If
-						Case "æ•µ"
-							If t.Party <> "æ•µ" Then
+						Case "“G"
+							If t.Party <> "“G" Then
 								GoTo NextPoint
 							End If
-						Case "Invalid_string_refer_to_original_code"
-							'Invalid_string_refer_to_original_code
-							'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-							GoTo NextPoint
-							'End If
+						Case "’†—§"
+							If t.Party <> "’†—§" Then
+								GoTo NextPoint
+							End If
 					End Select
 					
-					'Invalid_string_refer_to_original_code
-					If t.IsUnderSpecialPowerEffect("éš ã‚Œèº«") Then
+					'ƒ^[ƒQƒbƒg‚ªŒ©‚¦‚éH
+					If t.IsUnderSpecialPowerEffect("‰B‚êg") Then
 						GoTo NextPoint
 					End If
-					If t.IsFeatureAvailable("Invalid_string_refer_to_original_code") Then
-						'Invalid_string_refer_to_original_code_
-						'Then
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-						If t.IsFeatureLevelSpecified("Invalid_string_refer_to_original_code") Then
-							If System.Math.Abs(.X - t.X) + System.Math.Abs(.Y - t.Y) > t.FeatureLevel("Invalid_string_refer_to_original_code") Then
-								GoTo NextPoint
-							End If
-						Else
-							If System.Math.Abs(.X - t.X) + System.Math.Abs(.Y - t.Y) > 3 Then
-								GoTo NextPoint
+					If t.IsFeatureAvailable("ƒXƒeƒ‹ƒX") Then
+						If Not t.IsConditionSatisfied("ƒXƒeƒ‹ƒX–³Œø") And Not .IsFeatureAvailable("ƒXƒeƒ‹ƒX–³Œø‰»") Then
+							If t.IsFeatureLevelSpecified("ƒXƒeƒ‹ƒX") Then
+								If System.Math.Abs(.X - t.X) + System.Math.Abs(.Y - t.Y) > t.FeatureLevel("ƒXƒeƒ‹ƒX") Then
+									GoTo NextPoint
+								End If
+							Else
+								If System.Math.Abs(.X - t.X) + System.Math.Abs(.Y - t.Y) > 3 Then
+									GoTo NextPoint
+								End If
 							End If
 						End If
 					End If
-					'End If
 					
-					'Invalid_string_refer_to_original_code
+					'ƒ^[ƒQƒbƒg‚ÉŠÜ‚ß‚é
 					CountTargetInRange = CountTargetInRange + 1
 NextPoint: 
 				Next 
 			Next 
 			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code_
-			'Invalid_string_refer_to_original_code_
-			'Then
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			CountTargetInRange = 0
-			'End If
+			'–¡•û‚ğŠª‚«‚ñ‚Å‚µ‚Ü‚¤ê‡‚ÍUŒ‚‚ğ~‚ß‚é
+			If is_ally_involved And Not .IsWeaponClassifiedAs(w, "¯") And Not .IsUnderSpecialPowerEffect("¯•ÊUŒ‚") Then
+				CountTargetInRange = 0
+			End If
 		End With
 	End Function
 	
-	'ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼ã‚’ä½¿ç”¨ã™ã‚‹
+	'ƒXƒyƒVƒƒƒ‹ƒpƒ[‚ğg—p‚·‚é
 	Public Sub TrySpecialPower(ByRef p As Pilot)
 		Dim slist As String
 		Dim sd As SpecialPowerData
@@ -3869,45 +3796,40 @@ NextPoint:
 		
 		SelectedPilot = p
 		
-		'Invalid_string_refer_to_original_code
-		If InStr(p.Name, "(ã‚¶ã‚³)") > 0 Then
+		'ƒUƒRƒpƒCƒƒbƒg‚ÍƒXƒyƒVƒƒƒ‹ƒpƒ[‚ğg‚í‚È‚¢
+		If InStr(p.Name, "(ƒUƒR)") > 0 Then
 			Exit Sub
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'‹Z—Ê‚ª‚‚¢‚Ù‚ÇƒXƒyƒVƒƒƒ‹ƒpƒ[‚Ì”­“®Šm—¦‚ª‚‚¢
 		If Dice(100) > p.TacticalTechnique0 - 100 Then
 			Exit Sub
 		End If
 		
 		With SelectedUnit
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code_
-			'Invalid_string_refer_to_original_code_
-			'Invalid_string_refer_to_original_code_
-			'Or .IsConditionSatisfied("ç‹‚æˆ¦å£«") _
-			'Then
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			Exit Sub
-			'End If
+			'³í‚È”»’f—Í‚ª‚ ‚éH
+			If .IsConditionSatisfied("¬—") Or .IsConditionSatisfied("–£—¹") Or .IsConditionSatisfied("œßˆË") Or .IsConditionSatisfied("‹°•|") Or .IsConditionSatisfied("‹¶ím") Then
+				Exit Sub
+			End If
 			
-			'Invalid_string_refer_to_original_code
-			If .IsConditionSatisfied("Invalid_string_refer_to_original_code") Then
+			'ƒXƒyƒVƒƒƒ‹ƒpƒ[g—p•s”\
+			If .IsConditionSatisfied("ƒXƒyƒVƒƒƒ‹ƒpƒ[g—p•s”\") Then
 				Exit Sub
 			End If
 		End With
 		
-		'Invalid_string_refer_to_original_code
+		'g—p‚·‚é‰Â”\«‚Ì‚ ‚éƒXƒyƒVƒƒƒ‹ƒpƒ[‚Ìˆê——‚ğì¬
 		slist = ""
 		For i = 1 To p.CountSpecialPower
 			SelectedSpecialPower = p.SpecialPower(i)
 			sd = SPDList.Item(SelectedSpecialPower)
 			
-			'Invalid_string_refer_to_original_code
+			'‚r‚o‚ª‘«‚è‚Ä‚¢‚éH
 			If p.SP < p.SpecialPowerCost(SelectedSpecialPower) Then
 				GoTo NextSpecialPower
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'Šù‚ÉÀsÏ‚İH
 			If SelectedUnit.IsSpecialPowerInEffect(SelectedSpecialPower) Then
 				GoTo NextSpecialPower
 			End If
@@ -3915,213 +3837,178 @@ NextPoint:
 			sd = SPDList.Item(SelectedSpecialPower)
 			
 			With sd
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code
+				'ƒ^[ƒQƒbƒg‚ğ‘I‘ğ‚·‚é•K—v‚Ì‚ ‚éƒXƒyƒVƒƒƒ‹ƒpƒ[‚Í”»’f‚ª“ï‚µ‚¢‚Ì‚Å
+				'g—p‚µ‚È‚¢
 				Select Case .TargetType
-					Case "å‘³æ–¹", "æ•µ", "Invalid_string_refer_to_original_code"
+					Case "–¡•û", "“G", "”CˆÓ"
 						GoTo NextSpecialPower
 				End Select
 				
-				'Invalid_string_refer_to_original_code
+				'ƒ^[ƒQƒbƒg‚ª‚¢‚È‚¯‚ê‚Îg—p‚µ‚È‚¢
 				tnum = .CountTarget(p)
 				If tnum = 0 Then
 					GoTo NextSpecialPower
 				End If
 				
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code
+				'•¡”‚Ìƒ†ƒjƒbƒg‚ğƒ^[ƒQƒbƒg‚É‚·‚éƒXƒyƒVƒƒƒ‹ƒpƒ[‚Íƒ^[ƒQƒbƒg‚ª
+				'­‚È‚¢ê‡‚Íg—p‚µ‚È‚¢
 				Select Case .TargetType
-					Case "å…¨å‘³æ–¹", "å…¨æ•µ"
+					Case "‘S–¡•û", "‘S“G"
 						If tnum < 3 Then
 							GoTo NextSpecialPower
 						End If
 				End Select
 				
-				'Invalid_string_refer_to_original_code
+				'g—p‚É“K‚µ‚½ó‹µ‰º‚É‚ ‚éH
 				
-				'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg sd.IsEffectAvailable(Invalid_string_refer_to_original_code) ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				If .IsEffectAvailable("Invalid_string_refer_to_original_code") Then
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					If SelectedUnit.HP < 0.7 * SelectedUnit.MaxHP Then
-						GoTo AddSpecialPower
-					End If
-				ElseIf .TargetType = "å…¨å‘³æ–¹" Then 
-					If Turn >= 3 Then
-						GoTo AddSpecialPower
-					End If
-				End If
-				'End If
-				
-				'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg sd.IsEffectAvailable(Invalid_string_refer_to_original_code) ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				If .IsEffectAvailable("Invalid_string_refer_to_original_code") Then
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					If SelectedUnit.EN < 0.3 * SelectedUnit.MaxEN Then
-						GoTo AddSpecialPower
-					End If
-				ElseIf .TargetType = "å…¨å‘³æ–¹" Then 
-					If Turn >= 4 Then
-						GoTo AddSpecialPower
-					End If
-				End If
-				'End If
-				
-				'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg sd.IsEffectAvailable(æ°—åŠ›å¢—åŠ ) ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				If .IsEffectAvailable("æ°—åŠ›å¢—åŠ ") Then
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					If p.Morale < p.MaxMorale Then
-						If p.CountSpecialPower = 1 Or p.SP > p.MaxSP \ 2 Then
+				'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg sd.IsEffectAvailable(‚g‚o‰ñ•œ) ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				If .IsEffectAvailable("‚g‚o‰ñ•œ") Then
+					If .TargetType = "©•ª" Then
+						If SelectedUnit.HP < 0.7 * SelectedUnit.MaxHP Then
+							GoTo AddSpecialPower
+						End If
+					ElseIf .TargetType = "‘S–¡•û" Then 
+						If Turn >= 3 Then
 							GoTo AddSpecialPower
 						End If
 					End If
-				ElseIf .TargetType = "å…¨å‘³æ–¹" Then 
-					GoTo AddSpecialPower
 				End If
-				'End If
 				
-				'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg sd.IsEffectAvailable(è¡Œå‹•æ•°å¢—åŠ ) ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				If .IsEffectAvailable("è¡Œå‹•æ•°å¢—åŠ ") Then
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					If DistanceFromNearestEnemy(SelectedUnit) <= 5 Then
-						GoTo AddSpecialPower
-					End If
-				End If
-				'End If
-				
-				'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg sd.IsEffectAvailable(å¾©æ´») ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				If .IsEffectAvailable("å¾©æ´»") Then
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					GoTo AddSpecialPower
-				End If
-				'End If
-				
-				'Invalid_string_refer_to_original_code_
-				'Invalid_string_refer_to_original_code_
-				'Invalid_string_refer_to_original_code_
-				'Or IsSPEffectUseful(sd, "éš ã‚Œèº«") _
-				'Then
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				'Invalid_string_refer_to_original_code_
-				'Then
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				GoTo AddSpecialPower
-				'End If
-				'UPGRADE_WARNING: TrySpecialPower ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-				GoTo AddSpecialPower
-				'End If
-				'End If
-				
-				'Invalid_string_refer_to_original_code_
-				'Invalid_string_refer_to_original_code_
-				'Invalid_string_refer_to_original_code_
-				'Then
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				If DistanceFromNearestEnemy(SelectedUnit) <= 5 Or .Duration = "é˜²å¾¡" Then
-					GoTo AddSpecialPower
-				End If
-				'UPGRADE_WARNING: TrySpecialPower ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-				GoTo AddSpecialPower
-				'End If
-				'End If
-				
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				If DistanceFromNearestEnemy(SelectedUnit) > 5 Then
-					GoTo AddSpecialPower
-				End If
-				'UPGRADE_WARNING: TrySpecialPower ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-				GoTo AddSpecialPower
-				'End If
-				'End If
-				
-				If IsSPEffectUseful(sd, "Invalid_string_refer_to_original_code") Then
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					Select Case DistanceFromNearestEnemy(SelectedUnit)
-						Case 5, 6
+				'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg sd.IsEffectAvailable(‚d‚m‰ñ•œ) ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				If .IsEffectAvailable("‚d‚m‰ñ•œ") Then
+					If .TargetType = "©•ª" Then
+						If SelectedUnit.EN < 0.3 * SelectedUnit.MaxEN Then
 							GoTo AddSpecialPower
-					End Select
-				ElseIf .TargetType = "å…¨å‘³æ–¹" Then 
-					GoTo AddSpecialPower
+						End If
+					ElseIf .TargetType = "‘S–¡•û" Then 
+						If Turn >= 4 Then
+							GoTo AddSpecialPower
+						End If
+					End If
 				End If
-				'End If
 				
-				'Invalid_string_refer_to_original_code_
-				'Or .IsEffectAvailable("ãƒ©ãƒ³ãƒ€ãƒ ãƒ€ãƒ¡ãƒ¼ã‚¸") _
-				'Invalid_string_refer_to_original_code_
-				'Invalid_string_refer_to_original_code_
-				'Or .IsEffectAvailable("æŒ‘ç™º") _
-				'Then
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				If .TargetType = "å…¨æ•µ" Then
-					GoTo AddSpecialPower
-				End If
-				'End If
-				
-				'Invalid_string_refer_to_original_code_
-				'Or .IsEffectAvailable("è¢«ãƒ€ãƒ¡ãƒ¼ã‚¸å¢—åŠ ") _
-				'Invalid_string_refer_to_original_code_
-				'Invalid_string_refer_to_original_code_
-				'Invalid_string_refer_to_original_code_
-				'Invalid_string_refer_to_original_code_
-				'Invalid_string_refer_to_original_code_
-				'Then
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				If .TargetType = "å…¨æ•µ" Then
-					If Turn >= 3 Then
+				'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg sd.IsEffectAvailable(‹C—Í‘‰Á) ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				If .IsEffectAvailable("‹C—Í‘‰Á") Then
+					If .TargetType = "©•ª" Then
+						If p.Morale < p.MaxMorale Then
+							If p.CountSpecialPower = 1 Or p.SP > p.MaxSP \ 2 Then
+								GoTo AddSpecialPower
+							End If
+						End If
+					ElseIf .TargetType = "‘S–¡•û" Then 
 						GoTo AddSpecialPower
 					End If
 				End If
-				'End If
+				
+				'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg sd.IsEffectAvailable(s“®”‘‰Á) ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				If .IsEffectAvailable("s“®”‘‰Á") Then
+					If .TargetType = "©•ª" Then
+						If DistanceFromNearestEnemy(SelectedUnit) <= 5 Then
+							GoTo AddSpecialPower
+						End If
+					End If
+				End If
+				
+				'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg sd.IsEffectAvailable(•œŠˆ) ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				If .IsEffectAvailable("•œŠˆ") Then
+					If .TargetType = "©•ª" Then
+						GoTo AddSpecialPower
+					End If
+				End If
+				
+				If IsSPEffectUseful(sd, "â‘Î–½’†") Or IsSPEffectUseful(sd, "ƒ_ƒ[ƒW‘‰Á") Or IsSPEffectUseful(sd, "ƒNƒŠƒeƒBƒJƒ‹—¦‘‰Á") Or IsSPEffectUseful(sd, "–½’†‹­‰»") Or IsSPEffectUseful(sd, "ŠÑ’ÊUŒ‚") Or IsSPEffectUseful(sd, "ÄUŒ‚") Or IsSPEffectUseful(sd, "‰B‚êg") Then
+					If .TargetType = "©•ª" Then
+						If DistanceFromNearestEnemy(SelectedUnit) <= 5 Or .Duration = "UŒ‚" Then
+							GoTo AddSpecialPower
+						End If
+					ElseIf .TargetType = "‘S–¡•û" Then 
+						GoTo AddSpecialPower
+					End If
+				End If
+				
+				If IsSPEffectUseful(sd, "â‘Î‰ñ”ğ") Or IsSPEffectUseful(sd, "”íƒ_ƒ[ƒW’á‰º") Or IsSPEffectUseful(sd, "‘•b‹­‰»") Or IsSPEffectUseful(sd, "‰ñ”ğ‹­‰»") Then
+					If .TargetType = "©•ª" Then
+						If DistanceFromNearestEnemy(SelectedUnit) <= 5 Or .Duration = "–hŒä" Then
+							GoTo AddSpecialPower
+						End If
+					ElseIf .TargetType = "‘S–¡•û" Then 
+						GoTo AddSpecialPower
+					End If
+				End If
+				
+				If IsSPEffectUseful(sd, "ˆÚ“®—Í‹­‰»") Then
+					If .TargetType = "©•ª" Then
+						If DistanceFromNearestEnemy(SelectedUnit) > 5 Then
+							GoTo AddSpecialPower
+						End If
+					ElseIf .TargetType = "‘S–¡•û" Then 
+						GoTo AddSpecialPower
+					End If
+				End If
+				
+				If IsSPEffectUseful(sd, "Ë’ö‰„’·") Then
+					If .TargetType = "©•ª" Then
+						Select Case DistanceFromNearestEnemy(SelectedUnit)
+							Case 5, 6
+								GoTo AddSpecialPower
+						End Select
+					ElseIf .TargetType = "‘S–¡•û" Then 
+						GoTo AddSpecialPower
+					End If
+				End If
+				
+				If .IsEffectAvailable("‹C—Í’á‰º") Or .IsEffectAvailable("ƒ‰ƒ“ƒ_ƒ€ƒ_ƒ[ƒW") Or .IsEffectAvailable("‚g‚oŒ¸­") Or .IsEffectAvailable("‚d‚mŒ¸­") Or .IsEffectAvailable("’§”­") Then
+					If .TargetType = "‘S“G" Then
+						GoTo AddSpecialPower
+					End If
+				End If
+				
+				If .IsEffectAvailable("ƒ_ƒ[ƒW’á‰º") Or .IsEffectAvailable("”íƒ_ƒ[ƒW‘‰Á") Or .IsEffectAvailable("–½’†’á‰º") Or .IsEffectAvailable("‰ñ”ğ’á‰º") Or .IsEffectAvailable("–½’†—¦’á‰º") Or .IsEffectAvailable("ˆÚ“®—Í’á‰º") Or .IsEffectAvailable("ƒTƒ|[ƒgƒK[ƒh•s”\") Then
+					If .TargetType = "‘S“G" Then
+						If Turn >= 3 Then
+							GoTo AddSpecialPower
+						End If
+					End If
+				End If
 			End With
 			
-			'Invalid_string_refer_to_original_code
+			'—L—p‚ÈŒø‰Ê‚ªŒ©‚Â‚©‚ç‚È‚©‚Á‚½
 			GoTo NextSpecialPower
 			
 AddSpecialPower: 
 			
-			'ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼ã‚’å€™è£œãƒªã‚¹ãƒˆã«è¿½åŠ 
+			'ƒXƒyƒVƒƒƒ‹ƒpƒ[‚ğŒó•âƒŠƒXƒg‚É’Ç‰Á
 			slist = slist & " " & SelectedSpecialPower
 			
 NextSpecialPower: 
 		Next 
 		
-		'Invalid_string_refer_to_original_code
+		'g—p‰Â”\‚ÈƒXƒyƒVƒƒƒ‹ƒpƒ[‚ğŠ—L‚µ‚Ä‚¢‚È‚¢
 		If slist = "" Then
 			SelectedSpecialPower = ""
 			Exit Sub
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'g—p‚·‚éƒXƒyƒVƒƒƒ‹ƒpƒ[‚ğƒ‰ƒ“ƒ_ƒ€‚É‘I‘ğ
 		SelectedSpecialPower = LIndex(slist, Dice(LLength(slist)))
 		
-		'Invalid_string_refer_to_original_code
-		HandleEvent("ä½¿ç”¨", SelectedUnit.MainPilot.ID, SelectedSpecialPower)
+		'g—pƒCƒxƒ“ƒg
+		HandleEvent("g—p", SelectedUnit.MainPilot.ID, SelectedSpecialPower)
 		If IsScenarioFinished Or IsCanceled Then
 			Exit Sub
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'‘I‘ğ‚µ‚½ƒXƒyƒVƒƒƒ‹ƒpƒ[‚ğÀs‚·‚é
 		p.UseSpecialPower(SelectedSpecialPower)
 		SelectedUnit = SelectedUnit.CurrentForm
 		
-		'Invalid_string_refer_to_original_code
+		'ƒXƒe[ƒ^ƒXƒEƒBƒ“ƒhƒEXV
 		If Not IsRButtonPressed Then
 			DisplayUnitStatus(SelectedUnit)
 		End If
 		
-		'Invalid_string_refer_to_original_code
-		HandleEvent("Invalid_string_refer_to_original_code")
+		'g—pŒãƒCƒxƒ“ƒg
+		HandleEvent("g—pŒã", SelectedUnit.MainPilot.ID, SelectedSpecialPower)
 		
 		SelectedSpecialPower = ""
 	End Sub
@@ -4130,24 +4017,23 @@ NextSpecialPower:
 		With sd
 			'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg sd.IsEffectAvailable(ename) ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 			If .IsEffectAvailable(ename) Then
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code
-				If Not SelectedUnit.IsSpecialPowerInEffect(ename) Then
+				If .TargetType = "©•ª" Then
+					'©•ª©g‚ªƒ^[ƒQƒbƒg‚Å‚ ‚éê‡AŠù‚É“¯‚¶Œø‰Ê‚ğ‚ÂƒXƒyƒVƒƒƒ‹
+					'ƒpƒ[‚ğg—p‚µ‚Ä‚¢‚éê‡‚Íg—p‚µ‚È‚¢B
+					If Not SelectedUnit.IsSpecialPowerInEffect(ename) Then
+						IsSPEffectUseful = True
+					End If
+				Else
 					IsSPEffectUseful = True
 				End If
-			Else
-				IsSPEffectUseful = True
 			End If
-			'End If
 		End With
 	End Function
 	
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
+	'ƒ†ƒjƒbƒg u ‚ªƒ^[ƒQƒbƒg t ‚ğUŒ‚‚·‚é‚½‚ß‚Ì•Ší‚ğ‘I‘ğ
+	'amode:UŒ‚‚Ìí—Ş
+	'max_prob:“G‚ğ”j‰ó‚Å‚«‚éŠm—¦
+	'max_dmg:ƒ_ƒ[ƒWŠú‘Ò’l
 	Public Function SelectWeapon(ByRef u As Unit, ByRef t As Unit, Optional ByRef amode As String = "", Optional ByRef max_prob As Integer = 0, Optional ByRef max_dmg As Integer = 0) As Short
 		Dim smode As String
 		Dim use_true_value, is_move_attack As Boolean
@@ -4165,520 +4051,1147 @@ NextSpecialPower:
 		Dim checku As Unit
 		Dim checkwc As String
 		
+		Dim flag As Boolean
+		Dim parry_prob As Short
+		Dim fdata As String
 		With u
-			'å¾¡ä¸»äººã•ã¾ã«ã¯ã•ã‹ã‚‰ãˆã¾ã›ã‚“
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			If .Master Is t Then
+			'Œäål‚³‚Ü‚É‚Í‚³‚©‚ç‚¦‚Ü‚¹‚ñ
+			If .IsConditionSatisfied("–£—¹") Then
+				If .Master Is t Then
+					SelectWeapon = -1
+					Exit Function
+				End If
+			End If
+			
+			'—x‚è‚É–Z‚µ‚¢cc
+			If .IsConditionSatisfied("—x‚è") Then
 				SelectWeapon = -1
 				Exit Function
 			End If
-			'End If
 			
-			'Invalid_string_refer_to_original_code
-			If .IsConditionSatisfied("è¸Šã‚Š") Then
-				SelectWeapon = -1
-				Exit Function
-			End If
-			
-			'Invalid_string_refer_to_original_code
-			If .Party = "å‘³æ–¹" Then
+			'ƒXƒyƒVƒƒƒ‹ƒpƒ[“™‚Ì‰e‹¿‚ğl‚¦‚Ä•Ší‚ğ‘I‘ğ‚·‚é‚©‚ğ”»’è
+			If .Party = "–¡•û" Then
 				use_true_value = True
 			End If
 			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			smode = "Invalid_string_refer_to_original_code"
-			smode = "ç§»å‹•å‰"
-			'End If
+			'ƒ†ƒjƒbƒg‚ªˆÚ“®‘O‚©‚Ç‚¤‚©‚ğ”»’è
+			If amode = "ˆÚ“®Œã" Then
+				smode = "ˆÚ“®Œã"
+			Else
+				smode = "ˆÚ“®‘O"
+			End If
 			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code_
-			'Then
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			su = .LookForSupportAttack(t)
-			If Not su Is Nothing Then
-				w = SelectWeapon(su, t, "Invalid_string_refer_to_original_code", support_prob, support_exp_dmg)
-				If w > 0 Then
-					With su
-						support_prob = MinLng(.HitProbability(w, t, use_true_value), 100)
-						
-						dmg_mod = 1
-						
-						'Invalid_string_refer_to_original_code
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-						dmg_mod = 0.7
-					End With
+			'ƒTƒ|[ƒgƒAƒ^ƒbƒN‚ğ‚µ‚Ä‚­‚ê‚éƒ†ƒjƒbƒg‚ª‚¢‚é‚©‚Ç‚¤‚©
+			If InStr(amode, "”½Œ‚") = 0 And InStr(amode, "ƒTƒ|[ƒg") = 0 Then
+				su = .LookForSupportAttack(t)
+				If Not su Is Nothing Then
+					w = SelectWeapon(su, t, "ƒTƒ|[ƒgƒAƒ^ƒbƒN", support_prob, support_exp_dmg)
+					If w > 0 Then
+						With su
+							support_prob = MinLng(.HitProbability(w, t, use_true_value), 100)
+							
+							dmg_mod = 1
+							
+							'ƒTƒ|[ƒgƒAƒ^ƒbƒNƒ_ƒ[ƒW’á‰º
+							If IsOptionDefined("ƒTƒ|[ƒgƒAƒ^ƒbƒNƒ_ƒ[ƒW’á‰º") Then
+								dmg_mod = 0.7
+							End If
+							
+							'“¯‰‡ŒìUŒ‚H
+							If .MainPilot.IsSkillAvailable("“—¦") And .IsNormalWeapon(w) Then
+								If IsOptionDefined("ƒ_ƒ[ƒW”{—¦’á‰º") Then
+									dmg_mod = 1.2 * dmg_mod
+								Else
+									dmg_mod = 1.5 * dmg_mod
+								End If
+							End If
+							
+							support_dmg = .ExpDamage(w, t, use_true_value, dmg_mod)
+						End With
+					End If
+				End If
+			End If
+			
+			SelectWeapon = 0
+			max_destroy_prob = 0
+			max_exp_dmg = -1
+			
+			'Še•Ší‚ğg‚Á‚Äs
+			For w = 1 To .CountWeapon
+				'•Ší‚ªg—p‰Â”\H
+				If Not .IsWeaponAvailable(w, smode) Then
+					GoTo NextWeapon
 				End If
 				
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code_
-				'And .IsNormalWeapon(w) _
-				'Then
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				dmg_mod = 1.2 * dmg_mod
-			Else
-				dmg_mod = 1.5 * dmg_mod
-			End If
-			'End If
-			
-			support_dmg = .ExpDamage(w, t, use_true_value, dmg_mod)
-		End With
-		'End If
-		'End If
-		'End If
-		
-		SelectWeapon = 0
-		max_destroy_prob = 0
-		max_exp_dmg = -1
-		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_WARNING: SelectWeapon ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		'End If
-		'åŠ¹å±æ€§
-		'UPGRADE_WARNING: SelectWeapon ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
-		checkwc = Mid(wattr, 2)
-		'UPGRADE_WARNING: SelectWeapon ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		'End If
-		'End If
-		'End If
-		'End With
-		'Next
-		'End If
-		'Next
-		'End If
-		'å‰‹å±æ€§
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		'Invalid_string_refer_to_original_code
-		checkwc = Mid(wattr, 2)
-		Select Case checkwc
-			Case "ã‚ª"
-				'UPGRADE_WARNING: SelectWeapon ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-			Case "Invalid_string_refer_to_original_code"
-				'UPGRADE_WARNING: SelectWeapon ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-				GoTo NextAttribute
-				'End If
-			Case "ã‚·"
-				'UPGRADE_WARNING: SelectWeapon ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-				GoTo NextAttribute
-				'End If
-			Case "ã‚µ"
-				'UPGRADE_WARNING: SelectWeapon ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-				GoTo NextAttribute
-				'End If
-			Case "Invalid_string_refer_to_original_code"
-				'UPGRADE_WARNING: SelectWeapon ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-			Case "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_WARNING: SelectWeapon ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-				GoTo NextAttribute
-				'End If
-			Case "æŠ€"
-				'UPGRADE_WARNING: SelectWeapon ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		End Select
-		
-		'UPGRADE_WARNING: SelectWeapon ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		'End If
-		'End Select
+				'ƒ}ƒbƒvUŒ‚‚Í•Ší‘I’èŠO
+				If .IsWeaponClassifiedAs(w, "‚l") Then
+					GoTo NextWeapon
+				End If
+				
+				'‡‘Ì‹Z‚Í©•ª‚©‚çUŒ‚‚ğ‚©‚¯‚éê‡‚É‚Ì‚İg—p
+				If .IsWeaponClassifiedAs(w, "‡") Then
+					If InStr(amode, "”½Œ‚") > 0 Or InStr(amode, "ƒTƒ|[ƒg") > 0 Then
+						GoTo NextWeapon
+					End If
+				End If
+				
+				'Ë’ö”ÍˆÍ“àH
+				If .IsWeaponClassifiedAs(w, "ˆÚ“®ŒãUŒ‚‰Â") And amode = "ˆÚ“®‰Â”\" And .Mode <> "ŒÅ’è" Then
+					'‡‘Ì‹Z‚ÍˆÚ“®ŒãUŒ‚‰Â”\‚Å‚àˆÚ“®‚ğ‘O’ñ‚É‚µ‚È‚¢
+					'(ˆÚ“®Œã‚ÌˆÊ’u‚Å‚Íg‚¦‚È‚¢ŠëŒ¯«‚ª‚ ‚é‚½‚ß)
+					If .IsWeaponClassifiedAs(w, "‡") And .IsWeaponClassifiedAs(w, "‚o") Then
+						'ˆÚ“®‚µ‚ÄUŒ‚‚Ío—ˆ‚È‚¢
+						If Not .IsTargetWithinRange(w, t) Then
+							GoTo NextWeapon
+						End If
+						is_move_attack = False
+					Else
+						'ˆÚ“®‚µ‚ÄUŒ‚‰Â”\
+						If Not .IsTargetReachable(w, t) Then
+							GoTo NextWeapon
+						End If
+						is_move_attack = True
+					End If
+				Else
+					'ˆÚ“®‚µ‚ÄUŒ‚‚Ío—ˆ‚È‚¢
+					If Not .IsTargetWithinRange(w, t) Then
+						GoTo NextWeapon
+					End If
+					is_move_attack = False
+				End If
+				
+				'–¡•ûƒ†ƒjƒbƒg‚Ìê‡AÅŒã‚Ìˆê”­‚Íg—p‚µ‚È‚¢
+				If .Party = "–¡•û" And .Party0 = "–¡•û" And InStr(amode, "ƒCƒxƒ“ƒg") = 0 Then
+					'©”šUŒ‚‚Í•Ší‚ğè“®‘I‘ğ‚·‚éê‡‚É‚Ì‚İg—p
+					If .IsWeaponClassifiedAs(w, "©") Then
+						GoTo NextWeapon
+					End If
+					
+					'è“®”½Œ‚‚ÌƒTƒ|[ƒgƒAƒ^ƒbƒNˆÈŠO‚Íc’e”‚ª­‚È‚¢•Ší‚ğg—p‚µ‚È‚¢
+					'UPGRADE_ISSUE: Control mnuMapCommandItem ‚ÍA”Ä—p–¼‘O‹óŠÔ Form “à‚É‚ ‚é‚½‚ßA‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					If amode <> "ƒTƒ|[ƒgƒAƒ^ƒbƒN" Or MainForm.mnuMapCommandItem(AutoDefenseCmdID).Checked Then
+						If Not .IsWeaponClassifiedAs(w, "‰i") Then
+							If .Bullet(w) = 1 Or .MaxBullet(w) = 2 Or .MaxBullet(w) = 3 Then
+								GoTo NextWeapon
+							End If
+						End If
+						If .WeaponENConsumption(w) > 0 Then
+							If .WeaponENConsumption(w) >= .EN \ 2 Or .WeaponENConsumption(w) >= .MaxEN \ 4 Then
+								GoTo NextWeapon
+							End If
+						End If
+						If .IsWeaponClassifiedAs(w, "s") Then
+							GoTo NextWeapon
+						End If
+					End If
+				End If
+				
+				'ƒ{ƒXƒ†ƒjƒbƒg‚ª©”š•‘S‚d‚mÁ”ïUŒ‚g‚¤‚Ì‚Í”ñí‚Ì‚İ
+				If .BossRank >= 0 And InStr(amode, "ƒCƒxƒ“ƒg") = 0 Then
+					If .IsWeaponClassifiedAs(w, "©") Or .IsWeaponClassifiedAs(w, "s") Then
+						If .HP > .MaxHP \ 4 Then
+							GoTo NextWeapon
+						End If
+					End If
+				End If
+				
+				'“Á’è‚Ìƒ†ƒjƒbƒg‚ğƒ^[ƒQƒbƒg‚É‚µ‚Ä‚¢‚éê‡A©”šUŒ‚‚Í‚»‚Ìƒ^[ƒQƒbƒg‚É‚µ‚©g‚í‚È‚¢
+				If .IsWeaponClassifiedAs(w, "©") Then
+					If PList.IsDefined(.Mode) Then
+						If Not PList.Item(.Mode).Unit_Renamed Is Nothing Then
+							If .IsEnemy((PList.Item(.Mode).Unit_Renamed)) Then
+								If Not PList.Item(.Mode).Unit_Renamed Is t Then
+									GoTo NextWeapon
+								End If
+							End If
+						End If
+					End If
+				End If
+				
+				'ƒ_ƒ[ƒWC³—¦
+				dmg_mod = 1
+				
+				'ƒTƒ|[ƒgƒAƒ^ƒbƒNƒ_ƒ[ƒW’á‰º
+				If InStr(amode, "ƒTƒ|[ƒg") > 0 Then
+					If IsOptionDefined("ƒTƒ|[ƒgƒAƒ^ƒbƒNƒ_ƒ[ƒW’á‰º") Then
+						dmg_mod = 0.7
+					End If
+				End If
+				
+				'ƒ_ƒ[ƒWZo
+				dmg = .ExpDamage(w, t, use_true_value, dmg_mod)
+				
+				'UŒ‚‚Ì‰Â”Û”»’è‚ğs‚¤ê‡‚Íƒ_ƒ[ƒW‚ğ—^‚¦‚ç‚ê‚é•Ší‚ª‚ ‚ê‚Î‚æ‚¢
+				If InStr(amode, "‰Â”Û”»’è") > 0 Then
+					If dmg > 0 Then
+						SelectWeapon = w
+						Exit Function
+					ElseIf Not .IsNormalWeapon(w) Then 
+						If .CriticalProbability(w, t) > 0 Then
+							SelectWeapon = w
+							Exit Function
+						End If
+					End If
+					GoTo NextWeapon
+				End If
+				
+				If dmg = 0 Then
+					'–•EUŒ‚‚ÍˆêŒ‚‚Å“|‚¹‚éê‡‚Å‚È‚¢‚ÆŒø‰Ê‚ª–³‚¢
+					If .IsWeaponClassifiedAs(w, "E") Then
+						GoTo NextWeapon
+					End If
+					
+					'ƒ_ƒ[ƒW‘‰Á‚ÌƒXƒyƒVƒƒƒ‹ƒpƒ[‚ğg—p‚µ‚Ä‚¢‚éê‡‚Íƒ_ƒ[ƒW‚ğ—^‚¦‚ç‚ê‚È‚¢
+					'•Ší‚ğ‘I‘ğ‚µ‚È‚¢
+					If .IsUnderSpecialPowerEffect("ƒ_ƒ[ƒW‘‰Á") Then
+						GoTo NextWeapon
+					End If
+				End If
+				
+				'‘Šè‚Ì‚g‚o‚ª10ˆÈ‰º‚Ìê‡‚Íƒ_ƒ[ƒW‚ğ‚©‚³ã‚°
+				If t.HP <= 10 Then
+					If 0 < dmg And dmg < 20 Then
+						If .Weapon(w).Power > 0 Then
+							dmg = 20
+						End If
+					End If
+				End If
+				
+				'ÄUŒ‚‚ª‰Â”\‚Èê‡
+				If InStr(amode, "ƒTƒ|[ƒg") = 0 Then
+					If .IsUnderSpecialPowerEffect("ÄUŒ‚") Then
+						'ÄUŒ‚‚·‚éc’e•‚d‚m‚ª‚ ‚éH
+						If .Weapon(w).Bullet > 0 Then
+							If .Bullet(w) < 2 Then
+								GoTo NextWeapon
+							End If
+						End If
+						If .Weapon(w).ENConsumption > 0 Then
+							If .EN < 2 * .WeaponENConsumption(w) Then
+								GoTo NextWeapon
+							End If
+						End If
+						dmg = 2 * dmg
+					ElseIf .IsWeaponClassifiedAs(w, "Ä") Then 
+						dmg = dmg + dmg * .WeaponLevel(w, "Ä") \ 16
+					End If
+				End If
+				
+				'–½’†—¦Zo
+				prob = .HitProbability(w, t, use_true_value)
+				
+				'“Áê”\—Í‚É‚æ‚é‰ñ”ğ‚ğ”F¯‚·‚éH
+				If (.MainPilot.TacticalTechnique >= 150 Or .Party = "–¡•û") And Not .IsUnderSpecialPowerEffect("â‘Î–½’†") Then
+					'Ø‚è•¥‚¢‰Â”\‚Èê‡‚Í–½’†—¦‚ğ’á‰º
+					If .IsWeaponClassifiedAs(w, "•") Or .IsWeaponClassifiedAs(w, "“Ë") Or .IsWeaponClassifiedAs(w, "À") Then
+						
+						'Ø‚è•¥‚¢‰Â”\H
+						flag = False
+						If t.IsFeatureAvailable("Ši“¬•Ší") Then
+							flag = True
+						Else
+							For i = 1 To t.CountWeapon
+								If t.IsWeaponClassifiedAs(i, "•") And t.IsWeaponMastered(i) And t.MainPilot.Morale >= t.Weapon(i).NecessaryMorale And Not t.IsDisabled((t.Weapon(i).Name)) Then
+									flag = True
+									Exit For
+								End If
+							Next 
+						End If
+						If Not t.MainPilot.IsSkillAvailable("Ø‚è•¥‚¢") Then
+							flag = False
+						End If
+						
+						'Ø‚è•¥‚¢o—ˆ‚éê‡‚Í–½’†—¦‚ğ’á‰º
+						If flag Then
+							
+							parry_prob = 2 * t.MainPilot.SkillLevel("Ø‚è•¥‚¢")
+							If .IsWeaponClassifiedAs(w, "À") Then
+								If .IsWeaponClassifiedAs(w, "ƒT") Then
+									parry_prob = parry_prob - .MainPilot.SkillLevel("’´Š´Šo") - .MainPilot.SkillLevel("’mŠo‹­‰»")
+									With t.MainPilot
+										parry_prob = parry_prob + .SkillLevel("’´Š´Šo") + .SkillLevel("’mŠo‹­‰»")
+									End With
+								End If
+							Else
+								parry_prob = parry_prob - .MainPilot.SkillLevel("Ø‚è•¥‚¢")
+							End If
+							
+							If parry_prob > 0 Then
+								prob = prob * (32 - parry_prob) \ 32
+							End If
+						End If
+					End If
+					
+					'•ªg‰Â”\‚Èê‡‚Í–½’†—¦‚ğ’á‰º
+					If t.IsFeatureAvailable("•ªg") Then
+						If t.MainPilot.Morale >= 130 Then
+							prob = prob \ 2
+						End If
+					End If
+					If t.MainPilot.SkillLevel("•ªg") > 0 Then
+						prob = prob * t.MainPilot.SkillLevel("•ªg") \ 16
+					End If
+					
+					'’´‰ñ”ğ‰Â”\‚Èê‡‚Í–½’†—¦‚ğ’á‰º
+					If t.IsFeatureAvailable("’´‰ñ”ğ") Then
+						fdata = t.FeatureData("’´‰ñ”ğ")
+						If StrToLng(LIndex(fdata, 2)) > t.EN And StrToLng(LIndex(fdata, 3)) > t.MainPilot.Morale Then
+							prob = prob * t.FeatureLevel("’´‰ñ”ğ") \ 10
+						End If
+					End If
+				End If
+				
+				'‚b‚s—¦Zo
+				ct_prob = .CriticalProbability(w, t)
+				
+				'“ÁêŒø‰Ê‚ğ—^‚¦‚éŠm—¦‚ğŒvZ
+				sp_prob = 0
+				wclass = .WeaponClass(w)
+				With t
+					For i = 1 To Len(wclass)
+						wattr = GetClassBundle(wclass, i)
+						
+						'“ÁêŒø‰Ê–³Œø‰»‚É‚æ‚Á‚Ä–³Œø‰»‚³‚ê‚éH
+						If .SpecialEffectImmune(wattr) Then
+							GoTo NextAttribute
+						End If
+						
+						Select Case wattr
+							Case "”›"
+								If Not .IsConditionSatisfied("s“®•s”\") Then
+									sp_prob = sp_prob + 0.5
+								End If
+							Case "‚r"
+								If Not .IsConditionSatisfied("s“®•s”\") Then
+									sp_prob = sp_prob + 0.3
+								End If
+							Case "–°"
+								If Not .IsConditionSatisfied("‡–°") Then
+									sp_prob = sp_prob + 0.3
+								End If
+							Case "áƒ"
+								If Not .IsConditionSatisfied("–ƒáƒ") Then
+									sp_prob = sp_prob + 0.7
+								End If
+							Case "•s"
+								If Not .IsConditionSatisfied("UŒ‚•s”\") And .CountWeapon > 0 Then
+									sp_prob = sp_prob + 0.2
+								End If
+							Case "~"
+								If Not .IsConditionSatisfied("ˆÚ“®•s”\") And .Speed > 0 Then
+									sp_prob = sp_prob + 0.2
+								End If
+							Case "Î"
+								If Not .IsConditionSatisfied("Î‰»") And .BossRank < 0 Then
+									sp_prob = sp_prob + 1
+								End If
+							Case "“€"
+								If Not .IsConditionSatisfied("“€Œ‹") Then
+									sp_prob = sp_prob + 0.5
+								End If
+							Case "—"
+								If Not .IsConditionSatisfied("¬—") Then
+									sp_prob = sp_prob + 0.5
+								End If
+							Case "Šh"
+								If Not .IsConditionSatisfied("Šh—") And .CountWeapon > 0 Then
+									sp_prob = sp_prob + 0.2
+								End If
+							Case "‹°"
+								If Not .IsConditionSatisfied("‹°•|") Then
+									sp_prob = sp_prob + 0.4
+								End If
+							Case "–£"
+								If Not .IsConditionSatisfied("–£—¹") Then
+									sp_prob = sp_prob + 0.6
+								End If
+							Case "œß"
+								If .BossRank < 0 Then
+									sp_prob = sp_prob + 1
+								End If
+							Case "–Ù"
+								If Not .IsConditionSatisfied("’¾–Ù") Then
+									For j = 1 To .CountWeapon
+										If .IsSpellWeapon(j) Or .IsWeaponClassifiedAs(j, "‰¹") Then
+											sp_prob = sp_prob + 0.3
+											Exit For
+										End If
+									Next 
+									If j > .CountWeapon Then
+										For j = 1 To .CountAbility
+											If .IsSpellAbility(j) Or .IsAbilityClassifiedAs(j, "‰¹") Then
+												sp_prob = sp_prob + 0.3
+												Exit For
+											End If
+										Next 
+									End If
+								End If
+							Case "–Ó"
+								If Not .IsConditionSatisfied("–Ó–Ú") Then
+									sp_prob = sp_prob + 0.3
+								End If
+							Case "“Å"
+								If Not .IsConditionSatisfied("“Å") Then
+									sp_prob = sp_prob + 0.3
+								End If
+							Case "—x"
+								If Not .IsConditionSatisfied("—x‚è") Then
+									sp_prob = sp_prob + 0.3
+								End If
+							Case "‹¶"
+								If Not .IsConditionSatisfied("‹¶ím") Then
+									sp_prob = sp_prob + 0.3
+								End If
+							Case "ƒ]"
+								If Not .IsConditionSatisfied("ƒ]ƒ“ƒr") Then
+									sp_prob = sp_prob + 0.3
+								End If
+							Case "ŠQ"
+								If Not .IsConditionSatisfied("‰ñ•œ•s”\") Then
+									If .IsFeatureAvailable("‚g‚o‰ñ•œ") Or .IsFeatureAvailable("‚d‚m‰ñ•œ") Then
+										sp_prob = sp_prob + 0.4
+									End If
+								End If
+							Case "—ò"
+								If Not .IsConditionSatisfied("‘•b—ò‰»") Then
+									sp_prob = sp_prob + 0.3
+								End If
+							Case "’†"
+								If Not .IsConditionSatisfied("ƒoƒŠƒA–³Œø‰»") Then
+									If .IsFeatureAvailable("ƒoƒŠƒA") And InStr(t.FeatureData("ƒoƒŠƒA"), "ƒoƒŠƒA–³Œø‰»–³Œø") = 0 Then
+										sp_prob = sp_prob + 0.3
+									ElseIf .IsFeatureAvailable("LˆæƒoƒŠƒA") Then 
+										sp_prob = sp_prob + 0.3
+									ElseIf .IsFeatureAvailable("ƒoƒŠƒAƒV[ƒ‹ƒh") And InStr(t.FeatureData("ƒoƒŠƒAƒV[ƒ‹ƒh"), "ƒoƒŠƒA–³Œø‰»–³Œø") = 0 Then 
+										sp_prob = sp_prob + 0.3
+									ElseIf .IsFeatureAvailable("ƒtƒB[ƒ‹ƒh") And InStr(t.FeatureData("ƒtƒB[ƒ‹ƒh"), "ƒoƒŠƒA–³Œø‰»–³Œø") = 0 Then 
+										sp_prob = sp_prob + 0.3
+									ElseIf .IsFeatureAvailable("LˆæƒtƒB[ƒ‹ƒh") Then 
+										sp_prob = sp_prob + 0.3
+									ElseIf .IsFeatureAvailable("ƒAƒNƒeƒBƒuƒtƒB[ƒ‹ƒh") And InStr(t.FeatureData("ƒAƒNƒeƒBƒuƒtƒB[ƒ‹ƒh"), "ƒoƒŠƒA–³Œø‰»–³Œø") = 0 Then 
+										sp_prob = sp_prob + 0.3
+									End If
+								End If
+							Case "œ"
+								For j = 1 To .CountCondition
+									If (InStr(.Condition(j), "•t‰Á") > 0 Or InStr(.Condition(j), "‹­‰»") > 0 Or InStr(.Condition(j), "‚t‚o") > 0) And .ConditionLifetime(j) > 0 Then
+										sp_prob = sp_prob + 0.3
+										Exit For
+									End If
+								Next 
+							Case "‘¦"
+								If .BossRank < 0 Then
+									sp_prob = sp_prob + 1
+								End If
+							Case ""
+								If .BossRank < 0 Then
+									sp_prob = sp_prob + 0.4
+								End If
+							Case "’E"
+								If .MainPilot.Personality <> "‹@ŠB" Then
+									sp_prob = sp_prob + 0.2
+								End If
+							Case "‚c"
+								If .MainPilot.Personality <> "‹@ŠB" Then
+									sp_prob = sp_prob + 0.25
+								End If
+							Case "’áU"
+								If Not .IsConditionSatisfied("UŒ‚—Í‚c‚n‚v‚m") And .CountWeapon() > 0 Then
+									sp_prob = sp_prob + 0.2
+								End If
+							Case "’á–h"
+								If Not .IsConditionSatisfied("–hŒä—Í‚c‚n‚v‚m") Then
+									sp_prob = sp_prob + 0.2
+								End If
+							Case "’á‰^"
+								If Not .IsConditionSatisfied("‰^“®«‚c‚n‚v‚m") Then
+									sp_prob = sp_prob + 0.1
+								End If
+							Case "’áˆÚ"
+								If Not .IsConditionSatisfied("ˆÚ“®—Í‚c‚n‚v‚m") And .Speed > 0 Then
+									sp_prob = sp_prob + 0.1
+								End If
+							Case "“"
+								If Not .IsConditionSatisfied("‚·‚©‚ñ‚Ò‚ñ") Then
+									sp_prob = sp_prob + 0.5
+								End If
+							Case "Ê"
+								If .BossRank >= 0 Or u.IsFeatureAvailable("ƒm[ƒ}ƒ‹ƒ‚[ƒh") Then
+									GoTo NextAttribute
+								End If
+								Select Case u.Size
+									Case "SS"
+										Select Case .Size
+											Case "M", "L", "LL", "XL"
+												GoTo NextAttribute
+										End Select
+									Case "S"
+										Select Case .Size
+											Case "L", "LL", "XL"
+												GoTo NextAttribute
+										End Select
+									Case "M"
+										Select Case .Size
+											Case "SS", "LL", "XL"
+												GoTo NextAttribute
+										End Select
+									Case "L"
+										Select Case .Size
+											Case "SS", "S", "XL"
+												GoTo NextAttribute
+										End Select
+									Case "LL"
+										Select Case .Size
+											Case "SS", "S", "M"
+												GoTo NextAttribute
+										End Select
+									Case "XL"
+										Select Case .Size
+											Case "SS", "S", "M", "L"
+												GoTo NextAttribute
+										End Select
+								End Select
+								sp_prob = sp_prob + 1
+							Case "‰»"
+								If .BossRank < 0 And Not u.IsFeatureAvailable("ƒm[ƒ}ƒ‹ƒ‚[ƒh") Then
+									sp_prob = sp_prob + 1
+								End If
+							Case "Š"
+								If .BossRank >= 0 Then
+									Select Case CShort(u.WeaponLevel(w, "Š"))
+										Case 1
+											sp_prob = sp_prob + 1 / 8
+										Case 2
+											sp_prob = sp_prob + 1 / 4
+										Case 3
+											sp_prob = sp_prob + 1 / 2
+									End Select
+								Else
+									Select Case CShort(u.WeaponLevel(w, "Š"))
+										Case 1
+											sp_prob = sp_prob + 1 / 4
+										Case 2
+											sp_prob = sp_prob + 1 / 2
+										Case 3
+											sp_prob = sp_prob + 3 / 4
+									End Select
+								End If
+							Case "–Å"
+								If .BossRank >= 0 Then
+									Select Case CShort(u.WeaponLevel(w, "–Å"))
+										Case 1
+											sp_prob = sp_prob + 1 / 16
+										Case 2
+											sp_prob = sp_prob + 1 / 8
+										Case 3
+											sp_prob = sp_prob + 1 / 4
+									End Select
+								Else
+									Select Case CShort(u.WeaponLevel(w, "–Å"))
+										Case 1
+											sp_prob = sp_prob + 1 / 8
+										Case 2
+											sp_prob = sp_prob + 1 / 4
+										Case 3
+											sp_prob = sp_prob + 1 / 2
+									End Select
+								End If
+							Case Else
+								'ã‘®«
+								If Left(wattr, 1) = "ã" Then
+									'–¡•û‘Sˆõ‚ğŒŸõ‚µ‚ÄAŒ»İ‘ÎÛ‚ÉUŒ‚‰Â”\‚Èƒ†ƒjƒbƒg‚ª
+									'•t‰Á‚µ‚½ã“_‚É‘Î‚·‚é‘®«UŒ‚‚ğ‚Âê‡B
+									'“ÁêŒø‰Ê”­“®—¦‚Í‚Æ‚è‚ ‚¦‚¸’á–h(0.2)‚Æ‚»‚ë‚¦‚Ä‚İ‚½
+									checkwc = Mid(wattr, 2)
+									If Not .Weakness(checkwc) Then
+										For	Each checku In UList
+											With checku
+												If .Party = .Party And .Status_Renamed = "oŒ‚" Then
+													For j = 1 To .CountWeapon
+														If .IsWeaponClassifiedAs(j, checkwc) And .IsWeaponAvailable(j, "ˆÚ“®‘O") Then
+															'Ë’ö”ÍˆÍ“àH
+															If .IsWeaponClassifiedAs(j, "ˆÚ“®ŒãUŒ‚‰Â") And .Mode <> "ŒÅ’è" Then
+																'‡‘Ì‹Z‚ÍˆÚ“®ŒãUŒ‚‰Â”\‚Å‚àˆÚ“®‚ğ‘O’ñ‚É‚µ‚È‚¢
+																'(ˆÚ“®Œã‚ÌˆÊ’u‚Å‚Íg‚¦‚È‚¢ŠëŒ¯«‚ª‚ ‚é‚½‚ß)
+																If .IsWeaponClassifiedAs(j, "‡") And .IsWeaponClassifiedAs(j, "‚o") Then
+																	'ˆÚ“®‚µ‚ÄUŒ‚‚Ío—ˆ‚È‚¢
+																	If .IsTargetWithinRange(j, t) Then
+																		sp_prob = sp_prob + 0.2
+																		GoTo NextAttribute
+																	End If
+																Else
+																	'ˆÚ“®‚µ‚ÄUŒ‚‰Â”\
+																	If .IsTargetReachable(j, t) Then
+																		sp_prob = sp_prob + 0.2
+																		GoTo NextAttribute
+																	End If
+																End If
+															Else
+																'ˆÚ“®‚µ‚ÄUŒ‚‚Ío—ˆ‚È‚¢
+																If .IsTargetWithinRange(j, t) Then
+																	sp_prob = sp_prob + 0.2
+																	GoTo NextAttribute
+																End If
+															End If
+														End If
+													Next 
+												End If
+											End With
+										Next checku
+									End If
+									'Œø‘®«
+								ElseIf Left(wattr, 1) = "Œø" Then 
+									'–¡•û‘Sˆõ‚ğŒŸõ‚µ‚ÄAŒ»İ‘ÎÛ‚ÉUŒ‚‰Â”\‚Èƒ†ƒjƒbƒg‚ª
+									'•t‰Á‚µ‚½—LŒø‚É‘Î‚·‚é••ˆóAŒÀ’èUŒ‚‚ğ‚Âê‡B
+									'“ÁêŒø‰Ê”­“®—¦‚Í0.1‚Æ‚µ‚Ä‚İ‚½
+									checkwc = Mid(wattr, 2)
+									If Not .Weakness(checkwc) And Not .Effective(checkwc) Then
+										For	Each checku In UList
+											If checku.Party = .Party And checku.Status_Renamed = "oŒ‚" Then
+												For j = 1 To checku.CountWeapon
+													With checku
+														If .IsWeaponClassifiedAs(j, checkwc) And .IsWeaponAvailable(j, "ˆÚ“®‘O") Then
+															'•t‰Á‚·‚é—LŒø‚É‘Î‰‚·‚é••ˆóAŒÀ’è•Ší‚ª‚ ‚é
+															If InStrNotNest(.WeaponClass(j), "••") > 0 Or InStrNotNest(.WeaponClass(j), "ŒÀ") > 0 Then
+																If InStrNotNest(.WeaponClass(j), checkwc) > InStrNotNest(checku.WeaponClass(j), "ŒÀ") Then
+																	'Ë’ö”ÍˆÍ“àH
+																	If .IsWeaponClassifiedAs(j, "ˆÚ“®ŒãUŒ‚‰Â") And .Mode <> "ŒÅ’è" Then
+																		'‡‘Ì‹Z‚ÍˆÚ“®ŒãUŒ‚‰Â”\‚Å‚àˆÚ“®‚ğ‘O’ñ‚É‚µ‚È‚¢
+																		'(ˆÚ“®Œã‚ÌˆÊ’u‚Å‚Íg‚¦‚È‚¢ŠëŒ¯«‚ª‚ ‚é‚½‚ß)
+																		If .IsWeaponClassifiedAs(j, "‡") And .IsWeaponClassifiedAs(j, "‚o") Then
+																			'ˆÚ“®‚µ‚ÄUŒ‚‚Ío—ˆ‚È‚¢
+																			If .IsTargetWithinRange(j, t) Then
+																				sp_prob = sp_prob + 0.1
+																				GoTo NextAttribute
+																			End If
+																		Else
+																			'ˆÚ“®‚µ‚ÄUŒ‚‰Â”\
+																			If .IsTargetReachable(j, t) Then
+																				sp_prob = sp_prob + 0.1
+																				GoTo NextAttribute
+																			End If
+																		End If
+																	Else
+																		'ˆÚ“®‚µ‚ÄUŒ‚‚Ío—ˆ‚È‚¢
+																		If .IsTargetWithinRange(j, t) Then
+																			sp_prob = sp_prob + 0.1
+																			GoTo NextAttribute
+																		End If
+																	End If
+																End If
+															End If
+														End If
+													End With
+												Next 
+											End If
+										Next checku
+									End If
+									'™‘®«
+								ElseIf Left(wattr, 1) = "™" Then 
+									'“ÁêŒø‰Ê”­“®—¦‚Í–Ù‘®«‘µ‚¦‚Å0.3
+									checkwc = Mid(wattr, 2)
+									Select Case checkwc
+										Case "ƒI"
+											If Not .IsConditionSatisfied("ƒI[ƒ‰g—p•s”\") Then
+												If .IsSkillAvailable("ƒI[ƒ‰") Then
+													sp_prob = sp_prob + 0.3
+												End If
+											Else
+												GoTo NextAttribute
+											End If
+										Case "’´"
+											If Not .IsConditionSatisfied("’´”\—Íg—p•s”\") Then
+												If .IsSkillAvailable("’´”\—Í") Then
+													sp_prob = sp_prob + 0.3
+												End If
+											Else
+												GoTo NextAttribute
+											End If
+										Case "ƒV"
+											If Not .IsConditionSatisfied("“¯’²—¦g—p•s”\") Then
+												If .IsSkillAvailable("“¯’²—¦") Then
+													sp_prob = sp_prob + 0.3
+												End If
+											Else
+												GoTo NextAttribute
+											End If
+										Case "ƒT"
+											If Not .IsConditionSatisfied("’´Š´Šog—p•s”\") And Not .IsConditionSatisfied("’mŠo‹­‰»g—p•s”\") Then
+												If .IsSkillAvailable("’´Š´Šo") Or .IsSkillAvailable("’mŠo‹­‰»") Then
+													sp_prob = sp_prob + 0.3
+												End If
+											Else
+												GoTo NextAttribute
+											End If
+										Case "—ì"
+											If Not .IsConditionSatisfied("—ì—Íg—p•s”\") Then
+												If .IsSkillAvailable("—ì—Í") Then
+													sp_prob = sp_prob + 0.3
+												End If
+											Else
+												GoTo NextAttribute
+											End If
+										Case "p"
+											'p‚ÍËŒ‚‚ğ–‚—Í‚Æ•\¦‚·‚é‚½‚ß‚¾‚¯‚É•t‚¢‚Ä‚¢‚éê‡‚ª‚ ‚é‚½‚ß
+											'1ƒŒƒxƒ‹ˆÈ‰º‚Ìê‡‚Í•ŠíAƒAƒrƒŠƒeƒB‚ğŠm”F
+											If Not .IsConditionSatisfied("pg—p•s”\") Then
+												If .SkillLevel("p") > 1 Then
+													sp_prob = sp_prob + 0.3
+												End If
+											Else
+												GoTo NextAttribute
+											End If
+										Case "‹Z"
+											If Not .IsConditionSatisfied("‹Zg—p•s”\") Then
+												If .IsSkillAvailable("‹Z") Then
+													sp_prob = sp_prob + 0.3
+												End If
+											Else
+												GoTo NextAttribute
+											End If
+									End Select
+									
+									If Not .IsConditionSatisfied(checkwc & "‘®«g—p•s”\") Then
+										For j = 1 To .CountWeapon
+											If .IsWeaponClassifiedAs(j, checkwc) Then
+												sp_prob = sp_prob + 0.3
+												Exit For
+											End If
+										Next 
+										If j > .CountWeapon Then
+											For j = 1 To .CountAbility
+												If .IsAbilityClassifiedAs(j, checkwc) Then
+													sp_prob = sp_prob + 0.3
+													Exit For
+												End If
+											Next 
+										End If
+									End If
+								End If
+						End Select
 NextAttribute: 
-		'Next
-		'End With
-		If sp_prob > 1 Then
-			sp_prob = System.Math.Sqrt(sp_prob)
-		End If
-		sp_prob = sp_prob * ct_prob
-		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_WARNING: SelectWeapon ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_WARNING: SelectWeapon ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		sp_prob = sp_prob + 50 * dmg \ t.MaxHP
-		'End If
-		'UPGRADE_WARNING: SelectWeapon ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		
-		'Invalid_string_refer_to_original_code
-		If InStr(amode, "åæ’ƒ") > 0 Then
-			'Invalid_string_refer_to_original_code_
-			'Or .UsedCounterAttack < .MaxCounterAttack _
-			'Then
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			sp_prob = 1.5 * sp_prob
-		End If
-		'End If
-		If sp_prob > 100 Then
-			sp_prob = 100
-		End If
-		
-		'Invalid_string_refer_to_original_code
-		If dmg = 0 And ct_prob < 30 Then
-			sp_prob = sp_prob / 5
-		End If
-		
-		'Invalid_string_refer_to_original_code
-		If dmg = 0 And sp_prob = 0 Then
-			GoTo NextWeapon
-		End If
-		
-		If prob > 0 Then
-			If sp_prob > 0 Then
-				'Invalid_string_refer_to_original_code
-				exp_dmg = dmg + MaxLng(t.HP - dmg, 0) * sp_prob \ 100
-			End If
-		End If
-		'End If
-		'End If
-		exp_dmg = exp_dmg * 0.01 * MinLng(prob, 100)
-		'Invalid_string_refer_to_original_code
-		prob = 1
-		exp_dmg = (dmg \ 10 + MaxLng(t.HP - dmg \ 10, 0) * sp_prob \ 100) \ 10
-		'End If
-		
-		'Invalid_string_refer_to_original_code
-		If Not is_move_attack Then
-			exp_dmg = exp_dmg + support_exp_dmg
-		End If
-		
-		'Invalid_string_refer_to_original_code
-		destroy_prob = 0
-		With t
-			If .Party = "å‘³æ–¹" And Not .IsFeatureAvailable("é˜²å¾¡ä¸å¯") Then
-				If dmg >= 2 * .HP Then
-					destroy_prob = MinLng(prob, 100)
+					Next 
+				End With
+				If sp_prob > 1 Then
+					sp_prob = System.Math.Sqrt(sp_prob)
 				End If
-				'Invalid_string_refer_to_original_code
-				If Not is_move_attack Then
-					If support_dmg >= 2 * .HP Then
-						destroy_prob = destroy_prob + (100 - destroy_prob) * support_prob \ 100
-					ElseIf dmg + support_dmg >= 2 * .HP Then 
-						destroy_prob = destroy_prob + (100 - destroy_prob) * prob * support_prob \ 10000
+				sp_prob = sp_prob * ct_prob
+				
+				'ƒoƒŠƒA“™‚ÅUŒ‚‚ª–h‚ª‚ê‚Ä‚µ‚Ü‚¤ê‡‚Í“ÁêŒø‰Ê‚Í”­“®‚µ‚È‚¢
+				If .WeaponPower(w, "") > 0 And dmg = 0 And Not .IsWeaponClassifiedAs(w, "–³") Then
+					sp_prob = 0
+				End If
+				
+				'•K‚¸”­“®‚·‚é“ÁêŒø‰Ê‚ğl—¶
+				If .IsWeaponClassifiedAs(w, "‹z") Then
+					If .HP < .MaxHP Then
+						sp_prob = sp_prob + 25 * dmg \ t.MaxHP
 					End If
 				End If
-			Else
-				If dmg >= .HP Then
-					destroy_prob = MinLng(prob, 100)
+				If .IsWeaponClassifiedAs(w, "Œ¸") Then
+					sp_prob = sp_prob + 50 * dmg \ t.MaxHP
 				End If
-				'Invalid_string_refer_to_original_code
-				If Not is_move_attack Then
-					If support_dmg >= .HP Then
-						destroy_prob = destroy_prob + (100 - destroy_prob) * support_prob \ 100
-					ElseIf dmg + support_dmg >= .HP Then 
-						destroy_prob = destroy_prob + (100 - destroy_prob) * prob * support_prob \ 10000
+				If .IsWeaponClassifiedAs(w, "’D") Then
+					sp_prob = sp_prob + 50 * dmg \ t.MaxHP
+				End If
+				
+				'æ§UŒ‚‚Ìê‡‚Í“ÁêŒø‰Ê‚ğ—L—˜‚É”»’è
+				If InStr(amode, "”½Œ‚") > 0 Then
+					If .IsWeaponClassifiedAs(w, "æ") Or .UsedCounterAttack < .MaxCounterAttack Then
+						sp_prob = 1.5 * sp_prob
 					End If
 				End If
-			End If
-		End With
-		
-		'Invalid_string_refer_to_original_code
-		If InStr(amode, "åæ’ƒ") > 0 Then
-			'Invalid_string_refer_to_original_code_
-			'Or .UsedCounterAttack < .MaxCounterAttack _
-			'Then
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			destroy_prob = 1.5 * destroy_prob
-		End If
-		'End If
-		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		'UPGRADE_WARNING: SelectWeapon ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		'End If
-		
-		If destroy_prob >= 100 Then
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_WARNING: SelectWeapon ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		ElseIf destroy_prob > 50 Then 
-			'Invalid_string_refer_to_original_code
-			If destroy_prob > max_destroy_prob Then
-				SelectWeapon = w
-				max_destroy_prob = destroy_prob
-				max_exp_dmg = exp_dmg
-			ElseIf destroy_prob = max_destroy_prob Then 
-				If exp_dmg > max_exp_dmg Then
-					SelectWeapon = w
-					max_destroy_prob = destroy_prob
-					max_exp_dmg = exp_dmg
+				If sp_prob > 100 Then
+					sp_prob = 100
 				End If
-			End If
-		Else
-			'Invalid_string_refer_to_original_code
-			If max_destroy_prob <= 50 Then
-				If exp_dmg > max_exp_dmg Then
-					SelectWeapon = w
-					max_destroy_prob = destroy_prob
-					max_exp_dmg = exp_dmg
+				
+				'‚b‚s—¦‚ª’á‚¢ê‡‚Í“ÁêŒø‰Ê‚Ì‚İ‚ÌUŒ‚‚ğd‹‚µ‚È‚¢
+				If dmg = 0 And ct_prob < 30 Then
+					sp_prob = sp_prob / 5
 				End If
-			End If
-		End If
+				
+				'ƒ_ƒ[ƒW‚ª—^‚¦‚ç‚ê‚È‚¢•Ší‚Íg—p‚µ‚È‚¢
+				If dmg = 0 And sp_prob = 0 Then
+					GoTo NextWeapon
+				End If
+				
+				If prob > 0 Then
+					If sp_prob > 0 Then
+						'“ÁêŒø‰Ê‚Ì‰e‹¿‚ğ‰Á–¡‚µ‚Äƒ_ƒ[ƒW‚ÌŠú‘Ò’l‚ğŒvZ
+						exp_dmg = dmg + MaxLng(t.HP - dmg, 0) * sp_prob \ 100
+					Else
+						'ƒNƒŠƒeƒBƒJƒ‹‚Ì‰e‹¿‚ğ‰Á–¡‚µ‚Äƒ_ƒ[ƒW‚ÌŠú‘Ò’l‚ğŒvZ
+						If IsOptionDefined("ƒ_ƒ[ƒW”{—¦’á‰º") Then
+							If .IsWeaponClassifiedAs(w, "’É") Then
+								exp_dmg = dmg + 0.1 * .WeaponLevel(w, "’É") * dmg * ct_prob \ 100
+							Else
+								exp_dmg = dmg + 0.2 * dmg * ct_prob \ 100
+							End If
+						Else
+							If .IsWeaponClassifiedAs(w, "’É") Then
+								exp_dmg = dmg + 0.25 * .WeaponLevel(w, "’É") * dmg * ct_prob \ 100
+							Else
+								exp_dmg = dmg + 0.5 * dmg * ct_prob \ 100
+							End If
+						End If
+					End If
+					exp_dmg = exp_dmg * 0.01 * MinLng(prob, 100)
+				Else
+					'–½’†‚ª“–‚½‚ç‚È‚¢ê‡‚ÍŠú‘Ò’l‚ğv‚¢Ø‚è‰º‚°‚é
+					prob = 1
+					exp_dmg = (dmg \ 10 + MaxLng(t.HP - dmg \ 10, 0) * sp_prob \ 100) \ 10
+				End If
+				
+				'ƒTƒ|[ƒg‚É‚æ‚éƒ_ƒ[ƒW‚ğŠú‘Ò’l‚É’Ç‰Á
+				If Not is_move_attack Then
+					exp_dmg = exp_dmg + support_exp_dmg
+				End If
+				
+				'“G‚Ì”j‰óŠm—¦‚ğŒvZ
+				destroy_prob = 0
+				With t
+					If .Party = "–¡•û" And Not .IsFeatureAvailable("–hŒä•s‰Â") Then
+						If dmg >= 2 * .HP Then
+							destroy_prob = MinLng(prob, 100)
+						End If
+						'ƒTƒ|[ƒg‚É‚æ‚é”j‰óŠm—¦
+						If Not is_move_attack Then
+							If support_dmg >= 2 * .HP Then
+								destroy_prob = destroy_prob + (100 - destroy_prob) * support_prob \ 100
+							ElseIf dmg + support_dmg >= 2 * .HP Then 
+								destroy_prob = destroy_prob + (100 - destroy_prob) * prob * support_prob \ 10000
+							End If
+						End If
+					Else
+						If dmg >= .HP Then
+							destroy_prob = MinLng(prob, 100)
+						End If
+						'ƒTƒ|[ƒg‚É‚æ‚é”j‰óŠm—¦
+						If Not is_move_attack Then
+							If support_dmg >= .HP Then
+								destroy_prob = destroy_prob + (100 - destroy_prob) * support_prob \ 100
+							ElseIf dmg + support_dmg >= .HP Then 
+								destroy_prob = destroy_prob + (100 - destroy_prob) * prob * support_prob \ 10000
+							End If
+						End If
+					End If
+				End With
+				
+				'æ§UŒ‚‚Ìê‡‚Í“G‚ğ”j‰óo—ˆ‚éUŒ‚‚ğ—L—˜‚É”»’è
+				If InStr(amode, "”½Œ‚") > 0 Then
+					If .IsWeaponClassifiedAs(w, "æ") Or .UsedCounterAttack < .MaxCounterAttack Then
+						destroy_prob = 1.5 * destroy_prob
+					End If
+				End If
+				
+				'‚d‚mÁ–ÕUŒ‚‚Ìg—p‚ÍTd‚É
+				If .IsWeaponClassifiedAs(w, "Á") Then
+					If .Party = "–¡•û" Then
+						'©“®”½Œ‚ƒ‚[ƒh‚©‚Ç‚¤‚©
+						'UPGRADE_ISSUE: Control mnuMapCommandItem ‚ÍA”Ä—p–¼‘O‹óŠÔ Form “à‚É‚ ‚é‚½‚ßA‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						If MainForm.mnuMapCommandItem(AutoDefenseCmdID).Checked Then
+							GoTo NextWeapon
+						End If
+					Else
+						'“Gƒ†ƒjƒbƒg‚Í‘Šè‚ğ“|‚¹‚é‚Æ‚«‚É‚µ‚©‚d‚mÁ–ÕUŒ‚‚ğg‚í‚È‚¢
+						If destroy_prob = 0 And .BossRank < 0 Then
+							GoTo NextWeapon
+						End If
+					End If
+				End If
+				
+				If destroy_prob >= 100 Then
+					'”j‰óŠm—¦‚ª100%‚Ìê‡‚ÍƒRƒXƒg‚Ì’á‚³‚ğ—Dæ
+					'(Šm—¦‚ª“¯‚¶ê‡‚Í”Ô†‚ª’á‚¢•Ší‚ğg—p)
+					If .Party = "–¡•û" Or .Party = "‚m‚o‚b" Then
+						If destroy_prob > max_destroy_prob Then
+							SelectWeapon = w
+							max_destroy_prob = destroy_prob
+							max_exp_dmg = exp_dmg
+						End If
+					Else
+						'“G‚Ìê‡‚ÍƒRƒXƒg–³‹
+						If destroy_prob > max_destroy_prob Then
+							SelectWeapon = w
+							max_destroy_prob = destroy_prob
+							max_exp_dmg = exp_dmg
+						Else
+							If exp_dmg > max_exp_dmg Then
+								SelectWeapon = w
+								max_destroy_prob = destroy_prob
+								max_exp_dmg = exp_dmg
+							End If
+						End If
+					End If
+				ElseIf destroy_prob > 50 Then 
+					'”j‰óŠm—¦‚ª50%‚æ‚è‚‚¢ê‡‚Í”j‰óŠm—¦‚Ì‚‚³‚ğ—Dæ
+					If destroy_prob > max_destroy_prob Then
+						SelectWeapon = w
+						max_destroy_prob = destroy_prob
+						max_exp_dmg = exp_dmg
+					ElseIf destroy_prob = max_destroy_prob Then 
+						If exp_dmg > max_exp_dmg Then
+							SelectWeapon = w
+							max_destroy_prob = destroy_prob
+							max_exp_dmg = exp_dmg
+						End If
+					End If
+				Else
+					'”j‰óŠm—¦‚ª50%ˆÈ‰º‚Ìê‡‚Íƒ_ƒ[ƒW‚ÌŠú‘Ò’l‚Ì‚‚³‚ğ—Dæ
+					If max_destroy_prob <= 50 Then
+						If exp_dmg > max_exp_dmg Then
+							SelectWeapon = w
+							max_destroy_prob = destroy_prob
+							max_exp_dmg = exp_dmg
+						End If
+					End If
+				End If
 NextWeapon: 
-		'Next
-		
-		'Invalid_string_refer_to_original_code
-		If SelectWeapon > 0 Then
-			'UPGRADE_WARNING: SelectWeapon ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		End If
-		
-		'Invalid_string_refer_to_original_code
-		If max_destroy_prob > 50 Then
-			max_prob = max_destroy_prob
-		Else
-			max_prob = 0
-		End If
-		'UPGRADE_WARNING: SelectWeapon ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		'End With
+			Next 
+			
+			'ƒ_ƒ[ƒW‚ğ—^‚¦‚ç‚ê‚È‚¢•Ší‚ª‘I‘ğ‚³‚ê‚½ê‡‚ÍƒLƒƒƒ“ƒZƒ‹
+			If SelectWeapon > 0 Then
+				If .WeaponAdaption(SelectWeapon, (t.Area)) = 0 Then
+					SelectWeapon = 0
+				End If
+			End If
+			
+			'UŒ‚Œ‹‰Ê‚ÌŠú‘Ò’l‚Ì‘‚«‚İ
+			If max_destroy_prob > 50 Then
+				max_prob = max_destroy_prob
+			Else
+				max_prob = 0
+			End If
+			max_dmg = 100 * (max_exp_dmg / .HP)
+		End With
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'ƒ†ƒjƒbƒg u ‚ª•Ší w ‚ÅUŒ‚‚ğ‚©‚¯‚½Û‚Éƒ^[ƒQƒbƒg t ‚ª‘I‘ğ‚·‚é–hŒäs“®‚ğ•Ô‚·
 	Public Function SelectDefense(ByRef u As Unit, ByRef w As Short, ByRef t As Unit, ByRef tw As Short) As Object
 		Dim prob, dmg As Integer
 		Dim tprob, tdmg As Integer
 		Dim is_target_inferior As Boolean
 		
-		'Invalid_string_refer_to_original_code
-		If u.IsWeaponClassifiedAs(w, "Invalid_string_refer_to_original_code") Then
+		'ƒ}ƒbƒvUŒ‚‚É‘Î‚µ‚Ä‚Í–hŒäs“®‚ªæ‚ê‚È‚¢
+		If u.IsWeaponClassifiedAs(w, "‚l") Then
 			Exit Function
 		End If
 		
 		With t
-			'Invalid_string_refer_to_original_code
-			If .IsConditionSatisfied("è¸Šã‚Š") Then
+			'—x‚Á‚Ä‚¢‚éê‡‚Í‰ñ”ğˆµ‚¢
+			If .IsConditionSatisfied("—x‚è") Then
 				'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg SelectDefense ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				SelectDefense = "å›é¿"
+				SelectDefense = "‰ñ”ğ"
 				Exit Function
 			End If
 			
-			'Invalid_string_refer_to_original_code
-			If .IsConditionSatisfied("ç‹‚æˆ¦å£«") Then
+			'‹¶ímó‘Ô‚ÌÛ‚Í–hŒäs“®‚ğæ‚ç‚È‚¢
+			If .IsConditionSatisfied("‹¶ím") Then
 				Exit Function
 			End If
 			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			Exit Function
-			'End If
+			'–³–h”õó‘Ô‚Ìƒ†ƒjƒbƒg‚Í–hŒäs“®‚ªæ‚ê‚È‚¢
+			If .IsUnderSpecialPowerEffect("–³–h”õ") Then
+				Exit Function
+			End If
 			
-			If .Party <> "å‘³æ–¹" Then
-				'Invalid_string_refer_to_original_code
-				'é˜²å¾¡è¡Œå‹•ã‚’è¡Œã†
-				If Not IsOptionDefined("æ•µãƒ¦ãƒ‹ãƒƒãƒˆé˜²å¾¡ä½¿ç”¨") Then
+			If .Party <> "–¡•û" Then
+				'u“Gƒ†ƒjƒbƒg–hŒäg—pvƒIƒvƒVƒ‡ƒ“‚ğ‘I‘ğ‚µ‚Ä‚¢‚éê‡‚É‚Ì‚İ“Gƒ†ƒjƒbƒg‚Í
+				'–hŒäs“®‚ğs‚¤
+				If Not IsOptionDefined("“Gƒ†ƒjƒbƒg–hŒäg—p") Then
 					Exit Function
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'–hŒäs“®‚ğg‚Á‚Ä‚­‚é‚Ì‚Í‹Z—Ê‚ª160ˆÈã‚ÌƒUƒR‚Å‚È‚¢ƒpƒCƒƒbƒg‚Ì‚İ
 				With .MainPilot
-					If InStr(.Name, "(ã‚¶ã‚³)") > 0 Or .TacticalTechnique < 160 Then
+					If InStr(.Name, "(ƒUƒR)") > 0 Or .TacticalTechnique < 160 Then
 						Exit Function
 					End If
 				End With
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			's“®•s”\H
 			If .MaxAction = 0 Then
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code_
-				'Then
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg SelectDefense ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				SelectDefense = "é˜²å¾¡"
+				'ƒ`ƒƒ[ƒW’†AÁ–Õ’†‚Íí‚É–hŒäA‚»‚êˆÈŠO‚Ìê‡‚Í–hŒäs“®‚ªæ‚ê‚È‚¢
+				If .IsConditionSatisfied("ƒ`ƒƒ[ƒW") Or .IsConditionSatisfied("Á–Õ") Then
+					'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg SelectDefense ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					SelectDefense = "–hŒä"
+				End If
+				Exit Function
 			End If
-			Exit Function
-			'End If
 			
-			'Invalid_string_refer_to_original_code
+			'‘Šè‚ÌUŒ‚‚Ìƒ_ƒ[ƒWE–½’†—¦‚ğZo
 			dmg = u.ExpDamage(w, t, True)
 			prob = MinLng(u.HitProbability(w, t, True), 100)
 			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code_
-			'Then
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			prob = 0
-			'End If
+			'ƒ_ƒ~[‚ğ‚Á‚Ä‚¢‚éê‡A‘Šè‚ÌUŒ‚‚Í–³Œø
+			If .IsFeatureAvailable("ƒ_ƒ~[") And .ConditionLevel("ƒ_ƒ~[”j‰ó") < .FeatureLevel("ƒ_ƒ~[") Then
+				prob = 0
+			End If
 			
-			'Invalid_string_refer_to_original_code
+			'ƒTƒ|[ƒgƒK[ƒh‚³‚ê‚éê‡‚à‘Šè‚ÌUŒ‚‚Í–³Œø
 			If Not .LookForSupportGuard(u, w) Is Nothing Then
 				prob = 0
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'”½Œ‚‚Ìƒ_ƒ[ƒWE–½’†—¦‚ğZo
 			If tw > 0 Then
 				tdmg = .ExpDamage(tw, u, True)
 				tprob = MinLng(.HitProbability(tw, u, True), 100)
 				
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code_
-				'Then
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				prob = 0
+				'ƒ_ƒ~[‚ğ‚Á‚Ä‚¢‚éê‡‚Í”½Œ‚‚Í–³Œø
+				If u.IsFeatureAvailable("ƒ_ƒ~[") And u.ConditionLevel("ƒ_ƒ~[”j‰ó") < u.FeatureLevel("ƒ_ƒ~[") Then
+					prob = 0
+				End If
 			End If
-			'End If
 			
-			'Invalid_string_refer_to_original_code
-			If .Party = "å‘³æ–¹" Then
-				'Invalid_string_refer_to_original_code
+			'‘Šè‚ÌUŒ‚‚ÌŒø‰Ê‚Æ‚±‚¿‚ç‚Ì”½Œ‚‚ÌŒø‰Ê‚ğ”äŠr
+			If .Party = "–¡•û" Then
+				'–¡•ûƒ†ƒjƒbƒg‚Ìê‡A‘Šè‚ÌUŒ‚‚É‚æ‚éƒ_ƒ[ƒW‚Ì•û‚ª‘½‚¢ê‡‚Í–hŒä
 				If dmg * prob > tdmg * tprob And tdmg < u.HP Then
 					is_target_inferior = True
 				End If
 				
-				'Invalid_string_refer_to_original_code
-				If u.IsUnderSpecialPowerEffect("ãƒ€ãƒ¡ãƒ¼ã‚¸å¢—åŠ ") Then
+				'‹C‡‚ÌˆêŒ‚‚Í–hŒä‚ğ—Dæ‚µA‚â‚è‰ß‚²‚·
+				If u.IsUnderSpecialPowerEffect("ƒ_ƒ[ƒW‘‰Á") Then
 					If 2 * dmg * prob > tdmg * tprob And tdmg < u.HP Then
 						is_target_inferior = True
 					End If
 				End If
 			Else
-				'Invalid_string_refer_to_original_code
+				'“Gƒ†ƒjƒbƒg‚Ìê‡‚Å‚à‘Šè‚ÌUŒ‚‚É‚æ‚éƒ_ƒ[ƒW‚Ì•û‚ª‚Q”{ˆÈã‘½‚¢ê‡‚Í–hŒä
 				If dmg * prob \ 2 > tdmg * tprob And tdmg < u.HP Then
 					is_target_inferior = True
 				End If
 				
-				'Invalid_string_refer_to_original_code
-				If u.IsUnderSpecialPowerEffect("ãƒ€ãƒ¡ãƒ¼ã‚¸å¢—åŠ ") Then
+				'‹C‡‚ÌˆêŒ‚‚Í–hŒä‚ğ—Dæ‚µA‚â‚è‰ß‚²‚·
+				If u.IsUnderSpecialPowerEffect("ƒ_ƒ[ƒW‘‰Á") Then
 					If dmg * prob > tdmg * tprob And tdmg < u.HP Then
 						is_target_inferior = True
 					End If
 				End If
 			End If
 			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
+			'‚ ‚ÆˆêŒ‚‚Å”j‰ó‚³‚ê‚Ä‚µ‚Ü‚¤ê‡‚Í•K‚¸–hŒä
+			'(–½’†—¦‚ª’á‚¢ê‡‚ğœ‚­)
 			If dmg >= .HP And prob > 10 Then
 				is_target_inferior = True
 			End If
 			
 			If tw > 0 Then
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				'Invalid_string_refer_to_original_code_
-				'Invalid_string_refer_to_original_code_
-				'Or .MaxCounterAttack > .UsedCounterAttack _
-				'Then
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				If tdmg >= u.HP And tprob > 70 Then
-					'Invalid_string_refer_to_original_code
-					is_target_inferior = False
+				'æ§UŒ‚‰Â”\H
+				If Not .IsWeaponClassifiedAs(tw, "Œã") Then
+					If .IsWeaponClassifiedAs(tw, "æ") Or u.IsWeaponClassifiedAs(w, "Œã") Or .MaxCounterAttack > .UsedCounterAttack Then
+						If tdmg >= u.HP And tprob > 70 Then
+							'æ§UŒ‚‚Å“|‚¹‚éê‡‚Í–À‚í‚¸”½Œ‚
+							is_target_inferior = False
+						End If
+					End If
 				End If
+			Else
+				'”½Œ‚‚Å‚«‚È‚¢ê‡‚Í–hŒä
+				is_target_inferior = True
 			End If
-			'End If
-			'Invalid_string_refer_to_original_code
-			is_target_inferior = True
-			'End If
 			
 			If Not is_target_inferior Then
-				'Invalid_string_refer_to_original_code
+				'”½Œ‚‚ğ‘I‘ğ‚µ‚½
 				Exit Function
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'–hŒä‘¤‚ª—ò¨‚È‚Ì‚Å”½Œ‚‚Ís‚í‚¸A–hŒäs“®‚ğ‘I‘ğ
 			
-			'Invalid_string_refer_to_original_code
-			If dmg > .HP And dmg \ 2 < .HP And Not .IsFeatureAvailable("é˜²å¾¡ä¸å¯") And Not u.IsWeaponClassifiedAs(w, "æ®º") Then
+			'–½’†‚·‚ê‚ÎˆêŒ‚€‚ÅA–hŒä‚·‚ê‚Î”j‰ó‚ğ‚Ü‚Ê‚ª‚ê‚éUŒ‚‚Í•K‚¸–hŒä
+			If dmg > .HP And dmg \ 2 < .HP And Not .IsFeatureAvailable("–hŒä•s‰Â") And Not u.IsWeaponClassifiedAs(w, "E") Then
 				'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg SelectDefense ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				SelectDefense = "é˜²å¾¡"
+				SelectDefense = "–hŒä"
 				Exit Function
 			End If
 			
-			'Invalid_string_refer_to_original_code
-			If prob < 50 And Not .IsFeatureAvailable("å›é¿ä¸å¯") And Not .IsConditionSatisfied("Invalid_string_refer_to_original_code") Then
+			'‘Šè‚Ì–½’†—¦‚ª’á‚¢ê‡‚Í‰ñ”ğ
+			If prob < 50 And Not .IsFeatureAvailable("‰ñ”ğ•s‰Â") And Not .IsConditionSatisfied("ˆÚ“®•s”\") Then
 				'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg SelectDefense ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				SelectDefense = "å›é¿"
+				SelectDefense = "‰ñ”ğ"
 				Exit Function
 			End If
 			
-			'Invalid_string_refer_to_original_code
-			If dmg \ 2 < .HP And Not .IsFeatureAvailable("é˜²å¾¡ä¸å¯") And Not u.IsWeaponClassifiedAs(w, "æ®º") Then
+			'–hŒä‚·‚ê‚ÎˆêŒ‚€‚ğ‚Ü‚Ê‚ª‚ê‚éê‡‚Í–hŒä
+			If dmg \ 2 < .HP And Not .IsFeatureAvailable("–hŒä•s‰Â") And Not u.IsWeaponClassifiedAs(w, "E") Then
 				'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg SelectDefense ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				SelectDefense = "é˜²å¾¡"
+				SelectDefense = "–hŒä"
 				Exit Function
 			End If
 			
-			'Invalid_string_refer_to_original_code
-			If Not .IsFeatureAvailable("å›é¿ä¸å¯") And Not .IsConditionSatisfied("Invalid_string_refer_to_original_code") Then
+			'‚Ç‚¤‚µ‚æ‚¤‚à‚È‚¢‚Ì‚Å‚Æ‚è‚ ‚¦‚¸‰ñ”ğ
+			If Not .IsFeatureAvailable("‰ñ”ğ•s‰Â") And Not .IsConditionSatisfied("ˆÚ“®•s”\") Then
 				'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg SelectDefense ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				SelectDefense = "å›é¿"
+				SelectDefense = "‰ñ”ğ"
 				Exit Function
 			End If
 			
-			'Invalid_string_refer_to_original_code
-			If Not .IsFeatureAvailable("é˜²å¾¡ä¸å¯") Then
+			'‰ñ”ğ‚ào—ˆ‚È‚¢‚Ì‚Å–hŒäcc
+			If Not .IsFeatureAvailable("–hŒä•s‰Â") Then
 				'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg SelectDefense ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				SelectDefense = "é˜²å¾¡"
+				SelectDefense = "–hŒä"
 			End If
 		End With
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'ƒ†ƒjƒbƒg u ‚ªƒ^[ƒQƒbƒg t ‚É”½Œ‚‰Â”\‚©H
 	Public Function IsAbleToCounterAttack(ByRef u As Unit, ByRef t As Unit) As Boolean
 		Dim i, w, idx As Short
 		Dim buf, wclass, ch As String
 		
 		With u
 			For w = 1 To .CountWeapon
-				'Invalid_string_refer_to_original_code
-				If Not .IsWeaponAvailable(w, "ç§»å‹•å‰") Then
+				'•Ší‚ªg—p‰Â”\H
+				If Not .IsWeaponAvailable(w, "ˆÚ“®‘O") Then
 					GoTo NextWeapon
 				End If
 				
-				'Invalid_string_refer_to_original_code
-				If .IsWeaponClassifiedAs(w, "Invalid_string_refer_to_original_code") Then
+				'ƒ}ƒbƒvUŒ‚‚Í•Ší‘I’èŠO
+				If .IsWeaponClassifiedAs(w, "‚l") Then
 					GoTo NextWeapon
 				End If
 				
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				GoTo NextWeapon
-				'End If
+				'‡‘Ì‹Z‚Í©•ª‚©‚çUŒ‚‚ğ‚©‚¯‚éê‡‚É‚Ì‚İg—p
+				If .IsWeaponClassifiedAs(w, "‡") Then
+					GoTo NextWeapon
+				End If
 				
-				'Invalid_string_refer_to_original_code
+				'Ë’ö”ÍˆÍ“àH
 				If Not .IsTargetWithinRange(w, t) Then
 					GoTo NextWeapon
 				End If
 				
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code
+				' ADD START ƒ}[ƒW
+				'ƒ_ƒ[ƒW‚ğ—^‚¦‚ç‚ê‚éH
 				If .Damage(w, t, True) > 0 Then
 					IsAbleToCounterAttack = True
 					Exit Function
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'“ÁêŒø‰Ê‚ğ—^‚¦‚ç‚ê‚éH
 				If Not .IsNormalWeapon(w) Then
 					If .CriticalProbability(w, t) > 0 Then
 						IsAbleToCounterAttack = True
 						Exit Function
 					End If
 				End If
-				'Invalid_string_refer_to_original_code
+				' ADD END ƒ}[ƒW
 				
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code
+				' DEL START ƒ}[ƒW
+				'            '’nŒ`“K‰‚ÍH
 				'            If .WeaponAdaption(w, t.Area) = 0 Then
 				'                GoTo NextWeapon
 				'            End If
 				'
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code
+				'            '••ˆóUŒ‚‚Íã“_A—LŒø‚ğ‚Âƒ†ƒjƒbƒgˆÈŠO‚É‚ÍŒø‚©‚È‚¢
+				'            If .IsWeaponClassifiedAs(w, "••") Then
 				'                wclass = .WeaponClass(w)
 				'                buf = t.strWeakness & t.strEffective
 				'                For i = 1 To Len(buf)
 				'                    ch = GetClassBundle(buf, i)
-				'Invalid_string_refer_to_original_code
+				'                    If ch <> "•¨" And ch <> "–‚" Then
 				'                        If InStrNotNest(wclass, ch) > 0 Then
 				'                            Exit For
 				'                        End If
@@ -4689,14 +5202,14 @@ NextWeapon:
 				'                End If
 				'            End If
 				'
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code
+				'            'ŒÀ’èUŒ‚‚Íw’è‘®«‚ğã“_A—LŒø‚ğ‚Âƒ†ƒjƒbƒgˆÈŠO‚É‚ÍŒø‚©‚È‚¢
+				'            idx = InStrNotNest(.WeaponClass(w), "ŒÀ")
 				'            If idx > 0 Then
 				'                wclass = .WeaponClass(w)
 				'                buf = t.strWeakness & t.strEffective
 				'                For i = 1 To Len(buf)
 				'                    ch = GetClassBundle(buf, i)
-				'Invalid_string_refer_to_original_code
+				'                    If ch <> "•¨" And ch <> "–‚" Then
 				'                        If InStrNotNest(wclass, ch) > idx Then
 				'                            Exit For
 				'                        End If
@@ -4707,26 +5220,26 @@ NextWeapon:
 				'                End If
 				'            End If
 				'
-				'Invalid_string_refer_to_original_code
-				'            If .IsWeaponClassifiedAs(w, "å¯¾") Then
-				'                If t.MainPilot.Level Mod .WeaponLevel(w, "å¯¾") <> 0 Then
+				'            '“Á’èƒŒƒxƒ‹ŒÀ’èUŒ‚
+				'            If .IsWeaponClassifiedAs(w, "‘Î") Then
+				'                If t.MainPilot.Level Mod .WeaponLevel(w, "‘Î") <> 0 Then
 				'                    GoTo NextWeapon
 				'                End If
 				'            End If
 				'
-				'Invalid_string_refer_to_original_code
+				'            '”½Œ‚‚Ég—p‚Å‚«‚é•Ší‚ªŒ©‚Â‚©‚Á‚½
 				'            IsAbleToCounterAttack = True
 				'            Exit Function
-				'Invalid_string_refer_to_original_code
+				' DEL END ƒ}[ƒW
 NextWeapon: 
 			Next 
 		End With
 		
-		'Invalid_string_refer_to_original_code
+		'”½Œ‚‚Ég—p‚Å‚«‚é•Ší‚ª‚È‚©‚Á‚½
 		IsAbleToCounterAttack = False
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'Å‚à‹ß‚¢“Gƒ†ƒjƒbƒg‚ğ’T‚·
 	Public Function SearchNearestEnemy(ByRef u As Unit) As Unit
 		Dim distance As Short
 		Dim i, j As Short
@@ -4743,46 +5256,42 @@ NextWeapon:
 						GoTo NexLoop
 					End If
 					
-					'Invalid_string_refer_to_original_code
+					'‚à‚Á‚Æ‹ß‚­‚É‚¢‚é“G‚ğ”­Œ©Ï‚İH
 					If distance <= System.Math.Abs(.X - t.X) + System.Math.Abs(.Y - t.Y) Then
 						GoTo NexLoop
 					End If
 					
-					'Invalid_string_refer_to_original_code
+					'“GH
 					If .IsAlly(t) Then
 						GoTo NexLoop
 					End If
 					
-					'Invalid_string_refer_to_original_code
-					'Invalid_string_refer_to_original_code_
-					'Then
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					If t.Party <> .Mode Then
-						GoTo NexLoop
-					End If
-					'End If
-					
-					'Invalid_string_refer_to_original_code
-					If t.IsUnderSpecialPowerEffect("éš ã‚Œèº«") Or t.Area = "åœ°ä¸­" Then
-						GoTo NexLoop
-					End If
-					
-					'Invalid_string_refer_to_original_code
-					'Invalid_string_refer_to_original_code_
-					'Then
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					If t.IsFeatureLevelSpecified("Invalid_string_refer_to_original_code") Then
-						If System.Math.Abs(.X - t.X) + System.Math.Abs(.Y - t.Y) > t.FeatureLevel("Invalid_string_refer_to_original_code") Then
-							GoTo NexLoop
-						End If
-					Else
-						If System.Math.Abs(.X - t.X) + System.Math.Abs(.Y - t.Y) > 3 Then
+					'“Á’è‚Ìw‰c‚Ì‚İ‚ğ‘_‚¤vlƒ‚[ƒh‚Ìê‡
+					If .Mode = "–¡•û" Or .Mode = "‚m‚o‚b" Or .Mode = "“G" Or .Mode = "’†—§" Then
+						If t.Party <> .Mode Then
 							GoTo NexLoop
 						End If
 					End If
-					'End If
 					
-					'Invalid_string_refer_to_original_code
+					'–Ú‹•s”\H
+					If t.IsUnderSpecialPowerEffect("‰B‚êg") Or t.Area = "’n’†" Then
+						GoTo NexLoop
+					End If
+					
+					'ƒXƒeƒ‹ƒXó‘Ô‚É‚ ‚ê‚Î‰“‚­‚©‚ç‚Í”­Œ©‚Å‚«‚È‚¢
+					If t.IsFeatureAvailable("ƒXƒeƒ‹ƒX") And Not t.IsConditionSatisfied("ƒXƒeƒ‹ƒX–³Œø") And Not .IsFeatureAvailable("ƒXƒeƒ‹ƒX–³Œø‰»") Then
+						If t.IsFeatureLevelSpecified("ƒXƒeƒ‹ƒX") Then
+							If System.Math.Abs(.X - t.X) + System.Math.Abs(.Y - t.Y) > t.FeatureLevel("ƒXƒeƒ‹ƒX") Then
+								GoTo NexLoop
+							End If
+						Else
+							If System.Math.Abs(.X - t.X) + System.Math.Abs(.Y - t.Y) > 3 Then
+								GoTo NexLoop
+							End If
+						End If
+					End If
+					
+					'ƒ^[ƒQƒbƒg‚ğ”­Œ©
 					SearchNearestEnemy = t
 					distance = System.Math.Abs(.X - t.X) + System.Math.Abs(.Y - t.Y)
 					
@@ -4792,7 +5301,7 @@ NexLoop:
 		End With
 	End Function
 	
-	'æœ€ã‚‚è¿‘ã„æ•µãƒ¦ãƒ‹ãƒƒãƒˆã¸ã®è·é›¢ã‚’è¿”ã™
+	'Å‚à‹ß‚¢“Gƒ†ƒjƒbƒg‚Ö‚Ì‹——£‚ğ•Ô‚·
 	Private Function DistanceFromNearestEnemy(ByRef u As Unit) As Short
 		Dim t As Unit
 		

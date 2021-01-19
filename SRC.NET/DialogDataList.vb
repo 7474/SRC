@@ -3,16 +3,16 @@ Option Explicit On
 Friend Class DialogDataList
 	
 	' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
+	' 本プログラムはフリーソフトであり、無保証です。
+	' 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
+	' 再頒布または改変することができます。
 	
-	'Invalid_string_refer_to_original_code
+	'全ダイアログデータを管理するリストのクラス
 	
-	'Invalid_string_refer_to_original_code
+	'ダイアログデータのコレクション
 	Private colDialogDataList As New Collection
 	
-	'繧ｯ繝ｩ繧ｹ繧定ｧ｣謾ｾ
+	'クラスを解放
 	'UPGRADE_NOTE: Class_Terminate は Class_Terminate_Renamed にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
 	Private Sub Class_Terminate_Renamed()
 		Dim i As Short
@@ -30,7 +30,7 @@ Friend Class DialogDataList
 		MyBase.Finalize()
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'ダイアログデータを追加
 	Public Function Add(ByRef dname As String) As DialogData
 		Dim new_dd As New DialogData
 		
@@ -39,7 +39,7 @@ Friend Class DialogDataList
 		Add = new_dd
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'ダイアログデータの総数
 	Public Function Count() As Short
 		Count = colDialogDataList.Count()
 	End Function
@@ -48,7 +48,7 @@ Friend Class DialogDataList
 		colDialogDataList.Remove(Index)
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'ダイアログデータを返す
 	Public Function Item(ByRef Index As Object) As DialogData
 		On Error GoTo ErrorHandler
 		
@@ -60,7 +60,7 @@ ErrorHandler:
 		Item = Nothing
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'指定したダイアログデータが定義されているか？
 	Public Function IsDefined(ByRef Index As Object) As Boolean
 		Dim dummy As DialogData
 		
@@ -73,7 +73,7 @@ ErrorHandler:
 		IsDefined = False
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'データファイル fname からデータをロード
 	Public Sub Load(ByRef fname As String)
 		Dim FileNumber As Short
 		Dim i, ret As Short
@@ -104,7 +104,7 @@ ErrorHandler:
 			'UPGRADE_NOTE: オブジェクト dd をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
 			dd = Nothing
 			
-			'Invalid_string_refer_to_original_code
+			'パイロット名一覧
 			If LLength(line_buf) = 0 Then
 				Error(0)
 			End If
@@ -121,7 +121,7 @@ ErrorHandler:
 			
 			GetLine(FileNumber, line_buf, line_num)
 			Do While Len(line_buf) > 0
-				'繧ｷ繝√Η繝ｼ繧ｷ繝ｧ繝ｳ
+				'シチューション
 				d = dd.AddDialog(line_buf)
 				
 				Do While True
@@ -132,28 +132,26 @@ ErrorHandler:
 					
 					GetLine(FileNumber, line_buf, line_num)
 					
-					'Invalid_string_refer_to_original_code
+					'話者
 					ret = InStr(line_buf, ",")
 					If ret = 0 Then
 						Exit Do
 					End If
 					pname = Left(line_buf, ret - 1)
 					
-					'Invalid_string_refer_to_original_code
-					'Invalid_string_refer_to_original_code
-					'Invalid_string_refer_to_original_code
+					'指定した話者のデータが存在するかチェック。
+					'ただし合体技のパートナーは場合は他の作品のパイロットであることも
+					'あるので話者チェックを行わない。
 					If Left(pname, 1) <> "@" Then
-						If Not PDList.IsDefined(pname) And Not NPDList.IsDefined(pname) And pname <> "Invalid_string_refer_to_original_code" Then
-							err_msg = "Invalid_string_refer_to_original_code"
-							'Invalid_string_refer_to_original_code
-							'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+						If Not PDList.IsDefined(pname) And Not NPDList.IsDefined(pname) And pname <> "システム" Then
+							err_msg = "パイロット「" & pname & "」が定義されていません。"
 							Error(0)
 						End If
 					End If
 					
-					'Invalid_string_refer_to_original_code
+					'メッセージ
 					If Len(line_buf) = ret Then
-						err_msg = "Invalid_string_refer_to_original_code"
+						err_msg = "メッセージが定義されていません。"
 						Error(0)
 					End If
 					msg = Trim(Mid(line_buf, ret + 1))
@@ -165,7 +163,7 @@ ErrorHandler:
 		
 ErrorHandler: 
 		If line_num = 0 Then
-			ErrorMessage(fname & "Invalid_string_refer_to_original_code")
+			ErrorMessage(fname & "が開けません。")
 		Else
 			FileClose(FileNumber)
 			If dd Is Nothing Then

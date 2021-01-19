@@ -3,13 +3,13 @@ Option Explicit On
 Module InterMission
 	
 	' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
+	' 本プログラムはフリーソフトであり、無保証です。
+	' 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
+	' 再頒布または改変することができます。
 	
-	'Invalid_string_refer_to_original_code
+	'インターミッションに関する処理を行うモジュール
 	
-	'繧､繝ｳ繧ｿ繝ｼ繝溘ャ繧ｷ繝ｧ繝ｳ
+	'インターミッション
 	Public Sub InterMissionCommand(Optional ByVal skip_update As Boolean = False)
 		Dim cmd_list() As String
 		Dim name_list() As String
@@ -19,10 +19,10 @@ Module InterMission
 		Dim var As VarData
 		Dim fname, save_path As String
 		
-		Stage = "繧､繝ｳ繧ｿ繝ｼ繝溘ャ繧ｷ繝ｧ繝ｳ"
+		Stage = "インターミッション"
 		IsSubStage = False
 		
-		'Invalid_string_refer_to_original_code
+		'ＢＧＭを変更
 		KeepBGM = False
 		BossBGM = False
 		If InStr(BGMFileName, "\" & BGMName("Intermission")) = 0 Then
@@ -30,7 +30,7 @@ Module InterMission
 			StartBGM(BGMName("Intermission"))
 		End If
 		
-		'繝槭ャ繝励ｒ繧ｯ繝ｪ繧｢
+		'マップをクリア
 		For i = 1 To MapWidth
 			For j = 1 To MapHeight
 				'UPGRADE_NOTE: オブジェクト MapDataForUnit() をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
@@ -38,7 +38,7 @@ Module InterMission
 			Next 
 		Next 
 		
-		'Invalid_string_refer_to_original_code
+		'各種データをアップデート
 		If Not skip_update Then
 			UList.Update()
 			PList.Update()
@@ -47,112 +47,100 @@ Module InterMission
 		ClearEventData()
 		ClearMap()
 		
-		'驕ｸ謚樒畑繝繧､繧｢繝ｭ繧ｰ繧呈僑螟ｧ
+		'選択用ダイアログを拡大
 		EnlargeListBoxHeight()
 		
 		Do While True
-			'Invalid_string_refer_to_original_code
+			'利用可能なインターミッションコマンドを選択
 			
 			ReDim cmd_list(0)
 			ReDim ListItemFlag(0)
 			ReDim ListItemID(0)
-			cmd_list(0) = "繧ｭ繝｣繝ｳ繧ｻ繝ｫ"
+			cmd_list(0) = "キャンセル"
 			
-			'Invalid_string_refer_to_original_code
-			If GetValueAsString("Invalid_string_refer_to_original_code") <> "" Then
+			'「次のステージへ」コマンド
+			If GetValueAsString("次ステージ") <> "" Then
 				ReDim Preserve cmd_list(UBound(cmd_list) + 1)
 				ReDim Preserve ListItemFlag(UBound(cmd_list))
-				cmd_list(UBound(cmd_list)) = "Invalid_string_refer_to_original_code"
+				cmd_list(UBound(cmd_list)) = "次のステージへ"
 			End If
 			
-			'Invalid_string_refer_to_original_code
-			If Not IsOptionDefined("Invalid_string_refer_to_original_code") Or IsOptionDefined("Invalid_string_refer_to_original_code") Then
+			'データセーブコマンド
+			If Not IsOptionDefined("データセーブ不可") Or IsOptionDefined("デバッグ") Then
 				ReDim Preserve cmd_list(UBound(cmd_list) + 1)
 				ReDim Preserve ListItemFlag(UBound(cmd_list))
-				cmd_list(UBound(cmd_list)) = "Invalid_string_refer_to_original_code"
+				cmd_list(UBound(cmd_list)) = "データセーブ"
 			End If
 			
-			'Invalid_string_refer_to_original_code
-			If Not IsOptionDefined("謾ｹ騾荳榊庄") Then
+			'機体改造コマンド
+			If Not IsOptionDefined("改造不可") Then
 				ReDim Preserve cmd_list(UBound(cmd_list) + 1)
 				ReDim Preserve ListItemFlag(UBound(cmd_list))
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				cmd_list(UBound(cmd_list)) = "Invalid_string_refer_to_original_code"
-			Else
-				cmd_list(UBound(cmd_list)) = "讖滉ｽ捺隼騾"
-				For	Each u In UList
-					With u
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-						If Left(.Class_Renamed, 1) = "(" Then
-							cmd_list(UBound(cmd_list)) = "Invalid_string_refer_to_original_code"
-							Exit For
-						End If
-					End With
-				Next u
+				If IsOptionDefined("等身大基準") Then
+					cmd_list(UBound(cmd_list)) = "ユニットの強化"
+				Else
+					cmd_list(UBound(cmd_list)) = "機体改造"
+					For	Each u In UList
+						With u
+							If .Party0 = "味方" And .Status_Renamed = "待機" Then
+								If Left(.Class_Renamed, 1) = "(" Then
+									cmd_list(UBound(cmd_list)) = "ユニットの強化"
+									Exit For
+								End If
+							End If
+						End With
+					Next u
+				End If
 			End If
-			'End With
-			'Next
-			'End If
-			'End If
 			
-			'Invalid_string_refer_to_original_code
-			If IsOptionDefined("荵励ｊ謠帙∴") Then
+			'乗り換えコマンド
+			If IsOptionDefined("乗り換え") Then
 				ReDim Preserve cmd_list(UBound(cmd_list) + 1)
 				ReDim Preserve ListItemFlag(UBound(cmd_list))
-				cmd_list(UBound(cmd_list)) = "荵励ｊ謠帙∴"
+				cmd_list(UBound(cmd_list)) = "乗り換え"
 			End If
 			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			ReDim Preserve cmd_list(UBound(cmd_list) + 1)
-			ReDim Preserve ListItemFlag(UBound(cmd_list))
-			cmd_list(UBound(cmd_list)) = "Invalid_string_refer_to_original_code"
-			'End If
+			'アイテム交換コマンド
+			If IsOptionDefined("アイテム交換") Then
+				ReDim Preserve cmd_list(UBound(cmd_list) + 1)
+				ReDim Preserve ListItemFlag(UBound(cmd_list))
+				cmd_list(UBound(cmd_list)) = "アイテム交換"
+			End If
 			
-			'Invalid_string_refer_to_original_code
+			'換装コマンド
 			For	Each u In UList
 				With u
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-					Exit For
-					'End If
+					If .Party0 = "味方" And .Status_Renamed = "待機" Then
+						If .IsFeatureAvailable("換装") Then
+							For i = 1 To LLength(.FeatureData("換装"))
+								If .OtherForm(LIndex(.FeatureData("換装"), i)).IsAvailable Then
+									Exit For
+								End If
+							Next 
+							If i <= LLength(.FeatureData("換装")) Then
+								ReDim Preserve cmd_list(UBound(cmd_list) + 1)
+								ReDim Preserve ListItemFlag(UBound(cmd_list))
+								cmd_list(UBound(cmd_list)) = "換装"
+								Exit For
+							End If
+						End If
+					End If
 				End With
 			Next u
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+			
+			'パイロットステータスコマンド
+			If Not IsOptionDefined("等身大基準") Then
+				ReDim Preserve cmd_list(UBound(cmd_list) + 1)
+				ReDim Preserve ListItemFlag(UBound(cmd_list))
+				cmd_list(UBound(cmd_list)) = "パイロットステータス"
+			End If
+			
+			'ユニットステータスコマンド
 			ReDim Preserve cmd_list(UBound(cmd_list) + 1)
 			ReDim Preserve ListItemFlag(UBound(cmd_list))
-			cmd_list(UBound(cmd_list)) = "Invalid_string_refer_to_original_code"
-			Exit For
-			'End If
-			'End If
-			'End If
-			'End With
-			'Next
+			cmd_list(UBound(cmd_list)) = "ユニットステータス"
 			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			ReDim Preserve cmd_list(UBound(cmd_list) + 1)
-			ReDim Preserve ListItemFlag(UBound(cmd_list))
-			cmd_list(UBound(cmd_list)) = "Invalid_string_refer_to_original_code"
-			'End If
-			
-			'Invalid_string_refer_to_original_code
-			ReDim Preserve cmd_list(UBound(cmd_list) + 1)
-			ReDim Preserve ListItemFlag(UBound(cmd_list))
-			cmd_list(UBound(cmd_list)) = "Invalid_string_refer_to_original_code"
-			
-			'Invalid_string_refer_to_original_code
+			'ユーザー定義のインターミッションコマンド
 			For	Each var In GlobalVariableList
 				If InStr(var.Name, "IntermissionCommand(") = 1 Then
 					ret = Len("IntermissionCommand(")
@@ -167,12 +155,12 @@ Module InterMission
 				End If
 			Next var
 			
-			'Invalid_string_refer_to_original_code
+			'終了コマンド
 			ReDim Preserve cmd_list(UBound(cmd_list) + 1)
 			ReDim Preserve ListItemFlag(UBound(cmd_list))
-			cmd_list(UBound(cmd_list)) = "Invalid_string_refer_to_original_code"
+			cmd_list(UBound(cmd_list)) = "SRCを終了"
 			
-			'繧､繝ｳ繧ｿ繝ｼ繝溘ャ繧ｷ繝ｧ繝ｳ縺ｮ繧ｳ繝槭Φ繝牙錐遘ｰ縺ｫ繧ｨ繝ｪ繧｢繧ｹ繧帝←逕ｨ
+			'インターミッションのコマンド名称にエリアスを適用
 			ReDim name_list(UBound(cmd_list))
 			For i = 1 To UBound(name_list)
 				name_list(i) = cmd_list(i)
@@ -188,133 +176,121 @@ Module InterMission
 				End With
 			Next 
 			
-			'Invalid_string_refer_to_original_code
+			'プレイヤーによるコマンド選択
 			TopItem = 1
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+			ret = ListBox("インターミッション： 総ターン数" & VB6.Format(TotalTurn) & " " & Term("資金") & VB6.Format(Money), name_list, "コマンド", "連続表示")
 			
-			'Invalid_string_refer_to_original_code
+			'選択されたインターミッションコマンドを実行
 			Select Case cmd_list(ret)
-				Case "Invalid_string_refer_to_original_code"
-					'Invalid_string_refer_to_original_code_
-					'Invalid_string_refer_to_original_code_
-					'Then
-					'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+				Case "次のステージへ"
+					If MsgBox("次のステージへ進みますか？", MsgBoxStyle.OKCancel + MsgBoxStyle.Question, "次ステージ") = 1 Then
+						
+						UList.Update() '追加パイロットを消去
+						
+						frmListBox.Hide()
+						ReduceListBoxHeight()
+						StopBGM()
+						Exit Sub
+					End If
 					
-					UList.Update() 'Invalid_string_refer_to_original_code
-					
-					frmListBox.Hide()
-					ReduceListBoxHeight()
-					StopBGM()
-					Exit Sub
-					'End If
-					
-				Case "Invalid_string_refer_to_original_code"
-					'荳譌ｦ縲悟ｸｸ縺ｫ謇句燕縺ｫ陦ｨ遉ｺ縲阪ｒ隗｣髯､
+				Case "データセーブ"
+					'一旦「常に手前に表示」を解除
 					If frmListBox.Visible Then
 						ret = SetWindowPos(frmListBox.Handle.ToInt32, -2, 0, 0, 0, 0, &H3)
 					End If
 					
-					'Invalid_string_refer_to_original_code_
-					'Invalid_string_refer_to_original_code_
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+					fname = SaveFileDialog("データセーブ", ScenarioPath, GetValueAsString("セーブデータファイル名"), 2, "ｾｰﾌﾞﾃﾞｰﾀ", "src")
 					
-					'Invalid_string_refer_to_original_code
+					'再び「常に手前に表示」
 					If frmListBox.Visible Then
 						ret = SetWindowPos(frmListBox.Handle.ToInt32, -1, 0, 0, 0, 0, &H3)
 					End If
 					
-					'Invalid_string_refer_to_original_code
+					'キャンセル？
 					If fname = "" Then
 						GoTo NextLoop
 					End If
 					
-					'Invalid_string_refer_to_original_code
+					'セーブ先はシナリオフォルダ？
 					If InStr(fname, "\") > 0 Then
 						save_path = Left(fname, InStr2(fname, "\"))
 					End If
 					'UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
 					If Dir(save_path) <> Dir(ScenarioPath) Then
-						'Invalid_string_refer_to_original_code_
-						'Invalid_string_refer_to_original_code_
-						'Then
-						'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-						GoTo NextLoop
+						If MsgBox("セーブファイルはシナリオフォルダにないと読み込めません。" & vbCr & vbLf & "このままセーブしますか？", MsgBoxStyle.OKCancel + MsgBoxStyle.Question) <> 1 Then
+							GoTo NextLoop
+						End If
 					End If
-					'End If
 					
 					If fname <> "" Then
-						UList.Update() 'Invalid_string_refer_to_original_code
+						UList.Update() '追加パイロットを消去
 						SaveData(fname)
 					End If
 					
-				Case "讖滉ｽ捺隼騾", "Invalid_string_refer_to_original_code"
+				Case "機体改造", "ユニットの強化"
 					RankUpCommand()
 					
-				Case "荵励ｊ謠帙∴"
+				Case "乗り換え"
 					ExchangeUnitCommand()
 					
-				Case "Invalid_string_refer_to_original_code"
+				Case "アイテム交換"
 					ExchangeItemCommand()
 					
-				Case "Invalid_string_refer_to_original_code"
+				Case "換装"
 					ExchangeFormCommand()
 					
-				Case "Invalid_string_refer_to_original_code"
-					'Invalid_string_refer_to_original_code_
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-					frmListBox.Hide()
-					ReduceListBoxHeight()
-					ExitGame()
-					'End If
+				Case "SRCを終了"
+					If MsgBox("SRCを終了しますか？", MsgBoxStyle.OKCancel + MsgBoxStyle.Question, "終了") = 1 Then
+						frmListBox.Hide()
+						ReduceListBoxHeight()
+						ExitGame()
+					End If
 					
-				Case "Invalid_string_refer_to_original_code"
+				Case "パイロットステータス"
 					frmListBox.Hide()
 					ReduceListBoxHeight()
 					IsSubStage = True
-					If FileExists(ScenarioPath & "Invalid_string_refer_to_original_code") Then
-						StartScenario(ScenarioPath & "Invalid_string_refer_to_original_code")
-					ElseIf FileExists(ExtDataPath & "Invalid_string_refer_to_original_code") Then 
-						StartScenario(ExtDataPath & "Invalid_string_refer_to_original_code")
-					ElseIf FileExists(ExtDataPath2 & "Invalid_string_refer_to_original_code") Then 
-						StartScenario(ExtDataPath2 & "Invalid_string_refer_to_original_code")
+					If FileExists(ScenarioPath & "Lib\パイロットステータス表示.eve") Then
+						StartScenario(ScenarioPath & "Lib\パイロットステータス表示.eve")
+					ElseIf FileExists(ExtDataPath & "Lib\パイロットステータス表示.eve") Then 
+						StartScenario(ExtDataPath & "Lib\パイロットステータス表示.eve")
+					ElseIf FileExists(ExtDataPath2 & "Lib\パイロットステータス表示.eve") Then 
+						StartScenario(ExtDataPath2 & "Lib\パイロットステータス表示.eve")
 					Else
-						StartScenario(AppPath & "Invalid_string_refer_to_original_code")
+						StartScenario(AppPath & "Lib\パイロットステータス表示.eve")
 					End If
-					'Invalid_string_refer_to_original_code
+					'サブステージを通常のステージとして実行
 					IsSubStage = True
 					Exit Sub
 					
-				Case "Invalid_string_refer_to_original_code"
+				Case "ユニットステータス"
 					frmListBox.Hide()
 					ReduceListBoxHeight()
 					IsSubStage = True
-					If FileExists(ScenarioPath & "Invalid_string_refer_to_original_code") Then
-						StartScenario(ScenarioPath & "Invalid_string_refer_to_original_code")
-					ElseIf FileExists(ExtDataPath & "Invalid_string_refer_to_original_code") Then 
-						StartScenario(ExtDataPath & "Invalid_string_refer_to_original_code")
-					ElseIf FileExists(ExtDataPath2 & "Invalid_string_refer_to_original_code") Then 
-						StartScenario(ExtDataPath2 & "Invalid_string_refer_to_original_code")
+					If FileExists(ScenarioPath & "Lib\ユニットステータス表示.eve") Then
+						StartScenario(ScenarioPath & "Lib\ユニットステータス表示.eve")
+					ElseIf FileExists(ExtDataPath & "Lib\ユニットステータス表示.eve") Then 
+						StartScenario(ExtDataPath & "Lib\ユニットステータス表示.eve")
+					ElseIf FileExists(ExtDataPath2 & "Lib\ユニットステータス表示.eve") Then 
+						StartScenario(ExtDataPath2 & "Lib\ユニットステータス表示.eve")
 					Else
-						StartScenario(AppPath & "Invalid_string_refer_to_original_code")
+						StartScenario(AppPath & "Lib\ユニットステータス表示.eve")
 					End If
-					'Invalid_string_refer_to_original_code
+					'サブステージを通常のステージとして実行
 					IsSubStage = True
 					Exit Sub
 					
-				Case "繧ｭ繝｣繝ｳ繧ｻ繝ｫ"
-					'繧ｭ繝｣繝ｳ繧ｻ繝ｫ
+				Case "キャンセル"
+					'キャンセル
 					
-					'Invalid_string_refer_to_original_code
+					'ユーザー定義のインターミッションコマンド
 				Case Else
 					frmListBox.Hide()
 					ReduceListBoxHeight()
 					IsSubStage = True
 					StartScenario(GetValueAsString(ListItemID(ret)))
 					If IsSubStage Then
-						'Invalid_string_refer_to_original_code
+						'インターミッションを再開
 						KeepBGM = False
 						BossBGM = False
 						ChangeBGM(BGMName("Intermission"))
@@ -328,7 +304,7 @@ Module InterMission
 						IsSubStage = False
 						EnlargeListBoxHeight()
 					Else
-						'Invalid_string_refer_to_original_code
+						'サブステージを通常のステージとして実行
 						IsSubStage = True
 						Exit Sub
 					End If
@@ -337,7 +313,7 @@ NextLoop:
 		Loop 
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'機体改造コマンド
 	Public Sub RankUpCommand()
 		Dim k, i, j, urank As Short
 		Dim list() As String
@@ -362,56 +338,54 @@ NextLoop:
 		
 		TopItem = 1
 		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-		sort_mode = "繝ｬ繝吶Ν"
-		sort_mode = "Invalid_string_refer_to_original_code"
-		'End If
+		'デフォルトのソート方法
+		If IsOptionDefined("等身大基準") Then
+			sort_mode = "レベル"
+		Else
+			sort_mode = "ＨＰ"
+		End If
 		
-		'Invalid_string_refer_to_original_code
+		'最大改造数がユニット毎に変更されているかをあらかじめチェック
 		For	Each u In UList
-			If u.IsFeatureAvailable("譛螟ｧ謾ｹ騾謨ｰ") Then
+			If u.IsFeatureAvailable("最大改造数") Then
 				use_max_rank = True
 				Exit For
 			End If
 		Next u
 		
-		'Invalid_string_refer_to_original_code
+		'ユニット名の項の文字数を設定
 		name_width = 33
 		If use_max_rank Then
 			name_width = name_width - 2
 		End If
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-		name_width = name_width + 8
-		'End If
+		If IsOptionDefined("等身大基準") Then
+			name_width = name_width + 8
+		End If
 		
-		'Invalid_string_refer_to_original_code
+		'ユニットのリストを作成
 		ReDim list(1)
 		ReDim id_list(1)
 		ReDim ListItemFlag(1)
 		ReDim ListItemComment(1)
-		list(1) = "笆ｽ荳ｦ縺ｹ譖ｿ縺遺命"
+		list(1) = "▽並べ替え▽"
 		For	Each u In UList
 			With u
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				GoTo NextLoop
-				'End If
+				If .Party0 <> "味方" Or .Status_Renamed <> "待機" Then
+					GoTo NextLoop
+				End If
 				
 				ReDim Preserve list(UBound(list) + 1)
 				ReDim Preserve id_list(UBound(list))
 				ReDim Preserve ListItemFlag(UBound(list))
 				ReDim Preserve ListItemComment(UBound(list))
 				
-				'Invalid_string_refer_to_original_code
+				'改造が可能？
 				cost = RankUpCost(u)
 				If cost > Money Or cost > 10000000 Then
 					ListItemFlag(UBound(list)) = True
 				End If
 				
-				'繝ｦ繝九ャ繝医Λ繝ｳ繧ｯ
+				'ユニットランク
 				If use_max_rank Then
 					list(UBound(list)) = RightPaddedString(.Nickname0, name_width) & LeftPaddedString(VB6.Format(.Rank), 2) & "/"
 					If MaxRank(u) > 0 Then
@@ -427,45 +401,40 @@ NextLoop:
 					End If
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'改造に必要な資金
 				If cost < 10000000 Then
 					list(UBound(list)) = list(UBound(list)) & LeftPaddedString(VB6.Format(cost), 7)
 				Else
 					list(UBound(list)) = list(UBound(list)) & LeftPaddedString("----", 7)
 				End If
 				
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				If .CountPilot > 0 Then
-					list(UBound(list)) = list(UBound(list)) & LeftPaddedString(VB6.Format(.MainPilot.Level), 3)
+				'等身大基準の場合はパイロットレベルも表示
+				If IsOptionDefined("等身大基準") Then
+					If .CountPilot > 0 Then
+						list(UBound(list)) = list(UBound(list)) & LeftPaddedString(VB6.Format(.MainPilot.Level), 3)
+					End If
 				End If
-				'End If
 				
-				'Invalid_string_refer_to_original_code
+				'ユニットに関する情報
 				list(UBound(list)) = list(UBound(list)) & LeftPaddedString(VB6.Format(.MaxHP), 6) & LeftPaddedString(VB6.Format(.MaxEN), 4) & LeftPaddedString(VB6.Format(.Armor), 6) & LeftPaddedString(VB6.Format(.Mobility), 4)
 				
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				If .CountPilot > 0 Then
-					list(UBound(list)) = list(UBound(list)) & "  " & .MainPilot.Nickname
+				'等身大基準でない場合はパイロット名を表示
+				If Not IsOptionDefined("等身大基準") Then
+					If .CountPilot > 0 Then
+						list(UBound(list)) = list(UBound(list)) & "  " & .MainPilot.Nickname
+					End If
 				End If
-				'End If
 				
-				'Invalid_string_refer_to_original_code
+				'装備しているアイテムをコメント欄に列記
 				For k = 1 To .CountItem
 					With .Item(k)
-						'Invalid_string_refer_to_original_code_
-						'And .Part <> "髱櫁｡ｨ遉ｺ" _
-						'Then
-						'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-						ListItemComment(UBound(list)) = ListItemComment(UBound(list)) & .Nickname & " "
-						'End If
+						If (.Class_Renamed() <> "固定" Or Not .IsFeatureAvailable("非表示")) And .Part <> "非表示" Then
+							ListItemComment(UBound(list)) = ListItemComment(UBound(list)) & .Nickname & " "
+						End If
 					End With
 				Next 
 				
-				'Invalid_string_refer_to_original_code
+				'ユニットＩＤを記録しておく
 				id_list(UBound(list)) = .ID
 			End With
 NextLoop: 
@@ -473,35 +442,35 @@ NextLoop:
 		
 Beginning: 
 		
-		'Invalid_string_refer_to_original_code
-		If InStr(sort_mode, "蜷咲ｧｰ") = 0 Then
-			'Invalid_string_refer_to_original_code
+		'ソート
+		If InStr(sort_mode, "名称") = 0 Then
+			'数値を使ったソート
 			
-			'Invalid_string_refer_to_original_code
+			'まず並べ替えに使うキーのリストを作成
 			ReDim key_list(UBound(list))
 			With UList
 				Select Case sort_mode
-					Case "Invalid_string_refer_to_original_code"
+					Case "ＨＰ"
 						For i = 2 To UBound(list)
 							key_list(i) = .Item(id_list(i)).MaxHP
 						Next 
-					Case "Invalid_string_refer_to_original_code"
+					Case "ＥＮ"
 						For i = 2 To UBound(list)
 							key_list(i) = .Item(id_list(i)).MaxEN
 						Next 
-					Case "Invalid_string_refer_to_original_code"
+					Case "装甲"
 						For i = 2 To UBound(list)
 							key_list(i) = .Item(id_list(i)).Armor
 						Next 
-					Case "驕句虚諤ｧ"
+					Case "運動性"
 						For i = 2 To UBound(list)
 							key_list(i) = .Item(id_list(i)).Mobility
 						Next 
-					Case "繝ｦ繝九ャ繝医Λ繝ｳ繧ｯ"
+					Case "ユニットランク"
 						For i = 2 To UBound(list)
 							key_list(i) = .Item(id_list(i)).Rank
 						Next 
-					Case "繝ｬ繝吶Ν"
+					Case "レベル"
 						For i = 2 To UBound(list)
 							With .Item(id_list(i))
 								If .CountPilot() > 0 Then
@@ -514,7 +483,7 @@ Beginning:
 				End Select
 			End With
 			
-			'繧ｭ繝ｼ繧剃ｽｿ縺｣縺ｦ荳ｦ縺ｹ謠帙∴
+			'キーを使って並べ換え
 			For i = 2 To UBound(list) - 1
 				max_item = i
 				max_value = key_list(i)
@@ -545,17 +514,17 @@ Beginning:
 				End If
 			Next 
 		Else
-			'Invalid_string_refer_to_original_code
+			'数値を使ったソート
 			
-			'Invalid_string_refer_to_original_code
+			'まず並べ替えに使うキーのリストを作成
 			ReDim strkey_list(UBound(list))
 			With UList
 				Select Case sort_mode
-					Case "蜷咲ｧｰ", "繝ｦ繝九ャ繝亥錐遘ｰ"
+					Case "名称", "ユニット名称"
 						For i = 2 To UBound(list)
 							strkey_list(i) = .Item(id_list(i)).KanaName
 						Next 
-					Case "Invalid_string_refer_to_original_code"
+					Case "パイロット名称"
 						For i = 2 To UBound(list)
 							With .Item(id_list(i))
 								If .CountPilot() > 0 Then
@@ -566,7 +535,7 @@ Beginning:
 				End Select
 			End With
 			
-			'繧ｭ繝ｼ繧剃ｽｿ縺｣縺ｦ荳ｦ縺ｹ謠帙∴
+			'キーを使って並べ換え
 			For i = 2 To UBound(strkey_list) - 1
 				max_item = i
 				max_str = strkey_list(i)
@@ -598,62 +567,58 @@ Beginning:
 			Next 
 		End If
 		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-		If use_max_rank Then
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+		'改造するユニットを選択
+		If IsOptionDefined("等身大基準") Then
+			If use_max_rank Then
+				ret = ListBox("ユニット選択： " & Term("資金") & VB6.Format(Money), list, "ユニット                               " & Term("ランク", Nothing, 6) & "  費用 Lv  " & Term("ＨＰ", Nothing, 4) & " " & Term("ＥＮ", Nothing, 4) & " " & Term("装甲", Nothing, 4) & " " & Term("運動"), "連続表示,コメント")
+			Else
+				ret = ListBox("ユニット選択： " & Term("資金") & VB6.Format(Money), list, "ユニット                             " & Term("ランク", Nothing, 6) & "   費用 Lv  " & Term("ＨＰ", Nothing, 4) & " " & Term("ＥＮ", Nothing, 4) & " " & Term("装甲", Nothing, 4) & " " & Term("運動"), "連続表示,コメント")
+			End If
 		Else
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+			If use_max_rank Then
+				ret = ListBox("ユニット選択： " & Term("資金") & VB6.Format(Money), list, "ユニット                       " & Term("ランク", Nothing, 6) & "  費用  " & Term("ＨＰ", Nothing, 4) & " " & Term("ＥＮ", Nothing, 4) & " " & Term("装甲", Nothing, 4) & " " & Term("運動", Nothing, 4) & " パイロット", "連続表示,コメント")
+			Else
+				ret = ListBox("ユニット選択： " & Term("資金") & VB6.Format(Money), list, "ユニット                     " & Term("ランク", Nothing, 6) & "   費用  " & Term("ＨＰ", Nothing, 4) & " " & Term("ＥＮ", Nothing, 4) & " " & Term("装甲", Nothing, 4) & " " & Term("運動", Nothing, 4) & " パイロット", "連続表示,コメント")
+			End If
 		End If
-		If use_max_rank Then
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-		Else
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-		End If
-		'End If
 		
 		Select Case ret
 			Case 0
-				'繧ｭ繝｣繝ｳ繧ｻ繝ｫ
+				'キャンセル
 				Exit Sub
 			Case 1
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				sort_mode_type(1) = "蜷咲ｧｰ"
-				sort_mode_list(1) = "蜷咲ｧｰ"
-				sort_mode_type(2) = "繝ｬ繝吶Ν"
-				sort_mode_list(2) = "繝ｬ繝吶Ν"
-				sort_mode_type(3) = "Invalid_string_refer_to_original_code"
-				sort_mode_list(3) = Term("Invalid_string_refer_to_original_code")
-				sort_mode_type(4) = "Invalid_string_refer_to_original_code"
-				sort_mode_list(4) = Term("Invalid_string_refer_to_original_code")
-				sort_mode_type(5) = "Invalid_string_refer_to_original_code"
-				sort_mode_list(5) = Term("Invalid_string_refer_to_original_code")
-				sort_mode_type(6) = "驕句虚諤ｧ"
-				sort_mode_list(6) = Term("驕句虚諤ｧ")
-				sort_mode_type(7) = "繝ｦ繝九ャ繝医Λ繝ｳ繧ｯ"
-				sort_mode_list(7) = Term("繝ｩ繝ｳ繧ｯ")
-				sort_mode_type(1) = "Invalid_string_refer_to_original_code"
-				sort_mode_list(1) = Term("Invalid_string_refer_to_original_code")
-				sort_mode_type(2) = "Invalid_string_refer_to_original_code"
-				sort_mode_list(2) = Term("Invalid_string_refer_to_original_code")
-				sort_mode_type(3) = "Invalid_string_refer_to_original_code"
-				sort_mode_list(3) = Term("Invalid_string_refer_to_original_code")
-				sort_mode_type(4) = "驕句虚諤ｧ"
-				sort_mode_list(4) = Term("驕句虚諤ｧ")
-				sort_mode_type(5) = "繝ｦ繝九ャ繝医Λ繝ｳ繧ｯ"
-				sort_mode_list(5) = Term("繝ｩ繝ｳ繧ｯ")
-				sort_mode_type(6) = "繝ｦ繝九ャ繝亥錐遘ｰ"
-				sort_mode_list(6) = "繝ｦ繝九ャ繝亥錐遘ｰ"
-				sort_mode_type(7) = "Invalid_string_refer_to_original_code"
-				sort_mode_list(7) = "Invalid_string_refer_to_original_code"
-				'End If
+				'ソート方法を選択
+				If IsOptionDefined("等身大基準") Then
+					sort_mode_type(1) = "名称"
+					sort_mode_list(1) = "名称"
+					sort_mode_type(2) = "レベル"
+					sort_mode_list(2) = "レベル"
+					sort_mode_type(3) = "ＨＰ"
+					sort_mode_list(3) = Term("ＨＰ")
+					sort_mode_type(4) = "ＥＮ"
+					sort_mode_list(4) = Term("ＥＮ")
+					sort_mode_type(5) = "装甲"
+					sort_mode_list(5) = Term("装甲")
+					sort_mode_type(6) = "運動性"
+					sort_mode_list(6) = Term("運動性")
+					sort_mode_type(7) = "ユニットランク"
+					sort_mode_list(7) = Term("ランク")
+				Else
+					sort_mode_type(1) = "ＨＰ"
+					sort_mode_list(1) = Term("ＨＰ")
+					sort_mode_type(2) = "ＥＮ"
+					sort_mode_list(2) = Term("ＥＮ")
+					sort_mode_type(3) = "装甲"
+					sort_mode_list(3) = Term("装甲")
+					sort_mode_type(4) = "運動性"
+					sort_mode_list(4) = Term("運動性")
+					sort_mode_type(5) = "ユニットランク"
+					sort_mode_list(5) = Term("ランク")
+					sort_mode_type(6) = "ユニット名称"
+					sort_mode_list(6) = "ユニット名称"
+					sort_mode_type(7) = "パイロット名称"
+					sort_mode_list(7) = "パイロット名称"
+				End If
 				ReDim item_flag_backup(UBound(list))
 				ReDim item_comment_backup(UBound(list))
 				For i = 2 To UBound(list)
@@ -663,10 +628,7 @@ Beginning:
 				ReDim ListItemComment(UBound(sort_mode_list))
 				ReDim ListItemFlag(UBound(sort_mode_list))
 				
-				'Invalid_string_refer_to_original_code_
-				'Invalid_string_refer_to_original_code_
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+				ret = ListBox("どれで並べ替えますか？", sort_mode_list, "並べ替えの方法", "連続表示,コメント")
 				
 				ReDim ListItemFlag(UBound(list))
 				ReDim ListItemComment(UBound(list))
@@ -675,176 +637,187 @@ Beginning:
 					ListItemComment(i) = item_comment_backup(i)
 				Next 
 				
-				'繧ｽ繝ｼ繝域婿豕輔ｒ螟画峩縺励※蜀崎｡ｨ遉ｺ
+				'ソート方法を変更して再表示
 				If ret > 0 Then
 					sort_mode = sort_mode_type(ret)
 				End If
 				GoTo Beginning
 		End Select
 		
-		'謾ｹ騾縺吶ｋ繝ｦ繝九ャ繝医ｒ讀懃ｴ｢
+		'改造するユニットを検索
 		u = UList.Item(id_list(ret))
 		
-		'Invalid_string_refer_to_original_code
+		'改造するか確認
 		If u.IsHero Then
-			'Invalid_string_refer_to_original_code_
-			'Invalid_string_refer_to_original_code_
-			'Then
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			GoTo Beginning
+			If MsgBox(u.Nickname0 & "をパワーアップさせますか？", MsgBoxStyle.OKCancel + MsgBoxStyle.Question, "パワーアップ") <> 1 Then
+				GoTo Beginning
+			End If
+		Else
+			If MsgBox(u.Nickname0 & "を改造しますか？", MsgBoxStyle.OKCancel + MsgBoxStyle.Question, "改造") <> 1 Then
+				GoTo Beginning
+			End If
 		End If
-		'Invalid_string_refer_to_original_code_
-		'vbOKCancel + vbQuestion, "謾ｹ騾") <> 1 _
-		'Then
-		'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-		GoTo Beginning
-		'End If
-		'End If
 		
-		'Invalid_string_refer_to_original_code
+		'資金を減らす
 		IncrMoney(-RankUpCost(u))
 		
-		'Invalid_string_refer_to_original_code
+		'ユニットランクを一段階上げる
 		With u
 			.Rank = .Rank + 1
 			.HP = .MaxHP
 			.EN = .MaxEN
 			
-			'Invalid_string_refer_to_original_code
+			'他形態のランクも上げておく
 			For i = 1 To .CountOtherForm
 				.OtherForm(i).Rank = .Rank
 				.OtherForm(i).HP = .OtherForm(i).MaxHP
 				.OtherForm(i).EN = .OtherForm(i).MaxEN
 			Next 
 			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			For i = 1 To .CountFeature
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				buf = LIndex(.FeatureData(i), 2)
-				If LLength(.FeatureData(i)) = 3 Then
-					If UDList.IsDefined(buf) Then
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-						Exit For
-					End If
-				End If
-				If UDList.IsDefined(buf) Then
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-					Exit For
-				End If
-				'End If
-				'End If
-				'End If
-			Next 
-			If i <= .CountFeature Then
-				urank = .Rank
-				buf = UDList.Item(LIndex(.FeatureData(i), 2)).FeatureData("Invalid_string_refer_to_original_code")
-				For i = 2 To LLength(buf)
-					If Not UList.IsDefined(LIndex(buf, i)) Then
-						GoTo NextForm
-					End If
-					
-					With UList.Item(LIndex(buf, i))
-						.Rank = MaxLng(urank, .Rank)
-						.HP = .MaxHP
-						.EN = .MaxEN
-						For j = 1 To .CountOtherForm
-							.OtherForm(j).Rank = .Rank
-							.OtherForm(j).HP = .OtherForm(j).MaxHP
-							.OtherForm(j).EN = .OtherForm(j).MaxEN
-						Next 
-						
-						For j = 1 To UBound(id_list)
-							If .CurrentForm.ID = id_list(j) Then
-								Exit For
+			'合体形態が主形態の分離形態が改造された場合は他の分離形態のユニットの
+			'ランクも上げる
+			If .IsFeatureAvailable("合体") Then
+				For i = 1 To .CountFeature
+					If .Feature(i) = "合体" Then
+						buf = LIndex(.FeatureData(i), 2)
+						If LLength(.FeatureData(i)) = 3 Then
+							If UDList.IsDefined(buf) Then
+								If UDList.Item(buf).IsFeatureAvailable("主形態") Then
+									Exit For
+								End If
 							End If
-						Next 
-						
-						If j > UBound(id_list) Then
+						Else
+							If UDList.IsDefined(buf) Then
+								If Not UDList.Item(buf).IsFeatureAvailable("制限時間") Then
+									Exit For
+								End If
+							End If
+						End If
+					End If
+				Next 
+				If i <= .CountFeature Then
+					urank = .Rank
+					buf = UDList.Item(LIndex(.FeatureData(i), 2)).FeatureData("分離")
+					For i = 2 To LLength(buf)
+						If Not UList.IsDefined(LIndex(buf, i)) Then
 							GoTo NextForm
 						End If
 						
-						If use_max_rank Then
-							list(j) = RightPaddedString(.Nickname0, name_width) & LeftPaddedString(VB6.Format(.Rank), 2) & "/"
-							If MaxRank(u) > 0 Then
-								list(j) = list(j) & LeftPaddedString(VB6.Format(MaxRank(u)), 2)
-							Else
-								list(j) = list(j) & "--"
+						With UList.Item(LIndex(buf, i))
+							.Rank = MaxLng(urank, .Rank)
+							.HP = .MaxHP
+							.EN = .MaxEN
+							For j = 1 To .CountOtherForm
+								.OtherForm(j).Rank = .Rank
+								.OtherForm(j).HP = .OtherForm(j).MaxHP
+								.OtherForm(j).EN = .OtherForm(j).MaxEN
+							Next 
+							
+							For j = 1 To UBound(id_list)
+								If .CurrentForm.ID = id_list(j) Then
+									Exit For
+								End If
+							Next 
+							
+							If j > UBound(id_list) Then
+								GoTo NextForm
 							End If
-						Else
-							If .Rank < 10 Then
-								list(j) = RightPaddedString(.Nickname0, name_width) & StrConv(VB6.Format(.Rank), VbStrConv.Wide)
+							
+							If use_max_rank Then
+								list(j) = RightPaddedString(.Nickname0, name_width) & LeftPaddedString(VB6.Format(.Rank), 2) & "/"
+								If MaxRank(u) > 0 Then
+									list(j) = list(j) & LeftPaddedString(VB6.Format(MaxRank(u)), 2)
+								Else
+									list(j) = list(j) & "--"
+								End If
 							Else
-								list(j) = RightPaddedString(.Nickname0, name_width) & VB6.Format(.Rank)
+								If .Rank < 10 Then
+									list(j) = RightPaddedString(.Nickname0, name_width) & StrConv(VB6.Format(.Rank), VbStrConv.Wide)
+								Else
+									list(j) = RightPaddedString(.Nickname0, name_width) & VB6.Format(.Rank)
+								End If
 							End If
-						End If
-						
-						If RankUpCost(u) < 1000000 Then
-							list(j) = list(j) & LeftPaddedString(VB6.Format(RankUpCost(u)), 7)
-						Else
-							list(j) = list(j) & LeftPaddedString("----", 7)
-						End If
-						
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-						If .CountPilot > 0 Then
-							list(j) = list(j) & LeftPaddedString(VB6.Format(.MainPilot.Level), 3)
-						End If
-					End With
+							
+							If RankUpCost(u) < 1000000 Then
+								list(j) = list(j) & LeftPaddedString(VB6.Format(RankUpCost(u)), 7)
+							Else
+								list(j) = list(j) & LeftPaddedString("----", 7)
+							End If
+							
+							If IsOptionDefined("等身大基準") Then
+								If .CountPilot > 0 Then
+									list(j) = list(j) & LeftPaddedString(VB6.Format(.MainPilot.Level), 3)
+								End If
+							End If
+							list(j) = list(j) & LeftPaddedString(VB6.Format(.MaxHP), 6) & LeftPaddedString(VB6.Format(.MaxEN), 4) & LeftPaddedString(VB6.Format(.Armor), 6) & LeftPaddedString(VB6.Format(.Mobility), 4)
+							If Not IsOptionDefined("等身大基準") Then
+								If .CountPilot > 0 Then
+									list(j) = list(j) & "  " & .MainPilot.Nickname
+								End If
+							End If
+						End With
+NextForm: 
+					Next 
+				End If
+			End If
+			
+			'合体ユニットの場合は分離形態のユニットのランクも上げる
+			If .IsFeatureAvailable("分離") Then
+				urank = .Rank
+				buf = .FeatureData("分離")
+				For i = 2 To LLength(buf)
+					If UList.IsDefined(LIndex(buf, i)) Then
+						With UList.Item(LIndex(buf, i))
+							.Rank = MaxLng(urank, .Rank)
+							.HP = .MaxHP
+							.EN = .MaxEN
+							For j = 1 To .CountOtherForm
+								.OtherForm(j).Rank = .Rank
+								.OtherForm(j).HP = .OtherForm(j).MaxHP
+								.OtherForm(j).EN = .OtherForm(j).MaxEN
+							Next 
+						End With
+					End If
 				Next 
 			End If
-			list(j) = list(j) & LeftPaddedString(VB6.Format(.MaxHP), 6) & LeftPaddedString(VB6.Format(.MaxEN), 4) & LeftPaddedString(VB6.Format(.Armor), 6) & LeftPaddedString(VB6.Format(.Mobility), 4)
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			If .CountPilot > 0 Then
-				list(j) = list(j) & "  " & .MainPilot.Nickname
-			End If
-			'End If
-		End With
-NextForm: 
-		'Next
-		'End If
-		'End If
-		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_WARNING: RankUpCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-		
-		'Invalid_string_refer_to_original_code
-		
-		If use_max_rank Then
-			'UPGRADE_WARNING: RankUpCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-			If MaxRank(u) > 0 Then
-				list(ret) = list(ret) & LeftPaddedString(VB6.Format(MaxRank(u)), 2)
+			
+			'ユニットリストの表示内容を更新
+			
+			If use_max_rank Then
+				list(ret) = RightPaddedString(.Nickname0, name_width) & LeftPaddedString(VB6.Format(.Rank), 2) & "/"
+				If MaxRank(u) > 0 Then
+					list(ret) = list(ret) & LeftPaddedString(VB6.Format(MaxRank(u)), 2)
+				Else
+					list(ret) = list(ret) & "--"
+				End If
 			Else
-				list(ret) = list(ret) & "--"
+				If .Rank < 10 Then
+					list(ret) = RightPaddedString(.Nickname0, name_width) & StrConv(VB6.Format(.Rank), VbStrConv.Wide)
+				Else
+					list(ret) = RightPaddedString(.Nickname0, name_width) & VB6.Format(.Rank)
+				End If
 			End If
-		Else
-			'UPGRADE_WARNING: RankUpCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-		End If
+			
+			If RankUpCost(u) < 10000000 Then
+				list(ret) = list(ret) & LeftPaddedString(VB6.Format(RankUpCost(u)), 7)
+			Else
+				list(ret) = list(ret) & LeftPaddedString("----", 7)
+			End If
+			
+			If IsOptionDefined("等身大基準") Then
+				If .CountPilot > 0 Then
+					list(ret) = list(ret) & LeftPaddedString(VB6.Format(.MainPilot.Level), 3)
+				End If
+			End If
+			list(ret) = list(ret) & LeftPaddedString(VB6.Format(.MaxHP), 6) & LeftPaddedString(VB6.Format(.MaxEN), 4) & LeftPaddedString(VB6.Format(.Armor), 6) & LeftPaddedString(VB6.Format(.Mobility), 4)
+			If Not IsOptionDefined("等身大基準") Then
+				If .CountPilot > 0 Then
+					list(ret) = list(ret) & "  " & .MainPilot.Nickname
+				End If
+			End If
+		End With
 		
-		If RankUpCost(u) < 10000000 Then
-			list(ret) = list(ret) & LeftPaddedString(VB6.Format(RankUpCost(u)), 7)
-		Else
-			list(ret) = list(ret) & LeftPaddedString("----", 7)
-		End If
-		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-		'UPGRADE_WARNING: RankUpCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-		'End If
-		'UPGRADE_WARNING: RankUpCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-		'UPGRADE_WARNING: RankUpCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-		'End If
-		'End With
-		
-		'Invalid_string_refer_to_original_code
+		'改めて資金と改造費を調べ、各ユニットが改造可能かチェックする
 		For i = 2 To UBound(list)
 			cost = RankUpCost(UList.Item(id_list(i)))
 			If cost > Money Or cost > 10000000 Then
@@ -857,28 +830,25 @@ NextForm:
 		GoTo Beginning
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'ユニットランクを上げるためのコストを算出
 	Public Function RankUpCost(ByRef u As Unit) As Integer
 		With u
-			'Invalid_string_refer_to_original_code
+			'これ以上改造できない？
 			If .Rank >= MaxRank(u) Then
 				RankUpCost = 999999999
 				Exit Function
 			End If
 			
-			'Invalid_string_refer_to_original_code
-			If .IsFeatureAvailable("Invalid_string_refer_to_original_code") Then
-				'Invalid_string_refer_to_original_code_
-				'Invalid_string_refer_to_original_code_
-				'Then
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				RankUpCost = 999999999
-				Exit Function
+			'合体状態にある場合はそれが主形態でない限り改造不可
+			If .IsFeatureAvailable("分離") Then
+				If (LLength(.FeatureData("分離")) = 3 And Not .IsFeatureAvailable("主形態")) Or .IsFeatureAvailable("制限時間") Then
+					RankUpCost = 999999999
+					Exit Function
+				End If
 			End If
-			'End If
 			
-			If IsOptionDefined("菴取隼騾雋ｻ") Then
-				'Invalid_string_refer_to_original_code
+			If IsOptionDefined("低改造費") Then
+				'低改造費の場合
 				Select Case .Rank
 					Case 0
 						RankUpCost = 10000
@@ -914,9 +884,9 @@ NextForm:
 						RankUpCost = 999999999
 						Exit Function
 				End Select
-			ElseIf IsOptionDefined("Invalid_string_refer_to_original_code") Then 
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code
+			ElseIf IsOptionDefined("１５段階改造") Then 
+				'通常の１５段改造
+				'(１０段改造時よりお求め安い価格になっております……)
 				Select Case .Rank
 					Case 0
 						RankUpCost = 10000
@@ -953,7 +923,7 @@ NextForm:
 						Exit Function
 				End Select
 			Else
-				'Invalid_string_refer_to_original_code
+				'通常の１０段改造
 				Select Case .Rank
 					Case 0
 						RankUpCost = 10000
@@ -981,41 +951,41 @@ NextForm:
 				End Select
 			End If
 			
-			'Invalid_string_refer_to_original_code
-			If .IsFeatureAvailable("謾ｹ騾雋ｻ菫ｮ豁｣") Then
-				RankUpCost = RankUpCost * (1# + .FeatureLevel("謾ｹ騾雋ｻ菫ｮ豁｣") / 10)
+			'ユニット用特殊能力「改造費修正」による修正
+			If .IsFeatureAvailable("改造費修正") Then
+				RankUpCost = RankUpCost * (1# + .FeatureLevel("改造費修正") / 10)
 			End If
 		End With
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'ユニットの最大改造数を算出
 	Public Function MaxRank(ByRef u As Unit) As Integer
-		If IsOptionDefined("Invalid_string_refer_to_original_code") Then
-			'Invalid_string_refer_to_original_code
+		If IsOptionDefined("５段階改造") Then
+			'５段階改造までしか出来ない
 			MaxRank = 5
-		ElseIf IsOptionDefined("Invalid_string_refer_to_original_code") Then 
-			'Invalid_string_refer_to_original_code
+		ElseIf IsOptionDefined("１５段階改造") Then 
+			'１５段階改造まで可能
 			MaxRank = 15
 		Else
-			'Invalid_string_refer_to_original_code
+			'デフォルトは１０段階まで
 			MaxRank = 10
 		End If
 		
 		With u
-			'Invalid_string_refer_to_original_code
-			If IsGlobalVariableDefined("Disable(" & .Name & ",謾ｹ騾)") Then
+			'Disableコマンドで改造不可にされている？
+			If IsGlobalVariableDefined("Disable(" & .Name & ",改造)") Then
 				MaxRank = 0
 				Exit Function
 			End If
 			
-			'Invalid_string_refer_to_original_code
-			If .IsFeatureAvailable("譛螟ｧ謾ｹ騾謨ｰ") Then
-				MaxRank = MinLng(MaxRank, .FeatureLevel("譛螟ｧ謾ｹ騾謨ｰ"))
+			'最大改造数が設定されている？
+			If .IsFeatureAvailable("最大改造数") Then
+				MaxRank = MinLng(MaxRank, .FeatureLevel("最大改造数"))
 			End If
 		End With
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'乗り換えコマンド
 	Public Sub ExchangeUnitCommand()
 		Dim j, i, k As Short
 		Dim list() As String
@@ -1042,45 +1012,45 @@ NextForm:
 		
 		top_item = 1
 		
-		'Invalid_string_refer_to_original_code
-		sort_mode = "繝ｬ繝吶Ν"
-		sort_mode2 = "蜷咲ｧｰ"
+		'デフォルトのソート方法
+		sort_mode = "レベル"
+		sort_mode2 = "名称"
 		
 Beginning: 
 		
-		'Invalid_string_refer_to_original_code
+		'乗り換えるパイロットの一覧を作成
 		ReDim list(1)
 		ReDim id_list(1)
 		ReDim ListItemComment(1)
-		list(1) = "笆ｽ荳ｦ縺ｹ譖ｿ縺遺命"
+		list(1) = "▽並べ替え▽"
 		For	Each p In PList
 			With p
-				If .Party <> "蜻ｳ譁ｹ" Or .Away Or IsGlobalVariableDefined("Fix(" & .Name & ")") Then
+				If .Party <> "味方" Or .Away Or IsGlobalVariableDefined("Fix(" & .Name & ")") Then
 					GoTo NextLoop
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'追加パイロット＆サポートは乗り換え不可
 				If .IsAdditionalPilot Or .IsAdditionalSupport Then
 					GoTo NextLoop
 				End If
 				
 				is_support = False
 				If Not .Unit_Renamed Is Nothing Then
-					'Invalid_string_refer_to_original_code
+					'サポートが複数乗っている場合は乗り降り不可
 					If .Unit_Renamed.CountSupport > 1 Then
 						GoTo NextLoop
 					End If
 					
-					'Invalid_string_refer_to_original_code
+					'サポートパイロットとして乗り込んでいるかを判定
 					If .Unit_Renamed.CountSupport = 1 Then
 						If .ID = .Unit_Renamed.Support(1).ID Then
 							is_support = True
 						End If
 					End If
 					
-					'Invalid_string_refer_to_original_code
+					'通常のパイロットの場合
 					If Not is_support Then
-						'Invalid_string_refer_to_original_code
+						'３人乗り以上は乗り降り不可
 						If .Unit_Renamed.Data.PilotNum <> 1 And System.Math.Abs(.Unit_Renamed.Data.PilotNum) <> 2 Then
 							GoTo NextLoop
 						End If
@@ -1088,86 +1058,103 @@ Beginning:
 				End If
 				
 				If is_support Then
-					'Invalid_string_refer_to_original_code
+					'サポートパイロットの場合
 					ReDim Preserve list(UBound(list) + 1)
 					ReDim Preserve id_list(UBound(list))
 					ReDim Preserve ListItemComment(UBound(list))
 					
-					'Invalid_string_refer_to_original_code
+					'パイロットのステータス
 					list(UBound(list)) = RightPaddedString("*" & .Nickname, 25) & LeftPaddedString(StrConv(VB6.Format(.Level), VbStrConv.Wide), 4)
 					
 					If Not .Unit_Renamed Is Nothing Then
 						With .Unit_Renamed
-							'Invalid_string_refer_to_original_code
+							'ユニットのステータス
 							list(UBound(list)) = list(UBound(list)) & "  " & RightPaddedString(.Nickname0, 29) & "(" & .MainPilot.Nickname & ")"
 							
-							'Invalid_string_refer_to_original_code
+							'ユニットが装備しているアイテム一覧
 							For k = 1 To .CountItem
 								With .Item(k)
-									'Invalid_string_refer_to_original_code_
-									'And .Part <> "髱櫁｡ｨ遉ｺ" _
-									'Then
-									'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-									ListItemComment(UBound(list)) = ListItemComment(UBound(list)) & .Nickname & " "
+									If (.Class_Renamed() <> "固定" Or Not .IsFeatureAvailable("非表示")) And .Part <> "非表示" Then
+										ListItemComment(UBound(list)) = ListItemComment(UBound(list)) & .Nickname & " "
+									End If
 								End With
 							Next 
 						End With
 					End If
+					
+					'パイロットＩＤを記録しておく
+					id_list(UBound(list)) = .ID
+				ElseIf .Unit_Renamed Is Nothing Then 
+					'ユニットに乗っていないパイロットの場合
+					ReDim Preserve list(UBound(list) + 1)
+					ReDim Preserve id_list(UBound(list))
+					ReDim Preserve ListItemComment(UBound(list))
+					
+					'パイロットのステータス
+					list(UBound(list)) = RightPaddedString(" " & .Nickname, 25) & LeftPaddedString(StrConv(VB6.Format(.Level), VbStrConv.Wide), 4)
+					
+					'パイロットＩＤを記録しておく
+					id_list(UBound(list)) = .ID
+				ElseIf .Unit_Renamed.CountPilot <= 2 Then 
+					'複数乗りのユニットに乗っているパイロットの場合
+					ReDim Preserve list(UBound(list) + 1)
+					ReDim Preserve id_list(UBound(list))
+					ReDim Preserve ListItemComment(UBound(list))
+					
+					'パイロットが足りない？
+					If .Unit_Renamed.CountPilot < System.Math.Abs(.Unit_Renamed.Data.PilotNum) Then
+						list(UBound(list)) = "-"
+					Else
+						list(UBound(list)) = " "
+					End If
+					
+					If .Unit_Renamed.IsFeatureAvailable("追加パイロット") Then
+						pname = .Unit_Renamed.MainPilot.Nickname
+					Else
+						pname = .Nickname
+					End If
+					
+					'複数乗りの場合は何番目のパイロットか表示
+					If System.Math.Abs(.Unit_Renamed.Data.PilotNum) > 1 Then
+						For k = 1 To .Unit_Renamed.CountPilot
+							If .Unit_Renamed.Pilot(k) Is p Then
+								pname = pname & "(" & VB6.Format(k) & ")"
+							End If
+						Next 
+					End If
+					
+					'パイロット＆ユニットのステータス
+					list(UBound(list)) = list(UBound(list)) & RightPaddedString(pname, 24) & LeftPaddedString(StrConv(VB6.Format(.Level), VbStrConv.Wide), 4) & "  " & RightPaddedString((.Unit_Renamed.Nickname0), 29)
+					If .Unit_Renamed.CountSupport > 0 Then
+						list(UBound(list)) = list(UBound(list)) & "(" & .Unit_Renamed.Support(1).Nickname & ")"
+					End If
+					
+					'ユニットが装備しているアイテム一覧
+					With .Unit_Renamed
+						For k = 1 To .CountItem
+							With .Item(k)
+								If (.Class_Renamed() <> "固定" Or Not .IsFeatureAvailable("非表示")) And .Part <> "非表示" Then
+									ListItemComment(UBound(list)) = ListItemComment(UBound(list)) & .Nickname & " "
+								End If
+							End With
+						Next 
+					End With
+					
+					'パイロットＩＤを記録しておく
+					id_list(UBound(list)) = .ID
 				End If
 			End With
-		Next p
-		'End With
-		'End If
-		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_WARNING: ExchangeUnitCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-		'UPGRADE_WARNING: ExchangeUnitCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-		'Invalid_string_refer_to_original_code
-		ReDim Preserve list(UBound(list) + 1)
-		ReDim Preserve id_list(UBound(list))
-		ReDim Preserve ListItemComment(UBound(list))
-		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_WARNING: ExchangeUnitCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_WARNING: ExchangeUnitCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-		'UPGRADE_WARNING: ExchangeUnitCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-		'Invalid_string_refer_to_original_code
-		ReDim Preserve list(UBound(list) + 1)
-		ReDim Preserve id_list(UBound(list))
-		ReDim Preserve ListItemComment(UBound(list))
-		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_WARNING: ExchangeUnitCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-		
-		'UPGRADE_WARNING: ExchangeUnitCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_WARNING: ExchangeUnitCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_WARNING: ExchangeUnitCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-		'UPGRADE_WARNING: ExchangeUnitCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_WARNING: ExchangeUnitCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_WARNING: ExchangeUnitCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-		'End If
-		'End With
 NextLoop: 
-		'Next
+		Next p
 		ReDim ListItemFlag(UBound(list))
 		
 SortAgain: 
 		
-		'Invalid_string_refer_to_original_code
-		If sort_mode = "繝ｬ繝吶Ν" Then
-			'Invalid_string_refer_to_original_code
+		'ソート
+		If sort_mode = "レベル" Then
+			'レベルによるソート
 			
-			'Invalid_string_refer_to_original_code
+			'まずレベルのリストを作成
 			ReDim key_list(UBound(list))
 			With PList
 				For i = 2 To UBound(list)
@@ -1177,7 +1164,7 @@ SortAgain:
 				Next 
 			End With
 			
-			'繝ｬ繝吶Ν繧剃ｽｿ縺｣縺ｦ荳ｦ縺ｹ謠帙∴
+			'レベルを使って並べ換え
 			For i = 2 To UBound(list) - 1
 				max_item = i
 				max_value = key_list(i)
@@ -1204,9 +1191,9 @@ SortAgain:
 				End If
 			Next 
 		Else
-			'Invalid_string_refer_to_original_code
+			'読み仮名によるソート
 			
-			'Invalid_string_refer_to_original_code
+			'まず読み仮名のリストを作成
 			ReDim strkey_list(UBound(list))
 			With PList
 				For i = 2 To UBound(list)
@@ -1214,7 +1201,7 @@ SortAgain:
 				Next 
 			End With
 			
-			'Invalid_string_refer_to_original_code
+			'読み仮名を使って並べ替え
 			For i = 2 To UBound(strkey_list) - 1
 				max_item = i
 				max_str = strkey_list(i)
@@ -1242,28 +1229,26 @@ SortAgain:
 			Next 
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'パイロットを選択
 		TopItem = top_item
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-		caption_str = "Invalid_string_refer_to_original_code"
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-		caption_str = "Invalid_string_refer_to_original_code"
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-		'End If
+		If IsOptionDefined("等身大基準") Then
+			caption_str = " キャラクター          レベル  ユニット"
+			ret = ListBox("キャラクター選択", list, caption_str, "連続表示,コメント")
+		Else
+			caption_str = " パイロット            レベル  ユニット"
+			ret = ListBox("パイロット選択", list, caption_str, "連続表示,コメント")
+		End If
 		top_item = TopItem
 		
 		Select Case ret
 			Case 0
-				'繧ｭ繝｣繝ｳ繧ｻ繝ｫ
+				'キャンセル
 				Exit Sub
 			Case 1
-				'Invalid_string_refer_to_original_code
+				'ソート方法を選択
 				ReDim sort_mode_list(2)
-				sort_mode_list(1) = "繝ｬ繝吶Ν"
-				sort_mode_list(2) = "蜷咲ｧｰ"
+				sort_mode_list(1) = "レベル"
+				sort_mode_list(2) = "名称"
 				ReDim item_flag_backup(UBound(list))
 				ReDim item_comment_backup(UBound(list))
 				For i = 2 To UBound(list)
@@ -1273,10 +1258,7 @@ SortAgain:
 				ReDim ListItemComment(UBound(sort_mode_list))
 				ReDim ListItemFlag(UBound(sort_mode_list))
 				
-				'Invalid_string_refer_to_original_code_
-				'Invalid_string_refer_to_original_code_
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+				ret = ListBox("どれで並べ替えますか？", sort_mode_list, "並べ替えの方法", "連続表示,コメント")
 				
 				ReDim ListItemFlag(UBound(list))
 				ReDim ListItemComment(UBound(list))
@@ -1285,34 +1267,32 @@ SortAgain:
 					ListItemComment(i) = item_comment_backup(i)
 				Next 
 				
-				'繧ｽ繝ｼ繝域婿豕輔ｒ螟画峩縺励※蜀崎｡ｨ遉ｺ
+				'ソート方法を変更して再表示
 				If ret > 0 Then
 					sort_mode = sort_mode_list(ret)
 				End If
 				GoTo SortAgain
 		End Select
 		
-		'Invalid_string_refer_to_original_code
+		'乗り換えさせるパイロット
 		p = PList.Item(id_list(ret))
 		
-		'Invalid_string_refer_to_original_code
+		'乗り換え先ユニット一覧作成
 		ReDim list(1)
 		ReDim id_list(1)
 		ReDim ListItemComment(1)
-		list(1) = "笆ｽ荳ｦ縺ｹ譖ｿ縺遺命"
+		list(1) = "▽並べ替え▽"
 		For	Each u In UList
 			With u
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				GoTo NextUnit
-				'End If
-				
-				If .CountSupport > 1 Then
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+				If .Party0 <> "味方" Or .Status_Renamed <> "待機" Then
 					GoTo NextUnit
 				End If
-				'End If
+				
+				If .CountSupport > 1 Then
+					If InStr(p.Class_Renamed, "専属サポート") = 0 Then
+						GoTo NextUnit
+					End If
+				End If
 				
 				If u Is p.Unit_Renamed Then
 					GoTo NextUnit
@@ -1322,7 +1302,7 @@ SortAgain:
 					GoTo NextUnit
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'サポートキャラでなければ乗り換えられるパイロット数に制限がある
 				If Not p.IsSupport(u) Then
 					If .Data.PilotNum <> 1 And System.Math.Abs(.Data.PilotNum) <> 2 Then
 						GoTo NextUnit
@@ -1331,8 +1311,8 @@ SortAgain:
 				
 				If .CountPilot > 0 Then
 					If IsGlobalVariableDefined("Fix(" & .Pilot(1).Name & ")") And Not p.IsSupport(u) Then
-						'Invalid_string_refer_to_original_code
-						'髯舌ｊ荵励ｊ謠帙∴荳榊庄
+						'Fixコマンドでパイロットが固定されたユニットはサポートでない
+						'限り乗り換え不可
 						GoTo NextUnit
 					End If
 					
@@ -1340,7 +1320,7 @@ SortAgain:
 					ReDim Preserve id_list(UBound(list))
 					ReDim Preserve ListItemComment(UBound(list))
 					
-					'Invalid_string_refer_to_original_code
+					'パイロットが足りている？
 					If .CountPilot < System.Math.Abs(.Data.PilotNum) Then
 						list(UBound(list)) = "-"
 					Else
@@ -1357,77 +1337,82 @@ SortAgain:
 						list(UBound(list)) = list(UBound(list)) & " (" & .Support(1).Nickname & ")"
 					End If
 					
-					'Invalid_string_refer_to_original_code
+					'ユニットに装備されているアイテムをコメント欄に列記
 					For j = 1 To .CountItem
 						With .Item(j)
-							'Invalid_string_refer_to_original_code_
-							'And .Part <> "髱櫁｡ｨ遉ｺ" _
-							'Then
-							'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-							ListItemComment(UBound(list)) = ListItemComment(UBound(list)) & .Nickname & " "
+							If (.Class_Renamed() <> "固定" Or Not .IsFeatureAvailable("非表示")) And .Part <> "非表示" Then
+								ListItemComment(UBound(list)) = ListItemComment(UBound(list)) & .Nickname & " "
+							End If
 						End With
 					Next 
+					
+					'ユニットＩＤを記録しておく
+					id_list(UBound(list)) = .ID
+				ElseIf Not p.IsSupport(u) Then 
+					'誰も乗ってないユニットに乗れるのは通常パイロットのみ
+					
+					ReDim Preserve list(UBound(list) + 1)
+					ReDim Preserve id_list(UBound(list))
+					ReDim Preserve ListItemComment(UBound(list))
+					
+					list(UBound(list)) = " " & RightPaddedString(.Nickname0, 35) & Space(21)
+					If .Rank < 10 Then
+						list(UBound(list)) = list(UBound(list)) & " " & StrConv(VB6.Format(.Rank), VbStrConv.Wide)
+					Else
+						list(UBound(list)) = list(UBound(list)) & " " & VB6.Format(.Rank)
+					End If
+					
+					'ユニットに装備されているアイテムをコメント欄に列記
+					For j = 1 To .CountItem
+						With .Item(j)
+							If (.Class_Renamed() <> "固定" Or Not .IsFeatureAvailable("非表示")) And .Part <> "非表示" Then
+								ListItemComment(UBound(list)) = ListItemComment(UBound(list)) & .Nickname & " "
+							End If
+						End With
+					Next 
+					
+					'ユニットＩＤを記録しておく
+					id_list(UBound(list)) = .ID
 				End If
 			End With
-		Next u
-		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_WARNING: ExchangeUnitCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-		'UPGRADE_WARNING: ExchangeUnitCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-		'Invalid_string_refer_to_original_code
-		
-		ReDim Preserve list(UBound(list) + 1)
-		ReDim Preserve id_list(UBound(list))
-		ReDim Preserve ListItemComment(UBound(list))
-		
-		'UPGRADE_WARNING: ExchangeUnitCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-		'UPGRADE_WARNING: ExchangeUnitCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_WARNING: ExchangeUnitCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_WARNING: ExchangeUnitCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-		'End If
-		'End With
 NextUnit: 
-		'Next
+		Next u
 		ReDim ListItemFlag(UBound(list))
 		
 SortAgain2: 
 		
-		'Invalid_string_refer_to_original_code
-		If InStr(sort_mode2, "蜷咲ｧｰ") = 0 Then
-			'Invalid_string_refer_to_original_code
+		'ソート
+		If InStr(sort_mode2, "名称") = 0 Then
+			'数値によるソート
 			
-			'Invalid_string_refer_to_original_code
+			'まずキーのリストを作成
 			ReDim key_list(UBound(list))
 			With UList
 				Select Case sort_mode2
-					Case "Invalid_string_refer_to_original_code"
+					Case "ＨＰ"
 						For i = 2 To UBound(list)
 							key_list(i) = .Item(id_list(i)).MaxHP
 						Next 
-					Case "Invalid_string_refer_to_original_code"
+					Case "ＥＮ"
 						For i = 2 To UBound(list)
 							key_list(i) = .Item(id_list(i)).MaxEN
 						Next 
-					Case "Invalid_string_refer_to_original_code"
+					Case "装甲"
 						For i = 2 To UBound(list)
 							key_list(i) = .Item(id_list(i)).Armor
 						Next 
-					Case "驕句虚諤ｧ"
+					Case "運動性"
 						For i = 2 To UBound(list)
 							key_list(i) = .Item(id_list(i)).Mobility
 						Next 
-					Case "繝ｦ繝九ャ繝医Λ繝ｳ繧ｯ"
+					Case "ユニットランク"
 						For i = 2 To UBound(list)
 							key_list(i) = .Item(id_list(i)).Rank
 						Next 
 				End Select
 			End With
 			
-			'Invalid_string_refer_to_original_code
+			'キーを使って並べ替え
 			For i = 2 To UBound(list) - 1
 				max_item = i
 				max_value = key_list(i)
@@ -1458,9 +1443,9 @@ SortAgain2:
 				End If
 			Next 
 		Else
-			'Invalid_string_refer_to_original_code
+			'読み仮名によるソート
 			
-			'Invalid_string_refer_to_original_code
+			'まず読み仮名のリストを作成
 			ReDim strkey_list(UBound(list))
 			With UList
 				For i = 2 To UBound(list)
@@ -1468,7 +1453,7 @@ SortAgain2:
 				Next 
 			End With
 			
-			'Invalid_string_refer_to_original_code
+			'読み仮名を使って並べ替え
 			For i = 2 To UBound(strkey_list) - 1
 				max_item = i
 				max_str = strkey_list(i)
@@ -1500,62 +1485,59 @@ SortAgain2:
 			Next 
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'乗り換え先を選択
 		TopItem = 1
 		u = p.Unit_Renamed
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-		caption_str = "Invalid_string_refer_to_original_code" & Term("繝ｩ繝ｳ繧ｯ")
-		caption_str = "Invalid_string_refer_to_original_code" & Term("繝ｩ繝ｳ繧ｯ")
-		'End If
+		If IsOptionDefined("等身大基準") Then
+			caption_str = " ユニット                           キャラクター       " & Term("ランク")
+		Else
+			caption_str = " ユニット                           パイロット         " & Term("ランク")
+		End If
 		If Not u Is Nothing Then
-			If u.IsFeatureAvailable("Invalid_string_refer_to_original_code") Then
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+			If u.IsFeatureAvailable("追加パイロット") Then
+				ret = ListBox("乗り換え先選択 ： " & u.MainPilot.Nickname & " (" & u.Nickname & ")", list, caption_str, "連続表示,コメント")
 			Else
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+				ret = ListBox("乗り換え先選択 ： " & p.Nickname & " (" & u.Nickname & ")", list, caption_str, "連続表示,コメント")
 			End If
 		Else
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+			ret = ListBox("乗り換え先選択 ： " & p.Nickname, list, caption_str, "連続表示,コメント")
 		End If
 		
 		Select Case ret
 			Case 0
-				'繧ｭ繝｣繝ｳ繧ｻ繝ｫ
+				'キャンセル
 				Exit Sub
 			Case 1
-				'Invalid_string_refer_to_original_code
+				'ソート方法を選択
 				ReDim sort_mode_type(6)
 				ReDim sort_mode_list(6)
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				sort_mode_type(1) = "蜷咲ｧｰ"
-				sort_mode_list(1) = "蜷咲ｧｰ"
-				sort_mode_type(2) = "Invalid_string_refer_to_original_code"
-				sort_mode_list(2) = Term("Invalid_string_refer_to_original_code")
-				sort_mode_type(3) = "Invalid_string_refer_to_original_code"
-				sort_mode_list(3) = Term("Invalid_string_refer_to_original_code")
-				sort_mode_type(4) = "Invalid_string_refer_to_original_code"
-				sort_mode_list(4) = Term("Invalid_string_refer_to_original_code")
-				sort_mode_type(5) = "驕句虚諤ｧ"
-				sort_mode_list(5) = Term("驕句虚諤ｧ")
-				sort_mode_type(6) = "繝ｦ繝九ャ繝医Λ繝ｳ繧ｯ"
-				sort_mode_list(6) = Term("繝ｩ繝ｳ繧ｯ")
-				sort_mode_type(1) = "Invalid_string_refer_to_original_code"
-				sort_mode_list(1) = Term("Invalid_string_refer_to_original_code")
-				sort_mode_type(2) = "Invalid_string_refer_to_original_code"
-				sort_mode_list(2) = Term("Invalid_string_refer_to_original_code")
-				sort_mode_type(3) = "Invalid_string_refer_to_original_code"
-				sort_mode_list(3) = Term("Invalid_string_refer_to_original_code")
-				sort_mode_type(4) = "驕句虚諤ｧ"
-				sort_mode_list(4) = Term("驕句虚諤ｧ")
-				sort_mode_type(5) = "繝ｦ繝九ャ繝医Λ繝ｳ繧ｯ"
-				sort_mode_list(5) = Term("繝ｩ繝ｳ繧ｯ")
-				sort_mode_type(6) = "繝ｦ繝九ャ繝亥錐遘ｰ"
-				sort_mode_list(6) = "繝ｦ繝九ャ繝亥錐遘ｰ"
-				'End If
+				If IsOptionDefined("等身大基準") Then
+					sort_mode_type(1) = "名称"
+					sort_mode_list(1) = "名称"
+					sort_mode_type(2) = "ＨＰ"
+					sort_mode_list(2) = Term("ＨＰ")
+					sort_mode_type(3) = "ＥＮ"
+					sort_mode_list(3) = Term("ＥＮ")
+					sort_mode_type(4) = "装甲"
+					sort_mode_list(4) = Term("装甲")
+					sort_mode_type(5) = "運動性"
+					sort_mode_list(5) = Term("運動性")
+					sort_mode_type(6) = "ユニットランク"
+					sort_mode_list(6) = Term("ランク")
+				Else
+					sort_mode_type(1) = "ＨＰ"
+					sort_mode_list(1) = Term("ＨＰ")
+					sort_mode_type(2) = "ＥＮ"
+					sort_mode_list(2) = Term("ＥＮ")
+					sort_mode_type(3) = "装甲"
+					sort_mode_list(3) = Term("装甲")
+					sort_mode_type(4) = "運動性"
+					sort_mode_list(4) = Term("運動性")
+					sort_mode_type(5) = "ユニットランク"
+					sort_mode_list(5) = Term("ランク")
+					sort_mode_type(6) = "ユニット名称"
+					sort_mode_list(6) = "ユニット名称"
+				End If
 				ReDim item_flag_backup(UBound(list))
 				ReDim item_comment_backup(UBound(list))
 				For i = 2 To UBound(list)
@@ -1566,10 +1548,7 @@ SortAgain2:
 				ReDim ListItemFlag(UBound(sort_mode_list))
 				
 				TopItem = 1
-				'Invalid_string_refer_to_original_code_
-				'Invalid_string_refer_to_original_code_
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+				ret = ListBox("どれで並べ替えますか？", sort_mode_list, "並べ替えの方法", "連続表示,コメント")
 				
 				ReDim ListItemFlag(UBound(list))
 				ReDim ListItemComment(UBound(list))
@@ -1578,32 +1557,32 @@ SortAgain2:
 					ListItemComment(i) = item_comment_backup(i)
 				Next 
 				
-				'繧ｽ繝ｼ繝域婿豕輔ｒ螟画峩縺励※蜀崎｡ｨ遉ｺ
+				'ソート方法を変更して再表示
 				If ret > 0 Then
 					sort_mode2 = sort_mode_type(ret)
 				End If
 				GoTo SortAgain2
 		End Select
 		
-		'Invalid_string_refer_to_original_code
+		'キャンセル？
 		If ret = 0 Then
 			GoTo Beginning
 		End If
 		
 		u = UList.Item(id_list(ret))
 		
-		'Invalid_string_refer_to_original_code
+		'元のユニットから降ろす
 		p.GetOff()
 		
-		'荵励ｊ謠帙∴
+		'乗り換え
 		With u
 			If Not p.IsSupport(u) Then
-				'Invalid_string_refer_to_original_code
+				'通常のパイロット
 				If .CountPilot = .Data.PilotNum Then
 					.Pilot(1).GetOff()
 				End If
 			Else
-				'Invalid_string_refer_to_original_code
+				'サポートパイロット
 				For i = 1 To .CountSupport
 					.Support(1).GetOff()
 				Next 
@@ -1614,7 +1593,7 @@ SortAgain2:
 		GoTo Beginning
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'アイテム交換コマンド
 	Public Sub ExchangeItemCommand(Optional ByRef selected_unit As Unit = Nothing, Optional ByRef selected_part As String = "")
 		Dim j, i, k As Short
 		Dim inum, inum2 As Short
@@ -1650,16 +1629,15 @@ SortAgain2:
 		top_item1 = 1
 		top_item2 = 1
 		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-		sort_mode = "繝ｬ繝吶Ν"
-		Dim tmp_part_list() As String
-		sort_mode = "Invalid_string_refer_to_original_code"
-		'End If
+		'デフォルトのソート方法
+		If IsOptionDefined("等身大基準") Then
+			sort_mode = "レベル"
+		Else
+			sort_mode = "ＨＰ"
+		End If
 		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
+		'ユニットがあらかじめ選択されている場合
+		'(ユニットステータスからのアイテム交換時)
 		If Not selected_unit Is Nothing Then
 			EnlargeListBoxHeight()
 			ReduceListBoxWidth()
@@ -1676,49 +1654,43 @@ SortAgain2:
 		
 Beginning: 
 		
-		'Invalid_string_refer_to_original_code
+		'ユニット一覧の作成
 		ReDim list(1)
 		ReDim id_list(1)
 		ReDim ListItemComment(1)
-		list(1) = "笆ｽ荳ｦ縺ｹ譖ｿ縺遺命"
+		list(1) = "▽並べ替え▽"
 		For	Each u In UList
 			With u
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				GoTo NextUnit
-				'End If
+				If .Party0 <> "味方" Or .Status_Renamed <> "待機" Then
+					GoTo NextUnit
+				End If
 				
 				ReDim Preserve list(UBound(list) + 1)
 				ReDim Preserve id_list(UBound(list))
 				ReDim Preserve ListItemComment(UBound(list))
 				
-				'Invalid_string_refer_to_original_code
+				'装備しているアイテムの数を数える
 				inum = 0
 				inum2 = 0
 				For i = 1 To .CountItem
 					With .Item(i)
-						'Invalid_string_refer_to_original_code_
-						'And .Part <> "髱櫁｡ｨ遉ｺ" _
-						'Then
-						'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-						ListItemComment(UBound(list)) = ListItemComment(UBound(list)) & .Nickname & " "
-						'Invalid_string_refer_to_original_code_
-						'Invalid_string_refer_to_original_code_
-						'Then
-						'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-						inum = inum + .Size
-						inum2 = inum2 + .Size
-						'End If
-						'End If
+						If (.Class_Renamed() <> "固定" Or Not .IsFeatureAvailable("非表示")) And .Part <> "非表示" Then
+							ListItemComment(UBound(list)) = ListItemComment(UBound(list)) & .Nickname & " "
+							If .Part = "強化パーツ" Or .Part = "アイテム" Then
+								inum = inum + .Size
+							Else
+								inum2 = inum2 + .Size
+							End If
+						End If
 					End With
 				Next 
 				
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				list(UBound(list)) = RightPaddedString(.Nickname0, 39)
-				list(UBound(list)) = RightPaddedString(.Nickname0, 31)
-				'End If
+				'リストを作成
+				If IsOptionDefined("等身大基準") Then
+					list(UBound(list)) = RightPaddedString(.Nickname0, 39)
+				Else
+					list(UBound(list)) = RightPaddedString(.Nickname0, 31)
+				End If
 				list(UBound(list)) = list(UBound(list)) & VB6.Format(inum) & "/" & VB6.Format(.MaxItemNum)
 				If inum2 > 0 Then
 					list(UBound(list)) = list(UBound(list)) & "(" & VB6.Format(inum2) & ")   "
@@ -1730,21 +1702,19 @@ Beginning:
 				Else
 					list(UBound(list)) = list(UBound(list)) & VB6.Format(.Rank)
 				End If
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				If .CountPilot > 0 Then
-					list(UBound(list)) = list(UBound(list)) & LeftPaddedString(VB6.Format(.MainPilot.Level), 3)
+				If IsOptionDefined("等身大基準") Then
+					If .CountPilot > 0 Then
+						list(UBound(list)) = list(UBound(list)) & LeftPaddedString(VB6.Format(.MainPilot.Level), 3)
+					End If
 				End If
-				'End If
 				list(UBound(list)) = list(UBound(list)) & LeftPaddedString(VB6.Format(.MaxHP), 6) & LeftPaddedString(VB6.Format(.MaxEN), 4) & LeftPaddedString(VB6.Format(.Armor), 5) & LeftPaddedString(VB6.Format(.Mobility), 5)
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				If .CountPilot > 0 Then
-					list(UBound(list)) = list(UBound(list)) & " " & .MainPilot.Nickname
+				If Not IsOptionDefined("等身大基準") Then
+					If .CountPilot > 0 Then
+						list(UBound(list)) = list(UBound(list)) & " " & .MainPilot.Nickname
+					End If
 				End If
-				'End If
 				
-				'Invalid_string_refer_to_original_code
+				'ユニットＩＤを記録しておく
 				id_list(UBound(list)) = .ID
 			End With
 NextUnit: 
@@ -1753,35 +1723,35 @@ NextUnit:
 		
 SortAgain: 
 		
-		'Invalid_string_refer_to_original_code
-		If InStr(sort_mode, "蜷咲ｧｰ") = 0 Then
-			'Invalid_string_refer_to_original_code
+		'ソート
+		If InStr(sort_mode, "名称") = 0 Then
+			'数値によるソート
 			
-			'Invalid_string_refer_to_original_code
+			'まずキーのリストを作成
 			ReDim key_list(UBound(list))
 			With UList
 				Select Case sort_mode
-					Case "Invalid_string_refer_to_original_code"
+					Case "ＨＰ"
 						For i = 2 To UBound(list)
 							key_list(i) = .Item(id_list(i)).MaxHP
 						Next 
-					Case "Invalid_string_refer_to_original_code"
+					Case "ＥＮ"
 						For i = 2 To UBound(list)
 							key_list(i) = .Item(id_list(i)).MaxEN
 						Next 
-					Case "Invalid_string_refer_to_original_code"
+					Case "装甲"
 						For i = 2 To UBound(list)
 							key_list(i) = .Item(id_list(i)).Armor
 						Next 
-					Case "驕句虚諤ｧ"
+					Case "運動性"
 						For i = 2 To UBound(list)
 							key_list(i) = .Item(id_list(i)).Mobility
 						Next 
-					Case "繝ｦ繝九ャ繝医Λ繝ｳ繧ｯ"
+					Case "ユニットランク"
 						For i = 2 To UBound(list)
 							key_list(i) = .Item(id_list(i)).Rank
 						Next 
-					Case "繝ｬ繝吶Ν"
+					Case "レベル"
 						For i = 2 To UBound(list)
 							With .Item(id_list(i))
 								If .CountPilot() > 0 Then
@@ -1794,7 +1764,7 @@ SortAgain:
 				End Select
 			End With
 			
-			'Invalid_string_refer_to_original_code
+			'キーを使って並べ替え
 			For i = 2 To UBound(list) - 1
 				max_item = i
 				max_value = key_list(i)
@@ -1821,17 +1791,17 @@ SortAgain:
 				End If
 			Next 
 		Else
-			'Invalid_string_refer_to_original_code
+			'文字列によるソート
 			
-			'Invalid_string_refer_to_original_code
+			'まずはキーのリストを作成
 			ReDim strkey_list(UBound(list))
 			With UList
 				Select Case sort_mode
-					Case "蜷咲ｧｰ", "繝ｦ繝九ャ繝亥錐遘ｰ"
+					Case "名称", "ユニット名称"
 						For i = 2 To UBound(list)
 							strkey_list(i) = .Item(id_list(i)).KanaName
 						Next 
-					Case "Invalid_string_refer_to_original_code"
+					Case "パイロット名称"
 						For i = 2 To UBound(list)
 							With .Item(id_list(i))
 								If .CountPilot() > 0 Then
@@ -1842,7 +1812,7 @@ SortAgain:
 				End Select
 			End With
 			
-			'Invalid_string_refer_to_original_code
+			'キーを使って並べ替え
 			For i = 2 To UBound(strkey_list) - 1
 				max_item = i
 				max_str = strkey_list(i)
@@ -1870,64 +1840,52 @@ SortAgain:
 			Next 
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'アイテムを交換するユニットを選択
 		TopItem = top_item1
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'& Term("驕句虚"), _
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-		'End If
+		If IsOptionDefined("等身大基準") Then
+			ret = ListBox("アイテムを交換するユニットを選択", list, "ユニット                               アイテム " & Term("RK", Nothing, 2) & " Lv  " & Term("ＨＰ", Nothing, 4) & " " & Term("ＥＮ", Nothing, 4) & " " & Term("装甲", Nothing, 4) & " " & Term("運動"), "連続表示,コメント")
+		Else
+			ret = ListBox("アイテムを交換するユニットを選択", list, "ユニット                       アイテム " & Term("RK", Nothing, 2) & "  " & Term("ＨＰ", Nothing, 4) & " " & Term("ＥＮ", Nothing, 4) & " " & Term("装甲", Nothing, 4) & " " & Term("運動", Nothing, 4) & " パイロット", "連続表示,コメント")
+		End If
 		top_item1 = TopItem
 		
 		Select Case ret
 			Case 0
-				'繧ｭ繝｣繝ｳ繧ｻ繝ｫ
+				'キャンセル
 				Exit Sub
 			Case 1
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				sort_mode_type(1) = "蜷咲ｧｰ"
-				sort_mode_list(1) = "蜷咲ｧｰ"
-				sort_mode_type(2) = "繝ｬ繝吶Ν"
-				sort_mode_list(2) = "繝ｬ繝吶Ν"
-				sort_mode_type(3) = "Invalid_string_refer_to_original_code"
-				sort_mode_list(3) = Term("Invalid_string_refer_to_original_code")
-				sort_mode_type(4) = "Invalid_string_refer_to_original_code"
-				sort_mode_list(4) = Term("Invalid_string_refer_to_original_code")
-				sort_mode_type(5) = "Invalid_string_refer_to_original_code"
-				sort_mode_list(5) = Term("Invalid_string_refer_to_original_code")
-				sort_mode_type(6) = "驕句虚諤ｧ"
-				sort_mode_list(6) = Term("驕句虚諤ｧ")
-				sort_mode_type(7) = "繝ｦ繝九ャ繝医Λ繝ｳ繧ｯ"
-				sort_mode_list(7) = Term("繝ｩ繝ｳ繧ｯ")
-				sort_mode_type(1) = "Invalid_string_refer_to_original_code"
-				sort_mode_list(1) = Term("Invalid_string_refer_to_original_code")
-				sort_mode_type(2) = "Invalid_string_refer_to_original_code"
-				sort_mode_list(2) = Term("Invalid_string_refer_to_original_code")
-				sort_mode_type(3) = "Invalid_string_refer_to_original_code"
-				sort_mode_list(3) = Term("Invalid_string_refer_to_original_code")
-				sort_mode_type(4) = "驕句虚諤ｧ"
-				sort_mode_list(4) = Term("驕句虚諤ｧ")
-				sort_mode_type(5) = "繝ｦ繝九ャ繝医Λ繝ｳ繧ｯ"
-				sort_mode_list(5) = Term("繝ｩ繝ｳ繧ｯ")
-				sort_mode_type(6) = "繝ｦ繝九ャ繝亥錐遘ｰ"
-				sort_mode_list(6) = "繝ｦ繝九ャ繝亥錐遘ｰ"
-				sort_mode_type(7) = "Invalid_string_refer_to_original_code"
-				sort_mode_list(7) = "Invalid_string_refer_to_original_code"
-				'End If
+				'ソート方法を選択
+				If IsOptionDefined("等身大基準") Then
+					sort_mode_type(1) = "名称"
+					sort_mode_list(1) = "名称"
+					sort_mode_type(2) = "レベル"
+					sort_mode_list(2) = "レベル"
+					sort_mode_type(3) = "ＨＰ"
+					sort_mode_list(3) = Term("ＨＰ")
+					sort_mode_type(4) = "ＥＮ"
+					sort_mode_list(4) = Term("ＥＮ")
+					sort_mode_type(5) = "装甲"
+					sort_mode_list(5) = Term("装甲")
+					sort_mode_type(6) = "運動性"
+					sort_mode_list(6) = Term("運動性")
+					sort_mode_type(7) = "ユニットランク"
+					sort_mode_list(7) = Term("ランク")
+				Else
+					sort_mode_type(1) = "ＨＰ"
+					sort_mode_list(1) = Term("ＨＰ")
+					sort_mode_type(2) = "ＥＮ"
+					sort_mode_list(2) = Term("ＥＮ")
+					sort_mode_type(3) = "装甲"
+					sort_mode_list(3) = Term("装甲")
+					sort_mode_type(4) = "運動性"
+					sort_mode_list(4) = Term("運動性")
+					sort_mode_type(5) = "ユニットランク"
+					sort_mode_list(5) = Term("ランク")
+					sort_mode_type(6) = "ユニット名称"
+					sort_mode_list(6) = "ユニット名称"
+					sort_mode_type(7) = "パイロット名称"
+					sort_mode_list(7) = "パイロット名称"
+				End If
 				ReDim item_flag_backup(UBound(list))
 				ReDim item_comment_backup(UBound(list))
 				For i = 2 To UBound(list)
@@ -1938,10 +1896,7 @@ SortAgain:
 				ReDim ListItemFlag(UBound(sort_mode_list))
 				
 				TopItem = 1
-				'Invalid_string_refer_to_original_code_
-				'Invalid_string_refer_to_original_code_
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+				ret = ListBox("どれで並べ替えますか？", sort_mode_list, "並べ替えの方法", "連続表示,コメント")
 				
 				ReDim ListItemFlag(UBound(list))
 				ReDim ListItemComment(UBound(list))
@@ -1950,85 +1905,81 @@ SortAgain:
 					ListItemComment(i) = item_comment_backup(i)
 				Next 
 				
-				'繧ｽ繝ｼ繝域婿豕輔ｒ螟画峩縺励※蜀崎｡ｨ遉ｺ
+				'ソート方法を変更して再表示
 				If ret > 0 Then
 					sort_mode = sort_mode_type(ret)
 				End If
 				GoTo SortAgain
 		End Select
 		
-		'Invalid_string_refer_to_original_code
+		'ユニットを選択
 		u = UList.Item(id_list(ret))
 		
 MakeEquipedItemList: 
 		
-		'Invalid_string_refer_to_original_code
+		'選択されたユニットが装備しているアイテム一覧の作成
+		Dim tmp_part_list() As String
 		With u
 			Do While True
-				'Invalid_string_refer_to_original_code
+				'アイテムの装備個所一覧を作成
 				ReDim part_list(0)
-				If .IsFeatureAvailable("Invalid_string_refer_to_original_code") Then
-					buf = .FeatureData("Invalid_string_refer_to_original_code")
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-					arm_point = UBound(part_list) + 1
-					ReDim Preserve part_list(UBound(part_list) + 2)
-					part_list(1) = "Invalid_string_refer_to_original_code"
-					part_list(2) = "Invalid_string_refer_to_original_code"
+				If .IsFeatureAvailable("装備個所") Then
+					buf = .FeatureData("装備個所")
+					If InStr(buf, "腕") > 0 Then
+						arm_point = UBound(part_list) + 1
+						ReDim Preserve part_list(UBound(part_list) + 2)
+						part_list(1) = "右手"
+						part_list(2) = "左手"
+					End If
+					If InStr(buf, "肩") > 0 Then
+						shoulder_point = UBound(part_list) + 1
+						ReDim Preserve part_list(UBound(part_list) + 2)
+						part_list(UBound(part_list) - 1) = "右肩"
+						part_list(UBound(part_list)) = "左肩"
+					End If
+					If InStr(buf, "体") > 0 Then
+						ReDim Preserve part_list(UBound(part_list) + 1)
+						part_list(UBound(part_list)) = "体"
+					End If
+					If InStr(buf, "頭") > 0 Then
+						ReDim Preserve part_list(UBound(part_list) + 1)
+						part_list(UBound(part_list)) = "頭"
+					End If
 				End If
-				If InStr(buf, "閧ｩ") > 0 Then
-					shoulder_point = UBound(part_list) + 1
-					ReDim Preserve part_list(UBound(part_list) + 2)
-					part_list(UBound(part_list) - 1) = "蜿ｳ閧ｩ"
-					part_list(UBound(part_list)) = "蟾ｦ閧ｩ"
-				End If
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				ReDim Preserve part_list(UBound(part_list) + 1)
-				part_list(UBound(part_list)) = "Invalid_string_refer_to_original_code"
-				'End If
-				If InStr(buf, "鬆ｭ") > 0 Then
-					ReDim Preserve part_list(UBound(part_list) + 1)
-					part_list(UBound(part_list)) = "鬆ｭ"
-				End If
-				'End If
 				For i = 1 To .CountFeature
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-					ipart = .FeatureData(i)
-					Select Case ipart
-						Case "Invalid_string_refer_to_original_code"
-							'Invalid_string_refer_to_original_code
-							'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-							'Invalid_string_refer_to_original_code
-						Case Else
-							For j = 1 To UBound(part_list)
-								If part_list(j) = ipart Then
-									Exit For
-								End If
-							Next 
-							If j > UBound(part_list) Then
-								ReDim Preserve part_list(UBound(part_list) + .ItemSlotSize(ipart))
-								For j = UBound(part_list) - .ItemSlotSize(ipart) + 1 To UBound(part_list)
-									part_list(j) = ipart
+					If .Feature(i) = "ハードポイント" Then
+						ipart = .FeatureData(i)
+						Select Case ipart
+							Case "強化パーツ", "アイテム", "非表示"
+								'表示しない
+							Case Else
+								For j = 1 To UBound(part_list)
+									If part_list(j) = ipart Then
+										Exit For
+									End If
 								Next 
-							End If
-					End Select
-					'End If
+								If j > UBound(part_list) Then
+									ReDim Preserve part_list(UBound(part_list) + .ItemSlotSize(ipart))
+									For j = UBound(part_list) - .ItemSlotSize(ipart) + 1 To UBound(part_list)
+										part_list(j) = ipart
+									Next 
+								End If
+						End Select
+					End If
 				Next 
 				
 				ReDim Preserve part_list(UBound(part_list) + .MaxItemNum)
 				If .IsHero Then
 					For i = UBound(part_list) - .MaxItemNum + 1 To UBound(part_list)
-						part_list(i) = "Invalid_string_refer_to_original_code"
+						part_list(i) = "アイテム"
 					Next 
 				Else
 					For i = UBound(part_list) - .MaxItemNum + 1 To UBound(part_list)
-						part_list(i) = "Invalid_string_refer_to_original_code"
+						part_list(i) = "強化パーツ"
 					Next 
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'特定の装備個所のアイテムのみを交換する？
 				If selected_part <> "" Then
 					
 					ReDim tmp_part_list(UBound(part_list))
@@ -2040,51 +1991,36 @@ MakeEquipedItemList:
 					arm_point = 0
 					shoulder_point = 0
 					For i = 1 To UBound(tmp_part_list)
-						'Invalid_string_refer_to_original_code_
-						'Or selected_part = "逶ｾ") _
-						'Invalid_string_refer_to_original_code_
-						'Invalid_string_refer_to_original_code_
-						'Or ((selected_part = "閧ｩ" _
-						'Or selected_part = "荳｡閧ｩ") _
-						'And (tmp_part_list(i) = "蜿ｳ閧ｩ" _
-						'Or tmp_part_list(i) = "蟾ｦ閧ｩ")) _
-						'Invalid_string_refer_to_original_code_
-						'Invalid_string_refer_to_original_code_
-						'Invalid_string_refer_to_original_code_
-						'Invalid_string_refer_to_original_code_
-						'Then
-						'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-						ReDim Preserve part_list(UBound(part_list) + 1)
-						part_list(UBound(part_list)) = tmp_part_list(i)
-						Select Case part_list(UBound(part_list))
-							Case "Invalid_string_refer_to_original_code"
-								arm_point = UBound(part_list)
-							Case "蜿ｳ閧ｩ"
-								shoulder_point = UBound(part_list)
-						End Select
+						If tmp_part_list(i) = selected_part Or ((selected_part = "片手" Or selected_part = "両手" Or selected_part = "盾") And (tmp_part_list(i) = "右手" Or tmp_part_list(i) = "左手")) Or ((selected_part = "肩" Or selected_part = "両肩") And (tmp_part_list(i) = "右肩" Or tmp_part_list(i) = "左肩")) Or ((selected_part = "アイテム" Or selected_part = "強化パーツ") And (tmp_part_list(i) = "アイテム" Or tmp_part_list(i) = "強化パーツ")) Then
+							ReDim Preserve part_list(UBound(part_list) + 1)
+							part_list(UBound(part_list)) = tmp_part_list(i)
+							Select Case part_list(UBound(part_list))
+								Case "右手"
+									arm_point = UBound(part_list)
+								Case "右肩"
+									shoulder_point = UBound(part_list)
+							End Select
+						End If
 					Next 
 				End If
-				'Next
-				'End If
 				
 				ReDim part_item(UBound(part_list))
 				
-				'Invalid_string_refer_to_original_code
+				'装備個所に現在装備しているアイテムを割り当て
 				For i = 1 To .CountItem
 					With .Item(i)
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-						GoTo NextEquipedItem
-						'End If
+						If .Class_Renamed() = "固定" And .IsFeatureAvailable("非表示") Then
+							GoTo NextEquipedItem
+						End If
 						
 						Select Case .Part
-							Case "Invalid_string_refer_to_original_code"
+							Case "両手"
 								If arm_point = 0 Then
 									GoTo NextEquipedItem
 								End If
 								part_item(arm_point) = .ID
 								part_item(arm_point + 1) = ":"
-							Case "Invalid_string_refer_to_original_code"
+							Case "片手"
 								If arm_point = 0 Then
 									GoTo NextEquipedItem
 								End If
@@ -2093,17 +2029,17 @@ MakeEquipedItemList:
 								Else
 									part_item(arm_point + 1) = .ID
 								End If
-							Case "逶ｾ"
+							Case "盾"
 								If arm_point = 0 Then
 									GoTo NextEquipedItem
 								End If
 								part_item(arm_point + 1) = .ID
-							Case "荳｡閧ｩ"
+							Case "両肩"
 								If shoulder_point = 0 Then
 									GoTo NextEquipedItem
 								End If
 								part_item(shoulder_point) = .ID
-							Case "閧ｩ"
+							Case "肩"
 								If shoulder_point = 0 Then
 									GoTo NextEquipedItem
 								End If
@@ -2112,40 +2048,36 @@ MakeEquipedItemList:
 								Else
 									part_item(shoulder_point + 1) = .ID
 								End If
-							Case "髱櫁｡ｨ遉ｺ"
-								'Invalid_string_refer_to_original_code
+							Case "非表示"
+								'無視
 							Case Else
-								'Invalid_string_refer_to_original_code
-								'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-								For j = 1 To UBound(part_list)
-									'Invalid_string_refer_to_original_code_
-									'Invalid_string_refer_to_original_code_
-									'And part_item(j) = "" _
-									'Then
-									'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-									part_item(j) = .ID
-									For k = j + 1 To j + .Size - 1
-										If k > UBound(part_item) Then
+								If .Part = "強化パーツ" Or .Part = "アイテム" Then
+									For j = 1 To UBound(part_list)
+										If (part_list(j) = "強化パーツ" Or part_list(j) = "アイテム") And part_item(j) = "" Then
+											part_item(j) = .ID
+											For k = j + 1 To j + .Size - 1
+												If k > UBound(part_item) Then
+													Exit For
+												End If
+												part_item(k) = ":"
+											Next 
 											Exit For
 										End If
-										part_item(k) = ":"
 									Next 
-									Exit For
-									'End If
-								Next 
-								For j = 1 To UBound(part_list)
-									If part_list(j) = .Part And part_item(j) = "" Then
-										part_item(j) = .ID
-										For k = j + 1 To j + .Size - 1
-											If k > UBound(part_item) Then
-												Exit For
-											End If
-											part_item(k) = ":"
-										Next 
-										Exit For
-									End If
-								Next 
-								'End If
+								Else
+									For j = 1 To UBound(part_list)
+										If part_list(j) = .Part And part_item(j) = "" Then
+											part_item(j) = .ID
+											For k = j + 1 To j + .Size - 1
+												If k > UBound(part_item) Then
+													Exit For
+												End If
+												part_item(k) = ":"
+											Next 
+											Exit For
+										End If
+									Next 
+								End If
 								If j > UBound(part_list) And selected_part = "" Then
 									ReDim Preserve part_list(UBound(part_list) + 1)
 									ReDim Preserve part_item(UBound(part_list))
@@ -2162,7 +2094,7 @@ NextEquipedItem:
 				ReDim ListItemComment(UBound(list))
 				ReDim ListItemFlag(UBound(list))
 				
-				'Invalid_string_refer_to_original_code
+				'リストを構築
 				For i = 1 To UBound(part_item)
 					Select Case part_item(i)
 						Case ""
@@ -2182,76 +2114,69 @@ NextEquipedItem:
 									End If
 									id_list(j) = .ID
 								Next 
-								'Invalid_string_refer_to_original_code_
-								'Invalid_string_refer_to_original_code_
-								'Then
-								'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-								ListItemFlag(i) = True
-								For j = i + 1 To i + .Size - 1
-									If j > UBound(part_item) Then
-										Exit For
-									End If
-									ListItemFlag(j) = True
-								Next 
-								'End If
+								If IsGlobalVariableDefined("Fix(" & .Name & ")") Or .Class_Renamed() = "固定" Or .IsFeatureAvailable("呪い") Then
+									ListItemFlag(i) = True
+									For j = i + 1 To i + .Size - 1
+										If j > UBound(part_item) Then
+											Exit For
+										End If
+										ListItemFlag(j) = True
+									Next 
+								End If
 							End With
 					End Select
 				Next 
-				list(UBound(list)) = "Invalid_string_refer_to_original_code"
+				list(UBound(list)) = "▽装備解除▽"
 				
-				'Invalid_string_refer_to_original_code
-				caption_str = "Invalid_string_refer_to_original_code" & .Nickname
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				caption_str = caption_str & " (" & .MainPilot.Nickname & ")"
-				'End If
-				caption_str = caption_str & "  " & Term("Invalid_string_refer_to_original_code", u) & "=" & VB6.Format(.MaxHP) & " " & Term("Invalid_string_refer_to_original_code", u) & "=" & VB6.Format(.MaxEN) & " " & Term("Invalid_string_refer_to_original_code", u) & "=" & VB6.Format(.Armor) & " " & Term("驕句虚諤ｧ", u) & "=" & VB6.Format(.Mobility) & " " & Term("遘ｻ蜍募鴨", u) & "=" & VB6.Format(.Speed)
+				'交換するアイテムを選択
+				caption_str = "装備個所を選択 ： " & .Nickname
+				If .CountPilot > 0 And Not IsOptionDefined("等身大基準") Then
+					caption_str = caption_str & " (" & .MainPilot.Nickname & ")"
+				End If
+				caption_str = caption_str & "  " & Term("ＨＰ", u) & "=" & VB6.Format(.MaxHP) & " " & Term("ＥＮ", u) & "=" & VB6.Format(.MaxEN) & " " & Term("装甲", u) & "=" & VB6.Format(.Armor) & " " & Term("運動性", u) & "=" & VB6.Format(.Mobility) & " " & Term("移動力", u) & "=" & VB6.Format(.Speed)
 				TopItem = top_item2
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+				ret = ListBox(caption_str, list, "アイテム               分類", "連続表示,コメント")
 				top_item2 = TopItem
 				If ret = 0 Then
 					Exit Do
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'装備を解除する場合
 				If ret = UBound(list) Then
-					list(UBound(list)) = "笆ｽ蜈ｨ縺ｦ螟悶☆笆ｽ"
-					caption_str = "Invalid_string_refer_to_original_code" & .Nickname
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-					caption_str = caption_str & " (" & .MainPilot.Nickname & ")"
-				End If
-				caption_str = caption_str & "  " & Term("Invalid_string_refer_to_original_code", u) & "=" & VB6.Format(.MaxHP) & " " & Term("Invalid_string_refer_to_original_code", u) & "=" & VB6.Format(.MaxEN) & " " & Term("Invalid_string_refer_to_original_code", u) & "=" & VB6.Format(.Armor) & " " & Term("驕句虚諤ｧ", u) & "=" & VB6.Format(.Mobility) & " " & Term("遘ｻ蜍募鴨", u) & "=" & VB6.Format(.Speed)
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				If ret <> 0 Then
-					If ret < UBound(list) Then
-						'Invalid_string_refer_to_original_code
-						If id_list(ret) <> "" Then
-							.DeleteItem(id_list(ret), False)
-						ElseIf LIndex(list(ret), 1) = ":" Then 
-							.DeleteItem(id_list(ret - 1), False)
-						End If
-					Else
-						'Invalid_string_refer_to_original_code
-						For i = 1 To UBound(list) - 1
-							If Not ListItemFlag(i) And id_list(i) <> "" Then
-								.DeleteItem(id_list(i), False)
+					list(UBound(list)) = "▽全て外す▽"
+					caption_str = "外すアイテムを選択 ： " & .Nickname
+					If .CountPilot > 0 And Not IsOptionDefined("等身大基準") Then
+						caption_str = caption_str & " (" & .MainPilot.Nickname & ")"
+					End If
+					caption_str = caption_str & "  " & Term("ＨＰ", u) & "=" & VB6.Format(.MaxHP) & " " & Term("ＥＮ", u) & "=" & VB6.Format(.MaxEN) & " " & Term("装甲", u) & "=" & VB6.Format(.Armor) & " " & Term("運動性", u) & "=" & VB6.Format(.Mobility) & " " & Term("移動力", u) & "=" & VB6.Format(.Speed)
+					ret = ListBox(caption_str, list, "アイテム               分類", "連続表示,コメント")
+					If ret <> 0 Then
+						If ret < UBound(list) Then
+							'指定されたアイテムを外す
+							If id_list(ret) <> "" Then
+								.DeleteItem(id_list(ret), False)
+							ElseIf LIndex(list(ret), 1) = ":" Then 
+								.DeleteItem(id_list(ret - 1), False)
 							End If
-						Next 
+						Else
+							'全てのアイテムを外す
+							For i = 1 To UBound(list) - 1
+								If Not ListItemFlag(i) And id_list(i) <> "" Then
+									.DeleteItem(id_list(i), False)
+								End If
+							Next 
+						End If
+						If MapFileName = "" Then
+							.FullRecover()
+						End If
+						If MainForm.Visible Then
+							DisplayUnitStatus(u)
+						End If
 					End If
-					If MapFileName = "" Then
-						.FullRecover()
-					End If
-					If MainForm.Visible Then
-						DisplayUnitStatus(u)
-					End If
+					GoTo NextLoop2
 				End If
-				GoTo NextLoop2
-				'End If
 				
-				'Invalid_string_refer_to_original_code
+				'交換するアイテムの装備個所
 				iid = id_list(ret)
 				If iid <> "" Then
 					ipart = IList.Item(iid).Part
@@ -2259,76 +2184,56 @@ NextEquipedItem:
 					ipart = LIndex(list(ret), 2)
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'空きスロットを調べておく
 				Select Case ipart
-					Case "Invalid_string_refer_to_original_code"
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+					Case "右手", "左手", "片手", "両手", "盾"
 						is_right_hand_available = True
 						is_left_hand_available = True
 						For i = 1 To .CountItem
 							With .Item(i)
-								If .Part = "Invalid_string_refer_to_original_code" Then
-									'Invalid_string_refer_to_original_code_
-									'Invalid_string_refer_to_original_code_
-									'Then
-									'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-									If is_right_hand_available Then
-										is_right_hand_available = False
-									Else
+								If .Part = "片手" Then
+									If IsGlobalVariableDefined("Fix(" & .Name & ")") Or .Class_Renamed() = "固定" Or .IsFeatureAvailable("呪い") Then
+										If is_right_hand_available Then
+											is_right_hand_available = False
+										Else
+											is_left_hand_available = False
+										End If
+									End If
+								ElseIf .Part = "盾" Then 
+									If IsGlobalVariableDefined("Fix(" & .Name & ")") Or .Class_Renamed() = "固定" Or .IsFeatureAvailable("呪い") Then
 										is_left_hand_available = False
 									End If
 								End If
-								'UPGRADE_WARNING: ExchangeItemCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-								'Invalid_string_refer_to_original_code_
-								'Invalid_string_refer_to_original_code_
-								'Then
-								'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-								is_left_hand_available = False
-								'End If
-								'End If
 							End With
 						Next 
-					Case "蜿ｳ閧ｩ", "蟾ｦ閧ｩ", "閧ｩ"
+					Case "右肩", "左肩", "肩"
 						empty_slot = 2
 						For i = 1 To .CountItem
 							With .Item(i)
-								If .Part = "閧ｩ" Then
-									'Invalid_string_refer_to_original_code_
-									'Invalid_string_refer_to_original_code_
-									'Then
-									'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-									empty_slot = empty_slot - 1
+								If .Part = "肩" Then
+									If IsGlobalVariableDefined("Fix(" & .Name & ")") Or .Class_Renamed() = "固定" Or .IsFeatureAvailable("呪い") Then
+										empty_slot = empty_slot - 1
+									End If
 								End If
-								'End If
 							End With
 						Next 
-					Case "Invalid_string_refer_to_original_code"
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+					Case "強化パーツ", "アイテム"
 						empty_slot = .MaxItemNum
 						For i = 1 To .CountItem
 							With .Item(i)
-								'Invalid_string_refer_to_original_code
-								'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-								'Invalid_string_refer_to_original_code_
-								'Invalid_string_refer_to_original_code_
-								'Then
-								'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-								empty_slot = empty_slot - .Size
-								'End If
-								'End If
+								If .Part = "強化パーツ" Or .Part = "アイテム" Then
+									If IsGlobalVariableDefined("Fix(" & .Name & ")") Or .Class_Renamed() = "固定" Or .IsFeatureAvailable("呪い") Then
+										empty_slot = empty_slot - .Size
+									End If
+								End If
 							End With
 						Next 
 					Case Else
 						empty_slot = 0
 						For i = 1 To .CountFeature
-							'Invalid_string_refer_to_original_code_
-							'And .FeatureData(i) = ipart _
-							'Then
-							'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-							empty_slot = empty_slot + .FeatureLevel(i)
-							'End If
+							If .Feature(i) = "ハードポイント" And .FeatureData(i) = ipart Then
+								empty_slot = empty_slot + .FeatureLevel(i)
+							End If
 						Next 
 						If empty_slot = 0 Then
 							empty_slot = 1
@@ -2336,19 +2241,16 @@ NextEquipedItem:
 						For i = 1 To .CountItem
 							With .Item(i)
 								If .Part = ipart Then
-									'Invalid_string_refer_to_original_code_
-									'Invalid_string_refer_to_original_code_
-									'Then
-									'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-									empty_slot = empty_slot - .Size
+									If IsGlobalVariableDefined("Fix(" & .Name & ")") Or .Class_Renamed() = "固定" Or .IsFeatureAvailable("呪い") Then
+										empty_slot = empty_slot - .Size
+									End If
 								End If
-								'End If
 							End With
 						Next 
 				End Select
 				
 				Do While True
-					'Invalid_string_refer_to_original_code
+					'装備可能なアイテムを調べる
 					ReDim item_list(0)
 					For	Each it In IList
 						With it
@@ -2356,18 +2258,16 @@ NextEquipedItem:
 								GoTo NextItem
 							End If
 							
-							'Invalid_string_refer_to_original_code
+							'装備スロットが空いている？
 							Select Case ipart
-								Case "Invalid_string_refer_to_original_code"
-									'Invalid_string_refer_to_original_code
-									'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+								Case "右手", "左手", "片手", "両手"
 									Select Case .Part
-										Case "Invalid_string_refer_to_original_code"
+										Case "両手"
 											If Not is_right_hand_available Or Not is_left_hand_available Then
 												GoTo NextItem
 											End If
-										Case "Invalid_string_refer_to_original_code"
-											If u.IsFeatureAvailable("荳｡謇区戟縺｡") Then
+										Case "片手"
+											If u.IsFeatureAvailable("両手持ち") Then
 												If Not is_right_hand_available And Not is_left_hand_available Then
 													GoTo NextItem
 												End If
@@ -2376,52 +2276,47 @@ NextEquipedItem:
 													GoTo NextItem
 												End If
 											End If
-										Case "逶ｾ"
+										Case "盾"
 											If Not is_left_hand_available Then
 												GoTo NextItem
 											End If
 										Case Else
 											GoTo NextItem
 									End Select
-								Case "逶ｾ"
+								Case "盾"
 									Select Case .Part
-										Case "Invalid_string_refer_to_original_code"
+										Case "両手"
 											If Not is_right_hand_available Or Not is_left_hand_available Then
 												GoTo NextItem
 											End If
-										Case "Invalid_string_refer_to_original_code"
-											If u.IsFeatureAvailable("荳｡謇区戟縺｡") Then
+										Case "片手"
+											If u.IsFeatureAvailable("両手持ち") Then
 												If Not is_right_hand_available And Not is_left_hand_available Then
 													GoTo NextItem
 												End If
 											Else
 												GoTo NextItem
 											End If
-										Case "逶ｾ"
+										Case "盾"
 											If Not is_left_hand_available Then
 												GoTo NextItem
 											End If
 										Case Else
 											GoTo NextItem
 									End Select
-								Case "蜿ｳ閧ｩ", "蟾ｦ閧ｩ", "閧ｩ"
-									If .Part <> "荳｡閧ｩ" And .Part <> "閧ｩ" Then
+								Case "右肩", "左肩", "肩"
+									If .Part <> "両肩" And .Part <> "肩" Then
 										GoTo NextItem
 									End If
-									If .Part = "荳｡閧ｩ" Then
+									If .Part = "両肩" Then
 										If empty_slot < 2 Then
 											GoTo NextItem
 										End If
 									End If
-								Case "Invalid_string_refer_to_original_code"
-									'Invalid_string_refer_to_original_code
-									'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-									'Invalid_string_refer_to_original_code_
-									'Invalid_string_refer_to_original_code_
-									'Then
-									'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-									GoTo NextItem
-									'End If
+								Case "強化パーツ", "アイテム"
+									If .Part <> "強化パーツ" And .Part <> "アイテム" Then
+										GoTo NextItem
+									End If
 									If empty_slot < .Size Then
 										GoTo NextItem
 									End If
@@ -2436,25 +2331,24 @@ NextEquipedItem:
 							
 							If Not .Unit_Renamed Is Nothing Then
 								With .Unit_Renamed.CurrentForm
-									'Invalid_string_refer_to_original_code
-									If .Status_Renamed = "髮｢閼ｱ" Then
+									'離脱したユニットが装備している
+									If .Status_Renamed = "離脱" Then
 										GoTo NextItem
 									End If
 									
-									'Invalid_string_refer_to_original_code
-									If .Party <> "蜻ｳ譁ｹ" Then
+									'敵ユニットが装備している
+									If .Party <> "味方" Then
 										GoTo NextItem
 									End If
 								End With
 								
-								'Invalid_string_refer_to_original_code
-								'Invalid_string_refer_to_original_code
-								'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-								GoTo NextItem
+								'呪われているので外せない……
+								If .IsFeatureAvailable("呪い") Then
+									GoTo NextItem
+								End If
 							End If
-							'End If
 							
-							'Invalid_string_refer_to_original_code
+							'既に登録済み？
 							For i = 1 To UBound(item_list)
 								If item_list(i) = .Name Then
 									GoTo NextItem
@@ -2462,7 +2356,7 @@ NextEquipedItem:
 							Next 
 						End With
 						
-						'Invalid_string_refer_to_original_code
+						'装備可能？
 						If Not .IsAbleToEquip(it) Then
 							GoTo NextItem
 						End If
@@ -2472,7 +2366,7 @@ NextEquipedItem:
 NextItem: 
 					Next it
 					
-					'Invalid_string_refer_to_original_code
+					'装備可能なアイテムの一覧を表示
 					ReDim list(UBound(item_list))
 					ReDim strkey_list(UBound(item_list))
 					ReDim id_list(UBound(item_list))
@@ -2483,13 +2377,13 @@ NextItem:
 						With IDList.Item(iname)
 							list(i) = RightPaddedString(.Nickname, 22) & " "
 							
-							If .IsFeatureAvailable("Invalid_string_refer_to_original_code") Then
+							If .IsFeatureAvailable("大型アイテム") Then
 								list(i) = list(i) & RightPaddedString(.Part & "[" & VB6.Format(.Size) & "]", 15)
 							Else
 								list(i) = list(i) & RightPaddedString(.Part, 15)
 							End If
 							
-							'Invalid_string_refer_to_original_code
+							'アイテムの数をカウント
 							inum = 0
 							inum2 = 0
 							For	Each it In IList
@@ -2500,15 +2394,14 @@ NextItem:
 												inum = inum + 1
 												inum2 = inum2 + 1
 											Else
-												If .Unit_Renamed.CurrentForm.Status_Renamed <> "髮｢閼ｱ" Then
-													'Invalid_string_refer_to_original_code
-													'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-													inum = inum + 1
+												If .Unit_Renamed.CurrentForm.Status_Renamed <> "離脱" Then
+													If Not .IsFeatureAvailable("呪い") Then
+														inum = inum + 1
+													End If
 												End If
 											End If
 										End If
 									End If
-									'End If
 								End With
 							Next it
 							
@@ -2520,7 +2413,7 @@ NextItem:
 						End With
 					Next 
 					
-					'Invalid_string_refer_to_original_code
+					'アイテムを名前順にソート
 					For i = 1 To UBound(strkey_list) - 1
 						max_item = i
 						max_str = strkey_list(i)
@@ -2547,125 +2440,111 @@ NextItem:
 						End If
 					Next 
 					
-					'Invalid_string_refer_to_original_code
-					caption_str = "Invalid_string_refer_to_original_code" & .Nickname
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-					caption_str = caption_str & " (" & .MainPilot.Nickname & ")"
-					'End If
-					caption_str = caption_str & "  " & Term("Invalid_string_refer_to_original_code", u) & "=" & VB6.Format(.MaxHP) & " " & Term("Invalid_string_refer_to_original_code", u) & "=" & VB6.Format(.MaxEN) & " " & Term("Invalid_string_refer_to_original_code", u) & "=" & VB6.Format(.Armor) & " " & Term("驕句虚諤ｧ", u) & "=" & VB6.Format(.Mobility) & " " & Term("遘ｻ蜍募鴨", u) & "=" & VB6.Format(.Speed)
-					'Invalid_string_refer_to_original_code_
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+					'装備するアイテムの種類を選択
+					caption_str = "装備するアイテムを選択 ： " & .Nickname
+					If .CountPilot > 0 And Not IsOptionDefined("等身大基準") Then
+						caption_str = caption_str & " (" & .MainPilot.Nickname & ")"
+					End If
+					caption_str = caption_str & "  " & Term("ＨＰ", u) & "=" & VB6.Format(.MaxHP) & " " & Term("ＥＮ", u) & "=" & VB6.Format(.MaxEN) & " " & Term("装甲", u) & "=" & VB6.Format(.Armor) & " " & Term("運動性", u) & "=" & VB6.Format(.Mobility) & " " & Term("移動力", u) & "=" & VB6.Format(.Speed)
+					ret = ListBox(caption_str, list, "アイテム               分類            数量", "連続表示,コメント")
 					
-					'Invalid_string_refer_to_original_code
+					'キャンセルされた？
 					If ret = 0 Then
 						Exit Do
 					End If
 					
 					iname = id_list(ret)
 					
-					'Invalid_string_refer_to_original_code
+					'未装備のアイテムがあるかどうか探す
 					For	Each it In IList
 						With it
 							If .Name = iname And .Exist Then
 								If .Unit_Renamed Is Nothing Then
-									'Invalid_string_refer_to_original_code
+									'未装備の装備が見つかったのでそれを装備
 									If iid <> "" Then
 										u.DeleteItem(iid)
 									End If
-									'Invalid_string_refer_to_original_code
-									'Invalid_string_refer_to_original_code
-									'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-									MsgBox(.Nickname & "Invalid_string_refer_to_original_code")
+									'呪いのアイテムを装備……
+									If .IsFeatureAvailable("呪い") Then
+										MsgBox(.Nickname & "は呪われていた！")
+									End If
+									u.AddItem(it)
+									If MapFileName = "" Then
+										u.FullRecover()
+									End If
+									If MainForm.Visible Then
+										DisplayUnitStatus(u)
+									End If
+									Exit Do
 								End If
-								u.AddItem(it)
-								If MapFileName = "" Then
-									u.FullRecover()
-								End If
-								If MainForm.Visible Then
-									DisplayUnitStatus(u)
-								End If
-								Exit Do
 							End If
-							'End If
 						End With
 					Next it
 					
-					'Invalid_string_refer_to_original_code
+					'選択されたアイテムを列挙
 					ReDim list(0)
 					ReDim id_list(0)
 					ReDim ListItemComment(0)
 					inum = 0
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-					For	Each it In IList
-						With it
-							If .Name <> iname Or Not .Exist Then
-								GoTo NextItem2
-							End If
-							If .Unit_Renamed Is Nothing Then
-								GoTo NextItem2
-							End If
-							With .Unit_Renamed.CurrentForm
-								If .Status_Renamed = "髮｢閼ｱ" Then
+					If Not IDList.Item(iname).IsFeatureAvailable("呪い") Then
+						For	Each it In IList
+							With it
+								If .Name <> iname Or Not .Exist Then
 									GoTo NextItem2
 								End If
-								If .Party <> "蜻ｳ譁ｹ" Then
+								If .Unit_Renamed Is Nothing Then
 									GoTo NextItem2
 								End If
-								
-								ReDim Preserve list(UBound(list) + 1)
-								ReDim Preserve id_list(UBound(list))
-								ReDim Preserve ListItemComment(UBound(list))
-								
-								'Invalid_string_refer_to_original_code_
-								'And .CountPilot > 0 _
-								'Then
-								'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-								list(UBound(list)) = RightPaddedString(.Nickname0, 36) & " " & .MainPilot.Nickname
-								list(UBound(list)) = .Nickname0
-								'End If
-								id_list(UBound(list)) = it.ID
-								
-								For i = 1 To .CountItem
-									With .Item(i)
-										'Invalid_string_refer_to_original_code_
-										'And .Part <> "髱櫁｡ｨ遉ｺ" _
-										'Then
-										'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-										ListItemComment(UBound(list)) = ListItemComment(UBound(list)) & .Nickname & " "
-										'End If
-									End With
-								Next 
-								
-								inum = inum + 1
+								With .Unit_Renamed.CurrentForm
+									If .Status_Renamed = "離脱" Then
+										GoTo NextItem2
+									End If
+									If .Party <> "味方" Then
+										GoTo NextItem2
+									End If
+									
+									ReDim Preserve list(UBound(list) + 1)
+									ReDim Preserve id_list(UBound(list))
+									ReDim Preserve ListItemComment(UBound(list))
+									
+									If Not IsOptionDefined("等身大基準") And .CountPilot > 0 Then
+										list(UBound(list)) = RightPaddedString(.Nickname0, 36) & " " & .MainPilot.Nickname
+									Else
+										list(UBound(list)) = .Nickname0
+									End If
+									id_list(UBound(list)) = it.ID
+									
+									For i = 1 To .CountItem
+										With .Item(i)
+											If (.Class_Renamed() <> "固定" Or Not .IsFeatureAvailable("非表示")) And .Part <> "非表示" Then
+												ListItemComment(UBound(list)) = ListItemComment(UBound(list)) & .Nickname & " "
+											End If
+										End With
+									Next 
+									
+									inum = inum + 1
+								End With
 							End With
-						End With
 NextItem2: 
-					Next it
-					'End If
+						Next it
+					End If
 					ReDim ListItemFlag(UBound(list))
 					ReDim Preserve ListItemComment(UBound(list))
 					
-					'Invalid_string_refer_to_original_code
-					caption_str = IList.Item(id_list(1)).Nickname & "Invalid_string_refer_to_original_code" & .Nickname
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-					caption_str = caption_str & " (" & .MainPilot.Nickname & ")"
-					'End If
-					caption_str = caption_str & "  " & Term("Invalid_string_refer_to_original_code", u) & "=" & VB6.Format(.MaxHP) & " " & Term("Invalid_string_refer_to_original_code", u) & "=" & VB6.Format(.MaxEN) & " " & Term("Invalid_string_refer_to_original_code", u) & "=" & VB6.Format(.Armor) & " " & Term("驕句虚諤ｧ", u) & "=" & VB6.Format(.Mobility) & " " & Term("遘ｻ蜍募鴨", u) & "=" & VB6.Format(.Speed)
+					'どのアイテムを装備するか選択
+					caption_str = IList.Item(id_list(1)).Nickname & "の入手先を選択 ： " & .Nickname
+					If .CountPilot > 0 And Not IsOptionDefined("等身大基準") Then
+						caption_str = caption_str & " (" & .MainPilot.Nickname & ")"
+					End If
+					caption_str = caption_str & "  " & Term("ＨＰ", u) & "=" & VB6.Format(.MaxHP) & " " & Term("ＥＮ", u) & "=" & VB6.Format(.MaxEN) & " " & Term("装甲", u) & "=" & VB6.Format(.Armor) & " " & Term("運動性", u) & "=" & VB6.Format(.Mobility) & " " & Term("移動力", u) & "=" & VB6.Format(.Speed)
 					TopItem = 1
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-					'Invalid_string_refer_to_original_code_
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-					'End If
+					If IsOptionDefined("等身大基準") Then
+						ret = ListBox(caption_str, list, "ユニット", "連続表示,コメント")
+					Else
+						ret = ListBox(caption_str, list, "ユニット                             パイロット", "連続表示,コメント")
+					End If
 					
-					'Invalid_string_refer_to_original_code
+					'アイテムを交換
 					If ret > 0 Then
 						If iid <> "" Then
 							.DeleteItem(iid)
@@ -2675,32 +2554,28 @@ NextItem2:
 								.Unit_Renamed.DeleteItem(.ID)
 							End If
 							
-							'Invalid_string_refer_to_original_code
-							'Invalid_string_refer_to_original_code
-							'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-							MsgBox(.Nickname & "Invalid_string_refer_to_original_code")
+							'呪いのアイテムを装備……
+							If .IsFeatureAvailable("呪い") Then
+								MsgBox(.Nickname & "は呪われていた！")
+							End If
 						End With
+						.AddItem(IList.Item(id_list(ret)))
+						If MapFileName = "" Then
+							.FullRecover()
+						End If
+						If MainForm.Visible Then
+							DisplayUnitStatus(u)
+						End If
+						Exit Do
 					End If
+NextLoop: 
 				Loop 
+NextLoop2: 
 			Loop 
 		End With
-		'UPGRADE_WARNING: ExchangeItemCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-		If MapFileName = "" Then
-			'UPGRADE_WARNING: ExchangeItemCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-		End If
-		If MainForm.Visible Then
-			DisplayUnitStatus(u)
-		End If
-		Exit Do
-		'End If
-NextLoop: 
-		'Loop
-NextLoop2: 
-		'Loop
-		'End With
 		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
+		'ユニットがあらかじめ選択されている場合
+		'(ユニットステータスからのアイテム交換時)
 		If Not selected_unit Is Nothing Then
 			With frmListBox
 				.Hide()
@@ -2718,7 +2593,7 @@ NextLoop2:
 		GoTo Beginning
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'換装コマンド
 	' MOD START MARGE
 	'Public Sub ExchangeFormCommand()
 	Private Sub ExchangeFormCommand()
@@ -2740,63 +2615,76 @@ Beginning:
 		
 		top_item = 1
 		
-		'Invalid_string_refer_to_original_code
+		'換装可能なユニットのリストを作成
 		ReDim list(0)
 		ReDim id_list(0)
 		ReDim ListItemComment(0)
 		For	Each u In UList
 			With u
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				GoTo NextLoop
-				'End If
+				'待機中の味方ユニット？
+				If .Party0 <> "味方" Or .Status_Renamed <> "待機" Then
+					GoTo NextLoop
+				End If
 				
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				GoTo NextLoop
-				'End If
+				'換装能力を持っている？
+				If Not .IsFeatureAvailable("換装") Then
+					GoTo NextLoop
+				End If
 				
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				Exit For
-				'End If
+				'いずれかの形態に換装可能？
+				For i = 1 To LLength(.FeatureData("換装"))
+					If .OtherForm(LIndex(.FeatureData("換装"), i)).IsAvailable Then
+						Exit For
+					End If
+				Next 
+				If i > LLength(.FeatureData("換装")) Then
+					GoTo NextLoop
+				End If
+				
+				ReDim Preserve list(UBound(list) + 1)
+				ReDim Preserve id_list(UBound(list))
+				ReDim Preserve ListItemComment(UBound(list))
+				
+				'ユニットのステータスを表示
+				If IsOptionDefined("等身大基準") Then
+					If .Rank < 10 Then
+						list(UBound(list)) = RightPaddedString(.Nickname0, 37) & StrConv(VB6.Format(.Rank), VbStrConv.Wide)
+					Else
+						list(UBound(list)) = RightPaddedString(.Nickname0, 37) & VB6.Format(.Rank)
+					End If
+				Else
+					If .Rank < 10 Then
+						list(UBound(list)) = RightPaddedString(.Nickname0, 33) & StrConv(VB6.Format(.Rank), VbStrConv.Wide)
+					Else
+						list(UBound(list)) = RightPaddedString(.Nickname0, 33) & VB6.Format(.Rank)
+					End If
+				End If
+				list(UBound(list)) = list(UBound(list)) & LeftPaddedString(VB6.Format(.MaxHP), 6) & LeftPaddedString(VB6.Format(.MaxEN), 5) & LeftPaddedString(VB6.Format(.Armor), 5) & LeftPaddedString(VB6.Format(.Mobility), 5)
+				If .CountPilot > 0 Then
+					If IsOptionDefined("等身大基準") Then
+						list(UBound(list)) = list(UBound(list)) & "  " & LeftPaddedString(VB6.Format(.MainPilot.Level), 6)
+					Else
+						list(UBound(list)) = list(UBound(list)) & "  " & .MainPilot.Nickname
+					End If
+				End If
+				
+				'ユニットに装備されているアイテムをコメント欄に列記
+				For k = 1 To .CountItem
+					With .Item(k)
+						If (.Class_Renamed() <> "固定" Or Not .IsFeatureAvailable("非表示")) And .Part <> "非表示" Then
+							ListItemComment(UBound(list)) = ListItemComment(UBound(list)) & .Nickname & " "
+						End If
+					End With
+				Next 
+				
+				'ユニットＩＤを記録しておく
+				id_list(UBound(list)) = .ID
 			End With
-		Next u
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-		GoTo NextLoop
-		'End If
-		
-		ReDim Preserve list(UBound(list) + 1)
-		ReDim Preserve id_list(UBound(list))
-		ReDim Preserve ListItemComment(UBound(list))
-		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-		'UPGRADE_WARNING: ExchangeFormCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-		'UPGRADE_WARNING: ExchangeFormCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-		'End If
-		'UPGRADE_WARNING: ExchangeFormCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-		'UPGRADE_WARNING: ExchangeFormCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-		'End If
-		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_WARNING: ExchangeFormCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_WARNING: ExchangeFormCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-		'End With
 NextLoop: 
-		'Next
+		Next u
 		ReDim ListItemFlag(UBound(list))
 		
-		'Invalid_string_refer_to_original_code
+		'リストをユニットのＨＰでソート
 		ReDim key_list(UBound(list))
 		With UList
 			For i = 1 To UBound(list)
@@ -2829,37 +2717,26 @@ NextLoop:
 			End If
 		Next 
 		
-		'Invalid_string_refer_to_original_code
+		'換装するユニットを選択
 		TopItem = top_item
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-		'End If
+		If IsOptionDefined("等身大基準") Then
+			ret = ListBox("ユニット選択", list, "ユニット                         " & Term("ランク", Nothing, 6) & "   " & Term("ＨＰ", Nothing, 4) & " " & Term("ＥＮ", Nothing, 4) & " " & Term("装甲", Nothing, 4) & " " & Term("運動", Nothing, 4) & " レベル", "連続表示,コメント")
+		Else
+			ret = ListBox("ユニット選択", list, "ユニット                     " & Term("ランク", Nothing, 6) & "   " & Term("ＨＰ", Nothing, 4) & " " & Term("ＥＮ", Nothing, 4) & " " & Term("装甲", Nothing, 4) & " " & Term("運動", Nothing, 4) & " パイロット", "連続表示,コメント")
+		End If
 		top_item = TopItem
 		
-		'Invalid_string_refer_to_original_code
+		'キャンセル？
 		If ret = 0 Then
 			Exit Sub
 		End If
 		
-		'驕ｸ謚槭＆繧後◆繝ｦ繝九ャ繝医ｒ讀懃ｴ｢
+		'選択されたユニットを検索
 		u = UList.Item(id_list(ret))
 		
-		'Invalid_string_refer_to_original_code
+		'換装可能な形態のリストを作成
 		With u
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+			buf = .FeatureData("換装")
 			ReDim list2(0)
 			ReDim id_list2(0)
 			ReDim ListItemComment(0)
@@ -2870,12 +2747,12 @@ NextLoop:
 						ReDim Preserve id_list2(UBound(list2))
 						ReDim Preserve ListItemComment(UBound(list2))
 						
-						'Invalid_string_refer_to_original_code
+						'ユニットランクを合わせる
 						.Rank = u.Rank
 						.BossRank = u.BossRank
 						.Update()
 						
-						'Invalid_string_refer_to_original_code
+						'換装先のリストを作成
 						id_list2(UBound(list2)) = .Name
 						If u.Nickname0 = .Nickname Then
 							list2(UBound(list2)) = RightPaddedString(.Name, 27)
@@ -2884,80 +2761,70 @@ NextLoop:
 						End If
 						list2(UBound(list2)) = list2(UBound(list2)) & LeftPaddedString(VB6.Format(.MaxHP), 6) & LeftPaddedString(VB6.Format(.MaxEN), 5) & LeftPaddedString(VB6.Format(.Armor), 5) & LeftPaddedString(VB6.Format(.Mobility), 5) & " " & .Data.Adaption
 						
-						'Invalid_string_refer_to_original_code
+						'最大攻撃力
 						max_value = 0
 						For j = 1 To .CountWeapon
-							'Invalid_string_refer_to_original_code_
-							'Then
-							'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-							If .WeaponPower(j, "") > max_value Then
-								max_value = .WeaponPower(j, "")
+							If .IsWeaponMastered(j) And Not .IsDisabled((.Weapon(j).Name)) And Not .IsWeaponClassifiedAs(j, "合") Then
+								If .WeaponPower(j, "") > max_value Then
+									max_value = .WeaponPower(j, "")
+								End If
+							End If
+						Next 
+						list2(UBound(list2)) = list2(UBound(list2)) & LeftPaddedString(VB6.Format(max_value), 7)
+						
+						'最大射程
+						max_value = 0
+						For j = 1 To .CountWeapon
+							If .IsWeaponMastered(j) And Not .IsDisabled((.Weapon(j).Name)) And Not .IsWeaponClassifiedAs(j, "合") Then
+								If .WeaponMaxRange(j) > max_value Then
+									max_value = .WeaponMaxRange(j)
+								End If
+							End If
+						Next 
+						list2(UBound(list2)) = list2(UBound(list2)) & LeftPaddedString(VB6.Format(max_value), 5)
+						
+						'換装先が持つ特殊能力一覧
+						ReDim farray(0)
+						For j = 1 To .CountFeature
+							If .FeatureName(j) <> "" Then
+								'重複する特殊能力は表示しないようチェック
+								For k = 1 To UBound(farray)
+									If .FeatureName(j) = farray(k) Then
+										Exit For
+									End If
+								Next 
+								If k > UBound(farray) Then
+									ListItemComment(UBound(list2)) = ListItemComment(UBound(list2)) & .FeatureName(j) & " "
+									ReDim Preserve farray(UBound(farray) + 1)
+									farray(UBound(farray)) = .FeatureName(j)
+								End If
 							End If
 						Next 
 					End If
 				End With
 			Next 
-			list2(UBound(list2)) = list2(UBound(list2)) & LeftPaddedString(VB6.Format(max_value), 7)
+			ReDim ListItemFlag(UBound(list2))
 			
-			'Invalid_string_refer_to_original_code
-			max_value = 0
-			For j = 1 To .CountWeapon
-				'Invalid_string_refer_to_original_code_
-				'Then
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				If .WeaponMaxRange(j) > max_value Then
-					max_value = .WeaponMaxRange(j)
-				End If
-				'End If
-			Next 
-			list2(UBound(list2)) = list2(UBound(list2)) & LeftPaddedString(VB6.Format(max_value), 5)
+			'換装先の形態を選択
+			TopItem = 1
+			ret = ListBox("変更先選択", list2, "ユニット                     " & Term("ＨＰ", u, 4) & " " & Term("ＥＮ", u, 4) & " " & Term("装甲", u, 4) & " " & Term("運動", u, 4) & " 適応 攻撃力 射程", "連続表示,コメント")
 			
-			'Invalid_string_refer_to_original_code
-			ReDim farray(0)
-			For j = 1 To .CountFeature
-				If .FeatureName(j) <> "" Then
-					'Invalid_string_refer_to_original_code
-					For k = 1 To UBound(farray)
-						If .FeatureName(j) = farray(k) Then
-							Exit For
-						End If
-					Next 
-					If k > UBound(farray) Then
-						ListItemComment(UBound(list2)) = ListItemComment(UBound(list2)) & .FeatureName(j) & " "
-						ReDim Preserve farray(UBound(farray) + 1)
-						farray(UBound(farray)) = .FeatureName(j)
-					End If
-				End If
-			Next 
-			'End If
+			'キャンセル？
+			If ret = 0 Then
+				GoTo Beginning
+			End If
+			
+			'換装を実施
+			.Transform(id_list2(ret))
 		End With
-		'Next
-		ReDim ListItemFlag(UBound(list2))
-		
-		'Invalid_string_refer_to_original_code
-		TopItem = 1
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-		
-		'Invalid_string_refer_to_original_code
-		If ret = 0 Then
-			GoTo Beginning
-		End If
-		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_WARNING: ExchangeFormCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-		'End With
 		
 		GoTo Beginning
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'ステータスコマンド中かどうかを返す
 	Public Function InStatusCommand() As Boolean
 		If MapFileName = "" Then
-			If InStr(ScenarioFileName, "Invalid_string_refer_to_original_code") > 0 Or InStr(ScenarioFileName, "Invalid_string_refer_to_original_code") > 0 Or IsSubStage Then
+			If InStr(ScenarioFileName, "\ユニットステータス表示.eve") > 0 Or InStr(ScenarioFileName, "\パイロットステータス表示.eve") > 0 Or IsSubStage Then
 				InStatusCommand = True
 			End If
 		End If

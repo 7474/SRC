@@ -3,18 +3,18 @@ Option Explicit On
 Friend Class Condition
 	
 	' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
+	' 本プログラムはフリーソフトであり、無保証です。
+	' 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
+	' 再頒布または改変することができます。
 	
-	'Invalid_string_refer_to_original_code
+	'特殊状態のクラス
 	
-	'蜷咲ｧｰ
+	'名称
 	Public Name As String
-	'譛牙柑譛滄俣
+	'有効期間
 	Public Lifetime As Short
-	'繝ｬ繝吶Ν
+	'レベル
 	Public Level As Double
-	'Invalid_string_refer_to_original_code
+	'データ
 	Public StrData As String
 End Class

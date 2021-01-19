@@ -3,7 +3,7 @@ Option Explicit On
 Module VBMP3
 	
 	'VBMP3.BAS
-	'VisualBasic逕ｨ MP3謫堺ｽ廛LL 髢｢謨ｰ螳｣險繝輔ぃ繧､繝ｫ
+	'VisualBasic用 MP3操作DLL 関数宣言ファイル
 	'UPGRADE_WARNING: 構造体 WAVE_FORM に、この Declare ステートメントの引数としてマーシャリング属性を渡す必要があります。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="C429C3A5-5D47-4CD9-8F51-74A1616405DC"' をクリックしてください。
 	Declare Function vbmp3_encodeOpen Lib "VBMP3.dll" (ByVal pszWaveName As String, ByRef pWaveForm As WAVE_FORM) As Boolean
 	Declare Function vbmp3_encodeStart Lib "VBMP3.dll" (ByVal pszMp3Name As String) As Boolean
@@ -86,7 +86,7 @@ Module VBMP3
 	Declare Sub vbmp3_setFadeOut Lib "VBMP3.dll" (ByVal fout As Integer)
 	Declare Sub vbmp3_fadeOut Lib "VBMP3.dll" ()
 	
-	'譛ｪ菴ｿ逕ｨ
+	'未使用
 	Declare Sub vbmp3_startAnalyzeThread Lib "VBMP3.dll" ()
 	Declare Sub vbmp3_stopAnalyzeThread Lib "VBMP3.dll" ()
 	Declare Sub vbmp3_startAnalyze Lib "VBMP3.dll" ()
@@ -96,90 +96,90 @@ Module VBMP3
 	
 	Public Structure InputInfo
 		'UPGRADE_WARNING: 固定長文字列のサイズはバッファに合わせる必要があります。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="3C1E4426-0B80-443E-B943-0627CD55D48B"' をクリックしてください。
-		<VBFixedString(128),System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.ByValArray,SizeConst:=128)> Public szTrackName() As Char 'Invalid_string_refer_to_original_code
+		<VBFixedString(128),System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.ByValArray,SizeConst:=128)> Public szTrackName() As Char '曲名
 		'UPGRADE_WARNING: 固定長文字列のサイズはバッファに合わせる必要があります。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="3C1E4426-0B80-443E-B943-0627CD55D48B"' をクリックしてください。
-		<VBFixedString(128),System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.ByValArray,SizeConst:=128)> Public szArtistName() As Char 'Invalid_string_refer_to_original_code
-		Dim channels As Integer 'Invalid_string_refer_to_original_code
-		Dim bitRate As Integer 'Invalid_string_refer_to_original_code
-		Dim samplingRate As Integer 'Invalid_string_refer_to_original_code
-		Dim totalSec As Integer 'Invalid_string_refer_to_original_code
+		<VBFixedString(128),System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.ByValArray,SizeConst:=128)> Public szArtistName() As Char 'ｱｰﾃｨｽﾄ名
+		Dim channels As Integer 'ﾁｬﾝﾈﾙ数
+		Dim bitRate As Integer 'ﾋﾞｯﾄﾚｰﾄ(kbit/s)
+		Dim samplingRate As Integer 'ｻﾝﾌﾟﾙﾚｰﾄ(Hz)
+		Dim totalSec As Integer '演奏時間(s)
 	End Structure
 	
 	Public Structure TAG_INFO
 		'UPGRADE_WARNING: 固定長文字列のサイズはバッファに合わせる必要があります。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="3C1E4426-0B80-443E-B943-0627CD55D48B"' をクリックしてください。
-		<VBFixedString(128),System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.ByValArray,SizeConst:=128)> Public szTrackName() As Char 'Invalid_string_refer_to_original_code
+		<VBFixedString(128),System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.ByValArray,SizeConst:=128)> Public szTrackName() As Char '曲名
 		'UPGRADE_WARNING: 固定長文字列のサイズはバッファに合わせる必要があります。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="3C1E4426-0B80-443E-B943-0627CD55D48B"' をクリックしてください。
-		<VBFixedString(128),System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.ByValArray,SizeConst:=128)> Public szArtistName() As Char 'Invalid_string_refer_to_original_code
+		<VBFixedString(128),System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.ByValArray,SizeConst:=128)> Public szArtistName() As Char 'ｱｰﾃｨｽﾄ名
 		'UPGRADE_WARNING: 固定長文字列のサイズはバッファに合わせる必要があります。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="3C1E4426-0B80-443E-B943-0627CD55D48B"' をクリックしてください。
-		<VBFixedString(128),System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.ByValArray,SizeConst:=128)> Public szAlbumName() As Char 'Invalid_string_refer_to_original_code
+		<VBFixedString(128),System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.ByValArray,SizeConst:=128)> Public szAlbumName() As Char 'ｱﾙﾊﾞﾑ名
 		'UPGRADE_WARNING: 固定長文字列のサイズはバッファに合わせる必要があります。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="3C1E4426-0B80-443E-B943-0627CD55D48B"' をクリックしてください。
-		<VBFixedString(5),System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.ByValArray,SizeConst:=5)> Public szYear() As Char 'Invalid_string_refer_to_original_code
+		<VBFixedString(5),System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.ByValArray,SizeConst:=5)> Public szYear() As Char 'ﾘﾘｰｽ年号
 		'UPGRADE_WARNING: 固定長文字列のサイズはバッファに合わせる必要があります。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="3C1E4426-0B80-443E-B943-0627CD55D48B"' をクリックしてください。
-		<VBFixedString(128),System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.ByValArray,SizeConst:=128)> Public szComment() As Char 'Invalid_string_refer_to_original_code
-		Dim genre As Integer 'Invalid_string_refer_to_original_code
+		<VBFixedString(128),System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.ByValArray,SizeConst:=128)> Public szComment() As Char 'ｺﾒﾝﾄ
+		Dim genre As Integer 'ｼﾞｬﾝﾙ
 		'UPGRADE_WARNING: 固定長文字列のサイズはバッファに合わせる必要があります。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="3C1E4426-0B80-443E-B943-0627CD55D48B"' をクリックしてください。
-		<VBFixedString(128),System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.ByValArray,SizeConst:=128)> Public szGenreName() As Char 'Invalid_string_refer_to_original_code
+		<VBFixedString(128),System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.ByValArray,SizeConst:=128)> Public szGenreName() As Char 'ｼﾞｬﾝﾙ名
 	End Structure
 	
 	Public Structure MPEG_INFO
-		Dim version As Integer 'Invalid_string_refer_to_original_code
-		Dim layer As Integer 'Invalid_string_refer_to_original_code
-		Dim crcDisable As Integer 'Invalid_string_refer_to_original_code
-		Dim extension As Integer 'Invalid_string_refer_to_original_code
-		Dim Mode As Integer 'Invalid_string_refer_to_original_code
-		Dim copyright As Integer 'Invalid_string_refer_to_original_code
-		Dim original As Integer 'Invalid_string_refer_to_original_code
-		Dim emphasis As Integer 'Invalid_string_refer_to_original_code
-		Dim channels As Integer 'Invalid_string_refer_to_original_code
-		Dim bitRate As Integer 'Invalid_string_refer_to_original_code
-		Dim samplingRate As Integer 'Invalid_string_refer_to_original_code
-		Dim fileSize As Integer 'Invalid_string_refer_to_original_code
-		Dim flames As Integer 'Invalid_string_refer_to_original_code
-		Dim totalSec As Integer 'Invalid_string_refer_to_original_code
+		Dim version As Integer 'ﾊﾞｰｼﾞｮﾝ        1:MPEG-1, 2:MPEG-2, 3:MPEG-2.5
+		Dim layer As Integer 'ﾚｲﾔ            1:Layer1. 2:Layer2, 3:Layer3
+		Dim crcDisable As Integer 'ｴﾗｰ保護        0:無効, 1:有効
+		Dim extension As Integer 'ｴｸｽﾃﾝｼｮﾝ       0:なし, 1:ﾌﾟﾗｲﾍﾞｰﾄ
+		Dim Mode As Integer 'ﾁｬﾝﾈﾙﾓｰﾄﾞ      0:Stereo, 1:Joint stereo, 3:Dual channel, 4:Mono
+		Dim copyright As Integer '著作権         0:著作権保護あり, 1:著作権保護なし
+		Dim original As Integer 'ｵﾘｼﾞﾅﾙ         0:ｺﾋﾟｰ, 1:ｵﾘｼﾞﾅﾙ
+		Dim emphasis As Integer 'ｴﾝﾌｫｼｽ         0:None, 1:50/15ms, 2:Reserved, 3:CCITT j.17
+		Dim channels As Integer 'ﾁｬﾝﾈﾙ数
+		Dim bitRate As Integer 'ﾋﾞｯﾄﾚｰﾄ(kbit/s)(0 なら VBR形式)
+		Dim samplingRate As Integer 'ｻﾝﾌﾟﾙﾚｰﾄ(Hz)
+		Dim fileSize As Integer 'ﾌｧｲﾙｻｲｽﾞ(Byte)
+		Dim flames As Integer 'ﾌﾚｰﾑ数
+		Dim totalSec As Integer '演奏時間(s)
 	End Structure
 	
 	Public Structure DEC_OPTION
-		Dim reduction As Integer '繧ｵ繝ｳ繝励Μ繝ｳ繧ｰ 0:1/1 1:1/2 2:1/4 [Default = 0]
-		Dim convert As Integer 'Invalid_string_refer_to_original_code
-		Dim freqLimit As Integer '蜻ｨ豕｢謨ｰ[Default = 24000]
+		Dim reduction As Integer 'サンプリング 0:1/1 1:1/2 2:1/4 [Default = 0]
+		Dim convert As Integer 'チャンネル 0:ステレオ 1:モノラル[Default = 0]
+		Dim freqLimit As Integer '周波数[Default = 24000]
 	End Structure
 	
 	Public Structure VBMP3_OPTION
-		Dim inputBlock As Integer '蜈･蜉帙ヵ繝ｬ繝ｼ繝謨ｰ[Default = 40]
-		Dim outputBlock As Integer '蜃ｺ蜉帙ヵ繝ｬ繝ｼ繝謨ｰ[Default = 30]
-		Dim inputSleep As Integer 'Invalid_string_refer_to_original_code
-		Dim outputSleep As Integer 'Invalid_string_refer_to_original_code
+		Dim inputBlock As Integer '入力フレーム数[Default = 40]
+		Dim outputBlock As Integer '出力フレーム数[Default = 30]
+		Dim inputSleep As Integer '入力直後のｽﾘｰﾌﾟ時間(ﾐﾘ秒)[Default = 5]
+		Dim outputSleep As Integer '出力直後のｽﾘｰﾌﾟ時間(ﾐﾘ秒)[Default = 0]
 	End Structure
 	
 	Public Structure LIST_INFO
 		'UPGRADE_WARNING: 固定長文字列のサイズはバッファに合わせる必要があります。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="3C1E4426-0B80-443E-B943-0627CD55D48B"' をクリックしてください。
-		<VBFixedString(128),System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.ByValArray,SizeConst:=128)> Public INAM() As Char 'Invalid_string_refer_to_original_code
+		<VBFixedString(128),System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.ByValArray,SizeConst:=128)> Public INAM() As Char '曲名
 		'UPGRADE_WARNING: 固定長文字列のサイズはバッファに合わせる必要があります。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="3C1E4426-0B80-443E-B943-0627CD55D48B"' をクリックしてください。
-		<VBFixedString(128),System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.ByValArray,SizeConst:=128)> Public IART() As Char 'Invalid_string_refer_to_original_code
+		<VBFixedString(128),System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.ByValArray,SizeConst:=128)> Public IART() As Char 'アーティスト名
 		'UPGRADE_WARNING: 固定長文字列のサイズはバッファに合わせる必要があります。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="3C1E4426-0B80-443E-B943-0627CD55D48B"' をクリックしてください。
-		<VBFixedString(128),System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.ByValArray,SizeConst:=128)> Public IPRD() As Char '陬ｽ蜩∝錐
+		<VBFixedString(128),System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.ByValArray,SizeConst:=128)> Public IPRD() As Char '製品名
 		'UPGRADE_WARNING: 固定長文字列のサイズはバッファに合わせる必要があります。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="3C1E4426-0B80-443E-B943-0627CD55D48B"' をクリックしてください。
-		<VBFixedString(128),System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.ByValArray,SizeConst:=128)> Public ICMT() As Char 'Invalid_string_refer_to_original_code
+		<VBFixedString(128),System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.ByValArray,SizeConst:=128)> Public ICMT() As Char 'コメント文字列
 		'UPGRADE_WARNING: 固定長文字列のサイズはバッファに合わせる必要があります。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="3C1E4426-0B80-443E-B943-0627CD55D48B"' をクリックしてください。
-		<VBFixedString(128),System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.ByValArray,SizeConst:=128)> Public ICRD() As Char '繝ｪ繝ｪ繝ｼ繧ｹ蟷ｴ蜿ｷ
+		<VBFixedString(128),System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.ByValArray,SizeConst:=128)> Public ICRD() As Char 'リリース年号
 		'UPGRADE_WARNING: 固定長文字列のサイズはバッファに合わせる必要があります。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="3C1E4426-0B80-443E-B943-0627CD55D48B"' をクリックしてください。
-		<VBFixedString(128),System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.ByValArray,SizeConst:=128)> Public IGNR() As Char 'Invalid_string_refer_to_original_code
+		<VBFixedString(128),System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.ByValArray,SizeConst:=128)> Public IGNR() As Char 'ジャンル名
 		'UPGRADE_WARNING: 固定長文字列のサイズはバッファに合わせる必要があります。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="3C1E4426-0B80-443E-B943-0627CD55D48B"' をクリックしてください。
-		<VBFixedString(128),System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.ByValArray,SizeConst:=128)> Public ICOP() As Char '闡嶺ｽ懈ｨｩ
+		<VBFixedString(128),System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.ByValArray,SizeConst:=128)> Public ICOP() As Char '著作権
 		'UPGRADE_WARNING: 固定長文字列のサイズはバッファに合わせる必要があります。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="3C1E4426-0B80-443E-B943-0627CD55D48B"' をクリックしてください。
-		<VBFixedString(128),System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.ByValArray,SizeConst:=128)> Public IENG() As Char '繧ｨ繝ｳ繧ｸ繝九い
+		<VBFixedString(128),System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.ByValArray,SizeConst:=128)> Public IENG() As Char 'エンジニア
 		'UPGRADE_WARNING: 固定長文字列のサイズはバッファに合わせる必要があります。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="3C1E4426-0B80-443E-B943-0627CD55D48B"' をクリックしてください。
-		<VBFixedString(128),System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.ByValArray,SizeConst:=128)> Public ISRC() As Char '繧ｽ繝ｼ繧ｹ
+		<VBFixedString(128),System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.ByValArray,SizeConst:=128)> Public ISRC() As Char 'ソース
 		'UPGRADE_WARNING: 固定長文字列のサイズはバッファに合わせる必要があります。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="3C1E4426-0B80-443E-B943-0627CD55D48B"' をクリックしてください。
-		<VBFixedString(128),System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.ByValArray,SizeConst:=128)> Public ISFT() As Char '繧ｽ繝輔ヨ繧ｦ繧ｧ繧｢
+		<VBFixedString(128),System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.ByValArray,SizeConst:=128)> Public ISFT() As Char 'ソフトウェア
 		'UPGRADE_WARNING: 固定長文字列のサイズはバッファに合わせる必要があります。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="3C1E4426-0B80-443E-B943-0627CD55D48B"' をクリックしてください。
-		<VBFixedString(128),System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.ByValArray,SizeConst:=128)> Public IKEY() As Char 'Invalid_string_refer_to_original_code
+		<VBFixedString(128),System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.ByValArray,SizeConst:=128)> Public IKEY() As Char 'キーワード
 		'UPGRADE_WARNING: 固定長文字列のサイズはバッファに合わせる必要があります。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="3C1E4426-0B80-443E-B943-0627CD55D48B"' をクリックしてください。
-		<VBFixedString(128),System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.ByValArray,SizeConst:=128)> Public ITCH() As Char 'Invalid_string_refer_to_original_code
+		<VBFixedString(128),System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.ByValArray,SizeConst:=128)> Public ITCH() As Char '技術者
 		'UPGRADE_WARNING: 固定長文字列のサイズはバッファに合わせる必要があります。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="3C1E4426-0B80-443E-B943-0627CD55D48B"' をクリックしてください。
-		<VBFixedString(128),System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.ByValArray,SizeConst:=128)> Public ILYC() As Char 'Invalid_string_refer_to_original_code
+		<VBFixedString(128),System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.ByValArray,SizeConst:=128)> Public ILYC() As Char '歌詞
 		'UPGRADE_WARNING: 固定長文字列のサイズはバッファに合わせる必要があります。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="3C1E4426-0B80-443E-B943-0627CD55D48B"' をクリックしてください。
-		<VBFixedString(128),System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.ByValArray,SizeConst:=128)> Public ICMS() As Char '繧ｳ繝溘ャ繧ｷ繝ｧ繝ｳ
+		<VBFixedString(128),System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.ByValArray,SizeConst:=128)> Public ICMS() As Char 'コミッション
 	End Structure
 	
 	Public Structure LYRICS_INFO
@@ -212,7 +212,7 @@ Module VBMP3
 		Dim dataSize As Integer
 	End Structure
 	
-	'繝輔ぃ繧､繝ｫ繧ｿ繧､繝怜ｮ壽焚
+	'ファイルタイプ定数
 	Public Const FT_NOMAL As Short = 0
 	Public Const FT_WAVE As Short = 1
 	Public Const FT_RMP As Short = 2
@@ -220,7 +220,7 @@ Module VBMP3
 	Public Const FT_MAC As Short = 8
 	Public Const FT_ID3V1 As Short = 16
 	
-	'繧ｳ繝ｼ繝ｫ繝舌ャ繧ｯ髢｢謨ｰ逕ｨ
+	'コールバック関数用
 	Public Const MSG_ERROR As Short = 0
 	Public Const MSG_STOPING As Short = 1
 	Public Const MSG_PLAYING As Short = 2
@@ -264,10 +264,10 @@ Module VBMP3
 	
 	
 	'---------------------------------------------------------
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
+	'関数：Function NTrim()
+	'機能：\0 以降の文字列削除
+	'引数：Word  : 変換元文字列
+	'戻り値：変換後文字列
 	'---------------------------------------------------------
 	Function NTrim(ByRef Word As String) As String
 		If InStr(Word, Chr(0)) > 0 Then

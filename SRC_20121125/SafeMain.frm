@@ -1,15 +1,15 @@
 VERSION 5.00
 Begin VB.Form frmSafeMain 
    BackColor       =   &H00C0C0C0&
-   BorderStyle     =   1  'å›ºå®š(å®Ÿç·š)
-   Caption         =   "SRCé–‹ç™ºç‰ˆ"
+   BorderStyle     =   1  'ŒÅ’è(Àü)
+   Caption         =   "SRCŠJ”­”Å"
    ClientHeight    =   4410
    ClientLeft      =   1215
    ClientTop       =   3270
    ClientWidth     =   7620
    ClipControls    =   0   'False
    BeginProperty Font 
-      Name            =   "ï¼­ï¼³ æ˜æœ"
+      Name            =   "‚l‚r –¾’©"
       Size            =   9.75
       Charset         =   128
       Weight          =   400
@@ -21,23 +21,23 @@ Begin VB.Form frmSafeMain
    KeyPreview      =   -1  'True
    LinkTopic       =   "Main"
    MaxButton       =   0   'False
-   PaletteMode     =   1  'Z ï½µï½°ï¾€ï¾ï½°
+   PaletteMode     =   1  'Z µ°ÀŞ°
    ScaleHeight     =   294
-   ScaleMode       =   3  'ï¾‹ï¾Ÿï½¸ï½¾ï¾™
+   ScaleMode       =   3  'Ëß¸¾Ù
    ScaleWidth      =   508
    Visible         =   0   'False
    Begin VB.PictureBox picStretchedTmp 
       AutoRedraw      =   -1  'True
       AutoSize        =   -1  'True
       BackColor       =   &H00FFFFFF&
-      BorderStyle     =   0  'ãªã—
+      BorderStyle     =   0  '‚È‚µ
       ClipControls    =   0   'False
       ForeColor       =   &H00000000&
       Height          =   480
       Index           =   1
       Left            =   4320
       ScaleHeight     =   32
-      ScaleMode       =   3  'ï¾‹ï¾Ÿï½¸ï½¾ï¾™
+      ScaleMode       =   3  'Ëß¸¾Ù
       ScaleWidth      =   32
       TabIndex        =   21
       Top             =   3000
@@ -48,14 +48,14 @@ Begin VB.Form frmSafeMain
       AutoRedraw      =   -1  'True
       AutoSize        =   -1  'True
       BackColor       =   &H00FFFFFF&
-      BorderStyle     =   0  'ãªã—
+      BorderStyle     =   0  '‚È‚µ
       ClipControls    =   0   'False
       ForeColor       =   &H00000000&
       Height          =   480
       Index           =   0
       Left            =   4320
       ScaleHeight     =   32
-      ScaleMode       =   3  'ï¾‹ï¾Ÿï½¸ï½¾ï¾™
+      ScaleMode       =   3  'Ëß¸¾Ù
       ScaleWidth      =   32
       TabIndex        =   20
       Top             =   2280
@@ -65,10 +65,10 @@ Begin VB.Form frmSafeMain
    Begin VB.PictureBox picMain 
       AutoRedraw      =   -1  'True
       BackColor       =   &H00000000&
-      BorderStyle     =   0  'ãªã—
+      BorderStyle     =   0  '‚È‚µ
       ClipControls    =   0   'False
       BeginProperty Font 
-         Name            =   "ï¼­ï¼³ ï¼°æ˜æœ"
+         Name            =   "‚l‚r ‚o–¾’©"
          Size            =   15.75
          Charset         =   128
          Weight          =   700
@@ -82,7 +82,7 @@ Begin VB.Form frmSafeMain
       Left            =   1440
       MouseIcon       =   "SafeMain.frx":030A
       ScaleHeight     =   32
-      ScaleMode       =   3  'ï¾‹ï¾Ÿï½¸ï½¾ï¾™
+      ScaleMode       =   3  'Ëß¸¾Ù
       ScaleWidth      =   81
       TabIndex        =   13
       Top             =   120
@@ -93,11 +93,11 @@ Begin VB.Form frmSafeMain
       AutoRedraw      =   -1  'True
       AutoSize        =   -1  'True
       BackColor       =   &H00FFFFFF&
-      BorderStyle     =   0  'ãªã—
+      BorderStyle     =   0  '‚È‚µ
       ClipControls    =   0   'False
-      FillStyle       =   0  'å¡—ã‚Šã¤ã¶ã—
+      FillStyle       =   0  '“h‚è‚Â‚Ô‚µ
       BeginProperty Font 
-         Name            =   "ï¼­ï¼³ ï¼°ã‚´ã‚·ãƒƒã‚¯"
+         Name            =   "‚l‚r ‚oƒSƒVƒbƒN"
          Size            =   9
          Charset         =   128
          Weight          =   400
@@ -110,7 +110,7 @@ Begin VB.Form frmSafeMain
       Index           =   0
       Left            =   3360
       ScaleHeight     =   32
-      ScaleMode       =   3  'ï¾‹ï¾Ÿï½¸ï½¾ï¾™
+      ScaleMode       =   3  'Ëß¸¾Ù
       ScaleWidth      =   32
       TabIndex        =   19
       Top             =   720
@@ -120,14 +120,14 @@ Begin VB.Form frmSafeMain
    Begin VB.PictureBox picTmp32 
       AutoRedraw      =   -1  'True
       BackColor       =   &H00FFFFFF&
-      BorderStyle     =   0  'ãªã—
+      BorderStyle     =   0  '‚È‚µ
       ClipControls    =   0   'False
       ForeColor       =   &H00000000&
       Height          =   480
       Index           =   2
       Left            =   3600
       ScaleHeight     =   32
-      ScaleMode       =   3  'ï¾‹ï¾Ÿï½¸ï½¾ï¾™
+      ScaleMode       =   3  'Ëß¸¾Ù
       ScaleWidth      =   32
       TabIndex        =   18
       Top             =   3000
@@ -137,14 +137,14 @@ Begin VB.Form frmSafeMain
    Begin VB.PictureBox picTmp32 
       AutoRedraw      =   -1  'True
       BackColor       =   &H00FFFFFF&
-      BorderStyle     =   0  'ãªã—
+      BorderStyle     =   0  '‚È‚µ
       ClipControls    =   0   'False
       ForeColor       =   &H00000000&
       Height          =   480
       Index           =   1
       Left            =   2880
       ScaleHeight     =   32
-      ScaleMode       =   3  'ï¾‹ï¾Ÿï½¸ï½¾ï¾™
+      ScaleMode       =   3  'Ëß¸¾Ù
       ScaleWidth      =   32
       TabIndex        =   17
       Top             =   3600
@@ -158,7 +158,7 @@ Begin VB.Form frmSafeMain
       Height          =   1020
       Left            =   120
       ScaleHeight     =   64
-      ScaleMode       =   3  'ï¾‹ï¾Ÿï½¸ï½¾ï¾™
+      ScaleMode       =   3  'Ëß¸¾Ù
       ScaleWidth      =   64
       TabIndex        =   16
       Top             =   2520
@@ -167,14 +167,14 @@ Begin VB.Form frmSafeMain
    Begin VB.PictureBox picTmp32 
       AutoRedraw      =   -1  'True
       BackColor       =   &H00FFFFFF&
-      BorderStyle     =   0  'ãªã—
+      BorderStyle     =   0  '‚È‚µ
       ClipControls    =   0   'False
       ForeColor       =   &H00000000&
       Height          =   480
       Index           =   0
       Left            =   2880
       ScaleHeight     =   32
-      ScaleMode       =   3  'ï¾‹ï¾Ÿï½¸ï½¾ï¾™
+      ScaleMode       =   3  'Ëß¸¾Ù
       ScaleWidth      =   32
       TabIndex        =   15
       Top             =   3000
@@ -184,13 +184,13 @@ Begin VB.Form frmSafeMain
    Begin VB.PictureBox picMaskedBack 
       AutoRedraw      =   -1  'True
       BackColor       =   &H00000000&
-      BorderStyle     =   0  'ãªã—
+      BorderStyle     =   0  '‚È‚µ
       ClipControls    =   0   'False
       ForeColor       =   &H00FFFFFF&
       Height          =   480
       Left            =   4320
       ScaleHeight     =   32
-      ScaleMode       =   3  'ï¾‹ï¾Ÿï½¸ï½¾ï¾™
+      ScaleMode       =   3  'Ëß¸¾Ù
       ScaleWidth      =   81
       TabIndex        =   14
       Top             =   120
@@ -206,13 +206,13 @@ Begin VB.Form frmSafeMain
    Begin VB.PictureBox picMask2 
       AutoRedraw      =   -1  'True
       AutoSize        =   -1  'True
-      BorderStyle     =   0  'ãªã—
+      BorderStyle     =   0  '‚È‚µ
       ClipControls    =   0   'False
       Height          =   480
       Left            =   120
       Picture         =   "SafeMain.frx":0614
       ScaleHeight     =   32
-      ScaleMode       =   3  'ï¾‹ï¾Ÿï½¸ï½¾ï¾™
+      ScaleMode       =   3  'Ëß¸¾Ù
       ScaleWidth      =   32
       TabIndex        =   12
       Top             =   1635
@@ -221,13 +221,13 @@ Begin VB.Form frmSafeMain
    End
    Begin VB.PictureBox picNeautral 
       AutoRedraw      =   -1  'True
-      BorderStyle     =   0  'ãªã—
+      BorderStyle     =   0  '‚È‚µ
       ClipControls    =   0   'False
       Height          =   480
       Left            =   2640
       Picture         =   "SafeMain.frx":0E56
       ScaleHeight     =   32
-      ScaleMode       =   3  'ï¾‹ï¾Ÿï½¸ï½¾ï¾™
+      ScaleMode       =   3  'Ëß¸¾Ù
       ScaleWidth      =   32
       TabIndex        =   11
       Top             =   1740
@@ -236,13 +236,13 @@ Begin VB.Form frmSafeMain
    End
    Begin VB.PictureBox picEnemy 
       AutoRedraw      =   -1  'True
-      BorderStyle     =   0  'ãªã—
+      BorderStyle     =   0  '‚È‚µ
       ClipControls    =   0   'False
       Height          =   480
       Left            =   1860
       Picture         =   "SafeMain.frx":1698
       ScaleHeight     =   32
-      ScaleMode       =   3  'ï¾‹ï¾Ÿï½¸ï½¾ï¾™
+      ScaleMode       =   3  'Ëß¸¾Ù
       ScaleWidth      =   32
       TabIndex        =   10
       Top             =   1740
@@ -251,13 +251,13 @@ Begin VB.Form frmSafeMain
    End
    Begin VB.PictureBox picUnit 
       AutoRedraw      =   -1  'True
-      BorderStyle     =   0  'ãªã—
+      BorderStyle     =   0  '‚È‚µ
       ClipControls    =   0   'False
       Height          =   480
       Left            =   1140
       Picture         =   "SafeMain.frx":1EDA
       ScaleHeight     =   32
-      ScaleMode       =   3  'ï¾‹ï¾Ÿï½¸ï½¾ï¾™
+      ScaleMode       =   3  'Ëß¸¾Ù
       ScaleWidth      =   32
       TabIndex        =   9
       Top             =   1740
@@ -267,12 +267,12 @@ Begin VB.Form frmSafeMain
    Begin VB.PictureBox picPilotStatus 
       AutoRedraw      =   -1  'True
       BackColor       =   &H00C0C0C0&
-      BorderStyle     =   0  'ãªã—
+      BorderStyle     =   0  '‚È‚µ
       ClipControls    =   0   'False
       Height          =   495
       Left            =   6240
       ScaleHeight     =   33
-      ScaleMode       =   3  'ï¾‹ï¾Ÿï½¸ï½¾ï¾™
+      ScaleMode       =   3  'Ëß¸¾Ù
       ScaleWidth      =   81
       TabIndex        =   8
       Top             =   3000
@@ -281,11 +281,11 @@ Begin VB.Form frmSafeMain
    Begin VB.PictureBox picUnitStatus 
       AutoRedraw      =   -1  'True
       BackColor       =   &H00C0C0C0&
-      BorderStyle     =   0  'ãªã—
+      BorderStyle     =   0  '‚È‚µ
       ClipControls    =   0   'False
-      FillStyle       =   0  'å¡—ã‚Šã¤ã¶ã—
+      FillStyle       =   0  '“h‚è‚Â‚Ô‚µ
       BeginProperty Font 
-         Name            =   "ï¼­ï¼³ æ˜æœ"
+         Name            =   "‚l‚r –¾’©"
          Size            =   9
          Charset         =   128
          Weight          =   400
@@ -297,7 +297,7 @@ Begin VB.Form frmSafeMain
       Height          =   495
       Left            =   5640
       ScaleHeight     =   33
-      ScaleMode       =   3  'ï¾‹ï¾Ÿï½¸ï½¾ï¾™
+      ScaleMode       =   3  'Ëß¸¾Ù
       ScaleWidth      =   81
       TabIndex        =   7
       Top             =   3240
@@ -306,10 +306,10 @@ Begin VB.Form frmSafeMain
    Begin VB.PictureBox picUnitBitmap 
       AutoRedraw      =   -1  'True
       BackColor       =   &H00FFFFFF&
-      BorderStyle     =   0  'ãªã—
+      BorderStyle     =   0  '‚È‚µ
       ClipControls    =   0   'False
       BeginProperty Font 
-         Name            =   "ï¼­ï¼³ ï¼°ã‚´ã‚·ãƒƒã‚¯"
+         Name            =   "‚l‚r ‚oƒSƒVƒbƒN"
          Size            =   9
          Charset         =   128
          Weight          =   400
@@ -321,7 +321,7 @@ Begin VB.Form frmSafeMain
       Height          =   1440
       Left            =   1320
       ScaleHeight     =   96
-      ScaleMode       =   3  'ï¾‹ï¾Ÿï½¸ï½¾ï¾™
+      ScaleMode       =   3  'Ëß¸¾Ù
       ScaleWidth      =   32
       TabIndex        =   6
       Top             =   2520
@@ -356,10 +356,10 @@ Begin VB.Form frmSafeMain
    End
    Begin VB.PictureBox picMask 
       AutoRedraw      =   -1  'True
-      BorderStyle     =   0  'ãªã—
+      BorderStyle     =   0  '‚È‚µ
       ClipControls    =   0   'False
       BeginProperty Font 
-         Name            =   "ï¼­ï¼³ ï¼°ã‚´ã‚·ãƒƒã‚¯"
+         Name            =   "‚l‚r ‚oƒSƒVƒbƒN"
          Size            =   9
          Charset         =   128
          Weight          =   400
@@ -371,7 +371,7 @@ Begin VB.Form frmSafeMain
       Left            =   120
       Picture         =   "SafeMain.frx":271C
       ScaleHeight     =   32
-      ScaleMode       =   3  'ï¾‹ï¾Ÿï½¸ï½¾ï¾™
+      ScaleMode       =   3  'Ëß¸¾Ù
       ScaleWidth      =   32
       TabIndex        =   3
       Top             =   900
@@ -382,11 +382,11 @@ Begin VB.Form frmSafeMain
       AutoRedraw      =   -1  'True
       AutoSize        =   -1  'True
       BackColor       =   &H00FFFFFF&
-      BorderStyle     =   0  'ãªã—
+      BorderStyle     =   0  '‚È‚µ
       ClipControls    =   0   'False
-      FillStyle       =   0  'å¡—ã‚Šã¤ã¶ã—
+      FillStyle       =   0  '“h‚è‚Â‚Ô‚µ
       BeginProperty Font 
-         Name            =   "ï¼­ï¼³ ï¼°ã‚´ã‚·ãƒƒã‚¯"
+         Name            =   "‚l‚r ‚oƒSƒVƒbƒN"
          Size            =   9
          Charset         =   128
          Weight          =   400
@@ -398,7 +398,7 @@ Begin VB.Form frmSafeMain
       Height          =   480
       Left            =   3600
       ScaleHeight     =   32
-      ScaleMode       =   3  'ï¾‹ï¾Ÿï½¸ï½¾ï¾™
+      ScaleMode       =   3  'Ëß¸¾Ù
       ScaleWidth      =   32
       TabIndex        =   2
       Top             =   2280
@@ -408,10 +408,10 @@ Begin VB.Form frmSafeMain
    Begin VB.PictureBox picBack 
       AutoRedraw      =   -1  'True
       BackColor       =   &H00000000&
-      BorderStyle     =   0  'ãªã—
+      BorderStyle     =   0  '‚È‚µ
       ClipControls    =   0   'False
       BeginProperty Font 
-         Name            =   "ï¼­ï¼³ ï¼°ã‚´ã‚·ãƒƒã‚¯"
+         Name            =   "‚l‚r ‚oƒSƒVƒbƒN"
          Size            =   9
          Charset         =   128
          Weight          =   400
@@ -422,7 +422,7 @@ Begin VB.Form frmSafeMain
       Height          =   480
       Left            =   5760
       ScaleHeight     =   32
-      ScaleMode       =   3  'ï¾‹ï¾Ÿï½¸ï½¾ï¾™
+      ScaleMode       =   3  'Ëß¸¾Ù
       ScaleWidth      =   81
       TabIndex        =   1
       Top             =   120
@@ -432,10 +432,10 @@ Begin VB.Form frmSafeMain
    Begin VB.PictureBox picMain 
       AutoRedraw      =   -1  'True
       BackColor       =   &H00FFFFFF&
-      BorderStyle     =   0  'ãªã—
+      BorderStyle     =   0  '‚È‚µ
       ClipControls    =   0   'False
       BeginProperty Font 
-         Name            =   "ï¼­ï¼³ ï¼°æ˜æœ"
+         Name            =   "‚l‚r ‚o–¾’©"
          Size            =   15.75
          Charset         =   128
          Weight          =   700
@@ -449,119 +449,119 @@ Begin VB.Form frmSafeMain
       Left            =   120
       MouseIcon       =   "SafeMain.frx":2F5E
       ScaleHeight     =   32
-      ScaleMode       =   3  'ï¾‹ï¾Ÿï½¸ï½¾ï¾™
+      ScaleMode       =   3  'Ëß¸¾Ù
       ScaleWidth      =   81
       TabIndex        =   0
       Top             =   120
       Width           =   1215
    End
    Begin VB.Menu mnuUnitCommand 
-      Caption         =   "ãƒ¦ãƒ‹ãƒƒãƒˆã‚³ãƒãƒ³ãƒ‰"
+      Caption         =   "ƒ†ƒjƒbƒgƒRƒ}ƒ“ƒh"
       Visible         =   0   'False
       Begin VB.Menu mnuUnitCommandItem 
-         Caption         =   "ç§»å‹•"
+         Caption         =   "ˆÚ“®"
          Index           =   0
       End
       Begin VB.Menu mnuUnitCommandItem 
-         Caption         =   "ãƒ†ãƒ¬ãƒãƒ¼ãƒˆ"
+         Caption         =   "ƒeƒŒƒ|[ƒg"
          Index           =   1
          Visible         =   0   'False
       End
       Begin VB.Menu mnuUnitCommandItem 
-         Caption         =   "ã‚¸ãƒ£ãƒ³ãƒ—"
+         Caption         =   "ƒWƒƒƒ“ƒv"
          Index           =   2
          Visible         =   0   'False
       End
       Begin VB.Menu mnuUnitCommandItem 
-         Caption         =   "ä¼šè©±"
+         Caption         =   "‰ï˜b"
          Index           =   3
          Visible         =   0   'False
       End
       Begin VB.Menu mnuUnitCommandItem 
-         Caption         =   "æ”»æ’ƒ"
+         Caption         =   "UŒ‚"
          Index           =   4
       End
       Begin VB.Menu mnuUnitCommandItem 
-         Caption         =   "ä¿®ç†"
+         Caption         =   "C—"
          Index           =   5
       End
       Begin VB.Menu mnuUnitCommandItem 
-         Caption         =   "è£œçµ¦"
+         Caption         =   "•â‹‹"
          Index           =   6
       End
       Begin VB.Menu mnuUnitCommandItem 
-         Caption         =   "ã‚¢ãƒ“ãƒªãƒ†ã‚£"
+         Caption         =   "ƒAƒrƒŠƒeƒB"
          Index           =   7
       End
       Begin VB.Menu mnuUnitCommandItem 
-         Caption         =   "ãƒãƒ£ãƒ¼ã‚¸"
+         Caption         =   "ƒ`ƒƒ[ƒW"
          Index           =   8
          Visible         =   0   'False
       End
       Begin VB.Menu mnuUnitCommandItem 
-         Caption         =   "ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼"
+         Caption         =   "ƒXƒyƒVƒƒƒ‹ƒpƒ["
          Index           =   9
       End
       Begin VB.Menu mnuUnitCommandItem 
-         Caption         =   "å¤‰å½¢"
+         Caption         =   "•ÏŒ`"
          Index           =   10
       End
       Begin VB.Menu mnuUnitCommandItem 
-         Caption         =   "åˆ†é›¢"
+         Caption         =   "•ª—£"
          Index           =   11
          Visible         =   0   'False
       End
       Begin VB.Menu mnuUnitCommandItem 
-         Caption         =   "åˆä½“"
+         Caption         =   "‡‘Ì"
          Index           =   12
          Visible         =   0   'False
       End
       Begin VB.Menu mnuUnitCommandItem 
-         Caption         =   "ãƒã‚¤ãƒ‘ãƒ¼ãƒ¢ãƒ¼ãƒ‰"
+         Caption         =   "ƒnƒCƒp[ƒ‚[ƒh"
          Index           =   13
       End
       Begin VB.Menu mnuUnitCommandItem 
-         Caption         =   "åœ°ä¸Š"
+         Caption         =   "’nã"
          Index           =   14
       End
       Begin VB.Menu mnuUnitCommandItem 
-         Caption         =   "ç©ºä¸­"
+         Caption         =   "‹ó’†"
          Index           =   15
       End
       Begin VB.Menu mnuUnitCommandItem 
-         Caption         =   "åœ°ä¸­"
+         Caption         =   "’n’†"
          Index           =   16
       End
       Begin VB.Menu mnuUnitCommandItem 
-         Caption         =   "æ°´ä¸­"
+         Caption         =   "…’†"
          Index           =   17
       End
       Begin VB.Menu mnuUnitCommandItem 
-         Caption         =   "ç™ºé€²"
+         Caption         =   "”­i"
          Index           =   18
       End
       Begin VB.Menu mnuUnitCommandItem 
-         Caption         =   "ã‚¢ã‚¤ãƒ†ãƒ "
+         Caption         =   "ƒAƒCƒeƒ€"
          Index           =   19
       End
       Begin VB.Menu mnuUnitCommandItem 
-         Caption         =   "å¬å–šè§£é™¤"
+         Caption         =   "¢Š«‰ğœ"
          Index           =   20
       End
       Begin VB.Menu mnuUnitCommandItem 
-         Caption         =   "å‘½ä»¤"
+         Caption         =   "–½—ß"
          Index           =   21
       End
       Begin VB.Menu mnuUnitCommandItem 
-         Caption         =   "ç‰¹æ®Šèƒ½åŠ›ä¸€è¦§"
+         Caption         =   "“Áê”\—Íˆê——"
          Index           =   22
       End
       Begin VB.Menu mnuUnitCommandItem 
-         Caption         =   "æ­¦è£…ä¸€è¦§"
+         Caption         =   "•‘•ˆê——"
          Index           =   23
       End
       Begin VB.Menu mnuUnitCommandItem 
-         Caption         =   "ã‚¢ãƒ“ãƒªãƒ†ã‚£ä¸€è¦§"
+         Caption         =   "ƒAƒrƒŠƒeƒBˆê——"
          Index           =   24
       End
       Begin VB.Menu mnuUnitCommandItem 
@@ -615,35 +615,35 @@ Begin VB.Form frmSafeMain
          Visible         =   0   'False
       End
       Begin VB.Menu mnuUnitCommandItem 
-         Caption         =   "å¾…æ©Ÿ"
+         Caption         =   "‘Ò‹@"
          Index           =   35
       End
    End
    Begin VB.Menu mnuMapCommand 
-      Caption         =   "ãƒãƒƒãƒ—ã‚³ãƒãƒ³ãƒ‰"
+      Caption         =   "ƒ}ƒbƒvƒRƒ}ƒ“ƒh"
       Visible         =   0   'False
       Begin VB.Menu mnuMapCommandItem 
-         Caption         =   "ã‚¿ãƒ¼ãƒ³çµ‚äº†"
+         Caption         =   "ƒ^[ƒ“I—¹"
          Index           =   0
       End
       Begin VB.Menu mnuMapCommandItem 
-         Caption         =   "ä¸­æ–­"
+         Caption         =   "’†’f"
          Index           =   1
       End
       Begin VB.Menu mnuMapCommandItem 
-         Caption         =   "éƒ¨éšŠè¡¨"
+         Caption         =   "•”‘à•\"
          Index           =   2
       End
       Begin VB.Menu mnuMapCommandItem 
-         Caption         =   "ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼æ¤œç´¢"
+         Caption         =   "ƒXƒyƒVƒƒƒ‹ƒpƒ[ŒŸõ"
          Index           =   3
       End
       Begin VB.Menu mnuMapCommandItem 
-         Caption         =   "å…¨ä½“ãƒãƒƒãƒ—"
+         Caption         =   "‘S‘Ìƒ}ƒbƒv"
          Index           =   4
       End
       Begin VB.Menu mnuMapCommandItem 
-         Caption         =   "ä½œæˆ¦ç›®çš„"
+         Caption         =   "ìí–Ú“I"
          Index           =   5
          Visible         =   0   'False
       End
@@ -698,24 +698,24 @@ Begin VB.Form frmSafeMain
          Visible         =   0   'False
       End
       Begin VB.Menu mnuMapCommandItem 
-         Caption         =   "è‡ªå‹•åæ’ƒãƒ¢ãƒ¼ãƒ‰"
+         Caption         =   "©“®”½Œ‚ƒ‚[ƒh"
          Index           =   16
       End
       Begin VB.Menu mnuMapCommandItem 
-         Caption         =   "è¨­å®šå¤‰æ›´"
+         Caption         =   "İ’è•ÏX"
          Index           =   17
       End
       Begin VB.Menu mnuMapCommandItem 
-         Caption         =   "ãƒªã‚¹ã‚¿ãƒ¼ãƒˆ"
+         Caption         =   "ƒŠƒXƒ^[ƒg"
          Index           =   18
          Visible         =   0   'False
       End
       Begin VB.Menu mnuMapCommandItem 
-         Caption         =   "ã‚¯ã‚¤ãƒƒã‚¯ãƒ­ãƒ¼ãƒ‰"
+         Caption         =   "ƒNƒCƒbƒNƒ[ƒh"
          Index           =   19
       End
       Begin VB.Menu mnuMapCommandItem 
-         Caption         =   "ã‚¯ã‚¤ãƒƒã‚¯ã‚»ãƒ¼ãƒ–"
+         Caption         =   "ƒNƒCƒbƒNƒZ[ƒu"
          Index           =   20
       End
    End
@@ -728,20 +728,20 @@ Attribute VB_Exposed = False
 Option Explicit
 
 ' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯ãƒ•ãƒªãƒ¼ã‚½ãƒ•ãƒˆã§ã‚ã‚Šã€ç„¡ä¿è¨¼ã§ã™ã€‚
-' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯GNU General Public License(Ver.3ã¾ãŸã¯ãã‚Œä»¥é™)ãŒå®šã‚ã‚‹æ¡ä»¶ã®ä¸‹ã§
-' å†é ’å¸ƒã¾ãŸã¯æ”¹å¤‰ã™ã‚‹ã“ã¨ãŒã§ãã¾ã™ã€‚
+' –{ƒvƒƒOƒ‰ƒ€‚ÍƒtƒŠ[ƒ\ƒtƒg‚Å‚ ‚èA–³•ÛØ‚Å‚·B
+' –{ƒvƒƒOƒ‰ƒ€‚ÍGNU General Public License(Ver.3‚Ü‚½‚Í‚»‚êˆÈ~)‚ª’è‚ß‚éğŒ‚Ì‰º‚Å
+' Ä”Ğ•z‚Ü‚½‚Í‰ü•Ï‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B
 
-'ãƒ¡ã‚¤ãƒ³ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ãƒ•ã‚©ãƒ¼ãƒ  (Flashæ©Ÿèƒ½ãŒä½¿ãˆãªã„ç’°å¢ƒç”¨)
+'ƒƒCƒ“ƒEƒBƒ“ƒhƒE‚ÌƒtƒH[ƒ€ (Flash‹@”\‚ªg‚¦‚È‚¢ŠÂ‹«—p)
 
-'ãƒãƒƒãƒ—ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãŒãƒ‰ãƒ©ãƒƒã‚°ã•ã‚Œã¦ã„ã‚‹ã‹ï¼Ÿ
+'ƒ}ƒbƒvƒEƒBƒ“ƒhƒE‚ªƒhƒ‰ƒbƒO‚³‚ê‚Ä‚¢‚é‚©H
 Private IsDragging As Boolean
 
-'ãƒ•ã‚©ãƒ¼ãƒ ä¸Šã§ã‚­ãƒ¼ã‚’æŠ¼ã™
+'ƒtƒH[ƒ€ã‚ÅƒL[‚ğ‰Ÿ‚·
 Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
-    'ï¼§ï¼µï¼©ã‚’ãƒ­ãƒƒã‚¯ä¸­ï¼Ÿ
+    '‚f‚t‚h‚ğƒƒbƒN’†H
     If IsGUILocked Then
-        'ãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹è¡¨ç¤ºä¸­ã¯ã‚­ãƒ£ãƒ³ã‚»ãƒ«å‹•ä½œã¨ã¿ãªã™
+        'ƒŠƒXƒgƒ{ƒbƒNƒX•\¦’†‚ÍƒLƒƒƒ“ƒZƒ‹“®ì‚Æ‚İ‚È‚·
         If frmListBox.Visible Then
             SelectedItem = 0
             TopItem = frmListBox.lstItems.TopIndex + 1
@@ -751,12 +751,12 @@ Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
             IsFormClicked = True
         End If
         
-        'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸è¡¨ç¤ºä¸­ã¯ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸é€ã‚Šã¨ã¿ãªã™
+        'ƒƒbƒZ[ƒW•\¦’†‚ÍƒƒbƒZ[ƒW‘—‚è‚Æ‚İ‚È‚·
         If frmMessage.Visible Then
             IsFormClicked = True
         End If
         
-        'ã‚¯ãƒªãƒƒã‚¯å¾…ã¡ã§ã‚ã‚Œã°å¾…ã¡ã‚’è§£é™¤
+        'ƒNƒŠƒbƒN‘Ò‚¿‚Å‚ ‚ê‚Î‘Ò‚¿‚ğ‰ğœ
         If WaitClickMode Then
             IsFormClicked = True
         End If
@@ -764,7 +764,7 @@ Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
     End If
     
     If Shift = 0 Then
-        'æ–¹å‘ã‚­ãƒ¼ã‚’æŠ¼ã—ãŸå ´åˆã¯ãƒãƒƒãƒ—ã‚’å‹•ã‹ã™
+        '•ûŒüƒL[‚ğ‰Ÿ‚µ‚½ê‡‚Íƒ}ƒbƒv‚ğ“®‚©‚·
         Select Case KeyCode
             Case vbKeyLeft
                 If MapX > 1 Then
@@ -794,21 +794,21 @@ Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
     End If
 End Sub
 
-'ãƒ•ã‚©ãƒ¼ãƒ ä¸Šã§ãƒã‚¦ã‚¹ã‚’å‹•ã‹ã™
+'ƒtƒH[ƒ€ã‚Åƒ}ƒEƒX‚ğ“®‚©‚·
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-    'ãƒ„ãƒ¼ãƒ«ãƒãƒƒãƒ—ã‚’æ¶ˆã™
+    'ƒc[ƒ‹ƒ`ƒbƒv‚ğÁ‚·
     frmToolTip.Hide
     If picMain(0).MousePointer = 99 Then
         picMain(0).MousePointer = 0
     End If
 End Sub
 
-'ãƒ•ã‚©ãƒ¼ãƒ ã‚’é–‰ã˜ã‚‹
+'ƒtƒH[ƒ€‚ğ•Â‚¶‚é
 Private Sub Form_Unload(Cancel As Integer)
 Dim ret As Integer
 Dim IsErrorMessageVisible As Boolean
 
-    'ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã®ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã¯ä¸€ç•ªä¸Šã«é‡ã­ã‚‰ã‚Œã‚‹ãŸã‚æ¶ˆå»ã™ã‚‹å¿…è¦ãŒã‚ã‚‹
+    'ƒGƒ‰[ƒƒbƒZ[ƒW‚Ìƒ_ƒCƒAƒƒO‚Íˆê”Ôã‚Éd‚Ë‚ç‚ê‚é‚½‚ßÁ‹‚·‚é•K—v‚ª‚ ‚é
     If Not frmErrorMessage Is Nothing Then
         IsErrorMessageVisible = frmErrorMessage.Visible
     End If
@@ -816,74 +816,74 @@ Dim IsErrorMessageVisible As Boolean
         frmErrorMessage.Hide
     End If
     
-    'SRCã®çµ‚äº†ã‚’ç¢ºèª
-    ret = MsgBox("SRCã‚’çµ‚äº†ã—ã¾ã™ã‹ï¼Ÿ", _
-        vbOKCancel + vbQuestion, "çµ‚äº†")
+    'SRC‚ÌI—¹‚ğŠm”F
+    ret = MsgBox("SRC‚ğI—¹‚µ‚Ü‚·‚©H", _
+        vbOKCancel + vbQuestion, "I—¹")
     
     Select Case ret
         Case 1
-            'SRCã‚’çµ‚äº†
+            'SRC‚ğI—¹
             TerminateSRC
         Case 2
-            'çµ‚äº†ã‚’ã‚­ãƒ£ãƒ³ã‚»ãƒ«
+            'I—¹‚ğƒLƒƒƒ“ƒZƒ‹
             Cancel = 1
     End Select
     
-    'ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’è¡¨ç¤º
+    'ƒGƒ‰[ƒƒbƒZ[ƒW‚ğ•\¦
     If IsErrorMessageVisible Then
         frmErrorMessage.Show
     End If
 End Sub
 
-'ãƒãƒƒãƒ—ç”»é¢ã®æ¨ªã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«ãƒãƒ¼ã‚’æ“ä½œ
+'ƒ}ƒbƒv‰æ–Ê‚Ì‰¡ƒXƒNƒ[ƒ‹ƒo[‚ğ‘€ì
 Private Sub HScroll_Change()
     MapX = HScroll.Value
     
-    'ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹è¡¨ç¤ºä¸­ã¯ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«ãƒãƒ¼ã‚’ä¸­å¤®ã«å›ºå®š
+    'ƒXƒe[ƒ^ƒX•\¦’†‚ÍƒXƒNƒ[ƒ‹ƒo[‚ğ’†‰›‚ÉŒÅ’è
     If MapFileName = "" Then
         MapX = 8
     End If
     
-    'ç”»é¢æ›¸ãæ›ãˆ
+    '‰æ–Ê‘‚«Š·‚¦
     If frmSafeMain.Visible Then
         RefreshScreen
     End If
 End Sub
 
-'ãƒãƒƒãƒ—ã‚³ãƒãƒ³ãƒ‰ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚’ã‚¯ãƒªãƒƒã‚¯
+'ƒ}ƒbƒvƒRƒ}ƒ“ƒhƒƒjƒ…[‚ğƒNƒŠƒbƒN
 Private Sub mnuMapCommandItem_Click(Index As Integer)
     If GetAsyncKeyState(RButtonID) = 1 Then
-        'å³ãƒœã‚¿ãƒ³ã§ã‚­ãƒ£ãƒ³ã‚»ãƒ«
+        '‰Eƒ{ƒ^ƒ“‚ÅƒLƒƒƒ“ƒZƒ‹
         CancelCommand
         Exit Sub
     End If
     
-    'ãƒãƒƒãƒ—ã‚³ãƒãƒ³ãƒ‰ã‚’å®Ÿè¡Œ
+    'ƒ}ƒbƒvƒRƒ}ƒ“ƒh‚ğÀs
     MapCommand Index
 End Sub
 
-'ãƒ¦ãƒ‹ãƒƒãƒˆã‚³ãƒãƒ³ãƒ‰ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚’ã‚¯ãƒªãƒƒã‚¯
+'ƒ†ƒjƒbƒgƒRƒ}ƒ“ƒhƒƒjƒ…[‚ğƒNƒŠƒbƒN
 Private Sub mnuUnitCommandItem_Click(Index As Integer)
     If GetAsyncKeyState(RButtonID) = 1 Then
-        'å³ãƒœã‚¿ãƒ³ã§ã‚­ãƒ£ãƒ³ã‚»ãƒ«
+        '‰Eƒ{ƒ^ƒ“‚ÅƒLƒƒƒ“ƒZƒ‹
         CancelCommand
         Exit Sub
     End If
     
-    'ãƒ¦ãƒ‹ãƒƒãƒˆã‚³ãƒãƒ³ãƒ‰ã‚’å®Ÿè¡Œ
+    'ƒ†ƒjƒbƒgƒRƒ}ƒ“ƒh‚ğÀs
     UnitCommand Index
 End Sub
 
-'ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆç”»åƒä¸Šã‚’ã‚¯ãƒªãƒƒã‚¯
+'ƒXƒe[ƒ^ƒXƒEƒBƒ“ƒhƒE‚ÌƒpƒCƒƒbƒg‰æ‘œã‚ğƒNƒŠƒbƒN
 Private Sub picFace_Click()
 Dim n As Integer
 
-    'ï¼§ï¼µï¼©ã®ãƒ­ãƒƒã‚¯ä¸­ã¯ç„¡è¦–
+    '‚f‚t‚h‚ÌƒƒbƒN’†‚Í–³‹
     If IsGUILocked Then
         Exit Sub
     End If
     
-    'ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã§è¡¨ç¤ºã—ã¦ã„ã‚‹ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‚’å¤‰æ›´
+    'ƒXƒe[ƒ^ƒXƒEƒBƒ“ƒhƒE‚Å•\¦‚µ‚Ä‚¢‚éƒpƒCƒƒbƒg‚ğ•ÏX
     If DisplayedUnit Is Nothing Then
         Exit Sub
     End If
@@ -895,7 +895,7 @@ Dim n As Integer
         DisplayedPilotInd = DisplayedPilotInd + 1
         
         n = .CountPilot + .CountSupport
-        If .IsFeatureAvailable("è¿½åŠ ã‚µãƒãƒ¼ãƒˆ") Then
+        If .IsFeatureAvailable("’Ç‰ÁƒTƒ|[ƒg") Then
             n = n + 1
         End If
         If DisplayedPilotInd > n Then
@@ -906,14 +906,14 @@ Dim n As Integer
     End With
 End Sub
 
-'ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆç”»åƒä¸Šã‚’ãƒ€ãƒ–ãƒ«ã‚¯ãƒªãƒƒã‚¯
+'ƒXƒe[ƒ^ƒXƒEƒBƒ“ƒhƒE‚ÌƒpƒCƒƒbƒg‰æ‘œã‚ğƒ_ƒuƒ‹ƒNƒŠƒbƒN
 Private Sub picFace_DblClick()
-    'ï¼§ï¼µï¼©ã®ãƒ­ãƒƒã‚¯ä¸­ã¯ç„¡è¦–
+    '‚f‚t‚h‚ÌƒƒbƒN’†‚Í–³‹
     If IsGUILocked Then
         Exit Sub
     End If
     
-    'ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã§è¡¨ç¤ºã—ã¦ã„ã‚‹ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‚’å¤‰æ›´
+    'ƒXƒe[ƒ^ƒXƒEƒBƒ“ƒhƒE‚Å•\¦‚µ‚Ä‚¢‚éƒpƒCƒƒbƒg‚ğ•ÏX
     If Not DisplayedUnit Is Nothing Then
         DisplayedPilotInd = DisplayedPilotInd + 1
         If DisplayedPilotInd > DisplayedUnit.CountPilot + DisplayedUnit.CountSupport Then
@@ -923,10 +923,10 @@ Private Sub picFace_DblClick()
     End If
 End Sub
 
-'ãƒãƒƒãƒ—ç”»é¢ä¸Šã§ãƒ€ãƒ–ãƒ«ã‚¯ãƒªãƒƒã‚¯
+'ƒ}ƒbƒv‰æ–Êã‚Åƒ_ƒuƒ‹ƒNƒŠƒbƒN
 Private Sub picMain_DblClick(Index As Integer)
     If IsGUILocked Then
-        'ï¼§ï¼µï¼©ã‚¯ãƒ­ãƒƒã‚¯ä¸­ã¯å˜ãªã‚‹ã‚¯ãƒªãƒƒã‚¯ã¨ã¿ãªã™
+        '‚f‚t‚hƒNƒƒbƒN’†‚Í’P‚È‚éƒNƒŠƒbƒN‚Æ‚İ‚È‚·
         If frmMessage.Visible Then
             IsFormClicked = True
         End If
@@ -935,12 +935,12 @@ Private Sub picMain_DblClick(Index As Integer)
         End If
         Exit Sub
     Else
-        'ã‚­ãƒ£ãƒ³ã‚»ãƒ«ã®å ´åˆã¯ã‚­ãƒ£ãƒ³ã‚»ãƒ«ã‚’é€£ç¶šå®Ÿè¡Œ
+        'ƒLƒƒƒ“ƒZƒ‹‚Ìê‡‚ÍƒLƒƒƒ“ƒZƒ‹‚ğ˜A‘±Às
         If MouseButton = 2 Then
             Select Case CommandState
-                Case "ãƒãƒƒãƒ—ã‚³ãƒãƒ³ãƒ‰"
-                    CommandState = "ãƒ¦ãƒ‹ãƒƒãƒˆé¸æŠ"
-                Case "ãƒ¦ãƒ‹ãƒƒãƒˆé¸æŠ"
+                Case "ƒ}ƒbƒvƒRƒ}ƒ“ƒh"
+                    CommandState = "ƒ†ƒjƒbƒg‘I‘ğ"
+                Case "ƒ†ƒjƒbƒg‘I‘ğ"
                     ProceedCommand True
                 Case Else
                     CancelCommand
@@ -949,17 +949,17 @@ Private Sub picMain_DblClick(Index As Integer)
     End If
 End Sub
 
-'ãƒãƒƒãƒ—ç”»é¢ä¸Šã§ãƒã‚¦ã‚¹ã‚’ã‚¯ãƒªãƒƒã‚¯
+'ƒ}ƒbƒv‰æ–Êã‚Åƒ}ƒEƒX‚ğƒNƒŠƒbƒN
 Private Sub picMain_MouseDown(Index As Integer, Button As Integer, Shift As Integer, _
     X As Single, Y As Single)
 Dim xx As Integer, yy As Integer
     
-    'æŠ¼ã•ã‚ŒãŸãƒã‚¦ã‚¹ãƒœã‚¿ãƒ³ã®ç¨®é¡ï¼†ã‚«ãƒ¼ã‚½ãƒ«ã®åº§æ¨™ã‚’è¨˜éŒ²
+    '‰Ÿ‚³‚ê‚½ƒ}ƒEƒXƒ{ƒ^ƒ“‚Ìí—Ş•ƒJ[ƒ\ƒ‹‚ÌÀ•W‚ğ‹L˜^
     MouseButton = Button
     MouseX = X
     MouseY = Y
     
-    'ï¼§ï¼µï¼©ãƒ­ãƒƒã‚¯ä¸­ã¯å˜ãªã‚‹ã‚¯ãƒªãƒƒã‚¯ã¨ã—ã¦å‡¦ç†
+    '‚f‚t‚hƒƒbƒN’†‚Í’P‚È‚éƒNƒŠƒbƒN‚Æ‚µ‚Äˆ—
     If IsGUILocked Then
         If frmMessage.Visible Then
             IsFormClicked = True
@@ -972,15 +972,15 @@ Dim xx As Integer, yy As Integer
     
     Select Case Button
         Case 1
-            'å·¦ã‚¯ãƒªãƒƒã‚¯
+            '¶ƒNƒŠƒbƒN
             PrevMapX = MapX
             PrevMapY = MapY
             PrevMouseX = X
             PrevMouseY = Y
             Select Case CommandState
-                Case "ãƒãƒƒãƒ—ã‚³ãƒãƒ³ãƒ‰"
-                    CommandState = "ãƒ¦ãƒ‹ãƒƒãƒˆé¸æŠ"
-                Case "ãƒ¦ãƒ‹ãƒƒãƒˆé¸æŠ"
+                Case "ƒ}ƒbƒvƒRƒ}ƒ“ƒh"
+                    CommandState = "ƒ†ƒjƒbƒg‘I‘ğ"
+                Case "ƒ†ƒjƒbƒg‘I‘ğ"
                     xx = PixelToMapX(X)
                     yy = PixelToMapY(Y)
                     If xx < 1 Or MapWidth < xx _
@@ -992,7 +992,7 @@ Dim xx As Integer, yy As Integer
                     Else
                         IsDragging = True
                     End If
-                Case "ã‚¿ãƒ¼ã‚²ãƒƒãƒˆé¸æŠ", "ç§»å‹•å¾Œã‚¿ãƒ¼ã‚²ãƒƒãƒˆé¸æŠ"
+                Case "ƒ^[ƒQƒbƒg‘I‘ğ", "ˆÚ“®Œãƒ^[ƒQƒbƒg‘I‘ğ"
                     xx = PixelToMapX(X)
                     yy = PixelToMapY(Y)
                     If xx < 1 Or MapWidth < xx _
@@ -1004,17 +1004,17 @@ Dim xx As Integer, yy As Integer
                     Else
                         IsDragging = True
                     End If
-                Case "ã‚³ãƒãƒ³ãƒ‰é¸æŠ", "ç§»å‹•å¾Œã‚³ãƒãƒ³ãƒ‰é¸æŠ"
+                Case "ƒRƒ}ƒ“ƒh‘I‘ğ", "ˆÚ“®ŒãƒRƒ}ƒ“ƒh‘I‘ğ"
                     CancelCommand
                 Case Else
                     ProceedCommand
             End Select
         Case 2
-            'å³ã‚¯ãƒªãƒƒã‚¯
+            '‰EƒNƒŠƒbƒN
             Select Case CommandState
-                Case "ãƒãƒƒãƒ—ã‚³ãƒãƒ³ãƒ‰"
-                    CommandState = "ãƒ¦ãƒ‹ãƒƒãƒˆé¸æŠ"
-                Case "ãƒ¦ãƒ‹ãƒƒãƒˆé¸æŠ"
+                Case "ƒ}ƒbƒvƒRƒ}ƒ“ƒh"
+                    CommandState = "ƒ†ƒjƒbƒg‘I‘ğ"
+                Case "ƒ†ƒjƒbƒg‘I‘ğ"
                     ProceedCommand True
                 Case Else
                     CancelCommand
@@ -1022,7 +1022,7 @@ Dim xx As Integer, yy As Integer
     End Select
 End Sub
 
-'ãƒãƒƒãƒ—ç”»é¢ä¸Šã§ãƒã‚¦ã‚¹ã‚«ãƒ¼ã‚½ãƒ«ã‚’ç§»å‹•
+'ƒ}ƒbƒv‰æ–Êã‚Åƒ}ƒEƒXƒJ[ƒ\ƒ‹‚ğˆÚ“®
 Private Sub picMain_MouseMove(Index As Integer, Button As Integer, Shift As Integer, _
     X As Single, Y As Single)
 Static LastMouseX As Integer, LastMouseY As Integer
@@ -1031,27 +1031,27 @@ Static LastHostSpot As String
 Dim xx As Integer, yy As Integer
 Dim i As Integer
     
-    'å‰å›ã®ãƒã‚¦ã‚¹ä½ç½®ã‚’è¨˜éŒ²
+    '‘O‰ñ‚Ìƒ}ƒEƒXˆÊ’u‚ğ‹L˜^
     LastMouseX = MouseX
     LastMouseY = MouseY
     
-    'ç¾åœ¨ã®ãƒã‚¦ã‚¹ä½ç½®ã‚’è¨˜éŒ²
+    'Œ»İ‚Ìƒ}ƒEƒXˆÊ’u‚ğ‹L˜^
     MouseX = X
     MouseY = Y
     
-    'ï¼§ï¼µï¼©ãƒ­ãƒƒã‚¯ä¸­ï¼Ÿ
+    '‚f‚t‚hƒƒbƒN’†H
     If IsGUILocked Then
         If Not WaitClickMode Then
             Exit Sub
         End If
         
-        'ãƒ›ãƒƒãƒˆãƒã‚¤ãƒ³ãƒˆãŒå®šç¾©ã•ã‚Œã¦ã„ã‚‹å ´åˆã¯ãƒ„ãƒ¼ãƒ«ãƒãƒƒãƒ—ã‚’å¤‰æ›´
+        'ƒzƒbƒgƒ|ƒCƒ“ƒg‚ª’è‹`‚³‚ê‚Ä‚¢‚éê‡‚Íƒc[ƒ‹ƒ`ƒbƒv‚ğ•ÏX
         For i = 1 To UBound(HotPointList)
             With HotPointList(i)
                 If .Left <= MouseX And MouseX < .Left + .Width _
                     And .Top <= MouseY And MouseY < .Top + .Height _
                 Then
-                    If .Caption = "éè¡¨ç¤º" Or .Caption = "" Then
+                    If .Caption = "”ñ•\¦" Or .Caption = "" Then
                         Exit For
                     End If
                     
@@ -1059,7 +1059,7 @@ Dim i As Integer
                         Exit For
                     End If
                     
-                    'ãƒ„ãƒ¼ãƒ«ãƒãƒƒãƒ—ã®è¡¨ç¤º
+                    'ƒc[ƒ‹ƒ`ƒbƒv‚Ì•\¦
                     frmToolTip.ShowToolTip .Caption
                     
                     With picMain(0)
@@ -1075,19 +1075,19 @@ Dim i As Integer
             End With
         Next
         
-        'ãƒ›ãƒƒãƒˆãƒã‚¤ãƒ³ãƒˆä¸Šã«ã‚«ãƒ¼ã‚½ãƒ«ãŒãªã‘ã‚Œã°ãƒ„ãƒ¼ãƒ«ãƒãƒƒãƒ—ã‚’æ¶ˆã™
+        'ƒzƒbƒgƒ|ƒCƒ“ƒgã‚ÉƒJ[ƒ\ƒ‹‚ª‚È‚¯‚ê‚Îƒc[ƒ‹ƒ`ƒbƒv‚ğÁ‚·
         frmToolTip.Hide
         LastHostSpot = ""
         picMain(0).MousePointer = 0
         Exit Sub
     End If
     
-    'ãƒãƒƒãƒ—ãŒè¨­å®šã•ã‚Œã¦ã„ãªã„å ´åˆã¯ã“ã‚Œä»¥é™ã®åˆ¤å®šã¯ä¸è¦
+    'ƒ}ƒbƒv‚ªİ’è‚³‚ê‚Ä‚¢‚È‚¢ê‡‚Í‚±‚êˆÈ~‚Ì”»’è‚Í•s—v
     If MapWidth < 15 Or MapHeight < 15 Then
         Exit Sub
     End If
     
-    'ã‚«ãƒ¼ã‚½ãƒ«ä¸Šã«ãƒ¦ãƒ‹ãƒƒãƒˆãŒã„ã‚Œã°ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã«ãã®ãƒ¦ãƒ‹ãƒƒãƒˆã‚’è¡¨ç¤º
+    'ƒJ[ƒ\ƒ‹ã‚Éƒ†ƒjƒbƒg‚ª‚¢‚ê‚ÎƒXƒe[ƒ^ƒXƒEƒBƒ“ƒhƒE‚É‚»‚Ìƒ†ƒjƒbƒg‚ğ•\¦
     xx = PixelToMapX(X)
     yy = PixelToMapY(Y)
     If MainWidth = 15 Then
@@ -1099,10 +1099,10 @@ Dim i As Integer
             End If
         End If
     Else
-        If (CommandState = "ã‚¿ãƒ¼ã‚²ãƒƒãƒˆé¸æŠ" Or CommandState = "ç§»å‹•å¾Œã‚¿ãƒ¼ã‚²ãƒƒãƒˆé¸æŠ") _
-            And (SelectedCommand <> "ç§»å‹•" _
-                And SelectedCommand <> "ãƒ†ãƒ¬ãƒãƒ¼ãƒˆ" _
-                And SelectedCommand <> "ã‚¸ãƒ£ãƒ³ãƒ—") _
+        If (CommandState = "ƒ^[ƒQƒbƒg‘I‘ğ" Or CommandState = "ˆÚ“®Œãƒ^[ƒQƒbƒg‘I‘ğ") _
+            And (SelectedCommand <> "ˆÚ“®" _
+                And SelectedCommand <> "ƒeƒŒƒ|[ƒg" _
+                And SelectedCommand <> "ƒWƒƒƒ“ƒv") _
         Then
             If 1 <= xx And xx <= MapWidth _
                 And 1 <= yy And yy <= MapHeight _
@@ -1116,9 +1116,9 @@ Dim i As Integer
         End If
     End If
     
-    'ãƒãƒƒãƒ—ã‚’ãƒ‰ãƒ©ãƒƒã‚°ä¸­ï¼Ÿ
+    'ƒ}ƒbƒv‚ğƒhƒ‰ƒbƒO’†H
     If IsDragging And Button = 1 Then
-        'ï¼¸è»¸ã®ç§»å‹•é‡ã‚’ç®—å‡º
+        '‚w²‚ÌˆÚ“®—Ê‚ğZo
         MapX = PrevMapX - (X - PrevMouseX) \ 32
         If MapX < 1 Then
             MapX = 1
@@ -1126,7 +1126,7 @@ Dim i As Integer
             MapX = HScroll.max
         End If
         
-        'ï¼¹è»¸ã®ç§»å‹•é‡ã‚’ç®—å‡º
+        '‚x²‚ÌˆÚ“®—Ê‚ğZo
         MapY = PrevMapY - (Y - PrevMouseY) \ 32
         If MapY < 1 Then
             MapY = 1
@@ -1135,7 +1135,7 @@ Dim i As Integer
         End If
         
         If MapFileName = "" Then
-            'ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ç”»é¢ã®å ´åˆã¯ç§»å‹•é‡ã‚’é™å®š
+            'ƒXƒe[ƒ^ƒX‰æ–Ê‚Ìê‡‚ÍˆÚ“®—Ê‚ğŒÀ’è
             MapX = 8
             If MapY < 8 Then
                 MapY = 8
@@ -1144,25 +1144,25 @@ Dim i As Integer
             End If
         End If
         
-        'ãƒãƒƒãƒ—ç”»é¢ã‚’æ–°ã—ã„åº§æ¨™ã§æ›´æ–°
+        'ƒ}ƒbƒv‰æ–Ê‚ğV‚µ‚¢À•W‚ÅXV
         If Not MapX = LastMapX Or Not MapY = LastMapY Then
             RefreshScreen
         End If
     End If
 End Sub
 
-'ãƒãƒƒãƒ—ç”»é¢ä¸Šã§ãƒã‚¦ã‚¹ãƒœã‚¿ãƒ³ã‚’é›¢ã™
+'ƒ}ƒbƒv‰æ–Êã‚Åƒ}ƒEƒXƒ{ƒ^ƒ“‚ğ—£‚·
 Private Sub picMain_MouseUp(Index As Integer, Button As Integer, Shift As Integer, _
     X As Single, Y As Single)
     
     If IsGUILocked Then
         Exit Sub
     End If
-    'ãƒãƒƒãƒ—ç”»é¢ã®ãƒ‰ãƒ©ãƒƒã‚°ã‚’è§£é™¤
+    'ƒ}ƒbƒv‰æ–Ê‚Ìƒhƒ‰ƒbƒO‚ğ‰ğœ
     IsDragging = False
 End Sub
 
-'ï¼¢ï¼§ï¼­é€£ç¶šå†ç”Ÿç”¨ã‚¿ã‚¤ãƒãƒ¼
+'‚a‚f‚l˜A‘±Ä¶—pƒ^ƒCƒ}[
 Private Sub Timer1_Timer()
     If BGMFileName <> "" Then
         If RepeatMode Then
@@ -1171,12 +1171,12 @@ Private Sub Timer1_Timer()
     End If
 End Sub
 
-'ãƒãƒƒãƒ—ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ç¸¦ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«ã‚’æ“ä½œ
+'ƒ}ƒbƒvƒEƒBƒ“ƒhƒE‚ÌcƒXƒNƒ[ƒ‹‚ğ‘€ì
 Private Sub VScroll_Change()
     MapY = VScroll.Value
     
     If MapFileName = "" Then
-        'ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ç”»é¢ã®å ´åˆã¯ç§»å‹•é‡ã‚’åˆ¶é™
+        'ƒXƒe[ƒ^ƒX‰æ–Ê‚Ìê‡‚ÍˆÚ“®—Ê‚ğ§ŒÀ
         If MapY < 8 Then
             MapY = 8
         ElseIf MapY > MapHeight - 7 Then
@@ -1184,7 +1184,7 @@ Private Sub VScroll_Change()
         End If
     End If
     
-    'ãƒãƒƒãƒ—ç”»é¢ã‚’æ›´æ–°
+    'ƒ}ƒbƒv‰æ–Ê‚ğXV
     If frmSafeMain.Visible Then
         RefreshScreen
     End If

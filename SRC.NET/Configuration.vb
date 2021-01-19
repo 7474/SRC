@@ -4,20 +4,20 @@ Friend Class frmConfiguration
 	Inherits System.Windows.Forms.Form
 	
 	' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
+	' 本プログラムはフリーソフトであり、無保証です。
+	' 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
+	' 再頒布または改変することができます。
 	
-	'繝槭ャ繝励さ繝槭Φ繝峨瑚ｨｭ螳壼､画峩縲咲畑繝繧､繧｢繝ｭ繧ｰ
+	'マップコマンド「設定変更」用ダイアログ
 	
 	
-	'MP3Volume繧定ｨ倬鹸
+	'MP3Volumeを記録
 	Private SavedMP3Volume As Short
 	
-	'Invalid_string_refer_to_original_code
+	'戦闘アニメOn・Off切り替え
 	'UPGRADE_WARNING: イベント chkBattleAnimation.CheckStateChanged は、フォームが初期化されたときに発生します。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="88B12AE1-6DE0-48A0-86F1-60C0686C026A"' をクリックしてください。
 	Private Sub chkBattleAnimation_CheckStateChanged(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles chkBattleAnimation.CheckStateChanged
-		'Invalid_string_refer_to_original_code
+		'戦闘アニメを表示しない場合は拡張戦闘アニメ、武器アニメ選択の項目を選択不能にする
 		If chkBattleAnimation.CheckState = 1 Then
 			chkExtendedAnimation.Enabled = True
 			chkWeaponAnimation.Enabled = True
@@ -27,13 +27,13 @@ Friend Class frmConfiguration
 		End If
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'キャンセルボタンが押された
 	Private Sub cmdCancel_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdCancel.Click
 		Dim IsMP3Supported As Object
-		'繝繧､繧｢繝ｭ繧ｰ繧帝哩縺倥ｋ
+		'ダイアログを閉じる
 		Hide()
 		
-		'Invalid_string_refer_to_original_code
+		'MP3音量のみその場で変更しているので元に戻す必要がある
 		MP3Volume = SavedMP3Volume
 		'UPGRADE_WARNING: オブジェクト IsMP3Supported の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
 		If IsMP3Supported Then
@@ -41,28 +41,28 @@ Friend Class frmConfiguration
 		End If
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'OKボタンが押された
 	Private Sub cmdOK_Click(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles cmdOK.Click
-		'Invalid_string_refer_to_original_code
+		'各種設定を変更
 		
-		'Invalid_string_refer_to_original_code
+		'メッセージスピード
 		Select Case cboMessageSpeed.Text
-			Case "Invalid_string_refer_to_original_code"
+			Case "神の領域"
 				MessageWait = 0
-			Case "Invalid_string_refer_to_original_code"
+			Case "超高速"
 				MessageWait = 200
-			Case "Invalid_string_refer_to_original_code"
+			Case "高速"
 				MessageWait = 400
-			Case "Invalid_string_refer_to_original_code"
+			Case "普通"
 				MessageWait = 700
-			Case "Invalid_string_refer_to_original_code"
+			Case "低速"
 				MessageWait = 1000
-			Case "謇句虚騾√ｊ"
+			Case "手動送り"
 				MessageWait = 10000000
 		End Select
 		WriteIni("Option", "MessageWait", VB6.Format(MessageWait))
 		
-		'謌ｦ髣倥い繝九Γ陦ｨ遉ｺ
+		'戦闘アニメ表示
 		If chkBattleAnimation.CheckState = 1 Then
 			BattleAnimation = True
 			WriteIni("Option", "BattleAnimation", "On")
@@ -71,7 +71,7 @@ Friend Class frmConfiguration
 			WriteIni("Option", "BattleAnimation", "Off")
 		End If
 		
-		'諡｡螟ｧ謌ｦ髣倥い繝九Γ陦ｨ遉ｺ
+		'拡大戦闘アニメ表示
 		If chkExtendedAnimation.CheckState = 1 Then
 			ExtendedAnimation = True
 			WriteIni("Option", "ExtendedAnimation", "On")
@@ -80,7 +80,7 @@ Friend Class frmConfiguration
 			WriteIni("Option", "Extendednimation", "Off")
 		End If
 		
-		'豁ｦ蝎ｨ貅門ｙ繧｢繝九Γ陦ｨ遉ｺ
+		'武器準備アニメ表示
 		If chkWeaponAnimation.CheckState = 1 Then
 			WeaponAnimation = True
 			WriteIni("Option", "WeaponAnimation", "On")
@@ -89,7 +89,7 @@ Friend Class frmConfiguration
 			WriteIni("Option", "WeaponAnimation", "Off")
 		End If
 		
-		'遘ｻ蜍輔い繝九Γ陦ｨ遉ｺ
+		'移動アニメ表示
 		If chkMoveAnimation.CheckState = 1 Then
 			MoveAnimation = True
 			WriteIni("Option", "MoveAnimation", "On")
@@ -98,7 +98,7 @@ Friend Class frmConfiguration
 			WriteIni("Option", "MoveAnimation", "Off")
 		End If
 		
-		'繧ｹ繝壹す繝｣繝ｫ繝代Ρ繝ｼ繧｢繝九Γ陦ｨ遉ｺ
+		'スペシャルパワーアニメ表示
 		If chkSpecialPowerAnimation.CheckState = 1 Then
 			SpecialPowerAnimation = True
 			WriteIni("Option", "SpecialPowerAnimation", "On")
@@ -107,7 +107,7 @@ Friend Class frmConfiguration
 			WriteIni("Option", "SpecialPowerAnimation", "Off")
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'マウスカーソルの自動移動
 		If chkAutoMoveCursor.CheckState Then
 			AutoMoveCursor = True
 			WriteIni("Option", "AutoMoveCursor", "On")
@@ -116,7 +116,7 @@ Friend Class frmConfiguration
 			WriteIni("Option", "AutoMoveCursor", "Off")
 		End If
 		
-		'繝槭せ逶ｮ縺ｮ陦ｨ遉ｺ
+		'マス目の表示
 		If chkShowSquareLine.CheckState Then
 			ShowSquareLine = True
 			WriteIni("Option", "Square", "On")
@@ -125,14 +125,14 @@ Friend Class frmConfiguration
 			WriteIni("Option", "Square", "Off")
 		End If
 		
-		'蜻ｳ譁ｹ繝輔ぉ繧､繧ｺ髢句ｧ区凾縺ｮ繧ｿ繝ｼ繝ｳ陦ｨ遉ｺ
+		'味方フェイズ開始時のターン表示
 		If chkShowTurn.CheckState Then
 			WriteIni("Option", "Turn", "On")
 		Else
 			WriteIni("Option", "Turn", "Off")
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'敵フェイズ中にＢＧＭを変更しない
 		If chkKeepEnemyBGM.CheckState Then
 			KeepEnemyBGM = True
 			WriteIni("Option", "KeepEnemyBGM", "On")
@@ -141,60 +141,60 @@ Friend Class frmConfiguration
 			WriteIni("Option", "KeepEnemyBGM", "Off")
 		End If
 		
-		'MIDI貍泌･上↓DirectMusic繧剃ｽｿ逕ｨ縺吶ｋ
+		'MIDI演奏にDirectMusicを使用する
 		If chkUseDirectMusic.CheckState Then
 			WriteIni("Option", "UseDirectMusic", "On")
 		Else
 			WriteIni("Option", "UseDirectMusic", "Off")
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'MIDI音源リセットの種類
 		MidiResetType = cboMidiReset.Text
 		WriteIni("Option", "MidiReset", (cboMidiReset.Text))
 		
-		'Invalid_string_refer_to_original_code
+		'MP3再生音量
 		WriteIni("Option", "MP3Volume", VB6.Format(MP3Volume))
 		
-		'繝繧､繧｢繝ｭ繧ｰ繧帝哩縺倥ｋ
+		'ダイアログを閉じる
 		Hide()
 	End Sub
 	
 	Private Sub frmConfiguration_Load(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles MyBase.Load
-		'Invalid_string_refer_to_original_code
+		'ダイアログを初期化
 		
-		'Invalid_string_refer_to_original_code
-		cboMessageSpeed.Items.Add("謇句虚騾√ｊ")
-		cboMessageSpeed.Items.Add("Invalid_string_refer_to_original_code")
-		cboMessageSpeed.Items.Add("Invalid_string_refer_to_original_code")
-		cboMessageSpeed.Items.Add("Invalid_string_refer_to_original_code")
-		cboMessageSpeed.Items.Add("Invalid_string_refer_to_original_code")
-		cboMessageSpeed.Items.Add("Invalid_string_refer_to_original_code")
+		'メッセージスピード
+		cboMessageSpeed.Items.Add("手動送り")
+		cboMessageSpeed.Items.Add("低速")
+		cboMessageSpeed.Items.Add("普通")
+		cboMessageSpeed.Items.Add("高速")
+		cboMessageSpeed.Items.Add("超高速")
+		cboMessageSpeed.Items.Add("神の領域")
 		Select Case MessageWait
 			Case 0
-				cboMessageSpeed.Text = "Invalid_string_refer_to_original_code"
+				cboMessageSpeed.Text = "神の領域"
 			Case 200
-				cboMessageSpeed.Text = "Invalid_string_refer_to_original_code"
+				cboMessageSpeed.Text = "超高速"
 			Case 400
-				cboMessageSpeed.Text = "Invalid_string_refer_to_original_code"
+				cboMessageSpeed.Text = "高速"
 			Case 700
-				cboMessageSpeed.Text = "Invalid_string_refer_to_original_code"
+				cboMessageSpeed.Text = "普通"
 			Case 1000
-				cboMessageSpeed.Text = "Invalid_string_refer_to_original_code"
+				cboMessageSpeed.Text = "低速"
 			Case 10000000
-				cboMessageSpeed.Text = "謇句虚騾√ｊ"
+				cboMessageSpeed.Text = "手動送り"
 		End Select
 		
-		'謌ｦ髣倥い繝九Γ陦ｨ遉ｺ
+		'戦闘アニメ表示
 		If BattleAnimation Then
 			chkBattleAnimation.CheckState = System.Windows.Forms.CheckState.Checked
 		Else
 			chkBattleAnimation.CheckState = System.Windows.Forms.CheckState.Unchecked
 		End If
-		If Not FileExists(AppPath & "Lib\豎守畑謌ｦ髣倥い繝九Γ\include.eve") Then
-			chkBattleAnimation.CheckState = System.Windows.Forms.CheckState.Indeterminate '辟｡蜉ｹ
+		If Not FileExists(AppPath & "Lib\汎用戦闘アニメ\include.eve") Then
+			chkBattleAnimation.CheckState = System.Windows.Forms.CheckState.Indeterminate '無効
 		End If
 		
-		'諡｡蠑ｵ謌ｦ髣倥い繝九Γ陦ｨ遉ｺ
+		'拡張戦闘アニメ表示
 		If ExtendedAnimation Then
 			chkExtendedAnimation.CheckState = System.Windows.Forms.CheckState.Checked
 		Else
@@ -206,7 +206,7 @@ Friend Class frmConfiguration
 			chkExtendedAnimation.Enabled = False
 		End If
 		
-		'豁ｦ蝎ｨ貅門ｙ繧｢繝九Γ陦ｨ遉ｺ
+		'武器準備アニメ表示
 		If WeaponAnimation Then
 			chkWeaponAnimation.CheckState = System.Windows.Forms.CheckState.Checked
 		Else
@@ -218,68 +218,68 @@ Friend Class frmConfiguration
 			chkWeaponAnimation.Enabled = False
 		End If
 		
-		'遘ｻ蜍輔い繝九Γ陦ｨ遉ｺ
+		'移動アニメ表示
 		If MoveAnimation Then
 			chkMoveAnimation.CheckState = System.Windows.Forms.CheckState.Checked
 		Else
 			chkMoveAnimation.CheckState = System.Windows.Forms.CheckState.Unchecked
 		End If
 		
-		'繧ｹ繝壹す繝｣繝ｫ繝代Ρ繝ｼ繧｢繝九Γ陦ｨ遉ｺ
+		'スペシャルパワーアニメ表示
 		If SpecialPowerAnimation Then
 			chkSpecialPowerAnimation.CheckState = System.Windows.Forms.CheckState.Checked
 		Else
 			chkSpecialPowerAnimation.CheckState = System.Windows.Forms.CheckState.Unchecked
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'マウスカーソルの自動移動
 		If AutoMoveCursor Then
 			chkAutoMoveCursor.CheckState = System.Windows.Forms.CheckState.Checked
 		Else
 			chkAutoMoveCursor.CheckState = System.Windows.Forms.CheckState.Unchecked
 		End If
 		
-		'繝槭せ逶ｮ縺ｮ陦ｨ遉ｺ
+		'マス目の表示
 		If ShowSquareLine Then
 			chkShowSquareLine.CheckState = System.Windows.Forms.CheckState.Checked
 		Else
 			chkShowSquareLine.CheckState = System.Windows.Forms.CheckState.Unchecked
 		End If
 		
-		'蜻ｳ譁ｹ繝輔ぉ繧､繧ｺ髢句ｧ区凾縺ｮ繧ｿ繝ｼ繝ｳ陦ｨ遉ｺ
+		'味方フェイズ開始時のターン表示
 		If LCase(ReadIni("Option", "Turn")) = "on" Then
 			chkShowTurn.CheckState = System.Windows.Forms.CheckState.Checked
 		Else
 			chkShowTurn.CheckState = System.Windows.Forms.CheckState.Unchecked
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'敵フェイズ中にＢＧＭを変更しない
 		If KeepEnemyBGM Then
 			chkKeepEnemyBGM.CheckState = System.Windows.Forms.CheckState.Checked
 		Else
 			chkKeepEnemyBGM.CheckState = System.Windows.Forms.CheckState.Unchecked
 		End If
 		
-		'MIDI貍泌･上↓DirectMusic繧剃ｽｿ逕ｨ縺吶ｋ
+		'MIDI演奏にDirectMusicを使用する
 		If LCase(ReadIni("Option", "UseDirectMusic")) = "on" Then
 			chkUseDirectMusic.CheckState = System.Windows.Forms.CheckState.Checked
 		Else
 			chkUseDirectMusic.CheckState = System.Windows.Forms.CheckState.Unchecked
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'MIDI音源リセットの種類
 		cboMidiReset.Items.Add("None")
 		cboMidiReset.Items.Add("GM")
 		cboMidiReset.Items.Add("GS")
 		cboMidiReset.Items.Add("XG")
 		cboMidiReset.Text = MidiResetType
 		
-		'Invalid_string_refer_to_original_code
+		'MP3音量
 		SavedMP3Volume = MP3Volume
 		txtMP3Volume.Text = VB6.Format(MP3Volume)
 	End Sub
 	
-	'MP3髻ｳ驥丞､画峩
+	'MP3音量変更
 	'UPGRADE_NOTE: hscMP3Volume.Change はイベントからプロシージャに変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="4E2DC008-5EDA-4547-8317-C9316952674F"' をクリックしてください。
 	'UPGRADE_WARNING: HScrollBar イベント hscMP3Volume.Change には新しい動作が含まれます。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6BA9B8D2-2A32-4B6E-8D36-44949974A5B4"' をクリックしてください。
 	Private Sub hscMP3Volume_Change(ByVal newScrollValue As Integer)

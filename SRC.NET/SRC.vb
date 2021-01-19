@@ -4,116 +4,116 @@ Imports VB = Microsoft.VisualBasic
 Module SRC
 	
 	' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
+	' –{ƒvƒƒOƒ‰ƒ€‚ÍƒtƒŠ[ƒ\ƒtƒg‚Å‚ ‚èA–³•ÛØ‚Å‚·B
+	' –{ƒvƒƒOƒ‰ƒ€‚ÍGNU General Public License(Ver.3‚Ü‚½‚Í‚»‚êˆÈ~)‚ª’è‚ß‚éğŒ‚Ì‰º‚Å
+	' Ä”Ğ•z‚Ü‚½‚Í‰ü•Ï‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B
 	
-	'Invalid_string_refer_to_original_code
+	'ƒpƒCƒƒbƒgƒf[ƒ^‚ÌƒŠƒXƒg
 	Public PDList As New PilotDataList
-	'Invalid_string_refer_to_original_code
+	'ƒmƒ“ƒpƒCƒƒbƒgƒf[ƒ^‚ÌƒŠƒXƒg
 	Public NPDList As New NonPilotDataList
-	'Invalid_string_refer_to_original_code
+	'ƒ†ƒjƒbƒgƒf[ƒ^‚ÌƒŠƒXƒg
 	Public UDList As New UnitDataList
-	'Invalid_string_refer_to_original_code
+	'ƒAƒCƒeƒ€ƒf[ƒ^‚ÌƒŠƒXƒg
 	Public IDList As New ItemDataList
-	'Invalid_string_refer_to_original_code
+	'ƒƒbƒZ[ƒWƒf[ƒ^‚ÌƒŠƒXƒg
 	Public MDList As New MessageDataList
-	'Invalid_string_refer_to_original_code
+	'“ÁêŒø‰Êƒf[ƒ^‚ÌƒŠƒXƒg
 	Public EDList As New MessageDataList
-	'Invalid_string_refer_to_original_code
+	'í“¬ƒAƒjƒƒf[ƒ^‚ÌƒŠƒXƒg
 	Public ADList As New MessageDataList
-	'Invalid_string_refer_to_original_code
+	'Šg’£í“¬ƒAƒjƒƒf[ƒ^‚ÌƒŠƒXƒg
 	Public EADList As New MessageDataList
-	'Invalid_string_refer_to_original_code
+	'ƒ_ƒCƒAƒƒOƒf[ƒ^‚ÌƒŠƒXƒg
 	Public DDList As New DialogDataList
-	'Invalid_string_refer_to_original_code
+	'ƒXƒyƒVƒƒƒ‹ƒpƒ[ƒf[ƒ^‚ÌƒŠƒXƒg
 	Public SPDList As New SpecialPowerDataList
-	'Invalid_string_refer_to_original_code
+	'ƒGƒŠƒAƒXƒf[ƒ^‚ÌƒŠƒXƒg
 	Public ALDList As New AliasDataList
-	'Invalid_string_refer_to_original_code
+	'’nŒ`ƒf[ƒ^‚ÌƒŠƒXƒg
 	Public TDList As New TerrainDataList
-	'Invalid_string_refer_to_original_code
+	'ƒoƒgƒ‹ƒRƒ“ƒtƒBƒOƒf[ƒ^‚ÌƒŠƒXƒg
 	Public BCList As New BattleConfigDataList
 	
 	
-	'Invalid_string_refer_to_original_code
+	'ƒpƒCƒƒbƒg‚ÌƒŠƒXƒg
 	Public PList As New Pilots
-	'Invalid_string_refer_to_original_code
+	'ƒ†ƒjƒbƒg‚ÌƒŠƒXƒg
 	Public UList As New Units
-	'Invalid_string_refer_to_original_code
+	'ƒAƒCƒeƒ€‚ÌƒŠƒXƒg
 	Public IList As New Items
 	
-	'Invalid_string_refer_to_original_code
+	'ƒCƒxƒ“ƒgƒtƒ@ƒCƒ‹–¼
 	Public ScenarioFileName As String
-	'Invalid_string_refer_to_original_code
+	'ƒCƒxƒ“ƒgƒtƒ@ƒCƒ‹–¼‚Ì‚ ‚éƒtƒHƒ‹ƒ_
 	Public ScenarioPath As String
-	'Invalid_string_refer_to_original_code
+	'ƒZ[ƒuƒf[ƒ^‚Ìƒtƒ@ƒCƒ‹ƒfƒBƒXƒNƒŠƒvƒ^
 	Public SaveDataFileNumber As Short
-	'Invalid_string_refer_to_original_code
+	'ƒZ[ƒuƒf[ƒ^‚Ìƒo[ƒWƒ‡ƒ“
 	Public SaveDataVersion As Integer
 	
-	'Invalid_string_refer_to_original_code
+	'‚»‚ÌƒXƒe[ƒW‚ªI—¹‚µ‚½‚©‚ğ¦‚·ƒtƒ‰ƒO
 	Public IsScenarioFinished As Boolean
-	'Invalid_string_refer_to_original_code
+	'ƒCƒ“ƒ^[ƒ~ƒbƒVƒ‡ƒ“ƒRƒ}ƒ“ƒh‚É‚æ‚éƒXƒe[ƒW‚©‚Ç‚¤‚©‚ğ¦‚·ƒtƒ‰ƒO
 	Public IsSubStage As Boolean
-	'Invalid_string_refer_to_original_code
+	'ƒRƒ}ƒ“ƒh‚ªƒLƒƒƒ“ƒZƒ‹‚³‚ê‚½‚©‚Ç‚¤‚©‚ğ¦‚·ƒtƒ‰ƒO
 	Public IsCanceled As Boolean
 	
-	'Invalid_string_refer_to_original_code
+	'ƒtƒFƒCƒY–¼
 	Public Stage As String
-	'ã‚¿ãƒ¼ãƒ³æ•°
+	'ƒ^[ƒ“”
 	Public Turn As Short
-	'ç·ã‚¿ãƒ¼ãƒ³æ•°
+	'‘ƒ^[ƒ“”
 	Public TotalTurn As Integer
-	'Invalid_string_refer_to_original_code
+	'‘‘‹à
 	Public Money As Integer
-	'Invalid_string_refer_to_original_code
+	'“Ç‚İ‚Ü‚ê‚Ä‚¢‚éƒf[ƒ^”
 	Public Titles() As String
-	'Invalid_string_refer_to_original_code
+	'ƒ[ƒJƒ‹ƒf[ƒ^‚ª“Ç‚İ‚Ü‚ê‚Ä‚¢‚é‚©H
 	Public IsLocalDataLoaded As Boolean
 	
-	'Invalid_string_refer_to_original_code
+	'ÅV‚ÌƒZ[ƒuƒf[ƒ^‚Ìƒtƒ@ƒCƒ‹–¼
 	Public LastSaveDataFileName As String
-	'Invalid_string_refer_to_original_code
+	'ƒŠƒXƒ^[ƒg—pƒZ[ƒuƒf[ƒ^‚ª—˜—p‰Â”\‚©‚Ç‚¤‚©
 	Public IsRestartSaveDataAvailable As Boolean
-	'Invalid_string_refer_to_original_code
+	'ƒNƒCƒbƒNƒ[ƒh—pƒZ[ƒuƒf[ƒ^‚ª—˜—p‰Â”\‚©‚Ç‚¤‚©
 	Public IsQuickSaveDataAvailable As Boolean
 	
-	'Invalid_string_refer_to_original_code
-	'ãƒã‚¹ç›®ã®è¡¨ç¤ºã‚’ã™ã‚‹ã‹
+	'ƒVƒXƒeƒ€ƒIƒvƒVƒ‡ƒ“
+	'ƒ}ƒX–Ú‚Ì•\¦‚ğ‚·‚é‚©
 	Public ShowSquareLine As Boolean
-	'Invalid_string_refer_to_original_code
+	'“GƒtƒFƒCƒY‚É‚Í‚a‚f‚l‚ğ•ÏX‚µ‚È‚¢‚©
 	Public KeepEnemyBGM As Boolean
-	'Invalid_string_refer_to_original_code
+	'Šg’£ƒf[ƒ^ƒtƒHƒ‹ƒ_‚Ö‚ÌƒpƒX
 	Public ExtDataPath As String
 	Public ExtDataPath2 As String
-	'Invalid_string_refer_to_original_code
+	'MIDI‰¹Œ¹ƒŠƒZƒbƒg‚Ìí—Ş
 	Public MidiResetType As String
-	'Invalid_string_refer_to_original_code
+	'©“®–hŒäƒ‚[ƒh‚ğg‚¤‚©
 	Public AutoMoveCursor As Boolean
-	'Invalid_string_refer_to_original_code
+	'ƒXƒyƒVƒƒƒ‹ƒpƒ[ƒAƒjƒ‚ğ•\¦‚·‚é‚©
 	Public SpecialPowerAnimation As Boolean
-	'Invalid_string_refer_to_original_code
+	'í“¬ƒAƒjƒ‚ğ•\¦‚·‚é‚©
 	Public BattleAnimation As Boolean
-	'Invalid_string_refer_to_original_code
+	'•Ší€”õƒAƒjƒ‚ğ•\¦‚·‚é‚©
 	Public WeaponAnimation As Boolean
-	'Invalid_string_refer_to_original_code
+	'Šg‘åí“¬ƒAƒjƒ‚ğ•\¦‚·‚é‚©
 	Public ExtendedAnimation As Boolean
-	'Invalid_string_refer_to_original_code
+	'ˆÚ“®ƒAƒjƒ‚ğ•\¦‚·‚é‚©
 	Public MoveAnimation As Boolean
-	'Invalid_string_refer_to_original_code
+	'‰æ‘œƒoƒbƒtƒ@‚Ì–‡”
 	Public ImageBufferSize As Short
-	'Invalid_string_refer_to_original_code
+	'‰æ‘œƒoƒbƒtƒ@‚ÌÅ‘åƒoƒCƒg”
 	Public MaxImageBufferByteSize As Integer
-	'Invalid_string_refer_to_original_code
+	'Šg‘å‰æ‘œ‚ğ‰æ‘œƒoƒbƒtƒ@‚É•Û‘¶‚·‚é‚©
 	Public KeepStretchedImage As Boolean
-	'Invalid_string_refer_to_original_code
+	'“§‰ß•`‰æ‚ÉTransparentBlt‚ğg‚¤‚©
 	Public UseTransparentBlt As Boolean
 	
-	'SRC.exeã®ã‚ã‚‹å ´æ‰€
+	'SRC.exe‚Ì‚ ‚éêŠ
 	Public AppPath As String
 	
-	'Invalid_string_refer_to_original_code
+	'ƒf[ƒ^’†‚ÉƒŒƒxƒ‹w’è‚ğÈ—ª‚µ‚½ê‡‚ÌƒfƒtƒHƒ‹ƒg‚ÌƒŒƒxƒ‹’l
 	Public Const DEFAULT_LEVEL As Short = -1000
 	
 	'UPGRADE_WARNING: Sub Main() ‚ªŠ®—¹‚µ‚½‚Æ‚«‚ÉƒAƒvƒŠƒP[ƒVƒ‡ƒ“‚ÍI—¹‚µ‚Ü‚·B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="E08DDC71-66BA-424F-A612-80AF11498FF8"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
@@ -123,157 +123,127 @@ Module SRC
 		Dim buf As String
 		Dim ret As Integer
 		
-		'Invalid_string_refer_to_original_code
+		'‚Qd‹N“®‹Ö~
 		'UPGRADE_ISSUE: App ƒvƒƒpƒeƒB App.PrevInstance ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="076C26E5-B7A9-4E77-B69C-B4448DF39E58"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 		If App.PrevInstance Then
 			End
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'SRC.exe‚Ì‚ ‚éêŠ‚ğ’²‚×‚é
 		AppPath = My.Application.Info.DirectoryPath
 		If Right(AppPath, 1) <> "\" Then
 			AppPath = AppPath & "\"
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'SRC‚ª³‚µ‚­ƒCƒ“ƒXƒg[ƒ‹‚³‚ê‚Ä‚¢‚é‚©‚ğƒ`ƒFƒbƒN
 		
-		'Invalid_string_refer_to_original_code
+		'BitmapŠÖŒW‚Ìƒ`ƒFƒbƒN
 		'UPGRADE_WARNING: Dir ‚ÉV‚µ‚¢“®ì‚ªw’è‚³‚ê‚Ä‚¢‚Ü‚·B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 		If Len(Dir(AppPath & "Bitmap", FileAttribute.Directory)) = 0 Then
-			ErrorMessage("Invalid_string_refer_to_original_code")
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			ErrorMessage("BitmapƒtƒHƒ‹ƒ_‚ª‚ ‚è‚Ü‚¹‚ñB" & vbCr & vbLf & "SRC.exe‚Æ“¯‚¶ƒtƒHƒ‹ƒ_‚É”Ä—pƒOƒ‰ƒtƒBƒbƒNW‚ğƒCƒ“ƒXƒg[ƒ‹‚µ‚Ä‚­‚¾‚³‚¢B")
 			End
 		End If
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		ErrorMessage("Invalid_string_refer_to_original_code")
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		End
-		'End If
+		'UPGRADE_WARNING: Dir ‚ÉV‚µ‚¢“®ì‚ªw’è‚³‚ê‚Ä‚¢‚Ü‚·B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+		If Len(Dir(AppPath & "‚a‚‰‚”‚‚‚", FileAttribute.Directory)) > 0 Then
+			ErrorMessage("BitmapƒtƒHƒ‹ƒ_‚ÌƒtƒHƒ‹ƒ_–¼‚ª‘SŠp•¶š‚É‚È‚Á‚Ä‚¢‚Ü‚·B" & vbCr & vbLf & AppPath & "‚a‚‰‚”‚‚‚" & vbCr & vbLf & "ƒtƒHƒ‹ƒ_–¼‚ğ”¼Šp•¶š‚É’¼‚µ‚Ä‚­‚¾‚³‚¢B")
+			End
+		End If
 		'UPGRADE_WARNING: Dir ‚ÉV‚µ‚¢“®ì‚ªw’è‚³‚ê‚Ä‚¢‚Ü‚·B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 		If Len(Dir(AppPath & "Bitmap\Bitmap", FileAttribute.Directory)) > 0 Then
-			ErrorMessage("Invalid_string_refer_to_original_code")
-			& AppPath & "Bitmap\Bitmap" & vbCr & vbLf _
-			Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			ErrorMessage("BitmapƒtƒHƒ‹ƒ_“à‚É‚³‚ç‚ÉBitmapƒtƒHƒ‹ƒ_‚ª‘¶İ‚µ‚Ü‚·B" & vbCr & vbLf & AppPath & "Bitmap\Bitmap" & vbCr & vbLf & "ƒtƒHƒ‹ƒ_\‘¢‚ğ’¼‚µ‚Ä‚­‚¾‚³‚¢B")
 			End
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'ƒCƒxƒ“ƒgƒOƒ‰ƒtƒBƒbƒN
 		'UPGRADE_WARNING: Dir ‚ÉV‚µ‚¢“®ì‚ªw’è‚³‚ê‚Ä‚¢‚Ü‚·B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 		If Len(Dir(AppPath & "Bitmap\Event", FileAttribute.Directory)) = 0 Then
-			ErrorMessage("Invalid_string_refer_to_original_code")
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			ErrorMessage("Bitmap\EventƒtƒHƒ‹ƒ_‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñB" & vbCr & vbLf & "”Ä—pƒOƒ‰ƒtƒBƒbƒNW‚ª³‚µ‚­ƒCƒ“ƒXƒg[ƒ‹‚³‚ê‚Ä‚¢‚È‚¢‚Æv‚í‚ê‚Ü‚·B")
 			End
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'ƒ}ƒbƒvƒOƒ‰ƒtƒBƒbƒN
 		'UPGRADE_WARNING: Dir ‚ÉV‚µ‚¢“®ì‚ªw’è‚³‚ê‚Ä‚¢‚Ü‚·B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 		If Len(Dir(AppPath & "Bitmap\Map", FileAttribute.Directory)) = 0 Then
-			ErrorMessage("Invalid_string_refer_to_original_code")
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			ErrorMessage("Bitmap\MapƒtƒHƒ‹ƒ_‚ª‚ ‚è‚Ü‚¹‚ñB" & vbCr & vbLf & "”Ä—pƒOƒ‰ƒtƒBƒbƒNW‚ª³‚µ‚­ƒCƒ“ƒXƒg[ƒ‹‚³‚ê‚Ä‚¢‚È‚¢‚Æv‚í‚ê‚Ü‚·B")
 			End
 		End If
 		'UPGRADE_WARNING: Dir ‚ÉV‚µ‚¢“®ì‚ªw’è‚³‚ê‚Ä‚¢‚Ü‚·B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 		If Len(Dir(AppPath & "Bitmap\Map\plain\plain0000.bmp")) = 0 And Len(Dir(AppPath & "Bitmap\Map\plain0000.bmp")) = 0 And Len(Dir(AppPath & "Bitmap\Map\plain0.bmp")) = 0 Then
 			'UPGRADE_WARNING: Dir ‚ÉV‚µ‚¢“®ì‚ªw’è‚³‚ê‚Ä‚¢‚Ü‚·B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 			If Len(Dir(AppPath & "Bitmap\Map\Map", FileAttribute.Directory)) > 0 Then
-				ErrorMessage("Invalid_string_refer_to_original_code")
-				& AppPath & "Bitmap\Map\Map" & vbCr & vbLf _
-				Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				ErrorMessage("Bitmap\MapƒtƒHƒ‹ƒ_“à‚É‚³‚ç‚ÉMapƒtƒHƒ‹ƒ_‚ª‘¶İ‚µ‚Ü‚·B" & vbCr & vbLf & AppPath & "Bitmap\Map\Map" & vbCr & vbLf & "ƒtƒHƒ‹ƒ_\‘¢‚ğ’¼‚µ‚Ä‚­‚¾‚³‚¢B")
 				End
 			End If
 			
 			'UPGRADE_WARNING: Dir ‚ÉV‚µ‚¢“®ì‚ªw’è‚³‚ê‚Ä‚¢‚Ü‚·B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 			If Len(Dir(AppPath & "Bitmap\Map\*", FileAttribute.Normal)) = 0 Then
-				ErrorMessage("Invalid_string_refer_to_original_code")
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				ErrorMessage("Bitmap\MapƒtƒHƒ‹ƒ_“à‚Éƒtƒ@ƒCƒ‹‚ª‚ ‚è‚Ü‚¹‚ñB" & vbCr & vbLf & "”Ä—pƒOƒ‰ƒtƒBƒbƒNW‚ª³‚µ‚­ƒCƒ“ƒXƒg[ƒ‹‚³‚ê‚Ä‚¢‚È‚¢‚Æv‚í‚ê‚Ü‚·B")
 				End
 			End If
 			
-			ErrorMessage("Invalid_string_refer_to_original_code")
-			'Invalid_string_refer_to_original_code_
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			ErrorMessage("Bitmap\MapƒtƒHƒ‹ƒ_“à‚Éplain0000.bmp‚ª‚ ‚è‚Ü‚¹‚ñB" & vbCr & vbLf & "ˆê•”‚Ìƒ}ƒbƒv‰æ‘œƒtƒ@ƒCƒ‹‚µ‚©ƒCƒ“ƒXƒg[ƒ‹‚³‚ê‚Ä‚¢‚È‚¢‹°‚ê‚ª‚ ‚è‚Ü‚·B" & vbCr & vbLf & "V‹KƒCƒ“ƒXƒg[ƒ‹‚Ìƒtƒ@ƒCƒ‹‚ğg‚Á‚Ä”Ä—pƒOƒ‰ƒtƒBƒbƒNW‚ğƒCƒ“ƒXƒg[ƒ‹‚µ‚Ä‚­‚¾‚³‚¢B")
 			End
 		End If
 		
-		'åŠ¹æœéŸ³
+		'Œø‰Ê‰¹
 		'UPGRADE_WARNING: Dir ‚ÉV‚µ‚¢“®ì‚ªw’è‚³‚ê‚Ä‚¢‚Ü‚·B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 		If Len(Dir(AppPath & "Sound", FileAttribute.Directory)) = 0 Then
-			ErrorMessage("Invalid_string_refer_to_original_code")
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			ErrorMessage("SoundƒtƒHƒ‹ƒ_‚ª‚ ‚è‚Ü‚¹‚ñB" & vbCr & vbLf & "SRC.exe‚Æ“¯‚¶ƒtƒHƒ‹ƒ_‚ÉŒø‰Ê‰¹W‚ğƒCƒ“ƒXƒg[ƒ‹‚µ‚Ä‚­‚¾‚³‚¢B")
 			End
 		End If
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		ErrorMessage("Invalid_string_refer_to_original_code")
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		End
-		'End If
+		'UPGRADE_WARNING: Dir ‚ÉV‚µ‚¢“®ì‚ªw’è‚³‚ê‚Ä‚¢‚Ü‚·B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+		If Len(Dir(AppPath & "‚r‚‚•‚‚„", FileAttribute.Directory)) > 0 Then
+			ErrorMessage("SoundƒtƒHƒ‹ƒ_‚ÌƒtƒHƒ‹ƒ_–¼‚ª‘SŠp•¶š‚É‚È‚Á‚Ä‚¢‚Ü‚·B" & vbCr & vbLf & AppPath & "‚r‚‚•‚‚„" & vbCr & vbLf & "ƒtƒHƒ‹ƒ_–¼‚ğ”¼Šp•¶š‚É’¼‚µ‚Ä‚­‚¾‚³‚¢B")
+			End
+		End If
 		'UPGRADE_WARNING: Dir ‚ÉV‚µ‚¢“®ì‚ªw’è‚³‚ê‚Ä‚¢‚Ü‚·B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 		If Len(Dir(AppPath & "Sound\Sound", FileAttribute.Directory)) > 0 Then
-			ErrorMessage("Invalid_string_refer_to_original_code")
-			& AppPath & "Sound\Sound" & vbCr & vbLf _
-			Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			ErrorMessage("SoundƒtƒHƒ‹ƒ_“à‚É‚³‚ç‚ÉSoundƒtƒHƒ‹ƒ_‚ª‘¶İ‚µ‚Ü‚·B" & vbCr & vbLf & AppPath & "Sound\Sound" & vbCr & vbLf & "ƒtƒHƒ‹ƒ_\‘¢‚ğ’¼‚µ‚Ä‚­‚¾‚³‚¢B")
 			End
 		End If
 		'UPGRADE_WARNING: Dir ‚ÉV‚µ‚¢“®ì‚ªw’è‚³‚ê‚Ä‚¢‚Ü‚·B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 		If Len(Dir(AppPath & "Sound\*", FileAttribute.Normal)) = 0 Then
-			ErrorMessage("Invalid_string_refer_to_original_code")
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			ErrorMessage("SoundƒtƒHƒ‹ƒ_“à‚Éƒtƒ@ƒCƒ‹‚ª‚ ‚è‚Ü‚¹‚ñB" & vbCr & vbLf & "SoundƒtƒHƒ‹ƒ_“à‚ÉŒø‰Ê‰¹W‚ğƒCƒ“ƒXƒg[ƒ‹‚µ‚Ä‚­‚¾‚³‚¢B")
 			End
 		End If
 		
-		'ãƒ¡ã‚¤ãƒ³ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ãƒ­ãƒ¼ãƒ‰ã¨Flashã®ç™»éŒ²ã‚’å®Ÿæ–½
+		'ƒƒCƒ“ƒEƒBƒ“ƒhƒE‚Ìƒ[ƒh‚ÆFlash‚Ì“o˜^‚ğÀ{
 		LoadMainFormAndRegisterFlash()
 		
-		'Invalid_string_refer_to_original_code
+		'Src.ini‚ª–³‚¯‚ê‚Îì¬
 		If Not FileExists(AppPath & "Src.ini") Then
 			CreateIniFile()
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'—”‚Ì‰Šú‰»
 		Randomize()
 		
-		'æ™‚é–“è§£åƒåº¦ã‚’å¤‰æ›´ã™ã‚‹
+		'ŠÔ‰ğ‘œ“x‚ğ•ÏX‚·‚é
 		Call timeBeginPeriod(1)
 		
-		'Invalid_string_refer_to_original_code
+		'ƒtƒ‹ƒXƒNƒŠ[ƒ“ƒ‚[ƒh‚ğg‚¤H
 		If LCase(ReadIni("Option", "FullScreen")) = "on" Then
 			ChangeDisplaySize(800, 600)
 		End If
 		
-		'ãƒã‚¦ã‚¹ã‚«ãƒ¼ã‚½ãƒ«ã‚’ç ‚æ™‚è¨ˆã«
+		'ƒ}ƒEƒXƒJ[ƒ\ƒ‹‚ğ»Œv‚É
 		'UPGRADE_WARNING: Screen ƒvƒƒpƒeƒB Screen.MousePointer ‚É‚ÍV‚µ‚¢“®ì‚ªŠÜ‚Ü‚ê‚Ü‚·B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6BA9B8D2-2A32-4B6E-8D36-44949974A5B4"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 		System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.WaitCursor
 		
-		'ã‚¿ã‚¤ãƒˆãƒ«ç”»é¢ã‚’è¡¨ç¤º
+		'ƒ^ƒCƒgƒ‹‰æ–Ê‚ğ•\¦
 		OpenTitleForm()
 		
-		'Invalid_string_refer_to_original_code
+		'WAVEÄ¶‚Ìè’i‚ÍH
 		Select Case LCase(ReadIni("Option", "UseDirectSound"))
 			Case "on"
-				'Invalid_string_refer_to_original_code
+				'DirectSound‚Ì‰Šú‰»‚ğ‚İ‚é
 				InitDirectSound()
 			Case "off"
 				UseDirectSound = False
 			Case Else
-				'Invalid_string_refer_to_original_code
+				'DirectSound‚Ì‰Šú‰»‚ğ‚İ‚é
 				InitDirectSound()
-				'Invalid_string_refer_to_original_code
+				'DirectSound‚ªg—p‰Â”\‚©‚Ç‚¤‚©‚Åİ’è‚ğØ‚è‘Ö‚¦
 				'            If UseDirectSound Then
 				'                WriteIni "Option", "UseDirectSound", "On"
 				'            Else
@@ -281,26 +251,26 @@ Module SRC
 				'            End If
 		End Select
 		
-		'Invalid_string_refer_to_original_code
+		'MIDI‰‰‘t‚Ìè’i‚ÍH
 		Select Case LCase(ReadIni("Option", "UseDirectMusic"))
 			Case "on"
-				'Invalid_string_refer_to_original_code
+				'DirectMusic‚Ì‰Šú‰»‚ğ‚İ‚é
 				InitDirectMusic()
 			Case "off"
 				UseMCI = True
 			Case Else
 				If GetWinVersion() >= 500 Then
-					'Invalid_string_refer_to_original_code
-					'Invalid_string_refer_to_original_code
+					'NTŒn‚ÌOS‚Å‚ÍƒfƒtƒHƒ‹ƒg‚ÅDirectMusic‚ğg‚¤
+					'DirectMusic‚Ì‰Šú‰»‚ğ‚İ‚é
 					InitDirectMusic()
-					'Invalid_string_refer_to_original_code
+					'DirectMusic‚ªg—p‰Â”\‚©‚Ç‚¤‚©‚Åİ’è‚ğØ‚è‘Ö‚¦
 					If UseDirectMusic Then
 						WriteIni("Option", "UseDirectMusic", "On")
 					Else
 						WriteIni("Option", "UseDirectMusic", "Off")
 					End If
 				Else
-					'Invalid_string_refer_to_original_code
+					'NTŒnOS‚Å‚È‚¯‚ê‚ÎMCI‚ğg‚¤
 					UseMCI = True
 					WriteIni("Option", "UseDirectMusic", "Off")
 				End If
@@ -309,7 +279,7 @@ Module SRC
 			WriteIni("Option", "MIDIPortID", "0")
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'MP3‚ÌÄ¶‰¹—Ê
 		buf = ReadIni("Option", "MP3Volume")
 		If buf = "" Then
 			WriteIni("Option", "MP3Volume", "50")
@@ -325,19 +295,19 @@ Module SRC
 			End If
 		End If
 		
-		'MP3ã®å‡ºåŠ›ãƒ•ãƒ¬ãƒ¼ãƒ æ•°
+		'MP3‚Ìo—ÍƒtƒŒ[ƒ€”
 		buf = ReadIni("Option", "MP3OutputBlock")
 		If buf = "" Then
 			WriteIni("Option", "MP3OutputBlock", "20")
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'MP3‚Ì“ü—Í’¼Œã‚ÌƒXƒŠ[ƒvŠÔ
 		buf = ReadIni("Option", "MP3InputSleep")
 		If buf = "" Then
 			WriteIni("Option", "MP3InputSleep", "5")
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'‚a‚f‚l—pMIDIƒtƒ@ƒCƒ‹İ’è
 		If ReadIni("BGM", "Opening") = "" Then
 			WriteIni("BGM", "Opening", "Opening.mid")
 		End If
@@ -376,7 +346,7 @@ Module SRC
 		End If
 		
 		
-		'Invalid_string_refer_to_original_code
+		'‹N“®‚Ìˆø”‚©‚ç“Ç‚İ‚Şƒtƒ@ƒCƒ‹‚ğ’T‚·
 		If Left(VB.Command(), 1) = """" Then
 			fname = Mid(VB.Command(), 2, Len(VB.Command()) - 2)
 		Else
@@ -384,9 +354,9 @@ Module SRC
 		End If
 		
 		If LCase(Right(fname, 4)) <> ".src" And LCase(Right(fname, 4)) <> ".eve" Then
-			'Invalid_string_refer_to_original_code
+			'ƒ_ƒCƒAƒƒO‚ğ•\¦‚µ‚Ä“Ç‚İ‚Şƒtƒ@ƒCƒ‹‚ğw’è‚·‚éê‡
 			
-			'Invalid_string_refer_to_original_code
+			'ƒ_ƒCƒAƒƒO‚Ì‰ŠúƒtƒHƒ‹ƒ_‚ğİ’è
 			i = 0
 			ScenarioPath = ReadIni("Log", "LastFolder")
 			On Error GoTo ErrorHandler
@@ -398,167 +368,165 @@ Module SRC
 				If Dir(ScenarioPath & "*.src") <> "" Then
 					i = 3
 				End If
-				If InStr(ScenarioPath, "Invalid_string_refer_to_original_code") > 0 Then
+				If InStr(ScenarioPath, "ƒeƒXƒgƒf[ƒ^") > 0 Then
 					i = 2
 				End If
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				i = 2
+				If InStr(ScenarioPath, "í“¬ƒAƒjƒƒeƒXƒg") > 0 Then
+					i = 2
+				End If
+				'UPGRADE_WARNING: Dir ‚ÉV‚µ‚¢“®ì‚ªw’è‚³‚ê‚Ä‚¢‚Ü‚·B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				If Dir(ScenarioPath & "test.eve") <> "" Then
+					i = 2
+				End If
+			Else
+				ScenarioPath = AppPath
 			End If
-			'UPGRADE_WARNING: Dir ‚ÉV‚µ‚¢“®ì‚ªw’è‚³‚ê‚Ä‚¢‚Ü‚·B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			If Dir(ScenarioPath & "test.eve") <> "" Then
-				i = 2
-			End If
-		Else
-			ScenarioPath = AppPath
-		End If
-		On Error GoTo 0
-		GoTo SkipErrorHandler
-		
+			On Error GoTo 0
+			GoTo SkipErrorHandler
+			
 ErrorHandler: 
-		ScenarioPath = AppPath
-		
+			ScenarioPath = AppPath
+			
 SkipErrorHandler: 
-		If Right(ScenarioPath, 1) <> "\" Then
-			ScenarioPath = ScenarioPath & "\"
-		End If
-		
-		'Invalid_string_refer_to_original_code
-		ExtDataPath = ReadIni("Option", "ExtDataPath")
-		If Len(ExtDataPath) > 0 Then
-			If Right(ExtDataPath, 1) <> "\" Then
-				ExtDataPath = ExtDataPath & "\"
+			If Right(ScenarioPath, 1) <> "\" Then
+				ScenarioPath = ScenarioPath & "\"
 			End If
-		End If
-		ExtDataPath2 = ReadIni("Option", "ExtDataPath2")
-		If Len(ExtDataPath2) > 0 Then
-			If Right(ExtDataPath2, 1) <> "\" Then
-				ExtDataPath2 = ExtDataPath2 & "\"
-			End If
-		End If
-		
-		'Invalid_string_refer_to_original_code
-		StopBGM(True)
-		StartBGM(BGMName("Opening"), True)
-		
-		'Invalid_string_refer_to_original_code
-		InitEventData()
-		
-		'ã‚¿ã‚¤ãƒˆãƒ«ç”»é¢ã‚’é–‰ã˜ã‚‹
-		CloseTitleForm()
-		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_WARNING: Screen ƒvƒƒpƒeƒB Screen.MousePointer ‚É‚ÍV‚µ‚¢“®ì‚ªŠÜ‚Ü‚ê‚Ü‚·B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6BA9B8D2-2A32-4B6E-8D36-44949974A5B4"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.Default
-		
-		'Invalid_string_refer_to_original_code
-		ResetMidiSearchPath()
-		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		
-		'Invalid_string_refer_to_original_code
-		If fname = "" Then
-			TerminateSRC()
-			End
-		End If
-		
-		'Invalid_string_refer_to_original_code
-		If InStr(fname, "\") > 0 Then
-			For i = 1 To Len(fname)
-				If Mid(fname, Len(fname) - i + 1, 1) = "\" Then
-					Exit For
+			
+			'Šg’£ƒf[ƒ^‚ÌƒtƒHƒ‹ƒ_‚ğİ’è
+			ExtDataPath = ReadIni("Option", "ExtDataPath")
+			If Len(ExtDataPath) > 0 Then
+				If Right(ExtDataPath, 1) <> "\" Then
+					ExtDataPath = ExtDataPath & "\"
 				End If
-			Next 
-			ScenarioPath = Left(fname, Len(fname) - i)
-		Else
-			ScenarioPath = AppPath
-		End If
-		If Right(ScenarioPath, 1) <> "\" Then
-			ScenarioPath = ScenarioPath & "\"
-		End If
-		' ADD START MARGE
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
-		ExtDataPath = ReadIni("Option", "ExtDataPath")
-		If Len(ExtDataPath) > 0 Then
-			If Right(ExtDataPath, 1) <> "\" Then
-				ExtDataPath = ExtDataPath & "\"
 			End If
-		End If
-		ExtDataPath2 = ReadIni("Option", "ExtDataPath2")
-		If Len(ExtDataPath2) > 0 Then
-			If Right(ExtDataPath2, 1) <> "\" Then
-				ExtDataPath2 = ExtDataPath2 & "\"
-			End If
-		End If
-		' ADD  END  MARGE
-		'Invalid_string_refer_to_original_code
-		
-		'Invalid_string_refer_to_original_code
-		If fname = "" Then
-			TerminateSRC()
-			End
-		End If
-		
-		'Invalid_string_refer_to_original_code
-		If InStr(fname, "\") > 0 Then
-			For i = 1 To Len(fname)
-				If Mid(fname, Len(fname) - i + 1, 1) = "\" Then
-					Exit For
+			ExtDataPath2 = ReadIni("Option", "ExtDataPath2")
+			If Len(ExtDataPath2) > 0 Then
+				If Right(ExtDataPath2, 1) <> "\" Then
+					ExtDataPath2 = ExtDataPath2 & "\"
 				End If
-			Next 
-			ScenarioPath = Left(fname, Len(fname) - i)
+			End If
+			
+			'ƒI[ƒvƒjƒ“ƒO‹È‰‰‘t
+			StopBGM(True)
+			StartBGM(BGMName("Opening"), True)
+			
+			'ƒCƒxƒ“ƒgƒf[ƒ^‚ğ‰Šú‰»
+			InitEventData()
+			
+			'ƒ^ƒCƒgƒ‹‰æ–Ê‚ğ•Â‚¶‚é
+			CloseTitleForm()
+			
+			'ƒ}ƒEƒXƒJ[ƒ\ƒ‹‚ğŒ³‚É–ß‚·
+			'UPGRADE_WARNING: Screen ƒvƒƒpƒeƒB Screen.MousePointer ‚É‚ÍV‚µ‚¢“®ì‚ªŠÜ‚Ü‚ê‚Ü‚·B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6BA9B8D2-2A32-4B6E-8D36-44949974A5B4"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.Default
+			
+			'ƒVƒiƒŠƒIƒpƒX‚Í•ÏX‚³‚ê‚é‰Â”\«‚ª‚ ‚é‚Ì‚ÅAMIDIƒtƒ@ƒCƒ‹‚ÌƒT[ƒ`ƒpƒX‚ğƒŠƒZƒbƒg
+			ResetMidiSearchPath()
+			
+			'ƒvƒŒƒCƒ„[‚Éƒ[ƒh‚·‚éƒtƒ@ƒCƒ‹‚ğq‚Ë‚é
+			fname = LoadFileDialog("ƒVƒiƒŠƒI^ƒZ[ƒuƒtƒ@ƒCƒ‹‚Ìw’è", ScenarioPath, "", i, "²ÍŞİÄÃŞ°À", "eve", "¾°ÌŞÃŞ°À", "src")
+			
+			'ƒtƒ@ƒCƒ‹‚ªw’è‚³‚ê‚È‚©‚Á‚½ê‡‚Í‚»‚Ì‚Ü‚ÜI—¹
+			If fname = "" Then
+				TerminateSRC()
+				End
+			End If
+			
+			'ƒVƒiƒŠƒI‚Ì‚ ‚éƒtƒHƒ‹ƒ_‚ÌƒpƒX‚ğû“¾
+			If InStr(fname, "\") > 0 Then
+				For i = 1 To Len(fname)
+					If Mid(fname, Len(fname) - i + 1, 1) = "\" Then
+						Exit For
+					End If
+				Next 
+				ScenarioPath = Left(fname, Len(fname) - i)
+			Else
+				ScenarioPath = AppPath
+			End If
+			If Right(ScenarioPath, 1) <> "\" Then
+				ScenarioPath = ScenarioPath & "\"
+			End If
+			' ADD START MARGE
+			'ƒVƒiƒŠƒIƒpƒX‚ªŒˆ’è‚µ‚½’iŠK‚ÅŠg’£ƒf[ƒ^ƒtƒHƒ‹ƒ_ƒpƒX‚ğÄİ’è‚·‚é‚æ‚¤‚É•ÏX
+			'Šg’£ƒf[ƒ^‚ÌƒtƒHƒ‹ƒ_‚ğİ’è
+			ExtDataPath = ReadIni("Option", "ExtDataPath")
+			If Len(ExtDataPath) > 0 Then
+				If Right(ExtDataPath, 1) <> "\" Then
+					ExtDataPath = ExtDataPath & "\"
+				End If
+			End If
+			ExtDataPath2 = ReadIni("Option", "ExtDataPath2")
+			If Len(ExtDataPath2) > 0 Then
+				If Right(ExtDataPath2, 1) <> "\" Then
+					ExtDataPath2 = ExtDataPath2 & "\"
+				End If
+			End If
+			' ADD  END  MARGE
 		Else
-			ScenarioPath = AppPath
-		End If
-		If Right(ScenarioPath, 1) <> "\" Then
-			ScenarioPath = ScenarioPath & "\"
-		End If
-		
-		'Invalid_string_refer_to_original_code
-		ExtDataPath = ReadIni("Option", "ExtDataPath")
-		If Len(ExtDataPath) > 0 Then
-			If Right(ExtDataPath, 1) <> "\" Then
-				ExtDataPath = ExtDataPath & "\"
+			'ƒhƒ‰ƒbƒO•ƒhƒƒbƒv‚Å“Ç‚İ‚Şƒtƒ@ƒCƒ‹‚ªw’è‚³‚ê‚½ê‡
+			
+			'ƒtƒ@ƒCƒ‹–¼‚ª–³Œø‚Ìê‡‚Í‚»‚Ì‚Ü‚ÜI—¹
+			If fname = "" Then
+				TerminateSRC()
+				End
 			End If
-		End If
-		ExtDataPath2 = ReadIni("Option", "ExtDataPath2")
-		If Len(ExtDataPath2) > 0 Then
-			If Right(ExtDataPath2, 1) <> "\" Then
-				ExtDataPath2 = ExtDataPath2 & "\"
+			
+			'ƒVƒiƒŠƒI‚Ì‚ ‚éƒtƒHƒ‹ƒ_‚ÌƒpƒX‚ğû“¾
+			If InStr(fname, "\") > 0 Then
+				For i = 1 To Len(fname)
+					If Mid(fname, Len(fname) - i + 1, 1) = "\" Then
+						Exit For
+					End If
+				Next 
+				ScenarioPath = Left(fname, Len(fname) - i)
+			Else
+				ScenarioPath = AppPath
 			End If
+			If Right(ScenarioPath, 1) <> "\" Then
+				ScenarioPath = ScenarioPath & "\"
+			End If
+			
+			'Šg’£ƒf[ƒ^‚ÌƒtƒHƒ‹ƒ_‚ğİ’è
+			ExtDataPath = ReadIni("Option", "ExtDataPath")
+			If Len(ExtDataPath) > 0 Then
+				If Right(ExtDataPath, 1) <> "\" Then
+					ExtDataPath = ExtDataPath & "\"
+				End If
+			End If
+			ExtDataPath2 = ReadIni("Option", "ExtDataPath2")
+			If Len(ExtDataPath2) > 0 Then
+				If Right(ExtDataPath2, 1) <> "\" Then
+					ExtDataPath2 = ExtDataPath2 & "\"
+				End If
+			End If
+			
+			'ƒI[ƒvƒjƒ“ƒO‹È‰‰‘t
+			StopBGM(True)
+			StartBGM(BGMName("Opening"), True)
+			
+			InitEventData()
+			
+			CloseTitleForm()
+			
+			'UPGRADE_WARNING: Screen ƒvƒƒpƒeƒB Screen.MousePointer ‚É‚ÍV‚µ‚¢“®ì‚ªŠÜ‚Ü‚ê‚Ü‚·B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6BA9B8D2-2A32-4B6E-8D36-44949974A5B4"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.Default
 		End If
 		
-		'Invalid_string_refer_to_original_code
-		StopBGM(True)
-		StartBGM(BGMName("Opening"), True)
-		
-		InitEventData()
-		
-		CloseTitleForm()
-		
-		'UPGRADE_WARNING: Screen ƒvƒƒpƒeƒB Screen.MousePointer ‚É‚ÍV‚µ‚¢“®ì‚ªŠÜ‚Ü‚ê‚Ü‚·B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6BA9B8D2-2A32-4B6E-8D36-44949974A5B4"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.Default
-		'End If
-		
-		'Invalid_string_refer_to_original_code
+		'ƒƒ“ƒOƒl[ƒ€‚É‚µ‚Ä‚¨‚­
 		'UPGRADE_WARNING: Dir ‚ÉV‚µ‚¢“®ì‚ªw’è‚³‚ê‚Ä‚¢‚Ü‚·B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 		fname = ScenarioPath & Dir(fname)
 		If Not FileExists(fname) Then
-			ErrorMessage("Invalid_string_refer_to_original_code")
+			ErrorMessage("w’è‚µ‚½ƒtƒ@ƒCƒ‹‚ª‘¶İ‚µ‚Ü‚¹‚ñ")
 			TerminateSRC()
 		End If
-		If InStr(fname, "ä¸è¦ãƒ•ã‚¡ã‚¤ãƒ«å‰Šé™¤") = 0 And InStr(fname, "Invalid_string_refer_to_original_code") = 0 Then
-			'é–‹ã„ãŸãƒ•ã‚©ãƒ«ãƒ€ã‚’Src.iniã«ã‚»ãƒ¼ãƒ–ã—ã¦ãŠã
+		If InStr(fname, "•s—vƒtƒ@ƒCƒ‹íœ") = 0 And InStr(fname, "•K{C³") = 0 Then
+			'ŠJ‚¢‚½ƒtƒHƒ‹ƒ_‚ğSrc.ini‚ÉƒZ[ƒu‚µ‚Ä‚¨‚­
 			WriteIni("Log", "LastFolder", ScenarioPath)
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'Src.ini‚©‚çŠeíƒpƒ‰ƒ[ƒ^‚Ì“Ç‚İ‚İ
 		
-		'ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼ã‚¢ãƒ‹ãƒ¡
+		'ƒXƒyƒVƒƒƒ‹ƒpƒ[ƒAƒjƒ
 		buf = ReadIni("Option", "SpecialPowerAnimation")
 		If buf = "" Then
 			buf = ReadIni("Option", "MindEffect")
@@ -580,7 +548,7 @@ SkipErrorHandler:
 			End If
 		End If
 		
-		'æˆ¦é—˜ã‚¢ãƒ‹ãƒ¡
+		'í“¬ƒAƒjƒ
 		buf = LCase(ReadIni("Option", "BattleAnimation"))
 		If buf <> "" Then
 			If buf = "on" Then
@@ -596,7 +564,7 @@ SkipErrorHandler:
 			End If
 		End If
 		
-		'æ‹¡å¤§æˆ¦é—˜ã‚¢ãƒ‹ãƒ¡
+		'Šg‘åí“¬ƒAƒjƒ
 		buf = LCase(ReadIni("Option", "ExtendedAnimation"))
 		If buf <> "" Then
 			If buf = "on" Then
@@ -609,7 +577,7 @@ SkipErrorHandler:
 			WriteIni("Option", "ExtendedAnimation", "On")
 		End If
 		
-		'æ­¦å™¨æº–å‚™ã‚¢ãƒ‹ãƒ¡
+		'•Ší€”õƒAƒjƒ
 		buf = LCase(ReadIni("Option", "WeaponAnimation"))
 		If buf <> "" Then
 			If buf = "on" Then
@@ -622,7 +590,7 @@ SkipErrorHandler:
 			WriteIni("Option", "WeaponAnimation", "On")
 		End If
 		
-		'ç§»å‹•ã‚¢ãƒ‹ãƒ¡
+		'ˆÚ“®ƒAƒjƒ
 		buf = LCase(ReadIni("Option", "MoveAnimation"))
 		If buf <> "" Then
 			If buf = "on" Then
@@ -635,7 +603,7 @@ SkipErrorHandler:
 			WriteIni("Option", "MoveAnimation", "On")
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'ƒƒbƒZ[ƒW‘¬“x‚ğİ’è
 		buf = ReadIni("Option", "MessageWait")
 		If IsNumeric(buf) Then
 			MessageWait = CInt(buf)
@@ -647,7 +615,7 @@ SkipErrorHandler:
 			WriteIni("Option", "MessageWait", "700")
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'ƒ}ƒX–Ú‚ğ•\¦‚·‚é‚©‚Ç‚¤‚©
 		buf = ReadIni("Option", "Square")
 		If buf <> "" Then
 			If LCase(buf) = "on" Then
@@ -660,7 +628,7 @@ SkipErrorHandler:
 			WriteIni("Option", "Square", "Off")
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'“Gƒ^[ƒ“‚É‚a‚f‚l‚ğ•ÏX‚·‚é‚©‚Ç‚¤‚©
 		buf = ReadIni("Option", "KeepEnemyBGM")
 		If buf <> "" Then
 			If LCase(buf) = "on" Then
@@ -673,10 +641,10 @@ SkipErrorHandler:
 			WriteIni("Option", "KeepEnemyBGM", "Off")
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'‰¹Œ¹‚ÌƒŠƒZƒbƒgƒf[ƒ^‚Ìí—Ş
 		MidiResetType = ReadIni("Option", "MidiReset")
 		
-		'Invalid_string_refer_to_original_code
+		'©“®”½Œ‚ƒ‚[ƒh
 		buf = ReadIni("Option", "AutoDefense")
 		If buf = "" Then
 			buf = ReadIni("Option", "AutoDeffence")
@@ -698,7 +666,7 @@ SkipErrorHandler:
 			WriteIni("Option", "AutoDefense", "Off")
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'ƒJ[ƒ\ƒ‹©“®ˆÚ“®
 		buf = ReadIni("Option", "AutoMoveCursor")
 		If buf <> "" Then
 			If LCase(buf) = "on" Then
@@ -711,41 +679,41 @@ SkipErrorHandler:
 			WriteIni("Option", "AutoMoveCursor", "On")
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'ŠeƒEƒBƒ“ƒhƒE‚ğƒ[ƒh (ƒƒCƒ“ƒEƒBƒ“ƒhƒE‚Íæ‚Éƒ[ƒhÏ‚İ)
 		LoadForms()
 		
-		'Invalid_string_refer_to_original_code
+		'‰æ‘œƒoƒbƒtƒ@‚Ì–‡”
 		buf = ReadIni("Option", "ImageBufferNum")
 		If IsNumeric(buf) Then
 			ImageBufferSize = CShort(buf)
 			If ImageBufferSize < 5 Then
-				'Invalid_string_refer_to_original_code
+				'Å’á‚Å‚à5–‡‚Ìƒoƒbƒtƒ@‚ğg‚¤
 				ImageBufferSize = 5
 			End If
 		Else
-			'Invalid_string_refer_to_original_code
+			'ƒfƒtƒHƒ‹ƒg‚Í64–‡
 			ImageBufferSize = 64
 			WriteIni("Option", "ImageBufferNum", "64")
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'‰æ‘œƒoƒbƒtƒ@‚ğì¬
 		MakePicBuf()
 		
-		'Invalid_string_refer_to_original_code
+		'‰æ‘œƒoƒbƒtƒ@‚ÌÅ‘åƒTƒCƒY
 		buf = ReadIni("Option", "MaxImageBufferSize")
 		If IsNumeric(buf) Then
 			MaxImageBufferByteSize = CDbl(buf) * 1024 * 1024
 			If MaxImageBufferByteSize < CInt(1) * 1024 * 1024 Then
-				'Invalid_string_refer_to_original_code
+				'Å’á‚Å‚à1MB‚Ìƒoƒbƒtƒ@‚ğg‚¤
 				MaxImageBufferByteSize = CInt(1) * 1024 * 1024
 			End If
 		Else
-			'Invalid_string_refer_to_original_code
+			'ƒfƒtƒHƒ‹ƒg‚Í8MB
 			MaxImageBufferByteSize = CInt(8) * 1024 * 1024
 			WriteIni("Option", "MaxImageBufferSize", "8")
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'Šg‘å‰æ‘œ‚ğ‰æ‘œƒoƒbƒtƒ@‚É•Û‘¶‚·‚é‚©
 		buf = ReadIni("Option", "KeepStretchedImage")
 		If buf <> "" Then
 			If LCase(buf) = "on" Then
@@ -764,7 +732,7 @@ SkipErrorHandler:
 			End If
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'“§‰ß•`‰æ‚ÉUseTransparentBlt‚ğg—p‚·‚é‚©
 		If GetWinVersion() >= 500 Then
 			buf = ReadIni("Option", "UseTransparentBlt")
 			If buf <> "" Then
@@ -780,13 +748,13 @@ SkipErrorHandler:
 		End If
 		
 		
-		'Invalid_string_refer_to_original_code
+		'ƒ}ƒEƒXƒ{ƒ^ƒ“‚Ì—˜‚«˜rİ’è
 		If GetSystemMetrics(SM_SWAPBUTTON) = 0 Then
-			'å³åˆ©ãç”¨
+			'‰E—˜‚«—p
 			RButtonID = &H2
 			LButtonID = &H1
 		Else
-			'å·¦åˆ©ãç”¨
+			'¶—˜‚«—p
 			RButtonID = &H1
 			LButtonID = &H2
 		End If
@@ -794,13 +762,13 @@ SkipErrorHandler:
 		
 		ReDim ListItemComment(0)
 		
-		'Invalid_string_refer_to_original_code
+		'ƒGƒŠƒAƒXƒf[ƒ^‚ğƒ[ƒh
 		If FileExists(ScenarioPath & "Data\System\alias.txt") Then
 			ALDList.Load(ScenarioPath & "Data\System\alias.txt")
 		ElseIf FileExists(AppPath & "Data\System\alias.txt") Then 
 			ALDList.Load(AppPath & "Data\System\alias.txt")
 		End If
-		'Invalid_string_refer_to_original_code
+		'ƒXƒyƒVƒƒƒ‹ƒpƒ[ƒf[ƒ^‚ğƒ[ƒh
 		If FileExists(ScenarioPath & "Data\System\sp.txt") Then
 			SPDList.Load(ScenarioPath & "Data\System\sp.txt")
 		ElseIf FileExists(ScenarioPath & "Data\System\mind.txt") Then 
@@ -810,96 +778,92 @@ SkipErrorHandler:
 		ElseIf FileExists(AppPath & "Data\System\mind.txt") Then 
 			SPDList.Load(AppPath & "Data\System\mind.txt")
 		End If
-		'Invalid_string_refer_to_original_code
+		'”Ä—pƒAƒCƒeƒ€ƒf[ƒ^‚ğƒ[ƒh
 		If FileExists(ScenarioPath & "Data\System\item.txt") Then
 			IDList.Load(ScenarioPath & "Data\System\item.txt")
 		ElseIf FileExists(AppPath & "Data\System\item.txt") Then 
 			IDList.Load(AppPath & "Data\System\item.txt")
 		End If
-		'Invalid_string_refer_to_original_code
+		'’nŒ`ƒf[ƒ^‚ğƒ[ƒh
 		If FileExists(AppPath & "Data\System\terrain.txt") Then
 			TDList.Load(AppPath & "Data\System\terrain.txt")
 		Else
-			ErrorMessage("Invalid_string_refer_to_original_code")
+			ErrorMessage("’nŒ`ƒf[ƒ^ƒtƒ@ƒCƒ‹uData\System\terrain.txtv‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ")
 			TerminateSRC()
 		End If
 		If FileExists(ScenarioPath & "Data\System\terrain.txt") Then
 			TDList.Load(ScenarioPath & "Data\System\terrain.txt")
 		End If
-		'Invalid_string_refer_to_original_code
+		'ƒoƒgƒ‹ƒRƒ“ƒtƒBƒOƒf[ƒ^‚ğƒ[ƒh
 		If FileExists(ScenarioPath & "Data\System\battle.txt") Then
 			BCList.Load(ScenarioPath & "Data\System\battle.txt")
 		ElseIf FileExists(AppPath & "Data\System\battle.txt") Then 
 			BCList.Load(AppPath & "Data\System\battle.txt")
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'ƒ}ƒbƒv‚ğ‰Šú‰»
 		InitMap()
 		
-		'Invalid_string_refer_to_original_code
+		'—”Œn—ñ‚ğ‰Šú‰»
 		RndSeed = Int(1000000 * Rnd())
 		RndReset()
 		
 		If LCase(Right(fname, 4)) = ".src" Then
 			SaveDataFileNumber = FreeFile
 			FileOpen(SaveDataFileNumber, fname, OpenMode.Input)
-			'Invalid_string_refer_to_original_code
+			'‘æ‚P€–Ú‚ğ“Ç‚İ‚İ
 			Input(SaveDataFileNumber, buf)
-			'Invalid_string_refer_to_original_code
+			'‘æ‚P€–Ú‚ÍƒZ[ƒuƒf[ƒ^ƒo[ƒWƒ‡ƒ“H
 			If IsNumeric(buf) Then
 				If CInt(buf) > 10000 Then
-					'Invalid_string_refer_to_original_code
+					'ƒo[ƒWƒ‡ƒ“ƒf[ƒ^‚Å‚ ‚ê‚Î‘æ‚Q€–Ú‚ğ“Ç‚İ‚İ
 					Input(SaveDataFileNumber, buf)
 				End If
 			End If
 			FileClose(SaveDataFileNumber)
 			
-			'Invalid_string_refer_to_original_code
+			'ƒf[ƒ^‚Ìí—Ş‚ğ”»’è
 			If IsNumeric(buf) Then
-				'ã‚»ãƒ¼ãƒ–ãƒ‡ãƒ¼ã‚¿ã®èª­ã¿è¾¼ã¿
+				'ƒZ[ƒuƒf[ƒ^‚Ì“Ç‚İ‚İ
 				OpenNowLoadingForm()
 				LoadData(fname)
 				CloseNowLoadingForm()
 				
-				'ã‚¤ãƒ³ã‚¿ãƒ¼ãƒŸãƒƒã‚·ãƒ§ãƒ³
+				'ƒCƒ“ƒ^[ƒ~ƒbƒVƒ‡ƒ“
 				InterMissionCommand(True)
 				
 				If Not IsSubStage Then
-					If GetValueAsString("Invalid_string_refer_to_original_code") = "" Then
-						ErrorMessage("Invalid_string_refer_to_original_code")
+					If GetValueAsString("ŸƒXƒe[ƒW") = "" Then
+						ErrorMessage("Ÿ‚ÌƒXƒe[ƒW‚Ìƒtƒ@ƒCƒ‹–¼‚ªİ’è‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ")
 						TerminateSRC()
 					End If
 					
-					StartScenario(GetValueAsString("Invalid_string_refer_to_original_code"))
+					StartScenario(GetValueAsString("ŸƒXƒe[ƒW"))
 				Else
 					IsSubStage = False
 				End If
 			Else
-				'Invalid_string_refer_to_original_code
+				'’†’fƒf[ƒ^‚Ì“Ç‚İ‚İ
 				LockGUI()
 				
 				RestoreData(fname, False)
 				
-				'Invalid_string_refer_to_original_code
+				'‰æ–Ê‚ğ‘‚«’¼‚µ‚ÄƒXƒe[ƒ^ƒX‚ğ•\¦
 				RedrawScreen()
 				DisplayGlobalStatus()
 				
 				UnlockGUI()
 			End If
 		ElseIf LCase(Right(fname, 4)) = ".eve" Then 
-			'Invalid_string_refer_to_original_code
+			'ƒCƒxƒ“ƒgƒtƒ@ƒCƒ‹‚ÌÀs
 			StartScenario(fname)
 		Else
-			ErrorMessage("Invalid_string_refer_to_original_code")
-			'Invalid_string_refer_to_original_code_
-			'Invalid_string_refer_to_original_code_
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			ErrorMessage("u" & fname & "v‚ÍSRC—p‚Ìƒtƒ@ƒCƒ‹‚Å‚Í‚ ‚è‚Ü‚¹‚ñI" & vbCr & vbLf & "Šg’£q‚ªu.evev‚ÌƒCƒxƒ“ƒgƒtƒ@ƒCƒ‹A" & "‚Ü‚½‚ÍŠg’£q‚ªu.srcv‚ÌƒZ[ƒuƒf[ƒ^ƒtƒ@ƒCƒ‹‚ğw’è‚µ‚Ä‰º‚³‚¢B")
 			TerminateSRC()
 		End If
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'INIƒtƒ@ƒCƒ‹‚ğì¬‚·‚é
 	Public Sub CreateIniFile()
 		Dim f As Short
 		
@@ -908,143 +872,143 @@ SkipErrorHandler:
 		f = FreeFile
 		FileOpen(f, AppPath & "Src.ini", OpenMode.Output, OpenAccess.Write)
 		
-		PrintLine(f, "Invalid_string_refer_to_original_code")
-		PrintLine(f, "Invalid_string_refer_to_original_code")
-		PrintLine(f, "Invalid_string_refer_to_original_code")
-		PrintLine(f, "Invalid_string_refer_to_original_code")
+		PrintLine(f, ";SRC‚Ìİ’èƒtƒ@ƒCƒ‹‚Å‚·B")
+		PrintLine(f, ";€–Ú‚Ì“à—e‚ÉŠÖ‚µ‚Ä‚Íƒwƒ‹ƒv‚Ì")
+		PrintLine(f, "; ‘€ì•û–@ => ƒ}ƒbƒvƒRƒ}ƒ“ƒh => İ’è•ÏX")
+		PrintLine(f, ";‚Ì€‚ğQÆ‚µ‚Ä‰º‚³‚¢B")
 		PrintLine(f, "")
 		PrintLine(f, "[Option]")
-		PrintLine(f, "Invalid_string_refer_to_original_code")
+		PrintLine(f, ";ƒƒbƒZ[ƒW‚ÌƒEƒFƒCƒgB•W€‚Í700")
 		PrintLine(f, "MessageWait=700")
 		PrintLine(f, "")
-		PrintLine(f, ";ã‚¿ãƒ¼ãƒ³æ•°ã®è¡¨ç¤º [On|Off]")
+		PrintLine(f, ";ƒ^[ƒ“”‚Ì•\¦ [On|Off]")
 		PrintLine(f, "Turn=Off")
 		PrintLine(f, "")
-		PrintLine(f, ";ãƒã‚¹ç›®ã®è¡¨ç¤º [On|Off]")
+		PrintLine(f, ";ƒ}ƒX–Ú‚Ì•\¦ [On|Off]")
 		PrintLine(f, "Square=Off")
 		PrintLine(f, "")
-		PrintLine(f, "Invalid_string_refer_to_original_code")
+		PrintLine(f, ";“GƒtƒFƒCƒY‚É‚Í‚a‚f‚l‚ğ•ÏX‚µ‚È‚¢ [On|Off]")
 		PrintLine(f, "KeepEnemyBGM=Off")
 		PrintLine(f, "")
-		PrintLine(f, "Invalid_string_refer_to_original_code")
+		PrintLine(f, ";©“®–hŒäƒ‚[ƒh [On|Off]")
 		PrintLine(f, "AutoDefense=Off")
 		PrintLine(f, "")
-		PrintLine(f, "Invalid_string_refer_to_original_code")
+		PrintLine(f, ";©“®ƒJ[ƒ\ƒ‹ˆÚ“® [On|Off]")
 		PrintLine(f, "AutoMoveCursor=On")
 		PrintLine(f, "")
-		PrintLine(f, ";ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼ã‚¢ãƒ‹ãƒ¡ [On|Off]")
+		PrintLine(f, ";ƒXƒyƒVƒƒƒ‹ƒpƒ[ƒAƒjƒ [On|Off]")
 		PrintLine(f, "SpecialPowerAnimation=On")
 		PrintLine(f, "")
-		PrintLine(f, ";æˆ¦é—˜ã‚¢ãƒ‹ãƒ¡ [On|Off]")
+		PrintLine(f, ";í“¬ƒAƒjƒ [On|Off]")
 		PrintLine(f, "BattleAnimation=On")
 		PrintLine(f, "")
-		PrintLine(f, "Invalid_string_refer_to_original_code")
+		PrintLine(f, ";í“¬ƒAƒjƒ‚ÌŠg’£‹@”\ [On|Off]")
 		PrintLine(f, "ExtendedAnimation=On")
 		PrintLine(f, "")
-		PrintLine(f, ";æ­¦å™¨æº–å‚™ã‚¢ãƒ‹ãƒ¡ã®è‡ªå‹•é¸æŠè¡¨ç¤º [On|Off]")
+		PrintLine(f, ";•Ší€”õƒAƒjƒ‚Ì©“®‘I‘ğ•\¦ [On|Off]")
 		PrintLine(f, "WeaponAnimation=On")
 		PrintLine(f, "")
-		PrintLine(f, ";ç§»å‹•ã‚¢ãƒ‹ãƒ¡ [On|Off]")
+		PrintLine(f, ";ˆÚ“®ƒAƒjƒ [On|Off]")
 		PrintLine(f, "MoveAnimation=On")
 		PrintLine(f, "")
-		PrintLine(f, "Invalid_string_refer_to_original_code")
+		PrintLine(f, ";MIDI‰¹Œ¹ƒŠƒZƒbƒg‚Ìí—Ş [None|GM|GS|XG]")
 		PrintLine(f, "MidiReset=None")
 		PrintLine(f, "")
-		PrintLine(f, "Invalid_string_refer_to_original_code")
+		PrintLine(f, ";MIDI‰‰‘t‚ÉDirectMusic‚ğg‚¤ [On|Off]")
 		If GetWinVersion() >= 500 Then
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
+			'NTŒn‚ÌOS‚Å‚ÍƒfƒtƒHƒ‹ƒg‚ÅDirectMusic‚ğg‚¤
+			'DirectMusic‚Ì‰Šú‰»‚ğ‚İ‚é
 			InitDirectMusic()
-			'Invalid_string_refer_to_original_code
+			'DirectMusic‚ªg—p‰Â”\‚©‚Ç‚¤‚©‚Åİ’è‚ğØ‚è‘Ö‚¦
 			If UseDirectMusic Then
 				PrintLine(f, "UseDirectMusic=On")
 			Else
 				PrintLine(f, "UseDirectMusic=Off")
 			End If
 		Else
-			'Invalid_string_refer_to_original_code
+			'NTŒnOS‚Å‚È‚¯‚ê‚ÎMCI‚ğg‚¤
 			UseMCI = True
 			PrintLine(f, "UseDirectMusic=Off")
 		End If
 		PrintLine(f, "")
-		PrintLine(f, "Invalid_string_refer_to_original_code")
+		PrintLine(f, ";DirectMusic‚Åg‚¤MIDI‰¹Œ¹‚Ìƒ|[ƒg”Ô† [©“®ŒŸõ=0]")
 		PrintLine(f, "MIDIPortID=0")
 		PrintLine(f, "")
-		PrintLine(f, "Invalid_string_refer_to_original_code")
+		PrintLine(f, ";MP3Ä¶‚Ì‰¹—Ê (0`100)")
 		PrintLine(f, "MP3Volume=50")
 		PrintLine(f, "")
-		PrintLine(f, ";MP3ã®å‡ºåŠ›ãƒ•ãƒ¬ãƒ¼ãƒ æ•°")
+		PrintLine(f, ";MP3‚Ìo—ÍƒtƒŒ[ƒ€”")
 		PrintLine(f, "MP3OutputBlock=20")
 		PrintLine(f, "")
-		PrintLine(f, "Invalid_string_refer_to_original_code")
+		PrintLine(f, ";MP3‚Ì“ü—Í’¼Œã‚ÌƒXƒŠ[ƒvŠÔ(ƒ~ƒŠ•b)")
 		PrintLine(f, "MP3IutputSleep=5")
 		PrintLine(f, "")
-		'Invalid_string_refer_to_original_code
+		'    Print #f, ";WAVÄ¶‚ÉDirectSound‚ğg‚¤ [On|Off]"
 		'    Print #f, "UseDirectSound=On"
 		'    Print #f, ""
-		PrintLine(f, "Invalid_string_refer_to_original_code")
+		PrintLine(f, ";‰æ‘œƒoƒbƒtƒ@‚Ì–‡”")
 		PrintLine(f, "ImageBufferNum=64")
 		PrintLine(f, "")
-		PrintLine(f, "Invalid_string_refer_to_original_code")
+		PrintLine(f, ";‰æ‘œƒoƒbƒtƒ@‚ÌÅ‘åƒTƒCƒY (MB)")
 		PrintLine(f, "MaxImageBufferSize=8")
 		PrintLine(f, "")
-		PrintLine(f, "Invalid_string_refer_to_original_code")
+		PrintLine(f, ";Šg‘å‰æ‘œ‚ğ‰æ‘œƒoƒbƒtƒ@‚É•Û‘¶‚·‚é [On|Off]")
 		PrintLine(f, "KeepStretchedImage=")
 		PrintLine(f, "")
 		If GetWinVersion() >= 500 Then
-			PrintLine(f, "Invalid_string_refer_to_original_code")
+			PrintLine(f, ";“§‰ß•`‰æ‚ÉAPIŠÖ”TransparentBlt‚ğg‚¤ [On|Off]")
 			PrintLine(f, "UseTransparentBlt=On")
 			PrintLine(f, "")
 		End If
-		PrintLine(f, "Invalid_string_refer_to_original_code")
+		PrintLine(f, ";Šg’£ƒf[ƒ^‚ÌƒtƒHƒ‹ƒ_ (ƒtƒ‹ƒpƒX‚Åw’è)")
 		PrintLine(f, "ExtDataPath=")
 		PrintLine(f, "ExtDataPath2=")
 		PrintLine(f, "")
-		PrintLine(f, "Invalid_string_refer_to_original_code")
+		PrintLine(f, ";ƒfƒoƒbƒOƒ‚[ƒh [On|Off]")
 		PrintLine(f, "DebugMode=Off")
 		PrintLine(f, "")
-		PrintLine(f, "Invalid_string_refer_to_original_code")
+		PrintLine(f, ";V‚f‚t‚h(ƒeƒXƒg’†) [On|Off]")
 		PrintLine(f, "NewGUI=Off")
 		PrintLine(f, "")
 		PrintLine(f, "[Log]")
-		PrintLine(f, ";å‰å›ä½¿ç”¨ã—ãŸãƒ•ã‚©ãƒ«ãƒ€")
+		PrintLine(f, ";‘O‰ñg—p‚µ‚½ƒtƒHƒ‹ƒ_")
 		PrintLine(f, "LastFolder=")
 		PrintLine(f, "")
 		PrintLine(f, "[BGM]")
-		PrintLine(f, ";SRCèµ·å‹•æ™‚")
+		PrintLine(f, ";SRC‹N“®")
 		PrintLine(f, "Opening=Opening.mid")
-		PrintLine(f, ";å‘³æ–¹ãƒ•ã‚§ã‚¤ã‚ºé–‹å§‹æ™‚")
+		PrintLine(f, ";–¡•ûƒtƒFƒCƒYŠJn")
 		PrintLine(f, "Map1=Map1.mid")
-		PrintLine(f, ";æ•µãƒ•ã‚§ã‚¤ã‚ºé–‹å§‹æ™‚")
+		PrintLine(f, ";“GƒtƒFƒCƒYŠJn")
 		PrintLine(f, "Map2=Map2.mid")
-		PrintLine(f, "Invalid_string_refer_to_original_code")
+		PrintLine(f, ";‰®“àƒ}ƒbƒv‚Ì–¡•ûƒtƒFƒCƒYŠJn")
 		PrintLine(f, "Map3=Map3.mid")
-		PrintLine(f, "Invalid_string_refer_to_original_code")
+		PrintLine(f, ";‰®“àƒ}ƒbƒv‚Ì“GƒtƒFƒCƒYŠJn")
 		PrintLine(f, "Map4=Map4.mid")
-		PrintLine(f, "Invalid_string_refer_to_original_code")
+		PrintLine(f, ";‰F’ˆƒ}ƒbƒv‚Ì–¡•ûƒtƒFƒCƒYŠJn")
 		PrintLine(f, "Map5=Map5.mid")
-		PrintLine(f, "Invalid_string_refer_to_original_code")
+		PrintLine(f, ";‰F’ˆƒ}ƒbƒv‚Ì“GƒtƒFƒCƒYŠJn")
 		PrintLine(f, "Map6=Map6.mid")
-		PrintLine(f, ";ãƒ—ãƒ­ãƒ­ãƒ¼ã‚°ãƒ»ã‚¨ãƒ”ãƒ­ãƒ¼ã‚°é–‹å§‹æ™‚")
+		PrintLine(f, ";ƒvƒƒ[ƒOEƒGƒsƒ[ƒOŠJn")
 		PrintLine(f, "Briefing=Briefing.mid")
-		PrintLine(f, ";ã‚¤ãƒ³ã‚¿ãƒ¼ãƒŸãƒƒã‚·ãƒ§ãƒ³é–‹å§‹æ™‚")
+		PrintLine(f, ";ƒCƒ“ƒ^[ƒ~ƒbƒVƒ‡ƒ“ŠJn")
 		PrintLine(f, "Intermission=Intermission.mid")
-		PrintLine(f, "Invalid_string_refer_to_original_code")
+		PrintLine(f, ";ƒeƒƒbƒv•\¦")
 		PrintLine(f, "Subtitle=Subtitle.mid")
-		PrintLine(f, "Invalid_string_refer_to_original_code")
+		PrintLine(f, ";ƒQ[ƒ€ƒI[ƒo[")
 		PrintLine(f, "End=End.mid")
-		PrintLine(f, "Invalid_string_refer_to_original_code")
+		PrintLine(f, ";í“¬‚ÌƒfƒtƒHƒ‹ƒgMIDI")
 		PrintLine(f, "default=default.mid")
 		PrintLine(f, "")
 		
 		FileClose(f)
 		
 ErrorHandler: 
-		'Invalid_string_refer_to_original_code
+		'ƒGƒ‰[”­¶
 	End Sub
 	
-	'KeepStretchedImageã‚’ä½¿ç”¨ã™ã¹ãã‹æ±ºå®šã™ã‚‹ãŸã‚ã€BitBltã¨
-	'Invalid_string_refer_to_original_code
+	'KeepStretchedImage‚ğg—p‚·‚×‚«‚©Œˆ’è‚·‚é‚½‚ßABitBlt‚Æ
+	'StretchBlt‚Ì‘¬“x·‚ğ‘ª’è
 	Private Function IsBitBltFasterThanStretchBlt() As Object
 		Dim stime, etime As Integer
 		Dim bb_time, sb_time As Integer
@@ -1052,7 +1016,7 @@ ErrorHandler:
 		Dim i As Short
 		
 		With MainForm
-			'Invalid_string_refer_to_original_code
+			'•`‰æ—Ìˆæ‚ğİ’è
 			'UPGRADE_ISSUE: Control picStretchedTmp ‚ÍA”Ä—p–¼‘O‹óŠÔ Form “à‚É‚ ‚é‚½‚ßA‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 			With .picStretchedTmp(0)
 				'UPGRADE_ISSUE: Control picStretchedTmp ‚ÍA”Ä—p–¼‘O‹óŠÔ Form “à‚É‚ ‚é‚½‚ßA‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
@@ -1068,7 +1032,7 @@ ErrorHandler:
 				.Height = 128
 			End With
 			
-			'Invalid_string_refer_to_original_code
+			'StretchBlt‚Ì“]‘—‘¬“x‚ğ‘ª’è
 			stime = timeGetTime()
 			For i = 1 To 5
 				'UPGRADE_ISSUE: Control picUnit ‚ÍA”Ä—p–¼‘O‹óŠÔ Form “à‚É‚ ‚é‚½‚ßA‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
@@ -1078,7 +1042,7 @@ ErrorHandler:
 			etime = timeGetTime()
 			sb_time = etime - stime
 			
-			'Invalid_string_refer_to_original_code
+			'BitBlt‚Ì“]‘—‘¬“x‚ğ‘ª’è
 			stime = timeGetTime()
 			For i = 1 To 5
 				'UPGRADE_ISSUE: Control picStretchedTmp ‚ÍA”Ä—p–¼‘O‹óŠÔ Form “à‚É‚ ‚é‚½‚ßA‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
@@ -1087,7 +1051,7 @@ ErrorHandler:
 			etime = timeGetTime()
 			bb_time = etime - stime
 			
-			'æç”»é ˜åŸŸã‚’é–‹æ”¾
+			'•`‰æ—Ìˆæ‚ğŠJ•ú
 			'UPGRADE_ISSUE: Control picStretchedTmp ‚ÍA”Ä—p–¼‘O‹óŠÔ Form “à‚É‚ ‚é‚½‚ßA‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 			With .picStretchedTmp(0)
 				'UPGRADE_ISSUE: Control picStretchedTmp ‚ÍA”Ä—p–¼‘O‹óŠÔ Form “à‚É‚ ‚é‚½‚ßA‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
@@ -1108,7 +1072,7 @@ ErrorHandler:
 			End With
 		End With
 		
-		'Invalid_string_refer_to_original_code
+		'BitBlt‚ªStretchBlt‚æ‚è2”{ˆÈã‘¬‚¯‚ê‚ÎBitBlt‚ğ—Dæ‚µ‚Äg—p‚·‚é
 		If 2 * bb_time < sb_time Then
 			'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg IsBitBltFasterThanStretchBlt ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 			IsBitBltFasterThanStretchBlt = True
@@ -1119,13 +1083,13 @@ ErrorHandler:
 	End Function
 	
 	
-	'Invalid_string_refer_to_original_code
+	'ƒCƒxƒ“ƒgƒtƒ@ƒCƒ‹fname‚ğÀs
 	Public Sub StartScenario(ByVal fname As String)
 		Dim i As Short
 		Dim ret As Integer
 		Dim sf As System.Drawing.Font
 		
-		'ãƒ•ã‚¡ã‚¤ãƒ«ã‚’æ¤œç´¢
+		'ƒtƒ@ƒCƒ‹‚ğŒŸõ
 		If Len(fname) = 0 Then
 			TerminateSRC()
 			End
@@ -1137,15 +1101,15 @@ ErrorHandler:
 		
 		'UPGRADE_WARNING: Dir ‚ÉV‚µ‚¢“®ì‚ªw’è‚³‚ê‚Ä‚¢‚Ü‚·B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 		If Dir(fname, FileAttribute.Normal) = "" Then
-			MsgBox(fname & "ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“")
+			MsgBox(fname & "‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ")
 			TerminateSRC()
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'ƒEƒBƒ“ƒhƒE‚Ìƒ^ƒCƒgƒ‹‚ğİ’è
 		If My.Application.Info.Version.Minor Mod 2 = 0 Then
 			MainForm.Text = "SRC"
 		Else
-			MainForm.Text = "Invalid_string_refer_to_original_code"
+			MainForm.Text = "SRCŠJ”­”Å"
 		End If
 		
 		ScenarioFileName = fname
@@ -1153,78 +1117,57 @@ ErrorHandler:
 		If Not IsSubStage Then
 			'UPGRADE_WARNING: Dir ‚ÉV‚µ‚¢“®ì‚ªw’è‚³‚ê‚Ä‚¢‚Ü‚·B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 			If Len(Dir(ScenarioPath & "Date", FileAttribute.Directory)) > 0 Then
-				ErrorMessage("Invalid_string_refer_to_original_code")
-				& ScenarioPath & "Date" & vbCr & vbLf _
-				Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				ErrorMessage("ƒVƒiƒŠƒI‘¤‚ÌDataƒtƒHƒ‹ƒ_–¼‚ªDate‚É‚È‚Á‚Ä‚¢‚Ü‚·B" & vbCr & vbLf & ScenarioPath & "Date" & vbCr & vbLf & "ƒtƒHƒ‹ƒ_–¼‚ğData‚É’¼‚µ‚Ä‚­‚¾‚³‚¢B")
 				TerminateSRC()
 			End If
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			ErrorMessage("Invalid_string_refer_to_original_code")
-			'Invalid_string_refer_to_original_code_
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			TerminateSRC()
-		End If
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		ErrorMessage("Invalid_string_refer_to_original_code")
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		TerminateSRC()
-		'End If
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		ErrorMessage("Invalid_string_refer_to_original_code")
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		TerminateSRC()
-		'End If
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		ErrorMessage("Invalid_string_refer_to_original_code")
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		TerminateSRC()
-		'End If
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		ErrorMessage("Invalid_string_refer_to_original_code")
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		TerminateSRC()
-		'End If
-		
-		'Invalid_string_refer_to_original_code
-		If Not IsGlobalVariableDefined("Invalid_string_refer_to_original_code") Then
-			DefineGlobalVariable("Invalid_string_refer_to_original_code")
-		End If
-		SetVariableAsString("Invalid_string_refer_to_original_code", "")
-		For i = 1 To Len(fname)
-			If Mid(fname, Len(fname) - i + 1, 1) = "\" Then
-				Exit For
+			'UPGRADE_WARNING: Dir ‚ÉV‚µ‚¢“®ì‚ªw’è‚³‚ê‚Ä‚¢‚Ü‚·B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			If Len(Dir(ScenarioPath & "‚c‚‚”‚", FileAttribute.Directory)) > 0 Then
+				ErrorMessage("ƒVƒiƒŠƒI‘¤‚ÌDataƒtƒHƒ‹ƒ_–¼‚ª‘SŠp•¶š‚É‚È‚Á‚Ä‚¢‚Ü‚·B" & vbCr & vbLf & ScenarioPath & "‚c‚‚”‚" & vbCr & vbLf & "ƒtƒHƒ‹ƒ_–¼‚ğ”¼Šp•¶š‚É’¼‚µ‚Ä‚­‚¾‚³‚¢B")
+				TerminateSRC()
 			End If
-		Next 
-		SetVariableAsString("Invalid_string_refer_to_original_code", Mid(fname, Len(fname) - i + 2))
+			'UPGRADE_WARNING: Dir ‚ÉV‚µ‚¢“®ì‚ªw’è‚³‚ê‚Ä‚¢‚Ü‚·B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			If Len(Dir(ScenarioPath & "‚a‚‰‚”‚‚‚", FileAttribute.Directory)) > 0 Then
+				ErrorMessage("ƒVƒiƒŠƒI‘¤‚ÌBitmapƒtƒHƒ‹ƒ_–¼‚ª‘SŠp•¶š‚É‚È‚Á‚Ä‚¢‚Ü‚·B" & vbCr & vbLf & ScenarioPath & "‚a‚‰‚”‚‚‚" & vbCr & vbLf & "ƒtƒHƒ‹ƒ_–¼‚ğ”¼Šp•¶š‚É’¼‚µ‚Ä‚­‚¾‚³‚¢B")
+				TerminateSRC()
+			End If
+			'UPGRADE_WARNING: Dir ‚ÉV‚µ‚¢“®ì‚ªw’è‚³‚ê‚Ä‚¢‚Ü‚·B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			If Len(Dir(ScenarioPath & "‚k‚‰‚‚", FileAttribute.Directory)) > 0 Then
+				ErrorMessage("ƒVƒiƒŠƒI‘¤‚ÌLibƒtƒHƒ‹ƒ_–¼‚ª‘SŠp•¶š‚É‚È‚Á‚Ä‚¢‚Ü‚·B" & vbCr & vbLf & ScenarioPath & "‚k‚‰‚‚" & vbCr & vbLf & "ƒtƒHƒ‹ƒ_–¼‚ğ”¼Šp•¶š‚É’¼‚µ‚Ä‚­‚¾‚³‚¢B")
+				TerminateSRC()
+			End If
+			'UPGRADE_WARNING: Dir ‚ÉV‚µ‚¢“®ì‚ªw’è‚³‚ê‚Ä‚¢‚Ü‚·B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			If Len(Dir(ScenarioPath & "‚l‚‰‚„‚‰", FileAttribute.Directory)) > 0 Then
+				ErrorMessage("ƒVƒiƒŠƒI‘¤‚ÌMidiƒtƒHƒ‹ƒ_–¼‚ª‘SŠp•¶š‚É‚È‚Á‚Ä‚¢‚Ü‚·B" & vbCr & vbLf & ScenarioPath & "‚l‚‰‚„‚‰" & vbCr & vbLf & "ƒtƒHƒ‹ƒ_–¼‚ğ”¼Šp•¶š‚É’¼‚µ‚Ä‚­‚¾‚³‚¢B")
+				TerminateSRC()
+			End If
+			'UPGRADE_WARNING: Dir ‚ÉV‚µ‚¢“®ì‚ªw’è‚³‚ê‚Ä‚¢‚Ü‚·B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			If Len(Dir(ScenarioPath & "‚r‚‚•‚‚„", FileAttribute.Directory)) > 0 Then
+				ErrorMessage("ƒVƒiƒŠƒI‘¤‚ÌSoundƒtƒHƒ‹ƒ_–¼‚ª‘SŠp•¶š‚É‚È‚Á‚Ä‚¢‚Ü‚·B" & vbCr & vbLf & ScenarioPath & "‚r‚‚•‚‚„" & vbCr & vbLf & "ƒtƒHƒ‹ƒ_–¼‚ğ”¼Šp•¶š‚É’¼‚µ‚Ä‚­‚¾‚³‚¢B")
+				TerminateSRC()
+			End If
+			
+			'“Ç‚İ‚ŞƒCƒxƒ“ƒgƒtƒ@ƒCƒ‹–¼‚É‡‚í‚¹‚ÄŠeíƒVƒXƒeƒ€•Ï”‚ğİ’è
+			If Not IsGlobalVariableDefined("ŸƒXƒe[ƒW") Then
+				DefineGlobalVariable("ŸƒXƒe[ƒW")
+			End If
+			SetVariableAsString("ŸƒXƒe[ƒW", "")
+			For i = 1 To Len(fname)
+				If Mid(fname, Len(fname) - i + 1, 1) = "\" Then
+					Exit For
+				End If
+			Next 
+			SetVariableAsString("ƒXƒe[ƒW", Mid(fname, Len(fname) - i + 2))
+			
+			If Not IsGlobalVariableDefined("ƒZ[ƒuƒf[ƒ^ƒtƒ@ƒCƒ‹–¼") Then
+				DefineGlobalVariable("ƒZ[ƒuƒf[ƒ^ƒtƒ@ƒCƒ‹–¼")
+			End If
+			SetVariableAsString("ƒZ[ƒuƒf[ƒ^ƒtƒ@ƒCƒ‹–¼", Mid(fname, Len(fname) - i + 2, i - 5) & "‚Ü‚ÅƒNƒŠƒA.src")
+			
+			'ƒEƒBƒ“ƒhƒE‚Ìƒ^ƒCƒgƒ‹‚ÉƒVƒiƒŠƒIƒtƒ@ƒCƒ‹–¼‚ğ•\¦
+			MainForm.Text = MainForm.Text & " - " & Mid(fname, Len(fname) - i + 2, i - 5)
+		End If
 		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		DefineGlobalVariable("Invalid_string_refer_to_original_code")
-		'End If
-		SetVariableAsString("Invalid_string_refer_to_original_code")
-		Mid$(fname, Len(fname) - i + 2, i - 5) & "ã¾ã§ã‚¯ãƒªã‚¢.src"
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		
-		'ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ã‚¿ã‚¤ãƒˆãƒ«ã«ã‚·ãƒŠãƒªã‚ªãƒ•ã‚¡ã‚¤ãƒ«åã‚’è¡¨ç¤º
-		MainForm.Text = MainForm.Text & " - " & Mid(fname, Len(fname) - i + 2, i - 5)
-		'End If
-		
-		'ç”»é¢ã‚’ã‚¯ãƒªã‚¢ã—ã¦ãŠã
+		'‰æ–Ê‚ğƒNƒŠƒA‚µ‚Ä‚¨‚­
 		With MainForm
 			'UPGRADE_ISSUE: Control picMain ‚ÍA”Ä—p–¼‘O‹óŠÔ Form “à‚É‚ ‚é‚½‚ßA‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 			ret = PatBlt(.picMain(0).hDC, 0, 0, MainPWidth, MainPHeight, BLACKNESS)
@@ -1233,10 +1176,10 @@ ErrorHandler:
 		End With
 		ScreenIsSaved = True
 		
-		'ã‚¤ãƒ™ãƒ³ãƒˆãƒ‡ãƒ¼ã‚¿ã®èª­ã¿è¾¼ã¿
+		'ƒCƒxƒ“ƒgƒf[ƒ^‚Ì“Ç‚İ‚İ
 		LoadEventData(fname)
 		
-		'Invalid_string_refer_to_original_code
+		'Šeí•Ï”‚Ì‰Šú‰»
 		Turn = 0
 		IsScenarioFinished = False
 		IsPictureVisible = False
@@ -1244,19 +1187,18 @@ ErrorHandler:
 		LastSaveDataFileName = ""
 		IsRestartSaveDataAvailable = False
 		IsQuickSaveDataAvailable = False
-		CommandState = "Invalid_string_refer_to_original_code"
+		CommandState = "ƒ†ƒjƒbƒg‘I‘ğ"
 		ReDim SelectedPartners(0)
 		
-		'Invalid_string_refer_to_original_code
+		'ƒtƒHƒ“ƒgİ’è‚ğƒfƒtƒHƒ‹ƒg‚É–ß‚·
 		'UPGRADE_ISSUE: Control picMain ‚ÍA”Ä—p–¼‘O‹óŠÔ Form “à‚É‚ ‚é‚½‚ßA‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 		With MainForm.picMain(0)
 			'UPGRADE_ISSUE: Control picMain ‚ÍA”Ä—p–¼‘O‹óŠÔ Form “à‚É‚ ‚é‚½‚ßA‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 			.ForeColor = RGB(255, 255, 255)
 			'UPGRADE_ISSUE: Control picMain ‚ÍA”Ä—p–¼‘O‹óŠÔ Form “à‚É‚ ‚é‚½‚ßA‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			If .Font.Name <> "Invalid_string_refer_to_original_code" Then
+			If .Font.Name <> "‚l‚r ‚o–¾’©" Then
 				sf = System.Windows.Forms.Control.DefaultFont.Clone()
-				'UPGRADE_WARNING: Windows ƒtƒH[ƒ€‚Å‚ÍATrueType ‚¨‚æ‚Ñ OpenType ƒtƒHƒ“ƒg‚Ì‚İ‚ªƒTƒ|[ƒg‚³‚ê‚Ü‚·B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="971F4DF4-254E-44F4-861D-3AA0031FE361"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				sf = VB6.FontChangeName(sf, "Invalid_string_refer_to_original_code")
+				sf = VB6.FontChangeName(sf, "‚l‚r ‚o–¾’©")
 				'UPGRADE_ISSUE: Control picMain ‚ÍA”Ä—p–¼‘O‹óŠÔ Form “à‚É‚ ‚é‚½‚ßA‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 				.Font = sf
 			End If
@@ -1270,10 +1212,10 @@ ErrorHandler:
 			KeepStringMode = False
 		End With
 		
-		'Invalid_string_refer_to_original_code
+		'•`‰æ‚ÌŠî€À•WˆÊ’u‚ğƒŠƒZƒbƒg
 		ResetBasePoint()
 		
-		'Invalid_string_refer_to_original_code
+		'ƒƒ‚ƒŠ‚ğÁ”ï‚µ‰ß‚¬‚È‚¢‚æ‚¤‚Éƒ†ƒjƒbƒg‰æ‘œ‚ğƒNƒŠƒA
 		If Not IsSubStage Then
 			UList.ClearUnitBitmap()
 		End If
@@ -1284,13 +1226,13 @@ ErrorHandler:
 			SetMapSize(15, 15)
 		End If
 		
-		'ãƒ—ãƒ­ãƒ­ãƒ¼ã‚°
-		Stage = "ãƒ—ãƒ­ãƒ­ãƒ¼ã‚°"
-		If Not IsSubStage And IsEventDefined("ãƒ—ãƒ­ãƒ­ãƒ¼ã‚°", True) Then
+		'ƒvƒƒ[ƒO
+		Stage = "ƒvƒƒ[ƒO"
+		If Not IsSubStage And IsEventDefined("ƒvƒƒ[ƒO", True) Then
 			StopBGM()
 			StartBGM(BGMName("Briefing"))
 		End If
-		HandleEvent("ãƒ—ãƒ­ãƒ­ãƒ¼ã‚°")
+		HandleEvent("ƒvƒƒ[ƒO")
 		
 		If IsScenarioFinished Then
 			IsScenarioFinished = False
@@ -1298,23 +1240,22 @@ ErrorHandler:
 			Exit Sub
 		End If
 		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		ErrorMessage("Invalid_string_refer_to_original_code")
-		TerminateSRC()
-		'End If
+		If Not IsEventDefined("ƒXƒ^[ƒg") Then
+			ErrorMessage("ƒXƒ^[ƒgƒCƒxƒ“ƒg‚ª’è‹`‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ")
+			TerminateSRC()
+		End If
 		
 		IsPictureVisible = False
 		IsCursorVisible = False
-		Stage = "å‘³æ–¹"
+		Stage = "–¡•û"
 		StopBGM()
 		
-		'Invalid_string_refer_to_original_code
-		If InStr(fname, "Invalid_string_refer_to_original_code") = 0 And InStr(fname, "Invalid_string_refer_to_original_code") = 0 Then
-			DumpData(ScenarioPath & "Invalid_string_refer_to_original_code")
+		'ƒŠƒXƒ^[ƒg—p‚Éƒf[ƒ^‚ğƒZ[ƒu
+		If InStr(fname, "\Lib\ƒ†ƒjƒbƒgƒXƒe[ƒ^ƒX•\¦.eve") = 0 And InStr(fname, "\Lib\ƒpƒCƒƒbƒgƒXƒe[ƒ^ƒX•\¦.eve") = 0 Then
+			DumpData(ScenarioPath & "_ƒŠƒXƒ^[ƒg.src")
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'ƒXƒ^[ƒgƒCƒxƒ“ƒg‚ªn‚Ü‚Á‚½ê‡‚Í’Êí‚ÌƒXƒe[ƒW‚Æ‚İ‚È‚·
 		IsSubStage = False
 		
 		ClearUnitStatus()
@@ -1324,8 +1265,8 @@ ErrorHandler:
 		End If
 		RedrawScreen()
 		
-		'Invalid_string_refer_to_original_code
-		HandleEvent("Invalid_string_refer_to_original_code")
+		'ƒXƒ^[ƒgƒCƒxƒ“ƒg
+		HandleEvent("ƒXƒ^[ƒg")
 		If IsScenarioFinished Then
 			IsScenarioFinished = False
 			UnlockGUI()
@@ -1335,13 +1276,13 @@ ErrorHandler:
 		IsPictureVisible = False
 		IsCursorVisible = False
 		
-		'Invalid_string_refer_to_original_code
+		'ƒNƒCƒbƒNƒ[ƒh‚ğ–³Œø‚É‚·‚é
 		IsQuickSaveDataAvailable = False
 		
-		StartTurn("å‘³æ–¹")
+		StartTurn("–¡•û")
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'w‰cuparty‚ÌƒtƒFƒCƒY‚ğÀs
 	Public Sub StartTurn(ByRef uparty As String)
 		Dim num, i, phase As Short
 		Dim u As Unit
@@ -1349,24 +1290,22 @@ ErrorHandler:
 		Stage = uparty
 		BossBGM = False
 		
-		If uparty = "å‘³æ–¹" Then
+		If uparty = "–¡•û" Then
 			Do 
-				'å‘³æ–¹ãƒ•ã‚§ã‚¤ã‚º
-				Stage = "å‘³æ–¹"
+				'–¡•ûƒtƒFƒCƒY
+				Stage = "–¡•û"
 				
-				'ã‚¿ãƒ¼ãƒ³æ•°ã‚’é€²ã‚ã‚‹
+				'ƒ^[ƒ“”‚ği‚ß‚é
 				If MapFileName <> "" Then
 					Turn = Turn + 1
 					TotalTurn = TotalTurn + 1
 				End If
 				
-				'çŠ¶æ…‹å›å¾©
+				'ó‘Ô‰ñ•œ
 				For	Each SelectedUnit In UList
 					With SelectedUnit
 						Select Case .Status
-							Case "Invalid_string_refer_to_original_code"
-								'Invalid_string_refer_to_original_code
-								'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+							Case "oŒ‚", "Ši”["
 								If .Party = uparty Then
 									If MapFileName = "" Then
 										.UsedAction = 0
@@ -1380,260 +1319,234 @@ ErrorHandler:
 								Else
 									.UsedAction = 0
 								End If
-							Case "Invalid_string_refer_to_original_code"
-								'Invalid_string_refer_to_original_code
-								'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+							Case "‹ŒåŒ`‘Ô", "‹ŒŒ`‘Ô"
 								.UsedAction = 0
 						End Select
 					End With
 				Next SelectedUnit
 				
-				'å‘³æ–¹ãŒæ•µã«ã‹ã‘ãŸã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼ã‚’è§£é™¤
+				'–¡•û‚ª“G‚É‚©‚¯‚½ƒXƒyƒVƒƒƒ‹ƒpƒ[‚ğ‰ğœ
 				For	Each u In UList
 					With u
 						Select Case .Status
-							Case "Invalid_string_refer_to_original_code"
-								'Invalid_string_refer_to_original_code
-								'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-								.RemoveSpecialPowerInEffect("æ•µã‚¿ãƒ¼ãƒ³")
+							Case "oŒ‚", "Ši”["
+								.RemoveSpecialPowerInEffect("“Gƒ^[ƒ“")
 						End Select
 					End With
 				Next u
 				RedrawScreen()
 				
-				'Invalid_string_refer_to_original_code
+				'–¡•ûƒtƒFƒCƒY—p‚a‚f‚l‚ğ‰‰‘t
 				If MapFileName <> "" Then
 					Select Case TerrainClass(1, 1)
-						Case "Invalid_string_refer_to_original_code"
+						Case "‰®“à"
 							StartBGM(BGMName("Map3"))
-						Case "Invalid_string_refer_to_original_code"
+						Case "‰F’ˆ"
 							StartBGM(BGMName("Map5"))
 						Case Else
-							'Invalid_string_refer_to_original_code
-							'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-							StartBGM(BGMName("Map3"))
+							If TerrainName(1, 1) = "•Ç" Then
+								StartBGM(BGMName("Map3"))
+							Else
+								StartBGM(BGMName("Map1"))
+							End If
 					End Select
-				Else
-					StartBGM(BGMName("Map1"))
 				End If
-				'End Select
-			Loop 
+				
+				'ƒ^[ƒ“ƒCƒxƒ“ƒg
+				IsUnitCenter = False
+				HandleEvent("ƒ^[ƒ“", Turn, "–¡•û")
+				If IsScenarioFinished Then
+					UnlockGUI()
+					Exit Sub
+				End If
+				
+				'‘€ì‰Â”\‚Èƒ†ƒjƒbƒg‚ª‚¢‚é‚©‚Ç‚¤‚©ƒ`ƒFƒbƒN
+				num = 0
+				For	Each u In UList
+					With u
+						If .Party = "–¡•û" And (.Status = "oŒ‚" Or .Status = "Ši”[") And .Action > 0 Then
+							num = num + 1
+						End If
+					End With
+				Next u
+				If num > 0 Or IsOptionDefined("–¡•ûƒtƒFƒCƒY‹­§”­“®") Then
+					Exit Do
+				End If
+				
+				'CPU‚ª‘€ì‚·‚éƒ†ƒjƒbƒg‚ª‚¢‚é‚©‚Ç‚¤‚©ƒ`ƒFƒbƒN
+				num = 0
+				For	Each u In UList
+					With u
+						If .Party <> "–¡•û" And .Status = "oŒ‚" Then
+							num = num + 1
+						End If
+					End With
+				Next u
+				If num = 0 Then
+					Exit Do
+				End If
+				
+				'“GƒtƒFƒCƒY
+				StartTurn("“G")
+				If IsScenarioFinished Then
+					IsScenarioFinished = False
+					Exit Sub
+				End If
+				
+				'’†—§ƒtƒFƒCƒY
+				StartTurn("’†—§")
+				If IsScenarioFinished Then
+					IsScenarioFinished = False
+					Exit Sub
+				End If
+				
+				'‚m‚o‚bƒtƒFƒCƒY
+				StartTurn("‚m‚o‚b")
+				If IsScenarioFinished Then
+					IsScenarioFinished = False
+					Exit Sub
+				End If
+			Loop While True
+		Else
+			'–¡•ûƒtƒFƒCƒYˆÈŠO
+			
+			'ó‘Ô‰ñ•œ
+			For	Each SelectedUnit In UList
+				With SelectedUnit
+					Select Case .Status
+						Case "oŒ‚", "Ši”["
+							If .Party = uparty Then
+								.Rest()
+								If IsScenarioFinished Then
+									UnlockGUI()
+									Exit Sub
+								End If
+							Else
+								.UsedAction = 0
+							End If
+						Case "‹ŒåŒ`‘Ô", "‹ŒŒ`‘Ô"
+							.UsedAction = 0
+					End Select
+				End With
+			Next SelectedUnit
+			
+			'“Gƒ†ƒjƒbƒg‚ª–¡•û‚É‚©‚¯‚½ƒXƒyƒVƒƒƒ‹ƒpƒ[‚ğ‰ğœ
+			For	Each u In UList
+				With u
+					Select Case .Status
+						Case "oŒ‚", "Ši”["
+							.RemoveSpecialPowerInEffect("“Gƒ^[ƒ“")
+					End Select
+				End With
+			Next u
+			RedrawScreen()
+			
+			'“G(‚m‚o‚b)ƒtƒFƒCƒY—p‚a‚f‚l‚ğ‰‰‘t
+			Select Case TerrainClass(1, 1)
+				Case "‰®“à"
+					If Stage = "‚m‚o‚b" Then
+						StartBGM(BGMName("Map3"))
+					Else
+						StartBGM(BGMName("Map4"))
+					End If
+				Case "‰F’ˆ"
+					If Stage = "‚m‚o‚b" Then
+						StartBGM(BGMName("Map5"))
+					Else
+						StartBGM(BGMName("Map6"))
+					End If
+				Case Else
+					If Stage = "‚m‚o‚b" Then
+						If TerrainName(1, 1) = "•Ç" Then
+							StartBGM(BGMName("Map3"))
+						Else
+							StartBGM(BGMName("Map1"))
+						End If
+					Else
+						If TerrainName(1, 1) = "•Ç" Then
+							StartBGM(BGMName("Map4"))
+						Else
+							StartBGM(BGMName("Map2"))
+						End If
+					End If
+			End Select
+			
+			'ƒ^[ƒ“ƒCƒxƒ“ƒg
+			HandleEvent("ƒ^[ƒ“", Turn, uparty)
+			If IsScenarioFinished Then
+				UnlockGUI()
+				Exit Sub
+			End If
 		End If
 		
-		'Invalid_string_refer_to_original_code
-		IsUnitCenter = False
-		HandleEvent("ã‚¿ãƒ¼ãƒ³", Turn, "å‘³æ–¹")
-		If IsScenarioFinished Then
-			UnlockGUI()
-			Exit Sub
-		End If
-		
-		'Invalid_string_refer_to_original_code
-		num = 0
-		For	Each u In UList
-			With u
-				'Invalid_string_refer_to_original_code_
-				'And .Action > 0 _
-				'Then
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				num = num + 1
-				'End If
-			End With
-		Next u
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		Exit Do
-		'End If
-		
-		'Invalid_string_refer_to_original_code
-		num = 0
-		For	Each u In UList
-			With u
-				'Invalid_string_refer_to_original_code_
-				'Then
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				num = num + 1
-				'End If
-			End With
-		Next u
-		If num = 0 Then
-			Exit Do
-		End If
-		
-		'æ•µãƒ•ã‚§ã‚¤ã‚º
-		StartTurn("æ•µ")
-		If IsScenarioFinished Then
-			IsScenarioFinished = False
-			Exit Sub
-		End If
-		
-		'ä¸­ç«‹ãƒ•ã‚§ã‚¤ã‚º
-		StartTurn("Invalid_string_refer_to_original_code")
-		If IsScenarioFinished Then
-			IsScenarioFinished = False
-			Exit Sub
-		End If
-		
-		'Invalid_string_refer_to_original_code
-		StartTurn("Invalid_string_refer_to_original_code")
-		If IsScenarioFinished Then
-			IsScenarioFinished = False
-			Exit Sub
-		End If
-		'UPGRADE_WARNING: StartTurn ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		'Loop
 		Dim max_lv As Short
 		Dim max_unit As Unit
-		'Invalid_string_refer_to_original_code
-		
-		'çŠ¶æ…‹å›å¾©
-		For	Each SelectedUnit In UList
-			With SelectedUnit
-				Select Case .Status
-					Case "Invalid_string_refer_to_original_code"
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-						If .Party = uparty Then
-							.Rest()
-							If IsScenarioFinished Then
-								UnlockGUI()
-								Exit Sub
-							End If
-						Else
-							.UsedAction = 0
-						End If
-					Case "Invalid_string_refer_to_original_code"
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-						.UsedAction = 0
-				End Select
-			End With
-		Next SelectedUnit
-		
-		'æ•µãƒ¦ãƒ‹ãƒƒãƒˆãŒå‘³æ–¹ã«ã‹ã‘ãŸã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼ã‚’è§£é™¤
-		For	Each u In UList
-			With u
-				Select Case .Status
-					Case "Invalid_string_refer_to_original_code"
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-						.RemoveSpecialPowerInEffect("æ•µã‚¿ãƒ¼ãƒ³")
-				End Select
-			End With
-		Next u
-		RedrawScreen()
-		
-		'Invalid_string_refer_to_original_code
-		Select Case TerrainClass(1, 1)
-			Case "Invalid_string_refer_to_original_code"
-				If Stage = "Invalid_string_refer_to_original_code" Then
-					StartBGM(BGMName("Map3"))
-				Else
-					StartBGM(BGMName("Map4"))
-				End If
-			Case "Invalid_string_refer_to_original_code"
-				If Stage = "Invalid_string_refer_to_original_code" Then
-					StartBGM(BGMName("Map5"))
-				Else
-					StartBGM(BGMName("Map6"))
-				End If
-			Case Else
-				If Stage = "Invalid_string_refer_to_original_code" Then
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					StartBGM(BGMName("Map3"))
-				Else
-					StartBGM(BGMName("Map1"))
-				End If
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				StartBGM(BGMName("Map4"))
-				StartBGM(BGMName("Map2"))
-				'End If
-				'End If
-		End Select
-		
-		'Invalid_string_refer_to_original_code
-		HandleEvent("ã‚¿ãƒ¼ãƒ³", Turn, uparty)
-		If IsScenarioFinished Then
-			UnlockGUI()
-			Exit Sub
-		End If
-		'End If
-		
-		If uparty = "å‘³æ–¹" Then
-			'Invalid_string_refer_to_original_code
+		If uparty = "–¡•û" Then
+			'–¡•ûƒtƒFƒCƒY‚ÌƒvƒŒƒCƒ„[‚É‚æ‚éƒ†ƒjƒbƒg‘€ì‘O‚Ìˆ—
 			
-			'ã‚¿ãƒ¼ãƒ³æ•°ã‚’è¡¨ç¤º
-			If Turn > 1 And IsOptionDefined("Invalid_string_refer_to_original_code") Then
-				DisplayTelop("ã‚¿ãƒ¼ãƒ³" & VB6.Format(Turn))
+			'ƒ^[ƒ“”‚ğ•\¦
+			If Turn > 1 And IsOptionDefined("ƒfƒoƒbƒO") Then
+				DisplayTelop("ƒ^[ƒ“" & VB6.Format(Turn))
 			End If
 			
-			'Invalid_string_refer_to_original_code
-			'ãƒ¦ãƒ‹ãƒƒãƒˆã‚’ä¸­å¤®ã«é…ç½®
+			'’Êí‚ÌƒXƒe[ƒW‚Å‚Í•êŠÍƒ†ƒjƒbƒg‚Ü‚½‚ÍƒŒƒxƒ‹‚ª‚à‚Á‚Æ‚à‚‚¢
+			'ƒ†ƒjƒbƒg‚ğ’†‰›‚É”z’u
 			If MapFileName <> "" And Not IsUnitCenter Then
 				
 				For	Each u In UList
 					With u
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-						If .IsFeatureAvailable("æ¯è‰¦") Then
-							Center(.X, .Y)
-							DisplayUnitStatus(u)
-							RedrawScreen()
-							UnlockGUI()
-							Exit Sub
+						If .Party = "–¡•û" And .Status = "oŒ‚" And .Action > 0 Then
+							If .IsFeatureAvailable("•êŠÍ") Then
+								Center(.X, .Y)
+								DisplayUnitStatus(u)
+								RedrawScreen()
+								UnlockGUI()
+								Exit Sub
+							End If
 						End If
 					End With
 				Next u
+				
+				max_lv = 0
+				For	Each u In UList
+					With u
+						If .Party = "–¡•û" And .Status = "oŒ‚" Then
+							If .MainPilot.Level > max_lv Then
+								max_unit = u
+								max_lv = .MainPilot.Level
+							End If
+						End If
+					End With
+				Next u
+				If Not max_unit Is Nothing Then
+					Center(max_unit.X, max_unit.Y)
+				End If
 			End If
-			'End With
-			'Next
 			
-			max_lv = 0
-			For	Each u In UList
-				With u
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					If .MainPilot.Level > max_lv Then
-						max_unit = u
-						max_lv = .MainPilot.Level
-					End If
-				End With
-			Next u
+			'ƒXƒe[ƒ^ƒX‚ğ•\¦
+			If MapFileName <> "" Then
+				DisplayGlobalStatus()
+			End If
+			
+			'ƒvƒŒƒCƒ„[‚É‚æ‚é–¡•ûƒ†ƒjƒbƒg‘€ì‚ÉˆÚs
+			RedrawScreen()
+			System.Windows.Forms.Application.DoEvents()
+			UnlockGUI()
+			Exit Sub
 		End If
-		'End With
-		'Next
-		If Not max_unit Is Nothing Then
-			Center(max_unit.X, max_unit.Y)
-		End If
-		'End If
-		
-		'Invalid_string_refer_to_original_code
-		If MapFileName <> "" Then
-			DisplayGlobalStatus()
-		End If
-		
-		'Invalid_string_refer_to_original_code
-		RedrawScreen()
-		System.Windows.Forms.Application.DoEvents()
-		UnlockGUI()
-		Exit Sub
-		'End If
 		
 		LockGUI()
 		
-		'Invalid_string_refer_to_original_code
+		'CPU‚É‚æ‚éƒ†ƒjƒbƒg‘€ì
 		For phase = 1 To 5
 			For i = 1 To UList.Count
-				'Invalid_string_refer_to_original_code
+				'ƒtƒFƒCƒY’†‚És“®‚·‚éƒ†ƒjƒbƒg‚ğ‘I‘ğ
 				SelectedUnit = UList.Item(i)
 				
 				With SelectedUnit
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					GoTo NextLoop
-					'End If
+					If .Status <> "oŒ‚" Then
+						GoTo NextLoop
+					End If
 					
 					If .Action = 0 Then
 						GoTo NextLoop
@@ -1645,7 +1558,7 @@ ErrorHandler:
 					
 					u = SelectedUnit
 					
-					'Invalid_string_refer_to_original_code
+					'‘¼‚Ìƒ†ƒjƒbƒg‚ğŒì‰q‚µ‚Ä‚¢‚éƒ†ƒjƒbƒg‚ÍŒì‰q‘ÎÛ‚Æ“¯‚¶‡‚És“®
 					If PList.IsDefined(.Mode) Then
 						With PList.Item(.Mode)
 							If Not .Unit Is Nothing Then
@@ -1668,59 +1581,45 @@ ErrorHandler:
 					With u
 						Select Case phase
 							Case 1
-								'Invalid_string_refer_to_original_code
+								'Å‰‚ÉƒTƒ|[ƒg”\—Í‚ğ‚½‚È‚¢ƒUƒRƒ†ƒjƒbƒg‚ªs“®
 								If .BossRank >= 0 Then
 									GoTo NextLoop
 								End If
 								With .MainPilot
-									'Invalid_string_refer_to_original_code_
-									'Or .IsSkillAvailable("æ´è­·é˜²å¾¡") _
-									'Invalid_string_refer_to_original_code_
-									'Invalid_string_refer_to_original_code_
-									'Invalid_string_refer_to_original_code_
-									'Then
-									'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-									GoTo NextLoop
-									'End If
+									If .IsSkillAvailable("‰‡Œì") Or .IsSkillAvailable("‰‡ŒìUŒ‚") Or .IsSkillAvailable("‰‡Œì–hŒä") Or .IsSkillAvailable("“—¦") Or .IsSkillAvailable("wŠö") Or .IsSkillAvailable("LˆæƒTƒ|[ƒg") Then
+										GoTo NextLoop
+									End If
 								End With
 							Case 2
-								'Invalid_string_refer_to_original_code
+								'Ÿ‚ÉƒTƒ|[ƒg”\—Í‚ğ‚½‚È‚¢ƒ{ƒXƒ†ƒjƒbƒg‚ªs“®
 								With .MainPilot
-									'Invalid_string_refer_to_original_code_
-									'Or .IsSkillAvailable("æ´è­·é˜²å¾¡") _
-									'Invalid_string_refer_to_original_code_
-									'Invalid_string_refer_to_original_code_
-									'Invalid_string_refer_to_original_code_
-									'Then
-									'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-									GoTo NextLoop
-									'End If
+									If .IsSkillAvailable("‰‡Œì") Or .IsSkillAvailable("‰‡ŒìUŒ‚") Or .IsSkillAvailable("‰‡Œì–hŒä") Or .IsSkillAvailable("“—¦") Or .IsSkillAvailable("wŠö") Or .IsSkillAvailable("LˆæƒTƒ|[ƒg") Then
+										GoTo NextLoop
+									End If
 								End With
 							Case 3
-								'Invalid_string_refer_to_original_code
-								'Invalid_string_refer_to_original_code
-								'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-								GoTo NextLoop
-								'End If
+								'Ÿ‚É“—¦”\—Í‚ğ‚Âƒ†ƒjƒbƒg‚ªs“®
+								If Not .MainPilot.IsSkillAvailable("“—¦") Then
+									GoTo NextLoop
+								End If
 							Case 4
-								'Invalid_string_refer_to_original_code
+								'Ÿ‚ÉƒTƒ|[ƒg”\—Í‚ğ‚ÂƒUƒRƒ†ƒjƒbƒg‚ªs“®
 								If .BossRank >= 0 Then
 									GoTo NextLoop
 								End If
 							Case 5
-								'Invalid_string_refer_to_original_code
+								'ÅŒã‚ÉƒTƒ|[ƒg”\—Í‚ğ‚Âƒ{ƒXƒ†ƒjƒbƒg‚ªs“®
 						End Select
 					End With
 				End With
 				
 				Do While SelectedUnit.Action > 0
-					'Invalid_string_refer_to_original_code
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					Exit Do
-					'End If
+					'“r’†‚Åó‘Ô‚ª•ÏX‚³‚ê‚½ê‡
+					If SelectedUnit.Status <> "oŒ‚" Then
+						Exit Do
+					End If
 					
-					'Invalid_string_refer_to_original_code
+					'“r’†‚Åw‰c‚ª•ÏX‚³‚ê‚½ê‡
 					If SelectedUnit.Party <> uparty Then
 						Exit Do
 					End If
@@ -1732,115 +1631,108 @@ ErrorHandler:
 						System.Windows.Forms.Application.DoEvents()
 					End If
 					
-					IsCanceled = False 'Invalid_string_refer_to_original_code
+					IsCanceled = False 'CancelƒRƒ}ƒ“ƒh‚ÌƒNƒŠƒA
 					
-					'Invalid_string_refer_to_original_code
+					'ƒ†ƒjƒbƒg‚ğs“®‚³‚¹‚é
 					OperateUnit()
 					
 					If IsScenarioFinished Then
 						Exit Sub
 					End If
 					
-					'Invalid_string_refer_to_original_code
+					'ƒnƒCƒp[ƒ‚[ƒhEƒm[ƒ}ƒ‹ƒ‚[ƒh‚Ì©“®”­“®ƒ`ƒFƒbƒN
 					UList.CheckAutoHyperMode()
 					UList.CheckAutoNormalMode()
 					
-					'Invalid_string_refer_to_original_code
+					'CancelƒRƒ}ƒ“ƒh‚ªÀs‚³‚ê‚½‚ç‚±‚±‚ÅI—¹
 					If IsCanceled Then
 						If SelectedUnit Is Nothing Then
 							Exit Do
 						End If
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-						Exit Do
+						If SelectedUnit.Status <> "oŒ‚" Then
+							Exit Do
+						End If
+						IsCanceled = False
 					End If
-					IsCanceled = False
-					'End If
 					
-					'Invalid_string_refer_to_original_code
+					's“®”‚ğŒ¸­
 					SelectedUnit.UseAction()
 					
-					'Invalid_string_refer_to_original_code
+					'ÚGƒCƒxƒ“ƒg
 					With SelectedUnit
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-						If Not MapDataForUnit(.X - 1, .Y) Is Nothing Then
-							SelectedTarget = MapDataForUnit(.X - 1, .Y)
-							HandleEvent("æ¥è§¦", .MainPilot.ID, MapDataForUnit(.X - 1, .Y).MainPilot.ID)
-							If IsScenarioFinished Then
-								Exit Sub
+						If .Status = "oŒ‚" And .X > 1 Then
+							If Not MapDataForUnit(.X - 1, .Y) Is Nothing Then
+								SelectedTarget = MapDataForUnit(.X - 1, .Y)
+								HandleEvent("ÚG", .MainPilot.ID, MapDataForUnit(.X - 1, .Y).MainPilot.ID)
+								If IsScenarioFinished Then
+									Exit Sub
+								End If
 							End If
 						End If
-						'End If
 					End With
 					With SelectedUnit
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-						If Not MapDataForUnit(.X + 1, .Y) Is Nothing Then
-							SelectedTarget = MapDataForUnit(.X + 1, .Y)
-							HandleEvent("æ¥è§¦", .MainPilot.ID, MapDataForUnit(.X + 1, .Y).MainPilot.ID)
-							If IsScenarioFinished Then
-								Exit Sub
+						If .Status = "oŒ‚" And .X < MapWidth Then
+							If Not MapDataForUnit(.X + 1, .Y) Is Nothing Then
+								SelectedTarget = MapDataForUnit(.X + 1, .Y)
+								HandleEvent("ÚG", .MainPilot.ID, MapDataForUnit(.X + 1, .Y).MainPilot.ID)
+								If IsScenarioFinished Then
+									Exit Sub
+								End If
 							End If
 						End If
-						'End If
 					End With
 					With SelectedUnit
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-						If Not MapDataForUnit(.X, .Y - 1) Is Nothing Then
-							SelectedTarget = MapDataForUnit(.X, .Y - 1)
-							HandleEvent("æ¥è§¦", .MainPilot.ID, MapDataForUnit(.X, .Y - 1).MainPilot.ID)
-							If IsScenarioFinished Then
-								Exit Sub
+						If .Status = "oŒ‚" And .Y > 1 Then
+							If Not MapDataForUnit(.X, .Y - 1) Is Nothing Then
+								SelectedTarget = MapDataForUnit(.X, .Y - 1)
+								HandleEvent("ÚG", .MainPilot.ID, MapDataForUnit(.X, .Y - 1).MainPilot.ID)
+								If IsScenarioFinished Then
+									Exit Sub
+								End If
 							End If
 						End If
-						'End If
 					End With
 					With SelectedUnit
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-						If Not MapDataForUnit(.X, .Y + 1) Is Nothing Then
-							SelectedTarget = MapDataForUnit(.X, .Y + 1)
-							HandleEvent("æ¥è§¦", .MainPilot.ID, MapDataForUnit(.X, .Y + 1).MainPilot.ID)
-							If IsScenarioFinished Then
-								Exit Sub
+						If .Status = "oŒ‚" And .Y < MapHeight Then
+							If Not MapDataForUnit(.X, .Y + 1) Is Nothing Then
+								SelectedTarget = MapDataForUnit(.X, .Y + 1)
+								HandleEvent("ÚG", .MainPilot.ID, MapDataForUnit(.X, .Y + 1).MainPilot.ID)
+								If IsScenarioFinished Then
+									Exit Sub
+								End If
 							End If
 						End If
-						'End If
 					End With
 					
-					'Invalid_string_refer_to_original_code
+					'i“üƒCƒxƒ“ƒg
 					With SelectedUnit
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-						HandleEvent("é€²å…¥", .MainPilot.ID, .X, .Y)
-						If IsScenarioFinished Then
-							Exit Sub
+						If .Status = "oŒ‚" Then
+							HandleEvent("i“ü", .MainPilot.ID, .X, .Y)
+							If IsScenarioFinished Then
+								Exit Sub
+							End If
 						End If
-						'End If
 					End With
 					
-					'Invalid_string_refer_to_original_code
+					's“®I—¹ƒCƒxƒ“ƒg
 					With SelectedUnit
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-						HandleEvent("Invalid_string_refer_to_original_code")
-						If IsScenarioFinished Then
-							Exit Sub
+						If .Status = "oŒ‚" Then
+							HandleEvent("s“®I—¹", .MainPilot.ID)
+							If IsScenarioFinished Then
+								Exit Sub
+							End If
 						End If
-						'End If
 					End With
 				Loop 
 NextLoop: 
 			Next 
 		Next 
 		
-		'Invalid_string_refer_to_original_code
+		'ƒXƒe[ƒ^ƒXƒEƒBƒ“ƒhƒE‚Ì•\¦‚ğÁ‹
 		ClearUnitStatus()
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'ƒQ[ƒ€ƒI[ƒo[
 	Public Sub GameOver()
 		Dim fname As String
 		
@@ -1849,7 +1741,7 @@ NextLoop:
 		StopBGM()
 		MainForm.Hide()
 		
-		'Invalid_string_refer_to_original_code
+		'GameOver.eve‚ğ’T‚·
 		If FileExists(ScenarioPath & "Data\System\GameOver.eve") Then
 			fname = ScenarioPath & "Data\System\GameOver.eve"
 			If FileExists(ScenarioPath & "Data\System\non_pilot.txt") Then
@@ -1861,30 +1753,30 @@ NextLoop:
 				NPDList.Load(AppPath & "Data\System\non_pilot.txt")
 			End If
 		Else
-			'Invalid_string_refer_to_original_code
+			'GameOver.eve‚ª–³‚¯‚ê‚Î‚»‚Ì‚Ü‚ÜI—¹
 			TerminateSRC()
 		End If
 		
-		'GameOver.eveã‚’èª­ã¿è¾¼ã¿
+		'GameOver.eve‚ğ“Ç‚İ‚İ
 		ClearEventData()
 		LoadEventData(fname)
 		ScenarioFileName = fname
 		
-		If Not IsEventDefined("ãƒ—ãƒ­ãƒ­ãƒ¼ã‚°") Then
-			ErrorMessage(fname & "Invalid_string_refer_to_original_code")
+		If Not IsEventDefined("ƒvƒƒ[ƒO") Then
+			ErrorMessage(fname & "’†‚Éƒvƒƒ[ƒOƒCƒxƒ“ƒg‚ª’è‹`‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ")
 			TerminateSRC()
 		End If
 		
-		'GameOver.eveã®ãƒ—ãƒ­ãƒ­ãƒ¼ã‚°ã‚¤ãƒ™ãƒ³ãƒˆã‚’å®Ÿæ–½
-		HandleEvent("ãƒ—ãƒ­ãƒ­ãƒ¼ã‚°")
+		'GameOver.eve‚Ìƒvƒƒ[ƒOƒCƒxƒ“ƒg‚ğÀ{
+		HandleEvent("ƒvƒƒ[ƒO")
 	End Sub
 	
-	'ã‚²ãƒ¼ãƒ ã‚¯ãƒªã‚¢
+	'ƒQ[ƒ€ƒNƒŠƒA
 	Public Sub GameClear()
 		TerminateSRC()
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'ƒQ[ƒ€‚ğ“r’†I—¹
 	Public Sub ExitGame()
 		Dim fname As String
 		
@@ -1892,7 +1784,7 @@ NextLoop:
 		BossBGM = False
 		StopBGM()
 		
-		'Invalid_string_refer_to_original_code
+		'Exit.eve‚ğ’T‚·
 		MainForm.Hide()
 		If FileExists(ScenarioPath & "Data\System\Exit.eve") Then
 			fname = ScenarioPath & "Data\System\Exit.eve"
@@ -1905,31 +1797,31 @@ NextLoop:
 				NPDList.Load(AppPath & "Data\System\non_pilot.txt")
 			End If
 		Else
-			'Invalid_string_refer_to_original_code
+			'Exit.eve‚ª–³‚¯‚ê‚Î‚»‚Ì‚Ü‚ÜI—¹
 			TerminateSRC()
 		End If
 		
-		'Exit.eveã‚’èª­ã¿è¾¼ã¿
+		'Exit.eve‚ğ“Ç‚İ‚İ
 		ClearEventData()
 		LoadEventData(fname)
 		
-		If Not IsEventDefined("ãƒ—ãƒ­ãƒ­ãƒ¼ã‚°") Then
-			ErrorMessage(fname & "Invalid_string_refer_to_original_code")
+		If Not IsEventDefined("ƒvƒƒ[ƒO") Then
+			ErrorMessage(fname & "’†‚Éƒvƒƒ[ƒOƒCƒxƒ“ƒg‚ª’è‹`‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ")
 			TerminateSRC()
 		End If
 		
-		'Exit.eveã®ãƒ—ãƒ­ãƒ­ãƒ¼ã‚°ã‚¤ãƒ™ãƒ³ãƒˆã‚’å®Ÿæ–½
-		HandleEvent("ãƒ—ãƒ­ãƒ­ãƒ¼ã‚°")
+		'Exit.eve‚Ìƒvƒƒ[ƒOƒCƒxƒ“ƒg‚ğÀ{
+		HandleEvent("ƒvƒƒ[ƒO")
 		
-		'Invalid_string_refer_to_original_code
+		'SRC‚ğI—¹
 		TerminateSRC()
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'SRC‚ğI—¹
 	Public Sub TerminateSRC()
 		Dim i, j As Short
 		
-		'ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’é–‰ã˜ã‚‹
+		'ƒEƒBƒ“ƒhƒE‚ğ•Â‚¶‚é
 		If Not MainForm Is Nothing Then
 			MainForm.Hide()
 		End If
@@ -1950,18 +1842,18 @@ NextLoop:
 		End If
 		System.Windows.Forms.Application.DoEvents()
 		
-		'Invalid_string_refer_to_original_code
+		'ŠÔ‰ğ‘œ“x‚ğŒ³‚É–ß‚·
 		Call timeEndPeriod(1)
 		
-		'Invalid_string_refer_to_original_code
+		'ƒtƒ‹ƒXƒNƒŠ[ƒ“ƒ‚[ƒh‚ğg‚Á‚Ä‚¢‚½ê‡‚Í‰ğ‘œ“x‚ğŒ³‚É–ß‚·
 		If ReadIni("Option", "FullScreen") = "On" Then
 			ChangeDisplaySize(0, 0)
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'‚a‚f‚lEŒø‰Ê‰¹‚ÌÄ¶‚ğ’â~
 		FreeSoundModule()
 		
-		'Invalid_string_refer_to_original_code
+		'Šeíƒf[ƒ^‚ğ‰ğ•ú
 		
 		'UPGRADE_NOTE: ƒIƒuƒWƒFƒNƒg SelectedUnit ‚ğƒKƒx[ƒW ƒRƒŒƒNƒg‚·‚é‚Ü‚Å‚±‚ÌƒIƒuƒWƒFƒNƒg‚ğ”jŠü‚·‚é‚±‚Æ‚Í‚Å‚«‚Ü‚¹‚ñB Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 		SelectedUnit = Nothing
@@ -2007,7 +1899,7 @@ NextLoop:
 		'UPGRADE_NOTE: ƒIƒuƒWƒFƒNƒg IList ‚ğƒKƒx[ƒW ƒRƒŒƒNƒg‚·‚é‚Ü‚Å‚±‚ÌƒIƒuƒWƒFƒNƒg‚ğ”jŠü‚·‚é‚±‚Æ‚Í‚Å‚«‚Ü‚¹‚ñB Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 		IList = Nothing
 		
-		'Invalid_string_refer_to_original_code
+		'‚È‚º‚©‚±‚ê‚ª‚È‚¢‚Æ•s³I—¹‚·‚écc
 		System.Windows.Forms.Application.DoEvents()
 		
 		'UPGRADE_NOTE: ƒIƒuƒWƒFƒNƒg PDList ‚ğƒKƒx[ƒW ƒRƒŒƒNƒg‚·‚é‚Ü‚Å‚±‚ÌƒIƒuƒWƒFƒNƒg‚ğ”jŠü‚·‚é‚±‚Æ‚Í‚Å‚«‚Ü‚¹‚ñB Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
@@ -2041,7 +1933,7 @@ NextLoop:
 	End Sub
 	
 	
-	'Invalid_string_refer_to_original_code
+	'ƒf[ƒ^‚ğƒZ[ƒu
 	Public Sub SaveData(ByRef fname As String)
 		Dim i As Short
 		Dim num As Integer
@@ -2062,11 +1954,11 @@ NextLoop:
 			WriteLine(SaveDataFileNumber, Titles(i))
 		Next 
 		
-		WriteLine(SaveDataFileNumber, GetValueAsString("Invalid_string_refer_to_original_code"))
+		WriteLine(SaveDataFileNumber, GetValueAsString("ŸƒXƒe[ƒW"))
 		
 		WriteLine(SaveDataFileNumber, TotalTurn)
 		WriteLine(SaveDataFileNumber, Money)
-		WriteLine(SaveDataFileNumber, 0) 'Invalid_string_refer_to_original_code
+		WriteLine(SaveDataFileNumber, 0) 'ƒp[ƒc—p‚Ìƒ_ƒ~[
 		
 		SaveGlobalVariables()
 		PList.Save()
@@ -2078,11 +1970,11 @@ NextLoop:
 		Exit Sub
 		
 ErrorHandler: 
-		ErrorMessage("ã‚»ãƒ¼ãƒ–ä¸­ã«ã‚¨ãƒ©ãƒ¼ãŒç™ºç”Ÿã—ã¾ã—ãŸ")
+		ErrorMessage("ƒZ[ƒu’†‚ÉƒGƒ‰[‚ª”­¶‚µ‚Ü‚µ‚½")
 		FileClose(SaveDataFileNumber)
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'ƒf[ƒ^‚ğƒ[ƒh
 	Public Sub LoadData(ByRef fname As String)
 		Dim i, num As Short
 		Dim fname2 As String
@@ -2159,13 +2051,13 @@ ErrorHandler:
 		Input(SaveDataFileNumber, fname2)
 		Input(SaveDataFileNumber, TotalTurn)
 		Input(SaveDataFileNumber, Money)
-		Input(SaveDataFileNumber, num) 'Invalid_string_refer_to_original_code
+		Input(SaveDataFileNumber, num) 'ƒp[ƒc—p‚Ìƒ_ƒ~[
 		
 		LoadGlobalVariables()
-		If Not IsGlobalVariableDefined("Invalid_string_refer_to_original_code") Then
-			DefineGlobalVariable("Invalid_string_refer_to_original_code")
+		If Not IsGlobalVariableDefined("ŸƒXƒe[ƒW") Then
+			DefineGlobalVariable("ŸƒXƒe[ƒW")
 		End If
-		SetVariableAsString("Invalid_string_refer_to_original_code", fname2)
+		SetVariableAsString("ŸƒXƒe[ƒW", fname2)
 		
 		PList.Load()
 		UList.Load()
@@ -2173,7 +2065,7 @@ ErrorHandler:
 		
 		FileClose(SaveDataFileNumber)
 		
-		'Invalid_string_refer_to_original_code
+		'ƒŠƒ“ƒNƒf[ƒ^‚ğˆ—‚·‚é‚½‚ßAƒZ[ƒuƒtƒ@ƒCƒ‹‚ğˆê’U•Â‚¶‚Ä‚©‚çÄ“x“Ç‚İ‚İ
 		
 		SaveDataFileNumber = FreeFile
 		FileOpen(SaveDataFileNumber, fname, OpenMode.Input)
@@ -2189,8 +2081,8 @@ ErrorHandler:
 		Input(SaveDataFileNumber, dummy)
 		Input(SaveDataFileNumber, TotalTurn)
 		Input(SaveDataFileNumber, Money)
-		Input(SaveDataFileNumber, num) 'Invalid_string_refer_to_original_code
-		Input(SaveDataFileNumber, num) 'Invalid_string_refer_to_original_code
+		Input(SaveDataFileNumber, num) 'ƒp[ƒc—p‚Ìƒ_ƒ~[
+		Input(SaveDataFileNumber, num) 'ƒp[ƒc—p‚Ìƒ_ƒ~[
 		For i = 1 To num
 			dummy = LineInput(SaveDataFileNumber)
 		Next 
@@ -2202,14 +2094,14 @@ ErrorHandler:
 		
 		DisplayLoadingProgress()
 		
-		'Invalid_string_refer_to_original_code
+		'ƒ†ƒjƒbƒg‚Ìó‘Ô‚ğ‰ñ•œ
 		For	Each u In UList
 			u.Reset_Renamed()
 		Next u
 		
 		DisplayLoadingProgress()
 		
-		'Invalid_string_refer_to_original_code
+		'’Ç‰Á‚³‚ê‚½ƒVƒXƒeƒ€‘¤ƒCƒxƒ“ƒgƒf[ƒ^‚Ì“Ç‚İ‚İ
 		LoadEventData("")
 		
 		DisplayLoadingProgress()
@@ -2217,20 +2109,20 @@ ErrorHandler:
 		Exit Sub
 		
 ErrorHandler: 
-		ErrorMessage("ãƒ­ãƒ¼ãƒ‰ä¸­ã«ã‚¨ãƒ©ãƒ¼ãŒç™ºç”Ÿã—ã¾ã—ãŸ")
+		ErrorMessage("ƒ[ƒh’†‚ÉƒGƒ‰[‚ª”­¶‚µ‚Ü‚µ‚½")
 		FileClose(SaveDataFileNumber)
 		TerminateSRC()
 	End Sub
 	
 	
-	'Invalid_string_refer_to_original_code
+	'ˆê’†’f—pƒf[ƒ^‚ğƒtƒ@ƒCƒ‹‚ÉƒZ[ƒu‚·‚é
 	Public Sub DumpData(ByRef fname As String)
 		Dim i As Short
 		Dim num As Integer
 		
 		On Error GoTo ErrorHandler
 		
-		'Invalid_string_refer_to_original_code
+		'’†’fƒf[ƒ^‚ğƒZ[ƒu
 		SaveDataFileNumber = FreeFile
 		FileOpen(SaveDataFileNumber, fname, OpenMode.Output, OpenAccess.Write)
 		
@@ -2259,7 +2151,7 @@ ErrorHandler:
 		
 		DumpMapData()
 		
-		'Invalid_string_refer_to_original_code
+		' Midi ‚¶‚á‚È‚­‚Ä midi ‚¶‚á‚È‚¢‚ÆŒŸõ¸”s‚·‚é‚æ‚¤‚É‚È‚Á‚Ä‚é‚Ì‚ÅB
 		If InStr(LCase(BGMFileName), "\midi\") > 0 Then
 			WriteLine(SaveDataFileNumber, Mid(BGMFileName, InStr(LCase(BGMFileName), "\midi\") + 6))
 		ElseIf InStr(BGMFileName, "\") > 0 Then 
@@ -2277,20 +2169,20 @@ ErrorHandler:
 		FileClose(SaveDataFileNumber)
 		
 		LastSaveDataFileName = fname
-		If InStr(fname, "Invalid_string_refer_to_original_code") > 0 Then
+		If InStr(fname, "\_ƒŠƒXƒ^[ƒg.src") > 0 Then
 			IsRestartSaveDataAvailable = True
-		ElseIf InStr(fname, "Invalid_string_refer_to_original_code") > 0 Then 
+		ElseIf InStr(fname, "\_ƒNƒCƒbƒNƒZ[ƒu.src") > 0 Then 
 			IsQuickSaveDataAvailable = True
 		End If
 		
 		Exit Sub
 		
 ErrorHandler: 
-		ErrorMessage("ã‚»ãƒ¼ãƒ–ä¸­ã«ã‚¨ãƒ©ãƒ¼ãŒç™ºç”Ÿã—ã¾ã—ãŸ")
+		ErrorMessage("ƒZ[ƒu’†‚ÉƒGƒ‰[‚ª”­¶‚µ‚Ü‚µ‚½")
 		FileClose(SaveDataFileNumber)
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'ˆê’†’f—pƒf[ƒ^‚ğƒ[ƒh
 	Public Sub RestoreData(ByRef fname As String, ByRef quick_load As Boolean)
 		Dim i, num As Short
 		Dim fname2 As String
@@ -2300,13 +2192,13 @@ ErrorHandler:
 		
 		On Error GoTo ErrorHandler
 		
-		'ãƒã‚¦ã‚¹ã‚«ãƒ¼ã‚½ãƒ«ã‚’ç ‚æ™‚è¨ˆã«
+		'ƒ}ƒEƒXƒJ[ƒ\ƒ‹‚ğ»Œv‚É
 		'UPGRADE_WARNING: Screen ƒvƒƒpƒeƒB Screen.MousePointer ‚É‚ÍV‚µ‚¢“®ì‚ªŠÜ‚Ü‚ê‚Ü‚·B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6BA9B8D2-2A32-4B6E-8D36-44949974A5B4"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 		System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.WaitCursor
 		
 		If quick_load Then
-			If IsOptionDefined("Invalid_string_refer_to_original_code") Then
-				LoadEventData(ScenarioFileName, "Invalid_string_refer_to_original_code")
+			If IsOptionDefined("ƒfƒoƒbƒO") Then
+				LoadEventData(ScenarioFileName, "ƒNƒCƒbƒNƒ[ƒh")
 			End If
 		End If
 		
@@ -2326,7 +2218,7 @@ ErrorHandler:
 			SaveDataVersion = 1
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'ƒEƒBƒ“ƒhƒE‚Ìƒ^ƒCƒgƒ‹‚ğİ’è
 		If ScenarioFileName <> ScenarioPath & fname2 Then
 			MainForm.Text = "SRC - " & Left(fname2, Len(fname2) - 4)
 			ScenarioFileName = ScenarioPath & fname2
@@ -2335,7 +2227,7 @@ ErrorHandler:
 		
 		Input(SaveDataFileNumber, num)
 		
-		'Invalid_string_refer_to_original_code
+		'g—p‚·‚éƒf[ƒ^‚ğƒ[ƒh
 		If Not quick_load Then
 			SetLoadImageSize(num * 2 + 5)
 			
@@ -2390,7 +2282,7 @@ ErrorHandler:
 			DisplayLoadingProgress()
 			IsLocalDataLoaded = True
 			
-			LoadEventData(ScenarioFileName, "ãƒªã‚¹ãƒˆã‚¢")
+			LoadEventData(ScenarioFileName, "ƒŠƒXƒgƒA")
 			
 			DisplayLoadingProgress()
 		Else
@@ -2399,7 +2291,7 @@ ErrorHandler:
 			Next 
 			
 			If scenario_file_is_different Then
-				LoadEventData(ScenarioFileName, "ãƒªã‚¹ãƒˆã‚¢")
+				LoadEventData(ScenarioFileName, "ƒŠƒXƒgƒA")
 			End If
 		End If
 		
@@ -2415,9 +2307,9 @@ ErrorHandler:
 		
 		'MOD START 240a
 		'    RestoreMapData
-		'Invalid_string_refer_to_original_code
+		'    '‚a‚f‚lŠÖ˜A‚Ìİ’è‚ğ•œŒ³
 		'    Input #SaveDataFileNumber, fname2
-		'Invalid_string_refer_to_original_code
+		'ƒ}ƒbƒvƒf[ƒ^‚ÌŒİŠ·«ˆÛ‚Ì‚½‚ßARestoreMapData‚Å‚a‚f‚lŠÖ˜A‚Ì‚Ps–Ú‚Ü‚Å“Ç‚İ‚ñ‚Å–ß‚è’l‚É‚µ‚½
 		fname2 = RestoreMapData
 		'MOD  END  240a
 		fname2 = SearchMidiFile("(" & fname2 & ")")
@@ -2435,15 +2327,12 @@ ErrorHandler:
 			dummy = LineInput(SaveDataFileNumber)
 		End If
 		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code_
-		'And Not EOF(SaveDataFileNumber) _
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		Input(SaveDataFileNumber, RndSeed)
-		RndReset()
-		Input(SaveDataFileNumber, RndIndex)
-		'End If
+		'—”Œn—ñ‚ğ•œŒ³
+		If Not IsOptionDefined("ƒfƒoƒbƒO") And Not IsOptionDefined("—”Œn—ñ”ñ•Û‘¶") And Not EOF(SaveDataFileNumber) Then
+			Input(SaveDataFileNumber, RndSeed)
+			RndReset()
+			Input(SaveDataFileNumber, RndIndex)
+		End If
 		
 		If Not quick_load Then
 			DisplayLoadingProgress()
@@ -2451,7 +2340,7 @@ ErrorHandler:
 		
 		FileClose(SaveDataFileNumber)
 		
-		'Invalid_string_refer_to_original_code
+		'ƒŠƒ“ƒNƒf[ƒ^‚ğˆ—‚·‚é‚½‚ßAƒZ[ƒuƒtƒ@ƒCƒ‹‚ğˆê’U•Â‚¶‚Ä‚©‚çÄ“x“Ç‚İ‚İ
 		
 		SaveDataFileNumber = FreeFile
 		FileOpen(SaveDataFileNumber, fname, OpenMode.Input)
@@ -2464,7 +2353,7 @@ ErrorHandler:
 		'ScenarioFileName
 		dummy = LineInput(SaveDataFileNumber)
 		
-		'Invalid_string_refer_to_original_code
+		'g—p‚·‚éƒf[ƒ^–¼
 		Input(SaveDataFileNumber, num)
 		For i = 1 To num
 			dummy = LineInput(SaveDataFileNumber)
@@ -2485,9 +2374,9 @@ ErrorHandler:
 		
 		FileClose(SaveDataFileNumber)
 		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
+		'ƒpƒ‰ƒ[ƒ^î•ñ‚ğˆ—‚·‚é‚½‚ßAƒZ[ƒuƒtƒ@ƒCƒ‹‚ğˆê’U•Â‚¶‚Ä‚©‚çÄ“x“Ç‚İ‚İB
+		'—ì—Í‚â‚g‚oA‚d‚m‚Æ‚¢‚Á‚½ƒpƒ‰ƒ[ƒ^‚ÍÅ‘å’l‚ª“Áê”\—Í‚Å•Ï“®‚·‚é‚½‚ßA
+		'“Áê”\—Í‚Ìİ’è‚ªI‚í‚Á‚Ä‚©‚ç‰ü‚ß‚Äİ’è‚µ‚Ä‚â‚é•K—v‚ª‚ ‚éB
 		
 		SaveDataFileNumber = FreeFile
 		FileOpen(SaveDataFileNumber, fname, OpenMode.Input)
@@ -2500,7 +2389,7 @@ ErrorHandler:
 		'ScenarioFileName
 		dummy = LineInput(SaveDataFileNumber)
 		
-		'Invalid_string_refer_to_original_code
+		'g—p‚·‚éƒf[ƒ^–¼
 		Input(SaveDataFileNumber, num)
 		For i = 1 To num
 			dummy = LineInput(SaveDataFileNumber)
@@ -2521,20 +2410,20 @@ ErrorHandler:
 		
 		PList.UpdateSupportMod()
 		
-		'Invalid_string_refer_to_original_code
+		'”wŒi‘‚«Š·‚¦
 		Dim map_x, map_y As Short
 		If IsMapDirty Then
 			
 			map_x = MapX
 			map_y = MapY
 			
-			SetupBackground(MapDrawMode, "Invalid_string_refer_to_original_code")
+			SetupBackground(MapDrawMode, "”ñ“¯Šú")
 			
 			MapX = map_x
 			MapY = map_y
 			
-			'Invalid_string_refer_to_original_code
-			HandleEvent("å†é–‹")
+			'ÄŠJƒCƒxƒ“ƒg‚É‚æ‚éƒ}ƒbƒv‰æ‘œ‚Ì‘‚«Š·‚¦ˆ—‚ğs‚¤
+			HandleEvent("ÄŠJ")
 			
 			IsMapDirty = False
 		End If
@@ -2544,7 +2433,7 @@ ErrorHandler:
 		'UPGRADE_NOTE: ƒIƒuƒWƒFƒNƒg SelectedTarget ‚ğƒKƒx[ƒW ƒRƒŒƒNƒg‚·‚é‚Ü‚Å‚±‚ÌƒIƒuƒWƒFƒNƒg‚ğ”jŠü‚·‚é‚±‚Æ‚Í‚Å‚«‚Ü‚¹‚ñB Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 		SelectedTarget = Nothing
 		
-		'Invalid_string_refer_to_original_code
+		'ƒ†ƒjƒbƒg‰æ‘œ¶¬
 		For	Each u In UList
 			With u
 				If .BitmapID = 0 Then
@@ -2553,7 +2442,7 @@ ErrorHandler:
 			End With
 		Next u
 		
-		'ç”»é¢æ›´æ–°
+		'‰æ–ÊXV
 		Center(MapX, MapY)
 		
 		FileClose(SaveDataFileNumber)
@@ -2570,7 +2459,7 @@ ErrorHandler:
 			MainForm.Show()
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'ƒ}ƒEƒXƒJ[ƒ\ƒ‹‚ğŒ³‚É–ß‚·
 		'UPGRADE_WARNING: Screen ƒvƒƒpƒeƒB Screen.MousePointer ‚É‚ÍV‚µ‚¢“®ì‚ªŠÜ‚Ü‚ê‚Ü‚·B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6BA9B8D2-2A32-4B6E-8D36-44949974A5B4"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 		System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.Default
 		
@@ -2582,41 +2471,41 @@ ErrorHandler:
 		RedrawScreen()
 		
 		If Turn = 0 Then
-			HandleEvent("Invalid_string_refer_to_original_code")
+			HandleEvent("ƒXƒ^[ƒg")
 			
 			' MOD START MARGE
-			'        StartTurn "å‘³æ–¹"
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
+			'        StartTurn "–¡•û"
+			'ƒXƒ^[ƒgƒCƒxƒ“ƒg‚©‚çŸ‚ÌƒXƒe[ƒW‚ªŠJn‚³‚ê‚½ê‡AStartTurn‚ªã‚ÌHandleEvent‚Å
+			'Às‚³‚ê‚Ä‚µ‚Ü‚¤B
+			'–¡•ûƒ^[ƒ“‚Ìˆ—‚ª‚Qd‹N“®‚³‚ê‚é‚Ì‚ğ–h‚®‚½‚ßATurn‚ğƒ`ƒFƒbƒN‚µ‚Ä‚©‚ç‹N“®‚·‚é
 			If Turn = 0 Then
-				StartTurn("å‘³æ–¹")
+				StartTurn("–¡•û")
 			End If
 			' MOD END MARGE
 		Else
-			CommandState = "Invalid_string_refer_to_original_code"
-			Stage = "å‘³æ–¹"
+			CommandState = "ƒ†ƒjƒbƒg‘I‘ğ"
+			Stage = "–¡•û"
 		End If
 		
 		LastSaveDataFileName = fname
-		If InStr(fname, "Invalid_string_refer_to_original_code") > 0 Then
+		If InStr(fname, "\_ƒŠƒXƒ^[ƒg.src") > 0 Then
 			IsRestartSaveDataAvailable = True
-		ElseIf InStr(fname, "Invalid_string_refer_to_original_code") > 0 Then 
+		ElseIf InStr(fname, "\_ƒNƒCƒbƒNƒZ[ƒu.src") > 0 Then 
 			IsQuickSaveDataAvailable = True
 		End If
 		
 		Exit Sub
 		
 ErrorHandler: 
-		ErrorMessage("ãƒ­ãƒ¼ãƒ‰ä¸­ã«ã‚¨ãƒ©ãƒ¼ãŒç™ºç”Ÿã—ã¾ã—ãŸ")
+		ErrorMessage("ƒ[ƒh’†‚ÉƒGƒ‰[‚ª”­¶‚µ‚Ü‚µ‚½")
 		FileClose(SaveDataFileNumber)
 		TerminateSRC()
 	End Sub
 	
 	
-	'Invalid_string_refer_to_original_code
-	'æ—§å½¢å¼ï¼‰ãƒ¦ãƒ‹ãƒƒãƒˆåç§°+æ•°å€¤
-	'æ–°å½¢å¼ï¼‰ãƒ¦ãƒ‹ãƒƒãƒˆåç§°+":"+æ•°å€¤
+	'‹ŒŒ`®‚Ìƒ†ƒjƒbƒg‚h‚c‚ğVŒ`®‚É•ÏŠ·
+	'‹ŒŒ`®jƒ†ƒjƒbƒg–¼Ì+”’l
+	'VŒ`®jƒ†ƒjƒbƒg–¼Ì+":"+”’l
 	Public Sub ConvertUnitID(ByRef ID As String)
 		Dim i As Short
 		
@@ -2624,7 +2513,7 @@ ErrorHandler:
 			Exit Sub
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'”’l•”•ª‚ğ“Ç‚İ”ò‚Î‚·
 		i = Len(ID)
 		Do While i > 0
 			Select Case Asc(Mid(ID, i, 1))
@@ -2636,26 +2525,24 @@ ErrorHandler:
 			i = i - 1
 		Loop 
 		
-		'Invalid_string_refer_to_original_code
+		'ƒ†ƒjƒbƒg–¼Ì‚Æ”’l•”•ª‚ÌŠÔ‚Éu:v‚ğ‘}“ü
 		ID = Left(ID, i) & ":" & Mid(ID, i + 1)
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'ì•inew_title‚Ìƒf[ƒ^‚ğ“Ç‚İ‚İ
 	Public Sub IncludeData(ByRef new_title As String)
 		Dim fpath As String
 		
-		'Invalid_string_refer_to_original_code
+		'ƒ[ƒh‚ÌƒCƒ“ƒWƒP[ƒ^•\¦‚ğs‚¤
 		If frmNowLoading.Visible Then
 			DisplayLoadingProgress()
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'DataƒtƒHƒ‹ƒ_‚ÌêŠ‚ğ’T‚·
 		fpath = SearchDataFolder(new_title)
 		
 		If Len(fpath) = 0 Then
-			ErrorMessage("Invalid_string_refer_to_original_code")
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			ErrorMessage("ƒf[ƒ^u" & new_title & "v‚ÌƒtƒHƒ‹ƒ_‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ")
 			TerminateSRC()
 		End If
 		
@@ -2682,7 +2569,7 @@ ErrorHandler:
 			UDList.Load(fpath & "\unit.txt")
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'ƒ[ƒh‚ÌƒCƒ“ƒWƒP[ƒ^•\¦‚ğs‚¤
 		If frmNowLoading.Visible Then
 			DisplayLoadingProgress()
 		End If
@@ -2709,11 +2596,11 @@ ErrorHandler:
 		Exit Sub
 		
 ErrorHandler: 
-		ErrorMessage("Invalid_string_refer_to_original_code")
+		ErrorMessage("Src.ini“à‚ÌExtDataPath‚Ì’l‚ª•s³‚Å‚·")
 		TerminateSRC()
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'ƒf[ƒ^ƒtƒHƒ‹ƒ_ fname ‚ğŒŸõ
 	Public Function SearchDataFolder(ByRef fname As String) As String
 		Dim fname2 As String
 		Static init_search_data_folder As Boolean
@@ -2722,7 +2609,7 @@ ErrorHandler:
 		Static extdata2_data_dir_exists As Boolean
 		Static src_data_dir_exists As Boolean
 		
-		'Invalid_string_refer_to_original_code
+		'‰‚ß‚ÄÀs‚·‚éÛ‚ÉAŠeƒtƒHƒ‹ƒ_‚ÉDataƒtƒHƒ‹ƒ_‚ª‚ ‚é‚©ƒ`ƒFƒbƒN
 		If Not init_search_data_folder Then
 			'UPGRADE_WARNING: Dir ‚ÉV‚µ‚¢“®ì‚ªw’è‚³‚ê‚Ä‚¢‚Ü‚·B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 			If Len(Dir(ScenarioPath & "Data", FileAttribute.Directory)) > 0 Then
@@ -2749,7 +2636,7 @@ ErrorHandler:
 			init_search_data_folder = True
 		End If
 		
-		'ãƒ•ã‚©ãƒ«ãƒ€ã‚’æ¤œç´¢
+		'ƒtƒHƒ‹ƒ_‚ğŒŸõ
 		fname2 = "Data\" & fname
 		If scenario_data_dir_exists Then
 			SearchDataFolder = ScenarioPath & fname2
@@ -2780,11 +2667,11 @@ ErrorHandler:
 			End If
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'ƒtƒHƒ‹ƒ_‚ªŒ©‚Â‚©‚ç‚È‚©‚Á‚½
 		SearchDataFolder = ""
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'‘‹à‚Ì—Ê‚ğ•ÏX‚·‚é
 	Public Sub IncrMoney(ByVal earnings As Integer)
 		Money = MinLng(Money + earnings, 999999999)
 		Money = MaxLng(Money, 0)

@@ -3,24 +3,24 @@ Option Explicit On
 Module Help
 	
 	' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
+	' –{ƒvƒƒOƒ‰ƒ€‚ÍƒtƒŠ[ƒ\ƒtƒg‚Å‚ ‚èA–³•ÛØ‚Å‚·B
+	' –{ƒvƒƒOƒ‰ƒ€‚ÍGNU General Public License(Ver.3‚Ü‚½‚Í‚»‚êˆÈ~)‚ª’è‚ß‚éğŒ‚Ì‰º‚Å
+	' Ä”Ğ•z‚Ü‚½‚Í‰ü•Ï‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B
 	
-	'Invalid_string_refer_to_original_code
+	'“Áê”\—Í••Ší‘®«‚Ì‰ğà•\¦‚ğs‚¤ƒ‚ƒWƒ…[ƒ‹
 	
 	
-	'Invalid_string_refer_to_original_code
+	'ƒpƒCƒƒbƒg p ‚Ì“Áê”\—Í‚Ì‰ğà‚ğ•\¦
 	Public Sub SkillHelp(ByRef p As Pilot, ByRef sindex As String)
 		Dim stype, sname As String
 		Dim msg As String
 		Dim prev_mode As Boolean
 		
-		'Invalid_string_refer_to_original_code
+		'“Áê”\—Í‚Ì–¼Ì‚ğ’²‚×‚é
 		If IsNumeric(sindex) Then
 			sname = p.SkillName(CShort(sindex))
 		Else
-			'Invalid_string_refer_to_original_code
+			'•t‰Á‚³‚ê‚½ƒpƒCƒƒbƒg—p“Áê”\—Í
 			If InStr(sindex, "Lv") > 0 Then
 				stype = Left(sindex, InStr(sindex, "Lv") - 1)
 			Else
@@ -31,23 +31,23 @@ Module Help
 		
 		msg = SkillHelpMessage(p, sindex)
 		
-		'è§£èª¬ã®è¡¨ç¤º
+		'‰ğà‚Ì•\¦
 		If Len(msg) > 0 Then
 			prev_mode = AutoMessageMode
 			AutoMessageMode = False
 			
 			OpenMessageForm()
 			If AutoMoveCursor Then
-				MoveCursorPos("Invalid_string_refer_to_original_code")
+				MoveCursorPos("ƒƒbƒZ[ƒWƒEƒBƒ“ƒhƒE")
 			End If
-			DisplayMessage("Invalid_string_refer_to_original_code", "<b>" & sname & "</b>;" & msg)
+			DisplayMessage("ƒVƒXƒeƒ€", "<b>" & sname & "</b>;" & msg)
 			CloseMessageForm()
 			
 			AutoMessageMode = prev_mode
 		End If
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'ƒpƒCƒƒbƒg p ‚Ì“Áê”\—Í‚Ì‰ğà
 	Public Function SkillHelpMessage(ByRef p As Pilot, ByRef sindex As String) As String
 		Dim sname, stype, sname0 As String
 		Dim slevel As Double
@@ -58,7 +58,7 @@ Module Help
 		Dim uname, fdata As String
 		Dim i As Short
 		
-		'Invalid_string_refer_to_original_code
+		'“Áê”\—Í‚Ì–¼ÌAƒŒƒxƒ‹Aƒf[ƒ^‚ğ’²‚×‚é
 		With p
 			If IsNumeric(sindex) Then
 				stype = .Skill(CShort(sindex))
@@ -68,7 +68,7 @@ Module Help
 				sname0 = .SkillName0(CShort(sindex))
 				is_level_specified = .IsSkillLevelSpecified(CShort(sindex))
 			Else
-				'Invalid_string_refer_to_original_code
+				'•t‰Á‚³‚ê‚½ƒpƒCƒƒbƒg—p“Áê”\—Í
 				If InStr(sindex, "Lv") > 0 Then
 					stype = Left(sindex, InStr(sindex, "Lv") - 1)
 				Else
@@ -82,180 +82,167 @@ Module Help
 				is_level_specified = .IsSkillLevelSpecified(stype)
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'ƒpƒCƒƒbƒg‚ªæ‚Á‚Ä‚¢‚éƒ†ƒjƒbƒg
 			u = .Unit_Renamed
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			If IsLocalVariableDefined("Invalid_string_refer_to_original_code" & .ID & "]") Then
-				'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg LocalVariableList.Item().StringValue ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				uname = LocalVariableList.Item("Invalid_string_refer_to_original_code" & .ID & "]").StringValue
-				If uname <> "" Then
-					u2 = u
-					u = UList.Item(uname)
+			If u.Name = "ƒXƒe[ƒ^ƒX•\¦—pƒ_ƒ~[ƒ†ƒjƒbƒg" Then
+				If IsLocalVariableDefined("“‹æƒ†ƒjƒbƒg[" & .ID & "]") Then
+					'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg LocalVariableList.Item().StringValue ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					uname = LocalVariableList.Item("“‹æƒ†ƒjƒbƒg[" & .ID & "]").StringValue
+					If uname <> "" Then
+						u2 = u
+						u = UList.Item(uname)
+					End If
 				End If
 			End If
-			'End If
 		End With
 		
 		Select Case stype
-			Case "ã‚ªãƒ¼ãƒ©"
-				If u.FeatureName0("ãƒãƒªã‚¢") = "ã‚ªãƒ¼ãƒ©ãƒãƒªã‚¢" Then
-					msg = "Invalid_string_refer_to_original_code" & u.FeatureName0("ã‚ªãƒ¼ãƒ©ãƒãƒªã‚¢") & "ã®å¼·åº¦ã«" & VB6.Format(CInt(100 * slevel)) & "Invalid_string_refer_to_original_code"
+			Case "ƒI[ƒ‰"
+				If u.FeatureName0("ƒoƒŠƒA") = "ƒI[ƒ‰ƒoƒŠƒA" Then
+					msg = "ƒI[ƒ‰‹ZuƒIv‚ÌUŒ‚—Í‚Æ" & u.FeatureName0("ƒI[ƒ‰ƒoƒŠƒA") & "‚Ì‹­“x‚É" & VB6.Format(CInt(100 * slevel)) & "‚ÌC³‚ğ—^‚¦‚éB"
 				Else
-					msg = "Invalid_string_refer_to_original_code" & VB6.Format(CInt(100 * slevel)) & "Invalid_string_refer_to_original_code"
+					msg = "ƒI[ƒ‰‹ZuƒIv‚ÌUŒ‚—Í‚Ì‹­“x‚É" & VB6.Format(CInt(100 * slevel)) & "‚ÌC³‚ğ—^‚¦‚éB"
 				End If
-				If u.IsFeatureAvailable("ã‚ªãƒ¼ãƒ©å¤‰æ›å™¨") Then
-					msg = msg & "Invalid_string_refer_to_original_code"
-					'Invalid_string_refer_to_original_code_
-					'Invalid_string_refer_to_original_code_
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				If u.IsFeatureAvailable("ƒI[ƒ‰•ÏŠ·Ší") Then
+					msg = msg & "‚Ü‚½A" & Term("‚g‚o", u) & "A" & Term("‚d‚m", u) & "A" & Term("‘•b", u) & "A" & Term("‰^“®«") & "‚ªƒŒƒxƒ‹‚É‡‚í‚¹‚Ä‚»‚ê‚¼‚ê‘‰Á‚·‚éB"
 				End If
 				
-			Case "Invalid_string_refer_to_original_code"
-				msg = VB6.Format(CInt(100 * slevel \ 16)) & "Invalid_string_refer_to_original_code"
+			Case "•ªg"
+				msg = VB6.Format(CInt(100 * slevel \ 16)) & "% ‚ÌŠm—¦‚Å•ªg‚µAUŒ‚‚ğ‰ñ”ğ‚·‚éB"
 				
-			Case "Invalid_string_refer_to_original_code"
-				msg = Term("å‘½ä¸­", u) & "ãƒ»" & Term("å›é¿", u)
+			Case "’´Š´Šo"
+				msg = Term("–½’†", u) & "E" & Term("‰ñ”ğ", u)
 				If slevel > 0 Then
-					msg = msg & "ã« +" & VB6.Format(CInt(2 * slevel + 3)) & "Invalid_string_refer_to_original_code"
+					msg = msg & "‚É +" & VB6.Format(CInt(2 * slevel + 3)) & " ‚ÌC³‚ğ—^‚¦‚éB"
 				Else
-					msg = msg & "Invalid_string_refer_to_original_code"
+					msg = msg & "‚É +0 ‚ÌC³‚ğ—^‚¦‚éB"
 				End If
 				If slevel > 3 Then
-					msg = msg & "Invalid_string_refer_to_original_code" & VB6.Format(CInt(slevel \ 4)) & "Invalid_string_refer_to_original_code"
+					msg = msg & ";v”O—U“±UŒ‚(ƒT)‚ÌË’ö‚ğ" & VB6.Format(CInt(slevel \ 4)) & "‚¾‚¯‰„’·‚·‚éB"
 				End If
 				
-			Case "Invalid_string_refer_to_original_code"
-				msg = Term("å‘½ä¸­", u) & "ãƒ»" & Term("å›é¿", u)
+			Case "’mŠo‹­‰»"
+				msg = Term("–½’†", u) & "E" & Term("‰ñ”ğ", u)
 				If slevel > 0 Then
-					msg = msg & "ã« +" & VB6.Format(CInt(2 * slevel + 3)) & "Invalid_string_refer_to_original_code"
+					msg = msg & "‚É +" & VB6.Format(CInt(2 * slevel + 3)) & " ‚ÌC³‚ğ—^‚¦‚éB;"
 				Else
-					msg = msg & "Invalid_string_refer_to_original_code"
+					msg = msg & "‚É +0 ‚ÌC³‚ğ—^‚¦‚éB;"
 				End If
 				If slevel > 3 Then
-					msg = msg & "Invalid_string_refer_to_original_code" & VB6.Format(CInt(slevel \ 4)) & "Invalid_string_refer_to_original_code"
+					msg = msg & "v”O—U“±UŒ‚(ƒT)‚ÌË’ö‚ğ" & VB6.Format(CInt(slevel \ 4)) & "‚¾‚¯‰„’·‚·‚éB"
 				End If
-				msg = msg & "ç²¾ç¥ä¸å®‰å®šã«ã‚ˆã‚Š" & Term("Invalid_string_refer_to_original_code", u) & "æ¶ˆè²»é‡ãŒ20%å¢—åŠ ã™ã‚‹"
+				msg = msg & "¸_•sˆÀ’è‚É‚æ‚è" & Term("‚r‚o", u) & "Á”ï—Ê‚ª20%‘‰Á‚·‚é"
 				
-			Case "Invalid_string_refer_to_original_code"
-				msg = Term("å‘½ä¸­", u) & "ãƒ»" & Term("å›é¿", u)
+			Case "”O—Í"
+				msg = Term("–½’†", u) & "E" & Term("‰ñ”ğ", u)
 				If slevel > 0 Then
-					msg = msg & "ã« +" & VB6.Format(CInt(2 * slevel + 3)) & "Invalid_string_refer_to_original_code"
+					msg = msg & "‚É +" & VB6.Format(CInt(2 * slevel + 3)) & " ‚ÌC³‚ğ—^‚¦‚éB"
 				Else
-					msg = msg & "Invalid_string_refer_to_original_code"
+					msg = msg & "‚É +0 ‚ÌC³‚ğ—^‚¦‚éB"
 				End If
 				
-			Case "Invalid_string_refer_to_original_code"
-				msg = "Invalid_string_refer_to_original_code" & VB6.Format(CInt(100 * slevel \ 16)) & "Invalid_string_refer_to_original_code"
+			Case "Ø‚è•¥‚¢"
+				msg = "Ši“¬•Ší(•)A“Ëi‹Z(“Ë)AÀ’eUŒ‚(À)‚É‚æ‚éUŒ‚‚ğ " & VB6.Format(CInt(100 * slevel \ 16)) & "% ‚ÌŠm—¦‚ÅØ‚è•¥‚Á‚Ä‰ñ”ğ‚·‚éB"
 				
-			Case "è¿æ’ƒ"
-				msg = "Invalid_string_refer_to_original_code" & VB6.Format(CInt(100 * slevel \ 16)) & "Invalid_string_refer_to_original_code"
+			Case "Œ}Œ‚"
+				msg = "À’eUŒ‚(À)‚É‚æ‚éUŒ‚‚ğ " & VB6.Format(CInt(100 * slevel \ 16)) & "% ‚ÌŠm—¦‚ÅŒ}Œ‚‚·‚éB"
 				
-			Case "Invalid_string_refer_to_original_code"
-				msg = Term("å‘½ä¸­", u) & "ãƒ»" & Term("å›é¿", u)
-				msg = msg & "Invalid_string_refer_to_original_code"
+			Case "ƒTƒCƒ{[ƒO"
+				msg = Term("–½’†", u) & "E" & Term("‰ñ”ğ", u)
+				msg = msg & "‚É +5 ‚ÌC³‚ğ—^‚¦‚éB"
 				
-			Case "Invalid_string_refer_to_original_code"
-				If u.IsFeatureAvailable("ç›¾") Then
-					msg = "Invalid_string_refer_to_original_code"
-					VB6.Format((CInt(100 * slevel + 400)) & "Invalid_string_refer_to_original_code")
+			Case "‚r–hŒä"
+				If u.IsFeatureAvailable("‚") Then
+					msg = "ƒV[ƒ‹ƒh–hŒä‚ğs‚¢Aƒ_ƒ[ƒW‚ğ" & VB6.Format(CInt(100 * slevel + 400)) & "Œ¸­‚³‚¹‚éB"
 				Else
-					msg = VB6.Format(CInt(100 * slevel \ 16)) & "Invalid_string_refer_to_original_code"
+					msg = VB6.Format(CInt(100 * slevel \ 16)) & "% ‚ÌŠm—¦‚ÅƒV[ƒ‹ƒh–hŒä‚ğs‚¤B"
 				End If
 				
-			Case "Invalid_string_refer_to_original_code"
-				msg = "æ•µã‚’å€’ã—ãŸæ™‚ã«å¾—ã‚‰ã‚Œã‚‹" & Term("Invalid_string_refer_to_original_code")
+			Case "‘‹àŠl“¾"
+				msg = "“G‚ğ“|‚µ‚½‚É“¾‚ç‚ê‚é" & Term("‘‹à")
 				If Not is_level_specified Then
-					msg = msg & "Invalid_string_refer_to_original_code"
+					msg = msg & "‚ª 50% ‘‰Á‚·‚éB"
 				ElseIf slevel >= 0 Then 
-					msg = msg & "Invalid_string_refer_to_original_code" & VB6.Format(10 * slevel) & "Invalid_string_refer_to_original_code"
+					msg = msg & "‚ª " & VB6.Format(10 * slevel) & "% ‘‰Á‚·‚éB"
 				Else
-					msg = msg & "Invalid_string_refer_to_original_code" & VB6.Format(-10 * slevel) & "Invalid_string_refer_to_original_code"
+					msg = msg & "‚ª " & VB6.Format(-10 * slevel) & "% Œ¸­‚·‚éB"
 				End If
 				
-			Case "Invalid_string_refer_to_original_code"
-				msg = "Invalid_string_refer_to_original_code" & p.SkillName0("å†ç”Ÿ") & "Invalid_string_refer_to_original_code"
+			Case "ò‰»"
+				msg = "ò‰»‹Z(ò)‚ğg‚¤‚±‚Æ‚Å“G‚Ì" & p.SkillName0("Ä¶") & "”\—Í‚ğ–³Œø‰»B"
 				
-			Case "Invalid_string_refer_to_original_code"
+			Case "“¯’²—¦"
 				If u.IsHero Then
-					msg = "åŒèª¿ã«ã‚ˆã‚Š"
+					msg = "“¯’²‚É‚æ‚è"
 				Else
-					msg = "Invalid_string_refer_to_original_code"
+					msg = "‹@‘Ì‚É“¯’²‚µ"
 				End If
-				msg = msg & Term("é‹å‹•æ€§", u) & "Invalid_string_refer_to_original_code"
+				msg = msg & Term("‰^“®«", u) & "EUŒ‚—Í‚ğ‹­‰»‚·‚éB"
 				
-			Case "Invalid_string_refer_to_original_code"
+			Case "“¯’²—¦¬’·"
 				If slevel >= 0 Then
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					msg = p.SkillName0("“¯’²—¦") & "‚Ì¬’·—¦‚ª " & VB6.Format(10 * slevel) & "% ‘‰Á‚·‚éB"
 				Else
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					msg = p.SkillName0("“¯’²—¦") & "‚Ì¬’·—¦‚ª " & VB6.Format(-10 * slevel) & "% Œ¸­‚·‚éB"
 				End If
 				
-			Case "éœŠåŠ›"
-				msg = "ç¾åœ¨ã®" & sname0 & "å€¤ã«ã‚ã‚ã›ã¦" & Term("Invalid_string_refer_to_original_code", u) & "ãƒ»" & Term("Invalid_string_refer_to_original_code", u) & "ãƒ»" & Term("Invalid_string_refer_to_original_code", u) & "ãƒ»" & Term("ç§»å‹•åŠ›", u) & "Invalid_string_refer_to_original_code"
+			Case "—ì—Í"
+				msg = "Œ»İ‚Ì" & sname0 & "’l‚É‚ ‚í‚¹‚Ä" & Term("‚g‚o", u) & "E" & Term("‚d‚m", u) & "E" & Term("‘•b", u) & "E" & Term("ˆÚ“®—Í", u) & "‚ğ‹­‰»‚·‚éB"
 				
-			Case "éœŠåŠ›æˆé•·"
+			Case "—ì—Í¬’·"
 				If slevel >= 0 Then
-					msg = p.SkillName0("éœŠåŠ›") & "Invalid_string_refer_to_original_code" & VB6.Format(10 * slevel) & "Invalid_string_refer_to_original_code"
+					msg = p.SkillName0("—ì—Í") & "‚Ì¬’·—¦‚ª " & VB6.Format(10 * slevel) & "% ‘‰Á‚·‚éB"
 				Else
-					msg = p.SkillName0("éœŠåŠ›") & "Invalid_string_refer_to_original_code" & VB6.Format(-10 * slevel) & "Invalid_string_refer_to_original_code"
+					msg = p.SkillName0("—ì—Í") & "‚Ì¬’·—¦‚ª " & VB6.Format(-10 * slevel) & "% Œ¸­‚·‚éB"
 				End If
 				
-			Case "åº•åŠ›"
-				msg = Term("Invalid_string_refer_to_original_code", u) & "ãŒæœ€å¤§" & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code" & "Invalid_string_refer_to_original_code"
+			Case "’ê—Í"
+				msg = Term("‚g‚o", u) & "‚ªÅ‘å" & Term("‚g‚o", u) & "‚Ì1/4ˆÈ‰º‚Ì‚É”­“®B;" & "–½’†•‰ñ”ğ +30%AƒNƒŠƒeƒBƒJƒ‹”­¶—¦ +50%B"
 				
-			Case "Invalid_string_refer_to_original_code"
-				msg = Term("Invalid_string_refer_to_original_code", u) & "ãŒæœ€å¤§" & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code" & "Invalid_string_refer_to_original_code"
+			Case "’´’ê—Í"
+				msg = Term("‚g‚o", u) & "‚ªÅ‘å" & Term("‚g‚o", u) & "‚Ì1/4ˆÈ‰º‚Ì‚É”­“®B;" & "–½’†•‰ñ”ğ +50%AƒNƒŠƒeƒBƒJƒ‹”­¶—¦ +50%B"
 				
-			Case "è¦šæ‚Ÿ"
-				msg = Term("Invalid_string_refer_to_original_code", u) & "ãŒæœ€å¤§" & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				msg = msg & "Invalid_string_refer_to_original_code"
-				msg = msg & "Invalid_string_refer_to_original_code"
-				'End If
+			Case "ŠoŒå"
+				msg = Term("‚g‚o", u) & "‚ªÅ‘å" & Term("‚g‚o", u) & "‚Ì1/4ˆÈ‰º‚Ì‚É”­“®B;"
+				If IsOptionDefined("ƒ_ƒ[ƒW”{—¦’á‰º") Then
+					msg = msg & "UŒ‚—Í10%ƒAƒbƒvAƒNƒŠƒeƒBƒJƒ‹”­¶—¦ +50%B"
+				Else
+					msg = msg & "UŒ‚—Í1.2”{AƒNƒŠƒeƒBƒJƒ‹”­¶—¦ +50%B"
+				End If
 				
-			Case "Invalid_string_refer_to_original_code"
-				msg = Term("Invalid_string_refer_to_original_code", u) & "ãŒæœ€å¤§" & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code" & "Invalid_string_refer_to_original_code"
+			Case "•s‹ü"
+				msg = Term("‚g‚o", u) & "‚ªÅ‘å" & Term("‚g‚o", u) & "‚Ì1/2ˆÈ‰º‚Ì‚É”­“®B;" & "‘¹—¦‚É‰‚¶‚Ä–hŒä—Í‚ª‘‰Á‚·‚éB"
 				
-			Case "ç´ è³ª"
+			Case "‘f¿"
 				If Not is_level_specified Then
-					msg = "Invalid_string_refer_to_original_code"
+					msg = "“üè‚·‚éŒoŒ±’l‚ª50%‘‰Á‚·‚éB"
 				ElseIf slevel >= 0 Then 
-					msg = "Invalid_string_refer_to_original_code" & VB6.Format(10 * slevel) & "Invalid_string_refer_to_original_code"
+					msg = "“üè‚·‚éŒoŒ±’l‚ª " & VB6.Format(10 * slevel) & "% ‘‰Á‚·‚éB"
 				Else
-					msg = "Invalid_string_refer_to_original_code" & VB6.Format(-10 * slevel) & "Invalid_string_refer_to_original_code"
+					msg = "“üè‚·‚éŒoŒ±’l‚ª " & VB6.Format(-10 * slevel) & "% Œ¸­‚·‚éB"
 				End If
 				
-			Case "Invalid_string_refer_to_original_code"
-				msg = "Invalid_string_refer_to_original_code"
+			Case "’x¬’·"
+				msg = "“üè‚·‚éŒoŒ±’l‚ª”¼Œ¸‚·‚éB"
 				
-			Case "å†ç”Ÿ", "Invalid_string_refer_to_original_code"
-				msg = Term("Invalid_string_refer_to_original_code", u) & "ãŒï¼ã«ãªã£ãŸæ™‚ã«" & VB6.Format(CInt(100 * slevel \ 16)) & "Invalid_string_refer_to_original_code"
+			Case "Ä¶", "‰p—Y"
+				msg = Term("‚g‚o", u) & "‚ª‚O‚É‚È‚Á‚½‚É" & VB6.Format(CInt(100 * slevel \ 16)) & "%‚ÌŠm—¦‚Å•œŠˆ‚·‚éB"
 				
-			Case "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code_
-				'Invalid_string_refer_to_original_code_
-				'Invalid_string_refer_to_original_code_
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			Case "’´”\—Í"
+				msg = Term("–½’†", u) & "E" & Term("‰ñ”ğ", u) & "E" & Term("‚b‚s—¦", u) & "‚É‚»‚ê‚¼‚ê +5B;" & "ƒTƒCƒLƒbƒNUŒ‚(’´)‚ÌUŒ‚—Í‚É +" & VB6.Format(CInt(100 * slevel)) & "B;" & Term("‚r‚o", u) & "Á”ï—Ê‚ğ20%íŒ¸‚·‚éB"
 				
-			Case "æ‚Ÿã‚Š"
-				msg = Term("å‘½ä¸­", u) & "ãƒ»" & Term("å›é¿", u) & "Invalid_string_refer_to_original_code"
+			Case "Œå‚è"
+				msg = Term("–½’†", u) & "E" & Term("‰ñ”ğ", u) & "‚É +10 ‚ÌC³‚ğ—^‚¦‚éB"
 				
-			Case "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			Case "’´”½‰"
+				msg = Term("–½’†", u) & "E" & Term("‰ñ”ğ", u) & "E" & Term("‚b‚s—¦", u)
 				If slevel >= 0 Then
-					msg = msg & "ã«ãã‚Œãã‚Œ +" & VB6.Format(CInt(2 * slevel)) & "Invalid_string_refer_to_original_code"
+					msg = msg & "‚É‚»‚ê‚¼‚ê +" & VB6.Format(CInt(2 * slevel)) & " ‚ÌC³‚ğ—^‚¦‚éB"
 				Else
-					msg = msg & "ã«ãã‚Œãã‚Œ " & VB6.Format(CInt(2 * slevel)) & "Invalid_string_refer_to_original_code"
+					msg = msg & "‚É‚»‚ê‚¼‚ê " & VB6.Format(CInt(2 * slevel)) & " ‚ÌC³‚ğ—^‚¦‚éB"
 				End If
 				
-			Case "Invalid_string_refer_to_original_code"
+			Case "p"
 				Select Case slevel
 					Case 1
 						i = 0
@@ -280,12 +267,9 @@ Module Help
 					Case Else
 						i = 0
 				End Select
-				msg = "Invalid_string_refer_to_original_code" & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code_
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				msg = "p‘®«‚ğ‚Â•‘•E" & Term("ƒAƒrƒŠƒeƒB", u) & "‹y‚Ñ•K—v‹Z”\‚ª" & sname0 & "‚Ì•‘•E" & Term("ƒAƒrƒŠƒeƒB", u) & "‚ÌÁ”ï" & Term("‚d‚m", u) & "‚ğ" & VB6.Format(i) & "%Œ¸­‚³‚¹‚éB"
 				
-			Case "æŠ€"
+			Case "‹Z"
 				Select Case slevel
 					Case 1
 						i = 0
@@ -310,400 +294,342 @@ Module Help
 					Case Else
 						i = 0
 				End Select
-				msg = "Invalid_string_refer_to_original_code" & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code_
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				msg = "‹Z‘®«‚ğ‚Â•‘•E" & Term("ƒAƒrƒŠƒeƒB", u) & "‹y‚Ñ•K—v‹Z”\‚ª" & sname0 & "‚Ì•‘•E" & Term("ƒAƒrƒŠƒeƒB", u) & "‚ÌÁ”ï" & Term("‚d‚m", u) & "‚ğ" & VB6.Format(i) & "%Œ¸­‚³‚¹‚éB"
 				
-			Case "Invalid_string_refer_to_original_code"
-				msg = Term("ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼", u) & "ã®" & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
+			Case "W’†—Í"
+				msg = Term("ƒXƒyƒVƒƒƒ‹ƒpƒ[", u) & "‚Ì" & Term("‚r‚o", u) & "Á”ï—Ê‚ªŒ³‚Ì80%‚ÉŒ¸­‚·‚éB"
 				
-			Case "é—˜äº‰æœ¬èƒ½"
+			Case "“¬‘ˆ–{”\"
 				If p.MinMorale > 100 Then
-					If Not p.IsSkillLevelSpecified("é—˜äº‰æœ¬èƒ½") Then
-						msg = "Invalid_string_refer_to_original_code" & Term("æ°—åŠ›", u) & "Invalid_string_refer_to_original_code"
-						VB6.Format((p.MinMorale + 5 * slevel) & "Invalid_string_refer_to_original_code")
+					If Not p.IsSkillLevelSpecified("“¬‘ˆ–{”\") Then
+						msg = "oŒ‚‚Ì" & Term("‹C—Í", u) & "‚ª" & VB6.Format(p.MinMorale + 5 * slevel) & "‚É‘‰Á‚·‚éB"
 					ElseIf slevel >= 0 Then 
-						msg = "Invalid_string_refer_to_original_code" & Term("æ°—åŠ›", u) & "Invalid_string_refer_to_original_code"
-						VB6.Format((p.MinMorale + 5 * slevel) & "Invalid_string_refer_to_original_code")
+						msg = "oŒ‚‚Ì" & Term("‹C—Í", u) & "‚ª" & VB6.Format(p.MinMorale + 5 * slevel) & "‚É‘‰Á‚·‚éB"
 					Else
-						msg = "Invalid_string_refer_to_original_code" & Term("æ°—åŠ›", u) & "Invalid_string_refer_to_original_code"
-						VB6.Format((p.MinMorale + 5 * slevel) & "Invalid_string_refer_to_original_code")
+						msg = "oŒ‚‚Ì" & Term("‹C—Í", u) & "‚ª" & VB6.Format(p.MinMorale + 5 * slevel) & "‚ÉŒ¸­‚·‚éB"
 					End If
 				Else
-					If Not p.IsSkillLevelSpecified("é—˜äº‰æœ¬èƒ½") Then
-						msg = "Invalid_string_refer_to_original_code" & Term("æ°—åŠ›", u) & "Invalid_string_refer_to_original_code"
+					If Not p.IsSkillLevelSpecified("“¬‘ˆ–{”\") Then
+						msg = "oŒ‚‚Ì" & Term("‹C—Í", u) & "‚ª105‚É‘‰Á‚·‚éB"
 					ElseIf slevel >= 0 Then 
-						msg = "Invalid_string_refer_to_original_code" & Term("æ°—åŠ›", u) & "Invalid_string_refer_to_original_code"
-						VB6.Format((100 + 5 * slevel) & "Invalid_string_refer_to_original_code")
+						msg = "oŒ‚‚Ì" & Term("‹C—Í", u) & "‚ª" & VB6.Format(100 + 5 * slevel) & "‚É‘‰Á‚·‚éB"
 					Else
-						msg = "Invalid_string_refer_to_original_code" & Term("æ°—åŠ›", u) & "Invalid_string_refer_to_original_code"
-						VB6.Format((100 + 5 * slevel) & "Invalid_string_refer_to_original_code")
+						msg = "oŒ‚‚Ì" & Term("‹C—Í", u) & "‚ª" & VB6.Format(100 + 5 * slevel) & "‚ÉŒ¸­‚·‚éB"
 					End If
 				End If
 				
-			Case "æ½œåœ¨åŠ›é–‹æ”¾"
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				msg = Term("æ°—åŠ›", u) & "Invalid_string_refer_to_original_code"
-				msg = Term("æ°—åŠ›", u) & "Invalid_string_refer_to_original_code"
-				'End If
-				
-			Case "Invalid_string_refer_to_original_code"
-				msg = "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code_
-				'Term("å‘½ä¸­", u) & "ãƒ»" & Term("å›é¿", u)
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				If slevel >= 0 Then
-					msg = msg & "ã« +" & VB6.Format(CInt(5 * slevel)) & "Invalid_string_refer_to_original_code"
+			Case "öİ—ÍŠJ•ú"
+				If IsOptionDefined("ƒ_ƒ[ƒW”{—¦’á‰º") Then
+					msg = Term("‹C—Í", u) & "130ˆÈã‚Å”­“®‚µAƒ_ƒ[ƒW‚ğ 20% ‘‰Á‚³‚¹‚éB"
 				Else
-					msg = msg & "ã« " & VB6.Format(CInt(5 * slevel)) & "Invalid_string_refer_to_original_code"
+					msg = Term("‹C—Í", u) & "130ˆÈã‚Å”­“®‚µAƒ_ƒ[ƒW‚ğ 25% ‘‰Á‚³‚¹‚éB"
 				End If
 				
-			Case "Invalid_string_refer_to_original_code"
-				If InStr(sname, "éšç´šLv") = 0 Then
-					msg = "éšç´šãƒ¬ãƒ™ãƒ«" & StrConv(VB6.Format(CInt(slevel)), VbStrConv.Wide) & "Invalid_string_refer_to_original_code"
-				End If
-				msg = msg & "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				
-			Case "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			Case "wŠö"
+				msg = "”¼Œa" & StrConv(VB6.Format(p.CommandRange), VbStrConv.Wide) & "ƒ}ƒXˆÈ“à‚É‚¢‚é–¡•ûƒUƒRE”Ä—p‹y‚ÑŠK‹‰Š—LƒpƒCƒƒbƒg‚Ì" & Term("–½’†", u) & "E" & Term("‰ñ”ğ", u)
 				If slevel >= 0 Then
-					msg = msg & "ã« +" & VB6.Format(CInt(2 * slevel)) & "Invalid_string_refer_to_original_code"
+					msg = msg & "‚É +" & VB6.Format(CInt(5 * slevel)) & "B"
 				Else
-					msg = msg & "ã« " & VB6.Format(CInt(2 * slevel)) & "Invalid_string_refer_to_original_code"
+					msg = msg & "‚É " & VB6.Format(CInt(5 * slevel)) & "B"
 				End If
 				
-			Case "Invalid_string_refer_to_original_code"
-				msg = "Invalid_string_refer_to_original_code" & Term("Invalid_string_refer_to_original_code", u)
+			Case "ŠK‹‰"
+				If InStr(sname, "ŠK‹‰Lv") = 0 Then
+					msg = "ŠK‹‰ƒŒƒxƒ‹" & StrConv(VB6.Format(CInt(slevel)), VbStrConv.Wide) & "‚É‘Š“–‚·‚éB;"
+				End If
+				msg = msg & "”¼Œa" & StrConv(VB6.Format(p.CommandRange), VbStrConv.Wide) & "ƒ}ƒXˆÈ“à‚É‚¢‚éƒUƒR‹y‚ÑŠK‹‰Š—LƒpƒCƒƒbƒg‚ÉwŠöŒø‰Ê‚ğ—^‚¦‚éB"
+				
+			Case "Ši“¬ƒTƒ|[ƒg"
+				msg = "©•ª‚ªƒTƒ|[ƒgƒpƒCƒƒbƒg‚Ì‚ÉƒƒCƒ“ƒpƒCƒƒbƒg‚Ì" & Term("Ši“¬", u)
 				If slevel >= 0 Then
-					msg = msg & "ã« +" & VB6.Format(CInt(2 * slevel)) & "Invalid_string_refer_to_original_code"
+					msg = msg & "‚É +" & VB6.Format(CInt(2 * slevel)) & "B"
 				Else
-					msg = msg & "ã« " & VB6.Format(CInt(2 * slevel)) & "Invalid_string_refer_to_original_code"
+					msg = msg & "‚É " & VB6.Format(CInt(2 * slevel)) & "B"
 				End If
 				
-			Case "Invalid_string_refer_to_original_code"
-				msg = "Invalid_string_refer_to_original_code" & Term("é­”åŠ›", u)
+			Case "ËŒ‚ƒTƒ|[ƒg"
+				msg = "©•ª‚ªƒTƒ|[ƒgƒpƒCƒƒbƒg‚Ì‚ÉƒƒCƒ“ƒpƒCƒƒbƒg‚Ì" & Term("ËŒ‚", u)
 				If slevel >= 0 Then
-					msg = msg & "ã« +" & VB6.Format(CInt(2 * slevel)) & "Invalid_string_refer_to_original_code"
+					msg = msg & "‚É +" & VB6.Format(CInt(2 * slevel)) & "B"
 				Else
-					msg = msg & "ã« " & VB6.Format(CInt(2 * slevel)) & "Invalid_string_refer_to_original_code"
+					msg = msg & "‚É " & VB6.Format(CInt(2 * slevel)) & "B"
 				End If
 				
-			Case "Invalid_string_refer_to_original_code"
-				msg = "Invalid_string_refer_to_original_code" & Term("å‘½ä¸­", u)
+			Case "–‚—ÍƒTƒ|[ƒg"
+				msg = "©•ª‚ªƒTƒ|[ƒgƒpƒCƒƒbƒg‚Ì‚ÉƒƒCƒ“ƒpƒCƒƒbƒg‚Ì" & Term("–‚—Í", u)
 				If slevel >= 0 Then
-					msg = msg & "ã« +" & VB6.Format(CInt(2 * slevel)) & "Invalid_string_refer_to_original_code"
+					msg = msg & "‚É +" & VB6.Format(CInt(2 * slevel)) & "B"
 				Else
-					msg = msg & "ã« " & VB6.Format(CInt(2 * slevel)) & "Invalid_string_refer_to_original_code"
+					msg = msg & "‚É " & VB6.Format(CInt(2 * slevel)) & "B"
 				End If
 				
-			Case "Invalid_string_refer_to_original_code"
-				msg = "Invalid_string_refer_to_original_code" & Term("å›é¿", u)
+			Case "–½’†ƒTƒ|[ƒg"
+				msg = "©•ª‚ªƒTƒ|[ƒgƒpƒCƒƒbƒg‚Ì‚ÉƒƒCƒ“ƒpƒCƒƒbƒg‚Ì" & Term("–½’†", u)
 				If slevel >= 0 Then
-					msg = msg & "ã« +" & VB6.Format(CInt(2 * slevel)) & "Invalid_string_refer_to_original_code"
+					msg = msg & "‚É +" & VB6.Format(CInt(2 * slevel)) & "B"
 				Else
-					msg = msg & "ã« " & VB6.Format(CInt(2 * slevel)) & "Invalid_string_refer_to_original_code"
+					msg = msg & "‚É " & VB6.Format(CInt(2 * slevel)) & "B"
 				End If
 				
-			Case "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			Case "‰ñ”ğƒTƒ|[ƒg"
+				msg = "©•ª‚ªƒTƒ|[ƒgƒpƒCƒƒbƒg‚Ì‚ÉƒƒCƒ“ƒpƒCƒƒbƒg‚Ì" & Term("‰ñ”ğ", u)
 				If slevel >= 0 Then
-					msg = msg & "ã« +" & VB6.Format(CInt(2 * slevel)) & "Invalid_string_refer_to_original_code"
+					msg = msg & "‚É +" & VB6.Format(CInt(2 * slevel)) & "B"
 				Else
-					msg = msg & "ã« " & VB6.Format(CInt(2 * slevel)) & "Invalid_string_refer_to_original_code"
+					msg = msg & "‚É " & VB6.Format(CInt(2 * slevel)) & "B"
 				End If
 				
-			Case "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			Case "‹Z—ÊƒTƒ|[ƒg"
+				msg = "©•ª‚ªƒTƒ|[ƒgƒpƒCƒƒbƒg‚Ì‚ÉƒƒCƒ“ƒpƒCƒƒbƒg‚Ì" & Term("‹Z—Ê", u)
 				If slevel >= 0 Then
-					msg = msg & "ã« +" & VB6.Format(CInt(2 * slevel)) & "Invalid_string_refer_to_original_code"
+					msg = msg & "‚É +" & VB6.Format(CInt(2 * slevel)) & "B"
 				Else
-					msg = msg & "ã« " & VB6.Format(CInt(2 * slevel)) & "Invalid_string_refer_to_original_code"
+					msg = msg & "‚É " & VB6.Format(CInt(2 * slevel)) & "B"
 				End If
 				
-			Case "Invalid_string_refer_to_original_code"
-				msg = "Invalid_string_refer_to_original_code" & Term("å‘½ä¸­", u) & "ãƒ»" & Term("å›é¿", u)
+			Case "”½‰ƒTƒ|[ƒg"
+				msg = "©•ª‚ªƒTƒ|[ƒgƒpƒCƒƒbƒg‚Ì‚ÉƒƒCƒ“ƒpƒCƒƒbƒg‚Ì" & Term("”½‰", u)
 				If slevel >= 0 Then
-					msg = msg & "ã« +" & VB6.Format(CInt(3 * slevel)) & "Invalid_string_refer_to_original_code"
+					msg = msg & "‚É +" & VB6.Format(CInt(2 * slevel)) & "B"
 				Else
-					msg = msg & "ã« " & VB6.Format(CInt(3 * slevel)) & "Invalid_string_refer_to_original_code"
+					msg = msg & "‚É " & VB6.Format(CInt(2 * slevel)) & "B"
 				End If
 				
-			Case "Invalid_string_refer_to_original_code"
-				msg = "Invalid_string_refer_to_original_code" & Term("å‘½ä¸­", u) & "ãƒ»" & Term("å›é¿", u)
+			Case "ƒTƒ|[ƒg"
+				msg = "©•ª‚ªƒTƒ|[ƒgƒpƒCƒƒbƒg‚Ì‚ÉƒƒCƒ“ƒpƒCƒƒbƒg‚Ì" & Term("–½’†", u) & "E" & Term("‰ñ”ğ", u)
 				If slevel >= 0 Then
-					msg = msg & "ã« +" & VB6.Format(CInt(5 * slevel)) & "Invalid_string_refer_to_original_code"
+					msg = msg & "‚É +" & VB6.Format(CInt(3 * slevel)) & "B"
 				Else
-					msg = msg & "ã« " & VB6.Format(CInt(5 * slevel)) & "Invalid_string_refer_to_original_code"
+					msg = msg & "‚É " & VB6.Format(CInt(3 * slevel)) & "B"
 				End If
 				
-			Case "æ´è­·"
-				msg = "Invalid_string_refer_to_original_code" & "Invalid_string_refer_to_original_code" & VB6.Format(CInt(slevel)) & "Invalid_string_refer_to_original_code"
+			Case "LˆæƒTƒ|[ƒg"
+				msg = "”¼Œa‚Qƒ}ƒXˆÈ“à‚É‚¢‚é–¡•ûƒpƒCƒƒbƒg‚Ì" & Term("–½’†", u) & "E" & Term("‰ñ”ğ", u)
+				If slevel >= 0 Then
+					msg = msg & "‚É +" & VB6.Format(CInt(5 * slevel)) & "B"
+				Else
+					msg = msg & "‚É " & VB6.Format(CInt(5 * slevel)) & "B"
+				End If
 				
-			Case "Invalid_string_refer_to_original_code"
-				msg = "Invalid_string_refer_to_original_code" & VB6.Format(CInt(slevel)) & "Invalid_string_refer_to_original_code"
+			Case "‰‡Œì"
+				msg = "—×Ú‚·‚éƒ†ƒjƒbƒg‚ÉƒTƒ|[ƒgƒAƒ^ƒbƒN‚ÆƒTƒ|[ƒgƒK[ƒh‚ğ" & "‚Pƒ^[ƒ“‚É‚»‚ê‚¼‚ê" & VB6.Format(CInt(slevel)) & "‰ñs‚¤B"
 				
-			Case "æ´è­·é˜²å¾¡"
-				msg = "Invalid_string_refer_to_original_code" & VB6.Format(CInt(slevel)) & "Invalid_string_refer_to_original_code"
+			Case "‰‡ŒìUŒ‚"
+				msg = "—×Ú‚·‚éƒ†ƒjƒbƒg‚ÉƒTƒ|[ƒgƒAƒ^ƒbƒN‚ğ‚Pƒ^[ƒ“‚É" & VB6.Format(CInt(slevel)) & "‰ñs‚¤B"
 				
-			Case "Invalid_string_refer_to_original_code"
-				msg = "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code_
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			Case "‰‡Œì–hŒä"
+				msg = "—×Ú‚·‚éƒ†ƒjƒbƒg‚ÉƒTƒ|[ƒgƒK[ƒh‚ğ‚Pƒ^[ƒ“‚É" & VB6.Format(CInt(slevel)) & "‰ñs‚¤B"
 				
-			Case "Invalid_string_refer_to_original_code"
-				msg = sdata & "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			Case "“—¦"
+				msg = "©•ª‚©‚çUŒ‚‚ğ‚©‚¯‚½ê‡A" & "ƒTƒ|[ƒgƒAƒ^ƒbƒN‚ª“¯‰‡ŒìUŒ‚‚É•ÏX‚³‚ê‚éB;" & "i‚Pƒ^[ƒ“‚É " & VB6.Format(CInt(slevel)) & "‰ñj"
 				
-			Case "ã‚«ã‚¦ãƒ³ã‚¿ãƒ¼"
-				msg = "Invalid_string_refer_to_original_code" & VB6.Format(CInt(slevel)) & "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			Case "ƒ`[ƒ€"
+				msg = sdata & "‚ÉŠ‘®‚·‚éB" & "“¯‚¶" & sdata & "‚Ìƒ†ƒjƒbƒg‚É‘Î‚µ‚Ä‚Ì‚İ‰‡Œì‚âwŠö‚ğs‚¤B"
 				
-			Case "Invalid_string_refer_to_original_code"
+			Case "ƒJƒEƒ“ƒ^["
+				msg = "‚Pƒ^[ƒ“‚É " & VB6.Format(CInt(slevel)) & "‰ñ" & "”½Œ‚‚ªƒJƒEƒ“ƒ^[UŒ‚‚É‚È‚èA‘Šè‚ÌUŒ‚‚Éæ§‚µ‚Ä”½Œ‚‚ğs‚¤B"
+				
+			Case "æè•KŸ"
 				If LLength(sdata) = 2 Then
-					msg = "Invalid_string_refer_to_original_code" & Term("æ°—åŠ›", u) & "Invalid_string_refer_to_original_code"
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					msg = "ƒpƒCƒƒbƒg‚Ì" & Term("‹C—Í", u) & "‚ª" & LIndex(sdata, 2) & "ˆÈã‚Å”­“®B"
 				Else
-					msg = "Invalid_string_refer_to_original_code" & Term("æ°—åŠ›", u) & "Invalid_string_refer_to_original_code"
+					msg = "ƒpƒCƒƒbƒg‚Ì" & Term("‹C—Í", u) & "‚ª120ˆÈã‚Å”­“®B"
 				End If
-				msg = msg & "Invalid_string_refer_to_original_code"
+				msg = msg & "”½Œ‚‚ª•K‚¸ƒJƒEƒ“ƒ^[UŒ‚‚É‚È‚èA‘Šè‚ÌUŒ‚‚Éæ§‚µ‚Ä”½Œ‚‚ğs‚¤B"
 				
-			Case "å…ˆèª­ã¿"
-				msg = VB6.Format(CInt(100 * slevel \ 16)) & "Invalid_string_refer_to_original_code" & "Invalid_string_refer_to_original_code"
+			Case "æ“Ç‚İ"
+				msg = VB6.Format(CInt(100 * slevel \ 16)) & "%‚ÌŠm—¦‚Å" & "”½Œ‚‚ªƒJƒEƒ“ƒ^[UŒ‚‚É‚È‚èA‘Šè‚ÌUŒ‚‚Éæ§‚µ‚Ä”½Œ‚‚ğs‚¤B"
 				
-			Case "Invalid_string_refer_to_original_code"
-				msg = "Invalid_string_refer_to_original_code" & VB6.Format(CInt(100 * slevel \ 16)) & "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			Case "ÄUŒ‚"
+				msg = "©•ª‚ÌUŒ‚‚Ì’¼Œã‚É " & VB6.Format(CInt(100 * slevel \ 16)) & "% ‚ÌŠm—¦‚ÅÄUŒ‚‚ğs‚¤B" & "‚½‚¾‚µƒpƒCƒƒbƒg‚Ì" & Term("”½‰", u) & "‚ª‘Šè‚ğ‰º‰ñ‚éê‡AŠm—¦‚Í”¼Œ¸B"
 				
-			Case "Invalid_string_refer_to_original_code"
-				msg = "Invalid_string_refer_to_original_code"
+			Case "‚Q‰ñs“®"
+				msg = "‚Pƒ^[ƒ“‚É‚Q‰ñAs“®‚ª‰Â”\‚É‚È‚éB"
 				
-			Case "Invalid_string_refer_to_original_code"
+			Case "‘Ï‹v"
 				If slevel >= 0 Then
-					msg = "Invalid_string_refer_to_original_code" & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
-					VB6.Format((CInt(5 * slevel)) & "Invalid_string_refer_to_original_code")
+					msg = "ƒ_ƒ[ƒWŒvZ‚ÌÛ‚É" & Term("‘•b", u) & "‚ğ" & VB6.Format(CInt(5 * slevel)) & "%‘‰Á‚³‚¹‚éB"
 				Else
-					msg = "Invalid_string_refer_to_original_code" & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
-					VB6.Format((CInt(5 * System.Math.Abs(slevel))) & "Invalid_string_refer_to_original_code")
+					msg = "ƒ_ƒ[ƒWŒvZ‚ÌÛ‚É" & Term("‘•b", u) & "‚ğ" & VB6.Format(CInt(5 * System.Math.Abs(slevel))) & "%Œ¸­‚³‚¹‚éB"
 				End If
 				
-			Case "Invalid_string_refer_to_original_code"
-				msg = "Invalid_string_refer_to_original_code" & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
+			Case "‚r‚o’á¬’·"
+				msg = "ƒŒƒxƒ‹ƒAƒbƒv‚ÌÅ‘å" & Term("‚r‚o", u) & "‚Ì‘‰Á—Ê‚ª’Êí‚Ì”¼•ª‚ÉŒ¸­‚·‚éB"
 				
-			Case "Invalid_string_refer_to_original_code"
-				msg = "Invalid_string_refer_to_original_code" & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
+			Case "‚r‚o‚¬’·"
+				msg = "ƒŒƒxƒ‹ƒAƒbƒv‚ÌÅ‘å" & Term("‚r‚o", u) & "‚Ì‘‰Á—Ê‚ª’Êí‚Ì1.5”{‚É‘‰Á‚·‚éB"
 				
-			Case "Invalid_string_refer_to_original_code"
-				msg = "æ¯ã‚¿ãƒ¼ãƒ³" & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code" & VB6.Format(p.Level \ 8 + 5) & "Invalid_string_refer_to_original_code"
+			Case "‚r‚o‰ñ•œ"
+				msg = "–ˆƒ^[ƒ“" & Term("‚r‚o", u) & "‚ªƒpƒCƒƒbƒgƒŒƒxƒ‹/8+5‰ñ•œ‚·‚é(+" & VB6.Format(p.Level \ 8 + 5) & ")B"
 				
-			Case "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				If IsOptionDefined("Invalid_string_refer_to_original_code") Then
-					msg = msg & VB6.Format(slevel + 0.5) & "Invalid_string_refer_to_original_code"
+			Case "Ši“¬¬’·"
+				'UŒ‚—Í’á¬’·ƒIƒvƒVƒ‡ƒ“‚ªw’è‚³‚ê‚Ä‚¢‚é‚©‚Ç‚¤‚©‚Å‰ğà‚ğ•ÏX‚·‚éB
+				msg = "ƒŒƒxƒ‹ƒAƒbƒv‚Ì" & Term("Ši“¬", u) & "‚Ì‘‰Á—Ê‚ª"
+				If IsOptionDefined("UŒ‚—Í’á¬’·") Then
+					msg = msg & VB6.Format(slevel + 0.5) & "‚É‚È‚éB"
 				Else
-					msg = msg & VB6.Format(slevel + 1) & "Invalid_string_refer_to_original_code"
+					msg = msg & VB6.Format(slevel + 1) & "‚É‚È‚éB"
 				End If
 				
-			Case "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code
+			Case "ËŒ‚¬’·"
+				'UŒ‚—Í’á¬’·ƒIƒvƒVƒ‡ƒ“Ap‹Z”\‚Ì—L–³‚É‚æ‚Á‚ÄƒfƒtƒHƒ‹ƒg‰ğà‚ğ•ÏX‚·‚éB
 				If p.HasMana() Then
-					msg = "Invalid_string_refer_to_original_code" & Term("é­”åŠ›", u) & "ã®å¢—åŠ é‡ãŒ"
+					msg = "ƒŒƒxƒ‹ƒAƒbƒv‚Ì" & Term("–‚—Í", u) & "‚Ì‘‰Á—Ê‚ª"
 				Else
-					msg = "Invalid_string_refer_to_original_code" & Term("Invalid_string_refer_to_original_code", u) & "ã®å¢—åŠ é‡ãŒ"
+					msg = "ƒŒƒxƒ‹ƒAƒbƒv‚Ì" & Term("ËŒ‚", u) & "‚Ì‘‰Á—Ê‚ª"
 				End If
-				If IsOptionDefined("Invalid_string_refer_to_original_code") Then
-					msg = msg & VB6.Format(slevel + 0.5) & "Invalid_string_refer_to_original_code"
+				If IsOptionDefined("UŒ‚—Í’á¬’·") Then
+					msg = msg & VB6.Format(slevel + 0.5) & "‚É‚È‚éB"
 				Else
-					msg = msg & VB6.Format(slevel + 1) & "Invalid_string_refer_to_original_code"
-				End If
-				
-			Case "å‘½ä¸­æˆé•·"
-				msg = "Invalid_string_refer_to_original_code" & Term("å‘½ä¸­", u) & "ã®å¢—åŠ é‡ãŒ" & VB6.Format(slevel + 2) & "Invalid_string_refer_to_original_code"
-				
-			Case "å›é¿æˆé•·"
-				msg = "Invalid_string_refer_to_original_code" & Term("å›é¿", u) & "ã®å¢—åŠ é‡ãŒ" & VB6.Format(slevel + 2) & "Invalid_string_refer_to_original_code"
-				
-			Case "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				
-			Case "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				
-			Case "é˜²å¾¡æˆé•·"
-				'Invalid_string_refer_to_original_code
-				msg = "Invalid_string_refer_to_original_code" & Term("é˜²å¾¡", u) & "ã®å¢—åŠ é‡ãŒ"
-				If IsOptionDefined("Invalid_string_refer_to_original_code") Then
-					msg = msg & VB6.Format(slevel + 0.5) & "Invalid_string_refer_to_original_code"
-				Else
-					msg = msg & VB6.Format(slevel + 1) & "Invalid_string_refer_to_original_code"
+					msg = msg & VB6.Format(slevel + 1) & "‚É‚È‚éB"
 				End If
 				
-			Case "ç²¾ç¥çµ±ä¸€"
-				msg = Term("Invalid_string_refer_to_original_code", u) & "ãŒæœ€å¤§" & Term("Invalid_string_refer_to_original_code", u) & "ã®20%æœªæº€(" & VB6.Format(p.MaxSP \ 5) & "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code_
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			Case "–½’†¬’·"
+				msg = "ƒŒƒxƒ‹ƒAƒbƒv‚Ì" & Term("–½’†", u) & "‚Ì‘‰Á—Ê‚ª" & VB6.Format(slevel + 2) & "‚É‚È‚éB"
 				
-			Case "æå‚·æ™‚æ°—åŠ›å¢—åŠ "
+			Case "‰ñ”ğ¬’·"
+				msg = "ƒŒƒxƒ‹ƒAƒbƒv‚Ì" & Term("‰ñ”ğ", u) & "‚Ì‘‰Á—Ê‚ª" & VB6.Format(slevel + 2) & "‚É‚È‚éB"
+				
+			Case "‹Z—Ê¬’·"
+				msg = "ƒŒƒxƒ‹ƒAƒbƒv‚Ì" & Term("‹Z—Ê", u) & "‚Ì‘‰Á—Ê‚ª" & VB6.Format(slevel + 1) & "‚É‚È‚éB"
+				
+			Case "”½‰¬’·"
+				msg = "ƒŒƒxƒ‹ƒAƒbƒv‚Ì" & Term("”½‰", u) & "‚Ì‘‰Á—Ê‚ª" & VB6.Format(slevel + 1) & "‚É‚È‚éB"
+				
+			Case "–hŒä¬’·"
+				'–hŒä—Í’á¬’·ƒIƒvƒVƒ‡ƒ“‚ªw’è‚³‚ê‚Ä‚¢‚é‚©‚Ç‚¤‚©‚Å‰ğà‚ğ•ÏX‚·‚éB
+				msg = "ƒŒƒxƒ‹ƒAƒbƒv‚Ì" & Term("–hŒä", u) & "‚Ì‘‰Á—Ê‚ª"
+				If IsOptionDefined("–hŒä—Í’á¬’·") Then
+					msg = msg & VB6.Format(slevel + 0.5) & "‚É‚È‚éB"
+				Else
+					msg = msg & VB6.Format(slevel + 1) & "‚É‚È‚éB"
+				End If
+				
+			Case "¸_“ˆê"
+				msg = Term("‚r‚o", u) & "‚ªÅ‘å" & Term("‚r‚o", u) & "‚Ì20%–¢–(" & VB6.Format(p.MaxSP \ 5) & "–¢–)‚Ìê‡A" & "ƒ^[ƒ“ŠJn‚É" & Term("‚r‚o", u) & "‚ªÅ‘å" & Term("‚r‚o", u) & "‚Ì10%•ª‰ñ•œ‚·‚é(+" & VB6.Format(p.MaxSP \ 10) & ")B"
+				
+			Case "‘¹‹C—Í‘‰Á"
 				If slevel >= -1 Then
-					msg = "ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’å—ã‘ãŸéš›ã«" & Term("æ°—åŠ›", u) & "+" & VB6.Format(CInt(slevel + 1)) & "Invalid_string_refer_to_original_code"
+					msg = "ƒ_ƒ[ƒW‚ğó‚¯‚½Û‚É" & Term("‹C—Í", u) & "+" & VB6.Format(CInt(slevel + 1)) & "B"
 				Else
-					msg = "ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’å—ã‘ãŸéš›ã«" & Term("æ°—åŠ›", u) & VB6.Format(CInt(slevel + 1)) & "Invalid_string_refer_to_original_code"
+					msg = "ƒ_ƒ[ƒW‚ğó‚¯‚½Û‚É" & Term("‹C—Í", u) & VB6.Format(CInt(slevel + 1)) & "B"
 				End If
 				
-			Case "å‘½ä¸­æ™‚æ°—åŠ›å¢—åŠ "
+			Case "–½’†‹C—Í‘‰Á"
 				If slevel >= 0 Then
-					msg = "Invalid_string_refer_to_original_code" & Term("æ°—åŠ›", u) & "+" & VB6.Format(CInt(slevel)) & "Invalid_string_refer_to_original_code"
+					msg = "UŒ‚‚ğ–½’†‚³‚¹‚½Û‚É" & Term("‹C—Í", u) & "+" & VB6.Format(CInt(slevel)) & "B(ƒ}ƒbƒvUŒ‚‚Í—áŠO)"
 				Else
-					msg = "Invalid_string_refer_to_original_code" & Term("æ°—åŠ›", u) & VB6.Format(CInt(slevel)) & "Invalid_string_refer_to_original_code"
+					msg = "UŒ‚‚ğ–½’†‚³‚¹‚½Û‚É" & Term("‹C—Í", u) & VB6.Format(CInt(slevel)) & "B(ƒ}ƒbƒvUŒ‚‚Í—áŠO)"
 				End If
 				
-			Case "å¤±æ•—æ™‚æ°—åŠ›å¢—åŠ "
+			Case "¸”s‹C—Í‘‰Á"
 				If slevel >= 0 Then
-					msg = "Invalid_string_refer_to_original_code" & Term("æ°—åŠ›", u) & "+" & VB6.Format(CInt(slevel)) & "Invalid_string_refer_to_original_code"
+					msg = "UŒ‚‚ğŠO‚µ‚Ä‚µ‚Ü‚Á‚½Û‚É" & Term("‹C—Í", u) & "+" & VB6.Format(CInt(slevel)) & "B(ƒ}ƒbƒvUŒ‚‚Í—áŠO)"
 				Else
-					msg = "Invalid_string_refer_to_original_code" & Term("æ°—åŠ›", u) & VB6.Format(CInt(slevel)) & "Invalid_string_refer_to_original_code"
+					msg = "UŒ‚‚ğŠO‚µ‚Ä‚µ‚Ü‚Á‚½Û‚É" & Term("‹C—Í", u) & VB6.Format(CInt(slevel)) & "B(ƒ}ƒbƒvUŒ‚‚Í—áŠO)"
 				End If
 				
-			Case "å›é¿æ™‚æ°—åŠ›å¢—åŠ "
+			Case "‰ñ”ğ‹C—Í‘‰Á"
 				If slevel >= 0 Then
-					msg = "Invalid_string_refer_to_original_code" & Term("æ°—åŠ›", u) & "+" & VB6.Format(CInt(slevel)) & "Invalid_string_refer_to_original_code"
+					msg = "UŒ‚‚ğ‰ñ”ğ‚µ‚½Û‚É" & Term("‹C—Í", u) & "+" & VB6.Format(CInt(slevel)) & "B"
 				Else
-					msg = "Invalid_string_refer_to_original_code" & Term("æ°—åŠ›", u) & VB6.Format(CInt(slevel)) & "Invalid_string_refer_to_original_code"
+					msg = "UŒ‚‚ğ‰ñ”ğ‚µ‚½Û‚É" & Term("‹C—Í", u) & VB6.Format(CInt(slevel)) & "B"
 				End If
 				
-			Case "èµ·æ­»å›ç”Ÿ"
-				msg = Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code_
-				'Invalid_string_refer_to_original_code_
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			Case "‹N€‰ñ¶"
+				msg = Term("‚r‚o", u) & "A" & Term("‚g‚o", u) & "A" & Term("‚d‚m", u) & "‚Ì‘S‚Ä‚ªÅ‘å’l‚Ì20%ˆÈ‰º‚É‚È‚é‚Æ–ˆƒ^[ƒ“Å‰‚É”­“®B" & Term("‚r‚o", u) & "A" & Term("‚g‚o", u) & "A" & Term("‚d‚m", u) & "‚ª‘S‰õ‚·‚éB"
 				
-			Case "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			Case "íp"
+				msg = "vlƒpƒ^[ƒ“Œˆ’è‚ÌÛ‚É—p‚¢‚ç‚ê‚é" & Term("‹Z—Ê", u)
 				If slevel >= 0 Then
-					msg = msg & "Invalid_string_refer_to_original_code" & VB6.Format(CInt(10 * slevel)) & "Invalid_string_refer_to_original_code"
+					msg = msg & "‰Šú’l‚ªƒŒƒxƒ‹~10‘‰Á(+" & VB6.Format(CInt(10 * slevel)) & ")B"
 				Else
-					msg = msg & "Invalid_string_refer_to_original_code" & VB6.Format(CInt(10 * slevel)) & "Invalid_string_refer_to_original_code"
+					msg = msg & "‰Šú’l‚ªƒŒƒxƒ‹~10Œ¸­(" & VB6.Format(CInt(10 * slevel)) & ")B"
 				End If
 				
-			Case "å¾—æ„æŠ€"
-				msg = "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code_
-				'Invalid_string_refer_to_original_code_
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			Case "“¾ˆÓ‹Z"
+				msg = "u" & p.SkillData(stype) & "v‘®«‚ğ‚Â•ŠíE" & Term("ƒAƒrƒŠƒeƒB", u) & "‚É‚æ‚éƒ_ƒ[ƒWEŒø‰Ê—Ê‚ª 20% ‘‰ÁB" & "‚Ü‚½A" & Term("ƒAƒrƒŠƒeƒB", u) & "‚ÌŒp‘±ŠÔ‚ª 40% ‘‰ÁB"
 				
-			Case "ä¸å¾—æ‰‹"
-				msg = "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code_
-				'Invalid_string_refer_to_original_code_
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			Case "•s“¾è"
+				msg = "u" & p.SkillData(stype) & "v‘®«‚ğ‚Â•ŠíE" & Term("ƒAƒrƒŠƒeƒB", u) & "‚É‚æ‚éƒ_ƒ[ƒWEŒø‰Ê—Ê‚ª 20% Œ¸­B" & "‚Ü‚½A" & Term("ƒAƒrƒŠƒeƒB", u) & "‚ÌŒp‘±ŠÔ‚ª 40% Œ¸­B"
 				
-			Case "ãƒãƒ³ã‚¿ãƒ¼"
-				msg = "Invalid_string_refer_to_original_code"
+			Case "ƒnƒ“ƒ^["
+				msg = "ƒ^[ƒQƒbƒg‚ª"
 				For i = 2 To LLength(sdata)
 					If i = 3 Then
-						msg = msg & "Invalid_string_refer_to_original_code"
+						msg = msg & "‚â"
 					ElseIf 3 > 2 Then 
-						msg = msg & "Invalid_string_refer_to_original_code"
+						msg = msg & "A"
 					End If
 					msg = msg & LIndex(sdata, i)
 				Next 
-				msg = msg & "Invalid_string_refer_to_original_code"
+				msg = msg & "‚Å‚ ‚éê‡Aƒ^[ƒQƒbƒg‚É—^‚¦‚éƒ_ƒ[ƒW‚ª"
 				If slevel >= 0 Then
-					msg = msg & VB6.Format(10 * slevel) & "Invalid_string_refer_to_original_code"
+					msg = msg & VB6.Format(10 * slevel) & "%‘‰Á‚·‚éB"
 				Else
-					msg = msg & VB6.Format(-10 * slevel) & "Invalid_string_refer_to_original_code"
+					msg = msg & VB6.Format(-10 * slevel) & "%Œ¸­‚·‚éB"
 				End If
 				
-			Case "Invalid_string_refer_to_original_code"
-				msg = Term("ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼", u)
+			Case "‚r‚oÁ”ïŒ¸­"
+				msg = Term("ƒXƒyƒVƒƒƒ‹ƒpƒ[", u)
 				For i = 2 To LLength(sdata)
-					msg = msg & "Invalid_string_refer_to_original_code"
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					msg = msg & "u" & LIndex(sdata, i) & "v"
 				Next 
-				msg = msg & "ã®" & Term("Invalid_string_refer_to_original_code", u) & "æ¶ˆè²»é‡ãŒ"
+				msg = msg & "‚Ì" & Term("‚r‚o", u) & "Á”ï—Ê‚ª"
 				If slevel >= 0 Then
-					msg = msg & VB6.Format(10 * slevel) & "Invalid_string_refer_to_original_code"
+					msg = msg & VB6.Format(10 * slevel) & "%Œ¸­‚·‚éB"
 				Else
-					msg = msg & VB6.Format(-10 * slevel) & "Invalid_string_refer_to_original_code"
+					msg = msg & VB6.Format(-10 * slevel) & "%‘‰Á‚·‚éB"
 				End If
 				
-			Case "Invalid_string_refer_to_original_code"
-				msg = Term("æ°—åŠ›", u) & "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code_
-				'Invalid_string_refer_to_original_code_
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			Case "ƒXƒyƒVƒƒƒ‹ƒpƒ[©“®”­“®"
+				msg = Term("‹C—Í", u) & "‚ª" & LIndex(sdata, 3) & "ˆÈã‚Å”­“®‚µA" & "–ˆƒ^[ƒ“Å‰‚Éu" & LIndex(sdata, 2) & "v‚ª©“®‚Å‚©‚©‚éB" & "i" & Term("‚r‚o", u) & "‚ÍÁ”ï‚µ‚È‚¢j"
 				
-			Case "Invalid_string_refer_to_original_code"
-				msg = "Invalid_string_refer_to_original_code" & Term("Invalid_string_refer_to_original_code", u) & "ã‚’ä½¿ã£ãŸéš›ã®" & Term("Invalid_string_refer_to_original_code", u) & "å›å¾©é‡ãŒ "
+			Case "C—"
+				msg = "C—‘•’u‚â‰ñ•œ" & Term("ƒAƒrƒŠƒeƒB", u) & "‚ğg‚Á‚½Û‚Ì" & Term("‚g‚o", u) & "‰ñ•œ—Ê‚ª "
 				If slevel >= 0 Then
-					msg = msg & VB6.Format(10 * slevel) & "Invalid_string_refer_to_original_code"
+					msg = msg & VB6.Format(10 * slevel) & "% ‘‰Á‚·‚éB"
 				Else
-					msg = msg & VB6.Format(-10 * slevel) & "Invalid_string_refer_to_original_code"
+					msg = msg & VB6.Format(-10 * slevel) & "% Œ¸­‚·‚éB"
 				End If
 				
-			Case "è£œçµ¦"
-				If IsOptionDefined("ç§»å‹•å¾Œè£œçµ¦ä¸å¯") Then
-					msg = "Invalid_string_refer_to_original_code"
+			Case "•â‹‹"
+				If IsOptionDefined("ˆÚ“®Œã•â‹‹•s‰Â") Then
+					msg = "ˆÚ“®Œã‚É•â‹‹‘•’u‚ğg—p‚Å‚«‚é‚æ‚¤‚É‚È‚éB‚Ü‚½A"
 				End If
-				msg = msg & "è£œçµ¦" & Term("Invalid_string_refer_to_original_code", u) & "ã‚’ä½¿ã£ãŸéš›ã®" & Term("Invalid_string_refer_to_original_code", u) & "å›å¾©é‡ãŒ "
+				msg = msg & "•â‹‹" & Term("ƒAƒrƒŠƒeƒB", u) & "‚ğg‚Á‚½Û‚Ì" & Term("‚d‚m", u) & "‰ñ•œ—Ê‚ª "
 				If slevel >= 0 Then
-					msg = msg & VB6.Format(10 * slevel) & "Invalid_string_refer_to_original_code"
+					msg = msg & VB6.Format(10 * slevel) & "% ‘‰Á‚·‚éB"
 				Else
-					msg = msg & VB6.Format(-10 * slevel) & "Invalid_string_refer_to_original_code"
+					msg = msg & VB6.Format(-10 * slevel) & "% Œ¸­‚·‚éB"
 				End If
 				
-			Case "æ°—åŠ›ä¸Šé™"
+			Case "‹C—ÍãŒÀ"
 				i = 150
 				If slevel <> 0 Then
 					i = MaxLng(slevel, 0)
 				End If
-				msg = Term("æ°—åŠ›", u) & "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				msg = Term("‹C—Í", u) & "‚ÌãŒÀ‚ª" & VB6.Format(i) & "‚É‚È‚éB"
 				
-			Case "æ°—åŠ›ä¸‹é™"
+			Case "‹C—Í‰ºŒÀ"
 				i = 50
 				If slevel <> 0 Then
 					i = MaxLng(slevel, 0)
 				End If
-				msg = Term("æ°—åŠ›", u) & "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				msg = Term("‹C—Í", u) & "‚Ì‰ºŒÀ‚ª" & VB6.Format(i) & "‚É‚È‚éB"
 				
 				' ADD START MARGE
-			Case "éŠæ’ƒ"
-				msg = "ç§»å‹•å¾Œä½¿ç”¨å¯èƒ½ãªæ­¦å™¨ãƒ»" & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
+			Case "—VŒ‚"
+				msg = "ˆÚ“®Œãg—p‰Â”\‚È•ŠíE" & Term("ƒAƒrƒŠƒeƒB", u) & "‚ğg‚Á‚½Œã‚ÉAc‚Á‚½ˆÚ“®—Í‚ğg‚Á‚ÄˆÚ“®‚Å‚«‚éB"
 				' ADD END MARGE
 				
 			Case Else
-				'Invalid_string_refer_to_original_code
+				'ƒ_ƒ~[”\—Í
 				
-				'Invalid_string_refer_to_original_code
+				'ƒpƒCƒƒbƒg‘¤‚Å‰ğà‚ğ’è‹`‚µ‚Ä‚¢‚éH
 				With p
 					sdata = .SkillData(sname0)
-					If ListIndex(sdata, 1) = "è§£èª¬" Then
+					If ListIndex(sdata, 1) = "‰ğà" Then
 						msg = ListIndex(sdata, ListLength(sdata))
 						If Left(msg, 1) = """" Then
 							msg = Mid(msg, 2, Len(msg) - 2)
@@ -713,12 +639,12 @@ Module Help
 					End If
 				End With
 				
-				'Invalid_string_refer_to_original_code
+				'ƒ†ƒjƒbƒg‘¤‚Å‰ğà‚ğ’è‹`‚µ‚Ä‚¢‚éH
 				With u
 					For i = 1 To .CountFeature
 						If .Feature(i) = stype Then
 							fdata = .FeatureData(i)
-							If ListIndex(fdata, 1) = "è§£èª¬" Then
+							If ListIndex(fdata, 1) = "‰ğà" Then
 								msg = ListIndex(fdata, ListLength(fdata))
 							End If
 						End If
@@ -729,7 +655,7 @@ Module Help
 						For i = 1 To .CountFeature
 							If .Feature(i) = stype Then
 								fdata = .FeatureData(i)
-								If ListIndex(fdata, 1) = "è§£èª¬" Then
+								If ListIndex(fdata, 1) = "‰ğà" Then
 									msg = ListIndex(fdata, ListLength(fdata))
 								End If
 							End If
@@ -741,16 +667,16 @@ Module Help
 					Exit Function
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'ƒ†ƒjƒbƒg‘¤‚Å‰ğà‚ğ’è‹`‚µ‚Ä‚¢‚éê‡
 				If Left(msg, 1) = """" Then
 					msg = Mid(msg, 2, Len(msg) - 2)
 				End If
 		End Select
 		
-		'Invalid_string_refer_to_original_code
+		'ƒpƒCƒƒbƒg‘¤‚Å‰ğà‚ğ’è‹`‚µ‚Ä‚¢‚éH
 		With p
 			sdata = .SkillData(sname0)
-			If ListIndex(sdata, 1) = "è§£èª¬" Then
+			If ListIndex(sdata, 1) = "‰ğà" Then
 				msg = ListIndex(sdata, ListLength(sdata))
 				If Left(msg, 1) = """" Then
 					msg = Mid(msg, 2, Len(msg) - 2)
@@ -758,12 +684,12 @@ Module Help
 			End If
 		End With
 		
-		'Invalid_string_refer_to_original_code
+		'ƒ†ƒjƒbƒg‘¤‚Å‰ğà‚ğ’è‹`‚µ‚Ä‚¢‚éH
 		With u
 			For i = 1 To .CountFeature
 				If .Feature(i) = sname0 Then
 					fdata = .FeatureData(i)
-					If ListIndex(fdata, 1) = "è§£èª¬" Then
+					If ListIndex(fdata, 1) = "‰ğà" Then
 						msg = ListIndex(fdata, ListLength(fdata))
 						If Left(msg, 1) = """" Then
 							msg = Mid(msg, 2, Len(msg) - 2)
@@ -777,7 +703,7 @@ Module Help
 				For i = 1 To .CountFeature
 					If .Feature(i) = sname0 Then
 						fdata = .FeatureData(i)
-						If ListIndex(fdata, 1) = "è§£èª¬" Then
+						If ListIndex(fdata, 1) = "‰ğà" Then
 							msg = ListIndex(fdata, ListLength(fdata))
 							If Left(msg, 1) = """" Then
 								msg = Mid(msg, 2, Len(msg) - 2)
@@ -788,29 +714,28 @@ Module Help
 			End With
 		End If
 		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		ReplaceString(msg, "Invalid_string_refer_to_original_code", "Invalid_string_refer_to_original_code")
-		ReplaceString(msg, "Invalid_string_refer_to_original_code", "Invalid_string_refer_to_original_code")
-		ReplaceString(msg, "Invalid_string_refer_to_original_code", "ãƒ¬ãƒ™ãƒ«")
-		ReplaceString(msg, "Invalid_string_refer_to_original_code", "Invalid_string_refer_to_original_code")
-		'End If
+		'“™g‘åŠî€‚ÌÛ‚ÍuƒpƒCƒƒbƒgv‚Æ‚¢‚¤Œê‚ğg‚í‚È‚¢‚æ‚¤‚É‚·‚é
+		If IsOptionDefined("“™g‘åŠî€") Then
+			ReplaceString(msg, "ƒƒCƒ“ƒpƒCƒƒbƒg", "ƒ†ƒjƒbƒg")
+			ReplaceString(msg, "ƒTƒ|[ƒgƒpƒCƒƒbƒg", "ƒTƒ|[ƒg")
+			ReplaceString(msg, "ƒpƒCƒƒbƒgƒŒƒxƒ‹", "ƒŒƒxƒ‹")
+			ReplaceString(msg, "ƒpƒCƒƒbƒg", "ƒ†ƒjƒbƒg")
+		End If
 		
 		SkillHelpMessage = msg
 	End Function
 	
 	
-	'Invalid_string_refer_to_original_code
+	'ƒ†ƒjƒbƒg u ‚Ì findex ”Ô–Ú‚Ì“Áê”\—Í‚Ì‰ğà‚ğ•\¦
 	Public Sub FeatureHelp(ByRef u As Unit, ByVal findex As Object, ByVal is_additional As Boolean)
 		Dim fname As String
 		Dim msg As String
 		Dim prev_mode As Boolean
 		
 		With u
-			'Invalid_string_refer_to_original_code
+			'“Áê”\—Í‚Ì–¼Ì‚ğ’²‚×‚é
 			'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg findex ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			If findex = "æ­¦å™¨ãƒ»é˜²å…·ã‚¯ãƒ©ã‚¹" Then
+			If findex = "•ŠíE–h‹ïƒNƒ‰ƒX" Then
 				'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg findex ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 				fname = findex
 			ElseIf IsNumeric(findex) Then 
@@ -823,23 +748,23 @@ Module Help
 		
 		msg = FeatureHelpMessage(u, findex, is_additional)
 		
-		'è§£èª¬ã®è¡¨ç¤º
+		'‰ğà‚Ì•\¦
 		If Len(msg) > 0 Then
 			prev_mode = AutoMessageMode
 			AutoMessageMode = False
 			
 			OpenMessageForm()
 			If AutoMoveCursor Then
-				MoveCursorPos("Invalid_string_refer_to_original_code")
+				MoveCursorPos("ƒƒbƒZ[ƒWƒEƒBƒ“ƒhƒE")
 			End If
-			DisplayMessage("Invalid_string_refer_to_original_code", "<b>" & fname & "</b>;" & msg)
+			DisplayMessage("ƒVƒXƒeƒ€", "<b>" & fname & "</b>;" & msg)
 			CloseMessageForm()
 			
 			AutoMessageMode = prev_mode
 		End If
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'ƒ†ƒjƒbƒg u ‚Ì findex ”Ô–Ú‚Ì“Áê”\—Í‚Ì‰ğà
 	Public Function FeatureHelpMessage(ByRef u As Unit, ByVal findex As Object, ByVal is_additional As Boolean) As String
 		Dim fid As Short
 		Dim fname, ftype, fname0 As String
@@ -856,12 +781,12 @@ Module Help
 		Dim uname As String
 		
 		With u
-			'Invalid_string_refer_to_original_code
+			'ƒƒCƒ“ƒpƒCƒƒbƒg
 			p = .MainPilot
 			
-			'Invalid_string_refer_to_original_code
+			'“Áê”\—Í‚Ì–¼ÌAƒŒƒxƒ‹Aƒf[ƒ^‚ğ’²‚×‚é
 			'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg findex ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			If findex = "æ­¦å™¨ãƒ»é˜²å…·ã‚¯ãƒ©ã‚¹" Then
+			If findex = "•ŠíE–h‹ïƒNƒ‰ƒX" Then
 				'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg findex ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 				ftype = findex
 				'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg findex ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
@@ -893,11 +818,9 @@ Module Help
 				fname0 = fname
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'd•¡‰Â”\‚È“Áê”\—Í‚Ìê‡AƒŒƒxƒ‹‚Ì‚İ‚ªˆÙ‚È‚é”\—Í‚ÌƒŒƒxƒ‹‚Í—İÏ‚·‚é
 			Select Case ftype
-				Case "Invalid_string_refer_to_original_code"
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				Case "ƒtƒB[ƒ‹ƒh", "ƒA[ƒ}[", "ƒŒƒWƒXƒg", "UŒ‚‰ñ”ğ"
 					For i = 1 To u.CountAllFeature
 						If i <> fid And .AllFeature(i) = ftype And .AllFeatureData(i) = fdata Then
 							flevel = flevel + .AllFeatureLevel(i)
@@ -907,89 +830,69 @@ Module Help
 		End With
 		
 		Select Case ftype
-			Case "Invalid_string_refer_to_original_code"
-				sname = p.SkillName0("Invalid_string_refer_to_original_code")
-				prob = p.SkillLevel("Invalid_string_refer_to_original_code") * 100 \ 16
-				msg = sname & "Invalid_string_refer_to_original_code" & VB6.Format(prob) & "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			Case "ƒV[ƒ‹ƒh"
+				sname = p.SkillName0("‚r–hŒä")
+				prob = p.SkillLevel("‚r–hŒä") * 100 \ 16
+				msg = sname & "Lv/16‚ÌŠm—¦(" & VB6.Format(prob) & "%)‚Å–hŒä‚ğs‚¢A" & "ƒ_ƒ[ƒW‚ğ”¼Œ¸B"
 				
-			Case "Invalid_string_refer_to_original_code"
-				sname = p.SkillName0("Invalid_string_refer_to_original_code")
-				If p.IsSkillAvailable("Invalid_string_refer_to_original_code") Then
-					prob = (p.SkillLevel("Invalid_string_refer_to_original_code") + 1) * 100 \ 16
+			Case "‘åŒ^ƒV[ƒ‹ƒh"
+				sname = p.SkillName0("‚r–hŒä")
+				If p.IsSkillAvailable("‚r–hŒä") Then
+					prob = (p.SkillLevel("‚r–hŒä") + 1) * 100 \ 16
 				End If
-				msg = "(" & sname & "Invalid_string_refer_to_original_code" & VB6.Format(prob) & "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				msg = "(" & sname & "Lv+1)/16‚ÌŠm—¦(" & VB6.Format(prob) & "%)‚Å–hŒä‚ğs‚¢A" & "ƒ_ƒ[ƒW‚ğ”¼Œ¸B"
 				
-			Case "Invalid_string_refer_to_original_code"
-				sname = p.SkillName0("Invalid_string_refer_to_original_code")
-				prob = p.SkillLevel("Invalid_string_refer_to_original_code") * 100 \ 16
-				msg = sname & "Invalid_string_refer_to_original_code" & VB6.Format(prob) & "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			Case "¬Œ^ƒV[ƒ‹ƒh"
+				sname = p.SkillName0("‚r–hŒä")
+				prob = p.SkillLevel("‚r–hŒä") * 100 \ 16
+				msg = sname & "Lv/16‚ÌŠm—¦(" & VB6.Format(prob) & "%)‚Å–hŒä‚ğs‚¢A" & "ƒ_ƒ[ƒW‚ğ2/3‚ÉŒ¸­B"
 				
-			Case "Invalid_string_refer_to_original_code"
-				sname = p.SkillName0("Invalid_string_refer_to_original_code")
-				prob = p.SkillLevel("Invalid_string_refer_to_original_code") * 100 \ 16
+			Case "ƒGƒlƒ‹ƒM[ƒV[ƒ‹ƒh"
+				sname = p.SkillName0("‚r–hŒä")
+				prob = p.SkillLevel("‚r–hŒä") * 100 \ 16
 				If flevel > 0 Then
-					msg = sname & "Invalid_string_refer_to_original_code" & VB6.Format(prob) & "Invalid_string_refer_to_original_code"
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					msg = sname & "Lv/16‚ÌŠm—¦(" & VB6.Format(prob) & "%)‚Å–hŒä‚ğs‚¢A" & "ƒ_ƒ[ƒW‚ğ”¼Œ¸‚µ‚½ã‚ÅX‚É" & VB6.Format(100 * flevel) & "Œ¸­B"
 				Else
-					msg = sname & "Invalid_string_refer_to_original_code" & VB6.Format(prob) & "Invalid_string_refer_to_original_code"
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					msg = sname & "Lv/16‚ÌŠm—¦(" & VB6.Format(prob) & "%)‚Å–hŒä‚ğs‚¢A" & "ƒ_ƒ[ƒW‚ğ”¼Œ¸B"
 				End If
-				msg = msg & "Invalid_string_refer_to_original_code"
+				msg = msg & "”­“®‚É5‚d‚mÁ”ïBu–³v‘®«‚ğ‚Â•Ší‚É‚Í–³ŒøB"
 				
-			Case "Invalid_string_refer_to_original_code"
-				sname = p.SkillName0("Invalid_string_refer_to_original_code")
-				prob = p.SkillLevel("Invalid_string_refer_to_original_code") * 100 \ 16
-				If p.IsSkillAvailable("Invalid_string_refer_to_original_code") Then
-					prob = (p.SkillLevel("Invalid_string_refer_to_original_code") + 2) * 100 \ 16
+			Case "ƒAƒNƒeƒBƒuƒV[ƒ‹ƒh"
+				sname = p.SkillName0("‚r–hŒä")
+				prob = p.SkillLevel("‚r–hŒä") * 100 \ 16
+				If p.IsSkillAvailable("‚r–hŒä") Then
+					prob = (p.SkillLevel("‚r–hŒä") + 2) * 100 \ 16
 				End If
-				msg = "(" & sname & "Invalid_string_refer_to_original_code" & VB6.Format(prob) & "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				msg = "(" & sname & "Lv+2)/16‚ÌŠm—¦(" & VB6.Format(prob) & "%)‚Å–hŒä‚ğs‚¢A" & "ƒ_ƒ[ƒW‚ğ”¼Œ¸B"
 				
-			Case "ç›¾"
-				sname = p.SkillName0("Invalid_string_refer_to_original_code")
-				slevel = p.SkillLevel("Invalid_string_refer_to_original_code")
+			Case "‚"
+				sname = p.SkillName0("‚r–hŒä")
+				slevel = p.SkillLevel("‚r–hŒä")
 				If slevel > 0 Then
 					slevel = 100 * slevel + 400
 				End If
-				msg = VB6.Format(flevel) & "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code_
-				'Invalid_string_refer_to_original_code_
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				msg = VB6.Format(flevel) & "‰ñAUŒ‚‚É‚æ‚Á‚ÄŠÑ’Ê‚³‚ê‚é‚Ü‚ÅƒV[ƒ‹ƒh–hŒä‚ğs‚¢A" & "ƒ_ƒ[ƒW‚ğŒ¸­‚³‚¹‚é(-" & VB6.Format(CInt(slevel)) & ")B;" & "‚½‚¾‚µUŒ‚‘¤‚ªu”jv‘®«‚ğ‚Á‚Ä‚¢‚½ê‡Aˆê“x‚É‚Q‰ñ•ª”j‰ó‚³‚ê‚éB;" & "ƒ_ƒ[ƒW‚ÌŒ¸­—Ê‚ÍƒpƒCƒƒbƒg‚Ì" & sname & "ƒŒƒxƒ‹‚É‚æ‚Á‚ÄŒˆ‚Ü‚éB"
 				
-			Case "ãƒãƒªã‚¢"
-				If LIndex(fdata, 2) <> "" And LIndex(fdata, 2) <> "å…¨" Then
+			Case "ƒoƒŠƒA"
+				If LIndex(fdata, 2) <> "" And LIndex(fdata, 2) <> "‘S" Then
 					If Left(LIndex(fdata, 2), 1) = "!" Then
-						msg = "Invalid_string_refer_to_original_code"
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						msg = "u" & Mid(LIndex(fdata, 2), 2) & "v‘®«‚ğ‚½‚È‚¢"
 					Else
-						msg = "Invalid_string_refer_to_original_code"
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						msg = "u" & LIndex(fdata, 2) & "v‘®«‚ğ‚Â"
 					End If
 				End If
-				msg = msg & "ãƒ€ãƒ¡ãƒ¼ã‚¸" & VB6.Format(CInt(1000 * flevel)) & "Invalid_string_refer_to_original_code"
+				msg = msg & "ƒ_ƒ[ƒW" & VB6.Format(CInt(1000 * flevel)) & "ˆÈ‰º‚ÌUŒ‚‚ğ–³Œø‰»B"
 				If IsNumeric(LIndex(fdata, 3)) Then
 					If StrToLng(LIndex(fdata, 3)) > 0 Then
-						msg = msg & ";ç™ºå‹•æ™‚ã«" & LIndex(fdata, 3) & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
+						msg = msg & ";”­“®‚É" & LIndex(fdata, 3) & Term("‚d‚m", u) & "Á”ïB"
 					ElseIf StrToLng(LIndex(fdata, 3)) < 0 Then 
-						msg = msg & ";ç™ºå‹•æ™‚ã«" & Mid(LIndex(fdata, 3), 2) & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
+						msg = msg & ";”­“®‚É" & Mid(LIndex(fdata, 3), 2) & Term("‚d‚m", u) & "‘‰ÁB"
 					End If
 				Else
-					msg = msg & "Invalid_string_refer_to_original_code"
+					msg = msg & ";”­“®‚É10‚d‚mÁ”ïB"
 				End If
 				If StrToLng(LIndex(fdata, 4)) > 50 Then
-					msg = msg & Term("æ°—åŠ›", u) & LIndex(fdata, 4) & "Invalid_string_refer_to_original_code"
+					msg = msg & Term("‹C—Í", u) & LIndex(fdata, 4) & "ˆÈã‚Åg—p‰Â”\B"
 				End If
 				For i = 5 To LLength(fdata)
 					opt = LIndex(fdata, i)
@@ -1001,84 +904,78 @@ Module Help
 						lv_mod = -1
 					End If
 					Select Case p.SkillType(opt)
-						Case "ç›¸æ®º"
-							msg = msg & ";" & fname0 & "Invalid_string_refer_to_original_code"
-						Case "Invalid_string_refer_to_original_code"
-							msg = msg & ";" & fname0 & "Invalid_string_refer_to_original_code"
-							'Invalid_string_refer_to_original_code
-							'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-						Case "è¿‘æ¥ç„¡åŠ¹"
-							msg = msg & "Invalid_string_refer_to_original_code"
-						Case "ãƒãƒªã‚¢ç„¡åŠ¹åŒ–ç„¡åŠ¹"
-							msg = msg & "Invalid_string_refer_to_original_code"
-						Case "æ‰‹å‹•"
-							msg = msg & "Invalid_string_refer_to_original_code"
-						Case "Invalid_string_refer_to_original_code"
-							'Invalid_string_refer_to_original_code
-						Case "Invalid_string_refer_to_original_code"
+						Case "‘ŠE"
+							msg = msg & ";" & fname0 & "‚ğ‚Âƒ†ƒjƒbƒg“¯m‚Ìê‡A—×Ú‚ÉŒø‰Ê‚Í‘ŠEB"
+						Case "’†˜a"
+							msg = msg & ";" & fname0 & "‚ğ‚Âƒ†ƒjƒbƒg“¯m‚Ìê‡A" & "—×Ú‚ÉƒŒƒxƒ‹•ª‚¾‚¯Œø‰Ê‚ğ’†˜aB"
+						Case "‹ßÚ–³Œø"
+							msg = msg & ";u•vu“ËvuÚv‚É‚æ‚éUŒ‚‚É‚Í–³ŒøB"
+						Case "ƒoƒŠƒA–³Œø‰»–³Œø"
+							msg = msg & ";ƒoƒŠƒA–³Œø‰»‚É‚æ‚Á‚Ä–³Œø‰»‚³‚ê‚È‚¢B"
+						Case "è“®"
+							msg = msg & ";–hŒä‘I‘ğ‚É‚Ì‚İ”­“®B"
+						Case "”\—Í•K—v"
+							'ƒXƒLƒbƒv
+						Case "“¯’²—¦"
 							sname = p.SkillName0(opt)
 							If lv_mod = -1 Then
 								lv_mod = 20
 							End If
 							If u.SyncLevel >= 30 Then
-								msg = msg & "Invalid_string_refer_to_original_code" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¤‰åŒ–(+" & VB6.Format(lv_mod * (u.SyncLevel - 30)) & "Invalid_string_refer_to_original_code"
+								msg = msg & ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª•Ï‰»(+" & VB6.Format(lv_mod * (u.SyncLevel - 30)) & ")B"
 							ElseIf u.SyncLevel > 0 Then 
-								msg = msg & "Invalid_string_refer_to_original_code" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¤‰åŒ–(" & VB6.Format(lv_mod * (u.SyncLevel - 30)) & "Invalid_string_refer_to_original_code"
+								msg = msg & ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª•Ï‰»(" & VB6.Format(lv_mod * (u.SyncLevel - 30)) & ")B"
 							End If
-						Case "éœŠåŠ›"
+						Case "—ì—Í"
 							sname = p.SkillName0(opt)
 							If lv_mod = -1 Then
 								lv_mod = 10
 							End If
-							msg = msg & "Invalid_string_refer_to_original_code" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & VB6.Format(lv_mod * u.PlanaLevel) & "Invalid_string_refer_to_original_code"
-						Case "ã‚ªãƒ¼ãƒ©"
+							msg = msg & ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª‘‰Á(+" & VB6.Format(lv_mod * u.PlanaLevel) & ")B"
+						Case "ƒI[ƒ‰"
 							sname = p.SkillName0(opt)
 							If lv_mod = -1 Then
 								lv_mod = 200
 							End If
-							msg = msg & "Invalid_string_refer_to_original_code" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & VB6.Format(lv_mod * u.AuraLevel) & "Invalid_string_refer_to_original_code"
-						Case "Invalid_string_refer_to_original_code"
+							msg = msg & ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª‘‰Á(+" & VB6.Format(lv_mod * u.AuraLevel) & ")B"
+						Case "’´”\—Í"
 							sname = p.SkillName0(opt)
 							If lv_mod = -1 Then
 								lv_mod = 200
 							End If
-							msg = msg & "Invalid_string_refer_to_original_code" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & VB6.Format(lv_mod * u.PsychicLevel) & "Invalid_string_refer_to_original_code"
+							msg = msg & ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª‘‰Á(+" & VB6.Format(lv_mod * u.PsychicLevel) & ")B"
 						Case Else
 							sname = u.SkillName0(opt)
 							If lv_mod = -1 Then
 								lv_mod = 200
 							End If
-							msg = msg & "Invalid_string_refer_to_original_code" & sname & "ãƒ¬ãƒ™ãƒ«ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & VB6.Format(lv_mod * u.SkillLevel(opt)) & "Invalid_string_refer_to_original_code"
+							msg = msg & ";ƒpƒCƒƒbƒg‚Ì" & sname & "ƒŒƒxƒ‹‚É‚æ‚è‹­“x‚ª‘‰Á(+" & VB6.Format(lv_mod * u.SkillLevel(opt)) & ")B"
 					End Select
 				Next 
 				
-			Case "Invalid_string_refer_to_original_code"
-				sname = p.SkillName0("Invalid_string_refer_to_original_code")
-				prob = p.SkillLevel("Invalid_string_refer_to_original_code") * 100 \ 16
-				msg = sname & "Invalid_string_refer_to_original_code" & VB6.Format(prob) & "Invalid_string_refer_to_original_code"
-				If LIndex(fdata, 2) <> "" And LIndex(fdata, 2) <> "å…¨" Then
+			Case "ƒoƒŠƒAƒV[ƒ‹ƒh"
+				sname = p.SkillName0("‚r–hŒä")
+				prob = p.SkillLevel("‚r–hŒä") * 100 \ 16
+				msg = sname & "Lv/16‚ÌŠm—¦(" & VB6.Format(prob) & "%)‚Å”­“®‚µA"
+				If LIndex(fdata, 2) <> "" And LIndex(fdata, 2) <> "‘S" Then
 					If Left(LIndex(fdata, 2), 1) = "!" Then
-						msg = msg & "Invalid_string_refer_to_original_code"
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						msg = msg & "u" & Mid(LIndex(fdata, 2), 2) & "v‘®«‚ğ‚½‚È‚¢"
 					Else
-						msg = msg & "Invalid_string_refer_to_original_code"
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						msg = msg & "u" & LIndex(fdata, 2) & "v‘®«‚ğ‚Â"
 					End If
 				End If
-				msg = msg & "ãƒ€ãƒ¡ãƒ¼ã‚¸" & VB6.Format(CInt(1000 * flevel)) & "Invalid_string_refer_to_original_code"
+				msg = msg & "ƒ_ƒ[ƒW" & VB6.Format(CInt(1000 * flevel)) & "ˆÈ‰º‚ÌUŒ‚‚ğ–³Œø‰»B"
 				If IsNumeric(LIndex(fdata, 3)) Then
 					If StrToLng(LIndex(fdata, 3)) > 0 Then
-						msg = msg & "ç™ºå‹•æ™‚ã«" & LIndex(fdata, 3) & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
+						msg = msg & "”­“®‚É" & LIndex(fdata, 3) & Term("‚d‚m", u) & "Á”ïB"
 					ElseIf StrToLng(LIndex(fdata, 3)) < 0 Then 
-						msg = msg & ";ç™ºå‹•æ™‚ã«" & Mid(LIndex(fdata, 3), 2) & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
+						msg = msg & ";”­“®‚É" & Mid(LIndex(fdata, 3), 2) & Term("‚d‚m", u) & "‘‰ÁB"
 					End If
 				Else
-					msg = msg & "ç™ºå‹•æ™‚ã«10" & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
+					msg = msg & "”­“®‚É10" & Term("‚d‚m", u) & "Á”ïB"
 				End If
 				If StrToLng(LIndex(fdata, 4)) > 50 Then
-					msg = msg & Term("æ°—åŠ›", u) & LIndex(fdata, 4) & "Invalid_string_refer_to_original_code"
+					msg = msg & Term("‹C—Í", u) & LIndex(fdata, 4) & "ˆÈã‚Åg—p‰Â”\B"
 				End If
 				For i = 5 To LLength(fdata)
 					opt = LIndex(fdata, i)
@@ -1090,121 +987,105 @@ Module Help
 						lv_mod = -1
 					End If
 					Select Case p.SkillType(opt)
-						Case "ç›¸æ®º"
-							msg = msg & ";" & fname0 & "Invalid_string_refer_to_original_code"
-						Case "Invalid_string_refer_to_original_code"
-							msg = msg & ";" & fname0 & "Invalid_string_refer_to_original_code"
-							'Invalid_string_refer_to_original_code
-							'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-						Case "è¿‘æ¥ç„¡åŠ¹"
-							msg = msg & "Invalid_string_refer_to_original_code"
-						Case "ãƒãƒªã‚¢ç„¡åŠ¹åŒ–ç„¡åŠ¹"
-							msg = msg & "Invalid_string_refer_to_original_code"
-						Case "æ‰‹å‹•"
-							msg = msg & "Invalid_string_refer_to_original_code"
-						Case "Invalid_string_refer_to_original_code"
-							'Invalid_string_refer_to_original_code
-						Case "Invalid_string_refer_to_original_code"
+						Case "‘ŠE"
+							msg = msg & ";" & fname0 & "‚ğ‚Âƒ†ƒjƒbƒg“¯m‚Ìê‡A—×Ú‚ÉŒø‰Ê‚Í‘ŠEB"
+						Case "’†˜a"
+							msg = msg & ";" & fname0 & "‚ğ‚Âƒ†ƒjƒbƒg“¯m‚Ìê‡A" & "—×Ú‚ÉƒŒƒxƒ‹•ª‚¾‚¯Œø‰Ê‚ğ’†˜aB"
+						Case "‹ßÚ–³Œø"
+							msg = msg & ";u•vu“ËvuÚv‚É‚æ‚éUŒ‚‚É‚Í–³ŒøB"
+						Case "ƒoƒŠƒA–³Œø‰»–³Œø"
+							msg = msg & ";ƒoƒŠƒA–³Œø‰»‚É‚æ‚Á‚Ä–³Œø‰»‚³‚ê‚È‚¢B"
+						Case "è“®"
+							msg = msg & ";–hŒä‘I‘ğ‚É‚Ì‚İ”­“®B"
+						Case "”\—Í•K—v"
+							'ƒXƒLƒbƒv
+						Case "“¯’²—¦"
 							sname = p.SkillName0(opt)
 							If lv_mod = -1 Then
 								lv_mod = 20
 							End If
 							If u.SyncLevel >= 30 Then
-								msg = msg & "Invalid_string_refer_to_original_code" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¤‰åŒ–(+" & VB6.Format(lv_mod * (u.SyncLevel - 30)) & "Invalid_string_refer_to_original_code"
+								msg = msg & ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª•Ï‰»(+" & VB6.Format(lv_mod * (u.SyncLevel - 30)) & ")B"
 							ElseIf u.SyncLevel > 0 Then 
-								msg = msg & "Invalid_string_refer_to_original_code" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¤‰åŒ–(" & VB6.Format(lv_mod * (u.SyncLevel - 30)) & "Invalid_string_refer_to_original_code"
+								msg = msg & ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª•Ï‰»(" & VB6.Format(lv_mod * (u.SyncLevel - 30)) & ")B"
 							End If
-						Case "éœŠåŠ›"
+						Case "—ì—Í"
 							sname = p.SkillName0(opt)
 							If lv_mod = -1 Then
 								lv_mod = 10
 							End If
-							msg = msg & "Invalid_string_refer_to_original_code" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & VB6.Format(lv_mod * u.PlanaLevel) & "Invalid_string_refer_to_original_code"
-						Case "ã‚ªãƒ¼ãƒ©"
+							msg = msg & ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª‘‰Á(+" & VB6.Format(lv_mod * u.PlanaLevel) & ")B"
+						Case "ƒI[ƒ‰"
 							sname = p.SkillName0(opt)
 							If lv_mod = -1 Then
 								lv_mod = 200
 							End If
-							msg = msg & "Invalid_string_refer_to_original_code" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & VB6.Format(lv_mod * u.AuraLevel) & "Invalid_string_refer_to_original_code"
-						Case "Invalid_string_refer_to_original_code"
+							msg = msg & ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª‘‰Á(+" & VB6.Format(lv_mod * u.AuraLevel) & ")B"
+						Case "’´”\—Í"
 							sname = p.SkillName0(opt)
 							If lv_mod = -1 Then
 								lv_mod = 200
 							End If
-							msg = msg & "Invalid_string_refer_to_original_code" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & VB6.Format(lv_mod * u.PsychicLevel) & "Invalid_string_refer_to_original_code"
+							msg = msg & ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª‘‰Á(+" & VB6.Format(lv_mod * u.PsychicLevel) & ")B"
 						Case Else
 							sname = u.SkillName0(opt)
 							If lv_mod = -1 Then
 								lv_mod = 200
 							End If
-							msg = msg & "Invalid_string_refer_to_original_code" & sname & "ãƒ¬ãƒ™ãƒ«ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & VB6.Format(lv_mod * u.SkillLevel(opt)) & "Invalid_string_refer_to_original_code"
+							msg = msg & ";ƒpƒCƒƒbƒg‚Ì" & sname & "ƒŒƒxƒ‹‚É‚æ‚è‹­“x‚ª‘‰Á(+" & VB6.Format(lv_mod * u.SkillLevel(opt)) & ")B"
 					End Select
 				Next 
 				
-			Case "Invalid_string_refer_to_original_code"
+			Case "LˆæƒoƒŠƒA"
 				If IsNumeric(LIndex(fdata, 2)) And LIndex(fdata, 2) <> "1" Then
-					msg = "Invalid_string_refer_to_original_code"
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					msg = "”¼Œa" & StrConv(LIndex(fdata, 2), VbStrConv.Wide) & "ƒ}ƒXˆÈ“à‚Ì–¡•ûƒ†ƒjƒbƒg‚É‘Î‚·‚é"
 					i = CShort(LIndex(fdata, 2))
 				Else
-					msg = "éš£æ¥ã™ã‚‹å‘³æ–¹ãƒ¦ãƒ‹ãƒƒãƒˆã«å¯¾ã™ã‚‹"
+					msg = "—×Ú‚·‚é–¡•ûƒ†ƒjƒbƒg‚É‘Î‚·‚é"
 					i = 1
 				End If
-				If LIndex(fdata, 3) <> "" And LIndex(fdata, 3) <> "å…¨" Then
+				If LIndex(fdata, 3) <> "" And LIndex(fdata, 3) <> "‘S" Then
 					If Left(LIndex(fdata, 3), 1) = "!" Then
-						msg = msg & "Invalid_string_refer_to_original_code"
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						msg = msg & "u" & Mid(LIndex(fdata, 3), 2) & "v‘®«‚ğ‚½‚È‚¢"
 					Else
-						msg = msg & "Invalid_string_refer_to_original_code"
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						msg = msg & "u" & LIndex(fdata, 3) & "v‘®«‚ğ‚Â"
 					End If
 				End If
-				msg = msg & "ãƒ€ãƒ¡ãƒ¼ã‚¸" & VB6.Format(CInt(1000 * flevel)) & "Invalid_string_refer_to_original_code"
+				msg = msg & "ƒ_ƒ[ƒW" & VB6.Format(CInt(1000 * flevel)) & "ˆÈ‰º‚ÌUŒ‚‚ğ–³Œø‰»B"
 				If IsNumeric(LIndex(fdata, 4)) Then
 					If StrToLng(LIndex(fdata, 4)) > 0 Then
-						msg = msg & ";ç™ºå‹•æ™‚ã«" & LIndex(fdata, 4) & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
+						msg = msg & ";”­“®‚É" & LIndex(fdata, 4) & Term("‚d‚m", u) & "Á”ïB"
 					ElseIf StrToLng(LIndex(fdata, 4)) < 0 Then 
-						msg = msg & ";ç™ºå‹•æ™‚ã«" & Mid(LIndex(fdata, 4), 2) & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
+						msg = msg & ";”­“®‚É" & Mid(LIndex(fdata, 4), 2) & Term("‚d‚m", u) & "‘‰ÁB"
 					End If
 				Else
-					msg = msg & ";ç™ºå‹•æ™‚ã«" & VB6.Format(20 * i) & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
+					msg = msg & ";”­“®‚É" & VB6.Format(20 * i) & Term("‚d‚m", u) & "Á”ïB"
 				End If
 				If StrToLng(LIndex(fdata, 5)) > 50 Then
-					msg = msg & ";" & Term("æ°—åŠ›", u) & LIndex(fdata, 5) & "Invalid_string_refer_to_original_code"
+					msg = msg & ";" & Term("‹C—Í", u) & LIndex(fdata, 5) & "ˆÈã‚Åg—p‰Â”\B"
 				End If
-				msg = msg & "Invalid_string_refer_to_original_code"
+				msg = msg & ";‚½‚¾‚µUŒ‚‘¤‚à—LŒø”ÍˆÍ“à‚É‚¢‚éê‡‚Í–³Œø‰»B"
 				
-			Case "Invalid_string_refer_to_original_code"
-				If LIndex(fdata, 2) <> "" And LIndex(fdata, 2) <> "å…¨" Then
+			Case "ƒtƒB[ƒ‹ƒh"
+				If LIndex(fdata, 2) <> "" And LIndex(fdata, 2) <> "‘S" Then
 					If Left(LIndex(fdata, 2), 1) = "!" Then
-						msg = "Invalid_string_refer_to_original_code"
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						msg = "u" & Mid(LIndex(fdata, 2), 2) & "v‘®«‚ğ‚½‚È‚¢"
 					Else
-						msg = "Invalid_string_refer_to_original_code"
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						msg = "u" & LIndex(fdata, 2) & "v‘®«‚ğ‚Â"
 					End If
 				End If
 				If flevel >= 0 Then
-					msg = msg & "Invalid_string_refer_to_original_code"
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					msg = msg & "UŒ‚‚Ìƒ_ƒ[ƒW‚ğ" & VB6.Format(CInt(500 * flevel)) & "Œ¸­‚³‚¹‚éB"
 				Else
-					msg = msg & "Invalid_string_refer_to_original_code"
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					msg = msg & "UŒ‚‚Ìƒ_ƒ[ƒW‚ğ" & VB6.Format(CInt(-500 * flevel)) & "‘‰Á‚³‚¹‚éB"
 				End If
 				If StrToLng(LIndex(fdata, 3)) > 0 Then
-					msg = msg & ";ç™ºå‹•æ™‚ã«" & LIndex(fdata, 3) & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
+					msg = msg & ";”­“®‚É" & LIndex(fdata, 3) & Term("‚d‚m", u) & "Á”ïB"
 				ElseIf StrToLng(LIndex(fdata, 3)) < 0 Then 
-					msg = msg & ";ç™ºå‹•æ™‚ã«" & Mid(LIndex(fdata, 3), 2) & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
+					msg = msg & ";”­“®‚É" & Mid(LIndex(fdata, 3), 2) & Term("‚d‚m", u) & "‘‰ÁB"
 				End If
 				If StrToLng(LIndex(fdata, 4)) > 50 Then
-					msg = msg & Term("æ°—åŠ›", u) & LIndex(fdata, 4) & "Invalid_string_refer_to_original_code"
+					msg = msg & Term("‹C—Í", u) & LIndex(fdata, 4) & "ˆÈã‚Åg—p‰Â”\B"
 				End If
 				For i = 5 To LLength(fdata)
 					opt = LIndex(fdata, i)
@@ -1216,88 +1097,78 @@ Module Help
 						lv_mod = -1
 					End If
 					Select Case p.SkillType(opt)
-						Case "ç›¸æ®º"
-							msg = msg & ";" & fname0 & "Invalid_string_refer_to_original_code"
-						Case "Invalid_string_refer_to_original_code"
-							msg = msg & ";" & fname0 & "Invalid_string_refer_to_original_code"
-							'Invalid_string_refer_to_original_code
-							'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-						Case "è¿‘æ¥ç„¡åŠ¹"
-							msg = msg & "Invalid_string_refer_to_original_code"
-						Case "ãƒãƒªã‚¢ç„¡åŠ¹åŒ–ç„¡åŠ¹"
-							msg = msg & "Invalid_string_refer_to_original_code"
-						Case "æ‰‹å‹•"
-							msg = msg & "Invalid_string_refer_to_original_code"
-						Case "Invalid_string_refer_to_original_code"
-							'Invalid_string_refer_to_original_code
-						Case "Invalid_string_refer_to_original_code"
+						Case "‘ŠE"
+							msg = msg & ";" & fname0 & "‚ğ‚Âƒ†ƒjƒbƒg“¯m‚Ìê‡A—×Ú‚ÉŒø‰Ê‚Í‘ŠEB"
+						Case "’†˜a"
+							msg = msg & ";" & fname0 & "‚ğ‚Âƒ†ƒjƒbƒg“¯m‚Ìê‡A" & "—×Ú‚ÉƒŒƒxƒ‹•ª‚¾‚¯Œø‰Ê‚ğ’†˜aB"
+						Case "‹ßÚ–³Œø"
+							msg = msg & ";u•vu“ËvuÚv‚É‚æ‚éUŒ‚‚É‚Í–³ŒøB"
+						Case "ƒoƒŠƒA–³Œø‰»–³Œø"
+							msg = msg & ";ƒoƒŠƒA–³Œø‰»‚É‚æ‚Á‚Ä–³Œø‰»‚³‚ê‚È‚¢B"
+						Case "è“®"
+							msg = msg & ";–hŒä‘I‘ğ‚É‚Ì‚İ”­“®B"
+						Case "”\—Í•K—v"
+							'ƒXƒLƒbƒv
+						Case "“¯’²—¦"
 							sname = p.SkillName0(opt)
 							If lv_mod = -1 Then
 								lv_mod = 20
 							End If
 							If u.SyncLevel >= 30 Then
-								msg = msg & "Invalid_string_refer_to_original_code" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¤‰åŒ–(+" & VB6.Format(lv_mod * (u.SyncLevel - 30)) & "Invalid_string_refer_to_original_code"
+								msg = msg & ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª•Ï‰»(+" & VB6.Format(lv_mod * (u.SyncLevel - 30)) & ")B"
 							ElseIf u.SyncLevel > 0 Then 
-								msg = msg & "Invalid_string_refer_to_original_code" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¤‰åŒ–(" & VB6.Format(lv_mod * (u.SyncLevel - 30)) & "Invalid_string_refer_to_original_code"
+								msg = msg & ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª•Ï‰»(" & VB6.Format(lv_mod * (u.SyncLevel - 30)) & ")B"
 							End If
-						Case "éœŠåŠ›"
+						Case "—ì—Í"
 							sname = p.SkillName0(opt)
 							If lv_mod = -1 Then
 								lv_mod = 10
 							End If
-							msg = msg & "Invalid_string_refer_to_original_code" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & VB6.Format(lv_mod * u.PlanaLevel) & "Invalid_string_refer_to_original_code"
-						Case "ã‚ªãƒ¼ãƒ©"
+							msg = msg & ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª‘‰Á(+" & VB6.Format(lv_mod * u.PlanaLevel) & ")B"
+						Case "ƒI[ƒ‰"
 							sname = p.SkillName0(opt)
 							If lv_mod = -1 Then
 								lv_mod = 200
 							End If
-							msg = msg & "Invalid_string_refer_to_original_code" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & VB6.Format(lv_mod * u.AuraLevel) & "Invalid_string_refer_to_original_code"
-						Case "Invalid_string_refer_to_original_code"
+							msg = msg & ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª‘‰Á(+" & VB6.Format(lv_mod * u.AuraLevel) & ")B"
+						Case "’´”\—Í"
 							sname = p.SkillName0(opt)
 							If lv_mod = -1 Then
 								lv_mod = 200
 							End If
-							msg = msg & "Invalid_string_refer_to_original_code" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & VB6.Format(lv_mod * u.PsychicLevel) & "Invalid_string_refer_to_original_code"
+							msg = msg & ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª‘‰Á(+" & VB6.Format(lv_mod * u.PsychicLevel) & ")B"
 						Case Else
 							sname = u.SkillName0(opt)
 							If lv_mod = -1 Then
 								lv_mod = 200
 							End If
-							msg = msg & "Invalid_string_refer_to_original_code" & sname & "ãƒ¬ãƒ™ãƒ«ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & VB6.Format(lv_mod * u.SkillLevel(opt)) & "Invalid_string_refer_to_original_code"
+							msg = msg & ";ƒpƒCƒƒbƒg‚Ì" & sname & "ƒŒƒxƒ‹‚É‚æ‚è‹­“x‚ª‘‰Á(+" & VB6.Format(lv_mod * u.SkillLevel(opt)) & ")B"
 					End Select
 				Next 
 				
-			Case "Invalid_string_refer_to_original_code"
-				sname = p.SkillName0("Invalid_string_refer_to_original_code")
-				prob = p.SkillLevel("Invalid_string_refer_to_original_code") * 100 \ 16
-				msg = sname & "Invalid_string_refer_to_original_code" & VB6.Format(prob) & "Invalid_string_refer_to_original_code"
-				If LIndex(fdata, 2) <> "" And LIndex(fdata, 2) <> "å…¨" Then
+			Case "ƒAƒNƒeƒBƒuƒtƒB[ƒ‹ƒh"
+				sname = p.SkillName0("‚r–hŒä")
+				prob = p.SkillLevel("‚r–hŒä") * 100 \ 16
+				msg = sname & "Lv/16‚ÌŠm—¦(" & VB6.Format(prob) & "%)‚Å”­“®‚µA"
+				If LIndex(fdata, 2) <> "" And LIndex(fdata, 2) <> "‘S" Then
 					If Left(LIndex(fdata, 2), 1) = "!" Then
-						msg = msg & "Invalid_string_refer_to_original_code"
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						msg = msg & "u" & Mid(LIndex(fdata, 2), 2) & "v‘®«‚ğ‚½‚È‚¢"
 					Else
-						msg = msg & "Invalid_string_refer_to_original_code"
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						msg = msg & "u" & LIndex(fdata, 2) & "v‘®«‚ğ‚Â"
 					End If
 				End If
 				If flevel >= 0 Then
-					msg = msg & "Invalid_string_refer_to_original_code"
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					msg = msg & "UŒ‚‚Ìƒ_ƒ[ƒW‚ğ" & VB6.Format(CInt(500 * flevel)) & "Œ¸­‚³‚¹‚éB"
 				Else
-					msg = msg & "Invalid_string_refer_to_original_code"
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					msg = msg & "UŒ‚‚Ìƒ_ƒ[ƒW‚ğ" & VB6.Format(CInt(-500 * flevel)) & "‘‰Á‚³‚¹‚éB"
 				End If
 				If StrToLng(LIndex(fdata, 3)) > 0 Then
-					msg = msg & ";ç™ºå‹•æ™‚ã«" & LIndex(fdata, 3) & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
+					msg = msg & ";”­“®‚É" & LIndex(fdata, 3) & Term("‚d‚m", u) & "Á”ïB"
 				ElseIf StrToLng(LIndex(fdata, 3)) < 0 Then 
-					msg = msg & ";ç™ºå‹•æ™‚ã«" & Mid(LIndex(fdata, 3), 2) & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
+					msg = msg & ";”­“®‚É" & Mid(LIndex(fdata, 3), 2) & Term("‚d‚m", u) & "‘‰ÁB"
 				End If
 				If StrToLng(LIndex(fdata, 4)) > 50 Then
-					msg = msg & Term("æ°—åŠ›", u) & LIndex(fdata, 4) & "Invalid_string_refer_to_original_code"
+					msg = msg & Term("‹C—Í", u) & LIndex(fdata, 4) & "ˆÈã‚Åg—p‰Â”\B"
 				End If
 				For i = 5 To LLength(fdata)
 					opt = LIndex(fdata, i)
@@ -1309,132 +1180,113 @@ Module Help
 						lv_mod = -1
 					End If
 					Select Case p.SkillType(opt)
-						Case "ç›¸æ®º"
-							msg = msg & ";" & fname0 & "Invalid_string_refer_to_original_code"
-						Case "Invalid_string_refer_to_original_code"
-							msg = msg & ";" & fname0 & "Invalid_string_refer_to_original_code"
-							'Invalid_string_refer_to_original_code
-							'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-						Case "è¿‘æ¥ç„¡åŠ¹"
-							msg = msg & "Invalid_string_refer_to_original_code"
-						Case "ãƒãƒªã‚¢ç„¡åŠ¹åŒ–ç„¡åŠ¹"
-							msg = msg & "Invalid_string_refer_to_original_code"
-						Case "æ‰‹å‹•"
-							msg = msg & "Invalid_string_refer_to_original_code"
-						Case "Invalid_string_refer_to_original_code"
-							'Invalid_string_refer_to_original_code
-						Case "Invalid_string_refer_to_original_code"
+						Case "‘ŠE"
+							msg = msg & ";" & fname0 & "‚ğ‚Âƒ†ƒjƒbƒg“¯m‚Ìê‡A—×Ú‚ÉŒø‰Ê‚Í‘ŠEB"
+						Case "’†˜a"
+							msg = msg & ";" & fname0 & "‚ğ‚Âƒ†ƒjƒbƒg“¯m‚Ìê‡A" & "—×Ú‚ÉƒŒƒxƒ‹•ª‚¾‚¯Œø‰Ê‚ğ’†˜aB"
+						Case "‹ßÚ–³Œø"
+							msg = msg & ";u•vu“ËvuÚv‚É‚æ‚éUŒ‚‚É‚Í–³ŒøB"
+						Case "ƒoƒŠƒA–³Œø‰»–³Œø"
+							msg = msg & ";ƒoƒŠƒA–³Œø‰»‚É‚æ‚Á‚Ä–³Œø‰»‚³‚ê‚È‚¢B"
+						Case "è“®"
+							msg = msg & ";–hŒä‘I‘ğ‚É‚Ì‚İ”­“®B"
+						Case "”\—Í•K—v"
+							'ƒXƒLƒbƒv
+						Case "“¯’²—¦"
 							sname = p.SkillName0(opt)
 							If lv_mod = -1 Then
 								lv_mod = 20
 							End If
 							If u.SyncLevel >= 30 Then
-								msg = msg & "Invalid_string_refer_to_original_code" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¤‰åŒ–(+" & VB6.Format(lv_mod * (u.SyncLevel - 30)) & "Invalid_string_refer_to_original_code"
+								msg = msg & ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª•Ï‰»(+" & VB6.Format(lv_mod * (u.SyncLevel - 30)) & ")B"
 							ElseIf u.SyncLevel > 0 Then 
-								msg = msg & "Invalid_string_refer_to_original_code" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¤‰åŒ–(" & VB6.Format(lv_mod * (u.SyncLevel - 30)) & "Invalid_string_refer_to_original_code"
+								msg = msg & ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª•Ï‰»(" & VB6.Format(lv_mod * (u.SyncLevel - 30)) & ")B"
 							End If
-						Case "éœŠåŠ›"
+						Case "—ì—Í"
 							sname = p.SkillName0(opt)
 							If lv_mod = -1 Then
 								lv_mod = 10
 							End If
-							msg = msg & "Invalid_string_refer_to_original_code" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & VB6.Format(lv_mod * u.PlanaLevel) & "Invalid_string_refer_to_original_code"
-						Case "ã‚ªãƒ¼ãƒ©"
+							msg = msg & ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª‘‰Á(+" & VB6.Format(lv_mod * u.PlanaLevel) & ")B"
+						Case "ƒI[ƒ‰"
 							sname = p.SkillName0(opt)
 							If lv_mod = -1 Then
 								lv_mod = 200
 							End If
-							msg = msg & "Invalid_string_refer_to_original_code" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & VB6.Format(lv_mod * u.AuraLevel) & "Invalid_string_refer_to_original_code"
-						Case "Invalid_string_refer_to_original_code"
+							msg = msg & ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª‘‰Á(+" & VB6.Format(lv_mod * u.AuraLevel) & ")B"
+						Case "’´”\—Í"
 							sname = p.SkillName0(opt)
 							If lv_mod = -1 Then
 								lv_mod = 200
 							End If
-							msg = msg & "Invalid_string_refer_to_original_code" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & VB6.Format(lv_mod * u.PsychicLevel) & "Invalid_string_refer_to_original_code"
+							msg = msg & ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª‘‰Á(+" & VB6.Format(lv_mod * u.PsychicLevel) & ")B"
 						Case Else
 							sname = u.SkillName0(opt)
 							If lv_mod = -1 Then
 								lv_mod = 200
 							End If
-							msg = msg & "Invalid_string_refer_to_original_code" & sname & "ãƒ¬ãƒ™ãƒ«ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & VB6.Format(lv_mod * u.SkillLevel(opt)) & "Invalid_string_refer_to_original_code"
+							msg = msg & ";ƒpƒCƒƒbƒg‚Ì" & sname & "ƒŒƒxƒ‹‚É‚æ‚è‹­“x‚ª‘‰Á(+" & VB6.Format(lv_mod * u.SkillLevel(opt)) & ")B"
 					End Select
 				Next 
 				
-			Case "Invalid_string_refer_to_original_code"
+			Case "LˆæƒtƒB[ƒ‹ƒh"
 				If IsNumeric(LIndex(fdata, 2)) And LIndex(fdata, 2) <> "1" Then
-					msg = "Invalid_string_refer_to_original_code"
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					msg = "”¼Œa" & StrConv(LIndex(fdata, 2), VbStrConv.Wide) & "ƒ}ƒXˆÈ“à‚Ì–¡•ûƒ†ƒjƒbƒg‚É‘Î‚·‚é"
 					i = CShort(LIndex(fdata, 2))
 				Else
-					msg = "éš£æ¥ã™ã‚‹å‘³æ–¹ãƒ¦ãƒ‹ãƒƒãƒˆã«å¯¾ã™ã‚‹"
+					msg = "—×Ú‚·‚é–¡•ûƒ†ƒjƒbƒg‚É‘Î‚·‚é"
 					i = 1
 				End If
-				If LIndex(fdata, 3) <> "" And LIndex(fdata, 3) <> "å…¨" Then
+				If LIndex(fdata, 3) <> "" And LIndex(fdata, 3) <> "‘S" Then
 					If Left(LIndex(fdata, 3), 1) = "!" Then
-						msg = msg & "Invalid_string_refer_to_original_code"
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						msg = msg & "u" & Mid(LIndex(fdata, 3), 2) & "v‘®«‚ğ‚½‚È‚¢"
 					Else
-						msg = msg & "Invalid_string_refer_to_original_code"
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						msg = msg & "u" & LIndex(fdata, 3) & "v‘®«‚ğ‚Â"
 					End If
 				End If
 				If flevel >= 0 Then
-					msg = msg & "Invalid_string_refer_to_original_code"
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					msg = msg & "UŒ‚‚Ìƒ_ƒ[ƒW‚ğ" & VB6.Format(CInt(500 * flevel)) & "Œ¸­‚³‚¹‚éB"
 				Else
-					msg = msg & "Invalid_string_refer_to_original_code"
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					msg = msg & "UŒ‚‚Ìƒ_ƒ[ƒW‚ğ" & VB6.Format(CInt(-500 * flevel)) & "‘‰Á‚³‚¹‚éB"
 				End If
 				If IsNumeric(LIndex(fdata, 4)) Then
 					If StrToLng(LIndex(fdata, 4)) > 0 Then
-						msg = msg & ";ç™ºå‹•æ™‚ã«" & LIndex(fdata, 4) & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
+						msg = msg & ";”­“®‚É" & LIndex(fdata, 4) & Term("‚d‚m", u) & "Á”ïB"
 					ElseIf StrToLng(LIndex(fdata, 4)) < 0 Then 
-						msg = msg & ";ç™ºå‹•æ™‚ã«" & Mid(LIndex(fdata, 4), 2) & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
+						msg = msg & ";”­“®‚É" & Mid(LIndex(fdata, 4), 2) & Term("‚d‚m", u) & "‘‰ÁB"
 					End If
 				Else
-					msg = msg & ";ç™ºå‹•æ™‚ã«" & VB6.Format(20 * i) & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
+					msg = msg & ";”­“®‚É" & VB6.Format(20 * i) & Term("‚d‚m", u) & "Á”ïB"
 				End If
 				If StrToLng(LIndex(fdata, 5)) > 50 Then
-					msg = msg & ";" & Term("æ°—åŠ›", u) & LIndex(fdata, 5) & "Invalid_string_refer_to_original_code"
+					msg = msg & ";" & Term("‹C—Í", u) & LIndex(fdata, 5) & "ˆÈã‚Åg—p‰Â”\B"
 				End If
-				msg = msg & "Invalid_string_refer_to_original_code"
+				msg = msg & ";‚½‚¾‚µUŒ‚‘¤‚à—LŒø”ÍˆÍ“à‚É‚¢‚éê‡‚Í–³Œø‰»B"
 				
-			Case "Invalid_string_refer_to_original_code"
-				If LIndex(fdata, 2) <> "" And LIndex(fdata, 2) <> "å…¨" Then
+			Case "ƒvƒƒeƒNƒVƒ‡ƒ“"
+				If LIndex(fdata, 2) <> "" And LIndex(fdata, 2) <> "‘S" Then
 					If Left(LIndex(fdata, 2), 1) = "!" Then
-						msg = "Invalid_string_refer_to_original_code"
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						msg = "u" & Mid(LIndex(fdata, 2), 2) & "v‘®«‚ğ‚½‚È‚¢"
 					Else
-						msg = "Invalid_string_refer_to_original_code"
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						msg = "u" & LIndex(fdata, 2) & "v‘®«‚ğ‚Â"
 					End If
 				End If
 				If flevel > 10 Then
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					msg = msg & "UŒ‚‚Ìƒ_ƒ[ƒW‚ğ" & VB6.Format(CInt(10 * flevel - 100)) & "%‹zû‚·‚éB"
 				ElseIf flevel >= 0 Then 
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					msg = msg & "UŒ‚‚Ìƒ_ƒ[ƒW‚ğ" & VB6.Format(CInt(10 * flevel)) & "%Œ¸­‚³‚¹‚éB"
 				Else
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					msg = msg & "UŒ‚‚Ìƒ_ƒ[ƒW‚ğ" & VB6.Format(CInt(-10 * flevel)) & "%‘‰Á‚³‚¹‚éB"
 				End If
 				If Not IsNumeric(LIndex(fdata, 3)) Then
-					msg = msg & ";ç™ºå‹•æ™‚ã«10" & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
+					msg = msg & ";”­“®‚É10" & Term("‚d‚m", u) & "‘‰ÁB"
 				ElseIf StrToLng(LIndex(fdata, 3)) > 0 Then 
-					msg = msg & ";ç™ºå‹•æ™‚ã«" & LIndex(fdata, 3) & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
+					msg = msg & ";”­“®‚É" & LIndex(fdata, 3) & Term("‚d‚m", u) & "Á”ïB"
 				ElseIf StrToLng(LIndex(fdata, 3)) < 0 Then 
-					msg = msg & ";ç™ºå‹•æ™‚ã«" & Mid(LIndex(fdata, 3), 2) & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
+					msg = msg & ";”­“®‚É" & Mid(LIndex(fdata, 3), 2) & Term("‚d‚m", u) & "‘‰ÁB"
 				End If
 				If StrToLng(LIndex(fdata, 4)) > 50 Then
-					msg = msg & Term("æ°—åŠ›", u) & LIndex(fdata, 4) & "Invalid_string_refer_to_original_code"
+					msg = msg & Term("‹C—Í", u) & LIndex(fdata, 4) & "ˆÈã‚Åg—p‰Â”\B"
 				End If
 				For i = 5 To LLength(fdata)
 					opt = LIndex(fdata, i)
@@ -1446,91 +1298,82 @@ Module Help
 						lv_mod = -1
 					End If
 					Select Case p.SkillType(opt)
-						Case "ç›¸æ®º"
-							msg = msg & ";" & fname0 & "Invalid_string_refer_to_original_code"
-						Case "Invalid_string_refer_to_original_code"
-							msg = msg & ";" & fname0 & "Invalid_string_refer_to_original_code"
-							'Invalid_string_refer_to_original_code
-							'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-						Case "è¿‘æ¥ç„¡åŠ¹"
-							msg = msg & "Invalid_string_refer_to_original_code"
-						Case "ãƒãƒªã‚¢ç„¡åŠ¹åŒ–ç„¡åŠ¹"
-							msg = msg & "Invalid_string_refer_to_original_code"
-						Case "æ‰‹å‹•"
-							msg = msg & "Invalid_string_refer_to_original_code"
-						Case "Invalid_string_refer_to_original_code"
-							'Invalid_string_refer_to_original_code
-						Case "Invalid_string_refer_to_original_code"
+						Case "‘ŠE"
+							msg = msg & ";" & fname0 & "‚ğ‚Âƒ†ƒjƒbƒg“¯m‚Ìê‡A—×Ú‚ÉŒø‰Ê‚Í‘ŠEB"
+						Case "’†˜a"
+							msg = msg & ";" & fname0 & "‚ğ‚Âƒ†ƒjƒbƒg“¯m‚Ìê‡A" & "—×Ú‚ÉƒŒƒxƒ‹•ª‚¾‚¯Œø‰Ê‚ğ’†˜aB"
+						Case "‹ßÚ–³Œø"
+							msg = msg & ";u•vu“ËvuÚv‚É‚æ‚éUŒ‚‚É‚Í–³ŒøB"
+						Case "ƒoƒŠƒA–³Œø‰»–³Œø"
+							msg = msg & ";ƒoƒŠƒA–³Œø‰»‚É‚æ‚Á‚Ä–³Œø‰»‚³‚ê‚È‚¢B"
+						Case "è“®"
+							msg = msg & ";–hŒä‘I‘ğ‚É‚Ì‚İ”­“®B"
+						Case "”\—Í•K—v"
+							'ƒXƒLƒbƒv
+						Case "“¯’²—¦"
 							sname = p.SkillName0(opt)
 							If lv_mod = -1 Then
 								lv_mod = 0.5
 							End If
 							If u.SyncLevel >= 30 Then
-								msg = msg & "Invalid_string_refer_to_original_code" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¤‰åŒ–(+" & VB6.Format(lv_mod * (u.SyncLevel - 30)) & "Invalid_string_refer_to_original_code"
+								msg = msg & ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª•Ï‰»(+" & VB6.Format(lv_mod * (u.SyncLevel - 30)) & ")B"
 							ElseIf u.SyncLevel > 0 Then 
-								msg = msg & "Invalid_string_refer_to_original_code" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¤‰åŒ–(" & VB6.Format(lv_mod * (u.SyncLevel - 30)) & "Invalid_string_refer_to_original_code"
+								msg = msg & ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª•Ï‰»(" & VB6.Format(lv_mod * (u.SyncLevel - 30)) & ")B"
 							End If
-						Case "éœŠåŠ›"
+						Case "—ì—Í"
 							sname = p.SkillName0(opt)
 							If lv_mod = -1 Then
 								lv_mod = 0.2
 							End If
-							msg = msg & "Invalid_string_refer_to_original_code" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & VB6.Format(lv_mod * u.PlanaLevel) & "Invalid_string_refer_to_original_code"
-						Case "ã‚ªãƒ¼ãƒ©"
+							msg = msg & ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª‘‰Á(+" & VB6.Format(lv_mod * u.PlanaLevel) & ")B"
+						Case "ƒI[ƒ‰"
 							sname = p.SkillName0(opt)
 							If lv_mod = -1 Then
 								lv_mod = 5
 							End If
-							msg = msg & "Invalid_string_refer_to_original_code" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & VB6.Format(lv_mod * u.AuraLevel) & "Invalid_string_refer_to_original_code"
-						Case "Invalid_string_refer_to_original_code"
+							msg = msg & ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª‘‰Á(+" & VB6.Format(lv_mod * u.AuraLevel) & ")B"
+						Case "’´”\—Í"
 							sname = p.SkillName0(opt)
 							If lv_mod = -1 Then
 								lv_mod = 5
 							End If
-							msg = msg & "Invalid_string_refer_to_original_code" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & VB6.Format(lv_mod * u.PsychicLevel) & "Invalid_string_refer_to_original_code"
+							msg = msg & ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª‘‰Á(+" & VB6.Format(lv_mod * u.PsychicLevel) & ")B"
 						Case Else
 							sname = u.SkillName0(opt)
 							If lv_mod = -1 Then
 								lv_mod = 5
 							End If
-							msg = msg & "Invalid_string_refer_to_original_code" & sname & "ãƒ¬ãƒ™ãƒ«ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & VB6.Format(lv_mod * u.SkillLevel(opt)) & "Invalid_string_refer_to_original_code"
+							msg = msg & ";ƒpƒCƒƒbƒg‚Ì" & sname & "ƒŒƒxƒ‹‚É‚æ‚è‹­“x‚ª‘‰Á(+" & VB6.Format(lv_mod * u.SkillLevel(opt)) & ")B"
 					End Select
 				Next 
 				
-			Case "Invalid_string_refer_to_original_code"
-				sname = p.SkillName0("Invalid_string_refer_to_original_code")
-				prob = p.SkillLevel("Invalid_string_refer_to_original_code") * 100 \ 16
-				msg = sname & "Invalid_string_refer_to_original_code" & VB6.Format(prob) & "Invalid_string_refer_to_original_code"
-				If LIndex(fdata, 2) <> "" And LIndex(fdata, 2) <> "å…¨" Then
+			Case "ƒAƒNƒeƒBƒuƒvƒƒeƒNƒVƒ‡ƒ“"
+				sname = p.SkillName0("‚r–hŒä")
+				prob = p.SkillLevel("‚r–hŒä") * 100 \ 16
+				msg = sname & "Lv/16‚ÌŠm—¦(" & VB6.Format(prob) & "%)‚Å”­“®‚µA"
+				If LIndex(fdata, 2) <> "" And LIndex(fdata, 2) <> "‘S" Then
 					If Left(LIndex(fdata, 2), 1) = "!" Then
-						msg = msg & "Invalid_string_refer_to_original_code"
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						msg = msg & "u" & Mid(LIndex(fdata, 2), 2) & "v‘®«‚ğ‚½‚È‚¢"
 					Else
-						msg = msg & "Invalid_string_refer_to_original_code"
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						msg = msg & "u" & LIndex(fdata, 2) & "v‘®«‚ğ‚Â"
 					End If
 				End If
 				If flevel > 10 Then
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					msg = msg & "UŒ‚‚Ìƒ_ƒ[ƒW‚ğ" & VB6.Format(CInt(10 * flevel - 100)) & "%‹zû‚·‚éB"
 				ElseIf flevel >= 0 Then 
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					msg = msg & "UŒ‚‚Ìƒ_ƒ[ƒW‚ğ" & VB6.Format(CInt(10 * flevel)) & "%Œ¸­‚³‚¹‚éB"
 				Else
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					msg = msg & "UŒ‚‚Ìƒ_ƒ[ƒW‚ğ" & VB6.Format(CInt(-10 * flevel)) & "%‘‰Á‚³‚¹‚éB"
 				End If
 				If Not IsNumeric(LIndex(fdata, 3)) Then
-					msg = msg & ";ç™ºå‹•æ™‚ã«10" & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
+					msg = msg & ";”­“®‚É10" & Term("‚d‚m", u) & "‘‰ÁB"
 				ElseIf StrToLng(LIndex(fdata, 3)) > 0 Then 
-					msg = msg & ";ç™ºå‹•æ™‚ã«" & LIndex(fdata, 3) & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
+					msg = msg & ";”­“®‚É" & LIndex(fdata, 3) & Term("‚d‚m", u) & "Á”ïB"
 				ElseIf StrToLng(LIndex(fdata, 3)) < 0 Then 
-					msg = msg & ";ç™ºå‹•æ™‚ã«" & Mid(LIndex(fdata, 3), 2) & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
+					msg = msg & ";”­“®‚É" & Mid(LIndex(fdata, 3), 2) & Term("‚d‚m", u) & "‘‰ÁB"
 				End If
 				If StrToLng(LIndex(fdata, 4)) > 50 Then
-					msg = msg & Term("æ°—åŠ›", u) & LIndex(fdata, 4) & "Invalid_string_refer_to_original_code"
+					msg = msg & Term("‹C—Í", u) & LIndex(fdata, 4) & "ˆÈã‚Åg—p‰Â”\B"
 				End If
 				For i = 5 To LLength(fdata)
 					opt = LIndex(fdata, i)
@@ -1542,125 +1385,106 @@ Module Help
 						lv_mod = -1
 					End If
 					Select Case p.SkillType(opt)
-						Case "ç›¸æ®º"
-							msg = msg & ";" & fname0 & "Invalid_string_refer_to_original_code"
-						Case "Invalid_string_refer_to_original_code"
-							msg = msg & ";" & fname0 & "Invalid_string_refer_to_original_code"
-							'Invalid_string_refer_to_original_code
-							'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-						Case "è¿‘æ¥ç„¡åŠ¹"
-							msg = msg & "Invalid_string_refer_to_original_code"
-						Case "ãƒãƒªã‚¢ç„¡åŠ¹åŒ–ç„¡åŠ¹"
-							msg = msg & "Invalid_string_refer_to_original_code"
-						Case "æ‰‹å‹•"
-							msg = msg & "Invalid_string_refer_to_original_code"
-						Case "Invalid_string_refer_to_original_code"
-							'Invalid_string_refer_to_original_code
-						Case "Invalid_string_refer_to_original_code"
+						Case "‘ŠE"
+							msg = msg & ";" & fname0 & "‚ğ‚Âƒ†ƒjƒbƒg“¯m‚Ìê‡A—×Ú‚ÉŒø‰Ê‚Í‘ŠEB"
+						Case "’†˜a"
+							msg = msg & ";" & fname0 & "‚ğ‚Âƒ†ƒjƒbƒg“¯m‚Ìê‡A" & "—×Ú‚ÉƒŒƒxƒ‹•ª‚¾‚¯Œø‰Ê‚ğ’†˜aB"
+						Case "‹ßÚ–³Œø"
+							msg = msg & ";u•vu“ËvuÚv‚É‚æ‚éUŒ‚‚É‚Í–³ŒøB"
+						Case "ƒoƒŠƒA–³Œø‰»–³Œø"
+							msg = msg & ";ƒoƒŠƒA–³Œø‰»‚É‚æ‚Á‚Ä–³Œø‰»‚³‚ê‚È‚¢B"
+						Case "è“®"
+							msg = msg & ";–hŒä‘I‘ğ‚É‚Ì‚İ”­“®B"
+						Case "”\—Í•K—v"
+							'ƒXƒLƒbƒv
+						Case "“¯’²—¦"
 							sname = p.SkillName0(opt)
 							If lv_mod = -1 Then
 								lv_mod = 0.5
 							End If
 							If u.SyncLevel >= 30 Then
-								msg = msg & "Invalid_string_refer_to_original_code" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¤‰åŒ–(+" & VB6.Format(lv_mod * (u.SyncLevel - 30)) & "Invalid_string_refer_to_original_code"
+								msg = msg & ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª•Ï‰»(+" & VB6.Format(lv_mod * (u.SyncLevel - 30)) & "%)B"
 							ElseIf u.SyncLevel > 0 Then 
-								msg = msg & "Invalid_string_refer_to_original_code" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¤‰åŒ–(" & VB6.Format(lv_mod * (u.SyncLevel - 30)) & "Invalid_string_refer_to_original_code"
+								msg = msg & ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª•Ï‰»(" & VB6.Format(lv_mod * (u.SyncLevel - 30)) & "%)B"
 							End If
-						Case "éœŠåŠ›"
+						Case "—ì—Í"
 							sname = p.SkillName0(opt)
 							If lv_mod = -1 Then
 								lv_mod = 0.2
 							End If
-							msg = msg & "Invalid_string_refer_to_original_code" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & VB6.Format(lv_mod * u.PlanaLevel) & "Invalid_string_refer_to_original_code"
-						Case "ã‚ªãƒ¼ãƒ©"
+							msg = msg & ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª‘‰Á(+" & VB6.Format(lv_mod * u.PlanaLevel) & "%)B"
+						Case "ƒI[ƒ‰"
 							sname = p.SkillName0(opt)
 							If lv_mod = -1 Then
 								lv_mod = 5
 							End If
-							msg = msg & "Invalid_string_refer_to_original_code" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & VB6.Format(lv_mod * u.AuraLevel) & "Invalid_string_refer_to_original_code"
-						Case "Invalid_string_refer_to_original_code"
+							msg = msg & ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª‘‰Á(+" & VB6.Format(lv_mod * u.AuraLevel) & "%)B"
+						Case "’´”\—Í"
 							sname = p.SkillName0(opt)
 							If lv_mod = -1 Then
 								lv_mod = 5
 							End If
-							msg = msg & "Invalid_string_refer_to_original_code" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & VB6.Format(lv_mod * u.PsychicLevel) & "Invalid_string_refer_to_original_code"
+							msg = msg & ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª‘‰Á(+" & VB6.Format(lv_mod * u.PsychicLevel) & "%)B"
 						Case Else
 							sname = u.SkillName0(opt)
 							If lv_mod = -1 Then
 								lv_mod = 5
 							End If
-							msg = msg & "Invalid_string_refer_to_original_code" & sname & "ãƒ¬ãƒ™ãƒ«ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & VB6.Format(lv_mod * u.SkillLevel(opt)) & "Invalid_string_refer_to_original_code"
+							msg = msg & ";ƒpƒCƒƒbƒg‚Ì" & sname & "ƒŒƒxƒ‹‚É‚æ‚è‹­“x‚ª‘‰Á(+" & VB6.Format(lv_mod * u.SkillLevel(opt)) & "%)B"
 					End Select
 				Next 
 				
-			Case "Invalid_string_refer_to_original_code"
+			Case "LˆæƒvƒƒeƒNƒVƒ‡ƒ“"
 				If IsNumeric(LIndex(fdata, 2)) And LIndex(fdata, 2) <> "1" Then
-					msg = "Invalid_string_refer_to_original_code"
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					msg = "”¼Œa" & StrConv(LIndex(fdata, 2), VbStrConv.Wide) & "ƒ}ƒXˆÈ“à‚Ì–¡•ûƒ†ƒjƒbƒg‚É‘Î‚·‚é"
 					i = CShort(LIndex(fdata, 2))
 				Else
-					msg = "éš£æ¥ã™ã‚‹å‘³æ–¹ãƒ¦ãƒ‹ãƒƒãƒˆã«å¯¾ã™ã‚‹"
+					msg = "—×Ú‚·‚é–¡•ûƒ†ƒjƒbƒg‚É‘Î‚·‚é"
 					i = 1
 				End If
-				If LIndex(fdata, 3) <> "" And LIndex(fdata, 3) <> "å…¨" Then
+				If LIndex(fdata, 3) <> "" And LIndex(fdata, 3) <> "‘S" Then
 					If Left(LIndex(fdata, 3), 1) = "!" Then
-						msg = msg & "Invalid_string_refer_to_original_code"
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						msg = msg & "u" & Mid(LIndex(fdata, 3), 2) & "v‘®«‚ğ‚½‚È‚¢"
 					Else
-						msg = msg & "Invalid_string_refer_to_original_code"
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						msg = msg & "u" & LIndex(fdata, 3) & "v‘®«‚ğ‚Â"
 					End If
 				End If
 				If flevel > 10 Then
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					msg = msg & "UŒ‚‚Ìƒ_ƒ[ƒW‚ğ" & VB6.Format(CInt(10 * flevel - 100)) & "%‹zû‚·‚éB"
 				ElseIf flevel >= 0 Then 
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					msg = msg & "UŒ‚‚Ìƒ_ƒ[ƒW‚ğ" & VB6.Format(CInt(10 * flevel)) & "%Œ¸­‚³‚¹‚éB"
 				Else
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					msg = msg & "UŒ‚‚Ìƒ_ƒ[ƒW‚ğ" & VB6.Format(CInt(-10 * flevel)) & "%‘‰Á‚³‚¹‚éB"
 				End If
 				If IsNumeric(LIndex(fdata, 4)) Then
 					If StrToLng(LIndex(fdata, 4)) > 0 Then
-						msg = msg & ";ç™ºå‹•æ™‚ã«" & LIndex(fdata, 4) & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
+						msg = msg & ";”­“®‚É" & LIndex(fdata, 4) & Term("‚d‚m", u) & "Á”ïB"
 					ElseIf StrToLng(LIndex(fdata, 4)) < 0 Then 
-						msg = msg & ";ç™ºå‹•æ™‚ã«" & Mid(LIndex(fdata, 4), 2) & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
+						msg = msg & ";”­“®‚É" & Mid(LIndex(fdata, 4), 2) & Term("‚d‚m", u) & "‘‰ÁB"
 					End If
 				Else
-					msg = msg & ";ç™ºå‹•æ™‚ã«" & VB6.Format(20 * i) & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
+					msg = msg & ";”­“®‚É" & VB6.Format(20 * i) & Term("‚d‚m", u) & "Á”ïB"
 				End If
 				If StrToLng(LIndex(fdata, 5)) > 50 Then
-					msg = msg & ";" & Term("æ°—åŠ›", u) & LIndex(fdata, 5) & "Invalid_string_refer_to_original_code"
+					msg = msg & ";" & Term("‹C—Í", u) & LIndex(fdata, 5) & "ˆÈã‚Åg—p‰Â”\B"
 				End If
-				msg = msg & "Invalid_string_refer_to_original_code"
+				msg = msg & ";‚½‚¾‚µUŒ‚‘¤‚à—LŒø”ÍˆÍ“à‚É‚¢‚éê‡‚Í–³Œø‰»B"
 				
-			Case "Invalid_string_refer_to_original_code"
-				If LIndex(fdata, 2) <> "" And LIndex(fdata, 2) <> "å…¨" Then
+			Case "ƒA[ƒ}["
+				If LIndex(fdata, 2) <> "" And LIndex(fdata, 2) <> "‘S" Then
 					If Left(LIndex(fdata, 2), 1) = "!" Then
-						msg = "Invalid_string_refer_to_original_code"
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						msg = "u" & Mid(LIndex(fdata, 2), 2) & "v‘®«‚ğ‚½‚È‚¢"
 					Else
-						msg = "Invalid_string_refer_to_original_code"
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						msg = "u" & LIndex(fdata, 2) & "v‘®«‚ğ‚Â"
 					End If
 				End If
 				If flevel >= 0 Then
-					msg = msg & "Invalid_string_refer_to_original_code"
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					msg = msg & "UŒ‚‚É‘Î‚µ‚Ä‘•b‚ğ" & VB6.Format(CInt(100 * flevel)) & "‘‰Á‚³‚¹‚éB"
 				Else
-					msg = msg & "Invalid_string_refer_to_original_code"
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					msg = msg & "UŒ‚‚É‘Î‚µ‚Ä‘•b‚ğ" & VB6.Format(CInt(-100 * flevel)) & "Œ¸­‚³‚¹‚éB"
 				End If
 				If StrToLng(LIndex(fdata, 3)) > 50 Then
-					msg = msg & Term("æ°—åŠ›", u) & LIndex(fdata, 3) & "Invalid_string_refer_to_original_code"
+					msg = msg & Term("‹C—Í", u) & LIndex(fdata, 3) & "ˆÈã‚Åg—p‰Â”\B"
 				End If
 				For i = 4 To LLength(fdata)
 					opt = LIndex(fdata, i)
@@ -1672,69 +1496,62 @@ Module Help
 						lv_mod = -1
 					End If
 					Select Case p.SkillType(opt)
-						Case "Invalid_string_refer_to_original_code"
-							'Invalid_string_refer_to_original_code
-						Case "Invalid_string_refer_to_original_code"
+						Case "”\—Í•K—v"
+							'ƒXƒLƒbƒv
+						Case "“¯’²—¦"
 							sname = p.SkillName0(opt)
 							If lv_mod = -1 Then
 								lv_mod = 5
 							End If
 							If u.SyncLevel >= 30 Then
-								msg = msg & "Invalid_string_refer_to_original_code" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¤‰åŒ–(+" & VB6.Format(lv_mod * (u.SyncLevel - 30)) & "Invalid_string_refer_to_original_code"
+								msg = msg & ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª•Ï‰»(+" & VB6.Format(lv_mod * (u.SyncLevel - 30)) & ")B"
 							ElseIf u.SyncLevel > 0 Then 
-								msg = msg & "Invalid_string_refer_to_original_code" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¤‰åŒ–(" & VB6.Format(lv_mod * (u.SyncLevel - 30)) & "Invalid_string_refer_to_original_code"
+								msg = msg & ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª•Ï‰»(" & VB6.Format(lv_mod * (u.SyncLevel - 30)) & ")B"
 							End If
-						Case "éœŠåŠ›"
+						Case "—ì—Í"
 							sname = p.SkillName0(opt)
 							If lv_mod = -1 Then
 								lv_mod = 2
 							End If
-							msg = msg & "Invalid_string_refer_to_original_code" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & VB6.Format(lv_mod * u.PlanaLevel) & "Invalid_string_refer_to_original_code"
-						Case "ã‚ªãƒ¼ãƒ©"
+							msg = msg & ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª‘‰Á(+" & VB6.Format(lv_mod * u.PlanaLevel) & ")B"
+						Case "ƒI[ƒ‰"
 							sname = p.SkillName0(opt)
 							If lv_mod = -1 Then
 								lv_mod = 50
 							End If
-							msg = msg & "Invalid_string_refer_to_original_code" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & VB6.Format(lv_mod * u.AuraLevel) & "Invalid_string_refer_to_original_code"
-						Case "Invalid_string_refer_to_original_code"
+							msg = msg & ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª‘‰Á(+" & VB6.Format(lv_mod * u.AuraLevel) & ")B"
+						Case "’´”\—Í"
 							sname = p.SkillName0(opt)
 							If lv_mod = -1 Then
 								lv_mod = 50
 							End If
-							msg = msg & "Invalid_string_refer_to_original_code" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & VB6.Format(lv_mod * u.PsychicLevel) & "Invalid_string_refer_to_original_code"
+							msg = msg & ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª‘‰Á(+" & VB6.Format(lv_mod * u.PsychicLevel) & ")B"
 						Case Else
 							sname = u.SkillName0(opt)
 							If lv_mod = -1 Then
 								lv_mod = 50
 							End If
-							msg = msg & "Invalid_string_refer_to_original_code" & sname & "ãƒ¬ãƒ™ãƒ«ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & VB6.Format(lv_mod * u.SkillLevel(opt)) & "Invalid_string_refer_to_original_code"
+							msg = msg & ";ƒpƒCƒƒbƒg‚Ì" & sname & "ƒŒƒxƒ‹‚É‚æ‚è‹­“x‚ª‘‰Á(+" & VB6.Format(lv_mod * u.SkillLevel(opt)) & ")B"
 					End Select
 				Next 
 				
-			Case "Invalid_string_refer_to_original_code"
-				If LIndex(fdata, 2) <> "" And LIndex(fdata, 2) <> "å…¨" Then
+			Case "ƒŒƒWƒXƒg"
+				If LIndex(fdata, 2) <> "" And LIndex(fdata, 2) <> "‘S" Then
 					If Left(LIndex(fdata, 2), 1) = "!" Then
-						msg = "Invalid_string_refer_to_original_code"
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						msg = "u" & Mid(LIndex(fdata, 2), 2) & "v‘®«‚ğ‚½‚È‚¢"
 					Else
-						msg = "Invalid_string_refer_to_original_code"
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						msg = "u" & LIndex(fdata, 2) & "v‘®«‚ğ‚Â"
 					End If
 				End If
 				If flevel > 10 Then
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					msg = msg & "UŒ‚‚É‘Î‚µ‚Äƒ_ƒ[ƒW‚ğ" & VB6.Format(100 - CInt(10 * flevel)) & "%‹zû‚·‚éB"
 				ElseIf flevel >= 0 Then 
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					msg = msg & "UŒ‚‚É‘Î‚µ‚Äƒ_ƒ[ƒW‚ğ" & VB6.Format(CInt(10 * flevel)) & "%ŒyŒ¸‚³‚¹‚éB"
 				Else
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					msg = msg & "UŒ‚‚É‘Î‚µ‚Äƒ_ƒ[ƒW‚ğ" & VB6.Format(CInt(-10 * flevel)) & "%‘‰Á‚³‚¹‚éB"
 				End If
 				If StrToLng(LIndex(fdata, 3)) > 50 Then
-					msg = msg & Term("æ°—åŠ›", u) & LIndex(fdata, 3) & "Invalid_string_refer_to_original_code"
+					msg = msg & Term("‹C—Í", u) & LIndex(fdata, 3) & "ˆÈã‚Åg—p‰Â”\B"
 				End If
 				For i = 4 To LLength(fdata)
 					opt = LIndex(fdata, i)
@@ -1746,95 +1563,91 @@ Module Help
 						lv_mod = -1
 					End If
 					Select Case p.SkillType(opt)
-						Case "Invalid_string_refer_to_original_code"
-							'Invalid_string_refer_to_original_code
-						Case "Invalid_string_refer_to_original_code"
+						Case "”\—Í•K—v"
+							'ƒXƒLƒbƒv
+						Case "“¯’²—¦"
 							sname = p.SkillName0(opt)
 							If lv_mod = -1 Then
 								lv_mod = 5
 							End If
 							If u.SyncLevel >= 30 Then
-								msg = msg & "Invalid_string_refer_to_original_code" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¤‰åŒ–(+" & VB6.Format(lv_mod * (u.SyncLevel - 30)) & "Invalid_string_refer_to_original_code"
+								msg = msg & ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª•Ï‰»(+" & VB6.Format(lv_mod * (u.SyncLevel - 30)) & "%)B"
 							ElseIf u.SyncLevel > 0 Then 
-								msg = msg & "Invalid_string_refer_to_original_code" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¤‰åŒ–(" & VB6.Format(lv_mod * (u.SyncLevel - 30)) & "Invalid_string_refer_to_original_code"
+								msg = msg & ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª•Ï‰»(" & VB6.Format(lv_mod * (u.SyncLevel - 30)) & "%)B"
 							End If
-						Case "éœŠåŠ›"
+						Case "—ì—Í"
 							sname = p.SkillName0(opt)
 							If lv_mod = -1 Then
 								lv_mod = 2
 							End If
-							msg = msg & "Invalid_string_refer_to_original_code" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & VB6.Format(lv_mod * u.PlanaLevel) & "Invalid_string_refer_to_original_code"
-						Case "ã‚ªãƒ¼ãƒ©"
+							msg = msg & ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª‘‰Á(+" & VB6.Format(lv_mod * u.PlanaLevel) & "%)B"
+						Case "ƒI[ƒ‰"
 							sname = p.SkillName0(opt)
 							If lv_mod = -1 Then
 								lv_mod = 50
 							End If
-							msg = msg & "Invalid_string_refer_to_original_code" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & VB6.Format(lv_mod * u.AuraLevel) & "Invalid_string_refer_to_original_code"
-						Case "Invalid_string_refer_to_original_code"
+							msg = msg & ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª‘‰Á(+" & VB6.Format(lv_mod * u.AuraLevel) & "%)B"
+						Case "’´”\—Í"
 							sname = p.SkillName0(opt)
 							If lv_mod = -1 Then
 								lv_mod = 50
 							End If
-							msg = msg & "Invalid_string_refer_to_original_code" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & VB6.Format(lv_mod * u.PsychicLevel) & "Invalid_string_refer_to_original_code"
+							msg = msg & ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª‘‰Á(+" & VB6.Format(lv_mod * u.PsychicLevel) & "%)B"
 						Case Else
 							sname = u.SkillName0(opt)
 							If lv_mod = -1 Then
 								lv_mod = 50
 							End If
-							msg = msg & "Invalid_string_refer_to_original_code" & sname & "ãƒ¬ãƒ™ãƒ«ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & VB6.Format(lv_mod * u.SkillLevel(opt)) & "Invalid_string_refer_to_original_code"
+							msg = msg & ";ƒpƒCƒƒbƒg‚Ì" & sname & "ƒŒƒxƒ‹‚É‚æ‚è‹­“x‚ª‘‰Á(+" & VB6.Format(lv_mod * u.SkillLevel(opt)) & "%)B"
 					End Select
 				Next 
 				
-			Case "å½“ã¦èº«æŠ€"
-				If LIndex(fdata, 3) <> "" And LIndex(fdata, 3) <> "å…¨" Then
+			Case "“–‚Äg‹Z"
+				If LIndex(fdata, 3) <> "" And LIndex(fdata, 3) <> "‘S" Then
 					If Left(LIndex(fdata, 3), 1) = "!" Then
-						msg = "Invalid_string_refer_to_original_code"
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						msg = "u" & Mid(LIndex(fdata, 3), 2) & "v‘®«‚ğ‚½‚È‚¢"
 					Else
-						msg = "Invalid_string_refer_to_original_code"
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						msg = "u" & LIndex(fdata, 3) & "v‘®«‚ğ‚Â"
 					End If
 				End If
 				
 				If flevel <> 1 Then
-					msg = msg & "ãƒ€ãƒ¡ãƒ¼ã‚¸" & VB6.Format(CInt(500 * flevel)) & "ã¾ã§ã®"
+					msg = msg & "ƒ_ƒ[ƒW" & VB6.Format(CInt(500 * flevel)) & "‚Ü‚Å‚Ì"
 				End If
 				
-				msg = msg & "Invalid_string_refer_to_original_code"
+				msg = msg & "UŒ‚‚ğ"
 				
 				buf = LIndex(fdata, 4)
 				If IsNumeric(buf) Then
 					If buf <> "100" Then
-						msg = msg & buf & "Invalid_string_refer_to_original_code"
+						msg = msg & buf & "%‚ÌŠm—¦‚Åó‚¯~‚ßA"
 					Else
-						msg = msg & "Invalid_string_refer_to_original_code"
+						msg = msg & "ó‚¯~‚ßA"
 					End If
 				ElseIf InStr(buf, "+") > 0 Or InStr(buf, "-") > 0 Then 
 					i = MaxLng(InStr(buf, "+"), InStr(buf, "-"))
 					sname = u.SkillName0(Left(buf, i - 1))
 					prob = (u.SkillLevel(Left(buf, i - 1)) + CShort(Mid(buf, i))) * 100 \ 16
-					msg = msg & "(" & sname & "Lv" & Mid(buf, i) & "Invalid_string_refer_to_original_code" & VB6.Format(prob) & "Invalid_string_refer_to_original_code"
+					msg = msg & "(" & sname & "Lv" & Mid(buf, i) & ")/16‚ÌŠm—¦(" & VB6.Format(prob) & "%)‚Åó‚¯~‚ßA"
 				Else
 					sname = u.SkillName0(buf)
 					prob = u.SkillLevel(buf) * 100 \ 16
-					msg = msg & sname & "Invalid_string_refer_to_original_code" & VB6.Format(prob) & "Invalid_string_refer_to_original_code"
+					msg = msg & sname & "Lv/16‚ÌŠm—¦(" & VB6.Format(prob) & "%)‚Åó‚¯~‚ßA"
 				End If
 				
 				buf = LIndex(fdata, 2)
 				If InStr(buf, "(") > 0 Then
 					buf = Left(buf, InStr(buf, "(") - 1)
 				End If
-				msg = msg & buf & "Invalid_string_refer_to_original_code"
+				msg = msg & buf & "‚Å”½Œ‚B"
 				
 				If StrToLng(LIndex(fdata, 5)) > 0 Then
-					msg = msg & ";ç™ºå‹•æ™‚ã«" & LIndex(fdata, 5) & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
+					msg = msg & ";”­“®‚É" & LIndex(fdata, 5) & Term("‚d‚m", u) & "Á”ïB"
 				ElseIf StrToLng(LIndex(fdata, 5)) < 0 Then 
-					msg = msg & ";ç™ºå‹•æ™‚ã«" & Mid(LIndex(fdata, 5), 2) & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
+					msg = msg & ";”­“®‚É" & Mid(LIndex(fdata, 5), 2) & Term("‚d‚m", u) & "‘‰ÁB"
 				End If
 				If StrToLng(LIndex(fdata, 6)) > 50 Then
-					msg = msg & ";" & Term("æ°—åŠ›", u) & LIndex(fdata, 6) & "Invalid_string_refer_to_original_code"
+					msg = msg & ";" & Term("‹C—Í", u) & LIndex(fdata, 6) & "ˆÈã‚Åg—p‰Â”\B"
 				End If
 				For i = 7 To LLength(fdata)
 					opt = LIndex(fdata, i)
@@ -1846,99 +1659,93 @@ Module Help
 						lv_mod = -1
 					End If
 					Select Case p.SkillType(opt)
-						Case "ç›¸æ®º"
-							msg = msg & ";" & fname0 & "Invalid_string_refer_to_original_code"
-						Case "Invalid_string_refer_to_original_code"
-							msg = msg & ";" & fname0 & "Invalid_string_refer_to_original_code"
-							'Invalid_string_refer_to_original_code
-							'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-						Case "è¿‘æ¥ç„¡åŠ¹"
-							msg = msg & "Invalid_string_refer_to_original_code"
-						Case "æ‰‹å‹•"
-							msg = msg & "Invalid_string_refer_to_original_code"
-						Case "Invalid_string_refer_to_original_code"
-							'Invalid_string_refer_to_original_code
-						Case "Invalid_string_refer_to_original_code"
+						Case "‘ŠE"
+							msg = msg & ";" & fname0 & "‚ğ‚Âƒ†ƒjƒbƒg“¯m‚Ìê‡A—×Ú‚ÉŒø‰Ê‚Í‘ŠEB"
+						Case "’†˜a"
+							msg = msg & ";" & fname0 & "‚ğ‚Âƒ†ƒjƒbƒg“¯m‚Ìê‡A" & "—×Ú‚ÉƒŒƒxƒ‹•ª‚¾‚¯Œø‰Ê‚ğ‘ŠEB"
+						Case "‹ßÚ–³Œø"
+							msg = msg & ";u•vu“ËvuÚv‚É‚æ‚éUŒ‚‚É‚Í–³ŒøB"
+						Case "è“®"
+							msg = msg & ";–hŒä‘I‘ğ‚É‚Ì‚İ”­“®B"
+						Case "”\—Í•K—v"
+							'ƒXƒLƒbƒv
+						Case "“¯’²—¦"
 							sname = p.SkillName0(opt)
 							If lv_mod = -1 Then
 								lv_mod = 20
 							End If
 							If u.SyncLevel >= 30 Then
-								msg = msg & "Invalid_string_refer_to_original_code" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¤‰åŒ–(+" & VB6.Format(lv_mod * (u.SyncLevel - 30)) & "Invalid_string_refer_to_original_code"
+								msg = msg & ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª•Ï‰»(+" & VB6.Format(lv_mod * (u.SyncLevel - 30)) & ")B"
 							ElseIf u.SyncLevel > 0 Then 
-								msg = msg & "Invalid_string_refer_to_original_code" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¤‰åŒ–(" & VB6.Format(lv_mod * (u.SyncLevel - 30)) & "Invalid_string_refer_to_original_code"
+								msg = msg & ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª•Ï‰»(" & VB6.Format(lv_mod * (u.SyncLevel - 30)) & ")B"
 							End If
-						Case "éœŠåŠ›"
+						Case "—ì—Í"
 							sname = p.SkillName0(opt)
 							If lv_mod = -1 Then
 								lv_mod = 10
 							End If
-							msg = msg & "Invalid_string_refer_to_original_code" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & VB6.Format(lv_mod * u.PlanaLevel) & "Invalid_string_refer_to_original_code"
-						Case "ã‚ªãƒ¼ãƒ©"
+							msg = msg & ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª‘‰Á(+" & VB6.Format(lv_mod * u.PlanaLevel) & ")B"
+						Case "ƒI[ƒ‰"
 							sname = p.SkillName0(opt)
 							If lv_mod = -1 Then
 								lv_mod = 200
 							End If
-							msg = msg & "Invalid_string_refer_to_original_code" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & VB6.Format(lv_mod * u.AuraLevel) & "Invalid_string_refer_to_original_code"
-						Case "Invalid_string_refer_to_original_code"
+							msg = msg & ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª‘‰Á(+" & VB6.Format(lv_mod * u.AuraLevel) & ")B"
+						Case "’´”\—Í"
 							sname = p.SkillName0(opt)
 							If lv_mod = -1 Then
 								lv_mod = 200
 							End If
-							msg = msg & "Invalid_string_refer_to_original_code" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & VB6.Format(lv_mod * u.PsychicLevel) & "Invalid_string_refer_to_original_code"
+							msg = msg & ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª‘‰Á(+" & VB6.Format(lv_mod * u.PsychicLevel) & ")B"
 						Case Else
 							sname = u.SkillName0(opt)
 							If lv_mod = -1 Then
 								lv_mod = 200
 							End If
-							msg = msg & "Invalid_string_refer_to_original_code" & sname & "ãƒ¬ãƒ™ãƒ«ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & VB6.Format(lv_mod * u.SkillLevel(opt)) & "Invalid_string_refer_to_original_code"
+							msg = msg & ";ƒpƒCƒƒbƒg‚Ì" & sname & "ƒŒƒxƒ‹‚É‚æ‚è‹­“x‚ª‘‰Á(+" & VB6.Format(lv_mod * u.SkillLevel(opt)) & ")B"
 					End Select
 				Next 
 				
-			Case "Invalid_string_refer_to_original_code"
-				If LIndex(fdata, 2) <> "" And LIndex(fdata, 2) <> "å…¨" Then
+			Case "”½Ë"
+				If LIndex(fdata, 2) <> "" And LIndex(fdata, 2) <> "‘S" Then
 					If Left(LIndex(fdata, 2), 1) = "!" Then
-						msg = "Invalid_string_refer_to_original_code"
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						msg = "u" & Mid(LIndex(fdata, 2), 2) & "v‘®«‚ğ‚½‚È‚¢"
 					Else
-						msg = "Invalid_string_refer_to_original_code"
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						msg = "u" & LIndex(fdata, 2) & "v‘®«‚ğ‚Â"
 					End If
 				End If
 				
 				If flevel <> 1 Then
-					msg = msg & "ãƒ€ãƒ¡ãƒ¼ã‚¸" & VB6.Format(CInt(500 * flevel)) & "ã¾ã§ã®"
+					msg = msg & "ƒ_ƒ[ƒW" & VB6.Format(CInt(500 * flevel)) & "‚Ü‚Å‚Ì"
 				End If
 				
-				msg = msg & "Invalid_string_refer_to_original_code"
+				msg = msg & "UŒ‚‚ğ"
 				
 				buf = LIndex(fdata, 3)
 				If IsNumeric(buf) Then
 					If buf <> "100" Then
-						msg = msg & buf & "Invalid_string_refer_to_original_code"
+						msg = msg & buf & "%‚ÌŠm—¦‚Å”½ËB"
 					Else
-						msg = msg & "Invalid_string_refer_to_original_code"
+						msg = msg & "”½ËB"
 					End If
 				ElseIf InStr(buf, "+") > 0 Or InStr(buf, "-") > 0 Then 
 					i = MaxLng(InStr(buf, "+"), InStr(buf, "-"))
 					sname = u.SkillName0(Left(buf, i - 1))
 					prob = (u.SkillLevel(Left(buf, i - 1)) + CShort(Mid(buf, i))) * 100 \ 16
-					msg = msg & "(" & sname & "Lv" & Mid(buf, i) & "Invalid_string_refer_to_original_code" & VB6.Format(prob) & "Invalid_string_refer_to_original_code"
+					msg = msg & "(" & sname & "Lv" & Mid(buf, i) & ")/16‚ÌŠm—¦(" & VB6.Format(prob) & "%)‚Å”½ËB"
 				Else
 					sname = u.SkillName0(buf)
 					prob = u.SkillLevel(buf) * 100 \ 16
-					msg = msg & sname & "Invalid_string_refer_to_original_code" & VB6.Format(prob) & "Invalid_string_refer_to_original_code"
+					msg = msg & sname & "Lv/16‚ÌŠm—¦(" & VB6.Format(prob) & "%)‚Å”½ËB"
 				End If
 				
 				If StrToLng(LIndex(fdata, 4)) > 0 Then
-					msg = msg & ";ç™ºå‹•æ™‚ã«" & LIndex(fdata, 4) & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
+					msg = msg & ";”­“®‚É" & LIndex(fdata, 4) & Term("‚d‚m", u) & "Á”ïB"
 				ElseIf StrToLng(LIndex(fdata, 4)) < 0 Then 
-					msg = msg & ";ç™ºå‹•æ™‚ã«" & Mid(LIndex(fdata, 4), 2) & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
+					msg = msg & ";”­“®‚É" & Mid(LIndex(fdata, 4), 2) & Term("‚d‚m", u) & "‘‰ÁB"
 				End If
 				If StrToLng(LIndex(fdata, 5)) > 50 Then
-					msg = msg & ";" & Term("æ°—åŠ›", u) & LIndex(fdata, 5) & "Invalid_string_refer_to_original_code"
+					msg = msg & ";" & Term("‹C—Í", u) & LIndex(fdata, 5) & "ˆÈã‚Åg—p‰Â”\B"
 				End If
 				For i = 6 To LLength(fdata)
 					opt = LIndex(fdata, i)
@@ -1950,100 +1757,94 @@ Module Help
 						lv_mod = -1
 					End If
 					Select Case p.SkillType(opt)
-						Case "ç›¸æ®º"
-							msg = msg & ";" & fname0 & "Invalid_string_refer_to_original_code"
-						Case "Invalid_string_refer_to_original_code"
-							msg = msg & ";" & fname0 & "Invalid_string_refer_to_original_code"
-							'Invalid_string_refer_to_original_code
-							'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-						Case "è¿‘æ¥ç„¡åŠ¹"
-							msg = msg & "Invalid_string_refer_to_original_code"
-						Case "æ‰‹å‹•"
-							msg = msg & "Invalid_string_refer_to_original_code"
-						Case "Invalid_string_refer_to_original_code"
-							'Invalid_string_refer_to_original_code
-						Case "Invalid_string_refer_to_original_code"
+						Case "‘ŠE"
+							msg = msg & ";" & fname0 & "‚ğ‚Âƒ†ƒjƒbƒg“¯m‚Ìê‡A—×Ú‚ÉŒø‰Ê‚Í‘ŠEB"
+						Case "’†˜a"
+							msg = msg & ";" & fname0 & "‚ğ‚Âƒ†ƒjƒbƒg“¯m‚Ìê‡A" & "—×Ú‚ÉƒŒƒxƒ‹•ª‚¾‚¯Œø‰Ê‚ğ’†˜aB"
+						Case "‹ßÚ–³Œø"
+							msg = msg & ";u•vu“ËvuÚv‚É‚æ‚éUŒ‚‚É‚Í–³ŒøB"
+						Case "è“®"
+							msg = msg & ";–hŒä‘I‘ğ‚É‚Ì‚İ”­“®B"
+						Case "”\—Í•K—v"
+							'ƒXƒLƒbƒv
+						Case "“¯’²—¦"
 							sname = p.SkillName0(opt)
 							If lv_mod = -1 Then
 								lv_mod = 20
 							End If
 							If u.SyncLevel >= 30 Then
-								msg = msg & "Invalid_string_refer_to_original_code" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¤‰åŒ–(+" & VB6.Format(lv_mod * (u.SyncLevel - 30)) & "Invalid_string_refer_to_original_code"
+								msg = msg & ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª•Ï‰»(+" & VB6.Format(lv_mod * (u.SyncLevel - 30)) & ")B"
 							ElseIf u.SyncLevel > 0 Then 
-								msg = msg & "Invalid_string_refer_to_original_code" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¤‰åŒ–(" & VB6.Format(lv_mod * (u.SyncLevel - 30)) & "Invalid_string_refer_to_original_code"
+								msg = msg & ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª•Ï‰»(" & VB6.Format(lv_mod * (u.SyncLevel - 30)) & ")B"
 							End If
-						Case "éœŠåŠ›"
+						Case "—ì—Í"
 							sname = p.SkillName0(opt)
 							If lv_mod = -1 Then
 								lv_mod = 10
 							End If
-							msg = msg & "Invalid_string_refer_to_original_code" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & VB6.Format(lv_mod * u.PlanaLevel) & "Invalid_string_refer_to_original_code"
-						Case "ã‚ªãƒ¼ãƒ©"
+							msg = msg & ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª‘‰Á(+" & VB6.Format(lv_mod * u.PlanaLevel) & ")B"
+						Case "ƒI[ƒ‰"
 							sname = p.SkillName0(opt)
 							If lv_mod = -1 Then
 								lv_mod = 200
 							End If
-							msg = msg & "Invalid_string_refer_to_original_code" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & VB6.Format(lv_mod * u.AuraLevel) & "Invalid_string_refer_to_original_code"
-						Case "Invalid_string_refer_to_original_code"
+							msg = msg & ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª‘‰Á(+" & VB6.Format(lv_mod * u.AuraLevel) & ")B"
+						Case "’´”\—Í"
 							sname = p.SkillName0(opt)
 							If lv_mod = -1 Then
 								lv_mod = 200
 							End If
-							msg = msg & "Invalid_string_refer_to_original_code" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & VB6.Format(lv_mod * u.PsychicLevel) & "Invalid_string_refer_to_original_code"
+							msg = msg & ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª‘‰Á(+" & VB6.Format(lv_mod * u.PsychicLevel) & ")B"
 						Case Else
 							sname = u.SkillName0(opt)
 							If lv_mod = -1 Then
 								lv_mod = 200
 							End If
-							msg = msg & "Invalid_string_refer_to_original_code" & sname & "ãƒ¬ãƒ™ãƒ«ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & VB6.Format(lv_mod * u.SkillLevel(opt)) & "Invalid_string_refer_to_original_code"
+							msg = msg & ";ƒpƒCƒƒbƒg‚Ì" & sname & "ƒŒƒxƒ‹‚É‚æ‚è‹­“x‚ª‘‰Á(+" & VB6.Format(lv_mod * u.SkillLevel(opt)) & ")B"
 					End Select
 				Next 
 				
-			Case "é˜»æ­¢"
-				If LIndex(fdata, 2) <> "" And LIndex(fdata, 2) <> "å…¨" Then
+			Case "‘j~"
+				If LIndex(fdata, 2) <> "" And LIndex(fdata, 2) <> "‘S" Then
 					If Left(LIndex(fdata, 2), 1) = "!" Then
-						msg = "Invalid_string_refer_to_original_code"
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						msg = "u" & Mid(LIndex(fdata, 2), 2) & "v‘®«‚ğ‚½‚È‚¢"
 					Else
-						msg = "Invalid_string_refer_to_original_code"
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						msg = "u" & LIndex(fdata, 2) & "v‘®«‚ğ‚Â"
 					End If
 				End If
 				If flevel <> 1 Then
-					msg = msg & "ãƒ€ãƒ¡ãƒ¼ã‚¸" & VB6.Format(CInt(500 * flevel)) & "Invalid_string_refer_to_original_code"
+					msg = msg & "ƒ_ƒ[ƒW" & VB6.Format(CInt(500 * flevel)) & "ˆÈ‰º‚Ì"
 				End If
-				msg = msg & "Invalid_string_refer_to_original_code"
+				msg = msg & "UŒ‚‚ğ"
 				
 				buf = LIndex(fdata, 3)
 				If IsNumeric(buf) Then
 					If buf <> "100" Then
-						msg = msg & buf & "Invalid_string_refer_to_original_code"
+						msg = msg & buf & "%‚ÌŠm—¦‚Å‘j~B"
 					Else
 						' MOD START MARGE
-						'Invalid_string_refer_to_original_code
-						msg = msg & "Invalid_string_refer_to_original_code"
+						'                    msg = msg & buf & "‘j~B"
+						msg = msg & "‘j~B"
 						' MOD END MARGE
 					End If
 				ElseIf InStr(buf, "+") > 0 Or InStr(buf, "-") > 0 Then 
 					i = MaxLng(InStr(buf, "+"), InStr(buf, "-"))
 					sname = u.SkillName0(Left(buf, i - 1))
 					prob = (u.SkillLevel(Left(buf, i - 1)) + CShort(Mid(buf, i))) * 100 \ 16
-					msg = msg & "(" & sname & "Lv" & Mid(buf, i) & "Invalid_string_refer_to_original_code" & VB6.Format(prob) & "Invalid_string_refer_to_original_code"
+					msg = msg & "(" & sname & "Lv" & Mid(buf, i) & ")/16‚ÌŠm—¦(" & VB6.Format(prob) & "%)‚Å‘j~B"
 				Else
 					sname = u.SkillName0(buf)
 					prob = u.SkillLevel(buf) * 100 \ 16
-					msg = msg & sname & "Invalid_string_refer_to_original_code" & VB6.Format(prob) & "Invalid_string_refer_to_original_code"
+					msg = msg & sname & "Lv/16‚ÌŠm—¦(" & VB6.Format(prob) & "%)‚Å‘j~B"
 				End If
 				
 				If StrToLng(LIndex(fdata, 4)) > 0 Then
-					msg = msg & ";ç™ºå‹•æ™‚ã«" & LIndex(fdata, 4) & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
+					msg = msg & ";”­“®‚É" & LIndex(fdata, 4) & Term("‚d‚m", u) & "Á”ïB"
 				ElseIf StrToLng(LIndex(fdata, 4)) < 0 Then 
-					msg = msg & ";ç™ºå‹•æ™‚ã«" & Mid(LIndex(fdata, 4), 2) & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
+					msg = msg & ";”­“®‚É" & Mid(LIndex(fdata, 4), 2) & Term("‚d‚m", u) & "‘‰ÁB"
 				End If
 				If StrToLng(LIndex(fdata, 5)) > 50 Then
-					msg = msg & ";" & Term("æ°—åŠ›", u) & LIndex(fdata, 5) & "Invalid_string_refer_to_original_code"
+					msg = msg & ";" & Term("‹C—Í", u) & LIndex(fdata, 5) & "ˆÈã‚Åg—p‰Â”\B"
 				End If
 				For i = 6 To LLength(fdata)
 					opt = LIndex(fdata, i)
@@ -2055,189 +1856,167 @@ Module Help
 						lv_mod = -1
 					End If
 					Select Case p.SkillType(opt)
-						Case "ç›¸æ®º"
-							msg = msg & ";" & fname0 & "Invalid_string_refer_to_original_code"
-						Case "Invalid_string_refer_to_original_code"
-							msg = msg & ";" & fname0 & "Invalid_string_refer_to_original_code"
-							'Invalid_string_refer_to_original_code
-							'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-						Case "è¿‘æ¥ç„¡åŠ¹"
-							msg = msg & "Invalid_string_refer_to_original_code"
-						Case "æ‰‹å‹•"
-							msg = msg & "Invalid_string_refer_to_original_code"
-						Case "Invalid_string_refer_to_original_code"
-							'Invalid_string_refer_to_original_code
-						Case "Invalid_string_refer_to_original_code"
+						Case "‘ŠE"
+							msg = msg & ";" & fname0 & "‚ğ‚Âƒ†ƒjƒbƒg“¯m‚Ìê‡A—×Ú‚ÉŒø‰Ê‚Í‘ŠEB"
+						Case "’†˜a"
+							msg = msg & ";" & fname0 & "‚ğ‚Âƒ†ƒjƒbƒg“¯m‚Ìê‡A" & "—×Ú‚ÉƒŒƒxƒ‹•ª‚¾‚¯Œø‰Ê‚ğ’†˜aB"
+						Case "‹ßÚ–³Œø"
+							msg = msg & ";u•vu“ËvuÚv‚É‚æ‚éUŒ‚‚É‚Í–³ŒøB"
+						Case "è“®"
+							msg = msg & ";–hŒä‘I‘ğ‚É‚Ì‚İ”­“®B"
+						Case "”\—Í•K—v"
+							'ƒXƒLƒbƒv
+						Case "“¯’²—¦"
 							sname = p.SkillName0(opt)
 							If lv_mod = -1 Then
 								lv_mod = 20
 							End If
 							If u.SyncLevel >= 30 Then
-								msg = msg & "Invalid_string_refer_to_original_code" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¤‰åŒ–(+" & VB6.Format(lv_mod * (u.SyncLevel - 30)) & "Invalid_string_refer_to_original_code"
+								msg = msg & ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª•Ï‰»(+" & VB6.Format(lv_mod * (u.SyncLevel - 30)) & ")B"
 							ElseIf u.SyncLevel > 0 Then 
-								msg = msg & "Invalid_string_refer_to_original_code" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¤‰åŒ–(" & VB6.Format(lv_mod * (u.SyncLevel - 30)) & "Invalid_string_refer_to_original_code"
+								msg = msg & ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª•Ï‰»(" & VB6.Format(lv_mod * (u.SyncLevel - 30)) & ")B"
 							End If
-						Case "éœŠåŠ›"
+						Case "—ì—Í"
 							sname = p.SkillName0(opt)
 							If lv_mod = -1 Then
 								lv_mod = 10
 							End If
-							msg = msg & "Invalid_string_refer_to_original_code" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & VB6.Format(lv_mod * u.PlanaLevel) & "Invalid_string_refer_to_original_code"
-						Case "ã‚ªãƒ¼ãƒ©"
+							msg = msg & ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª‘‰Á(+" & VB6.Format(lv_mod * u.PlanaLevel) & ")B"
+						Case "ƒI[ƒ‰"
 							sname = p.SkillName0(opt)
 							If lv_mod = -1 Then
 								lv_mod = 200
 							End If
-							msg = msg & "Invalid_string_refer_to_original_code" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & VB6.Format(lv_mod * u.AuraLevel) & "Invalid_string_refer_to_original_code"
-						Case "Invalid_string_refer_to_original_code"
+							msg = msg & ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª‘‰Á(+" & VB6.Format(lv_mod * u.AuraLevel) & ")B"
+						Case "’´”\—Í"
 							sname = p.SkillName0(opt)
 							If lv_mod = -1 Then
 								lv_mod = 200
 							End If
-							msg = msg & "Invalid_string_refer_to_original_code" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & VB6.Format(lv_mod * u.PsychicLevel) & "Invalid_string_refer_to_original_code"
+							msg = msg & ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª‘‰Á(+" & VB6.Format(lv_mod * u.PsychicLevel) & ")B"
 						Case Else
 							sname = u.SkillName0(opt)
 							If lv_mod = -1 Then
 								lv_mod = 200
 							End If
-							msg = msg & "Invalid_string_refer_to_original_code" & sname & "ãƒ¬ãƒ™ãƒ«ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & VB6.Format(lv_mod * u.SkillLevel(opt)) & "Invalid_string_refer_to_original_code"
+							msg = msg & ";ƒpƒCƒƒbƒg‚Ì" & sname & "ƒŒƒxƒ‹‚É‚æ‚è‹­“x‚ª‘‰Á(+" & VB6.Format(lv_mod * u.SkillLevel(opt)) & ")B"
 					End Select
 				Next 
 				
-			Case "Invalid_string_refer_to_original_code"
+			Case "Lˆæ‘j~"
 				If IsNumeric(LIndex(fdata, 2)) And LIndex(fdata, 2) <> "1" Then
-					msg = "Invalid_string_refer_to_original_code"
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					msg = "”¼Œa" & StrConv(LIndex(fdata, 2), VbStrConv.Wide) & "ƒ}ƒXˆÈ“à‚Ì–¡•ûƒ†ƒjƒbƒg‚É‘Î‚·‚é"
 					i = CShort(LIndex(fdata, 2))
 				Else
-					msg = "éš£æ¥ã™ã‚‹å‘³æ–¹ãƒ¦ãƒ‹ãƒƒãƒˆã«å¯¾ã™ã‚‹"
+					msg = "—×Ú‚·‚é–¡•ûƒ†ƒjƒbƒg‚É‘Î‚·‚é"
 					i = 1
 				End If
-				If LIndex(fdata, 3) <> "" And LIndex(fdata, 3) <> "å…¨" Then
+				If LIndex(fdata, 3) <> "" And LIndex(fdata, 3) <> "‘S" Then
 					If Left(LIndex(fdata, 3), 1) = "!" Then
-						msg = msg & "Invalid_string_refer_to_original_code"
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						msg = msg & "u" & Mid(LIndex(fdata, 3), 2) & "v‘®«‚ğ‚½‚È‚¢"
 					Else
-						msg = msg & "Invalid_string_refer_to_original_code"
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						msg = msg & "u" & LIndex(fdata, 3) & "v‘®«‚ğ‚Â"
 					End If
 				End If
 				If flevel <> 1 Then
-					msg = msg & "ãƒ€ãƒ¡ãƒ¼ã‚¸" & VB6.Format(CInt(500 * flevel)) & "Invalid_string_refer_to_original_code"
+					msg = msg & "ƒ_ƒ[ƒW" & VB6.Format(CInt(500 * flevel)) & "ˆÈ‰º‚Ì"
 				End If
-				msg = msg & "Invalid_string_refer_to_original_code"
+				msg = msg & "UŒ‚‚ğ"
 				
 				buf = LIndex(fdata, 4)
 				If IsNumeric(buf) Then
 					If buf <> "100" Then
 						' MOD START MARGE
-						'Invalid_string_refer_to_original_code
-						msg = msg & buf & "Invalid_string_refer_to_original_code"
+						'                    msg = msg & "%‚ÌŠm—¦‚Å‘j~B"
+						msg = msg & buf & "%‚ÌŠm—¦‚Å‘j~B"
 						' MOD END MARGE
 					Else
-						msg = msg & "Invalid_string_refer_to_original_code"
+						msg = msg & "‘j~B"
 					End If
 				ElseIf InStr(buf, "+") > 0 Or InStr(buf, "-") > 0 Then 
 					i = MaxLng(InStr(buf, "+"), InStr(buf, "-"))
 					sname = u.SkillName0(Left(buf, i - 1))
 					prob = (u.SkillLevel(Left(buf, i - 1)) + CShort(Mid(buf, i))) * 100 \ 16
-					msg = msg & "(" & sname & "Lv" & Mid(buf, i) & "Invalid_string_refer_to_original_code" & VB6.Format(prob) & "Invalid_string_refer_to_original_code"
+					msg = msg & "(" & sname & "Lv" & Mid(buf, i) & ")/16‚ÌŠm—¦(" & VB6.Format(prob) & "%)‚Å‘j~B"
 				Else
 					sname = u.SkillName0(buf)
 					prob = u.SkillLevel(buf) * 100 \ 16
-					msg = msg & sname & "Invalid_string_refer_to_original_code" & VB6.Format(prob) & "Invalid_string_refer_to_original_code"
+					msg = msg & sname & "Lv/16‚ÌŠm—¦(" & VB6.Format(prob) & "%)‚Å‘j~B"
 				End If
 				
 				If StrToLng(LIndex(fdata, 5)) > 0 Then
-					msg = msg & ";ç™ºå‹•æ™‚ã«" & LIndex(fdata, 5) & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
+					msg = msg & ";”­“®‚É" & LIndex(fdata, 5) & Term("‚d‚m", u) & "Á”ïB"
 				ElseIf StrToLng(LIndex(fdata, 5)) < 0 Then 
-					msg = msg & ";ç™ºå‹•æ™‚ã«" & Mid(LIndex(fdata, 5), 2) & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
+					msg = msg & ";”­“®‚É" & Mid(LIndex(fdata, 5), 2) & Term("‚d‚m", u) & "‘‰ÁB"
 				End If
 				If StrToLng(LIndex(fdata, 6)) > 50 Then
-					msg = msg & Term("æ°—åŠ›", u) & LIndex(fdata, 6) & "Invalid_string_refer_to_original_code"
+					msg = msg & Term("‹C—Í", u) & LIndex(fdata, 6) & "ˆÈã‚Åg—p‰Â”\B"
 				End If
-				msg = msg & "Invalid_string_refer_to_original_code"
+				msg = msg & ";‚½‚¾‚µUŒ‚‘¤‚à—LŒø”ÍˆÍ“à‚É‚¢‚éê‡‚Í–³Œø‰»B"
 				
-			Case "èåˆ"
+			Case "—Z‡"
 				prob = flevel * 100 \ 16
-				msg = VB6.Format(flevel) & "Invalid_string_refer_to_original_code" & VB6.Format(prob) & "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code_
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				msg = VB6.Format(flevel) & "/16‚ÌŠm—¦(" & VB6.Format(prob) & "%)‚Å”­“®‚µA" & "ƒ_ƒ[ƒW‚ğ" & Term("‚g‚o", u) & "‚É•ÏŠ·B;" & "‚½‚¾‚µAu•vu“ËvuÚv‚É‚æ‚éUŒ‚‚É‚Í–³ŒøB"
 				
-			Case "å¤‰æ›"
-				If LIndex(fdata, 2) <> "" And LIndex(fdata, 2) <> "å…¨" Then
+			Case "•ÏŠ·"
+				If LIndex(fdata, 2) <> "" And LIndex(fdata, 2) <> "‘S" Then
 					If Left(LIndex(fdata, 2), 1) = "!" Then
-						msg = "Invalid_string_refer_to_original_code"
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						msg = "u" & Mid(LIndex(fdata, 2), 2) & "v‘®«‚ğ‚½‚È‚¢"
 					Else
-						msg = "Invalid_string_refer_to_original_code"
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						msg = "u" & LIndex(fdata, 2) & "v‘®«‚ğ‚Â"
 					End If
 				End If
-				msg = msg & "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code_
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				msg = msg & "UŒ‚‚ğó‚¯‚½Û‚Éƒ_ƒ[ƒW‚ğ" & Term("‚d‚m", u) & "‚É•ÏŠ·B;" & "•ÏŠ·Œø—¦‚Í " & Term("‚d‚m", u) & "‘‰Á  "
 				msg = msg & VB6.Format(0.01 * flevel)
-				msg = msg & "Invalid_string_refer_to_original_code"
+				msg = msg & " ~ ƒ_ƒ[ƒW"
 				
-			Case "Invalid_string_refer_to_original_code"
-				msg = "Invalid_string_refer_to_original_code"
+			Case "ƒr[ƒ€‹zû"
+				msg = "ƒr[ƒ€‚É‚æ‚éUŒ‚‚Ìƒ_ƒ[ƒW‚ğ‚g‚o‚É•ÏŠ·"
 				
-			Case "Invalid_string_refer_to_original_code"
-				If LIndex(fdata, 3) <> "" And LIndex(fdata, 3) <> "å…¨" Then
+			Case "©“®”½Œ‚"
+				If LIndex(fdata, 3) <> "" And LIndex(fdata, 3) <> "‘S" Then
 					If Left(LIndex(fdata, 3), 1) = "!" Then
-						msg = "Invalid_string_refer_to_original_code"
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						msg = "u" & Mid(LIndex(fdata, 3), 2) & "v‘®«‚ğ‚½‚È‚¢"
 					Else
-						msg = "Invalid_string_refer_to_original_code"
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						msg = "u" & LIndex(fdata, 3) & "v‘®«‚ğ‚Â"
 					End If
 				End If
 				
 				If flevel <> 1 Then
-					msg = msg & "ãƒ€ãƒ¡ãƒ¼ã‚¸" & VB6.Format(CInt(500 * flevel)) & "ã¾ã§ã®"
+					msg = msg & "ƒ_ƒ[ƒW" & VB6.Format(CInt(500 * flevel)) & "‚Ü‚Å‚Ì"
 				End If
 				
-				msg = msg & "Invalid_string_refer_to_original_code"
+				msg = msg & "UŒ‚‚ğó‚¯‚½Û‚É"
 				
 				buf = LIndex(fdata, 4)
 				If IsNumeric(buf) Then
 					If buf <> "100" Then
-						msg = msg & buf & "Invalid_string_refer_to_original_code"
+						msg = msg & buf & "%‚ÌŠm—¦‚ÅA"
 					End If
 				ElseIf InStr(buf, "+") > 0 Or InStr(buf, "-") > 0 Then 
 					i = MaxLng(InStr(buf, "+"), InStr(buf, "-"))
 					sname = u.SkillName0(Left(buf, i - 1))
 					prob = (u.SkillLevel(Left(buf, i - 1)) + CShort(Mid(buf, i))) * 100 \ 16
-					msg = msg & "(" & sname & "Lv" & Mid(buf, i) & "Invalid_string_refer_to_original_code" & VB6.Format(prob) & "Invalid_string_refer_to_original_code"
+					msg = msg & "(" & sname & "Lv" & Mid(buf, i) & ")/16‚ÌŠm—¦(" & VB6.Format(prob) & "%)‚ÅA"
 				Else
 					sname = u.SkillName0(buf)
 					prob = u.SkillLevel(buf) * 100 \ 16
-					msg = msg & sname & "Invalid_string_refer_to_original_code" & VB6.Format(prob) & "Invalid_string_refer_to_original_code"
+					msg = msg & sname & "Lv/16‚ÌŠm—¦(" & VB6.Format(prob) & "%)‚ÅA"
 				End If
 				
 				buf = LIndex(fdata, 2)
 				If InStr(buf, "(") > 0 Then
 					buf = Left(buf, InStr(buf, "(") - 1)
 				End If
-				msg = msg & buf & "Invalid_string_refer_to_original_code"
+				msg = msg & buf & "‚É‚æ‚é©“®”½Œ‚‚ª”­“®‚·‚éB"
 				
 				If StrToLng(LIndex(fdata, 5)) > 0 Then
-					msg = msg & ";ç™ºå‹•æ™‚ã«" & LIndex(fdata, 5) & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
+					msg = msg & ";”­“®‚É" & LIndex(fdata, 5) & Term("‚d‚m", u) & "Á”ïB"
 				ElseIf StrToLng(LIndex(fdata, 5)) < 0 Then 
-					msg = msg & ";ç™ºå‹•æ™‚ã«" & Mid(LIndex(fdata, 5), 2) & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
+					msg = msg & ";”­“®‚É" & Mid(LIndex(fdata, 5), 2) & Term("‚d‚m", u) & "‘‰ÁB"
 				End If
 				If StrToLng(LIndex(fdata, 6)) > 50 Then
-					msg = msg & ";" & Term("æ°—åŠ›", u) & LIndex(fdata, 6) & "Invalid_string_refer_to_original_code"
+					msg = msg & ";" & Term("‹C—Í", u) & LIndex(fdata, 6) & "ˆÈã‚Åg—p‰Â”\B"
 				End If
 				For i = 7 To LLength(fdata)
 					opt = LIndex(fdata, i)
@@ -2249,341 +2028,303 @@ Module Help
 						lv_mod = -1
 					End If
 					Select Case p.SkillType(opt)
-						Case "ç›¸æ®º"
-							msg = msg & ";" & fname0 & "Invalid_string_refer_to_original_code"
-						Case "Invalid_string_refer_to_original_code"
-							msg = msg & ";" & fname0 & "Invalid_string_refer_to_original_code"
-							'Invalid_string_refer_to_original_code
-							'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-						Case "è¿‘æ¥ç„¡åŠ¹"
-							msg = msg & "Invalid_string_refer_to_original_code"
-						Case "æ‰‹å‹•"
-							msg = msg & "Invalid_string_refer_to_original_code"
-						Case "Invalid_string_refer_to_original_code"
-							'Invalid_string_refer_to_original_code
-						Case "Invalid_string_refer_to_original_code"
+						Case "‘ŠE"
+							msg = msg & ";" & fname0 & "‚ğ‚Âƒ†ƒjƒbƒg“¯m‚Ìê‡A—×Ú‚ÉŒø‰Ê‚Í‘ŠEB"
+						Case "’†˜a"
+							msg = msg & ";" & fname0 & "‚ğ‚Âƒ†ƒjƒbƒg“¯m‚Ìê‡A" & "—×Ú‚ÉƒŒƒxƒ‹•ª‚¾‚¯Œø‰Ê‚ğ‘ŠEB"
+						Case "‹ßÚ–³Œø"
+							msg = msg & ";u•vu“ËvuÚv‚É‚æ‚éUŒ‚‚É‚Í–³ŒøB"
+						Case "è“®"
+							msg = msg & ";–hŒä‘I‘ğ‚É‚Ì‚İ”­“®B"
+						Case "”\—Í•K—v"
+							'ƒXƒLƒbƒv
+						Case "“¯’²—¦"
 							sname = p.SkillName0(opt)
 							If lv_mod = -1 Then
 								lv_mod = 20
 							End If
 							If u.SyncLevel >= 30 Then
-								msg = msg & "Invalid_string_refer_to_original_code" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¤‰åŒ–(+" & VB6.Format(lv_mod * (u.SyncLevel - 30)) & "Invalid_string_refer_to_original_code"
+								msg = msg & ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª•Ï‰»(+" & VB6.Format(lv_mod * (u.SyncLevel - 30)) & ")B"
 							ElseIf u.SyncLevel > 0 Then 
-								msg = msg & "Invalid_string_refer_to_original_code" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¤‰åŒ–(" & VB6.Format(lv_mod * (u.SyncLevel - 30)) & "Invalid_string_refer_to_original_code"
+								msg = msg & ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª•Ï‰»(" & VB6.Format(lv_mod * (u.SyncLevel - 30)) & ")B"
 							End If
-						Case "éœŠåŠ›"
+						Case "—ì—Í"
 							sname = p.SkillName0(opt)
 							If lv_mod = -1 Then
 								lv_mod = 10
 							End If
-							msg = msg & "Invalid_string_refer_to_original_code" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & VB6.Format(lv_mod * u.PlanaLevel) & "Invalid_string_refer_to_original_code"
-						Case "ã‚ªãƒ¼ãƒ©"
+							msg = msg & ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª‘‰Á(+" & VB6.Format(lv_mod * u.PlanaLevel) & ")B"
+						Case "ƒI[ƒ‰"
 							sname = p.SkillName0(opt)
 							If lv_mod = -1 Then
 								lv_mod = 200
 							End If
-							msg = msg & "Invalid_string_refer_to_original_code" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & VB6.Format(lv_mod * u.AuraLevel) & "Invalid_string_refer_to_original_code"
-						Case "Invalid_string_refer_to_original_code"
+							msg = msg & ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª‘‰Á(+" & VB6.Format(lv_mod * u.AuraLevel) & ")B"
+						Case "’´”\—Í"
 							sname = p.SkillName0(opt)
 							If lv_mod = -1 Then
 								lv_mod = 200
 							End If
-							msg = msg & "Invalid_string_refer_to_original_code" & sname & "ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & VB6.Format(lv_mod * u.PsychicLevel) & "Invalid_string_refer_to_original_code"
+							msg = msg & ";ƒpƒCƒƒbƒg‚Ì" & sname & "‚É‚æ‚è‹­“x‚ª‘‰Á(+" & VB6.Format(lv_mod * u.PsychicLevel) & ")B"
 						Case Else
 							sname = u.SkillName0(opt)
 							If lv_mod = -1 Then
 								lv_mod = 200
 							End If
-							msg = msg & "Invalid_string_refer_to_original_code" & sname & "ãƒ¬ãƒ™ãƒ«ã«ã‚ˆã‚Šå¼·åº¦ãŒå¢—åŠ (+" & VB6.Format(lv_mod * u.SkillLevel(opt)) & "Invalid_string_refer_to_original_code"
+							msg = msg & ";ƒpƒCƒƒbƒg‚Ì" & sname & "ƒŒƒxƒ‹‚É‚æ‚è‹­“x‚ª‘‰Á(+" & VB6.Format(lv_mod * u.SkillLevel(opt)) & ")B"
 					End Select
 				Next 
 				
-			Case "Invalid_string_refer_to_original_code"
-				msg = "æ¯ã‚¿ãƒ¼ãƒ³æœ€å¤§" & Term("Invalid_string_refer_to_original_code", u) & "ã®" & VB6.Format(10 * flevel) & "Invalid_string_refer_to_original_code" & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
+			Case "‚g‚o‰ñ•œ"
+				msg = "–ˆƒ^[ƒ“Å‘å" & Term("‚g‚o", u) & "‚Ì" & VB6.Format(10 * flevel) & "%•ª‚Ì" & Term("‚g‚o", u) & "‚ğ‰ñ•œB"
 				
-			Case "Invalid_string_refer_to_original_code"
-				msg = "æ¯ã‚¿ãƒ¼ãƒ³æœ€å¤§" & Term("Invalid_string_refer_to_original_code", u) & "ã®" & VB6.Format(10 * flevel) & "Invalid_string_refer_to_original_code" & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
+			Case "‚d‚m‰ñ•œ"
+				msg = "–ˆƒ^[ƒ“Å‘å" & Term("‚d‚m", u) & "‚Ì" & VB6.Format(10 * flevel) & "%•ª‚Ì" & Term("‚d‚m", u) & "‚ğ‰ñ•œB"
 				
-			Case "éœŠåŠ›å›å¾©"
-				sname = p.SkillName0("éœŠåŠ›")
-				msg = "æ¯ã‚¿ãƒ¼ãƒ³æœ€å¤§" & sname & "ã®" & VB6.Format(10 * flevel) & "Invalid_string_refer_to_original_code" & sname & "Invalid_string_refer_to_original_code"
+			Case "—ì—Í‰ñ•œ"
+				sname = p.SkillName0("—ì—Í")
+				msg = "–ˆƒ^[ƒ“Å‘å" & sname & "‚Ì" & VB6.Format(10 * flevel) & "%•ª‚Ì" & sname & "‚ğ‰ñ•œB"
 				
-			Case "Invalid_string_refer_to_original_code"
-				msg = "æ¯ã‚¿ãƒ¼ãƒ³æœ€å¤§" & Term("Invalid_string_refer_to_original_code", u) & "ã®" & VB6.Format(10 * flevel) & "Invalid_string_refer_to_original_code" & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
+			Case "‚g‚oÁ”ï"
+				msg = "–ˆƒ^[ƒ“Å‘å" & Term("‚g‚o", u) & "‚Ì" & VB6.Format(10 * flevel) & "%•ª‚Ì" & Term("‚g‚o", u) & "‚ğÁ”ïB"
 				
-			Case "Invalid_string_refer_to_original_code"
-				msg = "æ¯ã‚¿ãƒ¼ãƒ³æœ€å¤§" & Term("Invalid_string_refer_to_original_code", u) & "ã®" & VB6.Format(10 * flevel) & "Invalid_string_refer_to_original_code" & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
+			Case "‚d‚mÁ”ï"
+				msg = "–ˆƒ^[ƒ“Å‘å" & Term("‚d‚m", u) & "‚Ì" & VB6.Format(10 * flevel) & "%•ª‚Ì" & Term("‚d‚m", u) & "‚ğÁ”ïB"
 				
-			Case "éœŠåŠ›æ¶ˆè²»"
-				sname = p.SkillName0("éœŠåŠ›")
-				msg = "æ¯ã‚¿ãƒ¼ãƒ³æœ€å¤§" & sname & "ã®" & VB6.Format(10 * flevel) & "Invalid_string_refer_to_original_code" & sname & "Invalid_string_refer_to_original_code"
+			Case "—ì—ÍÁ”ï"
+				sname = p.SkillName0("—ì—Í")
+				msg = "–ˆƒ^[ƒ“Å‘å" & sname & "‚Ì" & VB6.Format(10 * flevel) & "%•ª‚Ì" & sname & "‚ğÁ”ïB"
 				
-			Case "Invalid_string_refer_to_original_code"
-				msg = "Invalid_string_refer_to_original_code" & "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			Case "•ªg"
+				msg = "50%‚ÌŠm—¦‚ÅUŒ‚‚ğŠ®‘S‚É‰ñ”ğB;" & "”­“®ğŒF" & Term("‹C—Í", u) & "130ˆÈã"
 				
-			Case "Invalid_string_refer_to_original_code"
-				msg = "Invalid_string_refer_to_original_code" & VB6.Format(10 * flevel) & "Invalid_string_refer_to_original_code"
+			Case "’´‰ñ”ğ"
+				msg = "‚ ‚ç‚ä‚éUŒ‚‚ğ" & VB6.Format(10 * flevel) & "%‚ÌŠm—¦‚Å‰ñ”ğB"
 				If IsNumeric(LIndex(fdata, 2)) Then
 					If StrToLng(LIndex(fdata, 2)) > 0 Then
-						msg = msg & ";ç™ºå‹•æ™‚ã«" & LIndex(fdata, 2) & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
+						msg = msg & ";”­“®‚É" & LIndex(fdata, 2) & Term("‚d‚m", u) & "Á”ïB"
 					ElseIf StrToLng(LIndex(fdata, 2)) < 0 Then 
-						msg = msg & ";ç™ºå‹•æ™‚ã«" & Mid(LIndex(fdata, 2), 2) & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
+						msg = msg & ";”­“®‚É" & Mid(LIndex(fdata, 2), 2) & Term("‚d‚m", u) & "‘‰ÁB"
 					End If
 				End If
 				If StrToLng(LIndex(fdata, 3)) > 50 Then
-					msg = msg & ";" & Term("æ°—åŠ›", u) & LIndex(fdata, 3) & "Invalid_string_refer_to_original_code"
+					msg = msg & ";" & Term("‹C—Í", u) & LIndex(fdata, 3) & "ˆÈã‚Åg—p‰Â”\B"
 				End If
-				If LIndex(fdata, 4) = "æ‰‹å‹•" Then
-					msg = msg & "Invalid_string_refer_to_original_code"
+				If LIndex(fdata, 4) = "è“®" Then
+					msg = msg & ";‰ñ”ğ‘I‘ğ‚É‚Ì‚İ”­“®B"
 				End If
 				
-			Case "Invalid_string_refer_to_original_code"
-				msg = "Invalid_string_refer_to_original_code" & VB6.Format(10 * flevel) & "Invalid_string_refer_to_original_code" & "Invalid_string_refer_to_original_code" & "Invalid_string_refer_to_original_code" & LIndex(fdata, 2) & "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			Case "‹Ù‹}ƒeƒŒƒ|[ƒg"
+				msg = "UŒ‚‚ğó‚¯‚½Û‚É" & VB6.Format(10 * flevel) & "%‚ÌŠm—¦‚Å" & "ƒeƒŒƒ|[ƒg‚µAUŒ‚‚ğ‰ñ”ğB;" & "ƒeƒŒƒ|[ƒgæ‚Í" & LIndex(fdata, 2) & "ƒ}ƒXˆÈ“à‚Ì”ÍˆÍ‚Ì“àA" & "Å‚à“G‚©‚ç‰“‚¢’n“_‚©‚ç‘I‚Î‚ê‚éB"
 				If IsNumeric(LIndex(fdata, 3)) Then
 					If StrToLng(LIndex(fdata, 3)) > 0 Then
-						msg = msg & ";ç™ºå‹•æ™‚ã«" & LIndex(fdata, 3) & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
+						msg = msg & ";”­“®‚É" & LIndex(fdata, 3) & Term("‚d‚m", u) & "Á”ïB"
 					ElseIf StrToLng(LIndex(fdata, 3)) < 0 Then 
-						msg = msg & ";ç™ºå‹•æ™‚ã«" & Mid(LIndex(fdata, 3), 2) & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
+						msg = msg & ";”­“®‚É" & Mid(LIndex(fdata, 3), 2) & Term("‚d‚m", u) & "‘‰ÁB"
 					End If
 				End If
 				If StrToLng(LIndex(fdata, 4)) > 50 Then
-					msg = msg & ";" & Term("æ°—åŠ›", u) & LIndex(fdata, 4) & "Invalid_string_refer_to_original_code"
+					msg = msg & ";" & Term("‹C—Í", u) & LIndex(fdata, 4) & "ˆÈã‚Åg—p‰Â”\B"
 				End If
-				If LIndex(fdata, 5) = "æ‰‹å‹•" Then
-					msg = msg & "Invalid_string_refer_to_original_code"
+				If LIndex(fdata, 5) = "è“®" Then
+					msg = msg & ";‰ñ”ğ‘I‘ğ‚É‚Ì‚İ”­“®B"
 				End If
 				
-			Case "Invalid_string_refer_to_original_code"
+			Case "ƒ_ƒ~["
 				buf = fname
 				If InStr(buf, "Lv") Then
 					buf = Left(buf, InStr(buf, "Lv") - 1)
 				End If
-				msg = buf & "Invalid_string_refer_to_original_code" & VB6.Format(flevel) & "Invalid_string_refer_to_original_code"
+				msg = buf & "‚ğg‘ã‚í‚è‚É‚µ‚ÄUŒ‚‚ğ" & VB6.Format(flevel) & "‰ñ‚Ü‚Å‰ñ”ğB"
 				
-			Case "Invalid_string_refer_to_original_code"
-				If LIndex(fdata, 2) <> "" And LIndex(fdata, 2) <> "å…¨" Then
+			Case "UŒ‚‰ñ”ğ"
+				If LIndex(fdata, 2) <> "" And LIndex(fdata, 2) <> "‘S" Then
 					If Left(LIndex(fdata, 2), 1) = "!" Then
-						msg = "Invalid_string_refer_to_original_code"
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						msg = "u" & Mid(LIndex(fdata, 2), 2) & "v‘®«‚ğ‚½‚È‚¢"
 					Else
-						msg = "Invalid_string_refer_to_original_code"
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						msg = "u" & LIndex(fdata, 2) & "v‘®«‚ğ‚Â"
 					End If
 				End If
 				If flevel >= 0 Then
-					msg = msg & "Invalid_string_refer_to_original_code" & VB6.Format(CInt(100 - 10 * flevel)) & "Invalid_string_refer_to_original_code"
+					msg = msg & "UŒ‚‚Ì–½’†—¦‚ğ–{—ˆ‚Ì" & VB6.Format(CInt(100 - 10 * flevel)) & "%‚ÉŒ¸­‚³‚¹‚éB"
 				Else
-					msg = msg & "Invalid_string_refer_to_original_code" & VB6.Format(CInt(100 - 10 * flevel)) & "Invalid_string_refer_to_original_code"
+					msg = msg & "UŒ‚‚Ì–½’†—¦‚ğ–{—ˆ‚Ì" & VB6.Format(CInt(100 - 10 * flevel)) & "%‚É‘‰Á‚³‚¹‚éB"
 				End If
 				If StrToLng(LIndex(fdata, 3)) > 50 Then
-					msg = msg & Term("æ°—åŠ›", u) & LIndex(fdata, 3) & "Invalid_string_refer_to_original_code"
+					msg = msg & Term("‹C—Í", u) & LIndex(fdata, 3) & "ˆÈã‚Åg—p‰Â”\B"
 				End If
 				
-			Case "æŠµæŠ—åŠ›"
+			Case "’ïR—Í"
 				If flevel >= 0 Then
-					msg = "Invalid_string_refer_to_original_code" & VB6.Format(10 * flevel) & "Invalid_string_refer_to_original_code"
+					msg = "•Ší‚Ì“ÁêŒø‰Ê‚ğó‚¯‚éŠm—¦‚ğ" & VB6.Format(10 * flevel) & "%Œ¸­‚³‚¹‚éB"
 				Else
-					msg = "Invalid_string_refer_to_original_code" & VB6.Format(-10 * flevel) & "Invalid_string_refer_to_original_code"
+					msg = "•Ší‚Ì“ÁêŒø‰Ê‚ğó‚¯‚éŠm—¦‚ğ" & VB6.Format(-10 * flevel) & "%‘‰Á‚³‚¹‚éB"
 				End If
 				
-			Case "Invalid_string_refer_to_original_code"
-				msg = "Invalid_string_refer_to_original_code" & Term("Invalid_string_refer_to_original_code", u)
+			Case "C—‘•’u"
+				msg = "‘¼‚Ìƒ†ƒjƒbƒg‚Ì" & Term("‚g‚o", u)
 				Select Case flevel
 					Case 1
-						msg = msg & "ã‚’æœ€å¤§" & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
+						msg = msg & "‚ğÅ‘å" & Term("‚g‚o", u) & "‚Ì30%‚¾‚¯‰ñ•œB"
 					Case 2
-						msg = msg & "ã‚’æœ€å¤§" & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
+						msg = msg & "‚ğÅ‘å" & Term("‚g‚o", u) & "‚Ì50%‚¾‚¯‰ñ•œB"
 					Case 3
-						msg = msg & "Invalid_string_refer_to_original_code"
+						msg = msg & "‚ğ‘S‰õB"
 				End Select
 				
-			Case "Invalid_string_refer_to_original_code"
-				msg = "Invalid_string_refer_to_original_code" & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code" & "Invalid_string_refer_to_original_code" & Term("æ°—åŠ›", u) & "Invalid_string_refer_to_original_code"
-				If IsOptionDefined("ç§»å‹•å¾Œè£œçµ¦ä¸å¯") Then
-					msg = msg & "Invalid_string_refer_to_original_code"
+			Case "•â‹‹‘•’u"
+				msg = "‘¼‚Ìƒ†ƒjƒbƒg‚Ì" & Term("‚d‚m", u) & "‚Æ’e–ò‚ğ‘S‰õB;" & "‚½‚¾‚µƒ†ƒjƒbƒg‚ÌƒpƒCƒƒbƒg‚Ì" & Term("‹C—Í", u) & "‚Í-10B"
+				If IsOptionDefined("ˆÚ“®Œã•â‹‹•s‰Â") Then
+					msg = msg & "ˆÚ“®Œã‚Íg—p•s‰ÂB"
 				End If
 				
-			Case "Invalid_string_refer_to_original_code"
+			Case "C—•s‰Â"
 				For i = 2 To CInt(fdata)
 					buf = LIndex(fdata, i)
 					If Left(buf, 1) = "!" Then
 						buf = Mid(buf, 2)
-						msg = msg & buf & "ä»¥å¤–ã§ã¯" & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
+						msg = msg & buf & "ˆÈŠO‚Å‚Í" & Term("‚g‚o", u) & "‚ğ‰ñ•œo—ˆ‚È‚¢B"
 					Else
-						msg = msg & buf & "ã§ã¯" & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
+						msg = msg & buf & "‚Å‚Í" & Term("‚g‚o", u) & "‚ğ‰ñ•œo—ˆ‚È‚¢B"
 					End If
 				Next 
-				msg = msg & buf & "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code_
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				msg = msg & buf & ";‚½‚¾‚µA" & Term("ƒXƒyƒVƒƒƒ‹ƒpƒ[", u) & "‚â’nŒ`A•êŠÍ‚É‚æ‚é‰ñ•œ‚Í‰Â”\B"
 				
-			Case "éœŠåŠ›å¤‰æ›å™¨"
-				sname = p.SkillName0("éœŠåŠ›")
-				msg = sname & "Invalid_string_refer_to_original_code"
+			Case "—ì—Í•ÏŠ·Ší"
+				sname = p.SkillName0("—ì—Í")
+				msg = sname & "‚É‡‚í‚¹‚ÄŠeí”\—Í‚ªã¸‚·‚éB"
 				If flevel_specified Then
-					msg = msg & "Invalid_string_refer_to_original_code"
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					msg = msg & ";i" & sname & "ãŒÀ = " & VB6.Format(flevel) & "j"
 				End If
 				
-			Case "ã‚ªãƒ¼ãƒ©å¤‰æ›å™¨"
-				sname = p.SkillName0("ã‚ªãƒ¼ãƒ©")
-				msg = sname & "Invalid_string_refer_to_original_code"
+			Case "ƒI[ƒ‰•ÏŠ·Ší"
+				sname = p.SkillName0("ƒI[ƒ‰")
+				msg = sname & "ƒŒƒxƒ‹‚É‡‚í‚¹‚ÄŠeí”\—Í‚ªã¸‚·‚éB"
 				If flevel_specified Then
-					msg = msg & "Invalid_string_refer_to_original_code"
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					msg = msg & ";i" & sname & "ãŒÀƒŒƒxƒ‹ = " & VB6.Format(flevel) & "j"
 				End If
 				
-			Case "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				msg = sname & "ãƒ¬ãƒ™ãƒ«ã”ã¨ã«" & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			Case "ƒTƒCƒLƒbƒNƒhƒ‰ƒCƒu"
+				sname = p.SkillName0("’´”\—Í")
+				msg = sname & "ƒŒƒxƒ‹‚²‚Æ‚É" & Term("‘•b", u) & "+100A" & Term("‰^“®«", u) & "+5"
 				If flevel_specified Then
-					msg = msg & "Invalid_string_refer_to_original_code"
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					msg = msg & ";i" & sname & "ãŒÀƒŒƒxƒ‹ = " & VB6.Format(flevel) & "j"
 				End If
 				
-			Case "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				msg = sname & "Invalid_string_refer_to_original_code"
+			Case "ƒVƒ“ƒNƒƒhƒ‰ƒCƒu"
+				sname = p.SkillName0("“¯’²—¦")
+				msg = sname & "‚É‡‚í‚¹‚ÄŠeí”\—Í‚ªã¸‚·‚éB"
 				If flevel_specified Then
-					msg = msg & "Invalid_string_refer_to_original_code"
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					msg = msg & ";i" & sname & "ãŒÀ = " & VB6.Format(flevel) & "%j"
 				End If
 				
-			Case "Invalid_string_refer_to_original_code"
+			Case "ƒXƒeƒ‹ƒX"
 				If flevel_specified Then
-					msg = "æ•µã‹ã‚‰" & StrConv(VB6.Format(flevel), VbStrConv.Wide) & "Invalid_string_refer_to_original_code"
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					msg = "“G‚©‚ç" & StrConv(VB6.Format(flevel), VbStrConv.Wide) & "ƒ}ƒXˆÈ“à‚É‚¢‚È‚¢ŒÀ‚è”­Œ©‚³‚ê‚È‚¢B" & "‚½‚¾‚µ©•ª‚©‚çUŒ‚‚·‚é‚Æ‚Pƒ^[ƒ“–³ŒøB"
 				Else
-					msg = "Invalid_string_refer_to_original_code"
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					msg = "“G‚©‚ç‚Rƒ}ƒXˆÈ“à‚É‚¢‚È‚¢ŒÀ‚è”­Œ©‚³‚ê‚È‚¢B" & "‚½‚¾‚µ©•ª‚©‚çUŒ‚‚·‚é‚Æ‚Pƒ^[ƒ“–³ŒøB"
 				End If
 				
-			Case "Invalid_string_refer_to_original_code"
-				msg = "Invalid_string_refer_to_original_code"
+			Case "ƒXƒeƒ‹ƒX–³Œø‰»"
+				msg = "“G‚ÌƒXƒeƒ‹ƒX”\—Í‚ğ–³Œø‰»‚·‚éB"
 				
-			Case "Invalid_string_refer_to_original_code"
-				msg = "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code_
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			Case "ƒeƒŒƒ|[ƒg"
+				msg = "ƒeƒŒƒ|[ƒg‚ğs‚¢A" & Term("ˆÚ“®—Í", u) & VB6.Format(u.Speed + flevel) & "‚Å’nŒ`‚ğ–³‹‚µ‚ÄˆÚ“®B;"
 				If LLength(fdata) > 1 Then
 					If CShort(LIndex(fdata, 2)) > 0 Then
-						msg = msg & LIndex(fdata, 2) & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
+						msg = msg & LIndex(fdata, 2) & Term("‚d‚m", u) & "Á”ïB"
 					End If
 				Else
-					msg = msg & "40" & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
+					msg = msg & "40" & Term("‚d‚m", u) & "Á”ïB"
 				End If
 				
-			Case "Invalid_string_refer_to_original_code"
-				msg = Term("ç§»å‹•åŠ›", u) & VB6.Format(u.Speed + flevel) & "Invalid_string_refer_to_original_code"
+			Case "ƒWƒƒƒ“ƒv"
+				msg = Term("ˆÚ“®—Í", u) & VB6.Format(u.Speed + flevel) & "‚Å’nã’nŒ`‚ğ–³‹‚µ‚È‚ª‚çƒWƒƒƒ“ƒvˆÚ“®B"
 				If LLength(fdata) > 1 Then
 					If StrToLng(LIndex(fdata, 2)) > 0 Then
-						msg = msg & ";" & LIndex(fdata, 2) & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
+						msg = msg & ";" & LIndex(fdata, 2) & Term("‚d‚m", u) & "Á”ïB"
 					End If
 				End If
 				
-			Case "æ°´æ³³"
-				msg = "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			Case "…‰j"
+				msg = "…’†‚ğ‰j‚¢‚ÅˆÚ“®‰Â”\B[ŠC“™‚Ì[‚¢…‚Ì’nŒ`‚Éi“ü‚·‚é‚±‚Æ‚ªo—ˆ‚éB" & "‚½‚¾‚µ…’†‚Å‚ÌˆÚ“®ƒRƒXƒg‚ª‚P‚É‚È‚é–ó‚Å‚Í‚È‚¢B"
 				
-			Case "Invalid_string_refer_to_original_code"
-				msg = "Invalid_string_refer_to_original_code"
+			Case "…ãˆÚ“®"
+				msg = "…ã‚É•‚‚©‚ñ‚ÅˆÚ“®‰Â”\B"
 				
-			Case "Invalid_string_refer_to_original_code"
-				msg = "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			Case "ƒzƒo[ˆÚ“®"
+				msg = "‹ó’†‚É•‚‚«‚È‚ª‚çˆÚ“®‚·‚é‚±‚Æ‚Å»”™‚ÆáŒ´‚ÌˆÚ“®ƒRƒXƒg‚ª‚P‚É‚È‚éB" & "‚Ü‚½A…ãˆÚ“®‚à‰Â”\B‚½‚¾‚µˆÚ“®‚É5" & Term("‚d‚m", u) & "Á”ïB"
 				
-			Case "Invalid_string_refer_to_original_code"
-				msg = "Invalid_string_refer_to_original_code"
+			Case "“§‰ßˆÚ“®"
+				msg = "áŠQ•¨‚ğ–³‹‚µ‚ÄˆÚ“®B"
 				
-			Case "Invalid_string_refer_to_original_code"
-				msg = "Invalid_string_refer_to_original_code"
+			Case "‚·‚è”²‚¯ˆÚ“®"
+				msg = "“Gƒ†ƒjƒbƒg‚ª‚¢‚éƒ}ƒX‚ğ’Ê‰ß‰Â”\B"
 				
-			Case "Invalid_string_refer_to_original_code"
-				msg = "Invalid_string_refer_to_original_code"
+			Case "ü˜HˆÚ“®"
+				msg = "ü˜Hã‚Ì‚İ‚ğˆÚ“®‰Â”\B"
 				
-			Case "Invalid_string_refer_to_original_code"
+			Case "ˆÚ“®§ŒÀ"
 				msg = msg & LIndex(fdata, 2)
 				For i = 3 To LLength(fdata)
-					msg = msg & "Invalid_string_refer_to_original_code"
+					msg = msg & "A" & LIndex(fdata, i)
 				Next 
-				msg = msg & "Invalid_string_refer_to_original_code"
+				msg = msg & "ã‚Ì‚İ‚ğˆÚ“®‰Â”\B"
 				
-			Case "é€²å…¥ä¸å¯"
+			Case "i“ü•s‰Â"
 				msg = msg & LIndex(fdata, 2)
 				For i = 3 To LLength(fdata)
-					msg = msg & "Invalid_string_refer_to_original_code"
+					msg = msg & "A" & LIndex(fdata, i)
 				Next 
-				msg = msg & "Invalid_string_refer_to_original_code"
+				msg = msg & "‚É‚Íi“ü•s‰ÂB"
 				
-			Case "Invalid_string_refer_to_original_code"
+			Case "’nŒ`“K‰"
 				msg = msg & LIndex(fdata, 2)
 				For i = 3 To LLength(fdata)
-					msg = msg & "Invalid_string_refer_to_original_code"
+					msg = msg & "A" & LIndex(fdata, i)
 				Next 
-				msg = msg & "Invalid_string_refer_to_original_code"
+				msg = msg & "‚É‚¨‚¯‚éˆÚ“®ƒRƒXƒg‚ª‚P‚É‚È‚éB"
 				
-			Case "è¿½åŠ ç§»å‹•åŠ›"
-				msg = LIndex(fdata, 2) & "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			Case "’Ç‰ÁˆÚ“®—Í"
+				msg = LIndex(fdata, 2) & "‚É‚¢‚é‚ÆA" & Term("ˆÚ“®—Í", u) & "‚ª"
 				If flevel >= 0 Then
-					msg = msg & VB6.Format(flevel) & "Invalid_string_refer_to_original_code"
+					msg = msg & VB6.Format(flevel) & "‘‰ÁB"
 				Else
-					msg = msg & VB6.Format(-flevel) & "Invalid_string_refer_to_original_code"
+					msg = msg & VB6.Format(-flevel) & "Œ¸­B"
 				End If
 				
-			Case "æ¯è‰¦"
-				msg = "Invalid_string_refer_to_original_code"
+			Case "•êŠÍ"
+				msg = "‘¼‚Ìƒ†ƒjƒbƒg‚ğŠi”[‚µAC—E‰^”À‰Â”\B"
 				
-			Case "æ ¼ç´ä¸å¯"
-				msg = "Invalid_string_refer_to_original_code"
+			Case "Ši”[•s‰Â"
+				msg = "•êŠÍ‚ÉŠi”[‚·‚é‚±‚Æ‚ªo—ˆ‚È‚¢B"
 				
-			Case "Invalid_string_refer_to_original_code"
-				msg = "Invalid_string_refer_to_original_code"
+			Case "—¼è—˜‚«"
+				msg = "—¼è‚É•Ší‚ğ‘•”õ‰Â”\B"
 				
-			Case "Invalid_string_refer_to_original_code"
-				msg = "Invalid_string_refer_to_original_code"
+			Case "•”‘àƒ†ƒjƒbƒg"
+				msg = "•¡”‚Ìƒ†ƒjƒbƒg‚É‚æ‚Á‚Ä\¬‚³‚ê‚½•”‘àƒ†ƒjƒbƒgB"
 				
-			Case "Invalid_string_refer_to_original_code"
-				msg = "Invalid_string_refer_to_original_code"
+			Case "¢Š«ƒ†ƒjƒbƒg"
+				msg = "¢Š«‚³‚ê‚½ƒ†ƒjƒbƒgB"
 				
-			Case "å¤‰å½¢"
+			Case "•ÏŒ`"
 				If u.IsHero Then
-					buf = "å¤‰åŒ–"
+					buf = "•Ï‰»"
 				Else
-					buf = "å¤‰å½¢"
+					buf = "•ÏŒ`"
 				End If
 				If LLength(fdata) > 2 Then
-					msg = "Invalid_string_refer_to_original_code" & buf & "; "
+					msg = "ˆÈ‰º‚ÌŒ`‘Ô‚É" & buf & "; "
 					For i = 2 To LLength(fdata)
 						If u.OtherForm(LIndex(fdata, i)).IsAvailable() Then
 							If u.Nickname = UDList.Item(LIndex(fdata, i)).Nickname Then
 								uname = UDList.Item(LIndex(fdata, i)).Name
-								If Right(uname, 5) = "Invalid_string_refer_to_original_code" Then
+								If Right(uname, 5) = "(‘OŠúŒ^)" Then
 									uname = Left(uname, Len(uname) - 5)
-								ElseIf Right(uname, 5) = "Invalid_string_refer_to_original_code" Then 
+								ElseIf Right(uname, 5) = "E‘OŠúŒ^)" Then 
 									uname = Left(uname, Len(uname) - 5) & ")"
-								ElseIf Right(uname, 5) = "Invalid_string_refer_to_original_code" Then 
+								ElseIf Right(uname, 5) = "(ŒãŠúŒ^)" Then 
 									uname = Left(uname, Len(uname) - 5)
 								End If
 							Else
@@ -2598,62 +2339,60 @@ Module Help
 					Else
 						uname = UDList.Item(LIndex(fdata, 2)).Nickname
 					End If
-					If Right(uname, 5) = "Invalid_string_refer_to_original_code" Then
+					If Right(uname, 5) = "(‘OŠúŒ^)" Then
 						uname = Left(uname, Len(uname) - 5)
-					ElseIf Right(uname, 5) = "Invalid_string_refer_to_original_code" Then 
+					ElseIf Right(uname, 5) = "E‘OŠúŒ^)" Then 
 						uname = Left(uname, Len(uname) - 5) & ")"
-					ElseIf Right(uname, 5) = "Invalid_string_refer_to_original_code" Then 
+					ElseIf Right(uname, 5) = "(ŒãŠúŒ^)" Then 
 						uname = Left(uname, Len(uname) - 5)
 					End If
-					msg = "<B>" & uname & "</B>ã«" & buf & "Invalid_string_refer_to_original_code"
+					msg = "<B>" & uname & "</B>‚É" & buf & "B"
 				End If
 				
-			Case "Invalid_string_refer_to_original_code"
+			Case "ƒp[ƒc•ª—£"
 				If u.Nickname = UDList.Item(LIndex(fdata, 2)).Nickname Then
 					uname = UDList.Item(LIndex(fdata, 2)).Name
 				Else
 					uname = UDList.Item(LIndex(fdata, 2)).Nickname
 				End If
-				If Right(uname, 5) = "Invalid_string_refer_to_original_code" Then
+				If Right(uname, 5) = "(‘OŠúŒ^)" Then
 					uname = Left(uname, Len(uname) - 5)
-				ElseIf Right(uname, 5) = "Invalid_string_refer_to_original_code" Then 
+				ElseIf Right(uname, 5) = "E‘OŠúŒ^)" Then 
 					uname = Left(uname, Len(uname) - 5) & ")"
-				ElseIf Right(uname, 5) = "Invalid_string_refer_to_original_code" Then 
+				ElseIf Right(uname, 5) = "(ŒãŠúŒ^)" Then 
 					uname = Left(uname, Len(uname) - 5)
 				End If
-				msg = "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				msg = "ƒp[ƒc‚ğ•ª—£‚µ" & uname & "‚É•ÏŒ`B"
 				If flevel_specified Then
-					msg = msg & ";ãƒ¦ãƒ‹ãƒƒãƒˆç ´å£Šæ™‚ã«" & VB6.Format(10 * flevel) & "Invalid_string_refer_to_original_code"
+					msg = msg & ";ƒ†ƒjƒbƒg”j‰ó‚É" & VB6.Format(10 * flevel) & "%‚ÌŠm—¦‚Å”­“®B"
 				End If
 				
-			Case "Invalid_string_refer_to_original_code"
+			Case "ƒp[ƒc‡‘Ì"
 				If u.Nickname = UDList.Item(fdata).Nickname Then
 					uname = UDList.Item(fdata).Name
 				Else
 					uname = UDList.Item(fdata).Nickname
 				End If
-				If Right(uname, 5) = "Invalid_string_refer_to_original_code" Then
+				If Right(uname, 5) = "(‘OŠúŒ^)" Then
 					uname = Left(uname, Len(uname) - 5)
-				ElseIf Right(uname, 5) = "Invalid_string_refer_to_original_code" Then 
+				ElseIf Right(uname, 5) = "E‘OŠúŒ^)" Then 
 					uname = Left(uname, Len(uname) - 5) & ")"
-				ElseIf Right(uname, 5) = "Invalid_string_refer_to_original_code" Then 
+				ElseIf Right(uname, 5) = "(ŒãŠúŒ^)" Then 
 					uname = Left(uname, Len(uname) - 5)
 				End If
-				msg = "Invalid_string_refer_to_original_code" & uname & "Invalid_string_refer_to_original_code"
+				msg = "ƒp[ƒc‚Æ‡‘Ì‚µ" & uname & "‚É•ÏŒ`B"
 				
-			Case "Invalid_string_refer_to_original_code"
+			Case "ƒnƒCƒp[ƒ‚[ƒh"
 				If u.Nickname = UDList.Item(LIndex(fdata, 2)).Nickname Then
 					uname = UDList.Item(LIndex(fdata, 2)).Name
 				Else
 					uname = UDList.Item(LIndex(fdata, 2)).Nickname
 				End If
-				If Right(uname, 5) = "Invalid_string_refer_to_original_code" Then
+				If Right(uname, 5) = "(‘OŠúŒ^)" Then
 					uname = Left(uname, Len(uname) - 5)
-				ElseIf Right(uname, 5) = "Invalid_string_refer_to_original_code" Then 
+				ElseIf Right(uname, 5) = "E‘OŠúŒ^)" Then 
 					uname = Left(uname, Len(uname) - 5) & ")"
-				ElseIf Right(uname, 5) = "Invalid_string_refer_to_original_code" Then 
+				ElseIf Right(uname, 5) = "(ŒãŠúŒ^)" Then 
 					uname = Left(uname, Len(uname) - 5)
 				End If
 				If u.Nickname <> uname Then
@@ -2661,41 +2400,33 @@ Module Help
 				Else
 					uname = ""
 				End If
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				msg = Term("æ°—åŠ›", u) & VB6.Format(100 + 10 * flevel) & "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				'UPGRADE_WARNING: FeatureHelpMessage ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-				msg = Term("æ°—åŠ›", u) & VB6.Format(100 + 10 * flevel) & "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code_
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				msg = Term("Invalid_string_refer_to_original_code", u) & "ãŒæœ€å¤§" & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				'End If
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				msg = msg & "Invalid_string_refer_to_original_code"
-				'End If
-				If u.IsHero Then
-					msg = msg & "Invalid_string_refer_to_original_code"
+				If InStr(fdata, "‹C—Í”­“®") > 0 Then
+					msg = Term("‹C—Í", u) & VB6.Format(100 + 10 * flevel) & "‚Å“ÁêŒ`‘Ô" & uname & "‚É"
+				ElseIf flevel <= 5 Then 
+					msg = Term("‹C—Í", u) & VB6.Format(100 + 10 * flevel) & "A" & "‚à‚µ‚­‚Í" & Term("‚g‚o", u) & "‚ªÅ‘å" & Term("‚g‚o", u) & "‚Ì1/4ˆÈ‰º‚Å“ÁêŒ`‘Ô" & uname & "‚É"
 				Else
-					msg = msg & "Invalid_string_refer_to_original_code"
+					msg = Term("‚g‚o", u) & "‚ªÅ‘å" & Term("‚g‚o", u) & "‚Ì1/4ˆÈ‰º‚Å“ÁêŒ`‘Ô" & uname & "‚É"
+				End If
+				If InStr(fdata, "©“®”­“®") > 0 Then
+					msg = msg & "©“®"
+				End If
+				If u.IsHero Then
+					msg = msg & "•ÏgB"
+				Else
+					msg = msg & "•ÏŒ`B"
 				End If
 				
-			Case "Invalid_string_refer_to_original_code"
+			Case "‡‘Ì"
 				If u.IsHero Then
-					buf = "Invalid_string_refer_to_original_code"
+					buf = "•Ï‰»B"
 				Else
-					buf = "Invalid_string_refer_to_original_code"
+					buf = "•ÏŒ`B"
 				End If
 				If LLength(fdata) > 3 Then
 					If UDList.IsDefined(LIndex(fdata, 2)) Then
-						msg = "Invalid_string_refer_to_original_code" & UDList.Item(LIndex(fdata, 2)).Nickname & "</B>ã«" & buf & "; "
+						msg = "ˆÈ‰º‚Ìƒ†ƒjƒbƒg‚Æ‡‘Ì‚µ<B>" & UDList.Item(LIndex(fdata, 2)).Nickname & "</B>‚É" & buf & "; "
 					Else
-						msg = "Invalid_string_refer_to_original_code" & LIndex(fdata, 2) & "</B>ã«" & buf & "; "
+						msg = "ˆÈ‰º‚Ìƒ†ƒjƒbƒg‚Æ‡‘Ì‚µ<B>" & LIndex(fdata, 2) & "</B>‚É" & buf & "; "
 					End If
 					
 					For i = 3 To LLength(fdata)
@@ -2707,19 +2438,19 @@ Module Help
 					Next 
 				Else
 					If UDList.IsDefined(LIndex(fdata, 3)) Then
-						msg = UDList.Item(LIndex(fdata, 3)).Nickname & "ã¨åˆä½“ã—"
+						msg = UDList.Item(LIndex(fdata, 3)).Nickname & "‚Æ‡‘Ì‚µ"
 					Else
-						msg = LIndex(fdata, 3) & "ã¨åˆä½“ã—"
+						msg = LIndex(fdata, 3) & "‚Æ‡‘Ì‚µ"
 					End If
 					If UDList.IsDefined(LIndex(fdata, 2)) Then
-						msg = msg & UDList.Item(LIndex(fdata, 2)).Nickname & "ã«" & buf
+						msg = msg & UDList.Item(LIndex(fdata, 2)).Nickname & "‚É" & buf
 					Else
-						msg = msg & LIndex(fdata, 2) & "ã«" & buf
+						msg = msg & LIndex(fdata, 2) & "‚É" & buf
 					End If
 				End If
 				
-			Case "Invalid_string_refer_to_original_code"
-				msg = "Invalid_string_refer_to_original_code"
+			Case "•ª—£"
+				msg = "ˆÈ‰º‚Ìƒ†ƒjƒbƒg‚É•ª—£B; "
 				For i = 2 To LLength(fdata)
 					If UDList.IsDefined(LIndex(fdata, i)) Then
 						msg = msg & UDList.Item(LIndex(fdata, i)).Nickname & "  "
@@ -2728,347 +2459,312 @@ Module Help
 					End If
 				Next 
 				
-			Case "Invalid_string_refer_to_original_code"
-				msg = Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
+			Case "•sˆÀ’è"
+				msg = Term("‚g‚o", u) & "‚ªÅ‘å’l‚Ì1/4ˆÈ‰º‚É‚È‚é‚Æ–\‘–‚·‚éB"
 				
-			Case "Invalid_string_refer_to_original_code"
+			Case "x”z"
 				If LLength(fdata) = 2 Then
 					If Not PDList.IsDefined(LIndex(fdata, 2)) Then
-						ErrorMessage("Invalid_string_refer_to_original_code")
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						ErrorMessage("x”z‘ÎÛ‚ÌƒpƒCƒƒbƒgu" & LIndex(fdata, 2) & "v‚Ìƒf[ƒ^‚ª’è‹`‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ")
 						Exit Function
 					End If
-					msg = PDList.Item(LIndex(fdata, 2)).Nickname & "Invalid_string_refer_to_original_code"
+					msg = PDList.Item(LIndex(fdata, 2)).Nickname & "‚Ì‘¶İ‚ğˆÛ‚µAd‚¦‚³‚¹‚Ä‚¢‚éB"
 				Else
-					msg = "Invalid_string_refer_to_original_code"
+					msg = "ˆÈ‰º‚Ìƒ†ƒjƒbƒg‚Ì‘¶İ‚ğˆÛ‚µAd‚¦‚³‚¹‚Ä‚¢‚éB;"
 					For i = 2 To LLength(fdata)
 						If Not PDList.IsDefined(LIndex(fdata, 2)) Then
-							ErrorMessage("Invalid_string_refer_to_original_code")
-							'Invalid_string_refer_to_original_code
-							'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+							ErrorMessage("x”z‘ÎÛ‚ÌƒpƒCƒƒbƒgu" & LIndex(fdata, i) & "v‚Ìƒf[ƒ^‚ª’è‹`‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ")
 							Exit Function
 						End If
 						msg = msg & PDList.Item(LIndex(fdata, i)).Nickname & "  "
 					Next 
 				End If
 				
-			Case "Invalid_string_refer_to_original_code"
-				msg = "Invalid_string_refer_to_original_code"
+			Case "‚d‚b‚l"
+				msg = "”¼Œa‚Rƒ}ƒXˆÈ“à‚Ì–¡•ûƒ†ƒjƒbƒg‚É‘Î‚·‚éUŒ‚‚Ì–½’†—¦‚ğŒ³‚Ì"
 				If flevel >= 0 Then
-					msg = msg & VB6.Format(100 - 5 * flevel) & "Invalid_string_refer_to_original_code"
+					msg = msg & VB6.Format(100 - 5 * flevel) & "%‚ÉŒ¸­‚³‚¹‚éB"
 				Else
-					msg = msg & VB6.Format(100 - 5 * flevel) & "Invalid_string_refer_to_original_code"
+					msg = msg & VB6.Format(100 - 5 * flevel) & "%‚É‘‰Á‚³‚¹‚éB"
 				End If
 				buf = fname
 				If InStr(buf, "Lv") Then
 					buf = Left(buf, InStr(buf, "Lv") - 1)
 				End If
-				msg = msg & "Invalid_string_refer_to_original_code" & buf & "Invalid_string_refer_to_original_code"
-				msg = msg & "Invalid_string_refer_to_original_code"
+				msg = msg & "“¯‚É‘Šè‚Ì" & buf & "”\—Í‚ÌŒø‰Ê‚ğ–³Œø‰»B"
+				msg = msg & ";v”O—U“±UŒ‚‚â‹ßÚUŒ‚‚É‚Í–³ŒøB"
 				
-			Case "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				msg = Term("æ°—åŠ›", u) & "Invalid_string_refer_to_original_code"
-				msg = Term("æ°—åŠ›", u) & "Invalid_string_refer_to_original_code"
-				'End If
-				
-			Case "é˜²å¾¡ä¸å¯"
-				msg = "Invalid_string_refer_to_original_code"
-				
-			Case "å›é¿ä¸å¯"
-				msg = "Invalid_string_refer_to_original_code"
-				
-			Case "Invalid_string_refer_to_original_code"
-				If flevel >= 0 Then
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			Case "ƒu[ƒXƒg"
+				If IsOptionDefined("ƒ_ƒ[ƒW”{—¦’á‰º") Then
+					msg = Term("‹C—Í", u) & "130ˆÈã‚Å”­“®‚µAƒ_ƒ[ƒW‚ğ 20% ƒAƒbƒvB"
 				Else
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					msg = Term("‹C—Í", u) & "130ˆÈã‚Å”­“®‚µAƒ_ƒ[ƒW‚ğ 25% ƒAƒbƒvB"
+				End If
+				
+			Case "–hŒä•s‰Â"
+				msg = "UŒ‚‚ğó‚¯‚½Û‚É–hŒä‰^“®‚ğæ‚é‚±‚Æ‚ªo—ˆ‚È‚¢B"
+				
+			Case "‰ñ”ğ•s‰Â"
+				msg = "UŒ‚‚ğó‚¯‚½Û‚É‰ñ”ğ‰^“®‚ğæ‚é‚±‚Æ‚ªo—ˆ‚È‚¢B"
+				
+			Case "Ši“¬‹­‰»"
+				If flevel >= 0 Then
+					msg = "ƒpƒCƒƒbƒg‚Ì" & Term("Ši“¬", u) & "‚ğ+" & VB6.Format(CShort(5 * flevel)) & "B"
+				Else
+					msg = "ƒpƒCƒƒbƒg‚Ì" & Term("Ši“¬", u) & "‚ğ" & VB6.Format(CShort(5 * flevel)) & "B"
 				End If
 				If IsNumeric(LIndex(fdata, 2)) Then
-					msg = msg & ";" & Term("æ°—åŠ›", u) & LIndex(fdata, 2) & "Invalid_string_refer_to_original_code"
+					msg = msg & ";" & Term("‹C—Í", u) & LIndex(fdata, 2) & "ˆÈã‚Å”­“®B"
 				End If
 				
-			Case "Invalid_string_refer_to_original_code"
+			Case "ËŒ‚‹­‰»"
 				If p.HasMana() Then
 					If flevel >= 0 Then
-						msg = "Invalid_string_refer_to_original_code" & Term("é­”åŠ›", u) & "Invalid_string_refer_to_original_code" & VB6.Format(CShort(5 * flevel)) & "Invalid_string_refer_to_original_code"
+						msg = "ƒpƒCƒƒbƒg‚Ì" & Term("–‚—Í", u) & "‚ğ+" & VB6.Format(CShort(5 * flevel)) & "B"
 					Else
-						msg = "Invalid_string_refer_to_original_code" & Term("é­”åŠ›", u) & "Invalid_string_refer_to_original_code"
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						msg = "ƒpƒCƒƒbƒg‚Ì" & Term("–‚—Í", u) & "‚ğ" & VB6.Format(CShort(5 * flevel)) & "B"
 					End If
 				Else
 					If flevel >= 0 Then
-						msg = "Invalid_string_refer_to_original_code" & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code" & VB6.Format(CShort(5 * flevel)) & "Invalid_string_refer_to_original_code"
+						msg = "ƒpƒCƒƒbƒg‚Ì" & Term("ËŒ‚", u) & "‚ğ+" & VB6.Format(CShort(5 * flevel)) & "B"
 					Else
-						msg = "Invalid_string_refer_to_original_code" & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						msg = "ƒpƒCƒƒbƒg‚Ì" & Term("ËŒ‚", u) & "‚ğ" & VB6.Format(CShort(5 * flevel)) & "B"
 					End If
 				End If
 				If IsNumeric(LIndex(fdata, 2)) Then
-					msg = msg & ";" & Term("æ°—åŠ›", u) & LIndex(fdata, 2) & "Invalid_string_refer_to_original_code"
+					msg = msg & ";" & Term("‹C—Í", u) & LIndex(fdata, 2) & "ˆÈã‚Å”­“®B"
 				End If
 				
-			Case "Invalid_string_refer_to_original_code"
+			Case "–½’†‹­‰»"
 				If flevel >= 0 Then
-					msg = "Invalid_string_refer_to_original_code" & Term("å‘½ä¸­", u) & "Invalid_string_refer_to_original_code" & VB6.Format(CShort(5 * flevel)) & "Invalid_string_refer_to_original_code"
+					msg = "ƒpƒCƒƒbƒg‚Ì" & Term("–½’†", u) & "‚ğ+" & VB6.Format(CShort(5 * flevel)) & "B"
 				Else
-					msg = "Invalid_string_refer_to_original_code" & Term("å‘½ä¸­", u) & "Invalid_string_refer_to_original_code"
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					msg = "ƒpƒCƒƒbƒg‚Ì" & Term("–½’†", u) & "‚ğ" & VB6.Format(CShort(5 * flevel)) & "B"
 				End If
 				If IsNumeric(LIndex(fdata, 2)) Then
-					msg = msg & "æ°—åŠ›" & LIndex(fdata, 2) & "Invalid_string_refer_to_original_code"
+					msg = msg & "‹C—Í" & LIndex(fdata, 2) & "ˆÈã‚Å”­“®B"
 				End If
 				
-			Case "Invalid_string_refer_to_original_code"
+			Case "‰ñ”ğ‹­‰»"
 				If flevel >= 0 Then
-					msg = "Invalid_string_refer_to_original_code" & Term("å›é¿", u) & "Invalid_string_refer_to_original_code" & VB6.Format(CShort(5 * flevel)) & "Invalid_string_refer_to_original_code"
+					msg = "ƒpƒCƒƒbƒg‚Ì" & Term("‰ñ”ğ", u) & "‚ğ+" & VB6.Format(CShort(5 * flevel)) & "B"
 				Else
-					msg = "Invalid_string_refer_to_original_code" & Term("å›é¿", u) & "Invalid_string_refer_to_original_code"
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					msg = "ƒpƒCƒƒbƒg‚Ì" & Term("‰ñ”ğ", u) & "‚ğ" & VB6.Format(CShort(5 * flevel)) & "B"
 				End If
 				If IsNumeric(LIndex(fdata, 2)) Then
-					msg = msg & ";" & Term("æ°—åŠ›", u) & LIndex(fdata, 2) & "Invalid_string_refer_to_original_code"
+					msg = msg & ";" & Term("‹C—Í", u) & LIndex(fdata, 2) & "ˆÈã‚Å”­“®B"
 				End If
 				
-			Case "Invalid_string_refer_to_original_code"
+			Case "‹Z—Ê‹­‰»"
 				If flevel >= 0 Then
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					msg = "ƒpƒCƒƒbƒg‚Ì" & Term("‹Z—Ê", u) & "‚ğ+" & VB6.Format(CShort(5 * flevel)) & "B"
 				Else
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					msg = "ƒpƒCƒƒbƒg‚Ì" & Term("‹Z—Ê", u) & "‚ğ" & VB6.Format(CShort(5 * flevel)) & "B"
 				End If
 				If IsNumeric(LIndex(fdata, 2)) Then
-					msg = msg & ";" & Term("æ°—åŠ›", u) & LIndex(fdata, 2) & "Invalid_string_refer_to_original_code"
+					msg = msg & ";" & Term("‹C—Í", u) & LIndex(fdata, 2) & "ˆÈã‚Å”­“®B"
 				End If
 				
-			Case "Invalid_string_refer_to_original_code"
+			Case "”½‰‹­‰»"
 				If flevel >= 0 Then
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					msg = "ƒpƒCƒƒbƒg‚Ì" & Term("”½‰", u) & "‚ğ+" & VB6.Format(CShort(5 * flevel)) & "B"
 				Else
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					msg = "ƒpƒCƒƒbƒg‚Ì" & Term("”½‰", u) & "‚ğ" & VB6.Format(CShort(5 * flevel)) & "B"
 				End If
 				If IsNumeric(LIndex(fdata, 2)) Then
-					msg = msg & ";" & Term("æ°—åŠ›", u) & LIndex(fdata, 2) & "Invalid_string_refer_to_original_code"
+					msg = msg & ";" & Term("‹C—Í", u) & LIndex(fdata, 2) & "ˆÈã‚Å”­“®B"
 				End If
 				
-			Case "Invalid_string_refer_to_original_code"
+			Case "‚g‚o‹­‰»"
 				If flevel >= 0 Then
-					msg = "æœ€å¤§" & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					msg = "Å‘å" & Term("‚g‚o", u) & "‚ğ" & VB6.Format(CShort(200 * flevel)) & "‘‰ÁB"
 				Else
-					msg = "æœ€å¤§" & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					msg = "Å‘å" & Term("‚g‚o", u) & "‚ğ" & VB6.Format(CShort(-200 * flevel)) & "Œ¸­B"
 				End If
 				If IsNumeric(LIndex(fdata, 2)) Then
-					msg = msg & ";" & Term("æ°—åŠ›", u) & LIndex(fdata, 2) & "Invalid_string_refer_to_original_code"
+					msg = msg & ";" & Term("‹C—Í", u) & LIndex(fdata, 2) & "ˆÈã‚Å”­“®B"
 				End If
 				
-			Case "Invalid_string_refer_to_original_code"
+			Case "‚d‚m‹­‰»"
 				If flevel >= 0 Then
-					msg = "æœ€å¤§" & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					msg = "Å‘å" & Term("‚d‚m", u) & "‚ğ" & VB6.Format(CShort(10 * flevel)) & "‘‰ÁB"
 				Else
-					msg = "æœ€å¤§" & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					msg = "Å‘å" & Term("‚d‚m", u) & "‚ğ" & VB6.Format(CShort(-10 * flevel)) & "Œ¸­B"
 				End If
 				If IsNumeric(LIndex(fdata, 2)) Then
-					msg = msg & ";" & Term("æ°—åŠ›", u) & LIndex(fdata, 2) & "Invalid_string_refer_to_original_code"
+					msg = msg & ";" & Term("‹C—Í", u) & LIndex(fdata, 2) & "ˆÈã‚Å”­“®B"
 				End If
 				
-			Case "Invalid_string_refer_to_original_code"
+			Case "‘•b‹­‰»"
 				If flevel >= 0 Then
-					msg = Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					msg = Term("‘•b", u) & "‚ğ" & VB6.Format(CShort(100 * flevel)) & "‘‰ÁB"
 				Else
-					msg = Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					msg = Term("‘•b", u) & "‚ğ" & VB6.Format(CShort(-100 * flevel)) & "Œ¸­B"
 				End If
 				If IsNumeric(LIndex(fdata, 2)) Then
-					msg = msg & ";" & Term("æ°—åŠ›", u) & LIndex(fdata, 2) & "Invalid_string_refer_to_original_code"
+					msg = msg & ";" & Term("‹C—Í", u) & LIndex(fdata, 2) & "ˆÈã‚Å”­“®B"
 				End If
 				
-			Case "Invalid_string_refer_to_original_code"
+			Case "‰^“®«‹­‰»"
 				If flevel >= 0 Then
-					msg = Term("é‹å‹•æ€§", u) & "Invalid_string_refer_to_original_code"
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					msg = Term("‰^“®«", u) & "‚ğ" & VB6.Format(CShort(5 * flevel)) & "‘‰ÁB"
 				Else
-					msg = Term("é‹å‹•æ€§", u) & "Invalid_string_refer_to_original_code"
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					msg = Term("‰^“®«", u) & "‚ğ" & VB6.Format(CShort(-5 * flevel)) & "Œ¸­B"
 				End If
 				If IsNumeric(LIndex(fdata, 2)) Then
-					msg = msg & ";" & Term("æ°—åŠ›", u) & LIndex(fdata, 2) & "Invalid_string_refer_to_original_code"
+					msg = msg & ";" & Term("‹C—Í", u) & LIndex(fdata, 2) & "ˆÈã‚Å”­“®B"
 				End If
 				
-			Case "Invalid_string_refer_to_original_code"
+			Case "ˆÚ“®—Í‹­‰»"
 				If flevel >= 0 Then
-					msg = Term("ç§»å‹•åŠ›", u) & "Invalid_string_refer_to_original_code"
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					msg = Term("ˆÚ“®—Í", u) & "‚ğ" & VB6.Format(CShort(flevel)) & "‘‰ÁB"
 				Else
-					msg = Term("ç§»å‹•åŠ›", u) & "Invalid_string_refer_to_original_code"
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					msg = Term("ˆÚ“®—Í", u) & "‚ğ" & VB6.Format(CShort(flevel)) & "Œ¸­B"
 				End If
 				If IsNumeric(LIndex(fdata, 2)) Then
-					msg = msg & ";" & Term("æ°—åŠ›", u) & LIndex(fdata, 2) & "Invalid_string_refer_to_original_code"
+					msg = msg & ";" & Term("‹C—Í", u) & LIndex(fdata, 2) & "ˆÈã‚Å”­“®B"
 				End If
 				
-			Case "Invalid_string_refer_to_original_code"
+			Case "‚g‚oŠ„‡‹­‰»"
 				If flevel >= 0 Then
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					msg = "Å‘å" & Term("‚g‚o", u) & "‚ğ" & VB6.Format(CShort(5 * flevel)) & "%•ª‘‰ÁB"
 				Else
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					msg = "Å‘å" & Term("‚g‚o", u) & "‚ğ" & VB6.Format(CShort(-5 * flevel)) & "%•ªŒ¸­B"
 				End If
 				If IsNumeric(LIndex(fdata, 2)) Then
-					msg = msg & ";" & Term("æ°—åŠ›", u) & LIndex(fdata, 2) & "Invalid_string_refer_to_original_code"
+					msg = msg & ";" & Term("‹C—Í", u) & LIndex(fdata, 2) & "ˆÈã‚Å”­“®B"
 				End If
 				
-			Case "Invalid_string_refer_to_original_code"
+			Case "‚d‚mŠ„‡‹­‰»"
 				If flevel >= 0 Then
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					msg = "Å‘å" & Term("‚d‚m", u) & "‚ğ" & VB6.Format(CShort(5 * flevel)) & "%•ª‘‰ÁB"
 				Else
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					msg = "Å‘å" & Term("‚d‚m", u) & "‚ğ" & VB6.Format(CShort(-5 * flevel)) & "%•ªŒ¸­B"
 				End If
 				If IsNumeric(LIndex(fdata, 2)) Then
-					msg = msg & ";" & Term("æ°—åŠ›", u) & LIndex(fdata, 2) & "Invalid_string_refer_to_original_code"
+					msg = msg & ";" & Term("‹C—Í", u) & LIndex(fdata, 2) & "ˆÈã‚Å”­“®B"
 				End If
 				
-			Case "Invalid_string_refer_to_original_code"
+			Case "‘•bŠ„‡‹­‰»"
 				If flevel >= 0 Then
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					msg = Term("‘•b", u) & "‚ğ" & VB6.Format(CShort(5 * flevel)) & "%•ª‘‰ÁB"
 				Else
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					msg = Term("‘•b", u) & "‚ğ" & VB6.Format(CShort(-5 * flevel)) & "%•ªŒ¸­B"
 				End If
 				If IsNumeric(LIndex(fdata, 2)) Then
-					msg = msg & ";" & Term("æ°—åŠ›", u) & LIndex(fdata, 2) & "Invalid_string_refer_to_original_code"
+					msg = msg & ";" & Term("‹C—Í", u) & LIndex(fdata, 2) & "ˆÈã‚Å”­“®B"
 				End If
 				
-			Case "Invalid_string_refer_to_original_code"
+			Case "‰^“®«Š„‡‹­‰»"
 				If flevel >= 0 Then
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					msg = Term("‰^“®«", u) & "‚ğ" & VB6.Format(CShort(5 * flevel)) & "%•ª‘‰ÁB"
 				Else
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					msg = Term("‰^“®«", u) & "‚ğ" & VB6.Format(CShort(-5 * flevel)) & "%•ªŒ¸­B"
 				End If
 				If IsNumeric(LIndex(fdata, 2)) Then
-					msg = msg & ";" & Term("æ°—åŠ›", u) & LIndex(fdata, 2) & "Invalid_string_refer_to_original_code"
+					msg = msg & ";" & Term("‹C—Í", u) & LIndex(fdata, 2) & "ˆÈã‚Å”­“®B"
 				End If
 				
-			Case "æ­¦å™¨ãƒ»é˜²å…·ã‚¯ãƒ©ã‚¹"
+			Case "•ŠíE–h‹ïƒNƒ‰ƒX"
 				fdata = Trim(u.WeaponProficiency)
 				If fdata <> "" Then
-					msg = "Invalid_string_refer_to_original_code"
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					msg = "•Šíy" & fdata & "z;"
 				Else
-					msg = "Invalid_string_refer_to_original_code"
+					msg = "•Šíy-z;"
 				End If
 				fdata = Trim(u.ArmorProficiency)
 				If fdata <> "" Then
-					msg = msg & "Invalid_string_refer_to_original_code"
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					msg = msg & "–h‹ïy" & fdata & "z"
 				Else
-					msg = msg & "Invalid_string_refer_to_original_code"
+					msg = msg & "–h‹ïy-z"
 				End If
 				
-			Case "Invalid_string_refer_to_original_code"
-				If LIndex(fdata, 3) <> "å…¨" Then
+			Case "’Ç‰ÁUŒ‚"
+				If LIndex(fdata, 3) <> "‘S" Then
 					buf = LIndex(fdata, 3)
 					If Left(buf, 1) = "@" Then
-						msg = Mid(buf, 2) & "ã«ã‚ˆã‚‹"
+						msg = Mid(buf, 2) & "‚É‚æ‚é"
 					Else
-						msg = "Invalid_string_refer_to_original_code"
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						msg = "u" & buf & "v‘®«‚ğ‚Â•Ší‚É‚æ‚é"
 					End If
 				End If
 				
-				msg = msg & "Invalid_string_refer_to_original_code"
+				msg = msg & "UŒ‚‚ÌŒã‚ÉA"
 				
 				buf = LIndex(fdata, 4)
 				If IsNumeric(buf) Then
 					If buf <> "100" Then
-						msg = msg & buf & "Invalid_string_refer_to_original_code"
+						msg = msg & buf & "%‚ÌŠm—¦‚Å"
 					End If
 				ElseIf InStr(buf, "+") > 0 Or InStr(buf, "-") > 0 Then 
 					i = MaxLng(InStr(buf, "+"), InStr(buf, "-"))
 					sname = u.SkillName0(Left(buf, i - 1))
 					prob = (u.SkillLevel(Left(buf, i - 1)) + CShort(Mid(buf, i))) * 100 \ 16
-					msg = msg & "(" & sname & "Lv" & Mid(buf, i) & "Invalid_string_refer_to_original_code" & VB6.Format(prob) & "%)ã§"
+					msg = msg & "(" & sname & "Lv" & Mid(buf, i) & ")/16‚ÌŠm—¦(" & VB6.Format(prob) & "%)‚Å"
 				Else
 					sname = u.SkillName0(buf)
 					prob = u.SkillLevel(buf) * 100 \ 16
-					msg = msg & sname & "Invalid_string_refer_to_original_code" & VB6.Format(prob) & "%)ã§"
+					msg = msg & sname & "Lv/16‚ÌŠm—¦(" & VB6.Format(prob) & "%)‚Å"
 				End If
 				
 				buf = LIndex(fdata, 2)
 				If InStr(buf, "(") > 0 Then
 					buf = Left(buf, InStr(buf, "(") - 1)
 				End If
-				msg = msg & buf & "Invalid_string_refer_to_original_code"
+				msg = msg & buf & "‚É‚æ‚é’ÇŒ‚‚ğs‚¤B"
 				
 				If StrToLng(LIndex(fdata, 5)) > 0 Then
-					msg = msg & ";ç™ºå‹•æ™‚ã«" & LIndex(fdata, 5) & "Invalid_string_refer_to_original_code"
+					msg = msg & ";”­“®‚É" & LIndex(fdata, 5) & "‚d‚mÁ”ïB"
 				ElseIf StrToLng(LIndex(fdata, 5)) < 0 Then 
-					msg = msg & ";ç™ºå‹•æ™‚ã«" & Mid(LIndex(fdata, 5), 2) & "Invalid_string_refer_to_original_code"
+					msg = msg & ";”­“®‚É" & Mid(LIndex(fdata, 5), 2) & "‚d‚m‘‰ÁB"
 				End If
 				If StrToLng(LIndex(fdata, 6)) > 50 Then
-					msg = msg & ";" & Term("æ°—åŠ›", u) & LIndex(fdata, 6) & "Invalid_string_refer_to_original_code"
+					msg = msg & ";" & Term("‹C—Í", u) & LIndex(fdata, 6) & "ˆÈã‚Åg—p‰Â”\B"
 				End If
-				If InStr(fdata, "é€£é–ä¸å¯") > 0 Then
-					msg = msg & "Invalid_string_refer_to_original_code"
+				If InStr(fdata, "˜A½•s‰Â") > 0 Then
+					msg = msg & "˜A½•s‰ÂB"
 				End If
 				
-			Case "Invalid_string_refer_to_original_code"
-				If u.FeatureLevel("Invalid_string_refer_to_original_code") < 0 Then
-					msg = "Invalid_string_refer_to_original_code"
-				End If
-				msg = msg & "Invalid_string_refer_to_original_code"
-				'End If
-				
-			Case "Invalid_string_refer_to_original_code"
-				If flevel = 1 Then
-					msg = "Invalid_string_refer_to_original_code"
+			Case "‚y‚n‚b"
+				If u.FeatureLevel("‚y‚n‚b") < 0 Then
+					msg = "‚±‚Ìƒ†ƒjƒbƒg‚Í‚y‚n‚b‚É‚æ‚é‰e‹¿‚ğ—^‚¦‚é‚±‚Æ‚ªo—ˆ‚È‚¢B"
 				Else
-					msg = "Invalid_string_refer_to_original_code" & VB6.Format(flevel) & "Invalid_string_refer_to_original_code"
+					msg = "‚±‚Ìƒ†ƒjƒbƒg‚©‚ç"
+					If LLength(fdata) < 2 Then
+						buf = "1"
+					Else
+						buf = LIndex(fdata, 2)
+					End If
+					
+					opt = LIndex(fdata, 3)
+					If InStr(opt, "’¼ü") > 0 Then
+						msg = msg & buf & "ƒ}ƒXˆÈ“à‚Ì’¼üã"
+					ElseIf InStr(opt, " …•½") > 0 Then 
+						msg = msg & "¶‰E" & buf & "ƒ}ƒXˆÈ“à‚Ì’¼üã"
+					ElseIf InStr(opt, " ‚’¼") > 0 Then 
+						msg = msg & "ã‰º" & buf & "ƒ}ƒXˆÈ“à‚Ì’¼üã"
+					Else
+						msg = msg & buf & "ƒ}ƒXˆÈ“à"
+					End If
+					msg = msg & "‚ğ’Ê‰ß‚·‚é“Gƒ†ƒjƒbƒg‚ÉA‚y‚n‚b‚É‚æ‚é‰e‹¿‚ğ—^‚¦‚éB"
 				End If
 				
-			Case "Invalid_string_refer_to_original_code"
+			Case "‚y‚n‚b–³Œø‰»"
 				If flevel = 1 Then
-					msg = "Invalid_string_refer_to_original_code"
+					msg = "‚±‚Ìƒ†ƒjƒbƒg‚Í“Gƒ†ƒjƒbƒg‚É‚æ‚é‚y‚n‚b‚Ì‰e‹¿‚ğó‚¯‚È‚¢B"
 				Else
-					msg = "Invalid_string_refer_to_original_code" & VB6.Format(flevel) & "Invalid_string_refer_to_original_code"
+					msg = "‚±‚Ìƒ†ƒjƒbƒg‚Í“Gƒ†ƒjƒbƒg‚É‚æ‚é" & VB6.Format(flevel) & "ƒŒƒxƒ‹ˆÈ‰º‚Ì‚y‚n‚b‚Ì‰e‹¿‚ğó‚¯‚È‚¢B"
 				End If
 				
-			Case "Invalid_string_refer_to_original_code"
-				msg = "Invalid_string_refer_to_original_code"
+			Case "—×Úƒ†ƒjƒbƒg‚y‚n‚b–³Œø‰»"
+				If flevel = 1 Then
+					msg = "‚±‚Ìƒ†ƒjƒbƒg‚ª—×Ú‚·‚é“Gƒ†ƒjƒbƒg‚É‚æ‚é‚y‚n‚b‚ğ–³Œø‰»‚·‚éB"
+				Else
+					msg = "‚±‚Ìƒ†ƒjƒbƒg‚ª—×Ú‚·‚é“Gƒ†ƒjƒbƒg‚É‚æ‚é" & VB6.Format(flevel) & "ƒŒƒxƒ‹ˆÈ‰º‚Ì‚y‚n‚b‚ğ–³Œø‰»‚·‚éB"
+				End If
+				
+			Case "Lˆæ‚y‚n‚b–³Œø‰»"
+				msg = "‚±‚Ìƒ†ƒjƒbƒg‚©‚ç"
 				If LLength(fdata) < 2 Then
 					buf = "1"
 				Else
@@ -3076,37 +2772,37 @@ Module Help
 				End If
 				
 				If flevel = 1 Then
-					msg = msg & buf & "Invalid_string_refer_to_original_code"
+					msg = msg & buf & "ƒ}ƒXˆÈ“à‚Éİ’è‚³‚ê‚½‚y‚n‚b‚Ì‰e‹¿‚ğ–³Œø‰»‚·‚éB"
 				Else
-					msg = msg & buf & "Invalid_string_refer_to_original_code" & VB6.Format(flevel) & "Invalid_string_refer_to_original_code"
+					msg = msg & buf & "ƒ}ƒXˆÈ“à‚Éİ’è‚³‚ê‚½" & VB6.Format(flevel) & "ƒŒƒxƒ‹ˆÈ‰º‚Ì‚y‚n‚b‚Ì‰e‹¿‚ğ–³Œø‰»‚·‚éB"
 				End If
 				
 				' ADD START MARGE
-			Case "Invalid_string_refer_to_original_code"
+			Case "’nŒ`Œø‰Ê–³Œø‰»"
 				If LLength(fdata) > 1 Then
 					For i = 2 To LLength(fdata)
 						If i > 2 Then
-							msg = msg & "Invalid_string_refer_to_original_code"
+							msg = msg & "A"
 						End If
 						msg = msg & LIndex(fdata, i)
 					Next 
-					msg = msg & "ã®"
+					msg = msg & "‚Ì"
 				Else
-					msg = msg & "å…¨åœ°å½¢ã®"
+					msg = msg & "‘S’nŒ`‚Ì"
 				End If
-				msg = msg & "Invalid_string_refer_to_original_code"
+				msg = msg & "‚g‚oE‚d‚mŒ¸­‚âó‘Ô•t‰Á“™‚Ì“ÁêŒø‰Ê‚ğ–³Œø‰»‚·‚éB"
 				' ADD END MARGE
 				
 			Case Else
 				If is_additional Then
-					'Invalid_string_refer_to_original_code
-					'Invalid_string_refer_to_original_code
+					'•t‰Á‚³‚ê‚½”\—Í‚Ìê‡Aƒ†ƒjƒbƒg—p“Áê”\—Í‚ÉŠY“–‚µ‚È‚¯‚ê‚Î
+					'ƒpƒCƒƒbƒg—p“Áê”\—Í‚Æ‚İ‚È‚·
 					msg = SkillHelpMessage(u.MainPilot, ftype)
 					If Len(msg) > 0 Then
 						Exit Function
 					End If
 					
-					'Invalid_string_refer_to_original_code
+					'À‚Íƒ_ƒ~[”\—ÍH
 					If Len(fdata) > 0 Then
 						msg = ListIndex(fdata, ListLength(fdata))
 						If Left(msg, 1) = """" Then
@@ -3114,386 +2810,373 @@ Module Help
 						End If
 					End If
 					
-					'Invalid_string_refer_to_original_code
+					'‰ğà‚ª‘¶İ‚µ‚È‚¢H
 					If Len(msg) = 0 Then
 						Exit Function
 					End If
 				ElseIf Len(fdata) > 0 Then 
-					'Invalid_string_refer_to_original_code
+					'ƒ_ƒ~[”\—Í‚Ìê‡
 					msg = ListIndex(fdata, ListLength(fdata))
 					If Left(msg, 1) = """" Then
 						msg = Mid(msg, 2, Len(msg) - 2)
 					End If
-				ElseIf ListIndex(u.AllFeatureData(fname), 1) <> "è§£èª¬" Then 
-					'Invalid_string_refer_to_original_code
+				ElseIf ListIndex(u.AllFeatureData(fname), 1) <> "‰ğà" Then 
+					'‰ğà‚ª‚È‚¢ê‡
 					Exit Function
 				End If
 				
 		End Select
 		
 		fdata = u.AllFeatureData(fname0)
-		If ListIndex(fdata, 1) = "è§£èª¬" Then
-			'Invalid_string_refer_to_original_code
+		If ListIndex(fdata, 1) = "‰ğà" Then
+			'‰ğà‚ğ’è‹`‚µ‚Ä‚¢‚éê‡
 			msg = ListTail(fdata, 2)
 			If Left(msg, 1) = """" Then
 				msg = Mid(msg, 2, Len(msg) - 2)
 			End If
 		End If
 		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		ReplaceString(msg, "Invalid_string_refer_to_original_code", "Invalid_string_refer_to_original_code")
-		'End If
+		'“™g‘åŠî€‚ÌÛ‚ÍuƒpƒCƒƒbƒgv‚Æ‚¢‚¤Œê‚ğg‚í‚È‚¢‚æ‚¤‚É‚·‚é
+		If IsOptionDefined("“™g‘åŠî€") Then
+			ReplaceString(msg, "ƒpƒCƒƒbƒg", "ƒ†ƒjƒbƒg")
+		End If
 		
 		FeatureHelpMessage = msg
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'ƒ†ƒjƒbƒg u ‚Ì•Ší•ƒAƒrƒŠƒeƒB‘®« atr ‚Ì–¼Ì
 	Public Function AttributeName(ByRef u As Unit, ByRef atr As String, Optional ByVal is_ability As Boolean = False) As String
 		Dim fdata As String
 		
 		Select Case atr
-			Case "å…¨"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "æ ¼"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				AttributeName = "ä½æ”¹é€ æ­¦å™¨"
-			Case "æ”¹"
-				AttributeName = "ä½æ”¹é€ æ­¦å™¨"
-			Case "æ”»"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				AttributeName = "åæ’ƒå°‚ç”¨"
-			Case "æ­¦"
-				AttributeName = "æ ¼é—˜æ­¦å™¨"
-			Case "Invalid_string_refer_to_original_code"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "æ¥"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "ã‚ª"
-				AttributeName = "ã‚ªãƒ¼ãƒ©æŠ€"
-			Case "Invalid_string_refer_to_original_code"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "ã‚·"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "ã‚µ"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "å¸"
-				AttributeName = Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				AttributeName = Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
-			Case "å¥ª"
-				AttributeName = Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
-			Case "è²«"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "ç„¡"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				AttributeName = "å°å°æŠ€"
-			Case "Invalid_string_refer_to_original_code"
-				AttributeName = "é™å®šæŠ€"
-			Case "æ®º"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "æµ¸"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "ç ´"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "â™€"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				AttributeName = "åˆä½“æŠ€"
-			Case "å…±"
+			Case "‘S"
+				AttributeName = "‘S‚Ä‚ÌUŒ‚"
+			Case "Ši"
+				AttributeName = "Ši“¬ŒnUŒ‚"
+			Case "Ë"
+				AttributeName = "ËŒ‚ŒnUŒ‚"
+			Case "•¡"
+				AttributeName = "•¡‡‹Z"
+			Case "‚o"
+				AttributeName = "ˆÚ“®Œãg—p‰Â”\UŒ‚"
+			Case "‚p"
+				AttributeName = "ˆÚ“®Œãg—p•s”\UŒ‚"
+			Case "‚q"
+				AttributeName = "’á‰ü‘¢•Ší"
+			Case "‰ü"
+				AttributeName = "’á‰ü‘¢•Ší"
+			Case "U"
+				AttributeName = "UŒ‚ê—p"
+			Case "”½"
+				AttributeName = "”½Œ‚ê—p"
+			Case "•"
+				AttributeName = "Ši“¬•Ší"
+			Case "“Ë"
+				AttributeName = "“Ëi‹Z"
+			Case "Ú"
+				AttributeName = "Ú‹ßíUŒ‚"
+			Case "‚i"
+				AttributeName = "ƒWƒƒƒ“ƒvUŒ‚"
+			Case "‚a"
+				AttributeName = "ƒr[ƒ€UŒ‚"
+			Case "À"
+				AttributeName = "À’eUŒ‚"
+			Case "ƒI"
+				AttributeName = "ƒI[ƒ‰‹Z"
+			Case "’´"
+				AttributeName = "ƒTƒCƒLƒbƒNUŒ‚"
+			Case "ƒV"
+				AttributeName = "“¯’²—¦‘ÎÛUŒ‚"
+			Case "ƒT"
+				AttributeName = "v”O—U“±UŒ‚"
+			Case "‘Ì"
+				AttributeName = "¶–½—ÍŠ·ZUŒ‚"
+			Case "‹z"
+				AttributeName = Term("‚g‚o", u) & "‹zûUŒ‚"
+			Case "Œ¸"
+				AttributeName = Term("‚d‚m", u) & "”j‰óUŒ‚"
+			Case "’D"
+				AttributeName = Term("‚d‚m", u) & "‹zûUŒ‚"
+			Case "ŠÑ"
+				AttributeName = "ŠÑ’ÊUŒ‚"
+			Case "–³"
+				AttributeName = "ƒoƒŠƒA–³Œø‰»UŒ‚"
+			Case "ò"
+				AttributeName = "ò‰»‹Z"
+			Case "••"
+				AttributeName = "••ˆó‹Z"
+			Case "ŒÀ"
+				AttributeName = "ŒÀ’è‹Z"
+			Case "E"
+				AttributeName = "–•EUŒ‚"
+			Case "Z"
+				AttributeName = "ZIUŒ‚"
+			Case "”j"
+				AttributeName = "ƒV[ƒ‹ƒhŠÑ’ÊUŒ‚"
+			Case "‰"
+				AttributeName = "‘Î’j«—pUŒ‚"
+			Case "Š"
+				AttributeName = "‘Î—«—pUŒ‚"
+			Case "‚`"
+				AttributeName = "©“®[“U®UŒ‚"
+			Case "‚b"
+				AttributeName = "ƒ`ƒƒ[ƒW®UŒ‚"
+			Case "‡"
+				AttributeName = "‡‘Ì‹Z"
+			Case "‹¤"
 				If Not is_ability Then
-					AttributeName = "å¼¾è–¬å…±æœ‰æ­¦å™¨"
+					AttributeName = "’e–ò‹¤—L•Ší"
 				Else
-					AttributeName = "Invalid_string_refer_to_original_code"
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					AttributeName = "g—p‰ñ”‹¤—L" & Term("ƒAƒrƒŠƒeƒB", u)
 				End If
-			Case "Invalid_string_refer_to_original_code"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "æ°¸"
-				AttributeName = "æ°¸ç¶šæ­¦å™¨"
-			Case "Invalid_string_refer_to_original_code"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "æŠ€"
-				AttributeName = "æŠ€"
-			Case "Invalid_string_refer_to_original_code"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "éŸ³"
+			Case "Ä"
+				AttributeName = "ˆêÄ”­Ë"
+			Case "‰i"
+				AttributeName = "‰i‘±•Ší"
+			Case "p"
+				AttributeName = "p"
+			Case "‹Z"
+				AttributeName = "‹Z"
+			Case "‹"
+				AttributeName = "‹ŠoUŒ‚"
+			Case "‰¹"
 				If Not is_ability Then
-					AttributeName = "Invalid_string_refer_to_original_code"
+					AttributeName = "‰¹”gUŒ‚"
 				Else
-					AttributeName = "éŸ³æ³¢" & Term("Invalid_string_refer_to_original_code", u)
+					AttributeName = "‰¹”g" & Term("ƒAƒrƒŠƒeƒB", u)
 				End If
-			Case "Invalid_string_refer_to_original_code"
-				AttributeName = Term("æ°—åŠ›", u) & "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "å¤±"
-				AttributeName = Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
-			Case "éŠ­"
-				AttributeName = Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				AttributeName = "æ¶ˆè€—æŠ€"
-			Case "è‡ª"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				AttributeName = "å¤‰å½¢æŠ€"
-			Case "Invalid_string_refer_to_original_code"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "åŠ£"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "ä¸­"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "çŸ³"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "ç—º"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "çœ "
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "ä¹±"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "ç›²"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "æ’¹"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "æ­¢"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "é™¤"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "å³"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "è„±"
-				AttributeName = Term("æ°—åŠ›", u) & "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				AttributeName = Term("æ°—åŠ›", u) & "Invalid_string_refer_to_original_code"
-			Case "ä½æ”»"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "ä½é˜²"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "ä½é‹"
-				AttributeName = Term("é‹å‹•æ€§", u) & "Invalid_string_refer_to_original_code"
-			Case "ä½ç§»"
-				AttributeName = Term("ç§»å‹•åŠ›", u) & "Invalid_string_refer_to_original_code"
-			Case "ç²¾"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "é€£"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "å¹"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "è»¢"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				AttributeName = "æš—æ®ºæŠ€"
-			Case "å°½"
-				AttributeName = "å…¨" & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				AttributeName = "ç›—ã¿"
-			Case "Invalid_string_refer_to_original_code"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "è¿½"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "ç©º"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "å›º"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "è¡°"
-				AttributeName = Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				AttributeName = Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "ã‚¾"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "å®³"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				AttributeName = "ãƒ©ãƒ¼ãƒ‹ãƒ³ã‚°"
-			Case "Invalid_string_refer_to_original_code"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				AttributeName = "å¤‰åŒ–"
-			Case "Invalid_string_refer_to_original_code"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "æ´"
-				AttributeName = "æ”¯æ´å°‚ç”¨" & Term("Invalid_string_refer_to_original_code", u)
-			Case "é›£"
-				AttributeName = "é«˜é›£åº¦" & Term("Invalid_string_refer_to_original_code", u)
-			Case "åœ°", "æ°´", "ç«", "é¢¨", "å†·", "é›·", "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				AttributeName = atr & "å±æ€§"
-			Case "Invalid_string_refer_to_original_code"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				AttributeName = atr & "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "å¯¾"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "ãƒ©"
-				AttributeName = "ãƒ©ãƒ¼ãƒ‹ãƒ³ã‚°å¯èƒ½æŠ€"
-			Case "Invalid_string_refer_to_original_code"
-				AttributeName = "ä½¿ç”¨ç¦æ­¢"
-			Case "Invalid_string_refer_to_original_code"
-				AttributeName = "Invalid_string_refer_to_original_code"
-			Case "æ•£"
-				AttributeName = "Invalid_string_refer_to_original_code"
+			Case "‹C"
+				AttributeName = Term("‹C—Í", u) & "Á”ïUŒ‚"
+			Case "—ì", "ƒv"
+				AttributeName = "—ì—ÍÁ”ïUŒ‚"
+			Case "¸"
+				AttributeName = Term("‚g‚o", u) & "Á”ïUŒ‚"
+			Case "‘K"
+				AttributeName = Term("‘‹à", u) & "Á”ïUŒ‚"
+			Case "Á"
+				AttributeName = "Á–Õ‹Z"
+			Case "©"
+				AttributeName = "©”šUŒ‚"
+			Case "•Ï"
+				AttributeName = "•ÏŒ`‹Z"
+			Case "ŠÔ"
+				AttributeName = "ŠÔÚUŒ‚"
+			Case "‚l’¼"
+				AttributeName = "’¼üŒ^ƒ}ƒbƒvUŒ‚"
+			Case "‚lŠg"
+				AttributeName = "ŠgUŒ^ƒ}ƒbƒvUŒ‚"
+			Case "‚lî"
+				AttributeName = "îŒ^ƒ}ƒbƒvUŒ‚"
+			Case "‚l‘S"
+				AttributeName = "‘S•ûˆÊŒ^ƒ}ƒbƒvUŒ‚"
+			Case "‚l“Š"
+				AttributeName = "“Š‰ºŒ^ƒ}ƒbƒvUŒ‚"
+			Case "‚lˆÚ"
+				AttributeName = "ˆÚ“®Œ^ƒ}ƒbƒvUŒ‚"
+			Case "‚lü"
+				AttributeName = "üóƒ}ƒbƒvUŒ‚"
+			Case "¯"
+				AttributeName = "¯•ÊŒ^ƒ}ƒbƒvUŒ‚"
+			Case "”›"
+				AttributeName = "•ß”›UŒ‚"
+			Case "‚r"
+				AttributeName = "ƒVƒ‡ƒbƒNUŒ‚"
+			Case "—ò"
+				AttributeName = "‘•b—ò‰»UŒ‚"
+			Case "’†"
+				AttributeName = "ƒoƒŠƒA’†˜aUŒ‚"
+			Case "Î"
+				AttributeName = "Î‰»UŒ‚"
+			Case "“€"
+				AttributeName = "“€Œ‹UŒ‚"
+			Case "áƒ"
+				AttributeName = "–ƒáƒUŒ‚"
+			Case "–°"
+				AttributeName = "Ã–°UŒ‚"
+			Case "—"
+				AttributeName = "¬—UŒ‚"
+			Case "–£"
+				AttributeName = "–£—¹UŒ‚"
+			Case "œß"
+				AttributeName = "œßˆËUŒ‚"
+			Case "–Ó"
+				AttributeName = "–Ú’×‚µUŒ‚"
+			Case "“Å"
+				AttributeName = "“ÅUŒ‚"
+			Case "Šh"
+				AttributeName = "Šh—UŒ‚"
+			Case "‹°"
+				AttributeName = "‹°•|UŒ‚"
+			Case "•s"
+				AttributeName = "UŒ‚••ˆóUŒ‚"
+			Case "~"
+				AttributeName = "‘«~‚ßUŒ‚"
+			Case "–Ù"
+				AttributeName = "’¾–ÙUŒ‚"
+			Case "œ"
+				AttributeName = "“ÁêŒø‰Êœ‹UŒ‚"
+			Case "‘¦"
+				AttributeName = "‘¦€UŒ‚"
+			Case ""
+				AttributeName = "€‚Ìé"
+			Case "’E"
+				AttributeName = Term("‹C—Í", u) & "Œ¸­UŒ‚"
+			Case "‚c"
+				AttributeName = Term("‹C—Í", u) & "‹zûUŒ‚"
+			Case "’áU"
+				AttributeName = "UŒ‚—Í’á‰ºUŒ‚"
+			Case "’á–h"
+				AttributeName = "–hŒä—Í’á‰ºUŒ‚"
+			Case "’á‰^"
+				AttributeName = Term("‰^“®«", u) & "’á‰ºUŒ‚"
+			Case "’áˆÚ"
+				AttributeName = Term("ˆÚ“®—Í", u) & "’á‰ºUŒ‚"
+			Case "¸"
+				AttributeName = "¸_UŒ‚"
+			Case "æ"
+				AttributeName = "æ§UŒ‚"
+			Case "Œã"
+				AttributeName = "ŒãUUŒ‚"
+			Case "˜A"
+				AttributeName = "˜A‘±UŒ‚"
+			Case "Ä"
+				AttributeName = "ÄUŒ‚"
+			Case ""
+				AttributeName = "‚«”ò‚Î‚µUŒ‚"
+			Case "‚j"
+				AttributeName = "ƒmƒbƒNƒoƒbƒNUŒ‚"
+			Case "ˆø"
+				AttributeName = "ˆø‚«Šñ‚¹UŒ‚"
+			Case "“]"
+				AttributeName = "‹­§“]ˆÚUŒ‚"
+			Case "”E"
+				AttributeName = "ˆÃE‹Z"
+			Case "s"
+				AttributeName = "‘S" & Term("‚d‚m", u) & "Á”ïUŒ‚"
+			Case "“"
+				AttributeName = "“‚İ"
+			Case "‚g"
+				AttributeName = "ƒz[ƒ~ƒ“ƒOUŒ‚"
+			Case "’Ç"
+				AttributeName = "©ŒÈ’Ç”öUŒ‚"
+			Case "—L"
+				AttributeName = "—Lü®—U“±UŒ‚"
+			Case "—U"
+				AttributeName = "“Áê—U“±UŒ‚"
+			Case "”š"
+				AttributeName = "”š”­UŒ‚"
+			Case "‹ó"
+				AttributeName = "‘Î‹óUŒ‚"
+			Case "ŒÅ"
+				AttributeName = "ƒ_ƒ[ƒWŒÅ’èUŒ‚"
+			Case "Š"
+				AttributeName = Term("‚g‚o", u) & "Œ¸ŠUŒ‚"
+			Case "–Å"
+				AttributeName = Term("‚d‚m", u) & "Œ¸ŠUŒ‚"
+			Case "—x"
+				AttributeName = "—x‚ç‚¹UŒ‚"
+			Case "‹¶"
+				AttributeName = "‹¶ím‰»UŒ‚"
+			Case "ƒ]"
+				AttributeName = "ƒ]ƒ“ƒr‰»UŒ‚"
+			Case "ŠQ"
+				AttributeName = "‰ñ•œ”\—Í‘jŠQUŒ‚"
+			Case "K"
+				AttributeName = "ƒ‰[ƒjƒ“ƒO"
+			Case "Ê"
+				AttributeName = "”\—ÍƒRƒs["
+			Case "‰»"
+				AttributeName = "•Ï‰»"
+			Case "’É"
+				AttributeName = "ƒNƒŠƒeƒBƒJƒ‹"
+			Case "‰‡"
+				AttributeName = "x‰‡ê—p" & Term("ƒAƒrƒŠƒeƒB", u)
+			Case "“ï"
+				AttributeName = "‚“ï“x" & Term("ƒAƒrƒŠƒeƒB", u)
+			Case "’n", "…", "‰Î", "•—", "—â", "—‹", "Œõ", "ˆÅ", "¹", "€", "–Ø"
+				AttributeName = atr & "‘®«"
+			Case "–‚"
+				AttributeName = "–‚–@UŒ‚"
+			Case ""
+				AttributeName = "ŠÔ‘€ìUŒ‚"
+			Case "d"
+				AttributeName = "d—ÍUŒ‚"
+			Case "e", "Œ•", "“", "‘„", "•€", "‹|"
+				AttributeName = atr & "UŒ‚"
+			Case "e"
+			Case "‹@"
+				AttributeName = "‘Î‹@ŠB—pUŒ‚"
+			Case "Š´"
+				AttributeName = "‘ÎƒGƒXƒp[—pUŒ‚"
+			Case "—³"
+				AttributeName = "—³E‚µ‚Ì•Ší"
+			Case "•m"
+				AttributeName = "•m€ŒÀ’èUŒ‚"
+			Case "‘Î"
+				AttributeName = "“Á’èƒŒƒxƒ‹ŒÀ’èUŒ‚"
+			Case "ƒ‰"
+				AttributeName = "ƒ‰[ƒjƒ“ƒO‰Â”\‹Z"
+			Case "‹Ö"
+				AttributeName = "g—p‹Ö~"
+			Case "¬"
+				AttributeName = "Å¬Ë’ö"
+			Case "U"
+				AttributeName = "ŠgUUŒ‚"
 			Case Else
-				If Left(atr, 1) = "å¼±" Then
-					AttributeName = Mid(atr, 2) & "Invalid_string_refer_to_original_code"
-				ElseIf Left(atr, 1) = "åŠ¹" Then 
-					AttributeName = Mid(atr, 2) & "Invalid_string_refer_to_original_code"
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					AttributeName = Mid(atr, 2) & "Invalid_string_refer_to_original_code"
+				If Left(atr, 1) = "ã" Then
+					AttributeName = Mid(atr, 2) & "‘®«ã“_•t‰ÁUŒ‚"
+				ElseIf Left(atr, 1) = "Œø" Then 
+					AttributeName = Mid(atr, 2) & "‘®«—LŒø•t‰ÁUŒ‚"
+				ElseIf Left(atr, 1) = "™" Then 
+					AttributeName = Mid(atr, 2) & "‘®«g—p–WŠQUŒ‚"
 				End If
 		End Select
 		
 		If Not u Is Nothing Then
 			fdata = u.FeatureData(atr)
-			If ListIndex(fdata, 1) = "è§£èª¬" Then
-				'Invalid_string_refer_to_original_code
+			If ListIndex(fdata, 1) = "‰ğà" Then
+				'‰ğà‚ğ’è‹`‚µ‚Ä‚¢‚éê‡
 				AttributeName = ListIndex(fdata, 2)
 				Exit Function
 			End If
 		End If
 		
 		If is_ability Then
-			'Invalid_string_refer_to_original_code_
-			'Or Right$(AttributeName, 2) = "æ­¦å™¨" _
-			'Then
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			AttributeName = Left(AttributeName, Len(AttributeName) - 2) & Term("Invalid_string_refer_to_original_code", u)
+			If Right(AttributeName, 2) = "UŒ‚" Or Right(AttributeName, 2) = "•Ší" Then
+				AttributeName = Left(AttributeName, Len(AttributeName) - 2) & Term("ƒAƒrƒŠƒeƒB", u)
+			End If
 		End If
-		'End If
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'ƒ†ƒjƒbƒg u ‚Ì idx ”Ô–Ú‚Ì•Ší•ƒAƒrƒŠƒeƒB‚Ì‘®« atr ‚Ì‰ğà‚ğ•\¦
 	Public Sub AttributeHelp(ByRef u As Unit, ByRef atr As String, ByVal idx As Short, Optional ByVal is_ability As Boolean = False)
 		Dim msg, aname As String
 		Dim prev_mode As Boolean
 		
 		msg = AttributeHelpMessage(u, atr, idx, is_ability)
 		
-		'è§£èª¬ã®è¡¨ç¤º
+		'‰ğà‚Ì•\¦
 		If Len(msg) > 0 Then
 			prev_mode = AutoMessageMode
 			AutoMessageMode = False
 			
 			OpenMessageForm()
 			If AutoMoveCursor Then
-				MoveCursorPos("Invalid_string_refer_to_original_code")
+				MoveCursorPos("ƒƒbƒZ[ƒWƒEƒBƒ“ƒhƒE")
 			End If
 			If InStr(atr, "L") > 0 Then
-				aname = AttributeName(u, Left(atr, InStr(atr, "L") - 1), is_ability) & "ãƒ¬ãƒ™ãƒ«" & StrConv(VB6.Format(Mid(atr, InStr(atr, "L") + 1)), VbStrConv.Wide)
+				aname = AttributeName(u, Left(atr, InStr(atr, "L") - 1), is_ability) & "ƒŒƒxƒ‹" & StrConv(VB6.Format(Mid(atr, InStr(atr, "L") + 1)), VbStrConv.Wide)
 			Else
 				aname = AttributeName(u, atr, is_ability)
 			End If
-			DisplayMessage("Invalid_string_refer_to_original_code", "<b>" & aname & "</b>;" & msg)
+			DisplayMessage("ƒVƒXƒeƒ€", "<b>" & aname & "</b>;" & msg)
 			CloseMessageForm()
 			
 			AutoMessageMode = prev_mode
 		End If
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'ƒ†ƒjƒbƒg u ‚Ì idx ”Ô–Ú‚Ì•Ší•ƒAƒrƒŠƒeƒB‚Ì‘®« atr ‚Ì‰ğà‚ğ•\¦
 	Public Function AttributeHelpMessage(ByRef u As Unit, ByRef atr As String, ByVal idx As Short, ByVal is_ability As Boolean) As String
 		Dim atype As String
 		Dim alevel As Double
@@ -3504,7 +3187,7 @@ Module Help
 		Dim buf As String
 		Dim fdata As String
 		
-		'Invalid_string_refer_to_original_code
+		'‘®«ƒŒƒxƒ‹‚Ìû“¾
 		If InStr(atr, "L") > 0 Then
 			atype = Left(atr, InStr(atr, "L") - 1)
 			alevel = CDbl(Mid(atr, InStr(atr, "L") + 1))
@@ -3514,177 +3197,149 @@ Module Help
 		End If
 		
 		With u
-			'Invalid_string_refer_to_original_code
+			'•Ší(ƒAƒrƒŠƒeƒB)–¼
 			If Not is_ability Then
 				waname = .Weapon(idx).Name
 				wanickname = .WeaponNickname(idx)
-				whatsthis = "Invalid_string_refer_to_original_code"
+				whatsthis = "UŒ‚"
 			Else
 				waname = .Ability(idx).Name
 				wanickname = .AbilityNickname(idx)
-				whatsthis = Term("Invalid_string_refer_to_original_code", u)
+				whatsthis = Term("ƒAƒrƒŠƒeƒB", u)
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'ƒƒCƒ“ƒpƒCƒƒbƒg
 			p = .MainPilot
 		End With
 		
 		Select Case atype
-			Case "æ ¼"
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			Case "Invalid_string_refer_to_original_code"
+			Case "Ši"
+				msg = "ƒpƒCƒƒbƒg‚Ì" & Term("Ši“¬", u) & "‚ğg‚Á‚ÄUŒ‚—Í‚ğZoB"
+			Case "Ë"
 				If p.HasMana() Then
-					msg = "Invalid_string_refer_to_original_code" & Term("é­”åŠ›", u) & "Invalid_string_refer_to_original_code"
+					msg = "ƒpƒCƒƒbƒg‚Ì" & Term("–‚—Í", u) & "‚ğg‚Á‚ÄUŒ‚—Í‚ğZoB"
 				Else
-					msg = "Invalid_string_refer_to_original_code" & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
+					msg = "ƒpƒCƒƒbƒg‚Ì" & Term("ËŒ‚", u) & "‚ğg‚Á‚ÄUŒ‚—Í‚ğZoB"
 				End If
-			Case "Invalid_string_refer_to_original_code"
+			Case "•¡"
 				If p.HasMana() Then
-					msg = "Invalid_string_refer_to_original_code"
-					'Invalid_string_refer_to_original_code_
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					msg = "Ši“¬‚Æ–‚–@‚Ì—¼•û‚ğg‚Á‚½UŒ‚B" & "ƒpƒCƒƒbƒg‚Ì" & Term("Ši“¬", u) & "‚Æ" & Term("–‚—Í", u) & "‚Ì" & "•½‹Ï’l‚ğg‚Á‚ÄUŒ‚—Í‚ğZo‚·‚éB"
 				Else
-					msg = "Invalid_string_refer_to_original_code"
-					'Invalid_string_refer_to_original_code_
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					msg = "Ši“¬‚ÆËŒ‚‚Ì—¼•û‚ğg‚Á‚½UŒ‚B" & "ƒpƒCƒƒbƒg‚Ì" & Term("Ši“¬", u) & "‚Æ" & Term("ËŒ‚", u) & "‚Ì" & "•½‹Ï’l‚ğg‚Á‚ÄUŒ‚—Í‚ğZo‚·‚éB"
 				End If
-			Case "Invalid_string_refer_to_original_code"
-				msg = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				msg = "Invalid_string_refer_to_original_code"
-			Case "æ”»"
-				msg = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				msg = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
+			Case "‚o"
+				msg = "Ë’ö‚É‚©‚©‚í‚ç‚¸ˆÚ“®Œã‚Ég—p‰Â”\B"
+			Case "‚p"
+				msg = "Ë’ö‚É‚©‚©‚í‚ç‚¸ˆÚ“®Œã‚Íg—p•s”\B"
+			Case "U"
+				msg = "UŒ‚‚É‚Ì‚İg—p‰Â”\B"
+			Case "”½"
+				msg = "”½Œ‚‚É‚Ì‚İg—p‰Â”\B"
+			Case "‚q"
 				If alevel = DEFAULT_LEVEL Then
-					msg = "Invalid_string_refer_to_original_code"
+					msg = "ƒ†ƒjƒbƒgƒ‰ƒ“ƒN‚â“Áê”\—Í‚É‚æ‚éUŒ‚—Íã¸‚ª’Êí‚Ì”¼•ªB"
 				Else
-					msg = "Invalid_string_refer_to_original_code"
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					msg = "ƒ†ƒjƒbƒgƒ‰ƒ“ƒN‚â“Áê”\—Í‚É‚æ‚éUŒ‚—Íã¸‚ª" & VB6.Format(10 * alevel) & "“‚É‚È‚éB"
 				End If
-				msg = "Invalid_string_refer_to_original_code"
-			Case "æ”¹"
+				msg = "ƒ†ƒjƒbƒgƒ‰ƒ“ƒN‚â“Áê”\—Í‚É‚æ‚éUŒ‚—Íã¸‚ª’Êí‚Ì”¼•ªB"
+			Case "‰ü"
 				If alevel = DEFAULT_LEVEL Then
-					msg = "Invalid_string_refer_to_original_code"
+					msg = "ƒ†ƒjƒbƒgƒ‰ƒ“ƒN‚É‚æ‚éUŒ‚—Íã¸‚ª’Êí‚Ì”¼•ªB"
 				Else
-					msg = "Invalid_string_refer_to_original_code"
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					msg = "ƒ†ƒjƒbƒgƒ‰ƒ“ƒN‚É‚æ‚éUŒ‚—Íã¸‚ª" & VB6.Format(10 * alevel) & "“‚É‚È‚éB"
 				End If
-			Case "æ­¦"
-				msg = "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			Case "Invalid_string_refer_to_original_code"
-				msg = "Invalid_string_refer_to_original_code"
-			Case "æ¥"
-				msg = "Invalid_string_refer_to_original_code" & "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				msg = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				msg = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				msg = "Invalid_string_refer_to_original_code"
-				If IsOptionDefined("è·é›¢ä¿®æ­£") Then
-					msg = msg & "Invalid_string_refer_to_original_code"
+			Case "•"
+				msg = "‚±‚Ì•Ší‚ğg‚Á‚ÄÀ’eUŒ‚‚È‚Ç‚ğØ‚è•¥‚¤‚±‚Æ‚ª‰Â”\B" & "Ø‚è•¥‚¢‚Ì‘ÎÛ‚É‚È‚éB"
+			Case "“Ë"
+				msg = "Ø‚è•¥‚¢‚Ì‘ÎÛ‚É‚È‚éB"
+			Case "Ú"
+				msg = "“Š‚°‹Z“™A‘Šè‚É–§’…‚µ‚ÄŒJ‚èo‚·Ši“¬íUŒ‚B;" & "Ø‚è•¥‚¢–³ŒøB"
+			Case "‚i"
+				msg = "ƒWƒƒƒ“ƒvUŒ‚‚Ì’nŒ`“K‰‚ğw’è‚µ‚½ƒŒƒxƒ‹‚¾‚¯ã‚°‚éB"
+			Case "‚a"
+				msg = "‘Îƒr[ƒ€—p–hŒä”\—Í‚Ì‘ÎÛ‚É‚È‚éB"
+			Case "À"
+				msg = "Ø‚è•¥‚¢‚ÆŒ}Œ‚‚Ì‘ÎÛ‚É‚È‚éB"
+				If IsOptionDefined("‹——£C³") Then
+					msg = msg & "’·‹——£‚Ì“G‚ğUŒ‚‚·‚éÛ‚àƒ_ƒ[ƒW‚ª’á‰º‚µ‚È‚¢B"
 				End If
-			Case "ã‚ª"
-				msg = "Invalid_string_refer_to_original_code" & p.SkillName0("ã‚ªãƒ¼ãƒ©") & "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			Case "ã‚·"
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			Case "ã‚µ"
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				If IsOptionDefined("è·é›¢ä¿®æ­£") Then
-					msg = msg & "Invalid_string_refer_to_original_code"
+			Case "ƒI"
+				msg = "ƒpƒCƒƒbƒg‚Ì" & p.SkillName0("ƒI[ƒ‰") & "ƒŒƒxƒ‹‚É‚æ‚Á‚ÄUŒ‚—Í‚ª•Ï‰»B"
+			Case "’´"
+				msg = "ƒpƒCƒƒbƒg‚Ì" & p.SkillName0("’´”\—Í") & "ƒŒƒxƒ‹‚É‚æ‚Á‚ÄUŒ‚—Í‚ª•Ï‰»B"
+			Case "ƒV"
+				msg = "ƒpƒCƒƒbƒg‚Ì" & p.SkillName0("“¯’²—¦") & "‚É‚æ‚Á‚ÄUŒ‚—Í‚ª•Ï‰»B"
+			Case "ƒT"
+				msg = "ƒpƒCƒƒbƒg‚Ì" & p.SkillName0("’´Š´Šo") & "ƒŒƒxƒ‹‚É‚æ‚Á‚ÄË’ö‚ª•Ï‰»B"
+				If IsOptionDefined("‹——£C³") Then
+					msg = msg & "‹——£‚É‚æ‚é–½’†—¦’á‰º‚ª‚È‚¢B‚Ü‚½A"
 				End If
-				msg = msg & "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				msg = "Invalid_string_refer_to_original_code" & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
-			Case "å¸"
-				msg = "Invalid_string_refer_to_original_code" & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				msg = Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code" & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
-			Case "å¥ª"
-				msg = Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code" & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			Case "è²«"
+				msg = msg & "‚d‚b‚l‚É‚æ‚é‰e‹¿‚ğó‚¯‚È‚¢B"
+			Case "‘Ì"
+				msg = "¶–½—Í‚ğUŒ‚—Í‚ÉŠ·‚¦‚éUŒ‚Bƒ†ƒjƒbƒg‚Ì" & Term("‚g‚o", u) & "‚É‚æ‚Á‚ÄUŒ‚—Í‚ª•Ï‰»‚·‚éB"
+			Case "‹z"
+				msg = "—^‚¦‚½ƒ_ƒ[ƒW‚Ì‚P^‚S‚ğ‹zû‚µA©•ª‚Ì" & Term("‚g‚o", u) & "‚É•ÏŠ·B"
+			Case "Œ¸"
+				msg = Term("‚g‚o", u) & "‚Éƒ_ƒ[ƒW‚ğ—^‚¦‚é‚Æ“¯‚É‘Šè‚Ì" & Term("‚d‚m", u) & "‚ğŒ¸­‚³‚¹‚éB"
+			Case "’D"
+				msg = Term("‚g‚o", u) & "‚Éƒ_ƒ[ƒW‚ğ—^‚¦‚é‚Æ“¯‚É‘Šè‚Ì" & Term("‚d‚m", u) & "‚ğŒ¸­‚³‚¹A" & "Œ¸­‚³‚¹‚½" & Term("‚d‚m", u) & "‚Ì”¼•ª‚ğ©•ª‚Ì‚à‚Ì‚É‚·‚éB"
+			Case "ŠÑ"
 				If alevel > 0 Then
-					msg = "Invalid_string_refer_to_original_code" & Term("Invalid_string_refer_to_original_code", u) & "ã‚’æœ¬æ¥ã®" & VB6.Format(100 - 10 * alevel) & "Invalid_string_refer_to_original_code"
+					msg = "‘Šè‚Ì" & Term("‘•b", u) & "‚ğ–{—ˆ‚Ì" & VB6.Format(100 - 10 * alevel) & "“‚Ì’l‚Æ‚İ‚È‚µ‚Äƒ_ƒ[ƒWŒvZ‚ğs‚¤B"
 				Else
-					msg = "Invalid_string_refer_to_original_code" & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
+					msg = "‘Šè‚Ì" & Term("‘•b", u) & "‚ğ”¼•ª‚Æ‚İ‚È‚µ‚Äƒ_ƒ[ƒWŒvZ‚ğs‚¤B"
 				End If
-			Case "ç„¡"
-				msg = "Invalid_string_refer_to_original_code"
-			Case "æµ¸"
-				msg = "Invalid_string_refer_to_original_code"
-			Case "ç ´"
-				msg = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				msg = "æ•µã®" & p.SkillName0("å†ç”Ÿ") & "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				msg = "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			Case "Invalid_string_refer_to_original_code"
-				msg = "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code_
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			Case "æ®º"
-				msg = "Invalid_string_refer_to_original_code" & "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				msg = "Invalid_string_refer_to_original_code"
-			Case "â™€"
-				msg = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				msg = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				msg = "ä½¿ç”¨ã™ã‚‹ã¨" & VB6.Format(alevel) & "Invalid_string_refer_to_original_code"
+			Case "–³"
+				msg = "ƒoƒŠƒA‚âƒtƒB[ƒ‹ƒh‚È‚Ç‚Ì–hŒä”\—Í‚ÌŒø‰Ê‚ğ–³‹‚µ‚Äƒ_ƒ[ƒW‚ğ—^‚¦‚éB"
+			Case "Z"
+				msg = "ƒV[ƒ‹ƒh–hŒä‚ğ–³‹‚µ‚Äƒ_ƒ[ƒW‚ğ—^‚¦‚éB"
+			Case "”j"
+				msg = "ƒV[ƒ‹ƒh–hŒä‚ÌŒø‰Ê‚ğ”¼Œ¸‚³‚¹‚éB"
+			Case "ò"
+				msg = "“G‚Ì" & p.SkillName0("Ä¶") & "”\—Í‚ğ–³Œø‰»B"
+			Case "••"
+				msg = "“Á’è‚Ìã“_‚ğ‚Â“G‚É‚Ì‚İ—LŒø‚È•‘•B" & "ã“_‚ğ‚Â‚¢‚½‚Æ‚«‚É‚Ì‚İƒ_ƒ[ƒW‚ğ—^‚¦‚é‚±‚Æ‚ªo—ˆ‚éB"
+			Case "ŒÀ"
+				msg = "“Á’è‚Ìã“_‚ğ‚Â“G‚É‚Ì‚İ—LŒø‚È•‘•B" & "ŒÀ’è‘®«ˆÈ~‚Éw’è‚µ‚½‘®«‚Å;" & "ã“_‚ğ‚Â‚¢‚½‚Æ‚«‚É‚Ì‚İƒ_ƒ[ƒW‚ğ—^‚¦‚é‚±‚Æ‚ªo—ˆ‚éB"
+			Case "E"
+				msg = "‘Šè‚ğˆêŒ‚‚Å“|‚¹‚éê‡‚É‚Ì‚İ—LŒø‚ÈUŒ‚B;" & "‘Šè‚Í–hŒä•ƒV[ƒ‹ƒh–hŒäo—ˆ‚È‚¢B"
+			Case "‰"
+				msg = "’j«‚É‚Ì‚İ—LŒøB"
+			Case "Š"
+				msg = "—«‚É‚Ì‚İ—LŒøB"
+			Case "‚b"
+				msg = "ƒ`ƒƒ[ƒWƒRƒ}ƒ“ƒh‚ğg—p‚µ‚Äƒ`ƒƒ[ƒWŠ®—¹‚Ìó‘Ô‚É‚È‚ç‚È‚¢‚Æg—p•s”\B"
+			Case "‚`"
+				msg = "g—p‚·‚é‚Æ" & VB6.Format(alevel) & "ƒ^[ƒ“Œã‚ÉÄƒ`ƒƒ[ƒW‚ªŠ®—¹‚·‚é‚Ü‚Åg—p•s”\B"
 				If Not is_ability Then
 					For i = 1 To u.CountWeapon
 						If i <> idx And wanickname = u.WeaponNickname(i) Then
-							msg = msg & "Invalid_string_refer_to_original_code"
+							msg = msg & "“¯–¼‚Ì•Ší‚à˜A“®‚µ‚Äg—p•s”\‚É‚È‚éB"
 							Exit For
 						End If
 					Next 
-					If u.IsWeaponClassifiedAs(idx, "å…±") And u.Weapon(idx).Bullet = 0 Then
-						msg = msg & "Invalid_string_refer_to_original_code"
+					If u.IsWeaponClassifiedAs(idx, "‹¤") And u.Weapon(idx).Bullet = 0 Then
+						msg = msg & "“¯ƒŒƒxƒ‹‚Ì’e–ò‹¤—L•Ší‚à˜A“®‚µ‚Äg—p•s”\‚É‚È‚éB"
 					End If
 				Else
 					For i = 1 To u.CountAbility
 						If i <> idx And wanickname = u.AbilityNickname(i) Then
-							msg = msg & "åŒåã®" & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
+							msg = msg & "“¯–¼‚Ì" & Term("ƒAƒrƒŠƒeƒB", u) & "‚à˜A“®‚µ‚Äg—p•s”\‚É‚È‚éB"
 							Exit For
 						End If
 					Next 
-					If u.IsAbilityClassifiedAs(idx, "å…±") And u.Ability(idx).Stock = 0 Then
-						msg = msg & "Invalid_string_refer_to_original_code"
-						'Invalid_string_refer_to_original_code_
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					If u.IsAbilityClassifiedAs(idx, "‹¤") And u.Ability(idx).Stock = 0 Then
+						msg = msg & "“¯ƒŒƒxƒ‹‚Ìg—p‰ñ”‹¤—L" & Term("ƒAƒrƒŠƒeƒB", u) & "‚à˜A“®‚µ‚Äg—p•s”\‚É‚È‚éB"
 					End If
 				End If
-			Case "Invalid_string_refer_to_original_code"
+			Case "‡"
 				For i = 1 To u.CountFeature
-					If u.Feature(i) = "åˆä½“æŠ€" And LIndex(u.FeatureData(i), 1) = waname Then
+					If u.Feature(i) = "‡‘Ì‹Z" And LIndex(u.FeatureData(i), 1) = waname Then
 						Exit For
 					End If
 				Next 
 				If i > u.CountFeature Then
-					ErrorMessage(u.Name & "Invalid_string_refer_to_original_code")
-					& "ã€ã«å¯¾å¿œã—ãŸåˆä½“æŠ€èƒ½åŠ›ãŒã‚ã‚Šã¾ã›ã‚“"
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					ErrorMessage(u.Name & "‚Ì‡‘Ì‹Zu" & waname & "v‚É‘Î‰‚µ‚½‡‘Ì‹Z”\—Í‚ª‚ ‚è‚Ü‚¹‚ñ")
 					Exit Function
 				End If
 				If LLength(u.FeatureData(i)) = 2 Then
@@ -3693,12 +3348,12 @@ Module Help
 						uname = UDList.Item(uname).Nickname
 					End If
 					If uname = u.Nickname Then
-						msg = "Invalid_string_refer_to_original_code" & uname & "Invalid_string_refer_to_original_code"
+						msg = "‘¼‚Ì" & uname & "‚Æ‹¦—Í‚µ‚Äs‚¤‹ZB"
 					Else
-						msg = uname & "Invalid_string_refer_to_original_code"
+						msg = uname & "‚Æ‹¦—Í‚µ‚Äs‚¤‹ZB"
 					End If
 				Else
-					msg = "Invalid_string_refer_to_original_code"
+					msg = "ˆÈ‰º‚Ìƒ†ƒjƒbƒg‚Æ‹¦—Í‚µ‚Äs‚¤‹ZB;"
 					For j = 2 To LLength(u.FeatureData(i))
 						uname = LIndex(u.FeatureData(i), j)
 						If UDList.IsDefined(uname) Then
@@ -3707,97 +3362,84 @@ Module Help
 						msg = msg & uname & "  "
 					Next 
 				End If
-			Case "å…±"
+			Case "‹¤"
 				If Not is_ability Then
-					msg = "Invalid_string_refer_to_original_code"
+					msg = "•¡”‚Ì•Ší‚Å’e–ò‚ğ‹¤—L‚µ‚Ä‚¢‚é‚±‚Æ‚ğ¦‚·B"
 					If alevel > 0 Then
-						msg = msg & "Invalid_string_refer_to_original_code"
+						msg = msg & ";“¯ƒŒƒxƒ‹‚Ì’e–ò‹¤—L•ŠíŠÔ‚Å’e–ò‚ğ‹¤—L‚µ‚Ä‚¢‚éB"
 					End If
 				Else
-					msg = "Invalid_string_refer_to_original_code" & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
+					msg = "•¡”‚Ì" & Term("ƒAƒrƒŠƒeƒB", u) & "‚Åg—p‰ñ”‚ğ‹¤—L‚µ‚Ä‚¢‚é‚±‚Æ‚ğ¦‚·B"
 					If alevel > 0 Then
-						msg = msg & "Invalid_string_refer_to_original_code"
-						'Invalid_string_refer_to_original_code_
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						msg = msg & ";“¯ƒŒƒxƒ‹‚Ìg—p‰ñ”‹¤—L" & Term("ƒAƒrƒŠƒeƒB", u) & "ŠÔ‚Åg—p‰ñ”‚ğ‹¤—L‚µ‚Ä‚¢‚éB"
 					End If
 				End If
-			Case "Invalid_string_refer_to_original_code"
+			Case "Ä"
 				If Not is_ability Then
-					msg = "Invalid_string_refer_to_original_code"
+					msg = "’e”§‚Ì•Ší‘S‚Ä‚Ì’e”‚ğÁ”ï‚µ‚ÄUŒ‚‚ğs‚¤B"
 				Else
-					msg = "å›æ•°åˆ¶ã®" & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
+					msg = "‰ñ”§‚Ì" & Term("ƒAƒrƒŠƒeƒB", u) & "‘S‚Ä‚Ìg—p‰ñ”‚ğÁ”ï‚·‚éB"
 				End If
-			Case "æ°¸"
-				msg = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				If buf = "éè¡¨ç¤º" Then
-					buf = "Invalid_string_refer_to_original_code"
+			Case "‰i"
+				msg = "Ø‚è•¥‚¢‚âŒ}Œ‚‚³‚ê‚È‚¢ŒÀ‚è’e”‚ªŒ¸­‚µ‚È‚¢B"
+			Case "p"
+				buf = p.SkillName0("p")
+				If buf = "”ñ•\¦" Then
+					buf = "p"
 				End If
-				msg = buf & "æŠ€èƒ½ã«ã‚ˆã£ã¦" & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
+				msg = buf & "‹Z”\‚É‚æ‚Á‚Ä" & Term("‚d‚m", u) & "Á”ï—Ê‚ªŒ¸­B"
 				If is_ability Then
-					msg = msg & "Invalid_string_refer_to_original_code" & Term("é­”åŠ›", u) & "Invalid_string_refer_to_original_code"
+					msg = msg & ";ƒpƒCƒƒbƒg‚Ì" & Term("–‚—Í", u) & "‚É‚æ‚Á‚ÄˆĞ—Í‚ª‘Œ¸‚·‚éB"
 				End If
-				msg = msg & "Invalid_string_refer_to_original_code"
-			Case "æŠ€"
-				buf = p.SkillName0("æŠ€")
-				If buf = "éè¡¨ç¤º" Then
-					buf = "æŠ€"
+				msg = msg & ";’¾–Ùó‘Ô‚Ì‚É‚Íg—p•s”\¡"
+			Case "‹Z"
+				buf = p.SkillName0("‹Z")
+				If buf = "”ñ•\¦" Then
+					buf = "‹Z"
 				End If
-				msg = buf & "æŠ€èƒ½ã«ã‚ˆã£ã¦" & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
-			Case "éŸ³"
+				msg = buf & "‹Z”\‚É‚æ‚Á‚Ä" & Term("‚d‚m", u) & "Á”ï—Ê‚ªŒ¸­B"
+			Case "‰¹"
 				If Not is_ability Then
-					msg = "Invalid_string_refer_to_original_code"
+					msg = "º‚È‚Ç‚Ì‰¹‚ğg‚Á‚½UŒ‚‚Å‚ ‚é‚±‚Æ‚ğ¦‚·¡"
 				Else
-					msg = "Invalid_string_refer_to_original_code"
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					msg = "º‚È‚Ç‚Ì‰¹‚ğg‚Á‚½" & Term("ƒAƒrƒŠƒeƒB", u) & "‚Å‚ ‚é‚±‚Æ‚ğ¦‚·¡"
 				End If
-				msg = msg & "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				msg = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				msg = "ä½¿ç”¨æ™‚ã«æ°—åŠ›" & VB6.Format(5 * alevel) & "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				msg = "ä½¿ç”¨æ™‚ã«" & VB6.Format(5 * alevel) & p.SkillName0("éœŠåŠ›") & "Invalid_string_refer_to_original_code"
-			Case "å¤±"
-				msg = "ä½¿ç”¨æ™‚ã«" & VB6.Format(alevel * u.MaxHP \ 10) & "ã®" & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
-			Case "éŠ­"
-				msg = "ä½¿ç”¨æ™‚ã«" & VB6.Format(MaxLng(alevel, 1) * u.Value \ 10) & "ã®" & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code" & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				msg = "Invalid_string_refer_to_original_code"
-			Case "å°½"
+				msg = msg & "’¾–Ùó‘Ô‚Ì‚É‚Íg—p•s”\¡ "
+			Case "‹"
+				msg = "‹Šo‚É“­‚«‚©‚¯‚éUŒ‚B–Ó–Úó‘Ô‚Ìƒ†ƒjƒbƒg‚É‚ÍŒø‚©‚È‚¢B"
+			Case "‹C"
+				msg = "g—p‚É‹C—Í" & VB6.Format(5 * alevel) & "‚ğÁ”ïB"
+			Case "—ì", "ƒv"
+				msg = "g—p‚É" & VB6.Format(5 * alevel) & p.SkillName0("—ì—Í") & "‚ğÁ”ïB"
+			Case "¸"
+				msg = "g—p‚É" & VB6.Format(alevel * u.MaxHP \ 10) & "‚Ì" & Term("‚g‚o", u) & "‚ğ¸‚¤B"
+			Case "‘K"
+				msg = "g—p‚É" & VB6.Format(MaxLng(alevel, 1) * u.Value \ 10) & "‚Ì" & Term("‘‹à", u) & "‚ª•K—vB;" & Term("‘‹à", u) & "‚ª‘«‚è‚È‚¢ê‡‚Íg—p•s‰ÂB"
+			Case "Á"
+				msg = "g—pŒã‚É1ƒ^[ƒ“Á–Õó‘Ô‚ÉŠ×‚èA‰ñ”ğE”½Œ‚•s”\B"
+			Case "s"
 				If Not is_ability Then
 					If alevel > 0 Then
-						msg = "å…¨" & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code" & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code" & "(æ®‹ã‚Š" & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
-						'Invalid_string_refer_to_original_code_
-						'Invalid_string_refer_to_original_code_
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						msg = "‘S" & Term("‚d‚m", u) & "‚ğg‚Á‚ÄUŒ‚‚µAg—pŒã‚É" & Term("‚d‚m", u) & "‚ª0‚É‚È‚éB;" & "(c‚è" & Term("‚d‚m", u) & "|•K—v" & Term("‚d‚m", u) & ")~" & StrConv(VB6.Format(alevel), VbStrConv.Wide) & "‚¾‚¯UŒ‚—Í‚ªã¸B"
 					Else
-						msg = "å…¨" & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
+						msg = "‘S" & Term("‚d‚m", u) & "‚ğg‚Á‚ÄUŒ‚‚µAg—pŒã‚É‚d‚m‚ª0‚É‚È‚éB"
 					End If
 				Else
-					msg = "ä½¿ç”¨å¾Œã«" & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
+					msg = "g—pŒã‚É" & Term("‚d‚m", u) & "‚ª0‚É‚È‚éB"
 				End If
-			Case "è‡ª"
-				msg = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				If u.IsFeatureAvailable("å¤‰å½¢æŠ€") Then
+			Case "©"
+				msg = "g—pŒã‚É©”šB"
+			Case "•Ï"
+				If u.IsFeatureAvailable("•ÏŒ`‹Z") Then
 					For i = 1 To u.CountFeature
-						If u.Feature(i) = "å¤‰å½¢æŠ€" And LIndex(u.FeatureData(i), 1) = waname Then
+						If u.Feature(i) = "•ÏŒ`‹Z" And LIndex(u.FeatureData(i), 1) = waname Then
 							uname = LIndex(u.FeatureData(i), 2)
 							Exit For
 						End If
 					Next 
 				End If
 				If uname = "" Then
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					uname = LIndex(u.FeatureData("ƒm[ƒ}ƒ‹ƒ‚[ƒh"), 1)
 				End If
 				If UDList.IsDefined(uname) Then
 					With UDList.Item(uname)
@@ -3808,412 +3450,378 @@ Module Help
 						End If
 					End With
 				End If
-				msg = "ä½¿ç”¨å¾Œã«" & uname & "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				msg = "Invalid_string_refer_to_original_code" & "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				msg = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				msg = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				msg = "Invalid_string_refer_to_original_code" & "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				msg = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				msg = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				msg = "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			Case "Invalid_string_refer_to_original_code"
-				msg = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				msg = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
+				msg = "g—pŒã‚É" & uname & "‚Ö•Ï‰»‚·‚éB"
+			Case "ŠÔ"
+				msg = "‹ŠEŠO‚È‚Ç‚©‚çŠÔÚ“I‚ÉUŒ‚‚ğs‚¤‚±‚Æ‚É‚æ‚è" & "‘Šè‚Ì”½Œ‚‚ğ••‚¶‚é•ŠíB"
+			Case "‚l’¼"
+				msg = "ã‰º¶‰E‚Ìˆê•ûŒü‚É‘Î‚·‚é’¼üó‚ÌŒø‰Ê”ÍˆÍ‚ğ‚ÂB"
+			Case "‚lŠg"
+				msg = "ã‰º¶‰E‚Ìˆê•ûŒü‚É‘Î‚·‚é•‚Rƒ}ƒX‚Ì’¼üó‚ÌŒø‰Ê”ÍˆÍ‚ğ‚ÂB"
+			Case "‚lî"
+				msg = "ã‰º¶‰E‚Ìˆê•ûŒü‚É‘Î‚·‚éîó‚ÌŒø‰Ê”ÍˆÍ‚ğ‚ÂB;" & "î‚ÌL‚ª‚è•û‚Ì“x‡‚¢‚ÍƒŒƒxƒ‹‚É‚æ‚Á‚ÄˆÙ‚È‚éB"
+			Case "‚l‘S"
+				msg = "ƒ†ƒjƒbƒg‚Ìü‚è‘Sˆæ‚É‘Î‚·‚éŒø‰Ê”ÍˆÍ‚ğ‚ÂB"
+			Case "‚l“Š"
+				msg = "w’è‚µ‚½’n“_‚ğ’†S‚Æ‚µ‚½ˆê’è”ÍˆÍ‚ÌŒø‰Ê”ÍˆÍ‚ğ‚ÂB"
+			Case "‚lˆÚ"
+				msg = "g—pŒã‚Éw’è‚µ‚½’n“_‚Ü‚Åƒ†ƒjƒbƒg‚ªˆÚ“®‚µA" & "ƒ†ƒjƒbƒg‚ª’Ê‰ß‚µ‚½êŠ‚ªŒø‰Ê”ÍˆÍ‚É‚È‚éB"
+			Case "‚lü"
+				msg = "w’è‚µ‚½’n“_‚Æƒ†ƒjƒbƒg‚ğŒ‹‚Ô’¼ü‚ªŒø‰Ê”ÍˆÍ‚É‚È‚éB"
+			Case "¯"
+				msg = "Œø‰Ê”ÍˆÍ“à‚É‚¢‚é–¡•ûƒ†ƒjƒbƒg‚ğ©“®“I‚É¯•Ê‚µA“G‚Ì‚İ‚Éƒ_ƒ[ƒW‚ğ—^‚¦‚éB"
+			Case "”›"
 				If alevel = DEFAULT_LEVEL Then
 					alevel = 2
 				End If
-				msg = "Invalid_string_refer_to_original_code"
+				msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šè‚ğ"
 				If alevel > 0 Then
-					msg = msg & StrConv(VB6.Format(CShort(alevel)), VbStrConv.Wide) & "ã‚¿ãƒ¼ãƒ³"
+					msg = msg & StrConv(VB6.Format(CShort(alevel)), VbStrConv.Wide) & "ƒ^[ƒ“"
 				Else
-					msg = msg & "Invalid_string_refer_to_original_code"
+					msg = msg & "‚»‚Ìí“¬’†‚Ì‚İ"
 				End If
-				msg = msg & "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
+				msg = msg & "s“®•s”\‚É‚·‚éB"
+			Case "‚r"
 				If alevel = DEFAULT_LEVEL Then
 					alevel = 1
 				End If
-				msg = "Invalid_string_refer_to_original_code"
+				msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šè‚ğ"
 				If alevel > 0 Then
-					msg = msg & StrConv(VB6.Format(CShort(alevel)), VbStrConv.Wide) & "ã‚¿ãƒ¼ãƒ³"
+					msg = msg & StrConv(VB6.Format(CShort(alevel)), VbStrConv.Wide) & "ƒ^[ƒ“"
 				Else
-					msg = msg & "Invalid_string_refer_to_original_code"
+					msg = msg & "‚»‚Ìí“¬’†‚Ì‚İ"
 				End If
-				msg = msg & "Invalid_string_refer_to_original_code"
-			Case "åŠ£"
+				msg = msg & "s“®•s”\‚É‚·‚éB"
+			Case "—ò"
 				If alevel = DEFAULT_LEVEL Then
-					msg = "Invalid_string_refer_to_original_code"
+					msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šè‚Ì‘•b‚ğ”¼Œ¸‚³‚¹‚éB"
 				Else
-					msg = "Invalid_string_refer_to_original_code"
+					msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šè‚Ì‘•b‚ğ"
 					If alevel > 0 Then
-						msg = msg & StrConv(VB6.Format(CShort(alevel)), VbStrConv.Wide) & "ã‚¿ãƒ¼ãƒ³"
+						msg = msg & StrConv(VB6.Format(CShort(alevel)), VbStrConv.Wide) & "ƒ^[ƒ“"
 					Else
-						msg = msg & "Invalid_string_refer_to_original_code"
+						msg = msg & "‚»‚Ìí“¬’†‚Ì‚İ"
 					End If
-					msg = msg & "Invalid_string_refer_to_original_code"
+					msg = msg & "”¼Œ¸‚³‚¹‚éB"
 				End If
-			Case "ä¸­"
+			Case "’†"
 				If alevel = DEFAULT_LEVEL Then
 					alevel = 1
 				End If
-				msg = "Invalid_string_refer_to_original_code"
+				msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šè‚ª‚ÂƒoƒŠƒA“™‚Ì–hŒä”\—Í‚ğ"
 				If alevel > 0 Then
-					msg = msg & StrConv(VB6.Format(CShort(alevel)), VbStrConv.Wide) & "ã‚¿ãƒ¼ãƒ³"
+					msg = msg & StrConv(VB6.Format(CShort(alevel)), VbStrConv.Wide) & "ƒ^[ƒ“"
 				Else
-					msg = msg & "Invalid_string_refer_to_original_code"
+					msg = msg & "‚»‚Ìí“¬’†‚Ì‚İ"
 				End If
-				msg = msg & "Invalid_string_refer_to_original_code"
-			Case "çŸ³"
+				msg = msg & "–³Œø‰»‚·‚éB"
+			Case "Î"
 				If alevel = DEFAULT_LEVEL Then
-					msg = "Invalid_string_refer_to_original_code"
+					msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šè‚ğÎ‰»‚³‚¹‚éB"
 				Else
-					msg = "Invalid_string_refer_to_original_code"
+					msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šè‚ğ"
 					If alevel > 0 Then
-						msg = msg & StrConv(VB6.Format(CShort(alevel)), VbStrConv.Wide) & "ã‚¿ãƒ¼ãƒ³"
+						msg = msg & StrConv(VB6.Format(CShort(alevel)), VbStrConv.Wide) & "ƒ^[ƒ“"
 					Else
-						msg = msg & "Invalid_string_refer_to_original_code"
+						msg = msg & "‚»‚Ìí“¬’†‚Ì‚İ"
 					End If
-					msg = msg & "Invalid_string_refer_to_original_code"
+					msg = msg & "Î‰»‚³‚¹‚éB"
 				End If
-			Case "Invalid_string_refer_to_original_code"
+			Case "“€"
 				If alevel = DEFAULT_LEVEL Then
 					alevel = 3
 				End If
-				msg = "Invalid_string_refer_to_original_code"
+				msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šè‚ğ"
 				If alevel > 0 Then
-					msg = msg & StrConv(VB6.Format(CShort(alevel)), VbStrConv.Wide) & "ã‚¿ãƒ¼ãƒ³"
+					msg = msg & StrConv(VB6.Format(CShort(alevel)), VbStrConv.Wide) & "ƒ^[ƒ“"
 				Else
-					msg = msg & "Invalid_string_refer_to_original_code"
+					msg = msg & "‚»‚Ìí“¬’†‚Ì‚İ"
 				End If
-				msg = msg & "Invalid_string_refer_to_original_code"
-				msg = msg & "Invalid_string_refer_to_original_code" & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
-				msg = msg & "Invalid_string_refer_to_original_code"
-			Case "ç—º"
+				msg = msg & "“€‚ç‚¹‚éB"
+				msg = msg & ";“€Œ‹‚µ‚½‘Šè‚Í" & Term("‘•b", u) & "‚ª”¼Œ¸‚·‚é‚ªA"
+				msg = msg & "ƒ_ƒ[ƒW‚ğ—^‚¦‚é‚Æ“€Œ‹‚Í‰ğœ‚³‚ê‚éB"
+			Case "áƒ"
 				If alevel = DEFAULT_LEVEL Then
 					alevel = 3
 				End If
-				msg = "Invalid_string_refer_to_original_code"
+				msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šè‚ğ"
 				If alevel > 0 Then
-					msg = msg & StrConv(VB6.Format(CShort(alevel)), VbStrConv.Wide) & "ã‚¿ãƒ¼ãƒ³"
+					msg = msg & StrConv(VB6.Format(CShort(alevel)), VbStrConv.Wide) & "ƒ^[ƒ“"
 				Else
-					msg = msg & "Invalid_string_refer_to_original_code"
+					msg = msg & "‚»‚Ìí“¬’†‚Ì‚İ"
 				End If
-				msg = msg & "Invalid_string_refer_to_original_code"
-			Case "çœ "
+				msg = msg & "–ƒáƒ‚³‚¹‚éB"
+			Case "–°"
 				If alevel = DEFAULT_LEVEL Then
 					alevel = 3
 				End If
-				msg = "Invalid_string_refer_to_original_code"
+				msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šè‚ğ"
 				If alevel > 0 Then
-					msg = msg & StrConv(VB6.Format(CShort(alevel)), VbStrConv.Wide) & "ã‚¿ãƒ¼ãƒ³"
+					msg = msg & StrConv(VB6.Format(CShort(alevel)), VbStrConv.Wide) & "ƒ^[ƒ“"
 				Else
-					msg = msg & "Invalid_string_refer_to_original_code"
+					msg = msg & "‚»‚Ìí“¬’†‚Ì‚İ"
 				End If
-				msg = msg & "Invalid_string_refer_to_original_code"
-				msg = msg & "Invalid_string_refer_to_original_code"
-				msg = msg & "Invalid_string_refer_to_original_code"
-			Case "ä¹±"
+				msg = msg & "–°‚ç‚¹‚éB"
+				msg = msg & ";–°‚Á‚½‘Šè‚Ö‚ÌUŒ‚‚Ìƒ_ƒ[ƒW‚Í‚P.‚T”{‚É‚È‚é‚ªA‡–°‚à‰ğœ‚³‚ê‚éB"
+				msg = msg & ";«Ši‚ª‹@ŠB‚Ì“G‚É‚Í–³ŒøB"
+			Case "—"
 				If alevel = DEFAULT_LEVEL Then
 					alevel = 3
 				End If
-				msg = "Invalid_string_refer_to_original_code"
+				msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šè‚ğ"
 				If alevel > 0 Then
-					msg = msg & StrConv(VB6.Format(CShort(alevel)), VbStrConv.Wide) & "ã‚¿ãƒ¼ãƒ³"
+					msg = msg & StrConv(VB6.Format(CShort(alevel)), VbStrConv.Wide) & "ƒ^[ƒ“"
 				Else
-					msg = msg & "Invalid_string_refer_to_original_code"
+					msg = msg & "‚»‚Ìí“¬’†‚Ì‚İ"
 				End If
-				msg = msg & "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
+				msg = msg & "¬—‚³‚¹‚éB"
+			Case "–£"
 				If alevel = DEFAULT_LEVEL Then
 					alevel = 3
 				End If
-				msg = "Invalid_string_refer_to_original_code"
+				msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šè‚ğ"
 				If alevel > 0 Then
-					msg = msg & StrConv(VB6.Format(CShort(alevel)), VbStrConv.Wide) & "ã‚¿ãƒ¼ãƒ³"
+					msg = msg & StrConv(VB6.Format(CShort(alevel)), VbStrConv.Wide) & "ƒ^[ƒ“"
 				Else
-					msg = msg & "Invalid_string_refer_to_original_code"
+					msg = msg & "‚»‚Ìí“¬’†‚Ì‚İ"
 				End If
-				msg = msg & "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
+				msg = msg & "–£—¹‚·‚éB"
+			Case "œß"
 				If alevel = DEFAULT_LEVEL Then
-					msg = "Invalid_string_refer_to_original_code"
+					msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šè‚ğæ‚Áæ‚Á‚Äx”z‚·‚éB"
 				Else
-					msg = "Invalid_string_refer_to_original_code"
+					msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šè‚ğ"
 					If alevel > 0 Then
-						msg = msg & StrConv(VB6.Format(CShort(alevel)), VbStrConv.Wide) & "ã‚¿ãƒ¼ãƒ³"
+						msg = msg & StrConv(VB6.Format(CShort(alevel)), VbStrConv.Wide) & "ƒ^[ƒ“"
 					Else
-						msg = msg & "Invalid_string_refer_to_original_code"
+						msg = msg & "‚»‚Ìí“¬’†‚Ì‚İ"
 					End If
-					msg = msg & "Invalid_string_refer_to_original_code"
+					msg = msg & "æ‚Áæ‚Á‚Äx”z‚·‚éB"
 				End If
-			Case "ç›²"
+			Case "–Ó"
 				If alevel = DEFAULT_LEVEL Then
 					alevel = 3
 				End If
-				msg = "Invalid_string_refer_to_original_code"
+				msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šè‚ğ"
 				If alevel > 0 Then
-					msg = msg & StrConv(VB6.Format(CShort(alevel)), VbStrConv.Wide) & "ã‚¿ãƒ¼ãƒ³"
+					msg = msg & StrConv(VB6.Format(CShort(alevel)), VbStrConv.Wide) & "ƒ^[ƒ“"
 				Else
-					msg = msg & "Invalid_string_refer_to_original_code"
+					msg = msg & "‚»‚Ìí“¬’†‚Ì‚İ"
 				End If
-				msg = msg & "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
+				msg = msg & "–Ó–Ú‚É‚·‚éB"
+			Case "“Å"
 				If alevel = DEFAULT_LEVEL Then
 					alevel = 3
 				End If
-				msg = "Invalid_string_refer_to_original_code"
+				msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šè‚ğ"
 				If alevel > 0 Then
-					msg = msg & StrConv(VB6.Format(CShort(alevel)), VbStrConv.Wide) & "ã‚¿ãƒ¼ãƒ³"
+					msg = msg & StrConv(VB6.Format(CShort(alevel)), VbStrConv.Wide) & "ƒ^[ƒ“"
 				Else
-					msg = msg & "Invalid_string_refer_to_original_code"
+					msg = msg & "‚»‚Ìí“¬’†‚Ì‚İ"
 				End If
-				msg = msg & "Invalid_string_refer_to_original_code"
-			Case "æ’¹"
+				msg = msg & "“Åó‘Ô‚É‚·‚éB"
+			Case "Šh"
 				If alevel = DEFAULT_LEVEL Then
 					alevel = 2
 				End If
-				msg = "Invalid_string_refer_to_original_code"
+				msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šè‚ğ"
 				If alevel > 0 Then
-					msg = msg & StrConv(VB6.Format(CShort(alevel)), VbStrConv.Wide) & "ã‚¿ãƒ¼ãƒ³"
+					msg = msg & StrConv(VB6.Format(CShort(alevel)), VbStrConv.Wide) & "ƒ^[ƒ“"
 				Else
-					msg = msg & "Invalid_string_refer_to_original_code"
+					msg = msg & "‚»‚Ìí“¬’†‚Ì‚İ"
 				End If
-				msg = msg & "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
+				msg = msg & "Šh—‚·‚éB"
+			Case "‹°"
 				If alevel = DEFAULT_LEVEL Then
 					alevel = 3
 				End If
-				msg = "Invalid_string_refer_to_original_code"
+				msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šè‚ğ"
 				If alevel > 0 Then
-					msg = msg & StrConv(VB6.Format(CShort(alevel)), VbStrConv.Wide) & "ã‚¿ãƒ¼ãƒ³"
+					msg = msg & StrConv(VB6.Format(CShort(alevel)), VbStrConv.Wide) & "ƒ^[ƒ“"
 				Else
-					msg = msg & "Invalid_string_refer_to_original_code"
+					msg = msg & "‚»‚Ìí“¬’†‚Ì‚İ"
 				End If
-				msg = msg & "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
+				msg = msg & "‹°•|‚ÉŠ×‚ê‚éB"
+			Case "•s"
 				If alevel = DEFAULT_LEVEL Then
 					alevel = 1
 				End If
-				msg = "Invalid_string_refer_to_original_code"
+				msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šè‚ğ"
 				If alevel > 0 Then
-					msg = msg & StrConv(VB6.Format(CShort(alevel)), VbStrConv.Wide) & "ã‚¿ãƒ¼ãƒ³"
+					msg = msg & StrConv(VB6.Format(CShort(alevel)), VbStrConv.Wide) & "ƒ^[ƒ“"
 				Else
-					msg = msg & "Invalid_string_refer_to_original_code"
+					msg = msg & "‚»‚Ìí“¬’†‚Ì‚İ"
 				End If
-				msg = msg & "Invalid_string_refer_to_original_code"
-			Case "æ­¢"
+				msg = msg & "UŒ‚•s”\‚É‚·‚éB"
+			Case "~"
 				If alevel = DEFAULT_LEVEL Then
 					alevel = 1
 				End If
-				msg = "Invalid_string_refer_to_original_code"
+				msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šè‚ğ"
 				If alevel > 0 Then
-					msg = msg & StrConv(VB6.Format(CShort(alevel)), VbStrConv.Wide) & "ã‚¿ãƒ¼ãƒ³"
+					msg = msg & StrConv(VB6.Format(CShort(alevel)), VbStrConv.Wide) & "ƒ^[ƒ“"
 				Else
-					msg = msg & "Invalid_string_refer_to_original_code"
+					msg = msg & "‚»‚Ìí“¬’†‚Ì‚İ"
 				End If
-				msg = msg & "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
+				msg = msg & "ˆÚ“®•s”\‚É‚·‚éB"
+			Case "–Ù"
 				If alevel = DEFAULT_LEVEL Then
 					alevel = 3
 				End If
-				msg = "Invalid_string_refer_to_original_code"
+				msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šè‚ğ"
 				If alevel > 0 Then
-					msg = msg & StrConv(VB6.Format(CShort(alevel)), VbStrConv.Wide) & "ã‚¿ãƒ¼ãƒ³"
+					msg = msg & StrConv(VB6.Format(CShort(alevel)), VbStrConv.Wide) & "ƒ^[ƒ“"
 				Else
-					msg = msg & "Invalid_string_refer_to_original_code"
+					msg = msg & "‚»‚Ìí“¬’†‚Ì‚İ"
 				End If
-				msg = msg & "Invalid_string_refer_to_original_code"
-			Case "é™¤"
+				msg = msg & "’¾–Ùó‘Ô‚É‚·‚éB"
+			Case "œ"
 				If Not is_ability Then
-					msg = "Invalid_string_refer_to_original_code"
-					'Invalid_string_refer_to_original_code_
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šè‚É‚©‚¯‚ç‚ê‚½" & Term("ƒAƒrƒŠƒeƒB", u) & "‚É‚æ‚é“ÁêŒø‰Ê‚ğ‘Å‚¿Á‚·B"
 				Else
-					msg = Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code" & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
+					msg = Term("ƒAƒrƒŠƒeƒB", u) & "Às‚ÉA‚»‚ê‚Ü‚Å‚É‘Šè‚É‚©‚¯‚ç‚ê‚Ä‚¢‚½" & Term("ƒAƒrƒŠƒeƒB", u) & "‚É‚æ‚é“ÁêŒø‰Ê‚ª‰ğœ‚³‚ê‚éB"
 				End If
-			Case "å³"
-				msg = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
+			Case "‘¦"
+				msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šè‚ğ‘¦€‚³‚¹‚éB"
+			Case ""
 				If alevel > 0 Then
-					msg = "Invalid_string_refer_to_original_code"
-					StrConv(Format$(CInt(alevel)), vbWide) & "ã‚¿ãƒ¼ãƒ³å¾Œã«" & _
-					Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šè‚ğu€‚Ìévó‘Ô‚É‚µA" & StrConv(VB6.Format(CShort(alevel)), VbStrConv.Wide) & "ƒ^[ƒ“Œã‚É" & Term("‚g‚o", u) & "‚ğ‚P‚É‚·‚éB"
 				Else
-					msg = "Invalid_string_refer_to_original_code" & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
+					msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šè‚Ì" & Term("‚g‚o", u) & "‚ğ‚P‚É‚·‚éB"
 				End If
-			Case "è„±"
+			Case "’E"
 				If alevel = DEFAULT_LEVEL Then
-					msg = "Invalid_string_refer_to_original_code" & Term("æ°—åŠ›", u) & "Invalid_string_refer_to_original_code"
+					msg = "‘Šè‚Ì" & Term("‹C—Í", u) & "‚ğ10’á‰º‚³‚¹‚éB"
 				ElseIf alevel >= 0 Then 
-					msg = "Invalid_string_refer_to_original_code" & Term("æ°—åŠ›", u) & "Invalid_string_refer_to_original_code"
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					msg = "‘Šè‚Ì" & Term("‹C—Í", u) & "‚ğ" & VB6.Format(CShort(5 * alevel)) & "’á‰º‚³‚¹‚éB"
 				Else
-					msg = "Invalid_string_refer_to_original_code" & Term("æ°—åŠ›", u) & "Invalid_string_refer_to_original_code"
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					msg = "‘Šè‚Ì" & Term("‹C—Í", u) & "‚ğ" & VB6.Format(CShort(-5 * alevel)) & "‘‰Á‚³‚¹‚éB"
 				End If
-			Case "Invalid_string_refer_to_original_code"
+			Case "‚c"
 				If alevel = DEFAULT_LEVEL Then
-					msg = "Invalid_string_refer_to_original_code" & Term("æ°—åŠ›", u) & "Invalid_string_refer_to_original_code"
+					msg = "‘Šè‚Ì" & Term("‹C—Í", u) & "‚ğ10’á‰º‚³‚¹A‚»‚Ì”¼•ª‚ğ‹zû‚·‚éB"
 				ElseIf alevel >= 0 Then 
-					msg = "Invalid_string_refer_to_original_code" & Term("æ°—åŠ›", u) & "Invalid_string_refer_to_original_code"
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					msg = "‘Šè‚Ì" & Term("‹C—Í", u) & "‚ğ" & VB6.Format(CShort(5 * alevel)) & "’á‰º‚³‚¹A‚»‚Ì”¼•ª‚ğ‹zû‚·‚éB"
 				Else
-					msg = "Invalid_string_refer_to_original_code" & Term("æ°—åŠ›", u) & "Invalid_string_refer_to_original_code"
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					msg = "‘Šè‚Ì" & Term("‹C—Í", u) & "‚ğ" & VB6.Format(CShort(-5 * alevel)) & "‘‰Á‚³‚¹A‚»‚Ì”¼•ª‚ğ—^‚¦‚éB"
 				End If
-			Case "ä½æ”»"
+			Case "’áU"
 				If alevel = DEFAULT_LEVEL Then
 					alevel = 3
 				End If
-				msg = "Invalid_string_refer_to_original_code"
+				msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šè‚ÌUŒ‚—Í‚ğ"
 				If alevel > 0 Then
-					msg = msg & StrConv(VB6.Format(CShort(alevel)), VbStrConv.Wide) & "ã‚¿ãƒ¼ãƒ³"
+					msg = msg & StrConv(VB6.Format(CShort(alevel)), VbStrConv.Wide) & "ƒ^[ƒ“"
 				Else
-					msg = msg & "Invalid_string_refer_to_original_code"
+					msg = msg & "‚»‚Ìí“¬’†‚Ì‚İ"
 				End If
-				msg = msg & "Invalid_string_refer_to_original_code"
-			Case "ä½é˜²"
+				msg = msg & "’á‰º‚³‚¹‚éB"
+			Case "’á–h"
 				If alevel = DEFAULT_LEVEL Then
 					alevel = 3
 				End If
-				msg = "Invalid_string_refer_to_original_code" & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
+				msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šè‚Ì" & Term("‘•b", u) & "‚ğ"
 				If alevel > 0 Then
-					msg = msg & StrConv(VB6.Format(CShort(alevel)), VbStrConv.Wide) & "ã‚¿ãƒ¼ãƒ³"
+					msg = msg & StrConv(VB6.Format(CShort(alevel)), VbStrConv.Wide) & "ƒ^[ƒ“"
 				Else
-					msg = msg & "Invalid_string_refer_to_original_code"
+					msg = msg & "‚»‚Ìí“¬’†‚Ì‚İ"
 				End If
-				msg = msg & "Invalid_string_refer_to_original_code"
-			Case "ä½é‹"
+				msg = msg & "’á‰º‚³‚¹‚éB"
+			Case "’á‰^"
 				If alevel = DEFAULT_LEVEL Then
 					alevel = 3
 				End If
-				msg = "Invalid_string_refer_to_original_code" & Term("é‹å‹•æ€§", u) & "Invalid_string_refer_to_original_code"
+				msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šè‚Ì" & Term("‰^“®«", u) & "‚ğ"
 				If alevel > 0 Then
-					msg = msg & StrConv(VB6.Format(CShort(alevel)), VbStrConv.Wide) & "ã‚¿ãƒ¼ãƒ³"
+					msg = msg & StrConv(VB6.Format(CShort(alevel)), VbStrConv.Wide) & "ƒ^[ƒ“"
 				Else
-					msg = msg & "Invalid_string_refer_to_original_code"
+					msg = msg & "‚»‚Ìí“¬’†‚Ì‚İ"
 				End If
-				msg = msg & "Invalid_string_refer_to_original_code"
-			Case "ä½ç§»"
+				msg = msg & "’á‰º‚³‚¹‚éB"
+			Case "’áˆÚ"
 				If alevel = DEFAULT_LEVEL Then
 					alevel = 3
 				End If
-				msg = "Invalid_string_refer_to_original_code" & Term("ç§»å‹•åŠ›", u) & "Invalid_string_refer_to_original_code"
+				msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šè‚Ì" & Term("ˆÚ“®—Í", u) & "‚ğ"
 				If alevel > 0 Then
-					msg = msg & StrConv(VB6.Format(CShort(alevel)), VbStrConv.Wide) & "ã‚¿ãƒ¼ãƒ³"
+					msg = msg & StrConv(VB6.Format(CShort(alevel)), VbStrConv.Wide) & "ƒ^[ƒ“"
 				Else
-					msg = msg & "Invalid_string_refer_to_original_code"
+					msg = msg & "‚»‚Ìí“¬’†‚Ì‚İ"
 				End If
-				msg = msg & "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				msg = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				msg = "Invalid_string_refer_to_original_code"
-			Case "å¹"
+				msg = msg & "’á‰º‚³‚¹‚éBB"
+			Case "æ"
+				msg = "”½Œ‚‚Å‚à‘Šè‚æ‚èæ‚ÉUŒ‚‚·‚éB"
+			Case "Œã"
+				msg = "”½Œ‚‚Å‚Í‚È‚¢ê‡‚à‘Šè‚æ‚èŒã‚ÉUŒ‚‚·‚éB"
+			Case ""
 				If alevel > 0 Then
-					msg = "ç›¸æ‰‹ãƒ¦ãƒ‹ãƒƒãƒˆã‚’" & StrConv(VB6.Format(CShort(alevel)), VbStrConv.Wide) & "Invalid_string_refer_to_original_code" & "Invalid_string_refer_to_original_code"
+					msg = "‘Šèƒ†ƒjƒbƒg‚ğ" & StrConv(VB6.Format(CShort(alevel)), VbStrConv.Wide) & "ƒ}ƒX‚«”ò‚Î‚·B;" & "ƒNƒŠƒeƒBƒJƒ‹”­¶‚Í‚«”ò‚Î‚µ‹——£{‚PB"
 				Else
-					msg = "Invalid_string_refer_to_original_code"
+					msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šèƒ†ƒjƒbƒg‚ğ‚Pƒ}ƒX‚«”ò‚Î‚·B"
 				End If
-			Case "Invalid_string_refer_to_original_code"
+			Case "‚j"
 				If alevel > 0 Then
-					msg = "ç›¸æ‰‹ãƒ¦ãƒ‹ãƒƒãƒˆã‚’" & StrConv(VB6.Format(CShort(alevel)), VbStrConv.Wide) & "Invalid_string_refer_to_original_code" & "Invalid_string_refer_to_original_code"
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					msg = "‘Šèƒ†ƒjƒbƒg‚ğ" & StrConv(VB6.Format(CShort(alevel)), VbStrConv.Wide) & "ƒ}ƒX‚«”ò‚Î‚·B;" & "ƒNƒŠƒeƒBƒJƒ‹”­¶‚Í‚«”ò‚Î‚µ‹——£{‚PB" & Term("ƒTƒCƒY", u) & "§ŒÀ‚ ‚èB"
 				Else
-					msg = "Invalid_string_refer_to_original_code"
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šèƒ†ƒjƒbƒg‚ğ‚Pƒ}ƒX‚«”ò‚Î‚·B" & Term("ƒTƒCƒY", u) & "§ŒÀ‚ ‚èB"
 				End If
-			Case "Invalid_string_refer_to_original_code"
-				msg = "Invalid_string_refer_to_original_code"
-			Case "è»¢"
-				msg = "Invalid_string_refer_to_original_code" & StrConv(VB6.Format(CShort(alevel)), VbStrConv.Wide) & "Invalid_string_refer_to_original_code"
-			Case "é€£"
-				msg = VB6.Format(alevel) & "Invalid_string_refer_to_original_code" & "Invalid_string_refer_to_original_code" & "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				msg = VB6.Format(100 * alevel \ 16) & "Invalid_string_refer_to_original_code"
-			Case "ç²¾"
-				msg = "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			Case "æ´"
-				msg = "Invalid_string_refer_to_original_code"
-			Case "é›£"
-				msg = VB6.Format(10 * alevel) & "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				msg = "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code_
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			Case "Invalid_string_refer_to_original_code"
-				msg = "Invalid_string_refer_to_original_code" & "ç›—ã‚ã‚‹ã‚‚ã®ã¯é€šå¸¸ã¯" & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			Case "Invalid_string_refer_to_original_code"
-				msg = "Invalid_string_refer_to_original_code"
-				If IsOptionDefined("è·é›¢ä¿®æ­£") Then
-					msg = msg & "Invalid_string_refer_to_original_code"
+			Case "ˆø"
+				msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šèƒ†ƒjƒbƒg‚ğ—×Ú‚·‚éƒ}ƒX‚Ü‚Åˆø‚«Šñ‚¹‚éB"
+			Case "“]"
+				msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šèƒ†ƒjƒbƒg‚ğ" & StrConv(VB6.Format(CShort(alevel)), VbStrConv.Wide) & "ƒ}ƒX‹­§ƒeƒŒƒ|[ƒg‚³‚¹‚éBƒeƒŒƒ|[ƒgæ‚Íƒ‰ƒ“ƒ_ƒ€‚É‘I‚Î‚ê‚éB"
+			Case "˜A"
+				msg = VB6.Format(alevel) & "‰ñ˜A‘±‚µ‚ÄUŒ‚‚ğs‚¤B;" & "UŒ‚‚É‚æ‚Á‚Ä—^‚¦‚éƒ_ƒ[ƒW‚Í‰º‹L‚Ì®‚ÅŒvZ‚³‚ê‚éB;" & "  ’Êí‚Ìƒ_ƒ[ƒW—Ê ~ –½’†‰ñ” ^ UŒ‚‰ñ”"
+			Case "Ä"
+				msg = VB6.Format(100 * alevel \ 16) & "%‚ÌŠm—¦‚ÅÄUŒ‚B"
+			Case "¸"
+				msg = "¸_‚É“­‚«‚©‚¯‚éUŒ‚B«Ši‚ªu‹@ŠBv‚Ìƒ†ƒjƒbƒg‚É‚ÍŒø‚©‚È‚¢B" & "ƒV[ƒ‹ƒh‚ğ–³Œø‰»B"
+			Case "‰‡"
+				msg = "©•ªˆÈŠO‚Ìƒ†ƒjƒbƒg‚É‘Î‚µ‚Ä‚Ì‚İg—p‰Â”\B"
+			Case "“ï"
+				msg = VB6.Format(10 * alevel) & "%‚ÌŠm—¦‚Å¸”s‚·‚éB"
+			Case "”E"
+				msg = "•¨‰¹‚ğ—§‚Ä‚¸‚ÉUŒ‚‚µA" & "ƒXƒeƒ‹ƒXó‘Ô‚ÌÛ‚É" & Term("‚b‚s—¦", u) & "‚É+10‚Ìƒ{[ƒiƒXB" & "ˆêŒ‚‚Å‘Šè‚ğ“|‚µ‚½ê‡‚Í©•ª‚©‚çUŒ‚‚ğ‚©‚¯‚Ä‚àƒXƒeƒ‹ƒXó‘Ô‚ªˆÛ‚³‚ê‚éB"
+			Case "“"
+				msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É“G‚©‚ç‚¿•¨‚ğ“‚ŞB;" & "“‚ß‚é‚à‚Ì‚Í’Êí‚Í" & Term("‘‹à", u) & "(•’Ê‚É“|‚µ‚½‚Ì”¼•ª‚ÌŠz)‚¾‚ªA" & "‘Šè‚É‚æ‚Á‚Ä‚ÍƒAƒCƒeƒ€‚ğ“üè‚·‚é‚±‚Æ‚à‚ ‚éB"
+			Case "‚g"
+				msg = "ƒŒ[ƒ_[“™‚Åƒ^[ƒQƒbƒg‚ğ’Ç”ö‚·‚éUŒ‚B;"
+				If IsOptionDefined("‹——£C³") Then
+					msg = msg & "’·‹——£‚Ì“G‚ğUŒ‚‚·‚éÛ‚à–½’†—¦‚ª’á‰º‚µ‚È‚¢‚ªA"
 				End If
-				msg = msg & "Invalid_string_refer_to_original_code"
-				msg = msg & "Invalid_string_refer_to_original_code"
-			Case "è¿½"
-				msg = "Invalid_string_refer_to_original_code"
-				If IsOptionDefined("è·é›¢ä¿®æ­£") Then
-					msg = msg & "Invalid_string_refer_to_original_code"
+				msg = msg & "‚d‚b‚l‚É‚æ‚é‰e‹¿‚ğ‹­‚­ó‚¯‚éB"
+				msg = msg & "UŒ‚‘¤‚ªŠh—“™‚Ìó‘Ô‚ÉŠ×‚Á‚Ä‚à–½’†—¦‚ª’á‰º‚µ‚È‚¢B"
+			Case "’Ç"
+				msg = "©ŒÈ”»’f”\—Í‚ğ‚¿Aƒ^[ƒQƒbƒg‚ğ’Ç”ö‚·‚éUŒ‚B;"
+				If IsOptionDefined("‹——£C³") Then
+					msg = msg & "’·‹——£‚Ì“G‚ğUŒ‚‚·‚éÛ‚à–½’†—¦‚ª’á‰º‚µ‚È‚¢B‚Ü‚½A"
 				End If
-				msg = msg & "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				msg = "Invalid_string_refer_to_original_code"
-				If IsOptionDefined("è·é›¢ä¿®æ­£") Then
-					msg = msg & "Invalid_string_refer_to_original_code"
+				msg = msg & "UŒ‚‘¤‚ªŠh—“™‚Ìó‘Ô‚ÉŠ×‚Á‚Ä‚à–½’†—¦‚ª’á‰º‚µ‚È‚¢B"
+			Case "—L"
+				msg = "—Lü‚É‚æ‚é—U“±‚Åƒ^[ƒQƒbƒg‚ğ’Ç”ö‚·‚éUŒ‚B;"
+				If IsOptionDefined("‹——£C³") Then
+					msg = msg & "’·‹——£‚Ì“G‚ğUŒ‚‚·‚éÛ‚à–½’†—¦‚ª’á‰º‚µ‚È‚¢B‚Ü‚½A"
 				End If
-				msg = msg & "Invalid_string_refer_to_original_code"
-				msg = msg & "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			Case "Invalid_string_refer_to_original_code"
-				msg = "Invalid_string_refer_to_original_code"
-				If IsOptionDefined("è·é›¢ä¿®æ­£") Then
-					msg = msg & "Invalid_string_refer_to_original_code"
+				msg = msg & "‚d‚b‚l‚É‚æ‚é‰e‹¿‚ğó‚¯‚È‚¢B"
+				msg = msg & "‚µ‚©‚µAƒXƒyƒVƒƒƒ‹ƒpƒ[‚â" & "ƒAƒCƒeƒ€‚ÌŒø‰Ê‚É‚æ‚Á‚ÄË’ö‚ª‘‰Á‚µ‚È‚¢B"
+			Case "—U"
+				msg = "“d”g–WŠQ‚ğó‚¯‚È‚¢“Áê‚Èè’i‚É‚æ‚é—U“±‚Åƒ^[ƒQƒbƒg‚ğ’Ç”ö‚·‚éUŒ‚B;"
+				If IsOptionDefined("‹——£C³") Then
+					msg = msg & "’·‹——£‚Ì“G‚ğUŒ‚‚·‚éÛ‚à–½’†—¦‚ª’á‰º‚µ‚È‚¢B‚Ü‚½A"
 				End If
-				msg = msg & "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				msg = "Invalid_string_refer_to_original_code"
-				If IsOptionDefined("è·é›¢ä¿®æ­£") Then
-					msg = msg & "Invalid_string_refer_to_original_code"
+				msg = msg & "‚d‚b‚l‚É‚æ‚é‰e‹¿‚ğó‚¯‚È‚¢B"
+			Case "”š"
+				msg = "”š”­‚É‚æ‚èƒ_ƒ[ƒW‚ğ—^‚¦‚éUŒ‚B;"
+				If IsOptionDefined("‹——£C³") Then
+					msg = msg & "’·‹——£‚Ì“G‚ğUŒ‚‚·‚éÛ‚àƒ_ƒ[ƒW‚ª’á‰º‚µ‚È‚¢B"
 				End If
-			Case "ç©º"
-				msg = "Invalid_string_refer_to_original_code"
-				If IsOptionDefined("é«˜åº¦ä¿®æ­£") Then
-					msg = msg & "Invalid_string_refer_to_original_code"
+			Case "‹ó"
+				msg = "‹ó’†‚É‚¢‚éƒ^[ƒQƒbƒg‚ğUŒ‚‚·‚é‚±‚Æ‚ğ–Ú“I‚Æ‚µ‚½UŒ‚B"
+				If IsOptionDefined("‚“xC³") Then
+					msg = msg & "’nã‚©‚ç‹ó’†‚É‚¢‚é“G‚ğUŒ‚‚·‚éÛ‚É–½’†—¦‚ª’á‰º‚µ‚È‚¢B"
 				End If
-			Case "å›º"
-				msg = "Invalid_string_refer_to_original_code" & Term("æ°—åŠ›", u) & "Invalid_string_refer_to_original_code" & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code_
-				'Invalid_string_refer_to_original_code_
-				'Invalid_string_refer_to_original_code_
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			Case "è¡°"
-				msg = "Invalid_string_refer_to_original_code" & Term("Invalid_string_refer_to_original_code", u) & "ã‚’ç¾åœ¨å€¤ã® "
+			Case "ŒÅ"
+				msg = "ƒpƒCƒƒbƒg‚Ì" & Term("‹C—Í", u) & "‚âUŒ‚—ÍA–hŒä‘¤‚Ì" & Term("‘•b", u) & "‚É‚©‚©‚í‚ç‚¸" & "•Ší‚ÌUŒ‚—Í‚Æ“¯‚¶ƒ_ƒ[ƒW‚ğ—^‚¦‚éUŒ‚B" & "‚½‚¾‚µAƒ†ƒjƒbƒgƒ‰ƒ“ƒN‚ªã‚ª‚Á‚Ä‚àUŒ‚—Í‚Í‘‚¦‚È‚¢B" & Term("ƒXƒyƒVƒƒƒ‹ƒpƒ[", u) & "‚â" & Term("’nŒ`“K‰", u) & "‚É‚æ‚éƒ_ƒ[ƒWC³‚Í—LŒøB"
+			Case "Š"
+				msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É“G‚Ì" & Term("‚g‚o", u) & "‚ğŒ»İ’l‚Ì "
 				Select Case CShort(alevel)
 					Case 1
 						msg = msg & "3/4"
@@ -4222,9 +3830,9 @@ Module Help
 					Case 3
 						msg = msg & "1/4"
 				End Select
-				msg = msg & "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				msg = "Invalid_string_refer_to_original_code" & Term("Invalid_string_refer_to_original_code", u) & "ã‚’ç¾åœ¨å€¤ã® "
+				msg = msg & " ‚Ü‚ÅŒ¸­‚³‚¹‚éB"
+			Case "–Å"
+				msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É“G‚Ì" & Term("‚d‚m", u) & "‚ğŒ»İ’l‚Ì "
 				Select Case CShort(alevel)
 					Case 1
 						msg = msg & "3/4"
@@ -4233,209 +3841,194 @@ Module Help
 					Case 3
 						msg = msg & "1/4"
 				End Select
-				msg = msg & "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
+				msg = msg & " ‚Ü‚ÅŒ¸­‚³‚¹‚éB"
+			Case "—x"
 				If alevel = DEFAULT_LEVEL Then
 					alevel = 3
 				End If
-				msg = "Invalid_string_refer_to_original_code"
+				msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šè‚ğ"
 				If alevel > 0 Then
-					msg = msg & StrConv(VB6.Format(CShort(alevel)), VbStrConv.Wide) & "ã‚¿ãƒ¼ãƒ³"
+					msg = msg & StrConv(VB6.Format(CShort(alevel)), VbStrConv.Wide) & "ƒ^[ƒ“"
 				Else
-					msg = msg & "Invalid_string_refer_to_original_code"
+					msg = msg & "‚»‚Ìí“¬’†‚Ì‚İ"
 				End If
-				msg = msg & "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
+				msg = msg & "—x‚ç‚¹‚éB"
+			Case "‹¶"
 				If alevel = DEFAULT_LEVEL Then
 					alevel = 3
 				End If
-				msg = "Invalid_string_refer_to_original_code"
+				msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šè‚ğ"
 				If alevel > 0 Then
-					msg = msg & StrConv(VB6.Format(CShort(alevel)), VbStrConv.Wide) & "ã‚¿ãƒ¼ãƒ³"
+					msg = msg & StrConv(VB6.Format(CShort(alevel)), VbStrConv.Wide) & "ƒ^[ƒ“"
 				Else
-					msg = msg & "Invalid_string_refer_to_original_code"
+					msg = msg & "‚»‚Ìí“¬’†‚Ì‚İ"
 				End If
-				msg = msg & "Invalid_string_refer_to_original_code"
-			Case "ã‚¾"
+				msg = msg & "‹¶ímó‘Ô‚É‚·‚éB"
+			Case "ƒ]"
 				If alevel = DEFAULT_LEVEL Then
-					msg = "Invalid_string_refer_to_original_code"
+					msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šè‚ğƒ]ƒ“ƒró‘Ô‚É‚·‚éB"
 				Else
-					msg = "Invalid_string_refer_to_original_code"
+					msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šè‚ğ"
 					If alevel > 0 Then
-						msg = msg & StrConv(VB6.Format(CShort(alevel)), VbStrConv.Wide) & "ã‚¿ãƒ¼ãƒ³"
+						msg = msg & StrConv(VB6.Format(CShort(alevel)), VbStrConv.Wide) & "ƒ^[ƒ“"
 					Else
-						msg = msg & "Invalid_string_refer_to_original_code"
+						msg = msg & "‚»‚Ìí“¬’†‚Ì‚İ"
 					End If
-					msg = msg & "Invalid_string_refer_to_original_code"
+					msg = msg & "ƒ]ƒ“ƒró‘Ô‚É‚·‚éB"
 				End If
-			Case "å®³"
+			Case "ŠQ"
 				If alevel = DEFAULT_LEVEL Then
-					msg = "Invalid_string_refer_to_original_code"
+					msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šè‚Ì©ŒÈ‰ñ•œ”\—Í‚ğ”j‰ó‚·‚éB"
 				Else
-					msg = "Invalid_string_refer_to_original_code"
+					msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šè‚ğ"
 					If alevel > 0 Then
-						msg = msg & StrConv(VB6.Format(CShort(alevel)), VbStrConv.Wide) & "ã‚¿ãƒ¼ãƒ³"
+						msg = msg & StrConv(VB6.Format(CShort(alevel)), VbStrConv.Wide) & "ƒ^[ƒ“"
 					Else
-						msg = msg & "Invalid_string_refer_to_original_code"
+						msg = msg & "‚»‚Ìí“¬’†‚Ì‚İ"
 					End If
-					msg = msg & "Invalid_string_refer_to_original_code"
+					msg = msg & "©ŒÈ‰ñ•œ•s”\ó‘Ô‚É‚·‚éB"
 				End If
-			Case "Invalid_string_refer_to_original_code"
-				msg = "Invalid_string_refer_to_original_code" & "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				msg = "Invalid_string_refer_to_original_code" & "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			Case "Invalid_string_refer_to_original_code"
-				msg = "Invalid_string_refer_to_original_code" & "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				msg = "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				msg = msg & VB6.Format(100 + 10 * (alevel + 2))
-				msg = msg & VB6.Format(100 + 25 * (alevel + 2))
-				'End If
-				msg = msg & "Invalid_string_refer_to_original_code"
-			Case "åœ°", "æ°´", "ç«", "é¢¨", "å†·", "é›·", "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			Case "K"
+				msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šè‚Ì‚Â‹Z‚ğK“¾o—ˆ‚éB;" & "‚½‚¾‚µAK“¾‰Â”\‚È‹Z‚ğ‘Šè‚ª‚Á‚Ä‚¢‚È‚¯‚ê‚Î–³ŒøB"
+			Case "Ê"
+				msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šèƒ†ƒjƒbƒg‚É•Ïg‚·‚éB;" & "‚½‚¾‚µAŠù‚É•Ïg‚µ‚Ä‚¢‚éê‡‚Íg—p‚Å‚«‚È‚¢B" & "‚Ü‚½A‘Šè‚Æ‚Q’iŠKˆÈã" & Term("ƒTƒCƒY", u) & "‚ªˆÙ‚È‚éê‡‚Í–³ŒøB"
+			Case "‰»"
+				msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šèƒ†ƒjƒbƒg‚É•Ïg‚·‚éB;" & "‚½‚¾‚µAŠù‚É•Ïg‚µ‚Ä‚¢‚éê‡‚Íg—p‚Å‚«‚È‚¢B"
+			Case "’É"
+				msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É’Êí‚Ì "
+				If IsOptionDefined("ƒ_ƒ[ƒW”{—¦’á‰º") Then
+					msg = msg & VB6.Format(100 + 10 * (alevel + 2))
+				Else
+					msg = msg & VB6.Format(100 + 25 * (alevel + 2))
+				End If
+				msg = msg & "% ‚Ìƒ_ƒ[ƒW‚ğ—^‚¦‚éB"
+			Case "’n", "…", "‰Î", "•—", "—â", "—‹", "Œõ", "ˆÅ", "¹", "€", "–Ø"
 				Select Case atype
-					Case "æ°´", "ç«", "é¢¨"
-						msg = atype & "Invalid_string_refer_to_original_code"
-					Case "Invalid_string_refer_to_original_code"
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-						msg = atype & "Invalid_string_refer_to_original_code"
-					Case "åœ°"
-						msg = "Invalid_string_refer_to_original_code"
-					Case "å†·"
-						msg = "å†·æ°—ã«ã‚ˆã‚‹"
-					Case "é›·"
-						msg = "Invalid_string_refer_to_original_code"
-					Case "Invalid_string_refer_to_original_code"
-						msg = "Invalid_string_refer_to_original_code"
-					Case "æœ¨"
-						msg = "Invalid_string_refer_to_original_code"
+					Case "…", "‰Î", "•—"
+						msg = atype & "‚ğg‚Á‚½"
+					Case "Œõ", "ˆÅ", "€"
+						msg = atype & "‚Ì—Í‚ğg‚Á‚½"
+					Case "’n"
+						msg = "‘å’n‚Ì—Í‚ğØ‚è‚½"
+					Case "—â"
+						msg = "—â‹C‚É‚æ‚é"
+					Case "—‹"
+						msg = "“dŒ‚‚É‚æ‚é"
+					Case "¹"
+						msg = "¹‚È‚é—Í‚ğØ‚è‚½"
+					Case "–Ø"
+						msg = "÷–Ø‚Ì—Í‚ğØ‚è‚½"
 				End Select
-				msg = msg & whatsthis & "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
+				msg = msg & whatsthis & "B"
+			Case "–‚"
 				If Not is_ability Then
-					msg = "Invalid_string_refer_to_original_code"
+					msg = "–‚—Í‚ğ‘Ñ‚Ñ‚½UŒ‚B"
 				Else
-					msg = "é­”æ³•ã«ã‚ˆã‚‹" & Term("Invalid_string_refer_to_original_code", u) & "Invalid_string_refer_to_original_code"
+					msg = "–‚–@‚É‚æ‚é" & Term("ƒAƒrƒŠƒeƒB", u) & "B"
 				End If
-			Case "Invalid_string_refer_to_original_code"
-				msg = "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			Case "Invalid_string_refer_to_original_code"
-				msg = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				msg = atype & "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				msg = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				msg = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				msg = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				msg = "ç€•æ­»æ™‚ã«ã®ã¿ä½¿ç”¨å¯èƒ½ãª" & whatsthis & "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				msg = "Invalid_string_refer_to_original_code"
-			Case "å¯¾"
+			Case ""
+				msg = "‚Ì—¬‚ê‚ğ‘€‚é" & whatsthis & "B"
+			Case "d"
+				msg = "d—Í‚ğg‚Á‚½UŒ‚B"
+			Case "e", "Œ•", "“", "‘„", "•€", "‹|"
+				msg = atype & "‚ğg‚Á‚½UŒ‚B"
+			Case "‹@"
+				msg = "‹@ŠB(ƒƒ{ƒbƒgAƒAƒ“ƒhƒƒCƒh)‚É‘Î‚µ“Á‚É—LŒø‚ÈUŒ‚B"
+			Case "Š´"
+				msg = "ƒGƒXƒp[(’´”\—ÍÒ)‚É‘Î‚µ“Á‚É—LŒø‚ÈUŒ‚B"
+			Case "—³"
+				msg = "—³‘°(ƒhƒ‰ƒSƒ“)‚É‘Î‚µ“Á‚É—LŒø‚È•ŠíB"
+			Case "•m"
+				msg = "•m€‚É‚Ì‚İg—p‰Â”\‚È" & whatsthis & "B"
+			Case "‹Ö"
+				msg = "Œ»İ‚Ìó‹µ‰º‚Å‚Íg—p‚·‚é‚±‚Æ‚ªo—ˆ‚Ü‚¹‚ñB"
+			Case "‘Î"
 				If Not is_ability Then
-					whatsthis = "Invalid_string_refer_to_original_code"
+					whatsthis = "UŒ‚"
 				End If
-				msg = "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			Case "ãƒ©"
+				msg = "‘Šè‚ÌƒƒCƒ“ƒpƒCƒƒbƒg‚ÌƒŒƒxƒ‹‚ª" & StrConv(VB6.Format(CShort(alevel)), VbStrConv.Wide) & "‚Ì”{”‚Ìê‡‚É‚Ì‚İ—LŒø‚È" & whatsthis & "B"
+			Case "ƒ‰"
 				If Not is_ability Then
-					whatsthis = "Invalid_string_refer_to_original_code"
+					whatsthis = "UŒ‚"
 				End If
-				msg = "ãƒ©ãƒ¼ãƒ‹ãƒ³ã‚°ãŒå¯èƒ½ãª" & whatsthis & "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				msg = "Invalid_string_refer_to_original_code" & StrConv(VB6.Format(CShort(alevel)), VbStrConv.Wide) & "Invalid_string_refer_to_original_code"
-			Case "æ•£"
-				msg = "Invalid_string_refer_to_original_code"
+				msg = "ƒ‰[ƒjƒ“ƒO‚ª‰Â”\‚È" & whatsthis & "B"
+			Case "¬"
+				msg = "Å¬Ë’ö‚ª" & StrConv(VB6.Format(CShort(alevel)), VbStrConv.Wide) & "‚É‚È‚éB"
+			Case "U"
+				msg = "‘Šè‚©‚ç‚Qƒ}ƒXˆÈã—£‚ê‚Ä‚¢‚é‚Æ–½’†—¦‚ªã¸‚µA—^‚¦‚éƒ_ƒ[ƒW‚ªŒ¸­‚·‚éB"
 			Case Else
-				'å¼±ã€åŠ¹ã€å‰‹å±æ€§
+				'ãAŒøA™‘®«
 				Select Case Left(atype, 1)
-					Case "å¼±"
+					Case "ã"
 						If alevel = DEFAULT_LEVEL Then
 							alevel = 3
 						End If
-						msg = "Invalid_string_refer_to_original_code" & Mid(atype, 2) & "Invalid_string_refer_to_original_code"
+						msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šè‚É" & Mid(atype, 2) & "‘®«‚É‘Î‚·‚éã“_‚ğ"
 						If alevel > 0 Then
-							msg = msg & StrConv(VB6.Format(CShort(alevel)), VbStrConv.Wide) & "ã‚¿ãƒ¼ãƒ³"
+							msg = msg & StrConv(VB6.Format(CShort(alevel)), VbStrConv.Wide) & "ƒ^[ƒ“"
 						Else
-							msg = msg & "Invalid_string_refer_to_original_code"
+							msg = msg & "‚»‚Ìí“¬’†‚Ì‚İ"
 						End If
-						msg = msg & "Invalid_string_refer_to_original_code"
-					Case "åŠ¹"
+						msg = msg & "•t‰Á‚·‚éB"
+					Case "Œø"
 						If alevel = DEFAULT_LEVEL Then
 							alevel = 3
 						End If
-						msg = "Invalid_string_refer_to_original_code" & Mid(atype, 2) & "Invalid_string_refer_to_original_code"
+						msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šè‚É" & Mid(atype, 2) & "‘®«‚É‘Î‚·‚é—LŒø‚ğ"
 						If alevel > 0 Then
-							msg = msg & StrConv(VB6.Format(CShort(alevel)), VbStrConv.Wide) & "ã‚¿ãƒ¼ãƒ³"
+							msg = msg & StrConv(VB6.Format(CShort(alevel)), VbStrConv.Wide) & "ƒ^[ƒ“"
 						Else
-							msg = msg & "Invalid_string_refer_to_original_code"
+							msg = msg & "‚»‚Ìí“¬’†‚Ì‚İ"
 						End If
-						msg = msg & "Invalid_string_refer_to_original_code"
-					Case "Invalid_string_refer_to_original_code"
+						msg = msg & "•t‰Á‚·‚éB"
+					Case "™"
 						If alevel = DEFAULT_LEVEL Then
 							alevel = 3
 						End If
-						msg = "Invalid_string_refer_to_original_code"
+						msg = "ƒNƒŠƒeƒBƒJƒ‹”­¶‚É‘Šè‚Ì"
 						Select Case Mid(atype, 2)
-							Case "ã‚ª"
-								msg = msg & "ã‚ªãƒ¼ãƒ©"
-							Case "Invalid_string_refer_to_original_code"
-								msg = msg & "Invalid_string_refer_to_original_code"
-							Case "ã‚·"
-								msg = msg & "Invalid_string_refer_to_original_code"
-							Case "ã‚µ"
-								msg = msg & "Invalid_string_refer_to_original_code"
-							Case "Invalid_string_refer_to_original_code"
-								msg = msg & "éœŠåŠ›"
-							Case "Invalid_string_refer_to_original_code"
-								msg = msg & "Invalid_string_refer_to_original_code"
-							Case "æŠ€"
-								msg = msg & "æŠ€"
+							Case "ƒI"
+								msg = msg & "ƒI[ƒ‰"
+							Case "’´"
+								msg = msg & "’´”\—Í"
+							Case "ƒV"
+								msg = msg & "“¯’²—¦"
+							Case "ƒT"
+								msg = msg & "’´Š´ŠoA’mŠo‹­‰»"
+							Case "—ì"
+								msg = msg & "—ì—Í"
+							Case "p"
+								msg = msg & "p"
+							Case "‹Z"
+								msg = msg & "‹Z"
 							Case Else
-								msg = msg & Mid(atype, 2) & "Invalid_string_refer_to_original_code"
+								msg = msg & Mid(atype, 2) & "‘®«‚Ì•ŠíAƒAƒrƒŠƒeƒB"
 						End Select
-						msg = msg & "Invalid_string_refer_to_original_code"
+						msg = msg & "‚ğ"
 						If alevel > 0 Then
-							msg = msg & StrConv(VB6.Format(CShort(alevel)), VbStrConv.Wide) & "ã‚¿ãƒ¼ãƒ³"
+							msg = msg & StrConv(VB6.Format(CShort(alevel)), VbStrConv.Wide) & "ƒ^[ƒ“"
 						Else
-							msg = msg & "Invalid_string_refer_to_original_code"
+							msg = msg & "‚»‚Ìí“¬’†‚Ì‚İ"
 						End If
-						msg = msg & "Invalid_string_refer_to_original_code"
+						msg = msg & "g—p•s”\‚É‚·‚éB"
 				End Select
 		End Select
 		
 		fdata = u.FeatureData(atype)
-		If ListIndex(fdata, 1) = "è§£èª¬" Then
-			'Invalid_string_refer_to_original_code
+		If ListIndex(fdata, 1) = "‰ğà" Then
+			'‰ğà‚ğ’è‹`‚µ‚Ä‚¢‚éê‡
 			msg = ListTail(fdata, 3)
 			If Left(msg, 1) = """" Then
 				msg = Mid(msg, 2, Len(msg) - 2)
 			End If
 		End If
 		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		ReplaceString(msg, "Invalid_string_refer_to_original_code", "Invalid_string_refer_to_original_code")
-		ReplaceString(msg, "Invalid_string_refer_to_original_code", "Invalid_string_refer_to_original_code")
-		ReplaceString(msg, "Invalid_string_refer_to_original_code")
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		'End If
+		'“™g‘åŠî€‚ÌÛ‚ÍuƒpƒCƒƒbƒgv‚Æ‚¢‚¤Œê‚ğg‚í‚È‚¢‚æ‚¤‚É‚·‚é
+		If IsOptionDefined("“™g‘åŠî€") Then
+			ReplaceString(msg, "ƒƒCƒ“ƒpƒCƒƒbƒg", "ƒ†ƒjƒbƒg")
+			ReplaceString(msg, "ƒpƒCƒƒbƒg", "ƒ†ƒjƒbƒg")
+			ReplaceString(msg, "‘Šè‚Ìƒ†ƒjƒbƒg", "‘Šèƒ†ƒjƒbƒg")
+		End If
 		
 		AttributeHelpMessage = msg
 	End Function

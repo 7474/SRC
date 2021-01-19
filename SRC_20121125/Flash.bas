@@ -2,29 +2,29 @@ Attribute VB_Name = "Flash"
 Option Explicit
 
 ' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯ãƒ•ãƒªãƒ¼ã‚½ãƒ•ãƒˆã§ã‚ã‚Šã€ç„¡ä¿è¨¼ã§ã™ã€‚
-' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯GNU General Public License(Ver.3ã¾ãŸã¯ãã‚Œä»¥é™)ãŒå®šã‚ã‚‹æ¡ä»¶ã®ä¸‹ã§
-' å†é ’å¸ƒã¾ãŸã¯æ”¹å¤‰ã™ã‚‹ã“ã¨ãŒã§ãã¾ã™ã€‚
+' –{ƒvƒƒOƒ‰ƒ€‚ÍƒtƒŠ[ƒ\ƒtƒg‚Å‚ ‚èA–³•ÛØ‚Å‚·B
+' –{ƒvƒƒOƒ‰ƒ€‚ÍGNU General Public License(Ver.3‚Ü‚½‚Í‚»‚êˆÈ~)‚ª’è‚ß‚éğŒ‚Ì‰º‚Å
+' Ä”Ğ•z‚Ü‚½‚Í‰ü•Ï‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B
 
-'Flashãƒ•ã‚¡ã‚¤ãƒ«ã®å†ç”Ÿ
+'Flashƒtƒ@ƒCƒ‹‚ÌÄ¶
 Public Sub PlayFlash(fname As String, _
     fx As Integer, fy As Integer, fw As Integer, fh As Integer, _
     opt As String)
 Dim i As Integer
 Dim is_VisibleEnd As Boolean
     
-    'FLASHãŒä½¿ç”¨ã§ããªã„å ´åˆã¯ã‚¨ãƒ©ãƒ¼
+    'FLASH‚ªg—p‚Å‚«‚È‚¢ê‡‚ÍƒGƒ‰[
     If Not IsFlashAvailable Then
-        ErrorMessage "Flashãƒ•ã‚¡ã‚¤ãƒ«ã®èª­ã¿è¾¼ã¿ä¸­ã«ã‚¨ãƒ©ãƒ¼ãŒç™ºç”Ÿã—ã¾ã—ãŸã€‚" & vbCrLf _
-            & "ã€ŒMacromedia Flash Playerã€ãŒã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã•ã‚Œã¦ã„ã¾ã›ã‚“ã€‚" & vbCrLf _
-            & "æ¬¡ã®URLã‹ã‚‰ã€æœ€æ–°ç‰ˆã®Flash Playerã‚’ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã—ã¦ãã ã•ã„ã€‚" & vbCrLf _
+        ErrorMessage "Flashƒtƒ@ƒCƒ‹‚Ì“Ç‚İ‚İ’†‚ÉƒGƒ‰[‚ª”­¶‚µ‚Ü‚µ‚½B" & vbCrLf _
+            & "uMacromedia Flash Playerv‚ªƒCƒ“ƒXƒg[ƒ‹‚³‚ê‚Ä‚¢‚Ü‚¹‚ñB" & vbCrLf _
+            & "Ÿ‚ÌURL‚©‚çAÅV”Å‚ÌFlash Player‚ğƒCƒ“ƒXƒg[ƒ‹‚µ‚Ä‚­‚¾‚³‚¢B" & vbCrLf _
             & "http://www.macromedia.com/shockwave/download/download.cgi?P5_Language=Japanese&Lang=Japanese&P1_Prod_Version=ShockwaveFlash&Lang=Japanese"
         Exit Sub
     End If
     If Not frmMain.FlashObject.Enable Then
-        ErrorMessage "Flashãƒ•ã‚¡ã‚¤ãƒ«ã®èª­ã¿è¾¼ã¿ä¸­ã«ã‚¨ãƒ©ãƒ¼ãŒç™ºç”Ÿã—ã¾ã—ãŸã€‚" & vbCrLf _
-            & "ã€ŒMacromedia Flash Playerã€ãŒã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã•ã‚Œã¦ã„ã¾ã›ã‚“ã€‚" & vbCrLf _
-            & "æ¬¡ã®URLã‹ã‚‰ã€æœ€æ–°ç‰ˆã®Flash Playerã‚’ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã—ã¦ãã ã•ã„ã€‚" & vbCrLf _
+        ErrorMessage "Flashƒtƒ@ƒCƒ‹‚Ì“Ç‚İ‚İ’†‚ÉƒGƒ‰[‚ª”­¶‚µ‚Ü‚µ‚½B" & vbCrLf _
+            & "uMacromedia Flash Playerv‚ªƒCƒ“ƒXƒg[ƒ‹‚³‚ê‚Ä‚¢‚Ü‚¹‚ñB" & vbCrLf _
+            & "Ÿ‚ÌURL‚©‚çAÅV”Å‚ÌFlash Player‚ğƒCƒ“ƒXƒg[ƒ‹‚µ‚Ä‚­‚¾‚³‚¢B" & vbCrLf _
             & "http://www.macromedia.com/shockwave/download/download.cgi?P5_Language=Japanese&Lang=Japanese&P1_Prod_Version=ShockwaveFlash&Lang=Japanese"
         Exit Sub
     End If
@@ -33,16 +33,16 @@ Dim is_VisibleEnd As Boolean
     
     For i = 1 To LLength(opt)
         Select Case LIndex(opt, i)
-            Case "ä¿æŒ"
+            Case "•Û"
                 is_VisibleEnd = True
         End Select
     Next
     
     With frmMain.FlashObject
-        'ä¸€æ—¦éè¡¨ç¤º
+        'ˆê’U”ñ•\¦
         .Visible = False
     
-        'Flashã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ä½ç½®ãƒ»ã‚µã‚¤ã‚ºè¨­å®š
+        'FlashƒIƒuƒWƒFƒNƒg‚ÌˆÊ’uEƒTƒCƒYİ’è
         .Left = fx
         .Top = fy
         .Width = fw
@@ -65,7 +65,7 @@ Dim is_VisibleEnd As Boolean
     End With
 End Sub
 
-'è¡¨ç¤ºã—ãŸã¾ã¾ã®Flashã‚’æ¶ˆå»ã™ã‚‹
+'•\¦‚µ‚½‚Ü‚Ü‚ÌFlash‚ğÁ‹‚·‚é
 Public Sub ClearFlash()
     If Not IsFlashAvailable Then Exit Sub
     If Not frmMain.FlashObject.Enable Then Exit Sub
@@ -76,40 +76,40 @@ Public Sub ClearFlash()
     End With
 End Sub
 
-'Flashãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ã‚¤ãƒ™ãƒ³ãƒˆã‚’å–å¾—
-' Flashã®ã‚¢ã‚¯ã‚·ãƒ§ãƒ³ã®ã€ŒGetURLã€ã§
-'ã€€1.ã€ŒURLã€ã«"FSCommand:"
-'ã€€2.ã€Œã‚¿ãƒ¼ã‚²ãƒƒãƒˆã€ã«ã€Œã‚µãƒ–ãƒ«ãƒ¼ãƒãƒ³å [å¼•æ•°1 [å¼•æ•°2 [â€¦]]ã€
-'ã‚’æŒ‡å®šã™ã‚‹ã¨ã€ãã®ã‚¢ã‚¯ã‚·ãƒ§ãƒ³ãŒå®Ÿè¡Œã•ã‚ŒãŸã¨ãã«
-'ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã®ã‚µãƒ–ãƒ«ãƒ¼ãƒãƒ³ãŒå®Ÿè¡Œã•ã‚Œã‚‹ã€‚
-'ã‚µãƒ–ãƒ«ãƒ¼ãƒãƒ³ã‚’å®Ÿè¡Œã—ã¦ã„ã‚‹é–“ã€Flashã®å†ç”Ÿã¯åœæ­¢ã™ã‚‹ã€‚
+'Flashƒtƒ@ƒCƒ‹‚©‚çƒCƒxƒ“ƒg‚ğæ“¾
+' Flash‚ÌƒAƒNƒVƒ‡ƒ“‚ÌuGetURLv‚Å
+'@1.uURLv‚É"FSCommand:"
+'@2.uƒ^[ƒQƒbƒgv‚ÉuƒTƒuƒ‹[ƒ`ƒ“–¼ [ˆø”1 [ˆø”2 [c]]v
+'‚ğw’è‚·‚é‚ÆA‚»‚ÌƒAƒNƒVƒ‡ƒ“‚ªÀs‚³‚ê‚½‚Æ‚«‚É
+'ƒ^[ƒQƒbƒg‚ÌƒTƒuƒ‹[ƒ`ƒ“‚ªÀs‚³‚ê‚éB
+'ƒTƒuƒ‹[ƒ`ƒ“‚ğÀs‚µ‚Ä‚¢‚éŠÔAFlash‚ÌÄ¶‚Í’â~‚·‚éB
 Public Sub GetEvent(ByVal fpara As String)
 Dim buf As String, i As Integer, j As Integer
 Dim funcname As String, funcpara As String
 Dim etype As ValueType, str_result As String, num_result As Double
 
-    'å†ç”Ÿã‚’ä¸€æ™‚åœæ­¢
+    'Ä¶‚ğˆê’â~
     frmMain.FlashObject.StopMovie
         
     funcname = ""
     funcpara = ""
     
-    'å¿µã®ãŸã‚ã«Flashã‹ã‚‰æ¸¡ã•ã‚ŒãŸãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿å…¨ã¦ã‚’è§£æ
-    'ä¸€ç•ªæœ€åˆã«è¦‹ã¤ã‹ã£ãŸæ–‡å­—åˆ—ã‚’ã€å‘¼ã³å‡ºã™ã‚µãƒ–ãƒ«ãƒ¼ãƒãƒ³åã¨ã™ã‚‹
+    '”O‚Ì‚½‚ß‚ÉFlash‚©‚ç“n‚³‚ê‚½ƒpƒ‰ƒ[ƒ^‘S‚Ä‚ğ‰ğÍ
+    'ˆê”ÔÅ‰‚ÉŒ©‚Â‚©‚Á‚½•¶š—ñ‚ğAŒÄ‚Ño‚·ƒTƒuƒ‹[ƒ`ƒ“–¼‚Æ‚·‚é
     If funcname = "" Then
         funcname = ListIndex(fpara, 1)
         buf = ListTail(fpara, 2)
     End If
-    'ã‚µãƒ–ãƒ«ãƒ¼ãƒãƒ³ã®å¼•æ•°ã‚’è¨˜éŒ²
+    'ƒTƒuƒ‹[ƒ`ƒ“‚Ìˆø”‚ğ‹L˜^
     For j = 1 To ListLength(buf)
         funcpara = funcpara & ", " & ListIndex(buf, j)
     Next
     
-    'ã‚µãƒ–ãƒ«ãƒ¼ãƒãƒ³åã¨å¼•æ•°ã‹ã‚‰ã€Callé–¢æ•°ã®å‘¼ã³å‡ºã—ã®æ–‡å­—åˆ—ã‚’ç”Ÿæˆ
+    'ƒTƒuƒ‹[ƒ`ƒ“–¼‚Æˆø”‚©‚çACallŠÖ”‚ÌŒÄ‚Ño‚µ‚Ì•¶š—ñ‚ğ¶¬
     buf = "Call(" & funcname & funcpara & ")"
-    'å¼ã¨ã—ã¦ç”Ÿæˆã—ãŸæ–‡å­—åˆ—ã‚’å®Ÿè¡Œ
+    '®‚Æ‚µ‚Ä¶¬‚µ‚½•¶š—ñ‚ğÀs
     CallFunction buf, etype, str_result, num_result
     
-    'å†ç”Ÿã‚’å†é–‹
+    'Ä¶‚ğÄŠJ
     frmMain.FlashObject.PlayMovie
 End Sub

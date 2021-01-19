@@ -3,25 +3,25 @@ Option Explicit On
 Friend Class Item
 	
 	' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
+	' 本プログラムはフリーソフトであり、無保証です。
+	' 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
+	' 再頒布または改変することができます。
 	
-	'Invalid_string_refer_to_original_code
+	'作成されたアイテムのクラス
 	
-	'Invalid_string_refer_to_original_code
+	'識別子
 	Public ID As String
-	'Invalid_string_refer_to_original_code
+	'アイテムデータへのポインタ
 	Public Data As ItemData
-	'Invalid_string_refer_to_original_code
+	'アイテムを装備しているユニット
 	'UPGRADE_NOTE: Unit は Unit_Renamed にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
 	Public Unit_Renamed As Unit
-	'Invalid_string_refer_to_original_code
+	'アイテムが存在しているか？ (RemoveItemされていないか？)
 	Public Exist As Boolean
-	'Invalid_string_refer_to_original_code
+	'アイテムが効力を発揮できているか？ (必要技能や武器クラス＆防具クラスを満たしているか？)
 	Public Activated As Boolean
 	
-	'Invalid_string_refer_to_original_code
+	'クラスの初期化
 	'UPGRADE_NOTE: Class_Initialize は Class_Initialize_Renamed にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
 	Private Sub Class_Initialize_Renamed()
 		Exist = True
@@ -36,7 +36,7 @@ Friend Class Item
 		Class_Initialize_Renamed()
 	End Sub
 	
-	'繧ｯ繝ｩ繧ｹ縺ｮ隗｣謾ｾ
+	'クラスの解放
 	'UPGRADE_NOTE: Class_Terminate は Class_Terminate_Renamed にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
 	Private Sub Class_Terminate_Renamed()
 		'UPGRADE_NOTE: オブジェクト Data をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
@@ -49,7 +49,7 @@ Friend Class Item
 		MyBase.Finalize()
 	End Sub
 	
-	'蜷咲ｧｰ
+	'名称
 	
 	Public Property Name() As String
 		Get
@@ -60,33 +60,33 @@ Friend Class Item
 		End Set
 	End Property
 	
-	'諢帷ｧｰ
+	'愛称
 	Public Function Nickname() As String
 		Dim u As Unit
 		
 		Nickname = Data.Nickname
 		
-		'Invalid_string_refer_to_original_code
+		'愛称内の式置換のため、デフォルトユニットを一時的に変更する
 		u = SelectedUnitForEvent
 		SelectedUnitForEvent = Unit_Renamed
 		ReplaceSubExpression(Nickname)
 		SelectedUnitForEvent = u
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'読み仮名
 	Public Function KanaName() As String
 		Dim u As Unit
 		
 		KanaName = Data.KanaName
 		
-		'Invalid_string_refer_to_original_code
+		'読み仮名内の式置換のため、デフォルトユニットを一時的に変更する
 		u = SelectedUnitForEvent
 		SelectedUnitForEvent = Unit_Renamed
 		ReplaceSubExpression(KanaName)
 		SelectedUnitForEvent = u
 	End Function
 	
-	'繧ｯ繝ｩ繧ｹ
+	'クラス
 	'UPGRADE_NOTE: Class は Class_Renamed にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
 	Public Function Class_Renamed() As String
 		Class_Renamed = Data.Class_Renamed
@@ -97,8 +97,8 @@ Friend Class Item
 		
 		Class0 = Data.Class_Renamed
 		
-		'Invalid_string_refer_to_original_code
-		If Right(Class0, 3) = "蟆ら畑)" Then
+		'専用指定を削除
+		If Right(Class0, 3) = "専用)" Then
 			n = 1
 			i = Len(Class0) - 2
 			Do 
@@ -117,98 +117,98 @@ Friend Class Item
 		End If
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'装備個所
 	Public Function Part() As String
 		Part = Data.Part
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'ＨＰ修正値
 	Public Function HP() As Integer
 		HP = Data.HP
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'ＥＮ修正値
 	Public Function EN() As Short
 		EN = Data.EN
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'装甲修正値
 	Public Function Armor() As Integer
 		Armor = Data.Armor
 	End Function
 	
-	'驕句虚諤ｧ菫ｮ豁｣蛟､
+	'運動性修正値
 	Public Function Mobility() As Short
 		Mobility = Data.Mobility
 	End Function
 	
-	'遘ｻ蜍募鴨菫ｮ豁｣蛟､
+	'移動力修正値
 	Public Function Speed() As Short
 		Speed = Data.Speed
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'特殊能力総数
 	Public Function CountFeature() As Short
 		CountFeature = Data.CountFeature
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'特殊能力
 	Public Function Feature(ByRef Index As Object) As String
 		Feature = Data.Feature(Index)
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'特殊能力の名称
 	Public Function FeatureName(ByRef Index As Object) As String
 		FeatureName = Data.FeatureName(Index)
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'特殊能力のレベル
 	Public Function FeatureLevel(ByRef Index As Object) As Double
 		FeatureLevel = Data.FeatureLevel(Index)
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'特殊能力のデータ
 	Public Function FeatureData(ByRef Index As Object) As String
 		FeatureData = Data.FeatureData(Index)
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'特殊能力の必要技能
 	Public Function FeatureNecessarySkill(ByRef Index As Object) As String
 		FeatureNecessarySkill = Data.FeatureNecessarySkill(Index)
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'指定した特殊能力を持っているか？
 	Public Function IsFeatureAvailable(ByRef fname As String) As Boolean
 		IsFeatureAvailable = Data.IsFeatureAvailable(fname)
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'武器データ
 	Public Function Weapon(ByRef Index As Object) As WeaponData
 		Weapon = Data.Weapon(Index)
 	End Function
 	
-	'豁ｦ蝎ｨ縺ｮ邱乗焚
+	'武器の総数
 	Public Function CountWeapon() As Short
 		CountWeapon = Data.CountWeapon
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'アビリティデータ
 	Public Function Ability(ByRef Index As Object) As AbilityData
 		Ability = Data.Ability(Index)
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'アビリティの総数
 	Public Function CountAbility() As Short
 		CountAbility = Data.CountAbility
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'サイズ(アイテムが消費するアイテムスロット数)
 	Public Function Size() As Short
 		Size = Data.Size
 	End Function
 	
 	
-	'Invalid_string_refer_to_original_code
+	'アイテムが使用可能か？
 	Public Function IsAvailable(ByRef u As Unit) As Boolean
 		Dim j, i, k As Short
 		Dim iclass As String
@@ -216,49 +216,43 @@ Friend Class Item
 		
 		IsAvailable = False
 		
-		'Invalid_string_refer_to_original_code
+		'イベントコマンド「Disable」
 		If IsGlobalVariableDefined("Disable(" & Name & ")") Then
 			Exit Function
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'装備個所に適合しているか
 		Select Case Part
-			Case "Invalid_string_refer_to_original_code", "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				Exit Function
-				'End If
-			Case "閧ｩ", "荳｡閧ｩ"
-				If InStr(u.FeatureData("Invalid_string_refer_to_original_code"), "閧ｩ") = 0 Then
+			Case "片手", "両手", "盾"
+				If InStr(u.FeatureData("装備個所"), "腕") = 0 Then
 					Exit Function
 				End If
-			Case "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				Exit Function
-				'End If
-			Case "鬆ｭ"
-				If InStr(u.FeatureData("Invalid_string_refer_to_original_code"), "鬆ｭ") = 0 Then
+			Case "肩", "両肩"
+				If InStr(u.FeatureData("装備個所"), "肩") = 0 Then
+					Exit Function
+				End If
+			Case "体"
+				If InStr(u.FeatureData("装備個所"), "体") = 0 Then
+					Exit Function
+				End If
+			Case "頭"
+				If InStr(u.FeatureData("装備個所"), "頭") = 0 Then
 					Exit Function
 				End If
 		End Select
 		
-		'Invalid_string_refer_to_original_code
+		'武器クラス or 防具クラスに属しているか？
 		Select Case Part
-			Case "豁ｦ蝎ｨ", "Invalid_string_refer_to_original_code", "Invalid_string_refer_to_original_code"
-				iclass = u.WeaponProficiency() & "Invalid_string_refer_to_original_code"
+			Case "武器", "片手", "両手"
+				iclass = u.WeaponProficiency() & " 固定 汎用"
 				For i = 1 To LLength(iclass)
 					If Class0 = LIndex(iclass, i) Then
 						IsAvailable = True
 						Exit For
 					End If
 				Next 
-			Case "逶ｾ", "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				iclass = u.ArmorProficiency() & "Invalid_string_refer_to_original_code"
+			Case "盾", "体", "頭"
+				iclass = u.ArmorProficiency() & " 固定 汎用"
 				For i = 1 To LLength(iclass)
 					If Class0 = LIndex(iclass, i) Then
 						IsAvailable = True
@@ -266,7 +260,7 @@ Friend Class Item
 					End If
 				Next 
 			Case Else
-				'Invalid_string_refer_to_original_code
+				'その他のアイテムは常に利用可能
 				IsAvailable = True
 		End Select
 		
@@ -274,19 +268,19 @@ Friend Class Item
 			Exit Function
 		End If
 		
-		'Invalid_string_refer_to_original_code
-		If Not IsFeatureAvailable("Invalid_string_refer_to_original_code") And Not IsFeatureAvailable("Invalid_string_refer_to_original_code") Then
+		'技能チェックが必要？
+		If Not IsFeatureAvailable("必要技能") And Not IsFeatureAvailable("不必要技能") Then
 			Exit Function
 		End If
 		
 		With u
-			'Invalid_string_refer_to_original_code
+			'必要技能をチェック
 			For i = 1 To CountFeature
 				Select Case Feature(i)
-					Case "Invalid_string_refer_to_original_code"
+					Case "必要技能"
 						If Not .IsNecessarySkillSatisfied(FeatureData(i)) Then
-							'Invalid_string_refer_to_original_code
-							'Invalid_string_refer_to_original_code
+							'アイテム自身により必要技能に指定された能力が封印されていた場合は
+							'必要技能を満たしていると判定させるため、チェックする必要がある。
 							
 							For j = 1 To .CountItem
 								If Me Is .Item(j) Then
@@ -294,7 +288,7 @@ Friend Class Item
 								End If
 							Next 
 							If j > .CountItem Then
-								'Invalid_string_refer_to_original_code
+								'既に装備しているのでなければ装備しない
 								IsAvailable = False
 								Exit Function
 							End If
@@ -305,22 +299,22 @@ Friend Class Item
 								sname = FeatureData(i)
 							End If
 							
-							'Invalid_string_refer_to_original_code
-							If Right(sname, 2) = "Invalid_string_refer_to_original_code" Then
+							'必要技能が「～装備」？
+							If Right(sname, 2) = "装備" Then
 								If Left(sname, Len(sname) - 2) = Name Or Left(sname, Len(sname) - 2) = Class0 Then
 									GoTo NextLoop
 								End If
 							End If
 							
-							'Invalid_string_refer_to_original_code
+							'封印する能力が必要技能になっている？
 							For j = 1 To CountFeature
 								Select Case Feature(j)
-									Case "Invalid_string_refer_to_original_code", "Invalid_string_refer_to_original_code"
+									Case "パイロット能力付加", "パイロット能力強化"
 									Case Else
 										GoTo NextLoop1
 								End Select
 								
-								'蟆∝魂縺吶ｋ閭ｽ蜉帛錐
+								'封印する能力名
 								fdata = FeatureData(j)
 								If Left(fdata, 1) = """" Then
 									fdata = Mid(fdata, 2, Len(fdata) - 2)
@@ -329,7 +323,7 @@ Friend Class Item
 									fdata = Left(fdata, InStr(fdata, "=") - 1)
 								End If
 								
-								'Invalid_string_refer_to_original_code
+								'必要技能と封印する能力が一致している？
 								If fdata = sname Then
 									GoTo NextLoop
 								End If
@@ -349,14 +343,14 @@ Friend Class Item
 NextLoop1: 
 							Next 
 							
-							'Invalid_string_refer_to_original_code
+							'必要技能が満たされていなかった
 							IsAvailable = False
 							Exit Function
 						End If
-					Case "Invalid_string_refer_to_original_code"
+					Case "不必要技能"
 						If .IsNecessarySkillSatisfied(FeatureData(i)) Then
-							'Invalid_string_refer_to_original_code
-							'Invalid_string_refer_to_original_code
+							'アイテム自身により不必要技能が満たされている場合は不必要技能を
+							'無視させるため、チェックする必要がある。
 							
 							For j = 1 To .CountItem
 								If Me Is .Item(j) Then
@@ -364,7 +358,7 @@ NextLoop1:
 								End If
 							Next 
 							If j > .CountItem Then
-								'Invalid_string_refer_to_original_code
+								'既に装備しているのでなければ装備しない
 								IsAvailable = False
 								Exit Function
 							End If
@@ -375,22 +369,22 @@ NextLoop1:
 								sname = FeatureData(i)
 							End If
 							
-							'Invalid_string_refer_to_original_code
-							If Right(sname, 2) = "Invalid_string_refer_to_original_code" Then
+							'不必要技能が「～装備」？
+							If Right(sname, 2) = "装備" Then
 								If Left(sname, Len(sname) - 2) = Name Or Left(sname, Len(sname) - 2) = Class0 Then
 									GoTo NextLoop
 								End If
 							End If
 							
-							'Invalid_string_refer_to_original_code
+							'付加する能力が不必要技能になっている？
 							For j = 1 To CountFeature
 								Select Case Feature(j)
-									Case "Invalid_string_refer_to_original_code", "Invalid_string_refer_to_original_code"
+									Case "パイロット能力付加", "パイロット能力強化"
 									Case Else
 										GoTo NextLoop2
 								End Select
 								
-								'莉伜刈縺吶ｋ閭ｽ蜉帛錐
+								'付加する能力名
 								fdata = FeatureData(j)
 								If Left(fdata, 1) = """" Then
 									fdata = Mid(fdata, 2, Len(fdata) - 2)
@@ -399,7 +393,7 @@ NextLoop1:
 									fdata = Left(fdata, InStr(fdata, "=") - 1)
 								End If
 								
-								'Invalid_string_refer_to_original_code
+								'必要技能と付加する能力が一致している？
 								If fdata = sname Then
 									GoTo NextLoop
 								End If
@@ -419,7 +413,7 @@ NextLoop1:
 NextLoop2: 
 							Next 
 							
-							'Invalid_string_refer_to_original_code
+							'不必要技能が満たされていた
 							IsAvailable = False
 							Exit Function
 						End If
@@ -430,7 +424,7 @@ NextLoop:
 	End Function
 	
 	
-	'Invalid_string_refer_to_original_code
+	'一時中断用データをファイルにセーブする
 	Public Sub Dump()
 		WriteLine(SaveDataFileNumber, Name, ID, Exist)
 		If Unit_Renamed Is Nothing Then
@@ -440,7 +434,7 @@ NextLoop:
 		End If
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'一時中断用データをファイルからロードする
 	Public Sub Restore()
 		Dim sbuf As String
 		Dim bbuf As Boolean
@@ -457,7 +451,7 @@ NextLoop:
 		sbuf = LineInput(SaveDataFileNumber)
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'一時中断用データのリンク情報をファイルからロードする
 	Public Sub RestoreLinkInfo()
 		Dim sbuf As String
 		
@@ -471,7 +465,7 @@ NextLoop:
 		End If
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	''一時中断用データのパラメータ情報をファイルからロードする
 	Public Sub RestoreParameter()
 		Dim sbuf As String
 		

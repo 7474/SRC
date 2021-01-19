@@ -2,13 +2,13 @@ Attribute VB_Name = "FileDialog"
 Option Explicit
 
 ' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-' Ф°╛Ц┐≈Ц┐╜Ц┌╟Ц┐╘Ц┐═Ц│╞Ц┐∙Ц┐╙Ц┐╪Ц┌╫Ц┐∙Ц┐┬Ц│╖Ц│┌Ц┌┼Ц─│Г└║Д©²Х╗╪Ц│╖Ц│≥Ц─┌
-' Ф°╛Ц┐≈Ц┐╜Ц┌╟Ц┐╘Ц┐═Ц│╞GNU General Public License(Ver.3Ц│╬Ц│÷Ц│╞Ц│²Ц┌▄Д╩╔И≥█)Ц│▄Е╝ Ц┌│Ц┌▀Ф²║Д╩╤Ц│╝Д╦▀Ц│╖
-' Е├█И═▓Е╦┐Ц│╬Ц│÷Ц│╞Ф■╧Е╓┴Ц│≥Ц┌▀Ц│⌠Ц│╗Ц│▄Ц│╖Ц│█Ц│╬Ц│≥Ц─┌
+' √{┐v┐█┐O┐┴┐─┌м┐t┐┼│[┐\┐t┐g┌е┌═┌Х│A√Ё∙ш▐ь┌е┌╥│B
+' √{┐v┐█┐O┐┴┐─┌мGNU General Public License(Ver.3┌э┌╫┌м┌╩┌Й┬х█~)┌╙▓Х┌ъ┌И▐П▄▐┌л┴╨┌е
+' █д■п∙z┌э┌╫┌м┴Э∙о┌╥┌И┌╠┌ф┌╙┌е┌╚┌э┌╥│B
 
-'APIЦ│═Ц│▒Ц│╖Ц┐∙Ц┌║Ц┌╓Ц┐╚Ц┐─Ц┌╓Ц┌╒Ц┐╜Ц┌╟Ц┌▓Е╝÷Г▐╬Ц│≥Ц┌▀Ц│÷Ц┌│Ц│╝Ц┐╒Ц┌╦Ц┐╔Ц┐╪Ц┐╚
+'API┌╬┌╞┌е┐t┐@┐C┐▀┐_┐C┐A┐█┐O┌П▌ю▄╩┌╥┌И┌╫┌ъ┌л┐┌┐W┐┘│[┐▀
 
-' OPENFILENAMEФ╖▀И─═Д╫⌠
+' OPENFILENAME█\▒╒▒л
 Private Type OPENFILENAME
     lStructSize         As Long
     hwndOwner           As Long
@@ -32,15 +32,15 @@ Private Type OPENFILENAME
     lpTemplateName      As String
 End Type
 
-'Ц─▄Ц┐∙Ц┌║Ц┌╓Ц┐╚Ц┌▓И√▀Ц│▐Ц─█Ц│╝Ц┐─Ц┌╓Ц┌╒Ц┐╜Ц┌╟Ц┌▓Д╫°Ф┬░
+'│u┐t┐@┐C┐▀┌П┼J┌╜│v┌л┐_┐C┐A┐█┐O┌П█Л░╛
 Private Declare Function GetOpenFileName Lib "comdlg32.dll" Alias "GetOpenFileNameA" _
     (f As OPENFILENAME) As Long
 
-'Ц─▄Ц┐∙Ц┌║Ц┌╓Ц┐╚Ц┌▓Д©²Е╜≤Ц─█Ц│╝Ц┐─Ц┌╓Ц┌╒Ц┐╜Ц┌╟Ц┌▓Д╫°Ф┬░
+'│u┐t┐@┐C┐▀┌П∙ш▒╤│v┌л┐_┐C┐A┐█┐O┌П█Л░╛
 Private Declare Function GetSaveFileName Lib "comdlg32.dll" Alias "GetSaveFileNameA" _
     (f As OPENFILENAME) As Long
 
-'Ц┐∙Ц┌║Ц┌╓Ц┐╚Ц┐╜Ц┐╪Ц┐┴Г■╗Ц│╝Ц┐─Ц┌╓Ц┌╒Ц┐╜Ц┌╟Ц┌▓Х║╗Г╓╨Ц│≥Ц┌▀Ц│÷Ц┌│Ц│╝И√╒Ф∙╟
+'┐t┐@┐C┐▀┐█│[┐h≈p┌л┐_┐C┐A┐█┐O┌П∙\▌╕┌╥┌И┌╫┌ъ┌л┼ж░■
 Public Function LoadFileDialog(dtitle As String, _
     fpath As String, default_file As String, _
     ByVal default_filter As Integer, _
@@ -54,23 +54,23 @@ Dim ret As Long
     fname = default_file & String$(1024 - Len(default_file), vbNullChar)
     ftitle = Space$(1024)
     
-    ' OPENFILENAMEФ╖▀И─═Д╫⌠Ц│╝Е┬²Ф°÷Е▄√
+    ' OPENFILENAME█\▒╒▒л┌л▐┴┼З┴╩
     With f
         .hwndOwner = MainForm.hwnd
         If ftype3 <> "" Then
             .lpstrFilter = _
-                "Ц│≥Ц│╧Ц│╕Ц│╝О╬▄О╫╖О╫╡О╬≥ (*.*)" & vbNullChar & "*.*" & vbNullChar _
+                "┌╥┌в┌д┌лл╖╡ы (*.*)" & vbNullChar & "*.*" & vbNullChar _
                 & ftype & " (*." & fsuffix & ")" & vbNullChar & "*." & fsuffix & vbNullChar _
                 & ftype2 & " (*." & fsuffix2 & ")" & vbNullChar & "*." & fsuffix2 & vbNullChar _
                 & ftype3 & " (*." & fsuffix3 & ")" & vbNullChar & "*." & fsuffix3 & vbNullChar
         ElseIf ftype2 <> "" Then
             .lpstrFilter = _
-                "Ц│≥Ц│╧Ц│╕Ц│╝О╬▄О╫╖О╫╡О╬≥ (*.*)" & vbNullChar & "*.*" & vbNullChar _
+                "┌╥┌в┌д┌лл╖╡ы (*.*)" & vbNullChar & "*.*" & vbNullChar _
                 & ftype & " (*." & fsuffix & ")" & vbNullChar & "*." & fsuffix & vbNullChar _
                 & ftype2 & " (*." & fsuffix2 & ")" & vbNullChar & "*." & fsuffix2 & vbNullChar
         Else
             .lpstrFilter = _
-                "Ц│≥Ц│╧Ц│╕Ц│╝О╬▄О╫╖О╫╡О╬≥ (*.*)" & vbNullChar & "*.*" & vbNullChar _
+                "┌╥┌в┌д┌лл╖╡ы (*.*)" & vbNullChar & "*.*" & vbNullChar _
                 & ftype & " (*." & fsuffix & ")" & vbNullChar & "*." & fsuffix & vbNullChar
         End If
         .iFilterIndex = default_filter
@@ -89,17 +89,17 @@ Dim ret As Long
     
     Select Case ret
         Case 0
-            'Ц┌╜Ц┐ёЦ┐ЁЦ┌╩Ц┐╚Ц│∙Ц┌▄Ц│÷
+            '┐L┐┐┐⌠┐Z┐▀┌Ё┌Й┌╫
             LoadFileDialog = ""
         Case 1
-            'Ц┐∙Ц┌║Ц┌╓Ц┐╚Ц┌▓И│╦Ф┼·
+            '┐t┐@┐C┐▀┌П▒I▒П
             LoadFileDialog = f.lpstrFile
-            ' vbNullChar Ц│╬Ц│╖Ц│╖Е┬┤Ц┌┼Е┤╨Ц│≥Ц─┌
+            ' vbNullChar ┌э┌е┌е░ь┌Х▐o┌╥│B
             LoadFileDialog = Left$(LoadFileDialog, InStr(LoadFileDialog, vbNullChar) - 1)
     End Select
 End Function
 
-'Ц┐∙Ц┌║Ц┌╓Ц┐╚Ц┌╩Ц┐╪Ц┐√Г■╗Ц│╝Ц┐─Ц┌╓Ц┌╒Ц┐╜Ц┌╟Ц┌▓Х║╗Г╓╨Ц│≥Ц┌▀Ц│÷Ц┌│Ц│╝И√╒Ф∙╟
+'┐t┐@┐C┐▀┐Z│[┐u≈p┌л┐_┐C┐A┐█┐O┌П∙\▌╕┌╥┌И┌╫┌ъ┌л┼ж░■
 Public Function SaveFileDialog(dtitle As String, _
     fpath As String, default_file As String, _
     ByVal default_filter As Integer, _
@@ -113,23 +113,23 @@ Dim ret As Long
     fname = default_file & String$(1024 - Len(default_file), vbNullChar)
     ftitle = Space$(1024)
     
-    ' OPENFILENAMEФ╖▀И─═Д╫⌠Ц│╝Е┬²Ф°÷Е▄√
+    ' OPENFILENAME█\▒╒▒л┌л▐┴┼З┴╩
     With f
         .hwndOwner = MainForm.hwnd
         If ftype3 <> "" Then
             .lpstrFilter = _
-                "Ц│≥Ц│╧Ц│╕Ц│╝О╬▄О╫╖О╫╡О╬≥ (*.*)" & vbNullChar & "*.*" & vbNullChar _
+                "┌╥┌в┌д┌лл╖╡ы (*.*)" & vbNullChar & "*.*" & vbNullChar _
                 & ftype & " (*." & fsuffix & ")" & vbNullChar & "*." & fsuffix & vbNullChar _
                 & ftype2 & " (*." & fsuffix2 & ")" & vbNullChar & "*." & fsuffix2 & vbNullChar _
                 & ftype3 & " (*." & fsuffix3 & ")" & vbNullChar & "*." & fsuffix2 & vbNullChar
         ElseIf ftype2 <> "" Then
             .lpstrFilter = _
-                "Ц│≥Ц│╧Ц│╕Ц│╝О╬▄О╫╖О╫╡О╬≥ (*.*)" & vbNullChar & "*.*" & vbNullChar _
+                "┌╥┌в┌д┌лл╖╡ы (*.*)" & vbNullChar & "*.*" & vbNullChar _
                 & ftype & " (*." & fsuffix & ")" & vbNullChar & "*." & fsuffix & vbNullChar _
                 & ftype2 & " (*." & fsuffix2 & ")" & vbNullChar & "*." & fsuffix2 & vbNullChar
         Else
             .lpstrFilter = _
-                "Ц│≥Ц│╧Ц│╕Ц│╝О╬▄О╫╖О╫╡О╬≥ (*.*)" & vbNullChar & "*.*" & vbNullChar _
+                "┌╥┌в┌д┌лл╖╡ы (*.*)" & vbNullChar & "*.*" & vbNullChar _
                 & ftype & " (*." & fsuffix & ")" & vbNullChar & "*." & fsuffix & vbNullChar
         End If
         .iFilterIndex = default_filter
@@ -148,12 +148,12 @@ Dim ret As Long
     
     Select Case ret
         Case 0
-            'Ц┌╜Ц┐ёЦ┐ЁЦ┌╩Ц┐╚Ц│∙Ц┌▄Ц│÷
+            '┐L┐┐┐⌠┐Z┐▀┌Ё┌Й┌╫
             SaveFileDialog = ""
         Case 1
-            'Ц┐∙Ц┌║Ц┌╓Ц┐╚Ц┌▓И│╦Ф┼·
+            '┐t┐@┐C┐▀┌П▒I▒П
             SaveFileDialog = f.lpstrFile
-            ' vbNullChar Ц│╬Ц│╖Ц│╖Е┬┤Ц┌┼Е┤╨Ц│≥Ц─┌
+            ' vbNullChar ┌э┌е┌е░ь┌Х▐o┌╥│B
             SaveFileDialog = Left$(SaveFileDialog, InStr(SaveFileDialog, vbNullChar) - 1)
     End Select
 End Function

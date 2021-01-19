@@ -2,23 +2,23 @@ Attribute VB_Name = "InterMission"
 Option Explicit
 
 ' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯ãƒ•ãƒªãƒ¼ã‚½ãƒ•ãƒˆã§ã‚ã‚Šã€ç„¡ä¿è¨¼ã§ã™ã€‚
-' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯GNU General Public License(Ver.3ã¾ãŸã¯ãã‚Œä»¥é™)ãŒå®šã‚ã‚‹æ¡ä»¶ã®ä¸‹ã§
-' å†é ’å¸ƒã¾ãŸã¯æ”¹å¤‰ã™ã‚‹ã“ã¨ãŒã§ãã¾ã™ã€‚
+' –{ƒvƒƒOƒ‰ƒ€‚ÍƒtƒŠ[ƒ\ƒtƒg‚Å‚ ‚èA–³•ÛØ‚Å‚·B
+' –{ƒvƒƒOƒ‰ƒ€‚ÍGNU General Public License(Ver.3‚Ü‚½‚Í‚»‚êˆÈ~)‚ª’è‚ß‚éğŒ‚Ì‰º‚Å
+' Ä”Ğ•z‚Ü‚½‚Í‰ü•Ï‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B
 
-'ã‚¤ãƒ³ã‚¿ãƒ¼ãƒŸãƒƒã‚·ãƒ§ãƒ³ã«é–¢ã™ã‚‹å‡¦ç†ã‚’è¡Œã†ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«
+'ƒCƒ“ƒ^[ƒ~ƒbƒVƒ‡ƒ“‚ÉŠÖ‚·‚éˆ—‚ğs‚¤ƒ‚ƒWƒ…[ƒ‹
 
-'ã‚¤ãƒ³ã‚¿ãƒ¼ãƒŸãƒƒã‚·ãƒ§ãƒ³
+'ƒCƒ“ƒ^[ƒ~ƒbƒVƒ‡ƒ“
 Public Sub InterMissionCommand(Optional ByVal skip_update As Boolean)
 Dim cmd_list() As String, name_list() As String
 Dim i As Integer, j As Integer, ret As Integer, buf As String
 Dim u As Unit, var As VarData
 Dim fname As String, save_path As String
 
-    Stage = "ã‚¤ãƒ³ã‚¿ãƒ¼ãƒŸãƒƒã‚·ãƒ§ãƒ³"
+    Stage = "ƒCƒ“ƒ^[ƒ~ƒbƒVƒ‡ƒ“"
     IsSubStage = False
     
-    'ï¼¢ï¼§ï¼­ã‚’å¤‰æ›´
+    '‚a‚f‚l‚ğ•ÏX
     KeepBGM = False
     BossBGM = False
     If InStr(BGMFileName, "\" & BGMName("Intermission")) = 0 Then
@@ -26,14 +26,14 @@ Dim fname As String, save_path As String
         StartBGM BGMName("Intermission")
     End If
     
-    'ãƒãƒƒãƒ—ã‚’ã‚¯ãƒªã‚¢
+    'ƒ}ƒbƒv‚ğƒNƒŠƒA
     For i = 1 To MapWidth
         For j = 1 To MapHeight
             Set MapDataForUnit(i, j) = Nothing
         Next
     Next
     
-    'å„ç¨®ãƒ‡ãƒ¼ã‚¿ã‚’ã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ãƒˆ
+    'Šeíƒf[ƒ^‚ğƒAƒbƒvƒf[ƒg
     If Not skip_update Then
         UList.Update
         PList.Update
@@ -42,46 +42,46 @@ Dim fname As String, save_path As String
     ClearEventData
     ClearMap
     
-    'é¸æŠç”¨ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã‚’æ‹¡å¤§
+    '‘I‘ğ—pƒ_ƒCƒAƒƒO‚ğŠg‘å
     EnlargeListBoxHeight
     
     Do While True
-        'åˆ©ç”¨å¯èƒ½ãªã‚¤ãƒ³ã‚¿ãƒ¼ãƒŸãƒƒã‚·ãƒ§ãƒ³ã‚³ãƒãƒ³ãƒ‰ã‚’é¸æŠ
+        '—˜—p‰Â”\‚ÈƒCƒ“ƒ^[ƒ~ƒbƒVƒ‡ƒ“ƒRƒ}ƒ“ƒh‚ğ‘I‘ğ
         
         ReDim cmd_list(0)
         ReDim ListItemFlag(0)
         ReDim ListItemID(0)
-        cmd_list(0) = "ã‚­ãƒ£ãƒ³ã‚»ãƒ«"
+        cmd_list(0) = "ƒLƒƒƒ“ƒZƒ‹"
         
-        'ã€Œæ¬¡ã®ã‚¹ãƒ†ãƒ¼ã‚¸ã¸ã€ã‚³ãƒãƒ³ãƒ‰
-        If GetValueAsString("æ¬¡ã‚¹ãƒ†ãƒ¼ã‚¸") <> "" Then
+        'uŸ‚ÌƒXƒe[ƒW‚ÖvƒRƒ}ƒ“ƒh
+        If GetValueAsString("ŸƒXƒe[ƒW") <> "" Then
             ReDim Preserve cmd_list(UBound(cmd_list) + 1)
             ReDim Preserve ListItemFlag(UBound(cmd_list))
-            cmd_list(UBound(cmd_list)) = "æ¬¡ã®ã‚¹ãƒ†ãƒ¼ã‚¸ã¸"
+            cmd_list(UBound(cmd_list)) = "Ÿ‚ÌƒXƒe[ƒW‚Ö"
         End If
         
-        'ãƒ‡ãƒ¼ã‚¿ã‚»ãƒ¼ãƒ–ã‚³ãƒãƒ³ãƒ‰
-        If Not IsOptionDefined("ãƒ‡ãƒ¼ã‚¿ã‚»ãƒ¼ãƒ–ä¸å¯") _
-            Or IsOptionDefined("ãƒ‡ãƒãƒƒã‚°") _
+        'ƒf[ƒ^ƒZ[ƒuƒRƒ}ƒ“ƒh
+        If Not IsOptionDefined("ƒf[ƒ^ƒZ[ƒu•s‰Â") _
+            Or IsOptionDefined("ƒfƒoƒbƒO") _
         Then
             ReDim Preserve cmd_list(UBound(cmd_list) + 1)
             ReDim Preserve ListItemFlag(UBound(cmd_list))
-            cmd_list(UBound(cmd_list)) = "ãƒ‡ãƒ¼ã‚¿ã‚»ãƒ¼ãƒ–"
+            cmd_list(UBound(cmd_list)) = "ƒf[ƒ^ƒZ[ƒu"
         End If
         
-        'æ©Ÿä½“æ”¹é€ ã‚³ãƒãƒ³ãƒ‰
-        If Not IsOptionDefined("æ”¹é€ ä¸å¯") Then
+        '‹@‘Ì‰ü‘¢ƒRƒ}ƒ“ƒh
+        If Not IsOptionDefined("‰ü‘¢•s‰Â") Then
             ReDim Preserve cmd_list(UBound(cmd_list) + 1)
             ReDim Preserve ListItemFlag(UBound(cmd_list))
-            If IsOptionDefined("ç­‰èº«å¤§åŸºæº–") Then
-                cmd_list(UBound(cmd_list)) = "ãƒ¦ãƒ‹ãƒƒãƒˆã®å¼·åŒ–"
+            If IsOptionDefined("“™g‘åŠî€") Then
+                cmd_list(UBound(cmd_list)) = "ƒ†ƒjƒbƒg‚Ì‹­‰»"
             Else
-                cmd_list(UBound(cmd_list)) = "æ©Ÿä½“æ”¹é€ "
+                cmd_list(UBound(cmd_list)) = "‹@‘Ì‰ü‘¢"
                 For Each u In UList
                     With u
-                        If .Party0 = "å‘³æ–¹" And .Status = "å¾…æ©Ÿ" Then
+                        If .Party0 = "–¡•û" And .Status = "‘Ò‹@" Then
                             If Left$(.Class, 1) = "(" Then
-                                cmd_list(UBound(cmd_list)) = "ãƒ¦ãƒ‹ãƒƒãƒˆã®å¼·åŒ–"
+                                cmd_list(UBound(cmd_list)) = "ƒ†ƒjƒbƒg‚Ì‹­‰»"
                                 Exit For
                             End If
                         End If
@@ -90,34 +90,34 @@ Dim fname As String, save_path As String
             End If
         End If
         
-        'ä¹—ã‚Šæ›ãˆã‚³ãƒãƒ³ãƒ‰
-        If IsOptionDefined("ä¹—ã‚Šæ›ãˆ") Then
+        'æ‚èŠ·‚¦ƒRƒ}ƒ“ƒh
+        If IsOptionDefined("æ‚èŠ·‚¦") Then
             ReDim Preserve cmd_list(UBound(cmd_list) + 1)
             ReDim Preserve ListItemFlag(UBound(cmd_list))
-            cmd_list(UBound(cmd_list)) = "ä¹—ã‚Šæ›ãˆ"
+            cmd_list(UBound(cmd_list)) = "æ‚èŠ·‚¦"
         End If
         
-        'ã‚¢ã‚¤ãƒ†ãƒ äº¤æ›ã‚³ãƒãƒ³ãƒ‰
-        If IsOptionDefined("ã‚¢ã‚¤ãƒ†ãƒ äº¤æ›") Then
+        'ƒAƒCƒeƒ€ŒğŠ·ƒRƒ}ƒ“ƒh
+        If IsOptionDefined("ƒAƒCƒeƒ€ŒğŠ·") Then
             ReDim Preserve cmd_list(UBound(cmd_list) + 1)
             ReDim Preserve ListItemFlag(UBound(cmd_list))
-            cmd_list(UBound(cmd_list)) = "ã‚¢ã‚¤ãƒ†ãƒ äº¤æ›"
+            cmd_list(UBound(cmd_list)) = "ƒAƒCƒeƒ€ŒğŠ·"
         End If
         
-        'æ›è£…ã‚³ãƒãƒ³ãƒ‰
+        'Š·‘•ƒRƒ}ƒ“ƒh
         For Each u In UList
             With u
-                If .Party0 = "å‘³æ–¹" And .Status = "å¾…æ©Ÿ" Then
-                    If .IsFeatureAvailable("æ›è£…") Then
-                        For i = 1 To LLength(.FeatureData("æ›è£…"))
-                            If .OtherForm(LIndex(.FeatureData("æ›è£…"), i)).IsAvailable Then
+                If .Party0 = "–¡•û" And .Status = "‘Ò‹@" Then
+                    If .IsFeatureAvailable("Š·‘•") Then
+                        For i = 1 To LLength(.FeatureData("Š·‘•"))
+                            If .OtherForm(LIndex(.FeatureData("Š·‘•"), i)).IsAvailable Then
                                 Exit For
                             End If
                         Next
-                        If i <= LLength(.FeatureData("æ›è£…")) Then
+                        If i <= LLength(.FeatureData("Š·‘•")) Then
                             ReDim Preserve cmd_list(UBound(cmd_list) + 1)
                             ReDim Preserve ListItemFlag(UBound(cmd_list))
-                            cmd_list(UBound(cmd_list)) = "æ›è£…"
+                            cmd_list(UBound(cmd_list)) = "Š·‘•"
                             Exit For
                         End If
                     End If
@@ -125,19 +125,19 @@ Dim fname As String, save_path As String
             End With
         Next
         
-        'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚³ãƒãƒ³ãƒ‰
-        If Not IsOptionDefined("ç­‰èº«å¤§åŸºæº–") Then
+        'ƒpƒCƒƒbƒgƒXƒe[ƒ^ƒXƒRƒ}ƒ“ƒh
+        If Not IsOptionDefined("“™g‘åŠî€") Then
             ReDim Preserve cmd_list(UBound(cmd_list) + 1)
             ReDim Preserve ListItemFlag(UBound(cmd_list))
-            cmd_list(UBound(cmd_list)) = "ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹"
+            cmd_list(UBound(cmd_list)) = "ƒpƒCƒƒbƒgƒXƒe[ƒ^ƒX"
         End If
         
-        'ãƒ¦ãƒ‹ãƒƒãƒˆã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚³ãƒãƒ³ãƒ‰
+        'ƒ†ƒjƒbƒgƒXƒe[ƒ^ƒXƒRƒ}ƒ“ƒh
         ReDim Preserve cmd_list(UBound(cmd_list) + 1)
         ReDim Preserve ListItemFlag(UBound(cmd_list))
-        cmd_list(UBound(cmd_list)) = "ãƒ¦ãƒ‹ãƒƒãƒˆã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹"
+        cmd_list(UBound(cmd_list)) = "ƒ†ƒjƒbƒgƒXƒe[ƒ^ƒX"
         
-        'ãƒ¦ãƒ¼ã‚¶ãƒ¼å®šç¾©ã®ã‚¤ãƒ³ã‚¿ãƒ¼ãƒŸãƒƒã‚·ãƒ§ãƒ³ã‚³ãƒãƒ³ãƒ‰
+        'ƒ†[ƒU[’è‹`‚ÌƒCƒ“ƒ^[ƒ~ƒbƒVƒ‡ƒ“ƒRƒ}ƒ“ƒh
         For Each var In GlobalVariableList
             If InStr(var.Name, "IntermissionCommand(") = 1 Then
                 ret = Len("IntermissionCommand(")
@@ -152,12 +152,12 @@ Dim fname As String, save_path As String
             End If
         Next
         
-        'çµ‚äº†ã‚³ãƒãƒ³ãƒ‰
+        'I—¹ƒRƒ}ƒ“ƒh
         ReDim Preserve cmd_list(UBound(cmd_list) + 1)
         ReDim Preserve ListItemFlag(UBound(cmd_list))
-        cmd_list(UBound(cmd_list)) = "SRCã‚’çµ‚äº†"
+        cmd_list(UBound(cmd_list)) = "SRC‚ğI—¹"
         
-        'ã‚¤ãƒ³ã‚¿ãƒ¼ãƒŸãƒƒã‚·ãƒ§ãƒ³ã®ã‚³ãƒãƒ³ãƒ‰åç§°ã«ã‚¨ãƒªã‚¢ã‚¹ã‚’é©ç”¨
+        'ƒCƒ“ƒ^[ƒ~ƒbƒVƒ‡ƒ“‚ÌƒRƒ}ƒ“ƒh–¼Ì‚ÉƒGƒŠƒAƒX‚ğ“K—p
         ReDim name_list(UBound(cmd_list))
         For i = 1 To UBound(name_list)
             name_list(i) = cmd_list(i)
@@ -173,20 +173,20 @@ Dim fname As String, save_path As String
             End With
         Next
         
-        'ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã«ã‚ˆã‚‹ã‚³ãƒãƒ³ãƒ‰é¸æŠ
+        'ƒvƒŒƒCƒ„[‚É‚æ‚éƒRƒ}ƒ“ƒh‘I‘ğ
         TopItem = 1
-        ret = ListBox("ã‚¤ãƒ³ã‚¿ãƒ¼ãƒŸãƒƒã‚·ãƒ§ãƒ³ï¼š ç·ã‚¿ãƒ¼ãƒ³æ•°" _
-                & Format$(TotalTurn) & " " & Term("è³‡é‡‘") & Format$(Money), _
-            name_list, "ã‚³ãƒãƒ³ãƒ‰", "é€£ç¶šè¡¨ç¤º")
+        ret = ListBox("ƒCƒ“ƒ^[ƒ~ƒbƒVƒ‡ƒ“F ‘ƒ^[ƒ“”" _
+                & Format$(TotalTurn) & " " & Term("‘‹à") & Format$(Money), _
+            name_list, "ƒRƒ}ƒ“ƒh", "˜A‘±•\¦")
         
-        'é¸æŠã•ã‚ŒãŸã‚¤ãƒ³ã‚¿ãƒ¼ãƒŸãƒƒã‚·ãƒ§ãƒ³ã‚³ãƒãƒ³ãƒ‰ã‚’å®Ÿè¡Œ
+        '‘I‘ğ‚³‚ê‚½ƒCƒ“ƒ^[ƒ~ƒbƒVƒ‡ƒ“ƒRƒ}ƒ“ƒh‚ğÀs
         Select Case cmd_list(ret)
-            Case "æ¬¡ã®ã‚¹ãƒ†ãƒ¼ã‚¸ã¸"
-                If MsgBox("æ¬¡ã®ã‚¹ãƒ†ãƒ¼ã‚¸ã¸é€²ã¿ã¾ã™ã‹ï¼Ÿ", _
-                    vbOKCancel + vbQuestion, "æ¬¡ã‚¹ãƒ†ãƒ¼ã‚¸") = 1 _
+            Case "Ÿ‚ÌƒXƒe[ƒW‚Ö"
+                If MsgBox("Ÿ‚ÌƒXƒe[ƒW‚Öi‚İ‚Ü‚·‚©H", _
+                    vbOKCancel + vbQuestion, "ŸƒXƒe[ƒW") = 1 _
                 Then
                                     
-UList.Update 'è¿½åŠ ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‚’æ¶ˆå»
+UList.Update '’Ç‰ÁƒpƒCƒƒbƒg‚ğÁ‹
 
                     frmListBox.Hide
                     ReduceListBoxHeight
@@ -194,108 +194,108 @@ UList.Update 'è¿½åŠ ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‚’æ¶ˆå»
                     Exit Sub
                 End If
                 
-            Case "ãƒ‡ãƒ¼ã‚¿ã‚»ãƒ¼ãƒ–"
-                'ä¸€æ—¦ã€Œå¸¸ã«æ‰‹å‰ã«è¡¨ç¤ºã€ã‚’è§£é™¤
+            Case "ƒf[ƒ^ƒZ[ƒu"
+                'ˆê’Uuí‚Éè‘O‚É•\¦v‚ğ‰ğœ
                 If frmListBox.Visible Then
                     ret = SetWindowPos(frmListBox.hwnd, -2, 0, 0, 0, 0, &H3)
                 End If
                 
-                fname = SaveFileDialog("ãƒ‡ãƒ¼ã‚¿ã‚»ãƒ¼ãƒ–", _
-                    ScenarioPath, GetValueAsString("ã‚»ãƒ¼ãƒ–ãƒ‡ãƒ¼ã‚¿ãƒ•ã‚¡ã‚¤ãƒ«å"), _
-                    2, "ï½¾ï½°ï¾Œï¾ï¾ƒï¾ï½°ï¾€", "src")
+                fname = SaveFileDialog("ƒf[ƒ^ƒZ[ƒu", _
+                    ScenarioPath, GetValueAsString("ƒZ[ƒuƒf[ƒ^ƒtƒ@ƒCƒ‹–¼"), _
+                    2, "¾°ÌŞÃŞ°À", "src")
                 
-                'å†ã³ã€Œå¸¸ã«æ‰‹å‰ã«è¡¨ç¤ºã€
+                'Ä‚Ñuí‚Éè‘O‚É•\¦v
                 If frmListBox.Visible Then
                     ret = SetWindowPos(frmListBox.hwnd, -1, 0, 0, 0, 0, &H3)
                 End If
                 
-                'ã‚­ãƒ£ãƒ³ã‚»ãƒ«ï¼Ÿ
+                'ƒLƒƒƒ“ƒZƒ‹H
                 If fname = "" Then
                     GoTo NextLoop
                 End If
                 
-                'ã‚»ãƒ¼ãƒ–å…ˆã¯ã‚·ãƒŠãƒªã‚ªãƒ•ã‚©ãƒ«ãƒ€ï¼Ÿ
+                'ƒZ[ƒuæ‚ÍƒVƒiƒŠƒIƒtƒHƒ‹ƒ_H
                 If InStr(fname, "\") > 0 Then
                     save_path = Left$(fname, InStr2(fname, "\"))
                 End If
                 If Dir$(save_path) <> Dir$(ScenarioPath) Then
-                    If MsgBox("ã‚»ãƒ¼ãƒ–ãƒ•ã‚¡ã‚¤ãƒ«ã¯ã‚·ãƒŠãƒªã‚ªãƒ•ã‚©ãƒ«ãƒ€ã«ãªã„ã¨èª­ã¿è¾¼ã‚ã¾ã›ã‚“ã€‚" & vbCr & vbLf _
-                            & "ã“ã®ã¾ã¾ã‚»ãƒ¼ãƒ–ã—ã¾ã™ã‹ï¼Ÿ", vbOKCancel + vbQuestion) <> 1 _
+                    If MsgBox("ƒZ[ƒuƒtƒ@ƒCƒ‹‚ÍƒVƒiƒŠƒIƒtƒHƒ‹ƒ_‚É‚È‚¢‚Æ“Ç‚İ‚ß‚Ü‚¹‚ñB" & vbCr & vbLf _
+                            & "‚±‚Ì‚Ü‚ÜƒZ[ƒu‚µ‚Ü‚·‚©H", vbOKCancel + vbQuestion) <> 1 _
                     Then
                         GoTo NextLoop
                     End If
                 End If
                 
                 If fname <> "" Then
-                    UList.Update 'è¿½åŠ ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‚’æ¶ˆå»
+                    UList.Update '’Ç‰ÁƒpƒCƒƒbƒg‚ğÁ‹
                     SaveData fname
                 End If
                 
-            Case "æ©Ÿä½“æ”¹é€ ", "ãƒ¦ãƒ‹ãƒƒãƒˆã®å¼·åŒ–"
+            Case "‹@‘Ì‰ü‘¢", "ƒ†ƒjƒbƒg‚Ì‹­‰»"
                 RankUpCommand
                 
-            Case "ä¹—ã‚Šæ›ãˆ"
+            Case "æ‚èŠ·‚¦"
                 ExchangeUnitCommand
                 
-            Case "ã‚¢ã‚¤ãƒ†ãƒ äº¤æ›"
+            Case "ƒAƒCƒeƒ€ŒğŠ·"
                 ExchangeItemCommand
                 
-            Case "æ›è£…"
+            Case "Š·‘•"
                 ExchangeFormCommand
                 
-            Case "SRCã‚’çµ‚äº†"
-                If MsgBox("SRCã‚’çµ‚äº†ã—ã¾ã™ã‹ï¼Ÿ", _
-                    vbOKCancel + vbQuestion, "çµ‚äº†") = 1 Then
+            Case "SRC‚ğI—¹"
+                If MsgBox("SRC‚ğI—¹‚µ‚Ü‚·‚©H", _
+                    vbOKCancel + vbQuestion, "I—¹") = 1 Then
                     frmListBox.Hide
                     ReduceListBoxHeight
                     ExitGame
                 End If
                 
-            Case "ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹"
+            Case "ƒpƒCƒƒbƒgƒXƒe[ƒ^ƒX"
                 frmListBox.Hide
                 ReduceListBoxHeight
                 IsSubStage = True
-                If FileExists(ScenarioPath & "Lib\ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹è¡¨ç¤º.eve") Then
-                    StartScenario ScenarioPath & "Lib\ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹è¡¨ç¤º.eve"
-                ElseIf FileExists(ExtDataPath & "Lib\ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹è¡¨ç¤º.eve") Then
-                    StartScenario ExtDataPath & "Lib\ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹è¡¨ç¤º.eve"
-                ElseIf FileExists(ExtDataPath2 & "Lib\ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹è¡¨ç¤º.eve") Then
-                    StartScenario ExtDataPath2 & "Lib\ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹è¡¨ç¤º.eve"
+                If FileExists(ScenarioPath & "Lib\ƒpƒCƒƒbƒgƒXƒe[ƒ^ƒX•\¦.eve") Then
+                    StartScenario ScenarioPath & "Lib\ƒpƒCƒƒbƒgƒXƒe[ƒ^ƒX•\¦.eve"
+                ElseIf FileExists(ExtDataPath & "Lib\ƒpƒCƒƒbƒgƒXƒe[ƒ^ƒX•\¦.eve") Then
+                    StartScenario ExtDataPath & "Lib\ƒpƒCƒƒbƒgƒXƒe[ƒ^ƒX•\¦.eve"
+                ElseIf FileExists(ExtDataPath2 & "Lib\ƒpƒCƒƒbƒgƒXƒe[ƒ^ƒX•\¦.eve") Then
+                    StartScenario ExtDataPath2 & "Lib\ƒpƒCƒƒbƒgƒXƒe[ƒ^ƒX•\¦.eve"
                 Else
-                    StartScenario AppPath & "Lib\ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹è¡¨ç¤º.eve"
+                    StartScenario AppPath & "Lib\ƒpƒCƒƒbƒgƒXƒe[ƒ^ƒX•\¦.eve"
                 End If
-                'ã‚µãƒ–ã‚¹ãƒ†ãƒ¼ã‚¸ã‚’é€šå¸¸ã®ã‚¹ãƒ†ãƒ¼ã‚¸ã¨ã—ã¦å®Ÿè¡Œ
+                'ƒTƒuƒXƒe[ƒW‚ğ’Êí‚ÌƒXƒe[ƒW‚Æ‚µ‚ÄÀs
                 IsSubStage = True
                 Exit Sub
                 
-            Case "ãƒ¦ãƒ‹ãƒƒãƒˆã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹"
+            Case "ƒ†ƒjƒbƒgƒXƒe[ƒ^ƒX"
                 frmListBox.Hide
                 ReduceListBoxHeight
                 IsSubStage = True
-                If FileExists(ScenarioPath & "Lib\ãƒ¦ãƒ‹ãƒƒãƒˆã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹è¡¨ç¤º.eve") Then
-                    StartScenario ScenarioPath & "Lib\ãƒ¦ãƒ‹ãƒƒãƒˆã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹è¡¨ç¤º.eve"
-                ElseIf FileExists(ExtDataPath & "Lib\ãƒ¦ãƒ‹ãƒƒãƒˆã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹è¡¨ç¤º.eve") Then
-                    StartScenario ExtDataPath & "Lib\ãƒ¦ãƒ‹ãƒƒãƒˆã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹è¡¨ç¤º.eve"
-                ElseIf FileExists(ExtDataPath2 & "Lib\ãƒ¦ãƒ‹ãƒƒãƒˆã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹è¡¨ç¤º.eve") Then
-                    StartScenario ExtDataPath2 & "Lib\ãƒ¦ãƒ‹ãƒƒãƒˆã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹è¡¨ç¤º.eve"
+                If FileExists(ScenarioPath & "Lib\ƒ†ƒjƒbƒgƒXƒe[ƒ^ƒX•\¦.eve") Then
+                    StartScenario ScenarioPath & "Lib\ƒ†ƒjƒbƒgƒXƒe[ƒ^ƒX•\¦.eve"
+                ElseIf FileExists(ExtDataPath & "Lib\ƒ†ƒjƒbƒgƒXƒe[ƒ^ƒX•\¦.eve") Then
+                    StartScenario ExtDataPath & "Lib\ƒ†ƒjƒbƒgƒXƒe[ƒ^ƒX•\¦.eve"
+                ElseIf FileExists(ExtDataPath2 & "Lib\ƒ†ƒjƒbƒgƒXƒe[ƒ^ƒX•\¦.eve") Then
+                    StartScenario ExtDataPath2 & "Lib\ƒ†ƒjƒbƒgƒXƒe[ƒ^ƒX•\¦.eve"
                 Else
-                    StartScenario AppPath & "Lib\ãƒ¦ãƒ‹ãƒƒãƒˆã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹è¡¨ç¤º.eve"
+                    StartScenario AppPath & "Lib\ƒ†ƒjƒbƒgƒXƒe[ƒ^ƒX•\¦.eve"
                 End If
-                'ã‚µãƒ–ã‚¹ãƒ†ãƒ¼ã‚¸ã‚’é€šå¸¸ã®ã‚¹ãƒ†ãƒ¼ã‚¸ã¨ã—ã¦å®Ÿè¡Œ
+                'ƒTƒuƒXƒe[ƒW‚ğ’Êí‚ÌƒXƒe[ƒW‚Æ‚µ‚ÄÀs
                 IsSubStage = True
                 Exit Sub
                 
-            Case "ã‚­ãƒ£ãƒ³ã‚»ãƒ«"
-                'ã‚­ãƒ£ãƒ³ã‚»ãƒ«
+            Case "ƒLƒƒƒ“ƒZƒ‹"
+                'ƒLƒƒƒ“ƒZƒ‹
                 
-            'ãƒ¦ãƒ¼ã‚¶ãƒ¼å®šç¾©ã®ã‚¤ãƒ³ã‚¿ãƒ¼ãƒŸãƒƒã‚·ãƒ§ãƒ³ã‚³ãƒãƒ³ãƒ‰
+            'ƒ†[ƒU[’è‹`‚ÌƒCƒ“ƒ^[ƒ~ƒbƒVƒ‡ƒ“ƒRƒ}ƒ“ƒh
             Case Else
                 frmListBox.Hide
                 ReduceListBoxHeight
                 IsSubStage = True
                 StartScenario GetValueAsString(ListItemID(ret))
                 If IsSubStage Then
-                    'ã‚¤ãƒ³ã‚¿ãƒ¼ãƒŸãƒƒã‚·ãƒ§ãƒ³ã‚’å†é–‹
+                    'ƒCƒ“ƒ^[ƒ~ƒbƒVƒ‡ƒ“‚ğÄŠJ
                     KeepBGM = False
                     BossBGM = False
                     ChangeBGM BGMName("Intermission")
@@ -309,7 +309,7 @@ UList.Update 'è¿½åŠ ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‚’æ¶ˆå»
                     IsSubStage = False
                     EnlargeListBoxHeight
                 Else
-                    'ã‚µãƒ–ã‚¹ãƒ†ãƒ¼ã‚¸ã‚’é€šå¸¸ã®ã‚¹ãƒ†ãƒ¼ã‚¸ã¨ã—ã¦å®Ÿè¡Œ
+                    'ƒTƒuƒXƒe[ƒW‚ğ’Êí‚ÌƒXƒe[ƒW‚Æ‚µ‚ÄÀs
                     IsSubStage = True
                     Exit Sub
                 End If
@@ -318,7 +318,7 @@ NextLoop:
     Loop
 End Sub
 
-'æ©Ÿä½“æ”¹é€ ã‚³ãƒãƒ³ãƒ‰
+'‹@‘Ì‰ü‘¢ƒRƒ}ƒ“ƒh
 Public Sub RankUpCommand()
 Dim i As Integer, j As Integer, k As Integer, urank As Integer
 Dim list() As String, id_list() As String
@@ -333,39 +333,39 @@ Dim name_width As Integer
     
     TopItem = 1
     
-    'ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®ã‚½ãƒ¼ãƒˆæ–¹æ³•
-    If IsOptionDefined("ç­‰èº«å¤§åŸºæº–") Then
-        sort_mode = "ãƒ¬ãƒ™ãƒ«"
+    'ƒfƒtƒHƒ‹ƒg‚Ìƒ\[ƒg•û–@
+    If IsOptionDefined("“™g‘åŠî€") Then
+        sort_mode = "ƒŒƒxƒ‹"
     Else
-        sort_mode = "ï¼¨ï¼°"
+        sort_mode = "‚g‚o"
     End If
     
-    'æœ€å¤§æ”¹é€ æ•°ãŒãƒ¦ãƒ‹ãƒƒãƒˆæ¯ã«å¤‰æ›´ã•ã‚Œã¦ã„ã‚‹ã‹ã‚’ã‚ã‚‰ã‹ã˜ã‚ãƒã‚§ãƒƒã‚¯
+    'Å‘å‰ü‘¢”‚ªƒ†ƒjƒbƒg–ˆ‚É•ÏX‚³‚ê‚Ä‚¢‚é‚©‚ğ‚ ‚ç‚©‚¶‚ßƒ`ƒFƒbƒN
     For Each u In UList
-        If u.IsFeatureAvailable("æœ€å¤§æ”¹é€ æ•°") Then
+        If u.IsFeatureAvailable("Å‘å‰ü‘¢”") Then
             use_max_rank = True
             Exit For
         End If
     Next
     
-    'ãƒ¦ãƒ‹ãƒƒãƒˆåã®é …ã®æ–‡å­—æ•°ã‚’è¨­å®š
+    'ƒ†ƒjƒbƒg–¼‚Ì€‚Ì•¶š”‚ğİ’è
     name_width = 33
     If use_max_rank Then
         name_width = name_width - 2
     End If
-    If IsOptionDefined("ç­‰èº«å¤§åŸºæº–") Then
+    If IsOptionDefined("“™g‘åŠî€") Then
         name_width = name_width + 8
     End If
     
-    'ãƒ¦ãƒ‹ãƒƒãƒˆã®ãƒªã‚¹ãƒˆã‚’ä½œæˆ
+    'ƒ†ƒjƒbƒg‚ÌƒŠƒXƒg‚ğì¬
     ReDim list(1)
     ReDim id_list(1)
     ReDim ListItemFlag(1)
     ReDim ListItemComment(1)
-    list(1) = "â–½ä¸¦ã¹æ›¿ãˆâ–½"
+    list(1) = "¤•À‚×‘Ö‚¦¤"
     For Each u In UList
         With u
-            If .Party0 <> "å‘³æ–¹" Or .Status <> "å¾…æ©Ÿ" Then
+            If .Party0 <> "–¡•û" Or .Status <> "‘Ò‹@" Then
                 GoTo NextLoop
             End If
             
@@ -374,13 +374,13 @@ Dim name_width As Integer
             ReDim Preserve ListItemFlag(UBound(list))
             ReDim Preserve ListItemComment(UBound(list))
             
-            'æ”¹é€ ãŒå¯èƒ½ï¼Ÿ
+            '‰ü‘¢‚ª‰Â”\H
             cost = RankUpCost(u)
             If cost > Money Or cost > 10000000 Then
                 ListItemFlag(UBound(list)) = True
             End If
             
-            'ãƒ¦ãƒ‹ãƒƒãƒˆãƒ©ãƒ³ã‚¯
+            'ƒ†ƒjƒbƒgƒ‰ƒ“ƒN
             If use_max_rank Then
                 list(UBound(list)) = RightPaddedString(.Nickname0, name_width) _
                     & LeftPaddedString(Format$(.Rank), 2) & "/"
@@ -402,7 +402,7 @@ Dim name_width As Integer
                 End If
             End If
             
-            'æ”¹é€ ã«å¿…è¦ãªè³‡é‡‘
+            '‰ü‘¢‚É•K—v‚È‘‹à
             If cost < 10000000 Then
                 list(UBound(list)) = list(UBound(list)) _
                     & LeftPaddedString(Format$(cost), 7)
@@ -411,34 +411,34 @@ Dim name_width As Integer
                     & LeftPaddedString("----", 7)
             End If
             
-            'ç­‰èº«å¤§åŸºæº–ã®å ´åˆã¯ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆãƒ¬ãƒ™ãƒ«ã‚‚è¡¨ç¤º
-            If IsOptionDefined("ç­‰èº«å¤§åŸºæº–") Then
+            '“™g‘åŠî€‚Ìê‡‚ÍƒpƒCƒƒbƒgƒŒƒxƒ‹‚à•\¦
+            If IsOptionDefined("“™g‘åŠî€") Then
                 If .CountPilot > 0 Then
                     list(UBound(list)) = list(UBound(list)) _
                         & LeftPaddedString(Format$(.MainPilot.Level), 3)
                 End If
             End If
             
-            'ãƒ¦ãƒ‹ãƒƒãƒˆã«é–¢ã™ã‚‹æƒ…å ±
+            'ƒ†ƒjƒbƒg‚ÉŠÖ‚·‚éî•ñ
             list(UBound(list)) = list(UBound(list)) _
                 & LeftPaddedString(Format$(.MaxHP), 6) _
                 & LeftPaddedString(Format$(.MaxEN), 4) _
                 & LeftPaddedString(Format$(.Armor), 6) _
                 & LeftPaddedString(Format$(.Mobility), 4)
             
-            'ç­‰èº«å¤§åŸºæº–ã§ãªã„å ´åˆã¯ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆåã‚’è¡¨ç¤º
-            If Not IsOptionDefined("ç­‰èº«å¤§åŸºæº–") Then
+            '“™g‘åŠî€‚Å‚È‚¢ê‡‚ÍƒpƒCƒƒbƒg–¼‚ğ•\¦
+            If Not IsOptionDefined("“™g‘åŠî€") Then
                 If .CountPilot > 0 Then
                     list(UBound(list)) = list(UBound(list)) _
                         & "  " & .MainPilot.Nickname
                 End If
             End If
             
-            'è£…å‚™ã—ã¦ã„ã‚‹ã‚¢ã‚¤ãƒ†ãƒ ã‚’ã‚³ãƒ¡ãƒ³ãƒˆæ¬„ã«åˆ—è¨˜
+            '‘•”õ‚µ‚Ä‚¢‚éƒAƒCƒeƒ€‚ğƒRƒƒ“ƒg—“‚É—ñ‹L
             For k = 1 To .CountItem
                 With .Item(k)
-                    If (.Class <> "å›ºå®š" Or Not .IsFeatureAvailable("éè¡¨ç¤º")) _
-                        And .Part <> "éè¡¨ç¤º" _
+                    If (.Class <> "ŒÅ’è" Or Not .IsFeatureAvailable("”ñ•\¦")) _
+                        And .Part <> "”ñ•\¦" _
                     Then
                         ListItemComment(UBound(list)) = _
                             ListItemComment(UBound(list)) & .Nickname & " "
@@ -446,7 +446,7 @@ Dim name_width As Integer
                 End With
             Next
             
-            'ãƒ¦ãƒ‹ãƒƒãƒˆï¼©ï¼¤ã‚’è¨˜éŒ²ã—ã¦ãŠã
+            'ƒ†ƒjƒbƒg‚h‚c‚ğ‹L˜^‚µ‚Ä‚¨‚­
             id_list(UBound(list)) = .ID
         End With
 NextLoop:
@@ -454,35 +454,35 @@ NextLoop:
     
 Beginning:
     
-    'ã‚½ãƒ¼ãƒˆ
-    If InStr(sort_mode, "åç§°") = 0 Then
-        'æ•°å€¤ã‚’ä½¿ã£ãŸã‚½ãƒ¼ãƒˆ
+    'ƒ\[ƒg
+    If InStr(sort_mode, "–¼Ì") = 0 Then
+        '”’l‚ğg‚Á‚½ƒ\[ƒg
         
-        'ã¾ãšä¸¦ã¹æ›¿ãˆã«ä½¿ã†ã‚­ãƒ¼ã®ãƒªã‚¹ãƒˆã‚’ä½œæˆ
+        '‚Ü‚¸•À‚×‘Ö‚¦‚Ég‚¤ƒL[‚ÌƒŠƒXƒg‚ğì¬
         ReDim key_list(UBound(list))
         With UList
             Select Case sort_mode
-                Case "ï¼¨ï¼°"
+                Case "‚g‚o"
                     For i = 2 To UBound(list)
                         key_list(i) = .Item(id_list(i)).MaxHP
                     Next
-                Case "ï¼¥ï¼®"
+                Case "‚d‚m"
                     For i = 2 To UBound(list)
                         key_list(i) = .Item(id_list(i)).MaxEN
                     Next
-                Case "è£…ç”²"
+                Case "‘•b"
                     For i = 2 To UBound(list)
                         key_list(i) = .Item(id_list(i)).Armor
                     Next
-                Case "é‹å‹•æ€§"
+                Case "‰^“®«"
                     For i = 2 To UBound(list)
                         key_list(i) = .Item(id_list(i)).Mobility
                     Next
-                Case "ãƒ¦ãƒ‹ãƒƒãƒˆãƒ©ãƒ³ã‚¯"
+                Case "ƒ†ƒjƒbƒgƒ‰ƒ“ƒN"
                     For i = 2 To UBound(list)
                         key_list(i) = .Item(id_list(i)).Rank
                     Next
-                Case "ãƒ¬ãƒ™ãƒ«"
+                Case "ƒŒƒxƒ‹"
                     For i = 2 To UBound(list)
                         With .Item(id_list(i))
                             If .CountPilot() > 0 Then
@@ -495,7 +495,7 @@ Beginning:
             End Select
         End With
         
-        'ã‚­ãƒ¼ã‚’ä½¿ã£ã¦ä¸¦ã¹æ›ãˆ
+        'ƒL[‚ğg‚Á‚Ä•À‚×Š·‚¦
         For i = 2 To UBound(list) - 1
             max_item = i
             max_value = key_list(i)
@@ -526,17 +526,17 @@ Beginning:
             End If
         Next
     Else
-        'æ•°å€¤ã‚’ä½¿ã£ãŸã‚½ãƒ¼ãƒˆ
+        '”’l‚ğg‚Á‚½ƒ\[ƒg
         
-        'ã¾ãšä¸¦ã¹æ›¿ãˆã«ä½¿ã†ã‚­ãƒ¼ã®ãƒªã‚¹ãƒˆã‚’ä½œæˆ
+        '‚Ü‚¸•À‚×‘Ö‚¦‚Ég‚¤ƒL[‚ÌƒŠƒXƒg‚ğì¬
         ReDim strkey_list(UBound(list))
         With UList
             Select Case sort_mode
-                Case "åç§°", "ãƒ¦ãƒ‹ãƒƒãƒˆåç§°"
+                Case "–¼Ì", "ƒ†ƒjƒbƒg–¼Ì"
                     For i = 2 To UBound(list)
                         strkey_list(i) = .Item(id_list(i)).KanaName
                     Next
-                Case "ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆåç§°"
+                Case "ƒpƒCƒƒbƒg–¼Ì"
                     For i = 2 To UBound(list)
                         With .Item(id_list(i))
                             If .CountPilot() > 0 Then
@@ -547,7 +547,7 @@ Beginning:
             End Select
         End With
         
-        'ã‚­ãƒ¼ã‚’ä½¿ã£ã¦ä¸¦ã¹æ›ãˆ
+        'ƒL[‚ğg‚Á‚Ä•À‚×Š·‚¦
         For i = 2 To UBound(strkey_list) - 1
             max_item = i
             max_str = strkey_list(i)
@@ -579,77 +579,77 @@ Beginning:
         Next
     End If
     
-    'æ”¹é€ ã™ã‚‹ãƒ¦ãƒ‹ãƒƒãƒˆã‚’é¸æŠ
-    If IsOptionDefined("ç­‰èº«å¤§åŸºæº–") Then
+    '‰ü‘¢‚·‚éƒ†ƒjƒbƒg‚ğ‘I‘ğ
+    If IsOptionDefined("“™g‘åŠî€") Then
         If use_max_rank Then
-            ret = ListBox("ãƒ¦ãƒ‹ãƒƒãƒˆé¸æŠï¼š " & Term("è³‡é‡‘") & Format$(Money), list, _
-                "ãƒ¦ãƒ‹ãƒƒãƒˆ                               " _
-                    & Term("ãƒ©ãƒ³ã‚¯", Nothing, 6) & "  è²»ç”¨ Lv  " _
-                    & Term("ï¼¨ï¼°", Nothing, 4) & " " & Term("ï¼¥ï¼®", Nothing, 4) & " " _
-                    & Term("è£…ç”²", Nothing, 4) & " " & Term("é‹å‹•"), _
-                "é€£ç¶šè¡¨ç¤º,ã‚³ãƒ¡ãƒ³ãƒˆ")
+            ret = ListBox("ƒ†ƒjƒbƒg‘I‘ğF " & Term("‘‹à") & Format$(Money), list, _
+                "ƒ†ƒjƒbƒg                               " _
+                    & Term("ƒ‰ƒ“ƒN", Nothing, 6) & "  ”ï—p Lv  " _
+                    & Term("‚g‚o", Nothing, 4) & " " & Term("‚d‚m", Nothing, 4) & " " _
+                    & Term("‘•b", Nothing, 4) & " " & Term("‰^“®"), _
+                "˜A‘±•\¦,ƒRƒƒ“ƒg")
         Else
-            ret = ListBox("ãƒ¦ãƒ‹ãƒƒãƒˆé¸æŠï¼š " & Term("è³‡é‡‘") & Format$(Money), list, _
-                "ãƒ¦ãƒ‹ãƒƒãƒˆ                             " _
-                    & Term("ãƒ©ãƒ³ã‚¯", Nothing, 6) & "   è²»ç”¨ Lv  " _
-                    & Term("ï¼¨ï¼°", Nothing, 4) & " " & Term("ï¼¥ï¼®", Nothing, 4) & " " _
-                    & Term("è£…ç”²", Nothing, 4) & " " & Term("é‹å‹•"), _
-                "é€£ç¶šè¡¨ç¤º,ã‚³ãƒ¡ãƒ³ãƒˆ")
+            ret = ListBox("ƒ†ƒjƒbƒg‘I‘ğF " & Term("‘‹à") & Format$(Money), list, _
+                "ƒ†ƒjƒbƒg                             " _
+                    & Term("ƒ‰ƒ“ƒN", Nothing, 6) & "   ”ï—p Lv  " _
+                    & Term("‚g‚o", Nothing, 4) & " " & Term("‚d‚m", Nothing, 4) & " " _
+                    & Term("‘•b", Nothing, 4) & " " & Term("‰^“®"), _
+                "˜A‘±•\¦,ƒRƒƒ“ƒg")
         End If
     Else
         If use_max_rank Then
-            ret = ListBox("ãƒ¦ãƒ‹ãƒƒãƒˆé¸æŠï¼š " & Term("è³‡é‡‘") & Format$(Money), list, _
-                "ãƒ¦ãƒ‹ãƒƒãƒˆ                       " _
-                    & Term("ãƒ©ãƒ³ã‚¯", Nothing, 6) & "  è²»ç”¨  " _
-                    & Term("ï¼¨ï¼°", Nothing, 4) & " " & Term("ï¼¥ï¼®", Nothing, 4) & " " _
-                    & Term("è£…ç”²", Nothing, 4) & " " & Term("é‹å‹•", Nothing, 4) & " ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆ", _
-                "é€£ç¶šè¡¨ç¤º,ã‚³ãƒ¡ãƒ³ãƒˆ")
+            ret = ListBox("ƒ†ƒjƒbƒg‘I‘ğF " & Term("‘‹à") & Format$(Money), list, _
+                "ƒ†ƒjƒbƒg                       " _
+                    & Term("ƒ‰ƒ“ƒN", Nothing, 6) & "  ”ï—p  " _
+                    & Term("‚g‚o", Nothing, 4) & " " & Term("‚d‚m", Nothing, 4) & " " _
+                    & Term("‘•b", Nothing, 4) & " " & Term("‰^“®", Nothing, 4) & " ƒpƒCƒƒbƒg", _
+                "˜A‘±•\¦,ƒRƒƒ“ƒg")
         Else
-            ret = ListBox("ãƒ¦ãƒ‹ãƒƒãƒˆé¸æŠï¼š " & Term("è³‡é‡‘") & Format$(Money), list, _
-                "ãƒ¦ãƒ‹ãƒƒãƒˆ                     " _
-                    & Term("ãƒ©ãƒ³ã‚¯", Nothing, 6) & "   è²»ç”¨  " _
-                    & Term("ï¼¨ï¼°", Nothing, 4) & " " & Term("ï¼¥ï¼®", Nothing, 4) & " " _
-                    & Term("è£…ç”²", Nothing, 4) & " " & Term("é‹å‹•", Nothing, 4) & " ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆ", _
-                "é€£ç¶šè¡¨ç¤º,ã‚³ãƒ¡ãƒ³ãƒˆ")
+            ret = ListBox("ƒ†ƒjƒbƒg‘I‘ğF " & Term("‘‹à") & Format$(Money), list, _
+                "ƒ†ƒjƒbƒg                     " _
+                    & Term("ƒ‰ƒ“ƒN", Nothing, 6) & "   ”ï—p  " _
+                    & Term("‚g‚o", Nothing, 4) & " " & Term("‚d‚m", Nothing, 4) & " " _
+                    & Term("‘•b", Nothing, 4) & " " & Term("‰^“®", Nothing, 4) & " ƒpƒCƒƒbƒg", _
+                "˜A‘±•\¦,ƒRƒƒ“ƒg")
         End If
     End If
     
     Select Case ret
         Case 0
-            'ã‚­ãƒ£ãƒ³ã‚»ãƒ«
+            'ƒLƒƒƒ“ƒZƒ‹
             Exit Sub
         Case 1
-            'ã‚½ãƒ¼ãƒˆæ–¹æ³•ã‚’é¸æŠ
-            If IsOptionDefined("ç­‰èº«å¤§åŸºæº–") Then
-                sort_mode_type(1) = "åç§°"
-                sort_mode_list(1) = "åç§°"
-                sort_mode_type(2) = "ãƒ¬ãƒ™ãƒ«"
-                sort_mode_list(2) = "ãƒ¬ãƒ™ãƒ«"
-                sort_mode_type(3) = "ï¼¨ï¼°"
-                sort_mode_list(3) = Term("ï¼¨ï¼°")
-                sort_mode_type(4) = "ï¼¥ï¼®"
-                sort_mode_list(4) = Term("ï¼¥ï¼®")
-                sort_mode_type(5) = "è£…ç”²"
-                sort_mode_list(5) = Term("è£…ç”²")
-                sort_mode_type(6) = "é‹å‹•æ€§"
-                sort_mode_list(6) = Term("é‹å‹•æ€§")
-                sort_mode_type(7) = "ãƒ¦ãƒ‹ãƒƒãƒˆãƒ©ãƒ³ã‚¯"
-                sort_mode_list(7) = Term("ãƒ©ãƒ³ã‚¯")
+            'ƒ\[ƒg•û–@‚ğ‘I‘ğ
+            If IsOptionDefined("“™g‘åŠî€") Then
+                sort_mode_type(1) = "–¼Ì"
+                sort_mode_list(1) = "–¼Ì"
+                sort_mode_type(2) = "ƒŒƒxƒ‹"
+                sort_mode_list(2) = "ƒŒƒxƒ‹"
+                sort_mode_type(3) = "‚g‚o"
+                sort_mode_list(3) = Term("‚g‚o")
+                sort_mode_type(4) = "‚d‚m"
+                sort_mode_list(4) = Term("‚d‚m")
+                sort_mode_type(5) = "‘•b"
+                sort_mode_list(5) = Term("‘•b")
+                sort_mode_type(6) = "‰^“®«"
+                sort_mode_list(6) = Term("‰^“®«")
+                sort_mode_type(7) = "ƒ†ƒjƒbƒgƒ‰ƒ“ƒN"
+                sort_mode_list(7) = Term("ƒ‰ƒ“ƒN")
             Else
-                sort_mode_type(1) = "ï¼¨ï¼°"
-                sort_mode_list(1) = Term("ï¼¨ï¼°")
-                sort_mode_type(2) = "ï¼¥ï¼®"
-                sort_mode_list(2) = Term("ï¼¥ï¼®")
-                sort_mode_type(3) = "è£…ç”²"
-                sort_mode_list(3) = Term("è£…ç”²")
-                sort_mode_type(4) = "é‹å‹•æ€§"
-                sort_mode_list(4) = Term("é‹å‹•æ€§")
-                sort_mode_type(5) = "ãƒ¦ãƒ‹ãƒƒãƒˆãƒ©ãƒ³ã‚¯"
-                sort_mode_list(5) = Term("ãƒ©ãƒ³ã‚¯")
-                sort_mode_type(6) = "ãƒ¦ãƒ‹ãƒƒãƒˆåç§°"
-                sort_mode_list(6) = "ãƒ¦ãƒ‹ãƒƒãƒˆåç§°"
-                sort_mode_type(7) = "ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆåç§°"
-                sort_mode_list(7) = "ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆåç§°"
+                sort_mode_type(1) = "‚g‚o"
+                sort_mode_list(1) = Term("‚g‚o")
+                sort_mode_type(2) = "‚d‚m"
+                sort_mode_list(2) = Term("‚d‚m")
+                sort_mode_type(3) = "‘•b"
+                sort_mode_list(3) = Term("‘•b")
+                sort_mode_type(4) = "‰^“®«"
+                sort_mode_list(4) = Term("‰^“®«")
+                sort_mode_type(5) = "ƒ†ƒjƒbƒgƒ‰ƒ“ƒN"
+                sort_mode_list(5) = Term("ƒ‰ƒ“ƒN")
+                sort_mode_type(6) = "ƒ†ƒjƒbƒg–¼Ì"
+                sort_mode_list(6) = "ƒ†ƒjƒbƒg–¼Ì"
+                sort_mode_type(7) = "ƒpƒCƒƒbƒg–¼Ì"
+                sort_mode_list(7) = "ƒpƒCƒƒbƒg–¼Ì"
             End If
             ReDim item_flag_backup(UBound(list))
             ReDim item_comment_backup(UBound(list))
@@ -660,9 +660,9 @@ Beginning:
             ReDim ListItemComment(UBound(sort_mode_list))
             ReDim ListItemFlag(UBound(sort_mode_list))
             
-            ret = ListBox("ã©ã‚Œã§ä¸¦ã¹æ›¿ãˆã¾ã™ã‹ï¼Ÿ", sort_mode_list, _
-                "ä¸¦ã¹æ›¿ãˆã®æ–¹æ³•", _
-                "é€£ç¶šè¡¨ç¤º,ã‚³ãƒ¡ãƒ³ãƒˆ")
+            ret = ListBox("‚Ç‚ê‚Å•À‚×‘Ö‚¦‚Ü‚·‚©H", sort_mode_list, _
+                "•À‚×‘Ö‚¦‚Ì•û–@", _
+                "˜A‘±•\¦,ƒRƒƒ“ƒg")
             
             ReDim ListItemFlag(UBound(list))
             ReDim ListItemComment(UBound(list))
@@ -671,62 +671,62 @@ Beginning:
                 ListItemComment(i) = item_comment_backup(i)
             Next
             
-            'ã‚½ãƒ¼ãƒˆæ–¹æ³•ã‚’å¤‰æ›´ã—ã¦å†è¡¨ç¤º
+            'ƒ\[ƒg•û–@‚ğ•ÏX‚µ‚ÄÄ•\¦
             If ret > 0 Then
                 sort_mode = sort_mode_type(ret)
             End If
             GoTo Beginning
     End Select
     
-    'æ”¹é€ ã™ã‚‹ãƒ¦ãƒ‹ãƒƒãƒˆã‚’æ¤œç´¢
+    '‰ü‘¢‚·‚éƒ†ƒjƒbƒg‚ğŒŸõ
     Set u = UList.Item(id_list(ret))
     
-    'æ”¹é€ ã™ã‚‹ã‹ç¢ºèª
+    '‰ü‘¢‚·‚é‚©Šm”F
     If u.IsHero Then
-        If MsgBox(u.Nickname0 & "ã‚’ãƒ‘ãƒ¯ãƒ¼ã‚¢ãƒƒãƒ—ã•ã›ã¾ã™ã‹ï¼Ÿ", _
-                vbOKCancel + vbQuestion, "ãƒ‘ãƒ¯ãƒ¼ã‚¢ãƒƒãƒ—") <> 1 _
+        If MsgBox(u.Nickname0 & "‚ğƒpƒ[ƒAƒbƒv‚³‚¹‚Ü‚·‚©H", _
+                vbOKCancel + vbQuestion, "ƒpƒ[ƒAƒbƒv") <> 1 _
         Then
             GoTo Beginning
         End If
     Else
-        If MsgBox(u.Nickname0 & "ã‚’æ”¹é€ ã—ã¾ã™ã‹ï¼Ÿ", _
-                vbOKCancel + vbQuestion, "æ”¹é€ ") <> 1 _
+        If MsgBox(u.Nickname0 & "‚ğ‰ü‘¢‚µ‚Ü‚·‚©H", _
+                vbOKCancel + vbQuestion, "‰ü‘¢") <> 1 _
         Then
             GoTo Beginning
         End If
     End If
     
-    'è³‡é‡‘ã‚’æ¸›ã‚‰ã™
+    '‘‹à‚ğŒ¸‚ç‚·
     IncrMoney -RankUpCost(u)
     
-    'ãƒ¦ãƒ‹ãƒƒãƒˆãƒ©ãƒ³ã‚¯ã‚’ä¸€æ®µéšä¸Šã’ã‚‹
+    'ƒ†ƒjƒbƒgƒ‰ƒ“ƒN‚ğˆê’iŠKã‚°‚é
     With u
         .Rank = .Rank + 1
         .HP = .MaxHP
         .EN = .MaxEN
         
-        'ä»–å½¢æ…‹ã®ãƒ©ãƒ³ã‚¯ã‚‚ä¸Šã’ã¦ãŠã
+        '‘¼Œ`‘Ô‚Ìƒ‰ƒ“ƒN‚àã‚°‚Ä‚¨‚­
         For i = 1 To .CountOtherForm
             .OtherForm(i).Rank = .Rank
             .OtherForm(i).HP = .OtherForm(i).MaxHP
             .OtherForm(i).EN = .OtherForm(i).MaxEN
         Next
         
-        'åˆä½“å½¢æ…‹ãŒä¸»å½¢æ…‹ã®åˆ†é›¢å½¢æ…‹ãŒæ”¹é€ ã•ã‚ŒãŸå ´åˆã¯ä»–ã®åˆ†é›¢å½¢æ…‹ã®ãƒ¦ãƒ‹ãƒƒãƒˆã®
-        'ãƒ©ãƒ³ã‚¯ã‚‚ä¸Šã’ã‚‹
-        If .IsFeatureAvailable("åˆä½“") Then
+        '‡‘ÌŒ`‘Ô‚ªåŒ`‘Ô‚Ì•ª—£Œ`‘Ô‚ª‰ü‘¢‚³‚ê‚½ê‡‚Í‘¼‚Ì•ª—£Œ`‘Ô‚Ìƒ†ƒjƒbƒg‚Ì
+        'ƒ‰ƒ“ƒN‚àã‚°‚é
+        If .IsFeatureAvailable("‡‘Ì") Then
             For i = 1 To .CountFeature
-                If .Feature(i) = "åˆä½“" Then
+                If .Feature(i) = "‡‘Ì" Then
                     buf = LIndex(.FeatureData(i), 2)
                     If LLength(.FeatureData(i)) = 3 Then
                         If UDList.IsDefined(buf) Then
-                            If UDList.Item(buf).IsFeatureAvailable("ä¸»å½¢æ…‹") Then
+                            If UDList.Item(buf).IsFeatureAvailable("åŒ`‘Ô") Then
                                 Exit For
                             End If
                         End If
                     Else
                         If UDList.IsDefined(buf) Then
-                            If Not UDList.Item(buf).IsFeatureAvailable("åˆ¶é™æ™‚é–“") Then
+                            If Not UDList.Item(buf).IsFeatureAvailable("§ŒÀŠÔ") Then
                                 Exit For
                             End If
                         End If
@@ -735,7 +735,7 @@ Beginning:
             Next
             If i <= .CountFeature Then
                 urank = .Rank
-                buf = UDList.Item(LIndex(.FeatureData(i), 2)).FeatureData("åˆ†é›¢")
+                buf = UDList.Item(LIndex(.FeatureData(i), 2)).FeatureData("•ª—£")
                 For i = 2 To LLength(buf)
                     If Not UList.IsDefined(LIndex(buf, i)) Then
                         GoTo NextForm
@@ -788,7 +788,7 @@ Beginning:
                                 & LeftPaddedString("----", 7)
                         End If
                         
-                        If IsOptionDefined("ç­‰èº«å¤§åŸºæº–") Then
+                        If IsOptionDefined("“™g‘åŠî€") Then
                             If .CountPilot > 0 Then
                                 list(j) = list(j) _
                                     & LeftPaddedString(Format$(.MainPilot.Level), 3)
@@ -799,7 +799,7 @@ Beginning:
                             & LeftPaddedString(Format$(.MaxEN), 4) _
                             & LeftPaddedString(Format$(.Armor), 6) _
                             & LeftPaddedString(Format$(.Mobility), 4)
-                        If Not IsOptionDefined("ç­‰èº«å¤§åŸºæº–") Then
+                        If Not IsOptionDefined("“™g‘åŠî€") Then
                             If .CountPilot > 0 Then
                                 list(j) = list(j) _
                                     & "  " & .MainPilot.Nickname
@@ -811,10 +811,10 @@ NextForm:
             End If
         End If
         
-        'åˆä½“ãƒ¦ãƒ‹ãƒƒãƒˆã®å ´åˆã¯åˆ†é›¢å½¢æ…‹ã®ãƒ¦ãƒ‹ãƒƒãƒˆã®ãƒ©ãƒ³ã‚¯ã‚‚ä¸Šã’ã‚‹
-        If .IsFeatureAvailable("åˆ†é›¢") Then
+        '‡‘Ìƒ†ƒjƒbƒg‚Ìê‡‚Í•ª—£Œ`‘Ô‚Ìƒ†ƒjƒbƒg‚Ìƒ‰ƒ“ƒN‚àã‚°‚é
+        If .IsFeatureAvailable("•ª—£") Then
             urank = .Rank
-            buf = .FeatureData("åˆ†é›¢")
+            buf = .FeatureData("•ª—£")
             For i = 2 To LLength(buf)
                 If UList.IsDefined(LIndex(buf, i)) Then
                     With UList.Item(LIndex(buf, i))
@@ -831,7 +831,7 @@ NextForm:
             Next
         End If
         
-        'ãƒ¦ãƒ‹ãƒƒãƒˆãƒªã‚¹ãƒˆã®è¡¨ç¤ºå†…å®¹ã‚’æ›´æ–°
+        'ƒ†ƒjƒbƒgƒŠƒXƒg‚Ì•\¦“à—e‚ğXV
         
         If use_max_rank Then
             list(ret) = RightPaddedString(.Nickname0, name_width) _
@@ -860,7 +860,7 @@ NextForm:
                 & LeftPaddedString("----", 7)
         End If
         
-        If IsOptionDefined("ç­‰èº«å¤§åŸºæº–") Then
+        If IsOptionDefined("“™g‘åŠî€") Then
             If .CountPilot > 0 Then
                 list(ret) = list(ret) _
                     & LeftPaddedString(Format$(.MainPilot.Level), 3)
@@ -871,7 +871,7 @@ NextForm:
             & LeftPaddedString(Format$(.MaxEN), 4) _
             & LeftPaddedString(Format$(.Armor), 6) _
             & LeftPaddedString(Format$(.Mobility), 4)
-        If Not IsOptionDefined("ç­‰èº«å¤§åŸºæº–") Then
+        If Not IsOptionDefined("“™g‘åŠî€") Then
             If .CountPilot > 0 Then
                 list(ret) = list(ret) _
                     & "  " & .MainPilot.Nickname
@@ -879,7 +879,7 @@ NextForm:
         End If
     End With
     
-    'æ”¹ã‚ã¦è³‡é‡‘ã¨æ”¹é€ è²»ã‚’èª¿ã¹ã€å„ãƒ¦ãƒ‹ãƒƒãƒˆãŒæ”¹é€ å¯èƒ½ã‹ãƒã‚§ãƒƒã‚¯ã™ã‚‹
+    '‰ü‚ß‚Ä‘‹à‚Æ‰ü‘¢”ï‚ğ’²‚×AŠeƒ†ƒjƒbƒg‚ª‰ü‘¢‰Â”\‚©ƒ`ƒFƒbƒN‚·‚é
     For i = 2 To UBound(list)
         cost = RankUpCost(UList.Item(id_list(i)))
         If cost > Money Or cost > 10000000 Then
@@ -892,28 +892,28 @@ NextForm:
     GoTo Beginning
 End Sub
 
-'ãƒ¦ãƒ‹ãƒƒãƒˆãƒ©ãƒ³ã‚¯ã‚’ä¸Šã’ã‚‹ãŸã‚ã®ã‚³ã‚¹ãƒˆã‚’ç®—å‡º
+'ƒ†ƒjƒbƒgƒ‰ƒ“ƒN‚ğã‚°‚é‚½‚ß‚ÌƒRƒXƒg‚ğZo
 Public Function RankUpCost(u As Unit) As Long
     With u
-        'ã“ã‚Œä»¥ä¸Šæ”¹é€ ã§ããªã„ï¼Ÿ
+        '‚±‚êˆÈã‰ü‘¢‚Å‚«‚È‚¢H
         If .Rank >= MaxRank(u) Then
             RankUpCost = 999999999
             Exit Function
         End If
         
-        'åˆä½“çŠ¶æ…‹ã«ã‚ã‚‹å ´åˆã¯ãã‚ŒãŒä¸»å½¢æ…‹ã§ãªã„é™ã‚Šæ”¹é€ ä¸å¯
-        If .IsFeatureAvailable("åˆ†é›¢") Then
-            If (LLength(.FeatureData("åˆ†é›¢")) = 3 _
-                And Not .IsFeatureAvailable("ä¸»å½¢æ…‹")) _
-                Or .IsFeatureAvailable("åˆ¶é™æ™‚é–“") _
+        '‡‘Ìó‘Ô‚É‚ ‚éê‡‚Í‚»‚ê‚ªåŒ`‘Ô‚Å‚È‚¢ŒÀ‚è‰ü‘¢•s‰Â
+        If .IsFeatureAvailable("•ª—£") Then
+            If (LLength(.FeatureData("•ª—£")) = 3 _
+                And Not .IsFeatureAvailable("åŒ`‘Ô")) _
+                Or .IsFeatureAvailable("§ŒÀŠÔ") _
             Then
                 RankUpCost = 999999999
                 Exit Function
             End If
         End If
         
-        If IsOptionDefined("ä½æ”¹é€ è²»") Then
-            'ä½æ”¹é€ è²»ã®å ´åˆ
+        If IsOptionDefined("’á‰ü‘¢”ï") Then
+            '’á‰ü‘¢”ï‚Ìê‡
             Select Case .Rank
                 Case 0
                     RankUpCost = 10000
@@ -949,9 +949,9 @@ Public Function RankUpCost(u As Unit) As Long
                     RankUpCost = 999999999
                     Exit Function
             End Select
-        ElseIf IsOptionDefined("ï¼‘ï¼•æ®µéšæ”¹é€ ") Then
-            'é€šå¸¸ã®ï¼‘ï¼•æ®µæ”¹é€ 
-            '(ï¼‘ï¼æ®µæ”¹é€ æ™‚ã‚ˆã‚ŠãŠæ±‚ã‚å®‰ã„ä¾¡æ ¼ã«ãªã£ã¦ãŠã‚Šã¾ã™â€¦â€¦)
+        ElseIf IsOptionDefined("‚P‚T’iŠK‰ü‘¢") Then
+            '’Êí‚Ì‚P‚T’i‰ü‘¢
+            '(‚P‚O’i‰ü‘¢‚æ‚è‚¨‹‚ßˆÀ‚¢‰¿Ši‚É‚È‚Á‚Ä‚¨‚è‚Ü‚·cc)
             Select Case .Rank
                 Case 0
                     RankUpCost = 10000
@@ -988,7 +988,7 @@ Public Function RankUpCost(u As Unit) As Long
                     Exit Function
             End Select
         Else
-            'é€šå¸¸ã®ï¼‘ï¼æ®µæ”¹é€ 
+            '’Êí‚Ì‚P‚O’i‰ü‘¢
             Select Case .Rank
                 Case 0
                     RankUpCost = 10000
@@ -1016,41 +1016,41 @@ Public Function RankUpCost(u As Unit) As Long
             End Select
         End If
         
-        'ãƒ¦ãƒ‹ãƒƒãƒˆç”¨ç‰¹æ®Šèƒ½åŠ›ã€Œæ”¹é€ è²»ä¿®æ­£ã€ã«ã‚ˆã‚‹ä¿®æ­£
-        If .IsFeatureAvailable("æ”¹é€ è²»ä¿®æ­£") Then
-            RankUpCost = RankUpCost * (1# + .FeatureLevel("æ”¹é€ è²»ä¿®æ­£") / 10)
+        'ƒ†ƒjƒbƒg—p“Áê”\—Íu‰ü‘¢”ïC³v‚É‚æ‚éC³
+        If .IsFeatureAvailable("‰ü‘¢”ïC³") Then
+            RankUpCost = RankUpCost * (1# + .FeatureLevel("‰ü‘¢”ïC³") / 10)
         End If
     End With
 End Function
 
-'ãƒ¦ãƒ‹ãƒƒãƒˆã®æœ€å¤§æ”¹é€ æ•°ã‚’ç®—å‡º
+'ƒ†ƒjƒbƒg‚ÌÅ‘å‰ü‘¢”‚ğZo
 Public Function MaxRank(u As Unit) As Long
-    If IsOptionDefined("ï¼•æ®µéšæ”¹é€ ") Then
-        'ï¼•æ®µéšæ”¹é€ ã¾ã§ã—ã‹å‡ºæ¥ãªã„
+    If IsOptionDefined("‚T’iŠK‰ü‘¢") Then
+        '‚T’iŠK‰ü‘¢‚Ü‚Å‚µ‚©o—ˆ‚È‚¢
         MaxRank = 5
-    ElseIf IsOptionDefined("ï¼‘ï¼•æ®µéšæ”¹é€ ") Then
-        'ï¼‘ï¼•æ®µéšæ”¹é€ ã¾ã§å¯èƒ½
+    ElseIf IsOptionDefined("‚P‚T’iŠK‰ü‘¢") Then
+        '‚P‚T’iŠK‰ü‘¢‚Ü‚Å‰Â”\
         MaxRank = 15
     Else
-        'ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã¯ï¼‘ï¼æ®µéšã¾ã§
+        'ƒfƒtƒHƒ‹ƒg‚Í‚P‚O’iŠK‚Ü‚Å
         MaxRank = 10
     End If
     
     With u
-        'Disableã‚³ãƒãƒ³ãƒ‰ã§æ”¹é€ ä¸å¯ã«ã•ã‚Œã¦ã„ã‚‹ï¼Ÿ
-        If IsGlobalVariableDefined("Disable(" & .Name & ",æ”¹é€ )") Then
+        'DisableƒRƒ}ƒ“ƒh‚Å‰ü‘¢•s‰Â‚É‚³‚ê‚Ä‚¢‚éH
+        If IsGlobalVariableDefined("Disable(" & .Name & ",‰ü‘¢)") Then
             MaxRank = 0
             Exit Function
         End If
         
-        'æœ€å¤§æ”¹é€ æ•°ãŒè¨­å®šã•ã‚Œã¦ã„ã‚‹ï¼Ÿ
-        If .IsFeatureAvailable("æœ€å¤§æ”¹é€ æ•°") Then
-            MaxRank = MinLng(MaxRank, .FeatureLevel("æœ€å¤§æ”¹é€ æ•°"))
+        'Å‘å‰ü‘¢”‚ªİ’è‚³‚ê‚Ä‚¢‚éH
+        If .IsFeatureAvailable("Å‘å‰ü‘¢”") Then
+            MaxRank = MinLng(MaxRank, .FeatureLevel("Å‘å‰ü‘¢”"))
         End If
     End With
 End Function
 
-'ä¹—ã‚Šæ›ãˆã‚³ãƒãƒ³ãƒ‰
+'æ‚èŠ·‚¦ƒRƒ}ƒ“ƒh
 Public Sub ExchangeUnitCommand()
 Dim i As Integer, j As Integer, k As Integer
 Dim list() As String, id_list() As String
@@ -1067,48 +1067,48 @@ Dim top_item As Integer
     
     top_item = 1
     
-    'ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®ã‚½ãƒ¼ãƒˆæ–¹æ³•
-    sort_mode = "ãƒ¬ãƒ™ãƒ«"
-    sort_mode2 = "åç§°"
+    'ƒfƒtƒHƒ‹ƒg‚Ìƒ\[ƒg•û–@
+    sort_mode = "ƒŒƒxƒ‹"
+    sort_mode2 = "–¼Ì"
     
 Beginning:
     
-    'ä¹—ã‚Šæ›ãˆã‚‹ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®ä¸€è¦§ã‚’ä½œæˆ
+    'æ‚èŠ·‚¦‚éƒpƒCƒƒbƒg‚Ìˆê——‚ğì¬
     ReDim list(1)
     ReDim id_list(1)
     ReDim ListItemComment(1)
-    list(1) = "â–½ä¸¦ã¹æ›¿ãˆâ–½"
+    list(1) = "¤•À‚×‘Ö‚¦¤"
     For Each p In PList
         With p
-            If .Party <> "å‘³æ–¹" _
+            If .Party <> "–¡•û" _
                 Or .Away _
                 Or IsGlobalVariableDefined("Fix(" & .Name & ")") _
             Then
                 GoTo NextLoop
             End If
             
-            'è¿½åŠ ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆï¼†ã‚µãƒãƒ¼ãƒˆã¯ä¹—ã‚Šæ›ãˆä¸å¯
+            '’Ç‰ÁƒpƒCƒƒbƒg•ƒTƒ|[ƒg‚Íæ‚èŠ·‚¦•s‰Â
             If .IsAdditionalPilot Or .IsAdditionalSupport Then
                 GoTo NextLoop
             End If
             
             is_support = False
             If Not .Unit Is Nothing Then
-                'ã‚µãƒãƒ¼ãƒˆãŒè¤‡æ•°ä¹—ã£ã¦ã„ã‚‹å ´åˆã¯ä¹—ã‚Šé™ã‚Šä¸å¯
+                'ƒTƒ|[ƒg‚ª•¡”æ‚Á‚Ä‚¢‚éê‡‚Íæ‚è~‚è•s‰Â
                 If .Unit.CountSupport > 1 Then
                     GoTo NextLoop
                 End If
                 
-                'ã‚µãƒãƒ¼ãƒˆãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã¨ã—ã¦ä¹—ã‚Šè¾¼ã‚“ã§ã„ã‚‹ã‹ã‚’åˆ¤å®š
+                'ƒTƒ|[ƒgƒpƒCƒƒbƒg‚Æ‚µ‚Äæ‚è‚ñ‚Å‚¢‚é‚©‚ğ”»’è
                 If .Unit.CountSupport = 1 Then
                     If .ID = .Unit.Support(1).ID Then
                         is_support = True
                     End If
                 End If
                 
-                'é€šå¸¸ã®ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®å ´åˆ
+                '’Êí‚ÌƒpƒCƒƒbƒg‚Ìê‡
                 If Not is_support Then
-                    'ï¼“äººä¹—ã‚Šä»¥ä¸Šã¯ä¹—ã‚Šé™ã‚Šä¸å¯
+                    '‚Rlæ‚èˆÈã‚Íæ‚è~‚è•s‰Â
                     If .Unit.Data.PilotNum <> 1 And Abs(.Unit.Data.PilotNum) <> 2 Then
                         GoTo NextLoop
                     End If
@@ -1116,28 +1116,28 @@ Beginning:
             End If
             
             If is_support Then
-                'ã‚µãƒãƒ¼ãƒˆãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®å ´åˆ
+                'ƒTƒ|[ƒgƒpƒCƒƒbƒg‚Ìê‡
                 ReDim Preserve list(UBound(list) + 1)
                 ReDim Preserve id_list(UBound(list))
                 ReDim Preserve ListItemComment(UBound(list))
                 
-                'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹
+                'ƒpƒCƒƒbƒg‚ÌƒXƒe[ƒ^ƒX
                 list(UBound(list)) = _
                      RightPaddedString("*" & .Nickname, 25) _
                     & LeftPaddedString(StrConv(Format$(.Level), vbWide), 4)
                 
                 If Not .Unit Is Nothing Then
                     With .Unit
-                        'ãƒ¦ãƒ‹ãƒƒãƒˆã®ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹
+                        'ƒ†ƒjƒbƒg‚ÌƒXƒe[ƒ^ƒX
                         list(UBound(list)) = list(UBound(list)) _
                             & "  " & RightPaddedString(.Nickname0, 29) _
                             & "(" & .MainPilot.Nickname & ")"
                         
-                        'ãƒ¦ãƒ‹ãƒƒãƒˆãŒè£…å‚™ã—ã¦ã„ã‚‹ã‚¢ã‚¤ãƒ†ãƒ ä¸€è¦§
+                        'ƒ†ƒjƒbƒg‚ª‘•”õ‚µ‚Ä‚¢‚éƒAƒCƒeƒ€ˆê——
                         For k = 1 To .CountItem
                             With .Item(k)
-                                If (.Class <> "å›ºå®š" Or Not .IsFeatureAvailable("éè¡¨ç¤º")) _
-                                    And .Part <> "éè¡¨ç¤º" _
+                                If (.Class <> "ŒÅ’è" Or Not .IsFeatureAvailable("”ñ•\¦")) _
+                                    And .Part <> "”ñ•\¦" _
                                 Then
                                     ListItemComment(UBound(list)) = _
                                         ListItemComment(UBound(list)) & .Nickname & " "
@@ -1147,41 +1147,41 @@ Beginning:
                     End With
                 End If
                 
-                'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆï¼©ï¼¤ã‚’è¨˜éŒ²ã—ã¦ãŠã
+                'ƒpƒCƒƒbƒg‚h‚c‚ğ‹L˜^‚µ‚Ä‚¨‚­
                 id_list(UBound(list)) = .ID
             ElseIf .Unit Is Nothing Then
-                'ãƒ¦ãƒ‹ãƒƒãƒˆã«ä¹—ã£ã¦ã„ãªã„ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®å ´åˆ
+                'ƒ†ƒjƒbƒg‚Éæ‚Á‚Ä‚¢‚È‚¢ƒpƒCƒƒbƒg‚Ìê‡
                 ReDim Preserve list(UBound(list) + 1)
                 ReDim Preserve id_list(UBound(list))
                 ReDim Preserve ListItemComment(UBound(list))
                 
-                'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹
+                'ƒpƒCƒƒbƒg‚ÌƒXƒe[ƒ^ƒX
                 list(UBound(list)) = _
                     RightPaddedString(" " & .Nickname, 25) _
                     & LeftPaddedString(StrConv(Format$(.Level), vbWide), 4)
                 
-                'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆï¼©ï¼¤ã‚’è¨˜éŒ²ã—ã¦ãŠã
+                'ƒpƒCƒƒbƒg‚h‚c‚ğ‹L˜^‚µ‚Ä‚¨‚­
                 id_list(UBound(list)) = .ID
             ElseIf .Unit.CountPilot <= 2 Then
-                'è¤‡æ•°ä¹—ã‚Šã®ãƒ¦ãƒ‹ãƒƒãƒˆã«ä¹—ã£ã¦ã„ã‚‹ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®å ´åˆ
+                '•¡”æ‚è‚Ìƒ†ƒjƒbƒg‚Éæ‚Á‚Ä‚¢‚éƒpƒCƒƒbƒg‚Ìê‡
                 ReDim Preserve list(UBound(list) + 1)
                 ReDim Preserve id_list(UBound(list))
                 ReDim Preserve ListItemComment(UBound(list))
                 
-                'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆãŒè¶³ã‚Šãªã„ï¼Ÿ
+                'ƒpƒCƒƒbƒg‚ª‘«‚è‚È‚¢H
                 If .Unit.CountPilot < Abs(.Unit.Data.PilotNum) Then
                     list(UBound(list)) = "-"
                 Else
                     list(UBound(list)) = " "
                 End If
                 
-                If .Unit.IsFeatureAvailable("è¿½åŠ ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆ") Then
+                If .Unit.IsFeatureAvailable("’Ç‰ÁƒpƒCƒƒbƒg") Then
                     pname = .Unit.MainPilot.Nickname
                 Else
                     pname = .Nickname
                 End If
                 
-                'è¤‡æ•°ä¹—ã‚Šã®å ´åˆã¯ä½•ç•ªç›®ã®ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‹è¡¨ç¤º
+                '•¡”æ‚è‚Ìê‡‚Í‰½”Ô–Ú‚ÌƒpƒCƒƒbƒg‚©•\¦
                 If Abs(.Unit.Data.PilotNum) > 1 Then
                     For k = 1 To .Unit.CountPilot
                         If .Unit.Pilot(k) Is p Then
@@ -1190,7 +1190,7 @@ Beginning:
                     Next
                 End If
                 
-                'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆï¼†ãƒ¦ãƒ‹ãƒƒãƒˆã®ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹
+                'ƒpƒCƒƒbƒg•ƒ†ƒjƒbƒg‚ÌƒXƒe[ƒ^ƒX
                 list(UBound(list)) = list(UBound(list)) _
                     & RightPaddedString(pname, 24) _
                     & LeftPaddedString(StrConv(Format$(.Level), vbWide), 4) _
@@ -1200,12 +1200,12 @@ Beginning:
                         & "(" & .Unit.Support(1).Nickname & ")"
                 End If
                 
-                'ãƒ¦ãƒ‹ãƒƒãƒˆãŒè£…å‚™ã—ã¦ã„ã‚‹ã‚¢ã‚¤ãƒ†ãƒ ä¸€è¦§
+                'ƒ†ƒjƒbƒg‚ª‘•”õ‚µ‚Ä‚¢‚éƒAƒCƒeƒ€ˆê——
                 With .Unit
                     For k = 1 To .CountItem
                         With .Item(k)
-                            If (.Class <> "å›ºå®š" Or Not .IsFeatureAvailable("éè¡¨ç¤º")) _
-                                And .Part <> "éè¡¨ç¤º" _
+                            If (.Class <> "ŒÅ’è" Or Not .IsFeatureAvailable("”ñ•\¦")) _
+                                And .Part <> "”ñ•\¦" _
                             Then
                                 ListItemComment(UBound(list)) = _
                                     ListItemComment(UBound(list)) & .Nickname & " "
@@ -1214,7 +1214,7 @@ Beginning:
                     Next
                 End With
                 
-                'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆï¼©ï¼¤ã‚’è¨˜éŒ²ã—ã¦ãŠã
+                'ƒpƒCƒƒbƒg‚h‚c‚ğ‹L˜^‚µ‚Ä‚¨‚­
                 id_list(UBound(list)) = .ID
             End If
         End With
@@ -1224,11 +1224,11 @@ NextLoop:
     
 SortAgain:
     
-    'ã‚½ãƒ¼ãƒˆ
-    If sort_mode = "ãƒ¬ãƒ™ãƒ«" Then
-        'ãƒ¬ãƒ™ãƒ«ã«ã‚ˆã‚‹ã‚½ãƒ¼ãƒˆ
+    'ƒ\[ƒg
+    If sort_mode = "ƒŒƒxƒ‹" Then
+        'ƒŒƒxƒ‹‚É‚æ‚éƒ\[ƒg
         
-        'ã¾ãšãƒ¬ãƒ™ãƒ«ã®ãƒªã‚¹ãƒˆã‚’ä½œæˆ
+        '‚Ü‚¸ƒŒƒxƒ‹‚ÌƒŠƒXƒg‚ğì¬
         ReDim key_list(UBound(list))
         With PList
             For i = 2 To UBound(list)
@@ -1238,7 +1238,7 @@ SortAgain:
             Next
         End With
         
-        'ãƒ¬ãƒ™ãƒ«ã‚’ä½¿ã£ã¦ä¸¦ã¹æ›ãˆ
+        'ƒŒƒxƒ‹‚ğg‚Á‚Ä•À‚×Š·‚¦
         For i = 2 To UBound(list) - 1
             max_item = i
             max_value = key_list(i)
@@ -1265,9 +1265,9 @@ SortAgain:
             End If
         Next
     Else
-        'èª­ã¿ä»®åã«ã‚ˆã‚‹ã‚½ãƒ¼ãƒˆ
+        '“Ç‚İ‰¼–¼‚É‚æ‚éƒ\[ƒg
         
-        'ã¾ãšèª­ã¿ä»®åã®ãƒªã‚¹ãƒˆã‚’ä½œæˆ
+        '‚Ü‚¸“Ç‚İ‰¼–¼‚ÌƒŠƒXƒg‚ğì¬
         ReDim strkey_list(UBound(list))
         With PList
             For i = 2 To UBound(list)
@@ -1275,7 +1275,7 @@ SortAgain:
             Next
         End With
         
-        'èª­ã¿ä»®åã‚’ä½¿ã£ã¦ä¸¦ã¹æ›¿ãˆ
+        '“Ç‚İ‰¼–¼‚ğg‚Á‚Ä•À‚×‘Ö‚¦
         For i = 2 To UBound(strkey_list) - 1
             max_item = i
             max_str = strkey_list(i)
@@ -1303,26 +1303,26 @@ SortAgain:
         Next
     End If
     
-    'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‚’é¸æŠ
+    'ƒpƒCƒƒbƒg‚ğ‘I‘ğ
     TopItem = top_item
-    If IsOptionDefined("ç­‰èº«å¤§åŸºæº–") Then
-        caption_str = " ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼          ãƒ¬ãƒ™ãƒ«  ãƒ¦ãƒ‹ãƒƒãƒˆ"
-        ret = ListBox("ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼é¸æŠ", list, caption_str, "é€£ç¶šè¡¨ç¤º,ã‚³ãƒ¡ãƒ³ãƒˆ")
+    If IsOptionDefined("“™g‘åŠî€") Then
+        caption_str = " ƒLƒƒƒ‰ƒNƒ^[          ƒŒƒxƒ‹  ƒ†ƒjƒbƒg"
+        ret = ListBox("ƒLƒƒƒ‰ƒNƒ^[‘I‘ğ", list, caption_str, "˜A‘±•\¦,ƒRƒƒ“ƒg")
     Else
-        caption_str = " ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆ            ãƒ¬ãƒ™ãƒ«  ãƒ¦ãƒ‹ãƒƒãƒˆ"
-        ret = ListBox("ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆé¸æŠ", list, caption_str, "é€£ç¶šè¡¨ç¤º,ã‚³ãƒ¡ãƒ³ãƒˆ")
+        caption_str = " ƒpƒCƒƒbƒg            ƒŒƒxƒ‹  ƒ†ƒjƒbƒg"
+        ret = ListBox("ƒpƒCƒƒbƒg‘I‘ğ", list, caption_str, "˜A‘±•\¦,ƒRƒƒ“ƒg")
     End If
     top_item = TopItem
     
     Select Case ret
         Case 0
-            'ã‚­ãƒ£ãƒ³ã‚»ãƒ«
+            'ƒLƒƒƒ“ƒZƒ‹
             Exit Sub
         Case 1
-            'ã‚½ãƒ¼ãƒˆæ–¹æ³•ã‚’é¸æŠ
+            'ƒ\[ƒg•û–@‚ğ‘I‘ğ
             ReDim sort_mode_list(2)
-            sort_mode_list(1) = "ãƒ¬ãƒ™ãƒ«"
-            sort_mode_list(2) = "åç§°"
+            sort_mode_list(1) = "ƒŒƒxƒ‹"
+            sort_mode_list(2) = "–¼Ì"
             ReDim item_flag_backup(UBound(list))
             ReDim item_comment_backup(UBound(list))
             For i = 2 To UBound(list)
@@ -1332,9 +1332,9 @@ SortAgain:
             ReDim ListItemComment(UBound(sort_mode_list))
             ReDim ListItemFlag(UBound(sort_mode_list))
             
-            ret = ListBox("ã©ã‚Œã§ä¸¦ã¹æ›¿ãˆã¾ã™ã‹ï¼Ÿ", sort_mode_list, _
-                "ä¸¦ã¹æ›¿ãˆã®æ–¹æ³•", _
-                "é€£ç¶šè¡¨ç¤º,ã‚³ãƒ¡ãƒ³ãƒˆ")
+            ret = ListBox("‚Ç‚ê‚Å•À‚×‘Ö‚¦‚Ü‚·‚©H", sort_mode_list, _
+                "•À‚×‘Ö‚¦‚Ì•û–@", _
+                "˜A‘±•\¦,ƒRƒƒ“ƒg")
             
             ReDim ListItemFlag(UBound(list))
             ReDim ListItemComment(UBound(list))
@@ -1343,29 +1343,29 @@ SortAgain:
                 ListItemComment(i) = item_comment_backup(i)
             Next
             
-            'ã‚½ãƒ¼ãƒˆæ–¹æ³•ã‚’å¤‰æ›´ã—ã¦å†è¡¨ç¤º
+            'ƒ\[ƒg•û–@‚ğ•ÏX‚µ‚ÄÄ•\¦
             If ret > 0 Then
                 sort_mode = sort_mode_list(ret)
             End If
             GoTo SortAgain
     End Select
     
-    'ä¹—ã‚Šæ›ãˆã•ã›ã‚‹ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆ
+    'æ‚èŠ·‚¦‚³‚¹‚éƒpƒCƒƒbƒg
     Set p = PList.Item(id_list(ret))
     
-    'ä¹—ã‚Šæ›ãˆå…ˆãƒ¦ãƒ‹ãƒƒãƒˆä¸€è¦§ä½œæˆ
+    'æ‚èŠ·‚¦æƒ†ƒjƒbƒgˆê——ì¬
     ReDim list(1)
     ReDim id_list(1)
     ReDim ListItemComment(1)
-    list(1) = "â–½ä¸¦ã¹æ›¿ãˆâ–½"
+    list(1) = "¤•À‚×‘Ö‚¦¤"
     For Each u In UList
         With u
-            If .Party0 <> "å‘³æ–¹" Or .Status <> "å¾…æ©Ÿ" Then
+            If .Party0 <> "–¡•û" Or .Status <> "‘Ò‹@" Then
                 GoTo NextUnit
             End If
             
             If .CountSupport > 1 Then
-                If InStr(p.Class, "å°‚å±ã‚µãƒãƒ¼ãƒˆ") = 0 Then
+                If InStr(p.Class, "ê‘®ƒTƒ|[ƒg") = 0 Then
                     GoTo NextUnit
                 End If
             End If
@@ -1378,7 +1378,7 @@ SortAgain:
                 GoTo NextUnit
             End If
             
-            'ã‚µãƒãƒ¼ãƒˆã‚­ãƒ£ãƒ©ã§ãªã‘ã‚Œã°ä¹—ã‚Šæ›ãˆã‚‰ã‚Œã‚‹ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆæ•°ã«åˆ¶é™ãŒã‚ã‚‹
+            'ƒTƒ|[ƒgƒLƒƒƒ‰‚Å‚È‚¯‚ê‚Îæ‚èŠ·‚¦‚ç‚ê‚éƒpƒCƒƒbƒg”‚É§ŒÀ‚ª‚ ‚é
             If Not p.IsSupport(u) Then
                 If .Data.PilotNum <> 1 And Abs(.Data.PilotNum) <> 2 Then
                     GoTo NextUnit
@@ -1389,8 +1389,8 @@ SortAgain:
                 If IsGlobalVariableDefined("Fix(" & .Pilot(1).Name & ")") _
                     And Not p.IsSupport(u) _
                 Then
-                    'Fixã‚³ãƒãƒ³ãƒ‰ã§ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆãŒå›ºå®šã•ã‚ŒãŸãƒ¦ãƒ‹ãƒƒãƒˆã¯ã‚µãƒãƒ¼ãƒˆã§ãªã„
-                    'é™ã‚Šä¹—ã‚Šæ›ãˆä¸å¯
+                    'FixƒRƒ}ƒ“ƒh‚ÅƒpƒCƒƒbƒg‚ªŒÅ’è‚³‚ê‚½ƒ†ƒjƒbƒg‚ÍƒTƒ|[ƒg‚Å‚È‚¢
+                    'ŒÀ‚èæ‚èŠ·‚¦•s‰Â
                     GoTo NextUnit
                 End If
                 
@@ -1398,7 +1398,7 @@ SortAgain:
                 ReDim Preserve id_list(UBound(list))
                 ReDim Preserve ListItemComment(UBound(list))
                 
-                'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆãŒè¶³ã‚Šã¦ã„ã‚‹ï¼Ÿ
+                'ƒpƒCƒƒbƒg‚ª‘«‚è‚Ä‚¢‚éH
                 If .CountPilot < Abs(.Data.PilotNum) Then
                     list(UBound(list)) = "-"
                 Else
@@ -1420,11 +1420,11 @@ SortAgain:
                         & " (" & .Support(1).Nickname & ")"
                 End If
                 
-                'ãƒ¦ãƒ‹ãƒƒãƒˆã«è£…å‚™ã•ã‚Œã¦ã„ã‚‹ã‚¢ã‚¤ãƒ†ãƒ ã‚’ã‚³ãƒ¡ãƒ³ãƒˆæ¬„ã«åˆ—è¨˜
+                'ƒ†ƒjƒbƒg‚É‘•”õ‚³‚ê‚Ä‚¢‚éƒAƒCƒeƒ€‚ğƒRƒƒ“ƒg—“‚É—ñ‹L
                 For j = 1 To .CountItem
                     With .Item(j)
-                        If (.Class <> "å›ºå®š" Or Not .IsFeatureAvailable("éè¡¨ç¤º")) _
-                            And .Part <> "éè¡¨ç¤º" _
+                        If (.Class <> "ŒÅ’è" Or Not .IsFeatureAvailable("”ñ•\¦")) _
+                            And .Part <> "”ñ•\¦" _
                         Then
                             ListItemComment(UBound(list)) = _
                                 ListItemComment(UBound(list)) & .Nickname & " "
@@ -1432,10 +1432,10 @@ SortAgain:
                     End With
                 Next
                 
-                'ãƒ¦ãƒ‹ãƒƒãƒˆï¼©ï¼¤ã‚’è¨˜éŒ²ã—ã¦ãŠã
+                'ƒ†ƒjƒbƒg‚h‚c‚ğ‹L˜^‚µ‚Ä‚¨‚­
                 id_list(UBound(list)) = .ID
             ElseIf Not p.IsSupport(u) Then
-                'èª°ã‚‚ä¹—ã£ã¦ãªã„ãƒ¦ãƒ‹ãƒƒãƒˆã«ä¹—ã‚Œã‚‹ã®ã¯é€šå¸¸ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®ã¿
+                '’N‚àæ‚Á‚Ä‚È‚¢ƒ†ƒjƒbƒg‚Éæ‚ê‚é‚Ì‚Í’ÊíƒpƒCƒƒbƒg‚Ì‚İ
                 
                 ReDim Preserve list(UBound(list) + 1)
                 ReDim Preserve id_list(UBound(list))
@@ -1451,11 +1451,11 @@ SortAgain:
                         & " " & Format$(.Rank)
                 End If
                 
-                'ãƒ¦ãƒ‹ãƒƒãƒˆã«è£…å‚™ã•ã‚Œã¦ã„ã‚‹ã‚¢ã‚¤ãƒ†ãƒ ã‚’ã‚³ãƒ¡ãƒ³ãƒˆæ¬„ã«åˆ—è¨˜
+                'ƒ†ƒjƒbƒg‚É‘•”õ‚³‚ê‚Ä‚¢‚éƒAƒCƒeƒ€‚ğƒRƒƒ“ƒg—“‚É—ñ‹L
                 For j = 1 To .CountItem
                     With .Item(j)
-                        If (.Class <> "å›ºå®š" Or Not .IsFeatureAvailable("éè¡¨ç¤º")) _
-                            And .Part <> "éè¡¨ç¤º" _
+                        If (.Class <> "ŒÅ’è" Or Not .IsFeatureAvailable("”ñ•\¦")) _
+                            And .Part <> "”ñ•\¦" _
                         Then
                             ListItemComment(UBound(list)) = _
                                 ListItemComment(UBound(list)) & .Nickname & " "
@@ -1463,7 +1463,7 @@ SortAgain:
                     End With
                 Next
                 
-                'ãƒ¦ãƒ‹ãƒƒãƒˆï¼©ï¼¤ã‚’è¨˜éŒ²ã—ã¦ãŠã
+                'ƒ†ƒjƒbƒg‚h‚c‚ğ‹L˜^‚µ‚Ä‚¨‚­
                 id_list(UBound(list)) = .ID
             End If
         End With
@@ -1473,38 +1473,38 @@ NextUnit:
     
 SortAgain2:
     
-    'ã‚½ãƒ¼ãƒˆ
-    If InStr(sort_mode2, "åç§°") = 0 Then
-        'æ•°å€¤ã«ã‚ˆã‚‹ã‚½ãƒ¼ãƒˆ
+    'ƒ\[ƒg
+    If InStr(sort_mode2, "–¼Ì") = 0 Then
+        '”’l‚É‚æ‚éƒ\[ƒg
         
-        'ã¾ãšã‚­ãƒ¼ã®ãƒªã‚¹ãƒˆã‚’ä½œæˆ
+        '‚Ü‚¸ƒL[‚ÌƒŠƒXƒg‚ğì¬
         ReDim key_list(UBound(list))
         With UList
             Select Case sort_mode2
-                Case "ï¼¨ï¼°"
+                Case "‚g‚o"
                     For i = 2 To UBound(list)
                         key_list(i) = .Item(id_list(i)).MaxHP
                     Next
-                Case "ï¼¥ï¼®"
+                Case "‚d‚m"
                     For i = 2 To UBound(list)
                         key_list(i) = .Item(id_list(i)).MaxEN
                     Next
-                Case "è£…ç”²"
+                Case "‘•b"
                     For i = 2 To UBound(list)
                         key_list(i) = .Item(id_list(i)).Armor
                     Next
-                Case "é‹å‹•æ€§"
+                Case "‰^“®«"
                     For i = 2 To UBound(list)
                         key_list(i) = .Item(id_list(i)).Mobility
                     Next
-                Case "ãƒ¦ãƒ‹ãƒƒãƒˆãƒ©ãƒ³ã‚¯"
+                Case "ƒ†ƒjƒbƒgƒ‰ƒ“ƒN"
                     For i = 2 To UBound(list)
                         key_list(i) = .Item(id_list(i)).Rank
                     Next
             End Select
         End With
         
-        'ã‚­ãƒ¼ã‚’ä½¿ã£ã¦ä¸¦ã¹æ›¿ãˆ
+        'ƒL[‚ğg‚Á‚Ä•À‚×‘Ö‚¦
         For i = 2 To UBound(list) - 1
             max_item = i
             max_value = key_list(i)
@@ -1535,9 +1535,9 @@ SortAgain2:
             End If
         Next
     Else
-        'èª­ã¿ä»®åã«ã‚ˆã‚‹ã‚½ãƒ¼ãƒˆ
+        '“Ç‚İ‰¼–¼‚É‚æ‚éƒ\[ƒg
         
-        'ã¾ãšèª­ã¿ä»®åã®ãƒªã‚¹ãƒˆã‚’ä½œæˆ
+        '‚Ü‚¸“Ç‚İ‰¼–¼‚ÌƒŠƒXƒg‚ğì¬
         ReDim strkey_list(UBound(list))
         With UList
             For i = 2 To UBound(list)
@@ -1545,7 +1545,7 @@ SortAgain2:
             Next
         End With
         
-        'èª­ã¿ä»®åã‚’ä½¿ã£ã¦ä¸¦ã¹æ›¿ãˆ
+        '“Ç‚İ‰¼–¼‚ğg‚Á‚Ä•À‚×‘Ö‚¦
         For i = 2 To UBound(strkey_list) - 1
             max_item = i
             max_str = strkey_list(i)
@@ -1577,60 +1577,60 @@ SortAgain2:
         Next
     End If
     
-    'ä¹—ã‚Šæ›ãˆå…ˆã‚’é¸æŠ
+    'æ‚èŠ·‚¦æ‚ğ‘I‘ğ
     TopItem = 1
     Set u = p.Unit
-    If IsOptionDefined("ç­‰èº«å¤§åŸºæº–") Then
-        caption_str = " ãƒ¦ãƒ‹ãƒƒãƒˆ                           ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼       " & Term("ãƒ©ãƒ³ã‚¯")
+    If IsOptionDefined("“™g‘åŠî€") Then
+        caption_str = " ƒ†ƒjƒbƒg                           ƒLƒƒƒ‰ƒNƒ^[       " & Term("ƒ‰ƒ“ƒN")
     Else
-        caption_str = " ãƒ¦ãƒ‹ãƒƒãƒˆ                           ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆ         " & Term("ãƒ©ãƒ³ã‚¯")
+        caption_str = " ƒ†ƒjƒbƒg                           ƒpƒCƒƒbƒg         " & Term("ƒ‰ƒ“ƒN")
     End If
     If Not u Is Nothing Then
-        If u.IsFeatureAvailable("è¿½åŠ ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆ") Then
-            ret = ListBox("ä¹—ã‚Šæ›ãˆå…ˆé¸æŠ ï¼š " & u.MainPilot.Nickname & " (" & u.Nickname & ")", _
-                list, caption_str, "é€£ç¶šè¡¨ç¤º,ã‚³ãƒ¡ãƒ³ãƒˆ")
+        If u.IsFeatureAvailable("’Ç‰ÁƒpƒCƒƒbƒg") Then
+            ret = ListBox("æ‚èŠ·‚¦æ‘I‘ğ F " & u.MainPilot.Nickname & " (" & u.Nickname & ")", _
+                list, caption_str, "˜A‘±•\¦,ƒRƒƒ“ƒg")
         Else
-            ret = ListBox("ä¹—ã‚Šæ›ãˆå…ˆé¸æŠ ï¼š " & p.Nickname & " (" & u.Nickname & ")", _
-                list, caption_str, "é€£ç¶šè¡¨ç¤º,ã‚³ãƒ¡ãƒ³ãƒˆ")
+            ret = ListBox("æ‚èŠ·‚¦æ‘I‘ğ F " & p.Nickname & " (" & u.Nickname & ")", _
+                list, caption_str, "˜A‘±•\¦,ƒRƒƒ“ƒg")
         End If
     Else
-        ret = ListBox("ä¹—ã‚Šæ›ãˆå…ˆé¸æŠ ï¼š " & p.Nickname, list, caption_str, "é€£ç¶šè¡¨ç¤º,ã‚³ãƒ¡ãƒ³ãƒˆ")
+        ret = ListBox("æ‚èŠ·‚¦æ‘I‘ğ F " & p.Nickname, list, caption_str, "˜A‘±•\¦,ƒRƒƒ“ƒg")
     End If
     
     Select Case ret
         Case 0
-            'ã‚­ãƒ£ãƒ³ã‚»ãƒ«
+            'ƒLƒƒƒ“ƒZƒ‹
             Exit Sub
         Case 1
-            'ã‚½ãƒ¼ãƒˆæ–¹æ³•ã‚’é¸æŠ
+            'ƒ\[ƒg•û–@‚ğ‘I‘ğ
             ReDim sort_mode_type(6)
             ReDim sort_mode_list(6)
-            If IsOptionDefined("ç­‰èº«å¤§åŸºæº–") Then
-                sort_mode_type(1) = "åç§°"
-                sort_mode_list(1) = "åç§°"
-                sort_mode_type(2) = "ï¼¨ï¼°"
-                sort_mode_list(2) = Term("ï¼¨ï¼°")
-                sort_mode_type(3) = "ï¼¥ï¼®"
-                sort_mode_list(3) = Term("ï¼¥ï¼®")
-                sort_mode_type(4) = "è£…ç”²"
-                sort_mode_list(4) = Term("è£…ç”²")
-                sort_mode_type(5) = "é‹å‹•æ€§"
-                sort_mode_list(5) = Term("é‹å‹•æ€§")
-                sort_mode_type(6) = "ãƒ¦ãƒ‹ãƒƒãƒˆãƒ©ãƒ³ã‚¯"
-                sort_mode_list(6) = Term("ãƒ©ãƒ³ã‚¯")
+            If IsOptionDefined("“™g‘åŠî€") Then
+                sort_mode_type(1) = "–¼Ì"
+                sort_mode_list(1) = "–¼Ì"
+                sort_mode_type(2) = "‚g‚o"
+                sort_mode_list(2) = Term("‚g‚o")
+                sort_mode_type(3) = "‚d‚m"
+                sort_mode_list(3) = Term("‚d‚m")
+                sort_mode_type(4) = "‘•b"
+                sort_mode_list(4) = Term("‘•b")
+                sort_mode_type(5) = "‰^“®«"
+                sort_mode_list(5) = Term("‰^“®«")
+                sort_mode_type(6) = "ƒ†ƒjƒbƒgƒ‰ƒ“ƒN"
+                sort_mode_list(6) = Term("ƒ‰ƒ“ƒN")
             Else
-                sort_mode_type(1) = "ï¼¨ï¼°"
-                sort_mode_list(1) = Term("ï¼¨ï¼°")
-                sort_mode_type(2) = "ï¼¥ï¼®"
-                sort_mode_list(2) = Term("ï¼¥ï¼®")
-                sort_mode_type(3) = "è£…ç”²"
-                sort_mode_list(3) = Term("è£…ç”²")
-                sort_mode_type(4) = "é‹å‹•æ€§"
-                sort_mode_list(4) = Term("é‹å‹•æ€§")
-                sort_mode_type(5) = "ãƒ¦ãƒ‹ãƒƒãƒˆãƒ©ãƒ³ã‚¯"
-                sort_mode_list(5) = Term("ãƒ©ãƒ³ã‚¯")
-                sort_mode_type(6) = "ãƒ¦ãƒ‹ãƒƒãƒˆåç§°"
-                sort_mode_list(6) = "ãƒ¦ãƒ‹ãƒƒãƒˆåç§°"
+                sort_mode_type(1) = "‚g‚o"
+                sort_mode_list(1) = Term("‚g‚o")
+                sort_mode_type(2) = "‚d‚m"
+                sort_mode_list(2) = Term("‚d‚m")
+                sort_mode_type(3) = "‘•b"
+                sort_mode_list(3) = Term("‘•b")
+                sort_mode_type(4) = "‰^“®«"
+                sort_mode_list(4) = Term("‰^“®«")
+                sort_mode_type(5) = "ƒ†ƒjƒbƒgƒ‰ƒ“ƒN"
+                sort_mode_list(5) = Term("ƒ‰ƒ“ƒN")
+                sort_mode_type(6) = "ƒ†ƒjƒbƒg–¼Ì"
+                sort_mode_list(6) = "ƒ†ƒjƒbƒg–¼Ì"
             End If
             ReDim item_flag_backup(UBound(list))
             ReDim item_comment_backup(UBound(list))
@@ -1642,9 +1642,9 @@ SortAgain2:
             ReDim ListItemFlag(UBound(sort_mode_list))
             
             TopItem = 1
-            ret = ListBox("ã©ã‚Œã§ä¸¦ã¹æ›¿ãˆã¾ã™ã‹ï¼Ÿ", sort_mode_list, _
-                "ä¸¦ã¹æ›¿ãˆã®æ–¹æ³•", _
-                "é€£ç¶šè¡¨ç¤º,ã‚³ãƒ¡ãƒ³ãƒˆ")
+            ret = ListBox("‚Ç‚ê‚Å•À‚×‘Ö‚¦‚Ü‚·‚©H", sort_mode_list, _
+                "•À‚×‘Ö‚¦‚Ì•û–@", _
+                "˜A‘±•\¦,ƒRƒƒ“ƒg")
             
             ReDim ListItemFlag(UBound(list))
             ReDim ListItemComment(UBound(list))
@@ -1653,32 +1653,32 @@ SortAgain2:
                 ListItemComment(i) = item_comment_backup(i)
             Next
             
-            'ã‚½ãƒ¼ãƒˆæ–¹æ³•ã‚’å¤‰æ›´ã—ã¦å†è¡¨ç¤º
+            'ƒ\[ƒg•û–@‚ğ•ÏX‚µ‚ÄÄ•\¦
             If ret > 0 Then
                 sort_mode2 = sort_mode_type(ret)
             End If
             GoTo SortAgain2
     End Select
     
-    'ã‚­ãƒ£ãƒ³ã‚»ãƒ«ï¼Ÿ
+    'ƒLƒƒƒ“ƒZƒ‹H
     If ret = 0 Then
         GoTo Beginning
     End If
     
     Set u = UList.Item(id_list(ret))
     
-    'å…ƒã®ãƒ¦ãƒ‹ãƒƒãƒˆã‹ã‚‰é™ã‚ã™
+    'Œ³‚Ìƒ†ƒjƒbƒg‚©‚ç~‚ë‚·
     p.GetOff
     
-    'ä¹—ã‚Šæ›ãˆ
+    'æ‚èŠ·‚¦
     With u
         If Not p.IsSupport(u) Then
-            'é€šå¸¸ã®ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆ
+            '’Êí‚ÌƒpƒCƒƒbƒg
             If .CountPilot = .Data.PilotNum Then
                 .Pilot(1).GetOff
             End If
         Else
-            'ã‚µãƒãƒ¼ãƒˆãƒ‘ã‚¤ãƒ­ãƒƒãƒˆ
+            'ƒTƒ|[ƒgƒpƒCƒƒbƒg
             For i = 1 To .CountSupport
                 .Support(1).GetOff
             Next
@@ -1689,7 +1689,7 @@ SortAgain2:
     GoTo Beginning
 End Sub
 
-'ã‚¢ã‚¤ãƒ†ãƒ äº¤æ›ã‚³ãƒãƒ³ãƒ‰
+'ƒAƒCƒeƒ€ŒğŠ·ƒRƒ}ƒ“ƒh
 Public Sub ExchangeItemCommand(Optional selected_unit As Unit, Optional selected_part As String)
 Dim i As Integer, j As Integer, k As Integer
 Dim inum As Integer, inum2 As Integer
@@ -1713,15 +1713,15 @@ Dim top_item1 As Integer, top_item2 As Integer
     top_item1 = 1
     top_item2 = 1
     
-    'ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®ã‚½ãƒ¼ãƒˆæ–¹æ³•
-    If IsOptionDefined("ç­‰èº«å¤§åŸºæº–") Then
-        sort_mode = "ãƒ¬ãƒ™ãƒ«"
+    'ƒfƒtƒHƒ‹ƒg‚Ìƒ\[ƒg•û–@
+    If IsOptionDefined("“™g‘åŠî€") Then
+        sort_mode = "ƒŒƒxƒ‹"
     Else
-        sort_mode = "ï¼¨ï¼°"
+        sort_mode = "‚g‚o"
     End If
     
-    'ãƒ¦ãƒ‹ãƒƒãƒˆãŒã‚ã‚‰ã‹ã˜ã‚é¸æŠã•ã‚Œã¦ã„ã‚‹å ´åˆ
-    '(ãƒ¦ãƒ‹ãƒƒãƒˆã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‹ã‚‰ã®ã‚¢ã‚¤ãƒ†ãƒ äº¤æ›æ™‚)
+    'ƒ†ƒjƒbƒg‚ª‚ ‚ç‚©‚¶‚ß‘I‘ğ‚³‚ê‚Ä‚¢‚éê‡
+    '(ƒ†ƒjƒbƒgƒXƒe[ƒ^ƒX‚©‚ç‚ÌƒAƒCƒeƒ€ŒğŠ·)
     If Not selected_unit Is Nothing Then
         EnlargeListBoxHeight
         ReduceListBoxWidth
@@ -1738,14 +1738,14 @@ Dim top_item1 As Integer, top_item2 As Integer
     
 Beginning:
     
-    'ãƒ¦ãƒ‹ãƒƒãƒˆä¸€è¦§ã®ä½œæˆ
+    'ƒ†ƒjƒbƒgˆê——‚Ìì¬
     ReDim list(1)
     ReDim id_list(1)
     ReDim ListItemComment(1)
-    list(1) = "â–½ä¸¦ã¹æ›¿ãˆâ–½"
+    list(1) = "¤•À‚×‘Ö‚¦¤"
     For Each u In UList
         With u
-            If .Party0 <> "å‘³æ–¹" Or .Status <> "å¾…æ©Ÿ" Then
+            If .Party0 <> "–¡•û" Or .Status <> "‘Ò‹@" Then
                 GoTo NextUnit
             End If
             
@@ -1753,18 +1753,18 @@ Beginning:
             ReDim Preserve id_list(UBound(list))
             ReDim Preserve ListItemComment(UBound(list))
             
-            'è£…å‚™ã—ã¦ã„ã‚‹ã‚¢ã‚¤ãƒ†ãƒ ã®æ•°ã‚’æ•°ãˆã‚‹
+            '‘•”õ‚µ‚Ä‚¢‚éƒAƒCƒeƒ€‚Ì”‚ğ”‚¦‚é
             inum = 0
             inum2 = 0
             For i = 1 To .CountItem
                 With .Item(i)
-                    If (.Class <> "å›ºå®š" Or Not .IsFeatureAvailable("éè¡¨ç¤º")) _
-                        And .Part <> "éè¡¨ç¤º" _
+                    If (.Class <> "ŒÅ’è" Or Not .IsFeatureAvailable("”ñ•\¦")) _
+                        And .Part <> "”ñ•\¦" _
                     Then
                         ListItemComment(UBound(list)) = _
                             ListItemComment(UBound(list)) & .Nickname & " "
-                        If .Part = "å¼·åŒ–ãƒ‘ãƒ¼ãƒ„" _
-                            Or .Part = "ã‚¢ã‚¤ãƒ†ãƒ " _
+                        If .Part = "‹­‰»ƒp[ƒc" _
+                            Or .Part = "ƒAƒCƒeƒ€" _
                         Then
                             inum = inum + .Size
                         Else
@@ -1774,8 +1774,8 @@ Beginning:
                 End With
             Next
             
-            'ãƒªã‚¹ãƒˆã‚’ä½œæˆ
-            If IsOptionDefined("ç­‰èº«å¤§åŸºæº–") Then
+            'ƒŠƒXƒg‚ğì¬
+            If IsOptionDefined("“™g‘åŠî€") Then
                 list(UBound(list)) = RightPaddedString(.Nickname0, 39)
             Else
                 list(UBound(list)) = RightPaddedString(.Nickname0, 31)
@@ -1795,7 +1795,7 @@ Beginning:
                 list(UBound(list)) = list(UBound(list)) _
                     & Format$(.Rank)
             End If
-            If IsOptionDefined("ç­‰èº«å¤§åŸºæº–") Then
+            If IsOptionDefined("“™g‘åŠî€") Then
                 If .CountPilot > 0 Then
                     list(UBound(list)) = list(UBound(list)) _
                         & LeftPaddedString(Format$(.MainPilot.Level), 3)
@@ -1806,14 +1806,14 @@ Beginning:
                 & LeftPaddedString(Format$(.MaxEN), 4) _
                 & LeftPaddedString(Format$(.Armor), 5) _
                 & LeftPaddedString(Format$(.Mobility), 5)
-            If Not IsOptionDefined("ç­‰èº«å¤§åŸºæº–") Then
+            If Not IsOptionDefined("“™g‘åŠî€") Then
                 If .CountPilot > 0 Then
                     list(UBound(list)) = list(UBound(list)) _
                         & " " & .MainPilot.Nickname
                 End If
             End If
             
-            'ãƒ¦ãƒ‹ãƒƒãƒˆï¼©ï¼¤ã‚’è¨˜éŒ²ã—ã¦ãŠã
+            'ƒ†ƒjƒbƒg‚h‚c‚ğ‹L˜^‚µ‚Ä‚¨‚­
             id_list(UBound(list)) = .ID
         End With
 NextUnit:
@@ -1822,35 +1822,35 @@ NextUnit:
     
 SortAgain:
     
-    'ã‚½ãƒ¼ãƒˆ
-    If InStr(sort_mode, "åç§°") = 0 Then
-        'æ•°å€¤ã«ã‚ˆã‚‹ã‚½ãƒ¼ãƒˆ
+    'ƒ\[ƒg
+    If InStr(sort_mode, "–¼Ì") = 0 Then
+        '”’l‚É‚æ‚éƒ\[ƒg
         
-        'ã¾ãšã‚­ãƒ¼ã®ãƒªã‚¹ãƒˆã‚’ä½œæˆ
+        '‚Ü‚¸ƒL[‚ÌƒŠƒXƒg‚ğì¬
         ReDim key_list(UBound(list))
         With UList
             Select Case sort_mode
-                Case "ï¼¨ï¼°"
+                Case "‚g‚o"
                     For i = 2 To UBound(list)
                         key_list(i) = .Item(id_list(i)).MaxHP
                     Next
-                Case "ï¼¥ï¼®"
+                Case "‚d‚m"
                     For i = 2 To UBound(list)
                         key_list(i) = .Item(id_list(i)).MaxEN
                     Next
-                Case "è£…ç”²"
+                Case "‘•b"
                     For i = 2 To UBound(list)
                         key_list(i) = .Item(id_list(i)).Armor
                     Next
-                Case "é‹å‹•æ€§"
+                Case "‰^“®«"
                     For i = 2 To UBound(list)
                         key_list(i) = .Item(id_list(i)).Mobility
                     Next
-                Case "ãƒ¦ãƒ‹ãƒƒãƒˆãƒ©ãƒ³ã‚¯"
+                Case "ƒ†ƒjƒbƒgƒ‰ƒ“ƒN"
                     For i = 2 To UBound(list)
                         key_list(i) = .Item(id_list(i)).Rank
                     Next
-                Case "ãƒ¬ãƒ™ãƒ«"
+                Case "ƒŒƒxƒ‹"
                     For i = 2 To UBound(list)
                         With .Item(id_list(i))
                             If .CountPilot() > 0 Then
@@ -1863,7 +1863,7 @@ SortAgain:
             End Select
         End With
         
-        'ã‚­ãƒ¼ã‚’ä½¿ã£ã¦ä¸¦ã¹æ›¿ãˆ
+        'ƒL[‚ğg‚Á‚Ä•À‚×‘Ö‚¦
         For i = 2 To UBound(list) - 1
             max_item = i
             max_value = key_list(i)
@@ -1890,17 +1890,17 @@ SortAgain:
             End If
         Next
     Else
-        'æ–‡å­—åˆ—ã«ã‚ˆã‚‹ã‚½ãƒ¼ãƒˆ
+        '•¶š—ñ‚É‚æ‚éƒ\[ƒg
         
-        'ã¾ãšã¯ã‚­ãƒ¼ã®ãƒªã‚¹ãƒˆã‚’ä½œæˆ
+        '‚Ü‚¸‚ÍƒL[‚ÌƒŠƒXƒg‚ğì¬
         ReDim strkey_list(UBound(list))
         With UList
             Select Case sort_mode
-                Case "åç§°", "ãƒ¦ãƒ‹ãƒƒãƒˆåç§°"
+                Case "–¼Ì", "ƒ†ƒjƒbƒg–¼Ì"
                     For i = 2 To UBound(list)
                         strkey_list(i) = .Item(id_list(i)).KanaName
                     Next
-                Case "ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆåç§°"
+                Case "ƒpƒCƒƒbƒg–¼Ì"
                     For i = 2 To UBound(list)
                         With .Item(id_list(i))
                             If .CountPilot() > 0 Then
@@ -1911,7 +1911,7 @@ SortAgain:
             End Select
         End With
         
-        'ã‚­ãƒ¼ã‚’ä½¿ã£ã¦ä¸¦ã¹æ›¿ãˆ
+        'ƒL[‚ğg‚Á‚Ä•À‚×‘Ö‚¦
         For i = 2 To UBound(strkey_list) - 1
             max_item = i
             max_str = strkey_list(i)
@@ -1939,61 +1939,61 @@ SortAgain:
         Next
     End If
     
-    'ã‚¢ã‚¤ãƒ†ãƒ ã‚’äº¤æ›ã™ã‚‹ãƒ¦ãƒ‹ãƒƒãƒˆã‚’é¸æŠ
+    'ƒAƒCƒeƒ€‚ğŒğŠ·‚·‚éƒ†ƒjƒbƒg‚ğ‘I‘ğ
     TopItem = top_item1
-    If IsOptionDefined("ç­‰èº«å¤§åŸºæº–") Then
-        ret = ListBox("ã‚¢ã‚¤ãƒ†ãƒ ã‚’äº¤æ›ã™ã‚‹ãƒ¦ãƒ‹ãƒƒãƒˆã‚’é¸æŠ", list, _
-            "ãƒ¦ãƒ‹ãƒƒãƒˆ                               ã‚¢ã‚¤ãƒ†ãƒ  " _
-                & Term("RK", Nothing, 2) & " Lv  " & Term("ï¼¨ï¼°", Nothing, 4) & " " _
-                & Term("ï¼¥ï¼®", Nothing, 4) & " " & Term("è£…ç”²", Nothing, 4) & " " _
-                & Term("é‹å‹•"), _
-            "é€£ç¶šè¡¨ç¤º,ã‚³ãƒ¡ãƒ³ãƒˆ")
+    If IsOptionDefined("“™g‘åŠî€") Then
+        ret = ListBox("ƒAƒCƒeƒ€‚ğŒğŠ·‚·‚éƒ†ƒjƒbƒg‚ğ‘I‘ğ", list, _
+            "ƒ†ƒjƒbƒg                               ƒAƒCƒeƒ€ " _
+                & Term("RK", Nothing, 2) & " Lv  " & Term("‚g‚o", Nothing, 4) & " " _
+                & Term("‚d‚m", Nothing, 4) & " " & Term("‘•b", Nothing, 4) & " " _
+                & Term("‰^“®"), _
+            "˜A‘±•\¦,ƒRƒƒ“ƒg")
     Else
-        ret = ListBox("ã‚¢ã‚¤ãƒ†ãƒ ã‚’äº¤æ›ã™ã‚‹ãƒ¦ãƒ‹ãƒƒãƒˆã‚’é¸æŠ", list, _
-            "ãƒ¦ãƒ‹ãƒƒãƒˆ                       ã‚¢ã‚¤ãƒ†ãƒ  " _
-                & Term("RK", Nothing, 2) & "  " & Term("ï¼¨ï¼°", Nothing, 4) & " " _
-                & Term("ï¼¥ï¼®", Nothing, 4) & " " & Term("è£…ç”²", Nothing, 4) & " " _
-                & Term("é‹å‹•", Nothing, 4) & " ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆ", _
-            "é€£ç¶šè¡¨ç¤º,ã‚³ãƒ¡ãƒ³ãƒˆ")
+        ret = ListBox("ƒAƒCƒeƒ€‚ğŒğŠ·‚·‚éƒ†ƒjƒbƒg‚ğ‘I‘ğ", list, _
+            "ƒ†ƒjƒbƒg                       ƒAƒCƒeƒ€ " _
+                & Term("RK", Nothing, 2) & "  " & Term("‚g‚o", Nothing, 4) & " " _
+                & Term("‚d‚m", Nothing, 4) & " " & Term("‘•b", Nothing, 4) & " " _
+                & Term("‰^“®", Nothing, 4) & " ƒpƒCƒƒbƒg", _
+            "˜A‘±•\¦,ƒRƒƒ“ƒg")
     End If
     top_item1 = TopItem
     
     Select Case ret
         Case 0
-            'ã‚­ãƒ£ãƒ³ã‚»ãƒ«
+            'ƒLƒƒƒ“ƒZƒ‹
             Exit Sub
         Case 1
-            'ã‚½ãƒ¼ãƒˆæ–¹æ³•ã‚’é¸æŠ
-            If IsOptionDefined("ç­‰èº«å¤§åŸºæº–") Then
-                sort_mode_type(1) = "åç§°"
-                sort_mode_list(1) = "åç§°"
-                sort_mode_type(2) = "ãƒ¬ãƒ™ãƒ«"
-                sort_mode_list(2) = "ãƒ¬ãƒ™ãƒ«"
-                sort_mode_type(3) = "ï¼¨ï¼°"
-                sort_mode_list(3) = Term("ï¼¨ï¼°")
-                sort_mode_type(4) = "ï¼¥ï¼®"
-                sort_mode_list(4) = Term("ï¼¥ï¼®")
-                sort_mode_type(5) = "è£…ç”²"
-                sort_mode_list(5) = Term("è£…ç”²")
-                sort_mode_type(6) = "é‹å‹•æ€§"
-                sort_mode_list(6) = Term("é‹å‹•æ€§")
-                sort_mode_type(7) = "ãƒ¦ãƒ‹ãƒƒãƒˆãƒ©ãƒ³ã‚¯"
-                sort_mode_list(7) = Term("ãƒ©ãƒ³ã‚¯")
+            'ƒ\[ƒg•û–@‚ğ‘I‘ğ
+            If IsOptionDefined("“™g‘åŠî€") Then
+                sort_mode_type(1) = "–¼Ì"
+                sort_mode_list(1) = "–¼Ì"
+                sort_mode_type(2) = "ƒŒƒxƒ‹"
+                sort_mode_list(2) = "ƒŒƒxƒ‹"
+                sort_mode_type(3) = "‚g‚o"
+                sort_mode_list(3) = Term("‚g‚o")
+                sort_mode_type(4) = "‚d‚m"
+                sort_mode_list(4) = Term("‚d‚m")
+                sort_mode_type(5) = "‘•b"
+                sort_mode_list(5) = Term("‘•b")
+                sort_mode_type(6) = "‰^“®«"
+                sort_mode_list(6) = Term("‰^“®«")
+                sort_mode_type(7) = "ƒ†ƒjƒbƒgƒ‰ƒ“ƒN"
+                sort_mode_list(7) = Term("ƒ‰ƒ“ƒN")
             Else
-                sort_mode_type(1) = "ï¼¨ï¼°"
-                sort_mode_list(1) = Term("ï¼¨ï¼°")
-                sort_mode_type(2) = "ï¼¥ï¼®"
-                sort_mode_list(2) = Term("ï¼¥ï¼®")
-                sort_mode_type(3) = "è£…ç”²"
-                sort_mode_list(3) = Term("è£…ç”²")
-                sort_mode_type(4) = "é‹å‹•æ€§"
-                sort_mode_list(4) = Term("é‹å‹•æ€§")
-                sort_mode_type(5) = "ãƒ¦ãƒ‹ãƒƒãƒˆãƒ©ãƒ³ã‚¯"
-                sort_mode_list(5) = Term("ãƒ©ãƒ³ã‚¯")
-                sort_mode_type(6) = "ãƒ¦ãƒ‹ãƒƒãƒˆåç§°"
-                sort_mode_list(6) = "ãƒ¦ãƒ‹ãƒƒãƒˆåç§°"
-                sort_mode_type(7) = "ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆåç§°"
-                sort_mode_list(7) = "ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆåç§°"
+                sort_mode_type(1) = "‚g‚o"
+                sort_mode_list(1) = Term("‚g‚o")
+                sort_mode_type(2) = "‚d‚m"
+                sort_mode_list(2) = Term("‚d‚m")
+                sort_mode_type(3) = "‘•b"
+                sort_mode_list(3) = Term("‘•b")
+                sort_mode_type(4) = "‰^“®«"
+                sort_mode_list(4) = Term("‰^“®«")
+                sort_mode_type(5) = "ƒ†ƒjƒbƒgƒ‰ƒ“ƒN"
+                sort_mode_list(5) = Term("ƒ‰ƒ“ƒN")
+                sort_mode_type(6) = "ƒ†ƒjƒbƒg–¼Ì"
+                sort_mode_list(6) = "ƒ†ƒjƒbƒg–¼Ì"
+                sort_mode_type(7) = "ƒpƒCƒƒbƒg–¼Ì"
+                sort_mode_list(7) = "ƒpƒCƒƒbƒg–¼Ì"
             End If
             ReDim item_flag_backup(UBound(list))
             ReDim item_comment_backup(UBound(list))
@@ -2005,9 +2005,9 @@ SortAgain:
             ReDim ListItemFlag(UBound(sort_mode_list))
             
             TopItem = 1
-            ret = ListBox("ã©ã‚Œã§ä¸¦ã¹æ›¿ãˆã¾ã™ã‹ï¼Ÿ", sort_mode_list, _
-                "ä¸¦ã¹æ›¿ãˆã®æ–¹æ³•", _
-                "é€£ç¶šè¡¨ç¤º,ã‚³ãƒ¡ãƒ³ãƒˆ")
+            ret = ListBox("‚Ç‚ê‚Å•À‚×‘Ö‚¦‚Ü‚·‚©H", sort_mode_list, _
+                "•À‚×‘Ö‚¦‚Ì•û–@", _
+                "˜A‘±•\¦,ƒRƒƒ“ƒg")
             
             ReDim ListItemFlag(UBound(list))
             ReDim ListItemComment(UBound(list))
@@ -2016,52 +2016,52 @@ SortAgain:
                 ListItemComment(i) = item_comment_backup(i)
             Next
             
-            'ã‚½ãƒ¼ãƒˆæ–¹æ³•ã‚’å¤‰æ›´ã—ã¦å†è¡¨ç¤º
+            'ƒ\[ƒg•û–@‚ğ•ÏX‚µ‚ÄÄ•\¦
             If ret > 0 Then
                 sort_mode = sort_mode_type(ret)
             End If
             GoTo SortAgain
     End Select
     
-    'ãƒ¦ãƒ‹ãƒƒãƒˆã‚’é¸æŠ
+    'ƒ†ƒjƒbƒg‚ğ‘I‘ğ
     Set u = UList.Item(id_list(ret))
     
 MakeEquipedItemList:
     
-    'é¸æŠã•ã‚ŒãŸãƒ¦ãƒ‹ãƒƒãƒˆãŒè£…å‚™ã—ã¦ã„ã‚‹ã‚¢ã‚¤ãƒ†ãƒ ä¸€è¦§ã®ä½œæˆ
+    '‘I‘ğ‚³‚ê‚½ƒ†ƒjƒbƒg‚ª‘•”õ‚µ‚Ä‚¢‚éƒAƒCƒeƒ€ˆê——‚Ìì¬
     With u
         Do While True
-            'ã‚¢ã‚¤ãƒ†ãƒ ã®è£…å‚™å€‹æ‰€ä¸€è¦§ã‚’ä½œæˆ
+            'ƒAƒCƒeƒ€‚Ì‘•”õŒÂŠˆê——‚ğì¬
             ReDim part_list(0)
-            If .IsFeatureAvailable("è£…å‚™å€‹æ‰€") Then
-                buf = .FeatureData("è£…å‚™å€‹æ‰€")
-                If InStr(buf, "è…•") > 0 Then
+            If .IsFeatureAvailable("‘•”õŒÂŠ") Then
+                buf = .FeatureData("‘•”õŒÂŠ")
+                If InStr(buf, "˜r") > 0 Then
                     arm_point = UBound(part_list) + 1
                     ReDim Preserve part_list(UBound(part_list) + 2)
-                    part_list(1) = "å³æ‰‹"
-                    part_list(2) = "å·¦æ‰‹"
+                    part_list(1) = "‰Eè"
+                    part_list(2) = "¶è"
                 End If
-                If InStr(buf, "è‚©") > 0 Then
+                If InStr(buf, "Œ¨") > 0 Then
                     shoulder_point = UBound(part_list) + 1
                     ReDim Preserve part_list(UBound(part_list) + 2)
-                    part_list(UBound(part_list) - 1) = "å³è‚©"
-                    part_list(UBound(part_list)) = "å·¦è‚©"
+                    part_list(UBound(part_list) - 1) = "‰EŒ¨"
+                    part_list(UBound(part_list)) = "¶Œ¨"
                 End If
-                If InStr(buf, "ä½“") > 0 Then
+                If InStr(buf, "‘Ì") > 0 Then
                     ReDim Preserve part_list(UBound(part_list) + 1)
-                    part_list(UBound(part_list)) = "ä½“"
+                    part_list(UBound(part_list)) = "‘Ì"
                 End If
-                If InStr(buf, "é ­") > 0 Then
+                If InStr(buf, "“ª") > 0 Then
                     ReDim Preserve part_list(UBound(part_list) + 1)
-                    part_list(UBound(part_list)) = "é ­"
+                    part_list(UBound(part_list)) = "“ª"
                 End If
             End If
             For i = 1 To .CountFeature
-                If .Feature(i) = "ãƒãƒ¼ãƒ‰ãƒã‚¤ãƒ³ãƒˆ" Then
+                If .Feature(i) = "ƒn[ƒhƒ|ƒCƒ“ƒg" Then
                     ipart = .FeatureData(i)
                     Select Case ipart
-                        Case "å¼·åŒ–ãƒ‘ãƒ¼ãƒ„", "ã‚¢ã‚¤ãƒ†ãƒ ", "éè¡¨ç¤º"
-                            'è¡¨ç¤ºã—ãªã„
+                        Case "‹­‰»ƒp[ƒc", "ƒAƒCƒeƒ€", "”ñ•\¦"
+                            '•\¦‚µ‚È‚¢
                         Case Else
                             For j = 1 To UBound(part_list)
                                 If part_list(j) = ipart Then
@@ -2081,15 +2081,15 @@ MakeEquipedItemList:
             ReDim Preserve part_list(UBound(part_list) + .MaxItemNum)
             If .IsHero Then
                 For i = UBound(part_list) - .MaxItemNum + 1 To UBound(part_list)
-                    part_list(i) = "ã‚¢ã‚¤ãƒ†ãƒ "
+                    part_list(i) = "ƒAƒCƒeƒ€"
                 Next
             Else
                 For i = UBound(part_list) - .MaxItemNum + 1 To UBound(part_list)
-                    part_list(i) = "å¼·åŒ–ãƒ‘ãƒ¼ãƒ„"
+                    part_list(i) = "‹­‰»ƒp[ƒc"
                 Next
             End If
             
-            'ç‰¹å®šã®è£…å‚™å€‹æ‰€ã®ã‚¢ã‚¤ãƒ†ãƒ ã®ã¿ã‚’äº¤æ›ã™ã‚‹ï¼Ÿ
+            '“Á’è‚Ì‘•”õŒÂŠ‚ÌƒAƒCƒeƒ€‚Ì‚İ‚ğŒğŠ·‚·‚éH
             If selected_part <> "" Then
                 Dim tmp_part_list() As String
                 
@@ -2103,26 +2103,26 @@ MakeEquipedItemList:
                 shoulder_point = 0
                 For i = 1 To UBound(tmp_part_list)
                     If tmp_part_list(i) = selected_part _
-                        Or ((selected_part = "ç‰‡æ‰‹" _
-                                Or selected_part = "ä¸¡æ‰‹" _
-                                Or selected_part = "ç›¾") _
-                            And (tmp_part_list(i) = "å³æ‰‹" _
-                                Or tmp_part_list(i) = "å·¦æ‰‹")) _
-                        Or ((selected_part = "è‚©" _
-                                Or selected_part = "ä¸¡è‚©") _
-                            And (tmp_part_list(i) = "å³è‚©" _
-                                Or tmp_part_list(i) = "å·¦è‚©")) _
-                        Or ((selected_part = "ã‚¢ã‚¤ãƒ†ãƒ " _
-                                Or selected_part = "å¼·åŒ–ãƒ‘ãƒ¼ãƒ„") _
-                            And (tmp_part_list(i) = "ã‚¢ã‚¤ãƒ†ãƒ " _
-                                Or tmp_part_list(i) = "å¼·åŒ–ãƒ‘ãƒ¼ãƒ„")) _
+                        Or ((selected_part = "•Ğè" _
+                                Or selected_part = "—¼è" _
+                                Or selected_part = "‚") _
+                            And (tmp_part_list(i) = "‰Eè" _
+                                Or tmp_part_list(i) = "¶è")) _
+                        Or ((selected_part = "Œ¨" _
+                                Or selected_part = "—¼Œ¨") _
+                            And (tmp_part_list(i) = "‰EŒ¨" _
+                                Or tmp_part_list(i) = "¶Œ¨")) _
+                        Or ((selected_part = "ƒAƒCƒeƒ€" _
+                                Or selected_part = "‹­‰»ƒp[ƒc") _
+                            And (tmp_part_list(i) = "ƒAƒCƒeƒ€" _
+                                Or tmp_part_list(i) = "‹­‰»ƒp[ƒc")) _
                     Then
                         ReDim Preserve part_list(UBound(part_list) + 1)
                         part_list(UBound(part_list)) = tmp_part_list(i)
                         Select Case part_list(UBound(part_list))
-                            Case "å³æ‰‹"
+                            Case "‰Eè"
                                 arm_point = UBound(part_list)
-                            Case "å³è‚©"
+                            Case "‰EŒ¨"
                                 shoulder_point = UBound(part_list)
                         End Select
                     End If
@@ -2131,21 +2131,21 @@ MakeEquipedItemList:
             
             ReDim part_item(UBound(part_list))
             
-            'è£…å‚™å€‹æ‰€ã«ç¾åœ¨è£…å‚™ã—ã¦ã„ã‚‹ã‚¢ã‚¤ãƒ†ãƒ ã‚’å‰²ã‚Šå½“ã¦
+            '‘•”õŒÂŠ‚ÉŒ»İ‘•”õ‚µ‚Ä‚¢‚éƒAƒCƒeƒ€‚ğŠ„‚è“–‚Ä
             For i = 1 To .CountItem
                 With .Item(i)
-                    If .Class = "å›ºå®š" And .IsFeatureAvailable("éè¡¨ç¤º") Then
+                    If .Class = "ŒÅ’è" And .IsFeatureAvailable("”ñ•\¦") Then
                         GoTo NextEquipedItem
                     End If
                     
                     Select Case .Part
-                        Case "ä¸¡æ‰‹"
+                        Case "—¼è"
                             If arm_point = 0 Then
                                 GoTo NextEquipedItem
                             End If
                             part_item(arm_point) = .ID
                             part_item(arm_point + 1) = ":"
-                        Case "ç‰‡æ‰‹"
+                        Case "•Ğè"
                             If arm_point = 0 Then
                                 GoTo NextEquipedItem
                             End If
@@ -2154,17 +2154,17 @@ MakeEquipedItemList:
                             Else
                                 part_item(arm_point + 1) = .ID
                             End If
-                        Case "ç›¾"
+                        Case "‚"
                             If arm_point = 0 Then
                                 GoTo NextEquipedItem
                             End If
                             part_item(arm_point + 1) = .ID
-                        Case "ä¸¡è‚©"
+                        Case "—¼Œ¨"
                             If shoulder_point = 0 Then
                                 GoTo NextEquipedItem
                             End If
                             part_item(shoulder_point) = .ID
-                        Case "è‚©"
+                        Case "Œ¨"
                             If shoulder_point = 0 Then
                                 GoTo NextEquipedItem
                             End If
@@ -2173,13 +2173,13 @@ MakeEquipedItemList:
                             Else
                                 part_item(shoulder_point + 1) = .ID
                             End If
-                        Case "éè¡¨ç¤º"
-                            'ç„¡è¦–
+                        Case "”ñ•\¦"
+                            '–³‹
                         Case Else
-                            If .Part = "å¼·åŒ–ãƒ‘ãƒ¼ãƒ„" Or .Part = "ã‚¢ã‚¤ãƒ†ãƒ " Then
+                            If .Part = "‹­‰»ƒp[ƒc" Or .Part = "ƒAƒCƒeƒ€" Then
                                 For j = 1 To UBound(part_list)
-                                    If (part_list(j) = "å¼·åŒ–ãƒ‘ãƒ¼ãƒ„" _
-                                        Or part_list(j) = "ã‚¢ã‚¤ãƒ†ãƒ ") _
+                                    If (part_list(j) = "‹­‰»ƒp[ƒc" _
+                                        Or part_list(j) = "ƒAƒCƒeƒ€") _
                                         And part_item(j) = "" _
                                     Then
                                         part_item(j) = .ID
@@ -2224,7 +2224,7 @@ NextEquipedItem:
             ReDim ListItemComment(UBound(list))
             ReDim ListItemFlag(UBound(list))
             
-            'ãƒªã‚¹ãƒˆã‚’æ§‹ç¯‰
+            'ƒŠƒXƒg‚ğ\’z
             For i = 1 To UBound(part_item)
                 Select Case part_item(i)
                     Case ""
@@ -2245,8 +2245,8 @@ NextEquipedItem:
                                 id_list(j) = .ID
                             Next
                             If IsGlobalVariableDefined("Fix(" & .Name & ")") _
-                                Or .Class = "å›ºå®š" _
-                                Or .IsFeatureAvailable("å‘ªã„") _
+                                Or .Class = "ŒÅ’è" _
+                                Or .IsFeatureAvailable("ô‚¢") _
                             Then
                                 ListItemFlag(i) = True
                                 For j = i + 1 To i + .Size - 1
@@ -2259,50 +2259,50 @@ NextEquipedItem:
                         End With
                 End Select
             Next
-            list(UBound(list)) = "â–½è£…å‚™è§£é™¤â–½"
+            list(UBound(list)) = "¤‘•”õ‰ğœ¤"
             
-            'äº¤æ›ã™ã‚‹ã‚¢ã‚¤ãƒ†ãƒ ã‚’é¸æŠ
-            caption_str = "è£…å‚™å€‹æ‰€ã‚’é¸æŠ ï¼š " & .Nickname
-            If .CountPilot > 0 And Not IsOptionDefined("ç­‰èº«å¤§åŸºæº–") Then
+            'ŒğŠ·‚·‚éƒAƒCƒeƒ€‚ğ‘I‘ğ
+            caption_str = "‘•”õŒÂŠ‚ğ‘I‘ğ F " & .Nickname
+            If .CountPilot > 0 And Not IsOptionDefined("“™g‘åŠî€") Then
                 caption_str = caption_str & " (" & .MainPilot.Nickname & ")"
             End If
             caption_str = caption_str & _
-                "  " & Term("ï¼¨ï¼°", u) & "=" & Format$(.MaxHP) & _
-                " " & Term("ï¼¥ï¼®", u) & "=" & Format$(.MaxEN) & _
-                " " & Term("è£…ç”²", u) & "=" & Format$(.Armor) & _
-                " " & Term("é‹å‹•æ€§", u) & "=" & Format$(.Mobility) & _
-                " " & Term("ç§»å‹•åŠ›", u) & "=" & Format$(.Speed)
+                "  " & Term("‚g‚o", u) & "=" & Format$(.MaxHP) & _
+                " " & Term("‚d‚m", u) & "=" & Format$(.MaxEN) & _
+                " " & Term("‘•b", u) & "=" & Format$(.Armor) & _
+                " " & Term("‰^“®«", u) & "=" & Format$(.Mobility) & _
+                " " & Term("ˆÚ“®—Í", u) & "=" & Format$(.Speed)
             TopItem = top_item2
-            ret = ListBox(caption_str, list, "ã‚¢ã‚¤ãƒ†ãƒ                åˆ†é¡", "é€£ç¶šè¡¨ç¤º,ã‚³ãƒ¡ãƒ³ãƒˆ")
+            ret = ListBox(caption_str, list, "ƒAƒCƒeƒ€               •ª—Ş", "˜A‘±•\¦,ƒRƒƒ“ƒg")
             top_item2 = TopItem
             If ret = 0 Then
                 Exit Do
             End If
             
-            'è£…å‚™ã‚’è§£é™¤ã™ã‚‹å ´åˆ
+            '‘•”õ‚ğ‰ğœ‚·‚éê‡
             If ret = UBound(list) Then
-                list(UBound(list)) = "â–½å…¨ã¦å¤–ã™â–½"
-                caption_str = "å¤–ã™ã‚¢ã‚¤ãƒ†ãƒ ã‚’é¸æŠ ï¼š " & .Nickname
-                If .CountPilot > 0 And Not IsOptionDefined("ç­‰èº«å¤§åŸºæº–") Then
+                list(UBound(list)) = "¤‘S‚ÄŠO‚·¤"
+                caption_str = "ŠO‚·ƒAƒCƒeƒ€‚ğ‘I‘ğ F " & .Nickname
+                If .CountPilot > 0 And Not IsOptionDefined("“™g‘åŠî€") Then
                     caption_str = caption_str & " (" & .MainPilot.Nickname & ")"
                 End If
                 caption_str = caption_str & _
-                    "  " & Term("ï¼¨ï¼°", u) & "=" & Format$(.MaxHP) & _
-                    " " & Term("ï¼¥ï¼®", u) & "=" & Format$(.MaxEN) & _
-                    " " & Term("è£…ç”²", u) & "=" & Format$(.Armor) & _
-                    " " & Term("é‹å‹•æ€§", u) & "=" & Format$(.Mobility) & _
-                    " " & Term("ç§»å‹•åŠ›", u) & "=" & Format$(.Speed)
-                ret = ListBox(caption_str, list, "ã‚¢ã‚¤ãƒ†ãƒ                åˆ†é¡", "é€£ç¶šè¡¨ç¤º,ã‚³ãƒ¡ãƒ³ãƒˆ")
+                    "  " & Term("‚g‚o", u) & "=" & Format$(.MaxHP) & _
+                    " " & Term("‚d‚m", u) & "=" & Format$(.MaxEN) & _
+                    " " & Term("‘•b", u) & "=" & Format$(.Armor) & _
+                    " " & Term("‰^“®«", u) & "=" & Format$(.Mobility) & _
+                    " " & Term("ˆÚ“®—Í", u) & "=" & Format$(.Speed)
+                ret = ListBox(caption_str, list, "ƒAƒCƒeƒ€               •ª—Ş", "˜A‘±•\¦,ƒRƒƒ“ƒg")
                 If ret <> 0 Then
                     If ret < UBound(list) Then
-                        'æŒ‡å®šã•ã‚ŒãŸã‚¢ã‚¤ãƒ†ãƒ ã‚’å¤–ã™
+                        'w’è‚³‚ê‚½ƒAƒCƒeƒ€‚ğŠO‚·
                         If id_list(ret) <> "" Then
                             .DeleteItem id_list(ret), False
                         ElseIf LIndex(list(ret), 1) = ":" Then
                             .DeleteItem id_list(ret - 1), False
                         End If
                     Else
-                        'å…¨ã¦ã®ã‚¢ã‚¤ãƒ†ãƒ ã‚’å¤–ã™
+                        '‘S‚Ä‚ÌƒAƒCƒeƒ€‚ğŠO‚·
                         For i = 1 To UBound(list) - 1
                             If Not ListItemFlag(i) _
                                 And id_list(i) <> "" _
@@ -2321,7 +2321,7 @@ NextEquipedItem:
                 GoTo NextLoop2
             End If
             
-            'äº¤æ›ã™ã‚‹ã‚¢ã‚¤ãƒ†ãƒ ã®è£…å‚™å€‹æ‰€
+            'ŒğŠ·‚·‚éƒAƒCƒeƒ€‚Ì‘•”õŒÂŠ
             iid = id_list(ret)
             If iid <> "" Then
                 ipart = IList.Item(iid).Part
@@ -2329,17 +2329,17 @@ NextEquipedItem:
                 ipart = LIndex(list(ret), 2)
             End If
             
-            'ç©ºãã‚¹ãƒ­ãƒƒãƒˆã‚’èª¿ã¹ã¦ãŠã
+            '‹ó‚«ƒXƒƒbƒg‚ğ’²‚×‚Ä‚¨‚­
             Select Case ipart
-                Case "å³æ‰‹", "å·¦æ‰‹", "ç‰‡æ‰‹", "ä¸¡æ‰‹", "ç›¾"
+                Case "‰Eè", "¶è", "•Ğè", "—¼è", "‚"
                     is_right_hand_available = True
                     is_left_hand_available = True
                     For i = 1 To .CountItem
                         With .Item(i)
-                            If .Part = "ç‰‡æ‰‹" Then
+                            If .Part = "•Ğè" Then
                                 If IsGlobalVariableDefined("Fix(" & .Name & ")") _
-                                    Or .Class = "å›ºå®š" _
-                                    Or .IsFeatureAvailable("å‘ªã„") _
+                                    Or .Class = "ŒÅ’è" _
+                                    Or .IsFeatureAvailable("ô‚¢") _
                                 Then
                                     If is_right_hand_available Then
                                         is_right_hand_available = False
@@ -2347,38 +2347,38 @@ NextEquipedItem:
                                         is_left_hand_available = False
                                     End If
                                 End If
-                            ElseIf .Part = "ç›¾" Then
+                            ElseIf .Part = "‚" Then
                                 If IsGlobalVariableDefined("Fix(" & .Name & ")") _
-                                    Or .Class = "å›ºå®š" _
-                                    Or .IsFeatureAvailable("å‘ªã„") _
+                                    Or .Class = "ŒÅ’è" _
+                                    Or .IsFeatureAvailable("ô‚¢") _
                                 Then
                                     is_left_hand_available = False
                                 End If
                             End If
                         End With
                     Next
-                Case "å³è‚©", "å·¦è‚©", "è‚©"
+                Case "‰EŒ¨", "¶Œ¨", "Œ¨"
                     empty_slot = 2
                     For i = 1 To .CountItem
                         With .Item(i)
-                            If .Part = "è‚©" Then
+                            If .Part = "Œ¨" Then
                                 If IsGlobalVariableDefined("Fix(" & .Name & ")") _
-                                    Or .Class = "å›ºå®š" _
-                                    Or .IsFeatureAvailable("å‘ªã„") _
+                                    Or .Class = "ŒÅ’è" _
+                                    Or .IsFeatureAvailable("ô‚¢") _
                                 Then
                                     empty_slot = empty_slot - 1
                                 End If
                             End If
                         End With
                     Next
-                Case "å¼·åŒ–ãƒ‘ãƒ¼ãƒ„", "ã‚¢ã‚¤ãƒ†ãƒ "
+                Case "‹­‰»ƒp[ƒc", "ƒAƒCƒeƒ€"
                     empty_slot = .MaxItemNum
                     For i = 1 To .CountItem
                         With .Item(i)
-                            If .Part = "å¼·åŒ–ãƒ‘ãƒ¼ãƒ„" Or .Part = "ã‚¢ã‚¤ãƒ†ãƒ " Then
+                            If .Part = "‹­‰»ƒp[ƒc" Or .Part = "ƒAƒCƒeƒ€" Then
                                 If IsGlobalVariableDefined("Fix(" & .Name & ")") _
-                                    Or .Class = "å›ºå®š" _
-                                    Or .IsFeatureAvailable("å‘ªã„") _
+                                    Or .Class = "ŒÅ’è" _
+                                    Or .IsFeatureAvailable("ô‚¢") _
                                 Then
                                     empty_slot = empty_slot - .Size
                                 End If
@@ -2388,7 +2388,7 @@ NextEquipedItem:
                 Case Else
                     empty_slot = 0
                     For i = 1 To .CountFeature
-                        If .Feature(i) = "ãƒãƒ¼ãƒ‰ãƒã‚¤ãƒ³ãƒˆ" _
+                        If .Feature(i) = "ƒn[ƒhƒ|ƒCƒ“ƒg" _
                             And .FeatureData(i) = ipart _
                         Then
                             empty_slot = empty_slot + .FeatureLevel(i)
@@ -2401,8 +2401,8 @@ NextEquipedItem:
                         With .Item(i)
                             If .Part = ipart Then
                                 If IsGlobalVariableDefined("Fix(" & .Name & ")") _
-                                    Or .Class = "å›ºå®š" _
-                                    Or .IsFeatureAvailable("å‘ªã„") _
+                                    Or .Class = "ŒÅ’è" _
+                                    Or .IsFeatureAvailable("ô‚¢") _
                                 Then
                                     empty_slot = empty_slot - .Size
                                 End If
@@ -2412,7 +2412,7 @@ NextEquipedItem:
             End Select
             
             Do While True
-                'è£…å‚™å¯èƒ½ãªã‚¢ã‚¤ãƒ†ãƒ ã‚’èª¿ã¹ã‚‹
+                '‘•”õ‰Â”\‚ÈƒAƒCƒeƒ€‚ğ’²‚×‚é
                 ReDim item_list(0)
                 For Each it In IList
                     With it
@@ -2420,18 +2420,18 @@ NextEquipedItem:
                             GoTo NextItem
                         End If
                         
-                        'è£…å‚™ã‚¹ãƒ­ãƒƒãƒˆãŒç©ºã„ã¦ã„ã‚‹ï¼Ÿ
+                        '‘•”õƒXƒƒbƒg‚ª‹ó‚¢‚Ä‚¢‚éH
                         Select Case ipart
-                            Case "å³æ‰‹", "å·¦æ‰‹", "ç‰‡æ‰‹", "ä¸¡æ‰‹"
+                            Case "‰Eè", "¶è", "•Ğè", "—¼è"
                                 Select Case .Part
-                                    Case "ä¸¡æ‰‹"
+                                    Case "—¼è"
                                         If Not is_right_hand_available _
                                             Or Not is_left_hand_available _
                                         Then
                                             GoTo NextItem
                                         End If
-                                    Case "ç‰‡æ‰‹"
-                                        If u.IsFeatureAvailable("ä¸¡æ‰‹æŒã¡") Then
+                                    Case "•Ğè"
+                                        If u.IsFeatureAvailable("—¼è‚¿") Then
                                              If Not is_right_hand_available _
                                                  And Not is_left_hand_available _
                                              Then
@@ -2442,23 +2442,23 @@ NextEquipedItem:
                                                  GoTo NextItem
                                              End If
                                          End If
-                                    Case "ç›¾"
+                                    Case "‚"
                                         If Not is_left_hand_available Then
                                             GoTo NextItem
                                         End If
                                     Case Else
                                         GoTo NextItem
                                 End Select
-                            Case "ç›¾"
+                            Case "‚"
                                 Select Case .Part
-                                    Case "ä¸¡æ‰‹"
+                                    Case "—¼è"
                                         If Not is_right_hand_available _
                                             Or Not is_left_hand_available _
                                         Then
                                             GoTo NextItem
                                         End If
-                                    Case "ç‰‡æ‰‹"
-                                        If u.IsFeatureAvailable("ä¸¡æ‰‹æŒã¡") Then
+                                    Case "•Ğè"
+                                        If u.IsFeatureAvailable("—¼è‚¿") Then
                                             If Not is_right_hand_available _
                                                 And Not is_left_hand_available _
                                             Then
@@ -2467,27 +2467,27 @@ NextEquipedItem:
                                         Else
                                             GoTo NextItem
                                         End If
-                                    Case "ç›¾"
+                                    Case "‚"
                                         If Not is_left_hand_available Then
                                             GoTo NextItem
                                         End If
                                     Case Else
                                         GoTo NextItem
                                 End Select
-                            Case "å³è‚©", "å·¦è‚©", "è‚©"
-                                If .Part <> "ä¸¡è‚©" _
-                                    And .Part <> "è‚©" _
+                            Case "‰EŒ¨", "¶Œ¨", "Œ¨"
+                                If .Part <> "—¼Œ¨" _
+                                    And .Part <> "Œ¨" _
                                 Then
                                     GoTo NextItem
                                 End If
-                                If .Part = "ä¸¡è‚©" Then
+                                If .Part = "—¼Œ¨" Then
                                     If empty_slot < 2 Then
                                         GoTo NextItem
                                     End If
                                 End If
-                            Case "å¼·åŒ–ãƒ‘ãƒ¼ãƒ„", "ã‚¢ã‚¤ãƒ†ãƒ "
-                                If .Part <> "å¼·åŒ–ãƒ‘ãƒ¼ãƒ„" _
-                                    And .Part <> "ã‚¢ã‚¤ãƒ†ãƒ " _
+                            Case "‹­‰»ƒp[ƒc", "ƒAƒCƒeƒ€"
+                                If .Part <> "‹­‰»ƒp[ƒc" _
+                                    And .Part <> "ƒAƒCƒeƒ€" _
                                 Then
                                     GoTo NextItem
                                 End If
@@ -2505,24 +2505,24 @@ NextEquipedItem:
                         
                         If Not .Unit Is Nothing Then
                             With .Unit.CurrentForm
-                                'é›¢è„±ã—ãŸãƒ¦ãƒ‹ãƒƒãƒˆãŒè£…å‚™ã—ã¦ã„ã‚‹
-                                If .Status = "é›¢è„±" Then
+                                '—£’E‚µ‚½ƒ†ƒjƒbƒg‚ª‘•”õ‚µ‚Ä‚¢‚é
+                                If .Status = "—£’E" Then
                                     GoTo NextItem
                                 End If
                                 
-                                'æ•µãƒ¦ãƒ‹ãƒƒãƒˆãŒè£…å‚™ã—ã¦ã„ã‚‹
-                                If .Party <> "å‘³æ–¹" Then
+                                '“Gƒ†ƒjƒbƒg‚ª‘•”õ‚µ‚Ä‚¢‚é
+                                If .Party <> "–¡•û" Then
                                     GoTo NextItem
                                 End If
                             End With
                             
-                            'å‘ªã‚ã‚Œã¦ã„ã‚‹ã®ã§å¤–ã›ãªã„â€¦â€¦
-                            If .IsFeatureAvailable("å‘ªã„") Then
+                            'ô‚í‚ê‚Ä‚¢‚é‚Ì‚ÅŠO‚¹‚È‚¢cc
+                            If .IsFeatureAvailable("ô‚¢") Then
                                 GoTo NextItem
                             End If
                         End If
                         
-                        'æ—¢ã«ç™»éŒ²æ¸ˆã¿ï¼Ÿ
+                        'Šù‚É“o˜^Ï‚İH
                         For i = 1 To UBound(item_list)
                             If item_list(i) = .Name Then
                                 GoTo NextItem
@@ -2530,7 +2530,7 @@ NextEquipedItem:
                         Next
                     End With
                     
-                    'è£…å‚™å¯èƒ½ï¼Ÿ
+                    '‘•”õ‰Â”\H
                     If Not .IsAbleToEquip(it) Then
                         GoTo NextItem
                     End If
@@ -2540,7 +2540,7 @@ NextEquipedItem:
 NextItem:
                 Next
                 
-                'è£…å‚™å¯èƒ½ãªã‚¢ã‚¤ãƒ†ãƒ ã®ä¸€è¦§ã‚’è¡¨ç¤º
+                '‘•”õ‰Â”\‚ÈƒAƒCƒeƒ€‚Ìˆê——‚ğ•\¦
                 ReDim list(UBound(item_list))
                 ReDim strkey_list(UBound(item_list))
                 ReDim id_list(UBound(item_list))
@@ -2551,7 +2551,7 @@ NextItem:
                     With IDList.Item(iname)
                         list(i) = RightPaddedString(.Nickname, 22) & " "
                         
-                        If .IsFeatureAvailable("å¤§å‹ã‚¢ã‚¤ãƒ†ãƒ ") Then
+                        If .IsFeatureAvailable("‘åŒ^ƒAƒCƒeƒ€") Then
                             list(i) = list(i) _
                                 & RightPaddedString(.Part & _
                                     "[" & Format$(.Size) & "]", 15)
@@ -2560,7 +2560,7 @@ NextItem:
                                 & RightPaddedString(.Part, 15)
                         End If
                         
-                        'ã‚¢ã‚¤ãƒ†ãƒ ã®æ•°ã‚’ã‚«ã‚¦ãƒ³ãƒˆ
+                        'ƒAƒCƒeƒ€‚Ì”‚ğƒJƒEƒ“ƒg
                         inum = 0
                         inum2 = 0
                         For Each it In IList
@@ -2571,8 +2571,8 @@ NextItem:
                                             inum = inum + 1
                                             inum2 = inum2 + 1
                                         Else
-                                            If .Unit.CurrentForm.Status <> "é›¢è„±" Then
-                                                If Not .IsFeatureAvailable("å‘ªã„") Then
+                                            If .Unit.CurrentForm.Status <> "—£’E" Then
+                                                If Not .IsFeatureAvailable("ô‚¢") Then
                                                     inum = inum + 1
                                                 End If
                                             End If
@@ -2592,7 +2592,7 @@ NextItem:
                     End With
                 Next
                 
-                'ã‚¢ã‚¤ãƒ†ãƒ ã‚’åå‰é †ã«ã‚½ãƒ¼ãƒˆ
+                'ƒAƒCƒeƒ€‚ğ–¼‘O‡‚Éƒ\[ƒg
                 For i = 1 To UBound(strkey_list) - 1
                     max_item = i
                     max_str = strkey_list(i)
@@ -2619,40 +2619,40 @@ NextItem:
                     End If
                 Next
                 
-                'è£…å‚™ã™ã‚‹ã‚¢ã‚¤ãƒ†ãƒ ã®ç¨®é¡ã‚’é¸æŠ
-                caption_str = "è£…å‚™ã™ã‚‹ã‚¢ã‚¤ãƒ†ãƒ ã‚’é¸æŠ ï¼š " & .Nickname
-                If .CountPilot > 0 And Not IsOptionDefined("ç­‰èº«å¤§åŸºæº–") Then
+                '‘•”õ‚·‚éƒAƒCƒeƒ€‚Ìí—Ş‚ğ‘I‘ğ
+                caption_str = "‘•”õ‚·‚éƒAƒCƒeƒ€‚ğ‘I‘ğ F " & .Nickname
+                If .CountPilot > 0 And Not IsOptionDefined("“™g‘åŠî€") Then
                     caption_str = caption_str & " (" & .MainPilot.Nickname & ")"
                 End If
                 caption_str = caption_str & _
-                    "  " & Term("ï¼¨ï¼°", u) & "=" & Format$(.MaxHP) & _
-                    " " & Term("ï¼¥ï¼®", u) & "=" & Format$(.MaxEN) & _
-                    " " & Term("è£…ç”²", u) & "=" & Format$(.Armor) & _
-                    " " & Term("é‹å‹•æ€§", u) & "=" & Format$(.Mobility) & _
-                    " " & Term("ç§»å‹•åŠ›", u) & "=" & Format$(.Speed)
+                    "  " & Term("‚g‚o", u) & "=" & Format$(.MaxHP) & _
+                    " " & Term("‚d‚m", u) & "=" & Format$(.MaxEN) & _
+                    " " & Term("‘•b", u) & "=" & Format$(.Armor) & _
+                    " " & Term("‰^“®«", u) & "=" & Format$(.Mobility) & _
+                    " " & Term("ˆÚ“®—Í", u) & "=" & Format$(.Speed)
                 ret = ListBox(caption_str, list, _
-                    "ã‚¢ã‚¤ãƒ†ãƒ                åˆ†é¡            æ•°é‡", _
-                    "é€£ç¶šè¡¨ç¤º,ã‚³ãƒ¡ãƒ³ãƒˆ")
+                    "ƒAƒCƒeƒ€               •ª—Ş            ”—Ê", _
+                    "˜A‘±•\¦,ƒRƒƒ“ƒg")
                 
-                'ã‚­ãƒ£ãƒ³ã‚»ãƒ«ã•ã‚ŒãŸï¼Ÿ
+                'ƒLƒƒƒ“ƒZƒ‹‚³‚ê‚½H
                 If ret = 0 Then
                     Exit Do
                 End If
                 
                 iname = id_list(ret)
                 
-                'æœªè£…å‚™ã®ã‚¢ã‚¤ãƒ†ãƒ ãŒã‚ã‚‹ã‹ã©ã†ã‹æ¢ã™
+                '–¢‘•”õ‚ÌƒAƒCƒeƒ€‚ª‚ ‚é‚©‚Ç‚¤‚©’T‚·
                 For Each it In IList
                     With it
                         If .Name = iname And .Exist Then
                             If .Unit Is Nothing Then
-                                'æœªè£…å‚™ã®è£…å‚™ãŒè¦‹ã¤ã‹ã£ãŸã®ã§ãã‚Œã‚’è£…å‚™
+                                '–¢‘•”õ‚Ì‘•”õ‚ªŒ©‚Â‚©‚Á‚½‚Ì‚Å‚»‚ê‚ğ‘•”õ
                                 If iid <> "" Then
                                     u.DeleteItem iid
                                 End If
-                                'å‘ªã„ã®ã‚¢ã‚¤ãƒ†ãƒ ã‚’è£…å‚™â€¦â€¦
-                                If .IsFeatureAvailable("å‘ªã„") Then
-                                    MsgBox .Nickname & "ã¯å‘ªã‚ã‚Œã¦ã„ãŸï¼"
+                                'ô‚¢‚ÌƒAƒCƒeƒ€‚ğ‘•”õcc
+                                If .IsFeatureAvailable("ô‚¢") Then
+                                    MsgBox .Nickname & "‚Íô‚í‚ê‚Ä‚¢‚½I"
                                 End If
                                 u.AddItem it
                                 If MapFileName = "" Then
@@ -2667,12 +2667,12 @@ NextItem:
                     End With
                 Next
                 
-                'é¸æŠã•ã‚ŒãŸã‚¢ã‚¤ãƒ†ãƒ ã‚’åˆ—æŒ™
+                '‘I‘ğ‚³‚ê‚½ƒAƒCƒeƒ€‚ğ—ñ‹“
                 ReDim list(0)
                 ReDim id_list(0)
                 ReDim ListItemComment(0)
                 inum = 0
-                If Not IDList.Item(iname).IsFeatureAvailable("å‘ªã„") Then
+                If Not IDList.Item(iname).IsFeatureAvailable("ô‚¢") Then
                     For Each it In IList
                         With it
                             If .Name <> iname Or Not .Exist Then
@@ -2682,10 +2682,10 @@ NextItem:
                                 GoTo NextItem2
                             End If
                             With .Unit.CurrentForm
-                                If .Status = "é›¢è„±" Then
+                                If .Status = "—£’E" Then
                                     GoTo NextItem2
                                 End If
-                                If .Party <> "å‘³æ–¹" Then
+                                If .Party <> "–¡•û" Then
                                     GoTo NextItem2
                                 End If
                                 
@@ -2693,7 +2693,7 @@ NextItem:
                                 ReDim Preserve id_list(UBound(list))
                                 ReDim Preserve ListItemComment(UBound(list))
                                 
-                                If Not IsOptionDefined("ç­‰èº«å¤§åŸºæº–") _
+                                If Not IsOptionDefined("“™g‘åŠî€") _
                                     And .CountPilot > 0 _
                                 Then
                                     list(UBound(list)) = _
@@ -2706,8 +2706,8 @@ NextItem:
                                 
                                 For i = 1 To .CountItem
                                     With .Item(i)
-                                        If (.Class <> "å›ºå®š" Or Not .IsFeatureAvailable("éè¡¨ç¤º")) _
-                                            And .Part <> "éè¡¨ç¤º" _
+                                        If (.Class <> "ŒÅ’è" Or Not .IsFeatureAvailable("”ñ•\¦")) _
+                                            And .Part <> "”ñ•\¦" _
                                         Then
                                             ListItemComment(UBound(list)) = _
                                                 ListItemComment(UBound(list)) & .Nickname & " "
@@ -2724,30 +2724,30 @@ NextItem2:
                 ReDim ListItemFlag(UBound(list))
                 ReDim Preserve ListItemComment(UBound(list))
                 
-                'ã©ã®ã‚¢ã‚¤ãƒ†ãƒ ã‚’è£…å‚™ã™ã‚‹ã‹é¸æŠ
+                '‚Ç‚ÌƒAƒCƒeƒ€‚ğ‘•”õ‚·‚é‚©‘I‘ğ
                 caption_str = IList.Item(id_list(1)).Nickname & _
-                    "ã®å…¥æ‰‹å…ˆã‚’é¸æŠ ï¼š " & .Nickname
-                If .CountPilot > 0 And Not IsOptionDefined("ç­‰èº«å¤§åŸºæº–") Then
+                    "‚Ì“üèæ‚ğ‘I‘ğ F " & .Nickname
+                If .CountPilot > 0 And Not IsOptionDefined("“™g‘åŠî€") Then
                     caption_str = caption_str & " (" & .MainPilot.Nickname & ")"
                 End If
                 caption_str = caption_str & _
-                    "  " & Term("ï¼¨ï¼°", u) & "=" & Format$(.MaxHP) & _
-                    " " & Term("ï¼¥ï¼®", u) & "=" & Format$(.MaxEN) & _
-                    " " & Term("è£…ç”²", u) & "=" & Format$(.Armor) & _
-                    " " & Term("é‹å‹•æ€§", u) & "=" & Format$(.Mobility) & _
-                    " " & Term("ç§»å‹•åŠ›", u) & "=" & Format$(.Speed)
+                    "  " & Term("‚g‚o", u) & "=" & Format$(.MaxHP) & _
+                    " " & Term("‚d‚m", u) & "=" & Format$(.MaxEN) & _
+                    " " & Term("‘•b", u) & "=" & Format$(.Armor) & _
+                    " " & Term("‰^“®«", u) & "=" & Format$(.Mobility) & _
+                    " " & Term("ˆÚ“®—Í", u) & "=" & Format$(.Speed)
                 TopItem = 1
-                If IsOptionDefined("ç­‰èº«å¤§åŸºæº–") Then
+                If IsOptionDefined("“™g‘åŠî€") Then
                     ret = ListBox(caption_str, list, _
-                        "ãƒ¦ãƒ‹ãƒƒãƒˆ", _
-                        "é€£ç¶šè¡¨ç¤º,ã‚³ãƒ¡ãƒ³ãƒˆ")
+                        "ƒ†ƒjƒbƒg", _
+                        "˜A‘±•\¦,ƒRƒƒ“ƒg")
                 Else
                     ret = ListBox(caption_str, list, _
-                        "ãƒ¦ãƒ‹ãƒƒãƒˆ                             ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆ", _
-                        "é€£ç¶šè¡¨ç¤º,ã‚³ãƒ¡ãƒ³ãƒˆ")
+                        "ƒ†ƒjƒbƒg                             ƒpƒCƒƒbƒg", _
+                        "˜A‘±•\¦,ƒRƒƒ“ƒg")
                 End If
                 
-                'ã‚¢ã‚¤ãƒ†ãƒ ã‚’äº¤æ›
+                'ƒAƒCƒeƒ€‚ğŒğŠ·
                 If ret > 0 Then
                     If iid <> "" Then
                         .DeleteItem iid
@@ -2757,9 +2757,9 @@ NextItem2:
                             .Unit.DeleteItem .ID
                         End If
                         
-                        'å‘ªã„ã®ã‚¢ã‚¤ãƒ†ãƒ ã‚’è£…å‚™â€¦â€¦
-                        If .IsFeatureAvailable("å‘ªã„") Then
-                            MsgBox .Nickname & "ã¯å‘ªã‚ã‚Œã¦ã„ãŸï¼"
+                        'ô‚¢‚ÌƒAƒCƒeƒ€‚ğ‘•”õcc
+                        If .IsFeatureAvailable("ô‚¢") Then
+                            MsgBox .Nickname & "‚Íô‚í‚ê‚Ä‚¢‚½I"
                         End If
                     End With
                     .AddItem IList.Item(id_list(ret))
@@ -2777,8 +2777,8 @@ NextLoop2:
         Loop
     End With
     
-    'ãƒ¦ãƒ‹ãƒƒãƒˆãŒã‚ã‚‰ã‹ã˜ã‚é¸æŠã•ã‚Œã¦ã„ã‚‹å ´åˆ
-    '(ãƒ¦ãƒ‹ãƒƒãƒˆã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‹ã‚‰ã®ã‚¢ã‚¤ãƒ†ãƒ äº¤æ›æ™‚)
+    'ƒ†ƒjƒbƒg‚ª‚ ‚ç‚©‚¶‚ß‘I‘ğ‚³‚ê‚Ä‚¢‚éê‡
+    '(ƒ†ƒjƒbƒgƒXƒe[ƒ^ƒX‚©‚ç‚ÌƒAƒCƒeƒ€ŒğŠ·)
     If Not selected_unit Is Nothing Then
         With frmListBox
             .Hide
@@ -2796,7 +2796,7 @@ NextLoop2:
     GoTo Beginning
 End Sub
 
-'æ›è£…ã‚³ãƒãƒ³ãƒ‰
+'Š·‘•ƒRƒ}ƒ“ƒh
 ' MOD START MARGE
 'Public Sub ExchangeFormCommand()
 Private Sub ExchangeFormCommand()
@@ -2814,29 +2814,29 @@ Beginning:
     
     top_item = 1
     
-    'æ›è£…å¯èƒ½ãªãƒ¦ãƒ‹ãƒƒãƒˆã®ãƒªã‚¹ãƒˆã‚’ä½œæˆ
+    'Š·‘•‰Â”\‚Èƒ†ƒjƒbƒg‚ÌƒŠƒXƒg‚ğì¬
     ReDim list(0)
     ReDim id_list(0)
     ReDim ListItemComment(0)
     For Each u In UList
         With u
-            'å¾…æ©Ÿä¸­ã®å‘³æ–¹ãƒ¦ãƒ‹ãƒƒãƒˆï¼Ÿ
-            If .Party0 <> "å‘³æ–¹" Or .Status <> "å¾…æ©Ÿ" Then
+            '‘Ò‹@’†‚Ì–¡•ûƒ†ƒjƒbƒgH
+            If .Party0 <> "–¡•û" Or .Status <> "‘Ò‹@" Then
                 GoTo NextLoop
             End If
             
-            'æ›è£…èƒ½åŠ›ã‚’æŒã£ã¦ã„ã‚‹ï¼Ÿ
-            If Not .IsFeatureAvailable("æ›è£…") Then
+            'Š·‘•”\—Í‚ğ‚Á‚Ä‚¢‚éH
+            If Not .IsFeatureAvailable("Š·‘•") Then
                 GoTo NextLoop
             End If
             
-            'ã„ãšã‚Œã‹ã®å½¢æ…‹ã«æ›è£…å¯èƒ½ï¼Ÿ
-            For i = 1 To LLength(.FeatureData("æ›è£…"))
-                If .OtherForm(LIndex(.FeatureData("æ›è£…"), i)).IsAvailable Then
+            '‚¢‚¸‚ê‚©‚ÌŒ`‘Ô‚ÉŠ·‘•‰Â”\H
+            For i = 1 To LLength(.FeatureData("Š·‘•"))
+                If .OtherForm(LIndex(.FeatureData("Š·‘•"), i)).IsAvailable Then
                     Exit For
                 End If
             Next
-            If i > LLength(.FeatureData("æ›è£…")) Then
+            If i > LLength(.FeatureData("Š·‘•")) Then
                 GoTo NextLoop
             End If
             
@@ -2844,8 +2844,8 @@ Beginning:
             ReDim Preserve id_list(UBound(list))
             ReDim Preserve ListItemComment(UBound(list))
             
-            'ãƒ¦ãƒ‹ãƒƒãƒˆã®ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚’è¡¨ç¤º
-            If IsOptionDefined("ç­‰èº«å¤§åŸºæº–") Then
+            'ƒ†ƒjƒbƒg‚ÌƒXƒe[ƒ^ƒX‚ğ•\¦
+            If IsOptionDefined("“™g‘åŠî€") Then
                 If .Rank < 10 Then
                     list(UBound(list)) = _
                         RightPaddedString(.Nickname0, 37) _
@@ -2872,7 +2872,7 @@ Beginning:
                 & LeftPaddedString(Format$(.Armor), 5) _
                 & LeftPaddedString(Format$(.Mobility), 5)
             If .CountPilot > 0 Then
-                If IsOptionDefined("ç­‰èº«å¤§åŸºæº–") Then
+                If IsOptionDefined("“™g‘åŠî€") Then
                     list(UBound(list)) = list(UBound(list)) _
                         & "  " & LeftPaddedString(Format$(.MainPilot.Level), 6)
                 Else
@@ -2881,11 +2881,11 @@ Beginning:
                 End If
             End If
             
-            'ãƒ¦ãƒ‹ãƒƒãƒˆã«è£…å‚™ã•ã‚Œã¦ã„ã‚‹ã‚¢ã‚¤ãƒ†ãƒ ã‚’ã‚³ãƒ¡ãƒ³ãƒˆæ¬„ã«åˆ—è¨˜
+            'ƒ†ƒjƒbƒg‚É‘•”õ‚³‚ê‚Ä‚¢‚éƒAƒCƒeƒ€‚ğƒRƒƒ“ƒg—“‚É—ñ‹L
             For k = 1 To .CountItem
                 With .Item(k)
-                    If (.Class <> "å›ºå®š" Or Not .IsFeatureAvailable("éè¡¨ç¤º")) _
-                        And .Part <> "éè¡¨ç¤º" _
+                    If (.Class <> "ŒÅ’è" Or Not .IsFeatureAvailable("”ñ•\¦")) _
+                        And .Part <> "”ñ•\¦" _
                     Then
                         ListItemComment(UBound(list)) = _
                             ListItemComment(UBound(list)) & .Nickname & " "
@@ -2893,14 +2893,14 @@ Beginning:
                 End With
             Next
             
-            'ãƒ¦ãƒ‹ãƒƒãƒˆï¼©ï¼¤ã‚’è¨˜éŒ²ã—ã¦ãŠã
+            'ƒ†ƒjƒbƒg‚h‚c‚ğ‹L˜^‚µ‚Ä‚¨‚­
             id_list(UBound(list)) = .ID
         End With
 NextLoop:
     Next
     ReDim ListItemFlag(UBound(list))
     
-    'ãƒªã‚¹ãƒˆã‚’ãƒ¦ãƒ‹ãƒƒãƒˆã®ï¼¨ï¼°ã§ã‚½ãƒ¼ãƒˆ
+    'ƒŠƒXƒg‚ğƒ†ƒjƒbƒg‚Ì‚g‚o‚Åƒ\[ƒg
     ReDim key_list(UBound(list))
     With UList
         For i = 1 To UBound(list)
@@ -2933,34 +2933,34 @@ NextLoop:
         End If
     Next
     
-    'æ›è£…ã™ã‚‹ãƒ¦ãƒ‹ãƒƒãƒˆã‚’é¸æŠ
+    'Š·‘•‚·‚éƒ†ƒjƒbƒg‚ğ‘I‘ğ
     TopItem = top_item
-    If IsOptionDefined("ç­‰èº«å¤§åŸºæº–") Then
-        ret = ListBox("ãƒ¦ãƒ‹ãƒƒãƒˆé¸æŠ", list, _
-            "ãƒ¦ãƒ‹ãƒƒãƒˆ                         " & Term("ãƒ©ãƒ³ã‚¯", Nothing, 6) & "   " _
-                & Term("ï¼¨ï¼°", Nothing, 4) & " " & Term("ï¼¥ï¼®", Nothing, 4) & " " _
-                & Term("è£…ç”²", Nothing, 4) & " " & Term("é‹å‹•", Nothing, 4) & " ãƒ¬ãƒ™ãƒ«", _
-            "é€£ç¶šè¡¨ç¤º,ã‚³ãƒ¡ãƒ³ãƒˆ")
+    If IsOptionDefined("“™g‘åŠî€") Then
+        ret = ListBox("ƒ†ƒjƒbƒg‘I‘ğ", list, _
+            "ƒ†ƒjƒbƒg                         " & Term("ƒ‰ƒ“ƒN", Nothing, 6) & "   " _
+                & Term("‚g‚o", Nothing, 4) & " " & Term("‚d‚m", Nothing, 4) & " " _
+                & Term("‘•b", Nothing, 4) & " " & Term("‰^“®", Nothing, 4) & " ƒŒƒxƒ‹", _
+            "˜A‘±•\¦,ƒRƒƒ“ƒg")
     Else
-        ret = ListBox("ãƒ¦ãƒ‹ãƒƒãƒˆé¸æŠ", list, _
-            "ãƒ¦ãƒ‹ãƒƒãƒˆ                     " & Term("ãƒ©ãƒ³ã‚¯", Nothing, 6) & "   " _
-                & Term("ï¼¨ï¼°", Nothing, 4) & " " & Term("ï¼¥ï¼®", Nothing, 4) & " " _
-                & Term("è£…ç”²", Nothing, 4) & " " & Term("é‹å‹•", Nothing, 4) & " ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆ", _
-            "é€£ç¶šè¡¨ç¤º,ã‚³ãƒ¡ãƒ³ãƒˆ")
+        ret = ListBox("ƒ†ƒjƒbƒg‘I‘ğ", list, _
+            "ƒ†ƒjƒbƒg                     " & Term("ƒ‰ƒ“ƒN", Nothing, 6) & "   " _
+                & Term("‚g‚o", Nothing, 4) & " " & Term("‚d‚m", Nothing, 4) & " " _
+                & Term("‘•b", Nothing, 4) & " " & Term("‰^“®", Nothing, 4) & " ƒpƒCƒƒbƒg", _
+            "˜A‘±•\¦,ƒRƒƒ“ƒg")
     End If
     top_item = TopItem
     
-    'ã‚­ãƒ£ãƒ³ã‚»ãƒ«ï¼Ÿ
+    'ƒLƒƒƒ“ƒZƒ‹H
     If ret = 0 Then
         Exit Sub
     End If
     
-    'é¸æŠã•ã‚ŒãŸãƒ¦ãƒ‹ãƒƒãƒˆã‚’æ¤œç´¢
+    '‘I‘ğ‚³‚ê‚½ƒ†ƒjƒbƒg‚ğŒŸõ
     Set u = UList.Item(id_list(ret))
     
-    'æ›è£…å¯èƒ½ãªå½¢æ…‹ã®ãƒªã‚¹ãƒˆã‚’ä½œæˆ
+    'Š·‘•‰Â”\‚ÈŒ`‘Ô‚ÌƒŠƒXƒg‚ğì¬
     With u
-        buf = .FeatureData("æ›è£…")
+        buf = .FeatureData("Š·‘•")
         ReDim list2(0)
         ReDim id_list2(0)
         ReDim ListItemComment(0)
@@ -2971,12 +2971,12 @@ NextLoop:
                     ReDim Preserve id_list2(UBound(list2))
                     ReDim Preserve ListItemComment(UBound(list2))
                     
-                    'ãƒ¦ãƒ‹ãƒƒãƒˆãƒ©ãƒ³ã‚¯ã‚’åˆã‚ã›ã‚‹
+                    'ƒ†ƒjƒbƒgƒ‰ƒ“ƒN‚ğ‡‚í‚¹‚é
                     .Rank = u.Rank
                     .BossRank = u.BossRank
                     .Update
                     
-                    'æ›è£…å…ˆã®ãƒªã‚¹ãƒˆã‚’ä½œæˆ
+                    'Š·‘•æ‚ÌƒŠƒXƒg‚ğì¬
                     id_list2(UBound(list2)) = .Name
                     If u.Nickname0 = .Nickname Then
                         list2(UBound(list2)) = RightPaddedString(.Name, 27)
@@ -2990,12 +2990,12 @@ NextLoop:
                         & LeftPaddedString(Format$(.Mobility), 5) _
                         & " " & .Data.Adaption
                     
-                    'æœ€å¤§æ”»æ’ƒåŠ›
+                    'Å‘åUŒ‚—Í
                     max_value = 0
                     For j = 1 To .CountWeapon
                         If .IsWeaponMastered(j) _
                             And Not .IsDisabled(.Weapon(j).Name) _
-                            And Not .IsWeaponClassifiedAs(j, "åˆ") _
+                            And Not .IsWeaponClassifiedAs(j, "‡") _
                         Then
                             If .WeaponPower(j, "") > max_value Then
                                 max_value = .WeaponPower(j, "")
@@ -3005,12 +3005,12 @@ NextLoop:
                     list2(UBound(list2)) = list2(UBound(list2)) _
                         & LeftPaddedString(Format$(max_value), 7)
                     
-                    'æœ€å¤§å°„ç¨‹
+                    'Å‘åË’ö
                     max_value = 0
                     For j = 1 To .CountWeapon
                         If .IsWeaponMastered(j) _
                             And Not .IsDisabled(.Weapon(j).Name) _
-                            And Not .IsWeaponClassifiedAs(j, "åˆ") _
+                            And Not .IsWeaponClassifiedAs(j, "‡") _
                         Then
                             If .WeaponMaxRange(j) > max_value Then
                                 max_value = .WeaponMaxRange(j)
@@ -3020,11 +3020,11 @@ NextLoop:
                     list2(UBound(list2)) = list2(UBound(list2)) _
                         & LeftPaddedString(Format$(max_value), 5)
                     
-                    'æ›è£…å…ˆãŒæŒã¤ç‰¹æ®Šèƒ½åŠ›ä¸€è¦§
+                    'Š·‘•æ‚ª‚Â“Áê”\—Íˆê——
                     ReDim farray(0)
                     For j = 1 To .CountFeature
                         If .FeatureName(j) <> "" Then
-                            'é‡è¤‡ã™ã‚‹ç‰¹æ®Šèƒ½åŠ›ã¯è¡¨ç¤ºã—ãªã„ã‚ˆã†ãƒã‚§ãƒƒã‚¯
+                            'd•¡‚·‚é“Áê”\—Í‚Í•\¦‚µ‚È‚¢‚æ‚¤ƒ`ƒFƒbƒN
                             For k = 1 To UBound(farray)
                                 If .FeatureName(j) = farray(k) Then
                                     Exit For
@@ -3043,30 +3043,30 @@ NextLoop:
         Next
         ReDim ListItemFlag(UBound(list2))
         
-        'æ›è£…å…ˆã®å½¢æ…‹ã‚’é¸æŠ
+        'Š·‘•æ‚ÌŒ`‘Ô‚ğ‘I‘ğ
         TopItem = 1
-        ret = ListBox("å¤‰æ›´å…ˆé¸æŠ", list2, _
-            "ãƒ¦ãƒ‹ãƒƒãƒˆ                     " & Term("ï¼¨ï¼°", u, 4) & " " & Term("ï¼¥ï¼®", u, 4) & " " _
-                & Term("è£…ç”²", u, 4) & " " & Term("é‹å‹•", u, 4) & " é©å¿œ æ”»æ’ƒåŠ› å°„ç¨‹", _
-            "é€£ç¶šè¡¨ç¤º,ã‚³ãƒ¡ãƒ³ãƒˆ")
+        ret = ListBox("•ÏXæ‘I‘ğ", list2, _
+            "ƒ†ƒjƒbƒg                     " & Term("‚g‚o", u, 4) & " " & Term("‚d‚m", u, 4) & " " _
+                & Term("‘•b", u, 4) & " " & Term("‰^“®", u, 4) & " “K‰ UŒ‚—Í Ë’ö", _
+            "˜A‘±•\¦,ƒRƒƒ“ƒg")
         
-        'ã‚­ãƒ£ãƒ³ã‚»ãƒ«ï¼Ÿ
+        'ƒLƒƒƒ“ƒZƒ‹H
         If ret = 0 Then
            GoTo Beginning
         End If
         
-        'æ›è£…ã‚’å®Ÿæ–½
+        'Š·‘•‚ğÀ{
         .Transform id_list2(ret)
     End With
     
     GoTo Beginning
 End Sub
 
-'ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚³ãƒãƒ³ãƒ‰ä¸­ã‹ã©ã†ã‹ã‚’è¿”ã™
+'ƒXƒe[ƒ^ƒXƒRƒ}ƒ“ƒh’†‚©‚Ç‚¤‚©‚ğ•Ô‚·
 Public Function InStatusCommand() As Boolean
     If MapFileName = "" Then
-        If InStr(ScenarioFileName, "\ãƒ¦ãƒ‹ãƒƒãƒˆã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹è¡¨ç¤º.eve") > 0 _
-            Or InStr(ScenarioFileName, "\ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹è¡¨ç¤º.eve") > 0 _
+        If InStr(ScenarioFileName, "\ƒ†ƒjƒbƒgƒXƒe[ƒ^ƒX•\¦.eve") > 0 _
+            Or InStr(ScenarioFileName, "\ƒpƒCƒƒbƒgƒXƒe[ƒ^ƒX•\¦.eve") > 0 _
             Or IsSubStage _
         Then
             InStatusCommand = True

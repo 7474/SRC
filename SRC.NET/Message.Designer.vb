@@ -61,10 +61,10 @@
 		Me.StartPosition = System.Windows.Forms.FormStartPosition.Manual
 		Me.BackColor = System.Drawing.Color.FromARGB(192, 192, 192)
 		Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
-		Me.Text = "Invalid_string_refer_to_original_code"
+		Me.Text = "ÉÅÉbÉZÅ[ÉW"
 		Me.ClientSize = New System.Drawing.Size(508, 118)
 		Me.Location = New System.Drawing.Point(93, 101)
-		Me.Font = New System.Drawing.Font("Invalid_string_refer_to_original_code", 12!, System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
+		Me.Font = New System.Drawing.Font("ÇlÇr Çoñæí©", 12!, System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
 		Me.ForeColor = System.Drawing.Color.Black
 		Me.Icon = CType(resources.GetObject("frmMessage.Icon"), System.Drawing.Icon)
 		Me.KeyPreview = True
@@ -126,7 +126,7 @@
 		Me.picUnit2.Name = "picUnit2"
 		Me.txtHP2.AutoSize = False
 		Me.txtHP2.BackColor = System.Drawing.Color.FromARGB(192, 192, 192)
-		Me.txtHP2.Font = New System.Drawing.Font("Invalid_string_refer_to_original_code", 9.75!, System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
+		Me.txtHP2.Font = New System.Drawing.Font("ÇlÇr ñæí©", 9.75!, System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
 		Me.txtHP2.ForeColor = System.Drawing.Color.Black
 		Me.txtHP2.Size = New System.Drawing.Size(88, 13)
 		Me.txtHP2.Location = New System.Drawing.Point(323, 10)
@@ -179,7 +179,7 @@
 		Me.picEN2.Name = "picEN2"
 		Me.txtEN2.AutoSize = False
 		Me.txtEN2.BackColor = System.Drawing.Color.FromARGB(192, 192, 192)
-		Me.txtEN2.Font = New System.Drawing.Font("Invalid_string_refer_to_original_code", 9.75!, System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
+		Me.txtEN2.Font = New System.Drawing.Font("ÇlÇr ñæí©", 9.75!, System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
 		Me.txtEN2.ForeColor = System.Drawing.Color.Black
 		Me.txtEN2.Size = New System.Drawing.Size(57, 13)
 		Me.txtEN2.Location = New System.Drawing.Point(443, 10)
@@ -202,7 +202,7 @@
 		Me.txtEN2.Name = "txtEN2"
 		Me.txtEN1.AutoSize = False
 		Me.txtEN1.BackColor = System.Drawing.Color.FromARGB(192, 192, 192)
-		Me.txtEN1.Font = New System.Drawing.Font("Invalid_string_refer_to_original_code", 9.75!, System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
+		Me.txtEN1.Font = New System.Drawing.Font("ÇlÇr ñæí©", 9.75!, System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
 		Me.txtEN1.ForeColor = System.Drawing.Color.Black
 		Me.txtEN1.Size = New System.Drawing.Size(57, 13)
 		Me.txtEN1.Location = New System.Drawing.Point(192, 10)
@@ -255,7 +255,7 @@
 		Me.picHP1.Name = "picHP1"
 		Me.txtHP1.AutoSize = False
 		Me.txtHP1.BackColor = System.Drawing.Color.FromARGB(192, 192, 192)
-		Me.txtHP1.Font = New System.Drawing.Font("Invalid_string_refer_to_original_code", 9.75!, System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
+		Me.txtHP1.Font = New System.Drawing.Font("ÇlÇr ñæí©", 9.75!, System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
 		Me.txtHP1.ForeColor = System.Drawing.Color.Black
 		Me.txtHP1.Size = New System.Drawing.Size(88, 13)
 		Me.txtHP1.Location = New System.Drawing.Point(72, 10)
@@ -277,7 +277,7 @@
 		Me.txtHP1.BorderStyle = System.Windows.Forms.BorderStyle.None
 		Me.txtHP1.Name = "txtHP1"
 		Me.picMessage.BackColor = System.Drawing.Color.White
-		Me.picMessage.Font = New System.Drawing.Font("Invalid_string_refer_to_original_code", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
+		Me.picMessage.Font = New System.Drawing.Font("ÇlÇr Çoñæí©", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
 		Me.picMessage.ForeColor = System.Drawing.Color.Black
 		Me.picMessage.Size = New System.Drawing.Size(417, 70)
 		Me.picMessage.Location = New System.Drawing.Point(84, 42)

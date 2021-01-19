@@ -1,7 +1,7 @@
 VERSION 5.00
 Begin VB.Form frmNowLoading 
    BackColor       =   &H00C0C0C0&
-   BorderStyle     =   3  'å›ºå®šï¾€ï¾ï½²ï½±ï¾›ï½¸ï¾
+   BorderStyle     =   3  'ŒÅ’èÀŞ²±Û¸Ş
    Caption         =   "SRC"
    ClientHeight    =   1320
    ClientLeft      =   1140
@@ -12,19 +12,19 @@ Begin VB.Form frmNowLoading
    Icon            =   "NowLoading.frx":0000
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
-   PaletteMode     =   1  'Z ï½µï½°ï¾€ï¾ï½°
+   PaletteMode     =   1  'Z µ°ÀŞ°
    ScaleHeight     =   1320
    ScaleWidth      =   3210
    Begin VB.PictureBox picBar 
       AutoRedraw      =   -1  'True
       BackColor       =   &H00FFFFFF&
       FillColor       =   &H00800000&
-      FillStyle       =   0  'å¡—ã‚Šã¤ã¶ã—
+      FillStyle       =   0  '“h‚è‚Â‚Ô‚µ
       ForeColor       =   &H00800000&
       Height          =   195
       Left            =   240
       ScaleHeight     =   9
-      ScaleMode       =   3  'ï¾‹ï¾Ÿï½¸ï½¾ï¾™
+      ScaleMode       =   3  'Ëß¸¾Ù
       ScaleWidth      =   179
       TabIndex        =   1
       Top             =   840
@@ -58,18 +58,18 @@ Attribute VB_Exposed = False
 Option Explicit
 
 ' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯ãƒ•ãƒªãƒ¼ã‚½ãƒ•ãƒˆã§ã‚ã‚Šã€ç„¡ä¿è¨¼ã§ã™ã€‚
-' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯GNU General Public License(Ver.3ã¾ãŸã¯ãã‚Œä»¥é™)ãŒå®šã‚ã‚‹æ¡ä»¶ã®ä¸‹ã§
-' å†é ’å¸ƒã¾ãŸã¯æ”¹å¤‰ã™ã‚‹ã“ã¨ãŒã§ãã¾ã™ã€‚
+' –{ƒvƒƒOƒ‰ƒ€‚ÍƒtƒŠ[ƒ\ƒtƒg‚Å‚ ‚èA–³•ÛØ‚Å‚·B
+' –{ƒvƒƒOƒ‰ƒ€‚ÍGNU General Public License(Ver.3‚Ü‚½‚Í‚»‚êˆÈ~)‚ª’è‚ß‚éğŒ‚Ì‰º‚Å
+' Ä”Ğ•z‚Ü‚½‚Í‰ü•Ï‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B
 
-'ãƒ‡ãƒ¼ã‚¿ãƒ­ãƒ¼ãƒ‰ã®é€²è¡ŒçŠ¶æ³ã‚’ç¤ºã™ãƒ•ã‚©ãƒ¼ãƒ 
+'ƒf[ƒ^ƒ[ƒh‚Ìisó‹µ‚ğ¦‚·ƒtƒH[ƒ€
 
-'ãƒ‡ãƒ¼ã‚¿ç·æ•°
+'ƒf[ƒ^‘”
 Public Size As Integer
-'èª­ã¿è¾¼ã¿çµ‚ãˆãŸãƒ‡ãƒ¼ã‚¿ã®æ•°
+'“Ç‚İ‚İI‚¦‚½ƒf[ƒ^‚Ì”
 Public Value As Integer
 
-'ãƒ­ãƒ¼ãƒ‰ã‚’ï¼‘æ®µéšé€²è¡Œã•ã›ã‚‹
+'ƒ[ƒh‚ğ‚P’iŠKis‚³‚¹‚é
 Public Sub Progress()
     Value = Value + 1
     picBar.Cls

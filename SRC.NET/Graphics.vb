@@ -3,28 +3,28 @@ Option Explicit On
 Module Graphics
 	
 	' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
+	' –{ƒvƒƒOƒ‰ƒ€‚ÍƒtƒŠ[ƒ\ƒtƒg‚Å‚ ‚èA–³•ÛØ‚Å‚·B
+	' –{ƒvƒƒOƒ‰ƒ€‚ÍGNU General Public License(Ver.3‚Ü‚½‚Í‚»‚êˆÈ~)‚ª’è‚ß‚éğŒ‚Ì‰º‚Å
+	' Ä”Ğ•z‚Ü‚½‚Í‰ü•Ï‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B
 	
-	'Invalid_string_refer_to_original_code
+	'‰æ‘œˆ—‚ğs‚¤ƒ‚ƒWƒ…[ƒ‹
 	
-	'Invalid_string_refer_to_original_code
+	' BITMAPINFO\‘¢‘Ì
 	Public Structure BITMAPINFOHEADER
-		Dim biSize As Integer 'bmiHeaderã®ã‚µã‚¤ã‚º
-		Dim biWidth As Integer 'Invalid_string_refer_to_original_code
-		Dim biHeight As Integer 'Invalid_string_refer_to_original_code
-		Dim biPlanes As Short 'Invalid_string_refer_to_original_code
-		Dim biBitCount As Short 'Invalid_string_refer_to_original_code
-		Dim biCompression As Integer 'Invalid_string_refer_to_original_code
-		Dim biSizeImage As Integer 'ç”»åƒãƒ‡ãƒ¼ã‚¿ã®ã‚µã‚¤ã‚ºã‚’è¡¨ã™ãƒã‚¤ãƒˆæ•°
-		Dim biXPelsPerMeter As Integer 'Invalid_string_refer_to_original_code
-		Dim biYPelsPerMeter As Integer 'Invalid_string_refer_to_original_code
-		Dim biClrUsed As Integer 'Invalid_string_refer_to_original_code
-		Dim biClrImportant As Integer 'Invalid_string_refer_to_original_code
+		Dim biSize As Integer 'bmiHeader‚ÌƒTƒCƒY
+		Dim biWidth As Integer 'ƒrƒbƒgƒ}ƒbƒv‚Ì•‚ğ•\‚·ƒsƒNƒZƒ‹”
+		Dim biHeight As Integer 'ƒrƒbƒgƒ}ƒbƒv‚Ì‚‚³‚ğ•\‚·ƒsƒNƒZƒ‹”
+		Dim biPlanes As Short 'í‚É‚P
+		Dim biBitCount As Short 'ƒsƒNƒZƒ‹‚ ‚½‚è‚Ìƒrƒbƒg”
+		Dim biCompression As Integer 'ˆ³k‚Ìí—Ş
+		Dim biSizeImage As Integer '‰æ‘œƒf[ƒ^‚ÌƒTƒCƒY‚ğ•\‚·ƒoƒCƒg”
+		Dim biXPelsPerMeter As Integer '…•½•ûŒü‚Ì‰ğ‘œ“x‚ğ•\‚·ƒ[ƒgƒ‹‚ ‚½‚è‚ÌƒsƒNƒZƒ‹”
+		Dim biYPelsPerMeter As Integer '‚’¼•ûŒü‚Ì‰ğ‘œ“x‚ğ•\‚·ƒ[ƒgƒ‹‚ ‚½‚è‚ÌƒsƒNƒZƒ‹”
+		Dim biClrUsed As Integer 'ƒrƒbƒgƒ}ƒbƒv‚ªÀÛ‚Ég—p‚·‚éF‚Ì”
+		Dim biClrImportant As Integer 'd—v‚ÈF‚Ì”(0‚Ìê‡‚Í‚·‚×‚Ä‚ÌF‚ªd—v)
 	End Structure
 	
-	'Invalid_string_refer_to_original_code
+	' ƒpƒŒƒbƒgƒGƒ“ƒgƒŠ\‘¢‘Ì
 	Public Structure RGBQUAD
 		Dim rgbBlue As Byte
 		Dim rgbGreen As Byte
@@ -32,7 +32,7 @@ Module Graphics
 		Dim rgbReserved As Byte
 	End Structure
 	
-	'Invalid_string_refer_to_original_code
+	' ƒrƒbƒgƒ}ƒbƒvî•ñ
 	Public Structure BITMAPINFO
 		Dim bmiHeader As BITMAPINFOHEADER
 		<VBFixedArray(255)> Dim bmiColors() As RGBQUAD
@@ -62,7 +62,7 @@ Module Graphics
 	Const BI_RGB As Short = 0
 	
 	
-	'Invalid_string_refer_to_original_code
+	' ƒrƒbƒgƒ}ƒbƒv\‘¢‘Ì
 	Public Structure Bitmap
 		Dim bmType As Integer
 		Dim bmWidth As Integer
@@ -88,24 +88,24 @@ Module Graphics
 	'UPGRADE_WARNING: \‘¢‘Ì BITMAPINFOHEADER ‚ÉA‚±‚Ì Declare ƒXƒe[ƒgƒƒ“ƒg‚Ìˆø”‚Æ‚µ‚Äƒ}[ƒVƒƒƒŠƒ“ƒO‘®«‚ğ“n‚·•K—v‚ª‚ ‚è‚Ü‚·B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="C429C3A5-5D47-4CD9-8F51-74A1616405DC"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 	Public Declare Function CreateDIBitmap Lib "gdi32" (ByVal hDC As Integer, ByRef lpInfoHeader As BITMAPINFOHEADER, ByVal dwUsage As Integer, ByRef lpInitBits As Any, ByRef lpInitInfo As BITMAPINFOHEADER, ByVal wUsage As Integer) As Integer
 	
-	'Invalid_string_refer_to_original_code
+	'w’èˆÊ’u‚ÌƒsƒNƒZƒ‹F‚ğæ“¾‚·‚é
 	Public Declare Function GetPixel Lib "gdi32" (ByVal hDC As Integer, ByVal X As Integer, ByVal Y As Integer) As Integer
 	
-	'Invalid_string_refer_to_original_code
+	' RGB\‘¢‘Ì
 	Public Structure RGBq
 		Dim Blue As Byte
 		Dim Green As Byte
 		Dim Red As Byte
 	End Structure
 	
-	Dim PixBuf() As RGBq 'Invalid_string_refer_to_original_code
-	Dim PixBuf2() As RGBq 'Invalid_string_refer_to_original_code
-	Dim PixWidth As Integer 'Invalid_string_refer_to_original_code
-	Dim PixHeight As Integer 'Invalid_string_refer_to_original_code
-	Dim PicWidth As Integer 'Invalid_string_refer_to_original_code
-	Dim PicHeight As Integer 'Invalid_string_refer_to_original_code
+	Dim PixBuf() As RGBq 'ƒsƒNƒZƒ‹‚ÌFî•ñ”z—ñ
+	Dim PixBuf2() As RGBq 'ƒsƒNƒZƒ‹‚ÌFî•ñ”z—ñ
+	Dim PixWidth As Integer 'ƒoƒbƒtƒ@‚Ì“à—e‚Ì•
+	Dim PixHeight As Integer 'ƒoƒbƒtƒ@‚Ì“à—e‚Ì‚‚³
+	Dim PicWidth As Integer '‰æ‘œ‚Ì•
+	Dim PicHeight As Integer '‰æ‘œ‚Ì‚‚³
 	
-	'Invalid_string_refer_to_original_code
+	'ƒtƒF[ƒhƒCƒ“•ƒAƒEƒg—p•Ï”
 	Dim BmpInfo() As BITMAPINFO
 	Dim NewDC As Integer
 	Dim MemDC As Integer
@@ -116,7 +116,7 @@ Module Graphics
 	
 	
 	'
-	'Invalid_string_refer_to_original_code
+	'ƒtƒF[ƒhƒCƒ“•ƒtƒF[ƒhƒAƒEƒg
 	'
 	Public Sub InitFade(ByRef pic As System.Windows.Forms.PictureBox, ByVal times As Integer, Optional ByVal white_out As Boolean = False)
 		Dim g, r, b As Integer
@@ -127,10 +127,10 @@ Module Graphics
 		'UPGRADE_NOTE: rgb ‚Í rgb_Renamed ‚ÉƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 		Dim rgb_Renamed As Integer
 		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
+		'ƒtƒF[ƒhˆ—‚Í‰æ‘œ‚ğ256F‚É•ÏŠ·‚µ‚Äs‚¤
+		'‚±‚Ì‚½‚ß‚Ì256F‚ÌƒJƒ‰[ƒ}ƒbƒv‚ğì¬‚·‚é
 		
-		'Invalid_string_refer_to_original_code
+		'‚Ü‚¸‚ÍŒˆ‚ß‘Å‚¿‚Å0`195”Ô‚ÌF‚ğì¬
 		i = 0
 		For j = 0 To 6
 			Select Case j
@@ -190,7 +190,7 @@ Module Graphics
 			Next 
 		Next 
 		
-		'Invalid_string_refer_to_original_code
+		'196`255”Ô‚ÌF‚ÍŒ³‰æ‘œ‚ÌF‚ğƒTƒ“ƒvƒŠƒ“ƒO‚µ‚Äì¬
 		With pic
 			j = 0
 			Do While i <= 220
@@ -269,7 +269,7 @@ Module Graphics
 			.Blue = b
 		End With
 		
-		'Invalid_string_refer_to_original_code
+		'BmpInfo‚ğƒJƒ‰[ƒpƒŒƒbƒg‚ğ•Ï‚¦‚È‚ª‚çtimes+1ŒÂì¬
 		'UPGRADE_WARNING: ”z—ñ BmpInfo ‚ÅŠe—v‘f‚ğ‰Šú‰»‚·‚é•K—v‚ª‚ ‚è‚Ü‚·B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="B97B714D-9338-48AC-B03F-345B617E2B02"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 		ReDim BmpInfo(times)
 		For i = 0 To times
@@ -287,7 +287,7 @@ Module Graphics
 				.biClrImportant = 0
 			End With
 			
-			'Invalid_string_refer_to_original_code
+			'ƒJƒ‰[ƒpƒŒƒbƒgİ’è
 			If white_out Then
 				For j = 0 To 255
 					With cmap(j)
@@ -317,18 +317,18 @@ Module Graphics
 			End If
 		Next 
 		
-		'Invalid_string_refer_to_original_code
+		'DIB‚ÆƒEƒCƒ“ƒhƒEDC‚©‚çDIBSection‚ğì¬
 		'UPGRADE_ISSUE: Form ƒvƒƒpƒeƒB MainForm.hDC ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 		NewDC = CreateDIBSection(MainForm.hDC, BmpInfo(times), DIB_RGB_COLORS, lpBit, 0, 0)
 		
-		'Invalid_string_refer_to_original_code
+		'ƒƒ‚ƒŠDC‚Ìì¬
 		'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB pic.hDC ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 		MemDC = CreateCompatibleDC(pic.hDC)
 		
-		'Invalid_string_refer_to_original_code
+		'ƒƒ‚ƒŠDC‚ÉDIBSection‚ğ‘I‘ğ‚µAŒ³‚Ìƒrƒbƒgƒ}ƒbƒv‚Ìƒnƒ“ƒhƒ‹‚ğ•Û‘¶
 		OrigPicDC = SelectObject(MemDC, NewDC)
 		
-		'Invalid_string_refer_to_original_code
+		'BitBlt‚ğg‚Á‚ÄŒ³‚Ì‰æ‘œ‚ğlpBit‚É”½‰f
 		'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB pic.hDC ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 		ret = BitBlt(MemDC, 0, 0, VB6.PixelsToTwipsX(pic.Width), VB6.PixelsToTwipsY(pic.Height), pic.hDC, 0, 0, SRCCOPY)
 		
@@ -337,12 +337,12 @@ Module Graphics
 	Public Sub DoFade(ByRef pic As System.Windows.Forms.PictureBox, ByVal times As Integer)
 		Dim ret As Integer
 		
-		'Invalid_string_refer_to_original_code
+		'”ÍˆÍŠO‚Ìê‡‚Í”²‚¯‚é
 		If times < 0 Or UBound(BmpInfo) < times Then
 			Exit Sub
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'BmpInfo‚ğ•ÏX‚µ‚ÄƒJƒ‰[ƒpƒŒƒbƒg‚ğ•ÏX
 		With pic
 			'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB pic.hDC ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 			ret = StretchDIBits(.hDC, 0, 0, VB6.PixelsToTwipsX(.Width), VB6.PixelsToTwipsY(.Height), 0, 0, VB6.PixelsToTwipsX(.Width), VB6.PixelsToTwipsY(.Height), lpBit, BmpInfo(times), DIB_RGB_COLORS, SRCCOPY)
@@ -352,51 +352,51 @@ Module Graphics
 	Public Sub FinishFade()
 		Dim ret As Integer
 		
-		'Invalid_string_refer_to_original_code
+		'Œ³‚Ìƒrƒbƒgƒ}ƒbƒv‚Ìƒnƒ“ƒhƒ‹‚ğ‘I‘ğ
 		ret = SelectObject(MemDC, OrigPicDC)
-		'Invalid_string_refer_to_original_code
+		'ƒfƒoƒCƒXƒRƒ“ƒeƒLƒXƒgŠJ•ú
 		ret = DeleteDC(MemDC)
-		'Invalid_string_refer_to_original_code
+		'ƒrƒbƒgƒ}ƒbƒvŠJ•ú
 		ret = DeleteObject(NewDC)
 	End Sub
 	
 	
 	'
-	'Invalid_string_refer_to_original_code
+	' ƒ}ƒXƒNì¬—p‚ÌƒTƒuƒ‹[ƒ`ƒ“
 	'
 	Public Sub MakeMask(ByRef src_dc As Integer, ByRef dest_dc As Integer, ByRef w As Integer, ByRef h As Integer, ByRef tcolor As Integer)
 		Dim mask_dc As Integer
 		Dim mask_bmp, orig_mask_bmp As Integer
 		Dim ret As Integer
 		
-		'Invalid_string_refer_to_original_code
+		'ƒƒ‚ƒŠDC‚Ìì¬
 		mask_dc = CreateCompatibleDC(src_dc)
-		'Invalid_string_refer_to_original_code
+		'ƒ‚ƒmƒNƒƒrƒbƒgƒ}ƒbƒv‚Ìì¬
 		mask_bmp = CreateBitmap(w, h, 1, 1, 0)
-		'Invalid_string_refer_to_original_code
+		'ƒƒ‚ƒŠDC‚Éƒrƒbƒgƒ}ƒbƒv‚ğ‘I‘ğ‚µŒ³‚Ìƒrƒbƒgƒ}ƒbƒv‚Ìƒnƒ“ƒhƒ‹‚ğ•Û‘¶
 		orig_mask_bmp = SelectObject(mask_dc, mask_bmp)
 		
-		'Invalid_string_refer_to_original_code
+		'”wŒiF(=“§–¾F)‚Ìİ’è
 		ret = SetBkColor(src_dc, tcolor)
 		
 		ret = BitBlt(mask_dc, 0, 0, w, h, src_dc, 0, 0, SRCCOPY)
 		
-		'Invalid_string_refer_to_original_code
+		'”wŒiF‚ğ”’‚É–ß‚·
 		If tcolor <> System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.White) Then
 			ret = SetBkColor(dest_dc, System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.White))
 		End If
 		
 		ret = BitBlt(dest_dc, 0, 0, w, h, mask_dc, 0, 0, SRCCOPY)
 		
-		'Invalid_string_refer_to_original_code
+		'Œ³‚Ìƒrƒbƒgƒ}ƒbƒv‚Ìƒnƒ“ƒhƒ‹‚ğ‘I‘ğ
 		ret = SelectObject(mask_dc, orig_mask_bmp)
-		'Invalid_string_refer_to_original_code
+		'ƒfƒoƒCƒXƒRƒ“ƒeƒLƒXƒgŠJ•ú
 		ret = DeleteDC(mask_dc)
-		'Invalid_string_refer_to_original_code
+		'ƒrƒbƒgƒ}ƒbƒvŠJ•ú
 		ret = DeleteObject(mask_bmp)
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'‰æ‘œƒCƒ[ƒWpic‚ğPixBuf‚Éû“¾
 	Public Sub GetImage(ByRef pic As System.Windows.Forms.PictureBox)
 		Dim pic_bmp, tmp_bmp As Integer
 		Dim bm_info As BITMAPINFOHEADER
@@ -438,7 +438,7 @@ Module Graphics
 		ret = DeleteObject(tmp_bmp)
 	End Sub
 	
-	'PixBufã®ç”»åƒã‚¤ãƒ¡ãƒ¼ã‚¸ã‚’picã«æãè¾¼ã‚€
+	'PixBuf‚Ì‰æ‘œƒCƒ[ƒW‚ğpic‚É•`‚«‚Ş
 	Public Sub SetImage(ByRef pic As System.Windows.Forms.PictureBox)
 		Dim pic_bmp, tmp_bmp As Integer
 		Dim bm_info As BITMAPINFOHEADER
@@ -470,7 +470,7 @@ Module Graphics
 		'ReDim PixBuf(0)
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'PixBuf‚Ì“à—e‚ğÁ‹
 	Public Sub ClearImage()
 		If UBound(PixBuf) > 0 Then
 			ReDim PixBuf(0)
@@ -478,7 +478,7 @@ Module Graphics
 		ReDim PixBuf2(0)
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'PixBuf‚Ì“à—e‚ğPixBuf2‚ÉƒRƒs[
 	Public Sub CopyImage()
 		Dim i As Integer
 		
@@ -489,7 +489,7 @@ Module Graphics
 		Next 
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'ƒ}ƒXƒN‰æ‘œ‚Ìì¬
 	Public Sub CreateMask(ByRef tcolor As Integer)
 		Dim j, i, k As Integer
 		
@@ -511,7 +511,7 @@ Module Graphics
 		Next i
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'•`‚«‚İ‰æ‘œ‚Ìì¬
 	Public Sub CreateImage(ByRef tcolor As Integer)
 		Dim j, i, k As Integer
 		
@@ -529,7 +529,7 @@ Module Graphics
 		Next i
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'ƒtƒF[ƒhˆ—‚Ì‰Šú‰»
 	Public Sub FadeInit(ByVal num As Integer)
 		Dim i, j As Short
 		
@@ -542,7 +542,7 @@ Module Graphics
 		Next 
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'ƒtƒF[ƒhƒCƒ“EƒAƒEƒgÀs
 	Public Sub FadeInOut(ByVal ind As Integer, ByVal num As Integer)
 		Dim g, i, r, b As Integer
 		
@@ -565,7 +565,7 @@ Module Graphics
 		Next 
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'ƒzƒƒCƒgƒCƒ“EƒAƒEƒgÀs
 	Public Sub WhiteInOut(ByVal ind As Integer, ByVal num As Integer)
 		Dim g, i, r, b As Integer
 		
@@ -583,14 +583,14 @@ Module Graphics
 		Next 
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'‰æ‘œ‚ğ–¾‚é‚­
 	Public Sub Bright(Optional ByVal is_transparent As Boolean = False)
 		'UPGRADE_NOTE: rgb ‚Í rgb_Renamed ‚ÉƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 		Dim i, rgb_Renamed As Integer
 		Dim g, r, b As Integer
 		
 		If is_transparent Then
-			'Invalid_string_refer_to_original_code
+			'”wŒiF‚ğRGB‚É•ª‰ğ
 			rgb_Renamed = BGColor
 			r = rgb_Renamed Mod &H100
 			rgb_Renamed = rgb_Renamed - r
@@ -625,14 +625,14 @@ Module Graphics
 		End If
 	End Sub
 	
-	'ç”»åƒã‚’æš—ã
+	'‰æ‘œ‚ğˆÃ‚­
 	Public Sub Dark(Optional ByVal is_transparent As Boolean = False)
 		'UPGRADE_NOTE: rgb ‚Í rgb_Renamed ‚ÉƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 		Dim i, rgb_Renamed As Integer
 		Dim g, r, b As Integer
 		
 		If is_transparent Then
-			'Invalid_string_refer_to_original_code
+			'”wŒiF‚ğRGB‚É•ª‰ğ
 			rgb_Renamed = BGColor
 			r = rgb_Renamed Mod &H100
 			rgb_Renamed = rgb_Renamed - r
@@ -661,14 +661,14 @@ Module Graphics
 		End If
 	End Sub
 	
-	'ç”»åƒã‚’ç™½é»’ã«
+	'‰æ‘œ‚ğ”’•‚É
 	Public Sub Monotone(Optional ByVal is_transparent As Boolean = False)
 		'UPGRADE_NOTE: rgb ‚Í rgb_Renamed ‚ÉƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 		Dim i, rgb_Renamed As Integer
 		Dim g, r, b As Integer
 		
 		If is_transparent Then
-			'Invalid_string_refer_to_original_code
+			'”wŒiF‚ğRGB‚É•ª‰ğ
 			rgb_Renamed = BGColor
 			r = rgb_Renamed Mod &H100
 			rgb_Renamed = rgb_Renamed - r
@@ -699,14 +699,14 @@ Module Graphics
 		End If
 	End Sub
 	
-	'ç”»åƒã‚’ã‚»ãƒ”ã‚¢è‰²ã«
+	'‰æ‘œ‚ğƒZƒsƒAF‚É
 	Public Sub Sepia(Optional ByVal is_transparent As Boolean = False)
 		'UPGRADE_NOTE: rgb ‚Í rgb_Renamed ‚ÉƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 		Dim i, rgb_Renamed As Integer
 		Dim g, r, b As Integer
 		
 		If is_transparent Then
-			'Invalid_string_refer_to_original_code
+			'”wŒiF‚ğRGB‚É•ª‰ğ
 			rgb_Renamed = BGColor
 			r = rgb_Renamed Mod &H100
 			rgb_Renamed = rgb_Renamed - r
@@ -737,14 +737,14 @@ Module Graphics
 		End If
 	End Sub
 	
-	'ç”»åƒã‚’å¤•ç„¼ã‘é¢¨ã«
+	'‰æ‘œ‚ğ—[Ä‚¯•—‚É
 	Public Sub Sunset(Optional ByVal is_transparent As Boolean = False)
 		'UPGRADE_NOTE: rgb ‚Í rgb_Renamed ‚ÉƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 		Dim i, rgb_Renamed As Integer
 		Dim g, r, b As Integer
 		
 		If is_transparent Then
-			'Invalid_string_refer_to_original_code
+			'”wŒiF‚ğRGB‚É•ª‰ğ
 			rgb_Renamed = BGColor
 			r = rgb_Renamed Mod &H100
 			rgb_Renamed = rgb_Renamed - r
@@ -775,14 +775,14 @@ Module Graphics
 		End If
 	End Sub
 	
-	'ç”»åƒã‚’æ°´ä¸­é¢¨ã«
+	'‰æ‘œ‚ğ…’†•—‚É
 	Public Sub Water(Optional ByVal is_transparent As Boolean = False)
 		'UPGRADE_NOTE: rgb ‚Í rgb_Renamed ‚ÉƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 		Dim i, rgb_Renamed As Integer
 		Dim g, r, b As Integer
 		
 		If is_transparent Then
-			'Invalid_string_refer_to_original_code
+			'”wŒiF‚ğRGB‚É•ª‰ğ
 			rgb_Renamed = BGColor
 			r = rgb_Renamed Mod &H100
 			rgb_Renamed = rgb_Renamed - r
@@ -813,7 +813,7 @@ Module Graphics
 		End If
 	End Sub
 	
-	'ç”»åƒã‚’å·¦å³åè»¢
+	'‰æ‘œ‚ğ¶‰E”½“]
 	Public Sub HReverse()
 		Dim i, j As Integer
 		Dim tmp As RGBq
@@ -830,7 +830,7 @@ Module Graphics
 		Next i
 	End Sub
 	
-	'ç”»åƒã‚’ä¸Šä¸‹åè»¢
+	'‰æ‘œ‚ğã‰º”½“]
 	Public Sub VReverse()
 		Dim i, j As Integer
 		Dim tmp As RGBq
@@ -847,14 +847,14 @@ Module Graphics
 		Next i
 	End Sub
 	
-	'ç”»åƒã‚’ãƒã‚¬ãƒã‚¸åè»¢
+	'‰æ‘œ‚ğƒlƒKƒ|ƒW”½“]
 	Public Sub NegPosReverse(Optional ByVal is_transparent As Boolean = False)
 		'UPGRADE_NOTE: rgb ‚Í rgb_Renamed ‚ÉƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 		Dim i, rgb_Renamed As Integer
 		Dim g, r, b As Integer
 		
 		If is_transparent Then
-			'Invalid_string_refer_to_original_code
+			'”wŒiF‚ğRGB‚É•ª‰ğ
 			rgb_Renamed = BGColor
 			r = rgb_Renamed Mod &H100
 			rgb_Renamed = rgb_Renamed - r
@@ -883,13 +883,13 @@ Module Graphics
 		End If
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'‰æ‘œ‚©‚çƒVƒ‹ƒGƒbƒg’Šo
 	Public Sub Silhouette()
 		'UPGRADE_NOTE: rgb ‚Í rgb_Renamed ‚ÉƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 		Dim i, rgb_Renamed As Integer
 		Dim g, r, b As Integer
 		
-		'Invalid_string_refer_to_original_code
+		'”wŒiF‚ğRGB‚É•ª‰ğ
 		rgb_Renamed = BGColor
 		r = rgb_Renamed Mod &H100
 		rgb_Renamed = rgb_Renamed - r
@@ -913,8 +913,8 @@ Module Graphics
 		Next 
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
+	'‰æ‘œ‚ğ‰E•ûŒü‚Éangle“x‰ñ“]‚³‚¹‚é
+	'do_same‚ªTrue‚Ìê‡‚Í‰ñ“]Šp“x‚ª90“x‚Ì”{”‚Å‚ ‚éÛ‚Ì•`‰æÅ“K‰»‚ğs‚í‚È‚¢
 	Public Sub Rotate(ByVal angle As Integer, Optional ByVal do_same As Boolean = False)
 		Dim i, j As Integer
 		Dim xsrc, ysrc As Integer
@@ -926,16 +926,16 @@ Module Graphics
 		Dim bg As RGBq
 		Dim g, rgb_Renamed, r, b As Integer
 		
-		'360åº¦ã§ä¸€å›è»¢
+		'360“x‚Åˆê‰ñ“]
 		angle = angle Mod 360
-		'Invalid_string_refer_to_original_code
+		'•‰‚Ìê‡‚Í³‚ÌŠp“x‚É
 		If angle < 0 Then
 			angle = 360 + angle
 		End If
 		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
+		'‰ñ“]Šp“x‚ª90“x‚Ì”{”‚Å‚ ‚éê‡‚Íˆ—‚ªŠÈ’PB
+		'‚½‚¾‚µA90“xˆÈŠO‚ÌŠp“x‚Å˜A‘±‰ñ“]‚³‚¹‚éê‡‚ÍAˆ—ŠÔ‚ğˆê’è‚É‚·‚é‚½‚ß
+		'‚±‚ÌÅ“K‰»‚Íg‚í‚È‚¢B
 		If Not do_same Then
 			Select Case angle
 				Case 0
@@ -974,19 +974,19 @@ Module Graphics
 			End Select
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'”CˆÓ‚ÌŠp“x‚Ìê‡‚ÍOŠpŠÖ”‚ğg‚¤•K—v‚ª‚ ‚é
 		
-		'Invalid_string_refer_to_original_code
+		'À•W‚ÌŒvZ‚Í‰æ‘œ‚Ì’†S‚ğÀ•WŒ´“_‚É‚µ‚Äs‚¤
 		xbase = (PicWidth - 1) / 2
 		ybase = (PicHeight - 1) / 2
 		
-		'å›è»¢ã«ã‚ˆã‚‹ãƒ™ã‚¯ãƒˆãƒ«
+		'‰ñ“]‚É‚æ‚éƒxƒNƒgƒ‹
 		angle = 90 - angle
 		rad = CDbl(angle) * 3.14159265 / 180
 		dsin = System.Math.Sin(rad)
 		dcos = System.Math.Cos(rad)
 		
-		'Invalid_string_refer_to_original_code
+		'”wŒiF‚ğRGB‚É•ª‰ğ
 		rgb_Renamed = BGColor
 		r = rgb_Renamed Mod &H100
 		rgb_Renamed = rgb_Renamed - r
@@ -994,17 +994,17 @@ Module Graphics
 		rgb_Renamed = rgb_Renamed - g
 		g = g \ &H100
 		b = rgb_Renamed \ &H10000
-		'Invalid_string_refer_to_original_code
+		'‡¬
 		With bg
 			.Red = r
 			.Green = g
 			.Blue = b
 		End With
 		
-		'Invalid_string_refer_to_original_code
+		'‰æ‘œƒf[ƒ^‚ÌƒRƒs[‚ğæ‚Á‚Ä‚¨‚­
 		CopyImage()
 		
-		'Invalid_string_refer_to_original_code
+		'ŠeƒsƒNƒZƒ‹‚É‘Î‚µ‚Ä‰ñ“]ˆ—
 		For i = 0 To PicHeight - 1
 			yoffset = i - ybase
 			xsrc0 = xbase + yoffset * dcos
@@ -1013,14 +1013,14 @@ Module Graphics
 			For j = 0 To PicWidth - 1
 				xoffset = j - xbase
 				
-				'Invalid_string_refer_to_original_code
+				'–{“–‚Í‰º‹L‚Ì®‚Åˆê“x‚ÉŒvZ‚Å‚«‚é‚ªA‚‘¬‰»‚Ì‚½‚ß®‚ğ•ªŠ„
 				'xsrc = xbase + xoffset * dsin + yoffset * dcos
 				'ysrc = ybase - xoffset * dcos + yoffset * dsin
 				xsrc = CInt(xsrc0 + xoffset * dsin)
 				ysrc = CInt(ysrc0 - xoffset * dcos)
 				
 				If xsrc < 0 Or PicWidth <= xsrc Or ysrc < 0 Or PicHeight <= ysrc Then
-					'Invalid_string_refer_to_original_code
+					'”ÍˆÍŠO‚ÌƒsƒNƒZƒ‹‚Ìê‡‚Í”wŒiF‚Å•`‰æ
 					'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg PixBuf(PicWidth * i + j) ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 					PixBuf(PicWidth * i + j) = bg
 				Else
@@ -1031,7 +1031,7 @@ Module Graphics
 		Next 
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'“§‰ß—¦trans_par‚Åfcolor‚É‚æ‚é”¼“§–¾•`‰æ‚ğs‚¤
 	Public Sub ColorFilter(ByRef fcolor As Integer, ByRef trans_par As Double, Optional ByVal is_transparent As Boolean = False)
 		'UPGRADE_NOTE: rgb ‚Í rgb_Renamed ‚ÉƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 		Dim i, rgb_Renamed As Integer
@@ -1039,15 +1039,15 @@ Module Graphics
 		Dim g2, r2, b2 As Byte
 		Dim tratio As Integer
 		
-		'Invalid_string_refer_to_original_code
+		'“§‰ß—¦‚ğƒp[ƒZƒ“ƒg‚É’¼‚·
 		tratio = MinLng(MaxLng(100 * trans_par, 0), 100)
 		
 		If tratio = 0 Then
-			'Invalid_string_refer_to_original_code
+			'“§‰ß‚µ‚È‚¢ê‡‚Í‚»‚Ì‚Ü‚ÜI—¹
 			Exit Sub
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'”¼“§–¾•`‰æF‚ğRGB‚É•ª‰ğ
 		rgb_Renamed = fcolor
 		r = rgb_Renamed Mod &H100
 		rgb_Renamed = rgb_Renamed - r
@@ -1060,7 +1060,7 @@ Module Graphics
 		b2 = b
 		
 		If is_transparent Then
-			'Invalid_string_refer_to_original_code
+			'”wŒiF‚ğRGB‚É•ª‰ğ
 			rgb_Renamed = BGColor
 			r = rgb_Renamed Mod &H100
 			rgb_Renamed = rgb_Renamed - r
@@ -1069,8 +1069,8 @@ Module Graphics
 			g = g \ &H100
 			b = rgb_Renamed \ &H10000
 			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
+			'”wŒiF‚Æ”¼“§–¾•`‰æF‚ª“¯ˆê‚¾‚Á‚½ê‡A”¼“§–¾•`‰æF‚ğ”wŒiF‚©‚ç­‚µ‚¸‚ç‚·
+			'‚½‚¾‚µ‚±‚Ìˆ—‚ª‰Â”\‚È‚Ì‚Í”wŒiF‚ª”’“™‚Ìê‡‚Ì‚İ
 			If r = r2 And g = g2 And b = b2 Then
 				If r2 = 255 Then
 					r2 = 254

@@ -3,24 +3,24 @@ Option Explicit On
 Friend Class NonPilotDataList
 	
 	' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
+	' 本プログラムはフリーソフトであり、無保証です。
+	' 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
+	' 再頒布または改変することができます。
 	
-	'Invalid_string_refer_to_original_code
+	'全ノンパイロットデータを管理するリストのクラス
 	
-	'Invalid_string_refer_to_original_code
+	'ノンパイロットデータのコレクション
 	Private colNonPilotDataList As New Collection
 	
-	'Invalid_string_refer_to_original_code
+	'クラスの初期化
 	'UPGRADE_NOTE: Class_Initialize は Class_Initialize_Renamed にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
 	Private Sub Class_Initialize_Renamed()
 		Dim npd As New NonPilotData
 		
-		'Talk繧ｳ繝槭Φ繝臥畑
+		'Talkコマンド用
 		With npd
-			.Name = "繝翫Ξ繝ｼ繧ｿ繝ｼ"
-			.Nickname = "繝翫Ξ繝ｼ繧ｿ繝ｼ"
+			.Name = "ナレーター"
+			.Nickname = "ナレーター"
 			.Bitmap = ".bmp"
 		End With
 		colNonPilotDataList.Add(npd, npd.Name)
@@ -30,7 +30,7 @@ Friend Class NonPilotDataList
 		Class_Initialize_Renamed()
 	End Sub
 	
-	'繧ｯ繝ｩ繧ｹ縺ｮ隗｣謾ｾ
+	'クラスの解放
 	'UPGRADE_NOTE: Class_Terminate は Class_Terminate_Renamed にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
 	Private Sub Class_Terminate_Renamed()
 		Dim i As Short
@@ -48,7 +48,7 @@ Friend Class NonPilotDataList
 		MyBase.Finalize()
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'ノンパイロットデータリストにデータを追加
 	Public Function Add(ByRef pname As String) As NonPilotData
 		Dim new_pilot_data As New NonPilotData
 		
@@ -57,17 +57,17 @@ Friend Class NonPilotDataList
 		Add = new_pilot_data
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'ノンパイロットデータリストに登録されているデータの総数
 	Public Function Count() As Short
 		Count = colNonPilotDataList.Count()
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'ノンパイロットデータリストからデータを削除
 	Public Sub Delete(ByRef Index As Object)
 		colNonPilotDataList.Remove(Index)
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'ノンパイロットデータリストからデータを取り出す
 	Public Function Item(ByRef Index As Object) As NonPilotData
 		Dim pd As NonPilotData
 		Dim pname As String
@@ -87,7 +87,7 @@ ErrorHandler:
 		Next pd
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'ノンパイロットデータリストに指定したデータが定義されているか？
 	Public Function IsDefined(ByRef Index As Object) As Boolean
 		Dim pd As NonPilotData
 		Dim pname As String
@@ -109,7 +109,7 @@ ErrorHandler:
 		IsDefined = False
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'ノンパイロットデータリストに指定したデータが定義されているか？ (愛称は見ない)
 	Public Function IsDefined2(ByRef Index As Object) As Boolean
 		Dim pd As NonPilotData
 		
@@ -122,7 +122,7 @@ ErrorHandler:
 		IsDefined2 = False
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'データファイル fname からデータをロード
 	Public Sub Load(ByRef fname As String)
 		Dim FileNumber As Short
 		Dim line_num As Integer
@@ -149,29 +149,28 @@ ErrorHandler:
 			Loop While Len(line_buf) = 0
 			
 			If InStr(line_buf, ",") > 0 Then
-				err_msg = "Invalid_string_refer_to_original_code"
+				err_msg = "名称の設定が抜けています。"
 				Error(0)
 			End If
 			
-			'蜷咲ｧｰ
+			'名称
 			data_name = line_buf
 			
 			If InStr(data_name, " ") > 0 Then
-				err_msg = "Invalid_string_refer_to_original_code"
+				err_msg = "名称に半角スペースは使用出来ません。"
 				Error(0)
 			End If
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			err_msg = "Invalid_string_refer_to_original_code"
-			Error(0)
-			'End If
+			If InStr(data_name, "（") > 0 Or InStr(data_name, "）") > 0 Then
+				err_msg = "名称に全角括弧は使用出来ません。"
+				Error(0)
+			End If
 			If InStr(data_name, """") > 0 Then
-				err_msg = "Invalid_string_refer_to_original_code"
+				err_msg = "名称に""は使用出来ません。"
 				Error(0)
 			End If
 			
 			If IsDefined(data_name) Then
-				'Invalid_string_refer_to_original_code
+				'すでに定義されているノンパイロットのデータであれば置き換える
 				If Item(data_name).Name = data_name Then
 					pd = Item(data_name)
 				Else
@@ -182,13 +181,13 @@ ErrorHandler:
 			End If
 			
 			With pd
-				'Invalid_string_refer_to_original_code
+				'愛称、ビットマップ
 				GetLine(FileNumber, line_buf, line_num)
 				
-				'諢帷ｧｰ
+				'愛称
 				ret = InStr(line_buf, ",")
 				If ret = 0 Then
-					err_msg = "Invalid_string_refer_to_original_code"
+					err_msg = "ビットマップの設定が抜けています。"
 					Error(0)
 				End If
 				buf2 = Trim(Left(line_buf, ret - 1))
@@ -196,25 +195,24 @@ ErrorHandler:
 				If buf2 <> "" Then
 					.Nickname = buf2
 				Else
-					err_msg = "Invalid_string_refer_to_original_code"
+					err_msg = "愛称の設定が間違っています。"
 					Error(0)
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'ビットマップ
 				buf2 = Trim(buf)
 				If LCase(Right(buf2, 4)) = ".bmp" Then
 					.Bitmap = buf2
 				Else
-					DataErrorMessage("Invalid_string_refer_to_original_code")
-					fname( , line_num, line_buf, .Name)
+					DataErrorMessage("ビットマップの設定が間違っています。", fname, line_num, line_buf, .Name)
 				End If
 			End With
 		Loop 
 		
 ErrorHandler: 
-		'Invalid_string_refer_to_original_code
+		'エラー処理
 		If line_num = 0 Then
-			ErrorMessage(fname & "Invalid_string_refer_to_original_code")
+			ErrorMessage(fname & "が開けません。")
 		Else
 			FileClose(FileNumber)
 			DataErrorMessage(err_msg, fname, line_num, line_buf, data_name)

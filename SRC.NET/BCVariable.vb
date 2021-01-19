@@ -3,57 +3,57 @@ Option Explicit On
 Module BCVariable
 	
 	' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
+	' 本プログラムはフリーソフトであり、無保証です。
+	' 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
+	' 再頒布または改変することができます。
 	
-	'Invalid_string_refer_to_original_code
+	' バトルコンフィグデータが有効か？
 	Public IsConfig As Boolean
 	
-	'Invalid_string_refer_to_original_code
+	' バトルコンフィグデータの各種変数を定義する
 	
-	'Invalid_string_refer_to_original_code
-	' ---------縺九↑繧峨★螳夂ｾｩ縺輔ｌ繧九ョ繝ｼ繧ｿ
+	' バトルコンフィグデータ対象中心ユニット定義
+	' ---------かならず定義されるデータ
 	Public MeUnit As Unit
 	
-	'Invalid_string_refer_to_original_code
+	' 攻撃側ユニット定義
 	Public AtkUnit As Unit
 	
-	' 髦ｲ蠕｡蛛ｴ繝ｦ繝九ャ繝亥ｮ夂ｾｩ
+	' 防御側ユニット定義
 	Public DefUnit As Unit
 	
-	' 豁ｦ蝎ｨ逡ｪ蜿ｷ
+	' 武器番号
 	Public WeaponNumber As Short
 	
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
+	' ---------定義されない場合もある(計算後にリセットされる)データ
+	' 攻撃値
 	Public AttackExp As Integer
 	
-	'Invalid_string_refer_to_original_code
+	' 攻撃側定義変数
 	Public AttackVariable As Integer
 	
-	' 髦ｲ蠕｡蛛ｴ螳夂ｾｩ螟画焚
+	' 防御側定義変数
 	Public DffenceVariable As Integer
 	
-	' 蝨ｰ蠖｢陬懈ｭ｣
+	' 地形補正
 	Public TerrainAdaption As Double
 	
-	' 繧ｵ繧､繧ｺ陬懈ｭ｣
+	' サイズ補正
 	Public SizeMod As Double
 	
-	' 譛邨ょ､
+	' 最終値
 	Public LastVariable As Integer
 	
-	'Invalid_string_refer_to_original_code
+	' 武器攻撃力
 	Public WeaponPower As Integer
 	
-	'Invalid_string_refer_to_original_code
+	' 装甲値
 	Public Armor As Integer
 	
-	' 繧ｶ繧ｳ陬懈ｭ｣
+	' ザコ補正
 	Public CommonEnemy As Integer
 	
-	'Invalid_string_refer_to_original_code
+	'定義されないこともあるデータをここでリセットする
 	Public Sub DataReset()
 		AttackExp = 0
 		AttackVariable = 0

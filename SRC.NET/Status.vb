@@ -3,38 +3,38 @@ Option Explicit On
 Module Status
 	
 	' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
+	' –{ƒvƒƒOƒ‰ƒ€‚ÍƒtƒŠ[ƒ\ƒtƒg‚Å‚ ‚èA–³•ÛØ‚Å‚·B
+	' –{ƒvƒƒOƒ‰ƒ€‚ÍGNU General Public License(Ver.3‚Ü‚½‚Í‚»‚êˆÈ~)‚ª’è‚ß‚éğŒ‚Ì‰º‚Å
+	' Ä”Ğ•z‚Ü‚½‚Í‰ü•Ï‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B
 	
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
+	'ƒXƒe[ƒ^ƒXƒEƒBƒ“ƒhƒE‚Ö‚ÌƒXƒe[ƒ^ƒX•\¦‚ğs‚¤ƒ‚ƒWƒ…[ƒ‹
+	'ppic‚Æupic‚É•ª‚©‚ê‚Ä‚¢‚é‚ªAppic‚É‚ÍƒAƒCƒRƒ“‚Æ“¯‚¶s‚Ìƒf[ƒ^‚ª‘‚«‚Ü‚ê‚éB
+	'Œˆ‚µ‚ÄƒpƒCƒƒbƒgƒXƒe[ƒ^ƒX‚ğ‘‚­‚Ì‚ªppic‚Å‚Í‚È‚¢‚±‚Æ‚ğ—¯ˆÓ‚µ‚Ä‚¨‚­
 	
-	'Invalid_string_refer_to_original_code
+	'ƒXƒe[ƒ^ƒX‰æ–Ê‚É•\¦‚³‚ê‚Ä‚¢‚éƒ†ƒjƒbƒg
 	Public DisplayedUnit As Unit
 	Public DisplayedPilotInd As Short
 	
-	'Invalid_string_refer_to_original_code
+	'ƒXƒe[ƒ^ƒX‰æ–Ê‚ÌXV‚ğˆê’â~‚·‚é‚©‚Ç‚¤‚©
 	Public IsStatusWindowDisabled As Boolean
 	'ADD START 240a
-	'Invalid_string_refer_to_original_code
+	'ƒXƒe[ƒ^ƒX‰æ–Ê‚Ì”wŒiF
 	Public StatusWindowBackBolor As Integer
-	'Invalid_string_refer_to_original_code
+	'ƒXƒe[ƒ^ƒX‰æ–Ê‚Ì˜gF
 	Public StatusWindowFrameColor As Integer
-	'Invalid_string_refer_to_original_code
+	'ƒXƒe[ƒ^ƒX‰æ–Ê‚Ì˜g•
 	Public StatusWindowFrameWidth As Integer
-	'Invalid_string_refer_to_original_code
+	'ƒXƒe[ƒ^ƒX‰æ–Ê ”\—Í–¼‚ÌƒtƒHƒ“ƒgƒJƒ‰[
 	Public StatusFontColorAbilityName As Integer
-	'Invalid_string_refer_to_original_code
+	'ƒXƒe[ƒ^ƒX‰æ–Ê —LŒø‚È”\—Í‚ÌƒtƒHƒ“ƒgƒJƒ‰[
 	Public StatusFontColorAbilityEnable As Integer
-	'Invalid_string_refer_to_original_code
+	'ƒXƒe[ƒ^ƒX‰æ–Ê –³Œø‚È”\—Í‚ÌƒtƒHƒ“ƒgƒJƒ‰[
 	Public StatusFontColorAbilityDisable As Integer
-	'Invalid_string_refer_to_original_code
+	'ƒXƒe[ƒ^ƒX‰æ–Ê ‚»‚Ì‘¼’Êí•`‰æ‚ÌƒtƒHƒ“ƒgƒJƒ‰[
 	Public StatusFontColorNormalString As Integer
 	'ADD  END
 	
-	'Invalid_string_refer_to_original_code
+	'Œ»İ‚Ìó‹µ‚ğƒXƒe[ƒ^ƒXƒEƒBƒ“ƒhƒE‚É•\¦
 	Public Sub DisplayGlobalStatus()
 		Dim X, Y As Short
 		Dim pic As System.Windows.Forms.PictureBox
@@ -45,7 +45,7 @@ Module Status
 		Dim lineStart, ret, color, lineEnd As Integer
 		'ADD  END  240a
 		
-		'Invalid_string_refer_to_original_code
+		'ƒXƒe[ƒ^ƒXƒEƒBƒ“ƒhƒE‚ğÁ‹
 		ClearUnitStatus()
 		
 		'UPGRADE_ISSUE: Control picUnitStatus ‚ÍA”Ä—p–¼‘O‹óŠÔ Form “à‚É‚ ‚é‚½‚ßA‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
@@ -54,12 +54,12 @@ Module Status
 		pic.Font = VB6.FontChangeSize(pic.Font, 12)
 		
 		'ADD START 240a
-		'Invalid_string_refer_to_original_code
+		'ƒ}ƒEƒXƒJ[ƒ\ƒ‹‚ÌˆÊ’u‚ÍH
 		X = PixelToMapX(MouseX)
 		Y = PixelToMapY(MouseY)
 		
 		If NewGUIMode Then
-			'Invalid_string_refer_to_original_code
+			'Global•Ï”‚ªéŒ¾‚³‚ê‚Ä‚¢‚ê‚ÎAƒXƒe[ƒ^ƒX‰æ–Ê—p•Ï”‚Ì“¯Šú‚ğæ‚é
 			GlobalVariableLoad()
 			pic.BackColor = System.Drawing.ColorTranslator.FromOle(StatusWindowBackBolor)
 			'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB pic.DrawWidth ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
@@ -70,27 +70,27 @@ Module Status
 			'UPGRADE_ISSUE: ’è” vbFSTransparent ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="55B59875-9A95-4B71-9D6A-7C294BF7139D"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 			'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB pic.FillStyle ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 			pic.FillStyle = vbFSTransparent
-			'ä¸€æ—¦é«˜ã•ã‚’æœ€å¤§ã«ã™ã‚‹
+			'ˆê’U‚‚³‚ğÅ‘å‚É‚·‚é
 			pic.Width = VB6.TwipsToPixelsX(235)
 			pic.Height = VB6.TwipsToPixelsY(MapPHeight - 20)
 			wHeight = GetGlobalStatusSize(X, Y)
-			'æ ç·šã‚’å¼•ã
+			'˜gü‚ğˆø‚­
 			'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh pic.Line ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 			pic.Line (lineStart, lineStart) - (235 - lineEnd, wHeight - lineEnd), color, B
 			'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB pic.FillStyle ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 			pic.FillStyle = ObjFillStyle
-			'Invalid_string_refer_to_original_code
+			'‚‚³‚ğİ’è‚·‚é
 			pic.Height = VB6.TwipsToPixelsY(wHeight)
 			'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB pic.CurrentX ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 			pic.CurrentX = 5
 			'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB pic.CurrentY ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 			pic.CurrentY = 5
-			'Invalid_string_refer_to_original_code
+			'•¶šF‚ğƒŠƒZƒbƒg
 			pic.ForeColor = System.Drawing.ColorTranslator.FromOle(StatusFontColorNormalString)
 		End If
 		'ADD  END  240a
 		'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh pic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		pic.Print("ã‚¿ãƒ¼ãƒ³æ•° " & VB6.Format(Turn))
+		pic.Print("ƒ^[ƒ“” " & VB6.Format(Turn))
 		'ADD START 240a
 		If NewGUIMode Then
 			'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB pic.CurrentX ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
@@ -98,31 +98,31 @@ Module Status
 		End If
 		'ADD  END  240a
 		'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh pic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		pic.Print(Term("Invalid_string_refer_to_original_code", Nothing, 8) & " " & VB6.Format(Money))
+		pic.Print(Term("‘‹à", Nothing, 8) & " " & VB6.Format(Money))
 		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
+		'MOV START 240a ª‚ÉˆÚ“®
+		'    'ƒ}ƒEƒXƒJ[ƒ\ƒ‹‚ÌˆÊ’u‚ÍH
 		'    X = PixelToMapX(MouseX)
 		'    Y = PixelToMapY(MouseY)
 		'MOV  END  240a
 		
-		'Invalid_string_refer_to_original_code
+		'ƒ}ƒbƒvŠO‚ğƒNƒŠƒbƒN‚µ‚½‚Í‚±‚±‚ÅI—¹
 		If X < 1 Or MapWidth < X Or Y < 1 Or MapHeight < Y Then
 			pic.Font = VB6.FontChangeSize(pic.Font, 9)
 			If NewGUIMode Then
-				'Invalid_string_refer_to_original_code
+				'‚‚³‚ğİ’è‚·‚é
 				pic.Height = VB6.TwipsToPixelsY(wHeight)
 			End If
 			Exit Sub
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'’nŒ`î•ñ‚Ì•\¦
 		'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh pic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 		pic.Print()
 		
-		'åœ°å½¢åç§°
+		'’nŒ`–¼Ì
 		'ADD START 240a
-		'ãƒãƒƒãƒ—ç”»åƒè¡¨ç¤º
+		'ƒ}ƒbƒv‰æ‘œ•\¦
 		If NewGUIMode Then
 			'UPGRADE_ISSUE: Control picBack ‚ÍA”Ä—p–¼‘O‹óŠÔ Form “à‚É‚ ‚é‚½‚ßA‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 			'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB pic.hDC ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
@@ -151,22 +151,22 @@ Module Status
 			pic.CurrentX = 5
 		End If
 		'ADD  END  240a
-		'å‘½ä¸­ä¿®æ­£
+		'–½’†C³
 		If TerrainEffectForHit(X, Y) >= 0 Then
 			'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh pic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			pic.Print("å›é¿ +" & VB6.Format(TerrainEffectForHit(X, Y)) & "%")
+			pic.Print("‰ñ”ğ +" & VB6.Format(TerrainEffectForHit(X, Y)) & "%")
 		Else
 			'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh pic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			pic.Print("å›é¿ " & VB6.Format(TerrainEffectForHit(X, Y)) & "%")
+			pic.Print("‰ñ”ğ " & VB6.Format(TerrainEffectForHit(X, Y)) & "%")
 		End If
 		
-		'ãƒ€ãƒ¡ãƒ¼ã‚¸ä¿®æ­£
+		'ƒ_ƒ[ƒWC³
 		If TerrainEffectForDamage(X, Y) >= 0 Then
 			'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh pic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			pic.Print("  é˜²å¾¡ +" & VB6.Format(TerrainEffectForDamage(X, Y)) & "%")
+			pic.Print("  –hŒä +" & VB6.Format(TerrainEffectForDamage(X, Y)) & "%")
 		Else
 			'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh pic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			pic.Print("  é˜²å¾¡ " & VB6.Format(TerrainEffectForDamage(X, Y)) & "%")
+			pic.Print("  –hŒä " & VB6.Format(TerrainEffectForDamage(X, Y)) & "%")
 		End If
 		
 		'ADD START 240a
@@ -175,16 +175,16 @@ Module Status
 			pic.CurrentX = 5
 		End If
 		'ADD  END  240a
-		'Invalid_string_refer_to_original_code
+		'‚g‚o‰ñ•œ—¦
 		If TerrainEffectForHPRecover(X, Y) > 0 Then
 			'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh pic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			pic.Print(Term("Invalid_string_refer_to_original_code") & " +" & VB6.Format(TerrainEffectForHPRecover(X, Y)) & "%  ")
+			pic.Print(Term("‚g‚o") & " +" & VB6.Format(TerrainEffectForHPRecover(X, Y)) & "%  ")
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'‚d‚m‰ñ•œ—¦
 		If TerrainEffectForENRecover(X, Y) > 0 Then
 			'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh pic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			pic.Print(Term("Invalid_string_refer_to_original_code") & " +" & VB6.Format(TerrainEffectForENRecover(X, Y)) & "%")
+			pic.Print(Term("‚d‚m") & " +" & VB6.Format(TerrainEffectForENRecover(X, Y)) & "%")
 		End If
 		
 		If TerrainEffectForHPRecover(X, Y) > 0 Or TerrainEffectForENRecover(X, Y) > 0 Then
@@ -194,7 +194,7 @@ Module Status
 		
 		'MOD START 240a
 		'    Set td = TDList.Item(MapData(X, Y, 0))
-		'Invalid_string_refer_to_original_code
+		'ƒ}ƒX‚Ìƒ^ƒCƒv‚É‰‚¶‚ÄQÆæ‚ğ•ÏX
 		Select Case MapData(X, Y, Map.MapDataIndex.BoxType)
 			Case Map.BoxTypes.Under, Map.BoxTypes.UpperBmpOnly
 				td = TDList.Item(MapData(X, Y, Map.MapDataIndex.TerrainType))
@@ -209,24 +209,19 @@ Module Status
 			pic.CurrentX = 5
 		End If
 		'ADD  END  240a
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		'End If
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		'End If
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh pic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		pic.Print()
-		'End If
+		'‚g‚o•‚d‚mŒ¸­
+		If td.IsFeatureAvailable("‚g‚oŒ¸­") Then
+			'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh pic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			pic.Print(Term("‚g‚o") & " -" & VB6.Format(10 * td.FeatureLevel("‚g‚oŒ¸­")) & "% (" & td.FeatureData("‚g‚oŒ¸­") & ")  ")
+		End If
+		If td.IsFeatureAvailable("‚d‚mŒ¸­") Then
+			'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh pic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			pic.Print(Term("‚d‚m") & " -" & VB6.Format(10 * td.FeatureLevel("‚d‚mŒ¸­")) & "% (" & td.FeatureData("‚d‚mŒ¸­") & ")  ")
+		End If
+		If td.IsFeatureAvailable("‚g‚oŒ¸­") Or td.IsFeatureAvailable("‚d‚mŒ¸­") Then
+			'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh pic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			pic.Print()
+		End If
 		
 		'ADD START 240a
 		If NewGUIMode Then
@@ -234,16 +229,16 @@ Module Status
 			pic.CurrentX = 5
 		End If
 		'ADD  END  240a
-		'Invalid_string_refer_to_original_code
-		If td.IsFeatureAvailable("Invalid_string_refer_to_original_code") Then
+		'‚g‚o•‚d‚m‘‰Á
+		If td.IsFeatureAvailable("‚g‚o‘‰Á") Then
 			'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh pic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			pic.Print(Term("Invalid_string_refer_to_original_code") & " +" & VB6.Format(1000 * td.FeatureLevel("Invalid_string_refer_to_original_code")) & "  ")
+			pic.Print(Term("‚g‚o") & " +" & VB6.Format(1000 * td.FeatureLevel("‚g‚o‘‰Á")) & "  ")
 		End If
-		If td.IsFeatureAvailable("Invalid_string_refer_to_original_code") Then
+		If td.IsFeatureAvailable("‚d‚m‘‰Á") Then
 			'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh pic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			pic.Print(Term("Invalid_string_refer_to_original_code") & " +" & VB6.Format(10 * td.FeatureLevel("Invalid_string_refer_to_original_code")) & "  ")
+			pic.Print(Term("‚d‚m") & " +" & VB6.Format(10 * td.FeatureLevel("‚d‚m‘‰Á")) & "  ")
 		End If
-		If td.IsFeatureAvailable("Invalid_string_refer_to_original_code") Or td.IsFeatureAvailable("Invalid_string_refer_to_original_code") Then
+		If td.IsFeatureAvailable("‚g‚o‘‰Á") Or td.IsFeatureAvailable("‚d‚m‘‰Á") Then
 			'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh pic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 			pic.Print()
 		End If
@@ -255,22 +250,19 @@ Module Status
 			pic.CurrentX = 5
 		End If
 		'ADD  END  240a
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		'End If
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		'End If
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh pic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		pic.Print()
-		'End If
+		'‚g‚o•‚d‚m’á‰º
+		If td.IsFeatureAvailable("‚g‚o’á‰º") Then
+			'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh pic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			pic.Print(Term("‚g‚o") & " -" & VB6.Format(1000 * td.FeatureLevel("‚g‚o’á‰º")) & "  ")
+		End If
+		If td.IsFeatureAvailable("‚d‚m’á‰º") Then
+			'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh pic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			pic.Print(Term("‚d‚m") & " -" & VB6.Format(10 * td.FeatureLevel("‚d‚m’á‰º")) & "  ")
+		End If
+		If td.IsFeatureAvailable("‚g‚o’á‰º") Or td.IsFeatureAvailable("‚d‚m’á‰º") Then
+			'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh pic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			pic.Print()
+		End If
 		
 		'ADD START 240a
 		If NewGUIMode Then
@@ -278,27 +270,26 @@ Module Status
 			pic.CurrentX = 5
 		End If
 		'ADD  END  240a
-		'æ‘©æ“¦
-		If td.IsFeatureAvailable("æ‘©æ“¦") Then
+		'–€C
+		If td.IsFeatureAvailable("–€C") Then
 			'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh pic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			pic.Print("æ‘©æ“¦Lv" & VB6.Format(td.FeatureLevel("æ‘©æ“¦")))
+			pic.Print("–€CLv" & VB6.Format(td.FeatureLevel("–€C")))
 		End If
 		' ADD START MARGE
-		'çŠ¶æ…‹ç•°å¸¸ä»˜åŠ 
-		If td.IsFeatureAvailable("çŠ¶æ…‹ä»˜åŠ ") Then
+		'ó‘ÔˆÙí•t‰Á
+		If td.IsFeatureAvailable("ó‘Ô•t‰Á") Then
 			'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh pic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			pic.Print(td.FeatureData("çŠ¶æ…‹ä»˜åŠ ") & "çŠ¶æ…‹ä»˜åŠ ")
+			pic.Print(td.FeatureData("ó‘Ô•t‰Á") & "ó‘Ô•t‰Á")
 		End If
 		' ADD END MARGE
 		
-		'Invalid_string_refer_to_original_code
+		'ƒtƒHƒ“ƒgƒTƒCƒY‚ğŒ³‚É–ß‚µ‚Ä‚¨‚­
 		pic.Font = VB6.FontChangeSize(pic.Font, 9)
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
+	'ƒ†ƒjƒbƒgƒXƒe[ƒ^ƒX‚ğ•\¦
+	'pindex‚ÍƒXƒe[ƒ^ƒX•\¦‚Ég‚¤ƒpƒCƒƒbƒg‚ğw’è
 	Public Sub DisplayUnitStatus(ByRef u As Unit, Optional ByVal pindex As Short = 0)
-		Dim Invalid_string_refer_to_original_code As Object
 		Dim p As Pilot
 		Dim k, i, j, n As Short
 		Dim ret As Integer
@@ -321,16 +312,15 @@ Module Status
 		Dim isNoSp As Boolean
 		isNoSp = False
 		'ADD  END  240a
-		'Invalid_string_refer_to_original_code
+		'ƒXƒe[ƒ^ƒX‰æ–Ê‚ÌXV‚ªˆê’â~‚³‚ê‚Ä‚¢‚éê‡‚Í‚»‚Ì‚Ü‚ÜI—¹
 		If IsStatusWindowDisabled Then
 			Exit Sub
 		End If
 		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		Exit Sub
-		'End If
+		'”j‰óA”jŠü‚³‚ê‚½ƒ†ƒjƒbƒg‚Í•\¦‚µ‚È‚¢
+		If u.Status_Renamed = "”j‰ó" Or u.Status_Renamed = "”jŠü" Then
+			Exit Sub
+		End If
 		
 		DisplayedUnit = u
 		DisplayedPilotInd = pindex
@@ -355,9 +345,9 @@ Module Status
 			'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Cls ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 			upic.Cls()
 			'ADD START 240a
-			'Invalid_string_refer_to_original_code
+			'global•Ï”‚ÆƒXƒe[ƒ^ƒX•`‰æ—p‚Ì•Ï”‚ğ“¯Šú
 			GlobalVariableLoad()
-			'Invalid_string_refer_to_original_code
+			'V‚f‚t‚h‚Å‚Í’nŒ`•\¦‚µ‚½‚Æ‚«‚ÉƒTƒCƒY‚ğ•Ï‚¦‚Ä‚¢‚é‚Ì‚ÅŒ³‚É–ß‚·
 			upic.SetBounds(VB6.TwipsToPixelsX(MainPWidth - 240), VB6.TwipsToPixelsY(10), VB6.TwipsToPixelsX(235), VB6.TwipsToPixelsY(MainPHeight - 20))
 			upic.BackColor = System.Drawing.ColorTranslator.FromOle(StatusWindowBackBolor)
 			'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB upic.DrawWidth ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
@@ -368,7 +358,7 @@ Module Status
 			'UPGRADE_ISSUE: ’è” vbFSTransparent ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="55B59875-9A95-4B71-9D6A-7C294BF7139D"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 			'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB upic.FillStyle ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 			upic.FillStyle = vbFSTransparent
-			'æ ç·šã‚’å¼•ã
+			'˜gü‚ğˆø‚­
 			'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Line ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 			upic.Line (lineStart, lineStart) - (235 - lineEnd, MainPHeight - 20 - lineEnd), color, B
 			'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB upic.FillStyle ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
@@ -377,32 +367,30 @@ Module Status
 			upic.CurrentX = 5
 			'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB upic.CurrentY ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 			upic.CurrentY = 5
-			'Invalid_string_refer_to_original_code
+			'•¶šF‚ğƒŠƒZƒbƒg
 			upic.ForeColor = System.Drawing.ColorTranslator.FromOle(StatusFontColorNormalString)
 			'ADD  END
 		End If
 		
 		Dim td As TerrainData
+		Dim wclass As String
 		With u
-			'Invalid_string_refer_to_original_code
+			'î•ñ‚ğXV
 			.Update()
 			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code_
-			'Or .IsConditionSatisfied("ãƒ¦ãƒ‹ãƒƒãƒˆæƒ…å ±éš è”½") _
-			'Then
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			is_unknown = True
-			'End If
+			'–¢Šm”Fƒ†ƒjƒbƒg‚©‚Ç‚¤‚©”»’è‚µ‚Ä‚¨‚­
+			If (IsOptionDefined("ƒ†ƒjƒbƒgî•ñ‰B•Á") And (Not .IsConditionSatisfied("¯•ÊÏ‚İ") And (.Party0 = "“G" Or .Party0 = "’†—§"))) Or .IsConditionSatisfied("ƒ†ƒjƒbƒgî•ñ‰B•Á") Then
+				is_unknown = True
+			End If
 			
-			'Invalid_string_refer_to_original_code
+			'ƒpƒCƒƒbƒg‚ªæ‚Á‚Ä‚¢‚È‚¢H
 			If .CountPilot = 0 Then
-				'ã‚­ãƒ£ãƒ©ç”»é¢ã‚’ã‚¯ãƒªã‚¢
+				'ƒLƒƒƒ‰‰æ–Ê‚ğƒNƒŠƒA
 				If MainWidth = 15 Then
 					'UPGRADE_ISSUE: Control picFace ‚ÍA”Ä—p–¼‘O‹óŠÔ Form “à‚É‚ ‚é‚½‚ßA‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 					MainForm.picFace = System.Drawing.Image.FromFile("")
 				Else
-					DrawPicture("white.bmp", 2, 2, 64, 64, 0, 0, 0, 0, "Invalid_string_refer_to_original_code")
+					DrawPicture("white.bmp", 2, 2, 64, 64, 0, 0, 0, 0, "ƒXƒe[ƒ^ƒX")
 				End If
 				'MOD START 240a
 				'            ppic.ForeColor = rgb(0, 0, 150)
@@ -416,7 +404,7 @@ Module Status
 					ppic.CurrentX = 68
 				End If
 				'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh ppic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				ppic.Print(Term("ãƒ¬ãƒ™ãƒ«", u))
+				ppic.Print(Term("ƒŒƒxƒ‹", u))
 				'MOD START 240a
 				'            If MainWidth <> 15 Then
 				If NewGUIMode Then
@@ -425,7 +413,7 @@ Module Status
 					ppic.CurrentX = 68
 				End If
 				'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh ppic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				ppic.Print(Term("æ°—åŠ›", u))
+				ppic.Print(Term("‹C—Í", u))
 				'MOD START 240a
 				'            ppic.ForeColor = rgb(0, 0, 0)
 				ppic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorNormalString, RGB(0, 0, 0)))
@@ -442,8 +430,8 @@ Module Status
 					'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB ppic.CurrentX ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 					ppic.CurrentX = 68
 				End If
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				upic.Print(Term("Ši“¬", u, 4) & "               " & Term("ËŒ‚", u))
 				'MOD START 240a
 				'            If MainWidth <> 15 Then
 				If NewGUIMode Then
@@ -452,7 +440,7 @@ Module Status
 					ppic.CurrentX = 68
 				End If
 				'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				upic.Print(Term("å‘½ä¸­", u, 4) & "               " & Term("å›é¿", u))
+				upic.Print(Term("–½’†", u, 4) & "               " & Term("‰ñ”ğ", u))
 				'MOD START 240a
 				'            If MainWidth <> 15 Then
 				If NewGUIMode Then
@@ -460,8 +448,8 @@ Module Status
 					'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB ppic.CurrentX ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 					ppic.CurrentX = 68
 				End If
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				upic.Print(Term("‹Z—Ê", u, 4) & "               " & Term("”½‰", u))
 				'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 				upic.Print()
 				'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
@@ -474,46 +462,46 @@ Module Status
 				GoTo UnitStatus
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'•\¦‚·‚éƒpƒCƒƒbƒg‚ğ‘I‘ğ
 			If pindex = 0 Then
-				'Invalid_string_refer_to_original_code
+				'ƒƒCƒ“ƒpƒCƒƒbƒg
 				p = .MainPilot
 				If .MainPilot.Nickname = .Pilot(1).Nickname Or .Data.PilotNum = 1 Then
 					DisplayedPilotInd = 1
 				End If
 			ElseIf pindex = 1 Then 
-				'Invalid_string_refer_to_original_code
+				'ƒƒCƒ“ƒpƒCƒƒbƒg‚Ü‚½‚Í‚P”Ô–Ú‚ÌƒpƒCƒƒbƒg
 				If .MainPilot.Nickname <> .Pilot(1).Nickname And .Data.PilotNum <> 1 Then
 					p = .Pilot(1)
 				Else
 					p = .MainPilot
 				End If
 			ElseIf pindex <= .CountPilot Then 
-				'Invalid_string_refer_to_original_code
+				'ƒTƒuƒpƒCƒƒbƒg
 				p = .Pilot(pindex)
 			ElseIf pindex <= .CountPilot + .CountSupport Then 
-				'Invalid_string_refer_to_original_code
+				'ƒTƒ|[ƒgƒpƒCƒƒbƒg
 				p = .Support(pindex - .CountPilot)
 			Else
-				'Invalid_string_refer_to_original_code
+				'’Ç‰ÁƒTƒ|[ƒg
 				p = .AdditionalSupport
 			End If
 			
 			With p
-				'Invalid_string_refer_to_original_code
+				'î•ñ‚ğXV
 				.UpdateSupportMod()
 				
-				'Invalid_string_refer_to_original_code
+				'ƒpƒCƒƒbƒg‰æ‘œ‚ğ•\¦
 				fname = "\Bitmap\Pilot\" & .Bitmap
 				If frmMultiSelectListBox.Visible Then
-					'Invalid_string_refer_to_original_code
-					'ä»£ã‚ã‚Šã«ãƒ¦ãƒ‹ãƒƒãƒˆç”»åƒã‚’è¡¨ç¤º
-					If InStr(.Name, "(ã‚¶ã‚³)") > 0 Or InStr(.Name, "(æ±ç”¨)") > 0 Then
+					'ƒUƒR•”Ä—pƒpƒCƒƒbƒg‚ªæ‚éƒ†ƒjƒbƒg‚ÌoŒ‚‘I‘ğ‚ÍƒpƒCƒƒbƒg‰æ‘œ‚Ì
+					'‘ã‚í‚è‚Éƒ†ƒjƒbƒg‰æ‘œ‚ğ•\¦
+					If InStr(.Name, "(ƒUƒR)") > 0 Or InStr(.Name, "(”Ä—p)") > 0 Then
 						fname = "\Bitmap\Unit\" & u.Bitmap
 					End If
 				End If
 				
-				'ç”»åƒãƒ•ã‚¡ã‚¤ãƒ«ã‚’æ¤œç´¢
+				'‰æ‘œƒtƒ@ƒCƒ‹‚ğŒŸõ
 				If InStr(fname, "\-.bmp") > 0 Then
 					fname = ""
 				ElseIf FileExists(ScenarioPath & fname) Then 
@@ -525,7 +513,7 @@ Module Status
 				ElseIf FileExists(AppPath & fname) Then 
 					fname = AppPath & fname
 				Else
-					'ç”»åƒãŒè¦‹ã¤ã‹ã‚‰ãªã‹ã£ãŸã“ã¨ã‚’è¨˜éŒ²
+					'‰æ‘œ‚ªŒ©‚Â‚©‚ç‚È‚©‚Á‚½‚±‚Æ‚ğ‹L˜^
 					If InStr(fname, "\Pilot\") > 0 Then
 						If .Bitmap = .Data.Bitmap Then
 							.Data.IsBitmapMissing = True
@@ -534,7 +522,7 @@ Module Status
 					fname = ""
 				End If
 				
-				'ç”»åƒãƒ•ã‚¡ã‚¤ãƒ«ã‚’èª­ã¿è¾¼ã‚“ã§è¡¨ç¤º
+				'‰æ‘œƒtƒ@ƒCƒ‹‚ğ“Ç‚İ‚ñ‚Å•\¦
 				If MainWidth = 15 Then
 					If fname <> "" Then
 						On Error GoTo ErrorHandler
@@ -545,20 +533,20 @@ Module Status
 						'UPGRADE_ISSUE: Control picFace ‚ÍA”Ä—p–¼‘O‹óŠÔ Form “à‚É‚ ‚é‚½‚ßA‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 						MainForm.picFace.PaintPicture(MainForm.picTmp.Picture, 0, 0, 64, 64)
 					Else
-						'Invalid_string_refer_to_original_code
+						'‰æ‘œƒtƒ@ƒCƒ‹‚ªŒ©‚Â‚©‚ç‚È‚©‚Á‚½ê‡‚ÍƒLƒƒƒ‰‰æ–Ê‚ğƒNƒŠƒA
 						'UPGRADE_ISSUE: Control picFace ‚ÍA”Ä—p–¼‘O‹óŠÔ Form “à‚É‚ ‚é‚½‚ßA‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 						MainForm.picFace = System.Drawing.Image.FromFile("")
 					End If
 				Else
 					If fname <> "" Then
-						DrawPicture(fname, 2, 2, 64, 64, 0, 0, 0, 0, "Invalid_string_refer_to_original_code")
+						DrawPicture(fname, 2, 2, 64, 64, 0, 0, 0, 0, "ƒXƒe[ƒ^ƒX")
 					Else
-						'Invalid_string_refer_to_original_code
-						DrawPicture("white.bmp", 2, 2, 64, 64, 0, 0, 0, 0, "Invalid_string_refer_to_original_code")
+						'‰æ‘œƒtƒ@ƒCƒ‹‚ªŒ©‚Â‚©‚ç‚È‚©‚Á‚½ê‡‚ÍƒLƒƒƒ‰‰æ–Ê‚ğƒNƒŠƒA
+						DrawPicture("white.bmp", 2, 2, 64, 64, 0, 0, 0, 0, "ƒXƒe[ƒ^ƒX")
 					End If
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'ƒpƒCƒƒbƒgˆ¤Ì
 				ppic.Font = VB6.FontChangeSize(ppic.Font, 10.5)
 				ppic.Font = VB6.FontChangeBold(ppic.Font, False)
 				'MOD START 240a
@@ -573,8 +561,8 @@ Module Status
 				ppic.Font = VB6.FontChangeBold(ppic.Font, False)
 				ppic.Font = VB6.FontChangeSize(ppic.Font, 10)
 				
-				'Invalid_string_refer_to_original_code
-				If .Nickname0 = "Invalid_string_refer_to_original_code" Then
+				'ƒ_ƒ~[ƒpƒCƒƒbƒgH
+				If .Nickname0 = "ƒpƒCƒƒbƒg•sİ" Then
 					'MOD START 240a
 					'                ppic.ForeColor = rgb(0, 0, 150)
 					ppic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityName, RGB(0, 0, 150)))
@@ -587,7 +575,7 @@ Module Status
 						ppic.CurrentX = 68
 					End If
 					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh ppic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					ppic.Print(Term("ãƒ¬ãƒ™ãƒ«", u))
+					ppic.Print(Term("ƒŒƒxƒ‹", u))
 					'MOD START 240a
 					'            If MainWidth <> 15 Then
 					If NewGUIMode Then
@@ -596,7 +584,7 @@ Module Status
 						ppic.CurrentX = 68
 					End If
 					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh ppic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					ppic.Print(Term("æ°—åŠ›", u))
+					ppic.Print(Term("‹C—Í", u))
 					'MOD START 240a
 					'                ppic.ForeColor = rgb(0, 0, 0)
 					ppic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorNormalString, RGB(0, 0, 0)))
@@ -613,8 +601,8 @@ Module Status
 						'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB ppic.CurrentX ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 						ppic.CurrentX = 68
 					End If
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					upic.Print(Term("Ši“¬", u, 4) & "               " & Term("ËŒ‚", u))
 					'MOD START 240a
 					'            If MainWidth <> 15 Then
 					If NewGUIMode Then
@@ -623,7 +611,7 @@ Module Status
 						ppic.CurrentX = 68
 					End If
 					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					upic.Print(Term("å‘½ä¸­", u, 4) & "               " & Term("å›é¿", u))
+					upic.Print(Term("–½’†", u, 4) & "               " & Term("‰ñ”ğ", u))
 					'MOD START 240a
 					'            If MainWidth <> 15 Then
 					If NewGUIMode Then
@@ -631,8 +619,8 @@ Module Status
 						'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB ppic.CurrentX ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 						ppic.CurrentX = 68
 					End If
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					upic.Print(Term("‹Z—Ê", u, 4) & "               " & Term("”½‰", u))
 					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 					upic.Print()
 					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
@@ -644,7 +632,7 @@ Module Status
 					
 					GoTo UnitStatus
 				End If
-				'ãƒ¬ãƒ™ãƒ«ã€çµŒé¨“å€¤ã€è¡Œå‹•å›æ•°
+				'ƒŒƒxƒ‹AŒoŒ±’lAs“®‰ñ”
 				'MOD START 240a
 				'            ppic.ForeColor = rgb(0, 0, 150)
 				ppic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityName, RGB(0, 0, 150)))
@@ -657,12 +645,12 @@ Module Status
 					ppic.CurrentX = 68
 				End If
 				'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh ppic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				ppic.Print(Term("ãƒ¬ãƒ™ãƒ«", u) & " ")
+				ppic.Print(Term("ƒŒƒxƒ‹", u) & " ")
 				'MOD START 240a
 				'            ppic.ForeColor = rgb(0, 0, 0)
 				ppic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorNormalString, RGB(0, 0, 0)))
 				'MOD  END  240a
-				If .Party = "å‘³æ–¹" Then
+				If .Party = "–¡•û" Then
 					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh ppic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 					ppic.Print(VB6.Format(.Level) & " (" & .Exp & ")")
 					Select Case u.Action
@@ -672,7 +660,7 @@ Module Status
 							ppic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityEnable, System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Blue)))
 							'MOD  END  240a
 							'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh ppic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-							ppic.Print("Invalid_string_refer_to_original_code")
+							ppic.Print(" ‚v")
 							'MOD START 240a
 							'                        ppic.ForeColor = rgb(0, 0, 0)
 							ppic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorNormalString, RGB(0, 0, 0)))
@@ -683,7 +671,7 @@ Module Status
 							ppic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityEnable, System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Blue)))
 							'MOD  END  240a
 							'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh ppic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-							ppic.Print("Invalid_string_refer_to_original_code")
+							ppic.Print(" ‚s")
 							'MOD START 240a
 							'                        ppic.ForeColor = rgb(0, 0, 0)
 							ppic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorNormalString, RGB(0, 0, 0)))
@@ -699,7 +687,7 @@ Module Status
 							ppic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityEnable, System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Blue)))
 							'MOD  END  240a
 							'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh ppic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-							ppic.Print("Invalid_string_refer_to_original_code")
+							ppic.Print(" ‚v")
 							'MOD START 240a
 							'                        ppic.ForeColor = rgb(0, 0, 0)
 							ppic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorNormalString, RGB(0, 0, 0)))
@@ -707,13 +695,13 @@ Module Status
 						End If
 					Else
 						'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh ppic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-						ppic.Print("Invalid_string_refer_to_original_code")
+						ppic.Print("H")
 					End If
 				End If
 				'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh ppic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 				ppic.Print()
 				
-				'æ°—åŠ›
+				'‹C—Í
 				'MOD START 240a
 				'            ppic.ForeColor = rgb(0, 0, 150)
 				ppic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityName, RGB(0, 0, 150)))
@@ -723,7 +711,7 @@ Module Status
 					ppic.CurrentX = 68
 				End If
 				'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh ppic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				ppic.Print(Term("æ°—åŠ›", u) & " ")
+				ppic.Print(Term("‹C—Í", u) & " ")
 				'MOD START 240a
 				'            ppic.ForeColor = rgb(0, 0, 0)
 				ppic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorNormalString, RGB(0, 0, 0)))
@@ -738,10 +726,10 @@ Module Status
 					End If
 				Else
 					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh ppic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					ppic.Print("Invalid_string_refer_to_original_code")
+					ppic.Print("H")
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'‚r‚o
 				If .MaxSP > 0 Then
 					'MOD START 240a
 					'                ppic.ForeColor = rgb(0, 0, 150)
@@ -752,7 +740,7 @@ Module Status
 						ppic.CurrentX = 68
 					End If
 					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh ppic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					ppic.Print(Term("Invalid_string_refer_to_original_code", u) & " ")
+					ppic.Print(Term("‚r‚o", u) & " ")
 					'MOD START 240a
 					'                ppic.ForeColor = rgb(0, 0, 0)
 					ppic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorNormalString, RGB(0, 0, 0)))
@@ -762,13 +750,13 @@ Module Status
 						ppic.Print(VB6.Format(.SP) & "/" & VB6.Format(.MaxSP))
 					Else
 						'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh ppic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-						ppic.Print("Invalid_string_refer_to_original_code")
+						ppic.Print("H")
 					End If
 				Else
 					isNoSp = True
 				End If
 				
-				'ä½¿ç”¨ä¸­ã®ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼ä¸€è¦§
+				'g—p’†‚ÌƒXƒyƒVƒƒƒ‹ƒpƒ[ˆê——
 				If Not is_unknown Then
 					'MOD START 240a
 					'                ppic.ForeColor = rgb(0, 0, 0)
@@ -797,7 +785,7 @@ Module Status
 					ppic.Print(" ")
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'upic‚ğ–¾¦“I‚É‰Šú‰»
 				upic.Font = VB6.FontChangeBold(upic.Font, False)
 				upic.Font = VB6.FontChangeSize(upic.Font, 9)
 				
@@ -807,20 +795,20 @@ Module Status
 					upic.CurrentX = 5
 				End If
 				'ADD  END  240a
-				'Invalid_string_refer_to_original_code
+				'Ši“¬
 				'MOD START 240a
 				'            upic.ForeColor = rgb(0, 0, 150)
 				upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityName, RGB(0, 0, 150)))
 				'MOD  END  240a
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				upic.Print(Term("Ši“¬", u, 4) & " ")
 				'MOD START 240a
 				'            upic.ForeColor = rgb(0, 0, 0)
 				upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorNormalString, RGB(0, 0, 0)))
 				'MOD  END  240a
 				If is_unknown Then
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					upic.Print(LeftPaddedString("H", 4) & Space(10))
 				ElseIf .Data.Infight > 1 Then 
 					Select Case .InfightMod + .InfightMod2
 						Case Is > 0
@@ -838,25 +826,25 @@ Module Status
 					upic.Print(LeftPaddedString("--", 5) & Space(9))
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'ËŒ‚
 				'MOD START 240a
 				'            upic.ForeColor = rgb(0, 0, 150)
 				upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityName, RGB(0, 0, 150)))
 				'MOD  END  240a
 				If Not .HasMana() Then
 					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					upic.Print(Term("Invalid_string_refer_to_original_code", u, 4) & " ")
+					upic.Print(Term("ËŒ‚", u, 4) & " ")
 				Else
 					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					upic.Print(Term("é­”åŠ›", u, 4) & " ")
+					upic.Print(Term("–‚—Í", u, 4) & " ")
 				End If
 				'MOD START 240a
 				'            upic.ForeColor = rgb(0, 0, 0)
 				upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorNormalString, RGB(0, 0, 0)))
 				'MOD  END  240a
 				If is_unknown Then
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					upic.Print(LeftPaddedString("H", 4))
 				ElseIf .Data.Shooting > 1 Then 
 					Select Case .ShootingMod + .ShootingMod2
 						Case Is > 0
@@ -880,20 +868,20 @@ Module Status
 					upic.CurrentX = 5
 				End If
 				'ADD  END  240a
-				'å‘½ä¸­
+				'–½’†
 				'MOD START 240a
 				'            upic.ForeColor = rgb(0, 0, 150)
 				upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityName, RGB(0, 0, 150)))
 				'MOD  END  240a
 				'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				upic.Print(Term("å‘½ä¸­", u, 4) & " ")
+				upic.Print(Term("–½’†", u, 4) & " ")
 				'MOD START 240a
 				'            upic.ForeColor = rgb(0, 0, 0)
 				upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorNormalString, RGB(0, 0, 0)))
 				'MOD  END  240a
 				If is_unknown Then
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					upic.Print(LeftPaddedString("H", 4) & Space(10))
 				ElseIf .Data.Hit > 1 Then 
 					Select Case .HitMod + .HitMod2
 						Case Is > 0
@@ -911,20 +899,20 @@ Module Status
 					upic.Print(LeftPaddedString("--", 5) & Space(9))
 				End If
 				
-				'å›é¿
+				'‰ñ”ğ
 				'MOD START 240a
 				'            upic.ForeColor = rgb(0, 0, 150)
 				upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityName, RGB(0, 0, 150)))
 				'MOD  END  240a
 				'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				upic.Print(Term("å›é¿", u, 4) & " ")
+				upic.Print(Term("‰ñ”ğ", u, 4) & " ")
 				'MOD START 240a
 				'            upic.ForeColor = rgb(0, 0, 0)
 				upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorNormalString, RGB(0, 0, 0)))
 				'MOD  END  240a
 				If is_unknown Then
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					upic.Print(LeftPaddedString("H", 4))
 				ElseIf .Data.Dodge > 1 Then 
 					Select Case .DodgeMod + .DodgeMod2
 						Case Is > 0
@@ -948,20 +936,20 @@ Module Status
 					upic.CurrentX = 5
 				End If
 				'ADD  END  240a
-				'Invalid_string_refer_to_original_code
+				'‹Z—Ê
 				'MOD START 240a
 				'            upic.ForeColor = rgb(0, 0, 150)
 				upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityName, RGB(0, 0, 150)))
 				'MOD  END  240a
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				upic.Print(Term("‹Z—Ê", u, 4) & " ")
 				'MOD START 240a
 				'            upic.ForeColor = rgb(0, 0, 0)
 				upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorNormalString, RGB(0, 0, 0)))
 				'MOD  END  240a
 				If is_unknown Then
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					upic.Print(LeftPaddedString("H", 4) & Space(10))
 				ElseIf .Data.Technique > 1 Then 
 					Select Case .TechniqueMod + .TechniqueMod2
 						Case Is > 0
@@ -979,20 +967,20 @@ Module Status
 					upic.Print(LeftPaddedString("--", 5) & Space(9))
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'”½‰
 				'MOD START 240a
 				'            upic.ForeColor = rgb(0, 0, 150)
 				upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityName, RGB(0, 0, 150)))
 				'MOD  END  240a
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				upic.Print(Term("”½‰", u, 4) & " ")
 				'MOD START 240a
 				'            upic.ForeColor = rgb(0, 0, 0)
 				upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorNormalString, RGB(0, 0, 0)))
 				'MOD  END  240a
 				If is_unknown Then
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					upic.Print(LeftPaddedString("H", 4))
 				ElseIf .Data.Intuition > 1 Then 
 					Select Case .IntuitionMod + .IntuitionMod2
 						Case Is > 0
@@ -1010,25 +998,25 @@ Module Status
 					upic.Print(LeftPaddedString("--", 5) & Space(9))
 				End If
 				
-				If IsOptionDefined("Invalid_string_refer_to_original_code") Or IsOptionDefined("Invalid_string_refer_to_original_code") Then
+				If IsOptionDefined("–hŒä—Í¬’·") Or IsOptionDefined("–hŒä—ÍƒŒƒxƒ‹ƒAƒbƒv") Then
 					If NewGUIMode Then
 						'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB upic.CurrentX ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 						upic.CurrentX = 5
 					End If
-					'é˜²å¾¡
+					'–hŒä
 					'MOD START 240a
 					'               upic.ForeColor = rgb(0, 0, 150)
 					upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityName, RGB(0, 0, 150)))
 					'MOD  END  240a
 					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					upic.Print(Term("é˜²å¾¡", u) & " ")
+					upic.Print(Term("–hŒä", u) & " ")
 					'MOD START 240a
 					'                upic.ForeColor = rgb(0, 0, 0)
 					upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorNormalString, RGB(0, 0, 0)))
 					'MOD  END  240a
 					If is_unknown Then
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						upic.Print(LeftPaddedString("H", 4))
 					ElseIf Not .IsSupport(u) Then 
 						'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 						upic.Print(LeftPaddedString(VB6.Format(.Defense), 5))
@@ -1045,7 +1033,7 @@ Module Status
 				upic.CurrentX = 5
 			End If
 			'ADD  END  240a
-			'æ‰€æœ‰ã™ã‚‹ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼ä¸€è¦§
+			'Š—L‚·‚éƒXƒyƒVƒƒƒ‹ƒpƒ[ˆê——
 			With p
 				If .CountSpecialPower > 0 Then
 					'MOD START 240a
@@ -1053,7 +1041,7 @@ Module Status
 					upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityName, RGB(0, 0, 150)))
 					'MOD  END  240a
 					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					upic.Print(Term("ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼", u, 18) & " ")
+					upic.Print(Term("ƒXƒyƒVƒƒƒ‹ƒpƒ[", u, 18) & " ")
 					'MOD START 240a
 					'                upic.ForeColor = rgb(0, 0, 0)
 					upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorNormalString, RGB(0, 0, 0)))
@@ -1076,21 +1064,21 @@ Module Status
 						Next 
 					Else
 						'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-						upic.Print("Invalid_string_refer_to_original_code")
+						upic.Print("H")
 					End If
 					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 					upic.Print()
 				End If
 			End With
 			
-			'Invalid_string_refer_to_original_code
+			'–¢¯•Ê‚Ìƒ†ƒjƒbƒg‚Í‚±‚êˆÈ~‚Ìî•ñ‚ğ•\¦‚µ‚È‚¢
 			If is_unknown Then
 				'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB upic.CurrentY ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 				upic.CurrentY = upic.CurrentY + 8
 				GoTo UnitStatus
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'ƒpƒCƒƒbƒg—p“Áê”\—Íˆê——
 			With p
 				'ADD START 240a
 				If NewGUIMode Then
@@ -1098,15 +1086,15 @@ Module Status
 					upic.CurrentX = 5
 				End If
 				'ADD  END  240a
-				'éœŠåŠ›
+				'—ì—Í
 				If .MaxPlana > 0 Then
-					If .IsSkillAvailable("éœŠåŠ›") Then
-						sname = .SkillName("éœŠåŠ›")
+					If .IsSkillAvailable("—ì—Í") Then
+						sname = .SkillName("—ì—Í")
 					Else
-						'Invalid_string_refer_to_original_code
-						sname = u.Pilot(1).SkillName("éœŠåŠ›")
+						'’Ç‰ÁƒpƒCƒƒbƒg‚Í‘æ‚PƒpƒCƒƒbƒg‚Ì—ì—Í‚ğ‘ã‚í‚è‚Ég‚¤‚Ì‚Å
+						sname = u.Pilot(1).SkillName("—ì—Í")
 					End If
-					If InStr(sname, "éè¡¨ç¤º") = 0 Then
+					If InStr(sname, "”ñ•\¦") = 0 Then
 						'MOD START 240a
 						'                    upic.ForeColor = rgb(0, 0, 150)
 						upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityName, RGB(0, 0, 150)))
@@ -1138,34 +1126,33 @@ Module Status
 					upic.CurrentX = 5
 				End If
 				'ADD  END  240a
-				'Invalid_string_refer_to_original_code
+				'“¯’²—¦
 				If .SynchroRate() > 0 Then
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					'MOD START 240a
-					'                    upic.ForeColor = rgb(0, 0, 150)
-					upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityName, RGB(0, 0, 150)))
-					'MOD  END  240a
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					'MOD START 240a
-					'                    upic.ForeColor = rgb(0, 0, 0)
-					upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorNormalString, RGB(0, 0, 0)))
-					'MOD  END  240a
-					If u.SyncLevel() < .SynchroRate Then
+					If InStr(.SkillName("“¯’²—¦"), "”ñ•\¦") = 0 Then
 						'MOD START 240a
-						'                        upic.ForeColor = rgb(150, 0, 0)
-						upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityDisable, RGB(150, 0, 0)))
+						'                    upic.ForeColor = rgb(0, 0, 150)
+						upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityName, RGB(0, 0, 150)))
+						'MOD  END  240a
+						'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						upic.Print(.SkillName("“¯’²—¦") & " ")
+						'MOD START 240a
+						'                    upic.ForeColor = rgb(0, 0, 0)
+						upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorNormalString, RGB(0, 0, 0)))
+						'MOD  END  240a
+						If u.SyncLevel() < .SynchroRate Then
+							'MOD START 240a
+							'                        upic.ForeColor = rgb(150, 0, 0)
+							upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityDisable, RGB(150, 0, 0)))
+							'MOD  END  240a
+						End If
+						'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						upic.Print(VB6.Format(.SynchroRate) & "%")
+						'MOD START 240a
+						'                    upic.ForeColor = rgb(0, 0, 0)
+						upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorNormalString, RGB(0, 0, 0)))
 						'MOD  END  240a
 					End If
-					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					upic.Print(VB6.Format(.SynchroRate) & "%")
-					'MOD START 240a
-					'                    upic.ForeColor = rgb(0, 0, 0)
-					upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorNormalString, RGB(0, 0, 0)))
-					'MOD  END  240a
 				End If
-				'End If
 				
 				'ADD START 240a
 				If NewGUIMode Then
@@ -1173,69 +1160,65 @@ Module Status
 					upic.CurrentX = 5
 				End If
 				'ADD  END  240a
-				'Invalid_string_refer_to_original_code
+				'“¾ˆÓ‹Z••s“¾è
 				n = 0
-				If .IsSkillAvailable("å¾—æ„æŠ€") Then
+				If .IsSkillAvailable("“¾ˆÓ‹Z") Then
 					n = n + 1
 					'MOD START 240a
 					'                upic.ForeColor = rgb(0, 0, 150)
 					upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityName, RGB(0, 0, 150)))
 					'MOD  END  240a
 					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					upic.Print("å¾—æ„æŠ€ ")
+					upic.Print("“¾ˆÓ‹Z ")
 					'MOD START 240a
 					'                upic.ForeColor = rgb(0, 0, 0)
 					upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorNormalString, RGB(0, 0, 0)))
 					'MOD  END  240a
 					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					upic.Print(RightPaddedString(.SkillData("å¾—æ„æŠ€"), 12))
+					upic.Print(RightPaddedString(.SkillData("“¾ˆÓ‹Z"), 12))
 				End If
-				If .IsSkillAvailable("ä¸å¾—æ‰‹") Then
+				If .IsSkillAvailable("•s“¾è") Then
 					n = n + 1
 					'MOD START 240a
 					'                upic.ForeColor = rgb(0, 0, 150)
 					upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityName, RGB(0, 0, 150)))
 					'MOD  END  240a
 					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					upic.Print("ä¸å¾—æ‰‹ ")
+					upic.Print("•s“¾è ")
 					'MOD START 240a
 					'                upic.ForeColor = rgb(0, 0, 0)
 					upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorNormalString, RGB(0, 0, 0)))
 					'MOD  END  240a
 					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					upic.Print(.SkillData("ä¸å¾—æ‰‹"))
+					upic.Print(.SkillData("•s“¾è"))
 				End If
 				If n > 0 Then
 					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 					upic.Print()
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'•\¦‚·‚éƒpƒCƒƒbƒg”\—Í‚ÌƒŠƒXƒg‚ğì¬
 				ReDim name_list(.CountSkill)
 				For i = 1 To .CountSkill
 					name_list(i) = .Skill(i)
 				Next 
-				'Invalid_string_refer_to_original_code
+				'•t‰Á‚³‚ê‚½ƒpƒCƒƒbƒg“Áê”\—Í
 				For i = 1 To u.CountCondition
 					If u.ConditionLifetime(i) <> 0 Then
 						Select Case Right(u.Condition(i), 3)
-							Case "Invalid_string_refer_to_original_code"
-								'Invalid_string_refer_to_original_code
-								'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+							Case "•t‰Á‚Q", "‹­‰»‚Q"
 								Select Case LIndex(u.ConditionData(i), 1)
-									Case "éè¡¨ç¤º", "è§£èª¬"
-										'Invalid_string_refer_to_original_code
+									Case "”ñ•\¦", "‰ğà"
+										'”ñ•\¦‚Ì”\—Í
 									Case Else
 										stype = Left(u.Condition(i), Len(u.Condition(i)) - 3)
 										Select Case stype
-											Case "ãƒãƒ³ã‚¿ãƒ¼", "Invalid_string_refer_to_original_code"
-												'Invalid_string_refer_to_original_code
-												'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-												'Invalid_string_refer_to_original_code
+											Case "ƒnƒ“ƒ^[", "‚r‚oÁ”ïŒ¸­", "ƒXƒyƒVƒƒƒ‹ƒpƒ[©“®”­“®"
+												'd•¡‰Â”\‚È”\—Í
 												ReDim Preserve name_list(UBound(name_list) + 1)
 												name_list(UBound(name_list)) = stype
 											Case Else
-												'Invalid_string_refer_to_original_code
+												'Šù‚ÉŠ—L‚µ‚Ä‚¢‚é”\—Í‚Å‚ ‚ê‚ÎƒXƒLƒbƒv
 												For j = 1 To UBound(name_list)
 													If stype = name_list(j) Then
 														Exit For
@@ -1251,11 +1234,11 @@ Module Status
 					End If
 				Next 
 				
-				'Invalid_string_refer_to_original_code
+				'ƒpƒCƒƒbƒg”\—Í‚ğ•\¦
 				n = 0
 				For i = 1 To UBound(name_list)
 					'ADD START 240a
-					'Invalid_string_refer_to_original_code
+					'•¶šF‚ğƒŠƒZƒbƒg
 					upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorNormalString, RGB(0, 0, 0)))
 					'ADD  END  240a
 					stype = name_list(i)
@@ -1267,12 +1250,12 @@ Module Status
 						slevel = CStr(.SkillLevel(stype))
 					End If
 					
-					If InStr(sname, "éè¡¨ç¤º") > 0 Then
+					If InStr(sname, "”ñ•\¦") > 0 Then
 						GoTo NextSkill
 					End If
 					
 					Select Case stype
-						Case "ã‚ªãƒ¼ãƒ©"
+						Case "ƒI[ƒ‰"
 							If DisplayedPilotInd = 1 Then
 								If u.AuraLevel(True) < u.AuraLevel() And MapFileName <> "" Then
 									'MOD START 240a
@@ -1285,7 +1268,7 @@ Module Status
 								End If
 							End If
 							
-						Case "Invalid_string_refer_to_original_code"
+						Case "’´”\—Í"
 							If DisplayedPilotInd = 1 Then
 								If u.PsychicLevel(True) < u.PsychicLevel() And MapFileName <> "" Then
 									'MOD START 240a
@@ -1298,7 +1281,7 @@ Module Status
 								End If
 							End If
 							
-						Case "åº•åŠ›", "Invalid_string_refer_to_original_code", "è¦šæ‚Ÿ"
+						Case "’ê—Í", "’´’ê—Í", "ŠoŒå"
 							If u.HP <= u.MaxHP \ 4 Then
 								'MOD START 240a
 								'                            upic.ForeColor = vbBlue
@@ -1306,7 +1289,7 @@ Module Status
 								'MOD  END  240a
 							End If
 							
-						Case "Invalid_string_refer_to_original_code"
+						Case "•s‹ü"
 							If u.HP <= u.MaxHP \ 2 Then
 								'MOD START 240a
 								'                            upic.ForeColor = vbBlue
@@ -1314,7 +1297,7 @@ Module Status
 								'MOD  END  240a
 							End If
 							
-						Case "æ½œåœ¨åŠ›é–‹æ”¾"
+						Case "öİ—ÍŠJ•ú"
 							If .Morale >= 130 Then
 								'MOD START 240a
 								'                            upic.ForeColor = vbBlue
@@ -1322,7 +1305,7 @@ Module Status
 								'MOD  END  240a
 							End If
 							
-						Case "Invalid_string_refer_to_original_code"
+						Case "ƒXƒyƒVƒƒƒ‹ƒpƒ[©“®”­“®"
 							If i <= .CountSkill Then
 								If .Morale >= StrToLng(LIndex(.SkillData(i), 3)) Then
 									'MOD START 240a
@@ -1339,88 +1322,55 @@ Module Status
 								End If
 							End If
 							
-						Case "Invalid_string_refer_to_original_code"
-							'Invalid_string_refer_to_original_code_
-							'Invalid_string_refer_to_original_code_
-							'Invalid_string_refer_to_original_code_
-							'Invalid_string_refer_to_original_code_
-							'Invalid_string_refer_to_original_code_
-							'And Not u.IsFeatureAvailable("ç›¾") _
-							'Invalid_string_refer_to_original_code_
-							'Invalid_string_refer_to_original_code_
-							'Invalid_string_refer_to_original_code_
-							'Invalid_string_refer_to_original_code_
-							'Invalid_string_refer_to_original_code_
-							'Invalid_string_refer_to_original_code_
-							'Invalid_string_refer_to_original_code_
-							'Invalid_string_refer_to_original_code_
-							'And MapFileName <> "" _
-							'Then
-							'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-							'MOD START 240a
-							'                            upic.ForeColor = rgb(150, 0, 0)
-							upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityDisable, RGB(150, 0, 0)))
-							'MOD  END  240a
-							'End If
+						Case "‚r–hŒä"
+							If Not u.IsFeatureAvailable("ƒV[ƒ‹ƒh") And Not u.IsFeatureAvailable("‘åŒ^ƒV[ƒ‹ƒh") And Not u.IsFeatureAvailable("¬Œ^ƒV[ƒ‹ƒh") And Not u.IsFeatureAvailable("ƒGƒlƒ‹ƒM[ƒV[ƒ‹ƒh") And Not u.IsFeatureAvailable("ƒAƒNƒeƒBƒuƒV[ƒ‹ƒh") And Not u.IsFeatureAvailable("‚") And Not u.IsFeatureAvailable("ƒoƒŠƒAƒV[ƒ‹ƒh") And Not u.IsFeatureAvailable("ƒAƒNƒeƒBƒuƒtƒB[ƒ‹ƒh") And Not u.IsFeatureAvailable("ƒAƒNƒeƒBƒuƒvƒƒeƒNƒVƒ‡ƒ“") And InStr(u.FeatureData("‘j~"), "‚r–hŒä") = 0 And InStr(u.FeatureData("Lˆæ‘j~"), "‚r–hŒä") = 0 And InStr(u.FeatureData("”½Ë"), "‚r–hŒä") = 0 And InStr(u.FeatureData("“–‚Äg‹Z"), "‚r–hŒä") = 0 And InStr(u.FeatureData("©“®”½Œ‚"), "‚r–hŒä") = 0 And MapFileName <> "" Then
+								'MOD START 240a
+								'                            upic.ForeColor = rgb(150, 0, 0)
+								upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityDisable, RGB(150, 0, 0)))
+								'MOD  END  240a
+							End If
 							
-						Case "Invalid_string_refer_to_original_code"
+						Case "Ø‚è•¥‚¢"
 							For j = 1 To u.CountWeapon
-								If u.IsWeaponClassifiedAs(j, "æ­¦") Then
+								If u.IsWeaponClassifiedAs(j, "•") Then
 									If Not u.IsDisabled((u.Weapon(j).Name)) Then
 										Exit For
 									End If
 								End If
 							Next 
-							If u.IsFeatureAvailable("æ ¼é—˜æ­¦å™¨") Then
+							If u.IsFeatureAvailable("Ši“¬•Ší") Then
 								j = 0
 							End If
-							'Invalid_string_refer_to_original_code_
-							'Invalid_string_refer_to_original_code_
-							'Invalid_string_refer_to_original_code_
-							'And MapFileName <> "" _
-							'Then
-							'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-							'MOD START 240a
-							'                            upic.ForeColor = rgb(150, 0, 0)
-							upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityDisable, RGB(150, 0, 0)))
-							'MOD  END  240a
-							'End If
-							
-						Case "è¿æ’ƒ"
-							For j = 1 To u.CountWeapon
-								'Invalid_string_refer_to_original_code_
-								'Invalid_string_refer_to_original_code_
-								'And (u.Weapon(j).Bullet >= 10 _
-								'Or (u.Weapon(j).Bullet = 0 _
-								'And u.Weapon(j).ENConsumption <= 5)) _
-								'Then
-								'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-								Exit For
-								'End If
-							Next 
-							If u.IsFeatureAvailable("è¿æ’ƒæ­¦å™¨") Then
-								j = 0
+							If j > u.CountWeapon And InStr(u.FeatureData("‘j~"), "Ø‚è•¥‚¢") = 0 And InStr(u.FeatureData("Lˆæ‘j~"), "Ø‚è•¥‚¢") = 0 And InStr(u.FeatureData("”½Ë"), "Ø‚è•¥‚¢") = 0 And InStr(u.FeatureData("“–‚Äg‹Z"), "Ø‚è•¥‚¢") = 0 And InStr(u.FeatureData("©“®”½Œ‚"), "Ø‚è•¥‚¢") = 0 And MapFileName <> "" Then
+								'MOD START 240a
+								'                            upic.ForeColor = rgb(150, 0, 0)
+								upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityDisable, RGB(150, 0, 0)))
+								'MOD  END  240a
 							End If
-							'Invalid_string_refer_to_original_code_
-							'And InStr(u.FeatureData("å½“ã¦èº«æŠ€"), "è¿æ’ƒ") = 0 _
-							'Invalid_string_refer_to_original_code_
-							'And MapFileName <> "" _
-							'Then
-							'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-							'MOD START 240a
-							'                            upic.ForeColor = rgb(150, 0, 0)
-							upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityDisable, RGB(150, 0, 0)))
-							'MOD  END  240a
-							'End If
 							
-						Case "Invalid_string_refer_to_original_code"
+						Case "Œ}Œ‚"
 							For j = 1 To u.CountWeapon
-								'Invalid_string_refer_to_original_code
-								'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-								If Not u.IsDisabled((u.Weapon(j).Name)) Then
+								If u.IsWeaponAvailable(j, "ˆÚ“®Œã") And u.IsWeaponClassifiedAs(j, "ËŒ‚Œn") And (u.Weapon(j).Bullet >= 10 Or (u.Weapon(j).Bullet = 0 And u.Weapon(j).ENConsumption <= 5)) Then
 									Exit For
 								End If
-								'End If
+							Next 
+							If u.IsFeatureAvailable("Œ}Œ‚•Ší") Then
+								j = 0
+							End If
+							If j > u.CountWeapon And InStr(u.FeatureData("‘j~"), "Œ}Œ‚") = 0 And InStr(u.FeatureData("Lˆæ‘j~"), "Œ}Œ‚") = 0 And InStr(u.FeatureData("”½Ë"), "Œ}Œ‚") = 0 And InStr(u.FeatureData("“–‚Äg‹Z"), "Œ}Œ‚") = 0 And InStr(u.FeatureData("©“®”½Œ‚"), "Œ}Œ‚") = 0 And MapFileName <> "" Then
+								'MOD START 240a
+								'                            upic.ForeColor = rgb(150, 0, 0)
+								upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityDisable, RGB(150, 0, 0)))
+								'MOD  END  240a
+							End If
+							
+						Case "ò‰»"
+							For j = 1 To u.CountWeapon
+								If u.IsWeaponClassifiedAs(j, "ò") Then
+									If Not u.IsDisabled((u.Weapon(j).Name)) Then
+										Exit For
+									End If
+								End If
 							Next 
 							If j > u.CountWeapon And MapFileName <> "" Then
 								'MOD START 240a
@@ -1429,12 +1379,12 @@ Module Status
 								'MOD  END  240a
 							End If
 							
-						Case "æ´è­·"
+						Case "‰‡Œì"
 							If MapFileName <> "" Then
 								If u.Party = Stage Then
 									ret = MaxLng(u.MaxSupportAttack - u.UsedSupportAttack, 0)
 								Else
-									If u.IsUnderSpecialPowerEffect("Invalid_string_refer_to_original_code") Then
+									If u.IsUnderSpecialPowerEffect("ƒTƒ|[ƒgƒK[ƒh•s”\") Then
 										'MOD START 240a
 										'                                    upic.ForeColor = rgb(150, 0, 0)
 										upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityDisable, RGB(150, 0, 0)))
@@ -1448,10 +1398,10 @@ Module Status
 									upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityDisable, RGB(150, 0, 0)))
 									'MOD  END  240a
 								End If
-								sname = sname & " (æ®‹ã‚Š" & VB6.Format(ret) & "Invalid_string_refer_to_original_code"
+								sname = sname & " (c‚è" & VB6.Format(ret) & "‰ñ)"
 							End If
 							
-						Case "Invalid_string_refer_to_original_code"
+						Case "‰‡ŒìUŒ‚"
 							If MapFileName <> "" Then
 								ret = MaxLng(u.MaxSupportAttack - u.UsedSupportAttack, 0)
 								If ret = 0 Then
@@ -1460,22 +1410,22 @@ Module Status
 									upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityDisable, RGB(150, 0, 0)))
 									'MOD  END  240a
 								End If
-								sname = sname & " (æ®‹ã‚Š" & VB6.Format(ret) & "Invalid_string_refer_to_original_code"
+								sname = sname & " (c‚è" & VB6.Format(ret) & "‰ñ)"
 							End If
 							
-						Case "æ´è­·é˜²å¾¡"
+						Case "‰‡Œì–hŒä"
 							If MapFileName <> "" Then
 								ret = MaxLng(u.MaxSupportGuard - u.UsedSupportGuard, 0)
-								If ret = 0 Or u.IsUnderSpecialPowerEffect("Invalid_string_refer_to_original_code") Then
+								If ret = 0 Or u.IsUnderSpecialPowerEffect("ƒTƒ|[ƒgƒK[ƒh•s”\") Then
 									'MOD START 240a
 									'                                upic.ForeColor = rgb(150, 0, 0)
 									upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityDisable, RGB(150, 0, 0)))
 									'MOD  END  240a
 								End If
-								sname = sname & " (æ®‹ã‚Š" & VB6.Format(ret) & "Invalid_string_refer_to_original_code"
+								sname = sname & " (c‚è" & VB6.Format(ret) & "‰ñ)"
 							End If
 							
-						Case "Invalid_string_refer_to_original_code"
+						Case "“—¦"
 							If MapFileName <> "" Then
 								ret = MaxLng(u.MaxSyncAttack - u.UsedSyncAttack, 0)
 								If ret = 0 Then
@@ -1484,26 +1434,26 @@ Module Status
 									upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityDisable, RGB(150, 0, 0)))
 									'MOD  END  240a
 								End If
-								sname = sname & " (æ®‹ã‚Š" & VB6.Format(ret) & "Invalid_string_refer_to_original_code"
+								sname = sname & " (c‚è" & VB6.Format(ret) & "‰ñ)"
 							End If
 							
-						Case "ã‚«ã‚¦ãƒ³ã‚¿ãƒ¼"
+						Case "ƒJƒEƒ“ƒ^["
 							If MapFileName <> "" Then
 								ret = MaxLng(u.MaxCounterAttack - u.UsedCounterAttack, 0)
 								If ret > 100 Then
-									sname = sname & " (æ®‹ã‚Šâˆå›)"
+									sname = sname & " (c‚è‡‰ñ)"
 								ElseIf ret > 0 Then 
-									sname = sname & " (æ®‹ã‚Š" & VB6.Format(ret) & "Invalid_string_refer_to_original_code"
+									sname = sname & " (c‚è" & VB6.Format(ret) & "‰ñ)"
 								Else
 									'MOD START 240a
 									'                                upic.ForeColor = rgb(150, 0, 0)
 									upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityDisable, RGB(150, 0, 0)))
 									'MOD  END  240a
-									sname = sname & "Invalid_string_refer_to_original_code"
+									sname = sname & " (c‚è0‰ñ)"
 								End If
 							End If
 							
-						Case "Invalid_string_refer_to_original_code"
+						Case "æè•KŸ"
 							If u.MaxCounterAttack > 100 Then
 								'MOD START 240a
 								'                            upic.ForeColor = vbBlue
@@ -1511,19 +1461,17 @@ Module Status
 								'MOD  END  240a
 							End If
 							
-						Case "Invalid_string_refer_to_original_code"
-							If IsOptionDefined("Invalid_string_refer_to_original_code") Or IsOptionDefined("Invalid_string_refer_to_original_code") Then
+						Case "‘Ï‹v"
+							If IsOptionDefined("–hŒä—Í¬’·") Or IsOptionDefined("–hŒä—ÍƒŒƒxƒ‹ƒAƒbƒv") Then
 								GoTo NextSkill
 							End If
 							
-						Case "éœŠåŠ›", "Invalid_string_refer_to_original_code"
-							'Invalid_string_refer_to_original_code
-							'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						Case "—ì—Í", "“¯’²—¦", "“¾ˆÓ‹Z", "•s“¾è"
 							GoTo NextSkill
 							
 					End Select
 					
-					'Invalid_string_refer_to_original_code
+					'“Áê”\—Í–¼‚ğ•\¦
 					'UPGRADE_ISSUE: ’è” vbFromUnicode ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="55B59875-9A95-4B71-9D6A-7C294BF7139D"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 					'UPGRADE_ISSUE: LenB ŠÖ”‚ÍƒTƒ|[ƒg‚³‚ê‚Ü‚¹‚ñB Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="367764E5-F3F8-4E43-AC3E-7FE0B5E074E2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 					If LenB(StrConv(sname, vbFromUnicode)) > 19 Then
@@ -1547,7 +1495,7 @@ Module Status
 					End If
 					upic.ForeColor = System.Drawing.Color.Black
 					
-					'Invalid_string_refer_to_original_code
+					'•K—v‚É‰‚¶‚Ä‰üs
 					If n > 1 Then
 						'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 						upic.Print()
@@ -1579,22 +1527,21 @@ NextSkill:
 			
 UnitStatus: 
 			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			GoTo UpdateStatusWindow
-			'End If
+			'ƒpƒCƒƒbƒgƒXƒe[ƒ^ƒX•\¦—p‚Ìƒ_ƒ~[ƒ†ƒjƒbƒg‚Ìê‡‚Í‚±‚±‚Å•\¦‚ğI—¹
+			If .IsFeatureAvailable("ƒ_ƒ~[ƒ†ƒjƒbƒg") Then
+				GoTo UpdateStatusWindow
+			End If
 			
-			'Invalid_string_refer_to_original_code
+			'‚±‚±‚©‚ç‚Íƒ†ƒjƒbƒg‚ÉŠÖ‚·‚éî•ñ
 			
-			'Invalid_string_refer_to_original_code
+			'ƒ†ƒjƒbƒgˆ¤Ì
 			upic.Font = VB6.FontChangeSize(upic.Font, 10.5)
 			upic.Font = VB6.FontChangeBold(upic.Font, False)
 			'ADD START 240a
 			If NewGUIMode Then
 				'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB upic.CurrentX ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 				upic.CurrentX = 5
-				'Invalid_string_refer_to_original_code
+				'•¶šF‚ğƒŠƒZƒbƒg
 				upic.ForeColor = System.Drawing.ColorTranslator.FromOle(StatusFontColorNormalString)
 			End If
 			'ADD  END  240a
@@ -1603,131 +1550,125 @@ UnitStatus:
 			upic.Font = VB6.FontChangeBold(upic.Font, False)
 			upic.Font = VB6.FontChangeSize(upic.Font, 9)
 			
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			
-			'Invalid_string_refer_to_original_code
-			
-			'ADD START 240a
-			If NewGUIMode Then
-				'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB upic.CurrentX ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				upic.CurrentX = 5
-			End If
-			'ADD  END  240a
-			'Invalid_string_refer_to_original_code
-			If InStr(TerrainName(.X, .Y), "(") > 0 Then
+			If .Status_Renamed = "oŒ‚" And MapFileName <> "" Then
+				
+				'’nŒ`î•ñ‚Ì•\¦
+				
+				'ADD START 240a
+				If NewGUIMode Then
+					'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB upic.CurrentX ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					upic.CurrentX = 5
+				End If
+				'ADD  END  240a
+				'ƒ†ƒjƒbƒg‚ÌˆÊ’u‚ğ’nŒ`–¼Ì
+				If InStr(TerrainName(.X, .Y), "(") > 0 Then
+					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					upic.Print(.Area & " (" & Left(TerrainName(.X, .Y), InStr(TerrainName(.X, .Y), "(") - 1))
+				Else
+					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					upic.Print(.Area & " (" & TerrainName(.X, .Y))
+				End If
+				
+				'‰ñ”ğ•–hŒäC³
+				If TerrainEffectForHit(.X, .Y) = TerrainEffectForDamage(.X, .Y) Then
+					If TerrainEffectForHit(.X, .Y) >= 0 Then
+						'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						upic.Print(" ‰ñ•–h+" & VB6.Format(TerrainEffectForHit(.X, .Y)) & "%")
+					Else
+						'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						upic.Print(" ‰ñ•–h" & VB6.Format(TerrainEffectForHit(.X, .Y)) & "%")
+					End If
+				Else
+					If TerrainEffectForHit(.X, .Y) >= 0 Then
+						'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						upic.Print(" ‰ñ+" & VB6.Format(TerrainEffectForHit(.X, .Y)) & "%")
+					Else
+						'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						upic.Print(" ‰ñ" & VB6.Format(TerrainEffectForHit(.X, .Y)) & "%")
+					End If
+					If TerrainEffectForDamage(.X, .Y) >= 0 Then
+						'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						upic.Print(" –h+" & VB6.Format(TerrainEffectForDamage(.X, .Y)) & "%")
+					Else
+						'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						upic.Print(" –h" & VB6.Format(TerrainEffectForDamage(.X, .Y)) & "%")
+					End If
+				End If
+				
+				'‚g‚o•‚d‚m‰ñ•œ
+				If TerrainEffectForHPRecover(.X, .Y) > 0 Then
+					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					upic.Print(" " & Left(Term("‚g‚o"), 1) & "+" & VB6.Format(TerrainEffectForHPRecover(.X, .Y)) & "%")
+				End If
+				If TerrainEffectForENRecover(.X, .Y) > 0 Then
+					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					upic.Print(" " & Left(Term("‚d‚m"), 1) & "+" & VB6.Format(TerrainEffectForENRecover(.X, .Y)) & "%")
+				End If
+				
+				'MOD START 240a
+				'            Set td = TDList.Item(MapData(.X, .Y, 0))
+				'ƒ}ƒX‚Ìƒ^ƒCƒv‚É‰‚¶‚ÄQÆæ‚ğ•ÏX
+				Select Case MapData(.X, .Y, Map.MapDataIndex.BoxType)
+					Case Map.BoxTypes.Under, Map.BoxTypes.UpperBmpOnly
+						td = TDList.Item(MapData(.X, .Y, Map.MapDataIndex.TerrainType))
+					Case Else
+						td = TDList.Item(MapData(.X, .Y, Map.MapDataIndex.LayerType))
+				End Select
+				'MOD START 240a
+				'‚g‚o•‚d‚mŒ¸­
+				If td.IsFeatureAvailable("‚g‚oŒ¸­") Then
+					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					upic.Print(" " & Left(Term("‚g‚o"), 1) & "-" & VB6.Format(10 * td.FeatureLevel("‚g‚oŒ¸­")) & "%")
+				End If
+				If td.IsFeatureAvailable("‚d‚mŒ¸­") Then
+					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					upic.Print(" " & Left(Term("‚d‚m"), 1) & "-" & VB6.Format(10 * td.FeatureLevel("‚d‚mŒ¸­")) & "%")
+				End If
+				
+				'‚g‚o•‚d‚m‘‰Á
+				If td.IsFeatureAvailable("‚g‚o‘‰Á") Then
+					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					upic.Print(" " & Left(Term("‚g‚o"), 1) & "+" & VB6.Format(1000 * td.FeatureLevel("‚g‚o‘‰Á")))
+				End If
+				If td.IsFeatureAvailable("‚d‚m‘‰Á") Then
+					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					upic.Print(" " & Left(Term("‚d‚m"), 1) & "+" & VB6.Format(10 * td.FeatureLevel("‚d‚m‘‰Á")))
+				End If
+				
+				'‚g‚o•‚d‚m’á‰º
+				If td.IsFeatureAvailable("‚g‚o’á‰º") Then
+					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					upic.Print(" " & Left(Term("‚g‚o"), 1) & "-" & VB6.Format(1000 * td.FeatureLevel("‚g‚o’á‰º")))
+				End If
+				If td.IsFeatureAvailable("‚d‚m’á‰º") Then
+					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					upic.Print(" " & Left(Term("‚d‚m"), 1) & "-" & VB6.Format(10 * td.FeatureLevel("‚d‚m’á‰º")))
+				End If
+				
+				'–€C
+				If td.IsFeatureAvailable("–€C") Then
+					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					upic.Print(" –€L" & VB6.Format(td.FeatureLevel("–€C")))
+				End If
+				
 				'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				upic.Print(.Area & " (" & Left(TerrainName(.X, .Y), InStr(TerrainName(.X, .Y), "(") - 1))
+				upic.Print(")")
 			Else
+				'MOD START 240a
+				'            upic.ForeColor = rgb(0, 0, 150)
+				upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityName, RGB(0, 0, 150)))
+				'MOD  END  240a
 				'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				upic.Print(.Area & " (" & TerrainName(.X, .Y))
-			End If
-			
-			'Invalid_string_refer_to_original_code
-			If TerrainEffectForHit(.X, .Y) = TerrainEffectForDamage(.X, .Y) Then
-				If TerrainEffectForHit(.X, .Y) >= 0 Then
-					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					upic.Print("Invalid_string_refer_to_original_code" & VB6.Format(TerrainEffectForHit(.X, .Y)) & "%")
-				Else
-					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					upic.Print("Invalid_string_refer_to_original_code" & VB6.Format(TerrainEffectForHit(.X, .Y)) & "%")
-				End If
-			Else
-				If TerrainEffectForHit(.X, .Y) >= 0 Then
-					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					upic.Print("Invalid_string_refer_to_original_code" & VB6.Format(TerrainEffectForHit(.X, .Y)) & "%")
-				Else
-					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					upic.Print("Invalid_string_refer_to_original_code")
-					& Format$(TerrainEffectForHit(.X, .Y)) & "%";
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				End If
-				If TerrainEffectForDamage(.X, .Y) >= 0 Then
-					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					upic.Print(" é˜²+" & VB6.Format(TerrainEffectForDamage(.X, .Y)) & "%")
-				Else
-					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					upic.Print(" é˜²" & VB6.Format(TerrainEffectForDamage(.X, .Y)) & "%")
-				End If
-			End If
-			
-			'Invalid_string_refer_to_original_code
-			If TerrainEffectForHPRecover(.X, .Y) > 0 Then
+				upic.Print("ƒ‰ƒ“ƒN ")
+				'MOD START 240a
+				'            upic.ForeColor = rgb(0, 0, 0)
+				upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorNormalString, RGB(0, 0, 0)))
+				'MOD  END  240a
 				'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				upic.Print(" " & Left(Term("Invalid_string_refer_to_original_code"), 1) & "+" & VB6.Format(TerrainEffectForHPRecover(.X, .Y)) & "%")
-			End If
-			If TerrainEffectForENRecover(.X, .Y) > 0 Then
-				'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				upic.Print(" " & Left(Term("Invalid_string_refer_to_original_code"), 1) & "+" & VB6.Format(TerrainEffectForENRecover(.X, .Y)) & "%")
+				upic.Print(VB6.Format(.Rank))
 			End If
 			
-			'MOD START 240a
-			'            Set td = TDList.Item(MapData(.X, .Y, 0))
-			'Invalid_string_refer_to_original_code
-			Select Case MapData(.X, .Y, Map.MapDataIndex.BoxType)
-				Case Map.BoxTypes.Under, Map.BoxTypes.UpperBmpOnly
-					td = TDList.Item(MapData(.X, .Y, Map.MapDataIndex.TerrainType))
-				Case Else
-					td = TDList.Item(MapData(.X, .Y, Map.MapDataIndex.LayerType))
-			End Select
-			'MOD START 240a
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			'End If
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			'End If
-			
-			'Invalid_string_refer_to_original_code
-			If td.IsFeatureAvailable("Invalid_string_refer_to_original_code") Then
-				'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				upic.Print(" " & Left(Term("Invalid_string_refer_to_original_code"), 1) & "+" & VB6.Format(1000 * td.FeatureLevel("Invalid_string_refer_to_original_code")))
-			End If
-			If td.IsFeatureAvailable("Invalid_string_refer_to_original_code") Then
-				'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				upic.Print(" " & Left(Term("Invalid_string_refer_to_original_code"), 1) & "+" & VB6.Format(10 * td.FeatureLevel("Invalid_string_refer_to_original_code")))
-			End If
-			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			'End If
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			'End If
-			
-			'æ‘©æ“¦
-			If td.IsFeatureAvailable("æ‘©æ“¦") Then
-				'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				upic.Print(" æ‘©L" & VB6.Format(td.FeatureLevel("æ‘©æ“¦")))
-			End If
-			
-			'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			upic.Print(")")
-			'MOD START 240a
-			'            upic.ForeColor = rgb(0, 0, 150)
-			upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityName, RGB(0, 0, 150)))
-			'MOD  END  240a
-			'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			upic.Print("ãƒ©ãƒ³ã‚¯ ")
-			'MOD START 240a
-			'            upic.ForeColor = rgb(0, 0, 0)
-			upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorNormalString, RGB(0, 0, 0)))
-			'MOD  END  240a
-			'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			upic.Print(VB6.Format(.Rank))
-			'End If
-			
-			'Invalid_string_refer_to_original_code
+			'–¢Šm”Fƒ†ƒjƒbƒgH
 			If is_unknown Then
 				'ADD START 240a
 				If NewGUIMode Then
@@ -1735,13 +1676,13 @@ UnitStatus:
 					upic.CurrentX = 5
 				End If
 				'ADD  END  240a
-				'Invalid_string_refer_to_original_code
+				'‚g‚o
 				'MOD START 240a
 				'            upic.ForeColor = rgb(0, 0, 150)
 				upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityName, RGB(0, 0, 150)))
 				'MOD  END  240a
 				'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				upic.Print(Term("Invalid_string_refer_to_original_code", Nothing, 6) & " ")
+				upic.Print(Term("‚g‚o", Nothing, 6) & " ")
 				'MOD START 240a
 				'            upic.ForeColor = rgb(0, 0, 0)
 				upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorNormalString, RGB(0, 0, 0)))
@@ -1755,13 +1696,13 @@ UnitStatus:
 					upic.CurrentX = 5
 				End If
 				'ADD  END  240a
-				'Invalid_string_refer_to_original_code
+				'‚d‚m
 				'MOD START 240a
 				'            upic.ForeColor = rgb(0, 0, 150)
 				upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityName, RGB(0, 0, 150)))
 				'MOD  END  240a
 				'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				upic.Print(Term("Invalid_string_refer_to_original_code", Nothing, 6) & " ")
+				upic.Print(Term("‚d‚m", Nothing, 6) & " ")
 				'MOD START 240a
 				'            upic.ForeColor = rgb(0, 0, 0)
 				upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorNormalString, RGB(0, 0, 0)))
@@ -1775,33 +1716,33 @@ UnitStatus:
 					upic.CurrentX = 5
 				End If
 				'ADD  END  240a
-				'Invalid_string_refer_to_original_code
+				'‘•b
 				'MOD START 240a
 				'            upic.ForeColor = rgb(0, 0, 150)
 				upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityName, RGB(0, 0, 150)))
 				'MOD  END  240a
 				'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				upic.Print(Term("Invalid_string_refer_to_original_code", Nothing, 6) & " ")
+				upic.Print(Term("‘•b", Nothing, 6) & " ")
 				'MOD START 240a
 				'            upic.ForeColor = rgb(0, 0, 0)
 				upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorNormalString, RGB(0, 0, 0)))
 				'MOD  END  240a
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				upic.Print(RightPaddedString("H", 12))
 				
-				'é‹å‹•æ€§
+				'‰^“®«
 				'MOD START 240a
 				'            upic.ForeColor = rgb(0, 0, 150)
 				upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityName, RGB(0, 0, 150)))
 				'MOD  END  240a
 				'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				upic.Print(Term("é‹å‹•æ€§", Nothing, 6) & " ")
+				upic.Print(Term("‰^“®«", Nothing, 6) & " ")
 				'MOD START 240a
 				'            upic.ForeColor = rgb(0, 0, 0)
 				upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorNormalString, RGB(0, 0, 0)))
 				'MOD  END  240a
 				'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				upic.Print("Invalid_string_refer_to_original_code")
+				upic.Print("H")
 				
 				'ADD START 240a
 				If NewGUIMode Then
@@ -1809,33 +1750,33 @@ UnitStatus:
 					upic.CurrentX = 5
 				End If
 				'ADD  END  240a
-				'Invalid_string_refer_to_original_code
+				'ˆÚ“®ƒ^ƒCƒv
 				'MOD START 240a
 				'            upic.ForeColor = rgb(0, 0, 150)
 				upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityName, RGB(0, 0, 150)))
 				'MOD  END  240a
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				upic.Print(Term("ƒ^ƒCƒv", Nothing, 6) & " ")
 				'MOD START 240a
 				'            upic.ForeColor = rgb(0, 0, 0)
 				upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorNormalString, RGB(0, 0, 0)))
 				'MOD  END  240a
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				upic.Print(RightPaddedString("H", 12))
 				
-				'ç§»å‹•åŠ›
+				'ˆÚ“®—Í
 				'MOD START 240a
 				'            upic.ForeColor = rgb(0, 0, 150)
 				upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityName, RGB(0, 0, 150)))
 				'MOD  END  240a
 				'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				upic.Print(Term("ç§»å‹•åŠ›", Nothing, 6) & " ")
+				upic.Print(Term("ˆÚ“®—Í", Nothing, 6) & " ")
 				'MOD START 240a
 				'            upic.ForeColor = rgb(0, 0, 0)
 				upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorNormalString, RGB(0, 0, 0)))
 				'MOD  END  240a
 				'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				upic.Print("Invalid_string_refer_to_original_code")
+				upic.Print("H")
 				
 				'ADD START 240a
 				If NewGUIMode Then
@@ -1843,428 +1784,920 @@ UnitStatus:
 					upic.CurrentX = 5
 				End If
 				'ADD  END  240a
-				'Invalid_string_refer_to_original_code
+				'’nŒ`“K‰
 				'MOD START 240a
 				'            upic.ForeColor = rgb(0, 0, 150)
 				upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityName, RGB(0, 0, 150)))
 				'MOD  END  240a
 				'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				upic.Print("Invalid_string_refer_to_original_code")
+				upic.Print("“K‰   ")
 				'MOD START 240a
 				'            upic.ForeColor = rgb(0, 0, 0)
 				upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorNormalString, RGB(0, 0, 0)))
 				'MOD  END  240a
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				upic.Print(RightPaddedString("H", 12))
 				
-				'ãƒ¦ãƒ‹ãƒƒãƒˆã‚µã‚¤ã‚º
+				'ƒ†ƒjƒbƒgƒTƒCƒY
 				'MOD START 240a
 				'            upic.ForeColor = rgb(0, 0, 150)
 				upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityName, RGB(0, 0, 150)))
 				'MOD  END  240a
 				'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				upic.Print(Term("ã‚µã‚¤ã‚º", Nothing, 6) & " ")
+				upic.Print(Term("ƒTƒCƒY", Nothing, 6) & " ")
 				'MOD START 240a
 				'            upic.ForeColor = rgb(0, 0, 0)
 				upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorNormalString, RGB(0, 0, 0)))
 				'MOD  END  240a
 				'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				upic.Print("Invalid_string_refer_to_original_code")
+				upic.Print("H")
 				
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code_
-				'Invalid_string_refer_to_original_code_
-				'And Not SelectedUnit Is Nothing _
-				'Then
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				'Invalid_string_refer_to_original_code_
-				'Or .IsConditionSatisfied("æš´èµ°") _
-				'Invalid_string_refer_to_original_code_
-				'Invalid_string_refer_to_original_code_
-				'Then
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				upic.Print()
-				
-				'Invalid_string_refer_to_original_code
-				'MOD START 240a
-				'                    upic.ForeColor = rgb(0, 0, 150)
-				upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityName, RGB(0, 0, 150)))
-				'MOD  END  240a
-				'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				upic.Print("Invalid_string_refer_to_original_code")
-				'MOD START 240a
-				'                   upic.ForeColor = rgb(0, 0, 0)
-				upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorNormalString, RGB(0, 0, 0)))
-				'MOD  END  240a
-				'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				upic.Print(SelectedUnit.WeaponNickname(SelectedWeapon))
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code_
-				'Invalid_string_refer_to_original_code_
-				'Then
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				If Not SelectedUnit.LookForSupportAttack(u) Is Nothing Then
-					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					upic.Print(" [æ´]")
-				End If
-			End If
-			'End If
-			'End If
-			
-			GoTo UpdateStatusWindow
-			'End If
-			
-			'å®Ÿè¡Œä¸­ã®å‘½ä»¤
-			'Invalid_string_refer_to_original_code_
-			'And Not .IsConditionSatisfied("æš´èµ°") _
-			'And Not .IsConditionSatisfied("ç‹‚æˆ¦å£«") _
-			'Then
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			'Invalid_string_refer_to_original_code
-			buf = ""
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			If Not .Master Is Nothing Then
-				If .Master.Party = "å‘³æ–¹" Then
-					buf = .Mode
-				End If
-			End If
-			'End If
-			'Invalid_string_refer_to_original_code_
-			'Invalid_string_refer_to_original_code_
-			'Then
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			If Not .Summoner Is Nothing Then
-				If .Summoner.Party = "å‘³æ–¹" Then
-					buf = .Mode
-				End If
-			End If
-			'End If
-			
-			If buf = "é€šå¸¸" Then
-				'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				upic.Print("è‡ªç”±è¡Œå‹•ä¸­")
-			ElseIf PList.IsDefined(buf) Then 
-				'Invalid_string_refer_to_original_code
-				With PList.Item(buf)
-					If Not .Unit_Renamed Is Nothing Then
-						With .Unit_Renamed
-							'Invalid_string_refer_to_original_code
-							'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-							'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-							upic.Print(.Nickname & "(" & VB6.Format(.X) & "," & VB6.Format(.Y) & "Invalid_string_refer_to_original_code")
-							If .Party = "å‘³æ–¹" Then
+				'ƒTƒ|[ƒgƒAƒ^ƒbƒN‚ğ“¾‚ç‚ê‚é‚©‚Ç‚¤‚©‚Ì‚İ•\¦
+				If (CommandState = "ƒ^[ƒQƒbƒg‘I‘ğ" Or CommandState = "ˆÚ“®Œãƒ^[ƒQƒbƒg‘I‘ğ") And (SelectedCommand = "UŒ‚" Or SelectedCommand = "ƒ}ƒbƒvUŒ‚") And Not SelectedUnit Is Nothing Then
+					If .Party = "“G" Or .Party = "’†—§" Or .IsConditionSatisfied("–\‘–") Or .IsConditionSatisfied("–£—¹") Or .IsConditionSatisfied("œßˆË") Then
+						'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						upic.Print()
+						
+						'UŒ‚è’i
+						'MOD START 240a
+						'                    upic.ForeColor = rgb(0, 0, 150)
+						upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityName, RGB(0, 0, 150)))
+						'MOD  END  240a
+						'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						upic.Print("UŒ‚     ")
+						'MOD START 240a
+						'                   upic.ForeColor = rgb(0, 0, 0)
+						upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorNormalString, RGB(0, 0, 0)))
+						'MOD  END  240a
+						'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						upic.Print(SelectedUnit.WeaponNickname(SelectedWeapon))
+						'ƒTƒ|[ƒgƒAƒ^ƒbƒN‚ğ“¾‚ç‚ê‚éH
+						If Not SelectedUnit.IsWeaponClassifiedAs(SelectedWeapon, "‡") And Not SelectedUnit.IsWeaponClassifiedAs(SelectedWeapon, "‚l") Then
+							If Not SelectedUnit.LookForSupportAttack(u) Is Nothing Then
 								'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-								upic.Print("è­·è¡›ä¸­")
+								upic.Print(" [‰‡]")
+							End If
+						End If
+					End If
+				End If
+				
+				GoTo UpdateStatusWindow
+			End If
+			
+			'Às’†‚Ì–½—ß
+			If .Party = "‚m‚o‚b" And Not .IsConditionSatisfied("¬—") And Not .IsConditionSatisfied("‹°•|") And Not .IsConditionSatisfied("–\‘–") And Not .IsConditionSatisfied("‹¶ím") Then
+				'vlƒ‚[ƒh‚ğŒ©‚ê‚ÎÀs‚µ‚Ä‚¢‚é–½—ß‚ª•ª‚©‚é‚Ì‚Åcc
+				buf = ""
+				If .IsConditionSatisfied("–£—¹") Then
+					If Not .Master Is Nothing Then
+						If .Master.Party = "–¡•û" Then
+							buf = .Mode
+						End If
+					End If
+				End If
+				If .IsFeatureAvailable("¢Š«ƒ†ƒjƒbƒg") And Not .IsConditionSatisfied("–£—¹") Then
+					If Not .Summoner Is Nothing Then
+						If .Summoner.Party = "–¡•û" Then
+							buf = .Mode
+						End If
+					End If
+				End If
+				
+				If buf = "’Êí" Then
+					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					upic.Print("©—Rs“®’†")
+				ElseIf PList.IsDefined(buf) Then 
+					'vlƒ‚[ƒh‚ÉƒpƒCƒƒbƒg–¼‚ªw’è‚³‚ê‚Ä‚¢‚éê‡
+					With PList.Item(buf)
+						If Not .Unit_Renamed Is Nothing Then
+							With .Unit_Renamed
+								If .Status_Renamed = "oŒ‚" Then
+									'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+									upic.Print(.Nickname & "(" & VB6.Format(.X) & "," & VB6.Format(.Y) & ")‚ğ")
+									If .Party = "–¡•û" Then
+										'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+										upic.Print("Œì‰q’†")
+									Else
+										'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+										upic.Print("’ÇÕ’†")
+									End If
+								End If
+							End With
+						End If
+					End With
+				ElseIf LLength(buf) = 2 Then 
+					'vlƒ‚[ƒh‚ÉÀ•W‚ªw’è‚³‚ê‚Ä‚¢‚éê‡
+					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					upic.Print("(" & LIndex(buf, 1) & "," & LIndex(buf, 2) & ")‚ÉˆÚ“®’†")
+				End If
+			End If
+			
+			'ƒ†ƒjƒbƒg‚É‚©‚©‚Á‚Ä‚¢‚é“ÁêƒXƒe[ƒ^ƒX
+			ReDim name_list(0)
+			For i = 1 To .CountCondition
+				'ŠÔØ‚êH
+				If .ConditionLifetime(i) = 0 Then
+					GoTo NextCondition
+				End If
+				
+				'”ñ•\¦H
+				If InStr(.ConditionData(i), "”ñ•\¦") > 0 Then
+					GoTo NextCondition
+				End If
+				
+				'‰ğàH
+				If LIndex(.ConditionData(i), 1) = "‰ğà" Then
+					GoTo NextCondition
+				End If
+				'ADD START 240a
+				If NewGUIMode Then
+					'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB upic.CurrentX ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					upic.CurrentX = 5
+				End If
+				'ADD  END  240a
+				Select Case .Condition(i)
+					Case "ƒf[ƒ^•s–¾", "Œ`‘ÔŒÅ’è", "‹@‘ÌŒÅ’è", "•s€g", "–³“G", "¯•ÊÏ‚İ", "”ñ‘€ì", "”j‰óƒLƒƒƒ“ƒZƒ‹", "‚ƒ_ƒ[ƒW", "”\—ÍƒRƒs[", "ƒƒbƒZ[ƒW•t‰Á", "ƒm[ƒ}ƒ‹ƒ‚[ƒh•t‰Á", "’Ç‰ÁƒpƒCƒƒbƒg•t‰Á", "’Ç‰ÁƒTƒ|[ƒg•t‰Á", "ƒpƒCƒƒbƒgˆ¤Ì•t‰Á", "ƒpƒCƒƒbƒg‰æ‘œ•t‰Á", "«Ši•ÏX•t‰Á", "«•Ê•t‰Á", "‚a‚f‚l•t‰Á", "ˆ¤Ì•ÏX•t‰Á", "ƒXƒyƒVƒƒƒ‹ƒpƒ[–³Œø‰»", "¸_ƒRƒ}ƒ“ƒh–³Œø‰»", "ƒ†ƒjƒbƒg‰æ‘œ•t‰Á", "ƒƒbƒZ[ƒW•t‰Á"
+						'”ñ•\¦
+					Case "c‚èŠÔ"
+						If 0 < .ConditionLifetime(i) And .ConditionLifetime(i) < 100 Then
+							'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+							upic.Print("c‚èŠÔ" & VB6.Format(.ConditionLifetime(i)) & "ƒ^[ƒ“")
+						End If
+					Case "–³Œø‰»•t‰Á", "‘Ï«•t‰Á", "‹zû•t‰Á", "ã“_•t‰Á"
+						'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						upic.Print(.ConditionData(i) & .Condition(i))
+						If 0 < .ConditionLifetime(i) And .ConditionLifetime(i) < 100 Then
+							'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+							upic.Print(" " & VB6.Format(.ConditionLifetime(i)) & "T")
+						End If
+						'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						upic.Print("")
+					Case "“ÁêŒø‰Ê–³Œø‰»•t‰Á"
+						'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						upic.Print(.ConditionData(i) & "–³Œø‰»•t‰Á")
+						If 0 < .ConditionLifetime(i) And .ConditionLifetime(i) < 100 Then
+							'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+							upic.Print(" c‚è" & VB6.Format(.ConditionLifetime(i)) & "ƒ^[ƒ“")
+						End If
+						'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						upic.Print("")
+					Case "UŒ‚‘®«•t‰Á"
+						'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						upic.Print(LIndex(.ConditionData(i), 1) & "‘®«•t‰Á")
+						If 0 < .ConditionLifetime(i) And .ConditionLifetime(i) < 100 Then
+							'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+							upic.Print(" c‚è" & VB6.Format(.ConditionLifetime(i)) & "ƒ^[ƒ“")
+						End If
+						'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						upic.Print("")
+					Case "•Ší‹­‰»•t‰Á"
+						'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						upic.Print("•Ší‹­‰»Lv" & .ConditionLevel(i) & "•t‰Á")
+						If .ConditionData(i) <> "" Then
+							'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+							upic.Print("(" & .ConditionData(i) & ")")
+						End If
+						If 0 < .ConditionLifetime(i) And .ConditionLifetime(i) < 100 Then
+							'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+							upic.Print(" c‚è" & VB6.Format(.ConditionLifetime(i)) & "ƒ^[ƒ“")
+						End If
+						'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						upic.Print("")
+					Case "–½’†—¦‹­‰»•t‰Á"
+						'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						upic.Print("–½’†—¦‹­‰»Lv" & .ConditionLevel(i) & "•t‰Á")
+						If .ConditionData(i) <> "" Then
+							'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+							upic.Print("(" & .ConditionData(i) & ")")
+						End If
+						If 0 < .ConditionLifetime(i) And .ConditionLifetime(i) < 100 Then
+							'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+							upic.Print(" c‚è" & VB6.Format(.ConditionLifetime(i)) & "ƒ^[ƒ“")
+						End If
+						'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						upic.Print("")
+					Case "‚b‚s—¦‹­‰»•t‰Á"
+						'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						upic.Print("‚b‚s—¦‹­‰»Lv" & .ConditionLevel(i) & "•t‰Á")
+						If .ConditionData(i) <> "" Then
+							'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+							upic.Print("(" & .ConditionData(i) & ")")
+						End If
+						If 0 < .ConditionLifetime(i) And .ConditionLifetime(i) < 100 Then
+							'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+							upic.Print(" c‚è" & VB6.Format(.ConditionLifetime(i)) & "ƒ^[ƒ“")
+						End If
+						'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						upic.Print("")
+					Case "“ÁêŒø‰Ê”­“®—¦‹­‰»•t‰Á"
+						'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						upic.Print("“ÁêŒø‰Ê”­“®—¦‹­‰»Lv" & .ConditionLevel(i) & "•t‰Á")
+						If .ConditionData(i) <> "" Then
+							'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+							upic.Print("(" & .ConditionData(i) & ")")
+						End If
+						If 0 < .ConditionLifetime(i) And .ConditionLifetime(i) < 100 Then
+							'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+							upic.Print(" c‚è" & VB6.Format(.ConditionLifetime(i)) & "ƒ^[ƒ“")
+						End If
+						'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						upic.Print("")
+					Case "’nŒ`“K‰•ÏX•t‰Á"
+						'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						upic.Print("’nŒ`“K‰•ÏX•t‰Á")
+						If 0 < .ConditionLifetime(i) And .ConditionLifetime(i) < 100 Then
+							'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+							upic.Print(" c‚è" & VB6.Format(.ConditionLifetime(i)) & "ƒ^[ƒ“")
+						End If
+						'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						upic.Print("")
+					Case "‚•t‰Á"
+						'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						upic.Print(LIndex(.ConditionData(i), 1) & "•t‰Á")
+						'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						upic.Print("(" & VB6.Format(.ConditionLevel(i)) & ")")
+						If 0 < .ConditionLifetime(i) And .ConditionLifetime(i) < 100 Then
+							'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+							upic.Print(" c‚è" & VB6.Format(.ConditionLifetime(i)) & "ƒ^[ƒ“")
+						End If
+						'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						upic.Print("")
+					Case "ƒ_ƒ~[”j‰ó"
+						buf = .FeatureName("ƒ_ƒ~[")
+						If InStr(buf, "Lv") > 0 Then
+							buf = Left(buf, InStr(buf, "Lv") - 1)
+						End If
+						'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						upic.Print(buf & StrConv(VB6.Format(.ConditionLevel(i)), VbStrConv.Wide) & "‘Ì”j‰ó")
+					Case "ƒ_ƒ~[•t‰Á"
+						'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						upic.Print(.FeatureName("ƒ_ƒ~[") & "c‚è" & StrConv(VB6.Format(.ConditionLevel(i)), VbStrConv.Wide) & "‘Ì")
+						If 0 < .ConditionLifetime(i) And .ConditionLifetime(i) < 100 Then
+							'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+							upic.Print(" c‚è" & VB6.Format(.ConditionLifetime(i)) & "ƒ^[ƒ“")
+						End If
+						'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						upic.Print("")
+					Case "ƒoƒŠƒA”­“®"
+						If .ConditionData(i) <> "" Then
+							'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+							upic.Print(.ConditionData(i))
+						Else
+							'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+							upic.Print("ƒoƒŠƒA”­“®")
+						End If
+						'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						upic.Print(" c‚è" & VB6.Format(.ConditionLifetime(i)) & "ƒ^[ƒ“")
+					Case "ƒtƒB[ƒ‹ƒh”­“®"
+						If .ConditionData(i) <> "" Then
+							'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+							upic.Print(.ConditionData(i))
+						Else
+							'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+							upic.Print("ƒtƒB[ƒ‹ƒh”­“®")
+						End If
+						'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						upic.Print(" c‚è" & VB6.Format(.ConditionLifetime(i)) & "ƒ^[ƒ“")
+					Case "‘•b—ò‰»"
+						'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						upic.Print(Term("‘•b", u) & "—ò‰»")
+						If 0 < .ConditionLifetime(i) And .ConditionLifetime(i) < 20 Then
+							'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+							upic.Print(" c‚è" & VB6.Format(.ConditionLifetime(i)) & "ƒ^[ƒ“")
+						End If
+						'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						upic.Print("")
+					Case "‰^“®«‚t‚o"
+						'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						upic.Print(Term("‰^“®«", u) & "‚t‚o")
+						If 0 < .ConditionLifetime(i) And .ConditionLifetime(i) < 20 Then
+							'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+							upic.Print(" c‚è" & VB6.Format(.ConditionLifetime(i)) & "ƒ^[ƒ“")
+						End If
+						'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						upic.Print("")
+					Case "‰^“®«‚c‚n‚v‚m"
+						'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						upic.Print(Term("‰^“®«", u) & "‚c‚n‚v‚m")
+						If 0 < .ConditionLifetime(i) And .ConditionLifetime(i) < 20 Then
+							'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+							upic.Print(" c‚è" & VB6.Format(.ConditionLifetime(i)) & "ƒ^[ƒ“")
+						End If
+						'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						upic.Print("")
+					Case "ˆÚ“®—Í‚t‚o"
+						'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						upic.Print(Term("ˆÚ“®—Í", u) & "‚t‚o")
+						If 0 < .ConditionLifetime(i) And .ConditionLifetime(i) < 20 Then
+							'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+							upic.Print(" c‚è" & VB6.Format(.ConditionLifetime(i)) & "ƒ^[ƒ“")
+						End If
+						'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						upic.Print("")
+					Case "ˆÚ“®—Í‚c‚n‚v‚m"
+						'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						upic.Print(Term("ˆÚ“®—Í", u) & "‚c‚n‚v‚m")
+						If 0 < .ConditionLifetime(i) And .ConditionLifetime(i) < 20 Then
+							'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+							upic.Print(" c‚è" & VB6.Format(.ConditionLifetime(i)) & "ƒ^[ƒ“")
+						End If
+						'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						upic.Print("")
+					Case Else
+						'[“U’†H
+						If Right(.Condition(i), 3) = "[“U’†" Then
+							If .IsHero() Then
+								'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+								upic.Print(Left(.Condition(i), Len(.Condition(i)) - 3))
+								'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+								upic.Print("€”õ’†")
 							Else
 								'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-								upic.Print("è¿½è·¡ä¸­")
+								upic.Print(.Condition(i))
 							End If
-						End With
-					End If
-				End With
-			End If
-		End With
-		'UPGRADE_WARNING: DisplayUnitStatus ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		upic.Print("(" & LIndex(buf, 1) & "," & LIndex(buf, 2) & ")ã«ç§»å‹•ä¸­")
-		'End If
-		'End If
-		
-		'Invalid_string_refer_to_original_code
-		ReDim name_list(0)
-		'UPGRADE_WARNING: DisplayUnitStatus ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		
-		'ADD START 240a
-		If NewGUIMode Then
-			'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB upic.CurrentX ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			upic.CurrentX = 5
-		End If
-		'ADD  END  240a
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB upic.CurrentX ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		cx = upic.CurrentX
-		'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB upic.CurrentY ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		cy = upic.CurrentY
-		'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Line ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		upic.Line (116, cy + 2) - (118 + GauageWidth, cy + 2), RGB(100, 100, 100)
-		'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Line ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		upic.Line (116, cy + 2) - (116, cy + 9), RGB(100, 100, 100)
-		'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Line ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		upic.Line (117, cy + 8) - (118 + GauageWidth, cy + 8), RGB(220, 220, 220)
-		'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Line ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		upic.Line (118 + GauageWidth, cy + 3) - (118 + GauageWidth, cy + 9), RGB(220, 220, 220)
-		'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Line ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		upic.Line (117, cy + 3) - (117 + GauageWidth, cy + 7), RGB(200, 0, 0), BF
-		'UPGRADE_WARNING: DisplayUnitStatus ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB upic.CurrentX ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		upic.CurrentX = cx
-		'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB upic.CurrentY ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		upic.CurrentY = cy
-		'MOD START 240a
-		'        upic.ForeColor = rgb(0, 0, 150)
-		upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityName, RGB(0, 0, 150)))
-		'MOD  END  240a
-		'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		upic.Print(Term("Invalid_string_refer_to_original_code", u, 6) & " ")
-		'MOD START 240a
-		'        upic.ForeColor = rgb(0, 0, 0)
-		upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorNormalString, RGB(0, 0, 0)))
-		'MOD  END  240a
-		'UPGRADE_WARNING: DisplayUnitStatus ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		
-		'ADD START 240a
-		If NewGUIMode Then
-			'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB upic.CurrentX ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			upic.CurrentX = 5
-		End If
-		'ADD  END  240a
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB upic.CurrentX ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		cx = upic.CurrentX
-		'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB upic.CurrentY ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		cy = upic.CurrentY
-		'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Line ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		upic.Line (116, cy + 2) - (118 + GauageWidth, cy + 2), RGB(100, 100, 100)
-		'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Line ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		upic.Line (116, cy + 2) - (116, cy + 9), RGB(100, 100, 100)
-		'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Line ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		upic.Line (117, cy + 8) - (118 + GauageWidth, cy + 8), RGB(220, 220, 220)
-		'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Line ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		upic.Line (118 + GauageWidth, cy + 3) - (118 + GauageWidth, cy + 9), RGB(220, 220, 220)
-		'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Line ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		upic.Line (117, cy + 3) - (117 + GauageWidth, cy + 7), RGB(200, 0, 0), BF
-		'UPGRADE_WARNING: DisplayUnitStatus ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB upic.CurrentX ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		upic.CurrentX = cx
-		'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB upic.CurrentY ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		upic.CurrentY = cy
-		'MOD START 240a
-		'        upic.ForeColor = rgb(0, 0, 150)
-		upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityName, RGB(0, 0, 150)))
-		'MOD  END  240a
-		'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		upic.Print(Term("Invalid_string_refer_to_original_code", u, 6) & " ")
-		'MOD START 240a
-		'        upic.ForeColor = rgb(0, 0, 0)
-		upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorNormalString, RGB(0, 0, 0)))
-		'MOD  END  240a
-		'UPGRADE_WARNING: DisplayUnitStatus ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		
-		'ADD START 240a
-		If NewGUIMode Then
-			'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB upic.CurrentX ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			upic.CurrentX = 5
-		End If
-		'ADD  END  240a
-		'Invalid_string_refer_to_original_code
-		'MOD START 240a
-		'        upic.ForeColor = rgb(0, 0, 150)
-		upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityName, RGB(0, 0, 150)))
-		'MOD  END  240a
-		'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		upic.Print(Term("Invalid_string_refer_to_original_code", u, 6) & " ")
-		'MOD START 240a
-		'        upic.ForeColor = rgb(0, 0, 0)
-		upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorNormalString, RGB(0, 0, 0)))
-		'MOD  END  240a
-		'UPGRADE_WARNING: DisplayUnitStatus ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		
-		'é‹å‹•æ€§
-		'MOD START 240a
-		'        upic.ForeColor = rgb(0, 0, 150)
-		upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityName, RGB(0, 0, 150)))
-		'MOD  END  240a
-		'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		upic.Print(Term("é‹å‹•æ€§", u, 6) & " ")
-		'MOD START 240a
-		'        upic.ForeColor = rgb(0, 0, 0)
-		upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorNormalString, RGB(0, 0, 0)))
-		'MOD  END  240a
-		'UPGRADE_WARNING: DisplayUnitStatus ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		
-		'ADD START 240a
-		If NewGUIMode Then
-			'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB upic.CurrentX ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			upic.CurrentX = 5
-		End If
-		'ADD  END  240a
-		'Invalid_string_refer_to_original_code
-		'MOD START 240a
-		'        upic.ForeColor = rgb(0, 0, 150)
-		upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityName, RGB(0, 0, 150)))
-		'MOD  END  240a
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		'MOD START 240a
-		'        upic.ForeColor = rgb(0, 0, 0)
-		upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorNormalString, RGB(0, 0, 0)))
-		'MOD  END  240a
-		'UPGRADE_WARNING: DisplayUnitStatus ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		
-		'ç§»å‹•åŠ›
-		'MOD START 240a
-		'        upic.ForeColor = rgb(0, 0, 150)
-		upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityName, RGB(0, 0, 150)))
-		'MOD  END  240a
-		'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		upic.Print(Term("ç§»å‹•åŠ›", u, 6) & " ")
-		'MOD START 240a
-		'        upic.ForeColor = rgb(0, 0, 0)
-		upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorNormalString, RGB(0, 0, 0)))
-		'MOD  END  240a
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		'UPGRADE_WARNING: DisplayUnitStatus ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		'End If
-		
-		'ADD START 240a
-		If NewGUIMode Then
-			'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB upic.CurrentX ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			upic.CurrentX = 5
-		End If
-		'ADD  END  240a
-		'Invalid_string_refer_to_original_code
-		'MOD START 240a
-		'        upic.ForeColor = rgb(0, 0, 150)
-		upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityName, RGB(0, 0, 150)))
-		'MOD  END  240a
-		'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		upic.Print("Invalid_string_refer_to_original_code")
-		'MOD START 240a
-		'        upic.ForeColor = rgb(0, 0, 0)
-		upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorNormalString, RGB(0, 0, 0)))
-		'MOD  END  240a
-		For i = 1 To 4
-			'UPGRADE_WARNING: DisplayUnitStatus ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		Next 
-		'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		upic.Print(Space(8))
-		
-		'ãƒ¦ãƒ‹ãƒƒãƒˆã‚µã‚¤ã‚º
-		'MOD START 240a
-		'        upic.ForeColor = rgb(0, 0, 150)
-		upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityName, RGB(0, 0, 150)))
-		'MOD  END  240a
-		'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		upic.Print(Term("ã‚µã‚¤ã‚º", u, 6) & " ")
-		'MOD START 240a
-		'        upic.ForeColor = rgb(0, 0, 0)
-		upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorNormalString, RGB(0, 0, 0)))
-		'MOD  END  240a
-		'UPGRADE_WARNING: DisplayUnitStatus ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		
-		'é˜²å¾¡å±æ€§ã®è¡¨ç¤º
-		n = 0
-		
-		'ADD START 240a
-		If NewGUIMode Then
-			'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB upic.CurrentX ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			upic.CurrentX = 5
-		End If
-		'ADD  END  240a
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_WARNING: DisplayUnitStatus ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_WARNING: DisplayUnitStatus ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		
-		'è€æ€§
-		'UPGRADE_WARNING: DisplayUnitStatus ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		
-		'å¼±ç‚¹
-		'UPGRADE_WARNING: DisplayUnitStatus ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		
-		'æœ‰åŠ¹
-		'UPGRADE_WARNING: DisplayUnitStatus ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_WARNING: DisplayUnitStatus ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		
-		'Invalid_string_refer_to_original_code
-		If n > 0 Then
-			'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			upic.Print()
+							'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+							upic.Print(" c‚è" & VB6.Format(.ConditionLifetime(i)) & "ƒ^[ƒ“")
+							GoTo NextCondition
+						End If
+						
+						'ƒpƒCƒƒbƒg“Áê”\—Í•t‰Á•‹­‰»‚É‚æ‚éó‘Ô‚Í•\¦‚µ‚È‚¢
+						If Right(.Condition(i), 3) = "•t‰Á‚Q" Or Right(.Condition(i), 3) = "‹­‰»‚Q" Then
+							GoTo NextCondition
+						End If
+						
+						If Right(.Condition(i), 2) = "•t‰Á" And .ConditionData(i) <> "" Then
+							buf = LIndex(.ConditionData(i), 1) & "•t‰Á"
+						ElseIf Right(.Condition(i), 2) = "‹­‰»" And .ConditionData(i) <> "" Then 
+							'‹­‰»ƒAƒrƒŠƒeƒB
+							buf = LIndex(.ConditionData(i), 1) & "‹­‰»Lv" & .ConditionLevel(i)
+						ElseIf .ConditionLevel(i) > 0 Then 
+							'•t‰ÁƒAƒrƒŠƒeƒB(ƒŒƒxƒ‹w’è‚ ‚è)
+							buf = Left(.Condition(i), Len(.Condition(i)) - 2) & "Lv" & VB6.Format(.ConditionLevel(i)) & "•t‰Á"
+						Else
+							'•t‰ÁƒAƒrƒŠƒeƒB(ƒŒƒxƒ‹w’è‚È‚µ)
+							buf = .Condition(i)
+						End If
+						
+						'ƒGƒŠƒAƒX‚³‚ê‚½“Áê”\—Í‚Ì•t‰Á•\¦‚ª‚½‚Ô‚ç‚È‚¢‚æ‚¤‚É
+						For j = 1 To UBound(name_list)
+							If buf = name_list(j) Then
+								Exit For
+							End If
+						Next 
+						If j <= UBound(name_list) Then
+							GoTo NextCondition
+						End If
+						ReDim Preserve name_list(UBound(name_list) + 1)
+						name_list(UBound(name_list)) = buf
+						
+						'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						upic.Print(buf)
+						
+						If 0 < .ConditionLifetime(i) And .ConditionLifetime(i) < 20 Then
+							'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+							upic.Print(" c‚è" & VB6.Format(.ConditionLifetime(i)) & "ƒ^[ƒ“")
+						End If
+						'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						upic.Print("")
+				End Select
+NextCondition: 
+			Next 
+			
 			'ADD START 240a
 			If NewGUIMode Then
 				'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB upic.CurrentX ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 				upic.CurrentX = 5
 			End If
 			'ADD  END  240a
-		End If
-		n = 0
-		
-		'ADD START 240a
-		If NewGUIMode Then
+			'‚g‚o
 			'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB upic.CurrentX ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			upic.CurrentX = 5
-		End If
-		'ADD  END  240a
-		'æ­¦å™¨ãƒ»é˜²å…·ã‚¯ãƒ©ã‚¹
-		ReDim flist(0)
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		'UPGRADE_WARNING: DisplayUnitStatus ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		'End If
-		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_WARNING: DisplayUnitStatus ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		
-		'ADD START 240a
-		If NewGUIMode Then
+			cx = upic.CurrentX
+			'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB upic.CurrentY ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			cy = upic.CurrentY
+			'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Line ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			upic.Line (116, cy + 2) - (118 + GauageWidth, cy + 2), RGB(100, 100, 100)
+			'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Line ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			upic.Line (116, cy + 2) - (116, cy + 9), RGB(100, 100, 100)
+			'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Line ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			upic.Line (117, cy + 8) - (118 + GauageWidth, cy + 8), RGB(220, 220, 220)
+			'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Line ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			upic.Line (118 + GauageWidth, cy + 3) - (118 + GauageWidth, cy + 9), RGB(220, 220, 220)
+			'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Line ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			upic.Line (117, cy + 3) - (117 + GauageWidth, cy + 7), RGB(200, 0, 0), BF
+			If .HP > 0 Then
+				'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Line ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				upic.Line (117, cy + 3) - (117 + GauageWidth * .HP \ .MaxHP, cy + 7), RGB(0, 210, 0), BF
+			End If
 			'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB upic.CurrentX ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			upic.CurrentX = 5
-		End If
-		'ADD  END  240a
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_WARNING: DisplayUnitStatus ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		'End With
-		
-		'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		upic.Print(RightPaddedString(fname, 19))
-		n = n + 1
-		If n > 1 Then
+			upic.CurrentX = cx
+			'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB upic.CurrentY ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			upic.CurrentY = cy
+			'MOD START 240a
+			'        upic.ForeColor = rgb(0, 0, 150)
+			upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityName, RGB(0, 0, 150)))
+			'MOD  END  240a
 			'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			upic.Print()
+			upic.Print(Term("‚g‚o", u, 6) & " ")
+			'MOD START 240a
+			'        upic.ForeColor = rgb(0, 0, 0)
+			upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorNormalString, RGB(0, 0, 0)))
+			'MOD  END  240a
+			If .IsConditionSatisfied("ƒf[ƒ^•s–¾") Then
+				'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				upic.Print("?????/?????")
+			Else
+				If .HP < 100000 Then
+					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					upic.Print(VB6.Format(.HP))
+				Else
+					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					upic.Print("?????")
+				End If
+				'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				upic.Print("/")
+				If .MaxHP < 100000 Then
+					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					upic.Print(VB6.Format(.MaxHP))
+				Else
+					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					upic.Print("?????")
+				End If
+			End If
+			
 			'ADD START 240a
 			If NewGUIMode Then
 				'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB upic.CurrentX ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 				upic.CurrentX = 5
 			End If
 			'ADD  END  240a
+			'‚d‚m
+			'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB upic.CurrentX ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			cx = upic.CurrentX
+			'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB upic.CurrentY ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			cy = upic.CurrentY
+			'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Line ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			upic.Line (116, cy + 2) - (118 + GauageWidth, cy + 2), RGB(100, 100, 100)
+			'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Line ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			upic.Line (116, cy + 2) - (116, cy + 9), RGB(100, 100, 100)
+			'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Line ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			upic.Line (117, cy + 8) - (118 + GauageWidth, cy + 8), RGB(220, 220, 220)
+			'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Line ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			upic.Line (118 + GauageWidth, cy + 3) - (118 + GauageWidth, cy + 9), RGB(220, 220, 220)
+			'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Line ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			upic.Line (117, cy + 3) - (117 + GauageWidth, cy + 7), RGB(200, 0, 0), BF
+			If .EN > 0 Then
+				'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Line ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				upic.Line (117, cy + 3) - (117 + GauageWidth * .EN \ .MaxEN, cy + 7), RGB(0, 210, 0), BF
+			End If
+			'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB upic.CurrentX ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			upic.CurrentX = cx
+			'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB upic.CurrentY ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			upic.CurrentY = cy
+			'MOD START 240a
+			'        upic.ForeColor = rgb(0, 0, 150)
+			upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityName, RGB(0, 0, 150)))
+			'MOD  END  240a
+			'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			upic.Print(Term("‚d‚m", u, 6) & " ")
+			'MOD START 240a
+			'        upic.ForeColor = rgb(0, 0, 0)
+			upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorNormalString, RGB(0, 0, 0)))
+			'MOD  END  240a
+			If .IsConditionSatisfied("ƒf[ƒ^•s–¾") Then
+				'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				upic.Print("???/???")
+			Else
+				If .EN < 1000 Then
+					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					upic.Print(VB6.Format(.EN))
+				Else
+					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					upic.Print("???")
+				End If
+				'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				upic.Print("/")
+				If .MaxEN < 1000 Then
+					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					upic.Print(VB6.Format(.MaxEN))
+				Else
+					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					upic.Print("???")
+				End If
+			End If
+			
+			'ADD START 240a
+			If NewGUIMode Then
+				'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB upic.CurrentX ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				upic.CurrentX = 5
+			End If
+			'ADD  END  240a
+			'‘•b
+			'MOD START 240a
+			'        upic.ForeColor = rgb(0, 0, 150)
+			upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityName, RGB(0, 0, 150)))
+			'MOD  END  240a
+			'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			upic.Print(Term("‘•b", u, 6) & " ")
+			'MOD START 240a
+			'        upic.ForeColor = rgb(0, 0, 0)
+			upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorNormalString, RGB(0, 0, 0)))
+			'MOD  END  240a
+			Select Case .Armor("C³’l")
+				Case Is > 0
+					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					upic.Print(RightPaddedString(VB6.Format(.Armor("Šî–{’l")) & "+" & VB6.Format(.Armor("C³’l")), 12))
+				Case Is < 0
+					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					upic.Print(RightPaddedString(VB6.Format(.Armor("Šî–{’l")) & VB6.Format(.Armor("C³’l")), 12))
+				Case 0
+					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					upic.Print(RightPaddedString(VB6.Format(.Armor), 12))
+			End Select
+			
+			'‰^“®«
+			'MOD START 240a
+			'        upic.ForeColor = rgb(0, 0, 150)
+			upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityName, RGB(0, 0, 150)))
+			'MOD  END  240a
+			'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			upic.Print(Term("‰^“®«", u, 6) & " ")
+			'MOD START 240a
+			'        upic.ForeColor = rgb(0, 0, 0)
+			upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorNormalString, RGB(0, 0, 0)))
+			'MOD  END  240a
+			Select Case .Mobility("C³’l")
+				Case Is > 0
+					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					upic.Print(VB6.Format(.Mobility("Šî–{’l")) & "+" & VB6.Format(.Mobility("C³’l")))
+				Case Is < 0
+					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					upic.Print(VB6.Format(.Mobility("Šî–{’l")) & VB6.Format(.Mobility("C³’l")))
+				Case 0
+					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					upic.Print(VB6.Format(.Mobility))
+			End Select
+			
+			'ADD START 240a
+			If NewGUIMode Then
+				'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB upic.CurrentX ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				upic.CurrentX = 5
+			End If
+			'ADD  END  240a
+			'ˆÚ“®ƒ^ƒCƒv
+			'MOD START 240a
+			'        upic.ForeColor = rgb(0, 0, 150)
+			upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityName, RGB(0, 0, 150)))
+			'MOD  END  240a
+			'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			upic.Print(Term("ƒ^ƒCƒv", u, 6) & " ")
+			'MOD START 240a
+			'        upic.ForeColor = rgb(0, 0, 0)
+			upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorNormalString, RGB(0, 0, 0)))
+			'MOD  END  240a
+			'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			upic.Print(RightPaddedString(.Transportation, 12))
+			
+			'ˆÚ“®—Í
+			'MOD START 240a
+			'        upic.ForeColor = rgb(0, 0, 150)
+			upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityName, RGB(0, 0, 150)))
+			'MOD  END  240a
+			'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			upic.Print(Term("ˆÚ“®—Í", u, 6) & " ")
+			'MOD START 240a
+			'        upic.ForeColor = rgb(0, 0, 0)
+			upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorNormalString, RGB(0, 0, 0)))
+			'MOD  END  240a
+			If .IsFeatureAvailable("ƒeƒŒƒ|[ƒg") And (.Data.Speed = 0 Or LIndex(.FeatureData("ƒeƒŒƒ|[ƒg"), 2) = "0") Then
+				'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				upic.Print(VB6.Format(.Speed + .FeatureLevel("ƒeƒŒƒ|[ƒg")))
+			Else
+				'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				upic.Print(VB6.Format(.Speed))
+			End If
+			
+			'ADD START 240a
+			If NewGUIMode Then
+				'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB upic.CurrentX ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				upic.CurrentX = 5
+			End If
+			'ADD  END  240a
+			'’nŒ`“K‰
+			'MOD START 240a
+			'        upic.ForeColor = rgb(0, 0, 150)
+			upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityName, RGB(0, 0, 150)))
+			'MOD  END  240a
+			'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			upic.Print("“K‰   ")
+			'MOD START 240a
+			'        upic.ForeColor = rgb(0, 0, 0)
+			upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorNormalString, RGB(0, 0, 0)))
+			'MOD  END  240a
+			For i = 1 To 4
+				Select Case .Adaption(i)
+					Case 5
+						'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						upic.Print("S")
+					Case 4
+						'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						upic.Print("A")
+					Case 3
+						'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						upic.Print("B")
+					Case 2
+						'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						upic.Print("C")
+					Case 1
+						'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						upic.Print("D")
+					Case Else
+						'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						upic.Print("E")
+				End Select
+			Next 
+			'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			upic.Print(Space(8))
+			
+			'ƒ†ƒjƒbƒgƒTƒCƒY
+			'MOD START 240a
+			'        upic.ForeColor = rgb(0, 0, 150)
+			upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityName, RGB(0, 0, 150)))
+			'MOD  END  240a
+			'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			upic.Print(Term("ƒTƒCƒY", u, 6) & " ")
+			'MOD START 240a
+			'        upic.ForeColor = rgb(0, 0, 0)
+			upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorNormalString, RGB(0, 0, 0)))
+			'MOD  END  240a
+			'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			upic.Print(StrConv(.Size, VbStrConv.Wide))
+			
+			'–hŒä‘®«‚Ì•\¦
 			n = 0
-		End If
-		'End Select
-		'End If
-		GoTo NextFeature
-		'End If
-		
-		'Invalid_string_refer_to_original_code
-		For j = 1 To UBound(flist)
-			If fname = flist(j) Then
-				GoTo NextFeature
+			
+			'ADD START 240a
+			If NewGUIMode Then
+				'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB upic.CurrentX ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				upic.CurrentX = 5
 			End If
-		Next 
-		ReDim Preserve flist(UBound(flist) + 1)
-		flist(UBound(flist)) = fname
-		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_WARNING: DisplayUnitStatus ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		'UPGRADE_WARNING: DisplayUnitStatus ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_WARNING: DisplayUnitStatus ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ’è” vbFromUnicode ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="55B59875-9A95-4B71-9D6A-7C294BF7139D"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		'UPGRADE_ISSUE: LenB ŠÖ”‚ÍƒTƒ|[ƒg‚³‚ê‚Ü‚¹‚ñB Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="367764E5-F3F8-4E43-AC3E-7FE0B5E074E2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		If LenB(StrConv(fname, vbFromUnicode)) > 19 Then
+			'ADD  END  240a
+			'‹zû
+			If Len(.strAbsorb) > 0 And InStr(.strAbsorb, "”ñ•\¦") = 0 Then
+				If Len(.strAbsorb) > 5 Then
+					If n > 0 Then
+						'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						upic.Print()
+					End If
+					n = 2
+				End If
+				'MOD START 240a
+				'            upic.ForeColor = rgb(0, 0, 150)
+				upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityName, RGB(0, 0, 150)))
+				'MOD  END  240a
+				'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				upic.Print("‹zû   ")
+				'MOD START 240a
+				'        upic.ForeColor = rgb(0, 0, 0)
+				upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorNormalString, RGB(0, 0, 0)))
+				'MOD  END  240a
+				'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				upic.Print(RightPaddedString(.strAbsorb, 12))
+				n = n + 1
+				If n > 1 Then
+					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					upic.Print()
+					'ADD START 240a
+					If NewGUIMode Then
+						'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB upic.CurrentX ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						upic.CurrentX = 5
+					End If
+					'ADD  END  240a
+					n = 0
+				End If
+			End If
+			
+			'–³Œø‰»
+			If Len(.strImmune) > 0 And InStr(.strImmune, "”ñ•\¦") = 0 Then
+				If Len(.strImmune) > 5 Then
+					If n > 0 Then
+						'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						upic.Print()
+						'ADD START 240a
+						If NewGUIMode Then
+							'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB upic.CurrentX ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+							upic.CurrentX = 5
+						End If
+						'ADD  END  240a
+					End If
+					n = 2
+				End If
+				'MOD START 240a
+				'            upic.ForeColor = rgb(0, 0, 150)
+				upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityName, RGB(0, 0, 150)))
+				'MOD  END  240a
+				'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				upic.Print("–³Œø‰» ")
+				'MOD START 240a
+				'        upic.ForeColor = rgb(0, 0, 0)
+				upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorNormalString, RGB(0, 0, 0)))
+				'MOD  END  240a
+				'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				upic.Print(RightPaddedString(.strImmune, 12))
+				n = n + 1
+				If n > 1 Then
+					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					upic.Print()
+					'ADD START 240a
+					If NewGUIMode Then
+						'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB upic.CurrentX ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						upic.CurrentX = 5
+					End If
+					'ADD  END  240a
+					n = 0
+				End If
+			End If
+			
+			'‘Ï«
+			If Len(.strResist) > 0 And InStr(.strResist, "”ñ•\¦") = 0 Then
+				If Len(.strResist) > 5 Then
+					If n > 0 Then
+						'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						upic.Print()
+						'ADD START 240a
+						If NewGUIMode Then
+							'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB upic.CurrentX ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+							upic.CurrentX = 5
+						End If
+						'ADD  END  240a
+					End If
+					n = 2
+				End If
+				If n = 0 And NewGUIMode Then
+					'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB upic.CurrentX ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					upic.CurrentX = 5
+				End If
+				'MOD START 240a
+				'            upic.ForeColor = rgb(0, 0, 150)
+				upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityName, RGB(0, 0, 150)))
+				'MOD  END  240a
+				'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				upic.Print("‘Ï«   ")
+				'MOD START 240a
+				'        upic.ForeColor = rgb(0, 0, 0)
+				upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorNormalString, RGB(0, 0, 0)))
+				'MOD  END  240a
+				'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				upic.Print(RightPaddedString(.strResist, 12))
+				n = n + 1
+				If n > 1 Then
+					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					upic.Print()
+					'ADD START 240a
+					If NewGUIMode Then
+						'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB upic.CurrentX ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						upic.CurrentX = 5
+					End If
+					'ADD  END  240a
+					n = 0
+				End If
+			End If
+			
+			'ã“_
+			If Len(.strWeakness) > 0 And InStr(.strWeakness, "”ñ•\¦") = 0 Then
+				If Len(.strWeakness) > 5 Then
+					If n > 0 Then
+						'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						upic.Print()
+						'ADD START 240a
+						If NewGUIMode Then
+							'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB upic.CurrentX ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+							upic.CurrentX = 5
+						End If
+						'ADD  END  240a
+					End If
+					n = 2
+				End If
+				If n = 0 And NewGUIMode Then
+					'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB upic.CurrentX ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					upic.CurrentX = 5
+				End If
+				'MOD START 240a
+				'            upic.ForeColor = rgb(0, 0, 150)
+				upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityName, RGB(0, 0, 150)))
+				'MOD  END  240a
+				'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				upic.Print("ã“_   ")
+				'MOD START 240a
+				'        upic.ForeColor = rgb(0, 0, 0)
+				upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorNormalString, RGB(0, 0, 0)))
+				'MOD  END  240a
+				'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				upic.Print(RightPaddedString(.strWeakness, 12))
+				n = n + 1
+				If n > 1 Then
+					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					upic.Print()
+					'ADD START 240a
+					If NewGUIMode Then
+						'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB upic.CurrentX ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						upic.CurrentX = 5
+					End If
+					'ADD  END  240a
+					n = 0
+				End If
+			End If
+			
+			'—LŒø
+			If Len(.strEffective) > 0 And InStr(.strEffective, "”ñ•\¦") = 0 Then
+				If Len(.strEffective) > 5 Then
+					If n > 0 Then
+						'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						upic.Print()
+						'ADD START 240a
+						If NewGUIMode Then
+							'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB upic.CurrentX ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+							upic.CurrentX = 5
+						End If
+						'ADD  END  240a
+					End If
+					n = 2
+				End If
+				If n = 0 And NewGUIMode Then
+					'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB upic.CurrentX ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					upic.CurrentX = 5
+				End If
+				'MOD START 240a
+				'            upic.ForeColor = rgb(0, 0, 150)
+				upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityName, RGB(0, 0, 150)))
+				'MOD  END  240a
+				'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				upic.Print("—LŒø   ")
+				'MOD START 240a
+				'        upic.ForeColor = rgb(0, 0, 0)
+				upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorNormalString, RGB(0, 0, 0)))
+				'MOD  END  240a
+				'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				upic.Print(RightPaddedString(.strEffective, 12))
+				n = n + 1
+				If n > 1 Then
+					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					upic.Print()
+					'ADD START 240a
+					If NewGUIMode Then
+						'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB upic.CurrentX ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						upic.CurrentX = 5
+					End If
+					'ADD  END  240a
+					n = 0
+				End If
+			End If
+			
+			'“ÁêŒø‰Ê–³Œø‰»
+			If Len(.strSpecialEffectImmune) > 0 And InStr(.strSpecialEffectImmune, "”ñ•\¦") = 0 Then
+				If Len(.strSpecialEffectImmune) > 5 Then
+					If n > 0 Then
+						'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						upic.Print()
+						'ADD START 240a
+						If NewGUIMode Then
+							'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB upic.CurrentX ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+							upic.CurrentX = 5
+						End If
+						'ADD  END  240a
+					End If
+					n = 2
+				End If
+				If n = 0 And NewGUIMode Then
+					'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB upic.CurrentX ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					upic.CurrentX = 5
+				End If
+				'MOD START 240a
+				'            upic.ForeColor = rgb(0, 0, 150)
+				upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityName, RGB(0, 0, 150)))
+				'MOD  END  240a
+				'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				upic.Print("“Á–³Œø ")
+				'MOD START 240a
+				'        upic.ForeColor = rgb(0, 0, 0)
+				upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorNormalString, RGB(0, 0, 0)))
+				'MOD  END  240a
+				'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				upic.Print(RightPaddedString(.strSpecialEffectImmune, 12))
+				n = n + 1
+				If n > 1 Then
+					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					upic.Print()
+					'ADD START 240a
+					If NewGUIMode Then
+						'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB upic.CurrentX ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						upic.CurrentX = 5
+					End If
+					'ADD  END  240a
+					n = 0
+				End If
+			End If
+			
+			'•K—v‚É‰‚¶‚Ä‰üs
 			If n > 0 Then
 				'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 				upic.Print()
@@ -2275,208 +2708,595 @@ UnitStatus:
 				End If
 				'ADD  END  240a
 			End If
-			'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			upic.Print(fname)
-			n = 2
-		Else
-			'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			upic.Print(RightPaddedString(fname, 19))
-			n = n + 1
-		End If
-		
-		'Invalid_string_refer_to_original_code
-		If n > 1 Then
-			'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			upic.Print()
+			n = 0
+			
 			'ADD START 240a
 			If NewGUIMode Then
 				'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB upic.CurrentX ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 				upic.CurrentX = 5
 			End If
 			'ADD  END  240a
-			n = 0
-		End If
-		
-		'è¡¨ç¤ºè‰²ã‚’æˆ»ã—ã¦ãŠã
-		'MOD START 240a
-		'            upic.ForeColor = rgb(0, 0, 0)
-		upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorNormalString, RGB(0, 0, 0)))
-		'MOD  END  240a
-NextFeature: 
-		'Next
-		If n > 0 Then
-			'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			upic.Print()
-		End If
-		
-		'ADD START 240a
-		If NewGUIMode Then
-			'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB upic.CurrentX ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			upic.CurrentX = 5
-		End If
-		'ADD  END  240a
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_WARNING: DisplayUnitStatus ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		
-		'Invalid_string_refer_to_original_code
-		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'And Not SelectedUnit Is Nothing _
-		'And SelectedWeapon > 0 _
-		'And Stage <> "ãƒ—ãƒ­ãƒ­ãƒ¼ã‚°" And Stage <> "ã‚¨ãƒ”ãƒ­ãƒ¼ã‚°" _
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		'Invalid_string_refer_to_original_code
-		GoTo SkipAttackExpResult
-		'End If
-		
-		'ç›¸æ‰‹ãŒæ•µã®å ´åˆã«ã®ã¿è¡¨ç¤º
-		'Invalid_string_refer_to_original_code_
-		'And Not .IsConditionSatisfied("æš´èµ°") _
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'And Not .IsConditionSatisfied("æ··ä¹±") _
-		'And Not .IsConditionSatisfied("ç¡çœ ") _
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		GoTo SkipAttackExpResult
-		'End If
-		
-		'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		upic.Print()
-		
-		'ADD START 240a
-		If NewGUIMode Then
-			'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB upic.CurrentX ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			upic.CurrentX = 5
-		End If
-		'ADD  END  240a
-		'Invalid_string_refer_to_original_code
-		'MOD START 240a
-		'        upic.ForeColor = rgb(0, 0, 150)
-		upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityName, RGB(0, 0, 150)))
-		'MOD  END  240a
-		'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		upic.Print("Invalid_string_refer_to_original_code")
-		'MOD START 240a
-		'        upic.ForeColor = rgb(0, 0, 0)
-		upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorNormalString, RGB(0, 0, 0)))
-		'MOD  END  240a
-		'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		upic.Print(SelectedUnit.WeaponNickname(SelectedWeapon))
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'And UseSupportAttack _
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		If Not SelectedUnit.LookForSupportAttack(u) Is Nothing Then
-			'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			upic.Print(" [æ´]")
-		Else
-			'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			upic.Print()
-		End If
-		'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		upic.Print()
-		'End If
-		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		w = 0
-		w = SelectWeapon(u, SelectedUnit, "åæ’ƒ")
-		'End If
-		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg SelectDefense() ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		def_mode = SelectDefense(SelectedUnit, SelectedWeapon, u, w)
-		If def_mode <> "" Then
-			w = 0
-		End If
-		
-		'ADD START 240a
-		If NewGUIMode Then
-			'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB upic.CurrentX ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			upic.CurrentX = 5
-		End If
-		'ADD  END  240a
-		'äºˆæ¸¬ãƒ€ãƒ¡ãƒ¼ã‚¸
-		If Not IsOptionDefined("äºˆæ¸¬ãƒ€ãƒ¡ãƒ¼ã‚¸éè¡¨ç¤º") Then
-			'MOD START 240a
-			'            upic.ForeColor = rgb(0, 0, 150)
-			upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityName, RGB(0, 0, 150)))
-			'MOD  END  240a
-			'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			upic.Print("ãƒ€ãƒ¡ãƒ¼ã‚¸ ")
-			dmg = SelectedUnit.Damage(SelectedWeapon, u, True)
-			If def_mode = "é˜²å¾¡" Then
-				dmg = dmg \ 2
+			'•ŠíE–h‹ïƒNƒ‰ƒX
+			ReDim flist(0)
+			If IsOptionDefined("ƒAƒCƒeƒ€ŒğŠ·") Then
+				If .IsFeatureAvailable("•ŠíƒNƒ‰ƒX") Or .IsFeatureAvailable("–h‹ïƒNƒ‰ƒX") Then
+					If NewGUIMode Then
+						'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB upic.CurrentX ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						upic.CurrentX = 5
+					End If
+					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					upic.Print(RightPaddedString("•ŠíE–h‹ïƒNƒ‰ƒX", 19))
+					ReDim Preserve flist(1)
+					flist(1) = "•ŠíE–h‹ïƒNƒ‰ƒX"
+					n = n + 1
+				End If
 			End If
-			'UPGRADE_WARNING: DisplayUnitStatus ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-			'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			upic.Print(VB6.Format(dmg))
-		End If
-		
-		'ADD START 240a
-		If NewGUIMode Then
-			'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB upic.CurrentX ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			upic.CurrentX = 5
-		End If
-		'ADD  END  240a
-		'Invalid_string_refer_to_original_code
-		If Not IsOptionDefined("Invalid_string_refer_to_original_code") Then
-			'MOD START 240a
-			'            upic.ForeColor = rgb(0, 0, 150)
-			upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityName, RGB(0, 0, 150)))
-			'MOD  END  240a
-			'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			upic.Print("Invalid_string_refer_to_original_code")
-			'MOD START 240a
-			'            upic.ForeColor = rgb(0, 0, 0)
-			upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorNormalString, RGB(0, 0, 0)))
-			'MOD  END  240a
-			prob = SelectedUnit.HitProbability(SelectedWeapon, u, True)
-			If def_mode = "å›é¿" Then
-				prob = prob \ 2
-			End If
-			cprob = SelectedUnit.CriticalProbability(SelectedWeapon, u, def_mode)
-			'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg Invalid_string_refer_to_original_code ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			upic.Print(MinLng(prob, 100) & "Invalid_string_refer_to_original_code" & Invalid_string_refer_to_original_code)
-			'MOD START 240a
-			'            upic.ForeColor = rgb(0, 0, 0)
-			upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorNormalString, RGB(0, 0, 0)))
-			'MOD  END  240a
-		End If
-		
-		'ADD START 240a
-		If NewGUIMode Then
-			'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB upic.CurrentX ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			upic.CurrentX = 5
-		End If
-		'ADD  END  240a
-		If w > 0 Then
-			'åæ’ƒæ‰‹æ®µ
-			'MOD START 240a
-			'            upic.ForeColor = rgb(0, 0, 150)
-			upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityName, RGB(0, 0, 150)))
-			'MOD  END  240a
-			'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			upic.Print("åæ’ƒ     ")
-			'MOD START 240a
-			'            upic.ForeColor = rgb(0, 0, 0)
-			upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorNormalString, RGB(0, 0, 0)))
-			'MOD  END  240a
-			'UPGRADE_WARNING: DisplayUnitStatus ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-			'Invalid_string_refer_to_original_code
-			If Not u.LookForSupportGuard(SelectedUnit, SelectedWeapon) Is Nothing Then
-				'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				upic.Print(" [æ´]")
+			
+			'“Áê”\—Íˆê——‚ğ•\¦‚·‚é‘O‚É•K—v‹C—Í”»’è‚Ì‚½‚ßƒƒCƒ“ƒpƒCƒƒbƒg‚Ì‹C—Í‚ğQÆ
+			If .CountPilot > 0 Then
+				pmorale = .MainPilot.Morale
 			Else
+				pmorale = 150
+			End If
+			
+			'ADD START 240a
+			If NewGUIMode Then
+				'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB upic.CurrentX ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				upic.CurrentX = 5
+			End If
+			'ADD  END  240a
+			'“Áê”\—Íˆê——
+			For i = .AdditionalFeaturesNum + 1 To .CountAllFeature
+				fname = .AllFeatureName(i)
+				
+				'ƒ†ƒjƒbƒgƒXƒe[ƒ^ƒXƒRƒ}ƒ“ƒh‚Í’Êí‚Í”ñ•\¦‚Ìƒp[ƒc‡‘ÌA
+				'ƒm[ƒ}ƒ‹ƒ‚[ƒhAŠ·‘•‚à•\¦
+				If fname = "" Then
+					If MapFileName = "" Then
+						Select Case .AllFeature(i)
+							Case "ƒp[ƒc‡‘Ì", "ƒm[ƒ}ƒ‹ƒ‚[ƒh"
+								'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+								upic.Print(RightPaddedString(.AllFeature(i), 19))
+								n = n + 1
+								If n > 1 Then
+									'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+									upic.Print()
+									'ADD START 240a
+									If NewGUIMode Then
+										'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB upic.CurrentX ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+										upic.CurrentX = 5
+									End If
+									'ADD  END  240a
+									n = 0
+								End If
+							Case "Š·‘•"
+								fname = "Š·‘•"
+								
+								'ƒGƒŠƒAƒX‚ÅŠ·‘•‚Ì–¼Ì‚ª•ÏX‚³‚ê‚Ä‚¢‚éH
+								With ALDList
+									For j = 1 To .Count
+										With .Item(j)
+											If .AliasType(1) = "Š·‘•" Then
+												fname = .Name
+												Exit For
+											End If
+										End With
+									Next 
+								End With
+								
+								'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+								upic.Print(RightPaddedString(fname, 19))
+								n = n + 1
+								If n > 1 Then
+									'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+									upic.Print()
+									'ADD START 240a
+									If NewGUIMode Then
+										'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB upic.CurrentX ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+										upic.CurrentX = 5
+									End If
+									'ADD  END  240a
+									n = 0
+								End If
+						End Select
+					End If
+					GoTo NextFeature
+				End If
+				
+				'Šù‚É•\¦‚µ‚Ä‚¢‚é‚©‚ğ”»’è
+				For j = 1 To UBound(flist)
+					If fname = flist(j) Then
+						GoTo NextFeature
+					End If
+				Next 
+				ReDim Preserve flist(UBound(flist) + 1)
+				flist(UBound(flist)) = fname
+				
+				'g—p‰Â”Û‚É‚æ‚Á‚Ä•\¦F‚ğ•Ï‚¦‚é
+				fdata = .AllFeatureData(i)
+				Select Case .AllFeature(i)
+					Case "‡‘Ì"
+						If Not UList.IsDefined(LIndex(fdata, 2)) Then
+							GoTo NextFeature
+						End If
+						If UList.Item(LIndex(fdata, 2)).IsConditionSatisfied("s“®•s”\") Then
+							'MOD START 240a
+							'                        upic.ForeColor = rgb(150, 0, 0)
+							upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityDisable, RGB(150, 0, 0)))
+							'MOD  END  240a
+						End If
+					Case "•ª—£"
+						k = 0
+						For j = 2 To LLength(fdata)
+							If Not UList.IsDefined(LIndex(fdata, j)) Then
+								GoTo NextFeature
+							End If
+							With UList.Item(LIndex(fdata, j)).Data
+								If .IsFeatureAvailable("¢Š«ƒ†ƒjƒbƒg") Then
+									k = k + System.Math.Abs(.PilotNum)
+								End If
+							End With
+						Next 
+						If .CountPilot < k Then
+							'MOD START 240a
+							'                        upic.ForeColor = rgb(150, 0, 0)
+							upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityDisable, RGB(150, 0, 0)))
+							'MOD  END  240a
+						End If
+					Case "ƒnƒCƒp[ƒ‚[ƒh"
+						If pmorale < CShort(10# * .FeatureLevel(i)) + 100 And .HP > .MaxHP \ 4 Then
+							'MOD START 240a
+							'                        upic.ForeColor = rgb(150, 0, 0)
+							upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityDisable, RGB(150, 0, 0)))
+							'MOD  END  240a
+						ElseIf .IsConditionSatisfied("ƒm[ƒ}ƒ‹ƒ‚[ƒh•t‰Á") Then 
+							'MOD START 240a
+							'                        upic.ForeColor = rgb(150, 0, 0)
+							upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityDisable, RGB(150, 0, 0)))
+							'MOD  END  240a
+						End If
+					Case "C—‘•’u", "•â‹‹‘•’u"
+						If IsNumeric(LIndex(fdata, 2)) Then
+							If .EN < CShort(LIndex(fdata, 2)) Then
+								'MOD START 240a
+								'                            upic.ForeColor = rgb(150, 0, 0)
+								upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityDisable, RGB(150, 0, 0)))
+								'MOD  END  240a
+							End If
+						End If
+					Case "ƒeƒŒƒ|[ƒg"
+						If IsNumeric(LIndex(fdata, 2)) Then
+							If .EN < CShort(LIndex(fdata, 2)) Then
+								'MOD START 240a
+								'                            upic.ForeColor = rgb(150, 0, 0)
+								upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityDisable, RGB(150, 0, 0)))
+								'MOD  END  240a
+							End If
+						Else
+							If .EN < 40 Then
+								'MOD START 240a
+								'                            upic.ForeColor = rgb(150, 0, 0)
+								upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityDisable, RGB(150, 0, 0)))
+								'MOD  END  240a
+							End If
+						End If
+					Case "•ªg"
+						If pmorale < 130 Then
+							'MOD START 240a
+							'                        upic.ForeColor = rgb(150, 0, 0)
+							upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityDisable, RGB(150, 0, 0)))
+							'MOD  END  240a
+						End If
+					Case "’´‰ñ”ğ"
+						If IsNumeric(LIndex(fdata, 2)) Then
+							ecost = CShort(LIndex(fdata, 2))
+						Else
+							ecost = 0
+						End If
+						If IsNumeric(LIndex(fdata, 3)) Then
+							nmorale = CShort(LIndex(fdata, 3))
+						Else
+							nmorale = 0
+						End If
+						If .EN < ecost Or pmorale < nmorale Then
+							'MOD START 240a
+							'                        upic.ForeColor = rgb(150, 0, 0)
+							upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityDisable, RGB(150, 0, 0)))
+							'MOD  END  240a
+						End If
+					Case "‹Ù‹}ƒeƒŒƒ|[ƒg"
+						If IsNumeric(LIndex(fdata, 3)) Then
+							ecost = CShort(LIndex(fdata, 3))
+						Else
+							ecost = 0
+						End If
+						If IsNumeric(LIndex(fdata, 4)) Then
+							nmorale = CShort(LIndex(fdata, 4))
+						Else
+							nmorale = 0
+						End If
+						If .EN < ecost Or pmorale < nmorale Then
+							'MOD START 240a
+							'                        upic.ForeColor = rgb(150, 0, 0)
+							upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityDisable, RGB(150, 0, 0)))
+							'MOD  END  240a
+						End If
+					Case "ƒGƒlƒ‹ƒM[ƒV[ƒ‹ƒh"
+						If .EN < 5 Then
+							'MOD START 240a
+							'                        upic.ForeColor = rgb(150, 0, 0)
+							upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityDisable, RGB(150, 0, 0)))
+							'MOD  END  240a
+						End If
+					Case "ƒoƒŠƒA", "ƒoƒŠƒAƒV[ƒ‹ƒh", "ƒvƒƒeƒNƒVƒ‡ƒ“", "ƒAƒNƒeƒBƒuƒvƒƒeƒNƒVƒ‡ƒ“"
+						If IsNumeric(LIndex(fdata, 3)) Then
+							ecost = CShort(LIndex(fdata, 3))
+						Else
+							ecost = 10
+						End If
+						If IsNumeric(LIndex(fdata, 4)) Then
+							nmorale = CShort(LIndex(fdata, 4))
+						Else
+							nmorale = 0
+						End If
+						If .EN < ecost Or pmorale < nmorale Or (.IsConditionSatisfied("ƒoƒŠƒA–³Œø‰»") And InStr(fdata, "ƒoƒŠƒA–³Œø‰»–³Œø") = 0) Then
+							'MOD START 240a
+							'                        upic.ForeColor = rgb(150, 0, 0)
+							upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityDisable, RGB(150, 0, 0)))
+							'MOD  END  240a
+						ElseIf InStr(fdata, "”\—Í•K—v") > 0 Then 
+							For j = 5 To LLength(fdata)
+								opt = LIndex(fdata, j)
+								If InStr(opt, "*") > 0 Then
+									opt = Left(opt, InStr(opt, "*") - 1)
+								End If
+								Select Case opt
+									Case "‘ŠE", "’†˜a", "‹ßÚ–³Œø", "è“®", "”\—Í•K—v"
+										'ƒXƒLƒbƒv
+									Case "“¯’²—¦"
+										If .SyncLevel = 0 Then
+											GoTo NextFeature
+										End If
+									Case "—ì—Í"
+										If .PlanaLevel = 0 Then
+											GoTo NextFeature
+										End If
+									Case Else
+										If .SkillLevel(opt) = 0 Then
+											GoTo NextFeature
+										End If
+								End Select
+							Next 
+						End If
+					Case "ƒtƒB[ƒ‹ƒh", "ƒAƒNƒeƒBƒuƒtƒB[ƒ‹ƒh"
+						If IsNumeric(LIndex(fdata, 3)) Then
+							ecost = CShort(LIndex(fdata, 3))
+						Else
+							ecost = 0
+						End If
+						If IsNumeric(LIndex(fdata, 4)) Then
+							nmorale = CShort(LIndex(fdata, 4))
+						Else
+							nmorale = 0
+						End If
+						If .EN < ecost Or pmorale < nmorale Or (.IsConditionSatisfied("ƒoƒŠƒA–³Œø‰»") And InStr(fdata, "ƒoƒŠƒA–³Œø‰»–³Œø") = 0) Then
+							'MOD START 240a
+							'                        upic.ForeColor = rgb(150, 0, 0)
+							upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityDisable, RGB(150, 0, 0)))
+							'MOD  END  240a
+						ElseIf InStr(fdata, "”\—Í•K—v") > 0 Then 
+							For j = 5 To LLength(fdata)
+								opt = LIndex(fdata, j)
+								If InStr(opt, "*") > 0 Then
+									opt = Left(opt, InStr(opt, "*") - 1)
+								End If
+								Select Case opt
+									Case "‘ŠE", "’†˜a", "‹ßÚ–³Œø", "è“®", "”\—Í•K—v"
+										'ƒXƒLƒbƒv
+									Case "“¯’²—¦"
+										If .SyncLevel = 0 Then
+											GoTo NextFeature
+										End If
+									Case "—ì—Í"
+										If .PlanaLevel = 0 Then
+											GoTo NextFeature
+										End If
+									Case Else
+										If .SkillLevel(opt) = 0 Then
+											GoTo NextFeature
+										End If
+								End Select
+							Next 
+						End If
+					Case "LˆæƒoƒŠƒA", "LˆæƒtƒB[ƒ‹ƒh", "LˆæƒvƒƒeƒNƒVƒ‡ƒ“"
+						If IsNumeric(LIndex(fdata, 4)) Then
+							ecost = CShort(LIndex(fdata, 4))
+						ElseIf IsNumeric(LIndex(fdata, 2)) Then 
+							ecost = 20 * CShort(LIndex(fdata, 2))
+						Else
+							ecost = 0
+						End If
+						If IsNumeric(LIndex(fdata, 5)) Then
+							nmorale = CShort(LIndex(fdata, 5))
+						Else
+							nmorale = 0
+						End If
+						If .EN < ecost Or pmorale < nmorale Or (.IsConditionSatisfied("ƒoƒŠƒA–³Œø‰»") And InStr(fdata, "ƒoƒŠƒA–³Œø‰»–³Œø") = 0) Then
+							'MOD START 240a
+							'                        upic.ForeColor = rgb(150, 0, 0)
+							upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityDisable, RGB(150, 0, 0)))
+							'MOD  END  240a
+						End If
+						fname = fname & "(”ÍˆÍ" & LIndex(fdata, 2) & "ƒ}ƒX)"
+					Case "ƒA[ƒ}[", "ƒŒƒWƒXƒg"
+						If IsNumeric(LIndex(fdata, 3)) Then
+							nmorale = CShort(LIndex(fdata, 3))
+						Else
+							nmorale = 0
+						End If
+						If pmorale < nmorale Then
+							'MOD START 240a
+							'                        upic.ForeColor = rgb(150, 0, 0)
+							upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityDisable, RGB(150, 0, 0)))
+							'MOD  END  240a
+						ElseIf InStr(fdata, "”\—Í•K—v") > 0 Then 
+							For j = 4 To LLength(fdata)
+								opt = LIndex(fdata, j)
+								If InStr(opt, "*") > 0 Then
+									opt = Left(opt, InStr(opt, "*") - 1)
+								End If
+								Select Case opt
+									Case "“¯’²—¦"
+										If .SyncLevel = 0 Then
+											GoTo NextFeature
+										End If
+									Case "—ì—Í"
+										If .PlanaLevel = 0 Then
+											GoTo NextFeature
+										End If
+									Case Else
+										If .SkillLevel(opt) = 0 Then
+											GoTo NextFeature
+										End If
+								End Select
+							Next 
+						End If
+					Case "UŒ‚‰ñ”ğ"
+						If IsNumeric(LIndex(fdata, 3)) Then
+							nmorale = CShort(LIndex(fdata, 3))
+						Else
+							nmorale = 0
+						End If
+						If pmorale < nmorale Then
+							'MOD START 240a
+							'                        upic.ForeColor = rgb(150, 0, 0)
+							upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityDisable, RGB(150, 0, 0)))
+							'MOD  END  240a
+						End If
+					Case "”½Ë", "‘j~"
+						If IsNumeric(LIndex(fdata, 4)) Then
+							ecost = CShort(LIndex(fdata, 4))
+						Else
+							ecost = 0
+						End If
+						If IsNumeric(LIndex(fdata, 5)) Then
+							nmorale = CShort(LIndex(fdata, 5))
+						Else
+							nmorale = 0
+						End If
+						If .EN < ecost Or pmorale < nmorale Then
+							'MOD START 240a
+							'                        upic.ForeColor = rgb(150, 0, 0)
+							upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityDisable, RGB(150, 0, 0)))
+							'MOD  END  240a
+						ElseIf InStr(fdata, "”\—Í•K—v") > 0 Then 
+							For j = 6 To LLength(fdata)
+								opt = LIndex(fdata, j)
+								If InStr(opt, "*") > 0 Then
+									opt = Left(opt, InStr(opt, "*") - 1)
+								End If
+								Select Case opt
+									Case "‘ŠE", "’†˜a", "‹ßÚ–³Œø", "è“®", "”\—Í•K—v"
+										'ƒXƒLƒbƒv
+									Case "“¯’²—¦"
+										If .SyncLevel = 0 Then
+											GoTo NextFeature
+										End If
+									Case "—ì—Í"
+										If .PlanaLevel = 0 Then
+											GoTo NextFeature
+										End If
+									Case Else
+										If .SkillLevel(opt) = 0 Then
+											GoTo NextFeature
+										End If
+								End Select
+							Next 
+						End If
+					Case "Lˆæ‘j~"
+						If IsNumeric(LIndex(fdata, 5)) Then
+							ecost = CShort(LIndex(fdata, 5))
+						Else
+							ecost = 0
+						End If
+						If IsNumeric(LIndex(fdata, 6)) Then
+							nmorale = CShort(LIndex(fdata, 6))
+						Else
+							nmorale = 0
+						End If
+						If .EN < ecost Or pmorale < nmorale Then
+							'MOD START 240a
+							'                        upic.ForeColor = rgb(150, 0, 0)
+							upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityDisable, RGB(150, 0, 0)))
+							'MOD  END  240a
+						End If
+						fname = fname & "(”ÍˆÍ" & LIndex(fdata, 2) & "ƒ}ƒX)"
+					Case "“–‚Äg‹Z", "©“®”½Œ‚"
+						If IsNumeric(LIndex(fdata, 5)) Then
+							ecost = CShort(LIndex(fdata, 5))
+						Else
+							ecost = 0
+						End If
+						If IsNumeric(LIndex(fdata, 6)) Then
+							nmorale = CShort(LIndex(fdata, 6))
+						Else
+							nmorale = 0
+						End If
+						If .EN < ecost Or pmorale < nmorale Then
+							'MOD START 240a
+							'                        upic.ForeColor = rgb(150, 0, 0)
+							upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityDisable, RGB(150, 0, 0)))
+							'MOD  END  240a
+						ElseIf InStr(fdata, "”\—Í•K—v") > 0 Then 
+							For j = 7 To LLength(fdata)
+								opt = LIndex(fdata, j)
+								If InStr(opt, "*") > 0 Then
+									opt = Left(opt, InStr(opt, "*") - 1)
+								End If
+								Select Case opt
+									Case "‘ŠE", "’†˜a", "‹ßÚ–³Œø", "è“®", "”\—Í•K—v"
+										'ƒXƒLƒbƒv
+									Case "“¯’²—¦"
+										If .SyncLevel = 0 Then
+											GoTo NextFeature
+										End If
+									Case "—ì—Í"
+										If .PlanaLevel = 0 Then
+											GoTo NextFeature
+										End If
+									Case Else
+										If .SkillLevel(opt) = 0 Then
+											GoTo NextFeature
+										End If
+								End Select
+							Next 
+						End If
+					Case "ƒu[ƒXƒg"
+						If pmorale >= 130 Then
+							'MOD START 240a
+							'                        upic.ForeColor = vbBlue
+							upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityEnable, System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Blue)))
+							'MOD  END  240a
+						End If
+					Case "‚"
+						If .ConditionLevel("‚ƒ_ƒ[ƒW") >= .AllFeatureLevel("‚") Then
+							'MOD START 240a
+							'                        upic.ForeColor = rgb(150, 0, 0)
+							upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityDisable, RGB(150, 0, 0)))
+							'MOD  END  240a
+						End If
+						fname = fname & "(" & VB6.Format(MaxLng(.AllFeatureLevel("‚") - .ConditionLevel("‚ƒ_ƒ[ƒW"), 0)) & "/" & VB6.Format(.AllFeatureLevel("‚")) & ")"
+					Case "‚g‚o‰ñ•œ", "‚d‚m‰ñ•œ"
+						' MOD START MARGE
+						'                    If .IsConditionSatisfied("‰ñ•œ•s”\") Then
+						If .IsConditionSatisfied("‰ñ•œ•s”\") Or .IsSpecialPowerInEffect("‰ñ•œ•s”\") Then
+							' MOD END MARGE
+							'MOD START 240a
+							'                        upic.ForeColor = rgb(150, 0, 0)
+							upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityDisable, RGB(150, 0, 0)))
+							'MOD  END  240a
+						End If
+					Case "Ši“¬‹­‰»", "ËŒ‚‹­‰»", "–½’†‹­‰»", "‰ñ”ğ‹­‰»", "‹Z—Ê‹­‰»", "”½‰‹­‰»", "‚g‚o‹­‰»", "‚d‚m‹­‰»", "‘•b‹­‰»", "‰^“®«‹­‰»", "ˆÚ“®—Í‹­‰»", "‚g‚oŠ„‡‹­‰»", "‚d‚mŠ„‡‹­‰»", "‘•bŠ„‡‹­‰»", "‰^“®«Š„‡‹­‰»"
+						If IsNumeric(LIndex(fdata, 2)) Then
+							If pmorale >= StrToLng(LIndex(fdata, 2)) Then
+								'MOD START 240a
+								'                            upic.ForeColor = vbBlue
+								upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityEnable, System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Blue)))
+								'MOD  END  240a
+							End If
+						End If
+					Case "‚y‚n‚b"
+						If LLength(fdata) < 2 Then
+							j = 1
+						Else
+							j = CShort(LIndex(fdata, 2))
+						End If
+						If j >= 1 Then
+							ReplaceString(fdata, vbTab, " ")
+							If InStr(fdata, " ’¼ü") > 0 Or (InStr(fdata, " ‚’¼") > 0 And InStr(fdata, " …•½") > 0) Then
+								buf = "’¼ü"
+							ElseIf InStr(fdata, " ‚’¼") > 0 Then 
+								buf = "ã‰º"
+							ElseIf InStr(fdata, " …•½") > 0 Then 
+								buf = "¶‰E"
+							Else
+								buf = "”ÍˆÍ"
+							End If
+							fname = fname & "(" & buf & VB6.Format(j) & "ƒ}ƒX)"
+						End If
+					Case "Lˆæ‚y‚n‚b–³Œø‰»"
+						fname = fname & "(”ÍˆÍ" & LIndex(fdata, 2) & "ƒ}ƒX)"
+					Case "’Ç‰ÁUŒ‚"
+						If IsNumeric(LIndex(fdata, 5)) Then
+							ecost = CShort(LIndex(fdata, 5))
+						Else
+							ecost = 0
+						End If
+						If IsNumeric(LIndex(fdata, 6)) Then
+							nmorale = CShort(LIndex(fdata, 6))
+						Else
+							nmorale = 0
+						End If
+						If .EN < ecost Or pmorale < nmorale Then
+							'MOD START 240a
+							'                        upic.ForeColor = rgb(150, 0, 0)
+							upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityDisable, RGB(150, 0, 0)))
+							'MOD  END  240a
+						End If
+				End Select
+				
+				'•K—vğŒ‚ğ–‚½‚³‚È‚¢“Áê”\—Í‚ÍÔF‚Å•\¦
+				If Not .IsFeatureActivated(i) Then
+					'MOD START 240a
+					'                upic.ForeColor = rgb(150, 0, 0)
+					upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityDisable, RGB(150, 0, 0)))
+					'MOD  END  240a
+				End If
+				
+				'“Áê”\—Í–¼‚ğ•\¦
+				'UPGRADE_ISSUE: ’è” vbFromUnicode ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="55B59875-9A95-4B71-9D6A-7C294BF7139D"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				'UPGRADE_ISSUE: LenB ŠÖ”‚ÍƒTƒ|[ƒg‚³‚ê‚Ü‚¹‚ñB Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="367764E5-F3F8-4E43-AC3E-7FE0B5E074E2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				If LenB(StrConv(fname, vbFromUnicode)) > 19 Then
+					If n > 0 Then
+						'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						upic.Print()
+						'ADD START 240a
+						If NewGUIMode Then
+							'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB upic.CurrentX ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+							upic.CurrentX = 5
+						End If
+						'ADD  END  240a
+					End If
+					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					upic.Print(fname)
+					n = 2
+				Else
+					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					upic.Print(RightPaddedString(fname, 19))
+					n = n + 1
+				End If
+				
+				'•K—v‚É‰‚¶‚Ä‰üs
+				If n > 1 Then
+					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					upic.Print()
+					'ADD START 240a
+					If NewGUIMode Then
+						'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB upic.CurrentX ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						upic.CurrentX = 5
+					End If
+					'ADD  END  240a
+					n = 0
+				End If
+				
+				'•\¦F‚ğ–ß‚µ‚Ä‚¨‚­
+				'MOD START 240a
+				'            upic.ForeColor = rgb(0, 0, 0)
+				upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorNormalString, RGB(0, 0, 0)))
+				'MOD  END  240a
+NextFeature: 
+			Next 
+			If n > 0 Then
 				'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 				upic.Print()
 			End If
@@ -2487,20 +3307,149 @@ NextFeature:
 				upic.CurrentX = 5
 			End If
 			'ADD  END  240a
-			'äºˆæ¸¬ãƒ€ãƒ¡ãƒ¼ã‚¸
-			If Not IsOptionDefined("äºˆæ¸¬ãƒ€ãƒ¡ãƒ¼ã‚¸éè¡¨ç¤º") Then
+			'ƒAƒCƒeƒ€ˆê——
+			If .CountItem > 0 Then
+				j = 0
+				For i = 1 To .CountItem
+					With .Item(i)
+						'•\¦w’è‚ğ‚ÂƒAƒCƒeƒ€‚Ì‚İ•\¦‚·‚é
+						If Not .IsFeatureAvailable("•\¦") Then
+							GoTo NextItem
+						End If
+						
+						'ƒAƒCƒeƒ€–¼‚ğ•\¦
+						If Len(.Nickname) > 9 Then
+							If j = 1 Then
+								'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+								upic.Print()
+								'ADD START 240a
+								If NewGUIMode Then
+									'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB upic.CurrentX ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+									upic.CurrentX = 5
+								End If
+								'ADD  END  240a
+							End If
+							'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+							upic.Print(.Nickname)
+							j = 2
+						Else
+							'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+							upic.Print(RightPaddedString(.Nickname, 19))
+							j = j + 1
+						End If
+						If j = 2 Then
+							'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+							upic.Print()
+							'ADD START 240a
+							If NewGUIMode Then
+								'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB upic.CurrentX ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+								upic.CurrentX = 5
+							End If
+							'ADD  END  240a
+							j = 0
+						End If
+					End With
+NextItem: 
+				Next 
+				If j > 0 Then
+					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					upic.Print()
+					'ADD START 240a
+					If NewGUIMode Then
+						'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB upic.CurrentX ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						upic.CurrentX = 5
+					End If
+					'ADD  END  240a
+				End If
+			End If
+			
+			'ƒ^[ƒQƒbƒg‘I‘ğ‚ÌUŒ‚Œ‹‰Ê—\‘z•\¦
+			
+			'UŒ‚‚É‚Ì‚İ•\¦
+			If (CommandState = "ƒ^[ƒQƒbƒg‘I‘ğ" Or CommandState = "ˆÚ“®Œãƒ^[ƒQƒbƒg‘I‘ğ") And (SelectedCommand = "UŒ‚" Or SelectedCommand = "ƒ}ƒbƒvUŒ‚") And Not SelectedUnit Is Nothing And SelectedWeapon > 0 And Stage <> "ƒvƒƒ[ƒO" And Stage <> "ƒGƒsƒ[ƒO" Then
+				'UŒ‚‚Æ”»’è
+			Else
+				GoTo SkipAttackExpResult
+			End If
+			
+			'‘Šè‚ª“G‚Ìê‡‚É‚Ì‚İ•\¦
+			If .Party <> "“G" And .Party <> "’†—§" And Not .IsConditionSatisfied("–\‘–") And Not .IsConditionSatisfied("–£—¹") And Not .IsConditionSatisfied("œßˆË") And Not .IsConditionSatisfied("¬—") And Not .IsConditionSatisfied("‡–°") Then
+				GoTo SkipAttackExpResult
+			End If
+			
+			'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			upic.Print()
+			
+			'ADD START 240a
+			If NewGUIMode Then
+				'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB upic.CurrentX ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				upic.CurrentX = 5
+			End If
+			'ADD  END  240a
+			'UŒ‚è’i
+			'MOD START 240a
+			'        upic.ForeColor = rgb(0, 0, 150)
+			upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityName, RGB(0, 0, 150)))
+			'MOD  END  240a
+			'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			upic.Print("UŒ‚     ")
+			'MOD START 240a
+			'        upic.ForeColor = rgb(0, 0, 0)
+			upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorNormalString, RGB(0, 0, 0)))
+			'MOD  END  240a
+			'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			upic.Print(SelectedUnit.WeaponNickname(SelectedWeapon))
+			'ƒTƒ|[ƒgƒAƒ^ƒbƒN‚ğ“¾‚ç‚ê‚éH
+			If Not SelectedUnit.IsWeaponClassifiedAs(SelectedWeapon, "‡") And Not SelectedUnit.IsWeaponClassifiedAs(SelectedWeapon, "‚l") And UseSupportAttack Then
+				If Not SelectedUnit.LookForSupportAttack(u) Is Nothing Then
+					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					upic.Print(" [‰‡]")
+				Else
+					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					upic.Print()
+				End If
+			Else
+				'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				upic.Print()
+			End If
+			
+			'”½Œ‚‚ğó‚¯‚éH
+			If .MaxAction = 0 Or SelectedUnit.IsWeaponClassifiedAs(SelectedWeapon, "‚l") Or SelectedUnit.IsWeaponClassifiedAs(SelectedWeapon, "ŠÔ") Then
+				w = 0
+			Else
+				w = SelectWeapon(u, SelectedUnit, "”½Œ‚")
+			End If
+			
+			'“G‚Ì–hŒäs“®‚ğİ’è
+			'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg SelectDefense() ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			def_mode = SelectDefense(SelectedUnit, SelectedWeapon, u, w)
+			If def_mode <> "" Then
+				w = 0
+			End If
+			
+			'ADD START 240a
+			If NewGUIMode Then
+				'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB upic.CurrentX ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				upic.CurrentX = 5
+			End If
+			'ADD  END  240a
+			'—\‘ªƒ_ƒ[ƒW
+			If Not IsOptionDefined("—\‘ªƒ_ƒ[ƒW”ñ•\¦") Then
 				'MOD START 240a
-				'                upic.ForeColor = rgb(0, 0, 150)
+				'            upic.ForeColor = rgb(0, 0, 150)
 				upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityName, RGB(0, 0, 150)))
 				'MOD  END  240a
 				'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				upic.Print("ãƒ€ãƒ¡ãƒ¼ã‚¸ ")
-				'UPGRADE_WARNING: DisplayUnitStatus ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-				If dmg >= SelectedUnit.HP Then
+				upic.Print("ƒ_ƒ[ƒW ")
+				dmg = SelectedUnit.Damage(SelectedWeapon, u, True)
+				If def_mode = "–hŒä" Then
+					dmg = dmg \ 2
+				End If
+				If dmg >= .HP And Not .IsConditionSatisfied("ƒf[ƒ^•s–¾") Then
 					upic.ForeColor = System.Drawing.ColorTranslator.FromOle(RGB(190, 0, 0))
 				Else
 					'MOD START 240a
-					'                    upic.ForeColor = rgb(0, 0, 0)
+					'                upic.ForeColor = rgb(0, 0, 0)
 					upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorNormalString, RGB(0, 0, 0)))
 					'MOD  END  240a
 				End If
@@ -2514,88 +3463,350 @@ NextFeature:
 				upic.CurrentX = 5
 			End If
 			'ADD  END  240a
-			'Invalid_string_refer_to_original_code
-			If Not IsOptionDefined("Invalid_string_refer_to_original_code") Then
+			'—\‘ª–½’†—¦
+			If Not IsOptionDefined("—\‘ª–½’†—¦”ñ•\¦") Then
 				'MOD START 240a
-				'                upic.ForeColor = rgb(0, 0, 150)
+				'            upic.ForeColor = rgb(0, 0, 150)
 				upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityName, RGB(0, 0, 150)))
 				'MOD  END  240a
 				'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				upic.Print("Invalid_string_refer_to_original_code")
+				upic.Print("–½’†—¦   ")
 				'MOD START 240a
-				'                upic.ForeColor = rgb(0, 0, 0)
+				'            upic.ForeColor = rgb(0, 0, 0)
 				upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorNormalString, RGB(0, 0, 0)))
 				'MOD  END  240a
-				'UPGRADE_WARNING: DisplayUnitStatus ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-				'UPGRADE_WARNING: DisplayUnitStatus ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-				'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg Invalid_string_refer_to_original_code ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				prob = SelectedUnit.HitProbability(SelectedWeapon, u, True)
+				If def_mode = "‰ñ”ğ" Then
+					prob = prob \ 2
+				End If
+				cprob = SelectedUnit.CriticalProbability(SelectedWeapon, u, def_mode)
 				'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				upic.Print(VB6.Format(MinLng(prob, 100)) & "Invalid_string_refer_to_original_code" & Invalid_string_refer_to_original_code)
+				upic.Print(MinLng(prob, 100) & "“i" & cprob & "“j")
+				'MOD START 240a
+				'            upic.ForeColor = rgb(0, 0, 0)
+				upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorNormalString, RGB(0, 0, 0)))
+				'MOD  END  240a
 			End If
-		Else
-			'Invalid_string_refer_to_original_code
+			
+			'ADD START 240a
+			If NewGUIMode Then
+				'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB upic.CurrentX ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				upic.CurrentX = 5
+			End If
+			'ADD  END  240a
+			If w > 0 Then
+				'”½Œ‚è’i
+				'MOD START 240a
+				'            upic.ForeColor = rgb(0, 0, 150)
+				upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityName, RGB(0, 0, 150)))
+				'MOD  END  240a
+				'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				upic.Print("”½Œ‚     ")
+				'MOD START 240a
+				'            upic.ForeColor = rgb(0, 0, 0)
+				upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorNormalString, RGB(0, 0, 0)))
+				'MOD  END  240a
+				'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				upic.Print(.WeaponNickname(w))
+				'ƒTƒ|[ƒgƒK[ƒh‚ğó‚¯‚ç‚ê‚éH
+				If Not u.LookForSupportGuard(SelectedUnit, SelectedWeapon) Is Nothing Then
+					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					upic.Print(" [‰‡]")
+				Else
+					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					upic.Print()
+				End If
+				
+				'ADD START 240a
+				If NewGUIMode Then
+					'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB upic.CurrentX ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					upic.CurrentX = 5
+				End If
+				'ADD  END  240a
+				'—\‘ªƒ_ƒ[ƒW
+				If Not IsOptionDefined("—\‘ªƒ_ƒ[ƒW”ñ•\¦") Then
+					'MOD START 240a
+					'                upic.ForeColor = rgb(0, 0, 150)
+					upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityName, RGB(0, 0, 150)))
+					'MOD  END  240a
+					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					upic.Print("ƒ_ƒ[ƒW ")
+					dmg = .Damage(w, SelectedUnit, True)
+					If dmg >= SelectedUnit.HP Then
+						upic.ForeColor = System.Drawing.ColorTranslator.FromOle(RGB(190, 0, 0))
+					Else
+						'MOD START 240a
+						'                    upic.ForeColor = rgb(0, 0, 0)
+						upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorNormalString, RGB(0, 0, 0)))
+						'MOD  END  240a
+					End If
+					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					upic.Print(VB6.Format(dmg))
+				End If
+				
+				'ADD START 240a
+				If NewGUIMode Then
+					'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB upic.CurrentX ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					upic.CurrentX = 5
+				End If
+				'ADD  END  240a
+				'—\‘ª–½’†—¦
+				If Not IsOptionDefined("—\‘ª–½’†—¦”ñ•\¦") Then
+					'MOD START 240a
+					'                upic.ForeColor = rgb(0, 0, 150)
+					upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityName, RGB(0, 0, 150)))
+					'MOD  END  240a
+					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					upic.Print("–½’†—¦   ")
+					'MOD START 240a
+					'                upic.ForeColor = rgb(0, 0, 0)
+					upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorNormalString, RGB(0, 0, 0)))
+					'MOD  END  240a
+					prob = .HitProbability(w, SelectedUnit, True)
+					cprob = .CriticalProbability(w, SelectedUnit)
+					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					upic.Print(VB6.Format(MinLng(prob, 100)) & "“i" & cprob & "“j")
+				End If
+			Else
+				'‘Šè‚Í”½Œ‚‚Å‚«‚È‚¢
+				'MOD START 240a
+				'            upic.ForeColor = rgb(0, 0, 150)
+				upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityName, RGB(0, 0, 150)))
+				'MOD  END  240a
+				If def_mode <> "" Then
+					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					upic.Print(def_mode)
+				Else
+					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					upic.Print("”½Œ‚•s”\")
+				End If
+				'MOD START 240a
+				'            upic.ForeColor = rgb(0, 0, 0)
+				upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorNormalString, RGB(0, 0, 0)))
+				'MOD  END  240a
+				'ƒTƒ|[ƒgƒK[ƒh‚ğó‚¯‚ç‚ê‚éH
+				If Not u.LookForSupportGuard(SelectedUnit, SelectedWeapon) Is Nothing Then
+					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					upic.Print(" [‰‡]")
+				Else
+					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					upic.Print()
+				End If
+			End If
+			
+SkipAttackExpResult: 
+			
+			'ADD START 240a
+			If NewGUIMode Then
+				'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB upic.CurrentX ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				upic.CurrentX = 5
+			End If
+			'ADD  END  240a
+			'•Šíˆê——
+			'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB upic.CurrentY ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			upic.CurrentY = upic.CurrentY + 8
+			'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			upic.Print(Space(25))
 			'MOD START 240a
-			'            upic.ForeColor = rgb(0, 0, 150)
+			'        upic.ForeColor = rgb(0, 0, 150)
 			upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityName, RGB(0, 0, 150)))
 			'MOD  END  240a
-			If def_mode <> "" Then
-				'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				upic.Print(def_mode)
-			Else
-				'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				upic.Print("Invalid_string_refer_to_original_code")
-			End If
+			'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			upic.Print("UŒ‚ Ë’ö")
 			'MOD START 240a
-			'            upic.ForeColor = rgb(0, 0, 0)
+			'        upic.ForeColor = rgb(0, 0, 0)
 			upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorNormalString, RGB(0, 0, 0)))
 			'MOD  END  240a
-			'Invalid_string_refer_to_original_code
-			If Not u.LookForSupportGuard(SelectedUnit, SelectedWeapon) Is Nothing Then
+			
+			ReDim warray(.CountWeapon)
+			ReDim wpower(.CountWeapon)
+			For i = 1 To .CountWeapon
+				wpower(i) = .WeaponPower(i, "")
+			Next 
+			
+			'UŒ‚—Í‚Åƒ\[ƒg
+			For i = 1 To .CountWeapon
+				For j = 1 To i - 1
+					If wpower(i) > wpower(warray(i - j)) Then
+						Exit For
+					ElseIf wpower(i) = wpower(warray(i - j)) Then 
+						If .Weapon(i).ENConsumption > 0 Then
+							If .Weapon(i).ENConsumption >= .Weapon(warray(i - j)).ENConsumption Then
+								Exit For
+							End If
+						ElseIf .Weapon(i).Bullet > 0 Then 
+							If .Weapon(i).Bullet <= .Weapon(warray(i - j)).Bullet Then
+								Exit For
+							End If
+						Else
+							If .Weapon(i - j).ENConsumption = 0 And .Weapon(warray(i - j)).Bullet = 0 Then
+								Exit For
+							End If
+						End If
+					End If
+				Next 
+				For k = 1 To j - 1
+					warray(i - k + 1) = warray(i - k)
+				Next 
+				warray(i - j + 1) = i
+			Next 
+			
+			'ŒÂX‚Ì•Ší‚ğ•\¦
+			For i = 1 To .CountWeapon
+				'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB upic.CurrentY ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				If upic.CurrentY > 420 Then
+					Exit For
+				End If
+				w = warray(i)
+				If Not .IsWeaponAvailable(w, "ƒXƒe[ƒ^ƒX") Then
+					'K“¾‚µ‚Ä‚¢‚È‚¢‹Z‚Í•\¦‚µ‚È‚¢
+					If Not .IsWeaponMastered(w) Then
+						GoTo NextWeapon
+					End If
+					'DisableƒRƒ}ƒ“ƒh‚Åg—p•s‰Â‚É‚È‚Á‚½•Ší‚à“¯—l
+					If .IsDisabled((.Weapon(w).Name)) Then
+						GoTo NextWeapon
+					End If
+					'ƒtƒH[ƒ[ƒVƒ‡ƒ“‚ğ–‚½‚µ‚Ä‚¢‚È‚¢‡‘Ì‹Z‚à
+					If .IsWeaponClassifiedAs(w, "‡") Then
+						If Not .IsCombinationAttackAvailable(w, True) Then
+							GoTo NextWeapon
+						End If
+					End If
+					'MOD START 240a
+					'                    upic.ForeColor = rgb(150, 0, 0)
+					upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityDisable, RGB(150, 0, 0)))
+					'MOD  END  240a
+				End If
+				
+				'•Ší‚Ì•\¦
+				If .WeaponPower(w, "") < 10000 Then
+					buf = RightPaddedString(VB6.Format(.WeaponNickname(w)), 25)
+					buf = buf & LeftPaddedString(VB6.Format(.WeaponPower(w, "")), 4)
+				Else
+					buf = RightPaddedString(VB6.Format(.WeaponNickname(w)), 24)
+					buf = buf & LeftPaddedString(VB6.Format(.WeaponPower(w, "")), 5)
+				End If
+				
+				'•Ší‚ª“ÁêŒø‰Ê‚ğ‚Âê‡‚Í—ªÌ‚Å•\‹L
+				If .WeaponMaxRange(w) > 1 Then
+					'UPGRADE_ISSUE: ’è” vbFromUnicode ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="55B59875-9A95-4B71-9D6A-7C294BF7139D"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					'UPGRADE_ISSUE: LenB ŠÖ”‚ÍƒTƒ|[ƒg‚³‚ê‚Ü‚¹‚ñB Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="367764E5-F3F8-4E43-AC3E-7FE0B5E074E2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					buf = buf & LeftPaddedString(VB6.Format(.Weapon(w).MinRange) & "-" & VB6.Format(.WeaponMaxRange(w)), 34 - LenB(StrConv(buf, vbFromUnicode)))
+					'ˆÚ“®ŒãUŒ‚‰Â”\
+					If .IsWeaponClassifiedAs(w, "‚o") Then
+						buf = buf & "P"
+					End If
+				Else
+					'UPGRADE_ISSUE: ’è” vbFromUnicode ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="55B59875-9A95-4B71-9D6A-7C294BF7139D"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					'UPGRADE_ISSUE: LenB ŠÖ”‚ÍƒTƒ|[ƒg‚³‚ê‚Ü‚¹‚ñB Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="367764E5-F3F8-4E43-AC3E-7FE0B5E074E2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					buf = buf & LeftPaddedString("1", 34 - LenB(StrConv(buf, vbFromUnicode)))
+					' ADD START MARGE
+					'ˆÚ“®ŒãUŒ‚•s‰Â
+					If .IsWeaponClassifiedAs(w, "‚p") Then
+						buf = buf & "Q"
+					End If
+					' ADD END MARGE
+				End If
+				'ƒ}ƒbƒvUŒ‚
+				If .IsWeaponClassifiedAs(w, "‚l") Then
+					buf = buf & "M"
+				End If
+				'“ÁêŒø‰Ê
+				wclass = .Weapon(w).Class_Renamed
+				For j = 1 To .CountWeaponEffect(w)
+					buf = buf & "+"
+				Next 
+				'ADD START 240a
+				If NewGUIMode Then
+					'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB upic.CurrentX ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					upic.CurrentX = 5
+				End If
+				'ADD  END  240a
 				'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				upic.Print(" [æ´]")
-			Else
+				upic.Print(buf)
+				'MOD START 240a
+				'            upic.ForeColor = rgb(0, 0, 0)
+				upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorNormalString, RGB(0, 0, 0)))
+				'MOD  END  240a
+NextWeapon: 
+			Next 
+			
+			'ƒAƒrƒŠƒeƒBˆê——
+			For i = 1 To .CountAbility
+				'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB upic.CurrentY ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				If upic.CurrentY > 420 Then
+					Exit For
+				End If
+				If Not .IsAbilityAvailable(i, "ƒXƒe[ƒ^ƒX") Then
+					'K“¾‚µ‚Ä‚¢‚È‚¢‹Z‚Í•\¦‚µ‚È‚¢
+					If Not .IsAbilityMastered(i) Then
+						GoTo NextAbility
+					End If
+					'DisableƒRƒ}ƒ“ƒh‚Åg—p•s‰Â‚É‚È‚Á‚½•Ší‚à“¯—l
+					If .IsDisabled((.Ability(i).Name)) Then
+						GoTo NextAbility
+					End If
+					'ƒtƒH[ƒ[ƒVƒ‡ƒ“‚ğ–‚½‚µ‚Ä‚¢‚È‚¢‡‘Ì‹Z‚à
+					If .IsAbilityClassifiedAs(i, "‡") Then
+						If Not .IsCombinationAbilityAvailable(i, True) Then
+							GoTo NextAbility
+						End If
+					End If
+					'MOD START 240a
+					'                upic.ForeColor = rgb(150, 0, 0)
+					upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityDisable, RGB(150, 0, 0)))
+					'MOD  END  240a
+				End If
+				
+				'ADD START 240a
+				If NewGUIMode Then
+					'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB upic.CurrentX ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					upic.CurrentX = 5
+				End If
+				'ADD  END  240a
+				'ƒAƒrƒŠƒeƒB‚Ì•\¦
 				'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				upic.Print()
-			End If
-		End If
-		
-SkipAttackExpResult: 
-		
-		'ADD START 240a
-		If NewGUIMode Then
-			'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB upic.CurrentX ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			upic.CurrentX = 5
-		End If
-		'ADD  END  240a
-		'æ­¦å™¨ä¸€è¦§
-		'UPGRADE_ISSUE: PictureBox ƒvƒƒpƒeƒB upic.CurrentY ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		upic.CurrentY = upic.CurrentY + 8
-		'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		upic.Print(Space(25))
-		'MOD START 240a
-		'        upic.ForeColor = rgb(0, 0, 150)
-		upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorAbilityName, RGB(0, 0, 150)))
-		'MOD  END  240a
-		'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		upic.Print("Invalid_string_refer_to_original_code")
-		'MOD START 240a
-		'        upic.ForeColor = rgb(0, 0, 0)
-		upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorNormalString, RGB(0, 0, 0)))
-		'MOD  END  240a
-		
-		'UPGRADE_WARNING: DisplayUnitStatus ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		'UPGRADE_WARNING: DisplayUnitStatus ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		'UPGRADE_WARNING: DisplayUnitStatus ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_WARNING: DisplayUnitStatus ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_WARNING: DisplayUnitStatus ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_WARNING: DisplayUnitStatus ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		'End With
+				upic.Print(RightPaddedString(VB6.Format(.AbilityNickname(i)), 29))
+				If .AbilityMaxRange(i) > 1 Then
+					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					upic.Print(LeftPaddedString(VB6.Format(.AbilityMinRange(i)) & "-" & VB6.Format(.AbilityMaxRange(i)), 5))
+					If .IsAbilityClassifiedAs(i, "‚o") Then
+						'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						upic.Print("P")
+					End If
+					If .IsAbilityClassifiedAs(i, "‚l") Then
+						'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						upic.Print("M")
+					End If
+					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					upic.Print()
+				ElseIf .AbilityMaxRange(i) = 1 Then 
+					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					upic.Print("    1")
+					' ADD START MARGE
+					If .IsAbilityClassifiedAs(i, "‚p") Then
+						'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						upic.Print("Q")
+					End If
+					' ADD END MARGE
+					If .IsAbilityClassifiedAs(i, "‚l") Then
+						'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						upic.Print("M")
+					End If
+					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					upic.Print()
+				Else
+					'UPGRADE_ISSUE: PictureBox ƒƒ\ƒbƒh upic.Print ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					upic.Print("    -")
+				End If
+				'MOD START 240a
+				'            upic.ForeColor = rgb(0, 0, 0)
+				upic.ForeColor = System.Drawing.ColorTranslator.FromOle(IIf(NewGUIMode, StatusFontColorNormalString, RGB(0, 0, 0)))
+				'MOD  END  240a
+NextAbility: 
+			Next 
+		End With
 		
 UpdateStatusWindow: 
 		
@@ -2603,7 +3814,7 @@ UpdateStatusWindow:
 		'    If MainWidth = 15 Then
 		If Not NewGUIMode Then
 			'MOD  END
-			'Invalid_string_refer_to_original_code
+			'ƒXƒe[ƒ^ƒXƒEƒBƒ“ƒhƒE‚ğƒŠƒtƒŒƒbƒVƒ…
 			'UPGRADE_ISSUE: Control picFace ‚ÍA”Ä—p–¼‘O‹óŠÔ Form “à‚É‚ ‚é‚½‚ßA‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 			MainForm.picFace.Refresh()
 			ppic.Refresh()
@@ -2612,7 +3823,7 @@ UpdateStatusWindow:
 			If MouseX < MainPWidth \ 2 Then
 				'MOD START 240a
 				'            upic.Move MainPWidth - 230 - 5, 10
-				'Invalid_string_refer_to_original_code
+				'‰æ–Ê¶‘¤‚ÉƒJ[ƒ\ƒ‹‚ª‚ ‚éê‡
 				upic.SetBounds(VB6.TwipsToPixelsX(MainPWidth - 240), VB6.TwipsToPixelsY(10), 0, 0, Windows.Forms.BoundsSpecified.X Or Windows.Forms.BoundsSpecified.Y)
 				'MOD  END
 			Else
@@ -2628,12 +3839,10 @@ UpdateStatusWindow:
 		Exit Sub
 		
 ErrorHandler: 
-		ErrorMessage("Invalid_string_refer_to_original_code" & vbCr & vbLf & fname & vbCr & vbLf & "Invalid_string_refer_to_original_code")
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+		ErrorMessage("ƒpƒCƒƒbƒg—p‰æ‘œƒtƒ@ƒCƒ‹" & vbCr & vbLf & fname & vbCr & vbLf & "‚Ì“Ç‚İ‚İ’†‚ÉƒGƒ‰[‚ª”­¶‚µ‚Ü‚µ‚½B" & vbCr & vbLf & "‰æ‘œƒtƒ@ƒCƒ‹‚ª‰ó‚ê‚Ä‚¢‚È‚¢‚©Šm”F‚µ‚Ä‰º‚³‚¢B")
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'w’è‚³‚ê‚½ƒpƒCƒƒbƒg‚ÌƒXƒe[ƒ^ƒX‚ğƒXƒe[ƒ^ƒXƒEƒBƒ“ƒhƒE‚É•\¦
 	Public Sub DisplayPilotStatus(ByVal p As Pilot)
 		Dim i As Short
 		
@@ -2641,10 +3850,10 @@ ErrorHandler:
 		
 		With DisplayedUnit
 			If p Is .MainPilot Then
-				'Invalid_string_refer_to_original_code
+				'ƒƒCƒ“ƒpƒCƒƒbƒg
 				DisplayUnitStatus(DisplayedUnit, 0)
 			Else
-				'Invalid_string_refer_to_original_code
+				'ƒTƒuƒpƒCƒƒbƒg
 				For i = 1 To .CountPilot
 					If p Is .Pilot(i) Then
 						DisplayUnitStatus(DisplayedUnit, i)
@@ -2652,7 +3861,7 @@ ErrorHandler:
 					End If
 				Next 
 				
-				'Invalid_string_refer_to_original_code
+				'ƒTƒ|[ƒgƒpƒCƒƒbƒg
 				For i = 1 To .CountSupport
 					If p Is .Support(i) Then
 						DisplayUnitStatus(DisplayedUnit, i + .CountPilot)
@@ -2660,37 +3869,35 @@ ErrorHandler:
 					End If
 				Next 
 				
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				DisplayUnitStatus(DisplayedUnit, .CountPilot + .CountSupport + 1)
+				'’Ç‰ÁƒTƒ|[ƒg
+				If .IsFeatureAvailable("’Ç‰ÁƒTƒ|[ƒg") Then
+					DisplayUnitStatus(DisplayedUnit, .CountPilot + .CountSupport + 1)
+				End If
 			End If
-			'End If
 		End With
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'w’è‚µ‚½ƒ}ƒbƒvÀ•W‚É‚¢‚éƒ†ƒjƒbƒg‚ÌƒXƒe[ƒ^ƒX‚ğƒXƒe[ƒ^ƒXƒEƒBƒ“ƒhƒE‚É•\¦
 	Public Sub InstantUnitStatusDisplay(ByVal X As Short, ByVal Y As Short)
 		Dim u As Unit
 		
-		'Invalid_string_refer_to_original_code
+		'w’è‚³‚ê‚½À•W‚É‚¢‚éƒ†ƒjƒbƒg‚ğû“¾
 		u = MapDataForUnit(X, Y)
 		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		If u Is SelectedUnit Then
-			u = SelectedTarget
-			If u Is Nothing Then
-				Exit Sub
+		'”­iƒRƒ}ƒ“ƒh‚Ìê‡‚Í•êŠÍ‚Å‚Í‚È‚­”­i‚·‚éƒ†ƒjƒbƒg‚ğg‚¤
+		If CommandState = "ƒ^[ƒQƒbƒg‘I‘ğ" And SelectedCommand = "”­i" Then
+			If u Is SelectedUnit Then
+				u = SelectedTarget
+				If u Is Nothing Then
+					Exit Sub
+				End If
 			End If
 		End If
-		'End If
 		
 		If DisplayedUnit Is Nothing Then
-			'Invalid_string_refer_to_original_code
+			'ƒXƒe[ƒ^ƒXƒEƒBƒ“ƒhƒE‚É‰½‚à•\¦‚³‚ê‚Ä‚¢‚È‚¯‚ê‚Î–³ğŒ‚Å•\¦
 		Else
-			'Invalid_string_refer_to_original_code
+			'“¯‚¶ƒ†ƒjƒbƒg‚ª•\¦‚³‚ê‚Ä‚¢‚ê‚ÎƒXƒLƒbƒv
 			If u Is DisplayedUnit Then
 				Exit Sub
 			End If
@@ -2699,7 +3906,7 @@ ErrorHandler:
 		DisplayUnitStatus(u)
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'ƒXƒe[ƒ^ƒXƒEƒBƒ“ƒhƒE‚ğƒNƒŠƒA
 	Public Sub ClearUnitStatus()
 		If MainWidth = 15 Then
 			'UPGRADE_ISSUE: Control picFace ‚ÍA”Ä—p–¼‘O‹óŠÔ Form “à‚É‚ ‚é‚½‚ßA‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
@@ -2725,78 +3932,76 @@ ErrorHandler:
 	End Sub
 	
 	'ADD START 240a
-	'Invalid_string_refer_to_original_code
+	'V‚f‚t‚h‚ÌƒOƒ[ƒoƒ‹ƒXƒe[ƒ^ƒXƒEƒCƒ“ƒhƒE‚ÌƒTƒCƒY‚ğæ“¾‚·‚é
 	Private Function GetGlobalStatusSize(ByRef X As Short, ByRef Y As Short) As Integer
 		Dim ret As Integer
 		ret = 42
 		If Not (X < 1 Or MapWidth < X Or Y < 1 Or MapHeight < Y) Then
-			'Invalid_string_refer_to_original_code
+			'’nŒ`î•ñ‚Ì•\¦‚ªŠm’è
 			ret = 106
-			'Invalid_string_refer_to_original_code
+			'‚g‚oE‚d‚m‰ñ•œ‚ª‹Lq‚³‚ê‚éê‡
 			If TerrainEffectForHPRecover(X, Y) > 0 Or TerrainEffectForENRecover(X, Y) > 0 Then
 				ret = ret + 16
 			End If
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			ret = ret + 16
+			'‚g‚oE‚d‚mŒ¸­‚ª‹Lq‚³‚ê‚éê‡
+			If TerrainHasFeature(X, Y, "‚g‚oŒ¸­") Or TerrainHasFeature(X, Y, "‚d‚mŒ¸­") Then
+				ret = ret + 16
+			End If
+			'‚g‚oE‚d‚m‘‰Á‚ª‹Lq‚³‚ê‚éê‡
+			If TerrainHasFeature(X, Y, "‚g‚o‘‰Á") Or TerrainHasFeature(X, Y, "‚d‚m‘‰Á") Then
+				ret = ret + 16
+			End If
+			'‚g‚oE‚d‚m’á‰º‚ª‹Lq‚³‚ê‚éê‡
+			If TerrainHasFeature(X, Y, "‚g‚o’á‰º") Or TerrainHasFeature(X, Y, "‚d‚m’á‰º") Then
+				ret = ret + 16
+			End If
+			'–€CEó‘Ô•t‰Á‚ª‹Lq‚³‚ê‚éê‡
+			If TerrainHasFeature(X, Y, "–€C") Or TerrainHasFeature(X, Y, "ó‘Ô•t‰Á") Then
+				ret = ret + 16
+			End If
 		End If
-		'Invalid_string_refer_to_original_code
-		If TerrainHasFeature(X, Y, "Invalid_string_refer_to_original_code") Or TerrainHasFeature(X, Y, "Invalid_string_refer_to_original_code") Then
-			ret = ret + 16
-		End If
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		ret = ret + 16
-		'End If
-		'Invalid_string_refer_to_original_code
-		If TerrainHasFeature(X, Y, "æ‘©æ“¦") Or TerrainHasFeature(X, Y, "çŠ¶æ…‹ä»˜åŠ ") Then
-			ret = ret + 16
-		End If
-		'End If
 		GetGlobalStatusSize = ret
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'Global•Ï”‚ÆƒXƒe[ƒ^ƒX•`‰æŒn•Ï”‚Ì“¯ŠúB
 	Private Sub GlobalVariableLoad()
-		'èƒŒæ™¯è‰²
+		'”wŒiF
 		If IsGlobalVariableDefined("StatusWindow(BackBolor)") Then
 			If Not StatusWindowBackBolor = GetValueAsLong("StatusWindow(BackBolor)") Then
 				StatusWindowBackBolor = GetValueAsLong("StatusWindow(BackBolor)")
 			End If
 		End If
-		'æ ã®è‰²
+		'˜g‚ÌF
 		If IsGlobalVariableDefined("StatusWindow(FrameColor)") Then
 			If Not StatusWindowFrameColor = GetValueAsLong("StatusWindow(FrameColor)") Then
 				StatusWindowFrameColor = GetValueAsLong("StatusWindow(FrameColor)")
 			End If
 		End If
-		'Invalid_string_refer_to_original_code
+		'˜g‚Ì‘¾‚³
 		If IsGlobalVariableDefined("StatusWindow(FrameWidth)") Then
 			If Not StatusWindowFrameWidth = GetValueAsLong("StatusWindow(FrameWidth)") Then
 				StatusWindowFrameWidth = GetValueAsLong("StatusWindow(FrameWidth)")
 			End If
 		End If
-		'èƒ½åŠ›åã®è‰²
+		'”\—Í–¼‚ÌF
 		If IsGlobalVariableDefined("StatusWindow(ANameColor)") Then
 			If Not StatusFontColorAbilityName = GetValueAsLong("StatusWindow(ANameColor)") Then
 				StatusFontColorAbilityName = GetValueAsLong("StatusWindow(ANameColor)")
 			End If
 		End If
-		'Invalid_string_refer_to_original_code
+		'—LŒø‚È”\—Í‚ÌF
 		If IsGlobalVariableDefined("StatusWindow(EnableColor)") Then
 			If Not StatusFontColorAbilityEnable = GetValueAsLong("StatusWindow(EnableColor)") Then
 				StatusFontColorAbilityEnable = GetValueAsLong("StatusWindow(EnableColor)")
 			End If
 		End If
-		'Invalid_string_refer_to_original_code
+		'–³Œø‚È”\—Í‚ÌF
 		If IsGlobalVariableDefined("StatusWindow(DisableColor)") Then
 			If Not StatusFontColorAbilityDisable = GetValueAsLong("StatusWindow(DisableColor)") Then
 				StatusFontColorAbilityDisable = GetValueAsLong("StatusWindow(DisableColor)")
 			End If
 		End If
-		'Invalid_string_refer_to_original_code
+		'’Êí•¶š‚ÌF
 		If IsGlobalVariableDefined("StatusWindow(StringColor)") Then
 			If Not StatusFontColorNormalString = GetValueAsLong("StatusWindow(StringColor)") Then
 				StatusFontColorNormalString = GetValueAsLong("StatusWindow(StringColor)")

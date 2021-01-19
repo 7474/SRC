@@ -2,38 +2,38 @@ Attribute VB_Name = "Status"
 Option Explicit
 
 ' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯ãƒ•ãƒªãƒ¼ã‚½ãƒ•ãƒˆã§ã‚ã‚Šã€ç„¡ä¿è¨¼ã§ã™ã€‚
-' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯GNU General Public License(Ver.3ã¾ãŸã¯ãã‚Œä»¥é™)ãŒå®šã‚ã‚‹æ¡ä»¶ã®ä¸‹ã§
-' å†é ’å¸ƒã¾ãŸã¯æ”¹å¤‰ã™ã‚‹ã“ã¨ãŒã§ãã¾ã™ã€‚
+' –{ƒvƒƒOƒ‰ƒ€‚ÍƒtƒŠ[ƒ\ƒtƒg‚Å‚ ‚èA–³•ÛØ‚Å‚·B
+' –{ƒvƒƒOƒ‰ƒ€‚ÍGNU General Public License(Ver.3‚Ü‚½‚Í‚»‚êˆÈ~)‚ª’è‚ß‚éğŒ‚Ì‰º‚Å
+' Ä”Ğ•z‚Ü‚½‚Í‰ü•Ï‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B
 
-'ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã¸ã®ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹è¡¨ç¤ºã‚’è¡Œã†ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«
-'ppicã¨upicã«åˆ†ã‹ã‚Œã¦ã„ã‚‹ãŒã€ppicã«ã¯ã‚¢ã‚¤ã‚³ãƒ³ã¨åŒã˜è¡Œã®ãƒ‡ãƒ¼ã‚¿ãŒæ›¸ãè¾¼ã¾ã‚Œã‚‹ã€‚
-'æ±ºã—ã¦ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚’æ›¸ãã®ãŒppicã§ã¯ãªã„ã“ã¨ã‚’ç•™æ„ã—ã¦ãŠã
+'ƒXƒe[ƒ^ƒXƒEƒBƒ“ƒhƒE‚Ö‚ÌƒXƒe[ƒ^ƒX•\¦‚ğs‚¤ƒ‚ƒWƒ…[ƒ‹
+'ppic‚Æupic‚É•ª‚©‚ê‚Ä‚¢‚é‚ªAppic‚É‚ÍƒAƒCƒRƒ“‚Æ“¯‚¶s‚Ìƒf[ƒ^‚ª‘‚«‚Ü‚ê‚éB
+'Œˆ‚µ‚ÄƒpƒCƒƒbƒgƒXƒe[ƒ^ƒX‚ğ‘‚­‚Ì‚ªppic‚Å‚Í‚È‚¢‚±‚Æ‚ğ—¯ˆÓ‚µ‚Ä‚¨‚­
 
-'ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ç”»é¢ã«è¡¨ç¤ºã•ã‚Œã¦ã„ã‚‹ãƒ¦ãƒ‹ãƒƒãƒˆ
+'ƒXƒe[ƒ^ƒX‰æ–Ê‚É•\¦‚³‚ê‚Ä‚¢‚éƒ†ƒjƒbƒg
 Public DisplayedUnit As Unit
 Public DisplayedPilotInd As Integer
 
-'ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ç”»é¢ã®æ›´æ–°ã‚’ä¸€æ™‚åœæ­¢ã™ã‚‹ã‹ã©ã†ã‹
+'ƒXƒe[ƒ^ƒX‰æ–Ê‚ÌXV‚ğˆê’â~‚·‚é‚©‚Ç‚¤‚©
 Public IsStatusWindowDisabled As Boolean
 'ADD START 240a
-'ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ç”»é¢ã®èƒŒæ™¯è‰²
+'ƒXƒe[ƒ^ƒX‰æ–Ê‚Ì”wŒiF
 Public StatusWindowBackBolor As Long
-'ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ç”»é¢ã®æ è‰²
+'ƒXƒe[ƒ^ƒX‰æ–Ê‚Ì˜gF
 Public StatusWindowFrameColor As Long
-'ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ç”»é¢ã®æ å¹…
+'ƒXƒe[ƒ^ƒX‰æ–Ê‚Ì˜g•
 Public StatusWindowFrameWidth As Long
-'ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ç”»é¢ èƒ½åŠ›åã®ãƒ•ã‚©ãƒ³ãƒˆã‚«ãƒ©ãƒ¼
+'ƒXƒe[ƒ^ƒX‰æ–Ê ”\—Í–¼‚ÌƒtƒHƒ“ƒgƒJƒ‰[
 Public StatusFontColorAbilityName As Long
-'ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ç”»é¢ æœ‰åŠ¹ãªèƒ½åŠ›ã®ãƒ•ã‚©ãƒ³ãƒˆã‚«ãƒ©ãƒ¼
+'ƒXƒe[ƒ^ƒX‰æ–Ê —LŒø‚È”\—Í‚ÌƒtƒHƒ“ƒgƒJƒ‰[
 Public StatusFontColorAbilityEnable As Long
-'ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ç”»é¢ ç„¡åŠ¹ãªèƒ½åŠ›ã®ãƒ•ã‚©ãƒ³ãƒˆã‚«ãƒ©ãƒ¼
+'ƒXƒe[ƒ^ƒX‰æ–Ê –³Œø‚È”\—Í‚ÌƒtƒHƒ“ƒgƒJƒ‰[
 Public StatusFontColorAbilityDisable As Long
-'ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ç”»é¢ ãã®ä»–é€šå¸¸æç”»ã®ãƒ•ã‚©ãƒ³ãƒˆã‚«ãƒ©ãƒ¼
+'ƒXƒe[ƒ^ƒX‰æ–Ê ‚»‚Ì‘¼’Êí•`‰æ‚ÌƒtƒHƒ“ƒgƒJƒ‰[
 Public StatusFontColorNormalString As Long
 'ADD  END
 
-'ç¾åœ¨ã®çŠ¶æ³ã‚’ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã«è¡¨ç¤º
+'Œ»İ‚Ìó‹µ‚ğƒXƒe[ƒ^ƒXƒEƒBƒ“ƒhƒE‚É•\¦
 Public Sub DisplayGlobalStatus()
 Dim X As Integer, Y As Integer
 Dim pic As PictureBox
@@ -44,7 +44,7 @@ Dim wHeight As Integer
 Dim ret As Long, color As Long, lineStart As Long, lineEnd As Long
 'ADD  END  240a
     
-    'ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’æ¶ˆå»
+    'ƒXƒe[ƒ^ƒXƒEƒBƒ“ƒhƒE‚ğÁ‹
     ClearUnitStatus
     
     Set pic = MainForm.picUnitStatus
@@ -52,12 +52,12 @@ Dim ret As Long, color As Long, lineStart As Long, lineEnd As Long
     pic.FontSize = 12
 
 'ADD START 240a
-    'ãƒã‚¦ã‚¹ã‚«ãƒ¼ã‚½ãƒ«ã®ä½ç½®ã¯ï¼Ÿ
+    'ƒ}ƒEƒXƒJ[ƒ\ƒ‹‚ÌˆÊ’u‚ÍH
     X = PixelToMapX(MouseX)
     Y = PixelToMapY(MouseY)
     
     If NewGUIMode Then
-        'Globalå¤‰æ•°ãŒå®£è¨€ã•ã‚Œã¦ã„ã‚Œã°ã€ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ç”»é¢ç”¨å¤‰æ•°ã®åŒæœŸã‚’å–ã‚‹
+        'Global•Ï”‚ªéŒ¾‚³‚ê‚Ä‚¢‚ê‚ÎAƒXƒe[ƒ^ƒX‰æ–Ê—p•Ï”‚Ì“¯Šú‚ğæ‚é
         GlobalVariableLoad
         pic.BackColor = StatusWindowBackBolor
         pic.DrawWidth = StatusWindowFrameWidth
@@ -65,53 +65,53 @@ Dim ret As Long, color As Long, lineStart As Long, lineEnd As Long
         lineStart = (StatusWindowFrameWidth - 1) / 2
         lineEnd = (StatusWindowFrameWidth + 1) / 2
         pic.FillStyle = vbFSTransparent
-        'ä¸€æ—¦é«˜ã•ã‚’æœ€å¤§ã«ã™ã‚‹
+        'ˆê’U‚‚³‚ğÅ‘å‚É‚·‚é
         pic.width = 235
         pic.Height = MapPHeight - 20
         wHeight = GetGlobalStatusSize(X, Y)
-        'æ ç·šã‚’å¼•ã
+        '˜gü‚ğˆø‚­
         pic.Line (lineStart, lineStart)-(235 - lineEnd, wHeight - lineEnd), color, B
         pic.FillStyle = ObjFillStyle
-        'é«˜ã•ã‚’è¨­å®šã™ã‚‹
+        '‚‚³‚ğİ’è‚·‚é
         pic.Height = wHeight
         pic.CurrentX = 5
         pic.CurrentY = 5
-        'æ–‡å­—è‰²ã‚’ãƒªã‚»ãƒƒãƒˆ
+        '•¶šF‚ğƒŠƒZƒbƒg
         pic.ForeColor = StatusFontColorNormalString
     End If
 'ADD  END  240a
-    pic.Print "ã‚¿ãƒ¼ãƒ³æ•° " & Format$(Turn)
+    pic.Print "ƒ^[ƒ“” " & Format$(Turn)
 'ADD START 240a
     If NewGUIMode Then
         pic.CurrentX = 5
     End If
 'ADD  END  240a
-    pic.Print Term("è³‡é‡‘", Nothing, 8) & " " & Format$(Money)
+    pic.Print Term("‘‹à", Nothing, 8) & " " & Format$(Money)
     
-'MOV START 240a â†‘ã«ç§»å‹•
-'    'ãƒã‚¦ã‚¹ã‚«ãƒ¼ã‚½ãƒ«ã®ä½ç½®ã¯ï¼Ÿ
+'MOV START 240a ª‚ÉˆÚ“®
+'    'ƒ}ƒEƒXƒJ[ƒ\ƒ‹‚ÌˆÊ’u‚ÍH
 '    X = PixelToMapX(MouseX)
 '    Y = PixelToMapY(MouseY)
 'MOV  END  240a
     
-    'ãƒãƒƒãƒ—å¤–ã‚’ã‚¯ãƒªãƒƒã‚¯ã—ãŸæ™‚ã¯ã“ã“ã§çµ‚äº†
+    'ƒ}ƒbƒvŠO‚ğƒNƒŠƒbƒN‚µ‚½‚Í‚±‚±‚ÅI—¹
     If X < 1 Or MapWidth < X _
         Or Y < 1 Or MapHeight < Y _
     Then
         pic.FontSize = 9
         If NewGUIMode Then
-            'é«˜ã•ã‚’è¨­å®šã™ã‚‹
+            '‚‚³‚ğİ’è‚·‚é
             pic.Height = wHeight
         End If
         Exit Sub
     End If
     
-    'åœ°å½¢æƒ…å ±ã®è¡¨ç¤º
+    '’nŒ`î•ñ‚Ì•\¦
     pic.Print
     
-    'åœ°å½¢åç§°
+    '’nŒ`–¼Ì
 'ADD START 240a
-    'ãƒãƒƒãƒ—ç”»åƒè¡¨ç¤º
+    'ƒ}ƒbƒv‰æ‘œ•\¦
     If NewGUIMode Then
         ret = BitBlt(pic.hDC, 5, 48, 32, 32, MainForm.picBack.hDC, (X - 1) * 32, (Y - 1) * 32, SRCCOPY)
     Else
@@ -132,18 +132,18 @@ Dim ret As Long, color As Long, lineStart As Long, lineEnd As Long
         pic.CurrentX = 5
     End If
 'ADD  END  240a
-    'å‘½ä¸­ä¿®æ­£
+    '–½’†C³
     If TerrainEffectForHit(X, Y) >= 0 Then
-        pic.Print "å›é¿ +" & Format$(TerrainEffectForHit(X, Y)) & "%";
+        pic.Print "‰ñ”ğ +" & Format$(TerrainEffectForHit(X, Y)) & "%";
     Else
-        pic.Print "å›é¿ " & Format$(TerrainEffectForHit(X, Y)) & "%";
+        pic.Print "‰ñ”ğ " & Format$(TerrainEffectForHit(X, Y)) & "%";
     End If
     
-    'ãƒ€ãƒ¡ãƒ¼ã‚¸ä¿®æ­£
+    'ƒ_ƒ[ƒWC³
     If TerrainEffectForDamage(X, Y) >= 0 Then
-        pic.Print "  é˜²å¾¡ +" & Format$(TerrainEffectForDamage(X, Y)) & "%"
+        pic.Print "  –hŒä +" & Format$(TerrainEffectForDamage(X, Y)) & "%"
     Else
-        pic.Print "  é˜²å¾¡ " & Format$(TerrainEffectForDamage(X, Y)) & "%"
+        pic.Print "  –hŒä " & Format$(TerrainEffectForDamage(X, Y)) & "%"
     End If
     
 'ADD START 240a
@@ -151,14 +151,14 @@ Dim ret As Long, color As Long, lineStart As Long, lineEnd As Long
         pic.CurrentX = 5
     End If
 'ADD  END  240a
-    'ï¼¨ï¼°å›å¾©ç‡
+    '‚g‚o‰ñ•œ—¦
     If TerrainEffectForHPRecover(X, Y) > 0 Then
-        pic.Print Term("ï¼¨ï¼°") & " +" & Format$(TerrainEffectForHPRecover(X, Y)) & "%  ";
+        pic.Print Term("‚g‚o") & " +" & Format$(TerrainEffectForHPRecover(X, Y)) & "%  ";
     End If
     
-    'ï¼¥ï¼®å›å¾©ç‡
+    '‚d‚m‰ñ•œ—¦
     If TerrainEffectForENRecover(X, Y) > 0 Then
-        pic.Print Term("ï¼¥ï¼®") & " +" & Format$(TerrainEffectForENRecover(X, Y)) & "%";
+        pic.Print Term("‚d‚m") & " +" & Format$(TerrainEffectForENRecover(X, Y)) & "%";
     End If
     
     If TerrainEffectForHPRecover(X, Y) > 0 _
@@ -169,7 +169,7 @@ Dim ret As Long, color As Long, lineStart As Long, lineEnd As Long
     
 'MOD START 240a
 '    Set td = TDList.Item(MapData(X, Y, 0))
-    'ãƒã‚¹ã®ã‚¿ã‚¤ãƒ—ã«å¿œã˜ã¦å‚ç…§å…ˆã‚’å¤‰æ›´
+    'ƒ}ƒX‚Ìƒ^ƒCƒv‚É‰‚¶‚ÄQÆæ‚ğ•ÏX
     Select Case MapData(X, Y, MapDataIndex.BoxType)
     Case BoxTypes.Under, BoxTypes.UpperBmpOnly
         Set td = TDList.Item(MapData(X, Y, MapDataIndex.TerrainType))
@@ -183,16 +183,16 @@ Dim ret As Long, color As Long, lineStart As Long, lineEnd As Long
         pic.CurrentX = 5
     End If
 'ADD  END  240a
-    'ï¼¨ï¼°ï¼†ï¼¥ï¼®æ¸›å°‘
-    If td.IsFeatureAvailable("ï¼¨ï¼°æ¸›å°‘") Then
-        pic.Print Term("ï¼¨ï¼°") & " -" & Format$(10 * td.FeatureLevel("ï¼¨ï¼°æ¸›å°‘")) & "% (" _
-            & td.FeatureData("ï¼¨ï¼°æ¸›å°‘") & ")  ";
+    '‚g‚o•‚d‚mŒ¸­
+    If td.IsFeatureAvailable("‚g‚oŒ¸­") Then
+        pic.Print Term("‚g‚o") & " -" & Format$(10 * td.FeatureLevel("‚g‚oŒ¸­")) & "% (" _
+            & td.FeatureData("‚g‚oŒ¸­") & ")  ";
     End If
-    If td.IsFeatureAvailable("ï¼¥ï¼®æ¸›å°‘") Then
-        pic.Print Term("ï¼¥ï¼®") & " -" & Format$(10 * td.FeatureLevel("ï¼¥ï¼®æ¸›å°‘")) & "% (" _
-            & td.FeatureData("ï¼¥ï¼®æ¸›å°‘") & ")  ";
+    If td.IsFeatureAvailable("‚d‚mŒ¸­") Then
+        pic.Print Term("‚d‚m") & " -" & Format$(10 * td.FeatureLevel("‚d‚mŒ¸­")) & "% (" _
+            & td.FeatureData("‚d‚mŒ¸­") & ")  ";
     End If
-    If td.IsFeatureAvailable("ï¼¨ï¼°æ¸›å°‘") Or td.IsFeatureAvailable("ï¼¥ï¼®æ¸›å°‘") Then
+    If td.IsFeatureAvailable("‚g‚oŒ¸­") Or td.IsFeatureAvailable("‚d‚mŒ¸­") Then
         pic.Print
     End If
     
@@ -201,16 +201,16 @@ Dim ret As Long, color As Long, lineStart As Long, lineEnd As Long
         pic.CurrentX = 5
     End If
 'ADD  END  240a
-    'ï¼¨ï¼°ï¼†ï¼¥ï¼®å¢—åŠ 
-    If td.IsFeatureAvailable("ï¼¨ï¼°å¢—åŠ ") Then
-        pic.Print Term("ï¼¨ï¼°") & " +" _
-            & Format$(1000 * td.FeatureLevel("ï¼¨ï¼°å¢—åŠ ")) & "  ";
+    '‚g‚o•‚d‚m‘‰Á
+    If td.IsFeatureAvailable("‚g‚o‘‰Á") Then
+        pic.Print Term("‚g‚o") & " +" _
+            & Format$(1000 * td.FeatureLevel("‚g‚o‘‰Á")) & "  ";
     End If
-    If td.IsFeatureAvailable("ï¼¥ï¼®å¢—åŠ ") Then
-        pic.Print Term("ï¼¥ï¼®") & " +" _
-            & Format$(10 * td.FeatureLevel("ï¼¥ï¼®å¢—åŠ ")) & "  ";
+    If td.IsFeatureAvailable("‚d‚m‘‰Á") Then
+        pic.Print Term("‚d‚m") & " +" _
+            & Format$(10 * td.FeatureLevel("‚d‚m‘‰Á")) & "  ";
     End If
-    If td.IsFeatureAvailable("ï¼¨ï¼°å¢—åŠ ") Or td.IsFeatureAvailable("ï¼¥ï¼®å¢—åŠ ") Then
+    If td.IsFeatureAvailable("‚g‚o‘‰Á") Or td.IsFeatureAvailable("‚d‚m‘‰Á") Then
         pic.Print
     End If
 'MOD  END
@@ -220,16 +220,16 @@ Dim ret As Long, color As Long, lineStart As Long, lineEnd As Long
         pic.CurrentX = 5
     End If
 'ADD  END  240a
-    'ï¼¨ï¼°ï¼†ï¼¥ï¼®ä½ä¸‹
-    If td.IsFeatureAvailable("ï¼¨ï¼°ä½ä¸‹") Then
-        pic.Print Term("ï¼¨ï¼°") & " -" _
-            & Format$(1000 * td.FeatureLevel("ï¼¨ï¼°ä½ä¸‹")) & "  ";
+    '‚g‚o•‚d‚m’á‰º
+    If td.IsFeatureAvailable("‚g‚o’á‰º") Then
+        pic.Print Term("‚g‚o") & " -" _
+            & Format$(1000 * td.FeatureLevel("‚g‚o’á‰º")) & "  ";
     End If
-    If td.IsFeatureAvailable("ï¼¥ï¼®ä½ä¸‹") Then
-        pic.Print Term("ï¼¥ï¼®") & " -" _
-            & Format$(10 * td.FeatureLevel("ï¼¥ï¼®ä½ä¸‹")) & "  ";
+    If td.IsFeatureAvailable("‚d‚m’á‰º") Then
+        pic.Print Term("‚d‚m") & " -" _
+            & Format$(10 * td.FeatureLevel("‚d‚m’á‰º")) & "  ";
     End If
-    If td.IsFeatureAvailable("ï¼¨ï¼°ä½ä¸‹") Or td.IsFeatureAvailable("ï¼¥ï¼®ä½ä¸‹") Then
+    If td.IsFeatureAvailable("‚g‚o’á‰º") Or td.IsFeatureAvailable("‚d‚m’á‰º") Then
         pic.Print
     End If
     
@@ -238,24 +238,24 @@ Dim ret As Long, color As Long, lineStart As Long, lineEnd As Long
         pic.CurrentX = 5
     End If
 'ADD  END  240a
-    'æ‘©æ“¦
-    If td.IsFeatureAvailable("æ‘©æ“¦") Then
-        pic.Print "æ‘©æ“¦Lv" _
-            & Format$(td.FeatureLevel("æ‘©æ“¦"))
+    '–€C
+    If td.IsFeatureAvailable("–€C") Then
+        pic.Print "–€CLv" _
+            & Format$(td.FeatureLevel("–€C"))
     End If
 ' ADD START MARGE
-    'çŠ¶æ…‹ç•°å¸¸ä»˜åŠ 
-    If td.IsFeatureAvailable("çŠ¶æ…‹ä»˜åŠ ") Then
-        pic.Print td.FeatureData("çŠ¶æ…‹ä»˜åŠ ") & "çŠ¶æ…‹ä»˜åŠ "
+    'ó‘ÔˆÙí•t‰Á
+    If td.IsFeatureAvailable("ó‘Ô•t‰Á") Then
+        pic.Print td.FeatureData("ó‘Ô•t‰Á") & "ó‘Ô•t‰Á"
     End If
 ' ADD END MARGE
     
-    'ãƒ•ã‚©ãƒ³ãƒˆã‚µã‚¤ã‚ºã‚’å…ƒã«æˆ»ã—ã¦ãŠã
+    'ƒtƒHƒ“ƒgƒTƒCƒY‚ğŒ³‚É–ß‚µ‚Ä‚¨‚­
     pic.FontSize = 9
 End Sub
 
-'ãƒ¦ãƒ‹ãƒƒãƒˆã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚’è¡¨ç¤º
-'pindexã¯ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹è¡¨ç¤ºã«ä½¿ã†ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‚’æŒ‡å®š
+'ƒ†ƒjƒbƒgƒXƒe[ƒ^ƒX‚ğ•\¦
+'pindex‚ÍƒXƒe[ƒ^ƒX•\¦‚Ég‚¤ƒpƒCƒƒbƒg‚ğw’è
 Public Sub DisplayUnitStatus(u As Unit, Optional ByVal pindex As Integer)
 Dim p As Pilot
 Dim i As Integer, j As Integer, k As Integer, n As Integer, ret As Long
@@ -276,13 +276,13 @@ Dim color As Long, lineStart As Long, lineEnd As Long
 Dim isNoSp As Boolean
     isNoSp = False
 'ADD  END  240a
-    'ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ç”»é¢ã®æ›´æ–°ãŒä¸€æ™‚åœæ­¢ã•ã‚Œã¦ã„ã‚‹å ´åˆã¯ãã®ã¾ã¾çµ‚äº†
+    'ƒXƒe[ƒ^ƒX‰æ–Ê‚ÌXV‚ªˆê’â~‚³‚ê‚Ä‚¢‚éê‡‚Í‚»‚Ì‚Ü‚ÜI—¹
     If IsStatusWindowDisabled Then
         Exit Sub
     End If
     
-    'ç ´å£Šã€ç ´æ£„ã•ã‚ŒãŸãƒ¦ãƒ‹ãƒƒãƒˆã¯è¡¨ç¤ºã—ãªã„
-    If u.Status = "ç ´å£Š" Or u.Status = "ç ´æ£„" Then
+    '”j‰óA”jŠü‚³‚ê‚½ƒ†ƒjƒbƒg‚Í•\¦‚µ‚È‚¢
+    If u.Status = "”j‰ó" Or u.Status = "”jŠü" Then
         Exit Sub
     End If
     
@@ -302,9 +302,9 @@ Dim isNoSp As Boolean
         Set upic = MainForm.picUnitStatus
         upic.Cls
 'ADD START 240a
-        'globalå¤‰æ•°ã¨ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹æç”»ç”¨ã®å¤‰æ•°ã‚’åŒæœŸ
+        'global•Ï”‚ÆƒXƒe[ƒ^ƒX•`‰æ—p‚Ì•Ï”‚ğ“¯Šú
         GlobalVariableLoad
-        'æ–°ï¼§ï¼µï¼©ã§ã¯åœ°å½¢è¡¨ç¤ºã—ãŸã¨ãã«ã‚µã‚¤ã‚ºã‚’å¤‰ãˆã¦ã„ã‚‹ã®ã§å…ƒã«æˆ»ã™
+        'V‚f‚t‚h‚Å‚Í’nŒ`•\¦‚µ‚½‚Æ‚«‚ÉƒTƒCƒY‚ğ•Ï‚¦‚Ä‚¢‚é‚Ì‚ÅŒ³‚É–ß‚·
         upic.Move MainPWidth - 240, 10, 235, MainPHeight - 20
         upic.BackColor = StatusWindowBackBolor
         upic.DrawWidth = StatusWindowFrameWidth
@@ -312,36 +312,36 @@ Dim isNoSp As Boolean
         lineStart = (StatusWindowFrameWidth - 1) / 2
         lineEnd = (StatusWindowFrameWidth + 1) / 2
         upic.FillStyle = vbFSTransparent
-        'æ ç·šã‚’å¼•ã
+        '˜gü‚ğˆø‚­
         upic.Line (lineStart, lineStart)-(235 - lineEnd, MainPHeight - 20 - lineEnd), color, B
         upic.FillStyle = ObjFillStyle
         upic.CurrentX = 5
         upic.CurrentY = 5
-        'æ–‡å­—è‰²ã‚’ãƒªã‚»ãƒƒãƒˆ
+        '•¶šF‚ğƒŠƒZƒbƒg
         upic.ForeColor = StatusFontColorNormalString
 'ADD  END
     End If
     
     With u
-        'æƒ…å ±ã‚’æ›´æ–°
+        'î•ñ‚ğXV
         .Update
         
-        'æœªç¢ºèªãƒ¦ãƒ‹ãƒƒãƒˆã‹ã©ã†ã‹åˆ¤å®šã—ã¦ãŠã
-        If (IsOptionDefined("ãƒ¦ãƒ‹ãƒƒãƒˆæƒ…å ±éš è”½") _
-                And (Not .IsConditionSatisfied("è­˜åˆ¥æ¸ˆã¿") _
-                    And (.Party0 = "æ•µ" Or .Party0 = "ä¸­ç«‹"))) _
-            Or .IsConditionSatisfied("ãƒ¦ãƒ‹ãƒƒãƒˆæƒ…å ±éš è”½") _
+        '–¢Šm”Fƒ†ƒjƒbƒg‚©‚Ç‚¤‚©”»’è‚µ‚Ä‚¨‚­
+        If (IsOptionDefined("ƒ†ƒjƒbƒgî•ñ‰B•Á") _
+                And (Not .IsConditionSatisfied("¯•ÊÏ‚İ") _
+                    And (.Party0 = "“G" Or .Party0 = "’†—§"))) _
+            Or .IsConditionSatisfied("ƒ†ƒjƒbƒgî•ñ‰B•Á") _
         Then
             is_unknown = True
         End If
         
-        'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆãŒä¹—ã£ã¦ã„ãªã„ï¼Ÿ
+        'ƒpƒCƒƒbƒg‚ªæ‚Á‚Ä‚¢‚È‚¢H
         If .CountPilot = 0 Then
-            'ã‚­ãƒ£ãƒ©ç”»é¢ã‚’ã‚¯ãƒªã‚¢
+            'ƒLƒƒƒ‰‰æ–Ê‚ğƒNƒŠƒA
             If MainWidth = 15 Then
                 MainForm.picFace = LoadPicture("")
             Else
-                DrawPicture "white.bmp", 2, 2, 64, 64, 0, 0, 0, 0, "ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹"
+                DrawPicture "white.bmp", 2, 2, 64, 64, 0, 0, 0, 0, "ƒXƒe[ƒ^ƒX"
             End If
 'MOD START 240a
 '            ppic.ForeColor = rgb(0, 0, 150)
@@ -353,14 +353,14 @@ Dim isNoSp As Boolean
 'MOD  END
                 ppic.CurrentX = 68
             End If
-            ppic.Print Term("ãƒ¬ãƒ™ãƒ«", u)
+            ppic.Print Term("ƒŒƒxƒ‹", u)
 'MOD START 240a
 '            If MainWidth <> 15 Then
             If NewGUIMode Then
 'MOD  END
                 ppic.CurrentX = 68
             End If
-            ppic.Print Term("æ°—åŠ›", u)
+            ppic.Print Term("‹C—Í", u)
 'MOD START 240a
 '            ppic.ForeColor = rgb(0, 0, 0)
             ppic.ForeColor = IIf(NewGUIMode, StatusFontColorNormalString, rgb(0, 0, 0))
@@ -376,21 +376,21 @@ Dim isNoSp As Boolean
 'MOD  END
                 ppic.CurrentX = 68
             End If
-            upic.Print Term("æ ¼é—˜", u, 4) & "               " & Term("å°„æ’ƒ", u)
+            upic.Print Term("Ši“¬", u, 4) & "               " & Term("ËŒ‚", u)
 'MOD START 240a
 '            If MainWidth <> 15 Then
             If NewGUIMode Then
 'MOD  END
                 ppic.CurrentX = 68
             End If
-            upic.Print Term("å‘½ä¸­", u, 4) & "               " & Term("å›é¿", u)
+            upic.Print Term("–½’†", u, 4) & "               " & Term("‰ñ”ğ", u)
 'MOD START 240a
 '            If MainWidth <> 15 Then
             If NewGUIMode Then
 'MOD  END
                 ppic.CurrentX = 68
             End If
-            upic.Print Term("æŠ€é‡", u, 4) & "               " & Term("åå¿œ", u)
+            upic.Print Term("‹Z—Ê", u, 4) & "               " & Term("”½‰", u)
             upic.Print
             upic.Print
 'MOD START 240a
@@ -401,46 +401,46 @@ Dim isNoSp As Boolean
             GoTo UnitStatus
          End If
          
-        'è¡¨ç¤ºã™ã‚‹ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‚’é¸æŠ
+        '•\¦‚·‚éƒpƒCƒƒbƒg‚ğ‘I‘ğ
         If pindex = 0 Then
-            'ãƒ¡ã‚¤ãƒ³ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆ
+            'ƒƒCƒ“ƒpƒCƒƒbƒg
             Set p = .MainPilot
             If .MainPilot.Nickname = .Pilot(1).Nickname Or .Data.PilotNum = 1 Then
                 DisplayedPilotInd = 1
             End If
         ElseIf pindex = 1 Then
-            'ãƒ¡ã‚¤ãƒ³ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã¾ãŸã¯ï¼‘ç•ªç›®ã®ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆ
+            'ƒƒCƒ“ƒpƒCƒƒbƒg‚Ü‚½‚Í‚P”Ô–Ú‚ÌƒpƒCƒƒbƒg
             If .MainPilot.Nickname <> .Pilot(1).Nickname And .Data.PilotNum <> 1 Then
                 Set p = .Pilot(1)
             Else
                 Set p = .MainPilot
             End If
         ElseIf pindex <= .CountPilot Then
-            'ã‚µãƒ–ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆ
+            'ƒTƒuƒpƒCƒƒbƒg
             Set p = .Pilot(pindex)
         ElseIf pindex <= .CountPilot + .CountSupport Then
-            'ã‚µãƒãƒ¼ãƒˆãƒ‘ã‚¤ãƒ­ãƒƒãƒˆ
+            'ƒTƒ|[ƒgƒpƒCƒƒbƒg
             Set p = .Support(pindex - .CountPilot)
         Else
-            'è¿½åŠ ã‚µãƒãƒ¼ãƒˆ
+            '’Ç‰ÁƒTƒ|[ƒg
             Set p = .AdditionalSupport
         End If
         
         With p
-            'æƒ…å ±ã‚’æ›´æ–°
+            'î•ñ‚ğXV
             .UpdateSupportMod
             
-            'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆç”»åƒã‚’è¡¨ç¤º
+            'ƒpƒCƒƒbƒg‰æ‘œ‚ğ•\¦
             fname = "\Bitmap\Pilot\" & .Bitmap
             If frmMultiSelectListBox.Visible Then
-                'ã‚¶ã‚³ï¼†æ±ç”¨ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆãŒä¹—ã‚‹ãƒ¦ãƒ‹ãƒƒãƒˆã®å‡ºæ’ƒé¸æŠæ™‚ã¯ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆç”»åƒã®
-                'ä»£ã‚ã‚Šã«ãƒ¦ãƒ‹ãƒƒãƒˆç”»åƒã‚’è¡¨ç¤º
-                If InStr(.Name, "(ã‚¶ã‚³)") > 0 Or InStr(.Name, "(æ±ç”¨)") > 0 Then
+                'ƒUƒR•”Ä—pƒpƒCƒƒbƒg‚ªæ‚éƒ†ƒjƒbƒg‚ÌoŒ‚‘I‘ğ‚ÍƒpƒCƒƒbƒg‰æ‘œ‚Ì
+                '‘ã‚í‚è‚Éƒ†ƒjƒbƒg‰æ‘œ‚ğ•\¦
+                If InStr(.Name, "(ƒUƒR)") > 0 Or InStr(.Name, "(”Ä—p)") > 0 Then
                     fname = "\Bitmap\Unit\" & u.Bitmap
                 End If
             End If
             
-            'ç”»åƒãƒ•ã‚¡ã‚¤ãƒ«ã‚’æ¤œç´¢
+            '‰æ‘œƒtƒ@ƒCƒ‹‚ğŒŸõ
             If InStr(fname, "\-.bmp") > 0 Then
                 fname = ""
             ElseIf FileExists(ScenarioPath & fname) Then
@@ -452,7 +452,7 @@ Dim isNoSp As Boolean
             ElseIf FileExists(AppPath & fname) Then
                 fname = AppPath & fname
             Else
-                'ç”»åƒãŒè¦‹ã¤ã‹ã‚‰ãªã‹ã£ãŸã“ã¨ã‚’è¨˜éŒ²
+                '‰æ‘œ‚ªŒ©‚Â‚©‚ç‚È‚©‚Á‚½‚±‚Æ‚ğ‹L˜^
                 If InStr(fname, "\Pilot\") > 0 Then
                     If .Bitmap = .Data.Bitmap Then
                         .Data.IsBitmapMissing = True
@@ -461,7 +461,7 @@ Dim isNoSp As Boolean
                 fname = ""
             End If
             
-            'ç”»åƒãƒ•ã‚¡ã‚¤ãƒ«ã‚’èª­ã¿è¾¼ã‚“ã§è¡¨ç¤º
+            '‰æ‘œƒtƒ@ƒCƒ‹‚ğ“Ç‚İ‚ñ‚Å•\¦
             If MainWidth = 15 Then
                 If fname <> "" Then
                     On Error GoTo ErrorHandler
@@ -471,19 +471,19 @@ Dim isNoSp As Boolean
                         MainForm.picTmp.Picture, _
                         0, 0, 64, 64
                 Else
-                    'ç”»åƒãƒ•ã‚¡ã‚¤ãƒ«ãŒè¦‹ã¤ã‹ã‚‰ãªã‹ã£ãŸå ´åˆã¯ã‚­ãƒ£ãƒ©ç”»é¢ã‚’ã‚¯ãƒªã‚¢
+                    '‰æ‘œƒtƒ@ƒCƒ‹‚ªŒ©‚Â‚©‚ç‚È‚©‚Á‚½ê‡‚ÍƒLƒƒƒ‰‰æ–Ê‚ğƒNƒŠƒA
                     MainForm.picFace = LoadPicture("")
                 End If
             Else
                 If fname <> "" Then
-                    DrawPicture fname, 2, 2, 64, 64, 0, 0, 0, 0, "ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹"
+                    DrawPicture fname, 2, 2, 64, 64, 0, 0, 0, 0, "ƒXƒe[ƒ^ƒX"
                 Else
-                    'ç”»åƒãƒ•ã‚¡ã‚¤ãƒ«ãŒè¦‹ã¤ã‹ã‚‰ãªã‹ã£ãŸå ´åˆã¯ã‚­ãƒ£ãƒ©ç”»é¢ã‚’ã‚¯ãƒªã‚¢
-                    DrawPicture "white.bmp", 2, 2, 64, 64, 0, 0, 0, 0, "ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹"
+                    '‰æ‘œƒtƒ@ƒCƒ‹‚ªŒ©‚Â‚©‚ç‚È‚©‚Á‚½ê‡‚ÍƒLƒƒƒ‰‰æ–Ê‚ğƒNƒŠƒA
+                    DrawPicture "white.bmp", 2, 2, 64, 64, 0, 0, 0, 0, "ƒXƒe[ƒ^ƒX"
                 End If
             End If
             
-            'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆæ„›ç§°
+            'ƒpƒCƒƒbƒgˆ¤Ì
             ppic.FontSize = 10.5
             ppic.FontBold = False
 'MOD START 240a
@@ -496,8 +496,8 @@ Dim isNoSp As Boolean
             ppic.FontBold = False
             ppic.FontSize = 10
             
-            'ãƒ€ãƒŸãƒ¼ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆï¼Ÿ
-            If .Nickname0 = "ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆä¸åœ¨" Then
+            'ƒ_ƒ~[ƒpƒCƒƒbƒgH
+            If .Nickname0 = "ƒpƒCƒƒbƒg•sİ" Then
 'MOD START 240a
 '                ppic.ForeColor = rgb(0, 0, 150)
                 ppic.ForeColor = IIf(NewGUIMode, StatusFontColorAbilityName, rgb(0, 0, 150))
@@ -508,14 +508,14 @@ Dim isNoSp As Boolean
 'MOD  END
                     ppic.CurrentX = 68
                 End If
-                ppic.Print Term("ãƒ¬ãƒ™ãƒ«", u)
+                ppic.Print Term("ƒŒƒxƒ‹", u)
 'MOD START 240a
     '            If MainWidth <> 15 Then
                 If NewGUIMode Then
 'MOD  END
                     ppic.CurrentX = 68
                 End If
-                ppic.Print Term("æ°—åŠ›", u)
+                ppic.Print Term("‹C—Í", u)
 'MOD START 240a
 '                ppic.ForeColor = rgb(0, 0, 0)
                 ppic.ForeColor = IIf(NewGUIMode, StatusFontColorNormalString, rgb(0, 0, 0))
@@ -531,21 +531,21 @@ Dim isNoSp As Boolean
 'MOD  END
                     ppic.CurrentX = 68
                 End If
-                upic.Print Term("æ ¼é—˜", u, 4) & "               " & Term("å°„æ’ƒ", u)
+                upic.Print Term("Ši“¬", u, 4) & "               " & Term("ËŒ‚", u)
 'MOD START 240a
     '            If MainWidth <> 15 Then
                 If NewGUIMode Then
 'MOD  END
                     ppic.CurrentX = 68
                 End If
-                upic.Print Term("å‘½ä¸­", u, 4) & "               " & Term("å›é¿", u)
+                upic.Print Term("–½’†", u, 4) & "               " & Term("‰ñ”ğ", u)
 'MOD START 240a
     '            If MainWidth <> 15 Then
                 If NewGUIMode Then
 'MOD  END
                     ppic.CurrentX = 68
                 End If
-                upic.Print Term("æŠ€é‡", u, 4) & "               " & Term("åå¿œ", u)
+                upic.Print Term("‹Z—Ê", u, 4) & "               " & Term("”½‰", u)
                 upic.Print
                 upic.Print
 'MOD START 240a
@@ -555,7 +555,7 @@ Dim isNoSp As Boolean
                 
                 GoTo UnitStatus
             End If
-            'ãƒ¬ãƒ™ãƒ«ã€çµŒé¨“å€¤ã€è¡Œå‹•å›æ•°
+            'ƒŒƒxƒ‹AŒoŒ±’lAs“®‰ñ”
 'MOD START 240a
 '            ppic.ForeColor = rgb(0, 0, 150)
             ppic.ForeColor = IIf(NewGUIMode, StatusFontColorAbilityName, rgb(0, 0, 150))
@@ -566,12 +566,12 @@ Dim isNoSp As Boolean
 'MOD  END  240a
                 ppic.CurrentX = 68
             End If
-            ppic.Print Term("ãƒ¬ãƒ™ãƒ«", u) & " ";
+            ppic.Print Term("ƒŒƒxƒ‹", u) & " ";
 'MOD START 240a
 '            ppic.ForeColor = rgb(0, 0, 0)
             ppic.ForeColor = IIf(NewGUIMode, StatusFontColorNormalString, rgb(0, 0, 0))
 'MOD  END  240a
-            If .Party = "å‘³æ–¹" Then
+            If .Party = "–¡•û" Then
                 ppic.Print Format$(.Level) & " (" & .Exp & ")";
                 Select Case u.Action
                     Case 2
@@ -579,7 +579,7 @@ Dim isNoSp As Boolean
 '                        ppic.ForeColor = rgb(0, 0, 200)
                         ppic.ForeColor = IIf(NewGUIMode, StatusFontColorAbilityEnable, vbBlue)
 'MOD  END  240a
-                        ppic.Print " ï¼·";
+                        ppic.Print " ‚v";
 'MOD START 240a
 '                        ppic.ForeColor = rgb(0, 0, 0)
                         ppic.ForeColor = IIf(NewGUIMode, StatusFontColorNormalString, rgb(0, 0, 0))
@@ -589,7 +589,7 @@ Dim isNoSp As Boolean
 '                        ppic.ForeColor = rgb(0, 0, 200)
                         ppic.ForeColor = IIf(NewGUIMode, StatusFontColorAbilityEnable, vbBlue)
 'MOD  END  240a
-                        ppic.Print " ï¼´";
+                        ppic.Print " ‚s";
 'MOD START 240a
 '                        ppic.ForeColor = rgb(0, 0, 0)
                         ppic.ForeColor = IIf(NewGUIMode, StatusFontColorNormalString, rgb(0, 0, 0))
@@ -603,19 +603,19 @@ Dim isNoSp As Boolean
 '                        ppic.ForeColor = rgb(0, 0, 200)
                         ppic.ForeColor = IIf(NewGUIMode, StatusFontColorAbilityEnable, vbBlue)
 'MOD  END  240a
-                        ppic.Print " ï¼·";
+                        ppic.Print " ‚v";
 'MOD START 240a
 '                        ppic.ForeColor = rgb(0, 0, 0)
                         ppic.ForeColor = IIf(NewGUIMode, StatusFontColorNormalString, rgb(0, 0, 0))
 'MOD  END  240a
                     End If
                 Else
-                    ppic.Print "ï¼Ÿ";
+                    ppic.Print "H";
                 End If
             End If
             ppic.Print
             
-            'æ°—åŠ›
+            '‹C—Í
 'MOD START 240a
 '            ppic.ForeColor = rgb(0, 0, 150)
             ppic.ForeColor = IIf(NewGUIMode, StatusFontColorAbilityName, rgb(0, 0, 150))
@@ -623,7 +623,7 @@ Dim isNoSp As Boolean
             If MainWidth <> 15 Then
                 ppic.CurrentX = 68
             End If
-            ppic.Print Term("æ°—åŠ›", u) & " ";
+            ppic.Print Term("‹C—Í", u) & " ";
 'MOD START 240a
 '            ppic.ForeColor = rgb(0, 0, 0)
             ppic.ForeColor = IIf(NewGUIMode, StatusFontColorNormalString, rgb(0, 0, 0))
@@ -636,10 +636,10 @@ Dim isNoSp As Boolean
                     ppic.Print Format$(.Morale) & " (" & .Personality & ")"
                 End If
             Else
-                ppic.Print "ï¼Ÿ"
+                ppic.Print "H"
             End If
             
-            'ï¼³ï¼°
+            '‚r‚o
             If .MaxSP > 0 Then
 'MOD START 240a
 '                ppic.ForeColor = rgb(0, 0, 150)
@@ -648,7 +648,7 @@ Dim isNoSp As Boolean
                 If MainWidth <> 15 Then
                     ppic.CurrentX = 68
                 End If
-                ppic.Print Term("ï¼³ï¼°", u) & " ";
+                ppic.Print Term("‚r‚o", u) & " ";
 'MOD START 240a
 '                ppic.ForeColor = rgb(0, 0, 0)
                 ppic.ForeColor = IIf(NewGUIMode, StatusFontColorNormalString, rgb(0, 0, 0))
@@ -656,13 +656,13 @@ Dim isNoSp As Boolean
                 If Not is_unknown Then
                     ppic.Print Format$(.SP) & "/" & Format$(.MaxSP)
                 Else
-                    ppic.Print "ï¼Ÿ"
+                    ppic.Print "H"
                 End If
             Else
                 isNoSp = True
             End If
             
-            'ä½¿ç”¨ä¸­ã®ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼ä¸€è¦§
+            'g—p’†‚ÌƒXƒyƒVƒƒƒ‹ƒpƒ[ˆê——
             If Not is_unknown Then
 'MOD START 240a
 '                ppic.ForeColor = rgb(0, 0, 0)
@@ -687,7 +687,7 @@ Dim isNoSp As Boolean
                 ppic.Print " "
             End If
             
-            'upicã‚’æ˜ç¤ºçš„ã«åˆæœŸåŒ–
+            'upic‚ğ–¾¦“I‚É‰Šú‰»
             upic.FontBold = False
             upic.FontSize = 9
 
@@ -696,18 +696,18 @@ Dim isNoSp As Boolean
                 upic.CurrentX = 5
             End If
 'ADD  END  240a
-            'æ ¼é—˜
+            'Ši“¬
 'MOD START 240a
 '            upic.ForeColor = rgb(0, 0, 150)
             upic.ForeColor = IIf(NewGUIMode, StatusFontColorAbilityName, rgb(0, 0, 150))
 'MOD  END  240a
-            upic.Print Term("æ ¼é—˜", u, 4) & " ";
+            upic.Print Term("Ši“¬", u, 4) & " ";
 'MOD START 240a
 '            upic.ForeColor = rgb(0, 0, 0)
             upic.ForeColor = IIf(NewGUIMode, StatusFontColorNormalString, rgb(0, 0, 0))
 'MOD  END  240a
             If is_unknown Then
-                upic.Print LeftPaddedString("ï¼Ÿ", 4) & Space$(10);
+                upic.Print LeftPaddedString("H", 4) & Space$(10);
             ElseIf .Data.Infight > 1 Then
                 Select Case .InfightMod + .InfightMod2
                     Case Is > 0
@@ -724,22 +724,22 @@ Dim isNoSp As Boolean
                 upic.Print LeftPaddedString("--", 5) & Space$(9);
             End If
             
-            'å°„æ’ƒ
+            'ËŒ‚
 'MOD START 240a
 '            upic.ForeColor = rgb(0, 0, 150)
             upic.ForeColor = IIf(NewGUIMode, StatusFontColorAbilityName, rgb(0, 0, 150))
 'MOD  END  240a
             If Not .HasMana() Then
-                upic.Print Term("å°„æ’ƒ", u, 4) & " ";
+                upic.Print Term("ËŒ‚", u, 4) & " ";
             Else
-                upic.Print Term("é­”åŠ›", u, 4) & " ";
+                upic.Print Term("–‚—Í", u, 4) & " ";
             End If
 'MOD START 240a
 '            upic.ForeColor = rgb(0, 0, 0)
             upic.ForeColor = IIf(NewGUIMode, StatusFontColorNormalString, rgb(0, 0, 0))
 'MOD  END  240a
             If is_unknown Then
-                upic.Print LeftPaddedString("ï¼Ÿ", 4)
+                upic.Print LeftPaddedString("H", 4)
             ElseIf .Data.Shooting > 1 Then
                 Select Case .ShootingMod + .ShootingMod2
                     Case Is > 0
@@ -761,18 +761,18 @@ Dim isNoSp As Boolean
                 upic.CurrentX = 5
             End If
 'ADD  END  240a
-            'å‘½ä¸­
+            '–½’†
 'MOD START 240a
 '            upic.ForeColor = rgb(0, 0, 150)
             upic.ForeColor = IIf(NewGUIMode, StatusFontColorAbilityName, rgb(0, 0, 150))
 'MOD  END  240a
-            upic.Print Term("å‘½ä¸­", u, 4) & " ";
+            upic.Print Term("–½’†", u, 4) & " ";
 'MOD START 240a
 '            upic.ForeColor = rgb(0, 0, 0)
             upic.ForeColor = IIf(NewGUIMode, StatusFontColorNormalString, rgb(0, 0, 0))
 'MOD  END  240a
             If is_unknown Then
-                upic.Print LeftPaddedString("ï¼Ÿ", 4) & Space$(10);
+                upic.Print LeftPaddedString("H", 4) & Space$(10);
             ElseIf .Data.Hit > 1 Then
                 Select Case .HitMod + .HitMod2
                     Case Is > 0
@@ -789,18 +789,18 @@ Dim isNoSp As Boolean
                 upic.Print LeftPaddedString("--", 5) & Space$(9);
             End If
             
-            'å›é¿
+            '‰ñ”ğ
 'MOD START 240a
 '            upic.ForeColor = rgb(0, 0, 150)
             upic.ForeColor = IIf(NewGUIMode, StatusFontColorAbilityName, rgb(0, 0, 150))
 'MOD  END  240a
-            upic.Print Term("å›é¿", u, 4) & " ";
+            upic.Print Term("‰ñ”ğ", u, 4) & " ";
 'MOD START 240a
 '            upic.ForeColor = rgb(0, 0, 0)
             upic.ForeColor = IIf(NewGUIMode, StatusFontColorNormalString, rgb(0, 0, 0))
 'MOD  END  240a
             If is_unknown Then
-                upic.Print LeftPaddedString("ï¼Ÿ", 4)
+                upic.Print LeftPaddedString("H", 4)
             ElseIf .Data.Dodge > 1 Then
                 Select Case .DodgeMod + .DodgeMod2
                     Case Is > 0
@@ -822,18 +822,18 @@ Dim isNoSp As Boolean
                 upic.CurrentX = 5
             End If
 'ADD  END  240a
-            'æŠ€é‡
+            '‹Z—Ê
 'MOD START 240a
 '            upic.ForeColor = rgb(0, 0, 150)
             upic.ForeColor = IIf(NewGUIMode, StatusFontColorAbilityName, rgb(0, 0, 150))
 'MOD  END  240a
-            upic.Print Term("æŠ€é‡", u, 4) & " ";
+            upic.Print Term("‹Z—Ê", u, 4) & " ";
 'MOD START 240a
 '            upic.ForeColor = rgb(0, 0, 0)
             upic.ForeColor = IIf(NewGUIMode, StatusFontColorNormalString, rgb(0, 0, 0))
 'MOD  END  240a
             If is_unknown Then
-                upic.Print LeftPaddedString("ï¼Ÿ", 4) & Space$(10);
+                upic.Print LeftPaddedString("H", 4) & Space$(10);
             ElseIf .Data.Technique > 1 Then
                 Select Case .TechniqueMod + .TechniqueMod2
                     Case Is > 0
@@ -850,18 +850,18 @@ Dim isNoSp As Boolean
                 upic.Print LeftPaddedString("--", 5) & Space$(9);
             End If
             
-            'åå¿œ
+            '”½‰
 'MOD START 240a
 '            upic.ForeColor = rgb(0, 0, 150)
             upic.ForeColor = IIf(NewGUIMode, StatusFontColorAbilityName, rgb(0, 0, 150))
 'MOD  END  240a
-            upic.Print Term("åå¿œ", u, 4) & " ";
+            upic.Print Term("”½‰", u, 4) & " ";
 'MOD START 240a
 '            upic.ForeColor = rgb(0, 0, 0)
             upic.ForeColor = IIf(NewGUIMode, StatusFontColorNormalString, rgb(0, 0, 0))
 'MOD  END  240a
             If is_unknown Then
-                upic.Print LeftPaddedString("ï¼Ÿ", 4)
+                upic.Print LeftPaddedString("H", 4)
             ElseIf .Data.Intuition > 1 Then
                 Select Case .IntuitionMod + .IntuitionMod2
                     Case Is > 0
@@ -878,24 +878,24 @@ Dim isNoSp As Boolean
                 upic.Print LeftPaddedString("--", 5) & Space$(9)
             End If
             
-            If IsOptionDefined("é˜²å¾¡åŠ›æˆé•·") _
-                Or IsOptionDefined("é˜²å¾¡åŠ›ãƒ¬ãƒ™ãƒ«ã‚¢ãƒƒãƒ—") _
+            If IsOptionDefined("–hŒä—Í¬’·") _
+                Or IsOptionDefined("–hŒä—ÍƒŒƒxƒ‹ƒAƒbƒv") _
             Then
                 If NewGUIMode Then
                     upic.CurrentX = 5
                 End If
-                'é˜²å¾¡
+                '–hŒä
 'MOD START 240a
 '               upic.ForeColor = rgb(0, 0, 150)
                 upic.ForeColor = IIf(NewGUIMode, StatusFontColorAbilityName, rgb(0, 0, 150))
 'MOD  END  240a
-                upic.Print Term("é˜²å¾¡", u) & " ";
+                upic.Print Term("–hŒä", u) & " ";
 'MOD START 240a
 '                upic.ForeColor = rgb(0, 0, 0)
                 upic.ForeColor = IIf(NewGUIMode, StatusFontColorNormalString, rgb(0, 0, 0))
 'MOD  END  240a
                 If is_unknown Then
-                    upic.Print LeftPaddedString("ï¼Ÿ", 4)
+                    upic.Print LeftPaddedString("H", 4)
                 ElseIf Not .IsSupport(u) Then
                     upic.Print LeftPaddedString(Format$(.Defense), 5)
                 Else
@@ -909,14 +909,14 @@ Dim isNoSp As Boolean
             upic.CurrentX = 5
         End If
 'ADD  END  240a
-        'æ‰€æœ‰ã™ã‚‹ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼ä¸€è¦§
+        'Š—L‚·‚éƒXƒyƒVƒƒƒ‹ƒpƒ[ˆê——
         With p
             If .CountSpecialPower > 0 Then
 'MOD START 240a
 '                upic.ForeColor = rgb(0, 0, 150)
                 upic.ForeColor = IIf(NewGUIMode, StatusFontColorAbilityName, rgb(0, 0, 150))
 'MOD  END  240a
-                upic.Print Term("ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼", u, 18) & " ";
+                upic.Print Term("ƒXƒyƒVƒƒƒ‹ƒpƒ[", u, 18) & " ";
 'MOD START 240a
 '                upic.ForeColor = rgb(0, 0, 0)
                 upic.ForeColor = IIf(NewGUIMode, StatusFontColorNormalString, rgb(0, 0, 0))
@@ -937,34 +937,34 @@ Dim isNoSp As Boolean
 'MOD  END  240a
                     Next
                 Else
-                    upic.Print "ï¼Ÿ";
+                    upic.Print "H";
                 End If
                 upic.Print
             End If
         End With
         
-        'æœªè­˜åˆ¥ã®ãƒ¦ãƒ‹ãƒƒãƒˆã¯ã“ã‚Œä»¥é™ã®æƒ…å ±ã‚’è¡¨ç¤ºã—ãªã„
+        '–¢¯•Ê‚Ìƒ†ƒjƒbƒg‚Í‚±‚êˆÈ~‚Ìî•ñ‚ğ•\¦‚µ‚È‚¢
         If is_unknown Then
             upic.CurrentY = upic.CurrentY + 8
             GoTo UnitStatus
         End If
         
-        'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆç”¨ç‰¹æ®Šèƒ½åŠ›ä¸€è¦§
+        'ƒpƒCƒƒbƒg—p“Áê”\—Íˆê——
         With p
 'ADD START 240a
             If NewGUIMode Then
                 upic.CurrentX = 5
             End If
 'ADD  END  240a
-            'éœŠåŠ›
+            '—ì—Í
             If .MaxPlana > 0 Then
-                If .IsSkillAvailable("éœŠåŠ›") Then
-                    sname = .SkillName("éœŠåŠ›")
+                If .IsSkillAvailable("—ì—Í") Then
+                    sname = .SkillName("—ì—Í")
                 Else
-                    'è¿½åŠ ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã¯ç¬¬ï¼‘ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®éœŠåŠ›ã‚’ä»£ã‚ã‚Šã«ä½¿ã†ã®ã§
-                    sname = u.Pilot(1).SkillName("éœŠåŠ›")
+                    '’Ç‰ÁƒpƒCƒƒbƒg‚Í‘æ‚PƒpƒCƒƒbƒg‚Ì—ì—Í‚ğ‘ã‚í‚è‚Ég‚¤‚Ì‚Å
+                    sname = u.Pilot(1).SkillName("—ì—Í")
                 End If
-                If InStr(sname, "éè¡¨ç¤º") = 0 Then
+                If InStr(sname, "”ñ•\¦") = 0 Then
 'MOD START 240a
 '                    upic.ForeColor = rgb(0, 0, 150)
                     upic.ForeColor = IIf(NewGUIMode, StatusFontColorAbilityName, rgb(0, 0, 150))
@@ -993,14 +993,14 @@ Dim isNoSp As Boolean
                 upic.CurrentX = 5
             End If
 'ADD  END  240a
-            'åŒèª¿ç‡
+            '“¯’²—¦
             If .SynchroRate() > 0 Then
-                If InStr(.SkillName("åŒèª¿ç‡"), "éè¡¨ç¤º") = 0 Then
+                If InStr(.SkillName("“¯’²—¦"), "”ñ•\¦") = 0 Then
 'MOD START 240a
 '                    upic.ForeColor = rgb(0, 0, 150)
                     upic.ForeColor = IIf(NewGUIMode, StatusFontColorAbilityName, rgb(0, 0, 150))
 'MOD  END  240a
-                    upic.Print .SkillName("åŒèª¿ç‡") & " ";
+                    upic.Print .SkillName("“¯’²—¦") & " ";
 'MOD START 240a
 '                    upic.ForeColor = rgb(0, 0, 0)
                     upic.ForeColor = IIf(NewGUIMode, StatusFontColorNormalString, rgb(0, 0, 0))
@@ -1024,60 +1024,60 @@ Dim isNoSp As Boolean
                 upic.CurrentX = 5
             End If
 'ADD  END  240a
-            'å¾—æ„æŠ€ï¼†ä¸å¾—æ‰‹
+            '“¾ˆÓ‹Z••s“¾è
             n = 0
-            If .IsSkillAvailable("å¾—æ„æŠ€") Then
+            If .IsSkillAvailable("“¾ˆÓ‹Z") Then
                 n = n + 1
 'MOD START 240a
 '                upic.ForeColor = rgb(0, 0, 150)
                 upic.ForeColor = IIf(NewGUIMode, StatusFontColorAbilityName, rgb(0, 0, 150))
 'MOD  END  240a
-                upic.Print "å¾—æ„æŠ€ ";
+                upic.Print "“¾ˆÓ‹Z ";
 'MOD START 240a
 '                upic.ForeColor = rgb(0, 0, 0)
                 upic.ForeColor = IIf(NewGUIMode, StatusFontColorNormalString, rgb(0, 0, 0))
 'MOD  END  240a
-                upic.Print RightPaddedString(.SkillData("å¾—æ„æŠ€"), 12);
+                upic.Print RightPaddedString(.SkillData("“¾ˆÓ‹Z"), 12);
             End If
-            If .IsSkillAvailable("ä¸å¾—æ‰‹") Then
+            If .IsSkillAvailable("•s“¾è") Then
                 n = n + 1
 'MOD START 240a
 '                upic.ForeColor = rgb(0, 0, 150)
                 upic.ForeColor = IIf(NewGUIMode, StatusFontColorAbilityName, rgb(0, 0, 150))
 'MOD  END  240a
-                upic.Print "ä¸å¾—æ‰‹ ";
+                upic.Print "•s“¾è ";
 'MOD START 240a
 '                upic.ForeColor = rgb(0, 0, 0)
                 upic.ForeColor = IIf(NewGUIMode, StatusFontColorNormalString, rgb(0, 0, 0))
 'MOD  END  240a
-                upic.Print .SkillData("ä¸å¾—æ‰‹");
+                upic.Print .SkillData("•s“¾è");
             End If
             If n > 0 Then
                 upic.Print
             End If
             
-            'è¡¨ç¤ºã™ã‚‹ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆèƒ½åŠ›ã®ãƒªã‚¹ãƒˆã‚’ä½œæˆ
+            '•\¦‚·‚éƒpƒCƒƒbƒg”\—Í‚ÌƒŠƒXƒg‚ğì¬
             ReDim name_list(.CountSkill)
             For i = 1 To .CountSkill
                 name_list(i) = .Skill(i)
             Next
-            'ä»˜åŠ ã•ã‚ŒãŸãƒ‘ã‚¤ãƒ­ãƒƒãƒˆç‰¹æ®Šèƒ½åŠ›
+            '•t‰Á‚³‚ê‚½ƒpƒCƒƒbƒg“Áê”\—Í
             For i = 1 To u.CountCondition
                 If u.ConditionLifetime(i) <> 0 Then
                     Select Case Right$(u.Condition(i), 3)
-                        Case "ä»˜åŠ ï¼’", "å¼·åŒ–ï¼’"
+                        Case "•t‰Á‚Q", "‹­‰»‚Q"
                             Select Case LIndex(u.ConditionData(i), 1)
-                                Case "éè¡¨ç¤º", "è§£èª¬"
-                                    'éè¡¨ç¤ºã®èƒ½åŠ›
+                                Case "”ñ•\¦", "‰ğà"
+                                    '”ñ•\¦‚Ì”\—Í
                                 Case Else
                                     stype = Left$(u.Condition(i), Len(u.Condition(i)) - 3)
                                     Select Case stype
-                                        Case "ãƒãƒ³ã‚¿ãƒ¼", "ï¼³ï¼°æ¶ˆè²»æ¸›å°‘", "ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼è‡ªå‹•ç™ºå‹•"
-                                            'é‡è¤‡å¯èƒ½ãªèƒ½åŠ›
+                                        Case "ƒnƒ“ƒ^[", "‚r‚oÁ”ïŒ¸­", "ƒXƒyƒVƒƒƒ‹ƒpƒ[©“®”­“®"
+                                            'd•¡‰Â”\‚È”\—Í
                                             ReDim Preserve name_list(UBound(name_list) + 1)
                                             name_list(UBound(name_list)) = stype
                                         Case Else
-                                            'æ—¢ã«æ‰€æœ‰ã—ã¦ã„ã‚‹èƒ½åŠ›ã§ã‚ã‚Œã°ã‚¹ã‚­ãƒƒãƒ—
+                                            'Šù‚ÉŠ—L‚µ‚Ä‚¢‚é”\—Í‚Å‚ ‚ê‚ÎƒXƒLƒbƒv
                                             For j = 1 To UBound(name_list)
                                                 If stype = name_list(j) Then
                                                     Exit For
@@ -1093,11 +1093,11 @@ Dim isNoSp As Boolean
                 End If
             Next
             
-            'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆèƒ½åŠ›ã‚’è¡¨ç¤º
+            'ƒpƒCƒƒbƒg”\—Í‚ğ•\¦
             n = 0
             For i = 1 To UBound(name_list)
 'ADD START 240a
-                'æ–‡å­—è‰²ã‚’ãƒªã‚»ãƒƒãƒˆ
+                '•¶šF‚ğƒŠƒZƒbƒg
                 upic.ForeColor = IIf(NewGUIMode, StatusFontColorNormalString, rgb(0, 0, 0))
 'ADD  END  240a
                 stype = name_list(i)
@@ -1109,12 +1109,12 @@ Dim isNoSp As Boolean
                     slevel = .SkillLevel(stype)
                 End If
                 
-                If InStr(sname, "éè¡¨ç¤º") > 0 Then
+                If InStr(sname, "”ñ•\¦") > 0 Then
                     GoTo NextSkill
                 End If
                 
                 Select Case stype
-                    Case "ã‚ªãƒ¼ãƒ©"
+                    Case "ƒI[ƒ‰"
                         If DisplayedPilotInd = 1 Then
                             If u.AuraLevel(True) < u.AuraLevel() _
                                 And MapFileName <> "" _
@@ -1129,7 +1129,7 @@ Dim isNoSp As Boolean
                             End If
                         End If
                         
-                    Case "è¶…èƒ½åŠ›"
+                    Case "’´”\—Í"
                         If DisplayedPilotInd = 1 Then
                             If u.PsychicLevel(True) < u.PsychicLevel() _
                                 And MapFileName <> "" _
@@ -1144,7 +1144,7 @@ Dim isNoSp As Boolean
                             End If
                         End If
                         
-                    Case "åº•åŠ›", "è¶…åº•åŠ›", "è¦šæ‚Ÿ"
+                    Case "’ê—Í", "’´’ê—Í", "ŠoŒå"
                         If u.HP <= u.MaxHP \ 4 Then
 'MOD START 240a
 '                            upic.ForeColor = vbBlue
@@ -1152,7 +1152,7 @@ Dim isNoSp As Boolean
 'MOD  END  240a
                         End If
                         
-                    Case "ä¸å±ˆ"
+                    Case "•s‹ü"
                         If u.HP <= u.MaxHP \ 2 Then
 'MOD START 240a
 '                            upic.ForeColor = vbBlue
@@ -1160,7 +1160,7 @@ Dim isNoSp As Boolean
 'MOD  END  240a
                         End If
                         
-                    Case "æ½œåœ¨åŠ›é–‹æ”¾"
+                    Case "öİ—ÍŠJ•ú"
                         If .Morale >= 130 Then
 'MOD START 240a
 '                            upic.ForeColor = vbBlue
@@ -1168,7 +1168,7 @@ Dim isNoSp As Boolean
 'MOD  END  240a
                         End If
                         
-                    Case "ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼è‡ªå‹•ç™ºå‹•"
+                    Case "ƒXƒyƒVƒƒƒ‹ƒpƒ[©“®”­“®"
                         If i <= .CountSkill Then
                             If .Morale >= StrToLng(LIndex(.SkillData(i), 3)) Then
 'MOD START 240a
@@ -1185,21 +1185,21 @@ Dim isNoSp As Boolean
                             End If
                         End If
                         
-                    Case "ï¼³é˜²å¾¡"
-                        If Not u.IsFeatureAvailable("ã‚·ãƒ¼ãƒ«ãƒ‰") _
-                            And Not u.IsFeatureAvailable("å¤§å‹ã‚·ãƒ¼ãƒ«ãƒ‰") _
-                            And Not u.IsFeatureAvailable("å°å‹ã‚·ãƒ¼ãƒ«ãƒ‰") _
-                            And Not u.IsFeatureAvailable("ã‚¨ãƒãƒ«ã‚®ãƒ¼ã‚·ãƒ¼ãƒ«ãƒ‰") _
-                            And Not u.IsFeatureAvailable("ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ã‚·ãƒ¼ãƒ«ãƒ‰") _
-                            And Not u.IsFeatureAvailable("ç›¾") _
-                            And Not u.IsFeatureAvailable("ãƒãƒªã‚¢ã‚·ãƒ¼ãƒ«ãƒ‰") _
-                            And Not u.IsFeatureAvailable("ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰") _
-                            And Not u.IsFeatureAvailable("ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ãƒ—ãƒ­ãƒ†ã‚¯ã‚·ãƒ§ãƒ³") _
-                            And InStr(u.FeatureData("é˜»æ­¢"), "ï¼³é˜²å¾¡") = 0 _
-                            And InStr(u.FeatureData("åºƒåŸŸé˜»æ­¢"), "ï¼³é˜²å¾¡") = 0 _
-                            And InStr(u.FeatureData("åå°„"), "ï¼³é˜²å¾¡") = 0 _
-                            And InStr(u.FeatureData("å½“ã¦èº«æŠ€"), "ï¼³é˜²å¾¡") = 0 _
-                            And InStr(u.FeatureData("è‡ªå‹•åæ’ƒ"), "ï¼³é˜²å¾¡") = 0 _
+                    Case "‚r–hŒä"
+                        If Not u.IsFeatureAvailable("ƒV[ƒ‹ƒh") _
+                            And Not u.IsFeatureAvailable("‘åŒ^ƒV[ƒ‹ƒh") _
+                            And Not u.IsFeatureAvailable("¬Œ^ƒV[ƒ‹ƒh") _
+                            And Not u.IsFeatureAvailable("ƒGƒlƒ‹ƒM[ƒV[ƒ‹ƒh") _
+                            And Not u.IsFeatureAvailable("ƒAƒNƒeƒBƒuƒV[ƒ‹ƒh") _
+                            And Not u.IsFeatureAvailable("‚") _
+                            And Not u.IsFeatureAvailable("ƒoƒŠƒAƒV[ƒ‹ƒh") _
+                            And Not u.IsFeatureAvailable("ƒAƒNƒeƒBƒuƒtƒB[ƒ‹ƒh") _
+                            And Not u.IsFeatureAvailable("ƒAƒNƒeƒBƒuƒvƒƒeƒNƒVƒ‡ƒ“") _
+                            And InStr(u.FeatureData("‘j~"), "‚r–hŒä") = 0 _
+                            And InStr(u.FeatureData("Lˆæ‘j~"), "‚r–hŒä") = 0 _
+                            And InStr(u.FeatureData("”½Ë"), "‚r–hŒä") = 0 _
+                            And InStr(u.FeatureData("“–‚Äg‹Z"), "‚r–hŒä") = 0 _
+                            And InStr(u.FeatureData("©“®”½Œ‚"), "‚r–hŒä") = 0 _
                             And MapFileName <> "" _
                         Then
 'MOD START 240a
@@ -1208,23 +1208,23 @@ Dim isNoSp As Boolean
 'MOD  END  240a
                         End If
                         
-                    Case "åˆ‡ã‚Šæ‰•ã„"
+                    Case "Ø‚è•¥‚¢"
                         For j = 1 To u.CountWeapon
-                            If u.IsWeaponClassifiedAs(j, "æ­¦") Then
+                            If u.IsWeaponClassifiedAs(j, "•") Then
                                 If Not u.IsDisabled(u.Weapon(j).Name) Then
                                     Exit For
                                 End If
                             End If
                         Next
-                        If u.IsFeatureAvailable("æ ¼é—˜æ­¦å™¨") Then
+                        If u.IsFeatureAvailable("Ši“¬•Ší") Then
                             j = 0
                         End If
                         If j > u.CountWeapon _
-                            And InStr(u.FeatureData("é˜»æ­¢"), "åˆ‡ã‚Šæ‰•ã„") = 0 _
-                            And InStr(u.FeatureData("åºƒåŸŸé˜»æ­¢"), "åˆ‡ã‚Šæ‰•ã„") = 0 _
-                            And InStr(u.FeatureData("åå°„"), "åˆ‡ã‚Šæ‰•ã„") = 0 _
-                            And InStr(u.FeatureData("å½“ã¦èº«æŠ€"), "åˆ‡ã‚Šæ‰•ã„") = 0 _
-                            And InStr(u.FeatureData("è‡ªå‹•åæ’ƒ"), "åˆ‡ã‚Šæ‰•ã„") = 0 _
+                            And InStr(u.FeatureData("‘j~"), "Ø‚è•¥‚¢") = 0 _
+                            And InStr(u.FeatureData("Lˆæ‘j~"), "Ø‚è•¥‚¢") = 0 _
+                            And InStr(u.FeatureData("”½Ë"), "Ø‚è•¥‚¢") = 0 _
+                            And InStr(u.FeatureData("“–‚Äg‹Z"), "Ø‚è•¥‚¢") = 0 _
+                            And InStr(u.FeatureData("©“®”½Œ‚"), "Ø‚è•¥‚¢") = 0 _
                             And MapFileName <> "" _
                         Then
 'MOD START 240a
@@ -1233,10 +1233,10 @@ Dim isNoSp As Boolean
 'MOD  END  240a
                         End If
                         
-                    Case "è¿æ’ƒ"
+                    Case "Œ}Œ‚"
                         For j = 1 To u.CountWeapon
-                            If u.IsWeaponAvailable(j, "ç§»å‹•å¾Œ") _
-                                And u.IsWeaponClassifiedAs(j, "å°„æ’ƒç³»") _
+                            If u.IsWeaponAvailable(j, "ˆÚ“®Œã") _
+                                And u.IsWeaponClassifiedAs(j, "ËŒ‚Œn") _
                                 And (u.Weapon(j).Bullet >= 10 _
                                 Or (u.Weapon(j).Bullet = 0 _
                                     And u.Weapon(j).ENConsumption <= 5)) _
@@ -1244,15 +1244,15 @@ Dim isNoSp As Boolean
                                 Exit For
                             End If
                         Next
-                        If u.IsFeatureAvailable("è¿æ’ƒæ­¦å™¨") Then
+                        If u.IsFeatureAvailable("Œ}Œ‚•Ší") Then
                             j = 0
                         End If
                         If j > u.CountWeapon _
-                            And InStr(u.FeatureData("é˜»æ­¢"), "è¿æ’ƒ") = 0 _
-                            And InStr(u.FeatureData("åºƒåŸŸé˜»æ­¢"), "è¿æ’ƒ") = 0 _
-                            And InStr(u.FeatureData("åå°„"), "è¿æ’ƒ") = 0 _
-                            And InStr(u.FeatureData("å½“ã¦èº«æŠ€"), "è¿æ’ƒ") = 0 _
-                            And InStr(u.FeatureData("è‡ªå‹•åæ’ƒ"), "è¿æ’ƒ") = 0 _
+                            And InStr(u.FeatureData("‘j~"), "Œ}Œ‚") = 0 _
+                            And InStr(u.FeatureData("Lˆæ‘j~"), "Œ}Œ‚") = 0 _
+                            And InStr(u.FeatureData("”½Ë"), "Œ}Œ‚") = 0 _
+                            And InStr(u.FeatureData("“–‚Äg‹Z"), "Œ}Œ‚") = 0 _
+                            And InStr(u.FeatureData("©“®”½Œ‚"), "Œ}Œ‚") = 0 _
                             And MapFileName <> "" _
                         Then
 'MOD START 240a
@@ -1261,9 +1261,9 @@ Dim isNoSp As Boolean
 'MOD  END  240a
                         End If
                         
-                    Case "æµ„åŒ–"
+                    Case "ò‰»"
                         For j = 1 To u.CountWeapon
-                            If u.IsWeaponClassifiedAs(j, "æµ„") Then
+                            If u.IsWeaponClassifiedAs(j, "ò") Then
                                 If Not u.IsDisabled(u.Weapon(j).Name) Then
                                     Exit For
                                 End If
@@ -1278,12 +1278,12 @@ Dim isNoSp As Boolean
 'MOD  END  240a
                         End If
                         
-                    Case "æ´è­·"
+                    Case "‰‡Œì"
                         If MapFileName <> "" Then
                             If u.Party = Stage Then
                                 ret = MaxLng(u.MaxSupportAttack - u.UsedSupportAttack, 0)
                             Else
-                                If u.IsUnderSpecialPowerEffect("ã‚µãƒãƒ¼ãƒˆã‚¬ãƒ¼ãƒ‰ä¸èƒ½") Then
+                                If u.IsUnderSpecialPowerEffect("ƒTƒ|[ƒgƒK[ƒh•s”\") Then
 'MOD START 240a
 '                                    upic.ForeColor = rgb(150, 0, 0)
                                     upic.ForeColor = IIf(NewGUIMode, StatusFontColorAbilityDisable, rgb(150, 0, 0))
@@ -1297,10 +1297,10 @@ Dim isNoSp As Boolean
                                 upic.ForeColor = IIf(NewGUIMode, StatusFontColorAbilityDisable, rgb(150, 0, 0))
 'MOD  END  240a
                             End If
-                            sname = sname & " (æ®‹ã‚Š" & Format$(ret) & "å›)"
+                            sname = sname & " (c‚è" & Format$(ret) & "‰ñ)"
                         End If
                         
-                    Case "æ´è­·æ”»æ’ƒ"
+                    Case "‰‡ŒìUŒ‚"
                         If MapFileName <> "" Then
                             ret = MaxLng(u.MaxSupportAttack - u.UsedSupportAttack, 0)
                             If ret = 0 Then
@@ -1309,22 +1309,22 @@ Dim isNoSp As Boolean
                                 upic.ForeColor = IIf(NewGUIMode, StatusFontColorAbilityDisable, rgb(150, 0, 0))
 'MOD  END  240a
                             End If
-                            sname = sname & " (æ®‹ã‚Š" & Format$(ret) & "å›)"
+                            sname = sname & " (c‚è" & Format$(ret) & "‰ñ)"
                         End If
                         
-                    Case "æ´è­·é˜²å¾¡"
+                    Case "‰‡Œì–hŒä"
                         If MapFileName <> "" Then
                             ret = MaxLng(u.MaxSupportGuard - u.UsedSupportGuard, 0)
-                            If ret = 0 Or u.IsUnderSpecialPowerEffect("ã‚µãƒãƒ¼ãƒˆã‚¬ãƒ¼ãƒ‰ä¸èƒ½") Then
+                            If ret = 0 Or u.IsUnderSpecialPowerEffect("ƒTƒ|[ƒgƒK[ƒh•s”\") Then
 'MOD START 240a
 '                                upic.ForeColor = rgb(150, 0, 0)
                                 upic.ForeColor = IIf(NewGUIMode, StatusFontColorAbilityDisable, rgb(150, 0, 0))
 'MOD  END  240a
                             End If
-                            sname = sname & " (æ®‹ã‚Š" & Format$(ret) & "å›)"
+                            sname = sname & " (c‚è" & Format$(ret) & "‰ñ)"
                         End If
                         
-                    Case "çµ±ç‡"
+                    Case "“—¦"
                         If MapFileName <> "" Then
                             ret = MaxLng(u.MaxSyncAttack - u.UsedSyncAttack, 0)
                             If ret = 0 Then
@@ -1333,26 +1333,26 @@ Dim isNoSp As Boolean
                                 upic.ForeColor = IIf(NewGUIMode, StatusFontColorAbilityDisable, rgb(150, 0, 0))
 'MOD  END  240a
                             End If
-                            sname = sname & " (æ®‹ã‚Š" & Format$(ret) & "å›)"
+                            sname = sname & " (c‚è" & Format$(ret) & "‰ñ)"
                         End If
                         
-                    Case "ã‚«ã‚¦ãƒ³ã‚¿ãƒ¼"
+                    Case "ƒJƒEƒ“ƒ^["
                         If MapFileName <> "" Then
                             ret = MaxLng(u.MaxCounterAttack - u.UsedCounterAttack, 0)
                             If ret > 100 Then
-                                sname = sname & " (æ®‹ã‚Šâˆå›)"
+                                sname = sname & " (c‚è‡‰ñ)"
                             ElseIf ret > 0 Then
-                                sname = sname & " (æ®‹ã‚Š" & Format$(ret) & "å›)"
+                                sname = sname & " (c‚è" & Format$(ret) & "‰ñ)"
                             Else
 'MOD START 240a
 '                                upic.ForeColor = rgb(150, 0, 0)
                                 upic.ForeColor = IIf(NewGUIMode, StatusFontColorAbilityDisable, rgb(150, 0, 0))
 'MOD  END  240a
-                                sname = sname & " (æ®‹ã‚Š0å›)"
+                                sname = sname & " (c‚è0‰ñ)"
                             End If
                         End If
                         
-                    Case "å…ˆæ‰‹å¿…å‹"
+                    Case "æè•KŸ"
                         If u.MaxCounterAttack > 100 Then
 'MOD START 240a
 '                            upic.ForeColor = vbBlue
@@ -1360,19 +1360,19 @@ Dim isNoSp As Boolean
 'MOD  END  240a
                         End If
                         
-                    Case "è€ä¹…"
-                        If IsOptionDefined("é˜²å¾¡åŠ›æˆé•·") _
-                            Or IsOptionDefined("é˜²å¾¡åŠ›ãƒ¬ãƒ™ãƒ«ã‚¢ãƒƒãƒ—") _
+                    Case "‘Ï‹v"
+                        If IsOptionDefined("–hŒä—Í¬’·") _
+                            Or IsOptionDefined("–hŒä—ÍƒŒƒxƒ‹ƒAƒbƒv") _
                         Then
                             GoTo NextSkill
                         End If
                         
-                    Case "éœŠåŠ›", "åŒèª¿ç‡", "å¾—æ„æŠ€", "ä¸å¾—æ‰‹"
+                    Case "—ì—Í", "“¯’²—¦", "“¾ˆÓ‹Z", "•s“¾è"
                         GoTo NextSkill
                         
                 End Select
                 
-                'ç‰¹æ®Šèƒ½åŠ›åã‚’è¡¨ç¤º
+                '“Áê”\—Í–¼‚ğ•\¦
                 If LenB(StrConv(sname, vbFromUnicode)) > 19 Then
                     If n > 0 Then
                         upic.Print
@@ -1390,7 +1390,7 @@ Dim isNoSp As Boolean
                 End If
                 upic.ForeColor = vbBlack
                 
-                'å¿…è¦ã«å¿œã˜ã¦æ”¹è¡Œ
+                '•K—v‚É‰‚¶‚Ä‰üs
                 If n > 1 Then
                     upic.Print
 'ADD START 240a
@@ -1417,20 +1417,20 @@ NextSkill:
         
 UnitStatus:
         
-        'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹è¡¨ç¤ºç”¨ã®ãƒ€ãƒŸãƒ¼ãƒ¦ãƒ‹ãƒƒãƒˆã®å ´åˆã¯ã“ã“ã§è¡¨ç¤ºã‚’çµ‚äº†
-        If .IsFeatureAvailable("ãƒ€ãƒŸãƒ¼ãƒ¦ãƒ‹ãƒƒãƒˆ") Then
+        'ƒpƒCƒƒbƒgƒXƒe[ƒ^ƒX•\¦—p‚Ìƒ_ƒ~[ƒ†ƒjƒbƒg‚Ìê‡‚Í‚±‚±‚Å•\¦‚ğI—¹
+        If .IsFeatureAvailable("ƒ_ƒ~[ƒ†ƒjƒbƒg") Then
             GoTo UpdateStatusWindow
         End If
         
-        'ã“ã“ã‹ã‚‰ã¯ãƒ¦ãƒ‹ãƒƒãƒˆã«é–¢ã™ã‚‹æƒ…å ±
+        '‚±‚±‚©‚ç‚Íƒ†ƒjƒbƒg‚ÉŠÖ‚·‚éî•ñ
         
-        'ãƒ¦ãƒ‹ãƒƒãƒˆæ„›ç§°
+        'ƒ†ƒjƒbƒgˆ¤Ì
         upic.FontSize = 10.5
         upic.FontBold = False
 'ADD START 240a
         If NewGUIMode Then
             upic.CurrentX = 5
-            'æ–‡å­—è‰²ã‚’ãƒªã‚»ãƒƒãƒˆ
+            '•¶šF‚ğƒŠƒZƒbƒg
             upic.ForeColor = StatusFontColorNormalString
         End If
 'ADD  END  240a
@@ -1438,17 +1438,17 @@ UnitStatus:
         upic.FontBold = False
         upic.FontSize = 9
         
-        If .Status = "å‡ºæ’ƒ" And MapFileName <> "" Then
+        If .Status = "oŒ‚" And MapFileName <> "" Then
             Dim td As TerrainData
             
-            'åœ°å½¢æƒ…å ±ã®è¡¨ç¤º
+            '’nŒ`î•ñ‚Ì•\¦
             
 'ADD START 240a
             If NewGUIMode Then
                 upic.CurrentX = 5
             End If
 'ADD  END  240a
-            'ãƒ¦ãƒ‹ãƒƒãƒˆã®ä½ç½®ã‚’åœ°å½¢åç§°
+            'ƒ†ƒjƒbƒg‚ÌˆÊ’u‚ğ’nŒ`–¼Ì
             If InStr(TerrainName(.X, .Y), "(") > 0 Then
                 upic.Print .Area & " (" _
                     & Left$(TerrainName(.X, .Y), InStr(TerrainName(.X, .Y), "(") - 1);
@@ -1456,45 +1456,45 @@ UnitStatus:
                 upic.Print .Area & " (" & TerrainName(.X, .Y);
             End If
             
-            'å›é¿ï¼†é˜²å¾¡ä¿®æ­£
+            '‰ñ”ğ•–hŒäC³
             If TerrainEffectForHit(.X, .Y) = TerrainEffectForDamage(.X, .Y) Then
                 If TerrainEffectForHit(.X, .Y) >= 0 Then
-                    upic.Print " å›ï¼†é˜²+" _
+                    upic.Print " ‰ñ•–h+" _
                         & Format$(TerrainEffectForHit(.X, .Y)) & "%";
                 Else
-                    upic.Print " å›ï¼†é˜²" _
+                    upic.Print " ‰ñ•–h" _
                         & Format$(TerrainEffectForHit(.X, .Y)) & "%";
                 End If
             Else
                 If TerrainEffectForHit(.X, .Y) >= 0 Then
-                    upic.Print " å›+" _
+                    upic.Print " ‰ñ+" _
                         & Format$(TerrainEffectForHit(.X, .Y)) & "%";
                 Else
-                    upic.Print " å›" _
+                    upic.Print " ‰ñ" _
                         & Format$(TerrainEffectForHit(.X, .Y)) & "%";
                 End If
                 If TerrainEffectForDamage(.X, .Y) >= 0 Then
-                    upic.Print " é˜²+" _
+                    upic.Print " –h+" _
                         & Format$(TerrainEffectForDamage(.X, .Y)) & "%";
                 Else
-                    upic.Print " é˜²" _
+                    upic.Print " –h" _
                         & Format$(TerrainEffectForDamage(.X, .Y)) & "%";
                 End If
             End If
             
-            'ï¼¨ï¼°ï¼†ï¼¥ï¼®å›å¾©
+            '‚g‚o•‚d‚m‰ñ•œ
             If TerrainEffectForHPRecover(.X, .Y) > 0 Then
-                upic.Print " " & Left$(Term("ï¼¨ï¼°"), 1) & "+" _
+                upic.Print " " & Left$(Term("‚g‚o"), 1) & "+" _
                     & Format$(TerrainEffectForHPRecover(.X, .Y)) & "%";
             End If
             If TerrainEffectForENRecover(.X, .Y) > 0 Then
-                upic.Print " " & Left$(Term("ï¼¥ï¼®"), 1) & "+" _
+                upic.Print " " & Left$(Term("‚d‚m"), 1) & "+" _
                     & Format$(TerrainEffectForENRecover(.X, .Y)) & "%";
             End If
             
 'MOD START 240a
 '            Set td = TDList.Item(MapData(.X, .Y, 0))
-            'ãƒã‚¹ã®ã‚¿ã‚¤ãƒ—ã«å¿œã˜ã¦å‚ç…§å…ˆã‚’å¤‰æ›´
+            'ƒ}ƒX‚Ìƒ^ƒCƒv‚É‰‚¶‚ÄQÆæ‚ğ•ÏX
             Select Case MapData(.X, .Y, MapDataIndex.BoxType)
             Case BoxTypes.Under, BoxTypes.UpperBmpOnly
                 Set td = TDList.Item(MapData(.X, .Y, MapDataIndex.TerrainType))
@@ -1502,40 +1502,40 @@ UnitStatus:
                 Set td = TDList.Item(MapData(.X, .Y, MapDataIndex.LayerType))
             End Select
 'MOD START 240a
-            'ï¼¨ï¼°ï¼†ï¼¥ï¼®æ¸›å°‘
-            If td.IsFeatureAvailable("ï¼¨ï¼°æ¸›å°‘") Then
-                upic.Print " " & Left$(Term("ï¼¨ï¼°"), 1) & "-" _
-                    & Format$(10 * td.FeatureLevel("ï¼¨ï¼°æ¸›å°‘")) & "%";
+            '‚g‚o•‚d‚mŒ¸­
+            If td.IsFeatureAvailable("‚g‚oŒ¸­") Then
+                upic.Print " " & Left$(Term("‚g‚o"), 1) & "-" _
+                    & Format$(10 * td.FeatureLevel("‚g‚oŒ¸­")) & "%";
             End If
-            If td.IsFeatureAvailable("ï¼¥ï¼®æ¸›å°‘") Then
-                upic.Print " " & Left$(Term("ï¼¥ï¼®"), 1) & "-" _
-                    & Format$(10 * td.FeatureLevel("ï¼¥ï¼®æ¸›å°‘")) & "%";
-            End If
-            
-            'ï¼¨ï¼°ï¼†ï¼¥ï¼®å¢—åŠ 
-            If td.IsFeatureAvailable("ï¼¨ï¼°å¢—åŠ ") Then
-                upic.Print " " & Left$(Term("ï¼¨ï¼°"), 1) & "+" _
-                    & Format$(1000 * td.FeatureLevel("ï¼¨ï¼°å¢—åŠ "));
-            End If
-            If td.IsFeatureAvailable("ï¼¥ï¼®å¢—åŠ ") Then
-                upic.Print " " & Left$(Term("ï¼¥ï¼®"), 1) & "+" _
-                    & Format$(10 * td.FeatureLevel("ï¼¥ï¼®å¢—åŠ "));
+            If td.IsFeatureAvailable("‚d‚mŒ¸­") Then
+                upic.Print " " & Left$(Term("‚d‚m"), 1) & "-" _
+                    & Format$(10 * td.FeatureLevel("‚d‚mŒ¸­")) & "%";
             End If
             
-            'ï¼¨ï¼°ï¼†ï¼¥ï¼®ä½ä¸‹
-            If td.IsFeatureAvailable("ï¼¨ï¼°ä½ä¸‹") Then
-                upic.Print " " & Left$(Term("ï¼¨ï¼°"), 1) & "-" _
-                    & Format$(1000 * td.FeatureLevel("ï¼¨ï¼°ä½ä¸‹"));
+            '‚g‚o•‚d‚m‘‰Á
+            If td.IsFeatureAvailable("‚g‚o‘‰Á") Then
+                upic.Print " " & Left$(Term("‚g‚o"), 1) & "+" _
+                    & Format$(1000 * td.FeatureLevel("‚g‚o‘‰Á"));
             End If
-            If td.IsFeatureAvailable("ï¼¥ï¼®ä½ä¸‹") Then
-                upic.Print " " & Left$(Term("ï¼¥ï¼®"), 1) & "-" _
-                    & Format$(10 * td.FeatureLevel("ï¼¥ï¼®ä½ä¸‹"));
+            If td.IsFeatureAvailable("‚d‚m‘‰Á") Then
+                upic.Print " " & Left$(Term("‚d‚m"), 1) & "+" _
+                    & Format$(10 * td.FeatureLevel("‚d‚m‘‰Á"));
             End If
             
-            'æ‘©æ“¦
-            If td.IsFeatureAvailable("æ‘©æ“¦") Then
-                upic.Print " æ‘©L" _
-                    & Format$(td.FeatureLevel("æ‘©æ“¦"));
+            '‚g‚o•‚d‚m’á‰º
+            If td.IsFeatureAvailable("‚g‚o’á‰º") Then
+                upic.Print " " & Left$(Term("‚g‚o"), 1) & "-" _
+                    & Format$(1000 * td.FeatureLevel("‚g‚o’á‰º"));
+            End If
+            If td.IsFeatureAvailable("‚d‚m’á‰º") Then
+                upic.Print " " & Left$(Term("‚d‚m"), 1) & "-" _
+                    & Format$(10 * td.FeatureLevel("‚d‚m’á‰º"));
+            End If
+            
+            '–€C
+            If td.IsFeatureAvailable("–€C") Then
+                upic.Print " –€L" _
+                    & Format$(td.FeatureLevel("–€C"));
             End If
             
             upic.Print ")"
@@ -1544,7 +1544,7 @@ UnitStatus:
 '            upic.ForeColor = rgb(0, 0, 150)
             upic.ForeColor = IIf(NewGUIMode, StatusFontColorAbilityName, rgb(0, 0, 150))
 'MOD  END  240a
-            upic.Print "ãƒ©ãƒ³ã‚¯ ";
+            upic.Print "ƒ‰ƒ“ƒN ";
 'MOD START 240a
 '            upic.ForeColor = rgb(0, 0, 0)
             upic.ForeColor = IIf(NewGUIMode, StatusFontColorNormalString, rgb(0, 0, 0))
@@ -1552,19 +1552,19 @@ UnitStatus:
             upic.Print Format$(.Rank)
         End If
         
-        'æœªç¢ºèªãƒ¦ãƒ‹ãƒƒãƒˆï¼Ÿ
+        '–¢Šm”Fƒ†ƒjƒbƒgH
         If is_unknown Then
 'ADD START 240a
             If NewGUIMode Then
                 upic.CurrentX = 5
             End If
 'ADD  END  240a
-            'ï¼¨ï¼°
+            '‚g‚o
 'MOD START 240a
 '            upic.ForeColor = rgb(0, 0, 150)
             upic.ForeColor = IIf(NewGUIMode, StatusFontColorAbilityName, rgb(0, 0, 150))
 'MOD  END  240a
-            upic.Print Term("ï¼¨ï¼°", Nothing, 6) & " ";
+            upic.Print Term("‚g‚o", Nothing, 6) & " ";
 'MOD START 240a
 '            upic.ForeColor = rgb(0, 0, 0)
             upic.ForeColor = IIf(NewGUIMode, StatusFontColorNormalString, rgb(0, 0, 0))
@@ -1576,12 +1576,12 @@ UnitStatus:
                 upic.CurrentX = 5
             End If
 'ADD  END  240a
-            'ï¼¥ï¼®
+            '‚d‚m
 'MOD START 240a
 '            upic.ForeColor = rgb(0, 0, 150)
             upic.ForeColor = IIf(NewGUIMode, StatusFontColorAbilityName, rgb(0, 0, 150))
 'MOD  END  240a
-            upic.Print Term("ï¼¥ï¼®", Nothing, 6) & " ";
+            upic.Print Term("‚d‚m", Nothing, 6) & " ";
 'MOD START 240a
 '            upic.ForeColor = rgb(0, 0, 0)
             upic.ForeColor = IIf(NewGUIMode, StatusFontColorNormalString, rgb(0, 0, 0))
@@ -1593,118 +1593,118 @@ UnitStatus:
                 upic.CurrentX = 5
             End If
 'ADD  END  240a
-            'è£…ç”²
+            '‘•b
 'MOD START 240a
 '            upic.ForeColor = rgb(0, 0, 150)
             upic.ForeColor = IIf(NewGUIMode, StatusFontColorAbilityName, rgb(0, 0, 150))
 'MOD  END  240a
-            upic.Print Term("è£…ç”²", Nothing, 6) & " ";
+            upic.Print Term("‘•b", Nothing, 6) & " ";
 'MOD START 240a
 '            upic.ForeColor = rgb(0, 0, 0)
             upic.ForeColor = IIf(NewGUIMode, StatusFontColorNormalString, rgb(0, 0, 0))
 'MOD  END  240a
-            upic.Print RightPaddedString("ï¼Ÿ", 12);
+            upic.Print RightPaddedString("H", 12);
             
-            'é‹å‹•æ€§
+            '‰^“®«
 'MOD START 240a
 '            upic.ForeColor = rgb(0, 0, 150)
             upic.ForeColor = IIf(NewGUIMode, StatusFontColorAbilityName, rgb(0, 0, 150))
 'MOD  END  240a
-            upic.Print Term("é‹å‹•æ€§", Nothing, 6) & " ";
+            upic.Print Term("‰^“®«", Nothing, 6) & " ";
 'MOD START 240a
 '            upic.ForeColor = rgb(0, 0, 0)
             upic.ForeColor = IIf(NewGUIMode, StatusFontColorNormalString, rgb(0, 0, 0))
 'MOD  END  240a
-            upic.Print "ï¼Ÿ"
-            
-'ADD START 240a
-            If NewGUIMode Then
-                upic.CurrentX = 5
-            End If
-'ADD  END  240a
-            'ç§»å‹•ã‚¿ã‚¤ãƒ—
-'MOD START 240a
-'            upic.ForeColor = rgb(0, 0, 150)
-            upic.ForeColor = IIf(NewGUIMode, StatusFontColorAbilityName, rgb(0, 0, 150))
-'MOD  END  240a
-            upic.Print Term("ã‚¿ã‚¤ãƒ—", Nothing, 6) & " ";
-'MOD START 240a
-'            upic.ForeColor = rgb(0, 0, 0)
-            upic.ForeColor = IIf(NewGUIMode, StatusFontColorNormalString, rgb(0, 0, 0))
-'MOD  END  240a
-            upic.Print RightPaddedString("ï¼Ÿ", 12);
-            
-            'ç§»å‹•åŠ›
-'MOD START 240a
-'            upic.ForeColor = rgb(0, 0, 150)
-            upic.ForeColor = IIf(NewGUIMode, StatusFontColorAbilityName, rgb(0, 0, 150))
-'MOD  END  240a
-            upic.Print Term("ç§»å‹•åŠ›", Nothing, 6) & " ";
-'MOD START 240a
-'            upic.ForeColor = rgb(0, 0, 0)
-            upic.ForeColor = IIf(NewGUIMode, StatusFontColorNormalString, rgb(0, 0, 0))
-'MOD  END  240a
-            upic.Print "ï¼Ÿ"
+            upic.Print "H"
             
 'ADD START 240a
             If NewGUIMode Then
                 upic.CurrentX = 5
             End If
 'ADD  END  240a
-            'åœ°å½¢é©å¿œ
+            'ˆÚ“®ƒ^ƒCƒv
 'MOD START 240a
 '            upic.ForeColor = rgb(0, 0, 150)
             upic.ForeColor = IIf(NewGUIMode, StatusFontColorAbilityName, rgb(0, 0, 150))
 'MOD  END  240a
-            upic.Print "é©å¿œ   ";
+            upic.Print Term("ƒ^ƒCƒv", Nothing, 6) & " ";
 'MOD START 240a
 '            upic.ForeColor = rgb(0, 0, 0)
             upic.ForeColor = IIf(NewGUIMode, StatusFontColorNormalString, rgb(0, 0, 0))
 'MOD  END  240a
-            upic.Print RightPaddedString("ï¼Ÿ", 12);
+            upic.Print RightPaddedString("H", 12);
             
-            'ãƒ¦ãƒ‹ãƒƒãƒˆã‚µã‚¤ã‚º
+            'ˆÚ“®—Í
 'MOD START 240a
 '            upic.ForeColor = rgb(0, 0, 150)
             upic.ForeColor = IIf(NewGUIMode, StatusFontColorAbilityName, rgb(0, 0, 150))
 'MOD  END  240a
-            upic.Print Term("ã‚µã‚¤ã‚º", Nothing, 6) & " ";
+            upic.Print Term("ˆÚ“®—Í", Nothing, 6) & " ";
 'MOD START 240a
 '            upic.ForeColor = rgb(0, 0, 0)
             upic.ForeColor = IIf(NewGUIMode, StatusFontColorNormalString, rgb(0, 0, 0))
 'MOD  END  240a
-            upic.Print "ï¼Ÿ"
+            upic.Print "H"
             
-            'ã‚µãƒãƒ¼ãƒˆã‚¢ã‚¿ãƒƒã‚¯ã‚’å¾—ã‚‰ã‚Œã‚‹ã‹ã©ã†ã‹ã®ã¿è¡¨ç¤º
-            If (CommandState = "ã‚¿ãƒ¼ã‚²ãƒƒãƒˆé¸æŠ" Or CommandState = "ç§»å‹•å¾Œã‚¿ãƒ¼ã‚²ãƒƒãƒˆé¸æŠ") _
-                And (SelectedCommand = "æ”»æ’ƒ" Or SelectedCommand = "ãƒãƒƒãƒ—æ”»æ’ƒ") _
+'ADD START 240a
+            If NewGUIMode Then
+                upic.CurrentX = 5
+            End If
+'ADD  END  240a
+            '’nŒ`“K‰
+'MOD START 240a
+'            upic.ForeColor = rgb(0, 0, 150)
+            upic.ForeColor = IIf(NewGUIMode, StatusFontColorAbilityName, rgb(0, 0, 150))
+'MOD  END  240a
+            upic.Print "“K‰   ";
+'MOD START 240a
+'            upic.ForeColor = rgb(0, 0, 0)
+            upic.ForeColor = IIf(NewGUIMode, StatusFontColorNormalString, rgb(0, 0, 0))
+'MOD  END  240a
+            upic.Print RightPaddedString("H", 12);
+            
+            'ƒ†ƒjƒbƒgƒTƒCƒY
+'MOD START 240a
+'            upic.ForeColor = rgb(0, 0, 150)
+            upic.ForeColor = IIf(NewGUIMode, StatusFontColorAbilityName, rgb(0, 0, 150))
+'MOD  END  240a
+            upic.Print Term("ƒTƒCƒY", Nothing, 6) & " ";
+'MOD START 240a
+'            upic.ForeColor = rgb(0, 0, 0)
+            upic.ForeColor = IIf(NewGUIMode, StatusFontColorNormalString, rgb(0, 0, 0))
+'MOD  END  240a
+            upic.Print "H"
+            
+            'ƒTƒ|[ƒgƒAƒ^ƒbƒN‚ğ“¾‚ç‚ê‚é‚©‚Ç‚¤‚©‚Ì‚İ•\¦
+            If (CommandState = "ƒ^[ƒQƒbƒg‘I‘ğ" Or CommandState = "ˆÚ“®Œãƒ^[ƒQƒbƒg‘I‘ğ") _
+                And (SelectedCommand = "UŒ‚" Or SelectedCommand = "ƒ}ƒbƒvUŒ‚") _
                 And Not SelectedUnit Is Nothing _
             Then
-                If .Party = "æ•µ" _
-                    Or .Party = "ä¸­ç«‹" _
-                    Or .IsConditionSatisfied("æš´èµ°") _
-                    Or .IsConditionSatisfied("é­…äº†") _
-                    Or .IsConditionSatisfied("æ†‘ä¾") _
+                If .Party = "“G" _
+                    Or .Party = "’†—§" _
+                    Or .IsConditionSatisfied("–\‘–") _
+                    Or .IsConditionSatisfied("–£—¹") _
+                    Or .IsConditionSatisfied("œßˆË") _
                 Then
                     upic.Print
                     
-                    'æ”»æ’ƒæ‰‹æ®µ
+                    'UŒ‚è’i
 'MOD START 240a
 '                    upic.ForeColor = rgb(0, 0, 150)
                     upic.ForeColor = IIf(NewGUIMode, StatusFontColorAbilityName, rgb(0, 0, 150))
 'MOD  END  240a
-                    upic.Print "æ”»æ’ƒ     ";
+                    upic.Print "UŒ‚     ";
 'MOD START 240a
 '                   upic.ForeColor = rgb(0, 0, 0)
                     upic.ForeColor = IIf(NewGUIMode, StatusFontColorNormalString, rgb(0, 0, 0))
 'MOD  END  240a
                     upic.Print SelectedUnit.WeaponNickname(SelectedWeapon);
-                    'ã‚µãƒãƒ¼ãƒˆã‚¢ã‚¿ãƒƒã‚¯ã‚’å¾—ã‚‰ã‚Œã‚‹ï¼Ÿ
-                    If Not SelectedUnit.IsWeaponClassifiedAs(SelectedWeapon, "åˆ") _
-                        And Not SelectedUnit.IsWeaponClassifiedAs(SelectedWeapon, "ï¼­") _
+                    'ƒTƒ|[ƒgƒAƒ^ƒbƒN‚ğ“¾‚ç‚ê‚éH
+                    If Not SelectedUnit.IsWeaponClassifiedAs(SelectedWeapon, "‡") _
+                        And Not SelectedUnit.IsWeaponClassifiedAs(SelectedWeapon, "‚l") _
                     Then
                         If Not SelectedUnit.LookForSupportAttack(u) Is Nothing Then
-                            upic.Print " [æ´]"
+                            upic.Print " [‰‡]"
                         End If
                     End If
                 End If
@@ -1713,71 +1713,71 @@ UnitStatus:
             GoTo UpdateStatusWindow
         End If
         
-        'å®Ÿè¡Œä¸­ã®å‘½ä»¤
-        If .Party = "ï¼®ï¼°ï¼£" _
-            And Not .IsConditionSatisfied("æ··ä¹±") _
-            And Not .IsConditionSatisfied("ææ€–") _
-            And Not .IsConditionSatisfied("æš´èµ°") _
-            And Not .IsConditionSatisfied("ç‹‚æˆ¦å£«") _
+        'Às’†‚Ì–½—ß
+        If .Party = "‚m‚o‚b" _
+            And Not .IsConditionSatisfied("¬—") _
+            And Not .IsConditionSatisfied("‹°•|") _
+            And Not .IsConditionSatisfied("–\‘–") _
+            And Not .IsConditionSatisfied("‹¶ím") _
         Then
-            'æ€è€ƒãƒ¢ãƒ¼ãƒ‰ã‚’è¦‹ã‚Œã°å®Ÿè¡Œã—ã¦ã„ã‚‹å‘½ä»¤ãŒåˆ†ã‹ã‚‹ã®ã§â€¦â€¦
+            'vlƒ‚[ƒh‚ğŒ©‚ê‚ÎÀs‚µ‚Ä‚¢‚é–½—ß‚ª•ª‚©‚é‚Ì‚Åcc
             buf = ""
-            If .IsConditionSatisfied("é­…äº†") Then
+            If .IsConditionSatisfied("–£—¹") Then
                 If Not .Master Is Nothing Then
-                    If .Master.Party = "å‘³æ–¹" Then
+                    If .Master.Party = "–¡•û" Then
                         buf = .Mode
                     End If
                 End If
             End If
-            If .IsFeatureAvailable("å¬å–šãƒ¦ãƒ‹ãƒƒãƒˆ") _
-                And Not .IsConditionSatisfied("é­…äº†") _
+            If .IsFeatureAvailable("¢Š«ƒ†ƒjƒbƒg") _
+                And Not .IsConditionSatisfied("–£—¹") _
             Then
                 If Not .Summoner Is Nothing Then
-                    If .Summoner.Party = "å‘³æ–¹" Then
+                    If .Summoner.Party = "–¡•û" Then
                         buf = .Mode
                     End If
                 End If
             End If
             
-            If buf = "é€šå¸¸" Then
-                upic.Print "è‡ªç”±è¡Œå‹•ä¸­"
+            If buf = "’Êí" Then
+                upic.Print "©—Rs“®’†"
             ElseIf PList.IsDefined(buf) Then
-                'æ€è€ƒãƒ¢ãƒ¼ãƒ‰ã«ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆåãŒæŒ‡å®šã•ã‚Œã¦ã„ã‚‹å ´åˆ
+                'vlƒ‚[ƒh‚ÉƒpƒCƒƒbƒg–¼‚ªw’è‚³‚ê‚Ä‚¢‚éê‡
                 With PList.Item(buf)
                     If Not .Unit Is Nothing Then
                         With .Unit
-                            If .Status = "å‡ºæ’ƒ" Then
-                                upic.Print .Nickname & "(" & Format$(.X) & "," & Format(.Y) & ")ã‚’";
-                                If .Party = "å‘³æ–¹" Then
-                                    upic.Print "è­·è¡›ä¸­"
+                            If .Status = "oŒ‚" Then
+                                upic.Print .Nickname & "(" & Format$(.X) & "," & Format(.Y) & ")‚ğ";
+                                If .Party = "–¡•û" Then
+                                    upic.Print "Œì‰q’†"
                                 Else
-                                    upic.Print "è¿½è·¡ä¸­"
+                                    upic.Print "’ÇÕ’†"
                                 End If
                             End If
                         End With
                     End If
                 End With
             ElseIf LLength(buf) = 2 Then
-                'æ€è€ƒãƒ¢ãƒ¼ãƒ‰ã«åº§æ¨™ãŒæŒ‡å®šã•ã‚Œã¦ã„ã‚‹å ´åˆ
-                upic.Print "(" & LIndex(buf, 1) & "," & LIndex(buf, 2) & ")ã«ç§»å‹•ä¸­"
+                'vlƒ‚[ƒh‚ÉÀ•W‚ªw’è‚³‚ê‚Ä‚¢‚éê‡
+                upic.Print "(" & LIndex(buf, 1) & "," & LIndex(buf, 2) & ")‚ÉˆÚ“®’†"
             End If
         End If
         
-        'ãƒ¦ãƒ‹ãƒƒãƒˆã«ã‹ã‹ã£ã¦ã„ã‚‹ç‰¹æ®Šã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹
+        'ƒ†ƒjƒbƒg‚É‚©‚©‚Á‚Ä‚¢‚é“ÁêƒXƒe[ƒ^ƒX
         ReDim name_list(0)
         For i = 1 To .CountCondition
-            'æ™‚é–“åˆ‡ã‚Œï¼Ÿ
+            'ŠÔØ‚êH
             If .ConditionLifetime(i) = 0 Then
                 GoTo NextCondition
             End If
             
-            'éè¡¨ç¤ºï¼Ÿ
-            If InStr(.ConditionData(i), "éè¡¨ç¤º") > 0 Then
+            '”ñ•\¦H
+            If InStr(.ConditionData(i), "”ñ•\¦") > 0 Then
                 GoTo NextCondition
             End If
             
-            'è§£èª¬ï¼Ÿ
-            If LIndex(.ConditionData(i), 1) = "è§£èª¬" Then
+            '‰ğàH
+            If LIndex(.ConditionData(i), 1) = "‰ğà" Then
                 GoTo NextCondition
             End If
 'ADD START 240a
@@ -1786,182 +1786,182 @@ UnitStatus:
             End If
 'ADD  END  240a
             Select Case .Condition(i)
-                Case "ãƒ‡ãƒ¼ã‚¿ä¸æ˜", "å½¢æ…‹å›ºå®š", "æ©Ÿä½“å›ºå®š", "ä¸æ­»èº«", "ç„¡æ•µ", _
-                    "è­˜åˆ¥æ¸ˆã¿", "éæ“ä½œ", "ç ´å£Šã‚­ãƒ£ãƒ³ã‚»ãƒ«", "ç›¾ãƒ€ãƒ¡ãƒ¼ã‚¸", _
-                    "èƒ½åŠ›ã‚³ãƒ”ãƒ¼", _
-                    "ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ä»˜åŠ ", "ãƒãƒ¼ãƒãƒ«ãƒ¢ãƒ¼ãƒ‰ä»˜åŠ ", "è¿½åŠ ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆä»˜åŠ ", _
-                    "è¿½åŠ ã‚µãƒãƒ¼ãƒˆä»˜åŠ ", "ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆæ„›ç§°ä»˜åŠ ", "ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆç”»åƒä»˜åŠ ", _
-                    "æ€§æ ¼å¤‰æ›´ä»˜åŠ ", "æ€§åˆ¥ä»˜åŠ ", "ï¼¢ï¼§ï¼­ä»˜åŠ ", "æ„›ç§°å¤‰æ›´ä»˜åŠ ", _
-                    "ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼ç„¡åŠ¹åŒ–", "ç²¾ç¥ã‚³ãƒãƒ³ãƒ‰ç„¡åŠ¹åŒ–", _
-                    "ãƒ¦ãƒ‹ãƒƒãƒˆç”»åƒä»˜åŠ ", "ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ä»˜åŠ "
-                    'éè¡¨ç¤º
-                Case "æ®‹ã‚Šæ™‚é–“"
+                Case "ƒf[ƒ^•s–¾", "Œ`‘ÔŒÅ’è", "‹@‘ÌŒÅ’è", "•s€g", "–³“G", _
+                    "¯•ÊÏ‚İ", "”ñ‘€ì", "”j‰óƒLƒƒƒ“ƒZƒ‹", "‚ƒ_ƒ[ƒW", _
+                    "”\—ÍƒRƒs[", _
+                    "ƒƒbƒZ[ƒW•t‰Á", "ƒm[ƒ}ƒ‹ƒ‚[ƒh•t‰Á", "’Ç‰ÁƒpƒCƒƒbƒg•t‰Á", _
+                    "’Ç‰ÁƒTƒ|[ƒg•t‰Á", "ƒpƒCƒƒbƒgˆ¤Ì•t‰Á", "ƒpƒCƒƒbƒg‰æ‘œ•t‰Á", _
+                    "«Ši•ÏX•t‰Á", "«•Ê•t‰Á", "‚a‚f‚l•t‰Á", "ˆ¤Ì•ÏX•t‰Á", _
+                    "ƒXƒyƒVƒƒƒ‹ƒpƒ[–³Œø‰»", "¸_ƒRƒ}ƒ“ƒh–³Œø‰»", _
+                    "ƒ†ƒjƒbƒg‰æ‘œ•t‰Á", "ƒƒbƒZ[ƒW•t‰Á"
+                    '”ñ•\¦
+                Case "c‚èŠÔ"
                     If 0 < .ConditionLifetime(i) And .ConditionLifetime(i) < 100 Then
-                        upic.Print "æ®‹ã‚Šæ™‚é–“" & Format$(.ConditionLifetime(i)) & "ã‚¿ãƒ¼ãƒ³"
+                        upic.Print "c‚èŠÔ" & Format$(.ConditionLifetime(i)) & "ƒ^[ƒ“"
                     End If
-                Case "ç„¡åŠ¹åŒ–ä»˜åŠ ", "è€æ€§ä»˜åŠ ", "å¸åä»˜åŠ ", "å¼±ç‚¹ä»˜åŠ "
+                Case "–³Œø‰»•t‰Á", "‘Ï«•t‰Á", "‹zû•t‰Á", "ã“_•t‰Á"
                     upic.Print .ConditionData(i) & .Condition(i);
                     If 0 < .ConditionLifetime(i) And .ConditionLifetime(i) < 100 Then
                         upic.Print " " & Format$(.ConditionLifetime(i)) & "T";
                     End If
                     upic.Print ""
-                Case "ç‰¹æ®ŠåŠ¹æœç„¡åŠ¹åŒ–ä»˜åŠ "
-                    upic.Print .ConditionData(i) & "ç„¡åŠ¹åŒ–ä»˜åŠ ";
+                Case "“ÁêŒø‰Ê–³Œø‰»•t‰Á"
+                    upic.Print .ConditionData(i) & "–³Œø‰»•t‰Á";
                     If 0 < .ConditionLifetime(i) And .ConditionLifetime(i) < 100 Then
-                        upic.Print " æ®‹ã‚Š" & Format$(.ConditionLifetime(i)) & "ã‚¿ãƒ¼ãƒ³";
+                        upic.Print " c‚è" & Format$(.ConditionLifetime(i)) & "ƒ^[ƒ“";
                     End If
                     upic.Print ""
-                Case "æ”»æ’ƒå±æ€§ä»˜åŠ "
-                    upic.Print LIndex(.ConditionData(i), 1) & "å±æ€§ä»˜åŠ ";
+                Case "UŒ‚‘®«•t‰Á"
+                    upic.Print LIndex(.ConditionData(i), 1) & "‘®«•t‰Á";
                     If 0 < .ConditionLifetime(i) And .ConditionLifetime(i) < 100 Then
-                        upic.Print " æ®‹ã‚Š" & Format$(.ConditionLifetime(i)) & "ã‚¿ãƒ¼ãƒ³";
+                        upic.Print " c‚è" & Format$(.ConditionLifetime(i)) & "ƒ^[ƒ“";
                     End If
                     upic.Print ""
-                Case "æ­¦å™¨å¼·åŒ–ä»˜åŠ "
-                    upic.Print "æ­¦å™¨å¼·åŒ–Lv" & .ConditionLevel(i) & "ä»˜åŠ ";
+                Case "•Ší‹­‰»•t‰Á"
+                    upic.Print "•Ší‹­‰»Lv" & .ConditionLevel(i) & "•t‰Á";
                     If .ConditionData(i) <> "" Then
                         upic.Print "(" & .ConditionData(i) & ")";
                     End If
                     If 0 < .ConditionLifetime(i) And .ConditionLifetime(i) < 100 Then
-                        upic.Print " æ®‹ã‚Š" & Format$(.ConditionLifetime(i)) & "ã‚¿ãƒ¼ãƒ³";
+                        upic.Print " c‚è" & Format$(.ConditionLifetime(i)) & "ƒ^[ƒ“";
                     End If
                     upic.Print ""
-                Case "å‘½ä¸­ç‡å¼·åŒ–ä»˜åŠ "
-                    upic.Print "å‘½ä¸­ç‡å¼·åŒ–Lv" & .ConditionLevel(i) & "ä»˜åŠ ";
+                Case "–½’†—¦‹­‰»•t‰Á"
+                    upic.Print "–½’†—¦‹­‰»Lv" & .ConditionLevel(i) & "•t‰Á";
                     If .ConditionData(i) <> "" Then
                         upic.Print "(" & .ConditionData(i) & ")";
                     End If
                     If 0 < .ConditionLifetime(i) And .ConditionLifetime(i) < 100 Then
-                        upic.Print " æ®‹ã‚Š" & Format$(.ConditionLifetime(i)) & "ã‚¿ãƒ¼ãƒ³";
+                        upic.Print " c‚è" & Format$(.ConditionLifetime(i)) & "ƒ^[ƒ“";
                     End If
                     upic.Print ""
-                Case "ï¼£ï¼´ç‡å¼·åŒ–ä»˜åŠ "
-                    upic.Print "ï¼£ï¼´ç‡å¼·åŒ–Lv" & .ConditionLevel(i) & "ä»˜åŠ ";
+                Case "‚b‚s—¦‹­‰»•t‰Á"
+                    upic.Print "‚b‚s—¦‹­‰»Lv" & .ConditionLevel(i) & "•t‰Á";
                     If .ConditionData(i) <> "" Then
                         upic.Print "(" & .ConditionData(i) & ")";
                     End If
                     If 0 < .ConditionLifetime(i) And .ConditionLifetime(i) < 100 Then
-                        upic.Print " æ®‹ã‚Š" & Format$(.ConditionLifetime(i)) & "ã‚¿ãƒ¼ãƒ³";
+                        upic.Print " c‚è" & Format$(.ConditionLifetime(i)) & "ƒ^[ƒ“";
                     End If
                     upic.Print ""
-                Case "ç‰¹æ®ŠåŠ¹æœç™ºå‹•ç‡å¼·åŒ–ä»˜åŠ "
-                    upic.Print "ç‰¹æ®ŠåŠ¹æœç™ºå‹•ç‡å¼·åŒ–Lv" & .ConditionLevel(i) & "ä»˜åŠ ";
+                Case "“ÁêŒø‰Ê”­“®—¦‹­‰»•t‰Á"
+                    upic.Print "“ÁêŒø‰Ê”­“®—¦‹­‰»Lv" & .ConditionLevel(i) & "•t‰Á";
                     If .ConditionData(i) <> "" Then
                         upic.Print "(" & .ConditionData(i) & ")";
                     End If
                     If 0 < .ConditionLifetime(i) And .ConditionLifetime(i) < 100 Then
-                        upic.Print " æ®‹ã‚Š" & Format$(.ConditionLifetime(i)) & "ã‚¿ãƒ¼ãƒ³";
+                        upic.Print " c‚è" & Format$(.ConditionLifetime(i)) & "ƒ^[ƒ“";
                     End If
                     upic.Print ""
-                Case "åœ°å½¢é©å¿œå¤‰æ›´ä»˜åŠ "
-                    upic.Print "åœ°å½¢é©å¿œå¤‰æ›´ä»˜åŠ ";
+                Case "’nŒ`“K‰•ÏX•t‰Á"
+                    upic.Print "’nŒ`“K‰•ÏX•t‰Á";
                     If 0 < .ConditionLifetime(i) And .ConditionLifetime(i) < 100 Then
-                        upic.Print " æ®‹ã‚Š" & Format$(.ConditionLifetime(i)) & "ã‚¿ãƒ¼ãƒ³";
+                        upic.Print " c‚è" & Format$(.ConditionLifetime(i)) & "ƒ^[ƒ“";
                     End If
                     upic.Print ""
-                Case "ç›¾ä»˜åŠ "
-                    upic.Print LIndex(.ConditionData(i), 1) & "ä»˜åŠ ";
+                Case "‚•t‰Á"
+                    upic.Print LIndex(.ConditionData(i), 1) & "•t‰Á";
                     upic.Print "(" & Format$(.ConditionLevel(i)) & ")";
                     If 0 < .ConditionLifetime(i) And .ConditionLifetime(i) < 100 Then
-                        upic.Print " æ®‹ã‚Š" & Format$(.ConditionLifetime(i)) & "ã‚¿ãƒ¼ãƒ³";
+                        upic.Print " c‚è" & Format$(.ConditionLifetime(i)) & "ƒ^[ƒ“";
                     End If
                     upic.Print ""
-                Case "ãƒ€ãƒŸãƒ¼ç ´å£Š"
-                    buf = .FeatureName("ãƒ€ãƒŸãƒ¼")
+                Case "ƒ_ƒ~[”j‰ó"
+                    buf = .FeatureName("ƒ_ƒ~[")
                     If InStr(buf, "Lv") > 0 Then
                         buf = Left$(buf, InStr(buf, "Lv") - 1)
                     End If
-                    upic.Print buf & StrConv(Format$(.ConditionLevel(i)), vbWide) & "ä½“ç ´å£Š"
-                Case "ãƒ€ãƒŸãƒ¼ä»˜åŠ "
-                    upic.Print .FeatureName("ãƒ€ãƒŸãƒ¼") & "æ®‹ã‚Š" & _
-                        StrConv(Format$(.ConditionLevel(i)), vbWide) & "ä½“";
+                    upic.Print buf & StrConv(Format$(.ConditionLevel(i)), vbWide) & "‘Ì”j‰ó"
+                Case "ƒ_ƒ~[•t‰Á"
+                    upic.Print .FeatureName("ƒ_ƒ~[") & "c‚è" & _
+                        StrConv(Format$(.ConditionLevel(i)), vbWide) & "‘Ì";
                     If 0 < .ConditionLifetime(i) And .ConditionLifetime(i) < 100 Then
-                        upic.Print " æ®‹ã‚Š" & Format$(.ConditionLifetime(i)) & "ã‚¿ãƒ¼ãƒ³";
+                        upic.Print " c‚è" & Format$(.ConditionLifetime(i)) & "ƒ^[ƒ“";
                     End If
                     upic.Print ""
-                Case "ãƒãƒªã‚¢ç™ºå‹•"
+                Case "ƒoƒŠƒA”­“®"
                     If .ConditionData(i) <> "" Then
                         upic.Print .ConditionData(i);
                     Else
-                        upic.Print "ãƒãƒªã‚¢ç™ºå‹•";
+                        upic.Print "ƒoƒŠƒA”­“®";
                     End If
-                    upic.Print " æ®‹ã‚Š" & Format$(.ConditionLifetime(i)) & "ã‚¿ãƒ¼ãƒ³"
-                Case "ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ç™ºå‹•"
+                    upic.Print " c‚è" & Format$(.ConditionLifetime(i)) & "ƒ^[ƒ“"
+                Case "ƒtƒB[ƒ‹ƒh”­“®"
                     If .ConditionData(i) <> "" Then
                         upic.Print .ConditionData(i);
                     Else
-                        upic.Print "ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ç™ºå‹•";
+                        upic.Print "ƒtƒB[ƒ‹ƒh”­“®";
                     End If
-                    upic.Print " æ®‹ã‚Š" & Format$(.ConditionLifetime(i)) & "ã‚¿ãƒ¼ãƒ³"
-                Case "è£…ç”²åŠ£åŒ–"
-                    upic.Print Term("è£…ç”²", u) & "åŠ£åŒ–";
+                    upic.Print " c‚è" & Format$(.ConditionLifetime(i)) & "ƒ^[ƒ“"
+                Case "‘•b—ò‰»"
+                    upic.Print Term("‘•b", u) & "—ò‰»";
                     If 0 < .ConditionLifetime(i) And .ConditionLifetime(i) < 20 Then
-                        upic.Print " æ®‹ã‚Š" & Format$(.ConditionLifetime(i)) & "ã‚¿ãƒ¼ãƒ³";
-                    End If
-                    upic.Print ""
-                Case "é‹å‹•æ€§ï¼µï¼°"
-                    upic.Print Term("é‹å‹•æ€§", u) & "ï¼µï¼°";
-                    If 0 < .ConditionLifetime(i) And .ConditionLifetime(i) < 20 Then
-                        upic.Print " æ®‹ã‚Š" & Format$(.ConditionLifetime(i)) & "ã‚¿ãƒ¼ãƒ³";
+                        upic.Print " c‚è" & Format$(.ConditionLifetime(i)) & "ƒ^[ƒ“";
                     End If
                     upic.Print ""
-                Case "é‹å‹•æ€§ï¼¤ï¼¯ï¼·ï¼®"
-                    upic.Print Term("é‹å‹•æ€§", u) & "ï¼¤ï¼¯ï¼·ï¼®";
+                Case "‰^“®«‚t‚o"
+                    upic.Print Term("‰^“®«", u) & "‚t‚o";
                     If 0 < .ConditionLifetime(i) And .ConditionLifetime(i) < 20 Then
-                        upic.Print " æ®‹ã‚Š" & Format$(.ConditionLifetime(i)) & "ã‚¿ãƒ¼ãƒ³";
+                        upic.Print " c‚è" & Format$(.ConditionLifetime(i)) & "ƒ^[ƒ“";
                     End If
                     upic.Print ""
-                Case "ç§»å‹•åŠ›ï¼µï¼°"
-                    upic.Print Term("ç§»å‹•åŠ›", u) & "ï¼µï¼°";
+                Case "‰^“®«‚c‚n‚v‚m"
+                    upic.Print Term("‰^“®«", u) & "‚c‚n‚v‚m";
                     If 0 < .ConditionLifetime(i) And .ConditionLifetime(i) < 20 Then
-                        upic.Print " æ®‹ã‚Š" & Format$(.ConditionLifetime(i)) & "ã‚¿ãƒ¼ãƒ³";
+                        upic.Print " c‚è" & Format$(.ConditionLifetime(i)) & "ƒ^[ƒ“";
                     End If
                     upic.Print ""
-                Case "ç§»å‹•åŠ›ï¼¤ï¼¯ï¼·ï¼®"
-                    upic.Print Term("ç§»å‹•åŠ›", u) & "ï¼¤ï¼¯ï¼·ï¼®";
+                Case "ˆÚ“®—Í‚t‚o"
+                    upic.Print Term("ˆÚ“®—Í", u) & "‚t‚o";
                     If 0 < .ConditionLifetime(i) And .ConditionLifetime(i) < 20 Then
-                        upic.Print " æ®‹ã‚Š" & Format$(.ConditionLifetime(i)) & "ã‚¿ãƒ¼ãƒ³";
+                        upic.Print " c‚è" & Format$(.ConditionLifetime(i)) & "ƒ^[ƒ“";
+                    End If
+                    upic.Print ""
+                Case "ˆÚ“®—Í‚c‚n‚v‚m"
+                    upic.Print Term("ˆÚ“®—Í", u) & "‚c‚n‚v‚m";
+                    If 0 < .ConditionLifetime(i) And .ConditionLifetime(i) < 20 Then
+                        upic.Print " c‚è" & Format$(.ConditionLifetime(i)) & "ƒ^[ƒ“";
                     End If
                     upic.Print ""
                 Case Else
-                    'å……å¡«ä¸­ï¼Ÿ
-                    If Right$(.Condition(i), 3) = "å……å¡«ä¸­" Then
+                    '[“U’†H
+                    If Right$(.Condition(i), 3) = "[“U’†" Then
                         If .IsHero() Then
                             upic.Print Left$(.Condition(i), Len(.Condition(i)) - 3);
-                            upic.Print "æº–å‚™ä¸­";
+                            upic.Print "€”õ’†";
                         Else
                             upic.Print .Condition(i);
                         End If
-                        upic.Print " æ®‹ã‚Š" & Format$(.ConditionLifetime(i)) & "ã‚¿ãƒ¼ãƒ³"
+                        upic.Print " c‚è" & Format$(.ConditionLifetime(i)) & "ƒ^[ƒ“"
                         GoTo NextCondition
                     End If
                     
-                    'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆç‰¹æ®Šèƒ½åŠ›ä»˜åŠ ï¼†å¼·åŒ–ã«ã‚ˆã‚‹çŠ¶æ…‹ã¯è¡¨ç¤ºã—ãªã„
-                    If Right$(.Condition(i), 3) = "ä»˜åŠ ï¼’" _
-                        Or Right$(.Condition(i), 3) = "å¼·åŒ–ï¼’" _
+                    'ƒpƒCƒƒbƒg“Áê”\—Í•t‰Á•‹­‰»‚É‚æ‚éó‘Ô‚Í•\¦‚µ‚È‚¢
+                    If Right$(.Condition(i), 3) = "•t‰Á‚Q" _
+                        Or Right$(.Condition(i), 3) = "‹­‰»‚Q" _
                     Then
                         GoTo NextCondition
                     End If
                     
-                    If Right$(.Condition(i), 2) = "ä»˜åŠ " _
+                    If Right$(.Condition(i), 2) = "•t‰Á" _
                         And .ConditionData(i) <> "" _
                     Then
-                        buf = LIndex(.ConditionData(i), 1) & "ä»˜åŠ "
-                    ElseIf Right$(.Condition(i), 2) = "å¼·åŒ–" _
+                        buf = LIndex(.ConditionData(i), 1) & "•t‰Á"
+                    ElseIf Right$(.Condition(i), 2) = "‹­‰»" _
                         And .ConditionData(i) <> "" _
                     Then
-                        'å¼·åŒ–ã‚¢ãƒ“ãƒªãƒ†ã‚£
-                        buf = LIndex(.ConditionData(i), 1) & "å¼·åŒ–Lv" & .ConditionLevel(i)
+                        '‹­‰»ƒAƒrƒŠƒeƒB
+                        buf = LIndex(.ConditionData(i), 1) & "‹­‰»Lv" & .ConditionLevel(i)
                     ElseIf .ConditionLevel(i) > 0 Then
-                        'ä»˜åŠ ã‚¢ãƒ“ãƒªãƒ†ã‚£(ãƒ¬ãƒ™ãƒ«æŒ‡å®šã‚ã‚Š)
+                        '•t‰ÁƒAƒrƒŠƒeƒB(ƒŒƒxƒ‹w’è‚ ‚è)
                         buf = Left$(.Condition(i), Len(.Condition(i)) - 2) _
-                            & "Lv" & Format$(.ConditionLevel(i)) & "ä»˜åŠ "
+                            & "Lv" & Format$(.ConditionLevel(i)) & "•t‰Á"
                     Else
-                        'ä»˜åŠ ã‚¢ãƒ“ãƒªãƒ†ã‚£(ãƒ¬ãƒ™ãƒ«æŒ‡å®šãªã—)
+                        '•t‰ÁƒAƒrƒŠƒeƒB(ƒŒƒxƒ‹w’è‚È‚µ)
                         buf = .Condition(i)
                     End If
                     
-                    'ã‚¨ãƒªã‚¢ã‚¹ã•ã‚ŒãŸç‰¹æ®Šèƒ½åŠ›ã®ä»˜åŠ è¡¨ç¤ºãŒãŸã¶ã‚‰ãªã„ã‚ˆã†ã«
+                    'ƒGƒŠƒAƒX‚³‚ê‚½“Áê”\—Í‚Ì•t‰Á•\¦‚ª‚½‚Ô‚ç‚È‚¢‚æ‚¤‚É
                     For j = 1 To UBound(name_list)
                         If buf = name_list(j) Then
                             Exit For
@@ -1976,7 +1976,7 @@ UnitStatus:
                     upic.Print buf;
                     
                     If 0 < .ConditionLifetime(i) And .ConditionLifetime(i) < 20 Then
-                        upic.Print " æ®‹ã‚Š" & Format$(.ConditionLifetime(i)) & "ã‚¿ãƒ¼ãƒ³";
+                        upic.Print " c‚è" & Format$(.ConditionLifetime(i)) & "ƒ^[ƒ“";
                     End If
                     upic.Print ""
             End Select
@@ -1988,7 +1988,7 @@ NextCondition:
             upic.CurrentX = 5
         End If
 'ADD  END  240a
-        'ï¼¨ï¼°
+        '‚g‚o
         cx = upic.CurrentX
         cy = upic.CurrentY
         upic.Line _
@@ -2011,12 +2011,12 @@ NextCondition:
 '        upic.ForeColor = rgb(0, 0, 150)
         upic.ForeColor = IIf(NewGUIMode, StatusFontColorAbilityName, rgb(0, 0, 150))
 'MOD  END  240a
-        upic.Print Term("ï¼¨ï¼°", u, 6) & " ";
+        upic.Print Term("‚g‚o", u, 6) & " ";
 'MOD START 240a
 '        upic.ForeColor = rgb(0, 0, 0)
         upic.ForeColor = IIf(NewGUIMode, StatusFontColorNormalString, rgb(0, 0, 0))
 'MOD  END  240a
-        If .IsConditionSatisfied("ãƒ‡ãƒ¼ã‚¿ä¸æ˜") Then
+        If .IsConditionSatisfied("ƒf[ƒ^•s–¾") Then
             upic.Print "?????/?????"
         Else
             If .HP < 100000 Then
@@ -2037,7 +2037,7 @@ NextCondition:
             upic.CurrentX = 5
         End If
 'ADD  END  240a
-        'ï¼¥ï¼®
+        '‚d‚m
         cx = upic.CurrentX
         cy = upic.CurrentY
         upic.Line _
@@ -2060,12 +2060,12 @@ NextCondition:
 '        upic.ForeColor = rgb(0, 0, 150)
         upic.ForeColor = IIf(NewGUIMode, StatusFontColorAbilityName, rgb(0, 0, 150))
 'MOD  END  240a
-        upic.Print Term("ï¼¥ï¼®", u, 6) & " ";
+        upic.Print Term("‚d‚m", u, 6) & " ";
 'MOD START 240a
 '        upic.ForeColor = rgb(0, 0, 0)
         upic.ForeColor = IIf(NewGUIMode, StatusFontColorNormalString, rgb(0, 0, 0))
 'MOD  END  240a
-        If .IsConditionSatisfied("ãƒ‡ãƒ¼ã‚¿ä¸æ˜") Then
+        If .IsConditionSatisfied("ƒf[ƒ^•s–¾") Then
             upic.Print "???/???"
         Else
             If .EN < 1000 Then
@@ -2086,42 +2086,42 @@ NextCondition:
             upic.CurrentX = 5
         End If
 'ADD  END  240a
-        'è£…ç”²
+        '‘•b
 'MOD START 240a
 '        upic.ForeColor = rgb(0, 0, 150)
         upic.ForeColor = IIf(NewGUIMode, StatusFontColorAbilityName, rgb(0, 0, 150))
 'MOD  END  240a
-        upic.Print Term("è£…ç”²", u, 6) & " ";
+        upic.Print Term("‘•b", u, 6) & " ";
 'MOD START 240a
 '        upic.ForeColor = rgb(0, 0, 0)
         upic.ForeColor = IIf(NewGUIMode, StatusFontColorNormalString, rgb(0, 0, 0))
 'MOD  END  240a
-        Select Case .Armor("ä¿®æ­£å€¤")
+        Select Case .Armor("C³’l")
             Case Is > 0
                 upic.Print RightPaddedString _
-                    (Format$(.Armor("åŸºæœ¬å€¤")) & "+" & Format$(.Armor("ä¿®æ­£å€¤")), 12);
+                    (Format$(.Armor("Šî–{’l")) & "+" & Format$(.Armor("C³’l")), 12);
             Case Is < 0
                 upic.Print RightPaddedString _
-                    (Format$(.Armor("åŸºæœ¬å€¤")) & Format$(.Armor("ä¿®æ­£å€¤")), 12);
+                    (Format$(.Armor("Šî–{’l")) & Format$(.Armor("C³’l")), 12);
             Case 0
                 upic.Print RightPaddedString(Format$(.Armor), 12);
         End Select
         
-        'é‹å‹•æ€§
+        '‰^“®«
 'MOD START 240a
 '        upic.ForeColor = rgb(0, 0, 150)
         upic.ForeColor = IIf(NewGUIMode, StatusFontColorAbilityName, rgb(0, 0, 150))
 'MOD  END  240a
-        upic.Print Term("é‹å‹•æ€§", u, 6) & " ";
+        upic.Print Term("‰^“®«", u, 6) & " ";
 'MOD START 240a
 '        upic.ForeColor = rgb(0, 0, 0)
         upic.ForeColor = IIf(NewGUIMode, StatusFontColorNormalString, rgb(0, 0, 0))
 'MOD  END  240a
-        Select Case .Mobility("ä¿®æ­£å€¤")
+        Select Case .Mobility("C³’l")
             Case Is > 0
-                upic.Print Format$(.Mobility("åŸºæœ¬å€¤")) & "+" & Format$(.Mobility("ä¿®æ­£å€¤"))
+                upic.Print Format$(.Mobility("Šî–{’l")) & "+" & Format$(.Mobility("C³’l"))
             Case Is < 0
-                upic.Print Format$(.Mobility("åŸºæœ¬å€¤")) & Format$(.Mobility("ä¿®æ­£å€¤"))
+                upic.Print Format$(.Mobility("Šî–{’l")) & Format$(.Mobility("C³’l"))
             Case 0
                 upic.Print Format$(.Mobility)
         End Select
@@ -2131,12 +2131,12 @@ NextCondition:
             upic.CurrentX = 5
         End If
 'ADD  END  240a
-        'ç§»å‹•ã‚¿ã‚¤ãƒ—
+        'ˆÚ“®ƒ^ƒCƒv
 'MOD START 240a
 '        upic.ForeColor = rgb(0, 0, 150)
         upic.ForeColor = IIf(NewGUIMode, StatusFontColorAbilityName, rgb(0, 0, 150))
 'MOD  END  240a
-        upic.Print Term("ã‚¿ã‚¤ãƒ—", u, 6) & " ";
+        upic.Print Term("ƒ^ƒCƒv", u, 6) & " ";
 'MOD START 240a
 '        upic.ForeColor = rgb(0, 0, 0)
         upic.ForeColor = IIf(NewGUIMode, StatusFontColorNormalString, rgb(0, 0, 0))
@@ -2144,20 +2144,20 @@ NextCondition:
         upic.Print _
             RightPaddedString(.Transportation, 12);
         
-        'ç§»å‹•åŠ›
+        'ˆÚ“®—Í
 'MOD START 240a
 '        upic.ForeColor = rgb(0, 0, 150)
         upic.ForeColor = IIf(NewGUIMode, StatusFontColorAbilityName, rgb(0, 0, 150))
 'MOD  END  240a
-        upic.Print Term("ç§»å‹•åŠ›", u, 6) & " ";
+        upic.Print Term("ˆÚ“®—Í", u, 6) & " ";
 'MOD START 240a
 '        upic.ForeColor = rgb(0, 0, 0)
         upic.ForeColor = IIf(NewGUIMode, StatusFontColorNormalString, rgb(0, 0, 0))
 'MOD  END  240a
-        If .IsFeatureAvailable("ãƒ†ãƒ¬ãƒãƒ¼ãƒˆ") _
-            And (.Data.Speed = 0 Or LIndex(.FeatureData("ãƒ†ãƒ¬ãƒãƒ¼ãƒˆ"), 2) = "0") _
+        If .IsFeatureAvailable("ƒeƒŒƒ|[ƒg") _
+            And (.Data.Speed = 0 Or LIndex(.FeatureData("ƒeƒŒƒ|[ƒg"), 2) = "0") _
         Then
-            upic.Print Format$(.Speed + .FeatureLevel("ãƒ†ãƒ¬ãƒãƒ¼ãƒˆ"))
+            upic.Print Format$(.Speed + .FeatureLevel("ƒeƒŒƒ|[ƒg"))
         Else
             upic.Print Format$(.Speed)
         End If
@@ -2167,12 +2167,12 @@ NextCondition:
             upic.CurrentX = 5
         End If
 'ADD  END  240a
-        'åœ°å½¢é©å¿œ
+        '’nŒ`“K‰
 'MOD START 240a
 '        upic.ForeColor = rgb(0, 0, 150)
         upic.ForeColor = IIf(NewGUIMode, StatusFontColorAbilityName, rgb(0, 0, 150))
 'MOD  END  240a
-        upic.Print "é©å¿œ   ";
+        upic.Print "“K‰   ";
 'MOD START 240a
 '        upic.ForeColor = rgb(0, 0, 0)
         upic.ForeColor = IIf(NewGUIMode, StatusFontColorNormalString, rgb(0, 0, 0))
@@ -2195,19 +2195,19 @@ NextCondition:
         Next
         upic.Print Space$(8);
         
-        'ãƒ¦ãƒ‹ãƒƒãƒˆã‚µã‚¤ã‚º
+        'ƒ†ƒjƒbƒgƒTƒCƒY
 'MOD START 240a
 '        upic.ForeColor = rgb(0, 0, 150)
         upic.ForeColor = IIf(NewGUIMode, StatusFontColorAbilityName, rgb(0, 0, 150))
 'MOD  END  240a
-        upic.Print Term("ã‚µã‚¤ã‚º", u, 6) & " ";
+        upic.Print Term("ƒTƒCƒY", u, 6) & " ";
 'MOD START 240a
 '        upic.ForeColor = rgb(0, 0, 0)
         upic.ForeColor = IIf(NewGUIMode, StatusFontColorNormalString, rgb(0, 0, 0))
 'MOD  END  240a
         upic.Print StrConv(.Size, vbWide)
         
-        'é˜²å¾¡å±æ€§ã®è¡¨ç¤º
+        '–hŒä‘®«‚Ì•\¦
         n = 0
         
 'ADD START 240a
@@ -2215,9 +2215,9 @@ NextCondition:
             upic.CurrentX = 5
         End If
 'ADD  END  240a
-        'å¸å
+        '‹zû
         If Len(.strAbsorb) > 0 _
-            And InStr(.strAbsorb, "éè¡¨ç¤º") = 0 _
+            And InStr(.strAbsorb, "”ñ•\¦") = 0 _
         Then
             If Len(.strAbsorb) > 5 Then
                 If n > 0 Then
@@ -2229,7 +2229,7 @@ NextCondition:
 '            upic.ForeColor = rgb(0, 0, 150)
             upic.ForeColor = IIf(NewGUIMode, StatusFontColorAbilityName, rgb(0, 0, 150))
 'MOD  END  240a
-            upic.Print "å¸å   ";
+            upic.Print "‹zû   ";
 'MOD START 240a
 '        upic.ForeColor = rgb(0, 0, 0)
         upic.ForeColor = IIf(NewGUIMode, StatusFontColorNormalString, rgb(0, 0, 0))
@@ -2247,9 +2247,9 @@ NextCondition:
             End If
         End If
         
-        'ç„¡åŠ¹åŒ–
+        '–³Œø‰»
         If Len(.strImmune) > 0 _
-            And InStr(.strImmune, "éè¡¨ç¤º") = 0 _
+            And InStr(.strImmune, "”ñ•\¦") = 0 _
         Then
             If Len(.strImmune) > 5 Then
                 If n > 0 Then
@@ -2266,7 +2266,7 @@ NextCondition:
 '            upic.ForeColor = rgb(0, 0, 150)
             upic.ForeColor = IIf(NewGUIMode, StatusFontColorAbilityName, rgb(0, 0, 150))
 'MOD  END  240a
-            upic.Print "ç„¡åŠ¹åŒ– ";
+            upic.Print "–³Œø‰» ";
 'MOD START 240a
 '        upic.ForeColor = rgb(0, 0, 0)
         upic.ForeColor = IIf(NewGUIMode, StatusFontColorNormalString, rgb(0, 0, 0))
@@ -2284,9 +2284,9 @@ NextCondition:
             End If
         End If
         
-        'è€æ€§
+        '‘Ï«
         If Len(.strResist) > 0 _
-            And InStr(.strResist, "éè¡¨ç¤º") = 0 _
+            And InStr(.strResist, "”ñ•\¦") = 0 _
         Then
             If Len(.strResist) > 5 Then
                 If n > 0 Then
@@ -2306,7 +2306,7 @@ NextCondition:
 '            upic.ForeColor = rgb(0, 0, 150)
             upic.ForeColor = IIf(NewGUIMode, StatusFontColorAbilityName, rgb(0, 0, 150))
 'MOD  END  240a
-            upic.Print "è€æ€§   ";
+            upic.Print "‘Ï«   ";
 'MOD START 240a
 '        upic.ForeColor = rgb(0, 0, 0)
         upic.ForeColor = IIf(NewGUIMode, StatusFontColorNormalString, rgb(0, 0, 0))
@@ -2324,9 +2324,9 @@ NextCondition:
             End If
         End If
         
-        'å¼±ç‚¹
+        'ã“_
         If Len(.strWeakness) > 0 _
-            And InStr(.strWeakness, "éè¡¨ç¤º") = 0 _
+            And InStr(.strWeakness, "”ñ•\¦") = 0 _
         Then
             If Len(.strWeakness) > 5 Then
                 If n > 0 Then
@@ -2346,7 +2346,7 @@ NextCondition:
 '            upic.ForeColor = rgb(0, 0, 150)
             upic.ForeColor = IIf(NewGUIMode, StatusFontColorAbilityName, rgb(0, 0, 150))
 'MOD  END  240a
-            upic.Print "å¼±ç‚¹   ";
+            upic.Print "ã“_   ";
 'MOD START 240a
 '        upic.ForeColor = rgb(0, 0, 0)
         upic.ForeColor = IIf(NewGUIMode, StatusFontColorNormalString, rgb(0, 0, 0))
@@ -2364,9 +2364,9 @@ NextCondition:
             End If
         End If
         
-        'æœ‰åŠ¹
+        '—LŒø
         If Len(.strEffective) > 0 _
-            And InStr(.strEffective, "éè¡¨ç¤º") = 0 _
+            And InStr(.strEffective, "”ñ•\¦") = 0 _
         Then
             If Len(.strEffective) > 5 Then
                 If n > 0 Then
@@ -2386,7 +2386,7 @@ NextCondition:
 '            upic.ForeColor = rgb(0, 0, 150)
             upic.ForeColor = IIf(NewGUIMode, StatusFontColorAbilityName, rgb(0, 0, 150))
 'MOD  END  240a
-            upic.Print "æœ‰åŠ¹   ";
+            upic.Print "—LŒø   ";
 'MOD START 240a
 '        upic.ForeColor = rgb(0, 0, 0)
         upic.ForeColor = IIf(NewGUIMode, StatusFontColorNormalString, rgb(0, 0, 0))
@@ -2404,9 +2404,9 @@ NextCondition:
             End If
         End If
         
-        'ç‰¹æ®ŠåŠ¹æœç„¡åŠ¹åŒ–
+        '“ÁêŒø‰Ê–³Œø‰»
         If Len(.strSpecialEffectImmune) > 0 _
-            And InStr(.strSpecialEffectImmune, "éè¡¨ç¤º") = 0 _
+            And InStr(.strSpecialEffectImmune, "”ñ•\¦") = 0 _
         Then
             If Len(.strSpecialEffectImmune) > 5 Then
                 If n > 0 Then
@@ -2426,7 +2426,7 @@ NextCondition:
 '            upic.ForeColor = rgb(0, 0, 150)
             upic.ForeColor = IIf(NewGUIMode, StatusFontColorAbilityName, rgb(0, 0, 150))
 'MOD  END  240a
-            upic.Print "ç‰¹ç„¡åŠ¹ ";
+            upic.Print "“Á–³Œø ";
 'MOD START 240a
 '        upic.ForeColor = rgb(0, 0, 0)
         upic.ForeColor = IIf(NewGUIMode, StatusFontColorNormalString, rgb(0, 0, 0))
@@ -2444,7 +2444,7 @@ NextCondition:
             End If
         End If
         
-        'å¿…è¦ã«å¿œã˜ã¦æ”¹è¡Œ
+        '•K—v‚É‰‚¶‚Ä‰üs
         If n > 0 Then
             upic.Print
 'ADD START 240a
@@ -2460,23 +2460,23 @@ NextCondition:
             upic.CurrentX = 5
         End If
 'ADD  END  240a
-        'æ­¦å™¨ãƒ»é˜²å…·ã‚¯ãƒ©ã‚¹
+        '•ŠíE–h‹ïƒNƒ‰ƒX
         ReDim flist(0)
-        If IsOptionDefined("ã‚¢ã‚¤ãƒ†ãƒ äº¤æ›") Then
-            If .IsFeatureAvailable("æ­¦å™¨ã‚¯ãƒ©ã‚¹") _
-                Or .IsFeatureAvailable("é˜²å…·ã‚¯ãƒ©ã‚¹") _
+        If IsOptionDefined("ƒAƒCƒeƒ€ŒğŠ·") Then
+            If .IsFeatureAvailable("•ŠíƒNƒ‰ƒX") _
+                Or .IsFeatureAvailable("–h‹ïƒNƒ‰ƒX") _
             Then
                 If NewGUIMode Then
                     upic.CurrentX = 5
                 End If
-                upic.Print RightPaddedString("æ­¦å™¨ãƒ»é˜²å…·ã‚¯ãƒ©ã‚¹", 19);
+                upic.Print RightPaddedString("•ŠíE–h‹ïƒNƒ‰ƒX", 19);
                 ReDim Preserve flist(1)
-                flist(1) = "æ­¦å™¨ãƒ»é˜²å…·ã‚¯ãƒ©ã‚¹"
+                flist(1) = "•ŠíE–h‹ïƒNƒ‰ƒX"
                 n = n + 1
             End If
         End If
         
-        'ç‰¹æ®Šèƒ½åŠ›ä¸€è¦§ã‚’è¡¨ç¤ºã™ã‚‹å‰ã«å¿…è¦æ°—åŠ›åˆ¤å®šã®ãŸã‚ãƒ¡ã‚¤ãƒ³ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®æ°—åŠ›ã‚’å‚ç…§
+        '“Áê”\—Íˆê——‚ğ•\¦‚·‚é‘O‚É•K—v‹C—Í”»’è‚Ì‚½‚ßƒƒCƒ“ƒpƒCƒƒbƒg‚Ì‹C—Í‚ğQÆ
         If .CountPilot > 0 Then
             pmorale = .MainPilot.Morale
         Else
@@ -2488,16 +2488,16 @@ NextCondition:
             upic.CurrentX = 5
         End If
 'ADD  END  240a
-        'ç‰¹æ®Šèƒ½åŠ›ä¸€è¦§
+        '“Áê”\—Íˆê——
         For i = .AdditionalFeaturesNum + 1 To .CountAllFeature
             fname = .AllFeatureName(i)
             
-            'ãƒ¦ãƒ‹ãƒƒãƒˆã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚³ãƒãƒ³ãƒ‰æ™‚ã¯é€šå¸¸ã¯éè¡¨ç¤ºã®ãƒ‘ãƒ¼ãƒ„åˆä½“ã€
-            'ãƒãƒ¼ãƒãƒ«ãƒ¢ãƒ¼ãƒ‰ã€æ›è£…ã‚‚è¡¨ç¤º
+            'ƒ†ƒjƒbƒgƒXƒe[ƒ^ƒXƒRƒ}ƒ“ƒh‚Í’Êí‚Í”ñ•\¦‚Ìƒp[ƒc‡‘ÌA
+            'ƒm[ƒ}ƒ‹ƒ‚[ƒhAŠ·‘•‚à•\¦
             If fname = "" Then
                 If MapFileName = "" Then
                     Select Case .AllFeature(i)
-                        Case "ãƒ‘ãƒ¼ãƒ„åˆä½“", "ãƒãƒ¼ãƒãƒ«ãƒ¢ãƒ¼ãƒ‰"
+                        Case "ƒp[ƒc‡‘Ì", "ƒm[ƒ}ƒ‹ƒ‚[ƒh"
                             upic.Print RightPaddedString(.AllFeature(i), 19);
                             n = n + 1
                             If n > 1 Then
@@ -2509,14 +2509,14 @@ NextCondition:
 'ADD  END  240a
                                 n = 0
                             End If
-                        Case "æ›è£…"
-                            fname = "æ›è£…"
+                        Case "Š·‘•"
+                            fname = "Š·‘•"
                             
-                            'ã‚¨ãƒªã‚¢ã‚¹ã§æ›è£…ã®åç§°ãŒå¤‰æ›´ã•ã‚Œã¦ã„ã‚‹ï¼Ÿ
+                            'ƒGƒŠƒAƒX‚ÅŠ·‘•‚Ì–¼Ì‚ª•ÏX‚³‚ê‚Ä‚¢‚éH
                             With ALDList
                                 For j = 1 To .Count
                                     With .Item(j)
-                                        If .AliasType(1) = "æ›è£…" Then
+                                        If .AliasType(1) = "Š·‘•" Then
                                             fname = .Name
                                             Exit For
                                         End If
@@ -2540,7 +2540,7 @@ NextCondition:
                 GoTo NextFeature
             End If
             
-            'æ—¢ã«è¡¨ç¤ºã—ã¦ã„ã‚‹ã‹ã‚’åˆ¤å®š
+            'Šù‚É•\¦‚µ‚Ä‚¢‚é‚©‚ğ”»’è
             For j = 1 To UBound(flist)
                 If fname = flist(j) Then
                     GoTo NextFeature
@@ -2549,27 +2549,27 @@ NextCondition:
             ReDim Preserve flist(UBound(flist) + 1)
             flist(UBound(flist)) = fname
             
-            'ä½¿ç”¨å¯å¦ã«ã‚ˆã£ã¦è¡¨ç¤ºè‰²ã‚’å¤‰ãˆã‚‹
+            'g—p‰Â”Û‚É‚æ‚Á‚Ä•\¦F‚ğ•Ï‚¦‚é
             fdata = .AllFeatureData(i)
             Select Case .AllFeature(i)
-                Case "åˆä½“"
+                Case "‡‘Ì"
                     If Not UList.IsDefined(LIndex(fdata, 2)) Then
                        GoTo NextFeature
                     End If
-                    If UList.Item(LIndex(fdata, 2)).IsConditionSatisfied("è¡Œå‹•ä¸èƒ½") Then
+                    If UList.Item(LIndex(fdata, 2)).IsConditionSatisfied("s“®•s”\") Then
 'MOD START 240a
 '                        upic.ForeColor = rgb(150, 0, 0)
                         upic.ForeColor = IIf(NewGUIMode, StatusFontColorAbilityDisable, rgb(150, 0, 0))
 'MOD  END  240a
                     End If
-                Case "åˆ†é›¢"
+                Case "•ª—£"
                     k = 0
                     For j = 2 To LLength(fdata)
                         If Not UList.IsDefined(LIndex(fdata, j)) Then
                             GoTo NextFeature
                         End If
                         With UList.Item(LIndex(fdata, j)).Data
-                            If .IsFeatureAvailable("å¬å–šãƒ¦ãƒ‹ãƒƒãƒˆ") Then
+                            If .IsFeatureAvailable("¢Š«ƒ†ƒjƒbƒg") Then
                                 k = k + Abs(.PilotNum)
                             End If
                         End With
@@ -2580,7 +2580,7 @@ NextCondition:
                         upic.ForeColor = IIf(NewGUIMode, StatusFontColorAbilityDisable, rgb(150, 0, 0))
 'MOD  END  240a
                     End If
-                Case "ãƒã‚¤ãƒ‘ãƒ¼ãƒ¢ãƒ¼ãƒ‰"
+                Case "ƒnƒCƒp[ƒ‚[ƒh"
                     If pmorale < CInt(10# * .FeatureLevel(i)) + 100 _
                         And .HP > .MaxHP \ 4 _
                     Then
@@ -2588,13 +2588,13 @@ NextCondition:
 '                        upic.ForeColor = rgb(150, 0, 0)
                         upic.ForeColor = IIf(NewGUIMode, StatusFontColorAbilityDisable, rgb(150, 0, 0))
 'MOD  END  240a
-                    ElseIf .IsConditionSatisfied("ãƒãƒ¼ãƒãƒ«ãƒ¢ãƒ¼ãƒ‰ä»˜åŠ ") Then
+                    ElseIf .IsConditionSatisfied("ƒm[ƒ}ƒ‹ƒ‚[ƒh•t‰Á") Then
 'MOD START 240a
 '                        upic.ForeColor = rgb(150, 0, 0)
                         upic.ForeColor = IIf(NewGUIMode, StatusFontColorAbilityDisable, rgb(150, 0, 0))
 'MOD  END  240a
                     End If
-                Case "ä¿®ç†è£…ç½®", "è£œçµ¦è£…ç½®"
+                Case "C—‘•’u", "•â‹‹‘•’u"
                     If IsNumeric(LIndex(fdata, 2)) Then
                         If .EN < CInt(LIndex(fdata, 2)) Then
 'MOD START 240a
@@ -2603,7 +2603,7 @@ NextCondition:
 'MOD  END  240a
                         End If
                     End If
-                Case "ãƒ†ãƒ¬ãƒãƒ¼ãƒˆ"
+                Case "ƒeƒŒƒ|[ƒg"
                     If IsNumeric(LIndex(fdata, 2)) Then
                         If .EN < CInt(LIndex(fdata, 2)) Then
 'MOD START 240a
@@ -2619,14 +2619,14 @@ NextCondition:
 'MOD  END  240a
                         End If
                     End If
-                Case "åˆ†èº«"
+                Case "•ªg"
                     If pmorale < 130 Then
 'MOD START 240a
 '                        upic.ForeColor = rgb(150, 0, 0)
                         upic.ForeColor = IIf(NewGUIMode, StatusFontColorAbilityDisable, rgb(150, 0, 0))
 'MOD  END  240a
                     End If
-                Case "è¶…å›é¿"
+                Case "’´‰ñ”ğ"
                     If IsNumeric(LIndex(fdata, 2)) Then
                         ecost = CInt(LIndex(fdata, 2))
                     Else
@@ -2643,7 +2643,7 @@ NextCondition:
                         upic.ForeColor = IIf(NewGUIMode, StatusFontColorAbilityDisable, rgb(150, 0, 0))
 'MOD  END  240a
                     End If
-                Case "ç·Šæ€¥ãƒ†ãƒ¬ãƒãƒ¼ãƒˆ"
+                Case "‹Ù‹}ƒeƒŒƒ|[ƒg"
                     If IsNumeric(LIndex(fdata, 3)) Then
                         ecost = CInt(LIndex(fdata, 3))
                     Else
@@ -2660,14 +2660,14 @@ NextCondition:
                         upic.ForeColor = IIf(NewGUIMode, StatusFontColorAbilityDisable, rgb(150, 0, 0))
 'MOD  END  240a
                     End If
-                Case "ã‚¨ãƒãƒ«ã‚®ãƒ¼ã‚·ãƒ¼ãƒ«ãƒ‰"
+                Case "ƒGƒlƒ‹ƒM[ƒV[ƒ‹ƒh"
                     If .EN < 5 Then
 'MOD START 240a
 '                        upic.ForeColor = rgb(150, 0, 0)
                         upic.ForeColor = IIf(NewGUIMode, StatusFontColorAbilityDisable, rgb(150, 0, 0))
 'MOD  END  240a
                     End If
-                Case "ãƒãƒªã‚¢", "ãƒãƒªã‚¢ã‚·ãƒ¼ãƒ«ãƒ‰", "ãƒ—ãƒ­ãƒ†ã‚¯ã‚·ãƒ§ãƒ³", "ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ãƒ—ãƒ­ãƒ†ã‚¯ã‚·ãƒ§ãƒ³"
+                Case "ƒoƒŠƒA", "ƒoƒŠƒAƒV[ƒ‹ƒh", "ƒvƒƒeƒNƒVƒ‡ƒ“", "ƒAƒNƒeƒBƒuƒvƒƒeƒNƒVƒ‡ƒ“"
                     If IsNumeric(LIndex(fdata, 3)) Then
                         ecost = CInt(LIndex(fdata, 3))
                     Else
@@ -2679,27 +2679,27 @@ NextCondition:
                         nmorale = 0
                     End If
                     If .EN < ecost Or pmorale < nmorale _
-                        Or (.IsConditionSatisfied("ãƒãƒªã‚¢ç„¡åŠ¹åŒ–") _
-                            And InStr(fdata, "ãƒãƒªã‚¢ç„¡åŠ¹åŒ–ç„¡åŠ¹") = 0) _
+                        Or (.IsConditionSatisfied("ƒoƒŠƒA–³Œø‰»") _
+                            And InStr(fdata, "ƒoƒŠƒA–³Œø‰»–³Œø") = 0) _
                     Then
 'MOD START 240a
 '                        upic.ForeColor = rgb(150, 0, 0)
                         upic.ForeColor = IIf(NewGUIMode, StatusFontColorAbilityDisable, rgb(150, 0, 0))
 'MOD  END  240a
-                    ElseIf InStr(fdata, "èƒ½åŠ›å¿…è¦") > 0 Then
+                    ElseIf InStr(fdata, "”\—Í•K—v") > 0 Then
                         For j = 5 To LLength(fdata)
                             opt = LIndex(fdata, j)
                             If InStr(opt, "*") > 0 Then
                                 opt = Left$(opt, InStr(opt, "*") - 1)
                             End If
                             Select Case opt
-                                Case "ç›¸æ®º", "ä¸­å’Œ", "è¿‘æ¥ç„¡åŠ¹", "æ‰‹å‹•", "èƒ½åŠ›å¿…è¦"
-                                    'ã‚¹ã‚­ãƒƒãƒ—
-                                Case "åŒèª¿ç‡"
+                                Case "‘ŠE", "’†˜a", "‹ßÚ–³Œø", "è“®", "”\—Í•K—v"
+                                    'ƒXƒLƒbƒv
+                                Case "“¯’²—¦"
                                     If .SyncLevel = 0 Then
                                         GoTo NextFeature
                                     End If
-                                Case "éœŠåŠ›"
+                                Case "—ì—Í"
                                     If .PlanaLevel = 0 Then
                                         GoTo NextFeature
                                     End If
@@ -2710,7 +2710,7 @@ NextCondition:
                             End Select
                         Next
                     End If
-                Case "ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰", "ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰"
+                Case "ƒtƒB[ƒ‹ƒh", "ƒAƒNƒeƒBƒuƒtƒB[ƒ‹ƒh"
                     If IsNumeric(LIndex(fdata, 3)) Then
                         ecost = CInt(LIndex(fdata, 3))
                     Else
@@ -2722,27 +2722,27 @@ NextCondition:
                         nmorale = 0
                     End If
                     If .EN < ecost Or pmorale < nmorale _
-                        Or (.IsConditionSatisfied("ãƒãƒªã‚¢ç„¡åŠ¹åŒ–") _
-                            And InStr(fdata, "ãƒãƒªã‚¢ç„¡åŠ¹åŒ–ç„¡åŠ¹") = 0) _
+                        Or (.IsConditionSatisfied("ƒoƒŠƒA–³Œø‰»") _
+                            And InStr(fdata, "ƒoƒŠƒA–³Œø‰»–³Œø") = 0) _
                     Then
 'MOD START 240a
 '                        upic.ForeColor = rgb(150, 0, 0)
                         upic.ForeColor = IIf(NewGUIMode, StatusFontColorAbilityDisable, rgb(150, 0, 0))
 'MOD  END  240a
-                    ElseIf InStr(fdata, "èƒ½åŠ›å¿…è¦") > 0 Then
+                    ElseIf InStr(fdata, "”\—Í•K—v") > 0 Then
                         For j = 5 To LLength(fdata)
                             opt = LIndex(fdata, j)
                             If InStr(opt, "*") > 0 Then
                                 opt = Left$(opt, InStr(opt, "*") - 1)
                             End If
                             Select Case opt
-                                Case "ç›¸æ®º", "ä¸­å’Œ", "è¿‘æ¥ç„¡åŠ¹", "æ‰‹å‹•", "èƒ½åŠ›å¿…è¦"
-                                    'ã‚¹ã‚­ãƒƒãƒ—
-                                Case "åŒèª¿ç‡"
+                                Case "‘ŠE", "’†˜a", "‹ßÚ–³Œø", "è“®", "”\—Í•K—v"
+                                    'ƒXƒLƒbƒv
+                                Case "“¯’²—¦"
                                     If .SyncLevel = 0 Then
                                         GoTo NextFeature
                                     End If
-                                Case "éœŠåŠ›"
+                                Case "—ì—Í"
                                     If .PlanaLevel = 0 Then
                                         GoTo NextFeature
                                     End If
@@ -2753,7 +2753,7 @@ NextCondition:
                             End Select
                         Next
                     End If
-                Case "åºƒåŸŸãƒãƒªã‚¢", "åºƒåŸŸãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰", "åºƒåŸŸãƒ—ãƒ­ãƒ†ã‚¯ã‚·ãƒ§ãƒ³"
+                Case "LˆæƒoƒŠƒA", "LˆæƒtƒB[ƒ‹ƒh", "LˆæƒvƒƒeƒNƒVƒ‡ƒ“"
                     If IsNumeric(LIndex(fdata, 4)) Then
                         ecost = CInt(LIndex(fdata, 4))
                     ElseIf IsNumeric(LIndex(fdata, 2)) Then
@@ -2767,16 +2767,16 @@ NextCondition:
                         nmorale = 0
                     End If
                     If .EN < ecost Or pmorale < nmorale _
-                        Or (.IsConditionSatisfied("ãƒãƒªã‚¢ç„¡åŠ¹åŒ–") _
-                            And InStr(fdata, "ãƒãƒªã‚¢ç„¡åŠ¹åŒ–ç„¡åŠ¹") = 0) _
+                        Or (.IsConditionSatisfied("ƒoƒŠƒA–³Œø‰»") _
+                            And InStr(fdata, "ƒoƒŠƒA–³Œø‰»–³Œø") = 0) _
                     Then
 'MOD START 240a
 '                        upic.ForeColor = rgb(150, 0, 0)
                         upic.ForeColor = IIf(NewGUIMode, StatusFontColorAbilityDisable, rgb(150, 0, 0))
 'MOD  END  240a
                     End If
-                    fname = fname & "(ç¯„å›²" & LIndex(fdata, 2) & "ãƒã‚¹)"
-                Case "ã‚¢ãƒ¼ãƒãƒ¼", "ãƒ¬ã‚¸ã‚¹ãƒˆ"
+                    fname = fname & "(”ÍˆÍ" & LIndex(fdata, 2) & "ƒ}ƒX)"
+                Case "ƒA[ƒ}[", "ƒŒƒWƒXƒg"
                     If IsNumeric(LIndex(fdata, 3)) Then
                         nmorale = CInt(LIndex(fdata, 3))
                     Else
@@ -2787,18 +2787,18 @@ NextCondition:
 '                        upic.ForeColor = rgb(150, 0, 0)
                         upic.ForeColor = IIf(NewGUIMode, StatusFontColorAbilityDisable, rgb(150, 0, 0))
 'MOD  END  240a
-                    ElseIf InStr(fdata, "èƒ½åŠ›å¿…è¦") > 0 Then
+                    ElseIf InStr(fdata, "”\—Í•K—v") > 0 Then
                         For j = 4 To LLength(fdata)
                             opt = LIndex(fdata, j)
                             If InStr(opt, "*") > 0 Then
                                 opt = Left$(opt, InStr(opt, "*") - 1)
                             End If
                             Select Case opt
-                                Case "åŒèª¿ç‡"
+                                Case "“¯’²—¦"
                                     If .SyncLevel = 0 Then
                                         GoTo NextFeature
                                     End If
-                                Case "éœŠåŠ›"
+                                Case "—ì—Í"
                                     If .PlanaLevel = 0 Then
                                         GoTo NextFeature
                                     End If
@@ -2809,7 +2809,7 @@ NextCondition:
                             End Select
                         Next
                     End If
-                Case "æ”»æ’ƒå›é¿"
+                Case "UŒ‚‰ñ”ğ"
                     If IsNumeric(LIndex(fdata, 3)) Then
                         nmorale = CInt(LIndex(fdata, 3))
                     Else
@@ -2821,7 +2821,7 @@ NextCondition:
                         upic.ForeColor = IIf(NewGUIMode, StatusFontColorAbilityDisable, rgb(150, 0, 0))
 'MOD  END  240a
                     End If
-                Case "åå°„", "é˜»æ­¢"
+                Case "”½Ë", "‘j~"
                     If IsNumeric(LIndex(fdata, 4)) Then
                         ecost = CInt(LIndex(fdata, 4))
                     Else
@@ -2837,20 +2837,20 @@ NextCondition:
 '                        upic.ForeColor = rgb(150, 0, 0)
                         upic.ForeColor = IIf(NewGUIMode, StatusFontColorAbilityDisable, rgb(150, 0, 0))
 'MOD  END  240a
-                    ElseIf InStr(fdata, "èƒ½åŠ›å¿…è¦") > 0 Then
+                    ElseIf InStr(fdata, "”\—Í•K—v") > 0 Then
                         For j = 6 To LLength(fdata)
                             opt = LIndex(fdata, j)
                             If InStr(opt, "*") > 0 Then
                                 opt = Left$(opt, InStr(opt, "*") - 1)
                             End If
                             Select Case opt
-                                Case "ç›¸æ®º", "ä¸­å’Œ", "è¿‘æ¥ç„¡åŠ¹", "æ‰‹å‹•", "èƒ½åŠ›å¿…è¦"
-                                    'ã‚¹ã‚­ãƒƒãƒ—
-                                Case "åŒèª¿ç‡"
+                                Case "‘ŠE", "’†˜a", "‹ßÚ–³Œø", "è“®", "”\—Í•K—v"
+                                    'ƒXƒLƒbƒv
+                                Case "“¯’²—¦"
                                     If .SyncLevel = 0 Then
                                         GoTo NextFeature
                                     End If
-                                Case "éœŠåŠ›"
+                                Case "—ì—Í"
                                     If .PlanaLevel = 0 Then
                                         GoTo NextFeature
                                     End If
@@ -2861,7 +2861,7 @@ NextCondition:
                             End Select
                         Next
                     End If
-                Case "åºƒåŸŸé˜»æ­¢"
+                Case "Lˆæ‘j~"
                     If IsNumeric(LIndex(fdata, 5)) Then
                         ecost = CInt(LIndex(fdata, 5))
                     Else
@@ -2878,8 +2878,8 @@ NextCondition:
                         upic.ForeColor = IIf(NewGUIMode, StatusFontColorAbilityDisable, rgb(150, 0, 0))
 'MOD  END  240a
                     End If
-                    fname = fname & "(ç¯„å›²" & LIndex(fdata, 2) & "ãƒã‚¹)"
-                Case "å½“ã¦èº«æŠ€", "è‡ªå‹•åæ’ƒ"
+                    fname = fname & "(”ÍˆÍ" & LIndex(fdata, 2) & "ƒ}ƒX)"
+                Case "“–‚Äg‹Z", "©“®”½Œ‚"
                     If IsNumeric(LIndex(fdata, 5)) Then
                         ecost = CInt(LIndex(fdata, 5))
                     Else
@@ -2895,20 +2895,20 @@ NextCondition:
 '                        upic.ForeColor = rgb(150, 0, 0)
                         upic.ForeColor = IIf(NewGUIMode, StatusFontColorAbilityDisable, rgb(150, 0, 0))
 'MOD  END  240a
-                    ElseIf InStr(fdata, "èƒ½åŠ›å¿…è¦") > 0 Then
+                    ElseIf InStr(fdata, "”\—Í•K—v") > 0 Then
                         For j = 7 To LLength(fdata)
                             opt = LIndex(fdata, j)
                             If InStr(opt, "*") > 0 Then
                                 opt = Left$(opt, InStr(opt, "*") - 1)
                             End If
                             Select Case opt
-                                Case "ç›¸æ®º", "ä¸­å’Œ", "è¿‘æ¥ç„¡åŠ¹", "æ‰‹å‹•", "èƒ½åŠ›å¿…è¦"
-                                    'ã‚¹ã‚­ãƒƒãƒ—
-                                Case "åŒèª¿ç‡"
+                                Case "‘ŠE", "’†˜a", "‹ßÚ–³Œø", "è“®", "”\—Í•K—v"
+                                    'ƒXƒLƒbƒv
+                                Case "“¯’²—¦"
                                     If .SyncLevel = 0 Then
                                         GoTo NextFeature
                                     End If
-                                Case "éœŠåŠ›"
+                                Case "—ì—Í"
                                     If .PlanaLevel = 0 Then
                                         GoTo NextFeature
                                     End If
@@ -2919,28 +2919,28 @@ NextCondition:
                             End Select
                         Next
                     End If
-                Case "ãƒ–ãƒ¼ã‚¹ãƒˆ"
+                Case "ƒu[ƒXƒg"
                     If pmorale >= 130 Then
 'MOD START 240a
 '                        upic.ForeColor = vbBlue
                         upic.ForeColor = IIf(NewGUIMode, StatusFontColorAbilityEnable, vbBlue)
 'MOD  END  240a
                     End If
-                Case "ç›¾"
-                    If .ConditionLevel("ç›¾ãƒ€ãƒ¡ãƒ¼ã‚¸") >= .AllFeatureLevel("ç›¾") Then
+                Case "‚"
+                    If .ConditionLevel("‚ƒ_ƒ[ƒW") >= .AllFeatureLevel("‚") Then
 'MOD START 240a
 '                        upic.ForeColor = rgb(150, 0, 0)
                         upic.ForeColor = IIf(NewGUIMode, StatusFontColorAbilityDisable, rgb(150, 0, 0))
 'MOD  END  240a
                     End If
                     fname = fname & "(" & _
-                        Format$(MaxLng(.AllFeatureLevel("ç›¾") - .ConditionLevel("ç›¾ãƒ€ãƒ¡ãƒ¼ã‚¸"), 0)) & _
-                        "/" & Format$(.AllFeatureLevel("ç›¾")) & ")"
-                Case "ï¼¨ï¼°å›å¾©", "ï¼¥ï¼®å›å¾©"
+                        Format$(MaxLng(.AllFeatureLevel("‚") - .ConditionLevel("‚ƒ_ƒ[ƒW"), 0)) & _
+                        "/" & Format$(.AllFeatureLevel("‚")) & ")"
+                Case "‚g‚o‰ñ•œ", "‚d‚m‰ñ•œ"
 ' MOD START MARGE
-'                    If .IsConditionSatisfied("å›å¾©ä¸èƒ½") Then
-                    If .IsConditionSatisfied("å›å¾©ä¸èƒ½") _
-                        Or .IsSpecialPowerInEffect("å›å¾©ä¸èƒ½") _
+'                    If .IsConditionSatisfied("‰ñ•œ•s”\") Then
+                    If .IsConditionSatisfied("‰ñ•œ•s”\") _
+                        Or .IsSpecialPowerInEffect("‰ñ•œ•s”\") _
                     Then
 ' MOD END MARGE
 'MOD START 240a
@@ -2948,9 +2948,9 @@ NextCondition:
                         upic.ForeColor = IIf(NewGUIMode, StatusFontColorAbilityDisable, rgb(150, 0, 0))
 'MOD  END  240a
                     End If
-                Case "æ ¼é—˜å¼·åŒ–", "å°„æ’ƒå¼·åŒ–", "å‘½ä¸­å¼·åŒ–", "å›é¿å¼·åŒ–", "æŠ€é‡å¼·åŒ–", "åå¿œå¼·åŒ–", _
-                    "ï¼¨ï¼°å¼·åŒ–", "ï¼¥ï¼®å¼·åŒ–", "è£…ç”²å¼·åŒ–", "é‹å‹•æ€§å¼·åŒ–", "ç§»å‹•åŠ›å¼·åŒ–", _
-                    "ï¼¨ï¼°å‰²åˆå¼·åŒ–", "ï¼¥ï¼®å‰²åˆå¼·åŒ–", "è£…ç”²å‰²åˆå¼·åŒ–", "é‹å‹•æ€§å‰²åˆå¼·åŒ–"
+                Case "Ši“¬‹­‰»", "ËŒ‚‹­‰»", "–½’†‹­‰»", "‰ñ”ğ‹­‰»", "‹Z—Ê‹­‰»", "”½‰‹­‰»", _
+                    "‚g‚o‹­‰»", "‚d‚m‹­‰»", "‘•b‹­‰»", "‰^“®«‹­‰»", "ˆÚ“®—Í‹­‰»", _
+                    "‚g‚oŠ„‡‹­‰»", "‚d‚mŠ„‡‹­‰»", "‘•bŠ„‡‹­‰»", "‰^“®«Š„‡‹­‰»"
                     If IsNumeric(LIndex(fdata, 2)) Then
                         If pmorale >= StrToLng(LIndex(fdata, 2)) Then
 'MOD START 240a
@@ -2959,7 +2959,7 @@ NextCondition:
 'MOD  END  240a
                         End If
                     End If
-                Case "ï¼ºï¼¯ï¼£"
+                Case "‚y‚n‚b"
                     If LLength(fdata) < 2 Then
                         j = 1
                     Else
@@ -2967,23 +2967,23 @@ NextCondition:
                     End If
                     If j >= 1 Then
                         ReplaceString fdata, vbTab, " "
-                        If InStr(fdata, " ç›´ç·š") > 0 _
-                            Or (InStr(fdata, " å‚ç›´") > 0 _
-                                And InStr(fdata, " æ°´å¹³") > 0) _
+                        If InStr(fdata, " ’¼ü") > 0 _
+                            Or (InStr(fdata, " ‚’¼") > 0 _
+                                And InStr(fdata, " …•½") > 0) _
                         Then
-                            buf = "ç›´ç·š"
-                        ElseIf InStr(fdata, " å‚ç›´") > 0 Then
-                            buf = "ä¸Šä¸‹"
-                        ElseIf InStr(fdata, " æ°´å¹³") > 0 Then
-                            buf = "å·¦å³"
+                            buf = "’¼ü"
+                        ElseIf InStr(fdata, " ‚’¼") > 0 Then
+                            buf = "ã‰º"
+                        ElseIf InStr(fdata, " …•½") > 0 Then
+                            buf = "¶‰E"
                         Else
-                            buf = "ç¯„å›²"
+                            buf = "”ÍˆÍ"
                         End If
-                        fname = fname & "(" & buf & Format$(j) & "ãƒã‚¹)"
+                        fname = fname & "(" & buf & Format$(j) & "ƒ}ƒX)"
                     End If
-                Case "åºƒåŸŸï¼ºï¼¯ï¼£ç„¡åŠ¹åŒ–"
-                    fname = fname & "(ç¯„å›²" & LIndex(fdata, 2) & "ãƒã‚¹)"
-                Case "è¿½åŠ æ”»æ’ƒ"
+                Case "Lˆæ‚y‚n‚b–³Œø‰»"
+                    fname = fname & "(”ÍˆÍ" & LIndex(fdata, 2) & "ƒ}ƒX)"
+                Case "’Ç‰ÁUŒ‚"
                     If IsNumeric(LIndex(fdata, 5)) Then
                         ecost = CInt(LIndex(fdata, 5))
                     Else
@@ -3002,7 +3002,7 @@ NextCondition:
                     End If
             End Select
             
-            'å¿…è¦æ¡ä»¶ã‚’æº€ãŸã•ãªã„ç‰¹æ®Šèƒ½åŠ›ã¯èµ¤è‰²ã§è¡¨ç¤º
+            '•K—vğŒ‚ğ–‚½‚³‚È‚¢“Áê”\—Í‚ÍÔF‚Å•\¦
             If Not .IsFeatureActivated(i) Then
 'MOD START 240a
 '                upic.ForeColor = rgb(150, 0, 0)
@@ -3010,7 +3010,7 @@ NextCondition:
 'MOD  END  240a
             End If
             
-            'ç‰¹æ®Šèƒ½åŠ›åã‚’è¡¨ç¤º
+            '“Áê”\—Í–¼‚ğ•\¦
             If LenB(StrConv(fname, vbFromUnicode)) > 19 Then
                 If n > 0 Then
                     upic.Print
@@ -3027,7 +3027,7 @@ NextCondition:
                 n = n + 1
             End If
             
-            'å¿…è¦ã«å¿œã˜ã¦æ”¹è¡Œ
+            '•K—v‚É‰‚¶‚Ä‰üs
             If n > 1 Then
                 upic.Print
 'ADD START 240a
@@ -3038,7 +3038,7 @@ NextCondition:
                 n = 0
             End If
             
-            'è¡¨ç¤ºè‰²ã‚’æˆ»ã—ã¦ãŠã
+            '•\¦F‚ğ–ß‚µ‚Ä‚¨‚­
 'MOD START 240a
 '            upic.ForeColor = rgb(0, 0, 0)
             upic.ForeColor = IIf(NewGUIMode, StatusFontColorNormalString, rgb(0, 0, 0))
@@ -3054,17 +3054,17 @@ NextFeature:
             upic.CurrentX = 5
         End If
 'ADD  END  240a
-        'ã‚¢ã‚¤ãƒ†ãƒ ä¸€è¦§
+        'ƒAƒCƒeƒ€ˆê——
         If .CountItem > 0 Then
             j = 0
             For i = 1 To .CountItem
                 With .Item(i)
-                    'è¡¨ç¤ºæŒ‡å®šã‚’æŒã¤ã‚¢ã‚¤ãƒ†ãƒ ã®ã¿è¡¨ç¤ºã™ã‚‹
-                    If Not .IsFeatureAvailable("è¡¨ç¤º") Then
+                    '•\¦w’è‚ğ‚ÂƒAƒCƒeƒ€‚Ì‚İ•\¦‚·‚é
+                    If Not .IsFeatureAvailable("•\¦") Then
                         GoTo NextItem
                     End If
                     
-                    'ã‚¢ã‚¤ãƒ†ãƒ åã‚’è¡¨ç¤º
+                    'ƒAƒCƒeƒ€–¼‚ğ•\¦
                     If Len(.Nickname) > 9 Then
                         If j = 1 Then
                             upic.Print
@@ -3103,28 +3103,28 @@ NextItem:
             End If
         End If
         
-        'ã‚¿ãƒ¼ã‚²ãƒƒãƒˆé¸æŠæ™‚ã®æ”»æ’ƒçµæœäºˆæƒ³è¡¨ç¤º
+        'ƒ^[ƒQƒbƒg‘I‘ğ‚ÌUŒ‚Œ‹‰Ê—\‘z•\¦
         
-        'æ”»æ’ƒæ™‚ã«ã®ã¿è¡¨ç¤º
-        If (CommandState = "ã‚¿ãƒ¼ã‚²ãƒƒãƒˆé¸æŠ" Or CommandState = "ç§»å‹•å¾Œã‚¿ãƒ¼ã‚²ãƒƒãƒˆé¸æŠ") _
-            And (SelectedCommand = "æ”»æ’ƒ" Or SelectedCommand = "ãƒãƒƒãƒ—æ”»æ’ƒ") _
+        'UŒ‚‚É‚Ì‚İ•\¦
+        If (CommandState = "ƒ^[ƒQƒbƒg‘I‘ğ" Or CommandState = "ˆÚ“®Œãƒ^[ƒQƒbƒg‘I‘ğ") _
+            And (SelectedCommand = "UŒ‚" Or SelectedCommand = "ƒ}ƒbƒvUŒ‚") _
             And Not SelectedUnit Is Nothing _
             And SelectedWeapon > 0 _
-            And Stage <> "ãƒ—ãƒ­ãƒ­ãƒ¼ã‚°" And Stage <> "ã‚¨ãƒ”ãƒ­ãƒ¼ã‚°" _
+            And Stage <> "ƒvƒƒ[ƒO" And Stage <> "ƒGƒsƒ[ƒO" _
         Then
-            'æ”»æ’ƒæ™‚ã¨åˆ¤å®š
+            'UŒ‚‚Æ”»’è
         Else
             GoTo SkipAttackExpResult
         End If
         
-        'ç›¸æ‰‹ãŒæ•µã®å ´åˆã«ã®ã¿è¡¨ç¤º
-        If .Party <> "æ•µ" _
-            And .Party <> "ä¸­ç«‹" _
-            And Not .IsConditionSatisfied("æš´èµ°") _
-            And Not .IsConditionSatisfied("é­…äº†") _
-            And Not .IsConditionSatisfied("æ†‘ä¾") _
-            And Not .IsConditionSatisfied("æ··ä¹±") _
-            And Not .IsConditionSatisfied("ç¡çœ ") _
+        '‘Šè‚ª“G‚Ìê‡‚É‚Ì‚İ•\¦
+        If .Party <> "“G" _
+            And .Party <> "’†—§" _
+            And Not .IsConditionSatisfied("–\‘–") _
+            And Not .IsConditionSatisfied("–£—¹") _
+            And Not .IsConditionSatisfied("œßˆË") _
+            And Not .IsConditionSatisfied("¬—") _
+            And Not .IsConditionSatisfied("‡–°") _
         Then
             GoTo SkipAttackExpResult
         End If
@@ -3136,24 +3136,24 @@ NextItem:
             upic.CurrentX = 5
         End If
 'ADD  END  240a
-        'æ”»æ’ƒæ‰‹æ®µ
+        'UŒ‚è’i
 'MOD START 240a
 '        upic.ForeColor = rgb(0, 0, 150)
         upic.ForeColor = IIf(NewGUIMode, StatusFontColorAbilityName, rgb(0, 0, 150))
 'MOD  END  240a
-        upic.Print "æ”»æ’ƒ     ";
+        upic.Print "UŒ‚     ";
 'MOD START 240a
 '        upic.ForeColor = rgb(0, 0, 0)
         upic.ForeColor = IIf(NewGUIMode, StatusFontColorNormalString, rgb(0, 0, 0))
 'MOD  END  240a
         upic.Print SelectedUnit.WeaponNickname(SelectedWeapon);
-        'ã‚µãƒãƒ¼ãƒˆã‚¢ã‚¿ãƒƒã‚¯ã‚’å¾—ã‚‰ã‚Œã‚‹ï¼Ÿ
-        If Not SelectedUnit.IsWeaponClassifiedAs(SelectedWeapon, "åˆ") _
-            And Not SelectedUnit.IsWeaponClassifiedAs(SelectedWeapon, "ï¼­") _
+        'ƒTƒ|[ƒgƒAƒ^ƒbƒN‚ğ“¾‚ç‚ê‚éH
+        If Not SelectedUnit.IsWeaponClassifiedAs(SelectedWeapon, "‡") _
+            And Not SelectedUnit.IsWeaponClassifiedAs(SelectedWeapon, "‚l") _
             And UseSupportAttack _
         Then
             If Not SelectedUnit.LookForSupportAttack(u) Is Nothing Then
-                upic.Print " [æ´]"
+                upic.Print " [‰‡]"
             Else
                 upic.Print
             End If
@@ -3161,17 +3161,17 @@ NextItem:
             upic.Print
         End If
         
-        'åæ’ƒã‚’å—ã‘ã‚‹ï¼Ÿ
+        '”½Œ‚‚ğó‚¯‚éH
         If .MaxAction = 0 _
-            Or SelectedUnit.IsWeaponClassifiedAs(SelectedWeapon, "ï¼­") _
-            Or SelectedUnit.IsWeaponClassifiedAs(SelectedWeapon, "é–“") _
+            Or SelectedUnit.IsWeaponClassifiedAs(SelectedWeapon, "‚l") _
+            Or SelectedUnit.IsWeaponClassifiedAs(SelectedWeapon, "ŠÔ") _
         Then
             w = 0
         Else
-            w = SelectWeapon(u, SelectedUnit, "åæ’ƒ")
+            w = SelectWeapon(u, SelectedUnit, "”½Œ‚")
         End If
         
-        'æ•µã®é˜²å¾¡è¡Œå‹•ã‚’è¨­å®š
+        '“G‚Ì–hŒäs“®‚ğİ’è
         def_mode = SelectDefense(SelectedUnit, SelectedWeapon, u, w)
         If def_mode <> "" Then
             w = 0
@@ -3182,18 +3182,18 @@ NextItem:
             upic.CurrentX = 5
         End If
 'ADD  END  240a
-        'äºˆæ¸¬ãƒ€ãƒ¡ãƒ¼ã‚¸
-        If Not IsOptionDefined("äºˆæ¸¬ãƒ€ãƒ¡ãƒ¼ã‚¸éè¡¨ç¤º") Then
+        '—\‘ªƒ_ƒ[ƒW
+        If Not IsOptionDefined("—\‘ªƒ_ƒ[ƒW”ñ•\¦") Then
 'MOD START 240a
 '            upic.ForeColor = rgb(0, 0, 150)
             upic.ForeColor = IIf(NewGUIMode, StatusFontColorAbilityName, rgb(0, 0, 150))
 'MOD  END  240a
-            upic.Print "ãƒ€ãƒ¡ãƒ¼ã‚¸ ";
+            upic.Print "ƒ_ƒ[ƒW ";
             dmg = SelectedUnit.Damage(SelectedWeapon, u, True)
-            If def_mode = "é˜²å¾¡" Then
+            If def_mode = "–hŒä" Then
                 dmg = dmg \ 2
             End If
-            If dmg >= .HP And Not .IsConditionSatisfied("ãƒ‡ãƒ¼ã‚¿ä¸æ˜") Then
+            If dmg >= .HP And Not .IsConditionSatisfied("ƒf[ƒ^•s–¾") Then
                 upic.ForeColor = rgb(190, 0, 0)
             Else
 'MOD START 240a
@@ -3209,23 +3209,23 @@ NextItem:
             upic.CurrentX = 5
         End If
 'ADD  END  240a
-        'äºˆæ¸¬å‘½ä¸­ç‡
-        If Not IsOptionDefined("äºˆæ¸¬å‘½ä¸­ç‡éè¡¨ç¤º") Then
+        '—\‘ª–½’†—¦
+        If Not IsOptionDefined("—\‘ª–½’†—¦”ñ•\¦") Then
 'MOD START 240a
 '            upic.ForeColor = rgb(0, 0, 150)
             upic.ForeColor = IIf(NewGUIMode, StatusFontColorAbilityName, rgb(0, 0, 150))
 'MOD  END  240a
-            upic.Print "å‘½ä¸­ç‡   ";
+            upic.Print "–½’†—¦   ";
 'MOD START 240a
 '            upic.ForeColor = rgb(0, 0, 0)
             upic.ForeColor = IIf(NewGUIMode, StatusFontColorNormalString, rgb(0, 0, 0))
 'MOD  END  240a
             prob = SelectedUnit.HitProbability(SelectedWeapon, u, True)
-            If def_mode = "å›é¿" Then
+            If def_mode = "‰ñ”ğ" Then
                 prob = prob \ 2
             End If
             cprob = SelectedUnit.CriticalProbability(SelectedWeapon, u, def_mode)
-            upic.Print MinLng(prob, 100) & "ï¼…ï¼ˆ" & cprob & "ï¼…ï¼‰"
+            upic.Print MinLng(prob, 100) & "“i" & cprob & "“j"
 'MOD START 240a
 '            upic.ForeColor = rgb(0, 0, 0)
             upic.ForeColor = IIf(NewGUIMode, StatusFontColorNormalString, rgb(0, 0, 0))
@@ -3238,20 +3238,20 @@ NextItem:
             End If
 'ADD  END  240a
         If w > 0 Then
-            'åæ’ƒæ‰‹æ®µ
+            '”½Œ‚è’i
 'MOD START 240a
 '            upic.ForeColor = rgb(0, 0, 150)
             upic.ForeColor = IIf(NewGUIMode, StatusFontColorAbilityName, rgb(0, 0, 150))
 'MOD  END  240a
-            upic.Print "åæ’ƒ     ";
+            upic.Print "”½Œ‚     ";
 'MOD START 240a
 '            upic.ForeColor = rgb(0, 0, 0)
             upic.ForeColor = IIf(NewGUIMode, StatusFontColorNormalString, rgb(0, 0, 0))
 'MOD  END  240a
             upic.Print .WeaponNickname(w);
-            'ã‚µãƒãƒ¼ãƒˆã‚¬ãƒ¼ãƒ‰ã‚’å—ã‘ã‚‰ã‚Œã‚‹ï¼Ÿ
+            'ƒTƒ|[ƒgƒK[ƒh‚ğó‚¯‚ç‚ê‚éH
             If Not u.LookForSupportGuard(SelectedUnit, SelectedWeapon) Is Nothing Then
-                upic.Print " [æ´]"
+                upic.Print " [‰‡]"
             Else
                 upic.Print
             End If
@@ -3261,13 +3261,13 @@ NextItem:
                 upic.CurrentX = 5
             End If
 'ADD  END  240a
-            'äºˆæ¸¬ãƒ€ãƒ¡ãƒ¼ã‚¸
-            If Not IsOptionDefined("äºˆæ¸¬ãƒ€ãƒ¡ãƒ¼ã‚¸éè¡¨ç¤º") Then
+            '—\‘ªƒ_ƒ[ƒW
+            If Not IsOptionDefined("—\‘ªƒ_ƒ[ƒW”ñ•\¦") Then
 'MOD START 240a
 '                upic.ForeColor = rgb(0, 0, 150)
                 upic.ForeColor = IIf(NewGUIMode, StatusFontColorAbilityName, rgb(0, 0, 150))
 'MOD  END  240a
-                upic.Print "ãƒ€ãƒ¡ãƒ¼ã‚¸ ";
+                upic.Print "ƒ_ƒ[ƒW ";
                 dmg = .Damage(w, SelectedUnit, True)
                 If dmg >= SelectedUnit.HP Then
                     upic.ForeColor = rgb(190, 0, 0)
@@ -3285,23 +3285,23 @@ NextItem:
                 upic.CurrentX = 5
             End If
 'ADD  END  240a
-            'äºˆæ¸¬å‘½ä¸­ç‡
-            If Not IsOptionDefined("äºˆæ¸¬å‘½ä¸­ç‡éè¡¨ç¤º") Then
+            '—\‘ª–½’†—¦
+            If Not IsOptionDefined("—\‘ª–½’†—¦”ñ•\¦") Then
 'MOD START 240a
 '                upic.ForeColor = rgb(0, 0, 150)
                 upic.ForeColor = IIf(NewGUIMode, StatusFontColorAbilityName, rgb(0, 0, 150))
 'MOD  END  240a
-                upic.Print "å‘½ä¸­ç‡   ";
+                upic.Print "–½’†—¦   ";
 'MOD START 240a
 '                upic.ForeColor = rgb(0, 0, 0)
                 upic.ForeColor = IIf(NewGUIMode, StatusFontColorNormalString, rgb(0, 0, 0))
 'MOD  END  240a
                 prob = .HitProbability(w, SelectedUnit, True)
                 cprob = .CriticalProbability(w, SelectedUnit)
-                upic.Print Format$(MinLng(prob, 100)) & "ï¼…ï¼ˆ" & cprob & "ï¼…ï¼‰"
+                upic.Print Format$(MinLng(prob, 100)) & "“i" & cprob & "“j"
             End If
         Else
-            'ç›¸æ‰‹ã¯åæ’ƒã§ããªã„
+            '‘Šè‚Í”½Œ‚‚Å‚«‚È‚¢
 'MOD START 240a
 '            upic.ForeColor = rgb(0, 0, 150)
             upic.ForeColor = IIf(NewGUIMode, StatusFontColorAbilityName, rgb(0, 0, 150))
@@ -3309,15 +3309,15 @@ NextItem:
             If def_mode <> "" Then
                 upic.Print def_mode;
             Else
-                upic.Print "åæ’ƒä¸èƒ½";
+                upic.Print "”½Œ‚•s”\";
             End If
 'MOD START 240a
 '            upic.ForeColor = rgb(0, 0, 0)
             upic.ForeColor = IIf(NewGUIMode, StatusFontColorNormalString, rgb(0, 0, 0))
 'MOD  END  240a
-            'ã‚µãƒãƒ¼ãƒˆã‚¬ãƒ¼ãƒ‰ã‚’å—ã‘ã‚‰ã‚Œã‚‹ï¼Ÿ
+            'ƒTƒ|[ƒgƒK[ƒh‚ğó‚¯‚ç‚ê‚éH
             If Not u.LookForSupportGuard(SelectedUnit, SelectedWeapon) Is Nothing Then
-                upic.Print " [æ´]"
+                upic.Print " [‰‡]"
             Else
                 upic.Print
             End If
@@ -3330,14 +3330,14 @@ SkipAttackExpResult:
                 upic.CurrentX = 5
             End If
 'ADD  END  240a
-        'æ­¦å™¨ä¸€è¦§
+        '•Šíˆê——
         upic.CurrentY = upic.CurrentY + 8
         upic.Print Space$(25);
 'MOD START 240a
 '        upic.ForeColor = rgb(0, 0, 150)
         upic.ForeColor = IIf(NewGUIMode, StatusFontColorAbilityName, rgb(0, 0, 150))
 'MOD  END  240a
-        upic.Print "æ”»æ’ƒ å°„ç¨‹"
+        upic.Print "UŒ‚ Ë’ö"
 'MOD START 240a
 '        upic.ForeColor = rgb(0, 0, 0)
         upic.ForeColor = IIf(NewGUIMode, StatusFontColorNormalString, rgb(0, 0, 0))
@@ -3349,7 +3349,7 @@ SkipAttackExpResult:
             wpower(i) = .WeaponPower(i, "")
         Next
         
-        'æ”»æ’ƒåŠ›ã§ã‚½ãƒ¼ãƒˆ
+        'UŒ‚—Í‚Åƒ\[ƒg
         For i = 1 To .CountWeapon
             For j = 1 To i - 1
                 If wpower(i) > wpower(warray(i - j)) Then
@@ -3378,23 +3378,23 @@ SkipAttackExpResult:
             warray(i - j + 1) = i
         Next
         
-        'å€‹ã€…ã®æ­¦å™¨ã‚’è¡¨ç¤º
+        'ŒÂX‚Ì•Ší‚ğ•\¦
         For i = 1 To .CountWeapon
             If upic.CurrentY > 420 Then
                 Exit For
             End If
             w = warray(i)
-            If Not .IsWeaponAvailable(w, "ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹") Then
-                'ç¿’å¾—ã—ã¦ã„ãªã„æŠ€ã¯è¡¨ç¤ºã—ãªã„
+            If Not .IsWeaponAvailable(w, "ƒXƒe[ƒ^ƒX") Then
+                'K“¾‚µ‚Ä‚¢‚È‚¢‹Z‚Í•\¦‚µ‚È‚¢
                 If Not .IsWeaponMastered(w) Then
                     GoTo NextWeapon
                 End If
-                'Disableã‚³ãƒãƒ³ãƒ‰ã§ä½¿ç”¨ä¸å¯ã«ãªã£ãŸæ­¦å™¨ã‚‚åŒæ§˜
+                'DisableƒRƒ}ƒ“ƒh‚Åg—p•s‰Â‚É‚È‚Á‚½•Ší‚à“¯—l
                 If .IsDisabled(.Weapon(w).Name) Then
                     GoTo NextWeapon
                 End If
-                'ãƒ•ã‚©ãƒ¼ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’æº€ãŸã—ã¦ã„ãªã„åˆä½“æŠ€ã‚‚
-                If .IsWeaponClassifiedAs(w, "åˆ") Then
+                'ƒtƒH[ƒ[ƒVƒ‡ƒ“‚ğ–‚½‚µ‚Ä‚¢‚È‚¢‡‘Ì‹Z‚à
+                If .IsWeaponClassifiedAs(w, "‡") Then
                     If Not .IsCombinationAttackAvailable(w, True) Then
                         GoTo NextWeapon
                     End If
@@ -3405,7 +3405,7 @@ SkipAttackExpResult:
 'MOD  END  240a
             End If
             
-            'æ­¦å™¨ã®è¡¨ç¤º
+            '•Ší‚Ì•\¦
             If .WeaponPower(w, "") < 10000 Then
                 buf = RightPaddedString(Format$(.WeaponNickname(w)), 25)
                 buf = buf & LeftPaddedString(Format$(.WeaponPower(w, "")), 4)
@@ -3414,30 +3414,30 @@ SkipAttackExpResult:
                 buf = buf & LeftPaddedString(Format$(.WeaponPower(w, "")), 5)
             End If
             
-            'æ­¦å™¨ãŒç‰¹æ®ŠåŠ¹æœã‚’æŒã¤å ´åˆã¯ç•¥ç§°ã§è¡¨è¨˜
+            '•Ší‚ª“ÁêŒø‰Ê‚ğ‚Âê‡‚Í—ªÌ‚Å•\‹L
             If .WeaponMaxRange(w) > 1 Then
                 Dim wclass As String
                 buf = buf & _
                     LeftPaddedString(Format$(.Weapon(w).MinRange) & "-" & Format$(.WeaponMaxRange(w)), _
                         34 - LenB(StrConv(buf, vbFromUnicode)))
-                'ç§»å‹•å¾Œæ”»æ’ƒå¯èƒ½
-                If .IsWeaponClassifiedAs(w, "ï¼°") Then
+                'ˆÚ“®ŒãUŒ‚‰Â”\
+                If .IsWeaponClassifiedAs(w, "‚o") Then
                     buf = buf & "P"
                 End If
             Else
                 buf = buf & LeftPaddedString("1", 34 - LenB(StrConv(buf, vbFromUnicode)))
 ' ADD START MARGE
-                'ç§»å‹•å¾Œæ”»æ’ƒä¸å¯
-                If .IsWeaponClassifiedAs(w, "ï¼±") Then
+                'ˆÚ“®ŒãUŒ‚•s‰Â
+                If .IsWeaponClassifiedAs(w, "‚p") Then
                     buf = buf & "Q"
                 End If
 ' ADD END MARGE
             End If
-            'ãƒãƒƒãƒ—æ”»æ’ƒ
-            If .IsWeaponClassifiedAs(w, "ï¼­") Then
+            'ƒ}ƒbƒvUŒ‚
+            If .IsWeaponClassifiedAs(w, "‚l") Then
                 buf = buf & "M"
             End If
-            'ç‰¹æ®ŠåŠ¹æœ
+            '“ÁêŒø‰Ê
             wclass = .Weapon(w).Class
             For j = 1 To .CountWeaponEffect(w)
                 buf = buf & "+"
@@ -3455,22 +3455,22 @@ SkipAttackExpResult:
 NextWeapon:
         Next
         
-        'ã‚¢ãƒ“ãƒªãƒ†ã‚£ä¸€è¦§
+        'ƒAƒrƒŠƒeƒBˆê——
         For i = 1 To .CountAbility
             If upic.CurrentY > 420 Then
                 Exit For
             End If
-            If Not .IsAbilityAvailable(i, "ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹") Then
-                'ç¿’å¾—ã—ã¦ã„ãªã„æŠ€ã¯è¡¨ç¤ºã—ãªã„
+            If Not .IsAbilityAvailable(i, "ƒXƒe[ƒ^ƒX") Then
+                'K“¾‚µ‚Ä‚¢‚È‚¢‹Z‚Í•\¦‚µ‚È‚¢
                 If Not .IsAbilityMastered(i) Then
                     GoTo NextAbility
                 End If
-                'Disableã‚³ãƒãƒ³ãƒ‰ã§ä½¿ç”¨ä¸å¯ã«ãªã£ãŸæ­¦å™¨ã‚‚åŒæ§˜
+                'DisableƒRƒ}ƒ“ƒh‚Åg—p•s‰Â‚É‚È‚Á‚½•Ší‚à“¯—l
                 If .IsDisabled(.Ability(i).Name) Then
                     GoTo NextAbility
                 End If
-                'ãƒ•ã‚©ãƒ¼ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’æº€ãŸã—ã¦ã„ãªã„åˆä½“æŠ€ã‚‚
-                If .IsAbilityClassifiedAs(i, "åˆ") Then
+                'ƒtƒH[ƒ[ƒVƒ‡ƒ“‚ğ–‚½‚µ‚Ä‚¢‚È‚¢‡‘Ì‹Z‚à
+                If .IsAbilityClassifiedAs(i, "‡") Then
                     If Not .IsCombinationAbilityAvailable(i, True) Then
                         GoTo NextAbility
                     End If
@@ -3486,27 +3486,27 @@ NextWeapon:
                 upic.CurrentX = 5
             End If
 'ADD  END  240a
-            'ã‚¢ãƒ“ãƒªãƒ†ã‚£ã®è¡¨ç¤º
+            'ƒAƒrƒŠƒeƒB‚Ì•\¦
             upic.Print RightPaddedString(Format$(.AbilityNickname(i)), 29);
             If .AbilityMaxRange(i) > 1 Then
                 upic.Print _
                     LeftPaddedString(Format$(.AbilityMinRange(i)) & _
                         "-" & Format$(.AbilityMaxRange(i)), 5);
-                If .IsAbilityClassifiedAs(i, "ï¼°") Then
+                If .IsAbilityClassifiedAs(i, "‚o") Then
                     upic.Print "P";
                 End If
-                If .IsAbilityClassifiedAs(i, "ï¼­") Then
+                If .IsAbilityClassifiedAs(i, "‚l") Then
                     upic.Print "M";
                 End If
                 upic.Print
             ElseIf .AbilityMaxRange(i) = 1 Then
                 upic.Print "    1";
 ' ADD START MARGE
-                If .IsAbilityClassifiedAs(i, "ï¼±") Then
+                If .IsAbilityClassifiedAs(i, "‚p") Then
                     upic.Print "Q";
                 End If
 ' ADD END MARGE
-                If .IsAbilityClassifiedAs(i, "ï¼­") Then
+                If .IsAbilityClassifiedAs(i, "‚l") Then
                     upic.Print "M";
                 End If
                 upic.Print
@@ -3527,7 +3527,7 @@ UpdateStatusWindow:
 '    If MainWidth = 15 Then
     If Not NewGUIMode Then
 'MOD  END
-        'ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’ãƒªãƒ•ãƒ¬ãƒƒã‚·ãƒ¥
+        'ƒXƒe[ƒ^ƒXƒEƒBƒ“ƒhƒE‚ğƒŠƒtƒŒƒbƒVƒ…
         MainForm.picFace.Refresh
         ppic.Refresh
         upic.Refresh
@@ -3535,7 +3535,7 @@ UpdateStatusWindow:
         If MouseX < MainPWidth \ 2 Then
 'MOD START 240a
 '            upic.Move MainPWidth - 230 - 5, 10
-            'ç”»é¢å·¦å´ã«ã‚«ãƒ¼ã‚½ãƒ«ãŒã‚ã‚‹å ´åˆ
+            '‰æ–Ê¶‘¤‚ÉƒJ[ƒ\ƒ‹‚ª‚ ‚éê‡
             upic.Move MainPWidth - 240, 10
 'MOD  END
         Else
@@ -3551,13 +3551,13 @@ UpdateStatusWindow:
     Exit Sub
     
 ErrorHandler:
-    ErrorMessage "ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆç”¨ç”»åƒãƒ•ã‚¡ã‚¤ãƒ«" & vbCr & vbLf _
+    ErrorMessage "ƒpƒCƒƒbƒg—p‰æ‘œƒtƒ@ƒCƒ‹" & vbCr & vbLf _
         & fname & vbCr & vbLf _
-        & "ã®èª­ã¿è¾¼ã¿ä¸­ã«ã‚¨ãƒ©ãƒ¼ãŒç™ºç”Ÿã—ã¾ã—ãŸã€‚" & vbCr & vbLf _
-        & "ç”»åƒãƒ•ã‚¡ã‚¤ãƒ«ãŒå£Šã‚Œã¦ã„ãªã„ã‹ç¢ºèªã—ã¦ä¸‹ã•ã„ã€‚"
+        & "‚Ì“Ç‚İ‚İ’†‚ÉƒGƒ‰[‚ª”­¶‚µ‚Ü‚µ‚½B" & vbCr & vbLf _
+        & "‰æ‘œƒtƒ@ƒCƒ‹‚ª‰ó‚ê‚Ä‚¢‚È‚¢‚©Šm”F‚µ‚Ä‰º‚³‚¢B"
 End Sub
 
-'æŒ‡å®šã•ã‚ŒãŸãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚’ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã«è¡¨ç¤º
+'w’è‚³‚ê‚½ƒpƒCƒƒbƒg‚ÌƒXƒe[ƒ^ƒX‚ğƒXƒe[ƒ^ƒXƒEƒBƒ“ƒhƒE‚É•\¦
 Public Sub DisplayPilotStatus(ByVal p As Pilot)
 Dim i As Integer
     
@@ -3565,10 +3565,10 @@ Dim i As Integer
     
     With DisplayedUnit
         If p Is .MainPilot Then
-            'ãƒ¡ã‚¤ãƒ³ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆ
+            'ƒƒCƒ“ƒpƒCƒƒbƒg
             DisplayUnitStatus DisplayedUnit, 0
         Else
-            'ã‚µãƒ–ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆ
+            'ƒTƒuƒpƒCƒƒbƒg
             For i = 1 To .CountPilot
                 If p Is .Pilot(i) Then
                     DisplayUnitStatus DisplayedUnit, i
@@ -3576,7 +3576,7 @@ Dim i As Integer
                 End If
             Next
             
-            'ã‚µãƒãƒ¼ãƒˆãƒ‘ã‚¤ãƒ­ãƒƒãƒˆ
+            'ƒTƒ|[ƒgƒpƒCƒƒbƒg
             For i = 1 To .CountSupport
                 If p Is .Support(i) Then
                     DisplayUnitStatus DisplayedUnit, i + .CountPilot
@@ -3584,23 +3584,23 @@ Dim i As Integer
                 End If
             Next
             
-            'è¿½åŠ ã‚µãƒãƒ¼ãƒˆ
-            If .IsFeatureAvailable("è¿½åŠ ã‚µãƒãƒ¼ãƒˆ") Then
+            '’Ç‰ÁƒTƒ|[ƒg
+            If .IsFeatureAvailable("’Ç‰ÁƒTƒ|[ƒg") Then
                 DisplayUnitStatus DisplayedUnit, .CountPilot + .CountSupport + 1
             End If
         End If
     End With
 End Sub
 
-'æŒ‡å®šã—ãŸãƒãƒƒãƒ—åº§æ¨™ã«ã„ã‚‹ãƒ¦ãƒ‹ãƒƒãƒˆã®ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚’ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã«è¡¨ç¤º
+'w’è‚µ‚½ƒ}ƒbƒvÀ•W‚É‚¢‚éƒ†ƒjƒbƒg‚ÌƒXƒe[ƒ^ƒX‚ğƒXƒe[ƒ^ƒXƒEƒBƒ“ƒhƒE‚É•\¦
 Public Sub InstantUnitStatusDisplay(ByVal X As Integer, ByVal Y As Integer)
 Dim u As Unit
     
-    'æŒ‡å®šã•ã‚ŒãŸåº§æ¨™ã«ã„ã‚‹ãƒ¦ãƒ‹ãƒƒãƒˆã‚’åå¾—
+    'w’è‚³‚ê‚½À•W‚É‚¢‚éƒ†ƒjƒbƒg‚ğû“¾
     Set u = MapDataForUnit(X, Y)
     
-    'ç™ºé€²ã‚³ãƒãƒ³ãƒ‰ã®å ´åˆã¯æ¯è‰¦ã§ã¯ãªãç™ºé€²ã™ã‚‹ãƒ¦ãƒ‹ãƒƒãƒˆã‚’ä½¿ã†
-    If CommandState = "ã‚¿ãƒ¼ã‚²ãƒƒãƒˆé¸æŠ" And SelectedCommand = "ç™ºé€²" Then
+    '”­iƒRƒ}ƒ“ƒh‚Ìê‡‚Í•êŠÍ‚Å‚Í‚È‚­”­i‚·‚éƒ†ƒjƒbƒg‚ğg‚¤
+    If CommandState = "ƒ^[ƒQƒbƒg‘I‘ğ" And SelectedCommand = "”­i" Then
         If u Is SelectedUnit Then
             Set u = SelectedTarget
             If u Is Nothing Then
@@ -3610,9 +3610,9 @@ Dim u As Unit
     End If
     
     If DisplayedUnit Is Nothing Then
-        'ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã«ä½•ã‚‚è¡¨ç¤ºã•ã‚Œã¦ã„ãªã‘ã‚Œã°ç„¡æ¡ä»¶ã§è¡¨ç¤º
+        'ƒXƒe[ƒ^ƒXƒEƒBƒ“ƒhƒE‚É‰½‚à•\¦‚³‚ê‚Ä‚¢‚È‚¯‚ê‚Î–³ğŒ‚Å•\¦
     Else
-        'åŒã˜ãƒ¦ãƒ‹ãƒƒãƒˆãŒè¡¨ç¤ºã•ã‚Œã¦ã„ã‚Œã°ã‚¹ã‚­ãƒƒãƒ—
+        '“¯‚¶ƒ†ƒjƒbƒg‚ª•\¦‚³‚ê‚Ä‚¢‚ê‚ÎƒXƒLƒbƒv
         If u Is DisplayedUnit Then
             Exit Sub
         End If
@@ -3621,7 +3621,7 @@ Dim u As Unit
     DisplayUnitStatus u
 End Sub
 
-'ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’ã‚¯ãƒªã‚¢
+'ƒXƒe[ƒ^ƒXƒEƒBƒ“ƒhƒE‚ğƒNƒŠƒA
 Public Sub ClearUnitStatus()
     If MainWidth = 15 Then
         MainForm.picFace = LoadPicture("")
@@ -3640,76 +3640,76 @@ Public Sub ClearUnitStatus()
 End Sub
 
 'ADD START 240a
-'æ–°ï¼§ï¼µï¼©æ™‚ã®ã‚°ãƒ­ãƒ¼ãƒãƒ«ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ã‚µã‚¤ã‚ºã‚’å–å¾—ã™ã‚‹
+'V‚f‚t‚h‚ÌƒOƒ[ƒoƒ‹ƒXƒe[ƒ^ƒXƒEƒCƒ“ƒhƒE‚ÌƒTƒCƒY‚ğæ“¾‚·‚é
 Private Function GetGlobalStatusSize(X As Integer, Y As Integer) As Long
 Dim ret As Long
     ret = 42
     If Not (X < 1 Or MapWidth < X Or Y < 1 Or MapHeight < Y) Then
-        'åœ°å½¢æƒ…å ±ã®è¡¨ç¤ºãŒç¢ºå®š
+        '’nŒ`î•ñ‚Ì•\¦‚ªŠm’è
         ret = 106
-        'ï¼¨ï¼°ãƒ»ï¼¥ï¼®å›å¾©ãŒè¨˜è¿°ã•ã‚Œã‚‹å ´åˆ
+        '‚g‚oE‚d‚m‰ñ•œ‚ª‹Lq‚³‚ê‚éê‡
         If TerrainEffectForHPRecover(X, Y) > 0 Or TerrainEffectForENRecover(X, Y) > 0 Then
             ret = ret + 16
         End If
-        'ï¼¨ï¼°ãƒ»ï¼¥ï¼®æ¸›å°‘ãŒè¨˜è¿°ã•ã‚Œã‚‹å ´åˆ
-        If TerrainHasFeature(X, Y, "ï¼¨ï¼°æ¸›å°‘") Or TerrainHasFeature(X, Y, "ï¼¥ï¼®æ¸›å°‘") Then
+        '‚g‚oE‚d‚mŒ¸­‚ª‹Lq‚³‚ê‚éê‡
+        If TerrainHasFeature(X, Y, "‚g‚oŒ¸­") Or TerrainHasFeature(X, Y, "‚d‚mŒ¸­") Then
             ret = ret + 16
         End If
-        'ï¼¨ï¼°ãƒ»ï¼¥ï¼®å¢—åŠ ãŒè¨˜è¿°ã•ã‚Œã‚‹å ´åˆ
-        If TerrainHasFeature(X, Y, "ï¼¨ï¼°å¢—åŠ ") Or TerrainHasFeature(X, Y, "ï¼¥ï¼®å¢—åŠ ") Then
+        '‚g‚oE‚d‚m‘‰Á‚ª‹Lq‚³‚ê‚éê‡
+        If TerrainHasFeature(X, Y, "‚g‚o‘‰Á") Or TerrainHasFeature(X, Y, "‚d‚m‘‰Á") Then
             ret = ret + 16
         End If
-        'ï¼¨ï¼°ãƒ»ï¼¥ï¼®ä½ä¸‹ãŒè¨˜è¿°ã•ã‚Œã‚‹å ´åˆ
-        If TerrainHasFeature(X, Y, "ï¼¨ï¼°ä½ä¸‹") Or TerrainHasFeature(X, Y, "ï¼¥ï¼®ä½ä¸‹") Then
+        '‚g‚oE‚d‚m’á‰º‚ª‹Lq‚³‚ê‚éê‡
+        If TerrainHasFeature(X, Y, "‚g‚o’á‰º") Or TerrainHasFeature(X, Y, "‚d‚m’á‰º") Then
             ret = ret + 16
         End If
-        'æ‘©æ“¦ãƒ»çŠ¶æ…‹ä»˜åŠ ãŒè¨˜è¿°ã•ã‚Œã‚‹å ´åˆ
-        If TerrainHasFeature(X, Y, "æ‘©æ“¦") Or TerrainHasFeature(X, Y, "çŠ¶æ…‹ä»˜åŠ ") Then
+        '–€CEó‘Ô•t‰Á‚ª‹Lq‚³‚ê‚éê‡
+        If TerrainHasFeature(X, Y, "–€C") Or TerrainHasFeature(X, Y, "ó‘Ô•t‰Á") Then
             ret = ret + 16
         End If
     End If
     GetGlobalStatusSize = ret
 End Function
 
-'Globalå¤‰æ•°ã¨ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹æç”»ç³»å¤‰æ•°ã®åŒæœŸã€‚
+'Global•Ï”‚ÆƒXƒe[ƒ^ƒX•`‰æŒn•Ï”‚Ì“¯ŠúB
 Private Sub GlobalVariableLoad()
-    'èƒŒæ™¯è‰²
+    '”wŒiF
     If IsGlobalVariableDefined("StatusWindow(BackBolor)") Then
         If Not StatusWindowBackBolor = GetValueAsLong("StatusWindow(BackBolor)") Then
             StatusWindowBackBolor = GetValueAsLong("StatusWindow(BackBolor)")
         End If
     End If
-    'æ ã®è‰²
+    '˜g‚ÌF
     If IsGlobalVariableDefined("StatusWindow(FrameColor)") Then
         If Not StatusWindowFrameColor = GetValueAsLong("StatusWindow(FrameColor)") Then
             StatusWindowFrameColor = GetValueAsLong("StatusWindow(FrameColor)")
         End If
     End If
-    'æ ã®å¤ªã•
+    '˜g‚Ì‘¾‚³
     If IsGlobalVariableDefined("StatusWindow(FrameWidth)") Then
         If Not StatusWindowFrameWidth = GetValueAsLong("StatusWindow(FrameWidth)") Then
             StatusWindowFrameWidth = GetValueAsLong("StatusWindow(FrameWidth)")
         End If
     End If
-    'èƒ½åŠ›åã®è‰²
+    '”\—Í–¼‚ÌF
     If IsGlobalVariableDefined("StatusWindow(ANameColor)") Then
         If Not StatusFontColorAbilityName = GetValueAsLong("StatusWindow(ANameColor)") Then
             StatusFontColorAbilityName = GetValueAsLong("StatusWindow(ANameColor)")
         End If
     End If
-    'æœ‰åŠ¹ãªèƒ½åŠ›ã®è‰²
+    '—LŒø‚È”\—Í‚ÌF
     If IsGlobalVariableDefined("StatusWindow(EnableColor)") Then
         If Not StatusFontColorAbilityEnable = GetValueAsLong("StatusWindow(EnableColor)") Then
             StatusFontColorAbilityEnable = GetValueAsLong("StatusWindow(EnableColor)")
         End If
     End If
-    'ç„¡åŠ¹ãªèƒ½åŠ›ã®è‰²
+    '–³Œø‚È”\—Í‚ÌF
     If IsGlobalVariableDefined("StatusWindow(DisableColor)") Then
         If Not StatusFontColorAbilityDisable = GetValueAsLong("StatusWindow(DisableColor)") Then
             StatusFontColorAbilityDisable = GetValueAsLong("StatusWindow(DisableColor)")
         End If
     End If
-    'é€šå¸¸æ–‡å­—ã®è‰²
+    '’Êí•¶š‚ÌF
     If IsGlobalVariableDefined("StatusWindow(StringColor)") Then
         If Not StatusFontColorNormalString = GetValueAsLong("StatusWindow(StringColor)") Then
             StatusFontColorNormalString = GetValueAsLong("StatusWindow(StringColor)")

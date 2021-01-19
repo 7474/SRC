@@ -4,16 +4,16 @@ Friend Class Pilots
 	Implements System.Collections.IEnumerable
 	
 	' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
+	' 本プログラムはフリーソフトであり、無保証です。
+	' 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
+	' 再頒布または改変することができます。
 	
-	'Invalid_string_refer_to_original_code
+	'作成されたパイロットのデータを管理するリストクラス
 	
-	'Invalid_string_refer_to_original_code
+	'パイロット一覧
 	Private colPilots As New Collection
 	
-	'繧ｯ繝ｩ繧ｹ縺ｮ隗｣謾ｾ
+	'クラスの解放
 	'UPGRADE_NOTE: Class_Terminate は Class_Terminate_Renamed にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
 	Private Sub Class_Terminate_Renamed()
 		Dim i As Short
@@ -31,7 +31,7 @@ Friend Class Pilots
 		MyBase.Finalize()
 	End Sub
 	
-	'ForEach逕ｨ髢｢謨ｰ
+	'ForEach用関数
 	'UPGRADE_NOTE: NewEnum プロパティがコメント アウトされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="B3FC1610-34F3-43F5-86B7-16C984F0E88E"' をクリックしてください。
 	'Public Function NewEnum() As stdole.IUnknown
 		'NewEnum = colPilots.GetEnumerator
@@ -43,7 +43,7 @@ Friend Class Pilots
 	End Function
 	
 	
-	'Invalid_string_refer_to_original_code
+	'パイロットを追加
 	Public Function Add(ByRef pname As String, ByVal plevel As Short, ByRef pparty As String, Optional ByRef gid As String = "") As Pilot
 		Dim new_pilot As New Pilot
 		Dim key As String
@@ -59,12 +59,12 @@ Friend Class Pilots
 			.Unit_Renamed = Nothing
 			
 			If gid = "" Then
-				'Invalid_string_refer_to_original_code
-				If InStr(.Name, "(繧ｶ繧ｳ)") = 0 And InStr(.Name, "(豎守畑)") = 0 Then
+				'グループＩＤが指定されていない場合
+				If InStr(.Name, "(ザコ)") = 0 And InStr(.Name, "(汎用)") = 0 Then
 					key = .Name
 					If PList.IsDefined2(key) Then
 						If PList.Item2(key).ID = key Then
-							'Invalid_string_refer_to_original_code
+							'一度作成されたパイロットを復活させる場合
 							If Not PList.Item2(key).Alive Then
 								With PList.Item2(key)
 									.Level = plevel
@@ -76,7 +76,7 @@ Friend Class Pilots
 								Exit Function
 							End If
 							
-							ErrorMessage(key & "Invalid_string_refer_to_original_code")
+							ErrorMessage(key & "というパイロットは既に登録されています")
 							Exit Function
 						End If
 					End If
@@ -88,7 +88,7 @@ Friend Class Pilots
 					Loop While PList.IsDefined2(key)
 				End If
 			Else
-				'Invalid_string_refer_to_original_code
+				'グループＩＤが指定されている場合
 				key = gid
 				i = 1
 				Do While PList.IsDefined2(key)
@@ -103,17 +103,17 @@ Friend Class Pilots
 		End With
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'登録されているパイロットの総数
 	Public Function Count() As Short
 		Count = colPilots.Count()
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'リストからパイロットを削除
 	Public Sub Delete(ByRef Index As Object)
 		colPilots.Remove(Index)
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'リストからパイロットを検索
 	Public Function Item(ByRef Index As Object) As Pilot
 		Dim p As Pilot
 		Dim pname As String
@@ -125,7 +125,7 @@ Friend Class Pilots
 		End If
 		
 ErrorHandler: 
-		'Invalid_string_refer_to_original_code
+		'ＩＤで見つからなければ名称で検索
 		'UPGRADE_WARNING: オブジェクト Index の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
 		pname = CStr(Index)
 		For	Each p In colPilots
@@ -136,7 +136,7 @@ ErrorHandler:
 				End If
 			End If
 		Next p
-		'縺昴ｌ縺ｧ繧りｦ九▽縺九ｉ縺ｪ縺代ｌ縺ｰ諢帷ｧｰ縺ｧ讀懃ｴ｢
+		'それでも見つからなければ愛称で検索
 		For	Each p In colPilots
 			If p.Data.Nickname = pname Then
 				If p.Alive Then
@@ -147,7 +147,7 @@ ErrorHandler:
 		Next p
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'パイロットが定義されているか
 	Public Function IsDefined(ByRef Index As Object) As Boolean
 		Dim p As Pilot
 		Dim pname As String
@@ -160,7 +160,7 @@ ErrorHandler:
 		End If
 		
 ErrorHandler: 
-		'Invalid_string_refer_to_original_code
+		'ＩＤで見つからなければ名称で検索
 		'UPGRADE_WARNING: オブジェクト Index の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
 		pname = CStr(Index)
 		For	Each p In colPilots
@@ -171,7 +171,7 @@ ErrorHandler:
 				End If
 			End If
 		Next p
-		'縺昴ｌ縺ｧ繧りｦ九▽縺九ｉ縺ｪ縺代ｌ縺ｰ諢帷ｧｰ縺ｧ讀懃ｴ｢
+		'それでも見つからなければ愛称で検索
 		For	Each p In colPilots
 			If p.Data.Nickname = pname Then
 				If p.Alive Then
@@ -182,7 +182,7 @@ ErrorHandler:
 		Next p
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'パイロットを検索 (IDのみで検索)
 	Public Function Item2(ByRef Index As Object) As Pilot
 		On Error GoTo ErrorHandler
 		Item2 = colPilots.Item(Index)
@@ -193,7 +193,7 @@ ErrorHandler:
 		Item2 = Nothing
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'パイロットが定義されているか (IDのみで検索)
 	Public Function IsDefined2(ByRef Index As Object) As Boolean
 		Dim p As Pilot
 		
@@ -206,18 +206,18 @@ ErrorHandler:
 		IsDefined2 = False
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'リストのアップデート
 	Public Sub Update()
 		Dim p As Pilot
 		Dim i As Short
 		
 		For	Each p In colPilots
 			With p
-				If .Party <> "蜻ｳ譁ｹ" Or Not .Alive Then
-					'Invalid_string_refer_to_original_code
+				If .Party <> "味方" Or Not .Alive Then
+					'味方でないパイロットや破棄されたパイロットは削除
 					Delete(.ID)
 				ElseIf .IsAdditionalPilot Then 
-					'Invalid_string_refer_to_original_code
+					'追加パイロットは削除
 					If Not .Unit_Renamed Is Nothing Then
 						With .Unit_Renamed
 							'UPGRADE_NOTE: オブジェクト p.Unit.pltAdditionalPilot をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
@@ -230,7 +230,7 @@ ErrorHandler:
 					End If
 					Delete(.ID)
 				ElseIf .IsAdditionalSupport Then 
-					'Invalid_string_refer_to_original_code
+					'追加サポートは削除
 					If Not .Unit_Renamed Is Nothing Then
 						With .Unit_Renamed
 							'UPGRADE_NOTE: オブジェクト p.Unit.pltAdditionalSupport をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
@@ -242,32 +242,31 @@ ErrorHandler:
 						End With
 					End If
 					Delete(.ID)
-				ElseIf .Nickname0 = "Invalid_string_refer_to_original_code" Then 
-					'Invalid_string_refer_to_original_code
+				ElseIf .Nickname0 = "パイロット不在" Then 
+					'ダミーパイロットは削除
 					Delete(.ID)
 				ElseIf Not .Unit_Renamed Is Nothing Then 
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-					'Invalid_string_refer_to_original_code
-					Delete(.ID)
+					If .Unit_Renamed.IsFeatureAvailable("召喚ユニット") Then
+						'召喚ユニットの追加パイロットも削除
+						Delete(.ID)
+					End If
 				End If
-				'End If
 			End With
 		Next p
 		
-		'Invalid_string_refer_to_original_code
+		'残ったパイロットを全回復
 		For	Each p In colPilots
 			p.FullRecover()
 		Next p
 	End Sub
 	
 	
-	'Invalid_string_refer_to_original_code
+	'ファイルにデータをセーブ
 	Public Sub Save()
 		Dim num As Short
 		Dim p As Pilot
 		
-		'Invalid_string_refer_to_original_code
+		'追加パイロットや追加サポートを除いたパイロット数を算出
 		For	Each p In colPilots
 			With p
 				If Not .IsAdditionalPilot And Not .IsAdditionalSupport Then
@@ -279,7 +278,7 @@ ErrorHandler:
 		
 		For	Each p In colPilots
 			With p
-				'Invalid_string_refer_to_original_code
+				'追加パイロットや追加サポートはセーブしない
 				If Not .IsAdditionalPilot And Not .IsAdditionalSupport Then
 					If .Name = .ID Then
 						WriteLine(SaveDataFileNumber, .Name)
@@ -289,7 +288,7 @@ ErrorHandler:
 					WriteLine(SaveDataFileNumber, .Level, .Exp)
 					If .Unit_Renamed Is Nothing Then
 						If .Away Then
-							WriteLine(SaveDataFileNumber, "髮｢閼ｱ")
+							WriteLine(SaveDataFileNumber, "離脱")
 						Else
 							WriteLine(SaveDataFileNumber, "-")
 						End If
@@ -301,7 +300,7 @@ ErrorHandler:
 		Next p
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'ファイルからデータをロード (リンクは行わない)
 	Public Sub Load()
 		Dim i, num As Short
 		Dim pname As String
@@ -324,28 +323,28 @@ ErrorHandler:
 						pname = Left(pname, InStr(pname, "(") - 1)
 					End If
 					If Not PDList.IsDefined(pname) Then
-						ErrorMessage(pname & "Invalid_string_refer_to_original_code")
+						ErrorMessage(pname & "のデータが定義されていません")
 						TerminateSRC()
 						End
 					End If
 				End If
-				With Add(pname, plevel, "蜻ｳ譁ｹ")
+				With Add(pname, plevel, "味方")
 					.Exp = pexp
 				End With
 			Else
 				If Not PDList.IsDefined(LIndex(pname, 1)) Then
-					ErrorMessage(LIndex(pname, 1) & "Invalid_string_refer_to_original_code")
+					ErrorMessage(LIndex(pname, 1) & "のデータが定義されていません")
 					TerminateSRC()
 					End
 				End If
-				With Add(LIndex(pname, 1), plevel, "蜻ｳ譁ｹ", LIndex(pname, 2))
+				With Add(LIndex(pname, 1), plevel, "味方", LIndex(pname, 2))
 					.Exp = pexp
 				End With
 			End If
 		Next 
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'ファイルからデータを読み込みリンク
 	Public Sub LoadLinkInfo()
 		Dim ret, i, num As Short
 		Dim pname, uid As String
@@ -368,8 +367,8 @@ ErrorHandler:
 			End If
 			
 			Select Case uid
-				Case "髮｢閼ｱ"
-					'Invalid_string_refer_to_original_code
+				Case "離脱"
+					'Leaveされたパイロット
 					If LLength(pname) = 1 Then
 						Item(pname).Away = True
 					Else
@@ -377,17 +376,17 @@ ErrorHandler:
 					End If
 					GoTo NextPilot
 				Case "-", "Dummy"
-					'Invalid_string_refer_to_original_code
+					'ユニットに乗っていないパイロット
 					GoTo NextPilot
 			End Select
 			
-			'Invalid_string_refer_to_original_code
+			'旧形式のユニットＩＤを新形式に変換
 			If SaveDataVersion < 10700 Then
 				ConvertUnitID(uid)
 			End If
 			
 			If UList.IsDefined(uid) Then
-				'Invalid_string_refer_to_original_code
+				'パイロットをユニットに乗せる
 				u = UList.Item(uid)
 				If LLength(pname) = 1 Then
 					Item(pname).Unit_Renamed = u
@@ -395,12 +394,12 @@ ErrorHandler:
 					Item(LIndex(pname, 2)).Unit_Renamed = u
 				End If
 			Else
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code
+				'乗せるべきユニットが見つからなかった場合は強制的にユニットを
+				'作って乗せる (バグ対策だったけど……不要？)
 				ret = InStr(uid, ":")
 				uid = Left(uid, ret - 1)
 				If UDList.IsDefined(uid) Then
-					u = UList.Add(uid, 0, "蜻ｳ譁ｹ")
+					u = UList.Add(uid, 0, "味方")
 					If LLength(pname) = 1 Then
 						Item(pname).Ride(u)
 					Else
@@ -413,12 +412,12 @@ NextPilot:
 	End Sub
 	
 	
-	'Invalid_string_refer_to_original_code
+	'一時中断用データをセーブする
 	Public Sub Dump()
 		Dim p As Pilot
 		Dim num As Short
 		
-		'Invalid_string_refer_to_original_code
+		'追加パイロットを除いたパイロット数を算出
 		For	Each p In colPilots
 			With p
 				If Not .IsAdditionalPilot Then
@@ -430,7 +429,7 @@ NextPilot:
 		
 		For	Each p In colPilots
 			With p
-				'Invalid_string_refer_to_original_code
+				'追加パイロットはセーブしない
 				If Not .IsAdditionalPilot Then
 					.Dump()
 				End If
@@ -438,7 +437,7 @@ NextPilot:
 		Next p
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'一時中断用データをファイルからロードする
 	Public Sub Restore()
 		Dim i, num As Short
 		Dim buf As String
@@ -461,7 +460,7 @@ NextPilot:
 		Next 
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'一時中断用データのリンク情報をファイルからロードする
 	Public Sub RestoreLinkInfo()
 		Dim i, num As Short
 		
@@ -473,7 +472,7 @@ NextPilot:
 		Next 
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'一時中断用データのパラメータ情報をファイルからロードする
 	Public Sub RestoreParameter()
 		Dim i, num As Short
 		
@@ -486,7 +485,7 @@ NextPilot:
 	End Sub
 	
 	
-	'繝ｪ繧ｹ繝医ｒ繧ｯ繝ｪ繧｢
+	'リストをクリア
 	Public Sub Clear()
 		Dim i As Short
 		
@@ -496,7 +495,7 @@ NextPilot:
 	End Sub
 	
 	
-	'Invalid_string_refer_to_original_code
+	'パイロットの支援修正を更新
 	Public Sub UpdateSupportMod(Optional ByVal u As Unit = Nothing)
 		Dim p As Pilot
 		Dim xx, i, yy As Short
@@ -506,7 +505,7 @@ NextPilot:
 			Exit Sub
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'ユニット指定がなければ全パイロットを更新
 		If u Is Nothing Then
 			For	Each p In colPilots
 				p.UpdateSupportMod()
@@ -515,25 +514,24 @@ NextPilot:
 		End If
 		
 		With u
-			'Invalid_string_refer_to_original_code
+			'ユニットにパイロットが乗っていなければそのまま終了
 			If .CountPilot = 0 Then
 				Exit Sub
 			End If
 			
 			With .MainPilot
-				'Invalid_string_refer_to_original_code
+				'メインパイロットを更新
 				.UpdateSupportMod()
 				
-				'Invalid_string_refer_to_original_code
+				'支援範囲を算出
 				max_range = .CommandRange
 				
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				max_range = MaxLng(max_range, 2)
-				'End If
+				If .IsSkillAvailable("広域サポート") Then
+					max_range = MaxLng(max_range, 2)
+				End If
 				
-				If IsOptionDefined("菫｡鬆ｼ陬懈ｭ｣") And InStr(.Name, "(繧ｶ繧ｳ)") = 0 Then
-					If IsOptionDefined("Invalid_string_refer_to_original_code") Then
+				If IsOptionDefined("信頼補正") And InStr(.Name, "(ザコ)") = 0 Then
+					If IsOptionDefined("信頼補正範囲拡大") Then
 						max_range = MaxLng(max_range, 2)
 					Else
 						max_range = MaxLng(max_range, 1)
@@ -541,7 +539,7 @@ NextPilot:
 				End If
 			End With
 			
-			'Invalid_string_refer_to_original_code
+			'他のパイロットを更新
 			For i = 2 To .CountPilot
 				.Pilot(i).UpdateSupportMod()
 			Next 
@@ -549,19 +547,19 @@ NextPilot:
 				.Support(i).UpdateSupportMod()
 			Next 
 			
-			'Invalid_string_refer_to_original_code
+			'支援範囲が無いなら他のユニットに乗っているパイロットには影響無し
 			If max_range = 0 Then
 				Exit Sub
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'周りのユニットに乗っているパイロットの支援修正を更新
 			For xx = MaxLng(.X - max_range, 1) To MinLng(.X + max_range, MapWidth)
 				For yy = MaxLng(.Y - max_range, 1) To MinLng(.Y + max_range, MapHeight)
 					If MapDataForUnit(xx, yy) Is Nothing Then
 						GoTo NextPoint
 					End If
 					
-					'Invalid_string_refer_to_original_code
+					'支援範囲内にいるかチェック
 					range = System.Math.Abs(.X - xx) + System.Math.Abs(.Y - yy)
 					If range > max_range Then
 						GoTo NextPoint
@@ -570,7 +568,7 @@ NextPilot:
 						GoTo NextPoint
 					End If
 					
-					'Invalid_string_refer_to_original_code
+					'乗っているパイロット全員の支援修正を更新
 					With MapDataForUnit(xx, yy)
 						If .CountPilot = 0 Then
 							GoTo NextPoint
@@ -590,14 +588,14 @@ NextPoint:
 		End With
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'破棄されたパイロットを削除する
 	Public Sub Clean()
 		Dim p As Pilot
 		
 		For	Each p In colPilots
 			With p
 				If Not .Alive Then
-					'Invalid_string_refer_to_original_code
+					'破棄されたパイロットを削除
 					Delete(.ID)
 				End If
 			End With

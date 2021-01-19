@@ -10,17 +10,17 @@ Attribute VB_Exposed = False
 Option Explicit
 
 ' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯ãƒ•ãƒªãƒ¼ã‚½ãƒ•ãƒˆã§ã‚ã‚Šã€ç„¡ä¿è¨¼ã§ã™ã€‚
-' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯GNU General Public License(Ver.3ã¾ãŸã¯ãã‚Œä»¥é™)ãŒå®šã‚ã‚‹æ¡ä»¶ã®ä¸‹ã§
-' å†é ’å¸ƒã¾ãŸã¯æ”¹å¤‰ã™ã‚‹ã“ã¨ãŒã§ãã¾ã™ã€‚
+' –{ƒvƒƒOƒ‰ƒ€‚ÍƒtƒŠ[ƒ\ƒtƒg‚Å‚ ‚èA–³•ÛØ‚Å‚·B
+' –{ƒvƒƒOƒ‰ƒ€‚ÍGNU General Public License(Ver.3‚Ü‚½‚Í‚»‚êˆÈ~)‚ª’è‚ß‚éğŒ‚Ì‰º‚Å
+' Ä”Ğ•z‚Ü‚½‚Í‰ü•Ï‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B
 
-'ã‚¢ã‚¤ãƒ†ãƒ ï¼©ï¼¤ä½œæˆç”¨ã‚«ã‚¦ãƒ³ã‚¿
+'ƒAƒCƒeƒ€‚h‚cì¬—pƒJƒEƒ“ƒ^
 Private IDCount As Long
 
-'ã‚¢ã‚¤ãƒ†ãƒ ä¸€è¦§
+'ƒAƒCƒeƒ€ˆê——
 Private colItems As New Collection
 
-'ã‚¯ãƒ©ã‚¹ã®è§£æ”¾
+'ƒNƒ‰ƒX‚Ì‰ğ•ú
 Private Sub Class_Terminate()
 Dim i As Integer
     
@@ -32,7 +32,7 @@ Dim i As Integer
     Set colItems = Nothing
 End Sub
 
-'ForEachç”¨é–¢æ•°
+'ForEach—pŠÖ”
 Public Function NewEnum() As IUnknown
 Attribute NewEnum.VB_UserMemId = -4
 Attribute NewEnum.VB_MemberFlags = "40"
@@ -40,7 +40,7 @@ Attribute NewEnum.VB_MemberFlags = "40"
 End Function
 
 
-'ãƒªã‚¹ãƒˆã«ã‚¢ã‚¤ãƒ†ãƒ ã‚’è¿½åŠ 
+'ƒŠƒXƒg‚ÉƒAƒCƒeƒ€‚ğ’Ç‰Á
 Public Function Add(Name As String) As Item
 Dim new_item As Item
     
@@ -58,7 +58,7 @@ Dim new_item As Item
     colItems.Add new_item, new_item.ID
 End Function
 
-'æ–°ã—ã„ã‚¢ã‚¤ãƒ†ãƒ ï¼©ï¼¤ã‚’ä½œæˆ
+'V‚µ‚¢ƒAƒCƒeƒ€‚h‚c‚ğì¬
 Private Function CreateID(iname As String) As String
     Do
         IDCount = IDCount + 1
@@ -66,17 +66,17 @@ Private Function CreateID(iname As String) As String
     CreateID = iname & "_" & Format$(IDCount)
 End Function
 
-'ãƒªã‚¹ãƒˆã«ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ã‚¢ã‚¤ãƒ†ãƒ ã®ç·æ•°
+'ƒŠƒXƒg‚É“o˜^‚³‚ê‚Ä‚¢‚éƒAƒCƒeƒ€‚Ì‘”
 Public Function Count() As Integer
     Count = colItems.Count
 End Function
 
-'ãƒªã‚¹ãƒˆã‹ã‚‰ã‚¢ã‚¤ãƒ†ãƒ ã‚’å‰Šé™¤
+'ƒŠƒXƒg‚©‚çƒAƒCƒeƒ€‚ğíœ
 Public Sub Delete(Index As Variant)
     colItems.Remove Index
 End Sub
 
-'æŒ‡å®šã•ã‚ŒãŸã‚¢ã‚¤ãƒ†ãƒ ã‚’æ¤œç´¢
+'w’è‚³‚ê‚½ƒAƒCƒeƒ€‚ğŒŸõ
 Public Function Item(Index As Variant) As Item
 Dim it As Item
 Dim iname As String
@@ -84,13 +84,13 @@ Dim iname As String
     On Error GoTo ErrorHandler
     Set Item = colItems.Item(Index)
     
-    'ç ´æ£„ã•ã‚Œã¦ã„ãªã„ï¼Ÿ
+    '”jŠü‚³‚ê‚Ä‚¢‚È‚¢H
     If Item.Exist Then
         Exit Function
     End If
 
 ErrorHandler:
-    'è¦‹ã¤ã‹ã‚‰ãªã‘ã‚Œã°ã‚¢ã‚¤ãƒ†ãƒ åã§æ¤œç´¢
+    'Œ©‚Â‚©‚ç‚È‚¯‚ê‚ÎƒAƒCƒeƒ€–¼‚ÅŒŸõ
     iname = CStr(Index)
     For Each it In colItems
         With it
@@ -103,7 +103,7 @@ ErrorHandler:
     Set Item = Nothing
 End Function
 
-'æŒ‡å®šã•ã‚ŒãŸã‚¢ã‚¤ãƒ†ãƒ ãŒç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ã‹ï¼Ÿ
+'w’è‚³‚ê‚½ƒAƒCƒeƒ€‚ª“o˜^‚³‚ê‚Ä‚¢‚é‚©H
 Public Function IsDefined(Index As Variant) As Boolean
 Dim it As Item
 Dim iname As String
@@ -111,14 +111,14 @@ Dim iname As String
     On Error GoTo ErrorHandler
     Set it = colItems.Item(Index)
     
-    'ç ´æ£„ã•ã‚ŒãŸã‚¢ã‚¤ãƒ†ãƒ ã¯ç™»éŒ²ã•ã‚Œã¦ã„ãªã„ã¨ã¿ãªã™
+    '”jŠü‚³‚ê‚½ƒAƒCƒeƒ€‚Í“o˜^‚³‚ê‚Ä‚¢‚È‚¢‚Æ‚İ‚È‚·
     If it.Exist Then
         IsDefined = True
         Exit Function
     End If
     
 ErrorHandler:
-    'è¦‹ã¤ã‹ã‚‰ãªã‘ã‚Œã°ã‚¢ã‚¤ãƒ†ãƒ åã§æ¤œç´¢
+    'Œ©‚Â‚©‚ç‚È‚¯‚ê‚ÎƒAƒCƒeƒ€–¼‚ÅŒŸõ
     iname = CStr(Index)
     For Each it In colItems
         With it
@@ -131,7 +131,7 @@ ErrorHandler:
     IsDefined = False
 End Function
 
-'ã‚¢ã‚¤ãƒ†ãƒ åã¨Exitãƒ•ãƒ©ã‚°ã‚’ç„¡è¦–ã—ã¦ã‚¢ã‚¤ãƒ†ãƒ ã‚’æ¤œç´¢
+'ƒAƒCƒeƒ€–¼‚ÆExitƒtƒ‰ƒO‚ğ–³‹‚µ‚ÄƒAƒCƒeƒ€‚ğŒŸõ
 Public Function IsDefined2(Index As Variant) As Boolean
 Dim it As Item
 
@@ -144,11 +144,11 @@ ErrorHandler:
     IsDefined2 = False
 End Function
 
-'ãƒªã‚¹ãƒˆã«ç™»éŒ²ã•ã‚ŒãŸã‚¢ã‚¤ãƒ†ãƒ ã‚’ã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ãƒˆ
+'ƒŠƒXƒg‚É“o˜^‚³‚ê‚½ƒAƒCƒeƒ€‚ğƒAƒbƒvƒf[ƒg
 Public Sub Update()
 Dim it As Item
     
-    'ç ´æ£„ã•ã‚ŒãŸã‚¢ã‚¤ãƒ†ãƒ ã‚’å‰Šé™¤
+    '”jŠü‚³‚ê‚½ƒAƒCƒeƒ€‚ğíœ
     For Each it In colItems
         With it
             If Not .Exist Then
@@ -157,7 +157,7 @@ Dim it As Item
         End With
     Next
     
-    'ãƒªãƒ³ã‚¯ãƒ‡ãƒ¼ã‚¿ã®æ•´åˆæ€§ã‚’å–ã‚‹
+    'ƒŠƒ“ƒNƒf[ƒ^‚Ì®‡«‚ğæ‚é
     For Each it In colItems
         With it
             If Not .Unit Is Nothing Then
@@ -168,7 +168,7 @@ Dim it As Item
 End Sub
 
 
-'ãƒ‡ãƒ¼ã‚¿ã‚’ãƒ•ã‚¡ã‚¤ãƒ«ã«ã‚»ãƒ¼ãƒ–
+'ƒf[ƒ^‚ğƒtƒ@ƒCƒ‹‚ÉƒZ[ƒu
 Public Sub Save()
 Dim i As Integer
 
@@ -186,7 +186,7 @@ Dim i As Integer
     Next
 End Sub
 
-'ãƒ‡ãƒ¼ã‚¿ã‚’ãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ãƒ­ãƒ¼ãƒ‰
+'ƒf[ƒ^‚ğƒtƒ@ƒCƒ‹‚©‚çƒ[ƒh
 Public Sub Load()
 Dim num As Integer
 Dim new_item As Item
@@ -210,7 +210,7 @@ Dim dummy As String
             Input #SaveDataFileNumber, iid, dummy
             
             If Not IDList.IsDefined(iname) Then
-                ErrorMessage iname & "ã®ãƒ‡ãƒ¼ã‚¿ãŒå®šç¾©ã•ã‚Œã¦ã„ã¾ã›ã‚“"
+                ErrorMessage iname & "‚Ìƒf[ƒ^‚ª’è‹`‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ"
                 StopBGM
                 End
             End If
@@ -222,7 +222,7 @@ Dim dummy As String
     Next
 End Sub
 
-'ãƒªãƒ³ã‚¯æƒ…å ±ã‚’ãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ãƒ­ãƒ¼ãƒ‰
+'ƒŠƒ“ƒNî•ñ‚ğƒtƒ@ƒCƒ‹‚©‚çƒ[ƒh
 Public Sub LoadLinkInfo()
 Dim num As Integer, i As Integer
 Dim dummy As String
@@ -244,7 +244,7 @@ Dim dummy As String
 End Sub
 
 
-'ä¸€æ™‚ä¸­æ–­ç”¨ãƒ‡ãƒ¼ã‚¿ã‚’ãƒ•ã‚¡ã‚¤ãƒ«ã«ã‚»ãƒ¼ãƒ–ã™ã‚‹
+'ˆê’†’f—pƒf[ƒ^‚ğƒtƒ@ƒCƒ‹‚ÉƒZ[ƒu‚·‚é
 Public Sub Dump()
 Dim it As Item
 
@@ -254,7 +254,7 @@ Dim it As Item
     Next
 End Sub
 
-'ä¸€æ™‚ä¸­æ–­ç”¨ãƒ‡ãƒ¼ã‚¿ã‚’ãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ãƒ­ãƒ¼ãƒ‰ã™ã‚‹
+'ˆê’†’f—pƒf[ƒ^‚ğƒtƒ@ƒCƒ‹‚©‚çƒ[ƒh‚·‚é
 Public Sub Restore()
 Dim i As Integer, num As Integer
 Dim it As Item
@@ -276,7 +276,7 @@ Dim it As Item
     Next
 End Sub
 
-'ä¸€æ™‚ä¸­æ–­ç”¨ãƒ‡ãƒ¼ã‚¿ã®ãƒªãƒ³ã‚¯æƒ…å ±ã‚’ãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ãƒ­ãƒ¼ãƒ‰ã™ã‚‹
+'ˆê’†’f—pƒf[ƒ^‚ÌƒŠƒ“ƒNî•ñ‚ğƒtƒ@ƒCƒ‹‚©‚çƒ[ƒh‚·‚é
 Public Sub RestoreLinkInfo()
 Dim it As Item
 Dim num As Integer
@@ -288,7 +288,7 @@ Dim num As Integer
     Next
 End Sub
 
-'ä¸€æ™‚ä¸­æ–­ç”¨ãƒ‡ãƒ¼ã‚¿ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿æƒ…å ±ã‚’ãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ãƒ­ãƒ¼ãƒ‰ã™ã‚‹
+'ˆê’†’f—pƒf[ƒ^‚Ìƒpƒ‰ƒ[ƒ^î•ñ‚ğƒtƒ@ƒCƒ‹‚©‚çƒ[ƒh‚·‚é
 Public Sub RestoreParameter()
 Dim it As Item
 Dim num As Integer
@@ -301,7 +301,7 @@ Dim num As Integer
 End Sub
 
 
-'ãƒªã‚¹ãƒˆã‚’ã‚¯ãƒªã‚¢
+'ƒŠƒXƒg‚ğƒNƒŠƒA
 Public Sub Clear()
 Dim i As Integer
 

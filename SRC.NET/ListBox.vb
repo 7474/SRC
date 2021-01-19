@@ -4,30 +4,30 @@ Friend Class frmListBox
 	Inherits System.Windows.Forms.Form
 	
 	' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
+	' 本プログラムはフリーソフトであり、無保証です。
+	' 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
+	' 再頒布または改変することができます。
 	
-	'Invalid_string_refer_to_original_code
+	'リストボックスのフォーム
 	
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
+	'リストボックスのサイズ (通常:M 大型:L)
+	'幅
 	Public HorizontalSize As String
-	'鬮倥＆
+	'高さ
 	Public VerticalSize As String
 	
-	'Question繧ｳ繝槭Φ繝臥畑螟画焚
+	'Questionコマンド用変数
 	Public CurrentTime As Short
 	Public TimeLimit As Short
 	
-	'Invalid_string_refer_to_original_code
+	'最後に選択されたアイテム
 	Private LastSelectedItem As Short
 	
-	'Invalid_string_refer_to_original_code
+	'リストボックスへのキー入力
 	Private Sub frmListBox_KeyDown(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.KeyEventArgs) Handles MyBase.KeyDown
 		Dim KeyCode As Short = eventArgs.KeyCode
 		Dim Shift As Short = eventArgs.KeyData \ &H10000
-		'Invalid_string_refer_to_original_code
+		'既にウィンドウが隠れている場合は無視
 		If Not Visible Then
 			Exit Sub
 		End If
@@ -37,7 +37,7 @@ Friend Class frmListBox
 			Case System.Windows.Forms.Keys.Down
 			Case System.Windows.Forms.Keys.Left, System.Windows.Forms.Keys.Right
 			Case System.Windows.Forms.Keys.Escape, System.Windows.Forms.Keys.Delete, System.Windows.Forms.Keys.Back
-				'繧ｭ繝｣繝ｳ繧ｻ繝ｫ
+				'キャンセル
 				SelectedItem = 0
 				LastSelectedItem = SelectedItem
 				TopItem = lstItems.TopIndex
@@ -46,7 +46,7 @@ Friend Class frmListBox
 				End If
 				IsFormClicked = True
 			Case Else
-				'Invalid_string_refer_to_original_code
+				'選択
 				If lstItems.SelectedIndex < 0 Then
 					Exit Sub
 				End If
@@ -65,17 +65,17 @@ Friend Class frmListBox
 		End Select
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'リストボックスを開く
 	Private Sub frmListBox_Load(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles MyBase.Load
 		Dim ret As Integer
 		
-		'Invalid_string_refer_to_original_code
+		'リストボックスを常に手前に表示
 		ret = SetWindowPos(Handle.ToInt32, -1, 0, 0, 0, 0, &H3)
 		HorizontalSize = "M"
 		VerticalSize = "M"
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'リストボックスを閉じる
 	Private Sub frmListBox_FormClosed(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.FormClosedEventArgs) Handles Me.FormClosed
 		TopItem = lstItems.TopIndex + 1
 		IsFormClicked = True
@@ -86,9 +86,9 @@ Friend Class frmListBox
 		Hide()
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'項目をダブルクリック
 	Private Sub lstItems_DoubleClick(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles lstItems.DoubleClick
-		'Invalid_string_refer_to_original_code
+		'無効なアイテムが選択されている？
 		If lstItems.SelectedIndex < 0 Then
 			Exit Sub
 		End If
@@ -99,7 +99,7 @@ Friend Class frmListBox
 		End If
 		
 		If LastSelectedItem <> 0 Then
-			'Invalid_string_refer_to_original_code
+			'連続で選択
 			If Not Visible Then
 				Exit Sub
 			End If
@@ -111,7 +111,7 @@ Friend Class frmListBox
 			End If
 			IsFormClicked = True
 		Else
-			'騾｣邯壹〒繧ｭ繝｣繝ｳ繧ｻ繝ｫ
+			'連続でキャンセル
 			SelectedItem = 0
 			LastSelectedItem = SelectedItem
 			TopItem = lstItems.TopIndex + 1
@@ -122,7 +122,7 @@ Friend Class frmListBox
 		End If
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'マウスでクリック
 	Private Sub lstItems_MouseDown(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.MouseEventArgs) Handles lstItems.MouseDown
 		Dim Button As Short = eventArgs.Button \ &H100000
 		Dim Shift As Short = System.Windows.Forms.Control.ModifierKeys \ &H10000
@@ -130,12 +130,12 @@ Friend Class frmListBox
 		Dim Y As Single = VB6.PixelsToTwipsY(eventArgs.Y)
 		Select Case Button
 			Case 1
-				'Invalid_string_refer_to_original_code
+				'選択
 				If Not Visible Then
 					Exit Sub
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'無効なアイテムが選択されている？
 				If lstItems.SelectedIndex < 0 Then
 					Exit Sub
 				End If
@@ -156,7 +156,7 @@ Friend Class frmListBox
 				End If
 				
 			Case 2
-				'繧ｭ繝｣繝ｳ繧ｻ繝ｫ
+				'キャンセル
 				SelectedItem = 0
 				LastSelectedItem = SelectedItem
 				TopItem = lstItems.TopIndex + 1
@@ -164,7 +164,7 @@ Friend Class frmListBox
 		End Select
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'キャプション部分をクリック
 	Private Sub labCaption_MouseDown(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.MouseEventArgs) Handles labCaption.MouseDown
 		Dim Button As Short = eventArgs.Button \ &H100000
 		Dim Shift As Short = System.Windows.Forms.Control.ModifierKeys \ &H10000
@@ -172,7 +172,7 @@ Friend Class frmListBox
 		Dim Y As Single = VB6.PixelsToTwipsY(eventArgs.Y)
 		Select Case Button
 			Case 1
-				'Invalid_string_refer_to_original_code
+				'ユニットステータスを表示しているユニットを入れ替え
 				If MainForm.Visible Then
 					If Not DisplayedUnit Is Nothing And Not SelectedUnit Is Nothing And Not SelectedTarget Is Nothing Then
 						If DisplayedUnit.ID = SelectedUnit.ID Then
@@ -183,7 +183,7 @@ Friend Class frmListBox
 					End If
 				End If
 			Case 2
-				'繧ｭ繝｣繝ｳ繧ｻ繝ｫ
+				'キャンセル
 				SelectedItem = 0
 				LastSelectedItem = SelectedItem
 				TopItem = lstItems.TopIndex
@@ -194,14 +194,14 @@ Friend Class frmListBox
 		End Select
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'リストボックスの端をクリック
 	Private Sub frmListBox_MouseDown(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.MouseEventArgs) Handles MyBase.MouseDown
 		Dim Button As Short = eventArgs.Button \ &H100000
 		Dim Shift As Short = System.Windows.Forms.Control.ModifierKeys \ &H10000
 		Dim X As Single = eventArgs.X
 		Dim Y As Single = eventArgs.Y
 		If Button = 2 Then
-			'繧ｭ繝｣繝ｳ繧ｻ繝ｫ
+			'キャンセル
 			SelectedItem = 0
 			LastSelectedItem = SelectedItem
 			TopItem = lstItems.TopIndex
@@ -212,7 +212,7 @@ Friend Class frmListBox
 		End If
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'リストボックス上でマウスカーソルを動かす
 	Private Sub lstItems_MouseMove(ByVal eventSender As System.Object, ByVal eventArgs As System.Windows.Forms.MouseEventArgs) Handles lstItems.MouseMove
 		Dim Button As Short = eventArgs.Button \ &H100000
 		Dim Shift As Short = System.Windows.Forms.Control.ModifierKeys \ &H10000
@@ -220,11 +220,11 @@ Friend Class frmListBox
 		Dim Y As Single = VB6.PixelsToTwipsY(eventArgs.Y)
 		Dim itm As Short
 		
-		'Invalid_string_refer_to_original_code
+		'カーソルがあるアイテムを算出
 		itm = ((Y * ClientRectangle.Width) \ VB6.PixelsToTwipsX(Width) + 1) \ 16
 		itm = itm + lstItems.TopIndex
 		
-		'Invalid_string_refer_to_original_code
+		'カーソル上のアイテムをハイライト表示
 		If itm < 0 Or itm >= lstItems.Items.Count Then
 			lstItems.SelectedIndex = -1
 			Exit Sub
@@ -234,13 +234,13 @@ Friend Class frmListBox
 		End If
 		lstItems.SelectedIndex = itm
 		
-		'Invalid_string_refer_to_original_code
+		'コメント欄を更新
 		If txtComment.Enabled Then
 			txtComment.Text = ListItemComment(itm + 1)
 		End If
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'Questionコマンド対応
 	Private Sub Timer1_Tick(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles Timer1.Tick
 		CurrentTime = CurrentTime + 1
 		'UPGRADE_ISSUE: PictureBox メソッド picBar.Cls はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
@@ -258,7 +258,7 @@ Friend Class frmListBox
 		End If
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'選択されているアイテムに対応するユニットのステータス表示
 	Private Sub Timer2_Tick(ByVal eventSender As System.Object, ByVal eventArgs As System.EventArgs) Handles Timer2.Tick
 		Dim u As Unit
 		
@@ -276,24 +276,24 @@ Friend Class frmListBox
 			Exit Sub
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'選択されたユニットが存在する？
 		If Not UList.IsDefined2(ListItemID(lstItems.SelectedIndex + 1)) Then
 			Exit Sub
 		End If
 		
 		u = UList.Item2(ListItemID(lstItems.SelectedIndex + 1))
 		
-		'Invalid_string_refer_to_original_code
+		'選択されたユニットにパイロットが乗っている？
 		If u.CountPilot = 0 Then
 			Exit Sub
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'既に表示している？
 		If DisplayedUnit Is u Then
 			Exit Sub
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'選択されたユニットをステータスウィンドウに表示
 		DisplayUnitStatus(u)
 		
 ErrorHandler: 

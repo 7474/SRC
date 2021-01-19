@@ -3,36 +3,36 @@ Option Explicit On
 Friend Class LabelData
 	
 	' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
+	' 本プログラムはフリーソフトであり、無保証です。
+	' 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
+	' 再頒布または改変することができます。
 	
-	'繧､繝吶Φ繝医ョ繝ｼ繧ｿ縺ｮ繝ｩ繝吶Ν縺ｮ繧ｯ繝ｩ繧ｹ
+	'イベントデータのラベルのクラス
 	
-	'Invalid_string_refer_to_original_code
+	'ラベル名
 	Public Name As Event.LabelType
-	'陦檎分蜿ｷ
+	'行番号
 	Public LineNum As Integer
-	'Invalid_string_refer_to_original_code
+	'ラベルが有効か？
 	Public Enable As Boolean
-	'Invalid_string_refer_to_original_code
+	'アスタリスクの指定状況
 	Public AsterNum As Short
 	
-	'Invalid_string_refer_to_original_code
+	'ラベル全体
 	Private StrData As String
-	'繝ｩ繝吶Ν縺ｮ蛟区焚
+	'ラベルの個数
 	Private intParaNum As Short
-	'Invalid_string_refer_to_original_code
+	'ラベルの各パラメータ
 	Private strParas() As String
-	'Invalid_string_refer_to_original_code
+	'パラメータが固定値？
 	Private blnConst() As Boolean
 	
-	'繝代Λ繝｡繝ｼ繧ｿ縺ｮ蛟区焚
+	'パラメータの個数
 	Public Function CountPara() As Short
 		CountPara = intParaNum
 	End Function
 	
-	'繝ｩ繝吶Ν縺ｮ idx 逡ｪ逶ｮ縺ｮ繝代Λ繝｡繝ｼ繧ｿ
+	'ラベルの idx 番目のパラメータ
 	Public Function Para(ByVal idx As Short) As String
 		If idx <= intParaNum Then
 			If blnConst(idx) Then
@@ -43,9 +43,9 @@ Friend Class LabelData
 		End If
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'ラベル全体を取り出す
 	
-	'Invalid_string_refer_to_original_code
+	'ラベル全体を設定
 	Public Property Data() As String
 		Get
 			DataControl = StrData
@@ -54,12 +54,12 @@ Friend Class LabelData
 			Dim i As Integer
 			Dim lname As String
 			
-			'Invalid_string_refer_to_original_code
+			'ラベル全体
 			StrData = Value
 			
-			'Invalid_string_refer_to_original_code
+			'ラベル名
 			lname = ListIndex(Value, 1)
-			'Invalid_string_refer_to_original_code
+			'「*」は省く
 			Select Case Asc(lname)
 				Case 42 '*
 					lname = Mid(lname, 2)
@@ -84,77 +84,77 @@ Friend Class LabelData
 					End Select
 			End Select
 			Select Case lname
-				Case "繝励Ο繝ｭ繝ｼ繧ｰ"
+				Case "プロローグ"
 					Name = Event_Renamed.LabelType.PrologueEventLabel
-				Case "Invalid_string_refer_to_original_code"
+				Case "スタート"
 					Name = Event_Renamed.LabelType.StartEventLabel
-				Case "繧ｨ繝斐Ο繝ｼ繧ｰ"
+				Case "エピローグ"
 					Name = Event_Renamed.LabelType.EpilogueEventLabel
-				Case "繧ｿ繝ｼ繝ｳ"
+				Case "ターン"
 					Name = Event_Renamed.LabelType.TurnEventLabel
-				Case "Invalid_string_refer_to_original_code"
+				Case "損傷率"
 					Name = Event_Renamed.LabelType.DamageEventLabel
-				Case "Invalid_string_refer_to_original_code"
+				Case "破壊"
 					Name = Event_Renamed.LabelType.DestructionEventLabel
-				Case "Invalid_string_refer_to_original_code"
+				Case "全滅"
 					Name = Event_Renamed.LabelType.TotalDestructionEventLabel
-				Case "Invalid_string_refer_to_original_code"
+				Case "攻撃"
 					Name = Event_Renamed.LabelType.AttackEventLabel
-				Case "Invalid_string_refer_to_original_code"
+				Case "攻撃後"
 					Name = Event_Renamed.LabelType.AfterAttackEventLabel
-				Case "莨夊ｩｱ"
+				Case "会話"
 					Name = Event_Renamed.LabelType.TalkEventLabel
-				Case "謗･隗ｦ"
+				Case "接触"
 					Name = Event_Renamed.LabelType.ContactEventLabel
-				Case "騾ｲ蜈･"
+				Case "進入"
 					Name = Event_Renamed.LabelType.EnterEventLabel
-				Case "閼ｱ蜃ｺ"
+				Case "脱出"
 					Name = Event_Renamed.LabelType.EscapeEventLabel
-				Case "Invalid_string_refer_to_original_code"
+				Case "収納"
 					Name = Event_Renamed.LabelType.LandEventLabel
-				Case "菴ｿ逕ｨ"
+				Case "使用"
 					Name = Event_Renamed.LabelType.UseEventLabel
-				Case "Invalid_string_refer_to_original_code"
+				Case "使用後"
 					Name = Event_Renamed.LabelType.AfterUseEventLabel
-				Case "螟牙ｽ｢"
+				Case "変形"
 					Name = Event_Renamed.LabelType.TransformEventLabel
-				Case "Invalid_string_refer_to_original_code"
+				Case "合体"
 					Name = Event_Renamed.LabelType.CombineEventLabel
-				Case "Invalid_string_refer_to_original_code"
+				Case "分離"
 					Name = Event_Renamed.LabelType.SplitEventLabel
-				Case "Invalid_string_refer_to_original_code"
+				Case "行動終了"
 					Name = Event_Renamed.LabelType.FinishEventLabel
-				Case "Invalid_string_refer_to_original_code"
+				Case "レベルアップ"
 					Name = Event_Renamed.LabelType.LevelUpEventLabel
-				Case "蜍晏茜譚｡莉ｶ"
+				Case "勝利条件"
 					Name = Event_Renamed.LabelType.RequirementEventLabel
-				Case "蜀埼幕"
+				Case "再開"
 					Name = Event_Renamed.LabelType.ResumeEventLabel
-				Case "Invalid_string_refer_to_original_code"
+				Case "マップコマンド"
 					Name = Event_Renamed.LabelType.MapCommandEventLabel
-				Case "Invalid_string_refer_to_original_code"
+				Case "ユニットコマンド"
 					Name = Event_Renamed.LabelType.UnitCommandEventLabel
-				Case "Invalid_string_refer_to_original_code"
+				Case "特殊効果"
 					Name = Event_Renamed.LabelType.EffectEventLabel
 				Case Else
 					Name = Event_Renamed.LabelType.NormalLabel
 			End Select
 			
-			'繝代Λ繝｡繝ｼ繧ｿ
+			'パラメータ
 			intParaNum = ListLength(Value)
 			If intParaNum = -1 Then
-				DisplayEventErrorMessage(CurrentLineNum, "Invalid_string_refer_to_original_code")
+				DisplayEventErrorMessage(CurrentLineNum, "ラベルの引数の括弧の対応が取れていません")
 				Exit Property
 			End If
 			ReDim strParas(intParaNum)
 			ReDim blnConst(intParaNum)
 			For i = 2 To intParaNum
 				strParas(i) = ListIndex(Value, i)
-				'Invalid_string_refer_to_original_code
+				'パラメータが固定値かどうか判定
 				If IsNumeric(strParas(i)) Then
 					blnConst(i) = True
 				ElseIf PDList.IsDefined(strParas(i)) Then 
-					If InStr(strParas(i), "荳ｻ莠ｺ蜈ｬ") <> 1 And InStr(strParas(i), "繝偵Ο繧､繝ｳ") <> 1 Then
+					If InStr(strParas(i), "主人公") <> 1 And InStr(strParas(i), "ヒロイン") <> 1 Then
 						blnConst(i) = True
 					End If
 				ElseIf UDList.IsDefined(strParas(i)) Then 
@@ -163,9 +163,7 @@ Friend Class LabelData
 					blnConst(i) = True
 				Else
 					Select Case strParas(i)
-						Case "蜻ｳ譁ｹ", "Invalid_string_refer_to_original_code", "謨ｵ", "Invalid_string_refer_to_original_code"
-							'Invalid_string_refer_to_original_code
-							'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+						Case "味方", "ＮＰＣ", "敵", "中立", "全"
 							blnConst(i) = True
 						Case "N", "W", "S", "E"
 							If Name = Event_Renamed.LabelType.EscapeEventLabel Then

@@ -3,34 +3,34 @@ Option Explicit On
 Friend Class TerrainData
 	
 	' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
+	' 本プログラムはフリーソフトであり、無保証です。
+	' 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
+	' 再頒布または改変することができます。
 	
-	'Invalid_string_refer_to_original_code
+	'地形データのクラス
 	
-	'隴伜挨逡ｪ蜿ｷ
+	'識別番号
 	Public ID As Short
-	'蜷咲ｧｰ
+	'名称
 	Public Name As String
-	'Invalid_string_refer_to_original_code
+	'ビットマップ名
 	'UPGRADE_NOTE: Bitmap は Bitmap_Renamed にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
 	Public Bitmap_Renamed As String
-	'Invalid_string_refer_to_original_code
+	'地形タイプ
 	'UPGRADE_NOTE: Class は Class_Renamed にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
 	Public Class_Renamed As String
-	'Invalid_string_refer_to_original_code
+	'移動コスト
 	Public MoveCost As Short
-	'蜻ｽ荳ｭ菫ｮ豁｣
+	'命中修正
 	Public HitMod As Short
-	'繝繝｡繝ｼ繧ｸ菫ｮ豁｣
+	'ダメージ修正
 	Public DamageMod As Short
 	
-	'Invalid_string_refer_to_original_code
+	'地形効果
 	Public colFeature As Collection
 	
 	
-	'Invalid_string_refer_to_original_code
+	'クラスの初期化
 	'UPGRADE_NOTE: Class_Initialize は Class_Initialize_Renamed にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
 	Private Sub Class_Initialize_Renamed()
 		ID = -1
@@ -40,7 +40,7 @@ Friend Class TerrainData
 		Class_Initialize_Renamed()
 	End Sub
 	
-	'繧ｯ繝ｩ繧ｹ縺ｮ隗｣謾ｾ
+	'クラスの解放
 	'UPGRADE_NOTE: Class_Terminate は Class_Terminate_Renamed にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
 	Private Sub Class_Terminate_Renamed()
 		Dim i As Short
@@ -61,7 +61,7 @@ Friend Class TerrainData
 	End Sub
 	
 	
-	'蝨ｰ蠖｢蜉ｹ譫懊ｒ霑ｽ蜉
+	'地形効果を追加
 	Public Sub AddFeature(ByRef fdef As String)
 		Dim fd As FeatureData
 		Dim ftype, fdata As String
@@ -75,7 +75,7 @@ Friend Class TerrainData
 		
 		buf = fdef
 		
-		'Invalid_string_refer_to_original_code
+		'地形効果の種類、レベル、データを切り出し
 		flevel = DEFAULT_LEVEL
 		i = InStr(buf, "Lv")
 		j = InStr(buf, "=")
@@ -97,7 +97,7 @@ Friend Class TerrainData
 			ftype = buf
 		End If
 		
-		'蝨ｰ蠖｢蜉ｹ譫懊ｒ逋ｻ骭ｲ
+		'地形効果を登録
 		fd = New FeatureData
 		With fd
 			.Name = ftype
@@ -111,7 +111,7 @@ Friend Class TerrainData
 		End If
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'地形効果の総数
 	Public Function CountFeature() As Short
 		If colFeature Is Nothing Then
 			Exit Function
@@ -119,7 +119,7 @@ Friend Class TerrainData
 		CountFeature = colFeature.Count()
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'地形効果
 	Public Function Feature(ByRef Index As Object) As String
 		Dim fd As FeatureData
 		
@@ -127,7 +127,7 @@ Friend Class TerrainData
 		Feature = fd.Name
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'地形効果の名称
 	Public Function FeatureName(ByRef Index As Object) As String
 		Dim fd As FeatureData
 		
@@ -143,7 +143,7 @@ Friend Class TerrainData
 		End With
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'地形効果のレベル
 	Public Function FeatureLevel(ByRef Index As Object) As Double
 		Dim fd As FeatureData
 		
@@ -159,7 +159,7 @@ ErrorHandler:
 		FeatureLevel = 0
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'地形効果のデータ
 	Public Function FeatureData(ByRef Index As Object) As String
 		Dim fd As FeatureData
 		
@@ -172,7 +172,7 @@ ErrorHandler:
 		FeatureData = ""
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'指定した地形効果を持っているか？
 	Public Function IsFeatureAvailable(ByRef fname As String) As Boolean
 		Dim fd As FeatureData
 		
@@ -188,7 +188,7 @@ ErrorHandler:
 		IsFeatureAvailable = False
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'指定した地形効果はレベル指定がされているか？
 	Public Function IsFeatureLevelSpecified(ByRef Index As Object) As Boolean
 		Dim fd As FeatureData
 		
@@ -206,7 +206,7 @@ ErrorHandler:
 		IsFeatureLevelSpecified = False
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'データをクリア
 	Public Sub Clear()
 		Dim i As Short
 		

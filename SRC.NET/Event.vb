@@ -4,116 +4,116 @@ Option Explicit On
 Module Event_Renamed
 	
 	' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
+	' 本プログラムはフリーソフトであり、無保証です。
+	' 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
+	' 再頒布または改変することができます。
 	
-	'Invalid_string_refer_to_original_code
+	'イベントデータの各種処理を行うモジュール
 	
-	'繧､繝吶Φ繝医ョ繝ｼ繧ｿ
+	'イベントデータ
 	Public EventData() As String
-	'Invalid_string_refer_to_original_code
+	'イベントコマンドリスト
 	Public EventCmd() As CmdData
-	'Invalid_string_refer_to_original_code
+	'個々の行がどのイベントファイルに属しているか
 	Public EventFileID() As Short
-	'Invalid_string_refer_to_original_code
+	'個々の行がイベントファイルの何行目に位置するか
 	Public EventLineNum() As Short
-	'Invalid_string_refer_to_original_code
+	'イベントファイルのファイル名リスト
 	Public EventFileNames() As String
-	'Invalid_string_refer_to_original_code
+	'Requireコマンドで追加されたイベントファイルのファイル名リスト
 	Public AdditionalEventFileNames() As String
 	
-	'Invalid_string_refer_to_original_code
+	'システム側のイベントデータのサイズ(行数)
 	Private SysEventDataSize As Integer
-	'Invalid_string_refer_to_original_code
+	'システム側のイベントファイル数
 	Private SysEventFileNum As Short
-	'Invalid_string_refer_to_original_code
+	'シナリオ添付のシステムファイルがチェックされたかどうか
 	Private ScenarioLibChecked As Boolean
 	
-	'Invalid_string_refer_to_original_code
+	'ラベルのリスト
 	Public colEventLabelList As New Collection
 	Private colSysNormalLabelList As New Collection
 	Private colNormalLabelList As New Collection
 	
 	
-	'螟画焚逕ｨ縺ｮ繧ｳ繝ｬ繧ｯ繧ｷ繝ｧ繝ｳ
+	'変数用のコレクション
 	Public GlobalVariableList As New Collection
 	Public LocalVariableList As New Collection
 	
-	'迴ｾ蝨ｨ縺ｮ陦檎分蜿ｷ
+	'現在の行番号
 	Public CurrentLineNum As Integer
 	
-	'Invalid_string_refer_to_original_code
+	'イベントで選択されているユニット・ターゲット
 	Public SelectedUnitForEvent As Unit
 	Public SelectedTargetForEvent As Unit
 	
-	'Invalid_string_refer_to_original_code
+	'イベント呼び出しのキュー
 	Public EventQue() As String
-	'迴ｾ蝨ｨ螳溯｡御ｸｭ縺ｮ繧､繝吶Φ繝医Λ繝吶Ν
+	'現在実行中のイベントラベル
 	Public CurrentLabel As Integer
 	
-	'Ask繧ｳ繝槭Φ繝峨〒驕ｸ謚槭＠縺滄∈謚櫁い
+	'Askコマンドで選択した選択肢
 	Public SelectedAlternative As String
 	
-	'髢｢謨ｰ蜻ｼ縺ｳ蜃ｺ縺礼畑螟画焚
+	'関数呼び出し用変数
 	
-	'譛螟ｧ蜻ｼ縺ｳ蜃ｺ縺鈴嚴螻､謨ｰ
+	'最大呼び出し階層数
 	Public Const MaxCallDepth As Short = 50
-	'蠑墓焚縺ｮ譛螟ｧ謨ｰ
+	'引数の最大数
 	Public Const MaxArgIndex As Short = 200
-	'繧ｵ繝悶Ν繝ｼ繝√Φ繝ｭ繝ｼ繧ｫ繝ｫ螟画焚縺ｮ譛螟ｧ謨ｰ
+	'サブルーチンローカル変数の最大数
 	Public Const MaxVarIndex As Short = 2000
 	
-	'蜻ｼ縺ｳ蜃ｺ縺怜ｱ･豁ｴ
+	'呼び出し履歴
 	Public CallDepth As Short
 	Public CallStack(MaxCallDepth) As Integer
-	'Invalid_string_refer_to_original_code
+	'引数スタック
 	Public ArgIndex As Short
 	Public ArgIndexStack(MaxCallDepth) As Short
 	Public ArgStack(MaxArgIndex) As String
-	'Invalid_string_refer_to_original_code
+	'UpVarコマンドによって引数が何段階シフトしているか
 	Public UpVarLevel As Short
 	Public UpVarLevelStack(MaxCallDepth) As Short
-	'Invalid_string_refer_to_original_code
+	'サブルーチンローカル変数スタック
 	Public VarIndex As Short
 	Public VarIndexStack(MaxCallDepth) As Short
 	Public VarStack(MaxVarIndex) As VarData
-	'Invalid_string_refer_to_original_code
+	'Forインデックス用スタック
 	Public ForIndex As Short
 	Public ForIndexStack(MaxCallDepth) As Short
 	Public ForLimitStack(MaxCallDepth) As Integer
 	
-	'ForEach繧ｳ繝槭Φ繝臥畑螟画焚
+	'ForEachコマンド用変数
 	Public ForEachIndex As Short
 	Public ForEachSet() As String
 	
-	'Invalid_string_refer_to_original_code
+	'Rideコマンド用パイロット搭乗履歴
 	Public LastUnitName As String
 	Public LastPilotID() As String
 	
-	'Wait髢句ｧ区凾蛻ｻ
+	'Wait開始時刻
 	Public WaitStartTime As Integer
 	Public WaitTimeCount As Integer
 	
-	'Invalid_string_refer_to_original_code
+	'描画基準座標
 	Public BaseX As Integer
 	Public BaseY As Integer
 	Private SavedBaseX(10) As Integer
 	Private SavedBaseY(10) As Integer
 	Private BasePointIndex As Integer
 	
-	'Invalid_string_refer_to_original_code
+	'オブジェクトの色
 	Public ObjColor As Integer
-	'Invalid_string_refer_to_original_code
+	'オブジェクトの線の太さ
 	Public ObjDrawWidth As Integer
-	'Invalid_string_refer_to_original_code
+	'オブジェクトの背景色
 	Public ObjFillColor As Integer
-	'Invalid_string_refer_to_original_code
+	'オブジェクトの背景描画方法
 	Public ObjFillStyle As Integer
-	'Invalid_string_refer_to_original_code
+	'オブジェクトの描画方法
 	Public ObjDrawOption As String
 	
-	'Invalid_string_refer_to_original_code
+	'ホットポイント
 	Public Structure HotPoint
 		Dim Name As String
 		'UPGRADE_NOTE: Left は Left_Renamed にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
@@ -125,14 +125,14 @@ Module Event_Renamed
 	End Structure
 	Public HotPointList() As HotPoint
 	
-	'Invalid_string_refer_to_original_code
+	'イベントコマンドエラーメッセージ
 	Public EventErrorMessage As String
 	
-	'Invalid_string_refer_to_original_code
+	'ユニットがセンタリングされたか？
 	Public IsUnitCenter As Boolean
 	
 	
-	'Invalid_string_refer_to_original_code
+	'イベントコマンドの種類
 	Enum CmdType
 		NullCmd = 0
 		NopCmd
@@ -326,7 +326,7 @@ Module Event_Renamed
 		ClearFlashCmd
 	End Enum
 	
-	'Invalid_string_refer_to_original_code
+	'イベントラベルの種類
 	Enum LabelType
 		NormalLabel = 0
 		PrologueEventLabel
@@ -358,7 +358,7 @@ Module Event_Renamed
 	End Enum
 	
 	
-	'Invalid_string_refer_to_original_code
+	'イベントデータを初期化
 	Public Sub InitEventData()
 		Dim i As Integer
 		
@@ -367,18 +367,18 @@ Module Event_Renamed
 		ReDim EventCmd(50000)
 		ReDim EventQue(0)
 		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
+		'オブジェクトの生成には時間がかかるので、
+		'あらかじめCmdDataオブジェクトを生成しておく。
 		For i = 1 To UBound(EventCmd)
 			EventCmd(i) = New CmdData
 			EventCmd(i).LineNum = i
 		Next 
 		
-		'Invalid_string_refer_to_original_code
-		LoadEventData("", "Invalid_string_refer_to_original_code")
+		'本体側のシナリオデータをチェックする
+		LoadEventData("", "システム")
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'イベントファイルのロード
 	Public Sub LoadEventData(ByRef fname As String, Optional ByRef load_mode As String = "")
 		Dim buf, buf2 As String
 		Dim tname, tfolder As String
@@ -393,7 +393,7 @@ Module Event_Renamed
 		Dim sys_event_data_size As Integer
 		Dim sys_event_file_num As Integer
 		
-		'Invalid_string_refer_to_original_code
+		'データの初期化
 		ReDim Preserve EventData(SysEventDataSize)
 		ReDim Preserve EventFileID(SysEventDataSize)
 		ReDim Preserve EventLineNum(SysEventDataSize)
@@ -419,7 +419,7 @@ Module Event_Renamed
 		ObjDrawWidth = 1
 		ObjDrawOption = ""
 		
-		'Invalid_string_refer_to_original_code
+		'ラベルの初期化
 		With colNormalLabelList
 			For i = 1 To .Count()
 				.Remove(1)
@@ -437,58 +437,58 @@ Module Event_Renamed
 			Loop 
 		End With
 		
-		'Invalid_string_refer_to_original_code
+		'デバッグモードの設定
 		If LCase(ReadIni("Option", "DebugMode")) = "on" Then
-			If Not IsOptionDefined("Invalid_string_refer_to_original_code") Then
-				DefineGlobalVariable("Invalid_string_refer_to_original_code")
+			If Not IsOptionDefined("デバッグ") Then
+				DefineGlobalVariable("Option(デバッグ)")
 			End If
-			SetVariableAsLong("Invalid_string_refer_to_original_code", 1)
+			SetVariableAsLong("Option(デバッグ)", 1)
 		End If
 		
-		'Invalid_string_refer_to_original_code
-		If load_mode = "Invalid_string_refer_to_original_code" Then
-			'Invalid_string_refer_to_original_code
+		'システム側のイベントデータのロード
+		If load_mode = "システム" Then
+			'本体側のシステムデータをチェック
 			
-			'Invalid_string_refer_to_original_code
-			If FileExists(ExtDataPath & "Lib\繧ｹ繝壹す繝｣繝ｫ繝代Ρ繝ｼ.eve") Then
-				LoadEventData2(ExtDataPath & "Lib\繧ｹ繝壹す繝｣繝ｫ繝代Ρ繝ｼ.eve")
-			ElseIf FileExists(ExtDataPath2 & "Lib\繧ｹ繝壹す繝｣繝ｫ繝代Ρ繝ｼ.eve") Then 
-				LoadEventData2(ExtDataPath2 & "Lib\繧ｹ繝壹す繝｣繝ｫ繝代Ρ繝ｼ.eve")
-			ElseIf FileExists(AppPath & "Lib\繧ｹ繝壹す繝｣繝ｫ繝代Ρ繝ｼ.eve") Then 
-				LoadEventData2(AppPath & "Lib\繧ｹ繝壹す繝｣繝ｫ繝代Ρ繝ｼ.eve")
-			ElseIf FileExists(ExtDataPath & "Invalid_string_refer_to_original_code") Then 
-				LoadEventData2(ExtDataPath & "Invalid_string_refer_to_original_code")
-			ElseIf FileExists(ExtDataPath2 & "Invalid_string_refer_to_original_code") Then 
-				LoadEventData2(ExtDataPath2 & "Invalid_string_refer_to_original_code")
-			ElseIf FileExists(AppPath & "Invalid_string_refer_to_original_code") Then 
-				LoadEventData2(AppPath & "Invalid_string_refer_to_original_code")
+			'スペシャルパワーアニメ用インクルードファイルをダウンロード
+			If FileExists(ExtDataPath & "Lib\スペシャルパワー.eve") Then
+				LoadEventData2(ExtDataPath & "Lib\スペシャルパワー.eve")
+			ElseIf FileExists(ExtDataPath2 & "Lib\スペシャルパワー.eve") Then 
+				LoadEventData2(ExtDataPath2 & "Lib\スペシャルパワー.eve")
+			ElseIf FileExists(AppPath & "Lib\スペシャルパワー.eve") Then 
+				LoadEventData2(AppPath & "Lib\スペシャルパワー.eve")
+			ElseIf FileExists(ExtDataPath & "Lib\精神コマンド.eve") Then 
+				LoadEventData2(ExtDataPath & "Lib\精神コマンド.eve")
+			ElseIf FileExists(ExtDataPath2 & "Lib\精神コマンド.eve") Then 
+				LoadEventData2(ExtDataPath2 & "Lib\精神コマンド.eve")
+			ElseIf FileExists(AppPath & "Lib\精神コマンド.eve") Then 
+				LoadEventData2(AppPath & "Lib\精神コマンド.eve")
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'汎用戦闘アニメ用インクルードファイルをダウンロード
 			If LCase(ReadIni("Option", "BattleAnimation")) <> "off" Then
 				BattleAnimation = True
 			End If
-			If FileExists(ExtDataPath & "Lib\豎守畑謌ｦ髣倥い繝九Γ\include.eve") Then
-				LoadEventData2(ExtDataPath & "Lib\豎守畑謌ｦ髣倥い繝九Γ\include.eve")
-			ElseIf FileExists(ExtDataPath2 & "Lib\豎守畑謌ｦ髣倥い繝九Γ\include.eve") Then 
-				LoadEventData2(ExtDataPath2 & "Lib\豎守畑謌ｦ髣倥い繝九Γ\include.eve")
-			ElseIf FileExists(AppPath & "Lib\豎守畑謌ｦ髣倥い繝九Γ\include.eve") Then 
-				LoadEventData2(AppPath & "Lib\豎守畑謌ｦ髣倥い繝九Γ\include.eve")
+			If FileExists(ExtDataPath & "Lib\汎用戦闘アニメ\include.eve") Then
+				LoadEventData2(ExtDataPath & "Lib\汎用戦闘アニメ\include.eve")
+			ElseIf FileExists(ExtDataPath2 & "Lib\汎用戦闘アニメ\include.eve") Then 
+				LoadEventData2(ExtDataPath2 & "Lib\汎用戦闘アニメ\include.eve")
+			ElseIf FileExists(AppPath & "Lib\汎用戦闘アニメ\include.eve") Then 
+				LoadEventData2(AppPath & "Lib\汎用戦闘アニメ\include.eve")
 			Else
-				'Invalid_string_refer_to_original_code
+				'戦闘アニメ表示切り替えコマンドを非表示に
 				BattleAnimation = False
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'システム側のイベントデータの総行数＆ファイル数を記録しておく
 			sys_event_data_size = UBound(EventData)
 			sys_event_file_num = UBound(EventFileNames)
 		ElseIf Not ScenarioLibChecked Then 
-			'Invalid_string_refer_to_original_code
+			'シナリオ側のシステムデータをチェック
 			
 			ScenarioLibChecked = True
 			
-			If FileExists(ScenarioPath & "Lib\繧ｹ繝壹す繝｣繝ｫ繝代Ρ繝ｼ.eve") Or FileExists(ScenarioPath & "Invalid_string_refer_to_original_code") Or FileExists(ScenarioPath & "Lib\豎守畑謌ｦ髣倥い繝九Γ\include.eve") Then
-				'Invalid_string_refer_to_original_code
+			If FileExists(ScenarioPath & "Lib\スペシャルパワー.eve") Or FileExists(ScenarioPath & "Lib\精神コマンド.eve") Or FileExists(ScenarioPath & "Lib\汎用戦闘アニメ\include.eve") Then
+				'システムデータのロードをやり直す
 				ReDim EventData(0)
 				ReDim EventFileID(0)
 				ReDim EventLineNum(0)
@@ -512,71 +512,71 @@ Module Event_Renamed
 					Next 
 				End With
 				
-				'Invalid_string_refer_to_original_code
-				If FileExists(ScenarioPath & "Lib\繧ｹ繝壹す繝｣繝ｫ繝代Ρ繝ｼ.eve") Then
-					LoadEventData2(ScenarioPath & "Lib\繧ｹ繝壹す繝｣繝ｫ繝代Ρ繝ｼ.eve")
-				ElseIf FileExists(ScenarioPath & "Invalid_string_refer_to_original_code") Then 
-					LoadEventData2(ScenarioPath & "Invalid_string_refer_to_original_code")
-				ElseIf FileExists(ExtDataPath & "Lib\繧ｹ繝壹す繝｣繝ｫ繝代Ρ繝ｼ.eve") Then 
-					LoadEventData2(ExtDataPath & "Lib\繧ｹ繝壹す繝｣繝ｫ繝代Ρ繝ｼ.eve")
-				ElseIf FileExists(ExtDataPath2 & "Lib\繧ｹ繝壹す繝｣繝ｫ繝代Ρ繝ｼ.eve") Then 
-					LoadEventData2(ExtDataPath2 & "Lib\繧ｹ繝壹す繝｣繝ｫ繝代Ρ繝ｼ.eve")
-				ElseIf FileExists(AppPath & "Lib\繧ｹ繝壹す繝｣繝ｫ繝代Ρ繝ｼ.eve") Then 
-					LoadEventData2(AppPath & "Lib\繧ｹ繝壹す繝｣繝ｫ繝代Ρ繝ｼ.eve")
-				ElseIf FileExists(ExtDataPath & "Invalid_string_refer_to_original_code") Then 
-					LoadEventData2(ExtDataPath & "Invalid_string_refer_to_original_code")
-				ElseIf FileExists(ExtDataPath2 & "Invalid_string_refer_to_original_code") Then 
-					LoadEventData2(ExtDataPath2 & "Invalid_string_refer_to_original_code")
-				ElseIf FileExists(AppPath & "Invalid_string_refer_to_original_code") Then 
-					LoadEventData2(AppPath & "Invalid_string_refer_to_original_code")
+				'スペシャルパワーアニメ用インクルードファイルをダウンロード
+				If FileExists(ScenarioPath & "Lib\スペシャルパワー.eve") Then
+					LoadEventData2(ScenarioPath & "Lib\スペシャルパワー.eve")
+				ElseIf FileExists(ScenarioPath & "Lib\精神コマンド.eve") Then 
+					LoadEventData2(ScenarioPath & "Lib\精神コマンド.eve")
+				ElseIf FileExists(ExtDataPath & "Lib\スペシャルパワー.eve") Then 
+					LoadEventData2(ExtDataPath & "Lib\スペシャルパワー.eve")
+				ElseIf FileExists(ExtDataPath2 & "Lib\スペシャルパワー.eve") Then 
+					LoadEventData2(ExtDataPath2 & "Lib\スペシャルパワー.eve")
+				ElseIf FileExists(AppPath & "Lib\スペシャルパワー.eve") Then 
+					LoadEventData2(AppPath & "Lib\スペシャルパワー.eve")
+				ElseIf FileExists(ExtDataPath & "Lib\精神コマンド.eve") Then 
+					LoadEventData2(ExtDataPath & "Lib\精神コマンド.eve")
+				ElseIf FileExists(ExtDataPath2 & "Lib\精神コマンド.eve") Then 
+					LoadEventData2(ExtDataPath2 & "Lib\精神コマンド.eve")
+				ElseIf FileExists(AppPath & "Lib\精神コマンド.eve") Then 
+					LoadEventData2(AppPath & "Lib\精神コマンド.eve")
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'汎用戦闘アニメ用インクルードファイルをダウンロード
 				If LCase(ReadIni("Option", "BattleAnimation")) <> "off" Then
 					BattleAnimation = True
 				End If
-				If FileExists(ScenarioPath & "Lib\豎守畑謌ｦ髣倥い繝九Γ\include.eve") Then
-					LoadEventData2(ScenarioPath & "Lib\豎守畑謌ｦ髣倥い繝九Γ\include.eve")
-				ElseIf FileExists(ExtDataPath & "Lib\豎守畑謌ｦ髣倥い繝九Γ\include.eve") Then 
-					LoadEventData2(ExtDataPath & "Lib\豎守畑謌ｦ髣倥い繝九Γ\include.eve")
-				ElseIf FileExists(ExtDataPath2 & "Lib\豎守畑謌ｦ髣倥い繝九Γ\include.eve") Then 
-					LoadEventData2(ExtDataPath2 & "Lib\豎守畑謌ｦ髣倥い繝九Γ\include.eve")
-				ElseIf FileExists(AppPath & "Lib\豎守畑謌ｦ髣倥い繝九Γ\include.eve") Then 
-					LoadEventData2(AppPath & "Lib\豎守畑謌ｦ髣倥い繝九Γ\include.eve")
+				If FileExists(ScenarioPath & "Lib\汎用戦闘アニメ\include.eve") Then
+					LoadEventData2(ScenarioPath & "Lib\汎用戦闘アニメ\include.eve")
+				ElseIf FileExists(ExtDataPath & "Lib\汎用戦闘アニメ\include.eve") Then 
+					LoadEventData2(ExtDataPath & "Lib\汎用戦闘アニメ\include.eve")
+				ElseIf FileExists(ExtDataPath2 & "Lib\汎用戦闘アニメ\include.eve") Then 
+					LoadEventData2(ExtDataPath2 & "Lib\汎用戦闘アニメ\include.eve")
+				ElseIf FileExists(AppPath & "Lib\汎用戦闘アニメ\include.eve") Then 
+					LoadEventData2(AppPath & "Lib\汎用戦闘アニメ\include.eve")
 				Else
-					'Invalid_string_refer_to_original_code
+					'戦闘アニメ表示切り替えコマンドを非表示に
 					BattleAnimation = False
 				End If
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'シナリオ添付の汎用インクルードファイルをダウンロード
 			If FileExists(ScenarioPath & "Lib\include.eve") Then
 				LoadEventData2(ScenarioPath & "Lib\include.eve")
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'システム側のイベントデータの総行数＆ファイル数を記録しておく
 			sys_event_data_size = UBound(EventData)
 			sys_event_file_num = UBound(EventFileNames)
 			
-			'Invalid_string_refer_to_original_code
+			'シナリオ側のイベントデータのロード
 			LoadEventData2(fname)
 		Else
-			'Invalid_string_refer_to_original_code
+			'シナリオ側のイベントデータのロード
 			LoadEventData2(fname)
 		End If
 		
-		'繧ｨ繝ｩ繝ｼ陦ｨ遉ｺ逕ｨ縺ｫ繧ｵ繧､繧ｺ繧貞､ｧ縺阪￥蜿悶▲縺ｦ縺翫￥
+		'エラー表示用にサイズを大きく取っておく
 		ReDim Preserve EventData(UBound(EventData) + 1)
 		ReDim Preserve EventLineNum(UBound(EventData))
 		EventData(UBound(EventData)) = ""
 		EventLineNum(UBound(EventData)) = EventLineNum(UBound(EventData) - 1) + 1
 		
-		'Invalid_string_refer_to_original_code
+		'データ読みこみ指定
 		For i = SysEventDataSize + 1 To UBound(EventData)
 			If Left(EventData(i), 1) = "@" Then
 				tname = Mid(EventData(i), 2)
 				
-				'Invalid_string_refer_to_original_code
+				'既にそのデータが読み込まれているかチェック
 				For j = 1 To UBound(Titles)
 					If tname = Titles(j) Then
 						Exit For
@@ -584,12 +584,10 @@ Module Event_Renamed
 				Next 
 				
 				If j > UBound(Titles) Then
-					'繝輔か繝ｫ繝繧呈､懃ｴ｢
+					'フォルダを検索
 					tfolder = SearchDataFolder(tname)
 					If Len(tfolder) = 0 Then
-						DisplayEventErrorMessage(i, "Invalid_string_refer_to_original_code")
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+						DisplayEventErrorMessage(i, "データ「" & tname & "」のフォルダが見つかりません")
 					Else
 						ReDim Preserve new_titles(UBound(new_titles) + 1)
 						ReDim Preserve Titles(UBound(Titles) + 1)
@@ -600,9 +598,9 @@ Module Event_Renamed
 			End If
 		Next 
 		
-		'Invalid_string_refer_to_original_code
-		If load_mode <> "Invalid_string_refer_to_original_code" Then
-			'Invalid_string_refer_to_original_code
+		'各作品データのinclude.eveを読み込む
+		If load_mode <> "システム" Then
+			'作品毎のインクルードファイル
 			For i = 1 To UBound(Titles)
 				tfolder = SearchDataFolder(Titles(i))
 				If FileExists(tfolder & "\include.eve") Then
@@ -610,7 +608,7 @@ Module Event_Renamed
 				End If
 			Next 
 			
-			'Invalid_string_refer_to_original_code
+			'汎用Dataインクルードファイルをロード
 			If FileExists(ScenarioPath & "Data\include.eve") Then
 				LoadEventData2(ScenarioPath & "Data\include.eve")
 			ElseIf FileExists(ExtDataPath & "Data\include.eve") Then 
@@ -622,7 +620,7 @@ Module Event_Renamed
 			End If
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'複数行に分割されたコマンドを結合
 		For i = SysEventDataSize + 1 To UBound(EventData) - 1
 			If Right(EventData(i), 1) = "_" Then
 				EventData(i + 1) = Left(EventData(i), Len(EventData(i)) - 1) & EventData(i + 1)
@@ -630,9 +628,9 @@ Module Event_Renamed
 			End If
 		Next 
 		
-		'繝ｩ繝吶Ν縺ｮ逋ｻ骭ｲ
+		'ラベルの登録
 		num = CurrentLineNum
-		If load_mode = "Invalid_string_refer_to_original_code" Then
+		If load_mode = "システム" Then
 			For CurrentLineNum = 1 To UBound(EventData)
 				buf = EventData(CurrentLineNum)
 				If Right(buf, 1) = ":" Then
@@ -640,14 +638,14 @@ Module Event_Renamed
 				End If
 			Next 
 		ElseIf sys_event_data_size > 0 Then 
-			'Invalid_string_refer_to_original_code
+			'システム側へのイベントデータの追加があった場合
 			For CurrentLineNum = 1 To sys_event_data_size
 				buf = EventData(CurrentLineNum)
 				Select Case Right(buf, 1)
 					Case ":"
 						AddSysLabel(Left(buf, Len(buf) - 1), CurrentLineNum)
-					Case "Invalid_string_refer_to_original_code"
-						DisplayEventErrorMessage(CurrentLineNum, "Invalid_string_refer_to_original_code")
+					Case "："
+						DisplayEventErrorMessage(CurrentLineNum, "ラベルの末尾が全角文字になっています")
 						error_found = True
 				End Select
 			Next 
@@ -656,8 +654,8 @@ Module Event_Renamed
 				Select Case Right(buf, 1)
 					Case ":"
 						AddLabel(Left(buf, Len(buf) - 1), CurrentLineNum)
-					Case "Invalid_string_refer_to_original_code"
-						DisplayEventErrorMessage(CurrentLineNum, "Invalid_string_refer_to_original_code")
+					Case "："
+						DisplayEventErrorMessage(CurrentLineNum, "ラベルの末尾が全角文字になっています")
 						error_found = True
 				End Select
 			Next 
@@ -667,15 +665,15 @@ Module Event_Renamed
 				Select Case Right(buf, 1)
 					Case ":"
 						AddLabel(Left(buf, Len(buf) - 1), CurrentLineNum)
-					Case "Invalid_string_refer_to_original_code"
-						DisplayEventErrorMessage(CurrentLineNum, "Invalid_string_refer_to_original_code")
+					Case "："
+						DisplayEventErrorMessage(CurrentLineNum, "ラベルの末尾が全角文字になっています")
 						error_found = True
 				End Select
 			Next 
 		End If
 		CurrentLineNum = num
 		
-		'Invalid_string_refer_to_original_code
+		'コマンドデータ配列を設定
 		If UBound(EventData) > UBound(EventCmd) Then
 			num = UBound(EventCmd)
 			ReDim Preserve EventCmd(UBound(EventData))
@@ -685,11 +683,11 @@ Module Event_Renamed
 			Next 
 		End If
 		
-		'Invalid_string_refer_to_original_code
-		If load_mode <> "Invalid_string_refer_to_original_code" Then
+		'書式チェックはシナリオ側にのみ実施
+		If load_mode <> "システム" Then
 			
-			'Invalid_string_refer_to_original_code
-			'蛻ｶ蠕｡讒矩
+			'構文解析と書式チェックその１
+			'制御構造
 			CmdStackIdx = 0
 			CmdPosStackIdx = 0
 			For CurrentLineNum = SysEventDataSize + 1 To UBound(EventData)
@@ -698,28 +696,28 @@ Module Event_Renamed
 					EventCmd(CurrentLineNum).LineNum = CurrentLineNum
 				End If
 				With EventCmd(CurrentLineNum)
-					'Invalid_string_refer_to_original_code
+					'コマンドの構文解析
 					If Not .Parse(EventData(CurrentLineNum)) Then
 						error_found = True
 					End If
 					
-					'Invalid_string_refer_to_original_code
+					'リスト長がマイナスのときは括弧の対応が取れていない
 					If .ArgNum = -1 Then
 						Select Case CmdStack(CmdStackIdx)
 							Case CmdType.AskCmd, CmdType.AutoTalkCmd, CmdType.QuestionCmd, CmdType.TalkCmd
-								'Invalid_string_refer_to_original_code
+								'これらのコマンドの入力の場合は無視する
 							Case Else
-								DisplayEventErrorMessage(CurrentLineNum, "Invalid_string_refer_to_original_code")
+								DisplayEventErrorMessage(CurrentLineNum, "括弧の対応が取れていません")
 								error_found = True
 						End Select
 					End If
 					
-					'Invalid_string_refer_to_original_code
+					'コマンドに応じて制御構造をチェック
 					Select Case .Name
 						Case CmdType.IfCmd
 							If CmdStack(CmdStackIdx) = CmdType.TalkCmd Then
 								num = CmdPosStack(CmdPosStackIdx)
-								DisplayEventErrorMessage(num, "Talk縺ｫ蟇ｾ蠢懊☆繧畿nd縺後≠繧翫∪縺帙ｓ")
+								DisplayEventErrorMessage(num, "Talkに対応するEndがありません")
 								CmdStackIdx = CmdStackIdx - 1
 								CmdPosStackIdx = CmdPosStackIdx - 1
 								error_found = True
@@ -735,14 +733,14 @@ Module Event_Renamed
 						Case CmdType.ElseIfCmd
 							If CmdStack(CmdStackIdx) = CmdType.TalkCmd Then
 								num = CmdPosStack(CmdPosStackIdx)
-								DisplayEventErrorMessage(num, "Talk縺ｫ蟇ｾ蠢懊☆繧畿nd縺後≠繧翫∪縺帙ｓ")
+								DisplayEventErrorMessage(num, "Talkに対応するEndがありません")
 								CmdStackIdx = CmdStackIdx - 1
 								CmdPosStackIdx = CmdPosStackIdx - 1
 								error_found = True
 							End If
 							
 							If CmdStack(CmdStackIdx) <> CmdType.IfCmd Then
-								DisplayEventErrorMessage(CurrentLineNum, "ElseIf縺ｫ蟇ｾ蠢懊☆繧紀f縺後≠繧翫∪縺帙ｓ")
+								DisplayEventErrorMessage(CurrentLineNum, "ElseIfに対応するIfがありません")
 								error_found = True
 								
 								CmdStackIdx = CmdStackIdx + 1
@@ -754,14 +752,14 @@ Module Event_Renamed
 						Case CmdType.ElseCmd
 							If CmdStack(CmdStackIdx) = CmdType.TalkCmd Then
 								num = CmdPosStack(CmdPosStackIdx)
-								DisplayEventErrorMessage(num, "Talk縺ｫ蟇ｾ蠢懊☆繧畿nd縺後≠繧翫∪縺帙ｓ")
+								DisplayEventErrorMessage(num, "Talkに対応するEndがありません")
 								CmdStackIdx = CmdStackIdx - 1
 								CmdPosStackIdx = CmdPosStackIdx - 1
 								error_found = True
 							End If
 							
 							If CmdStack(CmdStackIdx) = CmdType.TalkCmd Then
-								DisplayEventErrorMessage(CurrentLineNum, "Else縺ｫ蟇ｾ蠢懊☆繧紀f縺後≠繧翫∪縺帙ｓ")
+								DisplayEventErrorMessage(CurrentLineNum, "Elseに対応するIfがありません")
 								error_found = True
 								
 								CmdStackIdx = CmdStackIdx + 1
@@ -773,7 +771,7 @@ Module Event_Renamed
 						Case CmdType.EndIfCmd
 							If CmdStack(CmdStackIdx) = CmdType.TalkCmd Then
 								num = CmdPosStack(CmdPosStackIdx)
-								DisplayEventErrorMessage(num, "Talk縺ｫ蟇ｾ蠢懊☆繧畿nd縺後≠繧翫∪縺帙ｓ")
+								DisplayEventErrorMessage(num, "Talkに対応するEndがありません")
 								CmdStackIdx = CmdStackIdx - 1
 								CmdPosStackIdx = CmdPosStackIdx - 1
 								error_found = True
@@ -783,14 +781,14 @@ Module Event_Renamed
 								CmdStackIdx = CmdStackIdx - 1
 								CmdPosStackIdx = CmdPosStackIdx - 1
 							Else
-								DisplayEventErrorMessage(CurrentLineNum, "EndIf縺ｫ蟇ｾ蠢懊☆繧紀f縺後≠繧翫∪縺帙ｓ")
+								DisplayEventErrorMessage(CurrentLineNum, "EndIfに対応するIfがありません")
 								error_found = True
 							End If
 							
 						Case CmdType.DoCmd
 							If CmdStack(CmdStackIdx) = CmdType.TalkCmd Then
 								num = CmdPosStack(CmdPosStackIdx)
-								DisplayEventErrorMessage(num, "Talk縺ｫ蟇ｾ蠢懊☆繧畿nd縺後≠繧翫∪縺帙ｓ")
+								DisplayEventErrorMessage(num, "Talkに対応するEndがありません")
 								CmdStackIdx = CmdStackIdx - 1
 								CmdPosStackIdx = CmdPosStackIdx - 1
 								error_found = True
@@ -804,7 +802,7 @@ Module Event_Renamed
 						Case CmdType.LoopCmd
 							If CmdStack(CmdStackIdx) = CmdType.TalkCmd Then
 								num = CmdPosStack(CmdPosStackIdx)
-								DisplayEventErrorMessage(num, "Talk縺ｫ蟇ｾ蠢懊☆繧畿nd縺後≠繧翫∪縺帙ｓ")
+								DisplayEventErrorMessage(num, "Talkに対応するEndがありません")
 								CmdStackIdx = CmdStackIdx - 1
 								CmdPosStackIdx = CmdPosStackIdx - 1
 								error_found = True
@@ -814,14 +812,14 @@ Module Event_Renamed
 								CmdStackIdx = CmdStackIdx - 1
 								CmdPosStackIdx = CmdPosStackIdx - 1
 							Else
-								DisplayEventErrorMessage(CurrentLineNum, "Loop縺ｫ蟇ｾ蠢懊☆繧汽o縺後≠繧翫∪縺帙ｓ")
+								DisplayEventErrorMessage(CurrentLineNum, "Loopに対応するDoがありません")
 								error_found = True
 							End If
 							
 						Case CmdType.ForCmd, CmdType.ForEachCmd
 							If CmdStack(CmdStackIdx) = CmdType.TalkCmd Then
 								num = CmdPosStack(CmdPosStackIdx)
-								DisplayEventErrorMessage(num, "Talk縺ｫ蟇ｾ蠢懊☆繧畿nd縺後≠繧翫∪縺帙ｓ")
+								DisplayEventErrorMessage(num, "Talkに対応するEndがありません")
 								CmdStackIdx = CmdStackIdx - 1
 								CmdPosStackIdx = CmdPosStackIdx - 1
 								error_found = True
@@ -836,7 +834,7 @@ Module Event_Renamed
 							If .ArgNum = 1 Or .ArgNum = 2 Then
 								If CmdStack(CmdStackIdx) = CmdType.TalkCmd Then
 									num = CmdPosStack(CmdPosStackIdx)
-									DisplayEventErrorMessage(num, "Talk縺ｫ蟇ｾ蠢懊☆繧畿nd縺後≠繧翫∪縺帙ｓ")
+									DisplayEventErrorMessage(num, "Talkに対応するEndがありません")
 									CmdStackIdx = CmdStackIdx - 1
 									CmdPosStackIdx = CmdPosStackIdx - 1
 									error_found = True
@@ -847,7 +845,7 @@ Module Event_Renamed
 										CmdStackIdx = CmdStackIdx - 1
 										CmdPosStackIdx = CmdPosStackIdx - 1
 									Case Else
-										DisplayEventErrorMessage(CurrentLineNum, "Next縺ｫ蟇ｾ蠢懊☆繧九さ繝槭Φ繝峨′縺ゅｊ縺ｾ縺帙ｓ")
+										DisplayEventErrorMessage(CurrentLineNum, "Nextに対応するコマンドがありません")
 										error_found = True
 								End Select
 							Else
@@ -857,7 +855,7 @@ Module Event_Renamed
 											CmdStackIdx = CmdStackIdx - 1
 											CmdPosStackIdx = CmdPosStackIdx - 1
 										Case Else
-											DisplayEventErrorMessage(CurrentLineNum, "Next縺ｫ蟇ｾ蠢懊☆繧九さ繝槭Φ繝峨′縺ゅｊ縺ｾ縺帙ｓ")
+											DisplayEventErrorMessage(CurrentLineNum, "Nextに対応するコマンドがありません")
 											error_found = True
 									End Select
 								End If
@@ -866,7 +864,7 @@ Module Event_Renamed
 						Case CmdType.SwitchCmd
 							If CmdStack(CmdStackIdx) = CmdType.TalkCmd Then
 								num = CmdPosStack(CmdPosStackIdx)
-								DisplayEventErrorMessage(num, "Talk縺ｫ蟇ｾ蠢懊☆繧畿nd縺後≠繧翫∪縺帙ｓ")
+								DisplayEventErrorMessage(num, "Talkに対応するEndがありません")
 								error_found = True
 							End If
 							
@@ -878,14 +876,14 @@ Module Event_Renamed
 						Case CmdType.CaseCmd, CmdType.CaseElseCmd
 							If CmdStack(CmdStackIdx) = CmdType.TalkCmd Then
 								num = CmdPosStack(CmdPosStackIdx)
-								DisplayEventErrorMessage(num, "Talk縺ｫ蟇ｾ蠢懊☆繧畿nd縺後≠繧翫∪縺帙ｓ")
+								DisplayEventErrorMessage(num, "Talkに対応するEndがありません")
 								CmdStackIdx = CmdStackIdx - 1
 								CmdPosStackIdx = CmdPosStackIdx - 1
 								error_found = True
 							End If
 							
 							If CmdStack(CmdStackIdx) <> CmdType.SwitchCmd Then
-								DisplayEventErrorMessage(CurrentLineNum, "Case縺ｫ蟇ｾ蠢懊☆繧鬼witch縺後≠繧翫∪縺帙ｓ")
+								DisplayEventErrorMessage(CurrentLineNum, "Caseに対応するSwitchがありません")
 								error_found = True
 								
 								CmdStackIdx = CmdStackIdx + 1
@@ -897,7 +895,7 @@ Module Event_Renamed
 						Case CmdType.EndSwCmd
 							If CmdStack(CmdStackIdx) = CmdType.TalkCmd Then
 								num = CmdPosStack(CmdPosStackIdx)
-								DisplayEventErrorMessage(num, "Talk縺ｫ蟇ｾ蠢懊☆繧畿nd縺後≠繧翫∪縺帙ｓ")
+								DisplayEventErrorMessage(num, "Talkに対応するEndがありません")
 								CmdStackIdx = CmdStackIdx - 1
 								CmdPosStackIdx = CmdPosStackIdx - 1
 								error_found = True
@@ -907,7 +905,7 @@ Module Event_Renamed
 								CmdStackIdx = CmdStackIdx - 1
 								CmdPosStackIdx = CmdPosStackIdx - 1
 							Else
-								DisplayEventErrorMessage(CurrentLineNum, "EndSw縺ｫ蟇ｾ蠢懊☆繧鬼witch縺後≠繧翫∪縺帙ｓ")
+								DisplayEventErrorMessage(CurrentLineNum, "EndSwに対応するSwitchがありません")
 								error_found = True
 							End If
 							
@@ -922,7 +920,7 @@ Module Event_Renamed
 						Case CmdType.AskCmd
 							If CmdStack(CmdStackIdx) = CmdType.TalkCmd Then
 								num = CmdPosStack(CmdPosStackIdx)
-								DisplayEventErrorMessage(num, "Talk縺ｫ蟇ｾ蠢懊☆繧畿nd縺後≠繧翫∪縺帙ｓ")
+								DisplayEventErrorMessage(num, "Talkに対応するEndがありません")
 								CmdStackIdx = CmdStackIdx - 1
 								CmdPosStackIdx = CmdPosStackIdx - 1
 								error_found = True
@@ -931,11 +929,11 @@ Module Event_Renamed
 							i = .ArgNum
 							Do While i > 1
 								Select Case .GetArg(i)
-									Case "騾壼ｸｸ"
-									Case "諡｡螟ｧ"
-									Case "騾｣邯夊｡ｨ遉ｺ"
-									Case "繧ｭ繝｣繝ｳ繧ｻ繝ｫ蜿ｯ"
-									Case "Invalid_string_refer_to_original_code"
+									Case "通常"
+									Case "拡大"
+									Case "連続表示"
+									Case "キャンセル可"
+									Case "終了"
 										i = 3
 										Exit Do
 									Case Else
@@ -953,7 +951,7 @@ Module Event_Renamed
 						Case CmdType.QuestionCmd
 							If CmdStack(CmdStackIdx) = CmdType.TalkCmd Then
 								num = CmdPosStack(CmdPosStackIdx)
-								DisplayEventErrorMessage(num, "Talk縺ｫ蟇ｾ蠢懊☆繧畿nd縺後≠繧翫∪縺帙ｓ")
+								DisplayEventErrorMessage(num, "Talkに対応するEndがありません")
 								CmdStackIdx = CmdStackIdx - 1
 								CmdPosStackIdx = CmdPosStackIdx - 1
 								error_found = True
@@ -962,11 +960,11 @@ Module Event_Renamed
 							i = .ArgNum
 							Do While i > 1
 								Select Case .GetArg(.ArgNum)
-									Case "騾壼ｸｸ"
-									Case "諡｡螟ｧ"
-									Case "騾｣邯夊｡ｨ遉ｺ"
-									Case "繧ｭ繝｣繝ｳ繧ｻ繝ｫ蜿ｯ"
-									Case "Invalid_string_refer_to_original_code"
+									Case "通常"
+									Case "拡大"
+									Case "連続表示"
+									Case "キャンセル可"
+									Case "終了"
 										i = 4
 										Exit Do
 									Case Else
@@ -987,7 +985,7 @@ Module Event_Renamed
 									CmdStackIdx = CmdStackIdx - 1
 									CmdPosStackIdx = CmdPosStackIdx - 1
 								Case Else
-									DisplayEventErrorMessage(CurrentLineNum, "End縺ｫ蟇ｾ蠢懊☆繧亀alk縺後≠繧翫∪縺帙ｓ")
+									DisplayEventErrorMessage(CurrentLineNum, "Endに対応するTalkがありません")
 									error_found = True
 							End Select
 							
@@ -997,7 +995,7 @@ Module Event_Renamed
 									CmdStackIdx = CmdStackIdx - 1
 									CmdPosStackIdx = CmdPosStackIdx - 1
 								Case Else
-									DisplayEventErrorMessage(CurrentLineNum, "Suspend縺ｫ蟇ｾ蠢懊☆繧亀alk縺後≠繧翫∪縺帙ｓ")
+									DisplayEventErrorMessage(CurrentLineNum, "Suspendに対応するTalkがありません")
 									error_found = True
 							End Select
 							
@@ -1005,7 +1003,7 @@ Module Event_Renamed
 							Select Case CmdStack(CmdStackIdx)
 								Case CmdType.TalkCmd, CmdType.AutoTalkCmd, CmdType.AskCmd, CmdType.QuestionCmd
 									num = CmdPosStack(CmdPosStackIdx)
-									DisplayEventErrorMessage(num, "Talk縺ｫ蟇ｾ蠢懊☆繧畿nd縺後≠繧翫∪縺帙ｓ")
+									DisplayEventErrorMessage(num, "Talkに対応するEndがありません")
 									CmdStackIdx = CmdStackIdx - 1
 									CmdPosStackIdx = CmdPosStackIdx - 1
 									error_found = True
@@ -1013,14 +1011,14 @@ Module Event_Renamed
 							
 						Case CmdType.NopCmd
 							If EventData(CurrentLineNum) = " " Then
-								'Invalid_string_refer_to_original_code
+								'"_"で消去された行。Talk中の改行に対応するためのダミーの空白
 								EventData(CurrentLineNum) = ""
 							Else
 								Select Case CmdStack(CmdStackIdx)
 									Case CmdType.TalkCmd, CmdType.AutoTalkCmd, CmdType.AskCmd, CmdType.QuestionCmd
 										If CurrentLineNum = UBound(EventData) Then
 											num = CmdPosStack(CmdPosStackIdx)
-											DisplayEventErrorMessage(num, "Talk縺ｫ蟇ｾ蠢懊☆繧畿nd縺後≠繧翫∪縺帙ｓ")
+											DisplayEventErrorMessage(num, "Talkに対応するEndがありません")
 											CmdStackIdx = CmdStackIdx - 1
 											CmdPosStackIdx = CmdPosStackIdx - 1
 											error_found = True
@@ -1042,7 +1040,7 @@ Module Event_Renamed
 											'UPGRADE_ISSUE: LenB 関数はサポートされません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="367764E5-F3F8-4E43-AC3E-7FE0B5E074E2"' をクリックしてください。
 											If buf <> buf2 And buf <> "end" And buf <> "suspend" And Len(buf) = LenB(StrConv(buf, vbFromUnicode)) Then
 												num = CmdPosStack(CmdPosStackIdx)
-												DisplayEventErrorMessage(num, "Talk縺ｫ蟇ｾ蠢懊☆繧畿nd縺後≠繧翫∪縺帙ｓ")
+												DisplayEventErrorMessage(num, "Talkに対応するEndがありません")
 												CmdStackIdx = CmdStackIdx - 1
 												CmdPosStackIdx = CmdPosStackIdx - 1
 												error_found = True
@@ -1055,72 +1053,72 @@ Module Event_Renamed
 				End With
 			Next 
 			
-			'Invalid_string_refer_to_original_code
+			'ファイルの末尾まで読んでもコマンドの終わりがなかった？
 			If CmdStackIdx > 0 Then
 				num = CmdPosStack(CmdPosStackIdx)
 				Select Case CmdStack(CmdStackIdx)
 					Case CmdType.AskCmd
-						DisplayEventErrorMessage(num, "Ask縺ｫ蟇ｾ蠢懊☆繧畿nd縺後≠繧翫∪縺帙ｓ")
+						DisplayEventErrorMessage(num, "Askに対応するEndがありません")
 					Case CmdType.AutoTalkCmd
-						DisplayEventErrorMessage(num, "AutoTalk縺ｫ蟇ｾ蠢懊☆繧畿nd縺後≠繧翫∪縺帙ｓ")
+						DisplayEventErrorMessage(num, "AutoTalkに対応するEndがありません")
 					Case CmdType.DoCmd
-						DisplayEventErrorMessage(num, "Do縺ｫ蟇ｾ蠢懊☆繧記oop縺後≠繧翫∪縺帙ｓ")
+						DisplayEventErrorMessage(num, "Doに対応するLoopがありません")
 					Case CmdType.ForCmd
-						DisplayEventErrorMessage(num, "For縺ｫ蟇ｾ蠢懊☆繧起ext縺後≠繧翫∪縺帙ｓ")
+						DisplayEventErrorMessage(num, "Forに対応するNextがありません")
 					Case CmdType.ForEachCmd
-						DisplayEventErrorMessage(num, "ForEach縺ｫ蟇ｾ蠢懊☆繧起ext縺後≠繧翫∪縺帙ｓ")
+						DisplayEventErrorMessage(num, "ForEachに対応するNextがありません")
 					Case CmdType.IfCmd
-						DisplayEventErrorMessage(num, "If縺ｫ蟇ｾ蠢懊☆繧畿ndIf縺後≠繧翫∪縺帙ｓ")
+						DisplayEventErrorMessage(num, "Ifに対応するEndIfがありません")
 					Case CmdType.QuestionCmd
-						DisplayEventErrorMessage(num, "Question縺ｫ蟇ｾ蠢懊☆繧畿nd縺後≠繧翫∪縺帙ｓ")
+						DisplayEventErrorMessage(num, "Questionに対応するEndがありません")
 					Case CmdType.SwitchCmd
-						DisplayEventErrorMessage(num, "Switch縺ｫ蟇ｾ蠢懊☆繧畿ndSw縺後≠繧翫∪縺帙ｓ")
+						DisplayEventErrorMessage(num, "Switchに対応するEndSwがありません")
 					Case CmdType.TalkCmd
-						DisplayEventErrorMessage(num, "Talk縺ｫ蟇ｾ蠢懊☆繧畿nd縺後≠繧翫∪縺帙ｓ")
+						DisplayEventErrorMessage(num, "Talkに対応するEndがありません")
 				End Select
 				error_found = True
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'書式エラーが見つかった場合はSRCを終了
 			If error_found Then
 				TerminateSRC()
 			End If
 			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
+			'書式チェックその２
+			'主なコマンドの引数の数をチェック
 			For CurrentLineNum = SysEventDataSize + 1 To UBound(EventData)
 				With EventCmd(CurrentLineNum)
 					Select Case .Name
 						Case CmdType.CreateCmd
 							If .ArgNum < 8 Then
-								DisplayEventErrorMessage(CurrentLineNum, "Invalid_string_refer_to_original_code")
+								DisplayEventErrorMessage(CurrentLineNum, "Createコマンドのパラメータ数が違います")
 								error_found = True
 							End If
 						Case CmdType.PilotCmd
 							If .ArgNum < 3 Then
-								DisplayEventErrorMessage(CurrentLineNum, "Invalid_string_refer_to_original_code")
+								DisplayEventErrorMessage(CurrentLineNum, "Pilotコマンドのパラメータ数が違います")
 								error_found = True
 							End If
 						Case CmdType.UnitCmd
 							If .ArgNum <> 3 Then
-								DisplayEventErrorMessage(CurrentLineNum, "Invalid_string_refer_to_original_code")
+								DisplayEventErrorMessage(CurrentLineNum, "Unitコマンドのパラメータ数が違います")
 								error_found = True
 							End If
 					End Select
 				End With
 			Next 
 			
-			'Invalid_string_refer_to_original_code
+			'書式エラーが見つかった場合はSRCを終了
 			If error_found Then
 				TerminateSRC()
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'シナリオ側のイベントデータの場合はここまでスキップ
 		Else
 			
-			'Invalid_string_refer_to_original_code
+			'システム側のイベントデータの場合の処理
 			
-			'Invalid_string_refer_to_original_code
+			'CmdDataクラスのインスタンスの生成のみ行っておく
 			If CurrentLineNum > UBound(EventCmd) Then
 				ReDim Preserve EventCmd(CurrentLineNum)
 				i = CurrentLineNum
@@ -1133,30 +1131,28 @@ Module Event_Renamed
 			
 		End If
 		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
+		'イベントデータの読み込みが終了したのでシステム側イベントデータのサイズを決定。
+		'システム側イベントデータは読み込みを一度だけやればよい。
 		If sys_event_data_size > 0 Then
 			SysEventDataSize = sys_event_data_size
 			SysEventFileNum = sys_event_file_num
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'クイックロードやリスタートの場合はシナリオデータの再ロードのみ
 		Select Case load_mode
-			Case "繝ｪ繧ｹ繝医い"
+			Case "リストア"
 				ADList.AddDefaultAnimation()
 				Exit Sub
-			Case "Invalid_string_refer_to_original_code", "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+			Case "システム", "クイックロード", "リスタート"
 				Exit Sub
 		End Select
 		
-		'Invalid_string_refer_to_original_code
+		'追加されたシステム側イベントデータをチェックする場合はここで終了
 		If fname = "" Then
 			Exit Sub
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'ロードするデータ数をカウント
 		num = 2 * UBound(new_titles)
 		If IsLocalDataLoaded Then
 			If num > 0 Then
@@ -1169,23 +1165,23 @@ Module Event_Renamed
 			num = num + 1
 		End If
 		If num = 0 And IsLocalDataLoaded Then
-			'Invalid_string_refer_to_original_code
+			'デフォルトの戦闘アニメデータを設定
 			ADList.AddDefaultAnimation()
 			Exit Sub
 		End If
 		
-		'繝ｭ繝ｼ繝臥判髱｢繧定｡ｨ遉ｺ
+		'ロード画面を表示
 		OpenNowLoadingForm()
 		
-		'Invalid_string_refer_to_original_code
+		'ロードサイズを設定
 		SetLoadImageSize(num)
 		
-		'Invalid_string_refer_to_original_code
+		'使用しているタイトルのデータをロード
 		For i = 1 To UBound(new_titles)
 			IncludeData(new_titles(i))
 		Next 
 		
-		'Invalid_string_refer_to_original_code
+		'ローカルデータの読みこみ
 		If Not IsLocalDataLoaded Or UBound(new_titles) > 0 Then
 			If FileExists(ScenarioPath & "Data\alias.txt") Then
 				ALDList.Load(ScenarioPath & "Data\alias.txt")
@@ -1234,10 +1230,10 @@ Module Event_Renamed
 			IsLocalDataLoaded = True
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'デフォルトの戦闘アニメデータを設定
 		ADList.AddDefaultAnimation()
 		
-		'Invalid_string_refer_to_original_code
+		'マップデータをロード
 		If FileExists(Left(fname, Len(fname) - 4) & ".map") Then
 			LoadMapData(Left(fname, Len(fname) - 4) & ".map")
 			SetupBackground()
@@ -1245,11 +1241,11 @@ Module Event_Renamed
 			DisplayLoadingProgress()
 		End If
 		
-		'繝ｭ繝ｼ繝臥判髱｢繧帝哩縺倥ｋ
+		'ロード画面を閉じる
 		CloseNowLoadingForm()
 	End Sub
 	
-	'繧､繝吶Φ繝医ヵ繧｡繧､繝ｫ縺ｮ隱ｭ縺ｿ霎ｼ縺ｿ
+	'イベントファイルの読み込み
 	Public Sub LoadEventData2(ByRef fname As String, Optional ByVal lnum As Integer = 0)
 		Dim FileNumber, CurrentLineNum2 As Short
 		Dim i As Short
@@ -1261,38 +1257,38 @@ Module Event_Renamed
 			Exit Sub
 		End If
 		
-		'繧､繝吶Φ繝医ヵ繧｡繧､繝ｫ蜷阪ｒ險倬鹸縺励※縺翫￥ (繧ｨ繝ｩ繝ｼ陦ｨ遉ｺ逕ｨ)
+		'イベントファイル名を記録しておく (エラー表示用)
 		ReDim Preserve EventFileNames(UBound(EventFileNames) + 1)
 		EventFileNames(UBound(EventFileNames)) = fname
 		fid = UBound(EventFileNames)
 		
 		On Error GoTo ErrorHandler
 		
-		'Invalid_string_refer_to_original_code
+		'ファイルを開く
 		FileNumber = FreeFile
 		FileOpen(FileNumber, fname, OpenMode.Input, OpenAccess.Read)
 		
-		'Invalid_string_refer_to_original_code
+		'行番号の設定
 		If lnum > 0 Then
 			CurrentLineNum = lnum
 		End If
 		CurrentLineNum2 = 0
 		
-		'Invalid_string_refer_to_original_code
+		'各行の読み込み
 		Do Until EOF(FileNumber)
 			CurrentLineNum = CurrentLineNum + 1
 			CurrentLineNum2 = CurrentLineNum2 + 1
 			
-			'Invalid_string_refer_to_original_code
+			'データ領域確保
 			ReDim Preserve EventData(CurrentLineNum)
 			ReDim Preserve EventFileID(CurrentLineNum)
 			ReDim Preserve EventLineNum(CurrentLineNum)
 			
-			'Invalid_string_refer_to_original_code
+			'行の読み込み
 			buf = LineInput(FileNumber)
 			TrimString(buf)
 			
-			'繧ｳ繝｡繝ｳ繝医ｒ蜑企勁
+			'コメントを削除
 			If Left(buf, 1) = "#" Then
 				buf = " "
 			ElseIf InStr(buf, "//") > 0 Then 
@@ -1301,17 +1297,17 @@ Module Event_Renamed
 				For i = 1 To Len(buf)
 					Select Case Mid(buf, i, 1)
 						Case "`"
-							'Invalid_string_refer_to_original_code
+							'シングルクオート
 							If Not in_double_quote Then
 								in_single_quote = Not in_single_quote
 							End If
 						Case """"
-							'Invalid_string_refer_to_original_code
+							'ダブルクオート
 							If Not in_single_quote Then
 								in_double_quote = Not in_double_quote
 							End If
 						Case "/"
-							'Invalid_string_refer_to_original_code
+							'コメント？
 							If Not in_double_quote And Not in_single_quote Then
 								If i > 1 Then
 									If Mid(buf, i - 1, 1) = "/" Then
@@ -1327,17 +1323,17 @@ Module Event_Renamed
 				Next 
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'行を保存
 			EventData(CurrentLineNum) = buf
 			EventFileID(CurrentLineNum) = fid
 			EventLineNum(CurrentLineNum) = CurrentLineNum2
 			
-			'Invalid_string_refer_to_original_code
+			'他のイベントファイルの読み込み
 			If Left(buf, 1) = "<" Then
 				If InStr(buf, ">") = Len(buf) And buf <> "<>" Then
 					CurrentLineNum = CurrentLineNum - 1
 					fname2 = Mid(buf, 2, Len(buf) - 2)
-					If fname2 <> "Lib\繧ｹ繝壹す繝｣繝ｫ繝代Ρ繝ｼ.eve" And fname2 <> "Lib\豎守畑謌ｦ髣倥い繝九Γ\include.eve" And fname2 <> "Lib\include.eve" Then
+					If fname2 <> "Lib\スペシャルパワー.eve" And fname2 <> "Lib\汎用戦闘アニメ\include.eve" And fname2 <> "Lib\include.eve" Then
 						'UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
 						If Len(Dir(ScenarioPath & fname2)) > 0 Then
 							LoadEventData2(ScenarioPath & fname2)
@@ -1356,22 +1352,22 @@ Module Event_Renamed
 			End If
 		Loop 
 		
-		'繝輔ぃ繧､繝ｫ繧帝哩縺倥ｋ
+		'ファイルを閉じる
 		FileClose(FileNumber)
 		
 		Exit Sub
 		
 ErrorHandler: 
 		If Len(buf) = 0 Then
-			ErrorMessage(fname & "縺碁幕縺代∪縺帙ｓ")
+			ErrorMessage(fname & "が開けません")
 		Else
-			ErrorMessage(fname & "縺ｮ繝ｭ繝ｼ繝我ｸｭ縺ｫ繧ｨ繝ｩ繝ｼ縺檎匱逕溘＠縺ｾ縺励◆" & vbCr & VB6.Format(CurrentLineNum2) & "Invalid_string_refer_to_original_code")
+			ErrorMessage(fname & "のロード中にエラーが発生しました" & vbCr & VB6.Format(CurrentLineNum2) & "行目のイベントデータが不正です")
 		End If
 		TerminateSRC()
 	End Sub
 	
 	
-	'Invalid_string_refer_to_original_code
+	'イベントの実行
 	'UPGRADE_WARNING: ParamArray Args が ByRef から ByVal に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="93C6A0DC-8C99-429A-8696-35FC4DCEFCCC"' をクリックしてください。
 	Public Sub HandleEvent(ParamArray ByVal Args() As Object)
 		Dim event_que_idx As Short
@@ -1384,16 +1380,16 @@ ErrorHandler:
 		Dim u As Unit
 		Dim main_event_done As Boolean
 		
-		'Invalid_string_refer_to_original_code
+		'画面入力をロック
 		prev_is_gui_locked = IsGUILocked
 		If Not IsGUILocked Then
 			LockGUI()
 		End If
 		
-		'Invalid_string_refer_to_original_code
-		'(SearchLabel()螳溯｡梧凾縺ｮ蠑剰ｨ育ｮ礼畑縺ｫ縺ゅｉ縺九§繧∬ｨｭ螳壹＠縺ｦ縺翫￥)
+		'現在選択されているユニット＆ターゲットをイベント用に設定
+		'(SearchLabel()実行時の式計算用にあらかじめ設定しておく)
 		SelectedUnitForEvent = SelectedUnit
-		'Invalid_string_refer_to_original_code
+		'引数に指定されたユニットを優先
 		If UBound(Args) > 0 Then
 			If PList.IsDefined(Args(1)) Then
 				With PList.Item(Args(1))
@@ -1405,41 +1401,41 @@ ErrorHandler:
 		End If
 		SelectedTargetForEvent = SelectedTarget
 		
-		'Invalid_string_refer_to_original_code
+		'イベントキューを作成
 		ReDim Preserve EventQue(UBound(EventQue) + 1)
 		event_que_idx = UBound(EventQue)
 		Select Case Args(0)
-			Case "繝励Ο繝ｭ繝ｼ繧ｰ"
-				EventQue(UBound(EventQue)) = "繝励Ο繝ｭ繝ｼ繧ｰ"
-				Stage = "繝励Ο繝ｭ繝ｼ繧ｰ"
-			Case "繧ｨ繝斐Ο繝ｼ繧ｰ"
-				EventQue(UBound(EventQue)) = "繧ｨ繝斐Ο繝ｼ繧ｰ"
-				Stage = "繧ｨ繝斐Ο繝ｼ繧ｰ"
-			Case "Invalid_string_refer_to_original_code"
+			Case "プロローグ"
+				EventQue(UBound(EventQue)) = "プロローグ"
+				Stage = "プロローグ"
+			Case "エピローグ"
+				EventQue(UBound(EventQue)) = "エピローグ"
+				Stage = "エピローグ"
+			Case "破壊"
 				'UPGRADE_WARNING: オブジェクト Args() の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-				EventQue(UBound(EventQue)) = "Invalid_string_refer_to_original_code" & Args(1)
+				EventQue(UBound(EventQue)) = "破壊 " & Args(1)
 				With PList.Item(Args(1))
 					uparty = .Party
 					If Not .Unit_Renamed Is Nothing Then
 						With .Unit_Renamed
-							'Invalid_string_refer_to_original_code
+							'格納されていたユニットも破壊しておく
 							' MOD START MARGE
 							'                        For i = 1 To .CountUnitOnBoard
 							'                            Set u = .UnitOnBoard(1)
 							'                            .UnloadUnit u.ID
-							'Invalid_string_refer_to_original_code
+							'                            u.Status = "破壊"
 							'                            u.HP = 0
 							'                            ReDim Preserve EventQue(UBound(EventQue) + 1)
 							'                            EventQue(UBound(EventQue)) = _
-							'Invalid_string_refer_to_original_code
+							''                                "破壊 " & u.MainPilot.ID
 							'                        Next
 							Do While .CountUnitOnBoard > 0
 								u = .UnitOnBoard(1)
 								.UnloadUnit((u.ID))
-								u.Status_Renamed = "Invalid_string_refer_to_original_code"
+								u.Status_Renamed = "破壊"
 								u.HP = 0
 								ReDim Preserve EventQue(UBound(EventQue) + 1)
-								EventQue(UBound(EventQue)) = "Invalid_string_refer_to_original_code" & u.MainPilot.ID
+								EventQue(UBound(EventQue)) = "マップ攻撃破壊 " & u.MainPilot.ID
 							Loop 
 							' MOD END MARGE
 							uparty = .Party0
@@ -1447,118 +1443,115 @@ ErrorHandler:
 					End If
 				End With
 				
-				'Invalid_string_refer_to_original_code
+				'全滅の判定
 				flag = False
 				For	Each u In UList
 					With u
-						'Invalid_string_refer_to_original_code_
-						'Invalid_string_refer_to_original_code_
-						'Then
-						'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-						flag = True
-						Exit For
-						'End If
+						If .Party0 = uparty And .Status_Renamed = "出撃" And Not .IsConditionSatisfied("憑依") Then
+							flag = True
+							Exit For
+						End If
 					End With
 				Next u
 				If Not flag Then
 					ReDim Preserve EventQue(UBound(EventQue) + 1)
-					EventQue(UBound(EventQue)) = "Invalid_string_refer_to_original_code" & uparty
+					EventQue(UBound(EventQue)) = "全滅 " & uparty
 				End If
-			Case "Invalid_string_refer_to_original_code"
+			Case "マップ攻撃破壊"
 				'UPGRADE_WARNING: オブジェクト Args() の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-				EventQue(UBound(EventQue)) = "Invalid_string_refer_to_original_code" & Args(1)
+				EventQue(UBound(EventQue)) = "マップ攻撃破壊 " & Args(1)
 				With PList.Item(Args(1))
 					uparty = .Party
 					If Not .Unit_Renamed Is Nothing Then
 						With .Unit_Renamed
-							'Invalid_string_refer_to_original_code
+							'格納されていたユニットも破壊しておく
 							For i = 1 To .CountUnitOnBoard
 								u = .UnitOnBoard(i)
 								.UnloadUnit((u.ID))
-								u.Status_Renamed = "Invalid_string_refer_to_original_code"
+								u.Status_Renamed = "破壊"
 								u.HP = 0
 								ReDim Preserve EventQue(UBound(EventQue) + 1)
-								EventQue(UBound(EventQue)) = "Invalid_string_refer_to_original_code" & u.MainPilot.ID
+								EventQue(UBound(EventQue)) = "マップ攻撃破壊 " & u.MainPilot.ID
 							Next 
 							uparty = .Party0
 						End With
 					End If
 				End With
-			Case "繧ｿ繝ｼ繝ｳ"
+			Case "ターン"
 				'UPGRADE_WARNING: オブジェクト Args() の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-				EventQue(UBound(EventQue)) = "繧ｿ繝ｼ繝ｳ 蜈ｨ " & Args(2)
+				EventQue(UBound(EventQue)) = "ターン 全 " & Args(2)
 				ReDim Preserve EventQue(UBound(EventQue) + 1)
 				'UPGRADE_WARNING: オブジェクト Args(2) の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
 				'UPGRADE_WARNING: オブジェクト Args() の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-				EventQue(UBound(EventQue)) = "繧ｿ繝ｼ繝ｳ " & VB6.Format(Args(1)) & " " & Args(2)
-			Case "Invalid_string_refer_to_original_code"
+				EventQue(UBound(EventQue)) = "ターン " & VB6.Format(Args(1)) & " " & Args(2)
+			Case "損傷率"
 				'UPGRADE_WARNING: オブジェクト Args() の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-				EventQue(UBound(EventQue)) = "Invalid_string_refer_to_original_code" & Args(1) & " " & VB6.Format(Args(2))
-			Case "Invalid_string_refer_to_original_code"
+				EventQue(UBound(EventQue)) = "損傷率 " & Args(1) & " " & VB6.Format(Args(2))
+			Case "攻撃"
 				'UPGRADE_WARNING: オブジェクト Args(2) の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
 				'UPGRADE_WARNING: オブジェクト Args() の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-				EventQue(UBound(EventQue)) = "Invalid_string_refer_to_original_code" & Args(1) & " " & Args(2)
-			Case "Invalid_string_refer_to_original_code"
+				EventQue(UBound(EventQue)) = "攻撃 " & Args(1) & " " & Args(2)
+			Case "攻撃後"
 				'UPGRADE_WARNING: オブジェクト Args(2) の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
 				'UPGRADE_WARNING: オブジェクト Args() の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-				EventQue(UBound(EventQue)) = "Invalid_string_refer_to_original_code" & Args(1) & " " & Args(2)
-			Case "莨夊ｩｱ"
+				EventQue(UBound(EventQue)) = "攻撃後 " & Args(1) & " " & Args(2)
+			Case "会話"
 				'UPGRADE_WARNING: オブジェクト Args(2) の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
 				'UPGRADE_WARNING: オブジェクト Args() の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-				EventQue(UBound(EventQue)) = "莨夊ｩｱ " & Args(1) & " " & Args(2)
-			Case "謗･隗ｦ"
+				EventQue(UBound(EventQue)) = "会話 " & Args(1) & " " & Args(2)
+			Case "接触"
 				'UPGRADE_WARNING: オブジェクト Args(2) の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
 				'UPGRADE_WARNING: オブジェクト Args() の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-				EventQue(UBound(EventQue)) = "謗･隗ｦ " & Args(1) & " " & Args(2)
-			Case "騾ｲ蜈･"
+				EventQue(UBound(EventQue)) = "接触 " & Args(1) & " " & Args(2)
+			Case "進入"
 				'UPGRADE_WARNING: オブジェクト Args() の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-				EventQue(UBound(EventQue)) = "騾ｲ蜈･ " & Args(1) & " " & VB6.Format(Args(2)) & " " & VB6.Format(Args(3))
+				EventQue(UBound(EventQue)) = "進入 " & Args(1) & " " & VB6.Format(Args(2)) & " " & VB6.Format(Args(3))
 				ReDim Preserve EventQue(UBound(EventQue) + 1)
 				'UPGRADE_WARNING: オブジェクト Args() の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-				EventQue(UBound(EventQue)) = "騾ｲ蜈･ " & Args(1) & " " & TerrainName(CShort(Args(2)), CShort(Args(3)))
+				EventQue(UBound(EventQue)) = "進入 " & Args(1) & " " & TerrainName(CShort(Args(2)), CShort(Args(3)))
 				'UPGRADE_WARNING: オブジェクト Args(2) の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
 				If Args(2) = 1 Then
 					ReDim Preserve EventQue(UBound(EventQue) + 1)
 					'UPGRADE_WARNING: オブジェクト Args() の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-					EventQue(UBound(EventQue)) = "閼ｱ蜃ｺ " & Args(1) & " W"
+					EventQue(UBound(EventQue)) = "脱出 " & Args(1) & " W"
 					'UPGRADE_WARNING: オブジェクト Args(2) の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
 				ElseIf Args(2) = MapWidth Then 
 					ReDim Preserve EventQue(UBound(EventQue) + 1)
 					'UPGRADE_WARNING: オブジェクト Args() の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-					EventQue(UBound(EventQue)) = "閼ｱ蜃ｺ " & Args(1) & " E"
+					EventQue(UBound(EventQue)) = "脱出 " & Args(1) & " E"
 				End If
 				'UPGRADE_WARNING: オブジェクト Args(3) の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
 				If Args(3) = 1 Then
 					ReDim Preserve EventQue(UBound(EventQue) + 1)
 					'UPGRADE_WARNING: オブジェクト Args() の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-					EventQue(UBound(EventQue)) = "閼ｱ蜃ｺ " & Args(1) & " N"
+					EventQue(UBound(EventQue)) = "脱出 " & Args(1) & " N"
 					'UPGRADE_WARNING: オブジェクト Args(3) の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
 				ElseIf Args(3) = MapHeight Then 
 					ReDim Preserve EventQue(UBound(EventQue) + 1)
 					'UPGRADE_WARNING: オブジェクト Args() の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-					EventQue(UBound(EventQue)) = "閼ｱ蜃ｺ " & Args(1) & " S"
+					EventQue(UBound(EventQue)) = "脱出 " & Args(1) & " S"
 				End If
-			Case "Invalid_string_refer_to_original_code"
+			Case "収納"
 				'UPGRADE_WARNING: オブジェクト Args() の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-				EventQue(UBound(EventQue)) = "Invalid_string_refer_to_original_code" & Args(1)
-			Case "菴ｿ逕ｨ"
+				EventQue(UBound(EventQue)) = "収納 " & Args(1)
+			Case "使用"
 				'UPGRADE_WARNING: オブジェクト Args(2) の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
 				'UPGRADE_WARNING: オブジェクト Args() の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-				EventQue(UBound(EventQue)) = "菴ｿ逕ｨ " & Args(1) & " " & Args(2)
-			Case "Invalid_string_refer_to_original_code"
+				EventQue(UBound(EventQue)) = "使用 " & Args(1) & " " & Args(2)
+			Case "使用後"
 				'UPGRADE_WARNING: オブジェクト Args(2) の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
 				'UPGRADE_WARNING: オブジェクト Args() の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-				EventQue(UBound(EventQue)) = "Invalid_string_refer_to_original_code" & Args(1) & " " & Args(2)
-			Case "Invalid_string_refer_to_original_code"
+				EventQue(UBound(EventQue)) = "使用後 " & Args(1) & " " & Args(2)
+			Case "行動終了"
 				'UPGRADE_WARNING: オブジェクト Args() の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-				EventQue(UBound(EventQue)) = "Invalid_string_refer_to_original_code" & Args(1)
-			Case "Invalid_string_refer_to_original_code"
+				EventQue(UBound(EventQue)) = "行動終了 " & Args(1)
+			Case "ユニットコマンド"
 				'UPGRADE_WARNING: オブジェクト Args(2) の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
 				'UPGRADE_WARNING: オブジェクト Args() の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-				EventQue(UBound(EventQue)) = "Invalid_string_refer_to_original_code" & Args(1) & " " & Args(2)
+				EventQue(UBound(EventQue)) = "ユニットコマンド " & Args(1) & " " & Args(2)
 				If Not IsEventDefined(EventQue(UBound(EventQue))) Then
 					'UPGRADE_WARNING: オブジェクト Args() の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-					EventQue(UBound(EventQue)) = "Invalid_string_refer_to_original_code" & Args(1) & " " & PList.Item(Args(2)).Unit_Renamed.Name
+					EventQue(UBound(EventQue)) = "ユニットコマンド " & Args(1) & " " & PList.Item(Args(2)).Unit_Renamed.Name
 				End If
 			Case Else
 				'UPGRADE_WARNING: オブジェクト Args() の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
@@ -1570,53 +1563,47 @@ ErrorHandler:
 		End Select
 		
 		If CallDepth > MaxCallDepth Then
-			ErrorMessage("Invalid_string_refer_to_original_code")
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+			ErrorMessage("サブルーチンの呼び出し階層が" & VB6.Format(MaxCallDepth) & "を超えているため、イベントの処理が出来ません")
 			CallDepth = MaxCallDepth
 			Exit Sub
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'現在の状態を保存
 		ArgIndexStack(CallDepth) = ArgIndex
 		VarIndexStack(CallDepth) = VarIndex
 		ForIndexStack(CallDepth) = ForIndex
 		SaveBasePoint()
 		
-		'Invalid_string_refer_to_original_code
+		'呼び出し階層数をインクリメント
 		prev_call_depth = CallDepth
 		CallDepth = CallDepth + 1
 		
-		'Invalid_string_refer_to_original_code
+		'各イベントを発生させる
 		i = event_que_idx
 		IsCanceled = False
 		Do 
 			'Debug.Print "HandleEvent (" & EventQue(i) & ")"
 			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			uparty = LIndex(EventQue(i), 2)
-			For	Each u In UList
-				With u
-					'Invalid_string_refer_to_original_code_
-					'Invalid_string_refer_to_original_code_
-					'Then
-					'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-					GoTo NextLoop
-					'End If
-				End With
-			Next u
-			'End If
+			'前のイベントで他のユニットが出現している可能性があるので
+			'本当に全滅したのか判定
+			If LIndex(EventQue(i), 1) = "全滅" Then
+				uparty = LIndex(EventQue(i), 2)
+				For	Each u In UList
+					With u
+						If .Party0 = uparty And .Status_Renamed = "出撃" And Not .IsConditionSatisfied("憑依") Then
+							GoTo NextLoop
+						End If
+					End With
+				Next u
+			End If
 			
 			CurrentLabel = 0
 			main_event_done = False
 			Do While True
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code
+				'現在選択されているユニット＆ターゲットをイベント用に設定
+				'SearchLabel()で入れ替えられる可能性があるので、毎回設定し直す必要あり
 				SelectedUnitForEvent = SelectedUnit
-				'Invalid_string_refer_to_original_code
+				'引数に指定されたユニットを優先
 				If UBound(Args) > 0 Then
 					If PList.IsDefined(Args(1)) Then
 						With PList.Item(Args(1))
@@ -1628,7 +1615,7 @@ ErrorHandler:
 				End If
 				SelectedTargetForEvent = SelectedTarget
 				
-				'Invalid_string_refer_to_original_code
+				'実行するイベントラベルを探す
 				Do 
 					If IsNumeric(EventQue(i)) Then
 						If CurrentLabel = 0 Then
@@ -1646,7 +1633,7 @@ ErrorHandler:
 					CurrentLabel = ret
 					
 					If Asc(EventData(ret)) <> 42 Then '*
-						'Invalid_string_refer_to_original_code
+						'常時イベントではないイベントは１度しか実行しない
 						If main_event_done Then
 							ret = 0
 						Else
@@ -1655,33 +1642,29 @@ ErrorHandler:
 					End If
 				Loop While ret = 0
 				
-				'Invalid_string_refer_to_original_code
+				'戦闘後のイベント実行前にはいくつかの後始末が必要
 				If Left(EventData(ret), 1) <> "*" Then
-					'Invalid_string_refer_to_original_code_
-					'Invalid_string_refer_to_original_code_
-					'Invalid_string_refer_to_original_code_
-					'Invalid_string_refer_to_original_code_
-					'Then
-					'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-					'逕ｻ髱｢繧偵け繝ｪ繧｢
-					If MainForm.Visible = True Then
-						ClearUnitStatus()
-						RedrawScreen()
-					End If
-					
-					'Invalid_string_refer_to_original_code
-					If frmMessage.Visible = True Then
-						CloseMessageForm()
+					'UPGRADE_WARNING: オブジェクト Args(0) の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
+					If Args(0) = "破壊" Or Args(0) = "損傷率" Or Args(0) = "攻撃後" Or Args(0) = "全滅" Then
+						'画面をクリア
+						If MainForm.Visible = True Then
+							ClearUnitStatus()
+							RedrawScreen()
+						End If
+						
+						'メッセージウィンドウを閉じる
+						If frmMessage.Visible = True Then
+							CloseMessageForm()
+						End If
 					End If
 				End If
-				'End If
 				
-				'Invalid_string_refer_to_original_code
+				'ラベルの行は実行しても無駄なので
 				ret = ret + 1
 				
 				System.Windows.Forms.Application.DoEvents()
 				
-				'Invalid_string_refer_to_original_code
+				'イベントの各コマンドを実行
 				Do 
 					CurrentLineNum = ret
 					If CurrentLineNum > UBound(EventCmd) Then
@@ -1690,7 +1673,7 @@ ErrorHandler:
 					ret = EventCmd(CurrentLineNum).Exec
 				Loop While ret > 0
 				
-				'Invalid_string_refer_to_original_code
+				'ステージが終了 or キャンセル？
 				If IsScenarioFinished Or IsCanceled Then
 					GoTo ExitLoop
 				End If
@@ -1701,11 +1684,11 @@ NextLoop:
 ExitLoop: 
 		
 		If CallDepth >= 0 Then
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
+			'呼び出し階層数を元に戻す
+			'（サブルーチン内でExitが呼ばれることがあるので単純に-1出来ない）
 			CallDepth = prev_call_depth
 			
-			'繧､繝吶Φ繝亥ｮ溯｡悟燕縺ｮ迥ｶ諷九↓蠕ｩ蟶ｰ
+			'イベント実行前の状態に復帰
 			ArgIndex = ArgIndexStack(CallDepth)
 			VarIndex = VarIndexStack(CallDepth)
 			ForIndex = ForIndexStack(CallDepth)
@@ -1715,10 +1698,10 @@ ExitLoop:
 			ForIndex = 0
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'イベントキューを元に戻す
 		ReDim Preserve EventQue(MinLng(event_que_idx - 1, UBound(EventQue)))
 		
-		'Invalid_string_refer_to_original_code
+		'フォント設定をデフォルトに戻す
 		'UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 		With MainForm.picMain(0)
 			'UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
@@ -1728,7 +1711,7 @@ ExitLoop:
 				'UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 				.Size = 16
 				'UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-				.Name = "Invalid_string_refer_to_original_code"
+				.Name = "ＭＳ Ｐ明朝"
 				'UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 				.Bold = True
 				'UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
@@ -1738,7 +1721,7 @@ ExitLoop:
 			KeepStringMode = False
 		End With
 		
-		'Invalid_string_refer_to_original_code
+		'オブジェクト色をデフォルトに戻す
 		ObjColor = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.White)
 		ObjFillColor = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.White)
 		'UPGRADE_ISSUE: 定数 vbFSTransparent はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="55B59875-9A95-4B71-9D6A-7C294BF7139D"' をクリックしてください。
@@ -1746,16 +1729,16 @@ ExitLoop:
 		ObjDrawWidth = 1
 		ObjDrawOption = ""
 		
-		'Invalid_string_refer_to_original_code
+		'描画の基準座標位置を元に戻す
 		RestoreBasePoint()
 		
-		'Invalid_string_refer_to_original_code
+		'画面入力のロックを解除
 		If Not prev_is_gui_locked Then
 			UnlockGUI()
 		End If
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'イベントを登録しておき、後で実行
 	'UPGRADE_WARNING: ParamArray Args が ByRef から ByVal に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="93C6A0DC-8C99-429A-8696-35FC4DCEFCCC"' をクリックしてください。
 	Public Sub RegisterEvent(ParamArray ByVal Args() As Object)
 		Dim i As Short
@@ -1770,7 +1753,7 @@ ExitLoop:
 	End Sub
 	
 	
-	'繝ｩ繝吶Ν縺ｮ讀懃ｴ｢
+	'ラベルの検索
 	Public Function SearchLabel(ByRef lname As String, Optional ByVal start As Integer = 0) As Integer
 		Dim ltype As LabelType
 		Dim llen As Short
@@ -1785,55 +1768,53 @@ ExitLoop:
 		Dim tmp_u As Unit
 		Dim revrersible, reversed As Boolean
 		
-		'Invalid_string_refer_to_original_code
+		'ラベルの各要素をあらかじめ解析
 		llen = ListSplit(lname, litem)
 		
-		'Invalid_string_refer_to_original_code
+		'ラベルの種類を判定
 		Select Case litem(1)
-			Case "繝励Ο繝ｭ繝ｼ繧ｰ"
+			Case "プロローグ"
 				ltype = LabelType.PrologueEventLabel
-			Case "Invalid_string_refer_to_original_code"
+			Case "スタート"
 				ltype = LabelType.StartEventLabel
-			Case "繧ｨ繝斐Ο繝ｼ繧ｰ"
+			Case "エピローグ"
 				ltype = LabelType.EpilogueEventLabel
-			Case "繧ｿ繝ｼ繝ｳ"
+			Case "ターン"
 				ltype = LabelType.TurnEventLabel
 				If IsNumeric(litem(2)) Then
 					is_num(2) = True
 				End If
 				lnum(2) = CStr(StrToLng(litem(2)))
-			Case "Invalid_string_refer_to_original_code"
+			Case "損傷率"
 				ltype = LabelType.DamageEventLabel
 				is_unit(2) = True
 				is_num(3) = True
 				lnum(3) = CStr(StrToLng(litem(3)))
-			Case "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+			Case "破壊", "マップ攻撃破壊"
 				ltype = LabelType.DestructionEventLabel
 				is_unit(2) = True
-			Case "Invalid_string_refer_to_original_code"
+			Case "全滅"
 				ltype = LabelType.TotalDestructionEventLabel
-			Case "Invalid_string_refer_to_original_code"
+			Case "攻撃"
 				ltype = LabelType.AttackEventLabel
 				revrersible = True
 				is_unit(2) = True
 				is_unit(3) = True
-			Case "Invalid_string_refer_to_original_code"
+			Case "攻撃後"
 				ltype = LabelType.AfterAttackEventLabel
 				revrersible = True
 				is_unit(2) = True
 				is_unit(3) = True
-			Case "莨夊ｩｱ"
+			Case "会話"
 				ltype = LabelType.TalkEventLabel
 				is_unit(2) = True
 				is_unit(3) = True
-			Case "謗･隗ｦ"
+			Case "接触"
 				ltype = LabelType.ContactEventLabel
 				revrersible = True
 				is_unit(2) = True
 				is_unit(3) = True
-			Case "騾ｲ蜈･"
+			Case "進入"
 				ltype = LabelType.EnterEventLabel
 				is_unit(2) = True
 				If llen = 4 Then
@@ -1842,84 +1823,84 @@ ExitLoop:
 					lnum(3) = CStr(StrToLng(litem(3)))
 					lnum(4) = CStr(StrToLng(litem(4)))
 				End If
-			Case "閼ｱ蜃ｺ"
+			Case "脱出"
 				ltype = LabelType.EscapeEventLabel
 				is_unit(2) = True
-			Case "Invalid_string_refer_to_original_code"
+			Case "収納"
 				ltype = LabelType.LandEventLabel
 				is_unit(2) = True
-			Case "菴ｿ逕ｨ"
+			Case "使用"
 				ltype = LabelType.UseEventLabel
 				is_unit(2) = True
-			Case "Invalid_string_refer_to_original_code"
+			Case "使用後"
 				ltype = LabelType.AfterUseEventLabel
 				is_unit(2) = True
-			Case "螟牙ｽ｢"
+			Case "変形"
 				ltype = LabelType.TransformEventLabel
 				is_unit(2) = True
-			Case "Invalid_string_refer_to_original_code"
+			Case "合体"
 				ltype = LabelType.CombineEventLabel
 				is_unit(2) = True
-			Case "Invalid_string_refer_to_original_code"
+			Case "分離"
 				ltype = LabelType.SplitEventLabel
 				is_unit(2) = True
-			Case "Invalid_string_refer_to_original_code"
+			Case "行動終了"
 				ltype = LabelType.FinishEventLabel
 				is_unit(2) = True
-			Case "Invalid_string_refer_to_original_code"
+			Case "レベルアップ"
 				ltype = LabelType.LevelUpEventLabel
 				is_unit(2) = True
-			Case "蜍晏茜譚｡莉ｶ"
+			Case "勝利条件"
 				ltype = LabelType.RequirementEventLabel
-			Case "蜀埼幕"
+			Case "再開"
 				ltype = LabelType.ResumeEventLabel
-			Case "Invalid_string_refer_to_original_code"
+			Case "マップコマンド"
 				ltype = LabelType.MapCommandEventLabel
 				is_condition(3) = True
-			Case "Invalid_string_refer_to_original_code"
+			Case "ユニットコマンド"
 				ltype = LabelType.UnitCommandEventLabel
 				is_condition(4) = True
-			Case "Invalid_string_refer_to_original_code"
+			Case "特殊効果"
 				ltype = LabelType.EffectEventLabel
 			Case Else
 				ltype = LabelType.NormalLabel
 		End Select
 		
-		'Invalid_string_refer_to_original_code
+		'各ラベルについて一致しているかチェック
 		For	Each lab In colEventLabelList
 			With lab
-				'Invalid_string_refer_to_original_code
+				'ラベルの種類が一致している？
 				If ltype <> .Name Then
 					GoTo NextLabel
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'ClearEventされていない？
 				If Not .Enable Then
 					GoTo NextLabel
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'検索開始行より後ろ？
 				If .LineNum < start Then
 					GoTo NextLabel
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'パラメータ数が一致している？
 				If llen <> .CountPara Then
 					If ltype <> LabelType.MapCommandEventLabel And ltype <> LabelType.UnitCommandEventLabel Then
 						GoTo NextLabel
 					End If
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'各パラメータが一致している？
 				reversed = False
 CheckPara: 
 				For i = 2 To llen
-					'Invalid_string_refer_to_original_code
+					'コマンド関連ラベルの最後のパラメータは条件式なのでチェックを省く
 					If is_condition(i) Then
 						Exit For
 					End If
 					
-					'Invalid_string_refer_to_original_code
+					'比較するパラメータ
 					str1 = litem(i)
 					If reversed Then
 						str2 = .Para(5 - i)
@@ -1927,21 +1908,21 @@ CheckPara:
 						str2 = .Para(i)
 					End If
 					
-					'Invalid_string_refer_to_original_code
-					If str2 = "蜈ｨ" Then
-						'Invalid_string_refer_to_original_code
+					'「全」は全てに一致
+					If str2 = "全" Then
+						'だだし、「ターン 全」が２回実行されるのは防ぐ
 						If ltype <> LabelType.TurnEventLabel Or i <> 2 Then
 							GoTo NextPara
 						End If
 					End If
 					
-					'Invalid_string_refer_to_original_code
+					'数値として比較？
 					If is_num(i) Then
 						If IsNumeric(str2) Then
 							If CDbl(lnum(i)) = CInt(str2) Then
 								GoTo NextPara
 							ElseIf ltype = LabelType.DamageEventLabel Then 
-								'Invalid_string_refer_to_original_code
+								'損傷率ラベルの処理
 								If CDbl(lnum(i)) > CInt(str2) Then
 									Exit For
 								End If
@@ -1950,79 +1931,76 @@ CheckPara:
 						GoTo NextLabel
 					End If
 					
-					'Invalid_string_refer_to_original_code
+					'ユニット指定として比較？
 					If is_unit(i) Then
-						'Invalid_string_refer_to_original_code_
-						'Then
-						'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-						'Invalid_string_refer_to_original_code
-						'Invalid_string_refer_to_original_code_
-						'Then
-						'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-						If PList.IsDefined(str1) Then
-							str1 = PList.Item(str1).Party
-						End If
-					End If
-					PList.IsDefined(str2)
-					'Invalid_string_refer_to_original_code
-					With PList.Item(str2)
-						If str2 = .Data.Name Or str2 = .Data.Nickname Then
-							'Invalid_string_refer_to_original_code
-							'Invalid_string_refer_to_original_code
-							str2 = .Name
+						If str2 = "味方" Or str2 = "ＮＰＣ" Or str2 = "敵" Or str2 = "中立" Then
+							'陣営名で比較
+							If str1 <> "味方" And str1 <> "ＮＰＣ" And str1 <> "敵" And str1 <> "中立" Then
+								If PList.IsDefined(str1) Then
+									str1 = PList.Item(str1).Party
+								End If
+							End If
+						ElseIf PList.IsDefined(str2) Then 
+							'パイロットで比較
+							With PList.Item(str2)
+								If str2 = .Data.Name Or str2 = .Data.Nickname Then
+									'グループＩＤが付けられていない場合は
+									'パイロット名で比較
+									str2 = .Name
+									If PList.IsDefined(str1) Then
+										str1 = PList.Item(str1).Name
+									End If
+								Else
+									'グループＩＤが付けられている場合は
+									'グループＩＤで比較
+									If PList.IsDefined(str1) Then
+										str1 = PList.Item(str1).ID
+									End If
+									If InStr(str1, ":") > 0 Then
+										str1 = Left(str1, InStr(str1, ":") - 1)
+									End If
+								End If
+							End With
+						ElseIf PDList.IsDefined(str2) Then 
+							'パイロット名で比較
+							str2 = PDList.Item(str2).Name
 							If PList.IsDefined(str1) Then
 								str1 = PList.Item(str1).Name
 							End If
+						ElseIf UDList.IsDefined(str2) Then 
+							'ユニット名で比較
+							If PList.IsDefined(str1) Then
+								With PList.Item(str1)
+									If Not .Unit_Renamed Is Nothing Then
+										str1 = .Unit_Renamed.Name
+									End If
+								End With
+							End If
 						Else
-							'Invalid_string_refer_to_original_code
-							'Invalid_string_refer_to_original_code
+							'グループＩＤが付けられているおり、なおかつ同じＩＤの
+							'２番目以降のユニットの場合はグループＩＤで比較
 							If PList.IsDefined(str1) Then
 								str1 = PList.Item(str1).ID
 							End If
 							If InStr(str1, ":") > 0 Then
 								str1 = Left(str1, InStr(str1, ":") - 1)
 							End If
-						End If
-					End With
-					PDList.IsDefined(str2)
-					'Invalid_string_refer_to_original_code
-					str2 = PDList.Item(str2).Name
-					If PList.IsDefined(str1) Then
-						str1 = PList.Item(str1).Name
-					End If
-					UDList.IsDefined(str2)
-					'Invalid_string_refer_to_original_code
-					If PList.IsDefined(str1) Then
-						With PList.Item(str1)
-							If Not .Unit_Renamed Is Nothing Then
-								str1 = .Unit_Renamed.Name
+							If InStr(str2, ":") > 0 Then
+								str2 = Left(str2, InStr(str2, ":") - 1)
 							End If
-						End With
+						End If
 					End If
-					'Invalid_string_refer_to_original_code
-					'Invalid_string_refer_to_original_code
-					If PList.IsDefined(str1) Then
-						str1 = PList.Item(str1).ID
-					End If
-					If InStr(str1, ":") > 0 Then
-						str1 = Left(str1, InStr(str1, ":") - 1)
-					End If
-					If InStr(str2, ":") > 0 Then
-						str2 = Left(str2, InStr(str2, ":") - 1)
-					End If
-					'End If
-					'End If
 					
-					'Invalid_string_refer_to_original_code
+					'一致したか？
 					If str1 <> str2 Then
 						If revrersible And Not reversed Then
-							'Invalid_string_refer_to_original_code
+							'対象と相手を入れ替えたイベントラベルが存在するか判定
 							lname2 = litem(1) & " " & ListIndex(.Data, 3) & " " & ListIndex(.Data, 2)
 							If .AsterNum > 0 Then
 								lname2 = "*" & lname2
 							End If
 							If FindLabel(lname2) = 0 Then
-								'Invalid_string_refer_to_original_code
+								'対象と相手を入れ替えて判定し直す
 								reversed = True
 								GoTo CheckPara
 							End If
@@ -2032,10 +2010,10 @@ CheckPara:
 NextPara: 
 				Next 
 				
-				'Invalid_string_refer_to_original_code
+				'ここまでたどり付けばラベルは一致している
 				SearchLabel = .LineNum
 				
-				'Invalid_string_refer_to_original_code
+				'対象と相手を入れ替えて一致した場合はグローバル変数も入れ替え
 				If reversed Then
 					tmp_u = SelectedUnitForEvent
 					SelectedUnitForEvent = SelectedTargetForEvent
@@ -2049,13 +2027,13 @@ NextLabel:
 		SearchLabel = 0
 	End Function
 	
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
+	'指定したイベントへのイベントラベルが定義されているか
+	'常時イベントではない通常イベントのみを探す場合は
+	' normal_event_only = True を指定する
 	Public Function IsEventDefined(ByRef lname As String, Optional ByVal normal_event_only As Boolean = False) As Boolean
 		Dim i, ret As Integer
 		
-		'Invalid_string_refer_to_original_code
+		'イベントラベルを探す
 		i = 0
 		Do While 1
 			ret = SearchLabel(lname, i + 1)
@@ -2064,7 +2042,7 @@ NextLabel:
 			End If
 			
 			If normal_event_only Then
-				'Invalid_string_refer_to_original_code
+				'常時イベントではない通常イベントのみを探す場合
 				If Asc(EventData(ret)) <> 42 Then '*
 					IsEventDefined = True
 					Exit Function
@@ -2077,7 +2055,7 @@ NextLabel:
 		Loop 
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'ラベルが定義されているか
 	Public Function IsLabelDefined(ByRef Index As Object) As Boolean
 		Dim lab As LabelData
 		
@@ -2090,7 +2068,7 @@ ErrorHandler:
 		IsLabelDefined = False
 	End Function
 	
-	'繝ｩ繝吶Ν繧定ｿｽ蜉
+	'ラベルを追加
 	Public Sub AddLabel(ByRef lname As String, ByVal lnum As Integer)
 		Dim new_label As New LabelData
 		Dim lname2 As String
@@ -2104,15 +2082,15 @@ ErrorHandler:
 			.Enable = True
 			
 			If .Name = LabelType.NormalLabel Then
-				'騾壼ｸｸ繝ｩ繝吶Ν繧定ｿｽ蜉
+				'通常ラベルを追加
 				If FindNormalLabel0(lname) = 0 Then
 					colNormalLabelList.Add(new_label, lname)
 				End If
 			Else
-				'繧､繝吶Φ繝医Λ繝吶Ν繧定ｿｽ蜉
+				'イベントラベルを追加
 				
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code
+				'パラメータ間の文字列の違いによる不一致をなくすため、
+				'文字列を半角スペース一文字に直しておく
 				lname2 = ListIndex(lname, 1)
 				For i = 2 To ListLength(lname)
 					lname2 = lname2 & " " & ListIndex(lname, i)
@@ -2129,10 +2107,10 @@ ErrorHandler:
 		Exit Sub
 		
 ErrorHandler: 
-		'Invalid_string_refer_to_original_code
+		'通常ラベルが重複定義されている場合は無視
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'システム側のラベルを追加
 	Public Sub AddSysLabel(ByRef lname As String, ByVal lnum As Integer)
 		Dim new_label As New LabelData
 		Dim lname2 As String
@@ -2146,7 +2124,7 @@ ErrorHandler:
 			.Enable = True
 			
 			If .Name = LabelType.NormalLabel Then
-				'騾壼ｸｸ繝ｩ繝吶Ν繧定ｿｽ蜉
+				'通常ラベルを追加
 				If FindSysNormalLabel(lname) = 0 Then
 					colSysNormalLabelList.Add(new_label, lname)
 				Else
@@ -2154,10 +2132,10 @@ ErrorHandler:
 					colSysNormalLabelList.Item(lname).LineNum = lnum
 				End If
 			Else
-				'繧､繝吶Φ繝医Λ繝吶Ν繧定ｿｽ蜉
+				'イベントラベルを追加
 				
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code
+				'パラメータ間の文字列の違いによる不一致をなくすため、
+				'文字列を半角スペース一文字に直しておく
 				lname2 = ListIndex(lname, 1)
 				For i = 2 To ListLength(lname)
 					lname2 = lname2 & " " & ListIndex(lname, i)
@@ -2174,15 +2152,15 @@ ErrorHandler:
 		Exit Sub
 		
 ErrorHandler: 
-		'Invalid_string_refer_to_original_code
+		'通常ラベルが重複定義されている場合は無視
 	End Sub
 	
-	'繝ｩ繝吶Ν繧呈ｶ亥悉
+	'ラベルを消去
 	Public Sub ClearLabel(ByVal lnum As Integer)
 		Dim lab As LabelData
 		Dim i As Short
 		
-		'Invalid_string_refer_to_original_code
+		'行番号lnumにあるラベルを探す
 		For	Each lab In colEventLabelList
 			With lab
 				If .LineNum = lnum Then
@@ -2192,7 +2170,7 @@ ErrorHandler:
 			End With
 		Next lab
 		
-		'Invalid_string_refer_to_original_code
+		'lnum行目になければその周りを探す
 		For i = 1 To 10
 			For	Each lab In colEventLabelList
 				With lab
@@ -2205,7 +2183,7 @@ ErrorHandler:
 		Next 
 	End Sub
 	
-	'繝ｩ繝吶Ν繧貞ｾｩ豢ｻ
+	'ラベルを復活
 	Public Sub RestoreLabel(ByRef lname As String)
 		Dim lab As LabelData
 		
@@ -2219,35 +2197,35 @@ ErrorHandler:
 		Next lab
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'ラベルを探す
 	Public Function FindLabel(ByRef lname As String) As Integer
 		Dim lname2 As String
 		Dim i As Short
 		
-		'騾壼ｸｸ繝ｩ繝吶Ν縺九ｉ讀懃ｴ｢
+		'通常ラベルから検索
 		FindLabel = FindNormalLabel(lname)
 		If FindLabel > 0 Then
 			Exit Function
 		End If
 		
-		'繧､繝吶Φ繝医Λ繝吶Ν縺九ｉ讀懃ｴ｢
+		'イベントラベルから検索
 		FindLabel = FindEventLabel(lname)
 		If FindLabel > 0 Then
 			Exit Function
 		End If
 		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
+		'パラメータ間の文字列の違いで一致しなかった可能性があるので
+		'文字列を半角スペース一文字のみにして検索してみる
 		lname2 = ListIndex(lname, 1)
 		For i = 2 To ListLength(lname)
 			lname2 = lname2 & " " & ListIndex(lname, i)
 		Next 
 		
-		'繧､繝吶Φ繝医Λ繝吶Ν縺九ｉ讀懃ｴ｢
+		'イベントラベルから検索
 		FindLabel = FindEventLabel(lname2)
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'イベントラベルを探す
 	Public Function FindEventLabel(ByRef lname As String) As Integer
 		Dim lab As LabelData
 		
@@ -2260,7 +2238,7 @@ NotFound:
 		FindEventLabel = 0
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'通常ラベルを探す
 	Public Function FindNormalLabel(ByRef lname As String) As Integer
 		FindNormalLabel = FindNormalLabel0(lname)
 		If FindNormalLabel = 0 Then
@@ -2268,7 +2246,7 @@ NotFound:
 		End If
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'シナリオ側の通常ラベルを探す
 	Private Function FindNormalLabel0(ByRef lname As String) As Integer
 		Dim lab As LabelData
 		
@@ -2281,7 +2259,7 @@ NotFound:
 		FindNormalLabel0 = 0
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'システム側の通常ラベルを探す
 	Private Function FindSysNormalLabel(ByRef lname As String) As Integer
 		Dim lab As LabelData
 		
@@ -2295,8 +2273,8 @@ NotFound:
 	End Function
 	
 	
-	'繧､繝吶Φ繝医ョ繝ｼ繧ｿ縺ｮ豸亥悉
-	'Invalid_string_refer_to_original_code
+	'イベントデータの消去
+	'ただしグローバル変数のデータは残しておく
 	Public Sub ClearEventData()
 		Dim i As Short
 		
@@ -2354,7 +2332,7 @@ NotFound:
 		End With
 	End Sub
 	
-	'繧ｰ繝ｭ繝ｼ繝舌Ν螟画焚繧貞性繧√◆繧､繝吶Φ繝医ョ繝ｼ繧ｿ縺ｮ蜈ｨ豸亥悉
+	'グローバル変数を含めたイベントデータの全消去
 	Public Sub ClearAllEventData()
 		Dim i As Short
 		
@@ -2366,35 +2344,35 @@ NotFound:
 			Next 
 		End With
 		
-		DefineGlobalVariable("Invalid_string_refer_to_original_code")
-		DefineGlobalVariable("Invalid_string_refer_to_original_code")
+		DefineGlobalVariable("次ステージ")
+		DefineGlobalVariable("セーブデータファイル名")
 	End Sub
 	
 	
-	'Invalid_string_refer_to_original_code
+	'一時中断用データをファイルにセーブする
 	Public Sub DumpEventData()
 		Dim lab As LabelData
 		Dim i As Short
 		
-		'繧ｰ繝ｭ繝ｼ繝舌Ν螟画焚
+		'グローバル変数
 		SaveGlobalVariables()
-		'繝ｭ繝ｼ繧ｫ繝ｫ螟画焚
+		'ローカル変数
 		SaveLocalVariables()
 		
-		'繧､繝吶Φ繝育畑繝ｩ繝吶Ν
+		'イベント用ラベル
 		WriteLine(SaveDataFileNumber, colEventLabelList.Count())
 		For	Each lab In colEventLabelList
 			WriteLine(SaveDataFileNumber, lab.Enable)
 		Next lab
 		
-		'Require繧ｳ繝槭Φ繝峨〒霑ｽ蜉縺輔ｌ縺溘う繝吶Φ繝医ヵ繧｡繧､繝ｫ
+		'Requireコマンドで追加されたイベントファイル
 		WriteLine(SaveDataFileNumber, UBound(AdditionalEventFileNames))
 		For i = 1 To UBound(AdditionalEventFileNames)
 			WriteLine(SaveDataFileNumber, AdditionalEventFileNames(i))
 		Next 
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'一時中断用データをファイルからロードする
 	Public Sub RestoreEventData()
 		Dim lab As LabelData
 		Dim num As Short
@@ -2405,12 +2383,12 @@ NotFound:
 		Dim j As Short
 		Dim buf As String
 		
-		'繧ｰ繝ｭ繝ｼ繝舌Ν螟画焚
+		'グローバル変数
 		LoadGlobalVariables()
-		'繝ｭ繝ｼ繧ｫ繝ｫ螟画焚
+		'ローカル変数
 		LoadLocalVariables()
 		
-		'繧､繝吶Φ繝育畑繝ｩ繝吶Ν
+		'イベント用ラベル
 		Input(SaveDataFileNumber, num)
 		' MOD START MARGE
 		'    i = 1
@@ -2433,12 +2411,12 @@ NotFound:
 		Next 
 		' MOD END MARGE
 		
-		'Require繧ｳ繝槭Φ繝峨〒霑ｽ蜉縺輔ｌ縺溘う繝吶Φ繝医ヵ繧｡繧､繝ｫ
+		'Requireコマンドで追加されたイベントファイル
 		If SaveDataVersion > 20003 Then
 			file_head = UBound(EventData) + 1
 			
 			' MOD START MARGE
-			'Invalid_string_refer_to_original_code
+			'        'イベントファイルをロード
 			'        Input #SaveDataFileNumber, num
 			'        If num = 0 Then
 			'            Exit Sub
@@ -2451,7 +2429,7 @@ NotFound:
 			'                fname = ScenarioPath & fname
 			'            End If
 			'
-			'Invalid_string_refer_to_original_code
+			'            '既に読み込まれている場合はスキップ
 			'            For j = 1 To UBound(EventFileNames)
 			'               If fname = EventFileNames(j) Then
 			'                   GoTo NextEventFile
@@ -2462,13 +2440,13 @@ NotFound:
 			'NextEventFile:
 			'        Next
 			'
-			'        '繧ｨ繝ｩ繝ｼ陦ｨ遉ｺ逕ｨ縺ｫ繧ｵ繧､繧ｺ繧貞､ｧ縺阪￥蜿悶▲縺ｦ縺翫￥
+			'        'エラー表示用にサイズを大きく取っておく
 			'        ReDim Preserve EventData(UBound(EventData) + 1)
 			'        ReDim Preserve EventLineNum(UBound(EventData))
 			'        EventData(UBound(EventData)) = ""
 			'        EventLineNum(UBound(EventData)) = EventLineNum(UBound(EventData) - 1) + 1
 			'
-			'Invalid_string_refer_to_original_code
+			'        '複数行に分割されたコマンドを結合
 			'        For i = file_head To UBound(EventData) - 1
 			'            If Right$(EventData(i), 1) = "_" Then
 			'                EventData(i + 1) = _
@@ -2477,7 +2455,7 @@ NotFound:
 			'            End If
 			'        Next
 			'
-			'        '繝ｩ繝吶Ν繧堤匳骭ｲ
+			'        'ラベルを登録
 			'        For i = file_head To UBound(EventData)
 			'            buf = EventData(i)
 			'            If Right$(buf, 1) = ":" Then
@@ -2485,7 +2463,7 @@ NotFound:
 			'            End If
 			'        Next
 			'
-			'Invalid_string_refer_to_original_code
+			'        'コマンドデータ配列を設定
 			'        If UBound(EventData) > UBound(EventCmd) Then
 			'            ReDim Preserve EventCmd(UBound(EventData))
 			'            i = UBound(EventData)
@@ -2499,11 +2477,11 @@ NotFound:
 			'            EventCmd(i).Name = NullCmd
 			'        Next
 			'    End If
-			'霑ｽ蜉縺吶ｋ繧､繝吶Φ繝医ヵ繧｡繧､繝ｫ謨ｰ
+			'追加するイベントファイル数
 			Input(SaveDataFileNumber, num)
 			
 			If num > 0 Then
-				'Invalid_string_refer_to_original_code
+				'イベントファイルをロード
 				ReDim AdditionalEventFileNames(num)
 				For i = 1 To num
 					Input(SaveDataFileNumber, fname)
@@ -2512,7 +2490,7 @@ NotFound:
 						fname = ScenarioPath & fname
 					End If
 					
-					'Invalid_string_refer_to_original_code
+					'既に読み込まれている場合はスキップ
 					For j = 1 To UBound(EventFileNames)
 						If fname = EventFileNames(j) Then
 							GoTo NextEventFile
@@ -2523,13 +2501,13 @@ NotFound:
 NextEventFile: 
 				Next 
 				
-				'繧ｨ繝ｩ繝ｼ陦ｨ遉ｺ逕ｨ縺ｫ繧ｵ繧､繧ｺ繧貞､ｧ縺阪￥蜿悶▲縺ｦ縺翫￥
+				'エラー表示用にサイズを大きく取っておく
 				ReDim Preserve EventData(UBound(EventData) + 1)
 				ReDim Preserve EventLineNum(UBound(EventData))
 				EventData(UBound(EventData)) = ""
 				EventLineNum(UBound(EventData)) = EventLineNum(UBound(EventData) - 1) + 1
 				
-				'Invalid_string_refer_to_original_code
+				'複数行に分割されたコマンドを結合
 				For i = file_head To UBound(EventData) - 1
 					If Right(EventData(i), 1) = "_" Then
 						EventData(i + 1) = Left(EventData(i), Len(EventData(i)) - 1) & EventData(i + 1)
@@ -2537,7 +2515,7 @@ NextEventFile:
 					End If
 				Next 
 				
-				'繝ｩ繝吶Ν繧堤匳骭ｲ
+				'ラベルを登録
 				For i = file_head To UBound(EventData)
 					buf = EventData(i)
 					If Right(buf, 1) = ":" Then
@@ -2545,7 +2523,7 @@ NextEventFile:
 					End If
 				Next 
 				
-				'Invalid_string_refer_to_original_code
+				'コマンドデータ配列を設定
 				If UBound(EventData) > UBound(EventCmd) Then
 					ReDim Preserve EventCmd(UBound(EventData))
 					i = UBound(EventData)
@@ -2561,7 +2539,7 @@ NextEventFile:
 			End If
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'イベント用ラベルを設定
 		i = 1
 		num = UBound(label_enabled)
 		For	Each lab In colEventLabelList
@@ -2576,29 +2554,29 @@ NextEventFile:
 		' MOD END MARGE
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'一時中断用データのイベントデータ部分を読み飛ばす
 	Public Sub SkipEventData()
 		Dim i, num As Short
 		Dim dummy As String
 		
-		'繧ｰ繝ｭ繝ｼ繝舌Ν螟画焚
+		'グローバル変数
 		Input(SaveDataFileNumber, num)
 		For i = 1 To num
 			dummy = LineInput(SaveDataFileNumber)
 		Next 
-		'繝ｭ繝ｼ繧ｫ繝ｫ螟画焚
-		Input(SaveDataFileNumber, num)
-		For i = 1 To num
-			dummy = LineInput(SaveDataFileNumber)
-		Next 
-		
-		'Invalid_string_refer_to_original_code
+		'ローカル変数
 		Input(SaveDataFileNumber, num)
 		For i = 1 To num
 			dummy = LineInput(SaveDataFileNumber)
 		Next 
 		
-		'Require繧ｳ繝槭Φ繝峨〒隱ｭ縺ｿ霎ｼ繧薙□繧､繝吶Φ繝医ョ繝ｼ繧ｿ
+		'ラベル情報
+		Input(SaveDataFileNumber, num)
+		For i = 1 To num
+			dummy = LineInput(SaveDataFileNumber)
+		Next 
+		
+		'Requireコマンドで読み込んだイベントデータ
 		If SaveDataVersion > 20003 Then
 			Input(SaveDataFileNumber, num)
 			For i = 1 To num
@@ -2607,7 +2585,7 @@ NextEventFile:
 		End If
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'グローバル変数をファイルにセーブ
 	Public Sub SaveGlobalVariables()
 		Dim var As VarData
 		
@@ -2623,7 +2601,7 @@ NextEventFile:
 		Next var
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'グローバル変数をファイルからロード
 	Public Sub LoadGlobalVariables()
 		Dim num, j, i, k, idx As Short
 		Dim vvalue, vname, buf As String
@@ -2631,17 +2609,17 @@ NextEventFile:
 		' ADD START MARGE
 		Dim is_number As Boolean
 		' ADD END MARGE
-		'Invalid_string_refer_to_original_code
+		'グローバル変数を全削除
 		With GlobalVariableList
 			For i = 1 To .Count()
 				.Remove(1)
 			Next 
 		End With
 		
-		'Invalid_string_refer_to_original_code
+		'グローバル変数の総数を読み出し
 		Input(SaveDataFileNumber, num)
 		
-		'Invalid_string_refer_to_original_code
+		'各変数の値を読み出し
 		Dim vname2 As String
 		For i = 1 To num
 			Input(SaveDataFileNumber, vname)
@@ -2660,11 +2638,11 @@ NextEventFile:
 			' MOD END MARGE
 			
 			If SaveDataVersion < 10724 Then
-				'Invalid_string_refer_to_original_code
+				'SetSkillコマンドのセーブデータをエリアスに対応させる
 				If Left(vname, 8) = "Ability(" Then
 					idx = InStr(vname, ",")
 					If idx > 0 Then
-						'Invalid_string_refer_to_original_code
+						'個々の能力定義
 						aname = Mid(vname, idx + 1, Len(vname) - idx - 1)
 						If ALDList.IsDefined(aname) Then
 							vname = Left(vname, idx) & ALDList.Item(aname).AliasType(1) & ")"
@@ -2673,7 +2651,7 @@ NextEventFile:
 							End If
 						End If
 					Else
-						'Invalid_string_refer_to_original_code
+						'必要技能用の能力一覧
 						buf = ""
 						For j = 1 To LLength(vvalue)
 							aname = LIndex(vvalue, j)
@@ -2688,7 +2666,7 @@ NextEventFile:
 			End If
 			
 			If SaveDataVersion < 10730 Then
-				'Invalid_string_refer_to_original_code
+				'ラーニングした特殊能力が使えないバグに対応
 				If Left(vname, 8) = "Ability(" Then
 					idx = InStr(vname, ",")
 					If idx > 0 Then
@@ -2704,22 +2682,22 @@ NextEventFile:
 			End If
 			
 			If SaveDataVersion < 10731 Then
-				'Invalid_string_refer_to_original_code
+				'不必要な非表示能力に対するSetSkillを削除
 				If Left(vname, 8) = "Ability(" Then
-					If Right(vname, 5) = ",髱櫁｡ｨ遉ｺ)" Then
+					If Right(vname, 5) = ",非表示)" Then
 						GoTo NextVariable
 					End If
 				End If
 			End If
 			
 			If SaveDataVersion < 10732 Then
-				'Invalid_string_refer_to_original_code
+				'不必要な非表示能力に対するSetSkillと能力名のダブりを削除
 				If Left(vname, 8) = "Ability(" Then
 					If InStr(vname, ",") = 0 Then
 						buf = ""
 						For j = 1 To LLength(vvalue)
 							aname = LIndex(vvalue, j)
-							If aname <> "髱櫁｡ｨ遉ｺ" Then
+							If aname <> "非表示" Then
 								For k = 1 To LLength(buf)
 									If LIndex(buf, k) = aname Then
 										Exit For
@@ -2736,11 +2714,11 @@ NextEventFile:
 			End If
 			
 			If SaveDataVersion < 20027 Then
-				'Invalid_string_refer_to_original_code
+				'エリアスされた能力をSetSkillした際にエリアスに含まれる解説が無効になるバグへの対処
 				If Left(vname, 8) = "Ability(" Then
 					If LIndex(vvalue, 1) = "0" Then
-						If LIndex(vvalue, 2) = "隗｣隱ｬ" Then
-							vvalue = VB6.Format(DEFAULT_LEVEL) & " 隗｣隱ｬ " & ListTail(vvalue, 3)
+						If LIndex(vvalue, 2) = "解説" Then
+							vvalue = VB6.Format(DEFAULT_LEVEL) & " 解説 " & ListTail(vvalue, 3)
 						End If
 					End If
 				End If
@@ -2768,12 +2746,12 @@ NextEventFile:
 NextVariable: 
 		Next 
 		'ADD START 240a
-		'Invalid_string_refer_to_original_code
+		'Optionを全て読み込んだら、新ＧＵＩが有効になっているか確認する
 		SetNewGUIMode()
 		'ADD  END  240a
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'ローカル変数をファイルにセーブ
 	Public Sub SaveLocalVariables()
 		Dim var As VarData
 		
@@ -2792,7 +2770,7 @@ NextVariable:
 		Next var
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'ローカル変数をファイルからロード
 	Public Sub LoadLocalVariables()
 		Dim i, num As Short
 		' MOD START MARGE
@@ -2800,18 +2778,18 @@ NextVariable:
 		Dim vvalue, vname, buf As String
 		Dim is_number As Boolean
 		' MOD END MARGE
-		'Invalid_string_refer_to_original_code
+		'ローカル変数を全削除
 		With LocalVariableList
 			For i = 1 To .Count()
 				.Remove(1)
 			Next 
 		End With
 		
-		'Invalid_string_refer_to_original_code
+		'ローカル変数の総数を読み出し
 		Input(SaveDataFileNumber, num)
 		
 		For i = 1 To num
-			'Invalid_string_refer_to_original_code
+			'変数の値を読み出し
 			' MOD START MARGE
 			'        Input #SaveDataFileNumber, vname, vvalue
 			Input(SaveDataFileNumber, vname)
@@ -2827,7 +2805,7 @@ NextVariable:
 			' MOD END MARGE
 			
 			If SaveDataVersion < 10731 Then
-				'ClearSkill縺ｮ繝舌げ縺ｧ險ｭ螳壹＆繧後◆螟画焚繧貞炎髯､
+				'ClearSkillのバグで設定された変数を削除
 				If Left(vname, 8) = "Ability(" Then
 					If vname = vvalue Then
 						GoTo NextVariable
@@ -2835,7 +2813,7 @@ NextVariable:
 				End If
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'変数の値を設定
 			If Not IsLocalVariableDefined(vname) Then
 				DefineLocalVariable(vname)
 			End If
@@ -2860,17 +2838,14 @@ NextVariable:
 	End Sub
 	
 	
-	'繧､繝吶Φ繝医お繝ｩ繝ｼ陦ｨ遉ｺ
+	'イベントエラー表示
 	Public Sub DisplayEventErrorMessage(ByVal lnum As Integer, ByVal msg As String)
 		Dim buf As String
 		
-		'Invalid_string_refer_to_original_code
-		buf = EventFileNames(EventFileID(lnum)) & "Invalid_string_refer_to_original_code"
-		& EventLineNum(lnum) & "陦檎岼" & vbCr & vbLf _
-		& msg & vbCr & vbLf
-		'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+		'エラーが起こったファイル、行番号、エラーメッセージを表示
+		buf = EventFileNames(EventFileID(lnum)) & "：" & EventLineNum(lnum) & "行目" & vbCr & vbLf & msg & vbCr & vbLf
 		
-		'Invalid_string_refer_to_original_code
+		'エラーが起こった行とその前後の行の内容を表示
 		If lnum > 1 Then
 			buf = buf & EventLineNum(lnum - 1) & ": " & EventData(lnum - 1) & vbCr & vbLf
 		End If
@@ -2882,7 +2857,7 @@ NextVariable:
 		ErrorMessage(buf)
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'インターミッションコマンド「ユニットリスト」におけるユニットリストを作成する
 	Public Sub MakeUnitList(Optional ByRef smode As String = "")
 		Dim u As Unit
 		Dim p As Pilot
@@ -2895,285 +2870,274 @@ NextVariable:
 		Dim i, j As Short
 		Static key_type As String
 		
-		'Invalid_string_refer_to_original_code
+		'リストのソート項目を設定
 		If smode <> "" Then
 			key_type = smode
 		End If
 		If key_type = "" Then
-			key_type = "Invalid_string_refer_to_original_code"
+			key_type = "ＨＰ"
 		End If
 		
-		'繝槭え繧ｹ繧ｫ繝ｼ繧ｽ繝ｫ繧堤よ凾險医↓
+		'マウスカーソルを砂時計に
 		'UPGRADE_WARNING: Screen プロパティ Screen.MousePointer には新しい動作が含まれます。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6BA9B8D2-2A32-4B6E-8D36-44949974A5B4"' をクリックしてください。
 		System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.WaitCursor
 		
-		'縺ゅｉ縺九§繧∵彫騾縺輔○縺ｦ縺翫￥
+		'あらかじめ撤退させておく
 		For	Each u In UList
 			With u
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				.Escape()
-				'End If
+				If .Status_Renamed = "出撃" Then
+					.Escape()
+				End If
 			End With
 		Next u
 		
-		'繝槭ャ繝励ｒ繧ｯ繝ｪ繧｢
+		'マップをクリア
 		LoadMapData("")
-		SetupBackground("", "Invalid_string_refer_to_original_code")
+		SetupBackground("", "ステータス")
 		
-		'Invalid_string_refer_to_original_code
-		If key_type <> "蜷咲ｧｰ" Then
-			'Invalid_string_refer_to_original_code
+		'ユニット一覧を作成
+		If key_type <> "名称" Then
+			'配列作成
 			ReDim unit_list(UList.Count)
 			ReDim key_list(UList.Count)
 			i = 0
 			For	Each u In UList
 				With u
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-					i = i + 1
-					unit_list(i) = u
-					
-					'Invalid_string_refer_to_original_code
-					Select Case key_type
-						Case "繝ｩ繝ｳ繧ｯ"
-							key_list(i) = .Rank
-						Case "Invalid_string_refer_to_original_code"
-							key_list(i) = .HP
-						Case "Invalid_string_refer_to_original_code"
-							key_list(i) = .EN
-						Case "Invalid_string_refer_to_original_code"
-							key_list(i) = .Armor
-						Case "驕句虚諤ｧ"
-							key_list(i) = .Mobility
-						Case "遘ｻ蜍募鴨"
-							key_list(i) = .Speed
-						Case "Invalid_string_refer_to_original_code"
-							For j = 1 To .CountWeapon
-								'Invalid_string_refer_to_original_code_
-								'Then
-								'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-								If .WeaponPower(j, "") > key_list(i) Then
-									key_list(i) = .WeaponPower(j, "")
-								End If
-							Next 
-					End Select
+					If .Status_Renamed = "出撃" Or .Status_Renamed = "待機" Then
+						i = i + 1
+						unit_list(i) = u
+						
+						'ソートする項目にあわせてソートの際の優先度を決定
+						Select Case key_type
+							Case "ランク"
+								key_list(i) = .Rank
+							Case "ＨＰ"
+								key_list(i) = .HP
+							Case "ＥＮ"
+								key_list(i) = .EN
+							Case "装甲"
+								key_list(i) = .Armor
+							Case "運動性"
+								key_list(i) = .Mobility
+							Case "移動力"
+								key_list(i) = .Speed
+							Case "最大攻撃力"
+								For j = 1 To .CountWeapon
+									If .IsWeaponMastered(j) And Not .IsDisabled((.Weapon(j).Name)) And Not .IsWeaponClassifiedAs(j, "合") Then
+										If .WeaponPower(j, "") > key_list(i) Then
+											key_list(i) = .WeaponPower(j, "")
+										End If
+									End If
+								Next 
+							Case "最長射程"
+								For j = 1 To .CountWeapon
+									If .IsWeaponMastered(j) And Not .IsDisabled((.Weapon(j).Name)) And Not .IsWeaponClassifiedAs(j, "合") Then
+										If .WeaponMaxRange(j) > key_list(i) Then
+											key_list(i) = .WeaponMaxRange(j)
+										End If
+									End If
+								Next 
+							Case "レベル"
+								key_list(i) = .MainPilot.Level
+							Case "ＳＰ"
+								key_list(i) = .MainPilot.MaxSP
+							Case "格闘"
+								key_list(i) = .MainPilot.Infight
+							Case "射撃"
+								key_list(i) = .MainPilot.Shooting
+							Case "命中"
+								key_list(i) = .MainPilot.Hit
+							Case "回避"
+								key_list(i) = .MainPilot.Dodge
+							Case "技量"
+								key_list(i) = .MainPilot.Technique
+							Case "反応"
+								key_list(i) = .MainPilot.Intuition
+						End Select
+					End If
 				End With
 			Next u
+			ReDim Preserve unit_list(i)
+			ReDim Preserve key_list(i)
+			
+			'ソート
+			For i = 1 To UBound(key_list) - 1
+				max_item = i
+				max_value = key_list(i)
+				For j = i + 1 To UBound(unit_list)
+					If key_list(j) > max_value Then
+						max_item = j
+						max_value = key_list(j)
+					End If
+				Next 
+				If max_item <> i Then
+					u = unit_list(i)
+					unit_list(i) = unit_list(max_item)
+					unit_list(max_item) = u
+					
+					max_value = key_list(max_item)
+					key_list(max_item) = key_list(i)
+					key_list(i) = max_value
+				End If
+			Next 
+		Else
+			'配列作成
+			ReDim unit_list(UList.Count)
+			Dim strkey_list(UList.Count) As Object
+			i = 0
+			For	Each u In UList
+				With u
+					If .Status_Renamed = "出撃" Or .Status_Renamed = "待機" Then
+						i = i + 1
+						unit_list(i) = u
+						If IsOptionDefined("等身大基準") Then
+							'UPGRADE_WARNING: オブジェクト strkey_list(i) の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
+							strkey_list(i) = .MainPilot.KanaName
+						Else
+							'UPGRADE_WARNING: オブジェクト strkey_list(i) の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
+							strkey_list(i) = .KanaName
+						End If
+					End If
+				End With
+			Next u
+			ReDim Preserve unit_list(i)
+			ReDim Preserve strkey_list(i)
+			
+			'ソート
+			For i = 1 To UBound(strkey_list) - 1
+				max_item = i
+				'UPGRADE_WARNING: オブジェクト strkey_list(i) の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
+				max_str = strkey_list(i)
+				For j = i + 1 To UBound(strkey_list)
+					'UPGRADE_WARNING: オブジェクト strkey_list() の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
+					If StrComp(strkey_list(j), max_str, 1) = -1 Then
+						max_item = j
+						'UPGRADE_WARNING: オブジェクト strkey_list(j) の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
+						max_str = strkey_list(j)
+					End If
+				Next 
+				If max_item <> i Then
+					u = unit_list(i)
+					unit_list(i) = unit_list(max_item)
+					unit_list(max_item) = u
+					
+					'UPGRADE_WARNING: オブジェクト strkey_list(i) の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
+					'UPGRADE_WARNING: オブジェクト strkey_list(max_item) の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
+					strkey_list(max_item) = strkey_list(i)
+				End If
+			Next 
 		End If
-		'Next
-		'UPGRADE_WARNING: MakeUnitList に変換されていないステートメントがあります。ソース コードを確認してください。
-		'Case "Invalid_string_refer_to_original_code"
-			''UPGRADE_WARNING: MakeUnitList に変換されていないステートメントがあります。ソース コードを確認してください。
-			'Case "繝ｬ繝吶Ν"
-				''UPGRADE_WARNING: MakeUnitList に変換されていないステートメントがあります。ソース コードを確認してください。
-				'Case "Invalid_string_refer_to_original_code"
-					''UPGRADE_WARNING: MakeUnitList に変換されていないステートメントがあります。ソース コードを確認してください。
-					'Case "Invalid_string_refer_to_original_code"
-						''UPGRADE_WARNING: MakeUnitList に変換されていないステートメントがあります。ソース コードを確認してください。
-						'Case "Invalid_string_refer_to_original_code"
-							''UPGRADE_WARNING: MakeUnitList に変換されていないステートメントがあります。ソース コードを確認してください。
-							'Case "蜻ｽ荳ｭ"
-								''UPGRADE_WARNING: MakeUnitList に変換されていないステートメントがあります。ソース コードを確認してください。
-								'Case "蝗樣∩"
-									''UPGRADE_WARNING: MakeUnitList に変換されていないステートメントがあります。ソース コードを確認してください。
-									'Case "Invalid_string_refer_to_original_code"
-										''UPGRADE_WARNING: MakeUnitList に変換されていないステートメントがあります。ソース コードを確認してください。
-										'Case "Invalid_string_refer_to_original_code"
-											''UPGRADE_WARNING: MakeUnitList に変換されていないステートメントがあります。ソース コードを確認してください。
-											'End Select
-											'End If
-											'End With
-											'Next
-											''ReDim Preserve unit_list(i)
-											''ReDim Preserve key_list(i)
-											'
-											'Invalid_string_refer_to_original_code
-											'For 'i = 1 To UBound(key_list) - 1
-												'max_item = i
-												'max_value = key_list(i)
-												'For 'j = i + 1 To UBound(unit_list)
-													'If key_list(j) > max_value Then
-														'max_item = j
-														'max_value = key_list(j)
-													'End If
-												'Next 
-												'If max_item <> i Then
-													'u = unit_list(i)
-													'unit_list(i) = unit_list(max_item)
-													'unit_list(max_item) = u
-													'
-													'max_value = key_list(max_item)
-													'key_list(max_item) = key_list(i)
-													'key_list(i) = max_value
-												'End If
-											'Next 
-											'Invalid_string_refer_to_original_code
-											''ReDim unit_list(UList.Count)
-											'Dim strkey_list(UList.Count) As Object
-											'i = 0
-											'For	Each u In UList
-												'With u
-													'Invalid_string_refer_to_original_code
-													'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-													'i = i + 1
-													'unit_list(i) = u
-													'Invalid_string_refer_to_original_code
-													'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-													''UPGRADE_WARNING: オブジェクト strkey_list(i) の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-													'strkey_list(i) = .MainPilot.KanaName
-													''UPGRADE_WARNING: オブジェクト strkey_list(i) の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-													'strkey_list(i) = .KanaName
-													'End If
-													'End If
-												'End With
-											'Next u
-											''ReDim Preserve unit_list(i)
-											''ReDim Preserve strkey_list(i)
-											'
-											'Invalid_string_refer_to_original_code
-											'For 'i = 1 To UBound(strkey_list) - 1
-												'max_item = i
-												''UPGRADE_WARNING: オブジェクト strkey_list(i) の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-												'max_str = strkey_list(i)
-												'For 'j = i + 1 To UBound(strkey_list)
-													''UPGRADE_WARNING: オブジェクト strkey_list() の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-													'If StrComp(strkey_list(j), max_str, 1) = -1 Then
-														'max_item = j
-														''UPGRADE_WARNING: オブジェクト strkey_list(j) の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-														'max_str = strkey_list(j)
-													'End If
-												'Next 
-												'If max_item <> i Then
-													'u = unit_list(i)
-													'unit_list(i) = unit_list(max_item)
-													'unit_list(max_item) = u
-													'
-													''UPGRADE_WARNING: オブジェクト strkey_list(i) の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-													''UPGRADE_WARNING: オブジェクト strkey_list(max_item) の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-													'strkey_list(max_item) = strkey_list(i)
-												'End If
-											'Next 
-											'End If
-											'
-											'Font Regular 9pt 閭梧勹
-											''UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-											'With MainForm.picMain(0).Font
-												''UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-												'.Size = 9
-												''UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-												'.Bold = False
-												''UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-												'.Italic = False
-											'End With
-											'PermanentStringMode = True
-											'HCentering = False
-											'VCentering = False
-											'
-											'Invalid_string_refer_to_original_code
-											'xx = 1
-											'yy = 1
-											'For 'i = 1 To UBound(unit_list)
-												'u = unit_list(i)
-												'With u
-													'Invalid_string_refer_to_original_code
-													'If xx > 15 Then
-														'xx = 1
-														'yy = yy + 1
-														'If yy > 40 Then
-															'Invalid_string_refer_to_original_code
-															'Exit For
-														'End If
-													'End If
-													'
-													'Invalid_string_refer_to_original_code
-													'If .CountPilot = 0 Then
-														'p = PList.Add("Invalid_string_refer_to_original_code", 1, "蜻ｳ譁ｹ")
-														'p.Ride(u)
-													'End If
-													'
-													'Invalid_string_refer_to_original_code
-													'.UsedAction = 0
-													'.StandBy(xx, yy)
-													'
-													'Invalid_string_refer_to_original_code
-													'.AddCondition("Invalid_string_refer_to_original_code")
-													'
-													'Invalid_string_refer_to_original_code
-													'DrawString(.Nickname, 32 * xx + 2, 32 * yy - 31)
-													'
-													'Invalid_string_refer_to_original_code
-													'Select Case key_type
-														'Case "繝ｩ繝ｳ繧ｯ"
-															'DrawString("RK" & VB6.Format(key_list(i)) & " " & Term("HP", u) & VB6.Format(.HP) & " " & Term("EN", u) & VB6.Format(.EN), 32 * xx + 2, 32 * yy - 15)
-														'Case "Invalid_string_refer_to_original_code", "Invalid_string_refer_to_original_code", "蜷咲ｧｰ"
-															'DrawString(Term("HP", u) & VB6.Format(.HP) & " " & Term("EN", u) & VB6.Format(.EN), 32 * xx + 2, 32 * yy - 15)
-														'Case "Invalid_string_refer_to_original_code"
-															'DrawString(Term("Invalid_string_refer_to_original_code", u) & VB6.Format(key_list(i)), 32 * xx + 2, 32 * yy - 15)
-														'Case "驕句虚諤ｧ"
-															'DrawString(Term("驕句虚諤ｧ", u) & VB6.Format(key_list(i)), 32 * xx + 2, 32 * yy - 15)
-														'Case "遘ｻ蜍募鴨"
-															'DrawString(Term("遘ｻ蜍募鴨", u) & VB6.Format(key_list(i)), 32 * xx + 2, 32 * yy - 15)
-														'Case "Invalid_string_refer_to_original_code"
-															'DrawString("Invalid_string_refer_to_original_code" & VB6.Format(key_list(i)), 32 * xx + 2, 32 * yy - 15)
-														'Case "Invalid_string_refer_to_original_code"
-															'DrawString("Invalid_string_refer_to_original_code")
-															'32 * xx + 2, 32 * yy - 15
-															'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-														'Case "繝ｬ繝吶Ν"
-															'DrawString("Lv" & VB6.Format(key_list(i)), 32 * xx + 2, 32 * yy - 15)
-														'Case "Invalid_string_refer_to_original_code"
-															'DrawString(Term("SP", u) & VB6.Format(key_list(i)), 32 * xx + 2, 32 * yy - 15)
-														'Case "Invalid_string_refer_to_original_code"
-															'Invalid_string_refer_to_original_code_
-															'32 * xx + 2, 32 * yy - 15
-															'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-														'Case "Invalid_string_refer_to_original_code"
-															'If .MainPilot.HasMana() Then
-																'DrawString(Term("鬲泌鴨", u) & VB6.Format(key_list(i)), 32 * xx + 2, 32 * yy - 15)
-															'Else
-																'DrawString(Term("Invalid_string_refer_to_original_code", u) & VB6.Format(key_list(i)), 32 * xx + 2, 32 * yy - 15)
-															'End If
-														'Case "蜻ｽ荳ｭ"
-															'DrawString(Term("蜻ｽ荳ｭ", u) & VB6.Format(key_list(i)), 32 * xx + 2, 32 * yy - 15)
-														'Case "蝗樣∩"
-															'DrawString(Term("蝗樣∩", u) & VB6.Format(key_list(i)), 32 * xx + 2, 32 * yy - 15)
-														'Case "Invalid_string_refer_to_original_code"
-															'Invalid_string_refer_to_original_code_
-															'32 * xx + 2, 32 * yy - 15
-															'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-														'Case "Invalid_string_refer_to_original_code"
-															'Invalid_string_refer_to_original_code_
-															'32 * xx + 2, 32 * yy - 15
-															'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-													'End Select
-													'
-													'Invalid_string_refer_to_original_code
-													'xx = xx + 5
-												'End With
-											'Next 
-											'
-											'Invalid_string_refer_to_original_code
-											''UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-											'With MainForm.picMain(0).Font
-												''UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-												'.Size = 16
-												''UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-												'.Bold = True
-												''UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-												'.Italic = False
-											'End With
-											'PermanentStringMode = False
-											'
-											'RedrawScreen()
-											'
-											'Invalid_string_refer_to_original_code
-											''UPGRADE_WARNING: Screen プロパティ Screen.MousePointer には新しい動作が含まれます。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6BA9B8D2-2A32-4B6E-8D36-44949974A5B4"' をクリックしてください。
-											'System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.Default
+		
+		'Font Regular 9pt 背景
+		'UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+		With MainForm.picMain(0).Font
+			'UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+			.Size = 9
+			'UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+			.Bold = False
+			'UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+			.Italic = False
+		End With
+		PermanentStringMode = True
+		HCentering = False
+		VCentering = False
+		
+		'ユニットのリストを作成
+		xx = 1
+		yy = 1
+		For i = 1 To UBound(unit_list)
+			u = unit_list(i)
+			With u
+				'ユニット出撃位置を折り返す
+				If xx > 15 Then
+					xx = 1
+					yy = yy + 1
+					If yy > 40 Then
+						'ユニット数が多すぎるため、一部のパイロットが表示出来ません
+						Exit For
+					End If
+				End If
+				
+				'パイロットが乗っていない場合はダミーパイロットを乗せる
+				If .CountPilot = 0 Then
+					p = PList.Add("ステータス表示用ダミーパイロット(ザコ)", 1, "味方")
+					p.Ride(u)
+				End If
+				
+				'出撃
+				.UsedAction = 0
+				.StandBy(xx, yy)
+				
+				'プレイヤーが操作できないように
+				.AddCondition("非操作", -1)
+				
+				'ユニットの愛称を表示
+				DrawString(.Nickname, 32 * xx + 2, 32 * yy - 31)
+				
+				'ソート項目にあわせてユニットのステータスを表示
+				Select Case key_type
+					Case "ランク"
+						DrawString("RK" & VB6.Format(key_list(i)) & " " & Term("HP", u) & VB6.Format(.HP) & " " & Term("EN", u) & VB6.Format(.EN), 32 * xx + 2, 32 * yy - 15)
+					Case "ＨＰ", "ＥＮ", "名称"
+						DrawString(Term("HP", u) & VB6.Format(.HP) & " " & Term("EN", u) & VB6.Format(.EN), 32 * xx + 2, 32 * yy - 15)
+					Case "装甲"
+						DrawString(Term("装甲", u) & VB6.Format(key_list(i)), 32 * xx + 2, 32 * yy - 15)
+					Case "運動性"
+						DrawString(Term("運動性", u) & VB6.Format(key_list(i)), 32 * xx + 2, 32 * yy - 15)
+					Case "移動力"
+						DrawString(Term("移動力", u) & VB6.Format(key_list(i)), 32 * xx + 2, 32 * yy - 15)
+					Case "最大攻撃力"
+						DrawString("攻撃力" & VB6.Format(key_list(i)), 32 * xx + 2, 32 * yy - 15)
+					Case "最長射程"
+						DrawString("射程" & VB6.Format(key_list(i)), 32 * xx + 2, 32 * yy - 15)
+					Case "レベル"
+						DrawString("Lv" & VB6.Format(key_list(i)), 32 * xx + 2, 32 * yy - 15)
+					Case "ＳＰ"
+						DrawString(Term("SP", u) & VB6.Format(key_list(i)), 32 * xx + 2, 32 * yy - 15)
+					Case "格闘"
+						DrawString(Term("格闘", u) & VB6.Format(key_list(i)), 32 * xx + 2, 32 * yy - 15)
+					Case "射撃"
+						If .MainPilot.HasMana() Then
+							DrawString(Term("魔力", u) & VB6.Format(key_list(i)), 32 * xx + 2, 32 * yy - 15)
+						Else
+							DrawString(Term("射撃", u) & VB6.Format(key_list(i)), 32 * xx + 2, 32 * yy - 15)
+						End If
+					Case "命中"
+						DrawString(Term("命中", u) & VB6.Format(key_list(i)), 32 * xx + 2, 32 * yy - 15)
+					Case "回避"
+						DrawString(Term("回避", u) & VB6.Format(key_list(i)), 32 * xx + 2, 32 * yy - 15)
+					Case "技量"
+						DrawString(Term("技量", u) & VB6.Format(key_list(i)), 32 * xx + 2, 32 * yy - 15)
+					Case "反応"
+						DrawString(Term("反応", u) & VB6.Format(key_list(i)), 32 * xx + 2, 32 * yy - 15)
+				End Select
+				
+				'表示位置を右に5マスずらす
+				xx = xx + 5
+			End With
+		Next 
+		
+		'フォントの設定を戻しておく
+		'UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+		With MainForm.picMain(0).Font
+			'UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+			.Size = 16
+			'UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+			.Bold = True
+			'UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+			.Italic = False
+		End With
+		PermanentStringMode = False
+		
+		RedrawScreen()
+		
+		'マウスカーソルを元に戻す
+		'UPGRADE_WARNING: Screen プロパティ Screen.MousePointer には新しい動作が含まれます。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6BA9B8D2-2A32-4B6E-8D36-44949974A5B4"' をクリックしてください。
+		System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.Default
 	End Sub
 	
 	
-	'Invalid_string_refer_to_original_code
+	'描画の基準座標位置を保存
 	Public Sub SaveBasePoint()
 		BasePointIndex = BasePointIndex + 1
 		If BasePointIndex > UBound(SavedBaseX) Then
@@ -3183,7 +3147,7 @@ NextVariable:
 		SavedBaseY(BasePointIndex) = BaseY
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'描画の基準座標位置を復元
 	Public Sub RestoreBasePoint()
 		If BasePointIndex <= 0 Then
 			BasePointIndex = UBound(SavedBaseX)
@@ -3193,7 +3157,7 @@ NextVariable:
 		BasePointIndex = BasePointIndex - 1
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'描画の基準座標位置をリセット
 	Public Sub ResetBasePoint()
 		Dim i As Short
 		

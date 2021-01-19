@@ -4,13 +4,13 @@ Imports VB = Microsoft.VisualBasic
 Module Expression
 	
 	' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
+	' –{ƒvƒƒOƒ‰ƒ€‚ÍƒtƒŠ[ƒ\ƒtƒg‚Å‚ ‚èA–³•ÛØ‚Å‚·B
+	' –{ƒvƒƒOƒ‰ƒ€‚ÍGNU General Public License(Ver.3‚Ü‚½‚Í‚»‚êˆÈ~)‚ª’è‚ß‚éğŒ‚Ì‰º‚Å
+	' Ä”Ğ•z‚Ü‚½‚Í‰ü•Ï‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B
 	
-	'ã‚¤ãƒ™ãƒ³ãƒˆãƒ‡ãƒ¼ã‚¿ã®å¼è¨ˆç®—ã‚’è¡Œã†ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«
+	'ƒCƒxƒ“ƒgƒf[ƒ^‚Ì®ŒvZ‚ğs‚¤ƒ‚ƒWƒ…[ƒ‹
 	
-	'Invalid_string_refer_to_original_code
+	'‰‰Zq‚Ìí—Ş
 	Enum OperatorType
 		PlusOp
 		MinusOp
@@ -32,19 +32,19 @@ Module Expression
 		LikeOp
 	End Enum
 	
-	'Invalid_string_refer_to_original_code
+	'Œ^‚Ìí—Ş
 	Enum ValueType
 		UndefinedType = 0
 		StringType
 		NumericType
 	End Enum
 	
-	'æ­£è¦è¡¨ç¾
+	'³‹K•\Œ»
 	Private RegEx As Object
 	Private Matches As Object
 	
 	
-	'å¼ã‚’è©•ä¾¡
+	'®‚ğ•]‰¿
 	Public Function EvalExpr(ByRef expr As String, ByRef etype As ValueType, ByRef str_result As String, ByRef num_result As Double) As ValueType
 		Dim terms() As String
 		Dim tnum As Short
@@ -57,24 +57,24 @@ Module Expression
 		Dim osize, i, ret, tsize As Short
 		Dim buf As String
 		
-		'Invalid_string_refer_to_original_code
+		'®‚ğ‚ ‚ç‚©‚¶‚ß—v‘f‚É•ª‰ğ
 		tnum = ListSplit(expr, terms)
 		
 		Select Case tnum
-			'ç©ºç™½
+			'‹ó”’
 			Case 0
 				EvalExpr = etype
 				Exit Function
 				
-				'Invalid_string_refer_to_original_code
+				'€
 			Case 1
 				EvalExpr = EvalTerm(terms(1), etype, str_result, num_result)
 				Exit Function
 				
-				'Invalid_string_refer_to_original_code
+				'Š‡ŒÊ‚Ì‘Î‰‚ªæ‚ê‚Ä‚È‚¢•¶š—ñ
 			Case -1
 				If etype = ValueType.NumericType Then
-					'Invalid_string_refer_to_original_code
+					'0‚Æ‚İ‚È‚·
 					EvalExpr = ValueType.NumericType
 				Else
 					EvalExpr = ValueType.StringType
@@ -83,13 +83,13 @@ Module Expression
 				Exit Function
 		End Select
 		
-		'Invalid_string_refer_to_original_code
+		'€”‚ª‚QŒÂˆÈã‚Ìê‡‚Í‰‰Zq‚ğŠÜ‚Ş®
 		
-		'Invalid_string_refer_to_original_code
+		'—Dæ“x‚É‡‚í‚¹A‚Ç‚Ì‰‰Z‚ªÀs‚³‚ê‚é‚©‚ğ”»’è
 		op_idx = 0
 		op_pri = 100
 		For i = 1 To tnum - 1
-			'Invalid_string_refer_to_original_code
+			'‰‰Zq‚Ìí—Ş‚ğ”»’è
 			ret = Asc(terms(i))
 			If ret < 0 Then
 				GoTo NextTerm
@@ -244,24 +244,24 @@ NextTerm:
 		Next 
 		
 		If op_idx = 0 Then
-			'Invalid_string_refer_to_original_code
+			'’P‚È‚é•¶š—ñ
 			EvalExpr = ValueType.StringType
 			str_result = expr
 			Exit Function
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'‰‰Zq‚Ìˆø”‚Ìì¬
 		Select Case op_idx
 			Case 1
-				'Invalid_string_refer_to_original_code
+				'¶•Óˆø”–³‚µ
 				is_lop_term = True
 				lop = ""
 			Case 2
-				'Invalid_string_refer_to_original_code
+				'¶•Óˆø”‚Í€
 				is_lop_term = True
 				lop = terms(1)
 			Case Else
-				'Invalid_string_refer_to_original_code
+				'¶•Óˆø”‚Ì˜AŒ‹ˆ— (‚‘¬‰»‚Ì‚½‚ßAMid‚ğg—p)
 				buf = New String(vbNullChar, Len(expr))
 				tsize = Len(terms(1))
 				Mid(buf, 1, tsize) = terms(1)
@@ -275,11 +275,11 @@ NextTerm:
 				lop = Left(buf, osize)
 		End Select
 		If op_idx = tnum - 1 Then
-			'Invalid_string_refer_to_original_code
+			'‰E•Óˆø”‚Í€
 			is_rop_term = True
 			rop = terms(tnum)
 		Else
-			'Invalid_string_refer_to_original_code
+			'‰E•Óˆø”‚Ì˜AŒ‹ˆ— (‚‘¬‰»‚Ì‚½‚ßAMid‚ğg—p)
 			buf = New String(vbNullChar, Len(expr))
 			tsize = Len(terms(op_idx + 1))
 			Mid(buf, 1, tsize) = terms(op_idx + 1)
@@ -293,7 +293,7 @@ NextTerm:
 			rop = Left(buf, osize)
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'‰‰Z‚ÌÀ{
 		Select Case op_type
 			Case OperatorType.PlusOp '+
 				If is_lop_term Then
@@ -826,26 +826,26 @@ NextTerm:
 		End Select
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'€‚ğ•]‰¿
 	Public Function EvalTerm(ByRef expr As String, ByRef etype As ValueType, ByRef str_result As String, ByRef num_result As Double) As ValueType
 		
-		'Invalid_string_refer_to_original_code
+		'‹ó”’H
 		If Len(expr) = 0 Then
 			Exit Function
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'æ“ª‚Ìˆê•¶š‚ÅŒ©•ª‚¯‚é
 		Select Case Asc(expr)
-			Case 9 'Invalid_string_refer_to_original_code
-				'ã‚¿ãƒ–ã‚’Trimã™ã‚‹ãŸã‚EvalExprã§è©•ä¾¡
+			Case 9 'ƒ^ƒu
+				'ƒ^ƒu‚ğTrim‚·‚é‚½‚ßEvalExpr‚Å•]‰¿
 				EvalTerm = EvalExpr(expr, etype, str_result, num_result)
 				Exit Function
-			Case 32 'ç©ºç™½
-				'Invalid_string_refer_to_original_code
+			Case 32 '‹ó”’
+				'Trim‚³‚ê‚Ä‚È‚¢H
 				EvalTerm = EvalTerm(Trim(expr), etype, str_result, num_result)
 				Exit Function
 			Case 34 '"
-				'Invalid_string_refer_to_original_code
+				'ƒ_ƒuƒ‹ƒNƒH[ƒg‚ÅˆÍ‚Ü‚ê‚½•¶š—ñ
 				If Right(expr, 1) = """" Then
 					EvalTerm = ValueType.StringType
 					str_result = Mid(expr, 2, Len(expr) - 2)
@@ -859,12 +859,12 @@ NextTerm:
 				EvalTerm = ValueType.StringType
 				Exit Function
 			Case 35 '#
-				'Invalid_string_refer_to_original_code
+				'Fw’è
 				EvalTerm = ValueType.StringType
 				str_result = expr
 				Exit Function
 			Case 40 '(
-				'Invalid_string_refer_to_original_code
+				'ƒJƒbƒR‚ÅˆÍ‚Ü‚ê‚½®
 				If Right(expr, 1) = ")" Then
 					EvalTerm = EvalExpr(Mid(expr, 2, Len(expr) - 2), etype, str_result, num_result)
 				Else
@@ -875,8 +875,8 @@ NextTerm:
 					EvalTerm = ValueType.StringType
 				End If
 				Exit Function
-			Case 43, 45, 48 To 57 'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code
+			Case 43, 45, 48 To 57 '+, -, 0`9
+				'”’lH
 				If IsNumeric(expr) Then
 					Select Case etype
 						Case ValueType.StringType
@@ -889,7 +889,7 @@ NextTerm:
 					Exit Function
 				End If
 			Case 96 '`
-				'Invalid_string_refer_to_original_code
+				'ƒoƒbƒNƒNƒH[ƒg‚ÅˆÍ‚Ü‚ê‚½•¶š—ñ
 				If Right(expr, 1) = "`" Then
 					str_result = Mid(expr, 2, Len(expr) - 2)
 				Else
@@ -902,20 +902,20 @@ NextTerm:
 				Exit Function
 		End Select
 		
-		'Invalid_string_refer_to_original_code
+		'ŠÖ”ŒÄ‚Ño‚µH
 		EvalTerm = CallFunction(expr, etype, str_result, num_result)
 		If EvalTerm <> ValueType.UndefinedType Then
 			Exit Function
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'•Ï”H
 		EvalTerm = GetVariable(expr, etype, str_result, num_result)
 	End Function
 	
 	
-	'Invalid_string_refer_to_original_code
+	' === ŠÖ”‚ÉŠÖ‚·‚éˆ— ===
 	
-	'Invalid_string_refer_to_original_code
+	'®‚ğŠÖ”ŒÄ‚Ño‚µ‚Æ‚µ‚Ä\•¶‰ğÍ‚µAÀs
 	Public Function CallFunction(ByRef expr As String, ByRef etype As ValueType, ByRef str_result As String, ByRef num_result As Double) As ValueType
 		Dim fname As String
 		Dim start_idx As Short
@@ -937,7 +937,7 @@ NextTerm:
 		Static dir_index As Short
 		Static regexp_index As Short
 		
-		'Invalid_string_refer_to_original_code
+		'ŠÖ”ŒÄ‚Ño‚µ‚Ì‘®‚É‡‚Á‚Ä‚¢‚é‚©ƒ`ƒFƒbƒN
 		If Right(expr, 1) <> ")" Then
 			CallFunction = ValueType.UndefinedType
 			Exit Function
@@ -956,9 +956,9 @@ NextTerm:
 			End If
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'‚±‚±‚Ü‚Å‚­‚ê‚ÎŠÖ”ŒÄ‚Ño‚µ‚Æ’f’è
 		
-		'ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®æŠ½å‡º
+		'ƒpƒ‰ƒ[ƒ^‚Ì’Šo
 		pcount = 0
 		start_idx = j + 1
 		depth = 0
@@ -978,7 +978,7 @@ NextTerm:
 				End If
 			Else
 				Select Case Asc(Mid(expr, i, 1))
-					Case 9, 32 'Invalid_string_refer_to_original_code
+					Case 9, 32 'ƒ^ƒu, ‹ó”’
 						If start_idx = i Then
 							start_idx = i + 1
 						Else
@@ -1007,18 +1007,18 @@ NextTerm:
 			params(pcount) = Mid(expr, start_idx, num - start_idx)
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'æ“ª‚Ì•¶š‚ÅŠÖ”‚Ìí—Ş‚ğ”»’f‚·‚é
 		Select Case Asc(expr)
 			Case 95 '_
-				'Invalid_string_refer_to_original_code
+				'•K‚¸ƒ†[ƒU[’è‹`ŠÖ”
 				fname = Left(expr, j - 1)
 				GoTo LookUpUserDefinedID
 			Case 65 To 90, 97 To 122 'A To z
-				'Invalid_string_refer_to_original_code
+				'ƒVƒXƒeƒ€ŠÖ”‚Ì‰Â”\«‚ ‚è
 				fname = Left(expr, j - 1)
 			Case Else
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code
+				'æ“ª‚ªƒAƒ‹ƒtƒ@ƒxƒbƒg‚Å‚È‚¯‚ê‚Î•K‚¸ƒ†[ƒU[’è‹`ŠÖ”
+				'‚½‚¾‚µŠ‡ŒÊ‚ğŠÜ‚Şƒ†ƒjƒbƒg–¼“™‚Å‚ ‚éê‡‚ª‚ ‚é‚½‚ßAƒ`ƒFƒbƒN‚ª•K—v
 				If UDList.IsDefined(expr) Then
 					CallFunction = ValueType.UndefinedType
 					Exit Function
@@ -1039,7 +1039,7 @@ NextTerm:
 				GoTo LookUpUserDefinedID
 		End Select
 		
-		'Invalid_string_refer_to_original_code
+		'ƒVƒXƒeƒ€ŠÖ”H
 		Dim PT As POINTAPI
 		Dim in_window As Boolean
 		Dim x2, x1, y1, y2 As Short
@@ -1047,9 +1047,9 @@ NextTerm:
 		Dim list() As String
 		Dim flag As Boolean
 		Select Case LCase(fname)
-			'Invalid_string_refer_to_original_code
+			'‘½—p‚³‚ê‚éŠÖ”‚ğæ‚É”»’è
 			Case "args"
-				'Invalid_string_refer_to_original_code
+				'UpVarƒRƒ}ƒ“ƒh‚ÌŒÄ‚Ño‚µ‰ñ”‚ğ—İŒv
 				num = UpVarLevel
 				i = CallDepth
 				Do While num > 0
@@ -1064,7 +1064,7 @@ NextTerm:
 					i = 1
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'ˆø”‚Ì”ÍˆÍ“à‚É”[‚Ü‚Á‚Ä‚¢‚é‚©ƒ`ƒFƒbƒN
 				num = GetValueAsLong(params(1), is_term(1))
 				If num <= ArgIndex - ArgIndexStack(i - 1) Then
 					str_result = ArgStack(ArgIndex - num + 1)
@@ -1079,68 +1079,64 @@ NextTerm:
 				Exit Function
 				
 			Case "call"
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code
+				'ƒTƒuƒ‹[ƒ`ƒ“‚ÌêŠ‚ÍH
+				'‚Ü‚¸‚ÍƒTƒuƒ‹[ƒ`ƒ“–¼‚ª®‚Å‚È‚¢‚Æ‰¼’è‚µ‚ÄŒŸõ
 				ret = FindNormalLabel(params(1))
 				If ret = 0 Then
-					'Invalid_string_refer_to_original_code
+					'®‚Åw’è‚³‚ê‚Ä‚¢‚éH
 					ret = FindNormalLabel(GetValueAsString(params(1), is_term(1)))
 					If ret = 0 Then
-						DisplayEventErrorMessage(CurrentLineNum, "Invalid_string_refer_to_original_code")
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						DisplayEventErrorMessage(CurrentLineNum, "w’è‚³‚ê‚½ƒTƒuƒ‹[ƒ`ƒ“u" & params(1) & "v‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ")
 						Exit Function
 					End If
 				End If
 				ret = ret + 1
 				
-				'Invalid_string_refer_to_original_code
+				'ŒÄ‚Ño‚µŠK‘w‚ğƒ`ƒFƒbƒN
 				If CallDepth > MaxCallDepth Then
 					CallDepth = MaxCallDepth
-					DisplayEventErrorMessage(CurrentLineNum, FormatNum(MaxCallDepth) & "Invalid_string_refer_to_original_code")
+					DisplayEventErrorMessage(CurrentLineNum, FormatNum(MaxCallDepth) & "ŠK‘w‚ğ‰z‚¦‚éƒTƒuƒ‹[ƒ`ƒ“‚ÌŒÄ‚Ño‚µ‚Ío—ˆ‚Ü‚¹‚ñ")
 					Exit Function
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'ˆø”—pƒXƒ^ƒbƒN‚ªˆì‚ê‚È‚¢‚©ƒ`ƒFƒbƒN
 				If ArgIndex + pcount > MaxArgIndex Then
-					DisplayEventErrorMessage(CurrentLineNum, "Invalid_string_refer_to_original_code")
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					DisplayEventErrorMessage(CurrentLineNum, "ƒTƒuƒ‹[ƒ`ƒ“‚Ìˆø”‚Ì‘”‚ª" & FormatNum(MaxArgIndex) & "ŒÂ‚ğ’´‚¦‚Ä‚¢‚Ü‚·")
 					Exit Function
 				End If
 				
-				'å¼•æ•°ã‚’è©•ä¾¡ã—ã¦ãŠã
+				'ˆø”‚ğ•]‰¿‚µ‚Ä‚¨‚­
 				For i = 2 To pcount
 					params(i) = GetValueAsString(params(i), is_term(i))
 				Next 
 				
-				'Invalid_string_refer_to_original_code
+				'Œ»İ‚Ìó‘Ô‚ğ•Û‘¶
 				CallStack(CallDepth) = CurrentLineNum
 				ArgIndexStack(CallDepth) = ArgIndex
 				VarIndexStack(CallDepth) = VarIndex
 				ForIndexStack(CallDepth) = ForIndex
 				
-				'Invalid_string_refer_to_original_code
+				'UpVar‚ªÀs‚³‚ê‚½ê‡AUpVarÀs”‚Í—İŒv‚·‚é
 				If UpVarLevel > 0 Then
 					UpVarLevelStack(CallDepth) = UpVarLevel + UpVarLevelStack(CallDepth - 1)
 				Else
 					UpVarLevelStack(CallDepth) = 0
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'UpVar‚ÌŠK‘w”‚ğ‰Šú‰»
 				UpVarLevel = 0
 				
-				'Invalid_string_refer_to_original_code
+				'ŒÄ‚Ño‚µŠK‘w”‚ğƒCƒ“ƒNƒŠƒƒ“ƒg
 				CallDepth = CallDepth + 1
 				cur_depth = CallDepth
 				
-				'Invalid_string_refer_to_original_code
+				'ˆø”‚ğƒXƒ^ƒbƒN‚ÉÏ‚Ş
 				ArgIndex = ArgIndex + pcount - 1
 				For i = 2 To pcount
 					ArgStack(ArgIndex - i + 2) = params(i)
 				Next 
 				
-				'Invalid_string_refer_to_original_code
+				'ƒTƒuƒ‹[ƒ`ƒ“–{‘Ì‚ğÀs
 				Do 
 					CurrentLineNum = ret
 					If CurrentLineNum > UBound(EventCmd) Then
@@ -1154,7 +1150,7 @@ NextTerm:
 					End With
 				Loop While ret > 0
 				
-				'è¿”ã‚Šå€¤
+				'•Ô‚è’l
 				With EventCmd(CurrentLineNum)
 					If .ArgNum = 2 Then
 						str_result = .GetArgAsString(2)
@@ -1163,10 +1159,10 @@ NextTerm:
 					End If
 				End With
 				
-				'Invalid_string_refer_to_original_code
+				'ŒÄ‚Ño‚µŠK‘w”‚ğƒfƒNƒŠƒƒ“ƒg
 				CallDepth = CallDepth - 1
 				
-				'ã‚µãƒ–ãƒ«ãƒ¼ãƒãƒ³å®Ÿè¡Œå‰ã®çŠ¶æ…‹ã«å¾©å¸°
+				'ƒTƒuƒ‹[ƒ`ƒ“Às‘O‚Ìó‘Ô‚É•œ‹A
 				CurrentLineNum = CallStack(CallDepth)
 				ArgIndex = ArgIndexStack(CallDepth)
 				VarIndex = VarIndexStack(CallDepth)
@@ -1199,9 +1195,9 @@ NextTerm:
 				If pcount = 2 Then
 					i = InStr(GetValueAsString(params(1), is_term(1)), GetValueAsString(params(2), is_term(2)))
 				Else
-					'Invalid_string_refer_to_original_code
-					'Invalid_string_refer_to_original_code
-					'Invalid_string_refer_to_original_code
+					'params(3)‚ªw’è‚³‚ê‚Ä‚¢‚éê‡‚ÍA‚»‚ê‚ğŒŸõŠJnˆÊ’u—İ’è
+					'VB‚ÌInStr‚Íˆø”1‚ªŠJnˆÊ’u‚É‚È‚è‚Ü‚·‚ªAŒ»d—l‚Æ‚ÌŒ“‚Ë‡‚¢‚ğl‚¦A
+					'eveã‚Å‚Íˆø”3‚Éİ’è‚·‚é‚æ‚¤‚É‚µ‚Ä‚¢‚Ü‚·
 					i = InStr(GetValueAsLong(params(3), is_term(3)), GetValueAsString(params(1), is_term(1)), GetValueAsString(params(2), is_term(2)))
 				End If
 				
@@ -1220,9 +1216,9 @@ NextTerm:
 					'UPGRADE_ISSUE: InStrB ŠÖ”‚ÍƒTƒ|[ƒg‚³‚ê‚Ü‚¹‚ñB Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="367764E5-F3F8-4E43-AC3E-7FE0B5E074E2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 					i = InStrB(StrConv(GetValueAsString(params(1), is_term(1)), vbFromUnicode), StrConv(GetValueAsString(params(2), is_term(2)), vbFromUnicode))
 				Else
-					'Invalid_string_refer_to_original_code
-					'Invalid_string_refer_to_original_code
-					'Invalid_string_refer_to_original_code
+					'params(3)‚ªw’è‚³‚ê‚Ä‚¢‚éê‡‚ÍA‚»‚ê‚ğŒŸõŠJnˆÊ’u—İ’è
+					'VB‚ÌInStr‚Íˆø”1‚ªŠJnˆÊ’u‚É‚È‚è‚Ü‚·‚ªAŒ»d—l‚Æ‚ÌŒ“‚Ë‡‚¢‚ğl‚¦A
+					'eveã‚Å‚Íˆø”3‚Éİ’è‚·‚é‚æ‚¤‚É‚µ‚Ä‚¢‚Ü‚·
 					'UPGRADE_ISSUE: ’è” vbFromUnicode ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="55B59875-9A95-4B71-9D6A-7C294BF7139D"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 					'UPGRADE_ISSUE: InStrB ŠÖ”‚ÍƒTƒ|[ƒg‚³‚ê‚Ü‚¹‚ñB Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="367764E5-F3F8-4E43-AC3E-7FE0B5E074E2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 					i = InStrB(GetValueAsLong(params(3), is_term(3)), StrConv(GetValueAsString(params(1), is_term(1)), vbFromUnicode), StrConv(GetValueAsString(params(2), is_term(2)), vbFromUnicode))
@@ -1240,7 +1236,7 @@ NextTerm:
 			Case "lindex"
 				str_result = ListIndex(GetValueAsString(params(1), is_term(1)), GetValueAsLong(params(2), is_term(2)))
 				
-				'Invalid_string_refer_to_original_code
+				'‘S‘Ì‚ª()‚ÅˆÍ‚Ü‚ê‚Ä‚¢‚éê‡‚Í()‚ğŠO‚·
 				If Left(str_result, 1) = "(" And Right(str_result, 1) = ")" Then
 					str_result = Mid(str_result, 2, Len(str_result) - 2)
 				End If
@@ -1273,7 +1269,7 @@ NextTerm:
 				CallFunction = ValueType.StringType
 				Exit Function
 				
-				'Invalid_string_refer_to_original_code
+				'‚±‚êˆÈ~‚ÍƒAƒ‹ƒtƒ@ƒxƒbƒg‡
 			Case "abs"
 				num_result = System.Math.Abs(GetValueAsDouble(params(1), is_term(1)))
 				
@@ -1295,17 +1291,15 @@ NextTerm:
 							With PList.Item(pname)
 								If Not .Unit_Renamed Is Nothing Then
 									With .Unit_Renamed
-										'Invalid_string_refer_to_original_code
-										'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-										num_result = .Action
+										If .Status_Renamed = "oŒ‚" Or .Status_Renamed = "Ši”[" Then
+											num_result = .Action
+										Else
+											num_result = 0
+										End If
 									End With
-								Else
-									num_result = 0
 								End If
 							End With
 						End If
-						'End With
-						'End If
 					Case 0
 						If Not SelectedUnitForEvent Is Nothing Then
 							num_result = SelectedUnitForEvent.Action
@@ -1408,7 +1402,7 @@ NextTerm:
 				buf = Mid(expr, 7, Len(expr) - 7) & "["
 				num = 0
 				
-				'ã‚µãƒ–ãƒ«ãƒ¼ãƒãƒ³ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ã‚’æ¤œç´¢
+				'ƒTƒuƒ‹[ƒ`ƒ“ƒ[ƒJƒ‹•Ï”‚ğŒŸõ
 				If CallDepth > 0 Then
 					For i = VarIndexStack(CallDepth - 1) + 1 To VarIndex
 						If InStr(VarStack(i).Name, buf) = 1 Then
@@ -1427,7 +1421,7 @@ NextTerm:
 					End If
 				End If
 				
-				'ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ã‚’æ¤œç´¢
+				'ƒ[ƒJƒ‹•Ï”‚ğŒŸõ
 				For	Each var In LocalVariableList
 					If InStr(var.Name, buf) = 1 Then
 						num = num + 1
@@ -1444,7 +1438,7 @@ NextTerm:
 					Exit Function
 				End If
 				
-				'ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°ã‚’æ¤œç´¢
+				'ƒOƒ[ƒoƒ‹•Ï”‚ğŒŸõ
 				For	Each var In GlobalVariableList
 					If InStr(var.Name, buf) = 1 Then
 						num = num + 1
@@ -1466,7 +1460,7 @@ NextTerm:
 						If UList.IsDefined2(pname) Then
 							num = UList.Item2(pname).CountItem
 						ElseIf Not PList.IsDefined(pname) Then 
-							If pname = "Invalid_string_refer_to_original_code" Then
+							If pname = "–¢‘•”õ" Then
 								num = 0
 								For	Each it In IList
 									With it
@@ -1589,16 +1583,16 @@ NextTerm:
 					Case 2
 						fname = GetValueAsString(params(1), is_term(1))
 						
-						'Invalid_string_refer_to_original_code
+						'ƒtƒ‹ƒpƒXw’è‚Å‚È‚¯‚ê‚ÎƒVƒiƒŠƒIƒtƒHƒ‹ƒ_‚ğ‹N“_‚ÉŒŸõ
 						If Mid(fname, 2, 1) <> ":" Then
 							fname = ScenarioPath & fname
 						End If
 						
 						Select Case GetValueAsString(params(2), is_term(2))
-							Case "ãƒ•ã‚¡ã‚¤ãƒ«"
+							Case "ƒtƒ@ƒCƒ‹"
 								'UPGRADE_ISSUE: vbNormal ‚ğƒAƒbƒvƒOƒŒ[ƒh‚·‚é’è”‚ğŒˆ’è‚Å‚«‚Ü‚¹‚ñB Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="B3B44E51-B5F1-4FD7-AA29-CAD31B71F487"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 								num = vbNormal
-							Case "ãƒ•ã‚©ãƒ«ãƒ€"
+							Case "ƒtƒHƒ‹ƒ_"
 								num = FileAttribute.Directory
 						End Select
 						'UPGRADE_WARNING: Dir ‚ÉV‚µ‚¢“®ì‚ªw’è‚³‚ê‚Ä‚¢‚Ü‚·B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
@@ -1608,7 +1602,7 @@ NextTerm:
 							Exit Function
 						End If
 						
-						'Invalid_string_refer_to_original_code
+						'ƒtƒ@ƒCƒ‹‘®«ƒ`ƒFƒbƒN—p‚ÉŒŸõƒpƒX‚ğì¬
 						dir_path = fname
 						If num = FileAttribute.Directory Then
 							i = InStr2(fname, "\")
@@ -1617,10 +1611,10 @@ NextTerm:
 							End If
 						End If
 						
-						'Invalid_string_refer_to_original_code
+						'’Pˆêƒtƒ@ƒCƒ‹‚ÌŒŸõH
 						If InStr(fname, "*") = 0 Then
-							'Invalid_string_refer_to_original_code
-							'Invalid_string_refer_to_original_code
+							'ƒtƒHƒ‹ƒ_‚ÌŒŸõ‚Ìê‡‚ÍŒ©‚Â‚©‚Á‚½ƒtƒ@ƒCƒ‹‚ªƒtƒHƒ‹ƒ_
+							'‚©‚Ç‚¤‚©ƒ`ƒFƒbƒN‚·‚é
 							If num = FileAttribute.Directory Then
 								If (GetAttr(dir_path & str_result) And num) = 0 Then
 									str_result = ""
@@ -1638,12 +1632,12 @@ NextTerm:
 							str_result = Dir()
 						End If
 						
-						'Invalid_string_refer_to_original_code
+						'ŒŸõ‚³‚ê‚½ƒtƒ@ƒCƒ‹ˆê——‚ğì¬
 						ReDim dir_list(0)
 						If num = FileAttribute.Directory Then
 							Do While Len(str_result) > 0
-								'Invalid_string_refer_to_original_code
-								'Invalid_string_refer_to_original_code
+								'ƒtƒHƒ‹ƒ_‚ÌŒŸõ‚Ìê‡‚ÍŒ©‚Â‚©‚Á‚½ƒtƒ@ƒCƒ‹‚ªƒtƒHƒ‹ƒ_
+								'‚©‚Ç‚¤‚©ƒ`ƒFƒbƒN‚·‚é
 								If (GetAttr(dir_path & str_result) And num) <> 0 Then
 									ReDim Preserve dir_list(UBound(dir_list) + 1)
 									dir_list(UBound(dir_list)) = str_result
@@ -1671,7 +1665,7 @@ NextTerm:
 					Case 1
 						fname = GetValueAsString(params(1), is_term(1))
 						
-						'Invalid_string_refer_to_original_code
+						'ƒtƒ‹ƒpƒXw’è‚Å‚È‚¯‚ê‚ÎƒVƒiƒŠƒIƒtƒHƒ‹ƒ_‚ğ‹N“_‚ÉŒŸõ
 						If Mid(fname, 2, 1) <> ":" Then
 							fname = ScenarioPath & fname
 						End If
@@ -1683,7 +1677,7 @@ NextTerm:
 							Exit Function
 						End If
 						
-						'Invalid_string_refer_to_original_code
+						'’Pˆêƒtƒ@ƒCƒ‹‚ÌŒŸõH
 						If InStr(fname, "*") = 0 Then
 							Exit Function
 						End If
@@ -1697,7 +1691,7 @@ NextTerm:
 							str_result = Dir()
 						End If
 						
-						'Invalid_string_refer_to_original_code
+						'ŒŸõ‚³‚ê‚½ƒtƒ@ƒCƒ‹ˆê——‚ğì¬
 						ReDim dir_list(0)
 						Do While Len(str_result) > 0
 							ReDim Preserve dir_list(UBound(dir_list) + 1)
@@ -1774,11 +1768,11 @@ NextTerm:
 				
 			Case "font"
 				Select Case GetValueAsString(params(1), is_term(1))
-					Case "ãƒ•ã‚©ãƒ³ãƒˆå"
+					Case "ƒtƒHƒ“ƒg–¼"
 						'UPGRADE_ISSUE: Control picMain ‚ÍA”Ä—p–¼‘O‹óŠÔ Form “à‚É‚ ‚é‚½‚ßA‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 						str_result = MainForm.picMain(0).Font.Name
 						CallFunction = ValueType.StringType
-					Case "ã‚µã‚¤ã‚º"
+					Case "ƒTƒCƒY"
 						'UPGRADE_ISSUE: Control picMain ‚ÍA”Ä—p–¼‘O‹óŠÔ Form “à‚É‚ ‚é‚½‚ßA‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 						num_result = MainForm.picMain(0).Font.Size
 						If etype = ValueType.StringType Then
@@ -1787,7 +1781,7 @@ NextTerm:
 						Else
 							CallFunction = ValueType.NumericType
 						End If
-					Case "Invalid_string_refer_to_original_code"
+					Case "‘¾š"
 						'UPGRADE_ISSUE: Control picMain ‚ÍA”Ä—p–¼‘O‹óŠÔ Form “à‚É‚ ‚é‚½‚ßA‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 						If MainForm.picMain(0).Font.Bold Then
 							num_result = 1
@@ -1800,7 +1794,7 @@ NextTerm:
 						Else
 							CallFunction = ValueType.NumericType
 						End If
-					Case "Invalid_string_refer_to_original_code"
+					Case "Î‘Ì"
 						'UPGRADE_ISSUE: Control picMain ‚ÍA”Ä—p–¼‘O‹óŠÔ Form “à‚É‚ ‚é‚½‚ßA‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 						If MainForm.picMain(0).Font.Italic Then
 							num_result = 1
@@ -1813,7 +1807,7 @@ NextTerm:
 						Else
 							CallFunction = ValueType.NumericType
 						End If
-					Case "è‰²"
+					Case "F"
 						'UPGRADE_ISSUE: Control picMain ‚ÍA”Ä—p–¼‘O‹óŠÔ Form “à‚É‚ ‚é‚½‚ßA‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 						str_result = Hex(MainForm.picMain(0).ForeColor)
 						For i = 1 To 6 - Len(str_result)
@@ -1821,13 +1815,13 @@ NextTerm:
 						Next 
 						str_result = "#" & str_result
 						CallFunction = ValueType.StringType
-					Case "æ›¸ãè¾¼ã¿"
+					Case "‘‚«‚İ"
 						If PermanentStringMode Then
-							str_result = "èƒŒæ™¯"
+							str_result = "”wŒi"
 						ElseIf KeepStringMode Then 
-							str_result = "ä¿æŒ"
+							str_result = "•Û"
 						Else
-							str_result = "é€šå¸¸"
+							str_result = "’Êí"
 						End If
 						CallFunction = ValueType.StringType
 				End Select
@@ -1850,10 +1844,10 @@ NextTerm:
 					Exit Function
 				End If
 				
-				'ã‚­ãƒ¼ç•ªå·
+				'ƒL[”Ô†
 				i = GetValueAsLong(params(1), is_term(1))
 				
-				'Invalid_string_refer_to_original_code
+				'¶—˜‚«İ’è‚É‘Î‰
 				Select Case i
 					Case System.Windows.Forms.Keys.LButton
 						i = LButtonID
@@ -1862,10 +1856,10 @@ NextTerm:
 				End Select
 				
 				If i = System.Windows.Forms.Keys.LButton Or i = System.Windows.Forms.Keys.RButton Then
-					'ãƒã‚¦ã‚¹ã‚«ãƒ¼ã‚½ãƒ«ã®ä½ç½®ã‚’å‚ç…§
+					'ƒ}ƒEƒXƒJ[ƒ\ƒ‹‚ÌˆÊ’u‚ğQÆ
 					GetCursorPos(PT)
 					
-					'Invalid_string_refer_to_original_code
+					'ƒƒCƒ“ƒEƒCƒ“ƒhƒEã‚Åƒ}ƒEƒXƒ{ƒ^ƒ“‚ğ‰Ÿ‚µ‚Ä‚¢‚éH
 					If System.Windows.Forms.Form.ActiveForm Is MainForm Then
 						With MainForm
 							'UPGRADE_ISSUE: Control picMain ‚ÍA”Ä—p–¼‘O‹óŠÔ Form “à‚É‚ ‚é‚½‚ßA‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
@@ -1885,13 +1879,13 @@ NextTerm:
 						End With
 					End If
 				Else
-					'Invalid_string_refer_to_original_code
+					'ƒƒCƒ“ƒEƒBƒ“ƒhƒE‚ªƒAƒNƒeƒBƒu‚É‚È‚Á‚Ä‚¢‚éH
 					If System.Windows.Forms.Form.ActiveForm Is MainForm Then
 						in_window = True
 					End If
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'ƒEƒBƒ“ƒhƒE‚ª‘I‘ğ‚³‚ê‚Ä‚¢‚È‚¢ê‡‚Íí‚É0‚ğ•Ô‚·
 				If Not in_window Then
 					num_result = 0
 					If etype = ValueType.StringType Then
@@ -1903,7 +1897,7 @@ NextTerm:
 					Exit Function
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'ƒL[‚Ìó‘Ô‚ğQÆ
 				If GetAsyncKeyState(i) And &H8000 Then
 					num_result = 1
 				End If
@@ -1963,32 +1957,46 @@ NextTerm:
 							With PList.Item(list(1))
 								If .Unit_Renamed Is Nothing Then
 									flag = False
+								Else
+									With .Unit_Renamed
+										If .Status_Renamed = "oŒ‚" Or .Status_Renamed = "Ši”[" Then
+											flag = True
+										Else
+											flag = False
+										End If
+									End With
 								End If
 							End With
-						End If
-						'End With
-						If GetValueAsLong(params(1)) <> 0 Then
-							flag = True
 						Else
-							flag = False
+							If GetValueAsLong(params(1)) <> 0 Then
+								flag = True
+							Else
+								flag = False
+							End If
 						End If
-						'End If
 					Case 2
 						pname = ListIndex(expr, 2)
 						If PList.IsDefined(list(2)) Then
 							With PList.Item(list(2))
 								If .Unit_Renamed Is Nothing Then
 									flag = True
+								Else
+									With .Unit_Renamed
+										If .Status_Renamed = "oŒ‚" Or .Status_Renamed = "Ši”[" Then
+											flag = False
+										Else
+											flag = True
+										End If
+									End With
 								End If
 							End With
-						End If
-						'End With
-						If GetValueAsLong(params(1), True) = 0 Then
-							flag = True
 						Else
-							flag = False
+							If GetValueAsLong(params(1), True) = 0 Then
+								flag = True
+							Else
+								flag = False
+							End If
 						End If
-						'End If
 					Case Else
 						If GetValueAsLong(params(1)) <> 0 Then
 							flag = True
@@ -2096,7 +2104,7 @@ NextTerm:
 						pname = GetValueAsString(params(1), is_term(1))
 						buf = GetValueAsString(params(2), is_term(2))
 						
-						'Invalid_string_refer_to_original_code
+						'ƒGƒŠƒAƒX‚ª’è‹`‚³‚ê‚Ä‚¢‚éH
 						If ALDList.IsDefined(buf) Then
 							With ALDList.Item(buf)
 								For i = 1 To .Count
@@ -2127,7 +2135,7 @@ NextTerm:
 					Case 1
 						buf = GetValueAsString(params(1), is_term(1))
 						
-						'Invalid_string_refer_to_original_code
+						'ƒGƒŠƒAƒX‚ª’è‹`‚³‚ê‚Ä‚¢‚éH
 						If ALDList.IsDefined(buf) Then
 							buf = ALDList.Item(buf).AliasType(1)
 						End If
@@ -2152,20 +2160,19 @@ NextTerm:
 				Select Case pcount
 					Case 2
 						Select Case GetValueAsString(params(2), is_term(2))
-							Case "Invalid_string_refer_to_original_code"
+							Case "ƒpƒCƒƒbƒg"
 								If PList.IsDefined(pname) Then
 									If PList.Item(pname).Alive Then
 										num_result = 1
 									End If
 								End If
-							Case "Invalid_string_refer_to_original_code"
+							Case "ƒ†ƒjƒbƒg"
 								If UList.IsDefined(pname) Then
-									'Invalid_string_refer_to_original_code
-									'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-									num_result = 1
+									If UList.Item(pname).Status_Renamed <> "”jŠü" Then
+										num_result = 1
+									End If
 								End If
-								'End If
-							Case "Invalid_string_refer_to_original_code"
+							Case "ƒAƒCƒeƒ€"
 								If IList.IsDefined(pname) Then
 									num_result = 1
 								End If
@@ -2176,13 +2183,12 @@ NextTerm:
 								num_result = 1
 							End If
 						ElseIf UList.IsDefined(pname) Then 
-							'Invalid_string_refer_to_original_code
-							'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+							If UList.Item(pname).Status_Renamed <> "”jŠü" Then
+								num_result = 1
+							End If
+						ElseIf IList.IsDefined(pname) Then 
 							num_result = 1
 						End If
-						IList.IsDefined(pname)
-						num_result = 1
-						'End If
 				End Select
 				
 				If etype = ValueType.StringType Then
@@ -2306,7 +2312,7 @@ NextTerm:
 								End If
 							End With
 						ElseIf Not PList.IsDefined(pname) Then 
-							If pname = "Invalid_string_refer_to_original_code" Then
+							If pname = "–¢‘•”õ" Then
 								i = 0
 								j = GetValueAsLong(params(2), is_term(2))
 								For	Each it In IList
@@ -2354,7 +2360,7 @@ NextTerm:
 								End If
 							End With
 						ElseIf Not PList.IsDefined(pname) Then 
-							If pname = "Invalid_string_refer_to_original_code" Then
+							If pname = "–¢‘•”õ" Then
 								i = 0
 								j = GetValueAsLong(params(2), is_term(2))
 								For	Each it In IList
@@ -2812,53 +2818,53 @@ NextTerm:
 					RegEx = CreateObject("VBScript.RegExp")
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'RegExp(•¶š—ñ, ƒpƒ^[ƒ“[,‘å¬‹æ•Ê‚ ‚è|‘å¬‹æ•Ê‚È‚µ])
 				buf = ""
 				If pcount > 0 Then
-					'Invalid_string_refer_to_original_code
+					'•¶š—ñ‘S‘Ì‚ğŒŸõ
 					'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg RegEx.Global ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 					RegEx.Global = True
-					'Invalid_string_refer_to_original_code
+					'‘å•¶š¬•¶š‚Ì‹æ•ÊiTrue=‹æ•Ê‚µ‚È‚¢j
 					'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg RegEx.IgnoreCase ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 					RegEx.IgnoreCase = False
 					If pcount >= 3 Then
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-						'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg RegEx.IgnoreCase ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-						RegEx.IgnoreCase = True
+						If GetValueAsString(params(3), is_term(3)) = "‘å¬‹æ•Ê‚È‚µ" Then
+							'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg RegEx.IgnoreCase ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+							RegEx.IgnoreCase = True
+						End If
 					End If
-				End If
-				'æ¤œç´¢ãƒ‘ã‚¿ãƒ¼ãƒ³
-				'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg RegEx.Pattern ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				RegEx.Pattern = GetValueAsString(params(2), is_term(2))
-				'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg RegEx.Execute ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				Matches = RegEx.Execute(GetValueAsString(params(1), is_term(1)))
-				'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg Matches.Count ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				If Matches.Count = 0 Then
-					regexp_index = -1
-				Else
-					regexp_index = 0
-					'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg Matches() ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					buf = Matches(regexp_index)
-				End If
-				If regexp_index >= 0 Then
-					regexp_index = regexp_index + 1
+					'ŒŸõƒpƒ^[ƒ“
+					'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg RegEx.Pattern ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					RegEx.Pattern = GetValueAsString(params(2), is_term(2))
+					'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg RegEx.Execute ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					Matches = RegEx.Execute(GetValueAsString(params(1), is_term(1)))
 					'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg Matches.Count ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					If regexp_index <= Matches.Count - 1 Then
+					If Matches.Count = 0 Then
+						regexp_index = -1
+					Else
+						regexp_index = 0
 						'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg Matches() ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 						buf = Matches(regexp_index)
 					End If
+				Else
+					If regexp_index >= 0 Then
+						regexp_index = regexp_index + 1
+						'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg Matches.Count ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						If regexp_index <= Matches.Count - 1 Then
+							'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg Matches() ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+							buf = Matches(regexp_index)
+						End If
+					End If
 				End If
-				'End If
 				str_result = buf
 				CallFunction = ValueType.StringType
 				Exit Function
 RegExp_Error: 
-				DisplayEventErrorMessage(CurrentLineNum, "Invalid_string_refer_to_original_code")
+				DisplayEventErrorMessage(CurrentLineNum, "VBScript‚ªƒCƒ“ƒXƒg[ƒ‹‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ")
 				Exit Function
 				
 			Case "regexpreplace"
-				'Invalid_string_refer_to_original_code
+				'RegExpReplace(•¶š—ñ, ŒŸõƒpƒ^[ƒ“, ’uŠ·ƒpƒ^[ƒ“[,‘å¬‹æ•Ê‚ ‚è|‘å¬‹æ•Ê‚È‚µ])
 				
 				On Error GoTo RegExpReplace_Error
 				
@@ -2866,24 +2872,23 @@ RegExp_Error:
 					RegEx = CreateObject("VBScript.RegExp")
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'•¶š—ñ‘S‘Ì‚ğŒŸõ
 				'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg RegEx.Global ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 				RegEx.Global = True
-				'Invalid_string_refer_to_original_code
+				'‘å•¶š¬•¶š‚Ì‹æ•ÊiTrue=‹æ•Ê‚µ‚È‚¢j
 				'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg RegEx.IgnoreCase ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 				RegEx.IgnoreCase = False
 				If pcount >= 4 Then
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg RegEx.IgnoreCase ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					RegEx.IgnoreCase = True
+					If GetValueAsString(params(4), is_term(4)) = "‘å¬‹æ•Ê‚È‚µ" Then
+						'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg RegEx.IgnoreCase ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						RegEx.IgnoreCase = True
+					End If
 				End If
-				'End If
-				'æ¤œç´¢ãƒ‘ã‚¿ãƒ¼ãƒ³
+				'ŒŸõƒpƒ^[ƒ“
 				'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg RegEx.Pattern ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 				RegEx.Pattern = GetValueAsString(params(2), is_term(2))
 				
-				'Invalid_string_refer_to_original_code
+				'’uŠ·Às
 				'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg RegEx.Replace ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 				buf = RegEx.Replace(GetValueAsString(params(1), is_term(1)), GetValueAsString(params(3), is_term(3)))
 				
@@ -2891,7 +2896,7 @@ RegExp_Error:
 				CallFunction = ValueType.StringType
 				Exit Function
 RegExpReplace_Error: 
-				DisplayEventErrorMessage(CurrentLineNum, "Invalid_string_refer_to_original_code")
+				DisplayEventErrorMessage(CurrentLineNum, "VBScript‚ªƒCƒ“ƒXƒg[ƒ‹‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ")
 				Exit Function
 				
 			Case "relation"
@@ -2921,7 +2926,7 @@ RegExpReplace_Error:
 				End If
 				pname2 = PList.Item(pname2).Name
 				
-				num_result = GetValueAsLong("Invalid_string_refer_to_original_code" & pname & ":" & pname2)
+				num_result = GetValueAsLong("ŠÖŒW:" & pname & ":" & pname2)
 				
 				If etype = ValueType.StringType Then
 					str_result = FormatNum(num_result)
@@ -3059,7 +3064,7 @@ RegExpReplace_Error:
 						pname = GetValueAsString(params(1), is_term(1))
 						buf = GetValueAsString(params(2), is_term(2))
 						
-						'Invalid_string_refer_to_original_code
+						'ƒGƒŠƒAƒX‚ª’è‹`‚³‚ê‚Ä‚¢‚éH
 						If ALDList.IsDefined(buf) Then
 							buf = ALDList.Item(buf).AliasType(1)
 						End If
@@ -3072,7 +3077,7 @@ RegExpReplace_Error:
 					Case 1
 						buf = GetValueAsString(params(1), is_term(1))
 						
-						'Invalid_string_refer_to_original_code
+						'ƒGƒŠƒAƒX‚ª’è‹`‚³‚ê‚Ä‚¢‚éH
 						If ALDList.IsDefined(buf) Then
 							buf = ALDList.Item(buf).AliasType(1)
 						End If
@@ -3196,8 +3201,8 @@ RegExpReplace_Error:
 				If Len(buf) <= 1 Then
 					str_result = New String(buf, GetValueAsLong(params(1), is_term(1)))
 				Else
-					'Invalid_string_refer_to_original_code
-					'Invalid_string_refer_to_original_code
+					'StringŠÖ”‚Å‚Í•¶š—ñ‚Ìæ“ª‚µ‚©ŒJ‚è•Ô‚µ‚³‚ê‚È‚¢‚Ì‚ÅA
+					'’·‚³‚ª2ˆÈã‚Ì•¶š—ñ‚Ìê‡‚Í•Êˆ—
 					str_result = ""
 					For i = 1 To GetValueAsLong(params(1), is_term(1))
 						str_result = str_result & buf
@@ -3314,9 +3319,9 @@ RegExpReplace_Error:
 					Case 1
 						pname = GetValueAsString(params(1), is_term(1))
 						Select Case pname
-							Case "ç›®æ¨™åœ°ç‚¹"
+							Case "–Ú•W’n“_"
 								num_result = SelectedX
-							Case "ãƒã‚¦ã‚¹"
+							Case "ƒ}ƒEƒX"
 								num_result = MouseX
 							Case Else
 								If UList.IsDefined2(pname) Then
@@ -3348,9 +3353,9 @@ RegExpReplace_Error:
 					Case 1
 						pname = GetValueAsString(params(1), is_term(1))
 						Select Case pname
-							Case "ç›®æ¨™åœ°ç‚¹"
+							Case "–Ú•W’n“_"
 								num_result = SelectedY
-							Case "ãƒã‚¦ã‚¹"
+							Case "ƒ}ƒEƒX"
 								num_result = MouseY
 							Case Else
 								If UList.IsDefined2(pname) Then
@@ -3403,7 +3408,7 @@ RegExpReplace_Error:
 						pname = GetValueAsString(params(1), is_term(1))
 						If IsNumber(pname) Then
 							num_result = StrToLng(pname)
-						ElseIf pname = "ç›®æ¨™åœ°ç‚¹" Then 
+						ElseIf pname = "–Ú•W’n“_" Then 
 							num_result = SelectedX
 						ElseIf UList.IsDefined2(pname) Then 
 							num_result = UList.Item2(pname).x
@@ -3436,7 +3441,7 @@ RegExpReplace_Error:
 						pname = GetValueAsString(params(1), is_term(1))
 						If IsNumber(pname) Then
 							num_result = StrToLng(pname)
-						ElseIf pname = "ç›®æ¨™åœ°ç‚¹" Then 
+						ElseIf pname = "–Ú•W’n“_" Then 
 							num_result = SelectedY
 						ElseIf UList.IsDefined2(pname) Then 
 							num_result = UList.Item2(pname).y
@@ -3468,7 +3473,7 @@ RegExpReplace_Error:
 				CallFunction = ValueType.StringType
 				Exit Function
 				
-				'Invalid_string_refer_to_original_code
+				'DateŒ^‚Ìˆ—
 			Case "year"
 				Select Case pcount
 					Case 1
@@ -3518,37 +3523,37 @@ RegExpReplace_Error:
 						If IsDate(buf) Then
 							Select Case WeekDay(CDate(buf))
 								Case FirstDayOfWeek.Sunday
-									str_result = "Invalid_string_refer_to_original_code"
+									str_result = "“ú—j"
 								Case FirstDayOfWeek.Monday
-									str_result = "æœˆæ›œ"
+									str_result = "Œ—j"
 								Case FirstDayOfWeek.Tuesday
-									str_result = "Invalid_string_refer_to_original_code"
+									str_result = "‰Î—j"
 								Case FirstDayOfWeek.Wednesday
-									str_result = "Invalid_string_refer_to_original_code"
+									str_result = "…—j"
 								Case FirstDayOfWeek.Thursday
-									str_result = "Invalid_string_refer_to_original_code"
+									str_result = "–Ø—j"
 								Case FirstDayOfWeek.Friday
-									str_result = "é‡‘æ›œ"
+									str_result = "‹à—j"
 								Case FirstDayOfWeek.Saturday
-									str_result = "åœŸæ›œ"
+									str_result = "“y—j"
 							End Select
 						End If
 					Case 0
 						Select Case WeekDay(Now)
 							Case FirstDayOfWeek.Sunday
-								str_result = "Invalid_string_refer_to_original_code"
+								str_result = "“ú—j"
 							Case FirstDayOfWeek.Monday
-								str_result = "æœˆæ›œ"
+								str_result = "Œ—j"
 							Case FirstDayOfWeek.Tuesday
-								str_result = "Invalid_string_refer_to_original_code"
+								str_result = "‰Î—j"
 							Case FirstDayOfWeek.Wednesday
-								str_result = "Invalid_string_refer_to_original_code"
+								str_result = "…—j"
 							Case FirstDayOfWeek.Thursday
-								str_result = "Invalid_string_refer_to_original_code"
+								str_result = "–Ø—j"
 							Case FirstDayOfWeek.Friday
-								str_result = "é‡‘æ›œ"
+								str_result = "‹à—j"
 							Case FirstDayOfWeek.Saturday
-								str_result = "åœŸæ›œ"
+								str_result = "“y—j"
 						End Select
 				End Select
 				CallFunction = ValueType.StringType
@@ -3671,39 +3676,26 @@ RegExpReplace_Error:
 				End If
 				Exit Function
 				
-				'ãƒ€ã‚¤ã‚¢ãƒ­ã‚°è¡¨ç¤º
+				'ƒ_ƒCƒAƒƒO•\¦
 			Case "loadfiledialog"
 				Select Case pcount
 					Case 2
-						'Invalid_string_refer_to_original_code_
-						'ScenarioPath, "", 2, _
-						'GetValueAsString(params(1), is_term(1)), _
-						'GetValueAsString(params(2), is_term(2)))
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						str_result = LoadFileDialog("ƒtƒ@ƒCƒ‹‚ğŠJ‚­", ScenarioPath, "", 2, GetValueAsString(params(1), is_term(1)), GetValueAsString(params(2), is_term(2)))
 					Case 3
-						'Invalid_string_refer_to_original_code_
-						'ScenarioPath, GetValueAsString(params(3), is_term(3)), 2, _
-						'GetValueAsString(params(1), is_term(1)), _
-						'GetValueAsString(params(2), is_term(2)))
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						str_result = LoadFileDialog("ƒtƒ@ƒCƒ‹‚ğŠJ‚­", ScenarioPath, GetValueAsString(params(3), is_term(3)), 2, GetValueAsString(params(1), is_term(1)), GetValueAsString(params(2), is_term(2)))
 					Case 4
-						'Invalid_string_refer_to_original_code_
-						'ScenarioPath & GetValueAsString(params(4), is_term(4)), _
-						'GetValueAsString(params(3), is_term(3)), 2, _
-						'GetValueAsString(params(1), is_term(1)), _
-						'GetValueAsString(params(2), is_term(2)))
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						str_result = LoadFileDialog("ƒtƒ@ƒCƒ‹‚ğŠJ‚­", ScenarioPath & GetValueAsString(params(4), is_term(4)), GetValueAsString(params(3), is_term(3)), 2, GetValueAsString(params(1), is_term(1)), GetValueAsString(params(2), is_term(2)))
 				End Select
 				
 				CallFunction = ValueType.StringType
 				
-				'Invalid_string_refer_to_original_code
+				'–{“–‚Í‚±‚ê‚¾‚¯‚Å‚¢‚¢‚Í‚¸‚¾‚¯‚Çcc
 				If InStr(str_result, ScenarioPath) > 0 Then
 					str_result = Mid(str_result, Len(ScenarioPath) + 1)
 					Exit Function
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'ƒtƒ‹ƒpƒXw’è‚È‚ç‚±‚±‚ÅI—¹
 				If Right(Left(str_result, 3), 2) = ":\" Then
 					str_result = ""
 					Exit Function
@@ -3712,7 +3704,7 @@ RegExpReplace_Error:
 				'UPGRADE_WARNING: Dir ‚ÉV‚µ‚¢“®ì‚ªw’è‚³‚ê‚Ä‚¢‚Ü‚·B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 				Do Until Dir(ScenarioPath & str_result, FileAttribute.Normal) <> ""
 					If InStr(str_result, "\") = 0 Then
-						'Invalid_string_refer_to_original_code
+						'ƒVƒiƒŠƒIƒtƒHƒ‹ƒ_ŠO‚Ìƒtƒ@ƒCƒ‹‚¾‚Á‚½
 						str_result = ""
 						Exit Function
 					End If
@@ -3723,29 +3715,16 @@ RegExpReplace_Error:
 			Case "savefiledialog"
 				Select Case pcount
 					Case 2
-						'Invalid_string_refer_to_original_code_
-						'ScenarioPath, "", 2, _
-						'GetValueAsString(params(1), is_term(1)), _
-						'GetValueAsString(params(2), is_term(2)))
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						str_result = SaveFileDialog("ƒtƒ@ƒCƒ‹‚ğ•Û‘¶", ScenarioPath, "", 2, GetValueAsString(params(1), is_term(1)), GetValueAsString(params(2), is_term(2)))
 					Case 3
-						'Invalid_string_refer_to_original_code_
-						'ScenarioPath, GetValueAsString(params(3), is_term(3)), 2, _
-						'GetValueAsString(params(1), is_term(1)), _
-						'GetValueAsString(params(2), is_term(2)))
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						str_result = SaveFileDialog("ƒtƒ@ƒCƒ‹‚ğ•Û‘¶", ScenarioPath, GetValueAsString(params(3), is_term(3)), 2, GetValueAsString(params(1), is_term(1)), GetValueAsString(params(2), is_term(2)))
 					Case 4
-						'Invalid_string_refer_to_original_code_
-						'ScenarioPath & GetValueAsString(params(4), is_term(4)), _
-						'GetValueAsString(params(3), is_term(3)), 2, _
-						'GetValueAsString(params(1), is_term(1)), _
-						'GetValueAsString(params(2), is_term(2)))
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+						str_result = SaveFileDialog("ƒtƒ@ƒCƒ‹‚ğ•Û‘¶", ScenarioPath & GetValueAsString(params(4), is_term(4)), GetValueAsString(params(3), is_term(3)), 2, GetValueAsString(params(1), is_term(1)), GetValueAsString(params(2), is_term(2)))
 				End Select
 				
 				CallFunction = ValueType.StringType
 				
-				'Invalid_string_refer_to_original_code
+				'–{“–‚Í‚±‚ê‚¾‚¯‚Å‚¢‚¢‚Í‚¸‚¾‚¯‚Çcc
 				If InStr(str_result, ScenarioPath) > 0 Then
 					str_result = Mid(str_result, Len(ScenarioPath) + 1)
 					Exit Function
@@ -3781,54 +3760,52 @@ RegExpReplace_Error:
 		End Select
 		
 LookUpUserDefinedID: 
-		'Invalid_string_refer_to_original_code
+		'ƒ†[ƒU[’è‹`ŠÖ”H
 		ret = FindNormalLabel(fname)
 		If ret > 0 Then
-			'Invalid_string_refer_to_original_code
+			'ŠÖ”‚ªŒ©‚Â‚©‚Á‚½
 			ret = ret + 1
 			
-			'Invalid_string_refer_to_original_code
+			'ŒÄ‚Ño‚µŠK‘w‚ğƒ`ƒFƒbƒN
 			If CallDepth > MaxCallDepth Then
 				CallDepth = MaxCallDepth
-				DisplayEventErrorMessage(CurrentLineNum, FormatNum(MaxCallDepth) & "Invalid_string_refer_to_original_code")
+				DisplayEventErrorMessage(CurrentLineNum, FormatNum(MaxCallDepth) & "ŠK‘w‚ğ‰z‚¦‚éƒTƒuƒ‹[ƒ`ƒ“‚ÌŒÄ‚Ño‚µ‚Ío—ˆ‚Ü‚¹‚ñ")
 				Exit Function
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'ˆø”—pƒXƒ^ƒbƒN‚ªˆì‚ê‚È‚¢‚©ƒ`ƒFƒbƒN
 			If ArgIndex + pcount > MaxArgIndex Then
-				DisplayEventErrorMessage(CurrentLineNum, "Invalid_string_refer_to_original_code")
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				DisplayEventErrorMessage(CurrentLineNum, "ƒTƒuƒ‹[ƒ`ƒ“‚Ìˆø”‚Ì‘”‚ª" & FormatNum(MaxArgIndex) & "ŒÂ‚ğ’´‚¦‚Ä‚¢‚Ü‚·")
 				Exit Function
 			End If
 			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
+			'ˆø”‚Ì’l‚ğæ‚É‹‚ß‚Ä‚¨‚­
+			'(ƒXƒ^ƒbƒN‚ÉÏ‚İ‚È‚ª‚çŒvZ‚·‚é‚ÆAˆø”‚Å‚ÌŠÖ”ŒÄ‚Ño‚µ‚Å•s³‚É‚È‚é)
 			For i = 1 To pcount
 				params(i) = GetValueAsString(params(i), is_term(i))
 			Next 
 			
-			'Invalid_string_refer_to_original_code
+			'Œ»İ‚Ìó‘Ô‚ğ•Û‘¶
 			CallStack(CallDepth) = CurrentLineNum
 			ArgIndexStack(CallDepth) = ArgIndex
 			VarIndexStack(CallDepth) = VarIndex
 			ForIndexStack(CallDepth) = ForIndex
 			UpVarLevelStack(CallDepth) = UpVarLevel
 			
-			'Invalid_string_refer_to_original_code
+			'UpVar‚ÌŠK‘w”‚ğ‰Šú‰»
 			UpVarLevel = 0
 			
-			'Invalid_string_refer_to_original_code
+			'ŒÄ‚Ño‚µŠK‘w”‚ğƒCƒ“ƒNƒŠƒƒ“ƒg
 			CallDepth = CallDepth + 1
 			cur_depth = CallDepth
 			
-			'Invalid_string_refer_to_original_code
+			'ˆø”‚ğƒXƒ^ƒbƒN‚ÉÏ‚Ş
 			ArgIndex = ArgIndex + pcount
 			For i = 1 To pcount
 				ArgStack(ArgIndex - i + 1) = params(i)
 			Next 
 			
-			'Invalid_string_refer_to_original_code
+			'ƒTƒuƒ‹[ƒ`ƒ“–{‘Ì‚ğÀs
 			Do 
 				CurrentLineNum = ret
 				If CurrentLineNum > UBound(EventCmd) Then
@@ -3842,7 +3819,7 @@ LookUpUserDefinedID:
 				End With
 			Loop While ret > 0
 			
-			'è¿”ã‚Šå€¤
+			'•Ô‚è’l
 			With EventCmd(CurrentLineNum)
 				If .ArgNum > 1 Then
 					str_result = .GetArgAsString(2)
@@ -3851,10 +3828,10 @@ LookUpUserDefinedID:
 				End If
 			End With
 			
-			'Invalid_string_refer_to_original_code
+			'ŒÄ‚Ño‚µŠK‘w”‚ğƒfƒNƒŠƒƒ“ƒg
 			CallDepth = CallDepth - 1
 			
-			'ã‚µãƒ–ãƒ«ãƒ¼ãƒãƒ³å®Ÿè¡Œå‰ã®çŠ¶æ…‹ã«å¾©å¸°
+			'ƒTƒuƒ‹[ƒ`ƒ“Às‘O‚Ìó‘Ô‚É•œ‹A
 			CurrentLineNum = CallStack(CallDepth)
 			ArgIndex = ArgIndexStack(CallDepth)
 			VarIndex = VarIndexStack(CallDepth)
@@ -3870,7 +3847,7 @@ LookUpUserDefinedID:
 			Exit Function
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'À‚ÍƒVƒXƒeƒ€’è‹`‚ÌƒOƒ[ƒoƒ‹•Ï”H
 		If IsGlobalVariableDefined(expr) Then
 			With GlobalVariableList.Item(expr)
 				Select Case etype
@@ -3910,12 +3887,12 @@ LookUpUserDefinedID:
 			Exit Function
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'Œ‹‹Ç‚½‚¾‚Ì•¶š—ñcc
 		str_result = expr
 		CallFunction = ValueType.StringType
 	End Function
 	
-	'Infoé–¢æ•°ã®è©•ä¾¡
+	'InfoŠÖ”‚Ì•]‰¿
 	Private Function EvalInfoFunc(ByRef params() As String) As String
 		Dim u As Unit
 		Dim ud As UnitData
@@ -3949,39 +3926,37 @@ LookUpUserDefinedID:
 		'UPGRADE_NOTE: ƒIƒuƒWƒFƒNƒg spd ‚ğƒKƒx[ƒW ƒRƒŒƒNƒg‚·‚é‚Ü‚Å‚±‚ÌƒIƒuƒWƒFƒNƒg‚ğ”jŠü‚·‚é‚±‚Æ‚Í‚Å‚«‚Ü‚¹‚ñB Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 		spd = Nothing
 		
-		'Invalid_string_refer_to_original_code
+		'ŠeƒIƒuƒWƒFƒNƒg‚Ìİ’è
 		Select Case params(1)
-			Case "Invalid_string_refer_to_original_code"
+			Case "ƒ†ƒjƒbƒg"
 				u = UList.Item(params(2))
 				idx = 3
-			Case "ãƒ¦ãƒ‹ãƒƒãƒˆãƒ‡ãƒ¼ã‚¿"
+			Case "ƒ†ƒjƒbƒgƒf[ƒ^"
 				ud = UDList.Item(params(2))
 				idx = 3
-			Case "Invalid_string_refer_to_original_code"
+			Case "ƒpƒCƒƒbƒg"
 				p = PList.Item(params(2))
 				idx = 3
-			Case "Invalid_string_refer_to_original_code"
+			Case "ƒpƒCƒƒbƒgƒf[ƒ^"
 				pd = PDList.Item(params(2))
 				idx = 3
-			Case "éæˆ¦é—˜å“¡"
+			Case "”ñí“¬ˆõ"
 				nd = NPDList.Item(params(2))
 				idx = 3
-			Case "Invalid_string_refer_to_original_code"
+			Case "ƒAƒCƒeƒ€"
 				If IList.IsDefined(params(2)) Then
 					it = IList.Item(params(2))
 				Else
 					itd = IDList.Item(params(2))
 				End If
 				idx = 3
-			Case "Invalid_string_refer_to_original_code"
+			Case "ƒAƒCƒeƒ€ƒf[ƒ^"
 				itd = IDList.Item(params(2))
 				idx = 3
-			Case "ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼"
+			Case "ƒXƒyƒVƒƒƒ‹ƒpƒ["
 				spd = SPDList.Item(params(2))
 				idx = 3
-			Case "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			Case "ƒ}ƒbƒv", "ƒIƒvƒVƒ‡ƒ“"
 				idx = 1
 			Case ""
 				Exit Function
@@ -4000,7 +3975,7 @@ LookUpUserDefinedID:
 		'UPGRADE_NOTE: my ‚Í my_Renamed ‚ÉƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 		Dim mx, my_Renamed As Short
 		Select Case params(idx)
-			Case "åç§°"
+			Case "–¼Ì"
 				If Not u Is Nothing Then
 					EvalInfoFunc = u.Name
 				ElseIf Not ud Is Nothing Then 
@@ -4018,7 +3993,7 @@ LookUpUserDefinedID:
 				ElseIf Not spd Is Nothing Then 
 					EvalInfoFunc = spd.Name
 				End If
-			Case "Invalid_string_refer_to_original_code"
+			Case "“Ç‚İ‰¼–¼"
 				If Not u Is Nothing Then
 					EvalInfoFunc = u.KanaName
 				ElseIf Not ud Is Nothing Then 
@@ -4034,7 +4009,7 @@ LookUpUserDefinedID:
 				ElseIf Not spd Is Nothing Then 
 					EvalInfoFunc = spd.KanaName
 				End If
-			Case "æ„›ç§°"
+			Case "ˆ¤Ì"
 				If Not u Is Nothing Then
 					EvalInfoFunc = u.Nickname0
 				ElseIf Not ud Is Nothing Then 
@@ -4050,14 +4025,14 @@ LookUpUserDefinedID:
 				ElseIf Not itd Is Nothing Then 
 					EvalInfoFunc = itd.Nickname
 				End If
-			Case "æ€§åˆ¥"
+			Case "«•Ê"
 				If Not p Is Nothing Then
 					EvalInfoFunc = p.Sex
 				ElseIf Not pd Is Nothing Then 
 					EvalInfoFunc = pd.Sex
 				End If
 				Exit Function
-			Case "ãƒ¦ãƒ‹ãƒƒãƒˆã‚¯ãƒ©ã‚¹", "æ©Ÿä½“ã‚¯ãƒ©ã‚¹"
+			Case "ƒ†ƒjƒbƒgƒNƒ‰ƒX", "‹@‘ÌƒNƒ‰ƒX"
 				If Not u Is Nothing Then
 					EvalInfoFunc = u.Class_Renamed
 				ElseIf Not ud Is Nothing Then 
@@ -4067,7 +4042,7 @@ LookUpUserDefinedID:
 				ElseIf Not pd Is Nothing Then 
 					EvalInfoFunc = pd.Class_Renamed
 				End If
-			Case "Invalid_string_refer_to_original_code"
+			Case "’nŒ`“K‰"
 				If Not u Is Nothing Then
 					For i = 1 To 4
 						Select Case u.Adaption(i)
@@ -4092,7 +4067,7 @@ LookUpUserDefinedID:
 				ElseIf Not pd Is Nothing Then 
 					EvalInfoFunc = pd.Adaption
 				End If
-			Case "çµŒé¨“å€¤"
+			Case "ŒoŒ±’l"
 				If Not u Is Nothing Then
 					EvalInfoFunc = CStr(u.ExpValue)
 				ElseIf Not ud Is Nothing Then 
@@ -4102,126 +4077,126 @@ LookUpUserDefinedID:
 				ElseIf Not pd Is Nothing Then 
 					EvalInfoFunc = CStr(pd.ExpValue)
 				End If
-			Case "Invalid_string_refer_to_original_code"
+			Case "Ši“¬"
 				If Not p Is Nothing Then
 					EvalInfoFunc = VB6.Format(p.Infight)
 				ElseIf Not pd Is Nothing Then 
 					EvalInfoFunc = VB6.Format(pd.Infight)
 				End If
-			Case "Invalid_string_refer_to_original_code"
+			Case "ËŒ‚"
 				If Not p Is Nothing Then
 					EvalInfoFunc = VB6.Format(p.Shooting)
 				ElseIf Not pd Is Nothing Then 
 					EvalInfoFunc = VB6.Format(pd.Shooting)
 				End If
 				Exit Function
-			Case "å‘½ä¸­"
+			Case "–½’†"
 				If Not p Is Nothing Then
 					EvalInfoFunc = VB6.Format(p.Hit)
 				ElseIf Not pd Is Nothing Then 
 					EvalInfoFunc = VB6.Format(pd.Hit)
 				End If
-			Case "å›é¿"
+			Case "‰ñ”ğ"
 				If Not p Is Nothing Then
 					EvalInfoFunc = VB6.Format(p.Dodge)
 				ElseIf Not pd Is Nothing Then 
 					EvalInfoFunc = VB6.Format(pd.Dodge)
 				End If
-			Case "Invalid_string_refer_to_original_code"
+			Case "‹Z—Ê"
 				If Not p Is Nothing Then
 					EvalInfoFunc = VB6.Format(p.Technique)
 				ElseIf Not pd Is Nothing Then 
 					EvalInfoFunc = VB6.Format(pd.Technique)
 				End If
-			Case "Invalid_string_refer_to_original_code"
+			Case "”½‰"
 				If Not p Is Nothing Then
 					EvalInfoFunc = VB6.Format(p.Intuition)
 				ElseIf Not pd Is Nothing Then 
 					EvalInfoFunc = VB6.Format(pd.Intuition)
 				End If
-			Case "é˜²å¾¡"
+			Case "–hŒä"
 				If Not p Is Nothing Then
 					EvalInfoFunc = VB6.Format(p.Defense)
 				End If
-			Case "æ ¼é—˜åŸºæœ¬å€¤"
+			Case "Ši“¬Šî–{’l"
 				If Not p Is Nothing Then
 					EvalInfoFunc = VB6.Format(p.InfightBase)
 				End If
-			Case "Invalid_string_refer_to_original_code"
+			Case "ËŒ‚Šî–{’l"
 				If Not p Is Nothing Then
 					EvalInfoFunc = VB6.Format(p.ShootingBase)
 				End If
-			Case "å‘½ä¸­åŸºæœ¬å€¤"
+			Case "–½’†Šî–{’l"
 				If Not p Is Nothing Then
 					EvalInfoFunc = VB6.Format(p.HitBase)
 				End If
-			Case "å›é¿åŸºæœ¬å€¤"
+			Case "‰ñ”ğŠî–{’l"
 				If Not p Is Nothing Then
 					EvalInfoFunc = VB6.Format(p.DodgeBase)
 				End If
-			Case "æŠ€é‡åŸºæœ¬å€¤"
+			Case "‹Z—ÊŠî–{’l"
 				If Not p Is Nothing Then
 					EvalInfoFunc = VB6.Format(p.TechniqueBase)
 				End If
-			Case "åå¿œåŸºæœ¬å€¤"
+			Case "”½‰Šî–{’l"
 				If Not p Is Nothing Then
 					EvalInfoFunc = VB6.Format(p.IntuitionBase)
 				End If
-			Case "æ ¼é—˜ä¿®æ­£å€¤"
+			Case "Ši“¬C³’l"
 				If Not p Is Nothing Then
 					EvalInfoFunc = VB6.Format(p.InfightMod)
 				End If
-			Case "Invalid_string_refer_to_original_code"
+			Case "ËŒ‚C³’l"
 				If Not p Is Nothing Then
 					EvalInfoFunc = VB6.Format(p.ShootingMod)
 				End If
-			Case "å‘½ä¸­ä¿®æ­£å€¤"
+			Case "–½’†C³’l"
 				If Not p Is Nothing Then
 					EvalInfoFunc = VB6.Format(p.HitMod)
 				End If
-			Case "å›é¿ä¿®æ­£å€¤"
+			Case "‰ñ”ğC³’l"
 				If Not p Is Nothing Then
 					EvalInfoFunc = VB6.Format(p.DodgeMod)
 				End If
-			Case "æŠ€é‡ä¿®æ­£å€¤"
+			Case "‹Z—ÊC³’l"
 				If Not p Is Nothing Then
 					EvalInfoFunc = VB6.Format(p.TechniqueMod)
 				End If
-			Case "åå¿œä¿®æ­£å€¤"
+			Case "”½‰C³’l"
 				If Not p Is Nothing Then
 					EvalInfoFunc = VB6.Format(p.IntuitionMod)
 				End If
-			Case "æ ¼é—˜æ”¯æ´ä¿®æ­£å€¤"
+			Case "Ši“¬x‰‡C³’l"
 				If Not p Is Nothing Then
 					EvalInfoFunc = VB6.Format(p.InfightMod2)
 				End If
-			Case "Invalid_string_refer_to_original_code"
+			Case "ËŒ‚x‰‡C³’l"
 				If Not p Is Nothing Then
 					EvalInfoFunc = VB6.Format(p.ShootingMod2)
 				End If
-			Case "å‘½ä¸­æ”¯æ´ä¿®æ­£å€¤"
+			Case "–½’†x‰‡C³’l"
 				If Not p Is Nothing Then
 					EvalInfoFunc = VB6.Format(p.HitMod2)
 				End If
-			Case "å›é¿æ”¯æ´ä¿®æ­£å€¤"
+			Case "‰ñ”ğx‰‡C³’l"
 				If Not p Is Nothing Then
 					EvalInfoFunc = VB6.Format(p.DodgeMod2)
 				End If
-			Case "æŠ€é‡æ”¯æ´ä¿®æ­£å€¤"
+			Case "‹Z—Êx‰‡C³’l"
 				If Not p Is Nothing Then
 					EvalInfoFunc = VB6.Format(p.TechniqueMod2)
 				End If
-			Case "åå¿œæ”¯æ´ä¿®æ­£å€¤"
+			Case "”½‰x‰‡C³’l"
 				If Not p Is Nothing Then
 					EvalInfoFunc = VB6.Format(p.IntuitionMod2)
 				End If
-			Case "æ€§æ ¼"
+			Case "«Ši"
 				If Not p Is Nothing Then
 					EvalInfoFunc = p.Personality
 				ElseIf Not pd Is Nothing Then 
 					EvalInfoFunc = pd.Personality
 				End If
-			Case "Invalid_string_refer_to_original_code"
+			Case "Å‘å‚r‚o"
 				If Not p Is Nothing Then
 					EvalInfoFunc = VB6.Format(p.MaxSP)
 					If p.MaxSP = 0 And Not p.Unit_Renamed Is Nothing Then
@@ -4232,7 +4207,7 @@ LookUpUserDefinedID:
 				ElseIf Not pd Is Nothing Then 
 					EvalInfoFunc = VB6.Format(pd.SP)
 				End If
-			Case "Invalid_string_refer_to_original_code"
+			Case "‚r‚o"
 				If Not p Is Nothing Then
 					EvalInfoFunc = VB6.Format(p.SP)
 					If p.MaxSP = 0 And Not p.Unit_Renamed Is Nothing Then
@@ -4243,7 +4218,7 @@ LookUpUserDefinedID:
 				ElseIf Not pd Is Nothing Then 
 					EvalInfoFunc = VB6.Format(pd.SP)
 				End If
-			Case "Invalid_string_refer_to_original_code"
+			Case "ƒOƒ‰ƒtƒBƒbƒN"
 				If Not u Is Nothing Then
 					EvalInfoFunc = u.Bitmap(True)
 				ElseIf Not ud Is Nothing Then 
@@ -4255,48 +4230,43 @@ LookUpUserDefinedID:
 				ElseIf Not nd Is Nothing Then 
 					EvalInfoFunc = nd.Bitmap0
 				End If
-			Case "Invalid_string_refer_to_original_code"
+			Case "‚l‚h‚c‚h"
 				If Not p Is Nothing Then
 					EvalInfoFunc = p.BGM
 				ElseIf Not pd Is Nothing Then 
 					EvalInfoFunc = pd.BGM
 				End If
-			Case "ãƒ¬ãƒ™ãƒ«"
+			Case "ƒŒƒxƒ‹"
 				If Not p Is Nothing Then
 					EvalInfoFunc = VB6.Format(p.Level)
 				End If
-			Case "ç´¯ç©çµŒé¨“å€¤"
+			Case "—İÏŒoŒ±’l"
 				If Not p Is Nothing Then
 					EvalInfoFunc = VB6.Format(p.Exp)
 				End If
-			Case "æ°—åŠ›"
+			Case "‹C—Í"
 				If Not p Is Nothing Then
 					EvalInfoFunc = VB6.Format(p.Morale)
 				End If
-			Case "æœ€å¤§éœŠåŠ›", "Invalid_string_refer_to_original_code"
+			Case "Å‘å—ì—Í", "Å‘åƒvƒ‰[ƒi"
 				If Not p Is Nothing Then
 					EvalInfoFunc = VB6.Format(p.MaxPlana)
 				ElseIf Not pd Is Nothing Then 
-					EvalInfoFunc = VB6.Format(pd.SkillLevel(0, "éœŠåŠ›"))
+					EvalInfoFunc = VB6.Format(pd.SkillLevel(0, "—ì—Í"))
 				End If
-			Case "éœŠåŠ›", "Invalid_string_refer_to_original_code"
+			Case "—ì—Í", "ƒvƒ‰[ƒi"
 				If Not p Is Nothing Then
 					EvalInfoFunc = VB6.Format(p.Plana)
 				ElseIf Not pd Is Nothing Then 
-					EvalInfoFunc = VB6.Format(pd.SkillLevel(0, "éœŠåŠ›"))
+					EvalInfoFunc = VB6.Format(pd.SkillLevel(0, "—ì—Í"))
 				End If
-			Case "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			Case "“¯’²—¦", "ƒVƒ“ƒNƒ—¦"
 				If Not p Is Nothing Then
 					EvalInfoFunc = VB6.Format(p.SynchroRate)
 				ElseIf Not pd Is Nothing Then 
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					EvalInfoFunc = VB6.Format(pd.SkillLevel(0, "“¯’²—¦"))
 				End If
-			Case "ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼", "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			Case "ƒXƒyƒVƒƒƒ‹ƒpƒ[", "¸_ƒRƒ}ƒ“ƒh", "¸_"
 				If Not p Is Nothing Then
 					If p.MaxSP = 0 And Not p.Unit_Renamed Is Nothing Then
 						If p Is p.Unit_Renamed.MainPilot Then
@@ -4317,9 +4287,7 @@ LookUpUserDefinedID:
 					End With
 					EvalInfoFunc = Trim(EvalInfoFunc)
 				End If
-			Case "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			Case "ƒXƒyƒVƒƒƒ‹ƒpƒ[Š—L", "¸_ƒRƒ}ƒ“ƒhŠ—L"
 				If Not p Is Nothing Then
 					If p.MaxSP = 0 And Not p.Unit_Renamed Is Nothing Then
 						If p Is p.Unit_Renamed.MainPilot Then
@@ -4338,9 +4306,7 @@ LookUpUserDefinedID:
 						EvalInfoFunc = "0"
 					End If
 				End If
-			Case "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			Case "ƒXƒyƒVƒƒƒ‹ƒpƒ[ƒRƒXƒg", "¸_ƒRƒ}ƒ“ƒhƒRƒXƒg"
 				If Not p Is Nothing Then
 					If p.MaxSP = 0 And Not p.Unit_Renamed Is Nothing Then
 						If p Is p.Unit_Renamed.MainPilot Then
@@ -4351,7 +4317,7 @@ LookUpUserDefinedID:
 				ElseIf Not pd Is Nothing Then 
 					EvalInfoFunc = VB6.Format(pd.SpecialPowerCost(params(idx + 1)))
 				End If
-			Case "Invalid_string_refer_to_original_code"
+			Case "“Áê”\—Í”"
 				If Not u Is Nothing Then
 					EvalInfoFunc = VB6.Format(u.CountFeature)
 				ElseIf Not ud Is Nothing Then 
@@ -4365,7 +4331,7 @@ LookUpUserDefinedID:
 				ElseIf Not itd Is Nothing Then 
 					EvalInfoFunc = VB6.Format(itd.CountFeature)
 				End If
-			Case "Invalid_string_refer_to_original_code"
+			Case "“Áê”\—Í"
 				If Not u Is Nothing Then
 					If IsNumber(params(idx + 1)) Then
 						EvalInfoFunc = u.Feature(CShort(params(idx + 1)))
@@ -4391,10 +4357,10 @@ LookUpUserDefinedID:
 						EvalInfoFunc = itd.Feature(CShort(params(idx + 1)))
 					End If
 				End If
-			Case "Invalid_string_refer_to_original_code"
+			Case "“Áê”\—Í–¼Ì"
 				aname = params(idx + 1)
 				
-				'Invalid_string_refer_to_original_code
+				'ƒGƒŠƒAƒX‚ª’è‹`‚³‚ê‚Ä‚¢‚éH
 				If ALDList.IsDefined(aname) Then
 					With ALDList.Item(aname)
 						For i = 1 To .Count
@@ -4446,10 +4412,10 @@ LookUpUserDefinedID:
 						EvalInfoFunc = itd.FeatureName(aname)
 					End If
 				End If
-			Case "Invalid_string_refer_to_original_code"
+			Case "“Áê”\—ÍŠ—L"
 				aname = params(idx + 1)
 				
-				'Invalid_string_refer_to_original_code
+				'ƒGƒŠƒAƒX‚ª’è‹`‚³‚ê‚Ä‚¢‚éH
 				If ALDList.IsDefined(aname) Then
 					With ALDList.Item(aname)
 						For i = 1 To .Count
@@ -4501,10 +4467,10 @@ LookUpUserDefinedID:
 						EvalInfoFunc = "0"
 					End If
 				End If
-			Case "Invalid_string_refer_to_original_code"
+			Case "“Áê”\—ÍƒŒƒxƒ‹"
 				aname = params(idx + 1)
 				
-				'Invalid_string_refer_to_original_code
+				'ƒGƒŠƒAƒX‚ª’è‹`‚³‚ê‚Ä‚¢‚éH
 				If ALDList.IsDefined(aname) Then
 					With ALDList.Item(aname)
 						For i = 1 To .Count
@@ -4556,10 +4522,10 @@ LookUpUserDefinedID:
 						EvalInfoFunc = VB6.Format(itd.FeatureLevel(aname))
 					End If
 				End If
-			Case "Invalid_string_refer_to_original_code"
+			Case "“Áê”\—Íƒf[ƒ^"
 				aname = params(idx + 1)
 				
-				'Invalid_string_refer_to_original_code
+				'ƒGƒŠƒAƒX‚ª’è‹`‚³‚ê‚Ä‚¢‚éH
 				If ALDList.IsDefined(aname) Then
 					With ALDList.Item(aname)
 						For i = 1 To .Count
@@ -4611,10 +4577,10 @@ LookUpUserDefinedID:
 						EvalInfoFunc = itd.FeatureData(aname)
 					End If
 				End If
-			Case "Invalid_string_refer_to_original_code"
+			Case "“Áê”\—Í•K—v‹Z”\"
 				aname = params(idx + 1)
 				
-				'Invalid_string_refer_to_original_code
+				'ƒGƒŠƒAƒX‚ª’è‹`‚³‚ê‚Ä‚¢‚éH
 				If ALDList.IsDefined(aname) Then
 					With ALDList.Item(aname)
 						For i = 1 To .Count
@@ -4654,10 +4620,10 @@ LookUpUserDefinedID:
 						EvalInfoFunc = itd.FeatureNecessarySkill(aname)
 					End If
 				End If
-			Case "Invalid_string_refer_to_original_code"
+			Case "“Áê”\—Í‰ğà"
 				aname = params(idx + 1)
 				
-				'Invalid_string_refer_to_original_code
+				'ƒGƒŠƒAƒX‚ª’è‹`‚³‚ê‚Ä‚¢‚éH
 				If ALDList.IsDefined(aname) Then
 					With ALDList.Item(aname)
 						For i = 1 To .Count
@@ -4691,35 +4657,35 @@ LookUpUserDefinedID:
 						End If
 					End If
 				End If
-			Case "Invalid_string_refer_to_original_code"
+			Case "‹K’èƒpƒCƒƒbƒg”"
 				If Not u Is Nothing Then
 					EvalInfoFunc = VB6.Format(u.Data.PilotNum)
 				ElseIf Not ud Is Nothing Then 
 					EvalInfoFunc = VB6.Format(ud.PilotNum)
 				End If
-			Case "Invalid_string_refer_to_original_code"
+			Case "ƒpƒCƒƒbƒg”"
 				If Not u Is Nothing Then
 					EvalInfoFunc = VB6.Format(u.CountPilot)
 				ElseIf Not ud Is Nothing Then 
 					EvalInfoFunc = VB6.Format(ud.PilotNum)
 				End If
-			Case "Invalid_string_refer_to_original_code"
+			Case "ƒTƒ|[ƒg”"
 				If Not u Is Nothing Then
 					EvalInfoFunc = VB6.Format(u.CountSupport)
 				End If
-			Case "Invalid_string_refer_to_original_code"
+			Case "Å‘åƒAƒCƒeƒ€”"
 				If Not u Is Nothing Then
 					EvalInfoFunc = VB6.Format(u.Data.ItemNum)
 				ElseIf Not ud Is Nothing Then 
 					EvalInfoFunc = VB6.Format(ud.ItemNum)
 				End If
-			Case "Invalid_string_refer_to_original_code"
+			Case "ƒAƒCƒeƒ€”"
 				If Not u Is Nothing Then
 					EvalInfoFunc = VB6.Format(u.CountItem)
 				ElseIf Not ud Is Nothing Then 
 					EvalInfoFunc = VB6.Format(ud.ItemNum)
 				End If
-			Case "Invalid_string_refer_to_original_code"
+			Case "ƒAƒCƒeƒ€"
 				If Not u Is Nothing Then
 					If IsNumber(params(idx + 1)) Then
 						i = CShort(params(idx + 1))
@@ -4728,7 +4694,7 @@ LookUpUserDefinedID:
 						End If
 					End If
 				End If
-			Case "Invalid_string_refer_to_original_code"
+			Case "ƒAƒCƒeƒ€‚h‚c"
 				If Not u Is Nothing Then
 					If IsNumber(params(idx + 1)) Then
 						i = CShort(params(idx + 1))
@@ -4737,67 +4703,67 @@ LookUpUserDefinedID:
 						End If
 					End If
 				End If
-			Case "ç§»å‹•å¯èƒ½åœ°å½¢"
+			Case "ˆÚ“®‰Â”\’nŒ`"
 				If Not u Is Nothing Then
 					EvalInfoFunc = u.Transportation
 				ElseIf Not ud Is Nothing Then 
 					EvalInfoFunc = ud.Transportation
 				End If
-			Case "ç§»å‹•åŠ›"
+			Case "ˆÚ“®—Í"
 				If Not u Is Nothing Then
 					EvalInfoFunc = VB6.Format(u.Speed)
 				ElseIf Not ud Is Nothing Then 
 					EvalInfoFunc = VB6.Format(ud.Speed)
 				End If
-			Case "ã‚µã‚¤ã‚º"
+			Case "ƒTƒCƒY"
 				If Not u Is Nothing Then
 					EvalInfoFunc = u.Size
 				ElseIf Not ud Is Nothing Then 
 					EvalInfoFunc = ud.Size
 				End If
-			Case "Invalid_string_refer_to_original_code"
+			Case "C—”ï"
 				If Not u Is Nothing Then
 					EvalInfoFunc = CStr(u.Value)
 				ElseIf Not ud Is Nothing Then 
 					EvalInfoFunc = CStr(ud.Value)
 				End If
-			Case "Invalid_string_refer_to_original_code"
+			Case "Å‘å‚g‚o"
 				If Not u Is Nothing Then
 					EvalInfoFunc = VB6.Format(u.MaxHP)
 				ElseIf Not ud Is Nothing Then 
 					EvalInfoFunc = VB6.Format(ud.HP)
 				End If
-			Case "Invalid_string_refer_to_original_code"
+			Case "‚g‚o"
 				If Not u Is Nothing Then
 					EvalInfoFunc = VB6.Format(u.HP)
 				ElseIf Not ud Is Nothing Then 
 					EvalInfoFunc = VB6.Format(ud.HP)
 				End If
-			Case "Invalid_string_refer_to_original_code"
+			Case "Å‘å‚d‚m"
 				If Not u Is Nothing Then
 					EvalInfoFunc = VB6.Format(u.MaxEN)
 				ElseIf Not ud Is Nothing Then 
 					EvalInfoFunc = VB6.Format(ud.EN)
 				End If
-			Case "Invalid_string_refer_to_original_code"
+			Case "‚d‚m"
 				If Not u Is Nothing Then
 					EvalInfoFunc = VB6.Format(u.EN)
 				ElseIf Not ud Is Nothing Then 
 					EvalInfoFunc = VB6.Format(ud.EN)
 				End If
-			Case "Invalid_string_refer_to_original_code"
+			Case "‘•b"
 				If Not u Is Nothing Then
 					EvalInfoFunc = VB6.Format(u.Armor)
 				ElseIf Not ud Is Nothing Then 
 					EvalInfoFunc = VB6.Format(ud.Armor)
 				End If
-			Case "é‹å‹•æ€§"
+			Case "‰^“®«"
 				If Not u Is Nothing Then
 					EvalInfoFunc = VB6.Format(u.Mobility)
 				ElseIf Not ud Is Nothing Then 
 					EvalInfoFunc = VB6.Format(ud.Mobility)
 				End If
-			Case "æ­¦å™¨æ•°"
+			Case "•Ší”"
 				If Not u Is Nothing Then
 					EvalInfoFunc = VB6.Format(u.CountWeapon)
 				ElseIf Not ud Is Nothing Then 
@@ -4811,11 +4777,11 @@ LookUpUserDefinedID:
 				ElseIf Not itd Is Nothing Then 
 					EvalInfoFunc = VB6.Format(itd.CountWeapon)
 				End If
-			Case "æ­¦å™¨"
+			Case "•Ší"
 				idx = idx + 1
 				If Not u Is Nothing Then
 					With u
-						'Invalid_string_refer_to_original_code
+						'‰½”Ô–Ú‚Ì•Ší‚©‚ğ”»’è
 						If IsNumber(params(idx)) Then
 							i = CShort(params(idx))
 						Else
@@ -4825,60 +4791,58 @@ LookUpUserDefinedID:
 								End If
 							Next 
 						End If
-						'Invalid_string_refer_to_original_code
+						'w’è‚µ‚½•Ší‚ğ‚Á‚Ä‚¢‚È‚¢
 						If i <= 0 Or .CountWeapon < i Then
 							Exit Function
 						End If
 						
 						idx = idx + 1
 						Select Case params(idx)
-							Case "", "åç§°"
+							Case "", "–¼Ì"
 								EvalInfoFunc = .Weapon(i).Name
-							Case "Invalid_string_refer_to_original_code"
+							Case "UŒ‚—Í"
 								EvalInfoFunc = VB6.Format(.WeaponPower(i, ""))
-							Case "Invalid_string_refer_to_original_code"
-								'Invalid_string_refer_to_original_code
-								'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+							Case "Ë’ö", "Å‘åË’ö"
 								EvalInfoFunc = VB6.Format(.WeaponMaxRange(i))
-							Case "Invalid_string_refer_to_original_code"
+							Case "Å¬Ë’ö"
 								EvalInfoFunc = VB6.Format(.Weapon(i).MinRange)
-							Case "Invalid_string_refer_to_original_code"
+							Case "–½’†—¦"
 								EvalInfoFunc = VB6.Format(.WeaponPrecision(i))
-							Case "æœ€å¤§å¼¾æ•°"
+							Case "Å‘å’e”"
 								EvalInfoFunc = VB6.Format(.MaxBullet(i))
-							Case "å¼¾æ•°"
+							Case "’e”"
 								EvalInfoFunc = VB6.Format(.Bullet(i))
-							Case "Invalid_string_refer_to_original_code"
+							Case "Á”ï‚d‚m"
 								EvalInfoFunc = VB6.Format(.WeaponENConsumption(i))
-							Case "Invalid_string_refer_to_original_code"
+							Case "•K—v‹C—Í"
 								EvalInfoFunc = VB6.Format(.Weapon(i).NecessaryMorale)
-							Case "Invalid_string_refer_to_original_code"
+							Case "’nŒ`“K‰"
 								EvalInfoFunc = .Weapon(i).Adaption
-							Case "Invalid_string_refer_to_original_code"
+							Case "ƒNƒŠƒeƒBƒJƒ‹—¦"
 								EvalInfoFunc = VB6.Format(.WeaponCritical(i))
-							Case "å±æ€§"
+							Case "‘®«"
 								EvalInfoFunc = .WeaponClass(i)
-							Case "Invalid_string_refer_to_original_code"
+							Case "‘®«Š—L"
 								If .IsWeaponClassifiedAs(i, params(idx + 1)) Then
 									EvalInfoFunc = "1"
 								Else
 									EvalInfoFunc = "0"
 								End If
-							Case "å±æ€§ãƒ¬ãƒ™ãƒ«"
+							Case "‘®«ƒŒƒxƒ‹"
 								EvalInfoFunc = CStr(.WeaponLevel(i, params(idx + 1)))
-							Case "å±æ€§åç§°"
+							Case "‘®«–¼Ì"
 								EvalInfoFunc = AttributeName(u, params(idx + 1), False)
-							Case "å±æ€§è§£èª¬"
+							Case "‘®«‰ğà"
 								EvalInfoFunc = AttributeHelpMessage(u, params(idx + 1), i, False)
-							Case "Invalid_string_refer_to_original_code"
+							Case "•K—v‹Z”\"
 								EvalInfoFunc = .Weapon(i).NecessarySkill
-							Case "ä½¿ç”¨å¯"
-								If .IsWeaponAvailable(i, "Invalid_string_refer_to_original_code") Then
+							Case "g—p‰Â"
+								If .IsWeaponAvailable(i, "ƒXƒe[ƒ^ƒX") Then
 									EvalInfoFunc = "1"
 								Else
 									EvalInfoFunc = "0"
 								End If
-							Case "Invalid_string_refer_to_original_code"
+							Case "C“¾"
 								If .IsWeaponMastered(i) Then
 									EvalInfoFunc = "1"
 								Else
@@ -4888,7 +4852,7 @@ LookUpUserDefinedID:
 					End With
 				ElseIf Not ud Is Nothing Then 
 					With ud
-						'Invalid_string_refer_to_original_code
+						'‰½”Ô–Ú‚Ì•Ší‚©‚ğ”»’è
 						If IsNumber(params(idx)) Then
 							i = CShort(params(idx))
 						Else
@@ -4898,7 +4862,7 @@ LookUpUserDefinedID:
 								End If
 							Next 
 						End If
-						'Invalid_string_refer_to_original_code
+						'w’è‚µ‚½•Ší‚ğ‚Á‚Ä‚¢‚È‚¢
 						If i <= 0 Or .CountWeapon < i Then
 							Exit Function
 						End If
@@ -4906,37 +4870,35 @@ LookUpUserDefinedID:
 						idx = idx + 1
 						With .Weapon(i)
 							Select Case params(idx)
-								Case "", "åç§°"
+								Case "", "–¼Ì"
 									EvalInfoFunc = .Name
-								Case "Invalid_string_refer_to_original_code"
+								Case "UŒ‚—Í"
 									EvalInfoFunc = VB6.Format(.Power)
-								Case "Invalid_string_refer_to_original_code"
-									'Invalid_string_refer_to_original_code
-									'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+								Case "Ë’ö", "Å‘åË’ö"
 									EvalInfoFunc = VB6.Format(.MaxRange)
-								Case "Invalid_string_refer_to_original_code"
+								Case "Å¬Ë’ö"
 									EvalInfoFunc = VB6.Format(.MinRange)
-								Case "Invalid_string_refer_to_original_code"
+								Case "–½’†—¦"
 									EvalInfoFunc = VB6.Format(.Precision)
-								Case "æœ€å¤§å¼¾æ•°", "å¼¾æ•°"
+								Case "Å‘å’e”", "’e”"
 									EvalInfoFunc = VB6.Format(.Bullet)
-								Case "Invalid_string_refer_to_original_code"
+								Case "Á”ï‚d‚m"
 									EvalInfoFunc = VB6.Format(.ENConsumption)
-								Case "Invalid_string_refer_to_original_code"
+								Case "•K—v‹C—Í"
 									EvalInfoFunc = VB6.Format(.NecessaryMorale)
-								Case "Invalid_string_refer_to_original_code"
+								Case "’nŒ`“K‰"
 									EvalInfoFunc = .Adaption
-								Case "Invalid_string_refer_to_original_code"
+								Case "ƒNƒŠƒeƒBƒJƒ‹—¦"
 									EvalInfoFunc = VB6.Format(.Critical)
-								Case "å±æ€§"
+								Case "‘®«"
 									EvalInfoFunc = .Class_Renamed
-								Case "Invalid_string_refer_to_original_code"
+								Case "‘®«Š—L"
 									If InStrNotNest(.Class_Renamed, params(idx + 1)) > 0 Then
 										EvalInfoFunc = "1"
 									Else
 										EvalInfoFunc = "0"
 									End If
-								Case "å±æ€§ãƒ¬ãƒ™ãƒ«"
+								Case "‘®«ƒŒƒxƒ‹"
 									j = InStrNotNest(.Class_Renamed, params(idx + 1) & "L")
 									If j = 0 Then
 										EvalInfoFunc = "0"
@@ -4953,16 +4915,16 @@ LookUpUserDefinedID:
 									If Not IsNumber(EvalInfoFunc) Then
 										EvalInfoFunc = "0"
 									End If
-								Case "Invalid_string_refer_to_original_code"
+								Case "•K—v‹Z”\"
 									EvalInfoFunc = .NecessarySkill
-								Case "ä½¿ç”¨å¯", "Invalid_string_refer_to_original_code"
+								Case "g—p‰Â", "C“¾"
 									EvalInfoFunc = "1"
 							End Select
 						End With
 					End With
 				ElseIf Not p Is Nothing Then 
 					With p.Data
-						'Invalid_string_refer_to_original_code
+						'‰½”Ô–Ú‚Ì•Ší‚©‚ğ”»’è
 						If IsNumber(params(idx)) Then
 							i = CShort(params(idx))
 						Else
@@ -4972,7 +4934,7 @@ LookUpUserDefinedID:
 								End If
 							Next 
 						End If
-						'Invalid_string_refer_to_original_code
+						'w’è‚µ‚½•Ší‚ğ‚Á‚Ä‚¢‚È‚¢
 						If i <= 0 Or .CountWeapon < i Then
 							Exit Function
 						End If
@@ -4980,37 +4942,35 @@ LookUpUserDefinedID:
 						idx = idx + 1
 						With .Weapon(i)
 							Select Case params(idx)
-								Case "", "åç§°"
+								Case "", "–¼Ì"
 									EvalInfoFunc = .Name
-								Case "Invalid_string_refer_to_original_code"
+								Case "UŒ‚—Í"
 									EvalInfoFunc = VB6.Format(.Power)
-								Case "Invalid_string_refer_to_original_code"
-									'Invalid_string_refer_to_original_code
-									'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+								Case "Ë’ö", "Å‘åË’ö"
 									EvalInfoFunc = VB6.Format(.MaxRange)
-								Case "Invalid_string_refer_to_original_code"
+								Case "Å¬Ë’ö"
 									EvalInfoFunc = VB6.Format(.MinRange)
-								Case "Invalid_string_refer_to_original_code"
+								Case "–½’†—¦"
 									EvalInfoFunc = VB6.Format(.Precision)
-								Case "æœ€å¤§å¼¾æ•°", "å¼¾æ•°"
+								Case "Å‘å’e”", "’e”"
 									EvalInfoFunc = VB6.Format(.Bullet)
-								Case "Invalid_string_refer_to_original_code"
+								Case "Á”ï‚d‚m"
 									EvalInfoFunc = VB6.Format(.ENConsumption)
-								Case "Invalid_string_refer_to_original_code"
+								Case "•K—v‹C—Í"
 									EvalInfoFunc = VB6.Format(.NecessaryMorale)
-								Case "Invalid_string_refer_to_original_code"
+								Case "’nŒ`“K‰"
 									EvalInfoFunc = .Adaption
-								Case "Invalid_string_refer_to_original_code"
+								Case "ƒNƒŠƒeƒBƒJƒ‹—¦"
 									EvalInfoFunc = VB6.Format(.Critical)
-								Case "å±æ€§"
+								Case "‘®«"
 									EvalInfoFunc = .Class_Renamed
-								Case "Invalid_string_refer_to_original_code"
+								Case "‘®«Š—L"
 									If InStrNotNest(.Class_Renamed, params(idx + 1)) > 0 Then
 										EvalInfoFunc = "1"
 									Else
 										EvalInfoFunc = "0"
 									End If
-								Case "å±æ€§ãƒ¬ãƒ™ãƒ«"
+								Case "‘®«ƒŒƒxƒ‹"
 									j = InStrNotNest(.Class_Renamed, params(idx + 1) & "L")
 									If j = 0 Then
 										EvalInfoFunc = "0"
@@ -5027,16 +4987,16 @@ LookUpUserDefinedID:
 									If Not IsNumber(EvalInfoFunc) Then
 										EvalInfoFunc = "0"
 									End If
-								Case "Invalid_string_refer_to_original_code"
+								Case "•K—v‹Z”\"
 									EvalInfoFunc = .NecessarySkill
-								Case "ä½¿ç”¨å¯", "Invalid_string_refer_to_original_code"
+								Case "g—p‰Â", "C“¾"
 									EvalInfoFunc = "1"
 							End Select
 						End With
 					End With
 				ElseIf Not pd Is Nothing Then 
 					With pd
-						'Invalid_string_refer_to_original_code
+						'‰½”Ô–Ú‚Ì•Ší‚©‚ğ”»’è
 						If IsNumber(params(idx)) Then
 							i = CShort(params(idx))
 						Else
@@ -5046,7 +5006,7 @@ LookUpUserDefinedID:
 								End If
 							Next 
 						End If
-						'Invalid_string_refer_to_original_code
+						'w’è‚µ‚½•Ší‚ğ‚Á‚Ä‚¢‚È‚¢
 						If i <= 0 Or .CountWeapon < i Then
 							Exit Function
 						End If
@@ -5054,37 +5014,35 @@ LookUpUserDefinedID:
 						idx = idx + 1
 						With .Weapon(i)
 							Select Case params(idx)
-								Case "", "åç§°"
+								Case "", "–¼Ì"
 									EvalInfoFunc = .Name
-								Case "Invalid_string_refer_to_original_code"
+								Case "UŒ‚—Í"
 									EvalInfoFunc = VB6.Format(.Power)
-								Case "Invalid_string_refer_to_original_code"
-									'Invalid_string_refer_to_original_code
-									'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+								Case "Ë’ö", "Å‘åË’ö"
 									EvalInfoFunc = VB6.Format(.MaxRange)
-								Case "Invalid_string_refer_to_original_code"
+								Case "Å¬Ë’ö"
 									EvalInfoFunc = VB6.Format(.MinRange)
-								Case "Invalid_string_refer_to_original_code"
+								Case "–½’†—¦"
 									EvalInfoFunc = VB6.Format(.Precision)
-								Case "æœ€å¤§å¼¾æ•°", "å¼¾æ•°"
+								Case "Å‘å’e”", "’e”"
 									EvalInfoFunc = VB6.Format(.Bullet)
-								Case "Invalid_string_refer_to_original_code"
+								Case "Á”ï‚d‚m"
 									EvalInfoFunc = VB6.Format(.ENConsumption)
-								Case "Invalid_string_refer_to_original_code"
+								Case "•K—v‹C—Í"
 									EvalInfoFunc = VB6.Format(.NecessaryMorale)
-								Case "Invalid_string_refer_to_original_code"
+								Case "’nŒ`“K‰"
 									EvalInfoFunc = .Adaption
-								Case "Invalid_string_refer_to_original_code"
+								Case "ƒNƒŠƒeƒBƒJƒ‹—¦"
 									EvalInfoFunc = VB6.Format(.Critical)
-								Case "å±æ€§"
+								Case "‘®«"
 									EvalInfoFunc = .Class_Renamed
-								Case "Invalid_string_refer_to_original_code"
+								Case "‘®«Š—L"
 									If InStrNotNest(.Class_Renamed, params(idx + 1)) > 0 Then
 										EvalInfoFunc = "1"
 									Else
 										EvalInfoFunc = "0"
 									End If
-								Case "å±æ€§ãƒ¬ãƒ™ãƒ«"
+								Case "‘®«ƒŒƒxƒ‹"
 									j = InStrNotNest(.Class_Renamed, params(idx + 1) & "L")
 									If j = 0 Then
 										EvalInfoFunc = "0"
@@ -5101,16 +5059,16 @@ LookUpUserDefinedID:
 									If Not IsNumber(EvalInfoFunc) Then
 										EvalInfoFunc = "0"
 									End If
-								Case "Invalid_string_refer_to_original_code"
+								Case "•K—v‹Z”\"
 									EvalInfoFunc = .NecessarySkill
-								Case "ä½¿ç”¨å¯", "Invalid_string_refer_to_original_code"
+								Case "g—p‰Â", "C“¾"
 									EvalInfoFunc = "1"
 							End Select
 						End With
 					End With
 				ElseIf Not it Is Nothing Then 
 					With it
-						'Invalid_string_refer_to_original_code
+						'‰½”Ô–Ú‚Ì•Ší‚©‚ğ”»’è
 						If IsNumber(params(idx)) Then
 							i = CShort(params(idx))
 						Else
@@ -5120,7 +5078,7 @@ LookUpUserDefinedID:
 								End If
 							Next 
 						End If
-						'Invalid_string_refer_to_original_code
+						'w’è‚µ‚½•Ší‚ğ‚Á‚Ä‚¢‚È‚¢
 						If i <= 0 Or .CountWeapon < i Then
 							Exit Function
 						End If
@@ -5128,37 +5086,35 @@ LookUpUserDefinedID:
 						idx = idx + 1
 						With .Weapon(i)
 							Select Case params(idx)
-								Case "", "åç§°"
+								Case "", "–¼Ì"
 									EvalInfoFunc = .Name
-								Case "Invalid_string_refer_to_original_code"
+								Case "UŒ‚—Í"
 									EvalInfoFunc = VB6.Format(.Power)
-								Case "Invalid_string_refer_to_original_code"
-									'Invalid_string_refer_to_original_code
-									'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+								Case "Ë’ö", "Å‘åË’ö"
 									EvalInfoFunc = VB6.Format(.MaxRange)
-								Case "Invalid_string_refer_to_original_code"
+								Case "Å¬Ë’ö"
 									EvalInfoFunc = VB6.Format(.MinRange)
-								Case "Invalid_string_refer_to_original_code"
+								Case "–½’†—¦"
 									EvalInfoFunc = VB6.Format(.Precision)
-								Case "æœ€å¤§å¼¾æ•°", "å¼¾æ•°"
+								Case "Å‘å’e”", "’e”"
 									EvalInfoFunc = VB6.Format(.Bullet)
-								Case "Invalid_string_refer_to_original_code"
+								Case "Á”ï‚d‚m"
 									EvalInfoFunc = VB6.Format(.ENConsumption)
-								Case "Invalid_string_refer_to_original_code"
+								Case "•K—v‹C—Í"
 									EvalInfoFunc = VB6.Format(.NecessaryMorale)
-								Case "Invalid_string_refer_to_original_code"
+								Case "’nŒ`“K‰"
 									EvalInfoFunc = .Adaption
-								Case "Invalid_string_refer_to_original_code"
+								Case "ƒNƒŠƒeƒBƒJƒ‹—¦"
 									EvalInfoFunc = VB6.Format(.Critical)
-								Case "å±æ€§"
+								Case "‘®«"
 									EvalInfoFunc = .Class_Renamed
-								Case "Invalid_string_refer_to_original_code"
+								Case "‘®«Š—L"
 									If InStrNotNest(.Class_Renamed, params(idx + 1)) > 0 Then
 										EvalInfoFunc = "1"
 									Else
 										EvalInfoFunc = "0"
 									End If
-								Case "å±æ€§ãƒ¬ãƒ™ãƒ«"
+								Case "‘®«ƒŒƒxƒ‹"
 									j = InStrNotNest(.Class_Renamed, params(idx + 1) & "L")
 									If j = 0 Then
 										EvalInfoFunc = "0"
@@ -5175,16 +5131,16 @@ LookUpUserDefinedID:
 									If Not IsNumber(EvalInfoFunc) Then
 										EvalInfoFunc = "0"
 									End If
-								Case "Invalid_string_refer_to_original_code"
+								Case "•K—v‹Z”\"
 									EvalInfoFunc = .NecessarySkill
-								Case "ä½¿ç”¨å¯", "Invalid_string_refer_to_original_code"
+								Case "g—p‰Â", "C“¾"
 									EvalInfoFunc = "1"
 							End Select
 						End With
 					End With
 				ElseIf Not itd Is Nothing Then 
 					With itd
-						'Invalid_string_refer_to_original_code
+						'‰½”Ô–Ú‚Ì•Ší‚©‚ğ”»’è
 						If IsNumber(params(idx)) Then
 							i = CShort(params(idx))
 						Else
@@ -5194,7 +5150,7 @@ LookUpUserDefinedID:
 								End If
 							Next 
 						End If
-						'Invalid_string_refer_to_original_code
+						'w’è‚µ‚½•Ší‚ğ‚Á‚Ä‚¢‚È‚¢
 						If i <= 0 Or .CountWeapon < i Then
 							Exit Function
 						End If
@@ -5202,37 +5158,35 @@ LookUpUserDefinedID:
 						idx = idx + 1
 						With .Weapon(i)
 							Select Case params(idx)
-								Case "", "åç§°"
+								Case "", "–¼Ì"
 									EvalInfoFunc = .Name
-								Case "Invalid_string_refer_to_original_code"
+								Case "UŒ‚—Í"
 									EvalInfoFunc = VB6.Format(.Power)
-								Case "Invalid_string_refer_to_original_code"
-									'Invalid_string_refer_to_original_code
-									'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+								Case "Ë’ö", "Å‘åË’ö"
 									EvalInfoFunc = VB6.Format(.MaxRange)
-								Case "Invalid_string_refer_to_original_code"
+								Case "Å¬Ë’ö"
 									EvalInfoFunc = VB6.Format(.MinRange)
-								Case "Invalid_string_refer_to_original_code"
+								Case "–½’†—¦"
 									EvalInfoFunc = VB6.Format(.Precision)
-								Case "æœ€å¤§å¼¾æ•°", "å¼¾æ•°"
+								Case "Å‘å’e”", "’e”"
 									EvalInfoFunc = VB6.Format(.Bullet)
-								Case "Invalid_string_refer_to_original_code"
+								Case "Á”ï‚d‚m"
 									EvalInfoFunc = VB6.Format(.ENConsumption)
-								Case "Invalid_string_refer_to_original_code"
+								Case "•K—v‹C—Í"
 									EvalInfoFunc = VB6.Format(.NecessaryMorale)
-								Case "Invalid_string_refer_to_original_code"
+								Case "’nŒ`“K‰"
 									EvalInfoFunc = .Adaption
-								Case "Invalid_string_refer_to_original_code"
+								Case "ƒNƒŠƒeƒBƒJƒ‹—¦"
 									EvalInfoFunc = VB6.Format(.Critical)
-								Case "å±æ€§"
+								Case "‘®«"
 									EvalInfoFunc = .Class_Renamed
-								Case "Invalid_string_refer_to_original_code"
+								Case "‘®«Š—L"
 									If InStrNotNest(.Class_Renamed, params(idx + 1)) > 0 Then
 										EvalInfoFunc = "1"
 									Else
 										EvalInfoFunc = "0"
 									End If
-								Case "å±æ€§ãƒ¬ãƒ™ãƒ«"
+								Case "‘®«ƒŒƒxƒ‹"
 									j = InStrNotNest(.Class_Renamed, params(idx + 1) & "L")
 									If j = 0 Then
 										EvalInfoFunc = "0"
@@ -5249,15 +5203,15 @@ LookUpUserDefinedID:
 									If Not IsNumber(EvalInfoFunc) Then
 										EvalInfoFunc = "0"
 									End If
-								Case "Invalid_string_refer_to_original_code"
+								Case "•K—v‹Z”\"
 									EvalInfoFunc = .NecessarySkill
-								Case "ä½¿ç”¨å¯", "Invalid_string_refer_to_original_code"
+								Case "g—p‰Â", "C“¾"
 									EvalInfoFunc = "1"
 							End Select
 						End With
 					End With
 				End If
-			Case "Invalid_string_refer_to_original_code"
+			Case "ƒAƒrƒŠƒeƒB”"
 				If Not u Is Nothing Then
 					EvalInfoFunc = VB6.Format(u.CountAbility)
 				ElseIf Not ud Is Nothing Then 
@@ -5271,11 +5225,11 @@ LookUpUserDefinedID:
 				ElseIf Not itd Is Nothing Then 
 					EvalInfoFunc = VB6.Format(itd.CountAbility)
 				End If
-			Case "Invalid_string_refer_to_original_code"
+			Case "ƒAƒrƒŠƒeƒB"
 				idx = idx + 1
 				If Not u Is Nothing Then
 					With u
-						'Invalid_string_refer_to_original_code
+						'‰½”Ô–Ú‚ÌƒAƒrƒŠƒeƒB‚©‚ğ”»’è
 						If IsNumber(params(idx)) Then
 							i = CShort(params(idx))
 						Else
@@ -5285,19 +5239,19 @@ LookUpUserDefinedID:
 								End If
 							Next 
 						End If
-						'Invalid_string_refer_to_original_code
+						'w’è‚µ‚½ƒAƒrƒŠƒeƒB‚ğ‚Á‚Ä‚¢‚È‚¢
 						If i <= 0 Or .CountAbility < i Then
 							Exit Function
 						End If
 						
 						idx = idx + 1
 						Select Case params(idx)
-							Case "", "åç§°"
+							Case "", "–¼Ì"
 								EvalInfoFunc = .Ability(i).Name
-							Case "åŠ¹æœæ•°"
+							Case "Œø‰Ê”"
 								EvalInfoFunc = VB6.Format(.Ability(i).CountEffect)
-							Case "Invalid_string_refer_to_original_code"
-								'Invalid_string_refer_to_original_code
+							Case "Œø‰Êƒ^ƒCƒv"
+								'‰½”Ô–Ú‚ÌŒø‰Ê‚©‚ğ”»’è
 								If IsNumber(params(idx + 1)) Then
 									j = CShort(params(idx + 1))
 								End If
@@ -5305,8 +5259,8 @@ LookUpUserDefinedID:
 									Exit Function
 								End If
 								EvalInfoFunc = .Ability(i).EffectType(j)
-							Case "åŠ¹æœãƒ¬ãƒ™ãƒ«"
-								'Invalid_string_refer_to_original_code
+							Case "Œø‰ÊƒŒƒxƒ‹"
+								'‰½”Ô–Ú‚ÌŒø‰Ê‚©‚ğ”»’è
 								If IsNumber(params(idx + 1)) Then
 									j = CShort(params(idx + 1))
 								End If
@@ -5314,8 +5268,8 @@ LookUpUserDefinedID:
 									Exit Function
 								End If
 								EvalInfoFunc = VB6.Format(.Ability(i).EffectLevel(j))
-							Case "åŠ¹æœãƒ‡ãƒ¼ã‚¿"
-								'Invalid_string_refer_to_original_code
+							Case "Œø‰Êƒf[ƒ^"
+								'‰½”Ô–Ú‚ÌŒø‰Ê‚©‚ğ”»’è
 								If IsNumber(params(idx + 1)) Then
 									j = CShort(params(idx + 1))
 								End If
@@ -5323,43 +5277,41 @@ LookUpUserDefinedID:
 									Exit Function
 								End If
 								EvalInfoFunc = .Ability(i).EffectData(j)
-							Case "Invalid_string_refer_to_original_code"
-								'Invalid_string_refer_to_original_code
-								'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+							Case "Ë’ö", "Å‘åË’ö"
 								EvalInfoFunc = VB6.Format(.AbilityMaxRange(i))
-							Case "Invalid_string_refer_to_original_code"
+							Case "Å¬Ë’ö"
 								EvalInfoFunc = VB6.Format(.AbilityMinRange(i))
-							Case "æœ€å¤§ä½¿ç”¨å›æ•°"
+							Case "Å‘åg—p‰ñ”"
 								EvalInfoFunc = VB6.Format(.MaxStock(i))
-							Case "ä½¿ç”¨å›æ•°"
+							Case "g—p‰ñ”"
 								EvalInfoFunc = VB6.Format(.Stock(i))
-							Case "Invalid_string_refer_to_original_code"
+							Case "Á”ï‚d‚m"
 								EvalInfoFunc = VB6.Format(.AbilityENConsumption(i))
-							Case "Invalid_string_refer_to_original_code"
+							Case "•K—v‹C—Í"
 								EvalInfoFunc = VB6.Format(.Ability(i).NecessaryMorale)
-							Case "å±æ€§"
+							Case "‘®«"
 								EvalInfoFunc = .Ability(i).Class_Renamed
-							Case "Invalid_string_refer_to_original_code"
+							Case "‘®«Š—L"
 								If .IsAbilityClassifiedAs(i, params(idx + 1)) Then
 									EvalInfoFunc = "1"
 								Else
 									EvalInfoFunc = "0"
 								End If
-							Case "å±æ€§ãƒ¬ãƒ™ãƒ«"
+							Case "‘®«ƒŒƒxƒ‹"
 								EvalInfoFunc = CStr(.AbilityLevel(i, params(idx + 1)))
-							Case "å±æ€§åç§°"
+							Case "‘®«–¼Ì"
 								EvalInfoFunc = AttributeName(u, params(idx + 1), True)
-							Case "å±æ€§è§£èª¬"
+							Case "‘®«‰ğà"
 								EvalInfoFunc = AttributeHelpMessage(u, params(idx + 1), i, True)
-							Case "Invalid_string_refer_to_original_code"
+							Case "•K—v‹Z”\"
 								EvalInfoFunc = .Ability(i).NecessarySkill
-							Case "ä½¿ç”¨å¯"
-								If .IsAbilityAvailable(i, "ç§»å‹•å‰") Then
+							Case "g—p‰Â"
+								If .IsAbilityAvailable(i, "ˆÚ“®‘O") Then
 									EvalInfoFunc = "1"
 								Else
 									EvalInfoFunc = "0"
 								End If
-							Case "Invalid_string_refer_to_original_code"
+							Case "C“¾"
 								If .IsAbilityMastered(i) Then
 									EvalInfoFunc = "1"
 								Else
@@ -5369,7 +5321,7 @@ LookUpUserDefinedID:
 					End With
 				ElseIf Not ud Is Nothing Then 
 					With ud
-						'Invalid_string_refer_to_original_code
+						'‰½”Ô–Ú‚ÌƒAƒrƒŠƒeƒB‚©‚ğ”»’è
 						If IsNumber(params(idx)) Then
 							i = CShort(params(idx))
 						Else
@@ -5379,7 +5331,7 @@ LookUpUserDefinedID:
 								End If
 							Next 
 						End If
-						'Invalid_string_refer_to_original_code
+						'w’è‚µ‚½ƒAƒrƒŠƒeƒB‚ğ‚Á‚Ä‚¢‚È‚¢
 						If i <= 0 Or .CountAbility < i Then
 							Exit Function
 						End If
@@ -5387,12 +5339,12 @@ LookUpUserDefinedID:
 						idx = idx + 1
 						With .Ability(i)
 							Select Case params(idx)
-								Case "", "åç§°"
+								Case "", "–¼Ì"
 									EvalInfoFunc = .Name
-								Case "åŠ¹æœæ•°"
+								Case "Œø‰Ê”"
 									EvalInfoFunc = VB6.Format(.CountEffect)
-								Case "Invalid_string_refer_to_original_code"
-									'Invalid_string_refer_to_original_code
+								Case "Œø‰Êƒ^ƒCƒv"
+									'‰½”Ô–Ú‚ÌŒø‰Ê‚©‚ğ”»’è
 									If IsNumber(params(idx + 1)) Then
 										j = CShort(params(idx + 1))
 									End If
@@ -5400,8 +5352,8 @@ LookUpUserDefinedID:
 										Exit Function
 									End If
 									EvalInfoFunc = .EffectType(j)
-								Case "åŠ¹æœãƒ¬ãƒ™ãƒ«"
-									'Invalid_string_refer_to_original_code
+								Case "Œø‰ÊƒŒƒxƒ‹"
+									'‰½”Ô–Ú‚ÌŒø‰Ê‚©‚ğ”»’è
 									If IsNumber(params(idx + 1)) Then
 										j = CShort(params(idx + 1))
 									End If
@@ -5409,8 +5361,8 @@ LookUpUserDefinedID:
 										Exit Function
 									End If
 									EvalInfoFunc = VB6.Format(.EffectLevel(j))
-								Case "åŠ¹æœãƒ‡ãƒ¼ã‚¿"
-									'Invalid_string_refer_to_original_code
+								Case "Œø‰Êƒf[ƒ^"
+									'‰½”Ô–Ú‚ÌŒø‰Ê‚©‚ğ”»’è
 									If IsNumber(params(idx + 1)) Then
 										j = CShort(params(idx + 1))
 									End If
@@ -5418,27 +5370,25 @@ LookUpUserDefinedID:
 										Exit Function
 									End If
 									EvalInfoFunc = .EffectData(j)
-								Case "Invalid_string_refer_to_original_code"
-									'Invalid_string_refer_to_original_code
-									'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+								Case "Ë’ö", "Å‘åË’ö"
 									EvalInfoFunc = VB6.Format(.MaxRange)
-								Case "Invalid_string_refer_to_original_code"
+								Case "Å¬Ë’ö"
 									EvalInfoFunc = VB6.Format(.MinRange)
-								Case "æœ€å¤§ä½¿ç”¨å›æ•°", "ä½¿ç”¨å›æ•°"
+								Case "Å‘åg—p‰ñ”", "g—p‰ñ”"
 									EvalInfoFunc = VB6.Format(.Stock)
-								Case "Invalid_string_refer_to_original_code"
+								Case "Á”ï‚d‚m"
 									EvalInfoFunc = VB6.Format(.ENConsumption)
-								Case "Invalid_string_refer_to_original_code"
+								Case "•K—v‹C—Í"
 									EvalInfoFunc = VB6.Format(.NecessaryMorale)
-								Case "å±æ€§"
+								Case "‘®«"
 									EvalInfoFunc = .Class_Renamed
-								Case "Invalid_string_refer_to_original_code"
+								Case "‘®«Š—L"
 									If InStrNotNest(.Class_Renamed, params(idx + 1)) > 0 Then
 										EvalInfoFunc = "1"
 									Else
 										EvalInfoFunc = "0"
 									End If
-								Case "å±æ€§ãƒ¬ãƒ™ãƒ«"
+								Case "‘®«ƒŒƒxƒ‹"
 									j = InStrNotNest(.Class_Renamed, params(idx + 1) & "L")
 									If j = 0 Then
 										EvalInfoFunc = "0"
@@ -5455,16 +5405,16 @@ LookUpUserDefinedID:
 									If Not IsNumber(EvalInfoFunc) Then
 										EvalInfoFunc = "0"
 									End If
-								Case "Invalid_string_refer_to_original_code"
+								Case "•K—v‹Z”\"
 									EvalInfoFunc = .NecessarySkill
-								Case "ä½¿ç”¨å¯", "Invalid_string_refer_to_original_code"
+								Case "g—p‰Â", "C“¾"
 									EvalInfoFunc = "1"
 							End Select
 						End With
 					End With
 				ElseIf Not p Is Nothing Then 
 					With p.Data
-						'Invalid_string_refer_to_original_code
+						'‰½”Ô–Ú‚ÌƒAƒrƒŠƒeƒB‚©‚ğ”»’è
 						If IsNumber(params(idx)) Then
 							i = CShort(params(idx))
 						Else
@@ -5474,7 +5424,7 @@ LookUpUserDefinedID:
 								End If
 							Next 
 						End If
-						'Invalid_string_refer_to_original_code
+						'w’è‚µ‚½ƒAƒrƒŠƒeƒB‚ğ‚Á‚Ä‚¢‚È‚¢
 						If i <= 0 Or .CountAbility < i Then
 							Exit Function
 						End If
@@ -5482,12 +5432,12 @@ LookUpUserDefinedID:
 						idx = idx + 1
 						With .Ability(i)
 							Select Case params(idx)
-								Case "", "åç§°"
+								Case "", "–¼Ì"
 									EvalInfoFunc = .Name
-								Case "åŠ¹æœæ•°"
+								Case "Œø‰Ê”"
 									EvalInfoFunc = VB6.Format(.CountEffect)
-								Case "Invalid_string_refer_to_original_code"
-									'Invalid_string_refer_to_original_code
+								Case "Œø‰Êƒ^ƒCƒv"
+									'‰½”Ô–Ú‚ÌŒø‰Ê‚©‚ğ”»’è
 									If IsNumber(params(idx + 1)) Then
 										j = CShort(params(idx + 1))
 									End If
@@ -5495,8 +5445,8 @@ LookUpUserDefinedID:
 										Exit Function
 									End If
 									EvalInfoFunc = .EffectType(j)
-								Case "åŠ¹æœãƒ¬ãƒ™ãƒ«"
-									'Invalid_string_refer_to_original_code
+								Case "Œø‰ÊƒŒƒxƒ‹"
+									'‰½”Ô–Ú‚ÌŒø‰Ê‚©‚ğ”»’è
 									If IsNumber(params(idx + 1)) Then
 										j = CShort(params(idx + 1))
 									End If
@@ -5504,8 +5454,8 @@ LookUpUserDefinedID:
 										Exit Function
 									End If
 									EvalInfoFunc = VB6.Format(.EffectLevel(j))
-								Case "åŠ¹æœãƒ‡ãƒ¼ã‚¿"
-									'Invalid_string_refer_to_original_code
+								Case "Œø‰Êƒf[ƒ^"
+									'‰½”Ô–Ú‚ÌŒø‰Ê‚©‚ğ”»’è
 									If IsNumber(params(idx + 1)) Then
 										j = CShort(params(idx + 1))
 									End If
@@ -5513,27 +5463,25 @@ LookUpUserDefinedID:
 										Exit Function
 									End If
 									EvalInfoFunc = .EffectData(j)
-								Case "Invalid_string_refer_to_original_code"
-									'Invalid_string_refer_to_original_code
-									'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+								Case "Ë’ö", "Å‘åË’ö"
 									EvalInfoFunc = VB6.Format(.MaxRange)
-								Case "Invalid_string_refer_to_original_code"
+								Case "Å¬Ë’ö"
 									EvalInfoFunc = VB6.Format(.MinRange)
-								Case "æœ€å¤§ä½¿ç”¨å›æ•°", "ä½¿ç”¨å›æ•°"
+								Case "Å‘åg—p‰ñ”", "g—p‰ñ”"
 									EvalInfoFunc = VB6.Format(.Stock)
-								Case "Invalid_string_refer_to_original_code"
+								Case "Á”ï‚d‚m"
 									EvalInfoFunc = VB6.Format(.ENConsumption)
-								Case "Invalid_string_refer_to_original_code"
+								Case "•K—v‹C—Í"
 									EvalInfoFunc = VB6.Format(.NecessaryMorale)
-								Case "å±æ€§"
+								Case "‘®«"
 									EvalInfoFunc = .Class_Renamed
-								Case "Invalid_string_refer_to_original_code"
+								Case "‘®«Š—L"
 									If InStrNotNest(.Class_Renamed, params(idx + 1)) > 0 Then
 										EvalInfoFunc = "1"
 									Else
 										EvalInfoFunc = "0"
 									End If
-								Case "å±æ€§ãƒ¬ãƒ™ãƒ«"
+								Case "‘®«ƒŒƒxƒ‹"
 									j = InStrNotNest(.Class_Renamed, params(idx + 1) & "L")
 									If j = 0 Then
 										EvalInfoFunc = "0"
@@ -5550,16 +5498,16 @@ LookUpUserDefinedID:
 									If Not IsNumber(EvalInfoFunc) Then
 										EvalInfoFunc = "0"
 									End If
-								Case "Invalid_string_refer_to_original_code"
+								Case "•K—v‹Z”\"
 									EvalInfoFunc = .NecessarySkill
-								Case "ä½¿ç”¨å¯", "Invalid_string_refer_to_original_code"
+								Case "g—p‰Â", "C“¾"
 									EvalInfoFunc = "1"
 							End Select
 						End With
 					End With
 				ElseIf Not pd Is Nothing Then 
 					With pd
-						'Invalid_string_refer_to_original_code
+						'‰½”Ô–Ú‚ÌƒAƒrƒŠƒeƒB‚©‚ğ”»’è
 						If IsNumber(params(idx)) Then
 							i = CShort(params(idx))
 						Else
@@ -5569,7 +5517,7 @@ LookUpUserDefinedID:
 								End If
 							Next 
 						End If
-						'Invalid_string_refer_to_original_code
+						'w’è‚µ‚½ƒAƒrƒŠƒeƒB‚ğ‚Á‚Ä‚¢‚È‚¢
 						If i <= 0 Or .CountAbility < i Then
 							Exit Function
 						End If
@@ -5577,12 +5525,12 @@ LookUpUserDefinedID:
 						idx = idx + 1
 						With .Ability(i)
 							Select Case params(idx)
-								Case "", "åç§°"
+								Case "", "–¼Ì"
 									EvalInfoFunc = .Name
-								Case "åŠ¹æœæ•°"
+								Case "Œø‰Ê”"
 									EvalInfoFunc = VB6.Format(.CountEffect)
-								Case "Invalid_string_refer_to_original_code"
-									'Invalid_string_refer_to_original_code
+								Case "Œø‰Êƒ^ƒCƒv"
+									'‰½”Ô–Ú‚ÌŒø‰Ê‚©‚ğ”»’è
 									If IsNumber(params(idx + 1)) Then
 										j = CShort(params(idx + 1))
 									End If
@@ -5590,8 +5538,8 @@ LookUpUserDefinedID:
 										Exit Function
 									End If
 									EvalInfoFunc = .EffectType(j)
-								Case "åŠ¹æœãƒ¬ãƒ™ãƒ«"
-									'Invalid_string_refer_to_original_code
+								Case "Œø‰ÊƒŒƒxƒ‹"
+									'‰½”Ô–Ú‚ÌŒø‰Ê‚©‚ğ”»’è
 									If IsNumber(params(idx + 1)) Then
 										j = CShort(params(idx + 1))
 									End If
@@ -5599,8 +5547,8 @@ LookUpUserDefinedID:
 										Exit Function
 									End If
 									EvalInfoFunc = VB6.Format(.EffectLevel(j))
-								Case "åŠ¹æœãƒ‡ãƒ¼ã‚¿"
-									'Invalid_string_refer_to_original_code
+								Case "Œø‰Êƒf[ƒ^"
+									'‰½”Ô–Ú‚ÌŒø‰Ê‚©‚ğ”»’è
 									If IsNumber(params(idx + 1)) Then
 										j = CShort(params(idx + 1))
 									End If
@@ -5608,27 +5556,25 @@ LookUpUserDefinedID:
 										Exit Function
 									End If
 									EvalInfoFunc = .EffectData(j)
-								Case "Invalid_string_refer_to_original_code"
-									'Invalid_string_refer_to_original_code
-									'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+								Case "Ë’ö", "Å‘åË’ö"
 									EvalInfoFunc = VB6.Format(.MaxRange)
-								Case "Invalid_string_refer_to_original_code"
+								Case "Å¬Ë’ö"
 									EvalInfoFunc = VB6.Format(.MinRange)
-								Case "æœ€å¤§ä½¿ç”¨å›æ•°", "ä½¿ç”¨å›æ•°"
+								Case "Å‘åg—p‰ñ”", "g—p‰ñ”"
 									EvalInfoFunc = VB6.Format(.Stock)
-								Case "Invalid_string_refer_to_original_code"
+								Case "Á”ï‚d‚m"
 									EvalInfoFunc = VB6.Format(.ENConsumption)
-								Case "Invalid_string_refer_to_original_code"
+								Case "•K—v‹C—Í"
 									EvalInfoFunc = VB6.Format(.NecessaryMorale)
-								Case "å±æ€§"
+								Case "‘®«"
 									EvalInfoFunc = .Class_Renamed
-								Case "Invalid_string_refer_to_original_code"
+								Case "‘®«Š—L"
 									If InStrNotNest(.Class_Renamed, params(idx + 1)) > 0 Then
 										EvalInfoFunc = "1"
 									Else
 										EvalInfoFunc = "0"
 									End If
-								Case "å±æ€§ãƒ¬ãƒ™ãƒ«"
+								Case "‘®«ƒŒƒxƒ‹"
 									j = InStrNotNest(.Class_Renamed, params(idx + 1) & "L")
 									If j = 0 Then
 										EvalInfoFunc = "0"
@@ -5645,16 +5591,16 @@ LookUpUserDefinedID:
 									If Not IsNumber(EvalInfoFunc) Then
 										EvalInfoFunc = "0"
 									End If
-								Case "Invalid_string_refer_to_original_code"
+								Case "•K—v‹Z”\"
 									EvalInfoFunc = .NecessarySkill
-								Case "ä½¿ç”¨å¯", "Invalid_string_refer_to_original_code"
+								Case "g—p‰Â", "C“¾"
 									EvalInfoFunc = "1"
 							End Select
 						End With
 					End With
 				ElseIf Not it Is Nothing Then 
 					With it
-						'Invalid_string_refer_to_original_code
+						'‰½”Ô–Ú‚ÌƒAƒrƒŠƒeƒB‚©‚ğ”»’è
 						If IsNumber(params(idx)) Then
 							i = CShort(params(idx))
 						Else
@@ -5664,7 +5610,7 @@ LookUpUserDefinedID:
 								End If
 							Next 
 						End If
-						'Invalid_string_refer_to_original_code
+						'w’è‚µ‚½ƒAƒrƒŠƒeƒB‚ğ‚Á‚Ä‚¢‚È‚¢
 						If i <= 0 Or .CountAbility < i Then
 							Exit Function
 						End If
@@ -5672,12 +5618,12 @@ LookUpUserDefinedID:
 						idx = idx + 1
 						With .Ability(i)
 							Select Case params(idx)
-								Case "", "åç§°"
+								Case "", "–¼Ì"
 									EvalInfoFunc = .Name
-								Case "åŠ¹æœæ•°"
+								Case "Œø‰Ê”"
 									EvalInfoFunc = VB6.Format(.CountEffect)
-								Case "Invalid_string_refer_to_original_code"
-									'Invalid_string_refer_to_original_code
+								Case "Œø‰Êƒ^ƒCƒv"
+									'‰½”Ô–Ú‚ÌŒø‰Ê‚©‚ğ”»’è
 									If IsNumber(params(idx + 1)) Then
 										j = CShort(params(idx + 1))
 									End If
@@ -5685,8 +5631,8 @@ LookUpUserDefinedID:
 										Exit Function
 									End If
 									EvalInfoFunc = .EffectType(j)
-								Case "åŠ¹æœãƒ¬ãƒ™ãƒ«"
-									'Invalid_string_refer_to_original_code
+								Case "Œø‰ÊƒŒƒxƒ‹"
+									'‰½”Ô–Ú‚ÌŒø‰Ê‚©‚ğ”»’è
 									If IsNumber(params(idx + 1)) Then
 										j = CShort(params(idx + 1))
 									End If
@@ -5694,8 +5640,8 @@ LookUpUserDefinedID:
 										Exit Function
 									End If
 									EvalInfoFunc = VB6.Format(.EffectLevel(j))
-								Case "åŠ¹æœãƒ‡ãƒ¼ã‚¿"
-									'Invalid_string_refer_to_original_code
+								Case "Œø‰Êƒf[ƒ^"
+									'‰½”Ô–Ú‚ÌŒø‰Ê‚©‚ğ”»’è
 									If IsNumber(params(idx + 1)) Then
 										j = CShort(params(idx + 1))
 									End If
@@ -5703,27 +5649,25 @@ LookUpUserDefinedID:
 										Exit Function
 									End If
 									EvalInfoFunc = .EffectData(j)
-								Case "Invalid_string_refer_to_original_code"
-									'Invalid_string_refer_to_original_code
-									'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+								Case "Ë’ö", "Å‘åË’ö"
 									EvalInfoFunc = VB6.Format(.MaxRange)
-								Case "Invalid_string_refer_to_original_code"
+								Case "Å¬Ë’ö"
 									EvalInfoFunc = VB6.Format(.MinRange)
-								Case "æœ€å¤§ä½¿ç”¨å›æ•°", "ä½¿ç”¨å›æ•°"
+								Case "Å‘åg—p‰ñ”", "g—p‰ñ”"
 									EvalInfoFunc = VB6.Format(.Stock)
-								Case "Invalid_string_refer_to_original_code"
+								Case "Á”ï‚d‚m"
 									EvalInfoFunc = VB6.Format(.ENConsumption)
-								Case "Invalid_string_refer_to_original_code"
+								Case "•K—v‹C—Í"
 									EvalInfoFunc = VB6.Format(.NecessaryMorale)
-								Case "å±æ€§"
+								Case "‘®«"
 									EvalInfoFunc = .Class_Renamed
-								Case "Invalid_string_refer_to_original_code"
+								Case "‘®«Š—L"
 									If InStrNotNest(.Class_Renamed, params(idx + 1)) > 0 Then
 										EvalInfoFunc = "1"
 									Else
 										EvalInfoFunc = "0"
 									End If
-								Case "å±æ€§ãƒ¬ãƒ™ãƒ«"
+								Case "‘®«ƒŒƒxƒ‹"
 									j = InStrNotNest(.Class_Renamed, params(idx + 1) & "L")
 									If j = 0 Then
 										EvalInfoFunc = "0"
@@ -5740,16 +5684,16 @@ LookUpUserDefinedID:
 									If Not IsNumber(EvalInfoFunc) Then
 										EvalInfoFunc = "0"
 									End If
-								Case "Invalid_string_refer_to_original_code"
+								Case "•K—v‹Z”\"
 									EvalInfoFunc = .NecessarySkill
-								Case "ä½¿ç”¨å¯", "Invalid_string_refer_to_original_code"
+								Case "g—p‰Â", "C“¾"
 									EvalInfoFunc = "1"
 							End Select
 						End With
 					End With
 				ElseIf Not itd Is Nothing Then 
 					With itd
-						'Invalid_string_refer_to_original_code
+						'‰½”Ô–Ú‚ÌƒAƒrƒŠƒeƒB‚©‚ğ”»’è
 						If IsNumber(params(idx)) Then
 							i = CShort(params(idx))
 						Else
@@ -5759,7 +5703,7 @@ LookUpUserDefinedID:
 								End If
 							Next 
 						End If
-						'Invalid_string_refer_to_original_code
+						'w’è‚µ‚½ƒAƒrƒŠƒeƒB‚ğ‚Á‚Ä‚¢‚È‚¢
 						If i <= 0 Or .CountAbility < i Then
 							Exit Function
 						End If
@@ -5767,12 +5711,12 @@ LookUpUserDefinedID:
 						idx = idx + 1
 						With .Ability(i)
 							Select Case params(idx)
-								Case "", "åç§°"
+								Case "", "–¼Ì"
 									EvalInfoFunc = .Name
-								Case "åŠ¹æœæ•°"
+								Case "Œø‰Ê”"
 									EvalInfoFunc = VB6.Format(.CountEffect)
-								Case "Invalid_string_refer_to_original_code"
-									'Invalid_string_refer_to_original_code
+								Case "Œø‰Êƒ^ƒCƒv"
+									'‰½”Ô–Ú‚ÌŒø‰Ê‚©‚ğ”»’è
 									If IsNumber(params(idx + 1)) Then
 										j = CShort(params(idx + 1))
 									End If
@@ -5780,8 +5724,8 @@ LookUpUserDefinedID:
 										Exit Function
 									End If
 									EvalInfoFunc = .EffectType(j)
-								Case "åŠ¹æœãƒ¬ãƒ™ãƒ«"
-									'Invalid_string_refer_to_original_code
+								Case "Œø‰ÊƒŒƒxƒ‹"
+									'‰½”Ô–Ú‚ÌŒø‰Ê‚©‚ğ”»’è
 									If IsNumber(params(idx + 1)) Then
 										j = CShort(params(idx + 1))
 									End If
@@ -5789,8 +5733,8 @@ LookUpUserDefinedID:
 										Exit Function
 									End If
 									EvalInfoFunc = VB6.Format(.EffectLevel(j))
-								Case "åŠ¹æœãƒ‡ãƒ¼ã‚¿"
-									'Invalid_string_refer_to_original_code
+								Case "Œø‰Êƒf[ƒ^"
+									'‰½”Ô–Ú‚ÌŒø‰Ê‚©‚ğ”»’è
 									If IsNumber(params(idx + 1)) Then
 										j = CShort(params(idx + 1))
 									End If
@@ -5798,27 +5742,25 @@ LookUpUserDefinedID:
 										Exit Function
 									End If
 									EvalInfoFunc = .EffectData(j)
-								Case "Invalid_string_refer_to_original_code"
-									'Invalid_string_refer_to_original_code
-									'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+								Case "Ë’ö", "Å‘åË’ö"
 									EvalInfoFunc = VB6.Format(.MaxRange)
-								Case "Invalid_string_refer_to_original_code"
+								Case "Å¬Ë’ö"
 									EvalInfoFunc = VB6.Format(.MinRange)
-								Case "æœ€å¤§ä½¿ç”¨å›æ•°", "ä½¿ç”¨å›æ•°"
+								Case "Å‘åg—p‰ñ”", "g—p‰ñ”"
 									EvalInfoFunc = VB6.Format(.Stock)
-								Case "Invalid_string_refer_to_original_code"
+								Case "Á”ï‚d‚m"
 									EvalInfoFunc = VB6.Format(.ENConsumption)
-								Case "Invalid_string_refer_to_original_code"
+								Case "•K—v‹C—Í"
 									EvalInfoFunc = VB6.Format(.NecessaryMorale)
-								Case "å±æ€§"
+								Case "‘®«"
 									EvalInfoFunc = .Class_Renamed
-								Case "Invalid_string_refer_to_original_code"
+								Case "‘®«Š—L"
 									If InStrNotNest(.Class_Renamed, params(idx + 1)) > 0 Then
 										EvalInfoFunc = "1"
 									Else
 										EvalInfoFunc = "0"
 									End If
-								Case "å±æ€§ãƒ¬ãƒ™ãƒ«"
+								Case "‘®«ƒŒƒxƒ‹"
 									j = InStrNotNest(.Class_Renamed, params(idx + 1) & "L")
 									If j = 0 Then
 										EvalInfoFunc = "0"
@@ -5835,161 +5777,149 @@ LookUpUserDefinedID:
 									If Not IsNumber(EvalInfoFunc) Then
 										EvalInfoFunc = "0"
 									End If
-								Case "Invalid_string_refer_to_original_code"
+								Case "•K—v‹Z”\"
 									EvalInfoFunc = .NecessarySkill
-								Case "ä½¿ç”¨å¯", "Invalid_string_refer_to_original_code"
+								Case "g—p‰Â", "C“¾"
 									EvalInfoFunc = "1"
 							End Select
 						End With
 					End With
 				End If
-			Case "ãƒ©ãƒ³ã‚¯"
+			Case "ƒ‰ƒ“ƒN"
 				If Not u Is Nothing Then
 					EvalInfoFunc = VB6.Format(u.Rank)
 				End If
-			Case "ãƒœã‚¹ãƒ©ãƒ³ã‚¯"
+			Case "ƒ{ƒXƒ‰ƒ“ƒN"
 				If Not u Is Nothing Then
 					EvalInfoFunc = VB6.Format(u.BossRank)
 				End If
-			Case "ã‚¨ãƒªã‚¢"
+			Case "ƒGƒŠƒA"
 				If Not u Is Nothing Then
 					EvalInfoFunc = u.Area
 				End If
-			Case "Invalid_string_refer_to_original_code"
+			Case "vlƒ‚[ƒh"
 				If Not u Is Nothing Then
 					EvalInfoFunc = u.Mode
 				End If
-			Case "Invalid_string_refer_to_original_code"
+			Case "Å‘åUŒ‚—Í"
 				If Not u Is Nothing Then
 					With u
 						max_value = 0
 						For i = 1 To .CountWeapon
-							'Invalid_string_refer_to_original_code_
-							'Then
-							'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-							If .WeaponPower(i, "") > max_value Then
-								max_value = .WeaponPower(i, "")
+							If .IsWeaponMastered(i) And Not .IsDisabled((.Weapon(i).Name)) And Not .IsWeaponClassifiedAs(i, "‡") Then
+								If .WeaponPower(i, "") > max_value Then
+									max_value = .WeaponPower(i, "")
+								End If
 							End If
 						Next 
+						EvalInfoFunc = VB6.Format(max_value)
+					End With
+				ElseIf Not ud Is Nothing Then 
+					With ud
+						max_value = 0
+						For i = 1 To .CountWeapon
+							If InStr(.Weapon(i).Class_Renamed, "‡") = 0 Then
+								If .Weapon(i).Power > max_value Then
+									max_value = .Weapon(i).Power
+								End If
+							End If
+						Next 
+						EvalInfoFunc = VB6.Format(max_value)
 					End With
 				End If
-				'Next
-				EvalInfoFunc = VB6.Format(max_value)
-				'End With
-				'UPGRADE_WARNING: EvalInfoFunc ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-				With ud
-					max_value = 0
-					For i = 1 To .CountWeapon
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-						If .Weapon(i).Power > max_value Then
-							max_value = .Weapon(i).Power
-						End If
-						'End If
-					Next 
-					EvalInfoFunc = VB6.Format(max_value)
-				End With
-				'End If
-			Case "Invalid_string_refer_to_original_code"
+			Case "Å’·Ë’ö"
 				If Not u Is Nothing Then
 					With u
 						max_value = 0
 						For i = 1 To .CountWeapon
-							'Invalid_string_refer_to_original_code_
-							'Then
-							'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-							If .WeaponMaxRange(i) > max_value Then
-								max_value = .WeaponMaxRange(i)
+							If .IsWeaponMastered(i) And Not .IsDisabled((.Weapon(i).Name)) And Not .IsWeaponClassifiedAs(i, "‡") Then
+								If .WeaponMaxRange(i) > max_value Then
+									max_value = .WeaponMaxRange(i)
+								End If
 							End If
 						Next 
+						EvalInfoFunc = VB6.Format(max_value)
+					End With
+				ElseIf Not ud Is Nothing Then 
+					With ud
+						max_value = 0
+						For i = 1 To .CountWeapon
+							If InStr(.Weapon(i).Class_Renamed, "‡") = 0 Then
+								If .Weapon(i).MaxRange > max_value Then
+									max_value = .Weapon(i).MaxRange
+								End If
+							End If
+						Next 
+						EvalInfoFunc = VB6.Format(max_value)
 					End With
 				End If
-				'Next
-				EvalInfoFunc = VB6.Format(max_value)
-				'End With
-				'UPGRADE_WARNING: EvalInfoFunc ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-				With ud
-					max_value = 0
-					For i = 1 To .CountWeapon
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-						If .Weapon(i).MaxRange > max_value Then
-							max_value = .Weapon(i).MaxRange
-						End If
-						'End If
-					Next 
-					EvalInfoFunc = VB6.Format(max_value)
-				End With
-				'End If
-			Case "Invalid_string_refer_to_original_code"
+			Case "c‚èƒTƒ|[ƒgƒAƒ^ƒbƒN”"
 				If Not u Is Nothing Then
 					EvalInfoFunc = VB6.Format(u.MaxSupportAttack - u.UsedSupportAttack)
 				End If
-			Case "Invalid_string_refer_to_original_code"
+			Case "c‚èƒTƒ|[ƒgƒK[ƒh”"
 				If Not u Is Nothing Then
 					EvalInfoFunc = VB6.Format(u.MaxSupportGuard - u.UsedSupportGuard)
 				End If
-			Case "Invalid_string_refer_to_original_code"
+			Case "c‚è“¯‰‡ŒìUŒ‚”"
 				If Not u Is Nothing Then
 					EvalInfoFunc = VB6.Format(u.MaxSyncAttack - u.UsedSyncAttack)
 				End If
-			Case "Invalid_string_refer_to_original_code"
+			Case "c‚èƒJƒEƒ“ƒ^[UŒ‚”"
 				If Not u Is Nothing Then
 					EvalInfoFunc = VB6.Format(u.MaxCounterAttack - u.UsedCounterAttack)
 				End If
-			Case "æ”¹é€ è²»"
+			Case "‰ü‘¢”ï"
 				If Not u Is Nothing Then
 					EvalInfoFunc = VB6.Format(RankUpCost(u))
 				End If
-			Case "æœ€å¤§æ”¹é€ æ•°"
+			Case "Å‘å‰ü‘¢”"
 				If Not u Is Nothing Then
 					EvalInfoFunc = VB6.Format(MaxRank(u))
 				End If
-			Case "Invalid_string_refer_to_original_code"
+			Case "ƒAƒCƒeƒ€ƒNƒ‰ƒX"
 				If Not it Is Nothing Then
 					EvalInfoFunc = it.Class_Renamed()
 				ElseIf Not itd Is Nothing Then 
 					EvalInfoFunc = itd.Class_Renamed
 				End If
-			Case "Invalid_string_refer_to_original_code"
+			Case "‘•”õŒÂŠ"
 				If Not it Is Nothing Then
 					EvalInfoFunc = it.Part
 				ElseIf Not itd Is Nothing Then 
 					EvalInfoFunc = itd.Part
 				End If
-			Case "Invalid_string_refer_to_original_code"
+			Case "Å‘å‚g‚oC³’l"
 				If Not it Is Nothing Then
 					EvalInfoFunc = VB6.Format(it.HP)
 				ElseIf Not itd Is Nothing Then 
 					EvalInfoFunc = VB6.Format(itd.HP)
 				End If
-			Case "Invalid_string_refer_to_original_code"
+			Case "Å‘å‚d‚mC³’l"
 				If Not it Is Nothing Then
 					EvalInfoFunc = VB6.Format(it.EN)
 				ElseIf Not itd Is Nothing Then 
 					EvalInfoFunc = VB6.Format(itd.EN)
 				End If
-			Case "Invalid_string_refer_to_original_code"
+			Case "‘•bC³’l"
 				If Not it Is Nothing Then
 					EvalInfoFunc = VB6.Format(it.Armor)
 				ElseIf Not itd Is Nothing Then 
 					EvalInfoFunc = VB6.Format(itd.Armor)
 				End If
-			Case "é‹å‹•æ€§ä¿®æ­£å€¤"
+			Case "‰^“®«C³’l"
 				If Not it Is Nothing Then
 					EvalInfoFunc = VB6.Format(it.Mobility)
 				ElseIf Not itd Is Nothing Then 
 					EvalInfoFunc = VB6.Format(itd.Mobility)
 				End If
-			Case "ç§»å‹•åŠ›ä¿®æ­£å€¤"
+			Case "ˆÚ“®—ÍC³’l"
 				If Not it Is Nothing Then
 					EvalInfoFunc = VB6.Format(it.Speed)
 				ElseIf Not itd Is Nothing Then 
 					EvalInfoFunc = VB6.Format(itd.Speed)
 				End If
-			Case "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			Case "‰ğà•¶", "ƒRƒƒ“ƒg"
 				If Not it Is Nothing Then
 					EvalInfoFunc = it.Data.Comment
 					ReplaceString(EvalInfoFunc, vbCr & vbLf, " ")
@@ -5999,35 +5929,35 @@ LookUpUserDefinedID:
 				ElseIf Not spd Is Nothing Then 
 					EvalInfoFunc = spd.Comment
 				End If
-			Case "Invalid_string_refer_to_original_code"
+			Case "’Zk–¼"
 				If Not spd Is Nothing Then
 					EvalInfoFunc = spd.ShortName
 				End If
-			Case "Invalid_string_refer_to_original_code"
+			Case "Á”ï‚r‚o"
 				If Not spd Is Nothing Then
 					EvalInfoFunc = VB6.Format(spd.SPConsumption)
 				End If
-			Case "å¯¾è±¡"
+			Case "‘ÎÛ"
 				If Not spd Is Nothing Then
 					EvalInfoFunc = spd.TargetType
 				End If
-			Case "Invalid_string_refer_to_original_code"
+			Case "‘±ŠúŠÔ"
 				If Not spd Is Nothing Then
 					EvalInfoFunc = spd.Duration
 				End If
-			Case "é©ç”¨æ¡ä»¶"
+			Case "“K—pğŒ"
 				If Not spd Is Nothing Then
 					EvalInfoFunc = spd.NecessaryCondition
 				End If
-			Case "ã‚¢ãƒ‹ãƒ¡"
+			Case "ƒAƒjƒ"
 				If Not spd Is Nothing Then
 					EvalInfoFunc = spd.Animation
 				End If
-			Case "åŠ¹æœæ•°"
+			Case "Œø‰Ê”"
 				If Not spd Is Nothing Then
 					EvalInfoFunc = VB6.Format(spd.CountEffect)
 				End If
-			Case "Invalid_string_refer_to_original_code"
+			Case "Œø‰Êƒ^ƒCƒv"
 				If Not spd Is Nothing Then
 					idx = idx + 1
 					i = StrToLng(params(idx))
@@ -6035,7 +5965,7 @@ LookUpUserDefinedID:
 						EvalInfoFunc = spd.EffectType(i)
 					End If
 				End If
-			Case "åŠ¹æœãƒ¬ãƒ™ãƒ«"
+			Case "Œø‰ÊƒŒƒxƒ‹"
 				If Not spd Is Nothing Then
 					idx = idx + 1
 					i = StrToLng(params(idx))
@@ -6043,7 +5973,7 @@ LookUpUserDefinedID:
 						EvalInfoFunc = VB6.Format(spd.EffectLevel(i))
 					End If
 				End If
-			Case "åŠ¹æœãƒ‡ãƒ¼ã‚¿"
+			Case "Œø‰Êƒf[ƒ^"
 				If Not spd Is Nothing Then
 					idx = idx + 1
 					i = StrToLng(params(idx))
@@ -6051,21 +5981,21 @@ LookUpUserDefinedID:
 						EvalInfoFunc = spd.EffectData(i)
 					End If
 				End If
-			Case "Invalid_string_refer_to_original_code"
+			Case "ƒ}ƒbƒv"
 				idx = idx + 1
 				Select Case params(idx)
-					Case "Invalid_string_refer_to_original_code"
+					Case "ƒtƒ@ƒCƒ‹–¼"
 						EvalInfoFunc = MapFileName
 						If Len(EvalInfoFunc) > Len(ScenarioPath) Then
 							If Left(EvalInfoFunc, Len(ScenarioPath)) = ScenarioPath Then
 								EvalInfoFunc = Mid(EvalInfoFunc, Len(ScenarioPath) + 1)
 							End If
 						End If
-					Case "Invalid_string_refer_to_original_code"
+					Case "•"
 						EvalInfoFunc = VB6.Format(MapWidth)
-					Case "æ™‚é–“å¸¯"
+					Case "ŠÔ‘Ñ"
 						If MapDrawMode <> "" Then
-							If MapDrawMode = "ãƒ•ã‚£ãƒ«ã‚¿" Then
+							If MapDrawMode = "ƒtƒBƒ‹ƒ^" Then
 								buf = Hex(MapDrawFilterColor)
 								For i = 1 To 6 - Len(buf)
 									buf = "0" & buf
@@ -6075,13 +6005,13 @@ LookUpUserDefinedID:
 								buf = MapDrawMode
 							End If
 							If MapDrawIsMapOnly Then
-								buf = buf & "Invalid_string_refer_to_original_code"
+								buf = buf & " ƒ}ƒbƒvŒÀ’è"
 							End If
 							EvalInfoFunc = buf
 						Else
-							EvalInfoFunc = "æ˜¼"
+							EvalInfoFunc = "’‹"
 						End If
-					Case "é«˜ã•"
+					Case "‚‚³"
 						EvalInfoFunc = VB6.Format(MapHeight)
 					Case Else
 						
@@ -6099,25 +6029,23 @@ LookUpUserDefinedID:
 						
 						idx = idx + 1
 						Select Case params(idx)
-							Case "Invalid_string_refer_to_original_code"
+							Case "’nŒ`–¼"
 								EvalInfoFunc = TerrainName(mx, my_Renamed)
-							Case "Invalid_string_refer_to_original_code"
-								'Invalid_string_refer_to_original_code
-								'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+							Case "’nŒ`ƒ^ƒCƒv", "’nŒ`ƒNƒ‰ƒX"
 								EvalInfoFunc = TerrainClass(mx, my_Renamed)
-							Case "Invalid_string_refer_to_original_code"
-								'Invalid_string_refer_to_original_code
-								'Invalid_string_refer_to_original_code
+							Case "ˆÚ“®ƒRƒXƒg"
+								'0.5‚İ‚ÌˆÚ“®ƒRƒXƒg‚ğg‚¦‚é‚æ‚¤‚É‚·‚é‚½‚ßAˆÚ“®ƒRƒXƒg‚Í
+								'ÀÛ‚Ì‚Q”{‚Ì’l‚Å‹L˜^‚³‚ê‚Ä‚¢‚é
 								EvalInfoFunc = VB6.Format(TerrainMoveCost(mx, my_Renamed) / 2)
-							Case "å›é¿ä¿®æ­£"
+							Case "‰ñ”ğC³"
 								EvalInfoFunc = VB6.Format(TerrainEffectForHit(mx, my_Renamed))
-							Case "ãƒ€ãƒ¡ãƒ¼ã‚¸ä¿®æ­£"
+							Case "ƒ_ƒ[ƒWC³"
 								EvalInfoFunc = VB6.Format(TerrainEffectForDamage(mx, my_Renamed))
-							Case "Invalid_string_refer_to_original_code"
+							Case "‚g‚o‰ñ•œ—Ê"
 								EvalInfoFunc = VB6.Format(TerrainEffectForHPRecover(mx, my_Renamed))
-							Case "Invalid_string_refer_to_original_code"
+							Case "‚d‚m‰ñ•œ—Ê"
 								EvalInfoFunc = VB6.Format(TerrainEffectForENRecover(mx, my_Renamed))
-							Case "Invalid_string_refer_to_original_code"
+							Case "ƒrƒbƒgƒ}ƒbƒv–¼"
 								'MOD START 240a
 								'                            Select Case MapImageFileTypeData(mx, my)
 								'                                Case SeparateDirMapImageFileType
@@ -6144,7 +6072,7 @@ LookUpUserDefinedID:
 								End Select
 								'MOD  END  240a
 								'ADD START 240a
-							Case "Invalid_string_refer_to_original_code"
+							Case "ƒŒƒCƒ„[ƒrƒbƒgƒ}ƒbƒv–¼"
 								Select Case MapImageFileTypeData(mx, my_Renamed)
 									Case Map.MapImageFileType.SeparateDirMapImageFileType
 										EvalInfoFunc = TDList.Bitmap(MapData(mx, my_Renamed, Map.MapDataIndex.LayerType)) & "\" & TDList.Bitmap(MapData(mx, my_Renamed, Map.MapDataIndex.LayerType)) & VB6.Format(MapData(mx, my_Renamed, Map.MapDataIndex.LayerBitmapNo), "0000") & ".bmp"
@@ -6154,13 +6082,13 @@ LookUpUserDefinedID:
 										EvalInfoFunc = TDList.Bitmap(MapData(mx, my_Renamed, Map.MapDataIndex.LayerType)) & VB6.Format(MapData(mx, my_Renamed, Map.MapDataIndex.LayerBitmapNo)) & ".bmp"
 								End Select
 								'ADD  END  240a
-							Case "Invalid_string_refer_to_original_code"
+							Case "ƒ†ƒjƒbƒg‚h‚c"
 								If Not MapDataForUnit(mx, my_Renamed) Is Nothing Then
 									EvalInfoFunc = MapDataForUnit(mx, my_Renamed).ID
 								End If
 						End Select
 				End Select
-			Case "ã‚ªãƒ—ã‚·ãƒ§ãƒ³"
+			Case "ƒIƒvƒVƒ‡ƒ“"
 				idx = idx + 1
 				Select Case params(idx)
 					Case "MessageWait"
@@ -6205,12 +6133,12 @@ LookUpUserDefinedID:
 						''                    "BattleAnimation", "WeaponAnimation", "MoveAnimation", _
 						''                    "ImageBufferNum", "MaxImageBufferSize", "KeepStretchedImage", _
 						''                    "UseTransparentBlt"
-						'Invalid_string_refer_to_original_code
+						' uNewGUIv‚Å’T‚µ‚É—ˆ‚½‚çINI‚Ìó‘Ô‚ğ•Ô‚·BuV‚f‚t‚hv‚Å’T‚µ‚É—ˆ‚½‚çOption‚Ìó‘Ô‚ğ•Ô‚·B
 					Case "Turn", "Square", "KeepEnemyBGM", "MidiReset", "AutoMoveCursor", "DebugMode", "LastFolder", "MIDIPortID", "MP3Volume", "BattleAnimation", "WeaponAnimation", "MoveAnimation", "ImageBufferNum", "MaxImageBufferSize", "KeepStretchedImage", "UseTransparentBlt", "NewGUI"
 						' MOD END MARGE
 						EvalInfoFunc = ReadIni("Option", params(idx))
 					Case Else
-						'Invalid_string_refer_to_original_code
+						'OptionƒRƒ}ƒ“ƒh‚ÌƒIƒvƒVƒ‡ƒ“‚ğQÆ
 						If IsOptionDefined(params(idx)) Then
 							EvalInfoFunc = "On"
 						Else
@@ -6221,9 +6149,9 @@ LookUpUserDefinedID:
 	End Function
 	
 	
-	'Invalid_string_refer_to_original_code
+	' === •Ï”‚ÉŠÖ‚·‚éˆ— ===
 	
-	'å¤‰æ•°ã®å€¤ã‚’è©•ä¾¡
+	'•Ï”‚Ì’l‚ğ•]‰¿
 	Public Function GetVariable(ByRef var_name As String, ByRef etype As ValueType, ByRef str_result As String, ByRef num_result As Double) As ValueType
 		Dim vname As String
 		Dim i, num As Short
@@ -6236,10 +6164,10 @@ LookUpUserDefinedID:
 		
 		vname = var_name
 		
-		'Invalid_string_refer_to_original_code
+		'–¢’è‹`’l‚Ìİ’è
 		str_result = var_name
 		
-		'Invalid_string_refer_to_original_code
+		'•Ï”‚ª”z—ñH
 		ret = InStr(vname, "[")
 		If ret = 0 Then
 			GoTo SkipArrayHandling
@@ -6248,12 +6176,12 @@ LookUpUserDefinedID:
 			GoTo SkipArrayHandling
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'‚±‚±‚©‚ç”z—ñê—p‚Ìˆ—
 		
-		'Invalid_string_refer_to_original_code
+		'ƒCƒ“ƒfƒbƒNƒX•”•ª‚ÌØ‚è‚¾‚µ
 		idx = Mid(vname, ret + 1, Len(vname) - ret - 1)
 		
-		'Invalid_string_refer_to_original_code
+		'‘½ŸŒ³”z—ñ‚Ìˆ—
 		If InStr(idx, ",") > 0 Then
 			start_idx = 1
 			depth = 0
@@ -6269,7 +6197,7 @@ LookUpUserDefinedID:
 					End If
 				Else
 					Select Case Asc(Mid(idx, i, 1))
-						Case 9, 32 'Invalid_string_refer_to_original_code
+						Case 9, 32 'ƒ^ƒu, ‹ó”’
 							If start_idx = i Then
 								start_idx = i + 1
 							Else
@@ -6306,19 +6234,19 @@ LookUpUserDefinedID:
 			idx = GetValueAsString(idx)
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'•Ï”–¼‚ğ”z—ñ‚ÌƒCƒ“ƒfƒbƒNƒX•”‚ğŒvZ‚µ‚ÄÄ\’z
 		vname = Left(vname, ret) & idx & "]"
 		
-		'Invalid_string_refer_to_original_code
+		'’è‹`‚³‚ê‚Ä‚¢‚È‚¢—v‘f‚ğg‚Á‚Ä”z—ñ‚ğ“Ç‚İo‚µ‚½ê‡‚Í‹ó•¶š—ñ‚ğ•Ô‚·
 		str_result = ""
 		
-		'Invalid_string_refer_to_original_code
+		'”z—ñê—p‚Ìˆ—‚ªI—¹
 		
 SkipArrayHandling: 
 		
-		'Invalid_string_refer_to_original_code
+		'‚±‚±‚©‚ç”z—ñ‚Æ’Êí•Ï”‚Ì‹¤’Êˆ—
 		
-		'ã‚µãƒ–ãƒ«ãƒ¼ãƒãƒ³ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°
+		'ƒTƒuƒ‹[ƒ`ƒ“ƒ[ƒJƒ‹•Ï”
 		If CallDepth > 0 Then
 			For i = VarIndexStack(CallDepth - 1) + 1 To VarIndex
 				With VarStack(i)
@@ -6353,7 +6281,7 @@ SkipArrayHandling:
 			Next 
 		End If
 		
-		'ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°
+		'ƒ[ƒJƒ‹•Ï”
 		If IsLocalVariableDefined(vname) Then
 			With LocalVariableList.Item(vname)
 				Select Case etype
@@ -6393,7 +6321,7 @@ SkipArrayHandling:
 			Exit Function
 		End If
 		
-		'ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°
+		'ƒOƒ[ƒoƒ‹•Ï”
 		If IsGlobalVariableDefined(vname) Then
 			With GlobalVariableList.Item(vname)
 				Select Case etype
@@ -6433,11 +6361,9 @@ SkipArrayHandling:
 			Exit Function
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'ƒVƒXƒeƒ€•Ï”H
 		Select Case vname
-			Case "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			Case "‘ÎÛƒ†ƒjƒbƒg", "‘ÎÛƒpƒCƒƒbƒg"
 				If Not SelectedUnitForEvent Is Nothing Then
 					With SelectedUnitForEvent
 						If .CountPilot > 0 Then
@@ -6452,9 +6378,7 @@ SkipArrayHandling:
 				GetVariable = ValueType.StringType
 				Exit Function
 				
-			Case "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			Case "‘Šèƒ†ƒjƒbƒg", "‘ŠèƒpƒCƒƒbƒg"
 				If Not SelectedTargetForEvent Is Nothing Then
 					With SelectedTargetForEvent
 						If .CountPilot > 0 Then
@@ -6469,7 +6393,7 @@ SkipArrayHandling:
 				GetVariable = ValueType.StringType
 				Exit Function
 				
-			Case "Invalid_string_refer_to_original_code"
+			Case "‘ÎÛƒ†ƒjƒbƒg‚h‚c"
 				If Not SelectedUnitForEvent Is Nothing Then
 					str_result = SelectedUnitForEvent.ID
 				Else
@@ -6478,7 +6402,7 @@ SkipArrayHandling:
 				GetVariable = ValueType.StringType
 				Exit Function
 				
-			Case "Invalid_string_refer_to_original_code"
+			Case "‘Šèƒ†ƒjƒbƒg‚h‚c"
 				If Not SelectedTargetForEvent Is Nothing Then
 					str_result = SelectedTargetForEvent.ID
 				Else
@@ -6487,7 +6411,7 @@ SkipArrayHandling:
 				GetVariable = ValueType.StringType
 				Exit Function
 				
-			Case "å¯¾è±¡ãƒ¦ãƒ‹ãƒƒãƒˆä½¿ç”¨æ­¦å™¨"
+			Case "‘ÎÛƒ†ƒjƒbƒgg—p•Ší"
 				str_result = ""
 				If SelectedUnitForEvent Is SelectedUnit Then
 					With SelectedUnitForEvent
@@ -6509,7 +6433,7 @@ SkipArrayHandling:
 				GetVariable = ValueType.StringType
 				Exit Function
 				
-			Case "ç›¸æ‰‹ãƒ¦ãƒ‹ãƒƒãƒˆä½¿ç”¨æ­¦å™¨"
+			Case "‘Šèƒ†ƒjƒbƒgg—p•Ší"
 				str_result = ""
 				If SelectedTargetForEvent Is SelectedTarget Then
 					With SelectedTargetForEvent
@@ -6531,7 +6455,7 @@ SkipArrayHandling:
 				GetVariable = ValueType.StringType
 				Exit Function
 				
-			Case "å¯¾è±¡ãƒ¦ãƒ‹ãƒƒãƒˆä½¿ç”¨æ­¦å™¨ç•ªå·"
+			Case "‘ÎÛƒ†ƒjƒbƒgg—p•Ší”Ô†"
 				str_result = ""
 				If SelectedUnitForEvent Is SelectedUnit Then
 					With SelectedUnitForEvent
@@ -6556,7 +6480,7 @@ SkipArrayHandling:
 				End If
 				Exit Function
 				
-			Case "ç›¸æ‰‹ãƒ¦ãƒ‹ãƒƒãƒˆä½¿ç”¨æ­¦å™¨ç•ªå·"
+			Case "‘Šèƒ†ƒjƒbƒgg—p•Ší”Ô†"
 				str_result = ""
 				If SelectedTargetForEvent Is SelectedTarget Then
 					With SelectedTargetForEvent
@@ -6581,7 +6505,7 @@ SkipArrayHandling:
 				End If
 				Exit Function
 				
-			Case "Invalid_string_refer_to_original_code"
+			Case "‘ÎÛƒ†ƒjƒbƒgg—pƒAƒrƒŠƒeƒB"
 				str_result = ""
 				If SelectedUnitForEvent Is SelectedUnit Then
 					With SelectedUnitForEvent
@@ -6595,7 +6519,7 @@ SkipArrayHandling:
 				GetVariable = ValueType.StringType
 				Exit Function
 				
-			Case "Invalid_string_refer_to_original_code"
+			Case "‘ÎÛƒ†ƒjƒbƒgg—pƒAƒrƒŠƒeƒB”Ô†"
 				str_result = ""
 				If SelectedUnitForEvent Is SelectedUnit Then
 					With SelectedUnitForEvent
@@ -6610,7 +6534,7 @@ SkipArrayHandling:
 				End If
 				Exit Function
 				
-			Case "å¯¾è±¡ãƒ¦ãƒ‹ãƒƒãƒˆä½¿ç”¨ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼"
+			Case "‘ÎÛƒ†ƒjƒbƒgg—pƒXƒyƒVƒƒƒ‹ƒpƒ["
 				str_result = ""
 				If SelectedUnitForEvent Is SelectedUnit Then
 					str_result = SelectedSpecialPower
@@ -6618,7 +6542,7 @@ SkipArrayHandling:
 				GetVariable = ValueType.StringType
 				Exit Function
 				
-			Case "Invalid_string_refer_to_original_code"
+			Case "ƒTƒ|[ƒgƒAƒ^ƒbƒNƒ†ƒjƒbƒg‚h‚c"
 				If Not SupportAttackUnit Is Nothing Then
 					str_result = SupportAttackUnit.ID
 				Else
@@ -6627,7 +6551,7 @@ SkipArrayHandling:
 				GetVariable = ValueType.StringType
 				Exit Function
 				
-			Case "Invalid_string_refer_to_original_code"
+			Case "ƒTƒ|[ƒgƒK[ƒhƒ†ƒjƒbƒg‚h‚c"
 				If Not SupportGuardUnit Is Nothing Then
 					str_result = SupportGuardUnit.ID
 				Else
@@ -6636,7 +6560,7 @@ SkipArrayHandling:
 				GetVariable = ValueType.StringType
 				Exit Function
 				
-			Case "Invalid_string_refer_to_original_code"
+			Case "‘I‘ğ"
 				If etype = ValueType.NumericType Then
 					num_result = StrToDbl(SelectedAlternative)
 					GetVariable = ValueType.NumericType
@@ -6646,7 +6570,7 @@ SkipArrayHandling:
 				End If
 				Exit Function
 				
-			Case "ã‚¿ãƒ¼ãƒ³æ•°"
+			Case "ƒ^[ƒ“”"
 				If etype = ValueType.StringType Then
 					str_result = VB6.Format(Turn)
 					GetVariable = ValueType.StringType
@@ -6656,7 +6580,7 @@ SkipArrayHandling:
 				End If
 				Exit Function
 				
-			Case "ç·ã‚¿ãƒ¼ãƒ³æ•°"
+			Case "‘ƒ^[ƒ“”"
 				If etype = ValueType.StringType Then
 					str_result = VB6.Format(TotalTurn)
 					GetVariable = ValueType.StringType
@@ -6666,20 +6590,18 @@ SkipArrayHandling:
 				End If
 				Exit Function
 				
-			Case "ãƒ•ã‚§ã‚¤ã‚º"
+			Case "ƒtƒFƒCƒY"
 				str_result = Stage
 				GetVariable = ValueType.StringType
 				Exit Function
 				
-			Case "å‘³æ–¹æ•°"
+			Case "–¡•û”"
 				num = 0
 				For	Each u In UList
 					With u
-						'Invalid_string_refer_to_original_code_
-						'Then
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-						num = num + 1
-						'End If
+						If .Party0 = "–¡•û" And (.Status_Renamed = "oŒ‚" Or .Status_Renamed = "Ši”[") Then
+							num = num + 1
+						End If
 					End With
 				Next u
 				If etype = ValueType.StringType Then
@@ -6691,15 +6613,13 @@ SkipArrayHandling:
 				End If
 				Exit Function
 				
-			Case "Invalid_string_refer_to_original_code"
+			Case "‚m‚o‚b”"
 				num = 0
 				For	Each u In UList
 					With u
-						'Invalid_string_refer_to_original_code_
-						'Then
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-						num = num + 1
-						'End If
+						If .Party0 = "‚m‚o‚b" And (.Status_Renamed = "oŒ‚" Or .Status_Renamed = "Ši”[") Then
+							num = num + 1
+						End If
 					End With
 				Next u
 				If etype = ValueType.StringType Then
@@ -6711,15 +6631,13 @@ SkipArrayHandling:
 				End If
 				Exit Function
 				
-			Case "æ•µæ•°"
+			Case "“G”"
 				num = 0
 				For	Each u In UList
 					With u
-						'Invalid_string_refer_to_original_code_
-						'Then
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-						num = num + 1
-						'End If
+						If .Party0 = "“G" And (.Status_Renamed = "oŒ‚" Or .Status_Renamed = "Ši”[") Then
+							num = num + 1
+						End If
 					End With
 				Next u
 				If etype = ValueType.StringType Then
@@ -6731,16 +6649,13 @@ SkipArrayHandling:
 				End If
 				Exit Function
 				
-			Case "ä¸­ç«‹æ•°"
+			Case "’†—§”"
 				num = 0
 				For	Each u In UList
 					With u
-						'Invalid_string_refer_to_original_code_
-						'Invalid_string_refer_to_original_code_
-						'Then
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-						num = num + 1
-						'End If
+						If .Party0 = "’†—§" And (.Status_Renamed = "oŒ‚" Or .Status_Renamed = "Ši”[") Then
+							num = num + 1
+						End If
 					End With
 				Next u
 				If etype = ValueType.StringType Then
@@ -6752,7 +6667,7 @@ SkipArrayHandling:
 				End If
 				Exit Function
 				
-			Case "Invalid_string_refer_to_original_code"
+			Case "‘‹à"
 				If etype = ValueType.StringType Then
 					str_result = FormatNum(Money)
 					GetVariable = ValueType.StringType
@@ -6763,7 +6678,7 @@ SkipArrayHandling:
 				Exit Function
 				
 			Case Else
-				'Invalid_string_refer_to_original_code
+				'ƒAƒ‹ƒtƒ@ƒxƒbƒg‚Ì•Ï”–¼‚Ílow case‚Å”»•Ê
 				Select Case LCase(vname)
 					Case "apppath"
 						str_result = AppPath
@@ -6785,7 +6700,7 @@ SkipArrayHandling:
 						Exit Function
 						
 					Case "argnum"
-						'Invalid_string_refer_to_original_code
+						'UpVar‚ÌŒÄ‚Ño‚µ‰ñ”‚ğ—İŒv
 						num = UpVarLevel
 						i = CallDepth
 						Do While num > 0
@@ -6869,10 +6784,10 @@ SkipArrayHandling:
 				End Select
 		End Select
 		
-		'Invalid_string_refer_to_original_code
+		'ƒRƒ“ƒtƒBƒO•Ï”H
 		If BCVariable.IsConfig Then
 			Select Case vname
-				Case "Invalid_string_refer_to_original_code"
+				Case "UŒ‚’l"
 					If etype = ValueType.StringType Then
 						str_result = VB6.Format(BCVariable.AttackExp)
 						GetVariable = ValueType.StringType
@@ -6881,17 +6796,17 @@ SkipArrayHandling:
 						GetVariable = ValueType.NumericType
 					End If
 					Exit Function
-				Case "Invalid_string_refer_to_original_code"
+				Case "UŒ‚‘¤ƒ†ƒjƒbƒg‚h‚c"
 					str_result = BCVariable.AtkUnit.ID
 					GetVariable = ValueType.StringType
 					Exit Function
-				Case "Invalid_string_refer_to_original_code"
+				Case "–hŒä‘¤ƒ†ƒjƒbƒg‚h‚c"
 					If Not BCVariable.DefUnit Is Nothing Then
 						str_result = BCVariable.DefUnit.ID
 						GetVariable = ValueType.StringType
 						Exit Function
 					End If
-				Case "æ­¦å™¨ç•ªå·"
+				Case "•Ší”Ô†"
 					If etype = ValueType.StringType Then
 						str_result = VB6.Format(BCVariable.WeaponNumber)
 						GetVariable = ValueType.StringType
@@ -6900,7 +6815,7 @@ SkipArrayHandling:
 						GetVariable = ValueType.NumericType
 					End If
 					Exit Function
-				Case "Invalid_string_refer_to_original_code"
+				Case "’nŒ`“K‰"
 					If etype = ValueType.StringType Then
 						str_result = VB6.Format(BCVariable.TerrainAdaption)
 						GetVariable = ValueType.StringType
@@ -6909,7 +6824,7 @@ SkipArrayHandling:
 						GetVariable = ValueType.NumericType
 					End If
 					Exit Function
-				Case "æ­¦å™¨å¨åŠ›"
+				Case "•ŠíˆĞ—Í"
 					If etype = ValueType.StringType Then
 						str_result = VB6.Format(BCVariable.WeaponPower)
 						GetVariable = ValueType.StringType
@@ -6918,7 +6833,7 @@ SkipArrayHandling:
 						GetVariable = ValueType.NumericType
 					End If
 					Exit Function
-				Case "ã‚µã‚¤ã‚ºè£œæ­£"
+				Case "ƒTƒCƒY•â³"
 					If etype = ValueType.StringType Then
 						str_result = VB6.Format(BCVariable.SizeMod)
 						GetVariable = ValueType.StringType
@@ -6927,7 +6842,7 @@ SkipArrayHandling:
 						GetVariable = ValueType.NumericType
 					End If
 					Exit Function
-				Case "Invalid_string_refer_to_original_code"
+				Case "‘•b’l"
 					If etype = ValueType.StringType Then
 						str_result = VB6.Format(BCVariable.Armor)
 						GetVariable = ValueType.StringType
@@ -6936,7 +6851,7 @@ SkipArrayHandling:
 						GetVariable = ValueType.NumericType
 					End If
 					Exit Function
-				Case "æœ€çµ‚å€¤"
+				Case "ÅI’l"
 					If etype = ValueType.StringType Then
 						str_result = VB6.Format(BCVariable.LastVariable)
 						GetVariable = ValueType.StringType
@@ -6945,7 +6860,7 @@ SkipArrayHandling:
 						GetVariable = ValueType.NumericType
 					End If
 					Exit Function
-				Case "Invalid_string_refer_to_original_code"
+				Case "UŒ‚‘¤•â³"
 					If etype = ValueType.StringType Then
 						str_result = VB6.Format(BCVariable.AttackVariable)
 						GetVariable = ValueType.StringType
@@ -6954,7 +6869,7 @@ SkipArrayHandling:
 						GetVariable = ValueType.NumericType
 					End If
 					Exit Function
-				Case "é˜²å¾¡å´è£œæ­£"
+				Case "–hŒä‘¤•â³"
 					If etype = ValueType.StringType Then
 						str_result = VB6.Format(BCVariable.DffenceVariable)
 						GetVariable = ValueType.StringType
@@ -6963,7 +6878,7 @@ SkipArrayHandling:
 						GetVariable = ValueType.NumericType
 					End If
 					Exit Function
-				Case "ã‚¶ã‚³è£œæ­£"
+				Case "ƒUƒR•â³"
 					If etype = ValueType.StringType Then
 						str_result = VB6.Format(BCVariable.CommonEnemy)
 						GetVariable = ValueType.StringType
@@ -6974,221 +6889,207 @@ SkipArrayHandling:
 					Exit Function
 			End Select
 			
-			'Invalid_string_refer_to_original_code
+			'ƒpƒCƒƒbƒg‚ÉŠÖ‚·‚é•Ï”
 			With BCVariable.MeUnit.MainPilot
 				Select Case vname
-					Case "æ°—åŠ›"
+					Case "‹C—Í"
 						num = 0
 						
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-						num = 50 + (.Morale + .MoraleMod) \ 2 ' æ°—åŠ›ã®è£œæ­£è¾¼ã¿å€¤ã‚’ä»£å…¥
+						If IsOptionDefined("‹C—ÍŒø‰Ê¬") Then
+							num = 50 + (.Morale + .MoraleMod) \ 2 ' ‹C—Í‚Ì•â³‚İ’l‚ğ‘ã“ü
+						Else
+							num = .Morale + .MoraleMod ' ‹C—Í‚Ì•â³‚İ’l‚ğ‘ã“ü
+						End If
+						
+						If etype = ValueType.StringType Then
+							str_result = VB6.Format(num)
+							GetVariable = ValueType.StringType
+						Else
+							num_result = num
+							GetVariable = ValueType.NumericType
+						End If
+						Exit Function
+					Case "‘Ï‹v"
+						If etype = ValueType.StringType Then
+							str_result = VB6.Format(.Defense)
+							GetVariable = ValueType.StringType
+						Else
+							num_result = .Defense
+							GetVariable = ValueType.NumericType
+						End If
+						Exit Function
+					Case "‚k‚u"
+						If etype = ValueType.StringType Then
+							str_result = VB6.Format(.Level)
+							GetVariable = ValueType.StringType
+						Else
+							num_result = .Level
+							GetVariable = ValueType.NumericType
+						End If
+						Exit Function
+					Case "ŒoŒ±"
+						If etype = ValueType.StringType Then
+							str_result = VB6.Format(.Exp)
+							GetVariable = ValueType.StringType
+						Else
+							num_result = .Exp
+							GetVariable = ValueType.NumericType
+						End If
+						Exit Function
+					Case "‚r‚o"
+						If etype = ValueType.StringType Then
+							str_result = VB6.Format(.SP)
+							GetVariable = ValueType.StringType
+						Else
+							num_result = .SP
+							GetVariable = ValueType.NumericType
+						End If
+						Exit Function
+					Case "—ì—Í"
+						If etype = ValueType.StringType Then
+							str_result = VB6.Format(.Plana)
+							GetVariable = ValueType.StringType
+						Else
+							num_result = .Plana
+							GetVariable = ValueType.NumericType
+						End If
+						Exit Function
+					Case "Ši“¬"
+						If etype = ValueType.StringType Then
+							str_result = VB6.Format(.Infight)
+							GetVariable = ValueType.StringType
+						Else
+							num_result = .Infight
+							GetVariable = ValueType.NumericType
+						End If
+						Exit Function
+					Case "ËŒ‚"
+						If etype = ValueType.StringType Then
+							str_result = VB6.Format(.Shooting)
+							GetVariable = ValueType.StringType
+						Else
+							num_result = .Shooting
+							GetVariable = ValueType.NumericType
+						End If
+						Exit Function
+					Case "–½’†"
+						If etype = ValueType.StringType Then
+							str_result = VB6.Format(.Hit)
+							GetVariable = ValueType.StringType
+						Else
+							num_result = .Hit
+							GetVariable = ValueType.NumericType
+						End If
+						Exit Function
+					Case "‰ñ”ğ"
+						If etype = ValueType.StringType Then
+							str_result = VB6.Format(.Dodge)
+							GetVariable = ValueType.StringType
+						Else
+							num_result = .Dodge
+							GetVariable = ValueType.NumericType
+						End If
+						Exit Function
+					Case "‹Z—Ê"
+						If etype = ValueType.StringType Then
+							str_result = VB6.Format(.Technique)
+							GetVariable = ValueType.StringType
+						Else
+							num_result = .Technique
+							GetVariable = ValueType.NumericType
+						End If
+						Exit Function
+					Case "”½‰"
+						If etype = ValueType.StringType Then
+							str_result = VB6.Format(.Intuition)
+							GetVariable = ValueType.StringType
+						Else
+							num_result = .Intuition
+							GetVariable = ValueType.NumericType
+						End If
+						Exit Function
 				End Select
 			End With
-		Else
-			'UPGRADE_WARNING: GetVariable ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B ' æ°—åŠ›ã®è£œæ­£è¾¼ã¿å€¤ã‚’ä»£å…¥
+			
+			'ƒ†ƒjƒbƒg‚ÉŠÖ‚·‚é•Ï”
+			With BCVariable.MeUnit
+				Select Case vname
+					Case "Å‘å‚g‚o"
+						If etype = ValueType.StringType Then
+							str_result = VB6.Format(.MaxHP())
+							GetVariable = ValueType.StringType
+						Else
+							num_result = .MaxHP()
+							GetVariable = ValueType.NumericType
+						End If
+						Exit Function
+					Case "Œ»İ‚g‚o"
+						If etype = ValueType.StringType Then
+							str_result = VB6.Format(.HP())
+							GetVariable = ValueType.StringType
+						Else
+							num_result = .HP()
+							GetVariable = ValueType.NumericType
+						End If
+						Exit Function
+					Case "Å‘å‚d‚m"
+						If etype = ValueType.StringType Then
+							str_result = VB6.Format(.MaxEN())
+							GetVariable = ValueType.StringType
+						Else
+							num_result = .MaxEN()
+							GetVariable = ValueType.NumericType
+						End If
+						Exit Function
+					Case "Œ»İ‚d‚m"
+						If etype = ValueType.StringType Then
+							str_result = VB6.Format(.EN())
+							GetVariable = ValueType.StringType
+						Else
+							num_result = .EN()
+							GetVariable = ValueType.NumericType
+						End If
+						Exit Function
+					Case "ˆÚ“®—Í"
+						If etype = ValueType.StringType Then
+							str_result = VB6.Format(.Speed())
+							GetVariable = ValueType.StringType
+						Else
+							num_result = .Speed()
+							GetVariable = ValueType.NumericType
+						End If
+						Exit Function
+					Case "‘•b"
+						If etype = ValueType.StringType Then
+							str_result = VB6.Format(.Armor())
+							GetVariable = ValueType.StringType
+						Else
+							num_result = .Armor()
+							GetVariable = ValueType.NumericType
+						End If
+						Exit Function
+					Case "‰^“®«"
+						If etype = ValueType.StringType Then
+							str_result = VB6.Format(.Mobility())
+							GetVariable = ValueType.StringType
+						Else
+							num_result = .Mobility()
+							GetVariable = ValueType.NumericType
+						End If
+						Exit Function
+				End Select
+			End With
 		End If
 		
-		If etype = ValueType.StringType Then
-			str_result = VB6.Format(num)
-			GetVariable = ValueType.StringType
-		Else
-			num_result = num
+		If etype = ValueType.NumericType Then
+			num_result = 0
 			GetVariable = ValueType.NumericType
+		Else
+			GetVariable = ValueType.StringType
 		End If
-		Exit Function
-		'UPGRADE_WARNING: GetVariable ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		'Case "Invalid_string_refer_to_original_code"
-			'If etype = ValueType.StringType Then
-				''UPGRADE_WARNING: GetVariable ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-				'GetVariable = ValueType.StringType
-			'Else
-				''UPGRADE_WARNING: GetVariable ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-				'GetVariable = ValueType.NumericType
-			'End If
-			'Exit Function
-			''UPGRADE_WARNING: GetVariable ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-			'Case "Invalid_string_refer_to_original_code"
-				'If etype = ValueType.StringType Then
-					''UPGRADE_WARNING: GetVariable ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-					'GetVariable = ValueType.StringType
-				'Else
-					''UPGRADE_WARNING: GetVariable ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-					'GetVariable = ValueType.NumericType
-				'End If
-				'Exit Function
-				''UPGRADE_WARNING: GetVariable ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-				'Case "Invalid_string_refer_to_original_code"
-					'If etype = ValueType.StringType Then
-						''UPGRADE_WARNING: GetVariable ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-						'GetVariable = ValueType.StringType
-					'Else
-						''UPGRADE_WARNING: GetVariable ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-						'GetVariable = ValueType.NumericType
-					'End If
-					'Exit Function
-					''UPGRADE_WARNING: GetVariable ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-					'Case "Invalid_string_refer_to_original_code"
-						'If etype = ValueType.StringType Then
-							''UPGRADE_WARNING: GetVariable ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-							'GetVariable = ValueType.StringType
-						'Else
-							''UPGRADE_WARNING: GetVariable ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-							'GetVariable = ValueType.NumericType
-						'End If
-						'Exit Function
-						''UPGRADE_WARNING: GetVariable ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-						'Case "éœŠåŠ›"
-							'If etype = ValueType.StringType Then
-								''UPGRADE_WARNING: GetVariable ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-								'GetVariable = ValueType.StringType
-							'Else
-								''UPGRADE_WARNING: GetVariable ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-								'GetVariable = ValueType.NumericType
-							'End If
-							'Exit Function
-							''UPGRADE_WARNING: GetVariable ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-							'Case "Invalid_string_refer_to_original_code"
-								'If etype = ValueType.StringType Then
-									''UPGRADE_WARNING: GetVariable ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-									'GetVariable = ValueType.StringType
-								'Else
-									''UPGRADE_WARNING: GetVariable ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-									'GetVariable = ValueType.NumericType
-								'End If
-								'Exit Function
-								''UPGRADE_WARNING: GetVariable ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-								'Case "Invalid_string_refer_to_original_code"
-									'If etype = ValueType.StringType Then
-										''UPGRADE_WARNING: GetVariable ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-										'GetVariable = ValueType.StringType
-									'Else
-										''UPGRADE_WARNING: GetVariable ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-										'GetVariable = ValueType.NumericType
-									'End If
-									'Exit Function
-									''UPGRADE_WARNING: GetVariable ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-									'Case "å‘½ä¸­"
-										'If etype = ValueType.StringType Then
-											''UPGRADE_WARNING: GetVariable ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-											'GetVariable = ValueType.StringType
-										'Else
-											''UPGRADE_WARNING: GetVariable ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-											'GetVariable = ValueType.NumericType
-										'End If
-										'Exit Function
-										''UPGRADE_WARNING: GetVariable ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-										'Case "å›é¿"
-											'If etype = ValueType.StringType Then
-												''UPGRADE_WARNING: GetVariable ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-												'GetVariable = ValueType.StringType
-											'Else
-												''UPGRADE_WARNING: GetVariable ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-												'GetVariable = ValueType.NumericType
-											'End If
-											'Exit Function
-											''UPGRADE_WARNING: GetVariable ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-											'Case "Invalid_string_refer_to_original_code"
-												'If etype = ValueType.StringType Then
-													''UPGRADE_WARNING: GetVariable ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-													'GetVariable = ValueType.StringType
-												'Else
-													''UPGRADE_WARNING: GetVariable ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-													'GetVariable = ValueType.NumericType
-												'End If
-												'Exit Function
-												''UPGRADE_WARNING: GetVariable ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-												'Case "Invalid_string_refer_to_original_code"
-													'If etype = ValueType.StringType Then
-														''UPGRADE_WARNING: GetVariable ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-														'GetVariable = ValueType.StringType
-													'Else
-														''UPGRADE_WARNING: GetVariable ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-														'GetVariable = ValueType.NumericType
-													'End If
-													'Exit Function
-													'End Select
-													'End With
-													'
-													'ãƒ¦ãƒ‹ãƒƒãƒˆã«é–¢ã™ã‚‹å¤‰æ•°
-													'With BCVariable.MeUnit
-														'Select Case vname
-															'Case "Invalid_string_refer_to_original_code"
-																'If etype = ValueType.StringType Then
-																	'str_result = VB6.Format(.MaxHP())
-																	'GetVariable = ValueType.StringType
-																'Else
-																	'num_result = .MaxHP()
-																	'GetVariable = ValueType.NumericType
-																'End If
-																'Exit Function
-															'Case "Invalid_string_refer_to_original_code"
-																'If etype = ValueType.StringType Then
-																	'str_result = VB6.Format(.HP())
-																	'GetVariable = ValueType.StringType
-																'Else
-																	'num_result = .HP()
-																	'GetVariable = ValueType.NumericType
-																'End If
-																'Exit Function
-															'Case "Invalid_string_refer_to_original_code"
-																'If etype = ValueType.StringType Then
-																	'str_result = VB6.Format(.MaxEN())
-																	'GetVariable = ValueType.StringType
-																'Else
-																	'num_result = .MaxEN()
-																	'GetVariable = ValueType.NumericType
-																'End If
-																'Exit Function
-															'Case "Invalid_string_refer_to_original_code"
-																'If etype = ValueType.StringType Then
-																	'str_result = VB6.Format(.EN())
-																	'GetVariable = ValueType.StringType
-																'Else
-																	'num_result = .EN()
-																	'GetVariable = ValueType.NumericType
-																'End If
-																'Exit Function
-															'Case "ç§»å‹•åŠ›"
-																'If etype = ValueType.StringType Then
-																	'str_result = VB6.Format(.Speed())
-																	'GetVariable = ValueType.StringType
-																'Else
-																	'num_result = .Speed()
-																	'GetVariable = ValueType.NumericType
-																'End If
-																'Exit Function
-															'Case "Invalid_string_refer_to_original_code"
-																'If etype = ValueType.StringType Then
-																	'str_result = VB6.Format(.Armor())
-																	'GetVariable = ValueType.StringType
-																'Else
-																	'num_result = .Armor()
-																	'GetVariable = ValueType.NumericType
-																'End If
-																'Exit Function
-															'Case "é‹å‹•æ€§"
-																'If etype = ValueType.StringType Then
-																	'str_result = VB6.Format(.Mobility())
-																	'GetVariable = ValueType.StringType
-																'Else
-																	'num_result = .Mobility()
-																	'GetVariable = ValueType.NumericType
-																'End If
-																'Exit Function
-														'End Select
-													'End With
-													'End If
-													'
-													'If etype = ValueType.NumericType Then
-														'num_result = 0
-														'GetVariable = ValueType.NumericType
-													'Else
-														'GetVariable = ValueType.StringType
-													'End If
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'w’è‚µ‚½•Ï”‚ª’è‹`‚³‚ê‚Ä‚¢‚é‚©H
 	Public Function IsVariableDefined(ByRef var_name As String) As Boolean
 		Dim vname As String
 		Dim i, ret As Short
@@ -7204,7 +7105,7 @@ SkipArrayHandling:
 				vname = var_name
 		End Select
 		
-		'Invalid_string_refer_to_original_code
+		'•Ï”‚ª”z—ñH
 		ret = InStr(vname, "[")
 		If ret = 0 Then
 			GoTo SkipArrayHandling
@@ -7213,12 +7114,12 @@ SkipArrayHandling:
 			GoTo SkipArrayHandling
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'‚±‚±‚©‚ç”z—ñê—p‚Ìˆ—
 		
-		'Invalid_string_refer_to_original_code
+		'ƒCƒ“ƒfƒbƒNƒX•”•ª‚ÌØ‚è‚¾‚µ
 		idx = Mid(vname, ret + 1, Len(vname) - ret - 1)
 		
-		'Invalid_string_refer_to_original_code
+		'‘½ŸŒ³”z—ñ‚Ìˆ—
 		If InStr(idx, ",") > 0 Then
 			start_idx = 1
 			depth = 0
@@ -7234,7 +7135,7 @@ SkipArrayHandling:
 					End If
 				Else
 					Select Case Asc(Mid(idx, i, 1))
-						Case 9, 32 'Invalid_string_refer_to_original_code
+						Case 9, 32 'ƒ^ƒu, ‹ó”’
 							If start_idx = i Then
 								start_idx = i + 1
 							Else
@@ -7271,16 +7172,16 @@ SkipArrayHandling:
 			idx = GetValueAsString(Trim(idx))
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'•Ï”–¼‚ğ”z—ñ‚ÌƒCƒ“ƒfƒbƒNƒX•”‚ğŒvZ‚µ‚ÄÄ\’z
 		vname = Left(vname, ret) & idx & "]"
 		
-		'Invalid_string_refer_to_original_code
+		'”z—ñê—p‚Ìˆ—‚ªI—¹
 		
 SkipArrayHandling: 
 		
-		'Invalid_string_refer_to_original_code
+		'‚±‚±‚©‚ç”z—ñ‚Æ’Êí•Ï”‚Ì‹¤’Êˆ—
 		
-		'ã‚µãƒ–ãƒ«ãƒ¼ãƒãƒ³ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°
+		'ƒTƒuƒ‹[ƒ`ƒ“ƒ[ƒJƒ‹•Ï”
 		If CallDepth > 0 Then
 			For i = VarIndexStack(CallDepth - 1) + 1 To VarIndex
 				If vname = VarStack(i).Name Then
@@ -7290,20 +7191,20 @@ SkipArrayHandling:
 			Next 
 		End If
 		
-		'ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°
+		'ƒ[ƒJƒ‹•Ï”
 		If IsLocalVariableDefined(vname) Then
 			IsVariableDefined = True
 			Exit Function
 		End If
 		
-		'ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°
+		'ƒOƒ[ƒoƒ‹•Ï”
 		If IsGlobalVariableDefined(vname) Then
 			IsVariableDefined = True
 			Exit Function
 		End If
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'w’è‚µ‚½–¼‘O‚ÌƒTƒuƒ‹[ƒ`ƒ“ƒ[ƒJƒ‹•Ï”‚ª’è‹`‚³‚ê‚Ä‚¢‚é‚©H
 	Public Function IsSubLocalVariableDefined(ByRef vname As String) As Boolean
 		Dim i As Short
 		
@@ -7317,7 +7218,7 @@ SkipArrayHandling:
 		End If
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'w’è‚µ‚½–¼‘O‚Ìƒ[ƒJƒ‹•Ï”‚ª’è‹`‚³‚ê‚Ä‚¢‚é‚©H
 	Public Function IsLocalVariableDefined(ByRef vname As String) As Boolean
 		Dim dummy As VarData
 		
@@ -7330,7 +7231,7 @@ ErrorHandler:
 		IsLocalVariableDefined = False
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'w’è‚µ‚½–¼‘O‚ÌƒOƒ[ƒoƒ‹•Ï”‚ª’è‹`‚³‚ê‚Ä‚¢‚é‚©H
 	Public Function IsGlobalVariableDefined(ByRef vname As String) As Boolean
 		Dim dummy As VarData
 		
@@ -7343,7 +7244,7 @@ ErrorHandler:
 		IsGlobalVariableDefined = False
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'•Ï”‚Ì’l‚ğİ’è
 	Public Sub SetVariable(ByRef var_name As String, ByRef etype As ValueType, ByRef str_value As String, ByRef num_value As Double)
 		Dim new_var As VarData
 		Dim vname As String
@@ -7361,7 +7262,7 @@ ErrorHandler:
 		
 		vname = var_name
 		
-		'Invalid_string_refer_to_original_code
+		'¶•Ó’l‚ğ”º‚¤ŠÖ”
 		ret = InStr(vname, "(")
 		If ret > 1 And Right(vname, 1) = ")" Then
 			Select Case LCase(Left(vname, ret - 1))
@@ -7407,402 +7308,91 @@ ErrorHandler:
 						Else
 							u.EN = StrToLng(str_value)
 						End If
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-						PaintUnitBitmap(u)
+						If u.EN = 0 And u.Status_Renamed = "oŒ‚" Then
+							PaintUnitBitmap(u)
+						End If
 					End If
+					Exit Sub
+					
+				Case "sp"
+					idx = Mid(vname, ret + 1, Len(vname) - ret - 1)
+					idx = GetValueAsString(idx)
+					
+					If UList.IsDefined2(idx) Then
+						p = UList.Item2(idx).MainPilot
+					ElseIf PList.IsDefined(idx) Then 
+						p = PList.Item(idx)
+					Else
+						p = SelectedUnitForEvent.MainPilot
+					End If
+					
+					If Not p Is Nothing Then
+						With p
+							If .MaxSP > 0 Then
+								If etype = ValueType.NumericType Then
+									.SP = num_value
+								Else
+									.SP = StrToLng(str_value)
+								End If
+							End If
+						End With
+					End If
+					Exit Sub
+					
+				Case "plana"
+					idx = Mid(vname, ret + 1, Len(vname) - ret - 1)
+					idx = GetValueAsString(idx)
+					
+					If UList.IsDefined2(idx) Then
+						p = UList.Item2(idx).MainPilot
+					ElseIf PList.IsDefined(idx) Then 
+						p = PList.Item(idx)
+					Else
+						p = SelectedUnitForEvent.MainPilot
+					End If
+					
+					If Not p Is Nothing Then
+						With p
+							If .MaxPlana > 0 Then
+								If etype = ValueType.NumericType Then
+									.Plana = num_value
+								Else
+									.Plana = StrToLng(str_value)
+								End If
+							End If
+						End With
+					End If
+					Exit Sub
+					
+				Case "action"
+					idx = Mid(vname, ret + 1, Len(vname) - ret - 1)
+					idx = GetValueAsString(idx)
+					
+					If UList.IsDefined2(idx) Then
+						u = UList.Item2(idx)
+					ElseIf PList.IsDefined(idx) Then 
+						u = PList.Item(idx).Unit_Renamed
+					Else
+						u = SelectedUnitForEvent
+					End If
+					
+					If Not u Is Nothing Then
+						If etype = ValueType.NumericType Then
+							u.UsedAction = u.MaxAction - num_value
+						Else
+							u.UsedAction = u.MaxAction - StrToLng(str_value)
+						End If
+					End If
+					Exit Sub
+					
+				Case "eval"
+					vname = Trim(Mid(vname, ret + 1, Len(vname) - ret - 1))
+					vname = GetValueAsString(vname)
+					
 			End Select
 		End If
-		Exit Sub
 		
-		Dim new_var2 As VarData
-		'UPGRADE_WARNING: SetVariable ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		'Case "sp"
-			'idx = Mid(vname, ret + 1, Len(vname) - ret - 1)
-			'idx = GetValueAsString(idx)
-			'
-			'If UList.IsDefined2(idx) Then
-				'p = UList.Item2(idx).MainPilot
-			'ElseIf PList.IsDefined(idx) Then 
-				'p = PList.Item(idx)
-			'Else
-				'p = SelectedUnitForEvent.MainPilot
-			'End If
-			'
-			'If Not p Is Nothing Then
-				'With p
-					'If .MaxSP > 0 Then
-						'If etype = ValueType.NumericType Then
-							'.SP = num_value
-						'Else
-							'.SP = StrToLng(str_value)
-						'End If
-					'End If
-				'End With
-			'End If
-			'Exit Sub
-			'
-			''UPGRADE_WARNING: SetVariable ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-			'Case "plana"
-				'idx = Mid(vname, ret + 1, Len(vname) - ret - 1)
-				'idx = GetValueAsString(idx)
-				'
-				'If UList.IsDefined2(idx) Then
-					'p = UList.Item2(idx).MainPilot
-				'ElseIf PList.IsDefined(idx) Then 
-					'p = PList.Item(idx)
-				'Else
-					'p = SelectedUnitForEvent.MainPilot
-				'End If
-				'
-				'If Not p Is Nothing Then
-					'With p
-						'If .MaxPlana > 0 Then
-							'If etype = ValueType.NumericType Then
-								'.Plana = num_value
-							'Else
-								'.Plana = StrToLng(str_value)
-							'End If
-						'End If
-					'End With
-				'End If
-				'Exit Sub
-				'
-				''UPGRADE_WARNING: SetVariable ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-				'Case "action"
-					'idx = Mid(vname, ret + 1, Len(vname) - ret - 1)
-					'idx = GetValueAsString(idx)
-					'
-					'If UList.IsDefined2(idx) Then
-						'u = UList.Item2(idx)
-					'ElseIf PList.IsDefined(idx) Then 
-						'u = PList.Item(idx).Unit_Renamed
-					'Else
-						'u = SelectedUnitForEvent
-					'End If
-					'
-					'If Not u Is Nothing Then
-						'If etype = ValueType.NumericType Then
-							'u.UsedAction = u.MaxAction - num_value
-						'Else
-							'u.UsedAction = u.MaxAction - StrToLng(str_value)
-						'End If
-					'End If
-					'Exit Sub
-					'
-					''UPGRADE_WARNING: SetVariable ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-					'Case "eval"
-						'vname = Trim(Mid(vname, ret + 1, Len(vname) - ret - 1))
-						'vname = GetValueAsString(vname)
-						'
-						'End Select
-						'End If
-						'
-						'Invalid_string_refer_to_original_code
-						'ret = InStr(vname, "[")
-						'If ret = 0 Then
-							'GoTo SkipArrayHandling
-						'End If
-						'If Right(vname, 1) <> "]" Then
-							'GoTo SkipArrayHandling
-						'End If
-						'
-						'Invalid_string_refer_to_original_code
-						'
-						'Invalid_string_refer_to_original_code
-						'idx = Mid(vname, ret + 1, Len(vname) - ret - 1)
-						'
-						'Invalid_string_refer_to_original_code
-						'If InStr(idx, ",") > 0 Then
-							'start_idx = 1
-							'depth = 0
-							'is_term = True
-							'For 'i = 1 To Len(idx)
-								'If in_single_quote Then
-									'If Asc(Mid(idx, i, 1)) = 96 Then '`
-										'in_single_quote = False
-									'End If
-								'ElseIf in_double_quote Then 
-									'If Asc(Mid(idx, i, 1)) = 34 Then '"
-										'in_double_quote = False
-									'End If
-								'Else
-									'Select Case Asc(Mid(idx, i, 1))
-										'Case 9, 32 'Invalid_string_refer_to_original_code
-											'If start_idx = i Then
-												'start_idx = i + 1
-											'Else
-												'is_term = False
-											'End If
-										'Case 40, 91 '(, [
-											'depth = depth + 1
-										'Case 41, 93 '), ]
-											'depth = depth - 1
-										'Case 44 ',
-											'If depth = 0 Then
-												'If Len(buf) > 0 Then
-													'buf = buf & ","
-												'End If
-												'ipara = Trim(Mid(idx, start_idx, i - start_idx))
-												'buf = buf & GetValueAsString(ipara, is_term)
-												'start_idx = i + 1
-												'is_term = True
-											'End If
-										'Case 96 '`
-											'in_single_quote = True
-										'Case 34 '"
-											'in_double_quote = True
-									'End Select
-								'End If
-							'Next 
-							'ipara = Trim(Mid(idx, start_idx, i - start_idx))
-							'If Len(buf) > 0 Then
-								'idx = buf & "," & GetValueAsString(ipara, is_term)
-							'Else
-								'idx = GetValueAsString(ipara, is_term)
-							'End If
-						'Else
-							'idx = GetValueAsString(Trim(idx))
-						'End If
-						'
-						'Invalid_string_refer_to_original_code
-						'vname = Left(vname, ret) & idx & "]"
-						'
-						'Invalid_string_refer_to_original_code
-						'vname0 = Left(vname, ret - 1)
-						'
-						'Invalid_string_refer_to_original_code
-						'If IsSubLocalVariableDefined(vname0) Then
-							'is_subroutine_local_array = True
-						'End If
-						'
-						'Invalid_string_refer_to_original_code
-						'
-'SkipArrayHandling: '
-						'
-						'Invalid_string_refer_to_original_code
-						'
-						'Invalid_string_refer_to_original_code
-						'If CallDepth > 0 Then
-							'For 'i = VarIndexStack(CallDepth - 1) + 1 To VarIndex
-								'With VarStack(i)
-									'If vname = .Name Then
-										'.VariableType = etype
-										'.StringValue = str_value
-										'.NumericValue = num_value
-										'Exit Sub
-									'End If
-								'End With
-							'Next 
-						'End If
-						'
-						'If is_subroutine_local_array Then
-							'Invalid_string_refer_to_original_code
-							'VarIndex = VarIndex + 1
-							'If VarIndex > MaxVarIndex Then
-								'VarIndex = MaxVarIndex
-								'DisplayEventErrorMessage(CurrentLineNum, "Invalid_string_refer_to_original_code")
-								'VB6.Format((MaxVarIndex) & "Invalid_string_refer_to_original_code")
-								'Exit Sub
-							'End If
-							'With VarStack(VarIndex)
-								'.Name = vname
-								'.VariableType = etype
-								'.StringValue = str_value
-								'.NumericValue = num_value
-							'End With
-							'Exit Sub
-						'End If
-						'
-						'Invalid_string_refer_to_original_code
-						'If IsLocalVariableDefined(vname) Then
-							'With LocalVariableList.Item(vname)
-								''UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg LocalVariableList.Item().Name ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-								'.Name = vname
-								''UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg LocalVariableList.Item().VariableType ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-								'.VariableType = etype
-								''UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg LocalVariableList.Item().StringValue ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-								'.StringValue = str_value
-								''UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg LocalVariableList.Item().NumericValue ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-								'.NumericValue = num_value
-							'End With
-							'Exit Sub
-						'End If
-						'
-						'Invalid_string_refer_to_original_code
-						'If IsGlobalVariableDefined(vname) Then
-							'With GlobalVariableList.Item(vname)
-								''UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg GlobalVariableList.Item().Name ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-								'.Name = vname
-								''UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg GlobalVariableList.Item().VariableType ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-								'.VariableType = etype
-								''UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg GlobalVariableList.Item().StringValue ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-								'.StringValue = str_value
-								''UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg GlobalVariableList.Item().NumericValue ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-								'.NumericValue = num_value
-							'End With
-							'Exit Sub
-						'End If
-						'
-						'Invalid_string_refer_to_original_code
-						'Select Case LCase(vname)
-							'Case "basex"
-								'If etype = ValueType.NumericType Then
-									'BaseX = num_value
-								'Else
-									'BaseX = StrToLng(str_value)
-								'End If
-								''UPGRADE_ISSUE: Control picMain ‚ÍA”Ä—p–¼‘O‹óŠÔ Form “à‚É‚ ‚é‚½‚ßA‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-								'MainForm.picMain(0).CurrentX = BaseX
-								'Exit Sub
-							'Case "basey"
-								'If etype = ValueType.NumericType Then
-									'BaseY = num_value
-								'Else
-									'BaseY = StrToLng(str_value)
-								'End If
-								''UPGRADE_ISSUE: Control picMain ‚ÍA”Ä—p–¼‘O‹óŠÔ Form “à‚É‚ ‚é‚½‚ßA‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-								'MainForm.picMain(0).CurrentY = BaseY
-								'Exit Sub
-							'Case "ã‚¿ãƒ¼ãƒ³æ•°"
-								'If etype = ValueType.NumericType Then
-									'Turn = num_value
-								'Else
-									'Turn = StrToLng(str_value)
-								'End If
-								'Exit Sub
-							'Case "ç·ã‚¿ãƒ¼ãƒ³æ•°"
-								'If etype = ValueType.NumericType Then
-									'TotalTurn = num_value
-								'Else
-									'TotalTurn = StrToLng(str_value)
-								'End If
-								'Exit Sub
-							'Case "Invalid_string_refer_to_original_code"
-								'Money = 0
-								'If etype = ValueType.NumericType Then
-									'IncrMoney(num_value)
-								'Else
-									'IncrMoney(StrToLng(str_value))
-								'End If
-								'Exit Sub
-						'End Select
-						'
-						'Invalid_string_refer_to_original_code
-						'
-						'Invalid_string_refer_to_original_code
-						'If Len(vname0) <> 0 Then
-							'Invalid_string_refer_to_original_code
-							'If IsLocalVariableDefined(vname0) Then
-								'Nop
-								'Invalid_string_refer_to_original_code
-							'ElseIf IsGlobalVariableDefined(vname0) Then 
-								'DefineGlobalVariable(vname)
-								'With GlobalVariableList.Item(vname)
-									''UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg GlobalVariableList.Item().Name ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-									'.Name = vname
-									''UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg GlobalVariableList.Item().VariableType ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-									'.VariableType = etype
-									''UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg GlobalVariableList.Item().StringValue ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-									'.StringValue = str_value
-									''UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg GlobalVariableList.Item().NumericValue ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-									'.NumericValue = num_value
-								'End With
-								'Exit Sub
-								'Invalid_string_refer_to_original_code
-							'Else
-								'Invalid_string_refer_to_original_code
-								'new_var2 = New VarData
-								'With new_var2
-									'.Name = vname0
-									'.VariableType = ValueType.StringType
-									'If InStr(.Name, """") > 0 Then
-										'DisplayEventErrorMessage(CurrentLineNum, "Invalid_string_refer_to_original_code")
-										'Invalid_string_refer_to_original_code
-										'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-									'End If
-								'End With
-								'LocalVariableList.Add(new_var2, vname0)
-							'End If
-						'End If
-						'
-						'Invalid_string_refer_to_original_code
-						'new_var = New VarData
-						'With new_var
-							'.Name = vname
-							'.VariableType = etype
-							'.StringValue = str_value
-							'.NumericValue = num_value
-							'If InStr(.Name, """") > 0 Then
-								'DisplayEventErrorMessage(CurrentLineNum, "Invalid_string_refer_to_original_code")
-								'Invalid_string_refer_to_original_code
-								'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-							'End If
-						'End With
-						'LocalVariableList.Add(new_var, vname)
-	End Sub
-	
-	Public Sub SetVariableAsString(ByRef vname As String, ByRef new_value As String)
-		SetVariable(vname, ValueType.StringType, new_value, 0)
-	End Sub
-	
-	Public Sub SetVariableAsDouble(ByRef vname As String, ByVal new_value As Double)
-		SetVariable(vname, ValueType.NumericType, "", new_value)
-	End Sub
-	
-	Public Sub SetVariableAsLong(ByRef vname As String, ByVal new_value As Integer)
-		SetVariable(vname, ValueType.NumericType, "", CDbl(new_value))
-	End Sub
-	
-	'ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°ã‚’å®šç¾©
-	Public Sub DefineGlobalVariable(ByRef vname As String)
-		Dim new_var As New VarData
-		
-		With new_var
-			.Name = vname
-			.VariableType = ValueType.StringType
-			.StringValue = ""
-		End With
-		GlobalVariableList.Add(new_var, vname)
-	End Sub
-	
-	'ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ã‚’å®šç¾©
-	Public Sub DefineLocalVariable(ByRef vname As String)
-		Dim new_var As New VarData
-		
-		With new_var
-			.Name = vname
-			.VariableType = ValueType.StringType
-			.StringValue = ""
-		End With
-		LocalVariableList.Add(new_var, vname)
-	End Sub
-	
-	'å¤‰æ•°ã‚’æ¶ˆå»
-	Public Sub UndefineVariable(ByRef var_name As String)
-		Dim var As VarData
-		Dim vname, vname2 As String
-		Dim i, ret As Short
-		Dim idx, buf As String
-		Dim start_idx, depth As Short
-		Dim in_single_quote, in_double_quote As Boolean
-		Dim is_term As Boolean
-		
-		If Asc(var_name) = 36 Then '$
-			vname = Mid(var_name, 2)
-		Else
-			vname = var_name
-		End If
-		
-		'Evalé–¢æ•°
-		If LCase(Left(vname, 5)) = "eval(" Then
-			If Right(vname, 1) = ")" Then
-				vname = Mid(vname, 6, Len(vname) - 6)
-				vname = GetValueAsString(vname)
-			End If
-		End If
-		
-		'Invalid_string_refer_to_original_code
+		'•Ï”‚ª”z—ñH
 		ret = InStr(vname, "[")
 		If ret = 0 Then
 			GoTo SkipArrayHandling
@@ -7811,12 +7401,12 @@ ErrorHandler:
 			GoTo SkipArrayHandling
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'‚±‚±‚©‚ç”z—ñê—p‚Ìˆ—
 		
-		'Invalid_string_refer_to_original_code
+		'ƒCƒ“ƒfƒbƒNƒX•”•ª‚ÌØ‚è‚¾‚µ
 		idx = Mid(vname, ret + 1, Len(vname) - ret - 1)
 		
-		'Invalid_string_refer_to_original_code
+		'‘½ŸŒ³”z—ñ‚Ìˆ—
 		If InStr(idx, ",") > 0 Then
 			start_idx = 1
 			depth = 0
@@ -7832,7 +7422,307 @@ ErrorHandler:
 					End If
 				Else
 					Select Case Asc(Mid(idx, i, 1))
-						Case 9, 32 'Invalid_string_refer_to_original_code
+						Case 9, 32 'ƒ^ƒu, ‹ó”’
+							If start_idx = i Then
+								start_idx = i + 1
+							Else
+								is_term = False
+							End If
+						Case 40, 91 '(, [
+							depth = depth + 1
+						Case 41, 93 '), ]
+							depth = depth - 1
+						Case 44 ',
+							If depth = 0 Then
+								If Len(buf) > 0 Then
+									buf = buf & ","
+								End If
+								ipara = Trim(Mid(idx, start_idx, i - start_idx))
+								buf = buf & GetValueAsString(ipara, is_term)
+								start_idx = i + 1
+								is_term = True
+							End If
+						Case 96 '`
+							in_single_quote = True
+						Case 34 '"
+							in_double_quote = True
+					End Select
+				End If
+			Next 
+			ipara = Trim(Mid(idx, start_idx, i - start_idx))
+			If Len(buf) > 0 Then
+				idx = buf & "," & GetValueAsString(ipara, is_term)
+			Else
+				idx = GetValueAsString(ipara, is_term)
+			End If
+		Else
+			idx = GetValueAsString(Trim(idx))
+		End If
+		
+		'•Ï”–¼‚ğ”z—ñ‚ÌƒCƒ“ƒfƒbƒNƒX•”‚ğŒvZ‚µ‚ÄÄ\’z
+		vname = Left(vname, ret) & idx & "]"
+		
+		'”z—ñ–¼
+		vname0 = Left(vname, ret - 1)
+		
+		'ƒTƒuƒ‹[ƒ`ƒ“ƒ[ƒJƒ‹‚È”z—ñ‚Æ‚µ‚Ä’è‹`Ï‚İ‚©‚Ç‚¤‚©ƒ`ƒFƒbƒN
+		If IsSubLocalVariableDefined(vname0) Then
+			is_subroutine_local_array = True
+		End If
+		
+		'”z—ñê—p‚Ìˆ—‚ªI—¹
+		
+SkipArrayHandling: 
+		
+		'‚±‚±‚©‚ç”z—ñ‚Æ’Êí•Ï”‚Ì‹¤’Êˆ—
+		
+		'ƒTƒuƒ‹[ƒ`ƒ“ƒ[ƒJƒ‹•Ï”‚Æ‚µ‚Ä’è‹`Ï‚İH
+		If CallDepth > 0 Then
+			For i = VarIndexStack(CallDepth - 1) + 1 To VarIndex
+				With VarStack(i)
+					If vname = .Name Then
+						.VariableType = etype
+						.StringValue = str_value
+						.NumericValue = num_value
+						Exit Sub
+					End If
+				End With
+			Next 
+		End If
+		
+		If is_subroutine_local_array Then
+			'ƒTƒuƒ‹[ƒ`ƒ“ƒ[ƒJƒ‹•Ï”‚Ì”z—ñ‚Ì—v‘f‚Æ‚µ‚Ä’è‹`
+			VarIndex = VarIndex + 1
+			If VarIndex > MaxVarIndex Then
+				VarIndex = MaxVarIndex
+				DisplayEventErrorMessage(CurrentLineNum, "ì¬‚µ‚½ƒTƒuƒ‹[ƒ`ƒ“ƒ[ƒJƒ‹•Ï”‚Ì‘”‚ª" & VB6.Format(MaxVarIndex) & "ŒÂ‚ğ’´‚¦‚Ä‚¢‚Ü‚·")
+				Exit Sub
+			End If
+			With VarStack(VarIndex)
+				.Name = vname
+				.VariableType = etype
+				.StringValue = str_value
+				.NumericValue = num_value
+			End With
+			Exit Sub
+		End If
+		
+		'ƒ[ƒJƒ‹•Ï”‚Æ‚µ‚Ä’è‹`Ï‚İH
+		If IsLocalVariableDefined(vname) Then
+			With LocalVariableList.Item(vname)
+				'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg LocalVariableList.Item().Name ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				.Name = vname
+				'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg LocalVariableList.Item().VariableType ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				.VariableType = etype
+				'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg LocalVariableList.Item().StringValue ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				.StringValue = str_value
+				'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg LocalVariableList.Item().NumericValue ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				.NumericValue = num_value
+			End With
+			Exit Sub
+		End If
+		
+		'ƒOƒ[ƒoƒ‹•Ï”‚Æ‚µ‚Ä’è‹`Ï‚İH
+		If IsGlobalVariableDefined(vname) Then
+			With GlobalVariableList.Item(vname)
+				'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg GlobalVariableList.Item().Name ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				.Name = vname
+				'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg GlobalVariableList.Item().VariableType ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				.VariableType = etype
+				'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg GlobalVariableList.Item().StringValue ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				.StringValue = str_value
+				'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg GlobalVariableList.Item().NumericValue ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				.NumericValue = num_value
+			End With
+			Exit Sub
+		End If
+		
+		'ƒVƒXƒeƒ€•Ï”H
+		Select Case LCase(vname)
+			Case "basex"
+				If etype = ValueType.NumericType Then
+					BaseX = num_value
+				Else
+					BaseX = StrToLng(str_value)
+				End If
+				'UPGRADE_ISSUE: Control picMain ‚ÍA”Ä—p–¼‘O‹óŠÔ Form “à‚É‚ ‚é‚½‚ßA‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				MainForm.picMain(0).CurrentX = BaseX
+				Exit Sub
+			Case "basey"
+				If etype = ValueType.NumericType Then
+					BaseY = num_value
+				Else
+					BaseY = StrToLng(str_value)
+				End If
+				'UPGRADE_ISSUE: Control picMain ‚ÍA”Ä—p–¼‘O‹óŠÔ Form “à‚É‚ ‚é‚½‚ßA‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+				MainForm.picMain(0).CurrentY = BaseY
+				Exit Sub
+			Case "ƒ^[ƒ“”"
+				If etype = ValueType.NumericType Then
+					Turn = num_value
+				Else
+					Turn = StrToLng(str_value)
+				End If
+				Exit Sub
+			Case "‘ƒ^[ƒ“”"
+				If etype = ValueType.NumericType Then
+					TotalTurn = num_value
+				Else
+					TotalTurn = StrToLng(str_value)
+				End If
+				Exit Sub
+			Case "‘‹à"
+				Money = 0
+				If etype = ValueType.NumericType Then
+					IncrMoney(num_value)
+				Else
+					IncrMoney(StrToLng(str_value))
+				End If
+				Exit Sub
+		End Select
+		
+		'–¢’è‹`‚¾‚Á‚½ê‡
+		
+		'”z—ñ‚Ì—v‘f‚Æ‚µ‚Äì¬
+		Dim new_var2 As VarData
+		If Len(vname0) <> 0 Then
+			'ƒ[ƒJƒ‹•Ï”‚Ì”z—ñ‚Ì—v‘f‚Æ‚µ‚Ä’è‹`
+			If IsLocalVariableDefined(vname0) Then
+				'Nop
+				'ƒOƒ[ƒoƒ‹•Ï”‚Ì”z—ñ‚Ì—v‘f‚Æ‚µ‚Ä’è‹`
+			ElseIf IsGlobalVariableDefined(vname0) Then 
+				DefineGlobalVariable(vname)
+				With GlobalVariableList.Item(vname)
+					'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg GlobalVariableList.Item().Name ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					.Name = vname
+					'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg GlobalVariableList.Item().VariableType ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					.VariableType = etype
+					'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg GlobalVariableList.Item().StringValue ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					.StringValue = str_value
+					'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg GlobalVariableList.Item().NumericValue ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+					.NumericValue = num_value
+				End With
+				Exit Sub
+				'–¢’è‹`‚Ì”z—ñ‚È‚Ì‚Åƒ[ƒJƒ‹•Ï”‚Ì”z—ñ‚ğì¬
+			Else
+				'ƒ[ƒJƒ‹•Ï”‚Ì”z—ñ‚ÌƒƒCƒ“‚h‚c‚ğì¬
+				new_var2 = New VarData
+				With new_var2
+					.Name = vname0
+					.VariableType = ValueType.StringType
+					If InStr(.Name, """") > 0 Then
+						DisplayEventErrorMessage(CurrentLineNum, "•s³‚È•Ï”u" & .Name & "v‚ªì¬‚³‚ê‚Ü‚µ‚½")
+					End If
+				End With
+				LocalVariableList.Add(new_var2, vname0)
+			End If
+		End If
+		
+		'ƒ[ƒJƒ‹•Ï”‚Æ‚µ‚Äì¬
+		new_var = New VarData
+		With new_var
+			.Name = vname
+			.VariableType = etype
+			.StringValue = str_value
+			.NumericValue = num_value
+			If InStr(.Name, """") > 0 Then
+				DisplayEventErrorMessage(CurrentLineNum, "•s³‚È•Ï”u" & .Name & "v‚ªì¬‚³‚ê‚Ü‚µ‚½")
+			End If
+		End With
+		LocalVariableList.Add(new_var, vname)
+	End Sub
+	
+	Public Sub SetVariableAsString(ByRef vname As String, ByRef new_value As String)
+		SetVariable(vname, ValueType.StringType, new_value, 0)
+	End Sub
+	
+	Public Sub SetVariableAsDouble(ByRef vname As String, ByVal new_value As Double)
+		SetVariable(vname, ValueType.NumericType, "", new_value)
+	End Sub
+	
+	Public Sub SetVariableAsLong(ByRef vname As String, ByVal new_value As Integer)
+		SetVariable(vname, ValueType.NumericType, "", CDbl(new_value))
+	End Sub
+	
+	'ƒOƒ[ƒoƒ‹•Ï”‚ğ’è‹`
+	Public Sub DefineGlobalVariable(ByRef vname As String)
+		Dim new_var As New VarData
+		
+		With new_var
+			.Name = vname
+			.VariableType = ValueType.StringType
+			.StringValue = ""
+		End With
+		GlobalVariableList.Add(new_var, vname)
+	End Sub
+	
+	'ƒ[ƒJƒ‹•Ï”‚ğ’è‹`
+	Public Sub DefineLocalVariable(ByRef vname As String)
+		Dim new_var As New VarData
+		
+		With new_var
+			.Name = vname
+			.VariableType = ValueType.StringType
+			.StringValue = ""
+		End With
+		LocalVariableList.Add(new_var, vname)
+	End Sub
+	
+	'•Ï”‚ğÁ‹
+	Public Sub UndefineVariable(ByRef var_name As String)
+		Dim var As VarData
+		Dim vname, vname2 As String
+		Dim i, ret As Short
+		Dim idx, buf As String
+		Dim start_idx, depth As Short
+		Dim in_single_quote, in_double_quote As Boolean
+		Dim is_term As Boolean
+		
+		If Asc(var_name) = 36 Then '$
+			vname = Mid(var_name, 2)
+		Else
+			vname = var_name
+		End If
+		
+		'EvalŠÖ”
+		If LCase(Left(vname, 5)) = "eval(" Then
+			If Right(vname, 1) = ")" Then
+				vname = Mid(vname, 6, Len(vname) - 6)
+				vname = GetValueAsString(vname)
+			End If
+		End If
+		
+		'”z—ñ‚Ì—v‘fH
+		ret = InStr(vname, "[")
+		If ret = 0 Then
+			GoTo SkipArrayHandling
+		End If
+		If Right(vname, 1) <> "]" Then
+			GoTo SkipArrayHandling
+		End If
+		
+		'”z—ñ‚Ì—v‘f‚ğw’è‚³‚ê‚½ê‡
+		
+		'ƒCƒ“ƒfƒbƒNƒX•”•ª‚ÌØ‚è‚¾‚µ
+		idx = Mid(vname, ret + 1, Len(vname) - ret - 1)
+		
+		'‘½ŸŒ³”z—ñ‚Ìˆ—
+		If InStr(idx, ",") > 0 Then
+			start_idx = 1
+			depth = 0
+			is_term = True
+			For i = 1 To Len(idx)
+				If in_single_quote Then
+					If Asc(Mid(idx, i, 1)) = 96 Then '`
+						in_single_quote = False
+					End If
+				ElseIf in_double_quote Then 
+					If Asc(Mid(idx, i, 1)) = 34 Then '"
+						in_double_quote = False
+					End If
+				Else
+					Select Case Asc(Mid(idx, i, 1))
+						Case 9, 32 'ƒ^ƒu, ‹ó”’
 							If start_idx = i Then
 								start_idx = i + 1
 							Else
@@ -7867,10 +7757,10 @@ ErrorHandler:
 			idx = GetValueAsString(idx)
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'ƒCƒ“ƒfƒbƒNƒX•”•ª‚ğ•]‰¿‚µ‚Ä•Ï”–¼‚ğ’u‚«Š·‚¦
 		vname = Left(vname, ret) & idx & "]"
 		
-		'Invalid_string_refer_to_original_code
+		'ƒTƒuƒ‹[ƒ`ƒ“ƒ[ƒJƒ‹•Ï”H
 		If IsSubLocalVariableDefined(vname) Then
 			For i = VarIndexStack(CallDepth - 1) + 1 To VarIndex
 				With VarStack(i)
@@ -7882,28 +7772,28 @@ ErrorHandler:
 			Next 
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'ƒ[ƒJƒ‹•Ï”H
 		If IsLocalVariableDefined(vname) Then
 			LocalVariableList.Remove(vname)
 			Exit Sub
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'ƒOƒ[ƒoƒ‹•Ï”H
 		If IsGlobalVariableDefined(vname) Then
 			GlobalVariableList.Remove(vname)
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'”z—ñ‚Ìê‡‚Í‚±‚±‚ÅI—¹
 		Exit Sub
 		
 SkipArrayHandling: 
 		
-		'Invalid_string_refer_to_original_code
+		'’Êí‚Ì•Ï”–¼‚ğw’è‚³‚ê‚½ê‡
 		
-		'Invalid_string_refer_to_original_code
+		'”z—ñ—v‘f‚Ì”»’è—p
 		vname2 = vname & "["
 		
-		'Invalid_string_refer_to_original_code
+		'ƒTƒuƒ‹[ƒ`ƒ“ƒ[ƒJƒ‹•Ï”H
 		If IsSubLocalVariableDefined(vname) Then
 			For i = VarIndexStack(CallDepth - 1) + 1 To VarIndex
 				With VarStack(i)
@@ -7915,7 +7805,7 @@ SkipArrayHandling:
 			Exit Sub
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'ƒ[ƒJƒ‹•Ï”H
 		If IsLocalVariableDefined(vname) Then
 			LocalVariableList.Remove(vname)
 			For	Each var In LocalVariableList
@@ -7928,7 +7818,7 @@ SkipArrayHandling:
 			Exit Sub
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'ƒOƒ[ƒoƒ‹•Ï”H
 		If IsGlobalVariableDefined(vname) Then
 			GlobalVariableList.Remove(vname)
 			For	Each var In GlobalVariableList
@@ -7944,9 +7834,9 @@ SkipArrayHandling:
 	
 	
 	
-	'Invalid_string_refer_to_original_code
+	' === ‚»‚Ì‘¼‚ÌŠÖ” ===
 	
-	'Invalid_string_refer_to_original_code
+	'®‚ğ•¶š—ñ‚Æ‚µ‚Ä•]‰¿
 	Public Function GetValueAsString(ByRef expr As String, Optional ByVal is_term As Boolean = False) As String
 		Dim num As Double
 		
@@ -7957,7 +7847,7 @@ SkipArrayHandling:
 		End If
 	End Function
 	
-	'å¼ã‚’æµ®å‹•å°æ•°ç‚¹æ•°ã¨ã—ã¦è©•ä¾¡
+	'®‚ğ•‚“®¬”“_”‚Æ‚µ‚Ä•]‰¿
 	Public Function GetValueAsDouble(ByRef expr As String, Optional ByVal is_term As Boolean = False) As Double
 		Dim buf As String
 		
@@ -7968,7 +7858,7 @@ SkipArrayHandling:
 		End If
 	End Function
 	
-	'å¼ã‚’æ•´æ•°ã¨ã—ã¦è©•ä¾¡
+	'®‚ğ®”‚Æ‚µ‚Ä•]‰¿
 	Public Function GetValueAsLong(ByRef expr As String, Optional ByVal is_term As Boolean = False) As Integer
 		Dim buf As String
 		Dim num As Double
@@ -7982,8 +7872,8 @@ SkipArrayHandling:
 	End Function
 	
 	
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
+	'str‚ª®‚©‚Ç‚¤‚©ƒ`ƒFƒbƒN
+	'(‹^‚í‚µ‚«‚Í®‚Æ”»’f‚µ‚Ä‚¢‚é)
 	'UPGRADE_NOTE: str ‚Í str_Renamed ‚ÉƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 	Public Function IsExpr(ByRef str_Renamed As String) As Boolean
 		Select Case Asc(str_Renamed)
@@ -7995,7 +7885,7 @@ SkipArrayHandling:
 	End Function
 	
 	
-	'Invalid_string_refer_to_original_code
+	'w’è‚µ‚½ƒIƒvƒVƒ‡ƒ“‚ªİ’è‚³‚ê‚Ä‚¢‚é‚©H
 	Public Function IsOptionDefined(ByRef oname As String) As Boolean
 		Dim dummy As VarData
 		
@@ -8009,7 +7899,7 @@ ErrorHandler:
 	End Function
 	
 	
-	'str ã«å¯¾ã—ã¦å¼ç½®æ›ã‚’è¡Œã†
+	'str ‚É‘Î‚µ‚Ä®’uŠ·‚ğs‚¤
 	'UPGRADE_NOTE: str ‚Í str_Renamed ‚ÉƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 	Public Sub ReplaceSubExpression(ByRef str_Renamed As String)
 		Dim start_idx, end_idx As Short
@@ -8017,13 +7907,13 @@ ErrorHandler:
 		Dim i, n As Short
 		
 		Do While True
-			'Invalid_string_refer_to_original_code
+			'®’uŠ·‚ª‘¶İ‚·‚éH
 			start_idx = InStr(str_Renamed, "$(")
 			If start_idx = 0 Then
 				Exit Sub
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'®’uŠ·‚ÌI—¹ˆÊ’u‚ğ’²‚×‚é
 			str_len = Len(str_Renamed)
 			n = 1
 			For i = start_idx + 2 To str_len
@@ -8042,40 +7932,37 @@ ErrorHandler:
 				Exit Sub
 			End If
 			
-			'å¼ç½®æ›ã‚’å®Ÿæ–½
+			'®’uŠ·‚ğÀ{
 			str_Renamed = Left(str_Renamed, start_idx - 1) & GetValueAsString(Mid(str_Renamed, start_idx + 2, end_idx - start_idx - 2)) & Right(str_Renamed, str_len - end_idx)
 		Loop 
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'msg ‚É‘Î‚µ‚Ä®’uŠ·“™‚Ìˆ—‚ğs‚¤
 	Public Sub FormatMessage(ByRef msg As String)
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		ReplaceString(msg, "Invalid_string_refer_to_original_code")
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		ReplaceString(msg, "ãƒ¼ãƒ¼", "â”€â”€")
-		ReplaceString(msg, "â”€ãƒ¼", "â”€â”€")
-		'End If
+		'‚¿‚á‚ñ‚Æ‰¡–_‚ª‚Â‚È‚ª‚Á‚Ä•\¦‚³‚ê‚é‚æ‚¤‚ÉŒrü•¶š‚É’uŠ·
+		If ReplaceString(msg, "\\", "„Ÿ„Ÿ") Then
+			ReplaceString(msg, "„Ÿ\", "„Ÿ„Ÿ")
+		ElseIf ReplaceString(msg, "[[", "„Ÿ„Ÿ") Then 
+			ReplaceString(msg, "„Ÿ[", "„Ÿ„Ÿ")
+		End If
 		
-		'Invalid_string_refer_to_original_code
+		'®’uŠ·
 		ReplaceSubExpression(msg)
 	End Sub
 	
 	
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
+	'—pŒêtname‚Ì•\¦–¼‚ğQÆ‚·‚é
+	'tlen‚ªw’è‚³‚ê‚½ê‡‚Í•¶š—ñ’·‚ğ‹­§“I‚Étlen‚É‡‚í‚¹‚é
 	Public Function Term(ByRef tname As String, Optional ByRef u As Unit = Nothing, Optional ByVal tlen As Short = 0) As String
 		Dim vname As String
 		Dim i As Short
 		
-		'Invalid_string_refer_to_original_code
+		'ƒ†ƒjƒbƒg‚ª—pŒê–¼”\—Í‚ğ‚Á‚Ä‚¢‚éê‡‚Í‚»‚¿‚ç‚ğ—Dæ
 		If Not u Is Nothing Then
 			With u
-				If .IsFeatureAvailable("ç”¨èªå") Then
+				If .IsFeatureAvailable("—pŒê–¼") Then
 					For i = 1 To .CountFeature
-						If .Feature(i) = "ç”¨èªå" Then
+						If .Feature(i) = "—pŒê–¼" Then
 							If LIndex(.FeatureData(i), 1) = tname Then
 								Term = LIndex(.FeatureData(i), 2)
 								Exit For
@@ -8086,7 +7973,7 @@ ErrorHandler:
 			End With
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'RenameTerm‚Å—pŒê–¼‚ª•ÏX‚³‚ê‚Ä‚¢‚é‚©ƒ`ƒFƒbƒN
 		If Len(Term) = 0 Then
 			Select Case tname
 				Case "HP", "EN", "SP", "CT"
@@ -8102,7 +7989,7 @@ ErrorHandler:
 			End If
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'•\¦•‚Ì’²®
 		If tlen > 0 Then
 			'UPGRADE_ISSUE: ’è” vbFromUnicode ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="55B59875-9A95-4B71-9D6A-7C294BF7139D"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 			'UPGRADE_ISSUE: LenB ŠÖ”‚ÍƒTƒ|[ƒg‚³‚ê‚Ü‚¹‚ñB Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="367764E5-F3F8-4E43-AC3E-7FE0B5E074E2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
@@ -8113,7 +8000,7 @@ ErrorHandler:
 	End Function
 	
 	
-	'Invalid_string_refer_to_original_code
+	'ˆø”1‚Åw’è‚µ‚½•Ï”‚ÌƒIƒuƒWƒFƒNƒg‚ğæ“¾
 	Public Function GetVariableObject(ByRef var_name As String) As VarData
 		Dim vname As String
 		Dim i, num As Short
@@ -8130,7 +8017,7 @@ ErrorHandler:
 		
 		vname = var_name
 		
-		'Invalid_string_refer_to_original_code
+		'•Ï”‚ª”z—ñH
 		ret = InStr(vname, "[")
 		If ret = 0 Then
 			GoTo SkipArrayHandling
@@ -8139,12 +8026,12 @@ ErrorHandler:
 			GoTo SkipArrayHandling
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'‚±‚±‚©‚ç”z—ñê—p‚Ìˆ—
 		
-		'Invalid_string_refer_to_original_code
+		'ƒCƒ“ƒfƒbƒNƒX•”•ª‚ÌØ‚è‚¾‚µ
 		idx = Mid(vname, ret + 1, Len(vname) - ret - 1)
 		
-		'Invalid_string_refer_to_original_code
+		'‘½ŸŒ³”z—ñ‚Ìˆ—
 		If InStr(idx, ",") > 0 Then
 			start_idx = 1
 			depth = 0
@@ -8160,7 +8047,7 @@ ErrorHandler:
 					End If
 				Else
 					Select Case Asc(Mid(idx, i, 1))
-						Case 9, 32 'Invalid_string_refer_to_original_code
+						Case 9, 32 'ƒ^ƒu, ‹ó”’
 							If start_idx = i Then
 								start_idx = i + 1
 							Else
@@ -8197,16 +8084,16 @@ ErrorHandler:
 			idx = GetValueAsString(idx)
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'•Ï”–¼‚ğ”z—ñ‚ÌƒCƒ“ƒfƒbƒNƒX•”‚ğŒvZ‚µ‚ÄÄ\’z
 		vname = Left(vname, ret) & idx & "]"
 		
-		'Invalid_string_refer_to_original_code
+		'”z—ñê—p‚Ìˆ—‚ªI—¹
 		
 SkipArrayHandling: 
 		
-		'Invalid_string_refer_to_original_code
+		'‚±‚±‚©‚ç”z—ñ‚Æ’Êí•Ï”‚Ì‹¤’Êˆ—
 		
-		'ã‚µãƒ–ãƒ«ãƒ¼ãƒãƒ³ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°
+		'ƒTƒuƒ‹[ƒ`ƒ“ƒ[ƒJƒ‹•Ï”
 		If CallDepth > 0 Then
 			For i = VarIndexStack(CallDepth - 1) + 1 To VarIndex
 				If vname = VarStack(i).Name Then
@@ -8216,26 +8103,24 @@ SkipArrayHandling:
 			Next 
 		End If
 		
-		'ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°
+		'ƒ[ƒJƒ‹•Ï”
 		If IsLocalVariableDefined(vname) Then
 			GetVariableObject = LocalVariableList.Item(vname)
 			Exit Function
 		End If
 		
-		'ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°
+		'ƒOƒ[ƒoƒ‹•Ï”
 		If IsGlobalVariableDefined(vname) Then
 			GetVariableObject = GlobalVariableList.Item(vname)
 			Exit Function
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'ƒVƒXƒeƒ€•Ï”H
 		etype = ValueType.UndefinedType
 		str_result = ""
 		num_result = 0
 		Select Case vname
-			Case "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			Case "‘ÎÛƒ†ƒjƒbƒg", "‘ÎÛƒpƒCƒƒbƒg"
 				If Not SelectedUnitForEvent Is Nothing Then
 					With SelectedUnitForEvent
 						If .CountPilot > 0 Then
@@ -8248,9 +8133,7 @@ SkipArrayHandling:
 					str_result = ""
 				End If
 				etype = ValueType.StringType
-			Case "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			Case "‘Šèƒ†ƒjƒbƒg", "‘ŠèƒpƒCƒƒbƒg"
 				If Not SelectedTargetForEvent Is Nothing Then
 					With SelectedTargetForEvent
 						If .CountPilot > 0 Then
@@ -8263,21 +8146,21 @@ SkipArrayHandling:
 					str_result = ""
 				End If
 				etype = ValueType.StringType
-			Case "Invalid_string_refer_to_original_code"
+			Case "‘ÎÛƒ†ƒjƒbƒg‚h‚c"
 				If Not SelectedUnitForEvent Is Nothing Then
 					str_result = SelectedUnitForEvent.ID
 				Else
 					str_result = ""
 				End If
 				etype = ValueType.StringType
-			Case "Invalid_string_refer_to_original_code"
+			Case "‘Šèƒ†ƒjƒbƒg‚h‚c"
 				If Not SelectedTargetForEvent Is Nothing Then
 					str_result = SelectedTargetForEvent.ID
 				Else
 					str_result = ""
 				End If
 				etype = ValueType.StringType
-			Case "å¯¾è±¡ãƒ¦ãƒ‹ãƒƒãƒˆä½¿ç”¨æ­¦å™¨"
+			Case "‘ÎÛƒ†ƒjƒbƒgg—p•Ší"
 				If SelectedUnitForEvent Is SelectedUnit Then
 					If SelectedWeapon > 0 Then
 						str_result = SelectedWeaponName
@@ -8292,7 +8175,7 @@ SkipArrayHandling:
 					End If
 				End If
 				etype = ValueType.StringType
-			Case "ç›¸æ‰‹ãƒ¦ãƒ‹ãƒƒãƒˆä½¿ç”¨æ­¦å™¨"
+			Case "‘Šèƒ†ƒjƒbƒgg—p•Ší"
 				If SelectedTargetForEvent Is SelectedTarget Then
 					If SelectedTWeapon > 0 Then
 						str_result = SelectedTWeaponName
@@ -8307,21 +8190,21 @@ SkipArrayHandling:
 					End If
 				End If
 				etype = ValueType.StringType
-			Case "å¯¾è±¡ãƒ¦ãƒ‹ãƒƒãƒˆä½¿ç”¨æ­¦å™¨ç•ªå·"
+			Case "‘ÎÛƒ†ƒjƒbƒgg—p•Ší”Ô†"
 				If SelectedUnitForEvent Is SelectedUnit Then
 					num_result = SelectedWeapon
 				ElseIf SelectedUnitForEvent Is SelectedTarget Then 
 					num_result = SelectedTWeapon
 				End If
 				etype = ValueType.NumericType
-			Case "ç›¸æ‰‹ãƒ¦ãƒ‹ãƒƒãƒˆä½¿ç”¨æ­¦å™¨ç•ªå·"
+			Case "‘Šèƒ†ƒjƒbƒgg—p•Ší”Ô†"
 				If SelectedTargetForEvent Is SelectedTarget Then
 					num_result = SelectedTWeapon
 				ElseIf SelectedTargetForEvent Is SelectedUnit Then 
 					num_result = SelectedWeapon
 				End If
 				etype = ValueType.NumericType
-			Case "Invalid_string_refer_to_original_code"
+			Case "‘ÎÛƒ†ƒjƒbƒgg—pƒAƒrƒŠƒeƒB"
 				If SelectedUnitForEvent Is SelectedUnit Then
 					If SelectedAbility > 0 Then
 						str_result = SelectedAbilityName
@@ -8330,17 +8213,17 @@ SkipArrayHandling:
 					End If
 				End If
 				etype = ValueType.StringType
-			Case "Invalid_string_refer_to_original_code"
+			Case "‘ÎÛƒ†ƒjƒbƒgg—pƒAƒrƒŠƒeƒB”Ô†"
 				If SelectedUnitForEvent Is SelectedUnit Then
 					num_result = SelectedAbility
 				End If
 				etype = ValueType.NumericType
-			Case "å¯¾è±¡ãƒ¦ãƒ‹ãƒƒãƒˆä½¿ç”¨ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼"
+			Case "‘ÎÛƒ†ƒjƒbƒgg—pƒXƒyƒVƒƒƒ‹ƒpƒ["
 				If SelectedUnitForEvent Is SelectedUnit Then
 					str_result = SelectedSpecialPower
 				End If
 				etype = ValueType.StringType
-			Case "Invalid_string_refer_to_original_code"
+			Case "‘I‘ğ"
 				If IsNumeric(SelectedAlternative) Then
 					num_result = StrToDbl(SelectedAlternative)
 					etype = ValueType.NumericType
@@ -8348,33 +8231,31 @@ SkipArrayHandling:
 					str_result = SelectedAlternative
 					etype = ValueType.StringType
 				End If
-			Case "ã‚¿ãƒ¼ãƒ³æ•°"
+			Case "ƒ^[ƒ“”"
 				num_result = Turn
 				etype = ValueType.NumericType
-			Case "ç·ã‚¿ãƒ¼ãƒ³æ•°"
+			Case "‘ƒ^[ƒ“”"
 				num_result = TotalTurn
 				etype = ValueType.NumericType
-			Case "ãƒ•ã‚§ã‚¤ã‚º"
+			Case "ƒtƒFƒCƒY"
 				str_result = Stage
 				etype = ValueType.StringType
-			Case "å‘³æ–¹æ•°", "Invalid_string_refer_to_original_code", "æ•µæ•°", "ä¸­ç«‹æ•°"
+			Case "–¡•û”", "‚m‚o‚b”", "“G”", "’†—§”"
 				num = 0
 				For	Each u In UList
 					With u
-						'Invalid_string_refer_to_original_code_
-						'Then
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-						num = num + 1
-						'End If
+						If .Party0 = Left(vname, Len(vname) - 1) And (.Status_Renamed = "oŒ‚" Or .Status_Renamed = "Ši”[") Then
+							num = num + 1
+						End If
 					End With
 				Next u
 				num_result = num
 				etype = ValueType.NumericType
-			Case "Invalid_string_refer_to_original_code"
+			Case "‘‹à"
 				num_result = Money
 				etype = ValueType.NumericType
 			Case Else
-				'Invalid_string_refer_to_original_code
+				'ƒAƒ‹ƒtƒ@ƒxƒbƒg‚Ì•Ï”–¼‚Ílow case‚Å”»•Ê
 				Select Case LCase(vname)
 					Case "apppath"
 						str_result = AppPath

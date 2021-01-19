@@ -2,11 +2,11 @@ Attribute VB_Name = "Susie"
 Option Explicit
 
 ' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯ãƒ•ãƒªãƒ¼ã‚½ãƒ•ãƒˆã§ã‚ã‚Šã€ç„¡ä¿è¨¼ã§ã™ã€‚
-' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯GNU General Public License(Ver.3ã¾ãŸã¯ãã‚Œä»¥é™)ãŒå®šã‚ã‚‹æ¡ä»¶ã®ä¸‹ã§
-' å†é ’å¸ƒã¾ãŸã¯æ”¹å¤‰ã™ã‚‹ã“ã¨ãŒã§ãã¾ã™ã€‚
+' –{ƒvƒƒOƒ‰ƒ€‚ÍƒtƒŠ[ƒ\ƒtƒg‚Å‚ ‚èA–³•ÛØ‚Å‚·B
+' –{ƒvƒƒOƒ‰ƒ€‚ÍGNU General Public License(Ver.3‚Ü‚½‚Í‚»‚êˆÈ~)‚ª’è‚ß‚éğŒ‚Ì‰º‚Å
+' Ä”Ğ•z‚Ü‚½‚Í‰ü•Ï‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B
 
-'Susieãƒ—ãƒ©ã‚°ã‚¤ãƒ³ã‚’åˆ©ç”¨ã—ã¦ç”»åƒãƒ•ã‚¡ã‚¤ãƒ«ã‚’èª­ã¿è¾¼ã‚€ãŸã‚ã®ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«
+'Susieƒvƒ‰ƒOƒCƒ“‚ğ—˜—p‚µ‚Ä‰æ‘œƒtƒ@ƒCƒ‹‚ğ“Ç‚İ‚Ş‚½‚ß‚Ìƒ‚ƒWƒ…[ƒ‹
 
 'Susie 32-bit Plug-in API
 Private Declare Function GetPNGPicture Lib "ifpng.spi" Alias "GetPicture" (buf As Any, _
@@ -24,7 +24,7 @@ Private Declare Function LocalUnlock Lib "kernel32" (ByVal hMem As Long) As Long
 Private Declare Sub MoveMemory Lib "kernel32" Alias "RtlMoveMemory" (dest As Any, _
    Source As Any, ByVal length As Long)
 
-'ç”»åƒãƒ•ã‚¡ã‚¤ãƒ«ã‚’èª­ã¿è¾¼ã‚€é–¢æ•°
+'‰æ‘œƒtƒ@ƒCƒ‹‚ğ“Ç‚İ‚ŞŠÖ”
 Public Function LoadPicture2(pic As PictureBox, fname As String) As Boolean
 Dim HBInfo As Long, HBm As Long
 Dim lpHBInfo As Long, lpHBm As Long
@@ -33,60 +33,60 @@ Dim ret As Long
     
     On Error GoTo ErrorHandler
     
-    'ç”»åƒã®å–å¾—
+    '‰æ‘œ‚Ìæ“¾
     Select Case LCase$(Right$(fname, 4))
         Case ".bmp", ".jpg", ".gif"
-            'Susieãƒ—ãƒ©ã‚°ã‚¤ãƒ³ã‚’ä½¿ã‚ãšã«ãƒ­ãƒ¼ãƒ‰
+            'Susieƒvƒ‰ƒOƒCƒ“‚ğg‚í‚¸‚Éƒ[ƒh
             pic = LoadPicture(fname)
             LoadPicture2 = True
             Exit Function
         Case ".png"
-            'PNGãƒ•ã‚¡ã‚¤ãƒ«ç”¨Susieãƒ—ãƒ©ã‚°ã‚¤ãƒ³APIã‚’å®Ÿè¡Œ
+            'PNGƒtƒ@ƒCƒ‹—pSusieƒvƒ‰ƒOƒCƒ“API‚ğÀs
             ret = GetPNGPicture(ByVal fname, 0, 0, HBInfo, HBm, ByVal 0&, 0)
         Case Else
-            'æœªã‚µãƒãƒ¼ãƒˆã®ãƒ•ã‚¡ã‚¤ãƒ«å½¢å¼
-            ErrorMessage "ç”»åƒãƒ•ã‚¡ã‚¤ãƒ«" & vbCr & vbLf _
+            '–¢ƒTƒ|[ƒg‚Ìƒtƒ@ƒCƒ‹Œ`®
+            ErrorMessage "‰æ‘œƒtƒ@ƒCƒ‹" & vbCr & vbLf _
                 & fname & vbCr & vbLf _
-                & "ã®ç”»åƒãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã¯ã‚µãƒãƒ¼ãƒˆã•ã‚Œã¦ã„ã¾ã›ã‚“ã€‚"
+                & "‚Ì‰æ‘œƒtƒH[ƒ}ƒbƒg‚ÍƒTƒ|[ƒg‚³‚ê‚Ä‚¢‚Ü‚¹‚ñB"
             pic = LoadPicture("")
             Exit Function
     End Select
     
-    'èª­ã¿è¾¼ã¿ã«æˆåŠŸã—ãŸï¼Ÿ
+    '“Ç‚İ‚İ‚É¬Œ÷‚µ‚½H
     If ret <> 0 Then
-        ErrorMessage "ç”»åƒãƒ•ã‚¡ã‚¤ãƒ«" & vbCr & vbLf _
+        ErrorMessage "‰æ‘œƒtƒ@ƒCƒ‹" & vbCr & vbLf _
             & fname & vbCr & vbLf _
-            & "ã®èª­ã¿è¾¼ã¿ä¸­ã«ã‚¨ãƒ©ãƒ¼ãŒç™ºç”Ÿã—ã¾ã—ãŸã€‚" & vbCr & vbLf _
-            & "ç”»åƒãƒ•ã‚¡ã‚¤ãƒ«ãŒå£Šã‚Œã¦ã„ãªã„ã‹ç¢ºèªã—ã¦ä¸‹ã•ã„ã€‚"
+            & "‚Ì“Ç‚İ‚İ’†‚ÉƒGƒ‰[‚ª”­¶‚µ‚Ü‚µ‚½B" & vbCr & vbLf _
+            & "‰æ‘œƒtƒ@ƒCƒ‹‚ª‰ó‚ê‚Ä‚¢‚È‚¢‚©Šm”F‚µ‚Ä‰º‚³‚¢B"
         Exit Function
     End If
     
-    'ãƒ¡ãƒ¢ãƒªã®ãƒ­ãƒƒã‚¯
+    'ƒƒ‚ƒŠ‚ÌƒƒbƒN
     lpHBInfo = LocalLock(HBInfo)
     lpHBm = LocalLock(HBm)
     
-    'ãªãœã‹ç”»åƒã‚’ä¸€æ—¦æ¶ˆå»ã—ã¦ãŠãå¿…è¦ã‚ã‚Š
+    '‚È‚º‚©‰æ‘œ‚ğˆê’UÁ‹‚µ‚Ä‚¨‚­•K—v‚ ‚è
     pic = LoadPicture("")
     
     With pic
-        'ãƒ”ã‚¯ãƒãƒ£ãƒœãƒƒã‚¯ã‚¹ã®ã‚µã‚¤ã‚ºå¤‰æ›´
+        'ƒsƒNƒ`ƒƒƒ{ƒbƒNƒX‚ÌƒTƒCƒY•ÏX
         Call MoveMemory(bmi, ByVal lpHBInfo, Len(bmi))
         .Width = bmi.bmiHeader.biWidth
         .Height = bmi.bmiHeader.biHeight
         
-        'ç”»åƒã®è¡¨ç¤º
+        '‰æ‘œ‚Ì•\¦
         ret = SetDIBits(.hDC, .Image, 0, .Height, ByVal lpHBm, ByVal lpHBInfo, 0)
     End With
     
-    'ãƒ¡ãƒ¢ãƒªã®ãƒ­ãƒƒã‚¯è§£é™¤
+    'ƒƒ‚ƒŠ‚ÌƒƒbƒN‰ğœ
     Call LocalUnlock(HBInfo)
     Call LocalUnlock(HBm)
     
-    'ãƒ¡ãƒ¢ãƒªãƒãƒ³ãƒ‰ãƒ«ã®è§£æ”¾
+    'ƒƒ‚ƒŠƒnƒ“ƒhƒ‹‚Ì‰ğ•ú
     Call LocalFree(HBInfo)
     Call LocalFree(HBm)
     
-    'ç”»åƒã®èª­ã¿å‡ºã—ã«æˆåŠŸã—ãŸã‹ã©ã†ã‹ã‚’è¿”ã™
+    '‰æ‘œ‚Ì“Ç‚İo‚µ‚É¬Œ÷‚µ‚½‚©‚Ç‚¤‚©‚ğ•Ô‚·
     If ret <> 0 Then
         LoadPicture2 = True
     End If
@@ -94,18 +94,18 @@ Dim ret As Long
     Exit Function
     
 ErrorHandler:
-    'ã‚¨ãƒ©ãƒ¼å‡¦ç†
+    'ƒGƒ‰[ˆ—
     Select Case LCase$(Right$(fname, 4))
         Case ".bmp", ".jpg", ".gif"
-            ErrorMessage "ç”»åƒãƒ•ã‚¡ã‚¤ãƒ«" & vbCr & vbLf _
+            ErrorMessage "‰æ‘œƒtƒ@ƒCƒ‹" & vbCr & vbLf _
                 & fname & vbCr & vbLf _
-                & "ã®èª­ã¿è¾¼ã¿ä¸­ã«ã‚¨ãƒ©ãƒ¼ãŒç™ºç”Ÿã—ã¾ã—ãŸã€‚" & vbCr & vbLf _
-                & "ç”»åƒãƒ•ã‚¡ã‚¤ãƒ«ãŒå£Šã‚Œã¦ã„ãªã„ã‹ç¢ºèªã—ã¦ä¸‹ã•ã„ã€‚"
+                & "‚Ì“Ç‚İ‚İ’†‚ÉƒGƒ‰[‚ª”­¶‚µ‚Ü‚µ‚½B" & vbCr & vbLf _
+                & "‰æ‘œƒtƒ@ƒCƒ‹‚ª‰ó‚ê‚Ä‚¢‚È‚¢‚©Šm”F‚µ‚Ä‰º‚³‚¢B"
         Case ".png"
-            ErrorMessage "ç”»åƒãƒ•ã‚¡ã‚¤ãƒ«" & vbCr & vbLf _
+            ErrorMessage "‰æ‘œƒtƒ@ƒCƒ‹" & vbCr & vbLf _
                 & fname & vbCr & vbLf _
-                & "ã®èª­ã¿è¾¼ã¿ä¸­ã«ã‚¨ãƒ©ãƒ¼ãŒç™ºç”Ÿã—ã¾ã—ãŸã€‚" & vbCr & vbLf _
-                & "PNGãƒ•ã‚¡ã‚¤ãƒ«ç”¨Susie Plug-inãŒã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã•ã‚Œã¦ã„ã¾ã›ã‚“ã€‚"
+                & "‚Ì“Ç‚İ‚İ’†‚ÉƒGƒ‰[‚ª”­¶‚µ‚Ü‚µ‚½B" & vbCr & vbLf _
+                & "PNGƒtƒ@ƒCƒ‹—pSusie Plug-in‚ªƒCƒ“ƒXƒg[ƒ‹‚³‚ê‚Ä‚¢‚Ü‚¹‚ñB"
     End Select
 End Function
 

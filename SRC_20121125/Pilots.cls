@@ -10,16 +10,16 @@ Attribute VB_Exposed = False
 Option Explicit
 
 ' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯ãƒ•ãƒªãƒ¼ã‚½ãƒ•ãƒˆã§ã‚ã‚Šã€ç„¡ä¿è¨¼ã§ã™ã€‚
-' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯GNU General Public License(Ver.3ã¾ãŸã¯ãã‚Œä»¥é™)ãŒå®šã‚ã‚‹æ¡ä»¶ã®ä¸‹ã§
-' å†é ’å¸ƒã¾ãŸã¯æ”¹å¤‰ã™ã‚‹ã“ã¨ãŒã§ãã¾ã™ã€‚
+' –{ƒvƒƒOƒ‰ƒ€‚ÍƒtƒŠ[ƒ\ƒtƒg‚Å‚ ‚èA–³•ÛØ‚Å‚·B
+' –{ƒvƒƒOƒ‰ƒ€‚ÍGNU General Public License(Ver.3‚Ü‚½‚Í‚»‚êˆÈ~)‚ª’è‚ß‚éğŒ‚Ì‰º‚Å
+' Ä”Ğ•z‚Ü‚½‚Í‰ü•Ï‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B
 
-'ä½œæˆã•ã‚ŒãŸãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®ãƒ‡ãƒ¼ã‚¿ã‚’ç®¡ç†ã™ã‚‹ãƒªã‚¹ãƒˆã‚¯ãƒ©ã‚¹
+'ì¬‚³‚ê‚½ƒpƒCƒƒbƒg‚Ìƒf[ƒ^‚ğŠÇ—‚·‚éƒŠƒXƒgƒNƒ‰ƒX
 
-'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆä¸€è¦§
+'ƒpƒCƒƒbƒgˆê——
 Private colPilots As New Collection
 
-'ã‚¯ãƒ©ã‚¹ã®è§£æ”¾
+'ƒNƒ‰ƒX‚Ì‰ğ•ú
 Private Sub Class_Terminate()
 Dim i As Integer
     
@@ -31,7 +31,7 @@ Dim i As Integer
     Set colPilots = Nothing
 End Sub
 
-'ForEachç”¨é–¢æ•°
+'ForEach—pŠÖ”
 Public Function NewEnum() As IUnknown
 Attribute NewEnum.VB_UserMemId = -4
 Attribute NewEnum.VB_MemberFlags = "40"
@@ -39,7 +39,7 @@ Attribute NewEnum.VB_MemberFlags = "40"
 End Function
 
 
-'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‚’è¿½åŠ 
+'ƒpƒCƒƒbƒg‚ğ’Ç‰Á
 Public Function Add(pname As String, ByVal plevel As Integer, _
     pparty As String, Optional gid As String) As Pilot
 Dim new_pilot As New Pilot
@@ -55,14 +55,14 @@ Dim i As Integer
         Set .Unit = Nothing
         
         If gid = "" Then
-            'ã‚°ãƒ«ãƒ¼ãƒ—ï¼©ï¼¤ãŒæŒ‡å®šã•ã‚Œã¦ã„ãªã„å ´åˆ
-            If InStr(.Name, "(ã‚¶ã‚³)") = 0 _
-                And InStr(.Name, "(æ±ç”¨)") = 0 _
+            'ƒOƒ‹[ƒv‚h‚c‚ªw’è‚³‚ê‚Ä‚¢‚È‚¢ê‡
+            If InStr(.Name, "(ƒUƒR)") = 0 _
+                And InStr(.Name, "(”Ä—p)") = 0 _
             Then
                 key = .Name
                If PList.IsDefined2(key) Then
                    If PList.Item2(key).ID = key Then
-                       'ä¸€åº¦ä½œæˆã•ã‚ŒãŸãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‚’å¾©æ´»ã•ã›ã‚‹å ´åˆ
+                       'ˆê“xì¬‚³‚ê‚½ƒpƒCƒƒbƒg‚ğ•œŠˆ‚³‚¹‚éê‡
                        If Not PList.Item2(key).Alive Then
                            With PList.Item2(key)
                                .Level = plevel
@@ -74,7 +74,7 @@ Dim i As Integer
                            Exit Function
                        End If
                        
-                       ErrorMessage key & "ã¨ã„ã†ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã¯æ—¢ã«ç™»éŒ²ã•ã‚Œã¦ã„ã¾ã™"
+                       ErrorMessage key & "‚Æ‚¢‚¤ƒpƒCƒƒbƒg‚ÍŠù‚É“o˜^‚³‚ê‚Ä‚¢‚Ü‚·"
                        Exit Function
                    End If
                End If
@@ -86,7 +86,7 @@ Dim i As Integer
                 Loop While PList.IsDefined2(key)
             End If
         Else
-            'ã‚°ãƒ«ãƒ¼ãƒ—ï¼©ï¼¤ãŒæŒ‡å®šã•ã‚Œã¦ã„ã‚‹å ´åˆ
+            'ƒOƒ‹[ƒv‚h‚c‚ªw’è‚³‚ê‚Ä‚¢‚éê‡
             key = gid
             i = 1
             Do While PList.IsDefined2(key)
@@ -101,17 +101,17 @@ Dim i As Integer
     End With
 End Function
 
-'ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®ç·æ•°
+'“o˜^‚³‚ê‚Ä‚¢‚éƒpƒCƒƒbƒg‚Ì‘”
 Public Function Count() As Integer
     Count = colPilots.Count
 End Function
 
-'ãƒªã‚¹ãƒˆã‹ã‚‰ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‚’å‰Šé™¤
+'ƒŠƒXƒg‚©‚çƒpƒCƒƒbƒg‚ğíœ
 Public Sub Delete(Index As Variant)
     colPilots.Remove Index
 End Sub
 
-'ãƒªã‚¹ãƒˆã‹ã‚‰ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‚’æ¤œç´¢
+'ƒŠƒXƒg‚©‚çƒpƒCƒƒbƒg‚ğŒŸõ
 Public Function Item(Index As Variant) As Pilot
 Dim p As Pilot
 Dim pname As String
@@ -123,7 +123,7 @@ Dim pname As String
     End If
     
 ErrorHandler:
-    'ï¼©ï¼¤ã§è¦‹ã¤ã‹ã‚‰ãªã‘ã‚Œã°åç§°ã§æ¤œç´¢
+    '‚h‚c‚ÅŒ©‚Â‚©‚ç‚È‚¯‚ê‚Î–¼Ì‚ÅŒŸõ
     pname = CStr(Index)
     For Each p In colPilots
         If p.Data.Name = pname Then
@@ -133,7 +133,7 @@ ErrorHandler:
             End If
         End If
     Next
-    'ãã‚Œã§ã‚‚è¦‹ã¤ã‹ã‚‰ãªã‘ã‚Œã°æ„›ç§°ã§æ¤œç´¢
+    '‚»‚ê‚Å‚àŒ©‚Â‚©‚ç‚È‚¯‚ê‚Îˆ¤Ì‚ÅŒŸõ
     For Each p In colPilots
         If p.Data.Nickname = pname Then
             If p.Alive Then
@@ -144,7 +144,7 @@ ErrorHandler:
     Next
 End Function
 
-'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆãŒå®šç¾©ã•ã‚Œã¦ã„ã‚‹ã‹
+'ƒpƒCƒƒbƒg‚ª’è‹`‚³‚ê‚Ä‚¢‚é‚©
 Public Function IsDefined(Index As Variant) As Boolean
 Dim p As Pilot
 Dim pname As String
@@ -157,7 +157,7 @@ Dim pname As String
     End If
     
 ErrorHandler:
-    'ï¼©ï¼¤ã§è¦‹ã¤ã‹ã‚‰ãªã‘ã‚Œã°åç§°ã§æ¤œç´¢
+    '‚h‚c‚ÅŒ©‚Â‚©‚ç‚È‚¯‚ê‚Î–¼Ì‚ÅŒŸõ
     pname = CStr(Index)
     For Each p In colPilots
         If p.Data.Name = pname Then
@@ -167,7 +167,7 @@ ErrorHandler:
             End If
         End If
     Next
-    'ãã‚Œã§ã‚‚è¦‹ã¤ã‹ã‚‰ãªã‘ã‚Œã°æ„›ç§°ã§æ¤œç´¢
+    '‚»‚ê‚Å‚àŒ©‚Â‚©‚ç‚È‚¯‚ê‚Îˆ¤Ì‚ÅŒŸõ
     For Each p In colPilots
         If p.Data.Nickname = pname Then
             If p.Alive Then
@@ -178,7 +178,7 @@ ErrorHandler:
     Next
 End Function
 
-'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‚’æ¤œç´¢ (IDã®ã¿ã§æ¤œç´¢)
+'ƒpƒCƒƒbƒg‚ğŒŸõ (ID‚Ì‚İ‚ÅŒŸõ)
 Public Function Item2(Index As Variant) As Pilot
     On Error GoTo ErrorHandler
     Set Item2 = colPilots.Item(Index)
@@ -188,7 +188,7 @@ ErrorHandler:
     Set Item2 = Nothing
 End Function
 
-'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆãŒå®šç¾©ã•ã‚Œã¦ã„ã‚‹ã‹ (IDã®ã¿ã§æ¤œç´¢)
+'ƒpƒCƒƒbƒg‚ª’è‹`‚³‚ê‚Ä‚¢‚é‚© (ID‚Ì‚İ‚ÅŒŸõ)
 Public Function IsDefined2(Index As Variant) As Boolean
 Dim p As Pilot
 
@@ -201,18 +201,18 @@ ErrorHandler:
     IsDefined2 = False
 End Function
 
-'ãƒªã‚¹ãƒˆã®ã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ãƒˆ
+'ƒŠƒXƒg‚ÌƒAƒbƒvƒf[ƒg
 Public Sub Update()
 Dim p As Pilot
 Dim i As Integer
 
     For Each p In colPilots
         With p
-            If .Party <> "å‘³æ–¹" Or Not .Alive Then
-                'å‘³æ–¹ã§ãªã„ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‚„ç ´æ£„ã•ã‚ŒãŸãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã¯å‰Šé™¤
+            If .Party <> "–¡•û" Or Not .Alive Then
+                '–¡•û‚Å‚È‚¢ƒpƒCƒƒbƒg‚â”jŠü‚³‚ê‚½ƒpƒCƒƒbƒg‚Ííœ
                 Delete .ID
             ElseIf .IsAdditionalPilot Then
-                'è¿½åŠ ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã¯å‰Šé™¤
+                '’Ç‰ÁƒpƒCƒƒbƒg‚Ííœ
                 If Not .Unit Is Nothing Then
                     With .Unit
                         Set .pltAdditionalPilot = Nothing
@@ -223,7 +223,7 @@ Dim i As Integer
                 End If
                 Delete .ID
             ElseIf .IsAdditionalSupport Then
-                'è¿½åŠ ã‚µãƒãƒ¼ãƒˆã¯å‰Šé™¤
+                '’Ç‰ÁƒTƒ|[ƒg‚Ííœ
                 If Not .Unit Is Nothing Then
                     With .Unit
                         Set .pltAdditionalSupport = Nothing
@@ -233,31 +233,31 @@ Dim i As Integer
                     End With
                 End If
                 Delete .ID
-            ElseIf .Nickname0 = "ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆä¸åœ¨" Then
-                'ãƒ€ãƒŸãƒ¼ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã¯å‰Šé™¤
+            ElseIf .Nickname0 = "ƒpƒCƒƒbƒg•sİ" Then
+                'ƒ_ƒ~[ƒpƒCƒƒbƒg‚Ííœ
                 Delete .ID
             ElseIf Not .Unit Is Nothing Then
-                If .Unit.IsFeatureAvailable("å¬å–šãƒ¦ãƒ‹ãƒƒãƒˆ") Then
-                    'å¬å–šãƒ¦ãƒ‹ãƒƒãƒˆã®è¿½åŠ ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‚‚å‰Šé™¤
+                If .Unit.IsFeatureAvailable("¢Š«ƒ†ƒjƒbƒg") Then
+                    '¢Š«ƒ†ƒjƒbƒg‚Ì’Ç‰ÁƒpƒCƒƒbƒg‚àíœ
                     Delete .ID
                 End If
             End If
         End With
     Next
     
-    'æ®‹ã£ãŸãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‚’å…¨å›å¾©
+    'c‚Á‚½ƒpƒCƒƒbƒg‚ğ‘S‰ñ•œ
     For Each p In colPilots
         p.FullRecover
     Next
 End Sub
 
 
-'ãƒ•ã‚¡ã‚¤ãƒ«ã«ãƒ‡ãƒ¼ã‚¿ã‚’ã‚»ãƒ¼ãƒ–
+'ƒtƒ@ƒCƒ‹‚Éƒf[ƒ^‚ğƒZ[ƒu
 Public Sub Save()
 Dim num As Integer
 Dim p As Pilot
 
-    'è¿½åŠ ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‚„è¿½åŠ ã‚µãƒãƒ¼ãƒˆã‚’é™¤ã„ãŸãƒ‘ã‚¤ãƒ­ãƒƒãƒˆæ•°ã‚’ç®—å‡º
+    '’Ç‰ÁƒpƒCƒƒbƒg‚â’Ç‰ÁƒTƒ|[ƒg‚ğœ‚¢‚½ƒpƒCƒƒbƒg”‚ğZo
     For Each p In colPilots
         With p
             If Not .IsAdditionalPilot And Not .IsAdditionalSupport Then
@@ -269,7 +269,7 @@ Dim p As Pilot
     
     For Each p In colPilots
         With p
-            'è¿½åŠ ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‚„è¿½åŠ ã‚µãƒãƒ¼ãƒˆã¯ã‚»ãƒ¼ãƒ–ã—ãªã„
+            '’Ç‰ÁƒpƒCƒƒbƒg‚â’Ç‰ÁƒTƒ|[ƒg‚ÍƒZ[ƒu‚µ‚È‚¢
             If Not .IsAdditionalPilot And Not .IsAdditionalSupport Then
                 If .Name = .ID Then
                     Write #SaveDataFileNumber, .Name
@@ -279,7 +279,7 @@ Dim p As Pilot
                 Write #SaveDataFileNumber, .Level, .Exp
                 If .Unit Is Nothing Then
                     If .Away Then
-                        Write #SaveDataFileNumber, "é›¢è„±"
+                        Write #SaveDataFileNumber, "—£’E"
                     Else
                         Write #SaveDataFileNumber, "-"
                     End If
@@ -291,7 +291,7 @@ Dim p As Pilot
     Next
 End Sub
 
-'ãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ãƒ‡ãƒ¼ã‚¿ã‚’ãƒ­ãƒ¼ãƒ‰ (ãƒªãƒ³ã‚¯ã¯è¡Œã‚ãªã„)
+'ƒtƒ@ƒCƒ‹‚©‚çƒf[ƒ^‚ğƒ[ƒh (ƒŠƒ“ƒN‚Ís‚í‚È‚¢)
 Public Sub Load()
 Dim i As Integer, num As Integer
 Dim pname As String
@@ -313,28 +313,28 @@ Dim dummy As String
                     pname = Left$(pname, InStr(pname, "(") - 1)
                 End If
                 If Not PDList.IsDefined(pname) Then
-                    ErrorMessage pname & "ã®ãƒ‡ãƒ¼ã‚¿ãŒå®šç¾©ã•ã‚Œã¦ã„ã¾ã›ã‚“"
+                    ErrorMessage pname & "‚Ìƒf[ƒ^‚ª’è‹`‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ"
                     TerminateSRC
                     End
                 End If
             End If
-            With Add(pname, plevel, "å‘³æ–¹")
+            With Add(pname, plevel, "–¡•û")
                 .Exp = pexp
             End With
         Else
             If Not PDList.IsDefined(LIndex(pname, 1)) Then
-                ErrorMessage LIndex(pname, 1) & "ã®ãƒ‡ãƒ¼ã‚¿ãŒå®šç¾©ã•ã‚Œã¦ã„ã¾ã›ã‚“"
+                ErrorMessage LIndex(pname, 1) & "‚Ìƒf[ƒ^‚ª’è‹`‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ"
                 TerminateSRC
                 End
             End If
-            With Add(LIndex(pname, 1), plevel, "å‘³æ–¹", LIndex(pname, 2))
+            With Add(LIndex(pname, 1), plevel, "–¡•û", LIndex(pname, 2))
                 .Exp = pexp
             End With
         End If
     Next
 End Sub
 
-'ãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ãƒ‡ãƒ¼ã‚¿ã‚’èª­ã¿è¾¼ã¿ãƒªãƒ³ã‚¯
+'ƒtƒ@ƒCƒ‹‚©‚çƒf[ƒ^‚ğ“Ç‚İ‚İƒŠƒ“ƒN
 Public Sub LoadLinkInfo()
 Dim i As Integer, ret As Integer, num As Integer
 Dim pname As String, uid As String
@@ -357,8 +357,8 @@ Dim u As Unit
         End If
         
         Select Case uid
-            Case "é›¢è„±"
-                'Leaveã•ã‚ŒãŸãƒ‘ã‚¤ãƒ­ãƒƒãƒˆ
+            Case "—£’E"
+                'Leave‚³‚ê‚½ƒpƒCƒƒbƒg
                 If LLength(pname) = 1 Then
                     Item(pname).Away = True
                 Else
@@ -366,17 +366,17 @@ Dim u As Unit
                 End If
                 GoTo NextPilot
             Case "-", "Dummy"
-                'ãƒ¦ãƒ‹ãƒƒãƒˆã«ä¹—ã£ã¦ã„ãªã„ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆ
+                'ƒ†ƒjƒbƒg‚Éæ‚Á‚Ä‚¢‚È‚¢ƒpƒCƒƒbƒg
                 GoTo NextPilot
         End Select
         
-        'æ—§å½¢å¼ã®ãƒ¦ãƒ‹ãƒƒãƒˆï¼©ï¼¤ã‚’æ–°å½¢å¼ã«å¤‰æ›
+        '‹ŒŒ`®‚Ìƒ†ƒjƒbƒg‚h‚c‚ğVŒ`®‚É•ÏŠ·
         If SaveDataVersion < 10700 Then
             ConvertUnitID uid
         End If
         
         If UList.IsDefined(uid) Then
-            'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‚’ãƒ¦ãƒ‹ãƒƒãƒˆã«ä¹—ã›ã‚‹
+            'ƒpƒCƒƒbƒg‚ğƒ†ƒjƒbƒg‚Éæ‚¹‚é
             Set u = UList.Item(uid)
             If LLength(pname) = 1 Then
                 Set Item(pname).Unit = u
@@ -384,12 +384,12 @@ Dim u As Unit
                 Set Item(LIndex(pname, 2)).Unit = u
             End If
         Else
-            'ä¹—ã›ã‚‹ã¹ããƒ¦ãƒ‹ãƒƒãƒˆãŒè¦‹ã¤ã‹ã‚‰ãªã‹ã£ãŸå ´åˆã¯å¼·åˆ¶çš„ã«ãƒ¦ãƒ‹ãƒƒãƒˆã‚’
-            'ä½œã£ã¦ä¹—ã›ã‚‹ (ãƒã‚°å¯¾ç­–ã ã£ãŸã‘ã©â€¦â€¦ä¸è¦ï¼Ÿ)
+            'æ‚¹‚é‚×‚«ƒ†ƒjƒbƒg‚ªŒ©‚Â‚©‚ç‚È‚©‚Á‚½ê‡‚Í‹­§“I‚Éƒ†ƒjƒbƒg‚ğ
+            'ì‚Á‚Äæ‚¹‚é (ƒoƒO‘Îô‚¾‚Á‚½‚¯‚Çcc•s—vH)
             ret = InStr(uid, ":")
             uid = Left$(uid, ret - 1)
             If UDList.IsDefined(uid) Then
-                Set u = UList.Add(uid, 0, "å‘³æ–¹")
+                Set u = UList.Add(uid, 0, "–¡•û")
                 If LLength(pname) = 1 Then
                     Item(pname).Ride u
                 Else
@@ -402,12 +402,12 @@ NextPilot:
 End Sub
 
 
-'ä¸€æ™‚ä¸­æ–­ç”¨ãƒ‡ãƒ¼ã‚¿ã‚’ã‚»ãƒ¼ãƒ–ã™ã‚‹
+'ˆê’†’f—pƒf[ƒ^‚ğƒZ[ƒu‚·‚é
 Public Sub Dump()
 Dim p As Pilot
 Dim num As Integer
 
-    'è¿½åŠ ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‚’é™¤ã„ãŸãƒ‘ã‚¤ãƒ­ãƒƒãƒˆæ•°ã‚’ç®—å‡º
+    '’Ç‰ÁƒpƒCƒƒbƒg‚ğœ‚¢‚½ƒpƒCƒƒbƒg”‚ğZo
     For Each p In colPilots
         With p
             If Not .IsAdditionalPilot Then
@@ -419,7 +419,7 @@ Dim num As Integer
     
     For Each p In colPilots
         With p
-            'è¿½åŠ ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã¯ã‚»ãƒ¼ãƒ–ã—ãªã„
+            '’Ç‰ÁƒpƒCƒƒbƒg‚ÍƒZ[ƒu‚µ‚È‚¢
             If Not .IsAdditionalPilot Then
                 .Dump
             End If
@@ -427,7 +427,7 @@ Dim num As Integer
     Next
 End Sub
 
-'ä¸€æ™‚ä¸­æ–­ç”¨ãƒ‡ãƒ¼ã‚¿ã‚’ãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ãƒ­ãƒ¼ãƒ‰ã™ã‚‹
+'ˆê’†’f—pƒf[ƒ^‚ğƒtƒ@ƒCƒ‹‚©‚çƒ[ƒh‚·‚é
 Public Sub Restore()
 Dim i As Integer, num As Integer, buf As String
 Dim p As Pilot
@@ -449,7 +449,7 @@ Dim p As Pilot
     Next
 End Sub
 
-'ä¸€æ™‚ä¸­æ–­ç”¨ãƒ‡ãƒ¼ã‚¿ã®ãƒªãƒ³ã‚¯æƒ…å ±ã‚’ãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ãƒ­ãƒ¼ãƒ‰ã™ã‚‹
+'ˆê’†’f—pƒf[ƒ^‚ÌƒŠƒ“ƒNî•ñ‚ğƒtƒ@ƒCƒ‹‚©‚çƒ[ƒh‚·‚é
 Public Sub RestoreLinkInfo()
 Dim i As Integer, num As Integer
 
@@ -460,7 +460,7 @@ Dim i As Integer, num As Integer
     Next
 End Sub
 
-'ä¸€æ™‚ä¸­æ–­ç”¨ãƒ‡ãƒ¼ã‚¿ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿æƒ…å ±ã‚’ãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ãƒ­ãƒ¼ãƒ‰ã™ã‚‹
+'ˆê’†’f—pƒf[ƒ^‚Ìƒpƒ‰ƒ[ƒ^î•ñ‚ğƒtƒ@ƒCƒ‹‚©‚çƒ[ƒh‚·‚é
 Public Sub RestoreParameter()
 Dim i As Integer, num As Integer
 
@@ -472,7 +472,7 @@ Dim i As Integer, num As Integer
 End Sub
 
 
-'ãƒªã‚¹ãƒˆã‚’ã‚¯ãƒªã‚¢
+'ƒŠƒXƒg‚ğƒNƒŠƒA
 Public Sub Clear()
 Dim i As Integer
 
@@ -482,7 +482,7 @@ Dim i As Integer
 End Sub
 
 
-'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®æ”¯æ´ä¿®æ­£ã‚’æ›´æ–°
+'ƒpƒCƒƒbƒg‚Ìx‰‡C³‚ğXV
 Public Sub UpdateSupportMod(Optional ByVal u As Unit)
 Dim p As Pilot
 Dim i As Integer, xx As Integer, yy As Integer
@@ -492,7 +492,7 @@ Dim max_range As Integer, range As Integer
         Exit Sub
     End If
     
-    'ãƒ¦ãƒ‹ãƒƒãƒˆæŒ‡å®šãŒãªã‘ã‚Œã°å…¨ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‚’æ›´æ–°
+    'ƒ†ƒjƒbƒgw’è‚ª‚È‚¯‚ê‚Î‘SƒpƒCƒƒbƒg‚ğXV
     If u Is Nothing Then
         For Each p In colPilots
             p.UpdateSupportMod
@@ -501,26 +501,26 @@ Dim max_range As Integer, range As Integer
     End If
     
     With u
-        'ãƒ¦ãƒ‹ãƒƒãƒˆã«ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆãŒä¹—ã£ã¦ã„ãªã‘ã‚Œã°ãã®ã¾ã¾çµ‚äº†
+        'ƒ†ƒjƒbƒg‚ÉƒpƒCƒƒbƒg‚ªæ‚Á‚Ä‚¢‚È‚¯‚ê‚Î‚»‚Ì‚Ü‚ÜI—¹
         If .CountPilot = 0 Then
             Exit Sub
         End If
         
         With .MainPilot
-            'ãƒ¡ã‚¤ãƒ³ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‚’æ›´æ–°
+            'ƒƒCƒ“ƒpƒCƒƒbƒg‚ğXV
             .UpdateSupportMod
             
-            'æ”¯æ´ç¯„å›²ã‚’ç®—å‡º
+            'x‰‡”ÍˆÍ‚ğZo
             max_range = .CommandRange
             
-            If .IsSkillAvailable("åºƒåŸŸã‚µãƒãƒ¼ãƒˆ") Then
+            If .IsSkillAvailable("LˆæƒTƒ|[ƒg") Then
                 max_range = MaxLng(max_range, 2)
             End If
             
-            If IsOptionDefined("ä¿¡é ¼è£œæ­£") _
-                And InStr(.Name, "(ã‚¶ã‚³)") = 0 _
+            If IsOptionDefined("M—Š•â³") _
+                And InStr(.Name, "(ƒUƒR)") = 0 _
             Then
-                If IsOptionDefined("ä¿¡é ¼è£œæ­£ç¯„å›²æ‹¡å¤§") Then
+                If IsOptionDefined("M—Š•â³”ÍˆÍŠg‘å") Then
                     max_range = MaxLng(max_range, 2)
                 Else
                     max_range = MaxLng(max_range, 1)
@@ -528,7 +528,7 @@ Dim max_range As Integer, range As Integer
             End If
         End With
         
-        'ä»–ã®ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‚’æ›´æ–°
+        '‘¼‚ÌƒpƒCƒƒbƒg‚ğXV
         For i = 2 To .CountPilot
             .Pilot(i).UpdateSupportMod
         Next
@@ -536,19 +536,19 @@ Dim max_range As Integer, range As Integer
             .Support(i).UpdateSupportMod
         Next
         
-        'æ”¯æ´ç¯„å›²ãŒç„¡ã„ãªã‚‰ä»–ã®ãƒ¦ãƒ‹ãƒƒãƒˆã«ä¹—ã£ã¦ã„ã‚‹ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã«ã¯å½±éŸ¿ç„¡ã—
+        'x‰‡”ÍˆÍ‚ª–³‚¢‚È‚ç‘¼‚Ìƒ†ƒjƒbƒg‚Éæ‚Á‚Ä‚¢‚éƒpƒCƒƒbƒg‚É‚Í‰e‹¿–³‚µ
         If max_range = 0 Then
             Exit Sub
         End If
         
-        'å‘¨ã‚Šã®ãƒ¦ãƒ‹ãƒƒãƒˆã«ä¹—ã£ã¦ã„ã‚‹ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®æ”¯æ´ä¿®æ­£ã‚’æ›´æ–°
+        'ü‚è‚Ìƒ†ƒjƒbƒg‚Éæ‚Á‚Ä‚¢‚éƒpƒCƒƒbƒg‚Ìx‰‡C³‚ğXV
         For xx = MaxLng(.X - max_range, 1) To MinLng(.X + max_range, MapWidth)
             For yy = MaxLng(.Y - max_range, 1) To MinLng(.Y + max_range, MapHeight)
                 If MapDataForUnit(xx, yy) Is Nothing Then
                     GoTo NextPoint
                 End If
                 
-                'æ”¯æ´ç¯„å›²å†…ã«ã„ã‚‹ã‹ãƒã‚§ãƒƒã‚¯
+                'x‰‡”ÍˆÍ“à‚É‚¢‚é‚©ƒ`ƒFƒbƒN
                 range = Abs(.X - xx) + Abs(.Y - yy)
                 If range > max_range Then
                     GoTo NextPoint
@@ -557,7 +557,7 @@ Dim max_range As Integer, range As Integer
                     GoTo NextPoint
                 End If
                 
-                'ä¹—ã£ã¦ã„ã‚‹ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆå…¨å“¡ã®æ”¯æ´ä¿®æ­£ã‚’æ›´æ–°
+                'æ‚Á‚Ä‚¢‚éƒpƒCƒƒbƒg‘Sˆõ‚Ìx‰‡C³‚ğXV
                 With MapDataForUnit(xx, yy)
                     If .CountPilot = 0 Then
                         GoTo NextPoint
@@ -577,14 +577,14 @@ NextPoint:
     End With
 End Sub
 
-'ç ´æ£„ã•ã‚ŒãŸãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‚’å‰Šé™¤ã™ã‚‹
+'”jŠü‚³‚ê‚½ƒpƒCƒƒbƒg‚ğíœ‚·‚é
 Public Sub Clean()
 Dim p As Pilot
 
     For Each p In colPilots
         With p
             If Not .Alive Then
-                'ç ´æ£„ã•ã‚ŒãŸãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‚’å‰Šé™¤
+                '”jŠü‚³‚ê‚½ƒpƒCƒƒbƒg‚ğíœ
                 Delete .ID
             End If
         End With

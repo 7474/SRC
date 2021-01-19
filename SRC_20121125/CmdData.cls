@@ -10,29 +10,29 @@ Attribute VB_Exposed = False
 Option Explicit
 
 ' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯ãƒ•ãƒªãƒ¼ã‚½ãƒ•ãƒˆã§ã‚ã‚Šã€ç„¡ä¿è¨¼ã§ã™ã€‚
-' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯GNU General Public License(Ver.3ã¾ãŸã¯ãã‚Œä»¥é™)ãŒå®šã‚ã‚‹æ¡ä»¶ã®ä¸‹ã§
-' å†é ’å¸ƒã¾ãŸã¯æ”¹å¤‰ã™ã‚‹ã“ã¨ãŒã§ãã¾ã™ã€‚
+' –{ƒvƒƒOƒ‰ƒ€‚ÍƒtƒŠ[ƒ\ƒtƒg‚Å‚ ‚èA–³•ÛØ‚Å‚·B
+' –{ƒvƒƒOƒ‰ƒ€‚ÍGNU General Public License(Ver.3‚Ü‚½‚Í‚»‚êˆÈ~)‚ª’è‚ß‚éğŒ‚Ì‰º‚Å
+' Ä”Ğ•z‚Ü‚½‚Í‰ü•Ï‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B
 
-'ã‚¤ãƒ™ãƒ³ãƒˆã‚³ãƒãƒ³ãƒ‰ã®ã‚¯ãƒ©ã‚¹
+'ƒCƒxƒ“ƒgƒRƒ}ƒ“ƒh‚ÌƒNƒ‰ƒX
 
-'ã‚³ãƒãƒ³ãƒ‰ã®ç¨®é¡
+'ƒRƒ}ƒ“ƒh‚Ìí—Ş
 Private CmdName As CmdType
-'å¼•æ•°ã®æ•°
+'ˆø”‚Ì”
 Public ArgNum As Integer
-'ã‚³ãƒãƒ³ãƒ‰ã®EventDataã«ãŠã‘ã‚‹ä½ç½®
+'ƒRƒ}ƒ“ƒh‚ÌEventData‚É‚¨‚¯‚éˆÊ’u
 Public LineNum As Long
 
-'å¼•æ•°ã®å€¤
+'ˆø”‚Ì’l
 Private lngArgs() As Long
 Private dblArgs() As Double
 Private strArgs() As String
 
-'å¼•æ•°ã®å‹
+'ˆø”‚ÌŒ^
 Private ArgsType() As ValueType
 
 
-'ã‚³ãƒãƒ³ãƒ‰ã®ç¨®é¡
+'ƒRƒ}ƒ“ƒh‚Ìí—Ş
 Public Property Get Name() As CmdType
     If CmdName = NullCmd Then
         Parse EventData(LineNum)
@@ -44,40 +44,40 @@ Public Property Let Name(new_name As CmdType)
     CmdName = new_name
 End Property
 
-'ã‚¤ãƒ™ãƒ³ãƒˆãƒ‡ãƒ¼ã‚¿è¡Œã‚’èª­ã¿è¾¼ã‚“ã§è§£æã™ã‚‹
+'ƒCƒxƒ“ƒgƒf[ƒ^s‚ğ“Ç‚İ‚ñ‚Å‰ğÍ‚·‚é
 Public Function Parse(edata As String) As Boolean
 Dim buf As String, expr As String, list() As String
 Dim i As Integer
     
-    'æ­£å¸¸ã«è§£æãŒçµ‚äº†ã—ãŸå ´åˆã¯Trueã‚’è¿”ã™ã“ã¨
+    '³í‚É‰ğÍ‚ªI—¹‚µ‚½ê‡‚ÍTrue‚ğ•Ô‚·‚±‚Æ
     Parse = True
     
     On Error GoTo ErrorHandler
     
-    'ç©ºè¡Œã¯ç„¡è¦–
+    '‹ós‚Í–³‹
     If Len(edata) = 0 Then
         CmdName = NopCmd
         ArgNum = 0
         Exit Function
     End If
     
-    'ãƒ©ãƒ™ãƒ«ã¯ç„¡è¦–
+    'ƒ‰ƒxƒ‹‚Í–³‹
     If Right$(edata, 1) = ":" Then
         CmdName = NopCmd
         ArgNum = 0
         Exit Function
     End If
     
-    'ã‚³ãƒãƒ³ãƒ‰ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿åˆ†å‰²
+    'ƒRƒ}ƒ“ƒh‚Ìƒpƒ‰ƒ[ƒ^•ªŠ„
     ArgNum = ListSplit(edata, list)
     
-    'ç©ºè¡Œã¯ç„¡è¦–
+    '‹ós‚Í–³‹
     If ArgNum = 0 Then
         CmdName = NopCmd
         Exit Function
     End If
     
-    'ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®å‡¦ç†
+    'ƒpƒ‰ƒ[ƒ^‚Ìˆ—
     If ArgNum > 1 Then
         ReDim strArgs(2 To ArgNum)
         ReDim lngArgs(2 To ArgNum)
@@ -88,9 +88,9 @@ Dim i As Integer
             strArgs(i) = buf
             ArgsType(i) = UndefinedType
             
-            'å…ˆé ­ã®ä¸€æ–‡å­—ã‹ã‚‰ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®å±æ€§ã‚’åˆ¤å®š
+            'æ“ª‚Ìˆê•¶š‚©‚çƒpƒ‰ƒ[ƒ^‚Ì‘®«‚ğ”»’è
             Select Case Asc(buf)
-                Case 0 'ç©ºæ–‡å­—åˆ—
+                Case 0 '‹ó•¶š—ñ
                      ArgsType(i) = StringType
                 Case 34 '"
                     If Right$(buf, 1) = """" Then
@@ -102,7 +102,7 @@ Dim i As Integer
                         ArgsType(i) = StringType
                     End If
                 Case 40 '(
-                    'å¼
+                    '®
                 Case 45 '-
                     If IsNumeric(buf) Then
                         lngArgs(i) = StrToLng(buf)
@@ -111,7 +111,7 @@ Dim i As Integer
                     Else
                         ArgsType(i) = StringType
                     End If
-                Case 48 To 57 '0ï½9
+                Case 48 To 57 '0`9
                     If IsNumeric(buf) Then
                         lngArgs(i) = StrToLng(buf)
                         dblArgs(i) = CDbl(buf)
@@ -128,7 +128,7 @@ Dim i As Integer
         Next
     End If
     
-    'ã‚³ãƒãƒ³ãƒ‰ã®ç¨®é¡ã‚’åˆ¤å®š
+    'ƒRƒ}ƒ“ƒh‚Ìí—Ş‚ğ”»’è
     Select Case LCase$(list(1))
         Case "arc"
             CmdName = ArcCmd
@@ -522,11 +522,11 @@ Dim i As Integer
         Case "write"
             CmdName = WriteCmd
         Case Else
-            'å®šç¾©æ¸ˆã¿ã®ã‚¤ãƒ™ãƒ³ãƒˆã‚³ãƒãƒ³ãƒ‰ã§ã¯ãªã„
+            '’è‹`Ï‚İ‚ÌƒCƒxƒ“ƒgƒRƒ}ƒ“ƒh‚Å‚Í‚È‚¢
             
             If ArgNum >= 3 Then
                 If list(2) = "=" Then
-                    'ä»£å…¥å¼
+                    '‘ã“ü®
                     
                     CmdName = SetCmd
                     ReDim Preserve strArgs(2 To 3)
@@ -534,16 +534,16 @@ Dim i As Integer
                     ReDim Preserve dblArgs(2 To 3)
                     ReDim Preserve ArgsType(2 To 3)
                     
-                    'ä»£å…¥å…ˆã®å¤‰æ•°å
+                    '‘ã“üæ‚Ì•Ï”–¼
                     strArgs(2) = list(1)
                     ArgsType(2) = StringType
                     
-                    'ä»£å…¥ã™ã‚‹å€¤
-                    '(å€¤ãŒé …ã®å ´åˆã¯æ—¢ã«å¼•æ•°ã®å‡¦ç†ãŒæ¸ˆã‚“ã§ã„ã‚‹ã®ã§ãªã«ã‚‚ã—ãªãã¦ã‚ˆã„)
+                    '‘ã“ü‚·‚é’l
+                    '(’l‚ª€‚Ìê‡‚ÍŠù‚Éˆø”‚Ìˆ—‚ªÏ‚ñ‚Å‚¢‚é‚Ì‚Å‚È‚É‚à‚µ‚È‚­‚Ä‚æ‚¢)
                     If ArgNum > 3 Then
                         ArgsType(3) = UndefinedType
-                        'GetValueAsStringã®å‘¼ã³å‡ºã—ã®éš›ã«ã€Argsã®å†…å®¹ã¯å¿…ãšé …ã¨ä»®å®š
-                        'ã•ã‚Œã¦ã„ã‚‹ã®ã§ã€ã‚ã–ã¨é …ã«ã—ã¦ãŠã
+                        'GetValueAsString‚ÌŒÄ‚Ño‚µ‚ÌÛ‚ÉAArgs‚Ì“à—e‚Í•K‚¸€‚Æ‰¼’è
+                        '‚³‚ê‚Ä‚¢‚é‚Ì‚ÅA‚í‚´‚Æ€‚É‚µ‚Ä‚¨‚­
                         strArgs(3) = "(" & ListTail(edata, 3) & ")"
                     End If
                     ArgNum = 3
@@ -556,13 +556,13 @@ Dim i As Integer
                 Exit Function
             End If
             
-            'ã‚µãƒ–ãƒ«ãƒ¼ãƒãƒ³ã‚³ãƒ¼ãƒ«ï¼Ÿ
+            'ƒTƒuƒ‹[ƒ`ƒ“ƒR[ƒ‹H
             CmdName = CallCmd
             ReDim Preserve strArgs(2 To ArgNum + 1)
             ReDim Preserve lngArgs(2 To ArgNum + 1)
             ReDim Preserve dblArgs(2 To ArgNum + 1)
             ReDim Preserve ArgsType(2 To ArgNum + 1)
-            'å¼•æ•°ã‚’ï¼‘å€‹ãšã‚‰ã™
+            'ˆø”‚ğ‚PŒÂ‚¸‚ç‚·
             For i = 0 To ArgNum - 2
                 strArgs(ArgNum + 1 - i) = strArgs(ArgNum - i)
                 lngArgs(ArgNum + 1 - i) = lngArgs(ArgNum - i)
@@ -570,7 +570,7 @@ Dim i As Integer
                 ArgsType(ArgNum + 1 - i) = ArgsType(ArgNum - i)
             Next
             ArgNum = ArgNum + 1
-            'ç¬¬ï¼’å¼•æ•°ã‚’ã‚µãƒ–ãƒ«ãƒ¼ãƒãƒ³åã«è¨­å®š
+            '‘æ‚Qˆø”‚ğƒTƒuƒ‹[ƒ`ƒ“–¼‚Éİ’è
             strArgs(2) = list(1)
             If FindNormalLabel(list(1)) > 0 Then
                 ArgsType(2) = StringType
@@ -581,10 +581,10 @@ Dim i As Integer
     End Select
     
     If CmdName = IfCmd Or CmdName = ElseIfCmd Then
-        'Ifæ–‡ã®å‡¦ç†ã®é«˜é€ŸåŒ–ã®ãŸã‚ã€ã‚ã‚‰ã‹ã˜ã‚æ§‹æ–‡è§£æã—ã¦ãŠã
+        'If•¶‚Ìˆ—‚Ì‚‘¬‰»‚Ì‚½‚ßA‚ ‚ç‚©‚¶‚ß\•¶‰ğÍ‚µ‚Ä‚¨‚­
         If ArgNum = 1 Then
-            'æ›¸å¼ã‚¨ãƒ©ãƒ¼
-            DisplayEventErrorMessage CurrentLineNum, "Ifã‚³ãƒãƒ³ãƒ‰ã®æ›¸å¼ã«åˆã£ã¦ã„ã¾ã›ã‚“"
+            '‘®ƒGƒ‰[
+            DisplayEventErrorMessage CurrentLineNum, "IfƒRƒ}ƒ“ƒh‚Ì‘®‚É‡‚Á‚Ä‚¢‚Ü‚¹‚ñ"
             Parse = False
             Exit Function
         End If
@@ -624,23 +624,23 @@ Dim i As Integer
         If i > ArgNum Then
             If CmdName = IfCmd Then
                 DisplayEventErrorMessage LineNum, _
-                    "Ifã«å¯¾å¿œã™ã‚‹ Then ã¾ãŸã¯ Exit ã¾ãŸã¯ Goto ãŒã‚ã‚Šã¾ã›ã‚“"
+                    "If‚É‘Î‰‚·‚é Then ‚Ü‚½‚Í Exit ‚Ü‚½‚Í Goto ‚ª‚ ‚è‚Ü‚¹‚ñ"
             Else
                 DisplayEventErrorMessage LineNum, _
-                    "ElseIfã«å¯¾å¿œã™ã‚‹ Then ã¾ãŸã¯ Exit ã¾ãŸã¯ Goto ãŒã‚ã‚Šã¾ã›ã‚“"
+                    "ElseIf‚É‘Î‰‚·‚é Then ‚Ü‚½‚Í Exit ‚Ü‚½‚Í Goto ‚ª‚ ‚è‚Ü‚¹‚ñ"
             End If
             TerminateSRC
         End If
         
-        'æ¡ä»¶å¼ãŒå¼ã§ã‚ã‚‹ã“ã¨ãŒç¢ºå®šã—ã¦ã„ã‚Œã°æ¡ä»¶å¼ã®é …æ•°ã‚’0ã«
+        'ğŒ®‚ª®‚Å‚ ‚é‚±‚Æ‚ªŠm’è‚µ‚Ä‚¢‚ê‚ÎğŒ®‚Ì€”‚ğ0‚É
         Select Case lngArgs(3)
             Case 0
                 If CmdName = IfCmd Then
                     DisplayEventErrorMessage LineNum, _
-                        "Ifã‚³ãƒãƒ³ãƒ‰ã®æ¡ä»¶å¼ãŒã‚ã‚Šã¾ã›ã‚“"
+                        "IfƒRƒ}ƒ“ƒh‚ÌğŒ®‚ª‚ ‚è‚Ü‚¹‚ñ"
                 Else
                     DisplayEventErrorMessage LineNum, _
-                        "ElseIfã‚³ãƒãƒ³ãƒ‰ã®æ¡ä»¶å¼ãŒã‚ã‚Šã¾ã›ã‚“"
+                        "ElseIfƒRƒ}ƒ“ƒh‚ÌğŒ®‚ª‚ ‚è‚Ü‚¹‚ñ"
                 End If
                 TerminateSRC
             Case 1
@@ -648,7 +648,7 @@ Dim i As Integer
                     Case 36 '$
                         lngArgs(3) = 0
                     Case 40 '(
-                        '()ã‚’é™¤å»
+                        '()‚ğœ‹
                         strArgs(2) = Mid$(expr, 2, Len(expr) - 2)
                         lngArgs(3) = 0
                 End Select
@@ -669,16 +669,16 @@ Dim i As Integer
     End If
     
     If CmdName = PaintStringCmd Then
-        'PaintStringæ–‡ã®å‡¦ç†ã®é«˜é€ŸåŒ–ã®ãŸã‚ã€ã‚ã‚‰ã‹ã˜ã‚æ§‹æ–‡è§£æã—ã¦ãŠã
+        'PaintString•¶‚Ìˆ—‚Ì‚‘¬‰»‚Ì‚½‚ßA‚ ‚ç‚©‚¶‚ß\•¶‰ğÍ‚µ‚Ä‚¨‚­
         
-        'ã€Œ;ã€ã‚’å«ã‚€å ´åˆã¯æ”¹ã‚ã¦é …ã«åˆ†è§£
-        '(æ­£ã—ããƒªã‚¹ãƒˆã®å‡¦ç†ãŒè¡Œãˆãªã„ãŸã‚)
+        'u;v‚ğŠÜ‚Şê‡‚Í‰ü‚ß‚Ä€‚É•ª‰ğ
+        '(³‚µ‚­ƒŠƒXƒg‚Ìˆ—‚ªs‚¦‚È‚¢‚½‚ß)
         If Right$(buf, 1) = ";" Then
             buf = edata
             CmdName = PaintStringRCmd
             buf = Left$(buf, Len(buf) - 1)
             If Right$(buf, 1) = " " Then
-                'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãŒç©ºæ–‡å­—åˆ—
+                'ƒƒbƒZ[ƒW‚ª‹ó•¶š—ñ
                 buf = buf & """"""
             End If
             ArgNum = ListSplit(buf, list)
@@ -686,7 +686,7 @@ Dim i As Integer
         
         Select Case ArgNum
             Case 2
-                'å¼•æ•°ãŒï¼‘å€‹ã®å ´åˆ
+                'ˆø”‚ª‚PŒÂ‚Ìê‡
                 ArgNum = 2
                 ReDim strArgs(2 To 2)
                 ReDim lngArgs(2 To 2)
@@ -695,7 +695,7 @@ Dim i As Integer
                 
                 buf = list(2)
                 
-                'è¡¨ç¤ºæ–‡å­—åˆ—ãŒå¼ã®å ´åˆã«ã‚‚å¯¾å¿œ
+                '•\¦•¶š—ñ‚ª®‚Ìê‡‚É‚à‘Î‰
                 If Left$(buf, 1) = """" And Right$(buf, 1) = """" Then
                     If InStr(buf, "$(") > 0 Then
                         strArgs(2) = buf
@@ -712,14 +712,14 @@ Dim i As Integer
                     strArgs(2) = buf
                 End If
             Case 3
-                'å¼•æ•°ãŒï¼’å€‹ã®å ´åˆ
+                'ˆø”‚ª‚QŒÂ‚Ìê‡
                 ArgNum = 2
                 ReDim strArgs(2 To 2)
                 ReDim lngArgs(2 To 2)
                 ReDim dblArgs(2 To 2)
                 ReDim ArgsType(2 To 2)
                 
-                'è¡¨ç¤ºæ–‡å­—åˆ—ã¯å¿…ãšæ–‡å­—åˆ—
+                '•\¦•¶š—ñ‚Í•K‚¸•¶š—ñ
                 buf = ListTail(edata, 2)
                 If InStr(buf, "$(") > 0 Then
                     strArgs(2) = """" & buf & """"
@@ -728,13 +728,13 @@ Dim i As Integer
                     ArgsType(2) = StringType
                 End If
             Case 4
-                'å¼•æ•°ãŒï¼“å€‹ã®å ´åˆ
+                'ˆø”‚ª‚RŒÂ‚Ìê‡
                 
-                'åº§æ¨™æŒ‡å®šãŒã‚ã‚‹ã‹ã©ã†ã‹ãŒç¢ºå®šã—ã¦ã„ã‚‹ã‹ï¼Ÿ
+                'À•Ww’è‚ª‚ ‚é‚©‚Ç‚¤‚©‚ªŠm’è‚µ‚Ä‚¢‚é‚©H
                 If (list(2) = "-" Or IsNumeric(list(2)) Or IsExpr(list(2))) _
                     And (list(3) = "-" Or IsNumeric(list(3)) Or IsExpr(list(3))) _
                 Then
-                    'åº§æ¨™æŒ‡å®šãŒã‚ã‚‹ã“ã¨ãŒç¢ºå®š
+                    'À•Ww’è‚ª‚ ‚é‚±‚Æ‚ªŠm’è
                     ArgNum = 4
                     ReDim strArgs(2 To 4)
                     ReDim lngArgs(2 To 4)
@@ -750,7 +750,7 @@ Dim i As Integer
                         ArgsType(3) = StringType
                     End If
                 Else
-                    'å®Ÿè¡Œæ™‚ã¾ã§åº§æ¨™æŒ‡å®šãŒã‚ã‚‹ã‹ã©ã†ã‹ä¸æ˜
+                    'Às‚Ü‚ÅÀ•Ww’è‚ª‚ ‚é‚©‚Ç‚¤‚©•s–¾
                     ArgNum = 5
                     ReDim strArgs(2 To 5)
                     ReDim lngArgs(2 To 5)
@@ -760,7 +760,7 @@ Dim i As Integer
                     strArgs(2) = list(2)
                     strArgs(3) = list(3)
                     
-                    'åº§æ¨™æŒ‡å®šãŒãªã‹ã£ãŸå ´åˆã®è¡¨ç¤ºæ–‡å­—åˆ—
+                    'À•Ww’è‚ª‚È‚©‚Á‚½ê‡‚Ì•\¦•¶š—ñ
                     buf = ListTail(edata, 2)
                     If InStr(buf, "$(") > 0 Then
                         strArgs(5) = """" & buf & """"
@@ -770,7 +770,7 @@ Dim i As Integer
                     End If
                 End If
                 
-                'åº§æ¨™æŒ‡å®šãŒã‚ã£ãŸå ´åˆã®è¡¨ç¤ºæ–‡å­—åˆ—
+                'À•Ww’è‚ª‚ ‚Á‚½ê‡‚Ì•\¦•¶š—ñ
                 buf = list(4)
                 If Left$(buf, 1) = """" And Right$(buf, 1) = """" Then
                     If InStr(buf, "$(") > 0 Then
@@ -788,13 +788,13 @@ Dim i As Integer
                     strArgs(4) = buf
                 End If
             Case Else
-                'å¼•æ•°ãŒï¼”å€‹ä»¥ä¸Šã®å ´åˆ
+                'ˆø”‚ª‚SŒÂˆÈã‚Ìê‡
                 
-                'åº§æ¨™æŒ‡å®šãŒã‚ã‚‹ã‹ã©ã†ã‹ãŒç¢ºå®šã—ã¦ã„ã‚‹ã‹ï¼Ÿ
+                'À•Ww’è‚ª‚ ‚é‚©‚Ç‚¤‚©‚ªŠm’è‚µ‚Ä‚¢‚é‚©H
                 If (list(2) = "-" Or IsNumeric(list(2)) Or IsExpr(list(2))) _
                     And (list(3) = "-" Or IsNumeric(list(3)) Or IsExpr(list(3))) _
                 Then
-                    'åº§æ¨™æŒ‡å®šãŒã‚ã‚‹ã“ã¨ãŒç¢ºå®š
+                    'À•Ww’è‚ª‚ ‚é‚±‚Æ‚ªŠm’è
                     ArgNum = 4
                     ReDim strArgs(2 To 4)
                     ReDim lngArgs(2 To 4)
@@ -810,7 +810,7 @@ Dim i As Integer
                         ArgsType(3) = StringType
                     End If
                 Else
-                    'å®Ÿè¡Œæ™‚ã¾ã§åº§æ¨™æŒ‡å®šãŒã‚ã‚‹ã‹ã©ã†ã‹ä¸æ˜
+                    'Às‚Ü‚ÅÀ•Ww’è‚ª‚ ‚é‚©‚Ç‚¤‚©•s–¾
                     ArgNum = 5
                     ReDim strArgs(2 To 5)
                     ReDim lngArgs(2 To 5)
@@ -820,7 +820,7 @@ Dim i As Integer
                     strArgs(2) = list(2)
                     strArgs(3) = list(3)
                     
-                    'åº§æ¨™æŒ‡å®šãŒãªã‹ã£ãŸå ´åˆã®è¡¨ç¤ºæ–‡å­—åˆ—
+                    'À•Ww’è‚ª‚È‚©‚Á‚½ê‡‚Ì•\¦•¶š—ñ
                     buf = ListTail(edata, 2)
                     If InStr(buf, "$(") > 0 Then
                         strArgs(5) = """" & buf & """"
@@ -830,7 +830,7 @@ Dim i As Integer
                     End If
                 End If
                 
-                'åº§æ¨™æŒ‡å®šãŒã‚ã£ãŸå ´åˆã®è¡¨ç¤ºæ–‡å­—åˆ—
+                'À•Ww’è‚ª‚ ‚Á‚½ê‡‚Ì•\¦•¶š—ñ
                 buf = ListTail(edata, 4)
                 If InStr(buf, "$(") > 0 Then
                     strArgs(4) = """" & buf & """"
@@ -843,7 +843,7 @@ Dim i As Integer
     End If
     
     If CmdName = CallCmd Then
-        'Callã‚³ãƒãƒ³ãƒ‰ã®ã‚µãƒ–ãƒ«ãƒ¼ãƒãƒ³æŒ‡å®šãŒå¼ã‹ã©ã†ã‹èª¿ã¹ã¦ãŠã
+        'CallƒRƒ}ƒ“ƒh‚ÌƒTƒuƒ‹[ƒ`ƒ“w’è‚ª®‚©‚Ç‚¤‚©’²‚×‚Ä‚¨‚­
         If FindNormalLabel(strArgs(2)) > 0 Then
             ArgsType(2) = StringType
         Else
@@ -854,14 +854,14 @@ Dim i As Integer
     If CmdName = LocalCmd Then
         If ArgNum > 4 Then
             If list(3) = "=" Then
-                'Localã‚³ãƒãƒ³ãƒ‰ãŒè¤‡æ•°é …ã‹ã‚‰æˆã‚‹ä»£å…¥å¼ã‚’ä¼´ã†å ´åˆ
+                'LocalƒRƒ}ƒ“ƒh‚ª•¡”€‚©‚ç¬‚é‘ã“ü®‚ğ”º‚¤ê‡
                 
                 ReDim Preserve strArgs(2 To 4)
                 ReDim Preserve lngArgs(2 To 4)
                 ReDim Preserve dblArgs(2 To 4)
                 ReDim Preserve ArgsType(2 To 4)
                 
-                'ä»£å…¥ã™ã‚‹å€¤
+                '‘ã“ü‚·‚é’l
                 ArgsType(4) = UndefinedType
                 strArgs(4) = "(" & ListTail(edata, 4) & ")"
                 ArgNum = 4
@@ -873,7 +873,7 @@ Dim i As Integer
     Exit Function
     
 ErrorHandler:
-    DisplayEventErrorMessage LineNum, "ã‚¤ãƒ™ãƒ³ãƒˆã‚³ãƒãƒ³ãƒ‰ã®å†…å®¹ãŒä¸æ­£ã§ã™"
+    DisplayEventErrorMessage LineNum, "ƒCƒxƒ“ƒgƒRƒ}ƒ“ƒh‚Ì“à—e‚ª•s³‚Å‚·"
     Parse = False
 End Function
 
@@ -885,11 +885,11 @@ Dim idx As Integer, fname As String
         fname = Mid$(fname, idx + 1)
     End If
 '    Debug.Print Format$(LineNum) & " : " & EventData(LineNum);
-    Debug.Print "[" & fname & "ï¼š" & EventLineNum(LineNum) & "] ";
+    Debug.Print "[" & fname & "F" & EventLineNum(LineNum) & "] ";
     Debug.Print EventData(LineNum)
 End Sub
 
-'ã‚³ãƒãƒ³ãƒ‰ã‚’å®Ÿè¡Œã—ã€å®Ÿè¡Œå¾Œã®è¡Œç•ªå·ã‚’è¿”ã™
+'ƒRƒ}ƒ“ƒh‚ğÀs‚µAÀsŒã‚Ìs”Ô†‚ğ•Ô‚·
 Public Function Exec() As Long
     On Error GoTo ErrorHandler
     
@@ -897,7 +897,7 @@ Public Function Exec() As Long
     
     Select Case Name
         Case NopCmd
-            'ã‚¹ã‚­ãƒƒãƒ—
+            'ƒXƒLƒbƒv
             Exec = LineNum + 1
         Case ArcCmd
             Exec = ExecArcCmd()
@@ -1056,7 +1056,7 @@ Public Function Exec() As Long
         Case ElseCmd, ElseIfCmd
             Exec = ExecElseCmd()
         Case EndIfCmd
-            'ã‚¹ã‚­ãƒƒãƒ—
+            'ƒXƒLƒbƒv
             Exec = LineNum + 1
         Case IncrCmd
             Exec = ExecIncrCmd()
@@ -1064,12 +1064,12 @@ Public Function Exec() As Long
             Exec = ExecIncreaseMoraleCmd()
         Case InputCmd
             Exec = ExecInputCmd()
-' MOD START ãƒãƒ¼ã‚¸
+' MOD START ƒ}[ƒW
 '        Case InterMissionCommandCmd
 '            Exec = ExecInterMissionCommandCmd()
         Case IntermissionCommandCmd
             Exec = ExecIntermissionCommandCmd()
-' MOD ENDãƒãƒ¼ã‚¸
+' MOD ENDƒ}[ƒW
         Case ItemCmd
             Exec = ExecItemCmd()
         Case JoinCmd
@@ -1247,7 +1247,7 @@ Public Function Exec() As Long
         Case CaseCmd, CaseElseCmd
             Exec = ExecCaseCmd()
         Case EndSwCmd
-            'ã‚¹ã‚­ãƒƒãƒ—
+            'ƒXƒLƒbƒv
             Exec = LineNum + 1
         Case TalkCmd
             Exec = ExecTalkCmd()
@@ -1281,7 +1281,7 @@ Public Function Exec() As Long
             Exec = ExecClearFlashCmd()
         Case Else
             EventErrorMessage = _
-                ListIndex(EventData(LineNum), 1) & "ã¨ã„ã†ã‚³ãƒãƒ³ãƒ‰ã¯å­˜åœ¨ã—ã¾ã›ã‚“"
+                ListIndex(EventData(LineNum), 1) & "‚Æ‚¢‚¤ƒRƒ}ƒ“ƒh‚Í‘¶İ‚µ‚Ü‚¹‚ñ"
             Error 0
     End Select
     
@@ -1293,29 +1293,29 @@ ErrorHandler:
         EventErrorMessage = ""
     ElseIf LCase$(ListIndex(EventData(LineNum), 1)) = "talk" Then
         DisplayEventErrorMessage LineNum, _
-            "Talkã‚³ãƒãƒ³ãƒ‰å®Ÿè¡Œä¸­ã«ä¸æ­£ãªå‡¦ç†ãŒè¡Œã‚ã‚Œã¾ã—ãŸã€‚" & _
-            "MIDIãŒã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã‚·ãƒ³ã‚»ã‚µã‚¤ã‚¶ã§æ¼”å¥ã•ã‚Œã¦ã„ã‚‹ã‹ã€" & _
-            "ãƒ•ã‚©ãƒ³ãƒˆã‚­ãƒ£ãƒƒã‚·ãƒ¥ãŒå£Šã‚Œã¦ã„ã‚‹å¯èƒ½æ€§ãŒã‚ã‚Šã¾ã™ã€‚" & _
-            "è©³ã—ãã¯SRCå…¬å¼ãƒ›ãƒ¼ãƒ ãƒšãƒ¼ã‚¸ã®ã€Œã‚ˆãã‚ã‚‹è³ªå•é›†ã€ã‚’ã”è¦§ä¸‹ã•ã„ã€‚"
+            "TalkƒRƒ}ƒ“ƒhÀs’†‚É•s³‚Èˆ—‚ªs‚í‚ê‚Ü‚µ‚½B" & _
+            "MIDI‚ªƒ\ƒtƒgƒEƒFƒAƒVƒ“ƒZƒTƒCƒU‚Å‰‰‘t‚³‚ê‚Ä‚¢‚é‚©A" & _
+            "ƒtƒHƒ“ƒgƒLƒƒƒbƒVƒ…‚ª‰ó‚ê‚Ä‚¢‚é‰Â”\«‚ª‚ ‚è‚Ü‚·B" & _
+            "Ú‚µ‚­‚ÍSRCŒö®ƒz[ƒ€ƒy[ƒW‚Ìu‚æ‚­‚ ‚é¿–âWv‚ğ‚²——‰º‚³‚¢B"
     ElseIf LCase$(ListIndex(EventData(LineNum), 1)) = "autotalk" Then
         DisplayEventErrorMessage LineNum, _
-            "AutoTalkã‚³ãƒãƒ³ãƒ‰å®Ÿè¡Œä¸­ã«ä¸æ­£ãªå‡¦ç†ãŒè¡Œã‚ã‚Œã¾ã—ãŸã€‚" & _
-            "MIDIãŒã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã‚·ãƒ³ã‚»ã‚µã‚¤ã‚¶ã§æ¼”å¥ã•ã‚Œã¦ã„ã‚‹ã‹ã€" & _
-            "ãƒ•ã‚©ãƒ³ãƒˆã‚­ãƒ£ãƒƒã‚·ãƒ¥ãŒå£Šã‚Œã¦ã„ã‚‹å¯èƒ½æ€§ãŒã‚ã‚Šã¾ã™ã€‚" & _
-            "è©³ã—ãã¯SRCå…¬å¼ãƒ›ãƒ¼ãƒ ãƒšãƒ¼ã‚¸ã®ã€Œã‚ˆãã‚ã‚‹è³ªå•é›†ã€ã‚’ã”è¦§ä¸‹ã•ã„ã€‚"
+            "AutoTalkƒRƒ}ƒ“ƒhÀs’†‚É•s³‚Èˆ—‚ªs‚í‚ê‚Ü‚µ‚½B" & _
+            "MIDI‚ªƒ\ƒtƒgƒEƒFƒAƒVƒ“ƒZƒTƒCƒU‚Å‰‰‘t‚³‚ê‚Ä‚¢‚é‚©A" & _
+            "ƒtƒHƒ“ƒgƒLƒƒƒbƒVƒ…‚ª‰ó‚ê‚Ä‚¢‚é‰Â”\«‚ª‚ ‚è‚Ü‚·B" & _
+            "Ú‚µ‚­‚ÍSRCŒö®ƒz[ƒ€ƒy[ƒW‚Ìu‚æ‚­‚ ‚é¿–âWv‚ğ‚²——‰º‚³‚¢B"
     Else
-        DisplayEventErrorMessage LineNum, "ã‚¤ãƒ™ãƒ³ãƒˆãƒ‡ãƒ¼ã‚¿ãŒä¸æ­£ã§ã™"
+        DisplayEventErrorMessage LineNum, "ƒCƒxƒ“ƒgƒf[ƒ^‚ª•s³‚Å‚·"
     End If
     Exec = -1
 End Function
 
 
-'idxç•ªç›®ã®å¼•æ•°ã‚’å¼ã¨ã—ã¦è©•ä¾¡ã›ãšã«ãã®ã¾ã¾è¿”ã™
+'idx”Ô–Ú‚Ìˆø”‚ğ®‚Æ‚µ‚Ä•]‰¿‚¹‚¸‚É‚»‚Ì‚Ü‚Ü•Ô‚·
 Public Function GetArg(ByVal idx As Integer) As String
     GetArg = strArgs(idx)
 End Function
 
-'idxç•ªç›®ã®å¼•æ•°ã®å€¤ã‚’æ–‡å­—åˆ—ã¨ã—ã¦è¿”ã™
+'idx”Ô–Ú‚Ìˆø”‚Ì’l‚ğ•¶š—ñ‚Æ‚µ‚Ä•Ô‚·
 Public Function GetArgAsString(ByVal idx As Integer) As String
     Select Case ArgsType(idx)
         Case UndefinedType
@@ -1327,7 +1327,7 @@ Public Function GetArgAsString(ByVal idx As Integer) As String
     End Select
 End Function
 
-'idxç•ªç›®ã®å¼•æ•°ã®å€¤ã‚’Longã¨ã—ã¦è¿”ã™
+'idx”Ô–Ú‚Ìˆø”‚Ì’l‚ğLong‚Æ‚µ‚Ä•Ô‚·
 Public Function GetArgAsLong(ByVal idx As Integer) As Long
     Select Case ArgsType(idx)
         Case UndefinedType
@@ -1339,7 +1339,7 @@ Public Function GetArgAsLong(ByVal idx As Integer) As Long
     End Select
 End Function
 
-'idxç•ªç›®ã®å¼•æ•°ã®å€¤ã‚’Doubleã¨ã—ã¦è¿”ã™
+'idx”Ô–Ú‚Ìˆø”‚Ì’l‚ğDouble‚Æ‚µ‚Ä•Ô‚·
 Public Function GetArgAsDouble(ByVal idx As Integer) As Double
     Select Case ArgsType(idx)
         Case UndefinedType
@@ -1351,7 +1351,7 @@ Public Function GetArgAsDouble(ByVal idx As Integer) As Double
     End Select
 End Function
 
-'idxç•ªç›®ã®å¼•æ•°ãŒç¤ºã™ãƒ¦ãƒ‹ãƒƒãƒˆã‚’è¿”ã™
+'idx”Ô–Ú‚Ìˆø”‚ª¦‚·ƒ†ƒjƒbƒg‚ğ•Ô‚·
 Public Function GetArgAsUnit(ByVal idx As Integer, _
     Optional ByVal ignore_error As Boolean) As Unit
 Dim pname As String
@@ -1360,39 +1360,39 @@ Dim pname As String
     Set GetArgAsUnit = UList.Item2(pname)
     If GetArgAsUnit Is Nothing Then
         If Not PList.IsDefined(pname) Then
-            EventErrorMessage = "ã€Œ" & pname & "ã€ã¨ã„ã†ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“"
+            EventErrorMessage = "u" & pname & "v‚Æ‚¢‚¤ƒpƒCƒƒbƒg‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ"
             Error 0
         End If
         Set GetArgAsUnit = PList.Item(pname).Unit
         
         If Not ignore_error Then
             If GetArgAsUnit Is Nothing Then
-                EventErrorMessage = "ã€Œ" & pname & "ã€ã¯ãƒ¦ãƒ‹ãƒƒãƒˆã«ä¹—ã£ã¦ã„ã¾ã›ã‚“"
+                EventErrorMessage = "u" & pname & "v‚Íƒ†ƒjƒbƒg‚Éæ‚Á‚Ä‚¢‚Ü‚¹‚ñ"
                 Error 0
             End If
         End If
     End If
 End Function
 
-'idxç•ªç›®ã®å¼•æ•°ãŒç¤ºã™ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‚’è¿”ã™
+'idx”Ô–Ú‚Ìˆø”‚ª¦‚·ƒpƒCƒƒbƒg‚ğ•Ô‚·
 Public Function GetArgAsPilot(ByVal idx As Integer) As Pilot
 Dim pname As String
 
     pname = GetArgAsString(idx)
     If Not PList.IsDefined(pname) Then
-        EventErrorMessage = "ã€Œ" & pname & "ã€ã¨ã„ã†ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“"
+        EventErrorMessage = "u" & pname & "v‚Æ‚¢‚¤ƒpƒCƒƒbƒg‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ"
         Error 0
     End If
     Set GetArgAsPilot = PList.Item(pname)
 End Function
 
 
-'ArgsTypeã‚’å‚ç…§ã™ã‚‹
+'ArgsType‚ğQÆ‚·‚é
 Friend Function GetArgsType(ByVal idx As Integer) As ValueType
     GetArgsType = ArgsType(idx)
 End Function
 
-'ArgsTypeã‚’è¨­å®šã™ã‚‹
+'ArgsType‚ğİ’è‚·‚é
 Friend Sub SetArgsType(ByVal idx As Integer, ByVal new_type As ValueType)
     ArgsType(idx) = new_type
 End Sub
@@ -1407,7 +1407,7 @@ Dim cname As String, clr As Long
 Dim i As Integer
 
     If ArgNum < 6 Then
-        EventErrorMessage = "Arcã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+        EventErrorMessage = "ArcƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
         Error 0
     End If
     
@@ -1417,7 +1417,7 @@ Dim i As Integer
     start_angle = 3.1415926535 * GetArgAsDouble(5) / 180
     end_angle = 3.1415926535 * GetArgAsDouble(6) / 180
     
-    'å¡—ã‚Šã¤ã¶ã—ã®éš›ã¯è§’åº¦ã‚’è² ã®å€¤ã«ã™ã‚‹å¿…è¦ãŒã‚ã‚‹
+    '“h‚è‚Â‚Ô‚µ‚ÌÛ‚ÍŠp“x‚ğ•‰‚Ì’l‚É‚·‚é•K—v‚ª‚ ‚é
     If ObjFillStyle <> vbFSTransparent Then
         start_angle = -start_angle
         If start_angle = 0 Then
@@ -1431,21 +1431,21 @@ Dim i As Integer
     
     SaveScreen
     
-    'æç”»å…ˆ
+    '•`‰ææ
     Select Case ObjDrawOption
-        Case "èƒŒæ™¯"
+        Case "”wŒi"
             Set pic = MainForm.picBack
             Set pic2 = MainForm.picMaskedBack
             IsMapDirty = True
-       Case "ä¿æŒ"
+       Case "•Û"
             Set pic = MainForm.picMain(0)
             Set pic2 = MainForm.picMain(1)
         Case Else
             Set pic = MainForm.picMain(0)
     End Select
     
-    'æç”»é ˜åŸŸ
-    If ObjDrawOption <> "èƒŒæ™¯" Then
+    '•`‰æ—Ìˆæ
+    If ObjDrawOption <> "”wŒi" Then
         Dim tmp As Integer
         IsPictureVisible = True
         tmp = rad + ObjDrawWidth - 1
@@ -1460,7 +1460,7 @@ Dim i As Integer
         opt = GetArgAsString(i)
         If Asc(opt) = 35 Then '#
             If Len(opt) <> 7 Then
-                EventErrorMessage = "è‰²æŒ‡å®šãŒä¸æ­£ã§ã™"
+                EventErrorMessage = "Fw’è‚ª•s³‚Å‚·"
                 Error 0
             End If
             cname = String$(8, vbNullChar)
@@ -1469,13 +1469,13 @@ Dim i As Integer
             Mid(cname, 5, 2) = Mid$(opt, 4, 2)
             Mid(cname, 7, 2) = Mid$(opt, 2, 2)
             If Not IsNumeric(cname) Then
-                EventErrorMessage = "è‰²æŒ‡å®šãŒä¸æ­£ã§ã™"
+                EventErrorMessage = "Fw’è‚ª•s³‚Å‚·"
                 Error 0
             End If
             clr = CLng(cname)
         Else
             EventErrorMessage = _
-                "Arcã‚³ãƒãƒ³ãƒ‰ã«ä¸æ­£ãªã‚ªãƒ—ã‚·ãƒ§ãƒ³ã€Œ" & opt & "ã€ãŒä½¿ã‚ã‚Œã¦ã„ã¾ã™"
+                "ArcƒRƒ}ƒ“ƒh‚É•s³‚ÈƒIƒvƒVƒ‡ƒ“u" & opt & "v‚ªg‚í‚ê‚Ä‚¢‚Ü‚·"
             Error 0
         End If
     Next
@@ -1522,22 +1522,22 @@ Dim etype As ValueType, str_value As String, num_value As Double
 Dim sep As String
     
     If ArgNum <> 4 Then
-        EventErrorMessage = "Arrayã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+        EventErrorMessage = "ArrayƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
         Error 0
     Else
-        If GetArgAsString(4) = "ãƒªã‚¹ãƒˆ" Then
+        If GetArgAsString(4) = "ƒŠƒXƒg" Then
             IsList = True
         Else
             IsList = False
         End If
     End If
     
-    'ä»£å…¥å…ˆã®å¤‰æ•°å
+    '‘ã“üæ‚Ì•Ï”–¼
     var_name = GetArg(2)
     If Left$(var_name, 1) = "$" Then
         var_name = Mid$(var_name, 2)
     End If
-    'Evalé–¢æ•°
+    'EvalŠÖ”
     If LCase$(Left$(var_name, 5)) = "eval(" Then
         If Right$(var_name, 1) = ")" Then
             var_name = Mid$(var_name, 6, Len(var_name) - 6)
@@ -1545,8 +1545,8 @@ Dim sep As String
         End If
     End If
     
-    'ä»£å…¥å…ˆã®å¤‰æ•°ã‚’åˆæœŸåŒ–ã—ãŸä¸Šã§å†è¨­å®š
-    'ã‚µãƒ–ãƒ«ãƒ¼ãƒãƒ³ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ã®å ´åˆ
+    '‘ã“üæ‚Ì•Ï”‚ğ‰Šú‰»‚µ‚½ã‚ÅÄİ’è
+    'ƒTƒuƒ‹[ƒ`ƒ“ƒ[ƒJƒ‹•Ï”‚Ìê‡
     If IsSubLocalVariableDefined(var_name) Then
         UndefineVariable var_name
         VarIndex = VarIndex + 1
@@ -1556,22 +1556,22 @@ Dim sep As String
             .StringValue = ""
             .NumericValue = 0
         End With
-    'ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ã®å ´åˆ
+    'ƒ[ƒJƒ‹•Ï”‚Ìê‡
     ElseIf IsLocalVariableDefined(var_name) Then
         UndefineVariable var_name
         DefineLocalVariable var_name
-    'ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°ã®å ´åˆ
+    'ƒOƒ[ƒoƒ‹•Ï”‚Ìê‡
     ElseIf IsGlobalVariableDefined(var_name) Then
         UndefineVariable var_name
         DefineGlobalVariable var_name
     End If
     
     If IsList Then
-        'ãƒªã‚¹ãƒˆã‚’é…åˆ—ã«å¤‰æ›
+        'ƒŠƒXƒg‚ğ”z—ñ‚É•ÏŠ·
         num = ListSplit(GetArgAsString(3), array_buf2)
         array_buf = array_buf2
     Else
-        'æ–‡å­—åˆ—ã‚’åˆ†å‰²ã—ã¦é…åˆ—ã«ä»£å…¥
+        '•¶š—ñ‚ğ•ªŠ„‚µ‚Ä”z—ñ‚É‘ã“ü
         ReDim array_buf(0)
         buf = GetArgAsString(3)
         sep = GetArgAsString(4)
@@ -1620,19 +1620,19 @@ Dim var As VarData
     ReDim ListItemID(0)
     ReDim ListItemFlag(0)
     
-    'è¡¨ç¤ºã‚ªãƒ—ã‚·ãƒ§ãƒ³ã®å‡¦ç†
+    '•\¦ƒIƒvƒVƒ‡ƒ“‚Ìˆ—
     i = ArgNum
     Do While i > 1
         Select Case GetArg(i)
-            Case "é€šå¸¸"
+            Case "’Êí"
                 use_normal_list = True
-            Case "æ‹¡å¤§"
+            Case "Šg‘å"
                 use_large_list = True
-            Case "é€£ç¶šè¡¨ç¤º"
+            Case "˜A‘±•\¦"
                 use_continuous_mode = True
-            Case "ã‚­ãƒ£ãƒ³ã‚»ãƒ«å¯"
+            Case "ƒLƒƒƒ“ƒZƒ‹‰Â"
                 enable_rbutton_cancel = True
-            Case "çµ‚äº†"
+            Case "I—¹"
                 frmListBox.Hide
                 If AutoMoveCursor Then
                     RestoreCursorPos
@@ -1646,18 +1646,18 @@ Dim var As VarData
         i = i - 1
     Loop
     
-    'ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã§ã¯ãªã„å¼•æ•°ã®æ•°ã§æ›¸å¼ã‚¿ã‚¤ãƒ—ã‚’åˆ¤åˆ¥
+    'ƒIƒvƒVƒ‡ƒ“‚Å‚Í‚È‚¢ˆø”‚Ì”‚Å‘®ƒ^ƒCƒv‚ğ”»•Ê
     Select Case i
-        'ã‚¤ãƒ™ãƒ³ãƒˆãƒ‡ãƒ¼ã‚¿ä¸­ã«é¸æŠè‚¢ã‚’åˆ—æŒ™ã—ã¦ã„ã‚‹å ´åˆ
+        'ƒCƒxƒ“ƒgƒf[ƒ^’†‚É‘I‘ğˆ‚ğ—ñ‹“‚µ‚Ä‚¢‚éê‡
         Case 1, 2
             If ArgNum = 1 Then
-                msg = "ã„ãšã‚Œã‹ã‚’é¸ã‚“ã§ãã ã•ã„"
+                msg = "‚¢‚¸‚ê‚©‚ğ‘I‚ñ‚Å‚­‚¾‚³‚¢"
             Else
                 msg = GetArgAsString(2)
             End If
             ListItemID(0) = "0"
             
-            'é¸æŠè‚¢ã®èª­ã¿ã“ã¿
+            '‘I‘ğˆ‚Ì“Ç‚İ‚±‚İ
             For i = LineNum + 1 To UBound(EventData)
                 buf = EventData(i)
                 FormatMessage buf
@@ -1675,19 +1675,19 @@ Dim var As VarData
             Next
             
             If i > UBound(EventData) Then
-                EventErrorMessage = "Askã¨EndãŒå¯¾å¿œã—ã¦ã„ã¾ã›ã‚“"
+                EventErrorMessage = "Ask‚ÆEnd‚ª‘Î‰‚µ‚Ä‚¢‚Ü‚¹‚ñ"
                 Error 0
             End If
             
             ExecAskCmd = i + 1
         
-        'é¸æŠè‚¢ã‚’é…åˆ—ã§æŒ‡å®šã™ã‚‹å ´åˆ
+        '‘I‘ğˆ‚ğ”z—ñ‚Åw’è‚·‚éê‡
         Case 3
             vname = GetArg(2)
             msg = GetArgAsString(3)
             ListItemID(0) = ""
             
-            'é…åˆ—ã®æ¤œç´¢
+            '”z—ñ‚ÌŒŸõ
             If IsSubLocalVariableDefined(vname) Then
                 If Left$(vname, 1) = "$" Then
                     vname = Mid$(vname, 2) & "["
@@ -1773,17 +1773,17 @@ Dim var As VarData
             
             ExecAskCmd = LineNum + 1
         Case Else
-            EventErrorMessage = "Askã‚³ãƒãƒ³ãƒ‰ã®ã‚ªãƒ—ã‚·ãƒ§ãƒ³ãŒä¸æ­£ã§ã™"
+            EventErrorMessage = "AskƒRƒ}ƒ“ƒh‚ÌƒIƒvƒVƒ‡ƒ“‚ª•s³‚Å‚·"
             Error 0
     End Select
     
-    'é¸æŠè‚¢ãŒãªã‘ã‚Œã°ãã®ã¾ã¾çµ‚äº†
+    '‘I‘ğˆ‚ª‚È‚¯‚ê‚Î‚»‚Ì‚Ü‚ÜI—¹
     If UBound(list) = 0 Then
         SelectedAlternative = 0
         Exit Function
     End If
     
-    'ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã‚’æ‹¡å¤§ã™ã‚‹ã‹
+    'ƒ_ƒCƒAƒƒO‚ğŠg‘å‚·‚é‚©
     If Not use_normal_list _
         And (UBound(list) > 6 Or use_large_list) _
     Then
@@ -1794,17 +1794,17 @@ Dim var As VarData
         
     If AutoMoveCursor Then
         TopItem = 1
-        SelectedItem = ListBox("é¸æŠ", list, msg, "è¡¨ç¤ºã®ã¿")
-        MoveCursorPos "ãƒ€ã‚¤ã‚¢ãƒ­ã‚°"
+        SelectedItem = ListBox("‘I‘ğ", list, msg, "•\¦‚Ì‚İ")
+        MoveCursorPos "ƒ_ƒCƒAƒƒO"
     End If
     
-    'é¸æŠè‚¢ã®å…¥åŠ›
+    '‘I‘ğˆ‚Ì“ü—Í
     Do
         TopItem = 1
         If use_continuous_mode Then
-            SelectedItem = ListBox("é¸æŠ", list, msg, "é€£ç¶šè¡¨ç¤º")
+            SelectedItem = ListBox("‘I‘ğ", list, msg, "˜A‘±•\¦")
         Else
-            SelectedItem = ListBox("é¸æŠ", list, msg)
+            SelectedItem = ListBox("‘I‘ğ", list, msg)
         End If
         If enable_rbutton_cancel Then
             If SelectedItem = 0 Then
@@ -1822,7 +1822,7 @@ Dim var As VarData
         End If
     End If
     
-    'ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã‚’æ¨™æº–ã®å¤§ãã•ã«æˆ»ã™
+    'ƒ_ƒCƒAƒƒO‚ğ•W€‚Ì‘å‚«‚³‚É–ß‚·
     If Not use_normal_list _
         And Not use_continuous_mode _
         And (UBound(list) > 6 Or use_large_list) _
@@ -1844,62 +1844,62 @@ Dim def_option As String
     
     Select Case ArgNum
         Case 5
-            'ï¼¯ï¼«
+            '‚n‚j
         Case 6
-            If GetArgAsString(6) = "é€šå¸¸æˆ¦é—˜" Then
+            If GetArgAsString(6) = "’Êíí“¬" Then
                 is_event = False
             Else
-                EventErrorMessage = "Attackã‚³ãƒãƒ³ãƒ‰ã®ã‚ªãƒ—ã‚·ãƒ§ãƒ³ãŒä¸æ­£ã§ã™"
+                EventErrorMessage = "AttackƒRƒ}ƒ“ƒh‚ÌƒIƒvƒVƒ‡ƒ“‚ª•s³‚Å‚·"
                 Error 0
             End If
         Case Else
-            EventErrorMessage = "Attackã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+            EventErrorMessage = "AttackƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
             Error 0
     End Select
     
     Set u1 = GetArgAsUnit(2)
     Set u2 = GetArgAsUnit(4)
     
-    If u1.Status = "å‡ºæ’ƒ" And u2.Status = "å‡ºæ’ƒ" Then
-        If GetArgAsString(3) = "è‡ªå‹•" Then
-            w1 = SelectWeapon(u1, u2, "ã‚¤ãƒ™ãƒ³ãƒˆ")
+    If u1.Status = "oŒ‚" And u2.Status = "oŒ‚" Then
+        If GetArgAsString(3) = "©“®" Then
+            w1 = SelectWeapon(u1, u2, "ƒCƒxƒ“ƒg")
         Else
             For w1 = 1 To u1.CountWeapon
                 If GetArgAsString(3) = u1.Weapon(w1).Name _
-                    And Not u1.IsWeaponClassifiedAs(w1, "ãƒãƒƒãƒ—æ”»æ’ƒ") _
+                    And Not u1.IsWeaponClassifiedAs(w1, "ƒ}ƒbƒvUŒ‚") _
                 Then
                     Exit For
                 End If
             Next
             If w1 > u1.CountWeapon Then
-                EventErrorMessage = "ãƒ¦ãƒ‹ãƒƒãƒˆã€Œ" & u1.Name & "ã€ã«ã¯æ­¦è£…ã€Œ" _
-                    & GetArgAsString(3) & "ã€ã¯å­˜åœ¨ã—ã¾ã›ã‚“"
+                EventErrorMessage = "ƒ†ƒjƒbƒgu" & u1.Name & "v‚É‚Í•‘•u" _
+                    & GetArgAsString(3) & "v‚Í‘¶İ‚µ‚Ü‚¹‚ñ"
                 Error 0
             End If
         End If
         
         def_option = GetArgAsString(5)
         Select Case def_option
-            Case "é˜²å¾¡", "å›é¿", "ç„¡æŠµæŠ—"
+            Case "–hŒä", "‰ñ”ğ", "–³’ïR"
                 def_mode = GetArgAsString(5)
-            Case "åæ’ƒä¸èƒ½"
-                def_mode = "åæ’ƒ"
+            Case "”½Œ‚•s”\"
+                def_mode = "”½Œ‚"
                 w2 = 0
-            Case "è‡ªå‹•"
-                def_mode = "åæ’ƒ"
-                w2 = SelectWeapon(u2, u1, "åæ’ƒ ã‚¤ãƒ™ãƒ³ãƒˆ")
+            Case "©“®"
+                def_mode = "”½Œ‚"
+                w2 = SelectWeapon(u2, u1, "”½Œ‚ ƒCƒxƒ“ƒg")
             Case Else
-                def_mode = "åæ’ƒ"
+                def_mode = "”½Œ‚"
                 For w2 = 1 To u2.CountWeapon
                     If GetArgAsString(5) = u2.Weapon(w2).Name _
-                        And Not u2.IsWeaponClassifiedAs(w2, "ãƒãƒƒãƒ—æ”»æ’ƒ") _
+                        And Not u2.IsWeaponClassifiedAs(w2, "ƒ}ƒbƒvUŒ‚") _
                     Then
                         Exit For
                     End If
                 Next
                 If w2 > u2.CountWeapon Then
-                    EventErrorMessage = "ãƒ¦ãƒ‹ãƒƒãƒˆã€Œ" & u2.Name & "ã€ã«ã¯æ­¦è£…ã€Œ" _
-                        & GetArgAsString(5) & "ã€ã¯å­˜åœ¨ã—ã¾ã›ã‚“"
+                    EventErrorMessage = "ƒ†ƒjƒbƒgu" & u2.Name & "v‚É‚Í•‘•u" _
+                        & GetArgAsString(5) & "v‚Í‘¶İ‚µ‚Ü‚¹‚ñ"
                     Error 0
                 End If
         End Select
@@ -1914,54 +1914,54 @@ Dim def_option As String
             SelectedWeapon = w1
             SelectedTWeapon = w2
             
-            If u1.Party0 = "å‘³æ–¹" Or u1.Party0 = "ï¼®ï¼°ï¼£" Then
+            If u1.Party0 = "–¡•û" Or u1.Party0 = "‚m‚o‚b" Then
                 OpenMessageForm u2, u1
             Else
                 OpenMessageForm u1, u2
             End If
             
-            'æ”»æ’ƒã‚’å®Ÿè¡Œ
+            'UŒ‚‚ğÀs
             cur_stage = Stage
             Stage = u1.Party
             u1.Attack w1, u2, "", def_mode, is_event
             Set u1 = u1.CurrentForm
             
-            'åæ’ƒç”¨æ­¦å™¨ãŒã¾ã ä½¿ç”¨å¯èƒ½ã‹ãƒã‚§ãƒƒã‚¯
-' MOD START ãƒãƒ¼ã‚¸
-'            If def_option = "è‡ªå‹•" Then
+            '”½Œ‚—p•Ší‚ª‚Ü‚¾g—p‰Â”\‚©ƒ`ƒFƒbƒN
+' MOD START ƒ}[ƒW
+'            If def_option = "©“®" Then
 '                If Not u2.IsTargetWithinRange(w2, u1) Then
-'                    w2 = SelectWeapon(u2, u1, "åæ’ƒ ã‚¤ãƒ™ãƒ³ãƒˆ")
+'                    w2 = SelectWeapon(u2, u1, "”½Œ‚ ƒCƒxƒ“ƒg")
 '                    SelectedTWeapon = w2
 '                End If
 '            End If
-            If def_option = "è‡ªå‹•" _
-                And u2.Status = "å‡ºæ’ƒ" _
+            If def_option = "©“®" _
+                And u2.Status = "oŒ‚" _
             Then
                 If Not u2.IsTargetWithinRange(w2, u1) _
-                    Or Not u2.IsWeaponAvailable(w2, "ç§»å‹•å‰") _
+                    Or Not u2.IsWeaponAvailable(w2, "ˆÚ“®‘O") _
                 Then
-                    w2 = SelectWeapon(u2, u1, "åæ’ƒ ã‚¤ãƒ™ãƒ³ãƒˆ")
+                    w2 = SelectWeapon(u2, u1, "”½Œ‚ ƒCƒxƒ“ƒg")
                     SelectedTWeapon = w2
                 End If
             End If
-' MOD END ãƒãƒ¼ã‚¸
+' MOD END ƒ}[ƒW
             
-            'åæ’ƒã‚’å®Ÿè¡Œ
-' MOD START ãƒãƒ¼ã‚¸
-'            If def_mode = "åæ’ƒ" _
-'                And u2.Status = "å‡ºæ’ƒ" _
-'                And Not u2.IsConditionSatisfied("è¡Œå‹•ä¸èƒ½") _
+            '”½Œ‚‚ğÀs
+' MOD START ƒ}[ƒW
+'            If def_mode = "”½Œ‚" _
+'                And u2.Status = "oŒ‚" _
+'                And Not u2.IsConditionSatisfied("s“®•s”\") _
 '            Then
-            If def_mode = "åæ’ƒ" _
-                And u2.Status = "å‡ºæ’ƒ" _
+            If def_mode = "”½Œ‚" _
+                And u2.Status = "oŒ‚" _
                 And u2.MaxAction > 0 _
-                And Not u2.IsConditionSatisfied("æ”»æ’ƒä¸èƒ½") _
+                And Not u2.IsConditionSatisfied("UŒ‚•s”\") _
             Then
-' MOD END ãƒãƒ¼ã‚¸
+' MOD END ƒ}[ƒW
                 If w2 > 0 Then
                     u2.Attack w2, u1, "", "", is_event
                 Else
-                    u2.PilotMessage "å°„ç¨‹å¤–"
+                    u2.PilotMessage "Ë’öŠO"
                 End If
             End If
             Stage = cur_stage
@@ -1998,7 +1998,7 @@ Dim without_cursor As Boolean
 Dim options As String, opt As String
 Dim buf As String
 
-    'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸è¡¨ç¤ºé€Ÿåº¦ã‚’ã€Œæ™®é€šã€ã®å€¤ã«è¨­å®š
+    'ƒƒbƒZ[ƒW•\¦‘¬“x‚ğu•’Êv‚Ì’l‚Éİ’è
     prev_msg_wait = MessageWait
     MessageWait = 700
     
@@ -2013,7 +2013,7 @@ Dim buf As String
                     End If
                     
                     If Left$(pname, 1) = "@" Then
-                        'ãƒ¡ã‚¤ãƒ³ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®å¼·åˆ¶æŒ‡å®š
+                        'ƒƒCƒ“ƒpƒCƒƒbƒg‚Ì‹­§w’è
                         pname = Mid$(pname, 2)
                         If PList.IsDefined(pname) Then
                             With PList.Item(pname)
@@ -2024,15 +2024,15 @@ Dim buf As String
                         End If
                     End If
                     
-                    'è©±è€…åãƒã‚§ãƒƒã‚¯
+                    '˜bÒ–¼ƒ`ƒFƒbƒN
                     If Not PList.IsDefined(pname) _
                         And Not PDList.IsDefined(pname) _
                         And Not NPDList.IsDefined(pname) _
-                        And Not pname = "ã‚·ã‚¹ãƒ†ãƒ " _
+                        And Not pname = "ƒVƒXƒeƒ€" _
                         And Not pname = "" _
                     Then
                         EventErrorMessage = _
-                            "ã€Œ" & pname & "ã€ã¨ã„ã†ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆãŒå®šç¾©ã•ã‚Œã¦ã„ã¾ã›ã‚“"
+                            "u" & pname & "v‚Æ‚¢‚¤ƒpƒCƒƒbƒg‚ª’è‹`‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ"
                         LineNum = i
                         Error 0
                     End If
@@ -2045,32 +2045,32 @@ Dim buf As String
                         Do While j <= .ArgNum
                             opt = .GetArgAsString(j)
                             Select Case opt
-                                Case "éè¡¨ç¤º"
+                                Case "”ñ•\¦"
                                     without_cursor = True
-                                 Case "æ å¤–"
+                                 Case "˜gŠO"
                                     MessageWindowIsOut = True
-                                Case "ç™½é»’", "ã‚»ãƒ”ã‚¢", _
-                                    "æ˜", "æš—", "ä¸Šä¸‹åè»¢", "å·¦å³åè»¢", _
-                                    "ä¸ŠåŠåˆ†", "ä¸‹åŠåˆ†", "å³åŠåˆ†", "å·¦åŠåˆ†", _
-                                    "å³ä¸Š", "å·¦ä¸Š", "å³ä¸‹", "å·¦ä¸‹", _
-                                    "ãƒã‚¬ãƒã‚¸åè»¢", "ã‚·ãƒ«ã‚¨ãƒƒãƒˆ", _
-                                    "å¤•ç„¼ã‘", "æ°´ä¸­", "é€šå¸¸"
+                                Case "”’•", "ƒZƒsƒA", _
+                                    "–¾", "ˆÃ", "ã‰º”½“]", "¶‰E”½“]", _
+                                    "ã”¼•ª", "‰º”¼•ª", "‰E”¼•ª", "¶”¼•ª", _
+                                    "‰Eã", "¶ã", "‰E‰º", "¶‰º", _
+                                    "ƒlƒKƒ|ƒW”½“]", "ƒVƒ‹ƒGƒbƒg", _
+                                    "—[Ä‚¯", "…’†", "’Êí"
                                     If j > 2 Then
-                                        'ã“ã‚Œã‚‰ã®ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆç”»åƒæç”»ã«é–¢ã™ã‚‹ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã¯
-                                        'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆåãŒæŒ‡å®šã•ã‚Œã¦ã„ã‚‹å ´åˆã«ã®ã¿æœ‰åŠ¹
+                                        '‚±‚ê‚ç‚ÌƒpƒCƒƒbƒg‰æ‘œ•`‰æ‚ÉŠÖ‚·‚éƒIƒvƒVƒ‡ƒ“‚Í
+                                        'ƒpƒCƒƒbƒg–¼‚ªw’è‚³‚ê‚Ä‚¢‚éê‡‚É‚Ì‚İ—LŒø
                                         options = options & opt & " "
                                     Else
                                         lnum = j
                                     End If
-                                Case "å³å›è»¢"
+                                Case "‰E‰ñ“]"
                                     j = j + 1
                                     options = options & _
-                                        "å³å›è»¢ " & .GetArgAsString(j) & " "
-                                Case "å·¦å›è»¢"
+                                        "‰E‰ñ“] " & .GetArgAsString(j) & " "
+                                Case "¶‰ñ“]"
                                     j = j + 1
                                     options = options & _
-                                        "å·¦å›è»¢ " & .GetArgAsString(j) & " "
-                                Case "ãƒ•ã‚£ãƒ«ã‚¿"
+                                        "¶‰ñ“] " & .GetArgAsString(j) & " "
+                                Case "ƒtƒBƒ‹ƒ^"
                                     Dim cname As String, tcolor As Long
                                     j = j + 1
                                     buf = .GetArgAsString(j)
@@ -2082,11 +2082,11 @@ Dim buf As String
                                     tcolor = CLng(cname)
                                     j = j + 1
                                     options = options & _
-                                        "ãƒ•ã‚£ãƒ«ã‚¿ " & Format$(tcolor) & " " & .GetArgAsString(j) & " "
+                                        "ƒtƒBƒ‹ƒ^ " & Format$(tcolor) & " " & .GetArgAsString(j) & " "
                                 Case ""
-                                    'ç©ºç™½ã®ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã‚’ã‚¹ã‚­ãƒƒãƒ—
+                                    '‹ó”’‚ÌƒIƒvƒVƒ‡ƒ“‚ğƒXƒLƒbƒv
                                 Case Else
-                                    'é€šå¸¸ã®å¼•æ•°ã‚’ã‚¹ã‚­ãƒƒãƒ—
+                                    '’Êí‚Ìˆø”‚ğƒXƒLƒbƒv
                                     lnum = j
                             End Select
                             j = j + 1
@@ -2097,14 +2097,14 @@ Dim buf As String
                     
                     Select Case lnum
                         Case 0, 1
-                            'å¼•æ•°ãªã—
+                            'ˆø”‚È‚µ
                             
                             If Not frmMessage.Visible Then
                                 OpenMessageForm
                             End If
                             
-                            'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆç”»åƒã‚’ä»¥å‰æŒ‡å®šã•ã‚ŒãŸ
-                            'ã‚‚ã®ã«ç¢ºå®šã•ã›ã‚‹
+                            'ƒƒbƒZ[ƒWƒEƒBƒ“ƒhƒE‚ÌƒpƒCƒƒbƒg‰æ‘œ‚ğˆÈ‘Ow’è‚³‚ê‚½
+                            '‚à‚Ì‚ÉŠm’è‚³‚¹‚é
                             If current_pname <> "" Then
                                 DisplayBattleMessage current_pname, "", options
                             End If
@@ -2112,19 +2112,19 @@ Dim buf As String
                             current_pname = ""
                             
                         Case 2
-                            'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆåã®ã¿æŒ‡å®š
+                            'ƒpƒCƒƒbƒg–¼‚Ì‚İw’è
                             current_pname = pname
                             
-                            'è©±è€…ä¸­å¿ƒã«ç”»é¢ä½ç½®ã‚’å¤‰æ›´
+                            '˜bÒ’†S‚É‰æ–ÊˆÊ’u‚ğ•ÏX
                             
-                            'ãƒ—ãƒ­ãƒ­ãƒ¼ã‚°ã‚¤ãƒ™ãƒ³ãƒˆã‚„ã‚¨ãƒ”ãƒ­ãƒ¼ã‚°ã‚¤ãƒ™ãƒ³ãƒˆæ™‚ã¯ã‚­ãƒ£ãƒ³ã‚»ãƒ«
-                            If Stage = "ãƒ—ãƒ­ãƒ­ãƒ¼ã‚°" _
-                                Or Stage = "ã‚¨ãƒ”ãƒ­ãƒ¼ã‚°" _
+                            'ƒvƒƒ[ƒOƒCƒxƒ“ƒg‚âƒGƒsƒ[ƒOƒCƒxƒ“ƒg‚ÍƒLƒƒƒ“ƒZƒ‹
+                            If Stage = "ƒvƒƒ[ƒO" _
+                                Or Stage = "ƒGƒsƒ[ƒO" _
                             Then
                                 GoTo NextLoop
                             End If
                             
-                            'ç”»é¢æ›¸ãæ›ãˆå¯èƒ½ï¼Ÿ
+                            '‰æ–Ê‘‚«Š·‚¦‰Â”\H
                             If Not MainForm.Visible Then
                                 GoTo NextLoop
                             End If
@@ -2135,35 +2135,35 @@ Dim buf As String
                                 GoTo NextLoop
                             End If
                             
-                            'è©±è€…ã‚’ä¸­å¤®è¡¨ç¤º
+                            '˜bÒ‚ğ’†‰›•\¦
                             CenterUnit pname, without_cursor
                             
                         Case 3
                             current_pname = pname
                             Select Case .GetArgAsString(3)
-                                Case "æ¯è‰¦"
-                                    'æ¯è‰¦ã®ä¸­å¤®è¡¨ç¤º
-                                    CenterUnit "æ¯è‰¦", without_cursor
-                                Case "ä¸­å¤®"
-                                    'è©±è€…ã‚’ä¸­å¤®è¡¨ç¤º
+                                Case "•êŠÍ"
+                                    '•êŠÍ‚Ì’†‰›•\¦
+                                    CenterUnit "•êŠÍ", without_cursor
+                                Case "’†‰›"
+                                    '˜bÒ‚ğ’†‰›•\¦
                                     CenterUnit pname, without_cursor
-                                Case "å›ºå®š"
-                                    'è¡¨ç¤ºä½ç½®å›ºå®š
+                                Case "ŒÅ’è"
+                                    '•\¦ˆÊ’uŒÅ’è
                             End Select
                             
                         Case 4
-                            'è¡¨ç¤ºã®åº§æ¨™æŒ‡å®šã‚ã‚Š
+                            '•\¦‚ÌÀ•Ww’è‚ ‚è
                             current_pname = pname
                             CenterUnit "", without_cursor, .GetArgAsLong(3), .GetArgAsLong(4)
                             
                         Case -1
                             EventErrorMessage = _
-                                "AutoTalkã‚³ãƒãƒ³ãƒ‰ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®æ‹¬å¼§ã®å¯¾å¿œãŒå–ã‚Œã¦ã„ã¾ã›ã‚“"
+                                "AutoTalkƒRƒ}ƒ“ƒh‚Ìƒpƒ‰ƒ[ƒ^‚ÌŠ‡ŒÊ‚Ì‘Î‰‚ªæ‚ê‚Ä‚¢‚Ü‚¹‚ñ"
                             LineNum = i
                             Error 0
                             
                         Case Else
-                            EventErrorMessage = "AutoTalkã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+                            EventErrorMessage = "AutoTalkƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
                             LineNum = i
                             Error 0
                     End Select
@@ -2175,7 +2175,7 @@ Dim buf As String
                 Case EndCmd
                     CloseMessageForm
                     If .ArgNum <> 1 Then
-                        EventErrorMessage = "Endéƒ¨åˆ†ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+                        EventErrorMessage = "End•”•ª‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
                         LineNum = i
                         Error 0
                     End If
@@ -2183,7 +2183,7 @@ Dim buf As String
                     
                 Case SuspendCmd
                     If .ArgNum <> 1 Then
-                        EventErrorMessage = "Suspendéƒ¨åˆ†ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+                        EventErrorMessage = "Suspend•”•ª‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
                         LineNum = i
                         Error 0
                     End If
@@ -2200,29 +2200,29 @@ Dim buf As String
 NextLoop:
     Next
     
-    'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸è¡¨ç¤ºé€Ÿåº¦ã‚’å…ƒã«æˆ»ã™
+    'ƒƒbƒZ[ƒW•\¦‘¬“x‚ğŒ³‚É–ß‚·
     MessageWait = prev_msg_wait
     
     If i > UBound(EventData) Then
         CloseMessageForm
-        EventErrorMessage = "AutoTalkã¨EndãŒå¯¾å¿œã—ã¦ã„ã¾ã›ã‚“"
+        EventErrorMessage = "AutoTalk‚ÆEnd‚ª‘Î‰‚µ‚Ä‚¢‚Ü‚¹‚ñ"
         Error 0
     End If
     
     ExecAutoTalkCmd = i + 1
 End Function
 
-'è©±è€…ã®ä¸­å¤®è¡¨ç¤ºç”¨ã‚µãƒ–ãƒ«ãƒ¼ãƒãƒ³
+'˜bÒ‚Ì’†‰›•\¦—pƒTƒuƒ‹[ƒ`ƒ“
 Private Sub CenterUnit(ByVal pname As String, ByVal without_cursor As Boolean, _
     Optional ByVal X As Integer, Optional ByVal Y As Integer)
 Dim u As Unit, xx As Integer, yy As Integer
 
-    'åº§æ¨™ãŒæŒ‡å®šã•ã‚Œã¦ã„ã‚‹å ´åˆ
+    'À•W‚ªw’è‚³‚ê‚Ä‚¢‚éê‡
     If X <> 0 And Y <> 0 Then
         If X < 1 Or MapWidth < X _
             Or Y < 1 Or MapHeight < Y _
         Then
-            'ãƒãƒƒãƒ—å¤–
+            'ƒ}ƒbƒvŠO
             Exit Sub
         End If
         
@@ -2231,14 +2231,14 @@ Dim u As Unit, xx As Integer, yy As Integer
         GoTo FoundPoint
     End If
     
-    If pname = "æ¯è‰¦" Then
-        'æ¯è‰¦ã‚’ä¸­å¤®è¡¨ç¤º
+    If pname = "•êŠÍ" Then
+        '•êŠÍ‚ğ’†‰›•\¦
         For Each u In UList
             With u
-                If .Party0 = "å‘³æ–¹" _
-                    And .Status = "å‡ºæ’ƒ" _
+                If .Party0 = "–¡•û" _
+                    And .Status = "oŒ‚" _
                 Then
-                    If .IsFeatureAvailable("æ¯è‰¦") Then
+                    If .IsFeatureAvailable("•êŠÍ") Then
                         xx = .X
                         yy = .Y
                         GoTo FoundPoint
@@ -2249,7 +2249,7 @@ Dim u As Unit, xx As Integer, yy As Integer
         Exit Sub
     End If
     
-    'è¡¨æƒ…ãƒ‘ã‚¿ãƒ¼ãƒ³åã§ã®æŒ‡å®šã¯ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆåã«å¤‰æ›ã—ã¦ãŠã
+    '•\îƒpƒ^[ƒ“–¼‚Å‚Ìw’è‚ÍƒpƒCƒƒbƒg–¼‚É•ÏŠ·‚µ‚Ä‚¨‚­
     If Not PList.IsDefined(pname) _
         And InStr(pname, "(") > 0 _
     Then
@@ -2263,16 +2263,16 @@ Dim u As Unit, xx As Integer, yy As Integer
         pname = NPDList.Item(pname).Nickname
     End If
     
-    'è©±è€…ã¯ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆï¼Ÿ
+    '˜bÒ‚ÍƒpƒCƒƒbƒgH
     If Not PList.IsDefined(pname) Then
         Exit Sub
     End If
     
     With PList.Item(pname)
         If Not .Unit Is Nothing Then
-            'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆãŒä¹—ã£ã¦ã„ã‚‹ãƒ¦ãƒ‹ãƒƒãƒˆã‚’ä¸­å¤®è¡¨ç¤º
+            'ƒpƒCƒƒbƒg‚ªæ‚Á‚Ä‚¢‚éƒ†ƒjƒbƒg‚ğ’†‰›•\¦
             With .Unit
-                If .Status = "å‡ºæ’ƒ" Or .Status = "æ ¼ç´" Then
+                If .Status = "oŒ‚" Or .Status = "Ši”[" Then
                     xx = .X
                     yy = .Y
                     GoTo FoundPoint
@@ -2280,9 +2280,9 @@ Dim u As Unit, xx As Integer, yy As Integer
             End With
         End If
         
-        'è©±è€…ãŒå‘³æ–¹ã§ã‹ã¤å‡ºæ’ƒä¸­ã§ãªã„å ´åˆã¯æ¯è‰¦ã‚’ä¸­å¤®è¡¨ç¤º
-        If .Party = "å‘³æ–¹" Then
-            CenterUnit "æ¯è‰¦", without_cursor
+        '˜bÒ‚ª–¡•û‚Å‚©‚ÂoŒ‚’†‚Å‚È‚¢ê‡‚Í•êŠÍ‚ğ’†‰›•\¦
+        If .Party = "–¡•û" Then
+            CenterUnit "•êŠÍ", without_cursor
         End If
     End With
     
@@ -2303,7 +2303,7 @@ FoundPoint:
         DrawPicture "Event\cursor.bmp", _
             DEFAULT_LEVEL, DEFAULT_LEVEL, _
             DEFAULT_LEVEL, DEFAULT_LEVEL, _
-            0, 0, 0, 0, "é€é"
+            0, 0, 0, 0, "“§‰ß"
         IsPictureVisible = tmp
         IsCursorVisible = True
     End If
@@ -2321,7 +2321,7 @@ Dim buf As String
             
             buf = GetArgAsString(3)
             If Not IsNumeric(buf) Then
-                EventErrorMessage = "ãƒœã‚¹ãƒ©ãƒ³ã‚¯ãŒä¸æ­£ã§ã™"
+                EventErrorMessage = "ƒ{ƒXƒ‰ƒ“ƒN‚ª•s³‚Å‚·"
                 Error 0
             End If
         Case 2
@@ -2329,11 +2329,11 @@ Dim buf As String
             
             buf = GetArgAsString(2)
             If Not IsNumeric(buf) Then
-                EventErrorMessage = "ãƒœã‚¹ãƒ©ãƒ³ã‚¯ãŒä¸æ­£ã§ã™"
+                EventErrorMessage = "ƒ{ƒXƒ‰ƒ“ƒN‚ª•s³‚Å‚·"
                 Error 0
             End If
         Case Else
-            EventErrorMessage = "BossRankã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+            EventErrorMessage = "BossRankƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
             Error 0
     End Select
     
@@ -2351,7 +2351,7 @@ End Function
 Private Function ExecBreakCmd() As Long
 Dim i As Long, depth As Integer
     
-    'å¯¾å¿œã™ã‚‹Loopã‚‚ã—ãã¯Nextã‚³ãƒãƒ³ãƒ‰ã‚’æ¢ã™
+    '‘Î‰‚·‚éLoop‚à‚µ‚­‚ÍNextƒRƒ}ƒ“ƒh‚ğ’T‚·
     depth = 1
     For i = LineNum + 1 To UBound(EventCmd)
         Select Case EventCmd(i).Name
@@ -2372,7 +2372,7 @@ Dim i As Long, depth As Integer
     Next
     
     If i > UBound(EventCmd) Then
-        EventErrorMessage = "Breakã‚³ãƒãƒ³ãƒ‰ãŒãƒ«ãƒ¼ãƒ—ã®å¤–ã§ä½¿ã‚ã‚Œã¦ã„ã¾ã™"
+        EventErrorMessage = "BreakƒRƒ}ƒ“ƒh‚ªƒ‹[ƒv‚ÌŠO‚Åg‚í‚ê‚Ä‚¢‚Ü‚·"
         Error 0
     End If
     
@@ -2383,61 +2383,61 @@ Private Function ExecCallCmd() As Long
 Dim ret As Long, i As Integer
 Dim params(MaxArgIndex) As String
 
-    'ã‚µãƒ–ãƒ«ãƒ¼ãƒãƒ³ã‚’æ¢ã™
+    'ƒTƒuƒ‹[ƒ`ƒ“‚ğ’T‚·
     ret = FindNormalLabel(GetArgAsString(2))
     
-    'è¦‹ã¤ã‹ã£ãŸï¼Ÿ
+    'Œ©‚Â‚©‚Á‚½H
     If ret = 0 Then
-        EventErrorMessage = "ã‚µãƒ–ãƒ«ãƒ¼ãƒãƒ³ã®å‘¼ã³å‡ºã—å…ˆãƒ©ãƒ™ãƒ«ã§ã‚ã‚‹ã€Œ" _
-            & GetArgAsString(2) & "ã€ãŒã¿ã¤ã‹ã‚Šã¾ã›ã‚“"
+        EventErrorMessage = "ƒTƒuƒ‹[ƒ`ƒ“‚ÌŒÄ‚Ño‚µæƒ‰ƒxƒ‹‚Å‚ ‚éu" _
+            & GetArgAsString(2) & "v‚ª‚İ‚Â‚©‚è‚Ü‚¹‚ñ"
         Error 0
     End If
     
-    'å‘¼ã³å‡ºã—éšå±¤ã‚’ãƒã‚§ãƒƒã‚¯
+    'ŒÄ‚Ño‚µŠK‘w‚ğƒ`ƒFƒbƒN
     If CallDepth > MaxCallDepth Then
         CallDepth = MaxCallDepth
         EventErrorMessage = Format$(MaxCallDepth) & _
-            "éšå±¤ã‚’è¶Šãˆã‚‹ã‚µãƒ–ãƒ«ãƒ¼ãƒãƒ³ã®å‘¼ã³å‡ºã—ã¯å‡ºæ¥ã¾ã›ã‚“"
+            "ŠK‘w‚ğ‰z‚¦‚éƒTƒuƒ‹[ƒ`ƒ“‚ÌŒÄ‚Ño‚µ‚Ío—ˆ‚Ü‚¹‚ñ"
         Error 0
     End If
     
-    'å¼•æ•°ç”¨ã‚¹ã‚¿ãƒƒã‚¯ãŒæº¢ã‚Œãªã„ã‹ãƒã‚§ãƒƒã‚¯
+    'ˆø”—pƒXƒ^ƒbƒN‚ªˆì‚ê‚È‚¢‚©ƒ`ƒFƒbƒN
     If ArgIndex + ArgNum - 2 > MaxArgIndex Then
         EventErrorMessage = _
-            "ã‚µãƒ–ãƒ«ãƒ¼ãƒãƒ³ã®å¼•æ•°ã®ç·æ•°ãŒ" & Format$(MaxArgIndex) & _
-            "å€‹ã‚’è¶…ãˆã¦ã„ã¾ã™"
+            "ƒTƒuƒ‹[ƒ`ƒ“‚Ìˆø”‚Ì‘”‚ª" & Format$(MaxArgIndex) & _
+            "ŒÂ‚ğ’´‚¦‚Ä‚¢‚Ü‚·"
         Error 0
     End If
     
-    'å¼•æ•°ã®å€¤ã‚’å…ˆã«æ±‚ã‚ã¦ãŠã
-    '(ã‚¹ã‚¿ãƒƒã‚¯ã«ç©ã¿ãªãŒã‚‰è¨ˆç®—ã™ã‚‹ã¨ã€å¼•æ•°ã§ã®é–¢æ•°å‘¼ã³å‡ºã—ã§ä¸æ­£ã«ãªã‚‹)
+    'ˆø”‚Ì’l‚ğæ‚É‹‚ß‚Ä‚¨‚­
+    '(ƒXƒ^ƒbƒN‚ÉÏ‚İ‚È‚ª‚çŒvZ‚·‚é‚ÆAˆø”‚Å‚ÌŠÖ”ŒÄ‚Ño‚µ‚Å•s³‚É‚È‚é)
     For i = 3 To ArgNum
         params(i) = GetArgAsString(i)
     Next
     
-    'ç¾åœ¨ã®çŠ¶æ…‹ã‚’ä¿å­˜
+    'Œ»İ‚Ìó‘Ô‚ğ•Û‘¶
     CallStack(CallDepth) = LineNum
     ArgIndexStack(CallDepth) = ArgIndex
     VarIndexStack(CallDepth) = VarIndex
     ForIndexStack(CallDepth) = ForIndex
     
-    'UpVarãŒå®Ÿè¡Œã•ã‚ŒãŸå ´åˆã€UpVarå®Ÿè¡Œæ•°ã¯ç´¯è¨ˆã™ã‚‹
+    'UpVar‚ªÀs‚³‚ê‚½ê‡AUpVarÀs”‚Í—İŒv‚·‚é
     If UpVarLevel > 0 Then
         UpVarLevelStack(CallDepth) = UpVarLevel + UpVarLevelStack(CallDepth - 1)
     Else
         UpVarLevelStack(CallDepth) = 0
     End If
     
-    'UpVarã®éšå±¤æ•°ã‚’åˆæœŸåŒ–
+    'UpVar‚ÌŠK‘w”‚ğ‰Šú‰»
     UpVarLevel = 0
     
-    'å¼•æ•°ã‚’ã‚¹ã‚¿ãƒƒã‚¯ã«ç©ã‚€
+    'ˆø”‚ğƒXƒ^ƒbƒN‚ÉÏ‚Ş
     For i = 3 To ArgNum
         ArgStack(ArgIndex + ArgNum - i + 1) = params(i)
     Next
     ArgIndex = ArgIndex + ArgNum - 2
     
-    'å‘¼ã³å‡ºã—éšå±¤æ•°ã‚’ã‚¤ãƒ³ã‚¯ãƒªãƒ¡ãƒ³ãƒˆ
+    'ŒÄ‚Ño‚µŠK‘w”‚ğƒCƒ“ƒNƒŠƒƒ“ƒg
     CallDepth = CallDepth + 1
     
     ExecCallCmd = ret + 1
@@ -2445,17 +2445,17 @@ End Function
 
 Private Function ExecReturnCmd() As Long
     If CallDepth <= 0 Then
-        EventErrorMessage = "Callã‚³ãƒãƒ³ãƒ‰ã¨Returnã‚³ãƒãƒ³ãƒ‰ãŒå¯¾å¿œã—ã¦ã„ã¾ã›ã‚“"
+        EventErrorMessage = "CallƒRƒ}ƒ“ƒh‚ÆReturnƒRƒ}ƒ“ƒh‚ª‘Î‰‚µ‚Ä‚¢‚Ü‚¹‚ñ"
         Error 0
     ElseIf CallDepth = 1 And CallStack(CallDepth) = 0 Then
-        EventErrorMessage = "Callã‚³ãƒãƒ³ãƒ‰ã¨Returnã‚³ãƒãƒ³ãƒ‰ãŒå¯¾å¿œã—ã¦ã„ã¾ã›ã‚“"
+        EventErrorMessage = "CallƒRƒ}ƒ“ƒh‚ÆReturnƒRƒ}ƒ“ƒh‚ª‘Î‰‚µ‚Ä‚¢‚Ü‚¹‚ñ"
         Error 0
     End If
     
-    'å‘¼ã³å‡ºã—éšå±¤æ•°ã‚’ãƒ‡ã‚¯ãƒªãƒ¡ãƒ³ãƒˆ
+    'ŒÄ‚Ño‚µŠK‘w”‚ğƒfƒNƒŠƒƒ“ƒg
     CallDepth = CallDepth - 1
     
-    'ã‚µãƒ–ãƒ«ãƒ¼ãƒãƒ³å®Ÿè¡Œå‰ã®çŠ¶æ…‹ã«å¾©å¸°
+    'ƒTƒuƒ‹[ƒ`ƒ“Às‘O‚Ìó‘Ô‚É•œ‹A
     ArgIndex = ArgIndexStack(CallDepth)
     VarIndex = VarIndexStack(CallDepth)
     ForIndex = ForIndexStack(CallDepth)
@@ -2469,40 +2469,40 @@ Dim fname As String, save_path As String
 Dim ret As Integer
     
     If ArgNum <> 2 Then
-        EventErrorMessage = "CallInterMissionCommandã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+        EventErrorMessage = "CallInterMissionCommandƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
         Error 0
     End If
     
-    'é¸æŠã•ã‚ŒãŸã‚¤ãƒ³ã‚¿ãƒ¼ãƒŸãƒƒã‚·ãƒ§ãƒ³ã‚³ãƒãƒ³ãƒ‰ã‚’å®Ÿè¡Œ
+    '‘I‘ğ‚³‚ê‚½ƒCƒ“ƒ^[ƒ~ƒbƒVƒ‡ƒ“ƒRƒ}ƒ“ƒh‚ğÀs
     Select Case GetArgAsString(2)
-        Case "ãƒ‡ãƒ¼ã‚¿ã‚»ãƒ¼ãƒ–"
-            'ä¸€æ—¦ã€Œå¸¸ã«æ‰‹å‰ã«è¡¨ç¤ºã€ã‚’è§£é™¤
+        Case "ƒf[ƒ^ƒZ[ƒu"
+            'ˆê’Uuí‚Éè‘O‚É•\¦v‚ğ‰ğœ
             If frmListBox.Visible Then
                 ret = SetWindowPos(frmListBox.hwnd, -2, 0, 0, 0, 0, &H3)
             End If
             
-            fname = SaveFileDialog("ãƒ‡ãƒ¼ã‚¿ã‚»ãƒ¼ãƒ–", _
-                ScenarioPath, GetValueAsString("ã‚»ãƒ¼ãƒ–ãƒ‡ãƒ¼ã‚¿ãƒ•ã‚¡ã‚¤ãƒ«å"), _
-                2, "ï½¾ï½°ï¾Œï¾ï¾ƒï¾ï½°ï¾€", "src")
+            fname = SaveFileDialog("ƒf[ƒ^ƒZ[ƒu", _
+                ScenarioPath, GetValueAsString("ƒZ[ƒuƒf[ƒ^ƒtƒ@ƒCƒ‹–¼"), _
+                2, "¾°ÌŞÃŞ°À", "src")
             
-            'å†ã³ã€Œå¸¸ã«æ‰‹å‰ã«è¡¨ç¤ºã€
+            'Ä‚Ñuí‚Éè‘O‚É•\¦v
             If frmListBox.Visible Then
                 ret = SetWindowPos(frmListBox.hwnd, -1, 0, 0, 0, 0, &H3)
             End If
             
-            'ã‚­ãƒ£ãƒ³ã‚»ãƒ«ï¼Ÿ
+            'ƒLƒƒƒ“ƒZƒ‹H
             If fname = "" Then
                 ExecCallInterMissionCommandCmd = LineNum + 1
                 Exit Function
             End If
             
-            'ã‚»ãƒ¼ãƒ–å…ˆã¯ã‚·ãƒŠãƒªã‚ªãƒ•ã‚©ãƒ«ãƒ€ï¼Ÿ
+            'ƒZ[ƒuæ‚ÍƒVƒiƒŠƒIƒtƒHƒ‹ƒ_H
             If InStr(fname, "\") > 0 Then
                 save_path = Left$(fname, InStr2(fname, "\"))
             End If
             If Dir$(save_path) <> Dir$(ScenarioPath) Then
-                If MsgBox("ã‚»ãƒ¼ãƒ–ãƒ•ã‚¡ã‚¤ãƒ«ã¯ã‚·ãƒŠãƒªã‚ªãƒ•ã‚©ãƒ«ãƒ€ã«ãªã„ã¨èª­ã¿è¾¼ã‚ã¾ã›ã‚“ã€‚" & vbCr & vbLf _
-                        & "ã“ã®ã¾ã¾ã‚»ãƒ¼ãƒ–ã—ã¾ã™ã‹ï¼Ÿ", vbOKCancel + vbQuestion) <> 1 _
+                If MsgBox("ƒZ[ƒuƒtƒ@ƒCƒ‹‚ÍƒVƒiƒŠƒIƒtƒHƒ‹ƒ_‚É‚È‚¢‚Æ“Ç‚İ‚ß‚Ü‚¹‚ñB" & vbCr & vbLf _
+                        & "‚±‚Ì‚Ü‚ÜƒZ[ƒu‚µ‚Ü‚·‚©H", vbOKCancel + vbQuestion) <> 1 _
                 Then
                     ExecCallInterMissionCommandCmd = LineNum + 1
                     Exit Function
@@ -2510,77 +2510,77 @@ Dim ret As Integer
             End If
             
             If fname <> "" Then
-                UList.Update 'è¿½åŠ ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‚’æ¶ˆå»
+                UList.Update '’Ç‰ÁƒpƒCƒƒbƒg‚ğÁ‹
                 SaveData fname
             End If
             
-        Case "æ©Ÿä½“æ”¹é€ ", "ãƒ¦ãƒ‹ãƒƒãƒˆã®å¼·åŒ–"
-            'é¸æŠç”¨ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã‚’æ‹¡å¤§
+        Case "‹@‘Ì‰ü‘¢", "ƒ†ƒjƒbƒg‚Ì‹­‰»"
+            '‘I‘ğ—pƒ_ƒCƒAƒƒO‚ğŠg‘å
             EnlargeListBoxHeight
             
             RankUpCommand
             
-            'é¸æŠç”¨ãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹ã‚’å…ƒã«æˆ»ã™
+            '‘I‘ğ—pƒŠƒXƒgƒ{ƒbƒNƒX‚ğŒ³‚É–ß‚·
             ReduceListBoxHeight
             
-        Case "ä¹—ã‚Šæ›ãˆ"
-            'é¸æŠç”¨ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã‚’æ‹¡å¤§
+        Case "æ‚èŠ·‚¦"
+            '‘I‘ğ—pƒ_ƒCƒAƒƒO‚ğŠg‘å
             EnlargeListBoxHeight
             
             ExchangeUnitCommand
             
-            'é¸æŠç”¨ãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹ã‚’å…ƒã«æˆ»ã™
+            '‘I‘ğ—pƒŠƒXƒgƒ{ƒbƒNƒX‚ğŒ³‚É–ß‚·
             ReduceListBoxHeight
             
-        Case "ã‚¢ã‚¤ãƒ†ãƒ äº¤æ›"
-            'é¸æŠç”¨ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã‚’æ‹¡å¤§
+        Case "ƒAƒCƒeƒ€ŒğŠ·"
+            '‘I‘ğ—pƒ_ƒCƒAƒƒO‚ğŠg‘å
             EnlargeListBoxHeight
             
             ExchangeItemCommand
             
-            'é¸æŠç”¨ãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹ã‚’å…ƒã«æˆ»ã™
+            '‘I‘ğ—pƒŠƒXƒgƒ{ƒbƒNƒX‚ğŒ³‚É–ß‚·
             ReduceListBoxHeight
             
-        Case "æ›è£…"
-            'é¸æŠç”¨ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã‚’æ‹¡å¤§
+        Case "Š·‘•"
+            '‘I‘ğ—pƒ_ƒCƒAƒƒO‚ğŠg‘å
             EnlargeListBoxHeight
             
             ExchangeFormCommand
             
-            'é¸æŠç”¨ãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹ã‚’å…ƒã«æˆ»ã™
+            '‘I‘ğ—pƒŠƒXƒgƒ{ƒbƒNƒX‚ğŒ³‚É–ß‚·
             ReduceListBoxHeight
             
-        Case "ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹"
+        Case "ƒpƒCƒƒbƒgƒXƒe[ƒ^ƒX"
             frmListBox.Hide
             ReduceListBoxHeight
             IsSubStage = True
-            If FileExists(ScenarioPath & "Lib\ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹è¡¨ç¤º.eve") Then
-                StartScenario ScenarioPath & "Lib\ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹è¡¨ç¤º.eve"
-            ElseIf FileExists(ExtDataPath & "Lib\ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹è¡¨ç¤º.eve") Then
-                StartScenario ExtDataPath & "Lib\ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹è¡¨ç¤º.eve"
-            ElseIf FileExists(ExtDataPath2 & "Lib\ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹è¡¨ç¤º.eve") Then
-                StartScenario ExtDataPath2 & "Lib\ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹è¡¨ç¤º.eve"
+            If FileExists(ScenarioPath & "Lib\ƒpƒCƒƒbƒgƒXƒe[ƒ^ƒX•\¦.eve") Then
+                StartScenario ScenarioPath & "Lib\ƒpƒCƒƒbƒgƒXƒe[ƒ^ƒX•\¦.eve"
+            ElseIf FileExists(ExtDataPath & "Lib\ƒpƒCƒƒbƒgƒXƒe[ƒ^ƒX•\¦.eve") Then
+                StartScenario ExtDataPath & "Lib\ƒpƒCƒƒbƒgƒXƒe[ƒ^ƒX•\¦.eve"
+            ElseIf FileExists(ExtDataPath2 & "Lib\ƒpƒCƒƒbƒgƒXƒe[ƒ^ƒX•\¦.eve") Then
+                StartScenario ExtDataPath2 & "Lib\ƒpƒCƒƒbƒgƒXƒe[ƒ^ƒX•\¦.eve"
             Else
-                StartScenario AppPath & "Lib\ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹è¡¨ç¤º.eve"
+                StartScenario AppPath & "Lib\ƒpƒCƒƒbƒgƒXƒe[ƒ^ƒX•\¦.eve"
             End If
-            'ã‚µãƒ–ã‚¹ãƒ†ãƒ¼ã‚¸ã‚’é€šå¸¸ã®ã‚¹ãƒ†ãƒ¼ã‚¸ã¨ã—ã¦å®Ÿè¡Œ
+            'ƒTƒuƒXƒe[ƒW‚ğ’Êí‚ÌƒXƒe[ƒW‚Æ‚µ‚ÄÀs
             IsSubStage = True
             Exit Function
             
-        Case "ãƒ¦ãƒ‹ãƒƒãƒˆã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹"
+        Case "ƒ†ƒjƒbƒgƒXƒe[ƒ^ƒX"
             frmListBox.Hide
             ReduceListBoxHeight
             IsSubStage = True
-            If FileExists(ScenarioPath & "Lib\ãƒ¦ãƒ‹ãƒƒãƒˆã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹è¡¨ç¤º.eve") Then
-                StartScenario ScenarioPath & "Lib\ãƒ¦ãƒ‹ãƒƒãƒˆã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹è¡¨ç¤º.eve"
-            ElseIf FileExists(ExtDataPath & "Lib\ãƒ¦ãƒ‹ãƒƒãƒˆã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹è¡¨ç¤º.eve") Then
-                StartScenario ExtDataPath & "Lib\ãƒ¦ãƒ‹ãƒƒãƒˆã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹è¡¨ç¤º.eve"
-            ElseIf FileExists(ExtDataPath2 & "Lib\ãƒ¦ãƒ‹ãƒƒãƒˆã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹è¡¨ç¤º.eve") Then
-                StartScenario ExtDataPath2 & "Lib\ãƒ¦ãƒ‹ãƒƒãƒˆã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹è¡¨ç¤º.eve"
+            If FileExists(ScenarioPath & "Lib\ƒ†ƒjƒbƒgƒXƒe[ƒ^ƒX•\¦.eve") Then
+                StartScenario ScenarioPath & "Lib\ƒ†ƒjƒbƒgƒXƒe[ƒ^ƒX•\¦.eve"
+            ElseIf FileExists(ExtDataPath & "Lib\ƒ†ƒjƒbƒgƒXƒe[ƒ^ƒX•\¦.eve") Then
+                StartScenario ExtDataPath & "Lib\ƒ†ƒjƒbƒgƒXƒe[ƒ^ƒX•\¦.eve"
+            ElseIf FileExists(ExtDataPath2 & "Lib\ƒ†ƒjƒbƒgƒXƒe[ƒ^ƒX•\¦.eve") Then
+                StartScenario ExtDataPath2 & "Lib\ƒ†ƒjƒbƒgƒXƒe[ƒ^ƒX•\¦.eve"
             Else
-                StartScenario AppPath & "Lib\ãƒ¦ãƒ‹ãƒƒãƒˆã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹è¡¨ç¤º.eve"
+                StartScenario AppPath & "Lib\ƒ†ƒjƒbƒgƒXƒe[ƒ^ƒX•\¦.eve"
             End If
-            'ã‚µãƒ–ã‚¹ãƒ†ãƒ¼ã‚¸ã‚’é€šå¸¸ã®ã‚¹ãƒ†ãƒ¼ã‚¸ã¨ã—ã¦å®Ÿè¡Œ
+            'ƒTƒuƒXƒe[ƒW‚ğ’Êí‚ÌƒXƒe[ƒW‚Æ‚µ‚ÄÀs
             IsSubStage = True
             Exit Function
     End Select
@@ -2602,7 +2602,7 @@ Dim late_refresh As Boolean
     num = ArgNum
     
     If num > 1 Then
-        If GetArgAsString(num) = "éåŒæœŸ" Then
+        If GetArgAsString(num) = "”ñ“¯Šú" Then
             late_refresh = True
             num = num - 1
         End If
@@ -2627,14 +2627,14 @@ Dim late_refresh As Boolean
             Set u = GetArgAsUnit(2, True)
             If Not u Is Nothing Then
                 With u
-                    If .Status = "å‡ºæ’ƒ" Then
+                    If .Status = "oŒ‚" Then
                         Center .X, .Y
                         IsUnitCenter = True
                     End If
                 End With
             End If
         Case Else
-            EventErrorMessage = "Centerã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+            EventErrorMessage = "CenterƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
             Error 0
     End Select
     
@@ -2655,47 +2655,47 @@ Dim u As Unit
             Set u = GetArgAsUnit(2)
             new_area = GetArgAsString(3)
         Case Else
-            EventErrorMessage = "ChangeAreaã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+            EventErrorMessage = "ChangeAreaƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
             Error 0
     End Select
     
     With u
         Select Case TerrainClass(.X, .Y)
-            Case "é™¸"
-                If new_area <> "åœ°ä¸Š" And new_area <> "ç©ºä¸­" And new_area <> "åœ°ä¸­" Then
-                    EventErrorMessage = "å ´æ‰€ã®ç¨®é¡ãŒä¸æ­£ã§ã™"
+            Case "—¤"
+                If new_area <> "’nã" And new_area <> "‹ó’†" And new_area <> "’n’†" Then
+                    EventErrorMessage = "êŠ‚Ìí—Ş‚ª•s³‚Å‚·"
                     Error 0
                 End If
-            Case "å±‹å†…"
-                If new_area <> "åœ°ä¸Š" And new_area <> "ç©ºä¸­" Then
-                    EventErrorMessage = "å ´æ‰€ã®ç¨®é¡ãŒä¸æ­£ã§ã™"
+            Case "‰®“à"
+                If new_area <> "’nã" And new_area <> "‹ó’†" Then
+                    EventErrorMessage = "êŠ‚Ìí—Ş‚ª•s³‚Å‚·"
                     Error 0
                 End If
-            Case "æœˆé¢"
-                If new_area <> "åœ°ä¸Š" And new_area <> "å®‡å®™" And new_area <> "åœ°ä¸­" Then
-                    EventErrorMessage = "å ´æ‰€ã®ç¨®é¡ãŒä¸æ­£ã§ã™"
+            Case "Œ–Ê"
+                If new_area <> "’nã" And new_area <> "‰F’ˆ" And new_area <> "’n’†" Then
+                    EventErrorMessage = "êŠ‚Ìí—Ş‚ª•s³‚Å‚·"
                     Error 0
                 End If
-            Case "æ°´", "æ·±æ°´"
-                If new_area <> "æ°´ä¸­" And new_area <> "æ°´ä¸Š" And new_area <> "ç©ºä¸­" Then
-                    EventErrorMessage = "å ´æ‰€ã®ç¨®é¡ãŒä¸æ­£ã§ã™"
+            Case "…", "[…"
+                If new_area <> "…’†" And new_area <> "…ã" And new_area <> "‹ó’†" Then
+                    EventErrorMessage = "êŠ‚Ìí—Ş‚ª•s³‚Å‚·"
                     Error 0
                 End If
-            Case "ç©ºä¸­"
-                If new_area <> "ç©ºä¸­" Then
-                    EventErrorMessage = "å ´æ‰€ã®ç¨®é¡ãŒä¸æ­£ã§ã™"
+            Case "‹ó’†"
+                If new_area <> "‹ó’†" Then
+                    EventErrorMessage = "êŠ‚Ìí—Ş‚ª•s³‚Å‚·"
                     Error 0
                 End If
-            Case "å®‡å®™"
-                If new_area <> "å®‡å®™" Then
-                    EventErrorMessage = "å ´æ‰€ã®ç¨®é¡ãŒä¸æ­£ã§ã™"
+            Case "‰F’ˆ"
+                If new_area <> "‰F’ˆ" Then
+                    EventErrorMessage = "êŠ‚Ìí—Ş‚ª•s³‚Å‚·"
                     Error 0
                 End If
         End Select
         
         .Area = new_area
         .Update
-        If .Status = "å‡ºæ’ƒ" Then
+        If .Status = "oŒ‚" Then
             PaintUnitBitmap u
         End If
     End With
@@ -2705,7 +2705,7 @@ Dim u As Unit
 End Function
 
 'ADD START 240a
-'ChangeLayerã‚³ãƒãƒ³ãƒ‰
+'ChangeLayerƒRƒ}ƒ“ƒh
 'ChangeLayer X Y Name Number [Option]
 Private Function ExecChangeLayerCmd() As Long
 Dim X As Integer, Y As Integer
@@ -2716,26 +2716,26 @@ Dim ret As Long, i As Integer
 Dim isPaintBmp As Boolean
 
     If ArgNum <> 5 And ArgNum <> 6 Then
-        EventErrorMessage = "ChangeTerrainã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+        EventErrorMessage = "ChangeTerrainƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
         Error 0
     End If
     
-    'å¯¾è±¡åº§æ¨™ã‚’å–å¾—
+    '‘ÎÛÀ•W‚ğæ“¾
     X = GetArgAsLong(2)
     Y = GetArgAsLong(3)
     If X < 1 Or X > MapWidth Then
-        EventErrorMessage = "ï¼¸åº§æ¨™ã®å€¤ã¯1ï½" & MapWidth & "ã§æŒ‡å®šã—ã¦ãã ã•ã„"
+        EventErrorMessage = "‚wÀ•W‚Ì’l‚Í1`" & MapWidth & "‚Åw’è‚µ‚Ä‚­‚¾‚³‚¢"
         Error 0
     End If
     If Y < 1 Or Y > MapHeight Then
-        EventErrorMessage = "ï¼¹åº§æ¨™ã®å€¤ã¯1ï½" & MapHeight & "ã§æŒ‡å®šã—ã¦ãã ã•ã„"
+        EventErrorMessage = "‚xÀ•W‚Ì’l‚Í1`" & MapHeight & "‚Åw’è‚µ‚Ä‚­‚¾‚³‚¢"
         Error 0
     End If
     
-    'ãƒ¬ã‚¤ãƒ¤ãƒ¼æƒ…å ±ãƒ»ç”»åƒã‚’å–å¾—
+    'ƒŒƒCƒ„[î•ñE‰æ‘œ‚ğæ“¾
     lname = GetArgAsString(4)
     lbitmap = GetArgAsLong(5)
-    If Right$(lname, 6) = "(ãƒ­ãƒ¼ã‚«ãƒ«)" Then
+    If Right$(lname, 6) = "(ƒ[ƒJƒ‹)" Then
         lname = Left$(lname, Len(lname) - 6)
     End If
     With TDList
@@ -2746,26 +2746,26 @@ Dim isPaintBmp As Boolean
             End If
         Next
         If i > .Count Then
-            EventErrorMessage = "ã€Œ" & lname & "ã€ã¨ã„ã†åœ°å½¢ã¯å­˜åœ¨ã—ã¾ã›ã‚“"
+            EventErrorMessage = "u" & lname & "v‚Æ‚¢‚¤’nŒ`‚Í‘¶İ‚µ‚Ü‚¹‚ñ"
             Error 0
         End If
     End With
     MapData(X, Y, MapDataIndex.LayerType) = lid
     MapData(X, Y, MapDataIndex.LayerBitmapNo) = lbitmap
     
-    'ãƒã‚¹æƒ…å ±ã‚’å–å¾—
+    'ƒ}ƒXî•ñ‚ğæ“¾
     isPaintBmp = True
     If ArgNum = 6 Then
         ltypename = GetArgAsString(6)
-        If "é€šå¸¸" = ltypename Then
+        If "’Êí" = ltypename Then
             ltype = BoxTypes.Upper
-        ElseIf "æƒ…å ±é™å®š" = ltypename Then
+        ElseIf "î•ñŒÀ’è" = ltypename Then
             isPaintBmp = False
             ltype = BoxTypes.UpperDataOnly
-        ElseIf "ç”»åƒé™å®š" = ltypename Then
+        ElseIf "‰æ‘œŒÀ’è" = ltypename Then
             ltype = BoxTypes.UpperBmpOnly
         Else
-            EventErrorMessage = "ChangeLayerã‚³ãƒãƒ³ãƒ‰ã®OptionãŒä¸æ­£ã§ã™"
+            EventErrorMessage = "ChangeLayerƒRƒ}ƒ“ƒh‚ÌOption‚ª•s³‚Å‚·"
             Error 0
         End If
     Else
@@ -2774,86 +2774,86 @@ Dim isPaintBmp As Boolean
     MapData(X, Y, MapDataIndex.BoxType) = ltype
     
     If isPaintBmp Then
-        'ãƒãƒƒãƒ—ç”»åƒã‚’æ¤œç´¢
+        'ƒ}ƒbƒv‰æ‘œ‚ğŒŸõ
         basefname = SearchTerrainImageFile(MapData(X, Y, MapDataIndex.TerrainType), MapData(X, Y, MapDataIndex.BitmapNo), X, Y)
         fname = SearchTerrainImageFile(lid, lbitmap, X, Y)
         
         If fname = "" Then
-            EventErrorMessage = "ãƒãƒƒãƒ—ãƒ“ãƒƒãƒˆãƒãƒƒãƒ—ã€Œ" _
-                & TDList.Bitmap(lid) & Format$(lbitmap) & ".bmp" & "ã€ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“"
+            EventErrorMessage = "ƒ}ƒbƒvƒrƒbƒgƒ}ƒbƒvu" _
+                & TDList.Bitmap(lid) & Format$(lbitmap) & ".bmp" & "v‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ"
             Error 0
         End If
         
         With MainForm
-            'ãƒãƒƒãƒ—ç”»åƒã‚’èƒŒæ™¯ã¸æ›¸ãè¾¼ã¿
+            'ƒ}ƒbƒv‰æ‘œ‚ğ”wŒi‚Ö‘‚«‚İ
             .picTmp32(0) = LoadPicture(basefname)
             Select Case MapDrawMode
-                Case "å¤œ"
+                Case "–é"
                     GetImage MainForm.picTmp32(0)
                     Dark
                     SetImage MainForm.picTmp32(0)
-                Case "ã‚»ãƒ”ã‚¢"
+                Case "ƒZƒsƒA"
                     GetImage MainForm.picTmp32(0)
                     Sepia
                     SetImage MainForm.picTmp32(0)
-                Case "ç™½é»’"
+                Case "”’•"
                     GetImage MainForm.picTmp32(0)
                     Monotone
                     SetImage MainForm.picTmp32(0)
-                Case "å¤•ç„¼ã‘"
+                Case "—[Ä‚¯"
                     GetImage MainForm.picTmp32(0)
                     Sunset
                     SetImage MainForm.picTmp32(0)
-                Case "æ°´ä¸­"
+                Case "…’†"
                     GetImage MainForm.picTmp32(0)
                     Water
                     SetImage MainForm.picTmp32(0)
-                Case "ãƒ•ã‚£ãƒ«ã‚¿"
+                Case "ƒtƒBƒ‹ƒ^"
                     GetImage .picTmp32(0)
                     ColorFilter MapDrawFilterColor, MapDrawFilterTransPercent
                     SetImage .picTmp32(0)
             End Select
             ret = BitBlt(.picBack.hDC, 32 * (X - 1), 32 * (Y - 1), 32, 32, .picTmp32(0).hDC, 0, 0, SRCCOPY)
             
-            'ãƒ¬ã‚¤ãƒ¤ãƒ¼ç”»åƒã‚’èƒŒæ™¯ã¸æ›¸ãè¾¼ã¿
+            'ƒŒƒCƒ„[‰æ‘œ‚ğ”wŒi‚Ö‘‚«‚İ
             .picTmp32(0) = LoadPicture(fname)
             BGColor = vbWhite
             Select Case MapDrawMode
-                Case "å¤œ"
+                Case "–é"
                     GetImage MainForm.picTmp32(0)
                     Dark True
                     SetImage MainForm.picTmp32(0)
-                Case "ã‚»ãƒ”ã‚¢"
+                Case "ƒZƒsƒA"
                     GetImage MainForm.picTmp32(0)
                     Sepia True
                     SetImage MainForm.picTmp32(0)
-                Case "ç™½é»’"
+                Case "”’•"
                     GetImage MainForm.picTmp32(0)
                     Monotone True
                     SetImage MainForm.picTmp32(0)
-                Case "å¤•ç„¼ã‘"
+                Case "—[Ä‚¯"
                     GetImage MainForm.picTmp32(0)
                     Sunset True
                     SetImage MainForm.picTmp32(0)
-                Case "æ°´ä¸­"
+                Case "…’†"
                     GetImage MainForm.picTmp32(0)
                     Water True
                     SetImage MainForm.picTmp32(0)
-                Case "ãƒ•ã‚£ãƒ«ã‚¿"
+                Case "ƒtƒBƒ‹ƒ^"
                     GetImage .picTmp32(0)
                     ColorFilter MapDrawFilterColor, MapDrawFilterTransPercent, True
                     SetImage .picTmp32(0)
             End Select
-            'ãƒ¬ã‚¤ãƒ¤ãƒ¼ã¯é€éå‡¦ç†ã‚’ã™ã‚‹
+            'ƒŒƒCƒ„[‚Í“§‰ßˆ—‚ğ‚·‚é
             ret = TransparentBlt(.picBack.hDC, 32 * (X - 1), 32 * (Y - 1), 32, 32, .picTmp32(0).hDC, 0, 0, 32, 32, BGColor)
             
-            'ãƒã‚¹ç›®ã®è¡¨ç¤º
+            'ƒ}ƒX–Ú‚Ì•\¦
             If ShowSquareLine Then
                 .picBack.Line (32 * (X - 1), 32 * (Y - 1))-(32 * X, 32 * (Y - 1)), rgb(100, 100, 100), B
                 .picBack.Line (32 * (X - 1), 32 * (Y - 1))-(32 * (X - 1), 32 * Y), rgb(100, 100, 100), B
             End If
             
-            'ãƒã‚¹ã‚¯å…¥ã‚ŠèƒŒæ™¯ç”»é¢ã‚’ä½œæˆã—ã¦ãŠã
+            'ƒ}ƒXƒN“ü‚è”wŒi‰æ–Ê‚ğì¬‚µ‚Ä‚¨‚­
             ret = BitBlt(.picMaskedBack.hDC, _
                 32 * (X - 1), 32 * (Y - 1), 32, 32, _
                 .picBack.hDC, 32 * (X - 1), 32 * (Y - 1), SRCCOPY)
@@ -2865,12 +2865,12 @@ Dim isPaintBmp As Boolean
                 .picMask2.hDC, 0, 0, SRCINVERT)
         End With
     
-        'å¤‰æ›´ã•ã‚ŒãŸåœ°å½¢ã«ã„ãŸãƒ¦ãƒ‹ãƒƒãƒˆã‚’å†è¡¨ç¤ºï¼ˆã¤ã„ã§ã«ãƒãƒƒã‚¯ãƒãƒƒãƒ•ã‚¡ã‹ã‚‰ãƒ•ãƒ­ãƒ³ãƒˆã«æç”»ï¼‰
+        '•ÏX‚³‚ê‚½’nŒ`‚É‚¢‚½ƒ†ƒjƒbƒg‚ğÄ•\¦i‚Â‚¢‚Å‚ÉƒoƒbƒNƒoƒbƒtƒ@‚©‚çƒtƒƒ“ƒg‚É•`‰æj
         If Not MapDataForUnit(X, Y) Is Nothing Then
             With MapDataForUnit(X, Y)
                 Set MapDataForUnit(X, Y) = Nothing
                 EraseUnitBitmap X, Y, False
-                .StandBy X, Y, "éåŒæœŸ"
+                .StandBy X, Y, "”ñ“¯Šú"
             End With
         Else
             With MainForm
@@ -2893,28 +2893,28 @@ Dim late_refresh As Boolean
     
     Select Case ArgNum
         Case 2
-            'ï¼¯ï¼«
+            '‚n‚j
         Case 3
-             If GetArgAsString(3) = "éåŒæœŸ" Then
+             If GetArgAsString(3) = "”ñ“¯Šú" Then
                  late_refresh = True
              Else
-                 EventErrorMessage = "ChangeMapã‚³ãƒãƒ³ãƒ‰ã®ã‚ªãƒ—ã‚·ãƒ§ãƒ³ãŒä¸æ­£ã§ã™"
+                 EventErrorMessage = "ChangeMapƒRƒ}ƒ“ƒh‚ÌƒIƒvƒVƒ‡ƒ“‚ª•s³‚Å‚·"
                  Error 0
              End If
         Case Else
-            EventErrorMessage = "ChangeMapã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+            EventErrorMessage = "ChangeMapƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
             Error 0
     End Select
     
-    'ãƒã‚¦ã‚¹ã‚«ãƒ¼ã‚½ãƒ«ã‚’ç ‚æ™‚è¨ˆã«
+    'ƒ}ƒEƒXƒJ[ƒ\ƒ‹‚ğ»Œv‚É
     Screen.MousePointer = vbHourglass
     
-    'å‡ºæ’ƒä¸­ã®ãƒ¦ãƒ‹ãƒƒãƒˆã‚’æ’¤é€€ã•ã›ã‚‹
+    'oŒ‚’†‚Ìƒ†ƒjƒbƒg‚ğ“P‘Ş‚³‚¹‚é
     For Each u In UList
         With u
-            If .Status = "å‡ºæ’ƒ" Or .Status = "æ ¼ç´" Then
+            If .Status = "oŒ‚" Or .Status = "Ši”[" Then
                 If late_refresh Then
-                    .Escape "éåŒæœŸ"
+                    .Escape "”ñ“¯Šú"
                 Else
                     .Escape
                 End If
@@ -2929,14 +2929,14 @@ Dim late_refresh As Boolean
         LoadMapData ""
     End If
     If late_refresh Then
-        SetupBackground "", "éåŒæœŸ"
+        SetupBackground "", "”ñ“¯Šú"
         RedrawScreen True
     Else
         SetupBackground
         RedrawScreen
     End If
     
-    'ãƒã‚¦ã‚¹ã‚«ãƒ¼ã‚½ãƒ«ã‚’å…ƒã«æˆ»ã™
+    'ƒ}ƒEƒXƒJ[ƒ\ƒ‹‚ğŒ³‚É–ß‚·
     Screen.MousePointer = 0
     
     ExecChangeMapCmd = LineNum + 1
@@ -2965,14 +2965,14 @@ Dim dst_x As Integer, dst_y As Integer
                 If dst_x < 1 Or MapWidth < dst_x _
                     Or dst_y < 1 Or MapHeight < dst_y _
                 Then
-                    EventErrorMessage = "ChangeModeã‚³ãƒãƒ³ãƒ‰ã®ç›®çš„åœ°ã®åº§æ¨™ãŒä¸æ­£ã§ã™"
+                    EventErrorMessage = "ChangeModeƒRƒ}ƒ“ƒh‚Ì–Ú“I’n‚ÌÀ•W‚ª•s³‚Å‚·"
                     Error 0
                 End If
                 new_mode = Format$(dst_x) & " " & Format$(dst_y)
             Else
                 pname = GetArgAsString(2)
                 Select Case pname
-                    Case "å‘³æ–¹", "ï¼®ï¼°ï¼£", "æ•µ", "ä¸­ç«‹"
+                    Case "–¡•û", "‚m‚o‚b", "“G", "’†—§"
                         ReDim uarray(0)
                         For Each u In UList
                             If u.Party0 = pname Then
@@ -2986,7 +2986,7 @@ Dim dst_x As Integer, dst_y As Integer
                             With PList
                                 If Not .IsDefined(pname) Then
                                     EventErrorMessage = _
-                                        "ã€Œ" & pname & "ã€ã¨ã„ã†ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“"
+                                        "u" & pname & "v‚Æ‚¢‚¤ƒpƒCƒƒbƒg‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ"
                                     Error 0
                                 End If
                                 Set uarray(1) = .Item(pname).Unit
@@ -3005,7 +3005,7 @@ Dim dst_x As Integer, dst_y As Integer
         Case 4
             pname = GetArgAsString(2)
             Select Case pname
-                Case "å‘³æ–¹", "ï¼®ï¼°ï¼£", "æ•µ", "ä¸­ç«‹"
+                Case "–¡•û", "‚m‚o‚b", "“G", "’†—§"
                     ReDim uarray(0)
                     For Each u In UList
                         If u.Party0 = pname Then
@@ -3019,7 +3019,7 @@ Dim dst_x As Integer, dst_y As Integer
                         With PList
                             If Not .IsDefined(pname) Then
                                 EventErrorMessage = _
-                                    "ã€Œ" & pname & "ã€ã¨ã„ã†ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“"
+                                    "u" & pname & "v‚Æ‚¢‚¤ƒpƒCƒƒbƒg‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ"
                                 Error 0
                             End If
                             Set uarray(1) = .Item(pname).Unit
@@ -3038,12 +3038,12 @@ Dim dst_x As Integer, dst_y As Integer
             If dst_x < 1 Or MapWidth < dst_x _
                 Or dst_y < 1 Or MapHeight < dst_y _
             Then
-                EventErrorMessage = "ChangeModeã‚³ãƒãƒ³ãƒ‰ã®ç›®çš„åœ°ã®åº§æ¨™ãŒä¸æ­£ã§ã™"
+                EventErrorMessage = "ChangeModeƒRƒ}ƒ“ƒh‚Ì–Ú“I’n‚ÌÀ•W‚ª•s³‚Å‚·"
                 Error 0
             End If
             new_mode = Format$(dst_x) & " " & Format$(dst_y)
         Case Else
-            EventErrorMessage = "ChangeModeã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+            EventErrorMessage = "ChangeModeƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
             Error 0
     End Select
     
@@ -3064,20 +3064,20 @@ Dim u As Unit
     Select Case ArgNum
         Case 2
             new_party = GetArgAsString(2)
-            If new_party <> "å‘³æ–¹" And new_party <> "ï¼®ï¼°ï¼£" _
-                And new_party <> "æ•µ" And new_party <> "ä¸­ç«‹" _
+            If new_party <> "–¡•û" And new_party <> "‚m‚o‚b" _
+                And new_party <> "“G" And new_party <> "’†—§" _
             Then
-                EventErrorMessage = "é™£å–¶ã®æŒ‡å®šãŒé–“é•ã£ã¦ã„ã¾ã™"
+                EventErrorMessage = "w‰c‚Ìw’è‚ªŠÔˆá‚Á‚Ä‚¢‚Ü‚·"
                 Error 0
             End If
             
             SelectedUnitForEvent.ChangeParty new_party
         Case 3
             new_party = GetArgAsString(3)
-            If new_party <> "å‘³æ–¹" And new_party <> "ï¼®ï¼°ï¼£" _
-                And new_party <> "æ•µ" And new_party <> "ä¸­ç«‹" _
+            If new_party <> "–¡•û" And new_party <> "‚m‚o‚b" _
+                And new_party <> "“G" And new_party <> "’†—§" _
             Then
-                EventErrorMessage = "é™£å–¶ã®æŒ‡å®šãŒé–“é•ã£ã¦ã„ã¾ã™"
+                EventErrorMessage = "w‰c‚Ìw’è‚ªŠÔˆá‚Á‚Ä‚¢‚Ü‚·"
                 Error 0
             End If
                 
@@ -3085,7 +3085,7 @@ Dim u As Unit
             Set u = UList.Item2(pname)
             If u Is Nothing Then
                 If Not PList.IsDefined(pname) Then
-                    EventErrorMessage = "ã€Œ" & pname & "ã€ã¨ã„ã†ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“"
+                    EventErrorMessage = "u" & pname & "v‚Æ‚¢‚¤ƒpƒCƒƒbƒg‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ"
                     Error 0
                 End If
                 
@@ -3100,11 +3100,11 @@ Dim u As Unit
                 u.ChangeParty new_party
             End If
         Case Else
-            EventErrorMessage = "ChangePartyã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+            EventErrorMessage = "ChangePartyƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
             Error 0
     End Select
     
-    'ã‚«ãƒ¼ã‚½ãƒ«ãŒé™£å–¶å¤‰æ›´ã•ã‚ŒãŸãƒ¦ãƒ‹ãƒƒãƒˆä¸Šã«ã‚ã‚‹ã¨ã‚«ãƒ¼ã‚½ãƒ«ã¯æ¶ˆå»ã•ã‚Œã‚‹ã®ã§
+    'ƒJ[ƒ\ƒ‹‚ªw‰c•ÏX‚³‚ê‚½ƒ†ƒjƒbƒgã‚É‚ ‚é‚ÆƒJ[ƒ\ƒ‹‚ÍÁ‹‚³‚ê‚é‚Ì‚Å
     IsCursorVisible = False
     
     ExecChangePartyCmd = LineNum + 1
@@ -3117,24 +3117,24 @@ Dim fname As String, fname1 As String, fname2 As String, fname3 As String
 Dim ret As Long, i As Integer
 
     If ArgNum <> 5 Then
-        EventErrorMessage = "ChangeTerrainã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+        EventErrorMessage = "ChangeTerrainƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
         Error 0
     End If
     
     tx = GetArgAsLong(2)
     If tx < 1 Or tx > MapWidth Then
-        EventErrorMessage = "ï¼¸åº§æ¨™ã®å€¤ã¯1ï½" & MapWidth & "ã§æŒ‡å®šã—ã¦ãã ã•ã„"
+        EventErrorMessage = "‚wÀ•W‚Ì’l‚Í1`" & MapWidth & "‚Åw’è‚µ‚Ä‚­‚¾‚³‚¢"
         Error 0
     End If
     
     ty = GetArgAsLong(3)
     If ty < 1 Or ty > MapHeight Then
-        EventErrorMessage = "ï¼¹åº§æ¨™ã®å€¤ã¯1ï½" & MapHeight & "ã§æŒ‡å®šã—ã¦ãã ã•ã„"
+        EventErrorMessage = "‚xÀ•W‚Ì’l‚Í1`" & MapHeight & "‚Åw’è‚µ‚Ä‚­‚¾‚³‚¢"
         Error 0
     End If
     
     tname = GetArgAsString(4)
-    If Right$(tname, 6) <> "(ãƒ­ãƒ¼ã‚«ãƒ«)" Then
+    If Right$(tname, 6) <> "(ƒ[ƒJƒ‹)" Then
         With TDList
             For i = 1 To .Count
                 tid = .OrderedID(i)
@@ -3143,7 +3143,7 @@ Dim ret As Long, i As Integer
                 End If
             Next
             If i > .Count Then
-                EventErrorMessage = "ã€Œ" & tname & "ã€ã¨ã„ã†åœ°å½¢ã¯å­˜åœ¨ã—ã¾ã›ã‚“"
+                EventErrorMessage = "u" & tname & "v‚Æ‚¢‚¤’nŒ`‚Í‘¶İ‚µ‚Ü‚¹‚ñ"
                 Error 0
             End If
         End With
@@ -3169,7 +3169,7 @@ Dim ret As Long, i As Integer
                 End If
             Next
             If i > .Count Then
-                EventErrorMessage = "ã€Œ" & tname & "ã€ã¨ã„ã†åœ°å½¢ã¯å­˜åœ¨ã—ã¾ã›ã‚“"
+                EventErrorMessage = "u" & tname & "v‚Æ‚¢‚¤’nŒ`‚Í‘¶İ‚µ‚Ü‚¹‚ñ"
                 Error 0
             End If
         End With
@@ -3186,12 +3186,12 @@ Dim ret As Long, i As Integer
 'MOD  END  240a
     End If
     
-    'ãƒãƒƒãƒ—ç”»åƒã‚’æ¤œç´¢
+    'ƒ}ƒbƒv‰æ‘œ‚ğŒŸõ
     fname = SearchTerrainImageFile(tid, tbitmap, tx, ty)
     
     If fname = "" Then
-        EventErrorMessage = "ãƒãƒƒãƒ—ãƒ“ãƒƒãƒˆãƒãƒƒãƒ—ã€Œ" _
-            & TDList.Bitmap(tid) & Format$(tbitmap) & ".bmp" & "ã€ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“"
+        EventErrorMessage = "ƒ}ƒbƒvƒrƒbƒgƒ}ƒbƒvu" _
+            & TDList.Bitmap(tid) & Format$(tbitmap) & ".bmp" & "v‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ"
         Error 0
     End If
     
@@ -3199,44 +3199,44 @@ Dim ret As Long, i As Integer
         .picTmp32(0) = LoadPicture(fname)
         
         Select Case MapDrawMode
-            Case "å¤œ"
+            Case "–é"
                 GetImage MainForm.picTmp32(0)
                 Dark
                 SetImage MainForm.picTmp32(0)
-            Case "ã‚»ãƒ”ã‚¢"
+            Case "ƒZƒsƒA"
                 GetImage MainForm.picTmp32(0)
                 Sepia
                 SetImage MainForm.picTmp32(0)
-            Case "ç™½é»’"
+            Case "”’•"
                 GetImage MainForm.picTmp32(0)
                 Monotone
                 SetImage MainForm.picTmp32(0)
-            Case "å¤•ç„¼ã‘"
+            Case "—[Ä‚¯"
                 GetImage MainForm.picTmp32(0)
                 Sunset
                 SetImage MainForm.picTmp32(0)
-            Case "æ°´ä¸­"
+            Case "…’†"
                 GetImage MainForm.picTmp32(0)
                 Water
                 SetImage MainForm.picTmp32(0)
-            Case "ãƒ•ã‚£ãƒ«ã‚¿"
+            Case "ƒtƒBƒ‹ƒ^"
                 GetImage .picTmp32(0)
                 ColorFilter MapDrawFilterColor, MapDrawFilterTransPercent
                 SetImage .picTmp32(0)
         End Select
         
-        'èƒŒæ™¯ã¸ã®æ›¸ãè¾¼ã¿
+        '”wŒi‚Ö‚Ì‘‚«‚İ
         ret = BitBlt(.picBack.hDC, _
             32 * (tx - 1), 32 * (ty - 1), 32, 32, _
             .picTmp32(0).hDC, 0, 0, SRCCOPY)
         
-        'ãƒã‚¹ç›®ã®è¡¨ç¤º
+        'ƒ}ƒX–Ú‚Ì•\¦
         If ShowSquareLine Then
             .picBack.Line (32 * (tx - 1), 32 * (ty - 1))-(32 * tx, 32 * (ty - 1)), rgb(100, 100, 100), B
             .picBack.Line (32 * (tx - 1), 32 * (ty - 1))-(32 * (tx - 1), 32 * ty), rgb(100, 100, 100), B
         End If
         
-        'ãƒã‚¹ã‚¯å…¥ã‚ŠèƒŒæ™¯ç”»é¢ã‚’ä½œæˆ
+        'ƒ}ƒXƒN“ü‚è”wŒi‰æ–Ê‚ğì¬
         ret = BitBlt(.picMaskedBack.hDC, _
             32 * (tx - 1), 32 * (ty - 1), 32, 32, _
             .picBack.hDC, 32 * (tx - 1), 32 * (ty - 1), SRCCOPY)
@@ -3248,12 +3248,12 @@ Dim ret As Long, i As Integer
             .picMask2.hDC, 0, 0, SRCINVERT)
     End With
     
-    'å¤‰æ›´ã•ã‚ŒãŸåœ°å½¢ã«ã„ãŸãƒ¦ãƒ‹ãƒƒãƒˆã‚’å†è¡¨ç¤º
+    '•ÏX‚³‚ê‚½’nŒ`‚É‚¢‚½ƒ†ƒjƒbƒg‚ğÄ•\¦
     If Not MapDataForUnit(tx, ty) Is Nothing Then
         With MapDataForUnit(tx, ty)
             Set MapDataForUnit(tx, ty) = Nothing
             EraseUnitBitmap tx, ty, False
-            .StandBy tx, ty, "éåŒæœŸ"
+            .StandBy tx, ty, "”ñ“¯Šú"
         End With
     Else
         With MainForm
@@ -3278,36 +3278,36 @@ Dim u As Unit
             Set u = GetArgAsUnit(2)
             new_bmp = GetArgAsString(3)
         Case Else
-            EventErrorMessage = "ChangeUnitBitmapã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+            EventErrorMessage = "ChangeUnitBitmapƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
             Error 0
     End Select
     
     With u
         prev_bmp = .Bitmap
         If LCase$(Right$(new_bmp, 4)) = ".bmp" Then
-            .AddCondition "ãƒ¦ãƒ‹ãƒƒãƒˆç”»åƒ", -1, 0, "éè¡¨ç¤º " & new_bmp
+            .AddCondition "ƒ†ƒjƒbƒg‰æ‘œ", -1, 0, "”ñ•\¦ " & new_bmp
         ElseIf new_bmp = "-" Then
-            If .IsConditionSatisfied("ãƒ¦ãƒ‹ãƒƒãƒˆç”»åƒ") Then
-                .DeleteCondition "ãƒ¦ãƒ‹ãƒƒãƒˆç”»åƒ"
+            If .IsConditionSatisfied("ƒ†ƒjƒbƒg‰æ‘œ") Then
+                .DeleteCondition "ƒ†ƒjƒbƒg‰æ‘œ"
             End If
-        ElseIf new_bmp = "éè¡¨ç¤º" Then
-            .AddCondition "éè¡¨ç¤ºä»˜åŠ ", -1, 0, "éè¡¨ç¤º"
+        ElseIf new_bmp = "”ñ•\¦" Then
+            .AddCondition "”ñ•\¦•t‰Á", -1, 0, "”ñ•\¦"
             .BitmapID = -1
             EraseUnitBitmap .X, .Y, False
-        ElseIf new_bmp = "éè¡¨ç¤ºè§£é™¤" Then
-            If .IsConditionSatisfied("éè¡¨ç¤ºä»˜åŠ ") Then
-                .DeleteCondition "éè¡¨ç¤ºä»˜åŠ "
+        ElseIf new_bmp = "”ñ•\¦‰ğœ" Then
+            If .IsConditionSatisfied("”ñ•\¦•t‰Á") Then
+                .DeleteCondition "”ñ•\¦•t‰Á"
             End If
             .BitmapID = MakeUnitBitmap(u)
         Else
-            EventErrorMessage = "ãƒ“ãƒƒãƒˆãƒãƒƒãƒ—ãƒ•ã‚¡ã‚¤ãƒ«åãŒä¸æ­£ã§ã™"
+            EventErrorMessage = "ƒrƒbƒgƒ}ƒbƒvƒtƒ@ƒCƒ‹–¼‚ª•s³‚Å‚·"
             Error 0
         End If
         
         If .Bitmap <> prev_bmp Then
             .BitmapID = MakeUnitBitmap(u)
         End If
-        PaintUnitBitmap u, "ãƒªãƒ•ãƒ¬ãƒƒã‚·ãƒ¥ç„¡ã—"
+        PaintUnitBitmap u, "ƒŠƒtƒŒƒbƒVƒ…–³‚µ"
     End With
     
     ExecChangeUnitBitmapCmd = LineNum + 1
@@ -3322,11 +3322,11 @@ Dim u As Unit
         Case 1
             Set u = SelectedUnitForEvent
         Case Else
-            EventErrorMessage = "Chargeã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+            EventErrorMessage = "ChargeƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
             Error 0
     End Select
     
-    u.AddCondition "ãƒãƒ£ãƒ¼ã‚¸", 1
+    u.AddCondition "ƒ`ƒƒ[ƒW", 1
     
     ExecChargeCmd = LineNum + 1
 End Function
@@ -3339,7 +3339,7 @@ Dim cname As String, clr As Long
 Dim i As Integer
 
     If ArgNum < 4 Then
-        EventErrorMessage = "Circleã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+        EventErrorMessage = "CircleƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
         Error 0
     End If
     
@@ -3349,21 +3349,21 @@ Dim i As Integer
     
     SaveScreen
     
-    'æç”»å…ˆ
+    '•`‰ææ
     Select Case ObjDrawOption
-        Case "èƒŒæ™¯"
+        Case "”wŒi"
             Set pic = MainForm.picBack
             Set pic2 = MainForm.picMaskedBack
             IsMapDirty = True
-        Case "ä¿æŒ"
+        Case "•Û"
             Set pic = MainForm.picMain(0)
             Set pic2 = MainForm.picMain(1)
         Case Else
             Set pic = MainForm.picMain(0)
     End Select
     
-    'æç”»é ˜åŸŸ
-    If ObjDrawOption <> "èƒŒæ™¯" Then
+    '•`‰æ—Ìˆæ
+    If ObjDrawOption <> "”wŒi" Then
         Dim tmp As Integer
         IsPictureVisible = True
         tmp = rad + ObjDrawWidth - 1
@@ -3378,7 +3378,7 @@ Dim i As Integer
         opt = GetArgAsString(i)
         If Asc(opt) = 35 Then '#
             If Len(opt) <> 7 Then
-                EventErrorMessage = "è‰²æŒ‡å®šãŒä¸æ­£ã§ã™"
+                EventErrorMessage = "Fw’è‚ª•s³‚Å‚·"
                 Error 0
             End If
             cname = String$(8, vbNullChar)
@@ -3387,13 +3387,13 @@ Dim i As Integer
             Mid(cname, 5, 2) = Mid$(opt, 4, 2)
             Mid(cname, 7, 2) = Mid$(opt, 2, 2)
             If Not IsNumeric(cname) Then
-                EventErrorMessage = "è‰²æŒ‡å®šãŒä¸æ­£ã§ã™"
+                EventErrorMessage = "Fw’è‚ª•s³‚Å‚·"
                 Error 0
             End If
             clr = CLng(cname)
         Else
             EventErrorMessage = _
-                "Circleã‚³ãƒãƒ³ãƒ‰ã«ä¸æ­£ãªã‚ªãƒ—ã‚·ãƒ§ãƒ³ã€Œ" & opt & "ã€ãŒä½¿ã‚ã‚Œã¦ã„ã¾ã™"
+                "CircleƒRƒ}ƒ“ƒh‚É•s³‚ÈƒIƒvƒVƒ‡ƒ“u" & opt & "v‚ªg‚í‚ê‚Ä‚¢‚Ü‚·"
             Error 0
         End If
     Next
@@ -3445,14 +3445,14 @@ Dim ret As Long
                 ClearLabel CurrentLabel
             End If
         Case Else
-            EventErrorMessage = "ClearEventã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+            EventErrorMessage = "ClearEventƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
             Error 0
     End Select
     
     ExecClearEventCmd = LineNum + 1
 End Function
 
-'äº’æ›æ€§ç¶­æŒã®ãŸã‚ã«æ®‹ã—ã¦ã„ã‚‹
+'ŒİŠ·«ˆÛ‚Ì‚½‚ß‚Éc‚µ‚Ä‚¢‚é
 Private Function ExecClearImageCmd() As Long
     ClearPicture
     MainForm.picMain(0).Refresh
@@ -3461,28 +3461,28 @@ End Function
 
 'ADD START 240a
 'ExecClearLayerCmd
-'æ›¸å¼ï¼‘ å…¨ã¦ã®Layeræƒ…å ±ã‚’å‰Šé™¤
+'‘®‚P ‘S‚Ä‚ÌLayerî•ñ‚ğíœ
 ' ClearLayer [Option]
-'æ›¸å¼ï¼’ æŒ‡å®šã—ãŸåº§æ¨™ã®Layeræƒ…å ±ã‚’å‰Šé™¤ æƒ…å ±é™å®šãƒ»ç”»åƒé™å®šã‚’é¸æŠå¯èƒ½
+'‘®‚Q w’è‚µ‚½À•W‚ÌLayerî•ñ‚ğíœ î•ñŒÀ’èE‰æ‘œŒÀ’è‚ğ‘I‘ğ‰Â”\
 ' ClearLayer X Y [Option]
-'ã“ã®ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«ã«ãŠã„ã¦ã¯ã€ DataOnlyï¼ãƒ‡ãƒ¼ã‚¿ã®ã¿æ¶ˆã™ ã®æ„
+'‚±‚Ìƒ‚ƒWƒ…[ƒ‹‚É‚¨‚¢‚Ä‚ÍA DataOnlyƒf[ƒ^‚Ì‚İÁ‚· ‚ÌˆÓ
 Private Function ExecClearLayerCmd() As Long
 Dim X As Integer, Y As Integer, i As Integer, j As Integer
 Dim isAllClear As Boolean, isDataOnly As Boolean, isBitmapOnly As Boolean
 Dim fname As String, loption As String
 Dim ret As Long
-    'å¼•æ•°ãƒã‚§ãƒƒã‚¯
+    'ˆø”ƒ`ƒFƒbƒN
     If 4 < ArgNum Then
-        EventErrorMessage = "ClearLayerã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+        EventErrorMessage = "ClearLayerƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
         Error 0
     End If
-    'å…¨ä½“ã‚¯ãƒªã‚¢ãƒ•ãƒ©ã‚°å–å¾—
+    '‘S‘ÌƒNƒŠƒAƒtƒ‰ƒOæ“¾
     If ArgNum < 3 Then
         isAllClear = True
     Else
         isAllClear = False
     End If
-    'ã‚ªãƒ—ã‚·ãƒ§ãƒ³å–å¾—
+    'ƒIƒvƒVƒ‡ƒ“æ“¾
     isDataOnly = False
     isBitmapOnly = False
     loption = ""
@@ -3492,95 +3492,95 @@ Dim ret As Long
         loption = GetArgAsString(4)
     End If
     If loption <> "" Then
-        If "æƒ…å ±é™å®š" = loption Then
+        If "î•ñŒÀ’è" = loption Then
             isDataOnly = True
-        ElseIf "ç”»åƒé™å®š" = loption Then
+        ElseIf "‰æ‘œŒÀ’è" = loption Then
             isBitmapOnly = True
-        ElseIf "é€šå¸¸" <> loption Then
-            EventErrorMessage = "ClearLayerã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°OptionãŒä¸æ­£ã§ã™"
+        ElseIf "’Êí" <> loption Then
+            EventErrorMessage = "ClearLayerƒRƒ}ƒ“ƒh‚Ìˆø”Option‚ª•s³‚Å‚·"
             Error 0
         End If
     End If
-    'åº§æ¨™å–å¾—
+    'À•Wæ“¾
     If Not isAllClear Then
         X = GetArgAsLong(2)
         Y = GetArgAsLong(3)
         If X < 1 Or X > MapWidth Then
-            EventErrorMessage = "ï¼¸åº§æ¨™ã®å€¤ã¯1ï½" & MapWidth & "ã§æŒ‡å®šã—ã¦ãã ã•ã„"
+            EventErrorMessage = "‚wÀ•W‚Ì’l‚Í1`" & MapWidth & "‚Åw’è‚µ‚Ä‚­‚¾‚³‚¢"
             Error 0
         End If
         If Y < 1 Or Y > MapHeight Then
-            EventErrorMessage = "ï¼¹åº§æ¨™ã®å€¤ã¯1ï½" & MapHeight & "ã§æŒ‡å®šã—ã¦ãã ã•ã„"
+            EventErrorMessage = "‚xÀ•W‚Ì’l‚Í1`" & MapHeight & "‚Åw’è‚µ‚Ä‚­‚¾‚³‚¢"
             Error 0
         End If
     End If
-    'å‡¦ç†é–‹å§‹
+    'ˆ—ŠJn
     If isAllClear Then
-        'å…¨å‰Šé™¤å®Ÿè¡Œ
+        '‘SíœÀs
         For i = 1 To MapWidth
             For j = 1 To MapHeight
-                'ãƒ¬ã‚¤ãƒ¤ãƒ¼æƒ…å ±ã‚’æ›´æ–°ã™ã‚‹
+                'ƒŒƒCƒ„[î•ñ‚ğXV‚·‚é
                 If isDataOnly Then
                     MapData(i, j, MapDataIndex.BoxType) = BoxTypes.UpperBmpOnly
                 ElseIf isBitmapOnly Then
                     MapData(i, j, MapDataIndex.BoxType) = BoxTypes.UpperDataOnly
                 Else
-                    'ä¸¡æ–¹ã¨ã‚‚falseãªã‚‰ãƒ¬ã‚¤ãƒ¤ãƒ¼ä¸¸ã”ã¨å‰Šé™¤
+                    '—¼•û‚Æ‚àfalse‚È‚çƒŒƒCƒ„[ŠÛ‚²‚Æíœ
                     MapData(i, j, MapDataIndex.LayerType) = NO_LAYER_NUM
                     MapData(i, j, MapDataIndex.LayerBitmapNo) = NO_LAYER_NUM
                     MapData(i, j, MapDataIndex.BoxType) = BoxTypes.Under
                 End If
-                'ãƒ¬ã‚¤ãƒ¤ãƒ¼ç”»åƒã ã‘ã‚’æ¶ˆã™ã“ã¨ã¯ã§ããªã„ã®ã§ã€ä¸‹å±¤ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚’å†æç”»ã™ã‚‹ã“ã¨ã§å‡¦ç†ã™ã‚‹
+                'ƒŒƒCƒ„[‰æ‘œ‚¾‚¯‚ğÁ‚·‚±‚Æ‚Í‚Å‚«‚È‚¢‚Ì‚ÅA‰º‘wƒŒƒCƒ„[‚ğÄ•`‰æ‚·‚é‚±‚Æ‚Åˆ—‚·‚é
                 fname = SearchTerrainImageFile(MapData(i, j, MapDataIndex.TerrainType), MapData(i, j, MapDataIndex.BitmapNo), i, j)
 
-                'ãƒ‡ãƒ¼ã‚¿ã®ã¿å‰Šé™¤ã®å ´åˆã¯å†æç”»å‡¦ç†ã‚’ã‚¹ã‚­ãƒƒãƒ—ã™ã‚‹
+                'ƒf[ƒ^‚Ì‚İíœ‚Ìê‡‚ÍÄ•`‰æˆ—‚ğƒXƒLƒbƒv‚·‚é
                 If Not isDataOnly Then
                     With MainForm
-                        'ãƒãƒƒãƒ—ç”»åƒã‚’èƒŒæ™¯ã¸æ›¸ãè¾¼ã¿
+                        'ƒ}ƒbƒv‰æ‘œ‚ğ”wŒi‚Ö‘‚«‚İ
                         .picTmp32(0) = LoadPicture(fname)
                         Select Case MapDrawMode
-                            Case "å¤œ"
+                            Case "–é"
                                 GetImage MainForm.picTmp32(0)
                                 Dark
                                 SetImage MainForm.picTmp32(0)
-                            Case "ã‚»ãƒ”ã‚¢"
+                            Case "ƒZƒsƒA"
                                 GetImage MainForm.picTmp32(0)
                                 Sepia
                                 SetImage MainForm.picTmp32(0)
-                            Case "ç™½é»’"
+                            Case "”’•"
                                 GetImage MainForm.picTmp32(0)
                                 Monotone
                                 SetImage MainForm.picTmp32(0)
-                            Case "å¤•ç„¼ã‘"
+                            Case "—[Ä‚¯"
                                 GetImage MainForm.picTmp32(0)
                                 Sunset
                                 SetImage MainForm.picTmp32(0)
-                            Case "æ°´ä¸­"
+                            Case "…’†"
                                 GetImage MainForm.picTmp32(0)
                                 Water
                                 SetImage MainForm.picTmp32(0)
-                            Case "ãƒ•ã‚£ãƒ«ã‚¿"
+                            Case "ƒtƒBƒ‹ƒ^"
                                 GetImage .picTmp32(0)
                                 ColorFilter MapDrawFilterColor, MapDrawFilterTransPercent
                                 SetImage .picTmp32(0)
                         End Select
                         ret = BitBlt(.picBack.hDC, 32 * (i - 1), 32 * (j - 1), 32, 32, .picTmp32(0).hDC, 0, 0, SRCCOPY)
-                        'ãƒã‚¹ç›®ã®è¡¨ç¤º
+                        'ƒ}ƒX–Ú‚Ì•\¦
                         If ShowSquareLine Then
                             .picBack.Line (32 * (i - 1), 32 * (j - 1))-(32 * i, 32 * (j - 1)), rgb(100, 100, 100), B
                             .picBack.Line (32 * (i - 1), 32 * (j - 1))-(32 * (i - 1), 32 * j), rgb(100, 100, 100), B
                         End If
-                        'ãƒã‚¹ã‚¯å…¥ã‚ŠèƒŒæ™¯ç”»é¢ã‚’ä½œæˆ
+                        'ƒ}ƒXƒN“ü‚è”wŒi‰æ–Ê‚ğì¬
                         ret = BitBlt(.picMaskedBack.hDC, 32 * (i - 1), 32 * (j - 1), 32, 32, .picBack.hDC, 32 * (i - 1), 32 * (j - 1), SRCCOPY)
                         ret = BitBlt(.picMaskedBack.hDC, 32 * (i - 1), 32 * (j - 1), 32, 32, .picMask.hDC, 0, 0, SRCAND)
                         ret = BitBlt(.picMaskedBack.hDC, 32 * (i - 1), 32 * (j - 1), 32, 32, .picMask2.hDC, 0, 0, SRCINVERT)
                     End With
-                    'å¤‰æ›´ã•ã‚ŒãŸåœ°å½¢ã«ã„ãŸãƒ¦ãƒ‹ãƒƒãƒˆã‚’å†è¡¨ç¤º
+                    '•ÏX‚³‚ê‚½’nŒ`‚É‚¢‚½ƒ†ƒjƒbƒg‚ğÄ•\¦
                     If Not MapDataForUnit(i, j) Is Nothing Then
-                        'ä¸€æ—¦ãƒ¦ãƒ‹ãƒƒãƒˆã‚’ã©ã‹ã—ã¦å†é…ç½®ï¼ˆå¤‰æ›´å¾Œã®åœ°å½¢ãŒå…¥ã‚Œãªã„åœ°å½¢ã®å ´åˆã«å¯¾å‡¦ï¼‰
+                        'ˆê’Uƒ†ƒjƒbƒg‚ğ‚Ç‚©‚µ‚ÄÄ”z’ui•ÏXŒã‚Ì’nŒ`‚ª“ü‚ê‚È‚¢’nŒ`‚Ìê‡‚É‘Îˆj
                         Set MapDataForUnit(i, j) = Nothing
                         EraseUnitBitmap i, j, False
-                        MapDataForUnit(i, j).StandBy i, j, "éåŒæœŸ"
+                        MapDataForUnit(i, j).StandBy i, j, "”ñ“¯Šú"
                     Else
                         With MainForm
                             ret = TransparentBlt(.picMain(0).hDC, MapToPixelX(i), MapToPixelY(j), 32, 32, .picTmp32(0).hDC, 0, 0, 32, 32, vbWhite)
@@ -3590,66 +3590,66 @@ Dim ret As Long
             Next
         Next
     Else
-        'æŒ‡å®šã—ãŸåº§æ¨™ã®ã¿ãƒ¬ã‚¤ãƒ¤ãƒ¼æƒ…å ±ã‚’æ›´æ–°ã™ã‚‹
+        'w’è‚µ‚½À•W‚Ì‚İƒŒƒCƒ„[î•ñ‚ğXV‚·‚é
         If isDataOnly Then
             MapData(X, Y, MapDataIndex.BoxType) = BoxTypes.UpperBmpOnly
         ElseIf isBitmapOnly Then
             MapData(X, Y, MapDataIndex.BoxType) = BoxTypes.UpperDataOnly
         Else
-            'ä¸¡æ–¹ã¨ã‚‚falseãªã‚‰ãƒ¬ã‚¤ãƒ¤ãƒ¼ä¸¸ã”ã¨å‰Šé™¤
+            '—¼•û‚Æ‚àfalse‚È‚çƒŒƒCƒ„[ŠÛ‚²‚Æíœ
             MapData(X, Y, MapDataIndex.LayerType) = NO_LAYER_NUM
             MapData(X, Y, MapDataIndex.LayerBitmapNo) = NO_LAYER_NUM
             MapData(X, Y, MapDataIndex.BoxType) = BoxTypes.Under
         End If
     
-        'ãƒ‡ãƒ¼ã‚¿ã®ã¿ã®å ´åˆã¯å†æç”»å‡¦ç†ã‚’ã‚¹ã‚­ãƒƒãƒ—
+        'ƒf[ƒ^‚Ì‚İ‚Ìê‡‚ÍÄ•`‰æˆ—‚ğƒXƒLƒbƒv
         If Not isDataOnly Then
             fname = SearchTerrainImageFile(MapData(X, Y, MapDataIndex.TerrainType), MapData(X, Y, MapDataIndex.BitmapNo), X, Y)
             With MainForm
-                'ãƒãƒƒãƒ—ç”»åƒã‚’èƒŒæ™¯ã¸æ›¸ãè¾¼ã¿
+                'ƒ}ƒbƒv‰æ‘œ‚ğ”wŒi‚Ö‘‚«‚İ
                 .picTmp32(0) = LoadPicture(fname)
                 Select Case MapDrawMode
-                    Case "å¤œ"
+                    Case "–é"
                         GetImage MainForm.picTmp32(0)
                         Dark
                         SetImage MainForm.picTmp32(0)
-                    Case "ã‚»ãƒ”ã‚¢"
+                    Case "ƒZƒsƒA"
                         GetImage MainForm.picTmp32(0)
                         Sepia
                         SetImage MainForm.picTmp32(0)
-                    Case "ç™½é»’"
+                    Case "”’•"
                         GetImage MainForm.picTmp32(0)
                         Monotone
                         SetImage MainForm.picTmp32(0)
-                    Case "å¤•ç„¼ã‘"
+                    Case "—[Ä‚¯"
                         GetImage MainForm.picTmp32(0)
                         Sunset
                         SetImage MainForm.picTmp32(0)
-                    Case "æ°´ä¸­"
+                    Case "…’†"
                         GetImage MainForm.picTmp32(0)
                         Water
                         SetImage MainForm.picTmp32(0)
-                    Case "ãƒ•ã‚£ãƒ«ã‚¿"
+                    Case "ƒtƒBƒ‹ƒ^"
                         GetImage .picTmp32(0)
                         ColorFilter MapDrawFilterColor, MapDrawFilterTransPercent
                         SetImage .picTmp32(0)
                 End Select
                 ret = BitBlt(.picBack.hDC, 32 * (X - 1), 32 * (Y - 1), 32, 32, .picTmp32(0).hDC, 0, 0, SRCCOPY)
-                'ãƒã‚¹ç›®ã®è¡¨ç¤º
+                'ƒ}ƒX–Ú‚Ì•\¦
                 If ShowSquareLine Then
                     .picBack.Line (32 * (X - 1), 32 * (Y - 1))-(32 * X, 32 * (Y - 1)), rgb(100, 100, 100), B
                     .picBack.Line (32 * (X - 1), 32 * (Y - 1))-(32 * (X - 1), 32 * Y), rgb(100, 100, 100), B
                 End If
-                'ãƒã‚¹ã‚¯å…¥ã‚ŠèƒŒæ™¯ç”»é¢ã‚’ä½œæˆ
+                'ƒ}ƒXƒN“ü‚è”wŒi‰æ–Ê‚ğì¬
                 ret = BitBlt(.picMaskedBack.hDC, 32 * (X - 1), 32 * (Y - 1), 32, 32, .picBack.hDC, 32 * (X - 1), 32 * (Y - 1), SRCCOPY)
                 ret = BitBlt(.picMaskedBack.hDC, 32 * (X - 1), 32 * (Y - 1), 32, 32, .picMask.hDC, 0, 0, SRCAND)
                 ret = BitBlt(.picMaskedBack.hDC, 32 * (X - 1), 32 * (Y - 1), 32, 32, .picMask2.hDC, 0, 0, SRCINVERT)
             End With
-            'å¤‰æ›´ã•ã‚ŒãŸåœ°å½¢ã«ã„ãŸãƒ¦ãƒ‹ãƒƒãƒˆã‚’å†è¡¨ç¤º
+            '•ÏX‚³‚ê‚½’nŒ`‚É‚¢‚½ƒ†ƒjƒbƒg‚ğÄ•\¦
             If Not MapDataForUnit(X, Y) Is Nothing Then
                 Set MapDataForUnit(X, Y) = Nothing
                 EraseUnitBitmap X, Y, False
-                MapDataForUnit(X, Y).StandBy X, Y, "éåŒæœŸ"
+                MapDataForUnit(X, Y).StandBy X, Y, "”ñ“¯Šú"
             Else
                 With MainForm
                     ret = TransparentBlt(.picMain(0).hDC, MapToPixelX(X), MapToPixelY(Y), 32, 32, .picTmp32(0).hDC, 0, 0, 32, 32, vbWhite)
@@ -3670,7 +3670,7 @@ Dim without_refresh As Boolean
 
     n = ArgNum
     If n > 1 Then
-        If GetArgAsString(n) = "éåŒæœŸ" Then
+        If GetArgAsString(n) = "”ñ“¯Šú" Then
             n = n - 1
             without_refresh = True
         End If
@@ -3689,9 +3689,9 @@ Dim without_refresh As Boolean
                     If frmToolTip.Visible _
                         And SelectedAlternative = .Name _
                     Then
-                        'ãƒ„ãƒ¼ãƒ«ãƒãƒƒãƒ—ã‚’æ¶ˆã™
+                        'ƒc[ƒ‹ƒ`ƒbƒv‚ğÁ‚·
                         frmToolTip.Hide
-                        'ãƒã‚¦ã‚¹ã‚«ãƒ¼ã‚½ãƒ«ã‚’å…ƒã«æˆ»ã™
+                        'ƒ}ƒEƒXƒJ[ƒ\ƒ‹‚ğŒ³‚É–ß‚·
                         MainForm.picMain(0).MousePointer = 0
                     End If
                 End With
@@ -3703,13 +3703,13 @@ Dim without_refresh As Boolean
         Case 1
             ReDim HotPointList(0)
         Case Else
-            EventErrorMessage = "ClearObjã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+            EventErrorMessage = "ClearObjƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
             Error 0
     End Select
     
     ExecClearObjCmd = LineNum + 1
     
-    'ã¾ã ãƒã‚¦ã‚¹ã‚«ãƒ¼ã‚½ãƒ«ãŒãƒ›ãƒƒãƒˆãƒã‚¤ãƒ³ãƒˆä¸Šã«ã‚ã‚‹ã‹ï¼Ÿ
+    '‚Ü‚¾ƒ}ƒEƒXƒJ[ƒ\ƒ‹‚ªƒzƒbƒgƒ|ƒCƒ“ƒgã‚É‚ ‚é‚©H
     For i = 1 To UBound(HotPointList)
         With HotPointList(i)
             If .Left <= MouseX And MouseX < .Left + .width _
@@ -3720,13 +3720,13 @@ Dim without_refresh As Boolean
         End With
     Next
     
-    'ãƒ„ãƒ¼ãƒ«ãƒãƒƒãƒ—ã‚’æ¶ˆã™
+    'ƒc[ƒ‹ƒ`ƒbƒv‚ğÁ‚·
     frmToolTip.Hide
     If Not without_refresh Then
         MainForm.picMain(0).Refresh
     End If
     
-    'ãƒã‚¦ã‚¹ã‚«ãƒ¼ã‚½ãƒ«ã‚’å…ƒã«æˆ»ã™
+    'ƒ}ƒEƒXƒJ[ƒ\ƒ‹‚ğŒ³‚É–ß‚·
     MainForm.picMain(0).MousePointer = 0
 End Function
 
@@ -3739,7 +3739,7 @@ Private Function ExecClearPictureCmd() As Long
                 GetArgAsLong(2) + BaseX, GetArgAsLong(3) + BaseY, _
                 GetArgAsLong(4) + BaseX, GetArgAsLong(5) + BaseY
         Case Else
-            EventErrorMessage = "ClearPictureã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+            EventErrorMessage = "ClearPictureƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
             Error 0
     End Select
     
@@ -3759,13 +3759,13 @@ Dim i As Integer, j As Integer
     ElseIf PDList.IsDefined(pname) Then
         pname = PDList.Item(pname).Name
     Else
-        EventErrorMessage = "ã€Œ" & pname & "ã€ã¨ã„ã†ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“"
+        EventErrorMessage = "u" & pname & "v‚Æ‚¢‚¤ƒpƒCƒƒbƒg‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ"
         Error 0
     End If
     
     sname = GetArgAsString(3)
     
-    'ã‚¨ãƒªã‚¢ã‚¹ãŒå®šç¾©ã•ã‚Œã¦ã„ã‚‹ï¼Ÿ
+    'ƒGƒŠƒAƒX‚ª’è‹`‚³‚ê‚Ä‚¢‚éH
     If ALDList.IsDefined(sname) Then
         With ALDList.Item(sname)
             ReDim sarray(.Count)
@@ -3785,16 +3785,16 @@ Dim i As Integer, j As Integer
         vname = "Ability(" & pname & "," & sname & ")"
         
         If LLength(GetValueAsString(vname)) >= 2 Then
-            'å¿…è¦æŠ€èƒ½ç”¨å¤‰æ•°ã‚’å‰Šé™¤
+            '•K—v‹Z”\—p•Ï”‚ğíœ
             sname2 = LIndex(GetValueAsString(vname), 2)
             vname2 = "Ability(" & pname & "," & sname2 & ")"
             UndefineVariable vname2
         End If
         
-        'ãƒ¬ãƒ™ãƒ«è¨­å®šç”¨å¤‰æ•°ã‚’å‰Šé™¤
+        'ƒŒƒxƒ‹İ’è—p•Ï”‚ğíœ
         UndefineVariable vname
         
-        'ç‰¹æ®Šèƒ½åŠ›ä¸€è¦§ä½œæˆç”¨å¤‰æ•°ã‚’å‰Šé™¤
+        '“Áê”\—Íˆê——ì¬—p•Ï”‚ğíœ
         vname = "Ability(" & pname & ")"
         If IsGlobalVariableDefined(vname) Then
             buf = GetValueAsString(vname)
@@ -3815,13 +3815,13 @@ Dim i As Integer, j As Integer
         End If
     Next
     
-    'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‚„ãƒ¦ãƒ‹ãƒƒãƒˆã®ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚’ã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ãƒˆ
+    'ƒpƒCƒƒbƒg‚âƒ†ƒjƒbƒg‚ÌƒXƒe[ƒ^ƒX‚ğƒAƒbƒvƒf[ƒg
     If PList.IsDefined(pname) Then
         With PList.Item(pname)
             .Update
             If Not .Unit Is Nothing Then
                 .Unit.Update
-                If .Unit.Status = "å‡ºæ’ƒ" Then
+                If .Unit.Status = "oŒ‚" Then
                     PList.UpdateSupportMod .Unit
                 End If
             End If
@@ -3843,7 +3843,7 @@ Dim u As Unit
             Set u = SelectedUnitForEvent
             sname = GetArgAsString(2)
         Case Else
-            EventErrorMessage = "ClearSpecialPowerã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+            EventErrorMessage = "ClearSpecialPowerƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
             Error 0
     End Select
     
@@ -3868,7 +3868,7 @@ Dim u As Unit
             Set u = SelectedUnitForEvent
             sname = GetArgAsString(2)
         Case Else
-            EventErrorMessage = "ClearStatusã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+            EventErrorMessage = "ClearStatusƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
             Error 0
     End Select
     
@@ -3876,7 +3876,7 @@ Dim u As Unit
         If .IsConditionSatisfied(sname) Then
             .DeleteCondition sname
             .Update
-            If .Status = "å‡ºæ’ƒ" Then
+            If .Status = "oŒ‚" Then
                 PaintUnitBitmap u
             End If
         End If
@@ -3887,7 +3887,7 @@ End Function
 
 Private Function ExecCloseCmd() As Long
     If ArgNum <> 2 Then
-        EventErrorMessage = "Closeã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+        EventErrorMessage = "CloseƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
         Error 0
     End If
     
@@ -3904,7 +3904,7 @@ Dim ret As Long
         Case 2
             buf = GetArgAsString(2)
             If Asc(buf) <> 35 Or Len(buf) <> 7 Then
-                EventErrorMessage = "è‰²æŒ‡å®šãŒä¸æ­£ã§ã™"
+                EventErrorMessage = "Fw’è‚ª•s³‚Å‚·"
                 Error 0
             End If
             cname = String$(8, vbNullChar)
@@ -3913,7 +3913,7 @@ Dim ret As Long
             Mid(cname, 5, 2) = Mid$(buf, 4, 2)
             Mid(cname, 7, 2) = Mid$(buf, 2, 2)
             If Not IsNumeric(cname) Then
-                EventErrorMessage = "è‰²æŒ‡å®šãŒä¸æ­£ã§ã™"
+                EventErrorMessage = "Fw’è‚ª•s³‚Å‚·"
                 Error 0
             End If
             MainForm.picMain(0).Line (0, 0)-(MainPWidth - 1, MainPHeight - 1), CLng(cname), BF
@@ -3926,7 +3926,7 @@ Dim ret As Long
             End With
             ScreenIsSaved = True
         Case Else
-            EventErrorMessage = "Clsã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+            EventErrorMessage = "ClsƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
             Error 0
     End Select
     
@@ -3945,13 +3945,13 @@ Private Function ExecColorCmd() As Long
 Dim opt As String, cname As String
 
     If ArgNum <> 2 Then
-        EventErrorMessage = "Colorã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+        EventErrorMessage = "ColorƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
         Error 0
     End If
     
     opt = GetArgAsString(2)
     If Asc(opt) <> 35 Or Len(opt) <> 7 Then
-        EventErrorMessage = "è‰²æŒ‡å®šãŒä¸æ­£ã§ã™"
+        EventErrorMessage = "Fw’è‚ª•s³‚Å‚·"
         Error 0
     End If
     cname = String$(8, vbNullChar)
@@ -3960,7 +3960,7 @@ Dim opt As String, cname As String
     Mid(cname, 5, 2) = Mid$(opt, 4, 2)
     Mid(cname, 7, 2) = Mid$(opt, 2, 2)
     If Not IsNumeric(cname) Then
-        EventErrorMessage = "è‰²æŒ‡å®šãŒä¸æ­£ã§ã™"
+        EventErrorMessage = "Fw’è‚ª•s³‚Å‚·"
         Error 0
     End If
     
@@ -3977,7 +3977,7 @@ Dim buf As String, fcolor As Long
 Dim i As Integer, trans_par As Double
 
     If ArgNum < 2 Then
-        EventErrorMessage = "ColorFilterã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+        EventErrorMessage = "ColorFilterƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
         Error 0
     End If
     
@@ -3987,16 +3987,16 @@ Dim i As Integer, trans_par As Double
     For i = 3 To ArgNum
         buf = GetArgAsString(i)
         Select Case buf
-            Case "éåŒæœŸ"
+            Case "”ñ“¯Šú"
                 late_refresh = True
-            Case "ãƒãƒƒãƒ—é™å®š"
+            Case "ƒ}ƒbƒvŒÀ’è"
                 MapDrawIsMapOnly = True
             Case Else
                 If Right(buf, 1) = "%" And IsNumeric(Left(buf, Len(buf) - 1)) Then
                     trans_par = MaxDbl(0, MinDbl(1, CDbl(Left(buf, Len(buf) - 1)) / 100))
                 Else
                     EventErrorMessage = _
-                        "ColorFilterã‚³ãƒãƒ³ãƒ‰ã«ä¸æ­£ãªã‚ªãƒ—ã‚·ãƒ§ãƒ³ã€Œ" & buf & "ã€ãŒä½¿ã‚ã‚Œã¦ã„ã¾ã™"
+                        "ColorFilterƒRƒ}ƒ“ƒh‚É•s³‚ÈƒIƒvƒVƒ‡ƒ“u" & buf & "v‚ªg‚í‚ê‚Ä‚¢‚Ü‚·"
                     Error 0
                 End If
         End Select
@@ -4007,26 +4007,26 @@ Dim i As Integer, trans_par As Double
     If IsNumeric(buf) Then
         fcolor = CLng(buf)
     Else
-        EventErrorMessage = "ColorFilterã‚³ãƒãƒ³ãƒ‰ã®ã‚«ãƒ©ãƒ¼æŒ‡å®šãŒä¸æ­£ã§ã™"
+        EventErrorMessage = "ColorFilterƒRƒ}ƒ“ƒh‚ÌƒJƒ‰[w’è‚ª•s³‚Å‚·"
         Error 0
     End If
     
     prev_x = MapX
     prev_y = MapY
     
-    'ãƒã‚¦ã‚¹ã‚«ãƒ¼ã‚½ãƒ«ã‚’ç ‚æ™‚è¨ˆã«
+    'ƒ}ƒEƒXƒJ[ƒ\ƒ‹‚ğ»Œv‚É
     Screen.MousePointer = vbHourglass
     
-    SetupBackground "ãƒ•ã‚£ãƒ«ã‚¿", "éåŒæœŸ", fcolor, trans_par
+    SetupBackground "ƒtƒBƒ‹ƒ^", "”ñ“¯Šú", fcolor, trans_par
     
     For Each u In UList
         With u
-            If .Status = "å‡ºæ’ƒ" Then
+            If .Status = "oŒ‚" Then
                 If .BitmapID = 0 Then
                     With UList.Item(.Name)
                         If u.Party0 = .Party0 And .BitmapID <> 0 _
                             And u.Bitmap = .Bitmap _
-                            And Not .IsFeatureAvailable("ãƒ€ãƒŸãƒ¼ãƒ¦ãƒ‹ãƒƒãƒˆ") _
+                            And Not .IsFeatureAvailable("ƒ_ƒ~[ƒ†ƒjƒbƒg") _
                         Then
                             u.BitmapID = .BitmapID
                         Else
@@ -4041,7 +4041,7 @@ Dim i As Integer, trans_par As Double
     Center prev_x, prev_y
     RedrawScreen late_refresh
     
-    'ãƒã‚¦ã‚¹ã‚«ãƒ¼ã‚½ãƒ«ã‚’å…ƒã«æˆ»ã™
+    'ƒ}ƒEƒXƒJ[ƒ\ƒ‹‚ğŒ³‚É–ß‚·
     Screen.MousePointer = 0
     
     ExecColorFilterCmd = LineNum + 1
@@ -4060,12 +4060,12 @@ Dim anum As Integer
             Set u = GetArgAsUnit(2)
             uname = GetArgAsString(3)
         Case Else
-            EventErrorMessage = "Combineã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+            EventErrorMessage = "CombineƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
             Error 0
     End Select
     
     If Not UList.IsDefined(uname) Then
-        EventErrorMessage = "ã€Œ" & uname & "ã€ã¨ã„ã†ãƒ¦ãƒ‹ãƒƒãƒˆãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“"
+        EventErrorMessage = "u" & uname & "v‚Æ‚¢‚¤ƒ†ƒjƒbƒg‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ"
         Error 0
     End If
     
@@ -4097,7 +4097,7 @@ Dim anum As Integer
         
         With UList.Item(uname)
             .UsedAction = anum
-            If .Status = "å‡ºæ’ƒ" Then
+            If .Status = "oŒ‚" Then
                 RedrawScreen
             End If
         End With
@@ -4110,16 +4110,16 @@ Private Function ExecConfirmCmd() As Long
 Dim ret As Integer
     
     If ArgNum <> 2 Then
-        EventErrorMessage = "Confirmã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+        EventErrorMessage = "ConfirmƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
         Error 0
     End If
     
-    'ä¸€åº¦ã‚¤ãƒ™ãƒ³ãƒˆã‚’è§£æ¶ˆã—ã¦ãŠã‹ãªã„ã¨MsgBoxã‚’é€£ç¶šã§ä½¿ç”¨ã—ãŸã¨ãã«
-    'å‹•ä½œãŒãŠã‹ã—ããªã‚‹ï¼ˆï¼¶ï¼¢ã®ãƒã‚°ï¼Ÿï¼‰
+    'ˆê“xƒCƒxƒ“ƒg‚ğ‰ğÁ‚µ‚Ä‚¨‚©‚È‚¢‚ÆMsgBox‚ğ˜A‘±‚Åg—p‚µ‚½‚Æ‚«‚É
+    '“®ì‚ª‚¨‚©‚µ‚­‚È‚éi‚u‚a‚ÌƒoƒOHj
     DoEvents
     
     ret = MsgBox(GetArgAsString(2), _
-            vbOKCancel + vbQuestion, "é¸æŠ")
+            vbOKCancel + vbQuestion, "‘I‘ğ")
     If ret = 1 Then
         SelectedAlternative = 1
     Else
@@ -4138,24 +4138,24 @@ Dim u As Unit
 
     Select Case ArgNum
         Case 2
-            If Not IsGlobalVariableDefined("æ¬¡ã‚¹ãƒ†ãƒ¼ã‚¸") Then
-                DefineGlobalVariable "æ¬¡ã‚¹ãƒ†ãƒ¼ã‚¸"
+            If Not IsGlobalVariableDefined("ŸƒXƒe[ƒW") Then
+                DefineGlobalVariable "ŸƒXƒe[ƒW"
             End If
-            SetVariableAsString "æ¬¡ã‚¹ãƒ†ãƒ¼ã‚¸", GetArgAsString(2)
+            SetVariableAsString "ŸƒXƒe[ƒW", GetArgAsString(2)
         Case 1
         Case Else
-            EventErrorMessage = "Continueã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+            EventErrorMessage = "ContinueƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
             Error 0
     End Select
     
     ClearUnitStatus
     
-    'è¿½åŠ çµŒé¨“å€¤ã‚’å¾—ã‚‹ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‚„ç ´å£Šã•ã‚ŒãŸãƒ¦ãƒ‹ãƒƒãƒˆãŒã„ãªã‘ã‚Œã°å‡¦ç†ã‚’ã‚¹ã‚­ãƒƒãƒ—
+    '’Ç‰ÁŒoŒ±’l‚ğ“¾‚éƒpƒCƒƒbƒg‚â”j‰ó‚³‚ê‚½ƒ†ƒjƒbƒg‚ª‚¢‚È‚¯‚ê‚Îˆ—‚ğƒXƒLƒbƒv
     n = 0
     For Each u In UList
         With u
-            If .Party0 = "å‘³æ–¹" Then
-                If .Status = "å‡ºæ’ƒ" Or .Status = "æ ¼ç´" Or .Status = "ç ´å£Š" Then
+            If .Party0 = "–¡•û" Then
+                If .Status = "oŒ‚" Or .Status = "Ši”[" Or .Status = "”j‰ó" Then
                     n = 1
                     Exit For
                 End If
@@ -4166,15 +4166,15 @@ Dim u As Unit
         Turn = 0
     End If
     
-    'è¿½åŠ çµŒé¨“å€¤ã‚’åå¾—
-    If Turn > 0 And Not IsOptionDefined("è¿½åŠ çµŒé¨“å€¤ç„¡åŠ¹") Then
+    '’Ç‰ÁŒoŒ±’l‚ğû“¾
+    If Turn > 0 And Not IsOptionDefined("’Ç‰ÁŒoŒ±’l–³Œø") Then
         OpenMessageForm
         
         n = 0
         msg = ""
         For Each p In PList
             With p
-                If .Party <> "å‘³æ–¹" Then
+                If .Party <> "–¡•û" Then
                     GoTo NextPilot
                 End If
                 
@@ -4186,8 +4186,8 @@ Dim u As Unit
                     GoTo NextPilot
                 End If
                 
-                If .Unit.Status <> "å‡ºæ’ƒ" _
-                    And .Unit.Status <> "æ ¼ç´" _
+                If .Unit.Status <> "oŒ‚" _
+                    And .Unit.Status <> "Ši”[" _
                 Then
                     GoTo NextPilot
                 End If
@@ -4195,9 +4195,9 @@ Dim u As Unit
                 plevel = .Level
                 .Exp = .Exp + 2 * .SP
                 
-                'è¿½åŠ ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‚„æš´èµ°æ™‚ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã«é–¢ã™ã‚‹å‡¦ç†
+                '’Ç‰ÁƒpƒCƒƒbƒg‚â–\‘–ƒpƒCƒƒbƒg‚ÉŠÖ‚·‚éˆ—
                 If .Unit.CountPilot > 0 And Not .IsSupport(.Unit) Then
-                    'è¿½åŠ ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆãŒãƒ¡ã‚¤ãƒ³ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®å ´åˆ
+                    '’Ç‰ÁƒpƒCƒƒbƒg‚ªƒƒCƒ“ƒpƒCƒƒbƒg‚Ìê‡
                     If p Is .Unit.Pilot(1) _
                         And Not p Is .Unit.MainPilot _
                         And .Unit.MainPilot.MaxSP > 0 _
@@ -4205,9 +4205,9 @@ Dim u As Unit
                         GoTo NextPilot
                     End If
                     
-                    'è¿½åŠ ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆãŒãƒ¡ã‚¤ãƒ³ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã§ã¯ãªããªã£ãŸå ´åˆ
+                    '’Ç‰ÁƒpƒCƒƒbƒg‚ªƒƒCƒ“ƒpƒCƒƒbƒg‚Å‚Í‚È‚­‚È‚Á‚½ê‡
                     If Not p Is .Unit.MainPilot Then
-                        'è‡ªåˆ†ãŒãƒ¦ãƒ‹ãƒƒãƒˆã®ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆä¸€è¦§ã«å«ã¾ã‚Œã¦ã„ã‚‹ã‹åˆ¤å®š
+                        '©•ª‚ªƒ†ƒjƒbƒg‚ÌƒpƒCƒƒbƒgˆê——‚ÉŠÜ‚Ü‚ê‚Ä‚¢‚é‚©”»’è
                         For i = 1 To .Unit.CountPilot
                             If p Is .Unit.Pilot(i) Then
                                 Exit For
@@ -4220,14 +4220,14 @@ Dim u As Unit
                 End If
                 
                 If plevel = .Level Then
-                    msg = msg & ";" & .Nickname & " çµŒé¨“å€¤ +" & Format$(2 * .SP)
+                    msg = msg & ";" & .Nickname & " ŒoŒ±’l +" & Format$(2 * .SP)
                 Else
-                    msg = msg & ";" & .Nickname & " çµŒé¨“å€¤ +" & Format$(2 * .SP) _
-                        & " ãƒ¬ãƒ™ãƒ«ã‚¢ãƒƒãƒ—ï¼ï¼ˆLv" & Format$(.Level) & "ï¼‰"
+                    msg = msg & ";" & .Nickname & " ŒoŒ±’l +" & Format$(2 * .SP) _
+                        & " ƒŒƒxƒ‹ƒAƒbƒvIiLv" & Format$(.Level) & "j"
                 End If
                 n = n + 1
                 If n = 4 Then
-                    DisplayMessage "ã‚·ã‚¹ãƒ†ãƒ ", Mid$(msg, 2)
+                    DisplayMessage "ƒVƒXƒeƒ€", Mid$(msg, 2)
                     msg = ""
                     n = 0
                 End If
@@ -4235,7 +4235,7 @@ Dim u As Unit
 NextPilot:
         Next
         If n > 0 Then
-            DisplayMessage "ã‚·ã‚¹ãƒ†ãƒ ", Mid$(msg, 2)
+            DisplayMessage "ƒVƒXƒeƒ€", Mid$(msg, 2)
         End If
         
         CloseMessageForm
@@ -4243,45 +4243,45 @@ NextPilot:
     
     MainForm.Hide
     
-    'ã‚¨ãƒ”ãƒ­ãƒ¼ã‚°ã‚¤ãƒ™ãƒ³ãƒˆã‚’å®Ÿè¡Œ
-    If IsEventDefined("ã‚¨ãƒ”ãƒ­ãƒ¼ã‚°") Then
-        'ãƒã‚¤ãƒ‘ãƒ¼ãƒ¢ãƒ¼ãƒ‰ã‚„å¤‰èº«ã€èƒ½åŠ›ã‚³ãƒ”ãƒ¼ã‚’è§£é™¤
+    'ƒGƒsƒ[ƒOƒCƒxƒ“ƒg‚ğÀs
+    If IsEventDefined("ƒGƒsƒ[ƒO") Then
+        'ƒnƒCƒp[ƒ‚[ƒh‚â•ÏgA”\—ÍƒRƒs[‚ğ‰ğœ
         For Each u In UList
             With u
-                If .Status <> "ä»–å½¢æ…‹" _
-                    And .Status <> "æ—§ä¸»å½¢æ…‹" _
-                    And .Status <> "æ—§å½¢æ…‹" _
+                If .Status <> "‘¼Œ`‘Ô" _
+                    And .Status <> "‹ŒåŒ`‘Ô" _
+                    And .Status <> "‹ŒŒ`‘Ô" _
                 Then
-                    If .IsFeatureAvailable("ãƒãƒ¼ãƒãƒ«ãƒ¢ãƒ¼ãƒ‰") Then
-                        .Transform LIndex(.FeatureData("ãƒãƒ¼ãƒãƒ«ãƒ¢ãƒ¼ãƒ‰"), 1)
+                    If .IsFeatureAvailable("ƒm[ƒ}ƒ‹ƒ‚[ƒh") Then
+                        .Transform LIndex(.FeatureData("ƒm[ƒ}ƒ‹ƒ‚[ƒh"), 1)
                     End If
                 End If
             End With
         Next
         
-        If IsEventDefined("ã‚¨ãƒ”ãƒ­ãƒ¼ã‚°", True) Then
+        If IsEventDefined("ƒGƒsƒ[ƒO", True) Then
             StopBGM
             StartBGM BGMName("Briefing")
         End If
         
-        Stage = "ã‚¨ãƒ”ãƒ­ãƒ¼ã‚°"
-        HandleEvent "ã‚¨ãƒ”ãƒ­ãƒ¼ã‚°"
+        Stage = "ƒGƒsƒ[ƒO"
+        HandleEvent "ƒGƒsƒ[ƒO"
     End If
     
     MainForm.Hide
     
-    'ã‚¤ãƒ³ã‚¿ãƒ¼ãƒŸãƒƒã‚·ãƒ§ãƒ³ã«ç§»è¡Œ
+    'ƒCƒ“ƒ^[ƒ~ƒbƒVƒ‡ƒ“‚ÉˆÚs
     If Not IsSubStage Then
         '
         InterMissionCommand
         
         If Not IsSubStage Then
-            If GetValueAsString("æ¬¡ã‚¹ãƒ†ãƒ¼ã‚¸") = "" Then
-                EventErrorMessage = "æ¬¡ã®ã‚¹ãƒ†ãƒ¼ã‚¸ã®ãƒ•ã‚¡ã‚¤ãƒ«åãŒè¨­å®šã•ã‚Œã¦ã„ã¾ã›ã‚“"
+            If GetValueAsString("ŸƒXƒe[ƒW") = "" Then
+                EventErrorMessage = "Ÿ‚ÌƒXƒe[ƒW‚Ìƒtƒ@ƒCƒ‹–¼‚ªİ’è‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ"
                 Error 0
             End If
             
-            StartScenario GetValueAsString("æ¬¡ã‚¹ãƒ†ãƒ¼ã‚¸")
+            StartScenario GetValueAsString("ŸƒXƒe[ƒW")
         Else
             IsSubStage = False
         End If
@@ -4299,16 +4299,16 @@ Dim var As VarData
 Dim name1 As String, name2 As String
 
     If ArgNum <> 3 Then
-        EventErrorMessage = "CopyArrayã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+        EventErrorMessage = "CopyArrayƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
         Error 0
     End If
     
-    'ã‚³ãƒ”ãƒ¼å…ƒã®å¤‰æ•°å
+    'ƒRƒs[Œ³‚Ì•Ï”–¼
     name1 = GetArg(2)
     If Left$(name1, 1) = "$" Then
         name1 = Mid$(name1, 2)
     End If
-    'Evalé–¢æ•°
+    'EvalŠÖ”
     If LCase$(Left$(name1, 5)) = "eval(" Then
         If Right$(name1, 1) = ")" Then
             name1 = Mid$(name1, 6, Len(name1) - 6)
@@ -4316,12 +4316,12 @@ Dim name1 As String, name2 As String
         End If
     End If
     
-    'ã‚³ãƒ”ãƒ¼å…ˆã®å¤‰æ•°å
+    'ƒRƒs[æ‚Ì•Ï”–¼
     name2 = GetArg(3)
     If Left$(name2, 1) = "$" Then
         name1 = Mid$(name2, 2)
     End If
-    'Evalé–¢æ•°
+    'EvalŠÖ”
     If LCase$(Left$(name2, 5)) = "eval(" Then
         If Right$(name2, 1) = ")" Then
             name2 = Mid$(name2, 6, Len(name2) - 6)
@@ -4329,8 +4329,8 @@ Dim name1 As String, name2 As String
         End If
     End If
     
-    'ã‚³ãƒ”ãƒ¼å…ˆã®å¤‰æ•°ã‚’åˆæœŸåŒ–
-    'ã‚µãƒ–ãƒ«ãƒ¼ãƒãƒ³ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ã®å ´åˆ
+    'ƒRƒs[æ‚Ì•Ï”‚ğ‰Šú‰»
+    'ƒTƒuƒ‹[ƒ`ƒ“ƒ[ƒJƒ‹•Ï”‚Ìê‡
     If IsSubLocalVariableDefined(name2) Then
         UndefineVariable name2
         VarIndex = VarIndex + 1
@@ -4339,20 +4339,20 @@ Dim name1 As String, name2 As String
             .VariableType = StringType
             .StringValue = ""
         End With
-    'ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ã®å ´åˆ
+    'ƒ[ƒJƒ‹•Ï”‚Ìê‡
     ElseIf IsLocalVariableDefined(name2) Then
         UndefineVariable name2
         DefineLocalVariable name2
-    'ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°ã®å ´åˆ
+    'ƒOƒ[ƒoƒ‹•Ï”‚Ìê‡
     ElseIf IsGlobalVariableDefined(name2) Then
         UndefineVariable name2
         DefineGlobalVariable name2
     End If
     
-    'é…åˆ—ã‚’æ¤œç´¢ã—ã€é…åˆ—è¦ç´ ã‚’è¦‹ã¤ã‘ã‚‹
+    '”z—ñ‚ğŒŸõ‚µA”z—ñ—v‘f‚ğŒ©‚Â‚¯‚é
     buf = ""
     If IsSubLocalVariableDefined(name1) Then
-        'ã‚µãƒ–ãƒ«ãƒ¼ãƒãƒ³ãƒ­ãƒ¼ã‚«ãƒ«ãªé…åˆ—ã«å¯¾ã™ã‚‹CopyArray
+        'ƒTƒuƒ‹[ƒ`ƒ“ƒ[ƒJƒ‹‚È”z—ñ‚É‘Î‚·‚éCopyArray
         For i = VarIndexStack(CallDepth - 1) + 1 To VarIndex
             With VarStack(i)
                 If InStr(.Name, name1 & "[") = 1 Then
@@ -4368,7 +4368,7 @@ Dim name1 As String, name2 As String
             End With
         End If
     ElseIf IsLocalVariableDefined(name1) Then
-        'ãƒ­ãƒ¼ã‚«ãƒ«ãªé…åˆ—ã«å¯¾ã™ã‚‹CopyArray
+        'ƒ[ƒJƒ‹‚È”z—ñ‚É‘Î‚·‚éCopyArray
         For Each var In LocalVariableList
             With var
                 If InStr(.Name, name1 & "[") = 1 Then
@@ -4384,7 +4384,7 @@ Dim name1 As String, name2 As String
             End With
         End If
     ElseIf IsGlobalVariableDefined(name1) Then
-        'ã‚°ãƒ­ãƒ¼ãƒãƒ«ãªé…åˆ—ã«å¯¾ã™ã‚‹CopyArray
+        'ƒOƒ[ƒoƒ‹‚È”z—ñ‚É‘Î‚·‚éCopyArray
         For Each var In GlobalVariableList
             With var
                 If InStr(.Name, name1 & "[") = 1 Then
@@ -4410,7 +4410,7 @@ Private Function ExecCopyFileCmd() As Long
 Dim fname1 As String, fname2 As String
     
     If ArgNum <> 3 Then
-        EventErrorMessage = "CopyFileã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+        EventErrorMessage = "CopyFileƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
         Error 0
     End If
     
@@ -4429,22 +4429,22 @@ Dim fname1 As String, fname2 As String
     End If
     
     If InStr(fname1, "..\") > 0 Then
-        EventErrorMessage = "ãƒ•ã‚¡ã‚¤ãƒ«æŒ‡å®šã«ã€Œ..\ã€ã¯ä½¿ãˆã¾ã›ã‚“"
+        EventErrorMessage = "ƒtƒ@ƒCƒ‹w’è‚Éu..\v‚Íg‚¦‚Ü‚¹‚ñ"
         Error 0
     End If
     If InStr(fname1, "../") > 0 Then
-        EventErrorMessage = "ãƒ•ã‚¡ã‚¤ãƒ«æŒ‡å®šã«ã€Œ../ã€ã¯ä½¿ãˆã¾ã›ã‚“"
+        EventErrorMessage = "ƒtƒ@ƒCƒ‹w’è‚Éu../v‚Íg‚¦‚Ü‚¹‚ñ"
         Error 0
     End If
     
     fname2 = ScenarioPath & GetArgAsString(3)
     
     If InStr(fname2, "..\") > 0 Then
-        EventErrorMessage = "ãƒ•ã‚¡ã‚¤ãƒ«æŒ‡å®šã«ã€Œ..\ã€ã¯ä½¿ãˆã¾ã›ã‚“"
+        EventErrorMessage = "ƒtƒ@ƒCƒ‹w’è‚Éu..\v‚Íg‚¦‚Ü‚¹‚ñ"
         Error 0
     End If
     If InStr(fname2, "../") > 0 Then
-        EventErrorMessage = "ãƒ•ã‚¡ã‚¤ãƒ«æŒ‡å®šã«ã€Œ../ã€ã¯ä½¿ãˆã¾ã›ã‚“"
+        EventErrorMessage = "ƒtƒ@ƒCƒ‹w’è‚Éu../v‚Íg‚¦‚Ü‚¹‚ñ"
         Error 0
     End If
     
@@ -4466,58 +4466,58 @@ Dim opt As String
     num = ArgNum
     
     Select Case GetArgAsString(num)
-        Case "éåŒæœŸ"
-            opt = "éåŒæœŸ"
+        Case "”ñ“¯Šú"
+            opt = "”ñ“¯Šú"
             num = num - 1
-        Case "ã‚¢ãƒ‹ãƒ¡éè¡¨ç¤º"
+        Case "ƒAƒjƒ”ñ•\¦"
             opt = ""
             num = num - 1
         Case Else
-            opt = "å‡ºæ’ƒ"
+            opt = "oŒ‚"
     End Select
     
     If num < 0 Then
-        EventErrorMessage = "Createã‚³ãƒãƒ³ãƒ‰ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®æ‹¬å¼§ã®å¯¾å¿œãŒå–ã‚Œã¦ã„ã¾ã›ã‚“"
+        EventErrorMessage = "CreateƒRƒ}ƒ“ƒh‚Ìƒpƒ‰ƒ[ƒ^‚ÌŠ‡ŒÊ‚Ì‘Î‰‚ªæ‚ê‚Ä‚¢‚Ü‚¹‚ñ"
         Error 0
     ElseIf num <> 8 And num <> 9 Then
-        EventErrorMessage = "Createã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+        EventErrorMessage = "CreateƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
         Error 0
     End If
     
     uparty = GetArgAsString(2)
-    If Not (uparty = "å‘³æ–¹" Or uparty = "ï¼®ï¼°ï¼£" _
-        Or uparty = "æ•µ" Or uparty = "ä¸­ç«‹") _
+    If Not (uparty = "–¡•û" Or uparty = "‚m‚o‚b" _
+        Or uparty = "“G" Or uparty = "’†—§") _
     Then
-        EventErrorMessage = "æ‰€å±ã®æŒ‡å®šã€Œ" & uparty & "ã€ãŒé–“é•ã£ã¦ã„ã¾ã™"
+        EventErrorMessage = "Š‘®‚Ìw’èu" & uparty & "v‚ªŠÔˆá‚Á‚Ä‚¢‚Ü‚·"
         Error 0
     End If
     
     uname = GetArgAsString(3)
     If Not UDList.IsDefined(uname) Then
-        EventErrorMessage = "æŒ‡å®šã—ãŸãƒ¦ãƒ‹ãƒƒãƒˆã€Œ" & uname & "ã€ã®ãƒ‡ãƒ¼ã‚¿ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“"
+        EventErrorMessage = "w’è‚µ‚½ƒ†ƒjƒbƒgu" & uname & "v‚Ìƒf[ƒ^‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ"
         Error 0
     End If
     
     buf = GetArgAsString(4)
     If Not IsNumeric(buf) Then
-        EventErrorMessage = "ãƒ¦ãƒ‹ãƒƒãƒˆã®ãƒ©ãƒ³ã‚¯ãŒä¸æ­£ã§ã™"
+        EventErrorMessage = "ƒ†ƒjƒbƒg‚Ìƒ‰ƒ“ƒN‚ª•s³‚Å‚·"
         Error 0
     End If
     urank = CInt(buf)
     
     pname = GetArgAsString(5)
     If Not PDList.IsDefined(pname) Then
-        EventErrorMessage = "æŒ‡å®šã—ãŸãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã€Œ" & pname & "ã€ã®ãƒ‡ãƒ¼ã‚¿ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“"
+        EventErrorMessage = "w’è‚µ‚½ƒpƒCƒƒbƒgu" & pname & "v‚Ìƒf[ƒ^‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ"
         Error 0
     End If
     
     buf = GetArgAsString(6)
     If Not IsNumeric(buf) Then
-        EventErrorMessage = "ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®ãƒ¬ãƒ™ãƒ«ãŒä¸æ­£ã§ã™"
+        EventErrorMessage = "ƒpƒCƒƒbƒg‚ÌƒŒƒxƒ‹‚ª•s³‚Å‚·"
         Error 0
     End If
     plevel = CInt(buf)
-    If IsOptionDefined("ãƒ¬ãƒ™ãƒ«é™ç•Œçªç ´") Then
+    If IsOptionDefined("ƒŒƒxƒ‹ŒÀŠE“Ë”j") Then
         If plevel > 999 Then
             plevel = 999
         End If
@@ -4532,7 +4532,7 @@ Dim opt As String
     
     buf = GetArgAsString(7)
     If Not IsNumeric(buf) Then
-        EventErrorMessage = "ï¼¸åº§æ¨™ã®å€¤ãŒä¸æ­£ã§ã™"
+        EventErrorMessage = "‚wÀ•W‚Ì’l‚ª•s³‚Å‚·"
         Error 0
     End If
     ux = CInt(buf)
@@ -4544,7 +4544,7 @@ Dim opt As String
     
     buf = GetArgAsString(8)
     If Not IsNumeric(buf) Then
-        EventErrorMessage = "ï¼¹åº§æ¨™ã®å€¤ãŒä¸æ­£ã§ã™"
+        EventErrorMessage = "‚xÀ•W‚Ì’l‚ª•s³‚Å‚·"
         Error 0
     End If
     uy = CInt(buf)
@@ -4556,7 +4556,7 @@ Dim opt As String
     
     Set u = UList.Add(uname, urank, uparty)
     If u Is Nothing Then
-        EventErrorMessage = uname & "ã®ãƒ‡ãƒ¼ã‚¿ãŒä¸æ­£ã§ã™"
+        EventErrorMessage = uname & "‚Ìƒf[ƒ^‚ª•s³‚Å‚·"
         Error 0
     End If
     
@@ -4568,7 +4568,7 @@ Dim opt As String
     
     p.Ride u
     
-    If opt <> "éåŒæœŸ" And MainForm.Visible And Not IsPictureVisible Then
+    If opt <> "”ñ“¯Šú" And MainForm.Visible And Not IsPictureVisible Then
         Center ux, uy
         RefreshScreen
     End If
@@ -4593,18 +4593,18 @@ Private Function ExecCreateFolderCmd() As Long
 Dim fname As String
     
     If ArgNum <> 2 Then
-        EventErrorMessage = "CreateFolderã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+        EventErrorMessage = "CreateFolderƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
         Error 0
     End If
     
     fname = ScenarioPath & GetArgAsString(2)
     
     If InStr(fname, "..\") > 0 Then
-        EventErrorMessage = "ãƒ•ã‚©ãƒ«ãƒ€æŒ‡å®šã«ã€Œ..\ã€ã¯ä½¿ãˆã¾ã›ã‚“"
+        EventErrorMessage = "ƒtƒHƒ‹ƒ_w’è‚Éu..\v‚Íg‚¦‚Ü‚¹‚ñ"
         Error 0
     End If
     If InStr(fname, "../") > 0 Then
-        EventErrorMessage = "ãƒ•ã‚©ãƒ«ãƒ€æŒ‡å®šã«ã€Œ../ã€ã¯ä½¿ãˆã¾ã›ã‚“"
+        EventErrorMessage = "ƒtƒHƒ‹ƒ_w’è‚Éu../v‚Íg‚¦‚Ü‚¹‚ñ"
         Error 0
     End If
     
@@ -4644,44 +4644,44 @@ Dim i As Integer
         Case 1
             Set u = SelectedUnitForEvent
         Case Else
-            EventErrorMessage = "Destroyã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+            EventErrorMessage = "DestroyƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
             Error 0
     End Select
     
-    'ç ´å£Šã‚­ãƒ£ãƒ³ã‚»ãƒ«çŠ¶æ…‹ã«ã‚ã‚‹å ´åˆã¯è§£é™¤ã—ã¦ãŠã
-    If u.IsConditionSatisfied("ç ´å£Šã‚­ãƒ£ãƒ³ã‚»ãƒ«") Then
-        u.DeleteCondition "ç ´å£Šã‚­ãƒ£ãƒ³ã‚»ãƒ«"
+    '”j‰óƒLƒƒƒ“ƒZƒ‹ó‘Ô‚É‚ ‚éê‡‚Í‰ğœ‚µ‚Ä‚¨‚­
+    If u.IsConditionSatisfied("”j‰óƒLƒƒƒ“ƒZƒ‹") Then
+        u.DeleteCondition "”j‰óƒLƒƒƒ“ƒZƒ‹"
     End If
     
     Select Case u.Status
-        Case "å‡ºæ’ƒ"
+        Case "oŒ‚"
             u.Die
-        Case "æ ¼ç´"
+        Case "Ši”["
             u.Escape
-            u.Status = "ç ´å£Š"
-        Case "ç ´å£Š"
+            u.Status = "”j‰ó"
+        Case "”j‰ó"
             If MapDataForUnit(u.X, u.Y) Is u Then
                 u.Die
-                'æ—¢ã«ç ´å£Šã‚¤ãƒ™ãƒ³ãƒˆãŒç™ºç”Ÿã—ã¦ã„ã‚‹ã¯ãšãªã®ã§ã€ã“ã“ã§çµ‚äº†
+                'Šù‚É”j‰óƒCƒxƒ“ƒg‚ª”­¶‚µ‚Ä‚¢‚é‚Í‚¸‚È‚Ì‚ÅA‚±‚±‚ÅI—¹
                 ExecDestroyCmd = LineNum + 1
                 Exit Function
             End If
         Case Else
-            u.Status = "ç ´å£Š"
+            u.Status = "”j‰ó"
     End Select
     
-    'ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹è¡¨ç¤ºä¸­ã®å ´åˆã¯è¡¨ç¤ºã‚’è§£é™¤
+    'ƒXƒe[ƒ^ƒX•\¦’†‚Ìê‡‚Í•\¦‚ğ‰ğœ
     If u Is DisplayedUnit Then
         ClearUnitStatus
     End If
     
-    'Destroyã‚³ãƒãƒ³ãƒ‰ã«ã‚ˆã£ã¦å…¨æ»…ã—ãŸã‹ã‚’åˆ¤å®š
+    'DestroyƒRƒ}ƒ“ƒh‚É‚æ‚Á‚Ä‘S–Å‚µ‚½‚©‚ğ”»’è
     uparty = u.Party0
     For Each u In UList
         With u
             If .Party0 = uparty _
-                And (.Status = "å‡ºæ’ƒ" Or .Status = "æ ¼ç´") _
-                And Not .IsConditionSatisfied("æ†‘ä¾") _
+                And (.Status = "oŒ‚" Or .Status = "Ši”[") _
+                And Not .IsConditionSatisfied("œßˆË") _
             Then
                 ExecDestroyCmd = LineNum + 1
                 Exit Function
@@ -4689,20 +4689,20 @@ Dim i As Integer
         End With
     Next
     
-    'æˆ¦é—˜æ™‚ä»¥å¤–ã®ã‚¤ãƒ™ãƒ³ãƒˆä¸­ã®ç ´å£Šã¯ç„¡è¦–
+    'í“¬ˆÈŠO‚ÌƒCƒxƒ“ƒg’†‚Ì”j‰ó‚Í–³‹
     For i = 1 To UBound(EventQue)
-        If EventQue(i) = "ãƒ—ãƒ­ãƒ­ãƒ¼ã‚°" _
-            Or EventQue(i) = "ã‚¨ãƒ”ãƒ­ãƒ¼ã‚°" _
-            Or EventQue(i) = "ã‚¹ã‚¿ãƒ¼ãƒˆ" _
-            Or EventQue(i) = "å…¨æ»…" _
+        If EventQue(i) = "ƒvƒƒ[ƒO" _
+            Or EventQue(i) = "ƒGƒsƒ[ƒO" _
+            Or EventQue(i) = "ƒXƒ^[ƒg" _
+            Or EventQue(i) = "‘S–Å" _
         Then
             ExecDestroyCmd = LineNum + 1
             Exit Function
         End If
     Next
     
-    'å¾Œã§å…¨æ»…ã‚¤ãƒ™ãƒ³ãƒˆã‚’å®Ÿè¡Œ
-    RegisterEvent "å…¨æ»…", uparty
+    'Œã‚Å‘S–ÅƒCƒxƒ“ƒg‚ğÀs
+    RegisterEvent "‘S–Å", uparty
     
     ExecDestroyCmd = LineNum + 1
 End Function
@@ -4719,12 +4719,12 @@ Dim need_update As Boolean
             uname = GetArgAsString(2)
             aname = GetArgAsString(3)
         Case Else
-            EventErrorMessage = "Disableã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+            EventErrorMessage = "DisableƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
             Error 0
     End Select
     
     If aname = "" Then
-        EventErrorMessage = "Disableã‚³ãƒãƒ³ãƒ‰ã«æŒ‡å®šã•ã‚ŒãŸèƒ½åŠ›åãŒç©ºæ–‡å­—åˆ—ã§ã™"
+        EventErrorMessage = "DisableƒRƒ}ƒ“ƒh‚Éw’è‚³‚ê‚½”\—Í–¼‚ª‹ó•¶š—ñ‚Å‚·"
         Error 0
     End If
     
@@ -4734,17 +4734,17 @@ Dim need_update As Boolean
         vname = "Disable(" & aname & ")"
     End If
     
-    'Disableç”¨å¤‰æ•°ã‚’è¨­å®š
+    'Disable—p•Ï”‚ğİ’è
     If Not IsGlobalVariableDefined(vname) Then
         DefineGlobalVariable vname
         SetVariableAsLong vname, 1
     Else
-        'æ—¢ã«è¨­å®šæ¸ˆã¿ã§ã‚ã‚Œã°ãã®ã¾ã¾çµ‚äº†
+        'Šù‚Éİ’èÏ‚İ‚Å‚ ‚ê‚Î‚»‚Ì‚Ü‚ÜI—¹
         ExecDisableCmd = LineNum + 1
         Exit Function
     End If
     
-    'ãƒ¦ãƒ‹ãƒƒãƒˆã®ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚’æ›´æ–°
+    'ƒ†ƒjƒbƒg‚ÌƒXƒe[ƒ^ƒX‚ğXV
     If uname <> "" Then
         With UList
             If .IsDefined(uname) Then
@@ -4754,8 +4754,8 @@ Dim need_update As Boolean
     Else
         For Each u In UList
             With u
-                If .Status = "å‡ºæ’ƒ" Then
-                    'ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚’æ›´æ–°ã™ã‚‹å¿…è¦ãŒã‚ã‚‹ã‹ã©ã†ã‹ãƒã‚§ãƒƒã‚¯ã™ã‚‹
+                If .Status = "oŒ‚" Then
+                    'ƒXƒe[ƒ^ƒX‚ğXV‚·‚é•K—v‚ª‚ ‚é‚©‚Ç‚¤‚©ƒ`ƒFƒbƒN‚·‚é
                     need_update = False
                     If .IsFeatureAvailable(aname) Then
                         need_update = True
@@ -4768,7 +4768,7 @@ Dim need_update As Boolean
                         Next
                     End If
                     
-                    'å¿…è¦ãŒã‚ã‚‹å ´åˆã¯ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚’æ›´æ–°
+                    '•K—v‚ª‚ ‚éê‡‚ÍƒXƒe[ƒ^ƒX‚ğXV
                     If need_update Then
                         .Update
                     End If
@@ -4800,15 +4800,15 @@ Dim i As Long, depth As Integer
                         Exit Function
                     End If
                 Case Else
-                    EventErrorMessage = "Doã‚³ãƒãƒ³ãƒ‰ã®æ›¸å¼ãŒé–“é•ã£ã¦ã„ã¾ã™"
+                    EventErrorMessage = "DoƒRƒ}ƒ“ƒh‚Ì‘®‚ªŠÔˆá‚Á‚Ä‚¢‚Ü‚·"
                     Error 0
             End Select
         Case Else
-            EventErrorMessage = "Doã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+            EventErrorMessage = "DoƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
             Error 0
     End Select
     
-    'æ¡ä»¶å¼ãŒFalseã®ãŸã‚æœ¬ä½“ã‚’ã‚¹ã‚­ãƒƒãƒ—
+    'ğŒ®‚ªFalse‚Ì‚½‚ß–{‘Ì‚ğƒXƒLƒbƒv
     depth = 1
     For i = LineNum + 1 To UBound(EventCmd)
         Select Case EventCmd(i).Name
@@ -4823,7 +4823,7 @@ Dim i As Long, depth As Integer
         End Select
     Next
     
-    EventErrorMessage = "Doã¨LoopãŒå¯¾å¿œã—ã¦ã„ã¾ã›ã‚“"
+    EventErrorMessage = "Do‚ÆLoop‚ª‘Î‰‚µ‚Ä‚¢‚Ü‚¹‚ñ"
     Error 0
 End Function
 
@@ -4845,15 +4845,15 @@ Dim i As Long, depth As Integer
                         Exit Function
                     End If
                 Case Else
-                    EventErrorMessage = "Loopæ–‡ã®æ›¸å¼ãŒé–“é•ã£ã¦ã„ã¾ã™"
+                    EventErrorMessage = "Loop•¶‚Ì‘®‚ªŠÔˆá‚Á‚Ä‚¢‚Ü‚·"
                     Error 0
             End Select
         Case Else
-            EventErrorMessage = "Loopæ–‡ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+            EventErrorMessage = "Loop•¶‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
             Error 0
     End Select
     
-    'æ¡ä»¶å¼ãŒTrueã®ãŸã‚å…ˆé ­ã«æˆ»ã‚‹
+    'ğŒ®‚ªTrue‚Ì‚½‚ßæ“ª‚É–ß‚é
     i = LineNum
     depth = 1
     Do While i > 1
@@ -4870,13 +4870,13 @@ Dim i As Long, depth As Integer
         End Select
     Loop
     
-    EventErrorMessage = "Doã¨LoopãŒå¯¾å¿œã—ã¦ã„ã¾ã›ã‚“"
+    EventErrorMessage = "Do‚ÆLoop‚ª‘Î‰‚µ‚Ä‚¢‚Ü‚¹‚ñ"
     Error 0
 End Function
 
 Private Function ExecDrawOptionCmd() As Long
     If ArgNum <> 2 Then
-        EventErrorMessage = "DrawOptionã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+        EventErrorMessage = "DrawOptionƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
         Error 0
     End If
     
@@ -4887,7 +4887,7 @@ End Function
 
 Private Function ExecDrawWidthCmd() As Long
     If ArgNum <> 2 Then
-        EventErrorMessage = "DrawWidthã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+        EventErrorMessage = "DrawWidthƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
         Error 0
     End If
     
@@ -4907,7 +4907,7 @@ Dim u As Unit
             uname = GetArgAsString(2)
             aname = GetArgAsString(3)
         Case Else
-            EventErrorMessage = "Enableã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+            EventErrorMessage = "EnableƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
             Error 0
     End Select
     
@@ -4917,16 +4917,16 @@ Dim u As Unit
         vname = "Disable(" & aname & ")"
     End If
     
-    'Disableç”¨å¤‰æ•°ã‚’å‰Šé™¤
+    'Disable—p•Ï”‚ğíœ
     If IsGlobalVariableDefined(vname) Then
         UndefineVariable vname
     Else
-        'æ—¢ã«è¨­å®šæ¸ˆã¿ã§ã‚ã‚Œã°ãã®ã¾ã¾çµ‚äº†
+        'Šù‚Éİ’èÏ‚İ‚Å‚ ‚ê‚Î‚»‚Ì‚Ü‚ÜI—¹
         ExecEnableCmd = LineNum + 1
         Exit Function
     End If
     
-    'ãƒ¦ãƒ‹ãƒƒãƒˆã®ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚’æ›´æ–°
+    'ƒ†ƒjƒbƒg‚ÌƒXƒe[ƒ^ƒX‚ğXV
     If uname <> "" Then
         With UList
             If .IsDefined(uname) Then
@@ -4936,7 +4936,7 @@ Dim u As Unit
     Else
         For Each u In UList
             With u
-                If .Status = "å‡ºæ’ƒ" Then
+                If .Status = "oŒ‚" Then
                     .Update
                 End If
             End With
@@ -4960,22 +4960,22 @@ Dim i As Integer
             Set u = SelectedUnitForEvent
             iname = GetArgAsString(2)
         Case Else
-        EventErrorMessage = "Equipã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+        EventErrorMessage = "EquipƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
         Error 0
     End Select
     
-    'å¤§æ–‡å­—ãƒ»å°æ–‡å­—ã€ã²ã‚‰ãŒãªãƒ»ã‹ãŸã‹ãªã®é•ã„ã‚’æ­£ã—ãåˆ¤å®šã§ãã‚‹ã‚ˆã†ã«ã€
-    'åå‰ã‚’ãƒ‡ãƒ¼ã‚¿ã®ãã‚Œã¨ã‚ã‚ã›ã‚‹
+    '‘å•¶šE¬•¶šA‚Ğ‚ç‚ª‚ÈE‚©‚½‚©‚È‚Ìˆá‚¢‚ğ³‚µ‚­”»’è‚Å‚«‚é‚æ‚¤‚ÉA
+    '–¼‘O‚ğƒf[ƒ^‚Ì‚»‚ê‚Æ‚ ‚í‚¹‚é
     If IDList.IsDefined(iname) Then
         iname = IDList.Item(iname).Name
     End If
     
-    'è£…å‚™ã™ã‚‹ã‚¢ã‚¤ãƒ†ãƒ ã‚’æ¤œç´¢ or ä½œæˆ
+    '‘•”õ‚·‚éƒAƒCƒeƒ€‚ğŒŸõ or ì¬
     If IList.IsDefined(iname) Then
         If iname = IList.Item(iname).Name Then
-            'ã‚¢ã‚¤ãƒ†ãƒ åã§æŒ‡å®šã—ãŸå ´åˆ
-            If u.Party0 = "å‘³æ–¹" Then
-                'ã¾ãšã¯è£…å‚™ã•ã‚Œã¦ãªã„ã‚‚ã®ã‚’æ¢ã™
+            'ƒAƒCƒeƒ€–¼‚Åw’è‚µ‚½ê‡
+            If u.Party0 = "–¡•û" Then
+                '‚Ü‚¸‚Í‘•”õ‚³‚ê‚Ä‚È‚¢‚à‚Ì‚ğ’T‚·
                 For Each itm In IList
                     With itm
                         If .Name = iname _
@@ -4986,37 +4986,37 @@ Dim i As Integer
                         End If
                     End With
                 Next
-                'ãªã‹ã£ãŸã‚‰è£…å‚™ã•ã‚Œã¦ã„ã‚‹ã‚‚ã®ã‚’â€¦
+                '‚È‚©‚Á‚½‚ç‘•”õ‚³‚ê‚Ä‚¢‚é‚à‚Ì‚ğc
                 For Each itm In IList
                     With itm
                         If .Name = iname _
                             And Not .Unit Is Nothing _
                             And .Exist _
                         Then
-                            If .Unit.Party0 = "å‘³æ–¹" Then
+                            If .Unit.Party0 = "–¡•û" Then
                                 GoTo EquipItem
                             End If
                         End If
                     End With
                 Next
-                'ãã‚Œã§ã‚‚ãªã‘ã‚Œã°æ–°ãŸã«ä½œæˆ
+                '‚»‚ê‚Å‚à‚È‚¯‚ê‚ÎV‚½‚Éì¬
                 Set itm = IList.Add(iname)
             Else
                 Set itm = IList.Add(iname)
             End If
         Else
-            'ã‚¢ã‚¤ãƒ†ãƒ ï¼©ï¼¤ã§æŒ‡å®šã—ãŸå ´åˆ
+            'ƒAƒCƒeƒ€‚h‚c‚Åw’è‚µ‚½ê‡
             Set itm = IList.Item(iname)
         End If
     ElseIf IDList.IsDefined(iname) Then
         Set itm = IList.Add(iname)
     Else
-        EventErrorMessage = "ã€Œ" & iname & "ã€ã¨ã„ã†ã‚¢ã‚¤ãƒ†ãƒ ã¯å­˜åœ¨ã—ã¾ã›ã‚“"
+        EventErrorMessage = "u" & iname & "v‚Æ‚¢‚¤ƒAƒCƒeƒ€‚Í‘¶İ‚µ‚Ü‚¹‚ñ"
         Error 0
     End If
 
 EquipItem:
-    'ã‚¢ã‚¤ãƒ†ãƒ ã‚’è£…å‚™
+    'ƒAƒCƒeƒ€‚ğ‘•”õ
     If Not itm Is Nothing Then
         With itm
             If .Exist Then
@@ -5031,43 +5031,43 @@ EquipItem:
                     ubitmap = .Bitmap
                     If .CountPilot > 0 Then
                         With .MainPilot
-                            cmd_lv = .SkillLevel("æŒ‡æ®")
-                            rank_lv = .SkillLevel("éšç´š")
-                            support_lv = .SkillLevel("åºƒåŸŸã‚µãƒãƒ¼ãƒˆ")
+                            cmd_lv = .SkillLevel("wŠö")
+                            rank_lv = .SkillLevel("ŠK‹‰")
+                            support_lv = .SkillLevel("LˆæƒTƒ|[ƒg")
                         End With
                     End If
                     
                     .AddItem itm
                     
-                    'ãƒ¦ãƒ‹ãƒƒãƒˆç”»åƒãŒå¤‰åŒ–ã—ãŸï¼Ÿ
+                    'ƒ†ƒjƒbƒg‰æ‘œ‚ª•Ï‰»‚µ‚½H
                     If ubitmap <> .Bitmap Then
                         .BitmapID = MakeUnitBitmap(u)
                         For i = 1 To .CountOtherForm
                             .OtherForm(i).BitmapID = 0
                         Next
-                        If .Status = "å‡ºæ’ƒ" Then
+                        If .Status = "oŒ‚" Then
                             If Not IsPictureVisible And MapFileName <> "" Then
                                 PaintUnitBitmap u
                             End If
                         End If
                     End If
                     
-                    'æ”¯æ´åŠ¹æœãŒå¤‰åŒ–ã—ãŸï¼Ÿ
+                    'x‰‡Œø‰Ê‚ª•Ï‰»‚µ‚½H
                     If .CountPilot > 0 Then
                         With .MainPilot
-                            If cmd_lv <> .SkillLevel("æŒ‡æ®") _
-                                Or rank_lv <> .SkillLevel("éšç´š") _
-                                Or support_lv <> .SkillLevel("åºƒåŸŸã‚µãƒãƒ¼ãƒˆ") _
+                            If cmd_lv <> .SkillLevel("wŠö") _
+                                Or rank_lv <> .SkillLevel("ŠK‹‰") _
+                                Or support_lv <> .SkillLevel("LˆæƒTƒ|[ƒg") _
                             Then
-                                If u.Status = "å‡ºæ’ƒ" Then
+                                If u.Status = "oŒ‚" Then
                                     PList.UpdateSupportMod u
                                 End If
                             End If
                         End With
                     End If
                     
-                    'æœ€å¤§å¼¾æ•°ãŒå¤‰åŒ–ã—ãŸï¼Ÿ
-                    If itm.IsFeatureAvailable("æœ€å¤§å¼¾æ•°å¢—åŠ ") Then
+                    'Å‘å’e”‚ª•Ï‰»‚µ‚½H
+                    If itm.IsFeatureAvailable("Å‘å’e”‘‰Á") Then
                         .FullSupply
                     End If
                 End With
@@ -5088,8 +5088,8 @@ Dim ucount As Integer
     num = ArgNum
     
     If num > 1 Then
-        If GetArgAsString(num) = "éåŒæœŸ" Then
-            opt = "éåŒæœŸ"
+        If GetArgAsString(num) = "”ñ“¯Šú" Then
+            opt = "”ñ“¯Šú"
             num = num - 1
         End If
     End If
@@ -5097,22 +5097,22 @@ Dim ucount As Integer
     Select Case num
         Case 2
             pname = GetArgAsString(2)
-            If pname = "å‘³æ–¹" Or pname = "ï¼®ï¼°ï¼£" _
-                Or pname = "æ•µ" Or pname = "ä¸­ç«‹" _
+            If pname = "–¡•û" Or pname = "‚m‚o‚b" _
+                Or pname = "“G" Or pname = "’†—§" _
             Then
                 uparty = pname
                 For Each u In UList
                     With u
                         If .Party0 = uparty Then
-                            If .Status = "å‡ºæ’ƒ" Then
+                            If .Status = "oŒ‚" Then
                                 .Escape opt
                                 ucount = ucount + 1
-                            ElseIf .Status = "ç ´å£Š" Then
+                            ElseIf .Status = "”j‰ó" Then
                                 If 1 <= .X And .X <= MapWidth _
                                     And 1 <= .Y And .Y <= MapHeight _
                                 Then
                                     If u Is MapDataForUnit(.X, .Y) Then
-                                        'ç ´å£Šã‚­ãƒ£ãƒ³ã‚»ãƒ«ã§ç”»é¢ä¸Šã«æ®‹ã£ã¦ã„ãŸ
+                                        '”j‰óƒLƒƒƒ“ƒZƒ‹‚Å‰æ–Êã‚Éc‚Á‚Ä‚¢‚½
                                         .Escape opt
                                     End If
                                 End If
@@ -5125,8 +5125,8 @@ Dim ucount As Integer
                 If u Is Nothing Then
                     With PList
                         If Not .IsDefined(pname) Then
-                            EventErrorMessage = "ã€Œ" & pname & _
-                                "ã€ã¨ã„ã†ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“"
+                            EventErrorMessage = "u" & pname & _
+                                "v‚Æ‚¢‚¤ƒpƒCƒƒbƒg‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ"
                             Error 0
                         End If
                         Set u = .Item(pname).Unit
@@ -5134,7 +5134,7 @@ Dim ucount As Integer
                 End If
                 If Not u Is Nothing Then
                     With u
-                        If .Status = "å‡ºæ’ƒ" Then
+                        If .Status = "oŒ‚" Then
                             ucount = 1
                         End If
                         .Escape opt
@@ -5144,24 +5144,24 @@ Dim ucount As Integer
             End If
         Case 1
             With SelectedUnitForEvent
-                If .Status = "å‡ºæ’ƒ" Then
+                If .Status = "oŒ‚" Then
                     ucount = 1
                 End If
                 .Escape opt
                 uparty = .Party0
             End With
         Case Else
-            EventErrorMessage = "Escapeã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+            EventErrorMessage = "EscapeƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
             Error 0
     End Select
     
-    'Escapeã‚³ãƒãƒ³ãƒ‰ã«ã‚ˆã£ã¦å…¨æ»…ã—ãŸã‹ã‚’åˆ¤å®š
-    If uparty <> "ï¼®ï¼°ï¼£" And uparty <> "å‘³æ–¹" And ucount > 0 Then
+    'EscapeƒRƒ}ƒ“ƒh‚É‚æ‚Á‚Ä‘S–Å‚µ‚½‚©‚ğ”»’è
+    If uparty <> "‚m‚o‚b" And uparty <> "–¡•û" And ucount > 0 Then
         For Each u In UList
             With u
                 If .Party0 = uparty _
-                    And (.Status = "å‡ºæ’ƒ" Or .Status = "æ ¼ç´") _
-                    And Not .IsConditionSatisfied("æ†‘ä¾") _
+                    And (.Status = "oŒ‚" Or .Status = "Ši”[") _
+                    And Not .IsConditionSatisfied("œßˆË") _
                 Then
                     ExecEscapeCmd = LineNum + 1
                     Exit Function
@@ -5169,20 +5169,20 @@ Dim ucount As Integer
             End With
         Next
         
-        'æˆ¦é—˜æ™‚ä»¥å¤–ã®ã‚¤ãƒ™ãƒ³ãƒˆä¸­ã®æ’¤é€€ã¯ç„¡è¦–
+        'í“¬ˆÈŠO‚ÌƒCƒxƒ“ƒg’†‚Ì“P‘Ş‚Í–³‹
         For i = 1 To UBound(EventQue)
-            If EventQue(i) = "ãƒ—ãƒ­ãƒ­ãƒ¼ã‚°" _
-                Or EventQue(i) = "ã‚¨ãƒ”ãƒ­ãƒ¼ã‚°" _
-                Or EventQue(i) = "ã‚¹ã‚¿ãƒ¼ãƒˆ" _
-                Or LIndex(EventQue(i), 1) = "ãƒãƒƒãƒ—æ”»æ’ƒç ´å£Š" _
+            If EventQue(i) = "ƒvƒƒ[ƒO" _
+                Or EventQue(i) = "ƒGƒsƒ[ƒO" _
+                Or EventQue(i) = "ƒXƒ^[ƒg" _
+                Or LIndex(EventQue(i), 1) = "ƒ}ƒbƒvUŒ‚”j‰ó" _
             Then
                 ExecEscapeCmd = LineNum + 1
                 Exit Function
             End If
         Next
         
-        'å¾Œã§å…¨æ»…ã‚¤ãƒ™ãƒ³ãƒˆã‚’å®Ÿè¡Œ
-        RegisterEvent "å…¨æ»…", uparty
+        'Œã‚Å‘S–ÅƒCƒxƒ“ƒg‚ğÀs
+        RegisterEvent "‘S–Å", uparty
     End If
     
     ExecEscapeCmd = LineNum + 1
@@ -5203,18 +5203,18 @@ Dim u As Unit
             fname = GetArgAsString(2)
             opt = GetArgAsString(3)
         Case Else
-            EventErrorMessage = "Execã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+            EventErrorMessage = "ExecƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
             Error 0
     End Select
     
     ClearUnitStatus
     
-    'è¿½åŠ çµŒé¨“å€¤ã‚’å¾—ã‚‹ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‚„ç ´å£Šã•ã‚ŒãŸãƒ¦ãƒ‹ãƒƒãƒˆãŒã„ãªã‘ã‚Œã°å‡¦ç†ã‚’ã‚¹ã‚­ãƒƒãƒ—
+    '’Ç‰ÁŒoŒ±’l‚ğ“¾‚éƒpƒCƒƒbƒg‚â”j‰ó‚³‚ê‚½ƒ†ƒjƒbƒg‚ª‚¢‚È‚¯‚ê‚Îˆ—‚ğƒXƒLƒbƒv
     n = 0
     For Each u In UList
         With u
-            If .Party0 = "å‘³æ–¹" Then
-                If .Status = "å‡ºæ’ƒ" Or .Status = "æ ¼ç´" Or .Status = "ç ´å£Š" Then
+            If .Party0 = "–¡•û" Then
+                If .Status = "oŒ‚" Or .Status = "Ši”[" Or .Status = "”j‰ó" Then
                     n = 1
                     Exit For
                 End If
@@ -5225,15 +5225,15 @@ Dim u As Unit
         Turn = 0
     End If
     
-    'è¿½åŠ çµŒé¨“å€¤ã‚’åå¾—
-    If Turn > 0 And Not IsOptionDefined("è¿½åŠ çµŒé¨“å€¤ç„¡åŠ¹") Then
+    '’Ç‰ÁŒoŒ±’l‚ğû“¾
+    If Turn > 0 And Not IsOptionDefined("’Ç‰ÁŒoŒ±’l–³Œø") Then
         OpenMessageForm
         
         n = 0
         msg = ""
         For Each p In PList
             With p
-                If .Party <> "å‘³æ–¹" Then
+                If .Party <> "–¡•û" Then
                     GoTo NextPilot
                 End If
                 
@@ -5245,8 +5245,8 @@ Dim u As Unit
                     GoTo NextPilot
                 End If
                 
-                If .Unit.Status <> "å‡ºæ’ƒ" _
-                    And .Unit.Status <> "æ ¼ç´" _
+                If .Unit.Status <> "oŒ‚" _
+                    And .Unit.Status <> "Ši”[" _
                 Then
                     GoTo NextPilot
                 End If
@@ -5254,9 +5254,9 @@ Dim u As Unit
                 plevel = .Level
                 .Exp = .Exp + 2 * .SP
                 
-                'è¿½åŠ ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‚„æš´èµ°æ™‚ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã«é–¢ã™ã‚‹å‡¦ç†
+                '’Ç‰ÁƒpƒCƒƒbƒg‚â–\‘–ƒpƒCƒƒbƒg‚ÉŠÖ‚·‚éˆ—
                 If .Unit.CountPilot > 0 And Not .IsSupport(.Unit) Then
-                    'è¿½åŠ ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆãŒãƒ¡ã‚¤ãƒ³ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®å ´åˆ
+                    '’Ç‰ÁƒpƒCƒƒbƒg‚ªƒƒCƒ“ƒpƒCƒƒbƒg‚Ìê‡
                     If p Is .Unit.Pilot(1) _
                         And Not p Is .Unit.MainPilot _
                         And .Unit.MainPilot.MaxSP > 0 _
@@ -5264,9 +5264,9 @@ Dim u As Unit
                         GoTo NextPilot
                     End If
                     
-                    'è¿½åŠ ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆãŒãƒ¡ã‚¤ãƒ³ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã§ã¯ãªããªã£ãŸå ´åˆ
+                    '’Ç‰ÁƒpƒCƒƒbƒg‚ªƒƒCƒ“ƒpƒCƒƒbƒg‚Å‚Í‚È‚­‚È‚Á‚½ê‡
                     If Not p Is .Unit.MainPilot Then
-                        'è‡ªåˆ†ãŒãƒ¦ãƒ‹ãƒƒãƒˆã®ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆä¸€è¦§ã«å«ã¾ã‚Œã¦ã„ã‚‹ã‹åˆ¤å®š
+                        '©•ª‚ªƒ†ƒjƒbƒg‚ÌƒpƒCƒƒbƒgˆê——‚ÉŠÜ‚Ü‚ê‚Ä‚¢‚é‚©”»’è
                         For i = 1 To .Unit.CountPilot
                             If p Is .Unit.Pilot(i) Then
                                 Exit For
@@ -5279,14 +5279,14 @@ Dim u As Unit
                 End If
                 
                 If plevel = .Level Then
-                    msg = msg & ";" & .Nickname & " çµŒé¨“å€¤ +" & Format$(2 * .SP)
+                    msg = msg & ";" & .Nickname & " ŒoŒ±’l +" & Format$(2 * .SP)
                 Else
-                    msg = msg & ";" & .Nickname & " çµŒé¨“å€¤ +" & Format$(2 * .SP) _
-                        & " ãƒ¬ãƒ™ãƒ«ã‚¢ãƒƒãƒ—ï¼ï¼ˆLv" & Format$(.Level) & "ï¼‰"
+                    msg = msg & ";" & .Nickname & " ŒoŒ±’l +" & Format$(2 * .SP) _
+                        & " ƒŒƒxƒ‹ƒAƒbƒvIiLv" & Format$(.Level) & "j"
                 End If
                 n = n + 1
                 If n = 4 Then
-                    DisplayMessage "ã‚·ã‚¹ãƒ†ãƒ ", Mid$(msg, 2)
+                    DisplayMessage "ƒVƒXƒeƒ€", Mid$(msg, 2)
                     msg = ""
                     n = 0
                 End If
@@ -5294,7 +5294,7 @@ Dim u As Unit
 NextPilot:
         Next
         If n > 0 Then
-            DisplayMessage "ã‚·ã‚¹ãƒ†ãƒ ", Mid$(msg, 2)
+            DisplayMessage "ƒVƒXƒeƒ€", Mid$(msg, 2)
         End If
         
         CloseMessageForm
@@ -5302,55 +5302,55 @@ NextPilot:
     
     MainForm.Hide
     
-    'ã‚¨ãƒ”ãƒ­ãƒ¼ã‚°ã‚¤ãƒ™ãƒ³ãƒˆã‚’å®Ÿè¡Œ
-    If IsEventDefined("ã‚¨ãƒ”ãƒ­ãƒ¼ã‚°") Then
-        'ãƒã‚¤ãƒ‘ãƒ¼ãƒ¢ãƒ¼ãƒ‰ã‚„å¤‰èº«ã€èƒ½åŠ›ã‚³ãƒ”ãƒ¼ã‚’è§£é™¤
+    'ƒGƒsƒ[ƒOƒCƒxƒ“ƒg‚ğÀs
+    If IsEventDefined("ƒGƒsƒ[ƒO") Then
+        'ƒnƒCƒp[ƒ‚[ƒh‚â•ÏgA”\—ÍƒRƒs[‚ğ‰ğœ
         For Each u In UList
             With u
-                If .Status <> "ä»–å½¢æ…‹" _
-                    And .Status <> "æ—§ä¸»å½¢æ…‹" _
-                    And .Status <> "æ—§å½¢æ…‹" _
+                If .Status <> "‘¼Œ`‘Ô" _
+                    And .Status <> "‹ŒåŒ`‘Ô" _
+                    And .Status <> "‹ŒŒ`‘Ô" _
                 Then
-                    If .IsFeatureAvailable("ãƒãƒ¼ãƒãƒ«ãƒ¢ãƒ¼ãƒ‰") Then
-                        .Transform LIndex(.FeatureData("ãƒãƒ¼ãƒãƒ«ãƒ¢ãƒ¼ãƒ‰"), 1)
+                    If .IsFeatureAvailable("ƒm[ƒ}ƒ‹ƒ‚[ƒh") Then
+                        .Transform LIndex(.FeatureData("ƒm[ƒ}ƒ‹ƒ‚[ƒh"), 1)
                     End If
                 End If
             End With
         Next
         
-        If IsEventDefined("ã‚¨ãƒ”ãƒ­ãƒ¼ã‚°", True) Then
+        If IsEventDefined("ƒGƒsƒ[ƒO", True) Then
             StopBGM
             StartBGM BGMName("Briefing")
         End If
         
-        Stage = "ã‚¨ãƒ”ãƒ­ãƒ¼ã‚°"
-        HandleEvent "ã‚¨ãƒ”ãƒ­ãƒ¼ã‚°"
+        Stage = "ƒGƒsƒ[ƒO"
+        HandleEvent "ƒGƒsƒ[ƒO"
     End If
     
     MainForm.Hide
     
-    'ãƒãƒƒãƒ—ã‚’ã‚¯ãƒªã‚¢
+    'ƒ}ƒbƒv‚ğƒNƒŠƒA
     For i = 1 To MapWidth
         For j = 1 To MapHeight
             Set MapDataForUnit(i, j) = Nothing
         Next
     Next
     
-    'å„ç¨®ãƒ‡ãƒ¼ã‚¿ã‚’ã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ãƒˆ
+    'Šeíƒf[ƒ^‚ğƒAƒbƒvƒf[ƒg
     UList.Update
     PList.Update
     IList.Update
     ClearEventData
     ClearMap
     
-    'é€šå¸¸ã‚¹ãƒ†ãƒ¼ã‚¸ã¨ã—ã¦å®Ÿè¡Œã™ã‚‹ï¼Ÿ
-    If opt = "é€šå¸¸ã‚¹ãƒ†ãƒ¼ã‚¸" Then
+    '’ÊíƒXƒe[ƒW‚Æ‚µ‚ÄÀs‚·‚éH
+    If opt = "’ÊíƒXƒe[ƒW" Then
         IsSubStage = False
     Else
         IsSubStage = True
     End If
     
-    'ã‚¤ãƒ™ãƒ³ãƒˆãƒ•ã‚¡ã‚¤ãƒ«ã‚’å®Ÿè¡Œ
+    'ƒCƒxƒ“ƒgƒtƒ@ƒCƒ‹‚ğÀs
     StartScenario fname
     
     IsScenarioFinished = True
@@ -5374,7 +5374,7 @@ Dim u As Unit, ipart As String
             Set u = GetArgAsUnit(2)
             ipart = GetArgAsString(3)
         Case Else
-            EventErrorMessage = "ExchangeItemã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+            EventErrorMessage = "ExchangeItemƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
             Error 0
     End Select
     
@@ -5396,11 +5396,11 @@ Dim esize As String, tx As Integer, ty As Integer
             tx = GetArgAsLong(3)
             ty = GetArgAsLong(4)
         Case Else
-            EventErrorMessage = "Explodeã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+            EventErrorMessage = "ExplodeƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
             Error 0
     End Select
     
-    'çˆ†ç™ºã®è¡¨ç¤º
+    '”š”­‚Ì•\¦
     ExplodeAnimation esize, tx, ty
     
     ExecExplodeCmd = LineNum + 1
@@ -5428,7 +5428,7 @@ Dim num As Integer
             num = GetArgAsLong(2)
             
         Case Else
-            EventErrorMessage = "ExpUpã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+            EventErrorMessage = "ExpUpƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
             Error 0
     End Select
     
@@ -5451,7 +5451,7 @@ Dim num As Integer
         
         .Update
         
-        'ï¼³ï¼°ï¼†éœŠåŠ›ã‚’ã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ãƒˆ
+        '‚r‚o•—ì—Í‚ğƒAƒbƒvƒf[ƒg
         .SP = .SP
         .Plana = .Plana
         
@@ -5484,7 +5484,7 @@ Dim i As Long, num As Integer, ret As Long
         Case 2
             num = GetArgAsLong(2)
         Case Else
-            EventErrorMessage = "FadeInã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+            EventErrorMessage = "FadeInƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
             Error 0
     End Select
     
@@ -5497,14 +5497,14 @@ Dim i As Long, num As Integer, ret As Long
             .Height = MainPHeight
         End With
         
-' MOD START ãƒãƒ¼ã‚¸
+' MOD START ƒ}[ƒW
 '        ret = BitBlt(.picTmp.hDC, _
 '            0, 0, MapPWidth, MapPHeight, _
 '            .picMain(0).hDC, 0, 0, SRCCOPY)
         ret = BitBlt(.picTmp.hDC, _
             0, 0, MainPWidth, MainPHeight, _
             .picMain(0).hDC, 0, 0, SRCCOPY)
-' MOD END ãƒãƒ¼ã‚¸
+' MOD END ƒ}[ƒW
         
         InitFade .picMain(0), num
         
@@ -5554,7 +5554,7 @@ Dim i As Long, num As Integer, ret As Long
         Case 2
             num = GetArgAsLong(2)
         Case Else
-            EventErrorMessage = "FadeOutã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+            EventErrorMessage = "FadeOutƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
             Error 0
     End Select
     
@@ -5602,13 +5602,13 @@ Private Function ExecFillColorCmd() As Long
 Dim opt As String, cname As String
 
     If ArgNum <> 2 Then
-        EventErrorMessage = "FillColorã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+        EventErrorMessage = "FillColorƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
         Error 0
     End If
     
     opt = GetArgAsString(2)
     If Asc(opt) <> 35 Or Len(opt) <> 7 Then
-        EventErrorMessage = "è‰²æŒ‡å®šãŒä¸æ­£ã§ã™"
+        EventErrorMessage = "Fw’è‚ª•s³‚Å‚·"
         Error 0
     End If
     cname = String$(8, vbNullChar)
@@ -5617,7 +5617,7 @@ Dim opt As String, cname As String
     Mid(cname, 5, 2) = Mid$(opt, 4, 2)
     Mid(cname, 7, 2) = Mid$(opt, 2, 2)
     If Not IsNumeric(cname) Then
-        EventErrorMessage = "è‰²æŒ‡å®šãŒä¸æ­£ã§ã™"
+        EventErrorMessage = "Fw’è‚ª•s³‚Å‚·"
         Error 0
     End If
     
@@ -5628,29 +5628,29 @@ End Function
 
 Private Function ExecFillStyleCmd() As Long
     If ArgNum <> 2 Then
-        EventErrorMessage = "FillStyleã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+        EventErrorMessage = "FillStyleƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
         Error 0
     End If
     
     Select Case GetArgAsString(2)
-        Case "å¡—ã‚Šã¤ã¶ã—"
+        Case "“h‚è‚Â‚Ô‚µ"
             ObjFillStyle = vbFSSolid
-        Case "é€æ˜"
+        Case "“§–¾"
             ObjFillStyle = vbFSTransparent
-        Case "æ¨ªç·š"
+        Case "‰¡ü"
             ObjFillStyle = vbHorizontalLine
-        Case "ç¸¦ç·š"
+        Case "cü"
             ObjFillStyle = vbVerticalLine
-        Case "æ–œç·š"
+        Case "Îü"
             ObjFillStyle = vbUpwardDiagonal
-        Case "æ–œç·šï¼’"
+        Case "Îü‚Q"
             ObjFillStyle = vbDownwardDiagonal
-        Case "ã‚¯ãƒ­ã‚¹"
+        Case "ƒNƒƒX"
             ObjFillStyle = vbCross
-        Case "ç¶²ã‹ã‘"
+        Case "–Ô‚©‚¯"
             ObjFillStyle = vbDiagonalCross
         Case Else
-            EventErrorMessage = "èƒŒæ™¯æç”»æ–¹æ³•ã®æŒ‡å®šãŒä¸æ­£ã§ã™"
+            EventErrorMessage = "”wŒi•`‰æ•û–@‚Ìw’è‚ª•s³‚Å‚·"
             Error 0
     End Select
     
@@ -5666,7 +5666,7 @@ Dim u As Unit
         Case 1
             Set u = SelectedUnitForEvent
         Case Else
-            EventErrorMessage = "Finishã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+            EventErrorMessage = "FinishƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
             Error 0
     End Select
     
@@ -5675,11 +5675,11 @@ Dim u As Unit
             Select Case .Action
                 Case 1
                     .UseAction
-                    If .Status = "å‡ºæ’ƒ" Then
+                    If .Status = "oŒ‚" Then
                         PaintUnitBitmap u
                     End If
                 Case 0
-                    'ãªã«ã‚‚ã—ãªã„
+                    '‚È‚É‚à‚µ‚È‚¢
                 Case Else
                     .UseAction
             End Select
@@ -5698,7 +5698,7 @@ Dim buf As String
         Case 2
             buf = GetArgAsString(2)
             If Not PList.IsDefined(buf) And Not IList.IsDefined(buf) Then
-                EventErrorMessage = "ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆåã¾ãŸã¯ã‚¢ã‚¤ãƒ†ãƒ å" & buf & "ãŒé–“é•ã£ã¦ã„ã¾ã™"
+                EventErrorMessage = "ƒpƒCƒƒbƒg–¼‚Ü‚½‚ÍƒAƒCƒeƒ€–¼" & buf & "‚ªŠÔˆá‚Á‚Ä‚¢‚Ü‚·"
                 Error 0
             End If
             If PList.IsDefined(buf) Then
@@ -5707,7 +5707,7 @@ Dim buf As String
                 buf = IList.Item(buf).Name
             End If
         Case Else
-            EventErrorMessage = "Fixã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+            EventErrorMessage = "FixƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
             Error 0
     End Select
     
@@ -5730,11 +5730,11 @@ Dim sf As StdFont
     With MainForm.picMain(0)
         fname = .Font.Name
         
-        'ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®è¨­å®š
+        'ƒfƒtƒHƒ‹ƒg‚Ìİ’è
         If ArgNum = 1 Then
             .ForeColor = vbWhite
             With .Font
-                fname = "ï¼­ï¼³ ï¼°æ˜æœ"
+                fname = "‚l‚r ‚o–¾’©"
                 .Size = 16
                 .Bold = True
                 .Italic = False
@@ -5745,14 +5745,14 @@ Dim sf As StdFont
             For i = 2 To ArgNum
                 opt = GetArgAsString(i)
                 Select Case opt
-                    Case "ï¼°æ˜æœ"
-                        fname = "ï¼­ï¼³ ï¼°æ˜æœ"
-                    Case "ï¼°ã‚´ã‚·ãƒƒã‚¯"
-                        fname = "ï¼­ï¼³ ï¼°ã‚´ã‚·ãƒƒã‚¯"
-                    Case "æ˜æœ"
-                        fname = "ï¼­ï¼³ æ˜æœ"
-                    Case "ã‚´ã‚·ãƒƒã‚¯"
-                        fname = "ï¼­ï¼³ ã‚´ã‚·ãƒƒã‚¯"
+                    Case "‚o–¾’©"
+                        fname = "‚l‚r ‚o–¾’©"
+                    Case "‚oƒSƒVƒbƒN"
+                        fname = "‚l‚r ‚oƒSƒVƒbƒN"
+                    Case "–¾’©"
+                        fname = "‚l‚r –¾’©"
+                    Case "ƒSƒVƒbƒN"
+                        fname = "‚l‚r ƒSƒVƒbƒN"
                     Case "Bold"
                         .Font.Bold = True
                     Case "Italic"
@@ -5760,22 +5760,22 @@ Dim sf As StdFont
                     Case "Regular"
                         .Font.Bold = False
                         .Font.Italic = False
-                    Case "é€šå¸¸"
+                    Case "’Êí"
                         PermanentStringMode = False
                         KeepStringMode = False
-                    Case "èƒŒæ™¯"
+                    Case "”wŒi"
                         PermanentStringMode = True
-                    Case "ä¿æŒ"
+                    Case "•Û"
                         KeepStringMode = True
                     Case " ", ""
-                        'ç„¡è¦–
+                        '–³‹
                     Case Else
                         If Right$(opt, 2) = "pt" Then
-                            'æ–‡å­—ã‚µã‚¤ã‚º
+                            '•¶šƒTƒCƒY
                             opt = Left$(opt, Len(opt) - 2)
                             .Font.Size = CInt(opt)
                         ElseIf Asc(opt) = 35 And Len(opt) = 7 Then
-                            'æ–‡å­—è‰²
+                            '•¶šF
                             cname = String$(8, vbNullChar)
                             Mid(cname, 1, 2) = "&H"
                             Mid(cname, 3, 2) = Mid$(opt, 6, 2)
@@ -5785,14 +5785,14 @@ Dim sf As StdFont
                                 .ForeColor = CLng(cname)
                             End If
                         Else
-                            'ãã®ä»–ã®ãƒ•ã‚©ãƒ³ãƒˆ
+                            '‚»‚Ì‘¼‚ÌƒtƒHƒ“ƒg
                             fname = opt
                         End If
                 End Select
             Next
         End If
         
-        'ãƒ•ã‚©ãƒ³ãƒˆåãŒå¤‰æ›´ã•ã‚Œã¦ã„ã‚‹ï¼Ÿ
+        'ƒtƒHƒ“ƒg–¼‚ª•ÏX‚³‚ê‚Ä‚¢‚éH
         If fname <> .Font.Name Then
             Set sf = New StdFont
             With .Font
@@ -5812,22 +5812,22 @@ Dim i As Long, depth As Integer, idx As Long, limit As Long
 Dim isincr As Integer
 
     If ArgNum <> 6 And ArgNum <> 8 Then
-        EventErrorMessage = "Forã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+        EventErrorMessage = "ForƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
         Error 0
     End If
     
-    'ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹å¤‰æ•°ã«åˆæœŸå€¤ã‚’è¨­å®š
+    'ƒCƒ“ƒfƒbƒNƒX•Ï”‚É‰Šú’l‚ğİ’è
     vname = GetArg(2)
     idx = GetArgAsLong(4)
     SetVariableAsLong vname, idx
     
-    'ãƒ«ãƒ¼ãƒ—ã®çµ‚ç«¯å€¤
+    'ƒ‹[ƒv‚ÌI’[’l
     limit = GetArgAsLong(6)
     
-    'ArgNumãŒ8ã‹ã¤å¼•æ•°8ãŒ<0ã®å ´åˆã€ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãŒæ¸›ç®—ã•ã‚Œã‚‹ãƒ«ãƒ¼ãƒ—ã¨ã—ã¦
-    'ãƒ«ãƒ¼ãƒ—çµ‚äº†ã®æ¡ä»¶å¼ã®ä¸ç­‰å·ã‚’é€†ã«ã—ã¾ã™
-    '(idxãŠã‚ˆã³limitã®å€¤ã«-1ã‚’ä¹—ç®—ã™ã‚‹ã“ã¨ã§ã€æ“¬ä¼¼çš„ã«ä¸ç­‰å·ã‚’åå¯¾ã«ã—ã¦ã„ã¾ã™)
-    'ExecNextCmdã§ã‚‚åŒæ§˜ã®å‡¦ç†ã‚’ã—ã¦ã„ã¾ã™
+    'ArgNum‚ª8‚©‚Âˆø”8‚ª<0‚Ìê‡AƒCƒ“ƒfƒbƒNƒX‚ªŒ¸Z‚³‚ê‚éƒ‹[ƒv‚Æ‚µ‚Ä
+    'ƒ‹[ƒvI—¹‚ÌğŒ®‚Ì•s“™†‚ğ‹t‚É‚µ‚Ü‚·
+    '(idx‚¨‚æ‚Ñlimit‚Ì’l‚É-1‚ğæZ‚·‚é‚±‚Æ‚ÅA‹[—“I‚É•s“™†‚ğ”½‘Î‚É‚µ‚Ä‚¢‚Ü‚·)
+    'ExecNextCmd‚Å‚à“¯—l‚Ìˆ—‚ğ‚µ‚Ä‚¢‚Ü‚·
     isincr = 1
     If ArgNum = 8 Then
         If GetArgAsLong(8) < 0 Then
@@ -5836,15 +5836,15 @@ Dim isincr As Integer
     End If
     
     If idx * isincr <= limit * isincr Then
-        'çµ‚ç«¯å€¤ã‚’ã‚¹ã‚¿ãƒƒã‚¯ã«æ ¼ç´
+        'I’[’l‚ğƒXƒ^ƒbƒN‚ÉŠi”[
         ForIndex = ForIndex + 1
         ForLimitStack(ForIndex) = limit
-        'åˆå›ã®ãƒ«ãƒ¼ãƒ—ã‚’å®Ÿè¡Œ
+        '‰‰ñ‚Ìƒ‹[ƒv‚ğÀs
         ExecForCmd = LineNum + 1
     Else
-        'æœ€åˆã‹ã‚‰æ¡ä»¶å¼ã‚’æº€ãŸã—ã¦ã„ãªã„å ´åˆ
+        'Å‰‚©‚çğŒ®‚ğ–‚½‚µ‚Ä‚¢‚È‚¢ê‡
         
-        'å¯¾å¿œã™ã‚‹Nextã‚³ãƒãƒ³ãƒ‰ã‚’æ¢ã™
+        '‘Î‰‚·‚éNextƒRƒ}ƒ“ƒh‚ğ’T‚·
         depth = 1
         For i = LineNum + 1 To UBound(EventCmd)
             Select Case EventCmd(i).Name
@@ -5859,7 +5859,7 @@ Dim isincr As Integer
             End Select
         Next
         
-        EventErrorMessage = "Forã¾ãŸã¯ForEachã¨NextãŒå¯¾å¿œã—ã¦ã„ã¾ã›ã‚“"
+        EventErrorMessage = "For‚Ü‚½‚ÍForEach‚ÆNext‚ª‘Î‰‚µ‚Ä‚¢‚Ü‚¹‚ñ"
         Error 0
     End If
 End Function
@@ -5879,26 +5879,26 @@ Dim max_value As Long, max_str As String, max_item As Integer
     ReDim ForEachSet(0)
     
     Select Case ArgNum
-        'ãƒ¦ãƒ‹ãƒƒãƒˆã«å¯¾ã™ã‚‹ForEach
+        'ƒ†ƒjƒbƒg‚É‘Î‚·‚éForEach
         Case 2, 3
             If ArgNum = 2 Then
-                ustatus = "å‡ºæ’ƒ æ ¼ç´"
+                ustatus = "oŒ‚ Ši”["
             Else
                 ustatus = GetArgAsString(3)
-                If ustatus = "å…¨ã¦" Then
-                    ustatus = "å…¨"
+                If ustatus = "‘S‚Ä" Then
+                    ustatus = "‘S"
                 End If
             End If
             
             Select Case GetArgAsString(2)
-                Case "å…¨"
-                    If ustatus = "å…¨" Then
+                Case "‘S"
+                    If ustatus = "‘S" Then
                         For Each u In UList
                             With u
-                                If .Status <> "ä»–å½¢æ…‹" _
-                                    And .Status <> "æ—§ä¸»å½¢æ…‹" _
-                                    And .Status <> "æ—§å½¢æ…‹" _
-                                    And .Status <> "ç ´æ£„" _
+                                If .Status <> "‘¼Œ`‘Ô" _
+                                    And .Status <> "‹ŒåŒ`‘Ô" _
+                                    And .Status <> "‹ŒŒ`‘Ô" _
+                                    And .Status <> "”jŠü" _
                                 Then
                                     ReDim Preserve ForEachSet(UBound(ForEachSet) + 1)
                                     ForEachSet(UBound(ForEachSet)) = .ID
@@ -5915,16 +5915,16 @@ Dim max_value As Long, max_str As String, max_item As Integer
                             End With
                         Next
                     End If
-                Case "å‘³æ–¹", "ï¼®ï¼°ï¼£", "æ•µ", "ä¸­ç«‹"
+                Case "–¡•û", "‚m‚o‚b", "“G", "’†—§"
                     uparty = GetArgAsString(2)
-                    If ustatus = "å…¨" Then
+                    If ustatus = "‘S" Then
                         For Each u In UList
                             With u
                                 If .Party0 = uparty Then
-                                    If .Status <> "ä»–å½¢æ…‹" _
-                                        And .Status <> "æ—§ä¸»å½¢æ…‹" _
-                                        And .Status <> "æ—§å½¢æ…‹" _
-                                        And .Status <> "ç ´æ£„" _
+                                    If .Status <> "‘¼Œ`‘Ô" _
+                                        And .Status <> "‹ŒåŒ`‘Ô" _
+                                        And .Status <> "‹ŒŒ`‘Ô" _
+                                        And .Status <> "”jŠü" _
                                     Then
                                         ReDim Preserve ForEachSet(UBound(ForEachSet) + 1)
                                         ForEachSet(UBound(ForEachSet)) = .ID
@@ -5946,8 +5946,8 @@ Dim max_value As Long, max_str As String, max_item As Integer
                     End If
                 Case Else
                     ugroup = GetArgAsString(2)
-                    If ustatus = "å…¨ã¦" Then
-                        ustatus = "å…¨"
+                    If ustatus = "‘S‚Ä" Then
+                        ustatus = "‘S"
                     End If
                     For Each u In UList
                         With u
@@ -5955,11 +5955,11 @@ Dim max_value As Long, max_str As String, max_item As Integer
                                 If .MainPilot.ID = ugroup _
                                     Or InStr(.MainPilot.ID, ugroup & ":") = 1 _
                                 Then
-                                    If ustatus = "å…¨" Then
-                                        If .Status <> "ä»–å½¢æ…‹" _
-                                            And .Status <> "æ—§ä¸»å½¢æ…‹" _
-                                            And .Status <> "æ—§å½¢æ…‹" _
-                                            And .Status <> "ç ´æ£„" _
+                                    If ustatus = "‘S" Then
+                                        If .Status <> "‘¼Œ`‘Ô" _
+                                            And .Status <> "‹ŒåŒ`‘Ô" _
+                                            And .Status <> "‹ŒŒ`‘Ô" _
+                                            And .Status <> "”jŠü" _
                                         Then
                                             ReDim Preserve ForEachSet(UBound(ForEachSet) + 1)
                                             ForEachSet(UBound(ForEachSet)) = .ID
@@ -5976,20 +5976,20 @@ Dim max_value As Long, max_str As String, max_item As Integer
                     Next
             End Select
         
-        'é…åˆ—ã®è¦ç´ ã«å¯¾ã™ã‚‹ForEach
+        '”z—ñ‚Ì—v‘f‚É‘Î‚·‚éForEach
         Case 4
-            'ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ç”¨å¤‰æ•°å
+            'ƒCƒ“ƒfƒbƒNƒX—p•Ï”–¼
             vname = GetArg(2)
             If Left$(vname, 1) = "$" Then
                 vname = Mid$(vname, 2)
             End If
             
-            'é…åˆ—ã®å¤‰æ•°å
+            '”z—ñ‚Ì•Ï”–¼
             aname = GetArg(4)
             If Left$(aname, 1) = "$" Then
                 aname = Mid$(aname, 2)
             End If
-            'Evalé–¢æ•°
+            'EvalŠÖ”
             If LCase$(Left$(aname, 5)) = "eval(" Then
                 If Right$(aname, 1) = ")" Then
                     aname = Mid$(aname, 6, Len(aname) - 6)
@@ -5997,14 +5997,14 @@ Dim max_value As Long, max_str As String, max_item As Integer
                 End If
             End If
             
-            'é…åˆ—ã‚’æ¤œç´¢ã—ã€é…åˆ—è¦ç´ ã‚’è¦‹ã¤ã‘ã‚‹
-            If InStrNotNest(aname, "ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆä¸€è¦§(") = 1 Then
+            '”z—ñ‚ğŒŸõ‚µA”z—ñ—v‘f‚ğŒ©‚Â‚¯‚é
+            If InStrNotNest(aname, "ƒpƒCƒƒbƒgˆê——(") = 1 Then
                 key_type = Mid$(aname, InStrNotNest(aname, "(") + 1, _
                     Len(aname) - InStrNotNest(aname, "(") - 1)
                 key_type = GetValueAsString(key_type)
                 
-                If key_type <> "åç§°" Then
-                    'é…åˆ—ä½œæˆ
+                If key_type <> "–¼Ì" Then
+                    '”z—ñì¬
                     ReDim ForEachSet(PList.Count)
                     ReDim key_list(PList.Count)
                     i = 0
@@ -6027,21 +6027,21 @@ Dim max_value As Long, max_str As String, max_item As Integer
                             i = i + 1
                             ForEachSet(i) = .ID
                             Select Case key_type
-                                Case "ãƒ¬ãƒ™ãƒ«"
+                                Case "ƒŒƒxƒ‹"
                                     key_list(i) = 500 * CLng(.Level) + CLng(.Exp)
-                                Case "ï¼³ï¼°"
+                                Case "‚r‚o"
                                     key_list(i) = .MaxSP
-                                Case "æ ¼é—˜"
+                                Case "Ši“¬"
                                     key_list(i) = .Infight
-                                Case "å°„æ’ƒ"
+                                Case "ËŒ‚"
                                     key_list(i) = .Shooting
-                                Case "å‘½ä¸­"
+                                Case "–½’†"
                                     key_list(i) = .Hit
-                                Case "å›é¿"
+                                Case "‰ñ”ğ"
                                     key_list(i) = .Dodge
-                                Case "æŠ€é‡"
+                                Case "‹Z—Ê"
                                     key_list(i) = .Technique
-                                Case "åå¿œ"
+                                Case "”½‰"
                                     key_list(i) = .Intuition
                             End Select
                         End With
@@ -6050,7 +6050,7 @@ NextPilot1:
                     ReDim Preserve ForEachSet(i)
                     ReDim Preserve key_list(i)
                     
-                    'ã‚½ãƒ¼ãƒˆ
+                    'ƒ\[ƒg
                     For i = 1 To UBound(ForEachSet) - 1
                         max_item = i
                         max_value = key_list(i)
@@ -6069,7 +6069,7 @@ NextPilot1:
                         End If
                     Next
                 Else
-                    'é…åˆ—ä½œæˆ
+                    '”z—ñì¬
                     ReDim ForEachSet(PList.Count)
                     ReDim strkey_list(PList.Count)
                     i = 0
@@ -6098,7 +6098,7 @@ NextPilot2:
                     ReDim Preserve ForEachSet(i)
                     ReDim Preserve strkey_list(i)
                     
-                    'ã‚½ãƒ¼ãƒˆ
+                    'ƒ\[ƒg
                     For i = 1 To UBound(ForEachSet) - 1
                         max_item = i
                         max_str = strkey_list(i)
@@ -6117,50 +6117,50 @@ NextPilot2:
                         End If
                     Next
                 End If
-            ElseIf InStrNotNest(aname, "ãƒ¦ãƒ‹ãƒƒãƒˆä¸€è¦§(") = 1 Then
+            ElseIf InStrNotNest(aname, "ƒ†ƒjƒbƒgˆê——(") = 1 Then
                 key_type = Mid$(aname, InStrNotNest(aname, "(") + 1, _
                     Len(aname) - InStrNotNest(aname, "(") - 1)
                 key_type = GetValueAsString(key_type)
                 
-                If key_type <> "åç§°" Then
-                    'é…åˆ—ä½œæˆ
+                If key_type <> "–¼Ì" Then
+                    '”z—ñì¬
                     ReDim ForEachSet(UList.Count)
                     ReDim key_list(UList.Count)
                     i = 0
                     For Each u In UList
                         With u
-                            If .Status = "å‡ºæ’ƒ" Or .Status = "æ ¼ç´" Or .Status = "å¾…æ©Ÿ" Then
+                            If .Status = "oŒ‚" Or .Status = "Ši”[" Or .Status = "‘Ò‹@" Then
                                 i = i + 1
                                 ForEachSet(i) = .ID
                                 Select Case key_type
-                                    Case "ãƒ©ãƒ³ã‚¯"
+                                    Case "ƒ‰ƒ“ƒN"
                                         key_list(i) = .Rank
-                                    Case "ï¼¨ï¼°"
+                                    Case "‚g‚o"
                                         key_list(i) = .HP
-                                    Case "ï¼¥ï¼®"
+                                    Case "‚d‚m"
                                         key_list(i) = .EN
-                                    Case "è£…ç”²"
+                                    Case "‘•b"
                                         key_list(i) = .Armor
-                                    Case "é‹å‹•æ€§"
+                                    Case "‰^“®«"
                                         key_list(i) = .Mobility
-                                    Case "ç§»å‹•åŠ›"
+                                    Case "ˆÚ“®—Í"
                                         key_list(i) = .Speed
-                                    Case "æœ€å¤§æ”»æ’ƒåŠ›"
+                                    Case "Å‘åUŒ‚—Í"
                                         For j = 1 To .CountWeapon
                                             If .IsWeaponMastered(j) _
                                                 And Not .IsDisabled(.Weapon(j).Name) _
-                                                And Not .IsWeaponClassifiedAs(j, "åˆ") _
+                                                And Not .IsWeaponClassifiedAs(j, "‡") _
                                             Then
                                                 If .WeaponPower(j, "") > key_list(i) Then
                                                     key_list(i) = .WeaponPower(j, "")
                                                 End If
                                             End If
                                         Next
-                                    Case "æœ€é•·å°„ç¨‹"
+                                    Case "Å’·Ë’ö"
                                         For j = 1 To .CountWeapon
                                             If .IsWeaponMastered(j) _
                                                 And Not .IsDisabled(.Weapon(j).Name) _
-                                                And Not .IsWeaponClassifiedAs(j, "åˆ") _
+                                                And Not .IsWeaponClassifiedAs(j, "‡") _
                                             Then
                                                 If .WeaponMaxRange(j) > key_list(i) Then
                                                     key_list(i) = .WeaponMaxRange(j)
@@ -6174,7 +6174,7 @@ NextPilot2:
                     ReDim Preserve ForEachSet(i)
                     ReDim Preserve key_list(i)
                     
-                    'ã‚½ãƒ¼ãƒˆ
+                    'ƒ\[ƒg
                     For i = 1 To UBound(ForEachSet) - 1
                         max_item = i
                         max_value = key_list(i)
@@ -6193,13 +6193,13 @@ NextPilot2:
                         End If
                     Next
                 Else
-                    'é…åˆ—ä½œæˆ
+                    '”z—ñì¬
                     ReDim ForEachSet(UList.Count)
                     ReDim strkey_list(UList.Count)
                     i = 0
                     For Each u In UList
                         With u
-                            If .Status = "å‡ºæ’ƒ" Or .Status = "æ ¼ç´" Or .Status = "å¾…æ©Ÿ" Then
+                            If .Status = "oŒ‚" Or .Status = "Ši”[" Or .Status = "‘Ò‹@" Then
                                 i = i + 1
                                 ForEachSet(i) = .ID
                                 strkey_list(i) = .KanaName
@@ -6209,7 +6209,7 @@ NextPilot2:
                     ReDim Preserve ForEachSet(i)
                     ReDim Preserve strkey_list(i)
                     
-                    'ã‚½ãƒ¼ãƒˆ
+                    'ƒ\[ƒg
                     For i = 1 To UBound(ForEachSet) - 1
                         max_item = i
                         max_str = strkey_list(i)
@@ -6229,7 +6229,7 @@ NextPilot2:
                     Next
                 End If
             ElseIf IsSubLocalVariableDefined(aname) Then
-                'ã‚µãƒ–ãƒ«ãƒ¼ãƒãƒ³ãƒ­ãƒ¼ã‚«ãƒ«ãªé…åˆ—ã«å¯¾ã™ã‚‹ForEach
+                'ƒTƒuƒ‹[ƒ`ƒ“ƒ[ƒJƒ‹‚È”z—ñ‚É‘Î‚·‚éForEach
                 For i = VarIndexStack(CallDepth - 1) + 1 To VarIndex
                     With VarStack(i)
                         If InStr(.Name, aname & "[") = 1 Then
@@ -6254,7 +6254,7 @@ NextPilot2:
                     Next
                 End If
             ElseIf IsLocalVariableDefined(aname) Then
-                'ãƒ­ãƒ¼ã‚«ãƒ«ãªé…åˆ—ã«å¯¾ã™ã‚‹ForEach
+                'ƒ[ƒJƒ‹‚È”z—ñ‚É‘Î‚·‚éForEach
                 For Each var In LocalVariableList
                     With var
                         If InStr(.Name, aname & "[") = 1 Then
@@ -6279,7 +6279,7 @@ NextPilot2:
                     Next
                 End If
             ElseIf IsGlobalVariableDefined(aname) Then
-                'ã‚°ãƒ­ãƒ¼ãƒãƒ«ãªé…åˆ—ã«å¯¾ã™ã‚‹ForEach
+                'ƒOƒ[ƒoƒ‹‚È”z—ñ‚É‘Î‚·‚éForEach
                 For Each var In GlobalVariableList
                     With var
                         If InStr(.Name, aname & "[") = 1 Then
@@ -6308,7 +6308,7 @@ NextPilot2:
                 Or (Left$(aname, 1) = "`" And Right$(aname, 1) = "`") _
                 Or (InStr(LCase$(aname), "list(") = 1 And Right$(aname, 1) = ")") _
             Then
-                'ãƒªã‚¹ãƒˆã«å¯¾ã™ã‚‹ForEach
+                'ƒŠƒXƒg‚É‘Î‚·‚éForEach
                 buf = GetValueAsString(aname)
                 ReDim ForEachSet(ListLength(buf))
                 For i = 1 To ListLength(buf)
@@ -6317,12 +6317,12 @@ NextPilot2:
             End If
         
         Case Else
-            EventErrorMessage = "ForEachã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+            EventErrorMessage = "ForEachƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
             Error 0
     End Select
     
     If UBound(ForEachSet) > 0 Then
-        'ForEachã®å®Ÿè¡Œè¦ç´ ãŒã‚ã‚‹å ´åˆ
+        'ForEach‚ÌÀs—v‘f‚ª‚ ‚éê‡
         
         ForEachIndex = 1
         ForIndex = ForIndex + 1
@@ -6334,9 +6334,9 @@ NextPilot2:
         End If
         ExecForEachCmd = LineNum + 1
     Else
-        'ForEachã®å®Ÿè¡Œè¦ç´ ãŒãªã„å ´åˆ
+        'ForEach‚ÌÀs—v‘f‚ª‚È‚¢ê‡
         
-        'å¯¾å¿œã™ã‚‹Nextã‚’æ¢ã™
+        '‘Î‰‚·‚éNext‚ğ’T‚·
         depth = 1
         For i = LineNum + 1 To UBound(EventCmd)
             Select Case EventCmd(i).Name
@@ -6351,7 +6351,7 @@ NextPilot2:
             End Select
         Next
         
-        EventErrorMessage = "Forã¾ãŸã¯ForEachã¨NextãŒå¯¾å¿œã—ã¦ã„ã¾ã›ã‚“"
+        EventErrorMessage = "For‚Ü‚½‚ÍForEach‚ÆNext‚ª‘Î‰‚µ‚Ä‚¢‚Ü‚¹‚ñ"
         Error 0
     End If
 End Function
@@ -6361,7 +6361,7 @@ Dim i As Long, depth As Integer, idx As Double
 Dim vname As String, buf As String
 Dim isincr As Integer
     
-    'å¯¾å¿œã™ã‚‹Forã¾ãŸã¯ForEachã‚’æ¢ã™
+    '‘Î‰‚·‚éFor‚Ü‚½‚ÍForEach‚ğ’T‚·
     i = LineNum
     depth = 1
     Do While i > 1
@@ -6371,10 +6371,10 @@ Dim isincr As Integer
                 Case ForCmd
                     depth = depth - 1
                     If depth = 0 Then
-                        'ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹å¤‰æ•°ã®å€¤ã‚’1å¢—ã‚„ã™
+                        'ƒCƒ“ƒfƒbƒNƒX•Ï”‚Ì’l‚ğ1‘‚â‚·
                         vname = .GetArg(2)
                         
-                        'Stepå¥ãŒè¨­å®šã•ã‚Œã¦ã„ã‚‹å ´åˆã€ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹å¤‰æ•°ã«å¼•æ•°8ã®å€¤ã‚’åŠ ç®—
+                        'Step‹å‚ªİ’è‚³‚ê‚Ä‚¢‚éê‡AƒCƒ“ƒfƒbƒNƒX•Ï”‚Éˆø”8‚Ì’l‚ğ‰ÁZ
                         If .ArgNum = 6 Then
                             idx = GetValueAsDouble(vname, True) + 1
                         Else
@@ -6382,7 +6382,7 @@ Dim isincr As Integer
                         End If
                         SetVariableAsDouble vname, idx
                         
-                        'ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹å¤‰æ•°ã®å€¤ã¯ç¯„å›²å†…ï¼Ÿ
+                        'ƒCƒ“ƒfƒbƒNƒX•Ï”‚Ì’l‚Í”ÍˆÍ“àH
                         isincr = 1
                         If .ArgNum = 8 Then
                             If .GetArgAsLong(8) < 0 Then
@@ -6390,7 +6390,7 @@ Dim isincr As Integer
                             End If
                         End If
                         If idx * isincr > ForLimitStack(ForIndex) * isincr Then
-                            'ãƒ«ãƒ¼ãƒ—çµ‚äº†
+                            'ƒ‹[ƒvI—¹
                             i = LineNum
                             ForIndex = ForIndex - 1
                         End If
@@ -6402,16 +6402,16 @@ Dim isincr As Integer
                     If depth = 0 Then
                         ForEachIndex = ForEachIndex + 1
                         If ForEachIndex > UBound(ForEachSet) Then
-                            'ãƒ«ãƒ¼ãƒ—çµ‚äº†
+                            'ƒ‹[ƒvI—¹
                             i = LineNum
                             ForIndex = ForIndex - 1
                         Else
                             If .ArgNum < 4 Then
-                                'ãƒ¦ãƒ‹ãƒƒãƒˆï¼†ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã«å¯¾ã™ã‚‹ForEach
+                                'ƒ†ƒjƒbƒg•ƒpƒCƒƒbƒg‚É‘Î‚·‚éForEach
                                 Set SelectedUnitForEvent = _
                                     UList.Item(ForEachSet(ForEachIndex))
                             Else
-                                'é…åˆ—ã«å¯¾ã™ã‚‹ForEach
+                                '”z—ñ‚É‘Î‚·‚éForEach
                                 SetVariableAsString .GetArg(2), ForEachSet(ForEachIndex)
                             End If
                         End If
@@ -6424,7 +6424,7 @@ Dim isincr As Integer
         End With
     Loop
     
-    EventErrorMessage = "Forã¾ãŸã¯ForEachã¨NextãŒå¯¾å¿œã—ã¦ã„ã¾ã›ã‚“"
+    EventErrorMessage = "For‚Ü‚½‚ÍForEach‚ÆNext‚ª‘Î‰‚µ‚Ä‚¢‚Ü‚¹‚ñ"
     Error 0
 End Function
 
@@ -6433,7 +6433,7 @@ Dim tname As String
 Dim i As Integer, j As Integer
 
     If ArgNum <> 2 Then
-        EventErrorMessage = "Forgetã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+        EventErrorMessage = "ForgetƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
         Error 0
     End If
     
@@ -6462,7 +6462,7 @@ End Function
 
 Private Function ExecGameClearCmd() As Long
     If ArgNum <> 1 Then
-        EventErrorMessage = "GameClearã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+        EventErrorMessage = "GameClearƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
         Error 0
     End If
     
@@ -6471,7 +6471,7 @@ End Function
 
 Private Function ExecGameOverCmd() As Long
     If ArgNum <> 1 Then
-        EventErrorMessage = "GameOverã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+        EventErrorMessage = "GameOverƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
         Error 0
     End If
     
@@ -6489,24 +6489,24 @@ Dim u As Unit
         Case 2
             Set u = GetArgAsUnit(2, True)
         Case Else
-            EventErrorMessage = "GetOffã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+            EventErrorMessage = "GetOffƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
             Error 0
     End Select
     
     If Not u Is Nothing Then
         With u
             If .CountPilot > 0 Then
-                If .Status = "å‡ºæ’ƒ" Then
-                    'ãƒ¦ãƒ‹ãƒƒãƒˆã‚’ãƒãƒƒãƒ—ä¸Šã‹ã‚‰å‰Šé™¤ã—ãŸçŠ¶æ…‹ã§æ”¯æ´åŠ¹æœã‚’æ›´æ–°
+                If .Status = "oŒ‚" Then
+                    'ƒ†ƒjƒbƒg‚ğƒ}ƒbƒvã‚©‚çíœ‚µ‚½ó‘Ô‚Åx‰‡Œø‰Ê‚ğXV
                     Set MapDataForUnit(.X, .Y) = Nothing
                     PList.UpdateSupportMod u
                 End If
                 
-                'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‚’ä¸‹ã‚ã™
+                'ƒpƒCƒƒbƒg‚ğ‰º‚ë‚·
                 .Pilot(1).GetOff True
                 
-                If .Status = "å‡ºæ’ƒ" Then
-                    'ãƒ¦ãƒ‹ãƒƒãƒˆã‚’ãƒãƒƒãƒ—ä¸Šã«æˆ»ã™
+                If .Status = "oŒ‚" Then
+                    'ƒ†ƒjƒbƒg‚ğƒ}ƒbƒvã‚É–ß‚·
                     Set MapDataForUnit(.X, .Y) = u
                 End If
             End If
@@ -6522,7 +6522,7 @@ Dim vname As String, i As Integer
     For i = 2 To ArgNum
         vname = GetArg(i)
         If InStr(vname, """") > 0 Then
-            EventErrorMessage = "å¤‰æ•°åã€Œ" & vname & "ã€ãŒä¸æ­£ã§ã™"
+            EventErrorMessage = "•Ï”–¼u" & vname & "v‚ª•s³‚Å‚·"
             Error 0
         End If
         If Asc(vname) = 36 Then '$
@@ -6539,25 +6539,25 @@ End Function
 
 Private Function ExecGotoCmd() As Long
     If ArgNum <> 2 Then
-        EventErrorMessage = "Gotoã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+        EventErrorMessage = "GotoƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
         Error 0
     End If
     
-    'ãƒ©ãƒ™ãƒ«ãŒå¼ã§ãªã„ã¨ä»®å®š
+    'ƒ‰ƒxƒ‹‚ª®‚Å‚È‚¢‚Æ‰¼’è
     ExecGotoCmd = FindLabel(GetArg(2))
     
-    'ãƒ©ãƒ™ãƒ«ãŒè¦‹ã¤ã‹ã£ãŸï¼Ÿ
+    'ƒ‰ƒxƒ‹‚ªŒ©‚Â‚©‚Á‚½H
     If ExecGotoCmd > 0 Then
         ExecGotoCmd = ExecGotoCmd + 1
         Exit Function
     End If
     
-    'ãƒ©ãƒ™ãƒ«ã¯å¼ï¼Ÿ
+    'ƒ‰ƒxƒ‹‚Í®H
     ExecGotoCmd = FindLabel(GetArgAsString(2))
     
     If ExecGotoCmd = 0 Then
-        EventErrorMessage = "ãƒ©ãƒ™ãƒ«ã€Œ" & _
-            GetArg(2) & "ã€ãŒã¿ã¤ã‹ã‚Šã¾ã›ã‚“"
+        EventErrorMessage = "ƒ‰ƒxƒ‹u" & _
+            GetArg(2) & "v‚ª‚İ‚Â‚©‚è‚Ü‚¹‚ñ"
         Error 0
     End If
     
@@ -6591,7 +6591,7 @@ Dim hw As Integer, hh As Integer
             hh = GetArgAsLong(6)
             hcaption = GetArgAsString(7)
         Case Else
-            EventErrorMessage = "HotPointã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+            EventErrorMessage = "HotPointƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
             Error 0
     End Select
     
@@ -6617,8 +6617,8 @@ Dim ret As Long
     
     expr = GetArg(2)
     
-    'Ifã‚³ãƒãƒ³ãƒ‰ã¯ã‚ã‚‰ã‹ã˜ã‚æ§‹æ–‡è§£æã•ã‚Œã¦ã„ã¦ã€ç¬¬3å¼•æ•°ã«æ¡ä»¶å¼ã®é …æ•°
-    'ãŒå…¥ã£ã¦ã„ã‚‹
+    'IfƒRƒ}ƒ“ƒh‚Í‚ ‚ç‚©‚¶‚ß\•¶‰ğÍ‚³‚ê‚Ä‚¢‚ÄA‘æ3ˆø”‚ÉğŒ®‚Ì€”
+    '‚ª“ü‚Á‚Ä‚¢‚é
     Select Case GetArgAsLong(3)
         Case 1
             If PList.IsDefined(expr) Then
@@ -6627,8 +6627,8 @@ Dim ret As Long
                         flag = False
                     Else
                         With .Unit
-                            If .Status = "å‡ºæ’ƒ" _
-                                Or .Status = "æ ¼ç´" _
+                            If .Status = "oŒ‚" _
+                                Or .Status = "Ši”[" _
                             Then
                                 flag = True
                             Else
@@ -6652,8 +6652,8 @@ Dim ret As Long
                         flag = True
                     Else
                         With .Unit
-                            If .Status = "å‡ºæ’ƒ" _
-                                Or .Status = "æ ¼ç´" _
+                            If .Status = "oŒ‚" _
+                                Or .Status = "Ši”[" _
                             Then
                                 flag = False
                             Else
@@ -6691,8 +6691,8 @@ Dim ret As Long
                 If ret = 0 Then
                     ret = FindLabel(GetArgAsString(5))
                     If ret = 0 Then
-                        EventErrorMessage = "ãƒ©ãƒ™ãƒ«ã€Œ" & GetArg(5) _
-                            & "ã€ãŒã¿ã¤ã‹ã‚Šã¾ã›ã‚“"
+                        EventErrorMessage = "ƒ‰ƒxƒ‹u" & GetArg(5) _
+                            & "v‚ª‚İ‚Â‚©‚è‚Ü‚¹‚ñ"
                         Error 0
                     End If
                 End If
@@ -6703,12 +6703,12 @@ Dim ret As Long
             
         Case "then"
             If flag Then
-                'Thenç¯€ã‚’ãã®ã¾ã¾å®Ÿè¡Œ
+                'Thenß‚ğ‚»‚Ì‚Ü‚ÜÀs
                 ExecIfCmd = LineNum + 1
                 Exit Function
             End If
             
-            'æ¡ä»¶å¼ãŒæˆã‚Šç«‹ãŸãªã„å ´åˆã¯Elseç¯€ã‚‚ã—ãã¯EndIfã‚’æ¢ã™
+            'ğŒ®‚ª¬‚è—§‚½‚È‚¢ê‡‚ÍElseß‚à‚µ‚­‚ÍEndIf‚ğ’T‚·
             depth = 1
             For i = LineNum + 1 To UBound(EventCmd)
                 With EventCmd(i)
@@ -6725,7 +6725,7 @@ Dim ret As Long
                             If depth <> 1 Then
                                 GoTo NextLoop
                             End If
-                            'æ¡ä»¶å¼ãŒæˆã‚Šç«‹ã¤ã‹åˆ¤å®š
+                            'ğŒ®‚ª¬‚è—§‚Â‚©”»’è
                             expr = .GetArg(2)
                             Select Case .GetArgAsLong(3)
                                 Case 1
@@ -6735,8 +6735,8 @@ Dim ret As Long
                                                 flag = False
                                             Else
                                                 With .Unit
-                                                    If .Status = "å‡ºæ’ƒ" _
-                                                        Or .Status = "æ ¼ç´" _
+                                                    If .Status = "oŒ‚" _
+                                                        Or .Status = "Ši”[" _
                                                     Then
                                                         flag = True
                                                     Else
@@ -6760,8 +6760,8 @@ Dim ret As Long
                                                 flag = True
                                             Else
                                                 With .Unit
-                                                    If .Status = "å‡ºæ’ƒ" _
-                                                        Or .Status = "æ ¼ç´" _
+                                                    If .Status = "oŒ‚" _
+                                                        Or .Status = "Ši”[" _
                                                     Then
                                                         flag = False
                                                     Else
@@ -6798,14 +6798,14 @@ NextLoop:
             Next
             
             If i > UBound(EventData) Then
-                EventErrorMessage = "Ifã¨EndIfãŒå¯¾å¿œã—ã¦ã„ã¾ã›ã‚“"
+                EventErrorMessage = "If‚ÆEndIf‚ª‘Î‰‚µ‚Ä‚¢‚Ü‚¹‚ñ"
                 Error 0
             End If
             
             ExecIfCmd = i + 1
             
         Case Else
-            EventErrorMessage = "Ifè¡Œã«ã¯ Goto, Exit, Then ã®ã„ãšã‚Œã‹ã‚’æŒ‡å®šã—ã¦ä¸‹ã•ã„"
+            EventErrorMessage = "Ifs‚É‚Í Goto, Exit, Then ‚Ì‚¢‚¸‚ê‚©‚ğw’è‚µ‚Ä‰º‚³‚¢"
             Error 0
     End Select
 End Function
@@ -6813,7 +6813,7 @@ End Function
 Private Function ExecElseCmd() As Long
 Dim i As Long, depth As Integer
     
-    'EndIfã‚’æ¢ã™
+    'EndIf‚ğ’T‚·
     depth = 1
     For i = LineNum + 1 To UBound(EventCmd)
         With EventCmd(i)
@@ -6832,7 +6832,7 @@ Dim i As Long, depth As Integer
         End With
     Next
     
-    EventErrorMessage = "Ifã¨EndIfãŒå¯¾å¿œã—ã¦ã„ã¾ã›ã‚“"
+    EventErrorMessage = "If‚ÆEndIf‚ª‘Î‰‚µ‚Ä‚¢‚Ü‚¹‚ñ"
     Error 0
 End Function
 
@@ -6847,7 +6847,7 @@ Dim vname As String, buf As String, num As Double
         Case 2
             SetVariableAsDouble vname, num + 1
         Case Else
-            EventErrorMessage = "Incrã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+            EventErrorMessage = "IncrƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
             Error 0
     End Select
     
@@ -6865,7 +6865,7 @@ Dim u As Unit, num As String
             Set u = SelectedUnitForEvent
             num = GetArgAsLong(2)
         Case Else
-            EventErrorMessage = "IncreaseMoraleã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+            EventErrorMessage = "IncreaseMoraleƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
             Error 0
     End Select
     
@@ -6890,7 +6890,7 @@ Dim str As String
             str = InputBox(GetArgAsString(3), "SRC", _
                 GetArgAsString(4))
         Case Else
-            EventErrorMessage = "Inputã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+            EventErrorMessage = "InputƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
             Error 0
     End Select
     
@@ -6899,26 +6899,26 @@ Dim str As String
     ExecInputCmd = LineNum + 1
 End Function
 
-' MOD START ãƒãƒ¼ã‚¸
+' MOD START ƒ}[ƒW
 'Private Function ExecInterMissionCommandCmd() As Long
 Private Function ExecIntermissionCommandCmd() As Long
-' MOD END ãƒãƒ¼ã‚¸
+' MOD END ƒ}[ƒW
 Dim vname As String
     
     If ArgNum <> 3 Then
-' MOD START ãƒãƒ¼ã‚¸
-'        EventErrorMessage = "InterMissionCommandã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
-        EventErrorMessage = "IntermissionCommandã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
-' MOD END ãƒãƒ¼ã‚¸
+' MOD START ƒ}[ƒW
+'        EventErrorMessage = "InterMissionCommandƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
+        EventErrorMessage = "IntermissionCommandƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
+' MOD END ƒ}[ƒW
         Error 0
     End If
     
-' MOD START ãƒãƒ¼ã‚¸
+' MOD START ƒ}[ƒW
 '    vname = "InterMissionCommand(" & GetArgAsString(2) & ")"
     vname = "IntermissionCommand(" & GetArgAsString(2) & ")"
-' MOD END ãƒãƒ¼ã‚¸
+' MOD END ƒ}[ƒW
     
-    If GetArg(3) = "å‰Šé™¤" Then
+    If GetArg(3) = "íœ" Then
         UndefineVariable vname
     Else
         If Not IsGlobalVariableDefined(vname) Then
@@ -6927,10 +6927,10 @@ Dim vname As String
         SetVariableAsString vname, GetArgAsString(3)
     End If
     
-' MOD START ãƒãƒ¼ã‚¸
+' MOD START ƒ}[ƒW
 '    ExecInterMissionCommandCmd = LineNum + 1
     ExecIntermissionCommandCmd = LineNum + 1
-' MOD END ãƒãƒ¼ã‚¸
+' MOD END ƒ}[ƒW
 End Function
 
 Private Function ExecItemCmd() As Long
@@ -6940,11 +6940,11 @@ Dim iname As String
         Case 2
             iname = GetArgAsString(2)
         Case Else
-            EventErrorMessage = "Itemã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+            EventErrorMessage = "ItemƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
             Error 0
     End Select
     If Not IDList.IsDefined(iname) Then
-        EventErrorMessage = "ã€Œ" & iname & "ã€ã¨ã„ã†ã‚¢ã‚¤ãƒ†ãƒ ã¯å­˜åœ¨ã—ã¾ã›ã‚“"
+        EventErrorMessage = "u" & iname & "v‚Æ‚¢‚¤ƒAƒCƒeƒ€‚Í‘¶İ‚µ‚Ü‚¹‚ñ"
         Error 0
     End If
     IList.Add iname
@@ -6976,8 +6976,8 @@ Dim i As Integer
                     For Each u In UList
                         With u
                             If .Name = pname _
-                                And .Party0 = "å‘³æ–¹" _
-                                And .CurrentForm.Status = "é›¢è„±" _
+                                And .Party0 = "–¡•û" _
+                                And .CurrentForm.Status = "—£’E" _
                             Then
                                 Set u = .CurrentForm
                                 Exit For
@@ -6989,14 +6989,14 @@ Dim i As Integer
                     End If
                 End If
             Else
-                EventErrorMessage = "ã€Œ" & pname & _
-                    "ã€ã¨ã„ã†ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã¾ãŸã¯ãƒ¦ãƒ‹ãƒƒãƒˆãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“"
+                EventErrorMessage = "u" & pname & _
+                    "v‚Æ‚¢‚¤ƒpƒCƒƒbƒg‚Ü‚½‚Íƒ†ƒjƒbƒg‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ"
                 Error 0
             End If
         Case 1
             Set u = SelectedUnitForEvent
         Case Else
-            EventErrorMessage = "Joinã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+            EventErrorMessage = "JoinƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
             Error 0
     End Select
     
@@ -7006,7 +7006,7 @@ Dim i As Integer
         End If
     Else
         With u
-            .Status = "å¾…æ©Ÿ"
+            .Status = "‘Ò‹@"
             For i = 1 To .CountPilot
                 .Pilot(i).Away = False
             Next
@@ -7021,7 +7021,7 @@ End Function
 
 Private Function ExecKeepBGMCmd() As Long
     If ArgNum <> 1 Then
-        EventErrorMessage = "KeepBGMã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+        EventErrorMessage = "KeepBGMƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
         Error 0
     End If
     
@@ -7041,16 +7041,16 @@ Dim u1 As Unit, u2 As Unit
             Set u1 = GetArgAsUnit(2)
             Set u2 = GetArgAsUnit(3)
         Case Else
-            EventErrorMessage = "Landã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+            EventErrorMessage = "LandƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
             Error 0
     End Select
     
-    If u1.IsFeatureAvailable("æ¯è‰¦") Then
-        EventErrorMessage = u1.Name & "ã¯æ¯è‰¦ãªã®ã§æ ¼ç´å‡ºæ¥ã¾ã›ã‚“"
+    If u1.IsFeatureAvailable("•êŠÍ") Then
+        EventErrorMessage = u1.Name & "‚Í•êŠÍ‚È‚Ì‚ÅŠi”[o—ˆ‚Ü‚¹‚ñ"
         Error 0
     End If
-    If Not u2.IsFeatureAvailable("æ¯è‰¦") Then
-        EventErrorMessage = u2.Name & "ã¯æ¯è‰¦èƒ½åŠ›ã‚’æŒã£ã¦ã„ã¾ã›ã‚“"
+    If Not u2.IsFeatureAvailable("•êŠÍ") Then
+        EventErrorMessage = u2.Name & "‚Í•êŠÍ”\—Í‚ğ‚Á‚Ä‚¢‚Ü‚¹‚ñ"
         Error 0
     End If
     
@@ -7066,14 +7066,14 @@ Dim opt As String
     num = ArgNum
     
     Select Case GetArgAsString(num)
-        Case "éåŒæœŸ"
-            opt = "éåŒæœŸ"
+        Case "”ñ“¯Šú"
+            opt = "”ñ“¯Šú"
             num = num - 1
-        Case "ã‚¢ãƒ‹ãƒ¡éè¡¨ç¤º"
+        Case "ƒAƒjƒ”ñ•\¦"
             opt = ""
             num = num - 1
         Case Else
-            opt = "å‡ºæ’ƒ"
+            opt = "oŒ‚"
     End Select
     
     Select Case num
@@ -7110,22 +7110,22 @@ Dim opt As String
                 uy = MapHeight
             End If
         Case Else
-            EventErrorMessage = "Launchã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+            EventErrorMessage = "LaunchƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
             Error 0
     End Select
     
-    If opt <> "éåŒæœŸ" And MainForm.Visible And Not IsPictureVisible Then
+    If opt <> "”ñ“¯Šú" And MainForm.Visible And Not IsPictureVisible Then
         Center ux, uy
         RefreshScreen
     End If
     
     With u
         Select Case .Status
-            Case "å‡ºæ’ƒ"
-                EventErrorMessage = .MainPilot.Nickname & "ã¯ã™ã§ã«å‡ºæ’ƒã—ã¦ã„ã¾ã™"
+            Case "oŒ‚"
+                EventErrorMessage = .MainPilot.Nickname & "‚Í‚·‚Å‚ÉoŒ‚‚µ‚Ä‚¢‚Ü‚·"
                 Error 0
-            Case "é›¢è„±"
-                EventErrorMessage = .MainPilot.Nickname & "ã¯ã¾ã é›¢è„±ã—ã¦ã„ã¾ã™"
+            Case "—£’E"
+                EventErrorMessage = .MainPilot.Nickname & "‚Í‚Ü‚¾—£’E‚µ‚Ä‚¢‚Ü‚·"
                 Error 0
         End Select
         
@@ -7158,8 +7158,8 @@ Dim opt As String
     num = ArgNum
     
     If num > 1 Then
-        If GetArgAsString(num) = "éåŒæœŸ" Then
-            opt = "éåŒæœŸ"
+        If GetArgAsString(num) = "”ñ“¯Šú" Then
+            opt = "”ñ“¯Šú"
             num = num - 1
         End If
     End If
@@ -7183,8 +7183,8 @@ Dim opt As String
                 Else
                     For Each u In UList
                         If u.Name = pname _
-                            And u.Party0 = "å‘³æ–¹" _
-                            And u.CurrentForm.Status <> "é›¢è„±" _
+                            And u.Party0 = "–¡•û" _
+                            And u.CurrentForm.Status <> "—£’E" _
                         Then
                             Set u = u.CurrentForm
                             Exit For
@@ -7196,13 +7196,13 @@ Dim opt As String
                 End If
             Else
                 EventErrorMessage = _
-                    "ã€Œ" & pname & "ã€ã¨ã„ã†ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã¾ãŸã¯ãƒ¦ãƒ‹ãƒƒãƒˆãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“"
+                    "u" & pname & "v‚Æ‚¢‚¤ƒpƒCƒƒbƒg‚Ü‚½‚Íƒ†ƒjƒbƒg‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ"
                 Error 0
             End If
         Case 1
             Set u = SelectedUnitForEvent
         Case Else
-            EventErrorMessage = "Leaveã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+            EventErrorMessage = "LeaveƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
             Error 0
     End Select
     
@@ -7210,14 +7210,14 @@ Dim opt As String
         PList.Item(pname).Away = True
     Else
         With u
-            If .Status = "å‡ºæ’ƒ" Or .Status = "æ ¼ç´" Then
+            If .Status = "oŒ‚" Or .Status = "Ši”[" Then
                 .Escape opt
             End If
-            If .Party0 <> "å‘³æ–¹" Then
-                .ChangeParty "å‘³æ–¹"
+            If .Party0 <> "–¡•û" Then
+                .ChangeParty "–¡•û"
             End If
-            If .Status <> "ä»–å½¢æ…‹" And .Status <> "æ—§ä¸»å½¢æ…‹" And .Status <> "æ—§å½¢æ…‹" Then
-                .Status = "é›¢è„±"
+            If .Status <> "‘¼Œ`‘Ô" And .Status <> "‹ŒåŒ`‘Ô" And .Status <> "‹ŒŒ`‘Ô" Then
+                .Status = "—£’E"
             End If
             For i = 1 To .CountPilot
                 .Pilot(i).Away = True
@@ -7247,7 +7247,7 @@ Dim hp_ratio As Double, en_ratio As Double
             End With
             num = GetArgAsLong(2)
         Case Else
-            EventErrorMessage = "LevelUpã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+            EventErrorMessage = "LevelUpƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
             Error 0
     End Select
     
@@ -7260,26 +7260,26 @@ Dim hp_ratio As Double, en_ratio As Double
                 End With
             End If
             
-            If IsOptionDefined("ãƒ¬ãƒ™ãƒ«é™ç•Œçªç ´") Then
+            If IsOptionDefined("ƒŒƒxƒ‹ŒÀŠE“Ë”j") Then
                 .Level = MinLng(MaxLng(.Level + num, 1), 999)
             Else
                 .Level = MinLng(MaxLng(.Level + num, 1), 99)
             End If
             
-            'é—˜äº‰æœ¬èƒ½å…¥æ‰‹ï¼Ÿ
-            If .IsSkillAvailable("é—˜äº‰æœ¬èƒ½") Then
+            '“¬‘ˆ–{”\“üèH
+            If .IsSkillAvailable("“¬‘ˆ–{”\") Then
                 If .MinMorale > 100 Then
                     If .Morale = .MinMorale Then
-                        .Morale = .MinMorale + 5 * .SkillLevel("é—˜äº‰æœ¬èƒ½")
+                        .Morale = .MinMorale + 5 * .SkillLevel("“¬‘ˆ–{”\")
                     End If
                 Else
                     If .Morale = 100 Then
-                        .Morale = 100 + 5 * .SkillLevel("é—˜äº‰æœ¬èƒ½")
+                        .Morale = 100 + 5 * .SkillLevel("“¬‘ˆ–{”\")
                     End If
                 End If
             End If
             
-            'ï¼³ï¼°ï¼†éœŠåŠ›ã‚’ã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ãƒˆ
+            '‚r‚o•—ì—Í‚ğƒAƒbƒvƒf[ƒg
             .SP = .SP
             .Plana = .Plana
             
@@ -7306,7 +7306,7 @@ Dim cname As String, clr As Long
 Dim i As Integer
 
     If ArgNum < 5 Then
-        EventErrorMessage = "Lineã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+        EventErrorMessage = "LineƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
         Error 0
     End If
     
@@ -7317,13 +7317,13 @@ Dim i As Integer
     
     SaveScreen
     
-    'æç”»å…ˆ
+    '•`‰ææ
     Select Case ObjDrawOption
-        Case "èƒŒæ™¯"
+        Case "”wŒi"
             Set pic = MainForm.picBack
             Set pic2 = MainForm.picMaskedBack
             IsMapDirty = True
-        Case "ä¿æŒ"
+        Case "•Û"
             Set pic = MainForm.picMain(0)
             Set pic2 = MainForm.picMain(1)
             IsPictureVisible = True
@@ -7331,8 +7331,8 @@ Dim i As Integer
             Set pic = MainForm.picMain(0)
     End Select
     
-    'æç”»é ˜åŸŸ
-    If ObjDrawOption <> "èƒŒæ™¯" Then
+    '•`‰æ—Ìˆæ
+    If ObjDrawOption <> "”wŒi" Then
         Dim tmp As Integer
         IsPictureVisible = True
         tmp = ObjDrawWidth - 1
@@ -7347,7 +7347,7 @@ Dim i As Integer
         opt = GetArgAsString(i)
         If Asc(opt) = 35 Then '#
             If Len(opt) <> 7 Then
-                EventErrorMessage = "è‰²æŒ‡å®šãŒä¸æ­£ã§ã™"
+                EventErrorMessage = "Fw’è‚ª•s³‚Å‚·"
                 Error 0
             End If
             cname = String$(8, vbNullChar)
@@ -7356,14 +7356,14 @@ Dim i As Integer
             Mid(cname, 5, 2) = Mid$(opt, 4, 2)
             Mid(cname, 7, 2) = Mid$(opt, 2, 2)
             If Not IsNumeric(cname) Then
-                EventErrorMessage = "è‰²æŒ‡å®šãŒä¸æ­£ã§ã™"
+                EventErrorMessage = "Fw’è‚ª•s³‚Å‚·"
                 Error 0
             End If
             clr = CLng(cname)
         Else
             If opt <> "B" And opt <> "BF" Then
                 EventErrorMessage = _
-                    "Lineã‚³ãƒãƒ³ãƒ‰ã«ä¸æ­£ãªã‚ªãƒ—ã‚·ãƒ§ãƒ³ã€Œ" & opt & "ã€ãŒä½¿ã‚ã‚Œã¦ã„ã¾ã™"
+                    "LineƒRƒ}ƒ“ƒh‚É•s³‚ÈƒIƒvƒVƒ‡ƒ“u" & opt & "v‚ªg‚í‚ê‚Ä‚¢‚Ü‚·"
                 Error 0
             End If
             dtype = opt
@@ -7421,7 +7421,7 @@ Private Function ExecLineReadCmd() As Long
 Dim buf As String
 
     If ArgNum <> 3 Then
-        EventErrorMessage = "LineReadã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+        EventErrorMessage = "LineReadƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
         Error 0
     End If
     
@@ -7455,18 +7455,18 @@ Dim flag As Boolean
         End If
     Next
     
-    'æ–°è¦ã®ãƒ‡ãƒ¼ã‚¿ãŒãªã‹ã£ãŸï¼Ÿ
+    'V‹K‚Ìƒf[ƒ^‚ª‚È‚©‚Á‚½H
     If UBound(new_titles) = 0 Then
         ExecLoadCmd = LineNum + 1
         Exit Function
     End If
     
-    'ãƒã‚¦ã‚¹ã‚«ãƒ¼ã‚½ãƒ«ã‚’ç ‚æ™‚è¨ˆã«
+    'ƒ}ƒEƒXƒJ[ƒ\ƒ‹‚ğ»Œv‚É
     Screen.MousePointer = vbHourglass
     
     cur_data_size = UBound(EventData)
     
-    'ä½¿ç”¨ã—ã¦ã„ã‚‹ã‚¿ã‚¤ãƒˆãƒ«ã®ãƒ‡ãƒ¼ã‚¿ã‚’ãƒ­ãƒ¼ãƒ‰
+    'g—p‚µ‚Ä‚¢‚éƒ^ƒCƒgƒ‹‚Ìƒf[ƒ^‚ğƒ[ƒh
     For i = 1 To UBound(new_titles)
         IncludeData new_titles(i)
         tfolder = SearchDataFolder(new_titles(i))
@@ -7475,7 +7475,7 @@ Dim flag As Boolean
         End If
     Next
     
-    'ãƒ­ãƒ¼ã‚«ãƒ«ãƒ‡ãƒ¼ã‚¿ã®èª­ã¿ã“ã¿
+    'ƒ[ƒJƒ‹ƒf[ƒ^‚Ì“Ç‚İ‚±‚İ
     If FileExists(ScenarioPath & "Data\alias.txt") Then
         ALDList.Load ScenarioPath & "Data\alias.txt"
     End If
@@ -7508,7 +7508,7 @@ Dim flag As Boolean
     End If
     
     For i = cur_data_size + 1 To UBound(EventData)
-        'è¤‡æ•°è¡Œã«åˆ†å‰²ã•ã‚ŒãŸã‚³ãƒãƒ³ãƒ‰ã‚’çµåˆ
+        '•¡”s‚É•ªŠ„‚³‚ê‚½ƒRƒ}ƒ“ƒh‚ğŒ‹‡
         If Right$(EventData(i), 1) = "_" Then
             If UBound(EventData) > i Then
                 EventData(i + 1) = Left$(EventData(i), Len(EventData(i)) - 1) & EventData(i + 1)
@@ -7517,19 +7517,19 @@ Dim flag As Boolean
         End If
     Next
     
-    'ãƒ©ãƒ™ãƒ«ã®ç™»éŒ²
+    'ƒ‰ƒxƒ‹‚Ì“o˜^
     For i = cur_data_size + 1 To UBound(EventData)
         If Right$(EventData(i), 1) = ":" Then
             AddLabel Left$(EventData(i), Len(EventData(i)) - 1), i
         End If
     Next
     
-    'ã‚³ãƒãƒ³ãƒ‰ãƒ‡ãƒ¼ã‚¿é…åˆ—ã‚’å¢—ã‚„ã™
+    'ƒRƒ}ƒ“ƒhƒf[ƒ^”z—ñ‚ğ‘‚â‚·
     If UBound(EventData) > UBound(EventCmd) Then
         ReDim Preserve EventCmd(UBound(EventData))
     End If
     
-    'ã‚¤ãƒ™ãƒ³ãƒˆãƒ‡ãƒ¼ã‚¿ã®æ§‹æ–‡è§£æ
+    'ƒCƒxƒ“ƒgƒf[ƒ^‚Ì\•¶‰ğÍ
     For i = cur_data_size + 1 To UBound(EventData)
         If EventCmd(i) Is Nothing Then
             Set EventCmd(i) = New CmdData
@@ -7540,7 +7540,7 @@ Dim flag As Boolean
         End With
     Next
     
-    'ãƒã‚¦ã‚¹ã‚«ãƒ¼ã‚½ãƒ«ã‚’å…ƒã«æˆ»ã™
+    'ƒ}ƒEƒXƒJ[ƒ\ƒ‹‚ğŒ³‚É–ß‚·
     Screen.MousePointer = 0
     
     ExecLoadCmd = LineNum + 1
@@ -7550,19 +7550,19 @@ Private Function ExecLocalCmd() As Long
 Dim vname As String, i As Integer
 Dim etype As ValueType, str_result As String, num_result As Double
     
-    'ä»£å…¥å¼ä»˜ãã®å¤‰æ•°å®šç¾©ï¼Ÿ
+    '‘ã“ü®•t‚«‚Ì•Ï”’è‹`H
     If ArgNum >= 4 Then
         If GetArg(3) = "=" Then
             If VarIndex >= MaxVarIndex Then
                 VarIndex = MaxVarIndex
                 EventErrorMessage = Format$(MaxVarIndex) & _
-                    "å€‹ã‚’è¶…ãˆã‚‹ã‚µãƒ–ãƒ«ãƒ¼ãƒãƒ³ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ã¯ä½œæˆã§ãã¾ã›ã‚“"
+                    "ŒÂ‚ğ’´‚¦‚éƒTƒuƒ‹[ƒ`ƒ“ƒ[ƒJƒ‹•Ï”‚Íì¬‚Å‚«‚Ü‚¹‚ñ"
                 Error 0
             End If
             
             vname = GetArg(2)
             If InStr(vname, """") > 0 Then
-                EventErrorMessage = "å¤‰æ•°åã€Œ" & vname & "ã€ãŒä¸æ­£ã§ã™"
+                EventErrorMessage = "•Ï”–¼u" & vname & "v‚ª•s³‚Å‚·"
                 Error 0
             End If
             If Asc(vname) = 36 Then '$
@@ -7619,7 +7619,7 @@ Dim etype As ValueType, str_result As String, num_result As Double
     If VarIndex > MaxVarIndex Then
         VarIndex = MaxVarIndex
         EventErrorMessage = Format$(MaxVarIndex) & _
-            "å€‹ã‚’è¶…ãˆã‚‹ã‚µãƒ–ãƒ«ãƒ¼ãƒãƒ³ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ã¯ä½œæˆã§ãã¾ã›ã‚“"
+            "ŒÂ‚ğ’´‚¦‚éƒTƒuƒ‹[ƒ`ƒ“ƒ[ƒJƒ‹•Ï”‚Íì¬‚Å‚«‚Ü‚¹‚ñ"
         Error 0
     End If
     
@@ -7627,7 +7627,7 @@ Dim etype As ValueType, str_result As String, num_result As Double
         With VarStack(VarIndex - i + 2)
             vname = GetArg(i)
             If InStr(vname, """") > 0 Then
-                EventErrorMessage = "å¤‰æ•°åã€Œ" & vname & "ã€ãŒä¸æ­£ã§ã™"
+                EventErrorMessage = "•Ï”–¼u" & vname & "v‚ª•s³‚Å‚·"
                 Error 0
             End If
             If Asc(vname) = 36 Then '$
@@ -7652,37 +7652,37 @@ Dim pilot_list() As Pilot
 Dim i As Integer, j As Integer
 Dim buf As String
     
-    'ãƒã‚¦ã‚¹ã‚«ãƒ¼ã‚½ãƒ«ã‚’ç ‚æ™‚è¨ˆã«
+    'ƒ}ƒEƒXƒJ[ƒ\ƒ‹‚ğ»Œv‚É
     Screen.MousePointer = vbHourglass
     
-    'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆãŒã©ã®ãƒ¦ãƒ‹ãƒƒãƒˆã«ä¹—ã£ã¦ã„ãŸã‹è¨˜éŒ²ã—ã¦ãŠã
+    'ƒpƒCƒƒbƒg‚ª‚Ç‚Ìƒ†ƒjƒbƒg‚Éæ‚Á‚Ä‚¢‚½‚©‹L˜^‚µ‚Ä‚¨‚­
     For Each u In UList
         With u
-            If .Status = "å‡ºæ’ƒ" Then
-                'ã‚ã‚‰ã‹ã˜ã‚æ’¤é€€ã•ã›ã¦ãŠã
-                .Escape "éåŒæœŸ"
+            If .Status = "oŒ‚" Then
+                '‚ ‚ç‚©‚¶‚ß“P‘Ş‚³‚¹‚Ä‚¨‚­
+                .Escape "”ñ“¯Šú"
             End If
-            If .Status = "å¾…æ©Ÿ" Then
-                If InStr(.Name, "ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹è¡¨ç¤ºç”¨") = 0 Then
+            If .Status = "‘Ò‹@" Then
+                If InStr(.Name, "ƒXƒe[ƒ^ƒX•\¦—p") = 0 Then
                     For i = 1 To .CountPilot
-                        SetVariableAsString "æ­ä¹—ãƒ¦ãƒ‹ãƒƒãƒˆ[" & .Pilot(i).ID & "]", .ID
+                        SetVariableAsString "“‹æƒ†ƒjƒbƒg[" & .Pilot(i).ID & "]", .ID
                     Next
                     For i = 1 To .CountSupport
-                        SetVariableAsString "æ­ä¹—ãƒ¦ãƒ‹ãƒƒãƒˆ[" & .Support(i).ID & "]", .ID
+                        SetVariableAsString "“‹æƒ†ƒjƒbƒg[" & .Support(i).ID & "]", .ID
                     Next
                 End If
             End If
         End With
     Next
     
-    'ãƒãƒƒãƒ—ã‚’ã‚¯ãƒªã‚¢
+    'ƒ}ƒbƒv‚ğƒNƒŠƒA
     LoadMapData ""
-    SetupBackground "", "ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹"
+    SetupBackground "", "ƒXƒe[ƒ^ƒX"
     
-    'ãƒ¦ãƒ‹ãƒƒãƒˆä¸€è¦§ã‚’ä½œæˆ
+    'ƒ†ƒjƒbƒgˆê——‚ğì¬
     key_type = GetArgAsString(2)
-    If key_type <> "åç§°" Then
-        'é…åˆ—ä½œæˆ
+    If key_type <> "–¼Ì" Then
+        '”z—ñì¬
         ReDim pilot_list(PList.Count)
         ReDim key_list(PList.Count)
         i = 0
@@ -7694,11 +7694,11 @@ Dim buf As String
                 
                 If Not .Unit Is Nothing Then
                     If .IsAdditionalPilot Then
-                        'è¿½åŠ ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã¯å‹˜å®šã«å…¥ã‚Œãªã„
+                        '’Ç‰ÁƒpƒCƒƒbƒg‚ÍŠ¨’è‚É“ü‚ê‚È‚¢
                         GoTo NextPilot1
                     End If
                     If .IsAdditionalSupport Then
-                        'è¿½åŠ ã‚µãƒãƒ¼ãƒˆã¯å‹˜å®šã«å…¥ã‚Œãªã„
+                        '’Ç‰ÁƒTƒ|[ƒg‚ÍŠ¨’è‚É“ü‚ê‚È‚¢
                         GoTo NextPilot1
                     End If
                 End If
@@ -7706,21 +7706,21 @@ Dim buf As String
                 i = i + 1
                 Set pilot_list(i) = p
                 Select Case key_type
-                    Case "ãƒ¬ãƒ™ãƒ«"
+                    Case "ƒŒƒxƒ‹"
                         key_list(i) = .Level
-                    Case "ï¼³ï¼°"
+                    Case "‚r‚o"
                         key_list(i) = .MaxSP
-                    Case "æ ¼é—˜"
+                    Case "Ši“¬"
                         key_list(i) = .Infight
-                    Case "å°„æ’ƒ"
+                    Case "ËŒ‚"
                         key_list(i) = .Shooting
-                    Case "å‘½ä¸­"
+                    Case "–½’†"
                         key_list(i) = .Hit
-                    Case "å›é¿"
+                    Case "‰ñ”ğ"
                         key_list(i) = .Dodge
-                    Case "æŠ€é‡"
+                    Case "‹Z—Ê"
                         key_list(i) = .Technique
-                    Case "åå¿œ"
+                    Case "”½‰"
                         key_list(i) = .Intuition
                 End Select
             End With
@@ -7729,7 +7729,7 @@ NextPilot1:
         ReDim Preserve pilot_list(i)
         ReDim Preserve key_list(i)
         
-        'ã‚½ãƒ¼ãƒˆ
+        'ƒ\[ƒg
         For i = 1 To UBound(pilot_list) - 1
             max_item = i
             max_value = key_list(i)
@@ -7750,7 +7750,7 @@ NextPilot1:
             End If
         Next
     Else
-        'é…åˆ—ä½œæˆ
+        '”z—ñì¬
         ReDim pilot_list(PList.Count)
         ReDim strkey_list(PList.Count)
         i = 0
@@ -7761,8 +7761,8 @@ NextPilot1:
                 End If
                 
                 If Not .Unit Is Nothing Then
-                    If .Name = .Unit.FeatureData("è¿½åŠ ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆ") Then
-                        'è¿½åŠ ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã¯å‹˜å®šã«å…¥ã‚Œãªã„
+                    If .Name = .Unit.FeatureData("’Ç‰ÁƒpƒCƒƒbƒg") Then
+                        '’Ç‰ÁƒpƒCƒƒbƒg‚ÍŠ¨’è‚É“ü‚ê‚È‚¢
                         GoTo NextPilot2
                     End If
                 End If
@@ -7776,7 +7776,7 @@ NextPilot2:
         ReDim Preserve pilot_list(i)
         ReDim Preserve strkey_list(i)
         
-        'ã‚½ãƒ¼ãƒˆ
+        'ƒ\[ƒg
         For i = 1 To UBound(pilot_list) - 1
             max_item = i
             max_str = strkey_list(max_item)
@@ -7796,7 +7796,7 @@ NextPilot2:
         Next
     End If
     
-    'Font Regular 9pt èƒŒæ™¯
+    'Font Regular 9pt ”wŒi
     With MainForm.picMain(0).Font
         .Size = 9
         .Bold = False
@@ -7811,84 +7811,84 @@ NextPilot2:
     For i = 1 To UBound(pilot_list)
         Set p = pilot_list(i)
         With p
-            'ãƒ¦ãƒ‹ãƒƒãƒˆå‡ºæ’ƒä½ç½®ã‚’æŠ˜ã‚Šè¿”ã™
+            'ƒ†ƒjƒbƒgoŒ‚ˆÊ’u‚ğÜ‚è•Ô‚·
             If xx > 15 Then
                 xx = 1
                 yy = yy + 1
                 If yy > 40 Then
-                    'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆæ•°ãŒå¤šã™ãã‚‹ãŸã‚ã€ä¸€éƒ¨ã®ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆãŒè¡¨ç¤ºå‡ºæ¥ã¾ã›ã‚“
+                    'ƒpƒCƒƒbƒg”‚ª‘½‚·‚¬‚é‚½‚ßAˆê•”‚ÌƒpƒCƒƒbƒg‚ª•\¦o—ˆ‚Ü‚¹‚ñ
                     Exit For
                 End If
             End If
             
-            'ãƒ€ãƒŸãƒ¼ãƒ¦ãƒ‹ãƒƒãƒˆã«è¼‰ã›ã‚‹
+            'ƒ_ƒ~[ƒ†ƒjƒbƒg‚ÉÚ‚¹‚é
             If .Unit Is Nothing Then
-                If UDList.IsDefined(.Name & "ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹è¡¨ç¤ºç”¨ãƒ¦ãƒ‹ãƒƒãƒˆ") Then
-                    Set u = UList.Add(.Name & "ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹è¡¨ç¤ºç”¨ãƒ¦ãƒ‹ãƒƒãƒˆ", 0, "å‘³æ–¹")
+                If UDList.IsDefined(.Name & "ƒXƒe[ƒ^ƒX•\¦—pƒ†ƒjƒbƒg") Then
+                    Set u = UList.Add(.Name & "ƒXƒe[ƒ^ƒX•\¦—pƒ†ƒjƒbƒg", 0, "–¡•û")
                 Else
-                    Set u = UList.Add("ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹è¡¨ç¤ºç”¨ãƒ€ãƒŸãƒ¼ãƒ¦ãƒ‹ãƒƒãƒˆ", 0, "å‘³æ–¹")
+                    Set u = UList.Add("ƒXƒe[ƒ^ƒX•\¦—pƒ_ƒ~[ƒ†ƒjƒbƒg", 0, "–¡•û")
                 End If
                 .Ride u
-            ElseIf Not .Unit.IsFeatureAvailable("ãƒ€ãƒŸãƒ¼ãƒ¦ãƒ‹ãƒƒãƒˆ") Then
+            ElseIf Not .Unit.IsFeatureAvailable("ƒ_ƒ~[ƒ†ƒjƒbƒg") Then
                 .GetOff
-                If UDList.IsDefined(.Name & "ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹è¡¨ç¤ºç”¨ãƒ¦ãƒ‹ãƒƒãƒˆ") Then
-                    Set u = UList.Add(.Name & "ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹è¡¨ç¤ºç”¨ãƒ¦ãƒ‹ãƒƒãƒˆ", 0, "å‘³æ–¹")
+                If UDList.IsDefined(.Name & "ƒXƒe[ƒ^ƒX•\¦—pƒ†ƒjƒbƒg") Then
+                    Set u = UList.Add(.Name & "ƒXƒe[ƒ^ƒX•\¦—pƒ†ƒjƒbƒg", 0, "–¡•û")
                 Else
-                    Set u = UList.Add("ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹è¡¨ç¤ºç”¨ãƒ€ãƒŸãƒ¼ãƒ¦ãƒ‹ãƒƒãƒˆ", 0, "å‘³æ–¹")
+                    Set u = UList.Add("ƒXƒe[ƒ^ƒX•\¦—pƒ_ƒ~[ƒ†ƒjƒbƒg", 0, "–¡•û")
                 End If
                 .Ride u
             Else
                 Set u = .Unit
             End If
             
-            'å‡ºæ’ƒ
+            'oŒ‚
             u.UsedAction = 0
-            u.StandBy xx, yy, "éåŒæœŸ"
+            u.StandBy xx, yy, "”ñ“¯Šú"
             
-            'ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒæ“ä½œã§ããªã„ã‚ˆã†ã«
-            u.AddCondition "éæ“ä½œ", -1
+            'ƒvƒŒƒCƒ„[‚ª‘€ì‚Å‚«‚È‚¢‚æ‚¤‚É
+            u.AddCondition "”ñ‘€ì", -1
             
-            'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®æ„›ç§°ã‚’è¡¨ç¤º
+            'ƒpƒCƒƒbƒg‚Ìˆ¤Ì‚ğ•\¦
             DrawString .Nickname, 32 * xx + 2, 32 * yy - 31
             
             Select Case key_type
-                Case "ãƒ¬ãƒ™ãƒ«", "åç§°"
+                Case "ƒŒƒxƒ‹", "–¼Ì"
                     DrawString "Lv" & Format$(.Level), _
                         32 * xx + 2, 32 * yy - 15
-                Case "ï¼³ï¼°"
+                Case "‚r‚o"
                     DrawString Term("SP", u) & Format$(key_list(i)), _
                         32 * xx + 2, 32 * yy - 15
-                Case "æ ¼é—˜"
-                    DrawString Left$(Term("æ ¼é—˜", u), 1) & Format$(key_list(i)), _
+                Case "Ši“¬"
+                    DrawString Left$(Term("Ši“¬", u), 1) & Format$(key_list(i)), _
                         32 * xx + 2, 32 * yy - 15
-                Case "å°„æ’ƒ"
+                Case "ËŒ‚"
                     If .HasMana() Then
-                        DrawString Left$(Term("é­”åŠ›", u), 1) & Format$(key_list(i)), _
+                        DrawString Left$(Term("–‚—Í", u), 1) & Format$(key_list(i)), _
                             32 * xx + 2, 32 * yy - 15
                     Else
-                        DrawString Left$(Term("å°„æ’ƒ", u), 1) & Format$(key_list(i)), _
+                        DrawString Left$(Term("ËŒ‚", u), 1) & Format$(key_list(i)), _
                             32 * xx + 2, 32 * yy - 15
                     End If
-                Case "å‘½ä¸­"
-                    DrawString Left$(Term("å‘½ä¸­", u), 1) & Format$(key_list(i)), _
+                Case "–½’†"
+                    DrawString Left$(Term("–½’†", u), 1) & Format$(key_list(i)), _
                         32 * xx + 2, 32 * yy - 15
-                Case "å›é¿"
-                    DrawString Left$(Term("å›é¿", u), 1) & Format$(key_list(i)), _
+                Case "‰ñ”ğ"
+                    DrawString Left$(Term("‰ñ”ğ", u), 1) & Format$(key_list(i)), _
                         32 * xx + 2, 32 * yy - 15
-                Case "æŠ€é‡"
-                    DrawString Left$(Term("æŠ€é‡", u), 1) & Format$(key_list(i)), _
+                Case "‹Z—Ê"
+                    DrawString Left$(Term("‹Z—Ê", u), 1) & Format$(key_list(i)), _
                         32 * xx + 2, 32 * yy - 15
-                Case "åå¿œ"
-                    DrawString Left$(Term("åå¿œ", u), 1) & Format$(key_list(i)), _
+                Case "”½‰"
+                    DrawString Left$(Term("”½‰", u), 1) & Format$(key_list(i)), _
                         32 * xx + 2, 32 * yy - 15
             End Select
             
-            'è¡¨ç¤ºä½ç½®ã‚’å³ã«3ãƒã‚¹ãšã‚‰ã™
+            '•\¦ˆÊ’u‚ğ‰E‚É3ƒ}ƒX‚¸‚ç‚·
             xx = xx + 3
         End With
     Next
     
-    'ãƒ•ã‚©ãƒ³ãƒˆã®è¨­å®šã‚’æˆ»ã—ã¦ãŠã
+    'ƒtƒHƒ“ƒg‚Ìİ’è‚ğ–ß‚µ‚Ä‚¨‚­
     With MainForm.picMain(0).Font
         .Size = 16
         .Bold = True
@@ -7898,14 +7898,14 @@ NextPilot2:
     
     RedrawScreen
     
-    'ãƒã‚¦ã‚¹ã‚«ãƒ¼ã‚½ãƒ«ã‚’å…ƒã«æˆ»ã™
+    'ƒ}ƒEƒXƒJ[ƒ\ƒ‹‚ğŒ³‚É–ß‚·
     Screen.MousePointer = 0
     
     ExecMakePilotListCmd = LineNum + 1
 End Function
 
 Private Function ExecMakeUnitListCmd() As Long
-    'ãƒ¦ãƒ‹ãƒƒãƒˆä¸€è¦§ã‚’ä½œæˆ
+    'ƒ†ƒjƒbƒgˆê——‚ğì¬
     MakeUnitList GetArgAsString(2)
     ExecMakeUnitListCmd = LineNum + 1
 End Function
@@ -7922,13 +7922,13 @@ Dim a As Integer
             With u
                 For a = 1 To .CountAbility
                     If GetArgAsString(3) = .Ability(a).Name _
-                        And .IsAbilityClassifiedAs(a, "ï¼­") _
+                        And .IsAbilityClassifiedAs(a, "‚l") _
                     Then
                         Exit For
                     End If
                 Next
                 If a > .CountAbility Then
-                    EventErrorMessage = "ã‚¢ãƒ“ãƒªãƒ†ã‚£åãŒé–“é•ã£ã¦ã„ã¾ã™"
+                    EventErrorMessage = "ƒAƒrƒŠƒeƒB–¼‚ªŠÔˆá‚Á‚Ä‚¢‚Ü‚·"
                     Error 0
                 End If
             End With
@@ -7952,12 +7952,12 @@ Dim a As Integer
             With u
                 For a = 1 To .CountAbility
                     If GetArgAsString(2) = .Ability(a).Name _
-                        And .IsAbilityClassifiedAs(a, "ï¼­") Then
+                        And .IsAbilityClassifiedAs(a, "‚l") Then
                         Exit For
                     End If
                 Next
                 If a > .CountAbility Then
-                    EventErrorMessage = "ã‚¢ãƒ“ãƒªãƒ†ã‚£åãŒé–“é•ã£ã¦ã„ã¾ã™"
+                    EventErrorMessage = "ƒAƒrƒŠƒeƒB–¼‚ªŠÔˆá‚Á‚Ä‚¢‚Ü‚·"
                     Error 0
                 End If
             End With
@@ -7976,13 +7976,13 @@ Dim a As Integer
                 ty = MapHeight
             End If
         Case Else
-            EventErrorMessage = "MapAbilityã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+            EventErrorMessage = "MapAbilityƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
             Error 0
     End Select
     
     With u
-        If .Status <> "å‡ºæ’ƒ" Then
-            EventErrorMessage = .Nickname & "ã¯å‡ºæ’ƒã—ã¦ã„ã¾ã›ã‚“"
+        If .Status <> "oŒ‚" Then
+            EventErrorMessage = .Nickname & "‚ÍoŒ‚‚µ‚Ä‚¢‚Ü‚¹‚ñ"
             Error 0
         End If
         OpenMessageForm
@@ -8008,7 +8008,7 @@ Dim num As Integer
     is_event = True
     
     If num <= 6 Then
-        If GetArgAsString(num) = "é€šå¸¸æˆ¦é—˜" Then
+        If GetArgAsString(num) = "’Êíí“¬" Then
             is_event = False
             num = num - 1
         End If
@@ -8021,13 +8021,13 @@ Dim num As Integer
             With u
                 For w = 1 To .CountWeapon
                     If GetArgAsString(3) = .Weapon(w).Name _
-                        And .IsWeaponClassifiedAs(w, "ï¼­") _
+                        And .IsWeaponClassifiedAs(w, "‚l") _
                     Then
                         Exit For
                     End If
                 Next
                 If w > .CountWeapon Then
-                    EventErrorMessage = "ãƒãƒƒãƒ—æ”»æ’ƒåãŒé–“é•ã£ã¦ã„ã¾ã™"
+                    EventErrorMessage = "ƒ}ƒbƒvUŒ‚–¼‚ªŠÔˆá‚Á‚Ä‚¢‚Ü‚·"
                     Error 0
                 End If
             End With
@@ -8051,13 +8051,13 @@ Dim num As Integer
             With u
                 For w = 1 To u.CountWeapon
                     If GetArgAsString(2) = .Weapon(w).Name _
-                        And .IsWeaponClassifiedAs(w, "ï¼­") _
+                        And .IsWeaponClassifiedAs(w, "‚l") _
                     Then
                         Exit For
                     End If
                 Next
                 If w > .CountWeapon Then
-                    EventErrorMessage = "ãƒãƒƒãƒ—æ”»æ’ƒåãŒé–“é•ã£ã¦ã„ã¾ã™"
+                    EventErrorMessage = "ƒ}ƒbƒvUŒ‚–¼‚ªŠÔˆá‚Á‚Ä‚¢‚Ü‚·"
                     Error 0
                 End If
             End With
@@ -8076,17 +8076,17 @@ Dim num As Integer
                 ty = MapHeight
             End If
         Case Else
-            EventErrorMessage = "MapAttackã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+            EventErrorMessage = "MapAttackƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
             Error 0
     End Select
     
     With u
-        If .Status <> "å‡ºæ’ƒ" Then
-            EventErrorMessage = .Nickname & "ã¯å‡ºæ’ƒã—ã¦ã„ã¾ã›ã‚“"
+        If .Status <> "oŒ‚" Then
+            EventErrorMessage = .Nickname & "‚ÍoŒ‚‚µ‚Ä‚¢‚Ü‚¹‚ñ"
             Error 0
         End If
         
-        'ã‚¹ãƒ†ãƒ¼ã‚¸ã‚’ä»®æƒ³çš„ã«å¤‰æ›´ã—ã¦ãŠã
+        'ƒXƒe[ƒW‚ğ‰¼‘z“I‚É•ÏX‚µ‚Ä‚¨‚­
         cur_stage = Stage
         Stage = .Party
         
@@ -8112,7 +8112,7 @@ End Function
 
 Private Function ExecMoneyCmd() As Long
     If ArgNum <> 2 Then
-        EventErrorMessage = "Moneyã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé–“é•ã£ã¦ã„ã¾ã™"
+        EventErrorMessage = "MoneyƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªŠÔˆá‚Á‚Ä‚¢‚Ü‚·"
         Error 0
     End If
     
@@ -8132,13 +8132,13 @@ Dim i As Integer, buf As String
     For i = 2 To ArgNum
         buf = GetArgAsString(i)
         Select Case buf
-            Case "éåŒæœŸ"
+            Case "”ñ“¯Šú"
                 late_refresh = True
-            Case "ãƒãƒƒãƒ—é™å®š"
+            Case "ƒ}ƒbƒvŒÀ’è"
                 MapDrawIsMapOnly = True
             Case Else
                 EventErrorMessage = _
-                    "Monotoneã‚³ãƒãƒ³ãƒ‰ã«ä¸æ­£ãªã‚ªãƒ—ã‚·ãƒ§ãƒ³ã€Œ" & buf & "ã€ãŒä½¿ã‚ã‚Œã¦ã„ã¾ã™"
+                    "MonotoneƒRƒ}ƒ“ƒh‚É•s³‚ÈƒIƒvƒVƒ‡ƒ“u" & buf & "v‚ªg‚í‚ê‚Ä‚¢‚Ü‚·"
                 Error 0
         End Select
     Next
@@ -8146,19 +8146,19 @@ Dim i As Integer, buf As String
     prev_x = MapX
     prev_y = MapY
     
-    'ãƒã‚¦ã‚¹ã‚«ãƒ¼ã‚½ãƒ«ã‚’ç ‚æ™‚è¨ˆã«
+    'ƒ}ƒEƒXƒJ[ƒ\ƒ‹‚ğ»Œv‚É
     Screen.MousePointer = vbHourglass
     
-    SetupBackground "ç™½é»’", "éåŒæœŸ"
+    SetupBackground "”’•", "”ñ“¯Šú"
     
     For Each u In UList
         With u
-            If .Status = "å‡ºæ’ƒ" Then
+            If .Status = "oŒ‚" Then
                 If .BitmapID = 0 Then
                     With UList.Item(.Name)
                         If u.Party0 = .Party0 And .BitmapID <> 0 _
                             And u.Bitmap = .Bitmap _
-                            And Not .IsFeatureAvailable("ãƒ€ãƒŸãƒ¼ãƒ¦ãƒ‹ãƒƒãƒˆ") _
+                            And Not .IsFeatureAvailable("ƒ_ƒ~[ƒ†ƒjƒbƒg") _
                         Then
                             u.BitmapID = .BitmapID
                         Else
@@ -8173,7 +8173,7 @@ Dim i As Integer, buf As String
     Center prev_x, prev_y
     RedrawScreen late_refresh
     
-    'ãƒã‚¦ã‚¹ã‚«ãƒ¼ã‚½ãƒ«ã‚’å…ƒã«æˆ»ã™
+    'ƒ}ƒEƒXƒJ[ƒ\ƒ‹‚ğŒ³‚É–ß‚·
     Screen.MousePointer = 0
     
     ExecMonotoneCmd = LineNum + 1
@@ -8216,42 +8216,42 @@ Dim idx As Integer
     
     With u
         Select Case u.Status
-            Case "å‡ºæ’ƒ"
-                If InStr(opt, "ã‚¢ãƒ‹ãƒ¡è¡¨ç¤º") = 1 Then
-                     'ç¾åœ¨ä½ç½®ã‚’è¨˜éŒ²
+            Case "oŒ‚"
+                If InStr(opt, "ƒAƒjƒ•\¦") = 1 Then
+                     'Œ»İˆÊ’u‚ğ‹L˜^
                      ux = .X
                      uy = .Y
                      
-                     'ç›®çš„åœ°ã«ãƒ¦ãƒ‹ãƒƒãƒˆãŒã„ã¦å…¥ã‚Œãªã„å ´åˆãŒã‚ã‚‹ã®ã§
-                     'å®Ÿéš›ã«ç§»å‹•ã•ã›ã¦åˆ°ç€åœ°ç‚¹ã‚’ç¢ºã‹ã‚ã‚‹
+                     '–Ú“I’n‚Éƒ†ƒjƒbƒg‚ª‚¢‚Ä“ü‚ê‚È‚¢ê‡‚ª‚ ‚é‚Ì‚Å
+                     'ÀÛ‚ÉˆÚ“®‚³‚¹‚Ä“’…’n“_‚ğŠm‚©‚ß‚é
                      .Jump tx, ty, False
                      tx = .X
                      ty = .Y
                      
-                     'ä¸€æ—¦å…ƒã®ä½ç½®ã«æˆ»ã™
+                     'ˆê’UŒ³‚ÌˆÊ’u‚É–ß‚·
                      .Jump ux, uy, False
                      
-                     'ç§»å‹•ã‚¢ãƒ‹ãƒ¡è¡¨ç¤º
+                     'ˆÚ“®ƒAƒjƒ•\¦
                      MoveUnitBitmap u, ux, uy, tx, ty, 20
                 End If
                 
                 .Jump tx, ty, False
-            Case "æ ¼ç´"
+            Case "Ši”["
                 .StandBy tx, ty, opt
             Case Else
-                EventErrorMessage = .MainPilot.Nickname & "ã¯å‡ºæ’ƒã—ã¦ã„ã¾ã›ã‚“"
+                EventErrorMessage = .MainPilot.Nickname & "‚ÍoŒ‚‚µ‚Ä‚¢‚Ü‚¹‚ñ"
                 Error 0
         End Select
     End With
     
-    If opt = "" Or InStr(opt, "ã‚¢ãƒ‹ãƒ¡è¡¨ç¤º") = 1 Then
+    If opt = "" Or InStr(opt, "ƒAƒjƒ•\¦") = 1 Then
         If MainForm.Visible And Not IsPictureVisible Then
             RedrawScreen
         End If
-    ElseIf opt = "éåŒæœŸ" Then
-        'ç”»é¢æ›´æ–°ã—ãªã„
+    ElseIf opt = "”ñ“¯Šú" Then
+        '‰æ–ÊXV‚µ‚È‚¢
     Else
-        EventErrorMessage = "Moveã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+        EventErrorMessage = "MoveƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
         Error 0
     End If
     
@@ -8269,13 +8269,13 @@ Dim i As Integer, buf As String
     For i = 2 To ArgNum
         buf = GetArgAsString(i)
         Select Case buf
-            Case "éåŒæœŸ"
+            Case "”ñ“¯Šú"
                 late_refresh = True
-            Case "ãƒãƒƒãƒ—é™å®š"
+            Case "ƒ}ƒbƒvŒÀ’è"
                 MapDrawIsMapOnly = True
             Case Else
                 EventErrorMessage = _
-                    "Nightã‚³ãƒãƒ³ãƒ‰ã«ä¸æ­£ãªã‚ªãƒ—ã‚·ãƒ§ãƒ³ã€Œ" & buf & "ã€ãŒä½¿ã‚ã‚Œã¦ã„ã¾ã™"
+                    "NightƒRƒ}ƒ“ƒh‚É•s³‚ÈƒIƒvƒVƒ‡ƒ“u" & buf & "v‚ªg‚í‚ê‚Ä‚¢‚Ü‚·"
                 Error 0
         End Select
     Next
@@ -8283,19 +8283,19 @@ Dim i As Integer, buf As String
     prev_x = MapX
     prev_y = MapY
     
-    'ãƒã‚¦ã‚¹ã‚«ãƒ¼ã‚½ãƒ«ã‚’ç ‚æ™‚è¨ˆã«
+    'ƒ}ƒEƒXƒJ[ƒ\ƒ‹‚ğ»Œv‚É
     Screen.MousePointer = vbHourglass
     
-    SetupBackground "å¤œ", "éåŒæœŸ"
+    SetupBackground "–é", "”ñ“¯Šú"
     
     For Each u In UList
         With u
-            If .Status = "å‡ºæ’ƒ" Then
+            If .Status = "oŒ‚" Then
                 If .BitmapID = 0 Then
                     With UList.Item(.Name)
                         If u.Party0 = .Party0 And .BitmapID <> 0 _
                             And u.Bitmap = .Bitmap _
-                            And Not .IsFeatureAvailable("ãƒ€ãƒŸãƒ¼ãƒ¦ãƒ‹ãƒƒãƒˆ") _
+                            And Not .IsFeatureAvailable("ƒ_ƒ~[ƒ†ƒjƒbƒg") _
                         Then
                             u.BitmapID = .BitmapID
                         Else
@@ -8310,7 +8310,7 @@ Dim i As Integer, buf As String
     Center prev_x, prev_y
     RedrawScreen late_refresh
     
-    'ãƒã‚¦ã‚¹ã‚«ãƒ¼ã‚½ãƒ«ã‚’å…ƒã«æˆ»ã™
+    'ƒ}ƒEƒXƒJ[ƒ\ƒ‹‚ğŒ³‚É–ß‚·
     Screen.MousePointer = 0
     
     ExecNightCmd = LineNum + 1
@@ -8323,16 +8323,16 @@ Dim late_refresh As Boolean
     
     Select Case ArgNum
         Case 1
-            'ï¼¯ï¼«
+            '‚n‚j
         Case 2
-             If GetArgAsString(2) = "éåŒæœŸ" Then
+             If GetArgAsString(2) = "”ñ“¯Šú" Then
                  late_refresh = True
              Else
-                 EventErrorMessage = "Noonã‚³ãƒãƒ³ãƒ‰ã®ã‚ªãƒ—ã‚·ãƒ§ãƒ³ãŒä¸æ­£ã§ã™"
+                 EventErrorMessage = "NoonƒRƒ}ƒ“ƒh‚ÌƒIƒvƒVƒ‡ƒ“‚ª•s³‚Å‚·"
                  Error 0
              End If
         Case Else
-            EventErrorMessage = "Noonã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+            EventErrorMessage = "NoonƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
             Error 0
     End Select
     
@@ -8341,19 +8341,19 @@ Dim late_refresh As Boolean
     prev_x = MapX
     prev_y = MapY
     
-    'ãƒã‚¦ã‚¹ã‚«ãƒ¼ã‚½ãƒ«ã‚’ç ‚æ™‚è¨ˆã«
+    'ƒ}ƒEƒXƒJ[ƒ\ƒ‹‚ğ»Œv‚É
     Screen.MousePointer = vbHourglass
     
-    SetupBackground "", "éåŒæœŸ"
+    SetupBackground "", "”ñ“¯Šú"
     
     For Each u In UList
         With u
-            If .Status = "å‡ºæ’ƒ" Then
+            If .Status = "oŒ‚" Then
                 If .BitmapID = 0 Then
                     With UList.Item(.Name)
                         If u.Party0 = .Party0 And .BitmapID <> 0 _
                             And u.Bitmap = .Bitmap _
-                            And Not .IsFeatureAvailable("ãƒ€ãƒŸãƒ¼ãƒ¦ãƒ‹ãƒƒãƒˆ") _
+                            And Not .IsFeatureAvailable("ƒ_ƒ~[ƒ†ƒjƒbƒg") _
                         Then
                             u.BitmapID = .BitmapID
                         Else
@@ -8368,7 +8368,7 @@ Dim late_refresh As Boolean
     Center prev_x, prev_y
     RedrawScreen late_refresh
     
-    'ãƒã‚¦ã‚¹ã‚«ãƒ¼ã‚½ãƒ«ã‚’å…ƒã«æˆ»ã™
+    'ƒ}ƒEƒXƒJ[ƒ\ƒ‹‚ğŒ³‚É–ß‚·
     Screen.MousePointer = 0
     
     ExecNoonCmd = LineNum + 1
@@ -8381,18 +8381,18 @@ Dim opt As String
 Dim f As Integer
 
     If ArgNum <> 6 Then
-        EventErrorMessage = "Openã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+        EventErrorMessage = "OpenƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
         Error 0
     End If
     
     fname = ScenarioPath & GetArgAsString(2)
     
     If InStr(fname, "..\") > 0 Then
-        EventErrorMessage = "ãƒ•ã‚¡ã‚¤ãƒ«æŒ‡å®šã«ã€Œ..\ã€ã¯ä½¿ãˆã¾ã›ã‚“"
+        EventErrorMessage = "ƒtƒ@ƒCƒ‹w’è‚Éu..\v‚Íg‚¦‚Ü‚¹‚ñ"
         Error 0
     End If
     If InStr(fname, "../") > 0 Then
-        EventErrorMessage = "ãƒ•ã‚¡ã‚¤ãƒ«æŒ‡å®šã«ã€Œ../ã€ã¯ä½¿ãˆã¾ã›ã‚“"
+        EventErrorMessage = "ƒtƒ@ƒCƒ‹w’è‚Éu../v‚Íg‚¦‚Ü‚¹‚ñ"
         Error 0
     End If
         
@@ -8402,18 +8402,18 @@ Dim f As Integer
     f = FreeFile
     SetVariableAsLong vname, f
     Select Case opt
-        Case "å‡ºåŠ›"
+        Case "o—Í"
             Open fname For Output Access Write As #f
-        Case "è¿½åŠ å‡ºåŠ›"
+        Case "’Ç‰Áo—Í"
             Open fname For Append Access Write As #f
-        Case "å…¥åŠ›"
+        Case "“ü—Í"
             If Not FileExists(fname) Then
-                EventErrorMessage = fname & "ã¨ã„ã†ãƒ•ã‚¡ã‚¤ãƒ«ã¯å­˜åœ¨ã—ã¾ã›ã‚“"
+                EventErrorMessage = fname & "‚Æ‚¢‚¤ƒtƒ@ƒCƒ‹‚Í‘¶İ‚µ‚Ü‚¹‚ñ"
                 Error 0
             End If
             Open fname For Input Access Read As #f
         Case Else
-            EventErrorMessage = "ãƒ•ã‚¡ã‚¤ãƒ«ã®å…¥å‡ºåŠ›ãƒ¢ãƒ¼ãƒ‰ãŒä¸æ­£ã§ã™"
+            EventErrorMessage = "ƒtƒ@ƒCƒ‹‚Ì“üo—Íƒ‚[ƒh‚ª•s³‚Å‚·"
             Error 0
     End Select
     
@@ -8432,8 +8432,8 @@ Dim vname As String
             End If
             SetVariableAsLong vname, 1
 ' ADD START MARGE
-            If vname = "Option(æ–°ï¼§ï¼µï¼©)" Then
-                ' æ–°ï¼§ï¼µï¼©ãŒæŒ‡å®šã•ã‚ŒãŸã‚‰å³åæ˜ ã™ã‚‹ãŸã‚ã«ãƒ¡ã‚¤ãƒ³ç”»é¢ã‚’ãƒ­ãƒ¼ãƒ‰ã—ãªãŠã™
+            If vname = "Option(V‚f‚t‚h)" Then
+                ' V‚f‚t‚h‚ªw’è‚³‚ê‚½‚ç‘¦”½‰f‚·‚é‚½‚ß‚ÉƒƒCƒ“‰æ–Ê‚ğƒ[ƒh‚µ‚È‚¨‚·
                 LoadForms
             End If
 ' ADD END MARGE
@@ -8444,7 +8444,7 @@ Dim vname As String
                 UndefineVariable vname
             End If
         Case Else
-            EventErrorMessage = "Optionã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+            EventErrorMessage = "OptionƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
             Error 0
     End Select
     
@@ -8473,32 +8473,32 @@ Dim without_animation As Boolean
 '        Select Case GetArgAsString(num)
         Select Case GetArgAsString(i)
 ' MOD END MARGE
-            Case "å¯†é›†"
-                opt = opt & " å‡ºæ’ƒ"
+            Case "–§W"
+                opt = opt & " oŒ‚"
 '                num = num - 1
-            Case "éåŒæœŸ"
-                opt = opt & " éåŒæœŸ"
+            Case "”ñ“¯Šú"
+                opt = opt & " ”ñ“¯Šú"
 '                num = num - 1
-            Case "ã‚¢ãƒ‹ãƒ¡éè¡¨ç¤º"
-                opt = opt & " ã‚¢ãƒ‹ãƒ¡éè¡¨ç¤º"
+            Case "ƒAƒjƒ”ñ•\¦"
+                opt = opt & " ƒAƒjƒ”ñ•\¦"
 '                num = num - 1
         End Select
     Next
 ' MOD START MARGE
-'    If InStr(opt, "å‡ºæ’ƒ") = 0 Then
-    If InStr(opt, "å‡ºæ’ƒ") <= 0 Then
+'    If InStr(opt, "oŒ‚") = 0 Then
+    If InStr(opt, "oŒ‚") <= 0 Then
 ' MOD END MARGE
-        opt = opt & " éƒ¨éšŠé…ç½®"
+        opt = opt & " •”‘à”z’u"
     End If
     
     If num < 4 Then
-        EventErrorMessage = "Organizeã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+        EventErrorMessage = "OrganizeƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
         Error 0
     End If
     
     unum = GetArgAsLong(2)
     If unum < 1 Then
-        EventErrorMessage = "ãƒ¦ãƒ‹ãƒƒãƒˆæ•°ãŒä¸æ­£ã§ã™"
+        EventErrorMessage = "ƒ†ƒjƒbƒg”‚ª•s³‚Å‚·"
         Error 0
     End If
     
@@ -8517,7 +8517,7 @@ Dim without_animation As Boolean
     End If
     
     If num < 5 Then
-        uclass = "å…¨ã¦"
+        uclass = "‘S‚Ä"
     Else
         For i = 5 To num
             uclass = uclass & " " & GetArgAsString(i)
@@ -8531,51 +8531,51 @@ Beginning:
     ReDim ListItemID(0)
     For Each u In UList
         With u
-            If .Party0 <> "å‘³æ–¹" Or .Status <> "å¾…æ©Ÿ" _
+            If .Party0 <> "–¡•û" Or .Status <> "‘Ò‹@" _
                 Or .CountPilot = 0 _
             Then
                 GoTo NextOrganizeLoop
             End If
             
-            'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆæ•°ã®ãƒã‚§ãƒƒã‚¯
+            'ƒpƒCƒƒbƒg”‚Ìƒ`ƒFƒbƒN
             If (.Data.PilotNum = 1 Or Abs(.Data.PilotNum) = 2) _
                 And .CountPilot < Abs(.Data.PilotNum) _
-                And Not .IsFeatureAvailable("ï¼‘äººä¹—ã‚Šå¯èƒ½") _
+                And Not .IsFeatureAvailable("‚Plæ‚è‰Â”\") _
             Then
                 GoTo NextOrganizeLoop
             End If
             
             Select Case TerrainClass(1, 1)
-                Case "å®‡å®™", "æœˆé¢"
+                Case "‰F’ˆ", "Œ–Ê"
                     If .Adaption(4) = 0 Then
                         GoTo NextOrganizeLoop
                     End If
                 Case Else
-                    'å®‡å®™å°‚ç”¨ãƒ¦ãƒ‹ãƒƒãƒˆã¯å®‡å®™ã§ã—ã‹æ´»å‹•ã§ããªã„
-                    If .Transportation = "å®‡å®™" Then
+                    '‰F’ˆê—pƒ†ƒjƒbƒg‚Í‰F’ˆ‚Å‚µ‚©Šˆ“®‚Å‚«‚È‚¢
+                    If .Transportation = "‰F’ˆ" Then
                         GoTo NextOrganizeLoop
                     End If
                     
-                    'ç©ºä¸­ãƒãƒƒãƒ—ã‹ï¼Ÿ
-                    If TerrainName(1, 1) = "ç©º" _
-                        And TerrainName(MapWidth \ 2, MapHeight \ 2) = "ç©º" _
-                        And TerrainName(MapWidth, MapHeight) = "ç©º" _
+                    '‹ó’†ƒ}ƒbƒv‚©H
+                    If TerrainName(1, 1) = "‹ó" _
+                        And TerrainName(MapWidth \ 2, MapHeight \ 2) = "‹ó" _
+                        And TerrainName(MapWidth, MapHeight) = "‹ó" _
                     Then
-                        If Not .IsTransAvailable("ç©º") Then
+                        If Not .IsTransAvailable("‹ó") Then
                             GoTo NextOrganizeLoop
                         End If
                     End If
             End Select
             
             Select Case uclass
-                Case "å…¨ã¦", ""
-                    'å…¨ã¦ã®ãƒ¦ãƒ‹ãƒƒãƒˆ
-                Case "é€šå¸¸ãƒ¦ãƒ‹ãƒƒãƒˆ"
-                    If .IsFeatureAvailable("æ¯è‰¦") Then
+                Case "‘S‚Ä", ""
+                    '‘S‚Ä‚Ìƒ†ƒjƒbƒg
+                Case "’Êíƒ†ƒjƒbƒg"
+                    If .IsFeatureAvailable("•êŠÍ") Then
                         GoTo NextOrganizeLoop
                     End If
-                Case "æ¯è‰¦ãƒ¦ãƒ‹ãƒƒãƒˆ"
-                    If Not .IsFeatureAvailable("æ¯è‰¦") Then
+                Case "•êŠÍƒ†ƒjƒbƒg"
+                    If Not .IsFeatureAvailable("•êŠÍ") Then
                         GoTo NextOrganizeLoop
                     End If
                 Case "LL"
@@ -8613,9 +8613,9 @@ Beginning:
                         GoTo NextOrganizeLoop
                     End If
                 Case Else
-                    'ãƒ¦ãƒ‹ãƒƒãƒˆã‚¯ãƒ©ã‚¹æŒ‡å®šã—ãŸå ´åˆ
+                    'ƒ†ƒjƒbƒgƒNƒ‰ƒXw’è‚µ‚½ê‡
                     
-                    'æŒ‡å®šã•ã‚ŒãŸã‚¯ãƒ©ã‚¹ã«è©²å½“ã™ã‚‹ã‹
+                    'w’è‚³‚ê‚½ƒNƒ‰ƒX‚ÉŠY“–‚·‚é‚©
                     For i = 1 To ListLength(uclass)
                         If ListIndex(uclass, i) = .Class0 Then
                             Exit For
@@ -8628,7 +8628,7 @@ Beginning:
             
             ReDim Preserve list(UBound(list) + 1)
             ReDim Preserve ListItemID(UBound(list))
-            If IsOptionDefined("ç­‰èº«å¤§åŸºæº–") Then
+            If IsOptionDefined("“™g‘åŠî€") Then
                 list(UBound(list)) = _
                     .Nickname0 & _
                     Space$(MaxLng(52 - LenB(StrConv(.Nickname0, vbFromUnicode)), 1)) & _
@@ -8647,7 +8647,7 @@ NextOrganizeLoop:
     Next
     ReDim ListItemFlag(UBound(list))
     
-    'ãƒ¬ãƒ™ãƒ«ã®ä¸€è¦§ã¨æœ€å¤§å€¤ãƒ»æœ€å°å€¤ã‚’æ±‚ã‚ã‚‹
+    'ƒŒƒxƒ‹‚Ìˆê——‚ÆÅ‘å’lEÅ¬’l‚ğ‹‚ß‚é
     ReDim lv_list(UBound(list))
     min_value = 100000
     max_value = 0
@@ -8663,7 +8663,7 @@ NextOrganizeLoop:
         End If
     Next
     
-    'ãƒ¬ãƒ™ãƒ«ã«ã°ã‚‰ã¤ããŒã‚ã‚‹æ™‚ã«ã®ã¿ãƒ¬ãƒ™ãƒ«ã§ã‚½ãƒ¼ãƒˆ
+    'ƒŒƒxƒ‹‚É‚Î‚ç‚Â‚«‚ª‚ ‚é‚É‚Ì‚İƒŒƒxƒ‹‚Åƒ\[ƒg
     If min_value <> max_value Then
         For i = 1 To UBound(list) - 1
             max_item = i
@@ -8690,15 +8690,15 @@ NextOrganizeLoop:
     
     If UBound(list) > 0 Then
         Do
-            If IsOptionDefined("ç­‰èº«å¤§åŸºæº–") Then
-                ret = MultiSelectListBox("å‡ºæ’ƒãƒ¦ãƒ‹ãƒƒãƒˆé¸æŠ", list, _
-                    "ãƒ¦ãƒ‹ãƒƒãƒˆ                                            Lv", unum)
+            If IsOptionDefined("“™g‘åŠî€") Then
+                ret = MultiSelectListBox("oŒ‚ƒ†ƒjƒbƒg‘I‘ğ", list, _
+                    "ƒ†ƒjƒbƒg                                            Lv", unum)
             Else
-                ret = MultiSelectListBox("å‡ºæ’ƒãƒ¦ãƒ‹ãƒƒãƒˆé¸æŠ", list, _
-                    "ãƒ¦ãƒ‹ãƒƒãƒˆ                            ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆ       Lv", unum)
+                ret = MultiSelectListBox("oŒ‚ƒ†ƒjƒbƒg‘I‘ğ", list, _
+                    "ƒ†ƒjƒbƒg                            ƒpƒCƒƒbƒg       Lv", unum)
             End If
             If ret = 0 Then
-                CommandState = "ãƒ¦ãƒ‹ãƒƒãƒˆé¸æŠ"
+                CommandState = "ƒ†ƒjƒbƒg‘I‘ğ"
                 UnlockGUI
                 ViewMode = True
                 Do While ViewMode
@@ -8710,7 +8710,7 @@ NextOrganizeLoop:
             End If
         Loop While ret = 0
         
-        If InStr(opt, "éåŒæœŸ") > 0 Then
+        If InStr(opt, "”ñ“¯Šú") > 0 Then
             Center ux, uy
             RefreshScreen
         End If
@@ -8745,7 +8745,7 @@ Dim cname As String, clr As Long
 Dim i As Integer
 
     If ArgNum < 5 Then
-        EventErrorMessage = "Ovalã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+        EventErrorMessage = "OvalƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
         Error 0
     End If
     
@@ -8756,13 +8756,13 @@ Dim i As Integer
     
     SaveScreen
     
-    'æç”»å…ˆ
+    '•`‰ææ
     Select Case ObjDrawOption
-        Case "èƒŒæ™¯"
+        Case "”wŒi"
             Set pic = MainForm.picBack
             Set pic2 = MainForm.picMaskedBack
             IsMapDirty = True
-        Case "ä¿æŒ"
+        Case "•Û"
             Set pic = MainForm.picMain(0)
             Set pic2 = MainForm.picMain(1)
             IsPictureVisible = True
@@ -8770,8 +8770,8 @@ Dim i As Integer
             Set pic = MainForm.picMain(0)
     End Select
     
-    'æç”»é ˜åŸŸ
-    If ObjDrawOption <> "èƒŒæ™¯" Then
+    '•`‰æ—Ìˆæ
+    If ObjDrawOption <> "”wŒi" Then
         Dim tmp As Integer
         IsPictureVisible = True
         tmp = rad + ObjDrawWidth - 1
@@ -8786,7 +8786,7 @@ Dim i As Integer
         opt = GetArgAsString(i)
         If Asc(opt) = 35 Then '#
             If Len(opt) <> 7 Then
-                EventErrorMessage = "è‰²æŒ‡å®šãŒä¸æ­£ã§ã™"
+                EventErrorMessage = "Fw’è‚ª•s³‚Å‚·"
                 Error 0
             End If
             cname = String$(8, vbNullChar)
@@ -8795,13 +8795,13 @@ Dim i As Integer
             Mid(cname, 5, 2) = Mid$(opt, 4, 2)
             Mid(cname, 7, 2) = Mid$(opt, 2, 2)
             If Not IsNumeric(cname) Then
-                EventErrorMessage = "è‰²æŒ‡å®šãŒä¸æ­£ã§ã™"
+                EventErrorMessage = "Fw’è‚ª•s³‚Å‚·"
                 Error 0
             End If
             clr = CLng(cname)
         Else
             EventErrorMessage = _
-                "Ovalã‚³ãƒãƒ³ãƒ‰ã«ä¸æ­£ãªã‚ªãƒ—ã‚·ãƒ§ãƒ³ã€Œ" & opt & "ã€ãŒä½¿ã‚ã‚Œã¦ã„ã¾ã™"
+                "OvalƒRƒ}ƒ“ƒh‚É•s³‚ÈƒIƒvƒVƒ‡ƒ“u" & opt & "v‚ªg‚í‚ê‚Ä‚¢‚Ü‚·"
             Error 0
         End If
     Next
@@ -8851,7 +8851,7 @@ Dim buf As String, options As String
 Dim cname As String, tcolor As Long
 
     If ArgNum < 4 Then
-        EventErrorMessage = "PaintPictureã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+        EventErrorMessage = "PaintPictureƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
         Error 0
     End If
     
@@ -8862,24 +8862,24 @@ Dim cname As String, tcolor As Long
     Do While i <= ArgNum
         buf = GetArgAsString(i)
         Select Case buf
-            Case "é€é", "èƒŒæ™¯", "ç™½é»’", "ã‚»ãƒ”ã‚¢", _
-                "æ˜", "æš—", "ä¸Šä¸‹åè»¢", "å·¦å³åè»¢", _
-                "ä¸ŠåŠåˆ†", "ä¸‹åŠåˆ†", "å³åŠåˆ†", "å·¦åŠåˆ†", _
-                "å³ä¸Š", "å·¦ä¸Š", "å³ä¸‹", "å·¦ä¸‹", _
-                "ãƒã‚¬ãƒã‚¸åè»¢", "ã‚·ãƒ«ã‚¨ãƒƒãƒˆ", _
-                "å¤•ç„¼ã‘", "æ°´ä¸­", "ä¿æŒ", "ãƒ•ã‚£ãƒ«ã‚¿"
+            Case "“§‰ß", "”wŒi", "”’•", "ƒZƒsƒA", _
+                "–¾", "ˆÃ", "ã‰º”½“]", "¶‰E”½“]", _
+                "ã”¼•ª", "‰º”¼•ª", "‰E”¼•ª", "¶”¼•ª", _
+                "‰Eã", "¶ã", "‰E‰º", "¶‰º", _
+                "ƒlƒKƒ|ƒW”½“]", "ƒVƒ‹ƒGƒbƒg", _
+                "—[Ä‚¯", "…’†", "•Û", "ƒtƒBƒ‹ƒ^"
                 options = options & buf & " "
-            Case "å³å›è»¢"
+            Case "‰E‰ñ“]"
                 i = i + 1
-                options = options & "å³å›è»¢ " & GetArgAsString(i) & " "
-            Case "å·¦å›è»¢"
+                options = options & "‰E‰ñ“] " & GetArgAsString(i) & " "
+            Case "¶‰ñ“]"
                 i = i + 1
-                options = options & "å·¦å›è»¢ " & GetArgAsString(i) & " "
+                options = options & "¶‰ñ“] " & GetArgAsString(i) & " "
             Case "-"
-                'ã‚¹ã‚­ãƒƒãƒ—
+                'ƒXƒLƒbƒv
                 opt_n = i
             Case ""
-                'ã‚¹ã‚­ãƒƒãƒ—
+                'ƒXƒLƒbƒv
             Case Else
                 If Asc(buf) = 35 And Len(buf) = 7 Then
                     cname = String$(8, vbNullChar)
@@ -8889,12 +8889,12 @@ Dim cname As String, tcolor As Long
                     Mid(cname, 7, 2) = Mid$(buf, 2, 2)
                     If IsNumeric(cname) Then
                         tcolor = CLng(cname)
-                        If tcolor <> vbWhite Or GetArgAsString(i - 1) = "ãƒ•ã‚£ãƒ«ã‚¿" Then
+                        If tcolor <> vbWhite Or GetArgAsString(i - 1) = "ƒtƒBƒ‹ƒ^" Then
                             options = options & Format$(tcolor) & " "
                         End If
                     End If
                 ElseIf IsNumeric(buf) Then
-                    'ã‚¹ã‚­ãƒƒãƒ—
+                    'ƒXƒLƒbƒv
                     opt_n = i
                 ElseIf InStr(buf, " ") > 0 Then
                     options = options & buf & " "
@@ -8902,8 +8902,8 @@ Dim cname As String, tcolor As Long
                     options = options & buf & " "
                 Else
                     EventErrorMessage = _
-                       "PaintPictureã‚³ãƒãƒ³ãƒ‰ã®" & Format$(i) & _
-                       "ç•ªç›®ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã€Œ" & buf & "ã€ãŒä¸æ­£ã§ã™"
+                       "PaintPictureƒRƒ}ƒ“ƒh‚Ì" & Format$(i) & _
+                       "”Ô–Ú‚Ìƒpƒ‰ƒ[ƒ^u" & buf & "v‚ª•s³‚Å‚·"
                     Error 0
                 End If
         End Select
@@ -8913,7 +8913,7 @@ Dim cname As String, tcolor As Long
     fname = GetArgAsString(2)
     Select Case Right$(LCase$(fname), 4)
         Case ".bmp", ".jpg", ".gif", ".png"
-            'æ­£ã—ã„ç”»åƒãƒ•ã‚¡ã‚¤ãƒ«å
+            '³‚µ‚¢‰æ‘œƒtƒ@ƒCƒ‹–¼
         Case Else
             If PDList.IsDefined(fname) Then
                 fname = "Pilot\" & PDList.Item(fname).Bitmap
@@ -8923,12 +8923,12 @@ Dim cname As String, tcolor As Long
                 fname = "Unit\" & UDList.Item(fname).Bitmap
             Else
                 EventErrorMessage = _
-                    "ä¸æ­£ãªç”»åƒãƒ•ã‚¡ã‚¤ãƒ«åã€Œ" & fname & "ã€ãŒæŒ‡å®šã•ã‚Œã¦ã„ã¾ã™"
+                    "•s³‚È‰æ‘œƒtƒ@ƒCƒ‹–¼u" & fname & "v‚ªw’è‚³‚ê‚Ä‚¢‚Ü‚·"
                 Error 0
             End If
     End Select
     
-    'æç”»å…ˆã®ç”»åƒ
+    '•`‰ææ‚Ì‰æ‘œ
     buf = GetArgAsString(3)
     If buf = "-" Then
         dx = DEFAULT_LEVEL
@@ -8942,7 +8942,7 @@ Dim cname As String, tcolor As Long
         dy = StrToLng(buf) + BaseY
     End If
     
-    'æç”»ã‚µã‚¤ã‚º
+    '•`‰æƒTƒCƒY
     If opt_n >= 6 Then
         buf = GetArgAsString(5)
         If buf = "-" Then
@@ -8969,7 +8969,7 @@ Dim cname As String, tcolor As Long
         dh = DEFAULT_LEVEL
     End If
     
-    'åŸç”»åƒã«ãŠã‘ã‚‹è»¢é€å…ƒåº§æ¨™ï¼†ã‚µã‚¤ã‚º
+    'Œ´‰æ‘œ‚É‚¨‚¯‚é“]‘—Œ³À•W•ƒTƒCƒY
     If opt_n = 10 Then
         buf = GetArgAsString(7)
         If buf = "-" Then
@@ -9006,16 +9006,16 @@ Dim without_cr As Boolean
         without_cr = True
     End If
     
-    'PaintStringã¯ã‚ã‚‰ã‹ã˜ã‚æ§‹æ–‡è§£ææ¸ˆã¿
+    'PaintString‚Í‚ ‚ç‚©‚¶‚ß\•¶‰ğÍÏ‚İ
     Select Case ArgNum
         Case 2
-            'åº§æ¨™æŒ‡å®šãŒãªã„ã“ã¨ãŒç¢ºå®š
-' MOD START ãƒãƒ¼ã‚¸
+            'À•Ww’è‚ª‚È‚¢‚±‚Æ‚ªŠm’è
+' MOD START ƒ}[ƒW
 '            DrawString GetArgAsString(2), -1, -1, without_cr
             DrawString GetArgAsString(2), DEFAULT_LEVEL, DEFAULT_LEVEL, without_cr
-' MOD END ãƒãƒ¼ã‚¸
+' MOD END ƒ}[ƒW
         Case 4
-            'åº§æ¨™æŒ‡å®šä»˜ãã§ã‚ã‚‹ã“ã¨ãŒç¢ºå®š
+            'À•Ww’è•t‚«‚Å‚ ‚é‚±‚Æ‚ªŠm’è
             sx = GetArgAsString(2)
             sy = GetArgAsString(3)
             
@@ -9036,11 +9036,11 @@ Dim without_cr As Boolean
             
             DrawString GetArgAsString(4), xx, yy, without_cr
         Case 5
-            'åº§æ¨™æŒ‡å®šä»˜ãã‹ã©ã†ã‹å®Ÿè¡Œæ™‚ã¾ã§ä¸æ˜
+            'À•Ww’è•t‚«‚©‚Ç‚¤‚©Às‚Ü‚Å•s–¾
             sx = GetArgAsString(2)
             sy = GetArgAsString(3)
             
-            'æœ€åˆã®2å¼•æ•°ãŒæœ‰åŠ¹ãªåº§æ¨™æŒ‡å®šã‹ã©ã†ã‹ã§åˆ¤æ–­ã™ã‚‹
+            'Å‰‚Ì2ˆø”‚ª—LŒø‚ÈÀ•Ww’è‚©‚Ç‚¤‚©‚Å”»’f‚·‚é
             If (IsNumeric(sx) Or sx = "-") _
                 And (IsNumeric(sy) Or sy = "-") _
             Then
@@ -9072,12 +9072,12 @@ Private Function ExecPaintSysStringCmd() As Long
 Dim without_refresh As Boolean
 
     If ArgNum <> 4 And ArgNum <> 5 Then
-        EventErrorMessage = "PaintSysStringã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+        EventErrorMessage = "PaintSysStringƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
         Error 0
     End If
     
     If ArgNum = 5 Then
-        If GetArgAsString(5) = "éåŒæœŸ" Then
+        If GetArgAsString(5) = "”ñ“¯Šú" Then
             without_refresh = True
         End If
     End If
@@ -9092,21 +9092,21 @@ Dim pname As String
 Dim plevel As Integer
     
     If ArgNum < 0 Then
-        EventErrorMessage = "Pilotã‚³ãƒãƒ³ãƒ‰ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®æ‹¬å¼§ã®å¯¾å¿œãŒå–ã‚Œã¦ã„ã¾ã›ã‚“"
+        EventErrorMessage = "PilotƒRƒ}ƒ“ƒh‚Ìƒpƒ‰ƒ[ƒ^‚ÌŠ‡ŒÊ‚Ì‘Î‰‚ªæ‚ê‚Ä‚¢‚Ü‚¹‚ñ"
         Error 0
     ElseIf ArgNum <> 3 And ArgNum <> 4 Then
-        EventErrorMessage = "Pilotã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+        EventErrorMessage = "PilotƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
         Error 0
     End If
     
     pname = GetArgAsString(2)
     If Not PDList.IsDefined(pname) Then
-        EventErrorMessage = "æŒ‡å®šã—ãŸãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã€Œ" & pname & "ã€ã®ãƒ‡ãƒ¼ã‚¿ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“"
+        EventErrorMessage = "w’è‚µ‚½ƒpƒCƒƒbƒgu" & pname & "v‚Ìƒf[ƒ^‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ"
         Error 0
     End If
     
     plevel = GetArgAsLong(3)
-    If IsOptionDefined("ãƒ¬ãƒ™ãƒ«é™ç•Œçªç ´") Then
+    If IsOptionDefined("ƒŒƒxƒ‹ŒÀŠE“Ë”j") Then
         If plevel > 999 Then
             plevel = 999
         End If
@@ -9120,11 +9120,11 @@ Dim plevel As Integer
     End If
     
     If ArgNum = 3 Then
-        With PList.Add(pname, plevel, "å‘³æ–¹")
+        With PList.Add(pname, plevel, "–¡•û")
             .FullRecover
         End With
     Else
-        With PList.Add(pname, plevel, "å‘³æ–¹", GetArgAsString(4))
+        With PList.Add(pname, plevel, "–¡•û", GetArgAsString(4))
             .FullRecover
         End With
     End If
@@ -9137,7 +9137,7 @@ Dim fname As String
 Dim play_bgm_end As Long
 Dim i As Long
 
-    'PlayMIDIã‚³ãƒãƒ³ãƒ‰ãŒé€£ç¶šã—ã¦ã‚‹å ´åˆã€æœ€å¾Œã®PlayMIDIã‚³ãƒãƒ³ãƒ‰ã®ä½ç½®ã‚’æ¤œç´¢
+    'PlayMIDIƒRƒ}ƒ“ƒh‚ª˜A‘±‚µ‚Ä‚éê‡AÅŒã‚ÌPlayMIDIƒRƒ}ƒ“ƒh‚ÌˆÊ’u‚ğŒŸõ
     For i = LineNum + 1 To UBound(EventCmd)
         If EventCmd(i).Name <> PlayMIDICmd Then
             Exit For
@@ -9145,7 +9145,7 @@ Dim i As Long
     Next
     play_bgm_end = i - 1
     
-    'æœ€å¾Œã®SPlayMIDIã‹ã‚‰é †ã«MIDIãƒ•ã‚¡ã‚¤ãƒ«ã‚’æ¤œç´¢
+    'ÅŒã‚ÌSPlayMIDI‚©‚ç‡‚ÉMIDIƒtƒ@ƒCƒ‹‚ğŒŸõ
     For i = play_bgm_end To LineNum Step -1
         fname = ListTail(EventData(i), 2)
         If ListLength(fname) = 1 Then
@@ -9158,17 +9158,17 @@ Dim i As Long
         End If
         fname = SearchMidiFile(fname)
         If fname <> "" Then
-            'MIDIãƒ•ã‚¡ã‚¤ãƒ«ãŒå­˜åœ¨ã—ãŸã®ã§é¸æŠ
+            'MIDIƒtƒ@ƒCƒ‹‚ª‘¶İ‚µ‚½‚Ì‚Å‘I‘ğ
             Exit For
         End If
     Next
     
-    'MIDIãƒ•ã‚¡ã‚¤ãƒ«ã‚’å†ç”Ÿ
+    'MIDIƒtƒ@ƒCƒ‹‚ğÄ¶
     KeepBGM = False
     BossBGM = False
     StartBGM fname, False
     
-    'æ¬¡ã®ã‚³ãƒãƒ³ãƒ‰å®Ÿè¡Œä½ç½®ã¯æœ€å¾Œã®PlayMIDIã‚³ãƒãƒ³ãƒ‰ã®å¾Œ
+    'Ÿ‚ÌƒRƒ}ƒ“ƒhÀsˆÊ’u‚ÍÅŒã‚ÌPlayMIDIƒRƒ}ƒ“ƒh‚ÌŒã
     ExecPlayMIDICmd = play_bgm_end + 1
 End Function
 
@@ -9226,27 +9226,27 @@ Dim prev_clr As Long
     Loop
     
     If pnum = 1 Then
-        EventErrorMessage = "é ‚ç‚¹æ•°ãŒå°‘ãªã™ãã¾ã™"
+        EventErrorMessage = "’¸“_”‚ª­‚È‚·‚¬‚Ü‚·"
         Error 0
     End If
     
     SaveScreen
     
-    'æç”»å…ˆ
+    '•`‰ææ
     Select Case ObjDrawOption
-        Case "èƒŒæ™¯"
+        Case "”wŒi"
             Set pic = MainForm.picBack
             Set pic2 = MainForm.picMaskedBack
             IsMapDirty = True
-        Case "ä¿æŒ"
+        Case "•Û"
             Set pic = MainForm.picMain(0)
             Set pic2 = MainForm.picMain(1)
         Case Else
             Set pic = MainForm.picMain(0)
     End Select
     
-    'æç”»é ˜åŸŸ
-    If ObjDrawOption <> "èƒŒæ™¯" Then
+    '•`‰æ—Ìˆæ
+    If ObjDrawOption <> "”wŒi" Then
         Dim tmp As Integer
         IsPictureVisible = True
         tmp = ObjDrawWidth - 1
@@ -9300,7 +9300,7 @@ Dim f As Integer
 Dim msg As String
 
     If ArgNum = 1 Then
-        EventErrorMessage = "Printã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+        EventErrorMessage = "PrintƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
         Error 0
     End If
     
@@ -9353,15 +9353,15 @@ Dim opt As String
 Dim cname As String, clr As Long
 
     If ArgNum < 3 Then
-        EventErrorMessage = "PSetã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+        EventErrorMessage = "PSetƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
         Error 0
     End If
     
-    'åº§æ¨™
+    'À•W
     xx = GetArgAsLong(2) + BaseX
     yy = GetArgAsLong(3) + BaseY
     
-    'åº§æ¨™ã¯ç”»é¢ä¸Šã«ã‚ã‚‹ï¼Ÿ
+    'À•W‚Í‰æ–Êã‚É‚ ‚éH
     If xx < 0 Or MapPWidth <= xx _
         Or yy < 0 Or MapPHeight <= yy _
     Then
@@ -9371,21 +9371,21 @@ Dim cname As String, clr As Long
     
     SaveScreen
     
-    'æç”»å…ˆ
+    '•`‰ææ
     Select Case ObjDrawOption
-        Case "èƒŒæ™¯"
+        Case "”wŒi"
             Set pic = MainForm.picBack
             Set pic2 = MainForm.picMaskedBack
             IsMapDirty = True
-        Case "ä¿æŒ"
+        Case "•Û"
             Set pic = MainForm.picMain(0)
             Set pic2 = MainForm.picMain(1)
         Case Else
             Set pic = MainForm.picMain(0)
     End Select
     
-    'æç”»é ˜åŸŸ
-    If ObjDrawOption <> "èƒŒæ™¯" Then
+    '•`‰æ—Ìˆæ
+    If ObjDrawOption <> "”wŒi" Then
         Dim tmp As Integer
         IsPictureVisible = True
         tmp = ObjDrawWidth - 1
@@ -9401,11 +9401,11 @@ Dim cname As String, clr As Long
         End If
     End If
     
-    'æç”»è‰²
+    '•`‰æF
     If ArgNum = 4 Then
         opt = GetArgAsString(4)
         If Asc(opt) <> 35 Or Len(opt) <> 7 Then
-            EventErrorMessage = "è‰²æŒ‡å®šãŒä¸æ­£ã§ã™"
+            EventErrorMessage = "Fw’è‚ª•s³‚Å‚·"
             Error 0
         End If
         cname = String$(8, vbNullChar)
@@ -9414,7 +9414,7 @@ Dim cname As String, clr As Long
         Mid(cname, 5, 2) = Mid$(opt, 4, 2)
         Mid(cname, 7, 2) = Mid$(opt, 2, 2)
         If Not IsNumeric(cname) Then
-            EventErrorMessage = "è‰²æŒ‡å®šãŒä¸æ­£ã§ã™"
+            EventErrorMessage = "Fw’è‚ª•s³‚Å‚·"
             Error 0
         End If
         clr = CLng(cname)
@@ -9424,7 +9424,7 @@ Dim cname As String, clr As Long
     
     pic.DrawWidth = ObjDrawWidth
     
-    'ç‚¹ã‚’æç”»
+    '“_‚ğ•`‰æ
     pic.PSet (xx, yy), clr
     
     pic.DrawWidth = 1
@@ -9432,7 +9432,7 @@ Dim cname As String, clr As Long
     If Not pic2 Is Nothing Then
         pic2.DrawWidth = ObjDrawWidth
         
-        'ç‚¹ã‚’æç”»
+        '“_‚ğ•`‰æ
         pic2.PSet (xx, yy), clr
         
         pic2.DrawWidth = 1
@@ -9467,21 +9467,21 @@ Dim buf As String
         End If
     Next
     If i = UBound(EventData) Then
-        EventErrorMessage = "Questionã¨EndãŒå¯¾å¿œã—ã¦ã„ã¾ã›ã‚“"
+        EventErrorMessage = "Question‚ÆEnd‚ª‘Î‰‚µ‚Ä‚¢‚Ü‚¹‚ñ"
         Error 0
     End If
     
     If UBound(list) > 0 Then
         Select Case ArgNum
             Case 3
-                SelectedItem = LIPS("é¸æŠ", list, _
+                SelectedItem = LIPS("‘I‘ğ", list, _
                     GetArgAsString(3), _
                     GetArgAsLong(2))
             Case 2
-                SelectedItem = LIPS("é¸æŠ", list, "ã•ã‚ã€ã©ã†ã™ã‚‹ï¼Ÿ", _
+                SelectedItem = LIPS("‘I‘ğ", list, "‚³‚ A‚Ç‚¤‚·‚éH", _
                     GetArgAsLong(2))
             Case Else
-                EventErrorMessage = "Questionã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+                EventErrorMessage = "QuestionƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
                 Error 0
         End Select
     Else
@@ -9502,29 +9502,29 @@ Private Function ExecQuickLoadCmd() As Long
     StopBGM
     
     If FileExists(LastSaveDataFileName) Then
-        'ã‚»ãƒ¼ãƒ–ã—ãŸãƒ•ã‚¡ã‚¤ãƒ«ãŒå­˜åœ¨ã™ã‚Œã°ãã‚Œã‚’ãƒ­ãƒ¼ãƒ‰
+        'ƒZ[ƒu‚µ‚½ƒtƒ@ƒCƒ‹‚ª‘¶İ‚·‚ê‚Î‚»‚ê‚ğƒ[ƒh
         RestoreData LastSaveDataFileName, True
     Else
-        'ã‚»ãƒ¼ãƒ–ãƒ•ã‚¡ã‚¤ãƒ«ãŒè¦‹ã¤ã‹ã‚‰ãªã‘ã‚Œã°å¼·åˆ¶çµ‚äº†
-        ErrorMessage "ã‚»ãƒ¼ãƒ–ãƒ‡ãƒ¼ã‚¿ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“"
+        'ƒZ[ƒuƒtƒ@ƒCƒ‹‚ªŒ©‚Â‚©‚ç‚È‚¯‚ê‚Î‹­§I—¹
+        ErrorMessage "ƒZ[ƒuƒf[ƒ^‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ"
         TerminateSRC
     End If
     
-    'è©°ã¾ãªã„ã‚ˆã†ã«ä¹±æ•°ç³»åˆ—ã‚’ãƒªã‚»ãƒƒãƒˆ
+    '‹l‚Ü‚È‚¢‚æ‚¤‚É—”Œn—ñ‚ğƒŠƒZƒbƒg
     RndSeed = RndSeed + 1
     RndReset
     
-    'å†é–‹ã‚¤ãƒ™ãƒ³ãƒˆã«ã‚ˆã‚‹ãƒãƒƒãƒ—ç”»åƒã®æ›¸ãæ›ãˆå‡¦ç†ã‚’è¡Œã†
-    HandleEvent "å†é–‹"
+    'ÄŠJƒCƒxƒ“ƒg‚É‚æ‚éƒ}ƒbƒv‰æ‘œ‚Ì‘‚«Š·‚¦ˆ—‚ğs‚¤
+    HandleEvent "ÄŠJ"
     IsMapDirty = False
     
-    'ç”»é¢ã‚’æ›¸ãç›´ã—ã¦ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚’è¡¨ç¤º
+    '‰æ–Ê‚ğ‘‚«’¼‚µ‚ÄƒXƒe[ƒ^ƒX‚ğ•\¦
     RedrawScreen
     DisplayGlobalStatus
     MainForm.Show
     
-    'æ“ä½œå¯èƒ½ã«ã™ã‚‹
-    CommandState = "ãƒ¦ãƒ‹ãƒƒãƒˆé¸æŠ"
+    '‘€ì‰Â”\‚É‚·‚é
+    CommandState = "ƒ†ƒjƒbƒg‘I‘ğ"
     
     UnlockGUI
     
@@ -9549,7 +9549,7 @@ Dim buf As String
             uname = GetArgAsString(2)
             Set u = UList.Item(uname)
             If u Is Nothing Then
-                EventErrorMessage = uname & "ã¨ã„ã†ãƒ¦ãƒ‹ãƒƒãƒˆã¯å­˜åœ¨ã—ã¾ã›ã‚“"
+                EventErrorMessage = uname & "‚Æ‚¢‚¤ƒ†ƒjƒbƒg‚Í‘¶İ‚µ‚Ü‚¹‚ñ"
                 Error 0
             End If
             rk = GetArgAsLong(3)
@@ -9557,7 +9557,7 @@ Dim buf As String
             Set u = SelectedUnitForEvent
             rk = GetArgAsLong(2)
         Case Else
-            EventErrorMessage = "RankUpã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+            EventErrorMessage = "RankUpƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
             Error 0
     End Select
     
@@ -9578,21 +9578,21 @@ Dim buf As String
             End With
         Next
         
-        'åˆä½“ã§ãã‚‹å ´åˆã¯ä»–ã®åˆ†é›¢ãƒ¦ãƒ‹ãƒƒãƒˆã®ãƒ¦ãƒ‹ãƒƒãƒˆãƒ©ãƒ³ã‚¯ã‚’ä¸Šã’ã‚‹
-        If .IsFeatureAvailable("åˆä½“") Then
-            'åˆä½“å¾Œã®å½¢æ…‹ã‚’æ¤œç´¢
+        '‡‘Ì‚Å‚«‚éê‡‚Í‘¼‚Ì•ª—£ƒ†ƒjƒbƒg‚Ìƒ†ƒjƒbƒgƒ‰ƒ“ƒN‚ğã‚°‚é
+        If .IsFeatureAvailable("‡‘Ì") Then
+            '‡‘ÌŒã‚ÌŒ`‘Ô‚ğŒŸõ
             For i = 1 To .CountFeature
-                If .Feature(i) = "åˆä½“" Then
+                If .Feature(i) = "‡‘Ì" Then
                     buf = LIndex(.FeatureData(i), 2)
                     If LLength(.FeatureData(i)) = 3 Then
                         If UDList.IsDefined(buf) Then
-                            If UDList.Item(buf).IsFeatureAvailable("ä¸»å½¢æ…‹") Then
+                            If UDList.Item(buf).IsFeatureAvailable("åŒ`‘Ô") Then
                                 Exit For
                             End If
                         End If
                     Else
                         If UDList.IsDefined(buf) Then
-                            If Not UDList.Item(buf).IsFeatureAvailable("åˆ¶é™æ™‚é–“") Then
+                            If Not UDList.Item(buf).IsFeatureAvailable("§ŒÀŠÔ") Then
                                 Exit For
                             End If
                         End If
@@ -9600,12 +9600,12 @@ Dim buf As String
                 End If
             Next
             If i <= .CountFeature Then
-                buf = UDList.Item(LIndex(.FeatureData(i), 2)).FeatureData("åˆ†é›¢")
+                buf = UDList.Item(LIndex(.FeatureData(i), 2)).FeatureData("•ª—£")
                 For i = 2 To LLength(buf)
                     If UList.IsDefined(LIndex(buf, i)) Then
                         With UList.Item(LIndex(buf, i))
                             If Not u.IsEqual(.Name) Then
-                                'ä»–ã®åˆ†é›¢å½¢æ…‹ã®ãƒ¦ãƒ‹ãƒƒãƒˆãƒ©ãƒ³ã‚¯ã‚’ä¸Šã’ã‚‹
+                                '‘¼‚Ì•ª—£Œ`‘Ô‚Ìƒ†ƒjƒbƒgƒ‰ƒ“ƒN‚ğã‚°‚é
                                 hp_ratio = 100 * .HP / .MaxHP
                                 en_ratio = 100 * .EN / .MaxEN
                                 .Rank = .Rank + rk
@@ -9628,9 +9628,9 @@ Dim buf As String
             End If
         End If
         
-        'åˆ†é›¢ã§ãã‚‹å ´åˆã¯åˆ†é›¢ãƒ¦ãƒ‹ãƒƒãƒˆã®ãƒ¦ãƒ‹ãƒƒãƒˆãƒ©ãƒ³ã‚¯ã‚’ä¸Šã’ã‚‹
-        If .IsFeatureAvailable("åˆ†é›¢") Then
-            buf = .FeatureData("åˆ†é›¢")
+        '•ª—£‚Å‚«‚éê‡‚Í•ª—£ƒ†ƒjƒbƒg‚Ìƒ†ƒjƒbƒgƒ‰ƒ“ƒN‚ğã‚°‚é
+        If .IsFeatureAvailable("•ª—£") Then
+            buf = .FeatureData("•ª—£")
             For i = 2 To LLength(buf)
                 If UList.IsDefined(LIndex(buf, i)) Then
                     With UList.Item(LIndex(buf, i))
@@ -9661,7 +9661,7 @@ Dim i As Integer
 Dim buf As String
 
     If ArgNum < 3 Then
-        EventErrorMessage = "Readã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+        EventErrorMessage = "ReadƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
         Error 0
     End If
     
@@ -9686,7 +9686,7 @@ Dim per As Double
             Set u = SelectedUnitForEvent
             per = GetArgAsDouble(2)
         Case Else
-        EventErrorMessage = "RecoverENã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+        EventErrorMessage = "RecoverENƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
         Error 0
     End Select
     
@@ -9694,7 +9694,7 @@ Dim per As Double
         With u
             .RecoverEN per
             .Update
-            If .EN = 0 And .Status = "å‡ºæ’ƒ" Then
+            If .EN = 0 And .Status = "oŒ‚" Then
                 PaintUnitBitmap u
             End If
             .CheckAutoHyperMode
@@ -9717,7 +9717,7 @@ Dim per As Double
             Set u = SelectedUnitForEvent
             per = GetArgAsDouble(2)
         Case Else
-            EventErrorMessage = "RecoverHPã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+            EventErrorMessage = "RecoverHPƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
             Error 0
     End Select
     
@@ -9751,7 +9751,7 @@ Dim hp_ratio As Double, en_ratio As Double
             End With
             per = GetArgAsDouble(2)
         Case Else
-            EventErrorMessage = "RecoverPlanaã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+            EventErrorMessage = "RecoverPlanaƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
             Error 0
     End Select
     
@@ -9801,7 +9801,7 @@ Dim per As Double
             End With
             per = GetArgAsDouble(2)
         Case Else
-            EventErrorMessage = "RecoverSPã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+            EventErrorMessage = "RecoverSPƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
             Error 0
     End Select
     
@@ -9820,7 +9820,7 @@ Private Function ExecRedrawCmd() As Long
 Dim late_refresh As Boolean
 
     If ArgNum = 2 Then
-        If GetArgAsString(2) = "éåŒæœŸ" Then
+        If GetArgAsString(2) = "”ñ“¯Šú" Then
             late_refresh = True
         End If
     End If
@@ -9844,7 +9844,7 @@ Dim buf As String
             buf = GetArgAsString(2)
             If Not PList.IsDefined(buf) And Not IList.IsDefined(buf) Then
                 EventErrorMessage = _
-                    "ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆåã¾ãŸã¯ã‚¢ã‚¤ãƒ†ãƒ å" & buf & "ãŒé–“é•ã£ã¦ã„ã¾ã™"
+                    "ƒpƒCƒƒbƒg–¼‚Ü‚½‚ÍƒAƒCƒeƒ€–¼" & buf & "‚ªŠÔˆá‚Á‚Ä‚¢‚Ü‚·"
                 Error 0
             End If
             If PList.IsDefined(buf) Then
@@ -9853,7 +9853,7 @@ Dim buf As String
                 buf = IList.Item(buf).Name
             End If
         Case Else
-            EventErrorMessage = "Releaseã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+            EventErrorMessage = "ReleaseƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
             Error 0
     End Select
     
@@ -9869,18 +9869,18 @@ Private Function ExecRemoveFileCmd() As Long
 Dim fname As String
 
     If ArgNum <> 2 Then
-        EventErrorMessage = "RemoveFileã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+        EventErrorMessage = "RemoveFileƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
         Error 0
     End If
     
     fname = ScenarioPath & GetArgAsString(2)
     
     If InStr(fname, "..\") > 0 Then
-        EventErrorMessage = "ãƒ•ã‚¡ã‚¤ãƒ«æŒ‡å®šã«ã€Œ..\ã€ã¯ä½¿ãˆã¾ã›ã‚“"
+        EventErrorMessage = "ƒtƒ@ƒCƒ‹w’è‚Éu..\v‚Íg‚¦‚Ü‚¹‚ñ"
         Error 0
     End If
     If InStr(fname, "../") > 0 Then
-        EventErrorMessage = "ãƒ•ã‚¡ã‚¤ãƒ«æŒ‡å®šã«ã€Œ../ã€ã¯ä½¿ãˆã¾ã›ã‚“"
+        EventErrorMessage = "ƒtƒ@ƒCƒ‹w’è‚Éu../v‚Íg‚¦‚Ü‚¹‚ñ"
         Error 0
     End If
     
@@ -9896,18 +9896,18 @@ Dim fname As String
 Dim fso As Object
    
     If ArgNum <> 2 Then
-        EventErrorMessage = "RemoveFolderã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+        EventErrorMessage = "RemoveFolderƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
         Error 0
     End If
     
     fname = ScenarioPath & GetArgAsString(2)
     
     If InStr(fname, "..\") > 0 Then
-        EventErrorMessage = "ãƒ•ã‚¡ã‚¤ãƒ«æŒ‡å®šã«ã€Œ..\ã€ã¯ä½¿ãˆã¾ã›ã‚“"
+        EventErrorMessage = "ƒtƒ@ƒCƒ‹w’è‚Éu..\v‚Íg‚¦‚Ü‚¹‚ñ"
         Error 0
     End If
     If InStr(fname, "../") > 0 Then
-        EventErrorMessage = "ãƒ•ã‚¡ã‚¤ãƒ«æŒ‡å®šã«ã€Œ../ã€ã¯ä½¿ãˆã¾ã›ã‚“"
+        EventErrorMessage = "ƒtƒ@ƒCƒ‹w’è‚Éu../v‚Íg‚¦‚Ü‚¹‚ñ"
         Error 0
     End If
     
@@ -9936,14 +9936,14 @@ Dim item_with_image As Boolean
     
     Select Case ArgNum
         Case 1
-            'æŒ‡å®šã—ãŸãƒ¦ãƒ‹ãƒƒãƒˆãŒè£…å‚™ã—ã¦ã„ã‚‹ã‚¢ã‚¤ãƒ†ãƒ ã™ã¹ã¦ã‚’å¤–ã™
+            'w’è‚µ‚½ƒ†ƒjƒbƒg‚ª‘•”õ‚µ‚Ä‚¢‚éƒAƒCƒeƒ€‚·‚×‚Ä‚ğŠO‚·
             With SelectedUnitForEvent
                 Do While .CountItem > 0
-                    If .Item(1).IsFeatureAvailable("ãƒ¦ãƒ‹ãƒƒãƒˆç”»åƒ") Then
+                    If .Item(1).IsFeatureAvailable("ƒ†ƒjƒbƒg‰æ‘œ") Then
                         item_with_image = True
                     End If
                     
-                    If .Party0 <> "å‘³æ–¹" Then
+                    If .Party0 <> "–¡•û" Then
                         .Item(1).Exist = False
                     End If
                     .DeleteItem 1
@@ -9954,7 +9954,7 @@ Dim item_with_image As Boolean
                     For i = 1 To .CountOtherForm
                         .OtherForm(i).BitmapID = 0
                     Next
-                    If .Status = "å‡ºæ’ƒ" Then
+                    If .Status = "oŒ‚" Then
                         If Not IsPictureVisible And MapFileName <> "" Then
                             PaintUnitBitmap SelectedUnitForEvent
                         End If
@@ -9965,15 +9965,15 @@ Dim item_with_image As Boolean
         Case 2
             pname = GetArgAsString(2)
             If UList.IsDefined(pname) Then
-                'æŒ‡å®šã—ãŸãƒ¦ãƒ‹ãƒƒãƒˆãŒè£…å‚™ã—ã¦ã„ã‚‹ã‚¢ã‚¤ãƒ†ãƒ ã™ã¹ã¦ã‚’å¤–ã™
+                'w’è‚µ‚½ƒ†ƒjƒbƒg‚ª‘•”õ‚µ‚Ä‚¢‚éƒAƒCƒeƒ€‚·‚×‚Ä‚ğŠO‚·
                 Set u = UList.Item(pname).CurrentForm
                 With u
                     Do While .CountItem > 0
-                        If .Item(1).IsFeatureAvailable("ãƒ¦ãƒ‹ãƒƒãƒˆç”»åƒ") Then
+                        If .Item(1).IsFeatureAvailable("ƒ†ƒjƒbƒg‰æ‘œ") Then
                             item_with_image = True
                         End If
                         
-                        If .Party0 <> "å‘³æ–¹" Then
+                        If .Party0 <> "–¡•û" Then
                             .Item(1).Exist = False
                         End If
                         .DeleteItem 1
@@ -9984,7 +9984,7 @@ Dim item_with_image As Boolean
                         For i = 1 To .CountOtherForm
                             .OtherForm(i).BitmapID = 0
                         Next
-                        If .Status = "å‡ºæ’ƒ" Then
+                        If .Status = "oŒ‚" Then
                             If Not IsPictureVisible And MapFileName <> "" Then
                                 PaintUnitBitmap SelectedUnitForEvent
                             End If
@@ -9992,16 +9992,16 @@ Dim item_with_image As Boolean
                     End If
                 End With
             ElseIf PList.IsDefined(pname) Then
-                'æŒ‡å®šã—ãŸãƒ‘ã‚¤ãƒ­ãƒƒãƒˆãŒä¹—ã‚‹ãƒ¦ãƒ‹ãƒƒãƒˆãŒè£…å‚™ã—ã¦ã„ã‚‹ã‚¢ã‚¤ãƒ†ãƒ ã™ã¹ã¦ã‚’å¤–ã™
+                'w’è‚µ‚½ƒpƒCƒƒbƒg‚ªæ‚éƒ†ƒjƒbƒg‚ª‘•”õ‚µ‚Ä‚¢‚éƒAƒCƒeƒ€‚·‚×‚Ä‚ğŠO‚·
                 Set u = PList.Item(pname).Unit
                 If Not u Is Nothing Then
                     With u
                         Do While .CountItem > 0
-                            If .Item(1).IsFeatureAvailable("ãƒ¦ãƒ‹ãƒƒãƒˆç”»åƒ") Then
+                            If .Item(1).IsFeatureAvailable("ƒ†ƒjƒbƒg‰æ‘œ") Then
                                 item_with_image = True
                             End If
                             
-                            If .Party0 <> "å‘³æ–¹" Then
+                            If .Party0 <> "–¡•û" Then
                                 .Item(1).Exist = False
                             End If
                             .DeleteItem 1
@@ -10012,7 +10012,7 @@ Dim item_with_image As Boolean
                             For i = 1 To .CountOtherForm
                                 .OtherForm(i).BitmapID = 0
                             Next
-                            If .Status = "å‡ºæ’ƒ" Then
+                            If .Status = "oŒ‚" Then
                                 If Not IsPictureVisible And MapFileName <> "" Then
                                     PaintUnitBitmap u
                                 End If
@@ -10021,25 +10021,25 @@ Dim item_with_image As Boolean
                     End With
                 End If
             Else
-                'æŒ‡å®šã•ã‚ŒãŸã‚¢ã‚¤ãƒ†ãƒ ã‚’å‰Šé™¤
+                'w’è‚³‚ê‚½ƒAƒCƒeƒ€‚ğíœ
                 iname = pname
                 
                 If IsNumeric(iname) Then
                     With SelectedUnitForEvent
                         inumber = CInt(iname)
                         If inumber < 1 Then
-                            EventErrorMessage = "æŒ‡å®šã•ã‚ŒãŸã‚¢ã‚¤ãƒ†ãƒ ç•ªå·ã€Œ" & iname & _
-                                "ã€ãŒä¸æ­£ã§ã™"
+                            EventErrorMessage = "w’è‚³‚ê‚½ƒAƒCƒeƒ€”Ô†u" & iname & _
+                                "v‚ª•s³‚Å‚·"
                             Error 0
                         End If
                         If inumber > .CountItem Then
-                            EventErrorMessage = "æŒ‡å®šã•ã‚ŒãŸãƒ¦ãƒ‹ãƒƒãƒˆã¯" & Format$(.CountItem) & _
-                                "å€‹ã®ã‚¢ã‚¤ãƒ†ãƒ ã—ã‹æŒã£ã¦ã„ã¾ã›ã‚“"
+                            EventErrorMessage = "w’è‚³‚ê‚½ƒ†ƒjƒbƒg‚Í" & Format$(.CountItem) & _
+                                "ŒÂ‚ÌƒAƒCƒeƒ€‚µ‚©‚Á‚Ä‚¢‚Ü‚¹‚ñ"
                             Error 0
                         End If
                         
                         With .Item(inumber)
-                            If .IsFeatureAvailable("ãƒ¦ãƒ‹ãƒƒãƒˆç”»åƒ") Then
+                            If .IsFeatureAvailable("ƒ†ƒjƒbƒg‰æ‘œ") Then
                                 item_with_image = True
                             End If
                             
@@ -10051,7 +10051,7 @@ Dim item_with_image As Boolean
                                     For i = 1 To .CountOtherForm
                                         .OtherForm(i).BitmapID = 0
                                     Next
-                                    If .Status = "å‡ºæ’ƒ" Then
+                                    If .Status = "oŒ‚" Then
                                         If Not IsPictureVisible And MapFileName <> "" Then
                                             PaintUnitBitmap SelectedUnitForEvent
                                         End If
@@ -10068,12 +10068,12 @@ Dim item_with_image As Boolean
                     End With
                 End If
                 
-                'ã‚¢ã‚¤ãƒ†ãƒ ï¼©ï¼¤ãŒæŒ‡å®šã•ã‚ŒãŸå ´åˆã¯ãã®ã¾ã¾å‰Šé™¤
+                'ƒAƒCƒeƒ€‚h‚c‚ªw’è‚³‚ê‚½ê‡‚Í‚»‚Ì‚Ü‚Üíœ
                 If IList.IsDefined(iname) Then
                     If IList.Item(iname).ID = iname Then
                         With IList.Item(iname)
                             If Not .Unit Is Nothing Then
-                                If .IsFeatureAvailable("ãƒ¦ãƒ‹ãƒƒãƒˆç”»åƒ") Then
+                                If .IsFeatureAvailable("ƒ†ƒjƒbƒg‰æ‘œ") Then
                                     item_with_image = True
                                 End If
                                 
@@ -10085,7 +10085,7 @@ Dim item_with_image As Boolean
                                         For i = 1 To .CountOtherForm
                                             .OtherForm(i).BitmapID = 0
                                         Next
-                                        If .Status = "å‡ºæ’ƒ" Then
+                                        If .Status = "oŒ‚" Then
                                             If Not IsPictureVisible And MapFileName <> "" Then
                                                 PaintUnitBitmap SelectedUnitForEvent
                                             End If
@@ -10102,30 +10102,30 @@ Dim item_with_image As Boolean
                     End If
                 End If
                 
-                'å¤§æ–‡å­—ãƒ»å°æ–‡å­—ã€ã²ã‚‰ãŒãªãƒ»ã‹ãŸã‹ãªã®é•ã„ã‚’æ­£ã—ãåˆ¤å®šã§ãã‚‹ã‚ˆã†ã«ã€
-                'åå‰ã‚’ãƒ‡ãƒ¼ã‚¿ã®ãã‚Œã¨ã‚ã‚ã›ã‚‹
+                '‘å•¶šE¬•¶šA‚Ğ‚ç‚ª‚ÈE‚©‚½‚©‚È‚Ìˆá‚¢‚ğ³‚µ‚­”»’è‚Å‚«‚é‚æ‚¤‚ÉA
+                '–¼‘O‚ğƒf[ƒ^‚Ì‚»‚ê‚Æ‚ ‚í‚¹‚é
                 If IDList.IsDefined(iname) Then
                     iname = IDList.Item(iname).Name
                 End If
                 
-                'ã¾ãšã¯è£…å‚™ã•ã‚Œã¦ã„ãªã„ã‚¢ã‚¤ãƒ†ãƒ ã‚’æ¢ã™
+                '‚Ü‚¸‚Í‘•”õ‚³‚ê‚Ä‚¢‚È‚¢ƒAƒCƒeƒ€‚ğ’T‚·
                 For Each itm In IList
                     With itm
                         If .Name = iname And .Exist _
                             And .Unit Is Nothing _
                         Then
-                            'è¦‹ã¤ã‹ã£ãŸ
+                            'Œ©‚Â‚©‚Á‚½
                             .Exist = False
                             Exit For
                         End If
                     End With
                 Next
-                'è¦‹ã¤ã‹ã‚‰ãªã‹ã£ãŸã‚‰è£…å‚™ã•ã‚ŒãŸã‚¢ã‚¤ãƒ†ãƒ ã‹ã‚‰
+                'Œ©‚Â‚©‚ç‚È‚©‚Á‚½‚ç‘•”õ‚³‚ê‚½ƒAƒCƒeƒ€‚©‚ç
                 If itm Is Nothing Then
                     For Each itm In IList
                         With itm
                             If .Name = iname And .Exist Then
-                                If .IsFeatureAvailable("ãƒ¦ãƒ‹ãƒƒãƒˆç”»åƒ") Then
+                                If .IsFeatureAvailable("ƒ†ƒjƒbƒg‰æ‘œ") Then
                                     item_with_image = True
                                 End If
                                 
@@ -10138,7 +10138,7 @@ Dim item_with_image As Boolean
                                         For i = 1 To .CountOtherForm
                                             .OtherForm(i).BitmapID = 0
                                         Next
-                                        If .Status = "å‡ºæ’ƒ" Then
+                                        If .Status = "oŒ‚" Then
                                             If Not IsPictureVisible _
                                                 And MapFileName <> "" _
                                             Then
@@ -10158,18 +10158,18 @@ Dim item_with_image As Boolean
             End If
             
         Case 3
-            'æŒ‡å®šã•ã‚ŒãŸã‚¢ã‚¤ãƒ†ãƒ ã‚’å‰Šé™¤
+            'w’è‚³‚ê‚½ƒAƒCƒeƒ€‚ğíœ
             pname = GetArgAsString(2)
             If UList.IsDefined(pname) Then
                 Set u = UList.Item(pname).CurrentForm
             ElseIf PList.IsDefined(pname) Then
                 Set u = PList.Item(pname).Unit
                 If u Is Nothing Then
-                    EventErrorMessage = "ã€Œ" & pname & "ã€ã¯ãƒ¦ãƒ‹ãƒƒãƒˆã«ä¹—ã£ã¦ã„ã¾ã›ã‚“"
+                    EventErrorMessage = "u" & pname & "v‚Íƒ†ƒjƒbƒg‚Éæ‚Á‚Ä‚¢‚Ü‚¹‚ñ"
                     Error 0
                 End If
             Else
-                EventErrorMessage = "ã€Œ" & pname & "ã€ã¨ã„ã†ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“"
+                EventErrorMessage = "u" & pname & "v‚Æ‚¢‚¤ƒpƒCƒƒbƒg‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ"
                 Error 0
             End If
             
@@ -10179,18 +10179,18 @@ Dim item_with_image As Boolean
                 If IsNumeric(iname) Then
                     inumber = CInt(iname)
                     If inumber < 1 Then
-                        EventErrorMessage = "æŒ‡å®šã•ã‚ŒãŸã‚¢ã‚¤ãƒ†ãƒ ç•ªå·ã€Œ" & iname & _
-                            "ã€ãŒä¸æ­£ã§ã™"
+                        EventErrorMessage = "w’è‚³‚ê‚½ƒAƒCƒeƒ€”Ô†u" & iname & _
+                            "v‚ª•s³‚Å‚·"
                         Error 0
                     End If
                     If inumber > .CountItem Then
-                        EventErrorMessage = "æŒ‡å®šã•ã‚ŒãŸãƒ¦ãƒ‹ãƒƒãƒˆã¯" & Format$(.CountItem) & _
-                            "å€‹ã®ã‚¢ã‚¤ãƒ†ãƒ ã—ã‹æŒã£ã¦ã„ã¾ã›ã‚“"
+                        EventErrorMessage = "w’è‚³‚ê‚½ƒ†ƒjƒbƒg‚Í" & Format$(.CountItem) & _
+                            "ŒÂ‚ÌƒAƒCƒeƒ€‚µ‚©‚Á‚Ä‚¢‚Ü‚¹‚ñ"
                         Error 0
                     End If
                     
                     With .Item(inumber)
-                        If .IsFeatureAvailable("ãƒ¦ãƒ‹ãƒƒãƒˆç”»åƒ") Then
+                        If .IsFeatureAvailable("ƒ†ƒjƒbƒg‰æ‘œ") Then
                             item_with_image = True
                         End If
                         
@@ -10202,7 +10202,7 @@ Dim item_with_image As Boolean
                                 For j = 1 To .CountOtherForm
                                     .OtherForm(j).BitmapID = 0
                                 Next
-                                If .Status = "å‡ºæ’ƒ" Then
+                                If .Status = "oŒ‚" Then
                                     If Not IsPictureVisible And MapFileName <> "" Then
                                         PaintUnitBitmap u
                                     End If
@@ -10217,8 +10217,8 @@ Dim item_with_image As Boolean
                     End With
                 End If
                 
-                'å¤§æ–‡å­—ãƒ»å°æ–‡å­—ã€ã²ã‚‰ãŒãªãƒ»ã‹ãŸã‹ãªã®é•ã„ã‚’æ­£ã—ãåˆ¤å®šã§ãã‚‹ã‚ˆã†ã«ã€
-                'åå‰ã‚’ãƒ‡ãƒ¼ã‚¿ã®ãã‚Œã¨ã‚ã‚ã›ã‚‹
+                '‘å•¶šE¬•¶šA‚Ğ‚ç‚ª‚ÈE‚©‚½‚©‚È‚Ìˆá‚¢‚ğ³‚µ‚­”»’è‚Å‚«‚é‚æ‚¤‚ÉA
+                '–¼‘O‚ğƒf[ƒ^‚Ì‚»‚ê‚Æ‚ ‚í‚¹‚é
                 If IDList.IsDefined(iname) Then
                     iname = IDList.Item(iname).Name
                 End If
@@ -10228,7 +10228,7 @@ Dim item_with_image As Boolean
                         If (.Name = iname Or .ID = iname) _
                             And .Exist _
                         Then
-                            If .IsFeatureAvailable("ãƒ¦ãƒ‹ãƒƒãƒˆç”»åƒ") Then
+                            If .IsFeatureAvailable("ƒ†ƒjƒbƒg‰æ‘œ") Then
                                 item_with_image = True
                             End If
                             
@@ -10240,7 +10240,7 @@ Dim item_with_image As Boolean
                                     For j = 1 To .CountOtherForm
                                         .OtherForm(j).BitmapID = 0
                                     Next
-                                    If .Status = "å‡ºæ’ƒ" Then
+                                    If .Status = "oŒ‚" Then
                                         If Not IsPictureVisible And MapFileName <> "" Then
                                             PaintUnitBitmap u
                                         End If
@@ -10257,7 +10257,7 @@ Dim item_with_image As Boolean
             End With
             
         Case Else
-            EventErrorMessage = "RemoveItemã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+            EventErrorMessage = "RemoveItemƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
             Error 0
     End Select
     
@@ -10273,8 +10273,8 @@ Dim opt As String
     num = ArgNum
     
     If num > 1 Then
-        If GetArgAsString(num) = "éåŒæœŸ" Then
-            opt = "éåŒæœŸ"
+        If GetArgAsString(num) = "”ñ“¯Šú" Then
+            opt = "”ñ“¯Šú"
             num = num - 1
         End If
     End If
@@ -10285,10 +10285,10 @@ Dim opt As String
         Case 1
             With SelectedUnitForEvent
                 If .CountPilot = 0 Then
-                    EventErrorMessage = "æŒ‡å®šã•ã‚ŒãŸãƒ¦ãƒ‹ãƒƒãƒˆã«ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆãŒä¹—ã£ã¦ã„ã¾ã›ã‚“"
+                    EventErrorMessage = "w’è‚³‚ê‚½ƒ†ƒjƒbƒg‚ÉƒpƒCƒƒbƒg‚ªæ‚Á‚Ä‚¢‚Ü‚¹‚ñ"
                     Error 0
                 End If
-                If .Status = "å‡ºæ’ƒ" Then
+                If .Status = "oŒ‚" Then
                     .Escape opt
                 End If
                 For i = 1 To .CountPilot
@@ -10297,10 +10297,10 @@ Dim opt As String
                 For i = 1 To .CountSupport
                     .Support(i).Alive = False
                 Next
-                .Status = "ç ´æ£„"
+                .Status = "”jŠü"
                 For i = 1 To .CountOtherForm
-                    If .OtherForm(i).Status = "ä»–å½¢æ…‹" Then
-                        .OtherForm(i).Status = "ç ´æ£„"
+                    If .OtherForm(i).Status = "‘¼Œ`‘Ô" Then
+                        .OtherForm(i).Status = "”jŠü"
                     End If
                 Next
             End With
@@ -10308,7 +10308,7 @@ Dim opt As String
         Case 2
             pname = GetArgAsString(2)
             If Not PList.IsDefined(pname) Then
-                EventErrorMessage = "ã€Œ" & pname & "ã€ã¨ã„ã†ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“"
+                EventErrorMessage = "u" & pname & "v‚Æ‚¢‚¤ƒpƒCƒƒbƒg‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ"
                 Error 0
             End If
             
@@ -10318,9 +10318,9 @@ Dim opt As String
             If Not p.Unit Is Nothing Then
                 With p.Unit
                     If p.ID = .MainPilot.ID Or p.ID = .Pilot(1).ID Then
-                        'ãƒ¡ã‚¤ãƒ³ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®å ´åˆã¯ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆï¼†ã‚µãƒãƒ¼ãƒˆã‚’å…¨å“¡å‰Šé™¤
-                        'ãƒ¦ãƒ‹ãƒƒãƒˆã‚‚å‰Šé™¤ã™ã‚‹
-                        If .Status = "å‡ºæ’ƒ" Or .Status = "æ ¼ç´" Then
+                        'ƒƒCƒ“ƒpƒCƒƒbƒg‚Ìê‡‚ÍƒpƒCƒƒbƒg•ƒTƒ|[ƒg‚ğ‘Sˆõíœ
+                        'ƒ†ƒjƒbƒg‚àíœ‚·‚é
+                        If .Status = "oŒ‚" Or .Status = "Ši”[" Then
                             .Escape opt
                         End If
                         For i = 1 To .CountPilot
@@ -10329,14 +10329,14 @@ Dim opt As String
                         For i = 1 To .CountSupport
                             .Support(i).Alive = False
                         Next
-                        .Status = "ç ´æ£„"
+                        .Status = "”jŠü"
                         For i = 1 To .CountOtherForm
-                            If .OtherForm(i).Status = "ä»–å½¢æ…‹" Then
-                                .OtherForm(i).Status = "ç ´æ£„"
+                            If .OtherForm(i).Status = "‘¼Œ`‘Ô" Then
+                                .OtherForm(i).Status = "”jŠü"
                             End If
                         Next
                     Else
-                        'ãƒ¡ã‚¤ãƒ³ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆãŒå¯¾è±¡ã§ãªã‘ã‚Œã°æŒ‡å®šã•ã‚ŒãŸãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®ã¿ã‚’å‰Šé™¤
+                        'ƒƒCƒ“ƒpƒCƒƒbƒg‚ª‘ÎÛ‚Å‚È‚¯‚ê‚Îw’è‚³‚ê‚½ƒpƒCƒƒbƒg‚Ì‚İ‚ğíœ
                         For i = 1 To .CountPilot
                             If p.ID = .Pilot(i).ID Then
                                 .DeletePilot i
@@ -10356,7 +10356,7 @@ Dim opt As String
             End If
             
         Case Else
-            EventErrorMessage = "RemovePilotã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+            EventErrorMessage = "RemovePilot‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
             Error 0
     End Select
 End Function
@@ -10370,8 +10370,8 @@ Dim opt As String
     num = ArgNum
     
     If num > 1 Then
-        If GetArgAsString(num) = "éåŒæœŸ" Then
-            opt = "éåŒæœŸ"
+        If GetArgAsString(num) = "”ñ“¯Šú" Then
+            opt = "”ñ“¯Šú"
             num = num - 1
         End If
     End If
@@ -10383,10 +10383,10 @@ Dim opt As String
                 If .CountPilot > 0 Then
                     .Pilot(1).GetOff
                 End If
-                .Status = "ç ´æ£„"
+                .Status = "”jŠü"
                 For i = 1 To .CountOtherForm
-                    If .OtherForm(i).Status = "ä»–å½¢æ…‹" Then
-                        .OtherForm(i).Status = "ç ´æ£„"
+                    If .OtherForm(i).Status = "‘¼Œ`‘Ô" Then
+                        .OtherForm(i).Status = "”jŠü"
                     End If
                 Next
             End With
@@ -10394,23 +10394,23 @@ Dim opt As String
             uname = GetArgAsString(2)
             Set u = UList.Item(uname)
             
-            'ãƒ¦ãƒ‹ãƒƒãƒˆãŒå­˜åœ¨ã—ãªã‘ã‚Œã°ãã®ã¾ã¾çµ‚äº†
+            'ƒ†ƒjƒbƒg‚ª‘¶İ‚µ‚È‚¯‚ê‚Î‚»‚Ì‚Ü‚ÜI—¹
             If u Is Nothing Then
                 ExecRemoveUnitCmd = LineNum + 1
                 Exit Function
             End If
             
-            'ãƒ¦ãƒ‹ãƒƒãƒˆï¼©ï¼¤ã§æŒ‡å®šã•ã‚ŒãŸå ´åˆ
+            'ƒ†ƒjƒbƒg‚h‚c‚Åw’è‚³‚ê‚½ê‡
             If u.ID = uname Then
                 With u
                     .Escape opt
                     If .CountPilot > 0 Then
                         .Pilot(1).GetOff
                     End If
-                    .Status = "ç ´æ£„"
+                    .Status = "”jŠü"
                     For i = 1 To .CountOtherForm
-                        If .OtherForm(i).Status = "ä»–å½¢æ…‹" Then
-                            .OtherForm(i).Status = "ç ´æ£„"
+                        If .OtherForm(i).Status = "‘¼Œ`‘Ô" Then
+                            .OtherForm(i).Status = "”jŠü"
                         End If
                     Next
                 End With
@@ -10418,22 +10418,22 @@ Dim opt As String
                 Exit Function
             End If
             
-            'å¤§æ–‡å­—ãƒ»å°æ–‡å­—ã€ã²ã‚‰ãŒãªãƒ»ã‹ãŸã‹ãªã®é•ã„ã‚’æ­£ã—ãåˆ¤å®šã§ãã‚‹ã‚ˆã†ã«ã€
-            'åå‰ã‚’ãƒ‡ãƒ¼ã‚¿ã®ãã‚Œã¨ã‚ã‚ã›ã‚‹
+            '‘å•¶šE¬•¶šA‚Ğ‚ç‚ª‚ÈE‚©‚½‚©‚È‚Ìˆá‚¢‚ğ³‚µ‚­”»’è‚Å‚«‚é‚æ‚¤‚ÉA
+            '–¼‘O‚ğƒf[ƒ^‚Ì‚»‚ê‚Æ‚ ‚í‚¹‚é
             If UDList.IsDefined(uname) Then
                 uname = UDList.Item(uname).Name
             End If
             
-            'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆãŒä¹—ã£ã¦ãªã„ãƒ¦ãƒ‹ãƒƒãƒˆã‚’å„ªå…ˆ
+            'ƒpƒCƒƒbƒg‚ªæ‚Á‚Ä‚È‚¢ƒ†ƒjƒbƒg‚ğ—Dæ
             For Each u In UList
                 With u.CurrentForm
-                    If .Name = uname And .Status <> "ç ´æ£„" Then
+                    If .Name = uname And .Status <> "”jŠü" Then
                         If .CountPilot = 0 Then
                             .Escape opt
-                            .Status = "ç ´æ£„"
+                            .Status = "”jŠü"
                             For i = 1 To .CountOtherForm
-                                If .OtherForm(i).Status = "ä»–å½¢æ…‹" Then
-                                    .OtherForm(i).Status = "ç ´æ£„"
+                                If .OtherForm(i).Status = "‘¼Œ`‘Ô" Then
+                                    .OtherForm(i).Status = "”jŠü"
                                 End If
                             Next
                             ExecRemoveUnitCmd = LineNum + 1
@@ -10443,16 +10443,16 @@ Dim opt As String
                 End With
             Next
             
-            'è¦‹ã¤ã‹ã‚‰ãªã‘ã‚Œã°ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆãŒä¹—ã£ã¦ã„ã‚‹ãƒ¦ãƒ‹ãƒƒãƒˆã‚’å‰Šé™¤
+            'Œ©‚Â‚©‚ç‚È‚¯‚ê‚ÎƒpƒCƒƒbƒg‚ªæ‚Á‚Ä‚¢‚éƒ†ƒjƒbƒg‚ğíœ
             For Each u In UList
                 With u.CurrentForm
-                    If .Name = uname And .Status <> "ç ´æ£„" Then
+                    If .Name = uname And .Status <> "”jŠü" Then
                         .Escape opt
                         .Pilot(1).GetOff
-                        .Status = "ç ´æ£„"
+                        .Status = "”jŠü"
                         For i = 1 To .CountOtherForm
-                            If .OtherForm(i).Status = "ä»–å½¢æ…‹" Then
-                                .OtherForm(i).Status = "ç ´æ£„"
+                            If .OtherForm(i).Status = "‘¼Œ`‘Ô" Then
+                                .OtherForm(i).Status = "”jŠü"
                             End If
                         Next
                         ExecRemoveUnitCmd = LineNum + 1
@@ -10461,7 +10461,7 @@ Dim opt As String
                 End With
             Next
         Case Else
-            EventErrorMessage = "RemoveUnitã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+            EventErrorMessage = "RemoveUnit‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
             Error 0
     End Select
     
@@ -10472,7 +10472,7 @@ Private Function ExecRenameBGMCmd() As Long
 Dim bname As String, vname As String
 
     If ArgNum <> 3 Then
-        EventErrorMessage = "RenameBGMã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+        EventErrorMessage = "RenameBGM‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
         Error 0
     End If
     
@@ -10482,7 +10482,7 @@ Dim bname As String, vname As String
             "Briefing", "Intermission", "Subtitle", "End", "default"
             vname = "BGM(" & bname & ")"
         Case Else
-            EventErrorMessage = "BGMåãŒä¸æ­£ã§ã™"
+            EventErrorMessage = "BGM–¼‚ª•s³‚Å‚·"
             Error 0
     End Select
     
@@ -10498,7 +10498,7 @@ Private Function ExecRenameFileCmd() As Long
 Dim fname1 As String, fname2 As String
 
     If ArgNum <> 3 Then
-        EventErrorMessage = "RenameFileã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+        EventErrorMessage = "RenameFileƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
         Error 0
     End If
     
@@ -10506,30 +10506,30 @@ Dim fname1 As String, fname2 As String
     fname2 = ScenarioPath & GetArgAsString(3)
     
     If InStr(fname1, "..\") > 0 Then
-        EventErrorMessage = "ãƒ•ã‚¡ã‚¤ãƒ«æŒ‡å®šã«ã€Œ..\ã€ã¯ä½¿ãˆã¾ã›ã‚“"
+        EventErrorMessage = "ƒtƒ@ƒCƒ‹w’è‚Éu..\v‚Íg‚¦‚Ü‚¹‚ñ"
         Error 0
     End If
     If InStr(fname1, "../") > 0 Then
-        EventErrorMessage = "ãƒ•ã‚¡ã‚¤ãƒ«æŒ‡å®šã«ã€Œ../ã€ã¯ä½¿ãˆã¾ã›ã‚“"
+        EventErrorMessage = "ƒtƒ@ƒCƒ‹w’è‚Éu../v‚Íg‚¦‚Ü‚¹‚ñ"
         Error 0
     End If
     If InStr(fname2, "..\") > 0 Then
-        EventErrorMessage = "ãƒ•ã‚¡ã‚¤ãƒ«æŒ‡å®šã«ã€Œ..\ã€ã¯ä½¿ãˆã¾ã›ã‚“"
+        EventErrorMessage = "ƒtƒ@ƒCƒ‹w’è‚Éu..\v‚Íg‚¦‚Ü‚¹‚ñ"
         Error 0
     End If
     If InStr(fname2, "../") > 0 Then
-        EventErrorMessage = "ãƒ•ã‚¡ã‚¤ãƒ«æŒ‡å®šã«ã€Œ../ã€ã¯ä½¿ãˆã¾ã›ã‚“"
+        EventErrorMessage = "ƒtƒ@ƒCƒ‹w’è‚Éu../v‚Íg‚¦‚Ü‚¹‚ñ"
         Error 0
     End If
     
     If Not FileExists(fname1) Then
-        EventErrorMessage = "å…ƒã®ãƒ•ã‚¡ã‚¤ãƒ«" _
-            & "ã€Œ" & fname1 & "ã€ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“"
+        EventErrorMessage = "Œ³‚Ìƒtƒ@ƒCƒ‹" _
+            & "u" & fname1 & "v‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ"
         Error 0
     End If
     If FileExists(fname2) Then
-        EventErrorMessage = "æ—¢ã«" _
-            & "ã€Œ" & fname2 & "ã€ãŒå­˜åœ¨ã—ã¦ã„ã¾ã™"
+        EventErrorMessage = "Šù‚É" _
+            & "u" & fname2 & "v‚ª‘¶İ‚µ‚Ä‚¢‚Ü‚·"
         Error 0
     End If
     
@@ -10542,7 +10542,7 @@ Private Function ExecRenameTermCmd() As Long
 Dim tname As String, vname As String
 
     If ArgNum <> 3 Then
-        EventErrorMessage = "RenameTermã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+        EventErrorMessage = "RenameTerm‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
         Error 0
     End If
     
@@ -10568,7 +10568,7 @@ Dim p1 As Pilot, p2 As Pilot
 Dim i As Integer, is_support As Boolean
     
     If ArgNum <> 3 Then
-        EventErrorMessage = "ReplacePilotã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+        EventErrorMessage = "ReplacePilot‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
         Error 0
     End If
     
@@ -10576,7 +10576,7 @@ Dim i As Integer, is_support As Boolean
     
     pname = GetArgAsString(3)
     If Not PDList.IsDefined(pname) Then
-        EventErrorMessage = "ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆåãŒé–“é•ã£ã¦ã„ã¾ã™"
+        EventErrorMessage = "ƒpƒCƒƒbƒg–¼‚ªŠÔˆá‚Á‚Ä‚¢‚Ü‚·"
         Error 0
     End If
     Set p2 = PList.Add(pname, p1.Level, p1.Party)
@@ -10588,17 +10588,17 @@ Dim i As Integer, is_support As Boolean
         If .Data.SP > 0 And p1.MaxSP > 0 Then
             .SP = .MaxSP * p1.SP \ p1.MaxSP
         End If
-        If .IsSkillAvailable("éœŠåŠ›") Then
-            If p1.IsSkillAvailable("éœŠåŠ›") Then
+        If .IsSkillAvailable("—ì—Í") Then
+            If p1.IsSkillAvailable("—ì—Í") Then
                 .Plana = .MaxPlana * p1.Plana \ p1.MaxPlana
             End If
         End If
     End With
     
-    'ä¹—ã›æ›ãˆ
+    'æ‚¹Š·‚¦
     If Not p1.Unit Is Nothing Then
         With p1.Unit
-            'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆãŒã‚µãƒãƒ¼ãƒˆãŒã©ã†ã‹åˆ¤å®š
+            'ƒpƒCƒƒbƒg‚ªƒTƒ|[ƒg‚ª‚Ç‚¤‚©”»’è
             is_support = False
             For i = 1 To .CountSupport
                 If .Support(i) Is p1 Then
@@ -10606,7 +10606,7 @@ Dim i As Integer, is_support As Boolean
                     Exit For
                 End If
             Next
-            If .IsFeatureAvailable("è¿½åŠ ã‚µãƒãƒ¼ãƒˆ") Then
+            If .IsFeatureAvailable("’Ç‰ÁƒTƒ|[ƒg") Then
                 If .AdditionalSupport Is p1 Then
                     is_support = True
                 End If
@@ -10631,53 +10631,53 @@ Dim fname As String, file_head As Long
 Dim i As Long, buf As String
 
     If ArgNum <> 2 Then
-        EventErrorMessage = "Requireã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+        EventErrorMessage = "RequireƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
         Error 0
     End If
     
-    'LoadEventData2å†…ã§LineNumã¯æ›¸ãæ›ãˆã‚‰ã‚Œã‚‹ã®ã§ã“ã“ã§è¨­å®š
+    'LoadEventData2“à‚ÅLineNum‚Í‘‚«Š·‚¦‚ç‚ê‚é‚Ì‚Å‚±‚±‚Åİ’è
     ExecRequireCmd = LineNum + 1
 
-' ADD START ãƒãƒ¼ã‚¸
-    'Requireã‚³ãƒãƒ³ãƒ‰ã§èª­ã¿è¾¼ã¾ã‚ŒãŸã“ã¨ã‚’è¨˜éŒ²æ¸ˆã¿ï¼Ÿ
+' ADD START ƒ}[ƒW
+    'RequireƒRƒ}ƒ“ƒh‚Å“Ç‚İ‚Ü‚ê‚½‚±‚Æ‚ğ‹L˜^Ï‚İH
     For i = 1 To UBound(AdditionalEventFileNames)
        If GetArgAsString(2) = AdditionalEventFileNames(i) Then
            Exit Function
        End If
     Next
     
-    'èª­ã¿è¾¼ã‚“ã ã‚¤ãƒ™ãƒ³ãƒˆãƒ•ã‚¡ã‚¤ãƒ«ã‚’è¨˜éŒ²
+    '“Ç‚İ‚ñ‚¾ƒCƒxƒ“ƒgƒtƒ@ƒCƒ‹‚ğ‹L˜^
     ReDim Preserve AdditionalEventFileNames(UBound(AdditionalEventFileNames) + 1)
     AdditionalEventFileNames(UBound(AdditionalEventFileNames)) = GetArgAsString(2)
-' ADD END ãƒãƒ¼ã‚¸
+' ADD END ƒ}[ƒW
     
-    'èª­ã¿è¾¼ã‚€ãƒ•ã‚¡ã‚¤ãƒ«å
+    '“Ç‚İ‚Şƒtƒ@ƒCƒ‹–¼
     fname = ScenarioPath & GetArgAsString(2)
     
-    'æ—¢ã«èª­ã¿è¾¼ã¾ã‚Œã¦ã„ã‚‹å ´åˆã¯ã‚¹ã‚­ãƒƒãƒ—
+    'Šù‚É“Ç‚İ‚Ü‚ê‚Ä‚¢‚éê‡‚ÍƒXƒLƒbƒv
     For i = 1 To UBound(EventFileNames)
        If fname = EventFileNames(i) Then
            Exit Function
        End If
     Next
     
-    'ãƒ•ã‚¡ã‚¤ãƒ«ãŒå­˜åœ¨ã™ã‚‹ï¼Ÿ
+    'ƒtƒ@ƒCƒ‹‚ª‘¶İ‚·‚éH
     If Not FileExists(fname) Then
-        EventErrorMessage = "æŒ‡å®šã•ã‚ŒãŸãƒ•ã‚¡ã‚¤ãƒ«ã€Œ" & fname & "ã€ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“ã€‚"
+        EventErrorMessage = "w’è‚³‚ê‚½ƒtƒ@ƒCƒ‹u" & fname & "v‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñB"
         Error 0
     End If
     
-    'ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ãƒ­ãƒ¼ãƒ‰
+    'ƒtƒ@ƒCƒ‹‚ğƒ[ƒh
     file_head = UBound(EventData) + 1
     LoadEventData2 fname, UBound(EventData)
     
-    'ã‚¨ãƒ©ãƒ¼è¡¨ç¤ºç”¨ã«ã‚µã‚¤ã‚ºã‚’å¤§ããå–ã£ã¦ãŠã
+    'ƒGƒ‰[•\¦—p‚ÉƒTƒCƒY‚ğ‘å‚«‚­æ‚Á‚Ä‚¨‚­
     ReDim Preserve EventData(UBound(EventData) + 1)
     ReDim Preserve EventLineNum(UBound(EventData))
     EventData(UBound(EventData)) = ""
     EventLineNum(UBound(EventData)) = EventLineNum(UBound(EventData) - 1) + 1
     
-    'è¤‡æ•°è¡Œã«åˆ†å‰²ã•ã‚ŒãŸã‚³ãƒãƒ³ãƒ‰ã‚’çµåˆ
+    '•¡”s‚É•ªŠ„‚³‚ê‚½ƒRƒ}ƒ“ƒh‚ğŒ‹‡
     For i = file_head To UBound(EventData) - 1
         If Right$(EventData(i), 1) = "_" Then
             EventData(i + 1) = _
@@ -10686,7 +10686,7 @@ Dim i As Long, buf As String
         End If
     Next
     
-    'ãƒ©ãƒ™ãƒ«ã‚’ç™»éŒ²
+    'ƒ‰ƒxƒ‹‚ğ“o˜^
     For i = file_head To UBound(EventData)
         buf = EventData(i)
         If Right$(buf, 1) = ":" Then
@@ -10694,7 +10694,7 @@ Dim i As Long, buf As String
         End If
     Next
     
-    'ã‚³ãƒãƒ³ãƒ‰ãƒ‡ãƒ¼ã‚¿é…åˆ—ã‚’è¨­å®š
+    'ƒRƒ}ƒ“ƒhƒf[ƒ^”z—ñ‚ğİ’è
     If UBound(EventData) > UBound(EventCmd) Then
         ReDim Preserve EventCmd(UBound(EventData))
         i = UBound(EventData)
@@ -10708,14 +10708,14 @@ Dim i As Long, buf As String
         EventCmd(i).Name = NullCmd
     Next
     
-    'èª­ã¿è¾¼ã‚“ã ã‚¤ãƒ™ãƒ³ãƒˆãƒ•ã‚¡ã‚¤ãƒ«ã‚’è¨˜éŒ²
+    '“Ç‚İ‚ñ‚¾ƒCƒxƒ“ƒgƒtƒ@ƒCƒ‹‚ğ‹L˜^
     ReDim Preserve AdditionalEventFileNames(UBound(AdditionalEventFileNames) + 1)
     AdditionalEventFileNames(UBound(AdditionalEventFileNames)) = GetArgAsString(2)
 End Function
 
 Private Function ExecRestoreEventCmd() As Long
     If ArgNum <> 2 Then
-        EventErrorMessage = "RestoreEventã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+        EventErrorMessage = "RestoreEventƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
         Error 0
     End If
     
@@ -10736,7 +10736,7 @@ Dim i As Integer
         Case 3
             uname = GetArgAsString(3)
             
-            'æŒ‡å®šã—ãŸãƒ¦ãƒ‹ãƒƒãƒˆã«æ—¢ã«ä¹—ã£ã¦ã„ã‚‹å ´åˆã¯ä½•ã‚‚ã—ãªã„
+            'w’è‚µ‚½ƒ†ƒjƒbƒg‚ÉŠù‚Éæ‚Á‚Ä‚¢‚éê‡‚Í‰½‚à‚µ‚È‚¢
             If Not p.Unit Is Nothing Then
                 With p.Unit
                     If .Name = uname Or .ID = uname Then
@@ -10750,24 +10750,24 @@ Dim i As Integer
             
             Set u = UList.Item(uname)
             If u Is Nothing Then
-                EventErrorMessage = "ãƒ¦ãƒ‹ãƒƒãƒˆåãŒé–“é•ã£ã¦ã„ã¾ã™"
+                EventErrorMessage = "ƒ†ƒjƒbƒg–¼‚ªŠÔˆá‚Á‚Ä‚¢‚Ü‚·"
                 Error 0
             End If
             
-            'ãƒ¦ãƒ‹ãƒƒãƒˆï¼©ï¼¤ã§æŒ‡å®šã•ã‚ŒãŸå ´åˆ
+            'ƒ†ƒjƒbƒg‚h‚c‚Åw’è‚³‚ê‚½ê‡
             If u.ID = uname Then
                 p.Ride u.CurrentForm
                 ExecRideCmd = LineNum + 1
                 Exit Function
             End If
             
-            'å¤§æ–‡å­—ãƒ»å°æ–‡å­—ã€ã²ã‚‰ãŒãªãƒ»ã‹ãŸã‹ãªã®é•ã„ã‚’æ­£ã—ãåˆ¤å®šã§ãã‚‹ã‚ˆã†ã«ã€
-            'åå‰ã‚’ãƒ‡ãƒ¼ã‚¿ã®ãã‚Œã¨ã‚ã‚ã›ã‚‹
+            '‘å•¶šE¬•¶šA‚Ğ‚ç‚ª‚ÈE‚©‚½‚©‚È‚Ìˆá‚¢‚ğ³‚µ‚­”»’è‚Å‚«‚é‚æ‚¤‚ÉA
+            '–¼‘O‚ğƒf[ƒ^‚Ì‚»‚ê‚Æ‚ ‚í‚¹‚é
             If UDList.IsDefined(uname) Then
                 uname = UDList.Item(uname).Name
             End If
             
-            'Rideã‚³ãƒãƒ³ãƒ‰ã§ä¹—ã›æ›ãˆã‚‰ã‚ŒãŸãƒ¦ãƒ‹ãƒƒãƒˆï¼†ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®å±¥æ­´ã‚’æ›´æ–°
+            'RideƒRƒ}ƒ“ƒh‚Åæ‚¹Š·‚¦‚ç‚ê‚½ƒ†ƒjƒbƒg•ƒpƒCƒƒbƒg‚Ì—š—ğ‚ğXV
             If uname = LastUnitName Then
                 ReDim Preserve LastPilotID(UBound(LastPilotID) + 1)
             Else
@@ -10776,12 +10776,12 @@ Dim i As Integer
             End If
             LastPilotID(UBound(LastPilotID)) = p.ID
             
-            'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆãŒè¶³ã‚Šã¦ã„ãªã„ã‚‚ã®ã‚’å„ªå…ˆ
+            'ƒpƒCƒƒbƒg‚ª‘«‚è‚Ä‚¢‚È‚¢‚à‚Ì‚ğ—Dæ
             For Each u In UList
                 With u
-                    If .Name = uname And .Party0 = p.Party And .Status <> "ç ´æ£„" Then
+                    If .Name = uname And .Party0 = p.Party And .Status <> "”jŠü" Then
                         If p.IsSupport(u) _
-                            And Not .IsFeatureAvailable("ãƒ€ãƒŸãƒ¼ãƒ¦ãƒ‹ãƒƒãƒˆ") _
+                            And Not .IsFeatureAvailable("ƒ_ƒ~[ƒ†ƒjƒbƒg") _
                         Then
                             p.Ride .CurrentForm
                             ExecRideCmd = LineNum + 1
@@ -10796,12 +10796,12 @@ Dim i As Integer
                 End With
             Next
             
-            'ç©ºããŒãªã‘ã‚Œã°ä»Šã¾ã§Rideã‚³ãƒãƒ³ãƒ‰ã§æŒ‡å®šã•ã‚Œã¦ãªã„ãƒ¦ãƒ‹ãƒƒãƒˆã«ä¹—ã‚Šè¾¼ã‚€
+            '‹ó‚«‚ª‚È‚¯‚ê‚Î¡‚Ü‚ÅRideƒRƒ}ƒ“ƒh‚Åw’è‚³‚ê‚Ä‚È‚¢ƒ†ƒjƒbƒg‚Éæ‚è‚Ş
             For Each u In UList
                 With u
-                    If .Name = uname And .Party0 = p.Party And .Status <> "ç ´æ£„" Then
+                    If .Name = uname And .Party0 = p.Party And .Status <> "”jŠü" Then
                         If .CurrentForm.CountPilot > 0 Then
-                            'ä»Šã¾ã§ã«Rideã‚³ãƒãƒ³ãƒ‰ã§æŒ‡å®šã•ã‚Œã¦ã„ã‚‹ã‹åˆ¤å®š
+                            '¡‚Ü‚Å‚ÉRideƒRƒ}ƒ“ƒh‚Åw’è‚³‚ê‚Ä‚¢‚é‚©”»’è
                             For i = 1 To UBound(LastPilotID) - 1
                                 If .CurrentForm.MainPilot.ID = LastPilotID(i) Then
                                     GoTo NextUnit
@@ -10817,15 +10817,15 @@ Dim i As Integer
 NextUnit:
             Next
             
-            'ãã‚Œã§ã‚‚è¦‹ã¤ã‹ã‚‰ãªã‘ã‚Œã°ç„¡å·®åˆ¥ã§â€¦â€¦
+            '‚»‚ê‚Å‚àŒ©‚Â‚©‚ç‚È‚¯‚ê‚Î–³·•Ê‚Åcc
             For Each u In UList
                 With u
-                    If .Name = uname And .Party0 = p.Party And .Status <> "ç ´æ£„" Then
+                    If .Name = uname And .Party0 = p.Party And .Status <> "”jŠü" Then
                         If .CurrentForm.CountPilot > 0 Then
                             .CurrentForm.Pilot(1).GetOff True
                         End If
                         p.Ride .CurrentForm
-                        'ä¹—ã‚Šè¾¼ã¿å±¥æ­´ã‚’åˆæœŸåŒ–
+                        'æ‚è‚İ—š—ğ‚ğ‰Šú‰»
                         ReDim LastPilotID(1)
                         LastPilotID(1) = p.ID
                         ExecRideCmd = LineNum + 1
@@ -10834,10 +10834,10 @@ NextUnit:
                 End With
             Next
             
-            EventErrorMessage = p.Name & "ãŒä¹—ã‚Šè¾¼ã‚€ãŸã‚ã®" & uname & "ãŒå­˜åœ¨ã—ã¾ã›ã‚“"
+            EventErrorMessage = p.Name & "‚ªæ‚è‚Ş‚½‚ß‚Ì" & uname & "‚ª‘¶İ‚µ‚Ü‚¹‚ñ"
             Error 0
         Case 2
-            'æŒ‡å®šã—ãŸãƒ¦ãƒ‹ãƒƒãƒˆã«æ—¢ã«ä¹—ã£ã¦ã„ã‚‹å ´åˆã¯ä½•ã‚‚ã—ãªã„
+            'w’è‚µ‚½ƒ†ƒjƒbƒg‚ÉŠù‚Éæ‚Á‚Ä‚¢‚éê‡‚Í‰½‚à‚µ‚È‚¢
             If p.Unit Is SelectedUnitForEvent Then
                 ExecRideCmd = LineNum + 1
                 Exit Function
@@ -10847,16 +10847,16 @@ NextUnit:
                 If .CountPilot = Abs(.Data.PilotNum) _
                     And Not p.IsSupport(SelectedUnitForEvent) _
                 Then
-' MOD START ãƒãƒ¼ã‚¸
+' MOD START ƒ}[ƒW
 '                    .Pilot(1).GetOff
                     .Pilot(1).GetOff True
-' MOD END ãƒãƒ¼ã‚¸
+' MOD END ƒ}[ƒW
                 End If
             End With
             p.GetOff
             p.Ride SelectedUnitForEvent
         Case Else
-            EventErrorMessage = "Rideã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+            EventErrorMessage = "RideƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
             Error 0
     End Select
     
@@ -10870,45 +10870,45 @@ Dim ret As Integer
     If ArgNum = 2 Then
         fname = GetArgAsString(2)
     ElseIf ArgNum = 1 Then
-        'ä¸€æ—¦ã€Œå¸¸ã«æ‰‹å‰ã«è¡¨ç¤ºã€ã‚’è§£é™¤
+        'ˆê’Uuí‚Éè‘O‚É•\¦v‚ğ‰ğœ
         If frmListBox.Visible Then
             ret = SetWindowPos(frmListBox.hwnd, -2, 0, 0, 0, 0, &H3)
         End If
         
-        fname = SaveFileDialog("ãƒ‡ãƒ¼ã‚¿ã‚»ãƒ¼ãƒ–", _
-            ScenarioPath, GetValueAsString("ã‚»ãƒ¼ãƒ–ãƒ‡ãƒ¼ã‚¿ãƒ•ã‚¡ã‚¤ãƒ«å"), _
-            2, "ï½¾ï½°ï¾Œï¾ï¾ƒï¾ï½°ï¾€", "src")
+        fname = SaveFileDialog("ƒf[ƒ^ƒZ[ƒu", _
+            ScenarioPath, GetValueAsString("ƒZ[ƒuƒf[ƒ^ƒtƒ@ƒCƒ‹–¼"), _
+            2, "¾°ÌŞÃŞ°À", "src")
         
-        'å†ã³ã€Œå¸¸ã«æ‰‹å‰ã«è¡¨ç¤ºã€
+        'Ä‚Ñuí‚Éè‘O‚É•\¦v
         If frmListBox.Visible Then
             ret = SetWindowPos(frmListBox.hwnd, -1, 0, 0, 0, 0, &H3)
         End If
         
-        'ã‚­ãƒ£ãƒ³ã‚»ãƒ«ï¼Ÿ
+        'ƒLƒƒƒ“ƒZƒ‹H
         If fname = "" Then
             ExecSaveDataCmd = LineNum + 1
             Exit Function
         End If
         
-        'ã‚»ãƒ¼ãƒ–å…ˆã¯ã‚·ãƒŠãƒªã‚ªãƒ•ã‚©ãƒ«ãƒ€ï¼Ÿ
+        'ƒZ[ƒuæ‚ÍƒVƒiƒŠƒIƒtƒHƒ‹ƒ_H
         If InStr(fname, "\") > 0 Then
             save_path = Left$(fname, InStr2(fname, "\"))
         End If
         If Dir$(save_path) <> Dir$(ScenarioPath) Then
-            If MsgBox("ã‚»ãƒ¼ãƒ–ãƒ•ã‚¡ã‚¤ãƒ«ã¯ã‚·ãƒŠãƒªã‚ªãƒ•ã‚©ãƒ«ãƒ€ã«ãªã„ã¨èª­ã¿è¾¼ã‚ã¾ã›ã‚“ã€‚" & vbCr & vbLf _
-                    & "ã“ã®ã¾ã¾ã‚»ãƒ¼ãƒ–ã—ã¾ã™ã‹ï¼Ÿ", vbOKCancel + vbQuestion) <> 1 _
+            If MsgBox("ƒZ[ƒuƒtƒ@ƒCƒ‹‚ÍƒVƒiƒŠƒIƒtƒHƒ‹ƒ_‚É‚È‚¢‚Æ“Ç‚İ‚ß‚Ü‚¹‚ñB" & vbCr & vbLf _
+                    & "‚±‚Ì‚Ü‚ÜƒZ[ƒu‚µ‚Ü‚·‚©H", vbOKCancel + vbQuestion) <> 1 _
             Then
                 ExecSaveDataCmd = LineNum + 1
                 Exit Function
             End If
         End If
     Else
-        EventErrorMessage = "SaveDataã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+        EventErrorMessage = "SaveDataƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
         Error 0
     End If
     
     If fname <> "" Then
-        UList.Update 'è¿½åŠ ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‚’æ¶ˆå»
+        UList.Update '’Ç‰ÁƒpƒCƒƒbƒg‚ğÁ‹
         SaveData fname
     End If
     
@@ -10917,7 +10917,7 @@ End Function
 
 Private Function ExecSelectCmd() As Long
     If ArgNum <> 2 Then
-        EventErrorMessage = "Selectã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+        EventErrorMessage = "SelectƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
         Error 0
     End If
     
@@ -10930,7 +10930,7 @@ Private Function ExecSelectTargetCmd() As Long
 Dim pname As String
 
     If ArgNum <> 2 Then
-        EventErrorMessage = "SelectTargetã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+        EventErrorMessage = "SelectTargetƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
         Error 0
     End If
     
@@ -10950,13 +10950,13 @@ Dim i As Integer, buf As String
     For i = 2 To ArgNum
         buf = GetArgAsString(i)
         Select Case buf
-            Case "éåŒæœŸ"
+            Case "”ñ“¯Šú"
                 late_refresh = True
-            Case "ãƒãƒƒãƒ—é™å®š"
+            Case "ƒ}ƒbƒvŒÀ’è"
                 MapDrawIsMapOnly = True
             Case Else
                 EventErrorMessage = _
-                    "Sepiaã‚³ãƒãƒ³ãƒ‰ã«ä¸æ­£ãªã‚ªãƒ—ã‚·ãƒ§ãƒ³ã€Œ" & buf & "ã€ãŒä½¿ã‚ã‚Œã¦ã„ã¾ã™"
+                    "SepiaƒRƒ}ƒ“ƒh‚É•s³‚ÈƒIƒvƒVƒ‡ƒ“u" & buf & "v‚ªg‚í‚ê‚Ä‚¢‚Ü‚·"
                 Error 0
         End Select
     Next
@@ -10964,19 +10964,19 @@ Dim i As Integer, buf As String
     prev_x = MapX
     prev_y = MapY
     
-    'ãƒã‚¦ã‚¹ã‚«ãƒ¼ã‚½ãƒ«ã‚’ç ‚æ™‚è¨ˆã«
+    'ƒ}ƒEƒXƒJ[ƒ\ƒ‹‚ğ»Œv‚É
     Screen.MousePointer = vbHourglass
     
-    SetupBackground "ã‚»ãƒ”ã‚¢", "éåŒæœŸ"
+    SetupBackground "ƒZƒsƒA", "”ñ“¯Šú"
     
     For Each u In UList
         With u
-            If .Status = "å‡ºæ’ƒ" Then
+            If .Status = "oŒ‚" Then
                 If .BitmapID = 0 Then
                     With UList.Item(.Name)
                         If u.Party0 = .Party0 And .BitmapID <> 0 _
                             And u.Bitmap = .Bitmap _
-                            And Not .IsFeatureAvailable("ãƒ€ãƒŸãƒ¼ãƒ¦ãƒ‹ãƒƒãƒˆ") _
+                            And Not .IsFeatureAvailable("ƒ_ƒ~[ƒ†ƒjƒbƒg") _
                         Then
                             u.BitmapID = .BitmapID
                         Else
@@ -10991,7 +10991,7 @@ Dim i As Integer, buf As String
     Center prev_x, prev_y
     RedrawScreen late_refresh
     
-    'ãƒã‚¦ã‚¹ã‚«ãƒ¼ã‚½ãƒ«ã‚’å…ƒã«æˆ»ã™
+    'ƒ}ƒEƒXƒJ[ƒ\ƒ‹‚ğŒ³‚É–ß‚·
     Screen.MousePointer = 0
     
     ExecSepiaCmd = LineNum + 1
@@ -11003,12 +11003,12 @@ Dim num As Integer
 
     num = ArgNum
     If num > 3 Then
-        'éå»ã®ãƒãƒ¼ã‚¸ãƒ§ãƒ³ã®ã‚·ãƒŠãƒªã‚ªã‚’èª­ã¿è¾¼ã‚ã‚‹ã‚ˆã†ã«ã™ã‚‹ãŸã‚ã€
-        'Setã‚³ãƒãƒ³ãƒ‰ã®å¾Œã‚ã®ã€Œ#ã€å½¢å¼ã®ã‚³ãƒ¡ãƒ³ãƒˆã¯ç„¡è¦–ã™ã‚‹
+        '‰ß‹‚Ìƒo[ƒWƒ‡ƒ“‚ÌƒVƒiƒŠƒI‚ğ“Ç‚İ‚ß‚é‚æ‚¤‚É‚·‚é‚½‚ßA
+        'SetƒRƒ}ƒ“ƒh‚ÌŒã‚ë‚Ìu#vŒ`®‚ÌƒRƒƒ“ƒg‚Í–³‹‚·‚é
         If Left$(GetArg(4), 1) = "#" Then
             num = 3
         Else
-            EventErrorMessage = "Setã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+            EventErrorMessage = "SetƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
             Error 0
         End If
     End If
@@ -11051,7 +11051,7 @@ Dim u As Unit
             num = GetArgAsLong(3)
             
         Case Else
-            EventErrorMessage = "SetBulletã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+            EventErrorMessage = "SetBulletƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
             Error 0
     End Select
     
@@ -11059,7 +11059,7 @@ Dim u As Unit
         If IsNumeric(wname) Then
             wid = StrToLng(wname)
             If wid < 1 Or .CountWeapon < wid Then
-                EventErrorMessage = "æ­¦å™¨ã®ç•ªå·ã€Œ" & wname & "ã€ãŒé–“é•ã£ã¦ã„ã¾ã™"
+                EventErrorMessage = "•Ší‚Ì”Ô†u" & wname & "v‚ªŠÔˆá‚Á‚Ä‚¢‚Ü‚·"
                 Error 0
             End If
         Else
@@ -11069,7 +11069,7 @@ Dim u As Unit
                 End If
             Next
             If wid < 1 Or .CountWeapon < wid Then
-                EventErrorMessage = .Name & "ã¯æ­¦å™¨ã€Œ" & wname & "ã€ã‚’æŒã£ã¦ã„ã¾ã›ã‚“"
+                EventErrorMessage = .Name & "‚Í•Šíu" & wname & "v‚ğ‚Á‚Ä‚¢‚Ü‚¹‚ñ"
                 Error 0
             End If
         End If
@@ -11098,7 +11098,7 @@ Dim selected_msg As String
                         End If
                         If Not .IsDefined(pname0) Then
                             EventErrorMessage = _
-                                "ã€Œ" & pname & "ã€ã¨ã„ã†ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“"
+                                "u" & pname & "v‚Æ‚¢‚¤ƒpƒCƒƒbƒg‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ"
                             Error 0
                         End If
                         Set u = .Item(pname0).Unit
@@ -11107,12 +11107,12 @@ Dim selected_msg As String
                     End If
                 End With
                 If u Is Nothing Then
-                    EventErrorMessage = "ã€Œ" & pname & "ã€ã¯ãƒ¦ãƒ‹ãƒƒãƒˆã«ä¹—ã£ã¦ã„ã¾ã›ã‚“"
+                    EventErrorMessage = "u" & pname & "v‚Íƒ†ƒjƒbƒg‚Éæ‚Á‚Ä‚¢‚Ü‚¹‚ñ"
                     Error 0
                 End If
             ElseIf u.CountPilot = 0 Then
                 EventErrorMessage = _
-                    "æŒ‡å®šã•ã‚ŒãŸãƒ¦ãƒ‹ãƒƒãƒˆã«ã¯ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆãŒä¹—ã£ã¦ã„ã¾ã›ã‚“"
+                    "w’è‚³‚ê‚½ƒ†ƒjƒbƒg‚É‚ÍƒpƒCƒƒbƒg‚ªæ‚Á‚Ä‚¢‚Ü‚¹‚ñ"
                 Error 0
             End If
             sit = GetArgAsString(3)
@@ -11121,25 +11121,25 @@ Dim selected_msg As String
             Set u = SelectedUnitForEvent
             If u.CountPilot = 0 Then
                 EventErrorMessage = _
-                    "æŒ‡å®šã•ã‚ŒãŸãƒ¦ãƒ‹ãƒƒãƒˆã«ã¯ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆãŒä¹—ã£ã¦ã„ã¾ã›ã‚“"
+                    "w’è‚³‚ê‚½ƒ†ƒjƒbƒg‚É‚ÍƒpƒCƒƒbƒg‚ªæ‚Á‚Ä‚¢‚Ü‚¹‚ñ"
                 Error 0
             End If
             sit = GetArgAsString(2)
             selected_msg = GetArgAsString(3)
         Case Else
-            EventErrorMessage = "SetMessageã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+            EventErrorMessage = "SetMessageƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
             Error 0
     End Select
     
-    If selected_msg = "è§£é™¤" Then
-        'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ç”¨å¤‰æ•°ã‚’å‰Šé™¤
+    If selected_msg = "‰ğœ" Then
+        'ƒƒbƒZ[ƒW—p•Ï”‚ğíœ
         UndefineVariable "Message(" & u.MainPilot.ID & "," & sit & ")"
     ElseIf pname0 <> "" Then
-        'è¡¨æƒ…æŒ‡å®šä»˜ããƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ã¨ã—ã¦ç™»éŒ²ã™ã‚‹
+        '•\îw’è•t‚«ƒƒbƒZ[ƒW‚ğƒ[ƒJƒ‹•Ï”‚Æ‚µ‚Ä“o˜^‚·‚é
         SetVariableAsString "Message(" & u.MainPilot.ID & "," & sit & ")", _
             pname & "::" & selected_msg
     Else
-        'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ã¨ã—ã¦ç™»éŒ²ã™ã‚‹
+        'ƒƒbƒZ[ƒW‚ğƒ[ƒJƒ‹•Ï”‚Æ‚µ‚Ä“o˜^‚·‚é
         SetVariableAsString "Message(" & u.MainPilot.ID & "," & sit & ")", _
             selected_msg
     End If
@@ -11156,7 +11156,7 @@ Dim vname As String, rel As Integer
             pname1 = SelectedUnitForEvent.MainPilot.Name
             pname2 = GetArgAsString(2)
             If Not PDList.IsDefined(pname2) Then
-                EventErrorMessage = "ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼åãŒé–“é•ã£ã¦ã„ã¾ã™"
+                EventErrorMessage = "ƒLƒƒƒ‰ƒNƒ^[–¼‚ªŠÔˆá‚Á‚Ä‚¢‚Ü‚·"
                 Error 0
             End If
             pname2 = PDList.Item(pname2).Name
@@ -11165,25 +11165,25 @@ Dim vname As String, rel As Integer
         Case 4
             pname1 = GetArgAsString(2)
             If Not PDList.IsDefined(pname1) Then
-                EventErrorMessage = "ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼åãŒé–“é•ã£ã¦ã„ã¾ã™"
+                EventErrorMessage = "ƒLƒƒƒ‰ƒNƒ^[–¼‚ªŠÔˆá‚Á‚Ä‚¢‚Ü‚·"
                 Error 0
             End If
             pname1 = PDList.Item(pname1).Name
             
             pname2 = GetArgAsString(3)
             If Not PDList.IsDefined(pname2) Then
-                EventErrorMessage = "ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼åãŒé–“é•ã£ã¦ã„ã¾ã™"
+                EventErrorMessage = "ƒLƒƒƒ‰ƒNƒ^[–¼‚ªŠÔˆá‚Á‚Ä‚¢‚Ü‚·"
                 Error 0
             End If
             pname2 = PDList.Item(pname2).Name
             
             rel = GetArgAsLong(4)
         Case Else
-            EventErrorMessage = "SetRelationã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+            EventErrorMessage = "SetRelationƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
             Error 0
     End Select
     
-    vname = "é–¢ä¿‚:" & pname1 & ":" & pname2
+    vname = "ŠÖŒW:" & pname1 & ":" & pname2
     
     If rel <> 0 Then
         If Not IsGlobalVariableDefined(vname) Then
@@ -11196,8 +11196,8 @@ Dim vname As String, rel As Integer
         End If
     End If
     
-    'ä¿¡é ¼åº¦è£œæ­£ã«ã‚ˆã‚‹æ°—åŠ›ä¿®æ­£ã‚’æ›´æ–°
-    If IsOptionDefined("ä¿¡é ¼åº¦è£œæ­£") Then
+    'M—Š“x•â³‚É‚æ‚é‹C—ÍC³‚ğXV
+    If IsOptionDefined("M—Š“x•â³") Then
         If PList.IsDefined(pname1) Then
             PList.Item(pname1).UpdateSupportMod
         End If
@@ -11219,7 +11219,7 @@ Dim sdata As String, sdata_array() As String
 Dim i As Integer, j As Integer
 
     If ArgNum <> 4 And ArgNum <> 5 Then
-        EventErrorMessage = "SetSkillã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+        EventErrorMessage = "SetSkillƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
         Error 0
     End If
     
@@ -11229,7 +11229,7 @@ Dim i As Integer, j As Integer
     ElseIf PDList.IsDefined(pname) Then
         pname = PDList.Item(pname).Name
     Else
-        EventErrorMessage = "ã€Œ" & pname & "ã€ã¨ã„ã†ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“"
+        EventErrorMessage = "u" & pname & "v‚Æ‚¢‚¤ƒpƒCƒƒbƒg‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ"
         Error 0
     End If
     
@@ -11239,14 +11239,14 @@ Dim i As Integer, j As Integer
         sdata = GetArgAsString(5)
     End If
     
-    'ã‚¨ãƒªã‚¢ã‚¹ãŒå®šç¾©ã•ã‚Œã¦ã„ã‚‹ï¼Ÿ
+    'ƒGƒŠƒAƒX‚ª’è‹`‚³‚ê‚Ä‚¢‚éH
     If ALDList.IsDefined(sname) Then
         With ALDList.Item(sname)
             ReDim sname_array(.Count)
             ReDim slevel_array(.Count)
             ReDim sdata_array(.Count)
             For i = 1 To .Count
-                If LIndex(.AliasData(i), 1) = "è§£èª¬" Then
+                If LIndex(.AliasData(i), 1) = "‰ğà" Then
                     If sdata = "" Then
                         sname_array(i) = .AliasType(i)
                     Else
@@ -11303,7 +11303,7 @@ Dim i As Integer, j As Integer
             GoTo NextSkill
         End If
         
-        'ã‚¢ãƒ“ãƒªãƒ†ã‚£ä¸€è¦§è¡¨ç¤ºç”¨ã«SetSkillãŒé©ç”¨ã•ã‚ŒãŸèƒ½åŠ›ã®ä¸€è¦§ç”¨å¤‰æ•°ã‚’ä½œæˆ
+        'ƒAƒrƒŠƒeƒBˆê——•\¦—p‚ÉSetSkill‚ª“K—p‚³‚ê‚½”\—Í‚Ìˆê———p•Ï”‚ğì¬
         If Not IsGlobalVariableDefined("Ability(" & pname & ")") Then
             DefineGlobalVariable "Ability(" & pname & ")"
             slist = sname
@@ -11320,18 +11320,18 @@ Dim i As Integer, j As Integer
         End If
         SetVariableAsString "Ability(" & pname & ")", slist
         
-        'ä»Šå›SetSkillãŒé©ç”¨ã•ã‚ŒãŸèƒ½åŠ›snameç”¨å¤‰æ•°ã‚’ä½œæˆ
+        '¡‰ñSetSkill‚ª“K—p‚³‚ê‚½”\—Ísname—p•Ï”‚ğì¬
         vname = "Ability(" & pname & "," & sname & ")"
         If Not IsGlobalVariableDefined(vname) Then
             DefineGlobalVariable vname
         End If
         
         If sdata <> "" Then
-            'åˆ¥åæŒ‡å®šãŒã‚ã£ãŸå ´åˆ
+            '•Ê–¼w’è‚ª‚ ‚Á‚½ê‡
             SetVariableAsString vname, Format$(slevel) & " " & sdata
             
-            'å¿…è¦æŠ€èƒ½ç”¨
-            If sdata <> "éè¡¨ç¤º" And LIndex(sdata, 1) <> "è§£èª¬" Then
+            '•K—v‹Z”\—p
+            If sdata <> "”ñ•\¦" And LIndex(sdata, 1) <> "‰ğà" Then
                 vname = "Ability(" & pname & "," & LIndex(sdata, 1) & ")"
                 If Not IsGlobalVariableDefined(vname) Then
                     DefineGlobalVariable vname
@@ -11344,13 +11344,13 @@ Dim i As Integer, j As Integer
 NextSkill:
     Next
     
-    'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‚„ãƒ¦ãƒ‹ãƒƒãƒˆã®ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚’ã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ãƒˆ
+    'ƒpƒCƒƒbƒg‚âƒ†ƒjƒbƒg‚ÌƒXƒe[ƒ^ƒX‚ğƒAƒbƒvƒf[ƒg
     If PList.IsDefined(pname) Then
         With PList.Item(pname)
             .Update
             If Not .Unit Is Nothing Then
                 .Unit.Update
-                If .Unit.Status = "å‡ºæ’ƒ" Then
+                If .Unit.Status = "oŒ‚" Then
                     PList.UpdateSupportMod .Unit
                 End If
             End If
@@ -11370,10 +11370,10 @@ Dim cname As String
             With u
                 cname = GetArgAsString(3)
                 .AddCondition cname, GetArgAsLong(4)
-                If .Status = "å‡ºæ’ƒ" Then
+                If .Status = "oŒ‚" Then
                     PaintUnitBitmap u
                 End If
-                If cname <> "éæ“ä½œ" Then
+                If cname <> "”ñ‘€ì" Then
                     .Update
                 End If
             End With
@@ -11382,16 +11382,16 @@ Dim cname As String
                 With SelectedUnitForEvent
                     cname = GetArgAsString(2)
                     .AddCondition cname, GetArgAsLong(3)
-                    If .Status = "å‡ºæ’ƒ" Then
+                    If .Status = "oŒ‚" Then
                         PaintUnitBitmap SelectedUnitForEvent
                     End If
-                    If cname <> "éæ“ä½œ" Then
+                    If cname <> "”ñ‘€ì" Then
                         .Update
                     End If
                 End With
             End If
         Case Else
-            EventErrorMessage = "SetStatusã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+            EventErrorMessage = "SetStatusƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
             Error 0
     End Select
     
@@ -11402,16 +11402,16 @@ End Function
 Private Function ExecSetStatusStringColor() As Long
 Dim opt As String, cname As String, target As String
 Dim color As Long
-    'å¼•æ•°ãƒã‚§ãƒƒã‚¯
+    'ˆø”ƒ`ƒFƒbƒN
     If ArgNum <> 3 Then
-        EventErrorMessage = "StatusStringColorã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+        EventErrorMessage = "StatusStringColorƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
         Error 0
     End If
     
-    'å¤‰æ›´è‰²ã‚’å–å¾—
+    '•ÏXF‚ğæ“¾
     opt = GetArgAsString(2)
     If Asc(opt) <> 35 Or Len(opt) <> 7 Then
-        EventErrorMessage = "è‰²æŒ‡å®šãŒä¸æ­£ã§ã™"
+        EventErrorMessage = "Fw’è‚ª•s³‚Å‚·"
         Error 0
     End If
     cname = String$(8, vbNullChar)
@@ -11420,44 +11420,44 @@ Dim color As Long
     Mid(cname, 5, 2) = Mid$(opt, 4, 2)
     Mid(cname, 7, 2) = Mid$(opt, 2, 2)
     If Not IsNumeric(cname) Then
-        EventErrorMessage = "è‰²æŒ‡å®šãŒä¸æ­£ã§ã™"
+        EventErrorMessage = "Fw’è‚ª•s³‚Å‚·"
         Error 0
     End If
     color = CLng(cname)
     
-    'å¤‰æ›´å¯¾è±¡ã‚’å–å¾—
+    '•ÏX‘ÎÛ‚ğæ“¾
     target = GetArgAsString(3)
-    If target <> "é€šå¸¸" And target <> "èƒ½åŠ›å" And target <> "æœ‰åŠ¹" And target <> "ç„¡åŠ¹" Then
-        EventErrorMessage = "è¨­å®šå¯¾è±¡ã®æŒ‡å®šãŒä¸æ­£ã§ã™"
+    If target <> "’Êí" And target <> "”\—Í–¼" And target <> "—LŒø" And target <> "–³Œø" Then
+        EventErrorMessage = "İ’è‘ÎÛ‚Ìw’è‚ª•s³‚Å‚·"
         Error 0
     End If
 
-    'å‡¦ç†å®Ÿè¡Œ
+    'ˆ—Às
     Select Case target
-    Case "é€šå¸¸"
+    Case "’Êí"
         StatusFontColorNormalString = color
-        'Globalå¤‰æ•°ã«ä¿å­˜
+        'Global•Ï”‚É•Û‘¶
         If Not IsGlobalVariableDefined("StatusWindow(StringColor)") Then
             DefineGlobalVariable "StatusWindow(StringColor)"
         End If
         SetVariableAsLong "StatusWindow(StringColor)", color
-    Case "èƒ½åŠ›å"
+    Case "”\—Í–¼"
         StatusFontColorAbilityName = color
-        'Globalå¤‰æ•°ã«ä¿å­˜
+        'Global•Ï”‚É•Û‘¶
         If Not IsGlobalVariableDefined("StatusWindow(ANameColor)") Then
             DefineGlobalVariable "StatusWindow(ANameColor)"
         End If
         SetVariableAsLong "StatusWindow(ANameColor)", color
-    Case "æœ‰åŠ¹"
+    Case "—LŒø"
         StatusFontColorAbilityEnable = color
-        'Globalå¤‰æ•°ã«ä¿å­˜
+        'Global•Ï”‚É•Û‘¶
         If Not IsGlobalVariableDefined("StatusWindow(EnableColor)") Then
             DefineGlobalVariable "StatusWindow(EnableColor)"
         End If
         SetVariableAsLong "StatusWindow(EnableColor)", color
-    Case "ç„¡åŠ¹"
+    Case "–³Œø"
         StatusFontColorAbilityDisable = color
-        'Globalå¤‰æ•°ã«ä¿å­˜
+        'Global•Ï”‚É•Û‘¶
         If Not IsGlobalVariableDefined("StatusWindow(DisableColor)") Then
             DefineGlobalVariable "StatusWindow(DisableColor)"
         End If
@@ -11485,7 +11485,7 @@ Dim u As Unit
             num = GetArgAsLong(3)
             
         Case Else
-            EventErrorMessage = "SetStockã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+            EventErrorMessage = "SetStockƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
             Error 0
     End Select
     
@@ -11493,7 +11493,7 @@ Dim u As Unit
         If IsNumeric(aname) Then
             aid = StrToLng(aname)
             If aid < 1 Or .CountAbility < aid Then
-                EventErrorMessage = "ã‚¢ãƒ“ãƒªãƒ†ã‚£ã®ç•ªå·ã€Œ" & aname & "ã€ãŒé–“é•ã£ã¦ã„ã¾ã™"
+                EventErrorMessage = "ƒAƒrƒŠƒeƒB‚Ì”Ô†u" & aname & "v‚ªŠÔˆá‚Á‚Ä‚¢‚Ü‚·"
                 Error 0
             End If
         Else
@@ -11503,7 +11503,7 @@ Dim u As Unit
                 End If
             Next
             If aid < 1 Or .CountAbility < aid Then
-                EventErrorMessage = .Name & "ã¯ã‚¢ãƒ“ãƒªãƒ†ã‚£ã€Œ" & aname & "ã€ã‚’æŒã£ã¦ã„ã¾ã›ã‚“"
+                EventErrorMessage = .Name & "‚ÍƒAƒrƒŠƒeƒBu" & aname & "v‚ğ‚Á‚Ä‚¢‚Ü‚¹‚ñ"
                 Error 0
             End If
         End If
@@ -11518,16 +11518,16 @@ Dim cname As String, opt As String, target As String
 Dim color As Long
 Dim isTargetLine As Boolean, isTargetBG As Boolean
 
-    'å¼•æ•°ãƒã‚§ãƒƒã‚¯
+    'ˆø”ƒ`ƒFƒbƒN
     If ArgNum <> 2 And ArgNum <> 3 Then
-        EventErrorMessage = "SetWindowColorã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+        EventErrorMessage = "SetWindowColorƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
         Error 0
     End If
     
-    'è‰²å–å¾—
+    'Fæ“¾
     opt = GetArgAsString(2)
     If Asc(opt) <> 35 Or Len(opt) <> 7 Then
-        EventErrorMessage = "è‰²æŒ‡å®šãŒä¸æ­£ã§ã™"
+        EventErrorMessage = "Fw’è‚ª•s³‚Å‚·"
         Error 0
     End If
     cname = String$(8, vbNullChar)
@@ -11536,50 +11536,50 @@ Dim isTargetLine As Boolean, isTargetBG As Boolean
     Mid(cname, 5, 2) = Mid$(opt, 4, 2)
     Mid(cname, 7, 2) = Mid$(opt, 2, 2)
     If Not IsNumeric(cname) Then
-        EventErrorMessage = "è‰²æŒ‡å®šãŒä¸æ­£ã§ã™"
+        EventErrorMessage = "Fw’è‚ª•s³‚Å‚·"
         Error 0
     End If
     color = CLng(cname)
     
-    'å¤‰æ›´å¯¾è±¡å–å¾—
+    '•ÏX‘ÎÛæ“¾
     isTargetLine = False
     isTargetBG = False
     If ArgNum = 3 Then
         target = GetArgAsString(3)
-        If target = "æ " Then
+        If target = "˜g" Then
             isTargetLine = True
-        ElseIf target = "èƒŒæ™¯" Then
+        ElseIf target = "”wŒi" Then
             isTargetBG = True
         Else
-            EventErrorMessage = "è‰²è¨­å®šå¯¾è±¡ã®æŒ‡å®šãŒä¸æ­£ã§ã™"
+            EventErrorMessage = "Fİ’è‘ÎÛ‚Ìw’è‚ª•s³‚Å‚·"
             Error 0
         End If
     End If
     
-    'å‡¦ç†é–‹å§‹
+    'ˆ—ŠJn
     If isTargetLine Then
         StatusWindowFrameColor = color
-        'Globalå¤‰æ•°ã«ä¿å­˜
+        'Global•Ï”‚É•Û‘¶
         If Not IsGlobalVariableDefined("StatusWindow(FrameColor)") Then
             DefineGlobalVariable "StatusWindow(FrameColor)"
         End If
         SetVariableAsLong "StatusWindow(FrameColor)", color
     ElseIf isTargetBG Then
         StatusWindowBackBolor = color
-        'Globalå¤‰æ•°ã«ä¿å­˜
+        'Global•Ï”‚É•Û‘¶
         If Not IsGlobalVariableDefined("StatusWindow(BackBolor)") Then
             DefineGlobalVariable "StatusWindow(BackBolor)"
         End If
         SetVariableAsLong "StatusWindow(BackBolor)", color
     ElseIf Not isTargetLine And Not isTargetBG Then
         StatusWindowFrameColor = color
-        'Globalå¤‰æ•°ã«ä¿å­˜
+        'Global•Ï”‚É•Û‘¶
         If Not IsGlobalVariableDefined("StatusWindow(FrameColor)") Then
             DefineGlobalVariable "StatusWindow(FrameColor)"
         End If
         SetVariableAsLong "StatusWindow(FrameColor)", color
         StatusWindowBackBolor = color
-        'Globalå¤‰æ•°ã«ä¿å­˜
+        'Global•Ï”‚É•Û‘¶
         If Not IsGlobalVariableDefined("StatusWindow(BackBolor)") Then
             DefineGlobalVariable "StatusWindow(BackBolor)"
         End If
@@ -11592,16 +11592,16 @@ End Function
 
 Private Function ExecSetWindowFrameWidth() As Long
 Dim width As Long
-    'å¼•æ•°ãƒã‚§ãƒƒã‚¯
+    'ˆø”ƒ`ƒFƒbƒN
     If ArgNum <> 2 Then
-        EventErrorMessage = "SetWindowColorã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+        EventErrorMessage = "SetWindowColorƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
         Error 0
     End If
-    'å¹…å–å¾—
+    '•æ“¾
     width = GetArgAsLong(2)
-    'å‡¦ç†é–‹å§‹
+    'ˆ—ŠJn
     StatusWindowFrameWidth = width
-    'Globalå¤‰æ•°ã«ä¿å­˜
+    'Global•Ï”‚É•Û‘¶
     If Not IsGlobalVariableDefined("StatusWindow(FrameWidth)") Then
         DefineGlobalVariable "StatusWindow(FrameWidth)"
     End If
@@ -11627,7 +11627,7 @@ Private Function ExecShowCmd() As Long
     ExecShowCmd = LineNum + 1
 End Function
 
-'äº’æ›æ€§ç¶­æŒã®ãŸã‚ã«æ®‹ã—ã¦ã„ã‚‹
+'ŒİŠ·«ˆÛ‚Ì‚½‚ß‚Éc‚µ‚Ä‚¢‚é
 Private Function ExecShowImageCmd() As Long
 Dim fname As String
 Dim dw As Long, dh As Long
@@ -11636,10 +11636,10 @@ Dim ret As Integer
     fname = GetArgAsString(2)
     Select Case Right$(LCase$(fname), 4)
         Case ".bmp", ".jpg", ".gif", ".png"
-            'æ­£ã—ã„ç”»åƒãƒ•ã‚¡ã‚¤ãƒ«å
+            '³‚µ‚¢‰æ‘œƒtƒ@ƒCƒ‹–¼
         Case Else
             EventErrorMessage = _
-                "ä¸æ­£ãªç”»åƒãƒ•ã‚¡ã‚¤ãƒ«åã€Œ" & fname & "ã€ãŒæŒ‡å®šã•ã‚Œã¦ã„ã¾ã™"
+                "•s³‚È‰æ‘œƒtƒ@ƒCƒ‹–¼u" & fname & "v‚ªw’è‚³‚ê‚Ä‚¢‚Ü‚·"
             Error 0
     End Select
     
@@ -11668,7 +11668,7 @@ Dim u As Unit
         Case 1
             Set u = SelectedUnitForEvent
         Case 2
-            If GetArgAsString(2) = "çµ‚äº†" Then
+            If GetArgAsString(2) = "I—¹" Then
                 ClearUnitStatus
                 ExecShowUnitStatusCmd = LineNum + 1
                 Exit Function
@@ -11676,7 +11676,7 @@ Dim u As Unit
             
             Set u = GetArgAsUnit(2)
         Case Else
-            EventErrorMessage = "ShowUnitStatusã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+            EventErrorMessage = "ShowUnitStatusƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
             Error 0
     End Select
     
@@ -11690,7 +11690,7 @@ End Function
 Private Function ExecSkipCmd() As Long
 Dim i As Long, depth As Integer
 
-    'å¯¾å¿œã™ã‚‹ãƒ«ãƒ¼ãƒ—ã®æœ«å°¾ã‚’æ¢ã™
+    '‘Î‰‚·‚éƒ‹[ƒv‚Ì––”ö‚ğ’T‚·
     depth = 1
     For i = LineNum + 1 To UBound(EventCmd)
         Select Case EventCmd(i).Name
@@ -11705,7 +11705,7 @@ Dim i As Long, depth As Integer
         End Select
     Next
     
-    EventErrorMessage = "Skipã‚³ãƒãƒ³ãƒ‰ãŒãƒ«ãƒ¼ãƒ—ã®å¤–ã§ä½¿ã‚ã‚Œã¦ã„ã¾ã™"
+    EventErrorMessage = "SkipƒRƒ}ƒ“ƒh‚ªƒ‹[ƒv‚ÌŠO‚Åg‚í‚ê‚Ä‚¢‚Ü‚·"
     Error 0
 End Function
 
@@ -11717,49 +11717,49 @@ Dim vname As String, buf As String, value_buf As Variant, num As Integer
 Dim var As VarData, array_buf() As Variant, var_buf(2) As Variant
 
     'array_buf(opt, value)
-    ' opt=0â€¦é…åˆ—ã®æ·»å­—
-    '    =1â€¦å¤‰æ•°ã®ValueTyep
-    '    =2â€¦å¤‰æ•°ã®å€¤
+    ' opt=0c”z—ñ‚Ì“Yš
+    '    =1c•Ï”‚ÌValueTyep
+    '    =2c•Ï”‚Ì’l
 
     If ArgNum < 2 Then
-        EventErrorMessage = "Sortã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+        EventErrorMessage = "SortƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
         Error 0
     End If
     
-    'åˆæœŸå€¤
-    isAscOrder = True       'ã‚½ãƒ¼ãƒˆé †ã‚’æ˜‡é †ä¼¼è¨­å®š
-    isStringkey = False     'é…åˆ—ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’æ•°å€¤ã¨ã—ã¦æ‰±ã†
-    isStringValue = False   'é…åˆ—ã®è¦ç´ ã‚’æ•°å€¤ã¨ã—ã¦æ‰±ã†
-    isKeySort = False       'ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã®ã¿ã®ã‚½ãƒ¼ãƒˆã§ã¯ãªã„
+    '‰Šú’l
+    isAscOrder = True       'ƒ\[ƒg‡‚ğ¸‡—İ’è
+    isStringkey = False     '”z—ñ‚ÌƒCƒ“ƒfƒbƒNƒX‚ğ”’l‚Æ‚µ‚Äˆµ‚¤
+    isStringValue = False   '”z—ñ‚Ì—v‘f‚ğ”’l‚Æ‚µ‚Äˆµ‚¤
+    isKeySort = False       'ƒCƒ“ƒfƒbƒNƒX‚Ì‚İ‚Ìƒ\[ƒg‚Å‚Í‚È‚¢
     
     For i = 3 To ArgNum
         buf = GetArgAsString(i)
         Select Case buf
-            Case "æ˜‡é †"
+            Case "¸‡"
                 isAscOrder = True
-            Case "é™é †"
+            Case "~‡"
                 isAscOrder = False
-            Case "æ•°å€¤"
+            Case "”’l"
                 isStringValue = False
-            Case "æ–‡å­—"
+            Case "•¶š"
                 isStringValue = True
-            Case "ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã®ã¿"
+            Case "ƒCƒ“ƒfƒbƒNƒX‚Ì‚İ"
                 isKeySort = True
-            Case "æ–‡å­—ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹"
+            Case "•¶šƒCƒ“ƒfƒbƒNƒX"
                 isStringkey = True
             Case Else
                 EventErrorMessage = _
-                    "Sortã‚³ãƒãƒ³ãƒ‰ã«ä¸æ­£ãªã‚ªãƒ—ã‚·ãƒ§ãƒ³ã€Œ" & buf & "ã€ãŒä½¿ã‚ã‚Œã¦ã„ã¾ã™"
+                    "SortƒRƒ}ƒ“ƒh‚É•s³‚ÈƒIƒvƒVƒ‡ƒ“u" & buf & "v‚ªg‚í‚ê‚Ä‚¢‚Ü‚·"
                 Error 0
         End Select
     Next
 
-    'ã‚½ãƒ¼ãƒˆã™ã‚‹é…åˆ—å¤‰æ•°å
+    'ƒ\[ƒg‚·‚é”z—ñ•Ï”–¼
     vname = GetArg(2)
     If Left$(vname, 1) = "$" Then
         vname = Mid$(vname, 2)
     End If
-    'Evalé–¢æ•°
+    'EvalŠÖ”
     If LCase$(Left$(vname, 5)) = "eval(" Then
         If Right$(vname, 1) = ")" Then
             vname = Mid$(vname, 6, Len(vname) - 6)
@@ -11767,10 +11767,10 @@ Dim var As VarData, array_buf() As Variant, var_buf(2) As Variant
         End If
     End If
 
-    'é…åˆ—ã‚’æ¤œç´¢ã—ã€é…åˆ—è¦ç´ ã‚’è¦‹ã¤ã‘ã‚‹
+    '”z—ñ‚ğŒŸõ‚µA”z—ñ—v‘f‚ğŒ©‚Â‚¯‚é
     num = 0
     If IsSubLocalVariableDefined(vname) Then
-        'ã‚µãƒ–ãƒ«ãƒ¼ãƒãƒ³ãƒ­ãƒ¼ã‚«ãƒ«ãªé…åˆ—
+        'ƒTƒuƒ‹[ƒ`ƒ“ƒ[ƒJƒ‹‚È”z—ñ
         For i = VarIndexStack(CallDepth - 1) + 1 To VarIndex
             With VarStack(i)
                 If InStr(.Name, vname & "[") = 1 Then
@@ -11803,7 +11803,7 @@ Dim var As VarData, array_buf() As Variant, var_buf(2) As Variant
             Exit Function
         End If
     ElseIf IsLocalVariableDefined(vname) Then
-        'ãƒ­ãƒ¼ã‚«ãƒ«ãªé…åˆ—
+        'ƒ[ƒJƒ‹‚È”z—ñ
         For Each var In LocalVariableList
             With var
                 If InStr(.Name, vname & "[") = 1 Then
@@ -11836,7 +11836,7 @@ Dim var As VarData, array_buf() As Variant, var_buf(2) As Variant
             Exit Function
         End If
     ElseIf IsGlobalVariableDefined(vname) Then
-        'ã‚°ãƒ­ãƒ¼ãƒãƒ«ãªé…åˆ—
+        'ƒOƒ[ƒoƒ‹‚È”z—ñ
         For Each var In GlobalVariableList
             With var
                 If InStr(.Name, vname & "[") = 1 Then
@@ -11873,8 +11873,8 @@ Dim var As VarData, array_buf() As Variant, var_buf(2) As Variant
     num = num - 1
     
     If Not isStringkey Or isKeySort Then
-        'æ·»å­—ãŒæ•°å€¤ã®å ´åˆã€ã¾ãŸã¯ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã®ã¿ã®ã‚½ãƒ¼ãƒˆã®å ´åˆã€
-        'å…ˆã«æ·»å­—ã®æ˜‡é †ã«ä¸¦ã³æ›¿ãˆã‚‹
+        '“Yš‚ª”’l‚Ìê‡A‚Ü‚½‚ÍƒCƒ“ƒfƒbƒNƒX‚Ì‚İ‚Ìƒ\[ƒg‚Ìê‡A
+        'æ‚É“Yš‚Ì¸‡‚É•À‚Ñ‘Ö‚¦‚é
         For i = 0 To num - 1
             For j = num To i + 1 Step -1
                 isSwap = False
@@ -11905,7 +11905,7 @@ Dim var As VarData, array_buf() As Variant, var_buf(2) As Variant
     End If
     
     If Not isKeySort Then
-        'æ”¹ã‚ã¦è¦ç´ ã‚’ã‚½ãƒ¼ãƒˆ
+        '‰ü‚ß‚Ä—v‘f‚ğƒ\[ƒg
         For i = 0 To num - 1
             For j = num To i + 1 Step -1
                 isSwap = False
@@ -11935,7 +11935,7 @@ Dim var As VarData, array_buf() As Variant, var_buf(2) As Variant
         Next
     End If
     
-    'SRCå¤‰æ•°ã«å†é…ç½®
+    'SRC•Ï”‚ÉÄ”z’u
     For i = 0 To num
         buf = vname & "[" & CStr(array_buf(0, i)) & "]"
         UndefineVariable buf
@@ -11963,8 +11963,8 @@ Dim prev_action As Integer
         Case 3
             If SPDList.IsDefined(GetArgAsString(2)) Then
                 With SPDList.Item(GetArgAsString(2))
-                    If .IsEffectAvailable("ã¿ãŒã‚ã‚Š") _
-                        Or .IsEffectAvailable("æŒ‘ç™º") _
+                    If .IsEffectAvailable("‚İ‚ª‚í‚è") _
+                        Or .IsEffectAvailable("’§”­") _
                     Then
                         need_target = True
                     End If
@@ -11983,13 +11983,13 @@ Dim prev_action As Integer
             Set u = SelectedUnitForEvent
             sname = GetArgAsString(2)
         Case Else
-            EventErrorMessage = "SpecialPowerã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+            EventErrorMessage = "SpecialPowerƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
             Error 0
     End Select
     
     If Not SPDList.IsDefined(sname) Then
-        EventErrorMessage = "SpecialPowerã‚³ãƒãƒ³ãƒ‰ã§æŒ‡å®šã•ã‚ŒãŸã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼ã€Œ" & _
-            sname & "ã€ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“"
+        EventErrorMessage = "SpecialPowerƒRƒ}ƒ“ƒh‚Åw’è‚³‚ê‚½ƒXƒyƒVƒƒƒ‹ƒpƒ[u" & _
+            sname & "v‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ"
         Error 0
     End If
     
@@ -11997,7 +11997,7 @@ Dim prev_action As Integer
     
     msg_window_visible = frmMessage.Visible
     
-    If sd.Duration = "å³åŠ¹" Then
+    If sd.Duration = "‘¦Œø" Then
         Dim prev_target As Unit
         Set prev_target = SelectedTarget
         If Not t Is Nothing Then
@@ -12049,22 +12049,22 @@ Dim u As Unit
         Case 2
             Set u = GetArgAsUnit(2)
         Case Else
-            EventErrorMessage = "Splitã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+            EventErrorMessage = "SplitƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
             Error 0
     End Select
     
     With u
-        If Not .IsFeatureAvailable("åˆ†é›¢") Then
-            EventErrorMessage = .Name & "ã¯åˆ†é›¢ã§ãã¾ã›ã‚“"
+        If Not .IsFeatureAvailable("•ª—£") Then
+            EventErrorMessage = .Name & "‚Í•ª—£‚Å‚«‚Ü‚¹‚ñ"
             Error 0
         End If
         
         .Split
         
-        'åˆ†é›¢å½¢æ…‹ã®ï¼‘ç•ªç›®ã®ãƒ¦ãƒ‹ãƒƒãƒˆã‚’ãƒ¡ã‚¤ãƒ³ãƒ¦ãƒ‹ãƒƒãƒˆã«è¨­å®š
-        Set u = UList.Item(LIndex(.FeatureData("åˆ†é›¢"), 2))
+        '•ª—£Œ`‘Ô‚Ì‚P”Ô–Ú‚Ìƒ†ƒjƒbƒg‚ğƒƒCƒ“ƒ†ƒjƒbƒg‚Éİ’è
+        Set u = UList.Item(LIndex(.FeatureData("•ª—£"), 2))
         
-        'å¤‰æ•°ã®ã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ãƒˆ
+        '•Ï”‚ÌƒAƒbƒvƒf[ƒg
         If Not SelectedUnit Is Nothing Then
             If .ID = SelectedUnit.ID Then
                 Set SelectedUnit = u
@@ -12095,7 +12095,7 @@ Dim fname As String
 Dim start_bgm_end As Long
 Dim i As Long
 
-    'StartBGMã‚³ãƒãƒ³ãƒ‰ãŒé€£ç¶šã—ã¦ã‚‹å ´åˆã€æœ€å¾Œã®StartBGMã‚³ãƒãƒ³ãƒ‰ã®ä½ç½®ã‚’æ¤œç´¢
+    'StartBGMƒRƒ}ƒ“ƒh‚ª˜A‘±‚µ‚Ä‚éê‡AÅŒã‚ÌStartBGMƒRƒ}ƒ“ƒh‚ÌˆÊ’u‚ğŒŸõ
     For i = LineNum + 1 To UBound(EventCmd)
         If EventCmd(i).Name <> StartBGMCmd Then
             Exit For
@@ -12103,7 +12103,7 @@ Dim i As Long
     Next
     start_bgm_end = i - 1
     
-    'æœ€å¾Œã®StartBGMã‹ã‚‰é †ã«MIDIãƒ•ã‚¡ã‚¤ãƒ«ã‚’æ¤œç´¢
+    'ÅŒã‚ÌStartBGM‚©‚ç‡‚ÉMIDIƒtƒ@ƒCƒ‹‚ğŒŸõ
     For i = start_bgm_end To LineNum Step -1
         fname = ListTail(EventData(i), 2)
         If ListLength(fname) = 1 Then
@@ -12116,27 +12116,27 @@ Dim i As Long
         End If
         fname = SearchMidiFile(fname)
         If fname <> "" Then
-            'MIDIãƒ•ã‚¡ã‚¤ãƒ«ãŒå­˜åœ¨ã—ãŸã®ã§é¸æŠ
+            'MIDIƒtƒ@ƒCƒ‹‚ª‘¶İ‚µ‚½‚Ì‚Å‘I‘ğ
             Exit For
         End If
     Next
     
-    'MIDIãƒ•ã‚¡ã‚¤ãƒ«ã‚’å†ç”Ÿ
+    'MIDIƒtƒ@ƒCƒ‹‚ğÄ¶
     KeepBGM = False
     BossBGM = False
     StartBGM fname
     
-    'æ¬¡ã®ã‚³ãƒãƒ³ãƒ‰å®Ÿè¡Œä½ç½®ã¯æœ€å¾Œã®StartBGMã‚³ãƒãƒ³ãƒ‰ã®å¾Œ
+    'Ÿ‚ÌƒRƒ}ƒ“ƒhÀsˆÊ’u‚ÍÅŒã‚ÌStartBGMƒRƒ}ƒ“ƒh‚ÌŒã
     ExecStartBGMCmd = start_bgm_end + 1
 End Function
 
 Private Function ExecStopBGMCmd() As Long
     KeepBGM = False
     BossBGM = False
-' MOD START ãƒãƒ¼ã‚¸
+' MOD START ƒ}[ƒW
 '    StopBGM
     StopBGM True
-' MOD END ãƒãƒ¼ã‚¸
+' MOD END ƒ}[ƒW
     ExecStopBGMCmd = LineNum + 1
 End Function
 
@@ -12149,11 +12149,11 @@ Dim u As Unit
         Case 2
             Set u = GetArgAsUnit(2)
         Case Else
-            EventErrorMessage = "StopSummoningã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+            EventErrorMessage = "StopSummoningƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
             Error 0
     End Select
     
-    'å¬å–šã—ãŸãƒ¦ãƒ‹ãƒƒãƒˆã‚’è§£æ”¾
+    '¢Š«‚µ‚½ƒ†ƒjƒbƒg‚ğ‰ğ•ú
     u.DismissServant
     
     ExecStopSummoningCmd = LineNum + 1
@@ -12170,13 +12170,13 @@ Dim i As Integer, buf As String
     For i = 2 To ArgNum
         buf = GetArgAsString(i)
         Select Case buf
-            Case "éåŒæœŸ"
+            Case "”ñ“¯Šú"
                 late_refresh = True
-            Case "ãƒãƒƒãƒ—é™å®š"
+            Case "ƒ}ƒbƒvŒÀ’è"
                 MapDrawIsMapOnly = True
             Case Else
                 EventErrorMessage = _
-                    "Sunsetã‚³ãƒãƒ³ãƒ‰ã«ä¸æ­£ãªã‚ªãƒ—ã‚·ãƒ§ãƒ³ã€Œ" & buf & "ã€ãŒä½¿ã‚ã‚Œã¦ã„ã¾ã™"
+                    "SunsetƒRƒ}ƒ“ƒh‚É•s³‚ÈƒIƒvƒVƒ‡ƒ“u" & buf & "v‚ªg‚í‚ê‚Ä‚¢‚Ü‚·"
                 Error 0
         End Select
     Next
@@ -12184,19 +12184,19 @@ Dim i As Integer, buf As String
     prev_x = MapX
     prev_y = MapY
     
-    'ãƒã‚¦ã‚¹ã‚«ãƒ¼ã‚½ãƒ«ã‚’ç ‚æ™‚è¨ˆã«
+    'ƒ}ƒEƒXƒJ[ƒ\ƒ‹‚ğ»Œv‚É
     Screen.MousePointer = vbHourglass
     
-    SetupBackground "å¤•ç„¼ã‘", "éåŒæœŸ"
+    SetupBackground "—[Ä‚¯", "”ñ“¯Šú"
     
     For Each u In UList
         With u
-            If .Status = "å‡ºæ’ƒ" Then
+            If .Status = "oŒ‚" Then
                 If .BitmapID = 0 Then
                     With UList.Item(.Name)
                         If u.Party0 = .Party0 And .BitmapID <> 0 _
                             And u.Bitmap = .Bitmap _
-                            And Not .IsFeatureAvailable("ãƒ€ãƒŸãƒ¼ãƒ¦ãƒ‹ãƒƒãƒˆ") _
+                            And Not .IsFeatureAvailable("ƒ_ƒ~[ƒ†ƒjƒbƒg") _
                         Then
                             u.BitmapID = .BitmapID
                         Else
@@ -12211,7 +12211,7 @@ Dim i As Integer, buf As String
     Center prev_x, prev_y
     RedrawScreen late_refresh
     
-    'ãƒã‚¦ã‚¹ã‚«ãƒ¼ã‚½ãƒ«ã‚’å…ƒã«æˆ»ã™
+    'ƒ}ƒEƒXƒJ[ƒ\ƒ‹‚ğŒ³‚É–ß‚·
     Screen.MousePointer = 0
     
     ExecSunsetCmd = LineNum + 1
@@ -12226,7 +12226,7 @@ Dim u As Unit
         Case 1
             Set u = SelectedUnitForEvent
         Case Else
-        EventErrorMessage = "Supplyã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+        EventErrorMessage = "SupplyƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
         Error 0
     End Select
     
@@ -12245,11 +12245,11 @@ Dim old_var2    As VarData
 Dim i As Integer
     
     If ArgNum <> 3 Then
-        EventErrorMessage = "Swapã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+        EventErrorMessage = "SwapƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
         Error 0
     Else
-        'å…¥ã‚Œæ›¿ãˆã‚‹å‰ã®å¤‰æ•°ã®å€¤ã‚’ä¿å­˜
-        'å¼•æ•°1ã®å¤‰æ•°
+        '“ü‚ê‘Ö‚¦‚é‘O‚Ì•Ï”‚Ì’l‚ğ•Û‘¶
+        'ˆø”1‚Ì•Ï”
         Set old_var1 = GetVariableObject(GetArg(2))
         If Not old_var1 Is Nothing Then
             With new_var2
@@ -12259,7 +12259,7 @@ Dim i As Integer
                 .NumericValue = old_var1.NumericValue
             End With
         End If
-        'å¼•æ•°2ã®å¤‰æ•°
+        'ˆø”2‚Ì•Ï”
         Set old_var2 = GetVariableObject(GetArg(3))
         If Not old_var2 Is Nothing Then
             With new_var1
@@ -12270,9 +12270,9 @@ Dim i As Integer
             End With
         End If
         
-        'å¼•æ•°2ã®å¤‰æ•°ã‚’å¼•æ•°1ã®å¤‰æ•°ã«ä»£å…¥
+        'ˆø”2‚Ì•Ï”‚ğˆø”1‚Ì•Ï”‚É‘ã“ü
         With old_var1
-            'å¼•æ•°1ãŒã‚µãƒ–ãƒ«ãƒ¼ãƒãƒ³ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ã®å ´åˆ
+            'ˆø”1‚ªƒTƒuƒ‹[ƒ`ƒ“ƒ[ƒJƒ‹•Ï”‚Ìê‡
             If CallDepth > 0 Then
                 For i = VarIndexStack(CallDepth - 1) + 1 To VarIndex
                     If .Name = VarStack(i).Name Then
@@ -12286,15 +12286,15 @@ Dim i As Integer
                 Next
             End If
             
-            'ãƒ­ãƒ¼ã‚«ãƒ«ãƒ»ã¾ãŸã¯ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°ã®å ´åˆ
+            'ƒ[ƒJƒ‹E‚Ü‚½‚ÍƒOƒ[ƒoƒ‹•Ï”‚Ìê‡
             .VariableType = new_var1.VariableType
             .StringValue = new_var1.StringValue
             .NumericValue = new_var1.NumericValue
         End With
 Swap_Var2toVar1_End:
-        'å¼•æ•°1ã®å¤‰æ•°ã‚’å¼•æ•°2ã®å¤‰æ•°ã«ä»£å…¥
+        'ˆø”1‚Ì•Ï”‚ğˆø”2‚Ì•Ï”‚É‘ã“ü
         With old_var2
-            'å¼•æ•°2ãŒã‚µãƒ–ãƒ«ãƒ¼ãƒãƒ³ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ã®å ´åˆ
+            'ˆø”2‚ªƒTƒuƒ‹[ƒ`ƒ“ƒ[ƒJƒ‹•Ï”‚Ìê‡
             If CallDepth > 0 Then
                 For i = VarIndexStack(CallDepth - 1) + 1 To VarIndex
                     If .Name = VarStack(i).Name Then
@@ -12308,7 +12308,7 @@ Swap_Var2toVar1_End:
                 Next
             End If
             
-            'ãƒ­ãƒ¼ã‚«ãƒ«ãƒ»ã¾ãŸã¯ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°ã®å ´åˆ
+            'ƒ[ƒJƒ‹E‚Ü‚½‚ÍƒOƒ[ƒoƒ‹•Ï”‚Ìê‡
             .VariableType = new_var2.VariableType
             .StringValue = new_var2.StringValue
             .NumericValue = new_var2.NumericValue
@@ -12316,7 +12316,7 @@ Swap_Var2toVar1_End:
 Swap_Var1toVar2_End:
     End If
         
-    'ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®è§£æ”¾
+    'ƒIƒuƒWƒFƒNƒg‚Ì‰ğ•ú
     Set old_var1 = Nothing
     Set old_var2 = Nothing
     Set new_var1 = Nothing
@@ -12330,7 +12330,7 @@ Dim i As Long, j As Integer, depth As Integer
 Dim a As String, b As String
 
     If ArgNum <> 2 Then
-        EventErrorMessage = "Switchã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+        EventErrorMessage = "SwitchƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
         Error 0
     End If
     
@@ -12344,14 +12344,14 @@ Dim a As String, b As String
                     If depth = 1 Then
                         For j = 2 To .ArgNum
                             If .GetArgsType(j) = UndefinedType Then
-                                'æœªè­˜åˆ¥ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã¯å¼ã¨ã—ã¦å‡¦ç†ã™ã‚‹
+                                '–¢¯•Ê‚Ìƒpƒ‰ƒ[ƒ^‚Í®‚Æ‚µ‚Äˆ—‚·‚é
                                 b = .GetArgAsString(j)
                                 If b = .GetArg(j) Then
-                                    'æ–‡å­—åˆ—ã¨ã—ã¦è­˜åˆ¥æ¸ˆã¿ã«ã™ã‚‹
+                                    '•¶š—ñ‚Æ‚µ‚Ä¯•ÊÏ‚İ‚É‚·‚é
                                     .SetArgsType j, StringType
                                 End If
                             Else
-                                'è­˜åˆ¥æ¸ˆã¿ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã¯æ–‡å­—åˆ—ã¨ã—ã¦ãã®ã¾ã¾å‚ç…§ã™ã‚‹
+                                '¯•ÊÏ‚İ‚Ìƒpƒ‰ƒ[ƒ^‚Í•¶š—ñ‚Æ‚µ‚Ä‚»‚Ì‚Ü‚ÜQÆ‚·‚é
                                 b = .GetArg(j)
                             End If
                             
@@ -12379,14 +12379,14 @@ Dim a As String, b As String
         End With
     Next
     
-    EventErrorMessage = "Switchã¨EndSwãŒå¯¾å¿œã—ã¦ã„ã¾ã›ã‚“"
+    EventErrorMessage = "Switch‚ÆEndSw‚ª‘Î‰‚µ‚Ä‚¢‚Ü‚¹‚ñ"
     Error 0
 End Function
 
 Private Function ExecCaseCmd() As Long
 Dim i As Long, depth As Integer
 
-    'å¯¾å¿œã™ã‚‹EndSwã‚’æ¢ã™
+    '‘Î‰‚·‚éEndSw‚ğ’T‚·
     depth = 1
     For i = LineNum + 1 To UBound(EventCmd)
         Select Case EventCmd(i).Name
@@ -12401,7 +12401,7 @@ Dim i As Long, depth As Integer
         End Select
     Next
     
-    EventErrorMessage = "Switchã¨EndSwãŒå¯¾å¿œã—ã¦ã„ã¾ã›ã‚“"
+    EventErrorMessage = "Switch‚ÆEndSw‚ª‘Î‰‚µ‚Ä‚¢‚Ü‚¹‚ñ"
     Error 0
 End Function
 
@@ -12425,7 +12425,7 @@ Dim buf As String
                     End If
                     
                     If Left$(pname, 1) = "@" Then
-                        'ãƒ¡ã‚¤ãƒ³ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®å¼·åˆ¶æŒ‡å®š
+                        'ƒƒCƒ“ƒpƒCƒƒbƒg‚Ì‹­§w’è
                         pname = Mid$(pname, 2)
                         If PList.IsDefined(pname) Then
                             With PList.Item(pname)
@@ -12436,15 +12436,15 @@ Dim buf As String
                         End If
                     End If
                     
-                    'è©±è€…åãƒã‚§ãƒƒã‚¯
+                    '˜bÒ–¼ƒ`ƒFƒbƒN
                     If Not PList.IsDefined(pname) _
                         And Not PDList.IsDefined(pname) _
                         And Not NPDList.IsDefined(pname) _
-                        And Not pname = "ã‚·ã‚¹ãƒ†ãƒ " _
+                        And Not pname = "ƒVƒXƒeƒ€" _
                         And Not pname = "" _
                     Then
                         EventErrorMessage = _
-                            "ã€Œ" & pname & "ã€ã¨ã„ã†ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆãŒå®šç¾©ã•ã‚Œã¦ã„ã¾ã›ã‚“"
+                            "u" & pname & "v‚Æ‚¢‚¤ƒpƒCƒƒbƒg‚ª’è‹`‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ"
                         LineNum = i
                         Error 0
                     End If
@@ -12457,32 +12457,32 @@ Dim buf As String
                         Do While j <= .ArgNum
                             opt = .GetArgAsString(j)
                             Select Case opt
-                                Case "éè¡¨ç¤º"
+                                Case "”ñ•\¦"
                                     without_cursor = True
-                                 Case "æ å¤–"
+                                 Case "˜gŠO"
                                     MessageWindowIsOut = True
-                                Case "ç™½é»’", "ã‚»ãƒ”ã‚¢", _
-                                    "æ˜", "æš—", "ä¸Šä¸‹åè»¢", "å·¦å³åè»¢", _
-                                    "ä¸ŠåŠåˆ†", "ä¸‹åŠåˆ†", "å³åŠåˆ†", "å·¦åŠåˆ†", _
-                                    "å³ä¸Š", "å·¦ä¸Š", "å³ä¸‹", "å·¦ä¸‹", _
-                                    "ãƒã‚¬ãƒã‚¸åè»¢", "ã‚·ãƒ«ã‚¨ãƒƒãƒˆ", _
-                                    "å¤•ç„¼ã‘", "æ°´ä¸­", "é€šå¸¸"
+                                Case "”’•", "ƒZƒsƒA", _
+                                    "–¾", "ˆÃ", "ã‰º”½“]", "¶‰E”½“]", _
+                                    "ã”¼•ª", "‰º”¼•ª", "‰E”¼•ª", "¶”¼•ª", _
+                                    "‰Eã", "¶ã", "‰E‰º", "¶‰º", _
+                                    "ƒlƒKƒ|ƒW”½“]", "ƒVƒ‹ƒGƒbƒg", _
+                                    "—[Ä‚¯", "…’†", "’Êí"
                                     If j > 2 Then
-                                        'ã“ã‚Œã‚‰ã®ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆç”»åƒæç”»ã«é–¢ã™ã‚‹ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã¯
-                                        'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆåãŒæŒ‡å®šã•ã‚Œã¦ã„ã‚‹å ´åˆã«ã®ã¿æœ‰åŠ¹
+                                        '‚±‚ê‚ç‚ÌƒpƒCƒƒbƒg‰æ‘œ•`‰æ‚ÉŠÖ‚·‚éƒIƒvƒVƒ‡ƒ“‚Í
+                                        'ƒpƒCƒƒbƒg–¼‚ªw’è‚³‚ê‚Ä‚¢‚éê‡‚É‚Ì‚İ—LŒø
                                         options = options & opt & " "
                                     Else
                                         lnum = j
                                     End If
-                                Case "å³å›è»¢"
+                                Case "‰E‰ñ“]"
                                     j = j + 1
                                     options = options & _
-                                        "å³å›è»¢ " & .GetArgAsString(j) & " "
-                                Case "å·¦å›è»¢"
+                                        "‰E‰ñ“] " & .GetArgAsString(j) & " "
+                                Case "¶‰ñ“]"
                                     j = j + 1
                                     options = options & _
-                                        "å·¦å›è»¢ " & .GetArgAsString(j) & " "
-                                Case "ãƒ•ã‚£ãƒ«ã‚¿"
+                                        "¶‰ñ“] " & .GetArgAsString(j) & " "
+                                Case "ƒtƒBƒ‹ƒ^"
                                     Dim cname As String, tcolor As Long
                                     j = j + 1
                                     buf = .GetArgAsString(j)
@@ -12494,11 +12494,11 @@ Dim buf As String
                                     tcolor = CLng(cname)
                                     j = j + 1
                                     options = options & _
-                                        "ãƒ•ã‚£ãƒ«ã‚¿ " & Format$(tcolor) & " " & .GetArgAsString(j) & " "
+                                        "ƒtƒBƒ‹ƒ^ " & Format$(tcolor) & " " & .GetArgAsString(j) & " "
                                 Case ""
-                                    'ç©ºç™½ã®ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã‚’ã‚¹ã‚­ãƒƒãƒ—
+                                    '‹ó”’‚ÌƒIƒvƒVƒ‡ƒ“‚ğƒXƒLƒbƒv
                                 Case Else
-                                    'é€šå¸¸ã®å¼•æ•°ã‚’ã‚¹ã‚­ãƒƒãƒ—
+                                    '’Êí‚Ìˆø”‚ğƒXƒLƒbƒv
                                     lnum = j
                             End Select
                             j = j + 1
@@ -12509,14 +12509,14 @@ Dim buf As String
                     
                     Select Case lnum
                         Case 0, 1
-                            'å¼•æ•°ãªã—
+                            'ˆø”‚È‚µ
                             
                             If Not frmMessage.Visible Then
                                 OpenMessageForm
                             End If
                             
-                            'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆç”»åƒã‚’ä»¥å‰æŒ‡å®šã•ã‚ŒãŸ
-                            'ã‚‚ã®ã«ç¢ºå®šã•ã›ã‚‹
+                            'ƒƒbƒZ[ƒWƒEƒBƒ“ƒhƒE‚ÌƒpƒCƒƒbƒg‰æ‘œ‚ğˆÈ‘Ow’è‚³‚ê‚½
+                            '‚à‚Ì‚ÉŠm’è‚³‚¹‚é
                             If current_pname <> "" Then
                                 DisplayMessage current_pname, "", options
                             End If
@@ -12524,19 +12524,19 @@ Dim buf As String
                             current_pname = ""
                             
                         Case 2
-                            'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆåã®ã¿æŒ‡å®š
+                            'ƒpƒCƒƒbƒg–¼‚Ì‚İw’è
                             current_pname = pname
                             
-                            'è©±è€…ä¸­å¿ƒã«ç”»é¢ä½ç½®ã‚’å¤‰æ›´
+                            '˜bÒ’†S‚É‰æ–ÊˆÊ’u‚ğ•ÏX
                             
-                            'ãƒ—ãƒ­ãƒ­ãƒ¼ã‚°ã‚¤ãƒ™ãƒ³ãƒˆã‚„ã‚¨ãƒ”ãƒ­ãƒ¼ã‚°ã‚¤ãƒ™ãƒ³ãƒˆæ™‚ã¯ã‚­ãƒ£ãƒ³ã‚»ãƒ«
-                            If Stage = "ãƒ—ãƒ­ãƒ­ãƒ¼ã‚°" _
-                                Or Stage = "ã‚¨ãƒ”ãƒ­ãƒ¼ã‚°" _
+                            'ƒvƒƒ[ƒOƒCƒxƒ“ƒg‚âƒGƒsƒ[ƒOƒCƒxƒ“ƒg‚ÍƒLƒƒƒ“ƒZƒ‹
+                            If Stage = "ƒvƒƒ[ƒO" _
+                                Or Stage = "ƒGƒsƒ[ƒO" _
                             Then
                                 GoTo NextLoop
                             End If
                             
-                            'ç”»é¢æ›¸ãæ›ãˆå¯èƒ½ï¼Ÿ
+                            '‰æ–Ê‘‚«Š·‚¦‰Â”\H
                             If Not MainForm.Visible Then
                                 GoTo NextLoop
                             End If
@@ -12547,35 +12547,35 @@ Dim buf As String
                                 GoTo NextLoop
                             End If
                             
-                            'è©±è€…ã‚’ä¸­å¤®è¡¨ç¤º
+                            '˜bÒ‚ğ’†‰›•\¦
                             CenterUnit pname, without_cursor
                             
                         Case 3
                             current_pname = pname
                             Select Case .GetArgAsString(3)
-                                Case "æ¯è‰¦"
-                                    'æ¯è‰¦ã®ä¸­å¤®è¡¨ç¤º
-                                     CenterUnit "æ¯è‰¦", without_cursor
-                                Case "ä¸­å¤®"
-                                    'è©±è€…ã®ä¸­å¤®è¡¨ç¤º
+                                Case "•êŠÍ"
+                                    '•êŠÍ‚Ì’†‰›•\¦
+                                     CenterUnit "•êŠÍ", without_cursor
+                                Case "’†‰›"
+                                    '˜bÒ‚Ì’†‰›•\¦
                                      CenterUnit pname, without_cursor
-                                Case "å›ºå®š"
-                                    'è¡¨ç¤ºä½ç½®å›ºå®š
+                                Case "ŒÅ’è"
+                                    '•\¦ˆÊ’uŒÅ’è
                             End Select
                             
                         Case 4
-                            'è¡¨ç¤ºã®åº§æ¨™æŒ‡å®šã‚ã‚Š
+                            '•\¦‚ÌÀ•Ww’è‚ ‚è
                             current_pname = pname
                             CenterUnit pname, without_cursor, .GetArgAsLong(3), .GetArgAsLong(4)
                             
                         Case -1
                             EventErrorMessage = _
-                                "Talkã‚³ãƒãƒ³ãƒ‰ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®æ‹¬å¼§ã®å¯¾å¿œãŒå–ã‚Œã¦ã„ã¾ã›ã‚“"
+                                "TalkƒRƒ}ƒ“ƒh‚Ìƒpƒ‰ƒ[ƒ^‚ÌŠ‡ŒÊ‚Ì‘Î‰‚ªæ‚ê‚Ä‚¢‚Ü‚¹‚ñ"
                             LineNum = i
                             Error 0
                             
                         Case Else
-                            EventErrorMessage = "Talkã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+                            EventErrorMessage = "TalkƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
                             LineNum = i
                             Error 0
                     End Select
@@ -12588,7 +12588,7 @@ Dim buf As String
                     CloseMessageForm
                     MessageWindowIsOut = False
                     If .ArgNum <> 1 Then
-                        EventErrorMessage = "Endéƒ¨åˆ†ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+                        EventErrorMessage = "End•”•ª‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
                         LineNum = i
                         Error 0
                     End If
@@ -12596,7 +12596,7 @@ Dim buf As String
                     
                 Case SuspendCmd
                     If .ArgNum <> 1 Then
-                        EventErrorMessage = "Suspendéƒ¨åˆ†ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+                        EventErrorMessage = "Suspend•”•ª‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
                         LineNum = i
                         Error 0
                     End If
@@ -12615,7 +12615,7 @@ NextLoop:
     
     If i > UBound(EventData) Then
         CloseMessageForm
-        EventErrorMessage = "Talkã¨EndãŒå¯¾å¿œã—ã¦ã„ã¾ã›ã‚“"
+        EventErrorMessage = "Talk‚ÆEnd‚ª‘Î‰‚µ‚Ä‚¢‚Ü‚¹‚ñ"
         Error 0
     End If
     
@@ -12660,21 +12660,21 @@ Dim tname As String
             Set u = SelectedUnitForEvent
             tname = GetArgAsString(2)
         Case Else
-            EventErrorMessage = "Transformã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+            EventErrorMessage = "TransformƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
             Error 0
     End Select
     
     With u
         If .Name = tname Then
-            'å…ƒã€…æŒ‡å®šã•ã‚ŒãŸå½¢æ…‹ã«ãªã£ã¦ã„ãŸã®ã§å¤‰å½¢ã®å¿…è¦ãªã—
+            'Œ³Xw’è‚³‚ê‚½Œ`‘Ô‚É‚È‚Á‚Ä‚¢‚½‚Ì‚Å•ÏŒ`‚Ì•K—v‚È‚µ
             ExecTransformCmd = LineNum + 1
             Exit Function
         End If
         
-        'å¤‰å½¢
+        '•ÏŒ`
         .Transform tname
         
-        'ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°ã®æ›´æ–°
+        'ƒOƒ[ƒoƒ‹•Ï”‚ÌXV
         If u Is SelectedUnit Then
             Set SelectedUnit = .CurrentForm
         End If
@@ -12698,24 +12698,24 @@ Dim u As Unit
 Dim urank As Integer
 
     If ArgNum < 0 Then
-        EventErrorMessage = "Unitã‚³ãƒãƒ³ãƒ‰ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®æ‹¬å¼§ã®å¯¾å¿œãŒå–ã‚Œã¦ã„ã¾ã›ã‚“"
+        EventErrorMessage = "UnitƒRƒ}ƒ“ƒh‚Ìƒpƒ‰ƒ[ƒ^‚ÌŠ‡ŒÊ‚Ì‘Î‰‚ªæ‚ê‚Ä‚¢‚Ü‚¹‚ñ"
         Error 0
     ElseIf ArgNum <> 3 Then
-        EventErrorMessage = "Unitã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+        EventErrorMessage = "UnitƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
         Error 0
     End If
     
     uname = GetArgAsString(2)
     If Not UDList.IsDefined(uname) Then
-        EventErrorMessage = "æŒ‡å®šã—ãŸãƒ¦ãƒ‹ãƒƒãƒˆã€Œ" & uname & "ã€ã®ãƒ‡ãƒ¼ã‚¿ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“"
+        EventErrorMessage = "w’è‚µ‚½ƒ†ƒjƒbƒgu" & uname & "v‚Ìƒf[ƒ^‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ"
         Error 0
     End If
     
     urank = GetArgAsLong(3)
     
-    Set u = UList.Add(uname, urank, "å‘³æ–¹")
+    Set u = UList.Add(uname, urank, "–¡•û")
     If u Is Nothing Then
-        EventErrorMessage = uname & "ã®ãƒ¦ãƒ‹ãƒƒãƒˆãƒ‡ãƒ¼ã‚¿ãŒä¸æ­£ã§ã™"
+        EventErrorMessage = uname & "‚Ìƒ†ƒjƒbƒgƒf[ƒ^‚ª•s³‚Å‚·"
         Error 0
     End If
     Set SelectedUnitForEvent = u
@@ -12742,19 +12742,19 @@ Dim prev_status As String
         Case 3
             uname = GetArgAsString(2)
             If Not UList.IsDefined(uname) Then
-                EventErrorMessage = uname & "ã¨ã„ã†ãƒ¦ãƒ‹ãƒƒãƒˆã¯ã‚ã‚Šã¾ã›ã‚“"
+                EventErrorMessage = uname & "‚Æ‚¢‚¤ƒ†ƒjƒbƒg‚Í‚ ‚è‚Ü‚¹‚ñ"
                 Error 0
             End If
             Set u1 = UList.Item(uname).CurrentForm
             
             uname = GetArgAsString(3)
         Case Else
-            EventErrorMessage = "Upgradeã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+            EventErrorMessage = "UpgradeƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
             Error 0
     End Select
     
     If Not UDList.IsDefined(uname) Then
-        EventErrorMessage = "ãƒ¦ãƒ‹ãƒƒãƒˆã€Œ" & uname & "ã€ã®ãƒ‡ãƒ¼ã‚¿ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“"
+        EventErrorMessage = "ƒ†ƒjƒbƒgu" & uname & "v‚Ìƒf[ƒ^‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ"
         Error 0
     End If
     
@@ -12762,7 +12762,7 @@ Dim prev_status As String
     
     Set u2 = UList.Add(uname, u1.Rank, u1.Party0)
     If u2 Is Nothing Then
-        EventErrorMessage = uname & "ã®ãƒ¦ãƒ‹ãƒƒãƒˆãƒ‡ãƒ¼ã‚¿ãŒä¸æ­£ã§ã™"
+        EventErrorMessage = uname & "‚Ìƒ†ƒjƒbƒgƒf[ƒ^‚ª•s³‚Å‚·"
         Error 0
     End If
     
@@ -12771,7 +12771,7 @@ Dim prev_status As String
         u2.FullRecover
     End If
     
-    'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®ä¹—ã›æ›ãˆ
+    'ƒpƒCƒƒbƒg‚Ìæ‚¹Š·‚¦
     If u1.CountPilot > 0 Then
         Dim pilot_list() As Pilot
         Dim support_list() As Pilot
@@ -12796,7 +12796,7 @@ Dim prev_status As String
         Next
     End If
     
-    'ã‚¢ã‚¤ãƒ†ãƒ ã®äº¤æ›
+    'ƒAƒCƒeƒ€‚ÌŒğŠ·
     For i = 1 To u1.CountItem
         u2.AddItem u1.Item(i)
     Next
@@ -12804,13 +12804,13 @@ Dim prev_status As String
         u1.DeleteItem 1
     Next
     
-    'ãƒªãƒ³ã‚¯ã®ä»˜ã‘æ›¿ãˆ
+    'ƒŠƒ“ƒN‚Ì•t‚¯‘Ö‚¦
     Set u2.Master = u1.Master
     Set u1.Master = Nothing
     Set u2.Summoner = u1.Summoner
     Set u1.Summoner = Nothing
     
-    'å¬å–šãƒ¦ãƒ‹ãƒƒãƒˆã®äº¤æ›
+    '¢Š«ƒ†ƒjƒbƒg‚ÌŒğŠ·
     For i = 1 To u1.CountServant
         u2.AddServant u1.Servant(i)
     Next
@@ -12818,15 +12818,15 @@ Dim prev_status As String
         u1.DeleteServant 1
     Next
     
-    'åç´ãƒ¦ãƒ‹ãƒƒãƒˆã®äº¤æ›
-    If u1.IsFeatureAvailable("æ¯è‰¦") Then
+    'û”[ƒ†ƒjƒbƒg‚ÌŒğŠ·
+    If u1.IsFeatureAvailable("•êŠÍ") Then
         For i = 1 To u1.CountOtherForm
-            If u1.OtherForm(i).Status = "æ ¼ç´" Then
+            If u1.OtherForm(i).Status = "Ši”[" Then
                 u2.AddOtherForm u1.OtherForm(i)
             End If
         Next
         For i = 1 To u2.CountOtherForm
-            If u2.OtherForm(i).Status = "æ ¼ç´" Then
+            If u2.OtherForm(i).Status = "Ši”[" Then
                 u1.DeleteOtherForm u2.OtherForm(i).ID
             End If
         Next
@@ -12834,11 +12834,11 @@ Dim prev_status As String
     
     u2.Area = u1.Area
     
-    'å…ƒã®ãƒ¦ãƒ‹ãƒƒãƒˆã‚’å‰Šé™¤
-    u1.Status = "ç ´æ£„"
+    'Œ³‚Ìƒ†ƒjƒbƒg‚ğíœ
+    u1.Status = "”jŠü"
     For i = 1 To u1.CountOtherForm
-        If u1.OtherForm(i).Status = "ä»–å½¢æ…‹" Then
-            u1.OtherForm(i).Status = "ç ´æ£„"
+        If u1.OtherForm(i).Status = "‘¼Œ`‘Ô" Then
+            u1.OtherForm(i).Status = "”jŠü"
         End If
     Next
     
@@ -12849,13 +12849,13 @@ Dim prev_status As String
     u2.UsedCounterAttack = u1.UsedCounterAttack
     
     Select Case prev_status
-        Case "å‡ºæ’ƒ"
+        Case "oŒ‚"
             Set MapDataForUnit(u1.X, u1.Y) = Nothing
             u2.StandBy u1.X, u1.Y
             If Not IsPictureVisible Then
                 RedrawScreen
             End If
-        Case "ç ´å£Š", "ç ´æ£„"
+        Case "”j‰ó", "”jŠü"
             If MapDataForUnit(u1.X, u1.Y) Is u1 Then
                 Set MapDataForUnit(u1.X, u1.Y) = Nothing
             End If
@@ -12863,7 +12863,7 @@ Dim prev_status As String
             If Not IsPictureVisible Then
                 RedrawScreen
             End If
-        Case "æ ¼ç´"
+        Case "Ši”["
             For Each u In UList
                 With u
                     For i = 1 To .CountUnitOnBoard
@@ -12880,7 +12880,7 @@ ExitLoop:
             u2.Status = prev_status
     End Select
     
-    'ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°ã®æ›´æ–°
+    'ƒOƒ[ƒoƒ‹•Ï”‚ÌXV
     If u1 Is SelectedUnit Then
         Set SelectedUnit = u2
     End If
@@ -12932,7 +12932,7 @@ Dim a As Integer
                 End If
             Next
             If a > u1.CountAbility Then
-                EventErrorMessage = "ã‚¢ãƒ“ãƒªãƒ†ã‚£åãŒé–“é•ã£ã¦ã„ã¾ã™"
+                EventErrorMessage = "ƒAƒrƒŠƒeƒB–¼‚ªŠÔˆá‚Á‚Ä‚¢‚Ü‚·"
                 Error 0
             End If
             
@@ -12959,7 +12959,7 @@ Dim a As Integer
                         End If
                     Next
                     If a > u1.CountAbility Then
-                        EventErrorMessage = "ã‚¢ãƒ“ãƒªãƒ†ã‚£åãŒé–“é•ã£ã¦ã„ã¾ã™"
+                        EventErrorMessage = "ƒAƒrƒŠƒeƒB–¼‚ªŠÔˆá‚Á‚Ä‚¢‚Ü‚·"
                         Error 0
                     End If
                     
@@ -12975,7 +12975,7 @@ Dim a As Integer
                     End If
                 Next
                 If a > u1.CountAbility Then
-                    EventErrorMessage = "ã‚¢ãƒ“ãƒªãƒ†ã‚£åãŒé–“é•ã£ã¦ã„ã¾ã™"
+                    EventErrorMessage = "ƒAƒrƒŠƒeƒB–¼‚ªŠÔˆá‚Á‚Ä‚¢‚Ü‚·"
                     Error 0
                 End If
                 
@@ -12991,19 +12991,19 @@ Dim a As Integer
                 End If
             Next
             If a > u1.CountAbility Then
-                EventErrorMessage = "ã‚¢ãƒ“ãƒªãƒ†ã‚£åãŒé–“é•ã£ã¦ã„ã¾ã™"
+                EventErrorMessage = "ƒAƒrƒŠƒeƒB–¼‚ªŠÔˆá‚Á‚Ä‚¢‚Ü‚·"
                 Error 0
             End If
             
             Set u2 = SelectedUnitForEvent
         Case Else
-            EventErrorMessage = "UseAbilityã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+            EventErrorMessage = "UseAbilityƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
             Error 0
     End Select
     
     With u1
-        If .Status <> "å‡ºæ’ƒ" Then
-            EventErrorMessage = .Nickname & "ã¯å‡ºæ’ƒã—ã¦ã„ã¾ã›ã‚“"
+        If .Status <> "oŒ‚" Then
+            EventErrorMessage = .Nickname & "‚ÍoŒ‚‚µ‚Ä‚¢‚Ü‚¹‚ñ"
             Error 0
         End If
         .ExecuteAbility a, u2, False, True
@@ -13031,13 +13031,13 @@ Dim start_time As Long, wait_time As Long, cur_time As Long
                     WaitTimeCount = 0
                     
                 Case "click"
-                    'å…ˆè¡Œå…¥åŠ›ã•ã‚Œã¦ã„ãŸã‚¯ãƒªãƒƒã‚¯ã‚¤ãƒ™ãƒ³ãƒˆã‚’è§£æ¶ˆ
+                    'æs“ü—Í‚³‚ê‚Ä‚¢‚½ƒNƒŠƒbƒNƒCƒxƒ“ƒg‚ğ‰ğÁ
                     DoEvents
                     WaitClickMode = True
                     IsFormClicked = False
                     SelectedAlternative = ""
                     
-                    'ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãŒè¡¨ç¤ºã•ã‚Œã¦ã„ãªã„å ´åˆã¯è¡¨ç¤º
+                    'ƒEƒBƒ“ƒhƒE‚ª•\¦‚³‚ê‚Ä‚¢‚È‚¢ê‡‚Í•\¦
                     With MainForm
                         If Not .Visible Then
                             .Show
@@ -13045,7 +13045,7 @@ Dim start_time As Long, wait_time As Long, cur_time As Long
                         End If
                     End With
                     
-                    'ã‚¯ãƒªãƒƒã‚¯ã•ã‚Œã‚‹ã¾ã§å¾…ã¤
+                    'ƒNƒŠƒbƒN‚³‚ê‚é‚Ü‚Å‘Ò‚Â
                     Do Until IsFormClicked
                         If IsRButtonPressed(True) Then
                             MouseButton = 0
@@ -13055,7 +13055,7 @@ Dim start_time As Long, wait_time As Long, cur_time As Long
                         Sleep 25
                     Loop
                     
-                    'ãƒã‚¦ã‚¹ã®å·¦ãƒœã‚¿ãƒ³ãŒæŠ¼ã•ã‚ŒãŸå ´åˆã¯ãƒ›ãƒƒãƒˆãƒã‚¤ãƒ³ãƒˆã®åˆ¤å®šã‚’è¡Œã†
+                    'ƒ}ƒEƒX‚Ì¶ƒ{ƒ^ƒ“‚ª‰Ÿ‚³‚ê‚½ê‡‚Íƒzƒbƒgƒ|ƒCƒ“ƒg‚Ì”»’è‚ğs‚¤
                     If SelectedAlternative = "" And MouseButton = 1 Then
                         For i = 1 To UBound(HotPointList)
                             With HotPointList(i)
@@ -13075,7 +13075,7 @@ Dim start_time As Long, wait_time As Long, cur_time As Long
                 Case Else
                     wait_time = 100 * GetArgAsDouble(2)
                     
-                    'å¾…ã¡æ™‚é–“ãŒåˆ‡ã‚Œã‚‹ã¾ã§å¾…æ©Ÿ
+                    '‘Ò‚¿ŠÔ‚ªØ‚ê‚é‚Ü‚Å‘Ò‹@
                     If wait_time < 1000 Then
                         If Not IsRButtonPressed(True) Then
                             DoEvents
@@ -13084,7 +13084,7 @@ Dim start_time As Long, wait_time As Long, cur_time As Long
                     Else
                         start_time = timeGetTime()
                         Do While (start_time + wait_time > timeGetTime())
-                            'å³ãƒœã‚¿ãƒ³ã‚’æŠ¼ã•ã‚Œã¦ã„ãŸã‚‰æ—©é€ã‚Š
+                            '‰Eƒ{ƒ^ƒ“‚ğ‰Ÿ‚³‚ê‚Ä‚¢‚½‚ç‘‘—‚è
                             If IsRButtonPressed(True) Then
                                 Exit Do
                             End If
@@ -13096,17 +13096,17 @@ Dim start_time As Long, wait_time As Long, cur_time As Long
             End Select
             
         Case 3
-            'Wait Until ï½
+            'Wait Until `
             
             wait_time = 100 * GetArgAsDouble(3)
             WaitTimeCount = WaitTimeCount + 1
             
             If WaitStartTime = -1 Then
-                'Wait Reset ãŒå®Ÿè¡Œã•ã‚Œã¦ã„ãŸå ´åˆ
+                'Wait Reset ‚ªÀs‚³‚ê‚Ä‚¢‚½ê‡
                 WaitStartTime = timeGetTime()
             ElseIf wait_time < 100 Then
-                'ã‚¢ãƒ‹ãƒ¡ã®ï¼‘å›ç›®ã®è¡¨ç¤ºã¯ä¾‹å¤–çš„ã«æ™‚é–“ãŒã‹ã‹ã£ã¦ã—ã¾ã†ã“ã¨ãŒã‚ã‚‹
-                'ã®ã§ã€è¶…éæ™‚é–“ã‚’ç„¡è¦–ã™ã‚‹
+                'ƒAƒjƒ‚Ì‚P‰ñ–Ú‚Ì•\¦‚Í—áŠO“I‚ÉŠÔ‚ª‚©‚©‚Á‚Ä‚µ‚Ü‚¤‚±‚Æ‚ª‚ ‚é
+                '‚Ì‚ÅA’´‰ßŠÔ‚ğ–³‹‚·‚é
                 If WaitTimeCount = 1 Then
                     cur_time = timeGetTime()
                     If WaitStartTime + wait_time > cur_time Then
@@ -13125,7 +13125,7 @@ Dim start_time As Long, wait_time As Long, cur_time As Long
             Loop
             
         Case Else
-            EventErrorMessage = "Waitã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+            EventErrorMessage = "WaitƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
             Error 0
     End Select
     
@@ -13143,13 +13143,13 @@ Dim i As Integer, buf As String
     For i = 2 To ArgNum
         buf = GetArgAsString(i)
         Select Case buf
-            Case "éåŒæœŸ"
+            Case "”ñ“¯Šú"
                 late_refresh = True
-            Case "ãƒãƒƒãƒ—é™å®š"
+            Case "ƒ}ƒbƒvŒÀ’è"
                 MapDrawIsMapOnly = True
             Case Else
                 EventErrorMessage = _
-                    "Waterã‚³ãƒãƒ³ãƒ‰ã«ä¸æ­£ãªã‚ªãƒ—ã‚·ãƒ§ãƒ³ã€Œ" & buf & "ã€ãŒä½¿ã‚ã‚Œã¦ã„ã¾ã™"
+                    "WaterƒRƒ}ƒ“ƒh‚É•s³‚ÈƒIƒvƒVƒ‡ƒ“u" & buf & "v‚ªg‚í‚ê‚Ä‚¢‚Ü‚·"
                 Error 0
         End Select
     Next
@@ -13157,19 +13157,19 @@ Dim i As Integer, buf As String
     prev_x = MapX
     prev_y = MapY
     
-    'ãƒã‚¦ã‚¹ã‚«ãƒ¼ã‚½ãƒ«ã‚’ç ‚æ™‚è¨ˆã«
+    'ƒ}ƒEƒXƒJ[ƒ\ƒ‹‚ğ»Œv‚É
     Screen.MousePointer = vbHourglass
     
-    SetupBackground "æ°´ä¸­", "éåŒæœŸ"
+    SetupBackground "…’†", "”ñ“¯Šú"
     
     For Each u In UList
         With u
-            If .Status = "å‡ºæ’ƒ" Then
+            If .Status = "oŒ‚" Then
                 If .BitmapID = 0 Then
                     With UList.Item(.Name)
                         If u.Party0 = .Party0 And .BitmapID <> 0 _
                             And u.Bitmap = .Bitmap _
-                            And Not .IsFeatureAvailable("ãƒ€ãƒŸãƒ¼ãƒ¦ãƒ‹ãƒƒãƒˆ") _
+                            And Not .IsFeatureAvailable("ƒ_ƒ~[ƒ†ƒjƒbƒg") _
                         Then
                             u.BitmapID = .BitmapID
                         Else
@@ -13184,7 +13184,7 @@ Dim i As Integer, buf As String
     Center prev_x, prev_y
     RedrawScreen late_refresh
     
-    'ãƒã‚¦ã‚¹ã‚«ãƒ¼ã‚½ãƒ«ã‚’å…ƒã«æˆ»ã™
+    'ƒ}ƒEƒXƒJ[ƒ\ƒ‹‚ğŒ³‚É–ß‚·
     Screen.MousePointer = 0
     
     ExecWaterCmd = LineNum + 1
@@ -13200,7 +13200,7 @@ Dim i As Long, num As Integer, ret As Long
         Case 2
             num = GetArgAsLong(2)
         Case Else
-            EventErrorMessage = "WhiteInã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+            EventErrorMessage = "WhiteInƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
             Error 0
     End Select
     
@@ -13213,14 +13213,14 @@ Dim i As Long, num As Integer, ret As Long
             .Height = MainPHeight
         End With
         
-' MOD START ãƒãƒ¼ã‚¸
+' MOD START ƒ}[ƒW
 '        ret = BitBlt(.picTmp.hDC, _
 '            0, 0, MapPWidth, MapPHeight, _
 '            .picMain(0).hDC, 0, 0, SRCCOPY)
         ret = BitBlt(.picTmp.hDC, _
             0, 0, MainPWidth, MainPHeight, _
             .picMain(0).hDC, 0, 0, SRCCOPY)
-' MOD END ãƒãƒ¼ã‚¸
+' MOD END ƒ}[ƒW
         
         InitFade .picMain(0), num, True
         
@@ -13270,7 +13270,7 @@ Dim i As Long, num As Integer, ret As Long
         Case 2
             num = GetArgAsLong(2)
         Case Else
-            EventErrorMessage = "WhiteOutã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+            EventErrorMessage = "WhiteOutƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
             Error 0
     End Select
     
@@ -13319,7 +13319,7 @@ Dim f As Integer
 Dim i As Integer
     
     If ArgNum < 3 Then
-        EventErrorMessage = "Writeã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+        EventErrorMessage = "WriteƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
         Error 0
     End If
     
@@ -13331,14 +13331,14 @@ Dim i As Integer
     ExecWriteCmd = LineNum + 1
 End Function
 
-'Flashãƒ•ã‚¡ã‚¤ãƒ«ã®å†ç”Ÿ
+'Flashƒtƒ@ƒCƒ‹‚ÌÄ¶
 Private Function ExecPlayFlashCmd() As Long
 Dim fname As String
 Dim fx As Integer, fy As Integer, fw As Integer, fh As Integer
 Dim i As Integer, opt As String, buf As String
 
     If ArgNum < 6 Then
-        EventErrorMessage = "PlayFlashã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ã®æ•°ãŒé•ã„ã¾ã™"
+        EventErrorMessage = "PlayFlashƒRƒ}ƒ“ƒh‚Ìˆø”‚Ì”‚ªˆá‚¢‚Ü‚·"
         Error 0
     End If
     
@@ -13369,7 +13369,7 @@ Dim i As Integer, opt As String, buf As String
     ExecPlayFlashCmd = LineNum + 1
 End Function
 
-'Flashãƒ•ã‚¡ã‚¤ãƒ«ã®æ¶ˆå»
+'Flashƒtƒ@ƒCƒ‹‚ÌÁ‹
 Private Function ExecClearFlashCmd() As Long
     ClearFlash
     

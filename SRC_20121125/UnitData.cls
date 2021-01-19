@@ -10,62 +10,62 @@ Attribute VB_Exposed = False
 Option Explicit
 
 ' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯ãƒ•ãƒªãƒ¼ã‚½ãƒ•ãƒˆã§ã‚ã‚Šã€ç„¡ä¿è¨¼ã§ã™ã€‚
-' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯GNU General Public License(Ver.3ã¾ãŸã¯ãã‚Œä»¥é™)ãŒå®šã‚ã‚‹æ¡ä»¶ã®ä¸‹ã§
-' å†é ’å¸ƒã¾ãŸã¯æ”¹å¤‰ã™ã‚‹ã“ã¨ãŒã§ãã¾ã™ã€‚
+' –{ƒvƒƒOƒ‰ƒ€‚ÍƒtƒŠ[ƒ\ƒtƒg‚Å‚ ‚èA–³•ÛØ‚Å‚·B
+' –{ƒvƒƒOƒ‰ƒ€‚ÍGNU General Public License(Ver.3‚Ü‚½‚Í‚»‚êˆÈ~)‚ª’è‚ß‚éğŒ‚Ì‰º‚Å
+' Ä”Ğ•z‚Ü‚½‚Í‰ü•Ï‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B
 
-'ãƒ¦ãƒ‹ãƒƒãƒˆãƒ‡ãƒ¼ã‚¿ã®ã‚¯ãƒ©ã‚¹
+'ƒ†ƒjƒbƒgƒf[ƒ^‚ÌƒNƒ‰ƒX
 
-'åç§°
+'–¼Ì
 Public Name As String
-'è­˜åˆ¥å­
+'¯•Êq
 Public ID As Long
-'ã‚¯ãƒ©ã‚¹
+'ƒNƒ‰ƒX
 Public Class As String
-'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆæ•° (ãƒã‚¤ãƒŠã‚¹ã®å ´åˆã¯æ‹¬å¼§ã¤ãã®æŒ‡å®š)
+'ƒpƒCƒƒbƒg” (ƒ}ƒCƒiƒX‚Ìê‡‚ÍŠ‡ŒÊ‚Â‚«‚Ìw’è)
 Public PilotNum As Integer
-'ã‚¢ã‚¤ãƒ†ãƒ æ•°
+'ƒAƒCƒeƒ€”
 Public ItemNum As Integer
-'åœ°å½¢é©å¿œ
+'’nŒ`“K‰
 Public Adaption As String
-'ï¼¨ï¼°
+'‚g‚o
 Public HP As Long
-'ï¼¥ï¼®
+'‚d‚m
 Public EN As Integer
-'ç§»å‹•ã‚¿ã‚¤ãƒ—
+'ˆÚ“®ƒ^ƒCƒv
 Public Transportation As String
-'ç§»å‹•åŠ›
+'ˆÚ“®—Í
 Public Speed As Integer
-'ã‚µã‚¤ã‚º
+'ƒTƒCƒY
 Public Size As String
-'è£…ç”²
+'‘•b
 Public Armor As Long
-'é‹å‹•æ€§
+'‰^“®«
 Public Mobility As Integer
-'ä¿®ç†è²»
+'C—”ï
 Public Value As Long
-'çµŒé¨“å€¤
+'ŒoŒ±’l
 Public ExpValue As Integer
 
-'æ„›ç§°
+'ˆ¤Ì
 Private proNickname As String
-'èª­ã¿ä»®å
+'“Ç‚İ‰¼–¼
 Private proKanaName As String
 
-'ãƒ“ãƒƒãƒˆãƒãƒƒãƒ—å
+'ƒrƒbƒgƒ}ƒbƒv–¼
 Private proBitmap As String
-'ãƒ“ãƒƒãƒˆãƒãƒƒãƒ—ãŒå­˜åœ¨ã™ã‚‹ã‹
+'ƒrƒbƒgƒ}ƒbƒv‚ª‘¶İ‚·‚é‚©
 Public IsBitmapMissing As Boolean
 
-'ç‰¹æ®Šèƒ½åŠ›
+'“Áê”\—Í
 Public colFeature As Collection
-'æ­¦å™¨ãƒ‡ãƒ¼ã‚¿
+'•Šíƒf[ƒ^
 Private colWeaponData As Collection
-'ã‚¢ãƒ“ãƒªãƒ†ã‚£ãƒ‡ãƒ¼ã‚¿
+'ƒAƒrƒŠƒeƒBƒf[ƒ^
 Private colAbilityData As Collection
 
 
-'ã‚¯ãƒ©ã‚¹ã®è§£æ”¾
+'ƒNƒ‰ƒX‚Ì‰ğ•ú
 Private Sub Class_Terminate()
 Dim i As Integer
     
@@ -97,11 +97,11 @@ Dim i As Integer
     End If
 End Sub
 
-'æ„›ç§°
+'ˆ¤Ì
 Public Property Get Nickname() As String
     Nickname = proNickname
-    If InStr(Nickname, "ä¸»äººå…¬") = 1 Or InStr(Nickname, "ãƒ’ãƒ­ã‚¤ãƒ³") = 1 Then
-        Nickname = GetValueAsString(Nickname & "æ„›ç§°")
+    If InStr(Nickname, "ålŒö") = 1 Or InStr(Nickname, "ƒqƒƒCƒ“") = 1 Then
+        Nickname = GetValueAsString(Nickname & "ˆ¤Ì")
     End If
     ReplaceSubExpression Nickname
 End Property
@@ -110,17 +110,17 @@ Public Property Let Nickname(new_name As String)
     proNickname = new_name
 End Property
 
-'èª­ã¿ä»®å
+'“Ç‚İ‰¼–¼
 Public Property Get KanaName() As String
     KanaName = proKanaName
-    If InStr(KanaName, "ä¸»äººå…¬") = 1 _
-        Or InStr(KanaName, "ãƒ’ãƒ­ã‚¤ãƒ³") = 1 _
-        Or InStr(KanaName, "ã²ã‚ã„ã‚“") = 1 _
+    If InStr(KanaName, "ålŒö") = 1 _
+        Or InStr(KanaName, "ƒqƒƒCƒ“") = 1 _
+        Or InStr(KanaName, "‚Ğ‚ë‚¢‚ñ") = 1 _
     Then
-        If IsVariableDefined(KanaName & "èª­ã¿ä»®å") Then
-            KanaName = GetValueAsString(KanaName & "èª­ã¿ä»®å")
+        If IsVariableDefined(KanaName & "“Ç‚İ‰¼–¼") Then
+            KanaName = GetValueAsString(KanaName & "“Ç‚İ‰¼–¼")
         Else
-            KanaName = StrToHiragana(GetValueAsString(KanaName & "æ„›ç§°"))
+            KanaName = StrToHiragana(GetValueAsString(KanaName & "ˆ¤Ì"))
         End If
     End If
     ReplaceSubExpression KanaName
@@ -130,7 +130,7 @@ Public Property Let KanaName(new_name As String)
     proKanaName = new_name
 End Property
 
-'ãƒ“ãƒƒãƒˆãƒãƒƒãƒ—
+'ƒrƒbƒgƒ}ƒbƒv
 Public Property Get Bitmap0() As String
     Bitmap0 = proBitmap
 End Property
@@ -148,7 +148,7 @@ Public Property Let Bitmap(new_bitmap As String)
 End Property
 
 
-'ç‰¹æ®Šèƒ½åŠ›ã‚’è¿½åŠ 
+'“Áê”\—Í‚ğ’Ç‰Á
 Public Sub AddFeature(fdef As String)
 Dim fd As FeatureData
 Dim ftype As String, flevel As Double, fdata As String
@@ -160,7 +160,7 @@ Dim buf As String
         Set colFeature = New Collection
     End If
     
-    'å¿…è¦æŠ€èƒ½ã®åˆ‡ã‚Šå‡ºã—
+    '•K—v‹Z”\‚ÌØ‚èo‚µ
     If Right$(fdef, 1) = ")" Then
         i = InStr(fdef, " (")
         If i > 0 Then
@@ -176,7 +176,7 @@ Dim buf As String
         buf = fdef
     End If
     
-    'å¿…è¦æ¡ä»¶ã®åˆ‡ã‚Šå‡ºã—
+    '•K—vğŒ‚ÌØ‚èo‚µ
     If Right$(buf, 1) = ">" Then
         i = InStr(buf, " <")
         If i > 0 Then
@@ -188,7 +188,7 @@ Dim buf As String
         End If
     End If
     
-    'ç‰¹æ®Šèƒ½åŠ›ã®ç¨®é¡ã€ãƒ¬ãƒ™ãƒ«ã€ãƒ‡ãƒ¼ã‚¿ã‚’åˆ‡ã‚Šå‡ºã—
+    '“Áê”\—Í‚Ìí—ŞAƒŒƒxƒ‹Aƒf[ƒ^‚ğØ‚èo‚µ
     flevel = DEFAULT_LEVEL
     i = InStr(buf, "Lv")
     j = InStr(buf, "=")
@@ -210,21 +210,21 @@ Dim buf As String
         ftype = buf
     End If
     
-    'ãƒ‡ãƒ¼ã‚¿ãŒã€Œ"ã€ã§å›²ã¾ã‚Œã¦ã„ã‚‹å ´åˆã€ã€Œ"ã€ã‚’å‰Šé™¤
+    'ƒf[ƒ^‚ªu"v‚ÅˆÍ‚Ü‚ê‚Ä‚¢‚éê‡Au"v‚ğíœ
     If Left$(fdata, 1) = """" Then
         If Right$(fdata, 1) = """" Then
             fdata = Mid$(fdata, 2, Len(fdata) - 2)
         End If
     End If
     
-    'ã‚¨ãƒªã‚¢ã‚¹ãŒå®šç¾©ã•ã‚Œã¦ã„ã‚‹ï¼Ÿ
+    'ƒGƒŠƒAƒX‚ª’è‹`‚³‚ê‚Ä‚¢‚éH
     If ALDList.IsDefined(ftype) Then
-        If LIndex(fdata, 1) <> "è§£èª¬" Then
+        If LIndex(fdata, 1) <> "‰ğà" Then
             With ALDList.Item(ftype)
                 For i = 1 To .Count
                     Set fd = New FeatureData
                     
-                    'ã‚¨ãƒªã‚¢ã‚¹ã®å®šç¾©ã«å¾“ã£ã¦ç‰¹æ®Šèƒ½åŠ›å®šç¾©ã‚’ç½®ãæ›ãˆã‚‹
+                    'ƒGƒŠƒAƒX‚Ì’è‹`‚É]‚Á‚Ä“Áê”\—Í’è‹`‚ğ’u‚«Š·‚¦‚é
                     fd.Name = .AliasType(i)
                     If .AliasType(i) <> ftype Then
                         If .AliasLevelIsPlusMod(i) Then
@@ -250,7 +250,7 @@ Dim buf As String
                         Else
                             fd.Level = .AliasLevel(i)
                         End If
-                        If fdata <> "" And InStr(.AliasData(i), "éè¡¨ç¤º") <> 1 Then
+                        If fdata <> "" And InStr(.AliasData(i), "”ñ•\¦") <> 1 Then
                             fd.StrData = fdata & " " _
                                 & ListTail(.AliasData(i), LLength(fdata) + 1)
                         Else
@@ -262,8 +262,8 @@ Dim buf As String
                             fd.StrData = buf
                         End If
                     Else
-                        'ç‰¹æ®Šèƒ½åŠ›è§£èª¬ã®å®šç¾©
-                        If fdata <> "" And LIndex(fdata, 1) <> "éè¡¨ç¤º" Then
+                        '“Áê”\—Í‰ğà‚Ì’è‹`
+                        If fdata <> "" And LIndex(fdata, 1) <> "”ñ•\¦" Then
                             fd.Name = LIndex(fdata, 1)
                         End If
                         fd.StrData = .AliasData(i)
@@ -279,7 +279,7 @@ Dim buf As String
                         fd.NecessaryCondition = .AliasNecessaryCondition(i)
                     End If
                     
-                    'ç‰¹æ®Šèƒ½åŠ›ã‚’ç™»éŒ²
+                    '“Áê”\—Í‚ğ“o˜^
                     If IsFeatureAvailable(fd.Name) Then
                         colFeature.Add fd, fd.Name & Format$(CountFeature)
                     Else
@@ -291,7 +291,7 @@ Dim buf As String
         End If
     End If
     
-    'ç‰¹æ®Šèƒ½åŠ›ã‚’ç™»éŒ²
+    '“Áê”\—Í‚ğ“o˜^
     Set fd = New FeatureData
     With fd
         .Name = ftype
@@ -307,7 +307,7 @@ Dim buf As String
     End If
 End Sub
 
-'ç‰¹æ®Šèƒ½åŠ›ã®ç·æ•°
+'“Áê”\—Í‚Ì‘”
 Public Function CountFeature() As Integer
     If colFeature Is Nothing Then
         Exit Function
@@ -315,7 +315,7 @@ Public Function CountFeature() As Integer
     CountFeature = colFeature.Count
 End Function
 
-'ç‰¹æ®Šèƒ½åŠ›
+'“Áê”\—Í
 Public Function Feature(Index As Variant) As String
 Dim fd As FeatureData
 
@@ -323,7 +323,7 @@ Dim fd As FeatureData
     Feature = fd.Name
 End Function
 
-'ç‰¹æ®Šèƒ½åŠ›ã®åç§°
+'“Áê”\—Í‚Ì–¼Ì
 Public Function FeatureName(Index As Variant) As String
 Dim fd As FeatureData
 
@@ -339,7 +339,7 @@ Dim fd As FeatureData
     End With
 End Function
 
-'ç‰¹æ®Šèƒ½åŠ›ã®ãƒ¬ãƒ™ãƒ«
+'“Áê”\—Í‚ÌƒŒƒxƒ‹
 Public Function FeatureLevel(Index As Variant) As Double
 Dim fd As FeatureData
 
@@ -356,7 +356,7 @@ ErrorHandler:
     FeatureLevel = 0
 End Function
 
-'ç‰¹æ®Šèƒ½åŠ›ã®ãƒ‡ãƒ¼ã‚¿
+'“Áê”\—Í‚Ìƒf[ƒ^
 Public Function FeatureData(Index As Variant) As String
 Dim fd As FeatureData
 
@@ -369,7 +369,7 @@ ErrorHandler:
     FeatureData = ""
 End Function
 
-'ç‰¹æ®Šèƒ½åŠ›ã®å¿…è¦æŠ€èƒ½
+'“Áê”\—Í‚Ì•K—v‹Z”\
 Public Function FeatureNecessarySkill(Index As Variant) As String
 Dim fd As FeatureData
 
@@ -382,7 +382,7 @@ ErrorHandler:
     FeatureNecessarySkill = ""
 End Function
 
-'æŒ‡å®šã—ãŸç‰¹æ®Šèƒ½åŠ›ã‚’æŒã£ã¦ã„ã‚‹ã‹ï¼Ÿ
+'w’è‚µ‚½“Áê”\—Í‚ğ‚Á‚Ä‚¢‚é‚©H
 Public Function IsFeatureAvailable(fname As String) As Boolean
 Dim fd As FeatureData
 
@@ -395,7 +395,7 @@ ErrorHandler:
     IsFeatureAvailable = False
 End Function
 
-'æŒ‡å®šã—ãŸç‰¹æ®Šèƒ½åŠ›ãŒãƒ¬ãƒ™ãƒ«æŒ‡å®šã•ã‚Œã¦ã„ã‚‹ã‹ï¼Ÿ
+'w’è‚µ‚½“Áê”\—Í‚ªƒŒƒxƒ‹w’è‚³‚ê‚Ä‚¢‚é‚©H
 Public Function IsFeatureLevelSpecified(Index As Variant) As Boolean
 Dim fd As FeatureData
     
@@ -413,7 +413,7 @@ ErrorHandler:
     IsFeatureLevelSpecified = False
 End Function
 
-'æ­¦å™¨ã‚’è¿½åŠ 
+'•Ší‚ğ’Ç‰Á
 Public Function AddWeapon(wname As String) As WeaponData
 Dim new_wdata As New WeaponData
 
@@ -425,7 +425,7 @@ Dim new_wdata As New WeaponData
     Set AddWeapon = new_wdata
 End Function
 
-'æ­¦å™¨ã®ç·æ•°
+'•Ší‚Ì‘”
 Public Function CountWeapon() As Integer
     If colWeaponData Is Nothing Then
         Exit Function
@@ -433,12 +433,12 @@ Public Function CountWeapon() As Integer
     CountWeapon = colWeaponData.Count
 End Function
 
-'æ­¦å™¨ãƒ‡ãƒ¼ã‚¿
+'•Šíƒf[ƒ^
 Public Function Weapon(Index As Variant) As WeaponData
     Set Weapon = colWeaponData.Item(Index)
 End Function
 
-'ã‚¢ãƒ“ãƒªãƒ†ã‚£ã‚’è¿½åŠ 
+'ƒAƒrƒŠƒeƒB‚ğ’Ç‰Á
 Public Function AddAbility(aname As String) As AbilityData
 Dim new_sadata As New AbilityData
     
@@ -450,7 +450,7 @@ Dim new_sadata As New AbilityData
     Set AddAbility = new_sadata
 End Function
 
-'ã‚¢ãƒ“ãƒªãƒ†ã‚£ã®ç·æ•°
+'ƒAƒrƒŠƒeƒB‚Ì‘”
 Public Function CountAbility() As Integer
     If colAbilityData Is Nothing Then
         Exit Function
@@ -458,12 +458,12 @@ Public Function CountAbility() As Integer
     CountAbility = colAbilityData.Count
 End Function
 
-'ã‚¢ãƒ“ãƒªãƒ†ã‚£ãƒ‡ãƒ¼ã‚¿
+'ƒAƒrƒŠƒeƒBƒf[ƒ^
 Public Function Ability(Index As Variant) As AbilityData
     Set Ability = colAbilityData.Item(Index)
 End Function
 
-'ç‰¹æ®Šèƒ½åŠ›ã€æ­¦å™¨ãƒ‡ãƒ¼ã‚¿ã€ã‚¢ãƒ“ãƒªãƒ†ã‚£ãƒ‡ãƒ¼ã‚¿ã‚’å‰Šé™¤ã™ã‚‹
+'“Áê”\—ÍA•Šíƒf[ƒ^AƒAƒrƒŠƒeƒBƒf[ƒ^‚ğíœ‚·‚é
 Public Sub Clear()
 Dim i As Integer
 

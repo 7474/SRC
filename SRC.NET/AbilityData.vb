@@ -3,36 +3,36 @@ Option Explicit On
 Friend Class AbilityData
 	
 	' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
+	' –{ƒvƒƒOƒ‰ƒ€‚ÍƒtƒŠ[ƒ\ƒtƒg‚Å‚ ‚èA–³•ÛØ‚Å‚·B
+	' –{ƒvƒƒOƒ‰ƒ€‚ÍGNU General Public License(Ver.3‚Ü‚½‚Í‚»‚êˆÈ~)‚ª’è‚ß‚éğŒ‚Ì‰º‚Å
+	' Ä”Ğ•z‚Ü‚½‚Í‰ü•Ï‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B
 	
-	'Invalid_string_refer_to_original_code
+	'ƒAƒrƒŠƒeƒBƒf[ƒ^‚ÌƒNƒ‰ƒX
 	
-	'åç§°
+	'–¼Ì
 	Public Name As String
-	'ä½¿ç”¨å¯èƒ½å›æ•°
+	'g—p‰Â”\‰ñ”
 	Public Stock As Short
-	'Invalid_string_refer_to_original_code
+	'‚d‚mÁ”ï—Ê
 	Public ENConsumption As Short
-	'Invalid_string_refer_to_original_code
+	'•K—v‹C—Í
 	Public NecessaryMorale As Short
-	'Invalid_string_refer_to_original_code
+	'Å¬Ë’ö
 	Public MinRange As Short
-	'Invalid_string_refer_to_original_code
+	'Å‘åË’ö
 	Public MaxRange As Short
-	'å±æ€§
+	'‘®«
 	'UPGRADE_NOTE: Class ‚Í Class_Renamed ‚ÉƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 	Public Class_Renamed As String
-	'Invalid_string_refer_to_original_code
+	'•K—v‹Z”\
 	Public NecessarySkill As String
-	'Invalid_string_refer_to_original_code
+	'•K—vğŒ
 	Public NecessaryCondition As String
 	
-	'Invalid_string_refer_to_original_code
+	'Œø‰Ê
 	Private colEffects As New Collection
 	
-	'ã‚¯ãƒ©ã‚¹ã®è§£æ”¾
+	'ƒNƒ‰ƒX‚Ì‰ğ•ú
 	'UPGRADE_NOTE: Class_Terminate ‚Í Class_Terminate_Renamed ‚ÉƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 	Private Sub Class_Terminate_Renamed()
 		Dim i As Short
@@ -50,7 +50,7 @@ Friend Class AbilityData
 		MyBase.Finalize()
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'ƒAƒrƒŠƒeƒBˆ¤Ì
 	Public Function Nickname() As String
 		Nickname = Name
 		ReplaceSubExpression(Nickname)
@@ -59,7 +59,7 @@ Friend Class AbilityData
 		End If
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'ƒAƒrƒŠƒeƒB‚ÉŒø‰Ê‚ğ’Ç‰Á
 	Public Sub SetEffect(ByRef elist As String)
 		Dim j, i, k As Short
 		Dim buf As String
@@ -74,10 +74,10 @@ Friend Class AbilityData
 				j = InStr(buf, "Lv")
 				k = InStr(buf, "=")
 				If j > 0 And (k = 0 Or j < k) Then
-					'Invalid_string_refer_to_original_code
+					'ƒŒƒxƒ‹w’è‚Ì‚ ‚éŒø‰Ê(ƒf[ƒ^w’è‚ª‚ ‚é‚à‚Ì‚ğŠÜ‚Ş)
 					.Name = Left(buf, j - 1)
 					If k > 0 Then
-						'Invalid_string_refer_to_original_code
+						'ƒf[ƒ^w’è‚ª‚ ‚é‚à‚Ì
 						.Level = CDbl(Mid(buf, j + 2, k - (j + 2)))
 						buf = Mid(buf, k + 1)
 						If Left(buf, 1) = """" Then
@@ -88,7 +88,7 @@ Friend Class AbilityData
 						k = InStr(buf, "=")
 						
 						If j > 0 And (k = 0 Or j < k) Then
-							'Invalid_string_refer_to_original_code
+							'ƒf[ƒ^w’è“à‚ÉƒŒƒxƒ‹w’è‚ª‚ ‚é
 							etype = Left(buf, j - 1)
 							If k > 0 Then
 								elevel = Mid(buf, j + 2, k - (j + 2))
@@ -98,28 +98,28 @@ Friend Class AbilityData
 								edata = ""
 							End If
 						ElseIf k > 0 Then 
-							'Invalid_string_refer_to_original_code
+							'ƒf[ƒ^w’è“à‚Éƒf[ƒ^w’è‚ª‚ ‚é
 							etype = Left(buf, k - 1)
 							elevel = ""
 							edata = Mid(buf, k + 1)
 						Else
-							'Invalid_string_refer_to_original_code
+							'’Pƒ‚Èƒf[ƒ^w’è
 							etype = buf
 							elevel = ""
 							edata = ""
 						End If
 						
-						If .Name = "ä»˜åŠ " And elevel = "" Then
+						If .Name = "•t‰Á" And elevel = "" Then
 							elevel = VB6.Format(DEFAULT_LEVEL)
 						End If
 						
 						.Data = Trim(etype & " " & elevel & " " & edata)
 					Else
-						'Invalid_string_refer_to_original_code
+						'ƒf[ƒ^w’è‚ª‚È‚¢‚à‚Ì
 						.Level = CDbl(Mid(buf, j + 2))
 					End If
 				ElseIf k > 0 Then 
-					'Invalid_string_refer_to_original_code
+					'ƒf[ƒ^w’è‚ğŠÜ‚ŞŒø‰Ê
 					.Name = Left(buf, k - 1)
 					buf = Mid(buf, k + 1)
 					If Asc(buf) = 34 Then '"
@@ -129,13 +129,13 @@ Friend Class AbilityData
 					j = InStr(buf, "Lv")
 					k = InStr(buf, "=")
 					
-					If .Name = "è§£èª¬" Then
-						'Invalid_string_refer_to_original_code
+					If .Name = "‰ğà" Then
+						'‰ğà‚Ìw’è
 						etype = buf
 						elevel = ""
 						edata = ""
 					ElseIf j > 0 Then 
-						'Invalid_string_refer_to_original_code
+						'ƒf[ƒ^w’è“à‚ÉƒŒƒxƒ‹w’è‚ª‚ ‚é
 						etype = Left(buf, j - 1)
 						If k > 0 Then
 							elevel = Mid(buf, j + 2, k - (j + 2))
@@ -145,24 +145,24 @@ Friend Class AbilityData
 							edata = ""
 						End If
 					ElseIf k > 0 Then 
-						'Invalid_string_refer_to_original_code
+						'ƒf[ƒ^w’è“à‚Éƒf[ƒ^w’è‚ª‚ ‚é
 						etype = Left(buf, k - 1)
 						elevel = ""
 						edata = Mid(buf, k + 1)
 					Else
-						'Invalid_string_refer_to_original_code
+						'’Pƒ‚Èƒf[ƒ^w’è
 						etype = buf
 						elevel = ""
 						edata = ""
 					End If
 					
-					If .Name = "ä»˜åŠ " And elevel = "" Then
+					If .Name = "•t‰Á" And elevel = "" Then
 						elevel = VB6.Format(DEFAULT_LEVEL)
 					End If
 					
 					.Data = Trim(etype & " " & elevel & " " & edata)
 				Else
-					'åŠ¹æœåã®ã¿
+					'Œø‰Ê–¼‚Ì‚İ
 					.Name = buf
 				End If
 				
@@ -186,30 +186,30 @@ Friend Class AbilityData
 		NewAbilityEffect = dat
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'Œø‰Ê‚Ì‘”
 	Public Function CountEffect() As Short
 		CountEffect = colEffects.Count()
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'Œø‰Ê‚Ìí—Ş
 	Public Function EffectType(ByRef Index As Object) As String
 		'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg colEffects.Item().Name ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 		EffectType = colEffects.Item(Index).Name
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'Œø‰Ê‚ÌƒŒƒxƒ‹
 	Public Function EffectLevel(ByRef Index As Object) As Double
 		'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg colEffects.Item().Level ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 		EffectLevel = colEffects.Item(Index).Level
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'Œø‰Ê‚Ìƒf[ƒ^
 	Public Function EffectData(ByRef Index As Object) As String
 		'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg colEffects.Item().Data ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 		EffectData = colEffects.Item(Index).Data
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'Œø‰Ê“à—e‚Ì‰ğà
 	Public Function EffectName(ByRef Index As Object) As String
 		Dim ae As AbilityEffect
 		Dim elevel, elevel2 As Double
@@ -222,16 +222,16 @@ Friend Class AbilityData
 		
 		ae = colEffects.Item(Index)
 		With ae
-			'Invalid_string_refer_to_original_code
+			'Œø‰ÊƒŒƒxƒ‹‚ª‰ñ•œE‘‰Á—Ê‚ğˆÓ–¡‚·‚éƒAƒrƒŠƒeƒB—p
 			elevel = .Level
-			'Invalid_string_refer_to_original_code
+			'Œø‰ÊƒŒƒxƒ‹‚ªƒ^[ƒ“”‚ğˆÓ–¡‚·‚éƒAƒrƒŠƒeƒB‹y‚Ñ¢Š«ƒAƒrƒŠƒeƒB—p
 			elevel2 = elevel
 			
 			If SelectedUnit.CountPilot > 0 Then
 				With SelectedUnit.MainPilot
-					'å¾—æ„æŠ€
-					If .IsSkillAvailable("å¾—æ„æŠ€") Then
-						buf = .SkillData("å¾—æ„æŠ€")
+					'“¾ˆÓ‹Z
+					If .IsSkillAvailable("“¾ˆÓ‹Z") Then
+						buf = .SkillData("“¾ˆÓ‹Z")
 						For i = 1 To Len(buf)
 							If InStrNotNest(Class_Renamed, GetClassBundle(buf, i)) > 0 Then
 								elevel = 1.2 * elevel
@@ -241,9 +241,9 @@ Friend Class AbilityData
 						Next 
 					End If
 					
-					'ä¸å¾—æ‰‹
-					If .IsSkillAvailable("ä¸å¾—æ‰‹") Then
-						buf = .SkillData("ä¸å¾—æ‰‹")
+					'•s“¾è
+					If .IsSkillAvailable("•s“¾è") Then
+						buf = .SkillData("•s“¾è")
 						For i = 1 To Len(buf)
 							If InStrNotNest(Class_Renamed, GetClassBundle(buf, i)) > 0 Then
 								elevel = 0.8 * elevel
@@ -253,59 +253,371 @@ Friend Class AbilityData
 						Next 
 					End If
 					
-					'Invalid_string_refer_to_original_code
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					elevel = elevel * .Shooting / 100
+					'pƒAƒrƒŠƒeƒB‚Ìê‡‚Í–‚—Í‚É‚æ‚Á‚ÄŒø‰ÊƒŒƒxƒ‹‚ªC³‚ğó‚¯‚é
+					If InStrNotNest(Class_Renamed, "p") > 0 Then
+						elevel = elevel * .Shooting / 100
+					Else
+						For i = 1 To LLength(NecessarySkill)
+							If .SkillType(LIndex(NecessarySkill, i)) = "p" Then
+								elevel = elevel * .Shooting / 100
+								Exit For
+							End If
+						Next 
+					End If
+					
+					'C—••â‹‹‹Z”\
+					heal_lv = .SkillLevel("C—")
+					supply_lv = .SkillLevel("•â‹‹")
 				End With
-			Else
-				For i = 1 To LLength(NecessarySkill)
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg ae.Shooting ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					elevel = elevel * .Shooting / 100
-					Exit For
-				Next 
 			End If
-			'Next
-			'End If
 			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			'UPGRADE_WARNING: ƒIƒuƒWƒFƒNƒg ae.SkillLevel ‚ÌŠù’èƒvƒƒpƒeƒB‚ğ‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			supply_lv = .SkillLevel("è£œçµ¦")
+			'ƒAƒrƒŠƒeƒB‚ÌŒø‰Ê‚ÍÅ’á‚Å‚à‚Pƒ^[ƒ“‘±
+			If elevel2 <> 0 Then
+				elevel2 = MaxLng(elevel2, 1)
+			End If
+			
+			Select Case .Name
+				Case "‰ñ•œ"
+					EffectName = Term("‚g‚o") & "‚ğ"
+					If elevel > 0 Then
+						EffectName = EffectName & VB6.Format(CInt(500 * elevel * (10 + heal_lv) \ 10)) & "‰ñ•œ"
+					ElseIf elevel < 0 Then 
+						EffectName = EffectName & VB6.Format(CInt(-500 * elevel)) & "Œ¸­"
+					End If
+					
+				Case "•â‹‹"
+					EffectName = Term("‚d‚m") & "‚ğ"
+					If elevel > 0 Then
+						EffectName = EffectName & VB6.Format(CInt(50 * elevel * (10 + supply_lv)) \ 10) & "‰ñ•œ"
+					ElseIf elevel < 0 Then 
+						EffectName = EffectName & VB6.Format(CInt(-50 * elevel)) & "Œ¸­"
+					End If
+					
+				Case "—ì—Í‰ñ•œ", "ƒvƒ‰[ƒi‰ñ•œ"
+					If SelectedUnit.CountPilot > 0 Then
+						EffectName = SelectedUnit.MainPilot.SkillName0("—ì—Í")
+					Else
+						EffectName = "—ì—Í"
+					End If
+					If elevel > 0 Then
+						EffectName = EffectName & "‚ğ" & VB6.Format(CInt(10 * elevel)) & "‰ñ•œ"
+					ElseIf elevel < 0 Then 
+						EffectName = EffectName & "‚ğ" & VB6.Format(CInt(-10 * elevel)) & "Œ¸­"
+					End If
+					
+				Case "‚r‚o‰ñ•œ"
+					EffectName = Term("‚r‚o") & "‚ğ"
+					If elevel > 0 Then
+						EffectName = EffectName & VB6.Format(CInt(10 * elevel)) & "‰ñ•œ"
+					ElseIf elevel < 0 Then 
+						EffectName = EffectName & VB6.Format(CInt(-10 * elevel)) & "Œ¸­"
+					End If
+					
+				Case "‹C—Í‘‰Á"
+					EffectName = Term("‹C—Í") & "‚ğ"
+					If elevel > 0 Then
+						EffectName = EffectName & VB6.Format(CInt(10 * elevel)) & "‘‰Á"
+					ElseIf elevel < 0 Then 
+						EffectName = EffectName & VB6.Format(CInt(-10 * elevel)) & "Œ¸­"
+					End If
+					
+				Case "‘•“U"
+					If Len(.Data) = 0 Then
+						EffectName = "•Ší‚Ì’e”‚ğ‰ñ•œ"
+					Else
+						For i = 1 To SelectedUnit.CountWeapon
+							If SelectedUnit.WeaponNickname(i) = .Data Then
+								EffectName = .Data & "‚Ì’e”‚ğ‰ñ•œ"
+								Exit Function
+							End If
+						Next 
+						EffectName = .Data & "‘®«‚ğ‚Â•Ší‚Ì’e”‚ğ‰ñ•œ"
+					End If
+					
+				Case "¡–ü"
+					For i = 1 To LLength(.Data)
+						cname = LIndex(.Data, i)
+						Select Case cname
+							Case "‘•b—ò‰»"
+								cname = Term("‘•b") & "—ò‰»"
+							Case "‰^“®«‚t‚o"
+								cname = Term("‰^“®«") & "‚t‚o"
+							Case "‰^“®«‚c‚n‚v‚m"
+								cname = Term("‰^“®«") & "‚c‚n‚v‚m"
+							Case "ˆÚ“®—Í‚t‚o"
+								cname = Term("ˆÚ“®—Í") & "‚t‚o"
+							Case "ˆÚ“®—Í‚c‚n‚v‚m"
+								cname = Term("ˆÚ“®—Í") & "‚c‚n‚v‚m"
+						End Select
+						EffectName = EffectName & " " & cname
+					Next 
+					EffectName = Trim(EffectName)
+					If Len(EffectName) > 0 Then
+						EffectName = EffectName & "‚ğ‰ñ•œ"
+					Else
+						EffectName = "ó‘Ô‰ñ•œ"
+					End If
+					
+				Case "ó‘Ô"
+					cname = LIndex(.Data, 1)
+					Select Case cname
+						Case "‘•b—ò‰»"
+							cname = Term("‘•b") & "—ò‰»"
+						Case "‰^“®«‚t‚o"
+							cname = Term("‰^“®«") & "‚t‚o"
+						Case "‰^“®«‚c‚n‚v‚m"
+							cname = Term("‰^“®«") & "‚c‚n‚v‚m"
+						Case "ˆÚ“®—Í‚t‚o"
+							cname = Term("ˆÚ“®—Í") & "‚t‚o"
+						Case "ˆÚ“®—Í‚c‚n‚v‚m"
+							cname = Term("ˆÚ“®—Í") & "‚c‚n‚v‚m"
+					End Select
+					If 0 < elevel2 And elevel2 <= 10 Then
+						EffectName = cname & "(" & VB6.Format(CInt(elevel2)) & "ƒ^[ƒ“)"
+					Else
+						EffectName = cname
+					End If
+					
+				Case "•t‰Á"
+					Select Case LIndex(.Data, 1)
+						Case "‘Ï«"
+							aname = AttributeName(SelectedUnit, LIndex(.Data, 3))
+							If aname = "" Then
+								aname = LIndex(.Data, 3) & "UŒ‚"
+							End If
+							EffectName = aname & "‚Ìƒ_ƒ[ƒW‚ğ”¼Œ¸"
+						Case "–³Œø‰»"
+							aname = AttributeName(SelectedUnit, LIndex(.Data, 3))
+							If aname = "" Then
+								aname = LIndex(.Data, 3) & "UŒ‚"
+							End If
+							EffectName = aname & "‚ğ–³Œø‰»"
+						Case "“ÁêŒø‰Ê–³Œø‰»"
+							aname = AttributeName(SelectedUnit, LIndex(.Data, 3))
+							If aname = "" Then
+								aname = LIndex(.Data, 3) & "UŒ‚"
+							End If
+							EffectName = aname & "‚Ì“ÁêŒø‰Ê‚ğ–³Œø‰»"
+						Case "‹zû"
+							aname = AttributeName(SelectedUnit, LIndex(.Data, 3))
+							If aname = "" Then
+								aname = LIndex(.Data, 3) & "UŒ‚"
+							End If
+							EffectName = aname & "‚ğ‹zû"
+						Case "’Ç‰ÁƒpƒCƒƒbƒg"
+							EffectName = "ƒpƒCƒƒbƒg•Ï‰»"
+						Case "’Ç‰ÁƒTƒ|[ƒg"
+							EffectName = "ƒTƒ|[ƒg’Ç‰Á"
+						Case "«Ši•ÏX"
+							EffectName = "ƒpƒCƒƒbƒg‚Ì«Ši‚ğ" & LIndex(.Data, 3) & "‚É•ÏX"
+						Case "‚a‚f‚l"
+							EffectName = "‚a‚f‚l•ÏX"
+						Case "UŒ‚‘®«"
+							For i = 4 To LLength(.Data)
+								If InStr(LIndex(.Data, i), "!") = 0 Then
+									wclass = wclass & LIndex(.Data, i)
+								End If
+							Next 
+							EffectName = WeaponType(wclass) & "‚Ì‘®«‚É" & LIndex(.Data, 3) & "‚ğ’Ç‰Á"
+						Case "•Ší‹­‰»"
+							For i = 3 To LLength(.Data)
+								If InStr(LIndex(.Data, i), "!") = 0 Then
+									wclass = wclass & LIndex(.Data, i)
+								End If
+							Next 
+							flevel = StrToDbl(LIndex(.Data, 2))
+							If flevel >= 0 Then
+								EffectName = WeaponType(wclass) & "‚ÌUŒ‚—Í‚ğ+" & VB6.Format(100 * flevel)
+							Else
+								EffectName = WeaponType(wclass) & "‚ÌUŒ‚—Í‚ğ" & VB6.Format(100 * flevel)
+							End If
+						Case "–½’†—¦‹­‰»"
+							For i = 3 To LLength(.Data)
+								If InStr(LIndex(.Data, i), "!") = 0 Then
+									wclass = wclass & LIndex(.Data, i)
+								End If
+							Next 
+							flevel = StrToDbl(LIndex(.Data, 2))
+							If flevel >= 0 Then
+								EffectName = WeaponType(wclass) & "‚Ì–½’†—¦‚ğ+" & VB6.Format(5 * flevel)
+							Else
+								EffectName = WeaponType(wclass) & "‚Ì–½’†—¦‚ğ" & VB6.Format(5 * flevel)
+							End If
+						Case "‚b‚s—¦‹­‰»", "“ÁêŒø‰Ê”­“®—¦‹­‰»"
+							For i = 3 To LLength(.Data)
+								If InStr(LIndex(.Data, i), "!") = 0 Then
+									wclass = wclass & LIndex(.Data, i)
+								End If
+							Next 
+							flevel = StrToDbl(LIndex(.Data, 2))
+							If flevel >= 0 Then
+								EffectName = WeaponType(wclass) & "‚Ì‚b‚s—¦‚ğ+" & VB6.Format(5 * flevel)
+							Else
+								EffectName = WeaponType(wclass) & "‚Ì‚b‚s—¦‚ğ" & VB6.Format(5 * flevel)
+							End If
+						Case "Ë’ö‰„’·"
+							For i = 3 To LLength(.Data)
+								If InStr(LIndex(.Data, i), "!") = 0 Then
+									wclass = wclass & LIndex(.Data, i)
+								End If
+							Next 
+							flevel = StrToLng(LIndex(.Data, 2))
+							If flevel >= 0 Then
+								EffectName = WeaponType(wclass) & "‚ÌË’ö‚ğ+" & VB6.Format(flevel)
+							Else
+								EffectName = WeaponType(wclass) & "‚ÌË’ö‚ğ" & VB6.Format(flevel)
+							End If
+						Case "ƒTƒCƒY•ÏX"
+							EffectName = "ƒTƒCƒY‚ª" & LIndex(.Data, 3) & "‚É•Ï‰»"
+						Case "’nŒ`“K‰•ÏX"
+							If StrToLng(LIndex(.Data, 3)) > 0 Then
+								EffectName = "‹ó‚Ö‚Ì“K‰‚ğ‹­‰»"
+							ElseIf StrToLng(LIndex(.Data, 4)) > 0 Then 
+								EffectName = "—¤‚Ö‚Ì“K‰‚ğ‹­‰»"
+							ElseIf StrToLng(LIndex(.Data, 5)) > 0 Then 
+								EffectName = "…’†‚Ö‚Ì“K‰‚ğ‹­‰»"
+							ElseIf StrToLng(LIndex(.Data, 6)) > 0 Then 
+								EffectName = "‰F’ˆ‚Ö‚Ì“K‰‚ğ‹­‰»"
+							End If
+						Case "’nŒ`“K‰ŒÅ’è•ÏX"
+							If StrToLng(LIndex(.Data, 3)) <= 5 And StrToLng(LIndex(.Data, 3)) >= 0 Then
+								If LIndex(.Data, 6) = "‹­§" Then
+									EffectName = "‹ó‚Ö‚Ì“K‰‚ğ‹­§“I‚É•Ï‰»"
+								Else
+									EffectName = "‹ó‚Ö‚Ì“K‰‚ğ•Ï‰»"
+								End If
+							ElseIf StrToLng(LIndex(.Data, 4)) <= 5 And StrToLng(LIndex(.Data, 4)) >= 0 Then 
+								If LIndex(.Data, 6) = "‹­§" Then
+									EffectName = "—¤‚Ö‚Ì“K‰‚ğ‹­§“I‚É•Ï‰»"
+								Else
+									EffectName = "—¤‚Ö‚Ì“K‰‚ğ•Ï‰»"
+								End If
+							ElseIf StrToLng(LIndex(.Data, 5)) <= 5 And StrToLng(LIndex(.Data, 5)) >= 0 Then 
+								If LIndex(.Data, 6) = "‹­§" Then
+									EffectName = "…’†‚Ö‚Ì“K‰‚ğ‹­§“I‚É•Ï‰»"
+								Else
+									EffectName = "…’†‚Ö‚Ì“K‰‚ğ•Ï‰»"
+								End If
+							ElseIf StrToLng(LIndex(.Data, 6)) <= 5 And StrToLng(LIndex(.Data, 6)) >= 0 Then 
+								If LIndex(.Data, 6) = "‹­§" Then
+									EffectName = "‰F’ˆ‚Ö‚Ì“K‰‚ğ‹­§“I‚É•Ï‰»"
+								Else
+									EffectName = "‰F’ˆ‚Ö‚Ì“K‰‚ğ•Ï‰»"
+								End If
+							End If
+						Case "‚u|‚t‚o"
+							Select Case LIndex(.Data, 3)
+								Case "•Ší"
+									EffectName = "•ŠíUŒ‚—Í‚ğ‹­‰»"
+								Case "ƒ†ƒjƒbƒg"
+									EffectName = "Šeƒpƒ‰ƒ[ƒ^‚ğ‹­‰»"
+								Case Else
+									EffectName = "ƒ†ƒjƒbƒg‚ğ‹­‰»"
+							End Select
+						Case "Ši“¬•Ší", "Œ}Œ‚•Ší", "§ŒÀŠÔ"
+							EffectName = EffectName & "•t‰Á"
+						Case "ƒpƒCƒƒbƒgˆ¤Ì", "ƒpƒCƒƒbƒg‰æ‘œ", "ˆ¤Ì•ÏX", "ƒ†ƒjƒbƒg‰æ‘œ"
+							EffectName = ""
+						Case Else
+							EffectName = ListIndex(.Data, 3)
+							If Left(EffectName, 1) = """" Then
+								EffectName = ListIndex(Mid(EffectName, 2, Len(EffectName) - 2), 1)
+							End If
+							If EffectName = "" Or EffectName = "”ñ•\¦" Then
+								If LIndex(.Data, 2) <> VB6.Format(DEFAULT_LEVEL) And LLength(.Data) <= 3 Then
+									EffectName = LIndex(.Data, 1) & "Lv" & LIndex(.Data, 2) & "•t‰Á"
+								Else
+									EffectName = LIndex(.Data, 1) & "•t‰Á"
+								End If
+							Else
+								If LIndex(.Data, 2) <> VB6.Format(DEFAULT_LEVEL) And LLength(.Data) <= 3 Then
+									EffectName = EffectName & "Lv" & LIndex(.Data, 2)
+								End If
+								EffectName = EffectName & "•t‰Á"
+							End If
+					End Select
+					If EffectName <> "" Then
+						If 0 < elevel2 And elevel2 <= 10 Then
+							EffectName = EffectName & "(" & VB6.Format(CInt(elevel2)) & "ƒ^[ƒ“)"
+						End If
+					End If
+					
+				Case "‹­‰»"
+					EffectName = ListIndex(.Data, 3)
+					If EffectName = "" Or EffectName = "”ñ•\¦" Then
+						If StrToLng(LIndex(.Data, 2)) > 0 Then
+							EffectName = LIndex(.Data, 1) & "Lv" & LIndex(.Data, 2)
+						Else
+							EffectName = LIndex(.Data, 1)
+						End If
+					End If
+					If 0 < elevel2 And elevel2 <= 10 Then
+						EffectName = EffectName & "‹­‰»(" & VB6.Format(CInt(elevel2)) & "ƒ^[ƒ“)"
+					End If
+					
+				Case "¢Š«"
+					If Not UDList.IsDefined(.Data) Then
+						ErrorMessage("¢Š«ƒ†ƒjƒbƒgu" & .Data & "v‚ª’è‹`‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ")
+						Exit Function
+					End If
+					If elevel2 > 1 Then
+						EffectName = UDList.Item(.Data).Nickname & "‚ğ" & StrConv(VB6.Format(CInt(elevel2)), VbStrConv.Wide) & "‘Ì¢Š«"
+					Else
+						EffectName = UDList.Item(.Data).Nickname & "‚ğ¢Š«"
+					End If
+					
+				Case "•Ïg"
+					uname = LIndex(.Data, 1)
+					If Not UDList.IsDefined(uname) Then
+						ErrorMessage("•Ïgæ‚Ìƒf[ƒ^u" & uname & "v‚ª’è‹`‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ")
+						Exit Function
+					End If
+					If 0 < elevel2 And elevel2 <= 10 Then
+						EffectName = UDList.Item(uname).Nickname & "‚É•Ïg" & "(" & VB6.Format(CInt(elevel2)) & "ƒ^[ƒ“)"
+					Else
+						EffectName = UDList.Item(uname).Nickname & "‚É•Ïg"
+					End If
+					
+				Case "”\—ÍƒRƒs["
+					If 0 < elevel2 And elevel2 <= 10 Then
+						EffectName = "”CˆÓ‚Ì–¡•ûƒ†ƒjƒbƒg‚É•Ïg" & "(" & VB6.Format(CInt(elevel2)) & "ƒ^[ƒ“)"
+					Else
+						EffectName = "”CˆÓ‚Ì–¡•ûƒ†ƒjƒbƒg‚É•Ïg"
+					End If
+					
+				Case "Äs“®"
+					If MaxRange <> 0 Then
+						EffectName = "s“®Ï‚İƒ†ƒjƒbƒg‚ğÄs“®"
+					Else
+						EffectName = "s“®”ñÁ”ï"
+					End If
+					
+				Case "‰ğà"
+					EffectName = .Data
+					
+			End Select
 		End With
-		'End If
-		
-		'Invalid_string_refer_to_original_code
-		If elevel2 <> 0 Then
-			elevel2 = MaxLng(elevel2, 1)
-		End If
-		
-		'UPGRADE_WARNING: EffectName ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		'End With
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'•t‰Á‚·‚é•Ší‹­‰»Œn”\—Í‚Ì‘ÎÛ•\¦—p‚É•Ší‚Ìí—Ş‚ğ”»’è
 	Private Function WeaponType(ByRef wclass As String) As String
-		If wclass = "å…¨" Or wclass = "" Then
-			WeaponType = "æ­¦å™¨"
+		If wclass = "‘S" Or wclass = "" Then
+			WeaponType = "•Ší"
 		ElseIf Len(wclass) = 1 Then 
 			WeaponType = AttributeName(Nothing, wclass)
-		ElseIf Right(wclass, 2) = "Invalid_string_refer_to_original_code" Then 
+		ElseIf Right(wclass, 2) = "‘•”õ" Then 
 			WeaponType = Left(wclass, Len(wclass) - 2)
 		Else
-			WeaponType = wclass & "Invalid_string_refer_to_original_code"
+			WeaponType = wclass & "‘®«UŒ‚"
 		End If
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'g‚¢Ì‚ÄƒAƒCƒeƒ€‚É‚æ‚éƒAƒrƒŠƒeƒB‚©‚Ç‚¤‚©‚ğ•Ô‚·
 	Public Function IsItem() As Boolean
 		Dim i As Short
 		
 		For i = 1 To LLength(NecessarySkill)
-			If LIndex(NecessarySkill, i) = "Invalid_string_refer_to_original_code" Then
+			If LIndex(NecessarySkill, i) = "ƒAƒCƒeƒ€" Then
 				IsItem = True
 				Exit Function
 			End If

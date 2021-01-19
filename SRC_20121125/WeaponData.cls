@@ -10,40 +10,40 @@ Attribute VB_Exposed = False
 Option Explicit
 
 ' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯ãƒ•ãƒªãƒ¼ã‚½ãƒ•ãƒˆã§ã‚ã‚Šã€ç„¡ä¿è¨¼ã§ã™ã€‚
-' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯GNU General Public License(Ver.3ã¾ãŸã¯ãã‚Œä»¥é™)ãŒå®šã‚ã‚‹æ¡ä»¶ã®ä¸‹ã§
-' å†é ’å¸ƒã¾ãŸã¯æ”¹å¤‰ã™ã‚‹ã“ã¨ãŒã§ãã¾ã™ã€‚
+' –{ƒvƒƒOƒ‰ƒ€‚ÍƒtƒŠ[ƒ\ƒtƒg‚Å‚ ‚èA–³•ÛØ‚Å‚·B
+' –{ƒvƒƒOƒ‰ƒ€‚ÍGNU General Public License(Ver.3‚Ü‚½‚Í‚»‚êˆÈ~)‚ª’è‚ß‚éğŒ‚Ì‰º‚Å
+' Ä”Ğ•z‚Ü‚½‚Í‰ü•Ï‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B
 
-'æ­¦å™¨ãƒ‡ãƒ¼ã‚¿ã‚¯ãƒ©ã‚¹
+'•Šíƒf[ƒ^ƒNƒ‰ƒX
 
-'æ­¦å™¨å
+'•Ší–¼
 Public Name As String
-'æ”»æ’ƒåŠ›
+'UŒ‚—Í
 Public Power As Long
-'æœ€å°å°„ç¨‹
+'Å¬Ë’ö
 Public MinRange As Integer
-'æœ€å¤§å°„ç¨‹
+'Å‘åË’ö
 Public MaxRange As Integer
-'å‘½ä¸­ç‡
+'–½’†—¦
 Public Precision As Integer
-'å¼¾æ•°
+'’e”
 Public Bullet As Integer
-'æ¶ˆè²»ï¼¥ï¼®
+'Á”ï‚d‚m
 Public ENConsumption As Integer
-'å¿…è¦æ°—åŠ›
+'•K—v‹C—Í
 Public NecessaryMorale As Integer
-'åœ°å½¢é©å¿œ
+'’nŒ`“K‰
 Public Adaption As String
-'ï¼£ï¼´ç‡
+'‚b‚s—¦
 Public Critical As Integer
-'å±æ€§
+'‘®«
 Public Class As String
-'å¿…è¦æŠ€èƒ½
+'•K—v‹Z”\
 Public NecessarySkill As String
-'å¿…è¦æ¡ä»¶
+'•K—vğŒ
 Public NecessaryCondition As String
 
-'æ­¦å™¨æ„›ç§°
+'•Šíˆ¤Ì
 Public Function Nickname() As String
     Nickname = Name
     ReplaceSubExpression Nickname
@@ -52,12 +52,12 @@ Public Function Nickname() As String
     End If
 End Function
 
-'ä½¿ã„æ¨ã¦ã‚¢ã‚¤ãƒ†ãƒ ã«ã‚ˆã‚‹æ­¦å™¨ã‹ã©ã†ã‹ã‚’è¿”ã™
+'g‚¢Ì‚ÄƒAƒCƒeƒ€‚É‚æ‚é•Ší‚©‚Ç‚¤‚©‚ğ•Ô‚·
 Public Function IsItem() As Boolean
 Dim i As Integer
     
     For i = 1 To LLength(NecessarySkill)
-        If LIndex(NecessarySkill, i) = "ã‚¢ã‚¤ãƒ†ãƒ " Then
+        If LIndex(NecessarySkill, i) = "ƒAƒCƒeƒ€" Then
             IsItem = True
             Exit Function
         End If

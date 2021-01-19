@@ -3,70 +3,70 @@ Option Explicit On
 Friend Class PilotData
 	
 	' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
+	' 本プログラムはフリーソフトであり、無保証です。
+	' 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
+	' 再頒布または改変することができます。
 	
-	'Invalid_string_refer_to_original_code
+	'パイロットデータのクラス
 	
-	'蜷咲ｧｰ
+	'名称
 	Public Name As String
-	'諤ｧ蛻･
+	'性別
 	Public Sex As String
-	'繧ｯ繝ｩ繧ｹ
+	'クラス
 	'UPGRADE_NOTE: Class は Class_Renamed にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
 	Public Class_Renamed As String
-	'Invalid_string_refer_to_original_code
+	'地形適応
 	Public Adaption As String
-	'邨碁ｨ灘､
+	'経験値
 	Public ExpValue As Short
-	'Invalid_string_refer_to_original_code
+	'格闘
 	Public Infight As Short
-	'Invalid_string_refer_to_original_code
+	'射撃
 	Public Shooting As Short
-	'蜻ｽ荳ｭ
+	'命中
 	Public Hit As Short
-	'蝗樣∩
+	'回避
 	Public Dodge As Short
-	'Invalid_string_refer_to_original_code
+	'反応
 	Public Intuition As Short
-	'Invalid_string_refer_to_original_code
+	'技量
 	Public Technique As Short
-	'諤ｧ譬ｼ
+	'性格
 	Public Personality As String
-	'Invalid_string_refer_to_original_code
+	'ＳＰ
 	Public SP As Short
-	'Invalid_string_refer_to_original_code
+	'ＭＩＤＩ
 	Public BGM As String
 	
-	'諢帷ｧｰ
+	'愛称
 	Private proNickname As String
-	'Invalid_string_refer_to_original_code
+	'読み仮名
 	Private proKanaName As String
 	
-	'Invalid_string_refer_to_original_code
+	'ビットマップ名
 	Private proBitmap As String
-	'Invalid_string_refer_to_original_code
+	'ビットマップが存在するか
 	Public IsBitmapMissing As Boolean
 	
-	'繧ｹ繝壹す繝｣繝ｫ繝代Ρ繝ｼ
+	'スペシャルパワー
 	Private SpecialPowerName() As String
 	Private SpecialPowerNecessaryLevel() As Short
 	Private SpecialPowerSPConsumption() As Short
 	
-	'Invalid_string_refer_to_original_code
+	'特殊能力
 	Public colSkill As New Collection
 	
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
+	'ユニットに付加するデータ
+	'特殊能力
 	Public colFeature As Collection
-	'Invalid_string_refer_to_original_code
+	'武器データ
 	Private colWeaponData As Collection
-	'Invalid_string_refer_to_original_code
+	'アビリティデータ
 	Private colAbilityData As Collection
 	
 	
-	'Invalid_string_refer_to_original_code
+	'クラスの初期化
 	'UPGRADE_NOTE: Class_Initialize は Class_Initialize_Renamed にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
 	Private Sub Class_Initialize_Renamed()
 		ReDim SpecialPowerName(0)
@@ -78,7 +78,7 @@ Friend Class PilotData
 		Class_Initialize_Renamed()
 	End Sub
 	
-	'繧ｯ繝ｩ繧ｹ縺ｮ隗｣謾ｾ
+	'クラスの解放
 	'UPGRADE_NOTE: Class_Terminate は Class_Terminate_Renamed にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
 	Private Sub Class_Terminate_Renamed()
 		Dim i As Short
@@ -126,13 +126,13 @@ Friend Class PilotData
 		MyBase.Finalize()
 	End Sub
 	
-	'諢帷ｧｰ
+	'愛称
 	
 	Public Property Nickname() As String
 		Get
 			Nickname = proNickname
-			If InStr(Nickname, "荳ｻ莠ｺ蜈ｬ") = 1 Or InStr(Nickname, "繝偵Ο繧､繝ｳ") = 1 Then
-				Nickname = GetValueAsString(Nickname & "諢帷ｧｰ")
+			If InStr(Nickname, "主人公") = 1 Or InStr(Nickname, "ヒロイン") = 1 Then
+				Nickname = GetValueAsString(Nickname & "愛称")
 			End If
 			ReplaceSubExpression(Nickname)
 		End Get
@@ -141,21 +141,18 @@ Friend Class PilotData
 		End Set
 	End Property
 	
-	'Invalid_string_refer_to_original_code
+	'読み仮名
 	
 	Public Property KanaName() As String
 		Get
 			KanaName = proKanaName
-			'Invalid_string_refer_to_original_code_
-			'Then
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			KanaName = StrToHiragana(GetValueAsString(KanaName & "諢帷ｧｰ"))
-			'End If
-			'End If
+			If InStr(KanaName, "主人公") = 1 Or InStr(KanaName, "ヒロイン") = 1 Or InStr(KanaName, "ひろいん") = 1 Then
+				If IsVariableDefined(KanaName & "読み仮名") Then
+					KanaName = GetValueAsString(KanaName & "読み仮名")
+				Else
+					KanaName = StrToHiragana(GetValueAsString(KanaName & "愛称"))
+				End If
+			End If
 			ReplaceSubExpression(KanaName)
 		End Get
 		Set(ByVal Value As String)
@@ -163,7 +160,7 @@ Friend Class PilotData
 		End Set
 	End Property
 	
-	'Invalid_string_refer_to_original_code
+	'ビットマップ
 	Public ReadOnly Property Bitmap0() As String
 		Get
 			Bitmap0 = proBitmap
@@ -185,13 +182,13 @@ Friend Class PilotData
 	End Property
 	
 	
-	'Invalid_string_refer_to_original_code
+	'特殊能力を追加
 	Public Sub AddSkill(ByRef sname As String, ByVal slevel As Double, ByVal sdata As String, ByVal lv As Short)
 		Dim sd As SkillData
 		Dim i As Short
 		Static last_sname, last_sdata As String
 		
-		'Invalid_string_refer_to_original_code
+		'データ定義が省略されている場合は前回と同じ物を使う
 		If last_sname = sname And Len(sdata) = 0 Then
 			sdata = last_sdata
 		End If
@@ -199,16 +196,16 @@ Friend Class PilotData
 		last_sname = sname
 		last_sdata = sdata
 		
-		'Invalid_string_refer_to_original_code
+		'エリアスが定義されている？
 		If ALDList.IsDefined(sname) Then
-			If LIndex(sdata, 1) <> "隗｣隱ｬ" Then
+			If LIndex(sdata, 1) <> "解説" Then
 				With ALDList.Item(sname)
 					For i = 1 To .Count
-						'Invalid_string_refer_to_original_code
+						'エリアスの定義に従って特殊能力定義を置き換える
 						sd = New SkillData
 						
 						sd.Name = .AliasType(i)
-						If LIndex(.AliasData(i), 1) = "隗｣隱ｬ" Then
+						If LIndex(.AliasData(i), 1) = "解説" Then
 							If sdata <> "" Then
 								sd.Name = LIndex(sdata, 1)
 							End If
@@ -232,7 +229,7 @@ Friend Class PilotData
 						
 						sd.StrData = .AliasData(i)
 						If sdata <> "" Then
-							If .AliasData(i) <> "髱櫁｡ｨ遉ｺ" And LIndex(.AliasData(i), 1) <> "隗｣隱ｬ" Then
+							If .AliasData(i) <> "非表示" And LIndex(.AliasData(i), 1) <> "解説" Then
 								sd.StrData = Trim(sdata & " " & ListTail(.AliasData(i), 2))
 							End If
 						End If
@@ -249,7 +246,7 @@ Friend Class PilotData
 			End If
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'特殊能力を登録
 		sd = New SkillData
 		With sd
 			.Name = sname
@@ -260,7 +257,7 @@ Friend Class PilotData
 		colSkill.Add(sd, sname & VB6.Format(colSkill.Count()))
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'指定したレベルの時点で所有しているパイロット用特殊能力を列挙
 	Public Function Skill(ByVal lv As Short) As String
 		Dim skill_num As Short
 		Dim skill_name(32) As String
@@ -289,7 +286,7 @@ NextLoop:
 		Next 
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'指定したレベルで特殊能力snameが使えるか？
 	Public Function IsSkillAvailable(ByVal lv As Short, ByRef sname As String) As Boolean
 		Dim sd As SkillData
 		
@@ -305,7 +302,7 @@ NextLoop:
 		Next sd
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'指定したレベルでの特殊能力snameのレベル
 	Public Function SkillLevel(ByVal lv As Short, ByRef sname As String) As Double
 		Dim sd As SkillData
 		Dim lv2 As Short
@@ -330,7 +327,7 @@ NextLoop:
 		End If
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'必要技能判定用(別名でも判定)
 	Public Function SkillLevel2(ByVal lv As Short, ByRef sname As String) As Short
 		Dim sd As SkillData
 		Dim lv2 As Short
@@ -355,7 +352,7 @@ NextLoop:
 		End If
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'指定したレベルでの特殊能力Nameのデータ
 	Public Function SkillData(ByVal lv As Short, ByRef sname As String) As String
 		Dim sd As SkillData
 		Dim lv2 As Short
@@ -376,7 +373,7 @@ NextLoop:
 		Next sd
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'指定したレベルでの特殊能力Nameの名称
 	Public Function SkillName(ByVal lv As Short, ByRef sname As String) As String
 		Dim sd As SkillData
 		Dim lv2 As Short
@@ -395,41 +392,37 @@ NextLoop:
 						If Len(.StrData) > 0 Then
 							SkillName = LIndex(.StrData, 1)
 							Select Case SkillName
-								Case "髱櫁｡ｨ遉ｺ"
+								Case "非表示"
 									Exit Function
-								Case "隗｣隱ｬ"
-									SkillName = "髱櫁｡ｨ遉ｺ"
+								Case "解説"
+									SkillName = "非表示"
 									Exit Function
 							End Select
-							'Invalid_string_refer_to_original_code
-							'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-							GoTo NextLoop
+							If sname = "階級" Then
+								GoTo NextLoop
+							End If
+						Else
+							SkillName = sname
 						End If
-					Else
-						SkillName = sname
-					End If
-					
-					'Invalid_string_refer_to_original_code_
-					'And sname <> "髴雁鴨" _
-					'Then
-					'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-					If .Level <> DEFAULT_LEVEL And InStr(SkillName, "Lv") = 0 Then
-						SkillName = SkillName & "Lv" & VB6.Format(.Level)
+						
+						If sname <> "同調率" And sname <> "霊力" Then
+							If .Level <> DEFAULT_LEVEL And InStr(SkillName, "Lv") = 0 Then
+								SkillName = SkillName & "Lv" & VB6.Format(.Level)
+							End If
+						End If
 					End If
 				End If
-				'End If
-				'End If
 			End With
 NextLoop: 
 		Next sd
 		
-		'繝ｬ繝吶Ν髱櫁｡ｨ遉ｺ逕ｨ縺ｮ諡ｬ蠑ｧ繧貞炎髯､
+		'レベル非表示用の括弧を削除
 		If Left(SkillName, 1) = "(" Then
 			SkillName = Mid(SkillName, 2, Len(SkillName) - 2)
 		End If
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'特殊能力Nameの種類 (愛称=>名称)
 	Public Function SkillType(ByRef sname As String) As String
 		Dim sd As SkillData
 		
@@ -442,12 +435,12 @@ NextLoop:
 			End With
 		Next sd
 		
-		'Invalid_string_refer_to_original_code
+		'その能力を修得していない場合
 		SkillType = sname
 	End Function
 	
 	
-	'繧ｹ繝壹す繝｣繝ｫ繝代Ρ繝ｼ繧定ｿｽ蜉
+	'スペシャルパワーを追加
 	Public Sub AddSpecialPower(ByRef sname As String, ByVal lv As Short, ByVal sp_consumption As Short)
 		ReDim Preserve SpecialPowerName(UBound(SpecialPowerName) + 1)
 		ReDim Preserve SpecialPowerNecessaryLevel(UBound(SpecialPowerName))
@@ -457,7 +450,7 @@ NextLoop:
 		SpecialPowerSPConsumption(UBound(SpecialPowerName)) = sp_consumption
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'指定したレベルで使用可能なスペシャルパワーの個数
 	Public Function CountSpecialPower(ByVal lv As Short) As Short
 		Dim i As Short
 		
@@ -468,7 +461,7 @@ NextLoop:
 		Next 
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'指定したレベルで使用可能なidx番目のスペシャルパワー
 	Public Function SpecialPower(ByVal lv As Short, ByVal idx As Short) As String
 		Dim i, n As Short
 		
@@ -484,7 +477,7 @@ NextLoop:
 		Next 
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'指定したレベルでスペシャルパワーsnameを使えるか？
 	Public Function IsSpecialPowerAvailable(ByVal lv As Short, ByRef sname As String) As Boolean
 		Dim i As Short
 		
@@ -500,11 +493,11 @@ NextLoop:
 		IsSpecialPowerAvailable = False
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'指定したスペシャルパワーsnameのＳＰ消費量
 	Public Function SpecialPowerCost(ByVal sname As String) As Short
 		Dim i As Short
 		
-		'Invalid_string_refer_to_original_code
+		'パイロットデータ側でＳＰ消費量が定義されているか検索
 		For i = 1 To UBound(SpecialPowerName)
 			If SpecialPowerName(i) = sname Then
 				SpecialPowerCost = SpecialPowerSPConsumption(i)
@@ -512,15 +505,15 @@ NextLoop:
 			End If
 		Next 
 		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
+		'パイロットデータ側でＳＰ消費量が定義されていなければ
+		'デフォルトの値を使う
 		If SpecialPowerCost = 0 Then
 			SpecialPowerCost = SPDList.Item(sname).SPConsumption
 		End If
 	End Function
 	
 	
-	'Invalid_string_refer_to_original_code
+	'データを消去
 	Public Sub Clear()
 		Dim i As Short
 		
@@ -556,7 +549,7 @@ NextLoop:
 	End Sub
 	
 	
-	'Invalid_string_refer_to_original_code
+	'特殊能力を追加
 	Public Sub AddFeature(ByRef fdef As String)
 		Dim fd As FeatureData
 		Dim ftype, fdata As String
@@ -569,7 +562,7 @@ NextLoop:
 			colFeature = New Collection
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'必要技能の切り出し
 		If Right(fdef, 1) = ")" Then
 			i = InStr(fdef, " (")
 			If i > 0 Then
@@ -585,7 +578,7 @@ NextLoop:
 			buf = fdef
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'必要条件の切り出し
 		If Right(buf, 1) = ">" Then
 			i = InStr(buf, " <")
 			If i > 0 Then
@@ -597,7 +590,7 @@ NextLoop:
 			End If
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'特殊能力の種類、レベル、データを切り出し
 		flevel = DEFAULT_LEVEL
 		i = InStr(buf, "Lv")
 		j = InStr(buf, "=")
@@ -619,21 +612,21 @@ NextLoop:
 			ftype = buf
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'データが「"」で囲まれている場合、「"」を削除
 		If Left(fdata, 1) = """" Then
 			If Right(fdata, 1) = """" Then
 				fdata = Mid(fdata, 2, Len(fdata) - 2)
 			End If
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'エリアスが定義されている？
 		If ALDList.IsDefined(ftype) Then
-			If LIndex(fdata, 1) <> "隗｣隱ｬ" Then
+			If LIndex(fdata, 1) <> "解説" Then
 				With ALDList.Item(ftype)
 					For i = 1 To .Count
 						fd = New FeatureData
 						
-						'Invalid_string_refer_to_original_code
+						'エリアスの定義に従って特殊能力定義を置き換える
 						fd.Name = .AliasType(i)
 						If .AliasType(i) <> ftype Then
 							If .AliasLevelIsPlusMod(i) Then
@@ -659,7 +652,7 @@ NextLoop:
 							Else
 								fd.Level = .AliasLevel(i)
 							End If
-							If fdata <> "" And InStr(.AliasData(i), "髱櫁｡ｨ遉ｺ") <> 1 Then
+							If fdata <> "" And InStr(.AliasData(i), "非表示") <> 1 Then
 								fd.StrData = fdata & " " & ListTail(.AliasData(i), LLength(fdata) + 1)
 							Else
 								fd.StrData = .AliasData(i)
@@ -670,8 +663,8 @@ NextLoop:
 								fd.StrData = buf
 							End If
 						Else
-							'Invalid_string_refer_to_original_code
-							If fdata <> "" And LIndex(fdata, 1) <> "髱櫁｡ｨ遉ｺ" Then
+							'特殊能力解説の定義
+							If fdata <> "" And LIndex(fdata, 1) <> "非表示" Then
 								fd.Name = LIndex(fdata, 1)
 							End If
 							fd.StrData = .AliasData(i)
@@ -687,7 +680,7 @@ NextLoop:
 							fd.NecessaryCondition = .AliasNecessaryCondition(i)
 						End If
 						
-						'Invalid_string_refer_to_original_code
+						'特殊能力を登録
 						If IsFeatureAvailable((fd.Name)) Then
 							colFeature.Add(fd, fd.Name & VB6.Format(CountFeature))
 						Else
@@ -699,7 +692,7 @@ NextLoop:
 			End If
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'特殊能力を登録
 		fd = New FeatureData
 		With fd
 			.Name = ftype
@@ -715,7 +708,7 @@ NextLoop:
 		End If
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'特殊能力の総数
 	Public Function CountFeature() As Short
 		If colFeature Is Nothing Then
 			Exit Function
@@ -723,7 +716,7 @@ NextLoop:
 		CountFeature = colFeature.Count()
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'特殊能力
 	Public Function Feature(ByRef Index As Object) As String
 		Dim fd As FeatureData
 		
@@ -731,7 +724,7 @@ NextLoop:
 		Feature = fd.Name
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'特殊能力の名称
 	Public Function FeatureName(ByRef Index As Object) As String
 		Dim fd As FeatureData
 		
@@ -747,7 +740,7 @@ NextLoop:
 		End With
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'特殊能力のレベル
 	Public Function FeatureLevel(ByRef Index As Object) As Double
 		Dim fd As FeatureData
 		
@@ -763,7 +756,7 @@ ErrorHandler:
 		FeatureLevel = 0
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'特殊能力のデータ
 	Public Function FeatureData(ByRef Index As Object) As String
 		Dim fd As FeatureData
 		
@@ -776,7 +769,7 @@ ErrorHandler:
 		FeatureData = ""
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'指定した特殊能力を持っているか？
 	Public Function IsFeatureAvailable(ByRef fname As String) As Boolean
 		Dim fd As FeatureData
 		
@@ -793,12 +786,12 @@ ErrorHandler:
 	End Function
 	
 	
-	'Invalid_string_refer_to_original_code
+	'武器データ
 	Public Function Weapon(ByRef Index As Object) As WeaponData
 		Weapon = colWeaponData.Item(Index)
 	End Function
 	
-	'豁ｦ蝎ｨ縺ｮ邱乗焚
+	'武器の総数
 	Public Function CountWeapon() As Short
 		If colWeaponData Is Nothing Then
 			Exit Function
@@ -806,7 +799,7 @@ ErrorHandler:
 		CountWeapon = colWeaponData.Count()
 	End Function
 	
-	'豁ｦ蝎ｨ繧定ｿｽ蜉
+	'武器を追加
 	Public Function AddWeapon(ByRef wname As String) As WeaponData
 		Dim new_wdata As New WeaponData
 		
@@ -819,12 +812,12 @@ ErrorHandler:
 	End Function
 	
 	
-	'Invalid_string_refer_to_original_code
+	'アビリティデータ
 	Public Function Ability(ByRef Index As Object) As AbilityData
 		Ability = colAbilityData.Item(Index)
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'アビリティの総数
 	Public Function CountAbility() As Short
 		If colAbilityData Is Nothing Then
 			Exit Function
@@ -832,7 +825,7 @@ ErrorHandler:
 		CountAbility = colAbilityData.Count()
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'アビリティを追加
 	Public Function AddAbility(ByRef aname As String) As AbilityData
 		Dim new_adata As New AbilityData
 		

@@ -10,16 +10,16 @@ Attribute VB_Exposed = False
 Option Explicit
 
 ' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯ãƒ•ãƒªãƒ¼ã‚½ãƒ•ãƒˆã§ã‚ã‚Šã€ç„¡ä¿è¨¼ã§ã™ã€‚
-' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯GNU General Public License(Ver.3ã¾ãŸã¯ãã‚Œä»¥é™)ãŒå®šã‚ã‚‹æ¡ä»¶ã®ä¸‹ã§
-' å†é ’å¸ƒã¾ãŸã¯æ”¹å¤‰ã™ã‚‹ã“ã¨ãŒã§ãã¾ã™ã€‚
+' –{ƒvƒƒOƒ‰ƒ€‚ÍƒtƒŠ[ƒ\ƒtƒg‚Å‚ ‚èA–³•ÛØ‚Å‚·B
+' –{ƒvƒƒOƒ‰ƒ€‚ÍGNU General Public License(Ver.3‚Ü‚½‚Í‚»‚êˆÈ~)‚ª’è‚ß‚éğŒ‚Ì‰º‚Å
+' Ä”Ğ•z‚Ü‚½‚Í‰ü•Ï‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B
 
-'å…¨ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã‚’ç®¡ç†ã™ã‚‹ãƒªã‚¹ãƒˆã®ã‚¯ãƒ©ã‚¹
+'‘Sƒ_ƒCƒAƒƒOƒf[ƒ^‚ğŠÇ—‚·‚éƒŠƒXƒg‚ÌƒNƒ‰ƒX
 
-'ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®ã‚³ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³
+'ƒ_ƒCƒAƒƒOƒf[ƒ^‚ÌƒRƒŒƒNƒVƒ‡ƒ“
 Private colDialogDataList As New Collection
 
-'ã‚¯ãƒ©ã‚¹ã‚’è§£æ”¾
+'ƒNƒ‰ƒX‚ğ‰ğ•ú
 Private Sub Class_Terminate()
 Dim i As Integer
 
@@ -31,7 +31,7 @@ Dim i As Integer
     Set colDialogDataList = Nothing
 End Sub
 
-'ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã‚’è¿½åŠ 
+'ƒ_ƒCƒAƒƒOƒf[ƒ^‚ğ’Ç‰Á
 Public Function Add(dname As String) As DialogData
 Dim new_dd As New DialogData
 
@@ -40,7 +40,7 @@ Dim new_dd As New DialogData
     Set Add = new_dd
 End Function
 
-'ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®ç·æ•°
+'ƒ_ƒCƒAƒƒOƒf[ƒ^‚Ì‘”
 Public Function Count() As Integer
     Count = colDialogDataList.Count
 End Function
@@ -49,7 +49,7 @@ Public Sub Delete(Index As Variant)
     colDialogDataList.Remove Index
 End Sub
 
-'ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã‚’è¿”ã™
+'ƒ_ƒCƒAƒƒOƒf[ƒ^‚ğ•Ô‚·
 Public Function Item(Index As Variant) As DialogData
     On Error GoTo ErrorHandler
     
@@ -60,7 +60,7 @@ ErrorHandler:
     Set Item = Nothing
 End Function
 
-'æŒ‡å®šã—ãŸãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ãŒå®šç¾©ã•ã‚Œã¦ã„ã‚‹ã‹ï¼Ÿ
+'w’è‚µ‚½ƒ_ƒCƒAƒƒOƒf[ƒ^‚ª’è‹`‚³‚ê‚Ä‚¢‚é‚©H
 Public Function IsDefined(Index As Variant) As Boolean
 Dim dummy As DialogData
 
@@ -73,7 +73,7 @@ ErrorHandler:
     IsDefined = False
 End Function
 
-'ãƒ‡ãƒ¼ã‚¿ãƒ•ã‚¡ã‚¤ãƒ« fname ã‹ã‚‰ãƒ‡ãƒ¼ã‚¿ã‚’ãƒ­ãƒ¼ãƒ‰
+'ƒf[ƒ^ƒtƒ@ƒCƒ‹ fname ‚©‚çƒf[ƒ^‚ğƒ[ƒh
 Public Sub Load(fname As String)
 Dim FileNumber As Integer
 Dim i As Integer, ret As Integer
@@ -102,7 +102,7 @@ Dim pname As String, msg As String
         
         Set dd = Nothing
         
-        'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆåä¸€è¦§
+        'ƒpƒCƒƒbƒg–¼ˆê——
         If LLength(line_buf) = 0 Then
             Error 0
         End If
@@ -119,7 +119,7 @@ Dim pname As String, msg As String
         
         GetLine FileNumber, line_buf, line_num
         Do While Len(line_buf) > 0
-            'ã‚·ãƒãƒ¥ãƒ¼ã‚·ãƒ§ãƒ³
+            'ƒVƒ`ƒ…[ƒVƒ‡ƒ“
             Set d = dd.AddDialog(line_buf)
             
             Do While True
@@ -130,29 +130,29 @@ Dim pname As String, msg As String
                 
                 GetLine FileNumber, line_buf, line_num
                 
-                'è©±è€…
+                '˜bÒ
                 ret = InStr(line_buf, ",")
                 If ret = 0 Then
                     Exit Do
                 End If
                 pname = Left$(line_buf, ret - 1)
                 
-                'æŒ‡å®šã—ãŸè©±è€…ã®ãƒ‡ãƒ¼ã‚¿ãŒå­˜åœ¨ã™ã‚‹ã‹ãƒã‚§ãƒƒã‚¯ã€‚
-                'ãŸã ã—åˆä½“æŠ€ã®ãƒ‘ãƒ¼ãƒˆãƒŠãƒ¼ã¯å ´åˆã¯ä»–ã®ä½œå“ã®ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã§ã‚ã‚‹ã“ã¨ã‚‚
-                'ã‚ã‚‹ã®ã§è©±è€…ãƒã‚§ãƒƒã‚¯ã‚’è¡Œã‚ãªã„ã€‚
+                'w’è‚µ‚½˜bÒ‚Ìƒf[ƒ^‚ª‘¶İ‚·‚é‚©ƒ`ƒFƒbƒNB
+                '‚½‚¾‚µ‡‘Ì‹Z‚Ìƒp[ƒgƒi[‚Íê‡‚Í‘¼‚Ìì•i‚ÌƒpƒCƒƒbƒg‚Å‚ ‚é‚±‚Æ‚à
+                '‚ ‚é‚Ì‚Å˜bÒƒ`ƒFƒbƒN‚ğs‚í‚È‚¢B
                 If Left$(pname, 1) <> "@" Then
                     If Not PDList.IsDefined(pname) _
                         And Not NPDList.IsDefined(pname) _
-                        And pname <> "ã‚·ã‚¹ãƒ†ãƒ " _
+                        And pname <> "ƒVƒXƒeƒ€" _
                     Then
-                        err_msg = "ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã€Œ" & pname & "ã€ãŒå®šç¾©ã•ã‚Œã¦ã„ã¾ã›ã‚“ã€‚"
+                        err_msg = "ƒpƒCƒƒbƒgu" & pname & "v‚ª’è‹`‚³‚ê‚Ä‚¢‚Ü‚¹‚ñB"
                         Error 0
                     End If
                 End If
                 
-                'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+                'ƒƒbƒZ[ƒW
                 If Len(line_buf) = ret Then
-                    err_msg = "ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãŒå®šç¾©ã•ã‚Œã¦ã„ã¾ã›ã‚“ã€‚"
+                    err_msg = "ƒƒbƒZ[ƒW‚ª’è‹`‚³‚ê‚Ä‚¢‚Ü‚¹‚ñB"
                     Error 0
                 End If
                 msg = Trim$(Mid$(line_buf, ret + 1))
@@ -164,7 +164,7 @@ Dim pname As String, msg As String
     
 ErrorHandler:
     If line_num = 0 Then
-        ErrorMessage fname & "ãŒé–‹ã‘ã¾ã›ã‚“ã€‚"
+        ErrorMessage fname & "‚ªŠJ‚¯‚Ü‚¹‚ñB"
     Else
         Close #FileNumber
         If dd Is Nothing Then

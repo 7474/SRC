@@ -10,25 +10,25 @@ Attribute VB_Exposed = False
 Option Explicit
 
 ' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯ãƒ•ãƒªãƒ¼ã‚½ãƒ•ãƒˆã§ã‚ã‚Šã€ç„¡ä¿è¨¼ã§ã™ã€‚
-' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯GNU General Public License(Ver.3ã¾ãŸã¯ãã‚Œä»¥é™)ãŒå®šã‚ã‚‹æ¡ä»¶ã®ä¸‹ã§
-' å†é ’å¸ƒã¾ãŸã¯æ”¹å¤‰ã™ã‚‹ã“ã¨ãŒã§ãã¾ã™ã€‚
+' –{ƒvƒƒOƒ‰ƒ€‚ÍƒtƒŠ[ƒ\ƒtƒg‚Å‚ ‚èA–³•ÛØ‚Å‚·B
+' –{ƒvƒƒOƒ‰ƒ€‚ÍGNU General Public License(Ver.3‚Ü‚½‚Í‚»‚êˆÈ~)‚ª’è‚ß‚éğŒ‚Ì‰º‚Å
+' Ä”Ğ•z‚Ü‚½‚Í‰ü•Ï‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B
 
-'ãƒãƒ³ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆãƒ‡ãƒ¼ã‚¿ã®ã‚¯ãƒ©ã‚¹
+'ƒmƒ“ƒpƒCƒƒbƒgƒf[ƒ^‚ÌƒNƒ‰ƒX
 
-'åç§°
+'–¼Ì
 Public Name As String
 
-'æ„›ç§°
+'ˆ¤Ì
 Private strNickname As String
 
-'ãƒ“ãƒƒãƒˆãƒãƒƒãƒ—å
+'ƒrƒbƒgƒ}ƒbƒv–¼
 Private proBitmap As String
-'ãƒ“ãƒƒãƒˆãƒãƒƒãƒ—ãŒå­˜åœ¨ã™ã‚‹ã‹
+'ƒrƒbƒgƒ}ƒbƒv‚ª‘¶İ‚·‚é‚©
 Public IsBitmapMissing As Boolean
 
 
-'æ„›ç§°
+'ˆ¤Ì
 Public Property Get Nickname0() As String
     Nickname0 = strNickname
 End Property
@@ -38,47 +38,47 @@ Dim pname As String, idx As Integer
 
     Nickname = strNickname
     
-    'ã‚¤ãƒ™ãƒ³ãƒˆã§æ„›ç§°ãŒå¤‰æ›´ã•ã‚Œã¦ã„ã‚‹ï¼Ÿ
-    If InStr(Nickname, "ä¸»äººå…¬") = 1 Or InStr(Nickname, "ãƒ’ãƒ­ã‚¤ãƒ³") = 1 Then
-        Nickname = GetValueAsString(Nickname & "æ„›ç§°")
+    'ƒCƒxƒ“ƒg‚Åˆ¤Ì‚ª•ÏX‚³‚ê‚Ä‚¢‚éH
+    If InStr(Nickname, "ålŒö") = 1 Or InStr(Nickname, "ƒqƒƒCƒ“") = 1 Then
+        Nickname = GetValueAsString(Nickname & "ˆ¤Ì")
     End If
     
     ReplaceSubExpression Nickname
     
-    'è¡¨æƒ…ãƒ‘ã‚¿ãƒ¼ãƒ³ã®å ´åˆ
+    '•\îƒpƒ^[ƒ“‚Ìê‡
     idx = InStr(Name, "(")
     If idx > 1 Then
-        'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆæœ¬æ¥ã®åç§°oræ„›ç§°ã‚’åˆ‡ã‚Šå‡ºã—
+        'ƒpƒCƒƒbƒg–{—ˆ‚Ì–¼Ìorˆ¤Ì‚ğØ‚èo‚µ
         pname = Left$(Name, idx - 1)
         
-        'ãã®ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆãŒä½œæˆã•ã‚Œã¦ã„ã‚‹ï¼Ÿ
+        '‚»‚ÌƒpƒCƒƒbƒg‚ªì¬‚³‚ê‚Ä‚¢‚éH
         If Not PList.IsDefined(pname) Then
             Exit Property
         End If
         
         With PList.Item(pname)
-            'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆãŒãƒ¦ãƒ‹ãƒƒãƒˆã«ä¹—ã£ã¦ã„ã‚‹ï¼Ÿ
+            'ƒpƒCƒƒbƒg‚ªƒ†ƒjƒbƒg‚Éæ‚Á‚Ä‚¢‚éH
             If .Unit Is Nothing Then
                 Exit Property
             End If
             
             With .Unit
-                'å¿µã®ãŸã‚â€¦â€¦
+                '”O‚Ì‚½‚ßcc
                 If .CountPilot = 0 Then
                     Exit Property
                 End If
                 
-                'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã¯ãƒ¡ã‚¤ãƒ³ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆï¼Ÿ
+                'ƒpƒCƒƒbƒg‚ÍƒƒCƒ“ƒpƒCƒƒbƒgH
                 If pname <> .MainPilot.Name _
                     And pname <> .MainPilot.Data.Nickname _
                 Then
                     Exit Property
                 End If
                 
-                'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆæ„›ç§°å¤‰æ›´èƒ½åŠ›ã‚’é©ç”¨
-                If .IsFeatureAvailable("ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆæ„›ç§°") Then
-                    pname = .FeatureData("ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆæ„›ç§°")
-                    idx = InStr(pname, "$(æ„›ç§°)")
+                'ƒpƒCƒƒbƒgˆ¤Ì•ÏX”\—Í‚ğ“K—p
+                If .IsFeatureAvailable("ƒpƒCƒƒbƒgˆ¤Ì") Then
+                    pname = .FeatureData("ƒpƒCƒƒbƒgˆ¤Ì")
+                    idx = InStr(pname, "$(ˆ¤Ì)")
                     If idx > 0 Then
                         pname = Left$(pname, idx - 1) _
                             & Nickname & Mid$(pname, idx + 5)
@@ -94,7 +94,7 @@ Public Property Let Nickname(new_name As String)
     strNickname = new_name
 End Property
 
-'ãƒ“ãƒƒãƒˆãƒãƒƒãƒ—
+'ƒrƒbƒgƒ}ƒbƒv
 Public Property Get Bitmap0() As String
     Bitmap0 = proBitmap
 End Property

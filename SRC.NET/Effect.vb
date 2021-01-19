@@ -3,21 +3,21 @@ Option Explicit On
 Module Effect
 	
 	' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
+	' –{ƒvƒƒOƒ‰ƒ€‚ÍƒtƒŠ[ƒ\ƒtƒg‚Å‚ ‚èA–³•ÛØ‚Å‚·B
+	' –{ƒvƒƒOƒ‰ƒ€‚ÍGNU General Public License(Ver.3‚Ü‚½‚Í‚»‚êˆÈ~)‚ª’è‚ß‚éğŒ‚Ì‰º‚Å
+	' Ä”Ğ•z‚Ü‚½‚Í‰ü•Ï‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B
 	
-	'Invalid_string_refer_to_original_code
+	'“ÁêŒø‰Ê‚Ì©“®‘I‘ğ•Ä¶ˆ—
 	
 	
-	'Invalid_string_refer_to_original_code
+	'\‚¦‚Ä‚¢‚é•Ší‚Ìí—Ş
 	Private WeaponInHand As String
 	
-	'Invalid_string_refer_to_original_code
+	'UŒ‚è’i‚Ìí—Ş
 	Private CurrentWeaponType As String
 	
 	
-	'æˆ¦é—˜ã‚¢ãƒ‹ãƒ¡å†ç”Ÿç”¨ã‚µãƒ–ãƒ«ãƒ¼ãƒãƒ³
+	'í“¬ƒAƒjƒÄ¶—pƒTƒuƒ‹[ƒ`ƒ“
 	Public Sub ShowAnimation(ByRef aname As String)
 		Dim buf As String
 		Dim ret As Double
@@ -28,20 +28,18 @@ Module Effect
 			Exit Sub
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'‰EƒNƒŠƒbƒN’†‚Í“ÁêŒø‰Ê‚ğƒXƒLƒbƒv
 		If IsRButtonPressed() Then
 			Exit Sub
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'ƒTƒuƒ‹[ƒ`ƒ“ŒÄ‚Ño‚µ‚Ì‚½‚ß‚Ì®‚ğì¬
 		expr = LIndex(aname, 1)
-		If InStr(expr, "æˆ¦é—˜ã‚¢ãƒ‹ãƒ¡_") <> 1 Then
-			expr = "æˆ¦é—˜ã‚¢ãƒ‹ãƒ¡_" & LIndex(aname, 1)
+		If InStr(expr, "í“¬ƒAƒjƒ_") <> 1 Then
+			expr = "í“¬ƒAƒjƒ_" & LIndex(aname, 1)
 		End If
 		If FindNormalLabel(expr) = 0 Then
-			ErrorMessage("Invalid_string_refer_to_original_code")
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			ErrorMessage("ƒTƒuƒ‹[ƒ`ƒ“u" & expr & "v‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ")
 			Exit Sub
 		End If
 		expr = "Call(`" & expr & "`"
@@ -50,21 +48,21 @@ Module Effect
 		Next 
 		expr = expr & ")"
 		
-		'Invalid_string_refer_to_original_code
+		'‰æ‘œ•`‰æ‚ªs‚í‚ê‚½‚©‚Ç‚¤‚©‚Ì”»’è‚Ì‚½‚ß‚Éƒtƒ‰ƒO‚ğ‰Šú‰»
 		IsPictureDrawn = False
 		
-		'Invalid_string_refer_to_original_code
+		'ƒƒbƒZ[ƒWƒEƒBƒ“ƒhƒE‚Ìó‘Ô‚ğ‹L˜^
 		SaveMessageFormStatus()
 		
-		'æˆ¦é—˜ã‚¢ãƒ‹ãƒ¡å†ç”Ÿ
+		'í“¬ƒAƒjƒÄ¶
 		SaveBasePoint()
 		CallFunction(expr, Expression.ValueType.StringType, buf, ret)
 		RestoreBasePoint()
 		
-		'Invalid_string_refer_to_original_code
+		'ƒƒbƒZ[ƒWƒEƒBƒ“ƒhƒE‚Ìó‘Ô‚ª•Ï‰»‚µ‚Ä‚¢‚éê‡‚Í•œŒ³
 		KeepMessageFormStatus()
 		
-		'ç”»åƒã‚’æ¶ˆå»ã—ã¦ãŠã
+		'‰æ‘œ‚ğÁ‹‚µ‚Ä‚¨‚­
 		If IsPictureDrawn And LCase(buf) <> "keep" Then
 			ClearPicture()
 			'UPGRADE_ISSUE: Control picMain ‚ÍA”Ä—p–¼‘O‹óŠÔ Form “à‚É‚ ‚é‚½‚ßA‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
@@ -75,7 +73,7 @@ Module Effect
 		
 ErrorHandler: 
 		
-		'Invalid_string_refer_to_original_code
+		'í“¬ƒAƒjƒÀs’†‚É”­¶‚µ‚½ƒGƒ‰[‚Ìˆ—
 		If Len(EventErrorMessage) > 0 Then
 			DisplayEventErrorMessage(CurrentLineNum, EventErrorMessage)
 			EventErrorMessage = ""
@@ -85,9 +83,9 @@ ErrorHandler:
 	End Sub
 	
 	
-	'Invalid_string_refer_to_original_code
+	'•Ší€”õ‚Ì“ÁêŒø‰Ê
 	Public Sub PrepareWeaponEffect(ByRef u As Unit, ByVal w As Short)
-		'Invalid_string_refer_to_original_code
+		'‰EƒNƒŠƒbƒN’†‚Í“ÁêŒø‰Ê‚ğƒXƒLƒbƒv
 		If IsRButtonPressed() Then
 			Exit Sub
 		End If
@@ -99,7 +97,7 @@ ErrorHandler:
 		End If
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'•Ší€”õ‚ÌƒAƒjƒ[ƒVƒ‡ƒ“
 	Public Sub PrepareWeaponAnimation(ByRef u As Unit, ByVal w As Short)
 		Dim wclass, wname, wtype As String
 		Dim double_weapon As Boolean
@@ -107,907 +105,794 @@ ErrorHandler:
 		Dim with_face_up As Boolean
 		Dim i As Short
 		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		Exit Sub
-		'End If
+		'í“¬ƒAƒjƒ”ñ©“®‘I‘ğ
+		If IsOptionDefined("í“¬ƒAƒjƒ”ñ©“®‘I‘ğ") Then
+			Exit Sub
+		End If
 		
 		With u
-			'Invalid_string_refer_to_original_code
+			'‚Ü‚¸€”õƒAƒjƒ•\¦‚ÌÛ‚ÉƒtƒFƒCƒXƒAƒbƒv‚ğ•\¦‚·‚é‚©Œˆ’è‚·‚é
 			If .CountWeapon >= 4 And w >= .CountWeapon - 1 And .Weapon(w).Power >= 1800 And ((.Weapon(w).Bullet > 0 And .Weapon(w).Bullet <= 4) Or .Weapon(w).ENConsumption >= 35) Then
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code
+				'‚S‚ÂˆÈã‚Ì•Ší‚ğ‚Âƒ†ƒjƒbƒg‚ª‚»‚Ìƒ†ƒjƒbƒg‚ÌÅ‚ˆĞ—Í
+				'‚à‚µ‚­‚Í‚Q”Ô–Ú‚É‹­—Í‚È•Ší‚ğg—p‚µA
+				'‚»‚Ì•Ší‚ÌUŒ‚—Í1800ˆÈã‚Å‚©‚Â•Šíg—p‰Â”\‰ñ”‚ªŒÀ’è‚³‚ê‚Ä‚¢‚ê‚Î
+				'•KE‹Z‚ÆŒ©‚È‚µ‚ÄƒtƒFƒCƒXƒAƒbƒv•\¦
 				'            with_face_up = True
 			End If
 			
-			'Invalid_string_refer_to_original_code
-			If .Data.Transportation = "ç©º" Then
+			'‹ó’†ˆÚ“®ê—pŒ`‘Ô‚Í•Ší‚ğè‚Å\‚¦‚È‚¢
+			If .Data.Transportation = "‹ó" Then
 				WeaponInHand = ""
 				GoTo SkipWeaponAnimation
 			End If
 			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			WeaponInHand = ""
-			GoTo SkipWeaponAnimation
-			'End If
+			'“™g‘åŠî€‚Ìê‡A”ñlŠÔƒ†ƒjƒbƒg‚ÍƒƒJ‚Å‚ ‚é‚±‚Æ‚ª‘½‚¢‚Ì‚Å“à‘ •Ší‚ğ—Dæ‚·‚é
+			If IsOptionDefined("“™g‘åŠî€") And Not .IsHero() Then
+				WeaponInHand = ""
+				GoTo SkipWeaponAnimation
+			End If
 			
 			wname = .WeaponNickname(w)
 			wclass = .Weapon(w).Class_Renamed
 		End With
 		
-		'Invalid_string_refer_to_original_code
+		'•Ší€”õ‚ÌƒAƒjƒ[ƒVƒ‡ƒ“‚ğ”ñ•\¦‚É‚·‚éƒIƒvƒVƒ‡ƒ“‚ğ‘I‘ğ‚µ‚Ä‚¢‚éH
 		' MOD START MARGE
-		'    If Not WeaponAnimation Or IsOptionDefined("æ­¦å™¨æº–å‚™ã‚¢ãƒ‹ãƒ¡éè¡¨ç¤º") Then
-		If (Not WeaponAnimation And Not ExtendedAnimation) Or IsOptionDefined("æ­¦å™¨æº–å‚™ã‚¢ãƒ‹ãƒ¡éè¡¨ç¤º") Then
+		'    If Not WeaponAnimation Or IsOptionDefined("•Ší€”õƒAƒjƒ”ñ•\¦") Then
+		If (Not WeaponAnimation And Not ExtendedAnimation) Or IsOptionDefined("•Ší€”õƒAƒjƒ”ñ•\¦") Then
 			' MOD END MARGE
 			WeaponInHand = ""
 			GoTo SkipWeaponAnimation
 		End If
 		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		double_weapon = True
-		'End If
+		'“ñ“—¬H
+		If InStr(wname, "ƒ_ƒuƒ‹") > 0 Or InStr(wname, "ƒcƒCƒ“") > 0 Or InStr(wname, "‘o") > 0 Or InStr(wname, "“ñ“") > 0 Then
+			double_weapon = True
+		End If
 		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		sname = "BeamSaber.wav"
-		'End If
+		'uƒu[ƒ“v‚Æ‚¢‚¤Œø‰Ê‰¹‚ğ–Â‚ç‚·H
+		If InStr(wname, "‚ü”g") > 0 Or InStr(wname, "“d¥") > 0 Then
+			sname = "BeamSaber.wav"
+		End If
 		
-		'Invalid_string_refer_to_original_code
+		'‚±‚ê‚©‚ç•Ší‚Ìí—Ş‚ğ”»’è
 		
-		'Invalid_string_refer_to_original_code_
-		'And InStrNotNest(wclass, "æ¥") = 0 _
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		GoTo SkipInfightWeapon
-		'End If
+		If InStrNotNest(wclass, "•") = 0 And InStrNotNest(wclass, "“Ë") = 0 And InStrNotNest(wclass, "Ú") = 0 And InStrNotNest(wclass, "À") = 0 Then
+			GoTo SkipInfightWeapon
+		End If
 		
-		'Invalid_string_refer_to_original_code
+		'•Ší–¼‚©‚ç•Ší‚Ìí—Ş‚ğ”»’è
 		wtype = CheckWeaponType(wname, wclass)
-		If wtype = "æ‰‹è£å‰£" Then
-			'Invalid_string_refer_to_original_code
+		If wtype = "è— Œ•" Then
+			'è— Œ•‚Í\‚¦‚¸‚É‚¢‚«‚È‚è“Š‚°‚½‚Ù‚¤‚ª‚©‚Á‚±‚¢‚¢‚Æv‚¤‚Ì‚Å
 			Exit Sub
 		End If
 		If wtype <> "" Then
 			GoTo FoundWeaponType
 		End If
 		
-		'Invalid_string_refer_to_original_code
-		If InStrNotNest(wclass, "æ­¦") > 0 Then
-			'Invalid_string_refer_to_original_code
+		'Ú×‚ª•ª‚©‚ç‚È‚©‚Á‚½•Ší
+		If InStrNotNest(wclass, "•") > 0 Then
+			'‘•”õ‚µ‚Ä‚¢‚éƒAƒCƒeƒ€‚©‚ç•Ší‚ğŒŸõ
 			For i = 1 To u.CountItem
 				With u.Item(i)
-					'Invalid_string_refer_to_original_code_
-					'Invalid_string_refer_to_original_code_
-					'Or .Part = "æ­¦å™¨") _
-					'Then
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					wtype = CheckWeaponType(.Nickname, "")
-					If wtype <> "" Then
-						GoTo FoundWeaponType
+					If .Activated And (.Part = "—¼è" Or .Part = "•Ğè" Or .Part = "•Ší") Then
+						wtype = CheckWeaponType(.Nickname, "")
+						If wtype <> "" Then
+							GoTo FoundWeaponType
+						End If
+						wtype = CheckWeaponType(.Class0, "")
+						If wtype <> "" Then
+							GoTo FoundWeaponType
+						End If
+						Exit For
 					End If
-					wtype = CheckWeaponType(.Class0, "")
-					If wtype <> "" Then
-						GoTo FoundWeaponType
-					End If
-					Exit For
 				End With
 			Next 
+			GoTo SkipShootingWeapon
 		End If
-		'End With
-		'Next
-		GoTo SkipShootingWeapon
-		'End If
 		
-		'Invalid_string_refer_to_original_code_
-		'Or InStrNotNest(wclass, "æ¥") > 0 _
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		GoTo SkipShootingWeapon
-		'End If
+		If InStrNotNest(wclass, "“Ë") > 0 Or InStrNotNest(wclass, "Ú") > 0 Then
+			GoTo SkipShootingWeapon
+		End If
 		
 SkipInfightWeapon: 
 		
-		'Invalid_string_refer_to_original_code
+		'‚Ü‚¸‚Íƒr[ƒ€UŒ‚‚©‚Ç‚¤‚©”»’è
 		If Not IsBeamWeapon(wname, wclass, cname) Then
 			GoTo SkipBeamWeapon
 		End If
 		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		If InStrNotNest(wclass, "Invalid_string_refer_to_original_code") > 0 Then
-			wtype = "Invalid_string_refer_to_original_code"
+		'è‚¿H
+		If InStr(wname, "ƒ‰ƒCƒtƒ‹") > 0 Or InStr(wname, "ƒoƒY[ƒJ") > 0 Or Right(wname, 2) = "ƒKƒ“" Or (Right(wname, 1) = "e" And Right(wname, 2) <> "‹@e") Then
+			If InStrNotNest(wclass, "‚l") > 0 Then
+				wtype = "‚l‚`‚oƒoƒXƒ^[ƒr[ƒ€ƒ‰ƒCƒtƒ‹"
+				GoTo FoundWeaponType
+			End If
+			
+			If InStr(wname, "ƒnƒCƒƒK") > 0 Or InStr(wname, "ƒoƒXƒ^[") > 0 Or InStr(wname, "‘å") > 0 Or Left(wname, 2) = "ƒMƒK" Then
+				wtype = "ƒoƒXƒ^[ƒr[ƒ€ƒ‰ƒCƒtƒ‹"
+			ElseIf InStr(wname, "ƒƒK") > 0 Or InStr(wname, "ƒnƒC") > 0 Or InStr(wname, "ƒoƒY[ƒJ") > 0 Then 
+				If double_weapon Then
+					wtype = "ƒ_ƒuƒ‹ƒr[ƒ€ƒ‰ƒ“ƒ`ƒƒ["
+				Else
+					wtype = "ƒr[ƒ€ƒ‰ƒ“ƒ`ƒƒ["
+				End If
+				If InStr(wname, "ƒ‰ƒCƒtƒ‹") > 0 Then
+					wtype = "ƒoƒXƒ^[ƒr[ƒ€ƒ‰ƒCƒtƒ‹"
+				End If
+			ElseIf CountAttack0(u, w) >= 4 Then 
+				wtype = "ƒ}ƒVƒ“ƒKƒ“"
+			ElseIf InStr(wname, "ƒsƒXƒgƒ‹") > 0 Or InStr(wname, "ƒ~ƒj") > 0 Or InStr(wname, "¬") > 0 Then 
+				wtype = "ƒŒ[ƒU[ƒKƒ“"
+			Else
+				If double_weapon Then
+					wtype = "ƒ_ƒuƒ‹ƒr[ƒ€ƒ‰ƒCƒtƒ‹"
+				Else
+					wtype = "ƒr[ƒ€ƒ‰ƒCƒtƒ‹"
+				End If
+			End If
 			GoTo FoundWeaponType
 		End If
-		
-		If InStr(wname, "ãƒã‚¤ãƒ¡ã‚¬") > 0 Or InStr(wname, "ãƒã‚¹ã‚¿ãƒ¼") > 0 Or InStr(wname, "å¤§") > 0 Or Left(wname, 2) = "ã‚®ã‚¬" Then
-			wtype = "Invalid_string_refer_to_original_code"
-		ElseIf InStr(wname, "ãƒ¡ã‚¬") > 0 Or InStr(wname, "ãƒã‚¤") > 0 Or InStr(wname, "ãƒã‚ºãƒ¼ã‚«") > 0 Then 
-			If double_weapon Then
-				wtype = "Invalid_string_refer_to_original_code"
-			Else
-				wtype = "Invalid_string_refer_to_original_code"
-			End If
-			If InStr(wname, "ãƒ©ã‚¤ãƒ•ãƒ«") > 0 Then
-				wtype = "Invalid_string_refer_to_original_code"
-			End If
-		ElseIf CountAttack0(u, w) >= 4 Then 
-			wtype = "ãƒã‚·ãƒ³ã‚¬ãƒ³"
-			'Invalid_string_refer_to_original_code_
-			'Then
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			wtype = "ãƒ¬ãƒ¼ã‚¶ãƒ¼ã‚¬ãƒ³"
-		Else
-			If double_weapon Then
-				wtype = "Invalid_string_refer_to_original_code"
-			Else
-				wtype = "Invalid_string_refer_to_original_code"
-			End If
-		End If
-		GoTo FoundWeaponType
-		'End If
 		
 SkipBeamWeapon: 
 		
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "ãƒ­ãƒ³ã‚°ãƒœã‚¦") > 0 _
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		wtype = "Invalid_string_refer_to_original_code"
-		GoTo FoundWeaponType
-		'End If
-		
-		If InStr(wname, "ã‚¯ãƒ­ã‚¹ãƒœã‚¦") > 0 Or InStr(wname, "ãƒœã‚¦ã‚¬ãƒ³") > 0 Then
-			wtype = "ã‚¯ãƒ­ã‚¹ãƒœã‚¦"
+		If InStr(wname, "‹|") > 0 Or InStr(wname, "ƒVƒ‡[ƒgƒ{ƒE") > 0 Or InStr(wname, "ƒƒ“ƒOƒ{ƒE") > 0 Then
+			wtype = "‹|"
 			GoTo FoundWeaponType
 		End If
 		
-		If InStr(wname, "ãƒã‚ºãƒ¼ã‚«") > 0 Then
-			wtype = "ãƒã‚ºãƒ¼ã‚«"
+		If InStr(wname, "ƒNƒƒXƒ{ƒE") > 0 Or InStr(wname, "ƒ{ƒEƒKƒ“") > 0 Then
+			wtype = "ƒNƒƒXƒ{ƒE"
 			GoTo FoundWeaponType
 		End If
 		
-		If InStr(wname, "Invalid_string_refer_to_original_code") > 0 Then
-			wtype = "Invalid_string_refer_to_original_code"
+		If InStr(wname, "ƒoƒY[ƒJ") > 0 Then
+			wtype = "ƒoƒY[ƒJ"
 			GoTo FoundWeaponType
 		End If
 		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		wtype = "ãƒ˜ãƒ“ãƒ¼ãƒã‚·ãƒ³ã‚¬ãƒ³"
-		wtype = "ãƒã‚·ãƒ³ã‚¬ãƒ³"
-		'End If
-		GoTo FoundWeaponType
-		'End If
-		
-		If InStr(wname, "ã‚¬ãƒˆãƒªãƒ³ã‚°") > 0 Then
-			wtype = "ã‚¬ãƒˆãƒªãƒ³ã‚°"
+		If InStr(wname, "ƒTƒuƒ}ƒVƒ“ƒKƒ“") > 0 Then
+			wtype = "ƒTƒuƒ}ƒVƒ“ƒKƒ“"
 			GoTo FoundWeaponType
 		End If
 		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		wtype = "ãƒ”ã‚¹ãƒˆãƒ«"
-		GoTo FoundWeaponType
-		'End If
-		
-		If InStr(wname, "Invalid_string_refer_to_original_code") > 0 Or InStr(wname, "ãƒªãƒœãƒ«ãƒ´ã‚¡ãƒ¼") > 0 Then
-			wtype = "Invalid_string_refer_to_original_code"
+		If InStr(wname, "ƒ}ƒVƒ“ƒKƒ“") > 0 Or InStr(wname, "‹@ŠÖe") > 0 Then
+			If InStr(wname, "ƒwƒr[") > 0 Or InStr(wname, "d") > 0 Then
+				wtype = "ƒwƒr[ƒ}ƒVƒ“ƒKƒ“"
+			Else
+				wtype = "ƒ}ƒVƒ“ƒKƒ“"
+			End If
 			GoTo FoundWeaponType
 		End If
 		
-		If InStr(wname, "Invalid_string_refer_to_original_code") > 0 Or InStr(wname, "Invalid_string_refer_to_original_code") > 0 Then
-			wtype = "Invalid_string_refer_to_original_code"
+		If InStr(wname, "ƒKƒgƒŠƒ“ƒO") > 0 Then
+			wtype = "ƒKƒgƒŠƒ“ƒO"
 			GoTo FoundWeaponType
 		End If
 		
-		If InStr(wname, "Invalid_string_refer_to_original_code") > 0 Then
-			wtype = "Invalid_string_refer_to_original_code"
+		If InStr(wname, "ƒsƒXƒgƒ‹") > 0 Or InStr(wname, "Œe") > 0 Then
+			wtype = "ƒsƒXƒgƒ‹"
 			GoTo FoundWeaponType
 		End If
 		
-		If InStr(wname, "Invalid_string_refer_to_original_code") > 0 Then
-			wtype = "Invalid_string_refer_to_original_code"
+		If InStr(wname, "ƒŠƒ{ƒ‹ƒo[") > 0 Or InStr(wname, "ƒŠƒ{ƒ‹ƒ”ƒ@[") > 0 Then
+			wtype = "ƒŠƒ{ƒ‹ƒo["
 			GoTo FoundWeaponType
 		End If
 		
-		'Invalid_string_refer_to_original_code_
-		'Or Right$(wname, 2) = "ã‚¬ãƒ³" _
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		wtype = "ãƒ©ã‚¤ãƒ•ãƒ«"
-		GoTo FoundWeaponType
-		'End If
-		
-		If InStr(wname, "å¯¾æˆ¦è»Šãƒ©ã‚¤ãƒ•ãƒ«") > 0 Then
-			wtype = "å¯¾æˆ¦è»Šãƒ©ã‚¤ãƒ•ãƒ«"
+		If InStr(wname, "ƒVƒ‡ƒbƒgƒKƒ“") > 0 Or InStr(wname, "ƒ‰ƒCƒAƒbƒgƒKƒ“") > 0 Then
+			wtype = "ƒVƒ‡ƒbƒgƒKƒ“"
 			GoTo FoundWeaponType
 		End If
 		
-		If InStr(wname, "å¯¾ç‰©ãƒ©ã‚¤ãƒ•ãƒ«") > 0 Then
-			wtype = "å¯¾ç‰©ãƒ©ã‚¤ãƒ•ãƒ«"
+		If InStr(wname, "ƒX[ƒp[ƒKƒ“") > 0 Then
+			wtype = "ƒX[ƒp[ƒKƒ“"
 			GoTo FoundWeaponType
 		End If
 		
-		If InStr(wname, "æ¶ˆç«å™¨") > 0 Then
-			wtype = "æ¶ˆç«å™¨"
+		If InStr(wname, "ƒX[ƒp[ƒLƒƒƒmƒ“") > 0 Then
+			wtype = "ƒX[ƒp[ƒLƒƒƒmƒ“"
 			GoTo FoundWeaponType
 		End If
 		
-		If InStr(wname, "æ”¾æ°´") > 0 Or InStr(wname, "Invalid_string_refer_to_original_code") > 0 Then
-			wtype = "Invalid_string_refer_to_original_code"
+		If InStr(wname, "ƒ‰ƒCƒtƒ‹") > 0 Or (Right(wname, 1) = "e" And Right(wname, 2) <> "‹@e") Or Right(wname, 2) = "ƒKƒ“" Then
+			wtype = "ƒ‰ƒCƒtƒ‹"
+			GoTo FoundWeaponType
+		End If
+		
+		If InStr(wname, "‘ÎíÔƒ‰ƒCƒtƒ‹") > 0 Then
+			wtype = "‘ÎíÔƒ‰ƒCƒtƒ‹"
+			GoTo FoundWeaponType
+		End If
+		
+		If InStr(wname, "‘Î•¨ƒ‰ƒCƒtƒ‹") > 0 Then
+			wtype = "‘Î•¨ƒ‰ƒCƒtƒ‹"
+			GoTo FoundWeaponType
+		End If
+		
+		If InStr(wname, "Á‰ÎŠí") > 0 Then
+			wtype = "Á‰ÎŠí"
+			GoTo FoundWeaponType
+		End If
+		
+		If InStr(wname, "•ú…") > 0 Or InStr(wname, "•úËŠí") > 0 Then
+			wtype = "•ú…e"
 			GoTo FoundWeaponType
 		End If
 		
 SkipShootingWeapon: 
 		
-		'Invalid_string_refer_to_original_code
+		'‘Î‰‚·‚é•Ší‚ÍŒ©‚Â‚©‚ç‚È‚©‚Á‚½
 		WeaponInHand = ""
 		GoTo SkipWeaponAnimation
 		
 FoundWeaponType: 
 		
-		'Invalid_string_refer_to_original_code
+		'\‚¦‚Ä‚¢‚é•Ší‚ğ‹L˜^
 		WeaponInHand = wtype
 		
-		'Invalid_string_refer_to_original_code
-		aname = wtype & "æº–å‚™"
+		'•\¦‚·‚é€”õƒAƒjƒ‚Ìí—Ş
+		aname = wtype & "€”õ"
 		
-		'è‰²
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		If InStr(wname, "Invalid_string_refer_to_original_code") > 0 Then
-			aname = aname & " ãƒ”ãƒ³ã‚¯"
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			aname = aname & " ã‚°ãƒªãƒ¼ãƒ³"
-		ElseIf InStr(wname, "ãƒ¬ãƒ¼ã‚¶ãƒ¼") > 0 Then 
-			aname = aname & " ãƒ–ãƒ«ãƒ¼"
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			aname = aname & " ã‚¤ã‚¨ãƒ­ãƒ¼"
+		'F
+		If InStr(wtype, "ƒr[ƒ€ƒT[ƒxƒ‹") > 0 Or InStr(wtype, "ƒr[ƒ€ƒJƒbƒ^[") > 0 Or wtype = "ƒr[ƒ€ƒiƒCƒt" Or wtype = "ƒ‰ƒCƒgƒZƒCƒo[" Then
+			If InStr(wname, "ƒr[ƒ€") > 0 Then
+				aname = aname & " ƒsƒ“ƒN"
+			ElseIf InStr(wname, "ƒvƒ‰ƒYƒ}") > 0 Then 
+				aname = aname & " ƒOƒŠ[ƒ“"
+			ElseIf InStr(wname, "ƒŒ[ƒU[") > 0 Then 
+				aname = aname & " ƒuƒ‹["
+			ElseIf InStr(wname, "ƒ‰ƒCƒg") > 0 Then 
+				aname = aname & " ƒCƒGƒ["
+			End If
 		End If
-		'End If
 		
-		'åŠ¹æœéŸ³
+		'Œø‰Ê‰¹
 		If Len(sname) > 0 Then
 			aname = aname & " " & sname
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'“ñ“—¬
 		If double_weapon Then
-			aname = aname & "Invalid_string_refer_to_original_code"
+			aname = aname & " “ñ“—¬"
 		End If
 		
-		'æº–å‚™ã‚¢ãƒ‹ãƒ¡è¡¨ç¤º
+		'€”õƒAƒjƒ•\¦
 		ShowAnimation(aname)
 		
 SkipWeaponAnimation: 
 		
-		'Invalid_string_refer_to_original_code
+		'•Ší‚Ì€”õƒAƒjƒ‚ğƒXƒLƒbƒv‚·‚éê‡‚Í‚±‚±‚©‚ç
 		
 		If with_face_up Then
-			'Invalid_string_refer_to_original_code
-			aname = "Invalid_string_refer_to_original_code"
+			'ƒtƒFƒCƒXƒAƒbƒv‚ğ•\¦‚·‚é
+			aname = "ƒtƒFƒCƒXƒAƒbƒv€”õ"
 			
-			'Invalid_string_refer_to_original_code
-			If InStrNotNest(wclass, "ã‚µ") > 0 Then
-				aname = aname & " è¡æ’ƒ"
+			'ÕŒ‚‚ğ•\¦H
+			If InStrNotNest(wclass, "ƒT") > 0 Then
+				aname = aname & " ÕŒ‚"
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'ƒtƒFƒCƒXƒAƒbƒvƒAƒjƒ•\¦
 			ShowAnimation(aname)
 		End If
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'•Ší‚Ì–¼Ì‚©‚ç•Ší‚Ìí—Ş‚ğ”»’è
 	Private Function CheckWeaponType(ByRef wname As String, ByRef wclass As String) As String
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "ãƒ¬ãƒ¼ã‚¶ãƒ¼") > 0 _
-		'Or InStr(wname, "ãƒ–ãƒ©ã‚¹ã‚¿ãƒ¼") > 0 _
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "å‰£") > 0 _
-		'Or InStr(wname, "åˆ€") > 0 _
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		CheckWeaponType = "Invalid_string_refer_to_original_code"
-		'UPGRADE_WARNING: CheckWeaponType ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		CheckWeaponType = "Invalid_string_refer_to_original_code"
-		CheckWeaponType = "Invalid_string_refer_to_original_code"
-		'End If
-		Exit Function
-		'End If
-		
-		If InStr(wname, "Invalid_string_refer_to_original_code") > 0 Then
-			'Invalid_string_refer_to_original_code_
-			'Then
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			CheckWeaponType = "Invalid_string_refer_to_original_code"
-		Else
-			CheckWeaponType = "Invalid_string_refer_to_original_code"
-		End If
-		Exit Function
-		'End If
-		
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "ãƒ€ã‚¬ãƒ¼") > 0 _
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		CheckWeaponType = "Invalid_string_refer_to_original_code"
-		Exit Function
-		'End If
-		'End If
-		
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		'Invalid_string_refer_to_original_code_
-		'Or Right$(wname, 3) = "ã‚¹ãƒ­ãƒ¼" Or Right$(wname, 3) = "ã‚¹ãƒ­ã‚¦" _
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		CheckWeaponType = "Invalid_string_refer_to_original_code"
-		CheckWeaponType = "Invalid_string_refer_to_original_code"
-		'End If
-		Exit Function
-		'End If
-		
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		CheckWeaponType = "Invalid_string_refer_to_original_code"
-		Exit Function
-		'End If
-		
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		CheckWeaponType = "å¤§å‰£"
-		Exit Function
-		'End If
-		
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		CheckWeaponType = "Invalid_string_refer_to_original_code"
-		Exit Function
-		'End If
-		
-		If InStr(wname, "æ‰‹è£å‰£") > 0 Then
-			CheckWeaponType = "æ‰‹è£å‰£"
-			Exit Function
-		End If
-		
-		If Right(wname, 1) = "å‰£" And (Len(wname) <= 3 Or Right(wname, 2) = "ã®å‰£") Then
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			CheckWeaponType = "é»’å‰£"
-		Else
-			CheckWeaponType = "å‰£"
-		End If
-		Exit Function
-		'End If
-		
-		If InStr(wname, "ã‚½ãƒ¼ãƒ‰ãƒ–ãƒ¬ã‚¤ã‚«ãƒ¼") > 0 Then
-			CheckWeaponType = "ã‚½ãƒ¼ãƒ‰ãƒ–ãƒ¬ã‚¤ã‚«ãƒ¼"
-			Exit Function
-		End If
-		
-		If InStr(wname, "ãƒ¬ã‚¤ãƒ”ã‚¢") > 0 Then
-			CheckWeaponType = "ãƒ¬ã‚¤ãƒ”ã‚¢"
-			Exit Function
-		End If
-		
-		If InStr(wname, "ã‚·ãƒŸã‚¿ãƒ¼") > 0 Or InStr(wname, "ã‚µãƒ¼ãƒ™ãƒ«") > 0 Or InStr(wname, "Invalid_string_refer_to_original_code") > 0 Or InStr(wname, "Invalid_string_refer_to_original_code") > 0 Then
-			CheckWeaponType = "ã‚·ãƒŸã‚¿ãƒ¼"
-			Exit Function
-		End If
-		
-		If InStr(wname, "Invalid_string_refer_to_original_code") > 0 Then
-			CheckWeaponType = "Invalid_string_refer_to_original_code"
-			Exit Function
-		End If
-		
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		CheckWeaponType = "ãƒŠã‚®ãƒŠã‚¿"
-		Exit Function
-		'End If
-		
-		If InStr(wname, "ç«¹åˆ€") > 0 Then
-			CheckWeaponType = "ç«¹åˆ€"
-			Exit Function
-		End If
-		
-		If InStr(wname, "Invalid_string_refer_to_original_code") > 0 Or InStr(wname, "å°å¤ªåˆ€") > 0 Then
-			CheckWeaponType = "Invalid_string_refer_to_original_code"
-			Exit Function
-		End If
-		
-		If wname = "åˆ€" Or wname = "æ—¥æœ¬åˆ€" Or InStr(wname, "å¤ªåˆ€") > 0 Then
-			CheckWeaponType = "æ—¥æœ¬åˆ€"
-			Exit Function
-		End If
-		
-		If InStr(wname, "Invalid_string_refer_to_original_code") > 0 Then
-			CheckWeaponType = "Invalid_string_refer_to_original_code"
-			Exit Function
-		End If
-		
-		If InStr(wname, "åæ‰‹") > 0 Then
-			CheckWeaponType = "åæ‰‹"
-			Exit Function
-		End If
-		
-		If InStr(wname, "Invalid_string_refer_to_original_code") > 0 Then
-			CheckWeaponType = "Invalid_string_refer_to_original_code"
-			Exit Function
-		End If
-		
-		If InStr(wname, "Invalid_string_refer_to_original_code") > 0 Then
-			CheckWeaponType = "Invalid_string_refer_to_original_code"
-			Exit Function
-		End If
-		
-		If InStr(wname, "Invalid_string_refer_to_original_code") > 0 Or InStr(wname, "æ–§") > 0 Then
-			'Invalid_string_refer_to_original_code_
-			'Or InStr(wname, "ãƒãƒˆãƒ«") > 0 _
-			'Then
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			CheckWeaponType = "Invalid_string_refer_to_original_code"
-		Else
-			CheckWeaponType = "Invalid_string_refer_to_original_code"
-		End If
-		Exit Function
-		'End If
-		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		CheckWeaponType = "Invalid_string_refer_to_original_code"
-		Exit Function
-		'End If
-		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		CheckWeaponType = "Invalid_string_refer_to_original_code"
-		Exit Function
-		'End If
-		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		CheckWeaponType = "Invalid_string_refer_to_original_code"
-		Exit Function
-		'End If
-		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		CheckWeaponType = "Invalid_string_refer_to_original_code"
-		Exit Function
-		'End If
-		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		CheckWeaponType = "Invalid_string_refer_to_original_code"
-		Exit Function
-		'End If
-		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		CheckWeaponType = "Invalid_string_refer_to_original_code"
-		Exit Function
-		'End If
-		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		CheckWeaponType = "Invalid_string_refer_to_original_code"
-		Exit Function
-		'End If
-		
-		If InStr(wname, "Invalid_string_refer_to_original_code") > 0 Then
-			CheckWeaponType = "Invalid_string_refer_to_original_code"
-			Exit Function
-		End If
-		
-		If InStr(wname, "ã‚¹ãƒ‘ãƒŠ") > 0 Then
-			CheckWeaponType = "ã‚¹ãƒ‘ãƒŠ"
-			Exit Function
-		End If
-		
-		If InStr(wname, "ãƒ¡ã‚¤ã‚¹") > 0 Then
-			CheckWeaponType = "ãƒ¡ã‚¤ã‚¹"
-			Exit Function
-		End If
-		
-		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		CheckWeaponType = "Invalid_string_refer_to_original_code"
-		'End If
-		Exit Function
-		'End If
-		
-		
-		If InStr(wname, "Invalid_string_refer_to_original_code") > 0 Then
-			CheckWeaponType = "Invalid_string_refer_to_original_code"
-			Exit Function
-		End If
-		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		CheckWeaponType = "Invalid_string_refer_to_original_code"
-		Exit Function
-		'End If
-		
-		If InStr(wname, "Invalid_string_refer_to_original_code") > 0 Then
-			CheckWeaponType = "Invalid_string_refer_to_original_code"
-			Exit Function
-		End If
-		
-		If InStr(wname, "Invalid_string_refer_to_original_code") > 0 Then
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			CheckWeaponType = "Invalid_string_refer_to_original_code"
-		Else
-			CheckWeaponType = "Invalid_string_refer_to_original_code"
-		End If
-		Exit Function
-		'End If
-		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		CheckWeaponType = "Invalid_string_refer_to_original_code"
-		Exit Function
-		'End If
-		
-		If Right(wname, 3) = "ãƒ¢ãƒ¼ãƒ«" Then
-			CheckWeaponType = "ãƒ¢ãƒ¼ãƒ«"
-			Exit Function
-		End If
-		
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		CheckWeaponType = "é­"
-		Exit Function
-		'End If
-		
-		If wname = "ã‚µã‚¤" Then
-			CheckWeaponType = "ã‚µã‚¤"
-			Exit Function
-		End If
-		
-		If InStr(wname, "ãƒˆãƒ³ãƒ•ã‚¡ãƒ¼") > 0 Then
-			CheckWeaponType = "ãƒˆãƒ³ãƒ•ã‚¡ãƒ¼"
-			Exit Function
-		End If
-		
-		If InStr(wname, "Invalid_string_refer_to_original_code") > 0 Then
-			CheckWeaponType = "ã‚¯ãƒ­ãƒ¼"
-			Exit Function
-		End If
-		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		CheckWeaponType = "Invalid_string_refer_to_original_code"
-		Exit Function
-		'End If
-		
-		
-		If InStr(wname, "ãƒ¢ãƒ¼ãƒ‹ãƒ³ã‚°ã‚¹ã‚¿ãƒ¼") > 0 Then
-			CheckWeaponType = "ãƒ¢ãƒ¼ãƒ‹ãƒ³ã‚°ã‚¹ã‚¿ãƒ¼"
-			Exit Function
-		End If
-		
-		If InStr(wname, "ãƒ•ãƒ¬ã‚¤ãƒ«") > 0 Then
-			CheckWeaponType = "ãƒ•ãƒ¬ã‚¤ãƒ«"
-			Exit Function
-		End If
-		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		CheckWeaponType = "Invalid_string_refer_to_original_code"
-		Exit Function
-		'End If
-		
-		If InStr(wname, "Invalid_string_refer_to_original_code") > 0 Then
-			CheckWeaponType = "Invalid_string_refer_to_original_code"
-			Exit Function
-		End If
-		
-		If InStr(wname, "ãƒŒãƒ³ãƒãƒ£ã‚¯") > 0 Then
-			CheckWeaponType = "ãƒŒãƒ³ãƒãƒ£ã‚¯"
-			Exit Function
-		End If
-		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		CheckWeaponType = "Invalid_string_refer_to_original_code"
-		Exit Function
-		'End If
-		
-		If InStr(wname, "ãƒã‚§ãƒ¼ãƒ³") > 0 Then
-			CheckWeaponType = "ãƒã‚§ãƒ¼ãƒ³"
-			Exit Function
-		End If
-		
-		
-		If InStr(wname, "Invalid_string_refer_to_original_code") > 0 Then
-			CheckWeaponType = "Invalid_string_refer_to_original_code"
-			Exit Function
-		End If
-		
-		If InStr(wname, "ãƒãƒ£ã‚¯ãƒ©ãƒ ") > 0 Then
-			CheckWeaponType = "ãƒãƒ£ã‚¯ãƒ©ãƒ "
-			Exit Function
-		End If
-		
-		If InStr(wname, "ã‚½ãƒ¼ã‚µãƒ¼") > 0 Then
-			CheckWeaponType = "ã‚½ãƒ¼ã‚µãƒ¼"
-			Exit Function
-		End If
-		
-		If InStr(wname, "ã‚¯ãƒŠã‚¤") > 0 Then
-			CheckWeaponType = "ã‚¯ãƒŠã‚¤"
-			Exit Function
-		End If
-		
-		If InStr(wname, "çŸ³") > 0 Or InStr(wname, "ç¤«") > 0 Then
-			CheckWeaponType = "çŸ³"
-			Exit Function
-		End If
-		
-		If InStr(wname, "å²©") > 0 Then
-			CheckWeaponType = "å²©"
-			Exit Function
-		End If
-		
-		If InStr(wname, "Invalid_string_refer_to_original_code") > 0 Then
-			CheckWeaponType = "Invalid_string_refer_to_original_code"
-			Exit Function
-		End If
-		
-		If InStr(wname, "æ‰‹æ¦´å¼¾") > 0 Then
-			CheckWeaponType = "æ‰‹æ¦´å¼¾"
-			Exit Function
-		End If
-		
-		If InStr(wname, "ãƒãƒ†ãƒˆã‚¹ãƒãƒƒã‚·ãƒ£ãƒ¼") > 0 Then
-			CheckWeaponType = "ãƒãƒ†ãƒˆã‚¹ãƒãƒƒã‚·ãƒ£ãƒ¼"
-			Exit Function
-		End If
-		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		CheckWeaponType = "Invalid_string_refer_to_original_code"
-		Exit Function
-		'End If
-		
-		If InStr(wname, "Invalid_string_refer_to_original_code") > 0 Then
-			If InStr(wname, "æŠ•ã’") > 0 Then
-				CheckWeaponType = "Invalid_string_refer_to_original_code"
+		If InStr(wname, "ƒr[ƒ€") > 0 Or InStr(wname, "ƒvƒ‰ƒYƒ}") > 0 Or InStr(wname, "ƒŒ[ƒU[") > 0 Or InStr(wname, "ƒuƒ‰ƒXƒ^[") > 0 Or InStr(wname, "ƒ‰ƒCƒg") > 0 Then
+			If InStr(wname, "ƒT[ƒxƒ‹") > 0 Or InStr(wname, "ƒZƒCƒo[") > 0 Or InStr(wname, "ƒuƒŒ[ƒh") > 0 Or InStr(wname, "ƒ\[ƒh") > 0 Or InStr(wname, "Œ•") > 0 Or InStr(wname, "“") > 0 Then
+				If InStr(wname, "ƒnƒCƒp[") > 0 Or InStr(wname, "ƒƒ“ƒO") > 0 Or InStr(wname, "‘å") > 0 Or InStr(wname, "‚") > 0 Then
+					CheckWeaponType = "ƒnƒCƒp[ƒr[ƒ€ƒT[ƒxƒ‹"
+				ElseIf InStr(wname, "ƒZƒCƒo[") > 0 Then 
+					CheckWeaponType = "ƒ‰ƒCƒgƒZƒCƒo["
+				Else
+					CheckWeaponType = "ƒr[ƒ€ƒT[ƒxƒ‹"
+				End If
+				Exit Function
+			End If
+			
+			If InStr(wname, "ƒJƒbƒ^[") > 0 Then
+				If InStr(wname, "ƒnƒCƒp[") > 0 Or InStr(wname, "ƒƒ“ƒO") > 0 Or InStr(wname, "‘å") > 0 Or InStr(wname, "‚") > 0 Then
+					CheckWeaponType = "ƒGƒiƒW[ƒuƒŒ[ƒh"
+				Else
+					CheckWeaponType = "ƒGƒiƒW[ƒJƒbƒ^["
+				End If
+				Exit Function
+			End If
+			
+			If InStr(wname, "ƒiƒCƒt") > 0 Or InStr(wname, "ƒ_ƒK[") > 0 Then
+				CheckWeaponType = "ƒr[ƒ€ƒiƒCƒt"
 				Exit Function
 			End If
 		End If
 		
-		If InStr(wname, "ç«ç‚ç“¶") > 0 Then
-			CheckWeaponType = "ç«ç‚ç“¶"
+		If InStr(wname, "ƒiƒCƒt") > 0 Or InStr(wname, "ƒ_ƒK[") > 0 Or InStr(wname, "’Z“") > 0 Or InStr(wname, "¬“") > 0 Then
+			If InStr(wname, "“Š") > 0 Or InStr(wname, "”ò‚Ñ") > 0 Or Right(wname, 3) = "ƒXƒ[" Or Right(wname, 3) = "ƒXƒƒE" Or InStrNotNest(wclass, "À") > 0 Then
+				CheckWeaponType = "“Š‚°ƒiƒCƒt"
+			Else
+				CheckWeaponType = "ƒiƒCƒt"
+			End If
 			Exit Function
 		End If
 		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		CheckWeaponType = "Invalid_string_refer_to_original_code"
-		Exit Function
-		'End If
-		
-		If InStr(wname, "æ‰‹éŒ ") > 0 Then
-			CheckWeaponType = "Invalid_string_refer_to_original_code"
+		If InStr(wname, "ƒVƒ‡[ƒgƒ\[ƒh") > 0 Or InStr(wname, "’ZŒ•") > 0 Or InStr(wname, "ƒXƒ‚[ƒ‹ƒ\[ƒh") > 0 Or InStr(wname, "¬Œ•") > 0 Then
+			CheckWeaponType = "ƒVƒ‡[ƒgƒ\[ƒh"
 			Exit Function
 		End If
 		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		CheckWeaponType = "Invalid_string_refer_to_original_code"
-		Exit Function
-		'End If
+		If InStr(wname, "ƒOƒŒ[ƒgƒ\[ƒh") > 0 Or InStr(wname, "‘åŒ•") > 0 Or InStr(wname, "ƒnƒ“ƒfƒbƒhƒ\[ƒh") > 0 Or InStr(wname, "—¼èŒ•") > 0 Then
+			CheckWeaponType = "‘åŒ•"
+			Exit Function
+		End If
 		
-		If InStr(wname, "æœ­") > 0 Then
-			CheckWeaponType = "ãŠæœ­"
+		If InStr(wname, "ƒƒ“ƒOƒ\[ƒh") > 0 Or InStr(wname, "’·Œ•") > 0 Or InStr(wname, "ƒoƒXƒ^[ƒhƒ\[ƒh") > 0 Or wname = "ƒ\[ƒh" Then
+			CheckWeaponType = "ƒ\[ƒh"
+			Exit Function
+		End If
+		
+		If InStr(wname, "è— Œ•") > 0 Then
+			CheckWeaponType = "è— Œ•"
+			Exit Function
+		End If
+		
+		If Right(wname, 1) = "Œ•" And (Len(wname) <= 3 Or Right(wname, 2) = "‚ÌŒ•") Then
+			If InStr(wname, "ƒuƒ‰ƒbƒN") > 0 Or InStr(wname, "•") > 0 Then
+				CheckWeaponType = "•Œ•"
+			Else
+				CheckWeaponType = "Œ•"
+			End If
+			Exit Function
+		End If
+		
+		If InStr(wname, "ƒ\[ƒhƒuƒŒƒCƒJ[") > 0 Then
+			CheckWeaponType = "ƒ\[ƒhƒuƒŒƒCƒJ["
+			Exit Function
+		End If
+		
+		If InStr(wname, "ƒŒƒCƒsƒA") > 0 Then
+			CheckWeaponType = "ƒŒƒCƒsƒA"
+			Exit Function
+		End If
+		
+		If InStr(wname, "ƒVƒ~ƒ^[") > 0 Or InStr(wname, "ƒT[ƒxƒ‹") > 0 Or InStr(wname, "ƒJƒbƒgƒ‰ƒX") > 0 Or InStr(wname, "O“úŒ“") > 0 Then
+			CheckWeaponType = "ƒVƒ~ƒ^["
+			Exit Function
+		End If
+		
+		If InStr(wname, "ƒVƒ‡[ƒeƒ‹") > 0 Then
+			CheckWeaponType = "ƒVƒ‡[ƒeƒ‹"
+			Exit Function
+		End If
+		
+		If InStr(wname, "ƒiƒMƒiƒ^") > 0 Or InStr(wname, "“ã“") > 0 Or InStr(wname, "ƒOƒŒƒCƒu") > 0 Then
+			CheckWeaponType = "ƒiƒMƒiƒ^"
+			Exit Function
+		End If
+		
+		If InStr(wname, "’|“") > 0 Then
+			CheckWeaponType = "’|“"
+			Exit Function
+		End If
+		
+		If InStr(wname, "˜e·") > 0 Or InStr(wname, "¬‘¾“") > 0 Then
+			CheckWeaponType = "˜e·"
+			Exit Function
+		End If
+		
+		If wname = "“" Or wname = "“ú–{“" Or InStr(wname, "‘¾“") > 0 Then
+			CheckWeaponType = "“ú–{“"
+			Exit Function
+		End If
+		
+		If InStr(wname, "”EÒ“") > 0 Then
+			CheckWeaponType = "”EÒ“"
+			Exit Function
+		End If
+		
+		If InStr(wname, "\è") > 0 Then
+			CheckWeaponType = "\è"
+			Exit Function
+		End If
+		
+		If InStr(wname, "Â—´“") > 0 Then
+			CheckWeaponType = "Â—´“"
+			Exit Function
+		End If
+		
+		If InStr(wname, "ƒgƒ}ƒz[ƒN") > 0 Then
+			CheckWeaponType = "ƒgƒ}ƒz[ƒN"
+			Exit Function
+		End If
+		
+		If InStr(wname, "ƒAƒbƒNƒX") > 0 Or InStr(wname, "•€") > 0 Then
+			If InStr(wname, "ƒOƒŒ[ƒg") > 0 Or InStr(wname, "—¼") > 0 Or InStr(wname, "ƒoƒgƒ‹") > 0 Then
+				CheckWeaponType = "—¼n•€"
+			Else
+				CheckWeaponType = "•Ğn•€"
+			End If
+			Exit Function
+		End If
+		
+		If InStr(wname, "ƒTƒCƒY") > 0 Or InStr(wname, "‘åŠ™") > 0 Then
+			CheckWeaponType = "‘åŠ™"
+			Exit Function
+		End If
+		
+		If InStr(wname, "Š™") > 0 Then
+			CheckWeaponType = "Š™"
+			Exit Function
+		End If
+		
+		If InStr(wname, "ƒXƒ^ƒbƒt") > 0 Or InStr(wname, "ñ") > 0 Then
+			CheckWeaponType = "ñ"
+			Exit Function
+		End If
+		
+		If InStr(wname, "–_") > 0 Then
+			CheckWeaponType = "–_"
+			Exit Function
+		End If
+		
+		If InStr(wname, "Œx–_") > 0 Then
+			CheckWeaponType = "Œx–_"
+			Exit Function
+		End If
+		
+		If wname = "–_" Then
+			CheckWeaponType = "–_"
+			Exit Function
+		End If
+		
+		If InStr(wname, "“SƒpƒCƒv") > 0 Then
+			CheckWeaponType = "“SƒpƒCƒv"
+			Exit Function
+		End If
+		
+		If InStr(wname, "ƒXƒ^ƒ“ƒƒbƒh") > 0 Then
+			CheckWeaponType = "ƒXƒ^ƒ“ƒƒbƒh"
+			Exit Function
+		End If
+		
+		If InStr(wname, "ƒXƒpƒi") > 0 Then
+			CheckWeaponType = "ƒXƒpƒi"
+			Exit Function
+		End If
+		
+		If InStr(wname, "ƒƒCƒX") > 0 Then
+			CheckWeaponType = "ƒƒCƒX"
 			Exit Function
 		End If
 		
 		
-		If InStr(wname, "ãƒªãƒœãƒ³") > 0 Then
-			CheckWeaponType = "ãƒªãƒœãƒ³"
-			Exit Function
-		End If
-		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		CheckWeaponType = "Invalid_string_refer_to_original_code"
-		Exit Function
-		'End If
-		
-		
-		If InStr(wname, "ã‚«ã‚¿ãƒ­ã‚°") > 0 Then
-			CheckWeaponType = "ã‚«ã‚¿ãƒ­ã‚°"
-			Exit Function
-		End If
-		
-		If InStr(wname, "ãƒ•ãƒ©ã‚¤ãƒ‘ãƒ³") > 0 Then
-			CheckWeaponType = "ãƒ•ãƒ©ã‚¤ãƒ‘ãƒ³"
-			Exit Function
-		End If
-		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		CheckWeaponType = "Invalid_string_refer_to_original_code"
-		Exit Function
-		'End If
-		
-		If InStr(wname, "Invalid_string_refer_to_original_code") > 0 Then
-			CheckWeaponType = "Invalid_string_refer_to_original_code"
-			Exit Function
-		End If
-		
-		If InStr(wname, "å”å‚˜") > 0 Then
-			CheckWeaponType = "å”å‚˜"
-			Exit Function
-		End If
-		
-		If InStr(wname, "Invalid_string_refer_to_original_code") > 0 Then
-			CheckWeaponType = "Invalid_string_refer_to_original_code"
-			Exit Function
-		End If
-		
-		If InStr(wname, "Invalid_string_refer_to_original_code") > 0 Then
-			CheckWeaponType = "Invalid_string_refer_to_original_code"
-			Exit Function
-		End If
-		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		If InStr(wname, "Invalid_string_refer_to_original_code") = 0 Then
-			CheckWeaponType = "Invalid_string_refer_to_original_code"
-			Exit Function
-		End If
-		'End If
-		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		CheckWeaponType = "Invalid_string_refer_to_original_code"
-		Exit Function
-		'End If
-		
-		If InStr(wname, "ã‚®ã‚¿ãƒ¼") > 0 Then
-			CheckWeaponType = "ã‚®ã‚¿ãƒ¼"
-			Exit Function
-		End If
-		
-		If InStr(wname, "ãƒãƒªã‚»ãƒ³") > 0 Then
-			CheckWeaponType = "ãƒãƒªã‚»ãƒ³"
-			Exit Function
-		End If
-		
-		If wname = "Invalid_string_refer_to_original_code" Then
-			CheckWeaponType = "Invalid_string_refer_to_original_code"
+		If InStr(wname, "ƒpƒ“ƒ`") > 0 Or InStr(wname, "ƒiƒbƒNƒ‹") > 0 Then
+			'ƒnƒ“ƒ}[ƒpƒ“ƒ`“™‚ªƒnƒ“ƒ}[‚É‚Ğ‚Á‚©‚©‚é‚Æ¢‚é‚½‚ßA‚±‚±‚Å”»’è
+			If InStrNotNest(wclass, "À") > 0 Then
+				CheckWeaponType = "ƒƒPƒbƒgƒpƒ“ƒ`"
+			End If
 			Exit Function
 		End If
 		
 		
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "ã‚¸ãƒ£ãƒ™ãƒªãƒ³") > 0 _
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		CheckWeaponType = "Invalid_string_refer_to_original_code"
-		Exit Function
-		'End If
-		
-		If InStr(wname, "ã‚¹ãƒ”ã‚¢") > 0 Then
-			CheckWeaponType = "ã‚¹ãƒ”ã‚¢"
+		If InStr(wname, "ƒEƒH[ƒnƒ“ƒ}[") > 0 Then
+			CheckWeaponType = "ƒEƒH[ƒnƒ“ƒ}["
 			Exit Function
 		End If
 		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		CheckWeaponType = "Invalid_string_refer_to_original_code"
-		Exit Function
-		'End If
-		
-		If InStr(wname, "ãƒ©ãƒ³ã‚¹") > 0 Or InStr(wname, "ãƒ©ãƒ³ã‚µãƒ¼") > 0 Then
-			CheckWeaponType = "ãƒ©ãƒ³ã‚¹"
+		If InStr(wname, "–Ø’Æ") > 0 Then
+			CheckWeaponType = "–Ø’Æ"
 			Exit Function
 		End If
 		
-		If InStr(wname, "ãƒ‘ã‚¤ã‚¯") > 0 Then
-			CheckWeaponType = "ãƒ©ãƒ³ã‚¹"
+		If InStr(wname, "ƒsƒRƒsƒRƒnƒ“ƒ}[") > 0 Then
+			CheckWeaponType = "ƒsƒRƒsƒRƒnƒ“ƒ}["
 			Exit Function
 		End If
 		
-		If InStr(wname, "ã‚¨ã‚¹ãƒˆãƒƒã‚¯") > 0 Then
-			CheckWeaponType = "ã‚¨ã‚¹ãƒˆãƒƒã‚¯"
+		If InStr(wname, "ƒnƒ“ƒ}[") > 0 Then
+			If InStrNotNest(wclass, "À") > 0 Then
+				CheckWeaponType = "½“S‹…"
+			Else
+				CheckWeaponType = "ƒnƒ“ƒ}["
+			End If
 			Exit Function
 		End If
 		
-		If wname = "Invalid_string_refer_to_original_code" Then
-			CheckWeaponType = "Invalid_string_refer_to_original_code"
+		If InStr(wname, "’Æ") > 0 Then
+			CheckWeaponType = "ƒnƒ“ƒ}["
 			Exit Function
 		End If
 		
-		If InStr(wname, "ãƒ‰ãƒªãƒ«") > 0 Then
-			CheckWeaponType = "ãƒ‰ãƒªãƒ«"
+		If Right(wname, 3) = "ƒ‚[ƒ‹" Then
+			CheckWeaponType = "ƒ‚[ƒ‹"
+			Exit Function
+		End If
+		
+		If Right(wname, 2) = "ƒ€ƒ`" Or InStr(wname, "•Ú") > 0 Or InStr(wname, "ƒEƒBƒbƒv") > 0 Then
+			CheckWeaponType = "•Ú"
+			Exit Function
+		End If
+		
+		If wname = "ƒTƒC" Then
+			CheckWeaponType = "ƒTƒC"
+			Exit Function
+		End If
+		
+		If InStr(wname, "ƒgƒ“ƒtƒ@[") > 0 Then
+			CheckWeaponType = "ƒgƒ“ƒtƒ@["
+			Exit Function
+		End If
+		
+		If InStr(wname, "“S‚Ì’Ü") > 0 Then
+			CheckWeaponType = "ƒNƒ["
+			Exit Function
+		End If
+		
+		If InStr(wname, "ƒnƒ‹ƒo[ƒh") > 0 Then
+			CheckWeaponType = "ƒnƒ‹ƒo[ƒh"
+			Exit Function
+		End If
+		
+		
+		If InStr(wname, "ƒ‚[ƒjƒ“ƒOƒXƒ^[") > 0 Then
+			CheckWeaponType = "ƒ‚[ƒjƒ“ƒOƒXƒ^["
+			Exit Function
+		End If
+		
+		If InStr(wname, "ƒtƒŒƒCƒ‹") > 0 Then
+			CheckWeaponType = "ƒtƒŒƒCƒ‹"
+			Exit Function
+		End If
+		
+		If InStr(wname, "½“S‹…") > 0 Then
+			CheckWeaponType = "½“S‹…"
+			Exit Function
+		End If
+		
+		If InStr(wname, "•ª“º") > 0 Then
+			CheckWeaponType = "•ª“º"
+			Exit Function
+		End If
+		
+		If InStr(wname, "ƒkƒ“ƒ`ƒƒƒN") > 0 Then
+			CheckWeaponType = "ƒkƒ“ƒ`ƒƒƒN"
+			Exit Function
+		End If
+		
+		If InStr(wname, "Oß") > 0 Then
+			CheckWeaponType = "Oß"
+			Exit Function
+		End If
+		
+		If InStr(wname, "ƒ`ƒF[ƒ“") > 0 Then
+			CheckWeaponType = "ƒ`ƒF[ƒ“"
+			Exit Function
+		End If
+		
+		
+		If InStr(wname, "ƒu[ƒƒ‰ƒ“") > 0 Then
+			CheckWeaponType = "ƒu[ƒƒ‰ƒ“"
+			Exit Function
+		End If
+		
+		If InStr(wname, "ƒ`ƒƒƒNƒ‰ƒ€") > 0 Then
+			CheckWeaponType = "ƒ`ƒƒƒNƒ‰ƒ€"
+			Exit Function
+		End If
+		
+		If InStr(wname, "ƒ\[ƒT[") > 0 Then
+			CheckWeaponType = "ƒ\[ƒT["
+			Exit Function
+		End If
+		
+		If InStr(wname, "ƒNƒiƒC") > 0 Then
+			CheckWeaponType = "ƒNƒiƒC"
+			Exit Function
+		End If
+		
+		If InStr(wname, "Î") > 0 Or InStr(wname, "âI") > 0 Then
+			CheckWeaponType = "Î"
+			Exit Function
+		End If
+		
+		If InStr(wname, "Šâ") > 0 Then
+			CheckWeaponType = "Šâ"
+			Exit Function
+		End If
+		
+		If InStr(wname, "“S‹…") > 0 Then
+			CheckWeaponType = "“S‹…"
+			Exit Function
+		End If
+		
+		If InStr(wname, "èÖ’e") > 0 Then
+			CheckWeaponType = "èÖ’e"
+			Exit Function
+		End If
+		
+		If InStr(wname, "ƒ|ƒeƒgƒXƒ}ƒbƒVƒƒ[") > 0 Then
+			CheckWeaponType = "ƒ|ƒeƒgƒXƒ}ƒbƒVƒƒ["
+			Exit Function
+		End If
+		
+		If InStr(wname, "ƒ_ƒCƒiƒ}ƒCƒg") > 0 Then
+			CheckWeaponType = "ƒ_ƒCƒiƒ}ƒCƒg"
+			Exit Function
+		End If
+		
+		If InStr(wname, "”š’e") > 0 Then
+			If InStr(wname, "“Š‚°") > 0 Then
+				CheckWeaponType = "”š’e"
+				Exit Function
+			End If
+		End If
+		
+		If InStr(wname, "‰Î‰Š•r") > 0 Then
+			CheckWeaponType = "‰Î‰Š•r"
+			Exit Function
+		End If
+		
+		If InStr(wname, "ƒlƒbƒg") > 0 Or InStr(wname, "–Ô") > 0 Then
+			CheckWeaponType = "ƒlƒbƒg"
+			Exit Function
+		End If
+		
+		If InStr(wname, "èù") > 0 Then
+			CheckWeaponType = "ƒlƒbƒg"
+			Exit Function
+		End If
+		
+		If Right(wname, 2) = "ƒRƒ}" Then
+			CheckWeaponType = "ƒRƒ}"
+			Exit Function
+		End If
+		
+		If InStr(wname, "D") > 0 Then
+			CheckWeaponType = "‚¨D"
+			Exit Function
+		End If
+		
+		
+		If InStr(wname, "ƒŠƒ{ƒ“") > 0 Then
+			CheckWeaponType = "ƒŠƒ{ƒ“"
+			Exit Function
+		End If
+		
+		If InStr(wname, "ƒt[ƒv") > 0 Then
+			CheckWeaponType = "ƒt[ƒv"
+			Exit Function
+		End If
+		
+		
+		If InStr(wname, "ƒJƒ^ƒƒO") > 0 Then
+			CheckWeaponType = "ƒJƒ^ƒƒO"
+			Exit Function
+		End If
+		
+		If InStr(wname, "ƒtƒ‰ƒCƒpƒ“") > 0 Then
+			CheckWeaponType = "ƒtƒ‰ƒCƒpƒ“"
+			Exit Function
+		End If
+		
+		If InStr(wname, "ƒgƒ“ƒ{") > 0 Then
+			CheckWeaponType = "ƒgƒ“ƒ{"
+			Exit Function
+		End If
+		
+		If InStr(wname, "ƒ‚ƒbƒv") > 0 Then
+			CheckWeaponType = "ƒ‚ƒbƒv"
+			Exit Function
+		End If
+		
+		If InStr(wname, "“‚P") > 0 Then
+			CheckWeaponType = "“‚P"
+			Exit Function
+		End If
+		
+		If InStr(wname, "‹à‘®ƒoƒbƒg") > 0 Then
+			CheckWeaponType = "‹à‘®ƒoƒbƒg"
+			Exit Function
+		End If
+		
+		If InStr(wname, "“Bƒoƒbƒg") > 0 Then
+			CheckWeaponType = "“Bƒoƒbƒg"
+			Exit Function
+		End If
+		
+		If Right(wname, 3) = "ƒoƒbƒg" Then
+			If InStr(wname, "ƒwƒbƒhƒoƒbƒg") = 0 Then
+				CheckWeaponType = "ƒoƒbƒg"
+				Exit Function
+			End If
+		End If
+		
+		If InStr(wname, "îq") > 0 Then
+			CheckWeaponType = "îq"
+			Exit Function
+		End If
+		
+		If InStr(wname, "ƒMƒ^[") > 0 Then
+			CheckWeaponType = "ƒMƒ^["
+			Exit Function
+		End If
+		
+		If InStr(wname, "ƒnƒŠƒZƒ“") > 0 Then
+			CheckWeaponType = "ƒnƒŠƒZƒ“"
+			Exit Function
+		End If
+		
+		If wname = "ƒSƒ‹ƒtƒhƒ‰ƒCƒo[" Then
+			CheckWeaponType = "ƒSƒ‹ƒtƒhƒ‰ƒCƒo["
+			Exit Function
+		End If
+		
+		
+		If InStr(wname, "ƒgƒ‰ƒCƒfƒ“ƒg") > 0 Or InStr(wname, "O³‘„") > 0 Or InStr(wname, "ƒWƒƒƒxƒŠƒ“") > 0 Then
+			CheckWeaponType = "ƒgƒ‰ƒCƒfƒ“ƒg"
+			Exit Function
+		End If
+		
+		If InStr(wname, "ƒXƒsƒA") > 0 Then
+			CheckWeaponType = "ƒXƒsƒA"
+			Exit Function
+		End If
+		
+		If InStr(wname, "‘„") > 0 Then
+			CheckWeaponType = "˜a‘„"
+			Exit Function
+		End If
+		
+		If InStr(wname, "ƒ‰ƒ“ƒX") > 0 Or InStr(wname, "ƒ‰ƒ“ƒT[") > 0 Then
+			CheckWeaponType = "ƒ‰ƒ“ƒX"
+			Exit Function
+		End If
+		
+		If InStr(wname, "ƒpƒCƒN") > 0 Then
+			CheckWeaponType = "ƒ‰ƒ“ƒX"
+			Exit Function
+		End If
+		
+		If InStr(wname, "ƒGƒXƒgƒbƒN") > 0 Then
+			CheckWeaponType = "ƒGƒXƒgƒbƒN"
+			Exit Function
+		End If
+		
+		If wname = "ƒƒbƒh" Then
+			CheckWeaponType = "ƒƒbƒh"
+			Exit Function
+		End If
+		
+		If InStr(wname, "ƒhƒŠƒ‹") > 0 Then
+			CheckWeaponType = "ƒhƒŠƒ‹"
 			Exit Function
 		End If
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'•Ší€”õ‚ÌŒø‰Ê‰¹
 	Public Sub PrepareWeaponSound(ByRef u As Unit, ByVal w As Short)
 		Dim wname, wclass As String
 		
-		'ãƒ•ãƒ©ã‚°ã‚’ã‚¯ãƒªã‚¢
+		'ƒtƒ‰ƒO‚ğƒNƒŠƒA
 		IsWavePlayed = False
 		
 		wname = u.WeaponNickname(w)
 		wclass = u.Weapon(w).Class_Renamed
 		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "ãƒ¬ãƒ¼ã‚¶ãƒ¼") > 0 _
-		'Or InStr(wname, "ãƒ–ãƒ©ã‚¹ã‚¿ãƒ¼") > 0 _
-		'Or InStr(wname, "é«˜å‘¨æ³¢") > 0 _
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Or wname = "ãƒ©ãƒ³ã‚µãƒ¼" _
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		PlayWave("BeamSaber.wav")
-		'End If
-		'End If
+		If InStrNotNest(wclass, "•") > 0 Or InStrNotNest(wclass, "“Ë") > 0 Then
+			If InStr(wname, "ƒr[ƒ€") > 0 Or InStr(wname, "ƒvƒ‰ƒYƒ}") > 0 Or InStr(wname, "ƒŒ[ƒU[") > 0 Or InStr(wname, "ƒuƒ‰ƒXƒ^[") > 0 Or InStr(wname, "‚ü”g") > 0 Or InStr(wname, "“d¥") > 0 Or wname = "ƒZƒCƒo[" Or wname = "ƒ‰ƒCƒgƒZƒCƒo[" Or wname = "ƒ‰ƒ“ƒT[" Then
+				PlayWave("BeamSaber.wav")
+			End If
+		End If
 		
-		'ãƒ•ãƒ©ã‚°ã‚’ã‚¯ãƒªã‚¢
+		'ƒtƒ‰ƒO‚ğƒNƒŠƒA
 		IsWavePlayed = False
 	End Sub
 	
 	
-	'Invalid_string_refer_to_original_code
+	'•Šíg—p‚Ì“ÁêŒø‰Ê
 	Public Sub AttackEffect(ByRef u As Unit, ByVal w As Short)
-		'Invalid_string_refer_to_original_code
+		'‰EƒNƒŠƒbƒN’†‚Í“ÁêŒø‰Ê‚ğƒXƒLƒbƒv
 		If IsRButtonPressed() Then
 			Exit Sub
 		End If
@@ -1019,7 +904,7 @@ SkipWeaponAnimation:
 		End If
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'•Šíg—p‚ÌƒAƒjƒ[ƒVƒ‡ƒ“
 	Public Sub AttackAnimation(ByRef u As Unit, ByVal w As Short)
 		Dim wtype, wname, wclass, wtype0 As String
 		Dim cname, aname, bmpname, cname0 As String
@@ -1031,656 +916,540 @@ SkipWeaponAnimation:
 		Dim is_handy_weapon As Boolean
 		Dim i As Short
 		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		ShowAnimation("Invalid_string_refer_to_original_code")
-		Exit Sub
-		'End If
+		'í“¬ƒAƒjƒ”ñ©“®‘I‘ğƒIƒvƒVƒ‡ƒ“
+		If IsOptionDefined("í“¬ƒAƒjƒ”ñ©“®‘I‘ğ") Then
+			ShowAnimation("ƒfƒtƒHƒ‹ƒgUŒ‚")
+			Exit Sub
+		End If
 		
 		wname = u.WeaponNickname(w)
 		wclass = u.Weapon(w).Class_Renamed
 		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		double_weapon = True
-		'End If
+		'“ñ“—¬H
+		If InStr(wname, "ƒ_ƒuƒ‹") > 0 Or InStr(wname, "ƒcƒCƒ“") > 0 Or InStr(wname, "ƒfƒ…ƒAƒ‹") > 0 Or InStr(wname, "‘o") > 0 Or InStr(wname, "“ñ“") > 0 Or InStr(wname, "‚Q˜A") > 0 Or InStr(wname, "“ñ˜A") > 0 Or InStr(wname, "˜A‘•") > 0 Then
+			double_weapon = True
+		End If
 		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "é€£") > 0 Or InStrNotNest(wclass, "é€£") > 0 _
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		double_attack = True
-		'End If
+		'˜A‘±UŒ‚H
+		If InStr(wname, "ƒ_ƒuƒ‹") > 0 Or InStr(wname, "ƒcƒCƒ“") > 0 Or InStr(wname, "ƒRƒ“ƒrƒl[ƒVƒ‡ƒ“") > 0 Or InStr(wname, "ƒRƒ“ƒ{") > 0 Or InStr(wname, "˜A") > 0 Or InStrNotNest(wclass, "˜A") > 0 Then
+			double_attack = True
+		End If
 		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		combo_attack = True
-		'End If
+		'—‘ÅH
+		If InStr(wname, "—‘Å") > 0 Or InStr(wname, "—•‘") > 0 Or InStr(wname, "—‚ê") > 0 Or InStr(wname, "•S—ó") > 0 Or (Right(wname, 4) = "ƒ‰ƒbƒVƒ…" And InStr(wname, "ƒNƒ‰ƒbƒVƒ…") = 0 And InStr(wname, "ƒXƒ‰ƒbƒVƒ…") = 0 And InStr(wname, "ƒXƒvƒ‰ƒbƒVƒ…") = 0 And InStr(wname, "ƒtƒ‰ƒbƒVƒ…") = 0) Then
+			combo_attack = True
+		End If
 		
-		'Invalid_string_refer_to_original_code
+		'‚±‚ê‚©‚ç•Ší‚Ìí—Ş‚ğ”»’è
 		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code_
-		'And InStrNotNest(wclass, "æ¥") = 0 _
-		'And InStrNotNest(wclass, "æ ¼") = 0 _
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		GoTo SkipInfightWeapon
-		'End If
+		'‚Ü‚¸‚Í”’•ºí—p•Ší‚Ì”»’è
+		If InStrNotNest(wclass, "•") = 0 And InStrNotNest(wclass, "“Ë") = 0 And InStrNotNest(wclass, "Ú") = 0 And InStrNotNest(wclass, "Ši") = 0 Then
+			GoTo SkipInfightWeapon
+		End If
 		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code_
-		'Or Right$(wname, 3) = "ã‚¹ãƒ­ãƒ¼" Or Right$(wname, 3) = "ã‚¹ãƒ­ã‚¦" _
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		GoTo SkipInfightWeapon
-		'End If
+		'“Š±•Ší‚ğœ‚­
+		If InStr(wname, "“Š") > 0 Or InStr(wname, "”ò‚Ñ") > 0 Or Right(wname, 3) = "ƒXƒ[" Or Right(wname, 3) = "ƒXƒƒE" Or InStrNotNest(wclass, "À") > 0 Then
+			GoTo SkipInfightWeapon
+		End If
 		
-		'Invalid_string_refer_to_original_code
-		If InStrNotNest(wclass, "Invalid_string_refer_to_original_code") > 0 Then
-			wtype = "Invalid_string_refer_to_original_code"
+		'ˆÚ“®ƒ}ƒbƒvUŒ‚
+		If InStrNotNest(wclass, "‚lˆÚ") > 0 Then
+			wtype = "‚l‚`‚oˆÚ“®ƒ^ƒbƒNƒ‹"
 			GoTo FoundWeaponType
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'“ËŒ‚Œn(•Ší‚ğ\‚¦‚Ä“Ëi‚·‚é)
 		
-		If InStr(wname, "çªæ’ƒ") > 0 Or InStr(wname, "Invalid_string_refer_to_original_code") > 0 Or InStr(wname, "ãƒãƒ£ãƒ¼ã‚¸") > 0 Then
+		If InStr(wname, "“ËŒ‚") > 0 Or InStr(wname, "“Ëi") > 0 Or InStr(wname, "ƒ`ƒƒ[ƒW") > 0 Then
 			Select Case WeaponInHand
 				Case ""
-					'Invalid_string_refer_to_original_code
+					'ŠY“–‚¹‚¸
 				Case Else
-					wtype = WeaponInHand & "çªæ’ƒ"
+					wtype = WeaponInHand & "“ËŒ‚"
 					GoTo FoundWeaponType
 			End Select
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'‘ÅŒ‚Œn‚ÌUŒ‚
 		
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Or Right$(wname, 5) = "ã‚¹ãƒˆãƒ©ã‚¤ã‚¯" _
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		wtype = "Invalid_string_refer_to_original_code"
-		GoTo FoundWeaponType
-		'End If
-		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		wtype = "Invalid_string_refer_to_original_code"
-		GoTo FoundWeaponType
-		'End If
-		
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "ãƒŠãƒƒã‚¯ãƒ«") > 0 Or InStr(wname, "ãƒ–ãƒ­ãƒ¼") > 0 _
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "æ®´") > 0 _
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		If combo_attack Then
-			wtype = "Invalid_string_refer_to_original_code"
-		ElseIf double_attack Then 
-			wtype = "Invalid_string_refer_to_original_code"
-		ElseIf InStrNotNest(wclass, "Invalid_string_refer_to_original_code") > 0 Then 
-			wtype = "Invalid_string_refer_to_original_code"
-		Else
-			wtype = "Invalid_string_refer_to_original_code"
-		End If
-		GoTo FoundWeaponType
-		'End If
-		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		wtype = "Invalid_string_refer_to_original_code"
-		GoTo FoundWeaponType
-		'End If
-		
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		wtype = "Invalid_string_refer_to_original_code"
-		GoTo FoundWeaponType
-		'End If
-		
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		wtype = "Invalid_string_refer_to_original_code"
-		GoTo FoundWeaponType
-		'End If
-		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		wtype = "Invalid_string_refer_to_original_code"
-		GoTo FoundWeaponType
-		'End If
-		
-		If InStr(wname, "Invalid_string_refer_to_original_code") > 0 Then
-			wtype = "Invalid_string_refer_to_original_code"
+		If InStr(wname, "Œ–@") > 0 Or Right(wname, 2) = "ƒA[ƒc" Or Right(wname, 5) = "ƒXƒgƒ‰ƒCƒN" Then
+			wtype = "˜A‘Å"
 			GoTo FoundWeaponType
 		End If
 		
-		'Invalid_string_refer_to_original_code
-		
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "ã‚·ãƒŸã‚¿ãƒ¼") > 0 Or InStr(wname, "ã‚µãƒ¼ãƒ™ãƒ«") > 0 _
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "ã‚¯ãƒ­ãƒ¼") > 0 Or InStr(wname, "çˆª") > 0 _
-		'Or InStr(wname, "ã²ã£ã‹ã") > 0 _
-		'Or InStr(wname, "ã‚¢ãƒ¼ãƒ ") > 0 _
-		'Or Right$(wname, 1) = "å°¾" _
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		If combo_attack Then
-			wtype = "Invalid_string_refer_to_original_code"
-		ElseIf double_attack Then 
-			wtype = "Invalid_string_refer_to_original_code"
-		ElseIf InStr(wname, "å›è»¢") > 0 Then 
-			wtype = "ç™½å…µå›è»¢"
-		ElseIf InStrNotNest(wclass, "Invalid_string_refer_to_original_code") > 0 Then 
-			wtype = "æŒ¯ã‚Šä¸Šã’"
-		Else
-			wtype = "ç™½å…µæ­¦å™¨"
-		End If
-		GoTo FoundWeaponType
-		'End If
-		
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		If combo_attack Then
-			wtype = "Invalid_string_refer_to_original_code"
-		ElseIf double_attack Then 
-			wtype = "Invalid_string_refer_to_original_code"
-		ElseIf InStr(wname, "å›è»¢") > 0 Then 
-			wtype = "ç™½å…µå›è»¢"
-		ElseIf InStrNotNest(wclass, "Invalid_string_refer_to_original_code") > 0 Then 
-			wtype = "æŒ¯ã‚Šä¸Šã’"
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			wtype = "Invalid_string_refer_to_original_code"
-		Else
-			wtype = "Invalid_string_refer_to_original_code"
-		End If
-		GoTo FoundWeaponType
-		'End If
-		
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		wtype = "Invalid_string_refer_to_original_code"
-		GoTo FoundWeaponType
-		'End If
-		
-		If InStr(wname, "Invalid_string_refer_to_original_code") > 0 Then
-			wtype = "Invalid_string_refer_to_original_code"
+		If InStr(wname, "Gè") > 0 Or InStr(wname, "G˜r") > 0 Then
+			wtype = "”’•º˜AŒ‚"
 			GoTo FoundWeaponType
 		End If
 		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		wtype = "Invalid_string_refer_to_original_code"
-		GoTo FoundWeaponType
-		'End If
-		
-		'å¤§ããæŒ¯ã‚Šã¾ã‚ã™æ­¦å™¨
-		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		wtype = "Invalid_string_refer_to_original_code"
-		GoTo FoundWeaponType
-		'End If
-		
-		If InStr(wname, "ãƒ¢ãƒ¼ãƒ‹ãƒ³ã‚°ã‚¹ã‚¿ãƒ¼") > 0 Then
-			wtype = "ãƒ¢ãƒ¼ãƒ‹ãƒ³ã‚°ã‚¹ã‚¿ãƒ¼"
+		If InStr(wname, "ƒpƒ“ƒ`") > 0 Or InStr(wname, "ƒ`ƒ‡ƒbƒv") > 0 Or InStr(wname, "ƒiƒbƒNƒ‹") > 0 Or InStr(wname, "ƒuƒ[") > 0 Or InStr(wname, "Œ") > 0 Or InStr(wname, "¶") > 0 Or InStr(wname, "‘Å") > 0 Or InStr(wname, "™¤") > 0 Or InStr(wname, "‰£") > 0 Or Right(wname, 1) = "è" Or Right(wname, 1) = "˜r" Then
+			If combo_attack Then
+				wtype = "—‘Å"
+			ElseIf double_attack Then 
+				wtype = "˜A‘Å"
+			ElseIf InStrNotNest(wclass, "‚i") > 0 Then 
+				wtype = "ƒAƒbƒp["
+			Else
+				wtype = "‘Å“Ë"
+			End If
 			GoTo FoundWeaponType
 		End If
 		
-		If InStr(wname, "ãƒ•ãƒ¬ã‚¤ãƒ«") > 0 Then
-			wtype = "ãƒ•ãƒ¬ã‚¤ãƒ«"
+		If InStr(wname, "Ši“¬") > 0 Or InStr(wname, "‰ö—Í") > 0 Then
+			wtype = "Ši“¬"
 			GoTo FoundWeaponType
 		End If
 		
-		If InStr(wname, "Invalid_string_refer_to_original_code") > 0 Then
-			wtype = "Invalid_string_refer_to_original_code"
+		If InStr(wname, "ƒ^ƒbƒNƒ‹") > 0 Or InStr(wname, "‘Ì“–") > 0 Or InStr(wname, "ƒ`ƒƒ[ƒW") > 0 Or InStr(wname, "‚Ô‚¿‚©‚Ü‚µ") > 0 Or InStr(wname, "‚©‚İ‚Â‚«") > 0 Then
+			wtype = "ƒ^ƒbƒNƒ‹"
 			GoTo FoundWeaponType
 		End If
 		
-		If InStr(wname, "ãƒã‚§ãƒ¼ãƒ³") > 0 And InStr(wname, "ãƒã‚§ãƒ¼ãƒ³ã‚½ãƒ¼") = 0 Then
-			wtype = "ãƒã‚§ãƒ¼ãƒ³"
+		If InStr(wname, "ƒLƒbƒN") > 0 Or InStr(wname, "R") > 0 Or InStr(wname, "‹r") > 0 Or Right(wname, 1) = "‘«" Then
+			wtype = "ƒLƒbƒN"
 			GoTo FoundWeaponType
 		End If
 		
-		If InStr(wname, "ãƒŒãƒ³ãƒãƒ£ã‚¯") > 0 Then
-			wtype = "ãƒŒãƒ³ãƒãƒ£ã‚¯"
+		If InStr(wname, "ƒwƒbƒhƒoƒbƒg") > 0 Or InStr(wname, "“ª“Ë") > 0 Then
+			wtype = "ƒwƒbƒhƒoƒbƒg"
 			GoTo FoundWeaponType
 		End If
 		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		wtype = "Invalid_string_refer_to_original_code"
-		GoTo FoundWeaponType
-		'End If
-		
-		'çªãåˆºã™æ­¦å™¨
-		
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "ãƒ©ãƒ³ã‚¹") > 0 Or InStr(wname, "ãƒ©ãƒ³ã‚µãƒ¼") > 0 _
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "ã‚¸ãƒ£ãƒ™ãƒªãƒ³") > 0 _
-		'Or InStr(wname, "ãƒ¬ã‚¤ãƒ”ã‚¢") > 0 _
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		If combo_attack Then
-			wtype = "Invalid_string_refer_to_original_code"
-		ElseIf double_attack Then 
-			wtype = "Invalid_string_refer_to_original_code"
-		Else
-			wtype = "Invalid_string_refer_to_original_code"
-		End If
-		GoTo FoundWeaponType
-		'End If
-		
-		'ç‰¹æ®Šãªæ ¼é—˜æ­¦å™¨
-		
-		If InStr(wname, "ãƒ‰ãƒªãƒ«") > 0 Then
-			wtype = "ãƒ‰ãƒªãƒ«"
+		If InStr(wname, "ƒAƒbƒp[") > 0 Then
+			wtype = "ƒAƒbƒp["
 			GoTo FoundWeaponType
 		End If
 		
-		If InStr(wname, "ãƒã‚§ãƒ¼ãƒ³ã‚½ãƒ¼") > 0 Then
-			wtype = "ãƒã‚§ãƒ¼ãƒ³ã‚½ãƒ¼"
+		'U‚Á‚ÄUŒ‚‚·‚é•Ší
+		
+		If InStr(wname, "ƒ\[ƒh") > 0 Or InStr(wname, "Œ•") > 0 Or InStr(wname, "ƒiƒCƒt") > 0 Or InStr(wname, "ƒ_ƒK[") > 0 Or InStr(wname, "ƒVƒ~ƒ^[") > 0 Or InStr(wname, "ƒT[ƒxƒ‹") > 0 Or InStr(wname, "ƒJƒbƒgƒ‰ƒX") > 0 Or InStr(wname, "ƒJƒbƒ^[") > 0 Or Right(wname, 2) = "ƒ€ƒ`" Or InStr(wname, "•Ú") > 0 Or InStr(wname, "ƒEƒBƒbƒv") > 0 Or InStr(wname, "ƒnƒ“ƒ}[") > 0 Or InStr(wname, "ƒƒbƒh") > 0 Or InStr(wname, "ƒNƒ[") > 0 Or InStr(wname, "’Ü") > 0 Or InStr(wname, "‚Ğ‚Á‚©‚«") > 0 Or InStr(wname, "ƒA[ƒ€") > 0 Or Right(wname, 1) = "”ö" Then
+			If combo_attack Then
+				wtype = "”’•º—Œ‚"
+			ElseIf double_attack Then 
+				wtype = "”’•º˜AŒ‚"
+			ElseIf InStr(wname, "‰ñ“]") > 0 Then 
+				wtype = "”’•º‰ñ“]"
+			ElseIf InStrNotNest(wclass, "‚i") > 0 Then 
+				wtype = "U‚èã‚°"
+			Else
+				wtype = "”’•º•Ší"
+			End If
 			GoTo FoundWeaponType
 		End If
 		
-		'Invalid_string_refer_to_original_code
-		If InStrNotNest(wclass, "æ­¦") > 0 Then
-			'Invalid_string_refer_to_original_code
+		If InStr(wname, "“") > 0 Or InStr(wname, "a") > 0 Or InStr(wname, "ƒuƒŒ[ƒh") > 0 Or InStr(wname, "n") > 0 Or InStr(wname, "ƒAƒbƒNƒX") > 0 Or InStr(wname, "•€") > 0 Or InStr(wname, "ƒJƒbƒg") > 0 Or InStr(wname, "ƒJƒbƒ^[") > 0 Or InStr(wname, "ƒXƒ‰ƒbƒVƒ…") > 0 Or InStr(wname, "‹‡") > 0 Then
+			If combo_attack Then
+				wtype = "”’•º—Œ‚"
+			ElseIf double_attack Then 
+				wtype = "ƒ_ƒuƒ‹aŒ‚"
+			ElseIf InStr(wname, "‰ñ“]") > 0 Then 
+				wtype = "”’•º‰ñ“]"
+			ElseIf InStrNotNest(wclass, "‚i") > 0 Then 
+				wtype = "U‚èã‚°"
+			ElseIf InStr(wname, "ƒuƒ‰ƒbƒN") > 0 Or InStr(wname, "•") > 0 Then 
+				wtype = "•aŒ‚"
+			Else
+				wtype = "aŒ‚"
+			End If
+			GoTo FoundWeaponType
+		End If
+		
+		If InStr(wname, "ƒTƒCƒY") > 0 Or InStr(wname, "Š™") > 0 Or InStr(wname, "ƒOƒŒƒCƒu") > 0 Or InStr(wname, "ƒiƒMƒiƒ^") > 0 Then
+			wtype = "U‚è‰º‚ë‚µ"
+			GoTo FoundWeaponType
+		End If
+		
+		If InStr(wname, "ƒVƒ‡[ƒeƒ‹") > 0 Then
+			wtype = "ƒ_ƒuƒ‹aŒ‚"
+			GoTo FoundWeaponType
+		End If
+		
+		If InStr(wname, "‰~ŒE–@") > 0 Then
+			wtype = "‰~ŒE–@"
+			GoTo FoundWeaponType
+		End If
+		
+		'‘å‚«‚­U‚è‚Ü‚í‚·•Ší
+		
+		If InStr(wname, "½“S‹…") > 0 Then
+			wtype = "½“S‹…"
+			GoTo FoundWeaponType
+		End If
+		
+		If InStr(wname, "ƒ‚[ƒjƒ“ƒOƒXƒ^[") > 0 Then
+			wtype = "ƒ‚[ƒjƒ“ƒOƒXƒ^["
+			GoTo FoundWeaponType
+		End If
+		
+		If InStr(wname, "ƒtƒŒƒCƒ‹") > 0 Then
+			wtype = "ƒtƒŒƒCƒ‹"
+			GoTo FoundWeaponType
+		End If
+		
+		If InStr(wname, "•ª“º") > 0 Then
+			wtype = "•ª“º"
+			GoTo FoundWeaponType
+		End If
+		
+		If InStr(wname, "ƒ`ƒF[ƒ“") > 0 And InStr(wname, "ƒ`ƒF[ƒ“ƒ\[") = 0 Then
+			wtype = "ƒ`ƒF[ƒ“"
+			GoTo FoundWeaponType
+		End If
+		
+		If InStr(wname, "ƒkƒ“ƒ`ƒƒƒN") > 0 Then
+			wtype = "ƒkƒ“ƒ`ƒƒƒN"
+			GoTo FoundWeaponType
+		End If
+		
+		If InStr(wname, "Oß") > 0 Then
+			wtype = "Oß"
+			GoTo FoundWeaponType
+		End If
+		
+		'“Ë‚«h‚·•Ší
+		
+		If InStr(wname, "ƒXƒsƒA") > 0 Or InStr(wname, "‘„") > 0 Or InStr(wname, "ƒ‰ƒ“ƒX") > 0 Or InStr(wname, "ƒ‰ƒ“ƒT[") > 0 Or InStr(wname, "ƒgƒ‰ƒCƒfƒ“ƒg") > 0 Or InStr(wname, "ƒWƒƒƒxƒŠƒ“") > 0 Or InStr(wname, "ƒŒƒCƒsƒA") > 0 Or wname = "ƒƒbƒh" Then
+			If combo_attack Then
+				wtype = "—“Ë"
+			ElseIf double_attack Then 
+				wtype = "˜A“Ë"
+			Else
+				wtype = "h“Ë"
+			End If
+			GoTo FoundWeaponType
+		End If
+		
+		'“Áê‚ÈŠi“¬•Ší
+		
+		If InStr(wname, "ƒhƒŠƒ‹") > 0 Then
+			wtype = "ƒhƒŠƒ‹"
+			GoTo FoundWeaponType
+		End If
+		
+		If InStr(wname, "ƒ`ƒF[ƒ“ƒ\[") > 0 Then
+			wtype = "ƒ`ƒF[ƒ“ƒ\["
+			GoTo FoundWeaponType
+		End If
+		
+		'Ú×‚ª•ª‚©‚ç‚È‚©‚Á‚½•Ší
+		If InStrNotNest(wclass, "•") > 0 Then
+			'‘•”õ‚µ‚Ä‚¢‚éƒAƒCƒeƒ€‚©‚ç•Ší‚ğŒŸõ
 			For i = 1 To u.CountItem
 				With u.Item(i)
-					'Invalid_string_refer_to_original_code_
-					'Invalid_string_refer_to_original_code_
-					'Or .Part = "æ­¦å™¨") _
-					'Then
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					wtype = CheckWeaponType(.Nickname, "")
-					If wtype = "" Then
-						wtype = CheckWeaponType(.Class0, "")
+					If .Activated And (.Part = "—¼è" Or .Part = "•Ğè" Or .Part = "•Ší") Then
+						wtype = CheckWeaponType(.Nickname, "")
+						If wtype = "" Then
+							wtype = CheckWeaponType(.Class0, "")
+						End If
+						Exit For
 					End If
-					Exit For
 				End With
 			Next 
+			Select Case wtype
+				Case "ƒXƒsƒA", "ƒ‰ƒ“ƒX", "ƒgƒ‰ƒCƒfƒ“ƒg", "˜a‘„", "ƒGƒXƒgƒbƒN"
+					If combo_attack Then
+						wtype = "—“Ë"
+					ElseIf double_attack Then 
+						wtype = "˜A“Ë"
+					Else
+						wtype = "h“Ë"
+					End If
+				Case Else
+					If combo_attack Then
+						wtype = "”’•º—Œ‚"
+					ElseIf double_attack Then 
+						wtype = "”’•º˜AŒ‚"
+					ElseIf InStr(wname, "‰ñ“]") > 0 Then 
+						wtype = "”’•º‰ñ“]"
+					ElseIf InStrNotNest(wclass, "‚i") > 0 Then 
+						wtype = "U‚èã‚°"
+					Else
+						wtype = "”’•º•Ší"
+					End If
+			End Select
+			GoTo FoundWeaponType
 		End If
-		'End With
-		'Next
-		Select Case wtype
-			Case "ã‚¹ãƒ”ã‚¢", "ãƒ©ãƒ³ã‚¹", "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code_
-				'"ã‚¨ã‚¹ãƒˆãƒƒã‚¯"
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				If combo_attack Then
-					wtype = "Invalid_string_refer_to_original_code"
-				ElseIf double_attack Then 
-					wtype = "Invalid_string_refer_to_original_code"
-				Else
-					wtype = "Invalid_string_refer_to_original_code"
-				End If
-			Case Else
-				If combo_attack Then
-					wtype = "Invalid_string_refer_to_original_code"
-				ElseIf double_attack Then 
-					wtype = "Invalid_string_refer_to_original_code"
-				ElseIf InStr(wname, "å›è»¢") > 0 Then 
-					wtype = "ç™½å…µå›è»¢"
-				ElseIf InStrNotNest(wclass, "Invalid_string_refer_to_original_code") > 0 Then 
-					wtype = "æŒ¯ã‚Šä¸Šã’"
-				Else
-					wtype = "ç™½å…µæ­¦å™¨"
-				End If
-		End Select
-		GoTo FoundWeaponType
-		'End If
 		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code_
-		'And InStrNotNest(wclass, "æ¥") > 0 _
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		wtype = "Invalid_string_refer_to_original_code"
-		GoTo FoundWeaponType
-		'End If
+		'Ú×‚ª•ª‚©‚ç‚È‚©‚Á‚½‹ßÚ‹Z
+		If InStrNotNest(wclass, "“Ë") > 0 And InStrNotNest(wclass, "Ú") > 0 Then
+			wtype = "Ši“¬"
+			GoTo FoundWeaponType
+		End If
 		
 SkipInfightWeapon: 
 		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		GoTo SkipThrowingWeapon
-		'End If
+		If InStrNotNest(wclass, "À") = 0 Then
+			GoTo SkipThrowingWeapon
+		End If
 		
-		'æŠ•æ“²æ­¦å™¨
-		'Invalid_string_refer_to_original_code
+		'“Š±•Ší
+		'(^‚Á’¼‚®”ò‚Ô•Ší)
 		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		wtype = "Invalid_string_refer_to_original_code"
-		GoTo FoundWeaponType
-		'End If
-		
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "ã‚¯ãƒŠã‚¤") > 0 Or InStr(wname, "è‹¦ç„¡") > 0 _
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		wtype = "Invalid_string_refer_to_original_code"
-		GoTo FoundWeaponType
-		'End If
-		
-		If InStr(wname, "çŸ³") > 0 Or InStr(wname, "ç¤«") > 0 Then
-			wtype = "çŸ³"
+		If InStr(wname, "‘„") > 0 Or InStr(wname, "ƒXƒsƒA") > 0 Then
+			wtype = "“Š‚°‘„"
 			GoTo FoundWeaponType
 		End If
 		
-		If InStr(wname, "å²©") > 0 Then
-			wtype = "å²©"
+		If InStr(wname, "ƒiƒCƒt") > 0 Or InStr(wname, "ƒ_ƒK[") > 0 Or InStr(wname, "ƒNƒiƒC") > 0 Or InStr(wname, "‹ê–³") > 0 Then
+			wtype = "“Š‚°ƒiƒCƒt"
 			GoTo FoundWeaponType
 		End If
 		
-		If InStr(wname, "Invalid_string_refer_to_original_code") > 0 Then
-			wtype = "Invalid_string_refer_to_original_code"
+		If InStr(wname, "Î") > 0 Or InStr(wname, "âI") > 0 Then
+			wtype = "Î"
 			GoTo FoundWeaponType
 		End If
 		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		wtype = "Invalid_string_refer_to_original_code"
-		GoTo FoundWeaponType
-		'End If
+		If InStr(wname, "Šâ") > 0 Then
+			wtype = "Šâ"
+			GoTo FoundWeaponType
+		End If
 		
-		If InStr(wname, "Invalid_string_refer_to_original_code") > 0 Then
-			If InStr(wname, "æŠ•ã’") > 0 Then
-				wtype = "Invalid_string_refer_to_original_code"
+		If InStr(wname, "“S‹…") > 0 Then
+			wtype = "“S‹…"
+			GoTo FoundWeaponType
+		End If
+		
+		If InStr(wname, "ƒ_ƒCƒiƒ}ƒCƒg") > 0 Then
+			wtype = "ƒ_ƒCƒiƒ}ƒCƒg"
+			GoTo FoundWeaponType
+		End If
+		
+		If InStr(wname, "”š’e") > 0 Then
+			If InStr(wname, "“Š‚°") > 0 Then
+				wtype = "”š’e"
 				GoTo FoundWeaponType
 			End If
 		End If
 		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		wtype = "Invalid_string_refer_to_original_code"
-		GoTo FoundWeaponType
-		'End If
-		
-		'Invalid_string_refer_to_original_code
-		
-		If InStr(wname, "Invalid_string_refer_to_original_code") > 0 Then
-			wtype = "Invalid_string_refer_to_original_code"
+		If InStr(wname, "ƒnƒ“ƒhƒOƒŒƒl[ƒh") > 0 Then
+			wtype = "ƒOƒŒƒl[ƒh“Š‚°"
 			GoTo FoundWeaponType
 		End If
 		
-		If InStr(wname, "Invalid_string_refer_to_original_code") > 0 Or InStr(wname, "æ–§") > 0 Then
-			'Invalid_string_refer_to_original_code_
-			'Or InStr(wname, "ãƒãƒˆãƒ«") > 0 _
-			'Then
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			wtype = "Invalid_string_refer_to_original_code"
-		Else
-			wtype = "Invalid_string_refer_to_original_code"
-		End If
-		GoTo FoundWeaponType
-		'End If
+		'(‰ñ“]‚µ‚È‚ª‚ç”ò‚Ô•Ší)
 		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		wtype = "å¤§éŒæŠ•æ“²"
-		GoTo FoundWeaponType
-		'End If
-		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		wtype = "éŒæŠ•æ“²"
-		GoTo FoundWeaponType
-		'End If
-		
-		If InStr(wname, "Invalid_string_refer_to_original_code") > 0 Then
-			wtype = "Invalid_string_refer_to_original_code"
+		If InStr(wname, "ƒgƒ}ƒz[ƒN") > 0 Then
+			wtype = "ƒgƒ}ƒz[ƒN“Š±"
 			GoTo FoundWeaponType
 		End If
 		
-		If InStr(wname, "ãƒãƒ£ã‚¯ãƒ©ãƒ ") > 0 Then
-			wtype = "ãƒãƒ£ã‚¯ãƒ©ãƒ "
-			GoTo FoundWeaponType
-		End If
-		
-		If InStr(wname, "æ‰‹è£å‰£") > 0 Then
-			wtype = "æ‰‹è£å‰£"
-			GoTo FoundWeaponType
-		End If
-		
-		If InStr(wname, "æ‰‹æ¦´å¼¾") > 0 Then
-			wtype = "æ‰‹æ¦´å¼¾"
-			GoTo FoundWeaponType
-		End If
-		
-		If InStr(wname, "Invalid_string_refer_to_original_code") > 0 Then
-			wtype = "Invalid_string_refer_to_original_code"
-			GoTo FoundWeaponType
-		End If
-		
-		If InStr(wname, "ç«ç‚ç“¶") > 0 Then
-			wtype = "ç«ç‚ç“¶"
-			GoTo FoundWeaponType
-		End If
-		
-		If InStr(wname, "æ‰‹éŒ ") > 0 Then
-			wtype = "æ‰‹éŒ "
-			GoTo FoundWeaponType
-		End If
-		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		wtype = "Invalid_string_refer_to_original_code"
-		GoTo FoundWeaponType
-		'End If
-		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		wtype = "Invalid_string_refer_to_original_code"
-		GoTo FoundWeaponType
-		'End If
-		
-		If InStr(wname, "æœ­") > 0 Then
-			wtype = "ãŠæœ­"
-			GoTo FoundWeaponType
-		End If
-		
-		'å¼“çŸ¢
-		
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "ãƒ­ãƒ³ã‚°ãƒœã‚¦") > 0 _
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		wtype = "å¼“çŸ¢"
-		GoTo FoundWeaponType
-		'End If
-		
-		If InStr(wname, "çŸ¢") > 0 Or InStr(wname, "ã‚¢ãƒ­ãƒ¼") > 0 Then
-			If CountAttack0(u, w) > 1 Then
-				wtype = "Invalid_string_refer_to_original_code"
+		If InStr(wname, "ƒAƒbƒNƒX") > 0 Or InStr(wname, "•€") > 0 Then
+			If InStr(wname, "ƒOƒŒ[ƒg") > 0 Or InStr(wname, "—¼") > 0 Or InStr(wname, "ƒoƒgƒ‹") > 0 Then
+				wtype = "—¼n•€“Š±"
 			Else
-				wtype = "çŸ¢"
+				wtype = "•Ğn•€“Š±"
 			End If
 			GoTo FoundWeaponType
 		End If
 		
-		'é è·é›¢ç³»ã®æ ¼é—˜æ­¦å™¨
-		
-		'æŒ¯ã‚‹æ­¦å™¨
-		
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		wtype = "ç™½å…µæ­¦å™¨"
-		GoTo FoundWeaponType
-		'End If
-		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		wtype = "Invalid_string_refer_to_original_code"
-		GoTo FoundWeaponType
-		'End If
-		
-		'å¤§ããæŒ¯ã‚Šã¾ã‚ã™æ­¦å™¨
-		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		wtype = "Invalid_string_refer_to_original_code"
-		GoTo FoundWeaponType
-		'End If
-		
-		If InStr(wname, "Invalid_string_refer_to_original_code") > 0 Then
-			wtype = "Invalid_string_refer_to_original_code"
+		If InStr(wname, "ƒTƒCƒY") > 0 Or InStr(wname, "‘åŠ™") > 0 Then
+			wtype = "‘åŠ™“Š±"
 			GoTo FoundWeaponType
 		End If
 		
-		If InStr(wname, "ãƒã‚§ãƒ¼ãƒ³") > 0 Then
-			wtype = "ãƒã‚§ãƒ¼ãƒ³"
+		If InStr(wname, "Š™") > 0 Then
+			wtype = "Š™“Š±"
 			GoTo FoundWeaponType
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		If InStr(wname, "ƒu[ƒƒ‰ƒ“") > 0 Then
+			wtype = "ƒu[ƒƒ‰ƒ“"
+			GoTo FoundWeaponType
+		End If
 		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		wtype = "Invalid_string_refer_to_original_code"
-		GoTo FoundWeaponType
-		'End If
+		If InStr(wname, "ƒ`ƒƒƒNƒ‰ƒ€") > 0 Then
+			wtype = "ƒ`ƒƒƒNƒ‰ƒ€"
+			GoTo FoundWeaponType
+		End If
+		
+		If InStr(wname, "è— Œ•") > 0 Then
+			wtype = "è— Œ•"
+			GoTo FoundWeaponType
+		End If
+		
+		If InStr(wname, "èÖ’e") > 0 Then
+			wtype = "èÖ’e"
+			GoTo FoundWeaponType
+		End If
+		
+		If InStr(wname, "ƒ|ƒeƒgƒ}ƒbƒVƒƒ[") > 0 Then
+			wtype = "ƒ|ƒeƒgƒ}ƒbƒVƒƒ["
+			GoTo FoundWeaponType
+		End If
+		
+		If InStr(wname, "‰Î‰Š•r") > 0 Then
+			wtype = "‰Î‰Š•r"
+			GoTo FoundWeaponType
+		End If
+		
+		If InStr(wname, "èù") > 0 Then
+			wtype = "èù"
+			GoTo FoundWeaponType
+		End If
+		
+		If InStr(wname, "ƒt[ƒv") > 0 Then
+			wtype = "ƒt[ƒv"
+			GoTo FoundWeaponType
+		End If
+		
+		If InStr(wname, "îq") > 0 Then
+			wtype = "îq"
+			GoTo FoundWeaponType
+		End If
+		
+		If InStr(wname, "D") > 0 Then
+			wtype = "‚¨D"
+			GoTo FoundWeaponType
+		End If
+		
+		'‹|–î
+		
+		If InStr(wname, "‹|") > 0 Or InStr(wname, "ƒVƒ‡[ƒgƒ{ƒE") > 0 Or InStr(wname, "ƒƒ“ƒOƒ{ƒE") > 0 Then
+			wtype = "‹|–î"
+			GoTo FoundWeaponType
+		End If
+		
+		If InStr(wname, "–î") > 0 Or InStr(wname, "ƒAƒ[") > 0 Then
+			If CountAttack0(u, w) > 1 Then
+				wtype = "–î˜AË"
+			Else
+				wtype = "–î"
+			End If
+			GoTo FoundWeaponType
+		End If
+		
+		'‰“‹——£Œn‚ÌŠi“¬•Ší
+		
+		'U‚é•Ší
+		
+		If Right(wname, 2) = "ƒ€ƒ`" Or InStr(wname, "•Ú") > 0 Or InStr(wname, "ƒEƒBƒbƒv") > 0 Then
+			wtype = "”’•º•Ší"
+			GoTo FoundWeaponType
+		End If
+		
+		If InStr(wname, "Gè") > 0 Or InStr(wname, "G˜r") > 0 Then
+			wtype = "”’•º˜AŒ‚"
+			GoTo FoundWeaponType
+		End If
+		
+		'‘å‚«‚­U‚è‚Ü‚í‚·•Ší
+		
+		If InStr(wname, "½“S‹…") > 0 Or InStr(wname, "ƒnƒ“ƒ}[") > 0 Then
+			wtype = "½“S‹…"
+			GoTo FoundWeaponType
+		End If
+		
+		If InStr(wname, "•ª“º") > 0 Then
+			wtype = "•ª“º"
+			GoTo FoundWeaponType
+		End If
+		
+		If InStr(wname, "ƒ`ƒF[ƒ“") > 0 Then
+			wtype = "ƒ`ƒF[ƒ“"
+			GoTo FoundWeaponType
+		End If
+		
+		'‚»‚Ì‘¼Ši“¬Œn
+		
+		If InStr(wname, "ƒpƒ“ƒ`") > 0 Or InStr(wname, "ƒiƒbƒNƒ‹") > 0 Then
+			wtype = "ƒƒPƒbƒgƒpƒ“ƒ`"
+			GoTo FoundWeaponType
+		End If
 		
 SkipThrowingWeapon: 
 		
-		'Invalid_string_refer_to_original_code
+		'‚±‚ê‚æ‚è’ÊíËŒ‚UŒ‚
 		
-		'Invalid_string_refer_to_original_code
+		'‚Ü‚¸‚Íè‚¿•Ší‚Ì”»’è
 		is_handy_weapon = True
 		
-		'Invalid_string_refer_to_original_code
+		'ŒõüŒn‚ÌUŒ‚‚©‚Ç‚¤‚©‚ğ”»’è‚·‚é
 		
 		If IsBeamWeapon(wname, wclass, cname) Then
-			wtype = "Invalid_string_refer_to_original_code"
+			wtype = "ƒr[ƒ€"
 			
-			'Invalid_string_refer_to_original_code
+			'À’eŒn•Ší”»’è‚ğƒXƒLƒbƒv
 			GoTo SkipNormalHandWeapon
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'è‚É‚ÂËŒ‚•Ší
 		
-		'Invalid_string_refer_to_original_code
+		'(‘å‚«–Ú‚ÌÀ’e‚ğ”ò‚Î‚·ƒ^ƒCƒv)
 		
-		If InStr(wname, "ã‚¯ãƒ­ã‚¹ãƒœã‚¦") > 0 Or InStr(wname, "ãƒœã‚¦ã‚¬ãƒ³") > 0 Then
-			wtype = "ã‚¯ãƒ­ã‚¹ãƒœã‚¦"
+		If InStr(wname, "ƒNƒƒXƒ{ƒE") > 0 Or InStr(wname, "ƒ{ƒEƒKƒ“") > 0 Then
+			wtype = "ƒNƒƒXƒ{ƒE"
 			GoTo FoundWeaponType
 		End If
 		
-		If InStr(wname, "ãƒã‚ºãƒ¼ã‚«") > 0 Then
-			wtype = "ãƒã‚ºãƒ¼ã‚«"
+		If InStr(wname, "ƒoƒY[ƒJ") > 0 Then
+			wtype = "ƒoƒY[ƒJ"
 			GoTo FoundWeaponType
 		End If
 		
-		If InStr(wname, "å¯¾æˆ¦è»Šãƒ©ã‚¤ãƒ•ãƒ«") > 0 Then
-			wtype = "å¯¾æˆ¦è»Šãƒ©ã‚¤ãƒ•ãƒ«"
+		If InStr(wname, "‘ÎíÔƒ‰ƒCƒtƒ‹") > 0 Then
+			wtype = "‘ÎíÔƒ‰ƒCƒtƒ‹"
 			GoTo FoundWeaponType
 		End If
 		
-		If InStr(wname, "å¯¾ç‰©ãƒ©ã‚¤ãƒ•ãƒ«") > 0 Then
-			wtype = "å¯¾ç‰©ãƒ©ã‚¤ãƒ•ãƒ«"
+		If InStr(wname, "‘Î•¨ƒ‰ƒCƒtƒ‹") > 0 Then
+			wtype = "‘Î•¨ƒ‰ƒCƒtƒ‹"
 			GoTo FoundWeaponType
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'(¬‚³‚È’e‚ğ’P”­‚ÅŒ‚‚Âƒ^ƒCƒv‚Ìè‚¿‰ÎŠí)
 		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		wtype = "ãƒ”ã‚¹ãƒˆãƒ«"
-		GoTo FoundWeaponType
-		'End If
-		
-		If InStr(wname, "Invalid_string_refer_to_original_code") > 0 Or InStr(wname, "ãƒªãƒœãƒ«ãƒ´ã‚¡ãƒ¼") > 0 Then
-			wtype = "Invalid_string_refer_to_original_code"
+		If InStr(wname, "ƒsƒXƒgƒ‹") > 0 Or InStr(wname, "Œe") > 0 Then
+			wtype = "ƒsƒXƒgƒ‹"
 			GoTo FoundWeaponType
 		End If
 		
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		wtype = "ãƒ©ã‚¤ãƒ•ãƒ«"
-		GoTo FoundWeaponType
-		'End If
-		
-		'Invalid_string_refer_to_original_code
-		
-		If InStr(wname, "Invalid_string_refer_to_original_code") > 0 Then
-			wtype = "Invalid_string_refer_to_original_code"
+		If InStr(wname, "ƒŠƒ{ƒ‹ƒo[") > 0 Or InStr(wname, "ƒŠƒ{ƒ‹ƒ”ƒ@[") > 0 Then
+			wtype = "ƒŠƒ{ƒ‹ƒo["
 			GoTo FoundWeaponType
 		End If
 		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		wtype = "ãƒ˜ãƒ“ãƒ¼ãƒã‚·ãƒ³ã‚¬ãƒ³"
-		wtype = "ãƒã‚·ãƒ³ã‚¬ãƒ³"
-		'End If
-		GoTo FoundWeaponType
-		'End If
-		
-		If InStr(wname, "ã‚¬ãƒˆãƒªãƒ³ã‚°") > 0 Then
-			wtype = "ã‚¬ãƒˆãƒªãƒ³ã‚°"
+		If InStr(wname, "ƒ‰ƒCƒtƒ‹") > 0 Or (Right(wname, 1) = "e" And Right(wname, 2) <> "‹@e") Then
+			wtype = "ƒ‰ƒCƒtƒ‹"
 			GoTo FoundWeaponType
 		End If
 		
-		If InStr(wname, "Invalid_string_refer_to_original_code") > 0 Or InStr(wname, "Invalid_string_refer_to_original_code") > 0 Then
-			wtype = "Invalid_string_refer_to_original_code"
+		'(˜AË‚·‚éƒ^ƒCƒv‚Ìè‚¿‰ÎŠí)
+		
+		If InStr(wname, "ƒTƒuƒ}ƒVƒ“ƒKƒ“") > 0 Then
+			wtype = "ƒTƒuƒ}ƒVƒ“ƒKƒ“"
 			GoTo FoundWeaponType
 		End If
 		
-		If InStr(wname, "ãƒ¬ãƒ¼ãƒ«ã‚¬ãƒ³") > 0 Or InStr(wname, "ãƒªãƒ‹ã‚¢ã‚¬ãƒ³") > 0 Then
+		If InStr(wname, "ƒ}ƒVƒ“ƒKƒ“") > 0 Or InStr(wname, "‹@ŠÖe") > 0 Then
+			If InStr(wname, "ƒwƒr[") > 0 Or InStr(wname, "d") > 0 Then
+				wtype = "ƒwƒr[ƒ}ƒVƒ“ƒKƒ“"
+			Else
+				wtype = "ƒ}ƒVƒ“ƒKƒ“"
+			End If
+			GoTo FoundWeaponType
+		End If
+		
+		If InStr(wname, "ƒKƒgƒŠƒ“ƒO") > 0 Then
+			wtype = "ƒKƒgƒŠƒ“ƒO"
+			GoTo FoundWeaponType
+		End If
+		
+		If InStr(wname, "ƒVƒ‡ƒbƒgƒKƒ“") > 0 Or InStr(wname, "ƒ‰ƒCƒAƒbƒgƒKƒ“") > 0 Then
+			wtype = "ƒVƒ‡ƒbƒgƒKƒ“"
+			GoTo FoundWeaponType
+		End If
+		
+		If InStr(wname, "ƒŒ[ƒ‹ƒKƒ“") > 0 Or InStr(wname, "ƒŠƒjƒAƒKƒ“") > 0 Then
 			PlayWave("Thunder.wav")
 			Sleep(300)
-			wtype = "ã‚­ãƒ£ãƒãƒ³ç ²"
+			wtype = "ƒLƒƒƒmƒ“–C"
 			GoTo FoundWeaponType
 		End If
 		
-		'Invalid_string_refer_to_original_code
-		If Right(wname, 2) = "ã‚¬ãƒ³" Then
-			wtype = "ãƒ©ã‚¤ãƒ•ãƒ«"
+		'‚æ‚­•ª‚©‚ç‚È‚¢‚Ì‚Åƒ‰ƒCƒtƒ‹ˆµ‚¢
+		If Right(wname, 2) = "ƒKƒ“" Then
+			wtype = "ƒ‰ƒCƒtƒ‹"
 			GoTo FoundWeaponType
 		End If
 		
@@ -1688,666 +1457,569 @@ SkipThrowingWeapon:
 		
 SkipNormalHandWeapon: 
 		
-		'Invalid_string_refer_to_original_code
+		'(è‚¿‚Ìƒr[ƒ€UŒ‚)
 		
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		If InStrNotNest(wclass, "Invalid_string_refer_to_original_code") > 0 Then
-			wtype = "Invalid_string_refer_to_original_code"
+		If InStr(wname, "ƒ‰ƒCƒtƒ‹") > 0 Or InStr(wname, "ƒKƒ“") > 0 Or InStr(wname, "ƒsƒXƒgƒ‹") > 0 Or InStr(wname, "ƒoƒY[ƒJ") > 0 Or (Right(wname, 1) = "e" And Right(wname, 2) <> "‹@e") Then
+			If InStrNotNest(wclass, "‚l") > 0 Then
+				wtype = "‚l‚`‚oƒoƒXƒ^[ƒr[ƒ€ƒ‰ƒCƒtƒ‹"
+				GoTo FoundWeaponType
+			End If
+			
+			If InStr(wname, "ƒnƒCƒƒK") > 0 Or InStr(wname, "ƒoƒXƒ^[") > 0 Or InStr(wname, "‘å") > 0 Or Left(wname, 2) = "ƒMƒK" Then
+				wtype = "ƒoƒXƒ^[ƒr[ƒ€ƒ‰ƒCƒtƒ‹"
+			ElseIf InStr(wname, "ƒƒK") > 0 Or InStr(wname, "ƒnƒC") > 0 Or InStr(wname, "ƒoƒY[ƒJ") > 0 Then 
+				If double_weapon Then
+					wtype = "ƒ_ƒuƒ‹ƒr[ƒ€ƒ‰ƒ“ƒ`ƒƒ["
+				Else
+					wtype = "ƒr[ƒ€ƒ‰ƒ“ƒ`ƒƒ["
+				End If
+				If InStr(wname, "ƒ‰ƒCƒtƒ‹") > 0 Then
+					bmpname = "Weapon\EFFECT_BusterRifle01.bmp"
+				End If
+			ElseIf CountAttack0(u, w) >= 4 Then 
+				wtype = "ƒŒ[ƒU[ƒ}ƒVƒ“ƒKƒ“"
+				bmpname = "Weapon\EFFECT_Rifle01.bmp"
+			ElseIf InStr(wname, "ƒsƒXƒgƒ‹") > 0 Or InStr(wname, "ƒ~ƒj") > 0 Or InStr(wname, "¬") > 0 Then 
+				wtype = "ƒŒ[ƒU[ƒKƒ“"
+			Else
+				If double_weapon Then
+					wtype = "ƒ_ƒuƒ‹ƒr[ƒ€ƒ‰ƒCƒtƒ‹"
+				Else
+					wtype = "ƒr[ƒ€ƒ‰ƒCƒtƒ‹"
+				End If
+			End If
+			
+			If wtype = "ƒoƒXƒ^[" Then
+				wtype0 = "—±qW’†"
+			End If
+			
 			GoTo FoundWeaponType
 		End If
 		
-		If InStr(wname, "ãƒã‚¤ãƒ¡ã‚¬") > 0 Or InStr(wname, "ãƒã‚¹ã‚¿ãƒ¼") > 0 Or InStr(wname, "å¤§") > 0 Or Left(wname, 2) = "ã‚®ã‚¬" Then
-			wtype = "Invalid_string_refer_to_original_code"
-		ElseIf InStr(wname, "ãƒ¡ã‚¬") > 0 Or InStr(wname, "ãƒã‚¤") > 0 Or InStr(wname, "ãƒã‚ºãƒ¼ã‚«") > 0 Then 
-			If double_weapon Then
-				wtype = "Invalid_string_refer_to_original_code"
-			Else
-				wtype = "Invalid_string_refer_to_original_code"
-			End If
-			If InStr(wname, "ãƒ©ã‚¤ãƒ•ãƒ«") > 0 Then
-				bmpname = "Weapon\EFFECT_BusterRifle01.bmp"
-			End If
-		ElseIf CountAttack0(u, w) >= 4 Then 
-			wtype = "ãƒ¬ãƒ¼ã‚¶ãƒ¼ãƒã‚·ãƒ³ã‚¬ãƒ³"
-			bmpname = "Weapon\EFFECT_Rifle01.bmp"
-			'Invalid_string_refer_to_original_code_
-			'Then
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			wtype = "ãƒ¬ãƒ¼ã‚¶ãƒ¼ã‚¬ãƒ³"
-		Else
-			If double_weapon Then
-				wtype = "Invalid_string_refer_to_original_code"
-			Else
-				wtype = "Invalid_string_refer_to_original_code"
-			End If
-		End If
-		
-		If wtype = "ãƒã‚¹ã‚¿ãƒ¼" Then
-			wtype0 = "ç²’å­é›†ä¸­"
-		End If
-		
-		GoTo FoundWeaponType
-		'End If
-		
 SkipHandWeapon: 
 		
-		'Invalid_string_refer_to_original_code
+		'“à‘ Œ^ËŒ‚•Ší
 		is_handy_weapon = False
 		
-		'Invalid_string_refer_to_original_code
+		'(‘åŒ^‚ÌÀ’e‰ÎŠí)
 		
-		If InStr(wname, "ãƒŸã‚µã‚¤ãƒ«") > 0 Or InStr(wname, "Invalid_string_refer_to_original_code") > 0 Then
-			wtype = "ãƒŸã‚µã‚¤ãƒ«"
+		If InStr(wname, "ƒ~ƒTƒCƒ‹") > 0 Or InStr(wname, "ƒƒPƒbƒg") > 0 Then
+			wtype = "ƒ~ƒTƒCƒ‹"
 			
-			If InStr(wname, "ãƒ‰ãƒªãƒ«") > 0 Then
-				wtype = "ãƒ‰ãƒªãƒ«ãƒŸã‚µã‚¤ãƒ«"
+			If InStr(wname, "ƒhƒŠƒ‹") > 0 Then
+				wtype = "ƒhƒŠƒ‹ƒ~ƒTƒCƒ‹"
 				GoTo FoundWeaponType
 			End If
 			
 			attack_times = CountAttack0(u, w)
 			
-			'Invalid_string_refer_to_original_code_
-			'Or InStr(wname, "å¯¾è‰¦") > 0 _
-			'Then
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			wtype = "Invalid_string_refer_to_original_code"
-			attack_times = 1
-		ElseIf InStr(wname, "å°å‹") > 0 Then 
-			wtype = "å°å‹ãƒŸã‚µã‚¤ãƒ«"
-			'Invalid_string_refer_to_original_code_
-			'Or InStr(wname, "ãƒã‚¤ã‚¯ãƒ­") > 0 Or InStr(wname, "ã‚¹ãƒ—ãƒ¬ãƒ¼") > 0 _
-			'Then
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			wtype = "å°å‹ãƒŸã‚µã‚¤ãƒ«"
-			attack_times = 6
+			If InStr(wname, "‘åŒ^") > 0 Or InStr(wname, "ƒrƒbƒO") > 0 Or InStr(wname, "‘ÎŠÍ") > 0 Then
+				wtype = "ƒX[ƒp[ƒ~ƒTƒCƒ‹"
+				attack_times = 1
+			ElseIf InStr(wname, "¬Œ^") > 0 Then 
+				wtype = "¬Œ^ƒ~ƒTƒCƒ‹"
+			ElseIf InStr(wname, "ƒ‰ƒ“ƒ`ƒƒ[") > 0 Or InStr(wname, "ƒ|ƒbƒh") > 0 Or InStr(wname, "ƒ}ƒCƒNƒ") > 0 Or InStr(wname, "ƒXƒvƒŒ[") > 0 Then 
+				wtype = "¬Œ^ƒ~ƒTƒCƒ‹"
+				attack_times = 6
+			End If
+			
+			GoTo FoundWeaponType
 		End If
 		
-		GoTo FoundWeaponType
-		'End If
+		If InStr(wname, "ƒOƒŒƒl[ƒh") > 0 Or InStr(wname, "ƒfƒBƒXƒ`ƒƒ[ƒWƒƒ[") > 0 Then
+			wtype = "ƒOƒŒƒl[ƒh"
+			
+			attack_times = CountAttack0(u, w)
+			
+			GoTo FoundWeaponType
+		End If
 		
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		wtype = "Invalid_string_refer_to_original_code"
+		If InStr(wname, "ƒVƒ…ƒcƒ‹ƒ€ƒtƒ@ƒEƒXƒg") > 0 Then
+			wtype = "À’e”­Ë"
+			
+			bmpname = "Bullet\EFFECT_BazookaBullet01.bmp"
+			attack_times = CountAttack0(u, w)
+			
+			GoTo FoundWeaponType
+		End If
 		
-		attack_times = CountAttack0(u, w)
-		
-		GoTo FoundWeaponType
-		'End If
-		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		wtype = "Invalid_string_refer_to_original_code"
-		
-		bmpname = "Bullet\EFFECT_BazookaBullet01.bmp"
-		attack_times = CountAttack0(u, w)
-		
-		GoTo FoundWeaponType
-		'End If
-		
-		If InStr(wname, "Invalid_string_refer_to_original_code") > 0 Or InStr(wname, "Invalid_string_refer_to_original_code") > 0 Or InStr(wname, "Invalid_string_refer_to_original_code") > 0 Then
+		If InStr(wname, "”š’e") > 0 Or InStr(wname, "”šŒ‚") > 0 Or InStr(wname, "”š—‹") > 0 Then
 			If u.Weapon(w).MaxRange = 1 Then
-				wtype = "Invalid_string_refer_to_original_code"
+				wtype = "“Š‰º”š’e"
 			Else
-				wtype = "Invalid_string_refer_to_original_code"
+				wtype = "ƒOƒŒƒl[ƒh"
 				attack_times = CountAttack0(u, w)
 			End If
 			GoTo FoundWeaponType
 		End If
 		
-		If InStr(wname, "å…‰å­é­šé›·") > 0 Then
-			wtype = "å…‰å­é­šé›·"
+		If InStr(wname, "Œõq‹›—‹") > 0 Then
+			wtype = "Œõq‹›—‹"
 			GoTo FoundWeaponType
 		End If
 		
-		'(æ€ªå…‰ç·šç³»)
+		'(‰öŒõüŒn)
 		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		wtype = "Invalid_string_refer_to_original_code"
-		GoTo FoundWeaponType
-		'End If
-		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		wtype = "Invalid_string_refer_to_original_code"
-		GoTo FoundWeaponType
-		'End If
-		
-		'Invalid_string_refer_to_original_code
-		
-		If InStr(wname, "æ¶ˆç«") > 0 Then
-			wtype = "æ¶ˆç«å™¨"
+		If InStr(wname, "‰öŒõü") > 0 Then
+			wtype = "‰öŒõü"
 			GoTo FoundWeaponType
 		End If
 		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		wtype = "Invalid_string_refer_to_original_code"
-		GoTo FoundWeaponType
-		'End If
+		If InStr(wname, "”j‰óŒõü") > 0 Then
+			wtype = "”j‰óŒõü"
+			GoTo FoundWeaponType
+		End If
 		
-		If InStr(wname, "Invalid_string_refer_to_original_code") > 0 Or Right(wname, 1) = "æ¶²" Then
-			wtype = "Invalid_string_refer_to_original_code"
+		'“Áê‚È•¨¿‚ğo‚·•Ší
+		
+		If InStr(wname, "Á‰Î") > 0 Then
+			wtype = "Á‰ÎŠí"
+			GoTo FoundWeaponType
+		End If
+		
+		If InStr(wname, "•ú…") > 0 Or InStr(wname, "…—¬") > 0 Then
+			wtype = "•ú…e"
+			GoTo FoundWeaponType
+		End If
+		
+		If InStr(wname, "…“S–C") > 0 Or Right(wname, 1) = "‰t" Then
+			wtype = "À’e”­Ë"
 			sname = "Bow.wav"
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			bmpname = "Bullet\EFFECT_Venom01.bmp"
-		Else
-			bmpname = "Bullet\EFFECT_WaterShot01.bmp"
-		End If
-		GoTo FoundWeaponType
-		'End If
-		
-		'Invalid_string_refer_to_original_code
-		
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "ç¸®é€€") > 0 _
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		wtype = "é‡åŠ›å¼¾"
-		GoTo FoundWeaponType
-		'End If
-		
-		If InStr(wname, "è½é›·") > 0 Or Right(wname, 2) = "ç¨²å¦»" Then
-			wtype = "è½é›·"
-			GoTo FoundWeaponType
-		End If
-		
-		If InStr(wname, "é›·") > 0 Or InStr(wname, "ãƒ©ã‚¤ãƒˆãƒ‹ãƒ³ã‚°") > 0 Or InStr(wname, "ã‚µãƒ³ãƒ€ãƒ¼") > 0 Then
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			If u.Weapon(w).MaxRange = 1 Then
-				wtype = "Invalid_string_refer_to_original_code"
-				sname = "Thunder.wav"
+			If InStr(wname, "“Å") > 0 Or InStr(wname, "“Å") > 0 Then
+				bmpname = "Bullet\EFFECT_Venom01.bmp"
 			Else
-				wtype = "è½é›·"
+				bmpname = "Bullet\EFFECT_WaterShot01.bmp"
 			End If
 			GoTo FoundWeaponType
 		End If
-		'End If
 		
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		wtype = "Invalid_string_refer_to_original_code"
-		sname = "Thunder.wav"
-		GoTo FoundWeaponType
-		'End If
+		'•¨—Œ»ÛŒn‚ÌUŒ‚(‰Š‚âŒõ‚È‚Ç)
 		
-		If InStr(wname, "ã‚¨ãƒãƒ«ã‚®ãƒ¼å¼¾") > 0 Then
-			wtype = "Invalid_string_refer_to_original_code"
+		If InStr(wname, "d—Í") > 0 Or InStr(wname, "ƒOƒ‰ƒr") > 0 Or InStr(wname, "ƒuƒ‰ƒbƒNƒz[ƒ‹") > 0 Or InStr(wname, "k‘Ş") > 0 Then
+			wtype = "d—Í’e"
+			GoTo FoundWeaponType
+		End If
+		
+		If InStr(wname, "——‹") > 0 Or Right(wname, 2) = "ˆîÈ" Then
+			wtype = "——‹"
+			GoTo FoundWeaponType
+		End If
+		
+		If InStr(wname, "—‹") > 0 Or InStr(wname, "ƒ‰ƒCƒgƒjƒ“ƒO") > 0 Or InStr(wname, "ƒTƒ“ƒ_[") > 0 Then
+			If InStrNotNest(wclass, "À") = 0 Then
+				If u.Weapon(w).MaxRange = 1 Then
+					wtype = "”j‰óŒõü"
+					sname = "Thunder.wav"
+				Else
+					wtype = "——‹"
+				End If
+				GoTo FoundWeaponType
+			End If
+		End If
+		
+		If InStr(wname, "“dŒ‚") > 0 Or InStr(wname, "“d—¬") > 0 Or InStr(wname, "ƒGƒŒƒNƒg") > 0 Then
+			wtype = "”j‰óŒõü"
+			sname = "Thunder.wav"
+			GoTo FoundWeaponType
+		End If
+		
+		If InStr(wname, "ƒGƒlƒ‹ƒM[’e") > 0 Then
+			wtype = "‹…“d"
 			sname = "Beam.wav"
 			GoTo FoundWeaponType
 		End If
 		
-		If InStr(wname, "æ³¡") > 0 Or InStr(wname, "ãƒãƒ–ãƒ«") > 0 Then
-			wtype = "æ³¡"
+		If InStr(wname, "–A") > 0 Or InStr(wname, "ƒoƒuƒ‹") > 0 Then
+			wtype = "–A"
 			GoTo FoundWeaponType
 		End If
 		
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "ã‚½ãƒ‹ãƒƒã‚¯") > 0 _
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "å«ã³") > 0 _
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		wtype = "éŸ³æ³¢"
-		GoTo FoundWeaponType
-		'End If
-		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		wtype = "éŸ³ç¬¦"
-		GoTo FoundWeaponType
-		'End If
-		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		wtype = "Invalid_string_refer_to_original_code"
-		If CountAttack0(u, w) > 1 Then
-			wtype = "Invalid_string_refer_to_original_code"
-		End If
-		GoTo FoundWeaponType
-		'End If
-		
-		If InStr(wname, "æ´¥æ³¢") > 0 Or InStr(wname, "ãƒ€ã‚¤ãƒ€ãƒ«") > 0 Then
-			wtype = "æ´¥æ³¢"
+		If InStr(wname, "‰¹”g") > 0 Or InStr(wname, "ƒTƒEƒ“ƒh") > 0 Or InStr(wname, "ƒ\ƒjƒbƒN") > 0 Or (InStrNotNest(wclass, "‰¹") > 0 And InStr(wname, "ƒVƒ‡ƒbƒN") > 0) Or InStr(wname, "ƒEƒF[ƒu") > 0 Or InStr(wname, "‹©‚Ñ") > 0 Or (InStrNotNest(wclass, "‰¹") > 0 And InStr(wname, "™ôšK") > 0) Then
+			wtype = "‰¹”g"
 			GoTo FoundWeaponType
 		End If
 		
-		If InStr(wname, "Invalid_string_refer_to_original_code") > 0 Then
-			wtype = "æµæ˜Ÿ"
+		If InStr(wname, "‰Ì") > 0 Or InStr(wname, "ƒ\ƒ“ƒO") > 0 Then
+			wtype = "‰¹•„"
 			GoTo FoundWeaponType
 		End If
 		
-		If InStr(wname, "Invalid_string_refer_to_original_code") > 0 Or InStr(wname, "éš•çŸ³") > 0 Then
-			wtype = "éš•çŸ³"
+		If InStr(wname, "j") > 0 Or InStr(wname, "ƒj[ƒhƒ‹") > 0 Then
+			wtype = "ƒj[ƒhƒ‹"
+			If CountAttack0(u, w) > 1 Then
+				wtype = "ƒj[ƒhƒ‹˜AË"
+			End If
 			GoTo FoundWeaponType
 		End If
 		
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		wtype = "ç«œå·»"
-		GoTo FoundWeaponType
-		'End If
-		
-		If InStr(wname, "ã¤ã‚‰ã‚‰") > 0 Then
-			wtype = "æ°·å¼¾"
+		If InStr(wname, "’Ã”g") > 0 Or InStr(wname, "ƒ_ƒCƒ_ƒ‹") > 0 Then
+			wtype = "’Ã”g"
 			GoTo FoundWeaponType
 		End If
 		
-		If InStr(wname, "ã¤ã¶ã¦") > 0 Then
-			wtype = "å²©å¼¾"
+		If InStr(wname, "ƒRƒƒbƒg") > 0 Then
+			wtype = "—¬¯"
 			GoTo FoundWeaponType
 		End If
 		
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		wtype = "å¹é›ª"
-		GoTo FoundWeaponType
-		'End If
-		
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		wtype = "å¼·é¢¨"
-		GoTo FoundWeaponType
-		'End If
-		
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "é¢¨") > 0 _
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		wtype = "é¢¨"
-		GoTo FoundWeaponType
-		'End If
-		
-		'Invalid_string_refer_to_original_code_
-		'Or Right$(wname, 2) = "ã‚¬ã‚¹" Or Right$(wname, 1) = "éœ§" _
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		wtype = "Invalid_string_refer_to_original_code"
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		cname = "Invalid_string_refer_to_original_code"
-		'End If
-		GoTo FoundWeaponType
-		'End If
-		
-		If InStr(wname, "ç«ç‚å¼¾") > 0 Then
-			wtype = "ç«ç‚å¼¾"
+		If InStr(wname, "ƒƒeƒI") > 0 Or InStr(wname, "è¦Î") > 0 Then
+			wtype = "è¦Î"
 			GoTo FoundWeaponType
 		End If
 		
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		wtype = "Invalid_string_refer_to_original_code"
-		sname = "AntiShipMissile.wav"
-		GoTo FoundWeaponType
-		'End If
+		If InStr(wname, "—³Šª") > 0 Or InStr(wname, "‰QŠª") > 0 Or InStr(wname, "ƒgƒ‹ƒl[ƒh") > 0 Or InStr(wname, "ƒTƒCƒNƒƒ“") > 0 Then
+			wtype = "—³Šª"
+			GoTo FoundWeaponType
+		End If
 		
-		If Right(wname, 5) = "ãƒ•ã‚¡ã‚¤ã‚¢ãƒ¼" Or Right(wname, 5) = "ãƒ•ã‚¡ã‚¤ãƒ¤ãƒ¼" Or Right(wname, 4) = "ãƒ•ã‚¡ã‚¤ã‚¢" Or Right(wname, 4) = "ãƒ•ã‚¡ã‚¤ãƒ¤" Then
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			wtype = "Invalid_string_refer_to_original_code"
-		Else
-			wtype = "Invalid_string_refer_to_original_code"
+		If InStr(wname, "‚Â‚ç‚ç") > 0 Then
+			wtype = "•X’e"
+			GoTo FoundWeaponType
+		End If
+		
+		If InStr(wname, "‚Â‚Ô‚Ä") > 0 Then
+			wtype = "Šâ’e"
+			GoTo FoundWeaponType
+		End If
+		
+		If InStr(wname, "á") > 0 Or InStr(wname, "ƒuƒŠƒU[ƒh") > 0 Or InStr(wname, "ƒAƒCƒXƒXƒg[ƒ€") > 0 Then
+			wtype = "á"
+			GoTo FoundWeaponType
+		End If
+		
+		If InStr(wname, "ƒXƒg[ƒ€") > 0 Or InStr(wname, "ƒnƒŠƒP[ƒ“") > 0 Or InStr(wname, "ƒ^ƒCƒt[ƒ“") > 0 Or InStr(wname, "‘ä•—") > 0 Or InStr(wname, "—’") > 0 Then
+			wtype = "‹­•—"
+			GoTo FoundWeaponType
+		End If
+		
+		If InStr(wname, "ƒEƒBƒ“ƒh") > 0 Or InStr(wname, "ƒEƒCƒ“ƒh") > 0 Or InStr(wname, "•—") > 0 Then
+			wtype = "•—"
+			GoTo FoundWeaponType
+		End If
+		
+		If InStr(wname, "‰Œ") > 0 Or InStr(wname, "ƒXƒ‚[ƒN") > 0 Or Right(wname, 2) = "ƒKƒX" Or Right(wname, 1) = "–¶" Or InStr(wname, "–Eq") > 0 Then
+			wtype = "‰Œ"
+			If InStr(wname, "“Å") > 0 Or InStrNotNest(wclass, "“Å") > 0 Then
+				cname = "—Î"
+			End If
+			GoTo FoundWeaponType
+		End If
+		
+		If InStr(wname, "‰Î‰Š’e") > 0 Then
+			wtype = "‰Î‰Š’e"
+			GoTo FoundWeaponType
+		End If
+		
+		If InStr(wname, "‰Î‰Š•úË") > 0 Or Right(wname, 2) = "‰Î‰Š" Then
+			wtype = "‰Î‰Š•úË"
 			sname = "AntiShipMissile.wav"
-		End If
-		GoTo FoundWeaponType
-		'End If
-		'End If
-		
-		If InStr(wname, "æ¯") > 0 Or Right(wname, 3) = "ãƒ–ãƒ¬ã‚¹" Then
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			wtype = "Invalid_string_refer_to_original_code"
-			sname = "Breath.wav"
-			
-			Select Case SpellColor(wname, wclass)
-				Case "èµ¤", "Invalid_string_refer_to_original_code"
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					cname = SpellColor(wname, wclass)
-			End Select
-			
 			GoTo FoundWeaponType
 		End If
-		'End If
 		
-		If InStr(wname, "ã‚¨ãƒãƒ«ã‚®ãƒ¼æ³¢") > 0 Then
-			wtype = "Invalid_string_refer_to_original_code"
+		If Right(wname, 5) = "ƒtƒ@ƒCƒA[" Or Right(wname, 5) = "ƒtƒ@ƒCƒ„[" Or Right(wname, 4) = "ƒtƒ@ƒCƒA" Or Right(wname, 4) = "ƒtƒ@ƒCƒ„" Then
+			If InStrNotNest(wclass, "À") = 0 And Left(wname, 2) <> "ƒtƒ‹" Then
+				If InStrNotNest(wclass, "p") > 0 Then
+					wtype = "‰Š“ŠË"
+				Else
+					wtype = "‰Î‰Š•úË"
+					sname = "AntiShipMissile.wav"
+				End If
+				GoTo FoundWeaponType
+			End If
+		End If
+		
+		If InStr(wname, "‘§") > 0 Or Right(wname, 3) = "ƒuƒŒƒX" Then
+			If InStrNotNest(wclass, "À") = 0 Then
+				wtype = "‰Î‰Š•úË"
+				sname = "Breath.wav"
+				
+				Select Case SpellColor(wname, wclass)
+					Case "Ô", "Â", "‰©", "—Î", "”’", "•"
+						cname = SpellColor(wname, wclass)
+				End Select
+				
+				GoTo FoundWeaponType
+			End If
+		End If
+		
+		If InStr(wname, "ƒGƒlƒ‹ƒM[”g") > 0 Then
+			wtype = "”g“®•úË"
 			sname = "Beam.wav"
 			GoTo FoundWeaponType
 		End If
 		
-		If InStr(wname, "è¡æ’ƒ") > 0 Then
-			wtype = "Invalid_string_refer_to_original_code"
-			cname = "ç™½"
+		If InStr(wname, "ÕŒ‚") > 0 Then
+			wtype = "”g“®•úË"
+			cname = "”’"
 			sname = "Bazooka.wav"
 			GoTo FoundWeaponType
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'—ì“IA–‚–@“I‚ÈUŒ‚
 		
-		If InStr(wname, "æ°—å¼¾") > 0 Then
-			wtype = "æ°—å¼¾"
+		If InStr(wname, "‹C’e") > 0 Then
+			wtype = "‹C’e"
 			GoTo FoundWeaponType
 		End If
 		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		wtype = "æ°—æ–¬"
-		GoTo FoundWeaponType
-		'End If
+		If InStr(wname, "ƒ\ƒjƒbƒNƒuƒŒ[ƒh") > 0 Then
+			wtype = "‹Ca"
+			GoTo FoundWeaponType
+		End If
 		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		'Invalid_string_refer_to_original_code
-		'        cname = SpellColor(wname, wclass)
-		wtype = "Invalid_string_refer_to_original_code"
-		sname = "Whiz.wav"
-		GoTo FoundWeaponType
-		'End If
+		If u.IsSpellWeapon(w) Or InStrNotNest(wclass, "–‚") > 0 Then
+			'        wtype = "–‚–@•úË"
+			'        cname = SpellColor(wname, wclass)
+			wtype = "ƒfƒtƒHƒ‹ƒg"
+			sname = "Whiz.wav"
+			GoTo FoundWeaponType
+		End If
 		
-		'Invalid_string_refer_to_original_code
+		'(ƒr[ƒ€UŒ‚)
 		
-		If wtype = "Invalid_string_refer_to_original_code" Then
-			If InStrNotNest(wclass, "Invalid_string_refer_to_original_code") > 0 Then
-				wtype = "Invalid_string_refer_to_original_code"
+		If wtype = "ƒr[ƒ€" Then
+			If InStrNotNest(wclass, "‚l") > 0 Then
+				wtype = "‚l‚`‚oƒr[ƒ€"
 				GoTo FoundWeaponType
 			End If
 			
-			If InStr(wname, "ãƒã‚¤ãƒ¡ã‚¬") > 0 Or InStr(wname, "ãƒã‚¹ã‚¿ãƒ¼") > 0 Or InStr(wname, "å¤§") > 0 Or Left(wname, 2) = "ã‚®ã‚¬" Then
-				wtype = "Invalid_string_refer_to_original_code"
-			ElseIf InStr(wname, "ãƒ¡ã‚¬") > 0 Or InStr(wname, "ãƒã‚¤") > 0 Then 
-				wtype = "Invalid_string_refer_to_original_code"
-			ElseIf CountAttack0(u, w) >= 4 Or InStr(wname, "å¯¾ç©º") > 0 Then 
-				wtype = "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code_
-				'Then
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				wtype = "Invalid_string_refer_to_original_code"
-			ElseIf InStr(wname, "ãƒ©ãƒ³ãƒãƒ£ãƒ¼") > 0 Or InStr(wname, "ã‚­ãƒ£ãƒãƒ³") > 0 Or InStr(wname, "ã‚«ãƒãƒ³") > 0 Or InStr(wname, "ç ²") > 0 Then 
-				wtype = "Invalid_string_refer_to_original_code"
+			If InStr(wname, "ƒnƒCƒƒK") > 0 Or InStr(wname, "ƒoƒXƒ^[") > 0 Or InStr(wname, "‘å") > 0 Or Left(wname, 2) = "ƒMƒK" Then
+				wtype = "‘åƒr[ƒ€"
+			ElseIf InStr(wname, "ƒƒK") > 0 Or InStr(wname, "ƒnƒC") > 0 Then 
+				wtype = "’†ƒr[ƒ€"
+			ElseIf CountAttack0(u, w) >= 4 Or InStr(wname, "‘Î‹ó") > 0 Then 
+				wtype = "ƒj[ƒhƒ‹ƒŒ[ƒU[˜AË"
+			ElseIf InStr(wname, "ƒ~ƒj") > 0 Or InStr(wname, "¬") > 0 Then 
+				wtype = "ƒj[ƒhƒ‹ƒŒ[ƒU["
+			ElseIf InStr(wname, "ƒ‰ƒ“ƒ`ƒƒ[") > 0 Or InStr(wname, "ƒLƒƒƒmƒ“") > 0 Or InStr(wname, "ƒJƒmƒ“") > 0 Or InStr(wname, "–C") > 0 Then 
+				wtype = "’†ƒr[ƒ€"
 			Else
-				wtype = "å°ãƒ“ãƒ¼ãƒ "
+				wtype = "¬ƒr[ƒ€"
 			End If
 			
-			If wtype = "Invalid_string_refer_to_original_code" Then
-				wtype0 = "ç²’å­é›†ä¸­"
+			If wtype = "‘åƒr[ƒ€" Then
+				wtype0 = "—±qW’†"
 			End If
 			
 			Select Case wtype
-				Case "å°ãƒ“ãƒ¼ãƒ ", "Invalid_string_refer_to_original_code"
+				Case "¬ƒr[ƒ€", "’†ƒr[ƒ€"
 					If double_weapon Then
-						wtype = "Invalid_string_refer_to_original_code" & wtype
+						wtype = "‚Q˜A" & wtype
 					End If
 			End Select
 			
-			'Invalid_string_refer_to_original_code_
-			'Invalid_string_refer_to_original_code_
-			'Invalid_string_refer_to_original_code_
-			'Then
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			wtype = "Invalid_string_refer_to_original_code"
-		End If
-		
-		GoTo FoundWeaponType
-		'End If
-		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		wtype = "Invalid_string_refer_to_original_code"
-		GoTo FoundWeaponType
-		'End If
-		
-		'Invalid_string_refer_to_original_code
-		
-		If InStr(wname, "ãƒãƒ«ã‚«ãƒ³") > 0 Then
-			wtype = "ãƒãƒ«ã‚«ãƒ³"
+			If InStr(wname, "ŠgU") > 0 Or InStr(wname, "•úË") > 0 Or InStr(wname, "ƒz[ƒ~ƒ“ƒO") > 0 Or InStr(wname, "—U“±") > 0 Then
+				wtype = "ŠgUƒr[ƒ€"
+			End If
+			
 			GoTo FoundWeaponType
 		End If
 		
-		If InStr(wname, "æ©ŸéŠƒ") > 0 Or InStr(wname, "æ©Ÿé–¢ç ²") > 0 Then
-			wtype = "æ©Ÿé–¢ç ²"
+		If InStr(wname, "Œõü") > 0 Then
+			wtype = "‰öŒõü"
 			GoTo FoundWeaponType
 		End If
 		
-		If InStr(wname, "ãƒã‚§ãƒ¼ãƒ³ã‚¬ãƒ³") > 0 Or InStr(wname, "ã‚¬ãƒ³ãƒ©ãƒ³ãƒãƒ£ãƒ¼") > 0 Then
-			wtype = "Invalid_string_refer_to_original_code"
+		'(¬Œ^‚Å˜AË‚·‚é‰ÎŠí)
+		
+		If InStr(wname, "ƒoƒ‹ƒJƒ“") > 0 Then
+			wtype = "ƒoƒ‹ƒJƒ“"
 			GoTo FoundWeaponType
 		End If
 		
-		If InStr(wname, "ãƒã‚·ãƒ³ã‚­ãƒ£ãƒãƒ³") > 0 Or InStr(wname, "ã‚ªãƒ¼ãƒˆã‚­ãƒ£ãƒãƒ³") > 0 Or InStr(wname, "Invalid_string_refer_to_original_code") > 0 Then
-			wtype = "é‡æ©Ÿé–¢ç ²"
+		If InStr(wname, "‹@e") > 0 Or InStr(wname, "‹@ŠÖ–C") > 0 Then
+			wtype = "‹@ŠÖ–C"
 			GoTo FoundWeaponType
 		End If
 		
-		If InStr(wname, "ãƒ™ã‚¢ãƒªãƒ³ã‚°") > 0 Or InStr(wname, "ã‚¯ãƒ¬ã‚¤ãƒ¢ã‚¢") > 0 Then
-			wtype = "ãƒ™ã‚¢ãƒªãƒ³ã‚°"
+		If InStr(wname, "ƒ`ƒF[ƒ“ƒKƒ“") > 0 Or InStr(wname, "ƒKƒ“ƒ‰ƒ“ƒ`ƒƒ[") > 0 Then
+			wtype = "“à‘ ƒKƒgƒŠƒ“ƒO"
 			GoTo FoundWeaponType
 		End If
 		
-		'Invalid_string_refer_to_original_code
-		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		wtype = "Invalid_string_refer_to_original_code"
-		GoTo FoundWeaponType
-		'End If
-		
-		'Invalid_string_refer_to_original_code
-		If InStr(wname, "ç ²") > 0 Or InStr(wname, "ã‚­ãƒ£ãƒãƒ³") > 0 Or InStr(wname, "ã‚«ãƒãƒ³") > 0 Or InStr(wname, "å¼¾") > 0 Then
-			'Invalid_string_refer_to_original_code_
-			'Then
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			PlayWave("Thunder.wav")
-			Sleep(300)
+		If InStr(wname, "ƒ}ƒVƒ“ƒLƒƒƒmƒ“") > 0 Or InStr(wname, "ƒI[ƒgƒLƒƒƒmƒ“") > 0 Or InStr(wname, "‘¬Ë–C") > 0 Then
+			wtype = "d‹@ŠÖ–C"
+			GoTo FoundWeaponType
 		End If
 		
-		wtype = "ã‚­ãƒ£ãƒãƒ³ç ²"
+		If InStr(wname, "ƒxƒAƒŠƒ“ƒO") > 0 Or InStr(wname, "ƒNƒŒƒCƒ‚ƒA") > 0 Then
+			wtype = "ƒxƒAƒŠƒ“ƒO"
+			GoTo FoundWeaponType
+		End If
 		
-		attack_times = CountAttack0(u, w)
+		'(ƒI[ƒ‹ƒŒƒ“ƒWUŒ‚)
 		
-		GoTo FoundWeaponType
-		'End If
+		If InStr(wname, "—Lü") > 0 Then
+			wtype = "‚Q‚v‚`‚xËo"
+			GoTo FoundWeaponType
+		End If
+		
+		'”Ä—p“I‚Èu–Cv‚Ìw’è‚ÍÅŒã‚É”»’è
+		If InStr(wname, "–C") > 0 Or InStr(wname, "ƒLƒƒƒmƒ“") > 0 Or InStr(wname, "ƒJƒmƒ“") > 0 Or InStr(wname, "’e") > 0 Then
+			If InStr(wname, "ƒŠƒjƒA") > 0 Or InStr(wname, "ƒŒ[ƒ‹") > 0 Or InStr(wname, "“d¥") > 0 Then
+				PlayWave("Thunder.wav")
+				Sleep(300)
+			End If
+			
+			wtype = "ƒLƒƒƒmƒ“–C"
+			
+			attack_times = CountAttack0(u, w)
+			
+			GoTo FoundWeaponType
+		End If
 		
 SkipShootingWeapon: 
 		
-		'Invalid_string_refer_to_original_code
-		wtype = "Invalid_string_refer_to_original_code"
+		'‘Î‰‚·‚é•Ší‚ÍŒ©‚Â‚©‚ç‚È‚©‚Á‚½
+		wtype = "ƒfƒtƒHƒ‹ƒg"
 		
 FoundWeaponType: 
 		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		Select Case wtype
-			Case "Invalid_string_refer_to_original_code"
-				wtype = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				wtype = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				wtype = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				wtype = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				wtype = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				wtype = "å°ãƒ“ãƒ¼ãƒ "
-			Case "ãƒ¬ãƒ¼ã‚¶ãƒ¼ãƒã‚·ãƒ³ã‚¬ãƒ³"
-				wtype = "Invalid_string_refer_to_original_code"
-			Case "ãƒ¬ãƒ¼ã‚¶ãƒ¼ã‚¬ãƒ³"
-				wtype = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code", "ãƒã‚·ãƒ³ã‚¬ãƒ³"
-				wtype = "æ©Ÿé–¢ç ²"
-			Case "ãƒ˜ãƒ“ãƒ¼ãƒã‚·ãƒ³ã‚¬ãƒ³"
-				wtype = "é‡æ©Ÿé–¢ç ²"
-			Case "ã‚¬ãƒˆãƒªãƒ³ã‚°"
-				wtype = "Invalid_string_refer_to_original_code"
-			Case "Invalid_string_refer_to_original_code"
-				wtype = "ãƒ™ã‚¢ãƒªãƒ³ã‚°"
-			Case Else
-				'æ‰‹æŒã¡æ­¦å™¨ã®ç”»åƒã‚’ç©ºã«ã™ã‚‹
-				bmpname = "-.bmp"
-		End Select
-		'End If
-		
-		'Invalid_string_refer_to_original_code
-		If InStrNotNest(wclass, "Invalid_string_refer_to_original_code") > 0 Then
-			'Invalid_string_refer_to_original_code
+		'‹ó’†ˆÚ“®ê—pŒ`‘Ô‚Í•Ší‚ğè‚Å\‚¦‚È‚¢B
+		'‚Ü‚½“™g‘åŠî€‚Ìê‡A”ñlŠÔƒ†ƒjƒbƒg‚ÍƒƒJ‚Å‚ ‚é‚±‚Æ‚ª‘½‚¢‚Ì‚Å‚±‚¿‚ç‚à
+		'“à‘ •Ší‚ğ—Dæ‚·‚éB
+		If is_handy_weapon And (u.Data.Transportation = "‹ó" Or (IsOptionDefined("“™g‘åŠî€") And Not u.IsHero())) Then
 			Select Case wtype
-				Case "çŸ¢", "å°å‹ãƒŸã‚µã‚¤ãƒ«", "ãƒŸã‚µã‚¤ãƒ«", "Invalid_string_refer_to_original_code", "Invalid_string_refer_to_original_code"
-					'Invalid_string_refer_to_original_code_
-					'Invalid_string_refer_to_original_code_
-					'Invalid_string_refer_to_original_code_
-					'Invalid_string_refer_to_original_code_
-					'"å¼·é¢¨", "ç«œå·»", "æ´¥æ³¢", "æ³¡", _
-					'Invalid_string_refer_to_original_code_
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					wtype = "Invalid_string_refer_to_original_code" & wtype
-				Case "Invalid_string_refer_to_original_code"
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					wtype = "Invalid_string_refer_to_original_code"
-				Case "Invalid_string_refer_to_original_code", "Invalid_string_refer_to_original_code"
-					wtype = "Invalid_string_refer_to_original_code"
-				Case "Invalid_string_refer_to_original_code"
-					wtype = "Invalid_string_refer_to_original_code"
-				Case "é‡åŠ›å¼¾"
-					wtype = "Invalid_string_refer_to_original_code"
+				Case "‚l‚`‚oƒoƒXƒ^[ƒr[ƒ€ƒ‰ƒCƒtƒ‹"
+					wtype = "‚l‚`‚oƒr[ƒ€"
+				Case "ƒoƒXƒ^[ƒr[ƒ€ƒ‰ƒCƒtƒ‹"
+					wtype = "‘åƒr[ƒ€"
+				Case "ƒ_ƒuƒ‹ƒr[ƒ€ƒ‰ƒ“ƒ`ƒƒ["
+					wtype = "‚Q˜A’†ƒr[ƒ€"
+				Case "ƒr[ƒ€ƒ‰ƒ“ƒ`ƒƒ["
+					wtype = "’†ƒr[ƒ€"
+				Case "ƒ_ƒuƒ‹ƒr[ƒ€ƒ‰ƒCƒtƒ‹"
+					wtype = "‚Q˜A¬ƒr[ƒ€"
+				Case "ƒr[ƒ€ƒ‰ƒCƒtƒ‹"
+					wtype = "¬ƒr[ƒ€"
+				Case "ƒŒ[ƒU[ƒ}ƒVƒ“ƒKƒ“"
+					wtype = "ƒj[ƒhƒ‹ƒŒ[ƒU[˜AË"
+				Case "ƒŒ[ƒU[ƒKƒ“"
+					wtype = "ƒj[ƒhƒ‹ƒŒ[ƒU["
+				Case "ƒTƒuƒ}ƒVƒ“ƒKƒ“", "ƒ}ƒVƒ“ƒKƒ“"
+					wtype = "‹@ŠÖ–C"
+				Case "ƒwƒr[ƒ}ƒVƒ“ƒKƒ“"
+					wtype = "d‹@ŠÖ–C"
+				Case "ƒKƒgƒŠƒ“ƒO"
+					wtype = "“à‘ ƒKƒgƒŠƒ“ƒO"
+				Case "ƒVƒ‡ƒbƒgƒKƒ“"
+					wtype = "ƒxƒAƒŠƒ“ƒO"
 				Case Else
-					If InStr(wname, "Invalid_string_refer_to_original_code") > 0 Or InStr(wname, "Invalid_string_refer_to_original_code") > 0 Then
-						wtype = "Invalid_string_refer_to_original_code"
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-						wtype = "Invalid_string_refer_to_original_code"
-						'Invalid_string_refer_to_original_code_
-						'Or InStr(wname, "ã‚¯ã‚¨ã‚¤ã‚¯") > 0 _
-						'Then
-						'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-						wtype = "Invalid_string_refer_to_original_code"
+					'è‚¿•Ší‚Ì‰æ‘œ‚ğ‹ó‚É‚·‚é
+					bmpname = "-.bmp"
+			End Select
+		End If
+		
+		'ƒ}ƒbƒvUŒ‚H
+		If InStrNotNest(wclass, "‚l") > 0 Then
+			'ƒ}ƒbƒvUŒ‚‘Î‰ƒAƒjƒ‚É’u‚«Š·‚¦
+			Select Case wtype
+				Case "–î", "¬Œ^ƒ~ƒTƒCƒ‹", "ƒ~ƒTƒCƒ‹", "ƒX[ƒp[ƒ~ƒTƒCƒ‹", "ƒOƒŒƒl[ƒh", "ƒLƒƒƒmƒ“–C", "‘åƒLƒƒƒmƒ“–C", "‚h‚b‚a‚l", "ƒVƒ…[ƒgƒJƒbƒ^[", "‹…“d", "•X’e", "‰Î‰Š’e", "Šâ’e", "”­Œõ", "——‹", "•ú“d", "•X’Œ", "‚Â‚ç‚ç", "“€Œ‹", "á", "•—", "‹­•—", "—³Šª", "’Ã”g", "–A", "‰¹•„", "ƒI[ƒ‹ƒŒƒ“ƒW", "‰Œ", "‹C’e", "˜A‹C’e", "‹Ca", "”g“®•úË"
+					wtype = "‚l‚`‚o" & wtype
+				Case "‰Š", "‰Š“ŠË", "‰Î‰Š•úË"
+					wtype = "‚l‚`‚o‰Š"
+				Case "ƒj[ƒhƒ‹", "ƒj[ƒhƒ‹˜AË"
+					wtype = "‚l‚`‚oƒj[ƒhƒ‹"
+				Case "“Š‰º”š’e"
+					wtype = "‚l‚`‚o”š”­"
+				Case "d—Í’e"
+					wtype = "‚l‚`‚oƒuƒ‰ƒbƒNƒz[ƒ‹"
+				Case Else
+					If InStr(wname, "ƒtƒ‰ƒbƒVƒ…") > 0 Or InStr(wname, "‘MŒõ") > 0 Then
+						wtype = "‚l‚`‚oƒtƒ‰ƒbƒVƒ…"
+					ElseIf InStr(wname, "ƒ_[ƒN") > 0 Or InStr(wname, "ˆÅ") > 0 Then 
+						wtype = "‚l‚`‚oƒ_[ƒNƒlƒX"
+					ElseIf InStr(wname, "’nk") > 0 Or InStr(wname, "ƒNƒEƒFƒCƒN") > 0 Or InStr(wname, "ƒNƒGƒCƒN") > 0 Then 
+						wtype = "‚l‚`‚o’nk"
 						sname = " Explode(Far).wav"
-					ElseIf InStr(wname, "æ ¸") > 0 Or InStr(wname, "Invalid_string_refer_to_original_code") > 0 Then 
-						wtype = "Invalid_string_refer_to_original_code"
+					ElseIf InStr(wname, "Šj") > 0 Or InStr(wname, "ƒAƒgƒ~ƒbƒN") > 0 Then 
+						wtype = "‚l‚`‚oŠj”š”­"
 					End If
 			End Select
 		End If
 		
 		
-		'Invalid_string_refer_to_original_code
+		'g—p‚µ‚½UŒ‚è’i‚ğ‹L˜^
 		CurrentWeaponType = wtype
 		
-		'Invalid_string_refer_to_original_code
-		If InStr(wname, "Invalid_string_refer_to_original_code") > 0 Or InStr(wname, "èµ¤") > 0 Then
-			cname = "èµ¤"
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			cname = "Invalid_string_refer_to_original_code"
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			cname = "Invalid_string_refer_to_original_code"
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			cname = "Invalid_string_refer_to_original_code"
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			cname = "Invalid_string_refer_to_original_code"
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			cname = "Invalid_string_refer_to_original_code"
-			'Invalid_string_refer_to_original_code_
-			'Invalid_string_refer_to_original_code_
-			'Then
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			cname = "Invalid_string_refer_to_original_code"
-			'Invalid_string_refer_to_original_code_
-			'Invalid_string_refer_to_original_code_
-			'Then
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			cname = "ç™½"
+		'•`‰æF‚ğÅIŒˆ’è
+		If InStr(wname, "ƒŒƒbƒh") > 0 Or InStr(wname, "Ô") > 0 Then
+			cname = "Ô"
+		ElseIf InStr(wname, "ƒuƒ‹[") > 0 Or InStr(wname, "Â") > 0 Then 
+			cname = "Â"
+		ElseIf InStr(wname, "ƒCƒGƒ[") > 0 Or InStr(wname, "‰©") > 0 Then 
+			cname = "‰©"
+		ElseIf InStr(wname, "ƒOƒŠ[ƒ“") > 0 Or InStr(wname, "—Î") > 0 Then 
+			cname = "—Î"
+		ElseIf InStr(wname, "ƒsƒ“ƒN") > 0 Or InStr(wname, "“") > 0 Then 
+			cname = "“"
+		ElseIf InStr(wname, "ƒuƒ‰ƒEƒ“") > 0 Or InStr(wname, "ò") > 0 Then 
+			cname = "ò"
+		ElseIf InStr(wname, "ƒuƒ‰ƒbƒN") > 0 Or InStr(wname, "•") > 0 Or InStr(wname, "ƒ_[ƒN") > 0 Or InStr(wname, "ˆÅ") > 0 Then 
+			cname = "•"
+		ElseIf InStr(wname, "ƒzƒƒCƒg") > 0 Or InStr(wname, "”’") > 0 Or InStr(wname, "ƒz[ƒŠ[") > 0 Or InStr(wname, "¹") > 0 Then 
+			cname = "”’"
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'‚Qí—Ş‚ÌƒAƒjƒ‚ğ‘g‚İ‡‚í‚¹‚éê‡
 		If Len(wtype0) > 0 Then
-			'Invalid_string_refer_to_original_code
-			aname = wtype0 & "æº–å‚™"
+			'•\¦‚·‚é€”õƒAƒjƒ‚Ìí—Ş
+			aname = wtype0 & "€”õ"
 			
-			'è‰²
+			'F
 			If Len(cname0) > 0 Then
 				aname = aname & " " & cname0
 			ElseIf Len(cname) > 0 Then 
 				aname = aname & " " & cname
 			End If
 			
-			'åŠ¹æœéŸ³
+			'Œø‰Ê‰¹
 			If Len(sname0) > 0 Then
 				aname = aname & " " & sname0
 			End If
 			
-			'æˆ¦é—˜ã‚¢ãƒ‹ãƒ¡è¡¨ç¤º
+			'í“¬ƒAƒjƒ•\¦
 			ShowAnimation(aname)
 		End If
 		
-		'Invalid_string_refer_to_original_code
-		aname = wtype & "Invalid_string_refer_to_original_code"
+		'•\¦‚·‚éUŒ‚ƒAƒjƒ‚Ìí—Ş
+		aname = wtype & "UŒ‚"
 		
-		'Invalid_string_refer_to_original_code
+		'”­Ë‰ñ”
 		If attack_times > 0 Then
 			aname = aname & " " & VB6.Format(attack_times)
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'‰æ‘œ
 		If Len(bmpname) > 0 Then
 			aname = aname & " " & bmpname
 		End If
 		
-		'è‰²
+		'F
 		If Len(cname) > 0 Then
 			aname = aname & " " & cname
 		End If
 		
-		'åŠ¹æœéŸ³
+		'Œø‰Ê‰¹
 		If Len(sname) > 0 Then
 			aname = aname & " " & sname
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'UŒ‚ƒAƒjƒ•\¦
 		ShowAnimation(aname)
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'•Šíg—p‚ÌŒø‰Ê‰¹
 	Public Sub AttackSound(ByRef u As Unit, ByVal w As Short)
 		Dim wname, wclass As String
 		Dim sname As String
 		Dim num As Short
 		Dim i As Short
 		
-		'ãƒ•ãƒ©ã‚°ã‚’ã‚¯ãƒªã‚¢
+		'ƒtƒ‰ƒO‚ğƒNƒŠƒA
 		IsWavePlayed = False
 		
-		'Invalid_string_refer_to_original_code
+		'‰EƒNƒŠƒbƒN’†‚ÍŒø‰Ê‰¹‚ğƒXƒLƒbƒv
 		If IsRButtonPressed() Then
 			Exit Sub
 		End If
@@ -2355,291 +2027,181 @@ FoundWeaponType:
 		wname = u.WeaponNickname(w)
 		wclass = u.Weapon(w).Class_Renamed
 		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code_
-		'Or u.IsWeaponClassifiedAs(w, "æ¥") _
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		Exit Sub
-		'End If
-		If InStr(wname, "Invalid_string_refer_to_original_code") > 0 Then
+		'Œø‰Ê‰¹‚ª•K—v‚È‚¢‚à‚Ì
+		If u.IsWeaponClassifiedAs(w, "•") Or u.IsWeaponClassifiedAs(w, "“Ë") Or u.IsWeaponClassifiedAs(w, "Ú") Then
 			Exit Sub
 		End If
-		If InStrNotNest(wclass, "æ­¦") > 0 Then
-			If InStr(wname, "Invalid_string_refer_to_original_code") > 0 Then
+		If InStr(wname, "ƒr[ƒ€ƒT[ƒxƒ‹") > 0 Then
+			Exit Sub
+		End If
+		If InStrNotNest(wclass, "•") > 0 Then
+			If InStr(wname, "eŒ•") > 0 Then
 				Exit Sub
 			End If
 		End If
 		
-		'åŠ¹æœéŸ³ã®å†ç”Ÿå›æ•°
+		'Œø‰Ê‰¹‚ÌÄ¶‰ñ”
 		num = CountAttack(u, w)
 		
-		'Invalid_string_refer_to_original_code
-		If InStr(wname, "ä¸»ç ²") > 0 Or InStr(wname, "å‰¯ç ²") > 0 Then
-			If InStrNotNest(wclass, "Invalid_string_refer_to_original_code") > 0 Then
+		'•Ší–¼‚É‰‚¶‚ÄŒø‰Ê‰¹‚ğ‘I‘ğ
+		If InStr(wname, "å–C") > 0 Or InStr(wname, "•›–C") > 0 Then
+			If InStrNotNest(wclass, "‚a") > 0 Then
 				sname = "Beam.wav"
 			Else
 				sname = "Cannon.wav"
 			End If
-		ElseIf InStr(wname, "å¯¾ç©ºç ²") > 0 Then 
-			If InStrNotNest(wclass, "Invalid_string_refer_to_original_code") > 0 Then
+		ElseIf InStr(wname, "‘Î‹ó–C") > 0 Then 
+			If InStrNotNest(wclass, "‚a") > 0 Then
 				sname = "Beam.wav"
 				num = 4
 			Else
 				sname = "MachineCannon.wav"
 			End If
-			'Invalid_string_refer_to_original_code_
-			'Invalid_string_refer_to_original_code_
-			'Invalid_string_refer_to_original_code_
-			'Or InStr(wname, "è¡æ’ƒæ³¢") > 0 Or InStr(wname, "é›»ç£æ³¢") > 0 _
-			'Or InStr(wname, "é›»æ³¢") > 0 Or InStr(wname, "éŸ³æ³¢") > 0 _
-			'Or InStr(wname, "ç£åŠ›") > 0 _
-			'Invalid_string_refer_to_original_code_
-			'Invalid_string_refer_to_original_code_
-			'Invalid_string_refer_to_original_code_
-			'Or InStr(wname, "ã‚¨ãƒãƒ«ã‚®ãƒ¼") > 0 _
-			'Then
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+		ElseIf InStr(wname, "ƒŒ[ƒU[") > 0 Or InStr(wname, "Œõü") > 0 Or InStr(wname, "‹ÃWŒõ") > 0 Or InStr(wname, "”Mü") > 0 Or InStr(wname, "—âü") > 0 Or InStr(wname, "ÕŒ‚”g") > 0 Or InStr(wname, "“d¥”g") > 0 Or InStr(wname, "“d”g") > 0 Or InStr(wname, "‰¹”g") > 0 Or InStr(wname, "¥—Í") > 0 Or InStr(wname, "ƒuƒ‰ƒbƒNƒz[ƒ‹") > 0 Or InStr(wname, "k‘Ş") > 0 Or InStr(wname, "ƒEƒF[ƒu") > 0 Or InStr(wname, "”g“®") > 0 Or InStr(wname, "ƒ\ƒjƒbƒN") > 0 Or InStr(wname, "ƒXƒp[ƒN") > 0 Or InStr(wname, "ƒGƒlƒ‹ƒM[") > 0 Then 
 			sname = "LaserGun.wav"
-			'Invalid_string_refer_to_original_code_
-			'Invalid_string_refer_to_original_code_
-			'Invalid_string_refer_to_original_code_
-			'Invalid_string_refer_to_original_code_
-			'Invalid_string_refer_to_original_code_
-			'Invalid_string_refer_to_original_code_
-			'Invalid_string_refer_to_original_code_
-			'Invalid_string_refer_to_original_code_
-			'Or InStr(wname, "ã‚¤ã‚ªãƒ³") > 0 Or InStr(wname, "ãƒ—ãƒ­ãƒŸãƒãƒ³ã‚¹") > 0 _
-			'Or InStr(wname, "ãƒã‚¤ãƒ‰ãƒ­") > 0 Or InStr(wname, "ã‚¤ãƒ³ãƒ‘ãƒ«ã‚¹") > 0 _
-			'Or InStr(wname, "ãƒ•ãƒ¬ã‚¤ãƒ ") > 0 Or InStr(wname, "ã‚µãƒ³ã‚·ãƒ£ã‚¤ãƒ³") > 0 _
-			'Then
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+		ElseIf InStr(wname, "—±q") > 0 Or InStr(wname, "—z“dq") > 0 Or InStr(wname, "—zq") > 0 Or InStr(wname, "ƒuƒ‰ƒXƒ^[") > 0 Or InStr(wname, "ƒuƒ‰ƒXƒg") > 0 Or InStr(wname, "ƒtƒFƒCƒU[") > 0 Or InStr(wname, "ƒfƒBƒXƒ‰ƒvƒ^[") > 0 Or InStr(wname, "ƒXƒ}ƒbƒVƒƒ[") > 0 Or InStr(wname, "ƒXƒ‰ƒbƒVƒƒ[") > 0 Or InStr(wname, "ƒtƒ‰ƒbƒVƒƒ[") > 0 Or InStr(wname, "ƒfƒBƒoƒCƒ_[") > 0 Or InStr(wname, "ƒhƒ‰ƒCƒo[") > 0 Or InStr(wname, "ƒVƒ…ƒgƒ‰[ƒ‹") > 0 Or InStr(wname, "ƒjƒ…[ƒgƒƒ“") > 0 Or InStr(wname, "ƒvƒ‰ƒYƒ}") > 0 Or InStr(wname, "ƒCƒIƒ“") > 0 Or InStr(wname, "ƒvƒƒ~ƒlƒ“ƒX") > 0 Or InStr(wname, "ƒnƒCƒhƒ") > 0 Or InStr(wname, "ƒCƒ“ƒpƒ‹ƒX") > 0 Or InStr(wname, "ƒtƒŒƒCƒ€") > 0 Or InStr(wname, "ƒTƒ“ƒVƒƒƒCƒ“") > 0 Then 
 			sname = "Beam.wav"
-		ElseIf InStr(wname, "ã‚·ãƒ¥ãƒ¼ã‚¿ãƒ¼") > 0 Then 
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			sname = "Missile.wav"
-		Else
-			sname = "Beam.wav"
-		End If
-		'UPGRADE_WARNING: AttackSound ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		If InStrNotNest(wclass, "Invalid_string_refer_to_original_code") > 0 Then
-			sname = "Beam.wav"
-		Else
-			sname = "LaserGun.wav"
-		End If
-		If InStr(wname, "ãƒãƒ«ã‚«ãƒ³") > 0 Or InStr(wname, "ãƒã‚·ãƒ³ã‚¬ãƒ³") > 0 Then
-			num = 4
-		End If
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "æ©ŸéŠƒ") > 0 _
-		'Or InStr(wname, "ãƒã‚·ãƒ³ã‚¬ãƒ³") > 0 _
-		'Or InStr(wname, "ã‚¢ã‚µãƒ«ãƒˆãƒ©ã‚¤ãƒ•ãƒ«") > 0 _
-		'Or InStr(wname, "ãƒã‚§ãƒ¼ãƒ³ãƒ©ã‚¤ãƒ•ãƒ«") > 0 _
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "ãƒã‚¦ãƒ©ãƒ¼ç ²") > 0 _
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		If InStrNotNest(wclass, "Invalid_string_refer_to_original_code") > 0 Then
-			sname = "LaserGun.wav"
-		Else
-			sname = "MachineGun.wav"
-		End If
-		num = 1
-		'UPGRADE_WARNING: AttackSound ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		If InStrNotNest(wclass, "Invalid_string_refer_to_original_code") > 0 Then
-			sname = "LaserGun.wav"
-		Else
-			sname = "MachineCannon.wav"
-		End If
-		num = 1
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "ãƒãƒ«ã‚«ãƒ³") > 0 _
-		'Or InStr(wname, "ã‚¬ãƒˆãƒªãƒ³ã‚°") > 0 _
-		'Or InStr(wname, "ãƒãƒ³ãƒ‰ãƒ¬ãƒ¼ãƒ«ã‚¬ãƒ³") > 0 _
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		If InStrNotNest(wclass, "Invalid_string_refer_to_original_code") > 0 Then
-			sname = "LaserGun.wav"
-		Else
-			sname = "GunPod.wav"
-		End If
-		num = 1
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		PlayWave("Thunder.wav")
-		Sleep(300)
-		PlayWave("Cannon.wav")
-		For i = 2 To num
-			Sleep(130)
+		ElseIf InStr(wname, "ƒVƒ…[ƒ^[") > 0 Then 
+			If InStrNotNest(wclass, "À") > 0 Then
+				sname = "Missile.wav"
+			Else
+				sname = "Beam.wav"
+			End If
+		ElseIf InStr(wname, "ƒr[ƒ€") > 0 Then 
+			If InStrNotNest(wclass, "‚a") > 0 Then
+				sname = "Beam.wav"
+			Else
+				sname = "LaserGun.wav"
+			End If
+			If InStr(wname, "ƒoƒ‹ƒJƒ“") > 0 Or InStr(wname, "ƒ}ƒVƒ“ƒKƒ“") > 0 Then
+				num = 4
+			End If
+		ElseIf InStr(wname, "‹@ŠÖe") > 0 Or InStr(wname, "‹@e") > 0 Or InStr(wname, "ƒ}ƒVƒ“ƒKƒ“") > 0 Or InStr(wname, "ƒAƒTƒ‹ƒgƒ‰ƒCƒtƒ‹") > 0 Or InStr(wname, "ƒ`ƒF[ƒ“ƒ‰ƒCƒtƒ‹") > 0 Or InStr(wname, "ƒpƒŒƒbƒgƒ‰ƒCƒtƒ‹") > 0 Or InStr(wname, "ƒ}ƒEƒ‰[–C") > 0 Or InStr(wname, "‚r‚l‚f") > 0 Then 
+			If InStrNotNest(wclass, "‚a") > 0 Then
+				sname = "LaserGun.wav"
+			Else
+				sname = "MachineGun.wav"
+			End If
+			num = 1
+		ElseIf InStr(wname, "‹@ŠÖ–C") > 0 Or InStr(wname, "‘¬Ë–C") > 0 Or InStr(wname, "ƒ}ƒVƒ“ƒLƒƒƒmƒ“") > 0 Or InStr(wname, "ƒ‚[ƒ^[ƒJƒmƒ“") > 0 Or InStr(wname, "ƒKƒ“ƒNƒ‰ƒXƒ^[") > 0 Or InStr(wname, "ƒ`ƒF[ƒ“ƒKƒ“") > 0 Then 
+			If InStrNotNest(wclass, "‚a") > 0 Then
+				sname = "LaserGun.wav"
+			Else
+				sname = "MachineCannon.wav"
+			End If
+			num = 1
+		ElseIf InStr(wname, "ƒKƒ“ƒ|ƒbƒh") > 0 Or InStr(wname, "ƒoƒ‹ƒJƒ“") > 0 Or InStr(wname, "ƒKƒgƒŠƒ“ƒO") > 0 Or InStr(wname, "ƒnƒ“ƒhƒŒ[ƒ‹ƒKƒ“") > 0 Then 
+			If InStrNotNest(wclass, "‚a") > 0 Then
+				sname = "LaserGun.wav"
+			Else
+				sname = "GunPod.wav"
+			End If
+			num = 1
+		ElseIf InStr(wname, "ƒŠƒjƒAƒLƒƒƒmƒ“") > 0 Or InStr(wname, "ƒŒ[ƒ‹ƒLƒƒƒmƒ“") > 0 Or InStr(wname, "ƒŠƒjƒAƒJƒmƒ“") > 0 Or InStr(wname, "ƒŒ[ƒ‹ƒJƒmƒ“") > 0 Or InStr(wname, "ƒŠƒjƒAƒKƒ“") > 0 Or InStr(wname, "ƒŒ[ƒ‹ƒKƒ“") > 0 Or (InStr(wname, "“d¥") > 0 And InStr(wname, "–C") > 0) Then 
+			PlayWave("Thunder.wav")
+			Sleep(300)
 			PlayWave("Cannon.wav")
-		Next 
-		'UPGRADE_WARNING: AttackSound ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		If InStrNotNest(wclass, "Invalid_string_refer_to_original_code") > 0 Then
+			For i = 2 To num
+				Sleep(130)
+				PlayWave("Cannon.wav")
+			Next 
+		ElseIf InStr(wname, "ƒ‰ƒCƒtƒ‹") > 0 Then 
+			If InStrNotNest(wclass, "‚a") > 0 Then
+				sname = "Beam.wav"
+			Else
+				sname = "Rifle.wav"
+			End If
+		ElseIf InStr(wname, "ƒoƒY[ƒJ") > 0 Or InStr(wname, "ƒWƒƒƒCƒAƒ“ƒgƒoƒY") > 0 Or InStr(wname, "ƒVƒ…ƒcƒ‹ƒ€ƒtƒ@ƒEƒXƒg") > 0 Or InStr(wname, "ƒOƒŒƒl[ƒh") > 0 Or InStr(wname, "ƒOƒŒƒlƒCƒh") > 0 Or InStr(wname, "ƒiƒp[ƒ€") > 0 Or InStr(wname, "ƒNƒŒƒCƒ‚ƒA") > 0 Or InStr(wname, "ƒƒPƒbƒg–C") > 0 Or InStr(wname, "”—Œ‚–C") > 0 Or InStr(wname, "–³”½“®–C") > 0 Then 
+			If InStrNotNest(wclass, "‚a") > 0 Then
+				sname = "Beam.wav"
+			Else
+				sname = "Bazooka.wav"
+			End If
+		ElseIf InStr(wname, "©“®–C") > 0 Or InStr(wname, "ƒI[ƒgƒLƒƒƒmƒ“") > 0 Then 
+			sname = "FastGun.wav"
+			num = 1
+		ElseIf InStr(wname, "‹|") > 0 Or InStr(wname, "ƒAƒ[") > 0 Or InStr(wname, "ƒ{[ƒKƒ“") > 0 Or InStr(wname, "ƒ{ƒEƒKƒ“") > 0 Or InStr(wname, "ƒƒ“ƒOƒ{ƒE") > 0 Or InStr(wname, "ƒVƒ‡[ƒgƒ{ƒE") > 0 Or InStr(wname, "j") > 0 Or InStr(wname, "”¯") > 0 Then 
+			sname = "Bow.wav"
+		ElseIf InStr(wname, "ƒ}ƒCƒ“") > 0 Or InStr(wname, "ƒNƒ‰ƒbƒJ[") > 0 Or InStr(wname, "è“Š’e") > 0 Or InStr(wname, "èÖ’e") > 0 Or InStr(wname, "“Š‚°") > 0 Or InStr(wname, "ƒXƒŠƒ“ƒO") > 0 Or InStr(wname, "è— Œ•") > 0 Or InStr(wname, "‹ê–³") > 0 Or InStr(wname, "ƒNƒiƒC") > 0 Then 
+			sname = "Swing.wav"
+		ElseIf InStr(wname, "”š’e") > 0 Or InStr(wname, "”š—‹") > 0 Or InStr(wname, "”šŒ‚") > 0 Then 
+			sname = "Bomb.wav"
+		ElseIf InStr(wname, "‹@—‹") > 0 Then 
+			sname = "Explode.wav"
+		ElseIf InStr(wname, "ƒ}ƒCƒNƒƒ~ƒTƒCƒ‹") > 0 And InStrNotNest(wclass, "‚l") > 0 Then 
+			sname = "MicroMissile.wav"
+			num = 1
+		ElseIf InStr(wname, "‘S•ûˆÊƒ~ƒTƒCƒ‹") > 0 Then 
+			sname = "MicroMissile.wav"
+			num = 1
+		ElseIf InStr(wname, "ƒ~ƒTƒCƒ‹") > 0 Or InStr(wname, "ƒƒPƒbƒg") > 0 Or InStr(wname, "‹›—‹") > 0 Or InStr(wname, "”½‰’e") > 0 Or InStr(wname, "ƒ}ƒ‹ƒ`ƒ|ƒbƒh") > 0 Or InStr(wname, "ƒ}ƒ‹ƒ`ƒ‰ƒ“ƒ`ƒƒ[") > 0 Or InStr(wname, "ƒVƒ‡ƒbƒg") > 0 Or InStr(wname, "ƒtƒ‹ƒtƒ@ƒCƒA") > 0 Or InStr(wname, "ƒXƒgƒŠ[ƒ€") > 0 Or InStr(wname, "ƒiƒbƒNƒ‹") > 0 Or InStr(wname, "ƒpƒ“ƒ`") > 0 Or InStr(wname, "“S˜r") > 0 Or InStr(wname, "”­Ë") > 0 Or InStr(wname, "Ëo") > 0 Or InStr(wname, "ƒ‰ƒ“ƒ`ƒƒ[") > 0 Or InStr(wname, "‚`‚s‚l") > 0 Or InStr(wname, "‚`‚`‚l") > 0 Or InStr(wname, "‚`‚f‚l") > 0 Then 
+			If InStrNotNest(wclass, "‚a") > 0 Then
+				sname = "Beam.wav"
+			Else
+				sname = "Missile.wav"
+			End If
+		ElseIf InStr(wname, "–C") > 0 Or InStr(wname, "’e") > 0 Or InStr(wname, "ƒLƒƒƒmƒ“") > 0 Or InStr(wname, "ƒJƒmƒ“") > 0 Or InStr(wname, "ƒ{ƒ€") > 0 Or InStr(wname, "‰Î‹…") > 0 Then 
+			If InStrNotNest(wclass, "‚a") > 0 Then
+				sname = "Beam.wav"
+			Else
+				sname = "Cannon.wav"
+			End If
+		ElseIf InStr(wname, "ƒKƒ“") > 0 Or InStr(wname, "ƒsƒXƒgƒ‹") > 0 Or InStr(wname, "ƒŠƒ{ƒ‹ƒ”ƒ@[") > 0 Or InStr(wname, "ƒ}ƒOƒiƒ€") > 0 Or InStr(wname, "ƒ‰ƒCƒAƒbƒg") > 0 Or InStr(wname, "e") > 0 Then 
+			If InStrNotNest(wclass, "‚a") > 0 Then
+				sname = "Beam.wav"
+			Else
+				sname = "Gun.wav"
+			End If
+		ElseIf InStr(wname, "ƒ\ƒjƒbƒNƒuƒŒ[ƒh") > 0 Or InStr(wname, "ƒr[ƒ€ƒJƒbƒ^[") > 0 Or InStr(wname, "ƒXƒ‰ƒCƒT[") > 0 Then 
+			sname = "Saber.wav"
+		ElseIf InStr(wname, "d—Í") > 0 Or InStr(wname, "ƒOƒ‰ƒr") > 0 Then 
+			sname = "Shock(Low).wav"
+		ElseIf InStr(wname, "ƒXƒg[ƒ€") > 0 Or InStr(wname, "ƒgƒ‹ƒl[ƒh") > 0 Or InStr(wname, "ƒnƒŠƒP[ƒ“") > 0 Or InStr(wname, "ƒ^ƒCƒt[ƒ“") > 0 Or InStr(wname, "ƒTƒCƒNƒƒ“") > 0 Or InStr(wname, "ƒuƒŠƒU[ƒh") > 0 Or InStr(wname, "—³Šª") > 0 Or InStr(wname, "‰QŠª") > 0 Or InStr(wname, "‘ä•—") > 0 Or InStr(wname, "—’") > 0 Or InStr(wname, "á") > 0 Or InStr(wname, "ƒtƒŠ[ƒU[") > 0 Or InStr(wname, "ƒeƒŒƒLƒlƒVƒX") > 0 Then 
+			sname = "Storm.wav"
+			num = 1
+		ElseIf InStr(wname, "ƒu[ƒƒ‰ƒ“") > 0 Or InStr(wname, "ƒEƒFƒbƒu") > 0 Then 
+			sname = "Swing.wav"
+			num = 5
+		ElseIf InStr(wname, "ƒTƒ“ƒ_[") > 0 Or InStr(wname, "ƒ‰ƒCƒgƒjƒ“ƒO") > 0 Or InStr(wname, "ƒ{ƒ‹ƒg") > 0 Or InStr(wname, "ˆîÈ") > 0 Or InStr(wname, "•ú“d") > 0 Or InStr(wname, "“dŒ‚") > 0 Or InStr(wname, "“d—¬") > 0 Or InStr(wname, "—‹") > 0 Or InStrNotNest(wclass, "—‹") > 0 Then 
+			sname = "Thunder.wav"
+			num = 1
+		ElseIf InStr(wname, "‰Î‰Š•úË") > 0 Then 
+			sname = "AntiShipMissile.wav"
+		ElseIf InStr(wname, "‰Î‰Š") > 0 Or InStr(wname, "‰‹") > 0 Then 
+			sname = "Fire.wav"
+			num = 1
+		ElseIf InStr(wname, "–‚–@") > 0 Or InStrNotNest(wclass, "–‚") > 0 Or InStr(wname, "ƒTƒCƒRƒLƒlƒVƒX") > 0 Or InStr(wname, "…") > 0 Or InStr(wname, "ƒAƒ“ƒJ[") > 0 Then 
+			sname = "Whiz.wav"
+		ElseIf InStr(wname, "–A") > 0 Or InStr(wname, "ƒoƒuƒ‹") > 0 Then 
+			sname = "Bubble.wav"
+		ElseIf Right(wname, 1) = "‰t" Then 
+			sname = "Shower.wav"
+		ElseIf Right(wname, 3) = "ƒuƒŒƒX" Or Right(wname, 3) = "‚Ì‘§" Then 
+			If InStrNotNest(wclass, "‰Î") > 0 Then
+				sname = "AntiShipMissile.wav"
+			ElseIf InStrNotNest(wclass, "—â") > 0 Then 
+				sname = "Storm.wav"
+			ElseIf InStrNotNest(wclass, "ˆÅ") > 0 Then 
+				sname = "GunPod.wav"
+			ElseIf InStrNotNest(wclass, "…") > 0 Then 
+				sname = "Hide.wav"
+			Else
+				sname = "AntiShipMissile.wav"
+			End If
+		ElseIf InStr(wname, "ˆêÄËŒ‚") > 0 Then 
+			sname = "MultipleRocketLauncher(Light).wav"
+			num = 1
+		ElseIf InStrNotNest(wclass, "‚a") > 0 Then 
+			'‚È‚ñ‚©•ª‚©‚ç‚ñ‚¯‚Çƒr[ƒ€
 			sname = "Beam.wav"
-		Else
-			sname = "Rifle.wav"
-		End If
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "ãƒŠãƒ‘ãƒ¼ãƒ ") > 0 _
-		'Or InStr(wname, "ã‚¯ãƒ¬ã‚¤ãƒ¢ã‚¢") > 0 _
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "ç„¡åå‹•ç ²") > 0 _
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		If InStrNotNest(wclass, "Invalid_string_refer_to_original_code") > 0 Then
-			sname = "Beam.wav"
-		Else
-			sname = "Bazooka.wav"
-		End If
-		'UPGRADE_WARNING: AttackSound ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		sname = "FastGun.wav"
-		num = 1
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "ã‚¢ãƒ­ãƒ¼") > 0 _
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "ãƒœã‚¦ã‚¬ãƒ³") > 0 _
-		'Or InStr(wname, "ãƒ­ãƒ³ã‚°ãƒœã‚¦") > 0 _
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "é«ª") > 0 _
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		sname = "Bow.wav"
-		'UPGRADE_WARNING: AttackSound ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		sname = "Swing.wav"
-		'UPGRADE_WARNING: AttackSound ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		sname = "Bomb.wav"
-		'UPGRADE_WARNING: AttackSound ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		sname = "Explode.wav"
-		'UPGRADE_WARNING: AttackSound ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		sname = "MicroMissile.wav"
-		num = 1
-		'UPGRADE_WARNING: AttackSound ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		sname = "MicroMissile.wav"
-		num = 1
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "ãƒ©ãƒ³ãƒãƒ£ãƒ¼") > 0 _
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		If InStrNotNest(wclass, "Invalid_string_refer_to_original_code") > 0 Then
-			sname = "Beam.wav"
-		Else
-			sname = "Missile.wav"
-		End If
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		If InStrNotNest(wclass, "Invalid_string_refer_to_original_code") > 0 Then
-			sname = "Beam.wav"
-		Else
-			sname = "Cannon.wav"
-		End If
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		If InStrNotNest(wclass, "Invalid_string_refer_to_original_code") > 0 Then
-			sname = "Beam.wav"
-		Else
+		ElseIf InStrNotNest(wclass, "e") > 0 Then 
+			'‚È‚ñ‚©•ª‚©‚ç‚ñ‚¯‚Çe
 			sname = "Gun.wav"
 		End If
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "ã‚¹ãƒ©ã‚¤ã‚µãƒ¼") > 0 _
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		sname = "Saber.wav"
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		sname = "Shock(Low).wav"
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "ãƒãƒªã‚±ãƒ¼ãƒ³") > 0 _
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "ã‚µã‚¤ã‚¯ãƒ­ãƒ³") > 0 _
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "ç«œå·»") > 0 _
-		'Or InStr(wname, "æ¸¦å·»") > 0 _
-		'Or InStr(wname, "å°é¢¨") > 0 _
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "å¹é›ª") > 0 _
-		'Or InStr(wname, "ãƒ•ãƒªãƒ¼ã‚¶ãƒ¼") > 0 _
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		sname = "Storm.wav"
-		num = 1
-		'UPGRADE_WARNING: AttackSound ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		sname = "Swing.wav"
-		num = 5
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "ç¨²å¦»") > 0 _
-		'Or InStr(wname, "æ”¾é›»") > 0 _
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "é›·") > 0 _
-		'Or InStrNotNest(wclass, "é›·") > 0 _
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		sname = "Thunder.wav"
-		num = 1
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		sname = "AntiShipMissile.wav"
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		sname = "Fire.wav"
-		num = 1
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "ã‚µã‚¤ã‚³ã‚­ãƒã‚·ã‚¹") > 0 _
-		'Or InStr(wname, "ç³¸") > 0 _
-		'Or InStr(wname, "ã‚¢ãƒ³ã‚«ãƒ¼") > 0 _
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		sname = "Whiz.wav"
-		'UPGRADE_WARNING: AttackSound ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		sname = "Bubble.wav"
-		'UPGRADE_WARNING: AttackSound ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		sname = "Shower.wav"
-		'UPGRADE_WARNING: AttackSound ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		If InStrNotNest(wclass, "ç«") > 0 Then
-			sname = "AntiShipMissile.wav"
-		ElseIf InStrNotNest(wclass, "å†·") > 0 Then 
-			sname = "Storm.wav"
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			sname = "GunPod.wav"
-		ElseIf InStrNotNest(wclass, "æ°´") > 0 Then 
-			sname = "Hide.wav"
-		Else
-			sname = "AntiShipMissile.wav"
-		End If
-		'UPGRADE_WARNING: AttackSound ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		sname = "MultipleRocketLauncher(Light).wav"
-		num = 1
-		'UPGRADE_WARNING: AttackSound ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		'Invalid_string_refer_to_original_code
-		sname = "Beam.wav"
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		'Invalid_string_refer_to_original_code
-		sname = "Gun.wav"
-		'End If
 		
-		'Invalid_string_refer_to_original_code
+		'Œø‰Ê‰¹‚È‚µH
 		If sname = "" Then
-			'ãƒ•ãƒ©ã‚°ã‚’ã‚¯ãƒªã‚¢
+			'ƒtƒ‰ƒO‚ğƒNƒŠƒA
 			IsWavePlayed = False
 			Exit Sub
 		End If
@@ -2647,22 +2209,22 @@ FoundWeaponType:
 		For i = 1 To num
 			PlayWave(sname)
 			
-			'ã‚¦ã‚§ã‚¤ãƒˆã‚’å…¥ã‚Œã‚‹
+			'ƒEƒFƒCƒg‚ğ“ü‚ê‚é
 			Sleep(130)
 			If sname = "Swing.wav" Then
 				Sleep(150)
 			End If
 		Next 
 		
-		'ãƒ•ãƒ©ã‚°ã‚’ã‚¯ãƒªã‚¢
+		'ƒtƒ‰ƒO‚ğƒNƒŠƒA
 		IsWavePlayed = False
 	End Sub
 	
 	
-	'Invalid_string_refer_to_original_code
+	'•Ší–½’†‚Ì“ÁêŒø‰Ê
 	Public Sub HitEffect(ByRef u As Unit, ByRef w As Short, ByRef t As Unit, Optional ByVal hit_count As Short = 0)
 		
-		'Invalid_string_refer_to_original_code
+		'‰EƒNƒŠƒbƒN’†‚Í“ÁêŒø‰Ê‚ğƒXƒLƒbƒv
 		If IsRButtonPressed() Then
 			Exit Sub
 		End If
@@ -2674,7 +2236,7 @@ FoundWeaponType:
 		End If
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'•Ší–½’†‚ÌƒAƒjƒ[ƒVƒ‡ƒ“
 	Public Sub HitAnimation(ByRef u As Unit, ByVal w As Short, ByRef t As Unit, ByVal hit_count As Short)
 		Dim wtype, wname, wclass, wtype0 As String
 		Dim cname, aname, sname As String
@@ -2684,1018 +2246,786 @@ FoundWeaponType:
 		Dim combo_attack As Boolean
 		Dim i As Short
 		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		ShowAnimation("ãƒ€ãƒ¡ãƒ¼ã‚¸å‘½ä¸­")
-		Exit Sub
-		'End If
+		'í“¬ƒAƒjƒ”ñ©“®‘I‘ğƒIƒvƒVƒ‡ƒ“
+		If IsOptionDefined("í“¬ƒAƒjƒ”ñ©“®‘I‘ğ") Then
+			ShowAnimation("ƒ_ƒ[ƒW–½’†")
+			Exit Sub
+		End If
 		
 		wname = u.WeaponNickname(w)
 		wclass = u.Weapon(w).Class_Renamed
 		
-		'Invalid_string_refer_to_original_code
-		If InStrNotNest(wclass, "Invalid_string_refer_to_original_code") > 0 Then
-			'Invalid_string_refer_to_original_code
+		'ƒ}ƒbƒvUŒ‚‚Ìê‡‚Í•Ší‚É‚©‚©‚í‚ç‚¸ƒ_ƒ[ƒW‚ğg‚¤
+		If InStrNotNest(wclass, "‚l") > 0 Then
+			'UŒ‚—Í0‚ÌUŒ‚‚Ìê‡‚Íuƒ_ƒ[ƒWv‚ÌƒAƒjƒ‚ğg—p‚µ‚È‚¢
 			If u.WeaponPower(w, "") = 0 Then
 				Exit Sub
 			End If
 			
-			wtype = "ãƒ€ãƒ¡ãƒ¼ã‚¸"
+			wtype = "ƒ_ƒ[ƒW"
 			
-			If IsBeamWeapon(wname, wclass, cname) Or InStr(wname, "ãƒŸã‚µã‚¤ãƒ«") > 0 Or InStr(wname, "Invalid_string_refer_to_original_code") > 0 Then
+			If IsBeamWeapon(wname, wclass, cname) Or InStr(wname, "ƒ~ƒTƒCƒ‹") > 0 Or InStr(wname, "ƒƒPƒbƒg") > 0 Then
 				sname = "Explode.wav"
 			End If
 			
 			GoTo FoundWeaponType
 		End If
 		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		double_weapon = True
-		'End If
+		'“ñ“—¬H
+		If InStr(wname, "ƒ_ƒuƒ‹") > 0 Or InStr(wname, "ƒcƒCƒ“") > 0 Or InStr(wname, "ƒfƒ…ƒAƒ‹") > 0 Or InStr(wname, "‘o") > 0 Or InStr(wname, "“ñ“") > 0 Or InStr(wname, "‚Q˜A") > 0 Or InStr(wname, "“ñ˜A") > 0 Or InStr(wname, "˜A‘•") > 0 Then
+			double_weapon = True
+		End If
 		
-		'Invalid_string_refer_to_original_code
-		If InStr(wname, "ãƒ€ãƒ–ãƒ«") > 0 Or InStr(wname, "Invalid_string_refer_to_original_code") > 0 Or InStr(wname, "ã‚³ãƒ³ãƒ“ãƒãƒ¼ã‚·ãƒ§ãƒ³") > 0 Or InStr(wname, "é€£") > 0 Or InStrNotNest(wclass, "é€£") > 0 Then
+		'˜A‘±UŒ‚H
+		If InStr(wname, "ƒ_ƒuƒ‹") > 0 Or InStr(wname, "ƒcƒCƒ“") > 0 Or InStr(wname, "ƒRƒ“ƒrƒl[ƒVƒ‡ƒ“") > 0 Or InStr(wname, "˜A") > 0 Or InStrNotNest(wclass, "˜A") > 0 Then
 			double_attack = True
 		End If
 		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		combo_attack = True
-		'End If
+		'—‘ÅH
+		If InStr(wname, "—‘Å") > 0 Or InStr(wname, "—•‘") > 0 Or InStr(wname, "—‚ê") > 0 Or InStr(wname, "•S—ó") > 0 Then
+			combo_attack = True
+		End If
 		
-		'Invalid_string_refer_to_original_code
+		'‚±‚ê‚©‚ç•Ší‚Ìí—Ş‚ğ”»’è
 		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code_
-		'And InStrNotNest(wclass, "æ¥") = 0 _
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		GoTo SkipInfightWeapon
-		'End If
+		'‚Ü‚¸‚Í”’•ºí—p•Ší‚Ì”»’è
+		If InStrNotNest(wclass, "•") = 0 And InStrNotNest(wclass, "“Ë") = 0 And InStrNotNest(wclass, "Ú") = 0 And Not (InStrNotNest(wclass, "Ši") > 0 And InStrNotNest(wclass, "À") > 0) Then
+			GoTo SkipInfightWeapon
+		End If
 		
-		'Invalid_string_refer_to_original_code
+		'“ËŒ‚Œn(•Ší‚ğ\‚¦‚Ä“Ëi‚·‚é)
 		
-		If InStr(wname, "çªæ’ƒ") > 0 Or InStr(wname, "Invalid_string_refer_to_original_code") > 0 Or InStr(wname, "ãƒãƒ£ãƒ¼ã‚¸") > 0 Then
+		If InStr(wname, "“ËŒ‚") > 0 Or InStr(wname, "“Ëi") > 0 Or InStr(wname, "ƒ`ƒƒ[ƒW") > 0 Then
 			Select Case WeaponInHand
 				Case ""
-					'Invalid_string_refer_to_original_code
+					'ŠY“–‚¹‚¸
 				Case Else
-					wtype = WeaponInHand & "çªæ’ƒ"
+					wtype = WeaponInHand & "“ËŒ‚"
 					GoTo FoundWeaponType
 			End Select
 		End If
 		
-		'æ‰“æ’ƒç³»
+		'‘ÅŒ‚Œn
 		
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		wtype = "Invalid_string_refer_to_original_code"
-		GoTo FoundWeaponType
-		'End If
-		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Or Right$(wname, 5) = "ã‚¹ãƒˆãƒ©ã‚¤ã‚¯" _
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		wtype = "Invalid_string_refer_to_original_code"
-		GoTo FoundWeaponType
-		'End If
-		
-		'é€šå¸¸æ‰“æ’ƒ
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "ãƒ“ãƒ³ã‚¿") > 0 _
-		'Or InStr(wname, "æ®´") > 0 _
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "ãƒˆãƒ³ãƒ•ã‚¡ãƒ¼") > 0 _
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "ãƒ¢ãƒ¼ãƒ‹ãƒ³ã‚°ã‚¹ã‚¿ãƒ¼") > 0 Or InStr(wname, "ãƒ•ãƒ¬ã‚¤ãƒ«") > 0 _
-		'Or InStr(wname, "ãƒŒãƒ³ãƒãƒ£ã‚¯") > 0 Or InStr(wname, "ä¸‰ç¯€æ ¹") > 0 _
-		'Or (InStr(wname, "ãƒã‚§ãƒ¼ãƒ³") > 0 And InStr(wname, "ãƒã‚§ãƒ¼ãƒ³ã‚½ãƒ¼") = 0) _
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "ç«¹åˆ€") > 0 _
-		'Or InStr(wname, "ãƒãƒªã‚»ãƒ³") > 0 _
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		If combo_attack Then
-			wtype = "Invalid_string_refer_to_original_code"
-			'Invalid_string_refer_to_original_code_
-			'Then
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			wtype = "Invalid_string_refer_to_original_code"
-		Else
-			wtype = "æ‰“æ’ƒ"
-		End If
-		
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "ç«¹åˆ€") > 0 _
-		'Or InStr(wname, "ãƒãƒªã‚»ãƒ³") > 0 _
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		sname = "Whip.wav"
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "ãƒ“ãƒ³ã‚¿") > 0 _
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		sname = "Slap.wav"
-		'End If
-		
-		GoTo FoundWeaponType
-		'End If
-		
-		'å¼·æ‰“æ’ƒ
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "ãƒ¢ãƒ¼ãƒ«") > 0 _
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		If combo_attack Then
-			wtype = "Invalid_string_refer_to_original_code"
-		ElseIf double_attack Then 
-			wtype = "Invalid_string_refer_to_original_code"
-		Else
-			wtype = "Invalid_string_refer_to_original_code"
-		End If
-		
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		PlayWave("Bazooka.wav")
-		'End If
-		
-		GoTo FoundWeaponType
-		'End If
-		
-		If InStr(wname, "Invalid_string_refer_to_original_code") > 0 Then
-			wtype = "Invalid_string_refer_to_original_code"
+		If InStrNotNest(wclass, "À") > 0 And (InStr(wname, "ƒpƒ“ƒ`") > 0 Or InStr(wname, "ƒiƒbƒNƒ‹") > 0) Then
+			wtype = "ƒƒPƒbƒgƒpƒ“ƒ`"
 			GoTo FoundWeaponType
 		End If
 		
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "ãƒãƒ³ã‚«ãƒ¼") > 0 _
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		wtype = "Invalid_string_refer_to_original_code"
-		sname = "Crash.wav"
-		GoTo FoundWeaponType
-		'End If
+		'—‘Å
+		If InStr(wname, "Œ–@") > 0 Or Right(wname, 2) = "ƒA[ƒc" Or Right(wname, 5) = "ƒXƒgƒ‰ƒCƒN" Then
+			wtype = "˜A‘Å"
+			GoTo FoundWeaponType
+		End If
 		
-		If InStr(wname, "ãƒãƒ³ã‚«ãƒ¼") > 0 Then
-			wtype = "Invalid_string_refer_to_original_code"
+		'’Êí‘ÅŒ‚
+		If InStr(wname, "ƒpƒ“ƒ`") > 0 Or InStr(wname, "ƒiƒbƒNƒ‹") > 0 Or InStr(wname, "ƒuƒ[") > 0 Or InStr(wname, "ƒ`ƒ‡ƒbƒv") > 0 Or InStr(wname, "ƒrƒ“ƒ^") > 0 Or InStr(wname, "‰£") > 0 Or Right(wname, 1) = "è" Or Right(wname, 1) = "˜r" Or InStr(wname, "Ši“¬") > 0 Or InStr(wname, "ƒgƒ“ƒtƒ@[") > 0 Or InStr(wname, "–_") > 0 Or InStr(wname, "ñ") > 0 Or InStr(wname, "ƒXƒ^ƒbƒt") > 0 Or InStr(wname, "ƒƒCƒX") > 0 Or Right(wname, 2) = "ƒ€ƒ`" Or InStr(wname, "•Ú") > 0 Or InStr(wname, "ƒEƒBƒbƒv") > 0 Or InStr(wname, "ƒ`ƒF[ƒ“") > 0 Or InStr(wname, "ƒƒbƒh") > 0 Or InStr(wname, "ƒ‚[ƒjƒ“ƒOƒXƒ^[") > 0 Or InStr(wname, "ƒtƒŒƒCƒ‹") > 0 Or InStr(wname, "ƒkƒ“ƒ`ƒƒƒN") > 0 Or InStr(wname, "Oßª") > 0 Or (InStr(wname, "ƒ`ƒF[ƒ“") > 0 And InStr(wname, "ƒ`ƒF[ƒ“ƒ\[") = 0) Or InStr(wname, "ƒoƒbƒg") > 0 Or InStr(wname, "ƒMƒ^[") > 0 Or InStr(wname, "’|“") > 0 Or InStr(wname, "ƒnƒŠƒZƒ“") > 0 Then
+			If combo_attack Then
+				wtype = "—‘Å"
+			ElseIf double_attack Or InStr(wname, "Gè") > 0 Or InStr(wname, "G˜r") > 0 Then 
+				wtype = "˜A‘Å"
+			Else
+				wtype = "‘ÅŒ‚"
+			End If
+			
+			If Right(wname, 2) = "ƒ€ƒ`" Or InStr(wname, "•Ú") > 0 Or InStr(wname, "ƒEƒBƒbƒv") > 0 Or InStr(wname, "ƒ`ƒF[ƒ“") > 0 Or InStr(wname, "Gè") > 0 Or InStr(wname, "G˜r") > 0 Or (InStr(wname, "ƒƒbƒh") > 0 And wname <> "ƒƒbƒh") Or InStr(wname, "’|“") > 0 Or InStr(wname, "ƒnƒŠƒZƒ“") > 0 Then
+				sname = "Whip.wav"
+			ElseIf InStr(wname, "’£‚èè") > 0 Or InStr(wname, "•½è") > 0 Or InStr(wname, "ƒrƒ“ƒ^") > 0 Then 
+				sname = "Slap.wav"
+			End If
+			
+			GoTo FoundWeaponType
+		End If
+		
+		'‹­‘ÅŒ‚
+		If InStr(wname, "Œ") > 0 Or InStr(wname, "¶") > 0 Or InStr(wname, "‘Å") > 0 Or InStr(wname, "™¤") > 0 Or InStr(wname, "ƒ‰ƒŠƒA[ƒg") > 0 Or InStr(wname, "ƒLƒbƒN") > 0 Or InStr(wname, "R") > 0 Or InStr(wname, "‹r") > 0 Or Right(wname, 1) = "‘«" Or InStr(wname, "ƒwƒbƒhƒoƒbƒh") > 0 Or InStr(wname, "“ª“Ë") > 0 Or InStr(wname, "ƒnƒ“ƒ}[") > 0 Or InStr(wname, "’Æ") > 0 Or InStr(wname, "ƒ‚[ƒ‹") > 0 Then
+			If combo_attack Then
+				wtype = "—‘Å"
+			ElseIf double_attack Then 
+				wtype = "˜A‘Å"
+			Else
+				wtype = "‹­‘Å"
+			End If
+			
+			If InStr(wname, "Œ") > 0 Or InStr(wname, "¶") > 0 Or InStr(wname, "‘Å") > 0 Or InStr(wname, "™¤") > 0 Then
+				PlayWave("Bazooka.wav")
+			End If
+			
+			GoTo FoundWeaponType
+		End If
+		
+		If InStr(wname, "ƒAƒbƒp[") > 0 Then
+			wtype = "ƒAƒbƒp["
+			GoTo FoundWeaponType
+		End If
+		
+		If InStr(wname, "ƒ^ƒbƒNƒ‹") > 0 Or InStr(wname, "‘Ì“–") > 0 Or InStr(wname, "ƒ`ƒƒ[ƒW") > 0 Or InStr(wname, "‚Ô‚¿‚©‚Ü‚µ") > 0 Or InStr(wname, "ƒoƒ“ƒJ[") > 0 Then
+			wtype = "‹­‘Å"
+			sname = "Crash.wav"
+			GoTo FoundWeaponType
+		End If
+		
+		If InStr(wname, "ƒoƒ“ƒJ[") > 0 Then
+			wtype = "‹­‘Å"
 			sname = "Bazooka.wav"
 			GoTo FoundWeaponType
 		End If
 		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		wtype = "Invalid_string_refer_to_original_code"
-		sname = "Crash.wav"
-		GoTo FoundWeaponType
-		'End If
-		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		wtype = "æ‰“æ’ƒ"
-		GoTo FoundWeaponType
-		'End If
-		
-		'Invalid_string_refer_to_original_code
-		
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "ãƒ¬ãƒ¼ã‚¶ãƒ¼") > 0 _
-		'Or InStr(wname, "ãƒ–ãƒ©ã‚¹ã‚¿ãƒ¼") > 0 _
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		cname = "ã‚°ãƒªãƒ¼ãƒ³"
-		'UPGRADE_WARNING: HitAnimation ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		cname = "ãƒ–ãƒ«ãƒ¼"
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		cname = "ã‚¤ã‚¨ãƒ­ãƒ¼"
-		'End If
-		
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "å‰£") > 0 _
-		'Or InStr(wname, "åˆ€") > 0 _
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		wtype = "Invalid_string_refer_to_original_code"
-		wtype = "Invalid_string_refer_to_original_code"
-		'End If
-		
-		If double_weapon Then
-			wtype = "ãƒ€ãƒ–ãƒ«" & wtype
-		ElseIf InStr(wname, "å›è»¢") > 0 Then 
-			wtype = "å›è»¢" & wtype
-		End If
-		
-		GoTo FoundWeaponType
-		'End If
-		
-		If InStr(wname, "Invalid_string_refer_to_original_code") > 0 Then
-			'Invalid_string_refer_to_original_code_
-			'Then
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			wtype = "Invalid_string_refer_to_original_code"
-		Else
-			wtype = "Invalid_string_refer_to_original_code"
-		End If
-		GoTo FoundWeaponType
-		'End If
-		
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "ãƒ€ã‚¬ãƒ¼") > 0 _
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		wtype = "Invalid_string_refer_to_original_code"
-		GoTo FoundWeaponType
-		'End If
-		
-		If InStr(wname, "ãƒŠã‚®ãƒŠã‚¿") > 0 Then
-			wtype = "Invalid_string_refer_to_original_code"
-			GoTo FoundWeaponType
-		End If
-		'End If
-		
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "ã‚·ãƒŸã‚¿ãƒ¼") > 0 Or InStr(wname, "ã‚µãƒ¼ãƒ™ãƒ«") > 0 _
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "åˆ€") > 0 Or InStr(wname, "æ–¬") > 0 _
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		If combo_attack Then
-			wtype = "Invalid_string_refer_to_original_code"
-		ElseIf double_weapon Then 
-			wtype = "Invalid_string_refer_to_original_code"
-		ElseIf double_attack Then 
-			wtype = "Invalid_string_refer_to_original_code"
-		ElseIf InStrNotNest(wclass, "ç«") > 0 Then 
-			wtype = "Invalid_string_refer_to_original_code"
-		ElseIf InStrNotNest(wclass, "é›·") > 0 Then 
-			wtype = "Invalid_string_refer_to_original_code"
-		ElseIf InStrNotNest(wclass, "å†·") > 0 Then 
-			wtype = "Invalid_string_refer_to_original_code"
-		ElseIf InStr(wname, "å”ç«¹å‰²") > 0 Or InStr(wname, "ç¸¦") > 0 Then 
-			wtype = "å”ç«¹å‰²"
-		ElseIf InStr(wname, "Invalid_string_refer_to_original_code") > 0 Or InStr(wname, "æ¨ª") > 0 Then 
-			wtype = "Invalid_string_refer_to_original_code"
-		ElseIf InStr(wname, "æ–¬") > 0 Then 
-			wtype = "Invalid_string_refer_to_original_code"
-		ElseIf InStrNotNest(wclass, "Invalid_string_refer_to_original_code") > 0 Then 
-			wtype = "æ–¬ã‚Šä¸Šã’"
-			'Invalid_string_refer_to_original_code_
-			'Or InStr(wname, "æ­»") > 0 _
-			'Invalid_string_refer_to_original_code_
-			'Then
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			wtype = "Invalid_string_refer_to_original_code"
-		Else
-			wtype = "Invalid_string_refer_to_original_code"
-		End If
-		GoTo FoundWeaponType
-		'End If
-		
-		If InStr(wname, "Invalid_string_refer_to_original_code") > 0 Then
-			wtype = "Invalid_string_refer_to_original_code"
+		If InStr(wname, "‰ö—Í") > 0 Then
+			wtype = "’´‘Å"
+			sname = "Crash.wav"
 			GoTo FoundWeaponType
 		End If
 		
-		'åˆºçªç³»
-		
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "ãƒ©ãƒ³ã‚¹") > 0 Or InStr(wname, "ãƒ©ãƒ³ã‚µãƒ¼") > 0 _
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "ã‚¸ãƒ£ãƒ™ãƒªãƒ³") > 0 _
-		'Or InStr(wname, "ãƒ¬ã‚¤ãƒ”ã‚¢") > 0 _
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		If combo_attack Then
-			wtype = "Invalid_string_refer_to_original_code"
-		ElseIf double_attack Then 
-			wtype = "Invalid_string_refer_to_original_code"
-		Else
-			wtype = "Invalid_string_refer_to_original_code"
+		If InStr(wname, "Ši“¬") > 0 Then
+			wtype = "‘ÅŒ‚"
+			GoTo FoundWeaponType
 		End If
-		GoTo FoundWeaponType
-		'End If
 		
-		'Invalid_string_refer_to_original_code
+		'aŒ‚Œn
 		
-		If InStr(wname, "çˆª") > 0 Or InStr(wname, "ã‚¯ãƒ­ãƒ¼") > 0 Or InStr(wname, "ã²ã£ã‹ã") > 0 Then
-			If InStr(wname, "ã‚¢ãƒ¼ãƒ ") > 0 Then
-				wtype = "æ‰“æ’ƒ"
-				sname = "Crash.wav"
+		If InStr(wname, "ƒr[ƒ€") > 0 Or InStr(wname, "ƒvƒ‰ƒYƒ}") > 0 Or InStr(wname, "ƒŒ[ƒU[") > 0 Or InStr(wname, "ƒuƒ‰ƒXƒ^[") > 0 Or InStr(wname, "ƒ‰ƒCƒg") > 0 Then
+			If InStr(wname, "ƒvƒ‰ƒYƒ}") > 0 Then
+				cname = "ƒOƒŠ[ƒ“"
+			ElseIf InStr(wname, "ƒŒ[ƒU[") > 0 Then 
+				cname = "ƒuƒ‹["
+			ElseIf InStr(wname, "ƒ‰ƒCƒg") > 0 Then 
+				cname = "ƒCƒGƒ["
+			End If
+			
+			If InStr(wname, "ƒT[ƒxƒ‹") > 0 Or InStr(wname, "ƒZƒCƒo[") > 0 Or InStr(wname, "ƒuƒŒ[ƒh") > 0 Or InStr(wname, "ƒ\[ƒh") > 0 Or InStr(wname, "Œ•") > 0 Or InStr(wname, "“") > 0 Then
+				If InStr(wname, "ƒnƒCƒp[") > 0 Or InStr(wname, "ƒƒ“ƒO") > 0 Or InStr(wname, "‘å") > 0 Or InStr(wname, "‚") > 0 Then
+					wtype = "ƒnƒCƒp[ƒr[ƒ€ƒT[ƒxƒ‹"
+				Else
+					wtype = "ƒr[ƒ€ƒT[ƒxƒ‹"
+				End If
+				
+				If double_weapon Then
+					wtype = "ƒ_ƒuƒ‹" & wtype
+				ElseIf InStr(wname, "‰ñ“]") > 0 Then 
+					wtype = "‰ñ“]" & wtype
+				End If
+				
+				GoTo FoundWeaponType
+			End If
+			
+			If InStr(wname, "ƒJƒbƒ^[") > 0 Then
+				If InStr(wname, "ƒnƒCƒp[") > 0 Or InStr(wname, "ƒƒ“ƒO") > 0 Or InStr(wname, "‘å") > 0 Or InStr(wname, "‚") > 0 Then
+					wtype = "ƒGƒiƒW[ƒuƒŒ[ƒh"
+				Else
+					wtype = "ƒGƒiƒW[ƒJƒbƒ^["
+				End If
+				GoTo FoundWeaponType
+			End If
+			
+			If InStr(wname, "ƒiƒCƒt") > 0 Or InStr(wname, "ƒ_ƒK[") > 0 Then
+				wtype = "ƒr[ƒ€ƒiƒCƒt"
+				GoTo FoundWeaponType
+			End If
+			
+			If InStr(wname, "ƒiƒMƒiƒ^") > 0 Then
+				wtype = "‰ñ“]ƒr[ƒ€ƒT[ƒxƒ‹"
+				GoTo FoundWeaponType
+			End If
+		End If
+		
+		If InStr(wname, "ƒ\[ƒh") > 0 Or InStr(wname, "Œ•") > 0 Or InStr(wname, "ƒiƒCƒt") > 0 Or InStr(wname, "ƒ_ƒK[") > 0 Or InStr(wname, "ƒVƒ~ƒ^[") > 0 Or InStr(wname, "ƒT[ƒxƒ‹") > 0 Or InStr(wname, "ƒJƒbƒgƒ‰ƒX") > 0 Or InStr(wname, "“") > 0 Or InStr(wname, "a") > 0 Or InStr(wname, "ƒuƒŒ[ƒh") > 0 Or InStr(wname, "n") > 0 Or InStr(wname, "ƒAƒbƒNƒX") > 0 Or InStr(wname, "•€") > 0 Or InStr(wname, "ƒOƒŒƒCƒu") > 0 Or InStr(wname, "ƒiƒMƒiƒ^") > 0 Or InStr(wname, "Ø") > 0 Or InStr(wname, "—ô") > 0 Or InStr(wname, "ƒJƒbƒg") > 0 Or InStr(wname, "ƒJƒbƒ^[") > 0 Or InStr(wname, "ƒXƒ‰ƒbƒVƒ…") > 0 Or InStr(wname, "‹‡") > 0 Then
+			If combo_attack Then
+				wtype = "aŒ‚—•‘"
+			ElseIf double_weapon Then 
+				wtype = "˜AaŒ‚"
+			ElseIf double_attack Then 
+				wtype = "ƒ_ƒuƒ‹aŒ‚"
+			ElseIf InStrNotNest(wclass, "‰Î") > 0 Then 
+				wtype = "‰ŠaŒ‚"
+			ElseIf InStrNotNest(wclass, "—‹") > 0 Then 
+				wtype = "—‹aŒ‚"
+			ElseIf InStrNotNest(wclass, "—â") > 0 Then 
+				wtype = "“€aŒ‚"
+			ElseIf InStr(wname, "“‚’|Š„") > 0 Or InStr(wname, "c") > 0 Then 
+				wtype = "“‚’|Š„"
+			ElseIf InStr(wname, "‹‡") > 0 Or InStr(wname, "‰¡") > 0 Then 
+				wtype = "‚È‚¬•¥‚¢"
+			ElseIf InStr(wname, "a") > 0 Then 
+				wtype = "‘åaŒ‚"
+			ElseIf InStrNotNest(wclass, "‚i") > 0 Then 
+				wtype = "a‚èã‚°"
+			ElseIf InStr(wname, "•") > 0 Or InStr(wname, "ˆÅ") > 0 Or InStr(wname, "€") > 0 Or InStr(wname, "ƒ_[ƒN") > 0 Or InStr(wname, "ƒfƒX") > 0 Then 
+				wtype = "•aŒ‚"
 			Else
-				wtype = "Invalid_string_refer_to_original_code"
+				wtype = "aŒ‚"
 			End If
 			GoTo FoundWeaponType
 		End If
 		
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		wtype = "å™›ã¿ä»˜ã"
-		GoTo FoundWeaponType
-		'End If
-		
-		If InStr(wname, "ãƒ‰ãƒªãƒ«") > 0 Then
-			wtype = "ãƒ‰ãƒªãƒ«"
+		If InStr(wname, "ƒVƒ‡[ƒeƒ‹") > 0 Then
+			wtype = "ƒ_ƒuƒ‹aŒ‚"
 			GoTo FoundWeaponType
 		End If
 		
-		If InStr(wname, "ãƒªãƒœãƒ³") > 0 Then
-			wtype = "ãƒªãƒœãƒ³"
+		'h“ËŒn
+		
+		If InStr(wname, "ƒXƒsƒA") > 0 Or InStr(wname, "‘„") > 0 Or InStr(wname, "ƒ‰ƒ“ƒX") > 0 Or InStr(wname, "ƒ‰ƒ“ƒT[") > 0 Or InStr(wname, "ƒgƒ‰ƒCƒfƒ“ƒg") > 0 Or InStr(wname, "ƒWƒƒƒxƒŠƒ“") > 0 Or InStr(wname, "ƒŒƒCƒsƒA") > 0 Or wname = "ƒƒbƒh" Then
+			If combo_attack Then
+				wtype = "—“Ë"
+			ElseIf double_attack Then 
+				wtype = "˜A“Ë"
+			Else
+				wtype = "h“Ë"
+			End If
 			GoTo FoundWeaponType
 		End If
 		
-		'æ´ã¿ç³»
+		'‚»‚Ì‘¼Ši“¬Œn
 		
-		If InStr(wname, "Invalid_string_refer_to_original_code") > 0 Or InStr(wname, "æŠ•ã’") > 0 Or wname = "è¿”ã—" Then
-			wtype = "Invalid_string_refer_to_original_code"
+		If InStr(wname, "’Ü") > 0 Or InStr(wname, "ƒNƒ[") > 0 Or InStr(wname, "‚Ğ‚Á‚©‚«") > 0 Then
+			If InStr(wname, "ƒA[ƒ€") > 0 Then
+				wtype = "‘ÅŒ‚"
+				sname = "Crash.wav"
+			Else
+				wtype = "’ÜŒ‚"
+			End If
 			GoTo FoundWeaponType
 		End If
 		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		wtype = "Invalid_string_refer_to_original_code"
-		GoTo FoundWeaponType
-		'End If
-		
-		If InStr(wname, "ãƒ–ãƒªãƒ¼ã‚«ãƒ¼") > 0 Then
-			wtype = "Invalid_string_refer_to_original_code"
+		If InStr(wname, "Šš") > 0 Or InStr(wname, "‰å") > 0 Or InStr(wname, "‚©‚İ‚Â‚«") > 0 Then
+			wtype = "Šš‚İ•t‚«"
 			GoTo FoundWeaponType
 		End If
 		
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "æŠ˜ã‚Š") > 0 _
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		wtype = "Invalid_string_refer_to_original_code"
-		GoTo FoundWeaponType
-		'End If
-		
-		If InStr(wname, "ã‚¸ãƒ£ã‚¤ã‚¢ãƒ³ãƒˆã‚¹ã‚¤ãƒ³ã‚°") > 0 Then
-			wtype = "ã‚¸ãƒ£ã‚¤ã‚¢ãƒ³ãƒˆã‚¹ã‚¤ãƒ³ã‚°"
+		If InStr(wname, "ƒhƒŠƒ‹") > 0 Then
+			wtype = "ƒhƒŠƒ‹"
 			GoTo FoundWeaponType
 		End If
 		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		wtype = "Invalid_string_refer_to_original_code"
-		GoTo FoundWeaponType
-		'End If
-		
-		If InStr(wname, "ãƒ–ãƒ¬ãƒ¼ãƒ³ãƒã‚¹ã‚¿ãƒ¼") > 0 Then
-			wtype = "ãƒ–ãƒ¬ãƒ¼ãƒ³ãƒã‚¹ã‚¿ãƒ¼"
+		If InStr(wname, "ƒŠƒ{ƒ“") > 0 Then
+			wtype = "ƒŠƒ{ƒ“"
 			GoTo FoundWeaponType
 		End If
 		
-		If InStr(wname, "Invalid_string_refer_to_original_code") > 0 Then
-			wtype = "Invalid_string_refer_to_original_code"
+		'’Í‚İŒn
+		
+		If InStr(wname, "ƒX[ƒvƒŒƒbƒNƒX") > 0 Or InStr(wname, "“Š‚°") > 0 Or wname = "•Ô‚µ" Then
+			wtype = "“Š‚°”ò‚Î‚µ"
 			GoTo FoundWeaponType
 		End If
 		
-		If InStr(wname, "Invalid_string_refer_to_original_code") > 0 Then
-			wtype = "Invalid_string_refer_to_original_code"
+		If InStr(wname, "ƒq[ƒ‹ƒz[ƒ‹ƒh") > 0 Then
+			wtype = "‘«ŒÅ‚ß"
 			GoTo FoundWeaponType
 		End If
 		
-		If InStr(wname, "Invalid_string_refer_to_original_code") > 0 Then
-			wtype = "Invalid_string_refer_to_original_code"
+		If InStr(wname, "ƒuƒŠ[ƒJ[") > 0 Then
+			wtype = "”w•‰‚¢ŒÅ‚ß"
 			GoTo FoundWeaponType
 		End If
 		
-		If InStr(wname, "Invalid_string_refer_to_original_code") > 0 Then
-			wtype = "Invalid_string_refer_to_original_code"
+		If InStr(wname, "ŒÅ‚ß") > 0 Or InStr(wname, "ƒz[ƒ‹ƒh") > 0 Or InStr(wname, "ƒcƒCƒXƒg") > 0 Or InStr(wname, "i‚ß") > 0 Or InStr(wname, "’÷‚ß") > 0 Or InStr(wname, "Ü‚è") > 0 Then
+			wtype = "—§‚¿ŒÅ‚ß"
 			GoTo FoundWeaponType
 		End If
 		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		wtype = "Invalid_string_refer_to_original_code"
-		GoTo FoundWeaponType
-		'End If
+		If InStr(wname, "ƒWƒƒƒCƒAƒ“ƒgƒXƒCƒ“ƒO") > 0 Then
+			wtype = "ƒWƒƒƒCƒAƒ“ƒgƒXƒCƒ“ƒO"
+			GoTo FoundWeaponType
+		End If
 		
-		'Invalid_string_refer_to_original_code
-		If InStrNotNest(wclass, "æ­¦") > 0 Then
-			'Invalid_string_refer_to_original_code
+		If InStr(wname, "’n–Ô") > 0 Then
+			wtype = "’n–Ô"
+			GoTo FoundWeaponType
+		End If
+		
+		If InStr(wname, "ƒuƒŒ[ƒ“ƒoƒXƒ^[") > 0 Then
+			wtype = "ƒuƒŒ[ƒ“ƒoƒXƒ^["
+			GoTo FoundWeaponType
+		End If
+		
+		If InStr(wname, "ƒXƒNƒŠƒ…[ƒoƒbƒNƒhƒ‰ƒCƒo[") > 0 Then
+			wtype = "ƒXƒNƒŠƒ…[ƒoƒbƒNƒhƒ‰ƒCƒo["
+			GoTo FoundWeaponType
+		End If
+		
+		If InStr(wname, "ƒXƒNƒŠƒ…[ƒhƒ‰ƒCƒo[") > 0 Then
+			wtype = "ƒXƒNƒŠƒ…[ƒhƒ‰ƒCƒo["
+			GoTo FoundWeaponType
+		End If
+		
+		If InStr(wname, "ƒoƒbƒNƒhƒ‰ƒCƒo[") > 0 Then
+			wtype = "ƒoƒbƒNƒhƒ‰ƒCƒo["
+			GoTo FoundWeaponType
+		End If
+		
+		If InStr(wname, "ƒhƒ‰ƒCƒo[") > 0 Then
+			wtype = "ƒhƒ‰ƒCƒo["
+			GoTo FoundWeaponType
+		End If
+		
+		If InStr(wname, "“¥‚İ") > 0 Or InStr(wname, "‰Ÿ‚µ") > 0 Then
+			wtype = "“¥‚İ’×‚µ"
+			GoTo FoundWeaponType
+		End If
+		
+		'Ú×‚ª•ª‚©‚ç‚È‚©‚Á‚½•Ší
+		If InStrNotNest(wclass, "•") > 0 Then
+			'‘•”õ‚µ‚Ä‚¢‚éƒAƒCƒeƒ€‚©‚ç•Ší‚ğŒŸõ
 			For i = 1 To u.CountItem
 				With u.Item(i)
-					'Invalid_string_refer_to_original_code_
-					'Invalid_string_refer_to_original_code_
-					'Or .Part = "æ­¦å™¨") _
-					'Then
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					wtype = CheckWeaponType(.Nickname, "")
-					If wtype = "" Then
-						wtype = CheckWeaponType(.Class0, "")
+					If .Activated And (.Part = "—¼è" Or .Part = "•Ğè" Or .Part = "•Ší") Then
+						wtype = CheckWeaponType(.Nickname, "")
+						If wtype = "" Then
+							wtype = CheckWeaponType(.Class0, "")
+						End If
+						Exit For
 					End If
-					Exit For
 				End With
 			Next 
+			Select Case wtype
+				Case "ƒXƒsƒA", "ƒ‰ƒ“ƒX", "ƒgƒ‰ƒCƒfƒ“ƒg", "˜a‘„", "ƒGƒXƒgƒbƒN"
+					If combo_attack Then
+						wtype = "—“Ë"
+					ElseIf double_attack Then 
+						wtype = "˜A“Ë"
+					Else
+						wtype = "h“Ë"
+					End If
+				Case Else
+					If combo_attack Then
+						wtype = "aŒ‚—•‘"
+					ElseIf double_weapon Then 
+						wtype = "ƒ_ƒuƒ‹aŒ‚"
+					ElseIf double_attack Then 
+						wtype = "˜AaŒ‚"
+					ElseIf InStrNotNest(wclass, "‰Î") > 0 Then 
+						wtype = "‰ŠaŒ‚"
+					ElseIf InStrNotNest(wclass, "—‹") > 0 Then 
+						wtype = "—‹aŒ‚"
+					ElseIf InStrNotNest(wclass, "—â") > 0 Then 
+						wtype = "“€aŒ‚"
+					ElseIf InStrNotNest(wclass, "‚i") > 0 Then 
+						wtype = "a‚èã‚°"
+					Else
+						wtype = "aŒ‚"
+					End If
+			End Select
+			GoTo FoundWeaponType
 		End If
-		'End With
-		'Next
-		Select Case wtype
-			Case "ã‚¹ãƒ”ã‚¢", "ãƒ©ãƒ³ã‚¹", "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code_
-				'"ã‚¨ã‚¹ãƒˆãƒƒã‚¯"
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				If combo_attack Then
-					wtype = "Invalid_string_refer_to_original_code"
-				ElseIf double_attack Then 
-					wtype = "Invalid_string_refer_to_original_code"
-				Else
-					wtype = "Invalid_string_refer_to_original_code"
-				End If
-			Case Else
-				If combo_attack Then
-					wtype = "Invalid_string_refer_to_original_code"
-				ElseIf double_weapon Then 
-					wtype = "Invalid_string_refer_to_original_code"
-				ElseIf double_attack Then 
-					wtype = "Invalid_string_refer_to_original_code"
-				ElseIf InStrNotNest(wclass, "ç«") > 0 Then 
-					wtype = "Invalid_string_refer_to_original_code"
-				ElseIf InStrNotNest(wclass, "é›·") > 0 Then 
-					wtype = "Invalid_string_refer_to_original_code"
-				ElseIf InStrNotNest(wclass, "å†·") > 0 Then 
-					wtype = "Invalid_string_refer_to_original_code"
-				ElseIf InStrNotNest(wclass, "Invalid_string_refer_to_original_code") > 0 Then 
-					wtype = "æ–¬ã‚Šä¸Šã’"
-				Else
-					wtype = "Invalid_string_refer_to_original_code"
-				End If
-		End Select
-		GoTo FoundWeaponType
-		'End If
 		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code_
-		'And InStrNotNest(wclass, "æ¥") > 0 _
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		If combo_attack Then
-			wtype = "Invalid_string_refer_to_original_code"
-		ElseIf double_attack Then 
-			wtype = "Invalid_string_refer_to_original_code"
-		Else
-			wtype = "æ‰“æ’ƒ"
+		'Ú×‚ª•ª‚©‚ç‚È‚©‚Á‚½‹ßÚ‹Z
+		If InStrNotNest(wclass, "“Ë") > 0 And InStrNotNest(wclass, "Ú") > 0 Then
+			If combo_attack Then
+				wtype = "—‘Å"
+			ElseIf double_attack Then 
+				wtype = "˜A‘Å"
+			Else
+				wtype = "‘ÅŒ‚"
+			End If
+			GoTo FoundWeaponType
 		End If
-		GoTo FoundWeaponType
-		'End If
 		
 SkipInfightWeapon: 
 		
-		'Invalid_string_refer_to_original_code
+		'ËŒ‚•Ší(Ši“¬“Š±)
 		
-		If InStr(wname, "æ–§") > 0 Or InStr(wname, "Invalid_string_refer_to_original_code") > 0 Or InStr(wname, "Invalid_string_refer_to_original_code") > 0 Or InStr(wname, "ã‚½ãƒ¼ã‚µãƒ¼") > 0 Or InStr(wname, "ãƒãƒ£ã‚¯ãƒ©ãƒ ") > 0 Then
-			wtype = "ãƒ€ãƒ¡ãƒ¼ã‚¸"
+		If InStr(wname, "•€") > 0 Or InStr(wname, "ƒAƒbƒNƒX") > 0 Or InStr(wname, "ƒgƒ}ƒz[ƒN") > 0 Or InStr(wname, "ƒ\[ƒT[") > 0 Or InStr(wname, "ƒ`ƒƒƒNƒ‰ƒ€") > 0 Then
+			wtype = "ƒ_ƒ[ƒW"
 			sname = "Saber.wav"
 			GoTo FoundWeaponType
 		End If
 		
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		wtype = "Invalid_string_refer_to_original_code"
-		GoTo FoundWeaponType
-		'End If
-		
-		If InStr(wname, "çŸ³") > 0 Or InStr(wname, "ç¤«") > 0 Or InStr(wname, "Invalid_string_refer_to_original_code") > 0 Or InStr(wname, "Invalid_string_refer_to_original_code") > 0 Then
-			wtype = "æ‰“æ’ƒ"
+		If InStr(wname, "ƒpƒ“ƒ`") > 0 Or InStr(wname, "ƒnƒ“ƒ}[") > 0 Or InStr(wname, "Šâ") > 0 Or InStr(wname, "“S‹…") > 0 Then
+			wtype = "‹­‘Å"
 			GoTo FoundWeaponType
 		End If
 		
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "æ‰‹è£å‰£") > 0 Or InStr(wname, "ã‚¯ãƒŠã‚¤") > 0 _
-		'Or InStr(wname, "è‹¦ç„¡") > 0 _
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		wtype = "Invalid_string_refer_to_original_code"
-		GoTo FoundWeaponType
-		'End If
-		
-		'Invalid_string_refer_to_original_code
-		
-		'Invalid_string_refer_to_original_code
-		
-		If IsBeamWeapon(wname, wclass, cname) Then
-			wtype = "Invalid_string_refer_to_original_code"
+		If InStr(wname, "Î") > 0 Or InStr(wname, "âI") > 0 Or InStr(wname, "•ª“º") > 0 Or InStr(wname, "ƒu[ƒƒ‰ƒ“") > 0 Then
+			wtype = "‘ÅŒ‚"
+			GoTo FoundWeaponType
 		End If
 		
-		If wtype = "Invalid_string_refer_to_original_code" Then
-			'Invalid_string_refer_to_original_code
+		If InStr(wname, "ƒiƒCƒt") > 0 Or InStr(wname, "ƒ_ƒK[") > 0 Or InStr(wname, "è— Œ•") > 0 Or InStr(wname, "ƒNƒiƒC") > 0 Or InStr(wname, "‹ê–³") > 0 Then
+			wtype = "h“Ë"
+			GoTo FoundWeaponType
+		End If
+		
+		'‚±‚ê‚æ‚è’ÊíËŒ‚UŒ‚
+		
+		'‚Ü‚¸‚ÍŒõüŒn‚ÌUŒ‚‚©‚Ç‚¤‚©‚ğ”»’è‚·‚é
+		
+		If IsBeamWeapon(wname, wclass, cname) Then
+			wtype = "ƒr[ƒ€"
+		End If
+		
+		If wtype = "ƒr[ƒ€" Then
+			'À’eŒn•Ší”»’è‚ğƒXƒLƒbƒv
 			GoTo SkipNormalWeapon
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'ËŒ‚•Ší(À’eŒn)
 		
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "ãƒ­ãƒ³ã‚°ãƒœã‚¦") > 0 _
-		'Or InStr(wname, "ãƒœã‚¦ã‚¬ãƒ³") > 0 _
-		'Or InStr(wname, "çŸ¢") > 0 Or InStr(wname, "ã‚¢ãƒ­ãƒ¼") > 0 _
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		wtype = "çŸ¢"
-		GoTo FoundWeaponType
-		'End If
-		
-		If InStr(wname, "ãƒãƒ«ã‚«ãƒ³") > 0 Then
-			wtype = "ãƒãƒ«ã‚«ãƒ³"
+		If InStr(wname, "‹|") > 0 Or InStr(wname, "ƒVƒ‡[ƒgƒ{ƒE") > 0 Or InStr(wname, "ƒƒ“ƒOƒ{ƒE") > 0 Or InStr(wname, "ƒ{ƒEƒKƒ“") > 0 Or InStr(wname, "–î") > 0 Or InStr(wname, "ƒAƒ[") > 0 Then
+			wtype = "–î"
 			GoTo FoundWeaponType
 		End If
 		
-		If InStr(wname, "ã‚¬ãƒˆãƒªãƒ³ã‚°") > 0 Or InStr(wname, "ãƒã‚§ãƒ¼ãƒ³ã‚¬ãƒ³") Or InStr(wname, "ã‚¬ãƒ³ãƒ©ãƒ³ãƒãƒ£ãƒ¼") Then
-			wtype = "ã‚¬ãƒˆãƒªãƒ³ã‚°"
+		If InStr(wname, "ƒoƒ‹ƒJƒ“") > 0 Then
+			wtype = "ƒoƒ‹ƒJƒ“"
 			GoTo FoundWeaponType
 		End If
 		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		wtype = "ãƒ˜ãƒ“ãƒ¼ãƒã‚·ãƒ³ã‚¬ãƒ³"
-		wtype = "ãƒã‚·ãƒ³ã‚¬ãƒ³"
-		'End If
-		GoTo FoundWeaponType
-		'End If
-		
-		If InStr(wname, "æ©ŸéŠƒ") > 0 Or InStr(wname, "æ©Ÿé–¢ç ²") > 0 Then
-			wtype = "ãƒã‚·ãƒ³ã‚¬ãƒ³"
+		If InStr(wname, "ƒKƒgƒŠƒ“ƒO") > 0 Or InStr(wname, "ƒ`ƒF[ƒ“ƒKƒ“") Or InStr(wname, "ƒKƒ“ƒ‰ƒ“ƒ`ƒƒ[") Then
+			wtype = "ƒKƒgƒŠƒ“ƒO"
 			GoTo FoundWeaponType
 		End If
 		
-		If InStr(wname, "ãƒã‚·ãƒ³ã‚­ãƒ£ãƒãƒ³") > 0 Or InStr(wname, "ã‚ªãƒ¼ãƒˆã‚­ãƒ£ãƒãƒ³") > 0 Or InStr(wname, "Invalid_string_refer_to_original_code") > 0 Then
-			wtype = "ãƒ˜ãƒ“ãƒ¼ãƒã‚·ãƒ³ã‚¬ãƒ³"
+		If InStr(wname, "ƒ}ƒVƒ“ƒKƒ“") > 0 Or InStr(wname, "‹@ŠÖe") > 0 Then
+			If InStr(wname, "ƒwƒr[") > 0 Or InStr(wname, "d") > 0 Then
+				wtype = "ƒwƒr[ƒ}ƒVƒ“ƒKƒ“"
+			Else
+				wtype = "ƒ}ƒVƒ“ƒKƒ“"
+			End If
 			GoTo FoundWeaponType
 		End If
 		
-		If InStr(wname, "Invalid_string_refer_to_original_code") > 0 Or InStr(wname, "æ•£å¼¾") > 0 Or InStr(wname, "æ‹¡æ•£ãƒã‚ºãƒ¼ã‚«") > 0 Then
-			wtype = "Invalid_string_refer_to_original_code"
+		If InStr(wname, "‹@e") > 0 Or InStr(wname, "‹@ŠÖ–C") > 0 Then
+			wtype = "ƒ}ƒVƒ“ƒKƒ“"
 			GoTo FoundWeaponType
 		End If
 		
-		If InStr(wname, "ãƒ™ã‚¢ãƒªãƒ³ã‚°") > 0 Or InStr(wname, "ã‚¯ãƒ¬ã‚¤ãƒ¢ã‚¢") > 0 Then
-			wtype = "ãƒ™ã‚¢ãƒªãƒ³ã‚°"
+		If InStr(wname, "ƒ}ƒVƒ“ƒLƒƒƒmƒ“") > 0 Or InStr(wname, "ƒI[ƒgƒLƒƒƒmƒ“") > 0 Or InStr(wname, "‘¬Ë–C") > 0 Then
+			wtype = "ƒwƒr[ƒ}ƒVƒ“ƒKƒ“"
+			GoTo FoundWeaponType
+		End If
+		
+		If InStr(wname, "ƒVƒ‡ƒbƒgƒKƒ“") > 0 Or InStr(wname, "U’e") > 0 Or InStr(wname, "ŠgUƒoƒY[ƒJ") > 0 Then
+			wtype = "ƒVƒ‡ƒbƒgƒKƒ“"
+			GoTo FoundWeaponType
+		End If
+		
+		If InStr(wname, "ƒxƒAƒŠƒ“ƒO") > 0 Or InStr(wname, "ƒNƒŒƒCƒ‚ƒA") > 0 Then
+			wtype = "ƒxƒAƒŠƒ“ƒO"
 			GoTo FoundWeaponType
 		End If
 		
 SkipNormalWeapon: 
 		
-		'Invalid_string_refer_to_original_code
+		'ËŒ‚•Ší(ƒGƒlƒ‹ƒM[Œn)
 		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		wtype = "Invalid_string_refer_to_original_code"
-		GoTo FoundWeaponType
-		'End If
+		If InStr(wname, "‰öŒõü") > 0 Then
+			wtype = "‰öŒõü"
+			GoTo FoundWeaponType
+		End If
 		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		wtype = "Invalid_string_refer_to_original_code"
-		GoTo FoundWeaponType
-		'End If
+		If InStr(wname, "”j‰óŒõü") > 0 Then
+			wtype = "”j‰óŒõü"
+			GoTo FoundWeaponType
+		End If
 		
-		If wtype = "Invalid_string_refer_to_original_code" Then
-			If InStr(CurrentWeaponType, "Invalid_string_refer_to_original_code") > 0 Or InStr(CurrentWeaponType, "ãƒ¬ãƒ¼ã‚¶ãƒ¼") > 0 Then
-				'Invalid_string_refer_to_original_code
+		If wtype = "ƒr[ƒ€" Then
+			If InStr(CurrentWeaponType, "ƒr[ƒ€") > 0 Or InStr(CurrentWeaponType, "ƒŒ[ƒU[") > 0 Then
+				'‰Â”\‚Å‚ ‚ê‚Î”­Ë‚ÌƒGƒtƒFƒNƒg‚Æ“ˆê‚·‚é
 				Select Case CurrentWeaponType
-					Case "Invalid_string_refer_to_original_code"
-						wtype = "å°ãƒ“ãƒ¼ãƒ "
-					Case "Invalid_string_refer_to_original_code"
-						wtype = "Invalid_string_refer_to_original_code"
-					Case "Invalid_string_refer_to_original_code"
-						wtype = "Invalid_string_refer_to_original_code"
-					Case "Invalid_string_refer_to_original_code"
-						wtype = "Invalid_string_refer_to_original_code"
-					Case "Invalid_string_refer_to_original_code"
-						wtype = "Invalid_string_refer_to_original_code"
-					Case "ãƒ¬ãƒ¼ã‚¶ãƒ¼ã‚¬ãƒ³"
-						wtype = "Invalid_string_refer_to_original_code"
-					Case "ãƒ¬ãƒ¼ã‚¶ãƒ¼ãƒã‚·ãƒ³ã‚¬ãƒ³"
-						wtype = "Invalid_string_refer_to_original_code"
+					Case "ƒr[ƒ€ƒ‰ƒCƒtƒ‹"
+						wtype = "¬ƒr[ƒ€"
+					Case "ƒ_ƒuƒ‹ƒr[ƒ€ƒ‰ƒCƒtƒ‹"
+						wtype = "‚Q˜A¬ƒr[ƒ€"
+					Case "ƒr[ƒ€ƒ‰ƒ“ƒ`ƒƒ["
+						wtype = "’†ƒr[ƒ€"
+					Case "ƒ_ƒuƒ‹ƒr[ƒ€ƒ‰ƒ“ƒ`ƒƒ["
+						wtype = "‚Q˜A’†ƒr[ƒ€"
+					Case "ƒoƒXƒ^[ƒr[ƒ€ƒ‰ƒCƒtƒ‹"
+						wtype = "‘åƒr[ƒ€"
+					Case "ƒŒ[ƒU[ƒKƒ“"
+						wtype = "ƒj[ƒhƒ‹ƒŒ[ƒU["
+					Case "ƒŒ[ƒU[ƒ}ƒVƒ“ƒKƒ“"
+						wtype = "ƒj[ƒhƒ‹ƒŒ[ƒU[˜AË"
 					Case Else
 						wtype = CurrentWeaponType
 				End Select
 			Else
-				If InStr(wname, "ãƒã‚¤ãƒ¡ã‚¬") > 0 Or InStr(wname, "ãƒã‚¹ã‚¿ãƒ¼") > 0 Or InStr(wname, "å¤§") > 0 Or Left(wname, 2) = "ã‚®ã‚¬" Then
-					wtype = "Invalid_string_refer_to_original_code"
-				ElseIf InStr(wname, "ãƒ¡ã‚¬") > 0 Or InStr(wname, "ãƒã‚¤") > 0 Or InStr(wname, "ãƒã‚ºãƒ¼ã‚«") > 0 Then 
-					wtype = "Invalid_string_refer_to_original_code"
-				ElseIf CountAttack0(u, w) >= 4 Or InStr(wname, "å¯¾ç©º") > 0 Then 
-					wtype = "Invalid_string_refer_to_original_code"
-					'Invalid_string_refer_to_original_code_
-					'Then
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					wtype = "Invalid_string_refer_to_original_code"
-				ElseIf InStr(wname, "ãƒ©ãƒ³ãƒãƒ£ãƒ¼") > 0 Or InStr(wname, "ã‚­ãƒ£ãƒãƒ³") > 0 Or InStr(wname, "ã‚«ãƒãƒ³") > 0 Or InStr(wname, "ç ²") > 0 Then 
-					wtype = "Invalid_string_refer_to_original_code"
+				If InStr(wname, "ƒnƒCƒƒK") > 0 Or InStr(wname, "ƒoƒXƒ^[") > 0 Or InStr(wname, "‘å") > 0 Or Left(wname, 2) = "ƒMƒK" Then
+					wtype = "‘åƒr[ƒ€"
+				ElseIf InStr(wname, "ƒƒK") > 0 Or InStr(wname, "ƒnƒC") > 0 Or InStr(wname, "ƒoƒY[ƒJ") > 0 Then 
+					wtype = "’†ƒr[ƒ€"
+				ElseIf CountAttack0(u, w) >= 4 Or InStr(wname, "‘Î‹ó") > 0 Then 
+					wtype = "ƒj[ƒhƒ‹ƒŒ[ƒU[˜AË"
+				ElseIf InStr(wname, "ƒsƒXƒgƒ‹") > 0 Or InStr(wname, "ƒ~ƒj") > 0 Or InStr(wname, "¬") > 0 Then 
+					wtype = "ƒj[ƒhƒ‹ƒŒ[ƒU["
+				ElseIf InStr(wname, "ƒ‰ƒ“ƒ`ƒƒ[") > 0 Or InStr(wname, "ƒLƒƒƒmƒ“") > 0 Or InStr(wname, "ƒJƒmƒ“") > 0 Or InStr(wname, "–C") > 0 Then 
+					wtype = "’†ƒr[ƒ€"
 				Else
-					wtype = "å°ãƒ“ãƒ¼ãƒ "
+					wtype = "¬ƒr[ƒ€"
 				End If
 				
 				Select Case wtype
-					Case "å°ãƒ“ãƒ¼ãƒ ", "Invalid_string_refer_to_original_code"
+					Case "¬ƒr[ƒ€", "’†ƒr[ƒ€"
 						If double_weapon Then
-							wtype = "Invalid_string_refer_to_original_code" & wtype
+							wtype = "‚Q˜A" & wtype
 						End If
 				End Select
 				
-				'Invalid_string_refer_to_original_code_
-				'Then
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				wtype = "Invalid_string_refer_to_original_code"
+				If InStr(wname, "ŠgU") > 0 Or InStr(wname, "•úË") > 0 Then
+					wtype = "ŠgUƒr[ƒ€"
+				End If
+				
+				If InStr(wname, "ƒz[ƒ~ƒ“ƒO") > 0 Or InStr(wname, "—U“±") > 0 Then
+					wtype = "ƒz[ƒ~ƒ“ƒOƒŒ[ƒU["
+				End If
+			End If
+			GoTo FoundWeaponType
+		End If
+		
+		If InStr(wname, "Œõü") > 0 Then
+			wtype = "‰öŒõü"
+			GoTo FoundWeaponType
+		End If
+		
+		'”š”­Œn
+		
+		If InStr(wname, "ƒsƒXƒgƒ‹") > 0 Or InStr(wname, "Œe") > 0 Or InStr(wname, "ƒŠƒ{ƒ‹ƒo[") > 0 Or InStr(wname, "ƒŠƒ{ƒ‹ƒ”ƒ@[") > 0 Or InStr(wname, "e") > 0 Or Right(wname, 2) = "ƒKƒ“" Or InStr(wname, "ƒ‰ƒCƒtƒ‹") > 0 Then
+			wtype = "e’e"
+			GoTo FoundWeaponType
+		End If
+		
+		If InStr(wname, "”š—‹") > 0 Then
+			wtype = "”š—‹"
+			GoTo FoundWeaponType
+		End If
+		
+		If InStr(wname, "”šŒ‚") > 0 Or CurrentWeaponType = "“Š‰º”š’e" Then
+			wtype = "”šŒ‚"
+			GoTo FoundWeaponType
+		End If
+		
+		If InStr(wname, "ƒ~ƒTƒCƒ‹") > 0 Or InStr(wname, "ƒƒPƒbƒg") > 0 Or InStr(wname, "”š’e") > 0 Or InStr(wname, "ƒ_ƒCƒiƒ}ƒCƒg") > 0 Or InStr(wname, "Ö’e") > 0 Or InStr(wname, "”½‰’e") > 0 Or InStr(wname, "ƒOƒŒƒl[ƒh") > 0 Or InStr(wname, "èÖ’e") > 0 Or InStr(wname, "ƒNƒ‰ƒbƒJ[") > 0 Or InStr(wname, "ƒfƒBƒXƒ`ƒƒ[ƒWƒƒ[") > 0 Or InStr(wname, "ƒ}ƒCƒ“") > 0 Or InStr(wname, "ƒ{ƒ€") > 0 Or InStr(wname, "‹›—‹") > 0 Or InStr(wname, "‹@—‹") > 0 Or InStr(wname, "ƒoƒY[ƒJ") > 0 Or InStr(wname, "ƒVƒ…ƒcƒ‹ƒ€ƒtƒ@ƒEƒXƒg") > 0 Then
+			If InStr(wname, "Šj") > 0 Or InStr(wname, "”½‰") > 0 Or InStr(wname, "ƒAƒgƒ~ƒbƒN") > 0 Or InStr(wname, "’´") > 0 Then
+				wtype = "’´”š”­"
+			ElseIf InStr(wname, "‘å") > 0 Or InStr(wname, "ƒrƒbƒN") > 0 Or InStr(wname, "ƒWƒƒƒCƒAƒ“ƒg") > 0 Or InStr(wname, "ƒƒK") > 0 Then 
+				wtype = "‘å”š”­"
+			ElseIf InStr(wname, "¬") > 0 Or InStr(wname, "ƒ~ƒj") > 0 Or InStr(wname, "ƒ}ƒCƒNƒ") > 0 Then 
+				wtype = "¬”š”­"
+			Else
+				wtype = "”š”­"
 			End If
 			
-			'Invalid_string_refer_to_original_code_
-			'Then
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			wtype = "Invalid_string_refer_to_original_code"
-		End If
-		'End If
-		GoTo FoundWeaponType
-		'End If
-		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		wtype = "Invalid_string_refer_to_original_code"
-		GoTo FoundWeaponType
-		'End If
-		
-		'Invalid_string_refer_to_original_code
-		
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "ãƒ©ã‚¤ãƒ•ãƒ«") > 0 _
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		wtype = "Invalid_string_refer_to_original_code"
-		GoTo FoundWeaponType
-		'End If
-		
-		If InStr(wname, "Invalid_string_refer_to_original_code") > 0 Then
-			wtype = "Invalid_string_refer_to_original_code"
-			GoTo FoundWeaponType
-		End If
-		
-		If InStr(wname, "Invalid_string_refer_to_original_code") > 0 Or CurrentWeaponType = "Invalid_string_refer_to_original_code" Then
-			wtype = "Invalid_string_refer_to_original_code"
-			GoTo FoundWeaponType
-		End If
-		
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "åå¿œå¼¾") > 0 _
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "ãƒã‚¤ãƒ³") > 0 Or InStr(wname, "ãƒœãƒ ") > 0 _
-		'Or InStr(wname, "é­šé›·") > 0 Or InStr(wname, "æ©Ÿé›·") > 0 _
-		'Or InStr(wname, "ãƒã‚ºãƒ¼ã‚«") > 0 _
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		wtype = "Invalid_string_refer_to_original_code"
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		wtype = "Invalid_string_refer_to_original_code"
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "ãƒã‚¤ã‚¯ãƒ­") > 0 _
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		wtype = "Invalid_string_refer_to_original_code"
-		wtype = "Invalid_string_refer_to_original_code"
-		'End If
-		
-		'Invalid_string_refer_to_original_code
-		
-		If wtype = "Invalid_string_refer_to_original_code" Then
-			GoTo FoundWeaponType
-		End If
-		
-		attack_times = CountAttack0(u, w)
-		If InStrNotNest(wclass, "é€£") > 0 Then
-			attack_times = hit_count
-		End If
-		
-		If attack_times = 1 Then
-			attack_times = 0
-			GoTo FoundWeaponType
-		End If
-		
-		If wtype = "Invalid_string_refer_to_original_code" Then
-			wtype = "Invalid_string_refer_to_original_code"
-		Else
-			wtype = "Invalid_string_refer_to_original_code"
-		End If
-		
-		GoTo FoundWeaponType
-		'End If
-		
-		'Invalid_string_refer_to_original_code
-		
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		wtype = "Invalid_string_refer_to_original_code"
-		GoTo FoundWeaponType
-		'End If
-		
-		If InStr(wname, "é›·") > 0 Or InStr(wname, "ãƒ©ã‚¤ãƒˆãƒ‹ãƒ³ã‚°") > 0 Or InStr(wname, "ã‚µãƒ³ãƒ€ãƒ¼") > 0 Or Right(wname, 2) = "ç¨²å¦»" Or InStrNotNest(wclass, "é›»") > 0 Then
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			wtype = "æ”¾é›»"
-			GoTo FoundWeaponType
-		End If
-		'End If
-		
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		wtype = "å¹é›ª"
-		GoTo FoundWeaponType
-		'End If
-		
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		wtype = "å¼·é¢¨"
-		GoTo FoundWeaponType
-		'End If
-		
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "é¢¨") > 0 _
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		wtype = "é¢¨"
-		GoTo FoundWeaponType
-		'End If
-		
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "ç«œå·»") > 0 Or InStr(wname, "æ¸¦å·»") > 0 _
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		wtype = "ç«œå·»"
-		GoTo FoundWeaponType
-		'End If
-		
-		If InStr(wname, "æ³¡") > 0 Or InStr(wname, "ãƒãƒ–ãƒ«") > 0 Or InStr(wname, "æ¶ˆç«") > 0 Then
-			wtype = "æ³¡"
-			GoTo FoundWeaponType
-		End If
-		
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "ç¸®é€€") > 0 _
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		wtype = "é‡åŠ›åœ§ç¸®"
-		GoTo FoundWeaponType
-		'End If
-		
-		If InStr(wname, "ã‚¹ãƒ­ã‚¦") > 0 Then
-			wtype = "Invalid_string_refer_to_original_code"
-			GoTo FoundWeaponType
-		End If
-		
-		'Invalid_string_refer_to_original_code_
-		'Or Right$(wname, 2) = "ã‚¬ã‚¹" Or Right$(wname, 1) = "éœ§" _
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		wtype = "Invalid_string_refer_to_original_code"
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		cname = "Invalid_string_refer_to_original_code"
-		'End If
-		GoTo FoundWeaponType
-		'End If
-		
-		If InStr(wname, "ç«ç‚å¼¾") > 0 Then
-			wtype = "ç«ç‚å¼¾"
-			GoTo FoundWeaponType
-		End If
-		
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		wtype = "Invalid_string_refer_to_original_code"
-		GoTo FoundWeaponType
-		'End If
-		
-		If Right(wname, 5) = "ãƒ•ã‚¡ã‚¤ã‚¢ãƒ¼" Or Right(wname, 5) = "ãƒ•ã‚¡ã‚¤ãƒ¤ãƒ¼" Or Right(wname, 4) = "ãƒ•ã‚¡ã‚¤ã‚¢" Or Right(wname, 4) = "ãƒ•ã‚¡ã‚¤ãƒ¤" Then
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			wtype = "Invalid_string_refer_to_original_code"
-		Else
-			wtype = "Invalid_string_refer_to_original_code"
-		End If
-		GoTo FoundWeaponType
-		'End If
-		'End If
-		
-		If InStr(wname, "æ¯") > 0 Or Right(wname, 3) = "ãƒ–ãƒ¬ã‚¹" Then
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			wtype = "Invalid_string_refer_to_original_code"
+			'˜A‘±”š”­H
 			
-			Select Case SpellColor(wname, wclass)
-				Case "Invalid_string_refer_to_original_code"
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					cname = SpellColor(wname, wclass)
-					sname = "Breath.wav"
-			End Select
+			If wtype = "’´”š”­" Then
+				GoTo FoundWeaponType
+			End If
+			
+			attack_times = CountAttack0(u, w)
+			If InStrNotNest(wclass, "˜A") > 0 Then
+				attack_times = hit_count
+			End If
+			
+			If attack_times = 1 Then
+				attack_times = 0
+				GoTo FoundWeaponType
+			End If
+			
+			If wtype = "¬”š”­" Then
+				wtype = "˜A‘±”š”­"
+			Else
+				wtype = "˜A‘±" & wtype
+			End If
 			
 			GoTo FoundWeaponType
 		End If
-		'End If
 		
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		wtype = "Invalid_string_refer_to_original_code"
-		GoTo FoundWeaponType
-		'End If
+		'‚»‚Ì‘¼“ÁêŒn
 		
-		'Invalid_string_refer_to_original_code_
-		'Or Right$(wname, 1) = "æ¶²" Or Right$(wname, 1) = "é…¸" _
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		wtype = "é£›æ²«"
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		cname = "Invalid_string_refer_to_original_code"
-		'UPGRADE_WARNING: HitAnimation ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		cname = "ç™½"
-		cname = "Invalid_string_refer_to_original_code"
-		'End If
-		sname = "Splash.wav"
-		GoTo FoundWeaponType
-		'End If
+		If InStr(wname, "“dŒ‚") > 0 Or InStr(wname, "“d—¬") > 0 Or InStr(wname, "ƒGƒŒƒNƒg") > 0 Then
+			wtype = "”j‰óŒõü"
+			GoTo FoundWeaponType
+		End If
 		
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		wtype = "Invalid_string_refer_to_original_code"
-		GoTo FoundWeaponType
-		'End If
+		If InStr(wname, "—‹") > 0 Or InStr(wname, "ƒ‰ƒCƒgƒjƒ“ƒO") > 0 Or InStr(wname, "ƒTƒ“ƒ_[") > 0 Or Right(wname, 2) = "ˆîÈ" Or InStrNotNest(wclass, "“d") > 0 Then
+			If InStrNotNest(wclass, "À") = 0 Then
+				wtype = "•ú“d"
+				GoTo FoundWeaponType
+			End If
+		End If
 		
-		'Invalid_string_refer_to_original_code
+		If InStr(wname, "á") > 0 Or InStr(wname, "ƒuƒŠƒU[ƒh") > 0 Or InStr(wname, "ƒAƒCƒXƒXƒg[ƒ€") > 0 Then
+			wtype = "á"
+			GoTo FoundWeaponType
+		End If
+		
+		If InStr(wname, "ƒXƒg[ƒ€") > 0 Or InStr(wname, "ƒnƒŠƒP[ƒ“") > 0 Or InStr(wname, "ƒ^ƒCƒt[ƒ“") > 0 Or InStr(wname, "‘ä•—") > 0 Or InStr(wname, "—’") > 0 Then
+			wtype = "‹­•—"
+			GoTo FoundWeaponType
+		End If
+		
+		If InStr(wname, "ƒEƒBƒ“ƒh") > 0 Or InStr(wname, "ƒEƒCƒ“ƒh") > 0 Or InStr(wname, "•—") > 0 Then
+			wtype = "•—"
+			GoTo FoundWeaponType
+		End If
+		
+		If InStr(wname, "ƒgƒ‹ƒl[ƒh") > 0 Or InStr(wname, "ƒTƒCƒNƒƒ“") Or InStr(wname, "—³Šª") > 0 Or InStr(wname, "‰QŠª") > 0 Then
+			wtype = "—³Šª"
+			GoTo FoundWeaponType
+		End If
+		
+		If InStr(wname, "–A") > 0 Or InStr(wname, "ƒoƒuƒ‹") > 0 Or InStr(wname, "Á‰Î") > 0 Then
+			wtype = "–A"
+			GoTo FoundWeaponType
+		End If
+		
+		If InStr(wname, "d—Í") > 0 Or InStr(wname, "ƒOƒ‰ƒr") > 0 Or InStr(wname, "ƒuƒ‰ƒbƒNƒz[ƒ‹") > 0 Or InStr(wname, "k‘Ş") > 0 Then
+			wtype = "d—Íˆ³k"
+			GoTo FoundWeaponType
+		End If
+		
+		If InStr(wname, "ƒXƒƒE") > 0 Then
+			wtype = "ŠÔ‹ts"
+			GoTo FoundWeaponType
+		End If
+		
+		If InStr(wname, "‰Œ") > 0 Or InStr(wname, "ƒXƒ‚[ƒN") > 0 Or Right(wname, 2) = "ƒKƒX" Or Right(wname, 1) = "–¶" Or InStr(wname, "–Eq") > 0 Then
+			wtype = "‰Œ"
+			If InStr(wname, "“Å") > 0 Or InStrNotNest(wclass, "“Å") > 0 Then
+				cname = "—Î"
+			End If
+			GoTo FoundWeaponType
+		End If
+		
+		If InStr(wname, "‰Î‰Š’e") > 0 Then
+			wtype = "‰Î‰Š’e"
+			GoTo FoundWeaponType
+		End If
+		
+		If InStr(wname, "‰Î‰Š•úË") > 0 Or Right(wname, 2) = "‰Î‰Š" Then
+			wtype = "‰Î‰Š•úË"
+			GoTo FoundWeaponType
+		End If
+		
+		If Right(wname, 5) = "ƒtƒ@ƒCƒA[" Or Right(wname, 5) = "ƒtƒ@ƒCƒ„[" Or Right(wname, 4) = "ƒtƒ@ƒCƒA" Or Right(wname, 4) = "ƒtƒ@ƒCƒ„" Then
+			If InStrNotNest(wclass, "À") = 0 And Left(wname, 2) <> "ƒtƒ‹" Then
+				If InStrNotNest(wclass, "p") > 0 Then
+					wtype = "‰Š"
+				Else
+					wtype = "‰Î‰Š•úË"
+				End If
+				GoTo FoundWeaponType
+			End If
+		End If
+		
+		If InStr(wname, "‘§") > 0 Or Right(wname, 3) = "ƒuƒŒƒX" Then
+			If InStrNotNest(wclass, "À") = 0 Then
+				wtype = "‰Î‰Š•úË"
+				
+				Select Case SpellColor(wname, wclass)
+					Case "Â", "‰©", "—Î", "”’", "•"
+						cname = SpellColor(wname, wclass)
+						sname = "Breath.wav"
+				End Select
+				
+				GoTo FoundWeaponType
+			End If
+		End If
+		
+		If InStr(wname, "‰Î") > 0 Or InStr(wname, "‰Š") > 0 Or InStr(wname, "‰‹") > 0 Or InStr(wname, "ƒtƒ@ƒCƒ„[") > 0 Then
+			wtype = "‰Š"
+			GoTo FoundWeaponType
+		End If
+		
+		If InStr(wname, "…“S–C") > 0 Or InStr(wname, "•ú…") > 0 Or InStr(wname, "…—¬") > 0 Or InStr(wname, "_‚©‚¯") > 0 Or Right(wname, 1) = "‰t" Or Right(wname, 1) = "_" Then
+			wtype = "”ò–—"
+			If InStr(wname, "“Å") > 0 Or InStr(wname, "“Å") > 0 Then
+				cname = "—Î"
+			ElseIf InStr(wname, "_") > 0 Then 
+				cname = "”’"
+			Else
+				cname = "Â"
+			End If
+			sname = "Splash.wav"
+			GoTo FoundWeaponType
+		End If
+		
+		If InStr(wname, "‹zû") > 0 Or InStr(wname, "ƒhƒŒƒCƒ“") > 0 Or InStrNotNest(wclass, "‹z") > 0 Or InStrNotNest(wclass, "Œ¸") > 0 Then
+			wtype = "‹zû"
+			GoTo FoundWeaponType
+		End If
+		
+		'UŒ‚—Í0‚ÌUŒ‚‚Ìê‡‚Íuƒ_ƒ[ƒWv‚ÌƒAƒjƒ‚ğg—p‚µ‚È‚¢
 		If u.WeaponPower(w, "") = 0 Then
 			Exit Sub
 		End If
 		
-		'Invalid_string_refer_to_original_code
-		wtype = "ãƒ€ãƒ¡ãƒ¼ã‚¸"
+		'ƒfƒtƒHƒ‹ƒg
+		wtype = "ƒ_ƒ[ƒW"
 		
 FoundWeaponType: 
 		
-		'Invalid_string_refer_to_original_code
+		'ƒAƒjƒ‚Ì•s®‡‚ğ–h‚®‚½‚ßA‚«”ò‚Î‚µ‚ÍƒAƒjƒŒø‰Ê‚ğ‘ÅŒ‚‚É—}‚¦‚Ä‚¨‚­
 		Select Case wtype
-			Case "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				If InStrNotNest(wclass, "å¹") > 0 Or InStrNotNest(wclass, "Invalid_string_refer_to_original_code") > 0 Then
-					wtype = "æ‰“æ’ƒ"
+			Case "‹­‘Å", "’´‘Å"
+				If InStrNotNest(wclass, "") > 0 Or InStrNotNest(wclass, "‚j") > 0 Then
+					wtype = "‘ÅŒ‚"
 				End If
 		End Select
 		
-		'Invalid_string_refer_to_original_code
-		If InStr(wname, "Invalid_string_refer_to_original_code") > 0 Or InStr(wname, "èµ¤") > 0 Then
-			cname = "èµ¤"
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			cname = "Invalid_string_refer_to_original_code"
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			cname = "Invalid_string_refer_to_original_code"
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			cname = "Invalid_string_refer_to_original_code"
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			cname = "Invalid_string_refer_to_original_code"
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			cname = "Invalid_string_refer_to_original_code"
-			'Invalid_string_refer_to_original_code_
-			'Invalid_string_refer_to_original_code_
-			'Then
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			cname = "Invalid_string_refer_to_original_code"
-			'Invalid_string_refer_to_original_code_
-			'Invalid_string_refer_to_original_code_
-			'Then
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			cname = "ç™½"
+		'•\¦F‚ğÅIŒˆ’è
+		If InStr(wname, "ƒŒƒbƒh") > 0 Or InStr(wname, "Ô") > 0 Then
+			cname = "Ô"
+		ElseIf InStr(wname, "ƒuƒ‹[") > 0 Or InStr(wname, "Â") > 0 Then 
+			cname = "Â"
+		ElseIf InStr(wname, "ƒCƒGƒ[") > 0 Or InStr(wname, "‰©") > 0 Then 
+			cname = "‰©"
+		ElseIf InStr(wname, "ƒOƒŠ[ƒ“") > 0 Or InStr(wname, "—Î") > 0 Then 
+			cname = "—Î"
+		ElseIf InStr(wname, "ƒsƒ“ƒN") > 0 Or InStr(wname, "“") > 0 Then 
+			cname = "“"
+		ElseIf InStr(wname, "ƒuƒ‰ƒEƒ“") > 0 Or InStr(wname, "ò") > 0 Then 
+			cname = "ò"
+		ElseIf InStr(wname, "ƒuƒ‰ƒbƒN") > 0 Or InStr(wname, "•") > 0 Or InStr(wname, "ƒ_[ƒN") > 0 Or InStr(wname, "ˆÅ") > 0 Then 
+			cname = "•"
+		ElseIf InStr(wname, "ƒzƒƒCƒg") > 0 Or InStr(wname, "”’") > 0 Or InStr(wname, "ƒz[ƒŠ[") > 0 Or InStr(wname, "¹") > 0 Then 
+			cname = "”’"
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'‚Qí—Ş‚ÌƒAƒjƒ‚ğ‘g‚İ‡‚í‚¹‚éê‡
 		If Len(wtype0) > 0 Then
-			'Invalid_string_refer_to_original_code
-			aname = wtype0 & "å‘½ä¸­"
+			'•\¦‚·‚é–½’†ƒAƒjƒ‚Ìí—Ş
+			aname = wtype0 & "–½’†"
 			
-			'è‰²
+			'F
 			If Len(cname) > 0 Then
 				aname = aname & " " & cname
 			End If
 			
-			'å‘½ä¸­ã‚¢ãƒ‹ãƒ¡è¡¨ç¤º
+			'–½’†ƒAƒjƒ•\¦
 			ShowAnimation(aname)
 		End If
 		
-		'Invalid_string_refer_to_original_code
-		aname = wtype & "å‘½ä¸­"
+		'•\¦‚·‚é–½’†ƒAƒjƒ‚Ìí—Ş
+		aname = wtype & "–½’†"
 		
-		'è‰²
+		'F
 		If Len(cname) > 0 Then
 			aname = aname & " " & cname
 		End If
 		
-		'åŠ¹æœéŸ³
+		'Œø‰Ê‰¹
 		If Len(sname) > 0 Then
 			aname = aname & " " & sname
 		End If
 		
-		'å‘½ä¸­æ•°
+		'–½’†”
 		If attack_times > 0 Then
 			aname = aname & " " & VB6.Format(attack_times)
 		End If
 		
-		'å‘½ä¸­ã‚¢ãƒ‹ãƒ¡è¡¨ç¤º
+		'–½’†ƒAƒjƒ•\¦
 		ShowAnimation(aname)
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'•Ší–½’†‚ÌŒø‰Ê‰¹
 	Public Sub HitSound(ByRef u As Unit, ByRef w As Short, ByRef t As Unit, ByVal hit_count As Short)
 		Dim wname, wclass As String
 		Dim num, i As Short
 		
-		'Invalid_string_refer_to_original_code
+		'‰EƒNƒŠƒbƒN’†‚ÍŒø‰Ê‰¹‚ğƒXƒLƒbƒv
 		If IsRButtonPressed() Then
 			Exit Sub
 		End If
@@ -3703,317 +3033,183 @@ FoundWeaponType:
 		wname = u.WeaponNickname(w)
 		wclass = u.Weapon(w).Class_Renamed
 		
-		'åŠ¹æœéŸ³ã®å†ç”Ÿå›æ•°
+		'Œø‰Ê‰¹‚ÌÄ¶‰ñ”
 		num = CountAttack(u, w)
 		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code_
-		'Or InStrNotNest(wclass, "æ¥") > 0 _
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		PlayWave("Swing.wav")
-		Sleep(200)
-		PlayWave("Sword.wav")
-		For i = 2 To num
-			Sleep(200)
-			PlayWave("Sword.wav")
-		Next 
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "ãƒ‰ãƒªãƒ«") > 0 _
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		PlayWave("Drill.wav")
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "ãƒã‚¹ã‚¿ãƒ¼") > 0 Or InStr(wname, "ãƒ–ãƒ©ã‚¹ã‚¿ãƒ¼") > 0 _
-		'Or InStr(wname, "ã‚¯ãƒ­ãƒ¼") > 0 Or InStr(wname, "ã‚¸ã‚¶ãƒ¼ã‚¹") > 0 _
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Or (InStr(wname, "å‰£") > 0 And InStr(wname, "æ‰‹è£å‰£") = 0) _
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "ç¾½") > 0 _
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "ãƒ¬ãƒ¼ã‚¶ãƒ¼") > 0 _
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		PlayWave("Saber.wav")
-		For i = 2 To num
-			Sleep(350)
-			PlayWave("Saber.wav")
-		Next 
-		PlayWave("Swing.wav")
-		Sleep(190)
-		PlayWave("Slash.wav")
-		For i = 2 To num
-			Sleep(350)
-			PlayWave("Slash.wav")
-		Next 
-		'End If
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "æ‰‹è£å‰£") > 0 _
-		'Or InStr(wname, "è‹¦ç„¡") > 0 Or InStr(wname, "ã‚¯ãƒŠã‚¤") > 0 _
-		'Or (InStr(wname, "çªã") > 0 _
-		'And InStr(wname, "æ‹³") = 0 And InStr(wname, "é ­") = 0) _
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "ãƒ¬ãƒ¼ã‚¶ãƒ¼") > 0 _
-		'Or InStr(wname, "ãƒ©ãƒ³ã‚µãƒ¼") > 0 _
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		PlayWave("Saber.wav")
-		For i = 2 To num
-			Sleep(350)
-			PlayWave("Saber.wav")
-		Next 
-		PlayWave("Swing.wav")
-		Sleep(190)
-		PlayWave("Stab.wav")
-		For i = 2 To num
-			Sleep(350)
-			PlayWave("Stab.wav")
-		Next 
-		'End If
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		If Not t.IsHero Then
-			PlayWave("Saber.wav")
-			For i = 2 To num
-				Sleep(350)
-				PlayWave("Saber.wav")
-			Next 
-		Else
-			PlayWave("Stab.wav")
-			For i = 2 To num
-				Sleep(350)
+		'•Ší‚É‰‚¶‚ÄŒø‰Ê‰¹‚ğÄ¶
+		If InStrNotNest(wclass, "•") > 0 Or InStrNotNest(wclass, "“Ë") > 0 Or InStrNotNest(wclass, "Ú") > 0 Or InStrNotNest(wclass, "À") > 0 Then
+			If InStr(wname, "ƒfƒBƒXƒJƒbƒ^[") > 0 Or InStr(wname, "ƒŠƒbƒp[") > 0 Or InStr(wname, "ƒXƒpƒCƒh") > 0 Or InStr(wname, "‹‡") > 0 Or InStr(wname, "‘M") > 0 Then
+				PlayWave("Swing.wav")
+				Sleep(200)
+				PlayWave("Sword.wav")
+				For i = 2 To num
+					Sleep(200)
+					PlayWave("Sword.wav")
+				Next 
+			ElseIf InStr(wname, "ƒvƒƒOƒŒƒbƒVƒuƒiƒCƒt") > 0 Or InStr(wname, "ƒhƒŠƒ‹") > 0 Then 
+				PlayWave("Drill.wav")
+			ElseIf InStr(wname, "ƒT[ƒxƒ‹") > 0 Or InStr(wname, "ƒZƒCƒo[") > 0 Or InStr(wname, "ƒ\[ƒh") > 0 Or InStr(wname, "ƒuƒŒ[ƒh") > 0 Or InStr(wname, "ƒXƒpƒbƒh") > 0 Or InStr(wname, "ƒZ[ƒo[") > 0 Or InStr(wname, "ƒ_ƒK[") > 0 Or InStr(wname, "ƒiƒCƒt") > 0 Or InStr(wname, "ƒgƒ}ƒz[ƒN") > 0 Or InStr(wname, "ƒƒCƒX") > 0 Or InStr(wname, "ƒAƒbƒNƒX") > 0 Or InStr(wname, "ƒOƒŒƒCƒu") > 0 Or InStr(wname, "ƒiƒMƒiƒ^") > 0 Or InStr(wname, "ƒrƒAƒ“ƒL") > 0 Or InStr(wname, "ƒEƒFƒbƒu") > 0 Or InStr(wname, "ƒUƒ“ƒo[") > 0 Or InStr(wname, "ƒ}[ƒJ[") > 0 Or InStr(wname, "ƒoƒXƒ^[") > 0 Or InStr(wname, "ƒuƒ‰ƒXƒ^[") > 0 Or InStr(wname, "ƒNƒ[") > 0 Or InStr(wname, "ƒWƒU[ƒX") > 0 Or InStr(wname, "ƒu[ƒƒ‰ƒ“") > 0 Or InStr(wname, "ƒ\[ƒT[") > 0 Or InStr(wname, "ƒŒƒU[") > 0 Or InStr(wname, "ƒŒƒCƒo[") > 0 Or InStr(wname, "ƒTƒCƒY") > 0 Or InStr(wname, "ƒVƒ‡[ƒeƒ‹") > 0 Or InStr(wname, "ƒJƒbƒ^[") > 0 Or InStr(wname, "ƒXƒpƒCƒN") > 0 Or InStr(wname, "ƒJƒgƒ‰ƒX") > 0 Or InStr(wname, "ƒGƒbƒW") > 0 Or (InStr(wname, "Œ•") > 0 And InStr(wname, "è— Œ•") = 0) Or InStr(wname, "Ø") > 0 Or InStr(wname, "a") > 0 Or InStr(wname, "“") > 0 Or InStr(wname, "n") > 0 Or InStr(wname, "•€") > 0 Or InStr(wname, "Š™") > 0 Or InStr(wname, "‚©‚Ü") > 0 Or InStr(wname, "ƒJƒ}") > 0 Or InStr(wname, "’Ü") > 0 Or InStr(wname, "‚©‚¬‚Ã‚ß") > 0 Or InStr(wname, "ƒnƒTƒ~") > 0 Or InStr(wname, "ƒoƒTƒ~") > 0 Or InStr(wname, "‰H") > 0 Then 
+				If Not t.IsHero Or InStr(wname, "ƒr[ƒ€") > 0 Or InStr(wname, "ƒvƒ‰ƒYƒ}") > 0 Or InStr(wname, "ƒŒ[ƒU[") > 0 Or InStr(wname, "ƒZƒCƒo[") > 0 Then
+					PlayWave("Saber.wav")
+					For i = 2 To num
+						Sleep(350)
+						PlayWave("Saber.wav")
+					Next 
+				Else
+					PlayWave("Swing.wav")
+					Sleep(190)
+					PlayWave("Slash.wav")
+					For i = 2 To num
+						Sleep(350)
+						PlayWave("Slash.wav")
+					Next 
+				End If
+			ElseIf InStr(wname, "ƒ‰ƒ“ƒT[") > 0 Or InStr(wname, "ƒ‰ƒ“ƒX") > 0 Or InStr(wname, "ƒXƒsƒA") > 0 Or InStr(wname, "ƒgƒ‰ƒCƒfƒ“ƒg") > 0 Or InStr(wname, "ƒn[ƒPƒ“") > 0 Or InStr(wname, "‘„") > 0 Or InStr(wname, "‚à‚è") > 0 Or InStr(wname, "è— Œ•") > 0 Or InStr(wname, "‹ê–³") > 0 Or InStr(wname, "ƒNƒiƒC") > 0 Or (InStr(wname, "“Ë‚«") > 0 And InStr(wname, "Œ") = 0 And InStr(wname, "“ª") = 0) Then 
+				If Not t.IsHero Or InStr(wname, "ƒr[ƒ€") > 0 Or InStr(wname, "ƒvƒ‰ƒYƒ}") > 0 Or InStr(wname, "ƒŒ[ƒU[") > 0 Or InStr(wname, "ƒ‰ƒ“ƒT[") > 0 Then
+					PlayWave("Saber.wav")
+					For i = 2 To num
+						Sleep(350)
+						PlayWave("Saber.wav")
+					Next 
+				Else
+					PlayWave("Swing.wav")
+					Sleep(190)
+					PlayWave("Stab.wav")
+					For i = 2 To num
+						Sleep(350)
+						PlayWave("Stab.wav")
+					Next 
+				End If
+			ElseIf InStr(wname, "‰å") > 0 Or InStr(wname, "ƒtƒ@ƒ“ƒO") > 0 Or InStr(wname, "Šš") > 0 Or InStr(wname, "‚©‚İ‚Â‚«") > 0 Or InStr(wname, "Š{") > 0 Then 
+				If Not t.IsHero Then
+					PlayWave("Saber.wav")
+					For i = 2 To num
+						Sleep(350)
+						PlayWave("Saber.wav")
+					Next 
+				Else
+					PlayWave("Stab.wav")
+					For i = 2 To num
+						Sleep(350)
+						PlayWave("Stab.wav")
+					Next 
+				End If
+			ElseIf InStr(wname, "ƒXƒgƒ‰ƒCƒN") > 0 Or InStr(wname, "ƒA[ƒc") > 0 Or InStr(wname, "Œ–@") > 0 Or InStr(wname, "U“®Œ") > 0 Then 
+				PlayWave("Combo.wav")
+			ElseIf InStr(wname, "Ši“¬") > 0 Or InStr(wname, "ƒpƒ“ƒ`") > 0 Or InStr(wname, "ƒLƒbƒN") > 0 Or InStr(wname, "ƒ`ƒ‡ƒbƒv") > 0 Or InStr(wname, "ƒiƒbƒNƒ‹") > 0 Or InStr(wname, "ƒuƒ[") > 0 Or InStr(wname, "ƒnƒ“ƒ}[") > 0 Or InStr(wname, "ƒgƒ“ƒtƒ@[") > 0 Or InStr(wname, "ƒkƒ“ƒ`ƒƒƒN") > 0 Or InStr(wname, "ƒpƒCƒv") > 0 Or InStr(wname, "ƒ‰ƒŠƒAƒbƒg") > 0 Or InStr(wname, "ƒA[ƒ€") > 0 Or InStr(wname, "ƒwƒbƒhƒoƒbƒg") > 0 Or InStr(wname, "ƒXƒŠƒ“ƒO") > 0 Or InStr(wname, "“ª“Ë‚«") > 0 Or InStr(wname, "‹r") > 0 Or InStr(wname, "R") > 0 Or InStr(wname, "–_") > 0 Or InStr(wname, "Î") > 0 Or InStr(wname, "Šp") > 0 Or InStr(wname, "K”ö") > 0 Or InStr(wname, "“S˜r") > 0 Then 
+				PlayWave("Punch.wav")
+				For i = 2 To num
+					Sleep(120)
+					PlayWave("Punch.wav")
+				Next 
+			ElseIf InStr(wname, "‘Ì“–‚½‚è") > 0 Or InStr(wname, "ƒ^ƒbƒNƒ‹") > 0 Or InStr(wname, "‚Ô‚¿‚©‚Ü‚µ") > 0 Or InStr(wname, "“Ëi") > 0 Or InStr(wname, "“ËŒ‚") > 0 Or InStr(wname, "‰ö—Í") > 0 Or InStr(wname, "“SŒ") > 0 Or InStr(wname, "ƒƒKƒgƒ“ƒpƒ“ƒ`") > 0 Or InStr(wname, "“S‹…") > 0 Or InStr(wname, "ƒ{[ƒ‹") > 0 Or InStr(wname, "Ô—Ö") > 0 Or InStr(wname, "ƒLƒƒƒ^ƒsƒ‰") > 0 Or InStr(wname, "ƒV[ƒ‹ƒh") > 0 Then 
+				PlayWave("Crash.wav")
+			ElseIf InStr(wname, "Œ") > 0 Or InStr(wname, "¶") > 0 Or InStr(wname, "‘Å") > 0 Or InStr(wname, "™¤") > 0 Then 
+				PlayWave("Bazooka.wav")
+				For i = 2 To num
+					Sleep(120)
+					PlayWave("Bazooka.wav")
+				Next 
+			ElseIf InStr(wname, "“¥‚İ") > 0 Or InStr(wname, "‰Ÿ‚µ") > 0 Or InStr(wname, "ƒhƒƒbƒv") > 0 Then 
+				PlayWave("Shock(Low).wav")
+			ElseIf InStr(wname, "’£‚èè") > 0 Or InStr(wname, "ƒrƒ“ƒ^") > 0 Then 
+				PlayWave("Slap.wav")
+				For i = 2 To num
+					Sleep(120)
+					PlayWave("Slap.wav")
+				Next 
+			ElseIf InStr(wname, "‹|") > 0 Or InStr(wname, "–î") > 0 Or InStr(wname, "ƒAƒ[") > 0 Or InStr(wname, "ƒ{[ƒKƒ“") > 0 Or InStr(wname, "ƒ{ƒEƒKƒ“") > 0 Or InStr(wname, "ƒVƒ‡[ƒgƒ{ƒE") > 0 Or InStr(wname, "ƒƒ“ƒOƒ{ƒE") > 0 Or InStr(wname, "j") > 0 Or InStr(wname, "ƒj[ƒhƒ‹") > 0 Then 
 				PlayWave("Stab.wav")
-			Next 
-		End If
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "æŒ¯å‹•æ‹³") > 0 _
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		PlayWave("Combo.wav")
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "ãƒŠãƒƒã‚¯ãƒ«") > 0 Or InStr(wname, "ãƒ–ãƒ­ãƒ¼") > 0 _
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "é ­çªã") > 0 _
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "è¹´") > 0 _
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "çŸ³") > 0 _
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "å°»å°¾") > 0 _
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		PlayWave("Punch.wav")
-		For i = 2 To num
-			Sleep(120)
-			PlayWave("Punch.wav")
-		Next 
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "çªæ’ƒ") > 0 _
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "è»Šè¼ª") > 0 _
-		'Or InStr(wname, "ã‚­ãƒ£ã‚¿ãƒ”ãƒ©") > 0 _
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		PlayWave("Crash.wav")
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		PlayWave("Bazooka.wav")
-		For i = 2 To num
-			Sleep(120)
-			PlayWave("Bazooka.wav")
-		Next 
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		PlayWave("Shock(Low).wav")
-		'UPGRADE_WARNING: HitSound ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		PlayWave("Slap.wav")
-		For i = 2 To num
-			Sleep(120)
-			PlayWave("Slap.wav")
-		Next 
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "çŸ¢") > 0 _
-		'Or InStr(wname, "ã‚¢ãƒ­ãƒ¼") > 0 _
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "ãƒœã‚¦ã‚¬ãƒ³") > 0 _
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "ãƒ­ãƒ³ã‚°ãƒœã‚¦") > 0 _
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		PlayWave("Stab.wav")
-		For i = 2 To num
-			Sleep(120)
-			PlayWave("Stab.wav")
-		Next 
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "ãƒã‚§ãƒ¼ãƒ³") > 0 _
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "å°¾") > 0 _
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "ç³¸") > 0 _
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		PlayWave("Whip.wav")
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		PlayWave("Swing.wav")
-		Sleep(500)
-		PlayWave("Shock(Low).wav")
-		For i = 2 To num
-			Sleep(700)
-			PlayWave("Swing.wav")
-			Sleep(500)
-			PlayWave("Shock(Low).wav")
-		Next 
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		PlayWave("Swing.wav")
-		Sleep(700)
-		PlayWave("Swing.wav")
-		Sleep(500)
-		PlayWave("Swing.wav")
-		Sleep(300)
-		PlayWave("Shock(Low).wav")
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "æŠ˜ã‚Š") > 0 _
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "çµã‚") > 0 _
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		PlayWave("Swing.wav")
-		Sleep(190)
-		PlayWave("BreakOff.wav")
-		'UPGRADE_WARNING: HitSound ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		PlayWave("Explode(Nuclear).wav")
-		'UPGRADE_WARNING: HitSound ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		PlayWave("Explode(Small).wav")
-		For i = 2 To num
-			Sleep(130)
-			PlayWave("Explode(Small).wav")
-		Next 
-		'UPGRADE_WARNING: HitSound ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		'ç„¡éŸ³
-		'UPGRADE_WARNING: HitSound ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		'Invalid_string_refer_to_original_code
-		PlayWave("Saber.wav")
-		For i = 2 To num
-			Sleep(350)
-			PlayWave("Saber.wav")
-		Next 
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		'Invalid_string_refer_to_original_code
-		PlayWave("Punch.wav")
-		For i = 2 To num
-			Sleep(120)
-			PlayWave("Punch.wav")
-		Next 
-		If Not t.IsHero Then
-			PlayWave("Explode(Small).wav")
-			For i = 2 To num
-				Sleep(130)
+				For i = 2 To num
+					Sleep(120)
+					PlayWave("Stab.wav")
+				Next 
+			ElseIf InStr(wname, "•Ú") > 0 Or InStr(wname, "ƒ€ƒ`") > 0 Or InStr(wname, "ƒEƒCƒbƒv") > 0 Or InStr(wname, "ƒ`ƒF[ƒ“") > 0 Or InStr(wname, "ƒƒbƒh") > 0 Or InStr(wname, "ƒeƒ“ƒ^ƒN") > 0 Or InStr(wname, "ƒeƒCƒ‹") > 0 Or InStr(wname, "”ö") > 0 Or InStr(wname, "Gè") > 0 Or InStr(wname, "G˜r") > 0 Or InStr(wname, "ã") > 0 Or InStr(wname, "Šª‚«") > 0 Or InStr(wname, "…") > 0 Then 
+				PlayWave("Whip.wav")
+			ElseIf InStr(wname, "“Š‚°") > 0 Or InStr(wname, "ƒX[ƒvƒŒƒbƒN") > 0 Or (InStr(wname, "•Ô‚µ") > 0 And InStrNotNest(wclass, "“Ë") > 0) Then 
+				PlayWave("Swing.wav")
+				Sleep(500)
+				PlayWave("Shock(Low).wav")
+				For i = 2 To num
+					Sleep(700)
+					PlayWave("Swing.wav")
+					Sleep(500)
+					PlayWave("Shock(Low).wav")
+				Next 
+			ElseIf InStr(wname, "‘åáR‚¨‚ë‚µ") > 0 Then 
+				PlayWave("Swing.wav")
+				Sleep(700)
+				PlayWave("Swing.wav")
+				Sleep(500)
+				PlayWave("Swing.wav")
+				Sleep(300)
+				PlayWave("Shock(Low).wav")
+			ElseIf InStr(wname, "ŠÖß") > 0 Or InStr(wname, "ŒÅ‚ß") > 0 Or InStr(wname, "Ü‚è") > 0 Or InStr(wname, "’÷‚ß") > 0 Or InStr(wname, "i‚ß") > 0 Or InStr(wname, "ƒA[ƒ€ƒƒbƒN") > 0 Or InStr(wname, "ƒz[ƒ‹ƒh") > 0 Then 
+				PlayWave("Swing.wav")
+				Sleep(190)
+				PlayWave("BreakOff.wav")
+			ElseIf InStrNotNest(wclass, "Šj") > 0 Or InStr(wname, "Šj") > 0 Or InStr(wname, "”½‰’e") > 0 Then 
+				PlayWave("Explode(Nuclear).wav")
+			ElseIf InStr(wname, "ƒ~ƒTƒCƒ‹") > 0 Or InStr(wname, "ƒƒPƒbƒg") > 0 Or InStr(wname, "‹›—‹") > 0 Or InStr(wname, "ƒ}ƒ‹ƒ`ƒ|ƒbƒh") > 0 Or InStr(wname, "ƒ}ƒ‹ƒ`ƒ‰ƒ“ƒ`ƒƒ[") > 0 Or InStr(wname, "”š’e") > 0 Or InStr(wname, "”š—‹") > 0 Or InStr(wname, "”šŒ‚") > 0 Or Right(wname, 3) = "ƒ}ƒCƒ“" Or Right(wname, 2) = "ƒ{ƒ€" Then 
 				PlayWave("Explode(Small).wav")
-			Next 
+				For i = 2 To num
+					Sleep(130)
+					PlayWave("Explode(Small).wav")
+				Next 
+			ElseIf InStr(wname, "ƒAƒ“ƒJ[") > 0 Then 
+				'–³‰¹
+			ElseIf InStrNotNest(wclass, "•") > 0 Then 
+				'‚È‚ñ‚©•ª‚©‚ç‚ñ‚¯‚Ç•Ší
+				PlayWave("Saber.wav")
+				For i = 2 To num
+					Sleep(350)
+					PlayWave("Saber.wav")
+				Next 
+			ElseIf InStrNotNest(wclass, "“Ë") > 0 Then 
+				'‚È‚ñ‚©•ª‚©‚ç‚ñ‚¯‚Ç“Ëi‹Z
+				PlayWave("Punch.wav")
+				For i = 2 To num
+					Sleep(120)
+					PlayWave("Punch.wav")
+				Next 
+			Else
+				If Not t.IsHero Then
+					PlayWave("Explode(Small).wav")
+					For i = 2 To num
+						Sleep(130)
+						PlayWave("Explode(Small).wav")
+					Next 
+				End If
+			End If
+		Else
+			If InStr(wname, "ƒXƒg[ƒ€") > 0 Or InStr(wname, "ƒgƒ‹ƒl[ƒh") > 0 Or InStr(wname, "ƒnƒŠƒP[ƒ“") > 0 Or InStr(wname, "ƒ^ƒCƒt[ƒ“") > 0 Or InStr(wname, "ƒTƒCƒNƒƒ“") > 0 Or InStr(wname, "ƒuƒŠƒU[ƒh") > 0 Or InStr(wname, "—³Šª") > 0 Or InStr(wname, "‰QŠª") > 0 Or InStr(wname, "‘ä•—") > 0 Or InStr(wname, "—’") > 0 Then
+				'–½’†‚Í–³‰¹
+			ElseIf Right(wname, 1) = "‰t" Then 
+				PlayWave("Inori.wav")
+			ElseIf InStr(wname, "”­‰Î") > 0 Or InStr(wname, "ƒpƒCƒƒLƒlƒVƒX") > 0 Then 
+				PlayWave("Fire.wav")
+			ElseIf wname = "ƒeƒŒƒLƒlƒVƒX" Then 
+				PlayWave("Crash.wav")
+			ElseIf InStr(wname, "‹zû") > 0 Then 
+				PlayWave("Charge.wav")
+			ElseIf InStrNotNest(wclass, "Šj") > 0 Then 
+				PlayWave("Explode(Nuclear).wav")
+			Else
+				If Not t.IsHero Then
+					PlayWave("Explode(Small).wav")
+					For i = 2 To num
+						Sleep(130)
+						PlayWave("Explode(Small).wav")
+					Next 
+				End If
+			End If
 		End If
-		'End If
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "ãƒãƒªã‚±ãƒ¼ãƒ³") > 0 _
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "ã‚µã‚¤ã‚¯ãƒ­ãƒ³") > 0 _
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "ç«œå·»") > 0 _
-		'Or InStr(wname, "æ¸¦å·»") > 0 _
-		'Or InStr(wname, "å°é¢¨") > 0 _
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_WARNING: HitSound ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		PlayWave("Inori.wav")
-		'UPGRADE_WARNING: HitSound ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		PlayWave("Fire.wav")
-		'UPGRADE_WARNING: HitSound ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		PlayWave("Crash.wav")
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		PlayWave("Charge.wav")
-		'UPGRADE_WARNING: HitSound ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		PlayWave("Explode(Nuclear).wav")
-		If Not t.IsHero Then
-			PlayWave("Explode(Small).wav")
-			For i = 2 To num
-				Sleep(130)
-				PlayWave("Explode(Small).wav")
-			Next 
-		End If
-		'End If
-		'End If
 		
-		'ãƒ•ãƒ©ã‚°ã‚’ã‚¯ãƒªã‚¢
+		'ƒtƒ‰ƒO‚ğƒNƒŠƒA
 		IsWavePlayed = False
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'‰ñ”ğ‚ÌŒø‰Ê‰¹
 	Public Sub DodgeEffect(ByRef u As Unit, ByRef w As Short)
 		Dim wname, wclass As String
 		Dim sname As String
@@ -4021,9 +3217,9 @@ FoundWeaponType:
 		wname = u.WeaponNickname(w)
 		wclass = u.Weapon(w).Class_Renamed
 		
-		'Invalid_string_refer_to_original_code
-		If u.IsSpecialEffectDefined(wname & "(å›é¿)") Then
-			u.SpecialEffect(wname & "(å›é¿)")
+		'“ÁêŒø‰Ê‚ªw’è‚³‚ê‚Ä‚¢‚ê‚Î‚»‚ê‚ğg—p
+		If u.IsSpecialEffectDefined(wname & "(‰ñ”ğ)") Then
+			u.SpecialEffect(wname & "(‰ñ”ğ)")
 			Exit Sub
 		End If
 		
@@ -4031,7 +3227,7 @@ FoundWeaponType:
 			Exit Sub
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'UŒ‚‚ÌŒø‰Ê‰¹‚ª•—Ø‚è‰¹‚Ì‚İ‚Å‚ ‚ê‚Î•—Ø‚è‰¹‚Í•s—v
 		sname = u.SpecialEffectData(wname)
 		If InStr(sname, ";") > 0 Then
 			sname = Mid(sname, InStr(sname, ";"))
@@ -4040,41 +3236,24 @@ FoundWeaponType:
 			Exit Sub
 		End If
 		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code_
-		'Or InStrNotNest(wclass, "æ¥") _
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		PlayWave("Swing.wav")
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "ãƒã‚§ãƒ¼ãƒ³") > 0 _
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "å°¾") > 0 _
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "ç³¸") > 0 _
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		PlayWave("Swing.wav")
-		'End If
-		'End If
+		'•—Ø‚è‰¹‚ª•K—v‚©‚Ç‚¤‚©”»’è
+		If InStrNotNest(wclass, "•") Or InStrNotNest(wclass, "“Ë") Or InStrNotNest(wclass, "Ú") Then
+			PlayWave("Swing.wav")
+		ElseIf InStrNotNest(wclass, "À") Then 
+			If InStr(wname, "•Ú") > 0 Or InStr(wname, "ƒ€ƒ`") > 0 Or InStr(wname, "ƒEƒCƒbƒv") > 0 Or InStr(wname, "ƒ`ƒF[ƒ“") > 0 Or InStr(wname, "ƒƒbƒh") > 0 Or InStr(wname, "ƒeƒ“ƒ^ƒN") > 0 Or InStr(wname, "ƒeƒCƒ‹") > 0 Or InStr(wname, "”ö") > 0 Or InStr(wname, "Gè") > 0 Or InStr(wname, "G˜r") > 0 Or InStr(wname, "ã") > 0 Or InStr(wname, "Šª‚«") > 0 Or InStr(wname, "…") > 0 Then
+				PlayWave("Swing.wav")
+			End If
+		End If
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'•ŠíØ‚è•¥‚¢‚ÌŒø‰Ê‰¹
 	Public Sub ParryEffect(ByRef u As Unit, ByRef w As Short, ByRef t As Unit)
 		Dim wname, wclass As String
 		Dim sname As String
 		Dim num As Short
 		Dim i As Short
 		
-		'Invalid_string_refer_to_original_code
+		'‰EƒNƒŠƒbƒN’†‚ÍŒø‰Ê‰¹‚ğƒXƒLƒbƒv
 		If IsRButtonPressed() Then
 			Exit Sub
 		End If
@@ -4082,37 +3261,24 @@ FoundWeaponType:
 		wname = u.WeaponNickname(w)
 		wclass = u.Weapon(w).Class_Renamed
 		
-		'Invalid_string_refer_to_original_code
+		'Œø‰Ê‰¹¶¬‰ñ”‚ğİ’è
 		num = CountAttack(u, w)
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "ã‚¢ã‚µãƒ«ãƒˆãƒ©ã‚¤ãƒ•ãƒ«") > 0 _
-		'Or InStr(wname, "ãƒãƒ«ã‚«ãƒ³") > 0 _
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		num = 4
-		'End If
+		If InStr(wname, "ƒ}ƒVƒ“ƒKƒ“") > 0 Or InStr(wname, "‹@ŠÖe") > 0 Or InStr(wname, "ƒAƒTƒ‹ƒgƒ‰ƒCƒtƒ‹") > 0 Or InStr(wname, "ƒoƒ‹ƒJƒ“") > 0 Then
+			num = 4
+		End If
 		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "ãƒ©ãƒ³ã‚µãƒ¼") > 0 Or InStr(wname, "ãƒ€ã‚¬ãƒ¼") > 0 _
-		'Or InStr(wname, "å‰£") > 0 _
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		sname = "Sword.wav"
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		sname = "Explode(Small).wav"
-		InStrNotNest(wclass, "Invalid_string_refer_to_original_code")
-		sname = "BeamCoat.wav"
-		sname = "Explode(Small).wav"
-		'End If
+		'–½’†‰¹‚ğİ’è
+		If InStrNotNest(wclass, "e") Or InStrNotNest(wclass, "Ši") Or InStrNotNest(wclass, "•") Or InStrNotNest(wclass, "“Ë") Or InStr(wname, "‹|") > 0 Or InStr(wname, "ƒAƒ[") > 0 Or InStr(wname, "ƒƒ“ƒOƒ{ƒE") > 0 Or InStr(wname, "ƒVƒ‡[ƒgƒ{ƒE") > 0 Or InStr(wname, "ƒ{[ƒKƒ“") > 0 Or InStr(wname, "ƒ{ƒEƒKƒ“") > 0 Or InStr(wname, "j") > 0 Or InStr(wname, "ƒj[ƒhƒ‹") > 0 Or InStr(wname, "ƒ‰ƒ“ƒT[") > 0 Or InStr(wname, "ƒ_ƒK[") > 0 Or InStr(wname, "Œ•") > 0 Then
+			sname = "Sword.wav"
+		ElseIf InStrNotNest(wclass, "À") Then 
+			sname = "Explode(Small).wav"
+		ElseIf InStrNotNest(wclass, "‚a") Then 
+			sname = "BeamCoat.wav"
+		Else
+			sname = "Explode(Small).wav"
+		End If
 		
-		'Invalid_string_refer_to_original_code
+		'Ø‚è•¥‚¢‰¹‚ğÄ¶
 		PlayWave("Saber.wav")
 		Sleep(100)
 		PlayWave(sname)
@@ -4123,93 +3289,88 @@ FoundWeaponType:
 			PlayWave(sname)
 		Next 
 		
-		'ãƒ•ãƒ©ã‚°ã‚’ã‚¯ãƒªã‚¢
+		'ƒtƒ‰ƒO‚ğƒNƒŠƒA
 		IsWavePlayed = False
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'ƒV[ƒ‹ƒh–hŒä‚Ì“ÁêŒø‰Ê
 	Public Sub ShieldEffect(ByRef u As Unit)
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		ShowAnimation("Invalid_string_refer_to_original_code")
-		Exit Sub
-		'End If
+		'í“¬ƒAƒjƒ”ñ©“®‘I‘ğƒIƒvƒVƒ‡ƒ“
+		If IsOptionDefined("í“¬ƒAƒjƒ”ñ©“®‘I‘ğ") Then
+			ShowAnimation("ƒV[ƒ‹ƒh–hŒä”­“®")
+			Exit Sub
+		End If
 		
-		'Invalid_string_refer_to_original_code
+		'ƒV[ƒ‹ƒh‚Ìƒ^ƒCƒv‚ğ¯•Ê
 		With u
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			ShowAnimation("Invalid_string_refer_to_original_code")
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			ShowAnimation("Invalid_string_refer_to_original_code")
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			ShowAnimation("Invalid_string_refer_to_original_code")
-			ShowAnimation("Invalid_string_refer_to_original_code")
-			'End If
+			If .IsFeatureAvailable("ƒGƒlƒ‹ƒM[ƒV[ƒ‹ƒh") Then
+				ShowAnimation("ƒr[ƒ€ƒV[ƒ‹ƒh”­“®")
+			ElseIf .IsFeatureAvailable("¬Œ^ƒV[ƒ‹ƒh") Then 
+				ShowAnimation("ƒV[ƒ‹ƒh–hŒä”­“® 28")
+			ElseIf .IsFeatureAvailable("‘åŒ^ƒV[ƒ‹ƒh") Then 
+				ShowAnimation("ƒV[ƒ‹ƒh–hŒä”­“® 40")
+			Else
+				ShowAnimation("ƒV[ƒ‹ƒh–hŒä”­“®")
+			End If
 		End With
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'‹zûE—Z‡‚Ì“ÁêŒø‰Ê
 	Public Sub AbsorbEffect(ByRef u As Unit, ByRef w As Short, ByRef t As Unit)
 		Dim wclass, wname, cname As String
 		
-		'Invalid_string_refer_to_original_code
+		'‰EƒNƒŠƒbƒN’†‚Í“ÁêŒø‰Ê‚ğƒXƒLƒbƒv
 		If IsRButtonPressed() Then
 			Exit Sub
 		End If
 		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		PlayWave("Charge.wav")
-		Exit Sub
-		'End If
+		'í“¬ƒAƒjƒƒIƒt‚Ìê‡‚ÍŒø‰Ê‰¹Ä¶‚Ì‚İ
+		If Not BattleAnimation Or IsOptionDefined("í“¬ƒAƒjƒ”ñ©“®‘I‘ğ") Then
+			PlayWave("Charge.wav")
+			Exit Sub
+		End If
 		
 		With u.Weapon(w)
 			wname = .Nickname
 			wclass = .Class_Renamed
 		End With
 		
-		'Invalid_string_refer_to_original_code
+		'•`‰æF‚ğŒˆ’è
 		cname = SpellColor(wname, wclass)
 		If cname = "" Then
 			IsBeamWeapon(wname, wclass, cname)
 		End If
 		
-		'ã‚¢ãƒ‹ãƒ¡ã‚’è¡¨ç¤º
-		ShowAnimation("Invalid_string_refer_to_original_code" & cname)
+		'ƒAƒjƒ‚ğ•\¦
+		ShowAnimation("—±qW’†”­“® " & cname)
 	End Sub
 	
 	
-	'Invalid_string_refer_to_original_code
+	'ó‘Ô•Ï‰»‚Ì“ÁêŒø‰Ê
 	'UPGRADE_NOTE: ctype ‚Í ctype_Renamed ‚ÉƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 	Public Sub CriticalEffect(ByRef ctype_Renamed As String, ByVal w As Short, ByVal ignore_death As Boolean)
 		Dim aname, sname As String
 		Dim i As Short
 		
 		If Len(ctype_Renamed) = 0 Then
-			ShowAnimation("Invalid_string_refer_to_original_code")
+			ShowAnimation("ƒfƒtƒHƒ‹ƒgƒNƒŠƒeƒBƒJƒ‹")
 		Else
 			For i = 1 To LLength(ctype_Renamed)
-				aname = LIndex(ctype_Renamed, i) & "Invalid_string_refer_to_original_code"
+				aname = LIndex(ctype_Renamed, i) & "ƒNƒŠƒeƒBƒJƒ‹"
 				
-				If aname = "Invalid_string_refer_to_original_code" And ignore_death Then
+				If aname = "‘¦€ƒNƒŠƒeƒBƒJƒ‹" And ignore_death Then
 					GoTo NextLoop
 				End If
 				
-				If FindNormalLabel("æˆ¦é—˜ã‚¢ãƒ‹ãƒ¡_" & aname) = 0 Then
+				If FindNormalLabel("í“¬ƒAƒjƒ_" & aname) = 0 Then
 					GoTo NextLoop
 				End If
 				
 				sname = ""
 				
-				If aname = "Invalid_string_refer_to_original_code" Then
-					If SelectedUnit.IsWeaponClassifiedAs(w, "å†·") Then
-						'Invalid_string_refer_to_original_code
+				If aname = "ƒVƒ‡ƒbƒNƒNƒŠƒeƒBƒJƒ‹" Then
+					If SelectedUnit.IsWeaponClassifiedAs(w, "—â") Then
+						'—â‹C‚É‚æ‚éUŒ‚‚Ås“®•s”\‚É‚È‚Á‚½ê‡‚ÍŒø‰Ê‰¹‚ğƒIƒt
 						sname = "-.wav"
 					End If
 				End If
@@ -4225,16 +3386,16 @@ NextLoop:
 	End Sub
 	
 	
-	'Invalid_string_refer_to_original_code
+	'Œø‰Ê‰¹‚ÌÄ¶‰ñ”‚ğŒˆ’è
 	Private Function CountAttack(ByRef u As Unit, ByVal w As Short, Optional ByVal hit_count As Short = 0) As Short
-		'Invalid_string_refer_to_original_code
+		'ƒƒbƒZ[ƒWƒXƒs[ƒh‚ªu’´‚‘¬v‚È‚çŒJ‚è•Ô‚µ”‚ğ‚P‚Éİ’è
 		If MessageWait <= 200 Then
 			CountAttack = 1
 			Exit Function
 		End If
 		
-		'Invalid_string_refer_to_original_code
-		If hit_count > 0 And InStr(u.Weapon(w).Class_Renamed, "é€£") > 0 Then
+		'˜A‘±UŒ‚‚Ìê‡A–½’†”‚ªw’è‚³‚ê‚½‚È‚ç‚»‚¿‚ç‚É‚ ‚í‚¹‚é
+		If hit_count > 0 And InStr(u.Weapon(w).Class_Renamed, "˜A") > 0 Then
 			CountAttack = hit_count
 			Exit Function
 		End If
@@ -4248,349 +3409,255 @@ NextLoop:
 		wname = u.WeaponNickname(w)
 		wclass = u.Weapon(w).Class_Renamed
 		
-		'Invalid_string_refer_to_original_code
-		If InStrNotNest(wclass, "é€£") > 0 Then
-			CountAttack0 = u.WeaponLevel(w, "é€£")
+		'˜A‘±UŒ‚‚Ìê‡‚ÍUŒ‚‰ñ”‚É‚ ‚í‚¹‚é
+		If InStrNotNest(wclass, "˜A") > 0 Then
+			CountAttack0 = u.WeaponLevel(w, "˜A")
 			Exit Function
 		End If
 		
-		If InStr(wname, "é€£") > 0 Then
-			If InStr(wname, "Invalid_string_refer_to_original_code") > 0 Then
+		If InStr(wname, "˜A") > 0 Then
+			If InStr(wname, "‚Q‚S˜A") > 0 Then
 				CountAttack0 = 8
 				Exit Function
 			End If
-			If InStr(wname, "Invalid_string_refer_to_original_code") > 0 Then
+			If InStr(wname, "‚Q‚Q˜A") > 0 Then
 				CountAttack0 = 8
 				Exit Function
 			End If
-			If InStr(wname, "Invalid_string_refer_to_original_code") > 0 Or InStr(wname, "äºŒåé€£") > 0 Then
+			If InStr(wname, "‚Q‚O˜A") > 0 Or InStr(wname, "“ñ\˜A") > 0 Then
 				CountAttack0 = 8
 				Exit Function
 			End If
-			If InStr(wname, "Invalid_string_refer_to_original_code") > 0 Or InStr(wname, "Invalid_string_refer_to_original_code") > 0 Then
+			If InStr(wname, "‚P‚W˜A") > 0 Or InStr(wname, "\”ª˜A") > 0 Then
 				CountAttack0 = 7
 				Exit Function
 			End If
-			If InStr(wname, "Invalid_string_refer_to_original_code") > 0 Or InStr(wname, "Invalid_string_refer_to_original_code") > 0 Then
+			If InStr(wname, "‚P‚U˜A") > 0 Or InStr(wname, "\˜Z˜A") > 0 Then
 				CountAttack0 = 7
 				Exit Function
 			End If
-			If InStr(wname, "Invalid_string_refer_to_original_code") > 0 Or InStr(wname, "åå››é€£") > 0 Then
+			If InStr(wname, "‚P‚S˜A") > 0 Or InStr(wname, "\l˜A") > 0 Then
 				CountAttack0 = 7
 				Exit Function
 			End If
-			If InStr(wname, "Invalid_string_refer_to_original_code") > 0 Or InStr(wname, "åäºŒé€£") > 0 Then
+			If InStr(wname, "‚P‚Q˜A") > 0 Or InStr(wname, "\“ñ˜A") > 0 Then
 				CountAttack0 = 6
 				Exit Function
 			End If
-			If InStr(wname, "Invalid_string_refer_to_original_code") > 0 Or InStr(wname, "ä¸€é€£") > 0 Then
+			If InStr(wname, "‚P˜A") > 0 Or InStr(wname, "ˆê˜A") > 0 Then
 				CountAttack0 = 6
 				Exit Function
 			End If
-			If InStr(wname, "Invalid_string_refer_to_original_code") > 0 Or InStr(wname, "Invalid_string_refer_to_original_code") > 0 Then
+			If InStr(wname, "‚P‚O˜A") > 0 Or InStr(wname, "\˜A") > 0 Then
 				CountAttack0 = 6
 				Exit Function
 			End If
-			If InStr(wname, "Invalid_string_refer_to_original_code") > 0 Or InStr(wname, "ä¹é€£") > 0 Then
+			If InStr(wname, "‚X˜A") > 0 Or InStr(wname, "‹ã˜A") > 0 Then
 				CountAttack0 = 5
 				Exit Function
 			End If
-			If InStr(wname, "Invalid_string_refer_to_original_code") > 0 Or InStr(wname, "å…«é€£") > 0 Then
+			If InStr(wname, "‚W˜A") > 0 Or InStr(wname, "”ª˜A") > 0 Then
 				CountAttack0 = 5
 				Exit Function
 			End If
-			If InStr(wname, "Invalid_string_refer_to_original_code") > 0 Or InStr(wname, "Invalid_string_refer_to_original_code") > 0 Then
+			If InStr(wname, "‚V˜A") > 0 Or InStr(wname, "µ˜A") > 0 Then
 				CountAttack0 = 5
 				Exit Function
 			End If
-			If InStr(wname, "Invalid_string_refer_to_original_code") > 0 Or InStr(wname, "å…­é€£") > 0 Then
+			If InStr(wname, "‚U˜A") > 0 Or InStr(wname, "˜Z˜A") > 0 Then
 				CountAttack0 = 4
 				Exit Function
 			End If
-			If InStr(wname, "Invalid_string_refer_to_original_code") > 0 Or InStr(wname, "äº”é€£") > 0 Then
+			If InStr(wname, "‚T˜A") > 0 Or InStr(wname, "ŒÜ˜A") > 0 Then
 				CountAttack0 = 4
 			End If
-			If InStr(wname, "Invalid_string_refer_to_original_code") > 0 Or InStr(wname, "å››é€£") > 0 Then
+			If InStr(wname, "‚S˜A") > 0 Or InStr(wname, "l˜A") > 0 Then
 				CountAttack0 = 4
 				Exit Function
 			End If
-			If InStr(wname, "Invalid_string_refer_to_original_code") > 0 Or InStr(wname, "ä¸‰é€£") > 0 Then
+			If InStr(wname, "‚R˜A") > 0 Or InStr(wname, "O˜A") > 0 Then
 				CountAttack0 = 3
 				Exit Function
 			End If
-			If InStr(wname, "Invalid_string_refer_to_original_code") > 0 Or InStr(wname, "äºŒé€£") > 0 Then
+			If InStr(wname, "‚Q˜A") > 0 Or InStr(wname, "“ñ˜A") > 0 Then
 				CountAttack0 = 2
 				Exit Function
 			End If
 			
-			'Invalid_string_refer_to_original_code_
-			'Invalid_string_refer_to_original_code_
-			'Or InStr(wname, "å¤šé€£") > 0 _
-			'Then
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
+			If InStr(wname, "˜A‘Å") > 0 Or InStr(wname, "˜AË") > 0 Or InStr(wname, "‘½˜A") > 0 Then
+				CountAttack0 = 3
+				Exit Function
+			End If
+			
+			CountAttack0 = 2
+			Exit Function
+		End If
+		
+		If InStr(wname, "‘S’e") > 0 Or InStr(wname, "Ä") > 0 Or InStr(wname, "—Ë") > 0 Or InStr(wname, "ƒtƒ‹ƒtƒ@ƒCƒA") > 0 Or InStr(wname, "ƒXƒvƒŠƒbƒg") > 0 Or InStr(wname, "ƒ}ƒ‹ƒ`") > 0 Or InStr(wname, "ƒpƒ‰ƒŒƒ‹") > 0 Or InStr(wname, "•ªg") > 0 Or InStr(wname, "—‘Å") > 0 Or InStr(wname, "—•‘") > 0 Or InStr(wname, "—‚ê") > 0 Or InStr(wname, "•S—ó") > 0 Or InStr(wname, "ç–{") > 0 Or InStr(wname, "çè") > 0 Or InStr(wname, "ƒtƒ@ƒ“ƒlƒ‹") > 0 Or InStr(wname, "ƒrƒbƒg") > 0 Then
+			CountAttack0 = 4
+			Exit Function
+		End If
+		
+		If InStr(wname, "ƒ}ƒVƒ“ƒKƒ“") > 0 Or InStr(wname, "‹@e") > 0 Or InStr(wname, "‹@ŠÖe") > 0 Or InStr(wname, "ƒoƒ‹ƒJƒ“") > 0 Or InStr(wname, "ƒKƒgƒŠƒ“ƒO") > 0 Or (InStr(wname, "ƒpƒ‹ƒX") > 0 And InStr(wname, "ƒCƒ“ƒpƒ‹ƒX") = 0) Or InStr(wname, "‘¬Ë") > 0 Or InStr(wname, "ƒƒPƒbƒgƒ‰ƒ“ƒ`ƒƒ[") > 0 Or InStr(wname, "ƒ~ƒTƒCƒ‹ƒ‰ƒ“ƒ`ƒƒ[") > 0 Or InStr(wname, "ƒ~ƒTƒCƒ‹ƒ|ƒbƒh") > 0 Then
+			CountAttack0 = 4
+			Exit Function
+		End If
+		
+		If InStr(wname, "ƒgƒŠƒvƒ‹") > 0 Or InStr(wname, "ƒCƒ“ƒRƒ€") > 0 Or InStr(wname, "ƒtƒ@ƒ~ƒŠƒA") > 0 Or InStr(wname, "”šŒ‚") > 0 Or InStr(wname, "”š’e") > 0 Or InStr(wname, "”š—‹") > 0 Or InStr(wname, "ŠÍÚ‹@") > 0 Then
 			CountAttack0 = 3
 			Exit Function
 		End If
 		
-		CountAttack0 = 2
-		Exit Function
-		'End If
-		
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "ãƒ•ãƒ«ãƒ•ã‚¡ã‚¤ã‚¢") > 0 _
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "ãƒ‘ãƒ©ãƒ¬ãƒ«") > 0 _
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "ãƒ•ã‚¡ãƒ³ãƒãƒ«") > 0 _
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		CountAttack0 = 4
-		Exit Function
-		'End If
-		
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "ãƒãƒ«ã‚«ãƒ³") > 0 _
-		'Or InStr(wname, "ã‚¬ãƒˆãƒªãƒ³ã‚°") > 0 _
-		'Or (InStr(wname, "ãƒ‘ãƒ«ã‚¹") > 0 And InStr(wname, "ã‚¤ãƒ³ãƒ‘ãƒ«ã‚¹") = 0) _
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "ãƒŸã‚µã‚¤ãƒ«ãƒ©ãƒ³ãƒãƒ£ãƒ¼") > 0 _
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		CountAttack0 = 4
-		Exit Function
-		'End If
-		
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		CountAttack0 = 3
-		Exit Function
-		'End If
-		
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		CountAttack0 = 2
-		Exit Function
-		'End If
+		If InStr(wname, "ƒcƒCƒ“") > 0 Or InStr(wname, "ƒ_ƒuƒ‹") > 0 Or InStr(wname, "ƒfƒ…ƒAƒ‹") > 0 Or InStr(wname, "ƒ}ƒCƒNƒ") > 0 Or InStr(wname, "‘o") > 0 Or InStr(wname, "“ñ’š") > 0 Or InStr(wname, "“ñ“") > 0 Then
+			CountAttack0 = 2
+			Exit Function
+		End If
 		
 		CountAttack0 = 1
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'ŒõüŒn‚ÌUŒ‚‚©‚Ç‚¤‚©‚ğ”»’è‚µA•\¦F‚ğŒˆ’è
 	Private Function IsBeamWeapon(ByRef wname As String, ByVal wclass As String, ByRef cname As String) As Boolean
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		'Invalid_string_refer_to_original_code
-		Exit Function
-		'End If
+		If InStrNotNest(wclass, "À") > 0 Then
+			'ŒõüŒnUŒ‚‚Å‚Í‚ ‚è“¾‚È‚¢
+			Exit Function
+		End If
 		
-		If InStr(wname, "Invalid_string_refer_to_original_code") > 0 Or InStrNotNest(wclass, "Invalid_string_refer_to_original_code") > 0 Then
+		If InStr(wname, "ƒr[ƒ€") > 0 Or InStrNotNest(wclass, "‚a") > 0 Then
 			IsBeamWeapon = True
 		Else
-			If Right(wname, 2) = "ã‚¬ã‚¹" Then
+			If Right(wname, 2) = "ƒKƒX" Then
 				Exit Function
 			End If
 		End If
 		
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "ãƒ–ãƒ©ã‚¹ã‚¿ãƒ¼") > 0 _
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		IsBeamWeapon = True
-		cname = "Invalid_string_refer_to_original_code"
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		IsBeamWeapon = True
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		cname = "ã‚¤ã‚¨ãƒ­ãƒ¼"
-		cname = "ãƒ”ãƒ³ã‚¯"
-		'End If
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "ãƒ•ãƒªãƒ¼ã‚¶ãƒ¼") > 0 _
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		IsBeamWeapon = True
-		cname = "ãƒ–ãƒ«ãƒ¼"
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "ãƒ‹ãƒ¥ãƒ¼ãƒˆãƒ­ãƒ³") > 0 _
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		IsBeamWeapon = True
-		cname = "ã‚°ãƒªãƒ¼ãƒ³"
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		IsBeamWeapon = True
-		cname = "ã‚ªãƒ¬ãƒ³ã‚¸"
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		IsBeamWeapon = True
-		cname = "ã‚¤ã‚¨ãƒ­ãƒ¼"
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		IsBeamWeapon = True
-		cname = "Invalid_string_refer_to_original_code"
-		'End If
+		If InStr(wname, "”½•¨¿") > 0 Or InStr(wname, "”Mü") > 0 Or InStr(wname, "ƒuƒ‰ƒXƒ^[") > 0 Then
+			IsBeamWeapon = True
+			cname = "ƒŒƒbƒh"
+		ElseIf InStr(wname, "ƒtƒFƒCƒU[") > 0 Or InStr(wname, "—±q") > 0 Then 
+			IsBeamWeapon = True
+			If InStr(wname, "ƒƒK—±q") > 0 Then
+				cname = "ƒCƒGƒ["
+			Else
+				cname = "ƒsƒ“ƒN"
+			End If
+		ElseIf InStr(wname, "—â“€") > 0 Or InStr(wname, "—âü") > 0 Or InStr(wname, "ƒtƒŠ[ƒU[") > 0 Then 
+			IsBeamWeapon = True
+			cname = "ƒuƒ‹["
+		ElseIf InStr(wname, "’†ŠÔq") > 0 Or InStr(wname, "’†«q") > 0 Or InStr(wname, "ƒjƒ…[ƒgƒƒ“") > 0 Or InStr(wname, "ƒjƒ…[ƒgƒŠƒm") > 0 Then 
+			IsBeamWeapon = True
+			cname = "ƒOƒŠ[ƒ“"
+		ElseIf InStr(wname, "ƒvƒ‰ƒYƒ}") > 0 Then 
+			IsBeamWeapon = True
+			cname = "ƒIƒŒƒ“ƒW"
+		ElseIf InStr(wname, "ƒŒ[ƒU[") > 0 Or InStr(wname, "Œõq") > 0 Then 
+			IsBeamWeapon = True
+			cname = "ƒCƒGƒ["
+		ElseIf InStr(wname, "—zq") > 0 Then 
+			IsBeamWeapon = True
+			cname = "ƒzƒƒCƒg"
+		End If
 		
 		If cname = "" Then
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			cname = "ã‚¤ã‚¨ãƒ­ãƒ¼"
-		Else
-			cname = "ãƒ”ãƒ³ã‚¯"
+			If InStr(wname, "—±q") > 0 Then
+				If InStr(wname, "ƒƒK—±q") > 0 Then
+					cname = "ƒCƒGƒ["
+				Else
+					cname = "ƒsƒ“ƒN"
+				End If
+			ElseIf InStr(wname, "ƒCƒIƒ“") > 0 Or InStr(wname, "—â“€") > 0 Or InStr(wname, "“dq") > 0 Then 
+				cname = "ƒuƒ‹["
+			End If
 		End If
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		cname = "ãƒ–ãƒ«ãƒ¼"
-		'End If
-		'End If
 		
 		If Not IsBeamWeapon And cname <> "" Then
-			'Invalid_string_refer_to_original_code_
-			'Or Right$(wname, 1) = "ç ²" _
-			'Invalid_string_refer_to_original_code_
-			'Then
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			IsBeamWeapon = True
+			If Right(wname, 2) = "Œõü" Or Right(wname, 1) = "–C" Or Right(wname, 1) = "e" Then
+				IsBeamWeapon = True
+			End If
 		End If
-		'End If
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'–‚–@‚Ì•\¦F
 	Private Function SpellColor(ByRef wname As String, ByVal wclass As String) As String
 		Dim sclass As String
 		Dim i As Short
 		
 		sclass = wname & wclass
 		
-		'Invalid_string_refer_to_original_code
+		'•Ší–¼•‘®«‚ÉŠÜ‚Ü‚ê‚éŠ¿š‚©‚ç”»’è
 		For i = 1 To Len(sclass)
 			Select Case Mid(sclass, i, 1)
-				Case "Invalid_string_refer_to_original_code"
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					SpellColor = "èµ¤"
+				Case "‰Š", "‰‹", "‰Î", "ŒŒ", "Ü", "”M", "—n"
+					SpellColor = "Ô"
 					Exit Function
-				Case "æ°´", "æµ·", "Invalid_string_refer_to_original_code"
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					SpellColor = "Invalid_string_refer_to_original_code"
+				Case "…", "ŠC", "—¬", "”g", "‰Í"
+					SpellColor = "Â"
 					Exit Function
-				Case "é¢¨", "Invalid_string_refer_to_original_code"
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					SpellColor = "Invalid_string_refer_to_original_code"
+				Case "•—", "—’", "ù", "÷", "–Ø", "‘", "—t", "‰è", "“Å"
+					SpellColor = "—Î"
 					Exit Function
-				Case "é‚ª", "Invalid_string_refer_to_original_code"
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					SpellColor = "Invalid_string_refer_to_original_code"
+				Case "×", "ˆÅ", "ˆÃ", "€", "–»", "–", "ˆ«", "–é", "d", "‰e", "‰A", "ô", "E"
+					SpellColor = "•"
 					Exit Function
-				Case "Invalid_string_refer_to_original_code"
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					SpellColor = "Invalid_string_refer_to_original_code"
+				Case "“y", "’n", "‹à", "»", "Šâ", "Î", "R", "Šx"
+					SpellColor = "‰©"
 					Exit Function
-				Case "Invalid_string_refer_to_original_code"
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					SpellColor = "Invalid_string_refer_to_original_code"
+				Case "¶", "–½", "–£", "—U", "—", "‰", "Š"
+					SpellColor = "“"
 					Exit Function
-				Case "Invalid_string_refer_to_original_code"
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-					SpellColor = "ç™½"
+				Case "¹", "Œõ", "¯", "Œ", "•X", "á", "—â", "“€", "“~"
+					SpellColor = "”’"
 					Exit Function
-				Case "æ—¥", "é™½"
-					SpellColor = "Invalid_string_refer_to_original_code"
+				Case "“ú", "—z"
+					SpellColor = "ò"
 					Exit Function
 			End Select
 		Next 
 		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		SpellColor = "èµ¤"
-		Exit Function
-		'End If
-		
-		If InStr(wname, "ã‚¦ã‚©ãƒ¼ã‚¿ãƒ¼") > 0 Or InStr(wname, "ã‚¢ã‚¯ã‚¢") > 0 Then
-			SpellColor = "Invalid_string_refer_to_original_code"
+		'•Ší–¼‚©‚ç”»’è
+		If InStr(wname, "ƒtƒ@ƒCƒ„[") > 0 Or InStr(wname, "ƒtƒŒƒA") > 0 Or InStr(wname, "ƒq[ƒg") > 0 Or InStr(wname, "ƒuƒ‰ƒbƒh") > 0 Then
+			SpellColor = "Ô"
 			Exit Function
 		End If
 		
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "ãƒã‚¤ã‚ºãƒ³") > 0 _
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		SpellColor = "Invalid_string_refer_to_original_code"
-		Exit Function
-		'End If
+		If InStr(wname, "ƒEƒH[ƒ^[") > 0 Or InStr(wname, "ƒAƒNƒA") > 0 Then
+			SpellColor = "Â"
+			Exit Function
+		End If
 		
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "ã‚·ãƒ£ãƒ‰ã‚¦") > 0 _
-		'Or InStr(wname, "ã‚«ãƒ¼ã‚¹") > 0 _
-		'Or InStr(wname, "ã‚«ãƒ¼ã‚º") > 0 _
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		SpellColor = "Invalid_string_refer_to_original_code"
-		Exit Function
-		'End If
+		If InStr(wname, "ƒEƒbƒh") > 0 Or InStr(wname, "ƒtƒHƒŒƒXƒg") > 0 Or InStr(wname, "ƒ|ƒCƒYƒ“") > 0 Then
+			SpellColor = "—Î"
+			Exit Function
+		End If
 		
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		SpellColor = "Invalid_string_refer_to_original_code"
-		Exit Function
-		'End If
+		If InStr(wname, "ƒCƒrƒ‹") > 0 Or InStr(wname, "ƒGƒrƒ‹") > 0 Or InStr(wname, "ƒ_[ƒN") > 0 Or InStr(wname, "ƒfƒX") > 0 Or InStr(wname, "ƒiƒCƒg") > 0 Or InStr(wname, "ƒVƒƒƒhƒE") > 0 Or InStr(wname, "ƒJ[ƒX") > 0 Or InStr(wname, "ƒJ[ƒY") > 0 Then
+			SpellColor = "•"
+			Exit Function
+		End If
 		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		SpellColor = "Invalid_string_refer_to_original_code"
-		Exit Function
-		'End If
+		If InStr(wname, "ƒA[ƒX") > 0 Or InStr(wname, "ƒTƒ“ƒh") > 0 Or InStr(wname, "ƒƒbƒN") > 0 Or InStr(wname, "ƒXƒg[ƒ“") > 0 Then
+			SpellColor = "‰©"
+			Exit Function
+		End If
 		
-		'Invalid_string_refer_to_original_code_
-		'Or InStr(wname, "ã‚¢ã‚¤ã‚¹") > 0 _
-		'Or InStr(wname, "ãƒ•ãƒªãƒ¼ã‚º") > 0 _
-		'Then
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		SpellColor = "ç™½"
-		Exit Function
-		'End If
+		If InStr(wname, "ƒ‰ƒCƒt") > 0 Then
+			SpellColor = "“"
+			Exit Function
+		End If
 		
-		If InStr(wname, "ã‚µãƒ³") Then
-			SpellColor = "Invalid_string_refer_to_original_code"
+		If InStr(wname, "ƒz[ƒŠ[") > 0 Or InStr(wname, "ƒXƒ^[") > 0 Or InStr(wname, "ƒ€[ƒ“") > 0 Or InStr(wname, "ƒR[ƒ‹ƒh") > 0 Or InStr(wname, "ƒAƒCƒX") > 0 Or InStr(wname, "ƒtƒŠ[ƒY") > 0 Then
+			SpellColor = "”’"
+			Exit Function
+		End If
+		
+		If InStr(wname, "ƒTƒ“") Then
+			SpellColor = "ò"
 			Exit Function
 		End If
 	End Function
 	
 	
-	'ç ´å£Šã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’è¡¨ç¤ºã™ã‚‹
+	'”j‰óƒAƒjƒ[ƒVƒ‡ƒ“‚ğ•\¦‚·‚é
 	Public Sub DieAnimation(ByRef u As Unit)
 		Dim i As Short
 		Dim PT As POINTAPI
@@ -4599,7 +3666,7 @@ NextLoop:
 		With u
 			EraseUnitBitmap(.X, .Y)
 			
-			'Invalid_string_refer_to_original_code
+			'lŠÔƒ†ƒjƒbƒg‚Å‚È‚¢ê‡‚Í”š”­‚ğ•\¦
 			If Not .IsHero Then
 				ExplodeAnimation(.Size, .X, .Y)
 				Exit Sub
@@ -4607,59 +3674,59 @@ NextLoop:
 			
 			GetCursorPos(PT)
 			
-			'Invalid_string_refer_to_original_code
+			'ƒƒbƒZ[ƒWƒEƒCƒ“ƒhƒEã‚Åƒ}ƒEƒXƒ{ƒ^ƒ“‚ğ‰Ÿ‚µ‚½ê‡
 			If System.Windows.Forms.Form.ActiveForm Is frmMessage Then
 				With frmMessage
 					If VB6.PixelsToTwipsX(.Left) \ VB6.TwipsPerPixelX <= PT.X And PT.X <= (VB6.PixelsToTwipsX(.Left) + VB6.PixelsToTwipsX(.Width)) \ VB6.TwipsPerPixelX And VB6.PixelsToTwipsY(.Top) \ VB6.TwipsPerPixelY <= PT.Y And PT.Y <= (VB6.PixelsToTwipsY(.Top) + VB6.PixelsToTwipsY(.Height)) \ VB6.TwipsPerPixelY Then
 						If (GetAsyncKeyState(RButtonID) And &H8000) <> 0 Then
-							'Invalid_string_refer_to_original_code
+							'‰Eƒ{ƒ^ƒ“‚Å”š”­ƒXƒLƒbƒv
 							Exit Sub
 						End If
 					End If
 				End With
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'ƒƒCƒ“ƒEƒCƒ“ƒhƒEã‚Åƒ}ƒEƒXƒ{ƒ^ƒ“‚ğ‰Ÿ‚µ‚½ê‡
 			If System.Windows.Forms.Form.ActiveForm Is MainForm Then
 				With MainForm
 					If VB6.PixelsToTwipsX(.Left) \ VB6.TwipsPerPixelX <= PT.X And PT.X <= (VB6.PixelsToTwipsX(.Left) + VB6.PixelsToTwipsX(.Width)) \ VB6.TwipsPerPixelX And VB6.PixelsToTwipsY(.Top) \ VB6.TwipsPerPixelY <= PT.Y And PT.Y <= (VB6.PixelsToTwipsY(.Top) + VB6.PixelsToTwipsY(.Height)) \ VB6.TwipsPerPixelY Then
 						If (GetAsyncKeyState(RButtonID) And &H8000) <> 0 Then
-							'Invalid_string_refer_to_original_code
+							'‰Eƒ{ƒ^ƒ“‚Å”š”­ƒXƒLƒbƒv
 							Exit Sub
 						End If
 					End If
 				End With
 			End If
 			
-			'å€’ã‚Œã‚‹éŸ³
+			'“|‚ê‚é‰¹
 			Select Case .Area
-				Case "Invalid_string_refer_to_original_code"
+				Case "’nã"
 					PlayWave("FallDown.wav")
-				Case "ç©ºä¸­"
+				Case "‹ó’†"
 					If MessageWait > 0 Then
 						PlayWave("Bomb.wav")
 						Sleep(500)
 					End If
-					If TerrainClass(.X, .Y) = "æ°´" Or TerrainClass(.X, .Y) = "æ·±æµ·" Then
+					If TerrainClass(.X, .Y) = "…" Or TerrainClass(.X, .Y) = "[ŠC" Then
 						PlayWave("Splash.wav")
 					Else
 						PlayWave("FallDown.wav")
 					End If
 			End Select
 			
-			'Invalid_string_refer_to_original_code
+			'ƒ†ƒjƒbƒgÁ–Å‚ÌƒAƒjƒ[ƒVƒ‡ƒ“
 			
-			'Invalid_string_refer_to_original_code
+			'ƒƒbƒZ[ƒW‚ªƒEƒGƒCƒg–³‚µ‚È‚çƒAƒjƒ[ƒVƒ‡ƒ“‚àƒXƒLƒbƒv
 			If MessageWait = 0 Then
 				Exit Sub
 			End If
 			
 			Select Case .Party0
-				Case "å‘³æ–¹", "Invalid_string_refer_to_original_code"
+				Case "–¡•û", "‚m‚o‚b"
 					fname = "Bitmap\Anime\Common\EFFECT_Tile(Ally)"
-				Case "æ•µ"
+				Case "“G"
 					fname = "Bitmap\Anime\Common\EFFECT_Tile(Enemy)"
-				Case "Invalid_string_refer_to_original_code"
+				Case "’†—§"
 					fname = "Bitmap\Anime\Common\EFFECT_Tile(Neutral)"
 			End Select
 			If FileExists(ScenarioPath & fname & ".bmp") Then
@@ -4672,16 +3739,16 @@ NextLoop:
 			End If
 			
 			Select Case MapDrawMode
-				Case "Invalid_string_refer_to_original_code"
-					draw_mode = "Invalid_string_refer_to_original_code"
+				Case "–é"
+					draw_mode = "ˆÃ"
 				Case Else
 					draw_mode = MapDrawMode
 			End Select
 			
 			For i = 1 To 6
 				DrawPicture(fname & ".bmp", MapToPixelX(.X), MapToPixelY(.Y), 32, 32, 0, 0, 0, 0, draw_mode)
-				DrawPicture("Unit\" & .Bitmap, MapToPixelX(.X), MapToPixelY(.Y), 32, 32, 0, 0, 0, 0, "é€é " & draw_mode)
-				DrawPicture(fname & "0" & VB6.Format(i) & ".bmp", MapToPixelX(.X), MapToPixelY(.Y), 32, 32, 0, 0, 0, 0, "é€é " & draw_mode)
+				DrawPicture("Unit\" & .Bitmap, MapToPixelX(.X), MapToPixelY(.Y), 32, 32, 0, 0, 0, 0, "“§‰ß " & draw_mode)
+				DrawPicture(fname & "0" & VB6.Format(i) & ".bmp", MapToPixelX(.X), MapToPixelY(.Y), 32, 32, 0, 0, 0, 0, "“§‰ß " & draw_mode)
 				'UPGRADE_ISSUE: Control picMain ‚ÍA”Ä—p–¼‘O‹óŠÔ Form “à‚É‚ ‚é‚½‚ßA‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 				MainForm.picMain(0).Refresh()
 				Sleep(50)
@@ -4692,7 +3759,7 @@ NextLoop:
 		End With
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'”š”­ƒAƒjƒ[ƒVƒ‡ƒ“‚ğ•\¦‚·‚é
 	Public Sub ExplodeAnimation(ByRef tsize As String, ByVal tx As Short, ByVal ty As Short)
 		Dim i As Short
 		Dim PT As POINTAPI
@@ -4700,9 +3767,9 @@ NextLoop:
 		Static explode_image_path As String
 		Static explode_image_num As Short
 		
-		'Invalid_string_refer_to_original_code
+		'‰‚ß‚ÄÀs‚·‚éÛ‚ÉA”š”­—p‰æ‘œ‚ª‚ ‚éƒtƒHƒ‹ƒ_‚ğƒ`ƒFƒbƒN
 		If Not init_explode_animation Then
-			'Invalid_string_refer_to_original_code
+			'”š”­—p‰æ‘œ‚ÌƒpƒX
 			If FileExists(ScenarioPath & "Bitmap\Anime\Explode\EFFECT_Explode01.bmp") Then
 				explode_image_path = ScenarioPath & "Bitmap\Anime\Explode\EFFECT_Explode"
 			ElseIf FileExists(ScenarioPath & "Bitmap\Event\Explode01.bmp") Then 
@@ -4713,7 +3780,7 @@ NextLoop:
 				explode_image_path = AppPath & "Bitmap\Event\Explode"
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'”š”­—p‰æ‘œ‚ÌŒÂ”
 			i = 2
 			Do While FileExists(explode_image_path & VB6.Format(i, "00") & ".bmp")
 				i = i + 1
@@ -4723,31 +3790,31 @@ NextLoop:
 		
 		GetCursorPos(PT)
 		
-		'Invalid_string_refer_to_original_code
+		'ƒƒbƒZ[ƒWƒEƒCƒ“ƒhƒEã‚Åƒ}ƒEƒXƒ{ƒ^ƒ“‚ğ‰Ÿ‚µ‚½ê‡
 		If System.Windows.Forms.Form.ActiveForm Is frmMessage Then
 			With frmMessage
 				If VB6.PixelsToTwipsX(.Left) \ VB6.TwipsPerPixelX <= PT.X And PT.X <= (VB6.PixelsToTwipsX(.Left) + VB6.PixelsToTwipsX(.Width)) \ VB6.TwipsPerPixelX And VB6.PixelsToTwipsY(.Top) \ VB6.TwipsPerPixelY <= PT.Y And PT.Y <= (VB6.PixelsToTwipsY(.Top) + VB6.PixelsToTwipsY(.Height)) \ VB6.TwipsPerPixelY Then
 					If (GetAsyncKeyState(RButtonID) And &H8000) <> 0 Then
-						'Invalid_string_refer_to_original_code
+						'‰Eƒ{ƒ^ƒ“‚Å”š”­ƒXƒLƒbƒv
 						Exit Sub
 					End If
 				End If
 			End With
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'ƒƒCƒ“ƒEƒCƒ“ƒhƒEã‚Åƒ}ƒEƒXƒ{ƒ^ƒ“‚ğ‰Ÿ‚µ‚½ê‡
 		If System.Windows.Forms.Form.ActiveForm Is MainForm Then
 			With MainForm
 				If VB6.PixelsToTwipsX(.Left) \ VB6.TwipsPerPixelX <= PT.X And PT.X <= (VB6.PixelsToTwipsX(.Left) + VB6.PixelsToTwipsX(.Width)) \ VB6.TwipsPerPixelX And VB6.PixelsToTwipsY(.Top) \ VB6.TwipsPerPixelY <= PT.Y And PT.Y <= (VB6.PixelsToTwipsY(.Top) + VB6.PixelsToTwipsY(.Height)) \ VB6.TwipsPerPixelY Then
 					If (GetAsyncKeyState(RButtonID) And &H8000) <> 0 Then
-						'Invalid_string_refer_to_original_code
+						'‰Eƒ{ƒ^ƒ“‚Å”š”­ƒXƒLƒbƒv
 						Exit Sub
 					End If
 				End If
 			End With
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'”š”­‰¹
 		Select Case tsize
 			Case "XL", "LL"
 				PlayWave("Explode(Far).wav")
@@ -4755,19 +3822,19 @@ NextLoop:
 				PlayWave("Explode.wav")
 		End Select
 		
-		'Invalid_string_refer_to_original_code
+		'ƒƒbƒZ[ƒW‚ªƒEƒGƒCƒg–³‚µ‚È‚ç”š”­‚àƒXƒLƒbƒv
 		If MessageWait = 0 Then
 			Exit Sub
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'”š”­‚Ì•\¦
 		If InStr(explode_image_path, "\Anime\") > 0 Then
-			'Invalid_string_refer_to_original_code
+			'í“¬ƒAƒjƒ”Å‚Ì‰æ‘œ‚ğg—p
 			Select Case tsize
 				Case "XL"
 					For i = 1 To explode_image_num
 						ClearPicture()
-						DrawPicture(explode_image_path & VB6.Format(i, "00") & ".bmp", MapToPixelX(tx) - 64, MapToPixelY(ty) - 64, 160, 160, 0, 0, 0, 0, "é€é")
+						DrawPicture(explode_image_path & VB6.Format(i, "00") & ".bmp", MapToPixelX(tx) - 64, MapToPixelY(ty) - 64, 160, 160, 0, 0, 0, 0, "“§‰ß")
 						'UPGRADE_ISSUE: Control picMain ‚ÍA”Ä—p–¼‘O‹óŠÔ Form “à‚É‚ ‚é‚½‚ßA‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 						MainForm.picMain(0).Refresh()
 						Sleep(130)
@@ -4775,7 +3842,7 @@ NextLoop:
 				Case "LL"
 					For i = 1 To explode_image_num
 						ClearPicture()
-						DrawPicture(explode_image_path & VB6.Format(i, "00") & ".bmp", MapToPixelX(tx) - 56, MapToPixelY(ty) - 56, 144, 144, 0, 0, 0, 0, "é€é")
+						DrawPicture(explode_image_path & VB6.Format(i, "00") & ".bmp", MapToPixelX(tx) - 56, MapToPixelY(ty) - 56, 144, 144, 0, 0, 0, 0, "“§‰ß")
 						'UPGRADE_ISSUE: Control picMain ‚ÍA”Ä—p–¼‘O‹óŠÔ Form “à‚É‚ ‚é‚½‚ßA‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 						MainForm.picMain(0).Refresh()
 						Sleep(100)
@@ -4783,7 +3850,7 @@ NextLoop:
 				Case "L"
 					For i = 1 To explode_image_num
 						ClearPicture()
-						DrawPicture(explode_image_path & VB6.Format(i, "00") & ".bmp", MapToPixelX(tx) - 48, MapToPixelY(ty) - 48, 128, 128, 0, 0, 0, 0, "é€é")
+						DrawPicture(explode_image_path & VB6.Format(i, "00") & ".bmp", MapToPixelX(tx) - 48, MapToPixelY(ty) - 48, 128, 128, 0, 0, 0, 0, "“§‰ß")
 						'UPGRADE_ISSUE: Control picMain ‚ÍA”Ä—p–¼‘O‹óŠÔ Form “à‚É‚ ‚é‚½‚ßA‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 						MainForm.picMain(0).Refresh()
 						Sleep(70)
@@ -4791,7 +3858,7 @@ NextLoop:
 				Case "M"
 					For i = 1 To explode_image_num
 						ClearPicture()
-						DrawPicture(explode_image_path & VB6.Format(i, "00") & ".bmp", MapToPixelX(tx) - 40, MapToPixelY(ty) - 40, 112, 112, 0, 0, 0, 0, "é€é")
+						DrawPicture(explode_image_path & VB6.Format(i, "00") & ".bmp", MapToPixelX(tx) - 40, MapToPixelY(ty) - 40, 112, 112, 0, 0, 0, 0, "“§‰ß")
 						'UPGRADE_ISSUE: Control picMain ‚ÍA”Ä—p–¼‘O‹óŠÔ Form “à‚É‚ ‚é‚½‚ßA‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 						MainForm.picMain(0).Refresh()
 						Sleep(50)
@@ -4799,7 +3866,7 @@ NextLoop:
 				Case "S"
 					For i = 1 To explode_image_num
 						ClearPicture()
-						DrawPicture(explode_image_path & VB6.Format(i, "00") & ".bmp", MapToPixelX(tx) - 24, MapToPixelY(ty) - 24, 80, 80, 0, 0, 0, 0, "é€é")
+						DrawPicture(explode_image_path & VB6.Format(i, "00") & ".bmp", MapToPixelX(tx) - 24, MapToPixelY(ty) - 24, 80, 80, 0, 0, 0, 0, "“§‰ß")
 						'UPGRADE_ISSUE: Control picMain ‚ÍA”Ä—p–¼‘O‹óŠÔ Form “à‚É‚ ‚é‚½‚ßA‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 						MainForm.picMain(0).Refresh()
 						Sleep(40)
@@ -4807,7 +3874,7 @@ NextLoop:
 				Case "SS"
 					For i = 1 To explode_image_num
 						ClearPicture()
-						DrawPicture(explode_image_path & VB6.Format(i, "00") & ".bmp", MapToPixelX(tx) - 8, MapToPixelY(ty) - 8, 48, 48, 0, 0, 0, 0, "é€é")
+						DrawPicture(explode_image_path & VB6.Format(i, "00") & ".bmp", MapToPixelX(tx) - 8, MapToPixelY(ty) - 8, 48, 48, 0, 0, 0, 0, "“§‰ß")
 						'UPGRADE_ISSUE: Control picMain ‚ÍA”Ä—p–¼‘O‹óŠÔ Form “à‚É‚ ‚é‚½‚ßA‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 						MainForm.picMain(0).Refresh()
 						Sleep(40)
@@ -4817,46 +3884,46 @@ NextLoop:
 			'UPGRADE_ISSUE: Control picMain ‚ÍA”Ä—p–¼‘O‹óŠÔ Form “à‚É‚ ‚é‚½‚ßA‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 			MainForm.picMain(0).Refresh()
 		Else
-			'æ±ç”¨ã‚¤ãƒ™ãƒ³ãƒˆç”»åƒç‰ˆã®ç”»åƒã‚’ä½¿ç”¨
+			'”Ä—pƒCƒxƒ“ƒg‰æ‘œ”Å‚Ì‰æ‘œ‚ğg—p
 			Select Case tsize
 				Case "XL"
 					For i = 1 To explode_image_num
-						DrawPicture(explode_image_path & VB6.Format(i, "00") & ".bmp", MapToPixelX(tx) - 64, MapToPixelY(ty) - 64, 160, 160, 0, 0, 0, 0, "é€é")
+						DrawPicture(explode_image_path & VB6.Format(i, "00") & ".bmp", MapToPixelX(tx) - 64, MapToPixelY(ty) - 64, 160, 160, 0, 0, 0, 0, "“§‰ß")
 						'UPGRADE_ISSUE: Control picMain ‚ÍA”Ä—p–¼‘O‹óŠÔ Form “à‚É‚ ‚é‚½‚ßA‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 						MainForm.picMain(0).Refresh()
 						Sleep(130)
 					Next 
 				Case "LL"
 					For i = 1 To explode_image_num
-						DrawPicture(explode_image_path & VB6.Format(i, "00") & ".bmp", MapToPixelX(tx) - 48, MapToPixelY(ty) - 48, 128, 128, 0, 0, 0, 0, "é€é")
+						DrawPicture(explode_image_path & VB6.Format(i, "00") & ".bmp", MapToPixelX(tx) - 48, MapToPixelY(ty) - 48, 128, 128, 0, 0, 0, 0, "“§‰ß")
 						'UPGRADE_ISSUE: Control picMain ‚ÍA”Ä—p–¼‘O‹óŠÔ Form “à‚É‚ ‚é‚½‚ßA‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 						MainForm.picMain(0).Refresh()
 						Sleep(100)
 					Next 
 				Case "L"
 					For i = 1 To explode_image_num
-						DrawPicture(explode_image_path & VB6.Format(i, "00") & ".bmp", MapToPixelX(tx) - 32, MapToPixelY(ty) - 32, 96, 96, 0, 0, 0, 0, "é€é")
+						DrawPicture(explode_image_path & VB6.Format(i, "00") & ".bmp", MapToPixelX(tx) - 32, MapToPixelY(ty) - 32, 96, 96, 0, 0, 0, 0, "“§‰ß")
 						'UPGRADE_ISSUE: Control picMain ‚ÍA”Ä—p–¼‘O‹óŠÔ Form “à‚É‚ ‚é‚½‚ßA‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 						MainForm.picMain(0).Refresh()
 						Sleep(70)
 					Next 
 				Case "M"
 					For i = 1 To explode_image_num
-						DrawPicture(explode_image_path & VB6.Format(i, "00") & ".bmp", MapToPixelX(tx) - 16, MapToPixelY(ty) - 16, 64, 64, 0, 0, 0, 0, "é€é")
+						DrawPicture(explode_image_path & VB6.Format(i, "00") & ".bmp", MapToPixelX(tx) - 16, MapToPixelY(ty) - 16, 64, 64, 0, 0, 0, 0, "“§‰ß")
 						'UPGRADE_ISSUE: Control picMain ‚ÍA”Ä—p–¼‘O‹óŠÔ Form “à‚É‚ ‚é‚½‚ßA‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 						MainForm.picMain(0).Refresh()
 						Sleep(50)
 					Next 
 				Case "S"
 					For i = 1 To explode_image_num
-						DrawPicture(explode_image_path & VB6.Format(i, "00") & ".bmp", MapToPixelX(tx) - 8, MapToPixelY(ty) - 8, 48, 48, 0, 0, 0, 0, "é€é")
+						DrawPicture(explode_image_path & VB6.Format(i, "00") & ".bmp", MapToPixelX(tx) - 8, MapToPixelY(ty) - 8, 48, 48, 0, 0, 0, 0, "“§‰ß")
 						'UPGRADE_ISSUE: Control picMain ‚ÍA”Ä—p–¼‘O‹óŠÔ Form “à‚É‚ ‚é‚½‚ßA‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 						MainForm.picMain(0).Refresh()
 						Sleep(40)
 					Next 
 				Case "SS"
 					For i = 1 To explode_image_num
-						DrawPicture(explode_image_path & VB6.Format(i, "00") & ".bmp", MapToPixelX(tx), MapToPixelY(ty), 32, 32, 0, 0, 0, 0, "é€é")
+						DrawPicture(explode_image_path & VB6.Format(i, "00") & ".bmp", MapToPixelX(tx), MapToPixelY(ty), 32, 32, 0, 0, 0, 0, "“§‰ß")
 						'UPGRADE_ISSUE: Control picMain ‚ÍA”Ä—p–¼‘O‹óŠÔ Form “à‚É‚ ‚é‚½‚ßA‰ğŒˆ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 						MainForm.picMain(0).Refresh()
 						Sleep(40)
@@ -4868,113 +3935,110 @@ NextLoop:
 		End If
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'UŒ‚–³Œø‰»‚Ì“ÁêŒø‰Ê‚ÆƒƒbƒZ[ƒW‚ğ•\¦‚·‚é
 	Public Sub NegateEffect(ByRef u As Unit, ByRef t As Unit, ByVal w As Short, ByRef wname As String, ByVal dmg As Integer, ByRef fname As String, ByRef fdata As String, ByVal ecost As Short, ByRef msg As String, ByVal be_quiet As Boolean)
 		Dim defined As Boolean
 		
-		If LIndex(fdata, 1) = "Invalid_string_refer_to_original_code" Or LIndex(fdata, 2) = "Invalid_string_refer_to_original_code" Or LIndex(fdata, 3) = "Invalid_string_refer_to_original_code" Then
+		If LIndex(fdata, 1) = "‚a" Or LIndex(fdata, 2) = "‚a" Or LIndex(fdata, 3) = "‚a" Then
 			If Not be_quiet Then
-				If t.IsMessageDefined("Invalid_string_refer_to_original_code" & fname & ")") Then
-					t.PilotMessage("Invalid_string_refer_to_original_code" & fname & ")")
+				If t.IsMessageDefined("ƒr[ƒ€–³Œø‰»(" & fname & ")") Then
+					t.PilotMessage("ƒr[ƒ€–³Œø‰»(" & fname & ")")
 				Else
-					t.PilotMessage("Invalid_string_refer_to_original_code")
+					t.PilotMessage("ƒr[ƒ€–³Œø‰»")
 				End If
 			End If
 			
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			t.PlayAnimation("Invalid_string_refer_to_original_code")
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-			t.SpecialEffect("Invalid_string_refer_to_original_code")
-		ElseIf dmg < 0 Then 
-			AbsorbEffect(u, w, t)
-		ElseIf BattleAnimation Then 
-			ShowAnimation("Invalid_string_refer_to_original_code" & fname)
-		ElseIf Not IsWavePlayed Then 
-			PlayWave("BeamCoat.wav")
-		End If
-		
-		If u.IsAnimationDefined(wname & "Invalid_string_refer_to_original_code") Then
-			u.PlayAnimation(wname & "Invalid_string_refer_to_original_code")
-		ElseIf u.IsSpecialEffectDefined(wname & "Invalid_string_refer_to_original_code") Then 
-			u.SpecialEffect(wname & "Invalid_string_refer_to_original_code")
-		End If
-		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		t.SysMessage("Invalid_string_refer_to_original_code")
-		'UPGRADE_WARNING: NegateEffect ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		If dmg < 0 Then
-			DisplaySysMessage(msg & t.Nickname & "Invalid_string_refer_to_original_code")
-		Else
-			DisplaySysMessage(msg & t.Nickname & "Invalid_string_refer_to_original_code")
-		End If
-		If dmg < 0 Then
-			DisplaySysMessage(msg & t.Nickname & "ã®[" & fname & "Invalid_string_refer_to_original_code")
-		Else
-			DisplaySysMessage(msg & t.Nickname & "ã®[" & fname & "Invalid_string_refer_to_original_code")
-		End If
-		'End If
-		If Not be_quiet Then
-			If t.IsMessageDefined("Invalid_string_refer_to_original_code" & fname & ")") Then
-				t.PilotMessage("Invalid_string_refer_to_original_code" & fname & ")")
-			Else
-				t.PilotMessage("Invalid_string_refer_to_original_code")
+			If t.IsAnimationDefined("ƒr[ƒ€–³Œø‰»", fname) Then
+				t.PlayAnimation("ƒr[ƒ€–³Œø‰»", fname)
+			ElseIf t.IsSpecialEffectDefined("ƒr[ƒ€–³Œø‰»", fname) Then 
+				t.SpecialEffect("ƒr[ƒ€–³Œø‰»", fname)
+			ElseIf dmg < 0 Then 
+				AbsorbEffect(u, w, t)
+			ElseIf BattleAnimation Then 
+				ShowAnimation("ƒr[ƒ€ƒR[ƒg”­“® - " & fname)
+			ElseIf Not IsWavePlayed Then 
+				PlayWave("BeamCoat.wav")
 			End If
-		End If
-		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		t.PlayAnimation("Invalid_string_refer_to_original_code")
-		defined = True
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		t.SpecialEffect("Invalid_string_refer_to_original_code")
-		defined = True
-		'UPGRADE_WARNING: NegateEffect ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		AbsorbEffect(u, w, t)
-		defined = True
-		'UPGRADE_WARNING: NegateEffect ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		If InStr(fdata, "ãƒãƒªã‚¢ç„¡åŠ¹åŒ–ç„¡åŠ¹") = 0 Or ecost > 0 Then
-			If fname = "ãƒãƒªã‚¢" Then
-				ShowAnimation("Invalid_string_refer_to_original_code")
+			
+			If u.IsAnimationDefined(wname & "(UŒ‚–³Œø‰»)") Then
+				u.PlayAnimation(wname & "(UŒ‚–³Œø‰»)")
+			ElseIf u.IsSpecialEffectDefined(wname & "(UŒ‚–³Œø‰»)") Then 
+				u.SpecialEffect(wname & "(UŒ‚–³Œø‰»)")
+			End If
+			
+			If t.IsSysMessageDefined("ƒr[ƒ€–³Œø‰»", fname) Then
+				t.SysMessage("ƒr[ƒ€–³Œø‰»", fname)
 			ElseIf fname = "" Then 
-				ShowAnimation("Invalid_string_refer_to_original_code")
+				If dmg < 0 Then
+					DisplaySysMessage(msg & t.Nickname & "‚ªUŒ‚‚ğ‹zû‚µ‚½B")
+				Else
+					DisplaySysMessage(msg & t.Nickname & "‚ªUŒ‚‚ğ–h‚¢‚¾B")
+				End If
 			Else
-				ShowAnimation("Invalid_string_refer_to_original_code" & fname)
+				If dmg < 0 Then
+					DisplaySysMessage(msg & t.Nickname & "‚Ì[" & fname & "]‚ªUŒ‚‚ğ‹zû‚µ‚½B")
+				Else
+					DisplaySysMessage(msg & t.Nickname & "‚Ì[" & fname & "]‚ªUŒ‚‚ğ–h‚¢‚¾B")
+				End If
 			End If
-			defined = True
-		End If
-		'End If
-		
-		If u.IsAnimationDefined(wname & "Invalid_string_refer_to_original_code") Then
-			u.PlayAnimation(wname & "Invalid_string_refer_to_original_code")
-			defined = True
-		ElseIf u.IsSpecialEffectDefined(wname & "Invalid_string_refer_to_original_code") Then 
-			u.SpecialEffect(wname & "Invalid_string_refer_to_original_code")
-			defined = True
-		End If
-		
-		If Not defined Then
-			HitEffect(u, w, t)
-		End If
-		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		t.SysMessage("Invalid_string_refer_to_original_code")
-		'UPGRADE_WARNING: NegateEffect ‚É•ÏŠ·‚³‚ê‚Ä‚¢‚È‚¢ƒXƒe[ƒgƒƒ“ƒg‚ª‚ ‚è‚Ü‚·Bƒ\[ƒX ƒR[ƒh‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B
-		If dmg < 0 Then
-			DisplaySysMessage(msg & t.Nickname & "Invalid_string_refer_to_original_code")
 		Else
-			DisplaySysMessage(msg & t.Nickname & "Invalid_string_refer_to_original_code")
+			If Not be_quiet Then
+				If t.IsMessageDefined("UŒ‚–³Œø‰»(" & fname & ")") Then
+					t.PilotMessage("UŒ‚–³Œø‰»(" & fname & ")")
+				Else
+					t.PilotMessage("UŒ‚–³Œø‰»")
+				End If
+			End If
+			
+			If t.IsAnimationDefined("UŒ‚–³Œø‰»", fname) Then
+				t.PlayAnimation("UŒ‚–³Œø‰»", fname)
+				defined = True
+			ElseIf t.IsSpecialEffectDefined("UŒ‚–³Œø‰»", fname) Then 
+				t.SpecialEffect("UŒ‚–³Œø‰»", fname)
+				defined = True
+			ElseIf dmg < 0 Then 
+				AbsorbEffect(u, w, t)
+				defined = True
+			ElseIf BattleAnimation Then 
+				If InStr(fdata, "ƒoƒŠƒA–³Œø‰»–³Œø") = 0 Or ecost > 0 Then
+					If fname = "ƒoƒŠƒA" Then
+						ShowAnimation("ƒoƒŠƒA”­“®")
+					ElseIf fname = "" Then 
+						ShowAnimation("ƒoƒŠƒA”­“® - UŒ‚–³Œø‰»")
+					Else
+						ShowAnimation("ƒoƒŠƒA”­“® - " & fname)
+					End If
+					defined = True
+				End If
+			End If
+			
+			If u.IsAnimationDefined(wname & "(UŒ‚–³Œø‰»)") Then
+				u.PlayAnimation(wname & "(UŒ‚–³Œø‰»)")
+				defined = True
+			ElseIf u.IsSpecialEffectDefined(wname & "(UŒ‚–³Œø‰»)") Then 
+				u.SpecialEffect(wname & "(UŒ‚–³Œø‰»)")
+				defined = True
+			End If
+			
+			If Not defined Then
+				HitEffect(u, w, t)
+			End If
+			
+			If t.IsSysMessageDefined("UŒ‚–³Œø‰»", fname) Then
+				t.SysMessage("UŒ‚–³Œø‰»", fname)
+			ElseIf fname = "" Then 
+				If dmg < 0 Then
+					DisplaySysMessage(msg & t.Nickname & "‚ÍUŒ‚‚ğ‹zû‚µ‚½B")
+				Else
+					DisplaySysMessage(msg & t.Nickname & "‚ÍUŒ‚‚ğ–h‚¢‚¾B")
+				End If
+			Else
+				If dmg < 0 Then
+					DisplaySysMessage(msg & t.Nickname & "‚Ì[" & fname & "]‚ªUŒ‚‚ğ‹zû‚µ‚½B")
+				Else
+					DisplaySysMessage(msg & t.Nickname & "‚Ì[" & fname & "]‚ªUŒ‚‚ğ–h‚¢‚¾B")
+				End If
+			End If
 		End If
-		If dmg < 0 Then
-			DisplaySysMessage(msg & t.Nickname & "ã®[" & fname & "Invalid_string_refer_to_original_code")
-		Else
-			DisplaySysMessage(msg & t.Nickname & "ã®[" & fname & "Invalid_string_refer_to_original_code")
-		End If
-		'End If
-		'End If
 	End Sub
 End Module

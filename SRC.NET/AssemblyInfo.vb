@@ -12,7 +12,7 @@ Imports System.Runtime.InteropServices
 
 <Assembly: AssemblyTitle("SRC (Simulation RPG Construction)")>
 <Assembly: AssemblyDescription("")>
-<Assembly: AssemblyCompany("Kei Sakamoto /ã€€Inui Tetsuyuki")>
+<Assembly: AssemblyCompany("Kei Sakamoto /@Inui Tetsuyuki")>
 <Assembly: AssemblyProduct("SRC (Simulation RPG Construction)")>
 <Assembly: AssemblyCopyright("Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki")>
 <Assembly: AssemblyTrademark("")>

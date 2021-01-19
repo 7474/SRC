@@ -3,31 +3,31 @@ Option Explicit On
 Module GeneralLib
 	
 	' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
+	' –{ƒvƒƒOƒ‰ƒ€‚ÍƒtƒŠ[ƒ\ƒtƒg‚Å‚ ‚èA–³•ÛØ‚Å‚·B
+	' –{ƒvƒƒOƒ‰ƒ€‚ÍGNU General Public License(Ver.3‚Ü‚½‚Í‚»‚êˆÈ~)‚ª’è‚ß‚éğŒ‚Ì‰º‚Å
+	' Ä”Ğ•z‚Ü‚½‚Í‰ü•Ï‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B
 	
-	'Invalid_string_refer_to_original_code
+	'”Ä—p“I‚Èˆ—‚ğs‚¤ƒ‚ƒWƒ…[ƒ‹
 	
-	'Invalid_string_refer_to_original_code
+	'iniƒtƒ@ƒCƒ‹‚Ì“Ç‚İo‚µ
 	'UPGRADE_ISSUE: ƒpƒ‰ƒ[ƒ^ 'As Any' ‚ÌéŒ¾‚ÍƒTƒ|[ƒg‚³‚ê‚Ü‚¹‚ñB Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="FAE78A8D-8978-4FD4-8208-5B7324A8F795"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 	Declare Function GetPrivateProfileString Lib "kernel32"  Alias "GetPrivateProfileStringA"(ByVal lpApplicationName As String, ByVal lpKeyName As Any, ByVal lpDefault As String, ByVal lpReturnedString As String, ByVal nSize As Integer, ByVal lpFileName As String) As Integer
 	
-	'iniãƒ•ã‚¡ã‚¤ãƒ«ã¸ã®æ›¸ãè¾¼ã¿
+	'iniƒtƒ@ƒCƒ‹‚Ö‚Ì‘‚«‚İ
 	'UPGRADE_ISSUE: ƒpƒ‰ƒ[ƒ^ 'As Any' ‚ÌéŒ¾‚ÍƒTƒ|[ƒg‚³‚ê‚Ü‚¹‚ñB Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="FAE78A8D-8978-4FD4-8208-5B7324A8F795"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 	Declare Function WritePrivateProfileString Lib "kernel32"  Alias "WritePrivateProfileStringA"(ByVal lpApplicationName As String, ByVal lpKeyName As Any, ByVal lpString As String, ByVal lpFileName As String) As Integer
 	
-	'Invalid_string_refer_to_original_code
+	'Windows‚ª‹N“®‚µ‚Ä‚©‚ç‚ÌŠÔ‚ğ•Ô‚·(ƒ~ƒŠ•b)
 	Declare Function timeGetTime Lib "winmm.dll" () As Integer
 	
-	'Invalid_string_refer_to_original_code
+	'ŠÔˆ—‚Ì‰ğ‘œ“x‚ğ•ÏX‚·‚é
 	Declare Function timeBeginPeriod Lib "winmm.dll" (ByVal uPeriod As Integer) As Integer
 	Declare Function timeEndPeriod Lib "winmm.dll" (ByVal uPeriod As Integer) As Integer
 	
-	'ãƒ•ã‚¡ã‚¤ãƒ«å±æ€§ã‚’è¿”ã™
+	'ƒtƒ@ƒCƒ‹‘®«‚ğ•Ô‚·
 	Declare Function GetFileAttributes Lib "kernel32"  Alias "GetFileAttributesA"(ByVal lpFileName As String) As Integer
 	
-	'Invalid_string_refer_to_original_code
+	'OS‚Ìƒo[ƒWƒ‡ƒ“î•ñ‚ğ•Ô‚·
 	Structure OSVERSIONINFO
 		Dim dwOSVersionInfoSize As Integer
 		Dim dwMajorVersion As Integer
@@ -43,23 +43,23 @@ Module GeneralLib
 	Const VER_PLATFORM_WIN32_NT As Short = 2
 	
 	
-	'ä¹±æ•°ç™ºç”Ÿç”¨ã‚·ãƒ¼ãƒ‰å€¤
+	'—””­¶—pƒV[ƒh’l
 	Public RndSeed As Integer
 	
-	'Invalid_string_refer_to_original_code
+	'—”Œn—ñ
 	Private RndHistory(4096) As Single
 	
-	'Invalid_string_refer_to_original_code
+	'—”Œn—ñ‚Ì’†‚ÅŒ»İg—p‚µ‚Ä‚¢‚é’l‚ÌƒCƒ“ƒfƒbƒNƒX
 	Public RndIndex As Short
 	
-	'Invalid_string_refer_to_original_code
+	'—”Œn—ñ‚ÌƒŠƒZƒbƒg
 	Public Sub RndReset()
 		Dim i As Short
 		
 		Randomize(RndSeed)
 		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
+		'—”Œn—ñ‚ÌƒZ[ƒu•ƒ[ƒh‚ªo—ˆ‚é‚æ‚¤—”Œn—ñ‚ğ‚ ‚ç‚©‚¶‚ß
+		'”z—ñ‚É•Û‘¶‚µ‚ÄŠm’è‚³‚¹‚é
 		For i = 1 To UBound(RndHistory)
 			RndHistory(i) = Rnd()
 		Next 
@@ -67,18 +67,17 @@ Module GeneralLib
 		RndIndex = 0
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	' 1`max ‚Ì—”‚ğ•Ô‚·
 	Public Function Dice(ByVal max As Integer) As Integer
 		If max <= 1 Then
 			Dice = max
 			Exit Function
 		End If
 		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		Dice = Int((max * Rnd()) + 1)
-		Exit Function
-		'End If
+		If IsOptionDefined("—”Œn—ñ”ñ•Û‘¶") Then
+			Dice = Int((max * Rnd()) + 1)
+			Exit Function
+		End If
 		
 		RndIndex = RndIndex + 1
 		If RndIndex > UBound(RndHistory) Then
@@ -89,24 +88,24 @@ Module GeneralLib
 	End Function
 	
 	
-	'Invalid_string_refer_to_original_code
+	' ƒŠƒXƒg list ‚©‚ç idx ”Ô–Ú‚Ì—v‘f‚ğ•Ô‚·
 	Public Function LIndex(ByRef list As String, ByVal idx As Short) As String
 		Dim i, n As Short
 		Dim list_len As Short
 		Dim begin As Short
 		
-		'Invalid_string_refer_to_original_code
+		'idx‚ª³‚Ì”‚Å‚È‚¯‚ê‚Î‹ó•¶š—ñ‚ğ•Ô‚·
 		If idx < 1 Then
 			Exit Function
 		End If
 		
 		list_len = Len(list)
 		
-		'Invalid_string_refer_to_original_code
+		'idx”Ô–Ú‚Ì—v‘f‚Ü‚Å“Ç‚İ”ò‚Î‚·
 		n = 0
 		i = 0
 		Do While True
-			'Invalid_string_refer_to_original_code
+			'‹ó”’‚ğ“Ç‚İ”ò‚Î‚·
 			Do 
 				i = i + 1
 				If i > list_len Then
@@ -114,15 +113,15 @@ Module GeneralLib
 				End If
 			Loop While Mid(list, i, 1) = " "
 			
-			'Invalid_string_refer_to_original_code
+			'—v‘f”‚ğ‚P‚Â‘‚â‚·
 			n = n + 1
 			
-			'Invalid_string_refer_to_original_code
+			'‹‚ß‚é—v‘fH
 			If n = idx Then
 				Exit Do
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'—v‘f‚ğ“Ç‚İ”ò‚Î‚·
 			Do 
 				i = i + 1
 				If i > list_len Then
@@ -131,7 +130,7 @@ Module GeneralLib
 			Loop Until Mid(list, i, 1) = " "
 		Loop 
 		
-		'æ±‚ã‚ã‚‹è¦ç´ ã‚’èª­ã¿è¾¼ã‚€
+		'‹‚ß‚é—v‘f‚ğ“Ç‚İ‚Ş
 		begin = i
 		Do 
 			i = i + 1
@@ -144,7 +143,7 @@ Module GeneralLib
 		LIndex = Mid(list, begin, i - begin)
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	' ƒŠƒXƒg list ‚Ì—v‘f”‚ğ•Ô‚·
 	Public Function LLength(ByRef list As String) As Short
 		Dim i As Short
 		Dim list_len As Short
@@ -154,7 +153,7 @@ Module GeneralLib
 		
 		i = 0
 		Do While True
-			'Invalid_string_refer_to_original_code
+			'‹ó”’‚ğ“Ç‚İ”ò‚Î‚·
 			Do 
 				i = i + 1
 				If i > list_len Then
@@ -162,10 +161,10 @@ Module GeneralLib
 				End If
 			Loop While Mid(list, i, 1) = " "
 			
-			'Invalid_string_refer_to_original_code
+			'—v‘f”‚ğ‚P‚Â‘‚â‚·
 			LLength = LLength + 1
 			
-			'Invalid_string_refer_to_original_code
+			'—v‘f‚ğ“Ç‚İ”ò‚Î‚·
 			Do 
 				i = i + 1
 				If i > list_len Then
@@ -175,8 +174,8 @@ Module GeneralLib
 		Loop 
 	End Function
 	
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
+	' ƒŠƒXƒg list ‚©‚çAƒŠƒXƒg‚Ì—v‘f‚Ì”z—ñ larray ‚ğì¬‚µA
+	' ƒŠƒXƒg‚Ì—v‘f”‚ğ•Ô‚·
 	Public Function LSplit(ByRef list As String, ByRef larray() As String) As Short
 		Dim i As Short
 		Dim list_len As Short
@@ -188,7 +187,7 @@ Module GeneralLib
 		ReDim larray(0)
 		i = 0
 		Do While True
-			'Invalid_string_refer_to_original_code
+			'‹ó”’‚ğ“Ç‚İ”ò‚Î‚·
 			Do 
 				i = i + 1
 				If i > list_len Then
@@ -196,10 +195,10 @@ Module GeneralLib
 				End If
 			Loop While Mid(list, i, 1) = " "
 			
-			'Invalid_string_refer_to_original_code
+			'—v‘f”‚ğ‚P‚Â‘‚â‚·
 			LSplit = LSplit + 1
 			
-			'è¦ç´ ã‚’èª­ã¿è¾¼ã‚€
+			'—v‘f‚ğ“Ç‚İ‚Ş
 			ReDim Preserve larray(LSplit)
 			begin = i
 			Do 
@@ -213,7 +212,7 @@ Module GeneralLib
 		Loop 
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'•¶š—ñ ch ‚ª‹ó”’‚©‚Ç‚¤‚©’²‚×‚é
 	Public Function IsSpace(ByRef ch As String) As Boolean
 		If Len(ch) = 0 Then
 			IsSpace = True
@@ -226,7 +225,7 @@ Module GeneralLib
 		End Select
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'ƒŠƒXƒg list ‚É—v‘f str ‚ğ’Ç‰Á
 	'UPGRADE_NOTE: str ‚Í str_Renamed ‚ÉƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 	Public Sub LAppend(ByRef list As String, ByRef str_Renamed As String)
 		list = Trim(list)
@@ -242,7 +241,7 @@ Module GeneralLib
 		End If
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'ƒŠƒXƒg list ‚É str ‚ª“oê‚·‚éˆÊ’u‚ğ•Ô‚·
 	'UPGRADE_NOTE: str ‚Í str_Renamed ‚ÉƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 	Public Function SearchList(ByRef list As String, ByRef str_Renamed As String) As Short
 		Dim i As Short
@@ -258,53 +257,53 @@ Module GeneralLib
 	End Function
 	
 	
-	'Invalid_string_refer_to_original_code
+	' ƒŠƒXƒg list ‚©‚ç idx ”Ô–Ú‚Ì—v‘f‚ğ•Ô‚· (Š‡ŒÊ‚ğl—¶)
 	Public Function ListIndex(ByRef list As String, ByVal idx As Short) As String
 		Dim n, i, ch As Short
 		Dim paren, list_len, begin As Short
 		Dim in_single_quote, in_double_quote As Boolean
 		
-		'Invalid_string_refer_to_original_code
+		'idx‚ª³‚Ì”‚Å‚È‚¯‚ê‚Î‹ó•¶š—ñ‚ğ•Ô‚·
 		If idx < 1 Then
 			Exit Function
 		End If
 		
 		list_len = Len(list)
 		
-		'Invalid_string_refer_to_original_code
+		'idx”Ô–Ú‚Ì—v‘f‚Ü‚Å“Ç‚İ”ò‚Î‚·
 		n = 0
 		i = 0
 		Do While True
-			'Invalid_string_refer_to_original_code
+			'‹ó”’‚ğ“Ç‚İ”ò‚Î‚·
 			Do While True
 				i = i + 1
 				
-				'Invalid_string_refer_to_original_code
+				'•¶š—ñ‚ÌI‚èH
 				If i > list_len Then
 					Exit Function
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'Ÿ‚Ì•¶š
 				ch = Asc(Mid(list, i, 1))
 				
-				'Invalid_string_refer_to_original_code
+				'‹ó”’‚Å‚È‚¢H
 				Select Case ch
 					Case 9, 32
-						'Invalid_string_refer_to_original_code
+						'ƒXƒLƒbƒv
 					Case Else
 						Exit Do
 				End Select
 			Loop 
 			
-			'Invalid_string_refer_to_original_code
+			'—v‘f”‚ğ‚P‚Â‘‚â‚·
 			n = n + 1
 			
-			'Invalid_string_refer_to_original_code
+			'‹‚ß‚é—v‘fH
 			If n = idx Then
 				Exit Do
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'—v‘f‚ğ“Ç‚İ”ò‚Î‚·
 			Do While True
 				If in_single_quote Then
 					If ch = 96 Then ' "`"
@@ -321,7 +320,7 @@ Module GeneralLib
 						Case 41, 93 ' ")", "]"
 							paren = paren - 1
 							If paren < 0 Then
-								'Invalid_string_refer_to_original_code
+								'Š‡ŒÊ‚Ì‘Î‰‚ªæ‚ê‚Ä‚¢‚È‚¢
 								Exit Function
 							End If
 						Case 96 ' "`"
@@ -333,17 +332,17 @@ Module GeneralLib
 				
 				i = i + 1
 				
-				'Invalid_string_refer_to_original_code
+				'•¶š—ñ‚ÌI‚èH
 				If i > list_len Then
 					Exit Function
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'Ÿ‚Ì•¶š
 				ch = Asc(Mid(list, i, 1))
 				
-				'Invalid_string_refer_to_original_code
+				'—v‘f‚Ì––”ö‚©”»’è
 				If Not in_single_quote And Not in_double_quote And paren = 0 Then
-					'Invalid_string_refer_to_original_code
+					'‹ó”’H
 					Select Case ch
 						Case 9, 32
 							Exit Do
@@ -352,7 +351,7 @@ Module GeneralLib
 			Loop 
 		Loop 
 		
-		'æ±‚ã‚ã‚‹è¦ç´ ã‚’èª­ã¿è¾¼ã‚€
+		'‹‚ß‚é—v‘f‚ğ“Ç‚İ‚Ş
 		begin = i
 		Do While True
 			If in_single_quote Then
@@ -370,7 +369,7 @@ Module GeneralLib
 					Case 41, 93 ' ")", "]"
 						paren = paren - 1
 						If paren < 0 Then
-							'Invalid_string_refer_to_original_code
+							'Š‡ŒÊ‚Ì‘Î‰‚ªæ‚ê‚Ä‚¢‚È‚¢
 							Exit Function
 						End If
 					Case 96 ' "`"
@@ -382,18 +381,18 @@ Module GeneralLib
 			
 			i = i + 1
 			
-			'Invalid_string_refer_to_original_code
+			'•¶š—ñ‚ÌI‚èH
 			If i > list_len Then
 				ListIndex = Mid(list, begin)
 				Exit Function
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'Ÿ‚Ì•¶š
 			ch = Asc(Mid(list, i, 1))
 			
-			'Invalid_string_refer_to_original_code
+			'—v‘f‚Ì––”ö‚©”»’è
 			If Not in_single_quote And Not in_double_quote And paren = 0 Then
-				'Invalid_string_refer_to_original_code
+				'‹ó”’H
 				Select Case ch
 					Case 9, 32
 						Exit Do
@@ -404,7 +403,7 @@ Module GeneralLib
 		ListIndex = Mid(list, begin, i - begin)
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	' ƒŠƒXƒg list ‚Ì—v‘f”‚ğ•Ô‚· (Š‡ŒÊ‚ğl—¶)
 	Public Function ListLength(ByRef list As String) As Short
 		Dim i, ch As Short
 		Dim list_len, paren As Short
@@ -415,31 +414,31 @@ Module GeneralLib
 		
 		i = 0
 		Do While True
-			'Invalid_string_refer_to_original_code
+			'‹ó”’‚ğ“Ç‚İ”ò‚Î‚·
 			Do While True
 				i = i + 1
 				
-				'Invalid_string_refer_to_original_code
+				'•¶š—ñ‚ÌI‚èH
 				If i > list_len Then
 					Exit Function
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'Ÿ‚Ì•¶š
 				ch = Asc(Mid(list, i, 1))
 				
-				'Invalid_string_refer_to_original_code
+				'‹ó”’‚Å‚È‚¢H
 				Select Case ch
 					Case 9, 32
-						'Invalid_string_refer_to_original_code
+						'ƒXƒLƒbƒv
 					Case Else
 						Exit Do
 				End Select
 			Loop 
 			
-			'Invalid_string_refer_to_original_code
+			'—v‘f”‚ğ‚P‚Â‘‚â‚·
 			ListLength = ListLength + 1
 			
-			'Invalid_string_refer_to_original_code
+			'—v‘f‚ğ“Ç‚İ”ò‚Î‚·
 			Do While True
 				If in_single_quote Then
 					If ch = 96 Then ' "`"
@@ -456,7 +455,7 @@ Module GeneralLib
 						Case 41, 93 ' ")", "]"
 							paren = paren - 1
 							If paren < 0 Then
-								'Invalid_string_refer_to_original_code
+								'Š‡ŒÊ‚Ì‘Î‰‚ªæ‚ê‚Ä‚¢‚È‚¢
 								ListLength = -1
 								Exit Function
 							End If
@@ -469,21 +468,21 @@ Module GeneralLib
 				
 				i = i + 1
 				
-				'Invalid_string_refer_to_original_code
+				'•¶š—ñ‚ÌI‚èH
 				If i > list_len Then
-					'Invalid_string_refer_to_original_code
+					'ƒNƒH[ƒg‚âŠ‡ŒÊ‚Ì‘Î‰‚ªæ‚ê‚Ä‚¢‚éH
 					If in_single_quote Or in_double_quote Or paren <> 0 Then
 						ListLength = -1
 					End If
 					Exit Function
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'Ÿ‚Ì•¶š
 				ch = Asc(Mid(list, i, 1))
 				
-				'Invalid_string_refer_to_original_code
+				'—v‘f‚Ì––”ö‚©”»’è
 				If Not in_single_quote And Not in_double_quote And paren = 0 Then
-					'Invalid_string_refer_to_original_code
+					'‹ó”’H
 					Select Case ch
 						Case 9, 32
 							Exit Do
@@ -493,8 +492,8 @@ Module GeneralLib
 		Loop 
 	End Function
 	
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
+	' ƒŠƒXƒg list ‚©‚çAƒŠƒXƒg‚Ì—v‘f‚Ì”z—ñ larray ‚ğì¬‚µA
+	' ƒŠƒXƒg‚Ì—v‘f”‚ğ•Ô‚· (Š‡ŒÊ‚ğl—¶)
 	Public Function ListSplit(ByRef list As String, ByRef larray() As String) As Short
 		Dim n, i, ch As Short
 		Dim paren, list_len, begin As Short
@@ -507,32 +506,32 @@ Module GeneralLib
 		n = 0
 		i = 0
 		Do While True
-			'Invalid_string_refer_to_original_code
+			'‹ó”’‚ğ“Ç‚İ”ò‚Î‚·
 			Do While True
 				i = i + 1
 				
-				'Invalid_string_refer_to_original_code
+				'•¶š—ñ‚ÌI‚èH
 				If i > list_len Then
 					ListSplit = n
 					Exit Function
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'Ÿ‚Ì•¶š
 				ch = Asc(Mid(list, i, 1))
 				
-				'Invalid_string_refer_to_original_code
+				'‹ó”’‚Å‚È‚¢H
 				Select Case ch
 					Case 9, 32
-						'Invalid_string_refer_to_original_code
+						'ƒXƒLƒbƒv
 					Case Else
 						Exit Do
 				End Select
 			Loop 
 			
-			'Invalid_string_refer_to_original_code
+			'—v‘f”‚ğ‚P‚Â‘‚â‚·
 			n = n + 1
 			
-			'è¦ç´ ã‚’èª­ã¿è¾¼ã‚€
+			'—v‘f‚ğ“Ç‚İ‚Ş
 			ReDim Preserve larray(n)
 			begin = i
 			Do While True
@@ -551,7 +550,7 @@ Module GeneralLib
 						Case 41, 93 ' ")", "]"
 							paren = paren - 1
 							If paren < 0 Then
-								'Invalid_string_refer_to_original_code
+								'Š‡ŒÊ‚Ì‘Î‰‚ªæ‚ê‚Ä‚¢‚È‚¢
 								larray(n) = Mid(list, begin)
 								Exit Function
 							End If
@@ -564,22 +563,22 @@ Module GeneralLib
 				
 				i = i + 1
 				
-				'Invalid_string_refer_to_original_code
+				'•¶š—ñ‚ÌI‚èH
 				If i > list_len Then
 					larray(n) = Mid(list, begin)
-					'Invalid_string_refer_to_original_code
+					'ƒNƒH[ƒg‚âŠ‡ŒÊ‚Ì‘Î‰‚ªæ‚ê‚Ä‚¢‚éH
 					If Not in_single_quote And Not in_double_quote And paren = 0 Then
 						ListSplit = n
 					End If
 					Exit Function
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'Ÿ‚Ì•¶š
 				ch = Asc(Mid(list, i, 1))
 				
-				'Invalid_string_refer_to_original_code
+				'—v‘f‚Ì––”ö‚©”»’è
 				If Not in_single_quote And Not in_double_quote And paren = 0 Then
-					'Invalid_string_refer_to_original_code
+					'‹ó”’H
 					Select Case ch
 						Case 9, 32
 							Exit Do
@@ -590,53 +589,53 @@ Module GeneralLib
 		Loop 
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	' ƒŠƒXƒg list ‚©‚ç idx ”Ô–ÚˆÈ~‚Ì‘S—v‘f‚ğ•Ô‚· (Š‡ŒÊ‚ğl—¶)
 	Public Function ListTail(ByRef list As String, ByVal idx As Short) As String
 		Dim n, i, ch As Short
 		Dim list_len, paren As Short
 		Dim in_single_quote, in_double_quote As Boolean
 		
-		'Invalid_string_refer_to_original_code
+		'idx‚ª³‚Ì”‚Å‚È‚¯‚ê‚Î‹ó•¶š—ñ‚ğ•Ô‚·
 		If idx < 1 Then
 			Exit Function
 		End If
 		
 		list_len = Len(list)
 		
-		'Invalid_string_refer_to_original_code
+		'idx”Ô–Ú‚Ì—v‘f‚Ü‚Å“Ç‚İ”ò‚Î‚·
 		n = 0
 		i = 0
 		Do While True
-			'Invalid_string_refer_to_original_code
+			'‹ó”’‚ğ“Ç‚İ”ò‚Î‚·
 			Do While True
 				i = i + 1
 				
-				'Invalid_string_refer_to_original_code
+				'•¶š—ñ‚ÌI‚èH
 				If i > list_len Then
 					Exit Function
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'Ÿ‚Ì•¶š
 				ch = Asc(Mid(list, i, 1))
 				
-				'Invalid_string_refer_to_original_code
+				'‹ó”’‚Å‚È‚¢H
 				Select Case ch
 					Case 9, 32
-						'Invalid_string_refer_to_original_code
+						'ƒXƒLƒbƒv
 					Case Else
 						Exit Do
 				End Select
 			Loop 
 			
-			'Invalid_string_refer_to_original_code
+			'—v‘f”‚ğ‚P‚Â‘‚â‚·
 			n = n + 1
 			
-			'Invalid_string_refer_to_original_code
+			'‹‚ß‚é—v‘fH
 			If n = idx Then
 				Exit Do
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'—v‘f‚ğ“Ç‚İ”ò‚Î‚·
 			Do While True
 				If in_single_quote Then
 					If ch = 96 Then ' "`"
@@ -653,7 +652,7 @@ Module GeneralLib
 						Case 41, 93 ' ")", "]"
 							paren = paren - 1
 							If paren < 0 Then
-								'Invalid_string_refer_to_original_code
+								'Š‡ŒÊ‚Ì‘Î‰‚ªæ‚ê‚Ä‚¢‚È‚¢
 								Exit Function
 							End If
 						Case 96 ' "`"
@@ -665,17 +664,17 @@ Module GeneralLib
 				
 				i = i + 1
 				
-				'Invalid_string_refer_to_original_code
+				'•¶š—ñ‚ÌI‚èH
 				If i > list_len Then
 					Exit Function
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'Ÿ‚Ì•¶š
 				ch = Asc(Mid(list, i, 1))
 				
-				'Invalid_string_refer_to_original_code
+				'—v‘f‚Ì––”ö‚©”»’è
 				If Not in_single_quote And Not in_double_quote And paren = 0 Then
-					'Invalid_string_refer_to_original_code
+					'‹ó”’H
 					Select Case ch
 						Case 9, 32
 							Exit Do
@@ -688,7 +687,7 @@ Module GeneralLib
 	End Function
 	
 	
-	'Invalid_string_refer_to_original_code
+	'ƒ^ƒu‚ğl—¶‚µ‚½Trim
 	'UPGRADE_NOTE: str ‚Í str_Renamed ‚ÉƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 	Public Sub TrimString(ByRef str_Renamed As String)
 		Dim j, i, lstr As Short
@@ -697,7 +696,7 @@ Module GeneralLib
 		i = 1
 		j = lstr
 		
-		'å…ˆé ­ã®ç©ºç™½ã‚’æ¤œç´¢
+		'æ“ª‚Ì‹ó”’‚ğŒŸõ
 		Do While i <= j
 			Select Case Asc(Mid(str_Renamed, i))
 				Case 9, 32, -32448
@@ -707,7 +706,7 @@ Module GeneralLib
 			End Select
 		Loop 
 		
-		'æœ«å°¾ã®ç©ºç™½ã‚’æ¤œç´¢
+		'––”ö‚Ì‹ó”’‚ğŒŸõ
 		Do While i < j
 			Select Case Asc(Mid(str_Renamed, j))
 				Case 9, 32, -32448
@@ -717,13 +716,13 @@ Module GeneralLib
 			End Select
 		Loop 
 		
-		'Invalid_string_refer_to_original_code
+		'‹ó”’‚ª‚ ‚ê‚Î’u‚«Š·‚¦
 		If i <> 1 Or j <> lstr Then
 			str_Renamed = Mid(str_Renamed, i, j - i + 1)
 		End If
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'•¶š—ñ str ’†‚É str2 ‚ªoŒ»‚·‚éˆÊ’u‚ğ––”ö‚©‚çŒŸõ
 	'UPGRADE_NOTE: str ‚Í str_Renamed ‚ÉƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 	Public Function InStr2(ByRef str_Renamed As String, ByRef str2 As String) As Short
 		Dim slen, i As Short
@@ -740,14 +739,14 @@ Module GeneralLib
 	End Function
 	
 	
-	'Invalid_string_refer_to_original_code
+	'•¶š—ñ‚ğDouble‚É•ÏŠ·
 	Public Function StrToDbl(ByRef expr As String) As Double
 		If IsNumeric(expr) Then
 			StrToDbl = CDbl(expr)
 		End If
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'•¶š—ñ‚ğLong‚É•ÏŠ·
 	Public Function StrToLng(ByRef expr As String) As Integer
 		On Error GoTo ErrorHandler
 		If IsNumeric(expr) Then
@@ -757,9 +756,9 @@ Module GeneralLib
 ErrorHandler: 
 	End Function
 	
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
+	'•¶š—ñ‚ğ‚Ğ‚ç‚ª‚È‚É•ÏŠ·
+	'‚Ğ‚ç‚ª‚È‚Ö‚Ì•ÏŠ·‚Í“ú–{ŒêˆÈŠO‚ÌOS‚ğg‚¤‚ÆƒGƒ‰[‚ª”­¶‚·‚é‚æ‚¤‚È‚Ì‚Å
+	'ƒGƒ‰[‚ğƒgƒ‰ƒbƒv‚·‚é•K—v‚ª‚ ‚é
 	'UPGRADE_NOTE: str ‚Í str_Renamed ‚ÉƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 	Public Function StrToHiragana(ByRef str_Renamed As String) As String
 		On Error GoTo ErrorHandler
@@ -774,7 +773,7 @@ ErrorHandler:
 	End Function
 	
 	
-	'aã¨bã®æœ€å¤§å€¤ã‚’è¿”ã™
+	'a‚Æb‚ÌÅ‘å’l‚ğ•Ô‚·
 	Public Function MaxLng(ByVal a As Integer, ByVal b As Integer) As Integer
 		If a > b Then
 			MaxLng = a
@@ -783,7 +782,7 @@ ErrorHandler:
 		End If
 	End Function
 	
-	'aã¨bã®æœ€å°å€¤ã‚’è¿”ã™
+	'a‚Æb‚ÌÅ¬’l‚ğ•Ô‚·
 	Public Function MinLng(ByVal a As Integer, ByVal b As Integer) As Integer
 		If a < b Then
 			MinLng = a
@@ -792,7 +791,7 @@ ErrorHandler:
 		End If
 	End Function
 	
-	'aã¨bã®æœ€å¤§å€¤ã‚’è¿”ã™ (Double)
+	'a‚Æb‚ÌÅ‘å’l‚ğ•Ô‚· (Double)
 	Public Function MaxDbl(ByVal a As Double, ByVal b As Double) As Double
 		If a > b Then
 			MaxDbl = a
@@ -801,7 +800,7 @@ ErrorHandler:
 		End If
 	End Function
 	
-	'aã¨bã®æœ€å°å€¤ã‚’è¿”ã™ (Double)
+	'a‚Æb‚ÌÅ¬’l‚ğ•Ô‚· (Double)
 	Public Function MinDbl(ByVal a As Double, ByVal b As Double) As Double
 		If a < b Then
 			MinDbl = a
@@ -811,14 +810,14 @@ ErrorHandler:
 	End Function
 	
 	
-	'Invalid_string_refer_to_original_code
+	'•¶š—ñ buf ‚Ì’·‚³‚ª length ‚É‚È‚é‚æ‚¤‚É¶‘¤‚ÉƒXƒy[ƒX‚ğ•t‰Á‚·‚é
 	Public Function LeftPaddedString(ByRef buf As String, ByVal length As Short) As String
 		'UPGRADE_ISSUE: ’è” vbFromUnicode ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="55B59875-9A95-4B71-9D6A-7C294BF7139D"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 		'UPGRADE_ISSUE: LenB ŠÖ”‚ÍƒTƒ|[ƒg‚³‚ê‚Ü‚¹‚ñB Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="367764E5-F3F8-4E43-AC3E-7FE0B5E074E2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 		LeftPaddedString = Space(MaxLng(length - LenB(StrConv(buf, vbFromUnicode)), 0)) & buf
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'•¶š—ñ buf ‚Ì’·‚³‚ª length ‚É‚È‚é‚æ‚¤‚É‰E‘¤‚ÉƒXƒy[ƒX‚ğ•t‰Á‚·‚é
 	Public Function RightPaddedString(ByRef buf As String, ByVal length As Short) As String
 		'UPGRADE_ISSUE: ’è” vbFromUnicode ‚ÍƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="55B59875-9A95-4B71-9D6A-7C294BF7139D"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 		'UPGRADE_ISSUE: LenB ŠÖ”‚ÍƒTƒ|[ƒg‚³‚ê‚Ü‚¹‚ñB Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="367764E5-F3F8-4E43-AC3E-7FE0B5E074E2"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
@@ -826,55 +825,55 @@ ErrorHandler:
 	End Function
 	
 	
-	'Invalid_string_refer_to_original_code
+	' Src.ini ƒtƒ@ƒCƒ‹‚Ì ini_section ‚©‚ç ini_entry ‚Ì’l‚ğ“Ç‚İo‚·
 	Public Function ReadIni(ByRef ini_section As String, ByRef ini_entry As String) As String
 		Dim s As New VB6.FixedLengthString(1024)
 		Dim ret As Integer
 		
-		'Invalid_string_refer_to_original_code
+		'ƒVƒiƒŠƒI‘¤‚É Src.ini ƒtƒ@ƒCƒ‹‚ª‚ ‚ê‚Î‚»‚¿‚ç‚ğ—Dæ
 		If FileExists(ScenarioPath & "Src.ini") Then
 			ret = GetPrivateProfileString(ini_section, ini_entry, "", s.Value, 1024, ScenarioPath & "Src.ini")
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'ƒVƒiƒŠƒI‘¤ Src.ini ‚ÉƒGƒ“ƒgƒŠ‚ª–³‚¯‚ê‚Î–{‘Ì‘¤‚©‚ç“Ç‚İo‚µ
 		If ret = 0 Then
 			ret = GetPrivateProfileString(ini_section, ini_entry, "", s.Value, 1024, AppPath & "Src.ini")
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'•s—v•”•ª‚ğíœ
 		ReadIni = Left(s.Value, InStr(s.Value, vbNullChar) - 1)
 	End Function
 	
 	
-	' Src.ini ãƒ•ã‚¡ã‚¤ãƒ«ã® ini_section ã® ini_entry ã«å€¤ ini_data ã‚’æ›¸ãè¾¼ã‚€
+	' Src.ini ƒtƒ@ƒCƒ‹‚Ì ini_section ‚Ì ini_entry ‚É’l ini_data ‚ğ‘‚«‚Ş
 	Public Sub WriteIni(ByRef ini_section As String, ByRef ini_entry As String, ByRef ini_data As String)
 		Dim s As New VB6.FixedLengthString(1024)
 		Dim ret As Integer
 		
-		'Invalid_string_refer_to_original_code
+		'LastFolder‚Ìİ’è‚Ì‚İ‚Í•K‚¸–{‘Ì‘¤‚Ì Src.ini ‚É‘‚«‚Ş
 		If ini_entry = "LastFolder" Then
 			ret = WritePrivateProfileString(ini_section, ini_entry, ini_data, AppPath & "Src.ini")
 			Exit Sub
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'ƒVƒiƒŠƒI‘¤‚É Src.ini ƒtƒ@ƒCƒ‹‚ª‚ ‚ê‚Î‚»‚¿‚ç‚ğ—Dæ
 		If Len(ScenarioPath) > 0 And FileExists(ScenarioPath & "Src.ini") Then
-			'Invalid_string_refer_to_original_code
+			'ƒGƒ“ƒgƒŠ‚ª‘¶İ‚·‚é‚©ƒ`ƒFƒbƒN
 			ret = GetPrivateProfileString(ini_section, ini_entry, "", s.Value, 1024, ScenarioPath & "Src.ini")
 			If ret > 1 Then
 				ret = WritePrivateProfileString(ini_section, ini_entry, ini_data, ScenarioPath & "Src.ini")
 			End If
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'ƒVƒiƒŠƒI‘¤ Src.ini ‚ÉƒGƒ“ƒgƒŠ‚ª–³‚¯‚ê‚Î–{‘Ì‘¤‚©‚ç“Ç‚İo‚µ
 		If ret = 0 Then
 			ret = WritePrivateProfileString(ini_section, ini_entry, ini_data, AppPath & "Src.ini")
 		End If
 	End Sub
 	
 	
-	'Invalid_string_refer_to_original_code
-	'ç½®æ›ã‚’è¡Œã£ãŸã¨ãã«ã¯Trueã‚’è¿”ã™
+	'•¶š—ñ s1 ’†‚Ì s2 ‚ğ s3 ‚É’uŠ·
+	'’uŠ·‚ğs‚Á‚½‚Æ‚«‚É‚ÍTrue‚ğ•Ô‚·
 	Public Function ReplaceString(ByRef s1 As String, ByRef s2 As String, ByRef s3 As String) As Boolean
 		Dim buf As String
 		Dim len2, len3 As Short
@@ -882,7 +881,7 @@ ErrorHandler:
 		
 		idx = InStr(s1, s2)
 		
-		'Invalid_string_refer_to_original_code
+		'’uŠ·‚ª•K—vH
 		If idx = 0 Then
 			Exit Function
 		End If
@@ -890,7 +889,7 @@ ErrorHandler:
 		len2 = Len(s2)
 		len3 = Len(s3)
 		
-		'Invalid_string_refer_to_original_code
+		'&‚Í’x‚¢‚Ì‚Åo—ˆ‚é‚¾‚¯Mid‚ğg‚¤
 		If len2 = len3 Then
 			Do 
 				Mid(s1, idx, len2) = s3
@@ -911,7 +910,7 @@ ErrorHandler:
 	End Function
 	
 	
-	'Invalid_string_refer_to_original_code
+	'ƒtƒ@ƒCƒ‹ fname ‚ª‘¶İ‚·‚é‚©”»’è
 	Public Function FileExists(ByRef fname As String) As Boolean
 		If GetFileAttributes(fname) <> -1 Then
 			FileExists = True
@@ -919,11 +918,11 @@ ErrorHandler:
 	End Function
 	
 	
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
+	'ƒf[ƒ^ƒtƒ@ƒCƒ‹fnum‚©‚çƒf[ƒ^‚ğˆês“Ç‚İ‚İAline_buf‚ÉŠi”[‚·‚é‚Æ‚Æ‚à‚É
+	's”Ô†line_num‚ğXV‚·‚éB
+	's“ª‚Éu#v‚ª‚ ‚éê‡‚Ís‚Ì“Ç‚İ”ò‚Î‚µ‚ğs‚¤B
+	's’†‚Éu//v‚ª‚ ‚éê‡A‚»‚±‚©‚ç‚ÍƒRƒƒ“ƒg‚ÆŒ©‚È‚µ‚Ä–³‹‚·‚éB
+	's––‚Éu_v‚ª‚ ‚éê‡‚Ís‚ÌŒ‹‡‚ğs‚¤B
 	Public Sub GetLine(ByRef fnum As Short, ByRef line_buf As String, ByRef line_num As Integer)
 		Dim buf As String
 		Dim idx As Short
@@ -933,45 +932,45 @@ ErrorHandler:
 			line_num = line_num + 1
 			buf = LineInput(fnum)
 			
-			'Invalid_string_refer_to_original_code
+			'ƒRƒƒ“ƒgs‚ÍƒXƒLƒbƒv
 			If Left(buf, 1) = "#" Then
 				GoTo NextLine
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'ƒRƒƒ“ƒg•”•ª‚ğíœ
 			idx = InStr(buf, "//")
 			If idx > 0 Then
 				buf = Left(buf, idx - 1)
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			's––‚ªu_v‚Å‚È‚¯‚ê‚Îs‚Ì“Ç‚İ‚İ‚ğŠ®—¹
 			If Right(buf, 1) <> "_" Then
 				TrimString(buf)
 				line_buf = line_buf & buf
 				Exit Do
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			's––‚ªu_v‚Ìê‡‚Ís‚ğŒ‹‡
 			TrimString(buf)
 			line_buf = line_buf & Left(buf, Len(buf) - 1)
 			
 NextLine: 
 		Loop 
 		
-		ReplaceString(line_buf, "Invalid_string_refer_to_original_code", "")
+		ReplaceString(line_buf, "C", ", ")
 	End Sub
 	
 	
-	'Invalid_string_refer_to_original_code
+	'Windows‚Ìƒo[ƒWƒ‡ƒ“‚ğ”»’è‚·‚é
 	Public Function GetWinVersion() As Short
 		Dim vinfo As OSVERSIONINFO
 		Dim ret As Integer
 		
 		With vinfo
-			'Invalid_string_refer_to_original_code
+			' dwOSVersionInfoSize‚É\‘¢‘Ì‚ÌƒTƒCƒY‚ğƒZƒbƒg‚·‚éB
 			.dwOSVersionInfoSize = Len(vinfo)
 			
-			'Invalid_string_refer_to_original_code
+			' OS‚Ìƒo[ƒWƒ‡ƒ“î•ñ‚ğ“¾‚éB
 			ret = GetVersionEx(vinfo)
 			If ret = 0 Then
 				Exit Function
@@ -982,7 +981,7 @@ NextLine:
 	End Function
 	
 	
-	'Invalid_string_refer_to_original_code
+	'”’l‚ğw”•\‹L‚ğg‚í‚¸‚É•¶š—ñ•\‹L‚·‚é
 	Public Function FormatNum(ByVal n As Double) As String
 		If n = Int(n) Then
 			FormatNum = VB6.Format(n, "0")
@@ -992,14 +991,14 @@ NextLine:
 	End Function
 	
 	
-	'Invalid_string_refer_to_original_code
+	'•¶š—ñ str ‚ª”’l‚©‚Ç‚¤‚©’²‚×‚é
 	'UPGRADE_NOTE: str ‚Í str_Renamed ‚ÉƒAƒbƒvƒOƒŒ[ƒh‚³‚ê‚Ü‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
 	Public Function IsNumber(ByRef str_Renamed As String) As Boolean
 		If Not IsNumeric(str_Renamed) Then
 			Exit Function
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'"(1)"‚Ì‚æ‚¤‚È•¶š—ñ‚ª”’l‚Æ”»’è‚³‚ê‚Ä‚µ‚Ü‚¤‚Ì‚ğ–h‚®
 		If Asc(str_Renamed) = 40 Then
 			Exit Function
 		End If
@@ -1008,41 +1007,39 @@ NextLine:
 	End Function
 	
 	
-	'Invalid_string_refer_to_original_code
+	'•Ší‘®«ˆ——p‚ÌŠÖ”ŒQB
 	
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
+	'‘®«‚ğˆê‚Âæ“¾‚·‚éB•¡”•¶š‚Ì‘®«‚à‚Ğ‚Æ‚Â‚Æ‚µ‚Äæ“¾‚·‚éB
+	'‚½‚¾‚µ‚l‚Í–hŒä“Á«‚É‚¨‚¢‚Ä’P‘Ì•¶š‚Æ‚µ‚Äˆµ‚í‚ê‚é‚½‚ß‚Éœ‚­B
+	'ŒŸõ•¶š—ñ aname
+	'ŒŸõˆÊ’u idx (ŒŸõI—¹ˆÊ’u‚ğ•Ô‚·)
+	'æ“¾•¶š’· length (“ÁêŒø‰Ê”ƒJƒEƒ“ƒg—pBŠî–{“I‚É0(‘®«æ“¾)‚©1(‘®«“ª•¶šæ“¾))
 	Public Function GetClassBundle(ByRef aname As String, ByRef idx As Short, Optional ByVal length As Short = 0) As String
 		Dim i As Short
 		Dim ch As String
 		
 		i = idx
 		ch = Mid(aname, i, 1)
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
-		Do While ch = "å¼±" Or ch = "åŠ¹" Or ch = "Invalid_string_refer_to_original_code"
-			'Invalid_string_refer_to_original_code
+		'ãAŒøA™‚ª‚ ‚ê‚Î‚»‚ÌŸ‚Ì•¶š‚Ü‚Åˆê‚Éæ“¾‚·‚éB
+		'“ü‚êq‰Â”\‚È‚½‚ßãAŒøA™‚ª‘±‚­ŒÀ‚èƒ‹[ƒv
+		Do While ch = "ã" Or ch = "Œø" Or ch = "™"
+			'‘®«w’è‚ÌÅŒã‚Ì•¶š‚ªãŒø™‚¾‚Á‚½ê‡A‘®«‚È‚µ
 			If i >= Len(aname) Then GoTo NotFoundClass
 			i = i + 1
 			ch = Mid(aname, i, 1)
 		Loop 
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		i = i + 1
-		'Invalid_string_refer_to_original_code
-		If i > Len(aname) Then
-			GoTo NotFoundClass
+		'’á‚ª‚ ‚ê‚Î‚»‚ÌŸ‚Ì•¶š‚Ü‚Åˆê‚Éæ“¾‚·‚éB
+		If ch = "’á" Then
+			i = i + 1
+			'mid‚ÌŠJnˆÊ’uw’è‚Í•¶š”‚ğ’´‚¦‚Ä‚¢‚Ä‚à‘åä•v‚È‚Í‚¸‚Å‚·‚ª”O‚Ìˆ×
+			If i > Len(aname) Then
+				GoTo NotFoundClass
+			End If
+			ch = Mid(aname, i, 1)
+			If ch <> "U" And ch <> "–h" And ch <> "‰^" And ch <> "ˆÚ" Then
+				GoTo NotFoundClass
+			End If
 		End If
-		ch = Mid(aname, i, 1)
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-		GoTo NotFoundClass
-		'End If
-		'End If
 		If length = 0 Then
 			GetClassBundle = Mid(aname, idx, i - idx + 1)
 		Else
@@ -1053,32 +1050,30 @@ NotFoundClass:
 		idx = i
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'InStr‚Æ“¯‚¶“®ìB‚½‚¾‚µŒ©‚Â‚©‚Á‚½•¶š‚Ì‘O‚ÉuãvuŒøvu™v‚ª‚ ‚Á‚½ê‡A•Ê‘®«‚Æ”»’è‚·‚é)
 	Public Function InStrNotNest(ByRef string1 As String, ByRef string2 As String, Optional ByVal start As Short = 1) As Short
 		Dim i As Short
 		Dim c As String
 		
 		i = InStr(start, string1, string2)
-		'Invalid_string_refer_to_original_code
+		'æ“ªˆê’v‚©Aˆê’v‚È‚µ‚Ì‚Æ‚«A‚±‚±‚Åæ“¾
 		If i <= 1 Then
 			InStrNotNest = i
 		Else
 			Do While i > 0
 				c = Mid(string1, i - 1, 1)
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: ‘O‚Ìs‚ğ‰ğÍ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½B Ú×‚É‚Â‚¢‚Ä‚ÍA'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' ‚ğƒNƒŠƒbƒN‚µ‚Ä‚­‚¾‚³‚¢B
-				Exit Do
+				'ŒŸ’m‚µ‚½•¶š‚Ì‘O‚Ì•¶š‚ªãŒø™‚Å‚È‚©‚Á‚½‚çAInStr‚ÌŒ‹‰Ê‚ğ•Ô‚·
+				If c <> "ã" And c <> "Œø" And c <> "™" Then
+					Exit Do
+				End If
+				'ŒŸ’m‚µ‚½•¶š‚Ì‘O‚Ì•¶š‚ªãŒø™‚¾‚Á‚½‚çAÄ“x•¶š—ñ‚ğ’Tõ‚·‚é
+				If i < Len(string1) Then
+					i = InStr(i + 1, string1, string2)
+				Else
+					i = 0
+				End If
 			Loop 
+			InStrNotNest = i
 		End If
-		'Invalid_string_refer_to_original_code
-		If i < Len(string1) Then
-			i = InStr(i + 1, string1, string2)
-		Else
-			i = 0
-		End If
-		'Loop
-		InStrNotNest = i
-		'End If
 	End Function
 End Module

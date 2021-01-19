@@ -10,13 +10,13 @@ Attribute VB_Exposed = False
 Option Explicit
 
 ' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯ãƒ•ãƒªãƒ¼ã‚½ãƒ•ãƒˆã§ã‚ã‚Šã€ç„¡ä¿è¨¼ã§ã™ã€‚
-' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯GNU General Public License(Ver.3ã¾ãŸã¯ãã‚Œä»¥é™)ãŒå®šã‚ã‚‹æ¡ä»¶ã®ä¸‹ã§
-' å†é ’å¸ƒã¾ãŸã¯æ”¹å¤‰ã™ã‚‹ã“ã¨ãŒã§ãã¾ã™ã€‚
+' –{ƒvƒƒOƒ‰ƒ€‚ÍƒtƒŠ[ƒ\ƒtƒg‚Å‚ ‚èA–³•ÛØ‚Å‚·B
+' –{ƒvƒƒOƒ‰ƒ€‚ÍGNU General Public License(Ver.3‚Ü‚½‚Í‚»‚êˆÈ~)‚ª’è‚ß‚éğŒ‚Ì‰º‚Å
+' Ä”Ğ•z‚Ü‚½‚Í‰ü•Ï‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B
 
-'ã‚¨ãƒªã‚¢ã‚¹ãƒ‡ãƒ¼ã‚¿ã®ã‚¯ãƒ©ã‚¹
+'ƒGƒŠƒAƒXƒf[ƒ^‚ÌƒNƒ‰ƒX
 
-'åç§°
+'–¼Ì
 Public Name As String
 
 Private strAliasType() As String
@@ -29,7 +29,7 @@ Private strAliasNecessaryCondition() As String
 
 
 
-'ã‚¯ãƒ©ã‚¹ã®åˆæœŸåŒ–
+'ƒNƒ‰ƒX‚Ì‰Šú‰»
 Private Sub Class_Initialize()
     ReDim strAliasType(0)
     ReDim dblAliasLevel(0)
@@ -41,53 +41,53 @@ Private Sub Class_Initialize()
 End Sub
 
 
-'ã‚¨ãƒªã‚¢ã‚¹ã®å€‹æ•°
+'ƒGƒŠƒAƒX‚ÌŒÂ”
 Public Property Get Count() As Integer
     Count = UBound(strAliasType)
 End Property
 
-'ã‚¨ãƒªã‚¢ã‚¹ã®ç¨®é¡
+'ƒGƒŠƒAƒX‚Ìí—Ş
 Public Property Get AliasType(ByVal idx As Integer) As String
     AliasType = strAliasType(idx)
 End Property
 
-'ã‚¨ãƒªã‚¢ã‚¹ã®ãƒ¬ãƒ™ãƒ«
+'ƒGƒŠƒAƒX‚ÌƒŒƒxƒ‹
 Public Property Get AliasLevel(ByVal idx As Integer) As Double
     AliasLevel = dblAliasLevel(idx)
 End Property
 
-'ã‚¨ãƒªã‚¢ã‚¹ã®ãƒ¬ãƒ™ãƒ«ãŒï¼‹ä¿®æ­£å€¤ã‹ã©ã†ã‹
+'ƒGƒŠƒAƒX‚ÌƒŒƒxƒ‹‚ª{C³’l‚©‚Ç‚¤‚©
 Public Property Get AliasLevelIsPlusMod(ByVal idx As Integer) As Boolean
     AliasLevelIsPlusMod = blnAliasLevelIsPlusMod(idx)
 End Property
 
-'ã‚¨ãƒªã‚¢ã‚¹ã®ãƒ¬ãƒ™ãƒ«ãŒÃ—ä¿®æ­£å€¤ã‹ã©ã†ã‹
+'ƒGƒŠƒAƒX‚ÌƒŒƒxƒ‹‚ª~C³’l‚©‚Ç‚¤‚©
 Public Property Get AliasLevelIsMultMod(ByVal idx As Integer) As Boolean
     AliasLevelIsMultMod = blnAliasLevelIsMultMod(idx)
 End Property
 
-'ã‚¨ãƒªã‚¢ã‚¹ã®ãƒ‡ãƒ¼ã‚¿
+'ƒGƒŠƒAƒX‚Ìƒf[ƒ^
 Public Property Get AliasData(ByVal idx As Integer) As String
     AliasData = strAliasData(idx)
 End Property
 
-'ã‚¨ãƒªã‚¢ã‚¹ã®å¿…è¦æŠ€èƒ½
+'ƒGƒŠƒAƒX‚Ì•K—v‹Z”\
 Public Property Get AliasNecessarySkill(ByVal idx As Integer) As String
     AliasNecessarySkill = strAliasNecessarySkill(idx)
 End Property
 
-'ã‚¨ãƒªã‚¢ã‚¹ã®å¿…è¦æ¡ä»¶
+'ƒGƒŠƒAƒX‚Ì•K—vğŒ
 Public Property Get AliasNecessaryCondition(ByVal idx As Integer) As String
     AliasNecessaryCondition = strAliasNecessaryCondition(idx)
 End Property
 
-'ã‚¨ãƒªã‚¢ã‚¹ã‚’ç™»éŒ²
+'ƒGƒŠƒAƒX‚ğ“o˜^
 Public Sub AddAlias(ByVal adef As String)
 Dim atype As String, alevel As Double, adata As String
 Dim i As Integer, j As Integer, n As Integer
 Dim buf As String
     
-    'ã‚¨ãƒªã‚¢ã‚¹ã®é ˜åŸŸã‚’ç¢ºä¿
+    'ƒGƒŠƒAƒX‚Ì—Ìˆæ‚ğŠm•Û
     n = UBound(strAliasType) + 1
     ReDim Preserve strAliasType(n)
     ReDim Preserve dblAliasLevel(n)
@@ -97,7 +97,7 @@ Dim buf As String
     ReDim Preserve strAliasNecessarySkill(n)
     ReDim Preserve strAliasNecessaryCondition(n)
     
-    'å¿…è¦æŠ€èƒ½ã®åˆ‡ã‚Šå‡ºã—
+    '•K—v‹Z”\‚ÌØ‚èo‚µ
     If Right$(adef, 1) = ")" Then
         i = InStr(adef, " (")
         If i > 0 Then
@@ -113,7 +113,7 @@ Dim buf As String
         buf = adef
     End If
     
-    'å¿…è¦æ¡ä»¶ã®åˆ‡ã‚Šå‡ºã—
+    '•K—vğŒ‚ÌØ‚èo‚µ
     If Right$(buf, 1) = ">" Then
         i = InStr(adef, " <")
         If i > 0 Then
@@ -125,14 +125,14 @@ Dim buf As String
         End If
     End If
     
-    'ãƒ¬ãƒ™ãƒ«æŒ‡å®šãŒä¿®æ­£å€¤ã‹ï¼Ÿ
+    'ƒŒƒxƒ‹w’è‚ªC³’l‚©H
     If ReplaceString(buf, "Lv+", "Lv") Then
         blnAliasLevelIsPlusMod(n) = True
     ElseIf ReplaceString(buf, "Lv*", "Lv") Then
         blnAliasLevelIsMultMod(n) = True
     End If
     
-    'ã‚¨ãƒªã‚¢ã‚¹ã®ç¨®é¡ã€ãƒ¬ãƒ™ãƒ«ã€ãƒ‡ãƒ¼ã‚¿ã‚’åˆ‡ã‚Šå‡ºã—
+    'ƒGƒŠƒAƒX‚Ìí—ŞAƒŒƒxƒ‹Aƒf[ƒ^‚ğØ‚èo‚µ
     alevel = DEFAULT_LEVEL
     i = InStr(buf, "Lv")
     j = InStr(buf, "=")
@@ -154,7 +154,7 @@ Dim buf As String
         atype = buf
     End If
     
-    'ã‚¨ãƒªã‚¢ã‚¹ã‚’ç™»éŒ²
+    'ƒGƒŠƒAƒX‚ğ“o˜^
     strAliasType(n) = atype
     dblAliasLevel(n) = alevel
     strAliasData(n) = adata

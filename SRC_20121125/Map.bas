@@ -2,47 +2,47 @@ Attribute VB_Name = "Map"
 Option Explicit
 
 ' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯ãƒ•ãƒªãƒ¼ã‚½ãƒ•ãƒˆã§ã‚ã‚Šã€ç„¡ä¿è¨¼ã§ã™ã€‚
-' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯GNU General Public License(Ver.3ã¾ãŸã¯ãã‚Œä»¥é™)ãŒå®šã‚ã‚‹æ¡ä»¶ã®ä¸‹ã§
-' å†é ’å¸ƒã¾ãŸã¯æ”¹å¤‰ã™ã‚‹ã“ã¨ãŒã§ãã¾ã™ã€‚
+' –{ƒvƒƒOƒ‰ƒ€‚ÍƒtƒŠ[ƒ\ƒtƒg‚Å‚ ‚èA–³•ÛØ‚Å‚·B
+' –{ƒvƒƒOƒ‰ƒ€‚ÍGNU General Public License(Ver.3‚Ü‚½‚Í‚»‚êˆÈ~)‚ª’è‚ß‚éğŒ‚Ì‰º‚Å
+' Ä”Ğ•z‚Ü‚½‚Í‰ü•Ï‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B
 
-'ãƒãƒƒãƒ—ãƒ‡ãƒ¼ã‚¿ã«é–¢ã™ã‚‹å„ç¨®å‡¦ç†ã‚’è¡Œã†ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«
+'ƒ}ƒbƒvƒf[ƒ^‚ÉŠÖ‚·‚éŠeíˆ—‚ğs‚¤ƒ‚ƒWƒ…[ƒ‹
 
-'ç®¡ç†å¯èƒ½ãªåœ°å½¢ãƒ‡ãƒ¼ã‚¿ã®ç·æ•°
+'ŠÇ—‰Â”\‚È’nŒ`ƒf[ƒ^‚Ì‘”
 Public Const MAX_TERRAIN_DATA_NUM = 2000
 
 'ADD START 240a
-'ãƒ¬ã‚¤ãƒ¤ãƒ¼ç„¡ã—ã®å›ºå®šå€¤
+'ƒŒƒCƒ„[–³‚µ‚ÌŒÅ’è’l
 Public Const NO_LAYER_NUM = 10000
 'ADD  END  240a
 
-'ãƒãƒƒãƒ—ãƒ•ã‚¡ã‚¤ãƒ«å
+'ƒ}ƒbƒvƒtƒ@ƒCƒ‹–¼
 Public MapFileName As String
-'ãƒãƒƒãƒ—ã®æ¨ªã‚µã‚¤ã‚º
+'ƒ}ƒbƒv‚Ì‰¡ƒTƒCƒY
 Public MapWidth As Integer
-'ãƒãƒƒãƒ—ã®ç¸¦ã‚µã‚¤ã‚º
+'ƒ}ƒbƒv‚ÌcƒTƒCƒY
 Public MapHeight As Integer
 
-'ãƒãƒƒãƒ—ã®æç”»ãƒ¢ãƒ¼ãƒ‰
+'ƒ}ƒbƒv‚Ì•`‰æƒ‚[ƒh
 Public MapDrawMode As String
-'ãƒ•ã‚£ãƒ«ã‚¿è‰²
+'ƒtƒBƒ‹ƒ^F
 Public MapDrawFilterColor As Long
-'ãƒ•ã‚£ãƒ«ã‚¿ã®é€éåº¦
+'ƒtƒBƒ‹ƒ^‚Ì“§‰ß“x
 Public MapDrawFilterTransPercent As Double
-'ãƒ•ã‚£ãƒ«ã‚¿ã‚„Sepiaã‚³ãƒãƒ³ãƒ‰ãªã©ã§ãƒ¦ãƒ‹ãƒƒãƒˆã®è‰²ã‚’å¤‰æ›´ã™ã‚‹ã‹
+'ƒtƒBƒ‹ƒ^‚âSepiaƒRƒ}ƒ“ƒh‚È‚Ç‚Åƒ†ƒjƒbƒg‚ÌF‚ğ•ÏX‚·‚é‚©
 Public MapDrawIsMapOnly As Boolean
 
-'ãƒãƒƒãƒ—ã«ç”»åƒã®æ›¸ãè¾¼ã¿ãŒãªã•ã‚ŒãŸã‹
+'ƒ}ƒbƒv‚É‰æ‘œ‚Ì‘‚«‚İ‚ª‚È‚³‚ê‚½‚©
 Public IsMapDirty As Boolean
 
-'ãƒãƒƒãƒ—ãƒ‡ãƒ¼ã‚¿ã‚’è¨˜éŒ²ã™ã‚‹é…åˆ—
-' MapData(*,*,0)ã¯åœ°å½¢ã®ç¨®é¡
-' MapData(*,*,1)ã¯ãƒ“ãƒƒãƒˆãƒãƒƒãƒ—ã®ç•ªå·
+'ƒ}ƒbƒvƒf[ƒ^‚ğ‹L˜^‚·‚é”z—ñ
+' MapData(*,*,0)‚Í’nŒ`‚Ìí—Ş
+' MapData(*,*,1)‚Íƒrƒbƒgƒ}ƒbƒv‚Ì”Ô†
 'ADD START 240a
-'2ï½3ã¯ãƒãƒƒãƒ—ä¸Šå±¤ãƒ¬ã‚¤ãƒ¤ãƒ¼ãƒ‡ãƒ¼ã‚¿
-' MapData(*,*,2)ã¯åœ°å½¢ã®ç¨®é¡ã€‚æœªè¨­å®šã¯NO_LAYER_NUM
-' MapData(*,*,3)ã¯ãƒ“ãƒƒãƒˆãƒãƒƒãƒ—ã®ç•ªå·ã€‚æœªè¨­å®šã¯NO_LAYER_NUM
-' MapData(*,*,4)ã¯ãƒã‚¹ã®ãƒ‡ãƒ¼ã‚¿ã‚¿ã‚¤ãƒ—ã€‚1:ä¸‹å±¤ 2:ä¸Šå±¤ 3:ä¸Šå±¤ãƒ‡ãƒ¼ã‚¿ã®ã¿ 4:ä¸Šå±¤è¦‹ãŸç›®ã®ã¿
+'2`3‚Íƒ}ƒbƒvã‘wƒŒƒCƒ„[ƒf[ƒ^
+' MapData(*,*,2)‚Í’nŒ`‚Ìí—ŞB–¢İ’è‚ÍNO_LAYER_NUM
+' MapData(*,*,3)‚Íƒrƒbƒgƒ}ƒbƒv‚Ì”Ô†B–¢İ’è‚ÍNO_LAYER_NUM
+' MapData(*,*,4)‚Íƒ}ƒX‚Ìƒf[ƒ^ƒ^ƒCƒvB1:‰º‘w 2:ã‘w 3:ã‘wƒf[ƒ^‚Ì‚İ 4:ã‘wŒ©‚½–Ú‚Ì‚İ
 'ADD  END  240a
 Public MapData() As Integer
 
@@ -62,28 +62,28 @@ Public Enum BoxTypes
 End Enum
 'ADD  END  240a
 
-'ãƒãƒƒãƒ—ã®ç”»åƒãƒ•ã‚¡ã‚¤ãƒ«ã®æ ¼ç´å½¢å¼
+'ƒ}ƒbƒv‚Ì‰æ‘œƒtƒ@ƒCƒ‹‚ÌŠi”[Œ`®
 Enum MapImageFileType
-    OldMapImageFileType         'æ—§å½¢å¼ (plain0.bmp)
-    FourFiguresMapImageFileType 'ï¼”æ¡ã®æ•°å€¤ (plain0000.bmp)
-    SeparateDirMapImageFileType 'ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªåˆ†å‰² (plain\plain0000.bmp)
+    OldMapImageFileType         '‹ŒŒ`® (plain0.bmp)
+    FourFiguresMapImageFileType '‚SŒ…‚Ì”’l (plain0000.bmp)
+    SeparateDirMapImageFileType 'ƒfƒBƒŒƒNƒgƒŠ•ªŠ„ (plain\plain0000.bmp)
 End Enum
 Public MapImageFileTypeData() As MapImageFileType
 
-'ãƒãƒƒãƒ—ä¸Šã«å­˜åœ¨ã™ã‚‹ãƒ¦ãƒ‹ãƒƒãƒˆã‚’è¨˜éŒ²ã™ã‚‹é…åˆ—
+'ƒ}ƒbƒvã‚É‘¶İ‚·‚éƒ†ƒjƒbƒg‚ğ‹L˜^‚·‚é”z—ñ
 Public MapDataForUnit() As Unit
 
-'ãƒãƒƒãƒ—ä¸Šã§ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’é¸æŠã™ã‚‹éš›ã®ãƒã‚¹ã‚¯æƒ…å ±
+'ƒ}ƒbƒvã‚Åƒ^[ƒQƒbƒg‚ğ‘I‘ğ‚·‚éÛ‚Ìƒ}ƒXƒNî•ñ
 Public MaskData() As Boolean
 
-'ç¾åœ¨åœ°ç‚¹ã‹ã‚‰ãã®åœ°ç‚¹ã¾ã§ç§»å‹•ã™ã‚‹ã®ã«å¿…è¦ãªç§»å‹•åŠ›ã®é…åˆ—
+'Œ»İ’n“_‚©‚ç‚»‚Ì’n“_‚Ü‚ÅˆÚ“®‚·‚é‚Ì‚É•K—v‚ÈˆÚ“®—Í‚Ì”z—ñ
 Public TotalMoveCost() As Long
 
-'å„åœ°ç‚¹ãŒï¼ºï¼¯ï¼£ã®å½±éŸ¿ä¸‹ã«ã‚ã‚‹ã‹ã©ã†ã‹
+'Še’n“_‚ª‚y‚n‚b‚Ì‰e‹¿‰º‚É‚ ‚é‚©‚Ç‚¤‚©
 Public PointInZOC() As Long
 
 
-'åœ°å½¢æƒ…å ±ãƒ†ãƒ¼ãƒ–ãƒ«ã‚’åˆæœŸåŒ–
+'’nŒ`î•ñƒe[ƒuƒ‹‚ğ‰Šú‰»
 Public Sub InitMap()
 Dim i As Integer, j As Integer
     
@@ -104,174 +104,174 @@ Dim i As Integer, j As Integer
     Next
 End Sub
 
-'(X,Y)åœ°ç‚¹ã®å‘½ä¸­ä¿®æ­£
+'(X,Y)’n“_‚Ì–½’†C³
 Public Function TerrainEffectForHit(ByVal X As Integer, ByVal Y As Integer) As Integer
 'MOD START 240a
 '    TerrainEffectForHit = TDList.HitMod(MapData(X, Y, 0))
     Select Case MapData(X, Y, MapDataIndex.BoxType)
     Case BoxTypes.Under, BoxTypes.UpperBmpOnly
-        'ä¸Šå±¤ãƒ¬ã‚¤ãƒ¤ãŒç„¡ã„å ´åˆã¨ä¸Šå±¤ãŒç”»åƒæƒ…å ±ã—ã‹æŒã£ã¦ã„ãªã„å ´åˆã¯ä¸‹å±¤ã®ãƒ‡ãƒ¼ã‚¿ã‚’è¿”ã™
+        'ã‘wƒŒƒCƒ„‚ª–³‚¢ê‡‚Æã‘w‚ª‰æ‘œî•ñ‚µ‚©‚Á‚Ä‚¢‚È‚¢ê‡‚Í‰º‘w‚Ìƒf[ƒ^‚ğ•Ô‚·
         TerrainEffectForHit = TDList.HitMod(MapData(X, Y, MapDataIndex.TerrainType))
     Case Else
-        'ä¸Šå±¤ãƒ¬ã‚¤ãƒ¤ãŒä¸¡æ–¹æŒã£ã¦ã„ã‚‹å ´åˆã¨æƒ…å ±ã®ã¿æŒã£ã¦ã„ã‚‹å ´åˆã¯ä¸Šå±¤ã®ãƒ‡ãƒ¼ã‚¿ã‚’è¿”ã™
+        'ã‘wƒŒƒCƒ„‚ª—¼•û‚Á‚Ä‚¢‚éê‡‚Æî•ñ‚Ì‚İ‚Á‚Ä‚¢‚éê‡‚Íã‘w‚Ìƒf[ƒ^‚ğ•Ô‚·
         TerrainEffectForHit = TDList.HitMod(MapData(X, Y, MapDataIndex.LayerType))
     End Select
 'MOD  END  240a
 End Function
 
-'(X,Y)åœ°ç‚¹ã®ãƒ€ãƒ¡ãƒ¼ã‚¸ä¿®æ­£
+'(X,Y)’n“_‚Ìƒ_ƒ[ƒWC³
 Public Function TerrainEffectForDamage(ByVal X As Integer, ByVal Y As Integer) As Integer
 'MOD START 240a
 '    TerrainEffectForDamage = TDList.DamageMod(MapData(X, Y, 0))
     Select Case MapData(X, Y, MapDataIndex.BoxType)
     Case BoxTypes.Under, BoxTypes.UpperBmpOnly
-        'ä¸Šå±¤ãƒ¬ã‚¤ãƒ¤ãŒç„¡ã„å ´åˆã¨ä¸Šå±¤ãŒç”»åƒæƒ…å ±ã—ã‹æŒã£ã¦ã„ãªã„å ´åˆã¯ä¸‹å±¤ã®ãƒ‡ãƒ¼ã‚¿ã‚’è¿”ã™
+        'ã‘wƒŒƒCƒ„‚ª–³‚¢ê‡‚Æã‘w‚ª‰æ‘œî•ñ‚µ‚©‚Á‚Ä‚¢‚È‚¢ê‡‚Í‰º‘w‚Ìƒf[ƒ^‚ğ•Ô‚·
         TerrainEffectForDamage = TDList.DamageMod(MapData(X, Y, MapDataIndex.TerrainType))
     Case Else
-        'ä¸Šå±¤ãƒ¬ã‚¤ãƒ¤ãŒä¸¡æ–¹æŒã£ã¦ã„ã‚‹å ´åˆã¨æƒ…å ±ã®ã¿æŒã£ã¦ã„ã‚‹å ´åˆã¯ä¸Šå±¤ã®ãƒ‡ãƒ¼ã‚¿ã‚’è¿”ã™
+        'ã‘wƒŒƒCƒ„‚ª—¼•û‚Á‚Ä‚¢‚éê‡‚Æî•ñ‚Ì‚İ‚Á‚Ä‚¢‚éê‡‚Íã‘w‚Ìƒf[ƒ^‚ğ•Ô‚·
         TerrainEffectForDamage = TDList.DamageMod(MapData(X, Y, MapDataIndex.LayerType))
     End Select
 'MOD  END  240a
 End Function
 
-'(X,Y)åœ°ç‚¹ã®ï¼¨ï¼°å›å¾©ç‡
+'(X,Y)’n“_‚Ì‚g‚o‰ñ•œ—¦
 Public Function TerrainEffectForHPRecover(ByVal X As Integer, ByVal Y As Integer) As Integer
 'MOD START 240a
-'    TerrainEffectForHPRecover = 10 * TDList.FeatureLevel(MapData(X, Y, 0), "ï¼¨ï¼°å›å¾©")
+'    TerrainEffectForHPRecover = 10 * TDList.FeatureLevel(MapData(X, Y, 0), "‚g‚o‰ñ•œ")
     Select Case MapData(X, Y, MapDataIndex.BoxType)
     Case BoxTypes.Under, BoxTypes.UpperBmpOnly
-        'ä¸Šå±¤ãƒ¬ã‚¤ãƒ¤ãŒç„¡ã„å ´åˆã¨ä¸Šå±¤ãŒç”»åƒæƒ…å ±ã—ã‹æŒã£ã¦ã„ãªã„å ´åˆã¯ä¸‹å±¤ã®ãƒ‡ãƒ¼ã‚¿ã‚’è¿”ã™
-        TerrainEffectForHPRecover = 10 * TDList.FeatureLevel(MapData(X, Y, MapDataIndex.TerrainType), "ï¼¨ï¼°å›å¾©")
+        'ã‘wƒŒƒCƒ„‚ª–³‚¢ê‡‚Æã‘w‚ª‰æ‘œî•ñ‚µ‚©‚Á‚Ä‚¢‚È‚¢ê‡‚Í‰º‘w‚Ìƒf[ƒ^‚ğ•Ô‚·
+        TerrainEffectForHPRecover = 10 * TDList.FeatureLevel(MapData(X, Y, MapDataIndex.TerrainType), "‚g‚o‰ñ•œ")
     Case Else
-        'ä¸Šå±¤ãƒ¬ã‚¤ãƒ¤ãŒä¸¡æ–¹æŒã£ã¦ã„ã‚‹å ´åˆã¨æƒ…å ±ã®ã¿æŒã£ã¦ã„ã‚‹å ´åˆã¯ä¸Šå±¤ã®ãƒ‡ãƒ¼ã‚¿ã‚’è¿”ã™
-        TerrainEffectForHPRecover = 10 * TDList.FeatureLevel(MapData(X, Y, MapDataIndex.LayerType), "ï¼¨ï¼°å›å¾©")
+        'ã‘wƒŒƒCƒ„‚ª—¼•û‚Á‚Ä‚¢‚éê‡‚Æî•ñ‚Ì‚İ‚Á‚Ä‚¢‚éê‡‚Íã‘w‚Ìƒf[ƒ^‚ğ•Ô‚·
+        TerrainEffectForHPRecover = 10 * TDList.FeatureLevel(MapData(X, Y, MapDataIndex.LayerType), "‚g‚o‰ñ•œ")
     End Select
 'MOD  END  240a
 End Function
 
-'(X,Y)åœ°ç‚¹ã®ï¼¥ï¼®å›å¾©ç‡
+'(X,Y)’n“_‚Ì‚d‚m‰ñ•œ—¦
 Public Function TerrainEffectForENRecover(ByVal X As Integer, ByVal Y As Integer) As Integer
 'MOD START 240a
-'    TerrainEffectForENRecover = 10 * TDList.FeatureLevel(MapData(X, Y, 0), "ï¼¥ï¼®å›å¾©")
+'    TerrainEffectForENRecover = 10 * TDList.FeatureLevel(MapData(X, Y, 0), "‚d‚m‰ñ•œ")
     Select Case MapData(X, Y, MapDataIndex.BoxType)
     Case BoxTypes.Under, BoxTypes.UpperBmpOnly
-        'ä¸Šå±¤ãƒ¬ã‚¤ãƒ¤ãŒç„¡ã„å ´åˆã¨ä¸Šå±¤ãŒç”»åƒæƒ…å ±ã—ã‹æŒã£ã¦ã„ãªã„å ´åˆã¯ä¸‹å±¤ã®ãƒ‡ãƒ¼ã‚¿ã‚’è¿”ã™
-        TerrainEffectForENRecover = 10 * TDList.FeatureLevel(MapData(X, Y, MapDataIndex.TerrainType), "ï¼¥ï¼®å›å¾©")
+        'ã‘wƒŒƒCƒ„‚ª–³‚¢ê‡‚Æã‘w‚ª‰æ‘œî•ñ‚µ‚©‚Á‚Ä‚¢‚È‚¢ê‡‚Í‰º‘w‚Ìƒf[ƒ^‚ğ•Ô‚·
+        TerrainEffectForENRecover = 10 * TDList.FeatureLevel(MapData(X, Y, MapDataIndex.TerrainType), "‚d‚m‰ñ•œ")
     Case Else
-        'ä¸Šå±¤ãƒ¬ã‚¤ãƒ¤ãŒä¸¡æ–¹æŒã£ã¦ã„ã‚‹å ´åˆã¨æƒ…å ±ã®ã¿æŒã£ã¦ã„ã‚‹å ´åˆã¯ä¸Šå±¤ã®ãƒ‡ãƒ¼ã‚¿ã‚’è¿”ã™
-        TerrainEffectForENRecover = 10 * TDList.FeatureLevel(MapData(X, Y, MapDataIndex.LayerType), "ï¼¥ï¼®å›å¾©")
+        'ã‘wƒŒƒCƒ„‚ª—¼•û‚Á‚Ä‚¢‚éê‡‚Æî•ñ‚Ì‚İ‚Á‚Ä‚¢‚éê‡‚Íã‘w‚Ìƒf[ƒ^‚ğ•Ô‚·
+        TerrainEffectForENRecover = 10 * TDList.FeatureLevel(MapData(X, Y, MapDataIndex.LayerType), "‚d‚m‰ñ•œ")
     End Select
 'MOD  END  240a
 End Function
 
-'(X,Y)åœ°ç‚¹ã®åœ°å½¢åç§°
+'(X,Y)’n“_‚Ì’nŒ`–¼Ì
 Public Function TerrainName(ByVal X As Integer, ByVal Y As Integer) As String
 'MOD START 240a
 '    TerrainName = TDList.Name(MapData(X, Y, 0))
     Select Case MapData(X, Y, MapDataIndex.BoxType)
     Case BoxTypes.Under, BoxTypes.UpperBmpOnly
-        'ä¸Šå±¤ãƒ¬ã‚¤ãƒ¤ãŒç„¡ã„å ´åˆã¨ä¸Šå±¤ãŒç”»åƒæƒ…å ±ã—ã‹æŒã£ã¦ã„ãªã„å ´åˆã¯ä¸‹å±¤ã®ãƒ‡ãƒ¼ã‚¿ã‚’è¿”ã™
+        'ã‘wƒŒƒCƒ„‚ª–³‚¢ê‡‚Æã‘w‚ª‰æ‘œî•ñ‚µ‚©‚Á‚Ä‚¢‚È‚¢ê‡‚Í‰º‘w‚Ìƒf[ƒ^‚ğ•Ô‚·
         TerrainName = TDList.Name(MapData(X, Y, MapDataIndex.TerrainType))
     Case Else
-        'ä¸Šå±¤ãƒ¬ã‚¤ãƒ¤ãŒä¸¡æ–¹æŒã£ã¦ã„ã‚‹å ´åˆã¨æƒ…å ±ã®ã¿æŒã£ã¦ã„ã‚‹å ´åˆã¯ä¸Šå±¤ã®ãƒ‡ãƒ¼ã‚¿ã‚’è¿”ã™
+        'ã‘wƒŒƒCƒ„‚ª—¼•û‚Á‚Ä‚¢‚éê‡‚Æî•ñ‚Ì‚İ‚Á‚Ä‚¢‚éê‡‚Íã‘w‚Ìƒf[ƒ^‚ğ•Ô‚·
         TerrainName = TDList.Name(MapData(X, Y, MapDataIndex.LayerType))
     End Select
 'MOD  END  240a
 End Function
 
-'(X,Y)åœ°ç‚¹ã®åœ°å½¢ã‚¯ãƒ©ã‚¹
+'(X,Y)’n“_‚Ì’nŒ`ƒNƒ‰ƒX
 Public Function TerrainClass(ByVal X As Integer, ByVal Y As Integer) As String
 'MOD START 240a
 '    TerrainClass = TDList.Class(MapData(X, Y, 0))
     Select Case MapData(X, Y, MapDataIndex.BoxType)
     Case BoxTypes.Under, BoxTypes.UpperBmpOnly
-        'ä¸Šå±¤ãƒ¬ã‚¤ãƒ¤ãŒç„¡ã„å ´åˆã¨ä¸Šå±¤ãŒç”»åƒæƒ…å ±ã—ã‹æŒã£ã¦ã„ãªã„å ´åˆã¯ä¸‹å±¤ã®ãƒ‡ãƒ¼ã‚¿ã‚’è¿”ã™
+        'ã‘wƒŒƒCƒ„‚ª–³‚¢ê‡‚Æã‘w‚ª‰æ‘œî•ñ‚µ‚©‚Á‚Ä‚¢‚È‚¢ê‡‚Í‰º‘w‚Ìƒf[ƒ^‚ğ•Ô‚·
         TerrainClass = TDList.Class(MapData(X, Y, MapDataIndex.TerrainType))
     Case Else
-        'ä¸Šå±¤ãƒ¬ã‚¤ãƒ¤ãŒä¸¡æ–¹æŒã£ã¦ã„ã‚‹å ´åˆã¨æƒ…å ±ã®ã¿æŒã£ã¦ã„ã‚‹å ´åˆã¯ä¸Šå±¤ã®ãƒ‡ãƒ¼ã‚¿ã‚’è¿”ã™
+        'ã‘wƒŒƒCƒ„‚ª—¼•û‚Á‚Ä‚¢‚éê‡‚Æî•ñ‚Ì‚İ‚Á‚Ä‚¢‚éê‡‚Íã‘w‚Ìƒf[ƒ^‚ğ•Ô‚·
         TerrainClass = TDList.Class(MapData(X, Y, MapDataIndex.LayerType))
     End Select
 'MOD  END  240a
 End Function
 
-'(X,Y)åœ°ç‚¹ã®ç§»å‹•ã‚³ã‚¹ãƒˆ
+'(X,Y)’n“_‚ÌˆÚ“®ƒRƒXƒg
 Public Function TerrainMoveCost(ByVal X As Integer, ByVal Y As Integer) As Integer
 'MOD START 240a
 '    TerrainMoveCost = TDList.MoveCost(MapData(X, Y, 0))
     Select Case MapData(X, Y, MapDataIndex.BoxType)
     Case BoxTypes.Under, BoxTypes.UpperBmpOnly
-        'ä¸Šå±¤ãƒ¬ã‚¤ãƒ¤ãŒç„¡ã„å ´åˆã¨ä¸Šå±¤ãŒç”»åƒæƒ…å ±ã—ã‹æŒã£ã¦ã„ãªã„å ´åˆã¯ä¸‹å±¤ã®ãƒ‡ãƒ¼ã‚¿ã‚’è¿”ã™
+        'ã‘wƒŒƒCƒ„‚ª–³‚¢ê‡‚Æã‘w‚ª‰æ‘œî•ñ‚µ‚©‚Á‚Ä‚¢‚È‚¢ê‡‚Í‰º‘w‚Ìƒf[ƒ^‚ğ•Ô‚·
         TerrainMoveCost = TDList.MoveCost(MapData(X, Y, MapDataIndex.TerrainType))
     Case Else
-        'ä¸Šå±¤ãƒ¬ã‚¤ãƒ¤ãŒä¸¡æ–¹æŒã£ã¦ã„ã‚‹å ´åˆã¨æƒ…å ±ã®ã¿æŒã£ã¦ã„ã‚‹å ´åˆã¯ä¸Šå±¤ã®ãƒ‡ãƒ¼ã‚¿ã‚’è¿”ã™
+        'ã‘wƒŒƒCƒ„‚ª—¼•û‚Á‚Ä‚¢‚éê‡‚Æî•ñ‚Ì‚İ‚Á‚Ä‚¢‚éê‡‚Íã‘w‚Ìƒf[ƒ^‚ğ•Ô‚·
         TerrainMoveCost = TDList.MoveCost(MapData(X, Y, MapDataIndex.LayerType))
     End Select
 'MOD  END  240a
 End Function
 
-'(X,Y)åœ°ç‚¹ã«éšœå®³ç‰©ãŒã‚ã‚‹ã‹ (å¹ãé£›ã°ã—æ™‚ã«è¡çªã™ã‚‹ã‹)
+'(X,Y)’n“_‚ÉáŠQ•¨‚ª‚ ‚é‚© (‚«”ò‚Î‚µ‚ÉÕ“Ë‚·‚é‚©)
 Public Function TerrainHasObstacle(ByVal X As Integer, ByVal Y As Integer) As Boolean
 'MOD START 240a
-'    TerrainHasObstacle = TDList.IsFeatureAvailable(MapData(X, Y, 0), "è¡çª")
+'    TerrainHasObstacle = TDList.IsFeatureAvailable(MapData(X, Y, 0), "Õ“Ë")
     Select Case MapData(X, Y, MapDataIndex.BoxType)
     Case BoxTypes.Under, BoxTypes.UpperBmpOnly
-        'ä¸Šå±¤ãƒ¬ã‚¤ãƒ¤ãŒç„¡ã„å ´åˆã¨ä¸Šå±¤ãŒç”»åƒæƒ…å ±ã—ã‹æŒã£ã¦ã„ãªã„å ´åˆã¯ä¸‹å±¤ã®ãƒ‡ãƒ¼ã‚¿ã‚’è¿”ã™
-        TerrainHasObstacle = TDList.IsFeatureAvailable(MapData(X, Y, MapDataIndex.TerrainType), "è¡çª")
+        'ã‘wƒŒƒCƒ„‚ª–³‚¢ê‡‚Æã‘w‚ª‰æ‘œî•ñ‚µ‚©‚Á‚Ä‚¢‚È‚¢ê‡‚Í‰º‘w‚Ìƒf[ƒ^‚ğ•Ô‚·
+        TerrainHasObstacle = TDList.IsFeatureAvailable(MapData(X, Y, MapDataIndex.TerrainType), "Õ“Ë")
     Case Else
-        'ä¸Šå±¤ãƒ¬ã‚¤ãƒ¤ãŒä¸¡æ–¹æŒã£ã¦ã„ã‚‹å ´åˆã¨æƒ…å ±ã®ã¿æŒã£ã¦ã„ã‚‹å ´åˆã¯ä¸Šå±¤ã®ãƒ‡ãƒ¼ã‚¿ã‚’è¿”ã™
-        TerrainHasObstacle = TDList.IsFeatureAvailable(MapData(X, Y, MapDataIndex.LayerType), "è¡çª")
+        'ã‘wƒŒƒCƒ„‚ª—¼•û‚Á‚Ä‚¢‚éê‡‚Æî•ñ‚Ì‚İ‚Á‚Ä‚¢‚éê‡‚Íã‘w‚Ìƒf[ƒ^‚ğ•Ô‚·
+        TerrainHasObstacle = TDList.IsFeatureAvailable(MapData(X, Y, MapDataIndex.LayerType), "Õ“Ë")
     End Select
 'MOD  END  240a
 End Function
 
 'ADD START 240a
-'(X,Y)åœ°ç‚¹ãŒç§»å‹•åœæ­¢ã‹
+'(X,Y)’n“_‚ªˆÚ“®’â~‚©
 Public Function TerrainHasMoveStop(ByVal X As Integer, ByVal Y As Integer) As Boolean
     Select Case MapData(X, Y, MapDataIndex.BoxType)
     Case BoxTypes.Under, BoxTypes.UpperBmpOnly
-        'ä¸Šå±¤ãƒ¬ã‚¤ãƒ¤ãŒç„¡ã„å ´åˆã¨ä¸Šå±¤ãŒç”»åƒæƒ…å ±ã—ã‹æŒã£ã¦ã„ãªã„å ´åˆã¯ä¸‹å±¤ã®ãƒ‡ãƒ¼ã‚¿ã‚’è¿”ã™
-        TerrainHasMoveStop = TDList.IsFeatureAvailable(MapData(X, Y, MapDataIndex.TerrainType), "ç§»å‹•åœæ­¢")
+        'ã‘wƒŒƒCƒ„‚ª–³‚¢ê‡‚Æã‘w‚ª‰æ‘œî•ñ‚µ‚©‚Á‚Ä‚¢‚È‚¢ê‡‚Í‰º‘w‚Ìƒf[ƒ^‚ğ•Ô‚·
+        TerrainHasMoveStop = TDList.IsFeatureAvailable(MapData(X, Y, MapDataIndex.TerrainType), "ˆÚ“®’â~")
     Case Else
-        'ä¸Šå±¤ãƒ¬ã‚¤ãƒ¤ãŒä¸¡æ–¹æŒã£ã¦ã„ã‚‹å ´åˆã¨æƒ…å ±ã®ã¿æŒã£ã¦ã„ã‚‹å ´åˆã¯ä¸Šå±¤ã®ãƒ‡ãƒ¼ã‚¿ã‚’è¿”ã™
-        TerrainHasMoveStop = TDList.IsFeatureAvailable(MapData(X, Y, MapDataIndex.LayerType), "ç§»å‹•åœæ­¢")
+        'ã‘wƒŒƒCƒ„‚ª—¼•û‚Á‚Ä‚¢‚éê‡‚Æî•ñ‚Ì‚İ‚Á‚Ä‚¢‚éê‡‚Íã‘w‚Ìƒf[ƒ^‚ğ•Ô‚·
+        TerrainHasMoveStop = TDList.IsFeatureAvailable(MapData(X, Y, MapDataIndex.LayerType), "ˆÚ“®’â~")
     End Select
 End Function
 
-'(X,Y)åœ°ç‚¹ãŒé€²å…¥ç¦æ­¢ã‹
+'(X,Y)’n“_‚ªi“ü‹Ö~‚©
 Public Function TerrainDoNotEnter(ByVal X As Integer, ByVal Y As Integer) As Boolean
     Dim ret As Boolean
     Select Case MapData(X, Y, MapDataIndex.BoxType)
     Case BoxTypes.Under, BoxTypes.UpperBmpOnly
-        'ä¸Šå±¤ãƒ¬ã‚¤ãƒ¤ãŒç„¡ã„å ´åˆã¨ä¸Šå±¤ãŒç”»åƒæƒ…å ±ã—ã‹æŒã£ã¦ã„ãªã„å ´åˆã¯ä¸‹å±¤ã®ãƒ‡ãƒ¼ã‚¿ã‚’è¿”ã™
-        ret = TDList.IsFeatureAvailable(MapData(X, Y, MapDataIndex.TerrainType), "é€²å…¥ç¦æ­¢")
+        'ã‘wƒŒƒCƒ„‚ª–³‚¢ê‡‚Æã‘w‚ª‰æ‘œî•ñ‚µ‚©‚Á‚Ä‚¢‚È‚¢ê‡‚Í‰º‘w‚Ìƒf[ƒ^‚ğ•Ô‚·
+        ret = TDList.IsFeatureAvailable(MapData(X, Y, MapDataIndex.TerrainType), "i“ü‹Ö~")
         If Not ret Then
-            'äº’æ›æ€§ç¶­æŒã®ãŸã‚æ®‹ã—ã¦ã„ã‚‹
-            ret = TDList.IsFeatureAvailable(MapData(X, Y, MapDataIndex.TerrainType), "ä¾µå…¥ç¦æ­¢")
+            'ŒİŠ·«ˆÛ‚Ì‚½‚ßc‚µ‚Ä‚¢‚é
+            ret = TDList.IsFeatureAvailable(MapData(X, Y, MapDataIndex.TerrainType), "N“ü‹Ö~")
         End If
     Case Else
-        'ä¸Šå±¤ãƒ¬ã‚¤ãƒ¤ãŒä¸¡æ–¹æŒã£ã¦ã„ã‚‹å ´åˆã¨æƒ…å ±ã®ã¿æŒã£ã¦ã„ã‚‹å ´åˆã¯ä¸Šå±¤ã®ãƒ‡ãƒ¼ã‚¿ã‚’è¿”ã™
-        ret = TDList.IsFeatureAvailable(MapData(X, Y, MapDataIndex.LayerType), "é€²å…¥ç¦æ­¢")
+        'ã‘wƒŒƒCƒ„‚ª—¼•û‚Á‚Ä‚¢‚éê‡‚Æî•ñ‚Ì‚İ‚Á‚Ä‚¢‚éê‡‚Íã‘w‚Ìƒf[ƒ^‚ğ•Ô‚·
+        ret = TDList.IsFeatureAvailable(MapData(X, Y, MapDataIndex.LayerType), "i“ü‹Ö~")
         If Not ret Then
-            'äº’æ›æ€§ç¶­æŒã®ãŸã‚æ®‹ã—ã¦ã„ã‚‹
-            ret = TDList.IsFeatureAvailable(MapData(X, Y, MapDataIndex.LayerType), "ä¾µå…¥ç¦æ­¢")
+            'ŒİŠ·«ˆÛ‚Ì‚½‚ßc‚µ‚Ä‚¢‚é
+            ret = TDList.IsFeatureAvailable(MapData(X, Y, MapDataIndex.LayerType), "N“ü‹Ö~")
         End If
     End Select
 End Function
 
-'(X,Y)åœ°ç‚¹ãŒæŒ‡å®šã—ãŸèƒ½åŠ›ã‚’æŒã£ã¦ã„ã‚‹ã‹
+'(X,Y)’n“_‚ªw’è‚µ‚½”\—Í‚ğ‚Á‚Ä‚¢‚é‚©
 Public Function TerrainHasFeature(ByVal X As Integer, ByVal Y As Integer, Feature As String) As Boolean
     Select Case MapData(X, Y, MapDataIndex.BoxType)
     Case BoxTypes.Under, BoxTypes.UpperBmpOnly
-        'ä¸Šå±¤ãƒ¬ã‚¤ãƒ¤ãŒç„¡ã„å ´åˆã¨ä¸Šå±¤ãŒç”»åƒæƒ…å ±ã—ã‹æŒã£ã¦ã„ãªã„å ´åˆã¯ä¸‹å±¤ã®ãƒ‡ãƒ¼ã‚¿ã‚’è¿”ã™
+        'ã‘wƒŒƒCƒ„‚ª–³‚¢ê‡‚Æã‘w‚ª‰æ‘œî•ñ‚µ‚©‚Á‚Ä‚¢‚È‚¢ê‡‚Í‰º‘w‚Ìƒf[ƒ^‚ğ•Ô‚·
         TerrainHasFeature = TDList.IsFeatureAvailable(MapData(X, Y, MapDataIndex.TerrainType), Feature)
     Case Else
-        'ä¸Šå±¤ãƒ¬ã‚¤ãƒ¤ãŒä¸¡æ–¹æŒã£ã¦ã„ã‚‹å ´åˆã¨æƒ…å ±ã®ã¿æŒã£ã¦ã„ã‚‹å ´åˆã¯ä¸Šå±¤ã®ãƒ‡ãƒ¼ã‚¿ã‚’è¿”ã™
+        'ã‘wƒŒƒCƒ„‚ª—¼•û‚Á‚Ä‚¢‚éê‡‚Æî•ñ‚Ì‚İ‚Á‚Ä‚¢‚éê‡‚Íã‘w‚Ìƒf[ƒ^‚ğ•Ô‚·
         TerrainHasFeature = TDList.IsFeatureAvailable(MapData(X, Y, MapDataIndex.LayerType), Feature)
     End Select
 End Function
 'ADD  END  240a
 
-'(X,Y)åœ°ç‚¹ã«ã„ã‚‹ãƒ¦ãƒ‹ãƒƒãƒˆ
+'(X,Y)’n“_‚É‚¢‚éƒ†ƒjƒbƒg
 Public Function UnitAtPoint(ByVal X As Integer, ByVal Y As Integer) As Unit
     If X < 1 Or MapWidth < X Then
         Set UnitAtPoint = Nothing
@@ -284,7 +284,7 @@ Public Function UnitAtPoint(ByVal X As Integer, ByVal Y As Integer) As Unit
     Set UnitAtPoint = MapDataForUnit(X, Y)
 End Function
 
-'æŒ‡å®šã—ãŸãƒãƒƒãƒ—ç”»åƒã‚’æ¤œç´¢ã™ã‚‹
+'w’è‚µ‚½ƒ}ƒbƒv‰æ‘œ‚ğŒŸõ‚·‚é
 Public Function SearchTerrainImageFile(ByVal tid As Integer, ByVal tbitmap As Integer, _
     ByVal tx As Integer, ByVal ty As Integer) As String
 Dim tbmpname As String
@@ -295,7 +295,7 @@ Static extdata_map_dir_exists As Boolean
 Static extdata2_map_dir_exists As Boolean
 
 'ADD START 240a
-    'ç”»åƒç„¡ãŒç¢ºå®šã—ã¦ã‚‹ãªã‚‰å‡¦ç†ã—ãªã„
+    '‰æ‘œ–³‚ªŠm’è‚µ‚Ä‚é‚È‚çˆ—‚µ‚È‚¢
     If tid = NO_LAYER_NUM Then
         Exit Function
     ElseIf tbitmap = NO_LAYER_NUM Then
@@ -303,7 +303,7 @@ Static extdata2_map_dir_exists As Boolean
     End If
 'ADD  END  240a
 
-    'åˆã‚ã¦å®Ÿè¡Œã™ã‚‹éš›ã«ã€å„ãƒ•ã‚©ãƒ«ãƒ€ã«Bitmap\Mapãƒ•ã‚©ãƒ«ãƒ€ãŒã‚ã‚‹ã‹ãƒã‚§ãƒƒã‚¯
+    '‰‚ß‚ÄÀs‚·‚éÛ‚ÉAŠeƒtƒHƒ‹ƒ_‚ÉBitmap\MapƒtƒHƒ‹ƒ_‚ª‚ ‚é‚©ƒ`ƒFƒbƒN
     If Not init_setup_background Then
         If Len(Dir$(ScenarioPath & "Bitmap\Map", vbDirectory)) > 0 Then
             scenario_map_dir_exists = True
@@ -317,13 +317,13 @@ Static extdata2_map_dir_exists As Boolean
         init_setup_background = True
     End If
     
-    'ãƒãƒƒãƒ—ç”»åƒã®ãƒ•ã‚¡ã‚¤ãƒ«åã‚’ä½œæˆ
+    'ƒ}ƒbƒv‰æ‘œ‚Ìƒtƒ@ƒCƒ‹–¼‚ğì¬
     tbmpname = TDList.Bitmap(tid)
     fname1 = "\Bitmap\Map\" & tbmpname & "\" & tbmpname & Format$(tbitmap, "0000") & ".bmp"
     fname2 = "\Bitmap\Map\" & tbmpname & Format$(tbitmap, "0000") & ".bmp"
     fname3 = "\Bitmap\Map\" & tbmpname & Format$(tbitmap) & ".bmp"
     
-    'ãƒ“ãƒƒãƒˆãƒãƒƒãƒ—ã‚’æ¢ã™
+    'ƒrƒbƒgƒ}ƒbƒv‚ğ’T‚·
     If scenario_map_dir_exists Then
         If FileExists(ScenarioPath & fname1) Then
             SearchTerrainImageFile = ScenarioPath & fname1
@@ -393,17 +393,17 @@ Static extdata2_map_dir_exists As Boolean
 End Function
 
 
-'ãƒãƒƒãƒ—ãƒ•ã‚¡ã‚¤ãƒ« fname ã®ãƒ‡ãƒ¼ã‚¿ã‚’ãƒ­ãƒ¼ãƒ‰
+'ƒ}ƒbƒvƒtƒ@ƒCƒ‹ fname ‚Ìƒf[ƒ^‚ğƒ[ƒh
 Public Sub LoadMapData(fname As String)
 Dim FileNumber As Integer
 Dim i As Integer, j As Integer
 Dim buf As String
     
-    'ãƒ•ã‚¡ã‚¤ãƒ«ãŒå­˜åœ¨ã—ãªã„å ´åˆ
+    'ƒtƒ@ƒCƒ‹‚ª‘¶İ‚µ‚È‚¢ê‡
     If fname = "" Or Not FileExists(fname) Then
         MapFileName = ""
-        If InStr(ScenarioFileName, "ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹è¡¨ç¤º.") > 0 _
-            Or InStr(ScenarioFileName, "ãƒ©ãƒ³ã‚­ãƒ³ã‚°.") > 0 _
+        If InStr(ScenarioFileName, "ƒXƒe[ƒ^ƒX•\¦.") > 0 _
+            Or InStr(ScenarioFileName, "ƒ‰ƒ“ƒLƒ“ƒO.") > 0 _
         Then
             SetMapSize MainWidth, 40
         Else
@@ -414,7 +414,7 @@ Dim buf As String
 'MOD START 240a
 '                MapData(i, j, 0) = MAX_TERRAIN_DATA_NUM
 '                MapData(i, j, 1) = 0
-                'ãƒ•ã‚¡ã‚¤ãƒ«ãŒç„¡ã„å ´åˆ
+                'ƒtƒ@ƒCƒ‹‚ª–³‚¢ê‡
                 MapData(i, j, MapDataIndex.TerrainType) = MAX_TERRAIN_DATA_NUM
                 MapData(i, j, MapDataIndex.BitmapNo) = 0
                 MapData(i, j, MapDataIndex.LayerType) = NO_LAYER_NUM
@@ -428,17 +428,17 @@ Dim buf As String
     
     On Error GoTo ErrorHandler
     
-    'ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ã
+    'ƒtƒ@ƒCƒ‹‚ğŠJ‚­
     FileNumber = FreeFile
     Open fname For Input As #FileNumber
     
-    'ãƒ•ã‚¡ã‚¤ãƒ«åã‚’è¨˜éŒ²ã—ã¦ãŠã
+    'ƒtƒ@ƒCƒ‹–¼‚ğ‹L˜^‚µ‚Ä‚¨‚­
     MapFileName = fname
     
-    'ãƒ•ã‚¡ã‚¤ãƒ«ã®å…ˆé ­ã«ã‚ã‚‹ãƒãƒƒãƒ—ã‚µã‚¤ã‚ºæƒ…å ±ã‚’åå¾—
+    'ƒtƒ@ƒCƒ‹‚Ìæ“ª‚É‚ ‚éƒ}ƒbƒvƒTƒCƒYî•ñ‚ğû“¾
     Input #FileNumber, buf
     If buf <> "MapData" Then
-        'æ—§å½¢å¼ã®ãƒãƒƒãƒ—ãƒ‡ãƒ¼ã‚¿
+        '‹ŒŒ`®‚Ìƒ}ƒbƒvƒf[ƒ^
         SetMapSize 20, 20
         Close #FileNumber
         
@@ -450,18 +450,18 @@ Dim buf As String
         SetMapSize i, j
     End If
     
-    'ãƒãƒƒãƒ—ãƒ‡ãƒ¼ã‚¿ã‚’èª­ã¿è¾¼ã¿
+    'ƒ}ƒbƒvƒf[ƒ^‚ğ“Ç‚İ‚İ
     For i = 1 To MapWidth
         For j = 1 To MapHeight
 'MOD START 240a
 '            Input #FileNumber, MapData(i, j, 0), MapData(i, j, 1)
 '            If Not TDList.IsDefined(MapData(i, j, 0)) Then
-'                MsgBox "å®šç¾©ã•ã‚Œã¦ã„ãªã„" & Format$(MapData(i, j, 0)) _
-'                    & "ç•ªã®åœ°å½¢ãƒ‡ãƒ¼ã‚¿ãŒä½¿ã‚ã‚Œã¦ã„ã¾ã™"
+'                MsgBox "’è‹`‚³‚ê‚Ä‚¢‚È‚¢" & Format$(MapData(i, j, 0)) _
+'                    & "”Ô‚Ì’nŒ`ƒf[ƒ^‚ªg‚í‚ê‚Ä‚¢‚Ü‚·"
             Input #FileNumber, MapData(i, j, MapDataIndex.TerrainType), MapData(i, j, MapDataIndex.BitmapNo)
             If Not TDList.IsDefined(MapData(i, j, MapDataIndex.TerrainType)) Then
-                MsgBox "å®šç¾©ã•ã‚Œã¦ã„ãªã„" & Format$(MapData(i, j, MapDataIndex.TerrainType)) _
-                    & "ç•ªã®åœ°å½¢ãƒ‡ãƒ¼ã‚¿ãŒä½¿ã‚ã‚Œã¦ã„ã¾ã™"
+                MsgBox "’è‹`‚³‚ê‚Ä‚¢‚È‚¢" & Format$(MapData(i, j, MapDataIndex.TerrainType)) _
+                    & "”Ô‚Ì’nŒ`ƒf[ƒ^‚ªg‚í‚ê‚Ä‚¢‚Ü‚·"
 'MOD  END  240a
                 Close #FileNumber
                 End
@@ -470,7 +470,7 @@ Dim buf As String
     Next
 
 'ADD START 240a
-    'ãƒ¬ã‚¤ãƒ¤ãƒ¼ãƒ‡ãƒ¼ã‚¿èª­ã¿è¾¼ã¿
+    'ƒŒƒCƒ„[ƒf[ƒ^“Ç‚İ‚İ
     If Not EOF(FileNumber) Then
         Input #FileNumber, buf
         If buf = "Layer" Then
@@ -478,16 +478,16 @@ Dim buf As String
                 For j = 1 To MapHeight
                     Input #FileNumber, MapData(i, j, MapDataIndex.LayerType), MapData(i, j, MapDataIndex.LayerBitmapNo)
                     If (MapData(i, j, MapDataIndex.LayerType) <> NO_LAYER_NUM) Then
-                        'å®šç¾©ã•ã‚Œã¦ã„ãŸã‚‰ãƒ‡ãƒ¼ã‚¿ã®å¦¥å½“æ€§ãƒã‚§ãƒƒã‚¯
+                        '’è‹`‚³‚ê‚Ä‚¢‚½‚çƒf[ƒ^‚Ì‘Ã“–«ƒ`ƒFƒbƒN
                         If Not TDList.IsDefined(MapData(i, j, MapDataIndex.LayerType)) Then
-                            MsgBox "å®šç¾©ã•ã‚Œã¦ã„ãªã„" & Format$(MapData(i, j, MapDataIndex.LayerType)) & "ç•ªã®åœ°å½¢ãƒ‡ãƒ¼ã‚¿ãŒä½¿ã‚ã‚Œã¦ã„ã¾ã™"
+                            MsgBox "’è‹`‚³‚ê‚Ä‚¢‚È‚¢" & Format$(MapData(i, j, MapDataIndex.LayerType)) & "”Ô‚Ì’nŒ`ƒf[ƒ^‚ªg‚í‚ê‚Ä‚¢‚Ü‚·"
                             Close #FileNumber
                             End
                         End If
-                        'ãƒã‚¹ã®ã‚¿ã‚¤ãƒ—ã‚’ä¸Šå±¤ã«
+                        'ƒ}ƒX‚Ìƒ^ƒCƒv‚ğã‘w‚É
                         MapData(i, j, MapDataIndex.BoxType) = BoxTypes.Upper
                     Else
-                        'ãƒã‚¹ã®ã‚¿ã‚¤ãƒ—ã‚’ä¸‹å±¤ã«ï¼ˆåˆæœŸåŒ–æ™‚ä¸‹å±¤ã ãŒã€å†åº¦æ˜ç¤ºçš„ã«è¨­å®šã™ã‚‹ï¼‰
+                        'ƒ}ƒX‚Ìƒ^ƒCƒv‚ğ‰º‘w‚Éi‰Šú‰»‰º‘w‚¾‚ªAÄ“x–¾¦“I‚Éİ’è‚·‚éj
                         MapData(i, j, MapDataIndex.BoxType) = BoxTypes.Under
                     End If
                 Next
@@ -500,12 +500,12 @@ Dim buf As String
     Exit Sub
     
 ErrorHandler:
-    ErrorMessage "ãƒãƒƒãƒ—ãƒ•ã‚¡ã‚¤ãƒ«ã€Œ" & fname & "ã€ã®ãƒ‡ãƒ¼ã‚¿ãŒä¸æ­£ã§ã™"
+    ErrorMessage "ƒ}ƒbƒvƒtƒ@ƒCƒ‹u" & fname & "v‚Ìƒf[ƒ^‚ª•s³‚Å‚·"
     Close #FileNumber
     End
 End Sub
 
-'ãƒãƒƒãƒ—ã‚µã‚¤ã‚ºã‚’è¨­å®š
+'ƒ}ƒbƒvƒTƒCƒY‚ğİ’è
 Public Sub SetMapSize(ByVal w As Integer, ByVal h As Integer)
 Dim i As Integer, j As Integer, ret As Long
 
@@ -516,7 +516,7 @@ Dim i As Integer, j As Integer, ret As Long
     MapX = (MainWidth + 1) \ 2
     MapY = (MainHeight + 1) \ 2
     
-    'ãƒãƒƒãƒ—ç”»åƒã‚µã‚¤ã‚ºã‚’æ±ºå®š
+    'ƒ}ƒbƒv‰æ‘œƒTƒCƒY‚ğŒˆ’è
     With MainForm.picBack
         .Picture = LoadPicture("")
         .Move 0, 0, MapPWidth, MapPHeight
@@ -527,7 +527,7 @@ Dim i As Integer, j As Integer, ret As Long
         .Move 0, 0, MapPWidth, MapPHeight
     End With
     
-    'ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«ãƒãƒ¼ã®ç§»å‹•ç¯„å›²ã‚’æ±ºå®š
+    'ƒXƒNƒ[ƒ‹ƒo[‚ÌˆÚ“®”ÍˆÍ‚ğŒˆ’è
     With MainForm.HScroll
         If .max <> MapWidth Then
             .Visible = False
@@ -553,7 +553,7 @@ Dim i As Integer, j As Integer, ret As Long
         End If
     End With
     
-    'ãƒãƒƒãƒ—ãƒ‡ãƒ¼ã‚¿ç”¨é…åˆ—ã®é ˜åŸŸç¢ºä¿
+    'ƒ}ƒbƒvƒf[ƒ^—p”z—ñ‚Ì—ÌˆæŠm•Û
 'MOD START 240a
 '    ReDim MapData(1 To MapWidth, 1 To MapHeight, 1)
     ReDim MapData(1 To MapWidth, 1 To MapHeight, 4)
@@ -564,7 +564,7 @@ Dim i As Integer, j As Integer, ret As Long
     ReDim PointInZOC(0 To MapWidth + 1, 0 To MapHeight + 1)
     ReDim MapImageFileTypeData(1 To MapWidth, 1 To MapHeight)
     
-    'ãƒãƒƒãƒ—ãƒ‡ãƒ¼ã‚¿é…åˆ—ã®åˆæœŸåŒ–
+    'ƒ}ƒbƒvƒf[ƒ^”z—ñ‚Ì‰Šú‰»
     For i = 1 To MapWidth
         For j = 1 To MapHeight
 'MOD START 240a
@@ -582,7 +582,7 @@ Dim i As Integer, j As Integer, ret As Long
     Next
 End Sub
 
-'ãƒãƒƒãƒ—ãƒ‡ãƒ¼ã‚¿ã‚’ã‚¯ãƒªã‚¢
+'ƒ}ƒbƒvƒf[ƒ^‚ğƒNƒŠƒA
 Public Sub ClearMap()
 Dim ret As Long
 
@@ -608,7 +608,7 @@ Dim ret As Long
 'MOD  END  240a
     Set MapDataForUnit(1, 1) = Nothing
     
-    'ãƒãƒƒãƒ—ç”»é¢ã‚’æ¶ˆå»
+    'ƒ}ƒbƒv‰æ–Ê‚ğÁ‹
     With MainForm.picBack
         ret = PatBlt(.hDC, 0, 0, .width, .Height, BLACKNESS)
     End With
@@ -616,7 +616,7 @@ Dim ret As Long
         ret = PatBlt(.hDC, 0, 0, .width, .Height, BLACKNESS)
     End With
     
-    'ãƒ¦ãƒ‹ãƒƒãƒˆç”»åƒã‚’ãƒªã‚»ãƒƒãƒˆ
+    'ƒ†ƒjƒbƒg‰æ‘œ‚ğƒŠƒZƒbƒg
     If MapDrawMode <> "" And Not MapDrawIsMapOnly Then
         UList.ClearUnitBitmap
     End If
@@ -628,7 +628,7 @@ Dim ret As Long
 End Sub
 
 
-'ä¸­æ–­ç”¨ã‚»ãƒ¼ãƒ–ãƒ‡ãƒ¼ã‚¿ã«ãƒãƒƒãƒ—ãƒ‡ãƒ¼ã‚¿ã‚’ã‚»ãƒ¼ãƒ–
+'’†’f—pƒZ[ƒuƒf[ƒ^‚Éƒ}ƒbƒvƒf[ƒ^‚ğƒZ[ƒu
 Public Sub DumpMapData()
 Dim i As Integer, j As Integer
 Dim fname As String
@@ -641,7 +641,7 @@ Dim fname As String
     
     
     If MapDrawIsMapOnly Then
-        Write #SaveDataFileNumber, fname, MapDrawMode & "(ãƒãƒƒãƒ—é™å®š)"
+        Write #SaveDataFileNumber, fname, MapDrawMode & "(ƒ}ƒbƒvŒÀ’è)"
     Else
         Write #SaveDataFileNumber, fname, MapDrawMode
     End If
@@ -659,7 +659,7 @@ Dim fname As String
     Write #SaveDataFileNumber, MapX, MapY
     
 'ADD START 240a
-    'ãƒ¬ã‚¤ãƒ¤æƒ…å ±ã‚’æ›¸ãè¾¼ã‚€
+    'ƒŒƒCƒ„î•ñ‚ğ‘‚«‚Ş
     Write #SaveDataFileNumber, "Layer"
     For i = 1 To MapWidth
         For j = 1 To MapHeight
@@ -670,9 +670,9 @@ Dim fname As String
     
 End Sub
 
-'ä¸­æ–­ç”¨ã‚»ãƒ¼ãƒ–ãƒ‡ãƒ¼ã‚¿ã‹ã‚‰ãƒãƒƒãƒ—ãƒ‡ãƒ¼ã‚¿ã‚’ãƒ­ãƒ¼ãƒ‰
+'’†’f—pƒZ[ƒuƒf[ƒ^‚©‚çƒ}ƒbƒvƒf[ƒ^‚ğƒ[ƒh
 'MOD START 240a
-'Subâ†’Functionã«
+'Sub¨Function‚É
 'Public Sub RestoreMapData() As String
 Public Function RestoreMapData() As String
 'MOD  END  240a
@@ -686,7 +686,7 @@ Dim i As Integer, j As Integer
 Dim is_map_changed As Boolean
 Dim u As Unit
     
-    'ãƒãƒƒãƒ—ãƒ•ã‚¡ã‚¤ãƒ«å, ãƒãƒƒãƒ—æç”»æ–¹æ³•
+    'ƒ}ƒbƒvƒtƒ@ƒCƒ‹–¼, ƒ}ƒbƒv•`‰æ•û–@
     Input #SaveDataFileNumber, sbuf1, sbuf2
     If InStr(sbuf1, ":") = 0 Then
         sbuf1 = ScenarioPath & sbuf1
@@ -696,8 +696,8 @@ Dim u As Unit
         is_map_changed = True
     End If
     If MapDrawIsMapOnly Then
-        If sbuf2 <> MapDrawMode & "(ãƒãƒƒãƒ—é™å®š)" Then
-            If Right$(sbuf2, 7) = "(ãƒãƒƒãƒ—é™å®š)" Then
+        If sbuf2 <> MapDrawMode & "(ƒ}ƒbƒvŒÀ’è)" Then
+            If Right$(sbuf2, 7) = "(ƒ}ƒbƒvŒÀ’è)" Then
                 MapDrawMode = Left$(sbuf2, Len(sbuf2) - 7)
                 MapDrawIsMapOnly = True
             Else
@@ -709,7 +709,7 @@ Dim u As Unit
         End If
     Else
         If sbuf2 <> MapDrawMode Then
-            If Right$(sbuf2, 7) = "(ãƒãƒƒãƒ—é™å®š)" Then
+            If Right$(sbuf2, 7) = "(ƒ}ƒbƒvŒÀ’è)" Then
                 MapDrawMode = Left$(sbuf2, Len(sbuf2) - 7)
                 MapDrawIsMapOnly = True
             Else
@@ -721,13 +721,13 @@ Dim u As Unit
         End If
     End If
     
-    'ãƒãƒƒãƒ—å¹…, ãƒãƒƒãƒ—é«˜ã•
+    'ƒ}ƒbƒv•, ƒ}ƒbƒv‚‚³
     Input #SaveDataFileNumber, ibuf1, ibuf2
     If ibuf1 <> MapWidth Or ibuf2 <> MapHeight Then
         SetMapSize ibuf1, ibuf2
     End If
     
-    'å„åœ°å½¢
+    'Še’nŒ`
     For i = 1 To MapWidth
         For j = 1 To MapHeight
             Input #SaveDataFileNumber, ibuf1, ibuf2
@@ -753,21 +753,21 @@ Dim u As Unit
     Next
     
 'MOV START 240a
-'    'èƒŒæ™¯æ›¸ãæ›ãˆã®å¿…è¦æœ‰ã‚Šï¼Ÿ
+'    '”wŒi‘‚«Š·‚¦‚Ì•K—v—L‚èH
 '    If is_map_changed Then
 '        IsMapDirty = True
 '    End If
 'MOV  END  240a
     
-    'è¡¨ç¤ºä½ç½®
-    'SetupBackgroundã§MapX,MapYãŒæ›¸ãæ›ãˆã‚‰ã‚Œã¦ã—ã¾ã†ãŸã‚ã€ã“ã®ä½ç½®ã§
-    'å€¤ã‚’å‚ç…§ã™ã‚‹å¿…è¦ãŒã‚ã‚‹ã€‚
+    '•\¦ˆÊ’u
+    'SetupBackground‚ÅMapX,MapY‚ª‘‚«Š·‚¦‚ç‚ê‚Ä‚µ‚Ü‚¤‚½‚ßA‚±‚ÌˆÊ’u‚Å
+    '’l‚ğQÆ‚·‚é•K—v‚ª‚ ‚éB
     Input #SaveDataFileNumber, MapX, MapY
     
 'ADD START 240a
     Input #SaveDataFileNumber, buf
     If "Layer" = buf Then
-        'å„ãƒ¬ã‚¤ãƒ¤
+        'ŠeƒŒƒCƒ„
         For i = 1 To MapWidth
             For j = 1 To MapHeight
                 Input #SaveDataFileNumber, ibuf1, ibuf2, ibuf3
@@ -785,17 +785,17 @@ Dim u As Unit
                 End If
             Next
         Next
-        'ï¼¢ï¼§ï¼­é–¢é€£æƒ…å ±ã®1è¡Œç›®ã‚’èª­ã¿è¾¼ã‚€
+        '‚a‚f‚lŠÖ˜Aî•ñ‚Ì1s–Ú‚ğ“Ç‚İ‚Ş
         Input #SaveDataFileNumber, buf
     End If
     RestoreMapData = buf
-    'èƒŒæ™¯æ›¸ãæ›ãˆã®å¿…è¦æœ‰ã‚Šï¼Ÿ
+    '”wŒi‘‚«Š·‚¦‚Ì•K—v—L‚èH
     If is_map_changed Then
         IsMapDirty = True
     End If
 'ADD  END  240a
     
-    'ãƒ¦ãƒ‹ãƒƒãƒˆé…ç½®
+    'ƒ†ƒjƒbƒg”z’u
     For i = 1 To MapWidth
         For j = 1 To MapHeight
             Set MapDataForUnit(i, j) = Nothing
@@ -803,7 +803,7 @@ Dim u As Unit
     Next
     For Each u In UList
         With u
-            If .Status = "å‡ºæ’ƒ" Then
+            If .Status = "oŒ‚" Then
                 Set MapDataForUnit(.X, .Y) = u
             End If
         End With
@@ -811,8 +811,8 @@ Dim u As Unit
 End Function
 
 
-'(X,Y)ã‚’ä¸­å¿ƒã¨ã™ã‚‹ min_range - max_range ã®ã‚¨ãƒªã‚¢ã‚’é¸æŠ
-'ã‚¨ãƒªã‚¢å†…ã®ãƒ¦ãƒ‹ãƒƒãƒˆã¯ uparty ã®æŒ‡ç¤ºã«å¾“ã„é¸æŠ
+'(X,Y)‚ğ’†S‚Æ‚·‚é min_range - max_range ‚ÌƒGƒŠƒA‚ğ‘I‘ğ
+'ƒGƒŠƒA“à‚Ìƒ†ƒjƒbƒg‚Í uparty ‚Ìw¦‚É]‚¢‘I‘ğ
 Public Sub AreaInRange(ByVal X As Integer, ByVal Y As Integer, _
     ByVal max_range As Integer, ByVal min_range As Integer, _
     uparty As String)
@@ -821,7 +821,7 @@ Dim x2 As Integer, y2 As Integer
 Dim i As Integer, j As Integer
 Dim n As Integer
     
-    'é¸æŠæƒ…å ±ã‚’ã‚¯ãƒªã‚¢
+    '‘I‘ğî•ñ‚ğƒNƒŠƒA
     For i = 1 To MapWidth
         For j = 1 To MapHeight
             MaskData(i, j) = True
@@ -833,7 +833,7 @@ Dim n As Integer
     y1 = MaxLng(Y - max_range, 1)
     y2 = MinLng(Y + max_range, MapHeight)
     
-    'max_rangeå†…ã‹ã¤min_rangeå¤–ã®ã‚¨ãƒªã‚¢ã‚’é¸æŠ
+    'max_range“à‚©‚Âmin_rangeŠO‚ÌƒGƒŠƒA‚ğ‘I‘ğ
     For i = x1 To x2
         For j = y1 To y2
             n = Abs(X - i) + Abs(Y - j)
@@ -845,15 +845,15 @@ Dim n As Integer
         Next
     Next
     
-    'ã‚¨ãƒªã‚¢å†…ã®ãƒ¦ãƒ‹ãƒƒãƒˆã‚’é¸æŠã™ã‚‹ã‹ãã‚Œãã‚Œåˆ¤å®š
+    'ƒGƒŠƒA“à‚Ìƒ†ƒjƒbƒg‚ğ‘I‘ğ‚·‚é‚©‚»‚ê‚¼‚ê”»’è
     Select Case uparty
-        Case "å‘³æ–¹", "ï¼®ï¼°ï¼£"
+        Case "–¡•û", "‚m‚o‚b"
             For i = x1 To x2
                 For j = y1 To y2
                     If Not MaskData(i, j) Then
                         If Not MapDataForUnit(i, j) Is Nothing Then
-                            If Not MapDataForUnit(i, j).Party = "å‘³æ–¹" _
-                                And Not MapDataForUnit(i, j).Party = "ï¼®ï¼°ï¼£" _
+                            If Not MapDataForUnit(i, j).Party = "–¡•û" _
+                                And Not MapDataForUnit(i, j).Party = "‚m‚o‚b" _
                             Then
                                 MaskData(i, j) = True
                             End If
@@ -861,18 +861,18 @@ Dim n As Integer
                     End If
                 Next
             Next
-        Case "å‘³æ–¹ã®æ•µ", "ï¼®ï¼°ï¼£ã®æ•µ"
+        Case "–¡•û‚Ì“G", "‚m‚o‚b‚Ì“G"
             For i = x1 To x2
                 For j = y1 To y2
                     If Not MaskData(i, j) Then
                         If Not MapDataForUnit(i, j) Is Nothing Then
                             With MapDataForUnit(i, j)
-                                If (.Party = "å‘³æ–¹" Or .Party = "ï¼®ï¼°ï¼£") _
-                                    And Not .IsConditionSatisfied("æš´èµ°") _
-                                    And Not .IsConditionSatisfied("é­…äº†") _
-                                    And Not .IsConditionSatisfied("æ··ä¹±") _
-                                    And Not .IsConditionSatisfied("æ†‘ä¾") _
-                                    And Not .IsConditionSatisfied("ç¡çœ ") _
+                                If (.Party = "–¡•û" Or .Party = "‚m‚o‚b") _
+                                    And Not .IsConditionSatisfied("–\‘–") _
+                                    And Not .IsConditionSatisfied("–£—¹") _
+                                    And Not .IsConditionSatisfied("¬—") _
+                                    And Not .IsConditionSatisfied("œßˆË") _
+                                    And Not .IsConditionSatisfied("‡–°") _
                                 Then
                                     MaskData(i, j) = True
                                 End If
@@ -881,25 +881,25 @@ Dim n As Integer
                     End If
                 Next
             Next
-        Case "æ•µ"
+        Case "“G"
             For i = x1 To x2
                 For j = y1 To y2
                     If Not MaskData(i, j) Then
                         If Not MapDataForUnit(i, j) Is Nothing Then
-                            If Not MapDataForUnit(i, j).Party = "æ•µ" Then
+                            If Not MapDataForUnit(i, j).Party = "“G" Then
                                 MaskData(i, j) = True
                             End If
                         End If
                     End If
                 Next
             Next
-        Case "æ•µã®æ•µ"
+        Case "“G‚Ì“G"
             For i = x1 To x2
                 For j = y1 To y2
                     If Not MaskData(i, j) Then
                         If Not MapDataForUnit(i, j) Is Nothing Then
                             With MapDataForUnit(i, j)
-                                If .Party = "æ•µ" Then
+                                If .Party = "“G" Then
                                     MaskData(i, j) = True
                                 End If
                             End With
@@ -907,25 +907,25 @@ Dim n As Integer
                     End If
                 Next
             Next
-        Case "ä¸­ç«‹"
+        Case "’†—§"
             For i = x1 To x2
                 For j = y1 To y2
                     If Not MaskData(i, j) Then
                         If Not MapDataForUnit(i, j) Is Nothing Then
-                            If Not MapDataForUnit(i, j).Party = "ä¸­ç«‹" Then
+                            If Not MapDataForUnit(i, j).Party = "’†—§" Then
                                 MaskData(i, j) = True
                             End If
                         End If
                     End If
                 Next
             Next
-        Case "ä¸­ç«‹ã®æ•µ"
+        Case "’†—§‚Ì“G"
             For i = x1 To x2
                 For j = y1 To y2
                     If Not MaskData(i, j) Then
                         If Not MapDataForUnit(i, j) Is Nothing Then
                             With MapDataForUnit(i, j)
-                                If .Party = "ä¸­ç«‹" Then
+                                If .Party = "’†—§" Then
                                     MaskData(i, j) = True
                                 End If
                             End With
@@ -933,7 +933,7 @@ Dim n As Integer
                     End If
                 Next
             Next
-        Case "ç©ºé–“"
+        Case "‹óŠÔ"
             For i = x1 To x2
                 For j = y1 To y2
                     If Not MaskData(i, j) Then
@@ -943,23 +943,23 @@ Dim n As Integer
                     End If
                 Next
             Next
-        Case "å…¨ã¦", "ç„¡å·®åˆ¥"
+        Case "‘S‚Ä", "–³·•Ê"
     End Select
     
-    'ã‚¨ãƒªã‚¢ã®ä¸­å¿ƒã¯å¸¸ã«é¸æŠ
+    'ƒGƒŠƒA‚Ì’†S‚Íí‚É‘I‘ğ
     MaskData(X, Y) = False
 End Sub
 
-'ãƒ¦ãƒ‹ãƒƒãƒˆ u ã‹ã‚‰ç§»å‹•å¾Œä½¿ç”¨å¯èƒ½ãªå°„ç¨‹ max_range ã®æ­¦å™¨ï¼ã‚¢ãƒ“ãƒªãƒ†ã‚£ã‚’ä½¿ã†å ´åˆã®åŠ¹æœç¯„å›²
-'ã‚¨ãƒªã‚¢å†…ã®ãƒ¦ãƒ‹ãƒƒãƒˆã¯ Party ã®æŒ‡ç¤ºã«å¾“ã„é¸æŠ
+'ƒ†ƒjƒbƒg u ‚©‚çˆÚ“®Œãg—p‰Â”\‚ÈË’ö max_range ‚Ì•Ší^ƒAƒrƒŠƒeƒB‚ğg‚¤ê‡‚ÌŒø‰Ê”ÍˆÍ
+'ƒGƒŠƒA“à‚Ìƒ†ƒjƒbƒg‚Í Party ‚Ìw¦‚É]‚¢‘I‘ğ
 Public Sub AreaInReachable(u As Unit, ByVal max_range As Integer, uparty As String)
 Dim tmp_mask_data() As Boolean
 Dim i As Integer, j As Integer, k As Integer
     
-    'ã¾ãšã¯ç§»å‹•ç¯„å›²ã‚’é¸æŠ
+    '‚Ü‚¸‚ÍˆÚ“®”ÍˆÍ‚ğ‘I‘ğ
     AreaInSpeed u
     
-    'é¸æŠç¯„å›²ã‚’max_rangeã¶ã‚“ã ã‘æ‹¡å¤§
+    '‘I‘ğ”ÍˆÍ‚ğmax_range‚Ô‚ñ‚¾‚¯Šg‘å
     ReDim tmp_mask_data(0 To MapWidth + 1, 0 To MapHeight + 1)
     For i = 0 To MapWidth + 1
         For j = 0 To MapHeight + 1
@@ -983,15 +983,15 @@ Dim i As Integer, j As Integer, k As Integer
         Next
     Next
     
-    'ã‚¨ãƒªã‚¢å†…ã®ãƒ¦ãƒ‹ãƒƒãƒˆã‚’é¸æŠã™ã‚‹ã‹ãã‚Œãã‚Œåˆ¤å®š
+    'ƒGƒŠƒA“à‚Ìƒ†ƒjƒbƒg‚ğ‘I‘ğ‚·‚é‚©‚»‚ê‚¼‚ê”»’è
     Select Case uparty
-        Case "å‘³æ–¹", "ï¼®ï¼°ï¼£"
+        Case "–¡•û", "‚m‚o‚b"
             For i = 1 To MapWidth
                 For j = 1 To MapHeight
                     If Not MaskData(i, j) Then
                         If Not MapDataForUnit(i, j) Is Nothing Then
-                            If Not MapDataForUnit(i, j).Party = "å‘³æ–¹" _
-                                And Not MapDataForUnit(i, j).Party = "ï¼®ï¼°ï¼£" _
+                            If Not MapDataForUnit(i, j).Party = "–¡•û" _
+                                And Not MapDataForUnit(i, j).Party = "‚m‚o‚b" _
                             Then
                                 MaskData(i, j) = True
                             End If
@@ -999,16 +999,16 @@ Dim i As Integer, j As Integer, k As Integer
                     End If
                 Next
             Next
-        Case "å‘³æ–¹ã®æ•µ", "ï¼®ï¼°ï¼£ã®æ•µ"
+        Case "–¡•û‚Ì“G", "‚m‚o‚b‚Ì“G"
             For i = 1 To MapWidth
                 For j = 1 To MapHeight
                     If Not MaskData(i, j) Then
                         If Not MapDataForUnit(i, j) Is Nothing Then
                             With MapDataForUnit(i, j)
-                                If (.Party = "å‘³æ–¹" Or .Party = "ï¼®ï¼°ï¼£") _
-                                    And Not .IsConditionSatisfied("æš´èµ°") _
-                                    And Not .IsConditionSatisfied("é­…äº†") _
-                                    And Not .IsConditionSatisfied("æ†‘ä¾") _
+                                If (.Party = "–¡•û" Or .Party = "‚m‚o‚b") _
+                                    And Not .IsConditionSatisfied("–\‘–") _
+                                    And Not .IsConditionSatisfied("–£—¹") _
+                                    And Not .IsConditionSatisfied("œßˆË") _
                                 Then
                                     MaskData(i, j) = True
                                 End If
@@ -1017,25 +1017,25 @@ Dim i As Integer, j As Integer, k As Integer
                     End If
                 Next
             Next
-        Case "æ•µ"
+        Case "“G"
             For i = 1 To MapWidth
                 For j = 1 To MapHeight
                     If Not MaskData(i, j) Then
                         If Not MapDataForUnit(i, j) Is Nothing Then
-                            If Not MapDataForUnit(i, j).Party = "æ•µ" Then
+                            If Not MapDataForUnit(i, j).Party = "“G" Then
                                 MaskData(i, j) = True
                             End If
                         End If
                     End If
                 Next
             Next
-        Case "æ•µã®æ•µ"
+        Case "“G‚Ì“G"
             For i = 1 To MapWidth
                 For j = 1 To MapHeight
                     If Not MaskData(i, j) Then
                         If Not MapDataForUnit(i, j) Is Nothing Then
                             With MapDataForUnit(i, j)
-                                If .Party = "æ•µ" Then
+                                If .Party = "“G" Then
                                     MaskData(i, j) = True
                                 End If
                             End With
@@ -1043,25 +1043,25 @@ Dim i As Integer, j As Integer, k As Integer
                     End If
                 Next
             Next
-        Case "ä¸­ç«‹"
+        Case "’†—§"
             For i = 1 To MapWidth
                 For j = 1 To MapHeight
                     If Not MaskData(i, j) Then
                         If Not MapDataForUnit(i, j) Is Nothing Then
-                            If Not MapDataForUnit(i, j).Party = "ä¸­ç«‹" Then
+                            If Not MapDataForUnit(i, j).Party = "’†—§" Then
                                 MaskData(i, j) = True
                             End If
                         End If
                     End If
                 Next
             Next
-        Case "ä¸­ç«‹ã®æ•µ"
+        Case "’†—§‚Ì“G"
             For i = 1 To MapWidth
                 For j = 1 To MapHeight
                     If Not MaskData(i, j) Then
                         If Not MapDataForUnit(i, j) Is Nothing Then
                             With MapDataForUnit(i, j)
-                                If .Party = "ä¸­ç«‹" Then
+                                If .Party = "’†—§" Then
                                     MaskData(i, j) = True
                                 End If
                             End With
@@ -1069,7 +1069,7 @@ Dim i As Integer, j As Integer, k As Integer
                     End If
                 Next
             Next
-        Case "ç©ºé–“"
+        Case "‹óŠÔ"
             For i = 1 To MapWidth
                 For j = 1 To MapHeight
                     If Not MaskData(i, j) Then
@@ -1079,14 +1079,14 @@ Dim i As Integer, j As Integer, k As Integer
                     End If
                 Next
             Next
-        Case "å…¨ã¦", "ç„¡å·®åˆ¥"
+        Case "‘S‚Ä", "–³·•Ê"
     End Select
     
-    'ã‚¨ãƒªã‚¢ã®ä¸­å¿ƒã¯å¸¸ã«é¸æŠ
+    'ƒGƒŠƒA‚Ì’†S‚Íí‚É‘I‘ğ
     MaskData(u.X, u.Y) = False
 End Sub
 
-'ãƒãƒƒãƒ—å…¨åŸŸã«æ¸¡ã£ã¦upartyã«å±ã™ã‚‹ãƒ¦ãƒ‹ãƒƒãƒˆãŒå­˜åœ¨ã™ã‚‹å ´æ‰€ã‚’é¸æŠ
+'ƒ}ƒbƒv‘Sˆæ‚É“n‚Á‚Äuparty‚É‘®‚·‚éƒ†ƒjƒbƒg‚ª‘¶İ‚·‚éêŠ‚ğ‘I‘ğ
 Public Sub AreaWithUnit(uparty As String)
 Dim i As Integer, j As Integer
 Dim u As Unit
@@ -1106,28 +1106,28 @@ Dim u As Unit
             
             With u
                 Select Case uparty
-                    Case "å‘³æ–¹"
-                        If .Party = "å‘³æ–¹" Or .Party = "ï¼®ï¼°ï¼£" Then
+                    Case "–¡•û"
+                        If .Party = "–¡•û" Or .Party = "‚m‚o‚b" Then
                             MaskData(i, j) = False
                         End If
-                    Case "å‘³æ–¹ã®æ•µ"
-                        If .Party <> "å‘³æ–¹" And .Party <> "ï¼®ï¼°ï¼£" Then
+                    Case "–¡•û‚Ì“G"
+                        If .Party <> "–¡•û" And .Party <> "‚m‚o‚b" Then
                             MaskData(i, j) = False
                         End If
-                    Case "æ•µ"
-                        If .Party = "æ•µ" Then
+                    Case "“G"
+                        If .Party = "“G" Then
                             MaskData(i, j) = False
                         End If
-                    Case "æ•µã®æ•µ"
-                        If .Party <> "æ•µ" Then
+                    Case "“G‚Ì“G"
+                        If .Party <> "“G" Then
                             MaskData(i, j) = False
                         End If
-                    Case "ä¸­ç«‹"
-                        If .Party = "ä¸­ç«‹" Then
+                    Case "’†—§"
+                        If .Party = "’†—§" Then
                             MaskData(i, j) = False
                         End If
-                    Case "ä¸­ç«‹ã®æ•µ"
-                        If .Party <> "ä¸­ç«‹" Then
+                    Case "’†—§‚Ì“G"
+                        If .Party <> "’†—§" Then
                             MaskData(i, j) = False
                         End If
                     Case Else
@@ -1139,7 +1139,7 @@ NextLoop:
     Next
 End Sub
 
-'åå­—çŠ¶ã®ã‚¨ãƒªã‚¢ã‚’é¸æŠ (ï¼­ç›´ã®æ”»æ’ƒæ–¹å‘é¸æŠç”¨)
+'\šó‚ÌƒGƒŠƒA‚ğ‘I‘ğ (‚l’¼‚ÌUŒ‚•ûŒü‘I‘ğ—p)
 Public Sub AreaInCross(ByVal X As Integer, ByVal Y As Integer, _
     ByVal min_range As Integer, max_range As Integer)
 Dim i As Integer, j As Integer
@@ -1173,7 +1173,7 @@ Dim i As Integer, j As Integer
     MaskData(X, Y) = False
 End Sub
 
-'ç›´ç·šçŠ¶ã®ã‚¨ãƒªã‚¢ã‚’é¸æŠ (ï¼­ç›´ã®æ”»æ’ƒç¯„å›²è¨­å®šç”¨)
+'’¼üó‚ÌƒGƒŠƒA‚ğ‘I‘ğ (‚l’¼‚ÌUŒ‚”ÍˆÍİ’è—p)
 Public Sub AreaInLine(ByVal X As Integer, ByVal Y As Integer, _
     ByVal min_range As Integer, max_range As Integer, direction As String)
 Dim i As Integer, j As Integer
@@ -1213,7 +1213,7 @@ Dim i As Integer, j As Integer
     MaskData(X, Y) = False
 End Sub
 
-'å¹…ï¼“ãƒã‚¹ã®åå­—çŠ¶ã®ã‚¨ãƒªã‚¢ã‚’é¸æŠ (ï¼­æ‹¡ã®æ”»æ’ƒæ–¹å‘é¸æŠç”¨)
+'•‚Rƒ}ƒX‚Ì\šó‚ÌƒGƒŠƒA‚ğ‘I‘ğ (‚lŠg‚ÌUŒ‚•ûŒü‘I‘ğ—p)
 Public Sub AreaInWideCross(ByVal X As Integer, ByVal Y As Integer, _
     ByVal min_range As Integer, max_range As Integer)
 Dim i As Integer, j As Integer
@@ -1291,7 +1291,7 @@ Dim i As Integer, j As Integer
     MaskData(X, Y) = False
 End Sub
 
-'å¹…ï¼“ãƒã‚¹ã®ç›´ç·šçŠ¶ã®ã‚¨ãƒªã‚¢ã‚’é¸æŠ (ï¼­æ‹¡ã®æ”»æ’ƒç¯„å›²è¨­å®šç”¨)
+'•‚Rƒ}ƒX‚Ì’¼üó‚ÌƒGƒŠƒA‚ğ‘I‘ğ (‚lŠg‚ÌUŒ‚”ÍˆÍİ’è—p)
 Public Sub AreaInCone(ByVal X As Integer, ByVal Y As Integer, _
     ByVal min_range As Integer, max_range As Integer, direction As String)
 Dim i As Integer, j As Integer
@@ -1375,7 +1375,7 @@ Dim i As Integer, j As Integer
     MaskData(X, Y) = False
 End Sub
 
-'æ‰‡çŠ¶ã®ã‚¨ãƒªã‚¢ã‚’é¸æŠ (ï¼­æ‰‡ã®æ”»æ’ƒç¯„å›²è¨­å®šç”¨)
+'îó‚ÌƒGƒŠƒA‚ğ‘I‘ğ (‚lî‚ÌUŒ‚”ÍˆÍİ’è—p)
 Public Sub AreaInSector(ByVal X As Integer, ByVal Y As Integer, _
     ByVal min_range As Integer, max_range As Integer, direction As String, _
     ByVal lv As Integer, Optional ByVal without_refresh As Boolean)
@@ -1498,7 +1498,7 @@ Dim i As Integer, xx As Integer, yy As Integer
     MaskData(X, Y) = False
 End Sub
 
-'åå­—çŠ¶ã®æ‰‡çŠ¶ã®ã‚¨ãƒªã‚¢ã‚’é¸æŠ (ï¼­æ‰‡ã®æ”»æ’ƒæ–¹å‘é¸æŠç”¨)
+'\šó‚Ìîó‚ÌƒGƒŠƒA‚ğ‘I‘ğ (‚lî‚ÌUŒ‚•ûŒü‘I‘ğ—p)
 Public Sub AreaInSectorCross(ByVal X As Integer, ByVal Y As Integer, _
     ByVal min_range As Integer, max_range As Integer, ByVal lv As Integer)
 Dim xx As Integer, yy As Integer
@@ -1515,19 +1515,19 @@ Dim xx As Integer, yy As Integer
     AreaInSector X, Y, min_range, max_range, "E", lv, True
 End Sub
 
-'ï¼’ç‚¹é–“ã‚’çµã¶ç›´ç·šçŠ¶ã®ã‚¨ãƒªã‚¢ã‚’é¸æŠ (ï¼­ç·šã®ç¯„å›²è¨­å®šç”¨)
+'‚Q“_ŠÔ‚ğŒ‹‚Ô’¼üó‚ÌƒGƒŠƒA‚ğ‘I‘ğ (‚lü‚Ì”ÍˆÍİ’è—p)
 Public Sub AreaInPointToPoint(ByVal x1 As Integer, ByVal y1 As Integer, _
     ByVal x2 As Integer, ByVal y2 As Integer)
 Dim xx As Integer, yy As Integer
 
-    'ã¾ãšå…¨é ˜åŸŸã‚’ãƒã‚¹ã‚¯
+    '‚Ü‚¸‘S—Ìˆæ‚ğƒ}ƒXƒN
     For xx = 1 To MapWidth
         For yy = 1 To MapHeight
             MaskData(xx, yy) = True
         Next
     Next
     
-    'èµ·ç‚¹ã®ãƒã‚¹ã‚¯ã‚’è§£é™¤
+    '‹N“_‚Ìƒ}ƒXƒN‚ğ‰ğœ
     MaskData(x1, y1) = False
     
     xx = x1
@@ -1557,8 +1557,8 @@ Dim xx As Integer, yy As Integer
     End If
 End Sub
 
-'ãƒ¦ãƒ‹ãƒƒãƒˆ u ã®ç§»å‹•ç¯„å›²ã‚’é¸æŠ
-'ã‚¸ãƒ£ãƒ³ãƒ—ã™ã‚‹å ´åˆã¯ ByJump = True
+'ƒ†ƒjƒbƒg u ‚ÌˆÚ“®”ÍˆÍ‚ğ‘I‘ğ
+'ƒWƒƒƒ“ƒv‚·‚éê‡‚Í ByJump = True
 Public Sub AreaInSpeed(u As Unit, Optional ByVal ByJump As Boolean)
 Dim i As Integer, j As Integer, k As Integer, l As Integer, n As Integer
 Dim cur_cost(0 To 51, 0 To 51) As Long
@@ -1589,47 +1589,47 @@ Dim is_terrain_effective As Boolean
 ' ADD END MARGE
 
     With u
-        'ç§»å‹•æ™‚ã«ä½¿ç”¨ã™ã‚‹ã‚¨ãƒªã‚¢
+        'ˆÚ“®‚Ég—p‚·‚éƒGƒŠƒA
         If ByJump Then
-            move_area = "ç©ºä¸­"
+            move_area = "‹ó’†"
         Else
             move_area = .Area
         End If
         
-        'ç§»å‹•èƒ½åŠ›ã®å¯å¦ã‚’èª¿ã¹ã¦ãŠã
-        is_trans_available_on_ground = .IsTransAvailable("é™¸") And .Adaption(2) <> 0
-        is_trans_available_in_water = .IsTransAvailable("æ°´") And .Adaption(3) <> 0
-        is_trans_available_in_sky = .IsTransAvailable("ç©º") And .Adaption(1) <> 0
-        is_trans_available_in_moon_sky = (.IsTransAvailable("ç©º") And .Adaption(1) <> 0) _
-            Or (.IsTransAvailable("å®‡å®™") And .Adaption(4) <> 0)
+        'ˆÚ“®”\—Í‚Ì‰Â”Û‚ğ’²‚×‚Ä‚¨‚­
+        is_trans_available_on_ground = .IsTransAvailable("—¤") And .Adaption(2) <> 0
+        is_trans_available_in_water = .IsTransAvailable("…") And .Adaption(3) <> 0
+        is_trans_available_in_sky = .IsTransAvailable("‹ó") And .Adaption(1) <> 0
+        is_trans_available_in_moon_sky = (.IsTransAvailable("‹ó") And .Adaption(1) <> 0) _
+            Or (.IsTransAvailable("‰F’ˆ") And .Adaption(4) <> 0)
         If Mid$(.Data.Adaption, 3, 1) <> "-" _
-            Or .IsFeatureAvailable("æ°´ä¸­ç§»å‹•") _
+            Or .IsFeatureAvailable("…’†ˆÚ“®") _
         Then
             is_adaptable_in_water = True
         End If
         If Mid$(.Data.Adaption, 4, 1) <> "-" _
-            Or .IsFeatureAvailable("å®‡å®™ç§»å‹•") _
+            Or .IsFeatureAvailable("‰F’ˆˆÚ“®") _
         Then
             is_adaptable_in_space = True
         End If
-        If .IsFeatureAvailable("æ°´ä¸Šç§»å‹•") _
-            Or .IsFeatureAvailable("ãƒ›ãƒãƒ¼ç§»å‹•") _
+        If .IsFeatureAvailable("…ãˆÚ“®") _
+            Or .IsFeatureAvailable("ƒzƒo[ˆÚ“®") _
         Then
             is_trans_available_on_water = True
         End If
-        If .IsFeatureAvailable("æ°´æ³³") Then
+        If .IsFeatureAvailable("…‰j") Then
             is_swimable = True
         End If
         
-        'åœ°å½¢é©å¿œã®ã‚ã‚‹åœ°å½¢ã®ãƒªã‚¹ãƒˆã‚’ä½œæˆ
+        '’nŒ`“K‰‚Ì‚ ‚é’nŒ`‚ÌƒŠƒXƒg‚ğì¬
         ReDim adopted_terrain(0)
-        If .IsFeatureAvailable("åœ°å½¢é©å¿œ") Then
+        If .IsFeatureAvailable("’nŒ`“K‰") Then
             For i = 1 To .CountFeature
-                If .Feature(i) = "åœ°å½¢é©å¿œ" Then
+                If .Feature(i) = "’nŒ`“K‰" Then
                     buf = .FeatureData(i)
                     If LLength(buf) = 0 Then
-                        ErrorMessage "ãƒ¦ãƒ‹ãƒƒãƒˆã€Œ" & _
-                            .Name & "ã€ã®åœ°å½¢é©å¿œèƒ½åŠ›ã«å¯¾å¿œåœ°å½¢ãŒæŒ‡å®šã•ã‚Œã¦ã„ã¾ã›ã‚“"
+                        ErrorMessage "ƒ†ƒjƒbƒgu" & _
+                            .Name & "v‚Ì’nŒ`“K‰”\—Í‚É‘Î‰’nŒ`‚ªw’è‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ"
                         TerminateSRC
                     End If
                     n = LLength(buf)
@@ -1641,38 +1641,38 @@ Dim is_terrain_effective As Boolean
             Next
         End If
         
-        'ç§»å‹•åŠ›
+        'ˆÚ“®—Í
         If ByJump Then
-            uspeed = .Speed + .FeatureLevel("ã‚¸ãƒ£ãƒ³ãƒ—")
+            uspeed = .Speed + .FeatureLevel("ƒWƒƒƒ“ƒv")
         Else
             uspeed = .Speed
         End If
-        If .IsConditionSatisfied("ç§»å‹•ä¸èƒ½") Then
+        If .IsConditionSatisfied("ˆÚ“®•s”\") Then
             uspeed = 0
         End If
         
-        'ç§»å‹•ã‚³ã‚¹ãƒˆã¯å®Ÿéš›ã®ï¼’å€ã®å€¤ã§è¨˜éŒ²ã•ã‚Œã¦ã„ã‚‹ãŸã‚ã€ç§»å‹•åŠ›ã‚‚ãã‚Œã«åˆã‚ã›ã¦
-        'ï¼’å€ã«ã—ã¦ç§»å‹•ç¯„å›²ã‚’è¨ˆç®—ã™ã‚‹
+        'ˆÚ“®ƒRƒXƒg‚ÍÀÛ‚Ì‚Q”{‚Ì’l‚Å‹L˜^‚³‚ê‚Ä‚¢‚é‚½‚ßAˆÚ“®—Í‚à‚»‚ê‚É‡‚í‚¹‚Ä
+        '‚Q”{‚É‚µ‚ÄˆÚ“®”ÍˆÍ‚ğŒvZ‚·‚é
         uspeed = 2 * uspeed
         
 ' ADD START MARGE
-        'å†ç§»å‹•æ™‚ã¯æœ€åˆã®ç§»å‹•ã®åˆ†ã ã‘ç§»å‹•åŠ›ã‚’æ¸›å°‘ã•ã›ã‚‹
-        If SelectedCommand = "å†ç§»å‹•" Then
+        'ÄˆÚ“®‚ÍÅ‰‚ÌˆÚ“®‚Ì•ª‚¾‚¯ˆÚ“®—Í‚ğŒ¸­‚³‚¹‚é
+        If SelectedCommand = "ÄˆÚ“®" Then
             uspeed = uspeed - SelectedUnitMoveCost
         End If
         
-        If .IsConditionSatisfied("ç§»å‹•ä¸èƒ½") Then
+        If .IsConditionSatisfied("ˆÚ“®•s”\") Then
             uspeed = 0
         End If
 ' ADD END MARGE
         
-        'ç§»å‹•ç¯„å›²ã‚’ãƒã‚§ãƒƒã‚¯ã™ã¹ãé ˜åŸŸ
+        'ˆÚ“®”ÍˆÍ‚ğƒ`ƒFƒbƒN‚·‚×‚«—Ìˆæ
         x1 = MaxLng(1, .X - uspeed)
         y1 = MaxLng(1, .Y - uspeed)
         x2 = MinLng(.X + uspeed, MapWidth)
         y2 = MinLng(.Y + uspeed, MapHeight)
         
-        'ç§»å‹•ã‚³ã‚¹ãƒˆã¨ï¼ºï¼¯ï¼£ã‚’ãƒªã‚»ãƒƒãƒˆ
+        'ˆÚ“®ƒRƒXƒg‚Æ‚y‚n‚b‚ğƒŠƒZƒbƒg
         For i = 0 To MapWidth + 1
             For j = 0 To MapHeight + 1
                 move_cost(i, j) = 1000000
@@ -1680,15 +1680,15 @@ Dim is_terrain_effective As Boolean
             Next
         Next
         
-        'å„åœ°å½¢ã®ç§»å‹•ã‚³ã‚¹ãƒˆã‚’ç®—å‡ºã—ã¦ãŠã
+        'Še’nŒ`‚ÌˆÚ“®ƒRƒXƒg‚ğZo‚µ‚Ä‚¨‚­
         Select Case move_area
-            Case "ç©ºä¸­"
+            Case "‹ó’†"
                 For i = x1 To x2
                     For j = y1 To y2
                         Select Case TerrainClass(i, j)
-                            Case "ç©º"
+                            Case "‹ó"
                                 move_cost(i, j) = TerrainMoveCost(i, j)
-                            Case "å®‡å®™"
+                            Case "‰F’ˆ"
                                 If is_adaptable_in_space Then
                                     move_cost(i, j) = TerrainMoveCost(i, j)
                                     For k = 1 To UBound(adopted_terrain)
@@ -1705,11 +1705,11 @@ Dim is_terrain_effective As Boolean
                         End Select
                     Next
                 Next
-            Case "åœ°ä¸Š"
+            Case "’nã"
                 For i = x1 To x2
                     For j = y1 To y2
                         Select Case TerrainClass(i, j)
-                            Case "é™¸", "å±‹å†…", "æœˆé¢"
+                            Case "—¤", "‰®“à", "Œ–Ê"
                                 If is_trans_available_on_ground Then
                                     move_cost(i, j) = TerrainMoveCost(i, j)
                                     For k = 1 To UBound(adopted_terrain)
@@ -1721,7 +1721,7 @@ Dim is_terrain_effective As Boolean
                                 Else
                                     move_cost(i, j) = 1000000
                                 End If
-                            Case "æ°´"
+                            Case "…"
                                 If is_trans_available_in_water _
                                     Or is_trans_available_on_water _
                                 Then
@@ -1737,7 +1737,7 @@ Dim is_terrain_effective As Boolean
                                 Else
                                     move_cost(i, j) = 1000000
                                 End If
-                            Case "æ·±æ°´"
+                            Case "[…"
                                 If is_trans_available_in_water _
                                     Or is_trans_available_on_water _
                                 Then
@@ -1747,9 +1747,9 @@ Dim is_terrain_effective As Boolean
                                 Else
                                     move_cost(i, j) = 1000000
                                 End If
-                            Case "ç©º"
+                            Case "‹ó"
                                 move_cost(i, j) = 1000000
-                            Case "å®‡å®™"
+                            Case "‰F’ˆ"
                                 If is_adaptable_in_space Then
                                     move_cost(i, j) = TerrainMoveCost(i, j)
                                     For k = 1 To UBound(adopted_terrain)
@@ -1764,11 +1764,11 @@ Dim is_terrain_effective As Boolean
                         End Select
                     Next
                 Next
-            Case "æ°´ä¸Š"
+            Case "…ã"
                 For i = x1 To x2
                     For j = y1 To y2
                         Select Case TerrainClass(i, j)
-                            Case "é™¸", "å±‹å†…", "æœˆé¢"
+                            Case "—¤", "‰®“à", "Œ–Ê"
                                 If is_trans_available_on_ground Then
                                     move_cost(i, j) = TerrainMoveCost(i, j)
                                     For k = 1 To UBound(adopted_terrain)
@@ -1780,11 +1780,11 @@ Dim is_terrain_effective As Boolean
                                 Else
                                     move_cost(i, j) = 1000000
                                 End If
-                            Case "æ°´", "æ·±æ°´"
+                            Case "…", "[…"
                                move_cost(i, j) = 2
-                            Case "ç©º"
+                            Case "‹ó"
                                move_cost(i, j) = 1000000
-                            Case "å®‡å®™"
+                            Case "‰F’ˆ"
                                 If is_adaptable_in_space Then
                                     move_cost(i, j) = TerrainMoveCost(i, j)
                                     For k = 1 To UBound(adopted_terrain)
@@ -1799,11 +1799,11 @@ Dim is_terrain_effective As Boolean
                         End Select
                     Next
                 Next
-            Case "æ°´ä¸­"
+            Case "…’†"
                 For i = x1 To x2
                     For j = y1 To y2
                         Select Case TerrainClass(i, j)
-                            Case "é™¸", "å±‹å†…", "æœˆé¢"
+                            Case "—¤", "‰®“à", "Œ–Ê"
                                 If is_trans_available_on_ground Then
                                     move_cost(i, j) = TerrainMoveCost(i, j)
                                     For k = 1 To UBound(adopted_terrain)
@@ -1815,7 +1815,7 @@ Dim is_terrain_effective As Boolean
                                 Else
                                     move_cost(i, j) = 1000000
                                 End If
-                            Case "æ°´"
+                            Case "…"
                                 If is_trans_available_in_water Then
                                     move_cost(i, j) = 2
                                 Else
@@ -1827,7 +1827,7 @@ Dim is_terrain_effective As Boolean
                                         End If
                                     Next
                                 End If
-                            Case "æ·±æ°´"
+                            Case "[…"
                                 If is_trans_available_in_water Then
                                     move_cost(i, j) = 2
                                 ElseIf is_swimable Then
@@ -1835,9 +1835,9 @@ Dim is_terrain_effective As Boolean
                                 Else
                                     move_cost(i, j) = 1000000
                                 End If
-                            Case "ç©º"
+                            Case "‹ó"
                                 move_cost(i, j) = 1000000
-                            Case "å®‡å®™"
+                            Case "‰F’ˆ"
                                 If is_adaptable_in_space Then
                                     move_cost(i, j) = TerrainMoveCost(i, j)
                                     For k = 1 To UBound(adopted_terrain)
@@ -1852,11 +1852,11 @@ Dim is_terrain_effective As Boolean
                         End Select
                     Next
                 Next
-            Case "å®‡å®™"
+            Case "‰F’ˆ"
                 For i = x1 To x2
                     For j = y1 To y2
                         Select Case TerrainClass(i, j)
-                            Case "å®‡å®™"
+                            Case "‰F’ˆ"
                                 move_cost(i, j) = TerrainMoveCost(i, j)
                                 For k = 1 To UBound(adopted_terrain)
                                     If TerrainName(i, j) = adopted_terrain(k) Then
@@ -1864,7 +1864,7 @@ Dim is_terrain_effective As Boolean
                                         Exit For
                                     End If
                                 Next
-                            Case "é™¸", "å±‹å†…"
+                            Case "—¤", "‰®“à"
                                 If is_trans_available_in_sky Then
                                     move_cost(i, j) = 2
                                 ElseIf is_trans_available_on_ground Then
@@ -1878,7 +1878,7 @@ Dim is_terrain_effective As Boolean
                                 Else
                                     move_cost(i, j) = 1000000
                                 End If
-                            Case "æœˆé¢"
+                            Case "Œ–Ê"
                                 If is_trans_available_in_moon_sky Then
                                     move_cost(i, j) = 2
                                 ElseIf is_trans_available_on_ground Then
@@ -1892,7 +1892,7 @@ Dim is_terrain_effective As Boolean
                                 Else
                                     move_cost(i, j) = 1000000
                                 End If
-                            Case "æ°´"
+                            Case "…"
                                 If is_trans_available_in_water _
                                     Or is_trans_available_on_water _
                                 Then
@@ -1908,7 +1908,7 @@ Dim is_terrain_effective As Boolean
                                 Else
                                     move_cost(i, j) = 1000000
                                 End If
-                            Case "æ·±æ°´"
+                            Case "[…"
                                 If is_trans_available_in_water _
                                     Or is_trans_available_on_water _
                                 Then
@@ -1918,7 +1918,7 @@ Dim is_terrain_effective As Boolean
                                 Else
                                     move_cost(i, j) = 1000000
                                 End If
-                            Case "ç©º"
+                            Case "‹ó"
                                 If is_trans_available_in_sky Then
                                     move_cost(i, j) = TerrainMoveCost(i, j)
                                     For k = 1 To UBound(adopted_terrain)
@@ -1933,11 +1933,11 @@ Dim is_terrain_effective As Boolean
                         End Select
                     Next
                 Next
-            Case "åœ°ä¸­"
+            Case "’n’†"
                 For i = x1 To x2
                     For j = y1 To y2
                         Select Case TerrainClass(i, j)
-                            Case "é™¸", "æœˆé¢"
+                            Case "—¤", "Œ–Ê"
                                 move_cost(i, j) = 2
                             Case Else
                                 move_cost(i, j) = 1000000
@@ -1946,12 +1946,12 @@ Dim is_terrain_effective As Boolean
                 Next
         End Select
         
-        'ç·šè·¯ç§»å‹•
-        If .IsFeatureAvailable("ç·šè·¯ç§»å‹•") Then
-            If .Area = "åœ°ä¸Š" And Not ByJump Then
+        'ü˜HˆÚ“®
+        If .IsFeatureAvailable("ü˜HˆÚ“®") Then
+            If .Area = "’nã" And Not ByJump Then
                 For i = x1 To x2
                     For j = y1 To y2
-                        If TerrainName(i, j) = "ç·šè·¯" Then
+                        If TerrainName(i, j) = "ü˜H" Then
                             move_cost(i, j) = 2
                         Else
                             move_cost(i, j) = 1000000
@@ -1961,14 +1961,14 @@ Dim is_terrain_effective As Boolean
             End If
         End If
         
-        'ç§»å‹•åˆ¶é™
+        'ˆÚ“®§ŒÀ
         ReDim allowed_terrains(0)
-        If .IsFeatureAvailable("ç§»å‹•åˆ¶é™") Then
-            If .Area <> "ç©ºä¸­" And .Area <> "åœ°ä¸­" Then
-                n = LLength(.FeatureData("ç§»å‹•åˆ¶é™"))
+        If .IsFeatureAvailable("ˆÚ“®§ŒÀ") Then
+            If .Area <> "‹ó’†" And .Area <> "’n’†" Then
+                n = LLength(.FeatureData("ˆÚ“®§ŒÀ"))
                 ReDim allowed_terrains(n)
                 For i = 2 To n
-                    allowed_terrains(i) = LIndex(.FeatureData("ç§»å‹•åˆ¶é™"), i)
+                    allowed_terrains(i) = LIndex(.FeatureData("ˆÚ“®§ŒÀ"), i)
                 Next
                 If Not ByJump Then
                     For i = x1 To x2
@@ -1987,14 +1987,14 @@ Dim is_terrain_effective As Boolean
             End If
         End If
         
-        'é€²å…¥ä¸å¯
+        'i“ü•s‰Â
         ReDim prohibited_terrains(0)
-        If .IsFeatureAvailable("é€²å…¥ä¸å¯") Then
-            If .Area <> "ç©ºä¸­" And .Area <> "åœ°ä¸­" Then
-                n = LLength(.FeatureData("é€²å…¥ä¸å¯"))
+        If .IsFeatureAvailable("i“ü•s‰Â") Then
+            If .Area <> "‹ó’†" And .Area <> "’n’†" Then
+                n = LLength(.FeatureData("i“ü•s‰Â"))
                 ReDim prohibited_terrains(n)
                 For i = 2 To n
-                    prohibited_terrains(i) = LIndex(.FeatureData("é€²å…¥ä¸å¯"), i)
+                    prohibited_terrains(i) = LIndex(.FeatureData("i“ü•s‰Â"), i)
                 Next
                 If Not ByJump Then
                     For i = x1 To x2
@@ -2011,13 +2011,13 @@ Dim is_terrain_effective As Boolean
             End If
         End If
         
-        'ãƒ›ãƒãƒ¼ç§»å‹•
-        If .IsFeatureAvailable("ãƒ›ãƒãƒ¼ç§»å‹•") Then
-            If move_area = "åœ°ä¸Š" Or move_area = "æ°´ä¸Š" Then
+        'ƒzƒo[ˆÚ“®
+        If .IsFeatureAvailable("ƒzƒo[ˆÚ“®") Then
+            If move_area = "’nã" Or move_area = "…ã" Then
                 For i = x1 To x2
                     For j = y1 To y2
                         Select Case TerrainName(i, j)
-                            Case "ç ‚æ¼ ", "é›ªåŸ"
+                            Case "»”™", "áŒ´"
                                 move_cost(i, j) = 2
                         End Select
                     Next
@@ -2025,9 +2025,9 @@ Dim is_terrain_effective As Boolean
             End If
         End If
         
-        'é€éç§»å‹•
-        If .IsFeatureAvailable("é€éç§»å‹•") _
-            Or .IsUnderSpecialPowerEffect("é€éç§»å‹•") _
+        '“§‰ßˆÚ“®
+        If .IsFeatureAvailable("“§‰ßˆÚ“®") _
+            Or .IsUnderSpecialPowerEffect("“§‰ßˆÚ“®") _
         Then
             For i = x1 To x2
                 For j = y1 To y2
@@ -2036,27 +2036,27 @@ Dim is_terrain_effective As Boolean
             Next
         End If
         
-        'ãƒ¦ãƒ‹ãƒƒãƒˆãŒã„ã‚‹ãŸã‚é€šã‚ŠæŠœã‘å‡ºæ¥ãªã„å ´æ‰€ã‚’ãƒã‚§ãƒƒã‚¯
-        If Not .IsFeatureAvailable("ã™ã‚ŠæŠœã‘ç§»å‹•") _
-            And Not .IsUnderSpecialPowerEffect("ã™ã‚ŠæŠœã‘ç§»å‹•") _
+        'ƒ†ƒjƒbƒg‚ª‚¢‚é‚½‚ß’Ê‚è”²‚¯o—ˆ‚È‚¢êŠ‚ğƒ`ƒFƒbƒN
+        If Not .IsFeatureAvailable("‚·‚è”²‚¯ˆÚ“®") _
+            And Not .IsUnderSpecialPowerEffect("‚·‚è”²‚¯ˆÚ“®") _
         Then
             For Each u2 In UList
                 With u2
-                    If .Status = "å‡ºæ’ƒ" Then
+                    If .Status = "oŒ‚" Then
                         Dim blocked As Boolean
                         
                         blocked = False
                         
-                        'æ•µå¯¾ã™ã‚‹å ´åˆã¯é€šã‚ŠæŠœã‘ä¸å¯
+                        '“G‘Î‚·‚éê‡‚Í’Ê‚è”²‚¯•s‰Â
                         If .IsEnemy(u, True) Then
                             blocked = True
                         End If
                         
-                        'é™£å–¶ãŒåˆã‚ãªã„å ´åˆã‚‚é€šã‚ŠæŠœã‘ä¸å¯
+                        'w‰c‚ª‡‚í‚È‚¢ê‡‚à’Ê‚è”²‚¯•s‰Â
                         Select Case .Party0
-                            Case "å‘³æ–¹", "ï¼®ï¼°ï¼£"
-                                If u.Party0 <> "å‘³æ–¹" _
-                                    And u.Party0 <> "ï¼®ï¼°ï¼£" _
+                            Case "–¡•û", "‚m‚o‚b"
+                                If u.Party0 <> "–¡•û" _
+                                    And u.Party0 <> "‚m‚o‚b" _
                                 Then
                                     blocked = True
                                 End If
@@ -2066,42 +2066,42 @@ Dim is_terrain_effective As Boolean
                                 End If
                         End Select
                         
-                        'é€šã‚ŠæŠœã‘ã‚‰ã‚Œãªã„å ´åˆ
+                        '’Ê‚è”²‚¯‚ç‚ê‚È‚¢ê‡
                         If blocked Then
                             move_cost(.X, .Y) = 1000000
                         End If
                         
-                        'ï¼ºï¼¯ï¼£
+                        '‚y‚n‚b
                         If blocked And Not ByJump Then
                             is_zoc = False
                             zarea = 0
-                            If .IsFeatureAvailable("ï¼ºï¼¯ï¼£") _
-                                Or IsOptionDefined("ï¼ºï¼¯ï¼£") _
+                            If .IsFeatureAvailable("‚y‚n‚b") _
+                                Or IsOptionDefined("‚y‚n‚b") _
                             Then
                                 is_zoc = True
                                 zarea = 1
                                 
-                                'ï¼ºï¼¯ï¼£å´ã®ï¼ºï¼¯ï¼£ãƒ¬ãƒ™ãƒ«
-                                n = .FeatureLevel("ï¼ºï¼¯ï¼£")
+                                '‚y‚n‚b‘¤‚Ì‚y‚n‚bƒŒƒxƒ‹
+                                n = .FeatureLevel("‚y‚n‚b")
                                 If n = 1 Then n = 10000
                                 
-                                'Optionã€Œï¼ºï¼¯ï¼£ã€ãŒæŒ‡å®šã•ã‚Œã¦ã„ã‚‹
+                                'Optionu‚y‚n‚bv‚ªw’è‚³‚ê‚Ä‚¢‚é
                                 n = MaxLng(1, n)
                                 
-                                If u.IsFeatureAvailable("ï¼ºï¼¯ï¼£ç„¡åŠ¹åŒ–") Then
-                                    'ç§»å‹•å´ã®ï¼ºï¼¯ï¼£ç„¡åŠ¹åŒ–ãƒ¬ãƒ™ãƒ«
-                                    'ãƒ¬ãƒ™ãƒ«æŒ‡å®šãªã—ã€ã¾ãŸã¯Lv1ã¯Lv10000ã¨ã—ã¦æ‰±ã†
-                                    l = u.FeatureLevel("ï¼ºï¼¯ï¼£ç„¡åŠ¹åŒ–")
+                                If u.IsFeatureAvailable("‚y‚n‚b–³Œø‰»") Then
+                                    'ˆÚ“®‘¤‚Ì‚y‚n‚b–³Œø‰»ƒŒƒxƒ‹
+                                    'ƒŒƒxƒ‹w’è‚È‚µA‚Ü‚½‚ÍLv1‚ÍLv10000‚Æ‚µ‚Äˆµ‚¤
+                                    l = u.FeatureLevel("‚y‚n‚b–³Œø‰»")
                                     If l = 1 Then l = 10000
                                     
-                                    'ç§»å‹•å´ã®ï¼ºï¼¯ï¼£ç„¡åŠ¹åŒ–ãƒ¬ãƒ™ãƒ«ã®æ–¹ãŒé«˜ã„å ´åˆã€
-                                    'ï¼ºï¼¯ï¼£ä¸å¯èƒ½
+                                    'ˆÚ“®‘¤‚Ì‚y‚n‚b–³Œø‰»ƒŒƒxƒ‹‚Ì•û‚ª‚‚¢ê‡A
+                                    '‚y‚n‚b•s‰Â”\
                                     If l >= n Then
                                         is_zoc = False
                                     End If
                                 End If
                                 
-                                'éš£æ¥ã™ã‚‹ãƒ¦ãƒ‹ãƒƒãƒˆãŒã€Œéš£æ¥ãƒ¦ãƒ‹ãƒƒãƒˆï¼ºï¼¯ï¼£ç„¡åŠ¹åŒ–ã€ã‚’æŒã£ã¦ã„ã‚‹å ´åˆ
+                                '—×Ú‚·‚éƒ†ƒjƒbƒg‚ªu—×Úƒ†ƒjƒbƒg‚y‚n‚b–³Œø‰»v‚ğ‚Á‚Ä‚¢‚éê‡
                                 If is_zoc Then
                                     For i = -1 To 1
                                         For j = Abs(i) - 1 To Abs(Abs(i) - 1)
@@ -2109,15 +2109,15 @@ Dim is_terrain_effective As Boolean
                                                 And ((.X + i) >= 1 And (.X + i) <= MapWidth _
                                                     And (.Y + j) >= 1 And (.Y + j) <= MapHeight) _
                                             Then
-                                                'éš£æ¥ãƒ¦ãƒ‹ãƒƒãƒˆãŒå­˜åœ¨ã™ã‚‹ï¼Ÿ
+                                                '—×Úƒ†ƒjƒbƒg‚ª‘¶İ‚·‚éH
                                                 If Not MapDataForUnit(.X + i, .Y + j) Is Nothing Then
                                                     buf = .Party0
                                                     With MapDataForUnit(.X + i, .Y + j)
-                                                        'æ•µå¯¾é™£å–¶ï¼Ÿ
+                                                        '“G‘Îw‰cH
                                                         Select Case .Party0
-                                                            Case "å‘³æ–¹", "ï¼®ï¼°ï¼£"
-                                                                If buf = "å‘³æ–¹" _
-                                                                    Or buf = "ï¼®ï¼°ï¼£" _
+                                                            Case "–¡•û", "‚m‚o‚b"
+                                                                If buf = "–¡•û" _
+                                                                    Or buf = "‚m‚o‚b" _
                                                                 Then
                                                                     Exit For
                                                                 End If
@@ -2127,11 +2127,11 @@ Dim is_terrain_effective As Boolean
                                                                 End If
                                                         End Select
                                                         
-                                                        l = .FeatureLevel("éš£æ¥ãƒ¦ãƒ‹ãƒƒãƒˆï¼ºï¼¯ï¼£ç„¡åŠ¹åŒ–")
+                                                        l = .FeatureLevel("—×Úƒ†ƒjƒbƒg‚y‚n‚b–³Œø‰»")
                                                         If l = 1 Then l = 10000
                                                         
-                                                        'ç§»å‹•å´ã®ï¼ºï¼¯ï¼£ç„¡åŠ¹åŒ–ãƒ¬ãƒ™ãƒ«ã®æ–¹ãŒé«˜ã„å ´åˆã€
-                                                        'ï¼ºï¼¯ï¼£ä¸å¯èƒ½
+                                                        'ˆÚ“®‘¤‚Ì‚y‚n‚b–³Œø‰»ƒŒƒxƒ‹‚Ì•û‚ª‚‚¢ê‡A
+                                                        '‚y‚n‚b•s‰Â”\
                                                         If l >= n Then
                                                             is_zoc = False
                                                             Exit For
@@ -2145,26 +2145,26 @@ Dim is_terrain_effective As Boolean
                             End If
                             
                             If is_zoc Then
-                                'ç‰¹æ®Šèƒ½åŠ›ã€Œï¼ºï¼¯ï¼£ã€ãŒæŒ‡å®šã•ã‚Œã¦ã„ã‚‹ãªã‚‰ã€ãã®ãƒ‡ãƒ¼ã‚¿ã®2ã¤ç›®ã®å€¤ã‚’ï¼ºï¼¯ï¼£ã®ç¯„å›²ã«è¨­å®š
-                                '2ã¤ç›®ã®å€¤ãŒçœç•¥ã•ã‚Œã¦ã„ã‚‹å ´åˆã¯1ã‚’è¨­å®š
-                                'ï¼ºï¼¯ï¼£LvãŒ0ä»¥ä¸‹ã®å ´åˆã€ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã€Œï¼ºï¼¯ï¼£ã€ãŒæŒ‡å®šã•ã‚Œã¦ã„ã¦ã‚‚ç¯„å›²ã‚’0ã«è¨­å®š
-                                If LLength(.FeatureData("ï¼ºï¼¯ï¼£")) >= 2 Then
-                                    zarea = MaxLng(LIndex(.FeatureData("ï¼ºï¼¯ï¼£"), 2), 0)
+                                '“Áê”\—Íu‚y‚n‚bv‚ªw’è‚³‚ê‚Ä‚¢‚é‚È‚çA‚»‚Ìƒf[ƒ^‚Ì2‚Â–Ú‚Ì’l‚ğ‚y‚n‚b‚Ì”ÍˆÍ‚Éİ’è
+                                '2‚Â–Ú‚Ì’l‚ªÈ—ª‚³‚ê‚Ä‚¢‚éê‡‚Í1‚ğİ’è
+                                '‚y‚n‚bLv‚ª0ˆÈ‰º‚Ìê‡AƒIƒvƒVƒ‡ƒ“u‚y‚n‚bv‚ªw’è‚³‚ê‚Ä‚¢‚Ä‚à”ÍˆÍ‚ğ0‚Éİ’è
+                                If LLength(.FeatureData("‚y‚n‚b")) >= 2 Then
+                                    zarea = MaxLng(LIndex(.FeatureData("‚y‚n‚b"), 2), 0)
                                 End If
                                 
-                                'ç›¸å¯¾è·é›¢ï¼‹ï¼ºï¼¯ï¼£ã®ç¯„å›²ãŒç§»å‹•åŠ›ä»¥å†…ã®ã¨ãã€ï¼ºï¼¯ï¼£ã‚’è¨­å®š
+                                '‘Š‘Î‹——£{‚y‚n‚b‚Ì”ÍˆÍ‚ªˆÚ“®—ÍˆÈ“à‚Ì‚Æ‚«A‚y‚n‚b‚ğİ’è
                                 If Abs(u.X - .X) + Abs(u.Y - .Y) - zarea <= uspeed Then
-                                    'æ°´å¹³ãƒ»å‚ç›´æ–¹å‘ã®ã¿ã®ï¼ºï¼¯ï¼£ã‹ã©ã†ã‹ã‚’åˆ¤æ–­
+                                    '…•½E‚’¼•ûŒü‚Ì‚İ‚Ì‚y‚n‚b‚©‚Ç‚¤‚©‚ğ”»’f
                                     is_hzoc = False
                                     is_vzoc = False
-                                    If InStr(.FeatureData("ï¼ºï¼¯ï¼£"), "ç›´ç·š") Then
+                                    If InStr(.FeatureData("‚y‚n‚b"), "’¼ü") Then
                                         is_hzoc = True
                                         is_vzoc = True
                                     Else
-                                        If InStr(.FeatureData("ï¼ºï¼¯ï¼£"), "æ°´å¹³") Then
+                                        If InStr(.FeatureData("‚y‚n‚b"), "…•½") Then
                                             is_hzoc = True
                                         End If
-                                        If InStr(.FeatureData("ï¼ºï¼¯ï¼£"), "å‚ç›´") Then
+                                        If InStr(.FeatureData("‚y‚n‚b"), "‚’¼") Then
                                             is_vzoc = True
                                         End If
                                     End If
@@ -2180,7 +2180,7 @@ Dim is_terrain_effective As Boolean
                                                     PointInZOC(.X, .Y) = MaxLng(n, PointInZOC(.X, .Y))
                                                 End If
                                             Else
-                                                'æ°´å¹³ï¼ºï¼¯ï¼£
+                                                '…•½‚y‚n‚b
                                                 If is_hzoc And (.X + i) >= 1 And (.X + i) <= MapWidth Then
                                                     If PointInZOC(.X + i, .Y) < 0 Then
                                                         If n > Abs(PointInZOC(.X + i, .Y)) Then
@@ -2190,7 +2190,7 @@ Dim is_terrain_effective As Boolean
                                                         PointInZOC(.X + i, .Y) = MaxLng(n, PointInZOC(.X + i, .Y))
                                                     End If
                                                 End If
-                                                'å‚ç›´ï¼ºï¼¯ï¼£
+                                                '‚’¼‚y‚n‚b
                                                 If is_vzoc And (.Y + i) >= 1 And (.Y + i) <= MapHeight Then
                                                     If PointInZOC(.X, .Y + i) < 0 Then
                                                         If n > Abs(PointInZOC(.X, .Y + i)) Then
@@ -2203,7 +2203,7 @@ Dim is_terrain_effective As Boolean
                                             End If
                                         Next
                                     Else
-                                        'å…¨æ–¹ä½ï¼ºï¼¯ï¼£
+                                        '‘S•ûˆÊ‚y‚n‚b
                                         For i = (zarea * -1) To zarea
                                             For j = (Abs(i) - zarea) To Abs(Abs(i) - zarea)
                                                 If (.X + i) >= 1 And (.X + i) <= MapWidth _
@@ -2223,14 +2223,14 @@ Dim is_terrain_effective As Boolean
                                 End If
                             End If
                         Else
-                            'ã€ŒåºƒåŸŸï¼ºï¼¯ï¼£ç„¡åŠ¹åŒ–ã€ã‚’æ‰€æŒã—ã¦ã„ã‚‹å ´åˆã®å‡¦ç†
+                            'uLˆæ‚y‚n‚b–³Œø‰»v‚ğŠ‚µ‚Ä‚¢‚éê‡‚Ìˆ—
                             If Abs(u.X - .X) + Abs(u.Y - .Y) - zarea <= uspeed Then
-                                'ãƒ¬ãƒ™ãƒ«æŒ‡å®šãªã—ã€ã¾ãŸã¯Lv1ã¯Lv10000ã¨ã—ã¦æ‰±ã†
-                                l = .FeatureLevel("åºƒåŸŸï¼ºï¼¯ï¼£ç„¡åŠ¹åŒ–")
+                                'ƒŒƒxƒ‹w’è‚È‚µA‚Ü‚½‚ÍLv1‚ÍLv10000‚Æ‚µ‚Äˆµ‚¤
+                                l = .FeatureLevel("Lˆæ‚y‚n‚b–³Œø‰»")
                                 If l = 1 Then l = 10000
                                 
                                 If l > 0 Then
-                                    n = MaxLng(StrToLng(LIndex(.FeatureData("åºƒåŸŸï¼ºï¼¯ï¼£ç„¡åŠ¹åŒ–"), 2)), 1)
+                                    n = MaxLng(StrToLng(LIndex(.FeatureData("Lˆæ‚y‚n‚b–³Œø‰»"), 2)), 1)
                                     
                                     For i = (n * -1) To n
                                         For j = (Abs(i) - n) To Abs(Abs(i) - n)
@@ -2249,13 +2249,13 @@ Dim is_terrain_effective As Boolean
             Next
         End If
         
-        'ç§»å‹•åœæ­¢åœ°å½¢ã¯ï¼ºï¼¯ï¼£ã—ã¦æ‰±ã†
+        'ˆÚ“®’â~’nŒ`‚Í‚y‚n‚b‚µ‚Äˆµ‚¤
         If Not ByJump Then
             With TDList
                 For i = x1 To x2
                     For j = y1 To y2
 'MOD START 240a
-'                        If .IsFeatureAvailable(MapData(i, j, 0), "ç§»å‹•åœæ­¢") Then
+'                        If .IsFeatureAvailable(MapData(i, j, 0), "ˆÚ“®’â~") Then
 '                            PointInZOC(i, j) = 20000
 '                        End If
                         If TerrainHasMoveStop(i, j) Then
@@ -2267,21 +2267,21 @@ Dim is_terrain_effective As Boolean
             End With
         End If
         
-        'ãƒãƒƒãƒ—ä¸Šã®å„åœ°ç‚¹ã«åˆ°é”ã™ã‚‹ã®ã«å¿…è¦ãªç§»å‹•åŠ›ã‚’è¨ˆç®—ã™ã‚‹
+        'ƒ}ƒbƒvã‚ÌŠe’n“_‚É“’B‚·‚é‚Ì‚É•K—v‚ÈˆÚ“®—Í‚ğŒvZ‚·‚é
         
-        'ã¾ãšç§»å‹•ã‚³ã‚¹ãƒˆè¨ˆç®—ç”¨ã®é…åˆ—ã‚’åˆæœŸåŒ–
+        '‚Ü‚¸ˆÚ“®ƒRƒXƒgŒvZ—p‚Ì”z—ñ‚ğ‰Šú‰»
         For i = 0 To MapWidth + 1
             For j = 0 To MapHeight + 1
                 TotalMoveCost(i, j) = 1000000
             Next
         Next
         
-        'ç¾åœ¨ã„ã‚‹å ´æ‰€ã¯ç§»å‹•ã™ã‚‹å¿…è¦ãŒãªã„ãŸã‚ã€å¿…è¦ç§»å‹•åŠ›ãŒ0
+        'Œ»İ‚¢‚éêŠ‚ÍˆÚ“®‚·‚é•K—v‚ª‚È‚¢‚½‚ßA•K—vˆÚ“®—Í‚ª0
         TotalMoveCost(.X, .Y) = 0
         
-        'å¿…è¦ç§»å‹•åŠ›ã®è¨ˆç®—
+        '•K—vˆÚ“®—Í‚ÌŒvZ
         For i = 1 To uspeed
-            'ç¾åœ¨ã®å¿…è¦ç§»å‹•åŠ›ã‚’ä¿å­˜
+            'Œ»İ‚Ì•K—vˆÚ“®—Í‚ğ•Û‘¶
             For j = MaxLng(0, .X - i - 1) To MinLng(.X + i + 1, MapWidth + 1)
                 For k = MaxLng(0, .Y - i - 1) To MinLng(.Y + i + 1, MapHeight + 1)
                     cur_cost(j, k) = TotalMoveCost(j, k)
@@ -2289,7 +2289,7 @@ Dim is_terrain_effective As Boolean
             Next
             For j = MaxLng(1, .X - i) To MinLng(.X + i, MapWidth)
                 For k = MaxLng(1, .Y - i) To MinLng(.Y + i, MapHeight)
-                    'éš£æ¥ã™ã‚‹åœ°ç‚¹ã¨æ¯”è¼ƒã—ã¦æœ€ã‚‚ä½ã„å¿…è¦ç§»å‹•åŠ›ã‚’æ±‚ã‚ã‚‹
+                    '—×Ú‚·‚é’n“_‚Æ”äŠr‚µ‚ÄÅ‚à’á‚¢•K—vˆÚ“®—Í‚ğ‹‚ß‚é
                     tmp = cur_cost(j, k)
                     If i > 1 Then
                         With TDList
@@ -2304,65 +2304,65 @@ Dim is_terrain_effective As Boolean
                         tmp = MinLng(tmp, cur_cost(j, k - 1))
                         tmp = MinLng(tmp, cur_cost(j, k + 1))
                     End If
-                    'åœ°å½¢ã«é€²å…¥ã™ã‚‹ã®ã«å¿…è¦ãªç§»å‹•åŠ›ã‚’åŠ ç®—
+                    '’nŒ`‚Éi“ü‚·‚é‚Ì‚É•K—v‚ÈˆÚ“®—Í‚ğ‰ÁZ
                     tmp = tmp + move_cost(j, k)
-                    'å‰å›ã®å€¤ã¨ã©ã¡ã‚‰ãŒä½ã„ï¼Ÿ
+                    '‘O‰ñ‚Ì’l‚Æ‚Ç‚¿‚ç‚ª’á‚¢H
                     TotalMoveCost(j, k) = MinLng(tmp, cur_cost(j, k))
                 Next
             Next
         Next
         
-        'ç®—å‡ºã•ã‚ŒãŸå¿…è¦ç§»å‹•åŠ›ã‚’å…ƒã«é€²å…¥å¯èƒ½ã‹åˆ¤å®š
+        'Zo‚³‚ê‚½•K—vˆÚ“®—Í‚ğŒ³‚Éi“ü‰Â”\‚©”»’è
          For i = 1 To MapWidth
              For j = 1 To MapHeight
                 MaskData(i, j) = True
                 
-                'å¿…è¦ç§»å‹•åŠ›ãŒç§»å‹•åŠ›ä»¥å†…ï¼Ÿ
+                '•K—vˆÚ“®—Í‚ªˆÚ“®—ÍˆÈ“àH
                 If TotalMoveCost(i, j) > uspeed Then
                     GoTo NextLoop
                 End If
                 
                 Set u2 = MapDataForUnit(i, j)
                 
-                'ãƒ¦ãƒ‹ãƒƒãƒˆãŒå­˜åœ¨ï¼Ÿ
+                'ƒ†ƒjƒbƒg‚ª‘¶İH
                 If u2 Is Nothing Then
                     MaskData(i, j) = False
                     GoTo NextLoop
                 End If
                 
-                'åˆä½“ï¼†ç€è‰¦ã™ã‚‹ã®ã¯å‘³æ–¹ã®ã¿
-                If .Party0 <> "å‘³æ–¹" Then
+                '‡‘Ì•’…ŠÍ‚·‚é‚Ì‚Í–¡•û‚Ì‚İ
+                If .Party0 <> "–¡•û" Then
                     GoTo NextLoop
                 End If
                 
                 Select Case u2.Party0
-                    Case "å‘³æ–¹"
-                        If u2.IsFeatureAvailable("æ¯è‰¦") Then
-                            'æ¯è‰¦ã«ç€è‰¦ï¼Ÿ
-                            If Not .IsFeatureAvailable("æ¯è‰¦") _
-                                And u2.Area <> "åœ°ä¸­" _
+                    Case "–¡•û"
+                        If u2.IsFeatureAvailable("•êŠÍ") Then
+                            '•êŠÍ‚É’…ŠÍH
+                            If Not .IsFeatureAvailable("•êŠÍ") _
+                                And u2.Area <> "’n’†" _
                             Then
-                                If Not .IsFeatureAvailable("æ ¼ç´ä¸å¯") Then
+                                If Not .IsFeatureAvailable("Ši”[•s‰Â") Then
                                     MaskData(i, j) = False
                                 End If
                             End If
-                        ElseIf .IsFeatureAvailable("åˆä½“") _
-                            And u2.IsFeatureAvailable("åˆä½“") _
+                        ElseIf .IsFeatureAvailable("‡‘Ì") _
+                            And u2.IsFeatureAvailable("‡‘Ì") _
                         Then
-                            'ï¼’ä½“åˆä½“ï¼Ÿ
+                            '‚Q‘Ì‡‘ÌH
                             MaskData(i, j) = True
                             For k = 1 To .CountFeature
-                                If .Feature(k) = "åˆä½“" And .FeatureName(k) <> "" Then
+                                If .Feature(k) = "‡‘Ì" And .FeatureName(k) <> "" Then
                                     buf = .FeatureData(k)
                                     If LLength(buf) = 3 _
                                         And UList.IsDefined(LIndex(buf, 2)) _
                                         And UList.IsDefined(LIndex(buf, 3)) _
                                     Then
                                         With UList.Item(LIndex(buf, 2))
-                                            If .IsConditionSatisfied("è¡Œå‹•ä¸èƒ½") Then
+                                            If .IsConditionSatisfied("s“®•s”\") Then
                                                 Exit For
                                             End If
-                                            If .Status = "ç ´æ£„" Then
+                                            If .Status = "”jŠü" Then
                                                 Exit For
                                             End If
                                         End With
@@ -2371,7 +2371,7 @@ Dim is_terrain_effective As Boolean
                                             Exit For
                                         ElseIf u2.Name = _
                                                 UList.Item(LIndex(buf, 3)).CurrentForm.Name _
-                                            And Not u2.IsFeatureAvailable("åˆä½“åˆ¶é™") _
+                                            And Not u2.IsFeatureAvailable("‡‘Ì§ŒÀ") _
                                         Then
                                             MaskData(i, j) = False
                                             Exit For
@@ -2380,24 +2380,24 @@ Dim is_terrain_effective As Boolean
                                 End If
                             Next
                         End If
-                    Case "ï¼®ï¼°ï¼£"
-                        If .IsFeatureAvailable("åˆä½“") _
-                            And u2.IsFeatureAvailable("åˆä½“") _
+                    Case "‚m‚o‚b"
+                        If .IsFeatureAvailable("‡‘Ì") _
+                            And u2.IsFeatureAvailable("‡‘Ì") _
                         Then
-                            'ï¼’ä½“åˆä½“ï¼Ÿ
+                            '‚Q‘Ì‡‘ÌH
                             MaskData(i, j) = True
                             For k = 1 To .CountFeature
-                                If .Feature(k) = "åˆä½“" Then
+                                If .Feature(k) = "‡‘Ì" Then
                                     buf = .FeatureData(k)
                                     If LLength(buf) = 3 _
                                         And UList.IsDefined(LIndex(buf, 2)) _
                                         And UList.IsDefined(LIndex(buf, 3)) _
                                     Then
                                         With UList.Item(LIndex(buf, 2))
-                                            If .IsConditionSatisfied("è¡Œå‹•ä¸èƒ½") Then
+                                            If .IsConditionSatisfied("s“®•s”\") Then
                                                 Exit For
                                             End If
-                                            If .Status = "ç ´æ£„" Then
+                                            If .Status = "”jŠü" Then
                                                 Exit For
                                             End If
                                         End With
@@ -2406,7 +2406,7 @@ Dim is_terrain_effective As Boolean
                                             Exit For
                                         ElseIf u2.Name = _
                                                 UList.Item(LIndex(buf, 3)).CurrentForm.Name _
-                                            And Not u2.IsFeatureAvailable("åˆä½“åˆ¶é™") _
+                                            And Not u2.IsFeatureAvailable("‡‘Ì§ŒÀ") _
                                         Then
                                             MaskData(i, j) = False
                                             Exit For
@@ -2420,10 +2420,10 @@ NextLoop:
             Next
         Next
         
-        'ã‚¸ãƒ£ãƒ³ãƒ—ï¼†é€éç§»å‹•å…ˆã¯é€²å…¥å¯èƒ½ï¼Ÿ
+        'ƒWƒƒƒ“ƒv•“§‰ßˆÚ“®æ‚Íi“ü‰Â”\H
         If ByJump _
-            Or .IsFeatureAvailable("é€éç§»å‹•") _
-            Or .IsUnderSpecialPowerEffect("é€éç§»å‹•") _
+            Or .IsFeatureAvailable("“§‰ßˆÚ“®") _
+            Or .IsUnderSpecialPowerEffect("“§‰ßˆÚ“®") _
         Then
             For i = x1 To x2
                 For j = y1 To y2
@@ -2431,96 +2431,96 @@ NextLoop:
                         GoTo NextLoop2
                     End If
                     
-                    'ãƒ¦ãƒ‹ãƒƒãƒˆãŒã„ã‚‹åœ°å½¢ã«é€²å…¥å‡ºæ¥ã‚‹ã¨ã„ã†ã“ã¨ã¯
-                    'åˆä½“orç€è‰¦å¯èƒ½ã¨ã„ã†ã“ã¨ãªã®ã§åœ°å½¢ã¯ç„¡è¦–
+                    'ƒ†ƒjƒbƒg‚ª‚¢‚é’nŒ`‚Éi“üo—ˆ‚é‚Æ‚¢‚¤‚±‚Æ‚Í
+                    '‡‘Ìor’…ŠÍ‰Â”\‚Æ‚¢‚¤‚±‚Æ‚È‚Ì‚Å’nŒ`‚Í–³‹
                     If Not MapDataForUnit(i, j) Is Nothing Then
                         GoTo NextLoop2
                     End If
                     
                     Select Case .Area
-                        Case "åœ°ä¸Š"
+                        Case "’nã"
                             Select Case TerrainClass(i, j)
-                                Case "ç©º"
+                                Case "‹ó"
                                     MaskData(i, j) = True
-                                Case "æ°´"
+                                Case "…"
                                     If Not is_adaptable_in_water _
                                         And Not is_trans_available_on_water _
                                         And Not is_trans_available_in_water _
                                     Then
                                         MaskData(i, j) = True
                                     End If
-                                Case "æ·±æ°´"
+                                Case "[…"
                                     If Not is_trans_available_on_water _
                                         And Not is_trans_available_in_water _
                                     Then
                                         MaskData(i, j) = True
                                     End If
-                                Case "å®‡å®™"
+                                Case "‰F’ˆ"
                                     If Not is_adaptable_in_space Then
                                         MaskData(i, j) = True
                                     End If
                             End Select
-                        Case "æ°´ä¸Š"
+                        Case "…ã"
                             Select Case TerrainClass(i, j)
-                                Case "ç©º"
+                                Case "‹ó"
                                     MaskData(i, j) = True
-                                Case "å®‡å®™"
+                                Case "‰F’ˆ"
                                     If Not is_adaptable_in_space Then
                                         MaskData(i, j) = True
                                     End If
                             End Select
-                        Case "æ°´ä¸­"
+                        Case "…’†"
                             Select Case TerrainClass(i, j)
-                                Case "ç©º"
+                                Case "‹ó"
                                     MaskData(i, j) = True
-                                Case "æ·±æ°´"
+                                Case "[…"
                                     If Not is_trans_available_on_water _
                                         And Not is_trans_available_in_water _
                                     Then
                                         MaskData(i, j) = True
                                     End If
-                                Case "å®‡å®™"
+                                Case "‰F’ˆ"
                                     If Not is_adaptable_in_space Then
                                         MaskData(i, j) = True
                                     End If
                             End Select
-                        Case "ç©ºä¸­"
+                        Case "‹ó’†"
                             Select Case TerrainClass(i, j)
-                                Case "ç©º"
+                                Case "‹ó"
                                     If TerrainMoveCost(i, j) > 100 Then
                                         MaskData(i, j) = True
                                     End If
-                                Case "å®‡å®™"
+                                Case "‰F’ˆ"
                                     If Not is_adaptable_in_space Then
                                         MaskData(i, j) = True
                                     End If
                             End Select
-                        Case "åœ°ä¸­"
-                            If TerrainClass(i, j) <> "é™¸" Then
+                        Case "’n’†"
+                            If TerrainClass(i, j) <> "—¤" Then
                                 MaskData(i, j) = True
                             End If
-                        Case "å®‡å®™"
+                        Case "‰F’ˆ"
                             Select Case TerrainClass(i, j)
-                                Case "é™¸", "å±‹å†…"
+                                Case "—¤", "‰®“à"
                                     If Not is_trans_available_in_sky _
                                         And Not is_trans_available_on_ground _
                                     Then
                                         MaskData(i, j) = True
                                     End If
-                                Case "ç©º"
+                                Case "‹ó"
                                     If Not is_trans_available_in_sky _
                                         Or TerrainMoveCost(i, j) > 10 _
                                     Then
                                         MaskData(i, j) = True
                                     End If
-                                Case "æ°´"
+                                Case "…"
                                     If Not is_trans_available_in_water _
                                         And Not is_trans_available_on_water _
                                         And Not is_adaptable_in_water _
                                     Then
                                         MaskData(i, j) = True
                                     End If
-                                Case "æ·±æ°´"
+                                Case "[…"
                                     If Not is_trans_available_on_water _
                                         And Not is_trans_available_in_water _
                                     Then
@@ -2529,7 +2529,7 @@ NextLoop:
                             End Select
                     End Select
                     
-                    'ç§»å‹•åˆ¶é™
+                    'ˆÚ“®§ŒÀ
                     If UBound(allowed_terrains) > 0 Then
                         For k = 2 To UBound(allowed_terrains)
                             If TerrainName(i, j) = allowed_terrains(k) Then
@@ -2541,7 +2541,7 @@ NextLoop:
                         End If
                     End If
                     
-                    'é€²å…¥ä¸å¯
+                    'i“ü•s‰Â
                     For k = 2 To UBound(prohibited_terrains)
                         If TerrainName(i, j) = prohibited_terrains(k) Then
                             MaskData(i, j) = True
@@ -2553,13 +2553,13 @@ NextLoop2:
             Next
         End If
         
-        'ç¾åœ¨ã„ã‚‹å ´æ‰€ã¯å¸¸ã«é€²å…¥å¯èƒ½
+        'Œ»İ‚¢‚éêŠ‚Íí‚Éi“ü‰Â”\
         MaskData(.X, .Y) = False
     End With
 End Sub
 
-'ãƒ¦ãƒ‹ãƒƒãƒˆ u ãŒãƒ†ãƒ¬ãƒãƒ¼ãƒˆã—ã¦ç§»å‹•ã§ãã‚‹ç¯„å›²ã‚’é¸æŠ
-'æœ€å¤§è·é›¢ lv ã‚’æŒ‡å®šå¯èƒ½ã€‚(çœç•¥æ™‚ã¯ç§»å‹•åŠ›ï¼‹ãƒ†ãƒ¬ãƒãƒ¼ãƒˆãƒ¬ãƒ™ãƒ«)
+'ƒ†ƒjƒbƒg u ‚ªƒeƒŒƒ|[ƒg‚µ‚ÄˆÚ“®‚Å‚«‚é”ÍˆÍ‚ğ‘I‘ğ
+'Å‘å‹——£ lv ‚ğw’è‰Â”\B(È—ª‚ÍˆÚ“®—Í{ƒeƒŒƒ|[ƒgƒŒƒxƒ‹)
 Public Sub AreaInTeleport(u As Unit, Optional ByVal lv As Integer)
 Dim is_trans_available_on_ground As Boolean
 Dim is_trans_available_in_water As Boolean
@@ -2574,71 +2574,71 @@ Dim buf As String
 Dim u2 As Unit
     
     With u
-        'ç§»å‹•èƒ½åŠ›ã®å¯å¦ã‚’èª¿ã¹ã¦ãŠã
-        is_trans_available_on_ground = .IsTransAvailable("é™¸") And .Adaption(2) <> 0
-        is_trans_available_in_water = .IsTransAvailable("æ°´") And .Adaption(3) <> 0
-        is_trans_available_in_sky = .IsTransAvailable("ç©º") And .Adaption(1) <> 0
+        'ˆÚ“®”\—Í‚Ì‰Â”Û‚ğ’²‚×‚Ä‚¨‚­
+        is_trans_available_on_ground = .IsTransAvailable("—¤") And .Adaption(2) <> 0
+        is_trans_available_in_water = .IsTransAvailable("…") And .Adaption(3) <> 0
+        is_trans_available_in_sky = .IsTransAvailable("‹ó") And .Adaption(1) <> 0
         If Mid$(.Data.Adaption, 3, 1) <> "-" _
-            Or .IsFeatureAvailable("æ°´ä¸­ç§»å‹•") _
+            Or .IsFeatureAvailable("…’†ˆÚ“®") _
         Then
             is_adaptable_in_water = True
         End If
         If Mid$(.Data.Adaption, 4, 1) <> "-" _
-            Or .IsFeatureAvailable("å®‡å®™ç§»å‹•") _
+            Or .IsFeatureAvailable("‰F’ˆˆÚ“®") _
         Then
             is_adaptable_in_space = True
         End If
-        If .IsFeatureAvailable("æ°´ä¸Šç§»å‹•") _
-            Or .IsFeatureAvailable("ãƒ›ãƒãƒ¼ç§»å‹•") _
+        If .IsFeatureAvailable("…ãˆÚ“®") _
+            Or .IsFeatureAvailable("ƒzƒo[ˆÚ“®") _
         Then
             is_trans_available_on_water = True
         End If
         
-        'ç§»å‹•åˆ¶é™
+        'ˆÚ“®§ŒÀ
         ReDim allowed_terrains(0)
-        If .IsFeatureAvailable("ç§»å‹•åˆ¶é™") Then
-            If .Area <> "ç©ºä¸­" And .Area <> "åœ°ä¸­" Then
-                n = LLength(.FeatureData("ç§»å‹•åˆ¶é™"))
+        If .IsFeatureAvailable("ˆÚ“®§ŒÀ") Then
+            If .Area <> "‹ó’†" And .Area <> "’n’†" Then
+                n = LLength(.FeatureData("ˆÚ“®§ŒÀ"))
                 ReDim allowed_terrains(n)
                 For i = 2 To n
-                    allowed_terrains(i) = LIndex(.FeatureData("ç§»å‹•åˆ¶é™"), i)
+                    allowed_terrains(i) = LIndex(.FeatureData("ˆÚ“®§ŒÀ"), i)
                 Next
             End If
         End If
         
-        'é€²å…¥ä¸å¯
+        'i“ü•s‰Â
         ReDim prohibited_terrains(0)
-        If .IsFeatureAvailable("é€²å…¥ä¸å¯") Then
-            If .Area <> "ç©ºä¸­" And .Area <> "åœ°ä¸­" Then
-                n = LLength(.FeatureData("é€²å…¥ä¸å¯"))
+        If .IsFeatureAvailable("i“ü•s‰Â") Then
+            If .Area <> "‹ó’†" And .Area <> "’n’†" Then
+                n = LLength(.FeatureData("i“ü•s‰Â"))
                 ReDim prohibited_terrains(n)
                 For i = 2 To n
-                    prohibited_terrains(i) = LIndex(.FeatureData("é€²å…¥ä¸å¯"), i)
+                    prohibited_terrains(i) = LIndex(.FeatureData("i“ü•s‰Â"), i)
                 Next
             End If
         End If
         
-        'ãƒ†ãƒ¬ãƒãƒ¼ãƒˆã«ã‚ˆã‚‹ç§»å‹•è·é›¢ã‚’ç®—å‡º
+        'ƒeƒŒƒ|[ƒg‚É‚æ‚éˆÚ“®‹——£‚ğZo
         If lv > 0 Then
             r = lv
         Else
-            r = .Speed + .FeatureLevel("ãƒ†ãƒ¬ãƒãƒ¼ãƒˆ")
+            r = .Speed + .FeatureLevel("ƒeƒŒƒ|[ƒg")
         End If
-        If .IsConditionSatisfied("ç§»å‹•ä¸èƒ½") Then
+        If .IsConditionSatisfied("ˆÚ“®•s”\") Then
             r = 0
         End If
         
-        'é¸æŠè§£é™¤
+        '‘I‘ğ‰ğœ
         For i = 1 To MapWidth
             For j = 1 To MapHeight
                 MaskData(i, j) = True
             Next
         Next
         
-        'ç§»å‹•å¯èƒ½ãªåœ°ç‚¹ã‚’èª¿ã¹ã‚‹
+        'ˆÚ“®‰Â”\‚È’n“_‚ğ’²‚×‚é
         For i = MaxLng(1, .X - r) To MinLng(MapWidth, .X + r)
             For j = MaxLng(1, .Y - r) To MinLng(MapHeight, .Y + r)
-                'ç§»å‹•ç¯„å›²å†…ï¼Ÿ
+                'ˆÚ“®”ÍˆÍ“àH
                 If Abs(.X - i) + Abs(.Y - j) > r Then
                     GoTo NextLoop
                 End If
@@ -2646,83 +2646,83 @@ Dim u2 As Unit
                 Set u2 = MapDataForUnit(i, j)
                 
                 If u2 Is Nothing Then
-                    'ãƒ¦ãƒ‹ãƒƒãƒˆãŒã„ãªã„åœ°ç‚¹ã¯åœ°å½¢ã‹ã‚‰é€²å…¥å¯èƒ½ã‹ãƒã‚§ãƒƒã‚¯
+                    'ƒ†ƒjƒbƒg‚ª‚¢‚È‚¢’n“_‚Í’nŒ`‚©‚çi“ü‰Â”\‚©ƒ`ƒFƒbƒN
                     MaskData(i, j) = False
                     Select Case .Area
-                        Case "åœ°ä¸Š"
+                        Case "’nã"
                             Select Case TerrainClass(i, j)
-                                Case "ç©º"
+                                Case "‹ó"
                                     MaskData(i, j) = True
-                                Case "æ°´"
+                                Case "…"
                                     If Not is_adaptable_in_water _
                                         And Not is_trans_available_on_water _
                                         And Not is_trans_available_in_water _
                                     Then
                                         MaskData(i, j) = True
                                     End If
-                                Case "æ·±æ°´"
+                                Case "[…"
                                     If Not is_trans_available_on_water _
                                         And Not is_trans_available_in_water _
                                     Then
                                         MaskData(i, j) = True
                                     End If
-                                Case "å®‡å®™"
+                                Case "‰F’ˆ"
                                     If Not is_adaptable_in_space Then
                                         MaskData(i, j) = True
                                     End If
                             End Select
-                        Case "æ°´ä¸­"
+                        Case "…’†"
                             Select Case TerrainClass(i, j)
-                                Case "ç©º"
+                                Case "‹ó"
                                     MaskData(i, j) = True
-                                Case "æ·±æ°´"
+                                Case "[…"
                                     If Not is_trans_available_on_water _
                                         And Not is_trans_available_in_water _
                                     Then
                                         MaskData(i, j) = True
                                     End If
-                                Case "å®‡å®™"
+                                Case "‰F’ˆ"
                                     If Not is_adaptable_in_space Then
                                         MaskData(i, j) = True
                                     End If
                             End Select
-                        Case "ç©ºä¸­"
+                        Case "‹ó’†"
                             Select Case TerrainClass(i, j)
-                                Case "ç©º"
+                                Case "‹ó"
                                     If TerrainMoveCost(i, j) > 100 Then
                                         MaskData(i, j) = True
                                     End If
-                                Case "å®‡å®™"
+                                Case "‰F’ˆ"
                                     If Not is_adaptable_in_space Then
                                         MaskData(i, j) = True
                                     End If
                             End Select
-                        Case "åœ°ä¸­"
-                            If TerrainClass(i, j) <> "é™¸" Then
+                        Case "’n’†"
+                            If TerrainClass(i, j) <> "—¤" Then
                                 MaskData(i, j) = True
                             End If
-                        Case "å®‡å®™"
+                        Case "‰F’ˆ"
                             Select Case TerrainClass(i, j)
-                                Case "é™¸", "å±‹å†…"
+                                Case "—¤", "‰®“à"
                                     If Not is_trans_available_in_sky _
                                         And Not is_trans_available_on_ground _
                                     Then
                                         MaskData(i, j) = True
                                     End If
-                                Case "ç©º"
+                                Case "‹ó"
                                     If Not is_trans_available_in_sky _
                                         Or TerrainMoveCost(i, j) > 100 _
                                     Then
                                         MaskData(i, j) = True
                                     End If
-                                Case "æ°´"
+                                Case "…"
                                     If Not is_trans_available_in_water _
                                         And Not is_trans_available_on_water _
                                         And Not is_adaptable_in_water _
                                     Then
                                         MaskData(i, j) = True
                                     End If
-                                Case "æ·±æ°´"
+                                Case "[…"
                                     If Not is_trans_available_on_water _
                                         And Not is_trans_available_in_water _
                                     Then
@@ -2731,7 +2731,7 @@ Dim u2 As Unit
                             End Select
                     End Select
                     
-                    'ç§»å‹•åˆ¶é™
+                    'ˆÚ“®§ŒÀ
                     If UBound(allowed_terrains) > 0 Then
                         For k = 2 To UBound(allowed_terrains)
                             If TerrainName(i, j) = allowed_terrains(k) Then
@@ -2743,7 +2743,7 @@ Dim u2 As Unit
                         End If
                     End If
                     
-                    'é€²å…¥ä¸å¯
+                    'i“ü•s‰Â
                     For k = 2 To UBound(prohibited_terrains)
                         If TerrainName(i, j) = prohibited_terrains(k) Then
                             MaskData(i, j) = True
@@ -2754,39 +2754,39 @@ Dim u2 As Unit
                     GoTo NextLoop
                 End If
                 
-                'åˆä½“ï¼†ç€è‰¦ã™ã‚‹ã®ã¯å‘³æ–¹ã®ã¿
-                If .Party0 <> "å‘³æ–¹" Then
+                '‡‘Ì•’…ŠÍ‚·‚é‚Ì‚Í–¡•û‚Ì‚İ
+                If .Party0 <> "–¡•û" Then
                     GoTo NextLoop
                 End If
                 
                 Select Case u2.Party0
-                    Case "å‘³æ–¹"
-                        If u2.IsFeatureAvailable("æ¯è‰¦") Then
-                            'æ¯è‰¦ã«ç€è‰¦ï¼Ÿ
-                            If Not .IsFeatureAvailable("æ¯è‰¦") _
-                                And Not .IsFeatureAvailable("æ ¼ç´ä¸å¯") _
-                                And u2.Area <> "åœ°ä¸­" _
-                                And Not u2.IsDisabled("æ¯è‰¦") _
+                    Case "–¡•û"
+                        If u2.IsFeatureAvailable("•êŠÍ") Then
+                            '•êŠÍ‚É’…ŠÍH
+                            If Not .IsFeatureAvailable("•êŠÍ") _
+                                And Not .IsFeatureAvailable("Ši”[•s‰Â") _
+                                And u2.Area <> "’n’†" _
+                                And Not u2.IsDisabled("•êŠÍ") _
                             Then
                                 MaskData(i, j) = False
                             End If
-                        ElseIf .IsFeatureAvailable("åˆä½“") _
-                            And u2.IsFeatureAvailable("åˆä½“") _
+                        ElseIf .IsFeatureAvailable("‡‘Ì") _
+                            And u2.IsFeatureAvailable("‡‘Ì") _
                         Then
-                            'ï¼’ä½“åˆä½“ï¼Ÿ
+                            '‚Q‘Ì‡‘ÌH
                             MaskData(i, j) = True
                             For k = 1 To .CountFeature
-                                If .Feature(k) = "åˆä½“" And .FeatureName(k) <> "" Then
+                                If .Feature(k) = "‡‘Ì" And .FeatureName(k) <> "" Then
                                     buf = .FeatureData(k)
                                     If LLength(buf) = 3 _
                                         And UList.IsDefined(LIndex(buf, 2)) _
                                         And UList.IsDefined(LIndex(buf, 3)) _
                                     Then
                                         With UList.Item(LIndex(buf, 2))
-                                            If .IsConditionSatisfied("è¡Œå‹•ä¸èƒ½") Then
+                                            If .IsConditionSatisfied("s“®•s”\") Then
                                                 Exit For
                                             End If
-                                            If .Status = "ç ´æ£„" Then
+                                            If .Status = "”jŠü" Then
                                                 Exit For
                                             End If
                                         End With
@@ -2795,7 +2795,7 @@ Dim u2 As Unit
                                             Exit For
                                         ElseIf u2.Name = _
                                                 UList.Item(LIndex(buf, 3)).CurrentForm.Name _
-                                            And Not u2.IsFeatureAvailable("åˆä½“åˆ¶é™") _
+                                            And Not u2.IsFeatureAvailable("‡‘Ì§ŒÀ") _
                                         Then
                                             MaskData(i, j) = False
                                             Exit For
@@ -2804,24 +2804,24 @@ Dim u2 As Unit
                                 End If
                             Next
                         End If
-                    Case "ï¼®ï¼°ï¼£"
-                        If .IsFeatureAvailable("åˆä½“") _
-                            And u2.IsFeatureAvailable("åˆä½“") _
+                    Case "‚m‚o‚b"
+                        If .IsFeatureAvailable("‡‘Ì") _
+                            And u2.IsFeatureAvailable("‡‘Ì") _
                         Then
-                            'ï¼’ä½“åˆä½“ï¼Ÿ
+                            '‚Q‘Ì‡‘ÌH
                             MaskData(i, j) = True
                             For k = 1 To .CountFeature
-                                If .Feature(k) = "åˆä½“" Then
+                                If .Feature(k) = "‡‘Ì" Then
                                     buf = .FeatureData(k)
                                     If LLength(buf) = 3 _
                                         And UList.IsDefined(LIndex(buf, 2)) _
                                         And UList.IsDefined(LIndex(buf, 3)) _
                                     Then
                                         With UList.Item(LIndex(buf, 2))
-                                            If .IsConditionSatisfied("è¡Œå‹•ä¸èƒ½") Then
+                                            If .IsConditionSatisfied("s“®•s”\") Then
                                                 Exit For
                                             End If
-                                            If .Status = "ç ´æ£„" Then
+                                            If .Status = "”jŠü" Then
                                                 Exit For
                                             End If
                                         End With
@@ -2830,7 +2830,7 @@ Dim u2 As Unit
                                             Exit For
                                         ElseIf u2.Name = _
                                                 UList.Item(LIndex(buf, 3)).CurrentForm.Name _
-                                            And Not u2.IsFeatureAvailable("åˆä½“åˆ¶é™") _
+                                            And Not u2.IsFeatureAvailable("‡‘Ì§ŒÀ") _
                                         Then
                                             MaskData(i, j) = False
                                             Exit For
@@ -2844,12 +2844,12 @@ NextLoop:
             Next
         Next
         
-        'ç¾åœ¨ã„ã‚‹å ´æ‰€ã¯å¸¸ã«é€²å…¥å¯èƒ½
+        'Œ»İ‚¢‚éêŠ‚Íí‚Éi“ü‰Â”\
         MaskData(.X, .Y) = False
     End With
 End Sub
 
-'ãƒ¦ãƒ‹ãƒƒãƒˆ u ã®ï¼­ç§»æ­¦å™¨ã€ã‚¢ãƒ“ãƒªãƒ†ã‚£ã®ã‚¿ãƒ¼ã‚²ãƒƒãƒˆåº§æ¨™é¸æŠç”¨
+'ƒ†ƒjƒbƒg u ‚Ì‚lˆÚ•ŠíAƒAƒrƒŠƒeƒB‚Ìƒ^[ƒQƒbƒgÀ•W‘I‘ğ—p
 Public Sub AreaInMoveAction(u As Unit, ByVal max_range As Integer)
 Dim i As Integer, j As Integer, k As Integer, n As Integer
 ' ADD START MARGE
@@ -2874,48 +2874,48 @@ Dim td As TerrainData
 ' ADD END MARGE
    
     With u
-        'å…¨é ˜åŸŸãƒã‚¹ã‚¯
+        '‘S—Ìˆæƒ}ƒXƒN
         For i = 1 To MapWidth
             For j = 1 To MapHeight
                 MaskData(i, j) = True
             Next
         Next
         
-        'ç§»å‹•èƒ½åŠ›ã®å¯å¦ã‚’èª¿ã¹ã¦ãŠã
-        is_trans_available_on_ground = .IsTransAvailable("é™¸") And .Adaption(2) <> 0
-        is_trans_available_in_water = .IsTransAvailable("æ°´") And .Adaption(3) <> 0
-        is_trans_available_in_sky = .IsTransAvailable("ç©º") And .Adaption(1) <> 0
+        'ˆÚ“®”\—Í‚Ì‰Â”Û‚ğ’²‚×‚Ä‚¨‚­
+        is_trans_available_on_ground = .IsTransAvailable("—¤") And .Adaption(2) <> 0
+        is_trans_available_in_water = .IsTransAvailable("…") And .Adaption(3) <> 0
+        is_trans_available_in_sky = .IsTransAvailable("‹ó") And .Adaption(1) <> 0
         If Mid$(.Data.Adaption, 3, 1) <> "-" _
-            Or .IsFeatureAvailable("æ°´ä¸­ç§»å‹•") _
+            Or .IsFeatureAvailable("…’†ˆÚ“®") _
         Then
             is_adaptable_in_water = True
         End If
         If Mid$(.Data.Adaption, 4, 1) <> "-" _
-            Or .IsFeatureAvailable("å®‡å®™ç§»å‹•") _
+            Or .IsFeatureAvailable("‰F’ˆˆÚ“®") _
         Then
             is_adaptable_in_space = True
         End If
-        If .IsFeatureAvailable("æ°´ä¸Šç§»å‹•") _
-            Or .IsFeatureAvailable("ãƒ›ãƒãƒ¼ç§»å‹•") _
+        If .IsFeatureAvailable("…ãˆÚ“®") _
+            Or .IsFeatureAvailable("ƒzƒo[ˆÚ“®") _
         Then
             is_trans_available_on_water = True
         End If
-        If .IsFeatureAvailable("é€éç§»å‹•") _
-            Or .IsUnderSpecialPowerEffect("é€éç§»å‹•") _
+        If .IsFeatureAvailable("“§‰ßˆÚ“®") _
+            Or .IsUnderSpecialPowerEffect("“§‰ßˆÚ“®") _
         Then
             is_able_to_penetrate = True
         End If
         
 ' ADD START MARGE
-        'åœ°å½¢é©å¿œã®ã‚ã‚‹åœ°å½¢ã®ãƒªã‚¹ãƒˆã‚’ä½œæˆ
+        '’nŒ`“K‰‚Ì‚ ‚é’nŒ`‚ÌƒŠƒXƒg‚ğì¬
         ReDim adopted_terrain(0)
-        If .IsFeatureAvailable("åœ°å½¢é©å¿œ") Then
+        If .IsFeatureAvailable("’nŒ`“K‰") Then
             For i = 1 To .CountFeature
-                If .Feature(i) = "åœ°å½¢é©å¿œ" Then
+                If .Feature(i) = "’nŒ`“K‰" Then
                     buf = .FeatureData(i)
                     If LLength(buf) = 0 Then
-                        ErrorMessage "ãƒ¦ãƒ‹ãƒƒãƒˆã€Œ" & _
-                            .Name & "ã€ã®åœ°å½¢é©å¿œèƒ½åŠ›ã«å¯¾å¿œåœ°å½¢ãŒæŒ‡å®šã•ã‚Œã¦ã„ã¾ã›ã‚“"
+                        ErrorMessage "ƒ†ƒjƒbƒgu" & _
+                            .Name & "v‚Ì’nŒ`“K‰”\—Í‚É‘Î‰’nŒ`‚ªw’è‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ"
                         TerminateSRC
                     End If
                     n = LLength(buf)
@@ -2928,125 +2928,125 @@ Dim td As TerrainData
         End If
 ' ADD END MARGE
         
-        'ç§»å‹•åˆ¶é™
+        'ˆÚ“®§ŒÀ
         ReDim allowed_terrains(0)
-        If .IsFeatureAvailable("ç§»å‹•åˆ¶é™") Then
-            If .Area <> "ç©ºä¸­" And .Area <> "åœ°ä¸­" Then
-                n = LLength(.FeatureData("ç§»å‹•åˆ¶é™"))
+        If .IsFeatureAvailable("ˆÚ“®§ŒÀ") Then
+            If .Area <> "‹ó’†" And .Area <> "’n’†" Then
+                n = LLength(.FeatureData("ˆÚ“®§ŒÀ"))
                 ReDim allowed_terrains(n)
                 For i = 2 To n
-                    allowed_terrains(i) = LIndex(.FeatureData("ç§»å‹•åˆ¶é™"), i)
+                    allowed_terrains(i) = LIndex(.FeatureData("ˆÚ“®§ŒÀ"), i)
                 Next
             End If
         End If
         
-        'é€²å…¥ä¸å¯
+        'i“ü•s‰Â
         ReDim prohibited_terrains(0)
-        If .IsFeatureAvailable("é€²å…¥ä¸å¯") Then
-            If .Area <> "ç©ºä¸­" And .Area <> "åœ°ä¸­" Then
-                n = LLength(.FeatureData("é€²å…¥ä¸å¯"))
+        If .IsFeatureAvailable("i“ü•s‰Â") Then
+            If .Area <> "‹ó’†" And .Area <> "’n’†" Then
+                n = LLength(.FeatureData("i“ü•s‰Â"))
                 ReDim prohibited_terrains(n)
                 For i = 2 To n
-                    prohibited_terrains(i) = LIndex(.FeatureData("é€²å…¥ä¸å¯"), i)
+                    prohibited_terrains(i) = LIndex(.FeatureData("i“ü•s‰Â"), i)
                 Next
             End If
         End If
         
-        'ç§»å‹•ç¯„å›²ã‚’ãƒã‚§ãƒƒã‚¯ã™ã¹ãé ˜åŸŸ
+        'ˆÚ“®”ÍˆÍ‚ğƒ`ƒFƒbƒN‚·‚×‚«—Ìˆæ
         x1 = MaxLng(1, .X - max_range)
         y1 = MaxLng(1, .Y - max_range)
         x2 = MinLng(.X + max_range, MapWidth)
         y2 = MinLng(.Y + max_range, MapHeight)
         
-        'é€²å…¥å¯èƒ½ã‹åˆ¤å®š
+        'i“ü‰Â”\‚©”»’è
         For i = x1 To x2
             For j = y1 To y2
-                'ç§»å‹•åŠ›ã®ç¯„å›²å†…ï¼Ÿ
+                'ˆÚ“®—Í‚Ì”ÍˆÍ“àH
                 If Abs(.X - i) + Abs(.Y - j) > max_range Then
                     GoTo NextLoop
                 End If
                 
-                'ãƒ¦ãƒ‹ãƒƒãƒˆãŒå­˜åœ¨ï¼Ÿ
+                'ƒ†ƒjƒbƒg‚ª‘¶İH
                 If Not MapDataForUnit(i, j) Is Nothing Then
                     GoTo NextLoop
                 End If
                 
-                'é©å¿œã‚ã‚Šï¼Ÿ
+                '“K‰‚ ‚èH
                 Select Case .Area
-                    Case "åœ°ä¸Š"
+                    Case "’nã"
                         Select Case TerrainClass(i, j)
-                            Case "ç©º"
+                            Case "‹ó"
                                 GoTo NextLoop
-                            Case "æ°´"
+                            Case "…"
                                 If Not is_adaptable_in_water _
                                     And Not is_trans_available_on_water _
                                     And Not is_trans_available_in_water _
                                 Then
                                     GoTo NextLoop
                                 End If
-                            Case "æ·±æ°´"
+                            Case "[…"
                                 If Not is_trans_available_on_water _
                                     And Not is_trans_available_in_water _
                                 Then
                                     GoTo NextLoop
                                 End If
-                            Case "å®‡å®™"
+                            Case "‰F’ˆ"
                                 If Not is_adaptable_in_space Then
                                     GoTo NextLoop
                                 End If
                         End Select
-                    Case "æ°´ä¸­"
+                    Case "…’†"
                         Select Case TerrainClass(i, j)
-                            Case "ç©º"
+                            Case "‹ó"
                                 GoTo NextLoop
-                            Case "æ·±æ°´"
+                            Case "[…"
                                 If Not is_trans_available_on_water _
                                     And Not is_trans_available_in_water _
                                 Then
                                     GoTo NextLoop
                                 End If
-                            Case "å®‡å®™"
+                            Case "‰F’ˆ"
                                 If Not is_adaptable_in_space Then
                                     GoTo NextLoop
                                 End If
                         End Select
-                    Case "ç©ºä¸­"
+                    Case "‹ó’†"
                         Select Case TerrainClass(i, j)
-                            Case "ç©º"
+                            Case "‹ó"
                                 If TerrainMoveCost(i, j) > 100 Then
                                     GoTo NextLoop
                                 End If
-                            Case "å®‡å®™"
+                            Case "‰F’ˆ"
                                 If Not is_adaptable_in_space Then
                                     GoTo NextLoop
                                 End If
                         End Select
-                    Case "åœ°ä¸­"
-                        If TerrainClass(i, j) <> "é™¸" Then
+                    Case "’n’†"
+                        If TerrainClass(i, j) <> "—¤" Then
                             GoTo NextLoop
                         End If
-                    Case "å®‡å®™"
+                    Case "‰F’ˆ"
                         Select Case TerrainClass(i, j)
-                            Case "é™¸", "å±‹å†…"
+                            Case "—¤", "‰®“à"
                                 If Not is_trans_available_in_sky _
                                     And Not is_trans_available_on_ground _
                                 Then
                                     GoTo NextLoop
                                 End If
-                            Case "ç©º"
+                            Case "‹ó"
                                 If Not is_trans_available_in_sky _
                                     Or TerrainMoveCost(i, j) > 100 _
                                 Then
                                     GoTo NextLoop
                                 End If
-                            Case "æ°´"
+                            Case "…"
                                 If Not is_trans_available_in_water _
                                     And Not is_trans_available_on_water _
                                     And Not is_adaptable_in_water _
                                 Then
                                     GoTo NextLoop
                                 End If
-                            Case "æ·±æ°´"
+                            Case "[…"
                                 If Not is_trans_available_on_water _
                                     And Not is_trans_available_in_water _
                                 Then
@@ -3054,7 +3054,7 @@ Dim td As TerrainData
                                 End If
                         End Select
                         
-                        'ç§»å‹•åˆ¶é™
+                        'ˆÚ“®§ŒÀ
                         If UBound(allowed_terrains) > 0 Then
                             For k = 2 To UBound(allowed_terrains)
                                 If TerrainName(i, j) = allowed_terrains(k) Then
@@ -3066,7 +3066,7 @@ Dim td As TerrainData
                             End If
                         End If
                         
-                        'é€²å…¥ä¸å¯
+                        'i“ü•s‰Â
                         For k = 2 To UBound(prohibited_terrains)
                             If TerrainName(i, j) = prohibited_terrains(k) Then
                                 GoTo NextLoop
@@ -3074,11 +3074,11 @@ Dim td As TerrainData
                         Next
                 End Select
                 
-                'ä¾µå…¥ï¼ˆé€²å…¥ï¼‰ç¦æ­¢åœ°å½¢ï¼Ÿ
+                'N“üii“üj‹Ö~’nŒ`H
 'MOD START 240a
 '                Set td = TDList.Item(MapData(i, j, 0))
 '                With td
-'                    If .IsFeatureAvailable("ä¾µå…¥ç¦æ­¢") Then
+'                    If .IsFeatureAvailable("N“ü‹Ö~") Then
 '                        For k = 1 To UBound(adopted_terrain)
 '                            If .Name = adopted_terrain(k) Then
 '                                Exit For
@@ -3101,25 +3101,25 @@ Dim td As TerrainData
                 End If
 'MOD START 240a
                 
-                'é€²è·¯ä¸Šã«å£ãŒã‚ã‚‹ï¼Ÿ
+                'i˜Hã‚É•Ç‚ª‚ ‚éH
                 If Not is_able_to_penetrate Then
-                    If IsLineBlocked(.X, .Y, i, j, .Area = "ç©ºä¸­") Then
+                    If IsLineBlocked(.X, .Y, i, j, .Area = "‹ó’†") Then
                         GoTo NextLoop
                     End If
                 End If
                 
-                'ãƒã‚¹ã‚¯è§£é™¤
+                'ƒ}ƒXƒN‰ğœ
                 MaskData(i, j) = False
 NextLoop:
             Next
         Next
         
-        'ç¾åœ¨ã„ã‚‹å ´æ‰€ã¯å¸¸ã«é€²å…¥å¯èƒ½
+        'Œ»İ‚¢‚éêŠ‚Íí‚Éi“ü‰Â”\
         MaskData(.X, .Y) = False
     End With
 End Sub
 
-'ï¼’ç‚¹é–“ã‚’çµã¶ç›´ç·šãŒå£ã§ãƒ–ãƒ­ãƒƒã‚¯ã•ã‚Œã¦ã„ã‚‹ã‹åˆ¤å®š
+'‚Q“_ŠÔ‚ğŒ‹‚Ô’¼ü‚ª•Ç‚ÅƒuƒƒbƒN‚³‚ê‚Ä‚¢‚é‚©”»’è
 Public Function IsLineBlocked(ByVal x1 As Integer, ByVal y1 As Integer, _
     ByVal x2 As Integer, ByVal y2 As Integer, _
     Optional ByVal is_flying As Boolean) As Boolean
@@ -3138,22 +3138,22 @@ Dim xx2 As Integer, yy2 As Integer
              yy2 = yy
              yy = y1 + (y2 - y1) * (x1 - xx + 0#) / (x1 - x2)
              
-             'å£ï¼Ÿ
+             '•ÇH
              If is_flying Then
-                 If TerrainName(xx, yy) = "å£" _
-                     Or TerrainName(xx, yy2) = "å£" _
+                 If TerrainName(xx, yy) = "•Ç" _
+                     Or TerrainName(xx, yy2) = "•Ç" _
                  Then
                      IsLineBlocked = True
                      Exit Function
                  End If
              Else
                  Select Case TerrainName(xx, yy)
-                     Case "å£", "é˜²å£"
+                     Case "•Ç", "–h•Ç"
                          IsLineBlocked = True
                          Exit Function
                  End Select
                  Select Case TerrainName(xx, yy2)
-                     Case "å£", "é˜²å£"
+                     Case "•Ç", "–h•Ç"
                          IsLineBlocked = True
                          Exit Function
                  End Select
@@ -3169,22 +3169,22 @@ Dim xx2 As Integer, yy2 As Integer
              xx2 = xx
              xx = x1 + (x2 - x1) * (y1 - yy + 0#) / (y1 - y2)
              
-             'å£ï¼Ÿ
+             '•ÇH
              If is_flying Then
-                 If TerrainName(xx, yy) = "å£" _
-                     Or TerrainName(xx2, yy) = "å£" _
+                 If TerrainName(xx, yy) = "•Ç" _
+                     Or TerrainName(xx2, yy) = "•Ç" _
                  Then
                      IsLineBlocked = True
                      Exit Function
                  End If
              Else
                  Select Case TerrainName(xx, yy)
-                     Case "å£", "é˜²å£"
+                     Case "•Ç", "–h•Ç"
                          IsLineBlocked = True
                          Exit Function
                  End Select
                  Select Case TerrainName(xx2, yy)
-                     Case "å£", "é˜²å£"
+                     Case "•Ç", "–h•Ç"
                          IsLineBlocked = True
                          Exit Function
                  End Select
@@ -3195,7 +3195,7 @@ Dim xx2 As Integer, yy2 As Integer
     IsLineBlocked = False
 End Function
 
-'ãƒ¦ãƒ‹ãƒƒãƒˆ u ãŒ (dst_x,dst_y) ã«è¡Œãã®ã«æœ€ã‚‚è¿‘ã„ç§»å‹•ç¯„å›²å†…ã®å ´æ‰€ (X,Y) ã¯ã©ã“ã‹æ¤œç´¢
+'ƒ†ƒjƒbƒg u ‚ª (dst_x,dst_y) ‚És‚­‚Ì‚ÉÅ‚à‹ß‚¢ˆÚ“®”ÍˆÍ“à‚ÌêŠ (X,Y) ‚Í‚Ç‚±‚©ŒŸõ
 Public Sub NearestPoint(u As Unit, _
     ByVal dst_x As Integer, ByVal dst_y As Integer, _
     X As Integer, Y As Integer)
@@ -3214,40 +3214,40 @@ Dim is_changed As Boolean
 Dim min_x As Integer, max_x As Integer
 Dim min_y As Integer, max_y As Integer
 
-    'ç›®çš„åœ°ãŒãƒãƒƒãƒ—å¤–ã«ãªã‚‰ãªã„ã‚ˆã†ã«
+    '–Ú“I’n‚ªƒ}ƒbƒvŠO‚É‚È‚ç‚È‚¢‚æ‚¤‚É
     dst_x = MaxLng(MinLng(dst_x, MapWidth), 1)
     dst_y = MaxLng(MinLng(dst_y, MapHeight), 1)
 
-    'ç§»å‹•èƒ½åŠ›ã®å¯å¦ã‚’èª¿ã¹ã¦ãŠã
+    'ˆÚ“®”\—Í‚Ì‰Â”Û‚ğ’²‚×‚Ä‚¨‚­
     With u
         X = .X
         Y = .Y
         
-        is_trans_available_on_ground = .IsTransAvailable("é™¸") And .Adaption(2) <> 0
-        is_trans_available_in_water = .IsTransAvailable("æ°´") And .Adaption(3) <> 0
+        is_trans_available_on_ground = .IsTransAvailable("—¤") And .Adaption(2) <> 0
+        is_trans_available_in_water = .IsTransAvailable("…") And .Adaption(3) <> 0
         If Mid$(.Data.Adaption, 3, 1) <> "-" _
-            Or .IsFeatureAvailable("æ°´ä¸­ç§»å‹•") _
+            Or .IsFeatureAvailable("…’†ˆÚ“®") _
         Then
             is_adaptable_in_water = True
         End If
-        If .IsFeatureAvailable("æ°´ä¸Šç§»å‹•") _
-            Or .IsFeatureAvailable("ãƒ›ãƒãƒ¼ç§»å‹•") _
+        If .IsFeatureAvailable("…ãˆÚ“®") _
+            Or .IsFeatureAvailable("ƒzƒo[ˆÚ“®") _
         Then
             is_trans_available_on_water = True
         End If
         
-        ReDim adopted_terrain(LLength(.FeatureData("åœ°å½¢é©å¿œ")))
+        ReDim adopted_terrain(LLength(.FeatureData("’nŒ`“K‰")))
         For i = 2 To UBound(adopted_terrain)
-            adopted_terrain(i) = LIndex(.FeatureData("åœ°å½¢é©å¿œ"), i)
+            adopted_terrain(i) = LIndex(.FeatureData("’nŒ`“K‰"), i)
         Next
     End With
     
-    'å„åœ°å½¢ã®ç§»å‹•ã‚³ã‚¹ãƒˆã‚’ç®—å‡ºã—ã¦ãŠã
+    'Še’nŒ`‚ÌˆÚ“®ƒRƒXƒg‚ğZo‚µ‚Ä‚¨‚­
     Select Case u.Area
-        Case "ç©ºä¸­"
+        Case "‹ó’†"
             For i = 1 To MapWidth
                 For j = 1 To MapHeight
-                    If TerrainClass(i, j) = "ç©º" Then
+                    If TerrainClass(i, j) = "‹ó" Then
                         move_cost(i, j) = TerrainMoveCost(i, j)
                         For k = 2 To UBound(adopted_terrain)
                             If TerrainName(i, j) = adopted_terrain(k) Then
@@ -3261,11 +3261,11 @@ Dim min_y As Integer, max_y As Integer
                 Next
             Next
             
-        Case "åœ°ä¸Š"
+        Case "’nã"
             For i = 1 To MapWidth
                 For j = 1 To MapHeight
                     Select Case TerrainClass(i, j)
-                        Case "é™¸", "å±‹å†…", "æœˆé¢"
+                        Case "—¤", "‰®“à", "Œ–Ê"
                             If is_trans_available_on_ground Then
                                 move_cost(i, j) = TerrainMoveCost(i, j)
                                 For k = 2 To UBound(adopted_terrain)
@@ -3277,7 +3277,7 @@ Dim min_y As Integer, max_y As Integer
                             Else
                                 move_cost(i, j) = 1000000
                             End If
-                        Case "æ°´"
+                        Case "…"
                             If is_trans_available_in_water Then
                                 move_cost(i, j) = 2
                             ElseIf is_adaptable_in_water Then
@@ -3291,23 +3291,23 @@ Dim min_y As Integer, max_y As Integer
                             Else
                                 move_cost(i, j) = 1000000
                             End If
-                        Case "æ·±æ°´"
+                        Case "[…"
                             If is_trans_available_in_water Then
                                 move_cost(i, j) = 1
                             Else
                                 move_cost(i, j) = 1000000
                             End If
-                        Case "ç©º"
+                        Case "‹ó"
                             move_cost(i, j) = 1000000
                     End Select
                 Next
             Next
             
-        Case "æ°´ä¸Š"
+        Case "…ã"
             For i = 1 To MapWidth
                 For j = 1 To MapHeight
                     Select Case TerrainClass(i, j)
-                        Case "é™¸", "å±‹å†…", "æœˆé¢"
+                        Case "—¤", "‰®“à", "Œ–Ê"
                             If is_trans_available_on_ground Then
                                 move_cost(i, j) = TerrainMoveCost(i, j)
                                 For k = 2 To UBound(adopted_terrain)
@@ -3319,19 +3319,19 @@ Dim min_y As Integer, max_y As Integer
                             Else
                                 move_cost(i, j) = 1000000
                             End If
-                        Case "æ°´", "æ·±æ°´"
+                        Case "…", "[…"
                            move_cost(i, j) = 2
-                        Case "ç©º"
+                        Case "‹ó"
                            move_cost(i, j) = 1000000
                     End Select
                 Next
             Next
             
-        Case "æ°´ä¸­"
+        Case "…’†"
             For i = 1 To MapWidth
                 For j = 1 To MapHeight
                     Select Case TerrainClass(i, j)
-                        Case "é™¸", "å±‹å†…", "æœˆé¢"
+                        Case "—¤", "‰®“à", "Œ–Ê"
                             If is_trans_available_on_ground Then
                                 move_cost(i, j) = TerrainMoveCost(i, j)
                                 For k = 2 To UBound(adopted_terrain)
@@ -3343,7 +3343,7 @@ Dim min_y As Integer, max_y As Integer
                             Else
                                 move_cost(i, j) = 1000000
                             End If
-                        Case "æ°´"
+                        Case "…"
                             If is_trans_available_in_water Then
                                 move_cost(i, j) = 2
                             Else
@@ -3355,19 +3355,19 @@ Dim min_y As Integer, max_y As Integer
                                     End If
                                 Next
                             End If
-                        Case "æ·±æ°´"
+                        Case "[…"
                             If is_trans_available_in_water Then
                                 move_cost(i, j) = 1
                             Else
                                 move_cost(i, j) = 1000000
                             End If
-                        Case "ç©º"
+                        Case "‹ó"
                             move_cost(i, j) = 1000000
                     End Select
                 Next
             Next
             
-        Case "å®‡å®™"
+        Case "‰F’ˆ"
             For i = 1 To MapWidth
                 For j = 1 To MapHeight
                     move_cost(i, j) = TerrainMoveCost(i, j)
@@ -3380,10 +3380,10 @@ Dim min_y As Integer, max_y As Integer
                 Next
             Next
             
-        Case "åœ°ä¸­"
+        Case "’n’†"
             For i = 1 To MapWidth
                 For j = 1 To MapHeight
-                    If TerrainClass(i, j) = "é™¸" Then
+                    If TerrainClass(i, j) = "—¤" Then
                         move_cost(i, j) = 2
                     Else
                         move_cost(i, j) = 1000000
@@ -3393,12 +3393,12 @@ Dim min_y As Integer, max_y As Integer
     End Select
     
     With u
-        'ç·šè·¯ç§»å‹•
-        If .IsFeatureAvailable("ç·šè·¯ç§»å‹•") Then
-            If .Area = "åœ°ä¸Š" Then
+        'ü˜HˆÚ“®
+        If .IsFeatureAvailable("ü˜HˆÚ“®") Then
+            If .Area = "’nã" Then
                 For i = 1 To MapWidth
                     For j = 1 To MapHeight
-                        If TerrainName(i, j) = "ç·šè·¯" Then
+                        If TerrainName(i, j) = "ü˜H" Then
                             move_cost(i, j) = 1
                         Else
                             move_cost(i, j) = 1000000
@@ -3408,14 +3408,14 @@ Dim min_y As Integer, max_y As Integer
             End If
         End If
         
-        'ç§»å‹•åˆ¶é™
+        'ˆÚ“®§ŒÀ
         ReDim allowed_terrains(0)
-        If .IsFeatureAvailable("ç§»å‹•åˆ¶é™") Then
-            If .Area <> "ç©ºä¸­" And .Area <> "åœ°ä¸­" Then
-                n = LLength(.FeatureData("ç§»å‹•åˆ¶é™"))
+        If .IsFeatureAvailable("ˆÚ“®§ŒÀ") Then
+            If .Area <> "‹ó’†" And .Area <> "’n’†" Then
+                n = LLength(.FeatureData("ˆÚ“®§ŒÀ"))
                 ReDim allowed_terrains(n)
                 For i = 2 To n
-                    allowed_terrains(i) = LIndex(.FeatureData("ç§»å‹•åˆ¶é™"), i)
+                    allowed_terrains(i) = LIndex(.FeatureData("ˆÚ“®§ŒÀ"), i)
                 Next
                 For i = 1 To MapWidth
                     For j = 1 To MapHeight
@@ -3432,14 +3432,14 @@ Dim min_y As Integer, max_y As Integer
             End If
         End If
         
-        'é€²å…¥ä¸å¯
+        'i“ü•s‰Â
         ReDim prohibited_terrains(0)
-        If .IsFeatureAvailable("é€²å…¥ä¸å¯") Then
-            If .Area <> "ç©ºä¸­" And .Area <> "åœ°ä¸­" Then
-                n = LLength(.FeatureData("é€²å…¥ä¸å¯"))
+        If .IsFeatureAvailable("i“ü•s‰Â") Then
+            If .Area <> "‹ó’†" And .Area <> "’n’†" Then
+                n = LLength(.FeatureData("i“ü•s‰Â"))
                 ReDim prohibited_terrains(n)
                 For i = 2 To n
-                    prohibited_terrains(i) = LIndex(.FeatureData("é€²å…¥ä¸å¯"), i)
+                    prohibited_terrains(i) = LIndex(.FeatureData("i“ü•s‰Â"), i)
                 Next
                 For i = 1 To MapWidth
                     For j = 1 To MapHeight
@@ -3454,13 +3454,13 @@ Dim min_y As Integer, max_y As Integer
             End If
         End If
         
-        'ãƒ›ãƒãƒ¼ç§»å‹•
-        If .IsFeatureAvailable("ãƒ›ãƒãƒ¼ç§»å‹•") Then
-            If .Area = "åœ°ä¸Š" Or .Area = "æ°´ä¸Š" Then
+        'ƒzƒo[ˆÚ“®
+        If .IsFeatureAvailable("ƒzƒo[ˆÚ“®") Then
+            If .Area = "’nã" Or .Area = "…ã" Then
                 For i = 1 To MapWidth
                     For j = 1 To MapHeight
                         Select Case TerrainName(i, j)
-                            Case "ç ‚æ¼ ", "æœˆé¢"
+                            Case "»”™", "Œ–Ê"
                                 move_cost(i, j) = 1
                         End Select
                     Next
@@ -3468,13 +3468,13 @@ Dim min_y As Integer, max_y As Integer
             End If
         End If
         
-        'ã‚¸ãƒ£ãƒ³ãƒ—ç§»å‹•
-        If .IsFeatureAvailable("ã‚¸ãƒ£ãƒ³ãƒ—ç§»å‹•") Then
-            If .Area = "åœ°ä¸Š" Or .Area = "æ°´ä¸Š" Or .Area = "æ°´ä¸­" Then
+        'ƒWƒƒƒ“ƒvˆÚ“®
+        If .IsFeatureAvailable("ƒWƒƒƒ“ƒvˆÚ“®") Then
+            If .Area = "’nã" Or .Area = "…ã" Or .Area = "…’†" Then
                 For i = 1 To MapWidth
                     For j = 1 To MapHeight
                         Select Case TerrainClass(i, j)
-                            Case "é™¸", "æœˆé¢"
+                            Case "—¤", "Œ–Ê"
                                 move_cost(i, j) = 1
                         End Select
                     Next
@@ -3490,12 +3490,12 @@ Dim min_y As Integer, max_y As Integer
     Next
     total_cost(dst_x, dst_y) = 0
     
-    'ç›®çš„åœ°ã‹ã‚‰å„åœ°ç‚¹ã«åˆ°é”ã™ã‚‹ã®ã«ã‹ã‹ã‚‹ç§»å‹•åŠ›ã‚’è¨ˆç®—
+    '–Ú“I’n‚©‚çŠe’n“_‚É“’B‚·‚é‚Ì‚É‚©‚©‚éˆÚ“®—Í‚ğŒvZ
     i = 0
     Do
         i = i + 1
         
-        'ã‚¿ã‚¤ãƒ ã‚¢ã‚¦ãƒˆ
+        'ƒ^ƒCƒ€ƒAƒEƒg
         If i > 3 * (MapWidth + MapHeight) Then
             Exit Do
         End If
@@ -3526,13 +3526,13 @@ Dim min_y As Integer, max_y As Integer
             Next
         Next
         
-        'æœ€çŸ­çµŒè·¯ã‚’ç™ºè¦‹ã—ãŸ
+        'Å’ZŒo˜H‚ğ”­Œ©‚µ‚½
         If total_cost(X, Y) <= Abs(dst_x - X) + Abs(dst_y - Y) + 2 Then
             Exit Do
         End If
     Loop While is_changed
     
-    'ç§»å‹•å¯èƒ½ç¯„å›²å†…ã§ç›®çš„åœ°ã«æœ€ã‚‚è¿‘ã„å ´æ‰€ã‚’è¦‹ä»˜ã‘ã‚‹
+    'ˆÚ“®‰Â”\”ÍˆÍ“à‚Å–Ú“I’n‚ÉÅ‚à‹ß‚¢êŠ‚ğŒ©•t‚¯‚é
     tmp = total_cost(X, Y)
     For i = 1 To MapWidth
         For j = 1 To MapHeight
@@ -3556,7 +3556,7 @@ Dim min_y As Integer, max_y As Integer
     Next
 End Sub
 
-'ãƒ¦ãƒ‹ãƒƒãƒˆ u ãŒæ•µã‹ã‚‰æœ€ã‚‚é ããªã‚‹å ´æ‰€(X,Y)ã‚’æ¤œç´¢
+'ƒ†ƒjƒbƒg u ‚ª“G‚©‚çÅ‚à‰“‚­‚È‚éêŠ(X,Y)‚ğŒŸõ
 Public Sub SafetyPoint(u As Unit, X As Integer, Y As Integer)
 Dim i As Integer, j As Integer
 Dim total_cost(0 To 51, 0 To 51) As Long, cur_cost(0 To 51, 0 To 51) As Long
@@ -3564,7 +3564,7 @@ Dim tmp As Long
 Dim t As Unit
 Dim is_changed As Boolean
 
-    'ä½œæ¥­ç”¨é…åˆ—ã‚’åˆæœŸåŒ–
+    'ì‹Æ—p”z—ñ‚ğ‰Šú‰»
     For i = 0 To MapWidth + 1
         For j = 0 To MapHeight + 1
             total_cost(i, j) = 1000000
@@ -3576,7 +3576,7 @@ Dim is_changed As Boolean
         End If
     Next
     
-    'å„åœ°ç‚¹ã®æ•µã‹ã‚‰ã®è·é›¢ã‚’è¨ˆç®—
+    'Še’n“_‚Ì“G‚©‚ç‚Ì‹——£‚ğŒvZ
     Do
         is_changed = False
         
@@ -3601,7 +3601,7 @@ Dim is_changed As Boolean
         Next
     Loop While is_changed
     
-    'ç§»å‹•å¯èƒ½ç¯„å›²å†…ã§æ•µã‹ã‚‰æœ€ã‚‚é ã„å ´æ‰€ã‚’è¦‹ä»˜ã‘ã‚‹
+    'ˆÚ“®‰Â”\”ÍˆÍ“à‚Å“G‚©‚çÅ‚à‰“‚¢êŠ‚ğŒ©•t‚¯‚é
     tmp = 0
     For i = 1 To MapWidth
         For j = 1 To MapHeight
@@ -3625,8 +3625,8 @@ Dim is_changed As Boolean
     Next
 End Sub
 
-'ç¾åœ¨ä½ç½®ã‹ã‚‰æŒ‡å®šã—ãŸå ´æ‰€ã¾ã§ã®ç§»å‹•çµŒè·¯ã‚’èª¿ã¹ã‚‹
-'äº‹å‰ã«AreaInSpeedã‚’å®Ÿè¡Œã—ã¦ãŠãäº‹ãŒå¿…è¦
+'Œ»İˆÊ’u‚©‚çw’è‚µ‚½êŠ‚Ü‚Å‚ÌˆÚ“®Œo˜H‚ğ’²‚×‚é
+'–‘O‚ÉAreaInSpeed‚ğÀs‚µ‚Ä‚¨‚­–‚ª•K—v
 Public Sub SearchMoveRoute(tx As Integer, ty As Integer, _
     move_route_x() As Integer, move_route_y() As Integer)
 Dim xx As Integer, yy As Integer
@@ -3642,7 +3642,7 @@ Dim move_direction()
     move_route_x(1) = tx
     move_route_y(1) = ty
     
-    'ç¾åœ¨ä½ç½®ã‚’èª¿ã¹ã‚‹
+    'Œ»İˆÊ’u‚ğ’²‚×‚é
     For xx = 1 To MapWidth
         For yy = 1 To MapHeight
             If TotalMoveCost(xx, yy) = 0 Then
@@ -3652,7 +3652,7 @@ Dim move_direction()
         Next
     Next
     
-    'ç¾åœ¨ä½ç½®ã®ï¼ºï¼¯ï¼£ã¯ç„¡åŠ¹åŒ–ã™ã‚‹
+    'Œ»İˆÊ’u‚Ì‚y‚n‚b‚Í–³Œø‰»‚·‚é
     PointInZOC(ox, oy) = 0
     
     xx = tx
@@ -3663,9 +3663,9 @@ Dim move_direction()
     Do While TotalMoveCost(xx, yy) > 0
         tmp = TotalMoveCost(xx, yy)
         
-        'å‘¨ã‚Šã®å ´æ‰€ã‹ã‚‰æœ€ã‚‚å¿…è¦ç§»å‹•åŠ›ãŒä½ã„å ´æ‰€ã‚’æ¢ã™
+        'ü‚è‚ÌêŠ‚©‚çÅ‚à•K—vˆÚ“®—Í‚ª’á‚¢êŠ‚ğ’T‚·
         
-        'ãªã‚‹ã¹ãç›´ç·šæ–¹å‘ã«ç§»å‹•ã•ã›ã‚‹ãŸã‚ã€å‰å›ã¨åŒã˜ç§»å‹•æ–¹å‘ã‚’å„ªå…ˆã•ã›ã‚‹
+        '‚È‚é‚×‚­’¼ü•ûŒü‚ÉˆÚ“®‚³‚¹‚é‚½‚ßA‘O‰ñ‚Æ“¯‚¶ˆÚ“®•ûŒü‚ğ—Dæ‚³‚¹‚é
         Select Case prev_direction
             Case "N"
                 If TotalMoveCost(xx, yy - 1) < tmp _
@@ -3705,8 +3705,8 @@ Dim move_direction()
                 End If
         End Select
         
-        'ãªã‚‹ã¹ãç›®æ¨™ä½ç½®ä»˜è¿‘ã§ç›´é€²ã•ã›ã‚‹ãŸã‚ã€ç›®æ¨™ä½ç½®ã¨ã®è·é›¢å·®ã®å°ã•ã„
-        'åº§æ¨™è»¸æ–¹å‘ã«å„ªå…ˆã—ã¦ç§»å‹•ã•ã›ã‚‹
+        '‚È‚é‚×‚­–Ú•WˆÊ’u•t‹ß‚Å’¼i‚³‚¹‚é‚½‚ßA–Ú•WˆÊ’u‚Æ‚Ì‹——£·‚Ì¬‚³‚¢
+        'À•W²•ûŒü‚É—Dæ‚µ‚ÄˆÚ“®‚³‚¹‚é
         If Abs(xx - ox) <= Abs(yy - oy) Then
             If TotalMoveCost(xx, yy - 1) < tmp _
                 And PointInZOC(xx, yy - 1) <= 0 _
@@ -3776,27 +3776,27 @@ Dim move_direction()
         End If
         
         If nx = xx And ny = yy Then
-            'ã“ã‚Œä»¥ä¸Šå¿…è¦ç§»å‹•åŠ›ãŒä½ã„å ´æ‰€ãŒè¦‹ã¤ã‹ã‚‰ãªã‹ã£ãŸã®ã§çµ‚äº†
+            '‚±‚êˆÈã•K—vˆÚ“®—Í‚ª’á‚¢êŠ‚ªŒ©‚Â‚©‚ç‚È‚©‚Á‚½‚Ì‚ÅI—¹
             Exit Do
         End If
         
-        'è¦‹ã¤ã‹ã£ãŸå ´æ‰€ã‚’è¨˜éŒ²
+        'Œ©‚Â‚©‚Á‚½êŠ‚ğ‹L˜^
         ReDim Preserve move_route_x(UBound(move_route_x) + 1)
         ReDim Preserve move_route_y(UBound(move_route_y) + 1)
         move_route_x(UBound(move_route_x)) = nx
         move_route_y(UBound(move_route_y)) = ny
         
-        'ç§»å‹•æ–¹å‘ã‚’è¨˜éŒ²
+        'ˆÚ“®•ûŒü‚ğ‹L˜^
         ReDim Preserve move_direction(UBound(move_direction) + 1)
         move_direction(UBound(move_direction)) = direction
         prev_direction = direction
         
-        'æ¬¡å›ã¯ä»Šå›è¦‹ã¤ã‹ã£ãŸå ´æ‰€ã‚’èµ·ç‚¹ã«æ¤œç´¢ã™ã‚‹
+        'Ÿ‰ñ‚Í¡‰ñŒ©‚Â‚©‚Á‚½êŠ‚ğ‹N“_‚ÉŒŸõ‚·‚é
         xx = nx
         yy = ny
     Loop
     
-    'ç›´ç·šã‚’èµ°ã£ãŸè·é›¢ã‚’è¨ˆç®—
+    '’¼ü‚ğ‘–‚Á‚½‹——£‚ğŒvZ
     MovedUnitSpeed = 1
     For i = 2 To UBound(move_direction) - 1
         If move_direction(i) <> move_direction(i + 1) Then

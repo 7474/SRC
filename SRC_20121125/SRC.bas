@@ -2,116 +2,116 @@ Attribute VB_Name = "SRC"
 Option Explicit
 
 ' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯ãƒ•ãƒªãƒ¼ã‚½ãƒ•ãƒˆã§ã‚ã‚Šã€ç„¡ä¿è¨¼ã§ã™ã€‚
-' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯GNU General Public License(Ver.3ã¾ãŸã¯ãã‚Œä»¥é™)ãŒå®šã‚ã‚‹æ¡ä»¶ã®ä¸‹ã§
-' å†é ’å¸ƒã¾ãŸã¯æ”¹å¤‰ã™ã‚‹ã“ã¨ãŒã§ãã¾ã™ã€‚
+' –{ƒvƒƒOƒ‰ƒ€‚ÍƒtƒŠ[ƒ\ƒtƒg‚Å‚ ‚èA–³•ÛØ‚Å‚·B
+' –{ƒvƒƒOƒ‰ƒ€‚ÍGNU General Public License(Ver.3‚Ü‚½‚Í‚»‚êˆÈ~)‚ª’è‚ß‚éğŒ‚Ì‰º‚Å
+' Ä”Ğ•z‚Ü‚½‚Í‰ü•Ï‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B
 
-'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆãƒ‡ãƒ¼ã‚¿ã®ãƒªã‚¹ãƒˆ
+'ƒpƒCƒƒbƒgƒf[ƒ^‚ÌƒŠƒXƒg
 Public PDList As New PilotDataList
-'ãƒãƒ³ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆãƒ‡ãƒ¼ã‚¿ã®ãƒªã‚¹ãƒˆ
+'ƒmƒ“ƒpƒCƒƒbƒgƒf[ƒ^‚ÌƒŠƒXƒg
 Public NPDList As New NonPilotDataList
-'ãƒ¦ãƒ‹ãƒƒãƒˆãƒ‡ãƒ¼ã‚¿ã®ãƒªã‚¹ãƒˆ
+'ƒ†ƒjƒbƒgƒf[ƒ^‚ÌƒŠƒXƒg
 Public UDList As New UnitDataList
-'ã‚¢ã‚¤ãƒ†ãƒ ãƒ‡ãƒ¼ã‚¿ã®ãƒªã‚¹ãƒˆ
+'ƒAƒCƒeƒ€ƒf[ƒ^‚ÌƒŠƒXƒg
 Public IDList As New ItemDataList
-'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãƒ‡ãƒ¼ã‚¿ã®ãƒªã‚¹ãƒˆ
+'ƒƒbƒZ[ƒWƒf[ƒ^‚ÌƒŠƒXƒg
 Public MDList As New MessageDataList
-'ç‰¹æ®ŠåŠ¹æœãƒ‡ãƒ¼ã‚¿ã®ãƒªã‚¹ãƒˆ
+'“ÁêŒø‰Êƒf[ƒ^‚ÌƒŠƒXƒg
 Public EDList As New MessageDataList
-'æˆ¦é—˜ã‚¢ãƒ‹ãƒ¡ãƒ‡ãƒ¼ã‚¿ã®ãƒªã‚¹ãƒˆ
+'í“¬ƒAƒjƒƒf[ƒ^‚ÌƒŠƒXƒg
 Public ADList As New MessageDataList
-'æ‹¡å¼µæˆ¦é—˜ã‚¢ãƒ‹ãƒ¡ãƒ‡ãƒ¼ã‚¿ã®ãƒªã‚¹ãƒˆ
+'Šg’£í“¬ƒAƒjƒƒf[ƒ^‚ÌƒŠƒXƒg
 Public EADList As New MessageDataList
-'ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ãƒ‡ãƒ¼ã‚¿ã®ãƒªã‚¹ãƒˆ
+'ƒ_ƒCƒAƒƒOƒf[ƒ^‚ÌƒŠƒXƒg
 Public DDList As New DialogDataList
-'ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼ãƒ‡ãƒ¼ã‚¿ã®ãƒªã‚¹ãƒˆ
+'ƒXƒyƒVƒƒƒ‹ƒpƒ[ƒf[ƒ^‚ÌƒŠƒXƒg
 Public SPDList As New SpecialPowerDataList
-'ã‚¨ãƒªã‚¢ã‚¹ãƒ‡ãƒ¼ã‚¿ã®ãƒªã‚¹ãƒˆ
+'ƒGƒŠƒAƒXƒf[ƒ^‚ÌƒŠƒXƒg
 Public ALDList As New AliasDataList
-'åœ°å½¢ãƒ‡ãƒ¼ã‚¿ã®ãƒªã‚¹ãƒˆ
+'’nŒ`ƒf[ƒ^‚ÌƒŠƒXƒg
 Public TDList As New TerrainDataList
-'ãƒãƒˆãƒ«ã‚³ãƒ³ãƒ•ã‚£ã‚°ãƒ‡ãƒ¼ã‚¿ã®ãƒªã‚¹ãƒˆ
+'ƒoƒgƒ‹ƒRƒ“ƒtƒBƒOƒf[ƒ^‚ÌƒŠƒXƒg
 Public BCList As New BattleConfigDataList
 
 
-'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®ãƒªã‚¹ãƒˆ
+'ƒpƒCƒƒbƒg‚ÌƒŠƒXƒg
 Public PList As New Pilots
-'ãƒ¦ãƒ‹ãƒƒãƒˆã®ãƒªã‚¹ãƒˆ
+'ƒ†ƒjƒbƒg‚ÌƒŠƒXƒg
 Public UList As New Units
-'ã‚¢ã‚¤ãƒ†ãƒ ã®ãƒªã‚¹ãƒˆ
+'ƒAƒCƒeƒ€‚ÌƒŠƒXƒg
 Public IList As New Items
 
-'ã‚¤ãƒ™ãƒ³ãƒˆãƒ•ã‚¡ã‚¤ãƒ«å
+'ƒCƒxƒ“ƒgƒtƒ@ƒCƒ‹–¼
 Public ScenarioFileName As String
-'ã‚¤ãƒ™ãƒ³ãƒˆãƒ•ã‚¡ã‚¤ãƒ«åã®ã‚ã‚‹ãƒ•ã‚©ãƒ«ãƒ€
+'ƒCƒxƒ“ƒgƒtƒ@ƒCƒ‹–¼‚Ì‚ ‚éƒtƒHƒ‹ƒ_
 Public ScenarioPath As String
-'ã‚»ãƒ¼ãƒ–ãƒ‡ãƒ¼ã‚¿ã®ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‡ã‚£ã‚¹ã‚¯ãƒªãƒ—ã‚¿
+'ƒZ[ƒuƒf[ƒ^‚Ìƒtƒ@ƒCƒ‹ƒfƒBƒXƒNƒŠƒvƒ^
 Public SaveDataFileNumber As Integer
-'ã‚»ãƒ¼ãƒ–ãƒ‡ãƒ¼ã‚¿ã®ãƒãƒ¼ã‚¸ãƒ§ãƒ³
+'ƒZ[ƒuƒf[ƒ^‚Ìƒo[ƒWƒ‡ƒ“
 Public SaveDataVersion As Long
 
-'ãã®ã‚¹ãƒ†ãƒ¼ã‚¸ãŒçµ‚äº†ã—ãŸã‹ã‚’ç¤ºã™ãƒ•ãƒ©ã‚°
+'‚»‚ÌƒXƒe[ƒW‚ªI—¹‚µ‚½‚©‚ğ¦‚·ƒtƒ‰ƒO
 Public IsScenarioFinished As Boolean
-'ã‚¤ãƒ³ã‚¿ãƒ¼ãƒŸãƒƒã‚·ãƒ§ãƒ³ã‚³ãƒãƒ³ãƒ‰ã«ã‚ˆã‚‹ã‚¹ãƒ†ãƒ¼ã‚¸ã‹ã©ã†ã‹ã‚’ç¤ºã™ãƒ•ãƒ©ã‚°
+'ƒCƒ“ƒ^[ƒ~ƒbƒVƒ‡ƒ“ƒRƒ}ƒ“ƒh‚É‚æ‚éƒXƒe[ƒW‚©‚Ç‚¤‚©‚ğ¦‚·ƒtƒ‰ƒO
 Public IsSubStage As Boolean
-'ã‚³ãƒãƒ³ãƒ‰ãŒã‚­ãƒ£ãƒ³ã‚»ãƒ«ã•ã‚ŒãŸã‹ã©ã†ã‹ã‚’ç¤ºã™ãƒ•ãƒ©ã‚°
+'ƒRƒ}ƒ“ƒh‚ªƒLƒƒƒ“ƒZƒ‹‚³‚ê‚½‚©‚Ç‚¤‚©‚ğ¦‚·ƒtƒ‰ƒO
 Public IsCanceled As Boolean
 
-'ãƒ•ã‚§ã‚¤ã‚ºå
+'ƒtƒFƒCƒY–¼
 Public Stage As String
-'ã‚¿ãƒ¼ãƒ³æ•°
+'ƒ^[ƒ“”
 Public Turn As Integer
-'ç·ã‚¿ãƒ¼ãƒ³æ•°
+'‘ƒ^[ƒ“”
 Public TotalTurn As Long
-'ç·è³‡é‡‘
+'‘‘‹à
 Public Money As Long
-'èª­ã¿è¾¼ã¾ã‚Œã¦ã„ã‚‹ãƒ‡ãƒ¼ã‚¿æ•°
+'“Ç‚İ‚Ü‚ê‚Ä‚¢‚éƒf[ƒ^”
 Public Titles() As String
-'ãƒ­ãƒ¼ã‚«ãƒ«ãƒ‡ãƒ¼ã‚¿ãŒèª­ã¿è¾¼ã¾ã‚Œã¦ã„ã‚‹ã‹ï¼Ÿ
+'ƒ[ƒJƒ‹ƒf[ƒ^‚ª“Ç‚İ‚Ü‚ê‚Ä‚¢‚é‚©H
 Public IsLocalDataLoaded As Boolean
 
-'æœ€æ–°ã®ã‚»ãƒ¼ãƒ–ãƒ‡ãƒ¼ã‚¿ã®ãƒ•ã‚¡ã‚¤ãƒ«å
+'ÅV‚ÌƒZ[ƒuƒf[ƒ^‚Ìƒtƒ@ƒCƒ‹–¼
 Public LastSaveDataFileName As String
-'ãƒªã‚¹ã‚¿ãƒ¼ãƒˆç”¨ã‚»ãƒ¼ãƒ–ãƒ‡ãƒ¼ã‚¿ãŒåˆ©ç”¨å¯èƒ½ã‹ã©ã†ã‹
+'ƒŠƒXƒ^[ƒg—pƒZ[ƒuƒf[ƒ^‚ª—˜—p‰Â”\‚©‚Ç‚¤‚©
 Public IsRestartSaveDataAvailable As Boolean
-'ã‚¯ã‚¤ãƒƒã‚¯ãƒ­ãƒ¼ãƒ‰ç”¨ã‚»ãƒ¼ãƒ–ãƒ‡ãƒ¼ã‚¿ãŒåˆ©ç”¨å¯èƒ½ã‹ã©ã†ã‹
+'ƒNƒCƒbƒNƒ[ƒh—pƒZ[ƒuƒf[ƒ^‚ª—˜—p‰Â”\‚©‚Ç‚¤‚©
 Public IsQuickSaveDataAvailable As Boolean
 
-'ã‚·ã‚¹ãƒ†ãƒ ã‚ªãƒ—ã‚·ãƒ§ãƒ³
-'ãƒã‚¹ç›®ã®è¡¨ç¤ºã‚’ã™ã‚‹ã‹
+'ƒVƒXƒeƒ€ƒIƒvƒVƒ‡ƒ“
+'ƒ}ƒX–Ú‚Ì•\¦‚ğ‚·‚é‚©
 Public ShowSquareLine As Boolean
-'æ•µãƒ•ã‚§ã‚¤ã‚ºã«ã¯ï¼¢ï¼§ï¼­ã‚’å¤‰æ›´ã—ãªã„ã‹
+'“GƒtƒFƒCƒY‚É‚Í‚a‚f‚l‚ğ•ÏX‚µ‚È‚¢‚©
 Public KeepEnemyBGM As Boolean
-'æ‹¡å¼µãƒ‡ãƒ¼ã‚¿ãƒ•ã‚©ãƒ«ãƒ€ã¸ã®ãƒ‘ã‚¹
+'Šg’£ƒf[ƒ^ƒtƒHƒ‹ƒ_‚Ö‚ÌƒpƒX
 Public ExtDataPath As String
 Public ExtDataPath2 As String
-'MIDIéŸ³æºãƒªã‚»ãƒƒãƒˆã®ç¨®é¡
+'MIDI‰¹Œ¹ƒŠƒZƒbƒg‚Ìí—Ş
 Public MidiResetType As String
-'è‡ªå‹•é˜²å¾¡ãƒ¢ãƒ¼ãƒ‰ã‚’ä½¿ã†ã‹
+'©“®–hŒäƒ‚[ƒh‚ğg‚¤‚©
 Public AutoMoveCursor As Boolean
-'ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼ã‚¢ãƒ‹ãƒ¡ã‚’è¡¨ç¤ºã™ã‚‹ã‹
+'ƒXƒyƒVƒƒƒ‹ƒpƒ[ƒAƒjƒ‚ğ•\¦‚·‚é‚©
 Public SpecialPowerAnimation As Boolean
-'æˆ¦é—˜ã‚¢ãƒ‹ãƒ¡ã‚’è¡¨ç¤ºã™ã‚‹ã‹
+'í“¬ƒAƒjƒ‚ğ•\¦‚·‚é‚©
 Public BattleAnimation As Boolean
-'æ­¦å™¨æº–å‚™ã‚¢ãƒ‹ãƒ¡ã‚’è¡¨ç¤ºã™ã‚‹ã‹
+'•Ší€”õƒAƒjƒ‚ğ•\¦‚·‚é‚©
 Public WeaponAnimation As Boolean
-'æ‹¡å¤§æˆ¦é—˜ã‚¢ãƒ‹ãƒ¡ã‚’è¡¨ç¤ºã™ã‚‹ã‹
+'Šg‘åí“¬ƒAƒjƒ‚ğ•\¦‚·‚é‚©
 Public ExtendedAnimation As Boolean
-'ç§»å‹•ã‚¢ãƒ‹ãƒ¡ã‚’è¡¨ç¤ºã™ã‚‹ã‹
+'ˆÚ“®ƒAƒjƒ‚ğ•\¦‚·‚é‚©
 Public MoveAnimation As Boolean
-'ç”»åƒãƒãƒƒãƒ•ã‚¡ã®æšæ•°
+'‰æ‘œƒoƒbƒtƒ@‚Ì–‡”
 Public ImageBufferSize As Integer
-'ç”»åƒãƒãƒƒãƒ•ã‚¡ã®æœ€å¤§ãƒã‚¤ãƒˆæ•°
+'‰æ‘œƒoƒbƒtƒ@‚ÌÅ‘åƒoƒCƒg”
 Public MaxImageBufferByteSize As Long
-'æ‹¡å¤§ç”»åƒã‚’ç”»åƒãƒãƒƒãƒ•ã‚¡ã«ä¿å­˜ã™ã‚‹ã‹
+'Šg‘å‰æ‘œ‚ğ‰æ‘œƒoƒbƒtƒ@‚É•Û‘¶‚·‚é‚©
 Public KeepStretchedImage As Boolean
-'é€éæç”»ã«TransparentBltã‚’ä½¿ã†ã‹
+'“§‰ß•`‰æ‚ÉTransparentBlt‚ğg‚¤‚©
 Public UseTransparentBlt As Boolean
 
-'SRC.exeã®ã‚ã‚‹å ´æ‰€
+'SRC.exe‚Ì‚ ‚éêŠ
 Public AppPath As String
 
-'ãƒ‡ãƒ¼ã‚¿ä¸­ã«ãƒ¬ãƒ™ãƒ«æŒ‡å®šã‚’çœç•¥ã—ãŸå ´åˆã®ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®ãƒ¬ãƒ™ãƒ«å€¤
+'ƒf[ƒ^’†‚ÉƒŒƒxƒ‹w’è‚ğÈ—ª‚µ‚½ê‡‚ÌƒfƒtƒHƒ‹ƒg‚ÌƒŒƒxƒ‹’l
 Public Const DEFAULT_LEVEL = -1000
 
 Public Sub Main()
@@ -119,49 +119,49 @@ Dim fname As String
 Dim i As Integer, buf As String
 Dim ret As Long
     
-    'ï¼’é‡èµ·å‹•ç¦æ­¢
+    '‚Qd‹N“®‹Ö~
     If App.PrevInstance Then
         End
     End If
     
-    'SRC.exeã®ã‚ã‚‹å ´æ‰€ã‚’èª¿ã¹ã‚‹
+    'SRC.exe‚Ì‚ ‚éêŠ‚ğ’²‚×‚é
     AppPath = App.Path
     If Right$(AppPath, 1) <> "\" Then
         AppPath = AppPath & "\"
     End If
     
-    'SRCãŒæ­£ã—ãã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã•ã‚Œã¦ã„ã‚‹ã‹ã‚’ãƒã‚§ãƒƒã‚¯
+    'SRC‚ª³‚µ‚­ƒCƒ“ƒXƒg[ƒ‹‚³‚ê‚Ä‚¢‚é‚©‚ğƒ`ƒFƒbƒN
     
-    'Bitmapé–¢ä¿‚ã®ãƒã‚§ãƒƒã‚¯
+    'BitmapŠÖŒW‚Ìƒ`ƒFƒbƒN
     If Len(Dir$(AppPath & "Bitmap", vbDirectory)) = 0 Then
-        ErrorMessage "Bitmapãƒ•ã‚©ãƒ«ãƒ€ãŒã‚ã‚Šã¾ã›ã‚“ã€‚" & vbCr & vbLf _
-            & "SRC.exeã¨åŒã˜ãƒ•ã‚©ãƒ«ãƒ€ã«æ±ç”¨ã‚°ãƒ©ãƒ•ã‚£ãƒƒã‚¯é›†ã‚’ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã—ã¦ãã ã•ã„ã€‚"
+        ErrorMessage "BitmapƒtƒHƒ‹ƒ_‚ª‚ ‚è‚Ü‚¹‚ñB" & vbCr & vbLf _
+            & "SRC.exe‚Æ“¯‚¶ƒtƒHƒ‹ƒ_‚É”Ä—pƒOƒ‰ƒtƒBƒbƒNW‚ğƒCƒ“ƒXƒg[ƒ‹‚µ‚Ä‚­‚¾‚³‚¢B"
         End
     End If
-    If Len(Dir$(AppPath & "ï¼¢ï½‰ï½”ï½ï½ï½", vbDirectory)) > 0 Then
-        ErrorMessage "Bitmapãƒ•ã‚©ãƒ«ãƒ€ã®ãƒ•ã‚©ãƒ«ãƒ€åãŒå…¨è§’æ–‡å­—ã«ãªã£ã¦ã„ã¾ã™ã€‚" & vbCr & vbLf _
-            & AppPath & "ï¼¢ï½‰ï½”ï½ï½ï½" & vbCr & vbLf _
-            & "ãƒ•ã‚©ãƒ«ãƒ€åã‚’åŠè§’æ–‡å­—ã«ç›´ã—ã¦ãã ã•ã„ã€‚"
+    If Len(Dir$(AppPath & "‚a‚‰‚”‚‚‚", vbDirectory)) > 0 Then
+        ErrorMessage "BitmapƒtƒHƒ‹ƒ_‚ÌƒtƒHƒ‹ƒ_–¼‚ª‘SŠp•¶š‚É‚È‚Á‚Ä‚¢‚Ü‚·B" & vbCr & vbLf _
+            & AppPath & "‚a‚‰‚”‚‚‚" & vbCr & vbLf _
+            & "ƒtƒHƒ‹ƒ_–¼‚ğ”¼Šp•¶š‚É’¼‚µ‚Ä‚­‚¾‚³‚¢B"
         End
     End If
     If Len(Dir$(AppPath & "Bitmap\Bitmap", vbDirectory)) > 0 Then
-        ErrorMessage "Bitmapãƒ•ã‚©ãƒ«ãƒ€å†…ã«ã•ã‚‰ã«Bitmapãƒ•ã‚©ãƒ«ãƒ€ãŒå­˜åœ¨ã—ã¾ã™ã€‚" & vbCr & vbLf _
+        ErrorMessage "BitmapƒtƒHƒ‹ƒ_“à‚É‚³‚ç‚ÉBitmapƒtƒHƒ‹ƒ_‚ª‘¶İ‚µ‚Ü‚·B" & vbCr & vbLf _
             & AppPath & "Bitmap\Bitmap" & vbCr & vbLf _
-            & "ãƒ•ã‚©ãƒ«ãƒ€æ§‹é€ ã‚’ç›´ã—ã¦ãã ã•ã„ã€‚"
+            & "ƒtƒHƒ‹ƒ_\‘¢‚ğ’¼‚µ‚Ä‚­‚¾‚³‚¢B"
         End
     End If
     
-    'ã‚¤ãƒ™ãƒ³ãƒˆã‚°ãƒ©ãƒ•ã‚£ãƒƒã‚¯
+    'ƒCƒxƒ“ƒgƒOƒ‰ƒtƒBƒbƒN
     If Len(Dir$(AppPath & "Bitmap\Event", vbDirectory)) = 0 Then
-        ErrorMessage "Bitmap\Eventãƒ•ã‚©ãƒ«ãƒ€ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“ã€‚" & vbCr & vbLf _
-            & "æ±ç”¨ã‚°ãƒ©ãƒ•ã‚£ãƒƒã‚¯é›†ãŒæ­£ã—ãã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã•ã‚Œã¦ã„ãªã„ã¨æ€ã‚ã‚Œã¾ã™ã€‚"
+        ErrorMessage "Bitmap\EventƒtƒHƒ‹ƒ_‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñB" & vbCr & vbLf _
+            & "”Ä—pƒOƒ‰ƒtƒBƒbƒNW‚ª³‚µ‚­ƒCƒ“ƒXƒg[ƒ‹‚³‚ê‚Ä‚¢‚È‚¢‚Æv‚í‚ê‚Ü‚·B"
         End
     End If
     
-    'ãƒãƒƒãƒ—ã‚°ãƒ©ãƒ•ã‚£ãƒƒã‚¯
+    'ƒ}ƒbƒvƒOƒ‰ƒtƒBƒbƒN
     If Len(Dir$(AppPath & "Bitmap\Map", vbDirectory)) = 0 Then
-        ErrorMessage "Bitmap\Mapãƒ•ã‚©ãƒ«ãƒ€ãŒã‚ã‚Šã¾ã›ã‚“ã€‚" & vbCr & vbLf _
-            & "æ±ç”¨ã‚°ãƒ©ãƒ•ã‚£ãƒƒã‚¯é›†ãŒæ­£ã—ãã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã•ã‚Œã¦ã„ãªã„ã¨æ€ã‚ã‚Œã¾ã™ã€‚"
+        ErrorMessage "Bitmap\MapƒtƒHƒ‹ƒ_‚ª‚ ‚è‚Ü‚¹‚ñB" & vbCr & vbLf _
+            & "”Ä—pƒOƒ‰ƒtƒBƒbƒNW‚ª³‚µ‚­ƒCƒ“ƒXƒg[ƒ‹‚³‚ê‚Ä‚¢‚È‚¢‚Æv‚í‚ê‚Ü‚·B"
         End
     End If
     If Len(Dir$(AppPath & "Bitmap\Map\plain\plain0000.bmp")) = 0 _
@@ -169,84 +169,84 @@ Dim ret As Long
         And Len(Dir$(AppPath & "Bitmap\Map\plain0.bmp")) = 0 _
     Then
         If Len(Dir$(AppPath & "Bitmap\Map\Map", vbDirectory)) > 0 Then
-            ErrorMessage "Bitmap\Mapãƒ•ã‚©ãƒ«ãƒ€å†…ã«ã•ã‚‰ã«Mapãƒ•ã‚©ãƒ«ãƒ€ãŒå­˜åœ¨ã—ã¾ã™ã€‚" & vbCr & vbLf _
+            ErrorMessage "Bitmap\MapƒtƒHƒ‹ƒ_“à‚É‚³‚ç‚ÉMapƒtƒHƒ‹ƒ_‚ª‘¶İ‚µ‚Ü‚·B" & vbCr & vbLf _
                 & AppPath & "Bitmap\Map\Map" & vbCr & vbLf _
-                & "ãƒ•ã‚©ãƒ«ãƒ€æ§‹é€ ã‚’ç›´ã—ã¦ãã ã•ã„ã€‚"
+                & "ƒtƒHƒ‹ƒ_\‘¢‚ğ’¼‚µ‚Ä‚­‚¾‚³‚¢B"
             End
         End If
         
         If Len(Dir$(AppPath & "Bitmap\Map\*", vbNormal)) = 0 Then
-            ErrorMessage "Bitmap\Mapãƒ•ã‚©ãƒ«ãƒ€å†…ã«ãƒ•ã‚¡ã‚¤ãƒ«ãŒã‚ã‚Šã¾ã›ã‚“ã€‚" & vbCr & vbLf _
-                & "æ±ç”¨ã‚°ãƒ©ãƒ•ã‚£ãƒƒã‚¯é›†ãŒæ­£ã—ãã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã•ã‚Œã¦ã„ãªã„ã¨æ€ã‚ã‚Œã¾ã™ã€‚"
+            ErrorMessage "Bitmap\MapƒtƒHƒ‹ƒ_“à‚Éƒtƒ@ƒCƒ‹‚ª‚ ‚è‚Ü‚¹‚ñB" & vbCr & vbLf _
+                & "”Ä—pƒOƒ‰ƒtƒBƒbƒNW‚ª³‚µ‚­ƒCƒ“ƒXƒg[ƒ‹‚³‚ê‚Ä‚¢‚È‚¢‚Æv‚í‚ê‚Ü‚·B"
             End
         End If
         
-        ErrorMessage "Bitmap\Mapãƒ•ã‚©ãƒ«ãƒ€å†…ã«plain0000.bmpãŒã‚ã‚Šã¾ã›ã‚“ã€‚" & vbCr & vbLf _
-            & "ä¸€éƒ¨ã®ãƒãƒƒãƒ—ç”»åƒãƒ•ã‚¡ã‚¤ãƒ«ã—ã‹ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã•ã‚Œã¦ã„ãªã„æã‚ŒãŒã‚ã‚Šã¾ã™ã€‚" & vbCr & vbLf _
-            & "æ–°è¦ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã®ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ä½¿ã£ã¦æ±ç”¨ã‚°ãƒ©ãƒ•ã‚£ãƒƒã‚¯é›†ã‚’ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã—ã¦ãã ã•ã„ã€‚"
+        ErrorMessage "Bitmap\MapƒtƒHƒ‹ƒ_“à‚Éplain0000.bmp‚ª‚ ‚è‚Ü‚¹‚ñB" & vbCr & vbLf _
+            & "ˆê•”‚Ìƒ}ƒbƒv‰æ‘œƒtƒ@ƒCƒ‹‚µ‚©ƒCƒ“ƒXƒg[ƒ‹‚³‚ê‚Ä‚¢‚È‚¢‹°‚ê‚ª‚ ‚è‚Ü‚·B" & vbCr & vbLf _
+            & "V‹KƒCƒ“ƒXƒg[ƒ‹‚Ìƒtƒ@ƒCƒ‹‚ğg‚Á‚Ä”Ä—pƒOƒ‰ƒtƒBƒbƒNW‚ğƒCƒ“ƒXƒg[ƒ‹‚µ‚Ä‚­‚¾‚³‚¢B"
         End
     End If
     
-    'åŠ¹æœéŸ³
+    'Œø‰Ê‰¹
     If Len(Dir$(AppPath & "Sound", vbDirectory)) = 0 Then
-        ErrorMessage "Soundãƒ•ã‚©ãƒ«ãƒ€ãŒã‚ã‚Šã¾ã›ã‚“ã€‚" & vbCr & vbLf _
-            & "SRC.exeã¨åŒã˜ãƒ•ã‚©ãƒ«ãƒ€ã«åŠ¹æœéŸ³é›†ã‚’ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã—ã¦ãã ã•ã„ã€‚"
+        ErrorMessage "SoundƒtƒHƒ‹ƒ_‚ª‚ ‚è‚Ü‚¹‚ñB" & vbCr & vbLf _
+            & "SRC.exe‚Æ“¯‚¶ƒtƒHƒ‹ƒ_‚ÉŒø‰Ê‰¹W‚ğƒCƒ“ƒXƒg[ƒ‹‚µ‚Ä‚­‚¾‚³‚¢B"
         End
     End If
-    If Len(Dir$(AppPath & "ï¼³ï½ï½•ï½ï½„", vbDirectory)) > 0 Then
-        ErrorMessage "Soundãƒ•ã‚©ãƒ«ãƒ€ã®ãƒ•ã‚©ãƒ«ãƒ€åãŒå…¨è§’æ–‡å­—ã«ãªã£ã¦ã„ã¾ã™ã€‚" & vbCr & vbLf _
-            & AppPath & "ï¼³ï½ï½•ï½ï½„" & vbCr & vbLf _
-            & "ãƒ•ã‚©ãƒ«ãƒ€åã‚’åŠè§’æ–‡å­—ã«ç›´ã—ã¦ãã ã•ã„ã€‚"
+    If Len(Dir$(AppPath & "‚r‚‚•‚‚„", vbDirectory)) > 0 Then
+        ErrorMessage "SoundƒtƒHƒ‹ƒ_‚ÌƒtƒHƒ‹ƒ_–¼‚ª‘SŠp•¶š‚É‚È‚Á‚Ä‚¢‚Ü‚·B" & vbCr & vbLf _
+            & AppPath & "‚r‚‚•‚‚„" & vbCr & vbLf _
+            & "ƒtƒHƒ‹ƒ_–¼‚ğ”¼Šp•¶š‚É’¼‚µ‚Ä‚­‚¾‚³‚¢B"
         End
     End If
     If Len(Dir$(AppPath & "Sound\Sound", vbDirectory)) > 0 Then
-        ErrorMessage "Soundãƒ•ã‚©ãƒ«ãƒ€å†…ã«ã•ã‚‰ã«Soundãƒ•ã‚©ãƒ«ãƒ€ãŒå­˜åœ¨ã—ã¾ã™ã€‚" & vbCr & vbLf _
+        ErrorMessage "SoundƒtƒHƒ‹ƒ_“à‚É‚³‚ç‚ÉSoundƒtƒHƒ‹ƒ_‚ª‘¶İ‚µ‚Ü‚·B" & vbCr & vbLf _
             & AppPath & "Sound\Sound" & vbCr & vbLf _
-            & "ãƒ•ã‚©ãƒ«ãƒ€æ§‹é€ ã‚’ç›´ã—ã¦ãã ã•ã„ã€‚"
+            & "ƒtƒHƒ‹ƒ_\‘¢‚ğ’¼‚µ‚Ä‚­‚¾‚³‚¢B"
         End
     End If
     If Len(Dir$(AppPath & "Sound\*", vbNormal)) = 0 Then
-        ErrorMessage "Soundãƒ•ã‚©ãƒ«ãƒ€å†…ã«ãƒ•ã‚¡ã‚¤ãƒ«ãŒã‚ã‚Šã¾ã›ã‚“ã€‚" & vbCr & vbLf _
-            & "Soundãƒ•ã‚©ãƒ«ãƒ€å†…ã«åŠ¹æœéŸ³é›†ã‚’ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã—ã¦ãã ã•ã„ã€‚"
+        ErrorMessage "SoundƒtƒHƒ‹ƒ_“à‚Éƒtƒ@ƒCƒ‹‚ª‚ ‚è‚Ü‚¹‚ñB" & vbCr & vbLf _
+            & "SoundƒtƒHƒ‹ƒ_“à‚ÉŒø‰Ê‰¹W‚ğƒCƒ“ƒXƒg[ƒ‹‚µ‚Ä‚­‚¾‚³‚¢B"
         End
     End If
     
-    'ãƒ¡ã‚¤ãƒ³ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ãƒ­ãƒ¼ãƒ‰ã¨Flashã®ç™»éŒ²ã‚’å®Ÿæ–½
+    'ƒƒCƒ“ƒEƒBƒ“ƒhƒE‚Ìƒ[ƒh‚ÆFlash‚Ì“o˜^‚ğÀ{
     LoadMainFormAndRegisterFlash
     
-    'Src.iniãŒç„¡ã‘ã‚Œã°ä½œæˆ
+    'Src.ini‚ª–³‚¯‚ê‚Îì¬
     If Not FileExists(AppPath & "Src.ini") Then
         CreateIniFile
     End If
     
-    'ä¹±æ•°ã®åˆæœŸåŒ–
+    '—”‚Ì‰Šú‰»
     Randomize
     
-    'æ™‚é–“è§£åƒåº¦ã‚’å¤‰æ›´ã™ã‚‹
+    'ŠÔ‰ğ‘œ“x‚ğ•ÏX‚·‚é
     Call timeBeginPeriod(1)
     
-    'ãƒ•ãƒ«ã‚¹ã‚¯ãƒªãƒ¼ãƒ³ãƒ¢ãƒ¼ãƒ‰ã‚’ä½¿ã†ï¼Ÿ
+    'ƒtƒ‹ƒXƒNƒŠ[ƒ“ƒ‚[ƒh‚ğg‚¤H
     If LCase$(ReadIni("Option", "FullScreen")) = "on" Then
         ChangeDisplaySize 800, 600
     End If
     
-    'ãƒã‚¦ã‚¹ã‚«ãƒ¼ã‚½ãƒ«ã‚’ç ‚æ™‚è¨ˆã«
+    'ƒ}ƒEƒXƒJ[ƒ\ƒ‹‚ğ»Œv‚É
     Screen.MousePointer = 11
     
-    'ã‚¿ã‚¤ãƒˆãƒ«ç”»é¢ã‚’è¡¨ç¤º
+    'ƒ^ƒCƒgƒ‹‰æ–Ê‚ğ•\¦
     OpenTitleForm
     
-    'WAVEå†ç”Ÿã®æ‰‹æ®µã¯ï¼Ÿ
+    'WAVEÄ¶‚Ìè’i‚ÍH
     Select Case LCase$(ReadIni("Option", "UseDirectSound"))
         Case "on"
-            'DirectSoundã®åˆæœŸåŒ–ã‚’è©¦ã¿ã‚‹
+            'DirectSound‚Ì‰Šú‰»‚ğ‚İ‚é
             InitDirectSound
         Case "off"
             UseDirectSound = False
         Case Else
-            'DirectSoundã®åˆæœŸåŒ–ã‚’è©¦ã¿ã‚‹
+            'DirectSound‚Ì‰Šú‰»‚ğ‚İ‚é
             InitDirectSound
-            'DirectSoundãŒä½¿ç”¨å¯èƒ½ã‹ã©ã†ã‹ã§è¨­å®šã‚’åˆ‡ã‚Šæ›¿ãˆ
+            'DirectSound‚ªg—p‰Â”\‚©‚Ç‚¤‚©‚Åİ’è‚ğØ‚è‘Ö‚¦
 '            If UseDirectSound Then
 '                WriteIni "Option", "UseDirectSound", "On"
 '            Else
@@ -254,26 +254,26 @@ Dim ret As Long
 '            End If
     End Select
     
-    'MIDIæ¼”å¥ã®æ‰‹æ®µã¯ï¼Ÿ
+    'MIDI‰‰‘t‚Ìè’i‚ÍH
     Select Case LCase$(ReadIni("Option", "UseDirectMusic"))
         Case "on"
-            'DirectMusicã®åˆæœŸåŒ–ã‚’è©¦ã¿ã‚‹
+            'DirectMusic‚Ì‰Šú‰»‚ğ‚İ‚é
             InitDirectMusic
         Case "off"
             UseMCI = True
         Case Else
             If GetWinVersion() >= 500 Then
-                'NTç³»ã®OSã§ã¯ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã§DirectMusicã‚’ä½¿ã†
-                'DirectMusicã®åˆæœŸåŒ–ã‚’è©¦ã¿ã‚‹
+                'NTŒn‚ÌOS‚Å‚ÍƒfƒtƒHƒ‹ƒg‚ÅDirectMusic‚ğg‚¤
+                'DirectMusic‚Ì‰Šú‰»‚ğ‚İ‚é
                 InitDirectMusic
-                'DirectMusicãŒä½¿ç”¨å¯èƒ½ã‹ã©ã†ã‹ã§è¨­å®šã‚’åˆ‡ã‚Šæ›¿ãˆ
+                'DirectMusic‚ªg—p‰Â”\‚©‚Ç‚¤‚©‚Åİ’è‚ğØ‚è‘Ö‚¦
                 If UseDirectMusic Then
                     WriteIni "Option", "UseDirectMusic", "On"
                 Else
                     WriteIni "Option", "UseDirectMusic", "Off"
                 End If
             Else
-                'NTç³»OSã§ãªã‘ã‚Œã°MCIã‚’ä½¿ã†
+                'NTŒnOS‚Å‚È‚¯‚ê‚ÎMCI‚ğg‚¤
                 UseMCI = True
                 WriteIni "Option", "UseDirectMusic", "Off"
             End If
@@ -282,7 +282,7 @@ Dim ret As Long
         WriteIni "Option", "MIDIPortID", "0"
     End If
     
-    'MP3ã®å†ç”ŸéŸ³é‡
+    'MP3‚ÌÄ¶‰¹—Ê
     buf = ReadIni("Option", "MP3Volume")
     If buf = "" Then
         WriteIni "Option", "MP3Volume", "50"
@@ -298,19 +298,19 @@ Dim ret As Long
         End If
     End If
     
-    'MP3ã®å‡ºåŠ›ãƒ•ãƒ¬ãƒ¼ãƒ æ•°
+    'MP3‚Ìo—ÍƒtƒŒ[ƒ€”
     buf = ReadIni("Option", "MP3OutputBlock")
     If buf = "" Then
         WriteIni "Option", "MP3OutputBlock", "20"
     End If
     
-    'MP3ã®å…¥åŠ›ç›´å¾Œã®ã‚¹ãƒªãƒ¼ãƒ—æ™‚é–“
+    'MP3‚Ì“ü—Í’¼Œã‚ÌƒXƒŠ[ƒvŠÔ
     buf = ReadIni("Option", "MP3InputSleep")
     If buf = "" Then
         WriteIni "Option", "MP3InputSleep", "5"
     End If
     
-    'ï¼¢ï¼§ï¼­ç”¨MIDIãƒ•ã‚¡ã‚¤ãƒ«è¨­å®š
+    '‚a‚f‚l—pMIDIƒtƒ@ƒCƒ‹İ’è
     If ReadIni("BGM", "Opening") = "" Then
         WriteIni "BGM", "Opening", "Opening.mid"
     End If
@@ -349,7 +349,7 @@ Dim ret As Long
     End If
     
     
-    'èµ·å‹•æ™‚ã®å¼•æ•°ã‹ã‚‰èª­ã¿è¾¼ã‚€ãƒ•ã‚¡ã‚¤ãƒ«ã‚’æ¢ã™
+    '‹N“®‚Ìˆø”‚©‚ç“Ç‚İ‚Şƒtƒ@ƒCƒ‹‚ğ’T‚·
     If Left$(Command$(), 1) = """" Then
         fname = Mid$(Command$(), 2, Len(Command$()) - 2)
     Else
@@ -359,9 +359,9 @@ Dim ret As Long
     If LCase$(Right$(fname, 4)) <> ".src" _
         And LCase$(Right$(fname, 4)) <> ".eve" _
     Then
-        'ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã‚’è¡¨ç¤ºã—ã¦èª­ã¿è¾¼ã‚€ãƒ•ã‚¡ã‚¤ãƒ«ã‚’æŒ‡å®šã™ã‚‹å ´åˆ
+        'ƒ_ƒCƒAƒƒO‚ğ•\¦‚µ‚Ä“Ç‚İ‚Şƒtƒ@ƒCƒ‹‚ğw’è‚·‚éê‡
         
-        'ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã®åˆæœŸãƒ•ã‚©ãƒ«ãƒ€ã‚’è¨­å®š
+        'ƒ_ƒCƒAƒƒO‚Ì‰ŠúƒtƒHƒ‹ƒ_‚ğİ’è
         i = 0
         ScenarioPath = ReadIni("Log", "LastFolder")
         On Error GoTo ErrorHandler
@@ -371,10 +371,10 @@ Dim ret As Long
             If Dir$(ScenarioPath & "*.src") <> "" Then
                 i = 3
             End If
-            If InStr(ScenarioPath, "ãƒ†ã‚¹ãƒˆãƒ‡ãƒ¼ã‚¿") > 0 Then
+            If InStr(ScenarioPath, "ƒeƒXƒgƒf[ƒ^") > 0 Then
                 i = 2
             End If
-            If InStr(ScenarioPath, "æˆ¦é—˜ã‚¢ãƒ‹ãƒ¡ãƒ†ã‚¹ãƒˆ") > 0 Then
+            If InStr(ScenarioPath, "í“¬ƒAƒjƒƒeƒXƒg") > 0 Then
                 i = 2
             End If
             If Dir$(ScenarioPath & "test.eve") <> "" Then
@@ -394,7 +394,7 @@ SkipErrorHandler:
             ScenarioPath = ScenarioPath & "\"
         End If
         
-        'æ‹¡å¼µãƒ‡ãƒ¼ã‚¿ã®ãƒ•ã‚©ãƒ«ãƒ€ã‚’è¨­å®š
+        'Šg’£ƒf[ƒ^‚ÌƒtƒHƒ‹ƒ_‚ğİ’è
         ExtDataPath = ReadIni("Option", "ExtDataPath")
         If Len(ExtDataPath) > 0 Then
             If Right$(ExtDataPath, 1) <> "\" Then
@@ -408,33 +408,33 @@ SkipErrorHandler:
             End If
         End If
         
-        'ã‚ªãƒ¼ãƒ—ãƒ‹ãƒ³ã‚°æ›²æ¼”å¥
+        'ƒI[ƒvƒjƒ“ƒO‹È‰‰‘t
         StopBGM True
         StartBGM BGMName("Opening"), True
         
-        'ã‚¤ãƒ™ãƒ³ãƒˆãƒ‡ãƒ¼ã‚¿ã‚’åˆæœŸåŒ–
+        'ƒCƒxƒ“ƒgƒf[ƒ^‚ğ‰Šú‰»
         InitEventData
         
-        'ã‚¿ã‚¤ãƒˆãƒ«ç”»é¢ã‚’é–‰ã˜ã‚‹
+        'ƒ^ƒCƒgƒ‹‰æ–Ê‚ğ•Â‚¶‚é
         CloseTitleForm
         
-        'ãƒã‚¦ã‚¹ã‚«ãƒ¼ã‚½ãƒ«ã‚’å…ƒã«æˆ»ã™
+        'ƒ}ƒEƒXƒJ[ƒ\ƒ‹‚ğŒ³‚É–ß‚·
         Screen.MousePointer = 0
         
-        'ã‚·ãƒŠãƒªã‚ªãƒ‘ã‚¹ã¯å¤‰æ›´ã•ã‚Œã‚‹å¯èƒ½æ€§ãŒã‚ã‚‹ã®ã§ã€MIDIãƒ•ã‚¡ã‚¤ãƒ«ã®ã‚µãƒ¼ãƒãƒ‘ã‚¹ã‚’ãƒªã‚»ãƒƒãƒˆ
+        'ƒVƒiƒŠƒIƒpƒX‚Í•ÏX‚³‚ê‚é‰Â”\«‚ª‚ ‚é‚Ì‚ÅAMIDIƒtƒ@ƒCƒ‹‚ÌƒT[ƒ`ƒpƒX‚ğƒŠƒZƒbƒg
         ResetMidiSearchPath
         
-        'ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã«ãƒ­ãƒ¼ãƒ‰ã™ã‚‹ãƒ•ã‚¡ã‚¤ãƒ«ã‚’å°‹ã­ã‚‹
-        fname = LoadFileDialog("ã‚·ãƒŠãƒªã‚ªï¼ã‚»ãƒ¼ãƒ–ãƒ•ã‚¡ã‚¤ãƒ«ã®æŒ‡å®š", _
-            ScenarioPath, "", i, "ï½²ï¾ï¾ï¾ï¾„ï¾ƒï¾ï½°ï¾€", "eve", "ï½¾ï½°ï¾Œï¾ï¾ƒï¾ï½°ï¾€", "src")
+        'ƒvƒŒƒCƒ„[‚Éƒ[ƒh‚·‚éƒtƒ@ƒCƒ‹‚ğq‚Ë‚é
+        fname = LoadFileDialog("ƒVƒiƒŠƒI^ƒZ[ƒuƒtƒ@ƒCƒ‹‚Ìw’è", _
+            ScenarioPath, "", i, "²ÍŞİÄÃŞ°À", "eve", "¾°ÌŞÃŞ°À", "src")
         
-        'ãƒ•ã‚¡ã‚¤ãƒ«ãŒæŒ‡å®šã•ã‚Œãªã‹ã£ãŸå ´åˆã¯ãã®ã¾ã¾çµ‚äº†
+        'ƒtƒ@ƒCƒ‹‚ªw’è‚³‚ê‚È‚©‚Á‚½ê‡‚Í‚»‚Ì‚Ü‚ÜI—¹
         If fname = "" Then
             TerminateSRC
             End
         End If
         
-        'ã‚·ãƒŠãƒªã‚ªã®ã‚ã‚‹ãƒ•ã‚©ãƒ«ãƒ€ã®ãƒ‘ã‚¹ã‚’åå¾—
+        'ƒVƒiƒŠƒI‚Ì‚ ‚éƒtƒHƒ‹ƒ_‚ÌƒpƒX‚ğû“¾
         If InStr(fname, "\") > 0 Then
             For i = 1 To Len(fname)
                 If Mid$(fname, Len(fname) - i + 1, 1) = "\" Then
@@ -449,8 +449,8 @@ SkipErrorHandler:
             ScenarioPath = ScenarioPath & "\"
         End If
 ' ADD START MARGE
-        'ã‚·ãƒŠãƒªã‚ªãƒ‘ã‚¹ãŒæ±ºå®šã—ãŸæ®µéšã§æ‹¡å¼µãƒ‡ãƒ¼ã‚¿ãƒ•ã‚©ãƒ«ãƒ€ãƒ‘ã‚¹ã‚’å†è¨­å®šã™ã‚‹ã‚ˆã†ã«å¤‰æ›´
-        'æ‹¡å¼µãƒ‡ãƒ¼ã‚¿ã®ãƒ•ã‚©ãƒ«ãƒ€ã‚’è¨­å®š
+        'ƒVƒiƒŠƒIƒpƒX‚ªŒˆ’è‚µ‚½’iŠK‚ÅŠg’£ƒf[ƒ^ƒtƒHƒ‹ƒ_ƒpƒX‚ğÄİ’è‚·‚é‚æ‚¤‚É•ÏX
+        'Šg’£ƒf[ƒ^‚ÌƒtƒHƒ‹ƒ_‚ğİ’è
         ExtDataPath = ReadIni("Option", "ExtDataPath")
         If Len(ExtDataPath) > 0 Then
             If Right$(ExtDataPath, 1) <> "\" Then
@@ -465,15 +465,15 @@ SkipErrorHandler:
         End If
 ' ADD  END  MARGE
     Else
-        'ãƒ‰ãƒ©ãƒƒã‚°ï¼†ãƒ‰ãƒ­ãƒƒãƒ—ã§èª­ã¿è¾¼ã‚€ãƒ•ã‚¡ã‚¤ãƒ«ãŒæŒ‡å®šã•ã‚ŒãŸå ´åˆ
+        'ƒhƒ‰ƒbƒO•ƒhƒƒbƒv‚Å“Ç‚İ‚Şƒtƒ@ƒCƒ‹‚ªw’è‚³‚ê‚½ê‡
         
-        'ãƒ•ã‚¡ã‚¤ãƒ«åãŒç„¡åŠ¹ã®å ´åˆã¯ãã®ã¾ã¾çµ‚äº†
+        'ƒtƒ@ƒCƒ‹–¼‚ª–³Œø‚Ìê‡‚Í‚»‚Ì‚Ü‚ÜI—¹
         If fname = "" Then
             TerminateSRC
             End
         End If
         
-        'ã‚·ãƒŠãƒªã‚ªã®ã‚ã‚‹ãƒ•ã‚©ãƒ«ãƒ€ã®ãƒ‘ã‚¹ã‚’åå¾—
+        'ƒVƒiƒŠƒI‚Ì‚ ‚éƒtƒHƒ‹ƒ_‚ÌƒpƒX‚ğû“¾
         If InStr(fname, "\") > 0 Then
             For i = 1 To Len(fname)
                 If Mid$(fname, Len(fname) - i + 1, 1) = "\" Then
@@ -488,7 +488,7 @@ SkipErrorHandler:
             ScenarioPath = ScenarioPath & "\"
         End If
         
-        'æ‹¡å¼µãƒ‡ãƒ¼ã‚¿ã®ãƒ•ã‚©ãƒ«ãƒ€ã‚’è¨­å®š
+        'Šg’£ƒf[ƒ^‚ÌƒtƒHƒ‹ƒ_‚ğİ’è
         ExtDataPath = ReadIni("Option", "ExtDataPath")
         If Len(ExtDataPath) > 0 Then
             If Right$(ExtDataPath, 1) <> "\" Then
@@ -502,7 +502,7 @@ SkipErrorHandler:
             End If
         End If
         
-        'ã‚ªãƒ¼ãƒ—ãƒ‹ãƒ³ã‚°æ›²æ¼”å¥
+        'ƒI[ƒvƒjƒ“ƒO‹È‰‰‘t
         StopBGM True
         StartBGM BGMName("Opening"), True
         
@@ -513,22 +513,22 @@ SkipErrorHandler:
         Screen.MousePointer = 0
     End If
     
-    'ãƒ­ãƒ³ã‚°ãƒãƒ¼ãƒ ã«ã—ã¦ãŠã
+    'ƒƒ“ƒOƒl[ƒ€‚É‚µ‚Ä‚¨‚­
     fname = ScenarioPath & Dir$(fname)
     If Not FileExists(fname) Then
-        ErrorMessage "æŒ‡å®šã—ãŸãƒ•ã‚¡ã‚¤ãƒ«ãŒå­˜åœ¨ã—ã¾ã›ã‚“"
+        ErrorMessage "w’è‚µ‚½ƒtƒ@ƒCƒ‹‚ª‘¶İ‚µ‚Ü‚¹‚ñ"
         TerminateSRC
     End If
-    If InStr(fname, "ä¸è¦ãƒ•ã‚¡ã‚¤ãƒ«å‰Šé™¤") = 0 _
-        And InStr(fname, "å¿…é ˆä¿®æ­£") = 0 _
+    If InStr(fname, "•s—vƒtƒ@ƒCƒ‹íœ") = 0 _
+        And InStr(fname, "•K{C³") = 0 _
     Then
-        'é–‹ã„ãŸãƒ•ã‚©ãƒ«ãƒ€ã‚’Src.iniã«ã‚»ãƒ¼ãƒ–ã—ã¦ãŠã
+        'ŠJ‚¢‚½ƒtƒHƒ‹ƒ_‚ğSrc.ini‚ÉƒZ[ƒu‚µ‚Ä‚¨‚­
         WriteIni "Log", "LastFolder", ScenarioPath
     End If
     
-    'Src.iniã‹ã‚‰å„ç¨®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®èª­ã¿è¾¼ã¿
+    'Src.ini‚©‚çŠeíƒpƒ‰ƒ[ƒ^‚Ì“Ç‚İ‚İ
     
-    'ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼ã‚¢ãƒ‹ãƒ¡
+    'ƒXƒyƒVƒƒƒ‹ƒpƒ[ƒAƒjƒ
     buf = ReadIni("Option", "SpecialPowerAnimation")
     If buf = "" Then
         buf = ReadIni("Option", "MindEffect")
@@ -550,7 +550,7 @@ SkipErrorHandler:
         End If
     End If
     
-    'æˆ¦é—˜ã‚¢ãƒ‹ãƒ¡
+    'í“¬ƒAƒjƒ
     buf = LCase$(ReadIni("Option", "BattleAnimation"))
     If buf <> "" Then
         If buf = "on" Then
@@ -566,7 +566,7 @@ SkipErrorHandler:
         End If
     End If
     
-    'æ‹¡å¤§æˆ¦é—˜ã‚¢ãƒ‹ãƒ¡
+    'Šg‘åí“¬ƒAƒjƒ
     buf = LCase$(ReadIni("Option", "ExtendedAnimation"))
     If buf <> "" Then
         If buf = "on" Then
@@ -579,7 +579,7 @@ SkipErrorHandler:
         WriteIni "Option", "ExtendedAnimation", "On"
     End If
     
-    'æ­¦å™¨æº–å‚™ã‚¢ãƒ‹ãƒ¡
+    '•Ší€”õƒAƒjƒ
     buf = LCase$(ReadIni("Option", "WeaponAnimation"))
     If buf <> "" Then
         If buf = "on" Then
@@ -592,7 +592,7 @@ SkipErrorHandler:
         WriteIni "Option", "WeaponAnimation", "On"
     End If
     
-    'ç§»å‹•ã‚¢ãƒ‹ãƒ¡
+    'ˆÚ“®ƒAƒjƒ
     buf = LCase$(ReadIni("Option", "MoveAnimation"))
     If buf <> "" Then
         If buf = "on" Then
@@ -605,7 +605,7 @@ SkipErrorHandler:
         WriteIni "Option", "MoveAnimation", "On"
     End If
     
-    'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸é€Ÿåº¦ã‚’è¨­å®š
+    'ƒƒbƒZ[ƒW‘¬“x‚ğİ’è
     buf = ReadIni("Option", "MessageWait")
     If IsNumeric(buf) Then
         MessageWait = CLng(buf)
@@ -617,7 +617,7 @@ SkipErrorHandler:
         WriteIni "Option", "MessageWait", "700"
     End If
     
-    'ãƒã‚¹ç›®ã‚’è¡¨ç¤ºã™ã‚‹ã‹ã©ã†ã‹
+    'ƒ}ƒX–Ú‚ğ•\¦‚·‚é‚©‚Ç‚¤‚©
     buf = ReadIni("Option", "Square")
     If buf <> "" Then
         If LCase$(buf) = "on" Then
@@ -630,7 +630,7 @@ SkipErrorHandler:
         WriteIni "Option", "Square", "Off"
     End If
     
-    'æ•µã‚¿ãƒ¼ãƒ³ã«ï¼¢ï¼§ï¼­ã‚’å¤‰æ›´ã™ã‚‹ã‹ã©ã†ã‹
+    '“Gƒ^[ƒ“‚É‚a‚f‚l‚ğ•ÏX‚·‚é‚©‚Ç‚¤‚©
     buf = ReadIni("Option", "KeepEnemyBGM")
     If buf <> "" Then
         If LCase$(buf) = "on" Then
@@ -643,10 +643,10 @@ SkipErrorHandler:
         WriteIni "Option", "KeepEnemyBGM", "Off"
     End If
     
-    'éŸ³æºã®ãƒªã‚»ãƒƒãƒˆãƒ‡ãƒ¼ã‚¿ã®ç¨®é¡
+    '‰¹Œ¹‚ÌƒŠƒZƒbƒgƒf[ƒ^‚Ìí—Ş
     MidiResetType = ReadIni("Option", "MidiReset")
     
-    'è‡ªå‹•åæ’ƒãƒ¢ãƒ¼ãƒ‰
+    '©“®”½Œ‚ƒ‚[ƒh
     buf = ReadIni("Option", "AutoDefense")
     If buf = "" Then
         buf = ReadIni("Option", "AutoDeffence")
@@ -665,7 +665,7 @@ SkipErrorHandler:
         WriteIni "Option", "AutoDefense", "Off"
     End If
     
-    'ã‚«ãƒ¼ã‚½ãƒ«è‡ªå‹•ç§»å‹•
+    'ƒJ[ƒ\ƒ‹©“®ˆÚ“®
     buf = ReadIni("Option", "AutoMoveCursor")
     If buf <> "" Then
         If LCase$(buf) = "on" Then
@@ -678,41 +678,41 @@ SkipErrorHandler:
         WriteIni "Option", "AutoMoveCursor", "On"
     End If
     
-    'å„ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’ãƒ­ãƒ¼ãƒ‰ (ãƒ¡ã‚¤ãƒ³ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã¯å…ˆã«ãƒ­ãƒ¼ãƒ‰æ¸ˆã¿)
+    'ŠeƒEƒBƒ“ƒhƒE‚ğƒ[ƒh (ƒƒCƒ“ƒEƒBƒ“ƒhƒE‚Íæ‚Éƒ[ƒhÏ‚İ)
     LoadForms
     
-    'ç”»åƒãƒãƒƒãƒ•ã‚¡ã®æšæ•°
+    '‰æ‘œƒoƒbƒtƒ@‚Ì–‡”
     buf = ReadIni("Option", "ImageBufferNum")
     If IsNumeric(buf) Then
         ImageBufferSize = CInt(buf)
         If ImageBufferSize < 5 Then
-            'æœ€ä½ã§ã‚‚5æšã®ãƒãƒƒãƒ•ã‚¡ã‚’ä½¿ã†
+            'Å’á‚Å‚à5–‡‚Ìƒoƒbƒtƒ@‚ğg‚¤
             ImageBufferSize = 5
         End If
     Else
-        'ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã¯64æš
+        'ƒfƒtƒHƒ‹ƒg‚Í64–‡
         ImageBufferSize = 64
         WriteIni "Option", "ImageBufferNum", "64"
     End If
     
-    'ç”»åƒãƒãƒƒãƒ•ã‚¡ã‚’ä½œæˆ
+    '‰æ‘œƒoƒbƒtƒ@‚ğì¬
     MakePicBuf
     
-    'ç”»åƒãƒãƒƒãƒ•ã‚¡ã®æœ€å¤§ã‚µã‚¤ã‚º
+    '‰æ‘œƒoƒbƒtƒ@‚ÌÅ‘åƒTƒCƒY
     buf = ReadIni("Option", "MaxImageBufferSize")
     If IsNumeric(buf) Then
         MaxImageBufferByteSize = CDbl(buf) * 1024 * 1024
         If MaxImageBufferByteSize < CLng(1) * 1024 * 1024 Then
-            'æœ€ä½ã§ã‚‚1MBã®ãƒãƒƒãƒ•ã‚¡ã‚’ä½¿ã†
+            'Å’á‚Å‚à1MB‚Ìƒoƒbƒtƒ@‚ğg‚¤
             MaxImageBufferByteSize = CLng(1) * 1024 * 1024
         End If
     Else
-        'ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã¯8MB
+        'ƒfƒtƒHƒ‹ƒg‚Í8MB
         MaxImageBufferByteSize = CLng(8) * 1024 * 1024
         WriteIni "Option", "MaxImageBufferSize", "8"
     End If
     
-    'æ‹¡å¤§ç”»åƒã‚’ç”»åƒãƒãƒƒãƒ•ã‚¡ã«ä¿å­˜ã™ã‚‹ã‹
+    'Šg‘å‰æ‘œ‚ğ‰æ‘œƒoƒbƒtƒ@‚É•Û‘¶‚·‚é‚©
     buf = ReadIni("Option", "KeepStretchedImage")
     If buf <> "" Then
         If LCase$(buf) = "on" Then
@@ -730,7 +730,7 @@ SkipErrorHandler:
         End If
     End If
     
-    'é€éæç”»ã«UseTransparentBltã‚’ä½¿ç”¨ã™ã‚‹ã‹
+    '“§‰ß•`‰æ‚ÉUseTransparentBlt‚ğg—p‚·‚é‚©
     If GetWinVersion() >= 500 Then
         buf = ReadIni("Option", "UseTransparentBlt")
         If buf <> "" Then
@@ -746,13 +746,13 @@ SkipErrorHandler:
     End If
     
     
-    'ãƒã‚¦ã‚¹ãƒœã‚¿ãƒ³ã®åˆ©ãè…•è¨­å®š
+    'ƒ}ƒEƒXƒ{ƒ^ƒ“‚Ì—˜‚«˜rİ’è
     If GetSystemMetrics(SM_SWAPBUTTON) = 0 Then
-        'å³åˆ©ãç”¨
+        '‰E—˜‚«—p
         RButtonID = &H2
         LButtonID = &H1
     Else
-        'å·¦åˆ©ãç”¨
+        '¶—˜‚«—p
         RButtonID = &H1
         LButtonID = &H2
     End If
@@ -760,13 +760,13 @@ SkipErrorHandler:
     
     ReDim ListItemComment(0)
     
-    'ã‚¨ãƒªã‚¢ã‚¹ãƒ‡ãƒ¼ã‚¿ã‚’ãƒ­ãƒ¼ãƒ‰
+    'ƒGƒŠƒAƒXƒf[ƒ^‚ğƒ[ƒh
     If FileExists(ScenarioPath & "Data\System\alias.txt") Then
         ALDList.Load ScenarioPath & "Data\System\alias.txt"
     ElseIf FileExists(AppPath & "Data\System\alias.txt") Then
         ALDList.Load AppPath & "Data\System\alias.txt"
     End If
-    'ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼ãƒ‡ãƒ¼ã‚¿ã‚’ãƒ­ãƒ¼ãƒ‰
+    'ƒXƒyƒVƒƒƒ‹ƒpƒ[ƒf[ƒ^‚ğƒ[ƒh
     If FileExists(ScenarioPath & "Data\System\sp.txt") Then
         SPDList.Load ScenarioPath & "Data\System\sp.txt"
     ElseIf FileExists(ScenarioPath & "Data\System\mind.txt") Then
@@ -776,94 +776,94 @@ SkipErrorHandler:
     ElseIf FileExists(AppPath & "Data\System\mind.txt") Then
         SPDList.Load AppPath & "Data\System\mind.txt"
     End If
-    'æ±ç”¨ã‚¢ã‚¤ãƒ†ãƒ ãƒ‡ãƒ¼ã‚¿ã‚’ãƒ­ãƒ¼ãƒ‰
+    '”Ä—pƒAƒCƒeƒ€ƒf[ƒ^‚ğƒ[ƒh
     If FileExists(ScenarioPath & "Data\System\item.txt") Then
         IDList.Load ScenarioPath & "Data\System\item.txt"
     ElseIf FileExists(AppPath & "Data\System\item.txt") Then
         IDList.Load AppPath & "Data\System\item.txt"
     End If
-    'åœ°å½¢ãƒ‡ãƒ¼ã‚¿ã‚’ãƒ­ãƒ¼ãƒ‰
+    '’nŒ`ƒf[ƒ^‚ğƒ[ƒh
     If FileExists(AppPath & "Data\System\terrain.txt") Then
         TDList.Load AppPath & "Data\System\terrain.txt"
     Else
-        ErrorMessage "åœ°å½¢ãƒ‡ãƒ¼ã‚¿ãƒ•ã‚¡ã‚¤ãƒ«ã€ŒData\System\terrain.txtã€ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“"
+        ErrorMessage "’nŒ`ƒf[ƒ^ƒtƒ@ƒCƒ‹uData\System\terrain.txtv‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ"
         TerminateSRC
     End If
     If FileExists(ScenarioPath & "Data\System\terrain.txt") Then
         TDList.Load ScenarioPath & "Data\System\terrain.txt"
     End If
-    'ãƒãƒˆãƒ«ã‚³ãƒ³ãƒ•ã‚£ã‚°ãƒ‡ãƒ¼ã‚¿ã‚’ãƒ­ãƒ¼ãƒ‰
+    'ƒoƒgƒ‹ƒRƒ“ƒtƒBƒOƒf[ƒ^‚ğƒ[ƒh
     If FileExists(ScenarioPath & "Data\System\battle.txt") Then
         BCList.Load ScenarioPath & "Data\System\battle.txt"
     ElseIf FileExists(AppPath & "Data\System\battle.txt") Then
         BCList.Load AppPath & "Data\System\battle.txt"
     End If
     
-    'ãƒãƒƒãƒ—ã‚’åˆæœŸåŒ–
+    'ƒ}ƒbƒv‚ğ‰Šú‰»
     InitMap
     
-    'ä¹±æ•°ç³»åˆ—ã‚’åˆæœŸåŒ–
+    '—”Œn—ñ‚ğ‰Šú‰»
     RndSeed = Int(1000000 * Rnd)
     RndReset
     
     If LCase$(Right$(fname, 4)) = ".src" Then
         SaveDataFileNumber = FreeFile
         Open fname For Input As #SaveDataFileNumber
-        'ç¬¬ï¼‘é …ç›®ã‚’èª­ã¿è¾¼ã¿
+        '‘æ‚P€–Ú‚ğ“Ç‚İ‚İ
         Input #SaveDataFileNumber, buf
-        'ç¬¬ï¼‘é …ç›®ã¯ã‚»ãƒ¼ãƒ–ãƒ‡ãƒ¼ã‚¿ãƒãƒ¼ã‚¸ãƒ§ãƒ³ï¼Ÿ
+        '‘æ‚P€–Ú‚ÍƒZ[ƒuƒf[ƒ^ƒo[ƒWƒ‡ƒ“H
         If IsNumeric(buf) Then
             If CLng(buf) > 10000 Then
-                'ãƒãƒ¼ã‚¸ãƒ§ãƒ³ãƒ‡ãƒ¼ã‚¿ã§ã‚ã‚Œã°ç¬¬ï¼’é …ç›®ã‚’èª­ã¿è¾¼ã¿
+                'ƒo[ƒWƒ‡ƒ“ƒf[ƒ^‚Å‚ ‚ê‚Î‘æ‚Q€–Ú‚ğ“Ç‚İ‚İ
                 Input #SaveDataFileNumber, buf
             End If
         End If
         Close #SaveDataFileNumber
         
-        'ãƒ‡ãƒ¼ã‚¿ã®ç¨®é¡ã‚’åˆ¤å®š
+        'ƒf[ƒ^‚Ìí—Ş‚ğ”»’è
         If IsNumeric(buf) Then
-            'ã‚»ãƒ¼ãƒ–ãƒ‡ãƒ¼ã‚¿ã®èª­ã¿è¾¼ã¿
+            'ƒZ[ƒuƒf[ƒ^‚Ì“Ç‚İ‚İ
             OpenNowLoadingForm
             LoadData fname
             CloseNowLoadingForm
             
-            'ã‚¤ãƒ³ã‚¿ãƒ¼ãƒŸãƒƒã‚·ãƒ§ãƒ³
+            'ƒCƒ“ƒ^[ƒ~ƒbƒVƒ‡ƒ“
             InterMissionCommand True
             
             If Not IsSubStage Then
-                If GetValueAsString("æ¬¡ã‚¹ãƒ†ãƒ¼ã‚¸") = "" Then
-                    ErrorMessage "æ¬¡ã®ã‚¹ãƒ†ãƒ¼ã‚¸ã®ãƒ•ã‚¡ã‚¤ãƒ«åãŒè¨­å®šã•ã‚Œã¦ã„ã¾ã›ã‚“"
+                If GetValueAsString("ŸƒXƒe[ƒW") = "" Then
+                    ErrorMessage "Ÿ‚ÌƒXƒe[ƒW‚Ìƒtƒ@ƒCƒ‹–¼‚ªİ’è‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ"
                     TerminateSRC
                 End If
                 
-                StartScenario GetValueAsString("æ¬¡ã‚¹ãƒ†ãƒ¼ã‚¸")
+                StartScenario GetValueAsString("ŸƒXƒe[ƒW")
             Else
                 IsSubStage = False
             End If
         Else
-            'ä¸­æ–­ãƒ‡ãƒ¼ã‚¿ã®èª­ã¿è¾¼ã¿
+            '’†’fƒf[ƒ^‚Ì“Ç‚İ‚İ
             LockGUI
             
             RestoreData fname, False
             
-            'ç”»é¢ã‚’æ›¸ãç›´ã—ã¦ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚’è¡¨ç¤º
+            '‰æ–Ê‚ğ‘‚«’¼‚µ‚ÄƒXƒe[ƒ^ƒX‚ğ•\¦
             RedrawScreen
             DisplayGlobalStatus
             
             UnlockGUI
         End If
     ElseIf LCase$(Right$(fname, 4)) = ".eve" Then
-        'ã‚¤ãƒ™ãƒ³ãƒˆãƒ•ã‚¡ã‚¤ãƒ«ã®å®Ÿè¡Œ
+        'ƒCƒxƒ“ƒgƒtƒ@ƒCƒ‹‚ÌÀs
         StartScenario fname
     Else
-        ErrorMessage "ã€Œ" & fname & "ã€ã¯SRCç”¨ã®ãƒ•ã‚¡ã‚¤ãƒ«ã§ã¯ã‚ã‚Šã¾ã›ã‚“ï¼" & vbCr & vbLf _
-            & "æ‹¡å¼µå­ãŒã€Œ.eveã€ã®ã‚¤ãƒ™ãƒ³ãƒˆãƒ•ã‚¡ã‚¤ãƒ«ã€" _
-            & "ã¾ãŸã¯æ‹¡å¼µå­ãŒã€Œ.srcã€ã®ã‚»ãƒ¼ãƒ–ãƒ‡ãƒ¼ã‚¿ãƒ•ã‚¡ã‚¤ãƒ«ã‚’æŒ‡å®šã—ã¦ä¸‹ã•ã„ã€‚"
+        ErrorMessage "u" & fname & "v‚ÍSRC—p‚Ìƒtƒ@ƒCƒ‹‚Å‚Í‚ ‚è‚Ü‚¹‚ñI" & vbCr & vbLf _
+            & "Šg’£q‚ªu.evev‚ÌƒCƒxƒ“ƒgƒtƒ@ƒCƒ‹A" _
+            & "‚Ü‚½‚ÍŠg’£q‚ªu.srcv‚ÌƒZ[ƒuƒf[ƒ^ƒtƒ@ƒCƒ‹‚ğw’è‚µ‚Ä‰º‚³‚¢B"
         TerminateSRC
     End If
 End Sub
 
-'INIãƒ•ã‚¡ã‚¤ãƒ«ã‚’ä½œæˆã™ã‚‹
+'INIƒtƒ@ƒCƒ‹‚ğì¬‚·‚é
 Public Sub CreateIniFile()
 Dim f As Integer
 
@@ -872,150 +872,150 @@ Dim f As Integer
     f = FreeFile
     Open AppPath & "Src.ini" For Output Access Write As #f
     
-    Print #f, ";SRCã®è¨­å®šãƒ•ã‚¡ã‚¤ãƒ«ã§ã™ã€‚"
-    Print #f, ";é …ç›®ã®å†…å®¹ã«é–¢ã—ã¦ã¯ãƒ˜ãƒ«ãƒ—ã®"
-    Print #f, "; æ“ä½œæ–¹æ³• => ãƒãƒƒãƒ—ã‚³ãƒãƒ³ãƒ‰ => è¨­å®šå¤‰æ›´"
-    Print #f, ";ã®é …ã‚’å‚ç…§ã—ã¦ä¸‹ã•ã„ã€‚"
+    Print #f, ";SRC‚Ìİ’èƒtƒ@ƒCƒ‹‚Å‚·B"
+    Print #f, ";€–Ú‚Ì“à—e‚ÉŠÖ‚µ‚Ä‚Íƒwƒ‹ƒv‚Ì"
+    Print #f, "; ‘€ì•û–@ => ƒ}ƒbƒvƒRƒ}ƒ“ƒh => İ’è•ÏX"
+    Print #f, ";‚Ì€‚ğQÆ‚µ‚Ä‰º‚³‚¢B"
     Print #f, ""
     Print #f, "[Option]"
-    Print #f, ";ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã®ã‚¦ã‚§ã‚¤ãƒˆã€‚æ¨™æº–ã¯700"
+    Print #f, ";ƒƒbƒZ[ƒW‚ÌƒEƒFƒCƒgB•W€‚Í700"
     Print #f, "MessageWait=700"
     Print #f, ""
-    Print #f, ";ã‚¿ãƒ¼ãƒ³æ•°ã®è¡¨ç¤º [On|Off]"
+    Print #f, ";ƒ^[ƒ“”‚Ì•\¦ [On|Off]"
     Print #f, "Turn=Off"
     Print #f, ""
-    Print #f, ";ãƒã‚¹ç›®ã®è¡¨ç¤º [On|Off]"
+    Print #f, ";ƒ}ƒX–Ú‚Ì•\¦ [On|Off]"
     Print #f, "Square=Off"
     Print #f, ""
-    Print #f, ";æ•µãƒ•ã‚§ã‚¤ã‚ºã«ã¯ï¼¢ï¼§ï¼­ã‚’å¤‰æ›´ã—ãªã„ [On|Off]"
+    Print #f, ";“GƒtƒFƒCƒY‚É‚Í‚a‚f‚l‚ğ•ÏX‚µ‚È‚¢ [On|Off]"
     Print #f, "KeepEnemyBGM=Off"
     Print #f, ""
-    Print #f, ";è‡ªå‹•é˜²å¾¡ãƒ¢ãƒ¼ãƒ‰ [On|Off]"
+    Print #f, ";©“®–hŒäƒ‚[ƒh [On|Off]"
     Print #f, "AutoDefense=Off"
     Print #f, ""
-    Print #f, ";è‡ªå‹•ã‚«ãƒ¼ã‚½ãƒ«ç§»å‹• [On|Off]"
+    Print #f, ";©“®ƒJ[ƒ\ƒ‹ˆÚ“® [On|Off]"
     Print #f, "AutoMoveCursor=On"
     Print #f, ""
-    Print #f, ";ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼ã‚¢ãƒ‹ãƒ¡ [On|Off]"
+    Print #f, ";ƒXƒyƒVƒƒƒ‹ƒpƒ[ƒAƒjƒ [On|Off]"
     Print #f, "SpecialPowerAnimation=On"
     Print #f, ""
-    Print #f, ";æˆ¦é—˜ã‚¢ãƒ‹ãƒ¡ [On|Off]"
+    Print #f, ";í“¬ƒAƒjƒ [On|Off]"
     Print #f, "BattleAnimation=On"
     Print #f, ""
-    Print #f, ";æˆ¦é—˜ã‚¢ãƒ‹ãƒ¡ã®æ‹¡å¼µæ©Ÿèƒ½ [On|Off]"
+    Print #f, ";í“¬ƒAƒjƒ‚ÌŠg’£‹@”\ [On|Off]"
     Print #f, "ExtendedAnimation=On"
     Print #f, ""
-    Print #f, ";æ­¦å™¨æº–å‚™ã‚¢ãƒ‹ãƒ¡ã®è‡ªå‹•é¸æŠè¡¨ç¤º [On|Off]"
+    Print #f, ";•Ší€”õƒAƒjƒ‚Ì©“®‘I‘ğ•\¦ [On|Off]"
     Print #f, "WeaponAnimation=On"
     Print #f, ""
-    Print #f, ";ç§»å‹•ã‚¢ãƒ‹ãƒ¡ [On|Off]"
+    Print #f, ";ˆÚ“®ƒAƒjƒ [On|Off]"
     Print #f, "MoveAnimation=On"
     Print #f, ""
-    Print #f, ";MIDIéŸ³æºãƒªã‚»ãƒƒãƒˆã®ç¨®é¡ [None|GM|GS|XG]"
+    Print #f, ";MIDI‰¹Œ¹ƒŠƒZƒbƒg‚Ìí—Ş [None|GM|GS|XG]"
     Print #f, "MidiReset=None"
     Print #f, ""
-    Print #f, ";MIDIæ¼”å¥ã«DirectMusicã‚’ä½¿ã† [On|Off]"
+    Print #f, ";MIDI‰‰‘t‚ÉDirectMusic‚ğg‚¤ [On|Off]"
     If GetWinVersion() >= 500 Then
-        'NTç³»ã®OSã§ã¯ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã§DirectMusicã‚’ä½¿ã†
-        'DirectMusicã®åˆæœŸåŒ–ã‚’è©¦ã¿ã‚‹
+        'NTŒn‚ÌOS‚Å‚ÍƒfƒtƒHƒ‹ƒg‚ÅDirectMusic‚ğg‚¤
+        'DirectMusic‚Ì‰Šú‰»‚ğ‚İ‚é
         InitDirectMusic
-        'DirectMusicãŒä½¿ç”¨å¯èƒ½ã‹ã©ã†ã‹ã§è¨­å®šã‚’åˆ‡ã‚Šæ›¿ãˆ
+        'DirectMusic‚ªg—p‰Â”\‚©‚Ç‚¤‚©‚Åİ’è‚ğØ‚è‘Ö‚¦
         If UseDirectMusic Then
             Print #f, "UseDirectMusic=On"
         Else
             Print #f, "UseDirectMusic=Off"
         End If
     Else
-        'NTç³»OSã§ãªã‘ã‚Œã°MCIã‚’ä½¿ã†
+        'NTŒnOS‚Å‚È‚¯‚ê‚ÎMCI‚ğg‚¤
         UseMCI = True
         Print #f, "UseDirectMusic=Off"
     End If
     Print #f, ""
-    Print #f, ";DirectMusicã§ä½¿ã†MIDIéŸ³æºã®ãƒãƒ¼ãƒˆç•ªå· [è‡ªå‹•æ¤œç´¢=0]"
+    Print #f, ";DirectMusic‚Åg‚¤MIDI‰¹Œ¹‚Ìƒ|[ƒg”Ô† [©“®ŒŸõ=0]"
     Print #f, "MIDIPortID=0"
     Print #f, ""
-    Print #f, ";MP3å†ç”Ÿæ™‚ã®éŸ³é‡ (0ï½100)"
+    Print #f, ";MP3Ä¶‚Ì‰¹—Ê (0`100)"
     Print #f, "MP3Volume=50"
     Print #f, ""
-    Print #f, ";MP3ã®å‡ºåŠ›ãƒ•ãƒ¬ãƒ¼ãƒ æ•°"
+    Print #f, ";MP3‚Ìo—ÍƒtƒŒ[ƒ€”"
     Print #f, "MP3OutputBlock=20"
     Print #f, ""
-    Print #f, ";MP3ã®å…¥åŠ›ç›´å¾Œã®ã‚¹ãƒªãƒ¼ãƒ—æ™‚é–“(ãƒŸãƒªç§’)"
+    Print #f, ";MP3‚Ì“ü—Í’¼Œã‚ÌƒXƒŠ[ƒvŠÔ(ƒ~ƒŠ•b)"
     Print #f, "MP3IutputSleep=5"
     Print #f, ""
-'    Print #f, ";WAVå†ç”Ÿã«DirectSoundã‚’ä½¿ã† [On|Off]"
+'    Print #f, ";WAVÄ¶‚ÉDirectSound‚ğg‚¤ [On|Off]"
 '    Print #f, "UseDirectSound=On"
 '    Print #f, ""
-    Print #f, ";ç”»åƒãƒãƒƒãƒ•ã‚¡ã®æšæ•°"
+    Print #f, ";‰æ‘œƒoƒbƒtƒ@‚Ì–‡”"
     Print #f, "ImageBufferNum=64"
     Print #f, ""
-    Print #f, ";ç”»åƒãƒãƒƒãƒ•ã‚¡ã®æœ€å¤§ã‚µã‚¤ã‚º (MB)"
+    Print #f, ";‰æ‘œƒoƒbƒtƒ@‚ÌÅ‘åƒTƒCƒY (MB)"
     Print #f, "MaxImageBufferSize=8"
     Print #f, ""
-    Print #f, ";æ‹¡å¤§ç”»åƒã‚’ç”»åƒãƒãƒƒãƒ•ã‚¡ã«ä¿å­˜ã™ã‚‹ [On|Off]"
+    Print #f, ";Šg‘å‰æ‘œ‚ğ‰æ‘œƒoƒbƒtƒ@‚É•Û‘¶‚·‚é [On|Off]"
     Print #f, "KeepStretchedImage="
     Print #f, ""
     If GetWinVersion() >= 500 Then
-        Print #f, ";é€éæç”»ã«APIé–¢æ•°TransparentBltã‚’ä½¿ã† [On|Off]"
+        Print #f, ";“§‰ß•`‰æ‚ÉAPIŠÖ”TransparentBlt‚ğg‚¤ [On|Off]"
         Print #f, "UseTransparentBlt=On"
         Print #f, ""
     End If
-    Print #f, ";æ‹¡å¼µãƒ‡ãƒ¼ã‚¿ã®ãƒ•ã‚©ãƒ«ãƒ€ (ãƒ•ãƒ«ãƒ‘ã‚¹ã§æŒ‡å®š)"
+    Print #f, ";Šg’£ƒf[ƒ^‚ÌƒtƒHƒ‹ƒ_ (ƒtƒ‹ƒpƒX‚Åw’è)"
     Print #f, "ExtDataPath="
     Print #f, "ExtDataPath2="
     Print #f, ""
-    Print #f, ";ãƒ‡ãƒãƒƒã‚°ãƒ¢ãƒ¼ãƒ‰ [On|Off]"
+    Print #f, ";ƒfƒoƒbƒOƒ‚[ƒh [On|Off]"
     Print #f, "DebugMode=Off"
     Print #f, ""
-    Print #f, ";æ–°ï¼§ï¼µï¼©(ãƒ†ã‚¹ãƒˆä¸­) [On|Off]"
+    Print #f, ";V‚f‚t‚h(ƒeƒXƒg’†) [On|Off]"
     Print #f, "NewGUI=Off"
     Print #f, ""
     Print #f, "[Log]"
-    Print #f, ";å‰å›ä½¿ç”¨ã—ãŸãƒ•ã‚©ãƒ«ãƒ€"
+    Print #f, ";‘O‰ñg—p‚µ‚½ƒtƒHƒ‹ƒ_"
     Print #f, "LastFolder="
     Print #f, ""
     Print #f, "[BGM]"
-    Print #f, ";SRCèµ·å‹•æ™‚"
+    Print #f, ";SRC‹N“®"
     Print #f, "Opening=Opening.mid"
-    Print #f, ";å‘³æ–¹ãƒ•ã‚§ã‚¤ã‚ºé–‹å§‹æ™‚"
+    Print #f, ";–¡•ûƒtƒFƒCƒYŠJn"
     Print #f, "Map1=Map1.mid"
-    Print #f, ";æ•µãƒ•ã‚§ã‚¤ã‚ºé–‹å§‹æ™‚"
+    Print #f, ";“GƒtƒFƒCƒYŠJn"
     Print #f, "Map2=Map2.mid"
-    Print #f, ";å±‹å†…ãƒãƒƒãƒ—ã®å‘³æ–¹ãƒ•ã‚§ã‚¤ã‚ºé–‹å§‹æ™‚"
+    Print #f, ";‰®“àƒ}ƒbƒv‚Ì–¡•ûƒtƒFƒCƒYŠJn"
     Print #f, "Map3=Map3.mid"
-    Print #f, ";å±‹å†…ãƒãƒƒãƒ—ã®æ•µãƒ•ã‚§ã‚¤ã‚ºé–‹å§‹æ™‚"
+    Print #f, ";‰®“àƒ}ƒbƒv‚Ì“GƒtƒFƒCƒYŠJn"
     Print #f, "Map4=Map4.mid"
-    Print #f, ";å®‡å®™ãƒãƒƒãƒ—ã®å‘³æ–¹ãƒ•ã‚§ã‚¤ã‚ºé–‹å§‹æ™‚"
+    Print #f, ";‰F’ˆƒ}ƒbƒv‚Ì–¡•ûƒtƒFƒCƒYŠJn"
     Print #f, "Map5=Map5.mid"
-    Print #f, ";å®‡å®™ãƒãƒƒãƒ—ã®æ•µãƒ•ã‚§ã‚¤ã‚ºé–‹å§‹æ™‚"
+    Print #f, ";‰F’ˆƒ}ƒbƒv‚Ì“GƒtƒFƒCƒYŠJn"
     Print #f, "Map6=Map6.mid"
-    Print #f, ";ãƒ—ãƒ­ãƒ­ãƒ¼ã‚°ãƒ»ã‚¨ãƒ”ãƒ­ãƒ¼ã‚°é–‹å§‹æ™‚"
+    Print #f, ";ƒvƒƒ[ƒOEƒGƒsƒ[ƒOŠJn"
     Print #f, "Briefing=Briefing.mid"
-    Print #f, ";ã‚¤ãƒ³ã‚¿ãƒ¼ãƒŸãƒƒã‚·ãƒ§ãƒ³é–‹å§‹æ™‚"
+    Print #f, ";ƒCƒ“ƒ^[ƒ~ƒbƒVƒ‡ƒ“ŠJn"
     Print #f, "Intermission=Intermission.mid"
-    Print #f, ";ãƒ†ãƒ­ãƒƒãƒ—è¡¨ç¤ºæ™‚"
+    Print #f, ";ƒeƒƒbƒv•\¦"
     Print #f, "Subtitle=Subtitle.mid"
-    Print #f, ";ã‚²ãƒ¼ãƒ ã‚ªãƒ¼ãƒãƒ¼æ™‚"
+    Print #f, ";ƒQ[ƒ€ƒI[ƒo["
     Print #f, "End=End.mid"
-    Print #f, ";æˆ¦é—˜æ™‚ã®ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆMIDI"
+    Print #f, ";í“¬‚ÌƒfƒtƒHƒ‹ƒgMIDI"
     Print #f, "default=default.mid"
     Print #f, ""
     
     Close #f
     
 ErrorHandler:
-    'ã‚¨ãƒ©ãƒ¼ç™ºç”Ÿ
+    'ƒGƒ‰[”­¶
 End Sub
 
-'KeepStretchedImageã‚’ä½¿ç”¨ã™ã¹ãã‹æ±ºå®šã™ã‚‹ãŸã‚ã€BitBltã¨
-'StretchBltã®é€Ÿåº¦å·®ã‚’æ¸¬å®š
+'KeepStretchedImage‚ğg—p‚·‚×‚«‚©Œˆ’è‚·‚é‚½‚ßABitBlt‚Æ
+'StretchBlt‚Ì‘¬“x·‚ğ‘ª’è
 Private Function IsBitBltFasterThanStretchBlt()
 Dim stime As Long, etime As Long
 Dim bb_time As Long, sb_time As Long
 Dim ret As Long, i As Integer
   
     With MainForm
-        'æç”»é ˜åŸŸã‚’è¨­å®š
+        '•`‰æ—Ìˆæ‚ğİ’è
         With .picStretchedTmp(0)
             .width = 128
             .Height = 128
@@ -1025,7 +1025,7 @@ Dim ret As Long, i As Integer
             .Height = 128
         End With
         
-        'StretchBltã®è»¢é€é€Ÿåº¦ã‚’æ¸¬å®š
+        'StretchBlt‚Ì“]‘—‘¬“x‚ğ‘ª’è
         stime = timeGetTime()
         For i = 1 To 5
             ret = StretchBlt(.picStretchedTmp(0).hDC, 0, 0, 480, 480, _
@@ -1034,7 +1034,7 @@ Dim ret As Long, i As Integer
         etime = timeGetTime()
         sb_time = etime - stime
         
-        'BitBltã®è»¢é€é€Ÿåº¦ã‚’æ¸¬å®š
+        'BitBlt‚Ì“]‘—‘¬“x‚ğ‘ª’è
         stime = timeGetTime()
         For i = 1 To 5
             ret = BitBlt(.picStretchedTmp(1).hDC, 0, 0, 480, 480, _
@@ -1043,7 +1043,7 @@ Dim ret As Long, i As Integer
         etime = timeGetTime()
         bb_time = etime - stime
         
-        'æç”»é ˜åŸŸã‚’é–‹æ”¾
+        '•`‰æ—Ìˆæ‚ğŠJ•ú
         With .picStretchedTmp(0)
             .Picture = LoadPicture()
             .width = 32
@@ -1056,7 +1056,7 @@ Dim ret As Long, i As Integer
         End With
     End With
     
-    'BitBltãŒStretchBltã‚ˆã‚Š2å€ä»¥ä¸Šé€Ÿã‘ã‚Œã°BitBltã‚’å„ªå…ˆã—ã¦ä½¿ç”¨ã™ã‚‹
+    'BitBlt‚ªStretchBlt‚æ‚è2”{ˆÈã‘¬‚¯‚ê‚ÎBitBlt‚ğ—Dæ‚µ‚Äg—p‚·‚é
     If 2 * bb_time < sb_time Then
         IsBitBltFasterThanStretchBlt = True
     Else
@@ -1065,12 +1065,12 @@ Dim ret As Long, i As Integer
 End Function
 
 
-'ã‚¤ãƒ™ãƒ³ãƒˆãƒ•ã‚¡ã‚¤ãƒ«fnameã‚’å®Ÿè¡Œ
+'ƒCƒxƒ“ƒgƒtƒ@ƒCƒ‹fname‚ğÀs
 Public Sub StartScenario(ByVal fname As String)
 Dim i As Integer, ret As Long
 Dim sf As StdFont
     
-    'ãƒ•ã‚¡ã‚¤ãƒ«ã‚’æ¤œç´¢
+    'ƒtƒ@ƒCƒ‹‚ğŒŸõ
     If Len(fname) = 0 Then
         TerminateSRC
         End
@@ -1081,90 +1081,90 @@ Dim sf As StdFont
     End If
     
     If Dir$(fname, vbNormal) = "" Then
-        MsgBox fname & "ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“"
+        MsgBox fname & "‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ"
         TerminateSRC
     End If
     
-    'ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ã‚¿ã‚¤ãƒˆãƒ«ã‚’è¨­å®š
+    'ƒEƒBƒ“ƒhƒE‚Ìƒ^ƒCƒgƒ‹‚ğİ’è
     If App.Minor Mod 2 = 0 Then
         MainForm.Caption = "SRC"
     Else
-        MainForm.Caption = "SRCé–‹ç™ºç‰ˆ"
+        MainForm.Caption = "SRCŠJ”­”Å"
     End If
     
     ScenarioFileName = fname
     
     If Not IsSubStage Then
         If Len(Dir$(ScenarioPath & "Date", vbDirectory)) > 0 Then
-            ErrorMessage "ã‚·ãƒŠãƒªã‚ªå´ã®Dataãƒ•ã‚©ãƒ«ãƒ€åãŒDateã«ãªã£ã¦ã„ã¾ã™ã€‚" & vbCr & vbLf _
+            ErrorMessage "ƒVƒiƒŠƒI‘¤‚ÌDataƒtƒHƒ‹ƒ_–¼‚ªDate‚É‚È‚Á‚Ä‚¢‚Ü‚·B" & vbCr & vbLf _
                 & ScenarioPath & "Date" & vbCr & vbLf _
-                & "ãƒ•ã‚©ãƒ«ãƒ€åã‚’Dataã«ç›´ã—ã¦ãã ã•ã„ã€‚"
+                & "ƒtƒHƒ‹ƒ_–¼‚ğData‚É’¼‚µ‚Ä‚­‚¾‚³‚¢B"
             TerminateSRC
         End If
-        If Len(Dir$(ScenarioPath & "ï¼¤ï½ï½”ï½", vbDirectory)) > 0 Then
-            ErrorMessage "ã‚·ãƒŠãƒªã‚ªå´ã®Dataãƒ•ã‚©ãƒ«ãƒ€åãŒå…¨è§’æ–‡å­—ã«ãªã£ã¦ã„ã¾ã™ã€‚" & vbCr & vbLf _
-                & ScenarioPath & "ï¼¤ï½ï½”ï½" & vbCr & vbLf _
-                & "ãƒ•ã‚©ãƒ«ãƒ€åã‚’åŠè§’æ–‡å­—ã«ç›´ã—ã¦ãã ã•ã„ã€‚"
+        If Len(Dir$(ScenarioPath & "‚c‚‚”‚", vbDirectory)) > 0 Then
+            ErrorMessage "ƒVƒiƒŠƒI‘¤‚ÌDataƒtƒHƒ‹ƒ_–¼‚ª‘SŠp•¶š‚É‚È‚Á‚Ä‚¢‚Ü‚·B" & vbCr & vbLf _
+                & ScenarioPath & "‚c‚‚”‚" & vbCr & vbLf _
+                & "ƒtƒHƒ‹ƒ_–¼‚ğ”¼Šp•¶š‚É’¼‚µ‚Ä‚­‚¾‚³‚¢B"
             TerminateSRC
         End If
-        If Len(Dir$(ScenarioPath & "ï¼¢ï½‰ï½”ï½ï½ï½", vbDirectory)) > 0 Then
-            ErrorMessage "ã‚·ãƒŠãƒªã‚ªå´ã®Bitmapãƒ•ã‚©ãƒ«ãƒ€åãŒå…¨è§’æ–‡å­—ã«ãªã£ã¦ã„ã¾ã™ã€‚" & vbCr & vbLf _
-                & ScenarioPath & "ï¼¢ï½‰ï½”ï½ï½ï½" & vbCr & vbLf _
-                & "ãƒ•ã‚©ãƒ«ãƒ€åã‚’åŠè§’æ–‡å­—ã«ç›´ã—ã¦ãã ã•ã„ã€‚"
+        If Len(Dir$(ScenarioPath & "‚a‚‰‚”‚‚‚", vbDirectory)) > 0 Then
+            ErrorMessage "ƒVƒiƒŠƒI‘¤‚ÌBitmapƒtƒHƒ‹ƒ_–¼‚ª‘SŠp•¶š‚É‚È‚Á‚Ä‚¢‚Ü‚·B" & vbCr & vbLf _
+                & ScenarioPath & "‚a‚‰‚”‚‚‚" & vbCr & vbLf _
+                & "ƒtƒHƒ‹ƒ_–¼‚ğ”¼Šp•¶š‚É’¼‚µ‚Ä‚­‚¾‚³‚¢B"
             TerminateSRC
         End If
-        If Len(Dir$(ScenarioPath & "ï¼¬ï½‰ï½‚", vbDirectory)) > 0 Then
-            ErrorMessage "ã‚·ãƒŠãƒªã‚ªå´ã®Libãƒ•ã‚©ãƒ«ãƒ€åãŒå…¨è§’æ–‡å­—ã«ãªã£ã¦ã„ã¾ã™ã€‚" & vbCr & vbLf _
-                & ScenarioPath & "ï¼¬ï½‰ï½‚" & vbCr & vbLf _
-                & "ãƒ•ã‚©ãƒ«ãƒ€åã‚’åŠè§’æ–‡å­—ã«ç›´ã—ã¦ãã ã•ã„ã€‚"
+        If Len(Dir$(ScenarioPath & "‚k‚‰‚‚", vbDirectory)) > 0 Then
+            ErrorMessage "ƒVƒiƒŠƒI‘¤‚ÌLibƒtƒHƒ‹ƒ_–¼‚ª‘SŠp•¶š‚É‚È‚Á‚Ä‚¢‚Ü‚·B" & vbCr & vbLf _
+                & ScenarioPath & "‚k‚‰‚‚" & vbCr & vbLf _
+                & "ƒtƒHƒ‹ƒ_–¼‚ğ”¼Šp•¶š‚É’¼‚µ‚Ä‚­‚¾‚³‚¢B"
             TerminateSRC
         End If
-        If Len(Dir$(ScenarioPath & "ï¼­ï½‰ï½„ï½‰", vbDirectory)) > 0 Then
-            ErrorMessage "ã‚·ãƒŠãƒªã‚ªå´ã®Midiãƒ•ã‚©ãƒ«ãƒ€åãŒå…¨è§’æ–‡å­—ã«ãªã£ã¦ã„ã¾ã™ã€‚" & vbCr & vbLf _
-                & ScenarioPath & "ï¼­ï½‰ï½„ï½‰" & vbCr & vbLf _
-                & "ãƒ•ã‚©ãƒ«ãƒ€åã‚’åŠè§’æ–‡å­—ã«ç›´ã—ã¦ãã ã•ã„ã€‚"
+        If Len(Dir$(ScenarioPath & "‚l‚‰‚„‚‰", vbDirectory)) > 0 Then
+            ErrorMessage "ƒVƒiƒŠƒI‘¤‚ÌMidiƒtƒHƒ‹ƒ_–¼‚ª‘SŠp•¶š‚É‚È‚Á‚Ä‚¢‚Ü‚·B" & vbCr & vbLf _
+                & ScenarioPath & "‚l‚‰‚„‚‰" & vbCr & vbLf _
+                & "ƒtƒHƒ‹ƒ_–¼‚ğ”¼Šp•¶š‚É’¼‚µ‚Ä‚­‚¾‚³‚¢B"
             TerminateSRC
         End If
-        If Len(Dir$(ScenarioPath & "ï¼³ï½ï½•ï½ï½„", vbDirectory)) > 0 Then
-            ErrorMessage "ã‚·ãƒŠãƒªã‚ªå´ã®Soundãƒ•ã‚©ãƒ«ãƒ€åãŒå…¨è§’æ–‡å­—ã«ãªã£ã¦ã„ã¾ã™ã€‚" & vbCr & vbLf _
-                & ScenarioPath & "ï¼³ï½ï½•ï½ï½„" & vbCr & vbLf _
-                & "ãƒ•ã‚©ãƒ«ãƒ€åã‚’åŠè§’æ–‡å­—ã«ç›´ã—ã¦ãã ã•ã„ã€‚"
+        If Len(Dir$(ScenarioPath & "‚r‚‚•‚‚„", vbDirectory)) > 0 Then
+            ErrorMessage "ƒVƒiƒŠƒI‘¤‚ÌSoundƒtƒHƒ‹ƒ_–¼‚ª‘SŠp•¶š‚É‚È‚Á‚Ä‚¢‚Ü‚·B" & vbCr & vbLf _
+                & ScenarioPath & "‚r‚‚•‚‚„" & vbCr & vbLf _
+                & "ƒtƒHƒ‹ƒ_–¼‚ğ”¼Šp•¶š‚É’¼‚µ‚Ä‚­‚¾‚³‚¢B"
             TerminateSRC
         End If
         
-        'èª­ã¿è¾¼ã‚€ã‚¤ãƒ™ãƒ³ãƒˆãƒ•ã‚¡ã‚¤ãƒ«åã«åˆã‚ã›ã¦å„ç¨®ã‚·ã‚¹ãƒ†ãƒ å¤‰æ•°ã‚’è¨­å®š
-        If Not IsGlobalVariableDefined("æ¬¡ã‚¹ãƒ†ãƒ¼ã‚¸") Then
-            DefineGlobalVariable "æ¬¡ã‚¹ãƒ†ãƒ¼ã‚¸"
+        '“Ç‚İ‚ŞƒCƒxƒ“ƒgƒtƒ@ƒCƒ‹–¼‚É‡‚í‚¹‚ÄŠeíƒVƒXƒeƒ€•Ï”‚ğİ’è
+        If Not IsGlobalVariableDefined("ŸƒXƒe[ƒW") Then
+            DefineGlobalVariable "ŸƒXƒe[ƒW"
         End If
-        SetVariableAsString "æ¬¡ã‚¹ãƒ†ãƒ¼ã‚¸", ""
+        SetVariableAsString "ŸƒXƒe[ƒW", ""
         For i = 1 To Len(fname)
             If Mid$(fname, Len(fname) - i + 1, 1) = "\" Then
                 Exit For
             End If
         Next
-        SetVariableAsString "ã‚¹ãƒ†ãƒ¼ã‚¸", Mid$(fname, Len(fname) - i + 2)
+        SetVariableAsString "ƒXƒe[ƒW", Mid$(fname, Len(fname) - i + 2)
         
-        If Not IsGlobalVariableDefined("ã‚»ãƒ¼ãƒ–ãƒ‡ãƒ¼ã‚¿ãƒ•ã‚¡ã‚¤ãƒ«å") Then
-            DefineGlobalVariable "ã‚»ãƒ¼ãƒ–ãƒ‡ãƒ¼ã‚¿ãƒ•ã‚¡ã‚¤ãƒ«å"
+        If Not IsGlobalVariableDefined("ƒZ[ƒuƒf[ƒ^ƒtƒ@ƒCƒ‹–¼") Then
+            DefineGlobalVariable "ƒZ[ƒuƒf[ƒ^ƒtƒ@ƒCƒ‹–¼"
         End If
-        SetVariableAsString "ã‚»ãƒ¼ãƒ–ãƒ‡ãƒ¼ã‚¿ãƒ•ã‚¡ã‚¤ãƒ«å", _
-            Mid$(fname, Len(fname) - i + 2, i - 5) & "ã¾ã§ã‚¯ãƒªã‚¢.src"
+        SetVariableAsString "ƒZ[ƒuƒf[ƒ^ƒtƒ@ƒCƒ‹–¼", _
+            Mid$(fname, Len(fname) - i + 2, i - 5) & "‚Ü‚ÅƒNƒŠƒA.src"
         
-        'ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ã‚¿ã‚¤ãƒˆãƒ«ã«ã‚·ãƒŠãƒªã‚ªãƒ•ã‚¡ã‚¤ãƒ«åã‚’è¡¨ç¤º
+        'ƒEƒBƒ“ƒhƒE‚Ìƒ^ƒCƒgƒ‹‚ÉƒVƒiƒŠƒIƒtƒ@ƒCƒ‹–¼‚ğ•\¦
         MainForm.Caption = MainForm.Caption & " - " & Mid$(fname, Len(fname) - i + 2, i - 5)
     End If
     
-    'ç”»é¢ã‚’ã‚¯ãƒªã‚¢ã—ã¦ãŠã
+    '‰æ–Ê‚ğƒNƒŠƒA‚µ‚Ä‚¨‚­
     With MainForm
         ret = PatBlt(.picMain(0).hDC, 0, 0, MainPWidth, MainPHeight, BLACKNESS)
         ret = PatBlt(.picMain(1).hDC, 0, 0, MainPWidth, MainPHeight, BLACKNESS)
     End With
     ScreenIsSaved = True
     
-    'ã‚¤ãƒ™ãƒ³ãƒˆãƒ‡ãƒ¼ã‚¿ã®èª­ã¿è¾¼ã¿
+    'ƒCƒxƒ“ƒgƒf[ƒ^‚Ì“Ç‚İ‚İ
     LoadEventData fname
     
-    'å„ç¨®å¤‰æ•°ã®åˆæœŸåŒ–
+    'Šeí•Ï”‚Ì‰Šú‰»
     Turn = 0
     IsScenarioFinished = False
     IsPictureVisible = False
@@ -1172,15 +1172,15 @@ Dim sf As StdFont
     LastSaveDataFileName = ""
     IsRestartSaveDataAvailable = False
     IsQuickSaveDataAvailable = False
-    CommandState = "ãƒ¦ãƒ‹ãƒƒãƒˆé¸æŠ"
+    CommandState = "ƒ†ƒjƒbƒg‘I‘ğ"
     ReDim SelectedPartners(0)
     
-    'ãƒ•ã‚©ãƒ³ãƒˆè¨­å®šã‚’ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã«æˆ»ã™
+    'ƒtƒHƒ“ƒgİ’è‚ğƒfƒtƒHƒ‹ƒg‚É–ß‚·
     With MainForm.picMain(0)
         .ForeColor = rgb(255, 255, 255)
-        If .Font.Name <> "ï¼­ï¼³ ï¼°æ˜æœ" Then
+        If .Font.Name <> "‚l‚r ‚o–¾’©" Then
             Set sf = New StdFont
-            sf.Name = "ï¼­ï¼³ ï¼°æ˜æœ"
+            sf.Name = "‚l‚r ‚o–¾’©"
             Set .Font = sf
         End If
         .Font.Size = 16
@@ -1190,10 +1190,10 @@ Dim sf As StdFont
         KeepStringMode = False
     End With
     
-    'æç”»ã®åŸºæº–åº§æ¨™ä½ç½®ã‚’ãƒªã‚»ãƒƒãƒˆ
+    '•`‰æ‚ÌŠî€À•WˆÊ’u‚ğƒŠƒZƒbƒg
     ResetBasePoint
     
-    'ãƒ¡ãƒ¢ãƒªã‚’æ¶ˆè²»ã—éããªã„ã‚ˆã†ã«ãƒ¦ãƒ‹ãƒƒãƒˆç”»åƒã‚’ã‚¯ãƒªã‚¢
+    'ƒƒ‚ƒŠ‚ğÁ”ï‚µ‰ß‚¬‚È‚¢‚æ‚¤‚Éƒ†ƒjƒbƒg‰æ‘œ‚ğƒNƒŠƒA
     If Not IsSubStage Then
         UList.ClearUnitBitmap
     End If
@@ -1204,13 +1204,13 @@ Dim sf As StdFont
         SetMapSize 15, 15
     End If
     
-    'ãƒ—ãƒ­ãƒ­ãƒ¼ã‚°
-    Stage = "ãƒ—ãƒ­ãƒ­ãƒ¼ã‚°"
-    If Not IsSubStage And IsEventDefined("ãƒ—ãƒ­ãƒ­ãƒ¼ã‚°", True) Then
+    'ƒvƒƒ[ƒO
+    Stage = "ƒvƒƒ[ƒO"
+    If Not IsSubStage And IsEventDefined("ƒvƒƒ[ƒO", True) Then
         StopBGM
         StartBGM BGMName("Briefing")
     End If
-    HandleEvent "ãƒ—ãƒ­ãƒ­ãƒ¼ã‚°"
+    HandleEvent "ƒvƒƒ[ƒO"
     
     If IsScenarioFinished Then
         IsScenarioFinished = False
@@ -1218,24 +1218,24 @@ Dim sf As StdFont
         Exit Sub
     End If
     
-    If Not IsEventDefined("ã‚¹ã‚¿ãƒ¼ãƒˆ") Then
-        ErrorMessage "ã‚¹ã‚¿ãƒ¼ãƒˆã‚¤ãƒ™ãƒ³ãƒˆãŒå®šç¾©ã•ã‚Œã¦ã„ã¾ã›ã‚“"
+    If Not IsEventDefined("ƒXƒ^[ƒg") Then
+        ErrorMessage "ƒXƒ^[ƒgƒCƒxƒ“ƒg‚ª’è‹`‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ"
         TerminateSRC
     End If
     
     IsPictureVisible = False
     IsCursorVisible = False
-    Stage = "å‘³æ–¹"
+    Stage = "–¡•û"
     StopBGM
     
-    'ãƒªã‚¹ã‚¿ãƒ¼ãƒˆç”¨ã«ãƒ‡ãƒ¼ã‚¿ã‚’ã‚»ãƒ¼ãƒ–
-    If InStr(fname, "\Lib\ãƒ¦ãƒ‹ãƒƒãƒˆã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹è¡¨ç¤º.eve") = 0 _
-        And InStr(fname, "\Lib\ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹è¡¨ç¤º.eve") = 0 _
+    'ƒŠƒXƒ^[ƒg—p‚Éƒf[ƒ^‚ğƒZ[ƒu
+    If InStr(fname, "\Lib\ƒ†ƒjƒbƒgƒXƒe[ƒ^ƒX•\¦.eve") = 0 _
+        And InStr(fname, "\Lib\ƒpƒCƒƒbƒgƒXƒe[ƒ^ƒX•\¦.eve") = 0 _
     Then
-        DumpData ScenarioPath & "_ãƒªã‚¹ã‚¿ãƒ¼ãƒˆ.src"
+        DumpData ScenarioPath & "_ƒŠƒXƒ^[ƒg.src"
     End If
     
-    'ã‚¹ã‚¿ãƒ¼ãƒˆã‚¤ãƒ™ãƒ³ãƒˆãŒå§‹ã¾ã£ãŸå ´åˆã¯é€šå¸¸ã®ã‚¹ãƒ†ãƒ¼ã‚¸ã¨ã¿ãªã™
+    'ƒXƒ^[ƒgƒCƒxƒ“ƒg‚ªn‚Ü‚Á‚½ê‡‚Í’Êí‚ÌƒXƒe[ƒW‚Æ‚İ‚È‚·
     IsSubStage = False
     
     ClearUnitStatus
@@ -1245,8 +1245,8 @@ Dim sf As StdFont
     End If
     RedrawScreen
     
-    'ã‚¹ã‚¿ãƒ¼ãƒˆã‚¤ãƒ™ãƒ³ãƒˆ
-    HandleEvent "ã‚¹ã‚¿ãƒ¼ãƒˆ"
+    'ƒXƒ^[ƒgƒCƒxƒ“ƒg
+    HandleEvent "ƒXƒ^[ƒg"
     If IsScenarioFinished Then
         IsScenarioFinished = False
         UnlockGUI
@@ -1256,13 +1256,13 @@ Dim sf As StdFont
     IsPictureVisible = False
     IsCursorVisible = False
     
-    'ã‚¯ã‚¤ãƒƒã‚¯ãƒ­ãƒ¼ãƒ‰ã‚’ç„¡åŠ¹ã«ã™ã‚‹
+    'ƒNƒCƒbƒNƒ[ƒh‚ğ–³Œø‚É‚·‚é
     IsQuickSaveDataAvailable = False
     
-    StartTurn "å‘³æ–¹"
+    StartTurn "–¡•û"
 End Sub
 
-'é™£å–¶upartyã®ãƒ•ã‚§ã‚¤ã‚ºã‚’å®Ÿè¡Œ
+'w‰cuparty‚ÌƒtƒFƒCƒY‚ğÀs
 Public Sub StartTurn(uparty As String)
 Dim i As Integer, num As Integer, phase As Integer
 Dim u As Unit
@@ -1270,22 +1270,22 @@ Dim u As Unit
     Stage = uparty
     BossBGM = False
     
-    If uparty = "å‘³æ–¹" Then
+    If uparty = "–¡•û" Then
         Do
-            'å‘³æ–¹ãƒ•ã‚§ã‚¤ã‚º
-            Stage = "å‘³æ–¹"
+            '–¡•ûƒtƒFƒCƒY
+            Stage = "–¡•û"
             
-            'ã‚¿ãƒ¼ãƒ³æ•°ã‚’é€²ã‚ã‚‹
+            'ƒ^[ƒ“”‚ği‚ß‚é
             If MapFileName <> "" Then
                 Turn = Turn + 1
                 TotalTurn = TotalTurn + 1
             End If
             
-            'çŠ¶æ…‹å›å¾©
+            'ó‘Ô‰ñ•œ
             For Each SelectedUnit In UList
                 With SelectedUnit
                     Select Case .Status
-                        Case "å‡ºæ’ƒ", "æ ¼ç´"
+                        Case "oŒ‚", "Ši”["
                             If .Party = uparty Then
                                 If MapFileName = "" Then
                                     .UsedAction = 0
@@ -1299,32 +1299,32 @@ Dim u As Unit
                             Else
                                 .UsedAction = 0
                             End If
-                        Case "æ—§ä¸»å½¢æ…‹", "æ—§å½¢æ…‹"
+                        Case "‹ŒåŒ`‘Ô", "‹ŒŒ`‘Ô"
                             .UsedAction = 0
                     End Select
                 End With
             Next
             
-            'å‘³æ–¹ãŒæ•µã«ã‹ã‘ãŸã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼ã‚’è§£é™¤
+            '–¡•û‚ª“G‚É‚©‚¯‚½ƒXƒyƒVƒƒƒ‹ƒpƒ[‚ğ‰ğœ
             For Each u In UList
                 With u
                     Select Case .Status
-                        Case "å‡ºæ’ƒ", "æ ¼ç´"
-                            .RemoveSpecialPowerInEffect "æ•µã‚¿ãƒ¼ãƒ³"
+                        Case "oŒ‚", "Ši”["
+                            .RemoveSpecialPowerInEffect "“Gƒ^[ƒ“"
                     End Select
                 End With
             Next
             RedrawScreen
             
-            'å‘³æ–¹ãƒ•ã‚§ã‚¤ã‚ºç”¨ï¼¢ï¼§ï¼­ã‚’æ¼”å¥
+            '–¡•ûƒtƒFƒCƒY—p‚a‚f‚l‚ğ‰‰‘t
             If MapFileName <> "" Then
                 Select Case TerrainClass(1, 1)
-                    Case "å±‹å†…"
+                    Case "‰®“à"
                         StartBGM BGMName("Map3")
-                    Case "å®‡å®™"
+                    Case "‰F’ˆ"
                         StartBGM BGMName("Map5")
                     Case Else
-                        If TerrainName(1, 1) = "å£" Then
+                        If TerrainName(1, 1) = "•Ç" Then
                             StartBGM BGMName("Map3")
                         Else
                             StartBGM BGMName("Map1")
@@ -1332,36 +1332,36 @@ Dim u As Unit
                 End Select
             End If
             
-            'ã‚¿ãƒ¼ãƒ³ã‚¤ãƒ™ãƒ³ãƒˆ
+            'ƒ^[ƒ“ƒCƒxƒ“ƒg
             IsUnitCenter = False
-            HandleEvent "ã‚¿ãƒ¼ãƒ³", Turn, "å‘³æ–¹"
+            HandleEvent "ƒ^[ƒ“", Turn, "–¡•û"
             If IsScenarioFinished Then
                 UnlockGUI
                 Exit Sub
             End If
             
-            'æ“ä½œå¯èƒ½ãªãƒ¦ãƒ‹ãƒƒãƒˆãŒã„ã‚‹ã‹ã©ã†ã‹ãƒã‚§ãƒƒã‚¯
+            '‘€ì‰Â”\‚Èƒ†ƒjƒbƒg‚ª‚¢‚é‚©‚Ç‚¤‚©ƒ`ƒFƒbƒN
             num = 0
             For Each u In UList
                 With u
-                    If .Party = "å‘³æ–¹" _
-                        And (.Status = "å‡ºæ’ƒ" Or .Status = "æ ¼ç´") _
+                    If .Party = "–¡•û" _
+                        And (.Status = "oŒ‚" Or .Status = "Ši”[") _
                         And .Action > 0 _
                     Then
                         num = num + 1
                     End If
                 End With
             Next
-            If num > 0 Or IsOptionDefined("å‘³æ–¹ãƒ•ã‚§ã‚¤ã‚ºå¼·åˆ¶ç™ºå‹•") Then
+            If num > 0 Or IsOptionDefined("–¡•ûƒtƒFƒCƒY‹­§”­“®") Then
                 Exit Do
             End If
             
-            'CPUãŒæ“ä½œã™ã‚‹ãƒ¦ãƒ‹ãƒƒãƒˆãŒã„ã‚‹ã‹ã©ã†ã‹ãƒã‚§ãƒƒã‚¯
+            'CPU‚ª‘€ì‚·‚éƒ†ƒjƒbƒg‚ª‚¢‚é‚©‚Ç‚¤‚©ƒ`ƒFƒbƒN
             num = 0
             For Each u In UList
                 With u
-                    If .Party <> "å‘³æ–¹" _
-                        And .Status = "å‡ºæ’ƒ" _
+                    If .Party <> "–¡•û" _
+                        And .Status = "oŒ‚" _
                     Then
                         num = num + 1
                     End If
@@ -1371,35 +1371,35 @@ Dim u As Unit
                 Exit Do
             End If
             
-            'æ•µãƒ•ã‚§ã‚¤ã‚º
-            StartTurn "æ•µ"
+            '“GƒtƒFƒCƒY
+            StartTurn "“G"
             If IsScenarioFinished Then
                 IsScenarioFinished = False
                 Exit Sub
             End If
             
-            'ä¸­ç«‹ãƒ•ã‚§ã‚¤ã‚º
-            StartTurn "ä¸­ç«‹"
+            '’†—§ƒtƒFƒCƒY
+            StartTurn "’†—§"
             If IsScenarioFinished Then
                 IsScenarioFinished = False
                 Exit Sub
             End If
             
-            'ï¼®ï¼°ï¼£ãƒ•ã‚§ã‚¤ã‚º
-            StartTurn "ï¼®ï¼°ï¼£"
+            '‚m‚o‚bƒtƒFƒCƒY
+            StartTurn "‚m‚o‚b"
             If IsScenarioFinished Then
                 IsScenarioFinished = False
                 Exit Sub
             End If
         Loop While True
     Else
-        'å‘³æ–¹ãƒ•ã‚§ã‚¤ã‚ºä»¥å¤–
+        '–¡•ûƒtƒFƒCƒYˆÈŠO
         
-        'çŠ¶æ…‹å›å¾©
+        'ó‘Ô‰ñ•œ
         For Each SelectedUnit In UList
             With SelectedUnit
                 Select Case .Status
-                    Case "å‡ºæ’ƒ", "æ ¼ç´"
+                    Case "oŒ‚", "Ši”["
                         If .Party = uparty Then
                             .Rest
                             If IsScenarioFinished Then
@@ -1409,46 +1409,46 @@ Dim u As Unit
                         Else
                             .UsedAction = 0
                         End If
-                    Case "æ—§ä¸»å½¢æ…‹", "æ—§å½¢æ…‹"
+                    Case "‹ŒåŒ`‘Ô", "‹ŒŒ`‘Ô"
                         .UsedAction = 0
                 End Select
             End With
         Next
         
-        'æ•µãƒ¦ãƒ‹ãƒƒãƒˆãŒå‘³æ–¹ã«ã‹ã‘ãŸã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼ã‚’è§£é™¤
+        '“Gƒ†ƒjƒbƒg‚ª–¡•û‚É‚©‚¯‚½ƒXƒyƒVƒƒƒ‹ƒpƒ[‚ğ‰ğœ
         For Each u In UList
             With u
                 Select Case .Status
-                    Case "å‡ºæ’ƒ", "æ ¼ç´"
-                        .RemoveSpecialPowerInEffect "æ•µã‚¿ãƒ¼ãƒ³"
+                    Case "oŒ‚", "Ši”["
+                        .RemoveSpecialPowerInEffect "“Gƒ^[ƒ“"
                 End Select
             End With
         Next
         RedrawScreen
         
-        'æ•µ(ï¼®ï¼°ï¼£)ãƒ•ã‚§ã‚¤ã‚ºç”¨ï¼¢ï¼§ï¼­ã‚’æ¼”å¥
+        '“G(‚m‚o‚b)ƒtƒFƒCƒY—p‚a‚f‚l‚ğ‰‰‘t
         Select Case TerrainClass(1, 1)
-            Case "å±‹å†…"
-                If Stage = "ï¼®ï¼°ï¼£" Then
+            Case "‰®“à"
+                If Stage = "‚m‚o‚b" Then
                     StartBGM BGMName("Map3")
                 Else
                     StartBGM BGMName("Map4")
                 End If
-            Case "å®‡å®™"
-                If Stage = "ï¼®ï¼°ï¼£" Then
+            Case "‰F’ˆ"
+                If Stage = "‚m‚o‚b" Then
                     StartBGM BGMName("Map5")
                 Else
                     StartBGM BGMName("Map6")
                 End If
             Case Else
-                If Stage = "ï¼®ï¼°ï¼£" Then
-                    If TerrainName(1, 1) = "å£" Then
+                If Stage = "‚m‚o‚b" Then
+                    If TerrainName(1, 1) = "•Ç" Then
                         StartBGM BGMName("Map3")
                     Else
                         StartBGM BGMName("Map1")
                     End If
                 Else
-                    If TerrainName(1, 1) = "å£" Then
+                    If TerrainName(1, 1) = "•Ç" Then
                         StartBGM BGMName("Map4")
                     Else
                         StartBGM BGMName("Map2")
@@ -1456,31 +1456,31 @@ Dim u As Unit
                 End If
         End Select
         
-        'ã‚¿ãƒ¼ãƒ³ã‚¤ãƒ™ãƒ³ãƒˆ
-        HandleEvent "ã‚¿ãƒ¼ãƒ³", Turn, uparty
+        'ƒ^[ƒ“ƒCƒxƒ“ƒg
+        HandleEvent "ƒ^[ƒ“", Turn, uparty
         If IsScenarioFinished Then
             UnlockGUI
             Exit Sub
         End If
     End If
     
-    If uparty = "å‘³æ–¹" Then
-        'å‘³æ–¹ãƒ•ã‚§ã‚¤ã‚ºã®ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã«ã‚ˆã‚‹ãƒ¦ãƒ‹ãƒƒãƒˆæ“ä½œå‰ã®å‡¦ç†
+    If uparty = "–¡•û" Then
+        '–¡•ûƒtƒFƒCƒY‚ÌƒvƒŒƒCƒ„[‚É‚æ‚éƒ†ƒjƒbƒg‘€ì‘O‚Ìˆ—
         
-        'ã‚¿ãƒ¼ãƒ³æ•°ã‚’è¡¨ç¤º
-        If Turn > 1 And IsOptionDefined("ãƒ‡ãƒãƒƒã‚°") Then
-            DisplayTelop "ã‚¿ãƒ¼ãƒ³" & Format$(Turn)
+        'ƒ^[ƒ“”‚ğ•\¦
+        If Turn > 1 And IsOptionDefined("ƒfƒoƒbƒO") Then
+            DisplayTelop "ƒ^[ƒ“" & Format$(Turn)
         End If
         
-        'é€šå¸¸ã®ã‚¹ãƒ†ãƒ¼ã‚¸ã§ã¯æ¯è‰¦ãƒ¦ãƒ‹ãƒƒãƒˆã¾ãŸã¯ãƒ¬ãƒ™ãƒ«ãŒã‚‚ã£ã¨ã‚‚é«˜ã„
-        'ãƒ¦ãƒ‹ãƒƒãƒˆã‚’ä¸­å¤®ã«é…ç½®
+        '’Êí‚ÌƒXƒe[ƒW‚Å‚Í•êŠÍƒ†ƒjƒbƒg‚Ü‚½‚ÍƒŒƒxƒ‹‚ª‚à‚Á‚Æ‚à‚‚¢
+        'ƒ†ƒjƒbƒg‚ğ’†‰›‚É”z’u
         If MapFileName <> "" And Not IsUnitCenter Then
             Dim max_lv As Integer, max_unit As Unit
             
             For Each u In UList
                 With u
-                    If .Party = "å‘³æ–¹" And .Status = "å‡ºæ’ƒ" And .Action > 0 Then
-                        If .IsFeatureAvailable("æ¯è‰¦") Then
+                    If .Party = "–¡•û" And .Status = "oŒ‚" And .Action > 0 Then
+                        If .IsFeatureAvailable("•êŠÍ") Then
                             Center .X, .Y
                             DisplayUnitStatus u
                             RedrawScreen
@@ -1494,7 +1494,7 @@ Dim u As Unit
             max_lv = 0
             For Each u In UList
                 With u
-                    If .Party = "å‘³æ–¹" And .Status = "å‡ºæ’ƒ" Then
+                    If .Party = "–¡•û" And .Status = "oŒ‚" Then
                         If .MainPilot.Level > max_lv Then
                             Set max_unit = u
                             max_lv = .MainPilot.Level
@@ -1507,12 +1507,12 @@ Dim u As Unit
             End If
         End If
         
-        'ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚’è¡¨ç¤º
+        'ƒXƒe[ƒ^ƒX‚ğ•\¦
         If MapFileName <> "" Then
             DisplayGlobalStatus
         End If
         
-        'ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã«ã‚ˆã‚‹å‘³æ–¹ãƒ¦ãƒ‹ãƒƒãƒˆæ“ä½œã«ç§»è¡Œ
+        'ƒvƒŒƒCƒ„[‚É‚æ‚é–¡•ûƒ†ƒjƒbƒg‘€ì‚ÉˆÚs
         RedrawScreen
         DoEvents
         UnlockGUI
@@ -1521,14 +1521,14 @@ Dim u As Unit
     
     LockGUI
     
-    'CPUã«ã‚ˆã‚‹ãƒ¦ãƒ‹ãƒƒãƒˆæ“ä½œ
+    'CPU‚É‚æ‚éƒ†ƒjƒbƒg‘€ì
     For phase = 1 To 5
     For i = 1 To UList.Count
-        'ãƒ•ã‚§ã‚¤ã‚ºä¸­ã«è¡Œå‹•ã™ã‚‹ãƒ¦ãƒ‹ãƒƒãƒˆã‚’é¸æŠ
+        'ƒtƒFƒCƒY’†‚És“®‚·‚éƒ†ƒjƒbƒg‚ğ‘I‘ğ
         Set SelectedUnit = UList.Item(i)
         
         With SelectedUnit
-            If .Status <> "å‡ºæ’ƒ" Then
+            If .Status <> "oŒ‚" Then
                 GoTo NextLoop
             End If
             
@@ -1542,7 +1542,7 @@ Dim u As Unit
             
             Set u = SelectedUnit
             
-            'ä»–ã®ãƒ¦ãƒ‹ãƒƒãƒˆã‚’è­·è¡›ã—ã¦ã„ã‚‹ãƒ¦ãƒ‹ãƒƒãƒˆã¯è­·è¡›å¯¾è±¡ã¨åŒã˜é †ã«è¡Œå‹•
+            '‘¼‚Ìƒ†ƒjƒbƒg‚ğŒì‰q‚µ‚Ä‚¢‚éƒ†ƒjƒbƒg‚ÍŒì‰q‘ÎÛ‚Æ“¯‚¶‡‚És“®
             If PList.IsDefined(.Mode) Then
                 With PList.Item(.Mode)
                     If Not .Unit Is Nothing Then
@@ -1565,57 +1565,57 @@ Dim u As Unit
             With u
                 Select Case phase
                     Case 1
-                        'æœ€åˆã«ã‚µãƒãƒ¼ãƒˆèƒ½åŠ›ã‚’æŒãŸãªã„ã‚¶ã‚³ãƒ¦ãƒ‹ãƒƒãƒˆãŒè¡Œå‹•
+                        'Å‰‚ÉƒTƒ|[ƒg”\—Í‚ğ‚½‚È‚¢ƒUƒRƒ†ƒjƒbƒg‚ªs“®
                         If .BossRank >= 0 Then
                             GoTo NextLoop
                         End If
                         With .MainPilot
-                            If .IsSkillAvailable("æ´è­·") _
-                                Or .IsSkillAvailable("æ´è­·æ”»æ’ƒ") _
-                                Or .IsSkillAvailable("æ´è­·é˜²å¾¡") _
-                                Or .IsSkillAvailable("çµ±ç‡") _
-                                Or .IsSkillAvailable("æŒ‡æ®") _
-                                Or .IsSkillAvailable("åºƒåŸŸã‚µãƒãƒ¼ãƒˆ") _
+                            If .IsSkillAvailable("‰‡Œì") _
+                                Or .IsSkillAvailable("‰‡ŒìUŒ‚") _
+                                Or .IsSkillAvailable("‰‡Œì–hŒä") _
+                                Or .IsSkillAvailable("“—¦") _
+                                Or .IsSkillAvailable("wŠö") _
+                                Or .IsSkillAvailable("LˆæƒTƒ|[ƒg") _
                             Then
                                 GoTo NextLoop
                             End If
                         End With
                     Case 2
-                        'æ¬¡ã«ã‚µãƒãƒ¼ãƒˆèƒ½åŠ›ã‚’æŒãŸãªã„ãƒœã‚¹ãƒ¦ãƒ‹ãƒƒãƒˆãŒè¡Œå‹•
+                        'Ÿ‚ÉƒTƒ|[ƒg”\—Í‚ğ‚½‚È‚¢ƒ{ƒXƒ†ƒjƒbƒg‚ªs“®
                         With .MainPilot
-                            If .IsSkillAvailable("æ´è­·") _
-                                Or .IsSkillAvailable("æ´è­·æ”»æ’ƒ") _
-                                Or .IsSkillAvailable("æ´è­·é˜²å¾¡") _
-                                Or .IsSkillAvailable("çµ±ç‡") _
-                                Or .IsSkillAvailable("æŒ‡æ®") _
-                                Or .IsSkillAvailable("åºƒåŸŸã‚µãƒãƒ¼ãƒˆ") _
+                            If .IsSkillAvailable("‰‡Œì") _
+                                Or .IsSkillAvailable("‰‡ŒìUŒ‚") _
+                                Or .IsSkillAvailable("‰‡Œì–hŒä") _
+                                Or .IsSkillAvailable("“—¦") _
+                                Or .IsSkillAvailable("wŠö") _
+                                Or .IsSkillAvailable("LˆæƒTƒ|[ƒg") _
                             Then
                                 GoTo NextLoop
                             End If
                         End With
                     Case 3
-                        'æ¬¡ã«çµ±ç‡èƒ½åŠ›ã‚’æŒã¤ãƒ¦ãƒ‹ãƒƒãƒˆãŒè¡Œå‹•
-                        If Not .MainPilot.IsSkillAvailable("çµ±ç‡") Then
+                        'Ÿ‚É“—¦”\—Í‚ğ‚Âƒ†ƒjƒbƒg‚ªs“®
+                        If Not .MainPilot.IsSkillAvailable("“—¦") Then
                             GoTo NextLoop
                         End If
                     Case 4
-                        'æ¬¡ã«ã‚µãƒãƒ¼ãƒˆèƒ½åŠ›ã‚’æŒã¤ã‚¶ã‚³ãƒ¦ãƒ‹ãƒƒãƒˆãŒè¡Œå‹•
+                        'Ÿ‚ÉƒTƒ|[ƒg”\—Í‚ğ‚ÂƒUƒRƒ†ƒjƒbƒg‚ªs“®
                         If .BossRank >= 0 Then
                             GoTo NextLoop
                         End If
                     Case 5
-                        'æœ€å¾Œã«ã‚µãƒãƒ¼ãƒˆèƒ½åŠ›ã‚’æŒã¤ãƒœã‚¹ãƒ¦ãƒ‹ãƒƒãƒˆãŒè¡Œå‹•
+                        'ÅŒã‚ÉƒTƒ|[ƒg”\—Í‚ğ‚Âƒ{ƒXƒ†ƒjƒbƒg‚ªs“®
                 End Select
             End With
         End With
         
         Do While SelectedUnit.Action > 0
-            'é€”ä¸­ã§çŠ¶æ…‹ãŒå¤‰æ›´ã•ã‚ŒãŸå ´åˆ
-            If SelectedUnit.Status <> "å‡ºæ’ƒ" Then
+            '“r’†‚Åó‘Ô‚ª•ÏX‚³‚ê‚½ê‡
+            If SelectedUnit.Status <> "oŒ‚" Then
                 Exit Do
             End If
             
-            'é€”ä¸­ã§é™£å–¶ãŒå¤‰æ›´ã•ã‚ŒãŸå ´åˆ
+            '“r’†‚Åw‰c‚ª•ÏX‚³‚ê‚½ê‡
             If SelectedUnit.Party <> uparty Then
                 Exit Do
             End If
@@ -1627,39 +1627,39 @@ Dim u As Unit
                 DoEvents
             End If
             
-            IsCanceled = False 'Cancelã‚³ãƒãƒ³ãƒ‰ã®ã‚¯ãƒªã‚¢
+            IsCanceled = False 'CancelƒRƒ}ƒ“ƒh‚ÌƒNƒŠƒA
             
-            'ãƒ¦ãƒ‹ãƒƒãƒˆã‚’è¡Œå‹•ã•ã›ã‚‹
+            'ƒ†ƒjƒbƒg‚ğs“®‚³‚¹‚é
             OperateUnit
             
             If IsScenarioFinished Then
                 Exit Sub
             End If
             
-            'ãƒã‚¤ãƒ‘ãƒ¼ãƒ¢ãƒ¼ãƒ‰ãƒ»ãƒãƒ¼ãƒãƒ«ãƒ¢ãƒ¼ãƒ‰ã®è‡ªå‹•ç™ºå‹•ãƒã‚§ãƒƒã‚¯
+            'ƒnƒCƒp[ƒ‚[ƒhEƒm[ƒ}ƒ‹ƒ‚[ƒh‚Ì©“®”­“®ƒ`ƒFƒbƒN
             UList.CheckAutoHyperMode
             UList.CheckAutoNormalMode
             
-            'Cancelã‚³ãƒãƒ³ãƒ‰ãŒå®Ÿè¡Œã•ã‚ŒãŸã‚‰ã“ã“ã§çµ‚äº†
+            'CancelƒRƒ}ƒ“ƒh‚ªÀs‚³‚ê‚½‚ç‚±‚±‚ÅI—¹
             If IsCanceled Then
                 If SelectedUnit Is Nothing Then
                     Exit Do
                 End If
-                If SelectedUnit.Status <> "å‡ºæ’ƒ" Then
+                If SelectedUnit.Status <> "oŒ‚" Then
                     Exit Do
                 End If
                 IsCanceled = False
             End If
             
-            'è¡Œå‹•æ•°ã‚’æ¸›å°‘
+            's“®”‚ğŒ¸­
             SelectedUnit.UseAction
             
-            'æ¥è§¦ã‚¤ãƒ™ãƒ³ãƒˆ
+            'ÚGƒCƒxƒ“ƒg
             With SelectedUnit
-                If .Status = "å‡ºæ’ƒ" And .X > 1 Then
+                If .Status = "oŒ‚" And .X > 1 Then
                     If Not MapDataForUnit(.X - 1, .Y) Is Nothing Then
                         Set SelectedTarget = MapDataForUnit(.X - 1, .Y)
-                        HandleEvent "æ¥è§¦", .MainPilot.ID, _
+                        HandleEvent "ÚG", .MainPilot.ID, _
                             MapDataForUnit(.X - 1, .Y).MainPilot.ID
                         If IsScenarioFinished Then
                             Exit Sub
@@ -1668,10 +1668,10 @@ Dim u As Unit
                 End If
             End With
             With SelectedUnit
-                If .Status = "å‡ºæ’ƒ" And .X < MapWidth Then
+                If .Status = "oŒ‚" And .X < MapWidth Then
                     If Not MapDataForUnit(.X + 1, .Y) Is Nothing Then
                         Set SelectedTarget = MapDataForUnit(.X + 1, .Y)
-                        HandleEvent "æ¥è§¦", .MainPilot.ID, _
+                        HandleEvent "ÚG", .MainPilot.ID, _
                             MapDataForUnit(.X + 1, .Y).MainPilot.ID
                         If IsScenarioFinished Then
                             Exit Sub
@@ -1680,10 +1680,10 @@ Dim u As Unit
                 End If
             End With
             With SelectedUnit
-                If .Status = "å‡ºæ’ƒ" And .Y > 1 Then
+                If .Status = "oŒ‚" And .Y > 1 Then
                     If Not MapDataForUnit(.X, .Y - 1) Is Nothing Then
                         Set SelectedTarget = MapDataForUnit(.X, .Y - 1)
-                        HandleEvent "æ¥è§¦", .MainPilot.ID, _
+                        HandleEvent "ÚG", .MainPilot.ID, _
                             MapDataForUnit(.X, .Y - 1).MainPilot.ID
                         If IsScenarioFinished Then
                             Exit Sub
@@ -1692,10 +1692,10 @@ Dim u As Unit
                 End If
             End With
             With SelectedUnit
-                If .Status = "å‡ºæ’ƒ" And .Y < MapHeight Then
+                If .Status = "oŒ‚" And .Y < MapHeight Then
                     If Not MapDataForUnit(.X, .Y + 1) Is Nothing Then
                         Set SelectedTarget = MapDataForUnit(.X, .Y + 1)
-                        HandleEvent "æ¥è§¦", .MainPilot.ID, _
+                        HandleEvent "ÚG", .MainPilot.ID, _
                             MapDataForUnit(.X, .Y + 1).MainPilot.ID
                         If IsScenarioFinished Then
                             Exit Sub
@@ -1704,20 +1704,20 @@ Dim u As Unit
                 End If
             End With
             
-            'é€²å…¥ã‚¤ãƒ™ãƒ³ãƒˆ
+            'i“üƒCƒxƒ“ƒg
             With SelectedUnit
-                If .Status = "å‡ºæ’ƒ" Then
-                    HandleEvent "é€²å…¥", .MainPilot.ID, .X, .Y
+                If .Status = "oŒ‚" Then
+                    HandleEvent "i“ü", .MainPilot.ID, .X, .Y
                     If IsScenarioFinished Then
                         Exit Sub
                     End If
                 End If
             End With
             
-            'è¡Œå‹•çµ‚äº†ã‚¤ãƒ™ãƒ³ãƒˆ
+            's“®I—¹ƒCƒxƒ“ƒg
             With SelectedUnit
-                If .Status = "å‡ºæ’ƒ" Then
-                    HandleEvent "è¡Œå‹•çµ‚äº†", .MainPilot.ID
+                If .Status = "oŒ‚" Then
+                    HandleEvent "s“®I—¹", .MainPilot.ID
                     If IsScenarioFinished Then
                         Exit Sub
                     End If
@@ -1728,11 +1728,11 @@ NextLoop:
     Next
     Next
     
-    'ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®è¡¨ç¤ºã‚’æ¶ˆå»
+    'ƒXƒe[ƒ^ƒXƒEƒBƒ“ƒhƒE‚Ì•\¦‚ğÁ‹
     ClearUnitStatus
 End Sub
 
-'ã‚²ãƒ¼ãƒ ã‚ªãƒ¼ãƒãƒ¼
+'ƒQ[ƒ€ƒI[ƒo[
 Public Sub GameOver()
 Dim fname As String
 
@@ -1741,7 +1741,7 @@ Dim fname As String
     StopBGM
     MainForm.Hide
     
-    'GameOver.eveã‚’æ¢ã™
+    'GameOver.eve‚ğ’T‚·
     If FileExists(ScenarioPath & "Data\System\GameOver.eve") Then
         fname = ScenarioPath & "Data\System\GameOver.eve"
         If FileExists(ScenarioPath & "Data\System\non_pilot.txt") Then
@@ -1753,30 +1753,30 @@ Dim fname As String
             NPDList.Load AppPath & "Data\System\non_pilot.txt"
         End If
     Else
-        'GameOver.eveãŒç„¡ã‘ã‚Œã°ãã®ã¾ã¾çµ‚äº†
+        'GameOver.eve‚ª–³‚¯‚ê‚Î‚»‚Ì‚Ü‚ÜI—¹
         TerminateSRC
     End If
     
-    'GameOver.eveã‚’èª­ã¿è¾¼ã¿
+    'GameOver.eve‚ğ“Ç‚İ‚İ
     ClearEventData
     LoadEventData fname
     ScenarioFileName = fname
     
-    If Not IsEventDefined("ãƒ—ãƒ­ãƒ­ãƒ¼ã‚°") Then
-        ErrorMessage fname & "ä¸­ã«ãƒ—ãƒ­ãƒ­ãƒ¼ã‚°ã‚¤ãƒ™ãƒ³ãƒˆãŒå®šç¾©ã•ã‚Œã¦ã„ã¾ã›ã‚“"
+    If Not IsEventDefined("ƒvƒƒ[ƒO") Then
+        ErrorMessage fname & "’†‚Éƒvƒƒ[ƒOƒCƒxƒ“ƒg‚ª’è‹`‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ"
         TerminateSRC
     End If
     
-    'GameOver.eveã®ãƒ—ãƒ­ãƒ­ãƒ¼ã‚°ã‚¤ãƒ™ãƒ³ãƒˆã‚’å®Ÿæ–½
-    HandleEvent "ãƒ—ãƒ­ãƒ­ãƒ¼ã‚°"
+    'GameOver.eve‚Ìƒvƒƒ[ƒOƒCƒxƒ“ƒg‚ğÀ{
+    HandleEvent "ƒvƒƒ[ƒO"
 End Sub
 
-'ã‚²ãƒ¼ãƒ ã‚¯ãƒªã‚¢
+'ƒQ[ƒ€ƒNƒŠƒA
 Public Sub GameClear()
     TerminateSRC
 End Sub
 
-'ã‚²ãƒ¼ãƒ ã‚’é€”ä¸­çµ‚äº†
+'ƒQ[ƒ€‚ğ“r’†I—¹
 Public Sub ExitGame()
 Dim fname As String
 
@@ -1784,7 +1784,7 @@ Dim fname As String
     BossBGM = False
     StopBGM
     
-    'Exit.eveã‚’æ¢ã™
+    'Exit.eve‚ğ’T‚·
     MainForm.Hide
     If FileExists(ScenarioPath & "Data\System\Exit.eve") Then
         fname = ScenarioPath & "Data\System\Exit.eve"
@@ -1797,31 +1797,31 @@ Dim fname As String
             NPDList.Load AppPath & "Data\System\non_pilot.txt"
         End If
     Else
-        'Exit.eveãŒç„¡ã‘ã‚Œã°ãã®ã¾ã¾çµ‚äº†
+        'Exit.eve‚ª–³‚¯‚ê‚Î‚»‚Ì‚Ü‚ÜI—¹
         TerminateSRC
     End If
     
-    'Exit.eveã‚’èª­ã¿è¾¼ã¿
+    'Exit.eve‚ğ“Ç‚İ‚İ
     ClearEventData
     LoadEventData fname
     
-    If Not IsEventDefined("ãƒ—ãƒ­ãƒ­ãƒ¼ã‚°") Then
-        ErrorMessage fname & "ä¸­ã«ãƒ—ãƒ­ãƒ­ãƒ¼ã‚°ã‚¤ãƒ™ãƒ³ãƒˆãŒå®šç¾©ã•ã‚Œã¦ã„ã¾ã›ã‚“"
+    If Not IsEventDefined("ƒvƒƒ[ƒO") Then
+        ErrorMessage fname & "’†‚Éƒvƒƒ[ƒOƒCƒxƒ“ƒg‚ª’è‹`‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ"
         TerminateSRC
     End If
     
-    'Exit.eveã®ãƒ—ãƒ­ãƒ­ãƒ¼ã‚°ã‚¤ãƒ™ãƒ³ãƒˆã‚’å®Ÿæ–½
-    HandleEvent "ãƒ—ãƒ­ãƒ­ãƒ¼ã‚°"
+    'Exit.eve‚Ìƒvƒƒ[ƒOƒCƒxƒ“ƒg‚ğÀ{
+    HandleEvent "ƒvƒƒ[ƒO"
     
-    'SRCã‚’çµ‚äº†
+    'SRC‚ğI—¹
     TerminateSRC
 End Sub
 
-'SRCã‚’çµ‚äº†
+'SRC‚ğI—¹
 Public Sub TerminateSRC()
 Dim i As Integer, j As Integer
 
-    'ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’é–‰ã˜ã‚‹
+    'ƒEƒBƒ“ƒhƒE‚ğ•Â‚¶‚é
     If Not MainForm Is Nothing Then
         MainForm.Hide
     End If
@@ -1839,18 +1839,18 @@ Dim i As Integer, j As Integer
     End If
     DoEvents
     
-    'æ™‚é–“è§£åƒåº¦ã‚’å…ƒã«æˆ»ã™
+    'ŠÔ‰ğ‘œ“x‚ğŒ³‚É–ß‚·
     Call timeEndPeriod(1)
     
-    'ãƒ•ãƒ«ã‚¹ã‚¯ãƒªãƒ¼ãƒ³ãƒ¢ãƒ¼ãƒ‰ã‚’ä½¿ã£ã¦ã„ãŸå ´åˆã¯è§£åƒåº¦ã‚’å…ƒã«æˆ»ã™
+    'ƒtƒ‹ƒXƒNƒŠ[ƒ“ƒ‚[ƒh‚ğg‚Á‚Ä‚¢‚½ê‡‚Í‰ğ‘œ“x‚ğŒ³‚É–ß‚·
     If ReadIni("Option", "FullScreen") = "On" Then
         ChangeDisplaySize 0, 0
     End If
     
-    'ï¼¢ï¼§ï¼­ãƒ»åŠ¹æœéŸ³ã®å†ç”Ÿã‚’åœæ­¢
+    '‚a‚f‚lEŒø‰Ê‰¹‚ÌÄ¶‚ğ’â~
     FreeSoundModule
     
-    'å„ç¨®ãƒ‡ãƒ¼ã‚¿ã‚’è§£æ”¾
+    'Šeíƒf[ƒ^‚ğ‰ğ•ú
     
     Set SelectedUnit = Nothing
     Set SelectedTarget = Nothing
@@ -1884,7 +1884,7 @@ Dim i As Integer, j As Integer
     Set PList = Nothing
     Set IList = Nothing
     
-    'ãªãœã‹ã“ã‚ŒãŒãªã„ã¨ä¸æ­£çµ‚äº†ã™ã‚‹â€¦â€¦
+    '‚È‚º‚©‚±‚ê‚ª‚È‚¢‚Æ•s³I—¹‚·‚écc
     DoEvents
     
     Set PDList = Nothing
@@ -1905,7 +1905,7 @@ Dim i As Integer, j As Integer
 End Sub
 
 
-'ãƒ‡ãƒ¼ã‚¿ã‚’ã‚»ãƒ¼ãƒ–
+'ƒf[ƒ^‚ğƒZ[ƒu
 Public Sub SaveData(fname As String)
 Dim i As Integer, num As Long
 
@@ -1924,11 +1924,11 @@ Dim i As Integer, num As Long
         Write #SaveDataFileNumber, Titles(i)
     Next
     
-    Write #SaveDataFileNumber, GetValueAsString("æ¬¡ã‚¹ãƒ†ãƒ¼ã‚¸")
+    Write #SaveDataFileNumber, GetValueAsString("ŸƒXƒe[ƒW")
     
     Write #SaveDataFileNumber, TotalTurn
     Write #SaveDataFileNumber, Money
-    Write #SaveDataFileNumber, 0 'ãƒ‘ãƒ¼ãƒ„ç”¨ã®ãƒ€ãƒŸãƒ¼
+    Write #SaveDataFileNumber, 0 'ƒp[ƒc—p‚Ìƒ_ƒ~[
     
     SaveGlobalVariables
     PList.Save
@@ -1940,11 +1940,11 @@ Dim i As Integer, num As Long
     Exit Sub
     
 ErrorHandler:
-    ErrorMessage "ã‚»ãƒ¼ãƒ–ä¸­ã«ã‚¨ãƒ©ãƒ¼ãŒç™ºç”Ÿã—ã¾ã—ãŸ"
+    ErrorMessage "ƒZ[ƒu’†‚ÉƒGƒ‰[‚ª”­¶‚µ‚Ü‚µ‚½"
     Close #SaveDataFileNumber
 End Sub
 
-'ãƒ‡ãƒ¼ã‚¿ã‚’ãƒ­ãƒ¼ãƒ‰
+'ƒf[ƒ^‚ğƒ[ƒh
 Public Sub LoadData(fname As String)
 Dim i As Integer, num As Integer, fname2 As String
 Dim dummy As String
@@ -2020,13 +2020,13 @@ Dim u As Unit
     Input #SaveDataFileNumber, fname2
     Input #SaveDataFileNumber, TotalTurn
     Input #SaveDataFileNumber, Money
-    Input #SaveDataFileNumber, num 'ãƒ‘ãƒ¼ãƒ„ç”¨ã®ãƒ€ãƒŸãƒ¼
+    Input #SaveDataFileNumber, num 'ƒp[ƒc—p‚Ìƒ_ƒ~[
     
     LoadGlobalVariables
-    If Not IsGlobalVariableDefined("æ¬¡ã‚¹ãƒ†ãƒ¼ã‚¸") Then
-        DefineGlobalVariable "æ¬¡ã‚¹ãƒ†ãƒ¼ã‚¸"
+    If Not IsGlobalVariableDefined("ŸƒXƒe[ƒW") Then
+        DefineGlobalVariable "ŸƒXƒe[ƒW"
     End If
-    SetVariableAsString "æ¬¡ã‚¹ãƒ†ãƒ¼ã‚¸", fname2
+    SetVariableAsString "ŸƒXƒe[ƒW", fname2
     
     PList.Load
     UList.Load
@@ -2034,7 +2034,7 @@ Dim u As Unit
     
     Close #SaveDataFileNumber
     
-    'ãƒªãƒ³ã‚¯ãƒ‡ãƒ¼ã‚¿ã‚’å‡¦ç†ã™ã‚‹ãŸã‚ã€ã‚»ãƒ¼ãƒ–ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ä¸€æ—¦é–‰ã˜ã¦ã‹ã‚‰å†åº¦èª­ã¿è¾¼ã¿
+    'ƒŠƒ“ƒNƒf[ƒ^‚ğˆ—‚·‚é‚½‚ßAƒZ[ƒuƒtƒ@ƒCƒ‹‚ğˆê’U•Â‚¶‚Ä‚©‚çÄ“x“Ç‚İ‚İ
     
     SaveDataFileNumber = FreeFile
     Open fname For Input As #SaveDataFileNumber
@@ -2050,8 +2050,8 @@ Dim u As Unit
     Input #SaveDataFileNumber, dummy
     Input #SaveDataFileNumber, TotalTurn
     Input #SaveDataFileNumber, Money
-    Input #SaveDataFileNumber, num 'ãƒ‘ãƒ¼ãƒ„ç”¨ã®ãƒ€ãƒŸãƒ¼
-    Input #SaveDataFileNumber, num 'ãƒ‘ãƒ¼ãƒ„ç”¨ã®ãƒ€ãƒŸãƒ¼
+    Input #SaveDataFileNumber, num 'ƒp[ƒc—p‚Ìƒ_ƒ~[
+    Input #SaveDataFileNumber, num 'ƒp[ƒc—p‚Ìƒ_ƒ~[
     For i = 1 To num
         Line Input #SaveDataFileNumber, dummy
     Next
@@ -2063,14 +2063,14 @@ Dim u As Unit
     
     DisplayLoadingProgress
     
-    'ãƒ¦ãƒ‹ãƒƒãƒˆã®çŠ¶æ…‹ã‚’å›å¾©
+    'ƒ†ƒjƒbƒg‚Ìó‘Ô‚ğ‰ñ•œ
     For Each u In UList
         u.Reset
     Next
     
     DisplayLoadingProgress
     
-    'è¿½åŠ ã•ã‚ŒãŸã‚·ã‚¹ãƒ†ãƒ å´ã‚¤ãƒ™ãƒ³ãƒˆãƒ‡ãƒ¼ã‚¿ã®èª­ã¿è¾¼ã¿
+    '’Ç‰Á‚³‚ê‚½ƒVƒXƒeƒ€‘¤ƒCƒxƒ“ƒgƒf[ƒ^‚Ì“Ç‚İ‚İ
     LoadEventData ""
     
     DisplayLoadingProgress
@@ -2078,19 +2078,19 @@ Dim u As Unit
     Exit Sub
     
 ErrorHandler:
-    ErrorMessage "ãƒ­ãƒ¼ãƒ‰ä¸­ã«ã‚¨ãƒ©ãƒ¼ãŒç™ºç”Ÿã—ã¾ã—ãŸ"
+    ErrorMessage "ƒ[ƒh’†‚ÉƒGƒ‰[‚ª”­¶‚µ‚Ü‚µ‚½"
     Close #SaveDataFileNumber
     TerminateSRC
 End Sub
 
 
-'ä¸€æ™‚ä¸­æ–­ç”¨ãƒ‡ãƒ¼ã‚¿ã‚’ãƒ•ã‚¡ã‚¤ãƒ«ã«ã‚»ãƒ¼ãƒ–ã™ã‚‹
+'ˆê’†’f—pƒf[ƒ^‚ğƒtƒ@ƒCƒ‹‚ÉƒZ[ƒu‚·‚é
 Public Sub DumpData(fname As String)
 Dim i As Integer, num As Long
 
     On Error GoTo ErrorHandler
     
-    'ä¸­æ–­ãƒ‡ãƒ¼ã‚¿ã‚’ã‚»ãƒ¼ãƒ–
+    '’†’fƒf[ƒ^‚ğƒZ[ƒu
     SaveDataFileNumber = FreeFile
     Open fname For Output Access Write As #SaveDataFileNumber
     
@@ -2118,7 +2118,7 @@ Dim i As Integer, num As Long
     
     DumpMapData
     
-    ' Midi ã˜ã‚ƒãªãã¦ midi ã˜ã‚ƒãªã„ã¨æ¤œç´¢å¤±æ•—ã™ã‚‹ã‚ˆã†ã«ãªã£ã¦ã‚‹ã®ã§ã€‚
+    ' Midi ‚¶‚á‚È‚­‚Ä midi ‚¶‚á‚È‚¢‚ÆŒŸõ¸”s‚·‚é‚æ‚¤‚É‚È‚Á‚Ä‚é‚Ì‚ÅB
     If InStr(LCase$(BGMFileName), "\midi\") > 0 Then
         Write #SaveDataFileNumber, Mid$(BGMFileName, InStr(LCase$(BGMFileName), "\midi\") + 6)
     ElseIf InStr(BGMFileName, "\") > 0 Then
@@ -2136,20 +2136,20 @@ Dim i As Integer, num As Long
     Close #SaveDataFileNumber
     
     LastSaveDataFileName = fname
-    If InStr(fname, "\_ãƒªã‚¹ã‚¿ãƒ¼ãƒˆ.src") > 0 Then
+    If InStr(fname, "\_ƒŠƒXƒ^[ƒg.src") > 0 Then
         IsRestartSaveDataAvailable = True
-    ElseIf InStr(fname, "\_ã‚¯ã‚¤ãƒƒã‚¯ã‚»ãƒ¼ãƒ–.src") > 0 Then
+    ElseIf InStr(fname, "\_ƒNƒCƒbƒNƒZ[ƒu.src") > 0 Then
         IsQuickSaveDataAvailable = True
     End If
     
     Exit Sub
     
 ErrorHandler:
-    ErrorMessage "ã‚»ãƒ¼ãƒ–ä¸­ã«ã‚¨ãƒ©ãƒ¼ãŒç™ºç”Ÿã—ã¾ã—ãŸ"
+    ErrorMessage "ƒZ[ƒu’†‚ÉƒGƒ‰[‚ª”­¶‚µ‚Ü‚µ‚½"
     Close #SaveDataFileNumber
 End Sub
 
-'ä¸€æ™‚ä¸­æ–­ç”¨ãƒ‡ãƒ¼ã‚¿ã‚’ãƒ­ãƒ¼ãƒ‰
+'ˆê’†’f—pƒf[ƒ^‚ğƒ[ƒh
 Public Sub RestoreData(fname As String, quick_load As Boolean)
 Dim i As Integer, num As Integer, fname2 As String
 Dim dummy As String
@@ -2158,12 +2158,12 @@ Dim scenario_file_is_different As Boolean
 
     On Error GoTo ErrorHandler
     
-    'ãƒã‚¦ã‚¹ã‚«ãƒ¼ã‚½ãƒ«ã‚’ç ‚æ™‚è¨ˆã«
+    'ƒ}ƒEƒXƒJ[ƒ\ƒ‹‚ğ»Œv‚É
     Screen.MousePointer = 11
     
     If quick_load Then
-        If IsOptionDefined("ãƒ‡ãƒãƒƒã‚°") Then
-            LoadEventData ScenarioFileName, "ã‚¯ã‚¤ãƒƒã‚¯ãƒ­ãƒ¼ãƒ‰"
+        If IsOptionDefined("ƒfƒoƒbƒO") Then
+            LoadEventData ScenarioFileName, "ƒNƒCƒbƒNƒ[ƒh"
         End If
     End If
     
@@ -2183,7 +2183,7 @@ Dim scenario_file_is_different As Boolean
         SaveDataVersion = 1
     End If
     
-    'ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ã‚¿ã‚¤ãƒˆãƒ«ã‚’è¨­å®š
+    'ƒEƒBƒ“ƒhƒE‚Ìƒ^ƒCƒgƒ‹‚ğİ’è
     If ScenarioFileName <> ScenarioPath & fname2 Then
         MainForm.Caption = "SRC - " & Left$(fname2, Len(fname2) - 4)
         ScenarioFileName = ScenarioPath & fname2
@@ -2192,7 +2192,7 @@ Dim scenario_file_is_different As Boolean
     
     Input #SaveDataFileNumber, num
     
-    'ä½¿ç”¨ã™ã‚‹ãƒ‡ãƒ¼ã‚¿ã‚’ãƒ­ãƒ¼ãƒ‰
+    'g—p‚·‚éƒf[ƒ^‚ğƒ[ƒh
     If Not quick_load Then
         SetLoadImageSize num * 2 + 5
         
@@ -2247,7 +2247,7 @@ Dim scenario_file_is_different As Boolean
         DisplayLoadingProgress
         IsLocalDataLoaded = True
         
-        LoadEventData ScenarioFileName, "ãƒªã‚¹ãƒˆã‚¢"
+        LoadEventData ScenarioFileName, "ƒŠƒXƒgƒA"
         
         DisplayLoadingProgress
     Else
@@ -2256,7 +2256,7 @@ Dim scenario_file_is_different As Boolean
         Next
         
         If scenario_file_is_different Then
-            LoadEventData ScenarioFileName, "ãƒªã‚¹ãƒˆã‚¢"
+            LoadEventData ScenarioFileName, "ƒŠƒXƒgƒA"
         End If
     End If
     
@@ -2272,9 +2272,9 @@ Dim scenario_file_is_different As Boolean
 
 'MOD START 240a
 '    RestoreMapData
-'    'ï¼¢ï¼§ï¼­é–¢é€£ã®è¨­å®šã‚’å¾©å…ƒ
+'    '‚a‚f‚lŠÖ˜A‚Ìİ’è‚ğ•œŒ³
 '    Input #SaveDataFileNumber, fname2
-    'ãƒãƒƒãƒ—ãƒ‡ãƒ¼ã‚¿ã®äº’æ›æ€§ç¶­æŒã®ãŸã‚ã€RestoreMapDataã§ï¼¢ï¼§ï¼­é–¢é€£ã®ï¼‘è¡Œç›®ã¾ã§èª­ã¿è¾¼ã‚“ã§æˆ»ã‚Šå€¤ã«ã—ãŸ
+    'ƒ}ƒbƒvƒf[ƒ^‚ÌŒİŠ·«ˆÛ‚Ì‚½‚ßARestoreMapData‚Å‚a‚f‚lŠÖ˜A‚Ì‚Ps–Ú‚Ü‚Å“Ç‚İ‚ñ‚Å–ß‚è’l‚É‚µ‚½
     fname2 = RestoreMapData
 'MOD  END  240a
     fname2 = SearchMidiFile("(" & fname2 & ")")
@@ -2292,9 +2292,9 @@ Dim scenario_file_is_different As Boolean
         Line Input #SaveDataFileNumber, dummy
     End If
     
-    'ä¹±æ•°ç³»åˆ—ã‚’å¾©å…ƒ
-    If Not IsOptionDefined("ãƒ‡ãƒãƒƒã‚°") _
-        And Not IsOptionDefined("ä¹±æ•°ç³»åˆ—éä¿å­˜") _
+    '—”Œn—ñ‚ğ•œŒ³
+    If Not IsOptionDefined("ƒfƒoƒbƒO") _
+        And Not IsOptionDefined("—”Œn—ñ”ñ•Û‘¶") _
         And Not EOF(SaveDataFileNumber) _
     Then
         Input #SaveDataFileNumber, RndSeed
@@ -2308,7 +2308,7 @@ Dim scenario_file_is_different As Boolean
     
     Close #SaveDataFileNumber
     
-    'ãƒªãƒ³ã‚¯ãƒ‡ãƒ¼ã‚¿ã‚’å‡¦ç†ã™ã‚‹ãŸã‚ã€ã‚»ãƒ¼ãƒ–ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ä¸€æ—¦é–‰ã˜ã¦ã‹ã‚‰å†åº¦èª­ã¿è¾¼ã¿
+    'ƒŠƒ“ƒNƒf[ƒ^‚ğˆ—‚·‚é‚½‚ßAƒZ[ƒuƒtƒ@ƒCƒ‹‚ğˆê’U•Â‚¶‚Ä‚©‚çÄ“x“Ç‚İ‚İ
     
     SaveDataFileNumber = FreeFile
     Open fname For Input As #SaveDataFileNumber
@@ -2321,7 +2321,7 @@ Dim scenario_file_is_different As Boolean
     'ScenarioFileName
     Line Input #SaveDataFileNumber, dummy
     
-    'ä½¿ç”¨ã™ã‚‹ãƒ‡ãƒ¼ã‚¿å
+    'g—p‚·‚éƒf[ƒ^–¼
     Input #SaveDataFileNumber, num
     For i = 1 To num
         Line Input #SaveDataFileNumber, dummy
@@ -2342,9 +2342,9 @@ Dim scenario_file_is_different As Boolean
     
     Close #SaveDataFileNumber
     
-    'ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿æƒ…å ±ã‚’å‡¦ç†ã™ã‚‹ãŸã‚ã€ã‚»ãƒ¼ãƒ–ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ä¸€æ—¦é–‰ã˜ã¦ã‹ã‚‰å†åº¦èª­ã¿è¾¼ã¿ã€‚
-    'éœŠåŠ›ã‚„ï¼¨ï¼°ã€ï¼¥ï¼®ã¨ã„ã£ãŸãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã¯æœ€å¤§å€¤ãŒç‰¹æ®Šèƒ½åŠ›ã§å¤‰å‹•ã™ã‚‹ãŸã‚ã€
-    'ç‰¹æ®Šèƒ½åŠ›ã®è¨­å®šãŒçµ‚ã‚ã£ã¦ã‹ã‚‰æ”¹ã‚ã¦è¨­å®šã—ã¦ã‚„ã‚‹å¿…è¦ãŒã‚ã‚‹ã€‚
+    'ƒpƒ‰ƒ[ƒ^î•ñ‚ğˆ—‚·‚é‚½‚ßAƒZ[ƒuƒtƒ@ƒCƒ‹‚ğˆê’U•Â‚¶‚Ä‚©‚çÄ“x“Ç‚İ‚İB
+    '—ì—Í‚â‚g‚oA‚d‚m‚Æ‚¢‚Á‚½ƒpƒ‰ƒ[ƒ^‚ÍÅ‘å’l‚ª“Áê”\—Í‚Å•Ï“®‚·‚é‚½‚ßA
+    '“Áê”\—Í‚Ìİ’è‚ªI‚í‚Á‚Ä‚©‚ç‰ü‚ß‚Äİ’è‚µ‚Ä‚â‚é•K—v‚ª‚ ‚éB
     
     SaveDataFileNumber = FreeFile
     Open fname For Input As #SaveDataFileNumber
@@ -2357,7 +2357,7 @@ Dim scenario_file_is_different As Boolean
     'ScenarioFileName
     Line Input #SaveDataFileNumber, dummy
     
-    'ä½¿ç”¨ã™ã‚‹ãƒ‡ãƒ¼ã‚¿å
+    'g—p‚·‚éƒf[ƒ^–¼
     Input #SaveDataFileNumber, num
     For i = 1 To num
         Line Input #SaveDataFileNumber, dummy
@@ -2378,20 +2378,20 @@ Dim scenario_file_is_different As Boolean
     
     PList.UpdateSupportMod
     
-    'èƒŒæ™¯æ›¸ãæ›ãˆ
+    '”wŒi‘‚«Š·‚¦
     If IsMapDirty Then
         Dim map_x As Integer, map_y As Integer
         
         map_x = MapX
         map_y = MapY
         
-        SetupBackground MapDrawMode, "éåŒæœŸ"
+        SetupBackground MapDrawMode, "”ñ“¯Šú"
         
         MapX = map_x
         MapY = map_y
         
-        'å†é–‹ã‚¤ãƒ™ãƒ³ãƒˆã«ã‚ˆã‚‹ãƒãƒƒãƒ—ç”»åƒã®æ›¸ãæ›ãˆå‡¦ç†ã‚’è¡Œã†
-        HandleEvent "å†é–‹"
+        'ÄŠJƒCƒxƒ“ƒg‚É‚æ‚éƒ}ƒbƒv‰æ‘œ‚Ì‘‚«Š·‚¦ˆ—‚ğs‚¤
+        HandleEvent "ÄŠJ"
         
         IsMapDirty = False
     End If
@@ -2399,7 +2399,7 @@ Dim scenario_file_is_different As Boolean
     Set SelectedUnit = Nothing
     Set SelectedTarget = Nothing
     
-    'ãƒ¦ãƒ‹ãƒƒãƒˆç”»åƒç”Ÿæˆ
+    'ƒ†ƒjƒbƒg‰æ‘œ¶¬
     For Each u In UList
         With u
             If .BitmapID = 0 Then
@@ -2408,7 +2408,7 @@ Dim scenario_file_is_different As Boolean
         End With
     Next
     
-    'ç”»é¢æ›´æ–°
+    '‰æ–ÊXV
     Center MapX, MapY
     
     Close #SaveDataFileNumber
@@ -2425,7 +2425,7 @@ Dim scenario_file_is_different As Boolean
         MainForm.Show
     End If
     
-    'ãƒã‚¦ã‚¹ã‚«ãƒ¼ã‚½ãƒ«ã‚’å…ƒã«æˆ»ã™
+    'ƒ}ƒEƒXƒJ[ƒ\ƒ‹‚ğŒ³‚É–ß‚·
     Screen.MousePointer = 0
     
     ClearUnitStatus
@@ -2436,41 +2436,41 @@ Dim scenario_file_is_different As Boolean
     RedrawScreen
     
     If Turn = 0 Then
-        HandleEvent "ã‚¹ã‚¿ãƒ¼ãƒˆ"
+        HandleEvent "ƒXƒ^[ƒg"
         
 ' MOD START MARGE
-'        StartTurn "å‘³æ–¹"
-        'ã‚¹ã‚¿ãƒ¼ãƒˆã‚¤ãƒ™ãƒ³ãƒˆã‹ã‚‰æ¬¡ã®ã‚¹ãƒ†ãƒ¼ã‚¸ãŒé–‹å§‹ã•ã‚ŒãŸå ´åˆã€StartTurnãŒä¸Šã®HandleEventã§
-        'å®Ÿè¡Œã•ã‚Œã¦ã—ã¾ã†ã€‚
-        'å‘³æ–¹ã‚¿ãƒ¼ãƒ³ã®å‡¦ç†ãŒï¼’é‡èµ·å‹•ã•ã‚Œã‚‹ã®ã‚’é˜²ããŸã‚ã€Turnã‚’ãƒã‚§ãƒƒã‚¯ã—ã¦ã‹ã‚‰èµ·å‹•ã™ã‚‹
+'        StartTurn "–¡•û"
+        'ƒXƒ^[ƒgƒCƒxƒ“ƒg‚©‚çŸ‚ÌƒXƒe[ƒW‚ªŠJn‚³‚ê‚½ê‡AStartTurn‚ªã‚ÌHandleEvent‚Å
+        'Às‚³‚ê‚Ä‚µ‚Ü‚¤B
+        '–¡•ûƒ^[ƒ“‚Ìˆ—‚ª‚Qd‹N“®‚³‚ê‚é‚Ì‚ğ–h‚®‚½‚ßATurn‚ğƒ`ƒFƒbƒN‚µ‚Ä‚©‚ç‹N“®‚·‚é
         If Turn = 0 Then
-            StartTurn "å‘³æ–¹"
+            StartTurn "–¡•û"
         End If
 ' MOD END MARGE
     Else
-        CommandState = "ãƒ¦ãƒ‹ãƒƒãƒˆé¸æŠ"
-        Stage = "å‘³æ–¹"
+        CommandState = "ƒ†ƒjƒbƒg‘I‘ğ"
+        Stage = "–¡•û"
     End If
     
     LastSaveDataFileName = fname
-    If InStr(fname, "\_ãƒªã‚¹ã‚¿ãƒ¼ãƒˆ.src") > 0 Then
+    If InStr(fname, "\_ƒŠƒXƒ^[ƒg.src") > 0 Then
         IsRestartSaveDataAvailable = True
-    ElseIf InStr(fname, "\_ã‚¯ã‚¤ãƒƒã‚¯ã‚»ãƒ¼ãƒ–.src") > 0 Then
+    ElseIf InStr(fname, "\_ƒNƒCƒbƒNƒZ[ƒu.src") > 0 Then
         IsQuickSaveDataAvailable = True
     End If
     
     Exit Sub
     
 ErrorHandler:
-    ErrorMessage "ãƒ­ãƒ¼ãƒ‰ä¸­ã«ã‚¨ãƒ©ãƒ¼ãŒç™ºç”Ÿã—ã¾ã—ãŸ"
+    ErrorMessage "ƒ[ƒh’†‚ÉƒGƒ‰[‚ª”­¶‚µ‚Ü‚µ‚½"
     Close #SaveDataFileNumber
     TerminateSRC
 End Sub
 
 
-'æ—§å½¢å¼ã®ãƒ¦ãƒ‹ãƒƒãƒˆï¼©ï¼¤ã‚’æ–°å½¢å¼ã«å¤‰æ›
-'æ—§å½¢å¼ï¼‰ãƒ¦ãƒ‹ãƒƒãƒˆåç§°+æ•°å€¤
-'æ–°å½¢å¼ï¼‰ãƒ¦ãƒ‹ãƒƒãƒˆåç§°+":"+æ•°å€¤
+'‹ŒŒ`®‚Ìƒ†ƒjƒbƒg‚h‚c‚ğVŒ`®‚É•ÏŠ·
+'‹ŒŒ`®jƒ†ƒjƒbƒg–¼Ì+”’l
+'VŒ`®jƒ†ƒjƒbƒg–¼Ì+":"+”’l
 Public Sub ConvertUnitID(ID As String)
 Dim i As Integer
     
@@ -2478,7 +2478,7 @@ Dim i As Integer
         Exit Sub
     End If
     
-    'æ•°å€¤éƒ¨åˆ†ã‚’èª­ã¿é£›ã°ã™
+    '”’l•”•ª‚ğ“Ç‚İ”ò‚Î‚·
     i = Len(ID)
     Do While i > 0
         Select Case Asc(Mid$(ID, i, 1))
@@ -2490,24 +2490,24 @@ Dim i As Integer
         i = i - 1
     Loop
     
-    'ãƒ¦ãƒ‹ãƒƒãƒˆåç§°ã¨æ•°å€¤éƒ¨åˆ†ã®é–“ã«ã€Œ:ã€ã‚’æŒ¿å…¥
+    'ƒ†ƒjƒbƒg–¼Ì‚Æ”’l•”•ª‚ÌŠÔ‚Éu:v‚ğ‘}“ü
     ID = Left$(ID, i) & ":" & Mid$(ID, i + 1)
 End Sub
 
-'ä½œå“new_titleã®ãƒ‡ãƒ¼ã‚¿ã‚’èª­ã¿è¾¼ã¿
+'ì•inew_title‚Ìƒf[ƒ^‚ğ“Ç‚İ‚İ
 Public Sub IncludeData(new_title As String)
 Dim fpath As String
     
-    'ãƒ­ãƒ¼ãƒ‰ã®ã‚¤ãƒ³ã‚¸ã‚±ãƒ¼ã‚¿è¡¨ç¤ºã‚’è¡Œã†
+    'ƒ[ƒh‚ÌƒCƒ“ƒWƒP[ƒ^•\¦‚ğs‚¤
     If frmNowLoading.Visible Then
         DisplayLoadingProgress
     End If
     
-    'Dataãƒ•ã‚©ãƒ«ãƒ€ã®å ´æ‰€ã‚’æ¢ã™
+    'DataƒtƒHƒ‹ƒ_‚ÌêŠ‚ğ’T‚·
     fpath = SearchDataFolder(new_title)
     
     If Len(fpath) = 0 Then
-        ErrorMessage "ãƒ‡ãƒ¼ã‚¿ã€Œ" & new_title & "ã€ã®ãƒ•ã‚©ãƒ«ãƒ€ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“"
+        ErrorMessage "ƒf[ƒ^u" & new_title & "v‚ÌƒtƒHƒ‹ƒ_‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ"
         TerminateSRC
     End If
     
@@ -2534,7 +2534,7 @@ Dim fpath As String
         UDList.Load fpath & "\unit.txt"
     End If
     
-    'ãƒ­ãƒ¼ãƒ‰ã®ã‚¤ãƒ³ã‚¸ã‚±ãƒ¼ã‚¿è¡¨ç¤ºã‚’è¡Œã†
+    'ƒ[ƒh‚ÌƒCƒ“ƒWƒP[ƒ^•\¦‚ğs‚¤
     If frmNowLoading.Visible Then
         DisplayLoadingProgress
     End If
@@ -2561,11 +2561,11 @@ Dim fpath As String
     Exit Sub
     
 ErrorHandler:
-    ErrorMessage "Src.iniå†…ã®ExtDataPathã®å€¤ãŒä¸æ­£ã§ã™"
+    ErrorMessage "Src.ini“à‚ÌExtDataPath‚Ì’l‚ª•s³‚Å‚·"
     TerminateSRC
 End Sub
 
-'ãƒ‡ãƒ¼ã‚¿ãƒ•ã‚©ãƒ«ãƒ€ fname ã‚’æ¤œç´¢
+'ƒf[ƒ^ƒtƒHƒ‹ƒ_ fname ‚ğŒŸõ
 Public Function SearchDataFolder(fname As String) As String
 Dim fname2 As String
 Static init_search_data_folder As Boolean
@@ -2574,7 +2574,7 @@ Static extdata_data_dir_exists As Boolean
 Static extdata2_data_dir_exists As Boolean
 Static src_data_dir_exists As Boolean
 
-    'åˆã‚ã¦å®Ÿè¡Œã™ã‚‹éš›ã«ã€å„ãƒ•ã‚©ãƒ«ãƒ€ã«Dataãƒ•ã‚©ãƒ«ãƒ€ãŒã‚ã‚‹ã‹ãƒã‚§ãƒƒã‚¯
+    '‰‚ß‚ÄÀs‚·‚éÛ‚ÉAŠeƒtƒHƒ‹ƒ_‚ÉDataƒtƒHƒ‹ƒ_‚ª‚ ‚é‚©ƒ`ƒFƒbƒN
     If Not init_search_data_folder Then
         If Len(Dir$(ScenarioPath & "Data", vbDirectory)) > 0 Then
             scenario_data_dir_exists = True
@@ -2597,7 +2597,7 @@ Static src_data_dir_exists As Boolean
         init_search_data_folder = True
     End If
     
-    'ãƒ•ã‚©ãƒ«ãƒ€ã‚’æ¤œç´¢
+    'ƒtƒHƒ‹ƒ_‚ğŒŸõ
     fname2 = "Data\" & fname
     If scenario_data_dir_exists Then
         SearchDataFolder = ScenarioPath & fname2
@@ -2624,11 +2624,11 @@ Static src_data_dir_exists As Boolean
         End If
     End If
     
-    'ãƒ•ã‚©ãƒ«ãƒ€ãŒè¦‹ã¤ã‹ã‚‰ãªã‹ã£ãŸ
+    'ƒtƒHƒ‹ƒ_‚ªŒ©‚Â‚©‚ç‚È‚©‚Á‚½
     SearchDataFolder = ""
 End Function
 
-'è³‡é‡‘ã®é‡ã‚’å¤‰æ›´ã™ã‚‹
+'‘‹à‚Ì—Ê‚ğ•ÏX‚·‚é
 Public Sub IncrMoney(ByVal earnings As Long)
     Money = MinLng(Money + earnings, 999999999)
     Money = MaxLng(Money, 0)

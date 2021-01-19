@@ -50,7 +50,7 @@
 		Me.WindowState = System.Windows.Forms.FormWindowState.Normal
 		Me.Name = "frmMultiColumnListBox"
 		Me.lstItems.BackColor = System.Drawing.Color.White
-		Me.lstItems.Font = New System.Drawing.Font("Invalid_string_refer_to_original_code", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
+		Me.lstItems.Font = New System.Drawing.Font("‚l‚r –¾’©", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
 		Me.lstItems.ForeColor = System.Drawing.Color.Black
 		Me.lstItems.Size = New System.Drawing.Size(654, 407)
 		Me.lstItems.Location = New System.Drawing.Point(8, 8)
@@ -69,7 +69,7 @@
 		Me.lstItems.ColumnWidth = 164
 		Me.lstItems.Name = "lstItems"
 		Me.labCaption.BackColor = System.Drawing.Color.White
-		Me.labCaption.Font = New System.Drawing.Font("Invalid_string_refer_to_original_code", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
+		Me.labCaption.Font = New System.Drawing.Font("‚l‚r –¾’©", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
 		Me.labCaption.ForeColor = System.Drawing.Color.Black
 		Me.labCaption.Size = New System.Drawing.Size(654, 23)
 		Me.labCaption.Location = New System.Drawing.Point(8, 416)

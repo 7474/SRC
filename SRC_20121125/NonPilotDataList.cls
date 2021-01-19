@@ -10,29 +10,29 @@ Attribute VB_Exposed = False
 Option Explicit
 
 ' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯ãƒ•ãƒªãƒ¼ã‚½ãƒ•ãƒˆã§ã‚ã‚Šã€ç„¡ä¿è¨¼ã§ã™ã€‚
-' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯GNU General Public License(Ver.3ã¾ãŸã¯ãã‚Œä»¥é™)ãŒå®šã‚ã‚‹æ¡ä»¶ã®ä¸‹ã§
-' å†é ’å¸ƒã¾ãŸã¯æ”¹å¤‰ã™ã‚‹ã“ã¨ãŒã§ãã¾ã™ã€‚
+' –{ƒvƒƒOƒ‰ƒ€‚ÍƒtƒŠ[ƒ\ƒtƒg‚Å‚ ‚èA–³•ÛØ‚Å‚·B
+' –{ƒvƒƒOƒ‰ƒ€‚ÍGNU General Public License(Ver.3‚Ü‚½‚Í‚»‚êˆÈ~)‚ª’è‚ß‚éğŒ‚Ì‰º‚Å
+' Ä”Ğ•z‚Ü‚½‚Í‰ü•Ï‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B
 
-'å…¨ãƒãƒ³ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆãƒ‡ãƒ¼ã‚¿ã‚’ç®¡ç†ã™ã‚‹ãƒªã‚¹ãƒˆã®ã‚¯ãƒ©ã‚¹
+'‘Sƒmƒ“ƒpƒCƒƒbƒgƒf[ƒ^‚ğŠÇ—‚·‚éƒŠƒXƒg‚ÌƒNƒ‰ƒX
 
-'ãƒãƒ³ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆãƒ‡ãƒ¼ã‚¿ã®ã‚³ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³
+'ƒmƒ“ƒpƒCƒƒbƒgƒf[ƒ^‚ÌƒRƒŒƒNƒVƒ‡ƒ“
 Private colNonPilotDataList As New Collection
 
-'ã‚¯ãƒ©ã‚¹ã®åˆæœŸåŒ–
+'ƒNƒ‰ƒX‚Ì‰Šú‰»
 Private Sub Class_Initialize()
 Dim npd As New NonPilotData
     
-    'Talkã‚³ãƒãƒ³ãƒ‰ç”¨
+    'TalkƒRƒ}ƒ“ƒh—p
     With npd
-        .Name = "ãƒŠãƒ¬ãƒ¼ã‚¿ãƒ¼"
-        .Nickname = "ãƒŠãƒ¬ãƒ¼ã‚¿ãƒ¼"
+        .Name = "ƒiƒŒ[ƒ^["
+        .Nickname = "ƒiƒŒ[ƒ^["
         .Bitmap = ".bmp"
     End With
     colNonPilotDataList.Add npd, npd.Name
 End Sub
 
-'ã‚¯ãƒ©ã‚¹ã®è§£æ”¾
+'ƒNƒ‰ƒX‚Ì‰ğ•ú
 Private Sub Class_Terminate()
 Dim i As Integer
 
@@ -44,7 +44,7 @@ Dim i As Integer
     Set colNonPilotDataList = Nothing
 End Sub
 
-'ãƒãƒ³ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆãƒ‡ãƒ¼ã‚¿ãƒªã‚¹ãƒˆã«ãƒ‡ãƒ¼ã‚¿ã‚’è¿½åŠ 
+'ƒmƒ“ƒpƒCƒƒbƒgƒf[ƒ^ƒŠƒXƒg‚Éƒf[ƒ^‚ğ’Ç‰Á
 Public Function Add(pname As String) As NonPilotData
 Dim new_pilot_data As New NonPilotData
 
@@ -53,17 +53,17 @@ Dim new_pilot_data As New NonPilotData
     Set Add = new_pilot_data
 End Function
 
-'ãƒãƒ³ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆãƒ‡ãƒ¼ã‚¿ãƒªã‚¹ãƒˆã«ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ãƒ‡ãƒ¼ã‚¿ã®ç·æ•°
+'ƒmƒ“ƒpƒCƒƒbƒgƒf[ƒ^ƒŠƒXƒg‚É“o˜^‚³‚ê‚Ä‚¢‚éƒf[ƒ^‚Ì‘”
 Public Function Count() As Integer
     Count = colNonPilotDataList.Count
 End Function
 
-'ãƒãƒ³ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆãƒ‡ãƒ¼ã‚¿ãƒªã‚¹ãƒˆã‹ã‚‰ãƒ‡ãƒ¼ã‚¿ã‚’å‰Šé™¤
+'ƒmƒ“ƒpƒCƒƒbƒgƒf[ƒ^ƒŠƒXƒg‚©‚çƒf[ƒ^‚ğíœ
 Public Sub Delete(Index As Variant)
     colNonPilotDataList.Remove Index
 End Sub
 
-'ãƒãƒ³ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆãƒ‡ãƒ¼ã‚¿ãƒªã‚¹ãƒˆã‹ã‚‰ãƒ‡ãƒ¼ã‚¿ã‚’å–ã‚Šå‡ºã™
+'ƒmƒ“ƒpƒCƒƒbƒgƒf[ƒ^ƒŠƒXƒg‚©‚çƒf[ƒ^‚ğæ‚èo‚·
 Public Function Item(Index As Variant) As NonPilotData
 Dim pd As NonPilotData
 Dim pname As String
@@ -82,7 +82,7 @@ ErrorHandler:
     Next
 End Function
 
-'ãƒãƒ³ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆãƒ‡ãƒ¼ã‚¿ãƒªã‚¹ãƒˆã«æŒ‡å®šã—ãŸãƒ‡ãƒ¼ã‚¿ãŒå®šç¾©ã•ã‚Œã¦ã„ã‚‹ã‹ï¼Ÿ
+'ƒmƒ“ƒpƒCƒƒbƒgƒf[ƒ^ƒŠƒXƒg‚Éw’è‚µ‚½ƒf[ƒ^‚ª’è‹`‚³‚ê‚Ä‚¢‚é‚©H
 Public Function IsDefined(Index As Variant) As Boolean
 Dim pd As NonPilotData
 Dim pname As String
@@ -103,7 +103,7 @@ ErrorHandler:
     IsDefined = False
 End Function
 
-'ãƒãƒ³ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆãƒ‡ãƒ¼ã‚¿ãƒªã‚¹ãƒˆã«æŒ‡å®šã—ãŸãƒ‡ãƒ¼ã‚¿ãŒå®šç¾©ã•ã‚Œã¦ã„ã‚‹ã‹ï¼Ÿ (æ„›ç§°ã¯è¦‹ãªã„)
+'ƒmƒ“ƒpƒCƒƒbƒgƒf[ƒ^ƒŠƒXƒg‚Éw’è‚µ‚½ƒf[ƒ^‚ª’è‹`‚³‚ê‚Ä‚¢‚é‚©H (ˆ¤Ì‚ÍŒ©‚È‚¢)
 Public Function IsDefined2(Index As Variant) As Boolean
 Dim pd As NonPilotData
 
@@ -116,7 +116,7 @@ ErrorHandler:
     IsDefined2 = False
 End Function
 
-'ãƒ‡ãƒ¼ã‚¿ãƒ•ã‚¡ã‚¤ãƒ« fname ã‹ã‚‰ãƒ‡ãƒ¼ã‚¿ã‚’ãƒ­ãƒ¼ãƒ‰
+'ƒf[ƒ^ƒtƒ@ƒCƒ‹ fname ‚©‚çƒf[ƒ^‚ğƒ[ƒh
 Public Sub Load(fname As String)
 Dim FileNumber As Integer
 Dim line_num As Long
@@ -143,28 +143,28 @@ Dim err_msg As String
         Loop While Len(line_buf) = 0
         
         If InStr(line_buf, ",") > 0 Then
-            err_msg = "åç§°ã®è¨­å®šãŒæŠœã‘ã¦ã„ã¾ã™ã€‚"
+            err_msg = "–¼Ì‚Ìİ’è‚ª”²‚¯‚Ä‚¢‚Ü‚·B"
             Error 0
         End If
         
-        'åç§°
+        '–¼Ì
         data_name = line_buf
         
         If InStr(data_name, " ") > 0 Then
-            err_msg = "åç§°ã«åŠè§’ã‚¹ãƒšãƒ¼ã‚¹ã¯ä½¿ç”¨å‡ºæ¥ã¾ã›ã‚“ã€‚"
+            err_msg = "–¼Ì‚É”¼ŠpƒXƒy[ƒX‚Íg—po—ˆ‚Ü‚¹‚ñB"
             Error 0
         End If
-        If InStr(data_name, "ï¼ˆ") > 0 Or InStr(data_name, "ï¼‰") > 0 Then
-            err_msg = "åç§°ã«å…¨è§’æ‹¬å¼§ã¯ä½¿ç”¨å‡ºæ¥ã¾ã›ã‚“ã€‚"
+        If InStr(data_name, "i") > 0 Or InStr(data_name, "j") > 0 Then
+            err_msg = "–¼Ì‚É‘SŠpŠ‡ŒÊ‚Íg—po—ˆ‚Ü‚¹‚ñB"
             Error 0
         End If
         If InStr(data_name, """") > 0 Then
-            err_msg = "åç§°ã«""ã¯ä½¿ç”¨å‡ºæ¥ã¾ã›ã‚“ã€‚"
+            err_msg = "–¼Ì‚É""‚Íg—po—ˆ‚Ü‚¹‚ñB"
             Error 0
         End If
         
         If IsDefined(data_name) Then
-            'ã™ã§ã«å®šç¾©ã•ã‚Œã¦ã„ã‚‹ãƒãƒ³ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®ãƒ‡ãƒ¼ã‚¿ã§ã‚ã‚Œã°ç½®ãæ›ãˆã‚‹
+            '‚·‚Å‚É’è‹`‚³‚ê‚Ä‚¢‚éƒmƒ“ƒpƒCƒƒbƒg‚Ìƒf[ƒ^‚Å‚ ‚ê‚Î’u‚«Š·‚¦‚é
             If Item(data_name).Name = data_name Then
                 Set pd = Item(data_name)
             Else
@@ -175,13 +175,13 @@ Dim err_msg As String
         End If
         
         With pd
-            'æ„›ç§°ã€ãƒ“ãƒƒãƒˆãƒãƒƒãƒ—
+            'ˆ¤ÌAƒrƒbƒgƒ}ƒbƒv
             GetLine FileNumber, line_buf, line_num
             
-            'æ„›ç§°
+            'ˆ¤Ì
             ret = InStr(line_buf, ",")
             If ret = 0 Then
-                err_msg = "ãƒ“ãƒƒãƒˆãƒãƒƒãƒ—ã®è¨­å®šãŒæŠœã‘ã¦ã„ã¾ã™ã€‚"
+                err_msg = "ƒrƒbƒgƒ}ƒbƒv‚Ìİ’è‚ª”²‚¯‚Ä‚¢‚Ü‚·B"
                 Error 0
             End If
             buf2 = Trim$(Left$(line_buf, ret - 1))
@@ -189,25 +189,25 @@ Dim err_msg As String
             If buf2 <> "" Then
                 .Nickname = buf2
             Else
-                err_msg = "æ„›ç§°ã®è¨­å®šãŒé–“é•ã£ã¦ã„ã¾ã™ã€‚"
+                err_msg = "ˆ¤Ì‚Ìİ’è‚ªŠÔˆá‚Á‚Ä‚¢‚Ü‚·B"
                 Error 0
             End If
             
-            'ãƒ“ãƒƒãƒˆãƒãƒƒãƒ—
+            'ƒrƒbƒgƒ}ƒbƒv
             buf2 = Trim$(buf)
             If LCase$(Right$(buf2, 4)) = ".bmp" Then
                 .Bitmap = buf2
             Else
-                DataErrorMessage "ãƒ“ãƒƒãƒˆãƒãƒƒãƒ—ã®è¨­å®šãŒé–“é•ã£ã¦ã„ã¾ã™ã€‚", _
+                DataErrorMessage "ƒrƒbƒgƒ}ƒbƒv‚Ìİ’è‚ªŠÔˆá‚Á‚Ä‚¢‚Ü‚·B", _
                     fname, line_num, line_buf, .Name
             End If
         End With
     Loop
     
 ErrorHandler:
-    'ã‚¨ãƒ©ãƒ¼å‡¦ç†
+    'ƒGƒ‰[ˆ—
     If line_num = 0 Then
-        ErrorMessage fname & "ãŒé–‹ã‘ã¾ã›ã‚“ã€‚"
+        ErrorMessage fname & "‚ªŠJ‚¯‚Ü‚¹‚ñB"
     Else
         Close #FileNumber
         DataErrorMessage err_msg, fname, line_num, line_buf, data_name

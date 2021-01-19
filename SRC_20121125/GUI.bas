@@ -2,88 +2,88 @@ Attribute VB_Name = "GUI"
 Option Explicit
 
 ' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯ãƒ•ãƒªãƒ¼ã‚½ãƒ•ãƒˆã§ã‚ã‚Šã€ç„¡ä¿è¨¼ã§ã™ã€‚
-' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯GNU General Public License(Ver.3ã¾ãŸã¯ãã‚Œä»¥é™)ãŒå®šã‚ã‚‹æ¡ä»¶ã®ä¸‹ã§
-' å†é ’å¸ƒã¾ãŸã¯æ”¹å¤‰ã™ã‚‹ã“ã¨ãŒã§ãã¾ã™ã€‚
+' –{ƒvƒƒOƒ‰ƒ€‚ÍƒtƒŠ[ƒ\ƒtƒg‚Å‚ ‚èA–³•ÛØ‚Å‚·B
+' –{ƒvƒƒOƒ‰ƒ€‚ÍGNU General Public License(Ver.3‚Ü‚½‚Í‚»‚êˆÈ~)‚ª’è‚ß‚éğŒ‚Ì‰º‚Å
+' Ä”Ğ•z‚Ü‚½‚Í‰ü•Ï‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B
 
-'ãƒ¦ãƒ¼ã‚¶ãƒ¼ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ãƒ¼ã‚¹ã¨ç”»é¢æç”»ã®å‡¦ç†ã‚’è¡Œã†ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«
+'ƒ†[ƒU[ƒCƒ“ƒ^[ƒtƒF[ƒX‚Æ‰æ–Ê•`‰æ‚Ìˆ—‚ğs‚¤ƒ‚ƒWƒ…[ƒ‹
 
-'Mainã®Form
+'Main‚ÌForm
 Public MainForm As Form
 Public IsFlashAvailable As Boolean
 
 ' ADD START MARGE
-'GUIãŒæ–°ãƒãƒ¼ã‚¸ãƒ§ãƒ³ã‹
+'GUI‚ªVƒo[ƒWƒ‡ƒ“‚©
 Public NewGUIMode As Boolean
 ' ADD END
 
-'ãƒãƒƒãƒ—ç”»é¢ã«è¡¨ç¤ºã§ãã‚‹ãƒãƒƒãƒ—ã®ã‚µã‚¤ã‚º
+'ƒ}ƒbƒv‰æ–Ê‚É•\¦‚Å‚«‚éƒ}ƒbƒv‚ÌƒTƒCƒY
 Public MainWidth As Integer
 Public MainHeight As Integer
 
-'ãƒãƒƒãƒ—ç”»é¢ã®ã‚µã‚¤ã‚ºï¼ˆãƒ”ã‚¯ã‚»ãƒ«ï¼‰
+'ƒ}ƒbƒv‰æ–Ê‚ÌƒTƒCƒYiƒsƒNƒZƒ‹j
 Public MainPWidth As Integer
 Public MainPHeight As Integer
 
-'ãƒãƒƒãƒ—ã®ã‚µã‚¤ã‚ºï¼ˆãƒ”ã‚¯ã‚»ãƒ«ï¼‰
+'ƒ}ƒbƒv‚ÌƒTƒCƒYiƒsƒNƒZƒ‹j
 Public MapPWidth As Integer
 Public MapPHeight As Integer
 
-'ï¼¨ï¼°ãƒ»ï¼¥ï¼®ã®ã‚²ãƒ¼ã‚¸ã®å¹…ï¼ˆãƒ”ã‚¯ã‚»ãƒ«ï¼‰
+'‚g‚oE‚d‚m‚ÌƒQ[ƒW‚Ì•iƒsƒNƒZƒ‹j
 Public Const GauageWidth = 88
 
-'ç¾åœ¨ãƒãƒƒãƒ—ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãŒãƒã‚¹ã‚¯è¡¨ç¤ºã•ã‚Œã¦ã„ã‚‹ã‹
+'Œ»İƒ}ƒbƒvƒEƒBƒ“ƒhƒE‚ªƒ}ƒXƒN•\¦‚³‚ê‚Ä‚¢‚é‚©
 Public ScreenIsMasked As Boolean
-'ç¾åœ¨ãƒãƒƒãƒ—ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãŒä¿å­˜ã•ã‚Œã¦ã„ã‚‹ã‹
+'Œ»İƒ}ƒbƒvƒEƒBƒ“ƒhƒE‚ª•Û‘¶‚³‚ê‚Ä‚¢‚é‚©
 Public ScreenIsSaved As Boolean
 
-'ç¾åœ¨è¡¨ç¤ºã•ã‚Œã¦ã„ã‚‹ãƒãƒƒãƒ—ã®åº§æ¨™
+'Œ»İ•\¦‚³‚ê‚Ä‚¢‚éƒ}ƒbƒv‚ÌÀ•W
 Public MapX As Integer
 Public MapY As Integer
 
-'ãƒ‰ãƒ©ãƒƒã‚°å‰ã®ãƒãƒƒãƒ—ã®åº§æ¨™
+'ƒhƒ‰ƒbƒO‘O‚Ìƒ}ƒbƒv‚ÌÀ•W
 Public PrevMapX As Integer
 Public PrevMapY As Integer
 
-'æœ€å¾Œã«æŠ¼ã•ã‚ŒãŸãƒã‚¦ã‚¹ãƒœã‚¿ãƒ³
+'ÅŒã‚É‰Ÿ‚³‚ê‚½ƒ}ƒEƒXƒ{ƒ^ƒ“
 Public MouseButton As Integer
 
-'ç¾åœ¨ã®ãƒã‚¦ã‚¹ã®åº§æ¨™
+'Œ»İ‚Ìƒ}ƒEƒX‚ÌÀ•W
 Public MouseX As Single
 Public MouseY As Single
 
-'ãƒ‰ãƒ©ãƒƒã‚°å‰ã®ãƒã‚¦ã‚¹ã®åº§æ¨™
+'ƒhƒ‰ƒbƒO‘O‚Ìƒ}ƒEƒX‚ÌÀ•W
 Public PrevMouseX As Single
 Public PrevMouseY As Single
 
-'ã‚«ãƒ¼ã‚½ãƒ«ä½ç½®è‡ªå‹•å¤‰æ›´å‰ã®ãƒã‚¦ã‚¹ã‚«ãƒ¼ã‚½ãƒ«ã®åº§æ¨™
+'ƒJ[ƒ\ƒ‹ˆÊ’u©“®•ÏX‘O‚Ìƒ}ƒEƒXƒJ[ƒ\ƒ‹‚ÌÀ•W
 Private PrevCursorX As Integer
 Private PrevCursorY As Integer
-'ã‚«ãƒ¼ã‚½ãƒ«ä½ç½®è‡ªå‹•å¤‰æ›´å¾Œã®ãƒã‚¦ã‚¹ã‚«ãƒ¼ã‚½ãƒ«ã®åº§æ¨™
+'ƒJ[ƒ\ƒ‹ˆÊ’u©“®•ÏXŒã‚Ìƒ}ƒEƒXƒJ[ƒ\ƒ‹‚ÌÀ•W
 Private NewCursorX As Integer
 Private NewCursorY As Integer
 
-'ç§»å‹•å‰ã®ãƒ¦ãƒ‹ãƒƒãƒˆã®æƒ…å ±
+'ˆÚ“®‘O‚Ìƒ†ƒjƒbƒg‚Ìî•ñ
 Public PrevUnitX As Integer
 Public PrevUnitY As Integer
 Public PrevUnitArea As String
 Public PrevCommand As String
 
-'PaintPictureã§ç”»åƒãŒæãè¾¼ã¾ã‚ŒãŸã‹
+'PaintPicture‚Å‰æ‘œ‚ª•`‚«‚Ü‚ê‚½‚©
 Public IsPictureDrawn As Boolean
-'PaintPictureã§ç”»åƒãŒæã‹ã‚Œã¦ã„ã‚‹ã‹
+'PaintPicture‚Å‰æ‘œ‚ª•`‚©‚ê‚Ä‚¢‚é‚©
 Public IsPictureVisible As Boolean
-'PaintPictureã§æç”»ã—ãŸç”»åƒé ˜åŸŸ
+'PaintPicture‚Å•`‰æ‚µ‚½‰æ‘œ—Ìˆæ
 Public PaintedAreaX1 As Integer
 Public PaintedAreaY1 As Integer
 Public PaintedAreaX2 As Integer
 Public PaintedAreaY2 As Integer
-'ã‚«ãƒ¼ã‚½ãƒ«ç”»åƒãŒè¡¨ç¤ºã•ã‚Œã¦ã„ã‚‹ã‹
+'ƒJ[ƒ\ƒ‹‰æ‘œ‚ª•\¦‚³‚ê‚Ä‚¢‚é‚©
 Public IsCursorVisible As Boolean
-'èƒŒæ™¯è‰²
+'”wŒiF
 Public BGColor As Long
 
-'ç”»åƒãƒãƒƒãƒ•ã‚¡ç®¡ç†ç”¨å¤‰æ•°
+'‰æ‘œƒoƒbƒtƒ@ŠÇ——p•Ï”
 Private PicBufDateCount As Long
 Private PicBufDate() As Long
 Private PicBufSize() As Long
@@ -99,13 +99,13 @@ Private PicBufSH() As Integer
 Private PicBufIsMask() As Boolean
 
 
-'GUIã‹ã‚‰å…¥åŠ›å¯èƒ½ã‹ã©ã†ã‹
+'GUI‚©‚ç“ü—Í‰Â”\‚©‚Ç‚¤‚©
 Public IsGUILocked As Boolean
 
-'ãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹å†…ã§è¡¨ç¤ºä½ç½®
+'ƒŠƒXƒgƒ{ƒbƒNƒX“à‚Å•\¦ˆÊ’u
 Public TopItem As Integer
 
-'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã«ã«é–¢ã™ã‚‹æƒ…å ±
+'ƒƒbƒZ[ƒWƒEƒCƒ“ƒhƒE‚É‚ÉŠÖ‚·‚éî•ñ
 Private DisplayedPilot As String
 Private DisplayMode As String
 Private RightUnit As Unit
@@ -116,39 +116,39 @@ Private RightUnitENRatio As Double
 Private LeftUnitENRatio As Double
 Public MessageWindowIsOut As Boolean
 
-'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®çŠ¶æ…‹ã‚’ä¿æŒã™ã‚‹ãŸã‚ã®å¤‰æ•°
+'ƒƒbƒZ[ƒWƒEƒBƒ“ƒhƒE‚Ìó‘Ô‚ğ•Û‚·‚é‚½‚ß‚Ì•Ï”
 Private IsMessageFormVisible As Boolean
 Private SavedLeftUnit As Unit
 Private SavedRightUnit As Unit
 
-'ãƒ•ã‚©ãƒ¼ãƒ ãŒã‚¯ãƒªãƒƒã‚¯ã•ã‚ŒãŸã‹
+'ƒtƒH[ƒ€‚ªƒNƒŠƒbƒN‚³‚ê‚½‚©
 Public IsFormClicked As Boolean
-'ãƒ•ã‚©ãƒ¼ãƒ ãŒãƒ¢ãƒ¼ãƒ€ãƒ«ã‹
+'ƒtƒH[ƒ€‚ªƒ‚[ƒ_ƒ‹‚©
 Public IsMordal As Boolean
 
-'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸è¡¨ç¤ºã®ã‚¦ã‚§ã‚¤ãƒˆ
+'ƒƒbƒZ[ƒW•\¦‚ÌƒEƒFƒCƒg
 Public MessageWait As Long
 
-'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãŒè‡ªåƒé€ã‚Šã‹ã©ã†ã‹
+'ƒƒbƒZ[ƒW‚ª©“­‘—‚è‚©‚Ç‚¤‚©
 Public AutoMessageMode As Boolean
 
-'PaintStringã®ä¸­å¤®è¡¨ç¤ºã®è¨­å®š
+'PaintString‚Ì’†‰›•\¦‚Ìİ’è
 Public HCentering As Boolean
 Public VCentering As Boolean
-'PaintStringã®æ›¸ãã“ã¿ãŒèƒŒæ™¯ã«è¡Œã‚ã‚Œã‚‹ã‹ã©ã†ã‹
+'PaintString‚Ì‘‚«‚±‚İ‚ª”wŒi‚És‚í‚ê‚é‚©‚Ç‚¤‚©
 Public PermanentStringMode As Boolean
-'PaintStringã®æ›¸ãã“ã¿ãŒæŒç¶šæ€§ã‹ã©ã†ã‹
+'PaintString‚Ì‘‚«‚±‚İ‚ª‘±«‚©‚Ç‚¤‚©
 Public KeepStringMode As Boolean
 
 
-'ListBoxç”¨å¤‰æ•°
+'ListBox—p•Ï”
 Public ListItemFlag() As Boolean
 Public ListItemComment() As String
 Public ListItemID() As String
 Public MaxListItem As Integer
 
 
-'APIé–¢æ•°ã®å®šç¾©
+'APIŠÖ”‚Ì’è‹`
 
 Declare Function BitBlt Lib "gdi32" (ByVal hDestDC As Long, _
     ByVal X As Long, ByVal Y As Long, _
@@ -186,7 +186,7 @@ Public Const WHITENESS = &HFF0062
 Public Const STATUSBACK = &HC0C0C0
 'ADD START 240a
 
-'StretchBltã®ãƒ¢ãƒ¼ãƒ‰è¨­å®šã‚’è¡Œã†
+'StretchBlt‚Ìƒ‚[ƒhİ’è‚ğs‚¤
 Declare Function GetStretchBltMode Lib "gdi32" (ByVal hDC As Long) As Long
 Declare Function SetStretchBltMode Lib "gdi32" (ByVal hDC As Long, _
     ByVal nStretchMode As Long) As Long
@@ -196,64 +196,64 @@ Public Const STRETCH_ORSCANS = 2
 Public Const STRETCH_DELETESCANS = 3
 Public Const STRETCH_HALFTONE = 4
 
-'é€éæç”»
+'“§‰ß•`‰æ
 Declare Function TransparentBlt Lib "msimg32.dll" (ByVal hDC As Long, _
     ByVal X As Long, ByVal Y As Long, ByVal nWidth As Long, ByVal nHeight As Long, _
     ByVal hSrcDC As Long, ByVal xsrc As Long, ByVal ysrc As Long, ByVal nSrcWidth As Long, _
     ByVal nSrcHeight As Long, ByVal crTransparent As Long) As Long
 
-'ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ä½ç½®ã®è¨­å®š
+'ƒEƒBƒ“ƒhƒEˆÊ’u‚Ìİ’è
 Declare Function SetWindowPos Lib "user32" ( _
     ByVal hwnd As Long, ByVal hWndInsertAfter As Long, _
     ByVal X As Long, ByVal Y As Long, ByVal cx As Long, _
     ByVal cy As Long, ByVal wFlags As Long) As Long
 
-Public Const SW_SHOWNA = 8    'éã‚¢ã‚¯ãƒ†ã‚£ãƒ–ã§è¡¨ç¤º
+Public Const SW_SHOWNA = 8    '”ñƒAƒNƒeƒBƒu‚Å•\¦
 
-'ãƒ•ã‚©ãƒ¼ãƒ ã‚’ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ã«ã—ãªã„ã§è¡¨ç¤º
+'ƒtƒH[ƒ€‚ğƒAƒNƒeƒBƒu‚É‚µ‚È‚¢‚Å•\¦
 Declare Function ShowWindow Lib "user32" ( _
     ByVal hwnd As Long, ByVal nCmdShow As Long) As Long
 
 Declare Sub Sleep Lib "kernel32" (ByVal dwMilliseconds As Long)
 
-'ã‚«ãƒ¼ã‚½ãƒ«ä½ç½®å–å¾—
+'ƒJ[ƒ\ƒ‹ˆÊ’uæ“¾
 Declare Function GetCursorPos Lib "user32" (lpPoint As POINTAPI) As Long
 
-'ãƒã‚¤ãƒ³ãƒˆæ§‹é€ ä½“
+'ƒ|ƒCƒ“ƒg\‘¢‘Ì
 Type POINTAPI
     X As Long
     Y As Long
 End Type
 
-'ã‚«ãƒ¼ã‚½ãƒ«ä½ç½®è¨­å®š
+'ƒJ[ƒ\ƒ‹ˆÊ’uİ’è
 Declare Function SetCursorPos Lib "user32" (ByVal X As Long, ByVal Y As Long) As Long
 
-'ã‚­ãƒ¼ã®æƒ…å ±ã‚’å¾—ã‚‹
+'ƒL[‚Ìî•ñ‚ğ“¾‚é
 Declare Function GetAsyncKeyState Lib "user32" (ByVal vKey As Long) As Integer
 
 Public RButtonID As Long
 Public LButtonID As Long
 
-'ã‚·ã‚¹ãƒ†ãƒ ãƒ¡ãƒˆãƒªãƒƒã‚¯ã‚¹ã‚’å–å¾—ã™ã‚‹API
+'ƒVƒXƒeƒ€ƒƒgƒŠƒbƒNƒX‚ğæ“¾‚·‚éAPI
 Declare Function GetSystemMetrics Lib "user32" (ByVal nIndex As Long) As Long
 
-Public Const SM_SWAPBUTTON = 23    'å·¦å³ã®ãƒœã‚¿ãƒ³ãŒäº¤æ›ã•ã‚Œã¦ã„ã‚‹ã‹å¦ã‹
+Public Const SM_SWAPBUTTON = 23    '¶‰E‚Ìƒ{ƒ^ƒ“‚ªŒğŠ·‚³‚ê‚Ä‚¢‚é‚©”Û‚©
 
-'ç¾åœ¨ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ãªã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’å–å¾—ã™ã‚‹API
+'Œ»İƒAƒNƒeƒBƒu‚ÈƒEƒBƒ“ƒhƒE‚ğæ“¾‚·‚éAPI
 Public Declare Function GetForegroundWindow Lib "user32" () As Long
 
-'ç›´ç·šã‚’æç”»ã™ã‚‹ãŸã‚ã®API
+'’¼ü‚ğ•`‰æ‚·‚é‚½‚ß‚ÌAPI
 Declare Function MoveToEx Lib "gdi32" (ByVal hDC As Long, _
     ByVal X As Long, ByVal Y As Long, lpPoint As POINTAPI) As Long
 Declare Function LineTo Lib "gdi32" (ByVal hDC As Long, _
     ByVal X As Long, ByVal Y As Long) As Long
 
-'å¤šè§’å½¢ã‚’æç”»ã™ã‚‹API
+'‘½ŠpŒ`‚ğ•`‰æ‚·‚éAPI
 Public Declare Function Polygon Lib "gdi32.dll" (ByVal hDC As Long, _
     lpPoint As POINTAPI, ByVal nCount As Long) As Long
 
 
-'ãƒ‡ã‚£ã‚¹ãƒ—ãƒ¬ã‚¤ã®è¨­å®šã‚’å‚ç…§ã™ã‚‹API
+'ƒfƒBƒXƒvƒŒƒC‚Ìİ’è‚ğQÆ‚·‚éAPI
 Public Type DEVMODE
     dmDeviceName As String * 32
     dmSpecVersion As Integer
@@ -296,7 +296,7 @@ Public Declare Function EnumDisplaySettings Lib "user32.dll" Alias "EnumDisplayS
 
 Public Const ENUM_CURRENT_SETTINGS = -1
 
-'ãƒ‡ã‚£ã‚¹ãƒ—ãƒ¬ã‚¤ã®è¨­å®šã‚’å¤‰æ›´ã™ã‚‹ãŸã‚ã®API
+'ƒfƒBƒXƒvƒŒƒC‚Ìİ’è‚ğ•ÏX‚·‚é‚½‚ß‚ÌAPI
 Public Declare Function ChangeDisplaySettings Lib "user32.dll" Alias "ChangeDisplaySettingsA" _
     (lpDevMode As Any, ByVal dwFlags As Long) As Long
 
@@ -306,15 +306,15 @@ Public Const CDS_FULLSCREEN = &H4
 Public Const DISP_CHANGE_SUCCESSFUL = 0
 Public Const DISP_CHANGE_RESTART = 1
 
-'ãƒ‡ãƒã‚¤ã‚¹ã®è¨­å®šã‚’å‚ç…§ã™ã‚‹ãŸã‚ã®API
+'ƒfƒoƒCƒX‚Ìİ’è‚ğQÆ‚·‚é‚½‚ß‚ÌAPI
 Public Declare Function GetDeviceCaps Lib "gdi32" _
     (ByVal hDC As Long, ByVal nIndex As Long) As Long
 
-'ãƒ”ã‚¯ã‚»ãƒ«å½“ãŸã‚Šã®ã‚«ãƒ©ãƒ¼ãƒ“ãƒƒãƒˆæ•°
+'ƒsƒNƒZƒ‹“–‚½‚è‚ÌƒJƒ‰[ƒrƒbƒg”
 Private Const BITSPIXEL = 12
 
 
-'ã‚·ã‚¹ãƒ†ãƒ ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã‚’å¤‰æ›´ã™ã‚‹ãŸã‚ã®API
+'ƒVƒXƒeƒ€ƒpƒ‰ƒ[ƒ^‚ğ•ÏX‚·‚é‚½‚ß‚ÌAPI
 Declare Function SetSystemParametersInfo Lib "user32.dll" Alias "SystemParametersInfoA" _
     (ByVal uiAction As Long, ByVal uiParam As Long, ByVal pvParam As Long, _
     ByVal fWinIni As Long) As Long
@@ -323,24 +323,24 @@ Declare Function GetSystemParametersInfo Lib "user32.dll" Alias "SystemParameter
     (ByVal uiAction As Long, ByVal uiParam As Long, pvParam As Long, _
     ByVal fWinIni As Long) As Long
 
-'ãƒ•ã‚©ãƒ³ãƒˆã®ã‚¹ãƒ ãƒ¼ã‚¸ãƒ³ã‚°å‡¦ç†é–¢é€£ã®å®šæ•°
+'ƒtƒHƒ“ƒg‚ÌƒXƒ€[ƒWƒ“ƒOˆ—ŠÖ˜A‚Ì’è”
 Public Const SPI_GETFONTSMOOTHING = 74
 Public Const SPI_SETFONTSMOOTHING = 75
 
-'ãƒ¦ãƒ¼ã‚¶ãƒ¼ãƒ—ãƒ­ãƒ•ã‚¡ã‚¤ãƒ«ã®æ›´æ–°ã‚’æŒ‡å®š
+'ƒ†[ƒU[ƒvƒƒtƒ@ƒCƒ‹‚ÌXV‚ğw’è
 Public Const SPIF_UPDATEINIFILE = &H1
-'ã™ã¹ã¦ã®ãƒˆãƒƒãƒ—ãƒ¬ãƒ™ãƒ«ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã«å¤‰æ›´ã‚’é€šçŸ¥
+'‚·‚×‚Ä‚ÌƒgƒbƒvƒŒƒxƒ‹ƒEƒBƒ“ƒhƒE‚É•ÏX‚ğ’Ê’m
 Public Const SPIF_SENDWININICHANGE = &H2
 
 
-'ãƒ¡ã‚¤ãƒ³ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ãƒ­ãƒ¼ãƒ‰ã¨Flashã®ç™»éŒ²ã‚’è¡Œã†
+'ƒƒCƒ“ƒEƒBƒ“ƒhƒE‚Ìƒ[ƒh‚ÆFlash‚Ì“o˜^‚ğs‚¤
 Public Sub LoadMainFormAndRegisterFlash()
 Dim WSHShell As Object
     
     On Error GoTo ErrorHandler
     
-    'ã‚·ã‚§ãƒ«ã‹ã‚‰regsvr32.exeã‚’åˆ©ç”¨ã—ã¦ã€èµ·å‹•ã”ã¨ã«SRC.exeã¨åŒã˜ãƒ‘ã‚¹ã«ã‚ã‚‹
-    'FlashControl.ocxã‚’å†ç™»éŒ²ã™ã‚‹ã€‚
+    'ƒVƒFƒ‹‚©‚çregsvr32.exe‚ğ—˜—p‚µ‚ÄA‹N“®‚²‚Æ‚ÉSRC.exe‚Æ“¯‚¶ƒpƒX‚É‚ ‚é
+    'FlashControl.ocx‚ğÄ“o˜^‚·‚éB
     Set WSHShell = CreateObject("WScript.Shell")
     WSHShell.Run "regsvr32.exe /s """ & AppPath & "FlashControl.ocx""", 0, True
     Set WSHShell = Nothing
@@ -354,13 +354,13 @@ Dim WSHShell As Object
     
 ErrorHandler:
     
-    'FlashãŒä½¿ãˆãªã„ã®ã§Flashç„¡ã—ã®ãƒ¡ã‚¤ãƒ³ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’ä½¿ç”¨ã™ã‚‹
+    'Flash‚ªg‚¦‚È‚¢‚Ì‚ÅFlash–³‚µ‚ÌƒƒCƒ“ƒEƒBƒ“ƒhƒE‚ğg—p‚·‚é
     Load frmSafeMain
     Set MainForm = frmSafeMain
 End Sub
     
-'å„ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’ãƒ­ãƒ¼ãƒ‰
-'ãŸã ã—ãƒ¡ã‚¤ãƒ³ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã¯ã‚ã‚‰ã‹ã˜ã‚LoadMainFormAndRegisterFlashã§ãƒ­ãƒ¼ãƒ‰ã—ã¦ãŠãã“ã¨
+'ŠeƒEƒBƒ“ƒhƒE‚ğƒ[ƒh
+'‚½‚¾‚µƒƒCƒ“ƒEƒBƒ“ƒhƒE‚Í‚ ‚ç‚©‚¶‚ßLoadMainFormAndRegisterFlash‚Åƒ[ƒh‚µ‚Ä‚¨‚­‚±‚Æ
 Public Sub LoadForms()
 Dim X As Integer, Y As Integer
 
@@ -369,9 +369,9 @@ Dim X As Integer, Y As Integer
     Load frmListBox
     
     LockGUI
-    CommandState = "ãƒ¦ãƒ‹ãƒƒãƒˆé¸æŠ"
+    CommandState = "ƒ†ƒjƒbƒg‘I‘ğ"
     
-    'ãƒãƒƒãƒ—ç”»é¢ã«è¡¨ç¤ºã§ãã‚‹ãƒãƒƒãƒ—ã®ã‚µã‚¤ã‚º
+    'ƒ}ƒbƒv‰æ–Ê‚É•\¦‚Å‚«‚éƒ}ƒbƒv‚ÌƒTƒCƒY
     Select Case LCase$(ReadIni("Option", "NewGUI"))
         Case "on"
 ' MOD START MARGE
@@ -385,20 +385,20 @@ Dim X As Integer, Y As Integer
             WriteIni "Option", "NewGUI", "Off"
     End Select
 ' ADD START MARGE
-    ' Optionã§å®šç¾©ã•ã‚Œã¦ã„ã‚Œã°ãã¡ã‚‰ã‚’å„ªå…ˆã™ã‚‹
-    If IsOptionDefined("æ–°ï¼§ï¼µï¼©") Then
+    ' Option‚Å’è‹`‚³‚ê‚Ä‚¢‚ê‚Î‚»‚¿‚ç‚ğ—Dæ‚·‚é
+    If IsOptionDefined("V‚f‚t‚h") Then
         NewGUIMode = True
         MainWidth = 20
     End If
 ' ADD END MARGE
     MainHeight = 15
     
-    'ãƒãƒƒãƒ—ç”»é¢ã®ã‚µã‚¤ã‚ºï¼ˆãƒ”ã‚¯ã‚»ãƒ«ï¼‰
+    'ƒ}ƒbƒv‰æ–Ê‚ÌƒTƒCƒYiƒsƒNƒZƒ‹j
     MainPWidth = MainWidth * 32
     MainPHeight = MainHeight * 32
     
     With MainForm
-        'ãƒ¡ã‚¤ãƒ³ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ä½ç½®ï¼†ã‚µã‚¤ã‚ºã‚’è¨­å®š
+        'ƒƒCƒ“ƒEƒBƒ“ƒhƒE‚ÌˆÊ’u•ƒTƒCƒY‚ğİ’è
         X = Screen.TwipsPerPixelX
         Y = Screen.TwipsPerPixelY
 ' MOD START MARGE
@@ -414,7 +414,7 @@ Dim X As Integer, Y As Integer
         .Left = (Screen.width - .width) / 2
         .Top = (Screen.Height - .Height) / 2
         
-        'ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«ãƒãƒ¼ã®ä½ç½®ã‚’è¨­å®š
+        'ƒXƒNƒ[ƒ‹ƒo[‚ÌˆÊ’u‚ğİ’è
 ' MOD START MARGE
 '        If MainWidth = 15 Then
         If Not NewGUIMode Then
@@ -426,7 +426,7 @@ Dim X As Integer, Y As Integer
             .HScroll.Visible = False
         End If
         
-        'ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’è¨­ç½®
+        'ƒXƒe[ƒ^ƒXƒEƒBƒ“ƒhƒE‚ğİ’u
 ' MOD START MARGE
 '        If MainWidth = 15 Then
 '            .picFace.Move MainPWidth + 24, 4
@@ -460,7 +460,7 @@ Dim X As Integer, Y As Integer
         End If
 ' MOD END MARGE
         
-        'ãƒãƒƒãƒ—ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ã‚µã‚¤ã‚ºã‚’è¨­å®š
+        'ƒ}ƒbƒvƒEƒBƒ“ƒhƒE‚ÌƒTƒCƒY‚ğİ’è
 ' MOD START MARGE
 '        If MainWidth = 15 Then
         If Not NewGUIMode Then
@@ -475,10 +475,10 @@ Dim X As Integer, Y As Integer
 End Sub
 
 ' ADD START MARGE
-'Optionã«ã‚ˆã‚‹æ–°ï¼§ï¼µï¼©ãŒæœ‰åŠ¹ã‹ã©ã†ã‹ã‚’å†è¨­å®šã™ã‚‹
+'Option‚É‚æ‚éV‚f‚t‚h‚ª—LŒø‚©‚Ç‚¤‚©‚ğÄİ’è‚·‚é
 Public Sub SetNewGUIMode()
-    ' Optionã§å®šç¾©ã•ã‚Œã¦ã„ã‚‹ã®ã«NewGUIModeãŒfalseã®å ´åˆã€LoadFormsã‚’å‘¼ã¶
-    If IsOptionDefined("æ–°ï¼§ï¼µï¼©") _
+    ' Option‚Å’è‹`‚³‚ê‚Ä‚¢‚é‚Ì‚ÉNewGUIMode‚ªfalse‚Ìê‡ALoadForms‚ğŒÄ‚Ô
+    If IsOptionDefined("V‚f‚t‚h") _
         And Not NewGUIMode _
     Then
         LoadForms
@@ -486,10 +486,10 @@ Public Sub SetNewGUIMode()
 End Sub
 ' ADD  END  MARGE
 
-' === ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã«é–¢ã™ã‚‹å‡¦ç† ===
+' === ƒƒbƒZ[ƒWƒEƒBƒ“ƒhƒE‚ÉŠÖ‚·‚éˆ— ===
 
-'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’é–‹ã
-'æˆ¦é—˜ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ç”»é¢ãªã©ã€ãƒ¦ãƒ‹ãƒƒãƒˆè¡¨ç¤ºã‚’è¡Œã†å ´åˆã¯ u1, u2 ã«æŒ‡å®š
+'ƒƒbƒZ[ƒWƒEƒBƒ“ƒhƒE‚ğŠJ‚­
+'í“¬ƒƒbƒZ[ƒW‰æ–Ê‚È‚ÇAƒ†ƒjƒbƒg•\¦‚ğs‚¤ê‡‚Í u1, u2 ‚Éw’è
 Public Sub OpenMessageForm(Optional u1 As Unit, Optional u2 As Unit)
 Dim tppx As Integer, tppy As Integer
 Dim ret As Long
@@ -504,14 +504,14 @@ Dim ret As Long
     
     Load frmMessage
     With frmMessage
-        'ãƒ¦ãƒ‹ãƒƒãƒˆè¡¨ç¤ºã‚’ä¼´ã†å ´åˆã¯ã‚­ãƒ£ãƒ—ã‚·ãƒ§ãƒ³ã‹ã‚‰ã€Œ(è‡ªå‹•é€ã‚Š)ã€ã‚’å‰Šé™¤
+        'ƒ†ƒjƒbƒg•\¦‚ğ”º‚¤ê‡‚ÍƒLƒƒƒvƒVƒ‡ƒ“‚©‚çu(©“®‘—‚è)v‚ğíœ
         If Not u1 Is Nothing Then
-            If .Caption = "ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ (è‡ªå‹•é€ã‚Š)" Then
-                .Caption = "ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸"
+            If .Caption = "ƒƒbƒZ[ƒW (©“®‘—‚è)" Then
+                .Caption = "ƒƒbƒZ[ƒW"
             End If
         End If
         
-        'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’å¼·åˆ¶çš„ã«æœ€å°åŒ–è§£é™¤
+        'ƒƒbƒZ[ƒWƒEƒBƒ“ƒhƒE‚ğ‹­§“I‚ÉÅ¬‰»‰ğœ
         If .WindowState <> vbNormal Then
             .WindowState = vbNormal
             .Show
@@ -519,7 +519,7 @@ Dim ret As Long
         End If
         
         If u1 Is Nothing Then
-            'ãƒ¦ãƒ‹ãƒƒãƒˆè¡¨ç¤ºãªã—
+            'ƒ†ƒjƒbƒg•\¦‚È‚µ
             .labHP1.Visible = False
             .labHP2.Visible = False
             .labEN1.Visible = False
@@ -543,8 +543,8 @@ Dim ret As Long
             .picMessage.Top = 7
             .picMessage.Left = 84
         ElseIf u2 Is Nothing Then
-            'ãƒ¦ãƒ‹ãƒƒãƒˆè¡¨ç¤ºï¼‘ä½“ã®ã¿
-            If u1.Party = "å‘³æ–¹" Or u1.Party = "ï¼®ï¼°ï¼£" Then
+            'ƒ†ƒjƒbƒg•\¦‚P‘Ì‚Ì‚İ
+            If u1.Party = "–¡•û" Or u1.Party = "‚m‚o‚b" Then
                 .labHP1.Visible = False
                 .labEN1.Visible = False
                 .picHP1.Visible = False
@@ -586,7 +586,7 @@ Dim ret As Long
             .picMessage.Top = 41
             .picMessage.Left = 84
         Else
-            'ãƒ¦ãƒ‹ãƒƒãƒˆã‚’ï¼’ä½“è¡¨ç¤º
+            'ƒ†ƒjƒbƒg‚ğ‚Q‘Ì•\¦
             .labHP1.Visible = True
             .labHP2.Visible = True
             .labEN1.Visible = True
@@ -613,9 +613,9 @@ Dim ret As Long
             .picMessage.Left = 84
         End If
         
-        'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ä½ç½®è¨­å®š
+        'ƒƒbƒZ[ƒWƒEƒBƒ“ƒhƒE‚ÌˆÊ’uİ’è
         If MainForm.Visible And Not MainForm.WindowState = 1 Then
-            'ãƒ¡ã‚¤ãƒ³ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãŒè¡¨ç¤ºã•ã‚Œã¦ã„ã‚Œã°ãƒ¡ã‚¤ãƒ³ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ä¸‹ç«¯ã«åˆã‚ã›ã¦è¡¨ç¤º
+            'ƒƒCƒ“ƒEƒBƒ“ƒhƒE‚ª•\¦‚³‚ê‚Ä‚¢‚ê‚ÎƒƒCƒ“ƒEƒBƒ“ƒhƒE‚Ì‰º’[‚É‡‚í‚¹‚Ä•\¦
             If Not frmMessage.Visible Then
                 If MainWidth = 15 Then
                     .Left = MainForm.Left
@@ -629,27 +629,27 @@ Dim ret As Long
                 End If
             End If
         Else
-            'ãƒ¡ã‚¤ãƒ³ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãŒè¡¨ç¤ºã•ã‚Œã¦ã„ãªã„å ´åˆã¯ç”»é¢ä¸­å¤®ã«è¡¨ç¤º
+            'ƒƒCƒ“ƒEƒBƒ“ƒhƒE‚ª•\¦‚³‚ê‚Ä‚¢‚È‚¢ê‡‚Í‰æ–Ê’†‰›‚É•\¦
             .Left = (Screen.width - .width) / 2
             .Top = (Screen.Height - .Height) / 2
         End If
         
-        'ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’ã‚¯ãƒªã‚¢ã—ã¦ãŠã
+        'ƒEƒBƒ“ƒhƒE‚ğƒNƒŠƒA‚µ‚Ä‚¨‚­
         .picFace = LoadPicture("")
         DisplayedPilot = ""
         .picMessage.Cls
         
-        'ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’è¡¨ç¤º
+        'ƒEƒBƒ“ƒhƒE‚ğ•\¦
         .Show
         
-        'å¸¸ã«æ‰‹å‰ã«è¡¨ç¤ºã™ã‚‹
+        'í‚Éè‘O‚É•\¦‚·‚é
         ret = SetWindowPos(.hwnd, -1, 0, 0, 0, 0, &H3)
     End With
     
     DoEvents
 End Sub
 
-'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’é–‰ã˜ã‚‹
+'ƒƒbƒZ[ƒWƒEƒBƒ“ƒhƒE‚ğ•Â‚¶‚é
 Public Sub CloseMessageForm()
     If Not frmMessage.Visible Then
         Exit Sub
@@ -658,7 +658,7 @@ Public Sub CloseMessageForm()
     DoEvents
 End Sub
 
-'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’ã‚¯ãƒªã‚¢
+'ƒƒbƒZ[ƒWƒEƒBƒ“ƒhƒE‚ğƒNƒŠƒA
 Public Sub ClearMessageForm()
     With frmMessage
         .picFace = LoadPicture("")
@@ -670,24 +670,24 @@ Public Sub ClearMessageForm()
     DoEvents
 End Sub
 
-'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã«è¡¨ç¤ºã—ã¦ã„ã‚‹ãƒ¦ãƒ‹ãƒƒãƒˆæƒ…å ±ã‚’æ›´æ–°
+'ƒƒbƒZ[ƒWƒEƒBƒ“ƒhƒE‚É•\¦‚µ‚Ä‚¢‚éƒ†ƒjƒbƒgî•ñ‚ğXV
 Public Sub UpdateMessageForm(u1 As Unit, Optional u2 As Variant)
 Dim lu As Unit, ru As Unit
 Dim ret As Long, i As Integer, buf As String
 Dim num As Integer, tmp As Long
 
     With frmMessage
-        'ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã«ãƒ¦ãƒ‹ãƒƒãƒˆæƒ…å ±ãŒè¡¨ç¤ºã•ã‚Œã¦ã„ãªã„å ´åˆã¯ãã®ã¾ã¾çµ‚äº†
+        'ƒEƒBƒ“ƒhƒE‚Éƒ†ƒjƒbƒgî•ñ‚ª•\¦‚³‚ê‚Ä‚¢‚È‚¢ê‡‚Í‚»‚Ì‚Ü‚ÜI—¹
         If .Visible Then
             If Not .picUnit1.Visible And Not .picUnit2.Visible Then
                 Exit Sub
             End If
         End If
         
-        'luã‚’å·¦ã«è¡¨ç¤ºã™ã‚‹ãƒ¦ãƒ‹ãƒƒãƒˆã€ruã‚’å³ã«è¡¨ç¤ºã™ã‚‹ãƒ¦ãƒ‹ãƒƒãƒˆã«è¨­å®š
+        'lu‚ğ¶‚É•\¦‚·‚éƒ†ƒjƒbƒgAru‚ğ‰E‚É•\¦‚·‚éƒ†ƒjƒbƒg‚Éİ’è
         If IsMissing(u2) Then
-            'ï¼‘ä½“ã®ãƒ¦ãƒ‹ãƒƒãƒˆã®ã¿è¡¨ç¤º
-            If u1.Party = "å‘³æ–¹" Or u1.Party = "ï¼®ï¼°ï¼£" Then
+            '‚P‘Ì‚Ìƒ†ƒjƒbƒg‚Ì‚İ•\¦
+            If u1.Party = "–¡•û" Or u1.Party = "‚m‚o‚b" Then
                 Set lu = Nothing
                 Set ru = u1
             Else
@@ -695,8 +695,8 @@ Dim num As Integer, tmp As Long
                 Set ru = Nothing
             End If
         ElseIf u2 Is Nothing Then
-            'åå°„æ”»æ’ƒ
-            'å‰å›è¡¨ç¤ºã•ã‚ŒãŸãƒ¦ãƒ‹ãƒƒãƒˆã‚’ãã®ã¾ã¾ä½¿ç”¨
+            '”½ËUŒ‚
+            '‘O‰ñ•\¦‚³‚ê‚½ƒ†ƒjƒbƒg‚ğ‚»‚Ì‚Ü‚Üg—p
             Set lu = LeftUnit
             Set ru = RightUnit
         ElseIf (u2 Is LeftUnit Or u1 Is RightUnit) _
@@ -709,7 +709,7 @@ Dim num As Integer, tmp As Long
             Set ru = u2
         End If
         
-        'ç¾åœ¨è¡¨ç¤ºã•ã‚Œã¦ã„ã‚‹é †ç•ªã«å¿œã˜ã¦ãƒ¦ãƒ‹ãƒƒãƒˆã®å…¥ã‚Œæ›¿ãˆ
+        'Œ»İ•\¦‚³‚ê‚Ä‚¢‚é‡”Ô‚É‰‚¶‚Äƒ†ƒjƒbƒg‚Ì“ü‚ê‘Ö‚¦
         If lu Is RightUnit And ru Is LeftUnit _
             And Not LeftUnit Is RightUnit _
         Then
@@ -717,7 +717,7 @@ Dim num As Integer, tmp As Long
             Set ru = RightUnit
         End If
         
-        'è¡¨ç¤ºã™ã‚‹ãƒ¦ãƒ‹ãƒƒãƒˆã®ï¼§ï¼µï¼©éƒ¨å“ã‚’è¡¨ç¤º
+        '•\¦‚·‚éƒ†ƒjƒbƒg‚Ì‚f‚t‚h•”•i‚ğ•\¦
         If Not lu Is Nothing Then
             If Not .labHP1.Visible Then
                 .labHP1.Visible = True
@@ -741,11 +741,11 @@ Dim num As Integer, tmp As Long
             End If
         End If
         
-        'æœªè¡¨ç¤ºã®ãƒ¦ãƒ‹ãƒƒãƒˆã‚’è¡¨ç¤ºã™ã‚‹
+        '–¢•\¦‚Ìƒ†ƒjƒbƒg‚ğ•\¦‚·‚é
         If Not lu Is Nothing And Not lu Is LeftUnit Then
-            'å·¦ã®ãƒ¦ãƒ‹ãƒƒãƒˆãŒæœªè¡¨ç¤ºãªã®ã§è¡¨ç¤ºã™ã‚‹
+            '¶‚Ìƒ†ƒjƒbƒg‚ª–¢•\¦‚È‚Ì‚Å•\¦‚·‚é
             
-            'ãƒ¦ãƒ‹ãƒƒãƒˆç”»åƒ
+            'ƒ†ƒjƒbƒg‰æ‘œ
             If lu.BitmapID > 0 Then
                 If MapDrawMode = "" Then
                     ret = BitBlt(.picUnit1.hDC, 0, 0, 32, 32, _
@@ -756,21 +756,21 @@ Dim num As Integer, tmp As Long
                     LoadUnitBitmap lu, .picUnit1, 0, 0, True
                 End If
             Else
-                'éè¡¨ç¤ºã®ãƒ¦ãƒ‹ãƒƒãƒˆã®å ´åˆã¯ãƒ¦ãƒ‹ãƒƒãƒˆã®ã„ã‚‹åœ°å½¢ã‚¿ã‚¤ãƒ«ã‚’è¡¨ç¤º
+                '”ñ•\¦‚Ìƒ†ƒjƒbƒg‚Ìê‡‚Íƒ†ƒjƒbƒg‚Ì‚¢‚é’nŒ`ƒ^ƒCƒ‹‚ğ•\¦
                 ret = BitBlt(.picUnit1.hDC, 0, 0, 32, 32, _
                     MainForm.picBack.hDC, 32 * (lu.X - 1), 32 * (lu.Y - 1), SRCCOPY)
             End If
             .picUnit1.Refresh
             
-            'ï¼¨ï¼°åç§°
-            If lu.IsConditionSatisfied("ãƒ‡ãƒ¼ã‚¿ä¸æ˜") Then
+            '‚g‚o–¼Ì
+            If lu.IsConditionSatisfied("ƒf[ƒ^•s–¾") Then
                 .labHP1.Caption = Term("HP")
             Else
                 .labHP1.Caption = Term("HP", lu)
             End If
             
-            'ï¼¨ï¼°æ•°å€¤
-            If lu.IsConditionSatisfied("ãƒ‡ãƒ¼ã‚¿ä¸æ˜") Then
+            '‚g‚o”’l
+            If lu.IsConditionSatisfied("ƒf[ƒ^•s–¾") Then
                 .txtHP1.Text = "?????/?????"
             Else
                 If lu.HP < 100000 Then
@@ -786,21 +786,21 @@ Dim num As Integer, tmp As Long
                 .txtHP1.Text = buf
             End If
             
-            'ï¼¨ï¼°ã‚²ãƒ¼ã‚¸
+            '‚g‚oƒQ[ƒW
             .picHP1.Cls
             If lu.HP > 0 Or i < num Then
                 .picHP1.Line (0, 0)-((.picHP1.width - 4) * lu.HP \ lu.MaxHP - 1, 4), , BF
             End If
             
-            'ï¼¥ï¼®åç§°
-            If lu.IsConditionSatisfied("ãƒ‡ãƒ¼ã‚¿ä¸æ˜") Then
+            '‚d‚m–¼Ì
+            If lu.IsConditionSatisfied("ƒf[ƒ^•s–¾") Then
                 .labEN1.Caption = Term("EN")
             Else
                 .labEN1.Caption = Term("EN", lu)
             End If
             
-            'ï¼¥ï¼®æ•°å€¤
-            If lu.IsConditionSatisfied("ãƒ‡ãƒ¼ã‚¿ä¸æ˜") Then
+            '‚d‚m”’l
+            If lu.IsConditionSatisfied("ƒf[ƒ^•s–¾") Then
                 .txtEN1.Text = "???/???"
             Else
                 If lu.EN < 1000 Then
@@ -816,22 +816,22 @@ Dim num As Integer, tmp As Long
                 .txtEN1.Text = buf
             End If
             
-            'ï¼¥ï¼®ã‚²ãƒ¼ã‚¸
+            '‚d‚mƒQ[ƒW
             .picEN1.Cls
             If lu.EN > 0 Or i < num Then
                 .picEN1.Line (0, 0)-((.picEN1.width - 4) * lu.EN \ lu.MaxEN - 1, 4), , BF
             End If
             
-            'è¡¨ç¤ºå†…å®¹ã‚’è¨˜éŒ²
+            '•\¦“à—e‚ğ‹L˜^
             Set LeftUnit = lu
             LeftUnitHPRatio = lu.HP / lu.MaxHP
             LeftUnitENRatio = lu.EN / lu.MaxEN
         End If
         
         If Not ru Is Nothing And Not RightUnit Is ru Then
-            'å³ã®ãƒ¦ãƒ‹ãƒƒãƒˆãŒæœªè¡¨ç¤ºãªã®ã§è¡¨ç¤ºã™ã‚‹
+            '‰E‚Ìƒ†ƒjƒbƒg‚ª–¢•\¦‚È‚Ì‚Å•\¦‚·‚é
             
-            'ãƒ¦ãƒ‹ãƒƒãƒˆç”»åƒ
+            'ƒ†ƒjƒbƒg‰æ‘œ
             If ru.BitmapID > 0 Then
                 If MapDrawMode = "" Then
                     ret = BitBlt(.picUnit2.hDC, 0, 0, 32, 32, _
@@ -842,21 +842,21 @@ Dim num As Integer, tmp As Long
                     LoadUnitBitmap ru, .picUnit2, 0, 0, True
                 End If
             Else
-                'éè¡¨ç¤ºã®ãƒ¦ãƒ‹ãƒƒãƒˆã®å ´åˆã¯ãƒ¦ãƒ‹ãƒƒãƒˆã®ã„ã‚‹åœ°å½¢ã‚¿ã‚¤ãƒ«ã‚’è¡¨ç¤º
+                '”ñ•\¦‚Ìƒ†ƒjƒbƒg‚Ìê‡‚Íƒ†ƒjƒbƒg‚Ì‚¢‚é’nŒ`ƒ^ƒCƒ‹‚ğ•\¦
                 ret = BitBlt(.picUnit2.hDC, 0, 0, 32, 32, _
                     MainForm.picBack.hDC, 32 * (ru.X - 1), 32 * (ru.Y - 1), SRCCOPY)
             End If
             .picUnit2.Refresh
             
-            'ï¼¨ï¼°æ•°å€¤
-            If ru.IsConditionSatisfied("ãƒ‡ãƒ¼ã‚¿ä¸æ˜") Then
+            '‚g‚o”’l
+            If ru.IsConditionSatisfied("ƒf[ƒ^•s–¾") Then
                 .labHP2.Caption = Term("HP")
             Else
                 .labHP2.Caption = Term("HP", ru)
             End If
             
-            'ï¼¨ï¼°æ•°å€¤
-            If ru.IsConditionSatisfied("ãƒ‡ãƒ¼ã‚¿ä¸æ˜") Then
+            '‚g‚o”’l
+            If ru.IsConditionSatisfied("ƒf[ƒ^•s–¾") Then
                 .txtHP2.Text = "?????/?????"
             Else
                 If ru.HP < 100000 Then
@@ -872,21 +872,21 @@ Dim num As Integer, tmp As Long
                 .txtHP2.Text = buf
             End If
             
-            'ï¼¨ï¼°ã‚²ãƒ¼ã‚¸
+            '‚g‚oƒQ[ƒW
             .picHP2.Cls
             If ru.HP > 0 Or i < num Then
                 .picHP2.Line (0, 0)-((.picHP2.width - 4) * ru.HP \ ru.MaxHP - 1, 4), , BF
             End If
             
-            'ï¼¥ï¼®åç§°
-            If ru.IsConditionSatisfied("ãƒ‡ãƒ¼ã‚¿ä¸æ˜") Then
+            '‚d‚m–¼Ì
+            If ru.IsConditionSatisfied("ƒf[ƒ^•s–¾") Then
                 .labEN2.Caption = Term("EN")
             Else
                 .labEN2.Caption = Term("EN", ru)
             End If
             
-            'ï¼¥ï¼®æ•°å€¤
-            If ru.IsConditionSatisfied("ãƒ‡ãƒ¼ã‚¿ä¸æ˜") Then
+            '‚d‚m”’l
+            If ru.IsConditionSatisfied("ƒf[ƒ^•s–¾") Then
                 .txtEN2.Text = "???/???"
             Else
                 If ru.EN < 1000 Then
@@ -902,21 +902,21 @@ Dim num As Integer, tmp As Long
                 .txtEN2.Text = buf
             End If
             
-            'ï¼¥ï¼®ã‚²ãƒ¼ã‚¸
+            '‚d‚mƒQ[ƒW
             .picEN2.Cls
             If ru.EN > 0 Or i < num Then
                 .picEN2.Line (0, 0)-((.picEN2.width - 4) * ru.EN \ ru.MaxEN - 1, 4), , BF
             End If
             
-            'è¡¨ç¤ºå†…å®¹ã‚’è¨˜éŒ²
+            '•\¦“à—e‚ğ‹L˜^
             Set RightUnit = ru
             RightUnitHPRatio = ru.HP / ru.MaxHP
             RightUnitENRatio = ru.EN / ru.MaxEN
         End If
         
-        'å‰å›ã®è¡¨ç¤ºã‹ã‚‰ã®ï¼¨ï¼°ã€ï¼¥ï¼®ã®å¤‰åŒ–ã‚’ã‚¢ãƒ‹ãƒ¡è¡¨ç¤º
+        '‘O‰ñ‚Ì•\¦‚©‚ç‚Ì‚g‚oA‚d‚m‚Ì•Ï‰»‚ğƒAƒjƒ•\¦
         
-        'å¤‰åŒ–ãŒãªã„å ´åˆã¯ã‚¢ãƒ‹ãƒ¡è¡¨ç¤ºã®å¿…è¦ãŒãªã„ã®ã§ãƒã‚§ãƒƒã‚¯ã—ã¦ãŠã
+        '•Ï‰»‚ª‚È‚¢ê‡‚ÍƒAƒjƒ•\¦‚Ì•K—v‚ª‚È‚¢‚Ì‚Åƒ`ƒFƒbƒN‚µ‚Ä‚¨‚­
         num = 0
         If Not lu Is Nothing Then
             If lu.HP / lu.MaxHP <> LeftUnitHPRatio _
@@ -931,7 +931,7 @@ Dim num As Integer, tmp As Long
             End If
         End If
         
-        'å³ãƒœã‚¿ãƒ³ãŒæŠ¼ã•ã‚Œã¦ã„ã‚‹å ´åˆã¯ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³è¡¨ç¤ºã‚’çŸ­ç¸®åŒ–
+        '‰Eƒ{ƒ^ƒ“‚ª‰Ÿ‚³‚ê‚Ä‚¢‚éê‡‚ÍƒAƒjƒ[ƒVƒ‡ƒ“•\¦‚ğ’Zk‰»
         If num > 0 Then
             If IsRButtonPressed() Then
                 num = 2
@@ -939,13 +939,13 @@ Dim num As Integer, tmp As Long
         End If
         
         For i = 1 To num
-            'å·¦å´ã®ãƒ¦ãƒ‹ãƒƒãƒˆ
+            '¶‘¤‚Ìƒ†ƒjƒbƒg
             If Not lu Is Nothing Then
-                'ï¼¨ï¼°
+                '‚g‚o
                 If lu.HP / lu.MaxHP <> LeftUnitHPRatio Then
                     tmp = (lu.MaxHP * LeftUnitHPRatio * (num - i) + lu.HP * i) \ num
                     
-                    If lu.IsConditionSatisfied("ãƒ‡ãƒ¼ã‚¿ä¸æ˜") Then
+                    If lu.IsConditionSatisfied("ƒf[ƒ^•s–¾") Then
                         .txtHP1.Text = "?????/?????"
                     Else
                         If lu.HP < 100000 Then
@@ -968,11 +968,11 @@ Dim num As Integer, tmp As Long
                     End If
                 End If
                 
-                'ï¼¥ï¼®
+                '‚d‚m
                 If lu.EN / lu.MaxEN <> LeftUnitENRatio Then
                     tmp = (lu.MaxEN * LeftUnitENRatio * (num - i) + lu.EN * i) \ num
                     
-                    If lu.IsConditionSatisfied("ãƒ‡ãƒ¼ã‚¿ä¸æ˜") Then
+                    If lu.IsConditionSatisfied("ƒf[ƒ^•s–¾") Then
                         .txtEN1.Text = "???/???"
                     Else
                         If lu.EN < 1000 Then
@@ -996,13 +996,13 @@ Dim num As Integer, tmp As Long
                 End If
             End If
             
-            'å³å´ã®ãƒ¦ãƒ‹ãƒƒãƒˆ
+            '‰E‘¤‚Ìƒ†ƒjƒbƒg
             If Not ru Is Nothing Then
-                'ï¼¨ï¼°
+                '‚g‚o
                 If ru.HP / ru.MaxHP <> RightUnitHPRatio Then
                     tmp = (ru.MaxHP * RightUnitHPRatio * (num - i) + ru.HP * i) \ num
                     
-                    If ru.IsConditionSatisfied("ãƒ‡ãƒ¼ã‚¿ä¸æ˜") Then
+                    If ru.IsConditionSatisfied("ƒf[ƒ^•s–¾") Then
                         .txtHP2.Text = "?????/?????"
                     Else
                         If ru.HP < 100000 Then
@@ -1025,10 +1025,10 @@ Dim num As Integer, tmp As Long
                     End If
                 End If
                 
-                'ï¼¥ï¼®
+                '‚d‚m
                 If ru.EN / ru.MaxEN <> RightUnitENRatio Then
                     tmp = (ru.MaxEN * RightUnitENRatio * (num - i) + ru.EN * i) \ num
-                    If ru.IsConditionSatisfied("ãƒ‡ãƒ¼ã‚¿ä¸æ˜") Then
+                    If ru.IsConditionSatisfied("ƒf[ƒ^•s–¾") Then
                         .txtEN2.Text = "???/???"
                     Else
                         If ru.EN < 1000 Then
@@ -1052,7 +1052,7 @@ Dim num As Integer, tmp As Long
                 End If
             End If
             
-            'ãƒªãƒ•ãƒ¬ãƒƒã‚·ãƒ¥
+            'ƒŠƒtƒŒƒbƒVƒ…
             If Not lu Is Nothing Then
                 If lu.HP / lu.MaxHP <> LeftUnitHPRatio Then
                     .picHP1.Refresh
@@ -1077,7 +1077,7 @@ Dim num As Integer, tmp As Long
             Sleep 20
         Next
         
-        'è¡¨ç¤ºå†…å®¹ã‚’è¨˜éŒ²
+        '•\¦“à—e‚ğ‹L˜^
         If Not lu Is Nothing Then
             LeftUnitHPRatio = lu.HP / lu.MaxHP
             LeftUnitENRatio = lu.EN / lu.MaxEN
@@ -1091,37 +1091,37 @@ Dim num As Integer, tmp As Long
     End With
 End Sub
 
-'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®çŠ¶æ…‹ã‚’è¨˜éŒ²ã™ã‚‹
+'ƒƒbƒZ[ƒWƒEƒBƒ“ƒhƒE‚Ìó‘Ô‚ğ‹L˜^‚·‚é
 Public Sub SaveMessageFormStatus()
     IsMessageFormVisible = frmMessage.Visible
     Set SavedLeftUnit = LeftUnit
     Set SavedRightUnit = RightUnit
 End Sub
 
-'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®çŠ¶æ…‹ã‚’è¨˜éŒ²ã—ãŸçŠ¶æ…‹ã«ä¿ã¤
+'ƒƒbƒZ[ƒWƒEƒBƒ“ƒhƒE‚Ìó‘Ô‚ğ‹L˜^‚µ‚½ó‘Ô‚É•Û‚Â
 Public Sub KeepMessageFormStatus()
     If Not IsMessageFormVisible Then
-        'è¨˜éŒ²ã—ãŸæ™‚ç‚¹ã§ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãŒè¡¨ç¤ºã•ã‚Œã¦ã„ãªã‘ã‚Œã°
+        '‹L˜^‚µ‚½“_‚ÅƒƒbƒZ[ƒWƒEƒBƒ“ƒhƒE‚ª•\¦‚³‚ê‚Ä‚¢‚È‚¯‚ê‚Î
         If frmMessage.Visible Then
-            'é–‹ã„ã¦ã„ã‚‹ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’å¼·åˆ¶çš„ã«é–‰ã˜ã‚‹
+            'ŠJ‚¢‚Ä‚¢‚éƒƒbƒZ[ƒWƒEƒBƒ“ƒhƒE‚ğ‹­§“I‚É•Â‚¶‚é
             CloseMessageForm
         End If
     ElseIf Not frmMessage.Visible Then
-        'è¨˜éŒ²ã—ãŸæ™‚ç‚¹ã§ã¯ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãŒè¡¨ç¤ºã•ã‚Œã¦ã„ãŸã®ã§ã€
-        'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãŒè¡¨ç¤ºã•ã‚Œã¦ã„ãªã„å ´åˆã¯è¡¨ç¤ºã™ã‚‹
+        '‹L˜^‚µ‚½“_‚Å‚ÍƒƒbƒZ[ƒWƒEƒBƒ“ƒhƒE‚ª•\¦‚³‚ê‚Ä‚¢‚½‚Ì‚ÅA
+        'ƒƒbƒZ[ƒWƒEƒBƒ“ƒhƒE‚ª•\¦‚³‚ê‚Ä‚¢‚È‚¢ê‡‚Í•\¦‚·‚é
         OpenMessageForm SavedLeftUnit, SavedRightUnit
     ElseIf LeftUnit Is Nothing And RightUnit Is Nothing _
         And (Not SavedLeftUnit Is Nothing Or Not SavedRightUnit Is Nothing) _
     Then
-        'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‹ã‚‰ãƒ¦ãƒ‹ãƒƒãƒˆè¡¨ç¤ºãŒæ¶ˆãˆã¦ã—ã¾ã£ãŸå ´åˆã¯å†è¡¨ç¤º
+        'ƒƒbƒZ[ƒWƒEƒBƒ“ƒhƒE‚©‚çƒ†ƒjƒbƒg•\¦‚ªÁ‚¦‚Ä‚µ‚Ü‚Á‚½ê‡‚ÍÄ•\¦
         OpenMessageForm SavedLeftUnit, SavedRightUnit
     End If
 End Sub
 
 
-' === ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸è¡¨ç¤ºã«é–¢ã™ã‚‹å‡¦ç† ===
+' === ƒƒbƒZ[ƒW•\¦‚ÉŠÖ‚·‚éˆ— ===
 
-'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã«ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’è¡¨ç¤º
+'ƒƒbƒZ[ƒWƒEƒBƒ“ƒhƒE‚ÉƒƒbƒZ[ƒW‚ğ•\¦
 Public Sub DisplayMessage(pname As String, ByVal msg As String, _
     Optional ByVal msg_mode As String)
 Dim messages() As String
@@ -1140,15 +1140,15 @@ Dim is_character_message As Boolean
 Dim cl_margin(2) As Single
 Dim left_margin As String
     
-    'ã‚­ãƒ£ãƒ©è¡¨ç¤ºã®æãæ›ãˆ
-    If pname = "ã‚·ã‚¹ãƒ†ãƒ " Then
-        'ã€Œã‚·ã‚¹ãƒ†ãƒ ã€
+    'ƒLƒƒƒ‰•\¦‚Ì•`‚«Š·‚¦
+    If pname = "ƒVƒXƒeƒ€" Then
+        'uƒVƒXƒeƒ€v
         frmMessage.picFace = LoadPicture("")
         frmMessage.picFace.Refresh
         DisplayedPilot = ""
         left_margin = ""
     ElseIf pname <> "" Then
-        'ã©ã®ã‚­ãƒ£ãƒ©ç”»åƒã‚’ä½¿ã†ã‹ï¼Ÿ
+        '‚Ç‚ÌƒLƒƒƒ‰‰æ‘œ‚ğg‚¤‚©H
         If PList.IsDefined(pname) Then
             pnickname = PList.Item(pname).Nickname
             fname = PList.Item(pname).Bitmap
@@ -1162,11 +1162,11 @@ Dim left_margin As String
             fname = "-.bmp"
         End If
         
-        'ã‚­ãƒ£ãƒ©ç”»åƒã®è¡¨ç¤º
+        'ƒLƒƒƒ‰‰æ‘œ‚Ì•\¦
         If fname <> "-.bmp" Then
             fname = "Pilot\" & fname
             If DisplayedPilot <> fname Or DisplayMode <> msg_mode Then
-                If DrawPicture(fname, 0, 0, 64, 64, 0, 0, 0, 0, "ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ " & msg_mode) Then
+                If DrawPicture(fname, 0, 0, 64, 64, 0, 0, 0, 0, "ƒƒbƒZ[ƒW " & msg_mode) Then
                     frmMessage.picFace.Refresh
                     DisplayedPilot = fname
                     DisplayMode = msg_mode
@@ -1176,7 +1176,7 @@ Dim left_margin As String
                     DisplayedPilot = ""
                     DisplayMode = ""
                     
-                    'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆç”»åƒãŒå­˜åœ¨ã—ãªã„ã“ã¨ã‚’è¨˜éŒ²ã—ã¦ãŠã
+                    'ƒpƒCƒƒbƒg‰æ‘œ‚ª‘¶İ‚µ‚È‚¢‚±‚Æ‚ğ‹L˜^‚µ‚Ä‚¨‚­
                     If PList.IsDefined(pname) Then
                         With PList.Item(pname)
                             If .Bitmap = .Data.Bitmap Then
@@ -1197,42 +1197,42 @@ Dim left_margin As String
             DisplayMode = ""
         End If
         
-        If IsOptionDefined("ä¼šè©±ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆåæ”¹è¡Œ") Then
+        If IsOptionDefined("‰ï˜bƒpƒCƒƒbƒg–¼‰üs") Then
             left_margin = " "
         Else
             left_margin = "  "
         End If
     End If
     
-    'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ä¸­ã®å¼ç½®æ›ã‚’å‡¦ç†
+    'ƒƒbƒZ[ƒW’†‚Ì®’uŠ·‚ğˆ—
     FormatMessage msg
     msg = Trim$(msg)
     
-    'æœ«å°¾ã«å¼·åˆ¶æ”¹è¡ŒãŒå…¥ã£ã¦ã„ã‚‹å ´åˆã¯å–ã‚Šé™¤ã
+    '––”ö‚É‹­§‰üs‚ª“ü‚Á‚Ä‚¢‚éê‡‚Íæ‚èœ‚­
     Do While Right$(msg, 1) = ";"
         msg = Left$(msg, Len(msg) - 1)
     Loop
     
-    'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãŒç©ºã®å ´åˆã¯ã‚­ãƒ£ãƒ©è¡¨ç¤ºã®æãæ›ãˆã®ã¿è¡Œã†
+    'ƒƒbƒZ[ƒW‚ª‹ó‚Ìê‡‚ÍƒLƒƒƒ‰•\¦‚Ì•`‚«Š·‚¦‚Ì‚İs‚¤
     If msg = "" Then
         Exit Sub
     End If
     
     Select Case pname
-        Case "ã‚·ã‚¹ãƒ†ãƒ "
-            'ãã®ã¾ã¾ä½¿ç”¨
+        Case "ƒVƒXƒeƒ€"
+            '‚»‚Ì‚Ü‚Üg—p
         Case ""
-            'åŸºæœ¬çš„ã«ã¯ãã®ã¾ã¾ä½¿ç”¨ã™ã‚‹ãŒã€ã›ã‚Šãµè¡¨ç¤ºã®ä»£ç”¨ã®å ´åˆã¯
-            'ã›ã‚Šãµè¡¨ç¤ºç”¨ã®å‡¦ç†ã‚’è¡Œã†
+            'Šî–{“I‚É‚Í‚»‚Ì‚Ü‚Üg—p‚·‚é‚ªA‚¹‚è‚Ó•\¦‚Ì‘ã—p‚Ìê‡‚Í
+            '‚¹‚è‚Ó•\¦—p‚Ìˆ—‚ğs‚¤
             i = 0
-            If (InStr(msg, "ã€Œ") > 0 And Right$(msg, 1) = "ã€") Then
-                i = InStr(msg, "ã€Œ")
-            ElseIf (InStr(msg, "ã€") > 0 And Right$(msg, 1) = "ã€") Then
-                i = InStr(msg, "ã€")
+            If (InStr(msg, "u") > 0 And Right$(msg, 1) = "v") Then
+                i = InStr(msg, "u")
+            ElseIf (InStr(msg, "w") > 0 And Right$(msg, 1) = "x") Then
+                i = InStr(msg, "w")
             ElseIf (InStr(msg, "(") > 0 And Right$(msg, 1) = ")") Then
                 i = InStr(msg, "(")
-            ElseIf (InStr(msg, "ï¼ˆ") > 0 And Right$(msg, 1) = "ï¼‰") Then
-                i = InStr(msg, "ï¼ˆ")
+            ElseIf (InStr(msg, "i") > 0 And Right$(msg, 1) = "j") Then
+                i = InStr(msg, "i")
             End If
             If i > 1 Then
                 If i < 8 _
@@ -1241,46 +1241,46 @@ Dim left_margin As String
                 Then
                     is_character_message = True
                     If Not IsSpace(Mid$(msg, i - 1, 1)) Then
-                        '"ã€Œ"ã®å‰ã«åŠè§’ã‚¹ãƒšãƒ¼ã‚¹ã‚’æŒ¿å…¥
+                        '"u"‚Ì‘O‚É”¼ŠpƒXƒy[ƒX‚ğ‘}“ü
                         msg = Left$(msg, i - 1) & " " & Mid$(msg, i)
                     End If
                 End If
             End If
         Case Else
             is_character_message = True
-            If (Left$(msg, 1) = "(" Or Left$(msg, 1) = "ï¼ˆ") _
-                And (Right$(msg, 1) = ")" Or Right$(msg, 1) = "ï¼‰") _
+            If (Left$(msg, 1) = "(" Or Left$(msg, 1) = "i") _
+                And (Right$(msg, 1) = ")" Or Right$(msg, 1) = "j") _
             Then
-                'ãƒ¢ãƒãƒ­ãƒ¼ã‚°
+                'ƒ‚ƒmƒ[ƒO
                 msg = Mid$(msg, 2, Len(msg) - 2)
                 msg = pnickname _
-                    & IIf(IsOptionDefined("ä¼šè©±ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆåæ”¹è¡Œ"), ";", " ") _
-                    & "ï¼ˆ" & msg & "ï¼‰"
-            ElseIf Left$(msg, 1) = "ã€" And Right$(msg, 1) = "ã€" Then
+                    & IIf(IsOptionDefined("‰ï˜bƒpƒCƒƒbƒg–¼‰üs"), ";", " ") _
+                    & "i" & msg & "j"
+            ElseIf Left$(msg, 1) = "w" And Right$(msg, 1) = "x" Then
                 msg = Mid$(msg, 2, Len(msg) - 2)
                 msg = pnickname _
-                    & IIf(IsOptionDefined("ä¼šè©±ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆåæ”¹è¡Œ"), ";", " ") _
-                    & "ã€" & msg & "ã€"
+                    & IIf(IsOptionDefined("‰ï˜bƒpƒCƒƒbƒg–¼‰üs"), ";", " ") _
+                    & "w" & msg & "x"
             Else
-                'ã›ã‚Šãµ
+                '‚¹‚è‚Ó
                 msg = pnickname _
-                    & IIf(IsOptionDefined("ä¼šè©±ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆåæ”¹è¡Œ"), ";", " ") _
-                    & "ã€Œ" & msg & "ã€"
+                    & IIf(IsOptionDefined("‰ï˜bƒpƒCƒƒbƒg–¼‰üs"), ";", " ") _
+                    & "u" & msg & "v"
             End If
     End Select
 
-    'å¼·åˆ¶æ”¹è¡Œã®ä½ç½®ã‚’è¨­å®š
-    If IsOptionDefined("æ”¹è¡Œæ™‚ä½™ç™½çŸ­ç¸®") Then
-        cl_margin(0) = 0.94 'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸é•·ã®è¶…éã«ã‚ˆã‚‹æ”¹è¡Œã®ä½ç½®
-        cl_margin(1) = 0.7  '"ã€‚"," "ã«ã‚ˆã‚‹æ”¹è¡Œã®ä½ç½®
-        cl_margin(2) = 0.85  '"ã€"ã«ã‚ˆã‚‹æ”¹è¡Œã®ä½ç½®
+    '‹­§‰üs‚ÌˆÊ’u‚ğİ’è
+    If IsOptionDefined("‰üs—]”’’Zk") Then
+        cl_margin(0) = 0.94 'ƒƒbƒZ[ƒW’·‚Ì’´‰ß‚É‚æ‚é‰üs‚ÌˆÊ’u
+        cl_margin(1) = 0.7  '"B"," "‚É‚æ‚é‰üs‚ÌˆÊ’u
+        cl_margin(2) = 0.85  '"A"‚É‚æ‚é‰üs‚ÌˆÊ’u
     Else
         cl_margin(0) = 0.8
         cl_margin(1) = 0.6
         cl_margin(2) = 0.75
     End If
     
-    'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’åˆ†å‰²
+    'ƒƒbƒZ[ƒW‚ğ•ªŠ„
     ReDim messages(1)
     msg_head = 1
     buf = ""
@@ -1294,13 +1294,13 @@ Dim left_margin As String
     Next
     messages(UBound(messages)) = buf & Mid$(msg, msg_head)
     
-    'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸é•·åˆ¤å®šã®ãŸã‚ã€å…ƒã®ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’å†æ§‹ç¯‰
+    'ƒƒbƒZ[ƒW’·”»’è‚Ì‚½‚ßAŒ³‚ÌƒƒbƒZ[ƒW‚ğÄ\’z
     msg = ""
     For i = 1 To UBound(messages)
         msg = msg & messages(i)
     Next
         
-    'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã®è¡¨ç¤º
+    'ƒƒbƒZ[ƒW‚Ì•\¦
     Set p = frmMessage.picMessage
     msg_head = 1
     prev_lnum = 0
@@ -1317,16 +1317,16 @@ Dim left_margin As String
         p.CurrentX = 1
         
         If msg_head = 1 Then
-            'ãƒ•ã‚©ãƒ³ãƒˆè¨­å®šã‚’åˆæœŸåŒ–
+            'ƒtƒHƒ“ƒgİ’è‚ğ‰Šú‰»
             With p
                 .FontBold = False
                 .FontItalic = False
-                .FontName = "ï¼­ï¼³ ï¼°æ˜æœ"
+                .FontName = "‚l‚r ‚o–¾’©"
                 .FontSize = 12
                 .ForeColor = vbBlack
             End With
         Else
-            'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã®é€”ä¸­ã‹ã‚‰è¡¨ç¤º
+            'ƒƒbƒZ[ƒW‚Ì“r’†‚©‚ç•\¦
             If is_character_message Then
                 p.Print "  ";
             End If
@@ -1335,14 +1335,14 @@ Dim left_margin As String
         For j = msg_head To Len(buf)
             ch = Mid$(buf, j, 1)
             
-            '";"ã§ã¯å¿…ãšæ”¹è¡Œ
+            '";"‚Å‚Í•K‚¸‰üs
             If ch = ";" Then
                 If j <> line_head Then
                     PrintMessage Mid$(buf, line_head, j - line_head)
                     lnum = lnum + 1
                     If is_character_message _
-                        And ((lnum > 1 And IsOptionDefined("ä¼šè©±ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆåæ”¹è¡Œ")) _
-                            Or (lnum > 0 And Not IsOptionDefined("ä¼šè©±ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆåæ”¹è¡Œ"))) _
+                        And ((lnum > 1 And IsOptionDefined("‰ï˜bƒpƒCƒƒbƒg–¼‰üs")) _
+                            Or (lnum > 0 And Not IsOptionDefined("‰ï˜bƒpƒCƒƒbƒg–¼‰üs"))) _
                     Then
                         p.Print left_margin;
                     End If
@@ -1351,7 +1351,7 @@ Dim left_margin As String
                 GoTo NextLoop
             End If
             
-            'ã‚¿ã‚°å†…ã§ã¯æ”¹è¡Œã—ãªã„
+            'ƒ^ƒO“à‚Å‚Í‰üs‚µ‚È‚¢
             If ch = "<" Then
                 in_tag = True
                 GoTo NextLoop
@@ -1361,13 +1361,13 @@ Dim left_margin As String
                 GoTo NextLoop
             End If
             
-            'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãŒé€”åˆ‡ã‚Œã¦ã—ã¾ã†å ´åˆã¯å¿…ãšæ”¹è¡Œ
+            'ƒƒbƒZ[ƒW‚ª“rØ‚ê‚Ä‚µ‚Ü‚¤ê‡‚Í•K‚¸‰üs
             If MessageLen(Mid$(buf, line_head, j - line_head)) > 0.95 * p.width Then
                 PrintMessage Mid$(buf, line_head, j - line_head + 1)
                 lnum = lnum + 1
                 If is_character_message _
-                    And ((lnum > 1 And IsOptionDefined("ä¼šè©±ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆåæ”¹è¡Œ")) _
-                        Or (lnum > 0 And Not IsOptionDefined("ä¼šè©±ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆåæ”¹è¡Œ"))) _
+                    And ((lnum > 1 And IsOptionDefined("‰ï˜bƒpƒCƒƒbƒg–¼‰üs")) _
+                        Or (lnum > 0 And Not IsOptionDefined("‰ï˜bƒpƒCƒƒbƒg–¼‰üs"))) _
                 Then
                     p.Print left_margin;
                 End If
@@ -1375,48 +1375,48 @@ Dim left_margin As String
                 GoTo NextLoop
             End If
             
-            'ç¦å‰‡å‡¦ç†
+            '‹Ö‘¥ˆ—
             Select Case Mid$(buf, j + 1, 1)
-                Case "ã€‚", "ã€", "â€¦", "â€¥", "ãƒ»", "ï½¥", _
-                    "ï½", "ãƒ¼", "ï¼", "ï¼", "ï¼Ÿ", _
-                    "ã€", "ã€", "ï¼‰", ")", " ", ";"
+                Case "B", "A", "c", "d", "E", "¥", _
+                    "`", "[", "|", "I", "H", _
+                    "v", "x", "j", ")", " ", ";"
                     GoTo NextLoop
             End Select
             Select Case Mid$(buf, j + 2, 1)
-                Case "ã€‚", "ã€", "â€¦", "â€¥", "ãƒ»", "ï½¥", _
-                    "ï½", "ãƒ¼", "ï¼", "ï¼", "ï¼Ÿ", _
-                    "ã€", "ã€", "ï¼‰", ")", " ", ";"
+                Case "B", "A", "c", "d", "E", "¥", _
+                    "`", "[", "|", "I", "H", _
+                    "v", "x", "j", ")", " ", ";"
                     GoTo NextLoop
             End Select
             If Mid$(buf, j + 3, 1) = ";" Then
                 GoTo NextLoop
             End If
             
-            'æ”¹è¡Œã®åˆ¤å®š
+            '‰üs‚Ì”»’è
             If MessageLen(Mid$(messages(i), line_head)) < 0.95 * p.width Then
-                'å…¨ä½“ãŒä¸€è¡Œã«åã¾ã‚‹å ´åˆ
+                '‘S‘Ì‚ªˆês‚Éû‚Ü‚éê‡
                 GoTo NextLoop
             End If
             Select Case ch
-                Case "ã€‚"
+                Case "B"
                     If MessageLen(Mid$(buf, line_head, j - line_head)) > cl_margin(1) * p.width Then
                         PrintMessage Mid$(buf, line_head, j - line_head + 1)
                         lnum = lnum + 1
                         If is_character_message _
-                            And ((lnum > 1 And IsOptionDefined("ä¼šè©±ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆåæ”¹è¡Œ")) _
-                                Or (lnum > 0 And Not IsOptionDefined("ä¼šè©±ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆåæ”¹è¡Œ"))) _
+                            And ((lnum > 1 And IsOptionDefined("‰ï˜bƒpƒCƒƒbƒg–¼‰üs")) _
+                                Or (lnum > 0 And Not IsOptionDefined("‰ï˜bƒpƒCƒƒbƒg–¼‰üs"))) _
                         Then
                             p.Print left_margin;
                         End If
                         line_head = j + 1
                     End If
-                Case "ã€"
+                Case "A"
                     If MessageLen(Mid$(buf, line_head, j - line_head)) > cl_margin(2) * p.width Then
                         PrintMessage Mid$(buf, line_head, j - line_head + 1)
                         lnum = lnum + 1
                         If is_character_message _
-                            And ((lnum > 1 And IsOptionDefined("ä¼šè©±ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆåæ”¹è¡Œ")) _
-                                Or (lnum > 0 And Not IsOptionDefined("ä¼šè©±ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆåæ”¹è¡Œ"))) _
+                            And ((lnum > 1 And IsOptionDefined("‰ï˜bƒpƒCƒƒbƒg–¼‰üs")) _
+                                Or (lnum > 0 And Not IsOptionDefined("‰ï˜bƒpƒCƒƒbƒg–¼‰üs"))) _
                         Then
                             p.Print left_margin;
                         End If
@@ -1424,33 +1424,33 @@ Dim left_margin As String
                     End If
                 Case " "
                     ch = Mid$(buf, j - 1, 1)
-                    'ã‚¹ãƒšãƒ¼ã‚¹ãŒæ–‡ã®åŒºåˆ‡ã‚Šã«ä½¿ã‚ã‚Œã¦ã„ã‚‹ã‹ã©ã†ã‹åˆ¤å®š
-                    If pname <> "ã‚·ã‚¹ãƒ†ãƒ " _
-                        And (ch = "ï¼" Or ch = "ï¼Ÿ" _
-                            Or ch = "â€¦" Or ch = "â€¥" _
-                            Or ch = "ãƒ»" Or ch = "ï½¥" _
-                            Or ch = "ï½") _
+                    'ƒXƒy[ƒX‚ª•¶‚Ì‹æØ‚è‚Ég‚í‚ê‚Ä‚¢‚é‚©‚Ç‚¤‚©”»’è
+                    If pname <> "ƒVƒXƒeƒ€" _
+                        And (ch = "I" Or ch = "H" _
+                            Or ch = "c" Or ch = "d" _
+                            Or ch = "E" Or ch = "¥" _
+                            Or ch = "`") _
                     Then
-                        'æ–‡ã®åŒºåˆ‡ã‚Š
+                        '•¶‚Ì‹æØ‚è
                         If MessageLen(Mid$(buf, line_head, j - line_head)) > cl_margin(1) * p.width Then
                             PrintMessage Mid$(buf, line_head, j - line_head + 1)
                             lnum = lnum + 1
                             If is_character_message _
-                                And ((lnum > 1 And IsOptionDefined("ä¼šè©±ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆåæ”¹è¡Œ")) _
-                                    Or (lnum > 0 And Not IsOptionDefined("ä¼šè©±ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆåæ”¹è¡Œ"))) _
+                                And ((lnum > 1 And IsOptionDefined("‰ï˜bƒpƒCƒƒbƒg–¼‰üs")) _
+                                    Or (lnum > 0 And Not IsOptionDefined("‰ï˜bƒpƒCƒƒbƒg–¼‰üs"))) _
                             Then
                                 p.Print left_margin;
                             End If
                             line_head = j + 1
                         End If
                     Else
-                        'å˜ãªã‚‹ç©ºç™½
+                        '’P‚È‚é‹ó”’
                         If MessageLen(Mid$(buf, line_head, j - line_head)) > cl_margin(0) * p.width Then
                             PrintMessage Mid$(buf, line_head, j - line_head + 1)
                             lnum = lnum + 1
                             If is_character_message _
-                                And ((lnum > 1 And IsOptionDefined("ä¼šè©±ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆåæ”¹è¡Œ")) _
-                                    Or (lnum > 0 And Not IsOptionDefined("ä¼šè©±ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆåæ”¹è¡Œ"))) _
+                                And ((lnum > 1 And IsOptionDefined("‰ï˜bƒpƒCƒƒbƒg–¼‰üs")) _
+                                    Or (lnum > 0 And Not IsOptionDefined("‰ï˜bƒpƒCƒƒbƒg–¼‰üs"))) _
                             Then
                                 p.Print left_margin;
                             End If
@@ -1463,8 +1463,8 @@ Dim left_margin As String
                         PrintMessage Mid$(buf, line_head, j - line_head + 1)
                         lnum = lnum + 1
                         If is_character_message _
-                            And ((lnum > 1 And IsOptionDefined("ä¼šè©±ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆåæ”¹è¡Œ")) _
-                                Or (lnum > 0 And Not IsOptionDefined("ä¼šè©±ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆåæ”¹è¡Œ"))) _
+                            And ((lnum > 1 And IsOptionDefined("‰ï˜bƒpƒCƒƒbƒg–¼‰üs")) _
+                                Or (lnum > 0 And Not IsOptionDefined("‰ï˜bƒpƒCƒƒbƒg–¼‰üs"))) _
                         Then
                             p.Print left_margin;
                         End If
@@ -1480,7 +1480,7 @@ NextLoop:
                 End If
             End If
         Next
-        'æ®‹ã‚Šã®éƒ¨åˆ†ã‚’è¡¨ç¤º
+        'c‚è‚Ì•”•ª‚ğ•\¦
         If lnum < 4 Then
             If Len(buf) >= line_head Then
                 PrintMessage Mid$(buf, line_head)
@@ -1493,22 +1493,22 @@ NextLoop:
             AutoMessageMode = False
         End If
         
-        'ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ã‚­ãƒ£ãƒ—ã‚·ãƒ§ãƒ³ã‚’è¨­å®š
+        'ƒEƒBƒ“ƒhƒE‚ÌƒLƒƒƒvƒVƒ‡ƒ“‚ğİ’è
         If AutoMessageMode Then
-            If frmMessage.Caption = "ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸" Then
-                frmMessage.Caption = "ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ (è‡ªå‹•é€ã‚Š)"
+            If frmMessage.Caption = "ƒƒbƒZ[ƒW" Then
+                frmMessage.Caption = "ƒƒbƒZ[ƒW (©“®‘—‚è)"
             End If
         Else
-            If frmMessage.Caption = "ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ (è‡ªå‹•é€ã‚Š)" Then
-                frmMessage.Caption = "ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸"
+            If frmMessage.Caption = "ƒƒbƒZ[ƒW (©“®‘—‚è)" Then
+                frmMessage.Caption = "ƒƒbƒZ[ƒW"
             End If
         End If
         
-        'æ¬¡ã®ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸è¡¨ç¤ºã¾ã§ã®æ™‚é–“ã‚’è¨­å®š(è‡ªå‹•ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸é€ã‚Šç”¨)
+        'Ÿ‚ÌƒƒbƒZ[ƒW•\¦‚Ü‚Å‚ÌŠÔ‚ğİ’è(©“®ƒƒbƒZ[ƒW‘—‚è—p)
         start_time = timeGetTime()
         wait_time = (lnum - prev_lnum + 2) * (MessageWait + 250)
         
-        'æ¬¡ã®ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸å¾…ã¡
+        'Ÿ‚ÌƒƒbƒZ[ƒW‘Ò‚¿
         IsFormClicked = False
         is_automode = AutoMessageMode
         Do Until IsFormClicked
@@ -1520,7 +1520,7 @@ NextLoop:
             
             GetCursorPos PT
             
-            'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ä¸Šã§ãƒã‚¦ã‚¹ãƒœã‚¿ãƒ³ã‚’æŠ¼ã—ãŸå ´åˆ
+            'ƒƒbƒZ[ƒWƒEƒCƒ“ƒhƒEã‚Åƒ}ƒEƒXƒ{ƒ^ƒ“‚ğ‰Ÿ‚µ‚½ê‡
             If Screen.ActiveForm Is frmMessage Then
                 With frmMessage
                     If .Left \ Screen.TwipsPerPixelX <= PT.X _
@@ -1532,18 +1532,18 @@ NextLoop:
                         rstate = GetAsyncKeyState(RButtonID)
                         If (lstate And &H8000) <> 0 Then
                             If start_time + wait_time < timeGetTime Then
-                                'å·¦ãƒœã‚¿ãƒ³ã§ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã®è‡ªå‹•é€ã‚Š
+                                '¶ƒ{ƒ^ƒ“‚ÅƒƒbƒZ[ƒW‚Ì©“®‘—‚è
                                 Exit Do
                             End If
                         ElseIf (rstate And &H8000) <> 0 Then
-                            'å³ãƒœã‚¿ãƒ³ã§ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã®æ—©é€ã‚Š
+                            '‰Eƒ{ƒ^ƒ“‚ÅƒƒbƒZ[ƒW‚Ì‘‘—‚è
                             Exit Do
                         End If
                     End If
                 End With
             End If
             
-            'ãƒ¡ã‚¤ãƒ³ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ä¸Šã§ãƒã‚¦ã‚¹ãƒœã‚¿ãƒ³ã‚’æŠ¼ã—ãŸå ´åˆ
+            'ƒƒCƒ“ƒEƒCƒ“ƒhƒEã‚Åƒ}ƒEƒXƒ{ƒ^ƒ“‚ğ‰Ÿ‚µ‚½ê‡
             If Screen.ActiveForm Is MainForm Then
                 With MainForm
                     If .Left \ Screen.TwipsPerPixelX <= PT.X _
@@ -1555,11 +1555,11 @@ NextLoop:
                         rstate = GetAsyncKeyState(RButtonID)
                         If (lstate And &H8000) <> 0 Then
                             If start_time + wait_time < timeGetTime Then
-                                'å·¦ãƒœã‚¿ãƒ³ã§ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã®è‡ªå‹•é€ã‚Š
+                                '¶ƒ{ƒ^ƒ“‚ÅƒƒbƒZ[ƒW‚Ì©“®‘—‚è
                                 Exit Do
                             End If
                         ElseIf (rstate And &H8000) <> 0 Then
-                            'å³ãƒœã‚¿ãƒ³ã§ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã®æ—©é€ã‚Š
+                            '‰Eƒ{ƒ^ƒ“‚ÅƒƒbƒZ[ƒW‚Ì‘‘—‚è
                             Exit Do
                         End If
                     End If
@@ -1569,21 +1569,21 @@ NextLoop:
             Sleep 100
             DoEvents
             
-            'è‡ªå‹•é€ã‚Šãƒ¢ãƒ¼ãƒ‰ãŒåˆ‡ã‚Šæ›¿ãˆã‚‰ã‚ŒãŸå ´åˆ
+            '©“®‘—‚èƒ‚[ƒh‚ªØ‚è‘Ö‚¦‚ç‚ê‚½ê‡
             If is_automode <> AutoMessageMode Then
                 IsFormClicked = False
                 is_automode = AutoMessageMode
                 If AutoMessageMode Then
-                    frmMessage.Caption = "ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ (è‡ªå‹•é€ã‚Š)"
+                    frmMessage.Caption = "ƒƒbƒZ[ƒW (©“®‘—‚è)"
                     start_time = timeGetTime()
                     wait_time = (lnum - prev_lnum + 2) * (MessageWait + 250)
                 Else
-                    frmMessage.Caption = "ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸"
+                    frmMessage.Caption = "ƒƒbƒZ[ƒW"
                 End If
             End If
         Loop
         
-        'ã‚¦ã‚§ã‚¤ãƒˆè¨ˆç®—ç”¨ã«æ—¢ã«è¡¨ç¤ºã—ãŸè¡Œæ•°ã‚’è¨˜éŒ²
+        'ƒEƒFƒCƒgŒvZ—p‚ÉŠù‚É•\¦‚µ‚½s”‚ğ‹L˜^
         If lnum < 4 Then
             prev_lnum = lnum
         Else
@@ -1591,11 +1591,11 @@ NextLoop:
         End If
     Loop
     
-    'ãƒ•ã‚©ãƒ³ãƒˆè¨­å®šã‚’å…ƒã«æˆ»ã™
+    'ƒtƒHƒ“ƒgİ’è‚ğŒ³‚É–ß‚·
     With p
         .FontBold = False
         .FontItalic = False
-        .FontName = "ï¼­ï¼³ ï¼°æ˜æœ"
+        .FontName = "‚l‚r ‚o–¾’©"
         .FontSize = 12
         .ForeColor = vbBlack
     End With
@@ -1603,13 +1603,13 @@ NextLoop:
     Exit Sub
     
 ErrorHandler:
-    ErrorMessage "ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆç”¨ç”»åƒãƒ•ã‚¡ã‚¤ãƒ«" & vbCr & vbLf _
+    ErrorMessage "ƒpƒCƒƒbƒg—p‰æ‘œƒtƒ@ƒCƒ‹" & vbCr & vbLf _
         & DisplayedPilot & vbCr & vbLf _
-        & "ã®èª­ã¿è¾¼ã¿ä¸­ã«ã‚¨ãƒ©ãƒ¼ãŒç™ºç”Ÿã—ã¾ã—ãŸã€‚" & vbCr & vbLf _
-        & "ç”»åƒãƒ•ã‚¡ã‚¤ãƒ«ãŒå£Šã‚Œã¦ã„ãªã„ã‹ç¢ºèªã—ã¦ä¸‹ã•ã„ã€‚"
+        & "‚Ì“Ç‚İ‚İ’†‚ÉƒGƒ‰[‚ª”­¶‚µ‚Ü‚µ‚½B" & vbCr & vbLf _
+        & "‰æ‘œƒtƒ@ƒCƒ‹‚ª‰ó‚ê‚Ä‚¢‚È‚¢‚©Šm”F‚µ‚Ä‰º‚³‚¢B"
 End Sub
 
-'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã«æ–‡å­—åˆ—ã‚’æ›¸ãè¾¼ã‚€
+'ƒƒbƒZ[ƒWƒEƒBƒ“ƒhƒE‚É•¶š—ñ‚ğ‘‚«‚Ş
 Public Sub PrintMessage(msg As String, Optional ByVal is_sys_msg As Boolean)
 Dim tag As String, buf As String, ch As String
 Dim p As PictureBox
@@ -1623,14 +1623,14 @@ Dim in_tag As Boolean, escape_depth As Integer
     For i = 1 To Len(msg)
         ch = Mid$(msg, i, 1)
         
-        'ã‚·ã‚¹ãƒ†ãƒ ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã®æ™‚ã®ã¿ã‚¨ã‚¹ã‚±ãƒ¼ãƒ—ã‚·ãƒ¼ã‚±ãƒ³ã‚¹ã®å‡¦ç†ã‚’è¡Œã†
+        'ƒVƒXƒeƒ€ƒƒbƒZ[ƒW‚Ì‚Ì‚İƒGƒXƒP[ƒvƒV[ƒPƒ“ƒX‚Ìˆ—‚ğs‚¤
         If is_sys_msg Then
             Select Case ch
                 Case "["
                     escape_depth = escape_depth + 1
                     If escape_depth = 1 Then
-                        'ã‚¨ã‚¹ã‚±ãƒ¼ãƒ—ã‚·ãƒ¼ã‚±ãƒ³ã‚¹é–‹å§‹
-                        'ãã‚Œã¾ã§ã®æ–‡å­—åˆ—ã‚’å‡ºåŠ›
+                        'ƒGƒXƒP[ƒvƒV[ƒPƒ“ƒXŠJn
+                        '‚»‚ê‚Ü‚Å‚Ì•¶š—ñ‚ğo—Í
                         p.Print Mid$(msg, head, i - head);
                         head = i + 1
                         GoTo NextChar
@@ -1638,8 +1638,8 @@ Dim in_tag As Boolean, escape_depth As Integer
                 Case "]"
                     escape_depth = escape_depth - 1
                     If escape_depth = 0 Then
-                        'ã‚¨ã‚¹ã‚±ãƒ¼ãƒ—ã‚·ãƒ¼ã‚±ãƒ³ã‚¹çµ‚äº†
-                        'ã‚¨ã‚¹ã‚±ãƒ¼ãƒ—ã‚·ãƒ¼ã‚±ãƒ³ã‚¹ã‚’å‡ºåŠ›
+                        'ƒGƒXƒP[ƒvƒV[ƒPƒ“ƒXI—¹
+                        'ƒGƒXƒP[ƒvƒV[ƒPƒ“ƒX‚ğo—Í
                         p.Print Mid$(msg, head, i - head);
                         head = i + 1
                         GoTo NextChar
@@ -1647,26 +1647,26 @@ Dim in_tag As Boolean, escape_depth As Integer
             End Select
         End If
         
-        'ã‚¿ã‚°ã®å‡¦ç†
+        'ƒ^ƒO‚Ìˆ—
         Select Case ch
             Case "<"
                 If Not in_tag And escape_depth = 0 Then
-                    'ã‚¿ã‚°é–‹å§‹
+                    'ƒ^ƒOŠJn
                     in_tag = True
-                    'ãã‚Œã¾ã§ã®æ–‡å­—åˆ—ã‚’å‡ºåŠ›
+                    '‚»‚ê‚Ü‚Å‚Ì•¶š—ñ‚ğo—Í
                     p.Print Mid$(msg, head, i - head);
                     head = i + 1
                     GoTo NextChar
                 End If
             Case ">"
                 If in_tag Then
-                    'ã‚¿ã‚°çµ‚äº†
+                    'ƒ^ƒOI—¹
                     in_tag = False
                     
-                    'ã‚¿ã‚°ã®åˆ‡ã‚Šå‡ºã—
+                    'ƒ^ƒO‚ÌØ‚èo‚µ
                     tag = LCase$(Mid$(msg, head, i - head))
                     
-                    'ã‚¿ã‚°ã«åˆã‚ã›ã¦å„ç¨®å‡¦ç†ã‚’è¡Œã†
+                    'ƒ^ƒO‚É‡‚í‚¹‚ÄŠeíˆ—‚ğs‚¤
                     Select Case tag
                         Case "b"
                             p.FontBold = True
@@ -1710,7 +1710,7 @@ Dim in_tag As Boolean, escape_depth As Integer
                             p.Print ">";
                         Case Else
                             If InStr(tag, "color=") = 1 Then
-                                'è‰²è¨­å®š
+                                'Fİ’è
                                 Dim cname As String
                                 cname = GetValueAsString(Mid$(tag, 7))
                                 Select Case cname
@@ -1759,7 +1759,7 @@ Dim in_tag As Boolean, escape_depth As Integer
                                         End If
                                 End Select
                             ElseIf InStr(tag, "size=") = 1 Then
-                                'ã‚µã‚¤ã‚ºè¨­å®š
+                                'ƒTƒCƒYİ’è
                                 If IsNumeric(Mid$(tag, 6)) Then
                                     p.FontSize = CLng(Mid$(tag, 6))
                                     last_x = p.CurrentX
@@ -1772,7 +1772,7 @@ Dim in_tag As Boolean, escape_depth As Integer
                                     p.CurrentY = last_y
                                 End If
                             Else
-                                'ã‚¿ã‚°ã§ã¯ãªã„ã®ã§ãã®ã¾ã¾æ›¸ãå‡ºã™
+                                'ƒ^ƒO‚Å‚Í‚È‚¢‚Ì‚Å‚»‚Ì‚Ü‚Ü‘‚«o‚·
                                 p.Print Mid$(msg, head - 1, i - head + 2);
                             End If
                     End Select
@@ -1784,15 +1784,15 @@ Dim in_tag As Boolean, escape_depth As Integer
 NextChar:
     Next
     
-    'çµ‚äº†ã—ã¦ã„ãªã„ã‚¿ã‚°ã€ã‚‚ã—ãã¯ã‚¨ã‚¹ã‚±ãƒ¼ãƒ—ã‚·ãƒ¼ã‚±ãƒ³ã‚¹ã¯ãŸã ã®æ–‡å­—åˆ—ã¨è¦‹ãªã™
+    'I—¹‚µ‚Ä‚¢‚È‚¢ƒ^ƒOA‚à‚µ‚­‚ÍƒGƒXƒP[ƒvƒV[ƒPƒ“ƒX‚Í‚½‚¾‚Ì•¶š—ñ‚ÆŒ©‚È‚·
     If in_tag Or escape_depth > 0 Then
         head = head - 1
     End If
     
-    'æœªå‡ºåŠ›ã®æ–‡å­—åˆ—ã‚’å‡ºåŠ›ã™ã‚‹
+    '–¢o—Í‚Ì•¶š—ñ‚ğo—Í‚·‚é
     If head <= Len(msg) Then
-        If Right$(msg, 1) = "ã€" Then
-            'æœ€å¾Œã®æ‹¬å¼§ã®ä½ç½®ã¯ä¸€ç•ªå¤§ããªã‚µã‚¤ã‚ºã®æ–‡å­—ã«åˆã‚ã›ã‚‹
+        If Right$(msg, 1) = "v" Then
+            'ÅŒã‚ÌŠ‡ŒÊ‚ÌˆÊ’u‚Íˆê”Ô‘å‚«‚ÈƒTƒCƒY‚Ì•¶š‚É‡‚í‚¹‚é
             p.Print Mid$(msg, head, Len(msg) - head);
             
             last_x = p.CurrentX
@@ -1810,11 +1810,11 @@ NextChar:
             p.Print Mid$(msg, head)
         End If
     Else
-        'æœªå‡ºåŠ›ã®æ–‡å­—åˆ—ãŒãªã„å ´åˆã¯æ”¹è¡Œã®ã¿
+        '–¢o—Í‚Ì•¶š—ñ‚ª‚È‚¢ê‡‚Í‰üs‚Ì‚İ
         p.Print
     End If
     
-    'æ”¹è¡Œå¾Œã®ä½ç½®ã¯ä¸€ç•ªå¤§ããªã‚µã‚¤ã‚ºã®æ–‡å­—ã«åˆã‚ã›ã‚‹
+    '‰üsŒã‚ÌˆÊ’u‚Íˆê”Ô‘å‚«‚ÈƒTƒCƒY‚Ì•¶š‚É‡‚í‚¹‚é
     If max_y > p.CurrentY Then
         p.CurrentY = max_y + 1
     Else
@@ -1823,18 +1823,18 @@ NextChar:
     p.CurrentX = 1
 End Sub
 
-'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸å¹…ã‚’è¨ˆç®—(ã‚¿ã‚°ã‚’ç„¡è¦–ã—ã¦)
+'ƒƒbƒZ[ƒW•‚ğŒvZ(ƒ^ƒO‚ğ–³‹‚µ‚Ä)
 Public Function MessageLen(ByVal msg As String) As Integer
 Dim buf As String, ret As Integer
     
-    'ã‚¿ã‚°ãŒå­˜åœ¨ã™ã‚‹ï¼Ÿ
+    'ƒ^ƒO‚ª‘¶İ‚·‚éH
     ret = InStr(msg, "<")
     If ret = 0 Then
         MessageLen = frmMessage.picMessage.TextWidth(msg)
         Exit Function
     End If
     
-    'ã‚¿ã‚°ã‚’é™¤ã„ãŸãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’ä½œæˆ
+    'ƒ^ƒO‚ğœ‚¢‚½ƒƒbƒZ[ƒW‚ğì¬
     Do While ret > 0
         buf = buf & Left$(msg, ret - 1)
         msg = Mid$(msg, ret + 1)
@@ -1850,11 +1850,11 @@ Dim buf As String, ret As Integer
     Loop
     buf = buf & msg
     
-    'ã‚¿ã‚°æŠœããƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã®ãƒ”ã‚¯ã‚»ãƒ«å¹…ã‚’è¨ˆç®—
+    'ƒ^ƒO”²‚«ƒƒbƒZ[ƒW‚ÌƒsƒNƒZƒ‹•‚ğŒvZ
     MessageLen = frmMessage.picMessage.TextWidth(buf)
 End Function
 
-'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã«æˆ¦é—˜ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’è¡¨ç¤º
+'ƒƒbƒZ[ƒWƒEƒBƒ“ƒhƒE‚Éí“¬ƒƒbƒZ[ƒW‚ğ•\¦
 Public Sub DisplayBattleMessage(pname As String, ByVal msg As String, _
     Optional msg_mode As String)
 Dim messages() As String
@@ -1878,7 +1878,7 @@ Static extdata2_bitmap_dir_exists As Boolean
 Static last_path As String
 Dim cl_margin(2) As Single
 
-    'åˆã‚ã¦å®Ÿè¡Œã™ã‚‹éš›ã«ã€å„ãƒ•ã‚©ãƒ«ãƒ€ã«Bitmapãƒ•ã‚©ãƒ«ãƒ€ãŒã‚ã‚‹ã‹ãƒã‚§ãƒƒã‚¯
+    '‰‚ß‚ÄÀs‚·‚éÛ‚ÉAŠeƒtƒHƒ‹ƒ_‚ÉBitmapƒtƒHƒ‹ƒ_‚ª‚ ‚é‚©ƒ`ƒFƒbƒN
     If Not init_display_battle_message Then
         If Len(Dir$(ExtDataPath & "Bitmap", vbDirectory)) > 0 Then
             extdata_bitmap_dir_exists = True
@@ -1889,24 +1889,24 @@ Dim cl_margin(2) As Single
         init_display_battle_message = True
     End If
     
-    'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãŒé–‰ã˜ã‚‰ã‚Œã¦ã„ã‚Œã°è¡¨ç¤ºã—ãªã„
+    'ƒƒbƒZ[ƒWƒEƒBƒ“ƒhƒE‚ª•Â‚¶‚ç‚ê‚Ä‚¢‚ê‚Î•\¦‚µ‚È‚¢
     If frmMessage.WindowState = 1 Then
         Exit Sub
     End If
     
-    'ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ã‚­ãƒ£ãƒ—ã‚·ãƒ§ãƒ³ã‚’è¨­å®š
-    If frmMessage.Caption = "ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ (è‡ªå‹•é€ã‚Š)" Then
-        frmMessage.Caption = "ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸"
+    'ƒEƒBƒ“ƒhƒE‚ÌƒLƒƒƒvƒVƒ‡ƒ“‚ğİ’è
+    If frmMessage.Caption = "ƒƒbƒZ[ƒW (©“®‘—‚è)" Then
+        frmMessage.Caption = "ƒƒbƒZ[ƒW"
     End If
     
-    'ã‚­ãƒ£ãƒ©è¡¨ç¤ºã®æãæ›ãˆ
-    If pname = "ã‚·ã‚¹ãƒ†ãƒ " Then
-        'ã€Œã‚·ã‚¹ãƒ†ãƒ ã€
+    'ƒLƒƒƒ‰•\¦‚Ì•`‚«Š·‚¦
+    If pname = "ƒVƒXƒeƒ€" Then
+        'uƒVƒXƒeƒ€v
         frmMessage.picFace = LoadPicture("")
         frmMessage.picFace.Refresh
         DisplayedPilot = ""
     ElseIf pname <> "" And pname <> "-" Then
-        'ã©ã®ã‚­ãƒ£ãƒ©ç”»åƒã‚’ä½¿ã†ã‹ï¼Ÿ
+        '‚Ç‚ÌƒLƒƒƒ‰‰æ‘œ‚ğg‚¤‚©H
         If PList.IsDefined(pname) Then
             pnickname = PList.Item(pname).Nickname
             fname = PList.Item(pname).Bitmap
@@ -1920,11 +1920,11 @@ Dim cl_margin(2) As Single
             fname = "-.bmp"
         End If
         
-        'ã‚­ãƒ£ãƒ©ç”»åƒã®è¡¨ç¤º
+        'ƒLƒƒƒ‰‰æ‘œ‚Ì•\¦
         If fname <> "-.bmp" Then
             fname = "Pilot\" & fname
             If DisplayedPilot <> fname Or DisplayMode <> msg_mode Then
-                If DrawPicture(fname, 0, 0, 64, 64, 0, 0, 0, 0, "ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ " & msg_mode) Then
+                If DrawPicture(fname, 0, 0, 64, 64, 0, 0, 0, 0, "ƒƒbƒZ[ƒW " & msg_mode) Then
                     frmMessage.picFace.Refresh
                     DisplayedPilot = fname
                     DisplayMode = msg_mode
@@ -1934,7 +1934,7 @@ Dim cl_margin(2) As Single
                     DisplayedPilot = ""
                     DisplayMode = ""
                     
-                    'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆç”»åƒãŒå­˜åœ¨ã—ãªã„ã“ã¨ã‚’è¨˜éŒ²ã—ã¦ãŠã
+                    'ƒpƒCƒƒbƒg‰æ‘œ‚ª‘¶İ‚µ‚È‚¢‚±‚Æ‚ğ‹L˜^‚µ‚Ä‚¨‚­
                     If PList.IsDefined(pname) Then
                         With PList.Item(pname)
                             If .Bitmap = .Data.Bitmap Then
@@ -1956,17 +1956,17 @@ Dim cl_margin(2) As Single
         End If
     End If
     
-    'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãŒç©ºãªã‚‰è¡¨ç¤ºã¯æ­¢ã‚ã‚‹
+    'ƒƒbƒZ[ƒW‚ª‹ó‚È‚ç•\¦‚Í~‚ß‚é
     If msg = "" Then
         Exit Sub
     End If
     
     Set p = frmMessage.picMessage
     
-    'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®çŠ¶æ…‹ã‚’è¨˜éŒ²
+    'ƒƒbƒZ[ƒWƒEƒBƒ“ƒhƒE‚Ìó‘Ô‚ğ‹L˜^
     SaveMessageFormStatus
     
-    'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’åˆ†å‰²
+    'ƒƒbƒZ[ƒW‚ğ•ªŠ„
     ReDim messages(1)
     line_head = 1
     buf = ""
@@ -1989,42 +1989,42 @@ Dim cl_margin(2) As Single
     
     wait_time = DEFAULT_LEVEL
     
-    'å¼·åˆ¶æ”¹è¡Œã®ä½ç½®ã‚’è¨­å®š
-    If IsOptionDefined("æ”¹è¡Œæ™‚ä½™ç™½çŸ­ç¸®") Then
-        cl_margin(0) = 0.94 'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸é•·ã®è¶…éã«ã‚ˆã‚‹æ”¹è¡Œã®ä½ç½®
-        cl_margin(1) = 0.7  '"ã€‚"," "ã«ã‚ˆã‚‹æ”¹è¡Œã®ä½ç½®
-        cl_margin(2) = 0.85  '"ã€"ã«ã‚ˆã‚‹æ”¹è¡Œã®ä½ç½®
+    '‹­§‰üs‚ÌˆÊ’u‚ğİ’è
+    If IsOptionDefined("‰üs—]”’’Zk") Then
+        cl_margin(0) = 0.94 'ƒƒbƒZ[ƒW’·‚Ì’´‰ß‚É‚æ‚é‰üs‚ÌˆÊ’u
+        cl_margin(1) = 0.7  '"B"," "‚É‚æ‚é‰üs‚ÌˆÊ’u
+        cl_margin(2) = 0.85  '"A"‚É‚æ‚é‰üs‚ÌˆÊ’u
     Else
         cl_margin(0) = 0.8
         cl_margin(1) = 0.6
         cl_margin(2) = 0.75
     End If
 
-    'å„ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’è¡¨ç¤º
+    'ŠeƒƒbƒZ[ƒW‚ğ•\¦
     For i = 1 To UBound(messages)
         buf = messages(i)
         
-        'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸å†…ã®å¼ç½®æ›ã‚’å‡¦ç†
+        'ƒƒbƒZ[ƒW“à‚Ì®’uŠ·‚ğˆ—
         SaveBasePoint
         FormatMessage buf
         RestoreBasePoint
         
-        'ç‰¹æ®ŠåŠ¹æœ
+        '“ÁêŒø‰Ê
         Select Case LCase$(Right$(LIndex(buf, 1), 4))
             Case ".bmp", ".jpg", ".gif", ".png"
                 Dim fname0 As String, fsuffix As String, fpath As String
                 Dim first_id As Integer, last_id As Integer
                 Dim wait_time2 As Long
                 
-                'å³ãƒœã‚¿ãƒ³ã‚’æŠ¼ã•ã‚Œã¦ã„ãŸã‚‰ã‚¹ã‚­ãƒƒãƒ—
+                '‰Eƒ{ƒ^ƒ“‚ğ‰Ÿ‚³‚ê‚Ä‚¢‚½‚çƒXƒLƒbƒv
                 If IsRButtonPressed() Then
                     GoTo NextMessage
                 End If
                 
-                'ã‚«ãƒƒãƒˆã‚¤ãƒ³ã®è¡¨ç¤º
+                'ƒJƒbƒgƒCƒ“‚Ì•\¦
                 fname = LIndex(buf, 1)
                 
-                'ã‚¢ãƒ‹ãƒ¡æŒ‡å®šã‹ã©ã†ã‹åˆ¤å®š
+                'ƒAƒjƒw’è‚©‚Ç‚¤‚©”»’è
                 j = InStr(fname, "[")
                 If j > 0 And InStr(fname, "].") = Len(fname) - 4 Then
                     fname0 = Left$(fname, j - 1)
@@ -2037,7 +2037,7 @@ Dim cl_margin(2) As Single
                     first_id = -1
                 End If
                 
-                'ç”»åƒè¡¨ç¤ºã®ã‚ªãƒ—ã‚·ãƒ§ãƒ³
+                '‰æ‘œ•\¦‚ÌƒIƒvƒVƒ‡ƒ“
                 options = ""
                 n = LLength(buf)
                 j = 2
@@ -2045,27 +2045,27 @@ Dim cl_margin(2) As Single
                 Do While j <= n
                     buf2 = LIndex(buf, j)
                     Select Case buf2
-                        Case "é€é", "èƒŒæ™¯", "ç™½é»’", "ã‚»ãƒ”ã‚¢", _
-                            "æ˜", "æš—", "ä¸Šä¸‹åè»¢", "å·¦å³åè»¢", _
-                            "ä¸ŠåŠåˆ†", "ä¸‹åŠåˆ†", "å³åŠåˆ†", "å·¦åŠåˆ†", _
-                            "å³ä¸Š", "å·¦ä¸Š", "å³ä¸‹", "å·¦ä¸‹", _
-                            "ãƒã‚¬ãƒã‚¸åè»¢", "ã‚·ãƒ«ã‚¨ãƒƒãƒˆ", _
-                            "å¤•ç„¼ã‘", "æ°´ä¸­", "ä¿æŒ"
+                        Case "“§‰ß", "”wŒi", "”’•", "ƒZƒsƒA", _
+                            "–¾", "ˆÃ", "ã‰º”½“]", "¶‰E”½“]", _
+                            "ã”¼•ª", "‰º”¼•ª", "‰E”¼•ª", "¶”¼•ª", _
+                            "‰Eã", "¶ã", "‰E‰º", "¶‰º", _
+                            "ƒlƒKƒ|ƒW”½“]", "ƒVƒ‹ƒGƒbƒg", _
+                            "—[Ä‚¯", "…’†", "•Û"
                             options = options & buf2 & " "
-                        Case "æ¶ˆå»"
+                        Case "Á‹"
                             clear_every_time = True
-                        Case "å³å›è»¢"
+                        Case "‰E‰ñ“]"
                             j = j + 1
-                            options = options & "å³å›è»¢ " & LIndex(buf, j) & " "
-                        Case "å·¦å›è»¢"
+                            options = options & "‰E‰ñ“] " & LIndex(buf, j) & " "
+                        Case "¶‰ñ“]"
                             j = j + 1
-                            options = options & "å·¦å›è»¢ " & LIndex(buf, j) & " "
+                            options = options & "¶‰ñ“] " & LIndex(buf, j) & " "
                         Case "-"
-                            'ã‚¹ã‚­ãƒƒãƒ—
+                            'ƒXƒLƒbƒv
                             opt_n = j + 1
                         Case Else
                             If Asc(buf2) = 35 And Len(buf2) = 7 Then
-                                'é€éè‰²è¨­å®š
+                                '“§‰ßFİ’è
                                 cname = String$(8, vbNullChar)
                                 Mid(cname, 1, 2) = "&H"
                                 Mid(cname, 3, 2) = Mid$(buf2, 6, 2)
@@ -2077,7 +2077,7 @@ Dim cl_margin(2) As Single
                                     End If
                                 End If
                             ElseIf IsNumeric(buf2) Then
-                                'ã‚¹ã‚­ãƒƒãƒ—
+                                'ƒXƒLƒbƒv
                                 opt_n = j + 1
                             End If
                     End Select
@@ -2085,7 +2085,7 @@ Dim cl_margin(2) As Single
                 Loop
                 
                 If Asc(fname) = 64 Then '@
-                    'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆç”»åƒåˆ‡ã‚Šæ›¿ãˆã®å ´åˆ
+                    'ƒpƒCƒƒbƒg‰æ‘œØ‚è‘Ö‚¦‚Ìê‡
                     
                     If first_id = -1 Then
                         fname = Mid$(fname, 2)
@@ -2094,7 +2094,7 @@ Dim cl_margin(2) As Single
                         fname = fname0 & Format$(first_id, "00") & fsuffix
                     End If
                     
-                    'ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãŒè¡¨ç¤ºã•ã‚Œã¦ã„ãªã‘ã‚Œã°è¡¨ç¤º
+                    'ƒEƒBƒ“ƒhƒE‚ª•\¦‚³‚ê‚Ä‚¢‚È‚¯‚ê‚Î•\¦
                     If Not frmMessage.Visible Then
                         OpenMessageForm
                     End If
@@ -2103,15 +2103,15 @@ Dim cl_margin(2) As Single
                         start_time = timeGetTime()
                     End If
                     
-                    'ç”»åƒè¡¨ç¤ºã®ã‚ªãƒ—ã‚·ãƒ§ãƒ³
-                    options = options & " ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸"
+                    '‰æ‘œ•\¦‚ÌƒIƒvƒVƒ‡ƒ“
+                    options = options & " ƒƒbƒZ[ƒW"
                     Select Case MapDrawMode
-                        Case "ã‚»ãƒ”ã‚¢", "ç™½é»’"
+                        Case "ƒZƒsƒA", "”’•"
                             options = options & " " & MapDrawMode
                     End Select
                     
                     If first_id = -1 Then
-                        'ï¼‘æšç”»åƒã®å ´åˆ
+                        '‚P–‡‰æ‘œ‚Ìê‡
                         DrawPicture fname, 0, 0, 64, 64, 0, 0, 0, 0, options
                         frmMessage.picFace.Refresh
                         
@@ -2121,7 +2121,7 @@ Dim cl_margin(2) As Single
                             Loop
                         End If
                     Else
-                        'ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®å ´åˆ
+                        'ƒAƒjƒ[ƒVƒ‡ƒ“‚Ìê‡
                         For j = first_id To last_id
                             fname = fpath & fname0 & Format$(j, "00") & fsuffix
                             
@@ -2144,7 +2144,7 @@ Dim cl_margin(2) As Single
                     GoTo NextMessage
                 End If
                 
-                'è¡¨ç¤ºç”»åƒã®ã‚µã‚¤ã‚º
+                '•\¦‰æ‘œ‚ÌƒTƒCƒY
                 If opt_n > 2 Then
                     buf2 = LIndex(buf, 2)
                     If buf2 = "-" Then
@@ -2163,7 +2163,7 @@ Dim cl_margin(2) As Single
                     dh = DEFAULT_LEVEL
                 End If
                 
-                'è¡¨ç¤ºç”»åƒã®ä½ç½®
+                '•\¦‰æ‘œ‚ÌˆÊ’u
                 If opt_n > 4 Then
                     buf2 = LIndex(buf, 4)
                     If buf2 = "-" Then
@@ -2187,7 +2187,7 @@ Dim cl_margin(2) As Single
                 End If
                 
                 If first_id = -1 Then
-                    'ï¼‘æšçµµã®å ´åˆ
+                    '‚P–‡ŠG‚Ìê‡
                     If clear_every_time Then
                         ClearPicture
                     End If
@@ -2207,7 +2207,7 @@ Dim cl_margin(2) As Single
                         wait_time = DEFAULT_LEVEL
                     End If
                 Else
-                    'ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®å ´åˆ
+                    'ƒAƒjƒ[ƒVƒ‡ƒ“‚Ìê‡
                     For j = first_id To last_id
                         fname = fname0 & Format$(j, "00") & fsuffix
                         
@@ -2234,12 +2234,12 @@ Dim cl_margin(2) As Single
                 GoTo NextMessage
                 
             Case ".wav", ".mp3"
-                'å³ãƒœã‚¿ãƒ³ã‚’æŠ¼ã•ã‚Œã¦ã„ãŸã‚‰ã‚¹ã‚­ãƒƒãƒ—
+                '‰Eƒ{ƒ^ƒ“‚ğ‰Ÿ‚³‚ê‚Ä‚¢‚½‚çƒXƒLƒbƒv
                 If IsRButtonPressed() Then
                     GoTo NextMessage
                 End If
                 
-                'åŠ¹æœéŸ³ã®æ¼”å¥
+                'Œø‰Ê‰¹‚Ì‰‰‘t
                 PlayWave buf
                 If wait_time > 0 Then
                     If need_refresh Then
@@ -2252,73 +2252,73 @@ Dim cl_margin(2) As Single
                 GoTo NextMessage
         End Select
         
-        'æˆ¦é—˜ã‚¢ãƒ‹ãƒ¡å‘¼ã³å‡ºã—
+        'í“¬ƒAƒjƒŒÄ‚Ño‚µ
         If Left$(buf, 1) = "@" Then
             ShowAnimation Mid$(buf, 2)
             GoTo NextMessage
         End If
         
-        'ç‰¹æ®Šã‚³ãƒãƒ³ãƒ‰
+        '“ÁêƒRƒ}ƒ“ƒh
         Select Case LCase$(LIndex(buf, 1))
             Case "clear"
-                'ã‚«ãƒƒãƒˆã‚¤ãƒ³ã®æ¶ˆå»
+                'ƒJƒbƒgƒCƒ“‚ÌÁ‹
                 ClearPicture
                 need_refresh = True
                 GoTo NextMessage
                 
             Case "keep"
-                'ã‚«ãƒƒãƒˆã‚¤ãƒ³ã®ä¿å­˜
+                'ƒJƒbƒgƒCƒ“‚Ì•Û‘¶
                 IsPictureDrawn = False
                 GoTo NextMessage
         End Select
         
-        'ã‚¦ã‚§ã‚¤ãƒˆ
+        'ƒEƒFƒCƒg
         If IsNumeric(buf) Then
             wait_time = 100 * CDbl(buf)
             GoTo NextMessage
         End If
         
-        'ã“ã‚Œã‚ˆã‚Šãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã®è¡¨ç¤º
+        '‚±‚ê‚æ‚èƒƒbƒZ[ƒW‚Ì•\¦
         
-        'ç©ºãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã®å ´åˆã¯è¡¨ç¤ºã—ãªã„
+        '‹óƒƒbƒZ[ƒW‚Ìê‡‚Í•\¦‚µ‚È‚¢
         If buf = "" Then
             GoTo NextMessage
         End If
         
-        'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®çŠ¶æ…‹ãŒå¤‰åŒ–ã—ã¦ã„ã‚‹å ´åˆã¯å¾©å…ƒ
+        'ƒƒbƒZ[ƒWƒEƒBƒ“ƒhƒE‚Ìó‘Ô‚ª•Ï‰»‚µ‚Ä‚¢‚éê‡‚Í•œŒ³
         KeepMessageFormStatus
         
         With p
-            'ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’ã‚¯ãƒªã‚¢
+            'ƒEƒBƒ“ƒhƒE‚ğƒNƒŠƒA
             .Cls
             .CurrentX = 1
             
-            'ãƒ•ã‚©ãƒ³ãƒˆè¨­å®šã‚’åˆæœŸåŒ–
+            'ƒtƒHƒ“ƒgİ’è‚ğ‰Šú‰»
             .FontBold = False
             .FontItalic = False
-            .FontName = "ï¼­ï¼³ ï¼°æ˜æœ"
+            .FontName = "‚l‚r ‚o–¾’©"
             .FontSize = 12
             .ForeColor = vbBlack
         End With
         
-        'è©±è€…åã¨æ‹¬å¼§ã®è¡¨ç¤ºå‡¦ç†
+        '˜bÒ–¼‚ÆŠ‡ŒÊ‚Ì•\¦ˆ—
         is_char_message = False
-        If pname <> "ã‚·ã‚¹ãƒ†ãƒ " _
+        If pname <> "ƒVƒXƒeƒ€" _
             And ((pname <> "" And pname <> "-") _
-                Or ((Left$(buf, 1) = "ã€Œ" And Right$(buf, 1) = "ã€")) _
-                Or ((Left$(buf, 1) = "ã€" And Right$(buf, 1) = "ã€"))) _
+                Or ((Left$(buf, 1) = "u" And Right$(buf, 1) = "v")) _
+                Or ((Left$(buf, 1) = "w" And Right$(buf, 1) = "x"))) _
         Then
             Dim with_footer As Boolean
             
             is_char_message = True
             
-            'è©±è€…ã®ã‚°ãƒ©ãƒ•ã‚£ãƒƒã‚¯ã‚’è¡¨ç¤º
+            '˜bÒ‚ÌƒOƒ‰ƒtƒBƒbƒN‚ğ•\¦
             If pname = "-" _
                 And Not SelectedUnit Is Nothing _
             Then
                 If SelectedUnit.CountPilot > 0 Then
                     fname = SelectedUnit.MainPilot.Bitmap
-                    If DrawPicture(fname, 0, 0, 64, 64, 0, 0, 0, 0, "ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ " & msg_mode) Then
+                    If DrawPicture(fname, 0, 0, 64, 64, 0, 0, 0, 0, "ƒƒbƒZ[ƒW " & msg_mode) Then
                         frmMessage.picFace.Refresh
                         DisplayedPilot = fname
                         DisplayMode = msg_mode
@@ -2326,7 +2326,7 @@ Dim cl_margin(2) As Single
                 End If
             End If
             
-            'è©±è€…åã‚’è¡¨ç¤º
+            '˜bÒ–¼‚ğ•\¦
             If pnickname = "" _
                 And pname = "-" _
                 And Not SelectedUnit Is Nothing _
@@ -2338,7 +2338,7 @@ Dim cl_margin(2) As Single
                 p.Print pnickname
             End If
             
-            'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãŒé€”ä¸­ã§çµ‚ã‚ã£ã¦ã„ã‚‹ã‹åˆ¤å®š
+            'ƒƒbƒZ[ƒW‚ª“r’†‚ÅI‚í‚Á‚Ä‚¢‚é‚©”»’è
             If Right$(buf, 1) <> ":" Then
                 with_footer = True
             Else
@@ -2347,35 +2347,35 @@ Dim cl_margin(2) As Single
                 buf = Left$(buf, Len(buf) - 1)
             End If
             
-            'æ‹¬å¼§ã‚’ä»˜åŠ 
-            If (Left$(buf, 1) = "(" Or Left$(buf, 1) = "ï¼ˆ") _
-                And (Not with_footer Or (Right$(buf, 1) = ")" Or Right$(buf, 1) = "ï¼‰")) _
+            'Š‡ŒÊ‚ğ•t‰Á
+            If (Left$(buf, 1) = "(" Or Left$(buf, 1) = "i") _
+                And (Not with_footer Or (Right$(buf, 1) = ")" Or Right$(buf, 1) = "j")) _
             Then
-                'ãƒ¢ãƒãƒ­ãƒ¼ã‚°
+                'ƒ‚ƒmƒ[ƒO
                 If with_footer Then
                     buf = Mid$(buf, 2, Len(buf) - 2)
-                    buf = "ï¼ˆ" & buf & "ï¼‰"
+                    buf = "i" & buf & "j"
                 Else
                     buf = Mid$(buf, 2)
-                    buf = "ï¼ˆ" & buf
+                    buf = "i" & buf
                 End If
-            ElseIf Left$(buf, 1) = "ã€Œ" _
-                And (Not with_footer Or Right$(buf, 1) = "ã€") _
+            ElseIf Left$(buf, 1) = "u" _
+                And (Not with_footer Or Right$(buf, 1) = "v") _
             Then
-                'ã€Œã€ã®æ‹¬å¼§ãŒæ—¢ã«ã‚ã‚‹ã®ã§å¤‰æ›´ã—ãªã„
-            ElseIf Left$(buf, 1) = "ã€" _
-                And (Not with_footer Or Right$(buf, 1) = "ã€") _
+                'uv‚ÌŠ‡ŒÊ‚ªŠù‚É‚ ‚é‚Ì‚Å•ÏX‚µ‚È‚¢
+            ElseIf Left$(buf, 1) = "w" _
+                And (Not with_footer Or Right$(buf, 1) = "x") _
             Then
-                'ã€ã€ã®æ‹¬å¼§ãŒæ—¢ã«ã‚ã‚‹ã®ã§å¤‰æ›´ã—ãªã„
+                'wx‚ÌŠ‡ŒÊ‚ªŠù‚É‚ ‚é‚Ì‚Å•ÏX‚µ‚È‚¢
             Else
                 If with_footer Then
-                    buf = "ã€Œ" & buf & "ã€"
+                    buf = "u" & buf & "v"
                 Else
-                    buf = "ã€Œ" & buf
+                    buf = "u" & buf
                 End If
             End If
         Else
-            'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãŒé€”ä¸­ã§çµ‚ã‚ã£ã¦ã„ã‚‹ã‹åˆ¤å®š
+            'ƒƒbƒZ[ƒW‚ª“r’†‚ÅI‚í‚Á‚Ä‚¢‚é‚©”»’è
             If Right$(buf, 1) = ":" Then
                 prev_lnum = lnum
                 buf = Left$(buf, Len(buf) - 1)
@@ -2388,7 +2388,7 @@ Dim cl_margin(2) As Single
         For j = 1 To Len(buf)
             ch = Mid$(buf, j, 1)
             
-            'ã€Œ.ã€ã®å ´åˆã¯å¿…ãšæ”¹è¡Œ
+            'u.v‚Ìê‡‚Í•K‚¸‰üs
             If ch = "." Then
                 If j <> line_head Then
                     PrintMessage Mid$(buf, line_head, j - line_head), Not is_char_message
@@ -2401,7 +2401,7 @@ Dim cl_margin(2) As Single
                 GoTo NextLoop
             End If
                 
-            'ã‚¿ã‚°å†…ã§ã¯æ”¹è¡Œã—ãªã„
+            'ƒ^ƒO“à‚Å‚Í‰üs‚µ‚È‚¢
             If ch = "<" Then
                 in_tag = True
                 GoTo NextLoop
@@ -2411,7 +2411,7 @@ Dim cl_margin(2) As Single
                 GoTo NextLoop
             End If
             
-            'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãŒé€”åˆ‡ã‚Œã¦ã—ã¾ã†å ´åˆã¯å¿…ãšæ”¹è¡Œ
+            'ƒƒbƒZ[ƒW‚ª“rØ‚ê‚Ä‚µ‚Ü‚¤ê‡‚Í•K‚¸‰üs
             If MessageLen(Mid$(buf, line_head, j - line_head)) > 0.95 * p.width Then
                 PrintMessage Mid$(buf, line_head, j - line_head + 1), Not is_char_message
                 If is_char_message Then
@@ -2422,30 +2422,30 @@ Dim cl_margin(2) As Single
                 GoTo NextLoop
             End If
             
-            'ç¦å‰‡å‡¦ç†
+            '‹Ö‘¥ˆ—
             Select Case Mid$(buf, j + 1, 1)
-                Case "ã€‚", "ã€", "â€¦", "â€¥", "ãƒ»", "ï½¥", _
-                    "ï½", "ãƒ¼", "ï¼", "ï¼", "ï¼Ÿ", _
-                    "ã€", "ã€", "ï¼‰", ")", " ", "."
+                Case "B", "A", "c", "d", "E", "¥", _
+                    "`", "[", "|", "I", "H", _
+                    "v", "x", "j", ")", " ", "."
                     GoTo NextLoop
             End Select
             Select Case Mid$(buf, j + 2, 1)
-                Case "ã€‚", "ã€", "â€¦", "â€¥", "ãƒ»", "ï½¥", _
-                    "ï½", "ãƒ¼", "ï¼", "ï¼", "ï¼Ÿ", _
-                    "ã€", "ã€", "ï¼‰", ")", " ", "."
+                Case "B", "A", "c", "d", "E", "¥", _
+                    "`", "[", "|", "I", "H", _
+                    "v", "x", "j", ")", " ", "."
                     GoTo NextLoop
             End Select
             If Mid$(buf, j + 3, 1) = "." Then
                 GoTo NextLoop
             End If
             
-            'æ”¹è¡Œã®åˆ¤å®š
+            '‰üs‚Ì”»’è
             If MessageLen(Mid$(messages(i), line_head)) < 0.95 * p.width Then
-                'å…¨ä½“ãŒä¸€è¡Œã«åã¾ã‚‹å ´åˆ
+                '‘S‘Ì‚ªˆês‚Éû‚Ü‚éê‡
                 GoTo NextLoop
             End If
             Select Case ch
-                Case "ã€‚"
+                Case "B"
                     If MessageLen(Mid$(buf, line_head, j - line_head)) > cl_margin(1) * p.width Then
                         PrintMessage Mid$(buf, line_head, j - line_head + 1), Not is_char_message
                         If is_char_message Then
@@ -2463,7 +2463,7 @@ Dim cl_margin(2) As Single
                         line_head = j + 1
                         lnum = lnum + 1
                     End If
-                Case "ã€"
+                Case "A"
                     If MessageLen(Mid$(buf, line_head, j - line_head)) > cl_margin(2) * p.width Then
                         PrintMessage Mid$(buf, line_head, j - line_head + 1), Not is_char_message
                         If is_char_message Then
@@ -2484,46 +2484,46 @@ Dim cl_margin(2) As Single
             End Select
 NextLoop:
         Next
-        'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã®æ®‹ã‚Šã‚’è¡¨ç¤ºã—ã¦ãŠã
+        'ƒƒbƒZ[ƒW‚Ìc‚è‚ğ•\¦‚µ‚Ä‚¨‚­
         If Len(buf) >= line_head Then
             PrintMessage Mid$(buf, line_head), Not is_char_message
             lnum = lnum + 1
         End If
         
-        'ãƒ•ã‚©ãƒ³ãƒˆè¨­å®šã‚’å…ƒã«æˆ»ã™
+        'ƒtƒHƒ“ƒgİ’è‚ğŒ³‚É–ß‚·
         With p
             .FontBold = False
             .FontItalic = False
-            .FontName = "ï¼­ï¼³ ï¼°æ˜æœ"
+            .FontName = "‚l‚r ‚o–¾’©"
             .FontSize = 12
             .ForeColor = vbBlack
         End With
         
-        'ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®ã‚¦ã‚§ã‚¤ãƒˆ
+        'ƒfƒtƒHƒ‹ƒg‚ÌƒEƒFƒCƒg
         If wait_time = DEFAULT_LEVEL Then
             wait_time = (lnum - prev_lnum + 1) * MessageWait
-            If msg_mode = "é«˜é€Ÿ" Then
+            If msg_mode = "‚‘¬" Then
                 wait_time = wait_time \ 2
             End If
         End If
         
-        'ç”»é¢ã‚’æ›´æ–°
+        '‰æ–Ê‚ğXV
         If need_refresh Then
             MainForm.picMain(0).Refresh
             need_refresh = False
         End If
         DoEvents
         
-        'å¾…ã¡æ™‚é–“ãŒåˆ‡ã‚Œã‚‹ã¾ã§å¾…æ©Ÿ
+        '‘Ò‚¿ŠÔ‚ªØ‚ê‚é‚Ü‚Å‘Ò‹@
         start_time = timeGetTime()
         IsFormClicked = False
         Do While (start_time + wait_time > timeGetTime())
-            'å·¦ãƒœã‚¿ãƒ³ãŒæŠ¼ã•ã‚ŒãŸã‚‰ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸é€ã‚Š
+            '¶ƒ{ƒ^ƒ“‚ª‰Ÿ‚³‚ê‚½‚çƒƒbƒZ[ƒW‘—‚è
             If IsFormClicked Then
                 Exit Do
             End If
             
-            'å³ãƒœã‚¿ãƒ³ã‚’æŠ¼ã•ã‚Œã¦ã„ãŸã‚‰æ—©é€ã‚Š
+            '‰Eƒ{ƒ^ƒ“‚ğ‰Ÿ‚³‚ê‚Ä‚¢‚½‚ç‘‘—‚è
             If IsRButtonPressed() Then
                 Exit Do
             End If
@@ -2535,28 +2535,28 @@ NextLoop:
 NextMessage:
     Next
     
-    'æˆ¦é—˜ã‚¢ãƒ‹ãƒ¡ãƒ‡ãƒ¼ã‚¿ã®ã‚«ãƒƒãƒˆã‚¤ãƒ³è¡¨ç¤ºï¼Ÿ
+    'í“¬ƒAƒjƒƒf[ƒ^‚ÌƒJƒbƒgƒCƒ“•\¦H
     If pname = "-" Then
         Exit Sub
     End If
     
-    'ç”»é¢ã‚’æ›´æ–°
+    '‰æ–Ê‚ğXV
     If need_refresh Then
         MainForm.picMain(0).Refresh
         need_refresh = False
     End If
     
-    'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãƒ‡ãƒ¼ã‚¿ã®æœ€å¾Œã«ã‚¦ã‚§ã‚¤ãƒˆã®æŒ‡å®šãŒè¡Œã‚ã‚Œã¦ã„ãŸå ´åˆ
+    'ƒƒbƒZ[ƒWƒf[ƒ^‚ÌÅŒã‚ÉƒEƒFƒCƒg‚Ìw’è‚ªs‚í‚ê‚Ä‚¢‚½ê‡
     If wait_time > 0 Then
         start_time = timeGetTime()
         IsFormClicked = False
         Do While (start_time + wait_time > timeGetTime())
-            'å·¦ãƒœã‚¿ãƒ³ãŒæŠ¼ã•ã‚ŒãŸã‚‰ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸é€ã‚Š
+            '¶ƒ{ƒ^ƒ“‚ª‰Ÿ‚³‚ê‚½‚çƒƒbƒZ[ƒW‘—‚è
             If IsFormClicked Then
                 Exit Do
             End If
             
-            'å³ãƒœã‚¿ãƒ³ã‚’æŠ¼ã•ã‚Œã¦ã„ãŸã‚‰æ—©é€ã‚Š
+            '‰Eƒ{ƒ^ƒ“‚ğ‰Ÿ‚³‚ê‚Ä‚¢‚½‚ç‘‘—‚è
             If IsRButtonPressed() Then
                 Exit Do
             End If
@@ -2566,7 +2566,7 @@ NextMessage:
         Loop
     End If
     
-    'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®çŠ¶æ…‹ãŒå¤‰åŒ–ã—ã¦ã„ã‚‹å ´åˆã¯å¾©å…ƒ
+    'ƒƒbƒZ[ƒWƒEƒBƒ“ƒhƒE‚Ìó‘Ô‚ª•Ï‰»‚µ‚Ä‚¢‚éê‡‚Í•œŒ³
     KeepMessageFormStatus
     
     DoEvents
@@ -2574,13 +2574,13 @@ NextMessage:
     Exit Sub
     
 ErrorHandler:
-    ErrorMessage "ç”»åƒãƒ•ã‚¡ã‚¤ãƒ«" & vbCr & vbLf _
+    ErrorMessage "‰æ‘œƒtƒ@ƒCƒ‹" & vbCr & vbLf _
         & fname & vbCr & vbLf _
-        & "ã®èª­ã¿è¾¼ã¿ä¸­ã«ã‚¨ãƒ©ãƒ¼ãŒç™ºç”Ÿã—ã¾ã—ãŸã€‚" & vbCr & vbLf _
-        & "ç”»åƒãƒ•ã‚¡ã‚¤ãƒ«ãŒå£Šã‚Œã¦ã„ãªã„ã‹ç¢ºèªã—ã¦ä¸‹ã•ã„ã€‚"
+        & "‚Ì“Ç‚İ‚İ’†‚ÉƒGƒ‰[‚ª”­¶‚µ‚Ü‚µ‚½B" & vbCr & vbLf _
+        & "‰æ‘œƒtƒ@ƒCƒ‹‚ª‰ó‚ê‚Ä‚¢‚È‚¢‚©Šm”F‚µ‚Ä‰º‚³‚¢B"
 End Sub
 
-'ã‚·ã‚¹ãƒ†ãƒ ã«ã‚ˆã‚‹ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’è¡¨ç¤º
+'ƒVƒXƒeƒ€‚É‚æ‚éƒƒbƒZ[ƒW‚ğ•\¦
 Public Sub DisplaySysMessage(ByVal msg As String, Optional ByVal short_wait As Boolean)
 Dim i As Integer, j As Integer, line_head As Integer
 Dim ch As String, buf As String
@@ -2589,41 +2589,41 @@ Dim lnum As Integer
 Dim start_time As Long, wait_time As Long
 Dim in_tag As Boolean
 
-    'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãŒè¡¨ç¤ºã•ã‚Œã¦ã„ãªã„å ´åˆã¯è¡¨ç¤ºã‚’ã‚­ãƒ£ãƒ³ã‚»ãƒ«
+    'ƒƒbƒZ[ƒWƒEƒBƒ“ƒhƒE‚ª•\¦‚³‚ê‚Ä‚¢‚È‚¢ê‡‚Í•\¦‚ğƒLƒƒƒ“ƒZƒ‹
     If frmMessage.WindowState = 1 Then
         Exit Sub
     End If
 
-    'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸å†…ã®å¼ã‚’ç½®æ›
+    'ƒƒbƒZ[ƒW“à‚Ì®‚ğ’uŠ·
     FormatMessage msg
 
-    'ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ã‚­ãƒ£ãƒ—ã‚·ãƒ§ãƒ³ã‚’è¨­å®š
-    If frmMessage.Caption = "ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ (è‡ªå‹•é€ã‚Š)" Then
-        frmMessage.Caption = "ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸"
+    'ƒEƒBƒ“ƒhƒE‚ÌƒLƒƒƒvƒVƒ‡ƒ“‚ğİ’è
+    If frmMessage.Caption = "ƒƒbƒZ[ƒW (©“®‘—‚è)" Then
+        frmMessage.Caption = "ƒƒbƒZ[ƒW"
     End If
 
     Set p = frmMessage.picMessage
 
     With p
-        'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’ã‚¯ãƒªã‚¢
+        'ƒƒbƒZ[ƒWƒEƒBƒ“ƒhƒE‚ğƒNƒŠƒA
         .Cls
         .CurrentX = 1
 
-        'ãƒ•ã‚©ãƒ³ãƒˆè¨­å®šã‚’åˆæœŸåŒ–
+        'ƒtƒHƒ“ƒgİ’è‚ğ‰Šú‰»
         .FontBold = False
         .FontItalic = False
-        .FontName = "ï¼­ï¼³ ï¼°æ˜æœ"
+        .FontName = "‚l‚r ‚o–¾’©"
         .FontSize = 12
         .ForeColor = vbBlack
     End With
 
-    'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’è¡¨ç¤º
+    'ƒƒbƒZ[ƒW‚ğ•\¦
     lnum = 0
     line_head = 1
     For i = 1 To Len(msg)
         ch = Mid$(msg, i, 1)
 
-        'ã€Œ;ã€ã®å ´åˆã¯å¿…ãšæ”¹è¡Œ
+        'u;v‚Ìê‡‚Í•K‚¸‰üs
         If ch = ";" Then
             If line_head <> i Then
                 buf = Mid$(msg, line_head, i - line_head)
@@ -2634,7 +2634,7 @@ Dim in_tag As Boolean
             GoTo NextLoop
         End If
 
-        'ã‚¿ã‚°å†…ã§ã¯æ”¹è¡Œã—ãªã„
+        'ƒ^ƒO“à‚Å‚Í‰üs‚µ‚È‚¢
         If ch = "<" Then
             in_tag = True
             GoTo NextLoop
@@ -2644,18 +2644,18 @@ Dim in_tag As Boolean
             GoTo NextLoop
         End If
 
-        'ç¦å‰‡å‡¦ç†
-        If ch = "ã€‚" Or ch = "ã€" Then
+        '‹Ö‘¥ˆ—
+        If ch = "B" Or ch = "A" Then
             GoTo NextLoop
         End If
         If i < Len(msg) Then
-            If Mid$(msg, i + 1, 1) = "ã€‚" Or Mid$(msg, i + 1, 1) = "ã€" Then
+            If Mid$(msg, i + 1, 1) = "B" Or Mid$(msg, i + 1, 1) = "A" Then
                 GoTo NextLoop
             End If
         End If
 
         If MessageLen(Mid$(msg, line_head)) < p.width Then
-            'å…¨ä½“ãŒä¸€è¡Œã«åã¾ã‚‹å ´åˆ
+            '‘S‘Ì‚ªˆês‚Éû‚Ü‚éê‡
             GoTo NextLoop
         End If
 
@@ -2672,7 +2672,7 @@ Dim in_tag As Boolean
             lnum = lnum + 1
             line_head = i + 1
         ElseIf ch = "[" Then
-            '[]ã§å›²ã¾ã‚ŒãŸæ–‡å­—åˆ—å†…ã§ã¯æ”¹è¡Œã—ãªã„
+            '[]‚ÅˆÍ‚Ü‚ê‚½•¶š—ñ“à‚Å‚Í‰üs‚µ‚È‚¢
             For j = i To Len(msg)
                 If Mid$(msg, j, 1) = "]" Then
                     Exit For
@@ -2691,16 +2691,16 @@ NextLoop:
     PrintMessage buf, True
     lnum = lnum + 1
 
-    'ãƒ•ã‚©ãƒ³ãƒˆè¨­å®šã‚’å…ƒã«æˆ»ã™
+    'ƒtƒHƒ“ƒgİ’è‚ğŒ³‚É–ß‚·
     With p
         .FontBold = False
         .FontItalic = False
-        .FontName = "ï¼­ï¼³ ï¼°æ˜æœ"
+        .FontName = "‚l‚r ‚o–¾’©"
         .FontSize = 12
         .ForeColor = vbBlack
     End With
 
-    'ã‚¦ã‚§ã‚¤ãƒˆã‚’è¨ˆç®—
+    'ƒEƒFƒCƒg‚ğŒvZ
     wait_time = (0.8 + 0.5 * lnum) * MessageWait
     If short_wait Then
         wait_time = wait_time \ 2
@@ -2708,16 +2708,16 @@ NextLoop:
 
     DoEvents
 
-    'å¾…ã¡æ™‚é–“ãŒåˆ‡ã‚Œã‚‹ã¾ã§å¾…æ©Ÿ
+    '‘Ò‚¿ŠÔ‚ªØ‚ê‚é‚Ü‚Å‘Ò‹@
     IsFormClicked = False
     start_time = timeGetTime()
     Do While (start_time + wait_time > timeGetTime())
-        'å·¦ãƒœã‚¿ãƒ³ãŒæŠ¼ã•ã‚ŒãŸã‚‰ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸é€ã‚Š
+        '¶ƒ{ƒ^ƒ“‚ª‰Ÿ‚³‚ê‚½‚çƒƒbƒZ[ƒW‘—‚è
         If IsFormClicked Then
             Exit Do
         End If
 
-        'å³ãƒœã‚¿ãƒ³ã‚’æŠ¼ã•ã‚Œã¦ã„ãŸã‚‰æ—©é€ã‚Š
+        '‰Eƒ{ƒ^ƒ“‚ğ‰Ÿ‚³‚ê‚Ä‚¢‚½‚ç‘‘—‚è
         If IsRButtonPressed() Then
             Exit Do
         End If
@@ -2728,9 +2728,9 @@ NextLoop:
 End Sub
 
 
-' === ãƒãƒƒãƒ—ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã«é–¢ã™ã‚‹å‡¦ç† ===
+' === ƒ}ƒbƒvƒEƒBƒ“ƒhƒE‚ÉŠÖ‚·‚éˆ— ===
 
-'ãƒãƒƒãƒ—ç”»é¢èƒŒæ™¯ã®è¨­å®š
+'ƒ}ƒbƒv‰æ–Ê”wŒi‚Ìİ’è
 Public Sub SetupBackground(Optional draw_mode As String, Optional draw_option As String, _
     Optional filter_color As Long, Optional filter_trans_par As Double)
 Dim i As Integer, j As Integer, k As Integer, ret As Integer
@@ -2746,13 +2746,13 @@ Dim fname As String
     IsPictureVisible = False
     IsCursorVisible = False
     
-    'ãƒ¦ãƒ‹ãƒƒãƒˆç”»åƒè‰²ã‚’å¤‰æ›´ã—ãªã„ã¨ã„ã‘ãªã„å ´åˆ
+    'ƒ†ƒjƒbƒg‰æ‘œF‚ğ•ÏX‚µ‚È‚¢‚Æ‚¢‚¯‚È‚¢ê‡
     If MapDrawMode <> draw_mode Then
         UList.ClearUnitBitmap
         MapDrawMode = draw_mode
         MapDrawFilterColor = filter_color
         MapDrawFilterTransPercent = filter_trans_par
-    ElseIf draw_mode = "ãƒ•ã‚£ãƒ«ã‚¿" _
+    ElseIf draw_mode = "ƒtƒBƒ‹ƒ^" _
         And (MapDrawFilterColor <> filter_color _
             Or MapDrawFilterTransPercent <> filter_trans_par) _
     Then
@@ -2762,10 +2762,10 @@ Dim fname As String
         MapDrawFilterTransPercent = filter_trans_par
     End If
     
-    'ãƒãƒƒãƒ—èƒŒæ™¯ã®è¨­å®š
+    'ƒ}ƒbƒv”wŒi‚Ìİ’è
     With MainForm
         Select Case draw_option
-            Case "ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹"
+            Case "ƒXƒe[ƒ^ƒX"
                 With .picBack
                     ret = PatBlt(.hDC, 0, 0, .width, .Height, BLACKNESS)
                 End With
@@ -2775,14 +2775,14 @@ Dim fname As String
                 MapY = MainHeight \ 2 + 1
         End Select
         
-        'å„ãƒã‚¹ã®ãƒãƒƒãƒ—ç”»åƒã‚’è¡¨ç¤º
+        'Šeƒ}ƒX‚Ìƒ}ƒbƒv‰æ‘œ‚ğ•\¦
         For i = 1 To MapWidth
             For j = 1 To MapHeight
                 xx = 32 * (i - 1)
                 yy = 32 * (j - 1)
                 
 'DEL START 240a
-'                'ãƒãƒƒãƒ—ç”»åƒãŒæ—¢ã«èª­ã¿è¾¼ã¾ã‚Œã¦ã„ã‚‹ã‹åˆ¤å®š
+'                'ƒ}ƒbƒv‰æ‘œ‚ªŠù‚É“Ç‚İ‚Ü‚ê‚Ä‚¢‚é‚©”»’è
 '                For k = 1 To terrain_bmp_count
 '                    If terrain_bmp_type(k) = MapData(i, j, 0) _
 '                        And terrain_bmp_num(k) = MapData(i, j, 1) _
@@ -2792,22 +2792,22 @@ Dim fname As String
 '                Next
                 
 '                If k <= terrain_bmp_count Then
-'                    'æ—¢ã«æç”»æ¸ˆã¿ã®ç”»åƒã¯æç”»ã—ãŸå€‹æ‰€ã‹ã‚‰è»¢é€
+'                    'Šù‚É•`‰æÏ‚İ‚Ì‰æ‘œ‚Í•`‰æ‚µ‚½ŒÂŠ‚©‚ç“]‘—
 '                    ret = BitBlt(.picBack.hDC, _
 '                        xx, yy, 32, 32, _
 '                        .picBack.hDC, terrain_bmp_x(k), terrain_bmp_y(k), SRCCOPY)
 '                    MapImageFileTypeData(i, j) = _
 '                        MapImageFileTypeData(terrain_bmp_x(k) \ 32 + 1, terrain_bmp_y(k) \ 32 + 1)
 '                Else
-'                    'æ–°è¦ã®ç”»åƒã®å ´åˆ
+'                    'V‹K‚Ì‰æ‘œ‚Ìê‡
 'DEL  END  240a
-                'ç”»åƒãƒ•ã‚¡ã‚¤ãƒ«ã‚’æ¢ã™
+                '‰æ‘œƒtƒ@ƒCƒ‹‚ğ’T‚·
 'MOD START 240a
 '                fname = SearchTerrainImageFile(MapData(i, j, 0), MapData(i, j, 1), i, j)
                 fname = SearchTerrainImageFile(MapData(i, j, MapDataIndex.TerrainType), MapData(i, j, MapDataIndex.BitmapNo), i, j)
 'MOD  END  240a
                 
-                'ç”»åƒã‚’å–ã‚Šè¾¼ã¿
+                '‰æ‘œ‚ğæ‚è‚İ
                 If fname <> "" Then
                     On Error GoTo ErrorHandler
                     .picTmp32(0) = LoadPicture(fname)
@@ -2816,39 +2816,39 @@ Dim fname As String
                     ret = PatBlt(.picTmp32(0).hDC, 0, 0, 32, 32, BLACKNESS)
                 End If
                 
-                'ãƒãƒƒãƒ—è¨­å®šã«ã‚ˆã£ã¦è¡¨ç¤ºè‰²ã‚’å¤‰æ›´
+                'ƒ}ƒbƒvİ’è‚É‚æ‚Á‚Ä•\¦F‚ğ•ÏX
                 Select Case draw_mode
-                    Case "å¤œ"
+                    Case "–é"
                         GetImage .picTmp32(0)
                         Dark
                         SetImage .picTmp32(0)
-                    Case "ã‚»ãƒ”ã‚¢"
+                    Case "ƒZƒsƒA"
                         GetImage .picTmp32(0)
                         Sepia
                         SetImage .picTmp32(0)
-                    Case "ç™½é»’"
+                    Case "”’•"
                         GetImage .picTmp32(0)
                         Monotone
                         SetImage .picTmp32(0)
-                    Case "å¤•ç„¼ã‘"
+                    Case "—[Ä‚¯"
                         GetImage .picTmp32(0)
                         Sunset
                         SetImage .picTmp32(0)
-                    Case "æ°´ä¸­"
+                    Case "…’†"
                         GetImage .picTmp32(0)
                         Water
                         SetImage .picTmp32(0)
-                    Case "ãƒ•ã‚£ãƒ«ã‚¿"
+                    Case "ƒtƒBƒ‹ƒ^"
                         GetImage .picTmp32(0)
                         ColorFilter MapDrawFilterColor, MapDrawFilterTransPercent
                         SetImage .picTmp32(0)
                 End Select
                 
-                'ç”»åƒã‚’æãè¾¼ã¿
+                '‰æ‘œ‚ğ•`‚«‚İ
                 ret = BitBlt(.picBack.hDC, xx, yy, 32, 32, _
                     .picTmp32(0).hDC, 0, 0, SRCCOPY)
 'DEL START 240a
-'                    'ç”»åƒã‚’ç™»éŒ²
+'                    '‰æ‘œ‚ğ“o˜^
 '                    terrain_bmp_count = terrain_bmp_count + 1
 '                    ReDim Preserve terrain_bmp_type(terrain_bmp_count)
 '                    ReDim Preserve terrain_bmp_num(terrain_bmp_count)
@@ -2861,48 +2861,48 @@ Dim fname As String
 '                End If
 'DEL  END  240a
 'ADD START 240a
-                'ãƒ¬ã‚¤ãƒ¤ãƒ¼æç”»ã™ã‚‹å¿…è¦ãŒã‚ã‚‹å ´åˆã¯æç”»ã™ã‚‹
+                'ƒŒƒCƒ„[•`‰æ‚·‚é•K—v‚ª‚ ‚éê‡‚Í•`‰æ‚·‚é
                 If BoxTypes.Upper = MapData(i, j, MapDataIndex.BoxType) _
                     Or BoxTypes.UpperBmpOnly = MapData(i, j, MapDataIndex.BoxType) _
                 Then
-                    'ç”»åƒãƒ•ã‚¡ã‚¤ãƒ«ã‚’æ¢ã™
+                    '‰æ‘œƒtƒ@ƒCƒ‹‚ğ’T‚·
                      fname = SearchTerrainImageFile(MapData(i, j, MapDataIndex.LayerType), MapData(i, j, MapDataIndex.LayerBitmapNo), i, j)
                     
-                    'ç”»åƒã‚’å–ã‚Šè¾¼ã¿
+                    '‰æ‘œ‚ğæ‚è‚İ
                     If fname <> "" Then
 On Error GoTo ErrorHandler
                         .picTmp32(0) = LoadPicture(fname)
 On Error GoTo 0
                         BGColor = vbWhite
-                        'ãƒãƒƒãƒ—è¨­å®šã«ã‚ˆã£ã¦è¡¨ç¤ºè‰²ã‚’å¤‰æ›´
+                        'ƒ}ƒbƒvİ’è‚É‚æ‚Á‚Ä•\¦F‚ğ•ÏX
                         Select Case draw_mode
-                            Case "å¤œ"
+                            Case "–é"
                                 GetImage .picTmp32(0)
                                 Dark True
                                 SetImage .picTmp32(0)
-                            Case "ã‚»ãƒ”ã‚¢"
+                            Case "ƒZƒsƒA"
                                 GetImage .picTmp32(0)
                                 Sepia True
                                 SetImage .picTmp32(0)
-                            Case "ç™½é»’"
+                            Case "”’•"
                                 GetImage .picTmp32(0)
                                 Monotone True
                                 SetImage .picTmp32(0)
-                            Case "å¤•ç„¼ã‘"
+                            Case "—[Ä‚¯"
                                 GetImage .picTmp32(0)
                                 Sunset True
                                 SetImage .picTmp32(0)
-                            Case "æ°´ä¸­"
+                            Case "…’†"
                                 GetImage .picTmp32(0)
                                 Water True
                                 SetImage .picTmp32(0)
-                            Case "ãƒ•ã‚£ãƒ«ã‚¿"
+                            Case "ƒtƒBƒ‹ƒ^"
                                 GetImage .picTmp32(0)
                                 ColorFilter MapDrawFilterColor, MapDrawFilterTransPercent, True
                                 SetImage .picTmp32(0)
                         End Select
                         
-                        'ç”»åƒã‚’é€éæãè¾¼ã¿
+                        '‰æ‘œ‚ğ“§‰ß•`‚«‚İ
                         ret = TransparentBlt(.picBack.hDC, xx, yy, 32, 32, .picTmp32(0).hDC, 0, 0, 32, 32, BGColor)
                     End If
                     
@@ -2910,9 +2910,9 @@ On Error GoTo 0
 'ADD  END  240a
             Next
         Next
-'MapDrawn:  'ä½¿ç”¨ã•ã‚Œã¦ã„ãªã„ãƒ©ãƒ™ãƒ«ãªã®ã§å‰Šé™¤
+'MapDrawn:  'g—p‚³‚ê‚Ä‚¢‚È‚¢ƒ‰ƒxƒ‹‚È‚Ì‚Åíœ
         
-        'ãƒã‚¹ç›®ã®è¡¨ç¤º
+        'ƒ}ƒX–Ú‚Ì•\¦
         If ShowSquareLine Then
             MainForm.picBack.Line (0, 0)-(MapPWidth - 1, MapPHeight - 1), rgb(100, 100, 100), B
             For i = 1 To MapWidth - 1
@@ -2923,7 +2923,7 @@ On Error GoTo 0
             Next
         End If
         
-        'ãƒã‚¹ã‚¯å…¥ã‚ŠèƒŒæ™¯ç”»é¢ã‚’ä½œæˆ
+        'ƒ}ƒXƒN“ü‚è”wŒi‰æ–Ê‚ğì¬
         ret = BitBlt(.picMaskedBack.hDC, _
             0, 0, MapPWidth, MapPHeight, _
             .picBack.hDC, 0, 0, SRCCOPY)
@@ -2941,7 +2941,7 @@ On Error GoTo 0
         Next
     End With
     
-    'ç”»é¢ã‚’æ›´æ–°
+    '‰æ–Ê‚ğXV
     If MapFileName <> "" And draw_option = "" Then
         RefreshScreen
     End If
@@ -2949,38 +2949,38 @@ On Error GoTo 0
     Exit Sub
     
 ErrorHandler:
-    ErrorMessage "ãƒãƒƒãƒ—ç”¨ãƒ“ãƒƒãƒˆãƒãƒƒãƒ—ãƒ•ã‚¡ã‚¤ãƒ«" & vbCr & vbLf _
+    ErrorMessage "ƒ}ƒbƒv—pƒrƒbƒgƒ}ƒbƒvƒtƒ@ƒCƒ‹" & vbCr & vbLf _
         & fname & vbCr & vbLf _
-        & "ã®èª­ã¿è¾¼ã¿ä¸­ã«ã‚¨ãƒ©ãƒ¼ãŒç™ºç”Ÿã—ã¾ã—ãŸã€‚" & vbCr & vbLf _
-        & "ç”»åƒãƒ•ã‚¡ã‚¤ãƒ«ãŒå£Šã‚Œã¦ã„ãªã„ã‹ç¢ºèªã—ã¦ä¸‹ã•ã„ã€‚"
+        & "‚Ì“Ç‚İ‚İ’†‚ÉƒGƒ‰[‚ª”­¶‚µ‚Ü‚µ‚½B" & vbCr & vbLf _
+        & "‰æ‘œƒtƒ@ƒCƒ‹‚ª‰ó‚ê‚Ä‚¢‚È‚¢‚©Šm”F‚µ‚Ä‰º‚³‚¢B"
     TerminateSRC
 End Sub
 
-'ç”»é¢ã®æ›¸ãæ›ãˆ (ãƒ¦ãƒ‹ãƒƒãƒˆè¡¨ç¤ºã‹ã‚‰ã‚„ã‚Šç›´ã—)
+'‰æ–Ê‚Ì‘‚«Š·‚¦ (ƒ†ƒjƒbƒg•\¦‚©‚ç‚â‚è’¼‚µ)
 Public Sub RedrawScreen(Optional ByVal late_refresh As Boolean)
 Dim PT As POINTAPI
 Dim ret As Long
 
     ScreenIsMasked = False
     
-    'ç”»é¢ã‚’æ›´æ–°
+    '‰æ–Ê‚ğXV
     RefreshScreen False, late_refresh
     
-    'ã‚«ãƒ¼ã‚½ãƒ«ã‚’å†æç”»
+    'ƒJ[ƒ\ƒ‹‚ğÄ•`‰æ
     GetCursorPos PT
     ret = SetCursorPos(PT.X, PT.Y)
 End Sub
 
-'ç”»é¢ã‚’ãƒã‚¹ã‚¯ãŒã‘ã—ã¦å†è¡¨ç¤º
+'‰æ–Ê‚ğƒ}ƒXƒN‚ª‚¯‚µ‚ÄÄ•\¦
 Public Sub MaskScreen()
     ScreenIsMasked = True
     
-    'ç”»é¢ã‚’æ›´æ–°
+    '‰æ–Ê‚ğXV
     RefreshScreen
 End Sub
 
 ' ADD START MARGE
-'ç”»é¢ã®æ›¸ãæ›ãˆ
+'‰æ–Ê‚Ì‘‚«Š·‚¦
 Public Sub RefreshScreen(Optional ByVal without_refresh As Boolean, _
     Optional ByVal delay_refresh As Boolean)
 
@@ -2993,7 +2993,7 @@ End Sub
 ' ADD END MARGE
 
 
-'ç”»é¢ã®æ›¸ãæ›ãˆ (æ—§GUI)
+'‰æ–Ê‚Ì‘‚«Š·‚¦ (‹ŒGUI)
 ' MOD START MARGE
 'Public Sub RefreshScreen(Optional ByVal without_refresh As Boolean, _
 '    Optional ByVal delay_refresh As Boolean)
@@ -3011,12 +3011,12 @@ Dim u As Unit
 Dim PT As POINTAPI
 Dim prev_color As Long
 
-    'ãƒãƒƒãƒ—ãƒ‡ãƒ¼ã‚¿ãŒè¨­å®šã•ã‚Œã¦ã„ãªã‘ã‚Œã°ç”»é¢æ›¸ãæ›ãˆã‚’è¡Œã‚ãªã„
+    'ƒ}ƒbƒvƒf[ƒ^‚ªİ’è‚³‚ê‚Ä‚¢‚È‚¯‚ê‚Î‰æ–Ê‘‚«Š·‚¦‚ğs‚í‚È‚¢
     If MapWidth = 1 Then
         Exit Sub
     End If
     
-    'è¡¨ç¤ºä½ç½®ãŒãƒãƒƒãƒ—å¤–ã«ã‚ã‚‹å ´åˆã¯ãƒãƒƒãƒ—å†…ã«åˆã‚ã›ã‚‹
+    '•\¦ˆÊ’u‚ªƒ}ƒbƒvŠO‚É‚ ‚éê‡‚Íƒ}ƒbƒv“à‚É‡‚í‚¹‚é
     If MapX < 1 Then
         MapX = 1
     ElseIf MapX > MapWidth Then
@@ -3040,7 +3040,7 @@ Dim prev_color As Long
             PaintedAreaX2 = -1
             PaintedAreaY2 = -1
             
-            'ãƒãƒƒãƒ—ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«ãƒãƒ¼ã®ä½ç½®ã‚’å¤‰æ›´
+            'ƒ}ƒbƒvƒEƒBƒ“ƒhƒE‚ÌƒXƒNƒ[ƒ‹ƒo[‚ÌˆÊ’u‚ğ•ÏX
             If Not IsGUILocked Then
                 If .HScroll.Value <> MapX Then
                     .HScroll.Value = MapX
@@ -3052,14 +3052,14 @@ Dim prev_color As Long
                 End If
             End If
             
-            'ä¸€æ—¦ãƒãƒƒãƒ—ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®å†…å®¹ã‚’æ¶ˆå»
+            'ˆê’Uƒ}ƒbƒvƒEƒBƒ“ƒhƒE‚Ì“à—e‚ğÁ‹
             ret = PatBlt(pic.hDC, 0, 0, MainPWidth, MainPHeight, BLACKNESS)
         End If
         
         mx = MapX - (MainWidth + 1) \ 2 + 1
         my = MapY - (MainHeight + 1) \ 2 + 1
         
-        'ãƒãƒƒãƒ—ç”»åƒã®è»¢é€å…ƒã¨è»¢é€å…ˆã‚’è¨ˆç®—ã™ã‚‹
+        'ƒ}ƒbƒv‰æ‘œ‚Ì“]‘—Œ³‚Æ“]‘—æ‚ğŒvZ‚·‚é
         
         If mx < 1 Then
             sx = 1
@@ -3095,13 +3095,13 @@ Dim prev_color As Long
             dh = MainHeight
         End If
         
-        'ç›´ç·šã‚’æç”»ã™ã‚‹éš›ã®æç”»è‰²ã‚’é»’ã«å¤‰æ›´
+        '’¼ü‚ğ•`‰æ‚·‚éÛ‚Ì•`‰æF‚ğ•‚É•ÏX
         prev_color = pic.ForeColor
         pic.ForeColor = vbBlack
         
-        'è¡¨ç¤ºå†…å®¹ã‚’æ›´æ–°
+        '•\¦“à—e‚ğXV
         If Not ScreenIsMasked Then
-            'é€šå¸¸è¡¨ç¤º
+            '’Êí•\¦
             For i = 0 To dw - 1
                 xx = 32 * (dx + i - 1)
                 For j = 0 To dh - 1
@@ -3115,45 +3115,45 @@ Dim prev_color As Long
                     
                     Set u = MapDataForUnit(sx + i, sy + j)
                     If u Is Nothing Then
-                        'åœ°å½¢
+                        '’nŒ`
                         ret = BitBlt(pic.hDC, xx, yy, 32, 32, _
                             .picBack.hDC, 32 * (sx + i - 1), 32 * (sy + j - 1), _
                             SRCCOPY)
                     ElseIf u.BitmapID = -1 Then
-                        'éè¡¨ç¤ºã®ãƒ¦ãƒ‹ãƒƒãƒˆ
+                        '”ñ•\¦‚Ìƒ†ƒjƒbƒg
                         ret = BitBlt(pic.hDC, xx, yy, 32, 32, _
                             .picBack.hDC, 32 * (sx + i - 1), 32 * (sy + j - 1), _
                             SRCCOPY)
                     Else
-                        If u.Action > 0 Or u.IsFeatureAvailable("åœ°å½¢ãƒ¦ãƒ‹ãƒƒãƒˆ") Then
-                            'ãƒ¦ãƒ‹ãƒƒãƒˆ
+                        If u.Action > 0 Or u.IsFeatureAvailable("’nŒ`ƒ†ƒjƒbƒg") Then
+                            'ƒ†ƒjƒbƒg
                             ret = BitBlt(pic.hDC, xx, yy, 32, 32, _
                                 .picUnitBitmap.hDC, _
                                 32 * (u.BitmapID Mod 15), 96 * (u.BitmapID \ 15), _
                                 SRCCOPY)
                         Else
-                            'è¡Œå‹•æ¸ˆã®ãƒ¦ãƒ‹ãƒƒãƒˆ
+                            's“®Ï‚Ìƒ†ƒjƒbƒg
                             ret = BitBlt(pic.hDC, xx, yy, 32, 32, _
                                 .picUnitBitmap.hDC, _
                                 32 * (u.BitmapID Mod 15), 96 * (u.BitmapID \ 15) + 32, _
                                 SRCCOPY)
                         End If
                         
-                        'ãƒ¦ãƒ‹ãƒƒãƒˆã®ã„ã‚‹å ´æ‰€ã«åˆã‚ã›ã¦è¡¨ç¤ºã‚’å¤‰æ›´
+                        'ƒ†ƒjƒbƒg‚Ì‚¢‚éêŠ‚É‡‚í‚¹‚Ä•\¦‚ğ•ÏX
                         Select Case u.Area
-                            Case "ç©ºä¸­"
+                            Case "‹ó’†"
                                 ret = MoveToEx(pic.hDC, xx, yy + 28, PT)
                                 ret = LineTo(pic.hDC, xx + 31, yy + 28)
-                            Case "æ°´ä¸­"
+                            Case "…’†"
                                 ret = MoveToEx(pic.hDC, xx, yy + 3, PT)
                                 ret = LineTo(pic.hDC, xx + 31, yy + 3)
-                            Case "åœ°ä¸­"
+                            Case "’n’†"
                                 ret = MoveToEx(pic.hDC, xx, yy + 28, PT)
                                 ret = LineTo(pic.hDC, xx + 31, yy + 28)
                                 ret = MoveToEx(pic.hDC, xx, yy + 3, PT)
                                 ret = LineTo(pic.hDC, xx + 31, yy + 3)
-                            Case "å®‡å®™"
-                                If TerrainClass(sx + i, sy + j) = "æœˆé¢" Then
+                            Case "‰F’ˆ"
+                                If TerrainClass(sx + i, sy + j) = "Œ–Ê" Then
                                     ret = MoveToEx(pic.hDC, xx, yy + 28, PT)
                                     ret = LineTo(pic.hDC, xx + 31, yy + 28)
                                 End If
@@ -3164,7 +3164,7 @@ NextLoop:
                 Next
             Next
         Else
-            'ãƒã‚¹ã‚¯è¡¨ç¤º
+            'ƒ}ƒXƒN•\¦
             For i = 0 To dw - 1
                 xx = 32 * (dx + i - 1)
                 For j = 0 To dh - 1
@@ -3179,73 +3179,73 @@ NextLoop:
                     Set u = MapDataForUnit(sx + i, sy + j)
                     If u Is Nothing Then
                         If MaskData(sx + i, sy + j) Then
-                            'ãƒã‚¹ã‚¯ã•ã‚ŒãŸåœ°å½¢
+                            'ƒ}ƒXƒN‚³‚ê‚½’nŒ`
                             ret = BitBlt(pic.hDC, xx, yy, 32, 32, _
                                 .picMaskedBack.hDC, 32 * (sx + i - 1), 32 * (sy + j - 1), _
                                 SRCCOPY)
                         Else
-                            'åœ°å½¢
+                            '’nŒ`
                             ret = BitBlt(pic.hDC, xx, yy, 32, 32, _
                                 .picBack.hDC, 32 * (sx + i - 1), 32 * (sy + j - 1), _
                                 SRCCOPY)
                         End If
                     ElseIf u.BitmapID = -1 Then
-                        'éè¡¨ç¤ºã®ãƒ¦ãƒ‹ãƒƒãƒˆ
+                        '”ñ•\¦‚Ìƒ†ƒjƒbƒg
                         If MaskData(sx + i, sy + j) Then
-                            'ãƒã‚¹ã‚¯ã•ã‚ŒãŸåœ°å½¢
+                            'ƒ}ƒXƒN‚³‚ê‚½’nŒ`
                             ret = BitBlt(pic.hDC, xx, yy, 32, 32, _
                                 .picMaskedBack.hDC, 32 * (sx + i - 1), 32 * (sy + j - 1), _
                                 SRCCOPY)
                         Else
-                            'åœ°å½¢
+                            '’nŒ`
                             ret = BitBlt(pic.hDC, xx, yy, 32, 32, _
                                 .picBack.hDC, 32 * (sx + i - 1), 32 * (sy + j - 1), _
                                 SRCCOPY)
                         End If
                     Else
                         If MaskData(sx + i, sy + j) Then
-                            'ãƒã‚¹ã‚¯ã•ã‚ŒãŸãƒ¦ãƒ‹ãƒƒãƒˆ
+                            'ƒ}ƒXƒN‚³‚ê‚½ƒ†ƒjƒbƒg
                             ret = BitBlt(pic.hDC, xx, yy, 32, 32, _
                                 .picUnitBitmap.hDC, _
                                 32 * (u.BitmapID Mod 15), 96 * (u.BitmapID \ 15) + 64, _
                                 SRCCOPY)
                             
-                            'ãƒ¦ãƒ‹ãƒƒãƒˆã®ã„ã‚‹å ´æ‰€ã«åˆã‚ã›ã¦è¡¨ç¤ºã‚’å¤‰æ›´
+                            'ƒ†ƒjƒbƒg‚Ì‚¢‚éêŠ‚É‡‚í‚¹‚Ä•\¦‚ğ•ÏX
                             Select Case u.Area
-                                Case "ç©ºä¸­"
+                                Case "‹ó’†"
                                     DottedLine xx, yy + 28
-                                Case "æ°´ä¸­"
+                                Case "…’†"
                                     DottedLine xx, yy + 3
-                                Case "åœ°ä¸­"
+                                Case "’n’†"
                                     DottedLine xx, yy + 28
                                     DottedLine xx, yy + 3
-                                Case "å®‡å®™"
-                                    If TerrainClass(sx + i, sy + j) = "æœˆé¢" Then
+                                Case "‰F’ˆ"
+                                    If TerrainClass(sx + i, sy + j) = "Œ–Ê" Then
                                         DottedLine xx, yy + 28
                                     End If
                             End Select
                         Else
-                            'ãƒ¦ãƒ‹ãƒƒãƒˆ
+                            'ƒ†ƒjƒbƒg
                             ret = BitBlt(pic.hDC, xx, yy, 32, 32, _
                                 .picUnitBitmap.hDC, _
                                 32 * (u.BitmapID Mod 15), 96 * (u.BitmapID \ 15), _
                                 SRCCOPY)
                             
-                            'ãƒ¦ãƒ‹ãƒƒãƒˆã®ã„ã‚‹å ´æ‰€ã«åˆã‚ã›ã¦è¡¨ç¤ºã‚’å¤‰æ›´
+                            'ƒ†ƒjƒbƒg‚Ì‚¢‚éêŠ‚É‡‚í‚¹‚Ä•\¦‚ğ•ÏX
                             Select Case u.Area
-                                Case "ç©ºä¸­"
+                                Case "‹ó’†"
                                     ret = MoveToEx(pic.hDC, xx, yy + 28, PT)
                                     ret = LineTo(pic.hDC, xx + 31, yy + 28)
-                                Case "æ°´ä¸­"
+                                Case "…’†"
                                     ret = MoveToEx(pic.hDC, xx, yy + 3, PT)
                                     ret = LineTo(pic.hDC, xx + 31, yy + 3)
-                                Case "åœ°ä¸­"
+                                Case "’n’†"
                                     ret = MoveToEx(pic.hDC, xx, yy + 28, PT)
                                     ret = LineTo(pic.hDC, xx + 31, yy + 28)
                                     ret = MoveToEx(pic.hDC, xx, yy + 3, PT)
                                     ret = LineTo(pic.hDC, xx + 31, yy + 3)
-                                Case "å®‡å®™"
-                                    If TerrainClass(sx + i, sy + j) = "æœˆé¢" Then
+                                Case "‰F’ˆ"
+                                    If TerrainClass(sx + i, sy + j) = "Œ–Ê" Then
                                         ret = MoveToEx(pic.hDC, xx, yy + 28, PT)
                                         ret = LineTo(pic.hDC, xx + 31, yy + 28)
                                     End If
@@ -3258,10 +3258,10 @@ NextLoop2:
             Next
         End If
         
-        'æç”»è‰²ã‚’å…ƒã«æˆ»ã—ã¦ãŠã
+        '•`‰æF‚ğŒ³‚É–ß‚µ‚Ä‚¨‚­
         pic.ForeColor = prev_color
         
-        'ç”»é¢ãŒæ›¸ãæ›ãˆã‚‰ã‚ŒãŸã“ã¨ã‚’è¨˜éŒ²
+        '‰æ–Ê‚ª‘‚«Š·‚¦‚ç‚ê‚½‚±‚Æ‚ğ‹L˜^
         ScreenIsSaved = False
         
         If Not without_refresh And Not delay_refresh Then
@@ -3271,7 +3271,7 @@ NextLoop2:
 End Sub
 
 ' ADD START MARGE
-'ç”»é¢ã®æ›¸ãæ›ãˆ (æ–°GUI)
+'‰æ–Ê‚Ì‘‚«Š·‚¦ (VGUI)
 Private Sub RefreshScreenNew(Optional ByVal without_refresh As Boolean, _
     Optional ByVal delay_refresh As Boolean)
 Dim pic As PictureBox
@@ -3285,12 +3285,12 @@ Dim u As Unit
 Dim PT As POINTAPI
 Dim prev_color As Long
 
-    'ãƒãƒƒãƒ—ãƒ‡ãƒ¼ã‚¿ãŒè¨­å®šã•ã‚Œã¦ã„ãªã‘ã‚Œã°ç”»é¢æ›¸ãæ›ãˆã‚’è¡Œã‚ãªã„
+    'ƒ}ƒbƒvƒf[ƒ^‚ªİ’è‚³‚ê‚Ä‚¢‚È‚¯‚ê‚Î‰æ–Ê‘‚«Š·‚¦‚ğs‚í‚È‚¢
     If MapWidth = 1 Then
         Exit Sub
     End If
     
-    'è¡¨ç¤ºä½ç½®ãŒãƒãƒƒãƒ—å¤–ã«ã‚ã‚‹å ´åˆã¯ãƒãƒƒãƒ—å†…ã«åˆã‚ã›ã‚‹
+    '•\¦ˆÊ’u‚ªƒ}ƒbƒvŠO‚É‚ ‚éê‡‚Íƒ}ƒbƒv“à‚É‡‚í‚¹‚é
     If MapX < 1 Then
         MapX = 1
     ElseIf MapX > MapWidth Then
@@ -3314,7 +3314,7 @@ Dim prev_color As Long
             PaintedAreaX2 = -1
             PaintedAreaY2 = -1
             
-            'ãƒãƒƒãƒ—ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«ãƒãƒ¼ã®ä½ç½®ã‚’å¤‰æ›´
+            'ƒ}ƒbƒvƒEƒBƒ“ƒhƒE‚ÌƒXƒNƒ[ƒ‹ƒo[‚ÌˆÊ’u‚ğ•ÏX
             If Not IsGUILocked Then
                 If .HScroll.Value <> MapX Then
                     .HScroll.Value = MapX
@@ -3326,14 +3326,14 @@ Dim prev_color As Long
                 End If
             End If
             
-            'ä¸€æ—¦ãƒãƒƒãƒ—ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®å†…å®¹ã‚’æ¶ˆå»
+            'ˆê’Uƒ}ƒbƒvƒEƒBƒ“ƒhƒE‚Ì“à—e‚ğÁ‹
             ret = PatBlt(pic.hDC, 0, 0, MainPWidth, MainPHeight, BLACKNESS)
         End If
         
         mx = MapX - (MainWidth + 1) \ 2 + 1
         my = MapY - (MainHeight + 1) \ 2 + 1
         
-        'ãƒãƒƒãƒ—ç”»åƒã®è»¢é€å…ƒã¨è»¢é€å…ˆã‚’è¨ˆç®—ã™ã‚‹
+        'ƒ}ƒbƒv‰æ‘œ‚Ì“]‘—Œ³‚Æ“]‘—æ‚ğŒvZ‚·‚é
         
         If mx < 1 Then
             sx = 1
@@ -3369,13 +3369,13 @@ Dim prev_color As Long
             dh = MainHeight
         End If
         
-        'ç›´ç·šã‚’æç”»ã™ã‚‹éš›ã®æç”»è‰²ã‚’é»’ã«å¤‰æ›´
+        '’¼ü‚ğ•`‰æ‚·‚éÛ‚Ì•`‰æF‚ğ•‚É•ÏX
         prev_color = pic.ForeColor
         pic.ForeColor = vbBlack
         
-        'è¡¨ç¤ºå†…å®¹ã‚’æ›´æ–°
+        '•\¦“à—e‚ğXV
         If Not ScreenIsMasked Then
-            'é€šå¸¸è¡¨ç¤º
+            '’Êí•\¦
             For i = -1 To dw - 1
                 xx = 32 * (dx + i - 0.5)
                 For j = 0 To dh - 1
@@ -3390,94 +3390,94 @@ Dim prev_color As Long
                     Set u = MapDataForUnit(sx + i, sy + j)
                     
                     If i = -1 Then
-                        'ç”»é¢å·¦ç«¯ã¯16ãƒ”ã‚¯ã‚»ãƒ«å¹…åˆ†ã ã‘è¡¨ç¤º
+                        '‰æ–Ê¶’[‚Í16ƒsƒNƒZƒ‹••ª‚¾‚¯•\¦
                         If u Is Nothing Then
-                            'åœ°å½¢
+                            '’nŒ`
                             ret = BitBlt(pic.hDC, 0, yy, 16, 32, _
                                 .picBack.hDC, 32 * (sx - 1.5), 32 * (sy + j - 1), _
                                 SRCCOPY)
                         ElseIf u.BitmapID = -1 Then
-                            'éè¡¨ç¤ºã®ãƒ¦ãƒ‹ãƒƒãƒˆ
+                            '”ñ•\¦‚Ìƒ†ƒjƒbƒg
                             ret = BitBlt(pic.hDC, 0, yy, 16, 32, _
                                 .picBack.hDC, 32 * (sx - 1.5), 32 * (sy + j - 1), _
                                 SRCCOPY)
                         Else
-                            If u.Action > 0 Or u.IsFeatureAvailable("åœ°å½¢ãƒ¦ãƒ‹ãƒƒãƒˆ") Then
-                                'ãƒ¦ãƒ‹ãƒƒãƒˆ
+                            If u.Action > 0 Or u.IsFeatureAvailable("’nŒ`ƒ†ƒjƒbƒg") Then
+                                'ƒ†ƒjƒbƒg
                                 ret = BitBlt(pic.hDC, 0, yy, 16, 32, _
                                     .picUnitBitmap.hDC, _
                                     32 * (u.BitmapID Mod 15) + 16, 96 * (u.BitmapID \ 15), _
                                     SRCCOPY)
                             Else
-                                'è¡Œå‹•æ¸ˆã®ãƒ¦ãƒ‹ãƒƒãƒˆ
+                                's“®Ï‚Ìƒ†ƒjƒbƒg
                                 ret = BitBlt(pic.hDC, 0, yy, 16, 32, _
                                     .picUnitBitmap.hDC, _
                                     32 * (u.BitmapID Mod 15) + 16, 96 * (u.BitmapID \ 15) + 32, _
                                     SRCCOPY)
                             End If
                             
-                            'ãƒ¦ãƒ‹ãƒƒãƒˆã®ã„ã‚‹å ´æ‰€ã«åˆã‚ã›ã¦è¡¨ç¤ºã‚’å¤‰æ›´
+                            'ƒ†ƒjƒbƒg‚Ì‚¢‚éêŠ‚É‡‚í‚¹‚Ä•\¦‚ğ•ÏX
                             Select Case u.Area
-                                Case "ç©ºä¸­"
+                                Case "‹ó’†"
                                     ret = MoveToEx(pic.hDC, 0, yy + 28, PT)
                                     ret = LineTo(pic.hDC, 0 + 15, yy + 28)
-                                Case "æ°´ä¸­"
+                                Case "…’†"
                                     ret = MoveToEx(pic.hDC, 0, yy + 3, PT)
                                     ret = LineTo(pic.hDC, 0 + 15, yy + 3)
-                                Case "åœ°ä¸­"
+                                Case "’n’†"
                                     ret = MoveToEx(pic.hDC, 0, yy + 28, PT)
                                     ret = LineTo(pic.hDC, 0 + 15, yy + 28)
                                     ret = MoveToEx(pic.hDC, 0, yy + 3, PT)
                                     ret = LineTo(pic.hDC, 0 + 15, yy + 3)
-                                Case "å®‡å®™"
-                                    If TerrainClass(sx + i, sy + j) = "æœˆé¢" Then
+                                Case "‰F’ˆ"
+                                    If TerrainClass(sx + i, sy + j) = "Œ–Ê" Then
                                         ret = MoveToEx(pic.hDC, 0, yy + 28, PT)
                                         ret = LineTo(pic.hDC, 0 + 15, yy + 28)
                                     End If
                             End Select
                         End If
                     Else
-                        'ç”»é¢å·¦ç«¯ä»¥å¤–ã¯å…¨32ãƒ”ã‚¯ã‚»ãƒ«å¹…åˆ†ã ã‘è¡¨ç¤º
+                        '‰æ–Ê¶’[ˆÈŠO‚Í‘S32ƒsƒNƒZƒ‹••ª‚¾‚¯•\¦
                         If u Is Nothing Then
-                            'åœ°å½¢
+                            '’nŒ`
                             ret = BitBlt(pic.hDC, xx, yy, 32, 32, _
                                 .picBack.hDC, 32 * (sx + i - 1), 32 * (sy + j - 1), _
                                 SRCCOPY)
                         ElseIf u.BitmapID = -1 Then
-                            'éè¡¨ç¤ºã®ãƒ¦ãƒ‹ãƒƒãƒˆ
+                            '”ñ•\¦‚Ìƒ†ƒjƒbƒg
                             ret = BitBlt(pic.hDC, xx, yy, 32, 32, _
                                 .picBack.hDC, 32 * (sx + i - 1), 32 * (sy + j - 1), _
                                 SRCCOPY)
                         Else
-                            If u.Action > 0 Or u.IsFeatureAvailable("åœ°å½¢ãƒ¦ãƒ‹ãƒƒãƒˆ") Then
-                                'ãƒ¦ãƒ‹ãƒƒãƒˆ
+                            If u.Action > 0 Or u.IsFeatureAvailable("’nŒ`ƒ†ƒjƒbƒg") Then
+                                'ƒ†ƒjƒbƒg
                                 ret = BitBlt(pic.hDC, xx, yy, 32, 32, _
                                     .picUnitBitmap.hDC, _
                                     32 * (u.BitmapID Mod 15), 96 * (u.BitmapID \ 15), _
                                     SRCCOPY)
                             Else
-                                'è¡Œå‹•æ¸ˆã®ãƒ¦ãƒ‹ãƒƒãƒˆ
+                                's“®Ï‚Ìƒ†ƒjƒbƒg
                                 ret = BitBlt(pic.hDC, xx, yy, 32, 32, _
                                     .picUnitBitmap.hDC, _
                                     32 * (u.BitmapID Mod 15), 96 * (u.BitmapID \ 15) + 32, _
                                     SRCCOPY)
                             End If
                             
-                            'ãƒ¦ãƒ‹ãƒƒãƒˆã®ã„ã‚‹å ´æ‰€ã«åˆã‚ã›ã¦è¡¨ç¤ºã‚’å¤‰æ›´
+                            'ƒ†ƒjƒbƒg‚Ì‚¢‚éêŠ‚É‡‚í‚¹‚Ä•\¦‚ğ•ÏX
                             Select Case u.Area
-                                Case "ç©ºä¸­"
+                                Case "‹ó’†"
                                     ret = MoveToEx(pic.hDC, xx, yy + 28, PT)
                                     ret = LineTo(pic.hDC, xx + 31, yy + 28)
-                                Case "æ°´ä¸­"
+                                Case "…’†"
                                     ret = MoveToEx(pic.hDC, xx, yy + 3, PT)
                                     ret = LineTo(pic.hDC, xx + 31, yy + 3)
-                                Case "åœ°ä¸­"
+                                Case "’n’†"
                                     ret = MoveToEx(pic.hDC, xx, yy + 28, PT)
                                     ret = LineTo(pic.hDC, xx + 31, yy + 28)
                                     ret = MoveToEx(pic.hDC, xx, yy + 3, PT)
                                     ret = LineTo(pic.hDC, xx + 31, yy + 3)
-                                Case "å®‡å®™"
-                                    If TerrainClass(sx + i, sy + j) = "æœˆé¢" Then
+                                Case "‰F’ˆ"
+                                    If TerrainClass(sx + i, sy + j) = "Œ–Ê" Then
                                         ret = MoveToEx(pic.hDC, xx, yy + 28, PT)
                                         ret = LineTo(pic.hDC, xx + 31, yy + 28)
                                     End If
@@ -3488,7 +3488,7 @@ NextLoop:
                 Next
             Next
         Else
-            'ãƒã‚¹ã‚¯è¡¨ç¤º
+            'ƒ}ƒXƒN•\¦
             For i = -1 To dw - 1
                 xx = 32 * (dx + i - 0.5)
                 For j = 0 To dh - 1
@@ -3503,76 +3503,76 @@ NextLoop:
                     Set u = MapDataForUnit(sx + i, sy + j)
                     
                     If i = -1 Then
-                        'ç”»é¢å·¦ç«¯ã¯16ãƒ”ã‚¯ã‚»ãƒ«å¹…åˆ†ã ã‘è¡¨ç¤º
+                        '‰æ–Ê¶’[‚Í16ƒsƒNƒZƒ‹••ª‚¾‚¯•\¦
                         If u Is Nothing Then
                             If MaskData(sx + i, sy + j) Then
-                                'ãƒã‚¹ã‚¯ã•ã‚ŒãŸåœ°å½¢
+                                'ƒ}ƒXƒN‚³‚ê‚½’nŒ`
                                 ret = BitBlt(pic.hDC, 0, yy, 16, 32, _
                                     .picMaskedBack.hDC, 32 * (sx - 1.5), 32 * (sy + j - 1), _
                                     SRCCOPY)
                             Else
-                                'åœ°å½¢
+                                '’nŒ`
                                 ret = BitBlt(pic.hDC, 0, yy, 16, 32, _
                                     .picBack.hDC, 32 * (sx - 1.5), 32 * (sy + j - 1), _
                                     SRCCOPY)
                             End If
                         ElseIf u.BitmapID = -1 Then
-                            'éè¡¨ç¤ºã®ãƒ¦ãƒ‹ãƒƒãƒˆ
+                            '”ñ•\¦‚Ìƒ†ƒjƒbƒg
                             If MaskData(sx + i, sy + j) Then
-                                'ãƒã‚¹ã‚¯ã•ã‚ŒãŸåœ°å½¢
+                                'ƒ}ƒXƒN‚³‚ê‚½’nŒ`
                                 ret = BitBlt(pic.hDC, 0, yy, 16, 32, _
                                     .picMaskedBack.hDC, 32 * (sx - 1.5), 32 * (sy + j - 1), _
                                     SRCCOPY)
                             Else
-                                'åœ°å½¢
+                                '’nŒ`
                                 ret = BitBlt(pic.hDC, 0, yy, 16, 32, _
                                     .picBack.hDC, 32 * (sx - 1.5), 32 * (sy + j - 1), _
                                     SRCCOPY)
                             End If
                         Else
                             If MaskData(sx + i, sy + j) Then
-                                'ãƒã‚¹ã‚¯ã•ã‚ŒãŸãƒ¦ãƒ‹ãƒƒãƒˆ
+                                'ƒ}ƒXƒN‚³‚ê‚½ƒ†ƒjƒbƒg
                                 ret = BitBlt(pic.hDC, 0, yy, 16, 32, _
                                     .picUnitBitmap.hDC, _
                                     32 * (u.BitmapID Mod 15) + 16, 96 * (u.BitmapID \ 15) + 64, _
                                     SRCCOPY)
                                 
-                                'ãƒ¦ãƒ‹ãƒƒãƒˆã®ã„ã‚‹å ´æ‰€ã«åˆã‚ã›ã¦è¡¨ç¤ºã‚’å¤‰æ›´
+                                'ƒ†ƒjƒbƒg‚Ì‚¢‚éêŠ‚É‡‚í‚¹‚Ä•\¦‚ğ•ÏX
                                 Select Case u.Area
-                                    Case "ç©ºä¸­"
+                                    Case "‹ó’†"
                                         DottedLine 0, yy + 28, True
-                                    Case "æ°´ä¸­"
+                                    Case "…’†"
                                         DottedLine 0, yy + 3, True
-                                    Case "åœ°ä¸­"
+                                    Case "’n’†"
                                         DottedLine 0, yy + 28, True
                                         DottedLine 0, yy + 3, True
-                                    Case "å®‡å®™"
-                                        If TerrainClass(sx + i, sy + j) = "æœˆé¢" Then
+                                    Case "‰F’ˆ"
+                                        If TerrainClass(sx + i, sy + j) = "Œ–Ê" Then
                                             DottedLine 0, yy + 28, True
                                         End If
                                 End Select
                             Else
-                                'ãƒ¦ãƒ‹ãƒƒãƒˆ
+                                'ƒ†ƒjƒbƒg
                                 ret = BitBlt(pic.hDC, 0, yy, 16, 32, _
                                     .picUnitBitmap.hDC, _
                                     32 * (u.BitmapID Mod 15) + 16, 96 * (u.BitmapID \ 15), _
                                     SRCCOPY)
                                 
-                                'ãƒ¦ãƒ‹ãƒƒãƒˆã®ã„ã‚‹å ´æ‰€ã«åˆã‚ã›ã¦è¡¨ç¤ºã‚’å¤‰æ›´
+                                'ƒ†ƒjƒbƒg‚Ì‚¢‚éêŠ‚É‡‚í‚¹‚Ä•\¦‚ğ•ÏX
                                 Select Case u.Area
-                                    Case "ç©ºä¸­"
+                                    Case "‹ó’†"
                                         ret = MoveToEx(pic.hDC, 0, yy + 28, PT)
                                         ret = LineTo(pic.hDC, 0 + 15, yy + 28)
-                                    Case "æ°´ä¸­"
+                                    Case "…’†"
                                         ret = MoveToEx(pic.hDC, 0, yy + 3, PT)
                                         ret = LineTo(pic.hDC, 0 + 15, yy + 3)
-                                    Case "åœ°ä¸­"
+                                    Case "’n’†"
                                         ret = MoveToEx(pic.hDC, 0, yy + 28, PT)
                                         ret = LineTo(pic.hDC, 0 + 15, yy + 28)
                                         ret = MoveToEx(pic.hDC, 0, yy + 3, PT)
                                         ret = LineTo(pic.hDC, 0 + 15, yy + 3)
-                                    Case "å®‡å®™"
-                                        If TerrainClass(sx + i, sy + j) = "æœˆé¢" Then
+                                    Case "‰F’ˆ"
+                                        If TerrainClass(sx + i, sy + j) = "Œ–Ê" Then
                                             ret = MoveToEx(pic.hDC, 0, yy + 28, PT)
                                             ret = LineTo(pic.hDC, 0 + 15, yy + 28)
                                         End If
@@ -3580,76 +3580,76 @@ NextLoop:
                             End If
                         End If
                     Else
-                        'ç”»é¢å·¦ç«¯ä»¥å¤–ã¯å…¨32ãƒ”ã‚¯ã‚»ãƒ«å¹…åˆ†ã ã‘è¡¨ç¤º
+                        '‰æ–Ê¶’[ˆÈŠO‚Í‘S32ƒsƒNƒZƒ‹••ª‚¾‚¯•\¦
                         If u Is Nothing Then
                             If MaskData(sx + i, sy + j) Then
-                                'ãƒã‚¹ã‚¯ã•ã‚ŒãŸåœ°å½¢
+                                'ƒ}ƒXƒN‚³‚ê‚½’nŒ`
                                 ret = BitBlt(pic.hDC, xx, yy, 32, 32, _
                                     .picMaskedBack.hDC, 32 * (sx + i - 1), 32 * (sy + j - 1), _
                                     SRCCOPY)
                             Else
-                                'åœ°å½¢
+                                '’nŒ`
                                 ret = BitBlt(pic.hDC, xx, yy, 32, 32, _
                                     .picBack.hDC, 32 * (sx + i - 1), 32 * (sy + j - 1), _
                                     SRCCOPY)
                             End If
                         ElseIf u.BitmapID = -1 Then
-                            'éè¡¨ç¤ºã®ãƒ¦ãƒ‹ãƒƒãƒˆ
+                            '”ñ•\¦‚Ìƒ†ƒjƒbƒg
                             If MaskData(sx + i, sy + j) Then
-                                'ãƒã‚¹ã‚¯ã•ã‚ŒãŸåœ°å½¢
+                                'ƒ}ƒXƒN‚³‚ê‚½’nŒ`
                                 ret = BitBlt(pic.hDC, xx, yy, 32, 32, _
                                     .picMaskedBack.hDC, 32 * (sx + i - 1), 32 * (sy + j - 1), _
                                     SRCCOPY)
                             Else
-                                'åœ°å½¢
+                                '’nŒ`
                                 ret = BitBlt(pic.hDC, xx, yy, 32, 32, _
                                     .picBack.hDC, 32 * (sx + i - 1), 32 * (sy + j - 1), _
                                     SRCCOPY)
                             End If
                         Else
                             If MaskData(sx + i, sy + j) Then
-                                'ãƒã‚¹ã‚¯ã•ã‚ŒãŸãƒ¦ãƒ‹ãƒƒãƒˆ
+                                'ƒ}ƒXƒN‚³‚ê‚½ƒ†ƒjƒbƒg
                                 ret = BitBlt(pic.hDC, xx, yy, 32, 32, _
                                     .picUnitBitmap.hDC, _
                                     32 * (u.BitmapID Mod 15), 96 * (u.BitmapID \ 15) + 64, _
                                     SRCCOPY)
                                 
-                                'ãƒ¦ãƒ‹ãƒƒãƒˆã®ã„ã‚‹å ´æ‰€ã«åˆã‚ã›ã¦è¡¨ç¤ºã‚’å¤‰æ›´
+                                'ƒ†ƒjƒbƒg‚Ì‚¢‚éêŠ‚É‡‚í‚¹‚Ä•\¦‚ğ•ÏX
                                 Select Case u.Area
-                                    Case "ç©ºä¸­"
+                                    Case "‹ó’†"
                                         DottedLine xx, yy + 28
-                                    Case "æ°´ä¸­"
+                                    Case "…’†"
                                         DottedLine xx, yy + 3
-                                    Case "åœ°ä¸­"
+                                    Case "’n’†"
                                         DottedLine xx, yy + 28
                                         DottedLine xx, yy + 3
-                                    Case "å®‡å®™"
-                                        If TerrainClass(sx + i, sy + j) = "æœˆé¢" Then
+                                    Case "‰F’ˆ"
+                                        If TerrainClass(sx + i, sy + j) = "Œ–Ê" Then
                                             DottedLine xx, yy + 28
                                         End If
                                 End Select
                             Else
-                                'ãƒ¦ãƒ‹ãƒƒãƒˆ
+                                'ƒ†ƒjƒbƒg
                                 ret = BitBlt(pic.hDC, xx, yy, 32, 32, _
                                     .picUnitBitmap.hDC, _
                                     32 * (u.BitmapID Mod 15), 96 * (u.BitmapID \ 15), _
                                     SRCCOPY)
                                 
-                                'ãƒ¦ãƒ‹ãƒƒãƒˆã®ã„ã‚‹å ´æ‰€ã«åˆã‚ã›ã¦è¡¨ç¤ºã‚’å¤‰æ›´
+                                'ƒ†ƒjƒbƒg‚Ì‚¢‚éêŠ‚É‡‚í‚¹‚Ä•\¦‚ğ•ÏX
                                 Select Case u.Area
-                                    Case "ç©ºä¸­"
+                                    Case "‹ó’†"
                                         ret = MoveToEx(pic.hDC, xx, yy + 28, PT)
                                         ret = LineTo(pic.hDC, xx + 31, yy + 28)
-                                    Case "æ°´ä¸­"
+                                    Case "…’†"
                                         ret = MoveToEx(pic.hDC, xx, yy + 3, PT)
                                         ret = LineTo(pic.hDC, xx + 31, yy + 3)
-                                    Case "åœ°ä¸­"
+                                    Case "’n’†"
                                         ret = MoveToEx(pic.hDC, xx, yy + 28, PT)
                                         ret = LineTo(pic.hDC, xx + 31, yy + 28)
                                         ret = MoveToEx(pic.hDC, xx, yy + 3, PT)
                                         ret = LineTo(pic.hDC, xx + 31, yy + 3)
-                                    Case "å®‡å®™"
-                                        If TerrainClass(sx + i, sy + j) = "æœˆé¢" Then
+                                    Case "‰F’ˆ"
+                                        If TerrainClass(sx + i, sy + j) = "Œ–Ê" Then
                                             ret = MoveToEx(pic.hDC, xx, yy + 28, PT)
                                             ret = LineTo(pic.hDC, xx + 31, yy + 28)
                                         End If
@@ -3662,10 +3662,10 @@ NextLoop2:
             Next
         End If
         
-        'æç”»è‰²ã‚’å…ƒã«æˆ»ã—ã¦ãŠã
+        '•`‰æF‚ğŒ³‚É–ß‚µ‚Ä‚¨‚­
         pic.ForeColor = prev_color
         
-        'ç”»é¢ãŒæ›¸ãæ›ãˆã‚‰ã‚ŒãŸã“ã¨ã‚’è¨˜éŒ²
+        '‰æ–Ê‚ª‘‚«Š·‚¦‚ç‚ê‚½‚±‚Æ‚ğ‹L˜^
         ScreenIsSaved = False
         
         If Not without_refresh And Not delay_refresh Then
@@ -3700,7 +3700,7 @@ Dim i As Integer
     End With
 End Sub
 
-'æŒ‡å®šã•ã‚ŒãŸãƒãƒƒãƒ—åº§æ¨™ã‚’ç”»é¢ã®ä¸­å¤®ã«è¡¨ç¤º
+'w’è‚³‚ê‚½ƒ}ƒbƒvÀ•W‚ğ‰æ–Ê‚Ì’†‰›‚É•\¦
 Public Sub Center(ByVal new_x As Integer, ByVal new_y As Integer)
     If MapFileName = "" Then
         new_x = (MainWidth + 1) \ 2
@@ -3727,9 +3727,9 @@ Public Sub Center(ByVal new_x As Integer, ByVal new_y As Integer)
 End Sub
 
 
-' === åº§æ¨™å¤‰æ› ===
+' === À•W•ÏŠ· ===
 
-'ãƒãƒƒãƒ—ä¸Šã§ã®åº§æ¨™ãŒãƒãƒƒãƒ—ç”»é¢ã®ã©ã®ä½ç½®ã«ãã‚‹ã‹ã‚’è¿”ã™
+'ƒ}ƒbƒvã‚Å‚ÌÀ•W‚ªƒ}ƒbƒv‰æ–Ê‚Ì‚Ç‚ÌˆÊ’u‚É‚­‚é‚©‚ğ•Ô‚·
 Public Function MapToPixelX(ByVal X As Integer) As Integer
 ' MOD START MARGE
 '    MapToPixelX = 32 * ((MainWidth + 1) \ 2 - 1 - (MapX - X))
@@ -3745,7 +3745,7 @@ Public Function MapToPixelY(ByVal Y As Integer) As Integer
     MapToPixelY = 32 * ((MainHeight + 1) \ 2 - 1 - (MapY - Y))
 End Function
 
-'ãƒãƒƒãƒ—ç”»é¢ã§ã®ãƒ”ã‚¯ã‚»ãƒ«ãŒãƒãƒƒãƒ—ã®åº§æ¨™ã®ã©ã®ä½ç½®ã«ãã‚‹ã‹ã‚’è¿”ã™
+'ƒ}ƒbƒv‰æ–Ê‚Å‚ÌƒsƒNƒZƒ‹‚ªƒ}ƒbƒv‚ÌÀ•W‚Ì‚Ç‚ÌˆÊ’u‚É‚­‚é‚©‚ğ•Ô‚·
 Public Function PixelToMapX(ByVal X As Integer) As Integer
     If X < 0 Then
        X = 0
@@ -3774,35 +3774,35 @@ Public Function PixelToMapY(ByVal Y As Integer) As Integer
 End Function
 
 
-' === ãƒ¦ãƒ‹ãƒƒãƒˆç”»åƒè¡¨ç¤ºã«é–¢ã™ã‚‹å‡¦ç† ===
+' === ƒ†ƒjƒbƒg‰æ‘œ•\¦‚ÉŠÖ‚·‚éˆ— ===
 
-'ãƒ¦ãƒ‹ãƒƒãƒˆç”»åƒãƒ•ã‚¡ã‚¤ãƒ«ã‚’æ¤œç´¢
+'ƒ†ƒjƒbƒg‰æ‘œƒtƒ@ƒCƒ‹‚ğŒŸõ
 Private Function FindUnitBitmap(u As Unit) As String
 Dim fname As String, uname As String
 Dim tname As String, tnum As String, tdir As String
 Dim i As Integer, j As Integer
 
     With u
-        'ã‚¤ãƒ³ã‚¿ãƒ¼ãƒŸãƒƒã‚·ãƒ§ãƒ³ã§ã®ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹è¡¨ç¤ºã®å ´åˆã¯
-        'ç‰¹æ®Šãªå‡¦ç†ãŒå¿…è¦
-        If .IsFeatureAvailable("ãƒ€ãƒŸãƒ¼ãƒ¦ãƒ‹ãƒƒãƒˆ") _
-            And InStr(.Name, "ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹è¡¨ç¤ºç”¨ãƒ¦ãƒ‹ãƒƒãƒˆ") = 0 _
+        'ƒCƒ“ƒ^[ƒ~ƒbƒVƒ‡ƒ“‚Å‚ÌƒpƒCƒƒbƒgƒXƒe[ƒ^ƒX•\¦‚Ìê‡‚Í
+        '“Áê‚Èˆ—‚ª•K—v
+        If .IsFeatureAvailable("ƒ_ƒ~[ƒ†ƒjƒbƒg") _
+            And InStr(.Name, "ƒXƒe[ƒ^ƒX•\¦—pƒ†ƒjƒbƒg") = 0 _
         Then
             If .CountPilot = 0 Then
                 Exit Function
             End If
             
-            If .FeatureData("ãƒ€ãƒŸãƒ¼ãƒ¦ãƒ‹ãƒƒãƒˆ") = "ãƒ¦ãƒ‹ãƒƒãƒˆç”»åƒä½¿ç”¨" Then
-                'ãƒ¦ãƒ‹ãƒƒãƒˆç”»åƒã‚’ä½¿ã£ã¦è¡¨ç¤º
-                uname = "æ­ä¹—ãƒ¦ãƒ‹ãƒƒãƒˆ[" & .MainPilot.ID & "]"
+            If .FeatureData("ƒ_ƒ~[ƒ†ƒjƒbƒg") = "ƒ†ƒjƒbƒg‰æ‘œg—p" Then
+                'ƒ†ƒjƒbƒg‰æ‘œ‚ğg‚Á‚Ä•\¦
+                uname = "“‹æƒ†ƒjƒbƒg[" & .MainPilot.ID & "]"
                 uname = LocalVariableList.Item(uname).StringValue
                 fname = "\Bitmap\Unit\" & UList.Item(uname).Bitmap
             Else
-                'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆç”»åƒã‚’ä½¿ã£ã¦è¡¨ç¤º
+                'ƒpƒCƒƒbƒg‰æ‘œ‚ğg‚Á‚Ä•\¦
                 fname = "\Bitmap\Pilot\" & .MainPilot.Bitmap
             End If
             
-            'ç”»åƒã‚’æ¤œç´¢
+            '‰æ‘œ‚ğŒŸõ
             If InStr(fname, "\-.bmp") > 0 Then
                 fname = ""
             ElseIf FileExists(ScenarioPath & fname) Then
@@ -3821,15 +3821,15 @@ Dim i As Integer, j As Integer
             Exit Function
         End If
         
-        If .IsFeatureAvailable("åœ°å½¢ãƒ¦ãƒ‹ãƒƒãƒˆ") Then
-            'åœ°å½¢ãƒ¦ãƒ‹ãƒƒãƒˆ
+        If .IsFeatureAvailable("’nŒ`ƒ†ƒjƒbƒg") Then
+            '’nŒ`ƒ†ƒjƒbƒg
             fname = .Bitmap
             If FileExists(AppPath & "Bitmap\Map\" & fname) _
                 Or FileExists(ScenarioPath & "Bitmap\Map\" & fname) _
             Then
                 fname = "Bitmap\Map\" & fname
             Else
-                'åœ°å½¢ç”»åƒæ¤œç´¢ç”¨ã®åœ°å½¢ç”»åƒãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªåã¨4æ¡ãƒ•ã‚¡ã‚¤ãƒ«åã‚’ä½œæˆ
+                '’nŒ`‰æ‘œŒŸõ—p‚Ì’nŒ`‰æ‘œƒfƒBƒŒƒNƒgƒŠ–¼‚Æ4Œ…ƒtƒ@ƒCƒ‹–¼‚ğì¬
                 i = Len(fname) - 5
                 Do While i > 0
                     If Mid$(fname, i, 1) Like "[!-0-9]" Then
@@ -3864,29 +3864,29 @@ Dim i As Integer, j As Integer
                     End If
                 Else
                     If InStr(fname, "\") > 0 Then
-                        'ãƒ•ã‚©ãƒ«ãƒ€æŒ‡å®šã‚ã‚Š
+                        'ƒtƒHƒ‹ƒ_w’è‚ ‚è
                         fname = "Bitmap\" & fname
                     Else
-                        'é€šå¸¸ã®ãƒ¦ãƒ‹ãƒƒãƒˆç”»åƒ
+                        '’Êí‚Ìƒ†ƒjƒbƒg‰æ‘œ
                         fname = "Bitmap\Unit\" & fname
                     End If
                 End If
             End If
         Else
-            'é€šå¸¸ã®ãƒ¦ãƒ‹ãƒƒãƒˆæç”»
+            '’Êí‚Ìƒ†ƒjƒbƒg•`‰æ
             fname = .Bitmap
             If InStr(fname, ":") = 2 Then
-                'ãƒ•ãƒ«ãƒ‘ã‚¹æŒ‡å®š
+                'ƒtƒ‹ƒpƒXw’è
             ElseIf InStr(fname, "\") > 0 Then
-                'ãƒ•ã‚©ãƒ«ãƒ€æŒ‡å®šã‚ã‚Š
+                'ƒtƒHƒ‹ƒ_w’è‚ ‚è
                 fname = "Bitmap\" & fname
             Else
-                'é€šå¸¸ã®ãƒ¦ãƒ‹ãƒƒãƒˆç”»åƒ
+                '’Êí‚Ìƒ†ƒjƒbƒg‰æ‘œ
                 fname = "Bitmap\Unit\" & fname
             End If
         End If
         
-        'ç”»åƒã®æ¤œç´¢
+        '‰æ‘œ‚ÌŒŸõ
         If InStr(fname, "\-.bmp") > 0 Then
             fname = ""
         ElseIf FileExists(ScenarioPath & fname) Then
@@ -3900,7 +3900,7 @@ Dim i As Integer, j As Integer
         ElseIf Not FileExists(fname) Then
             fname = ""
             
-            'ç”»åƒãŒè¦‹ã¤ã‹ã‚‰ãªã‹ã£ãŸã“ã¨ã‚’è¨˜éŒ²
+            '‰æ‘œ‚ªŒ©‚Â‚©‚ç‚È‚©‚Á‚½‚±‚Æ‚ğ‹L˜^
             If .Bitmap = .Data.Bitmap Then
                 .Data.IsBitmapMissing = True
             End If
@@ -3910,7 +3910,7 @@ Dim i As Integer, j As Integer
     End With
 End Function
 
-'ãƒ¦ãƒ‹ãƒƒãƒˆã®ãƒ“ãƒƒãƒˆãƒãƒƒãƒ—ã‚’ä½œæˆ
+'ƒ†ƒjƒbƒg‚Ìƒrƒbƒgƒ}ƒbƒv‚ğì¬
 Public Function MakeUnitBitmap(u As Unit) As Integer
 Dim fname As String, uparty As String
 Dim i As Integer, ret As Long
@@ -3920,51 +3920,51 @@ Static fname_list() As String
 Static party_list() As String
 
     With MainForm
-        If u.IsFeatureAvailable("éè¡¨ç¤º") Then
+        If u.IsFeatureAvailable("”ñ•\¦") Then
             MakeUnitBitmap = -1
             Exit Function
         End If
         
-        'ç”»åƒãŒã‚¯ãƒªã‚¢ã•ã‚Œã¦ã„ã‚‹ï¼Ÿ
+        '‰æ‘œ‚ªƒNƒŠƒA‚³‚ê‚Ä‚¢‚éH
         If .picUnitBitmap.width = 32 Then
             bitmap_num = 0
         End If
         
-        'ä»Šã¾ã§ã«ãƒ­ãƒ¼ãƒ‰ã•ã‚Œã¦ã„ã‚‹ãƒ¦ãƒ‹ãƒƒãƒˆç”»åƒæ•°
+        '¡‚Ü‚Å‚Éƒ[ƒh‚³‚ê‚Ä‚¢‚éƒ†ƒjƒbƒg‰æ‘œ”
         ReDim Preserve fname_list(bitmap_num)
         ReDim Preserve party_list(bitmap_num)
         
-        'ä»¥å‰ãƒ­ãƒ¼ãƒ‰ã—ãŸãƒ¦ãƒ‹ãƒƒãƒˆç”»åƒã¨ä¸€è‡´ã—ã¦ã„ã‚‹ï¼Ÿ
+        'ˆÈ‘Oƒ[ƒh‚µ‚½ƒ†ƒjƒbƒg‰æ‘œ‚Æˆê’v‚µ‚Ä‚¢‚éH
         fname = FindUnitBitmap(u)
         uparty = u.Party0
         For i = 1 To bitmap_num
             If fname = fname_list(i) _
                 And uparty = party_list(i) _
             Then
-                'ä¸€è‡´ã—ãŸã‚‚ã®ãŒè¦‹ã¤ã‹ã£ãŸ
+                'ˆê’v‚µ‚½‚à‚Ì‚ªŒ©‚Â‚©‚Á‚½
                 MakeUnitBitmap = i
                 Exit Function
             End If
         Next
         
-        'æ–°ãŸã«ç”»åƒã‚’ç™»éŒ²
+        'V‚½‚É‰æ‘œ‚ğ“o˜^
         bitmap_num = bitmap_num + 1
         ReDim Preserve fname_list(bitmap_num)
         ReDim Preserve party_list(bitmap_num)
         fname_list(bitmap_num) = fname
         party_list(bitmap_num) = uparty
         
-        'ç”»åƒãƒãƒƒãƒ•ã‚¡ã®å¤§ãã•ã‚’å¤‰æ›´
+        '‰æ‘œƒoƒbƒtƒ@‚Ì‘å‚«‚³‚ğ•ÏX
         .picUnitBitmap.Move 0, 0, 480, 96 * (bitmap_num \ 15 + 1)
         
-        'ç”»åƒã®æ›¸ãè¾¼ã¿ä½ç½®
+        '‰æ‘œ‚Ì‘‚«‚İˆÊ’u
         xx = 32 * (bitmap_num Mod 15)
         yy = 96 * (bitmap_num \ 15)
         
-        'ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ãƒ­ãƒ¼ãƒ‰ã™ã‚‹
+        'ƒtƒ@ƒCƒ‹‚ğƒ[ƒh‚·‚é
         LoadUnitBitmap u, .picUnitBitmap, xx, yy, False, fname
         
-        'è¡Œå‹•æ¸ˆã¿ã®éš›ã®ç”»åƒã‚’ä½œæˆ
+        's“®Ï‚İ‚ÌÛ‚Ì‰æ‘œ‚ğì¬
         ret = BitBlt(.picUnitBitmap.hDC, _
             xx, yy + 32, 32, 32, _
             .picUnitBitmap.hDC, _
@@ -3973,7 +3973,7 @@ Static party_list() As String
             xx, yy + 32, 32, 32, _
             .picMask.hDC, 0, 0, SRCAND)
         
-        'ãƒã‚¹ã‚¯å…¥ã‚Šã®ç”»åƒã‚’ä½œæˆ
+        'ƒ}ƒXƒN“ü‚è‚Ì‰æ‘œ‚ğì¬
         ret = BitBlt(.picUnitBitmap.hDC, _
             xx, yy + 64, 32, 32, _
             .picUnitBitmap.hDC, _
@@ -3983,11 +3983,11 @@ Static party_list() As String
             .picMask2.hDC, 0, 0, SRCINVERT)
     End With
     
-    'ãƒ¦ãƒ‹ãƒƒãƒˆç”»åƒç•ªå·ã‚’è¿”ã™
+    'ƒ†ƒjƒbƒg‰æ‘œ”Ô†‚ğ•Ô‚·
     MakeUnitBitmap = bitmap_num
 End Function
 
-'ãƒ¦ãƒ‹ãƒƒãƒˆã®ãƒ“ãƒƒãƒˆãƒãƒƒãƒ—ã‚’ãƒ­ãƒ¼ãƒ‰
+'ƒ†ƒjƒbƒg‚Ìƒrƒbƒgƒ}ƒbƒv‚ğƒ[ƒh
 Public Sub LoadUnitBitmap(u As Unit, pic As PictureBox, _
     ByVal dx As Integer, ByVal dy As Integer, _
     Optional ByVal use_orig_color As Boolean, _
@@ -3996,100 +3996,100 @@ Dim ret As Long
 Dim emit_light As Boolean
 
     With MainForm
-        'ç”»åƒãƒ•ã‚¡ã‚¤ãƒ«ã‚’æ¤œç´¢
+        '‰æ‘œƒtƒ@ƒCƒ‹‚ğŒŸõ
         If fname = "" Then
             fname = FindUnitBitmap(u)
         End If
         
-        'ç”»åƒã‚’ãã®ã¾ã¾ä½¿ç”¨ã™ã‚‹å ´åˆ
+        '‰æ‘œ‚ğ‚»‚Ì‚Ü‚Üg—p‚·‚éê‡
         If InStr(fname, "\Pilot\") > 0 _
-            Or u.FeatureData("ãƒ€ãƒŸãƒ¼ãƒ¦ãƒ‹ãƒƒãƒˆ") = "ãƒ¦ãƒ‹ãƒƒãƒˆç”»åƒä½¿ç”¨" _
+            Or u.FeatureData("ƒ_ƒ~[ƒ†ƒjƒbƒg") = "ƒ†ƒjƒbƒg‰æ‘œg—p" _
         Then
-            'ç”»åƒã®èª­ã¿è¾¼ã¿
+            '‰æ‘œ‚Ì“Ç‚İ‚İ
             On Error GoTo ErrorHandler
             .picTmp = LoadPicture(fname)
             On Error GoTo 0
             
-            'ç”»é¢ã«æç”»
+            '‰æ–Ê‚É•`‰æ
             ret = StretchBlt(pic.hDC, dx, dy, 32, 32, _
                 .picTmp.hDC, 0, 0, .picTmp.width, .picTmp.Height, SRCCOPY)
             
             Exit Sub
         End If
         
-        'ãƒ¦ãƒ‹ãƒƒãƒˆãŒè‡ªåˆ†ã§ç™ºå…‰ã—ã¦ã„ã‚‹ã‹ã‚’ã‚ã‚‰ã‹ã˜ã‚ãƒã‚§ãƒƒã‚¯
-        If MapDrawMode = "å¤œ" _
+        'ƒ†ƒjƒbƒg‚ª©•ª‚Å”­Œõ‚µ‚Ä‚¢‚é‚©‚ğ‚ ‚ç‚©‚¶‚ßƒ`ƒFƒbƒN
+        If MapDrawMode = "–é" _
             And Not MapDrawIsMapOnly _
             And Not use_orig_color _
-            And u.IsFeatureAvailable("ç™ºå…‰") _
+            And u.IsFeatureAvailable("”­Œõ") _
         Then
             emit_light = True
         End If
         
         If fname <> "" Then
-            'ç”»åƒãŒè¦‹ã¤ã‹ã£ãŸå ´åˆã¯ç”»åƒã‚’èª­ã¿è¾¼ã¿
+            '‰æ‘œ‚ªŒ©‚Â‚©‚Á‚½ê‡‚Í‰æ‘œ‚ğ“Ç‚İ‚İ
             On Error GoTo ErrorHandler
             .picTmp32(0) = LoadPicture(fname)
             On Error GoTo 0
             
-            'ç”»åƒã®ã‚µã‚¤ã‚ºãŒæ­£ã—ã„ã‹ãƒã‚§ãƒƒã‚¯
+            '‰æ‘œ‚ÌƒTƒCƒY‚ª³‚µ‚¢‚©ƒ`ƒFƒbƒN
             If .picTmp32(0).width <> 32 Or .picTmp32(0).Height <> 32 Then
                 With .picTmp32(0)
                     .Picture = LoadPicture("")
                     .width = 32
                     .Height = 32
                 End With
-                ErrorMessage u.Name & "ã®ãƒ¦ãƒ‹ãƒƒãƒˆç”»åƒãŒ32x32ã®å¤§ãã•ã«ãªã£ã¦ã„ã¾ã›ã‚“"
+                ErrorMessage u.Name & "‚Ìƒ†ƒjƒbƒg‰æ‘œ‚ª32x32‚Ì‘å‚«‚³‚É‚È‚Á‚Ä‚¢‚Ü‚¹‚ñ"
                 Exit Sub
             End If
             
-            If u.IsFeatureAvailable("åœ°å½¢ãƒ¦ãƒ‹ãƒƒãƒˆ") Then
-                'åœ°å½¢ãƒ¦ãƒ‹ãƒƒãƒˆã®å ´åˆã¯ç”»åƒã‚’ãã®ã¾ã¾ä½¿ã†
+            If u.IsFeatureAvailable("’nŒ`ƒ†ƒjƒbƒg") Then
+                '’nŒ`ƒ†ƒjƒbƒg‚Ìê‡‚Í‰æ‘œ‚ğ‚»‚Ì‚Ü‚Üg‚¤
                 ret = BitBlt(.picTmp32(1).hDC, 0, 0, 32, 32, _
                     .picTmp32(0).hDC, 0, 0, SRCCOPY)
             ElseIf UseTransparentBlt Then
-                'TransparentBltã‚’ä½¿ã£ã¦ãƒ¦ãƒ‹ãƒƒãƒˆç”»åƒã¨ã‚¿ã‚¤ãƒ«ã‚’é‡ã­åˆã‚ã›ã‚‹
+                'TransparentBlt‚ğg‚Á‚Äƒ†ƒjƒbƒg‰æ‘œ‚Æƒ^ƒCƒ‹‚ğd‚Ë‡‚í‚¹‚é
                 
-                'ã‚¿ã‚¤ãƒ«
+                'ƒ^ƒCƒ‹
                 Select Case u.Party0
-                    Case "å‘³æ–¹", "ï¼®ï¼°ï¼£"
+                    Case "–¡•û", "‚m‚o‚b"
                         ret = BitBlt(.picTmp32(1).hDC, 0, 0, 32, 32, _
                             .picUnit.hDC, 0, 0, SRCCOPY)
-                    Case "æ•µ"
+                    Case "“G"
                         ret = BitBlt(.picTmp32(1).hDC, 0, 0, 32, 32, _
                             .picEnemy.hDC, 0, 0, SRCCOPY)
-                    Case "ä¸­ç«‹"
+                    Case "’†—§"
                         ret = BitBlt(.picTmp32(1).hDC, 0, 0, 32, 32, _
                             .picNeautral.hDC, 0, 0, SRCCOPY)
                 End Select
                 
-                'ç”»åƒã®é‡ã­åˆã‚ã›
-                '(ç™ºå…‰ã—ã¦ã„ã‚‹å ´åˆã¯ï¼’åº¦å¡—ã‚Šã‚’é˜²ããŸã‚æç”»ã—ãªã„)
+                '‰æ‘œ‚Ìd‚Ë‡‚í‚¹
+                '(”­Œõ‚µ‚Ä‚¢‚éê‡‚Í‚Q“x“h‚è‚ğ–h‚®‚½‚ß•`‰æ‚µ‚È‚¢)
                 If Not emit_light Then
                     ret = TransparentBlt(.picTmp32(1).hDC, 0, 0, 32, 32, _
                         .picTmp32(0).hDC, 0, 0, 32, 32, vbWhite)
                 End If
             Else
-                'BitBltã‚’ä½¿ã£ã¦ãƒ¦ãƒ‹ãƒƒãƒˆç”»åƒã¨ã‚¿ã‚¤ãƒ«ã‚’é‡ã­åˆã‚ã›ã‚‹
+                'BitBlt‚ğg‚Á‚Äƒ†ƒjƒbƒg‰æ‘œ‚Æƒ^ƒCƒ‹‚ğd‚Ë‡‚í‚¹‚é
                 
-                'ãƒã‚¹ã‚¯ã‚’ä½œæˆ
+                'ƒ}ƒXƒN‚ğì¬
                 MakeMask .picTmp32(0).hDC, .picTmp32(2).hDC, 32, 32, vbWhite
                 
-                'ã‚¿ã‚¤ãƒ«
+                'ƒ^ƒCƒ‹
                 Select Case u.Party0
-                    Case "å‘³æ–¹", "ï¼®ï¼°ï¼£"
+                    Case "–¡•û", "‚m‚o‚b"
                         ret = BitBlt(.picTmp32(1).hDC, 0, 0, 32, 32, _
                             .picUnit.hDC, 0, 0, SRCCOPY)
-                    Case "æ•µ"
+                    Case "“G"
                         ret = BitBlt(.picTmp32(1).hDC, 0, 0, 32, 32, _
                             .picEnemy.hDC, 0, 0, SRCCOPY)
-                    Case "ä¸­ç«‹"
+                    Case "’†—§"
                         ret = BitBlt(.picTmp32(1).hDC, 0, 0, 32, 32, _
                             .picNeautral.hDC, 0, 0, SRCCOPY)
                 End Select
                 
-                'ç”»åƒã®é‡ã­åˆã‚ã›
-                '(ç™ºå…‰ã—ã¦ã„ã‚‹å ´åˆã¯ï¼’åº¦å¡—ã‚Šã‚’é˜²ããŸã‚æç”»ã—ãªã„)
+                '‰æ‘œ‚Ìd‚Ë‡‚í‚¹
+                '(”­Œõ‚µ‚Ä‚¢‚éê‡‚Í‚Q“x“h‚è‚ğ–h‚®‚½‚ß•`‰æ‚µ‚È‚¢)
                 If Not emit_light Then
                     ret = BitBlt(.picTmp32(1).hDC, 0, 0, 32, 32, _
                         .picTmp32(2).hDC, 0, 0, SRCERASE)
@@ -4098,31 +4098,31 @@ Dim emit_light As Boolean
                 End If
             End If
         Else
-            'ç”»åƒãŒè¦‹ã¤ã‹ã‚‰ãªã‹ã£ãŸå ´åˆã¯ã‚¿ã‚¤ãƒ«ã®ã¿ã§ãƒ¦ãƒ‹ãƒƒãƒˆç”»åƒã‚’ä½œæˆ
+            '‰æ‘œ‚ªŒ©‚Â‚©‚ç‚È‚©‚Á‚½ê‡‚Íƒ^ƒCƒ‹‚Ì‚İ‚Åƒ†ƒjƒbƒg‰æ‘œ‚ğì¬
             Select Case u.Party0
-                Case "å‘³æ–¹", "ï¼®ï¼°ï¼£"
+                Case "–¡•û", "‚m‚o‚b"
                     ret = BitBlt(.picTmp32(1).hDC, 0, 0, 32, 32, _
                         .picUnit.hDC, 0, 0, SRCCOPY)
-                Case "æ•µ"
+                Case "“G"
                     ret = BitBlt(.picTmp32(1).hDC, 0, 0, 32, 32, _
                         .picEnemy.hDC, 0, 0, SRCCOPY)
-                Case "ä¸­ç«‹"
+                Case "’†—§"
                     ret = BitBlt(.picTmp32(1).hDC, 0, 0, 32, 32, _
                         .picNeautral.hDC, 0, 0, SRCCOPY)
             End Select
         End If
         
-        'è‰²ã‚’ã‚¹ãƒ†ãƒ¼ã‚¸ã®çŠ¶æ³ã«åˆã‚ã›ã¦å¤‰æ›´
+        'F‚ğƒXƒe[ƒW‚Ìó‹µ‚É‡‚í‚¹‚Ä•ÏX
         If Not use_orig_color _
             And Not MapDrawIsMapOnly _
         Then
             Select Case MapDrawMode
-                Case "å¤œ"
+                Case "–é"
                     GetImage .picTmp32(1)
                     Dark
                     SetImage .picTmp32(1)
-                    'ãƒ¦ãƒ‹ãƒƒãƒˆãŒ"ç™ºå…‰"ã®ç‰¹æ®Šèƒ½åŠ›ã‚’æŒã¤å ´åˆã€
-                    'ãƒ¦ãƒ‹ãƒƒãƒˆç”»åƒã‚’ã€æš—ãã—ãŸã‚¿ã‚¤ãƒ«ç”»åƒã®ä¸Šã«æç”»ã™ã‚‹ã€‚
+                    'ƒ†ƒjƒbƒg‚ª"”­Œõ"‚Ì“Áê”\—Í‚ğ‚Âê‡A
+                    'ƒ†ƒjƒbƒg‰æ‘œ‚ğAˆÃ‚­‚µ‚½ƒ^ƒCƒ‹‰æ‘œ‚Ìã‚É•`‰æ‚·‚éB
                     If emit_light Then
                         If UseTransparentBlt Then
                             ret = TransparentBlt(.picTmp32(1).hDC, 0, 0, 32, 32, _
@@ -4134,30 +4134,30 @@ Dim emit_light As Boolean
                                 .picTmp32(0).hDC, 0, 0, SRCINVERT)
                         End If
                     End If
-                Case "ã‚»ãƒ”ã‚¢"
+                Case "ƒZƒsƒA"
                     GetImage .picTmp32(1)
                     Sepia
                     SetImage .picTmp32(1)
-                Case "ç™½é»’"
+                Case "”’•"
                     GetImage .picTmp32(1)
                     Monotone
                     SetImage .picTmp32(1)
-                Case "å¤•ç„¼ã‘"
+                Case "—[Ä‚¯"
                     GetImage .picTmp32(1)
                     Sunset
                     SetImage .picTmp32(1)
-                Case "æ°´ä¸­"
+                Case "…’†"
                     GetImage .picTmp32(1)
                     Water
                     SetImage .picTmp32(1)
-                Case "ãƒ•ã‚£ãƒ«ã‚¿"
+                Case "ƒtƒBƒ‹ƒ^"
                     GetImage .picTmp32(1)
                     ColorFilter MapDrawFilterColor, MapDrawFilterTransPercent
                     SetImage .picTmp32(1)
             End Select
         End If
         
-        'ç”»é¢ã«æç”»
+        '‰æ–Ê‚É•`‰æ
         ret = BitBlt(pic.hDC, _
             dx, dy, 32, 32, _
             .picTmp32(1).hDC, 0, 0, SRCCOPY)
@@ -4166,13 +4166,13 @@ Dim emit_light As Boolean
     Exit Sub
     
 ErrorHandler:
-    ErrorMessage "ãƒ¦ãƒ‹ãƒƒãƒˆç”¨ãƒ“ãƒƒãƒˆãƒãƒƒãƒ—ãƒ•ã‚¡ã‚¤ãƒ«" & vbCr & vbLf _
+    ErrorMessage "ƒ†ƒjƒbƒg—pƒrƒbƒgƒ}ƒbƒvƒtƒ@ƒCƒ‹" & vbCr & vbLf _
         & fname & vbCr & vbLf _
-        & "ã®èª­ã¿è¾¼ã¿ä¸­ã«ã‚¨ãƒ©ãƒ¼ãŒç™ºç”Ÿã—ã¾ã—ãŸã€‚" & vbCr & vbLf _
-        & "ç”»åƒãƒ•ã‚¡ã‚¤ãƒ«ãŒå£Šã‚Œã¦ã„ãªã„ã‹ç¢ºèªã—ã¦ä¸‹ã•ã„ã€‚"
+        & "‚Ì“Ç‚İ‚İ’†‚ÉƒGƒ‰[‚ª”­¶‚µ‚Ü‚µ‚½B" & vbCr & vbLf _
+        & "‰æ‘œƒtƒ@ƒCƒ‹‚ª‰ó‚ê‚Ä‚¢‚È‚¢‚©Šm”F‚µ‚Ä‰º‚³‚¢B"
 End Sub
 
-'ãƒ¦ãƒ‹ãƒƒãƒˆç”»åƒã®æç”»
+'ƒ†ƒjƒbƒg‰æ‘œ‚Ì•`‰æ
 Public Sub PaintUnitBitmap(u As Unit, Optional ByVal smode As String)
 Dim xx As Integer, yy As Integer
 Dim pic As PictureBox
@@ -4180,27 +4180,27 @@ Dim ret As Long
 Dim PT As POINTAPI
     
     With u
-        'éè¡¨ç¤ºï¼Ÿ
+        '”ñ•\¦H
         If .BitmapID = -1 Then
             Exit Sub
         End If
         
-        'ç”»é¢å¤–ï¼Ÿ
+        '‰æ–ÊŠOH
         If .X < MapX - (MainWidth + 1) \ 2 Or MapX + (MainWidth + 1) \ 2 < .X _
             Or .Y < MapY - (MainHeight + 1) \ 2 Or MapY + (MainHeight + 1) \ 2 < .Y _
         Then
             Exit Sub
         End If
         
-        'æãè¾¼ã¿å…ˆã®åº§æ¨™ã‚’è¨­å®š
+        '•`‚«‚İæ‚ÌÀ•W‚ğİ’è
         xx = MapToPixelX(.X)
         yy = MapToPixelY(.Y)
     End With
     
     With MainForm
-        If smode = "ãƒªãƒ•ãƒ¬ãƒƒã‚·ãƒ¥ç„¡ã—" And ScreenIsSaved Then
+        If smode = "ƒŠƒtƒŒƒbƒVƒ…–³‚µ" And ScreenIsSaved Then
             Set pic = .picMain(1)
-            'è¡¨ç¤ºç”»åƒã‚’æ¶ˆå»ã™ã‚‹éš›ã«ä½¿ã†æç”»é ˜åŸŸã‚’è¨­å®š
+            '•\¦‰æ‘œ‚ğÁ‹‚·‚éÛ‚Ég‚¤•`‰æ—Ìˆæ‚ğİ’è
             PaintedAreaX1 = MinLng(PaintedAreaX1, MaxLng(xx, 0))
             PaintedAreaY1 = MinLng(PaintedAreaY1, MaxLng(yy, 0))
             PaintedAreaX2 = MaxLng(PaintedAreaX2, MinLng(xx + 32, MainPWidth - 1))
@@ -4209,16 +4209,16 @@ Dim PT As POINTAPI
             Set pic = .picMain(0)
         End If
         
-        'ãƒ¦ãƒ‹ãƒƒãƒˆç”»åƒã®æ›¸ãè¾¼ã¿
-        If u.Action > 0 Or u.IsFeatureAvailable("åœ°å½¢ãƒ¦ãƒ‹ãƒƒãƒˆ") Then
-            'é€šå¸¸ã®è¡¨ç¤º
+        'ƒ†ƒjƒbƒg‰æ‘œ‚Ì‘‚«‚İ
+        If u.Action > 0 Or u.IsFeatureAvailable("’nŒ`ƒ†ƒjƒbƒg") Then
+            '’Êí‚Ì•\¦
             ret = BitBlt(pic.hDC, _
                 xx, yy, 32, 32, _
                 .picUnitBitmap.hDC, _
                 32 * (u.BitmapID Mod 15), 96 * (u.BitmapID \ 15), _
                 SRCCOPY)
         Else
-            'è¡Œå‹•æ¸ˆã®å ´åˆã¯ç¶²æ›ã‘
+            's“®Ï‚Ìê‡‚Í–ÔŠ|‚¯
             ret = BitBlt(pic.hDC, _
                 xx, yy, 32, 32, _
                 .picUnitBitmap.hDC, _
@@ -4226,34 +4226,34 @@ Dim PT As POINTAPI
                 SRCCOPY)
         End If
         
-        'ç›´ç·šã‚’æç”»ã™ã‚‹éš›ã®æç”»è‰²ã‚’è¨­å®š
+        '’¼ü‚ğ•`‰æ‚·‚éÛ‚Ì•`‰æF‚ğİ’è
         pic.ForeColor = vbBlack
         
-        'ãƒ¦ãƒ‹ãƒƒãƒˆã®ã„ã‚‹å ´æ‰€ã«åˆã‚ã›ã¦è¡¨ç¤ºã‚’å¤‰æ›´
+        'ƒ†ƒjƒbƒg‚Ì‚¢‚éêŠ‚É‡‚í‚¹‚Ä•\¦‚ğ•ÏX
         Select Case u.Area
-            Case "ç©ºä¸­"
+            Case "‹ó’†"
                 ret = MoveToEx(pic.hDC, xx, yy + 28, PT)
                 ret = LineTo(pic.hDC, xx + 31, yy + 28)
-            Case "æ°´ä¸­"
+            Case "…’†"
                 ret = MoveToEx(pic.hDC, xx, yy + 3, PT)
                 ret = LineTo(pic.hDC, xx + 31, yy + 3)
-            Case "åœ°ä¸­"
+            Case "’n’†"
                 ret = MoveToEx(pic.hDC, xx, yy + 28, PT)
                 ret = LineTo(pic.hDC, xx + 31, yy + 28)
                 ret = MoveToEx(pic.hDC, xx, yy + 3, PT)
                 ret = LineTo(pic.hDC, xx + 31, yy + 3)
-            Case "å®‡å®™"
-                If TerrainClass(u.X, u.Y) = "æœˆé¢" Then
+            Case "‰F’ˆ"
+                If TerrainClass(u.X, u.Y) = "Œ–Ê" Then
                     ret = MoveToEx(pic.hDC, xx, yy + 28, PT)
                     ret = LineTo(pic.hDC, xx + 31, yy + 28)
                 End If
         End Select
         
-        'æç”»è‰²ã‚’ç™½ã«æˆ»ã—ã¦ãŠã
+        '•`‰æF‚ğ”’‚É–ß‚µ‚Ä‚¨‚­
         pic.ForeColor = vbWhite
         
-        If smode <> "ãƒªãƒ•ãƒ¬ãƒƒã‚·ãƒ¥ç„¡ã—" Then
-            'ç”»é¢ãŒæ›¸ãæ›ãˆã‚‰ã‚ŒãŸã“ã¨ã‚’è¨˜éŒ²
+        If smode <> "ƒŠƒtƒŒƒbƒVƒ…–³‚µ" Then
+            '‰æ–Ê‚ª‘‚«Š·‚¦‚ç‚ê‚½‚±‚Æ‚ğ‹L˜^
             ScreenIsSaved = False
             
             If .Visible Then
@@ -4263,20 +4263,20 @@ Dim PT As POINTAPI
     End With
 End Sub
 
-'ãƒ¦ãƒ‹ãƒƒãƒˆç”»åƒã®è¡¨ç¤ºã‚’æ¶ˆã™
+'ƒ†ƒjƒbƒg‰æ‘œ‚Ì•\¦‚ğÁ‚·
 Public Sub EraseUnitBitmap(ByVal X As Integer, ByVal Y As Integer, _
     Optional ByVal do_refresh As Boolean = True)
 Dim xx As Integer, yy As Integer
 Dim ret As Long
     
-    'ç”»é¢å¤–ï¼Ÿ
+    '‰æ–ÊŠOH
     If X < MapX - (MainWidth + 1) \ 2 Or MapX + (MainWidth + 1) \ 2 < X _
         Or Y < MapY - (MainHeight + 1) \ 2 Or MapY + (MainHeight + 1) \ 2 < Y _
     Then
         Exit Sub
     End If
     
-    'ç”»é¢ãŒä¹±ã‚Œã‚‹ã®ã§æ›¸ãæ›ãˆãªã„ï¼Ÿ
+    '‰æ–Ê‚ª—‚ê‚é‚Ì‚Å‘‚«Š·‚¦‚È‚¢H
     If IsPictureVisible Then
         Exit Sub
     End If
@@ -4287,14 +4287,14 @@ Dim ret As Long
     With MainForm
         SaveScreen
         
-        'ç”»é¢è¡¨ç¤ºå¤‰æ›´
+        '‰æ–Ê•\¦•ÏX
         ret = BitBlt(.picMain(0).hDC, xx, yy, 32, 32, _
             .picBack.hDC, 32 * (X - 1), 32 * (Y - 1), SRCCOPY)
         ret = BitBlt(.picMain(1).hDC, xx, yy, 32, 32, _
             .picBack.hDC, 32 * (X - 1), 32 * (Y - 1), SRCCOPY)
         
         If do_refresh Then
-            'ç”»é¢ãŒæ›¸ãæ›ãˆã‚‰ã‚ŒãŸã“ã¨ã‚’è¨˜éŒ²
+            '‰æ–Ê‚ª‘‚«Š·‚¦‚ç‚ê‚½‚±‚Æ‚ğ‹L˜^
             ScreenIsSaved = False
             
             If .Visible Then
@@ -4304,7 +4304,7 @@ Dim ret As Long
     End With
 End Sub
 
-'ãƒ¦ãƒ‹ãƒƒãƒˆç”»åƒã®è¡¨ç¤ºä½ç½®ã‚’ç§»å‹• (ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³)
+'ƒ†ƒjƒbƒg‰æ‘œ‚Ì•\¦ˆÊ’u‚ğˆÚ“® (ƒAƒjƒ[ƒVƒ‡ƒ“)
 Public Sub MoveUnitBitmap(u As Unit, _
     ByVal x1 As Integer, ByVal y1 As Integer, ByVal x2 As Integer, ByVal y2 As Integer, _
     ByVal wait_time0 As Long, Optional ByVal division As Integer = 2)
@@ -4322,39 +4322,39 @@ Dim PT As POINTAPI
     With MainForm
         Set pic = .picTmp32(0)
         
-        'ãƒ¦ãƒ‹ãƒƒãƒˆç”»åƒã‚’ä½œæˆ
+        'ƒ†ƒjƒbƒg‰æ‘œ‚ğì¬
         ret = BitBlt(pic.hDC, _
             0, 0, 32, 32, _
             .picUnitBitmap.hDC, _
             32 * (u.BitmapID Mod 15), 96 * (u.BitmapID \ 15), _
             SRCCOPY)
         
-        'ãƒ¦ãƒ‹ãƒƒãƒˆã®ã„ã‚‹å ´æ‰€ã«åˆã‚ã›ã¦è¡¨ç¤ºã‚’å¤‰æ›´
+        'ƒ†ƒjƒbƒg‚Ì‚¢‚éêŠ‚É‡‚í‚¹‚Ä•\¦‚ğ•ÏX
         Select Case u.Area
-            Case "ç©ºä¸­"
+            Case "‹ó’†"
                 ret = MoveToEx(pic.hDC, 0, 28, PT)
                 ret = LineTo(pic.hDC, 31, 28)
-            Case "æ°´ä¸­"
+            Case "…’†"
                 ret = MoveToEx(pic.hDC, 0, 3, PT)
                 ret = LineTo(pic.hDC, 31, 3)
-            Case "åœ°ä¸­"
+            Case "’n’†"
                 ret = MoveToEx(pic.hDC, 0, 28, PT)
                 ret = LineTo(pic.hDC, 31, 28)
                 ret = MoveToEx(pic.hDC, 0, 3, PT)
                 ret = LineTo(pic.hDC, 31, 3)
-            Case "å®‡å®™"
-                If TerrainClass(u.X, u.Y) = "æœˆé¢" Then
+            Case "‰F’ˆ"
+                If TerrainClass(u.X, u.Y) = "Œ–Ê" Then
                     ret = MoveToEx(pic.hDC, 0, 28, PT)
                     ret = LineTo(pic.hDC, 31, 28)
                 End If
         End Select
         
-        'ç§»å‹•ã®å§‹ç‚¹ã‚’è¨­å®š
+        'ˆÚ“®‚Ìn“_‚ğİ’è
         xx = MapToPixelX(x1)
         yy = MapToPixelY(y1)
         
-        'èƒŒæ™¯ä¸Šã®ç”»åƒã‚’ã¾ãšæ¶ˆå»
-        '(æ—¢ã«ç§»å‹•ã—ã¦ã„ã‚‹å ´åˆã‚’é™¤ã)
+        '”wŒiã‚Ì‰æ‘œ‚ğ‚Ü‚¸Á‹
+        '(Šù‚ÉˆÚ“®‚µ‚Ä‚¢‚éê‡‚ğœ‚­)
         If u Is MapDataForUnit(x1, y1) Then
             ret = BitBlt(.picMain(0).hDC, xx, yy, 32, 32, _
                 .picBack.hDC, 32 * (x1 - 1), 32 * (y1 - 1), SRCCOPY)
@@ -4362,7 +4362,7 @@ Dim PT As POINTAPI
                 .picBack.hDC, 32 * (x1 - 1), 32 * (y1 - 1), SRCCOPY)
         End If
         
-        'æœ€åˆã®ç§»å‹•æ–¹å‘ã‚’è¨­å®š
+        'Å‰‚ÌˆÚ“®•ûŒü‚ğİ’è
         If Abs(x2 - x1) > Abs(y2 - y1) Then
             If x2 > x1 Then
                 vx = 1
@@ -4383,17 +4383,17 @@ Dim PT As POINTAPI
             start_time = timeGetTime()
         End If
         
-        'ç§»å‹•ã®æç”»
+        'ˆÚ“®‚Ì•`‰æ
         For i = 1 To division * MaxLng(Abs(x2 - x1), Abs(y2 - y1))
-            'ç”»åƒã‚’æ¶ˆå»
+            '‰æ‘œ‚ğÁ‹
             ret = BitBlt(.picMain(0).hDC, xx, yy, 32, 32, _
                 .picMain(1).hDC, xx, yy, SRCCOPY)
             
-            'åº§æ¨™ã‚’ç§»å‹•
+            'À•W‚ğˆÚ“®
             xx = xx + 32 * vx \ division
             yy = yy + 32 * vy \ division
             
-            'ç”»åƒã‚’æç”»
+            '‰æ‘œ‚ğ•`‰æ
             ret = BitBlt(.picMain(0).hDC, _
                 xx, yy, 32, 32, _
                 pic.hDC, 0, 0, SRCCOPY)
@@ -4409,7 +4409,7 @@ Dim PT As POINTAPI
             End If
         Next
         
-        'ï¼’å›ç›®ã®ç§»å‹•æ–¹å‘ã‚’è¨­å®š
+        '‚Q‰ñ–Ú‚ÌˆÚ“®•ûŒü‚ğİ’è
         If Abs(x2 - x1) > Abs(y2 - y1) Then
             If y2 > y1 Then
                 vy = 1
@@ -4426,17 +4426,17 @@ Dim PT As POINTAPI
             vy = 0
         End If
         
-        'ç§»å‹•ã®æç”»
+        'ˆÚ“®‚Ì•`‰æ
         For i = 1 To division * MinLng(Abs(x2 - x1), Abs(y2 - y1))
-            'ç”»åƒã‚’æ¶ˆå»
+            '‰æ‘œ‚ğÁ‹
             ret = BitBlt(.picMain(0).hDC, xx, yy, 32, 32, _
                 .picMain(1).hDC, xx, yy, SRCCOPY)
             
-            'åº§æ¨™ã‚’ç§»å‹•
+            'À•W‚ğˆÚ“®
             xx = xx + 32 * vx \ division
             yy = yy + 32 * vy \ division
             
-            'ç”»åƒã‚’æç”»
+            '‰æ‘œ‚ğ•`‰æ
             ret = BitBlt(.picMain(0).hDC, _
                 xx, yy, 32, 32, _
                 pic.hDC, 0, 0, SRCCOPY)
@@ -4453,12 +4453,12 @@ Dim PT As POINTAPI
         Next
     End With
     
-    'ç”»é¢ãŒæ›¸ãæ›ãˆã‚‰ã‚ŒãŸã“ã¨ã‚’è¨˜éŒ²
+    '‰æ–Ê‚ª‘‚«Š·‚¦‚ç‚ê‚½‚±‚Æ‚ğ‹L˜^
     ScreenIsSaved = False
 End Sub
 
-'ãƒ¦ãƒ‹ãƒƒãƒˆç”»åƒã®è¡¨ç¤ºä½ç½®ã‚’ç§»å‹• (ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³)
-'ç”»åƒã®çµŒè·¯ã‚’å®Ÿéš›ã®ç§»å‹•çµŒè·¯ã«ã‚ã‚ã›ã‚‹
+'ƒ†ƒjƒbƒg‰æ‘œ‚Ì•\¦ˆÊ’u‚ğˆÚ“® (ƒAƒjƒ[ƒVƒ‡ƒ“)
+'‰æ‘œ‚ÌŒo˜H‚ğÀÛ‚ÌˆÚ“®Œo˜H‚É‚ ‚í‚¹‚é
 Public Sub MoveUnitBitmap2(u As Unit, _
     ByVal wait_time0 As Long, Optional ByVal division As Integer = 2)
 Dim xx As Integer, yy As Integer
@@ -4476,39 +4476,39 @@ Dim move_route_x() As Integer, move_route_y() As Integer
     With MainForm
         Set pic = .picTmp32(0)
         
-        'ãƒ¦ãƒ‹ãƒƒãƒˆç”»åƒã‚’ä½œæˆ
+        'ƒ†ƒjƒbƒg‰æ‘œ‚ğì¬
         ret = BitBlt(pic.hDC, 0, 0, 32, 32, .picUnitBitmap.hDC, _
             32 * (u.BitmapID Mod 15), 96 * (u.BitmapID \ 15), _
             SRCCOPY)
         
-        'ãƒ¦ãƒ‹ãƒƒãƒˆã®ã„ã‚‹å ´æ‰€ã«åˆã‚ã›ã¦è¡¨ç¤ºã‚’å¤‰æ›´
+        'ƒ†ƒjƒbƒg‚Ì‚¢‚éêŠ‚É‡‚í‚¹‚Ä•\¦‚ğ•ÏX
         Select Case u.Area
-            Case "ç©ºä¸­"
+            Case "‹ó’†"
                 ret = MoveToEx(pic.hDC, 0, 28, PT)
                 ret = LineTo(pic.hDC, 31, 28)
-            Case "æ°´ä¸­"
+            Case "…’†"
                 ret = MoveToEx(pic.hDC, 0, 3, PT)
                 ret = LineTo(pic.hDC, 31, 3)
-            Case "åœ°ä¸­"
+            Case "’n’†"
                 ret = MoveToEx(pic.hDC, 0, 28, PT)
                 ret = LineTo(pic.hDC, 31, 28)
                 ret = MoveToEx(pic.hDC, 0, 3, PT)
                 ret = LineTo(pic.hDC, 31, 3)
-            Case "å®‡å®™"
-                If TerrainClass(u.X, u.Y) = "æœˆé¢" Then
+            Case "‰F’ˆ"
+                If TerrainClass(u.X, u.Y) = "Œ–Ê" Then
                     ret = MoveToEx(pic.hDC, 0, 28, PT)
                     ret = LineTo(pic.hDC, 31, 28)
                 End If
         End Select
         
-        'ç§»å‹•çµŒè·¯ã‚’æ¤œç´¢
+        'ˆÚ“®Œo˜H‚ğŒŸõ
         SearchMoveRoute u.X, u.Y, move_route_x, move_route_y
         
         If wait_time > 0 Then
             start_time = timeGetTime()
         End If
         
-        'ç§»å‹•ã®å§‹ç‚¹
+        'ˆÚ“®‚Ìn“_
         xx = MapToPixelX(move_route_x(UBound(move_route_x)))
         yy = MapToPixelY(move_route_y(UBound(move_route_y)))
         
@@ -4517,17 +4517,17 @@ Dim move_route_x() As Integer, move_route_y() As Integer
             vx = MapToPixelX(move_route_x(i)) - xx
             vy = MapToPixelY(move_route_y(i)) - yy
             
-            'ç§»å‹•ã®æç”»
+            'ˆÚ“®‚Ì•`‰æ
             For j = 1 To division
-                'ç”»åƒã‚’æ¶ˆå»
+                '‰æ‘œ‚ğÁ‹
                 ret = BitBlt(.picMain(0).hDC, xx, yy, 32, 32, _
                     .picMain(1).hDC, xx, yy, SRCCOPY)
                 
-                'åº§æ¨™ã‚’ç§»å‹•
+                'À•W‚ğˆÚ“®
                 xx = xx + vx \ division
                 yy = yy + vy \ division
                 
-                'ç”»åƒã‚’æç”»
+                '‰æ‘œ‚ğ•`‰æ
                 ret = BitBlt(.picMain(0).hDC, xx, yy, 32, 32, _
                     pic.hDC, 0, 0, SRCCOPY)
                 
@@ -4546,14 +4546,14 @@ Dim move_route_x() As Integer, move_route_y() As Integer
         Loop
     End With
     
-    'ç”»é¢ãŒæ›¸ãæ›ãˆã‚‰ã‚ŒãŸã“ã¨ã‚’è¨˜éŒ²
+    '‰æ–Ê‚ª‘‚«Š·‚¦‚ç‚ê‚½‚±‚Æ‚ğ‹L˜^
     ScreenIsSaved = False
 End Sub
 
 
-' === å„ç¨®ãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹ã«é–¢ã™ã‚‹å‡¦ç† ===
+' === ŠeíƒŠƒXƒgƒ{ƒbƒNƒX‚ÉŠÖ‚·‚éˆ— ===
 
-'ãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹ã‚’è¡¨ç¤º
+'ƒŠƒXƒgƒ{ƒbƒNƒX‚ğ•\¦
 Public Function ListBox(lb_caption As String, list() As String, lb_info As String, _
     Optional lb_mode As String) As Integer
 Dim i As Integer
@@ -4563,8 +4563,8 @@ Dim is_rbutton_released As Boolean
     With frmListBox
         .WindowState = vbNormal
         
-        'ã‚³ãƒ¡ãƒ³ãƒˆã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®å‡¦ç†
-        If InStr(lb_mode, "ã‚³ãƒ¡ãƒ³ãƒˆ") > 0 Then
+        'ƒRƒƒ“ƒgƒEƒBƒ“ƒhƒE‚Ìˆ—
+        If InStr(lb_mode, "ƒRƒƒ“ƒg") > 0 Then
             If Not .txtComment.Enabled Then
                 .txtComment.Enabled = True
                 .txtComment.Visible = True
@@ -4581,7 +4581,7 @@ Dim is_rbutton_released As Boolean
             End If
         End If
         
-        'ã‚­ãƒ£ãƒ—ã‚·ãƒ§ãƒ³
+        'ƒLƒƒƒvƒVƒ‡ƒ“
         .Caption = lb_caption
         If UBound(ListItemFlag) > 0 Then
             .labCaption = "  " & lb_info
@@ -4589,13 +4589,13 @@ Dim is_rbutton_released As Boolean
             .labCaption = lb_info
         End If
         
-        'ãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹ã«ã‚¢ã‚¤ãƒ†ãƒ ã‚’è¿½åŠ 
+        'ƒŠƒXƒgƒ{ƒbƒNƒX‚ÉƒAƒCƒeƒ€‚ğ’Ç‰Á
         .lstItems.Visible = False
         .lstItems.Clear
         If UBound(ListItemFlag) > 0 Then
             For i = 1 To UBound(list)
                 If ListItemFlag(i) Then
-                    .lstItems.AddItem "Ã—" & list(i)
+                    .lstItems.AddItem "~" & list(i)
                 Else
                     .lstItems.AddItem "  " & list(i)
                 End If
@@ -4616,18 +4616,18 @@ Dim is_rbutton_released As Boolean
         .lstItems.ListIndex = -1
         .lstItems.Visible = True
         
-        'ã‚³ãƒ¡ãƒ³ãƒˆä»˜ãã®ã‚¢ã‚¤ãƒ†ãƒ ï¼Ÿ
+        'ƒRƒƒ“ƒg•t‚«‚ÌƒAƒCƒeƒ€H
         If UBound(ListItemComment) <> UBound(list) Then
             ReDim Preserve ListItemComment(UBound(list))
         End If
         
-        'æœ€å°åŒ–ã•ã‚Œã¦ã„ã‚‹å ´åˆã¯æˆ»ã—ã¦ãŠã
+        'Å¬‰»‚³‚ê‚Ä‚¢‚éê‡‚Í–ß‚µ‚Ä‚¨‚­
         If .WindowState <> vbNormal Then
             .WindowState = vbNormal
             .Show
         End If
         
-        'è¡¨ç¤ºä½ç½®ã‚’è¨­å®š
+        '•\¦ˆÊ’u‚ğİ’è
         If MainForm.Visible _
             And .HorizontalSize = "S" _
         Then
@@ -4638,14 +4638,14 @@ Dim is_rbutton_released As Boolean
         If MainForm.Visible _
             And Not MainForm.WindowState = 1 _
             And .VerticalSize = "M" _
-            And InStr(lb_mode, "ä¸­å¤®è¡¨ç¤º") = 0 _
+            And InStr(lb_mode, "’†‰›•\¦") = 0 _
         Then
             .Top = MainForm.Top + MainForm.Height - .Height
         Else
             .Top = (Screen.Height - .Height) / 2
         End If
         
-        'å…ˆé ­ã®ã‚¢ã‚¤ãƒ†ãƒ ã‚’è¨­å®š
+        'æ“ª‚ÌƒAƒCƒeƒ€‚ğİ’è
         If TopItem > 0 Then
             If .lstItems.TopIndex <> TopItem - 1 Then
                 .lstItems.TopIndex = MaxLng(MinLng(TopItem - 1, .lstItems.ListCount - 1), 0)
@@ -4659,7 +4659,7 @@ Dim is_rbutton_released As Boolean
             End If
         End If
         
-        'ã‚³ãƒ¡ãƒ³ãƒˆã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®è¡¨ç¤º
+        'ƒRƒƒ“ƒgƒEƒBƒ“ƒhƒE‚Ì•\¦
         If .txtComment.Enabled Then
             .txtComment.Text = ListItemComment(.lstItems.ListIndex + 1)
         End If
@@ -4669,17 +4669,17 @@ Dim is_rbutton_released As Boolean
         IsFormClicked = False
         DoEvents
         
-        'ãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹ã‚’è¡¨ç¤º
-        If InStr(lb_mode, "è¡¨ç¤ºã®ã¿") > 0 Then
-            'è¡¨ç¤ºã®ã¿ã‚’è¡Œã†
+        'ƒŠƒXƒgƒ{ƒbƒNƒX‚ğ•\¦
+        If InStr(lb_mode, "•\¦‚Ì‚İ") > 0 Then
+            '•\¦‚Ì‚İ‚ğs‚¤
             IsMordal = False
             .Show
             .lstItems.SetFocus
             Call SetWindowPos(.hwnd, -1, 0, 0, 0, 0, &H3)
             .Refresh
             Exit Function
-        ElseIf InStr(lb_mode, "é€£ç¶šè¡¨ç¤º") > 0 Then
-            'é¸æŠãŒè¡Œã‚ã‚Œã¦ã‚‚ãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹ã‚’é–‰ã˜ãªã„
+        ElseIf InStr(lb_mode, "˜A‘±•\¦") > 0 Then
+            '‘I‘ğ‚ªs‚í‚ê‚Ä‚àƒŠƒXƒgƒ{ƒbƒNƒX‚ğ•Â‚¶‚È‚¢
             IsMordal = False
             If Not .Visible Then
                 .Show
@@ -4687,15 +4687,15 @@ Dim is_rbutton_released As Boolean
                 .lstItems.SetFocus
             End If
             
-            If InStr(lb_mode, "ã‚«ãƒ¼ã‚½ãƒ«ç§»å‹•") > 0 Then
+            If InStr(lb_mode, "ƒJ[ƒ\ƒ‹ˆÚ“®") > 0 Then
                 If AutoMoveCursor Then
-                    MoveCursorPos "ãƒ€ã‚¤ã‚¢ãƒ­ã‚°"
+                    MoveCursorPos "ƒ_ƒCƒAƒƒO"
                 End If
             End If
             
             Do Until IsFormClicked
                 DoEvents
-                'å³ãƒœã‚¿ãƒ³ã§ã®ãƒ€ãƒ–ãƒ«ã‚¯ãƒªãƒƒã‚¯ã®å®Ÿç¾
+                '‰Eƒ{ƒ^ƒ“‚Å‚Ìƒ_ƒuƒ‹ƒNƒŠƒbƒN‚ÌÀŒ»
                 If (GetAsyncKeyState(RButtonID) And &H8000) = 0 Then
                     is_rbutton_released = True
                 Else
@@ -4706,21 +4706,21 @@ Dim is_rbutton_released As Boolean
                 Sleep 50
             Loop
         Else
-            'é¸æŠãŒè¡Œã‚ã‚ŒãŸæ™‚ç‚¹ã§ãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹ã‚’é–‰ã˜ã‚‹
+            '‘I‘ğ‚ªs‚í‚ê‚½“_‚ÅƒŠƒXƒgƒ{ƒbƒNƒX‚ğ•Â‚¶‚é
             IsMordal = False
             .Show
             Call SetWindowPos(.hwnd, -1, 0, 0, 0, 0, &H3)
             .lstItems.SetFocus
             
-            If InStr(lb_mode, "ã‚«ãƒ¼ã‚½ãƒ«ç§»å‹•") > 0 Then
+            If InStr(lb_mode, "ƒJ[ƒ\ƒ‹ˆÚ“®") > 0 Then
                 If AutoMoveCursor Then
-                    MoveCursorPos "ãƒ€ã‚¤ã‚¢ãƒ­ã‚°"
+                    MoveCursorPos "ƒ_ƒCƒAƒƒO"
                 End If
             End If
             
             Do Until IsFormClicked
                 DoEvents
-                'å³ãƒœã‚¿ãƒ³ã§ã®ãƒ€ãƒ–ãƒ«ã‚¯ãƒªãƒƒã‚¯ã®å®Ÿç¾
+                '‰Eƒ{ƒ^ƒ“‚Å‚Ìƒ_ƒuƒ‹ƒNƒŠƒbƒN‚ÌÀŒ»
                 If (GetAsyncKeyState(RButtonID) And &H8000) = 0 Then
                     is_rbutton_released = True
                 Else
@@ -4732,8 +4732,8 @@ Dim is_rbutton_released As Boolean
             Loop
             .Hide
             
-            If InStr(lb_mode, "ã‚«ãƒ¼ã‚½ãƒ«ç§»å‹•") > 0 _
-                And InStr(lb_mode, "ã‚«ãƒ¼ã‚½ãƒ«ç§»å‹•(è¡Œãã®ã¿)") = 0 _
+            If InStr(lb_mode, "ƒJ[ƒ\ƒ‹ˆÚ“®") > 0 _
+                And InStr(lb_mode, "ƒJ[ƒ\ƒ‹ˆÚ“®(s‚«‚Ì‚İ)") = 0 _
             Then
                 If AutoMoveCursor Then
                     RestoreCursorPos
@@ -4752,7 +4752,7 @@ Dim is_rbutton_released As Boolean
     End With
 End Function
 
-'ãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹ã®é«˜ã•ã‚’å¤§ããã™ã‚‹
+'ƒŠƒXƒgƒ{ƒbƒNƒX‚Ì‚‚³‚ğ‘å‚«‚­‚·‚é
 Public Sub EnlargeListBoxHeight()
     With frmListBox
         Select Case .VerticalSize
@@ -4769,7 +4769,7 @@ Public Sub EnlargeListBoxHeight()
     End With
 End Sub
 
-'ãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹ã®é«˜ã•ã‚’å°ã•ãã™ã‚‹
+'ƒŠƒXƒgƒ{ƒbƒNƒX‚Ì‚‚³‚ğ¬‚³‚­‚·‚é
 Public Sub ReduceListBoxHeight()
     With frmListBox
         Select Case .VerticalSize
@@ -4786,7 +4786,7 @@ Public Sub ReduceListBoxHeight()
     End With
 End Sub
 
-'ãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹ã®å¹…ã‚’å¤§ããã™ã‚‹
+'ƒŠƒXƒgƒ{ƒbƒNƒX‚Ì•‚ğ‘å‚«‚­‚·‚é
 Public Sub EnlargeListBoxWidth()
     With frmListBox
         Select Case .HorizontalSize
@@ -4804,7 +4804,7 @@ Public Sub EnlargeListBoxWidth()
     End With
 End Sub
 
-'ãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹ã®å¹…ã‚’å°ã•ãã™ã‚‹
+'ƒŠƒXƒgƒ{ƒbƒNƒX‚Ì•‚ğ¬‚³‚­‚·‚é
 Public Sub ReduceListBoxWidth()
     With frmListBox
         Select Case .HorizontalSize
@@ -4822,7 +4822,7 @@ Public Sub ReduceListBoxWidth()
     End With
 End Sub
 
-'æ­¦å™¨é¸æŠç”¨ã«ãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹ã‚’åˆ‡ã‚Šæ›¿ãˆ
+'•Ší‘I‘ğ—p‚ÉƒŠƒXƒgƒ{ƒbƒNƒX‚ğØ‚è‘Ö‚¦
 Public Sub AddPartsToListBox()
 Dim ret As Long
 Dim fname As String
@@ -4832,7 +4832,7 @@ Dim u As Unit, t As Unit
     Set t = SelectedTarget
     
     With frmListBox
-    'ãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹ã«ãƒ¦ãƒ‹ãƒƒãƒˆã‚„ï¼¨ï¼°ã®ã‚²ãƒ¼ã‚¸ã‚’è¿½åŠ 
+    'ƒŠƒXƒgƒ{ƒbƒNƒX‚Éƒ†ƒjƒbƒg‚â‚g‚o‚ÌƒQ[ƒW‚ğ’Ç‰Á
         .Height = .Height + 535
         .labCaption.Top = 42
         .lstItems.Top = 69
@@ -4861,7 +4861,7 @@ Dim u As Unit, t As Unit
         .txtEN2.Visible = True
         .picEN2.Visible = True
         
-        'ãƒ¦ãƒ‹ãƒƒãƒˆå´ã®è¡¨ç¤º
+        'ƒ†ƒjƒbƒg‘¤‚Ì•\¦
         fname = "Bitmap\Pilot\" & u.MainPilot.Bitmap
         If FileExists(ScenarioPath & fname) Then
             .imgPilot1 = LoadPicture(ScenarioPath & fname)
@@ -4885,7 +4885,7 @@ Dim u As Unit, t As Unit
                     32 * (u.BitmapID Mod 15), 96 * (u.BitmapID \ 15), _
                     SRCCOPY)
             Else
-                'éè¡¨ç¤ºã®ãƒ¦ãƒ‹ãƒƒãƒˆã®å ´åˆã¯ãƒ¦ãƒ‹ãƒƒãƒˆã®ã„ã‚‹åœ°å½¢ã‚¿ã‚¤ãƒ«ã‚’è¡¨ç¤º
+                '”ñ•\¦‚Ìƒ†ƒjƒbƒg‚Ìê‡‚Íƒ†ƒjƒbƒg‚Ì‚¢‚é’nŒ`ƒ^ƒCƒ‹‚ğ•\¦
                 ret = BitBlt(.picUnit1.hDC, 0, 0, 32, 32, _
                     MainForm.picBack.hDC, _
                     32 * (u.X - 1), 32 * (u.Y - 1), _
@@ -4896,7 +4896,7 @@ Dim u As Unit, t As Unit
         End If
         .picUnit1.Refresh
             
-        If u.IsConditionSatisfied("ãƒ‡ãƒ¼ã‚¿ä¸æ˜") Then
+        If u.IsConditionSatisfied("ƒf[ƒ^•s–¾") Then
             .labHP1.Caption = Term("HP")
             .txtHP1.Text = "?????/?????"
         Else
@@ -4917,7 +4917,7 @@ Dim u As Unit, t As Unit
     frmListBox.picHP1.Line (0, 0)-((frmListBox.picHP1.width - 4) * u.HP \ u.MaxHP - 1, 4), , BF
     
     With frmListBox
-        If u.IsConditionSatisfied("ãƒ‡ãƒ¼ã‚¿ä¸æ˜") Then
+        If u.IsConditionSatisfied("ƒf[ƒ^•s–¾") Then
             .labEN1.Caption = Term("EN")
             .txtEN1.Text = "???/???"
         Else
@@ -4938,7 +4938,7 @@ Dim u As Unit, t As Unit
     frmListBox.picEN1.Line (0, 0)-((frmListBox.picEN1.width - 4) * u.EN \ u.MaxEN - 1, 4), , BF
     
     With frmListBox
-        'ã‚¿ãƒ¼ã‚²ãƒƒãƒˆå´ã®è¡¨ç¤º
+        'ƒ^[ƒQƒbƒg‘¤‚Ì•\¦
         fname = "Bitmap\Pilot\" & t.MainPilot.Bitmap
         If FileExists(ScenarioPath & fname) Then
             .imgPilot2 = LoadPicture(ScenarioPath & fname)
@@ -4962,7 +4962,7 @@ Dim u As Unit, t As Unit
                     32 * (t.BitmapID Mod 15), 96 * (t.BitmapID \ 15), _
                     SRCCOPY)
             Else
-                'éè¡¨ç¤ºã®ãƒ¦ãƒ‹ãƒƒãƒˆã®å ´åˆã¯ãƒ¦ãƒ‹ãƒƒãƒˆã®ã„ã‚‹åœ°å½¢ã‚¿ã‚¤ãƒ«ã‚’è¡¨ç¤º
+                '”ñ•\¦‚Ìƒ†ƒjƒbƒg‚Ìê‡‚Íƒ†ƒjƒbƒg‚Ì‚¢‚é’nŒ`ƒ^ƒCƒ‹‚ğ•\¦
                 ret = BitBlt(.picUnit2.hDC, 0, 0, 32, 32, _
                     MainForm.picBack.hDC, _
                     32 * (t.X - 1), 32 * (t.Y - 1), _
@@ -4973,7 +4973,7 @@ Dim u As Unit, t As Unit
         End If
         .picUnit2.Refresh
         
-        If t.IsConditionSatisfied("ãƒ‡ãƒ¼ã‚¿ä¸æ˜") Then
+        If t.IsConditionSatisfied("ƒf[ƒ^•s–¾") Then
             .labHP2.Caption = Term("HP")
             .txtHP2.Text = "?????/?????"
         Else
@@ -4994,7 +4994,7 @@ Dim u As Unit, t As Unit
     frmListBox.picHP2.Line (0, 0)-((frmListBox.picHP2.width - 4) * t.HP \ t.MaxHP - 1, 4), , BF
     
     With frmListBox
-        If t.IsConditionSatisfied("ãƒ‡ãƒ¼ã‚¿ä¸æ˜") Then
+        If t.IsConditionSatisfied("ƒf[ƒ^•s–¾") Then
             .labEN2.Caption = Term("EN")
             .txtEN2.Text = "???/???"
         Else
@@ -5015,7 +5015,7 @@ Dim u As Unit, t As Unit
     frmListBox.picEN2.Line (0, 0)-((frmListBox.picEN2.width - 4) * t.EN \ t.MaxEN - 1, 4), , BF
 End Sub
 
-'æ­¦å™¨é¸æŠç”¨ãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹ã‚’é€šå¸¸ã®ã‚‚ã®ã«åˆ‡ã‚Šæ›¿ãˆ
+'•Ší‘I‘ğ—pƒŠƒXƒgƒ{ƒbƒNƒX‚ğ’Êí‚Ì‚à‚Ì‚ÉØ‚è‘Ö‚¦
 Public Sub RemovePartsOnListBox()
     With frmListBox
         .Height = .Height - 535
@@ -5049,7 +5049,7 @@ Public Sub RemovePartsOnListBox()
     End With
 End Sub
 
-'æ­¦å™¨é¸æŠç”¨ãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹
+'•Ší‘I‘ğ—pƒŠƒXƒgƒ{ƒbƒNƒX
 Public Function WeaponListBox(u As Unit, caption_msg As String, _
     lb_mode As String, Optional BGM As String) As Integer
 Dim i As Integer, j As Integer, k As Integer, ret As Integer, w As Integer
@@ -5067,7 +5067,7 @@ Dim buf As String
             wpower(i) = .WeaponPower(i, "")
         Next
         
-        'æ”»æ’ƒåŠ›ã§ã‚½ãƒ¼ãƒˆ
+        'UŒ‚—Í‚Åƒ\[ƒg
         For i = 1 To .CountWeapon
             For j = 1 To i - 1
                 If wpower(i) > wpower(warray(i - j)) Then
@@ -5099,23 +5099,23 @@ Dim buf As String
     
     ReDim list(0)
     ReDim wlist(0)
-    If lb_mode = "ç§»å‹•å‰" Or lb_mode = "ç§»å‹•å¾Œ" Or lb_mode = "ä¸€è¦§" Then
-        'é€šå¸¸ã®æ­¦å™¨é¸æŠæ™‚ã®è¡¨ç¤º
+    If lb_mode = "ˆÚ“®‘O" Or lb_mode = "ˆÚ“®Œã" Or lb_mode = "ˆê——" Then
+        '’Êí‚Ì•Ší‘I‘ğ‚Ì•\¦
         For i = 1 To u.CountWeapon
             w = warray(i)
             
             With u
-                If lb_mode = "ä¸€è¦§" Then
-                    If Not .IsWeaponAvailable(w, "ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹") Then
-                        'Disableã‚³ãƒãƒ³ãƒ‰ã§ä½¿ç”¨ä¸å¯ã«ã•ã‚ŒãŸæ­¦å™¨ã¨ä½¿ç”¨ã§ããªã„åˆä½“æŠ€
-                        'ã¯è¡¨ç¤ºã—ãªã„
+                If lb_mode = "ˆê——" Then
+                    If Not .IsWeaponAvailable(w, "ƒXƒe[ƒ^ƒX") Then
+                        'DisableƒRƒ}ƒ“ƒh‚Åg—p•s‰Â‚É‚³‚ê‚½•Ší‚Æg—p‚Å‚«‚È‚¢‡‘Ì‹Z
+                        '‚Í•\¦‚µ‚È‚¢
                         If .IsDisabled(.Weapon(w).Name) Then
                             GoTo NextLoop1
                         End If
                         If Not .IsWeaponMastered(w) Then
                             GoTo NextLoop1
                         End If
-                        If .IsWeaponClassifiedAs(w, "åˆ") Then
+                        If .IsWeaponClassifiedAs(w, "‡") Then
                             If Not .IsCombinationAttackAvailable(w, True) Then
                                 GoTo NextLoop1
                             End If
@@ -5126,15 +5126,15 @@ Dim buf As String
                     If .IsWeaponUseful(w, lb_mode) Then
                         ListItemFlag(UBound(list) + 1) = False
                     Else
-                        'Disableã‚³ãƒãƒ³ãƒ‰ã§ä½¿ç”¨ä¸å¯ã«ã•ã‚ŒãŸæ­¦å™¨ã¨ä½¿ç”¨ã§ããªã„åˆä½“æŠ€
-                        'ã¯è¡¨ç¤ºã—ãªã„
+                        'DisableƒRƒ}ƒ“ƒh‚Åg—p•s‰Â‚É‚³‚ê‚½•Ší‚Æg—p‚Å‚«‚È‚¢‡‘Ì‹Z
+                        '‚Í•\¦‚µ‚È‚¢
                         If .IsDisabled(.Weapon(w).Name) Then
                             GoTo NextLoop1
                         End If
                         If Not .IsWeaponMastered(w) Then
                             GoTo NextLoop1
                         End If
-                        If .IsWeaponClassifiedAs(w, "åˆ") Then
+                        If .IsWeaponClassifiedAs(w, "‡") Then
                             If Not .IsCombinationAttackAvailable(w, True) Then
                                 GoTo NextLoop1
                             End If
@@ -5148,9 +5148,9 @@ Dim buf As String
             ReDim Preserve wlist(UBound(list))
             wlist(UBound(list)) = w
             
-            'å„æ­¦å™¨ã®è¡¨ç¤ºå†…å®¹ã®è¨­å®š
+            'Še•Ší‚Ì•\¦“à—e‚Ìİ’è
             With u.Weapon(w)
-                'æ”»æ’ƒåŠ›
+                'UŒ‚—Í
                 If wpower(w) < 10000 Then
                     list(UBound(list)) = RightPaddedString(.Nickname, 27) _
                         & LeftPaddedString(Format$(wpower(w)), 4)
@@ -5159,7 +5159,7 @@ Dim buf As String
                         & LeftPaddedString(Format$(wpower(w)), 5)
                 End If
                 
-                'æœ€å¤§å°„ç¨‹
+                'Å‘åË’ö
                 If u.WeaponMaxRange(w) > 1 Then
                     buf = Format$(.MinRange) & "-" & Format$(u.WeaponMaxRange(w))
                     list(UBound(list)) = list(UBound(list)) & _
@@ -5168,7 +5168,7 @@ Dim buf As String
                     list(UBound(list)) = list(UBound(list)) & "    1"
                 End If
                 
-                'å‘½ä¸­ç‡ä¿®æ­£
+                '–½’†—¦C³
                 If u.WeaponPrecision(w) >= 0 Then
                     list(UBound(list)) = list(UBound(list)) & _
                         LeftPaddedString("+" & Format$(u.WeaponPrecision(w)), 4)
@@ -5177,7 +5177,7 @@ Dim buf As String
                         LeftPaddedString(Format$(u.WeaponPrecision(w)), 4)
                 End If
                 
-                'æ®‹ã‚Šå¼¾æ•°
+                'c‚è’e”
                 If .Bullet > 0 Then
                     list(UBound(list)) = list(UBound(list)) & _
                         LeftPaddedString(Format$(u.Bullet(w)), 3)
@@ -5185,7 +5185,7 @@ Dim buf As String
                     list(UBound(list)) = list(UBound(list)) & "  -"
                 End If
                 
-                'ï¼¥ï¼®æ¶ˆè²»é‡
+                '‚d‚mÁ”ï—Ê
                 If .ENConsumption > 0 Then
                     list(UBound(list)) = list(UBound(list)) & _
                         LeftPaddedString(Format$(u.WeaponENConsumption(w)), 4)
@@ -5193,7 +5193,7 @@ Dim buf As String
                     list(UBound(list)) = list(UBound(list)) & "   -"
                 End If
                 
-                'ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ç‡ä¿®æ­£
+                'ƒNƒŠƒeƒBƒJƒ‹—¦C³
                 If u.WeaponCritical(w) >= 0 Then
                     list(UBound(list)) = list(UBound(list)) & _
                         LeftPaddedString("+" & Format$(u.WeaponCritical(w)), 4)
@@ -5202,16 +5202,16 @@ Dim buf As String
                         LeftPaddedString(Format$(u.WeaponCritical(w)), 4)
                 End If
                 
-                'åœ°å½¢é©å¿œ
+                '’nŒ`“K‰
                 list(UBound(list)) = list(UBound(list)) & " " & .Adaption
                 
-                'å¿…è¦æ°—åŠ›
+                '•K—v‹C—Í
                 If .NecessaryMorale > 0 Then
                     list(UBound(list)) = list(UBound(list)) _
-                        & " æ°—" & .NecessaryMorale
+                        & " ‹C" & .NecessaryMorale
                 End If
                 
-                'å±æ€§
+                '‘®«
                 wclass = u.WeaponClass(w)
                 If InStrNotNest(wclass, "|") > 0 Then
                     wclass = Left$(wclass, InStrNotNest(wclass, "|") - 1)
@@ -5221,28 +5221,28 @@ Dim buf As String
 NextLoop1:
         Next
         
-        If lb_mode = "ç§»å‹•å‰" Or lb_mode = "ç§»å‹•å¾Œ" Then
+        If lb_mode = "ˆÚ“®‘O" Or lb_mode = "ˆÚ“®Œã" Then
             If Not u.LookForSupportAttack(Nothing) Is Nothing Then
-                'æ´è­·æ”»æ’ƒã‚’ä½¿ã†ã‹ã©ã†ã‹é¸æŠ
+                '‰‡ŒìUŒ‚‚ğg‚¤‚©‚Ç‚¤‚©‘I‘ğ
                 UseSupportAttack = True
                 ReDim Preserve list(UBound(list) + 1)
                 ReDim Preserve ListItemFlag(UBound(list))
-                list(UBound(list)) = "æ´è­·æ”»æ’ƒï¼šä½¿ç”¨ã™ã‚‹"
+                list(UBound(list)) = "‰‡ŒìUŒ‚Fg—p‚·‚é"
             End If
         End If
         
-        'ãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹ã‚’è¡¨ç¤º
+        'ƒŠƒXƒgƒ{ƒbƒNƒX‚ğ•\¦
         TopItem = -1
         ret = ListBox(caption_msg, list, _
-            "åç§°                       æ”»æ’ƒ å°„ç¨‹  å‘½ å¼¾  " & Term("EN", u, 2) & "  " _
-                & Term("CT", u, 2) & " é©å¿œ åˆ†é¡", _
-            "è¡¨ç¤ºã®ã¿")
+            "–¼Ì                       UŒ‚ Ë’ö  –½ ’e  " & Term("EN", u, 2) & "  " _
+                & Term("CT", u, 2) & " “K‰ •ª—Ş", _
+            "•\¦‚Ì‚İ")
         
         If AutoMoveCursor Then
-            If lb_mode <> "ä¸€è¦§" Then
-                MoveCursorPos "æ­¦å™¨é¸æŠ"
+            If lb_mode <> "ˆê——" Then
+                MoveCursorPos "•Ší‘I‘ğ"
             Else
-                MoveCursorPos "ãƒ€ã‚¤ã‚¢ãƒ­ã‚°"
+                MoveCursorPos "ƒ_ƒCƒAƒƒO"
             End If
         End If
         If BGM <> "" Then
@@ -5252,7 +5252,7 @@ NextLoop1:
         Do While True
             Do Until IsFormClicked
                 DoEvents
-                'å³ãƒœã‚¿ãƒ³ã§ã®ãƒ€ãƒ–ãƒ«ã‚¯ãƒªãƒƒã‚¯ã®å®Ÿç¾
+                '‰Eƒ{ƒ^ƒ“‚Å‚Ìƒ_ƒuƒ‹ƒNƒŠƒbƒN‚ÌÀŒ»
                 If (GetAsyncKeyState(RButtonID) And &H8000) = 0 Then
                     is_rbutton_released = True
                 Else
@@ -5265,73 +5265,73 @@ NextLoop1:
             If SelectedItem <= UBound(wlist) Then
                 Exit Do
             Else
-                'æ´è­·æ”»æ’ƒã®ã‚ªãƒ³/ã‚ªãƒ•åˆ‡ã‚Šæ›¿ãˆ
+                '‰‡ŒìUŒ‚‚ÌƒIƒ“/ƒIƒtØ‚è‘Ö‚¦
                 UseSupportAttack = Not UseSupportAttack
                 If UseSupportAttack Then
-                    list(UBound(list)) = "æ´è­·æ”»æ’ƒï¼šä½¿ç”¨ã™ã‚‹"
+                    list(UBound(list)) = "‰‡ŒìUŒ‚Fg—p‚·‚é"
                 Else
-                    list(UBound(list)) = "æ´è­·æ”»æ’ƒï¼šä½¿ç”¨ã—ãªã„"
+                    list(UBound(list)) = "‰‡ŒìUŒ‚Fg—p‚µ‚È‚¢"
                 End If
                 
                 SelectedItem = ListBox(caption_msg, list, _
-                    "åç§°                       æ”»æ’ƒ å°„ç¨‹  å‘½ å¼¾  " & Term("EN", u, 2) _
-                        & "  " & Term("CT", u, 2) & " é©å¿œ åˆ†é¡", _
-                    "è¡¨ç¤ºã®ã¿")
+                    "–¼Ì                       UŒ‚ Ë’ö  –½ ’e  " & Term("EN", u, 2) _
+                        & "  " & Term("CT", u, 2) & " “K‰ •ª—Ş", _
+                    "•\¦‚Ì‚İ")
             End If
         Loop
         
-        If lb_mode <> "ä¸€è¦§" Then
+        If lb_mode <> "ˆê——" Then
             frmListBox.Hide
         End If
         ReDim ListItemComment(0)
         WeaponListBox = wlist(SelectedItem)
         
-    ElseIf lb_mode = "åæ’ƒ" Then
-        'åæ’ƒæ­¦å™¨é¸æŠæ™‚ã®è¡¨ç¤º
+    ElseIf lb_mode = "”½Œ‚" Then
+        '”½Œ‚•Ší‘I‘ğ‚Ì•\¦
         
         For i = 1 To u.CountWeapon
             w = warray(i)
             
             With u
-                'Disableã‚³ãƒãƒ³ãƒ‰ã§ä½¿ç”¨ä¸å¯ã«ã•ã‚ŒãŸæ­¦å™¨ã¯è¡¨ç¤ºã—ãªã„
+                'DisableƒRƒ}ƒ“ƒh‚Åg—p•s‰Â‚É‚³‚ê‚½•Ší‚Í•\¦‚µ‚È‚¢
                 If .IsDisabled(.Weapon(w).Name) Then
                     GoTo NextLoop2
                 End If
                 
-                'å¿…è¦æŠ€èƒ½ã‚’æº€ãŸã•ãªã„æ­¦å™¨ã¯è¡¨ç¤ºã—ãªã„
+                '•K—v‹Z”\‚ğ–‚½‚³‚È‚¢•Ší‚Í•\¦‚µ‚È‚¢
                 If Not .IsWeaponMastered(w) Then
                     GoTo NextLoop2
                 End If
                 
-                'ä½¿ç”¨ã§ããªã„åˆä½“æŠ€ã¯è¡¨ç¤ºã—ãªã„
-                If .IsWeaponClassifiedAs(w, "åˆ") Then
+                'g—p‚Å‚«‚È‚¢‡‘Ì‹Z‚Í•\¦‚µ‚È‚¢
+                If .IsWeaponClassifiedAs(w, "‡") Then
                     If Not .IsCombinationAttackAvailable(w, True) Then
                         GoTo NextLoop2
                     End If
                 End If
                     
-                If Not .IsWeaponAvailable(w, "ç§»å‹•å‰") Then
-                    'ã“ã®æ­¦å™¨ã¯ä½¿ç”¨ä¸èƒ½
+                If Not .IsWeaponAvailable(w, "ˆÚ“®‘O") Then
+                    '‚±‚Ì•Ší‚Íg—p•s”\
                     ListItemFlag(UBound(list) + 1) = True
                 ElseIf Not .IsTargetWithinRange(w, SelectedUnit) Then
-                    'ã‚¿ãƒ¼ã‚²ãƒƒãƒˆãŒå°„ç¨‹å¤–
+                    'ƒ^[ƒQƒbƒg‚ªË’öŠO
                     ListItemFlag(UBound(list) + 1) = True
-                ElseIf .IsWeaponClassifiedAs(w, "ï¼­") Then
-                    'ãƒãƒƒãƒ—æ”»æ’ƒã¯æ­¦å™¨é¸å®šå¤–
+                ElseIf .IsWeaponClassifiedAs(w, "‚l") Then
+                    'ƒ}ƒbƒvUŒ‚‚Í•Ší‘I’èŠO
                     ListItemFlag(UBound(list) + 1) = True
-                ElseIf .IsWeaponClassifiedAs(w, "åˆ") Then
-                    'åˆä½“æŠ€ã¯è‡ªåˆ†ã‹ã‚‰æ”»æ’ƒã‚’ã‹ã‘ã‚‹å ´åˆã«ã®ã¿ä½¿ç”¨
+                ElseIf .IsWeaponClassifiedAs(w, "‡") Then
+                    '‡‘Ì‹Z‚Í©•ª‚©‚çUŒ‚‚ğ‚©‚¯‚éê‡‚É‚Ì‚İg—p
                     ListItemFlag(UBound(list) + 1) = True
                 ElseIf .Damage(w, SelectedUnit, True) > 0 Then
-                    'ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‰ã‚Œã‚‹
+                    'ƒ_ƒ[ƒW‚ğ—^‚¦‚ç‚ê‚é
                     ListItemFlag(UBound(list) + 1) = False
                 ElseIf Not .IsNormalWeapon(w) _
                     And .CriticalProbability(w, SelectedUnit) > 0 _
                 Then
-                    'ç‰¹æ®ŠåŠ¹æœã‚’ä¸ãˆã‚‰ã‚Œã‚‹
+                    '“ÁêŒø‰Ê‚ğ—^‚¦‚ç‚ê‚é
                     ListItemFlag(UBound(list) + 1) = False
                 Else
-                    'ã“ã®æ­¦å™¨ã¯åŠ¹æœãŒç„¡ã„
+                    '‚±‚Ì•Ší‚ÍŒø‰Ê‚ª–³‚¢
                     ListItemFlag(UBound(list) + 1) = True
                 End If
             End With
@@ -5340,14 +5340,14 @@ NextLoop1:
             ReDim Preserve wlist(UBound(list))
             wlist(UBound(list)) = w
             
-            'å„æ­¦å™¨ã®è¡¨ç¤ºå†…å®¹ã®è¨­å®š
+            'Še•Ší‚Ì•\¦“à—e‚Ìİ’è
             With u.Weapon(w)
-                'æ”»æ’ƒåŠ›
+                'UŒ‚—Í
                 list(UBound(list)) = RightPaddedString(.Nickname, 29) _
                     & LeftPaddedString(Format$(wpower(w)), 4)
                 
-                'å‘½ä¸­ç‡
-                If Not IsOptionDefined("äºˆæ¸¬å‘½ä¸­ç‡éè¡¨ç¤º") Then
+                '–½’†—¦
+                If Not IsOptionDefined("—\‘ª–½’†—¦”ñ•\¦") Then
                     buf = Format$(MinLng(u.HitProbability(w, SelectedUnit, True), 100)) & "%"
                     list(UBound(list)) = list(UBound(list)) _
                         & LeftPaddedString(buf, 5)
@@ -5360,8 +5360,8 @@ NextLoop1:
                 End If
                 
                 
-                'ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ç‡
-                If Not IsOptionDefined("äºˆæ¸¬å‘½ä¸­ç‡éè¡¨ç¤º") Then
+                'ƒNƒŠƒeƒBƒJƒ‹—¦
+                If Not IsOptionDefined("—\‘ª–½’†—¦”ñ•\¦") Then
                     buf = Format$(MinLng(u.CriticalProbability(w, SelectedUnit), 100)) & "%"
                     list(UBound(list)) = list(UBound(list)) _
                         & LeftPaddedString(buf, 5)
@@ -5373,7 +5373,7 @@ NextLoop1:
                         LeftPaddedString(Format$(u.WeaponCritical(w)), 5)
                 End If
                 
-                'æ®‹ã‚Šå¼¾æ•°
+                'c‚è’e”
                 If .Bullet > 0 Then
                     list(UBound(list)) = list(UBound(list)) _
                         & LeftPaddedString(Format$(u.Bullet(w)), 3)
@@ -5381,7 +5381,7 @@ NextLoop1:
                     list(UBound(list)) = list(UBound(list)) & "  -"
                 End If
                 
-                'ï¼¥ï¼®æ¶ˆè²»é‡
+                '‚d‚mÁ”ï—Ê
                 If .ENConsumption > 0 Then
                     list(UBound(list)) = list(UBound(list)) _
                         & LeftPaddedString(Format$(u.WeaponENConsumption(w)), 4)
@@ -5389,16 +5389,16 @@ NextLoop1:
                     list(UBound(list)) = list(UBound(list)) & "   -"
                 End If
                 
-                'åœ°å½¢é©å¿œ
+                '’nŒ`“K‰
                 list(UBound(list)) = list(UBound(list)) & " " & .Adaption
                 
-                'å¿…è¦æ°—åŠ›
+                '•K—v‹C—Í
                 If .NecessaryMorale > 0 Then
                     list(UBound(list)) = list(UBound(list)) _
-                        & " æ°—" & .NecessaryMorale
+                        & " ‹C" & .NecessaryMorale
                 End If
                 
-                'å±æ€§
+                '‘®«
                 wclass = u.WeaponClass(w)
                 If InStrNotNest(wclass, "|") > 0 Then
                     wclass = Left$(wclass, InStrNotNest(wclass, "|") - 1)
@@ -5408,19 +5408,19 @@ NextLoop1:
 NextLoop2:
         Next
         
-        'ãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹ã‚’è¡¨ç¤º
+        'ƒŠƒXƒgƒ{ƒbƒNƒX‚ğ•\¦
         TopItem = -1
         ret = ListBox(caption_msg, list, _
-            "åç§°                         æ”»æ’ƒ å‘½ä¸­ " & Term("CT", u, 2) & "   å¼¾  " _
-                & Term("EN", u, 2) & " é©å¿œ åˆ†é¡", _
-            "é€£ç¶šè¡¨ç¤º,ã‚«ãƒ¼ã‚½ãƒ«ç§»å‹•")
+            "–¼Ì                         UŒ‚ –½’† " & Term("CT", u, 2) & "   ’e  " _
+                & Term("EN", u, 2) & " “K‰ •ª—Ş", _
+            "˜A‘±•\¦,ƒJ[ƒ\ƒ‹ˆÚ“®")
         WeaponListBox = wlist(ret)
     End If
     
     DoEvents
 End Function
 
-'ã‚¢ãƒ“ãƒªãƒ†ã‚£é¸æŠç”¨ãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹
+'ƒAƒrƒŠƒeƒB‘I‘ğ—pƒŠƒXƒgƒ{ƒbƒNƒX
 Public Function AbilityListBox(u As Unit, caption_msg As String, _
     lb_mode As String, Optional ByVal is_item As Boolean) As Integer
 Dim i As Integer, j As Integer, k As Integer
@@ -5431,10 +5431,10 @@ Dim is_available As Boolean
 Dim is_rbutton_released As Boolean
     
     With u
-        'ã‚¢ãƒ“ãƒªãƒ†ã‚£ãŒä¸€ã¤ã—ã‹ãªã„å ´åˆã¯è‡ªå‹•çš„ã«ãã®ã‚¢ãƒ“ãƒªãƒ†ã‚£ã‚’é¸æŠã™ã‚‹ã€‚
-        'ãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹ã®è¡¨ç¤ºã¯è¡Œã‚ãªã„ã€‚
-        If lb_mode <> "ä¸€è¦§" And Not is_item _
-            And MainForm.mnuUnitCommandItem(AbilityCmdID).Caption <> Term("ã‚¢ãƒ“ãƒªãƒ†ã‚£", u) _
+        'ƒAƒrƒŠƒeƒB‚ªˆê‚Â‚µ‚©‚È‚¢ê‡‚Í©“®“I‚É‚»‚ÌƒAƒrƒŠƒeƒB‚ğ‘I‘ğ‚·‚éB
+        'ƒŠƒXƒgƒ{ƒbƒNƒX‚Ì•\¦‚Ís‚í‚È‚¢B
+        If lb_mode <> "ˆê——" And Not is_item _
+            And MainForm.mnuUnitCommandItem(AbilityCmdID).Caption <> Term("ƒAƒrƒŠƒeƒB", u) _
         Then
             For i = 1 To .CountAbility
                 If Not .Ability(i).IsItem _
@@ -5452,9 +5452,9 @@ Dim is_rbutton_released As Boolean
         
         For i = 1 To .CountAbility
             is_available = True
-            If lb_mode = "ä¸€è¦§" Then
-                If .IsAbilityAvailable(i, "ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹") Then
-                    'ã‚¢ã‚¤ãƒ†ãƒ ã®ä½¿ç”¨åŠ¹æœã‹ã©ã†ã‹
+            If lb_mode = "ˆê——" Then
+                If .IsAbilityAvailable(i, "ƒXƒe[ƒ^ƒX") Then
+                    'ƒAƒCƒeƒ€‚Ìg—pŒø‰Ê‚©‚Ç‚¤‚©
                     With .Ability(i)
                         If is_item Then
                             If Not .IsItem Then
@@ -5467,22 +5467,22 @@ Dim is_rbutton_released As Boolean
                         End If
                     End With
                 Else
-                    'Disableã‚³ãƒãƒ³ãƒ‰ã§ä½¿ç”¨ä¸å¯ã«ã•ã‚ŒãŸã‚¢ãƒ“ãƒªãƒ†ã‚£ã¨ä½¿ç”¨ã§ããªã„åˆä½“æŠ€
-                    'ã¯è¡¨ç¤ºã—ãªã„
+                    'DisableƒRƒ}ƒ“ƒh‚Åg—p•s‰Â‚É‚³‚ê‚½ƒAƒrƒŠƒeƒB‚Æg—p‚Å‚«‚È‚¢‡‘Ì‹Z
+                    '‚Í•\¦‚µ‚È‚¢
                     If .IsDisabled(.Ability(i).Name) Then
                         GoTo NextLoop
                     End If
                     If Not .IsAbilityMastered(i) Then
                         GoTo NextLoop
                     End If
-                    If .IsAbilityClassifiedAs(i, "åˆ") Then
+                    If .IsAbilityClassifiedAs(i, "‡") Then
                         If Not .IsCombinationAbilityAvailable(i, True) Then
                             GoTo NextLoop
                         End If
                     End If
                 End If
             Else
-                'ã‚¢ã‚¤ãƒ†ãƒ ã®ä½¿ç”¨åŠ¹æœã‹ã©ã†ã‹
+                'ƒAƒCƒeƒ€‚Ìg—pŒø‰Ê‚©‚Ç‚¤‚©
                 With .Ability(i)
                     If is_item Then
                         If Not .IsItem Then
@@ -5495,15 +5495,15 @@ Dim is_rbutton_released As Boolean
                     End If
                 End With
                 If Not .IsAbilityUseful(i, lb_mode) Then
-                    'Disableã‚³ãƒãƒ³ãƒ‰ã§ä½¿ç”¨ä¸å¯ã«ã•ã‚ŒãŸæ­¦å™¨ã¨ä½¿ç”¨ã§ããªã„åˆä½“æŠ€
-                    'ã¯è¡¨ç¤ºã—ãªã„
+                    'DisableƒRƒ}ƒ“ƒh‚Åg—p•s‰Â‚É‚³‚ê‚½•Ší‚Æg—p‚Å‚«‚È‚¢‡‘Ì‹Z
+                    '‚Í•\¦‚µ‚È‚¢
                     If .IsDisabled(.Ability(i).Name) Then
                         GoTo NextLoop
                     End If
                     If Not .IsAbilityMastered(i) Then
                         GoTo NextLoop
                     End If
-                    If .IsAbilityClassifiedAs(i, "åˆ") Then
+                    If .IsAbilityClassifiedAs(i, "‡") Then
                         If Not .IsCombinationAbilityAvailable(i, True) Then
                             GoTo NextLoop
                         End If
@@ -5524,14 +5524,14 @@ Dim is_rbutton_released As Boolean
                 msg = ""
                 rest_msg = ""
                 For j = 1 To .CountEffect
-                    If .EffectType(j) = "è§£èª¬" Then
+                    If .EffectType(j) = "‰ğà" Then
                         msg = .EffectName(j)
                         Exit For
-                    ElseIf InStr(.EffectName(j), "ã‚¿ãƒ¼ãƒ³)") > 0 Then
-                        'æŒç¶šæ™‚é–“ãŒåŒã˜èƒ½åŠ›ã¯ã‚¿ãƒ¼ãƒ³æ•°ã‚’ã¾ã¨ã‚ã¦è¡¨ç¤º
+                    ElseIf InStr(.EffectName(j), "ƒ^[ƒ“)") > 0 Then
+                        '‘±ŠÔ‚ª“¯‚¶”\—Í‚Íƒ^[ƒ“”‚ğ‚Ü‚Æ‚ß‚Ä•\¦
                         k = InStr(msg, Mid$(.EffectName(j), InStr(.EffectName(j), "(")))
                         If k > 0 Then
-                            msg = Left$(msg, k - 1) & "ã€" _
+                            msg = Left$(msg, k - 1) & "A" _
                                 & Left$(.EffectName(j), InStr(.EffectName(j), "(") - 1) _
                                 & Mid$(msg, k)
                         Else
@@ -5543,7 +5543,7 @@ Dim is_rbutton_released As Boolean
                 Next
                 msg = Trim$(msg)
                 
-                'åŠ¹æœè§£èª¬ãŒé•·ã™ãã‚‹å ´åˆã¯æ”¹è¡Œ
+                'Œø‰Ê‰ğà‚ª’·‚·‚¬‚éê‡‚Í‰üs
                 buf = StrConv(msg, vbFromUnicode)
                 If LenB(buf) > 32 Then
                     Do
@@ -5561,7 +5561,7 @@ Dim is_rbutton_released As Boolean
                 
                 list(UBound(list)) = RightPaddedString(list(UBound(list)) & " " & msg, 53)
                 
-                'æœ€å¤§å°„ç¨‹
+                'Å‘åË’ö
                 If u.AbilityMaxRange(i) > 1 Then
                     list(UBound(list)) = list(UBound(list)) & _
                         LeftPaddedString(Format$(u.AbilityMinRange(i)) _
@@ -5572,7 +5572,7 @@ Dim is_rbutton_released As Boolean
                     list(UBound(list)) = list(UBound(list)) & "   -"
                 End If
                 
-                'æ®‹ã‚Šä½¿ç”¨å›æ•°
+                'c‚èg—p‰ñ”
                 If .Stock > 0 Then
                     list(UBound(list)) = list(UBound(list)) & _
                         LeftPaddedString(Format$(u.Stock(i)), 3)
@@ -5580,7 +5580,7 @@ Dim is_rbutton_released As Boolean
                     list(UBound(list)) = list(UBound(list)) & "  -"
                 End If
                 
-                'ï¼¥ï¼®æ¶ˆè²»é‡
+                '‚d‚mÁ”ï—Ê
                 If .ENConsumption > 0 Then
                     list(UBound(list)) = list(UBound(list)) & _
                         LeftPaddedString(Format$(u.AbilityENConsumption(i)), 4)
@@ -5588,13 +5588,13 @@ Dim is_rbutton_released As Boolean
                     list(UBound(list)) = list(UBound(list)) & "   -"
                 End If
                 
-                'å¿…è¦æ°—åŠ›
+                '•K—v‹C—Í
                 If .NecessaryMorale > 0 Then
                     list(UBound(list)) = list(UBound(list)) _
-                        & " æ°—" & .NecessaryMorale
+                        & " ‹C" & .NecessaryMorale
                 End If
                 
-                'å±æ€§
+                '‘®«
                 If InStrNotNest(.Class, "|") > 0 Then
                    list(UBound(list)) = list(UBound(list)) & " " & _
                        Left$(.Class, InStrNotNest(.Class, "|") - 1)
@@ -5620,20 +5620,20 @@ NextLoop:
         Exit Function
     End If
     
-    'ãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹ã‚’è¡¨ç¤º
+    'ƒŠƒXƒgƒ{ƒbƒNƒX‚ğ•\¦
     TopItem = -1
     ret = ListBox(caption_msg, list, _
-        "åç§°                 åŠ¹æœ                            å°„ç¨‹ æ•°  " _
-            & Term("EN", u, 2) & " åˆ†é¡", _
-        "è¡¨ç¤ºã®ã¿")
+        "–¼Ì                 Œø‰Ê                            Ë’ö ”  " _
+            & Term("EN", u, 2) & " •ª—Ş", _
+        "•\¦‚Ì‚İ")
     
     If AutoMoveCursor Then
-        MoveCursorPos "ãƒ€ã‚¤ã‚¢ãƒ­ã‚°"
+        MoveCursorPos "ƒ_ƒCƒAƒƒO"
     End If
     
     Do Until IsFormClicked
         DoEvents
-        'å³ãƒœã‚¿ãƒ³ã§ã®ãƒ€ãƒ–ãƒ«ã‚¯ãƒªãƒƒã‚¯ã®å®Ÿç¾
+        '‰Eƒ{ƒ^ƒ“‚Å‚Ìƒ_ƒuƒ‹ƒNƒŠƒbƒN‚ÌÀŒ»
         If (GetAsyncKeyState(RButtonID) And &H8000) = 0 Then
             is_rbutton_released = True
         Else
@@ -5642,7 +5642,7 @@ NextLoop:
             End If
         End If
     Loop
-    If lb_mode <> "ä¸€è¦§" Then
+    If lb_mode <> "ˆê——" Then
         frmListBox.Hide
     End If
     ReDim ListItemComment(0)
@@ -5651,14 +5651,14 @@ NextLoop:
     DoEvents
 End Function
 
-'å…¥åŠ›æ™‚é–“åˆ¶é™ä»˜ãã®ãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹ã‚’è¡¨ç¤º
+'“ü—ÍŠÔ§ŒÀ•t‚«‚ÌƒŠƒXƒgƒ{ƒbƒNƒX‚ğ•\¦
 Public Function LIPS(lb_caption As String, list() As String, _
     lb_info As String, ByVal time_limit As Integer) As Integer
 Dim i As Integer
     
     Load frmListBox
     With frmListBox
-        'è¡¨ç¤ºå†…å®¹ã‚’è¨­å®š
+        '•\¦“à—e‚ğİ’è
         .Caption = lb_caption
         .labCaption = "  " & lb_info
         .lstItems.Clear
@@ -5668,7 +5668,7 @@ Dim i As Integer
         .lstItems.ListIndex = 0
         .lstItems.Height = 86
         
-        'è¡¨ç¤ºä½ç½®ã‚’è¨­å®š
+        '•\¦ˆÊ’u‚ğİ’è
         .Left = (Screen.width - .width) / 2
         If MainForm.Visible = True And Not MainForm.WindowState = 1 Then
             .Top = MainForm.Top + MainForm.Height - .Height
@@ -5676,27 +5676,27 @@ Dim i As Integer
             .Top = (Screen.Height - .Height) / 2
         End If
         
-        'å…¥åŠ›åˆ¶é™æ™‚é–“ã«é–¢ã™ã‚‹è¨­å®šã‚’è¡Œã†
+        '“ü—Í§ŒÀŠÔ‚ÉŠÖ‚·‚éİ’è‚ğs‚¤
         .CurrentTime = 0
         .TimeLimit = time_limit
         .picBar.Visible = True
         .Timer1.Enabled = True
         
-        'ãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹ã‚’è¡¨ç¤ºã—ã€ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‹ã‚‰ã®å…¥åŠ›ã‚’å¾…ã¤
+        'ƒŠƒXƒgƒ{ƒbƒNƒX‚ğ•\¦‚µAƒvƒŒƒCƒ„[‚©‚ç‚Ì“ü—Í‚ğ‘Ò‚Â
         SelectedItem = 0
         IsFormClicked = False
         .Show 1
         .CurrentTime = 0
         LIPS = SelectedItem
         
-        'ãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹ã‚’æ¶ˆå»
+        'ƒŠƒXƒgƒ{ƒbƒNƒX‚ğÁ‹
         .lstItems.Height = 100
         .picBar.Visible = False
         .Timer1.Enabled = False
     End With
 End Function
 
-'è¤‡æ•°æ®µã®ãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹ã‚’è¡¨ç¤º
+'•¡”’i‚ÌƒŠƒXƒgƒ{ƒbƒNƒX‚ğ•\¦
 Public Function MultiColumnListBox(lb_caption As String, _
     list() As String, ByVal is_center As Boolean) As Integer
 Dim i As Integer
@@ -5707,10 +5707,10 @@ Dim i As Integer
         .lstItems.Visible = False
         .lstItems.Clear
         
-        'ã‚¢ã‚¤ãƒ†ãƒ ã‚’è¿½åŠ 
+        'ƒAƒCƒeƒ€‚ğ’Ç‰Á
         For i = 1 To UBound(list)
             If ListItemFlag(i) Then
-                .lstItems.AddItem "Ã—" & list(i)
+                .lstItems.AddItem "~" & list(i)
             Else
                 .lstItems.AddItem "  " & list(i)
             End If
@@ -5730,7 +5730,7 @@ Dim i As Integer
             ReDim Preserve ListItemComment(UBound(list))
         End If
         
-        'è¡¨ç¤ºä½ç½®ã‚’è¨­å®š
+        '•\¦ˆÊ’u‚ğİ’è
         .Left = (Screen.width - .width) / 2
         If MainForm.Visible = True _
             And Not MainForm.WindowState = 1 _
@@ -5741,7 +5741,7 @@ Dim i As Integer
             .Top = (Screen.Height - .Height) / 2
         End If
         
-        'å…ˆé ­ã«è¡¨ç¤ºã™ã‚‹ã‚¢ã‚¤ãƒ†ãƒ ã‚’è¨­å®š
+        'æ“ª‚É•\¦‚·‚éƒAƒCƒeƒ€‚ğİ’è
         If TopItem > 0 Then
             If .lstItems.TopIndex <> TopItem - 1 Then
                 .lstItems.TopIndex = MinLng(TopItem, .lstItems.ListCount) - 1
@@ -5753,7 +5753,7 @@ Dim i As Integer
         DoEvents
         IsFormClicked = False
         
-        'ãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹ã‚’è¡¨ç¤º
+        'ƒŠƒXƒgƒ{ƒbƒNƒX‚ğ•\¦
         IsMordal = False
         .Show
         Do Until IsFormClicked
@@ -5766,30 +5766,30 @@ Dim i As Integer
     End With
 End Function
 
-'è¤‡æ•°ã®ã‚¢ã‚¤ãƒ†ãƒ é¸æŠå¯èƒ½ãªãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹ã‚’è¡¨ç¤º
+'•¡”‚ÌƒAƒCƒeƒ€‘I‘ğ‰Â”\‚ÈƒŠƒXƒgƒ{ƒbƒNƒX‚ğ•\¦
 Public Function MultiSelectListBox(ByVal lb_caption As String, list() As String, _
     ByVal lb_info As String, ByVal max_num As Integer) As Integer
 Dim i As Integer, j As Integer
     
-    'ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã«æ”»æ’ƒã®å‘½ä¸­ç‡ãªã©ã‚’è¡¨ç¤ºã•ã›ãªã„ã‚ˆã†ã«ã™ã‚‹
-    CommandState = "ãƒ¦ãƒ‹ãƒƒãƒˆé¸æŠ"
+    'ƒXƒe[ƒ^ƒXƒEƒBƒ“ƒhƒE‚ÉUŒ‚‚Ì–½’†—¦‚È‚Ç‚ğ•\¦‚³‚¹‚È‚¢‚æ‚¤‚É‚·‚é
+    CommandState = "ƒ†ƒjƒbƒg‘I‘ğ"
     
-    'ãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹ã‚’ä½œæˆã—ã¦è¡¨ç¤º
+    'ƒŠƒXƒgƒ{ƒbƒNƒX‚ğì¬‚µ‚Ä•\¦
     Load frmMultiSelectListBox
     With frmMultiSelectListBox
         .Caption = lb_caption
-        .lblCaption = "ã€€" & lb_info
+        .lblCaption = "@" & lb_info
         MaxListItem = max_num
         For i = 1 To UBound(list)
-            .lstItems.AddItem "ã€€" & list(i)
+            .lstItems.AddItem "@" & list(i)
         Next
-        .cmdSort.Caption = "åç§°é †ã«ä¸¦ã¹æ›¿ãˆ"
+        .cmdSort.Caption = "–¼Ì‡‚É•À‚×‘Ö‚¦"
         .Left = MainForm.Left
         .Top = (Screen.Height - .Height) / 2
         .Show 1
     End With
     
-    'é¸æŠã•ã‚ŒãŸé …ç›®æ•°ã‚’è¿”ã™
+    '‘I‘ğ‚³‚ê‚½€–Ú”‚ğ•Ô‚·
     j = 0
     For i = 1 To UBound(list)
         If ListItemFlag(i) Then
@@ -5798,15 +5798,15 @@ Dim i As Integer, j As Integer
     Next
     MultiSelectListBox = j
     
-    'ãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹ã‚’æ¶ˆå»
+    'ƒŠƒXƒgƒ{ƒbƒNƒX‚ğÁ‹
     Unload frmMultiSelectListBox
     Set frmMultiSelectListBox = Nothing
 End Function
 
 
-' === ç”»åƒæç”»ã«é–¢ã™ã‚‹å‡¦ç† ===
+' === ‰æ‘œ•`‰æ‚ÉŠÖ‚·‚éˆ— ===
 
-'ç”»åƒã‚’ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã«æç”»
+'‰æ‘œ‚ğƒEƒBƒ“ƒhƒE‚É•`‰æ
 Public Function DrawPicture(fname As String, _
     ByVal dx As Long, ByVal dy As Long, _
     ByVal dw As Long, ByVal dh As Long, _
@@ -5868,9 +5868,9 @@ Static last_path As String
 Static last_angle As Long
 Static fpath_history As New Collection
     
-    'åˆå›å®Ÿè¡Œæ™‚ã«å„ç¨®æƒ…å ±ã®åˆæœŸåŒ–ã‚’è¡Œã†
+    '‰‰ñÀs‚ÉŠeíî•ñ‚Ì‰Šú‰»‚ğs‚¤
     If Not init_draw_pitcure Then
-        'å„ãƒ•ã‚©ãƒ«ãƒ€ã«Bitmapãƒ•ã‚©ãƒ«ãƒ€ãŒã‚ã‚‹ã‹ãƒã‚§ãƒƒã‚¯
+        'ŠeƒtƒHƒ‹ƒ_‚ÉBitmapƒtƒHƒ‹ƒ_‚ª‚ ‚é‚©ƒ`ƒFƒbƒN
         If Len(Dir$(ScenarioPath & "Bitmap", vbDirectory)) > 0 Then
             scenario_bitmap_dir_exists = True
         End If
@@ -5950,13 +5950,13 @@ Static fpath_history As New Collection
             extdata2_map_bitmap_dir_exists = True
         End If
         
-        'ç”»é¢ã®è‰²æ•°ã‚’å‚ç…§
+        '‰æ–Ê‚ÌF”‚ğQÆ
         display_byte_pixel = GetDeviceCaps(MainForm.picMain(0).hDC, BITSPIXEL) \ 8
         
         init_draw_pitcure = True
     End If
     
-    'ãƒ€ãƒŸãƒ¼ã®ãƒ•ã‚¡ã‚¤ãƒ«åï¼Ÿ
+    'ƒ_ƒ~[‚Ìƒtƒ@ƒCƒ‹–¼H
     Select Case fname
         Case "", "-.bmp", "EFFECT_Void.bmp"
             Exit Function
@@ -5964,123 +5964,123 @@ Static fpath_history As New Collection
     
     'Debug.Print fname, draw_option
     
-    'ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã®è§£æ
+    'ƒIƒvƒVƒ‡ƒ“‚Ì‰ğÍ
     BGColor = vbWhite
-    'ãƒã‚¹ã‚¯ç”»åƒã«å½±éŸ¿ã—ãªã„ã‚ªãƒ—ã‚·ãƒ§ãƒ³
+    'ƒ}ƒXƒN‰æ‘œ‚É‰e‹¿‚µ‚È‚¢ƒIƒvƒVƒ‡ƒ“
     pic_option = ""
-    'ãƒã‚¹ã‚¯ç”»åƒã«å½±éŸ¿ã™ã‚‹ã‚ªãƒ—ã‚·ãƒ§ãƒ³
+    'ƒ}ƒXƒN‰æ‘œ‚É‰e‹¿‚·‚éƒIƒvƒVƒ‡ƒ“
     pic_option2 = ""
-    'ãƒ•ã‚£ãƒ«ã‚¿æ™‚ã®é€éåº¦ã‚’åˆæœŸåŒ–
+    'ƒtƒBƒ‹ƒ^‚Ì“§‰ß“x‚ğ‰Šú‰»
     trans_par = -1
     i = 1
     Do While i <= LLength(draw_option)
         opt = LIndex(draw_option, i)
         Select Case opt
-            Case "èƒŒæ™¯"
+            Case "”wŒi"
                 permanent = True
-                'èƒŒæ™¯æ›¸ãè¾¼ã¿ã§å¤œã‚„ã‚»ãƒ”ã‚¢è‰²ã®ãƒãƒƒãƒ—ã®å ´åˆã¯æŒ‡å®šãŒãªãã¦ã‚‚ç‰¹æ®ŠåŠ¹æœã‚’ä»˜ã‘ã‚‹
+                '”wŒi‘‚«‚İ‚Å–é‚âƒZƒsƒAF‚Ìƒ}ƒbƒv‚Ìê‡‚Íw’è‚ª‚È‚­‚Ä‚à“ÁêŒø‰Ê‚ğ•t‚¯‚é
                 Select Case MapDrawMode
-                    Case "å¤œ"
+                    Case "–é"
                         dark_count = dark_count + 1
-                        pic_option = pic_option & " æš—"
-                    Case "ç™½é»’"
+                        pic_option = pic_option & " ˆÃ"
+                    Case "”’•"
                         is_monotone = True
-                        pic_option = pic_option & " ç™½é»’"
-                    Case "ã‚»ãƒ”ã‚¢"
+                        pic_option = pic_option & " ”’•"
+                    Case "ƒZƒsƒA"
                         is_sepia = True
-                        pic_option = pic_option & " ã‚»ãƒ”ã‚¢"
-                    Case "å¤•ç„¼ã‘"
+                        pic_option = pic_option & " ƒZƒsƒA"
+                    Case "—[Ä‚¯"
                         is_sunset = True
-                        pic_option = pic_option & " å¤•ç„¼ã‘"
-                    Case "æ°´ä¸­"
+                        pic_option = pic_option & " —[Ä‚¯"
+                    Case "…’†"
                         is_water = True
-                        pic_option = pic_option & " æ°´ä¸­"
-                    Case "ãƒ•ã‚£ãƒ«ã‚¿"
+                        pic_option = pic_option & " …’†"
+                    Case "ƒtƒBƒ‹ƒ^"
                         is_colorfilter = True
                         fcolor = MapDrawFilterColor
-                        pic_option2 = pic_option2 & " ãƒ•ã‚£ãƒ«ã‚¿=" & CStr(MapDrawFilterColor)
+                        pic_option2 = pic_option2 & " ƒtƒBƒ‹ƒ^=" & CStr(MapDrawFilterColor)
                 End Select
-            Case "é€é"
+            Case "“§‰ß"
                 transparent = True
                 pic_option = pic_option & " " & opt
-            Case "ç™½é»’"
+            Case "”’•"
                 is_monotone = True
                 pic_option = pic_option & " " & opt
-            Case "ã‚»ãƒ”ã‚¢"
+            Case "ƒZƒsƒA"
                 is_sepia = True
                 pic_option = pic_option & " " & opt
-            Case "å¤•ç„¼ã‘"
+            Case "—[Ä‚¯"
                 is_sunset = True
                 pic_option = pic_option & " " & opt
-            Case "æ°´ä¸­"
+            Case "…’†"
                 is_water = True
                 pic_option = pic_option & " " & opt
-            Case "æ˜"
+            Case "–¾"
                 bright_count = bright_count + 1
                 pic_option = pic_option & " " & opt
-            Case "æš—"
+            Case "ˆÃ"
                 dark_count = dark_count + 1
                 pic_option = pic_option & " " & opt
-            Case "å·¦å³åè»¢"
+            Case "¶‰E”½“]"
                 hrev = True
                 pic_option2 = pic_option2 & " " & opt
-            Case "ä¸Šä¸‹åè»¢"
+            Case "ã‰º”½“]"
                 vrev = True
                 pic_option2 = pic_option2 & " " & opt
-            Case "ãƒã‚¬ãƒã‚¸åè»¢"
+            Case "ƒlƒKƒ|ƒW”½“]"
                 negpos = True
                 pic_option = pic_option & " " & opt
-            Case "ã‚·ãƒ«ã‚¨ãƒƒãƒˆ"
+            Case "ƒVƒ‹ƒGƒbƒg"
                 is_sil = True
                 pic_option = pic_option & " " & opt
-            Case "ä¸ŠåŠåˆ†"
+            Case "ã”¼•ª"
                 top_part = True
                 pic_option2 = pic_option2 & " " & opt
-            Case "ä¸‹åŠåˆ†"
+            Case "‰º”¼•ª"
                 bottom_part = True
                 pic_option2 = pic_option2 & " " & opt
-            Case "å³åŠåˆ†"
+            Case "‰E”¼•ª"
                 right_part = True
                 pic_option2 = pic_option2 & " " & opt
-            Case "å·¦åŠåˆ†"
+            Case "¶”¼•ª"
                 left_part = True
                 pic_option2 = pic_option2 & " " & opt
-            Case "å³ä¸Š"
+            Case "‰Eã"
                 tright_part = True
                 pic_option2 = pic_option2 & " " & opt
-            Case "å·¦ä¸Š"
+            Case "¶ã"
                 tleft_part = True
                 pic_option2 = pic_option2 & " " & opt
-            Case "å³ä¸‹"
+            Case "‰E‰º"
                 bright_part = True
                 pic_option2 = pic_option2 & " " & opt
-            Case "å·¦ä¸‹"
+            Case "¶‰º"
                 bleft_part = True
                 pic_option2 = pic_option2 & " " & opt
-            Case "ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸"
+            Case "ƒƒbƒZ[ƒW"
                 on_msg_window = True
-            Case "ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹"
+            Case "ƒXƒe[ƒ^ƒX"
                 on_status_window = True
-            Case "ä¿æŒ"
+            Case "•Û"
                 keep_picture = True
-            Case "å³å›è»¢"
+            Case "‰E‰ñ“]"
                 i = i + 1
                 angle = StrToLng(LIndex(draw_option, i))
-                pic_option2 = pic_option2 & " å³å›è»¢=" & Format$(angle Mod 360)
-            Case "å·¦å›è»¢"
+                pic_option2 = pic_option2 & " ‰E‰ñ“]=" & Format$(angle Mod 360)
+            Case "¶‰ñ“]"
                 i = i + 1
                 angle = -StrToLng(LIndex(draw_option, i))
-                pic_option2 = pic_option2 & " å³å›è»¢=" & Format$(angle Mod 360)
-            Case "ãƒ•ã‚£ãƒ«ã‚¿"
+                pic_option2 = pic_option2 & " ‰E‰ñ“]=" & Format$(angle Mod 360)
+            Case "ƒtƒBƒ‹ƒ^"
                 is_colorfilter = True
             Case Else
                 If Right(opt, 1) = "%" And IsNumeric(Left(opt, Len(opt) - 1)) Then
                     trans_par = MaxDbl(0, MinDbl(1, CDbl(Left(opt, Len(opt) - 1)) / 100))
-                    pic_option2 = pic_option2 & " ãƒ•ã‚£ãƒ«ã‚¿é€éåº¦=" & opt
+                    pic_option2 = pic_option2 & " ƒtƒBƒ‹ƒ^“§‰ß“x=" & opt
                 Else
                     If is_colorfilter Then
                         fcolor = CLng(opt)
-                        pic_option2 = pic_option2 & " ãƒ•ã‚£ãƒ«ã‚¿=" & opt
+                        pic_option2 = pic_option2 & " ƒtƒBƒ‹ƒ^=" & opt
                     Else
                         BGColor = CLng(opt)
                         pic_option2 = pic_option2 & " " & opt
@@ -6092,39 +6092,39 @@ Static fpath_history As New Collection
     pic_option = Trim$(pic_option)
     pic_option2 = Trim$(pic_option2)
     
-    'æç”»å…ˆã‚’è¨­å®š
+    '•`‰ææ‚ğİ’è
     If on_msg_window Then
-        'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã¸ã®ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆç”»åƒã®æç”»
+        'ƒƒbƒZ[ƒWƒEƒBƒ“ƒhƒE‚Ö‚ÌƒpƒCƒƒbƒg‰æ‘œ‚Ì•`‰æ
         Set pic = frmMessage.picFace
         permanent = False
     ElseIf on_status_window Then
-        'ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã¸ã®ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆç”»åƒã®æç”»
+        'ƒXƒe[ƒ^ƒXƒEƒBƒ“ƒhƒE‚Ö‚ÌƒpƒCƒƒbƒg‰æ‘œ‚Ì•`‰æ
         Set pic = MainForm.picUnitStatus
     ElseIf permanent Then
-        'èƒŒæ™¯ã¸ã®æç”»
+        '”wŒi‚Ö‚Ì•`‰æ
         Set pic = MainForm.picBack
     Else
-        'ãƒãƒƒãƒ—ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã¸ã®é€šå¸¸ã®æç”»
+        'ƒ}ƒbƒvƒEƒBƒ“ƒhƒE‚Ö‚Ì’Êí‚Ì•`‰æ
         Set pic = MainForm.picMain(0)
         SaveScreen
     End If
     
-    'èª­ã¿è¾¼ã‚€ãƒ•ã‚¡ã‚¤ãƒ«ã®æ¢ç´¢
+    '“Ç‚İ‚Şƒtƒ@ƒCƒ‹‚Ì’Tõ
     
-    'å‰å›ã®ç”»åƒãƒ•ã‚¡ã‚¤ãƒ«ã¨åŒã˜ï¼Ÿ
+    '‘O‰ñ‚Ì‰æ‘œƒtƒ@ƒCƒ‹‚Æ“¯‚¶H
     If fname = last_fname Then
-        'å‰å›ãƒ•ã‚¡ã‚¤ãƒ«ã¯è¦‹ã¤ã‹ã£ã¦ã„ãŸã®ã‹ï¼Ÿ
+        '‘O‰ñƒtƒ@ƒCƒ‹‚ÍŒ©‚Â‚©‚Á‚Ä‚¢‚½‚Ì‚©H
         If Not last_exists Then
             DrawPicture = False
             Exit Function
         End If
     End If
     
-    'ä»¥å‰è¡¨ç¤ºã—ãŸæ‹¡å¤§ç”»åƒãŒåˆ©ç”¨å¯èƒ½ï¼Ÿ
+    'ˆÈ‘O•\¦‚µ‚½Šg‘å‰æ‘œ‚ª—˜—p‰Â”\H
     For i = 0 To ImageBufferSize - 1
-        'åŒã˜ãƒ•ã‚¡ã‚¤ãƒ«ï¼Ÿ
+        '“¯‚¶ƒtƒ@ƒCƒ‹H
         If PicBufFname(i) = fname Then
-            'ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã‚‚åŒã˜ï¼Ÿ
+            'ƒIƒvƒVƒ‡ƒ“‚à“¯‚¶H
             If PicBufOption(i) = pic_option _
                 And PicBufOption2(i) = pic_option2 _
                 And Not PicBufIsMask(i) _
@@ -6135,9 +6135,9 @@ Static fpath_history As New Collection
                 And PicBufSW(i) = sw _
                 And PicBufSH(i) = sh _
             Then
-                'åŒã˜ãƒ•ã‚¡ã‚¤ãƒ«ã€ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã«ã‚ˆã‚‹ç”»åƒãŒè¦‹ã¤ã‹ã£ãŸ
+                '“¯‚¶ƒtƒ@ƒCƒ‹AƒIƒvƒVƒ‡ƒ“‚É‚æ‚é‰æ‘œ‚ªŒ©‚Â‚©‚Á‚½
                 
-                'ä»¥å‰è¡¨ç¤ºã—ãŸç”»åƒã‚’ãã®ã¾ã¾åˆ©ç”¨
+                'ˆÈ‘O•\¦‚µ‚½‰æ‘œ‚ğ‚»‚Ì‚Ü‚Ü—˜—p
                 UsePicBuf i
                 Set orig_pic = MainForm.picBuf(i)
                 With orig_pic
@@ -6150,11 +6150,11 @@ Static fpath_history As New Collection
         End If
     Next
     
-    'ä»¥å‰è¡¨ç¤ºã—ãŸç”»åƒãŒåˆ©ç”¨å¯èƒ½ï¼Ÿ
+    'ˆÈ‘O•\¦‚µ‚½‰æ‘œ‚ª—˜—p‰Â”\H
     For i = 0 To ImageBufferSize - 1
-        'åŒã˜ãƒ•ã‚¡ã‚¤ãƒ«ï¼Ÿ
+        '“¯‚¶ƒtƒ@ƒCƒ‹H
         If PicBufFname(i) = fname Then
-            'ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã‚‚åŒã˜ï¼Ÿ
+            'ƒIƒvƒVƒ‡ƒ“‚à“¯‚¶H
             If PicBufOption(i) = pic_option _
                 And PicBufOption2(i) = pic_option2 _
                 And Not PicBufIsMask(i) _
@@ -6165,9 +6165,9 @@ Static fpath_history As New Collection
                 And PicBufSW(i) = sw _
                 And PicBufSH(i) = sh _
             Then
-                'åŒã˜ãƒ•ã‚¡ã‚¤ãƒ«ã€ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã«ã‚ˆã‚‹ç”»åƒãŒè¦‹ã¤ã‹ã£ãŸ
+                '“¯‚¶ƒtƒ@ƒCƒ‹AƒIƒvƒVƒ‡ƒ“‚É‚æ‚é‰æ‘œ‚ªŒ©‚Â‚©‚Á‚½
                 
-                'ä»¥å‰è¡¨ç¤ºã—ãŸç”»åƒã‚’ãã®ã¾ã¾åˆ©ç”¨
+                'ˆÈ‘O•\¦‚µ‚½‰æ‘œ‚ğ‚»‚Ì‚Ü‚Ü—˜—p
                 UsePicBuf i
                 Set orig_pic = MainForm.picBuf(i)
                 With orig_pic
@@ -6181,10 +6181,10 @@ Static fpath_history As New Collection
         End If
     Next
     
-    'ä»¥å‰ä½¿ç”¨ã—ãŸéƒ¨åˆ†ç”»åƒãŒåˆ©ç”¨å¯èƒ½ï¼Ÿ
+    'ˆÈ‘Og—p‚µ‚½•”•ª‰æ‘œ‚ª—˜—p‰Â”\H
     If sw <> 0 Then
         For i = 0 To ImageBufferSize - 1
-            'åŒã˜ãƒ•ã‚¡ã‚¤ãƒ«ï¼Ÿ
+            '“¯‚¶ƒtƒ@ƒCƒ‹H
             If PicBufFname(i) = fname Then
                 If PicBufOption(i) = "" _
                     And PicBufOption2(i) = "" _
@@ -6196,7 +6196,7 @@ Static fpath_history As New Collection
                     And PicBufSW(i) = sw _
                     And PicBufSH(i) = sh _
                 Then
-                    'ä»¥å‰ä½¿ç”¨ã—ãŸéƒ¨åˆ†ç”»åƒã‚’ãã®ã¾ã¾åˆ©ç”¨
+                    'ˆÈ‘Og—p‚µ‚½•”•ª‰æ‘œ‚ğ‚»‚Ì‚Ü‚Ü—˜—p
                     UsePicBuf i
                     Set orig_pic = MainForm.picBuf(i)
                     With orig_pic
@@ -6210,9 +6210,9 @@ Static fpath_history As New Collection
         Next
     End If
     
-    'ä»¥å‰ä½¿ç”¨ã—ãŸåŸç”»åƒãŒåˆ©ç”¨å¯èƒ½ï¼Ÿ
+    'ˆÈ‘Og—p‚µ‚½Œ´‰æ‘œ‚ª—˜—p‰Â”\H
     For i = 0 To ImageBufferSize - 1
-        'åŒã˜ãƒ•ã‚¡ã‚¤ãƒ«ï¼Ÿ
+        '“¯‚¶ƒtƒ@ƒCƒ‹H
         If PicBufFname(i) = fname Then
             If PicBufOption(i) = "" _
                 And PicBufOption2(i) = "" _
@@ -6221,7 +6221,7 @@ Static fpath_history As New Collection
                 And PicBufDH(i) = DEFAULT_LEVEL _
                 And PicBufSW(i) = 0 _
             Then
-                'ä»¥å‰ä½¿ç”¨ã—ãŸåŸç”»åƒã‚’ãã®ã¾ã¾åˆ©ç”¨
+                'ˆÈ‘Og—p‚µ‚½Œ´‰æ‘œ‚ğ‚»‚Ì‚Ü‚Ü—˜—p
                 UsePicBuf i
                 Set orig_pic = MainForm.picBuf(i)
                 With orig_pic
@@ -6234,10 +6234,10 @@ Static fpath_history As New Collection
         End If
     Next
     
-    'ç‰¹æ®Šãªãƒ•ã‚¡ã‚¤ãƒ«å
+    '“Áê‚Èƒtƒ@ƒCƒ‹–¼
     Select Case LCase$(fname)
         Case "black.bmp", "event\black.bmp"
-            'é»’ã§å¡—ã‚Šã¤ã¶ã—
+            '•‚Å“h‚è‚Â‚Ô‚µ
             With pic
                 If dx = DEFAULT_LEVEL Then
                     dx = (.width - dw) \ 2
@@ -6249,7 +6249,7 @@ Static fpath_history As New Collection
             End With
             GoTo DrewPicture
         Case "white.bmp", "event\white.bmp"
-            'ç™½ã§å¡—ã‚Šã¤ã¶ã—
+            '”’‚Å“h‚è‚Â‚Ô‚µ
             With pic
                 If dx = DEFAULT_LEVEL Then
                     dx = (.width - dw) \ 2
@@ -6261,43 +6261,43 @@ Static fpath_history As New Collection
             End With
             GoTo DrewPicture
         Case "common\effect_tile(ally).bmp", "anime\common\effect_tile(ally).bmp"
-            'å‘³æ–¹ãƒ¦ãƒ‹ãƒƒãƒˆã‚¿ã‚¤ãƒ«
+            '–¡•ûƒ†ƒjƒbƒgƒ^ƒCƒ‹
             Set orig_pic = MainForm.picUnit
             orig_width = 32
             orig_height = 32
             GoTo LoadedOrigPicture
         Case "common\effect_tile(enemy).bmp", "anime\common\effect_tile(enemy).bmp"
-            'æ•µãƒ¦ãƒ‹ãƒƒãƒˆã‚¿ã‚¤ãƒ«
+            '“Gƒ†ƒjƒbƒgƒ^ƒCƒ‹
             Set orig_pic = MainForm.picEnemy
             orig_width = 32
             orig_height = 32
             GoTo LoadedOrigPicture
         Case "common\effect_tile(neutral).bmp", "anime\common\effect_tile(neutral).bmp"
-            'ä¸­ç«‹ãƒ¦ãƒ‹ãƒƒãƒˆã‚¿ã‚¤ãƒ«
+            '’†—§ƒ†ƒjƒbƒgƒ^ƒCƒ‹
             Set orig_pic = MainForm.picNeautral
             orig_width = 32
             orig_height = 32
             GoTo LoadedOrigPicture
     End Select
     
-    'ãƒ•ãƒ«ãƒ‘ã‚¹ã§æŒ‡å®šã•ã‚Œã¦ã„ã‚‹ï¼Ÿ
+    'ƒtƒ‹ƒpƒX‚Åw’è‚³‚ê‚Ä‚¢‚éH
     If InStr(fname, ":") = 2 Then
         fpath = ""
         last_path = ""
-        'ç™»éŒ²ã‚’é¿ã‘ã‚‹ãŸã‚
+        '“o˜^‚ğ”ğ‚¯‚é‚½‚ß
         in_history = True
         GoTo FoundPicture
     End If
     
-    'å±¥æ­´ã‚’æ¤œç´¢ã—ã¦ã¿ã‚‹
+    '—š—ğ‚ğŒŸõ‚µ‚Ä‚İ‚é
     On Error GoTo NotFound
     fpath = fpath_history.Item(fname)
     last_path = ""
     
-    'å±¥æ­´ä¸Šã«ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ç™ºè¦‹
+    '—š—ğã‚Éƒtƒ@ƒCƒ‹‚ğ”­Œ©
     On Error GoTo 0
     If fpath = "" Then
-        'ãƒ•ã‚¡ã‚¤ãƒ«ã¯å­˜åœ¨ã—ãªã„
+        'ƒtƒ@ƒCƒ‹‚Í‘¶İ‚µ‚È‚¢
         last_fname = fname
         last_exists = False
         DrawPicture = False
@@ -6308,10 +6308,10 @@ Static fpath_history As New Collection
     
 NotFound:
     
-    'å±¥æ­´ã«ãªã‹ã£ãŸ
+    '—š—ğ‚É‚È‚©‚Á‚½
     On Error GoTo 0
     
-    'æˆ¦é—˜ã‚¢ãƒ‹ãƒ¡ç”¨ï¼Ÿ
+    'í“¬ƒAƒjƒ—pH
     If InStr(fname, "\EFFECT_") > 0 Then
         If scenario_anime_bitmap_dir_exists Then
             If FileExists(ScenarioPath & "Bitmap\Anime\" & fname) Then
@@ -6341,7 +6341,7 @@ NotFound:
         End If
     End If
     
-    'å‰å›ã¨åŒã˜ãƒ‘ã‚¹ï¼Ÿ
+    '‘O‰ñ‚Æ“¯‚¶ƒpƒXH
     If Len(last_path) > 0 Then
         If FileExists(last_path & fname) Then
             fpath = last_path
@@ -6349,7 +6349,7 @@ NotFound:
         End If
     End If
     
-    'ãƒ‘ã‚¹åå…¥ã‚Šï¼Ÿ
+    'ƒpƒX–¼“ü‚èH
     If InStr(fname, "Bitmap\") > 0 Then
         If scenario_bitmap_dir_exists Then
             If FileExists(ScenarioPath & fname) Then
@@ -6370,7 +6370,7 @@ NotFound:
         End If
     End If
     
-    'ãƒ•ã‚©ãƒ«ãƒ€æŒ‡å®šã‚ã‚Šï¼Ÿ
+    'ƒtƒHƒ‹ƒ_w’è‚ ‚èH
     If InStr(fname, "\") > 0 Then
         If scenario_bitmap_dir_exists Then
             If FileExists(ScenarioPath & "Bitmap\" & fname) Then
@@ -6417,7 +6417,7 @@ NotFound:
             End If
         End If
     Else
-        'åœ°å½¢ç”»åƒæ¤œç´¢ç”¨ã®åœ°å½¢ç”»åƒãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªåã¨4æ¡ãƒ•ã‚¡ã‚¤ãƒ«åã‚’ä½œæˆ
+        '’nŒ`‰æ‘œŒŸõ—p‚Ì’nŒ`‰æ‘œƒfƒBƒŒƒNƒgƒŠ–¼‚Æ4Œ…ƒtƒ@ƒCƒ‹–¼‚ğì¬
         If fname Like "*#.bmp" And Left$(fname, 1) Like "[a-z]" Then
             i = Len(fname) - 5
             Do While i > 0
@@ -6446,9 +6446,9 @@ NotFound:
         End If
     End If
     
-    'å„ãƒ•ã‚©ãƒ«ãƒ€ã‚’æ¤œç´¢ã™ã‚‹
+    'ŠeƒtƒHƒ‹ƒ_‚ğŒŸõ‚·‚é
     
-    'Bitmapãƒ•ã‚©ãƒ«ãƒ€ã«ç›´ç½®ã
+    'BitmapƒtƒHƒ‹ƒ_‚É’¼’u‚«
     If scenario_map_bitmap_dir_exists Then
         If FileExists(ScenarioPath & "Bitmap\" & fname) Then
             fpath = ScenarioPath & "Bitmap\"
@@ -6462,7 +6462,7 @@ NotFound:
         GoTo FoundPicture
     End If
     
-    'ã‚·ãƒŠãƒªã‚ªãƒ•ã‚©ãƒ«ãƒ€
+    'ƒVƒiƒŠƒIƒtƒHƒ‹ƒ_
     If scenario_bitmap_dir_exists Then
         If scenario_anime_bitmap_dir_exists Then
             If FileExists(ScenarioPath & "Bitmap\Anime\" & fname) Then
@@ -6510,7 +6510,7 @@ NotFound:
                     fname = tname
                     fpath = ScenarioPath & "Bitmap\Map\" & tdir
                     last_path = fpath
-                    'ç™»éŒ²ã‚’é¿ã‘ã‚‹ãŸã‚
+                    '“o˜^‚ğ”ğ‚¯‚é‚½‚ß
                     in_history = True
                     GoTo FoundPicture
                 End If
@@ -6518,7 +6518,7 @@ NotFound:
                     fname = tname
                     fpath = ScenarioPath & "Bitmap\Map\"
                     last_path = fpath
-                    'ç™»éŒ²ã‚’é¿ã‘ã‚‹ãŸã‚
+                    '“o˜^‚ğ”ğ‚¯‚é‚½‚ß
                     in_history = True
                     GoTo FoundPicture
                 End If
@@ -6579,7 +6579,7 @@ NotFound:
                     fname = tname
                     fpath = ExtDataPath & "Bitmap\Map\" & tdir
                     last_path = ""
-                    'ç™»éŒ²ã‚’é¿ã‘ã‚‹ãŸã‚
+                    '“o˜^‚ğ”ğ‚¯‚é‚½‚ß
                     in_history = True
                     GoTo FoundPicture
                 End If
@@ -6587,7 +6587,7 @@ NotFound:
                     fname = tname
                     fpath = ExtDataPath & "Bitmap\Map\"
                     last_path = ""
-                    'ç™»éŒ²ã‚’é¿ã‘ã‚‹ãŸã‚
+                    '“o˜^‚ğ”ğ‚¯‚é‚½‚ß
                     in_history = True
                     GoTo FoundPicture
                 End If
@@ -6648,7 +6648,7 @@ NotFound:
                     fname = tname
                     fpath = ExtDataPath2 & "Bitmap\Map\" & tdir
                     last_path = ""
-                    'ç™»éŒ²ã‚’é¿ã‘ã‚‹ãŸã‚
+                    '“o˜^‚ğ”ğ‚¯‚é‚½‚ß
                     in_history = True
                     GoTo FoundPicture
                 End If
@@ -6656,7 +6656,7 @@ NotFound:
                     fname = tname
                     fpath = ExtDataPath2 & "Bitmap\Map\"
                     last_path = ""
-                    'ç™»éŒ²ã‚’é¿ã‘ã‚‹ãŸã‚
+                    '“o˜^‚ğ”ğ‚¯‚é‚½‚ß
                     in_history = True
                     GoTo FoundPicture
                 End If
@@ -6669,7 +6669,7 @@ NotFound:
         End If
     End If
     
-    'æœ¬ä½“å´ãƒ•ã‚©ãƒ«ãƒ€
+    '–{‘Ì‘¤ƒtƒHƒ‹ƒ_
     If FileExists(AppPath & "Bitmap\Anime\" & fname) Then
         fpath = AppPath & "Bitmap\Anime\"
         last_path = ""
@@ -6711,7 +6711,7 @@ NotFound:
             fname = tname
             fpath = AppPath & "Bitmap\Map\" & tdir
             last_path = ""
-            'ç™»éŒ²ã‚’é¿ã‘ã‚‹ãŸã‚
+            '“o˜^‚ğ”ğ‚¯‚é‚½‚ß
             in_history = True
             GoTo FoundPicture
         End If
@@ -6719,7 +6719,7 @@ NotFound:
             fname = tname
             fpath = AppPath & "Bitmap\Map\"
             last_path = ""
-            'ç™»éŒ²ã‚’é¿ã‘ã‚‹ãŸã‚
+            '“o˜^‚ğ”ğ‚¯‚é‚½‚ß
             in_history = True
             GoTo FoundPicture
         End If
@@ -6730,12 +6730,12 @@ NotFound:
         GoTo FoundPicture
     End If
     
-    'è¦‹ã¤ã‹ã‚‰ãªã‹ã£ãŸâ€¦â€¦
+    'Œ©‚Â‚©‚ç‚È‚©‚Á‚½cc
     
-    'å±¥æ­´ã«è¨˜éŒ²ã—ã¦ãŠã
+    '—š—ğ‚É‹L˜^‚µ‚Ä‚¨‚­
     fpath_history.Add "", fname
     
-    'è¡¨ç¤ºã‚’ä¸­æ­¢
+    '•\¦‚ğ’†~
     last_fname = fname
     last_exists = False
     DrawPicture = False
@@ -6743,10 +6743,10 @@ NotFound:
     
 FoundPicture:
     
-    'ãƒ•ã‚¡ã‚¤ãƒ«åã‚’è¨˜éŒ²ã—ã¦ãŠã
+    'ƒtƒ@ƒCƒ‹–¼‚ğ‹L˜^‚µ‚Ä‚¨‚­
     last_fname = fname
     
-    'å±¥æ­´ã«è¨˜éŒ²ã—ã¦ãŠã
+    '—š—ğ‚É‹L˜^‚µ‚Ä‚¨‚­
     If Not in_history Then
         fpath_history.Add fpath, fname
     End If
@@ -6754,7 +6754,7 @@ FoundPicture:
     last_exists = True
     pfname = fpath & fname
     
-    'ä½¿ç”¨ã™ã‚‹ãƒãƒƒãƒ•ã‚¡ã‚’é¸æŠ
+    'g—p‚·‚éƒoƒbƒtƒ@‚ğ‘I‘ğ
     i = GetPicBuf()
     Set orig_pic = MainForm.picBuf(i)
     PicBufFname(i) = fname
@@ -6771,7 +6771,7 @@ FoundPicture:
     
     LoadPicture2 orig_pic, pfname
     
-    'èª­ã¿è¾¼ã‚“ã ç”»åƒã®ã‚µã‚¤ã‚º(ãƒã‚¤ãƒˆæ•°)ã‚’ãƒãƒƒãƒ•ã‚¡æƒ…å ±ã«è¨˜éŒ²ã—ã¦ãŠã
+    '“Ç‚İ‚ñ‚¾‰æ‘œ‚ÌƒTƒCƒY(ƒoƒCƒg”)‚ğƒoƒbƒtƒ@î•ñ‚É‹L˜^‚µ‚Ä‚¨‚­
     With orig_pic
         PicBufSize(i) = display_byte_pixel * .width * .Height
     End With
@@ -6783,10 +6783,10 @@ LoadedOrigPicture:
         orig_height = .Height
     End With
     
-    'åŸç”»åƒã®ä¸€éƒ¨ã®ã¿ã‚’æç”»ï¼Ÿ
+    'Œ´‰æ‘œ‚Ìˆê•”‚Ì‚İ‚ğ•`‰æH
     If sw <> 0 Then
         If sw <> orig_width Or sh <> orig_height Then
-            'ä½¿ç”¨ã™ã‚‹picBufã‚’é¸æŠ
+            'g—p‚·‚épicBuf‚ğ‘I‘ğ
             i = GetPicBuf(display_byte_pixel * sw * sh)
             PicBufFname(i) = fname
             PicBufOption(i) = ""
@@ -6800,7 +6800,7 @@ LoadedOrigPicture:
             PicBufIsMask(i) = False
             'Debug.Print "Use " & Format$(i) & " As Partial"
             
-            'åŸç”»åƒã‹ã‚‰æç”»éƒ¨åˆ†ã‚’ã‚³ãƒ”ãƒ¼
+            'Œ´‰æ‘œ‚©‚ç•`‰æ•”•ª‚ğƒRƒs[
             With MainForm.picBuf(i)
                 .Picture = LoadPicture("")
                 .width = sw
@@ -6825,7 +6825,7 @@ LoadedOrigPicture:
     
 LoadedPicture:
     
-    'åŸç”»åƒã‚’ä¿®æ­£ã—ã¦ä½¿ã†å ´åˆã¯åŸç”»åƒã‚’åˆ¥ã®picBufã«ã‚³ãƒ”ãƒ¼ã—ã¦ä¿®æ­£ã™ã‚‹
+    'Œ´‰æ‘œ‚ğC³‚µ‚Äg‚¤ê‡‚ÍŒ´‰æ‘œ‚ğ•Ê‚ÌpicBuf‚ÉƒRƒs[‚µ‚ÄC³‚·‚é
     If top_part Or bottom_part Or left_part Or right_part _
         Or tleft_part Or tright_part Or bleft_part Or bright_part _
         Or is_monotone Or is_sepia Or is_sunset Or is_water _
@@ -6833,7 +6833,7 @@ LoadedPicture:
         Or bright_count > 0 Or dark_count > 0 Or angle Mod 360 <> 0 _
         Or is_colorfilter _
     Then
-        'ä½¿ç”¨ã™ã‚‹picBufã‚’é¸æŠ
+        'g—p‚·‚épicBuf‚ğ‘I‘ğ
         i = GetPicBuf(display_byte_pixel * orig_width * orig_height)
         PicBufFname(i) = fname
         PicBufOption(i) = pic_option
@@ -6847,7 +6847,7 @@ LoadedPicture:
         PicBufIsMask(i) = False
         'Debug.Print "Use " & Format$(i) & " As Edited"
         
-        'ç”»åƒã‚’ã‚³ãƒ”ãƒ¼
+        '‰æ‘œ‚ğƒRƒs[
         With MainForm.picBuf(i)
             .Picture = LoadPicture("")
             .width = orig_width
@@ -6860,49 +6860,49 @@ LoadedPicture:
         Set orig_pic = MainForm.picBuf(i)
     End If
     
-    'ç”»åƒã®ä¸€éƒ¨ã‚’å¡—ã‚Šã¤ã¶ã—ã¦æç”»ã™ã‚‹å ´åˆ
+    '‰æ‘œ‚Ìˆê•”‚ğ“h‚è‚Â‚Ô‚µ‚Ä•`‰æ‚·‚éê‡
     If top_part Then
-        'ä¸ŠåŠåˆ†
+        'ã”¼•ª
         orig_pic.Line (0, orig_height \ 2)-(orig_width - 1, orig_height - 1), BGColor, BF
     End If
     If bottom_part Then
-        'ä¸‹åŠåˆ†
+        '‰º”¼•ª
         orig_pic.Line (0, 0)-(orig_width - 1, orig_height \ 2 - 1), BGColor, BF
     End If
     If left_part Then
-        'å·¦åŠåˆ†
+        '¶”¼•ª
         orig_pic.Line (orig_width \ 2, 0)-(orig_width - 1, orig_height - 1), BGColor, BF
     End If
     If right_part Then
-        'å³åŠåˆ†
+        '‰E”¼•ª
         orig_pic.Line (0, 0)-(orig_width \ 2 - 1, orig_height - 1), BGColor, BF
     End If
     If tleft_part Then
-        'å·¦ä¸Š
+        '¶ã
         For i = 0 To orig_width - 1
             orig_pic.Line (i, orig_height - 1 - i)-(i, orig_height - 1), BGColor, B
         Next
     End If
     If tright_part Then
-        'å³ä¸Š
+        '‰Eã
         For i = 0 To orig_width - 1
             orig_pic.Line (i, i)-(i, orig_height - 1), BGColor, B
         Next
     End If
     If bleft_part Then
-        'å·¦ä¸‹
+        '¶‰º
         For i = 0 To orig_width - 1
             orig_pic.Line (i, 0)-(i, i), BGColor, B
         Next
     End If
     If bright_part Then
-        'å³ä¸‹
+        '‰E‰º
         For i = 0 To orig_width - 1
             orig_pic.Line (i, 0)-(i, orig_height - 1 - i), BGColor, B
         Next
     End If
     
-    'ç‰¹æ®ŠåŠ¹æœ
+    '“ÁêŒø‰Ê
     If is_monotone Or is_sepia _
         Or is_sunset Or is_water _
         Or is_colorfilter _
@@ -6911,46 +6911,46 @@ LoadedPicture:
         Or vrev Or hrev _
         Or angle <> 0 _
     Then
-        'ç”»åƒã®ã‚µã‚¤ã‚ºã‚’ãƒã‚§ãƒƒã‚¯
+        '‰æ‘œ‚ÌƒTƒCƒY‚ğƒ`ƒFƒbƒN
         If orig_width * orig_height Mod 4 <> 0 Then
-            ErrorMessage fname & "ã®ç”»åƒã‚µã‚¤ã‚ºãŒ4ã®å€æ•°ã«ãªã£ã¦ã„ã¾ã›ã‚“"
+            ErrorMessage fname & "‚Ì‰æ‘œƒTƒCƒY‚ª4‚Ì”{”‚É‚È‚Á‚Ä‚¢‚Ü‚¹‚ñ"
             Exit Function
         End If
         
-        'ã‚¤ãƒ¡ãƒ¼ã‚¸ã‚’ãƒãƒƒãƒ•ã‚¡ã«å–ã‚Šè¾¼ã¿
+        'ƒCƒ[ƒW‚ğƒoƒbƒtƒ@‚Éæ‚è‚İ
         GetImage orig_pic
         
-        'ç™½é»’
+        '”’•
         If is_monotone Then
             Monotone transparent
         End If
         
-        'ã‚»ãƒ”ã‚¢
+        'ƒZƒsƒA
         If is_sepia Then
             Sepia transparent
         End If
         
-        'å¤•ç„¼ã‘
+        '—[Ä‚¯
         If is_sunset Then
             Sunset transparent
         End If
         
-        'æ°´ä¸­
+        '…’†
         If is_water Then
             Water transparent
         End If
         
-        'ã‚·ãƒ«ã‚¨ãƒƒãƒˆ
+        'ƒVƒ‹ƒGƒbƒg
         If is_sil Then
             Silhouette
         End If
         
-        'ãƒã‚¬ãƒã‚¸åè»¢
+        'ƒlƒKƒ|ƒW”½“]
         If negpos Then
             NegPosReverse transparent
         End If
         
-        'ãƒ•ã‚£ãƒ«ã‚¿
+        'ƒtƒBƒ‹ƒ^
         If is_colorfilter Then
             If trans_par < 0 Then
                 trans_par = 0.5
@@ -6958,44 +6958,44 @@ LoadedPicture:
             ColorFilter fcolor, trans_par, transparent
         End If
         
-        'æ˜ (å¤šæ®µæŒ‡å®šå¯èƒ½)
+        '–¾ (‘½’iw’è‰Â”\)
         For i = 1 To bright_count
             Bright transparent
         Next
         
-        'æš— (å¤šæ®µæŒ‡å®šå¯èƒ½)
+        'ˆÃ (‘½’iw’è‰Â”\)
         For i = 1 To dark_count
             Dark transparent
         Next
         
-        'å·¦å³åè»¢
+        '¶‰E”½“]
         If vrev Then
             VReverse
         End If
         
-        'ä¸Šä¸‹åè»¢
+        'ã‰º”½“]
         If hrev Then
             HReverse
         End If
         
-        'å›è»¢
+        '‰ñ“]
         If angle <> 0 Then
-            'å‰å›ã®å›è»¢è§’ãŒ90åº¦ã®å€æ•°ã‹ã©ã†ã‹ã§æç”»ã®éš›ã®æœ€é©åŒ–ä½¿ç”¨å¯å¦ã‚’æ±ºã‚ã‚‹
-            '(é€£ç¶šã§å›è»¢ã•ã›ã‚‹å ´åˆã«æç”»é€Ÿåº¦ã‚’ä¸€å®šã«ã™ã‚‹ãŸã‚)
+            '‘O‰ñ‚Ì‰ñ“]Šp‚ª90“x‚Ì”{”‚©‚Ç‚¤‚©‚Å•`‰æ‚ÌÛ‚ÌÅ“K‰»g—p‰Â”Û‚ğŒˆ‚ß‚é
+            '(˜A‘±‚Å‰ñ“]‚³‚¹‚éê‡‚É•`‰æ‘¬“x‚ğˆê’è‚É‚·‚é‚½‚ß)
             Rotate angle, last_angle Mod 90 <> 0
         End If
         
-        'å¤‰æ›´ã—ãŸå†…å®¹ã‚’ã‚¤ãƒ¡ãƒ¼ã‚¸ã«å¤‰æ›
+        '•ÏX‚µ‚½“à—e‚ğƒCƒ[ƒW‚É•ÏŠ·
         SetImage orig_pic
         
-        'ãƒãƒƒãƒ•ã‚¡ã‚’ç ´æ£„
+        'ƒoƒbƒtƒ@‚ğ”jŠü
         ClearImage
     End If
     last_angle = angle
     
 EditedPicture:
     
-    'ã‚¯ãƒªãƒƒãƒ”ãƒ³ã‚°å‡¦ç†
+    'ƒNƒŠƒbƒsƒ“ƒOˆ—
     If dw = DEFAULT_LEVEL Then
         dw = orig_width
     End If
@@ -7003,7 +7003,7 @@ EditedPicture:
         dh = orig_height
     End If
     If permanent Then
-        'èƒŒæ™¯æç”»ã®å ´åˆã€ã‚»ãƒ³ã‚¿ãƒªãƒ³ã‚°ã¯ãƒãƒƒãƒ—ä¸­å¤®ã«
+        '”wŒi•`‰æ‚Ìê‡AƒZƒ“ƒ^ƒŠƒ“ƒO‚Íƒ}ƒbƒv’†‰›‚É
         If dx = DEFAULT_LEVEL Then
             dx = (MapPWidth - dw) \ 2
         End If
@@ -7015,11 +7015,11 @@ EditedPicture:
             End If
         End If
     Else
-        'ãƒ¦ãƒ‹ãƒƒãƒˆä¸Šã§ç”»åƒã®ã‚»ãƒ³ã‚¿ãƒªãƒ³ã‚°ã‚’è¡Œã†ã“ã¨ã‚’æ„å›³ã—ã¦ã„ã‚‹
-        'å ´åˆã¯ä¿®æ­£ãŒå¿…è¦
+        'ƒ†ƒjƒbƒgã‚Å‰æ‘œ‚ÌƒZƒ“ƒ^ƒŠƒ“ƒO‚ğs‚¤‚±‚Æ‚ğˆÓ}‚µ‚Ä‚¢‚é
+        'ê‡‚ÍC³‚ª•K—v
         If InStr(fname, "EFFECT_") > 0 _
-            Or InStr(fname, "ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼\") > 0 _
-            Or InStr(fname, "ç²¾ç¥ã‚³ãƒãƒ³ãƒ‰\") > 0 _
+            Or InStr(fname, "ƒXƒyƒVƒƒƒ‹ƒpƒ[\") > 0 _
+            Or InStr(fname, "¸_ƒRƒ}ƒ“ƒh\") > 0 _
         Then
             If dx = DEFAULT_LEVEL Then
                 dx = (MainPWidth - dw) \ 2
@@ -7034,7 +7034,7 @@ EditedPicture:
                 End If
             End If
         Else
-            'é€šå¸¸æç”»ã®å ´åˆã€ã‚»ãƒ³ã‚¿ãƒªãƒ³ã‚°ã¯ç”»é¢ä¸­å¤®ã«
+            '’Êí•`‰æ‚Ìê‡AƒZƒ“ƒ^ƒŠƒ“ƒO‚Í‰æ–Ê’†‰›‚É
             If dx = DEFAULT_LEVEL Then
                 dx = (MainPWidth - dw) \ 2
             End If
@@ -7044,7 +7044,7 @@ EditedPicture:
         End If
     End If
     
-    'æç”»å…ˆãŒç”»é¢å¤–ã®å ´åˆã‚„æç”»ã‚µã‚¤ã‚ºãŒ0ã®å ´åˆã¯ç”»åƒã®ãƒ­ãƒ¼ãƒ‰ã®ã¿ã‚’è¡Œã†
+    '•`‰ææ‚ª‰æ–ÊŠO‚Ìê‡‚â•`‰æƒTƒCƒY‚ª0‚Ìê‡‚Í‰æ‘œ‚Ìƒ[ƒh‚Ì‚İ‚ğs‚¤
     With pic
         If dx >= .width Or dy >= .Height _
             Or dx + dw <= 0 Or dy + dh <= 0 _
@@ -7054,30 +7054,30 @@ EditedPicture:
         End If
     End With
     
-    'æç”»ã‚’æœ€é©åŒ–ã™ã‚‹ãŸã‚ã€æç”»æ–¹æ³•ã‚’ç´°ã‹ãåˆ†ã‘ã¦ã„ã‚‹ã€‚
-    'æç”»æ–¹æ³•ã¯ä»¥ä¸‹ã®é€šã‚Šã€‚
-    '(1) BitBltã§ãã®ã¾ã¾æç”» (æ‹¡å¤§å‡¦ç†ãªã—ã€é€éå‡¦ç†ãªã—)
-    '(2) æ‹¡å¤§ç”»åƒã‚’ä½œã£ã¦ã‹ã‚‰ãƒãƒƒãƒ•ã‚¡ãƒªãƒ³ã‚°ã—ã¦æç”» (æ‹¡å¤§å‡¦ç†ã‚ã‚Šã€é€éå‡¦ç†ãªã—)
-    '(3) æ‹¡å¤§ç”»åƒã‚’ä½œã‚‰ãšã«StretchBltã§ç›´æ¥æ‹¡å¤§æç”» (æ‹¡å¤§å‡¦ç†ã‚ã‚Šã€é€éå‡¦ç†ãªã—)
-    '(4) TransparentBltã§æ‹¡å¤§é€éæç”» (æ‹¡å¤§å‡¦ç†ã‚ã‚Šã€é€éå‡¦ç†ã‚ã‚Š)
-    '(5) åŸç”»åƒã‚’ãã®ã¾ã¾é€éæç”» (æ‹¡å¤§å‡¦ç†ãªã—ã€é€éå‡¦ç†ã‚ã‚Š)
-    '(6) æ‹¡å¤§ç”»åƒã‚’ä½œã£ã¦ã‹ã‚‰ãƒãƒƒãƒ•ã‚¡ãƒªãƒ³ã‚°ã—ã¦é€éæç”» (æ‹¡å¤§å‡¦ç†ã‚ã‚Šã€é€éå‡¦ç†ã‚ã‚Š)
-    '(7) æ‹¡å¤§ç”»åƒã‚’ä½œã£ã¦ã‹ã‚‰ãƒãƒƒãƒ•ã‚¡ãƒªãƒ³ã‚°ã›ãšã«é€éæç”» (æ‹¡å¤§å‡¦ç†ã‚ã‚Šã€é€éå‡¦ç†ã‚ã‚Š)
-    '(8) æ‹¡å¤§ç”»åƒã‚’ä½œã‚‰ãšã«StretchBltã§ç›´æ¥æ‹¡å¤§é€éæç”» (æ‹¡å¤§å‡¦ç†ã‚ã‚Šã€é€éå‡¦ç†ã‚ã‚Š)
+    '•`‰æ‚ğÅ“K‰»‚·‚é‚½‚ßA•`‰æ•û–@‚ğ×‚©‚­•ª‚¯‚Ä‚¢‚éB
+    '•`‰æ•û–@‚ÍˆÈ‰º‚Ì’Ê‚èB
+    '(1) BitBlt‚Å‚»‚Ì‚Ü‚Ü•`‰æ (Šg‘åˆ—‚È‚µA“§‰ßˆ—‚È‚µ)
+    '(2) Šg‘å‰æ‘œ‚ğì‚Á‚Ä‚©‚çƒoƒbƒtƒ@ƒŠƒ“ƒO‚µ‚Ä•`‰æ (Šg‘åˆ—‚ ‚èA“§‰ßˆ—‚È‚µ)
+    '(3) Šg‘å‰æ‘œ‚ğì‚ç‚¸‚ÉStretchBlt‚Å’¼ÚŠg‘å•`‰æ (Šg‘åˆ—‚ ‚èA“§‰ßˆ—‚È‚µ)
+    '(4) TransparentBlt‚ÅŠg‘å“§‰ß•`‰æ (Šg‘åˆ—‚ ‚èA“§‰ßˆ—‚ ‚è)
+    '(5) Œ´‰æ‘œ‚ğ‚»‚Ì‚Ü‚Ü“§‰ß•`‰æ (Šg‘åˆ—‚È‚µA“§‰ßˆ—‚ ‚è)
+    '(6) Šg‘å‰æ‘œ‚ğì‚Á‚Ä‚©‚çƒoƒbƒtƒ@ƒŠƒ“ƒO‚µ‚Ä“§‰ß•`‰æ (Šg‘åˆ—‚ ‚èA“§‰ßˆ—‚ ‚è)
+    '(7) Šg‘å‰æ‘œ‚ğì‚Á‚Ä‚©‚çƒoƒbƒtƒ@ƒŠƒ“ƒO‚¹‚¸‚É“§‰ß•`‰æ (Šg‘åˆ—‚ ‚èA“§‰ßˆ—‚ ‚è)
+    '(8) Šg‘å‰æ‘œ‚ğì‚ç‚¸‚ÉStretchBlt‚Å’¼ÚŠg‘å“§‰ß•`‰æ (Šg‘åˆ—‚ ‚èA“§‰ßˆ—‚ ‚è)
     
-    'ç”»é¢ã«æç”»ã™ã‚‹
+    '‰æ–Ê‚É•`‰æ‚·‚é
     If Not transparent _
         And dw = orig_width And dh = orig_height _
     Then
-        'åŸç”»åƒã‚’ãã®ã¾ã¾æç”»
+        'Œ´‰æ‘œ‚ğ‚»‚Ì‚Ü‚Ü•`‰æ
         
-        'æç”»ã‚’ã‚­ãƒ£ãƒ³ã‚»ãƒ«ï¼Ÿ
+        '•`‰æ‚ğƒLƒƒƒ“ƒZƒ‹H
         If load_only Then
             DrawPicture = True
             Exit Function
         End If
         
-        'ç”»åƒã‚’æç”»å…ˆã«æç”»
+        '‰æ‘œ‚ğ•`‰ææ‚É•`‰æ
         ret = BitBlt(pic.hDC, _
             dx, dy, dw, dh, _
             orig_pic.hDC, 0, 0, _
@@ -7087,9 +7087,9 @@ EditedPicture:
         And (Not found_orig Or load_only) _
         And dw <= 480 And dh <= 480 _
     Then
-        'æ‹¡å¤§ç”»åƒã‚’ä½œæˆã—ã€ãƒãƒƒãƒ•ã‚¡ãƒªãƒ³ã‚°ã—ã¦æç”»
+        'Šg‘å‰æ‘œ‚ğì¬‚µAƒoƒbƒtƒ@ƒŠƒ“ƒO‚µ‚Ä•`‰æ
         
-        'æ‹¡å¤§ç”»åƒã«ä½¿ç”¨ã™ã‚‹picBufã‚’é¸æŠ
+        'Šg‘å‰æ‘œ‚Ég—p‚·‚épicBuf‚ğ‘I‘ğ
         i = GetPicBuf(display_byte_pixel * dw * dh)
         PicBufFname(i) = fname
         PicBufIsMask(i) = False
@@ -7103,7 +7103,7 @@ EditedPicture:
         PicBufSH(i) = sh
         'Debug.Print "Use " & Format$(i) & " As Stretched"
         
-        'ãƒãƒƒãƒ•ã‚¡ã®åˆæœŸåŒ–
+        'ƒoƒbƒtƒ@‚Ì‰Šú‰»
         Set stretched_pic = MainForm.picBuf(i)
         With stretched_pic
             .Picture = LoadPicture("")
@@ -7111,34 +7111,34 @@ EditedPicture:
             .Height = dh
         End With
         
-        'ãƒãƒƒãƒ•ã‚¡ã«æ‹¡å¤§ã—ãŸç”»åƒã‚’ä¿å­˜
+        'ƒoƒbƒtƒ@‚ÉŠg‘å‚µ‚½‰æ‘œ‚ğ•Û‘¶
         ret = StretchBlt(stretched_pic.hDC, _
             0, 0, dw, dh, _
             orig_pic.hDC, _
             0, 0, orig_width, orig_height, _
             SRCCOPY)
         
-        'æç”»ã‚’ã‚­ãƒ£ãƒ³ã‚»ãƒ«ï¼Ÿ
+        '•`‰æ‚ğƒLƒƒƒ“ƒZƒ‹H
         If load_only Then
             DrawPicture = True
             Exit Function
         End If
         
-        'æ‹¡å¤§ã—ãŸç”»åƒã‚’æç”»å…ˆã«æç”»
+        'Šg‘å‚µ‚½‰æ‘œ‚ğ•`‰ææ‚É•`‰æ
         ret = BitBlt(pic.hDC, _
             dx, dy, dw, dh, _
             stretched_pic.hDC, 0, 0, _
             SRCCOPY)
     ElseIf Not transparent Then
-        'æ‹¡å¤§ç”»åƒã‚’ä½œã‚‰ãšã«StretchBltã§ç›´æ¥æ‹¡å¤§æç”»
+        'Šg‘å‰æ‘œ‚ğì‚ç‚¸‚ÉStretchBlt‚Å’¼ÚŠg‘å•`‰æ
         
-        'æç”»ã‚’ã‚­ãƒ£ãƒ³ã‚»ãƒ«ï¼Ÿ
+        '•`‰æ‚ğƒLƒƒƒ“ƒZƒ‹H
         If load_only Then
             DrawPicture = True
             Exit Function
         End If
         
-        'æ‹¡å¤§ã—ãŸç”»åƒã‚’æç”»å…ˆã«æç”»
+        'Šg‘å‚µ‚½‰æ‘œ‚ğ•`‰ææ‚É•`‰æ
         ret = StretchBlt(pic.hDC, _
             dx, dy, dw, dh, _
             orig_pic.hDC, _
@@ -7151,30 +7151,30 @@ EditedPicture:
         And (dw * dh < 40000 _
             Or orig_width * orig_height > 40000) _
     Then
-        'TransparentBltã®æ–¹ãŒé«˜é€Ÿã«æç”»ã§ãã‚‹å ´åˆã«é™ã‚Š
-        'TransparentBltã‚’ä½¿ã£ã¦æ‹¡å¤§é€éæç”»
+        'TransparentBlt‚Ì•û‚ª‚‘¬‚É•`‰æ‚Å‚«‚éê‡‚ÉŒÀ‚è
+        'TransparentBlt‚ğg‚Á‚ÄŠg‘å“§‰ß•`‰æ
         
-        'æç”»ã‚’ã‚­ãƒ£ãƒ³ã‚»ãƒ«ï¼Ÿ
+        '•`‰æ‚ğƒLƒƒƒ“ƒZƒ‹H
         If load_only Then
             DrawPicture = True
             Exit Function
         End If
         
-        'ç”»åƒã‚’æç”»å…ˆã«é€éæç”»
+        '‰æ‘œ‚ğ•`‰ææ‚É“§‰ß•`‰æ
         ret = TransparentBlt(pic.hDC, _
             dx, dy, dw, dh, _
             orig_pic.hDC, _
             0, 0, orig_width, orig_height, _
             BGColor)
     ElseIf dw = orig_width And dh = orig_height Then
-        'åŸç”»åƒã‚’ãã®ã¾ã¾é€éæç”»
+        'Œ´‰æ‘œ‚ğ‚»‚Ì‚Ü‚Ü“§‰ß•`‰æ
         
-        'ä»¥å‰ä½¿ç”¨ã—ãŸãƒã‚¹ã‚¯ç”»åƒãŒåˆ©ç”¨å¯èƒ½ï¼Ÿ
+        'ˆÈ‘Og—p‚µ‚½ƒ}ƒXƒN‰æ‘œ‚ª—˜—p‰Â”\H
         Set mask_pic = Nothing
         For i = 0 To ImageBufferSize - 1
-            'åŒã˜ãƒ•ã‚¡ã‚¤ãƒ«ï¼Ÿ
+            '“¯‚¶ƒtƒ@ƒCƒ‹H
             If PicBufFname(i) = fname Then
-                'ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã‚‚åŒã˜ï¼Ÿ
+                'ƒIƒvƒVƒ‡ƒ“‚à“¯‚¶H
                 If PicBufIsMask(i) _
                     And PicBufOption2(i) = pic_option2 _
                     And PicBufDW(i) = orig_width _
@@ -7184,7 +7184,7 @@ EditedPicture:
                     And PicBufSW(i) = sw _
                     And PicBufSH(i) = sh _
                 Then
-                    'ä»¥å‰ä½¿ç”¨ã—ãŸãƒã‚¹ã‚¯ç”»åƒã‚’ãã®ã¾ã¾åˆ©ç”¨
+                    'ˆÈ‘Og—p‚µ‚½ƒ}ƒXƒN‰æ‘œ‚ğ‚»‚Ì‚Ü‚Ü—˜—p
                     UsePicBuf i
                     Set mask_pic = MainForm.picBuf(i)
                     'Debug.Print "Reuse " & Format$(i) & " As Mask"
@@ -7194,9 +7194,9 @@ EditedPicture:
         Next
         
         If mask_pic Is Nothing Then
-            'ãƒã‚¹ã‚¯ç”»åƒã‚’æ–°è¦ã«ä½œæˆ
+            'ƒ}ƒXƒN‰æ‘œ‚ğV‹K‚Éì¬
             
-            'ãƒã‚¹ã‚¯ç”»åƒã«ä½¿ç”¨ã™ã‚‹picBufã‚’é¸æŠ
+            'ƒ}ƒXƒN‰æ‘œ‚Ég—p‚·‚épicBuf‚ğ‘I‘ğ
             i = GetPicBuf(display_byte_pixel * dw * dh)
             PicBufFname(i) = fname
             PicBufIsMask(i) = True
@@ -7210,7 +7210,7 @@ EditedPicture:
             PicBufSH(i) = sh
             'Debug.Print "Use " & Format$(i) & " As Mask"
             
-            'ãƒãƒƒãƒ•ã‚¡ã®åˆæœŸåŒ–
+            'ƒoƒbƒtƒ@‚Ì‰Šú‰»
             Set mask_pic = MainForm.picBuf(i)
             With mask_pic
                 .Picture = LoadPicture("")
@@ -7218,19 +7218,19 @@ EditedPicture:
                 .Height = orig_height
             End With
             
-            'ãƒã‚¹ã‚¯ç”»åƒã‚’ä½œæˆ
+            'ƒ}ƒXƒN‰æ‘œ‚ğì¬
             MakeMask orig_pic.hDC, mask_pic.hDC, orig_width, orig_height, BGColor
         End If
         
-        'æç”»ã‚’ã‚­ãƒ£ãƒ³ã‚»ãƒ«ï¼Ÿ
+        '•`‰æ‚ğƒLƒƒƒ“ƒZƒ‹H
         If load_only Then
             DrawPicture = True
             Exit Function
         End If
         
-        'ç”»åƒã‚’é€éæç”»
+        '‰æ‘œ‚ğ“§‰ß•`‰æ
         If BGColor = vbWhite Then
-            'èƒŒæ™¯è‰²ãŒç™½
+            '”wŒiF‚ª”’
             ret = BitBlt(pic.hDC, _
                 dx, dy, dw, dh, _
                 mask_pic.hDC, 0, 0, _
@@ -7241,7 +7241,7 @@ EditedPicture:
                 orig_pic.hDC, 0, 0, _
                 SRCINVERT)
         Else
-            'èƒŒæ™¯è‰²ãŒç™½ä»¥å¤–
+            '”wŒiF‚ª”’ˆÈŠO
             ret = BitBlt(pic.hDC, _
                 dx, dy, dw, dh, _
                 mask_pic.hDC, 0, 0, _
@@ -7257,16 +7257,16 @@ EditedPicture:
                 mask_pic.hDC, 0, 0, _
                 SRCINVERT)
             
-            'ãƒã‚¹ã‚¯ç”»åƒãŒå†åˆ©ç”¨ã§ããªã„ã®ã§ãƒãƒƒãƒ•ã‚¡ã‚’é–‹æ”¾
+            'ƒ}ƒXƒN‰æ‘œ‚ªÄ—˜—p‚Å‚«‚È‚¢‚Ì‚Åƒoƒbƒtƒ@‚ğŠJ•ú
             ReleasePicBuf i
         End If
     ElseIf KeepStretchedImage _
         And (Not found_orig Or load_only) _
         And dw <= 480 And dh <= 480 _
     Then
-        'æ‹¡å¤§ç”»åƒã‚’ä½œæˆã—ã€ãƒãƒƒãƒ•ã‚¡ãƒªãƒ³ã‚°ã—ã¦é€éæç”»
+        'Šg‘å‰æ‘œ‚ğì¬‚µAƒoƒbƒtƒ@ƒŠƒ“ƒO‚µ‚Ä“§‰ß•`‰æ
         
-        'æ‹¡å¤§ç”»åƒç”¨ã«ä½¿ç”¨ã™ã‚‹picBufã‚’é¸æŠ
+        'Šg‘å‰æ‘œ—p‚Ég—p‚·‚épicBuf‚ğ‘I‘ğ
         i = GetPicBuf(display_byte_pixel * dw * dh)
         PicBufFname(i) = fname
         PicBufIsMask(i) = False
@@ -7280,7 +7280,7 @@ EditedPicture:
         PicBufSH(i) = sh
         'Debug.Print "Use " & Format$(i) & " As Stretched"
         
-        'ãƒãƒƒãƒ•ã‚¡ã®åˆæœŸåŒ–
+        'ƒoƒbƒtƒ@‚Ì‰Šú‰»
         Set stretched_pic = MainForm.picBuf(i)
         With stretched_pic
             .Picture = LoadPicture("")
@@ -7288,19 +7288,19 @@ EditedPicture:
             .Height = dh
         End With
         
-        'ãƒãƒƒãƒ•ã‚¡ã«æ‹¡å¤§ã—ãŸç”»åƒã‚’ä¿å­˜
+        'ƒoƒbƒtƒ@‚ÉŠg‘å‚µ‚½‰æ‘œ‚ğ•Û‘¶
         ret = StretchBlt(stretched_pic.hDC, _
             0, 0, dw, dh, _
             orig_pic.hDC, _
             0, 0, orig_width, orig_height, _
             SRCCOPY)
         
-        'ä»¥å‰ä½¿ç”¨ã—ãŸæ‹¡å¤§ãƒã‚¹ã‚¯ç”»åƒãŒåˆ©ç”¨å¯èƒ½ï¼Ÿ
+        'ˆÈ‘Og—p‚µ‚½Šg‘åƒ}ƒXƒN‰æ‘œ‚ª—˜—p‰Â”\H
         Set stretched_mask_pic = Nothing
         For i = 0 To ImageBufferSize - 1
-            'åŒã˜ãƒ•ã‚¡ã‚¤ãƒ«ï¼Ÿ
+            '“¯‚¶ƒtƒ@ƒCƒ‹H
             If PicBufFname(i) = fname Then
-                'ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã‚‚åŒã˜ï¼Ÿ
+                'ƒIƒvƒVƒ‡ƒ“‚à“¯‚¶H
                 If PicBufIsMask(i) _
                     And PicBufOption2(i) = pic_option2 _
                     And PicBufDW(i) = dw _
@@ -7310,7 +7310,7 @@ EditedPicture:
                     And PicBufSW(i) = sw _
                     And PicBufSH(i) = sh _
                 Then
-                    'ä»¥å‰ä½¿ç”¨ã—ãŸæ‹¡å¤§ãƒã‚¹ã‚¯ç”»åƒã‚’ãã®ã¾ã¾åˆ©ç”¨
+                    'ˆÈ‘Og—p‚µ‚½Šg‘åƒ}ƒXƒN‰æ‘œ‚ğ‚»‚Ì‚Ü‚Ü—˜—p
                     UsePicBuf i
                     Set stretched_mask_pic = MainForm.picBuf(i)
                     'Debug.Print "Reuse " & Format$(i) & " As StretchedMask"
@@ -7320,9 +7320,9 @@ EditedPicture:
         Next
         
         If stretched_mask_pic Is Nothing Then
-            'æ‹¡å¤§ãƒã‚¹ã‚¯ç”»åƒã‚’æ–°è¦ã«ä½œæˆ
+            'Šg‘åƒ}ƒXƒN‰æ‘œ‚ğV‹K‚Éì¬
             
-            'ãƒã‚¹ã‚¯ç”»åƒç”¨ã®é ˜åŸŸã‚’åˆæœŸåŒ–
+            'ƒ}ƒXƒN‰æ‘œ—p‚Ì—Ìˆæ‚ğ‰Šú‰»
             Set mask_pic = MainForm.picTmp
             With mask_pic
                 .Picture = LoadPicture("")
@@ -7330,10 +7330,10 @@ EditedPicture:
                 .Height = orig_height
             End With
             
-            'ãƒã‚¹ã‚¯ç”»åƒã‚’ä½œæˆ
+            'ƒ}ƒXƒN‰æ‘œ‚ğì¬
             MakeMask orig_pic.hDC, mask_pic.hDC, orig_width, orig_height, BGColor
             
-            'æ‹¡å¤§ãƒã‚¹ã‚¯ç”»åƒã«ä½¿ç”¨ã™ã‚‹picBufã‚’é¸æŠ
+            'Šg‘åƒ}ƒXƒN‰æ‘œ‚Ég—p‚·‚épicBuf‚ğ‘I‘ğ
             i = GetPicBuf(display_byte_pixel * orig_width * orig_height)
             PicBufFname(i) = fname
             PicBufIsMask(i) = True
@@ -7347,7 +7347,7 @@ EditedPicture:
             PicBufSH(i) = sh
             'Debug.Print "Use " & Format$(i) & " As StretchedMask"
             
-            'ãƒãƒƒãƒ•ã‚¡ã‚’åˆæœŸåŒ–
+            'ƒoƒbƒtƒ@‚ğ‰Šú‰»
             Set stretched_mask_pic = MainForm.picBuf(i)
             With stretched_mask_pic
                 .Picture = LoadPicture("")
@@ -7355,7 +7355,7 @@ EditedPicture:
                 .Height = dh
             End With
             
-            'ãƒãƒƒãƒ•ã‚¡ã«æ‹¡å¤§ã—ãŸãƒã‚¹ã‚¯ç”»åƒã‚’ä¿å­˜
+            'ƒoƒbƒtƒ@‚ÉŠg‘å‚µ‚½ƒ}ƒXƒN‰æ‘œ‚ğ•Û‘¶
             ret = StretchBlt(stretched_mask_pic.hDC, _
                 0, 0, dw, dh, _
                 mask_pic.hDC, _
@@ -7363,15 +7363,15 @@ EditedPicture:
                 SRCCOPY)
         End If
         
-        'æç”»ã‚’ã‚­ãƒ£ãƒ³ã‚»ãƒ«ï¼Ÿ
+        '•`‰æ‚ğƒLƒƒƒ“ƒZƒ‹H
         If load_only Then
             DrawPicture = True
             Exit Function
         End If
         
-        'ç”»åƒã‚’é€éæç”»
+        '‰æ‘œ‚ğ“§‰ß•`‰æ
         If BGColor = vbWhite Then
-            'èƒŒæ™¯è‰²ãŒç™½
+            '”wŒiF‚ª”’
             ret = BitBlt(pic.hDC, _
                 dx, dy, dw, dh, _
                 stretched_mask_pic.hDC, 0, 0, _
@@ -7382,7 +7382,7 @@ EditedPicture:
                 stretched_pic.hDC, 0, 0, _
                 SRCINVERT)
         Else
-            'èƒŒæ™¯è‰²ãŒç™½ä»¥å¤–
+            '”wŒiF‚ª”’ˆÈŠO
             ret = BitBlt(pic.hDC, _
                 dx, dy, dw, dh, _
                 stretched_mask_pic.hDC, 0, 0, _
@@ -7398,32 +7398,32 @@ EditedPicture:
                 stretched_mask_pic.hDC, 0, 0, _
                 SRCINVERT)
             
-            'æ‹¡å¤§ãƒã‚¹ã‚¯ç”»åƒãŒå†åˆ©ç”¨ã§ããªã„ã®ã§ãƒãƒƒãƒ•ã‚¡ã‚’é–‹æ”¾
+            'Šg‘åƒ}ƒXƒN‰æ‘œ‚ªÄ—˜—p‚Å‚«‚È‚¢‚Ì‚Åƒoƒbƒtƒ@‚ğŠJ•ú
             ReleasePicBuf i
         End If
     ElseIf dw <= 480 And dh <= 480 Then
-        'æ‹¡å¤§ç”»åƒã‚’ä½œæˆã—ãŸå¾Œã€ãƒãƒƒãƒ•ã‚¡ãƒªãƒ³ã‚°ã›ãšã«é€éæç”»
+        'Šg‘å‰æ‘œ‚ğì¬‚µ‚½ŒãAƒoƒbƒtƒ@ƒŠƒ“ƒO‚¹‚¸‚É“§‰ß•`‰æ
         
-        'æ‹¡å¤§ç”»åƒç”¨ã®é ˜åŸŸã‚’ä½œæˆ
+        'Šg‘å‰æ‘œ—p‚Ì—Ìˆæ‚ğì¬
         Set stretched_pic = MainForm.picStretchedTmp(0)
         With stretched_pic
             .width = dw
             .Height = dh
         End With
         
-        'ãƒãƒƒãƒ•ã‚¡ã«æ‹¡å¤§ã—ãŸç”»åƒã‚’ä¿å­˜
+        'ƒoƒbƒtƒ@‚ÉŠg‘å‚µ‚½‰æ‘œ‚ğ•Û‘¶
         ret = StretchBlt(stretched_pic.hDC, _
             0, 0, dw, dh, _
             orig_pic.hDC, _
             0, 0, orig_width, orig_height, _
             SRCCOPY)
         
-        'ä»¥å‰ä½¿ç”¨ã—ãŸãƒã‚¹ã‚¯ç”»åƒãŒåˆ©ç”¨å¯èƒ½ï¼Ÿ
+        'ˆÈ‘Og—p‚µ‚½ƒ}ƒXƒN‰æ‘œ‚ª—˜—p‰Â”\H
         Set mask_pic = Nothing
         For i = 0 To ImageBufferSize - 1
-            'åŒã˜ãƒ•ã‚¡ã‚¤ãƒ«ï¼Ÿ
+            '“¯‚¶ƒtƒ@ƒCƒ‹H
             If PicBufFname(i) = fname Then
-                'ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã‚‚åŒã˜ï¼Ÿ
+                'ƒIƒvƒVƒ‡ƒ“‚à“¯‚¶H
                 If PicBufIsMask(i) _
                     And PicBufOption2(i) = pic_option2 _
                     And PicBufDW(i) = orig_width _
@@ -7433,7 +7433,7 @@ EditedPicture:
                     And PicBufSW(i) = sw _
                     And PicBufSH(i) = sh _
                 Then
-                    'ä»¥å‰ä½¿ç”¨ã—ãŸãƒã‚¹ã‚¯ç”»åƒã‚’ãã®ã¾ã¾åˆ©ç”¨
+                    'ˆÈ‘Og—p‚µ‚½ƒ}ƒXƒN‰æ‘œ‚ğ‚»‚Ì‚Ü‚Ü—˜—p
                     UsePicBuf i
                     Set mask_pic = MainForm.picBuf(i)
                     'Debug.Print "Reuse " & Format$(i) & " As Mask"
@@ -7443,9 +7443,9 @@ EditedPicture:
         Next
         
         If mask_pic Is Nothing Then
-            'æ–°è¦ã«ãƒã‚¹ã‚¯ç”»åƒä½œæˆ
+            'V‹K‚Éƒ}ƒXƒN‰æ‘œì¬
             
-            'ãƒã‚¹ã‚¯ç”»åƒã«ä½¿ç”¨ã™ã‚‹picBufã‚’é¸æŠ
+            'ƒ}ƒXƒN‰æ‘œ‚Ég—p‚·‚épicBuf‚ğ‘I‘ğ
             i = GetPicBuf(display_byte_pixel * orig_width * orig_height)
             PicBufFname(i) = fname
             PicBufIsMask(i) = True
@@ -7459,18 +7459,18 @@ EditedPicture:
             PicBufSH(i) = sh
             'Debug.Print "Use " & Format$(i) & " As Mask"
             
-            'ãƒãƒƒãƒ•ã‚¡ã‚’åˆæœŸåŒ–
+            'ƒoƒbƒtƒ@‚ğ‰Šú‰»
             Set mask_pic = MainForm.picBuf(i)
             With mask_pic
                 .width = orig_width
                 .Height = orig_height
             End With
             
-            'ãƒã‚¹ã‚¯ç”»åƒã‚’ä½œæˆ
+            'ƒ}ƒXƒN‰æ‘œ‚ğì¬
             MakeMask orig_pic.hDC, mask_pic.hDC, orig_width, orig_height, BGColor
         End If
         
-        'æ‹¡å¤§ãƒã‚¹ã‚¯ç”»åƒç”¨ã®é ˜åŸŸã‚’ä½œæˆ
+        'Šg‘åƒ}ƒXƒN‰æ‘œ—p‚Ì—Ìˆæ‚ğì¬
         Set stretched_mask_pic = MainForm.picStretchedTmp(1)
         With stretched_mask_pic
             .Picture = LoadPicture("")
@@ -7478,22 +7478,22 @@ EditedPicture:
             .Height = dh
         End With
         
-        'ãƒã‚¹ã‚¯ç”»åƒã‚’æ‹¡å¤§ã—ã¦æ‹¡å¤§ãƒã‚¹ã‚¯ç”»åƒã‚’ä½œæˆ
+        'ƒ}ƒXƒN‰æ‘œ‚ğŠg‘å‚µ‚ÄŠg‘åƒ}ƒXƒN‰æ‘œ‚ğì¬
         ret = StretchBlt(stretched_mask_pic.hDC, _
             0, 0, dw, dh, _
             mask_pic.hDC, _
             0, 0, orig_width, orig_height, _
             SRCCOPY)
         
-        'æç”»ã‚’ã‚­ãƒ£ãƒ³ã‚»ãƒ«ï¼Ÿ
+        '•`‰æ‚ğƒLƒƒƒ“ƒZƒ‹H
         If load_only Then
             DrawPicture = True
             Exit Function
         End If
         
-        'ç”»åƒã‚’é€éæç”»
+        '‰æ‘œ‚ğ“§‰ß•`‰æ
         If BGColor = vbWhite Then
-            'èƒŒæ™¯è‰²ãŒç™½
+            '”wŒiF‚ª”’
             ret = BitBlt(pic.hDC, _
                 dx, dy, dw, dh, _
                 stretched_mask_pic.hDC, 0, 0, _
@@ -7504,7 +7504,7 @@ EditedPicture:
                 stretched_pic.hDC, 0, 0, _
                 SRCINVERT)
         Else
-            'èƒŒæ™¯è‰²ãŒç™½ä»¥å¤–
+            '”wŒiF‚ª”’ˆÈŠO
             ret = BitBlt(pic.hDC, _
                 dx, dy, dw, dh, _
                 stretched_mask_pic.hDC, 0, 0, _
@@ -7521,7 +7521,7 @@ EditedPicture:
                 SRCINVERT)
         End If
         
-        'ä½¿ç”¨ã—ãŸä¸€æ™‚ç”»åƒé ˜åŸŸã‚’é–‹æ”¾
+        'g—p‚µ‚½ˆê‰æ‘œ—Ìˆæ‚ğŠJ•ú
         With MainForm.picStretchedTmp(0)
             .Picture = LoadPicture("")
             .width = 32
@@ -7533,14 +7533,14 @@ EditedPicture:
             .Height = 32
         End With
     Else
-        'æ‹¡å¤§ç”»åƒã‚’ä½œæˆã›ãšã€StretchBltã§ç›´æ¥æ‹¡å¤§é€éæç”»
+        'Šg‘å‰æ‘œ‚ğì¬‚¹‚¸AStretchBlt‚Å’¼ÚŠg‘å“§‰ß•`‰æ
         
-        'ä»¥å‰ä½¿ç”¨ã—ãŸãƒã‚¹ã‚¯ç”»åƒãŒåˆ©ç”¨å¯èƒ½ï¼Ÿ
+        'ˆÈ‘Og—p‚µ‚½ƒ}ƒXƒN‰æ‘œ‚ª—˜—p‰Â”\H
         Set mask_pic = Nothing
         For i = 0 To ImageBufferSize - 1
-            'åŒã˜ãƒ•ã‚¡ã‚¤ãƒ«ï¼Ÿ
+            '“¯‚¶ƒtƒ@ƒCƒ‹H
             If PicBufFname(i) = fname Then
-                'ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã‚‚åŒã˜ï¼Ÿ
+                'ƒIƒvƒVƒ‡ƒ“‚à“¯‚¶H
                 If PicBufIsMask(i) _
                     And PicBufOption2(i) = pic_option2 _
                     And PicBufDW(i) = orig_width _
@@ -7550,7 +7550,7 @@ EditedPicture:
                     And PicBufSW(i) = sw _
                     And PicBufSH(i) = sh _
                 Then
-                    'ä»¥å‰ä½¿ç”¨ã—ãŸãƒã‚¹ã‚¯ç”»åƒã‚’ãã®ã¾ã¾åˆ©ç”¨
+                    'ˆÈ‘Og—p‚µ‚½ƒ}ƒXƒN‰æ‘œ‚ğ‚»‚Ì‚Ü‚Ü—˜—p
                     UsePicBuf i
                     Set mask_pic = MainForm.picBuf(i)
                     'Debug.Print "Reuse " & Format$(i) & " As Mask"
@@ -7560,9 +7560,9 @@ EditedPicture:
         Next
         
         If mask_pic Is Nothing Then
-            'æ–°è¦ã«ãƒã‚¹ã‚¯ç”»åƒä½œæˆ
+            'V‹K‚Éƒ}ƒXƒN‰æ‘œì¬
             
-            'ãƒã‚¹ã‚¯ç”»åƒã«ä½¿ç”¨ã™ã‚‹picBufã‚’é¸æŠ
+            'ƒ}ƒXƒN‰æ‘œ‚Ég—p‚·‚épicBuf‚ğ‘I‘ğ
             i = GetPicBuf(display_byte_pixel * orig_width * orig_height)
             PicBufFname(i) = fname
             PicBufIsMask(i) = True
@@ -7576,26 +7576,26 @@ EditedPicture:
             PicBufSH(i) = sh
             'Debug.Print "Use " & Format$(i) & " As Mask"
             
-            'ãƒãƒƒãƒ•ã‚¡ã‚’åˆæœŸåŒ–
+            'ƒoƒbƒtƒ@‚ğ‰Šú‰»
             Set mask_pic = MainForm.picBuf(i)
             With mask_pic
                 .width = orig_width
                 .Height = orig_height
             End With
             
-            'ãƒã‚¹ã‚¯ç”»åƒã‚’ä½œæˆ
+            'ƒ}ƒXƒN‰æ‘œ‚ğì¬
             MakeMask orig_pic.hDC, mask_pic.hDC, orig_width, orig_height, BGColor
         End If
         
-        'æç”»ã‚’ã‚­ãƒ£ãƒ³ã‚»ãƒ«ï¼Ÿ
+        '•`‰æ‚ğƒLƒƒƒ“ƒZƒ‹H
         If load_only Then
             DrawPicture = True
             Exit Function
         End If
         
-        'ç”»åƒã‚’é€éæç”»
+        '‰æ‘œ‚ğ“§‰ß•`‰æ
         If BGColor = vbWhite Then
-            'èƒŒæ™¯è‰²ãŒç™½
+            '”wŒiF‚ª”’
             ret = StretchBlt(pic.hDC, _
                 dx, dy, dw, dh, _
                 mask_pic.hDC, _
@@ -7608,7 +7608,7 @@ EditedPicture:
                 0, 0, orig_width, orig_height, _
                 SRCINVERT)
         Else
-            'èƒŒæ™¯è‰²ãŒç™½ä»¥å¤–
+            '”wŒiF‚ª”’ˆÈŠO
             ret = StretchBlt(pic.hDC, _
                 dx, dy, dw, dh, _
                 mask_pic.hDC, _
@@ -7626,7 +7626,7 @@ EditedPicture:
                 0, 0, orig_width, orig_height, _
                 SRCINVERT)
             
-            'ãƒã‚¹ã‚¯ç”»åƒãŒå†åˆ©ç”¨ã§ããªã„ã®ã§ãƒãƒƒãƒ•ã‚¡ã‚’é–‹æ”¾
+            'ƒ}ƒXƒN‰æ‘œ‚ªÄ—˜—p‚Å‚«‚È‚¢‚Ì‚Åƒoƒbƒtƒ@‚ğŠJ•ú
             ReleasePicBuf i
         End If
     End If
@@ -7634,10 +7634,10 @@ EditedPicture:
 DrewPicture:
     
     If permanent Then
-        'èƒŒæ™¯ã¸ã®æãè¾¼ã¿
+        '”wŒi‚Ö‚Ì•`‚«‚İ
         IsMapDirty = True
         With MainForm
-            'ãƒã‚¹ã‚¯å…¥ã‚ŠèƒŒæ™¯ç”»åƒç”»é¢ã«ã‚‚ç”»åƒã‚’æãè¾¼ã‚€
+            'ƒ}ƒXƒN“ü‚è”wŒi‰æ‘œ‰æ–Ê‚É‚à‰æ‘œ‚ğ•`‚«‚Ş
             ret = BitBlt(.picMaskedBack.hDC, _
                 dx, dy, dw, dh, _
                 pic.hDC, dx, dy, _
@@ -7654,7 +7654,7 @@ DrewPicture:
             Next
         End With
     ElseIf Not on_msg_window And Not on_status_window Then
-        'è¡¨ç¤ºç”»åƒã‚’æ¶ˆå»ã™ã‚‹éš›ã«ä½¿ã†æç”»é ˜åŸŸã‚’è¨­å®š
+        '•\¦‰æ‘œ‚ğÁ‹‚·‚éÛ‚Ég‚¤•`‰æ—Ìˆæ‚ğİ’è
         PaintedAreaX1 = MinLng(PaintedAreaX1, MaxLng(dx, 0))
         PaintedAreaY1 = MinLng(PaintedAreaY1, MaxLng(dy, 0))
         PaintedAreaX2 = MaxLng(PaintedAreaX2, MinLng(dx + dw, MainPWidth - 1))
@@ -7665,7 +7665,7 @@ DrewPicture:
         IsCursorVisible = False
         
         If keep_picture Then
-            'picMain(1)ã«ã‚‚æç”»
+            'picMain(1)‚É‚à•`‰æ
             ret = BitBlt(MainForm.picMain(1).hDC, _
                 dx, dy, dw, dh, _
                 pic.hDC, dx, dy, _
@@ -7676,18 +7676,18 @@ DrewPicture:
     DrawPicture = True
 End Function
 
-'ç”»åƒãƒãƒƒãƒ•ã‚¡ã‚’ä½œæˆ
+'‰æ‘œƒoƒbƒtƒ@‚ğì¬
 Public Sub MakePicBuf()
 Dim i As Integer
 
-    'ç”»åƒãƒãƒƒãƒ•ã‚¡ç”¨ã®PictureBoxã‚’å‹•çš„ã«ç”Ÿæˆã™ã‚‹
+    '‰æ‘œƒoƒbƒtƒ@—p‚ÌPictureBox‚ğ“®“I‚É¶¬‚·‚é
     With MainForm
         For i = 1 To ImageBufferSize - 1
             Load .picBuf(i)
         Next
     End With
     
-    'ç”»åƒãƒãƒƒãƒ•ã‚¡ç®¡ç†ç”¨é…åˆ—ã‚’åˆæœŸåŒ–
+    '‰æ‘œƒoƒbƒtƒ@ŠÇ——p”z—ñ‚ğ‰Šú‰»
     ReDim PicBufDate(ImageBufferSize)
     ReDim PicBufSize(ImageBufferSize)
     ReDim PicBufFname(ImageBufferSize - 1)
@@ -7702,12 +7702,12 @@ Dim i As Integer
     ReDim PicBufIsMask(ImageBufferSize - 1)
 End Sub
 
-'ä½¿ç”¨å¯èƒ½ãªç”»åƒãƒãƒƒãƒ•ã‚¡ã‚’æ¤œç´¢
+'g—p‰Â”\‚È‰æ‘œƒoƒbƒtƒ@‚ğŒŸõ
 Private Function GetPicBuf(Optional ByVal buf_size As Long) As Integer
 Dim total_size As Long, oldest_buf As Integer, used_buf_num As Integer
 Dim i As Integer, tmp As Long
     
-    'ç”»åƒãƒãƒƒãƒ•ã‚¡ã®ç·ã‚µã‚¤ã‚ºåŠã³ä½¿ç”¨ã•ã‚Œã¦ã„ã‚‹ãƒãƒƒãƒ•ã‚¡æ•°ã‚’èª¿ã¹ã‚‹
+    '‰æ‘œƒoƒbƒtƒ@‚Ì‘ƒTƒCƒY‹y‚Ñg—p‚³‚ê‚Ä‚¢‚éƒoƒbƒtƒ@”‚ğ’²‚×‚é
     total_size = buf_size
     For i = 0 To ImageBufferSize - 1
         total_size = total_size + PicBufSize(i)
@@ -7716,12 +7716,12 @@ Dim i As Integer, tmp As Long
         End If
     Next
     
-    'ç·ã‚µã‚¤ã‚ºãŒMaxImageBufferByteSizeã‚’è¶…ãˆã¦ã—ã¾ã†å ´åˆã¯ç·ã‚µã‚¤ã‚ºãŒ
-    'MaxImageBufferByteSizeä»¥ä¸‹ã«ãªã‚‹ã¾ã§ãƒãƒƒãƒ•ã‚¡ã‚’é–‹æ”¾ã™ã‚‹ã€‚
-    'ãŸã ã—ä¸€åº¦ã®æç”»ã§æœ€å¤§ã§5æšã®ãƒãƒƒãƒ•ã‚¡ãŒä½¿ã‚ã‚Œã‚‹ãŸã‚ã€æœ€æ–°ã®4ã¤ã®
-    'ãƒãƒƒãƒ•ã‚¡ã¯ã‚­ãƒ¼ãƒ—ã—ã¦ãŠãã€‚
+    '‘ƒTƒCƒY‚ªMaxImageBufferByteSize‚ğ’´‚¦‚Ä‚µ‚Ü‚¤ê‡‚Í‘ƒTƒCƒY‚ª
+    'MaxImageBufferByteSizeˆÈ‰º‚É‚È‚é‚Ü‚Åƒoƒbƒtƒ@‚ğŠJ•ú‚·‚éB
+    '‚½‚¾‚µˆê“x‚Ì•`‰æ‚ÅÅ‘å‚Å5–‡‚Ìƒoƒbƒtƒ@‚ªg‚í‚ê‚é‚½‚ßAÅV‚Ì4‚Â‚Ì
+    'ƒoƒbƒtƒ@‚ÍƒL[ƒv‚µ‚Ä‚¨‚­B
     Do While total_size > MaxImageBufferByteSize And used_buf_num > 4
-        'æœ€ã‚‚é•·ã„é–“ä½¿ã‚ã‚Œã¦ã„ãªã„ãƒãƒƒãƒ•ã‚¡ã‚’æ¢ã™
+        'Å‚à’·‚¢ŠÔg‚í‚ê‚Ä‚¢‚È‚¢ƒoƒbƒtƒ@‚ğ’T‚·
         tmp = 100000000
         For i = 0 To ImageBufferSize - 1
             If PicBufFname(i) <> "" Then
@@ -7732,16 +7732,16 @@ Dim i As Integer, tmp As Long
             End If
         Next
         
-        'ãƒãƒƒãƒ•ã‚¡ã‚’é–‹æ”¾
+        'ƒoƒbƒtƒ@‚ğŠJ•ú
         ReleasePicBuf oldest_buf
         used_buf_num = used_buf_num - 1
         
-        'ç·ã‚µã‚¤ã‚ºæ•°ã‚’æ¸›å°‘ã•ã›ã‚‹
+        '‘ƒTƒCƒY”‚ğŒ¸­‚³‚¹‚é
         total_size = total_size - PicBufSize(oldest_buf)
         PicBufSize(oldest_buf) = 0
     Loop
     
-    'æœ€ã‚‚é•·ã„é–“ä½¿ã‚ã‚Œã¦ã„ãªã„ãƒãƒƒãƒ•ã‚¡ã‚’æ¢ã™
+    'Å‚à’·‚¢ŠÔg‚í‚ê‚Ä‚¢‚È‚¢ƒoƒbƒtƒ@‚ğ’T‚·
     GetPicBuf = 0
     For i = 1 To ImageBufferSize - 1
         If PicBufDate(i) < PicBufDate(GetPicBuf) Then
@@ -7749,14 +7749,14 @@ Dim i As Integer, tmp As Long
         End If
     Next
     
-    'ç”»åƒã®ã‚µã‚¤ã‚ºã‚’è¨˜éŒ²ã—ã¦ãŠã
+    '‰æ‘œ‚ÌƒTƒCƒY‚ğ‹L˜^‚µ‚Ä‚¨‚­
     PicBufSize(GetPicBuf) = buf_size
     
-    'ä½¿ç”¨ã™ã‚‹ã“ã¨ã‚’è¨˜éŒ²ã™ã‚‹
+    'g—p‚·‚é‚±‚Æ‚ğ‹L˜^‚·‚é
     UsePicBuf GetPicBuf
 End Function
 
-'ç”»åƒãƒãƒƒãƒ•ã‚¡ã‚’é–‹æ”¾ã™ã‚‹
+'‰æ‘œƒoƒbƒtƒ@‚ğŠJ•ú‚·‚é
 Private Sub ReleasePicBuf(ByVal idx As Integer)
     PicBufFname(idx) = ""
     With MainForm.picBuf(idx)
@@ -7766,16 +7766,16 @@ Private Sub ReleasePicBuf(ByVal idx As Integer)
     End With
 End Sub
 
-'ç”»åƒãƒãƒƒãƒ•ã‚¡ã®ä½¿ç”¨è¨˜éŒ²ã‚’ã¤ã‘ã‚‹
+'‰æ‘œƒoƒbƒtƒ@‚Ìg—p‹L˜^‚ğ‚Â‚¯‚é
 Private Sub UsePicBuf(ByVal idx As Integer)
     PicBufDateCount = PicBufDateCount + 1
     PicBufDate(idx) = PicBufDateCount
 End Sub
 
 
-' === æ–‡å­—åˆ—æç”»ã«é–¢ã™ã‚‹å‡¦ç† ===
+' === •¶š—ñ•`‰æ‚ÉŠÖ‚·‚éˆ— ===
 
-'ãƒ¡ã‚¤ãƒ³ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã«æ–‡å­—åˆ—ã‚’è¡¨ç¤ºã™ã‚‹
+'ƒƒCƒ“ƒEƒBƒ“ƒhƒE‚É•¶š—ñ‚ğ•\¦‚·‚é
 Public Sub DrawString(msg As String, ByVal X As Long, ByVal Y As Long, _
     Optional ByVal without_cr As Boolean)
 Dim tx As Integer, ty As Integer
@@ -7786,9 +7786,9 @@ Static font_smoothing As Long
 Static init_draw_string As Boolean
 
     If PermanentStringMode Then
-        'èƒŒæ™¯æ›¸ãè¾¼ã¿
+        '”wŒi‘‚«‚İ
         Set pic = MainForm.picBack
-        'ãƒ•ã‚©ãƒ³ãƒˆè¨­å®šã‚’å¤‰æ›´
+        'ƒtƒHƒ“ƒgİ’è‚ğ•ÏX
         With MainForm.picBack
             .ForeColor = MainForm.picMain(0).ForeColor
             If .Font.Name <> MainForm.picMain(0).Font.Name Then
@@ -7812,27 +7812,27 @@ Static init_draw_string As Boolean
             .Font.Italic = MainForm.picMain(0).Font.Italic
         End With
     Else
-        'é€šå¸¸ã®æ›¸ãè¾¼ã¿
+        '’Êí‚Ì‘‚«‚İ
         Set pic = MainForm.picMain(0)
         SaveScreen
     End If
     
-    'ãƒ•ã‚©ãƒ³ãƒˆãŒã‚¹ãƒ ãƒ¼ã‚¸ãƒ³ã‚°è¡¨ç¤ºã•ã‚Œã¦ã„ã‚‹ã‹å‚ç…§
+    'ƒtƒHƒ“ƒg‚ªƒXƒ€[ƒWƒ“ƒO•\¦‚³‚ê‚Ä‚¢‚é‚©QÆ
     If Not init_draw_string Then
         Call GetSystemParametersInfo(SPI_GETFONTSMOOTHING, 0, font_smoothing, 0)
         init_draw_string = True
     End If
     
-    'ãƒ•ã‚©ãƒ³ãƒˆã‚’ã‚¹ãƒ ãƒ¼ã‚¸ãƒ³ã‚°ã™ã‚‹ã‚ˆã†ã«è¨­å®š
+    'ƒtƒHƒ“ƒg‚ğƒXƒ€[ƒWƒ“ƒO‚·‚é‚æ‚¤‚Éİ’è
     If font_smoothing = 0 Then
         Call SetSystemParametersInfo(SPI_SETFONTSMOOTHING, 1, 0, 0)
     End If
     
     With pic
-        'ç¾åœ¨ã®Xä½ç½®ã‚’è¨˜éŒ²ã—ã¦ãŠã
+        'Œ»İ‚ÌXˆÊ’u‚ğ‹L˜^‚µ‚Ä‚¨‚­
         prev_cx = .CurrentX
         
-        'æ›¸ãè¾¼ã¿å…ˆã®åº§æ¨™ã‚’æ±‚ã‚ã‚‹
+        '‘‚«‚İæ‚ÌÀ•W‚ğ‹‚ß‚é
         If HCentering Then
             .CurrentX = (.width - .TextWidth(msg)) \ 2
         Else
@@ -7851,10 +7851,10 @@ Static init_draw_string As Boolean
         ty = .CurrentY
         
         If Not without_cr Then
-            'æ”¹è¡Œã‚ã‚Š
+            '‰üs‚ ‚è
             pic.Print msg
             
-            'èƒŒæ™¯æ›¸ãè¾¼ã¿ã®å ´åˆ
+            '”wŒi‘‚«‚İ‚Ìê‡
             If PermanentStringMode Then
                 With MainForm.picMaskedBack
                     .CurrentX = tx
@@ -7864,7 +7864,7 @@ Static init_draw_string As Boolean
                 IsMapDirty = True
             End If
             
-            'ä¿æŒã‚ªãƒ—ã‚·ãƒ§ãƒ³ä½¿ç”¨æ™‚
+            '•ÛƒIƒvƒVƒ‡ƒ“g—p
             If KeepStringMode Then
                 With MainForm.picMain(1)
                     .CurrentX = tx
@@ -7882,17 +7882,17 @@ Static init_draw_string As Boolean
                 MainForm.picMain(1).Print msg
             End If
             
-            'æ¬¡å›ã®æ›¸ãè¾¼ã¿ã®ãŸã‚ã€Xåº§æ¨™ä½ç½®ã‚’è¨­å®šã—ç›´ã™
+            'Ÿ‰ñ‚Ì‘‚«‚İ‚Ì‚½‚ßAXÀ•WˆÊ’u‚ğİ’è‚µ’¼‚·
             If X <> DEFAULT_LEVEL Then
                 .CurrentX = X
             Else
                 .CurrentX = prev_cx
             End If
         Else
-            'æ”¹è¡Œãªã—
+            '‰üs‚È‚µ
             pic.Print msg;
             
-            'èƒŒæ™¯æ›¸ãè¾¼ã¿ã®å ´åˆ
+            '”wŒi‘‚«‚İ‚Ìê‡
             If PermanentStringMode Then
                 With MainForm.picMaskedBack
                     .CurrentX = tx
@@ -7902,7 +7902,7 @@ Static init_draw_string As Boolean
                 IsMapDirty = True
             End If
             
-            'ä¿æŒã‚ªãƒ—ã‚·ãƒ§ãƒ³ä½¿ç”¨æ™‚
+            '•ÛƒIƒvƒVƒ‡ƒ“g—p
             If KeepStringMode Then
                 With MainForm.picMain(1)
                     .CurrentX = tx
@@ -7913,7 +7913,7 @@ Static init_draw_string As Boolean
         End If
     End With
     
-    'ãƒ•ã‚©ãƒ³ãƒˆã®ã‚¹ãƒ ãƒ¼ã‚¸ãƒ³ã‚°ã«é–¢ã™ã‚‹è¨­å®šã‚’å…ƒã«æˆ»ã™
+    'ƒtƒHƒ“ƒg‚ÌƒXƒ€[ƒWƒ“ƒO‚ÉŠÖ‚·‚éİ’è‚ğŒ³‚É–ß‚·
     If font_smoothing = 0 Then
         Call SetSystemParametersInfo(SPI_SETFONTSMOOTHING, 0, 0, 0)
     End If
@@ -7928,7 +7928,7 @@ Static init_draw_string As Boolean
     End If
 End Sub
 
-'ãƒ¡ã‚¤ãƒ³ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã«æ–‡å­—åˆ—ã‚’è¡¨ç¤º (ã‚·ã‚¹ãƒ†ãƒ ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸)
+'ƒƒCƒ“ƒEƒBƒ“ƒhƒE‚É•¶š—ñ‚ğ•\¦ (ƒVƒXƒeƒ€ƒƒbƒZ[ƒW)
 Public Sub DrawSysString(ByVal X As Integer, ByVal Y As Integer, msg As String, _
     Optional ByVal without_refresh As Boolean)
 Dim prev_color As Long
@@ -7938,7 +7938,7 @@ Dim is_bold As Boolean
 Dim is_italic As Boolean
 Dim sf As StdFont
     
-    'è¡¨ç¤ºä½ç½®ãŒç”»é¢å¤–ï¼Ÿ
+    '•\¦ˆÊ’u‚ª‰æ–ÊŠOH
     If X < MapX - MainWidth \ 2 Or MapX + MainWidth \ 2 < X _
         Or Y < MapY - MainHeight \ 2 Or MapY + MainHeight \ 2 < Y _
     Then
@@ -7948,19 +7948,19 @@ Dim sf As StdFont
     SaveScreen
     
     With MainForm.picMain(0)
-        'ç¾åœ¨ã®ãƒ•ã‚©ãƒ³ãƒˆè¨­å®šã‚’ä¿å­˜
+        'Œ»İ‚ÌƒtƒHƒ“ƒgİ’è‚ğ•Û‘¶
         prev_color = .ForeColor
         prev_size = .Font.Size
         prev_name = .Font.Name
         is_bold = .Font.Bold
         is_italic = .Font.Italic
         
-        'ãƒ•ã‚©ãƒ³ãƒˆè¨­å®šã‚’ã‚·ã‚¹ãƒ†ãƒ ç”¨ã«åˆ‡ã‚Šæ›¿ãˆ
+        'ƒtƒHƒ“ƒgİ’è‚ğƒVƒXƒeƒ€—p‚ÉØ‚è‘Ö‚¦
         .ForeColor = vbBlack
         .FontTransparent = False
-        If .Font.Name <> "ï¼­ï¼³ ï¼°æ˜æœ" Then
+        If .Font.Name <> "‚l‚r ‚o–¾’©" Then
             Set sf = New StdFont
-            sf.Name = "ï¼­ï¼³ ï¼°æ˜æœ"
+            sf.Name = "‚l‚r ‚o–¾’©"
             Set .Font = sf
         End If
         With .Font
@@ -7974,12 +7974,12 @@ Dim sf As StdFont
             .Italic = False
         End With
         
-        'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã®æ›¸ãè¾¼ã¿
+        'ƒƒbƒZ[ƒW‚Ì‘‚«‚İ
         .CurrentX = MapToPixelX(X) + (32 - .TextWidth(msg)) \ 2 - 1
         .CurrentY = MapToPixelY(Y + 1) - .TextHeight(msg)
         MainForm.picMain(0).Print msg
         
-        'ãƒ•ã‚©ãƒ³ãƒˆè¨­å®šã‚’å…ƒã«æˆ»ã™
+        'ƒtƒHƒ“ƒgİ’è‚ğŒ³‚É–ß‚·
         .ForeColor = prev_color
         .FontTransparent = True
         If .Font.Name <> prev_name Then
@@ -7993,7 +7993,7 @@ Dim sf As StdFont
             .Italic = is_italic
         End With
         
-        'è¡¨ç¤ºã‚’æ›´æ–°
+        '•\¦‚ğXV
         If Not without_refresh Then
             .Refresh
         End If
@@ -8006,14 +8006,14 @@ Dim sf As StdFont
 End Sub
 
 
-' === ç”»åƒæ¶ˆå»ã«é–¢ã™ã‚‹å‡¦ç† ===
+' === ‰æ‘œÁ‹‚ÉŠÖ‚·‚éˆ— ===
 
-'æç”»ã—ãŸç”»åƒã‚’æ¶ˆå»ã§ãã‚‹ã‚ˆã†ã«å…ƒç”»åƒã‚’ä¿å­˜ã™ã‚‹
+'•`‰æ‚µ‚½‰æ‘œ‚ğÁ‹‚Å‚«‚é‚æ‚¤‚ÉŒ³‰æ‘œ‚ğ•Û‘¶‚·‚é
 Public Sub SaveScreen()
 Dim ret As Long
 
     If Not ScreenIsSaved Then
-        'ç”»åƒã‚’picMain(1)ã«ä¿å­˜
+        '‰æ‘œ‚ğpicMain(1)‚É•Û‘¶
         With MainForm
              ret = BitBlt(.picMain(1).hDC, 0, 0, MainPWidth, MainPHeight, _
                  .picMain(0).hDC, 0, 0, SRCCOPY)
@@ -8022,7 +8022,7 @@ Dim ret As Long
     End If
 End Sub
 
-'æç”»ã—ãŸã‚°ãƒ©ãƒ•ã‚£ãƒƒã‚¯ã‚’æ¶ˆå»
+'•`‰æ‚µ‚½ƒOƒ‰ƒtƒBƒbƒN‚ğÁ‹
 Public Sub ClearPicture()
 Dim pawidth As Integer, paheight As Integer
 Dim ret As Long
@@ -8050,7 +8050,7 @@ Dim ret As Long
     End With
 End Sub
 
-'æç”»ã—ãŸã‚°ãƒ©ãƒ•ã‚£ãƒƒã‚¯ã®ä¸€éƒ¨ã‚’æ¶ˆå»
+'•`‰æ‚µ‚½ƒOƒ‰ƒtƒBƒbƒN‚Ìˆê•”‚ğÁ‹
 Public Sub ClearPicture2(ByVal x1 As Long, ByVal y1 As Long, _
     ByVal x2 As Long, ByVal y2 As Long)
 Dim ret As Long
@@ -8069,9 +8069,9 @@ Dim ret As Long
 End Sub
 
 
-' === ç”»é¢ãƒ­ãƒƒã‚¯ã«é–¢ã™ã‚‹å‡¦ç† ===
+' === ‰æ–ÊƒƒbƒN‚ÉŠÖ‚·‚éˆ— ===
 
-'ï¼§ï¼µï¼©ã‚’ãƒ­ãƒƒã‚¯ã—ã€ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‹ã‚‰ã®å…¥åŠ›ã‚’ç„¡åŠ¹ã«ã™ã‚‹
+'‚f‚t‚h‚ğƒƒbƒN‚µAƒvƒŒƒCƒ„[‚©‚ç‚Ì“ü—Í‚ğ–³Œø‚É‚·‚é
 Public Sub LockGUI()
     IsGUILocked = True
     With MainForm
@@ -8080,7 +8080,7 @@ Public Sub LockGUI()
     End With
 End Sub
 
-'ï¼§ï¼µï¼©ã®ãƒ­ãƒƒã‚¯ã‚’è§£é™¤ã—ã€ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‹ã‚‰ã®å…¥åŠ›ã‚’æœ‰åŠ¹ã«ã™ã‚‹
+'‚f‚t‚h‚ÌƒƒbƒN‚ğ‰ğœ‚µAƒvƒŒƒCƒ„[‚©‚ç‚Ì“ü—Í‚ğ—LŒø‚É‚·‚é
 Public Sub UnlockGUI()
     IsGUILocked = False
     With MainForm
@@ -8090,9 +8090,9 @@ Public Sub UnlockGUI()
 End Sub
 
 
-' === ãƒã‚¦ã‚¹ã‚«ãƒ¼ã‚½ãƒ«ã®è‡ªå‹•ç§»å‹•ã«é–¢ã™ã‚‹å‡¦ç† ===
+' === ƒ}ƒEƒXƒJ[ƒ\ƒ‹‚Ì©“®ˆÚ“®‚ÉŠÖ‚·‚éˆ— ===
 
-'ç¾åœ¨ã®ãƒã‚¦ã‚¹ã‚«ãƒ¼ã‚½ãƒ«ã®ä½ç½®ã‚’è¨˜éŒ²
+'Œ»İ‚Ìƒ}ƒEƒXƒJ[ƒ\ƒ‹‚ÌˆÊ’u‚ğ‹L˜^
 Public Sub SaveCursorPos()
 Dim PT As POINTAPI
 
@@ -8103,26 +8103,26 @@ Dim PT As POINTAPI
     NewCursorY = 0
 End Sub
 
-'ãƒã‚¦ã‚¹ã‚«ãƒ¼ã‚½ãƒ«ã‚’ç§»å‹•ã™ã‚‹
+'ƒ}ƒEƒXƒJ[ƒ\ƒ‹‚ğˆÚ“®‚·‚é
 Public Sub MoveCursorPos(cursor_mode As String, Optional ByVal t As Unit)
 Dim tx As Long, ty As Long, i As Long, num As Long
 Dim ret As Long, prev_lock As Boolean
 Dim PT As POINTAPI
     
-    'ãƒã‚¦ã‚¹ã‚«ãƒ¼ã‚½ãƒ«ã®ä½ç½®ã‚’åå¾—
+    'ƒ}ƒEƒXƒJ[ƒ\ƒ‹‚ÌˆÊ’u‚ğû“¾
     GetCursorPos PT
     
-    'ç¾åœ¨ã®ä½ç½®ã‚’è¨˜éŒ²ã—ã¦ãŠã
+    'Œ»İ‚ÌˆÊ’u‚ğ‹L˜^‚µ‚Ä‚¨‚­
     If PrevCursorX = 0 _
-        And cursor_mode <> "ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦" _
+        And cursor_mode <> "ƒƒbƒZ[ƒWƒEƒBƒ“ƒhƒE" _
     Then
         SaveCursorPos
     End If
     
-    'ã‚«ãƒ¼ã‚½ãƒ«è‡ªå‹•ç§»å‹•
+    'ƒJ[ƒ\ƒ‹©“®ˆÚ“®
     If t Is Nothing Then
-        If cursor_mode = "ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦" Then
-            'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã¾ã§ç§»å‹•
+        If cursor_mode = "ƒƒbƒZ[ƒWƒEƒBƒ“ƒhƒE" Then
+            'ƒƒbƒZ[ƒWƒEƒBƒ“ƒhƒE‚Ü‚ÅˆÚ“®
             With frmMessage
                 If PT.X < (.Left + 0.05 * .width) \ Screen.TwipsPerPixelX Then
                     tx = (.Left + 0.05 * .width) \ Screen.TwipsPerPixelX
@@ -8144,7 +8144,7 @@ Dim PT As POINTAPI
                 End If
             End With
         Else
-            'ãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹ã¾ã§ç§»å‹•
+            'ƒŠƒXƒgƒ{ƒbƒNƒX‚Ü‚ÅˆÚ“®
             With frmListBox
                 If PT.X < (.Left + 0.1 * .width) \ Screen.TwipsPerPixelX Then
                     tx = (.Left + 0.1 * .width) \ Screen.TwipsPerPixelX
@@ -8154,18 +8154,18 @@ Dim PT As POINTAPI
                     tx = PT.X
                 End If
                 
-                'é¸æŠã™ã‚‹ã‚¢ã‚¤ãƒ†ãƒ 
-                If cursor_mode = "æ­¦å™¨é¸æŠ" Then
-                    'æ­¦å™¨é¸æŠã®å ´åˆã¯é¸æŠå¯èƒ½ãªæœ€å¾Œã®ã‚¢ã‚¤ãƒ†ãƒ ã«
+                '‘I‘ğ‚·‚éƒAƒCƒeƒ€
+                If cursor_mode = "•Ší‘I‘ğ" Then
+                    '•Ší‘I‘ğ‚Ìê‡‚Í‘I‘ğ‰Â”\‚ÈÅŒã‚ÌƒAƒCƒeƒ€‚É
                     i = .lstItems.ListCount
                     Do
-                        If Not ListItemFlag(i) And InStr(.lstItems.list(i), "æ´è­·æ”»æ’ƒï¼š") = 0 Then
+                        If Not ListItemFlag(i) And InStr(.lstItems.list(i), "‰‡ŒìUŒ‚F") = 0 Then
                             Exit Do
                         End If
                         i = i - 1
                     Loop While i > 1
                 Else
-                    'ãã†ã§ãªã‘ã‚Œã°æœ€åˆã®ã‚¢ã‚¤ãƒ†ãƒ ã«
+                    '‚»‚¤‚Å‚È‚¯‚ê‚ÎÅ‰‚ÌƒAƒCƒeƒ€‚É
                     i = .lstItems.TopIndex + 1
                 End If
                 
@@ -8176,7 +8176,7 @@ Dim PT As POINTAPI
             End With
         End If
     Else
-        'ãƒ¦ãƒ‹ãƒƒãƒˆä¸Šã¾ã§ç§»å‹•
+        'ƒ†ƒjƒbƒgã‚Ü‚ÅˆÚ“®
         With MainForm
 'MOD START 240a
 '            If MainWidth = 15 Then
@@ -8209,10 +8209,10 @@ Dim PT As POINTAPI
         End With
     End If
     
-    'ä½•å›ã«åˆ†ã‘ã¦ç§»å‹•ã™ã‚‹ã‹è¨ˆç®—
+    '‰½‰ñ‚É•ª‚¯‚ÄˆÚ“®‚·‚é‚©ŒvZ
     num = Sqr((tx - PT.X) ^ 2 + (ty - PT.Y) ^ 2) \ 25 + 1
     
-    'ã‚«ãƒ¼ã‚½ãƒ«ã‚’ç§»å‹•
+    'ƒJ[ƒ\ƒ‹‚ğˆÚ“®
     prev_lock = IsGUILocked
     IsGUILocked = True
     IsStatusWindowDisabled = True
@@ -8225,36 +8225,36 @@ Dim PT As POINTAPI
     IsStatusWindowDisabled = False
     IsGUILocked = prev_lock
     
-    'æ–°ã—ã„ã‚«ãƒ¼ã‚½ãƒ«ä½ç½®ã‚’è¨˜éŒ²
+    'V‚µ‚¢ƒJ[ƒ\ƒ‹ˆÊ’u‚ğ‹L˜^
     If NewCursorX = 0 Then
         NewCursorX = tx
         NewCursorY = ty
     End If
 End Sub
 
-'ãƒã‚¦ã‚¹ã‚«ãƒ¼ã‚½ãƒ«ã‚’å…ƒã®ä½ç½®ã«æˆ»ã™
+'ƒ}ƒEƒXƒJ[ƒ\ƒ‹‚ğŒ³‚ÌˆÊ’u‚É–ß‚·
 Public Sub RestoreCursorPos()
 Dim tx As Integer, ty As Integer, i As Integer, num As Integer
 Dim ret As Long
 Dim PT As POINTAPI
     
-    'ãƒ¦ãƒ‹ãƒƒãƒˆãŒé¸æŠã•ã‚Œã¦ã„ã‚Œã°ãã®å ´æ‰€ã¾ã§æˆ»ã™
+    'ƒ†ƒjƒbƒg‚ª‘I‘ğ‚³‚ê‚Ä‚¢‚ê‚Î‚»‚ÌêŠ‚Ü‚Å–ß‚·
     If Not SelectedUnit Is Nothing Then
-        If SelectedUnit.Status = "å‡ºæ’ƒ" Then
-            MoveCursorPos "ãƒ¦ãƒ‹ãƒƒãƒˆé¸æŠ", SelectedUnit
+        If SelectedUnit.Status = "oŒ‚" Then
+            MoveCursorPos "ƒ†ƒjƒbƒg‘I‘ğ", SelectedUnit
             Exit Sub
         End If
     End If
     
-    'æˆ»ã‚‹ã¹ãä½ç½®ãŒè¨­å®šã•ã‚Œã¦ã„ãªã„ï¼Ÿ
+    '–ß‚é‚×‚«ˆÊ’u‚ªİ’è‚³‚ê‚Ä‚¢‚È‚¢H
     If PrevCursorX = 0 And PrevCursorY = 0 Then
         Exit Sub
     End If
     
-    'ç¾åœ¨ã®ã‚«ãƒ¼ã‚½ãƒ«ä½ç½®åå¾—
+    'Œ»İ‚ÌƒJ[ƒ\ƒ‹ˆÊ’uû“¾
     GetCursorPos PT
     
-    'ä»¥å‰ã®ä½ç½®ã¾ã§ã‚«ãƒ¼ã‚½ãƒ«è‡ªå‹•ç§»å‹•
+    'ˆÈ‘O‚ÌˆÊ’u‚Ü‚ÅƒJ[ƒ\ƒ‹©“®ˆÚ“®
     With frmListBox
         tx = PrevCursorX
         ty = PrevCursorY
@@ -8269,15 +8269,15 @@ Dim PT As POINTAPI
         Next
     End With
     
-    'æˆ»ã‚Šä½ç½®ã‚’åˆæœŸåŒ–
+    '–ß‚èˆÊ’u‚ğ‰Šú‰»
     PrevCursorX = 0
     PrevCursorY = 0
 End Sub
 
 
-' === ã‚¿ã‚¤ãƒˆãƒ«ç”»é¢è¡¨ç¤ºã«é–¢ã™ã‚‹å‡¦ç† ===
+' === ƒ^ƒCƒgƒ‹‰æ–Ê•\¦‚ÉŠÖ‚·‚éˆ— ===
 
-'ã‚¿ã‚¤ãƒˆãƒ«ç”»é¢ã‚’è¡¨ç¤º
+'ƒ^ƒCƒgƒ‹‰æ–Ê‚ğ•\¦
 Public Sub OpenTitleForm()
     Load frmTitle
     
@@ -8288,16 +8288,16 @@ Public Sub OpenTitleForm()
     frmTitle.Refresh
 End Sub
 
-'ã‚¿ã‚¤ãƒˆãƒ«ç”»é¢ã‚’é–‰ã˜ã‚‹
+'ƒ^ƒCƒgƒ‹‰æ–Ê‚ğ•Â‚¶‚é
 Public Sub CloseTitleForm()
     Unload frmTitle
     Set frmTitle = Nothing
 End Sub
 
 
-' === ã€ŒNow Loading...ã€è¡¨ç¤ºã«é–¢ã™ã‚‹å‡¦ç† ===
+' === uNow Loading...v•\¦‚ÉŠÖ‚·‚éˆ— ===
 
-'ã€ŒNow Loading...ã€ã®ç”»é¢ã‚’è¡¨ç¤º
+'uNow Loading...v‚Ì‰æ–Ê‚ğ•\¦
 Public Sub OpenNowLoadingForm()
     Screen.MousePointer = 11
     Load frmNowLoading
@@ -8309,20 +8309,20 @@ Public Sub OpenNowLoadingForm()
     End With
 End Sub
 
-'ã€ŒNow Loading...ã€ã®ç”»é¢ã‚’æ¶ˆå»
+'uNow Loading...v‚Ì‰æ–Ê‚ğÁ‹
 Public Sub CloseNowLoadingForm()
     Unload frmNowLoading
     Set frmNowLoading = Nothing
     Screen.MousePointer = 0
 End Sub
 
-'ã€ŒNow Loading...ã€ã®ãƒãƒ¼ã‚’ï¼‘æ®µéšé€²è¡Œã•ã›ã‚‹
+'uNow Loading...v‚Ìƒo[‚ğ‚P’iŠKis‚³‚¹‚é
 Public Sub DisplayLoadingProgress()
     frmNowLoading.Progress
     DoEvents
 End Sub
 
-'ã€ŒNow Loading...ã€ã®ãƒãƒ¼ã®é•·ã•ã‚’è¨­å®š
+'uNow Loading...v‚Ìƒo[‚Ì’·‚³‚ğİ’è
 Public Sub SetLoadImageSize(ByVal new_size As Integer)
     With frmNowLoading
         .Value = 0
@@ -8331,59 +8331,59 @@ Public Sub SetLoadImageSize(ByVal new_size As Integer)
 End Sub
 
 
-' === ç”»é¢ã®è§£åƒåº¦å¤‰æ›´ ===
+' === ‰æ–Ê‚Ì‰ğ‘œ“x•ÏX ===
 
 Public Sub ChangeDisplaySize(ByVal w As Integer, ByVal h As Integer)
 Dim dm As DEVMODE
 Dim ret As Long
 Static orig_width As Integer, orig_height As Integer
     
-    'DEVMODEæ§‹é€ ä½“ã‚’åˆæœŸåŒ–
+    'DEVMODE\‘¢‘Ì‚ğ‰Šú‰»
     dm.dmSize = Len(dm)
     
-    'ç¾åœ¨ã®ãƒ‡ã‚£ã‚¹ãƒ—ãƒ¬ã‚¤è¨­å®šã‚’å‚ç…§
+    'Œ»İ‚ÌƒfƒBƒXƒvƒŒƒCİ’è‚ğQÆ
     ret = EnumDisplaySettings(vbNullString, ENUM_CURRENT_SETTINGS, dm)
     
     If w <> 0 And h <> 0 Then
-        'ç”»é¢ã®è§£åƒåº¦ã‚’ w x h ã«å¤‰æ›´ã™ã‚‹å ´åˆ
+        '‰æ–Ê‚Ì‰ğ‘œ“x‚ğ w x h ‚É•ÏX‚·‚éê‡
         
-        'ç¾åœ¨ã®è§£åƒåº¦ã‚’è¨˜éŒ²ã—ã¦ãŠã
+        'Œ»İ‚Ì‰ğ‘œ“x‚ğ‹L˜^‚µ‚Ä‚¨‚­
         orig_width = dm.dmPelsWidth
         orig_height = dm.dmPelsHeight
         
         If dm.dmPelsWidth = w And dm.dmPelsHeight = h Then
-            'æ—¢ã«ä½¿ç”¨ã—ãŸã„è§£åƒåº¦ã«ãªã£ã¦ã„ã‚Œã°ãã®ã¾ã¾çµ‚äº†
+            'Šù‚Ég—p‚µ‚½‚¢‰ğ‘œ“x‚É‚È‚Á‚Ä‚¢‚ê‚Î‚»‚Ì‚Ü‚ÜI—¹
             Exit Sub
         End If
         
-        'ç”»é¢ã®è§£åƒåº¦ã‚’ w x h ã«å¤‰æ›´
+        '‰æ–Ê‚Ì‰ğ‘œ“x‚ğ w x h ‚É•ÏX
         dm.dmPelsWidth = w
         dm.dmPelsHeight = h
     Else
-        'ç”»é¢ã®è§£åƒåº¦ã‚’å…ƒã®è§£åƒåº¦ã«æˆ»ã™å ´åˆ
+        '‰æ–Ê‚Ì‰ğ‘œ“x‚ğŒ³‚Ì‰ğ‘œ“x‚É–ß‚·ê‡
         
         If orig_width = 0 And orig_height Then
-            'è§£åƒåº¦ã‚’å¤‰æ›´ã—ã¦ã„ãªã‘ã‚Œã°çµ‚äº†
+            '‰ğ‘œ“x‚ğ•ÏX‚µ‚Ä‚¢‚È‚¯‚ê‚ÎI—¹
             Exit Sub
         End If
         
         If dm.dmPelsWidth = orig_width And dm.dmPelsHeight = orig_width Then
-            'è§£åƒåº¦ãŒå¤‰åŒ–ã—ã¦ã„ãªã‘ã‚Œã°ãã®ã¾ã¾çµ‚äº†
+            '‰ğ‘œ“x‚ª•Ï‰»‚µ‚Ä‚¢‚È‚¯‚ê‚Î‚»‚Ì‚Ü‚ÜI—¹
             Exit Sub
         End If
         
-        'ç”»é¢ã®è§£åƒåº¦ã‚’å…ƒã«æˆ»ã™
+        '‰æ–Ê‚Ì‰ğ‘œ“x‚ğŒ³‚É–ß‚·
         ret = ChangeDisplaySettings(vbNull, 0)
         Exit Sub
     End If
     
-    'è§£åƒåº¦ã‚’å¤‰æ›´å¯èƒ½ã‹ã©ã†ã‹èª¿ã¹ã‚‹
+    '‰ğ‘œ“x‚ğ•ÏX‰Â”\‚©‚Ç‚¤‚©’²‚×‚é
     ret = ChangeDisplaySettings(dm, CDS_TEST)
     If ret <> DISP_CHANGE_SUCCESSFUL Then
         Exit Sub
     End If
     
-    'è§£åƒåº¦ã‚’å®Ÿéš›ã«å¤‰æ›´ã™ã‚‹
+    '‰ğ‘œ“x‚ğÀÛ‚É•ÏX‚·‚é
 ' MOD START MARGE
 '    If GetWinVersion() >= 5 Then
     If GetWinVersion() >= 501 Then
@@ -8394,18 +8394,18 @@ Static orig_width As Integer, orig_height As Integer
     End If
     Select Case ret
         Case DISP_CHANGE_SUCCESSFUL
-            'æˆåŠŸï¼
+            '¬Œ÷I
             Exit Sub
         Case DISP_CHANGE_RESTART
-            'å†èµ·å‹•ãŒå¿…è¦ãªå ´åˆã¯ã‚ãã‚‰ã‚ã¦ã‚‚ã¨ã®è§£åƒåº¦ã«æˆ»ã™
+            'Ä‹N“®‚ª•K—v‚Èê‡‚Í‚ ‚«‚ç‚ß‚Ä‚à‚Æ‚Ì‰ğ‘œ“x‚É–ß‚·
             ret = ChangeDisplaySettings(vbNull, 0)
     End Select
 End Sub
 
 
-' === ãã®ä»– ===
+' === ‚»‚Ì‘¼ ===
 
-'ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’è¡¨ç¤º
+'ƒGƒ‰[ƒƒbƒZ[ƒW‚ğ•\¦
 Public Sub ErrorMessage(msg As String)
 Dim ret As Long
 
@@ -8419,7 +8419,7 @@ Dim ret As Long
         .Show
     End With
     
-    'ãƒ¡ã‚¤ãƒ³ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ã‚¯ãƒ­ãƒ¼ã‚ºãŒè¡Œãˆã‚‹ã‚ˆã†ã«ãƒ¢ãƒ¼ãƒ€ãƒ«ãƒ¢ãƒ¼ãƒ‰ã¯ä½¿ç”¨ã—ãªã„
+    'ƒƒCƒ“ƒEƒBƒ“ƒhƒE‚ÌƒNƒ[ƒY‚ªs‚¦‚é‚æ‚¤‚Éƒ‚[ƒ_ƒ‹ƒ‚[ƒh‚Íg—p‚µ‚È‚¢
     Do While frmErrorMessage.Visible
         DoEvents
         Sleep 200
@@ -8429,48 +8429,48 @@ Dim ret As Long
     Set frmErrorMessage = Nothing
 End Sub
 
-'ãƒ‡ãƒ¼ã‚¿èª­ã¿è¾¼ã¿æ™‚ã®ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’è¡¨ç¤ºã™ã‚‹
+'ƒf[ƒ^“Ç‚İ‚İ‚ÌƒGƒ‰[ƒƒbƒZ[ƒW‚ğ•\¦‚·‚é
 Public Sub DataErrorMessage(msg As String, fname As String, ByVal line_num As Integer, _
     line_buf As String, dname As String)
 Dim err_msg As String
 
-    'ã‚¨ãƒ©ãƒ¼ãŒç™ºç”Ÿã—ãŸãƒ•ã‚¡ã‚¤ãƒ«åã¨è¡Œç•ªå·
-    err_msg = fname & "ï¼š" & line_num & "è¡Œç›®" & vbCr & vbLf
+    'ƒGƒ‰[‚ª”­¶‚µ‚½ƒtƒ@ƒCƒ‹–¼‚Æs”Ô†
+    err_msg = fname & "F" & line_num & "s–Ú" & vbCr & vbLf
     
-    'ã‚¨ãƒ©ãƒ¼ãŒç™ºç”Ÿã—ãŸãƒ‡ãƒ¼ã‚¿å
+    'ƒGƒ‰[‚ª”­¶‚µ‚½ƒf[ƒ^–¼
     If Len(dname) > 0 Then
-        err_msg = err_msg & dname & "ã®ãƒ‡ãƒ¼ã‚¿ãŒä¸æ­£ã§ã™ã€‚" & vbCr & vbLf
+        err_msg = err_msg & dname & "‚Ìƒf[ƒ^‚ª•s³‚Å‚·B" & vbCr & vbLf
     End If
     
-    'ã‚¨ãƒ©ãƒ¼ã®åŸå› 
+    'ƒGƒ‰[‚ÌŒ´ˆö
     If Len(msg) > 0 Then
         err_msg = err_msg & msg & vbCr & vbLf
     End If
     
-    'ãªã«ã‚‚æŒ‡å®šã•ã‚Œã¦ã„ãªã„ï¼Ÿ
+    '‚È‚É‚àw’è‚³‚ê‚Ä‚¢‚È‚¢H
     If dname = "" And msg = "" Then
-        err_msg = err_msg & "ãƒ‡ãƒ¼ã‚¿ãŒä¸æ­£ã§ã™ã€‚" & vbCr & vbLf
+        err_msg = err_msg & "ƒf[ƒ^‚ª•s³‚Å‚·B" & vbCr & vbLf
     End If
     
-    'ã‚¨ãƒ©ãƒ¼ãŒç™ºç”Ÿã—ãŸãƒ‡ãƒ¼ã‚¿è¡Œ
+    'ƒGƒ‰[‚ª”­¶‚µ‚½ƒf[ƒ^s
     err_msg = err_msg & line_buf
     
-    'ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’è¡¨ç¤º
+    'ƒGƒ‰[ƒƒbƒZ[ƒW‚ğ•\¦
     ErrorMessage err_msg
 End Sub
 
 
-'ãƒã‚¦ã‚¹ã®å³ãƒœã‚¿ãƒ³ãŒæŠ¼ã•ã‚Œã¦ã„ã‚‹ã‹(ã‚­ãƒ£ãƒ³ã‚»ãƒ«)åˆ¤å®š
+'ƒ}ƒEƒX‚Ì‰Eƒ{ƒ^ƒ“‚ª‰Ÿ‚³‚ê‚Ä‚¢‚é‚©(ƒLƒƒƒ“ƒZƒ‹)”»’è
 Public Function IsRButtonPressed(Optional ByVal ignore_message_wait As Boolean) As Boolean
 Dim PT As POINTAPI
 
-    'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãŒã‚¦ã‚¨ã‚¤ãƒˆç„¡ã—ãªã‚‰ã‚¹ã‚­ãƒƒãƒ—
+    'ƒƒbƒZ[ƒW‚ªƒEƒGƒCƒg–³‚µ‚È‚çƒXƒLƒbƒv
     If Not ignore_message_wait And MessageWait = 0 Then
         IsRButtonPressed = True
         Exit Function
     End If
     
-    'ãƒ¡ã‚¤ãƒ³ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ä¸Šã§ãƒã‚¦ã‚¹ãƒœã‚¿ãƒ³ã‚’æŠ¼ã—ãŸå ´åˆ
+    'ƒƒCƒ“ƒEƒCƒ“ƒhƒEã‚Åƒ}ƒEƒXƒ{ƒ^ƒ“‚ğ‰Ÿ‚µ‚½ê‡
     If MainForm.hwnd = GetForegroundWindow Then
         GetCursorPos PT
         With MainForm
@@ -8480,13 +8480,13 @@ Dim PT As POINTAPI
                 And PT.Y <= (.Top + .Height) \ Screen.TwipsPerPixelY _
             Then
                 If (GetAsyncKeyState(RButtonID) And &H8000) <> 0 Then
-                    'å³ãƒœã‚¿ãƒ³ã§ã‚¹ã‚­ãƒƒãƒ—
+                    '‰Eƒ{ƒ^ƒ“‚ÅƒXƒLƒbƒv
                     IsRButtonPressed = True
                     Exit Function
                 End If
             End If
         End With
-    'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ä¸Šã§ãƒã‚¦ã‚¹ãƒœã‚¿ãƒ³ã‚’æŠ¼ã—ãŸå ´åˆ
+    'ƒƒbƒZ[ƒWƒEƒCƒ“ƒhƒEã‚Åƒ}ƒEƒXƒ{ƒ^ƒ“‚ğ‰Ÿ‚µ‚½ê‡
     ElseIf frmMessage.hwnd = GetForegroundWindow Then
         GetCursorPos PT
         With frmMessage
@@ -8496,7 +8496,7 @@ Dim PT As POINTAPI
                 And PT.Y <= (.Top + .Height) \ Screen.TwipsPerPixelY _
             Then
                 If (GetAsyncKeyState(RButtonID) And &H8000) <> 0 Then
-                    'å³ãƒœã‚¿ãƒ³ã§ã‚¹ã‚­ãƒƒãƒ—
+                    '‰Eƒ{ƒ^ƒ“‚ÅƒXƒLƒbƒv
                     IsRButtonPressed = True
                     Exit Function
                 End If
@@ -8506,7 +8506,7 @@ Dim PT As POINTAPI
 End Function
 
 
-'Telopã‚³ãƒãƒ³ãƒ‰ç”¨æç”»ãƒ«ãƒ¼ãƒãƒ³
+'TelopƒRƒ}ƒ“ƒh—p•`‰æƒ‹[ƒ`ƒ“
 Public Sub DisplayTelop(msg As String)
     Load frmTelop
     

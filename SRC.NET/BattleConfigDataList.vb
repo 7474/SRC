@@ -3,18 +3,18 @@ Option Explicit On
 Friend Class BattleConfigDataList
 	
 	' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
+	' 本プログラムはフリーソフトであり、無保証です。
+	' 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
+	' 再頒布または改変することができます。
 	
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
+	'バトルコンフィグデータを管理するクラス
+	' --- ダメージ計算、命中率算出など、バトルに関連するエリアスの定義を設定します。
 	
-	'Invalid_string_refer_to_original_code
+	'バトルコンフィグデータのコレクション
 	Private colBattleConfigData As New Collection
 	
 	
-	'繧ｯ繝ｩ繧ｹ縺ｮ隗｣謾ｾ
+	'クラスの解放
 	'UPGRADE_NOTE: Class_Terminate は Class_Terminate_Renamed にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
 	Private Sub Class_Terminate_Renamed()
 		Dim i As Short
@@ -32,7 +32,7 @@ Friend Class BattleConfigDataList
 		MyBase.Finalize()
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'バトルコンフィグデータリストにデータを追加
 	Public Function Add(ByRef cname As String) As BattleConfigData
 		Dim cd As New BattleConfigData
 		
@@ -41,22 +41,22 @@ Friend Class BattleConfigDataList
 		Add = cd
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'バトルコンフィグデータリストに登録されているデータの総数
 	Public Function Count() As Short
 		Count = colBattleConfigData.Count()
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'バトルコンフィグデータリストからデータを削除
 	Public Sub Delete(ByRef Index As Object)
 		colBattleConfigData.Remove(Index)
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'バトルコンフィグデータリストからデータを取り出す
 	Public Function Item(ByRef Index As String) As BattleConfigData
 		Item = colBattleConfigData.Item(Index)
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'バトルコンフィグデータリストに指定したデータが定義されているか？
 	Public Function IsDefined(ByRef Index As Object) As Boolean
 		Dim cd As BattleConfigData
 		
@@ -69,7 +69,7 @@ ErrorHandler:
 		IsDefined = False
 	End Function
 	
-	'Invalid_string_refer_to_original_code
+	'データファイル fname からデータをロード
 	Public Sub Load(ByRef fname As String)
 		Dim FileNumber As Short
 		Dim line_num As Integer
@@ -99,7 +99,7 @@ ErrorHandler:
 			data_name = line_buf
 			
 			If IsDefined(data_name) Then
-				'Invalid_string_refer_to_original_code
+				'すでに定義されているエリアスのデータであれば置き換える
 				Delete(data_name)
 			End If
 			cd = Add(data_name)
@@ -123,9 +123,9 @@ ErrorHandler:
 		Loop 
 		
 ErrorHandler: 
-		'Invalid_string_refer_to_original_code
+		'エラー処理
 		If line_num = 0 Then
-			ErrorMessage(fname & "Invalid_string_refer_to_original_code")
+			ErrorMessage(fname & "が開けません。")
 		Else
 			FileClose(FileNumber)
 			DataErrorMessage(err_msg, fname, line_num, line_buf, data_name)

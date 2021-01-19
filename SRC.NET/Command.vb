@@ -3,13 +3,13 @@ Option Explicit On
 Module Commands
 	
 	' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
+	' 本プログラムはフリーソフトであり、無保証です。
+	' 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
+	' 再頒布または改変することができます。
 	
-	'Invalid_string_refer_to_original_code
+	'ユニット＆マップコマンドの実行を行うモジュール
 	
-	'Invalid_string_refer_to_original_code
+	'ユニットコマンドのメニュー番号
 	Public Const MoveCmdID As Short = 0
 	Public Const TeleportCmdID As Short = 1
 	Public Const JumpCmdID As Short = 2
@@ -47,7 +47,7 @@ Module Commands
 	Public Const UnitCommand10CmdID As Short = 34
 	Public Const WaitCmdID As Short = 35
 	
-	'Invalid_string_refer_to_original_code
+	'マップコマンドのメニュー番号
 	Public Const EndTurnCmdID As Short = 0
 	Public Const DumpCmdID As Short = 1
 	Public Const UnitListCmdID As Short = 2
@@ -70,41 +70,41 @@ Module Commands
 	Public Const QuickLoadCmdID As Short = 19
 	Public Const QuickSaveCmdID As Short = 20
 	
-	'Invalid_string_refer_to_original_code
+	'現在のコマンドの進行状況
 	Public CommandState As String
 	
-	'Invalid_string_refer_to_original_code
+	'クリック待ちモード
 	Public WaitClickMode As Boolean
-	'Invalid_string_refer_to_original_code
+	'閲覧モード
 	Public ViewMode As Boolean
 	
-	'Invalid_string_refer_to_original_code
+	'マップコマンドラベルのリスト
 	Private MapCommandLabelList(10) As String
-	'Invalid_string_refer_to_original_code
+	'ユニットコマンドラベルのリスト
 	Private UnitCommandLabelList(10) As String
 	
-	'Invalid_string_refer_to_original_code
-	Public SelectedUnit As Unit 'Invalid_string_refer_to_original_code
-	Public SelectedCommand As String 'Invalid_string_refer_to_original_code
-	Public SelectedTarget As Unit 'Invalid_string_refer_to_original_code
-	Public SelectedX As Short 'Invalid_string_refer_to_original_code
-	Public SelectedY As Short 'Invalid_string_refer_to_original_code
-	Public SelectedWeapon As Short '豁ｦ蝎ｨ
+	'現在選択されているもの
+	Public SelectedUnit As Unit 'ユニット
+	Public SelectedCommand As String 'コマンド
+	Public SelectedTarget As Unit 'ターゲット
+	Public SelectedX As Short 'Ｘ座標
+	Public SelectedY As Short 'Ｙ座標
+	Public SelectedWeapon As Short '武器
 	Public SelectedWeaponName As String
-	Public SelectedTWeapon As Short '蜿肴茶豁ｦ蝎ｨ
+	Public SelectedTWeapon As Short '反撃武器
 	Public SelectedTWeaponName As String
-	Public SelectedDefenseOption As String 'Invalid_string_refer_to_original_code
-	Public SelectedAbility As Short 'Invalid_string_refer_to_original_code
+	Public SelectedDefenseOption As String '防御方法
+	Public SelectedAbility As Short 'アビリティ
 	Public SelectedAbilityName As String
-	Public SelectedPilot As Pilot 'Invalid_string_refer_to_original_code
-	Public SelectedItem As Short 'Invalid_string_refer_to_original_code
-	Public SelectedSpecialPower As String '繧ｹ繝壹す繝｣繝ｫ繝代Ρ繝ｼ
-	Public SelectedPartners() As Unit 'Invalid_string_refer_to_original_code
+	Public SelectedPilot As Pilot 'パイロット
+	Public SelectedItem As Short 'リストボックス中のアイテム
+	Public SelectedSpecialPower As String 'スペシャルパワー
+	Public SelectedPartners() As Unit '合体技のパートナー
 	' ADD START MARGE
-	Public SelectedUnitMoveCost As Short 'Invalid_string_refer_to_original_code
+	Public SelectedUnitMoveCost As Short '選択したユニットの移動力消費量
 	' ADD END MARGE
 	
-	'Invalid_string_refer_to_original_code
+	'選択状況の記録用変数
 	Public SelectionStackIndex As Short
 	Public SavedSelectedUnit() As Unit
 	Public SavedSelectedTarget() As Unit
@@ -120,40 +120,40 @@ Module Commands
 	Public SavedSelectedX() As Short
 	Public SavedSelectedY() As Short
 	
-	'Invalid_string_refer_to_original_code
+	'援護を使うかどうか
 	Public UseSupportAttack As Boolean
 	Public UseSupportGuard As Boolean
 	
-	'Invalid_string_refer_to_original_code
+	'「味方スペシャルパワー実行」を使ってスペシャルパワーを使用するかどうか
 	Private WithDoubleSPConsumption As Boolean
 	
-	'Invalid_string_refer_to_original_code
+	'攻撃を行うユニット
 	Public AttackUnit As Unit
-	'Invalid_string_refer_to_original_code
+	'援護攻撃を行うユニット
 	Public SupportAttackUnit As Unit
-	'Invalid_string_refer_to_original_code
+	'援護防御を行うユニット
 	Public SupportGuardUnit As Unit
-	'Invalid_string_refer_to_original_code
+	'援護防御を行うユニットのＨＰ値
 	Public SupportGuardUnitHPRatio As Double
-	'Invalid_string_refer_to_original_code
+	'援護防御を行うユニット(反撃時)
 	Public SupportGuardUnit2 As Unit
-	'Invalid_string_refer_to_original_code
+	'援護防御を行うユニットのＨＰ値(反撃時)
 	Public SupportGuardUnitHPRatio2 As Double
 	
-	'Invalid_string_refer_to_original_code
+	'移動前のユニットの情報
 	Private PrevUnitX As Short
 	Private PrevUnitY As Short
 	Private PrevUnitArea As String
 	Private PrevUnitEN As Short
 	Private PrevCommand As String
 	
-	'Invalid_string_refer_to_original_code
+	'移動したユニットの情報
 	Public MovedUnit As Unit
 	Public MovedUnitSpeed As Short
 	
 	
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
+	'コマンドの処理を進める
+	'by_cancel = True の場合はコマンドをキャンセルした場合の処理
 	Public Sub ProceedCommand(Optional ByVal by_cancel As Boolean = False)
 		Dim j, i, n As Short
 		Dim u As Unit
@@ -162,7 +162,7 @@ Module Commands
 		Dim buf As String
 		Dim lab As LabelData
 		
-		'Invalid_string_refer_to_original_code
+		'閲覧モードはキャンセルで終了。それ以外の入力は無視
 		If ViewMode Then
 			If by_cancel Then
 				ViewMode = False
@@ -170,22 +170,20 @@ Module Commands
 			Exit Sub
 		End If
 		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
+		'処理が行われるまでこれ以降のコマンド受付を禁止
+		'(スクロール禁止にしなければならないほどの時間はないため、LockGUIは使わない)
 		IsGUILocked = True
 		
-		'Invalid_string_refer_to_original_code
+		'コマンド実行を行うということはシナリオプレイ中ということなので毎回初期化する。
 		IsScenarioFinished = False
 		IsCanceled = False
 		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
+		'ポップアップメニュー上で押したマウスボタンが左右どちらかを判定するため、
+		'あらかじめGetAsyncKeyState()を実行しておく必要がある
 		Call GetAsyncKeyState(RButtonID)
 		
 		Select Case CommandState
-			Case "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+			Case "ユニット選択", "マップコマンド"
 				'UPGRADE_NOTE: オブジェクト SelectedUnit をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
 				SelectedUnit = Nothing
 				' ADD START MARGE
@@ -199,27 +197,27 @@ Module Commands
 					SelectedY = PixelToMapY(MouseY)
 					
 					If MapFileName <> "" Then
-						'Invalid_string_refer_to_original_code
+						'通常のステージ
 						
 						DisplayGlobalStatus()
 						
-						'Invalid_string_refer_to_original_code
+						'ターン終了
 						If ViewMode Then
 							'UPGRADE_ISSUE: Control mnuMapCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-							MainForm.mnuMapCommandItem(EndTurnCmdID).Caption = "Invalid_string_refer_to_original_code"
+							MainForm.mnuMapCommandItem(EndTurnCmdID).Caption = "部隊編成に戻る"
 						Else
 							'UPGRADE_ISSUE: Control mnuMapCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-							MainForm.mnuMapCommandItem(EndTurnCmdID).Caption = "Invalid_string_refer_to_original_code"
+							MainForm.mnuMapCommandItem(EndTurnCmdID).Caption = "ターン終了"
 						End If
 						'UPGRADE_ISSUE: Control mnuMapCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 						MainForm.mnuMapCommandItem(EndTurnCmdID).Visible = True
 						
-						'荳ｭ譁ｭ
-						If IsOptionDefined("Invalid_string_refer_to_original_code") Then
+						'中断
+						If IsOptionDefined("デバッグ") Then
 							'UPGRADE_ISSUE: Control mnuMapCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 							MainForm.mnuMapCommandItem(DumpCmdID).Visible = True
 						Else
-							If Not IsOptionDefined("Invalid_string_refer_to_original_code") Then
+							If Not IsOptionDefined("クイックセーブ不可") Then
 								'UPGRADE_ISSUE: Control mnuMapCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 								MainForm.mnuMapCommandItem(DumpCmdID).Visible = True
 							Else
@@ -228,12 +226,12 @@ Module Commands
 							End If
 						End If
 						
-						'Invalid_string_refer_to_original_code
+						'全体マップ
 						'UPGRADE_ISSUE: Control mnuMapCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 						MainForm.mnuMapCommandItem(GlobalMapCmdID).Visible = True
 						
-						'Invalid_string_refer_to_original_code
-						If IsEventDefined("蜍晏茜譚｡莉ｶ") Then
+						'作戦目的
+						If IsEventDefined("勝利条件") Then
 							'UPGRADE_ISSUE: Control mnuMapCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 							MainForm.mnuMapCommandItem(OperationObjectCmdID).Visible = True
 						Else
@@ -241,15 +239,15 @@ Module Commands
 							MainForm.mnuMapCommandItem(OperationObjectCmdID).Visible = False
 						End If
 						
-						'Invalid_string_refer_to_original_code
+						'自動反撃モード
 						'UPGRADE_ISSUE: Control mnuMapCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 						MainForm.mnuMapCommandItem(AutoDefenseCmdID).Visible = True
 						
-						'險ｭ螳壼､画峩
+						'設定変更
 						'UPGRADE_ISSUE: Control mnuMapCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 						MainForm.mnuMapCommandItem(ConfigurationCmdID).Visible = True
 						
-						'Invalid_string_refer_to_original_code
+						'リスタート
 						If IsRestartSaveDataAvailable And Not ViewMode Then
 							'UPGRADE_ISSUE: Control mnuMapCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 							MainForm.mnuMapCommandItem(RestartCmdID).Visible = True
@@ -258,7 +256,7 @@ Module Commands
 							MainForm.mnuMapCommandItem(RestartCmdID).Visible = False
 						End If
 						
-						'Invalid_string_refer_to_original_code
+						'クイックロード
 						If IsQuickSaveDataAvailable And Not ViewMode Then
 							'UPGRADE_ISSUE: Control mnuMapCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 							MainForm.mnuMapCommandItem(QuickLoadCmdID).Visible = True
@@ -267,15 +265,15 @@ Module Commands
 							MainForm.mnuMapCommandItem(QuickLoadCmdID).Visible = False
 						End If
 						
-						'Invalid_string_refer_to_original_code
+						'クイックセーブ
 						If ViewMode Then
 							'UPGRADE_ISSUE: Control mnuMapCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 							MainForm.mnuMapCommandItem(QuickSaveCmdID).Visible = False
-						ElseIf IsOptionDefined("Invalid_string_refer_to_original_code") Then 
+						ElseIf IsOptionDefined("デバッグ") Then 
 							'UPGRADE_ISSUE: Control mnuMapCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 							MainForm.mnuMapCommandItem(QuickSaveCmdID).Visible = True
 						Else
-							If Not IsOptionDefined("Invalid_string_refer_to_original_code") Then
+							If Not IsOptionDefined("クイックセーブ不可") Then
 								'UPGRADE_ISSUE: Control mnuMapCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 								MainForm.mnuMapCommandItem(QuickSaveCmdID).Visible = True
 							Else
@@ -284,7 +282,7 @@ Module Commands
 							End If
 						End If
 					Else
-						'Invalid_string_refer_to_original_code
+						'パイロットステータス・ユニットステータスのステージ
 						With MainForm
 							'UPGRADE_ISSUE: Control mnuMapCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 							.mnuMapCommandItem(EndTurnCmdID).Visible = False
@@ -307,14 +305,14 @@ Module Commands
 						End With
 					End If
 					
-					'繧ｹ繝壹す繝｣繝ｫ繝代Ρ繝ｼ讀懃ｴ｢
+					'スペシャルパワー検索
 					'UPGRADE_ISSUE: Control mnuMapCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 					MainForm.mnuMapCommandItem(SearchSpecialPowerCmdID).Visible = False
 					'UPGRADE_ISSUE: Control mnuMapCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-					MainForm.mnuMapCommandItem(SearchSpecialPowerCmdID).Caption = Term("繧ｹ繝壹す繝｣繝ｫ繝代Ρ繝ｼ") & "讀懃ｴ｢"
+					MainForm.mnuMapCommandItem(SearchSpecialPowerCmdID).Caption = Term("スペシャルパワー") & "検索"
 					For	Each p In PList
 						With p
-							If .Party = "蜻ｳ譁ｹ" Then
+							If .Party = "味方" Then
 								If .CountSpecialPower > 0 Then
 									'UPGRADE_ISSUE: Control mnuMapCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 									MainForm.mnuMapCommandItem(SearchSpecialPowerCmdID).Visible = True
@@ -324,7 +322,7 @@ Module Commands
 						End With
 					Next p
 					
-					'Invalid_string_refer_to_original_code
+					'イベントで定義されたマップコマンド
 					With MainForm
 						'UPGRADE_ISSUE: Control mnuMapCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 						.mnuMapCommandItem(MapCommand1CmdID).Visible = False
@@ -377,11 +375,11 @@ Module Commands
 						Next lab
 					End If
 					
-					CommandState = "Invalid_string_refer_to_original_code"
+					CommandState = "マップコマンド"
 					
 					IsGUILocked = False
 					' ADD START 240a
-					'Invalid_string_refer_to_original_code
+					'ここに来た時点でcancel=Trueはユニットのいないセルを右クリックした場合のみ
 					If by_cancel Then
 						If NewGUIMode And (Not MapFileName = "") Then
 							If MouseX < MainPWidth \ 2 Then
@@ -408,30 +406,29 @@ Module Commands
 				SelectedAbility = 0
 				
 				If by_cancel Then
-					'Invalid_string_refer_to_original_code
-					'Invalid_string_refer_to_original_code
+					'ユニット上でキャンセルボタンを押した場合は武器一覧
+					'もしくはアビリティ一覧を表示する
 					With SelectedUnit
-						'Invalid_string_refer_to_original_code
-						'Invalid_string_refer_to_original_code_
-						'Or .IsConditionSatisfied("繝ｦ繝九ャ繝域ュ蝣ｱ髫阡ｽ") _
-						'Invalid_string_refer_to_original_code_
-						'Then
-						'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-						IsGUILocked = False
-						Exit Sub
+						'情報が隠蔽されている場合は表示しない
+						If (IsOptionDefined("ユニット情報隠蔽") And (Not .IsConditionSatisfied("識別済み") And (.Party0 = "敵" Or .Party0 = "中立"))) Or .IsConditionSatisfied("ユニット情報隠蔽") Or .IsFeatureAvailable("ダミーユニット") Then
+							IsGUILocked = False
+							Exit Sub
+						End If
+						
+						If .CountWeapon = 0 And .CountAbility > 0 Then
+							AbilityListCommand()
+						Else
+							WeaponListCommand()
+						End If
 					End With
+					IsGUILocked = False
+					Exit Sub
 				End If
 				
-				'UPGRADE_WARNING: ProceedCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-				'End With
-				IsGUILocked = False
-				Exit Sub
-				'End If
-				
-				CommandState = "Invalid_string_refer_to_original_code"
+				CommandState = "コマンド選択"
 				ProceedCommand(by_cancel)
 				
-			Case "Invalid_string_refer_to_original_code"
+			Case "コマンド選択"
 				'MOD START 240aClearUnitStatus
 				'            If MainWidth <> 15 Then
 				'                DisplayUnitStatus SelectedUnit
@@ -443,7 +440,7 @@ Module Commands
 				End If
 				'MOD  END  240a
 				
-				'Invalid_string_refer_to_original_code
+				'武装一覧以外は一旦消しておく
 				With MainForm
 					'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 					.mnuUnitCommandItem(WeaponListCmdID).Visible = True
@@ -464,14 +461,14 @@ Module Commands
 				SelectedTargetForEvent = Nothing
 				
 				With SelectedUnit
-					'Invalid_string_refer_to_original_code
-					'蜈医↓蛻､螳壹＠縺ｦ縺翫￥
+					'特殊能力＆アビリティ一覧はどのユニットでも見れる可能性があるので
+					'先に判定しておく
 					
-					'Invalid_string_refer_to_original_code
+					'特殊能力一覧コマンド
 					For i = 1 To .CountAllFeature
 						If .AllFeatureName(i) <> "" Then
 							Select Case .AllFeature(i)
-								Case "Invalid_string_refer_to_original_code"
+								Case "合体"
 									If UList.IsDefined(LIndex(.AllFeatureData(i), 2)) Then
 										'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 										MainForm.mnuUnitCommandItem(FeatureListCmdID).Visible = True
@@ -482,34 +479,31 @@ Module Commands
 									MainForm.mnuUnitCommandItem(FeatureListCmdID).Visible = True
 									Exit For
 							End Select
-							'Invalid_string_refer_to_original_code_
-							'Then
-							'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-							If InStr(.AllFeatureData(i), "髱櫁｡ｨ遉ｺ") = 0 Then
+						ElseIf .AllFeature(i) = "パイロット能力付加" Or .AllFeature(i) = "パイロット能力強化" Then 
+							If InStr(.AllFeatureData(i), "非表示") = 0 Then
 								'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 								MainForm.mnuUnitCommandItem(FeatureListCmdID).Visible = True
 								Exit For
 							End If
-						ElseIf .AllFeature(i) = "豁ｦ蝎ｨ繧ｯ繝ｩ繧ｹ" Or .AllFeature(i) = "髦ｲ蜈ｷ繧ｯ繝ｩ繧ｹ" Then 
-							'Invalid_string_refer_to_original_code
-							'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-							'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-							MainForm.mnuUnitCommandItem(FeatureListCmdID).Visible = True
-							Exit For
+						ElseIf .AllFeature(i) = "武器クラス" Or .AllFeature(i) = "防具クラス" Then 
+							If IsOptionDefined("アイテム交換") Then
+								'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+								MainForm.mnuUnitCommandItem(FeatureListCmdID).Visible = True
+								Exit For
+							End If
 						End If
-						'End If
 					Next 
 					With .MainPilot
 						For i = 1 To .CountSkill
-							If .SkillName0(i) <> "髱櫁｡ｨ遉ｺ" And .SkillName0(i) <> "" Then
+							If .SkillName0(i) <> "非表示" And .SkillName0(i) <> "" Then
 								Select Case .Skill(i)
-									Case "Invalid_string_refer_to_original_code"
-										If Not IsOptionDefined("Invalid_string_refer_to_original_code") And Not IsOptionDefined("Invalid_string_refer_to_original_code") Then
+									Case "耐久"
+										If Not IsOptionDefined("防御力成長") And Not IsOptionDefined("防御力レベルアップ") Then
 											'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 											MainForm.mnuUnitCommandItem(FeatureListCmdID).Visible = True
 											Exit For
 										End If
-									Case "霑ｽ蜉繝ｬ繝吶Ν", "Invalid_string_refer_to_original_code", "Invalid_string_refer_to_original_code", "Invalid_string_refer_to_original_code", "Invalid_string_refer_to_original_code", "Invalid_string_refer_to_original_code", "Invalid_string_refer_to_original_code", "Invalid_string_refer_to_original_code", "Invalid_string_refer_to_original_code", "Invalid_string_refer_to_original_code", "Invalid_string_refer_to_original_code", "Invalid_string_refer_to_original_code", "Invalid_string_refer_to_original_code", "Invalid_string_refer_to_original_code", "Invalid_string_refer_to_original_code", "Invalid_string_refer_to_original_code", "Invalid_string_refer_to_original_code"
+									Case "追加レベル", "格闘ＵＰ", "射撃ＵＰ", "命中ＵＰ", "回避ＵＰ", "技量ＵＰ", "反応ＵＰ", "ＳＰＵＰ", "格闘ＤＯＷＮ", "射撃ＤＯＷＮ", "命中ＤＯＷＮ", "回避ＤＯＷＮ", "技量ＤＯＷＮ", "反応ＤＯＷＮ", "ＳＰＤＯＷＮ", "メッセージ", "魔力所有"
 									Case Else
 										'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 										MainForm.mnuUnitCommandItem(FeatureListCmdID).Visible = True
@@ -519,227 +513,974 @@ Module Commands
 						Next 
 					End With
 					
-					'Invalid_string_refer_to_original_code
+					'アビリティ一覧コマンド
 					For i = 1 To .CountAbility
-						'Invalid_string_refer_to_original_code_
-						'Or .IsCombinationAbilityAvailable(i, True)) _
-						'And Not .Ability(i).IsItem _
-						'Then
-						'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-						'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-						MainForm.mnuUnitCommandItem(AbilityListCmdID).Caption = Term("Invalid_string_refer_to_original_code", SelectedUnit) & "荳隕ｧ"
-						'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-						MainForm.mnuUnitCommandItem(AbilityListCmdID).Visible = True
-						Exit For
-						'End If
+						If .IsAbilityMastered(i) And Not .IsDisabled((.Ability(i).Name)) And (Not .IsAbilityClassifiedAs(i, "合") Or .IsCombinationAbilityAvailable(i, True)) And Not .Ability(i).IsItem Then
+							'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+							MainForm.mnuUnitCommandItem(AbilityListCmdID).Caption = Term("アビリティ", SelectedUnit) & "一覧"
+							'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+							MainForm.mnuUnitCommandItem(AbilityListCmdID).Visible = True
+							Exit For
+						End If
 					Next 
 					
-					'Invalid_string_refer_to_original_code
-					'Invalid_string_refer_to_original_code_
-					'Or ViewMode _
-					'Then
-					'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-					'Invalid_string_refer_to_original_code
-					'Invalid_string_refer_to_original_code_
-					'Invalid_string_refer_to_original_code_
-					'And Not .IsConditionSatisfied("豺ｷ荵ｱ") _
-					'Invalid_string_refer_to_original_code_
-					'And Not .IsConditionSatisfied("證ｴ襍ｰ") _
-					'And Not .IsConditionSatisfied("迢よ姶螢ｫ") _
-					'And Not ViewMode _
-					'Then
-					'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-					If Not .Summoner Is Nothing Then
-						If .Summoner.Party = "蜻ｳ譁ｹ" Then
-							'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-							MainForm.mnuUnitCommandItem(OrderCmdID).Caption = "蜻ｽ莉､"
-							'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-							MainForm.mnuUnitCommandItem(OrderCmdID).Visible = True
+					'味方じゃない場合
+					If .Party <> "味方" Or .IsConditionSatisfied("非操作") Or ViewMode Then
+						'召喚ユニットは命令コマンドを使用可能
+						If .Party = "ＮＰＣ" And .IsFeatureAvailable("召喚ユニット") And Not .IsConditionSatisfied("魅了") And Not .IsConditionSatisfied("混乱") And Not .IsConditionSatisfied("恐怖") And Not .IsConditionSatisfied("暴走") And Not .IsConditionSatisfied("狂戦士") And Not ViewMode Then
+							If Not .Summoner Is Nothing Then
+								If .Summoner.Party = "味方" Then
+									'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+									MainForm.mnuUnitCommandItem(OrderCmdID).Caption = "命令"
+									'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+									MainForm.mnuUnitCommandItem(OrderCmdID).Visible = True
+								End If
+							End If
 						End If
-					End If
-					'End If
-					
-					'Invalid_string_refer_to_original_code
-					'Invalid_string_refer_to_original_code_
-					'And Not .IsConditionSatisfied("豺ｷ荵ｱ") _
-					'Invalid_string_refer_to_original_code_
-					'And Not .IsConditionSatisfied("證ｴ襍ｰ") _
-					'And Not .IsConditionSatisfied("迢よ姶螢ｫ") _
-					'And Not ViewMode _
-					'Then
-					'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-					If Not .Master Is Nothing Then
-						If .Master.Party = "蜻ｳ譁ｹ" Then
-							'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-							MainForm.mnuUnitCommandItem(OrderCmdID).Caption = "蜻ｽ莉､"
-							'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-							MainForm.mnuUnitCommandItem(OrderCmdID).Visible = True
-						End If
-					End If
-					'End If
-					
-					'Invalid_string_refer_to_original_code
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-					If MainForm.mnuUnitCommandItem(FeatureListCmdID).Visible Then
-						UnitCommand(FeatureListCmdID)
-					Else
-						CommandState = "Invalid_string_refer_to_original_code"
-					End If
-					
-					IsGUILocked = False
-					Exit Sub
-					'End If
-					
-					If MapFileName <> "" Then
-						'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-						MainForm.mnuUnitCommandItem(MoveCmdID).Caption = "Invalid_string_refer_to_original_code"
-						'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-						MainForm.mnuUnitCommandItem(MoveCmdID).Visible = True
 						
-						For i = 1 To .CountWeapon
-							If .IsWeaponAvailable(i, "") And Not .IsWeaponClassifiedAs(i, "Invalid_string_refer_to_original_code") Then
+						'魅了したユニットに対しても命令コマンドを使用可能
+						If .Party = "ＮＰＣ" And .IsConditionSatisfied("魅了") And Not .IsConditionSatisfied("混乱") And Not .IsConditionSatisfied("恐怖") And Not .IsConditionSatisfied("暴走") And Not .IsConditionSatisfied("狂戦士") And Not ViewMode Then
+							If Not .Master Is Nothing Then
+								If .Master.Party = "味方" Then
+									'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+									MainForm.mnuUnitCommandItem(OrderCmdID).Caption = "命令"
+									'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+									MainForm.mnuUnitCommandItem(OrderCmdID).Visible = True
+								End If
+							End If
+						End If
+						
+						'ダミーユニットの場合はコマンド一覧を表示しない
+						If .IsFeatureAvailable("ダミーユニット") Then
+							'特殊能力一覧
+							'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+							If MainForm.mnuUnitCommandItem(FeatureListCmdID).Visible Then
+								UnitCommand(FeatureListCmdID)
+							Else
+								CommandState = "ユニット選択"
+							End If
+							
+							IsGUILocked = False
+							Exit Sub
+						End If
+						
+						If MapFileName <> "" Then
+							'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+							MainForm.mnuUnitCommandItem(MoveCmdID).Caption = "移動範囲"
+							'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+							MainForm.mnuUnitCommandItem(MoveCmdID).Visible = True
+							
+							For i = 1 To .CountWeapon
+								If .IsWeaponAvailable(i, "") And Not .IsWeaponClassifiedAs(i, "Ｍ") Then
+									'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+									MainForm.mnuUnitCommandItem(AttackCmdID).Caption = "射程範囲"
+									'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+									MainForm.mnuUnitCommandItem(AttackCmdID).Visible = True
+								End If
+							Next 
+						End If
+						
+						'ユニットステータスコマンド用
+						If MapFileName = "" Then
+							'変形コマンド
+							If .IsFeatureAvailable("変形") Then
 								'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-								MainForm.mnuUnitCommandItem(AttackCmdID).Caption = "Invalid_string_refer_to_original_code"
+								MainForm.mnuUnitCommandItem(TransformCmdID).Caption = .FeatureName("変形")
 								'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-								MainForm.mnuUnitCommandItem(AttackCmdID).Visible = True
+								If MainForm.mnuUnitCommandItem(TransformCmdID).Caption = "" Then
+									'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+									MainForm.mnuUnitCommandItem(TransformCmdID).Caption = "変形"
+								End If
+								
+								For i = 2 To LLength(.FeatureData("変形"))
+									uname = LIndex(.FeatureData("変形"), i)
+									If .OtherForm(uname).IsAvailable Then
+										'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+										MainForm.mnuUnitCommandItem(TransformCmdID).Visible = True
+										Exit For
+									End If
+								Next 
+							End If
+							
+							'分離コマンド
+							If .IsFeatureAvailable("分離") Then
+								'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+								MainForm.mnuUnitCommandItem(SplitCmdID).Visible = True
+								'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+								MainForm.mnuUnitCommandItem(SplitCmdID).Caption = .FeatureName("分離")
+								'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+								If MainForm.mnuUnitCommandItem(SplitCmdID).Caption = "" Then
+									'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+									MainForm.mnuUnitCommandItem(SplitCmdID).Caption = "分離"
+								End If
+								
+								buf = .FeatureData("分離")
+								
+								'分離形態が利用出来ない場合は分離を行わない
+								For i = 2 To LLength(buf)
+									If Not UList.IsDefined(LIndex(buf, i)) Then
+										'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+										MainForm.mnuUnitCommandItem(SplitCmdID).Visible = False
+										Exit For
+									End If
+								Next 
+								
+								'パイロットが足らない場合も分離を行わない
+								'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+								If MainForm.mnuUnitCommandItem(SplitCmdID).Visible Then
+									n = 0
+									For i = 2 To LLength(buf)
+										With UList.Item(LIndex(buf, i)).Data
+											If Not .IsFeatureAvailable("召喚ユニット") Then
+												n = n + System.Math.Abs(.PilotNum)
+											End If
+										End With
+									Next 
+									If .CountPilot < n Then
+										'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+										MainForm.mnuUnitCommandItem(SplitCmdID).Visible = False
+									End If
+								End If
+							End If
+							If .IsFeatureAvailable("パーツ分離") Then
+								'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+								MainForm.mnuUnitCommandItem(SplitCmdID).Caption = .FeatureName("パーツ分離")
+								'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+								If MainForm.mnuUnitCommandItem(SplitCmdID).Caption = "" Then
+									'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+									MainForm.mnuUnitCommandItem(SplitCmdID).Caption = "パーツ分離"
+								End If
+								'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+								MainForm.mnuUnitCommandItem(SplitCmdID).Visible = True
+							End If
+							
+							'合体コマンド
+							If .IsFeatureAvailable("合体") Then
+								For i = 1 To .CountFeature
+									If .Feature(i) = "合体" Then
+										n = 0
+										'パートナーが存在しているか？
+										For j = 3 To LLength(.FeatureData(i))
+											u = UList.Item(LIndex(.FeatureData(i), j))
+											If u Is Nothing Then
+												Exit For
+											End If
+											
+											If u.Status_Renamed <> "出撃" And u.CurrentForm.IsFeatureAvailable("合体制限") Then
+												Exit For
+											End If
+											n = n + 1
+										Next 
+										
+										'合体先のユニットが作成されているか？
+										If Not UList.IsDefined(LIndex(.FeatureData(i), 2)) Then
+											n = 0
+										End If
+										
+										'すべての条件を満たしている場合
+										If n = LLength(.FeatureData(i)) - 2 Then
+											'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+											MainForm.mnuUnitCommandItem(CombineCmdID).Visible = True
+											'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+											MainForm.mnuUnitCommandItem(CombineCmdID).Caption = LIndex(.FeatureData(i), 1)
+											'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+											If MainForm.mnuUnitCommandItem(CombineCmdID).Caption = "非表示" Then
+												'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+												MainForm.mnuUnitCommandItem(CombineCmdID).Caption = "合体"
+											End If
+											Exit For
+										End If
+									End If
+								Next 
+							ElseIf .IsFeatureAvailable("パーツ合体") Then 
+								'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+								MainForm.mnuUnitCommandItem(CombineCmdID).Caption = "パーツ合体"
+								'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+								MainForm.mnuUnitCommandItem(CombineCmdID).Visible = True
+							End If
+							
+							If Not .IsConditionSatisfied("ノーマルモード付加") Then
+								'ハイパーモードコマンド
+								If .IsFeatureAvailable("ハイパーモード") Then
+									uname = LIndex(.FeatureData("ハイパーモード"), 2)
+									If .OtherForm(uname).IsAvailable Then
+										'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+										MainForm.mnuUnitCommandItem(HyperModeCmdID).Visible = True
+										'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+										MainForm.mnuUnitCommandItem(HyperModeCmdID).Caption = LIndex(.FeatureData("ハイパーモード"), 1)
+										'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+										If MainForm.mnuUnitCommandItem(HyperModeCmdID).Caption = "非表示" Then
+											'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+											MainForm.mnuUnitCommandItem(HyperModeCmdID).Caption = "ハイパーモード"
+										End If
+									End If
+								ElseIf .IsFeatureAvailable("ノーマルモード") Then 
+									uname = LIndex(.FeatureData("ノーマルモード"), 1)
+									If .OtherForm(uname).IsAvailable Then
+										'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+										MainForm.mnuUnitCommandItem(HyperModeCmdID).Visible = True
+										'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+										MainForm.mnuUnitCommandItem(HyperModeCmdID).Caption = "ノーマルモード"
+										If uname = LIndex(.FeatureData("変形"), 2) Then
+											'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+											MainForm.mnuUnitCommandItem(HyperModeCmdID).Visible = False
+										End If
+									End If
+								End If
+							Else
+								'変身解除
+								If InStr(.FeatureData("ノーマルモード"), "手動解除") > 0 Then
+									'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+									MainForm.mnuUnitCommandItem(HyperModeCmdID).Visible = True
+									If .IsFeatureAvailable("変身解除コマンド名") Then
+										'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+										MainForm.mnuUnitCommandItem(HyperModeCmdID).Caption = .FeatureData("変身解除コマンド名")
+									ElseIf .IsHero Then 
+										'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+										MainForm.mnuUnitCommandItem(HyperModeCmdID).Caption = "変身解除"
+									Else
+										'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+										MainForm.mnuUnitCommandItem(HyperModeCmdID).Caption = "特殊モード解除"
+									End If
+								End If
+							End If
+							
+							'換装コマンド
+							If .IsFeatureAvailable("換装") Then
+								'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+								MainForm.mnuUnitCommandItem(OrderCmdID).Caption = "換装"
+								
+								For i = 1 To LLength(.FeatureData("換装"))
+									uname = LIndex(.FeatureData("換装"), i)
+									If .OtherForm(uname).IsAvailable Then
+										'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+										MainForm.mnuUnitCommandItem(OrderCmdID).Visible = True
+										Exit For
+									End If
+								Next 
+								
+								'エリアスで換装の名称が変更されている？
+								With ALDList
+									For i = 1 To .Count
+										With .Item(i)
+											If .AliasType(1) = "換装" Then
+												'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+												MainForm.mnuUnitCommandItem(OrderCmdID).Caption = .Name
+												Exit For
+											End If
+										End With
+									Next 
+								End With
+							End If
+						End If
+						
+						'ユニットコマンド
+						If Not ViewMode Then
+							i = UnitCommand1CmdID
+							For	Each lab In colEventLabelList
+								With lab
+									If .Name = Event_Renamed.LabelType.UnitCommandEventLabel And .Enable Then
+										buf = GetValueAsString(.Para(3))
+										If (SelectedUnit.Party = "味方" And (buf = SelectedUnit.MainPilot.Name Or buf = SelectedUnit.MainPilot.Nickname Or buf = SelectedUnit.Name)) Or buf = SelectedUnit.Party Or buf = "全" Then
+											If .CountPara <= 3 Then
+												'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+												MainForm.mnuUnitCommandItem(i).Visible = True
+											ElseIf GetValueAsLong(.Para(4)) <> 0 Then 
+												'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+												MainForm.mnuUnitCommandItem(i).Visible = True
+											End If
+										End If
+										
+										'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+										If MainForm.mnuUnitCommandItem(i).Visible Then
+											'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+											MainForm.mnuUnitCommandItem(i).Caption = .Para(2)
+											UnitCommandLabelList(i - UnitCommand1CmdID + 1) = CStr(.LineNum)
+											i = i + 1
+											If i > UnitCommand10CmdID Then
+												Exit For
+											End If
+										End If
+									End If
+								End With
+							Next lab
+						End If
+						
+						'未確認ユニットの場合は情報を隠蔽
+						If (IsOptionDefined("ユニット情報隠蔽") And (Not .IsConditionSatisfied("識別済み") And (.Party0 = "敵" Or .Party0 = "中立"))) Or .IsConditionSatisfied("ユニット情報隠蔽") Then
+							'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+							MainForm.mnuUnitCommandItem(MoveCmdID).Visible = True
+							'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+							MainForm.mnuUnitCommandItem(AttackCmdID).Visible = False
+							'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+							MainForm.mnuUnitCommandItem(FeatureListCmdID).Visible = False
+							'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+							MainForm.mnuUnitCommandItem(WeaponListCmdID).Visible = False
+							'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+							MainForm.mnuUnitCommandItem(AbilityListCmdID).Visible = False
+							For i = 1 To WaitCmdID
+								'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+								If MainForm.mnuUnitCommandItem(i).Visible Then
+									Exit For
+								End If
+							Next 
+							If i > WaitCmdID Then
+								'表示可能なコマンドがなかった
+								CommandState = "ユニット選択"
+								IsGUILocked = False
+								Exit Sub
+							End If
+							'メニューコマンドを全て殺してしまうとエラーになるのでここで非表示
+							'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+							MainForm.mnuUnitCommandItem(MoveCmdID).Visible = False
+						End If
+						
+						IsGUILocked = False
+						If by_cancel Then
+							'UPGRADE_ISSUE: Control mnuUnitCommand は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+							'UPGRADE_ISSUE: Form メソッド MainForm.PopupMenu はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+							MainForm.PopupMenu(MainForm.mnuUnitCommand, 6, MouseX, MouseY + 5)
+						Else
+							'UPGRADE_ISSUE: Control mnuUnitCommand は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+							'UPGRADE_ISSUE: Form メソッド MainForm.PopupMenu はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+							MainForm.PopupMenu(MainForm.mnuUnitCommand, 6, MouseX, MouseY - 6)
+						End If
+						Exit Sub
+						
+						'行動終了している場合
+					ElseIf .Action = 0 Then 
+						'発進コマンドは使用可能
+						If .IsFeatureAvailable("母艦") Then
+							If .Area <> "地中" Then
+								If .CountUnitOnBoard > 0 Then
+									'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+									MainForm.mnuUnitCommandItem(LaunchCmdID).Visible = True
+								End If
+							End If
+						End If
+						
+						'ユニットコマンド
+						i = UnitCommand1CmdID
+						For	Each lab In colEventLabelList
+							With lab
+								If .Name = Event_Renamed.LabelType.UnitCommandEventLabel And (.AsterNum = 1 Or .AsterNum = 3) Then
+									If .Enable Then
+										buf = .Para(3)
+										If (SelectedUnit.Party = "味方" And (buf = SelectedUnit.MainPilot.Name Or buf = SelectedUnit.MainPilot.Nickname Or buf = SelectedUnit.Name)) Or buf = SelectedUnit.Party Or buf = "全" Then
+											If .CountPara <= 3 Then
+												'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+												MainForm.mnuUnitCommandItem(i).Visible = True
+											ElseIf StrToLng(.Para(4)) <> 0 Then 
+												'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+												MainForm.mnuUnitCommandItem(i).Visible = True
+											End If
+										End If
+									End If
+									
+									'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+									If MainForm.mnuUnitCommandItem(i).Visible Then
+										'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+										MainForm.mnuUnitCommandItem(i).Caption = .Para(2)
+										UnitCommandLabelList(i - UnitCommand1CmdID + 1) = CStr(.LineNum)
+										i = i + 1
+										If i > UnitCommand10CmdID Then
+											Exit For
+										End If
+									End If
+								End If
+							End With
+						Next lab
+						
+						IsGUILocked = False
+						'UPGRADE_ISSUE: Control mnuUnitCommand は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+						'UPGRADE_ISSUE: Form メソッド MainForm.PopupMenu はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+						MainForm.PopupMenu(MainForm.mnuUnitCommand, 6, MouseX, MouseY - 5)
+						Exit Sub
+					End If
+					
+					'移動コマンド
+					'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+					MainForm.mnuUnitCommandItem(MoveCmdID).Caption = "移動"
+					If .Speed <= 0 Then
+						'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+						MainForm.mnuUnitCommandItem(WaitCmdID).Visible = True '待機
+					Else
+						'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+						MainForm.mnuUnitCommandItem(MoveCmdID).Visible = True '移動
+					End If
+					
+					'テレポートコマンド
+					If .IsFeatureAvailable("テレポート") Then
+						If Len(.FeatureData("テレポート")) > 0 Then
+							'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+							MainForm.mnuUnitCommandItem(TeleportCmdID).Caption = LIndex(.FeatureData("テレポート"), 1)
+						Else
+							'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+							MainForm.mnuUnitCommandItem(TeleportCmdID).Caption = "テレポート"
+						End If
+						
+						If LLength(.FeatureData("テレポート")) = 2 Then
+							If .EN >= CShort(LIndex(.FeatureData("テレポート"), 2)) Then
+								'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+								MainForm.mnuUnitCommandItem(TeleportCmdID).Visible = True
+							End If
+							'通常移動がテレポートの場合
+							If .Speed0 = 0 Or (.FeatureLevel("テレポート") >= 0 And LIndex(.FeatureData("テレポート"), 2) = "0") Then
+								'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+								MainForm.mnuUnitCommandItem(MoveCmdID).Visible = False
+							End If
+						Else
+							If .EN >= 40 Then
+								'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+								MainForm.mnuUnitCommandItem(TeleportCmdID).Visible = True
+							End If
+						End If
+						
+						If .IsConditionSatisfied("移動不能") Then
+							'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+							MainForm.mnuUnitCommandItem(TeleportCmdID).Visible = False
+						End If
+					End If
+					
+					'ジャンプコマンド
+					If .IsFeatureAvailable("ジャンプ") And .Area <> "空中" And .Area <> "宇宙" Then
+						If Len(.FeatureData("ジャンプ")) > 0 Then
+							'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+							MainForm.mnuUnitCommandItem(JumpCmdID).Caption = LIndex(.FeatureData("ジャンプ"), 1)
+						Else
+							'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+							MainForm.mnuUnitCommandItem(JumpCmdID).Caption = "ジャンプ"
+						End If
+						
+						If LLength(.FeatureData("ジャンプ")) = 2 Then
+							If .EN >= CShort(LIndex(.FeatureData("ジャンプ"), 2)) Then
+								'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+								MainForm.mnuUnitCommandItem(JumpCmdID).Visible = True
+							End If
+							'通常移動がジャンプの場合
+							If .Speed0 = 0 Or (.FeatureLevel("ジャンプ") >= 0 And LIndex(.FeatureData("ジャンプ"), 2) = "0") Then
+								'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+								MainForm.mnuUnitCommandItem(MoveCmdID).Visible = False
+							End If
+						Else
+							'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+							MainForm.mnuUnitCommandItem(JumpCmdID).Visible = True
+							If .FeatureLevel("ジャンプ") >= 0 Then
+								'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+								MainForm.mnuUnitCommandItem(MoveCmdID).Visible = False
+							End If
+						End If
+						
+						If .IsConditionSatisfied("移動不能") Then
+							'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+							MainForm.mnuUnitCommandItem(JumpCmdID).Visible = False
+						End If
+					End If
+					
+					'会話コマンド
+					For i = 1 To 4
+						'UPGRADE_NOTE: オブジェクト u をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
+						u = Nothing
+						Select Case i
+							Case 1
+								If .X > 1 Then
+									u = MapDataForUnit(.X - 1, .Y)
+								End If
+							Case 2
+								If .X < MapWidth Then
+									u = MapDataForUnit(.X + 1, .Y)
+								End If
+							Case 3
+								If .Y > 1 Then
+									u = MapDataForUnit(.X, .Y - 1)
+								End If
+							Case 4
+								If .Y < MapHeight Then
+									u = MapDataForUnit(.X, .Y + 1)
+								End If
+						End Select
+						
+						If Not u Is Nothing Then
+							If IsEventDefined("会話 " & .MainPilot.ID & " " & u.MainPilot.ID) Then
+								'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+								MainForm.mnuUnitCommandItem(TalkCmdID).Visible = True
+								Exit For
+							End If
+						End If
+					Next 
+					
+					'攻撃コマンド
+					'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+					MainForm.mnuUnitCommandItem(AttackCmdID).Caption = "攻撃"
+					For i = 1 To .CountWeapon
+						If .IsWeaponUseful(i, "移動前") Then
+							'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+							MainForm.mnuUnitCommandItem(AttackCmdID).Visible = True
+							Exit For
+						End If
+					Next 
+					If .Area = "地中" Then
+						'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+						MainForm.mnuUnitCommandItem(AttackCmdID).Visible = False
+					End If
+					If .IsConditionSatisfied("攻撃不能") Then
+						'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+						MainForm.mnuUnitCommandItem(AttackCmdID).Visible = False
+					End If
+					
+					'修理コマンド
+					If .IsFeatureAvailable("修理装置") And .Area <> "地中" Then
+						For i = 1 To 4
+							'UPGRADE_NOTE: オブジェクト u をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
+							u = Nothing
+							Select Case i
+								Case 1
+									If .X > 1 Then
+										u = MapDataForUnit(.X - 1, .Y)
+									End If
+								Case 2
+									If .X < MapWidth Then
+										u = MapDataForUnit(.X + 1, .Y)
+									End If
+								Case 3
+									If .Y > 1 Then
+										u = MapDataForUnit(.X, .Y - 1)
+									End If
+								Case 4
+									If .Y < MapHeight Then
+										u = MapDataForUnit(.X, .Y + 1)
+									End If
+							End Select
+							
+							If Not u Is Nothing Then
+								With u
+									If (.Party = "味方" Or .Party = "ＮＰＣ") And .HP < .MaxHP And Not .IsConditionSatisfied("ゾンビ") Then
+										'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+										MainForm.mnuUnitCommandItem(FixCmdID).Visible = True
+										Exit For
+									End If
+								End With
+							End If
+						Next 
+						
+						If Len(.FeatureData("修理装置")) > 0 Then
+							'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+							MainForm.mnuUnitCommandItem(FixCmdID).Caption = LIndex(.FeatureData("修理装置"), 1)
+							If IsNumeric(LIndex(.FeatureData("修理装置"), 2)) Then
+								If .EN < CShort(LIndex(.FeatureData("修理装置"), 2)) Then
+									'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+									MainForm.mnuUnitCommandItem(FixCmdID).Visible = False
+								End If
+							End If
+						Else
+							'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+							MainForm.mnuUnitCommandItem(FixCmdID).Caption = "修理装置"
+						End If
+					End If
+					
+					'補給コマンド
+					If .IsFeatureAvailable("補給装置") And .Area <> "地中" Then
+						For i = 1 To 4
+							'UPGRADE_NOTE: オブジェクト u をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
+							u = Nothing
+							Select Case i
+								Case 1
+									If .X > 1 Then
+										u = MapDataForUnit(.X - 1, .Y)
+									End If
+								Case 2
+									If .X < MapWidth Then
+										u = MapDataForUnit(.X + 1, .Y)
+									End If
+								Case 3
+									If .Y > 1 Then
+										u = MapDataForUnit(.X, .Y - 1)
+									End If
+								Case 4
+									If .Y < MapHeight Then
+										u = MapDataForUnit(.X, .Y + 1)
+									End If
+							End Select
+							
+							If Not u Is Nothing Then
+								With u
+									If .Party = "味方" Or .Party = "ＮＰＣ" Then
+										If .EN < .MaxEN And Not .IsConditionSatisfied("ゾンビ") Then
+											'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+											MainForm.mnuUnitCommandItem(SupplyCmdID).Visible = True
+										Else
+											For j = 1 To .CountWeapon
+												If .Bullet(j) < .MaxBullet(j) Then
+													'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+													MainForm.mnuUnitCommandItem(SupplyCmdID).Visible = True
+													Exit For
+												End If
+											Next 
+											For j = 1 To .CountAbility
+												If .Stock(j) < .MaxStock(j) Then
+													'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+													MainForm.mnuUnitCommandItem(SupplyCmdID).Visible = True
+													Exit For
+												End If
+											Next 
+										End If
+									End If
+								End With
+							End If
+						Next 
+						
+						If Len(.FeatureData("補給装置")) > 0 Then
+							'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+							MainForm.mnuUnitCommandItem(SupplyCmdID).Caption = LIndex(.FeatureData("補給装置"), 1)
+							If IsNumeric(LIndex(.FeatureData("補給装置"), 2)) Then
+								If .EN < CShort(LIndex(.FeatureData("補給装置"), 2)) Or .MainPilot.Morale < 100 Then
+									'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+									MainForm.mnuUnitCommandItem(SupplyCmdID).Visible = False
+								End If
+							End If
+						Else
+							'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+							MainForm.mnuUnitCommandItem(SupplyCmdID).Caption = "補給装置"
+						End If
+					End If
+					
+					'アビリティコマンド
+					n = 0
+					For i = 1 To .CountAbility
+						If Not .Ability(i).IsItem And .IsAbilityMastered(i) Then
+							n = n + 1
+							If .IsAbilityUseful(i, "移動前") Then
+								'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+								MainForm.mnuUnitCommandItem(AbilityCmdID).Visible = True
+							End If
+						End If
+					Next 
+					If .Area = "地中" Then
+						'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+						MainForm.mnuUnitCommandItem(AbilityCmdID).Visible = False
+					End If
+					'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+					MainForm.mnuUnitCommandItem(AbilityCmdID).Caption = Term("アビリティ", SelectedUnit)
+					If n = 1 Then
+						For i = 1 To .CountAbility
+							If Not .Ability(i).IsItem And .IsAbilityMastered(i) Then
+								'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+								MainForm.mnuUnitCommandItem(AbilityCmdID).Caption = .AbilityNickname(i)
+								Exit For
 							End If
 						Next 
 					End If
 					
-					'Invalid_string_refer_to_original_code
-					If MapFileName = "" Then
-						'Invalid_string_refer_to_original_code
-						If .IsFeatureAvailable("螟牙ｽ｢") Then
-							'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-							MainForm.mnuUnitCommandItem(TransformCmdID).Caption = .FeatureName("螟牙ｽ｢")
-							'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-							If MainForm.mnuUnitCommandItem(TransformCmdID).Caption = "" Then
-								'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-								MainForm.mnuUnitCommandItem(TransformCmdID).Caption = "螟牙ｽ｢"
-							End If
-							
-							For i = 2 To LLength(.FeatureData("螟牙ｽ｢"))
-								uname = LIndex(.FeatureData("螟牙ｽ｢"), i)
-								If .OtherForm(uname).IsAvailable Then
+					'チャージコマンド
+					If Not .IsConditionSatisfied("チャージ完了") Then
+						For i = 1 To .CountWeapon
+							If .IsWeaponClassifiedAs(i, "Ｃ") Then
+								If .IsWeaponAvailable(i, "チャージ") Then
 									'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-									MainForm.mnuUnitCommandItem(TransformCmdID).Visible = True
+									MainForm.mnuUnitCommandItem(ChargeCmdID).Visible = True
 									Exit For
 								End If
-							Next 
-						End If
-						
-						'Invalid_string_refer_to_original_code
-						If .IsFeatureAvailable("Invalid_string_refer_to_original_code") Then
-							'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-							MainForm.mnuUnitCommandItem(SplitCmdID).Visible = True
-							'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-							MainForm.mnuUnitCommandItem(SplitCmdID).Caption = .FeatureName("Invalid_string_refer_to_original_code")
-							'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-							If MainForm.mnuUnitCommandItem(SplitCmdID).Caption = "" Then
-								'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-								MainForm.mnuUnitCommandItem(SplitCmdID).Caption = "Invalid_string_refer_to_original_code"
 							End If
-							
-							buf = .FeatureData("Invalid_string_refer_to_original_code")
-							
-							'Invalid_string_refer_to_original_code
-							For i = 2 To LLength(buf)
-								If Not UList.IsDefined(LIndex(buf, i)) Then
+						Next 
+						For i = 1 To .CountAbility
+							If .IsAbilityClassifiedAs(i, "Ｃ") Then
+								If .IsAbilityAvailable(i, "チャージ") Then
 									'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-									MainForm.mnuUnitCommandItem(SplitCmdID).Visible = False
+									MainForm.mnuUnitCommandItem(ChargeCmdID).Visible = True
 									Exit For
 								End If
-							Next 
-							
-							'Invalid_string_refer_to_original_code
-							'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-							If MainForm.mnuUnitCommandItem(SplitCmdID).Visible Then
-								n = 0
-								For i = 2 To LLength(buf)
-									With UList.Item(LIndex(buf, i)).Data
-										'Invalid_string_refer_to_original_code
-										'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-										n = n + System.Math.Abs(.PilotNum)
-									End With
-								Next 
+							End If
+						Next 
+					End If
+					
+					'スペシャルパワーコマンド
+					'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+					MainForm.mnuUnitCommandItem(SpecialPowerCmdID).Caption = Term("スペシャルパワー", SelectedUnit)
+					If .MainPilot.CountSpecialPower > 0 Then
+						'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+						MainForm.mnuUnitCommandItem(SpecialPowerCmdID).Visible = True
+					Else
+						For i = 1 To .CountPilot
+							If .Pilot(i).CountSpecialPower > 0 Then
+								'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+								MainForm.mnuUnitCommandItem(SpecialPowerCmdID).Visible = True
+								Exit For
+							End If
+						Next 
+						For i = 1 To .CountSupport
+							If .Support(i).CountSpecialPower > 0 Then
+								'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+								MainForm.mnuUnitCommandItem(SpecialPowerCmdID).Visible = True
+								Exit For
+							End If
+						Next 
+						If .IsFeatureAvailable("追加サポート") Then
+							If .AdditionalSupport.CountSpecialPower > 0 Then
+								'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+								MainForm.mnuUnitCommandItem(SpecialPowerCmdID).Visible = True
 							End If
 						End If
 					End If
-				End With
-				'Next
-				'UPGRADE_WARNING: ProceedCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-				'End If
-				'End If
-				'UPGRADE_WARNING: ProceedCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-				
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				'UPGRADE_WARNING: ProceedCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-				MainForm.mnuUnitCommandItem(CombineCmdID).Caption = "Invalid_string_refer_to_original_code"
-				'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-				MainForm.mnuUnitCommandItem(CombineCmdID).Visible = True
-				'End If
-				
-				'UPGRADE_WARNING: ProceedCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-				'螟芽ｺｫ隗｣髯､
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-				MainForm.mnuUnitCommandItem(HyperModeCmdID).Visible = True
-				'UPGRADE_WARNING: ProceedCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-				'End If
-				'End If
-				
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-				MainForm.mnuUnitCommandItem(OrderCmdID).Caption = "Invalid_string_refer_to_original_code"
-				
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				'UPGRADE_WARNING: ProceedCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-				'Next
-				
-				'Invalid_string_refer_to_original_code
-				With ALDList
-					For i = 1 To .Count
-						With .Item(i)
-							'Invalid_string_refer_to_original_code
-							'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+					If .IsConditionSatisfied("憑依") Or .IsConditionSatisfied("スペシャルパワー使用不能") Then
+						'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+						MainForm.mnuUnitCommandItem(SpecialPowerCmdID).Visible = False
+					End If
+					
+					'変形コマンド
+					If .IsFeatureAvailable("変形") And .FeatureName("変形") <> "" And Not .IsConditionSatisfied("形態固定") And Not .IsConditionSatisfied("機体固定") Then
+						'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+						MainForm.mnuUnitCommandItem(TransformCmdID).Caption = .FeatureName("変形")
+						
+						For i = 2 To LLength(.FeatureData("変形"))
+							uname = LIndex(.FeatureData("変形"), i)
+							If .OtherForm(uname).IsAvailable Then
+								'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+								MainForm.mnuUnitCommandItem(TransformCmdID).Visible = True
+								Exit For
+							End If
+						Next 
+					End If
+					
+					'分離コマンド
+					If .IsFeatureAvailable("分離") And .FeatureName("分離") <> "" And Not .IsConditionSatisfied("形態固定") And Not .IsConditionSatisfied("機体固定") Then
+						'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+						MainForm.mnuUnitCommandItem(SplitCmdID).Visible = True
+						'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+						MainForm.mnuUnitCommandItem(SplitCmdID).Caption = .FeatureName("分離")
+						
+						buf = .FeatureData("分離")
+						
+						'分離形態が利用出来ない場合は分離を行わない
+						For i = 2 To LLength(buf)
+							If Not UList.IsDefined(LIndex(buf, i)) Then
+								'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+								MainForm.mnuUnitCommandItem(SplitCmdID).Visible = False
+								Exit For
+							End If
+						Next 
+						
+						'パイロットが足らない場合も分離を行わない
+						'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+						If MainForm.mnuUnitCommandItem(SplitCmdID).Visible Then
+							n = 0
+							For i = 2 To LLength(buf)
+								With UList.Item(LIndex(buf, i)).Data
+									If Not .IsFeatureAvailable("召喚ユニット") Then
+										n = n + System.Math.Abs(.PilotNum)
+									End If
+								End With
+							Next 
+							If .CountPilot < n Then
+								'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+								MainForm.mnuUnitCommandItem(SplitCmdID).Visible = False
+							End If
+						End If
+					End If
+					If .IsFeatureAvailable("パーツ分離") And .FeatureName("パーツ分離") <> "" Then
+						'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+						MainForm.mnuUnitCommandItem(SplitCmdID).Caption = .FeatureName("パーツ分離")
+						'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+						MainForm.mnuUnitCommandItem(SplitCmdID).Visible = True
+					End If
+					
+					'合体コマンド
+					If .IsFeatureAvailable("合体") And Not .IsConditionSatisfied("形態固定") And Not .IsConditionSatisfied("機体固定") Then
+						For i = 1 To .CountFeature
+							'3体以上からなる合体能力を持っているか？
+							If .Feature(i) = "合体" And .FeatureName(i) <> "" And LLength(.FeatureData(i)) > 3 Then
+								n = 0
+								'パートナーは隣接しているか？
+								For j = 3 To LLength(.FeatureData(i))
+									u = UList.Item(LIndex(.FeatureData(i), j))
+									If u Is Nothing Then
+										Exit For
+									End If
+									If Not u.IsOperational Then
+										Exit For
+									End If
+									If u.Status_Renamed <> "出撃" And u.CurrentForm.IsFeatureAvailable("合体制限") Then
+										Exit For
+									End If
+									If System.Math.Abs(.X - u.CurrentForm.X) + System.Math.Abs(.Y - u.CurrentForm.Y) > 2 Then
+										Exit For
+									End If
+									n = n + 1
+								Next 
+								
+								'合体先のユニットが作成され、かつ合体可能な状態にあるか？
+								uname = LIndex(.FeatureData(i), 2)
+								u = UList.Item(uname)
+								If u Is Nothing Then
+									n = 0
+								ElseIf u.IsConditionSatisfied("行動不能") Then 
+									n = 0
+								End If
+								
+								'すべての条件を満たしている場合
+								If n = LLength(.FeatureData(i)) - 2 Then
+									'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+									MainForm.mnuUnitCommandItem(CombineCmdID).Visible = True
+									'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+									MainForm.mnuUnitCommandItem(CombineCmdID).Caption = LIndex(.FeatureData(i), 1)
+									Exit For
+								End If
+							End If
+						Next 
+					End If
+					
+					If Not .IsConditionSatisfied("ノーマルモード付加") Then
+						'ハイパーモードコマンド
+						If .IsFeatureAvailable("ハイパーモード") And (.MainPilot.Morale >= CShort(10# * .FeatureLevel("ハイパーモード")) + 100 Or (.HP <= .MaxHP \ 4 And InStr(.FeatureData("ハイパーモード"), "気力発動") = 0)) And InStr(.FeatureData("ハイパーモード"), "自動発動") = 0 And .FeatureName("ハイパーモード") <> "" And Not .IsConditionSatisfied("形態固定") And Not .IsConditionSatisfied("機体固定") Then
+							uname = LIndex(.FeatureData("ハイパーモード"), 2)
+							If Not .OtherForm(uname).IsConditionSatisfied("行動不能") And .OtherForm(uname).IsAbleToEnter(.X, .Y) Then
+								'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+								MainForm.mnuUnitCommandItem(HyperModeCmdID).Visible = True
+								'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+								MainForm.mnuUnitCommandItem(HyperModeCmdID).Caption = LIndex(.FeatureData("ハイパーモード"), 1)
+							End If
+						End If
+					Else
+						'変身解除
+						If InStr(.FeatureData("ノーマルモード"), "手動解除") > 0 Then
 							'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-							MainForm.mnuUnitCommandItem(OrderCmdID).Caption = .Name
+							MainForm.mnuUnitCommandItem(HyperModeCmdID).Visible = True
+							If .IsFeatureAvailable("変身解除コマンド名") Then
+								'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+								MainForm.mnuUnitCommandItem(HyperModeCmdID).Caption = .FeatureData("変身解除コマンド名")
+							ElseIf .IsHero Then 
+								'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+								MainForm.mnuUnitCommandItem(HyperModeCmdID).Caption = "変身解除"
+							Else
+								'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+								MainForm.mnuUnitCommandItem(HyperModeCmdID).Caption = "特殊モード解除"
+							End If
+						End If
+					End If
+					
+					'地上コマンド
+					If TerrainClass(.X, .Y) = "陸" Or TerrainClass(.X, .Y) = "屋内" Or TerrainClass(.X, .Y) = "月面" Then
+						If .Area <> "地上" And .IsTransAvailable("陸") Then
+							'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+							MainForm.mnuUnitCommandItem(GroundCmdID).Caption = "地上"
+							'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+							MainForm.mnuUnitCommandItem(GroundCmdID).Visible = True
+						End If
+					ElseIf TerrainClass(.X, .Y) = "水" Or TerrainClass(.X, .Y) = "深水" Then 
+						If .Area <> "水上" And .IsTransAvailable("水上") Then
+							'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+							MainForm.mnuUnitCommandItem(GroundCmdID).Caption = "水上"
+							'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+							MainForm.mnuUnitCommandItem(GroundCmdID).Visible = True
+						End If
+					End If
+					
+					'空中コマンド
+					Select Case TerrainClass(.X, .Y)
+						Case "宇宙"
+						Case "月面"
+							If (.IsTransAvailable("空") Or .IsTransAvailable("宇宙")) And Not .Area = "宇宙" Then
+								'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+								MainForm.mnuUnitCommandItem(SkyCmdID).Caption = "宇宙"
+								'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+								MainForm.mnuUnitCommandItem(SkyCmdID).Visible = True
+							End If
+						Case Else
+							If .IsTransAvailable("空") And Not .Area = "空中" Then
+								'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+								MainForm.mnuUnitCommandItem(SkyCmdID).Caption = "空中"
+								'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+								MainForm.mnuUnitCommandItem(SkyCmdID).Visible = True
+							End If
+					End Select
+					
+					'地中コマンド
+					If .IsTransAvailable("地中") And Not .Area = "地中" And (TerrainClass(.X, .Y) = "陸" Or TerrainClass(.X, .Y) = "月面") Then
+						'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+						MainForm.mnuUnitCommandItem(UndergroundCmdID).Visible = True
+					End If
+					
+					'水中コマンド
+					If .Area <> "水中" Then
+						If TerrainClass(.X, .Y) = "深水" And (.IsTransAvailable("水") Or .IsFeatureAvailable("水泳")) And Mid(.Data.Adaption, 3, 1) <> "-" Then
+							'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+							MainForm.mnuUnitCommandItem(WaterCmdID).Visible = True
+						ElseIf TerrainClass(.X, .Y) = "水" And Mid(.Data.Adaption, 3, 1) <> "-" Then 
+							'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+							MainForm.mnuUnitCommandItem(WaterCmdID).Visible = True
+						End If
+					End If
+					
+					'発進コマンド
+					If .IsFeatureAvailable("母艦") And .Area <> "地中" Then
+						If .CountUnitOnBoard > 0 Then
+							'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+							MainForm.mnuUnitCommandItem(LaunchCmdID).Visible = True
+						End If
+					End If
+					
+					'アイテムコマンド
+					For i = 1 To .CountAbility
+						If .IsAbilityUseful(i, "移動前") And .Ability(i).IsItem Then
+							'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+							MainForm.mnuUnitCommandItem(ItemCmdID).Visible = True
 							Exit For
-							'End If
+						End If
+					Next 
+					If .Area = "地中" Then
+						'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+						MainForm.mnuUnitCommandItem(ItemCmdID).Visible = False
+					End If
+					
+					'召喚解除コマンド
+					For i = 1 To .CountServant
+						With .Servant(i).CurrentForm
+							Select Case .Status_Renamed
+								Case "出撃", "格納"
+									'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+									MainForm.mnuUnitCommandItem(DismissCmdID).Visible = True
+								Case "旧主形態", "旧形態"
+									'合体後の形態が出撃中なら使用不可
+									'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+									MainForm.mnuUnitCommandItem(DismissCmdID).Visible = True
+									For j = 1 To .CountFeature
+										If .Feature(j) = "合体" Then
+											uname = LIndex(.FeatureData(j), 2)
+											If UList.IsDefined(uname) Then
+												With UList.Item(uname).CurrentForm
+													If .Status_Renamed = "出撃" Or .Status_Renamed = "格納" Then
+														'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+														MainForm.mnuUnitCommandItem(DismissCmdID).Visible = False
+													End If
+												End With
+											End If
+										End If
+									Next 
+							End Select
 						End With
 					Next 
-				End With
-				'End If
-				'End If
-				
-				'Invalid_string_refer_to_original_code
-				If Not ViewMode Then
+					If .IsFeatureAvailable("召喚解除コマンド名") Then
+						'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+						MainForm.mnuUnitCommandItem(DismissCmdID).Caption = .FeatureData("召喚解除コマンド名")
+					Else
+						'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+						MainForm.mnuUnitCommandItem(DismissCmdID).Caption = "召喚解除"
+					End If
+					
+					'ユニットコマンド
 					i = UnitCommand1CmdID
 					For	Each lab In colEventLabelList
 						With lab
-							If .Name = Event_Renamed.LabelType.UnitCommandEventLabel And .Enable Then
-								buf = GetValueAsString(.Para(3))
-								If (SelectedUnit.Party = "蜻ｳ譁ｹ" And (buf = SelectedUnit.MainPilot.Name Or buf = SelectedUnit.MainPilot.Nickname Or buf = SelectedUnit.Name)) Or buf = SelectedUnit.Party Or buf = "蜈ｨ" Then
-									If .CountPara <= 3 Then
-										'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-										MainForm.mnuUnitCommandItem(i).Visible = True
-									ElseIf GetValueAsLong(.Para(4)) <> 0 Then 
-										'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-										MainForm.mnuUnitCommandItem(i).Visible = True
+							If .Name = Event_Renamed.LabelType.UnitCommandEventLabel Then
+								If .Enable Then
+									buf = .Para(3)
+									If (SelectedUnit.Party = "味方" And (buf = SelectedUnit.MainPilot.Name Or buf = SelectedUnit.MainPilot.Nickname Or buf = SelectedUnit.Name)) Or buf = SelectedUnit.Party Or buf = "全" Then
+										If .CountPara <= 3 Then
+											'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+											MainForm.mnuUnitCommandItem(i).Visible = True
+										ElseIf StrToLng(.Para(4)) <> 0 Then 
+											'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+											MainForm.mnuUnitCommandItem(i).Visible = True
+										End If
 									End If
 								End If
 								
@@ -756,39 +1497,17 @@ Module Commands
 							End If
 						End With
 					Next lab
-				End If
+				End With
 				
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code_
-				'Or .IsConditionSatisfied("繝ｦ繝九ャ繝域ュ蝣ｱ髫阡ｽ") _
-				'Then
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-				MainForm.mnuUnitCommandItem(MoveCmdID).Visible = True
-				'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-				MainForm.mnuUnitCommandItem(AttackCmdID).Visible = False
-				'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-				MainForm.mnuUnitCommandItem(FeatureListCmdID).Visible = False
-				'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-				MainForm.mnuUnitCommandItem(WeaponListCmdID).Visible = False
-				'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-				MainForm.mnuUnitCommandItem(AbilityListCmdID).Visible = False
-				For i = 1 To WaitCmdID
-					'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-					If MainForm.mnuUnitCommandItem(i).Visible Then
-						Exit For
+				If Not SelectedUnit Is DisplayedUnit Then
+					'MOD START 240a
+					'                DisplayUnitStatus SelectedUnit
+					'新ＧＵＩ使用時はクリック時にユニットステータスを表示しない
+					If Not NewGUIMode Then
+						DisplayUnitStatus(SelectedUnit)
 					End If
-				Next 
-				If i > WaitCmdID Then
-					'Invalid_string_refer_to_original_code
-					CommandState = "Invalid_string_refer_to_original_code"
-					IsGUILocked = False
-					Exit Sub
+					'MOD  END  240a
 				End If
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-				MainForm.mnuUnitCommandItem(MoveCmdID).Visible = False
-				'End If
 				
 				IsGUILocked = False
 				If by_cancel Then
@@ -800,907 +1519,529 @@ Module Commands
 					'UPGRADE_ISSUE: Form メソッド MainForm.PopupMenu はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 					MainForm.PopupMenu(MainForm.mnuUnitCommand, 6, MouseX, MouseY - 6)
 				End If
-				Exit Sub
 				
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_WARNING: ProceedCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_WARNING: ProceedCommand に変換されていないステートメントがあります。ソース コードを確認してください。
+			Case "移動後コマンド選択"
+				SelectedUnitForEvent = SelectedUnit
 				
-				'Invalid_string_refer_to_original_code
-				i = UnitCommand1CmdID
-				For	Each lab In colEventLabelList
-					With lab
-						If .Name = Event_Renamed.LabelType.UnitCommandEventLabel And (.AsterNum = 1 Or .AsterNum = 3) Then
-							If .Enable Then
-								buf = .Para(3)
-								If (SelectedUnit.Party = "蜻ｳ譁ｹ" And (buf = SelectedUnit.MainPilot.Name Or buf = SelectedUnit.MainPilot.Nickname Or buf = SelectedUnit.Name)) Or buf = SelectedUnit.Party Or buf = "蜈ｨ" Then
-									If .CountPara <= 3 Then
-										'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-										MainForm.mnuUnitCommandItem(i).Visible = True
-									ElseIf StrToLng(.Para(4)) <> 0 Then 
-										'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-										MainForm.mnuUnitCommandItem(i).Visible = True
+				With SelectedUnit
+					'移動時にＥＮを消費している場合はステータスウィンドウを更新
+					' MOD START MARGE
+					'                If MainWidth = 15 Then
+					If Not NewGUIMode Then
+						' MOD END MARGE
+						If PrevUnitEN <> .EN Then
+							DisplayUnitStatus(SelectedUnit)
+						End If
+					End If
+					
+					With MainForm
+						'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+						.mnuUnitCommandItem(WaitCmdID).Visible = True
+						'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+						.mnuUnitCommandItem(MoveCmdID).Visible = False
+						'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+						.mnuUnitCommandItem(TeleportCmdID).Visible = False
+						'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+						.mnuUnitCommandItem(JumpCmdID).Visible = False
+					End With
+					
+					'会話コマンド
+					'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+					MainForm.mnuUnitCommandItem(TalkCmdID).Visible = False
+					For i = 1 To 4
+						'UPGRADE_NOTE: オブジェクト u をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
+						u = Nothing
+						Select Case i
+							Case 1
+								If .X > 1 Then
+									u = MapDataForUnit(.X - 1, .Y)
+								End If
+							Case 2
+								If .X < MapWidth Then
+									u = MapDataForUnit(.X + 1, .Y)
+								End If
+							Case 3
+								If .Y > 1 Then
+									u = MapDataForUnit(.X, .Y - 1)
+								End If
+							Case 4
+								If .Y < MapHeight Then
+									u = MapDataForUnit(.X, .Y + 1)
+								End If
+						End Select
+						
+						If Not u Is Nothing Then
+							If IsEventDefined("会話 " & .MainPilot.ID & " " & u.MainPilot.ID) Then
+								'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+								MainForm.mnuUnitCommandItem(TalkCmdID).Visible = True
+								Exit For
+							End If
+						End If
+					Next 
+					
+					'攻撃コマンド
+					'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+					MainForm.mnuUnitCommandItem(AttackCmdID).Caption = "攻撃"
+					'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+					MainForm.mnuUnitCommandItem(AttackCmdID).Visible = False
+					For i = 1 To .CountWeapon
+						If .IsWeaponUseful(i, "移動後") Then
+							'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+							MainForm.mnuUnitCommandItem(AttackCmdID).Visible = True
+							Exit For
+						End If
+					Next 
+					If .Area = "地中" Then
+						'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+						MainForm.mnuUnitCommandItem(AttackCmdID).Visible = False
+					End If
+					If .IsConditionSatisfied("攻撃不能") Then
+						'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+						MainForm.mnuUnitCommandItem(AttackCmdID).Visible = False
+					End If
+					
+					'修理コマンド
+					'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+					MainForm.mnuUnitCommandItem(FixCmdID).Visible = False
+					If .IsFeatureAvailable("修理装置") And .Area <> "地中" Then
+						For i = 1 To 4
+							'UPGRADE_NOTE: オブジェクト u をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
+							u = Nothing
+							Select Case i
+								Case 1
+									If .X > 1 Then
+										u = MapDataForUnit(.X - 1, .Y)
 									End If
+								Case 2
+									If .X < MapWidth Then
+										u = MapDataForUnit(.X + 1, .Y)
+									End If
+								Case 3
+									If .Y > 1 Then
+										u = MapDataForUnit(.X, .Y - 1)
+									End If
+								Case 4
+									If .Y < MapHeight Then
+										u = MapDataForUnit(.X, .Y + 1)
+									End If
+							End Select
+							
+							If Not u Is Nothing Then
+								With u
+									If (.Party = "味方" Or .Party = "ＮＰＣ") And .HP < .MaxHP Then
+										'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+										MainForm.mnuUnitCommandItem(FixCmdID).Visible = True
+										Exit For
+									End If
+								End With
+							End If
+						Next 
+						
+						If Len(.FeatureData("修理装置")) > 0 Then
+							'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+							MainForm.mnuUnitCommandItem(FixCmdID).Caption = LIndex(.FeatureData("修理装置"), 1)
+							If IsNumeric(LIndex(.FeatureData("修理装置"), 2)) Then
+								If .EN < CShort(LIndex(.FeatureData("修理装置"), 2)) Then
+									'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+									MainForm.mnuUnitCommandItem(FixCmdID).Visible = False
 								End If
 							End If
-							
+						Else
 							'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-							If MainForm.mnuUnitCommandItem(i).Visible Then
+							MainForm.mnuUnitCommandItem(FixCmdID).Caption = "修理装置"
+						End If
+					End If
+					
+					'補給コマンド
+					'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+					MainForm.mnuUnitCommandItem(SupplyCmdID).Visible = False
+					If .IsFeatureAvailable("補給装置") And .Area <> "地中" Then
+						For i = 1 To 4
+							'UPGRADE_NOTE: オブジェクト u をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
+							u = Nothing
+							Select Case i
+								Case 1
+									If .X > 1 Then
+										u = MapDataForUnit(.X - 1, .Y)
+									End If
+								Case 2
+									If .X < MapWidth Then
+										u = MapDataForUnit(.X + 1, .Y)
+									End If
+								Case 3
+									If .Y > 1 Then
+										u = MapDataForUnit(.X, .Y - 1)
+									End If
+								Case 4
+									If .Y < MapHeight Then
+										u = MapDataForUnit(.X, .Y + 1)
+									End If
+							End Select
+							
+							If Not u Is Nothing Then
+								With u
+									If .Party = "味方" Or .Party = "ＮＰＣ" Then
+										If .EN < .MaxEN Then
+											'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+											MainForm.mnuUnitCommandItem(SupplyCmdID).Visible = True
+										Else
+											For j = 1 To .CountWeapon
+												If .Bullet(j) < .MaxBullet(j) Then
+													'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+													MainForm.mnuUnitCommandItem(SupplyCmdID).Visible = True
+													Exit For
+												End If
+											Next 
+											For j = 1 To .CountAbility
+												If .Stock(j) < .MaxStock(j) Then
+													'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+													MainForm.mnuUnitCommandItem(SupplyCmdID).Visible = True
+													Exit For
+												End If
+											Next 
+										End If
+									End If
+								End With
+							End If
+						Next 
+						
+						If Len(.FeatureData("補給装置")) > 0 Then
+							'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+							MainForm.mnuUnitCommandItem(SupplyCmdID).Caption = LIndex(.FeatureData("補給装置"), 1)
+							If IsNumeric(LIndex(.FeatureData("補給装置"), 2)) Then
+								If .EN < CShort(LIndex(.FeatureData("補給装置"), 2)) Or .MainPilot.Morale < 100 Then
+									'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+									MainForm.mnuUnitCommandItem(SupplyCmdID).Visible = False
+								End If
+							End If
+						Else
+							'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+							MainForm.mnuUnitCommandItem(SupplyCmdID).Caption = "補給装置"
+						End If
+						
+						If IsOptionDefined("移動後補給不可") And Not SelectedUnit.MainPilot.IsSkillAvailable("補給") Then
+							'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+							MainForm.mnuUnitCommandItem(SupplyCmdID).Visible = False
+						End If
+					End If
+					
+					'アビリティコマンド
+					'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+					MainForm.mnuUnitCommandItem(AbilityCmdID).Visible = False
+					n = 0
+					For i = 1 To .CountAbility
+						If Not .Ability(i).IsItem Then
+							n = n + 1
+							If .IsAbilityUseful(i, "移動後") Then
 								'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-								MainForm.mnuUnitCommandItem(i).Caption = .Para(2)
-								UnitCommandLabelList(i - UnitCommand1CmdID + 1) = CStr(.LineNum)
-								i = i + 1
-								If i > UnitCommand10CmdID Then
+								MainForm.mnuUnitCommandItem(AbilityCmdID).Visible = True
+							End If
+						End If
+					Next 
+					If .Area = "地中" Then
+						'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+						MainForm.mnuUnitCommandItem(AbilityCmdID).Visible = False
+					End If
+					'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+					MainForm.mnuUnitCommandItem(AbilityCmdID).Caption = Term("アビリティ", SelectedUnit)
+					If n = 1 Then
+						For i = 1 To .CountAbility
+							If Not .Ability(i).IsItem Then
+								'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+								MainForm.mnuUnitCommandItem(AbilityCmdID).Caption = .AbilityNickname(i)
+								Exit For
+							End If
+						Next 
+					End If
+					
+					With MainForm
+						'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+						.mnuUnitCommandItem(ChargeCmdID).Visible = False
+						'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+						.mnuUnitCommandItem(SpecialPowerCmdID).Visible = False
+						'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+						.mnuUnitCommandItem(TransformCmdID).Visible = False
+						'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+						.mnuUnitCommandItem(SplitCmdID).Visible = False
+					End With
+					
+					'合体コマンド
+					'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+					MainForm.mnuUnitCommandItem(CombineCmdID).Visible = False
+					If .IsFeatureAvailable("合体") And Not .IsConditionSatisfied("形態固定") And Not .IsConditionSatisfied("機体固定") Then
+						For i = 1 To .CountFeature
+							'3体以上からなる合体能力を持っているか？
+							If .Feature(i) = "合体" And .FeatureName(i) <> "" And LLength(.FeatureData(i)) > 3 Then
+								n = 0
+								For j = 3 To LLength(.FeatureData(i))
+									u = UList.Item(LIndex(.FeatureData(i), j))
+									If u Is Nothing Then
+										Exit For
+									End If
+									If Not u.IsOperational Then
+										Exit For
+									End If
+									If u.Status_Renamed <> "出撃" And u.CurrentForm.IsFeatureAvailable("合体制限") Then
+										Exit For
+									End If
+									If System.Math.Abs(.X - u.CurrentForm.X) + System.Math.Abs(.Y - u.CurrentForm.Y) > 2 Then
+										Exit For
+									End If
+									n = n + 1
+								Next 
+								
+								uname = LIndex(.FeatureData(i), 2)
+								u = UList.Item(uname)
+								If u Is Nothing Then
+									n = 0
+								ElseIf u.IsConditionSatisfied("行動不能") Then 
+									n = 0
+								End If
+								
+								If n = LLength(.FeatureData(i)) - 2 Then
+									'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+									MainForm.mnuUnitCommandItem(CombineCmdID).Visible = True
+									'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+									MainForm.mnuUnitCommandItem(CombineCmdID).Caption = LIndex(.FeatureData(i), 1)
 									Exit For
 								End If
 							End If
-						End If
+						Next 
+					End If
+					
+					With MainForm
+						'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+						.mnuUnitCommandItem(HyperModeCmdID).Visible = False
+						'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+						.mnuUnitCommandItem(GroundCmdID).Visible = False
+						'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+						.mnuUnitCommandItem(SkyCmdID).Visible = False
+						'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+						.mnuUnitCommandItem(UndergroundCmdID).Visible = False
+						'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+						.mnuUnitCommandItem(WaterCmdID).Visible = False
+						'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+						.mnuUnitCommandItem(LaunchCmdID).Visible = False
 					End With
-				Next lab
+					
+					'アイテムコマンド
+					'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+					MainForm.mnuUnitCommandItem(ItemCmdID).Visible = False
+					For i = 1 To .CountAbility
+						If .IsAbilityUseful(i, "移動後") And .Ability(i).IsItem Then
+							'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+							MainForm.mnuUnitCommandItem(ItemCmdID).Visible = True
+							Exit For
+						End If
+					Next 
+					If .Area = "地中" Then
+						'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+						MainForm.mnuUnitCommandItem(ItemCmdID).Visible = False
+					End If
+					
+					With MainForm
+						'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+						.mnuUnitCommandItem(DismissCmdID).Visible = False
+						'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+						.mnuUnitCommandItem(OrderCmdID).Visible = False
+						'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+						.mnuUnitCommandItem(FeatureListCmdID).Visible = False
+						'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+						.mnuUnitCommandItem(WeaponListCmdID).Visible = False
+						'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+						.mnuUnitCommandItem(AbilityListCmdID).Visible = False
+						'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+						.mnuUnitCommandItem(UnitCommand1CmdID).Visible = False
+						'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+						.mnuUnitCommandItem(UnitCommand2CmdID).Visible = False
+						'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+						.mnuUnitCommandItem(UnitCommand3CmdID).Visible = False
+						'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+						.mnuUnitCommandItem(UnitCommand4CmdID).Visible = False
+						'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+						.mnuUnitCommandItem(UnitCommand5CmdID).Visible = False
+						'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+						.mnuUnitCommandItem(UnitCommand6CmdID).Visible = False
+						'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+						.mnuUnitCommandItem(UnitCommand7CmdID).Visible = False
+						'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+						.mnuUnitCommandItem(UnitCommand8CmdID).Visible = False
+						'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+						.mnuUnitCommandItem(UnitCommand9CmdID).Visible = False
+						'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+						.mnuUnitCommandItem(UnitCommand10CmdID).Visible = False
+					End With
+					
+					'ユニットコマンド
+					i = UnitCommand1CmdID
+					For	Each lab In colEventLabelList
+						With lab
+							If .Name = Event_Renamed.LabelType.UnitCommandEventLabel And .AsterNum >= 2 Then
+								If .Enable Then
+									buf = .Para(3)
+									If (SelectedUnit.Party = "味方" And (buf = SelectedUnit.MainPilot.Name Or buf = SelectedUnit.MainPilot.Nickname Or buf = SelectedUnit.Name)) Or buf = SelectedUnit.Party Or buf = "全" Then
+										If .CountPara <= 3 Then
+											'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+											MainForm.mnuUnitCommandItem(i).Visible = True
+										ElseIf StrToLng(.Para(4)) <> 0 Then 
+											'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+											MainForm.mnuUnitCommandItem(i).Visible = True
+										End If
+									End If
+								End If
+								
+								'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+								If MainForm.mnuUnitCommandItem(i).Visible Then
+									'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+									MainForm.mnuUnitCommandItem(i).Caption = .Para(2)
+									UnitCommandLabelList(i - UnitCommand1CmdID + 1) = CStr(.LineNum)
+									i = i + 1
+									If i > UnitCommand10CmdID Then
+										Exit For
+									End If
+								End If
+							End If
+						End With
+					Next lab
+				End With
 				
 				IsGUILocked = False
-				'UPGRADE_ISSUE: Control mnuUnitCommand は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-				'UPGRADE_ISSUE: Form メソッド MainForm.PopupMenu はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-				MainForm.PopupMenu(MainForm.mnuUnitCommand, 6, MouseX, MouseY - 5)
-				Exit Sub
-				'End If
+				If by_cancel Then
+					'UPGRADE_ISSUE: Control mnuUnitCommand は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+					'UPGRADE_ISSUE: Form メソッド MainForm.PopupMenu はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+					MainForm.PopupMenu(MainForm.mnuUnitCommand, 6, MouseX, MouseY + 5)
+				Else
+					'UPGRADE_ISSUE: Control mnuUnitCommand は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+					'UPGRADE_ISSUE: Form メソッド MainForm.PopupMenu はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+					MainForm.PopupMenu(MainForm.mnuUnitCommand, 6, MouseX, MouseY - 6)
+					System.Windows.Forms.Application.DoEvents()
+					'ＰＣに負荷がかかったような状態だとポップアップメニューの選択が
+					'うまく行えない場合があるのでやり直す
+					Do While (CommandState = "移動後コマンド選択" And SelectedCommand = "移動")
+						'UPGRADE_ISSUE: Control mnuUnitCommand は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+						'UPGRADE_ISSUE: Form メソッド MainForm.PopupMenu はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+						MainForm.PopupMenu(MainForm.mnuUnitCommand, 6, MouseX, MouseY - 6)
+						System.Windows.Forms.Application.DoEvents()
+					Loop 
+				End If
 				
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-				MainForm.mnuUnitCommandItem(MoveCmdID).Caption = "Invalid_string_refer_to_original_code"
-				'UPGRADE_WARNING: ProceedCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-				
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-				MainForm.mnuUnitCommandItem(TeleportCmdID).Caption = "Invalid_string_refer_to_original_code"
-				'End If
-				
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-				MainForm.mnuUnitCommandItem(TeleportCmdID).Visible = True
-				'End If
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code_
-				'Invalid_string_refer_to_original_code_
-				'Then
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-				MainForm.mnuUnitCommandItem(MoveCmdID).Visible = False
-				'End If
-				'UPGRADE_WARNING: ProceedCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-				'End If
-				
-				'UPGRADE_WARNING: ProceedCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-				'End If
-				
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code_
-				'Invalid_string_refer_to_original_code_
-				'Then
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-				MainForm.mnuUnitCommandItem(JumpCmdID).Caption = "Invalid_string_refer_to_original_code"
-				'End If
-				
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-				MainForm.mnuUnitCommandItem(JumpCmdID).Visible = True
-				'End If
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code_
-				'Invalid_string_refer_to_original_code_
-				'Then
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-				MainForm.mnuUnitCommandItem(MoveCmdID).Visible = False
-				'End If
-				'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-				MainForm.mnuUnitCommandItem(JumpCmdID).Visible = True
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-				MainForm.mnuUnitCommandItem(MoveCmdID).Visible = False
-				'End If
-				'End If
-				
-				'UPGRADE_WARNING: ProceedCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-				'End If
-				
-				'Invalid_string_refer_to_original_code
-				For i = 1 To 4
-					'UPGRADE_NOTE: オブジェクト u をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-					u = Nothing
-					Select Case i
-						Case 1
-							'UPGRADE_WARNING: ProceedCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-						Case 2
-							'UPGRADE_WARNING: ProceedCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-						Case 3
-							'UPGRADE_WARNING: ProceedCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-						Case 4
-							'UPGRADE_WARNING: ProceedCommand に変換されていないステートメントがあります。ソース コードを確認してください。
+			Case "ターゲット選択", "移動後ターゲット選択"
+				If Not MaskData(PixelToMapX(MouseX), PixelToMapY(MouseY)) Then
+					SelectedX = PixelToMapX(MouseX)
+					SelectedY = PixelToMapY(MouseY)
+					
+					'自分自身を選択された場合
+					If SelectedUnit.X = SelectedX And SelectedUnit.Y = SelectedY Then
+						If SelectedCommand = "スペシャルパワー" Then
+							'下に抜ける
+						ElseIf SelectedCommand = "アビリティ" Or SelectedCommand = "マップアビリティ" Or SelectedCommand = "アイテム" Or SelectedCommand = "マップアイテム" Then 
+							If SelectedUnit.AbilityMinRange(SelectedAbility) > 0 Then
+								'自分自身は選択不可
+								IsGUILocked = False
+								Exit Sub
+							End If
+						ElseIf SelectedCommand = "移動命令" Then 
+							'下に抜ける
+						Else
+							'自分自身は選択不可
+							IsGUILocked = False
+							Exit Sub
+						End If
+					End If
+					
+					'場所を選択するコマンド
+					Select Case SelectedCommand
+						' MOD START MARGE
+						'                    Case "移動"
+						Case "移動", "再移動"
+							' MOD END MARGE
+							FinishMoveCommand()
+							IsGUILocked = False
+							Exit Sub
+						Case "テレポート"
+							FinishTeleportCommand()
+							IsGUILocked = False
+							Exit Sub
+						Case "ジャンプ"
+							FinishJumpCommand()
+							IsGUILocked = False
+							Exit Sub
+						Case "マップ攻撃"
+							MapAttackCommand()
+							IsGUILocked = False
+							Exit Sub
+						Case "マップアビリティ", "マップアイテム"
+							MapAbilityCommand()
+							IsGUILocked = False
+							Exit Sub
+						Case "発進"
+							FinishLaunchCommand()
+							IsGUILocked = False
+							Exit Sub
+						Case "移動命令"
+							FinishOrderCommand()
+							IsGUILocked = False
+							Exit Sub
 					End Select
 					
-					If Not u Is Nothing Then
-						'UPGRADE_WARNING: ProceedCommand に変換されていないステートメントがあります。ソース コードを確認してください。
+					'これ以降はユニットを選択するコマンド
+					
+					'指定した地点にユニットがいる？
+					If MapDataForUnit(SelectedX, SelectedY) Is Nothing Then
+						IsGUILocked = False
+						Exit Sub
 					End If
-				Next 
-				
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-				MainForm.mnuUnitCommandItem(AttackCmdID).Caption = "Invalid_string_refer_to_original_code"
-				'UPGRADE_WARNING: ProceedCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-				'UPGRADE_WARNING: ProceedCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-				'UPGRADE_WARNING: ProceedCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-				
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_WARNING: ProceedCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-				'Next
-				
-				'UPGRADE_WARNING: ProceedCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-				'End If
-				
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_WARNING: ProceedCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-				'Next
-				
-				'UPGRADE_WARNING: ProceedCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-				'End If
-				
-				'Invalid_string_refer_to_original_code
-				n = 0
-				'UPGRADE_WARNING: ProceedCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-				'UPGRADE_WARNING: ProceedCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-				'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-				MainForm.mnuUnitCommandItem(AbilityCmdID).Caption = Term("Invalid_string_refer_to_original_code", SelectedUnit)
-				If n = 1 Then
-					'UPGRADE_WARNING: ProceedCommand に変換されていないステートメントがあります。ソース コードを確認してください。
+					
+					'ターゲットを選択
+					SelectedTarget = MapDataForUnit(SelectedX, SelectedY)
+					
+					Select Case SelectedCommand
+						Case "攻撃"
+							FinishAttackCommand()
+						Case "アビリティ", "アイテム"
+							FinishAbilityCommand()
+						Case "会話"
+							FinishTalkCommand()
+						Case "修理"
+							FinishFixCommand()
+						Case "補給"
+							FinishSupplyCommand()
+						Case "スペシャルパワー"
+							FinishSpecialPowerCommand()
+						Case "攻撃命令", "護衛命令"
+							FinishOrderCommand()
+					End Select
 				End If
 				
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				'UPGRADE_WARNING: ProceedCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-				'UPGRADE_WARNING: ProceedCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-				'End If
-				
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-				MainForm.mnuUnitCommandItem(SpecialPowerCmdID).Caption = Term("繧ｹ繝壹す繝｣繝ｫ繝代Ρ繝ｼ", SelectedUnit)
-				'UPGRADE_WARNING: ProceedCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-				'End If
-				'Invalid_string_refer_to_original_code_
-				'Invalid_string_refer_to_original_code_
-				'Then
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-				MainForm.mnuUnitCommandItem(SpecialPowerCmdID).Visible = False
-				'End If
-				
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code_
-				'Invalid_string_refer_to_original_code_
-				'Then
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				'UPGRADE_WARNING: ProceedCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-				
-				'UPGRADE_WARNING: ProceedCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-				'End If
-				
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code_
-				'Invalid_string_refer_to_original_code_
-				'Then
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-				MainForm.mnuUnitCommandItem(SplitCmdID).Visible = True
-				'UPGRADE_WARNING: ProceedCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-				
-				'UPGRADE_WARNING: ProceedCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-				
-				'Invalid_string_refer_to_original_code
-				For i = 2 To LLength(buf)
-					If Not UList.IsDefined(LIndex(buf, i)) Then
-						'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-						MainForm.mnuUnitCommandItem(SplitCmdID).Visible = False
-						Exit For
-					End If
-				Next 
-				
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-				If MainForm.mnuUnitCommandItem(SplitCmdID).Visible Then
-					n = 0
-					For i = 2 To LLength(buf)
-						With UList.Item(LIndex(buf, i)).Data
-							'Invalid_string_refer_to_original_code
-							'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-							n = n + System.Math.Abs(.PilotNum)
-						End With
-					Next 
-				End If
-				'End With
-				'Next
-				'UPGRADE_WARNING: ProceedCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-				'End If
-				'End If
-				'UPGRADE_WARNING: ProceedCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-				
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code_
-				'Invalid_string_refer_to_original_code_
-				'Invalid_string_refer_to_original_code_
-				'Then
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				'UPGRADE_WARNING: ProceedCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-				'End If
-				
-				'UPGRADE_WARNING: ProceedCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-				'螟芽ｺｫ隗｣髯､
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-				MainForm.mnuUnitCommandItem(HyperModeCmdID).Visible = True
-				'UPGRADE_WARNING: ProceedCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-				'End If
-				'End If
-				
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_WARNING: ProceedCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-				'UPGRADE_WARNING: ProceedCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-				'Invalid_string_refer_to_original_code_
-				'Invalid_string_refer_to_original_code_
-				'Then
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-				MainForm.mnuUnitCommandItem(GroundCmdID).Caption = "Invalid_string_refer_to_original_code"
-				'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-				MainForm.mnuUnitCommandItem(GroundCmdID).Visible = True
-				'End If
-				'End If
-				
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_WARNING: ProceedCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-				
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_WARNING: ProceedCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-				
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_WARNING: ProceedCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-				
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_WARNING: ProceedCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-				
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_WARNING: ProceedCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-				'UPGRADE_WARNING: ProceedCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-				
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_WARNING: ProceedCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-		End Select
-		'End With
-		'Next
-		'UPGRADE_WARNING: ProceedCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-		
-		'Invalid_string_refer_to_original_code
-		i = UnitCommand1CmdID
-		For	Each lab In colEventLabelList
-			With lab
-				If .Name = Event_Renamed.LabelType.UnitCommandEventLabel Then
-					If .Enable Then
-						buf = .Para(3)
-						If (SelectedUnit.Party = "蜻ｳ譁ｹ" And (buf = SelectedUnit.MainPilot.Name Or buf = SelectedUnit.MainPilot.Nickname Or buf = SelectedUnit.Name)) Or buf = SelectedUnit.Party Or buf = "蜈ｨ" Then
-							If .CountPara <= 3 Then
-								'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-								MainForm.mnuUnitCommandItem(i).Visible = True
-							ElseIf StrToLng(.Para(4)) <> 0 Then 
-								'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-								MainForm.mnuUnitCommandItem(i).Visible = True
+			Case "マップ攻撃使用", "移動後マップ攻撃使用"
+				If 1 <= PixelToMapX(MouseX) And PixelToMapX(MouseX) <= MapWidth Then
+					If 1 <= PixelToMapY(MouseY) And PixelToMapY(MouseY) <= MapHeight Then
+						If Not MaskData(PixelToMapX(MouseX), PixelToMapY(MouseY)) Then
+							'効果範囲内でクリックされればマップ攻撃発動
+							If SelectedCommand = "マップ攻撃" Then
+								MapAttackCommand()
+							Else
+								MapAbilityCommand()
 							End If
 						End If
 					End If
-					
-					'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-					If MainForm.mnuUnitCommandItem(i).Visible Then
-						'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-						MainForm.mnuUnitCommandItem(i).Caption = .Para(2)
-						UnitCommandLabelList(i - UnitCommand1CmdID + 1) = CStr(.LineNum)
-						i = i + 1
-						If i > UnitCommand10CmdID Then
-							Exit For
-						End If
-					End If
 				End If
-			End With
-		Next lab
-		'End With
-		
-		If Not SelectedUnit Is DisplayedUnit Then
-			'MOD START 240a
-			'                DisplayUnitStatus SelectedUnit
-			'Invalid_string_refer_to_original_code
-			If Not NewGUIMode Then
-				DisplayUnitStatus(SelectedUnit)
-			End If
-			'MOD  END  240a
-		End If
+		End Select
 		
 		IsGUILocked = False
-		If by_cancel Then
-			'UPGRADE_ISSUE: Control mnuUnitCommand は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-			'UPGRADE_ISSUE: Form メソッド MainForm.PopupMenu はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-			MainForm.PopupMenu(MainForm.mnuUnitCommand, 6, MouseX, MouseY + 5)
-		Else
-			'UPGRADE_ISSUE: Control mnuUnitCommand は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-			'UPGRADE_ISSUE: Form メソッド MainForm.PopupMenu はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-			MainForm.PopupMenu(MainForm.mnuUnitCommand, 6, MouseX, MouseY - 6)
-		End If
-		
-		'UPGRADE_WARNING: ProceedCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-		'Case "Invalid_string_refer_to_original_code"
-			'SelectedUnitForEvent = SelectedUnit
-			'
-			'With SelectedUnit
-				'Invalid_string_refer_to_original_code
-				' MOD START MARGE
-				'                If MainWidth = 15 Then
-				'If Not NewGUIMode Then
-					' MOD END MARGE
-					'If PrevUnitEN <> .EN Then
-						'DisplayUnitStatus(SelectedUnit)
-					'End If
-				'End If
-				'
-				'With MainForm
-					''UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-					'.mnuUnitCommandItem(WaitCmdID).Visible = True
-					''UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-					'.mnuUnitCommandItem(MoveCmdID).Visible = False
-					''UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-					'.mnuUnitCommandItem(TeleportCmdID).Visible = False
-					''UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-					'.mnuUnitCommandItem(JumpCmdID).Visible = False
-				'End With
-				'
-				'Invalid_string_refer_to_original_code
-				''UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-				'MainForm.mnuUnitCommandItem(TalkCmdID).Visible = False
-				'For 'i = 1 To 4
-					''UPGRADE_NOTE: オブジェクト u をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-					'u = Nothing
-					'Select Case i
-						'Case 1
-							'If .X > 1 Then
-								'u = MapDataForUnit(.X - 1, .Y)
-							'End If
-						'Case 2
-							'If .X < MapWidth Then
-								'u = MapDataForUnit(.X + 1, .Y)
-							'End If
-						'Case 3
-							'If .Y > 1 Then
-								'u = MapDataForUnit(.X, .Y - 1)
-							'End If
-						'Case 4
-							'If .Y < MapHeight Then
-								'u = MapDataForUnit(.X, .Y + 1)
-							'End If
-					'End Select
-					'
-					'If Not u Is Nothing Then
-						'If IsEventDefined("莨夊ｩｱ " & .MainPilot.ID & " " & u.MainPilot.ID) Then
-							''UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-							'MainForm.mnuUnitCommandItem(TalkCmdID).Visible = True
-							'Exit For
-						'End If
-					'End If
-				'Next 
-				'
-				'Invalid_string_refer_to_original_code
-				''UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-				'MainForm.mnuUnitCommandItem(AttackCmdID).Caption = "Invalid_string_refer_to_original_code"
-				''UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-				'MainForm.mnuUnitCommandItem(AttackCmdID).Visible = False
-				'For 'i = 1 To .CountWeapon
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-					''UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-					'MainForm.mnuUnitCommandItem(AttackCmdID).Visible = True
-					'Exit For
-					'End If
-				'Next 
-				'If .Area = "蝨ｰ荳ｭ" Then
-					''UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-					'MainForm.mnuUnitCommandItem(AttackCmdID).Visible = False
-				'End If
-				'If .IsConditionSatisfied("Invalid_string_refer_to_original_code") Then
-					''UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-					'MainForm.mnuUnitCommandItem(AttackCmdID).Visible = False
-				'End If
-				'
-				'Invalid_string_refer_to_original_code
-				''UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-				'MainForm.mnuUnitCommandItem(FixCmdID).Visible = False
-				'If .IsFeatureAvailable("Invalid_string_refer_to_original_code") And .Area <> "蝨ｰ荳ｭ" Then
-					'For 'i = 1 To 4
-						''UPGRADE_NOTE: オブジェクト u をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-						'u = Nothing
-						'Select Case i
-							'Case 1
-								'If .X > 1 Then
-									'u = MapDataForUnit(.X - 1, .Y)
-								'End If
-							'Case 2
-								'If .X < MapWidth Then
-									'u = MapDataForUnit(.X + 1, .Y)
-								'End If
-							'Case 3
-								'If .Y > 1 Then
-									'u = MapDataForUnit(.X, .Y - 1)
-								'End If
-							'Case 4
-								'If .Y < MapHeight Then
-									'u = MapDataForUnit(.X, .Y + 1)
-								'End If
-						'End Select
-						'
-						'If Not u Is Nothing Then
-							'With u
-								'If (.Party = "蜻ｳ譁ｹ" Or .Party = "Invalid_string_refer_to_original_code") And .HP < .MaxHP Then
-									''UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-									'MainForm.mnuUnitCommandItem(FixCmdID).Visible = True
-									'Exit For
-								'End If
-							'End With
-						'End If
-					'Next 
-					'
-					'If Len(.FeatureData("Invalid_string_refer_to_original_code")) > 0 Then
-						''UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-						'MainForm.mnuUnitCommandItem(FixCmdID).Caption = LIndex(.FeatureData("Invalid_string_refer_to_original_code"), 1)
-						'If IsNumeric(LIndex(.FeatureData("Invalid_string_refer_to_original_code"), 2)) Then
-							'If .EN < CShort(LIndex(.FeatureData("Invalid_string_refer_to_original_code"), 2)) Then
-								''UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-								'MainForm.mnuUnitCommandItem(FixCmdID).Visible = False
-							'End If
-						'End If
-					'Else
-						''UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-						'MainForm.mnuUnitCommandItem(FixCmdID).Caption = "Invalid_string_refer_to_original_code"
-					'End If
-				'End If
-				'
-				'Invalid_string_refer_to_original_code
-				''UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-				'MainForm.mnuUnitCommandItem(SupplyCmdID).Visible = False
-				'If .IsFeatureAvailable("Invalid_string_refer_to_original_code") And .Area <> "蝨ｰ荳ｭ" Then
-					'For 'i = 1 To 4
-						''UPGRADE_NOTE: オブジェクト u をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-						'u = Nothing
-						'Select Case i
-							'Case 1
-								'If .X > 1 Then
-									'u = MapDataForUnit(.X - 1, .Y)
-								'End If
-							'Case 2
-								'If .X < MapWidth Then
-									'u = MapDataForUnit(.X + 1, .Y)
-								'End If
-							'Case 3
-								'If .Y > 1 Then
-									'u = MapDataForUnit(.X, .Y - 1)
-								'End If
-							'Case 4
-								'If .Y < MapHeight Then
-									'u = MapDataForUnit(.X, .Y + 1)
-								'End If
-						'End Select
-						'
-						'If Not u Is Nothing Then
-							'With u
-								'If .Party = "蜻ｳ譁ｹ" Or .Party = "Invalid_string_refer_to_original_code" Then
-									'If .EN < .MaxEN Then
-										''UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-										'MainForm.mnuUnitCommandItem(SupplyCmdID).Visible = True
-									'Else
-										'For 'j = 1 To .CountWeapon
-											'If .Bullet(j) < .MaxBullet(j) Then
-												''UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-												'MainForm.mnuUnitCommandItem(SupplyCmdID).Visible = True
-												'Exit For
-											'End If
-										'Next 
-										'For 'j = 1 To .CountAbility
-											'If .Stock(j) < .MaxStock(j) Then
-												''UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-												'MainForm.mnuUnitCommandItem(SupplyCmdID).Visible = True
-												'Exit For
-											'End If
-										'Next 
-									'End If
-								'End If
-							'End With
-						'End If
-					'Next 
-					'
-					'If Len(.FeatureData("Invalid_string_refer_to_original_code")) > 0 Then
-						''UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-						'MainForm.mnuUnitCommandItem(SupplyCmdID).Caption = LIndex(.FeatureData("Invalid_string_refer_to_original_code"), 1)
-						'If IsNumeric(LIndex(.FeatureData("Invalid_string_refer_to_original_code"), 2)) Then
-							'If .EN < CShort(LIndex(.FeatureData("Invalid_string_refer_to_original_code"), 2)) Or .MainPilot.Morale < 100 Then
-								''UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-								'MainForm.mnuUnitCommandItem(SupplyCmdID).Visible = False
-							'End If
-						'End If
-					'Else
-						''UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-						'MainForm.mnuUnitCommandItem(SupplyCmdID).Caption = "Invalid_string_refer_to_original_code"
-					'End If
-					'
-					'If IsOptionDefined("遘ｻ蜍募ｾ瑚｣懃ｵｦ荳榊庄") And Not SelectedUnit.MainPilot.IsSkillAvailable("陬懃ｵｦ") Then
-						''UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-						'MainForm.mnuUnitCommandItem(SupplyCmdID).Visible = False
-					'End If
-				'End If
-				'
-				'Invalid_string_refer_to_original_code
-				''UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-				'MainForm.mnuUnitCommandItem(AbilityCmdID).Visible = False
-				'n = 0
-				'For 'i = 1 To .CountAbility
-					'If Not .Ability(i).IsItem Then
-						'n = n + 1
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-						''UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-						'MainForm.mnuUnitCommandItem(AbilityCmdID).Visible = True
-					'End If
-					'End If
-				'Next 
-				'If .Area = "蝨ｰ荳ｭ" Then
-					''UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-					'MainForm.mnuUnitCommandItem(AbilityCmdID).Visible = False
-				'End If
-				''UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-				'MainForm.mnuUnitCommandItem(AbilityCmdID).Caption = Term("Invalid_string_refer_to_original_code", SelectedUnit)
-				'If n = 1 Then
-					'For 'i = 1 To .CountAbility
-						'If Not .Ability(i).IsItem Then
-							''UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-							'MainForm.mnuUnitCommandItem(AbilityCmdID).Caption = .AbilityNickname(i)
-							'Exit For
-						'End If
-					'Next 
-				'End If
-				'
-				'With MainForm
-					''UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-					'.mnuUnitCommandItem(ChargeCmdID).Visible = False
-					''UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-					'.mnuUnitCommandItem(SpecialPowerCmdID).Visible = False
-					''UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-					'.mnuUnitCommandItem(TransformCmdID).Visible = False
-					''UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-					'.mnuUnitCommandItem(SplitCmdID).Visible = False
-				'End With
-				'
-				'Invalid_string_refer_to_original_code
-				''UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-				'MainForm.mnuUnitCommandItem(CombineCmdID).Visible = False
-				'Invalid_string_refer_to_original_code_
-				'Invalid_string_refer_to_original_code_
-				'Invalid_string_refer_to_original_code_
-				'Then
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				'For 'i = 1 To .CountFeature
-					'Invalid_string_refer_to_original_code
-					'Invalid_string_refer_to_original_code_
-					'And .FeatureName(i) <> "" _
-					'And LLength(.FeatureData(i)) > 3 _
-					'Then
-					'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-					'n = 0
-					'For 'j = 3 To LLength(.FeatureData(i))
-						'u = UList.Item(LIndex(.FeatureData(i), j))
-						'If u Is Nothing Then
-							'Exit For
-						'End If
-						'If Not u.IsOperational Then
-							'Exit For
-						'End If
-						'Invalid_string_refer_to_original_code_
-						'Invalid_string_refer_to_original_code_
-						'Then
-						'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-						'Exit For
-						'End If
-						'If System.Math.Abs(.X - u.CurrentForm.X) + System.Math.Abs(.Y - u.CurrentForm.Y) > 2 Then
-							'Exit For
-						'End If
-						'n = n + 1
-					'Next 
-					'
-					'uname = LIndex(.FeatureData(i), 2)
-					'u = UList.Item(uname)
-					'If u Is Nothing Then
-						'n = 0
-					'ElseIf u.IsConditionSatisfied("Invalid_string_refer_to_original_code") Then 
-						'n = 0
-					'End If
-					'
-					'If n = LLength(.FeatureData(i)) - 2 Then
-						''UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-						'MainForm.mnuUnitCommandItem(CombineCmdID).Visible = True
-						''UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-						'MainForm.mnuUnitCommandItem(CombineCmdID).Caption = LIndex(.FeatureData(i), 1)
-						'Exit For
-					'End If
-					'End If
-				'Next 
-				'End If
-				'
-				'With MainForm
-					''UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-					'.mnuUnitCommandItem(HyperModeCmdID).Visible = False
-					''UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-					'.mnuUnitCommandItem(GroundCmdID).Visible = False
-					''UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-					'.mnuUnitCommandItem(SkyCmdID).Visible = False
-					''UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-					'.mnuUnitCommandItem(UndergroundCmdID).Visible = False
-					''UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-					'.mnuUnitCommandItem(WaterCmdID).Visible = False
-					''UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-					'.mnuUnitCommandItem(LaunchCmdID).Visible = False
-				'End With
-				'
-				'Invalid_string_refer_to_original_code
-				''UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-				'MainForm.mnuUnitCommandItem(ItemCmdID).Visible = False
-				'For 'i = 1 To .CountAbility
-					'Invalid_string_refer_to_original_code_
-					'And .Ability(i).IsItem _
-					'Then
-					'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-					''UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-					'MainForm.mnuUnitCommandItem(ItemCmdID).Visible = True
-					'Exit For
-					'End If
-				'Next 
-				'If .Area = "蝨ｰ荳ｭ" Then
-					''UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-					'MainForm.mnuUnitCommandItem(ItemCmdID).Visible = False
-				'End If
-				'
-				'With MainForm
-					''UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-					'.mnuUnitCommandItem(DismissCmdID).Visible = False
-					''UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-					'.mnuUnitCommandItem(OrderCmdID).Visible = False
-					''UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-					'.mnuUnitCommandItem(FeatureListCmdID).Visible = False
-					''UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-					'.mnuUnitCommandItem(WeaponListCmdID).Visible = False
-					''UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-					'.mnuUnitCommandItem(AbilityListCmdID).Visible = False
-					''UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-					'.mnuUnitCommandItem(UnitCommand1CmdID).Visible = False
-					''UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-					'.mnuUnitCommandItem(UnitCommand2CmdID).Visible = False
-					''UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-					'.mnuUnitCommandItem(UnitCommand3CmdID).Visible = False
-					''UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-					'.mnuUnitCommandItem(UnitCommand4CmdID).Visible = False
-					''UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-					'.mnuUnitCommandItem(UnitCommand5CmdID).Visible = False
-					''UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-					'.mnuUnitCommandItem(UnitCommand6CmdID).Visible = False
-					''UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-					'.mnuUnitCommandItem(UnitCommand7CmdID).Visible = False
-					''UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-					'.mnuUnitCommandItem(UnitCommand8CmdID).Visible = False
-					''UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-					'.mnuUnitCommandItem(UnitCommand9CmdID).Visible = False
-					''UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-					'.mnuUnitCommandItem(UnitCommand10CmdID).Visible = False
-				'End With
-				'
-				'Invalid_string_refer_to_original_code
-				'i = UnitCommand1CmdID
-				'For	Each lab In colEventLabelList
-					'With lab
-						'If .Name = Event_Renamed.LabelType.UnitCommandEventLabel And .AsterNum >= 2 Then
-							'If .Enable Then
-								'buf = .Para(3)
-								'If (SelectedUnit.Party = "蜻ｳ譁ｹ" And (buf = SelectedUnit.MainPilot.Name Or buf = SelectedUnit.MainPilot.Nickname Or buf = SelectedUnit.Name)) Or buf = SelectedUnit.Party Or buf = "蜈ｨ" Then
-									'If .CountPara <= 3 Then
-										''UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-										'MainForm.mnuUnitCommandItem(i).Visible = True
-									'ElseIf StrToLng(.Para(4)) <> 0 Then 
-										''UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-										'MainForm.mnuUnitCommandItem(i).Visible = True
-									'End If
-								'End If
-							'End If
-							'
-							''UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-							'If MainForm.mnuUnitCommandItem(i).Visible Then
-								''UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-								'MainForm.mnuUnitCommandItem(i).Caption = .Para(2)
-								'UnitCommandLabelList(i - UnitCommand1CmdID + 1) = CStr(.LineNum)
-								'i = i + 1
-								'If i > UnitCommand10CmdID Then
-									'Exit For
-								'End If
-							'End If
-						'End If
-					'End With
-				'Next lab
-			'End With
-			'
-			'IsGUILocked = False
-			'If by_cancel Then
-				''UPGRADE_ISSUE: Control mnuUnitCommand は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-				''UPGRADE_ISSUE: Form メソッド MainForm.PopupMenu はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-				'MainForm.PopupMenu(MainForm.mnuUnitCommand, 6, MouseX, MouseY + 5)
-			'Else
-				''UPGRADE_ISSUE: Control mnuUnitCommand は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-				''UPGRADE_ISSUE: Form メソッド MainForm.PopupMenu はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-				'MainForm.PopupMenu(MainForm.mnuUnitCommand, 6, MouseX, MouseY - 6)
-				'System.Windows.Forms.Application.DoEvents()
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code_
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				''UPGRADE_ISSUE: Control mnuUnitCommand は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-				''UPGRADE_ISSUE: Form メソッド MainForm.PopupMenu はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-				'MainForm.PopupMenu(MainForm.mnuUnitCommand, 6, MouseX, MouseY - 6)
-				'System.Windows.Forms.Application.DoEvents()
-				'Loop
-			'End If
-			'
-			''UPGRADE_WARNING: ProceedCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-			'Case CInt("Invalid_string_refer_to_original_code")
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				'If Not MaskData(PixelToMapX(MouseX), PixelToMapY(MouseY)) Then
-					'SelectedX = PixelToMapX(MouseX)
-					'SelectedY = PixelToMapY(MouseY)
-					'
-					'Invalid_string_refer_to_original_code
-					'If SelectedUnit.X = SelectedX And SelectedUnit.Y = SelectedY Then
-						'If SelectedCommand = "繧ｹ繝壹す繝｣繝ｫ繝代Ρ繝ｼ" Then
-							'Invalid_string_refer_to_original_code
-						'ElseIf SelectedCommand = "Invalid_string_refer_to_original_code" Or SelectedCommand = "Invalid_string_refer_to_original_code" Or SelectedCommand = "Invalid_string_refer_to_original_code" Or SelectedCommand = "Invalid_string_refer_to_original_code" Then 
-							'If SelectedUnit.AbilityMinRange(SelectedAbility) > 0 Then
-								'Invalid_string_refer_to_original_code
-								'IsGUILocked = False
-								'Exit Sub
-							'End If
-						'ElseIf SelectedCommand = "遘ｻ蜍募多莉､" Then 
-							'Invalid_string_refer_to_original_code
-						'Else
-							'Invalid_string_refer_to_original_code
-							'IsGUILocked = False
-							'Exit Sub
-						'End If
-					'End If
-					'
-					'Invalid_string_refer_to_original_code
-					'Select Case SelectedCommand
-						' MOD START MARGE
-						'Invalid_string_refer_to_original_code
-						'Case "Invalid_string_refer_to_original_code"
-							'Invalid_string_refer_to_original_code
-							'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-							' MOD END MARGE
-							'FinishMoveCommand()
-							'IsGUILocked = False
-							'Exit Sub
-						'Case "Invalid_string_refer_to_original_code"
-							'FinishTeleportCommand()
-							'IsGUILocked = False
-							'Exit Sub
-						'Case "Invalid_string_refer_to_original_code"
-							'FinishJumpCommand()
-							'IsGUILocked = False
-							'Exit Sub
-						'Case "Invalid_string_refer_to_original_code"
-							'MapAttackCommand()
-							'IsGUILocked = False
-							'Exit Sub
-						'Case "Invalid_string_refer_to_original_code", "Invalid_string_refer_to_original_code"
-							'MapAbilityCommand()
-							'IsGUILocked = False
-							'Exit Sub
-						'Case "逋ｺ騾ｲ"
-							'FinishLaunchCommand()
-							'IsGUILocked = False
-							'Exit Sub
-						'Case "遘ｻ蜍募多莉､"
-							'FinishOrderCommand()
-							'IsGUILocked = False
-							'Exit Sub
-					'End Select
-					'
-					'Invalid_string_refer_to_original_code
-					'
-					'Invalid_string_refer_to_original_code
-					'If MapDataForUnit(SelectedX, SelectedY) Is Nothing Then
-						'IsGUILocked = False
-						'Exit Sub
-					'End If
-					'
-					'Invalid_string_refer_to_original_code
-					'SelectedTarget = MapDataForUnit(SelectedX, SelectedY)
-					'
-					'Select Case SelectedCommand
-						'Case "Invalid_string_refer_to_original_code"
-							'FinishAttackCommand()
-						'Case "Invalid_string_refer_to_original_code", "Invalid_string_refer_to_original_code"
-							'FinishAbilityCommand()
-						'Case "莨夊ｩｱ"
-							'FinishTalkCommand()
-						'Case "Invalid_string_refer_to_original_code"
-							'FinishFixCommand()
-						'Case "陬懃ｵｦ"
-							'FinishSupplyCommand()
-						'Case "繧ｹ繝壹す繝｣繝ｫ繝代Ρ繝ｼ"
-							'FinishSpecialPowerCommand()
-						'Case "Invalid_string_refer_to_original_code", "隴ｷ陦帛多莉､"
-							'FinishOrderCommand()
-					'End Select
-				'End If
-				'
-				''UPGRADE_WARNING: ProceedCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-				'Case "Invalid_string_refer_to_original_code", "Invalid_string_refer_to_original_code"
-					'If 1 <= PixelToMapX(MouseX) And PixelToMapX(MouseX) <= MapWidth Then
-						'If 1 <= PixelToMapY(MouseY) And PixelToMapY(MouseY) <= MapHeight Then
-							'If Not MaskData(PixelToMapX(MouseX), PixelToMapY(MouseY)) Then
-								'Invalid_string_refer_to_original_code
-								'Invalid_string_refer_to_original_code
-								'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-								'MapAttackCommand()
-							'Else
-								'MapAbilityCommand()
-							'End If
-						'End If
-					'End If
-					'End If
-					'End Select
-					'
-					'IsGUILocked = False
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'ＧＵＩの処理をキャンセル
 	Public Sub CancelCommand()
 		Dim tmp_x, tmp_y As Short
 		
 		With SelectedUnit
 			Select Case CommandState
-				Case "Invalid_string_refer_to_original_code"
-				Case "Invalid_string_refer_to_original_code"
-					CommandState = "Invalid_string_refer_to_original_code"
+				Case "ユニット選択"
+				Case "コマンド選択"
+					CommandState = "ユニット選択"
 					'ADD START
-					'Invalid_string_refer_to_original_code
+					'選択したコマンドを初期化
 					SelectedCommand = ""
 					' MOD START MARGE
 					'                If MainWidth <> 15 Then
@@ -1709,26 +2050,25 @@ Module Commands
 						ClearUnitStatus()
 					End If
 					
-				Case "Invalid_string_refer_to_original_code"
+				Case "ターゲット選択"
 					' ADD START MARGE
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-					WaitCommand()
-					Exit Sub
-					'End If
+					If SelectedCommand = "再移動" Then
+						WaitCommand()
+						Exit Sub
+					End If
 					' ADD END MARGE
-					CommandState = "Invalid_string_refer_to_original_code"
+					CommandState = "コマンド選択"
 					DisplayUnitStatus(SelectedUnit)
 					RedrawScreen()
 					ProceedCommand(True)
 					
-				Case "Invalid_string_refer_to_original_code"
-					CommandState = "Invalid_string_refer_to_original_code"
+				Case "移動後コマンド選択"
+					CommandState = "ターゲット選択"
 					.Area = PrevUnitArea
 					.Move(PrevUnitX, PrevUnitY, True, True)
 					.EN = PrevUnitEN
 					If Not SelectedUnit Is MapDataForUnit(PrevUnitX, PrevUnitY) Then
-						'Invalid_string_refer_to_original_code
+						'発進をキャンセルした場合
 						SelectedTarget = SelectedUnit
 						PaintUnitBitmap(SelectedTarget)
 						SelectedUnit = MapDataForUnit(PrevUnitX, PrevUnitY)
@@ -1739,22 +2079,22 @@ Module Commands
 						DisplayUnitStatus(SelectedUnit)
 					End If
 					' MOD START MARGE
-					'Invalid_string_refer_to_original_code
+					' 移動後コマンドをキャンセルした場合、MoveCostを0にリセットする
 					SelectedUnitMoveCost = 0
 					' MOD END MARGE
 					Select Case SelectedCommand
-						Case "Invalid_string_refer_to_original_code"
+						Case "移動"
 							StartMoveCommand()
-						Case "Invalid_string_refer_to_original_code"
+						Case "テレポート"
 							StartTeleportCommand()
-						Case "Invalid_string_refer_to_original_code"
+						Case "ジャンプ"
 							StartJumpCommand()
-						Case "逋ｺ騾ｲ"
+						Case "発進"
 							PaintUnitBitmap(SelectedTarget)
 					End Select
 					
-				Case "Invalid_string_refer_to_original_code"
-					CommandState = "Invalid_string_refer_to_original_code"
+				Case "移動後ターゲット選択"
+					CommandState = "移動後コマンド選択"
 					DisplayUnitStatus(SelectedUnit)
 					
 					tmp_x = .X
@@ -1762,29 +2102,21 @@ Module Commands
 					.X = PrevUnitX
 					.Y = PrevUnitY
 					Select Case PrevCommand
-						Case "Invalid_string_refer_to_original_code"
+						Case "移動"
 							AreaInSpeed(SelectedUnit)
-						Case "Invalid_string_refer_to_original_code"
+						Case "テレポート"
 							AreaInTeleport(SelectedUnit)
-						Case "Invalid_string_refer_to_original_code"
+						Case "ジャンプ"
 							AreaInSpeed(SelectedUnit, True)
-						Case "逋ｺ騾ｲ"
+						Case "発進"
 							With SelectedTarget
-								'Invalid_string_refer_to_original_code_
-								'And (.Data.Speed = 0 _
-								'Invalid_string_refer_to_original_code_
-								'Then
-								'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-								AreaInTeleport(SelectedTarget)
-								'Invalid_string_refer_to_original_code_
-								'And (.Data.Speed = 0 _
-								'Invalid_string_refer_to_original_code_
-								'Invalid_string_refer_to_original_code_
-								'Then
-								'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-								AreaInSpeed(SelectedTarget, True)
-								AreaInSpeed(SelectedTarget)
-								'End If
+								If .IsFeatureAvailable("テレポート") And (.Data.Speed = 0 Or LIndex(.FeatureData("テレポート"), 2) = "0") Then
+									AreaInTeleport(SelectedTarget)
+								ElseIf .IsFeatureAvailable("ジャンプ") And (.Data.Speed = 0 Or LLength(.FeatureData("ジャンプ")) < 2 Or LIndex(.FeatureData("ジャンプ"), 2) = "0") Then 
+									AreaInSpeed(SelectedTarget, True)
+								Else
+									AreaInSpeed(SelectedTarget)
+								End If
 							End With
 					End Select
 					.X = tmp_x
@@ -1795,36 +2127,36 @@ Module Commands
 					MaskScreen()
 					ProceedCommand(True)
 					
-				Case "Invalid_string_refer_to_original_code", "Invalid_string_refer_to_original_code"
-					If CommandState = "Invalid_string_refer_to_original_code" Then
-						CommandState = "Invalid_string_refer_to_original_code"
+				Case "マップ攻撃使用", "移動後マップ攻撃使用"
+					If CommandState = "マップ攻撃使用" Then
+						CommandState = "ターゲット選択"
 					Else
-						CommandState = "Invalid_string_refer_to_original_code"
+						CommandState = "移動後ターゲット選択"
 					End If
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-					If .IsWeaponClassifiedAs(SelectedWeapon, "Invalid_string_refer_to_original_code") Then
-						AreaInCross(.X, .Y, .WeaponMaxRange(SelectedWeapon), (.Weapon(SelectedWeapon).MinRange))
-					ElseIf .IsWeaponClassifiedAs(SelectedWeapon, "Invalid_string_refer_to_original_code") Then 
-						AreaInMoveAction(SelectedUnit, .WeaponMaxRange(SelectedWeapon))
+					If SelectedCommand = "マップ攻撃" Then
+						If .IsWeaponClassifiedAs(SelectedWeapon, "Ｍ直") Then
+							AreaInCross(.X, .Y, .WeaponMaxRange(SelectedWeapon), (.Weapon(SelectedWeapon).MinRange))
+						ElseIf .IsWeaponClassifiedAs(SelectedWeapon, "Ｍ移") Then 
+							AreaInMoveAction(SelectedUnit, .WeaponMaxRange(SelectedWeapon))
+						Else
+							AreaInRange(.X, .Y, .WeaponMaxRange(SelectedWeapon), .Weapon(SelectedWeapon).MinRange, "すべて")
+						End If
 					Else
-						AreaInRange(.X, .Y, .WeaponMaxRange(SelectedWeapon), .Weapon(SelectedWeapon).MinRange, "縺吶∋縺ｦ")
+						If .IsAbilityClassifiedAs(SelectedAbility, "Ｍ直") Then
+							AreaInCross(.X, .Y, .AbilityMaxRange(SelectedAbility), .AbilityMinRange(SelectedAbility))
+						ElseIf .IsAbilityClassifiedAs(SelectedAbility, "Ｍ移") Then 
+							AreaInMoveAction(SelectedUnit, .AbilityMaxRange(SelectedAbility))
+						Else
+							AreaInRange(.X, .Y, .AbilityMaxRange(SelectedAbility), .AbilityMinRange(SelectedAbility), "すべて")
+						End If
 					End If
-					If .IsAbilityClassifiedAs(SelectedAbility, "Invalid_string_refer_to_original_code") Then
-						AreaInCross(.X, .Y, .AbilityMaxRange(SelectedAbility), .AbilityMinRange(SelectedAbility))
-					ElseIf .IsAbilityClassifiedAs(SelectedAbility, "Invalid_string_refer_to_original_code") Then 
-						AreaInMoveAction(SelectedUnit, .AbilityMaxRange(SelectedAbility))
-					Else
-						AreaInRange(.X, .Y, .AbilityMaxRange(SelectedAbility), .AbilityMinRange(SelectedAbility), "縺吶∋縺ｦ")
-					End If
-					'End If
 					MaskScreen()
 			End Select
 		End With
 	End Sub
 	
 	
-	'Invalid_string_refer_to_original_code
+	' ユニットコマンドを実行
 	Public Sub UnitCommand(ByVal idx As Short)
 		Dim prev_used_action As Short
 		
@@ -1833,91 +2165,75 @@ Module Commands
 		With SelectedUnit
 			prev_used_action = .UsedAction
 			Select Case idx
-				Case MoveCmdID 'Invalid_string_refer_to_original_code
-					'Invalid_string_refer_to_original_code
-					'Invalid_string_refer_to_original_code
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-					System.Windows.Forms.Application.DoEvents()
-					Exit Sub
-					'End If
+				Case MoveCmdID '移動
+					'なんらかの原因により、ユニットコマンドの選択がうまくいかなかった場合は
+					'移動後のコマンド選択をやり直す
+					If CommandState = "移動後コマンド選択" Then
+						System.Windows.Forms.Application.DoEvents()
+						Exit Sub
+					End If
 					
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-					StartMoveCommand()
-					ShowAreaInSpeedCommand()
-					'End If
+					'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+					If MainForm.mnuUnitCommandItem.Item(MoveCmdID).Caption = "移動" Then
+						StartMoveCommand()
+					Else
+						ShowAreaInSpeedCommand()
+					End If
 					
-				Case TeleportCmdID 'Invalid_string_refer_to_original_code
+				Case TeleportCmdID 'テレポート
 					StartTeleportCommand()
 					
-				Case JumpCmdID 'Invalid_string_refer_to_original_code
+				Case JumpCmdID 'ジャンプ
 					StartJumpCommand()
 					
-				Case TalkCmdID '莨夊ｩｱ
+				Case TalkCmdID '会話
 					StartTalkCommand()
 					
-				Case AttackCmdID 'Invalid_string_refer_to_original_code
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-					StartAttackCommand()
-					ShowAreaInRangeCommand()
-					'End If
+				Case AttackCmdID '攻撃
+					'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+					If MainForm.mnuUnitCommandItem.Item(AttackCmdID).Caption = "攻撃" Then
+						StartAttackCommand()
+					Else
+						ShowAreaInRangeCommand()
+					End If
 					
-				Case FixCmdID 'Invalid_string_refer_to_original_code
+				Case FixCmdID '修理
 					StartFixCommand()
 					
-				Case SupplyCmdID '陬懃ｵｦ
+				Case SupplyCmdID '補給
 					StartSupplyCommand()
 					
-				Case AbilityCmdID 'Invalid_string_refer_to_original_code
+				Case AbilityCmdID 'アビリティ
 					StartAbilityCommand()
 					
-				Case ChargeCmdID '繝√Ε繝ｼ繧ｸ
+				Case ChargeCmdID 'チャージ
 					ChargeCommand()
 					
-				Case SpecialPowerCmdID 'Invalid_string_refer_to_original_code
+				Case SpecialPowerCmdID '精神
 					StartSpecialPowerCommand()
 					
-				Case TransformCmdID '螟牙ｽ｢
+				Case TransformCmdID '変形
 					TransformCommand()
 					
-				Case SplitCmdID 'Invalid_string_refer_to_original_code
+				Case SplitCmdID '分離
 					SplitCommand()
 					
-				Case CombineCmdID 'Invalid_string_refer_to_original_code
+				Case CombineCmdID '合体
 					CombineCommand()
 					
-				Case HyperModeCmdID 'Invalid_string_refer_to_original_code
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-					CancelTransformationCommand()
-					HyperModeCommand()
-					'End If
-					
-				Case GroundCmdID 'Invalid_string_refer_to_original_code
-					LockGUI()
-					If TerrainClass(.X, .Y) = "豌ｴ" Or TerrainClass(.X, .Y) = "豺ｱ豌ｴ" Then
-						.Area = "Invalid_string_refer_to_original_code"
+				Case HyperModeCmdID 'ハイパーモード・変身解除
+					If InStr(.FeatureData("ノーマルモード"), "手動解除") > 0 Then
+						CancelTransformationCommand()
 					Else
-						.Area = "Invalid_string_refer_to_original_code"
+						HyperModeCommand()
 					End If
-					.Update()
-					If .IsMessageDefined(.Area) Then
-						OpenMessageForm()
-						.PilotMessage(.Area)
-						CloseMessageForm()
-					End If
-					PaintUnitBitmap(SelectedUnit)
-					CommandState = "Invalid_string_refer_to_original_code"
-					UnlockGUI()
 					
-				Case SkyCmdID '遨ｺ荳ｭ
+				Case GroundCmdID '地上
 					LockGUI()
-					If TerrainClass(.X, .Y) = "譛磯擇" Then
-						.Area = "Invalid_string_refer_to_original_code"
+					If TerrainClass(.X, .Y) = "水" Or TerrainClass(.X, .Y) = "深水" Then
+						.Area = "水上"
 					Else
-						.Area = "遨ｺ荳ｭ"
+						.Area = "地上"
 					End If
 					.Update()
 					If .IsMessageDefined(.Area) Then
@@ -1926,12 +2242,16 @@ Module Commands
 						CloseMessageForm()
 					End If
 					PaintUnitBitmap(SelectedUnit)
-					CommandState = "Invalid_string_refer_to_original_code"
+					CommandState = "ユニット選択"
 					UnlockGUI()
 					
-				Case UndergroundCmdID '蝨ｰ荳ｭ
+				Case SkyCmdID '空中
 					LockGUI()
-					.Area = "蝨ｰ荳ｭ"
+					If TerrainClass(.X, .Y) = "月面" Then
+						.Area = "宇宙"
+					Else
+						.Area = "空中"
+					End If
 					.Update()
 					If .IsMessageDefined(.Area) Then
 						OpenMessageForm()
@@ -1939,12 +2259,12 @@ Module Commands
 						CloseMessageForm()
 					End If
 					PaintUnitBitmap(SelectedUnit)
-					CommandState = "Invalid_string_refer_to_original_code"
+					CommandState = "ユニット選択"
 					UnlockGUI()
 					
-				Case WaterCmdID '豌ｴ荳ｭ
+				Case UndergroundCmdID '地中
 					LockGUI()
-					.Area = "豌ｴ荳ｭ"
+					.Area = "地中"
 					.Update()
 					If .IsMessageDefined(.Area) Then
 						OpenMessageForm()
@@ -1952,20 +2272,33 @@ Module Commands
 						CloseMessageForm()
 					End If
 					PaintUnitBitmap(SelectedUnit)
-					CommandState = "Invalid_string_refer_to_original_code"
+					CommandState = "ユニット選択"
 					UnlockGUI()
 					
-				Case LaunchCmdID '逋ｺ騾ｲ
+				Case WaterCmdID '水中
+					LockGUI()
+					.Area = "水中"
+					.Update()
+					If .IsMessageDefined(.Area) Then
+						OpenMessageForm()
+						.PilotMessage(.Area)
+						CloseMessageForm()
+					End If
+					PaintUnitBitmap(SelectedUnit)
+					CommandState = "ユニット選択"
+					UnlockGUI()
+					
+				Case LaunchCmdID '発進
 					StartLaunchCommand()
 					
-				Case ItemCmdID 'Invalid_string_refer_to_original_code
+				Case ItemCmdID 'アイテム
 					StartAbilityCommand(True)
 					
-				Case DismissCmdID '蜿ｬ蝟夊ｧ｣髯､
+				Case DismissCmdID '召喚解除
 					LockGUI()
 					
-					'Invalid_string_refer_to_original_code
-					HandleEvent("菴ｿ逕ｨ", .MainPilot.ID, "蜿ｬ蝟夊ｧ｣髯､")
+					'召喚解除の使用イベント
+					HandleEvent("使用", .MainPilot.ID, "召喚解除")
 					If IsScenarioFinished Then
 						IsScenarioFinished = False
 						UnlockGUI()
@@ -1976,13 +2309,11 @@ Module Commands
 						Exit Sub
 					End If
 					
-					'蜿ｬ蝟壹Θ繝九ャ繝医ｒ隗｣謾ｾ
+					'召喚ユニットを解放
 					.DismissServant()
 					
-					'Invalid_string_refer_to_original_code
-					HandleEvent("Invalid_string_refer_to_original_code")
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+					'召喚解除の使用後イベント
+					HandleEvent("使用後", .CurrentForm.MainPilot.ID, "召喚解除")
 					If IsScenarioFinished Then
 						IsScenarioFinished = False
 					End If
@@ -1992,29 +2323,29 @@ Module Commands
 					
 					UnlockGUI()
 					
-				Case OrderCmdID 'Invalid_string_refer_to_original_code
+				Case OrderCmdID '命令/換装
 					'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-					If MainForm.mnuUnitCommandItem.Item(OrderCmdID).Caption = "蜻ｽ莉､" Then
+					If MainForm.mnuUnitCommandItem.Item(OrderCmdID).Caption = "命令" Then
 						StartOrderCommand()
 					Else
 						ExchangeFormCommand()
 					End If
 					
-				Case FeatureListCmdID 'Invalid_string_refer_to_original_code
+				Case FeatureListCmdID '特殊能力一覧
 					FeatureListCommand()
 					
-				Case WeaponListCmdID '豁ｦ蝎ｨ荳隕ｧ
+				Case WeaponListCmdID '武器一覧
 					WeaponListCommand()
 					
-				Case AbilityListCmdID 'Invalid_string_refer_to_original_code
+				Case AbilityListCmdID 'アビリティ一覧
 					AbilityListCommand()
 					
-				Case UnitCommand1CmdID To UnitCommand10CmdID 'Invalid_string_refer_to_original_code
+				Case UnitCommand1CmdID To UnitCommand10CmdID 'ユニットコマンド
 					LockGUI()
 					
-					'Invalid_string_refer_to_original_code
+					'ユニットコマンドの使用イベント
 					'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-					HandleEvent("菴ｿ逕ｨ", .MainPilot.ID, MainForm.mnuUnitCommandItem.Item(idx).Caption)
+					HandleEvent("使用", .MainPilot.ID, MainForm.mnuUnitCommandItem.Item(idx).Caption)
 					If IsScenarioFinished Then
 						IsScenarioFinished = False
 						UnlockGUI()
@@ -2026,7 +2357,7 @@ Module Commands
 						Exit Sub
 					End If
 					
-					'Invalid_string_refer_to_original_code
+					'ユニットコマンドを実行
 					HandleEvent(UnitCommandLabelList(idx - UnitCommand1CmdID + 1))
 					
 					If IsCanceled Then
@@ -2036,11 +2367,10 @@ Module Commands
 						Exit Sub
 					End If
 					
-					'Invalid_string_refer_to_original_code
+					'ユニットコマンドの使用後イベント
 					If .CurrentForm.CountPilot > 0 Then
-						HandleEvent("Invalid_string_refer_to_original_code")
 						'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-						MainForm.mnuUnitCommandItem.Item(idx).Caption()
+						HandleEvent("使用後", .CurrentForm.MainPilot.ID, MainForm.mnuUnitCommandItem.Item(idx).Caption)
 						If IsScenarioFinished Then
 							IsScenarioFinished = False
 							UnlockGUI()
@@ -2048,49 +2378,48 @@ Module Commands
 						End If
 					End If
 					
-					'Invalid_string_refer_to_original_code
+					'ステータスウィンドウを更新
 					If .CurrentForm.CountPilot > 0 Then
 						DisplayUnitStatus(.CurrentForm)
 					End If
 					
-					'Invalid_string_refer_to_original_code
+					'行動終了
 					If .CurrentForm.UsedAction <= prev_used_action Then
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-						WaitCommand()
+						If CommandState = "移動後コマンド選択" Then
+							WaitCommand()
+						Else
+							CommandState = "ユニット選択"
+							UnlockGUI()
+						End If
+					ElseIf IsCanceled Then 
+						IsCanceled = False
 					Else
-						CommandState = "Invalid_string_refer_to_original_code"
-						UnlockGUI()
+						WaitCommand(True)
 					End If
-					'UPGRADE_WARNING: UnitCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-					IsCanceled = False
-					WaitCommand(True)
-					'End If
 					
-				Case WaitCmdID 'Invalid_string_refer_to_original_code
+				Case WaitCmdID '待機
 					WaitCommand()
 					
 				Case Else
-					'Invalid_string_refer_to_original_code
-					'Invalid_string_refer_to_original_code
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-					System.Windows.Forms.Application.DoEvents()
-					Exit Sub
-					'End If
+					'なんらかの原因により、ユニットコマンドの選択がうまくいかなかった場合は
+					'移動後のコマンド選択をやり直す
+					If CommandState = "移動後コマンド選択" Then
+						System.Windows.Forms.Application.DoEvents()
+						Exit Sub
+					End If
 			End Select
 		End With
 	End Sub
 	
 	
-	'Invalid_string_refer_to_original_code
+	'「移動」コマンドを開始
 	' MOD START MARGE
 	'Public Sub StartMoveCommand()
 	Private Sub StartMoveCommand()
 		' MOD END MARGE
-		SelectedCommand = "Invalid_string_refer_to_original_code"
+		SelectedCommand = "移動"
 		AreaInSpeed(SelectedUnit)
-		If Not IsOptionDefined("Invalid_string_refer_to_original_code") Then
+		If Not IsOptionDefined("大型マップ") Then
 			Center(SelectedUnit.X, SelectedUnit.Y)
 		End If
 		MaskScreen()
@@ -2101,10 +2430,10 @@ Module Commands
 			System.Windows.Forms.Application.DoEvents()
 			ClearUnitStatus()
 		End If
-		CommandState = "Invalid_string_refer_to_original_code"
+		CommandState = "ターゲット選択"
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'「移動」コマンドを終了
 	' MOD START MARGE
 	'Public Sub FinishMoveCommand()
 	Private Sub FinishMoveCommand()
@@ -2119,16 +2448,12 @@ Module Commands
 			PrevUnitArea = .Area
 			PrevUnitEN = .EN
 			
-			'Invalid_string_refer_to_original_code
+			'移動後に着艦or合体する場合はプレイヤーに確認を取る
 			If Not MapDataForUnit(SelectedX, SelectedY) Is Nothing Then
-				If MapDataForUnit(SelectedX, SelectedY).IsFeatureAvailable("豈崎襖") And Not .IsFeatureAvailable("豈崎襖") Then
-					'Invalid_string_refer_to_original_code_
-					'vbOKCancel + vbQuestion, "逹濶ｦ")
-					'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+				If MapDataForUnit(SelectedX, SelectedY).IsFeatureAvailable("母艦") And Not .IsFeatureAvailable("母艦") Then
+					ret = MsgBox("着艦しますか？", MsgBoxStyle.OKCancel + MsgBoxStyle.Question, "着艦")
 				Else
-					'Invalid_string_refer_to_original_code_
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+					ret = MsgBox("合体しますか？", MsgBoxStyle.OKCancel + MsgBoxStyle.Question, "合体")
 				End If
 				If ret = MsgBoxResult.Cancel Then
 					CancelCommand()
@@ -2137,36 +2462,36 @@ Module Commands
 				End If
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'ユニットを移動
 			.Move(SelectedX, SelectedY)
 			
-			'Invalid_string_refer_to_original_code
+			'移動後に着艦または合体した？
 			If Not MapDataForUnit(.X, .Y) Is SelectedUnit Then
-				If MapDataForUnit(.X, .Y).IsFeatureAvailable("豈崎襖") And Not .IsFeatureAvailable("豈崎襖") And .CountPilot > 0 Then
-					'Invalid_string_refer_to_original_code
-					If .IsMessageDefined("逹濶ｦ(" & .Name & ")") Then
+				If MapDataForUnit(.X, .Y).IsFeatureAvailable("母艦") And Not .IsFeatureAvailable("母艦") And .CountPilot > 0 Then
+					'着艦メッセージ表示
+					If .IsMessageDefined("着艦(" & .Name & ")") Then
 						OpenMessageForm()
-						.PilotMessage("逹濶ｦ(" & .Name & ")")
+						.PilotMessage("着艦(" & .Name & ")")
 						CloseMessageForm()
-					ElseIf .IsMessageDefined("逹濶ｦ") Then 
+					ElseIf .IsMessageDefined("着艦") Then 
 						OpenMessageForm()
-						.PilotMessage("逹濶ｦ")
+						.PilotMessage("着艦")
 						CloseMessageForm()
 					End If
-					.SpecialEffect("逹濶ｦ", .Name)
+					.SpecialEffect("着艦", .Name)
 					
-					'Invalid_string_refer_to_original_code
+					'収納イベント
 					SelectedTarget = MapDataForUnit(.X, .Y)
-					HandleEvent("Invalid_string_refer_to_original_code")
+					HandleEvent("収納", .MainPilot.ID)
 				Else
-					'Invalid_string_refer_to_original_code
+					'合体後のユニットを選択
 					SelectedUnit = MapDataForUnit(.X, .Y)
 					
-					'Invalid_string_refer_to_original_code
-					HandleEvent("Invalid_string_refer_to_original_code")
+					'合体イベント
+					HandleEvent("合体", SelectedUnit.MainPilot.ID, SelectedUnit.Name)
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'移動後の収納・合体イベントでステージが終了することがあるので
 				If IsScenarioFinished Then
 					IsScenarioFinished = False
 					UnlockGUI()
@@ -2176,26 +2501,26 @@ Module Commands
 					IsCanceled = False
 					ClearUnitStatus()
 					RedrawScreen()
-					CommandState = "Invalid_string_refer_to_original_code"
+					CommandState = "ユニット選択"
 					UnlockGUI()
 					Exit Sub
 				End If
 				
-				'谿九ｊ陦悟虚謨ｰ繧呈ｸ帛ｰ代＆縺帙ｋ
+				'残り行動数を減少させる
 				SelectedUnit.UseAction()
 				
-				'Invalid_string_refer_to_original_code
-				SelectedUnit.RemoveSpecialPowerInEffect("Invalid_string_refer_to_original_code")
+				'持続期間が「移動」のスペシャルパワー効果を削除
+				SelectedUnit.RemoveSpecialPowerInEffect("移動")
 				
 				DisplayUnitStatus(SelectedUnit)
 				RedrawScreen()
-				CommandState = "Invalid_string_refer_to_original_code"
+				CommandState = "ユニット選択"
 				UnlockGUI()
 				Exit Sub
 			End If
 			' ADD START MARGE
 			If SelectedUnitMoveCost > 0 Then
-				'Invalid_string_refer_to_original_code
+				'行動数を減らす
 				WaitCommand()
 				Exit Sub
 			End If
@@ -2204,20 +2529,20 @@ Module Commands
 			' ADD END MARGE
 		End With
 		
-		CommandState = "Invalid_string_refer_to_original_code"
+		CommandState = "移動後コマンド選択"
 		UnlockGUI()
 		ProceedCommand()
 	End Sub
 	
 	
-	'Invalid_string_refer_to_original_code
+	'「テレポート」コマンドを開始
 	' MOD START MARGE
 	'Public Sub StartTeleportCommand()
 	Private Sub StartTeleportCommand()
 		' MOD END MARGE
-		SelectedCommand = "Invalid_string_refer_to_original_code"
+		SelectedCommand = "テレポート"
 		AreaInTeleport(SelectedUnit)
-		If Not IsOptionDefined("Invalid_string_refer_to_original_code") Then
+		If Not IsOptionDefined("大型マップ") Then
 			Center(SelectedUnit.X, SelectedUnit.Y)
 		End If
 		MaskScreen()
@@ -2228,10 +2553,10 @@ Module Commands
 			System.Windows.Forms.Application.DoEvents()
 			ClearUnitStatus()
 		End If
-		CommandState = "Invalid_string_refer_to_original_code"
+		CommandState = "ターゲット選択"
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'「テレポート」コマンドを終了
 	' MOD START MARGE
 	'Public Sub FinishTeleportCommand()
 	Private Sub FinishTeleportCommand()
@@ -2246,16 +2571,12 @@ Module Commands
 			PrevUnitArea = .Area
 			PrevUnitEN = .EN
 			
-			'Invalid_string_refer_to_original_code
+			'テレポート後に着艦or合体する場合はプレイヤーに確認を取る
 			If Not MapDataForUnit(SelectedX, SelectedY) Is Nothing Then
-				If MapDataForUnit(SelectedX, SelectedY).IsFeatureAvailable("豈崎襖") Then
-					'Invalid_string_refer_to_original_code_
-					'vbOKCancel + vbQuestion, "逹濶ｦ")
-					'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+				If MapDataForUnit(SelectedX, SelectedY).IsFeatureAvailable("母艦") Then
+					ret = MsgBox("着艦しますか？", MsgBoxStyle.OKCancel + MsgBoxStyle.Question, "着艦")
 				Else
-					'Invalid_string_refer_to_original_code_
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+					ret = MsgBox("合体しますか？", MsgBoxStyle.OKCancel + MsgBoxStyle.Question, "合体")
 				End If
 				If ret = MsgBoxResult.Cancel Then
 					CancelCommand()
@@ -2264,77 +2585,66 @@ Module Commands
 				End If
 			End If
 			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			OpenMessageForm()
-			.PilotMessage("Invalid_string_refer_to_original_code" & .FeatureName("Invalid_string_refer_to_original_code"))
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			CloseMessageForm()
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			OpenMessageForm()
-			.PilotMessage("Invalid_string_refer_to_original_code")
-			CloseMessageForm()
-			'End If
+			'メッセージを表示
+			If .IsMessageDefined("テレポート(" & .FeatureName("テレポート") & ")") Then
+				OpenMessageForm()
+				.PilotMessage("テレポート(" & .FeatureName("テレポート") & ")")
+				CloseMessageForm()
+			ElseIf .IsMessageDefined("テレポート") Then 
+				OpenMessageForm()
+				.PilotMessage("テレポート")
+				CloseMessageForm()
+			End If
 			
-			'繧｢繝九Γ陦ｨ遉ｺ
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			.PlayAnimation("Invalid_string_refer_to_original_code")
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			.SpecialEffect("Invalid_string_refer_to_original_code")
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			'UPGRADE_WARNING: FinishTeleportCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			PlayWave("Whiz.wav")
-			'End If
+			'アニメ表示
+			If .IsAnimationDefined("テレポート", .FeatureName("テレポート")) Then
+				.PlayAnimation("テレポート", .FeatureName("テレポート"))
+			ElseIf .IsSpecialEffectDefined("テレポート", .FeatureName("テレポート")) Then 
+				.SpecialEffect("テレポート", .FeatureName("テレポート"))
+			ElseIf BattleAnimation Then 
+				ShowAnimation("テレポート発動 Whiz.wav " & .FeatureName0("テレポート"))
+			Else
+				PlayWave("Whiz.wav")
+			End If
 			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			.EN = PrevUnitEN - 40
-			'End If
+			'ＥＮを消費
+			If LLength(.FeatureData("テレポート")) = 2 Then
+				.EN = PrevUnitEN - CShort(LIndex(.FeatureData("テレポート"), 2))
+			Else
+				.EN = PrevUnitEN - 40
+			End If
 			
-			'Invalid_string_refer_to_original_code
+			'ユニットを移動
 			.Move(SelectedX, SelectedY, True, False, True)
 			RedrawScreen()
 			
-			'Invalid_string_refer_to_original_code
+			'移動後に着艦または合体した？
 			If Not MapDataForUnit(SelectedX, SelectedY) Is SelectedUnit Then
-				If MapDataForUnit(SelectedX, SelectedY).IsFeatureAvailable("豈崎襖") And Not .IsFeatureAvailable("豈崎襖") And .CountPilot > 0 Then
-					'Invalid_string_refer_to_original_code
-					If .IsMessageDefined("逹濶ｦ(" & .Name & ")") Then
+				If MapDataForUnit(SelectedX, SelectedY).IsFeatureAvailable("母艦") And Not .IsFeatureAvailable("母艦") And .CountPilot > 0 Then
+					'着艦メッセージ表示
+					If .IsMessageDefined("着艦(" & .Name & ")") Then
 						OpenMessageForm()
-						.PilotMessage("逹濶ｦ(" & .Name & ")")
+						.PilotMessage("着艦(" & .Name & ")")
 						CloseMessageForm()
-					ElseIf .IsMessageDefined("逹濶ｦ") Then 
+					ElseIf .IsMessageDefined("着艦") Then 
 						OpenMessageForm()
-						.PilotMessage("逹濶ｦ")
+						.PilotMessage("着艦")
 						CloseMessageForm()
 					End If
-					.SpecialEffect("逹濶ｦ", .Name)
+					.SpecialEffect("着艦", .Name)
 					
-					'Invalid_string_refer_to_original_code
+					'収納イベント
 					SelectedTarget = MapDataForUnit(SelectedX, SelectedY)
-					HandleEvent("Invalid_string_refer_to_original_code")
+					HandleEvent("収納", .MainPilot.ID)
 				Else
-					'Invalid_string_refer_to_original_code
+					'合体後のユニットを選択
 					SelectedUnit = MapDataForUnit(SelectedX, SelectedY)
 					
-					'Invalid_string_refer_to_original_code
-					HandleEvent("Invalid_string_refer_to_original_code")
+					'合体イベント
+					HandleEvent("合体", SelectedUnit.MainPilot.ID, SelectedUnit.Name)
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'移動後の収納・合体イベントでステージが終了することがあるので
 				If IsScenarioFinished Then
 					IsScenarioFinished = False
 					UnlockGUI()
@@ -2344,20 +2654,20 @@ Module Commands
 					IsCanceled = False
 					ClearUnitStatus()
 					RedrawScreen()
-					CommandState = "Invalid_string_refer_to_original_code"
+					CommandState = "ユニット選択"
 					UnlockGUI()
 					Exit Sub
 				End If
 				
-				'谿九ｊ陦悟虚謨ｰ繧呈ｸ帛ｰ代＆縺帙ｋ
+				'残り行動数を減少させる
 				SelectedUnit.UseAction()
 				
-				'Invalid_string_refer_to_original_code
-				SelectedUnit.RemoveSpecialPowerInEffect("Invalid_string_refer_to_original_code")
+				'持続期間が「移動」のスペシャルパワー効果を削除
+				SelectedUnit.RemoveSpecialPowerInEffect("移動")
 				
 				DisplayUnitStatus(MapDataForUnit(SelectedX, SelectedY))
 				RedrawScreen()
-				CommandState = "Invalid_string_refer_to_original_code"
+				CommandState = "ユニット選択"
 				UnlockGUI()
 				Exit Sub
 			End If
@@ -2366,20 +2676,20 @@ Module Commands
 			' ADD END MARGE
 		End With
 		
-		CommandState = "Invalid_string_refer_to_original_code"
+		CommandState = "移動後コマンド選択"
 		UnlockGUI()
 		ProceedCommand()
 	End Sub
 	
 	
-	'Invalid_string_refer_to_original_code
+	'「ジャンプ」コマンドを開始
 	' MOD START MARGE
 	'Public Sub StartJumpCommand()
 	Private Sub StartJumpCommand()
 		' MOD END MARGE
-		SelectedCommand = "Invalid_string_refer_to_original_code"
+		SelectedCommand = "ジャンプ"
 		AreaInSpeed(SelectedUnit, True)
-		If Not IsOptionDefined("Invalid_string_refer_to_original_code") Then
+		If Not IsOptionDefined("大型マップ") Then
 			Center(SelectedUnit.X, SelectedUnit.Y)
 		End If
 		MaskScreen()
@@ -2390,10 +2700,10 @@ Module Commands
 			System.Windows.Forms.Application.DoEvents()
 			ClearUnitStatus()
 		End If
-		CommandState = "Invalid_string_refer_to_original_code"
+		CommandState = "ターゲット選択"
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'「ジャンプ」コマンドを終了
 	' MOD START MARGE
 	'Public Sub FinishJumpCommand()
 	Private Sub FinishJumpCommand()
@@ -2408,16 +2718,12 @@ Module Commands
 			PrevUnitArea = .Area
 			PrevUnitEN = .EN
 			
-			'Invalid_string_refer_to_original_code
+			'ジャンプ後に着艦or合体する場合はプレイヤーに確認を取る
 			If Not MapDataForUnit(SelectedX, SelectedY) Is Nothing Then
-				If MapDataForUnit(SelectedX, SelectedY).IsFeatureAvailable("豈崎襖") Then
-					'Invalid_string_refer_to_original_code_
-					'vbOKCancel + vbQuestion, "逹濶ｦ")
-					'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+				If MapDataForUnit(SelectedX, SelectedY).IsFeatureAvailable("母艦") Then
+					ret = MsgBox("着艦しますか？", MsgBoxStyle.OKCancel + MsgBoxStyle.Question, "着艦")
 				Else
-					'Invalid_string_refer_to_original_code_
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+					ret = MsgBox("合体しますか？", MsgBoxStyle.OKCancel + MsgBoxStyle.Question, "合体")
 				End If
 				If ret = MsgBoxResult.Cancel Then
 					CancelCommand()
@@ -2426,73 +2732,62 @@ Module Commands
 				End If
 			End If
 			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			OpenMessageForm()
-			.PilotMessage("Invalid_string_refer_to_original_code" & .FeatureName("Invalid_string_refer_to_original_code"))
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			CloseMessageForm()
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			OpenMessageForm()
-			.PilotMessage("Invalid_string_refer_to_original_code")
-			CloseMessageForm()
-			'End If
+			'メッセージを表示
+			If .IsMessageDefined("ジャンプ(" & .FeatureName("ジャンプ") & ")") Then
+				OpenMessageForm()
+				.PilotMessage("ジャンプ(" & .FeatureName("ジャンプ") & ")")
+				CloseMessageForm()
+			ElseIf .IsMessageDefined("ジャンプ") Then 
+				OpenMessageForm()
+				.PilotMessage("ジャンプ")
+				CloseMessageForm()
+			End If
 			
-			'繧｢繝九Γ陦ｨ遉ｺ
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			.PlayAnimation("Invalid_string_refer_to_original_code")
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			.SpecialEffect("Invalid_string_refer_to_original_code")
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			PlayWave("Swing.wav")
-			'End If
+			'アニメ表示
+			If .IsAnimationDefined("ジャンプ", .FeatureName("ジャンプ")) Then
+				.PlayAnimation("ジャンプ", .FeatureName("ジャンプ"))
+			ElseIf .IsSpecialEffectDefined("ジャンプ", .FeatureName("ジャンプ")) Then 
+				.SpecialEffect("ジャンプ", .FeatureName("ジャンプ"))
+			Else
+				PlayWave("Swing.wav")
+			End If
 			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			'End If
+			'ＥＮを消費
+			If LLength(.FeatureData("ジャンプ")) = 2 Then
+				.EN = PrevUnitEN - CShort(LIndex(.FeatureData("ジャンプ"), 2))
+			End If
 			
-			'Invalid_string_refer_to_original_code
+			'ユニットを移動
 			.Move(SelectedX, SelectedY, True, False, True)
 			RedrawScreen()
 			
-			'Invalid_string_refer_to_original_code
+			'移動後に着艦または合体した？
 			If Not MapDataForUnit(SelectedX, SelectedY) Is SelectedUnit Then
-				If MapDataForUnit(SelectedX, SelectedY).IsFeatureAvailable("豈崎襖") And Not .IsFeatureAvailable("豈崎襖") And .CountPilot > 0 Then
-					'Invalid_string_refer_to_original_code
-					If .IsMessageDefined("逹濶ｦ(" & .Name & ")") Then
+				If MapDataForUnit(SelectedX, SelectedY).IsFeatureAvailable("母艦") And Not .IsFeatureAvailable("母艦") And .CountPilot > 0 Then
+					'着艦メッセージ表示
+					If .IsMessageDefined("着艦(" & .Name & ")") Then
 						OpenMessageForm()
-						.PilotMessage("逹濶ｦ(" & .Name & ")")
+						.PilotMessage("着艦(" & .Name & ")")
 						CloseMessageForm()
-					ElseIf .IsMessageDefined("逹濶ｦ") Then 
+					ElseIf .IsMessageDefined("着艦") Then 
 						OpenMessageForm()
-						.PilotMessage("逹濶ｦ")
+						.PilotMessage("着艦")
 						CloseMessageForm()
 					End If
-					.SpecialEffect("逹濶ｦ", .Name)
+					.SpecialEffect("着艦", .Name)
 					
-					'Invalid_string_refer_to_original_code
+					'収納イベント
 					SelectedTarget = MapDataForUnit(SelectedX, SelectedY)
-					HandleEvent("Invalid_string_refer_to_original_code")
+					HandleEvent("収納", .MainPilot.ID)
 				Else
-					'Invalid_string_refer_to_original_code
+					'合体後のユニットを選択
 					SelectedUnit = MapDataForUnit(SelectedX, SelectedY)
 					
-					'Invalid_string_refer_to_original_code
-					HandleEvent("Invalid_string_refer_to_original_code")
+					'合体イベント
+					HandleEvent("合体", SelectedUnit.MainPilot.ID, SelectedUnit.Name)
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'移動後の収納・合体イベントでステージが終了することがあるので
 				If IsScenarioFinished Then
 					IsScenarioFinished = False
 					UnlockGUI()
@@ -2502,20 +2797,20 @@ Module Commands
 					IsCanceled = False
 					ClearUnitStatus()
 					RedrawScreen()
-					CommandState = "Invalid_string_refer_to_original_code"
+					CommandState = "ユニット選択"
 					UnlockGUI()
 					Exit Sub
 				End If
 				
-				'谿九ｊ陦悟虚謨ｰ繧呈ｸ帛ｰ代＆縺帙ｋ
+				'残り行動数を減少させる
 				SelectedUnit.UseAction()
 				
-				'Invalid_string_refer_to_original_code
-				SelectedUnit.RemoveSpecialPowerInEffect("Invalid_string_refer_to_original_code")
+				'持続期間が「移動」のスペシャルパワー効果を削除
+				SelectedUnit.RemoveSpecialPowerInEffect("移動")
 				
 				DisplayUnitStatus(MapDataForUnit(SelectedX, SelectedY))
 				RedrawScreen()
-				CommandState = "Invalid_string_refer_to_original_code"
+				CommandState = "ユニット選択"
 				UnlockGUI()
 				Exit Sub
 			End If
@@ -2524,13 +2819,13 @@ Module Commands
 			' ADD END MARGE
 		End With
 		
-		CommandState = "Invalid_string_refer_to_original_code"
+		CommandState = "移動後コマンド選択"
 		UnlockGUI()
 		ProceedCommand()
 	End Sub
 	
 	
-	'Invalid_string_refer_to_original_code
+	'「攻撃」コマンドを開始
 	' MOD START MARGE
 	'Public Sub StartAttackCommand()
 	Private Sub StartAttackCommand()
@@ -2544,9 +2839,9 @@ Module Commands
 		
 		Dim partners() As Unit
 		With SelectedUnit
-			'Invalid_string_refer_to_original_code
-			If .IsFeatureAvailable("Invalid_string_refer_to_original_code") Then
-				BGM = SearchMidiFile(.FeatureData("Invalid_string_refer_to_original_code"))
+			'ＢＧＭの設定
+			If .IsFeatureAvailable("ＢＧＭ") Then
+				BGM = SearchMidiFile(.FeatureData("ＢＧＭ"))
 			End If
 			If Len(BGM) = 0 Then
 				BGM = SearchMidiFile(.MainPilot.BGM)
@@ -2555,17 +2850,15 @@ Module Commands
 				BGM = BGMName("default")
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'武器の選択
 			UseSupportAttack = True
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			'End If
+			If CommandState = "コマンド選択" Then
+				SelectedWeapon = WeaponListBox(SelectedUnit, "武器選択", "移動前", BGM)
+			Else
+				SelectedWeapon = WeaponListBox(SelectedUnit, "武器選択", "移動後", BGM)
+			End If
 			
-			'繧ｭ繝｣繝ｳ繧ｻ繝ｫ
+			'キャンセル
 			If SelectedWeapon = 0 Then
 				If AutoMoveCursor Then
 					RestoreCursorPos()
@@ -2575,10 +2868,10 @@ Module Commands
 				Exit Sub
 			End If
 			
-			'Invalid_string_refer_to_original_code
-			If .IsFeatureAvailable("Invalid_string_refer_to_original_code") Then
+			'武器ＢＧＭの演奏
+			If .IsFeatureAvailable("武器ＢＧＭ") Then
 				For i = 1 To .CountFeature
-					If .Feature(i) = "Invalid_string_refer_to_original_code" And LIndex(.FeatureData(i), 1) = .Weapon(SelectedWeapon).Name Then
+					If .Feature(i) = "武器ＢＧＭ" And LIndex(.FeatureData(i), 1) = .Weapon(SelectedWeapon).Name Then
 						BGM = SearchMidiFile(Mid(.FeatureData(i), InStr(.FeatureData(i), " ") + 1))
 						If Len(BGM) > 0 Then
 							ChangeBGM(BGM)
@@ -2588,189 +2881,172 @@ Module Commands
 				Next 
 			End If
 			
-			'Invalid_string_refer_to_original_code
-			If .IsWeaponClassifiedAs(SelectedWeapon, "Invalid_string_refer_to_original_code") Then
-				SelectedCommand = "Invalid_string_refer_to_original_code"
+			'選択した武器の種類により、この後のコマンドの進行の仕方が異なる
+			If .IsWeaponClassifiedAs(SelectedWeapon, "Ｍ") Then
+				SelectedCommand = "マップ攻撃"
 			Else
-				SelectedCommand = "Invalid_string_refer_to_original_code"
+				SelectedCommand = "攻撃"
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'武器の射程を求めておく
 			min_range = .Weapon(SelectedWeapon).MinRange
 			max_range = .WeaponMaxRange(SelectedWeapon)
 			
-			'Invalid_string_refer_to_original_code
-			If .IsWeaponClassifiedAs(SelectedWeapon, "Invalid_string_refer_to_original_code") Then
+			'攻撃範囲の表示
+			If .IsWeaponClassifiedAs(SelectedWeapon, "Ｍ直") Then
 				AreaInCross(.X, .Y, min_range, max_range)
-			ElseIf .IsWeaponClassifiedAs(SelectedWeapon, "Invalid_string_refer_to_original_code") Then 
+			ElseIf .IsWeaponClassifiedAs(SelectedWeapon, "Ｍ拡") Then 
 				AreaInWideCross(.X, .Y, min_range, max_range)
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				'Invalid_string_refer_to_original_code_
-				'Invalid_string_refer_to_original_code_
-				'Then
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				AreaInRange(.X, .Y, max_range, min_range, "縺吶∋縺ｦ")
-			ElseIf .IsWeaponClassifiedAs(SelectedWeapon, "Invalid_string_refer_to_original_code") Then 
+			ElseIf .IsWeaponClassifiedAs(SelectedWeapon, "Ｍ扇") Then 
+				AreaInSectorCross(.X, .Y, min_range, max_range, .WeaponLevel(SelectedWeapon, "Ｍ扇"))
+			ElseIf .IsWeaponClassifiedAs(SelectedWeapon, "Ｍ全") Or .IsWeaponClassifiedAs(SelectedWeapon, "Ｍ投") Or .IsWeaponClassifiedAs(SelectedWeapon, "Ｍ線") Then 
+				AreaInRange(.X, .Y, max_range, min_range, "すべて")
+			ElseIf .IsWeaponClassifiedAs(SelectedWeapon, "Ｍ移") Then 
 				AreaInMoveAction(SelectedUnit, max_range)
 			Else
-				AreaInRange(.X, .Y, max_range, min_range, "蜻ｳ譁ｹ縺ｮ謨ｵ")
+				AreaInRange(.X, .Y, max_range, min_range, "味方の敵")
 			End If
 			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code_
-			'Invalid_string_refer_to_original_code_
-			'Then
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			For i = 1 To 4
-				'UPGRADE_NOTE: オブジェクト t をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-				t = Nothing
-				Select Case i
-					Case 1
-						If .X > 1 Then
-							t = MapDataForUnit(.X - 1, .Y)
-						End If
-					Case 2
-						If .X < MapWidth Then
-							t = MapDataForUnit(.X + 1, .Y)
-						End If
-					Case 3
-						If .Y > 1 Then
-							t = MapDataForUnit(.X, .Y - 1)
-						End If
-					Case 4
-						If .Y < MapHeight Then
-							t = MapDataForUnit(.X, .Y + 1)
-						End If
-				End Select
-				
-				If Not t Is Nothing Then
-					If .IsEnemy(t) Then
-						.CombinationPartner("Invalid_string_refer_to_original_code")
-						If UBound(partners) = 0 Then
-							MaskData(t.X, t.Y) = True
+			'射程１の合体技はパートナーで相手を取り囲んでいないと使用できない
+			If max_range = 1 And .IsWeaponClassifiedAs(SelectedWeapon, "合") And Not .IsWeaponClassifiedAs(SelectedWeapon, "Ｍ") Then
+				For i = 1 To 4
+					'UPGRADE_NOTE: オブジェクト t をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
+					t = Nothing
+					Select Case i
+						Case 1
+							If .X > 1 Then
+								t = MapDataForUnit(.X - 1, .Y)
+							End If
+						Case 2
+							If .X < MapWidth Then
+								t = MapDataForUnit(.X + 1, .Y)
+							End If
+						Case 3
+							If .Y > 1 Then
+								t = MapDataForUnit(.X, .Y - 1)
+							End If
+						Case 4
+							If .Y < MapHeight Then
+								t = MapDataForUnit(.X, .Y + 1)
+							End If
+					End Select
+					
+					If Not t Is Nothing Then
+						If .IsEnemy(t) Then
+							.CombinationPartner("武装", SelectedWeapon, partners, t.X, t.Y)
+							If UBound(partners) = 0 Then
+								MaskData(t.X, t.Y) = True
+							End If
 						End If
 					End If
-				End If
-			Next 
-			'End If
+				Next 
+			End If
 			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code_
-			'Invalid_string_refer_to_original_code_
-			'Then
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			For i = MaxLng(.X - max_range, 1) To MinLng(.X + max_range, MapWidth)
-				For j = MaxLng(.Y - max_range, 1) To MinLng(.Y + max_range, MapHeight)
-					If MaskData(i, j) Then
-						GoTo NextLoop
-					End If
-					
-					t = MapDataForUnit(i, j)
-					
-					If t Is Nothing Then
-						GoTo NextLoop
-					End If
-					
-					'Invalid_string_refer_to_original_code
-					If .WeaponAdaption(SelectedWeapon, (t.Area)) = 0 Then
-						MaskData(i, j) = True
-						GoTo NextLoop
-					End If
-					
-					'Invalid_string_refer_to_original_code
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-					If (.Weapon(SelectedWeapon).Power > 0 And .Damage(SelectedWeapon, t, True) = 0) Or .CriticalProbability(SelectedWeapon, t) = 0 Then
-						MaskData(i, j) = True
-						GoTo NextLoop
-					End If
-					'End If
-					
-					'Invalid_string_refer_to_original_code
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-					If (.Weapon(SelectedWeapon).Power > 0 And .Damage(SelectedWeapon, t, True) = 0) Or (.Weapon(SelectedWeapon).Power = 0 And .CriticalProbability(SelectedWeapon, t) = 0) Then
-						MaskData(i, j) = True
-						GoTo NextLoop
-					End If
-					'End If
-					
-					'Invalid_string_refer_to_original_code
-					'Invalid_string_refer_to_original_code_
-					'Invalid_string_refer_to_original_code_
-					'Then
-					'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-					If .IsAlly(t) Then
-						MaskData(i, j) = True
-						GoTo NextLoop
-					End If
-					'End If
-					
-					'Invalid_string_refer_to_original_code
-					If Not .IsWeaponClassifiedAs(SelectedWeapon, "Invalid_string_refer_to_original_code") Then
-						If Not .IsTargetWithinRange(SelectedWeapon, t) Then
+			'ユニットに対するマスクの設定
+			If Not .IsWeaponClassifiedAs(SelectedWeapon, "Ｍ投") And Not .IsWeaponClassifiedAs(SelectedWeapon, "Ｍ線") Then
+				For i = MaxLng(.X - max_range, 1) To MinLng(.X + max_range, MapWidth)
+					For j = MaxLng(.Y - max_range, 1) To MinLng(.Y + max_range, MapHeight)
+						If MaskData(i, j) Then
+							GoTo NextLoop
+						End If
+						
+						t = MapDataForUnit(i, j)
+						
+						If t Is Nothing Then
+							GoTo NextLoop
+						End If
+						
+						'武器の地形適応が有効？
+						If .WeaponAdaption(SelectedWeapon, (t.Area)) = 0 Then
 							MaskData(i, j) = True
 							GoTo NextLoop
 						End If
-					End If
+						
+						'封印武器の対象属性外でない？
+						If .IsWeaponClassifiedAs(SelectedWeapon, "封") Then
+							If (.Weapon(SelectedWeapon).Power > 0 And .Damage(SelectedWeapon, t, True) = 0) Or .CriticalProbability(SelectedWeapon, t) = 0 Then
+								MaskData(i, j) = True
+								GoTo NextLoop
+							End If
+						End If
+						
+						'限定武器の対象属性外でない？
+						If .IsWeaponClassifiedAs(SelectedWeapon, "限") Then
+							If (.Weapon(SelectedWeapon).Power > 0 And .Damage(SelectedWeapon, t, True) = 0) Or (.Weapon(SelectedWeapon).Power = 0 And .CriticalProbability(SelectedWeapon, t) = 0) Then
+								MaskData(i, j) = True
+								GoTo NextLoop
+							End If
+						End If
+						
+						'識別攻撃の場合の処理
+						If .IsWeaponClassifiedAs(SelectedWeapon, "識") Or .IsUnderSpecialPowerEffect("識別攻撃") Then
+							If .IsAlly(t) Then
+								MaskData(i, j) = True
+								GoTo NextLoop
+							End If
+						End If
+						
+						'ステルス＆隠れ身チェック
+						If Not .IsWeaponClassifiedAs(SelectedWeapon, "Ｍ") Then
+							If Not .IsTargetWithinRange(SelectedWeapon, t) Then
+								MaskData(i, j) = True
+								GoTo NextLoop
+							End If
+						End If
 NextLoop: 
+					Next 
 				Next 
-			Next 
-			'End If
+			End If
 			MaskData(.X, .Y) = False
-			If Not IsOptionDefined("Invalid_string_refer_to_original_code") Then
+			If Not IsOptionDefined("大型マップ") Then
 				Center(.X, .Y)
 			End If
 			MaskScreen()
 		End With
 		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-		CommandState = "Invalid_string_refer_to_original_code"
-		CommandState = "Invalid_string_refer_to_original_code"
-		'End If
+		'ターゲット選択へ
+		If CommandState = "コマンド選択" Then
+			CommandState = "ターゲット選択"
+		Else
+			CommandState = "移動後ターゲット選択"
+		End If
 		
-		'Invalid_string_refer_to_original_code
+		'カーソル自動移動を行う？
 		If Not AutoMoveCursor Then
 			UnlockGUI()
 			Exit Sub
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'ＨＰがもっとも低いターゲットを探す
 		'UPGRADE_NOTE: オブジェクト t をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
 		t = Nothing
 		For	Each u In UList
 			With u
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				If MaskData(.X, .Y) = False Then
-					If t Is Nothing Then
-						t = u
-					ElseIf .HP < t.HP Then 
-						t = u
-					ElseIf .HP = t.HP Then 
-						If System.Math.Abs(SelectedUnit.X - .X) ^ 2 + System.Math.Abs(SelectedUnit.Y - .Y) ^ 2 < System.Math.Abs(SelectedUnit.X - t.X) ^ 2 + System.Math.Abs(SelectedUnit.Y - t.Y) ^ 2 Then
+				If .Status_Renamed = "出撃" And (.Party = "敵" Or .Party = "中立") Then
+					If MaskData(.X, .Y) = False Then
+						If t Is Nothing Then
 							t = u
+						ElseIf .HP < t.HP Then 
+							t = u
+						ElseIf .HP = t.HP Then 
+							If System.Math.Abs(SelectedUnit.X - .X) ^ 2 + System.Math.Abs(SelectedUnit.Y - .Y) ^ 2 < System.Math.Abs(SelectedUnit.X - t.X) ^ 2 + System.Math.Abs(SelectedUnit.Y - t.Y) ^ 2 Then
+								t = u
+							End If
 						End If
 					End If
 				End If
-				'End If
 			End With
 		Next u
 		
-		'Invalid_string_refer_to_original_code
+		'適当なターゲットが見つからなければ自分自身を選択
 		If t Is Nothing Then
 			t = SelectedUnit
 		End If
 		
-		'Invalid_string_refer_to_original_code
-		MoveCursorPos("Invalid_string_refer_to_original_code")
+		'カーソルを移動
+		MoveCursorPos("ユニット選択", t)
 		
-		'Invalid_string_refer_to_original_code
+		'ターゲットのステータスを表示
 		If Not SelectedUnit Is t Then
 			DisplayUnitStatus(t)
 		End If
@@ -2778,7 +3054,7 @@ NextLoop:
 		UnlockGUI()
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'「攻撃」コマンドを終了
 	' MOD START MARGE
 	'Public Sub FinishAttackCommand()
 	Private Sub FinishAttackCommand()
@@ -2816,32 +3092,30 @@ NextLoop:
 		SelectedWeaponName = wname
 		
 		' ADD START MARGE
-		'遘ｻ蜍募ｾ御ｽｿ逕ｨ蠕悟庄閭ｽ縺ｪ豁ｦ蝎ｨ縺玖ｨ倬鹸縺励※縺翫￥
-		is_p_weapon = SelectedUnit.IsWeaponClassifiedAs(SelectedWeapon, "Invalid_string_refer_to_original_code")
+		'移動後使用後可能な武器か記録しておく
+		is_p_weapon = SelectedUnit.IsWeaponClassifiedAs(SelectedWeapon, "移動後攻撃可")
 		' ADD END MARGE
 		
-		'Invalid_string_refer_to_original_code
+		'合体技のパートナーを設定
 		With SelectedUnit
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			If .WeaponMaxRange(SelectedWeapon) = 1 Then
-				.CombinationPartner("Invalid_string_refer_to_original_code")
-				SelectedTarget.X( , SelectedTarget.Y)
+			If .IsWeaponClassifiedAs(SelectedWeapon, "合") Then
+				If .WeaponMaxRange(SelectedWeapon) = 1 Then
+					.CombinationPartner("武装", SelectedWeapon, partners, SelectedTarget.X, SelectedTarget.Y)
+				Else
+					.CombinationPartner("武装", SelectedWeapon, partners)
+				End If
 			Else
-				.CombinationPartner("Invalid_string_refer_to_original_code")
+				ReDim SelectedPartners(0)
+				ReDim partners(0)
 			End If
-			ReDim SelectedPartners(0)
-			ReDim partners(0)
-			'End If
 		End With
 		
-		'Invalid_string_refer_to_original_code
+		'敵の反撃手段を設定
 		UseSupportGuard = True
-		SelectedTWeapon = SelectWeapon(SelectedTarget, SelectedUnit, "蜿肴茶")
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-		SelectedTWeapon = 0
-		'End If
+		SelectedTWeapon = SelectWeapon(SelectedTarget, SelectedUnit, "反撃")
+		If SelectedUnit.IsWeaponClassifiedAs(SelectedWeapon, "間") Then
+			SelectedTWeapon = 0
+		End If
 		If SelectedTWeapon > 0 Then
 			twname = SelectedTarget.Weapon(SelectedTWeapon).Name
 			SelectedTWeaponName = twname
@@ -2849,7 +3123,7 @@ NextLoop:
 			SelectedTWeaponName = ""
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'敵の防御行動を設定
 		'UPGRADE_WARNING: オブジェクト SelectDefense() の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
 		def_mode = SelectDefense(SelectedUnit, SelectedWeapon, SelectedTarget, SelectedTWeapon)
 		If def_mode <> "" Then
@@ -2859,7 +3133,7 @@ NextLoop:
 		End If
 		SelectedDefenseOption = def_mode
 		
-		'謌ｦ髣伜燕縺ｫ荳譌ｦ繧ｯ繝ｪ繧｢
+		'戦闘前に一旦クリア
 		'UPGRADE_NOTE: オブジェクト SupportAttackUnit をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
 		SupportAttackUnit = Nothing
 		'UPGRADE_NOTE: オブジェクト SupportGuardUnit をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
@@ -2867,8 +3141,8 @@ NextLoop:
 		'UPGRADE_NOTE: オブジェクト SupportGuardUnit2 をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
 		SupportGuardUnit2 = Nothing
 		
-		'Invalid_string_refer_to_original_code
-		HandleEvent("菴ｿ逕ｨ", SelectedUnit.MainPilot.ID, wname)
+		'攻撃側の武器使用イベント
+		HandleEvent("使用", SelectedUnit.MainPilot.ID, wname)
 		If IsScenarioFinished Then
 			UnlockGUI()
 			IsScenarioFinished = False
@@ -2881,11 +3155,11 @@ NextLoop:
 			Exit Sub
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'敵の武器使用イベント
 		If SelectedTWeapon > 0 Then
 			SaveSelections()
 			SwapSelections()
-			HandleEvent("菴ｿ逕ｨ", SelectedUnit.MainPilot.ID, twname)
+			HandleEvent("使用", SelectedUnit.MainPilot.ID, twname)
 			RestoreSelections()
 			If IsScenarioFinished Then
 				IsScenarioFinished = False
@@ -2901,8 +3175,8 @@ NextLoop:
 			End If
 		End If
 		
-		'Invalid_string_refer_to_original_code
-		HandleEvent("Invalid_string_refer_to_original_code")
+		'攻撃イベント
+		HandleEvent("攻撃", SelectedUnit.MainPilot.ID, SelectedTarget.MainPilot.ID)
 		If IsScenarioFinished Then
 			IsScenarioFinished = False
 			ReDim SelectedPartners(0)
@@ -2916,10 +3190,10 @@ NextLoop:
 			Exit Sub
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'敵がＢＧＭ能力を持つ場合はＢＧＭを変更
 		With SelectedTarget
-			If .IsFeatureAvailable("Invalid_string_refer_to_original_code") And InStr(.MainPilot.Name, "(繧ｶ繧ｳ)") = 0 Then
-				BGM = SearchMidiFile(.FeatureData("Invalid_string_refer_to_original_code"))
+			If .IsFeatureAvailable("ＢＧＭ") And InStr(.MainPilot.Name, "(ザコ)") = 0 Then
+				BGM = SearchMidiFile(.FeatureData("ＢＧＭ"))
 				If Len(BGM) > 0 Then
 					BossBGM = False
 					ChangeBGM(BGM)
@@ -2928,22 +3202,22 @@ NextLoop:
 			End If
 		End With
 		
-		'Invalid_string_refer_to_original_code
+		'そうではなく、ボス用ＢＧＭが流れていれば味方のＢＧＭに切り替え
 		If Len(BGM) = 0 And BossBGM Then
 			BossBGM = False
 			BGM = ""
 			With SelectedUnit
-				If .IsFeatureAvailable("Invalid_string_refer_to_original_code") Then
+				If .IsFeatureAvailable("武器ＢＧＭ") Then
 					For i = 1 To .CountFeature
-						If .Feature(i) = "Invalid_string_refer_to_original_code" And LIndex(.FeatureData(i), 1) = .Weapon(SelectedWeapon).Name Then
+						If .Feature(i) = "武器ＢＧＭ" And LIndex(.FeatureData(i), 1) = .Weapon(SelectedWeapon).Name Then
 							BGM = SearchMidiFile(Mid(.FeatureData(i), InStr(.FeatureData(i), " ") + 1))
 							Exit For
 						End If
 					Next 
 				End If
 				If Len(BGM) = 0 Then
-					If .IsFeatureAvailable("Invalid_string_refer_to_original_code") Then
-						BGM = SearchMidiFile(.FeatureData("Invalid_string_refer_to_original_code"))
+					If .IsFeatureAvailable("ＢＧＭ") Then
+						BGM = SearchMidiFile(.FeatureData("ＢＧＭ"))
 					End If
 				End If
 				If Len(BGM) = 0 Then
@@ -2957,17 +3231,16 @@ NextLoop:
 		End If
 		
 		With SelectedUnit
-			'Invalid_string_refer_to_original_code
+			'攻撃参加ユニット以外はマスク
 			For	Each u In UList
 				With u
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-					MaskData(.X, .Y) = True
-					'End If
+					If .Status_Renamed = "出撃" Then
+						MaskData(.X, .Y) = True
+					End If
 				End With
 			Next u
 			
-			'Invalid_string_refer_to_original_code
+			'合体技パートナーのハイライト表示
 			For i = 1 To UBound(partners)
 				With partners(i)
 					MaskData(.X, .Y) = False
@@ -2981,7 +3254,7 @@ NextLoop:
 			End If
 		End With
 		
-		'Invalid_string_refer_to_original_code
+		'イベント用に戦闘に参加するユニットの情報を記録しておく
 		AttackUnit = SelectedUnit
 		attack_target = SelectedUnit
 		attack_target_hp_ratio = SelectedUnit.HP / SelectedUnit.MaxHP
@@ -2996,462 +3269,410 @@ NextLoop:
 		'UPGRADE_NOTE: オブジェクト SupportGuardUnit2 をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
 		SupportGuardUnit2 = Nothing
 		
-		'Invalid_string_refer_to_original_code
+		'ターゲットの位置を記録
 		tx = SelectedTarget.X
 		ty = SelectedTarget.Y
 		
 		OpenMessageForm(SelectedTarget, SelectedUnit)
 		
-		'Invalid_string_refer_to_original_code
+		'相手の先制攻撃？
 		With SelectedTarget
 			' MOD START MARGE
-			'        If SelectedTWeapon > 0 And .MaxAction > 0 And .IsWeaponAvailable(SelectedTWeapon, "遘ｻ蜍募燕") Then
-			'Invalid_string_refer_to_original_code
-			If .MaxAction > 0 And .IsWeaponAvailable(SelectedTWeapon, "遘ｻ蜍募燕") Then
+			'        If SelectedTWeapon > 0 And .MaxAction > 0 And .IsWeaponAvailable(SelectedTWeapon, "移動前") Then
+			'SelectedTWeapon > 0の判定は、IsWeaponAvailableで行うようにした
+			If .MaxAction > 0 And .IsWeaponAvailable(SelectedTWeapon, "移動前") Then
 				' MOD END MARGE
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				def_mode = "Invalid_string_refer_to_original_code"
-				
-				If .IsWeaponClassifiedAs(SelectedTWeapon, "閾ｪ") Then
-					is_suiside = True
+				If Not .IsWeaponClassifiedAs(SelectedTWeapon, "後") Then
+					If SelectedUnit.IsWeaponClassifiedAs(SelectedWeapon, "後") Then
+						def_mode = "先制攻撃"
+						
+						If .IsWeaponClassifiedAs(SelectedTWeapon, "自") Then
+							is_suiside = True
+						End If
+						
+						'先制攻撃攻撃を実施
+						.Attack(SelectedTWeapon, SelectedUnit, "先制攻撃", "")
+						SelectedTarget = .CurrentForm
+					ElseIf .IsWeaponClassifiedAs(SelectedTWeapon, "先") Or .MainPilot.SkillLevel("先読み") >= Dice(16) Or .IsUnderSpecialPowerEffect("カウンター") Then 
+						def_mode = "先制攻撃"
+						
+						If .IsWeaponClassifiedAs(SelectedTWeapon, "自") Then
+							is_suiside = True
+						End If
+						
+						'カウンター攻撃を実施
+						.Attack(SelectedTWeapon, SelectedUnit, "カウンター", "")
+						SelectedTarget = .CurrentForm
+					ElseIf .MaxCounterAttack > .UsedCounterAttack Then 
+						def_mode = "先制攻撃"
+						
+						If .IsWeaponClassifiedAs(SelectedTWeapon, "自") Then
+							is_suiside = True
+						End If
+						
+						'カウンター攻撃の残り回数を減少
+						.UsedCounterAttack = .UsedCounterAttack + 1
+						
+						'カウンター攻撃を実施
+						.Attack(SelectedTWeapon, SelectedUnit, "カウンター", "")
+						SelectedTarget = .CurrentForm
+					End If
 				End If
 				
-				'Invalid_string_refer_to_original_code
-				.Attack(SelectedTWeapon, SelectedUnit, "Invalid_string_refer_to_original_code")
-				SelectedTarget = .CurrentForm
-				'Invalid_string_refer_to_original_code_
-				'Or .MainPilot.SkillLevel("蜈郁ｪｭ縺ｿ") >= Dice(16) _
-				'Or .IsUnderSpecialPowerEffect("繧ｫ繧ｦ繝ｳ繧ｿ繝ｼ") _
-				'Then
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				def_mode = "Invalid_string_refer_to_original_code"
-				
-				If .IsWeaponClassifiedAs(SelectedTWeapon, "閾ｪ") Then
-					is_suiside = True
+				'攻撃側のユニットがかばわれた場合は攻撃側のターゲットを再設定
+				If Not SupportGuardUnit2 Is Nothing Then
+					attack_target = SupportGuardUnit2
+					attack_target_hp_ratio = SupportGuardUnitHPRatio2
 				End If
-				
-				'Invalid_string_refer_to_original_code
-				.Attack(SelectedTWeapon, SelectedUnit, "繧ｫ繧ｦ繝ｳ繧ｿ繝ｼ", "")
-				SelectedTarget = .CurrentForm
-			ElseIf .MaxCounterAttack > .UsedCounterAttack Then 
-				def_mode = "Invalid_string_refer_to_original_code"
-				
-				If .IsWeaponClassifiedAs(SelectedTWeapon, "閾ｪ") Then
-					is_suiside = True
-				End If
-				
-				'Invalid_string_refer_to_original_code
-				.UsedCounterAttack = .UsedCounterAttack + 1
-				
-				'Invalid_string_refer_to_original_code
-				.Attack(SelectedTWeapon, SelectedUnit, "繧ｫ繧ｦ繝ｳ繧ｿ繝ｼ", "")
-				SelectedTarget = .CurrentForm
 			End If
-			'End If
-			
-			'Invalid_string_refer_to_original_code
-			If Not SupportGuardUnit2 Is Nothing Then
-				attack_target = SupportGuardUnit2
-				attack_target_hp_ratio = SupportGuardUnitHPRatio2
-			End If
-			'End If
 		End With
 		
-		'Invalid_string_refer_to_original_code
+		'サポートアタックのパートナーを探す
 		With SelectedUnit
-			'Invalid_string_refer_to_original_code_
-			'And UseSupportAttack _
-			'Then
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			SupportAttackUnit = .LookForSupportAttack(SelectedTarget)
-			
-			'Invalid_string_refer_to_original_code
-			If 0 < SelectedWeapon And SelectedWeapon <= .CountWeapon Then
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				'UPGRADE_NOTE: オブジェクト SupportAttackUnit をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-				SupportAttackUnit = Nothing
-			End If
-			'End If
-			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			'UPGRADE_NOTE: オブジェクト SupportAttackUnit をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-			SupportAttackUnit = Nothing
-			'End If
-			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			If .Master.Party = SelectedTarget.Party Then
-				'UPGRADE_NOTE: オブジェクト SupportAttackUnit をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-				SupportAttackUnit = Nothing
-			End If
-			'End If
-			
-			'Invalid_string_refer_to_original_code
-			If .IsConditionSatisfied("雕翫ｊ") Then
-				'UPGRADE_NOTE: オブジェクト SupportAttackUnit をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-				SupportAttackUnit = Nothing
-			End If
-			'End If
-		End With
-		
-		'Invalid_string_refer_to_original_code
-		With SelectedUnit
-			'Invalid_string_refer_to_original_code_
-			'And .MaxAction(True) > 0 _
-			'Invalid_string_refer_to_original_code_
-			'Invalid_string_refer_to_original_code_
-			'Then
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			'Invalid_string_refer_to_original_code
-			If SelectedWeapon > .CountWeapon Then
-				SelectedWeapon = -1
-			ElseIf wname <> .Weapon(SelectedWeapon).Name Then 
-				SelectedWeapon = -1
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				SelectedWeapon = -1
-			End If
-			If Not .IsWeaponAvailable(SelectedWeapon, "遘ｻ蜍募燕") Then
-				SelectedWeapon = -1
-			End If
-			'End If
-			If SelectedWeapon > 0 Then
-				If Not .IsTargetWithinRange(SelectedWeapon, SelectedTarget) Then
-					SelectedWeapon = 0
+			If .Status_Renamed = "出撃" And SelectedTarget.Status_Renamed = "出撃" And UseSupportAttack Then
+				SupportAttackUnit = .LookForSupportAttack(SelectedTarget)
+				
+				'合体技ではサポートアタック不能
+				If 0 < SelectedWeapon And SelectedWeapon <= .CountWeapon Then
+					If .IsWeaponClassifiedAs(SelectedWeapon, "合") Then
+						'UPGRADE_NOTE: オブジェクト SupportAttackUnit をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
+						SupportAttackUnit = Nothing
+					End If
+				End If
+				
+				'魅了された場合
+				If .IsConditionSatisfied("魅了") And .Master Is SelectedTarget Then
+					'UPGRADE_NOTE: オブジェクト SupportAttackUnit をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
+					SupportAttackUnit = Nothing
+				End If
+				
+				'憑依された場合
+				If .IsConditionSatisfied("憑依") Then
+					If .Master.Party = SelectedTarget.Party Then
+						'UPGRADE_NOTE: オブジェクト SupportAttackUnit をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
+						SupportAttackUnit = Nothing
+					End If
+				End If
+				
+				'踊らされた場合
+				If .IsConditionSatisfied("踊り") Then
+					'UPGRADE_NOTE: オブジェクト SupportAttackUnit をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
+					SupportAttackUnit = Nothing
 				End If
 			End If
-			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			SelectedWeapon = -1
-			'End If
-			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			If .Master.Party = SelectedTarget.Party0 Then
-				SelectedWeapon = -1
-			End If
-			'End If
-			
-			'Invalid_string_refer_to_original_code
-			If .IsConditionSatisfied("雕翫ｊ") Then
-				SelectedWeapon = -1
-			End If
-			
-			If SelectedWeapon > 0 Then
-				If Not SupportAttackUnit Is Nothing And .MaxSyncAttack > .UsedSyncAttack Then
-					'Invalid_string_refer_to_original_code
-					.Attack(SelectedWeapon, SelectedTarget, "Invalid_string_refer_to_original_code")
+		End With
+		
+		'攻撃の実施
+		With SelectedUnit
+			If .Status_Renamed = "出撃" And .MaxAction(True) > 0 And Not .IsConditionSatisfied("攻撃不能") And SelectedTarget.Status_Renamed = "出撃" Then
+				'まだ武器は使用可能か？
+				If SelectedWeapon > .CountWeapon Then
+					SelectedWeapon = -1
+				ElseIf wname <> .Weapon(SelectedWeapon).Name Then 
+					SelectedWeapon = -1
+				ElseIf CommandState = "移動後ターゲット選択" Then 
+					If Not .IsWeaponAvailable(SelectedWeapon, "移動後") Then
+						SelectedWeapon = -1
+					End If
 				Else
-					'Invalid_string_refer_to_original_code
-					.Attack(SelectedWeapon, SelectedTarget, "", def_mode)
+					If Not .IsWeaponAvailable(SelectedWeapon, "移動前") Then
+						SelectedWeapon = -1
+					End If
 				End If
-			ElseIf SelectedWeapon = 0 Then 
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				.PlayAnimation("Invalid_string_refer_to_original_code")
+				If SelectedWeapon > 0 Then
+					If Not .IsTargetWithinRange(SelectedWeapon, SelectedTarget) Then
+						SelectedWeapon = 0
+					End If
+				End If
+				
+				'魅了された場合
+				If .IsConditionSatisfied("魅了") And .Master Is SelectedTarget Then
+					SelectedWeapon = -1
+				End If
+				
+				'憑依された場合
+				If .IsConditionSatisfied("憑依") Then
+					If .Master.Party = SelectedTarget.Party0 Then
+						SelectedWeapon = -1
+					End If
+				End If
+				
+				'踊らされた場合
+				If .IsConditionSatisfied("踊り") Then
+					SelectedWeapon = -1
+				End If
+				
+				If SelectedWeapon > 0 Then
+					If Not SupportAttackUnit Is Nothing And .MaxSyncAttack > .UsedSyncAttack Then
+						'同時援護攻撃
+						.Attack(SelectedWeapon, SelectedTarget, "統率", def_mode)
+					Else
+						'通常攻撃
+						.Attack(SelectedWeapon, SelectedTarget, "", def_mode)
+					End If
+				ElseIf SelectedWeapon = 0 Then 
+					If .IsAnimationDefined("射程外") Then
+						.PlayAnimation("射程外")
+					Else
+						.SpecialEffect("射程外")
+					End If
+					.PilotMessage("射程外")
+				End If
 			Else
-				.SpecialEffect("Invalid_string_refer_to_original_code")
+				SelectedWeapon = -1
 			End If
-			.PilotMessage("Invalid_string_refer_to_original_code")
-			'End If
-			SelectedWeapon = -1
-			'End If
 			SelectedUnit = .CurrentForm
 			
-			'Invalid_string_refer_to_original_code
+			'防御側のユニットがかばわれた場合は2番目の防御側ユニットとして記録
 			If Not SupportGuardUnit Is Nothing Then
 				defense_target2 = SupportGuardUnit
 				defense_target2_hp_ratio = SupportGuardUnitHPRatio
 			End If
 		End With
 		
-		'Invalid_string_refer_to_original_code
+		'同時攻撃
 		If Not SupportAttackUnit Is Nothing Then
-			'Invalid_string_refer_to_original_code_
-			'Invalid_string_refer_to_original_code_
-			'Invalid_string_refer_to_original_code_
-			'Then
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			'UPGRADE_NOTE: オブジェクト SupportAttackUnit をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-			SupportAttackUnit = Nothing
+			If SupportAttackUnit.Status_Renamed <> "出撃" Or SelectedUnit.Status_Renamed <> "出撃" Or SelectedTarget.Status_Renamed <> "出撃" Then
+				'UPGRADE_NOTE: オブジェクト SupportAttackUnit をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
+				SupportAttackUnit = Nothing
+			End If
 		End If
-		'End If
 		If Not SupportAttackUnit Is Nothing Then
 			If SelectedUnit.MaxSyncAttack > SelectedUnit.UsedSyncAttack Then
 				With SupportAttackUnit
-					'Invalid_string_refer_to_original_code
-					w2 = SelectWeapon(SupportAttackUnit, SelectedTarget, "Invalid_string_refer_to_original_code")
+					'サポートアタックに使う武器を決定
+					w2 = SelectWeapon(SupportAttackUnit, SelectedTarget, "サポートアタック")
 					
 					If w2 > 0 Then
-						'Invalid_string_refer_to_original_code
+						'サポートアタックを実施
 						MaskData(.X, .Y) = False
 						If Not BattleAnimation Then
 							MaskScreen()
 						End If
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-						.PlayAnimation("Invalid_string_refer_to_original_code")
+						If .IsAnimationDefined("サポートアタック開始") Then
+							.PlayAnimation("サポートアタック開始")
+						End If
+						UpdateMessageForm(SelectedTarget, SupportAttackUnit)
+						.Attack(w2, SelectedTarget, "同時援護攻撃", def_mode)
 					End If
-					UpdateMessageForm(SelectedTarget, SupportAttackUnit)
-					.Attack(w2, SelectedTarget, "Invalid_string_refer_to_original_code")
 				End With
-			End If
-			'End With
-			
-			'蠕悟ｧ区忰
-			With SupportAttackUnit.CurrentForm
-				If w2 > 0 Then
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-					.PlayAnimation("Invalid_string_refer_to_original_code")
+				
+				'後始末
+				With SupportAttackUnit.CurrentForm
+					If w2 > 0 Then
+						If .IsAnimationDefined("サポートアタック終了") Then
+							.PlayAnimation("サポートアタック終了")
+						End If
+						
+						'サポートアタックの残り回数を減らす
+						.UsedSupportAttack = .UsedSupportAttack + 1
+						
+						'同時援護攻撃の残り回数を減らす
+						SelectedUnit.UsedSyncAttack = SelectedUnit.UsedSyncAttack + 1
+					End If
+				End With
+				
+				support_attack_done = True
+				
+				'防御側のユニットがかばわれた場合は本来の防御ユニットデータと
+				'入れ替えて記録
+				If Not SupportGuardUnit Is Nothing Then
+					defense_target = SupportGuardUnit
+					defense_target_hp_ratio = SupportGuardUnitHPRatio
 				End If
-				
-				'Invalid_string_refer_to_original_code
-				.UsedSupportAttack = .UsedSupportAttack + 1
-				
-				'Invalid_string_refer_to_original_code
-				SelectedUnit.UsedSyncAttack = SelectedUnit.UsedSyncAttack + 1
-			End With
+			End If
 		End If
-		'End With
 		
-		support_attack_done = True
-		
-		'Invalid_string_refer_to_original_code
-		'蜈･繧梧崛縺医※險倬鹸
-		If Not SupportGuardUnit Is Nothing Then
-			defense_target = SupportGuardUnit
-			defense_target_hp_ratio = SupportGuardUnitHPRatio
-		End If
-		'End If
-		'End If
-		
-		'蜿肴茶縺ｮ螳滓命
+		'反撃の実施
 		With SelectedTarget
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			'Invalid_string_refer_to_original_code_
-			'And .Party <> "蜻ｳ譁ｹ" _
-			'Invalid_string_refer_to_original_code_
-			'Then
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			'Invalid_string_refer_to_original_code
-			If SelectedTWeapon > 0 Then
-				If SelectedTWeapon > .CountWeapon Then
+			If def_mode <> "先制攻撃" Then
+				If .Status_Renamed = "出撃" And .Party <> "味方" And SelectedUnit.Status_Renamed = "出撃" Then
+					'まだ武器は使用可能か？
+					If SelectedTWeapon > 0 Then
+						If SelectedTWeapon > .CountWeapon Then
+							SelectedTWeapon = -1
+						ElseIf twname <> .Weapon(SelectedTWeapon).Name Or Not .IsWeaponAvailable(SelectedTWeapon, "移動前") Then 
+							SelectedTWeapon = -1
+						End If
+					End If
+					If SelectedTWeapon > 0 Then
+						If Not .IsTargetWithinRange(SelectedTWeapon, SelectedUnit) Then
+							'敵が射程外に逃げていたら武器を再選択
+							SelectedTWeapon = SelectWeapon(SelectedTarget, SelectedUnit, "反撃")
+						End If
+					End If
+					
+					'行動不能な場合
+					If .MaxAction = 0 Then
+						SelectedTWeapon = -1
+					End If
+					
+					'魅了された場合
+					If .IsConditionSatisfied("魅了") And .Master Is SelectedUnit Then
+						SelectedTWeapon = -1
+					End If
+					
+					'憑依された場合
+					If .IsConditionSatisfied("憑依") Then
+						If .Master.Party = SelectedUnit.Party Then
+							SelectedWeapon = -1
+						End If
+					End If
+					
+					'踊らされた場合
+					If .IsConditionSatisfied("踊り") Then
+						SelectedTWeapon = -1
+					End If
+					
+					If SelectedTWeapon > 0 And def_mode = "" Then
+						'反撃を実施
+						If .IsWeaponClassifiedAs(SelectedTWeapon, "自") Then
+							is_suiside = True
+						End If
+						.Attack(SelectedTWeapon, SelectedUnit, "", "")
+						
+						'攻撃側のユニットがかばわれた場合は攻撃側のターゲットを再設定
+						If Not SupportGuardUnit2 Is Nothing Then
+							attack_target = SupportGuardUnit2
+							attack_target_hp_ratio = SupportGuardUnitHPRatio2
+						End If
+					ElseIf SelectedTWeapon = 0 And .X = tx And .Y = ty Then 
+						'反撃出来る武器がなかった場合は射程外メッセージを表示
+						If .IsAnimationDefined("射程外") Then
+							.PlayAnimation("射程外")
+						Else
+							.SpecialEffect("射程外")
+						End If
+						.PilotMessage("射程外")
+					Else
+						SelectedTWeapon = -1
+					End If
+				Else
 					SelectedTWeapon = -1
-				ElseIf twname <> .Weapon(SelectedTWeapon).Name Or Not .IsWeaponAvailable(SelectedTWeapon, "遘ｻ蜍募燕") Then 
-					SelectedTWeapon = -1
 				End If
 			End If
-			If SelectedTWeapon > 0 Then
-				If Not .IsTargetWithinRange(SelectedTWeapon, SelectedUnit) Then
-					'Invalid_string_refer_to_original_code
-					SelectedTWeapon = SelectWeapon(SelectedTarget, SelectedUnit, "蜿肴茶")
-				End If
-			End If
-			
-			'Invalid_string_refer_to_original_code
-			If .MaxAction = 0 Then
-				SelectedTWeapon = -1
-			End If
-			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			SelectedTWeapon = -1
-			'End If
-			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			If .Master.Party = SelectedUnit.Party Then
-				SelectedWeapon = -1
-			End If
-			'End If
-			
-			'Invalid_string_refer_to_original_code
-			If .IsConditionSatisfied("雕翫ｊ") Then
-				SelectedTWeapon = -1
-			End If
-			
-			If SelectedTWeapon > 0 And def_mode = "" Then
-				'蜿肴茶繧貞ｮ滓命
-				If .IsWeaponClassifiedAs(SelectedTWeapon, "閾ｪ") Then
-					is_suiside = True
-				End If
-				.Attack(SelectedTWeapon, SelectedUnit, "", "")
-				
-				'Invalid_string_refer_to_original_code
-				If Not SupportGuardUnit2 Is Nothing Then
-					attack_target = SupportGuardUnit2
-					attack_target_hp_ratio = SupportGuardUnitHPRatio2
-				End If
-			ElseIf SelectedTWeapon = 0 And .X = tx And .Y = ty Then 
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				.PlayAnimation("Invalid_string_refer_to_original_code")
-			Else
-				.SpecialEffect("Invalid_string_refer_to_original_code")
-			End If
-			.PilotMessage("Invalid_string_refer_to_original_code")
-			SelectedTWeapon = -1
-			'End If
-			SelectedTWeapon = -1
-			'End If
-			'End If
 		End With
 		
-		'Invalid_string_refer_to_original_code
+		'サポートアタック
 		If Not SupportAttackUnit Is Nothing Then
-			'Invalid_string_refer_to_original_code_
-			'Invalid_string_refer_to_original_code_
-			'Invalid_string_refer_to_original_code_
-			'Or support_attack_done _
-			'Then
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			'UPGRADE_NOTE: オブジェクト SupportAttackUnit をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-			SupportAttackUnit = Nothing
+			If SupportAttackUnit.Status_Renamed <> "出撃" Or SelectedUnit.Status_Renamed <> "出撃" Or SelectedTarget.Status_Renamed <> "出撃" Or support_attack_done Then
+				'UPGRADE_NOTE: オブジェクト SupportAttackUnit をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
+				SupportAttackUnit = Nothing
+			End If
 		End If
-		'End If
 		If Not SupportAttackUnit Is Nothing Then
 			With SupportAttackUnit
-				'Invalid_string_refer_to_original_code
-				w2 = SelectWeapon(SupportAttackUnit, SelectedTarget, "Invalid_string_refer_to_original_code")
+				'サポートアタックに使う武器を決定
+				w2 = SelectWeapon(SupportAttackUnit, SelectedTarget, "サポートアタック")
 				
 				If w2 > 0 Then
-					'Invalid_string_refer_to_original_code
+					'サポートアタックを実施
 					MaskData(.X, .Y) = False
 					If Not BattleAnimation Then
 						MaskScreen()
 					End If
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-					.PlayAnimation("Invalid_string_refer_to_original_code")
+					If .IsAnimationDefined("サポートアタック開始") Then
+						.PlayAnimation("サポートアタック開始")
+					End If
+					UpdateMessageForm(SelectedTarget, SupportAttackUnit)
+					.Attack(w2, SelectedTarget, "援護攻撃", def_mode)
 				End If
-				UpdateMessageForm(SelectedTarget, SupportAttackUnit)
-				.Attack(w2, SelectedTarget, "Invalid_string_refer_to_original_code")
 			End With
-		End If
-		'End With
-		
-		'蠕悟ｧ区忰
-		With SupportAttackUnit.CurrentForm
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			.PlayAnimation("Invalid_string_refer_to_original_code")
-			'End If
 			
-			'Invalid_string_refer_to_original_code
-			If w2 > 0 Then
-				.UsedSupportAttack = .UsedSupportAttack + 1
+			'後始末
+			With SupportAttackUnit.CurrentForm
+				If .IsAnimationDefined("サポートアタック終了") Then
+					.PlayAnimation("サポートアタック終了")
+				End If
+				
+				'サポートアタックの残り回数を減らす
+				If w2 > 0 Then
+					.UsedSupportAttack = .UsedSupportAttack + 1
+				End If
+			End With
+			
+			'防御側のユニットがかばわれた場合は本来の防御ユニットデータと
+			'入れ替えて記録
+			If Not SupportGuardUnit Is Nothing Then
+				defense_target = SupportGuardUnit
+				defense_target_hp_ratio = SupportGuardUnitHPRatio
 			End If
-		End With
-		
-		'Invalid_string_refer_to_original_code
-		'蜈･繧梧崛縺医※險倬鹸
-		If Not SupportGuardUnit Is Nothing Then
-			defense_target = SupportGuardUnit
-			defense_target_hp_ratio = SupportGuardUnitHPRatio
 		End If
-		'End If
 		
 		SelectedTarget = SelectedTarget.CurrentForm
 		
 		With SelectedUnit
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			'Invalid_string_refer_to_original_code
-			
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			'Invalid_string_refer_to_original_code
-			
-			'Invalid_string_refer_to_original_code
-			.GetExp(SelectedTarget, "Invalid_string_refer_to_original_code")
-			If Not IsOptionDefined("Invalid_string_refer_to_original_code") Then
-				For i = 1 To UBound(partners)
-					partners(i).CurrentForm.GetExp(SelectedTarget, "Invalid_string_refer_to_original_code")
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				Next 
+			If .Status_Renamed = "出撃" Then
+				'攻撃をかけたユニットがまだ生き残っていれば経験値＆資金を獲得
+				
+				If SelectedTarget.Status_Renamed = "破壊" And Not is_suiside Then
+					'敵を破壊した場合
+					
+					'経験値を獲得
+					.GetExp(SelectedTarget, "破壊")
+					If Not IsOptionDefined("合体技パートナー経験値無効") Then
+						For i = 1 To UBound(partners)
+							partners(i).CurrentForm.GetExp(SelectedTarget, "破壊", "パートナー")
+						Next 
+					End If
+					
+					'獲得する資金を算出
+					earnings = SelectedTarget.Value \ 2
+					
+					'スペシャルパワーによる獲得資金増加
+					If .IsUnderSpecialPowerEffect("獲得資金増加") Then
+						earnings = earnings * (1 + 0.1 * .SpecialPowerEffectLevel("獲得資金増加"))
+					End If
+					
+					'パイロット能力による獲得資金増加
+					If .IsSkillAvailable("資金獲得") Then
+						If Not .IsUnderSpecialPowerEffect("獲得資金増加") Or IsOptionDefined("収得効果重複") Then
+							earnings = MinDbl(earnings * ((10 + .SkillLevel("資金獲得", 5)) / 10), 999999999)
+						End If
+					End If
+					
+					'資金を獲得
+					IncrMoney(earnings)
+					
+					If earnings > 0 Then
+						DisplaySysMessage(VB6.Format(earnings) & "の" & Term("資金", SelectedUnit) & "を得た。")
+					End If
+					
+					'スペシャルパワー効果「敵破壊時再行動」
+					If .IsUnderSpecialPowerEffect("敵破壊時再行動") Then
+						.UsedAction = .UsedAction - 1
+					End If
+				Else
+					'相手を破壊できなかった場合
+					
+					'経験値を獲得
+					.GetExp(SelectedTarget, "攻撃")
+					If Not IsOptionDefined("合体技パートナー経験値無効") Then
+						For i = 1 To UBound(partners)
+							partners(i).CurrentForm.GetExp(SelectedTarget, "攻撃", "パートナー")
+						Next 
+					End If
+				End If
+				
+				'スペシャルパワー「獲得資金増加」「獲得経験値増加」の効果はここで削除する
+				.RemoveSpecialPowerInEffect("戦闘終了")
+				If earnings > 0 Then
+					.RemoveSpecialPowerInEffect("敵破壊")
+				End If
 			End If
-			
-			'Invalid_string_refer_to_original_code
-			earnings = SelectedTarget.Value \ 2
-			
-			'Invalid_string_refer_to_original_code
-			If .IsUnderSpecialPowerEffect("Invalid_string_refer_to_original_code") Then
-				earnings = earnings * (1 + 0.1 * .SpecialPowerEffectLevel("Invalid_string_refer_to_original_code"))
-			End If
-			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			'Invalid_string_refer_to_original_code_
-			'Then
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			'End If
-			'End If
-			
-			'Invalid_string_refer_to_original_code
-			IncrMoney(earnings)
-			
-			If earnings > 0 Then
-				DisplaySysMessage(VB6.Format(earnings) & "縺ｮ" & Term("Invalid_string_refer_to_original_code", SelectedUnit) & "Invalid_string_refer_to_original_code")
-			End If
-			
-			'Invalid_string_refer_to_original_code
-			If .IsUnderSpecialPowerEffect("謨ｵ遐ｴ螢頑凾蜀崎｡悟虚") Then
-				.UsedAction = .UsedAction - 1
-			End If
-			'Invalid_string_refer_to_original_code
-			
-			'Invalid_string_refer_to_original_code
-			.GetExp(SelectedTarget, "Invalid_string_refer_to_original_code")
-			If Not IsOptionDefined("Invalid_string_refer_to_original_code") Then
-				For i = 1 To UBound(partners)
-					partners(i).CurrentForm.GetExp(SelectedTarget, "Invalid_string_refer_to_original_code")
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				Next 
-			End If
-			'End If
-			
-			'Invalid_string_refer_to_original_code
-			.RemoveSpecialPowerInEffect("Invalid_string_refer_to_original_code")
-			If earnings > 0 Then
-				.RemoveSpecialPowerInEffect("Invalid_string_refer_to_original_code")
-			End If
-			'End If
 		End With
 		
 		With SelectedTarget
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			'Invalid_string_refer_to_original_code
-			.RemoveSpecialPowerInEffect("Invalid_string_refer_to_original_code")
-			'End If
+			If .Status_Renamed = "出撃" Then
+				'持続期間が「戦闘終了」のスペシャルパワー効果を削除
+				.RemoveSpecialPowerInEffect("戦闘終了")
+			End If
 		End With
 		
 		CloseMessageForm()
 		ClearUnitStatus()
 		
-		'Invalid_string_refer_to_original_code
+		'状態＆データ更新
 		With attack_target.CurrentForm
 			.UpdateCondition()
 			.Update()
@@ -3473,7 +3694,7 @@ NextLoop:
 			End With
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'破壊＆損傷率イベント発生
 		
 		If SelectedWeapon <= 0 Then
 			SelectedWeaponName = ""
@@ -3482,15 +3703,13 @@ NextLoop:
 			SelectedTWeaponName = ""
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'攻撃を受けた攻撃側ユニット
 		With attack_target.CurrentForm
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			HandleEvent("Invalid_string_refer_to_original_code")
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			HandleEvent("Invalid_string_refer_to_original_code")
-			'End If
+			If .Status_Renamed = "破壊" Then
+				HandleEvent("破壊", .MainPilot.ID)
+			ElseIf .Status_Renamed = "出撃" And .HP / .MaxHP < attack_target_hp_ratio Then 
+				HandleEvent("損傷率", .MainPilot.ID, 100 * (.MaxHP - .HP) \ .MaxHP)
+			End If
 		End With
 		If IsScenarioFinished Then
 			UnlockGUI()
@@ -3505,21 +3724,19 @@ NextLoop:
 		
 		SelectedUnit = SelectedUnit.CurrentForm
 		
-		'Invalid_string_refer_to_original_code
+		'ターゲット側のイベント処理を行うためにユニットの入れ替えを行う
 		SaveSelections()
 		SwapSelections()
 		
-		'Invalid_string_refer_to_original_code
+		'攻撃を受けた防御側ユニット
 		With defense_target.CurrentForm
 			If .CountPilot > 0 Then
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				HandleEvent("Invalid_string_refer_to_original_code")
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				HandleEvent("Invalid_string_refer_to_original_code")
+				If .Status_Renamed = "破壊" Then
+					HandleEvent("破壊", .MainPilot.ID)
+				ElseIf .Status_Renamed = "出撃" And .HP / .MaxHP < defense_target_hp_ratio Then 
+					HandleEvent("損傷率", .MainPilot.ID, 100 * (.MaxHP - .HP) \ .MaxHP)
+				End If
 			End If
-			'End If
 		End With
 		
 		If IsScenarioFinished Then
@@ -3528,23 +3745,20 @@ NextLoop:
 			Exit Sub
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'攻撃を受けた防御側ユニットその2
 		If Not defense_target2 Is Nothing Then
 			If Not defense_target2.CurrentForm Is defense_target.CurrentForm Then
 				With defense_target2.CurrentForm
 					If .CountPilot > 0 Then
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-						HandleEvent("Invalid_string_refer_to_original_code")
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-						HandleEvent("Invalid_string_refer_to_original_code")
+						If .Status_Renamed = "破壊" Then
+							HandleEvent("破壊", .MainPilot.ID)
+						ElseIf .Status_Renamed = "出撃" And .HP / .MaxHP < defense_target2_hp_ratio Then 
+							HandleEvent("損傷率", .MainPilot.ID, 100 * (.MaxHP - .HP) \ .MaxHP)
+						End If
 					End If
 				End With
 			End If
-			'End With
 		End If
-		'End If
 		
 		RestoreSelections()
 		
@@ -3561,148 +3775,139 @@ NextLoop:
 			Exit Sub
 		End If
 		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-		HandleEvent("Invalid_string_refer_to_original_code")
-		If IsScenarioFinished Then
-			IsScenarioFinished = False
-			ReDim SelectedPartners(0)
-			UnlockGUI()
-			Exit Sub
+		'武器の使用後イベント
+		If SelectedUnit.Status_Renamed = "出撃" And SelectedWeapon > 0 Then
+			HandleEvent("使用後", SelectedUnit.MainPilot.ID, wname)
+			If IsScenarioFinished Then
+				IsScenarioFinished = False
+				ReDim SelectedPartners(0)
+				UnlockGUI()
+				Exit Sub
+			End If
+			If IsCanceled Then
+				IsCanceled = False
+				ReDim SelectedPartners(0)
+				UnlockGUI()
+				Exit Sub
+			End If
 		End If
-		If IsCanceled Then
-			IsCanceled = False
-			ReDim SelectedPartners(0)
-			UnlockGUI()
-			Exit Sub
-		End If
-		'End If
 		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-		SaveSelections()
-		SwapSelections()
-		HandleEvent("Invalid_string_refer_to_original_code")
-		RestoreSelections()
-		If IsScenarioFinished Then
-			IsScenarioFinished = False
-			ReDim SelectedPartners(0)
-			UnlockGUI()
-			Exit Sub
+		If SelectedTarget.Status_Renamed = "出撃" And SelectedTWeapon > 0 Then
+			SaveSelections()
+			SwapSelections()
+			HandleEvent("使用後", SelectedUnit.MainPilot.ID, twname)
+			RestoreSelections()
+			If IsScenarioFinished Then
+				IsScenarioFinished = False
+				ReDim SelectedPartners(0)
+				UnlockGUI()
+				Exit Sub
+			End If
+			If IsCanceled Then
+				IsCanceled = False
+				ReDim SelectedPartners(0)
+				UnlockGUI()
+				Exit Sub
+			End If
 		End If
-		If IsCanceled Then
-			IsCanceled = False
-			ReDim SelectedPartners(0)
-			UnlockGUI()
-			Exit Sub
-		End If
-		'End If
 		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Then
-		'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-		HandleEvent("Invalid_string_refer_to_original_code")
-		SelectedTarget.MainPilot.ID()
-		If IsScenarioFinished Then
-			IsScenarioFinished = False
-			ReDim SelectedPartners(0)
-			UnlockGUI()
-			Exit Sub
+		'攻撃後イベント
+		If SelectedUnit.Status_Renamed = "出撃" And SelectedTarget.Status_Renamed = "出撃" Then
+			HandleEvent("攻撃後", SelectedUnit.MainPilot.ID, SelectedTarget.MainPilot.ID)
+			If IsScenarioFinished Then
+				IsScenarioFinished = False
+				ReDim SelectedPartners(0)
+				UnlockGUI()
+				Exit Sub
+			End If
+			If IsCanceled Then
+				IsCanceled = False
+				ReDim SelectedPartners(0)
+				UnlockGUI()
+				Exit Sub
+			End If
 		End If
-		If IsCanceled Then
-			IsCanceled = False
-			ReDim SelectedPartners(0)
-			UnlockGUI()
-			Exit Sub
-		End If
-		'End If
 		
-		'Invalid_string_refer_to_original_code
+		'もし敵が移動していれば進入イベント
 		With SelectedTarget
 			'UPGRADE_NOTE: オブジェクト SelectedTarget をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
 			SelectedTarget = Nothing
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			If .X <> tx Or .Y <> ty Then
-				HandleEvent("騾ｲ蜈･", .MainPilot.ID, .X, .Y)
-				If IsScenarioFinished Then
-					IsScenarioFinished = False
-					ReDim SelectedPartners(0)
-					UnlockGUI()
-					Exit Sub
-				End If
-				If IsCanceled Then
-					IsCanceled = False
-					ReDim SelectedPartners(0)
-					UnlockGUI()
-					Exit Sub
+			If .Status_Renamed = "出撃" Then
+				If .X <> tx Or .Y <> ty Then
+					HandleEvent("進入", .MainPilot.ID, .X, .Y)
+					If IsScenarioFinished Then
+						IsScenarioFinished = False
+						ReDim SelectedPartners(0)
+						UnlockGUI()
+						Exit Sub
+					End If
+					If IsCanceled Then
+						IsCanceled = False
+						ReDim SelectedPartners(0)
+						UnlockGUI()
+						Exit Sub
+					End If
 				End If
 			End If
-			'End If
 		End With
 		
 EndAttack: 
 		
-		'Invalid_string_refer_to_original_code
-		If Not IsOptionDefined("Invalid_string_refer_to_original_code") Then
+		'合体技のパートナーの行動数を減らす
+		If Not IsOptionDefined("合体技パートナー行動数無消費") Then
 			For i = 1 To UBound(partners)
 				partners(i).CurrentForm.UseAction()
 			Next 
 		End If
 		ReDim SelectedPartners(0)
 		
-		'Invalid_string_refer_to_original_code
+		'ハイパーモード＆ノーマルモードの自動発動をチェック
 		UList.CheckAutoHyperMode()
 		UList.CheckAutoNormalMode()
 		
 		' ADD START MARGE
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-		If SelectedUnit.MainPilot.IsSkillAvailable("驕頑茶") And SelectedUnit.Speed * 2 > SelectedUnitMoveCost Then
-			'Invalid_string_refer_to_original_code
-			If SelectedUnitMoveCost > 0 Then
-				HandleEvent("騾ｲ蜈･", SelectedUnit.MainPilot.ID, SelectedUnit.X, SelectedUnit.Y)
-				If IsScenarioFinished Then
-					IsScenarioFinished = False
+		'再移動
+		If is_p_weapon And SelectedUnit.Status_Renamed = "出撃" Then
+			If SelectedUnit.MainPilot.IsSkillAvailable("遊撃") And SelectedUnit.Speed * 2 > SelectedUnitMoveCost Then
+				'進入イベント
+				If SelectedUnitMoveCost > 0 Then
+					HandleEvent("進入", SelectedUnit.MainPilot.ID, SelectedUnit.X, SelectedUnit.Y)
+					If IsScenarioFinished Then
+						IsScenarioFinished = False
+						Exit Sub
+					End If
+				End If
+				
+				'ユニットが既に出撃していない？
+				If SelectedUnit.Status_Renamed <> "出撃" Then
+					RedrawScreen()
+					ClearUnitStatus()
 					Exit Sub
 				End If
+				
+				SelectedCommand = "再移動"
+				AreaInSpeed(SelectedUnit)
+				If Not IsOptionDefined("大型マップ") Then
+					Center(SelectedUnit.X, SelectedUnit.Y)
+				End If
+				MaskScreen()
+				If NewGUIMode Then
+					System.Windows.Forms.Application.DoEvents()
+					ClearUnitStatus()
+				Else
+					DisplayUnitStatus(SelectedUnit)
+				End If
+				CommandState = "ターゲット選択"
+				Exit Sub
 			End If
-			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			RedrawScreen()
-			ClearUnitStatus()
-			Exit Sub
 		End If
-		
-		SelectedCommand = "Invalid_string_refer_to_original_code"
-		AreaInSpeed(SelectedUnit)
-		If Not IsOptionDefined("Invalid_string_refer_to_original_code") Then
-			Center(SelectedUnit.X, SelectedUnit.Y)
-		End If
-		MaskScreen()
-		If NewGUIMode Then
-			System.Windows.Forms.Application.DoEvents()
-			ClearUnitStatus()
-		Else
-			DisplayUnitStatus(SelectedUnit)
-		End If
-		CommandState = "Invalid_string_refer_to_original_code"
-		Exit Sub
-		'End If
-		'End If
 		' ADD END MARGE
 		
-		'Invalid_string_refer_to_original_code
+		'行動数を減らす
 		WaitCommand()
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'マップ攻撃による「攻撃」コマンドを終了
 	' MOD START MARGE
 	'Public Sub MapAttackCommand()
 	Private Sub MapAttackCommand()
@@ -3715,88 +3920,77 @@ EndAttack:
 		
 		With SelectedUnit
 			' ADD START MARGE
-			'遘ｻ蜍募ｾ御ｽｿ逕ｨ蠕悟庄閭ｽ縺ｪ豁ｦ蝎ｨ縺玖ｨ倬鹸縺励※縺翫￥
-			is_p_weapon = .IsWeaponClassifiedAs(SelectedWeapon, "Invalid_string_refer_to_original_code")
+			'移動後使用後可能な武器か記録しておく
+			is_p_weapon = .IsWeaponClassifiedAs(SelectedWeapon, "移動後攻撃可")
 			' ADD END MARGE
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code_
-			'Invalid_string_refer_to_original_code_
-			'Then
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			CommandState = "Invalid_string_refer_to_original_code"
-			CommandState = "Invalid_string_refer_to_original_code"
-			'End If
-			
-			'Invalid_string_refer_to_original_code
-			SelectedX = PixelToMapX(MouseX)
-			SelectedY = PixelToMapY(MouseY)
-			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code_
-			'Invalid_string_refer_to_original_code_
-			'Then
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			'Invalid_string_refer_to_original_code_
-			'1, "蜻ｳ譁ｹ縺ｮ謨ｵ"
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			'Invalid_string_refer_to_original_code_
-			'1, "縺吶∋縺ｦ"
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			'End If
-			MaskScreen()
-			Exit Sub
-			.IsWeaponClassifiedAs(SelectedWeapon, "Invalid_string_refer_to_original_code")
-			'Invalid_string_refer_to_original_code
-			SelectedX = PixelToMapX(MouseX)
-			SelectedY = PixelToMapY(MouseY)
-			
-			'Invalid_string_refer_to_original_code
-			If Not MapDataForUnit(SelectedX, SelectedY) Is Nothing Then
-				MaskScreen()
-				Exit Sub
+			'攻撃目標地点を選択して初めて攻撃範囲が分かるタイプのマップ攻撃
+			'の場合は再度プレイヤーの選択を促す必要がある
+			If CommandState = "ターゲット選択" Or CommandState = "移動後ターゲット選択" Then
+				If .IsWeaponClassifiedAs(SelectedWeapon, "Ｍ投") Then
+					If CommandState = "ターゲット選択" Then
+						CommandState = "マップ攻撃使用"
+					Else
+						CommandState = "移動後マップ攻撃使用"
+					End If
+					
+					'攻撃目標地点
+					SelectedX = PixelToMapX(MouseX)
+					SelectedY = PixelToMapY(MouseY)
+					
+					'攻撃範囲を設定
+					If .IsWeaponClassifiedAs(SelectedWeapon, "識") Or .IsUnderSpecialPowerEffect("識別攻撃") Then
+						AreaInRange(SelectedX, SelectedY, .WeaponLevel(SelectedWeapon, "Ｍ投"), 1, "味方の敵")
+					Else
+						AreaInRange(SelectedX, SelectedY, .WeaponLevel(SelectedWeapon, "Ｍ投"), 1, "すべて")
+					End If
+					MaskScreen()
+					Exit Sub
+				ElseIf .IsWeaponClassifiedAs(SelectedWeapon, "Ｍ移") Then 
+					'攻撃目標地点
+					SelectedX = PixelToMapX(MouseX)
+					SelectedY = PixelToMapY(MouseY)
+					
+					'攻撃目標地点に他のユニットがいては駄目
+					If Not MapDataForUnit(SelectedX, SelectedY) Is Nothing Then
+						MaskScreen()
+						Exit Sub
+					End If
+					
+					If CommandState = "ターゲット選択" Then
+						CommandState = "マップ攻撃使用"
+					Else
+						CommandState = "移動後マップ攻撃使用"
+					End If
+					
+					'攻撃範囲を設定
+					AreaInPointToPoint(.X, .Y, SelectedX, SelectedY)
+					MaskScreen()
+					Exit Sub
+				ElseIf .IsWeaponClassifiedAs(SelectedWeapon, "Ｍ線") Then 
+					If CommandState = "ターゲット選択" Then
+						CommandState = "マップ攻撃使用"
+					Else
+						CommandState = "移動後マップ攻撃使用"
+					End If
+					
+					'攻撃目標地点
+					SelectedX = PixelToMapX(MouseX)
+					SelectedY = PixelToMapY(MouseY)
+					
+					'攻撃範囲を設定
+					AreaInPointToPoint(.X, .Y, SelectedX, SelectedY)
+					MaskScreen()
+					Exit Sub
+				End If
 			End If
 			
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			CommandState = "Invalid_string_refer_to_original_code"
-			CommandState = "Invalid_string_refer_to_original_code"
-			'End If
-			
-			'Invalid_string_refer_to_original_code
-			AreaInPointToPoint(.X, .Y, SelectedX, SelectedY)
-			MaskScreen()
-			Exit Sub
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			CommandState = "Invalid_string_refer_to_original_code"
-			CommandState = "Invalid_string_refer_to_original_code"
-			'End If
-			
-			'Invalid_string_refer_to_original_code
-			SelectedX = PixelToMapX(MouseX)
-			SelectedY = PixelToMapY(MouseY)
-			
-			'Invalid_string_refer_to_original_code
-			AreaInPointToPoint(.X, .Y, SelectedX, SelectedY)
-			MaskScreen()
-			Exit Sub
-			'End If
-			'End If
-			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			.CombinationPartner("Invalid_string_refer_to_original_code")
-			ReDim SelectedPartners(0)
-			ReDim partners(0)
-			'End If
+			'合体技パートナーの設定
+			If .IsWeaponClassifiedAs(SelectedWeapon, "合") Then
+				.CombinationPartner("武装", SelectedWeapon, partners)
+			Else
+				ReDim SelectedPartners(0)
+				ReDim partners(0)
+			End If
 			
 			If MainWidth <> 15 Then
 				ClearUnitStatus()
@@ -3806,7 +4000,7 @@ EndAttack:
 			
 			SelectedTWeapon = 0
 			
-			'Invalid_string_refer_to_original_code
+			'マップ攻撃による攻撃を行う
 			.MapAttack(SelectedWeapon, SelectedX, SelectedY)
 			SelectedUnit = .CurrentForm
 			'UPGRADE_NOTE: オブジェクト SelectedTarget をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
@@ -3826,8 +4020,8 @@ EndAttack:
 			End If
 		End With
 		
-		'Invalid_string_refer_to_original_code
-		If Not IsOptionDefined("Invalid_string_refer_to_original_code") Then
+		'合体技のパートナーの行動数を減らす
+		If Not IsOptionDefined("合体技パートナー行動数無消費") Then
 			For i = 1 To UBound(partners)
 				partners(i).CurrentForm.UseAction()
 			Next 
@@ -3835,52 +4029,50 @@ EndAttack:
 		ReDim SelectedPartners(0)
 		
 		' ADD START MARGE
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-		If SelectedUnit.MainPilot.IsSkillAvailable("驕頑茶") And SelectedUnit.Speed * 2 > SelectedUnitMoveCost Then
-			'Invalid_string_refer_to_original_code
-			If SelectedUnitMoveCost > 0 Then
-				HandleEvent("騾ｲ蜈･", SelectedUnit.MainPilot.ID, SelectedUnit.X, SelectedUnit.Y)
-				If IsScenarioFinished Then
-					IsScenarioFinished = False
+		'再移動
+		If is_p_weapon And SelectedUnit.Status_Renamed = "出撃" Then
+			If SelectedUnit.MainPilot.IsSkillAvailable("遊撃") And SelectedUnit.Speed * 2 > SelectedUnitMoveCost Then
+				'進入イベント
+				If SelectedUnitMoveCost > 0 Then
+					HandleEvent("進入", SelectedUnit.MainPilot.ID, SelectedUnit.X, SelectedUnit.Y)
+					If IsScenarioFinished Then
+						IsScenarioFinished = False
+						Exit Sub
+					End If
+				End If
+				
+				'ユニットが既に出撃していない？
+				If SelectedUnit.Status_Renamed <> "出撃" Then
+					RedrawScreen()
+					ClearUnitStatus()
 					Exit Sub
 				End If
+				
+				SelectedCommand = "再移動"
+				AreaInSpeed(SelectedUnit)
+				If Not IsOptionDefined("大型マップ") Then
+					Center(SelectedUnit.X, SelectedUnit.Y)
+				End If
+				MaskScreen()
+				If NewGUIMode Then
+					System.Windows.Forms.Application.DoEvents()
+					ClearUnitStatus()
+				Else
+					DisplayUnitStatus(SelectedUnit)
+				End If
+				CommandState = "ターゲット選択"
+				Exit Sub
 			End If
-			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			RedrawScreen()
-			ClearUnitStatus()
-			Exit Sub
 		End If
-		
-		SelectedCommand = "Invalid_string_refer_to_original_code"
-		AreaInSpeed(SelectedUnit)
-		If Not IsOptionDefined("Invalid_string_refer_to_original_code") Then
-			Center(SelectedUnit.X, SelectedUnit.Y)
-		End If
-		MaskScreen()
-		If NewGUIMode Then
-			System.Windows.Forms.Application.DoEvents()
-			ClearUnitStatus()
-		Else
-			DisplayUnitStatus(SelectedUnit)
-		End If
-		CommandState = "Invalid_string_refer_to_original_code"
-		Exit Sub
-		'End If
-		'End If
 		' ADD END MARGE
 		
-		'Invalid_string_refer_to_original_code
+		'行動終了
 		WaitCommand()
 	End Sub
 	
 	
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
+	'「アビリティ」コマンドを開始
+	' is_item=True の場合は「アイテム」コマンドによる使い捨てアイテムのアビリティ
 	' MOD STAR MARGE
 	'Public Sub StartAbilityCommand(Optional ByVal is_item As Boolean)
 	Private Sub StartAbilityCommand(Optional ByVal is_item As Boolean = False)
@@ -3892,23 +4084,19 @@ EndAttack:
 		
 		LockGUI()
 		
-		'Invalid_string_refer_to_original_code
+		'使用するアビリティを選択
 		If is_item Then
-			cap = "Invalid_string_refer_to_original_code"
+			cap = "アイテム選択"
 		Else
-			cap = Term("Invalid_string_refer_to_original_code", SelectedUnit) & "Invalid_string_refer_to_original_code"
+			cap = Term("アビリティ", SelectedUnit) & "選択"
 		End If
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-		SelectedAbility = AbilityListBox(SelectedUnit, cap, "遘ｻ蜍募燕", is_item)
-		Dim BGM As String
-		Dim is_transformation As Boolean
-		Dim partners() As Unit
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-		'End If
+		If CommandState = "コマンド選択" Then
+			SelectedAbility = AbilityListBox(SelectedUnit, cap, "移動前", is_item)
+		Else
+			SelectedAbility = AbilityListBox(SelectedUnit, cap, "移動後", is_item)
+		End If
 		
-		'繧ｭ繝｣繝ｳ繧ｻ繝ｫ
+		'キャンセル
 		If SelectedAbility = 0 Then
 			If AutoMoveCursor Then
 				RestoreCursorPos()
@@ -3918,11 +4106,12 @@ EndAttack:
 			Exit Sub
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'アビリティ専用ＢＧＭがあればそれを演奏
+		Dim BGM As String
 		With SelectedUnit
-			If .IsFeatureAvailable("Invalid_string_refer_to_original_code") Then
+			If .IsFeatureAvailable("アビリティＢＧＭ") Then
 				For i = 1 To .CountFeature
-					If .Feature(i) = "Invalid_string_refer_to_original_code" And LIndex(.FeatureData(i), 1) = .Ability(SelectedAbility).Name Then
+					If .Feature(i) = "アビリティＢＧＭ" And LIndex(.FeatureData(i), 1) = .Ability(SelectedAbility).Name Then
 						BGM = SearchMidiFile(Mid(.FeatureData(i), InStr(.FeatureData(i), " ") + 1))
 						If Len(BGM) > 0 Then
 							ChangeBGM(BGM)
@@ -3933,14 +4122,15 @@ EndAttack:
 			End If
 		End With
 		
-		'Invalid_string_refer_to_original_code
+		'射程0のアビリティはその場で実行
+		Dim is_transformation As Boolean
 		If SelectedUnit.Ability(SelectedAbility).MaxRange = 0 Then
 			
 			SelectedTarget = SelectedUnit
 			
-			'Invalid_string_refer_to_original_code
+			'変身アビリティであるか判定
 			For i = 1 To SelectedUnit.Ability(SelectedAbility).CountEffect
-				If SelectedUnit.Ability(SelectedAbility).EffectType(i) = "螟芽ｺｫ" Then
+				If SelectedUnit.Ability(SelectedAbility).EffectType(i) = "変身" Then
 					is_transformation = True
 					Exit For
 				End If
@@ -3948,8 +4138,8 @@ EndAttack:
 			
 			SelectedAbilityName = SelectedUnit.Ability(SelectedAbility).Name
 			
-			'Invalid_string_refer_to_original_code
-			HandleEvent("菴ｿ逕ｨ", SelectedUnit.MainPilot.ID, SelectedAbilityName)
+			'使用イベント
+			HandleEvent("使用", SelectedUnit.MainPilot.ID, SelectedAbilityName)
 			If IsScenarioFinished Then
 				IsScenarioFinished = False
 				UnlockGUI()
@@ -3961,17 +4151,36 @@ EndAttack:
 				Exit Sub
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'アビリティを実行
 			SelectedUnit.ExecuteAbility(SelectedAbility, SelectedUnit)
 			SelectedUnit = SelectedUnit.CurrentForm
 			CloseMessageForm()
 			
-			'Invalid_string_refer_to_original_code
+			'破壊イベント
 			With SelectedUnit
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+				If .Status_Renamed = "破壊" Then
+					If .CountPilot > 0 Then
+						HandleEvent("破壊", .MainPilot.ID)
+						If IsScenarioFinished Then
+							IsScenarioFinished = False
+							UnlockGUI()
+							Exit Sub
+						End If
+						If IsCanceled Then
+							IsCanceled = False
+							UnlockGUI()
+							Exit Sub
+						End If
+					End If
+					WaitCommand()
+					Exit Sub
+				End If
+			End With
+			
+			'使用後イベント
+			With SelectedUnit
 				If .CountPilot > 0 Then
-					HandleEvent("Invalid_string_refer_to_original_code")
+					HandleEvent("使用後", .MainPilot.ID, SelectedAbilityName)
 					If IsScenarioFinished Then
 						IsScenarioFinished = False
 						UnlockGUI()
@@ -3983,199 +4192,168 @@ EndAttack:
 						Exit Sub
 					End If
 				End If
-				WaitCommand()
-				Exit Sub
 			End With
-		End If
-		'End With
-		
-		'Invalid_string_refer_to_original_code
-		With SelectedUnit
-			If .CountPilot > 0 Then
-				HandleEvent("Invalid_string_refer_to_original_code")
-				If IsScenarioFinished Then
-					IsScenarioFinished = False
-					UnlockGUI()
-					Exit Sub
-				End If
-				If IsCanceled Then
-					IsCanceled = False
-					UnlockGUI()
-					Exit Sub
-				End If
-			End If
-		End With
-		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-		WaitCommand()
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-		'Invalid_string_refer_to_original_code
-		If AutoMoveCursor Then
-			MoveCursorPos("Invalid_string_refer_to_original_code")
-		End If
-		DisplayUnitStatus(SelectedUnit)
-		ClearUnitStatus()
-		'End If
-		CommandState = "Invalid_string_refer_to_original_code"
-		UnlockGUI()
-		'End If
-		Exit Sub
-		'End If
-		
-		With SelectedUnit
-			'Invalid_string_refer_to_original_code
-			If is_item Then
-				If .IsAbilityClassifiedAs(SelectedAbility, "Invalid_string_refer_to_original_code") Then
-					SelectedCommand = "Invalid_string_refer_to_original_code"
+			
+			'変身アビリティの場合は行動終了しない
+			If Not is_transformation Or CommandState = "移動後コマンド選択" Then
+				WaitCommand()
+			Else
+				If SelectedUnit.Status_Renamed = "出撃" Then
+					'カーソル自動移動
+					If AutoMoveCursor Then
+						MoveCursorPos("ユニット選択", SelectedUnit)
+					End If
+					DisplayUnitStatus(SelectedUnit)
 				Else
-					SelectedCommand = "Invalid_string_refer_to_original_code"
+					ClearUnitStatus()
+				End If
+				CommandState = "ユニット選択"
+				UnlockGUI()
+			End If
+			Exit Sub
+		End If
+		
+		Dim partners() As Unit
+		With SelectedUnit
+			'マップ型アビリティかどうかで今後のコマンド処理の進行の仕方が異なる
+			If is_item Then
+				If .IsAbilityClassifiedAs(SelectedAbility, "Ｍ") Then
+					SelectedCommand = "マップアイテム"
+				Else
+					SelectedCommand = "アイテム"
 				End If
 			Else
-				If .IsAbilityClassifiedAs(SelectedAbility, "Invalid_string_refer_to_original_code") Then
-					SelectedCommand = "Invalid_string_refer_to_original_code"
+				If .IsAbilityClassifiedAs(SelectedAbility, "Ｍ") Then
+					SelectedCommand = "マップアビリティ"
 				Else
-					SelectedCommand = "Invalid_string_refer_to_original_code"
+					SelectedCommand = "アビリティ"
 				End If
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'アビリティの射程を求めておく
 			min_range = .AbilityMinRange(SelectedAbility)
 			max_range = .AbilityMaxRange(SelectedAbility)
 			
-			'Invalid_string_refer_to_original_code
-			If .IsAbilityClassifiedAs(SelectedAbility, "Invalid_string_refer_to_original_code") Then
+			'アビリティの効果範囲を設定
+			If .IsAbilityClassifiedAs(SelectedAbility, "Ｍ直") Then
 				AreaInCross(.X, .Y, min_range, max_range)
-			ElseIf .IsAbilityClassifiedAs(SelectedAbility, "Invalid_string_refer_to_original_code") Then 
+			ElseIf .IsAbilityClassifiedAs(SelectedAbility, "Ｍ拡") Then 
 				AreaInWideCross(.X, .Y, min_range, max_range)
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			ElseIf .IsAbilityClassifiedAs(SelectedAbility, "Invalid_string_refer_to_original_code") Then 
+			ElseIf .IsAbilityClassifiedAs(SelectedAbility, "Ｍ扇") Then 
+				AreaInSectorCross(.X, .Y, min_range, max_range, .AbilityLevel(SelectedAbility, "Ｍ扇"))
+			ElseIf .IsAbilityClassifiedAs(SelectedAbility, "Ｍ移") Then 
 				AreaInMoveAction(SelectedUnit, max_range)
 			Else
-				AreaInRange(.X, .Y, max_range, min_range, "縺吶∋縺ｦ")
+				AreaInRange(.X, .Y, max_range, min_range, "すべて")
 			End If
 			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code_
-			'Invalid_string_refer_to_original_code_
-			'And .Ability(SelectedAbility).MaxRange = 1 _
-			'Then
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			For i = 1 To 4
-				'UPGRADE_NOTE: オブジェクト t をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-				t = Nothing
-				Select Case i
-					Case 1
-						If .X > 1 Then
-							t = MapDataForUnit(.X - 1, .Y)
-						End If
-					Case 2
-						If .X < MapWidth Then
-							t = MapDataForUnit(.X + 1, .Y)
-						End If
-					Case 3
-						If .Y > 1 Then
-							t = MapDataForUnit(.X, .Y - 1)
-						End If
-					Case 4
-						If .Y < MapHeight Then
-							t = MapDataForUnit(.X, .Y + 1)
-						End If
-				End Select
-				
-				If Not t Is Nothing Then
-					If .IsAlly(t) Then
-						.CombinationPartner("Invalid_string_refer_to_original_code", SelectedAbility, partners, t.X, t.Y)
-						If UBound(partners) = 0 Then
-							MaskData(t.X, t.Y) = True
-						End If
-					End If
-				End If
-			Next 
-			'End If
-			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code_
-			'Invalid_string_refer_to_original_code_
-			'Invalid_string_refer_to_original_code_
-			'Then
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			For i = MaxLng(.X - max_range, 1) To MinLng(.X + max_range, MapWidth)
-				For j = MaxLng(.Y - max_range, 1) To MinLng(.Y + max_range, MapHeight)
-					If Not MaskData(i, j) Then
-						t = MapDataForUnit(i, j)
-						If Not t Is Nothing Then
-							'Invalid_string_refer_to_original_code
-							If .IsAbilityEffective(SelectedAbility, t) Then
-								MaskData(i, j) = False
-							Else
-								MaskData(i, j) = True
+			'射程１の合体技はパートナーで相手を取り囲んでいないと使用できない
+			If .IsAbilityClassifiedAs(SelectedAbility, "合") And Not .IsAbilityClassifiedAs(SelectedAbility, "Ｍ") And .Ability(SelectedAbility).MaxRange = 1 Then
+				For i = 1 To 4
+					'UPGRADE_NOTE: オブジェクト t をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
+					t = Nothing
+					Select Case i
+						Case 1
+							If .X > 1 Then
+								t = MapDataForUnit(.X - 1, .Y)
+							End If
+						Case 2
+							If .X < MapWidth Then
+								t = MapDataForUnit(.X + 1, .Y)
+							End If
+						Case 3
+							If .Y > 1 Then
+								t = MapDataForUnit(.X, .Y - 1)
+							End If
+						Case 4
+							If .Y < MapHeight Then
+								t = MapDataForUnit(.X, .Y + 1)
+							End If
+					End Select
+					
+					If Not t Is Nothing Then
+						If .IsAlly(t) Then
+							.CombinationPartner("アビリティ", SelectedAbility, partners, t.X, t.Y)
+							If UBound(partners) = 0 Then
+								MaskData(t.X, t.Y) = True
 							End If
 						End If
 					End If
 				Next 
-			Next 
-			'End If
+			End If
 			
-			'Invalid_string_refer_to_original_code
+			'ユニットがいるマスの処理
+			If Not .IsAbilityClassifiedAs(SelectedAbility, "Ｍ投") And Not .IsAbilityClassifiedAs(SelectedAbility, "Ｍ線") And Not .IsAbilityClassifiedAs(SelectedAbility, "Ｍ移") Then
+				For i = MaxLng(.X - max_range, 1) To MinLng(.X + max_range, MapWidth)
+					For j = MaxLng(.Y - max_range, 1) To MinLng(.Y + max_range, MapHeight)
+						If Not MaskData(i, j) Then
+							t = MapDataForUnit(i, j)
+							If Not t Is Nothing Then
+								'有効？
+								If .IsAbilityEffective(SelectedAbility, t) Then
+									MaskData(i, j) = False
+								Else
+									MaskData(i, j) = True
+								End If
+							End If
+						End If
+					Next 
+				Next 
+			End If
+			
+			'支援専用アビリティは自分には使用できない
 			If Not MaskData(.X, .Y) Then
-				If .IsAbilityClassifiedAs(SelectedAbility, "謠ｴ") Then
+				If .IsAbilityClassifiedAs(SelectedAbility, "援") Then
 					MaskData(.X, .Y) = True
 				End If
 			End If
 			
-			If Not IsOptionDefined("Invalid_string_refer_to_original_code") Then
+			If Not IsOptionDefined("大型マップ") Then
 				Center(.X, .Y)
 			End If
 			MaskScreen()
 		End With
 		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-		CommandState = "Invalid_string_refer_to_original_code"
-		CommandState = "Invalid_string_refer_to_original_code"
-		'End If
+		If CommandState = "コマンド選択" Then
+			CommandState = "ターゲット選択"
+		Else
+			CommandState = "移動後ターゲット選択"
+		End If
 		
-		'Invalid_string_refer_to_original_code
+		'カーソル自動移動を行う？
 		If Not AutoMoveCursor Then
 			UnlockGUI()
 			Exit Sub
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'自分から最も近い味方ユニットを探す
 		'UPGRADE_NOTE: オブジェクト t をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
 		t = Nothing
 		For	Each u In UList
 			With u
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				If MaskData(.X, .Y) = False And Not u Is SelectedUnit Then
-					If t Is Nothing Then
-						t = u
-					Else
-						If System.Math.Abs(SelectedUnit.X - .X) ^ 2 + System.Math.Abs(SelectedUnit.Y - .Y) ^ 2 < System.Math.Abs(SelectedUnit.X - t.X) ^ 2 + System.Math.Abs(SelectedUnit.Y - t.Y) ^ 2 Then
+				If .Status_Renamed = "出撃" And .Party = "味方" Then
+					If MaskData(.X, .Y) = False And Not u Is SelectedUnit Then
+						If t Is Nothing Then
 							t = u
+						Else
+							If System.Math.Abs(SelectedUnit.X - .X) ^ 2 + System.Math.Abs(SelectedUnit.Y - .Y) ^ 2 < System.Math.Abs(SelectedUnit.X - t.X) ^ 2 + System.Math.Abs(SelectedUnit.Y - t.Y) ^ 2 Then
+								t = u
+							End If
 						End If
 					End If
 				End If
-				'End If
 			End With
 		Next u
 		
-		'Invalid_string_refer_to_original_code
+		'適当がユニットがなければ自分自身を選択
 		If t Is Nothing Then
 			t = SelectedUnit
 		End If
 		
-		'Invalid_string_refer_to_original_code
-		MoveCursorPos("Invalid_string_refer_to_original_code")
+		'カーソルを移動
+		MoveCursorPos("ユニット選択", t)
 		
-		'Invalid_string_refer_to_original_code
+		'ターゲットのステータスを表示
 		If Not SelectedUnit Is t Then
 			DisplayUnitStatus(t)
 		End If
@@ -4183,7 +4361,7 @@ EndAttack:
 		UnlockGUI()
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'「アビリティ」コマンドを終了
 	' MOD START MARGE
 	'Public Sub FinishAbilityCommand()
 	Private Sub FinishAbilityCommand()
@@ -4205,30 +4383,30 @@ EndAttack:
 		
 		LockGUI()
 		
-		'Invalid_string_refer_to_original_code
+		'合体技のパートナーを設定
 		With SelectedUnit
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			If .AbilityMaxRange(SelectedAbility) = 1 Then
-				.CombinationPartner("Invalid_string_refer_to_original_code", SelectedAbility, partners, SelectedTarget.X, SelectedTarget.Y)
+			If .IsAbilityClassifiedAs(SelectedAbility, "合") Then
+				If .AbilityMaxRange(SelectedAbility) = 1 Then
+					.CombinationPartner("アビリティ", SelectedAbility, partners, SelectedTarget.X, SelectedTarget.Y)
+				Else
+					.CombinationPartner("アビリティ", SelectedAbility, partners)
+				End If
 			Else
-				.CombinationPartner("Invalid_string_refer_to_original_code", SelectedAbility, partners)
+				ReDim SelectedPartners(0)
+				ReDim partners(0)
 			End If
-			ReDim SelectedPartners(0)
-			ReDim partners(0)
-			'End If
 		End With
 		
 		aname = SelectedUnit.Ability(SelectedAbility).Name
 		SelectedAbilityName = aname
 		
 		' ADD START MARGE
-		'Invalid_string_refer_to_original_code
-		is_p_ability = SelectedUnit.IsAbilityClassifiedAs(SelectedAbility, "Invalid_string_refer_to_original_code") Or (SelectedUnit.AbilityMaxRange(SelectedAbility) = 1 And Not SelectedUnit.IsAbilityClassifiedAs(SelectedAbility, "Invalid_string_refer_to_original_code"))
+		'移動後使用後可能なアビリティか記録しておく
+		is_p_ability = SelectedUnit.IsAbilityClassifiedAs(SelectedAbility, "Ｐ") Or (SelectedUnit.AbilityMaxRange(SelectedAbility) = 1 And Not SelectedUnit.IsAbilityClassifiedAs(SelectedAbility, "Ｑ"))
 		' ADD END MARGE
 		
-		'Invalid_string_refer_to_original_code
-		HandleEvent("菴ｿ逕ｨ", SelectedUnit.MainPilot.ID, aname)
+		'使用イベント
+		HandleEvent("使用", SelectedUnit.MainPilot.ID, aname)
 		If IsScenarioFinished Then
 			IsScenarioFinished = False
 			ReDim SelectedPartners(0)
@@ -4245,22 +4423,20 @@ EndAttack:
 		With SelectedUnit
 			For	Each u In UList
 				With u
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-					MaskData(.X, .Y) = True
-					'End If
+					If .Status_Renamed = "出撃" Then
+						MaskData(.X, .Y) = True
+					End If
 				End With
 			Next u
 			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			For i = 1 To UBound(partners)
-				With partners(i)
-					MaskData(.X, .Y) = False
-				End With
-			Next 
-			'End If
+			'合体技パートナーのハイライト表示
+			If .IsAbilityClassifiedAs(SelectedAbility, "合") Then
+				For i = 1 To UBound(partners)
+					With partners(i)
+						MaskData(.X, .Y) = False
+					End With
+				Next 
+			End If
 			
 			MaskData(.X, .Y) = False
 			MaskData(SelectedTarget.X, SelectedTarget.Y) = False
@@ -4268,7 +4444,7 @@ EndAttack:
 				MaskScreen()
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'アビリティを実行
 			.ExecuteAbility(SelectedAbility, SelectedTarget)
 			SelectedUnit = .CurrentForm
 			
@@ -4276,12 +4452,33 @@ EndAttack:
 			ClearUnitStatus()
 		End With
 		
-		'Invalid_string_refer_to_original_code
+		'破壊イベント
 		With SelectedUnit
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+			If .Status_Renamed = "破壊" Then
+				If .CountPilot > 0 Then
+					HandleEvent("破壊", .MainPilot.ID)
+					If IsScenarioFinished Then
+						IsScenarioFinished = False
+						ReDim SelectedPartners(0)
+						UnlockGUI()
+						Exit Sub
+					End If
+					If IsCanceled Then
+						IsCanceled = False
+						ReDim SelectedPartners(0)
+						UnlockGUI()
+						Exit Sub
+					End If
+				End If
+				WaitCommand()
+				Exit Sub
+			End If
+		End With
+		
+		'使用後イベント
+		With SelectedUnit
 			If .CountPilot > 0 Then
-				HandleEvent("Invalid_string_refer_to_original_code")
+				HandleEvent("使用後", .MainPilot.ID, aname)
 				If IsScenarioFinished Then
 					IsScenarioFinished = False
 					ReDim SelectedPartners(0)
@@ -4295,32 +4492,10 @@ EndAttack:
 					Exit Sub
 				End If
 			End If
-			WaitCommand()
-			Exit Sub
-			'End If
 		End With
 		
-		'Invalid_string_refer_to_original_code
-		With SelectedUnit
-			If .CountPilot > 0 Then
-				HandleEvent("Invalid_string_refer_to_original_code")
-				If IsScenarioFinished Then
-					IsScenarioFinished = False
-					ReDim SelectedPartners(0)
-					UnlockGUI()
-					Exit Sub
-				End If
-				If IsCanceled Then
-					IsCanceled = False
-					ReDim SelectedPartners(0)
-					UnlockGUI()
-					Exit Sub
-				End If
-			End If
-		End With
-		
-		'Invalid_string_refer_to_original_code
-		If Not IsOptionDefined("Invalid_string_refer_to_original_code") Then
+		'合体技のパートナーの行動数を減らす
+		If Not IsOptionDefined("合体技パートナー行動数無消費") Then
 			For i = 1 To UBound(partners)
 				partners(i).CurrentForm.UseAction()
 			Next 
@@ -4328,50 +4503,48 @@ EndAttack:
 		ReDim SelectedPartners(0)
 		
 		' ADD START MARGE
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-		If SelectedUnit.MainPilot.IsSkillAvailable("驕頑茶") And SelectedUnit.Speed * 2 > SelectedUnitMoveCost Then
-			'Invalid_string_refer_to_original_code
-			If SelectedUnitMoveCost > 0 Then
-				HandleEvent("騾ｲ蜈･", SelectedUnit.MainPilot.ID, SelectedUnit.X, SelectedUnit.Y)
-				If IsScenarioFinished Then
-					IsScenarioFinished = False
+		'再移動
+		If is_p_ability And SelectedUnit.Status_Renamed = "出撃" Then
+			If SelectedUnit.MainPilot.IsSkillAvailable("遊撃") And SelectedUnit.Speed * 2 > SelectedUnitMoveCost Then
+				'進入イベント
+				If SelectedUnitMoveCost > 0 Then
+					HandleEvent("進入", SelectedUnit.MainPilot.ID, SelectedUnit.X, SelectedUnit.Y)
+					If IsScenarioFinished Then
+						IsScenarioFinished = False
+						Exit Sub
+					End If
+				End If
+				
+				'ユニットが既に出撃していない？
+				If SelectedUnit.Status_Renamed <> "出撃" Then
+					RedrawScreen()
+					ClearUnitStatus()
 					Exit Sub
 				End If
+				
+				SelectedCommand = "再移動"
+				AreaInSpeed(SelectedUnit)
+				If Not IsOptionDefined("大型マップ") Then
+					Center(SelectedUnit.X, SelectedUnit.Y)
+				End If
+				MaskScreen()
+				If NewGUIMode Then
+					System.Windows.Forms.Application.DoEvents()
+					ClearUnitStatus()
+				Else
+					DisplayUnitStatus(SelectedUnit)
+				End If
+				CommandState = "ターゲット選択"
+				Exit Sub
 			End If
-			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			RedrawScreen()
-			ClearUnitStatus()
-			Exit Sub
 		End If
-		
-		SelectedCommand = "Invalid_string_refer_to_original_code"
-		AreaInSpeed(SelectedUnit)
-		If Not IsOptionDefined("Invalid_string_refer_to_original_code") Then
-			Center(SelectedUnit.X, SelectedUnit.Y)
-		End If
-		MaskScreen()
-		If NewGUIMode Then
-			System.Windows.Forms.Application.DoEvents()
-			ClearUnitStatus()
-		Else
-			DisplayUnitStatus(SelectedUnit)
-		End If
-		CommandState = "Invalid_string_refer_to_original_code"
-		Exit Sub
-		'End If
-		'End If
 		' ADD END MARGE
 		
-		'Invalid_string_refer_to_original_code
+		'行動終了
 		WaitCommand()
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'マップ型「アビリティ」コマンドを終了
 	' MOD START MARGE
 	'Public Sub MapAbilityCommand()
 	Private Sub MapAbilityCommand()
@@ -4384,80 +4557,73 @@ EndAttack:
 		
 		With SelectedUnit
 			' ADD START MARGE
-			'Invalid_string_refer_to_original_code
-			is_p_ability = .IsAbilityClassifiedAs(SelectedAbility, "Invalid_string_refer_to_original_code") Or (.AbilityMaxRange(SelectedAbility) = 1 And Not .IsAbilityClassifiedAs(SelectedAbility, "Invalid_string_refer_to_original_code"))
+			'移動後使用後可能なアビリティか記録しておく
+			is_p_ability = .IsAbilityClassifiedAs(SelectedAbility, "Ｐ") Or (.AbilityMaxRange(SelectedAbility) = 1 And Not .IsAbilityClassifiedAs(SelectedAbility, "Ｑ"))
 			' ADD END MARGE
 			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code_
-			'Invalid_string_refer_to_original_code_
-			'Then
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			CommandState = "Invalid_string_refer_to_original_code"
-			CommandState = "Invalid_string_refer_to_original_code"
-			'End If
-			
-			'逶ｮ讓吝慍轤ｹ
-			SelectedX = PixelToMapX(MouseX)
-			SelectedY = PixelToMapY(MouseY)
-			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code_
-			'1, "蜻ｳ譁ｹ"
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			MaskScreen()
-			Exit Sub
-			.IsAbilityClassifiedAs(SelectedAbility, "Invalid_string_refer_to_original_code")
-			SelectedX = PixelToMapX(MouseX)
-			SelectedY = PixelToMapY(MouseY)
-			
-			If Not MapDataForUnit(SelectedX, SelectedY) Is Nothing Then
-				MaskScreen()
-				Exit Sub
+			'目標地点を選択して初めて効果範囲が分かるタイプのマップアビリティ
+			'の場合は再度プレイヤーの選択を促す必要がある
+			If CommandState = "ターゲット選択" Or CommandState = "移動後ターゲット選択" Then
+				If .IsAbilityClassifiedAs(SelectedAbility, "Ｍ投") Then
+					If CommandState = "ターゲット選択" Then
+						CommandState = "マップ攻撃使用"
+					Else
+						CommandState = "移動後マップ攻撃使用"
+					End If
+					
+					'目標地点
+					SelectedX = PixelToMapX(MouseX)
+					SelectedY = PixelToMapY(MouseY)
+					
+					'効果範囲を設定
+					AreaInRange(SelectedX, SelectedY, .AbilityLevel(SelectedAbility, "Ｍ投"), 1, "味方")
+					MaskScreen()
+					Exit Sub
+				ElseIf .IsAbilityClassifiedAs(SelectedAbility, "Ｍ移") Then 
+					SelectedX = PixelToMapX(MouseX)
+					SelectedY = PixelToMapY(MouseY)
+					
+					If Not MapDataForUnit(SelectedX, SelectedY) Is Nothing Then
+						MaskScreen()
+						Exit Sub
+					End If
+					
+					'目標地点
+					If CommandState = "ターゲット選択" Then
+						CommandState = "マップ攻撃使用"
+					Else
+						CommandState = "移動後マップ攻撃使用"
+					End If
+					
+					'効果範囲を設定
+					AreaInPointToPoint(.X, .Y, SelectedX, SelectedY)
+					MaskScreen()
+					Exit Sub
+				ElseIf .IsAbilityClassifiedAs(SelectedAbility, "Ｍ線") Then 
+					If CommandState = "ターゲット選択" Then
+						CommandState = "マップ攻撃使用"
+					Else
+						CommandState = "移動後マップ攻撃使用"
+					End If
+					
+					'目標地点
+					SelectedX = PixelToMapX(MouseX)
+					SelectedY = PixelToMapY(MouseY)
+					
+					'効果範囲を設定
+					AreaInPointToPoint(.X, .Y, SelectedX, SelectedY)
+					MaskScreen()
+					Exit Sub
+				End If
 			End If
 			
-			'逶ｮ讓吝慍轤ｹ
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			CommandState = "Invalid_string_refer_to_original_code"
-			CommandState = "Invalid_string_refer_to_original_code"
-			'End If
-			
-			'Invalid_string_refer_to_original_code
-			AreaInPointToPoint(.X, .Y, SelectedX, SelectedY)
-			MaskScreen()
-			Exit Sub
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			CommandState = "Invalid_string_refer_to_original_code"
-			CommandState = "Invalid_string_refer_to_original_code"
-			'End If
-			
-			'逶ｮ讓吝慍轤ｹ
-			SelectedX = PixelToMapX(MouseX)
-			SelectedY = PixelToMapY(MouseY)
-			
-			'Invalid_string_refer_to_original_code
-			AreaInPointToPoint(.X, .Y, SelectedX, SelectedY)
-			MaskScreen()
-			Exit Sub
-			'End If
-			'End If
-			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			.CombinationPartner("Invalid_string_refer_to_original_code", SelectedAbility, partners)
-			ReDim SelectedPartners(0)
-			ReDim partners(0)
-			'End If
+			'合体技パートナーの設定
+			If .IsAbilityClassifiedAs(SelectedAbility, "合") Then
+				.CombinationPartner("アビリティ", SelectedAbility, partners)
+			Else
+				ReDim SelectedPartners(0)
+				ReDim partners(0)
+			End If
 		End With
 		
 		If MainWidth <> 15 Then
@@ -4466,7 +4632,7 @@ EndAttack:
 		
 		LockGUI()
 		
-		'Invalid_string_refer_to_original_code
+		'アビリティを実行
 		SelectedUnit.ExecuteMapAbility(SelectedAbility, SelectedX, SelectedY)
 		SelectedUnit = SelectedUnit.CurrentForm
 		'UPGRADE_NOTE: オブジェクト SelectedTarget をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
@@ -4485,8 +4651,8 @@ EndAttack:
 			Exit Sub
 		End If
 		
-		'Invalid_string_refer_to_original_code
-		If Not IsOptionDefined("Invalid_string_refer_to_original_code") Then
+		'合体技のパートナーの行動数を減らす
+		If Not IsOptionDefined("合体技パートナー行動数無消費") Then
 			For i = 1 To UBound(partners)
 				partners(i).CurrentForm.UseAction()
 			Next 
@@ -4494,51 +4660,49 @@ EndAttack:
 		ReDim SelectedPartners(0)
 		
 		' ADD START MARGE
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-		If SelectedUnit.MainPilot.IsSkillAvailable("驕頑茶") And SelectedUnit.Speed * 2 > SelectedUnitMoveCost Then
-			'Invalid_string_refer_to_original_code
-			If SelectedUnitMoveCost > 0 Then
-				HandleEvent("騾ｲ蜈･", SelectedUnit.MainPilot.ID, SelectedUnit.X, SelectedUnit.Y)
-				If IsScenarioFinished Then
-					IsScenarioFinished = False
+		'再移動
+		If is_p_ability And SelectedUnit.Status_Renamed = "出撃" Then
+			If SelectedUnit.MainPilot.IsSkillAvailable("遊撃") And SelectedUnit.Speed * 2 > SelectedUnitMoveCost Then
+				'進入イベント
+				If SelectedUnitMoveCost > 0 Then
+					HandleEvent("進入", SelectedUnit.MainPilot.ID, SelectedUnit.X, SelectedUnit.Y)
+					If IsScenarioFinished Then
+						IsScenarioFinished = False
+						Exit Sub
+					End If
+				End If
+				
+				'ユニットが既に出撃していない？
+				If SelectedUnit.Status_Renamed <> "出撃" Then
+					RedrawScreen()
+					ClearUnitStatus()
 					Exit Sub
 				End If
+				
+				SelectedCommand = "再移動"
+				AreaInSpeed(SelectedUnit)
+				If Not IsOptionDefined("大型マップ") Then
+					Center(SelectedUnit.X, SelectedUnit.Y)
+				End If
+				MaskScreen()
+				If NewGUIMode Then
+					System.Windows.Forms.Application.DoEvents()
+					ClearUnitStatus()
+				Else
+					DisplayUnitStatus(SelectedUnit)
+				End If
+				CommandState = "ターゲット選択"
+				Exit Sub
 			End If
-			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			RedrawScreen()
-			ClearUnitStatus()
-			Exit Sub
 		End If
-		
-		SelectedCommand = "Invalid_string_refer_to_original_code"
-		AreaInSpeed(SelectedUnit)
-		If Not IsOptionDefined("Invalid_string_refer_to_original_code") Then
-			Center(SelectedUnit.X, SelectedUnit.Y)
-		End If
-		MaskScreen()
-		If NewGUIMode Then
-			System.Windows.Forms.Application.DoEvents()
-			ClearUnitStatus()
-		Else
-			DisplayUnitStatus(SelectedUnit)
-		End If
-		CommandState = "Invalid_string_refer_to_original_code"
-		Exit Sub
-		'End If
-		'End If
 		' ADD END MARGE
 		
-		'Invalid_string_refer_to_original_code
+		'行動終了
 		WaitCommand()
 	End Sub
 	
 	
-	'Invalid_string_refer_to_original_code
+	'スペシャルパワーコマンドを開始
 	' MOD START MARGE
 	'Public Sub StartSpecialPowerCommand()
 	Private Sub StartSpecialPowerCommand()
@@ -4561,38 +4725,37 @@ EndAttack:
 		
 		LockGUI()
 		
-		SelectedCommand = "繧ｹ繝壹す繝｣繝ｫ繝代Ρ繝ｼ"
+		SelectedCommand = "スペシャルパワー"
 		
 		With SelectedUnit
 			ReDim pname_list(0)
 			ReDim pid_list(0)
 			ReDim ListItemFlag(0)
 			
-			'Invalid_string_refer_to_original_code
+			'スペシャルパワーを使用可能なパイロットの一覧を作成
 			n = .CountPilot + .CountSupport
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			n = n + 1
-			'End If
+			If .IsFeatureAvailable("追加サポート") Then
+				n = n + 1
+			End If
 			For i = 1 To n
 				If i <= .CountPilot Then
-					'Invalid_string_refer_to_original_code
+					'メインパイロット＆サブパイロット
 					p = .Pilot(i)
 					
 					If i = 1 Then
-						'Invalid_string_refer_to_original_code
+						'１番目のパイロットの場合はメインパイロットを使用
 						p = .MainPilot
 						
-						'Invalid_string_refer_to_original_code
-						'Invalid_string_refer_to_original_code
+						'ただし２人乗り以上のユニットで、メインパイロットが
+						'スペシャルパワーを持たない場合はそのまま１番目のパイロットを使用
 						If .CountPilot > 1 Then
 							If p.Data.SP <= 0 And .Pilot(1).Data.SP > 0 Then
 								p = .Pilot(1)
 							End If
 						End If
 						
-						'Invalid_string_refer_to_original_code
-						'Invalid_string_refer_to_original_code
+						'サブパイロットがメインパイロットを勤めている場合も
+						'１番目のパイロットを使用
 						For j = 2 To .CountPilot
 							If p Is .Pilot(j) Then
 								p = .Pilot(1)
@@ -4623,7 +4786,7 @@ EndAttack:
 						Next 
 					End With
 				ElseIf i <= .CountPilot + .CountSupport Then 
-					'Invalid_string_refer_to_original_code
+					'サポートパイロット
 					With .Support(i - .CountPilot)
 						If .CountSpecialPower = 0 Then
 							GoTo NextPilot
@@ -4644,7 +4807,7 @@ EndAttack:
 						Next 
 					End With
 				Else
-					'Invalid_string_refer_to_original_code
+					'追加サポートパイロット
 					With .AdditionalSupport
 						If .CountSpecialPower = 0 Then
 							GoTo NextPilot
@@ -4669,26 +4832,18 @@ NextPilot:
 			Next 
 			TopItem = 1
 			If UBound(pname_list) > 1 Then
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				'Invalid_string_refer_to_original_code_
-				'"繧ｭ繝｣繝ｩ繧ｯ繧ｿ繝ｼ     " & Term("SP", SelectedUnit, 2) _
-				'& "/Max" & Term("SP", SelectedUnit, 2), _
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+				'どのパイロットを使うか選択
+				If IsOptionDefined("等身大基準") Then
+					i = ListBox("キャラクター選択", pname_list, "キャラクター     " & Term("SP", SelectedUnit, 2) & "/Max" & Term("SP", SelectedUnit, 2), "連続表示,カーソル移動")
+				Else
+					i = ListBox("パイロット選択", pname_list, "パイロット       " & Term("SP", SelectedUnit, 2) & "/Max" & Term("SP", SelectedUnit, 2), "連続表示,カーソル移動")
+				End If
 			Else
-				'Invalid_string_refer_to_original_code_
-				'Invalid_string_refer_to_original_code_
-				'& "/Max" & Term("SP", SelectedUnit, 2), _
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+				'一人しかいないので選択の必要なし
+				i = 1
 			End If
-			'Invalid_string_refer_to_original_code
-			i = 1
-			'End If
 			
-			'隱ｰ繧ゅせ繝壹す繝｣繝ｫ繝代Ρ繝ｼ繧剃ｽｿ縺医↑縺代ｌ縺ｰ繧ｭ繝｣繝ｳ繧ｻ繝ｫ
+			'誰もスペシャルパワーを使えなければキャンセル
 			If i = 0 Then
 				frmListBox.Hide()
 				If AutoMoveCursor Then
@@ -4699,16 +4854,16 @@ NextPilot:
 				Exit Sub
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'スペシャルパワーを使うパイロットを設定
 			SelectedPilot = PList.Item(pid_list(i))
-			'Invalid_string_refer_to_original_code
+			'そのパイロットのステータスを表示
 			If UBound(pname_list) > 1 Then
 				DisplayPilotStatus(SelectedPilot)
 			End If
 		End With
 		
 		With SelectedPilot
-			'Invalid_string_refer_to_original_code
+			'使用可能なスペシャルパワーの一覧を作成
 			ReDim sp_list(.CountSpecialPower)
 			ReDim ListItemFlag(.CountSpecialPower)
 			For i = 1 To .CountSpecialPower
@@ -4725,176 +4880,165 @@ NextPilot:
 			Next 
 		End With
 		
-		'Invalid_string_refer_to_original_code
+		'どのコマンドを使用するかを選択
 		With SelectedPilot
 			TopItem = 1
-			'Invalid_string_refer_to_original_code_
-			'Invalid_string_refer_to_original_code_
-			'& .Nickname & " " & Term("SP", SelectedUnit) & "=" _
-			'Invalid_string_refer_to_original_code_
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+			i = ListBox(Term("スペシャルパワー", SelectedUnit) & "選択", sp_list, "名称         消費" & Term("SP", SelectedUnit) & "（" & .Nickname & " " & Term("SP", SelectedUnit) & "=" & VB6.Format(.SP) & "/" & VB6.Format(.MaxSP) & "）", "カーソル移動(行きのみ)")
 		End With
 		
-		'繧ｭ繝｣繝ｳ繧ｻ繝ｫ
+		'キャンセル
 		If i = 0 Then
 			DisplayUnitStatus(SelectedUnit)
-			'Invalid_string_refer_to_original_code
+			'カーソル自動移動
 			If AutoMoveCursor Then
-				MoveCursorPos("Invalid_string_refer_to_original_code")
+				MoveCursorPos("ユニット選択", SelectedUnit)
 			End If
 			UnlockGUI()
 			CancelCommand()
 			Exit Sub
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'使用するスペシャルパワーを設定
 		SelectedSpecialPower = SelectedPilot.SpecialPower(i)
 		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-		'繧ｹ繝壹す繝｣繝ｫ繝代Ρ繝ｼ荳隕ｧ
-		ReDim list(0)
-		For i = 1 To SPDList.Count
-			With SPDList.Item(i)
-				'Invalid_string_refer_to_original_code_
-				'And .ShortName <> "髱櫁｡ｨ遉ｺ" _
-				'Then
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				ReDim Preserve list(UBound(list) + 1)
-				ReDim Preserve strkey_list(UBound(list))
-				list(UBound(list)) = .Name
-				strkey_list(UBound(list)) = .KanaName
-				'End If
-			End With
-		Next 
-		ReDim ListItemFlag(UBound(list))
-		
-		'Invalid_string_refer_to_original_code
-		For i = 1 To UBound(strkey_list) - 1
-			max_item = i
-			max_str = strkey_list(i)
-			For j = i + 1 To UBound(strkey_list)
-				If StrComp(strkey_list(j), max_str, 1) = -1 Then
-					max_item = j
-					max_str = strkey_list(j)
+		'味方スペシャルパワー実行の効果により他のパイロットが持っているスペシャルパワーを
+		'使う場合は記録しておき、後で消費ＳＰを倍にする必要がある
+		If SPDList.Item(SelectedSpecialPower).EffectType(1) = "味方スペシャルパワー実行" Then
+			'スペシャルパワー一覧
+			ReDim list(0)
+			For i = 1 To SPDList.Count
+				With SPDList.Item(i)
+					If .EffectType(1) <> "味方スペシャルパワー実行" And .ShortName <> "非表示" Then
+						ReDim Preserve list(UBound(list) + 1)
+						ReDim Preserve strkey_list(UBound(list))
+						list(UBound(list)) = .Name
+						strkey_list(UBound(list)) = .KanaName
+					End If
+				End With
+			Next 
+			ReDim ListItemFlag(UBound(list))
+			
+			'ソート
+			For i = 1 To UBound(strkey_list) - 1
+				max_item = i
+				max_str = strkey_list(i)
+				For j = i + 1 To UBound(strkey_list)
+					If StrComp(strkey_list(j), max_str, 1) = -1 Then
+						max_item = j
+						max_str = strkey_list(j)
+					End If
+				Next 
+				If max_item <> i Then
+					buf = list(i)
+					list(i) = list(max_item)
+					list(max_item) = buf
+					
+					buf = strkey_list(i)
+					strkey_list(i) = max_str
+					strkey_list(max_item) = buf
 				End If
 			Next 
-			If max_item <> i Then
-				buf = list(i)
-				list(i) = list(max_item)
-				list(max_item) = buf
-				
-				buf = strkey_list(i)
-				strkey_list(i) = max_str
-				strkey_list(max_item) = buf
-			End If
-		Next 
-		
-		'Invalid_string_refer_to_original_code
-		For i = 1 To UBound(list)
-			ListItemFlag(i) = True
-			For	Each p In PList
-				With p
-					If .Party = "蜻ｳ譁ｹ" Then
-						If Not .Unit_Renamed Is Nothing Then
-							'Invalid_string_refer_to_original_code_
-							'Invalid_string_refer_to_original_code_
-							'Then
-							'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-							'Invalid_string_refer_to_original_code
-							found = False
-							With .Unit_Renamed
-								If p Is .MainPilot Then
-									found = True
-								Else
-									For j = 2 To .CountPilot
-										If p Is .Pilot(j) Then
+			
+			'スペシャルパワーを使用可能なパイロットがいるかどうかを判定
+			For i = 1 To UBound(list)
+				ListItemFlag(i) = True
+				For	Each p In PList
+					With p
+						If .Party = "味方" Then
+							If Not .Unit_Renamed Is Nothing Then
+								If .Unit_Renamed.Status_Renamed = "出撃" And Not .Unit_Renamed.IsConditionSatisfied("憑依") Then
+									'本当に乗っている？
+									found = False
+									With .Unit_Renamed
+										If p Is .MainPilot Then
 											found = True
+										Else
+											For j = 2 To .CountPilot
+												If p Is .Pilot(j) Then
+													found = True
+													Exit For
+												End If
+											Next 
+											For j = 1 To .CountSupport
+												If p Is .Support(j) Then
+													found = True
+													Exit For
+												End If
+											Next 
+											If p Is .AdditionalSupport Then
+												found = True
+											End If
+										End If
+									End With
+									
+									If found Then
+										If .IsSpecialPowerAvailable(list(i)) Then
+											ListItemFlag(i) = False
 											Exit For
 										End If
-									Next 
-									For j = 1 To .CountSupport
-										If p Is .Support(j) Then
-											found = True
-											Exit For
-										End If
-									Next 
-									If p Is .AdditionalSupport Then
-										found = True
 									End If
-								End If
-							End With
-							
-							If found Then
-								If .IsSpecialPowerAvailable(list(i)) Then
-									ListItemFlag(i) = False
-									Exit For
 								End If
 							End If
 						End If
-					End If
-					'End If
-				End With
-			Next p
-		Next 
-		
-		'Invalid_string_refer_to_original_code
-		With SelectedPilot
-			For i = 1 To UBound(list)
-				If Not ListItemFlag(i) And .SP >= 2 * .SpecialPowerCost(list(i)) Then
-					If Not .IsSpecialPowerUseful(list(i)) Then
+					End With
+				Next p
+			Next 
+			
+			'各スペシャルパワーが使用可能か判定
+			With SelectedPilot
+				For i = 1 To UBound(list)
+					If Not ListItemFlag(i) And .SP >= 2 * .SpecialPowerCost(list(i)) Then
+						If Not .IsSpecialPowerUseful(list(i)) Then
+							ListItemFlag(i) = True
+						End If
+					Else
 						ListItemFlag(i) = True
 					End If
-				Else
-					ListItemFlag(i) = True
-				End If
+				Next 
+			End With
+			
+			'スペシャルパワーの解説を設定
+			ReDim ListItemComment(UBound(list))
+			For i = 1 To UBound(list)
+				ListItemComment(i) = SPDList.Item(list(i)).Comment
 			Next 
-		End With
-		
-		'Invalid_string_refer_to_original_code
-		ReDim ListItemComment(UBound(list))
-		For i = 1 To UBound(list)
-			ListItemComment(i) = SPDList.Item(list(i)).Comment
-		Next 
-		
-		'Invalid_string_refer_to_original_code
-		TopItem = 1
-		ret = MultiColumnListBox(Term("繧ｹ繝壹す繝｣繝ｫ繝代Ρ繝ｼ") & "讀懃ｴ｢", list, True)
-		If ret = 0 Then
-			SelectedSpecialPower = ""
-			CancelCommand()
-			UnlockGUI()
-			Exit Sub
+			
+			'検索するスペシャルパワーを選択
+			TopItem = 1
+			ret = MultiColumnListBox(Term("スペシャルパワー") & "検索", list, True)
+			If ret = 0 Then
+				SelectedSpecialPower = ""
+				CancelCommand()
+				UnlockGUI()
+				Exit Sub
+			End If
+			
+			'スペシャルパワー使用メッセージ
+			If SelectedUnit.IsMessageDefined(SelectedSpecialPower) Then
+				OpenMessageForm()
+				SelectedUnit.PilotMessage(SelectedSpecialPower)
+				CloseMessageForm()
+			End If
+			
+			SelectedSpecialPower = list(ret)
+			
+			WithDoubleSPConsumption = True
+		Else
+			WithDoubleSPConsumption = False
 		End If
-		
-		'Invalid_string_refer_to_original_code
-		If SelectedUnit.IsMessageDefined(SelectedSpecialPower) Then
-			OpenMessageForm()
-			SelectedUnit.PilotMessage(SelectedSpecialPower)
-			CloseMessageForm()
-		End If
-		
-		SelectedSpecialPower = list(ret)
-		
-		WithDoubleSPConsumption = True
-		WithDoubleSPConsumption = False
-		'End If
 		
 		sd = SPDList.Item(SelectedSpecialPower)
 		
-		'Invalid_string_refer_to_original_code
+		'ターゲットを選択する必要があるスペシャルパワーの場合
 		Select Case sd.TargetType
-			Case "蜻ｳ譁ｹ", "謨ｵ", "Invalid_string_refer_to_original_code"
-				'Invalid_string_refer_to_original_code
+			Case "味方", "敵", "任意"
+				'マップ上のユニットからターゲットを選択する
 				
 				OpenMessageForm()
-				DisplaySysMessage(SelectedPilot.Nickname & "縺ｯ" & SelectedSpecialPower & "Invalid_string_refer_to_original_code" & "Invalid_string_refer_to_original_code")
+				DisplaySysMessage(SelectedPilot.Nickname & "は" & SelectedSpecialPower & "を使った。;" & "ターゲットを選んでください。")
 				CloseMessageForm()
 				
-				'Invalid_string_refer_to_original_code
+				'ターゲットのエリアを設定
 				For i = 1 To MapWidth
 					For j = 1 To MapHeight
 						MaskData(i, j) = True
@@ -4905,23 +5049,23 @@ NextPilot:
 							GoTo NextLoop
 						End If
 						
-						'Invalid_string_refer_to_original_code
+						'陣営が合っている？
 						Select Case sd.TargetType
-							Case "蜻ｳ譁ｹ"
+							Case "味方"
 								With u
-									If .Party <> "蜻ｳ譁ｹ" And .Party0 <> "蜻ｳ譁ｹ" And .Party <> "Invalid_string_refer_to_original_code" And .Party0 <> "Invalid_string_refer_to_original_code" Then
+									If .Party <> "味方" And .Party0 <> "味方" And .Party <> "ＮＰＣ" And .Party0 <> "ＮＰＣ" Then
 										GoTo NextLoop
 									End If
 								End With
-							Case "謨ｵ"
+							Case "敵"
 								With u
-									If (.Party = "蜻ｳ譁ｹ" And .Party0 = "蜻ｳ譁ｹ") Or (.Party = "Invalid_string_refer_to_original_code" And .Party0 = "Invalid_string_refer_to_original_code") Then
+									If (.Party = "味方" And .Party0 = "味方") Or (.Party = "ＮＰＣ" And .Party0 = "ＮＰＣ") Then
 										GoTo NextLoop
 									End If
 								End With
 						End Select
 						
-						'Invalid_string_refer_to_original_code
+						'スペシャルパワーを適用可能？
 						If Not sd.Effective(SelectedPilot, u) Then
 							GoTo NextLoop
 						End If
@@ -4931,40 +5075,36 @@ NextLoop:
 					Next 
 				Next 
 				MaskScreen()
-				CommandState = "Invalid_string_refer_to_original_code"
+				CommandState = "ターゲット選択"
 				UnlockGUI()
 				Exit Sub
 				
-			Case "遐ｴ螢雁袖譁ｹ"
-				'Invalid_string_refer_to_original_code
+			Case "破壊味方"
+				'破壊された味方ユニットの中からターゲットを選択する
 				
 				OpenMessageForm()
-				DisplaySysMessage(SelectedPilot.Nickname & "縺ｯ" & SelectedSpecialPower & "Invalid_string_refer_to_original_code" & "Invalid_string_refer_to_original_code")
+				DisplaySysMessage(SelectedPilot.Nickname & "は" & SelectedSpecialPower & "を使った。;" & "復活させるユニットを選んでください。")
 				CloseMessageForm()
 				
-				'Invalid_string_refer_to_original_code
+				'破壊された味方ユニットのリストを作成
 				ReDim list(0)
 				ReDim id_list(0)
 				ReDim ListItemFlag(0)
 				For	Each u In UList
 					With u
-						'Invalid_string_refer_to_original_code_
-						'And (.CountPilot > 0 Or .Data.PilotNum = 0) _
-						'Then
-						'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-						ReDim Preserve list(UBound(list) + 1)
-						ReDim Preserve id_list(UBound(list))
-						ReDim Preserve ListItemFlag(UBound(list))
-						list(UBound(list)) = RightPaddedString(.Nickname, 28) & RightPaddedString(.MainPilot.Nickname, 18) & LeftPaddedString(VB6.Format(.MainPilot.Level), 3)
-						id_list(UBound(list)) = .ID
-						ListItemFlag(UBound(list)) = False
-						'End If
+						If .Party0 = "味方" And .Status_Renamed = "破壊" And (.CountPilot > 0 Or .Data.PilotNum = 0) Then
+							ReDim Preserve list(UBound(list) + 1)
+							ReDim Preserve id_list(UBound(list))
+							ReDim Preserve ListItemFlag(UBound(list))
+							list(UBound(list)) = RightPaddedString(.Nickname, 28) & RightPaddedString(.MainPilot.Nickname, 18) & LeftPaddedString(VB6.Format(.MainPilot.Level), 3)
+							id_list(UBound(list)) = .ID
+							ListItemFlag(UBound(list)) = False
+						End If
 					End With
 				Next u
 				
 				TopItem = 1
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+				i = ListBox("ユニット選択", list, "ユニット名                  パイロット     レベル")
 				If i = 0 Then
 					UnlockGUI()
 					CancelCommand()
@@ -4974,20 +5114,18 @@ NextLoop:
 				SelectedTarget = UList.Item(id_list(i))
 		End Select
 		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-		If ret = MsgBoxResult.Cancel Then
-			UnlockGUI()
-			Exit Sub
+		'自爆を選択した場合は確認を取る
+		'UPGRADE_WARNING: オブジェクト sd.IsEffectAvailable(自爆) の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
+		If sd.IsEffectAvailable("自爆") Then
+			ret = MsgBox("自爆させますか？", MsgBoxStyle.OKCancel + MsgBoxStyle.Question, "自爆")
+			If ret = MsgBoxResult.Cancel Then
+				UnlockGUI()
+				Exit Sub
+			End If
 		End If
-		'End If
 		
-		'Invalid_string_refer_to_original_code
-		HandleEvent("菴ｿ逕ｨ", SelectedUnit.MainPilot.ID, SelectedSpecialPower)
+		'使用イベント
+		HandleEvent("使用", SelectedUnit.MainPilot.ID, SelectedSpecialPower)
 		If IsScenarioFinished Then
 			IsScenarioFinished = False
 			UnlockGUI()
@@ -4999,7 +5137,7 @@ NextLoop:
 			Exit Sub
 		End If
 		
-		'繧ｹ繝壹す繝｣繝ｫ繝代Ρ繝ｼ繧剃ｽｿ逕ｨ
+		'スペシャルパワーを使用
 		If WithDoubleSPConsumption Then
 			SelectedPilot.UseSpecialPower(SelectedSpecialPower, 2)
 		Else
@@ -5007,16 +5145,16 @@ NextLoop:
 		End If
 		SelectedUnit = SelectedUnit.CurrentForm
 		
-		'Invalid_string_refer_to_original_code
+		'カーソル自動移動
 		If AutoMoveCursor Then
-			MoveCursorPos("Invalid_string_refer_to_original_code")
+			MoveCursorPos("ユニット選択", SelectedUnit)
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'ステータスウィンドウを更新
 		DisplayUnitStatus(SelectedUnit)
 		
-		'Invalid_string_refer_to_original_code
-		HandleEvent("Invalid_string_refer_to_original_code")
+		'使用後イベント
+		HandleEvent("使用後", SelectedUnit.MainPilot.ID, SelectedSpecialPower)
 		If IsScenarioFinished Then
 			IsScenarioFinished = False
 		End If
@@ -5028,10 +5166,10 @@ NextLoop:
 		
 		UnlockGUI()
 		
-		CommandState = "Invalid_string_refer_to_original_code"
+		CommandState = "ユニット選択"
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'スペシャルパワーコマンドを終了
 	' MOD START MARGE
 	'Public Sub FinishSpecialPowerCommand()
 	Private Sub FinishSpecialPowerCommand()
@@ -5040,40 +5178,37 @@ NextLoop:
 		
 		LockGUI()
 		
-		'Invalid_string_refer_to_original_code
+		'自爆を選択した場合は確認を取る
 		With SPDList.Item(SelectedSpecialPower)
 			For i = 1 To .CountEffect
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				'Invalid_string_refer_to_original_code_
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				If ret = MsgBoxResult.Cancel Then
-					CommandState = "Invalid_string_refer_to_original_code"
-					UnlockGUI()
-					Exit Sub
+				If .EffectType(i) = "自爆" Then
+					ret = MsgBox("自爆させますか？", MsgBoxStyle.OKCancel + MsgBoxStyle.Question, "自爆")
+					If ret = MsgBoxResult.Cancel Then
+						CommandState = "ユニット選択"
+						UnlockGUI()
+						Exit Sub
+					End If
+					Exit For
 				End If
-				Exit For
-				'End If
 			Next 
 		End With
 		
-		'Invalid_string_refer_to_original_code
-		HandleEvent("菴ｿ逕ｨ", SelectedUnit.MainPilot.ID, SelectedSpecialPower)
+		'使用イベント
+		HandleEvent("使用", SelectedUnit.MainPilot.ID, SelectedSpecialPower)
 		If IsScenarioFinished Then
 			IsScenarioFinished = False
-			CommandState = "Invalid_string_refer_to_original_code"
+			CommandState = "ユニット選択"
 			UnlockGUI()
 			Exit Sub
 		End If
 		If IsCanceled Then
 			IsCanceled = False
-			CommandState = "Invalid_string_refer_to_original_code"
+			CommandState = "ユニット選択"
 			UnlockGUI()
 			Exit Sub
 		End If
 		
-		'繧ｹ繝壹す繝｣繝ｫ繝代Ρ繝ｼ繧剃ｽｿ逕ｨ
+		'スペシャルパワーを使用
 		If WithDoubleSPConsumption Then
 			SelectedPilot.UseSpecialPower(SelectedSpecialPower, 2)
 		Else
@@ -5081,16 +5216,15 @@ NextLoop:
 		End If
 		SelectedUnit = SelectedUnit.CurrentForm
 		
-		'Invalid_string_refer_to_original_code
+		'ステータスウィンドウを更新
 		If Not SelectedTarget Is Nothing Then
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			DisplayUnitStatus(SelectedTarget)
+			If SelectedTarget.CurrentForm.Status_Renamed = "出撃" Then
+				DisplayUnitStatus(SelectedTarget)
+			End If
 		End If
-		'End If
 		
-		'Invalid_string_refer_to_original_code
-		HandleEvent("Invalid_string_refer_to_original_code")
+		'使用後イベント
+		HandleEvent("使用後", SelectedUnit.MainPilot.ID, SelectedSpecialPower)
 		If IsScenarioFinished Then
 			IsScenarioFinished = False
 		End If
@@ -5102,11 +5236,11 @@ NextLoop:
 		
 		UnlockGUI()
 		
-		CommandState = "Invalid_string_refer_to_original_code"
+		CommandState = "ユニット選択"
 	End Sub
 	
 	
-	'Invalid_string_refer_to_original_code
+	'「修理」コマンドを開始
 	' MOD START MARGE
 	'Public Sub StartFixCommand()
 	Private Sub StartFixCommand()
@@ -5115,85 +5249,77 @@ NextLoop:
 		Dim t, u As Unit
 		Dim fname As String
 		
-		SelectedCommand = "Invalid_string_refer_to_original_code"
+		SelectedCommand = "修理"
 		
-		'Invalid_string_refer_to_original_code
+		'射程範囲？を表示
 		With SelectedUnit
-			AreaInRange(.X, .Y, 1, 1, "蜻ｳ譁ｹ")
+			AreaInRange(.X, .Y, 1, 1, "味方")
 			For i = 1 To MapWidth
 				For j = 1 To MapHeight
 					If Not MaskData(i, j) And Not MapDataForUnit(i, j) Is Nothing Then
 						With MapDataForUnit(i, j)
-							'Invalid_string_refer_to_original_code_
-							'Then
-							'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-							MaskData(i, j) = True
-						End With
-					End If
-					If .IsFeatureAvailable("Invalid_string_refer_to_original_code") Then
-						For k = 2 To CInt(.FeatureData("Invalid_string_refer_to_original_code"))
-							fname = LIndex(.FeatureData("Invalid_string_refer_to_original_code"), k)
-							If Left(fname, 1) = "!" Then
-								fname = Mid(fname, 2)
-								If fname <> SelectedUnit.FeatureName0("Invalid_string_refer_to_original_code") Then
-									MaskData(i, j) = True
-									Exit For
-								End If
-							Else
-								If fname = SelectedUnit.FeatureName0("Invalid_string_refer_to_original_code") Then
-									MaskData(i, j) = True
-									Exit For
-								End If
+							If .HP = .MaxHP Or .IsConditionSatisfied("ゾンビ") Then
+								MaskData(i, j) = True
 							End If
-						Next 
+							If .IsFeatureAvailable("修理不可") Then
+								For k = 2 To CInt(.FeatureData("修理不可"))
+									fname = LIndex(.FeatureData("修理不可"), k)
+									If Left(fname, 1) = "!" Then
+										fname = Mid(fname, 2)
+										If fname <> SelectedUnit.FeatureName0("修理装置") Then
+											MaskData(i, j) = True
+											Exit For
+										End If
+									Else
+										If fname = SelectedUnit.FeatureName0("修理装置") Then
+											MaskData(i, j) = True
+											Exit For
+										End If
+									End If
+								Next 
+							End If
+						End With
 					End If
 				Next 
 			Next 
+			MaskData(.X, .Y) = False
 		End With
-		'End If
-		'Next
-		'Next
-		'UPGRADE_WARNING: StartFixCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-		'End With
 		MaskScreen()
 		
-		'Invalid_string_refer_to_original_code
+		'カーソル自動移動
 		If AutoMoveCursor Then
 			'UPGRADE_NOTE: オブジェクト t をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
 			t = Nothing
 			For	Each u In UList
 				With u
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-					If MaskData(.X, .Y) = False And Not u Is SelectedUnit Then
-						If t Is Nothing Then
-							t = u
-						ElseIf u.MaxHP - u.HP > t.MaxHP - t.HP Then 
-							t = u
+					If .Status_Renamed = "出撃" And .Party = "味方" Then
+						If MaskData(.X, .Y) = False And Not u Is SelectedUnit Then
+							If t Is Nothing Then
+								t = u
+							ElseIf u.MaxHP - u.HP > t.MaxHP - t.HP Then 
+								t = u
+							End If
 						End If
 					End If
 				End With
 			Next u
+			If t Is Nothing Then
+				t = SelectedUnit
+			End If
+			MoveCursorPos("ユニット選択", t)
+			If Not SelectedUnit Is t Then
+				DisplayUnitStatus(t)
+			End If
 		End If
-		'End With
-		'Next
-		If t Is Nothing Then
-			t = SelectedUnit
-		End If
-		MoveCursorPos("Invalid_string_refer_to_original_code")
-		If Not SelectedUnit Is t Then
-			DisplayUnitStatus(t)
-		End If
-		'End If
 		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-		CommandState = "Invalid_string_refer_to_original_code"
-		CommandState = "Invalid_string_refer_to_original_code"
-		'End If
+		If CommandState = "コマンド選択" Then
+			CommandState = "ターゲット選択"
+		Else
+			CommandState = "移動後ターゲット選択"
+		End If
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'「修理」コマンドを終了
 	' MOD START MARGE
 	'Public Sub FinishFixCommand()
 	Private Sub FinishFixCommand()
@@ -5205,51 +5331,42 @@ NextLoop:
 		OpenMessageForm(SelectedTarget, SelectedUnit)
 		
 		With SelectedUnit
-			'Invalid_string_refer_to_original_code
+			'選択内容を変更
 			SelectedUnitForEvent = SelectedUnit
 			SelectedTargetForEvent = SelectedTarget
 			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			.PilotMessage("Invalid_string_refer_to_original_code")
-			'End If
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			.PlayAnimation("Invalid_string_refer_to_original_code")
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			.SpecialEffect("Invalid_string_refer_to_original_code")
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			'End If
+			'修理メッセージ＆特殊効果
+			If .IsMessageDefined("修理") Then
+				.PilotMessage("修理")
+			End If
+			If .IsAnimationDefined("修理", .FeatureName("修理装置")) Then
+				.PlayAnimation("修理", .FeatureName("修理装置"))
+			Else
+				.SpecialEffect("修理", .FeatureName("修理装置"))
+			End If
 			
-			DisplaySysMessage(.Nickname & "縺ｯ" & SelectedTarget.Nickname & "縺ｫ" & .FeatureName("Invalid_string_refer_to_original_code") & "Invalid_string_refer_to_original_code")
+			DisplaySysMessage(.Nickname & "は" & SelectedTarget.Nickname & "に" & .FeatureName("修理装置") & "を使った。")
 			
-			'Invalid_string_refer_to_original_code
+			'修理を実行
 			tmp = SelectedTarget.HP
-			Select Case .FeatureLevel("Invalid_string_refer_to_original_code")
+			Select Case .FeatureLevel("修理装置")
 				Case 1, -1
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+					SelectedTarget.RecoverHP(30 + 3 * SelectedUnit.MainPilot.SkillLevel("修理"))
 				Case 2
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+					SelectedTarget.RecoverHP(50 + 5 * SelectedUnit.MainPilot.SkillLevel("修理"))
 				Case 3
 					SelectedTarget.RecoverHP(100)
 			End Select
-			If IsNumeric(LIndex(.FeatureData("Invalid_string_refer_to_original_code"), 2)) Then
-				.EN = .EN - CShort(LIndex(.FeatureData("Invalid_string_refer_to_original_code"), 2))
+			If IsNumeric(LIndex(.FeatureData("修理装置"), 2)) Then
+				.EN = .EN - CShort(LIndex(.FeatureData("修理装置"), 2))
 			End If
 			
 			DrawSysString(SelectedTarget.X, SelectedTarget.Y, "+" & VB6.Format(SelectedTarget.HP - tmp))
 			UpdateMessageForm(SelectedTarget, SelectedUnit)
-			DisplaySysMessage(SelectedTarget.Nickname & "縺ｮ" & Term("Invalid_string_refer_to_original_code", SelectedTarget) & "Invalid_string_refer_to_original_code")
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+			DisplaySysMessage(SelectedTarget.Nickname & "の" & Term("ＨＰ", SelectedTarget) & "が" & VB6.Format(SelectedTarget.HP - tmp) & "回復した。")
 			
-			'Invalid_string_refer_to_original_code
-			.GetExp(SelectedTarget, "Invalid_string_refer_to_original_code")
+			'経験値獲得
+			.GetExp(SelectedTarget, "修理")
 			
 			If MessageWait < 10000 Then
 				Sleep(MessageWait)
@@ -5258,17 +5375,17 @@ NextLoop:
 		
 		CloseMessageForm()
 		
-		'Invalid_string_refer_to_original_code
+		'形態変化のチェック
 		SelectedTarget.Update()
 		SelectedTarget.CurrentForm.CheckAutoHyperMode()
 		SelectedTarget.CurrentForm.CheckAutoNormalMode()
 		
-		'Invalid_string_refer_to_original_code
+		'行動終了
 		WaitCommand()
 	End Sub
 	
 	
-	'Invalid_string_refer_to_original_code
+	'「補給」コマンドを開始
 	' MOD START MARGE
 	'Public Sub StartSupplyCommand()
 	Private Sub StartSupplyCommand()
@@ -5276,79 +5393,71 @@ NextLoop:
 		Dim j, i, k As Short
 		Dim t, u As Unit
 		
-		SelectedCommand = "陬懃ｵｦ"
+		SelectedCommand = "補給"
 		
-		'Invalid_string_refer_to_original_code
+		'射程範囲？を表示
 		With SelectedUnit
-			AreaInRange(.X, .Y, 1, 1, "蜻ｳ譁ｹ")
+			AreaInRange(.X, .Y, 1, 1, "味方")
 			For i = 1 To MapWidth
 				For j = 1 To MapHeight
 					If Not MaskData(i, j) And Not MapDataForUnit(i, j) Is Nothing Then
 						MaskData(i, j) = True
 						With MapDataForUnit(i, j)
-							'Invalid_string_refer_to_original_code_
-							'Then
-							'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-							MaskData(i, j) = False
+							If .EN < .MaxEN And Not .IsConditionSatisfied("ゾンビ") Then
+								MaskData(i, j) = False
+							Else
+								For k = 1 To .CountWeapon
+									If .Bullet(k) < .MaxBullet(k) Then
+										MaskData(i, j) = False
+										Exit For
+									End If
+								Next 
+								For k = 1 To .CountAbility
+									If .Stock(k) < .MaxStock(k) Then
+										MaskData(i, j) = False
+										Exit For
+									End If
+								Next 
+							End If
 						End With
-					Else
-						For k = 1 To .CountWeapon
-							If .Bullet(k) < .MaxBullet(k) Then
-								MaskData(i, j) = False
-								Exit For
-							End If
-						Next 
-						For k = 1 To .CountAbility
-							If .Stock(k) < .MaxStock(k) Then
-								MaskData(i, j) = False
-								Exit For
-							End If
-						Next 
 					End If
 				Next 
 			Next 
+			MaskData(.X, .Y) = False
 		End With
-		'End If
-		'Next
-		'Next
-		'UPGRADE_WARNING: StartSupplyCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-		'End With
 		MaskScreen()
 		
-		'Invalid_string_refer_to_original_code
+		'カーソル自動移動
 		If AutoMoveCursor Then
 			'UPGRADE_NOTE: オブジェクト t をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
 			t = Nothing
 			For	Each u In UList
 				With u
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-					If MaskData(.X, .Y) = False And Not u Is SelectedUnit Then
-						t = u
-						Exit For
+					If .Status_Renamed = "出撃" And .Party = "味方" Then
+						If MaskData(.X, .Y) = False And Not u Is SelectedUnit Then
+							t = u
+							Exit For
+						End If
 					End If
 				End With
 			Next u
+			If t Is Nothing Then
+				t = SelectedUnit
+			End If
+			MoveCursorPos("ユニット選択", t)
+			If Not SelectedUnit Is t Then
+				DisplayUnitStatus(t)
+			End If
 		End If
-		'End With
-		'Next
-		If t Is Nothing Then
-			t = SelectedUnit
-		End If
-		MoveCursorPos("Invalid_string_refer_to_original_code")
-		If Not SelectedUnit Is t Then
-			DisplayUnitStatus(t)
-		End If
-		'End If
 		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-		CommandState = "Invalid_string_refer_to_original_code"
-		CommandState = "Invalid_string_refer_to_original_code"
-		'End If
+		If CommandState = "コマンド選択" Then
+			CommandState = "ターゲット選択"
+		Else
+			CommandState = "移動後ターゲット選択"
+		End If
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'「補給」コマンドを終了
 	' MOD START MARGE
 	'Public Sub FinishSupplyCommand()
 	Private Sub FinishSupplyCommand()
@@ -5359,53 +5468,53 @@ NextLoop:
 		OpenMessageForm(SelectedTarget, SelectedUnit)
 		
 		With SelectedUnit
-			'Invalid_string_refer_to_original_code
+			'選択内容を変更
 			SelectedUnitForEvent = SelectedUnit
 			SelectedTargetForEvent = SelectedTarget
 			
-			'Invalid_string_refer_to_original_code
-			If .IsMessageDefined("陬懃ｵｦ") Then
-				.PilotMessage("陬懃ｵｦ")
+			'補給メッセージ＆特殊効果
+			If .IsMessageDefined("補給") Then
+				.PilotMessage("補給")
 			End If
-			If .IsAnimationDefined("陬懃ｵｦ", .FeatureName("Invalid_string_refer_to_original_code")) Then
-				.PlayAnimation("陬懃ｵｦ", .FeatureName("Invalid_string_refer_to_original_code"))
+			If .IsAnimationDefined("補給", .FeatureName("補給装置")) Then
+				.PlayAnimation("補給", .FeatureName("補給装置"))
 			Else
-				.SpecialEffect("陬懃ｵｦ", .FeatureName("Invalid_string_refer_to_original_code"))
+				.SpecialEffect("補給", .FeatureName("補給装置"))
 			End If
 			
-			DisplaySysMessage(.Nickname & "縺ｯ" & SelectedTarget.Nickname & "縺ｫ" & .FeatureName("Invalid_string_refer_to_original_code") & "Invalid_string_refer_to_original_code")
+			DisplaySysMessage(.Nickname & "は" & SelectedTarget.Nickname & "に" & .FeatureName("補給装置") & "を使った。")
 			
-			'陬懃ｵｦ繧貞ｮ滓命
+			'補給を実施
 			SelectedTarget.FullSupply()
 			SelectedTarget.IncreaseMorale(-10)
-			If IsNumeric(LIndex(.FeatureData("Invalid_string_refer_to_original_code"), 2)) Then
-				.EN = .EN - CShort(LIndex(.FeatureData("Invalid_string_refer_to_original_code"), 2))
+			If IsNumeric(LIndex(.FeatureData("補給装置"), 2)) Then
+				.EN = .EN - CShort(LIndex(.FeatureData("補給装置"), 2))
 			End If
 			
 			UpdateMessageForm(SelectedTarget, SelectedUnit)
-			DisplaySysMessage(SelectedTarget.Nickname & "縺ｮ蠑ｾ謨ｰ縺ｨ" & Term("Invalid_string_refer_to_original_code", SelectedTarget) & "Invalid_string_refer_to_original_code")
+			DisplaySysMessage(SelectedTarget.Nickname & "の弾数と" & Term("ＥＮ", SelectedTarget) & "が全快した。")
 			
-			'Invalid_string_refer_to_original_code
-			.GetExp(SelectedTarget, "陬懃ｵｦ")
+			'経験値を獲得
+			.GetExp(SelectedTarget, "補給")
 			
 			If MessageWait < 10000 Then
 				Sleep(MessageWait)
 			End If
 		End With
 		
-		'Invalid_string_refer_to_original_code
+		'形態変化のチェック
 		SelectedTarget.Update()
 		SelectedTarget.CurrentForm.CheckAutoHyperMode()
 		SelectedTarget.CurrentForm.CheckAutoNormalMode()
 		
 		CloseMessageForm()
 		
-		'Invalid_string_refer_to_original_code
+		'行動終了
 		WaitCommand()
 	End Sub
 	
 	
-	'Invalid_string_refer_to_original_code
+	'「チャージ」コマンド
 	' MOD START MARGE
 	'Public Sub ChargeCommand()
 	Private Sub ChargeCommand()
@@ -5416,108 +5525,99 @@ NextLoop:
 		
 		LockGUI()
 		
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+		ret = MsgBox("チャージを開始しますか？", MsgBoxStyle.OKCancel + MsgBoxStyle.Question, "チャージ開始")
 		If ret = MsgBoxResult.Cancel Then
 			CancelCommand()
 			UnlockGUI()
 			Exit Sub
 		End If
 		
-		'Invalid_string_refer_to_original_code
-		HandleEvent("菴ｿ逕ｨ", SelectedUnit.MainPilot.ID, "繝√Ε繝ｼ繧ｸ")
+		'使用イベント
+		HandleEvent("使用", SelectedUnit.MainPilot.ID, "チャージ")
 		If IsScenarioFinished Then
 			IsScenarioFinished = False
-			CommandState = "Invalid_string_refer_to_original_code"
+			CommandState = "ユニット選択"
 			UnlockGUI()
 			Exit Sub
 		End If
 		If IsCanceled Then
 			IsCanceled = False
-			CommandState = "Invalid_string_refer_to_original_code"
+			CommandState = "ユニット選択"
 			UnlockGUI()
 			Exit Sub
 		End If
 		
 		With SelectedUnit
-			'Invalid_string_refer_to_original_code
-			If .IsMessageDefined("繝√Ε繝ｼ繧ｸ") Then
+			'チャージのメッセージを表示
+			If .IsMessageDefined("チャージ") Then
 				OpenMessageForm()
-				.PilotMessage("繝√Ε繝ｼ繧ｸ")
+				.PilotMessage("チャージ")
 				CloseMessageForm()
 			End If
 			
-			'繧｢繝九Γ陦ｨ遉ｺ繧定｡後≧
-			If .IsAnimationDefined("繝√Ε繝ｼ繧ｸ") Then
-				.PlayAnimation("繝√Ε繝ｼ繧ｸ")
-			ElseIf .IsSpecialEffectDefined("繝√Ε繝ｼ繧ｸ") Then 
-				.SpecialEffect("繝√Ε繝ｼ繧ｸ")
+			'アニメ表示を行う
+			If .IsAnimationDefined("チャージ") Then
+				.PlayAnimation("チャージ")
+			ElseIf .IsSpecialEffectDefined("チャージ") Then 
+				.SpecialEffect("チャージ")
 			Else
 				PlayWave("Charge.wav")
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'チャージ攻撃のパートナーを探す
 			ReDim partners(0)
 			For i = 1 To .CountWeapon
-				'Invalid_string_refer_to_original_code_
-				'Then
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				If .IsWeaponAvailable(i, "繝√Ε繝ｼ繧ｸ") Then
-					.CombinationPartner("Invalid_string_refer_to_original_code")
-					Exit For
+				If .IsWeaponClassifiedAs(i, "Ｃ") And .IsWeaponClassifiedAs(i, "合") Then
+					If .IsWeaponAvailable(i, "チャージ") Then
+						.CombinationPartner("武装", i, partners)
+						Exit For
+					End If
 				End If
-				'End If
 			Next 
 			If UBound(partners) = 0 Then
 				For i = 1 To .CountAbility
-					'Invalid_string_refer_to_original_code_
-					'Then
-					'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-					If .IsAbilityAvailable(i, "繝√Ε繝ｼ繧ｸ") Then
-						.CombinationPartner("Invalid_string_refer_to_original_code", i, partners)
-						Exit For
+					If .IsAbilityClassifiedAs(i, "Ｃ") And .IsAbilityClassifiedAs(i, "合") Then
+						If .IsAbilityAvailable(i, "チャージ") Then
+							.CombinationPartner("アビリティ", i, partners)
+							Exit For
+						End If
 					End If
 				Next 
 			End If
-			'Next
-			'End If
 			
-			'Invalid_string_refer_to_original_code
-			.AddCondition("繝√Ε繝ｼ繧ｸ", 1)
+			'ユニットの状態をチャージ中に
+			.AddCondition("チャージ", 1)
 			
-			'Invalid_string_refer_to_original_code
+			'チャージ攻撃のパートナーもチャージ中にする
 			For i = 1 To UBound(partners)
 				With partners(i)
-					.AddCondition("繝√Ε繝ｼ繧ｸ", 1)
+					.AddCondition("チャージ", 1)
 				End With
 			Next 
 		End With
 		
-		'Invalid_string_refer_to_original_code
-		HandleEvent("Invalid_string_refer_to_original_code")
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+		'使用後イベント
+		HandleEvent("使用後", SelectedUnit.MainPilot.ID, "チャージ")
 		If IsScenarioFinished Then
 			IsScenarioFinished = False
-			CommandState = "Invalid_string_refer_to_original_code"
+			CommandState = "ユニット選択"
 			UnlockGUI()
 			Exit Sub
 		End If
 		If IsCanceled Then
 			IsCanceled = False
-			CommandState = "Invalid_string_refer_to_original_code"
+			CommandState = "ユニット選択"
 			UnlockGUI()
 			Exit Sub
 		End If
 		
 		UnlockGUI()
 		
-		'Invalid_string_refer_to_original_code
+		'行動終了
 		WaitCommand()
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'「会話」コマンドを開始
 	' MOD START MARGE
 	'Public Sub StartTalkCommand()
 	Private Sub StartTalkCommand()
@@ -5525,19 +5625,19 @@ NextLoop:
 		Dim i, j As Short
 		Dim t As Unit
 		
-		SelectedCommand = "莨夊ｩｱ"
+		SelectedCommand = "会話"
 		
 		'UPGRADE_NOTE: オブジェクト t をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
 		t = Nothing
 		
-		'莨夊ｩｱ蜿ｯ閭ｽ縺ｪ繝ｦ繝九ャ繝医ｒ陦ｨ遉ｺ
+		'会話可能なユニットを表示
 		With SelectedUnit
 			AreaInRange(.X, .Y, 1, 1, "")
 			For i = 1 To MapWidth
 				For j = 1 To MapHeight
 					If Not MaskData(i, j) Then
 						If Not MapDataForUnit(i, j) Is Nothing Then
-							If Not IsEventDefined("莨夊ｩｱ " & .MainPilot.ID & " " & MapDataForUnit(i, j).MainPilot.ID) Then
+							If Not IsEventDefined("会話 " & .MainPilot.ID & " " & MapDataForUnit(i, j).MainPilot.ID) Then
 								MaskData(i, j) = True
 								t = MapDataForUnit(i, j)
 							End If
@@ -5549,22 +5649,22 @@ NextLoop:
 		End With
 		MaskScreen()
 		
-		'Invalid_string_refer_to_original_code
+		'カーソル自動移動
 		If AutoMoveCursor Then
 			If Not t Is Nothing Then
-				MoveCursorPos("Invalid_string_refer_to_original_code")
+				MoveCursorPos("ユニット選択", t)
 				DisplayUnitStatus(t)
 			End If
 		End If
 		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-		CommandState = "Invalid_string_refer_to_original_code"
-		CommandState = "Invalid_string_refer_to_original_code"
-		'End If
+		If CommandState = "コマンド選択" Then
+			CommandState = "ターゲット選択"
+		Else
+			CommandState = "移動後ターゲット選択"
+		End If
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'「会話」コマンドを終了
 	' MOD START MARGE
 	'Public Sub FinishTalkCommand()
 	Private Sub FinishTalkCommand()
@@ -5580,8 +5680,8 @@ NextLoop:
 			p = Nothing
 		End If
 		
-		'莨夊ｩｱ繧､繝吶Φ繝医ｒ螳滓命
-		HandleEvent("莨夊ｩｱ", SelectedUnit.MainPilot.ID, SelectedTarget.MainPilot.ID)
+		'会話イベントを実施
+		HandleEvent("会話", SelectedUnit.MainPilot.ID, SelectedTarget.MainPilot.ID)
 		
 		If IsScenarioFinished Then
 			IsScenarioFinished = False
@@ -5596,11 +5696,11 @@ NextLoop:
 		
 		UnlockGUI()
 		
-		'Invalid_string_refer_to_original_code
+		'行動終了
 		WaitCommand()
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'「変形」コマンド
 	' MOD START MARGE
 	'Public Sub TransformCommand()
 	Private Sub TransformCommand()
@@ -5621,14 +5721,14 @@ NextLoop:
 		
 		LockGUI()
 		
-		fdata = SelectedUnit.FeatureData("螟牙ｽ｢")
+		fdata = SelectedUnit.FeatureData("変形")
 		
 		If MapFileName = "" Then
-			'Invalid_string_refer_to_original_code
+			'ユニットステータスコマンドの場合
 			With SelectedUnit
 				ReDim list(0)
 				ReDim list_id(0)
-				'Invalid_string_refer_to_original_code
+				'変形可能な形態一覧を作成
 				For i = 2 To LLength(fdata)
 					With .OtherForm(LIndex(fdata, i))
 						If .IsAvailable Then
@@ -5641,11 +5741,10 @@ NextLoop:
 				Next 
 				ReDim ListItemFlag(UBound(list))
 				
-				'Invalid_string_refer_to_original_code
+				'変形する形態を選択
 				If UBound(list) > 1 Then
 					TopItem = 1
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+					ret = ListBox("変形", list, "名前", "カーソル移動")
 					If ret = 0 Then
 						CancelCommand()
 						UnlockGUI()
@@ -5655,23 +5754,23 @@ NextLoop:
 					ret = 1
 				End If
 				
-				'螟牙ｽ｢繧貞ｮ滓命
+				'変形を実施
 				.Transform((.OtherForm(list_id(ret)).Name))
 				
-				'Invalid_string_refer_to_original_code
+				'ユニットリストの表示を更新
 				MakeUnitList()
 				
-				'Invalid_string_refer_to_original_code
+				'ステータスウィンドウの表示を更新
 				DisplayUnitStatus(.CurrentForm)
 				
-				'Invalid_string_refer_to_original_code
+				'コマンドを終了
 				UnlockGUI()
-				CommandState = "Invalid_string_refer_to_original_code"
+				CommandState = "ユニット選択"
 				Exit Sub
 			End With
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'変形可能な形態の一覧を作成
 		ReDim list(0)
 		ReDim list_id(0)
 		ReDim ListItemFlag(0)
@@ -5692,10 +5791,10 @@ NextLoop:
 			End With
 		Next 
 		
-		'Invalid_string_refer_to_original_code
+		'変形先の形態を選択
 		If UBound(list) = 1 Then
 			If ListItemFlag(1) Then
-				MsgBox("Invalid_string_refer_to_original_code" & LIndex(fdata, 1) & "縺ｧ縺阪∪縺帙ｓ")
+				MsgBox("この地形では" & LIndex(fdata, 1) & "できません")
 				CancelCommand()
 				UnlockGUI()
 				Exit Sub
@@ -5704,11 +5803,9 @@ NextLoop:
 		Else
 			TopItem = 1
 			If Not SelectedUnit.IsHero Then
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+				ret = ListBox("変形先", list, "名前", "カーソル移動")
 			Else
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+				ret = ListBox("変身先", list, "名前", "カーソル移動")
 			End If
 			If ret = 0 Then
 				CancelCommand()
@@ -5721,24 +5818,23 @@ NextLoop:
 		
 		Dim BGM As String
 		With SelectedUnit
-			'Invalid_string_refer_to_original_code
+			'ダイアログでメッセージを表示させるため追加パイロットをあらかじめ作成
 			With UDList.Item(uname)
-				If .IsFeatureAvailable("Invalid_string_refer_to_original_code") Then
-					If Not PList.IsDefined(.FeatureData("Invalid_string_refer_to_original_code")) Then
-						If Not PDList.IsDefined(.FeatureData("Invalid_string_refer_to_original_code")) Then
-							ErrorMessage(uname & "Invalid_string_refer_to_original_code")
-							.FeatureData(("Invalid_string_refer_to_original_code") & "Invalid_string_refer_to_original_code")
+				If .IsFeatureAvailable("追加パイロット") Then
+					If Not PList.IsDefined(.FeatureData("追加パイロット")) Then
+						If Not PDList.IsDefined(.FeatureData("追加パイロット")) Then
+							ErrorMessage(uname & "の追加パイロット「" & .FeatureData("追加パイロット") & "」のデータが見つかりません")
 							TerminateSRC()
 						End If
-						PList.Add(.FeatureData("Invalid_string_refer_to_original_code"), SelectedUnit.MainPilot.Level, (SelectedUnit.Party0))
+						PList.Add(.FeatureData("追加パイロット"), SelectedUnit.MainPilot.Level, (SelectedUnit.Party0))
 					End If
 				End If
 			End With
 			
-			'Invalid_string_refer_to_original_code
-			If .IsFeatureAvailable("Invalid_string_refer_to_original_code") Then
+			'ＢＧＭの変更
+			If .IsFeatureAvailable("変形ＢＧＭ") Then
 				For i = 1 To .CountFeature
-					If .Feature(i) = "Invalid_string_refer_to_original_code" And LIndex(.FeatureData(i), 1) = uname Then
+					If .Feature(i) = "変形ＢＧＭ" And LIndex(.FeatureData(i), 1) = uname Then
 						BGM = SearchMidiFile(Mid(.FeatureData(i), InStr(.FeatureData(i), " ") + 1))
 						If Len(BGM) > 0 Then
 							ChangeBGM(BGM)
@@ -5749,93 +5845,88 @@ NextLoop:
 				Next 
 			End If
 			
-			'Invalid_string_refer_to_original_code
-			If .IsMessageDefined("螟牙ｽ｢(" & .Name & "=>" & uname & ")") Or .IsMessageDefined("螟牙ｽ｢(" & uname & ")") Or .IsMessageDefined("螟牙ｽ｢(" & .FeatureName("螟牙ｽ｢") & ")") Then
+			'メッセージを表示
+			If .IsMessageDefined("変形(" & .Name & "=>" & uname & ")") Or .IsMessageDefined("変形(" & uname & ")") Or .IsMessageDefined("変形(" & .FeatureName("変形") & ")") Then
 				Center(.X, .Y)
 				RefreshScreen()
 				
 				OpenMessageForm()
-				If .IsMessageDefined("螟牙ｽ｢(" & .Name & "=>" & uname & ")") Then
-					.PilotMessage("螟牙ｽ｢(" & .Name & "=>" & uname & ")")
-				ElseIf .IsMessageDefined("螟牙ｽ｢(" & uname & ")") Then 
-					.PilotMessage("螟牙ｽ｢(" & uname & ")")
-				ElseIf .IsMessageDefined("螟牙ｽ｢(" & .FeatureName("螟牙ｽ｢") & ")") Then 
-					.PilotMessage("螟牙ｽ｢(" & .FeatureName("螟牙ｽ｢") & ")")
+				If .IsMessageDefined("変形(" & .Name & "=>" & uname & ")") Then
+					.PilotMessage("変形(" & .Name & "=>" & uname & ")")
+				ElseIf .IsMessageDefined("変形(" & uname & ")") Then 
+					.PilotMessage("変形(" & uname & ")")
+				ElseIf .IsMessageDefined("変形(" & .FeatureName("変形") & ")") Then 
+					.PilotMessage("変形(" & .FeatureName("変形") & ")")
 				End If
 				CloseMessageForm()
 			End If
 			
-			'繧｢繝九Γ陦ｨ遉ｺ
-			If .IsAnimationDefined("螟牙ｽ｢(" & .Name & "=>" & uname & ")") Then
-				.PlayAnimation("螟牙ｽ｢(" & .Name & "=>" & uname & ")")
-			ElseIf .IsAnimationDefined("螟牙ｽ｢(" & uname & ")") Then 
-				.PlayAnimation("螟牙ｽ｢(" & uname & ")")
-			ElseIf .IsAnimationDefined("螟牙ｽ｢(" & .FeatureName("螟牙ｽ｢") & ")") Then 
-				.PlayAnimation("螟牙ｽ｢(" & .FeatureName("螟牙ｽ｢") & ")")
-			ElseIf .IsSpecialEffectDefined("螟牙ｽ｢(" & .Name & "=>" & uname & ")") Then 
-				.SpecialEffect("螟牙ｽ｢(" & .Name & "=>" & uname & ")")
-			ElseIf .IsSpecialEffectDefined("螟牙ｽ｢(" & uname & ")") Then 
-				.SpecialEffect("螟牙ｽ｢(" & uname & ")")
-			ElseIf .IsSpecialEffectDefined("螟牙ｽ｢(" & .FeatureName("螟牙ｽ｢") & ")") Then 
-				.SpecialEffect("螟牙ｽ｢(" & .FeatureName("螟牙ｽ｢") & ")")
+			'アニメ表示
+			If .IsAnimationDefined("変形(" & .Name & "=>" & uname & ")") Then
+				.PlayAnimation("変形(" & .Name & "=>" & uname & ")")
+			ElseIf .IsAnimationDefined("変形(" & uname & ")") Then 
+				.PlayAnimation("変形(" & uname & ")")
+			ElseIf .IsAnimationDefined("変形(" & .FeatureName("変形") & ")") Then 
+				.PlayAnimation("変形(" & .FeatureName("変形") & ")")
+			ElseIf .IsSpecialEffectDefined("変形(" & .Name & "=>" & uname & ")") Then 
+				.SpecialEffect("変形(" & .Name & "=>" & uname & ")")
+			ElseIf .IsSpecialEffectDefined("変形(" & uname & ")") Then 
+				.SpecialEffect("変形(" & uname & ")")
+			ElseIf .IsSpecialEffectDefined("変形(" & .FeatureName("変形") & ")") Then 
+				.SpecialEffect("変形(" & .FeatureName("変形") & ")")
 			End If
 		End With
 		
-		'螟牙ｽ｢
+		'変形
 		prev_uname = SelectedUnit.Name
 		SelectedUnit.Transform(uname)
 		SelectedUnit = MapDataForUnit(SelectedUnit.X, SelectedUnit.Y)
 		
-		'Invalid_string_refer_to_original_code
+		'変形をキャンセルする？
 		If SelectedUnit.Action = 0 Then
-			'Invalid_string_refer_to_original_code_
-			'Invalid_string_refer_to_original_code_
-			'vbOKCancel + vbQuestion, "螟牙ｽ｢")
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+			ret = MsgBox("この形態ではこれ以上の行動が出来ません。" & vbCr & vbLf & "それでも変形しますか？", MsgBoxStyle.OKCancel + MsgBoxStyle.Question, "変形")
 			If ret = MsgBoxResult.Cancel Then
 				SelectedUnit.Transform(prev_uname)
 				SelectedUnit = MapDataForUnit(SelectedUnit.X, SelectedUnit.Y)
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				SelectedUnit.DeleteCondition("Invalid_string_refer_to_original_code")
+				If SelectedUnit.IsConditionSatisfied("消耗") Then
+					SelectedUnit.DeleteCondition("消耗")
+				End If
 			End If
+			RedrawScreen()
 		End If
-		RedrawScreen()
-		'End If
 		
-		'Invalid_string_refer_to_original_code
+		'変形イベント
 		With SelectedUnit.CurrentForm
-			HandleEvent("螟牙ｽ｢", .MainPilot.ID, .Name)
+			HandleEvent("変形", .MainPilot.ID, .Name)
 		End With
 		If IsScenarioFinished Then
 			IsScenarioFinished = False
 			ClearUnitStatus()
 			RedrawScreen()
-			CommandState = "Invalid_string_refer_to_original_code"
+			CommandState = "ユニット選択"
 			UnlockGUI()
 			Exit Sub
 		End If
 		IsCanceled = False
 		
-		'Invalid_string_refer_to_original_code
+		'ハイパーモード・ノーマルモードの自動発動をチェック
 		SelectedUnit.CurrentForm.CheckAutoHyperMode()
 		SelectedUnit.CurrentForm.CheckAutoNormalMode()
 		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-		If AutoMoveCursor Then
-			MoveCursorPos("Invalid_string_refer_to_original_code")
+		'カーソル自動移動
+		If SelectedUnit.Status_Renamed = "出撃" Then
+			If AutoMoveCursor Then
+				MoveCursorPos("ユニット選択", SelectedUnit)
+			End If
+			DisplayUnitStatus(SelectedUnit)
 		End If
-		DisplayUnitStatus(SelectedUnit)
-		'End If
 		
-		CommandState = "Invalid_string_refer_to_original_code"
+		CommandState = "ユニット選択"
 		
 		UnlockGUI()
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'「ハイパーモード」コマンド
 	' MOD START MARGE
 	'Public Sub HyperModeCommand()
 	Private Sub HyperModeCommand()
@@ -5852,67 +5943,61 @@ NextLoop:
 		
 		LockGUI()
 		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+		uname = LIndex(SelectedUnit.FeatureData("ハイパーモード"), 2)
+		fname = SelectedUnit.FeatureName("ハイパーモード")
 		
 		If MapFileName = "" Then
-			'Invalid_string_refer_to_original_code
+			'ユニットステータスコマンドの場合
 			With SelectedUnit
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+				If Not .IsFeatureAvailable("ハイパーモード") Then
+					uname = LIndex(SelectedUnit.FeatureData("ノーマルモード"), 1)
+				End If
+				
+				'ハイパーモードを発動
+				.Transform(uname)
+				
+				'ユニットリストの表示を更新
+				MakeUnitList()
+				
+				'ステータスウィンドウの表示を更新
+				DisplayUnitStatus(.CurrentForm)
+				
+				'コマンドを終了
+				UnlockGUI()
+				CommandState = "ユニット選択"
+				Exit Sub
 			End With
 		End If
 		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_WARNING: HyperModeCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-		
-		'Invalid_string_refer_to_original_code
-		MakeUnitList()
-		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_WARNING: HyperModeCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-		
-		'Invalid_string_refer_to_original_code
-		UnlockGUI()
-		CommandState = "Invalid_string_refer_to_original_code"
-		Exit Sub
-		'End With
-		'End If
-		
-		'Invalid_string_refer_to_original_code
+		'ハイパーモードを発動可能かどうかチェック
 		With SelectedUnit.OtherForm(uname)
 			If Not .IsAbleToEnter(SelectedUnit.X, SelectedUnit.Y) And MapFileName <> "" Then
-				MsgBox("Invalid_string_refer_to_original_code")
+				MsgBox("この地形では変形できません")
 				UnlockGUI()
 				CancelCommand()
 				Exit Sub
 			End If
 		End With
 		
-		'Invalid_string_refer_to_original_code
+		'ダイアログでメッセージを表示させるため追加パイロットをあらかじめ作成
 		With UDList.Item(uname)
-			If .IsFeatureAvailable("Invalid_string_refer_to_original_code") Then
-				If Not PList.IsDefined(.FeatureData("Invalid_string_refer_to_original_code")) Then
-					If Not PDList.IsDefined(.FeatureData("Invalid_string_refer_to_original_code")) Then
-						ErrorMessage(uname & "Invalid_string_refer_to_original_code")
-						.FeatureData(("Invalid_string_refer_to_original_code") & "Invalid_string_refer_to_original_code")
+			If .IsFeatureAvailable("追加パイロット") Then
+				If Not PList.IsDefined(.FeatureData("追加パイロット")) Then
+					If Not PDList.IsDefined(.FeatureData("追加パイロット")) Then
+						ErrorMessage(uname & "の追加パイロット「" & .FeatureData("追加パイロット") & "」のデータが見つかりません")
 						TerminateSRC()
 					End If
-					PList.Add(.FeatureData("Invalid_string_refer_to_original_code"), SelectedUnit.MainPilot.Level, (SelectedUnit.Party0))
+					PList.Add(.FeatureData("追加パイロット"), SelectedUnit.MainPilot.Level, (SelectedUnit.Party0))
 				End If
 			End If
 		End With
 		
 		Dim BGM As String
 		With SelectedUnit
-			'Invalid_string_refer_to_original_code
-			If .IsFeatureAvailable("Invalid_string_refer_to_original_code") Then
+			'ＢＧＭを変更
+			If .IsFeatureAvailable("ハイパーモードＢＧＭ") Then
 				For i = 1 To .CountFeature
-					If .Feature(i) = "Invalid_string_refer_to_original_code" And LIndex(.FeatureData(i), 1) = uname Then
+					If .Feature(i) = "ハイパーモードＢＧＭ" And LIndex(.FeatureData(i), 1) = uname Then
 						BGM = SearchMidiFile(Mid(.FeatureData(i), InStr(.FeatureData(i), " ") + 1))
 						If Len(BGM) > 0 Then
 							ChangeBGM(BGM)
@@ -5923,84 +6008,80 @@ NextLoop:
 				Next 
 			End If
 			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code_
-			'Then
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			Center(.X, .Y)
-			RefreshScreen()
-			
-			OpenMessageForm()
-			If .IsMessageDefined("Invalid_string_refer_to_original_code" & .Name & "=>" & uname & ")") Then
-				.PilotMessage("Invalid_string_refer_to_original_code" & .Name & "=>" & uname & ")")
-			ElseIf .IsMessageDefined("Invalid_string_refer_to_original_code" & uname & ")") Then 
-				.PilotMessage("Invalid_string_refer_to_original_code" & uname & ")")
-			ElseIf .IsMessageDefined("Invalid_string_refer_to_original_code" & fname & ")") Then 
-				.PilotMessage("Invalid_string_refer_to_original_code" & fname & ")")
-			Else
-				.PilotMessage("Invalid_string_refer_to_original_code")
+			'メッセージを表示
+			If .IsMessageDefined("ハイパーモード(" & .Name & "=>" & uname & ")") Or .IsMessageDefined("ハイパーモード(" & uname & ")") Or .IsMessageDefined("ハイパーモード(" & fname & ")") Or .IsMessageDefined("ハイパーモード") Then
+				Center(.X, .Y)
+				RefreshScreen()
+				
+				OpenMessageForm()
+				If .IsMessageDefined("ハイパーモード(" & .Name & "=>" & uname & ")") Then
+					.PilotMessage("ハイパーモード(" & .Name & "=>" & uname & ")")
+				ElseIf .IsMessageDefined("ハイパーモード(" & uname & ")") Then 
+					.PilotMessage("ハイパーモード(" & uname & ")")
+				ElseIf .IsMessageDefined("ハイパーモード(" & fname & ")") Then 
+					.PilotMessage("ハイパーモード(" & fname & ")")
+				Else
+					.PilotMessage("ハイパーモード")
+				End If
+				CloseMessageForm()
 			End If
-			CloseMessageForm()
-			'End If
 			
-			'繧｢繝九Γ陦ｨ遉ｺ
-			If .IsAnimationDefined("Invalid_string_refer_to_original_code" & .Name & "=>" & uname & ")") Then
-				.PlayAnimation("Invalid_string_refer_to_original_code" & .Name & "=>" & uname & ")")
-			ElseIf .IsAnimationDefined("Invalid_string_refer_to_original_code" & uname & ")") Then 
-				.PlayAnimation("Invalid_string_refer_to_original_code" & uname & ")")
-			ElseIf .IsAnimationDefined("Invalid_string_refer_to_original_code" & fname & ")") Then 
-				.PlayAnimation("Invalid_string_refer_to_original_code" & fname & ")")
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				.PlayAnimation("Invalid_string_refer_to_original_code")
-			ElseIf .IsSpecialEffectDefined("Invalid_string_refer_to_original_code" & .Name & "=>" & uname & ")") Then 
-				.SpecialEffect("Invalid_string_refer_to_original_code" & .Name & "=>" & uname & ")")
-			ElseIf .IsSpecialEffectDefined("Invalid_string_refer_to_original_code" & uname & ")") Then 
-				.SpecialEffect("Invalid_string_refer_to_original_code" & uname & ")")
-			ElseIf .IsSpecialEffectDefined("Invalid_string_refer_to_original_code" & fname & ")") Then 
-				.SpecialEffect("Invalid_string_refer_to_original_code" & fname & ")")
+			'アニメ表示
+			If .IsAnimationDefined("ハイパーモード(" & .Name & "=>" & uname & ")") Then
+				.PlayAnimation("ハイパーモード(" & .Name & "=>" & uname & ")")
+			ElseIf .IsAnimationDefined("ハイパーモード(" & uname & ")") Then 
+				.PlayAnimation("ハイパーモード(" & uname & ")")
+			ElseIf .IsAnimationDefined("ハイパーモード(" & fname & ")") Then 
+				.PlayAnimation("ハイパーモード(" & fname & ")")
+			ElseIf .IsAnimationDefined("ハイパーモード") Then 
+				.PlayAnimation("ハイパーモード")
+			ElseIf .IsSpecialEffectDefined("ハイパーモード(" & .Name & "=>" & uname & ")") Then 
+				.SpecialEffect("ハイパーモード(" & .Name & "=>" & uname & ")")
+			ElseIf .IsSpecialEffectDefined("ハイパーモード(" & uname & ")") Then 
+				.SpecialEffect("ハイパーモード(" & uname & ")")
+			ElseIf .IsSpecialEffectDefined("ハイパーモード(" & fname & ")") Then 
+				.SpecialEffect("ハイパーモード(" & fname & ")")
 			Else
-				.SpecialEffect("Invalid_string_refer_to_original_code")
+				.SpecialEffect("ハイパーモード")
 			End If
 		End With
 		
-		'Invalid_string_refer_to_original_code
+		'ハイパーモード発動
 		SelectedUnit.Transform(uname)
 		
-		'Invalid_string_refer_to_original_code
+		'ハイパーモード・ノーマルモードの自動発動をチェック
 		SelectedUnit.CurrentForm.CheckAutoHyperMode()
 		SelectedUnit.CurrentForm.CheckAutoNormalMode()
 		SelectedUnit = MapDataForUnit(SelectedUnit.X, SelectedUnit.Y)
 		
-		'Invalid_string_refer_to_original_code
+		'変形イベント
 		With SelectedUnit.CurrentForm
-			HandleEvent("螟牙ｽ｢", .MainPilot.ID, .Name)
+			HandleEvent("変形", .MainPilot.ID, .Name)
 		End With
 		If IsScenarioFinished Then
 			IsScenarioFinished = False
 			ClearUnitStatus()
 			RedrawScreen()
-			CommandState = "Invalid_string_refer_to_original_code"
+			CommandState = "ユニット選択"
 			UnlockGUI()
 			Exit Sub
 		End If
 		IsCanceled = False
 		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-		If AutoMoveCursor Then
-			MoveCursorPos("Invalid_string_refer_to_original_code")
+		'カーソル自動移動
+		If SelectedUnit.Status_Renamed = "出撃" Then
+			If AutoMoveCursor Then
+				MoveCursorPos("ユニット選択", SelectedUnit)
+			End If
+			DisplayUnitStatus(SelectedUnit)
 		End If
-		DisplayUnitStatus(SelectedUnit)
-		'End If
 		
-		CommandState = "Invalid_string_refer_to_original_code"
+		CommandState = "ユニット選択"
 		
 		UnlockGUI()
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'「変身解除」コマンド
 	' MOD START MARGE
 	'Public Sub CancelTransformationCommand()
 	Private Sub CancelTransformationCommand()
@@ -6018,24 +6099,19 @@ NextLoop:
 		
 		With SelectedUnit
 			If MapFileName = "" Then
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+				'ユニットステータスコマンドの場合
+				.Transform(LIndex(.FeatureData("ノーマルモード"), 1))
 				MakeUnitList()
 				DisplayUnitStatus(.CurrentForm)
 				UnlockGUI()
-				CommandState = "Invalid_string_refer_to_original_code"
+				CommandState = "ユニット選択"
 				Exit Sub
 			End If
 			
 			If .IsHero Then
-				'Invalid_string_refer_to_original_code_
-				'vbOKCancel + vbQuestion, "螟芽ｺｫ隗｣髯､")
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+				ret = MsgBox("変身を解除しますか？", MsgBoxStyle.OKCancel + MsgBoxStyle.Question, "変身解除")
 			Else
-				'Invalid_string_refer_to_original_code_
-				'vbOKCancel + vbQuestion, "迚ｹ谿翫Δ繝ｼ繝芽ｧ｣髯､")
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+				ret = MsgBox("特殊モードを解除しますか？", MsgBoxStyle.OKCancel + MsgBoxStyle.Question, "特殊モード解除")
 			End If
 			If ret = MsgBoxResult.Cancel Then
 				UnlockGUI()
@@ -6043,30 +6119,29 @@ NextLoop:
 				Exit Sub
 			End If
 			
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+			.Transform(LIndex(.FeatureData("ノーマルモード"), 1))
 			SelectedUnit = MapDataForUnit(.X, .Y)
 		End With
 		
-		'Invalid_string_refer_to_original_code
+		'カーソル自動移動
 		If AutoMoveCursor Then
-			MoveCursorPos("Invalid_string_refer_to_original_code")
+			MoveCursorPos("ユニット選択", SelectedUnit)
 		End If
 		DisplayUnitStatus(SelectedUnit)
 		
 		RedrawScreen()
 		
-		'Invalid_string_refer_to_original_code
-		HandleEvent("螟牙ｽ｢", SelectedUnit.MainPilot.ID, SelectedUnit.Name)
+		'変形イベント
+		HandleEvent("変形", SelectedUnit.MainPilot.ID, SelectedUnit.Name)
 		IsScenarioFinished = False
 		IsCanceled = False
 		
-		CommandState = "Invalid_string_refer_to_original_code"
+		CommandState = "ユニット選択"
 		
 		UnlockGUI()
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'「分離」コマンド
 	' MOD START MARGE
 	'Public Sub SplitCommand()
 	Private Sub SplitCommand()
@@ -6085,12 +6160,12 @@ NextLoop:
 		LockGUI()
 		
 		If MapFileName = "" Then
-			'Invalid_string_refer_to_original_code
+			'ユニットステータスコマンドの場合
 			
-			'Invalid_string_refer_to_original_code
+			'分離を実施
 			With SelectedUnit
-				If .IsFeatureAvailable("Invalid_string_refer_to_original_code") Then
-					tname = LIndex(.FeatureData("Invalid_string_refer_to_original_code"), 2)
+				If .IsFeatureAvailable("パーツ分離") Then
+					tname = LIndex(.FeatureData("パーツ分離"), 2)
 					.Transform(tname)
 				Else
 					.Split_Renamed()
@@ -6100,177 +6175,173 @@ NextLoop:
 				DisplayUnitStatus(MapDataForUnit(.X, .Y))
 			End With
 			
-			'Invalid_string_refer_to_original_code
+			'ユニットリストの表示を更新
 			MakeUnitList()
 			
-			'Invalid_string_refer_to_original_code
-			CommandState = "Invalid_string_refer_to_original_code"
+			'コマンドを終了
+			CommandState = "ユニット選択"
 			UnlockGUI()
 			Exit Sub
 		End If
 		
 		With SelectedUnit
-			If .IsFeatureAvailable("Invalid_string_refer_to_original_code") Then
-				'Invalid_string_refer_to_original_code
+			If .IsFeatureAvailable("パーツ分離") Then
+				'パーツ分離を行う場合
 				
-				'Invalid_string_refer_to_original_code_
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+				ret = MsgBox("パーツを分離しますか？", MsgBoxStyle.OKCancel + MsgBoxStyle.Question, "パーツ分離")
 				If ret = MsgBoxResult.Cancel Then
 					UnlockGUI()
 					CancelCommand()
 					Exit Sub
 				End If
 				
-				tname = LIndex(.FeatureData("Invalid_string_refer_to_original_code"), 2)
+				tname = LIndex(.FeatureData("パーツ分離"), 2)
 				
 				If Not .OtherForm(tname).IsAbleToEnter(.X, .Y) Then
-					MsgBox("Invalid_string_refer_to_original_code")
+					MsgBox("この地形では分離できません")
 					UnlockGUI()
 					CancelCommand()
 					Exit Sub
 				End If
 				
-				'Invalid_string_refer_to_original_code
-				If .IsFeatureAvailable("Invalid_string_refer_to_original_code") Then
-					BGM = SearchMidiFile(.FeatureData("Invalid_string_refer_to_original_code"))
+				'ＢＧＭ変更
+				If .IsFeatureAvailable("分離ＢＧＭ") Then
+					BGM = SearchMidiFile(.FeatureData("分離ＢＧＭ"))
 					If Len(BGM) > 0 Then
-						StartBGM(.FeatureData("Invalid_string_refer_to_original_code"))
+						StartBGM(.FeatureData("分離ＢＧＭ"))
 						Sleep(500)
 					End If
 				End If
 				
-				fname = .FeatureName("Invalid_string_refer_to_original_code")
+				fname = .FeatureName("パーツ分離")
 				
-				'Invalid_string_refer_to_original_code
-				If .IsMessageDefined("Invalid_string_refer_to_original_code" & .Name & ")") Or .IsMessageDefined("Invalid_string_refer_to_original_code" & fname & ")") Or .IsMessageDefined("Invalid_string_refer_to_original_code") Then
+				'メッセージを表示
+				If .IsMessageDefined("分離(" & .Name & ")") Or .IsMessageDefined("分離(" & fname & ")") Or .IsMessageDefined("分離") Then
 					Center(.X, .Y)
 					RefreshScreen()
 					
 					OpenMessageForm()
-					If .IsMessageDefined("Invalid_string_refer_to_original_code" & .Name & ")") Then
-						.PilotMessage("Invalid_string_refer_to_original_code" & .Name & ")")
-					ElseIf .IsMessageDefined("Invalid_string_refer_to_original_code" & fname & ")") Then 
-						.PilotMessage("Invalid_string_refer_to_original_code" & fname & ")")
+					If .IsMessageDefined("分離(" & .Name & ")") Then
+						.PilotMessage("分離(" & .Name & ")")
+					ElseIf .IsMessageDefined("分離(" & fname & ")") Then 
+						.PilotMessage("分離(" & fname & ")")
 					Else
-						.PilotMessage("Invalid_string_refer_to_original_code")
+						.PilotMessage("分離")
 					End If
 					CloseMessageForm()
 				End If
 				
-				'繧｢繝九Γ陦ｨ遉ｺ
-				If .IsAnimationDefined("Invalid_string_refer_to_original_code" & .Name & ")") Then
-					.PlayAnimation("Invalid_string_refer_to_original_code" & .Name & ")")
-				ElseIf .IsAnimationDefined("Invalid_string_refer_to_original_code" & fname & ")") Then 
-					.PlayAnimation("Invalid_string_refer_to_original_code" & fname & ")")
-				ElseIf .IsAnimationDefined("Invalid_string_refer_to_original_code") Then 
-					.PlayAnimation("Invalid_string_refer_to_original_code")
-				ElseIf .IsSpecialEffectDefined("Invalid_string_refer_to_original_code" & .Name & ")") Then 
-					.SpecialEffect("Invalid_string_refer_to_original_code" & .Name & ")")
-				ElseIf .IsSpecialEffectDefined("Invalid_string_refer_to_original_code" & fname & ")") Then 
-					.SpecialEffect("Invalid_string_refer_to_original_code" & fname & ")")
+				'アニメ表示
+				If .IsAnimationDefined("分離(" & .Name & ")") Then
+					.PlayAnimation("分離(" & .Name & ")")
+				ElseIf .IsAnimationDefined("分離(" & fname & ")") Then 
+					.PlayAnimation("分離(" & fname & ")")
+				ElseIf .IsAnimationDefined("分離") Then 
+					.PlayAnimation("分離")
+				ElseIf .IsSpecialEffectDefined("分離(" & .Name & ")") Then 
+					.SpecialEffect("分離(" & .Name & ")")
+				ElseIf .IsSpecialEffectDefined("分離(" & fname & ")") Then 
+					.SpecialEffect("分離(" & fname & ")")
 				Else
-					.SpecialEffect("Invalid_string_refer_to_original_code")
+					.SpecialEffect("分離")
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'パーツ分離
 				uname = .Name
 				.Transform(tname)
 				SelectedUnit = MapDataForUnit(.X, .Y)
 				DisplayUnitStatus(SelectedUnit)
 			Else
-				'Invalid_string_refer_to_original_code
+				'通常の分離を行う場合
 				
-				'Invalid_string_refer_to_original_code_
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+				ret = MsgBox("分離しますか？", MsgBoxStyle.OKCancel + MsgBoxStyle.Question, "分離")
 				If ret = MsgBoxResult.Cancel Then
 					UnlockGUI()
 					CancelCommand()
 					Exit Sub
 				End If
 				
-				'Invalid_string_refer_to_original_code
-				If .IsFeatureAvailable("Invalid_string_refer_to_original_code") Then
-					BGM = SearchMidiFile(.FeatureData("Invalid_string_refer_to_original_code"))
+				'ＢＧＭを変更
+				If .IsFeatureAvailable("分離ＢＧＭ") Then
+					BGM = SearchMidiFile(.FeatureData("分離ＢＧＭ"))
 					If Len(BGM) > 0 Then
-						StartBGM(.FeatureData("Invalid_string_refer_to_original_code"))
+						StartBGM(.FeatureData("分離ＢＧＭ"))
 						Sleep(500)
 					End If
 				End If
 				
-				fname = .FeatureName("Invalid_string_refer_to_original_code")
+				fname = .FeatureName("分離")
 				
-				'Invalid_string_refer_to_original_code
-				If .IsMessageDefined("Invalid_string_refer_to_original_code" & .Name & ")") Or .IsMessageDefined("Invalid_string_refer_to_original_code" & fname & ")") Or .IsMessageDefined("Invalid_string_refer_to_original_code") Then
+				'メッセージを表示
+				If .IsMessageDefined("分離(" & .Name & ")") Or .IsMessageDefined("分離(" & fname & ")") Or .IsMessageDefined("分離") Then
 					Center(.X, .Y)
 					RefreshScreen()
 					
 					OpenMessageForm()
-					If .IsMessageDefined("Invalid_string_refer_to_original_code" & .Name & ")") Then
-						.PilotMessage("Invalid_string_refer_to_original_code" & .Name & ")")
-					ElseIf .IsMessageDefined("Invalid_string_refer_to_original_code" & fname & ")") Then 
-						.PilotMessage("Invalid_string_refer_to_original_code" & fname & ")")
+					If .IsMessageDefined("分離(" & .Name & ")") Then
+						.PilotMessage("分離(" & .Name & ")")
+					ElseIf .IsMessageDefined("分離(" & fname & ")") Then 
+						.PilotMessage("分離(" & fname & ")")
 					Else
-						.PilotMessage("Invalid_string_refer_to_original_code")
+						.PilotMessage("分離")
 					End If
 					CloseMessageForm()
 				End If
 				
-				'繧｢繝九Γ陦ｨ遉ｺ
-				If .IsAnimationDefined("Invalid_string_refer_to_original_code" & .Name & ")") Then
-					.PlayAnimation("Invalid_string_refer_to_original_code" & .Name & ")")
-				ElseIf .IsAnimationDefined("Invalid_string_refer_to_original_code" & fname & ")") Then 
-					.PlayAnimation("Invalid_string_refer_to_original_code" & fname & ")")
-				ElseIf .IsAnimationDefined("Invalid_string_refer_to_original_code") Then 
-					.PlayAnimation("Invalid_string_refer_to_original_code")
-				ElseIf .IsSpecialEffectDefined("Invalid_string_refer_to_original_code" & .Name & ")") Then 
-					.SpecialEffect("Invalid_string_refer_to_original_code" & .Name & ")")
-				ElseIf .IsSpecialEffectDefined("Invalid_string_refer_to_original_code" & fname & ")") Then 
-					.SpecialEffect("Invalid_string_refer_to_original_code" & fname & ")")
+				'アニメ表示
+				If .IsAnimationDefined("分離(" & .Name & ")") Then
+					.PlayAnimation("分離(" & .Name & ")")
+				ElseIf .IsAnimationDefined("分離(" & fname & ")") Then 
+					.PlayAnimation("分離(" & fname & ")")
+				ElseIf .IsAnimationDefined("分離") Then 
+					.PlayAnimation("分離")
+				ElseIf .IsSpecialEffectDefined("分離(" & .Name & ")") Then 
+					.SpecialEffect("分離(" & .Name & ")")
+				ElseIf .IsSpecialEffectDefined("分離(" & fname & ")") Then 
+					.SpecialEffect("分離(" & fname & ")")
 				Else
-					.SpecialEffect("Invalid_string_refer_to_original_code")
+					.SpecialEffect("分離")
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'分離
 				uname = .Name
 				.Split_Renamed()
 				
-				'Invalid_string_refer_to_original_code
-				SelectedUnit = UList.Item(LIndex(.FeatureData("Invalid_string_refer_to_original_code"), 2))
+				'選択ユニットを再設定
+				SelectedUnit = UList.Item(LIndex(.FeatureData("分離"), 2))
 				
 				DisplayUnitStatus(SelectedUnit)
 				
 			End If
 		End With
 		
-		'Invalid_string_refer_to_original_code
-		HandleEvent("Invalid_string_refer_to_original_code", SelectedUnit.MainPilot.ID, uname)
+		'分離イベント
+		HandleEvent("分離", SelectedUnit.MainPilot.ID, uname)
 		If IsScenarioFinished Then
 			IsScenarioFinished = False
 			ClearUnitStatus()
 			RedrawScreen()
-			CommandState = "Invalid_string_refer_to_original_code"
+			CommandState = "ユニット選択"
 			UnlockGUI()
 			Exit Sub
 		End If
 		IsCanceled = False
 		
-		'Invalid_string_refer_to_original_code
+		'カーソル自動移動
 		If AutoMoveCursor Then
-			MoveCursorPos("Invalid_string_refer_to_original_code")
+			MoveCursorPos("ユニット選択", SelectedUnit)
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'ハイパーモード＆ノーマルモードの自動発動チェック
 		UList.CheckAutoHyperMode()
 		UList.CheckAutoNormalMode()
 		
-		CommandState = "Invalid_string_refer_to_original_code"
+		CommandState = "ユニット選択"
 		
 		UnlockGUI()
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'「合体」コマンド
 	' MOD START MARGE
 	'Public Sub CombineCommand()
 	Private Sub CombineCommand()
@@ -6292,75 +6363,65 @@ NextLoop:
 		ReDim ListItemFlag(0)
 		With SelectedUnit
 			If MapFileName = "" Then
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code_
-				'Invalid_string_refer_to_original_code_
-				'Then
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				DisplayUnitStatus(MapDataForUnit(.X, .Y))
-				MapDataForUnit(.X, .Y).CheckAutoHyperMode()
-				MapDataForUnit(.X, .Y).CheckAutoNormalMode()
-				
-				'Invalid_string_refer_to_original_code
-				MakeUnitList()
-				
-				'Invalid_string_refer_to_original_code
-				CommandState = "Invalid_string_refer_to_original_code"
-				UnlockGUI()
-				Exit Sub
-			End If
-			'End If
-			
-			'Invalid_string_refer_to_original_code
-			For i = 1 To .CountFeature
-				'Invalid_string_refer_to_original_code_
-				'And (LLength(.FeatureData(i)) > 3 Or MapFileName = "") _
-				'Then
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				If Not UList.IsDefined(LIndex(.FeatureData(i), 2)) Then
-					GoTo NextLoop
+				'ユニットステータスコマンドの時
+				'パーツ合体ならば……
+				'UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+				If MainForm.mnuUnitCommandItem.Item(CombineCmdID).Caption = "パーツ合体" And .IsFeatureAvailable("パーツ合体") Then
+					'パーツ合体を実施
+					.Transform(.FeatureData("パーツ合体"))
+					DisplayUnitStatus(MapDataForUnit(.X, .Y))
+					MapDataForUnit(.X, .Y).CheckAutoHyperMode()
+					MapDataForUnit(.X, .Y).CheckAutoNormalMode()
+					
+					'ユニットリストの表示を更新
+					MakeUnitList()
+					
+					'コマンドを終了
+					CommandState = "ユニット選択"
+					UnlockGUI()
+					Exit Sub
 				End If
-				
-				For j = 3 To LLength(.FeatureData(i))
-					u = UList.Item(LIndex(.FeatureData(i), j))
-					If u Is Nothing Then
+			End If
+			
+			'選択可能な合体パターンのリストを作成
+			For i = 1 To .CountFeature
+				If .Feature(i) = "合体" And (LLength(.FeatureData(i)) > 3 Or MapFileName = "") Then
+					If Not UList.IsDefined(LIndex(.FeatureData(i), 2)) Then
 						GoTo NextLoop
 					End If
-					If Not u.IsOperational Then
-						GoTo NextLoop
-					End If
-					'Invalid_string_refer_to_original_code_
-					'Invalid_string_refer_to_original_code_
-					'Then
-					'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-					GoTo NextLoop
-					'End If
-					If MapFileName <> "" Then
-						If System.Math.Abs(.X - u.CurrentForm.X) > 2 Or System.Math.Abs(.Y - u.CurrentForm.Y) > 2 Then
+					
+					For j = 3 To LLength(.FeatureData(i))
+						u = UList.Item(LIndex(.FeatureData(i), j))
+						If u Is Nothing Then
 							GoTo NextLoop
 						End If
-					End If
-				Next 
-				
-				ReDim Preserve list(UBound(list) + 1)
-				ReDim ListItemFlag(UBound(list))
-				list(UBound(list)) = LIndex(.FeatureData(i), 2)
-				ListItemFlag(UBound(list)) = False
-				'End If
+						If Not u.IsOperational Then
+							GoTo NextLoop
+						End If
+						If u.Status_Renamed <> "出撃" And u.CurrentForm.IsFeatureAvailable("合体制限") Then
+							GoTo NextLoop
+						End If
+						If MapFileName <> "" Then
+							If System.Math.Abs(.X - u.CurrentForm.X) > 2 Or System.Math.Abs(.Y - u.CurrentForm.Y) > 2 Then
+								GoTo NextLoop
+							End If
+						End If
+					Next 
+					
+					ReDim Preserve list(UBound(list) + 1)
+					ReDim ListItemFlag(UBound(list))
+					list(UBound(list)) = LIndex(.FeatureData(i), 2)
+					ListItemFlag(UBound(list)) = False
+				End If
 NextLoop: 
 			Next 
 			
-			'Invalid_string_refer_to_original_code
+			'どの合体を行うかを選択
 			If UBound(list) = 1 Then
 				i = 1
 			Else
 				TopItem = 1
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+				i = ListBox("合体後の形態", list, "名前")
 				If i = 0 Then
 					CancelCommand()
 					UnlockGUI()
@@ -6370,44 +6431,44 @@ NextLoop:
 		End With
 		
 		If MapFileName = "" Then
-			'Invalid_string_refer_to_original_code
+			'ユニットステータスコマンドの時
 			SelectedUnit.Combine(list(i), True)
 			
-			'Invalid_string_refer_to_original_code
+			'ハイパーモード・ノーマルモードの自動発動をチェック
 			UList.CheckAutoHyperMode()
 			UList.CheckAutoNormalMode()
 			
-			'Invalid_string_refer_to_original_code
+			'ユニットリストの表示を更新
 			MakeUnitList()
 			
-			'Invalid_string_refer_to_original_code
-			CommandState = "Invalid_string_refer_to_original_code"
+			'コマンドを終了
+			CommandState = "ユニット選択"
 			UnlockGUI()
 			Exit Sub
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'合体！
 		SelectedUnit.Combine(list(i))
 		
-		'Invalid_string_refer_to_original_code
+		'ハイパーモード＆ノーマルモードの自動発動
 		UList.CheckAutoHyperMode()
 		UList.CheckAutoNormalMode()
 		
-		'Invalid_string_refer_to_original_code
+		'合体後のユニットを選択しておく
 		SelectedUnit = MapDataForUnit(SelectedUnit.X, SelectedUnit.Y)
 		
-		'陦悟虚謨ｰ豸郁ｲｻ
+		'行動数消費
 		SelectedUnit.UseAction()
 		
-		'Invalid_string_refer_to_original_code
+		'カーソル自動移動
 		If AutoMoveCursor Then
-			MoveCursorPos("Invalid_string_refer_to_original_code")
+			MoveCursorPos("ユニット選択", SelectedUnit)
 		End If
 		
 		DisplayUnitStatus(SelectedUnit)
 		
-		'Invalid_string_refer_to_original_code
-		HandleEvent("Invalid_string_refer_to_original_code")
+		'合体イベント
+		HandleEvent("合体", SelectedUnit.MainPilot.ID, SelectedUnit.Name)
 		If IsScenarioFinished Then
 			IsScenarioFinished = False
 			UnlockGUI()
@@ -6417,16 +6478,16 @@ NextLoop:
 			IsCanceled = False
 			ClearUnitStatus()
 			RedrawScreen()
-			CommandState = "Invalid_string_refer_to_original_code"
+			CommandState = "ユニット選択"
 			UnlockGUI()
 			Exit Sub
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'行動終了
 		WaitCommand(True)
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'「換装」コマンド
 	' MOD START MARGE
 	'Public Sub ExchangeFormCommand()
 	Public Sub ExchangeFormCommand()
@@ -6442,10 +6503,9 @@ NextLoop:
 		LockGUI()
 		
 		With SelectedUnit
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+			fdata = .FeatureData("換装")
 			
-			'Invalid_string_refer_to_original_code
+			'選択可能な換装先のリストを作成
 			ReDim list(0)
 			ReDim id_list(0)
 			ReDim ListItemComment(0)
@@ -6457,7 +6517,7 @@ NextLoop:
 						ReDim Preserve ListItemComment(UBound(list))
 						id_list(UBound(list)) = .Name
 						
-						'Invalid_string_refer_to_original_code
+						'各形態の表示内容を作成
 						If SelectedUnit.Nickname0 = .Nickname Then
 							list(UBound(list)) = RightPaddedString(.Name, 27)
 						Else
@@ -6465,91 +6525,79 @@ NextLoop:
 						End If
 						list(UBound(list)) = list(UBound(list)) & LeftPaddedString(VB6.Format(.MaxHP), 6) & LeftPaddedString(VB6.Format(.MaxEN), 5) & LeftPaddedString(VB6.Format(.Armor), 5) & LeftPaddedString(VB6.Format(.Mobility), 5) & " " & .Data.Adaption
 						
-						'Invalid_string_refer_to_original_code
+						'最大攻撃力
 						max_value = 0
 						For j = 1 To .CountWeapon
-							'Invalid_string_refer_to_original_code_
-							'Then
-							'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-							If .WeaponPower(j, "") > max_value Then
-								max_value = .WeaponPower(j, "")
+							If .IsWeaponMastered(j) And Not .IsDisabled((.Weapon(j).Name)) And Not .IsWeaponClassifiedAs(j, "合") Then
+								If .WeaponPower(j, "") > max_value Then
+									max_value = .WeaponPower(j, "")
+								End If
+							End If
+						Next 
+						list(UBound(list)) = list(UBound(list)) & LeftPaddedString(VB6.Format(max_value), 7)
+						
+						'最大射程
+						max_value = 0
+						For j = 1 To .CountWeapon
+							If .IsWeaponMastered(j) And Not .IsDisabled((.Weapon(j).Name)) And Not .IsWeaponClassifiedAs(j, "合") Then
+								If .WeaponMaxRange(j) > max_value Then
+									max_value = .WeaponMaxRange(j)
+								End If
+							End If
+						Next 
+						list(UBound(list)) = list(UBound(list)) & LeftPaddedString(VB6.Format(max_value), 5)
+						
+						'換装先が持つ特殊能力一覧
+						ReDim farray(0)
+						For j = 1 To .CountFeature
+							If .FeatureName(j) <> "" Then
+								'重複する特殊能力は表示しないようチェック
+								For k = 1 To UBound(farray)
+									If .FeatureName(j) = farray(k) Then
+										Exit For
+									End If
+								Next 
+								If k > UBound(farray) Then
+									ListItemComment(UBound(list)) = ListItemComment(UBound(list)) & .FeatureName(j) & " "
+									ReDim Preserve farray(UBound(farray) + 1)
+									farray(UBound(farray)) = .FeatureName(j)
+								End If
 							End If
 						Next 
 					End If
 				End With
 			Next 
-			list(UBound(list)) = list(UBound(list)) & LeftPaddedString(VB6.Format(max_value), 7)
+			ReDim ListItemFlag(UBound(list))
 			
-			'Invalid_string_refer_to_original_code
-			max_value = 0
-			For j = 1 To .CountWeapon
-				'Invalid_string_refer_to_original_code_
-				'Then
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				If .WeaponMaxRange(j) > max_value Then
-					max_value = .WeaponMaxRange(j)
-				End If
-				'End If
-			Next 
-			list(UBound(list)) = list(UBound(list)) & LeftPaddedString(VB6.Format(max_value), 5)
+			'どの形態に換装するかを選択
+			TopItem = 1
+			ret = ListBox("変更先選択", list, "ユニット                     " & Term("ＨＰ", Nothing, 4) & " " & Term("ＥＮ", Nothing, 4) & " " & Term("装甲", Nothing, 4) & " " & Term("運動", Nothing, 4) & " " & "適応 攻撃力 射程", "カーソル移動,コメント")
+			If ret = 0 Then
+				CancelCommand()
+				UnlockGUI()
+				Exit Sub
+			End If
 			
-			'Invalid_string_refer_to_original_code
-			ReDim farray(0)
-			For j = 1 To .CountFeature
-				If .FeatureName(j) <> "" Then
-					'Invalid_string_refer_to_original_code
-					For k = 1 To UBound(farray)
-						If .FeatureName(j) = farray(k) Then
-							Exit For
-						End If
-					Next 
-					If k > UBound(farray) Then
-						ListItemComment(UBound(list)) = ListItemComment(UBound(list)) & .FeatureName(j) & " "
-						ReDim Preserve farray(UBound(farray) + 1)
-						farray(UBound(farray)) = .FeatureName(j)
-					End If
-				End If
-			Next 
-			'End If
+			'換装を実施
+			.Transform((.OtherForm(id_list(ret)).Name))
+			
+			'ユニットリストの再構築
+			MakeUnitList()
+			
+			'カーソル自動移動
+			If AutoMoveCursor Then
+				MoveCursorPos("ユニット選択", .CurrentForm)
+			End If
+			DisplayUnitStatus(.CurrentForm)
 		End With
-		'Next
-		ReDim ListItemFlag(UBound(list))
 		
-		'Invalid_string_refer_to_original_code
-		TopItem = 1
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-		If ret = 0 Then
-			CancelCommand()
-			UnlockGUI()
-			Exit Sub
-		End If
-		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_WARNING: ExchangeFormCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-		
-		'Invalid_string_refer_to_original_code
-		MakeUnitList()
-		
-		'Invalid_string_refer_to_original_code
-		If AutoMoveCursor Then
-			MoveCursorPos("Invalid_string_refer_to_original_code")
-		End If
-		'UPGRADE_WARNING: ExchangeFormCommand に変換されていないステートメントがあります。ソース コードを確認してください。
-		'End With
-		
-		CommandState = "Invalid_string_refer_to_original_code"
+		CommandState = "ユニット選択"
 		
 		UnlockGUI()
 	End Sub
 	
 	
-	'Invalid_string_refer_to_original_code
+	'「発進」コマンドを開始
 	' MOD START MARGE
 	'Public Sub StartLaunchCommand()
 	Private Sub StartLaunchCommand()
@@ -6563,7 +6611,7 @@ NextLoop:
 			ReDim ListItemFlag(.CountUnitOnBoard)
 		End With
 		
-		'Invalid_string_refer_to_original_code
+		'母艦に搭載しているユニットの一覧を作成
 		For i = 1 To SelectedUnit.CountUnitOnBoard
 			With SelectedUnit.UnitOnBoard(i)
 				list(i) = RightPaddedString(.Nickname0, 25) & RightPaddedString(.MainPilot.Nickname, 17) & LeftPaddedString(VB6.Format(.MainPilot.Level), 2) & " " & RightPaddedString(VB6.Format(.HP) & "/" & VB6.Format(.MaxHP), 12) & RightPaddedString(VB6.Format(.EN) & "/" & VB6.Format(.MaxEN), 8)
@@ -6576,51 +6624,40 @@ NextLoop:
 			End With
 		Next 
 		
-		'Invalid_string_refer_to_original_code
+		'どのユニットを発進させるか選択
 		TopItem = 1
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+		ret = ListBox("ユニット選択", list, "ユニット名               パイロット       Lv " & Term("ＨＰ", Nothing, 8) & Term("ＥＮ"), "カーソル移動")
 		
-		'Invalid_string_refer_to_original_code
+		'キャンセルされた？
 		If ret = 0 Then
 			ReDim ListItemID(0)
 			CancelCommand()
 			Exit Sub
 		End If
 		
-		SelectedCommand = "逋ｺ騾ｲ"
+		SelectedCommand = "発進"
 		
-		'Invalid_string_refer_to_original_code
+		'ユニットの発進処理
 		SelectedTarget = UList.Item(ListItemID(ret))
 		With SelectedTarget
 			.X = SelectedUnit.X
 			.Y = SelectedUnit.Y
 			
-			'Invalid_string_refer_to_original_code_
-			'And (.Data.Speed = 0 _
-			'Invalid_string_refer_to_original_code_
-			'Then
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			'Invalid_string_refer_to_original_code
-			AreaInTeleport(SelectedTarget)
-			'Invalid_string_refer_to_original_code_
-			'And (.Data.Speed = 0 _
-			'Invalid_string_refer_to_original_code_
-			'Invalid_string_refer_to_original_code_
-			'Then
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			'繧ｸ繝｣繝ｳ繝励↓繧医ｋ逋ｺ騾ｲ
-			AreaInSpeed(SelectedTarget, True)
-			'騾壼ｸｸ遘ｻ蜍輔↓繧医ｋ逋ｺ騾ｲ
-			AreaInSpeed(SelectedTarget)
-			'End If
+			If .IsFeatureAvailable("テレポート") And (.Data.Speed = 0 Or LIndex(.FeatureData("テレポート"), 2) = "0") Then
+				'テレポートによる発進
+				AreaInTeleport(SelectedTarget)
+			ElseIf .IsFeatureAvailable("ジャンプ") And (.Data.Speed = 0 Or LLength(.FeatureData("ジャンプ")) < 2 Or LIndex(.FeatureData("ジャンプ"), 2) = "0") Then 
+				'ジャンプによる発進
+				AreaInSpeed(SelectedTarget, True)
+			Else
+				'通常移動による発進
+				AreaInSpeed(SelectedTarget)
+			End If
 			
-			'豈崎襖繧剃ｸｭ螟ｮ陦ｨ遉ｺ
+			'母艦を中央表示
 			Center(.X, .Y)
 			
-			'逋ｺ騾ｲ縺輔○繧九Θ繝九ャ繝医ｒ豈崎襖縺ｮ莉｣繧上ｊ縺ｫ陦ｨ遉ｺ
+			'発進させるユニットを母艦の代わりに表示
 			If .BitmapID = 0 Then
 				With UList.Item(.Name)
 					If SelectedTarget.Party0 = .Party0 And .BitmapID <> 0 And SelectedTarget.Bitmap = .Bitmap Then
@@ -6636,13 +6673,12 @@ NextLoop:
 		
 		ReDim ListItemID(0)
 		
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-		CommandState = "Invalid_string_refer_to_original_code"
-		'End If
+		If CommandState = "コマンド選択" Then
+			CommandState = "ターゲット選択"
+		End If
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'「発進」コマンドを終了
 	' MOD START MARGE
 	'Public Sub FinishLaunchCommand()
 	Private Sub FinishLaunchCommand()
@@ -6652,16 +6688,12 @@ NextLoop:
 		LockGUI()
 		
 		With SelectedTarget
-			'Invalid_string_refer_to_original_code
+			'発進コマンドの目的地にユニットがいた場合
 			If Not MapDataForUnit(SelectedX, SelectedY) Is Nothing Then
-				If MapDataForUnit(SelectedX, SelectedY).IsFeatureAvailable("豈崎襖") Then
-					'Invalid_string_refer_to_original_code_
-					'vbOKCancel + vbQuestion, "逹濶ｦ")
-					'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+				If MapDataForUnit(SelectedX, SelectedY).IsFeatureAvailable("母艦") Then
+					ret = MsgBox("着艦しますか？", MsgBoxStyle.OKCancel + MsgBoxStyle.Question, "着艦")
 				Else
-					'Invalid_string_refer_to_original_code_
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+					ret = MsgBox("合体しますか？", MsgBoxStyle.OKCancel + MsgBoxStyle.Question, "合体")
 				End If
 				If ret = MsgBoxResult.Cancel Then
 					CancelCommand()
@@ -6670,34 +6702,34 @@ NextLoop:
 				End If
 			End If
 			
-			'Invalid_string_refer_to_original_code
-			If .IsMessageDefined("逋ｺ騾ｲ(" & .Name & ")") Then
+			'メッセージの表示
+			If .IsMessageDefined("発進(" & .Name & ")") Then
 				OpenMessageForm()
-				.PilotMessage("逋ｺ騾ｲ(" & .Name & ")")
+				.PilotMessage("発進(" & .Name & ")")
 				CloseMessageForm()
-			ElseIf .IsMessageDefined("逋ｺ騾ｲ") Then 
+			ElseIf .IsMessageDefined("発進") Then 
 				OpenMessageForm()
-				.PilotMessage("逋ｺ騾ｲ")
+				.PilotMessage("発進")
 				CloseMessageForm()
 			End If
 			
-			.SpecialEffect("逋ｺ騾ｲ", .Name)
+			.SpecialEffect("発進", .Name)
 			
 			PrevUnitArea = .Area
 			PrevUnitEN = .EN
-			.Status_Renamed = "Invalid_string_refer_to_original_code"
+			.Status_Renamed = "出撃"
 			
-			'Invalid_string_refer_to_original_code
+			'指定した位置に発進したユニットを移動
 			.Move(SelectedX, SelectedY)
 		End With
 		
-		'Invalid_string_refer_to_original_code
+		'発進したユニットを母艦から降ろす
 		With SelectedUnit
 			PrevUnitX = .X
 			PrevUnitY = .Y
 			.UnloadUnit((SelectedTarget.ID))
 			
-			'Invalid_string_refer_to_original_code
+			'母艦の位置には発進したユニットが表示されているので元に戻しておく
 			MapDataForUnit(.X, .Y) = SelectedUnit
 			PaintUnitBitmap(SelectedUnit)
 		End With
@@ -6706,20 +6738,20 @@ NextLoop:
 		With SelectedUnit
 			If MapDataForUnit(.X, .Y).ID <> .ID Then
 				RedrawScreen()
-				CommandState = "Invalid_string_refer_to_original_code"
+				CommandState = "ユニット選択"
 				UnlockGUI()
 				Exit Sub
 			End If
 		End With
 		
-		CommandState = "Invalid_string_refer_to_original_code"
+		CommandState = "移動後コマンド選択"
 		
 		UnlockGUI()
 		ProceedCommand()
 	End Sub
 	
 	
-	'Invalid_string_refer_to_original_code
+	'「命令」コマンドを開始
 	' MOD START MARGE
 	'Public Sub StartOrderCommand()
 	Private Sub StartOrderCommand()
@@ -6732,75 +6764,75 @@ NextLoop:
 		ReDim list(4)
 		ReDim ListItemFlag(4)
 		
-		'Invalid_string_refer_to_original_code
-		list(1) = "Invalid_string_refer_to_original_code"
-		list(2) = "Invalid_string_refer_to_original_code"
-		list(3) = "Invalid_string_refer_to_original_code"
-		list(4) = "Invalid_string_refer_to_original_code"
+		'可能な命令内容一覧を作成
+		list(1) = "自由：自由に行動させる"
+		list(2) = "移動：指定した位置に移動"
+		list(3) = "攻撃：指定した敵を攻撃"
+		list(4) = "護衛：指定したユニットを護衛"
 		If Not SelectedUnit.Summoner Is Nothing Or Not SelectedUnit.Master Is Nothing Then
 			ReDim Preserve list(5)
 			ReDim Preserve ListItemFlag(5)
 			If Not SelectedUnit.Master Is Nothing Then
-				list(5) = "Invalid_string_refer_to_original_code"
+				list(5) = "帰還：主人の所に戻る"
 			Else
-				list(5) = "Invalid_string_refer_to_original_code"
+				list(5) = "帰還：召喚主の所に戻る"
 			End If
 		End If
 		
-		'Invalid_string_refer_to_original_code
-		ret = ListBox("蜻ｽ莉､", list, "陦悟虚繝代ち繝ｼ繝ｳ")
+		'命令する行動パターンを選択
+		ret = ListBox("命令", list, "行動パターン")
 		
-		'Invalid_string_refer_to_original_code
+		'選択された行動パターンに応じてターゲット領域を表示
 		Select Case ret
 			Case 0
 				CancelCommand()
-			Case 1 '閾ｪ逕ｱ
-				SelectedUnit.Mode = "騾壼ｸｸ"
-				CommandState = "Invalid_string_refer_to_original_code"
+			Case 1 '自由
+				SelectedUnit.Mode = "通常"
+				CommandState = "ユニット選択"
 				DisplayUnitStatus(SelectedUnit)
-			Case 2 'Invalid_string_refer_to_original_code
-				SelectedCommand = "遘ｻ蜍募多莉､"
+			Case 2 '移動
+				SelectedCommand = "移動命令"
 				For i = 1 To MapWidth
 					For j = 1 To MapHeight
 						MaskData(i, j) = False
 					Next 
 				Next 
 				MaskScreen()
-				CommandState = "Invalid_string_refer_to_original_code"
-			Case 3 'Invalid_string_refer_to_original_code
-				SelectedCommand = "Invalid_string_refer_to_original_code"
-				AreaWithUnit("蜻ｳ譁ｹ縺ｮ謨ｵ")
+				CommandState = "ターゲット選択"
+			Case 3 '攻撃
+				SelectedCommand = "攻撃命令"
+				AreaWithUnit("味方の敵")
 				MaskData(SelectedUnit.X, SelectedUnit.Y) = True
 				MaskScreen()
-				CommandState = "Invalid_string_refer_to_original_code"
-			Case 4 'Invalid_string_refer_to_original_code
-				SelectedCommand = "隴ｷ陦帛多莉､"
-				AreaWithUnit("蜻ｳ譁ｹ")
+				CommandState = "ターゲット選択"
+			Case 4 '護衛
+				SelectedCommand = "護衛命令"
+				AreaWithUnit("味方")
 				MaskData(SelectedUnit.X, SelectedUnit.Y) = True
 				MaskScreen()
-				CommandState = "Invalid_string_refer_to_original_code"
-			Case 5 'Invalid_string_refer_to_original_code
+				CommandState = "ターゲット選択"
+			Case 5 '帰還
 				If Not SelectedUnit.Master Is Nothing Then
 					SelectedUnit.Mode = SelectedUnit.Master.MainPilot.ID
 				Else
 					SelectedUnit.Mode = SelectedUnit.Summoner.MainPilot.ID
 				End If
-				CommandState = "Invalid_string_refer_to_original_code"
+				CommandState = "ユニット選択"
 				DisplayUnitStatus(SelectedUnit)
 		End Select
 		
 		UnlockGUI()
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'「命令」コマンドを終了
 	' MOD START MARGE
 	'Public Sub FinishOrderCommand()
 	Private Sub FinishOrderCommand()
 		' MOD END MARGE
 		Select Case SelectedCommand
-			Case "遘ｻ蜍募多莉､"
+			Case "移動命令"
 				SelectedUnit.Mode = VB6.Format(SelectedX) & " " & VB6.Format(SelectedY)
-			Case "Invalid_string_refer_to_original_code", "隴ｷ陦帛多莉､"
+			Case "攻撃命令", "護衛命令"
 				SelectedUnit.Mode = SelectedTarget.MainPilot.ID
 		End Select
 		If DisplayedUnit Is SelectedUnit Then
@@ -6809,11 +6841,11 @@ NextLoop:
 		
 		RedrawScreen()
 		
-		CommandState = "Invalid_string_refer_to_original_code"
+		CommandState = "ユニット選択"
 	End Sub
 	
 	
-	'Invalid_string_refer_to_original_code
+	'「特殊能力一覧」コマンド
 	' MOD START MARGE
 	'Public Sub FeatureListCommand()
 	Private Sub FeatureListCommand()
@@ -6827,49 +6859,48 @@ NextLoop:
 		
 		LockGUI()
 		
-		'Invalid_string_refer_to_original_code
+		'表示する特殊能力名一覧の作成
 		ReDim list(0)
 		Dim id_ist(0) As Object
 		ReDim is_unit_feature(0)
 		
-		'豁ｦ蝎ｨ繝ｻ髦ｲ蜈ｷ繧ｯ繝ｩ繧ｹ
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-		With SelectedUnit
-			If .IsFeatureAvailable("豁ｦ蝎ｨ繧ｯ繝ｩ繧ｹ") Or .IsFeatureAvailable("髦ｲ蜈ｷ繧ｯ繝ｩ繧ｹ") Then
-				ReDim Preserve list(UBound(list) + 1)
-				ReDim Preserve id_list(UBound(list))
-				ReDim Preserve is_unit_feature(UBound(list))
-				list(UBound(list)) = "豁ｦ蝎ｨ繝ｻ髦ｲ蜈ｷ繧ｯ繝ｩ繧ｹ"
-				id_list(UBound(list)) = "豁ｦ蝎ｨ繝ｻ髦ｲ蜈ｷ繧ｯ繝ｩ繧ｹ"
-				is_unit_feature(UBound(list)) = True
-			End If
-		End With
-		'End If
+		'武器・防具クラス
+		If IsOptionDefined("アイテム交換") Then
+			With SelectedUnit
+				If .IsFeatureAvailable("武器クラス") Or .IsFeatureAvailable("防具クラス") Then
+					ReDim Preserve list(UBound(list) + 1)
+					ReDim Preserve id_list(UBound(list))
+					ReDim Preserve is_unit_feature(UBound(list))
+					list(UBound(list)) = "武器・防具クラス"
+					id_list(UBound(list)) = "武器・防具クラス"
+					is_unit_feature(UBound(list)) = True
+				End If
+			End With
+		End If
 		
 		With SelectedUnit.MainPilot
-			'Invalid_string_refer_to_original_code
+			'パイロット特殊能力
 			For i = 1 To .CountSkill
 				Select Case .Skill(i)
-					Case "蠕玲э謚", "荳榊ｾ玲焔"
+					Case "得意技", "不得手"
 						fname = .Skill(i)
 					Case Else
 						fname = .SkillName(i)
 				End Select
 				
-				'Invalid_string_refer_to_original_code
-				If InStr(fname, "髱櫁｡ｨ遉ｺ") > 0 Then
+				'非表示の能力は除く
+				If InStr(fname, "非表示") > 0 Then
 					GoTo NextSkill
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'既に表示されていればスキップ
 				For j = 1 To UBound(list)
 					If list(j) = fname Then
 						GoTo NextSkill
 					End If
 				Next 
 				
-				'繝ｪ繧ｹ繝医↓霑ｽ蜉
+				'リストに追加
 				ReDim Preserve list(UBound(list) + 1)
 				ReDim Preserve id_list(UBound(list))
 				list(UBound(list)) = fname
@@ -6878,43 +6909,40 @@ NextSkill:
 			Next 
 		End With
 		With SelectedUnit
-			'Invalid_string_refer_to_original_code
+			'付加・強化されたパイロット用特殊能力
 			For i = 1 To .CountCondition
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code_
-				'Invalid_string_refer_to_original_code_
-				'Then
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				GoTo NextSkill2
-				'End If
+				'パイロット能力付加または強化？
+				If Right(.Condition(i), 3) <> "付加２" And Right(.Condition(i), 3) <> "強化２" Then
+					GoTo NextSkill2
+				End If
 				
 				ftype = Left(.Condition(i), Len(.Condition(i)) - 3)
 				
-				'Invalid_string_refer_to_original_code
+				'非表示の能力？
 				Select Case LIndex(.ConditionData(i), 1)
-					Case "髱櫁｡ｨ遉ｺ", "隗｣隱ｬ"
+					Case "非表示", "解説"
 						GoTo NextSkill2
 				End Select
 				
-				'Invalid_string_refer_to_original_code
+				'有効時間が残っている？
 				If .ConditionLifetime(i) = 0 Then
 					GoTo NextSkill2
 				End If
 				
-				'陦ｨ遉ｺ蜷咲ｧｰ
+				'表示名称
 				fname = .MainPilot.SkillName(ftype)
-				If InStr(fname, "髱櫁｡ｨ遉ｺ") > 0 Then
+				If InStr(fname, "非表示") > 0 Then
 					GoTo NextSkill2
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'既に表示していればスキップ
 				For j = 1 To UBound(list)
 					If list(j) = fname Then
 						GoTo NextSkill2
 					End If
 				Next 
 				
-				'繝ｪ繧ｹ繝医↓霑ｽ蜉
+				'リストに追加
 				ReDim Preserve list(UBound(list) + 1)
 				ReDim Preserve id_list(UBound(list))
 				list(UBound(list)) = fname
@@ -6923,35 +6951,32 @@ NextSkill2:
 			Next 
 			ReDim Preserve is_unit_feature(UBound(list))
 			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
+			'ユニット用特殊能力
+			'付加された特殊能力より先に固有の特殊能力を表示
 			If .CountAllFeature > .AdditionalFeaturesNum Then
 				i = .AdditionalFeaturesNum + 1
 			Else
 				i = 1
 			End If
 			Do While i <= .CountAllFeature
-				'Invalid_string_refer_to_original_code
+				'非表示の特殊能力を排除
 				If .AllFeatureName(i) = "" Then
 					GoTo NextFeature
 				End If
 				
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code_
-				'And Not UList.IsDefined(LIndex(.AllFeatureData(i), 2)) _
-				'Then
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				GoTo NextFeature
-				'End If
+				'合体の場合は合体後の形態が作成されていなければならない
+				If .AllFeature(i) = "合体" And Not UList.IsDefined(LIndex(.AllFeatureData(i), 2)) Then
+					GoTo NextFeature
+				End If
 				
-				'Invalid_string_refer_to_original_code
+				'既に表示していればスキップ
 				For j = 1 To UBound(list)
 					If list(j) = .AllFeatureName(i) Then
 						GoTo NextFeature
 					End If
 				Next 
 				
-				'繝ｪ繧ｹ繝医↓霑ｽ蜉
+				'リストに追加
 				ReDim Preserve list(UBound(list) + 1)
 				ReDim Preserve id_list(UBound(list))
 				ReDim Preserve is_unit_feature(UBound(list))
@@ -6962,7 +6987,7 @@ NextFeature:
 				If i = .AdditionalFeaturesNum Then
 					Exit Do
 				ElseIf i = .CountFeature Then 
-					'Invalid_string_refer_to_original_code
+					'付加された特殊能力は後から表示
 					If .AdditionalFeaturesNum > 0 Then
 						i = 0
 					End If
@@ -6970,41 +6995,39 @@ NextFeature:
 				i = i + 1
 			Loop 
 			
-			'Invalid_string_refer_to_original_code
+			'アビリティで付加・強化されたパイロット用特殊能力
 			For i = 1 To .CountCondition
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code_
-				'Then
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				GoTo NextSkill3
-				'End If
+				'パイロット能力付加または強化？
+				If Right(.Condition(i), 2) <> "付加" And Right(.Condition(i), 2) <> "強化" Then
+					GoTo NextSkill3
+				End If
 				
 				ftype = Left(.Condition(i), Len(.Condition(i)) - 2)
 				
-				'Invalid_string_refer_to_original_code
-				If ftype = "Invalid_string_refer_to_original_code" Then
+				'非表示の能力？
+				If ftype = "メッセージ" Then
 					GoTo NextSkill3
 				End If
 				Select Case LIndex(.ConditionData(i), 1)
-					Case "髱櫁｡ｨ遉ｺ", "隗｣隱ｬ"
+					Case "非表示", "解説"
 						GoTo NextSkill3
 				End Select
 				
-				'Invalid_string_refer_to_original_code
+				'有効時間が残っている？
 				If .ConditionLifetime(i) = 0 Then
 					GoTo NextSkill3
 				End If
 				
-				'陦ｨ遉ｺ蜷咲ｧｰ
+				'表示名称
 				If .FeatureName0(ftype) = "" Then
 					GoTo NextSkill3
 				End If
 				fname = .MainPilot.SkillName0(ftype)
-				If InStr(fname, "髱櫁｡ｨ遉ｺ") > 0 Then
+				If InStr(fname, "非表示") > 0 Then
 					GoTo NextSkill3
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'付加されたユニット用特殊能力として既に表示していればスキップ
 				For j = 1 To UBound(list)
 					If list(j) = fname Then
 						GoTo NextSkill3
@@ -7018,14 +7041,14 @@ NextFeature:
 					fname0 = fname
 				End If
 				
-				'Invalid_string_refer_to_original_code
+				'パイロット用特殊能力として既に表示していればスキップ
 				For j = 1 To UBound(list)
 					If list(j) = fname Or list(j) = fname0 Then
 						GoTo NextSkill3
 					End If
 				Next 
 				
-				'繝ｪ繧ｹ繝医↓霑ｽ蜉
+				'リストに追加
 				ReDim Preserve list(UBound(list) + 1)
 				ReDim Preserve id_list(UBound(list))
 				ReDim Preserve is_unit_feature(UBound(list))
@@ -7043,7 +7066,7 @@ NextSkill3:
 				If AutoMoveCursor Then
 					SaveCursorPos()
 				End If
-				If id_list(ret) = "豁ｦ蝎ｨ繝ｻ髦ｲ蜈ｷ繧ｯ繝ｩ繧ｹ" Then
+				If id_list(ret) = "武器・防具クラス" Then
 					FeatureHelp(SelectedUnit, id_list(1), False)
 				ElseIf is_unit_feature(1) Then 
 					FeatureHelp(SelectedUnit, id_list(1), StrToLng(id_list(1)) <= SelectedUnit.AdditionalFeaturesNum)
@@ -7055,18 +7078,18 @@ NextSkill3:
 				End If
 			Case Else
 				TopItem = 1
-				ret = ListBox("Invalid_string_refer_to_original_code", list, "閭ｽ蜉帛錐", "陦ｨ遉ｺ縺ｮ縺ｿ")
+				ret = ListBox("特殊能力一覧", list, "能力名", "表示のみ")
 				If AutoMoveCursor Then
-					MoveCursorPos("繝繧､繧｢繝ｭ繧ｰ")
+					MoveCursorPos("ダイアログ")
 				End If
 				Do While True
-					ret = ListBox("Invalid_string_refer_to_original_code", list, "閭ｽ蜉帛錐", "騾｣邯夊｡ｨ遉ｺ")
-					'list縺御ｸ螳壹↑縺ｮ縺ｧ騾｣邯夊｡ｨ遉ｺ繧呈ｵ∫畑
+					ret = ListBox("特殊能力一覧", list, "能力名", "連続表示")
+					'listが一定なので連続表示を流用
 					frmListBox.Hide()
 					If ret = 0 Then
 						Exit Do
 					End If
-					If id_list(ret) = "豁ｦ蝎ｨ繝ｻ髦ｲ蜈ｷ繧ｯ繝ｩ繧ｹ" Then
+					If id_list(ret) = "武器・防具クラス" Then
 						FeatureHelp(SelectedUnit, id_list(ret), False)
 					ElseIf is_unit_feature(ret) Then 
 						FeatureHelp(SelectedUnit, id_list(ret), CDbl(id_list(ret)) <= SelectedUnit.AdditionalFeaturesNum)
@@ -7079,12 +7102,12 @@ NextSkill3:
 				End If
 		End Select
 		
-		CommandState = "Invalid_string_refer_to_original_code"
+		CommandState = "ユニット選択"
 		
 		UnlockGUI()
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'「武器一覧」コマンド
 	' MOD START MARGE
 	'Public Sub WeaponListCommand()
 	Private Sub WeaponListCommand()
@@ -7101,21 +7124,21 @@ NextSkill3:
 		
 		Dim min_range, max_range As Short
 		Do While True
-			w = WeaponListBox(SelectedUnit, "Invalid_string_refer_to_original_code", "荳隕ｧ")
+			w = WeaponListBox(SelectedUnit, "武装一覧", "一覧")
 			SelectedWeapon = w
 			
 			If SelectedWeapon <= 0 Then
-				'繧ｭ繝｣繝ｳ繧ｻ繝ｫ
+				'キャンセル
 				If AutoMoveCursor Then
 					RestoreCursorPos()
 				End If
 				frmListBox.Hide()
 				UnlockGUI()
-				CommandState = "Invalid_string_refer_to_original_code"
+				CommandState = "ユニット選択"
 				Exit Sub
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'指定された武器の属性一覧を作成
 			ReDim list(0)
 			i = 0
 			With SelectedUnit
@@ -7127,18 +7150,18 @@ NextSkill3:
 					atype = ""
 					alevel = ""
 					
-					'Invalid_string_refer_to_original_code
+					'非表示？
 					If buf = "|" Then
 						Exit Do
 					End If
 					
-					'Invalid_string_refer_to_original_code
-					If Mid(wclass, i, 1) = "Invalid_string_refer_to_original_code" Then
+					'Ｍ属性
+					If Mid(wclass, i, 1) = "Ｍ" Then
 						i = i + 1
 						buf = buf & Mid(wclass, i, 1)
 					End If
 					
-					'Invalid_string_refer_to_original_code
+					'レベル指定
 					If Mid(wclass, i + 1, 1) = "L" Then
 						i = i + 2
 						c = Mid(wclass, i, 1)
@@ -7150,13 +7173,13 @@ NextSkill3:
 						i = i - 1
 					End If
 					
-					'螻樊ｧ縺ｮ蜷咲ｧｰ
+					'属性の名称
 					atype = AttributeName(SelectedUnit, buf)
 					If Len(atype) > 0 Then
 						ReDim Preserve list(UBound(list) + 1)
 						
 						If Len(alevel) > 0 Then
-							list(UBound(list)) = RightPaddedString(buf & "L" & alevel, 8) & atype & "繝ｬ繝吶Ν" & StrConv(alevel, VbStrConv.Wide)
+							list(UBound(list)) = RightPaddedString(buf & "L" & alevel, 8) & atype & "レベル" & StrConv(alevel, VbStrConv.Wide)
 						Else
 							list(UBound(list)) = RightPaddedString(buf, 8) & atype
 						End If
@@ -7165,68 +7188,60 @@ NextSkill3:
 				
 				If MapFileName <> "" Then
 					ReDim Preserve list(UBound(list) + 1)
-					list(UBound(list)) = "Invalid_string_refer_to_original_code"
+					list(UBound(list)) = "射程範囲"
 				End If
 				
 				If UBound(list) > 0 Then
 					TopItem = 1
 					Do While True
-						If UBound(list) = 1 And list(1) = "Invalid_string_refer_to_original_code" Then
+						If UBound(list) = 1 And list(1) = "射程範囲" Then
 							i = 1
 						Else
 							ReDim ListItemFlag(UBound(list))
-							'Invalid_string_refer_to_original_code
-							'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+							i = ListBox("武器属性一覧", list, "属性    効果", "連続表示")
 						End If
 						
 						If i = 0 Then
-							'繧ｭ繝｣繝ｳ繧ｻ繝ｫ
+							'キャンセル
 							Exit Do
-						ElseIf list(i) = "Invalid_string_refer_to_original_code" Then 
+						ElseIf list(i) = "射程範囲" Then 
 							
 							frmListBox.Hide()
 							
-							'Invalid_string_refer_to_original_code
+							'武器の射程を求めておく
 							min_range = .Weapon(w).MinRange
 							max_range = .WeaponMaxRange(w)
 							
-							'Invalid_string_refer_to_original_code
-							If (max_range = 1 Or .IsWeaponClassifiedAs(w, "Invalid_string_refer_to_original_code")) And Not .IsWeaponClassifiedAs(w, "Invalid_string_refer_to_original_code") Then
-								AreaInReachable(SelectedUnit, max_range, .Party & "縺ｮ謨ｵ")
-							ElseIf .IsWeaponClassifiedAs(w, "Invalid_string_refer_to_original_code") Then 
+							'射程範囲表示
+							If (max_range = 1 Or .IsWeaponClassifiedAs(w, "Ｐ")) And Not .IsWeaponClassifiedAs(w, "Ｑ") Then
+								AreaInReachable(SelectedUnit, max_range, .Party & "の敵")
+							ElseIf .IsWeaponClassifiedAs(w, "Ｍ直") Then 
 								AreaInCross(.X, .Y, min_range, max_range)
-							ElseIf .IsWeaponClassifiedAs(w, "Invalid_string_refer_to_original_code") Then 
+							ElseIf .IsWeaponClassifiedAs(w, "Ｍ拡") Then 
 								AreaInWideCross(.X, .Y, min_range, max_range)
-								'Invalid_string_refer_to_original_code
-								'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-								'Invalid_string_refer_to_original_code
-								'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-								'Invalid_string_refer_to_original_code_
-								'Then
-								'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-								AreaInRange(.X, .Y, max_range, min_range, "縺吶∋縺ｦ")
-								'Invalid_string_refer_to_original_code
-								'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-								'Invalid_string_refer_to_original_code
-								'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-								'Invalid_string_refer_to_original_code
-								'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+							ElseIf .IsWeaponClassifiedAs(w, "Ｍ扇") Then 
+								AreaInSectorCross(.X, .Y, min_range, max_range, .WeaponLevel(w, "Ｍ扇"))
+							ElseIf .IsWeaponClassifiedAs(w, "Ｍ全") Or .IsWeaponClassifiedAs(w, "Ｍ線") Then 
+								AreaInRange(.X, .Y, max_range, min_range, "すべて")
+							ElseIf .IsWeaponClassifiedAs(w, "Ｍ投") Then 
+								max_range = max_range + .WeaponLevel(w, "Ｍ投")
+								min_range = min_range - .WeaponLevel(w, "Ｍ投")
 								min_range = MaxLng(min_range, 1)
-								AreaInRange(.X, .Y, max_range, min_range, "縺吶∋縺ｦ")
-							ElseIf .IsWeaponClassifiedAs(w, "Invalid_string_refer_to_original_code") Then 
+								AreaInRange(.X, .Y, max_range, min_range, "すべて")
+							ElseIf .IsWeaponClassifiedAs(w, "Ｍ移") Then 
 								AreaInMoveAction(SelectedUnit, max_range)
 							Else
-								AreaInRange(.X, .Y, max_range, min_range, .Party & "縺ｮ謨ｵ")
+								AreaInRange(.X, .Y, max_range, min_range, .Party & "の敵")
 							End If
 							Center(.X, .Y)
 							MaskScreen()
 							
-							'Invalid_string_refer_to_original_code
+							'先行入力されていたクリックイベントを解消
 							System.Windows.Forms.Application.DoEvents()
 							WaitClickMode = True
 							IsFormClicked = False
 							
-							'Invalid_string_refer_to_original_code
+							'クリックされるまで待つ
 							Do Until IsFormClicked
 								Sleep(25)
 								System.Windows.Forms.Application.DoEvents()
@@ -7238,11 +7253,11 @@ NextSkill3:
 							
 							RedrawScreen()
 							
-							If UBound(list) = 1 And list(i) = "Invalid_string_refer_to_original_code" Then
+							If UBound(list) = 1 And list(i) = "射程範囲" Then
 								Exit Do
 							End If
 						Else
-							'Invalid_string_refer_to_original_code
+							'指定された属性の解説を表示
 							frmListBox.Hide()
 							AttributeHelp(SelectedUnit, LIndex(list(i), 1), w)
 						End If
@@ -7252,7 +7267,7 @@ NextSkill3:
 		Loop 
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'「アビリティ一覧」コマンド
 	' MOD START MARGE
 	'Public Sub AbilityListCommand()
 	Private Sub AbilityListCommand()
@@ -7268,21 +7283,21 @@ NextSkill3:
 		
 		Dim min_range, max_range As Short
 		Do While True
-			a = AbilityListBox(SelectedUnit, Term("Invalid_string_refer_to_original_code", SelectedUnit) & "荳隕ｧ", "荳隕ｧ")
+			a = AbilityListBox(SelectedUnit, Term("アビリティ", SelectedUnit) & "一覧", "一覧")
 			SelectedAbility = a
 			
 			If SelectedAbility <= 0 Then
-				'繧ｭ繝｣繝ｳ繧ｻ繝ｫ
+				'キャンセル
 				If AutoMoveCursor Then
 					RestoreCursorPos()
 				End If
 				frmListBox.Hide()
 				UnlockGUI()
-				CommandState = "Invalid_string_refer_to_original_code"
+				CommandState = "ユニット選択"
 				Exit Sub
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'指定されたアビリティの属性一覧を作成
 			ReDim list(0)
 			i = 0
 			With SelectedUnit
@@ -7294,18 +7309,18 @@ NextSkill3:
 					atype = ""
 					alevel = ""
 					
-					'Invalid_string_refer_to_original_code
+					'非表示？
 					If buf = "|" Then
 						Exit Do
 					End If
 					
-					'Invalid_string_refer_to_original_code
-					If Mid(aclass, i, 1) = "Invalid_string_refer_to_original_code" Then
+					'Ｍ属性
+					If Mid(aclass, i, 1) = "Ｍ" Then
 						i = i + 1
 						buf = buf & Mid(aclass, i, 1)
 					End If
 					
-					'Invalid_string_refer_to_original_code
+					'レベル指定
 					If Mid(aclass, i + 1, 1) = "L" Then
 						i = i + 2
 						c = Mid(aclass, i, 1)
@@ -7317,13 +7332,13 @@ NextSkill3:
 						i = i - 1
 					End If
 					
-					'螻樊ｧ縺ｮ蜷咲ｧｰ
+					'属性の名称
 					atype = AttributeName(SelectedUnit, buf, True)
 					If Len(atype) > 0 Then
 						ReDim Preserve list(UBound(list) + 1)
 						
 						If Len(alevel) > 0 Then
-							list(UBound(list)) = RightPaddedString(buf & "L" & alevel, 8) & atype & "繝ｬ繝吶Ν" & StrConv(alevel, VbStrConv.Wide)
+							list(UBound(list)) = RightPaddedString(buf & "L" & alevel, 8) & atype & "レベル" & StrConv(alevel, VbStrConv.Wide)
 						Else
 							list(UBound(list)) = RightPaddedString(buf, 8) & atype
 						End If
@@ -7332,64 +7347,58 @@ NextSkill3:
 				
 				If MapFileName <> "" Then
 					ReDim Preserve list(UBound(list) + 1)
-					list(UBound(list)) = "Invalid_string_refer_to_original_code"
+					list(UBound(list)) = "射程範囲"
 				End If
 				
 				If UBound(list) > 0 Then
 					TopItem = 1
 					Do While True
-						If UBound(list) = 1 And list(1) = "Invalid_string_refer_to_original_code" Then
+						If UBound(list) = 1 And list(1) = "射程範囲" Then
 							i = 1
 						Else
 							ReDim ListItemFlag(UBound(list))
-							'Invalid_string_refer_to_original_code
-							'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+							i = ListBox("アビリティ属性一覧", list, "属性    効果", "連続表示")
 						End If
 						
 						If i = 0 Then
-							'繧ｭ繝｣繝ｳ繧ｻ繝ｫ
+							'キャンセル
 							Exit Do
-						ElseIf list(i) = "Invalid_string_refer_to_original_code" Then 
+						ElseIf list(i) = "射程範囲" Then 
 							
 							frmListBox.Hide()
 							
-							'Invalid_string_refer_to_original_code
+							'アビリティの射程を求めておく
 							min_range = .AbilityMinRange(a)
 							max_range = .AbilityMaxRange(a)
 							
-							'Invalid_string_refer_to_original_code
-							If (max_range = 1 Or .IsAbilityClassifiedAs(a, "Invalid_string_refer_to_original_code")) And Not .IsAbilityClassifiedAs(a, "Invalid_string_refer_to_original_code") Then
-								AreaInReachable(SelectedUnit, max_range, "縺吶∋縺ｦ")
-							ElseIf .IsAbilityClassifiedAs(a, "Invalid_string_refer_to_original_code") Then 
+							'射程範囲表示
+							If (max_range = 1 Or .IsAbilityClassifiedAs(a, "Ｐ")) And Not .IsAbilityClassifiedAs(a, "Ｑ") Then
+								AreaInReachable(SelectedUnit, max_range, "すべて")
+							ElseIf .IsAbilityClassifiedAs(a, "Ｍ直") Then 
 								AreaInCross(.X, .Y, min_range, max_range)
-							ElseIf .IsAbilityClassifiedAs(a, "Invalid_string_refer_to_original_code") Then 
+							ElseIf .IsAbilityClassifiedAs(a, "Ｍ拡") Then 
 								AreaInWideCross(.X, .Y, min_range, max_range)
-								'Invalid_string_refer_to_original_code
-								'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-								'Invalid_string_refer_to_original_code
-								'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-								'Invalid_string_refer_to_original_code
-								'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-								'Invalid_string_refer_to_original_code
-								'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-								'Invalid_string_refer_to_original_code
-								'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+							ElseIf .IsAbilityClassifiedAs(a, "Ｍ扇") Then 
+								AreaInSectorCross(.X, .Y, min_range, max_range, .AbilityLevel(a, "Ｍ扇"))
+							ElseIf .IsAbilityClassifiedAs(a, "Ｍ投") Then 
+								max_range = max_range + .AbilityLevel(a, "Ｍ投")
+								min_range = min_range - .AbilityLevel(a, "Ｍ投")
 								min_range = MaxLng(min_range, 1)
-								AreaInRange(.X, .Y, max_range, min_range, "縺吶∋縺ｦ")
-							ElseIf .IsAbilityClassifiedAs(a, "Invalid_string_refer_to_original_code") Then 
+								AreaInRange(.X, .Y, max_range, min_range, "すべて")
+							ElseIf .IsAbilityClassifiedAs(a, "Ｍ移") Then 
 								AreaInMoveAction(SelectedUnit, max_range)
 							Else
-								AreaInRange(.X, .Y, max_range, min_range, "縺吶∋縺ｦ")
+								AreaInRange(.X, .Y, max_range, min_range, "すべて")
 							End If
 							Center(.X, .Y)
 							MaskScreen()
 							
-							'Invalid_string_refer_to_original_code
+							'先行入力されていたクリックイベントを解消
 							System.Windows.Forms.Application.DoEvents()
 							WaitClickMode = True
 							IsFormClicked = False
 							
-							'Invalid_string_refer_to_original_code
+							'クリックされるまで待つ
 							Do Until IsFormClicked
 								Sleep(25)
 								System.Windows.Forms.Application.DoEvents()
@@ -7401,11 +7410,11 @@ NextSkill3:
 							
 							RedrawScreen()
 							
-							If UBound(list) = 1 And list(i) = "Invalid_string_refer_to_original_code" Then
+							If UBound(list) = 1 And list(i) = "射程範囲" Then
 								Exit Do
 							End If
 						Else
-							'Invalid_string_refer_to_original_code
+							'指定された属性の解説を表示
 							frmListBox.Hide()
 							AttributeHelp(SelectedUnit, LIndex(list(i), 1), a, True)
 						End If
@@ -7415,12 +7424,12 @@ NextSkill3:
 		Loop 
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'「移動範囲」コマンド
 	' MOD START MARGE
 	'Public Sub ShowAreaInSpeedCommand()
 	Private Sub ShowAreaInSpeedCommand()
 		' MOD END MARGE
-		SelectedCommand = "Invalid_string_refer_to_original_code"
+		SelectedCommand = "移動範囲"
 		' MOD START MARGE
 		'    If MainWidth <> 15 Then
 		If NewGUIMode Then
@@ -7430,17 +7439,17 @@ NextSkill3:
 		AreaInSpeed(SelectedUnit)
 		Center(SelectedUnit.X, SelectedUnit.Y)
 		MaskScreen()
-		CommandState = "Invalid_string_refer_to_original_code"
+		CommandState = "ターゲット選択"
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'「射程範囲」コマンド
 	' MOD START MARGE
 	'Public Sub ShowAreaInRangeCommand()
 	Private Sub ShowAreaInRangeCommand()
 		' MOD END MARGE
 		Dim w, i, max_range As Short
 		
-		SelectedCommand = "Invalid_string_refer_to_original_code"
+		SelectedCommand = "射程範囲"
 		
 		' MOD START MARGE
 		'    If MainWidth <> 15 Then
@@ -7450,11 +7459,11 @@ NextSkill3:
 		End If
 		
 		With SelectedUnit
-			'Invalid_string_refer_to_original_code
+			'最大の射程を持つ武器を探す
 			w = 0
 			max_range = 0
 			For i = 1 To .CountWeapon
-				If .IsWeaponAvailable(i, "Invalid_string_refer_to_original_code") And Not .IsWeaponClassifiedAs(i, "Invalid_string_refer_to_original_code") Then
+				If .IsWeaponAvailable(i, "ステータス") And Not .IsWeaponClassifiedAs(i, "Ｍ") Then
 					If .WeaponMaxRange(i) > max_range Then
 						w = i
 						max_range = .WeaponMaxRange(i)
@@ -7462,63 +7471,61 @@ NextSkill3:
 				End If
 			Next 
 			
-			'Invalid_string_refer_to_original_code
-			AreaInRange(.X, .Y, max_range, 1, .Party & "縺ｮ謨ｵ")
+			'見つかった最大の射程を持つ武器の射程範囲を選択
+			AreaInRange(.X, .Y, max_range, 1, .Party & "の敵")
 			
-			'Invalid_string_refer_to_original_code
+			'射程範囲を表示
 			Center(.X, .Y)
 			MaskScreen()
 		End With
 		
-		CommandState = "Invalid_string_refer_to_original_code"
+		CommandState = "ターゲット選択"
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
+	'「待機」コマンド
+	'他のコマンドの終了処理にも使われる
 	' MOD START MARGE
 	'Public Sub WaitCommand(Optional ByVal WithoutAction As Boolean)
-	'Invalid_string_refer_to_original_code
+	' 今後どうしてもPrivateじゃダメな処理が出たら戻してください
 	Private Sub WaitCommand(Optional ByVal WithoutAction As Boolean = False)
 		' MOD END MARGE
 		Dim p As Pilot
 		Dim i As Short
 		
-		'Invalid_string_refer_to_original_code
+		'コマンド終了時はターゲットを解除
 		'UPGRADE_NOTE: オブジェクト SelectedTarget をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
 		SelectedTarget = Nothing
 		
-		'Invalid_string_refer_to_original_code
+		'ユニットにパイロットが乗っていない？
 		If SelectedUnit.CountPilot = 0 Then
-			CommandState = "Invalid_string_refer_to_original_code"
+			CommandState = "ユニット選択"
 			RedrawScreen()
 			ClearUnitStatus()
 			Exit Sub
 		End If
 		
 		If Not WithoutAction Then
-			'谿九ｊ陦悟虚謨ｰ繧呈ｸ帛ｰ代＆縺帙ｋ
+			'残り行動数を減少させる
 			SelectedUnit.UseAction()
 			
-			'Invalid_string_refer_to_original_code
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			SelectedUnit.RemoveSpecialPowerInEffect("Invalid_string_refer_to_original_code")
+			'持続期間が「移動」のスペシャルパワー効果を削除
+			If InStr(CommandState, "移動後") > 0 Then
+				SelectedUnit.RemoveSpecialPowerInEffect("移動")
+			End If
 		End If
-		'End If
 		
-		CommandState = "Invalid_string_refer_to_original_code"
+		CommandState = "ユニット選択"
 		
-		'Invalid_string_refer_to_original_code
+		'アップデート
 		SelectedUnit.Update()
 		PList.UpdateSupportMod(SelectedUnit)
 		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-		RedrawScreen()
-		ClearUnitStatus()
-		Exit Sub
-		'End If
+		'ユニットが既に出撃していない？
+		If SelectedUnit.Status_Renamed <> "出撃" Then
+			RedrawScreen()
+			ClearUnitStatus()
+			Exit Sub
+		End If
 		
 		LockGUI()
 		
@@ -7526,7 +7533,7 @@ NextSkill3:
 		
 		p = SelectedUnit.Pilot(1)
 		
-		'Invalid_string_refer_to_original_code
+		'接触イベント
 		For i = 1 To 4
 			'UPGRADE_NOTE: オブジェクト SelectedTarget をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
 			SelectedTarget = Nothing
@@ -7552,25 +7559,24 @@ NextSkill3:
 			End With
 			
 			If Not SelectedTarget Is Nothing Then
-				HandleEvent("謗･隗ｦ", SelectedUnit.MainPilot.ID, SelectedTarget.MainPilot.ID)
+				HandleEvent("接触", SelectedUnit.MainPilot.ID, SelectedTarget.MainPilot.ID)
 				'UPGRADE_NOTE: オブジェクト SelectedTarget をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
 				SelectedTarget = Nothing
 				If IsScenarioFinished Then
 					IsScenarioFinished = False
 					Exit Sub
 				End If
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				RedrawScreen()
-				ClearUnitStatus()
-				UnlockGUI()
-				Exit Sub
+				If SelectedUnit.Status_Renamed <> "出撃" Then
+					RedrawScreen()
+					ClearUnitStatus()
+					UnlockGUI()
+					Exit Sub
+				End If
 			End If
-			'End If
 		Next 
 		
-		'Invalid_string_refer_to_original_code
-		HandleEvent("騾ｲ蜈･", SelectedUnit.MainPilot.ID, SelectedUnit.X, SelectedUnit.Y)
+		'進入イベント
+		HandleEvent("進入", SelectedUnit.MainPilot.ID, SelectedUnit.X, SelectedUnit.Y)
 		If IsScenarioFinished Then
 			IsScenarioFinished = False
 			Exit Sub
@@ -7582,8 +7588,8 @@ NextSkill3:
 			Exit Sub
 		End If
 		
-		'Invalid_string_refer_to_original_code
-		HandleEvent("Invalid_string_refer_to_original_code")
+		'行動終了イベント
+		HandleEvent("行動終了", SelectedUnit.MainPilot.ID)
 		If IsScenarioFinished Then
 			IsScenarioFinished = False
 			Exit Sub
@@ -7600,13 +7606,13 @@ NextSkill3:
 		End If
 		
 		If SelectedUnit.Action > 0 And SelectedUnit.CountPilot > 0 Then
-			'Invalid_string_refer_to_original_code
+			'カーソル自動移動
 			If AutoMoveCursor Then
-				MoveCursorPos("Invalid_string_refer_to_original_code")
+				MoveCursorPos("ユニット選択", SelectedUnit)
 			End If
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'ハイパーモード・ノーマルモードの自動発動をチェック
 		SelectedUnit.CurrentForm.CheckAutoHyperMode()
 		SelectedUnit.CurrentForm.CheckAutoNormalMode()
 		
@@ -7616,44 +7622,44 @@ NextSkill3:
 		
 		UnlockGUI()
 		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-		DisplayUnitStatus(SelectedUnit)
-		ClearUnitStatus()
-		'End If
+		'ステータスウィンドウの表示内容を更新
+		If SelectedUnit.Status_Renamed = "出撃" And MainWidth = 15 Then
+			DisplayUnitStatus(SelectedUnit)
+		Else
+			ClearUnitStatus()
+		End If
 	End Sub
 	
 	
-	'Invalid_string_refer_to_original_code
+	'マップコマンド実行
 	Public Sub MapCommand(ByVal idx As Short)
-		CommandState = "Invalid_string_refer_to_original_code"
+		CommandState = "ユニット選択"
 		
 		Select Case idx
-			Case EndTurnCmdID 'Invalid_string_refer_to_original_code
+			Case EndTurnCmdID 'ターン終了
 				If ViewMode Then
 					ViewMode = False
 					Exit Sub
 				End If
 				EndTurnCommand()
-			Case DumpCmdID '荳ｭ譁ｭ
+			Case DumpCmdID '中断
 				DumpCommand()
-			Case UnitListCmdID '驛ｨ髫願｡ｨ
+			Case UnitListCmdID '部隊表
 				UnitListCommand()
-			Case SearchSpecialPowerCmdID '繧ｹ繝壹す繝｣繝ｫ繝代Ρ繝ｼ讀懃ｴ｢
+			Case SearchSpecialPowerCmdID 'スペシャルパワー検索
 				SearchSpecialPowerCommand()
-			Case GlobalMapCmdID 'Invalid_string_refer_to_original_code
+			Case GlobalMapCmdID '全体マップ
 				GlobalMapCommand()
-			Case OperationObjectCmdID 'Invalid_string_refer_to_original_code
+			Case OperationObjectCmdID '作戦目的
 				LockGUI()
-				HandleEvent("蜍晏茜譚｡莉ｶ")
+				HandleEvent("勝利条件")
 				RedrawScreen()
 				UnlockGUI()
-			Case MapCommand1CmdID To MapCommand10CmdID 'Invalid_string_refer_to_original_code
+			Case MapCommand1CmdID To MapCommand10CmdID 'マップコマンド
 				LockGUI()
 				HandleEvent(MapCommandLabelList(idx - MapCommand1CmdID + 1))
 				UnlockGUI()
-			Case AutoDefenseCmdID 'Invalid_string_refer_to_original_code
+			Case AutoDefenseCmdID '自動反撃モード
 				'UPGRADE_ISSUE: Control mnuMapCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 				MainForm.mnuMapCommandItem(AutoDefenseCmdID).Checked = Not MainForm.mnuMapCommandItem(AutoDefenseCmdID).Checked
 				'UPGRADE_ISSUE: Control mnuMapCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
@@ -7662,7 +7668,7 @@ NextSkill3:
 				Else
 					WriteIni("Option", "AutoDefense", "Off")
 				End If
-			Case ConfigurationCmdID '險ｭ螳壼､画峩
+			Case ConfigurationCmdID '設定変更
 				'UPGRADE_ISSUE: Load ステートメント はサポートされていません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="B530EFF2-3132-48F8-B8BC-D88AF543D321"' をクリックしてください。
 				Load(frmConfiguration)
 				frmConfiguration.Left = VB6.TwipsToPixelsX((VB6.PixelsToTwipsX(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width) - VB6.PixelsToTwipsX(frmConfiguration.Width)) / 2)
@@ -7671,17 +7677,17 @@ NextSkill3:
 				frmConfiguration.Close()
 				'UPGRADE_NOTE: オブジェクト frmConfiguration をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
 				frmConfiguration = Nothing
-			Case RestartCmdID 'Invalid_string_refer_to_original_code
+			Case RestartCmdID 'リスタート
 				RestartCommand()
-			Case QuickLoadCmdID 'Invalid_string_refer_to_original_code
+			Case QuickLoadCmdID 'クイックロード
 				QuickLoadCommand()
-			Case QuickSaveCmdID 'Invalid_string_refer_to_original_code
+			Case QuickSaveCmdID 'クイックセーブ
 				QuickSaveCommand()
 		End Select
 		IsScenarioFinished = False
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'「ターン終了」コマンド
 	' MOD START MARGE
 	'Public Sub EndTurnCommand()
 	Private Sub EndTurnCommand()
@@ -7690,25 +7696,19 @@ NextSkill3:
 		Dim ret As Short
 		Dim u As Unit
 		
-		'Invalid_string_refer_to_original_code
+		'行動していない味方ユニットの数を数える
 		num = 0
 		For	Each u In UList
 			With u
-				'Invalid_string_refer_to_original_code_
-				'And .Action > 0 _
-				'Then
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				num = num + 1
-				'End If
+				If .Party = "味方" And (.Status_Renamed = "出撃" Or .Status_Renamed = "格納") And .Action > 0 Then
+					num = num + 1
+				End If
 			End With
 		Next u
 		
-		'Invalid_string_refer_to_original_code
+		'行動していないユニットがいれば警告
 		If num > 0 Then
-			'Invalid_string_refer_to_original_code_
-			'Invalid_string_refer_to_original_code_
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+			ret = MsgBox("行動していないユニットが" & VB6.Format(num) & "体あります" & vbCr & "このターンを終了しますか？", MsgBoxStyle.OKCancel + MsgBoxStyle.Question, "終了")
 		Else
 			ret = 0
 		End If
@@ -7719,48 +7719,45 @@ NextSkill3:
 				Exit Sub
 		End Select
 		
-		'Invalid_string_refer_to_original_code
+		'行動終了していないユニットに対して行動終了イベントを実施
 		For	Each SelectedUnit In UList
 			With SelectedUnit
-				'Invalid_string_refer_to_original_code_
-				'And .Action > 0 _
-				'Then
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				HandleEvent("Invalid_string_refer_to_original_code")
-				If IsScenarioFinished Then
-					IsScenarioFinished = False
-					Exit Sub
+				If .Party = "味方" And (.Status_Renamed = "出撃" Or .Status_Renamed = "格納") And .Action > 0 Then
+					HandleEvent("行動終了", .MainPilot.ID)
+					If IsScenarioFinished Then
+						IsScenarioFinished = False
+						Exit Sub
+					End If
 				End If
-				'End If
 			End With
 		Next SelectedUnit
 		
-		'Invalid_string_refer_to_original_code
+		'各陣営のフェイズに移行
 		
-		StartTurn("謨ｵ")
+		StartTurn("敵")
 		If IsScenarioFinished Then
 			IsScenarioFinished = False
 			Exit Sub
 		End If
 		
-		StartTurn("Invalid_string_refer_to_original_code")
+		StartTurn("中立")
 		If IsScenarioFinished Then
 			IsScenarioFinished = False
 			Exit Sub
 		End If
 		
-		StartTurn("Invalid_string_refer_to_original_code")
+		StartTurn("ＮＰＣ")
 		If IsScenarioFinished Then
 			IsScenarioFinished = False
 			Exit Sub
 		End If
 		
-		'Invalid_string_refer_to_original_code
-		StartTurn("蜻ｳ譁ｹ")
+		'味方フェイズに戻る
+		StartTurn("味方")
 		IsScenarioFinished = False
 	End Sub
 	
-	'繝ｦ繝九ャ繝井ｸ隕ｧ縺ｮ陦ｨ遉ｺ
+	'ユニット一覧の表示
 	' MOD START MARGE
 	'Public Sub UnitListCommand()
 	Private Sub UnitListCommand()
@@ -7785,101 +7782,95 @@ NextSkill3:
 		EnlargeListBoxHeight()
 		ReduceListBoxWidth()
 		
-		'Invalid_string_refer_to_original_code
-		uparty = "蜻ｳ譁ｹ"
-		sort_mode = "繝ｬ繝吶Ν"
+		'デフォルトのソート方法
+		uparty = "味方"
+		sort_mode = "レベル"
 		
 Beginning: 
 		
-		'Invalid_string_refer_to_original_code
+		'ユニット一覧のリストを作成
 		ReDim list(1)
 		ReDim id_list(1)
-		list(1) = "笆ｽ髯｣蝟ｶ螟画峩繝ｻ荳ｦ縺ｹ譖ｿ縺遺命"
+		list(1) = "▽陣営変更・並べ替え▽"
 		For	Each u In UList
 			With u
-				'Invalid_string_refer_to_original_code_
-				'Then
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				'Invalid_string_refer_to_original_code
-				'Invalid_string_refer_to_original_code_
-				'Or .IsConditionSatisfied("繝ｦ繝九ャ繝域ュ蝣ｱ髫阡ｽ") _
-				'Then
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				GoTo NextUnit
-				'End If
-				
-				ReDim Preserve list(UBound(list) + 1)
-				ReDim Preserve id_list(UBound(list))
-				ReDim Preserve ListItemFlag(UBound(list))
-				
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				'騾壼ｸｸ縺ｮ繝ｦ繝九ャ繝郁｡ｨ遉ｺ
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				'Invalid_string_refer_to_original_code
-				list(UBound(list)) = RightPaddedString(.Nickname0, 33) & LeftPaddedString(VB6.Format(.MainPilot.Level), 3) & " "
-				list(UBound(list)) = RightPaddedString(.Nickname0, 23)
-				If .MainPilot.Nickname0 = "Invalid_string_refer_to_original_code" Then
-					'Invalid_string_refer_to_original_code
-					list(UBound(list)) = RightPaddedString(list(UBound(list)) & "", 34) & LeftPaddedString("", 2)
-				Else
-					list(UBound(list)) = RightPaddedString(list(UBound(list)) & .MainPilot.Nickname, 34) & LeftPaddedString(VB6.Format(.MainPilot.Level), 2)
-				End If
-				list(UBound(list)) = RightPaddedString(list(UBound(list)), 37)
-				'End If
-				If .IsConditionSatisfied("Invalid_string_refer_to_original_code") Then
-					list(UBound(list)) = list(UBound(list)) & "?????/????? ???/???"
-				Else
-					list(UBound(list)) = list(UBound(list)) & LeftPaddedString(VB6.Format(.HP), 5) & "/" & LeftPaddedString(VB6.Format(.MaxHP), 5) & " " & LeftPaddedString(VB6.Format(.EN), 3) & "/" & LeftPaddedString(VB6.Format(.MaxEN), 3)
-				End If
-				'Invalid_string_refer_to_original_code
-				pilot_status_mode = True
-				With .MainPilot
-					list(UBound(list)) = RightPaddedString(.Nickname, 21) & LeftPaddedString(VB6.Format(.Level), 3) & LeftPaddedString(VB6.Format(.SP) & "/" & VB6.Format(.MaxSP), 9) & "  "
-					'菴ｿ逕ｨ蜿ｯ閭ｽ縺ｪ繧ｹ繝壹す繝｣繝ｫ繝代Ρ繝ｼ荳隕ｧ
-					For i = 1 To .CountSpecialPower
-						If .SP >= .SpecialPowerCost(.SpecialPower(i)) Then
-							list(UBound(list)) = list(UBound(list)) & SPDList.Item(.SpecialPower(i)).ShortName
+				If .Party0 = uparty And (.Status_Renamed = "出撃" Or .Status_Renamed = "格納") Then
+					'未確認のユニットは表示しない
+					If (IsOptionDefined("ユニット情報隠蔽") And (Not .IsConditionSatisfied("識別済み") And (.Party0 = "敵" Or .Party0 = "中立"))) Or .IsConditionSatisfied("ユニット情報隠蔽") Then
+						GoTo NextUnit
+					End If
+					
+					ReDim Preserve list(UBound(list) + 1)
+					ReDim Preserve id_list(UBound(list))
+					ReDim Preserve ListItemFlag(UBound(list))
+					
+					If Not .IsFeatureAvailable("ダミーユニット") Then
+						'通常のユニット表示
+						If IsOptionDefined("等身大基準") Then
+							'等身大基準を使った場合のユニット表示
+							list(UBound(list)) = RightPaddedString(.Nickname0, 33) & LeftPaddedString(VB6.Format(.MainPilot.Level), 3) & " "
+						Else
+							list(UBound(list)) = RightPaddedString(.Nickname0, 23)
+							If .MainPilot.Nickname0 = "パイロット不在" Then
+								'パイロットが乗っていない場合
+								list(UBound(list)) = RightPaddedString(list(UBound(list)) & "", 34) & LeftPaddedString("", 2)
+							Else
+								list(UBound(list)) = RightPaddedString(list(UBound(list)) & .MainPilot.Nickname, 34) & LeftPaddedString(VB6.Format(.MainPilot.Level), 2)
+							End If
+							list(UBound(list)) = RightPaddedString(list(UBound(list)), 37)
 						End If
-					Next 
-				End With
-				'End If
-				
-				If .Action = 0 Then
-					list(UBound(list)) = list(UBound(list)) & "Invalid_string_refer_to_original_code"
+						If .IsConditionSatisfied("データ不明") Then
+							list(UBound(list)) = list(UBound(list)) & "?????/????? ???/???"
+						Else
+							list(UBound(list)) = list(UBound(list)) & LeftPaddedString(VB6.Format(.HP), 5) & "/" & LeftPaddedString(VB6.Format(.MaxHP), 5) & " " & LeftPaddedString(VB6.Format(.EN), 3) & "/" & LeftPaddedString(VB6.Format(.MaxEN), 3)
+						End If
+					Else
+						'パイロットステータス表示時
+						pilot_status_mode = True
+						With .MainPilot
+							list(UBound(list)) = RightPaddedString(.Nickname, 21) & LeftPaddedString(VB6.Format(.Level), 3) & LeftPaddedString(VB6.Format(.SP) & "/" & VB6.Format(.MaxSP), 9) & "  "
+							'使用可能なスペシャルパワー一覧
+							For i = 1 To .CountSpecialPower
+								If .SP >= .SpecialPowerCost(.SpecialPower(i)) Then
+									list(UBound(list)) = list(UBound(list)) & SPDList.Item(.SpecialPower(i)).ShortName
+								End If
+							Next 
+						End With
+					End If
+					
+					If .Action = 0 Then
+						list(UBound(list)) = list(UBound(list)) & "済"
+					End If
+					If .Status_Renamed = "格納" Then
+						list(UBound(list)) = list(UBound(list)) & "格"
+					End If
+					
+					id_list(UBound(list)) = .ID
+					ListItemFlag(UBound(list)) = False
 				End If
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				list(UBound(list)) = list(UBound(list)) & "譬ｼ"
-				'End If
-				
-				id_list(UBound(list)) = .ID
-				ListItemFlag(UBound(list)) = False
-				'End If
 			End With
 NextUnit: 
 		Next u
 		
 SortList: 
 		
-		'Invalid_string_refer_to_original_code
-		If InStr(sort_mode, "蜷咲ｧｰ") = 0 Then
-			'Invalid_string_refer_to_original_code
+		'ソート
+		If InStr(sort_mode, "名称") = 0 Then
+			'数値を使ったソート
 			
-			'Invalid_string_refer_to_original_code
+			'まず並べ替えに使うキーのリストを作成
 			ReDim key_list(UBound(list))
 			With UList
 				Select Case sort_mode
-					Case "Invalid_string_refer_to_original_code"
+					Case "ＨＰ"
 						For i = 2 To UBound(list)
 							key_list(i) = .Item(id_list(i)).HP
 						Next 
-					Case "Invalid_string_refer_to_original_code"
+					Case "ＥＮ"
 						For i = 2 To UBound(list)
 							key_list(i) = .Item(id_list(i)).EN
 						Next 
-					Case "繝ｬ繝吶Ν", "Invalid_string_refer_to_original_code"
+					Case "レベル", "パイロットレベル"
 						For i = 2 To UBound(list)
 							With .Item(id_list(i))
 								If .CountPilot() > 0 Then
@@ -7892,7 +7883,7 @@ SortList:
 				End Select
 			End With
 			
-			'繧ｭ繝ｼ繧剃ｽｿ縺｣縺ｦ荳ｦ縺ｹ謠帙∴
+			'キーを使って並べ換え
 			For i = 2 To UBound(list) - 1
 				max_item = i
 				max_value = key_list(i)
@@ -7915,17 +7906,17 @@ SortList:
 				End If
 			Next 
 		Else
-			'Invalid_string_refer_to_original_code
+			'文字列を使ったソート
 			
-			'Invalid_string_refer_to_original_code
+			'まず並べ替えに使うキーのリストを作成
 			ReDim strkey_list(UBound(list))
 			With UList
 				Select Case sort_mode
-					Case "蜷咲ｧｰ", "繝ｦ繝九ャ繝亥錐遘ｰ"
+					Case "名称", "ユニット名称"
 						For i = 2 To UBound(list)
 							strkey_list(i) = .Item(id_list(i)).KanaName
 						Next 
-					Case "Invalid_string_refer_to_original_code"
+					Case "パイロット名称"
 						For i = 2 To UBound(list)
 							With .Item(id_list(i))
 								If .CountPilot() > 0 Then
@@ -7936,7 +7927,7 @@ SortList:
 				End Select
 			End With
 			
-			'繧ｭ繝ｼ繧剃ｽｿ縺｣縺ｦ荳ｦ縺ｹ謠帙∴
+			'キーを使って並べ換え
 			For i = 2 To UBound(strkey_list) - 1
 				max_item = i
 				max_str = strkey_list(i)
@@ -7966,19 +7957,18 @@ SortList:
 			ListItemID(i) = id_list(i)
 		Next 
 		
-		'繝ｪ繧ｹ繝医ｒ陦ｨ遉ｺ
+		'リストを表示
 		If pilot_status_mode Then
-			ret = ListBox(uparty & "Invalid_string_refer_to_original_code", list, "Invalid_string_refer_to_original_code" & Term("Invalid_string_refer_to_original_code", Nothing, 4) & "  " & Term("繧ｹ繝壹す繝｣繝ｫ繝代Ρ繝ｼ"), "騾｣邯夊｡ｨ遉ｺ")
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			ret = ListBox(uparty & "繝ｦ繝九ャ繝井ｸ隕ｧ", list, "繝ｦ繝九ャ繝亥錐                        Lv     " & Term("Invalid_string_refer_to_original_code", Nothing, 8) & Term("Invalid_string_refer_to_original_code"), "騾｣邯夊｡ｨ遉ｺ")
+			ret = ListBox(uparty & "パイロット一覧", list, "パイロット名       レベル    " & Term("ＳＰ", Nothing, 4) & "  " & Term("スペシャルパワー"), "連続表示")
+		ElseIf IsOptionDefined("等身大基準") Then 
+			ret = ListBox(uparty & "ユニット一覧", list, "ユニット名                        Lv     " & Term("ＨＰ", Nothing, 8) & Term("ＥＮ"), "連続表示")
 		Else
-			ret = ListBox(uparty & "繝ｦ繝九ャ繝井ｸ隕ｧ", list, "Invalid_string_refer_to_original_code" & Term("Invalid_string_refer_to_original_code", Nothing, 8) & Term("Invalid_string_refer_to_original_code"), "騾｣邯夊｡ｨ遉ｺ")
+			ret = ListBox(uparty & "ユニット一覧", list, "ユニット               パイロット Lv     " & Term("ＨＰ", Nothing, 8) & Term("ＥＮ"), "連続表示")
 		End If
 		
 		Select Case ret
 			Case 0
-				'繧ｭ繝｣繝ｳ繧ｻ繝ｫ
+				'キャンセル
 				frmListBox.Hide()
 				ReduceListBoxHeight()
 				EnlargeListBoxWidth()
@@ -7986,48 +7976,44 @@ SortList:
 				UnlockGUI()
 				Exit Sub
 			Case 1
-				'陦ｨ遉ｺ縺吶ｋ髯｣蝟ｶ
+				'表示する陣営
 				ReDim mode_list(4)
-				mode_list(1) = "蜻ｳ譁ｹ荳隕ｧ"
-				mode_list(2) = "Invalid_string_refer_to_original_code"
-				mode_list(3) = "謨ｵ荳隕ｧ"
-				mode_list(4) = "荳ｭ遶倶ｸ隕ｧ"
+				mode_list(1) = "味方一覧"
+				mode_list(2) = "ＮＰＣ一覧"
+				mode_list(3) = "敵一覧"
+				mode_list(4) = "中立一覧"
 				
-				'Invalid_string_refer_to_original_code
+				'ソート方法を選択
 				If pilot_status_mode Then
 					ReDim Preserve mode_list(7)
-					mode_list(5) = "Invalid_string_refer_to_original_code"
-					mode_list(6) = "Invalid_string_refer_to_original_code"
-					mode_list(7) = Term("Invalid_string_refer_to_original_code") & "Invalid_string_refer_to_original_code"
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+					mode_list(5) = "パイロット名称で並べ替え"
+					mode_list(6) = "レベルで並べ替え"
+					mode_list(7) = Term("ＳＰ") & "で並べ替え"
+				ElseIf IsOptionDefined("等身大基準") Then 
 					ReDim Preserve mode_list(8)
-					mode_list(5) = "Invalid_string_refer_to_original_code"
-					mode_list(6) = "Invalid_string_refer_to_original_code"
-					mode_list(7) = Term("Invalid_string_refer_to_original_code") & "Invalid_string_refer_to_original_code"
-					mode_list(8) = Term("Invalid_string_refer_to_original_code") & "Invalid_string_refer_to_original_code"
+					mode_list(5) = "名称で並べ替え"
+					mode_list(6) = "レベルで並べ替え"
+					mode_list(7) = Term("ＨＰ") & "で並べ替え"
+					mode_list(8) = Term("ＥＮ") & "で並べ替え"
 				Else
 					ReDim Preserve mode_list(9)
-					mode_list(5) = Term("Invalid_string_refer_to_original_code") & "Invalid_string_refer_to_original_code"
-					mode_list(6) = Term("Invalid_string_refer_to_original_code") & "Invalid_string_refer_to_original_code"
-					mode_list(7) = "Invalid_string_refer_to_original_code"
-					mode_list(8) = "Invalid_string_refer_to_original_code"
-					mode_list(9) = "Invalid_string_refer_to_original_code"
+					mode_list(5) = Term("ＨＰ") & "で並べ替え"
+					mode_list(6) = Term("ＥＮ") & "で並べ替え"
+					mode_list(7) = "パイロットレベルで並べ替え"
+					mode_list(8) = "ユニット名称で並べ替え"
+					mode_list(9) = "パイロット名称で並べ替え"
 				End If
 				ReDim ListItemID(UBound(mode_list))
 				ReDim ListItemFlag(UBound(mode_list))
 				
-				'Invalid_string_refer_to_original_code_
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+				ret = ListBox("選択", mode_list, "一覧表示方法", "連続表示")
 				
-				'髯｣蝟ｶ繧貞､画峩縺励※蜀崎｡ｨ遉ｺ
+				'陣営を変更して再表示
 				If ret > 0 Then
-					If Right(mode_list(ret), 2) = "荳隕ｧ" Then
+					If Right(mode_list(ret), 2) = "一覧" Then
 						uparty = Left(mode_list(ret), Len(mode_list(ret)) - 2)
 						GoTo Beginning
-						'Invalid_string_refer_to_original_code
-						'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+					ElseIf Right(mode_list(ret), 5) = "で並べ替え" Then 
 						sort_mode = Left(mode_list(ret), Len(mode_list(ret)) - 5)
 						GoTo SortList
 					End If
@@ -8040,15 +8026,15 @@ SortList:
 		ReduceListBoxHeight()
 		EnlargeListBoxWidth()
 		
-		'驕ｸ謚槭＆繧後◆繝ｦ繝九ャ繝医ｒ逕ｻ髱｢荳ｭ螟ｮ縺ｫ陦ｨ遉ｺ
+		'選択されたユニットを画面中央に表示
 		u = UList.Item(ListItemID(ret))
 		Center(u.X, u.Y)
 		RefreshScreen()
 		DisplayUnitStatus(u)
 		
-		'Invalid_string_refer_to_original_code
+		'カーソル自動移動
 		If AutoMoveCursor Then
-			MoveCursorPos("Invalid_string_refer_to_original_code")
+			MoveCursorPos("ユニット選択", u)
 		End If
 		
 		ReDim ListItemID(0)
@@ -8056,7 +8042,7 @@ SortList:
 		UnlockGUI()
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'スペシャルパワー検索コマンド
 	' MOD START MARGE
 	'Public Sub SearchSpecialPowerCommand()
 	Private Sub SearchSpecialPowerCommand()
@@ -8076,11 +8062,11 @@ SortList:
 		
 		LockGUI()
 		
-		'Invalid_string_refer_to_original_code
+		'イベント専用のコマンドを除いた全スペシャルパワーのリストを作成
 		ReDim list(0)
 		For i = 1 To SPDList.Count
 			With SPDList.Item(i)
-				If .ShortName <> "髱櫁｡ｨ遉ｺ" Then
+				If .ShortName <> "非表示" Then
 					ReDim Preserve list(UBound(list) + 1)
 					ReDim Preserve strkey_list(UBound(list))
 					list(UBound(list)) = .Name
@@ -8089,7 +8075,7 @@ SortList:
 			End With
 		Next 
 		
-		'Invalid_string_refer_to_original_code
+		'ソート
 		For i = 1 To UBound(strkey_list) - 1
 			max_item = i
 			max_str = strkey_list(i)
@@ -8110,52 +8096,49 @@ SortList:
 			End If
 		Next 
 		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code
+		'個々のスペシャルパワーに対して、そのスペシャルパワーを使用可能なパイロットが
+		'いるかどうか判定
 		ReDim flist(UBound(list))
 		For i = 1 To UBound(list)
 			flist(i) = True
 			For	Each p In PList
 				With p
-					If .Party = "蜻ｳ譁ｹ" Then
+					If .Party = "味方" Then
 						If Not .Unit_Renamed Is Nothing Then
-							'Invalid_string_refer_to_original_code_
-							'Invalid_string_refer_to_original_code_
-							'Then
-							'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-							'Invalid_string_refer_to_original_code
-							found = False
-							With .Unit_Renamed
-								If p Is .MainPilot Then
-									found = True
-								Else
-									For j = 2 To .CountPilot
-										If p Is .Pilot(j) Then
-											found = True
-											Exit For
-										End If
-									Next 
-									For j = 1 To .CountSupport
-										If p Is .Support(j) Then
-											found = True
-											Exit For
-										End If
-									Next 
-									If p Is .AdditionalSupport Then
+							If .Unit_Renamed.Status_Renamed = "出撃" And Not .Unit_Renamed.IsConditionSatisfied("憑依") Then
+								'本当に乗っている？
+								found = False
+								With .Unit_Renamed
+									If p Is .MainPilot Then
 										found = True
+									Else
+										For j = 2 To .CountPilot
+											If p Is .Pilot(j) Then
+												found = True
+												Exit For
+											End If
+										Next 
+										For j = 1 To .CountSupport
+											If p Is .Support(j) Then
+												found = True
+												Exit For
+											End If
+										Next 
+										If p Is .AdditionalSupport Then
+											found = True
+										End If
 									End If
-								End If
-							End With
-							
-							If found Then
-								If .IsSpecialPowerAvailable(list(i)) Then
-									flist(i) = False
-									Exit For
+								End With
+								
+								If found Then
+									If .IsSpecialPowerAvailable(list(i)) Then
+										flist(i) = False
+										Exit For
+									End If
 								End If
 							End If
 						End If
 					End If
-					'End If
 				End With
 			Next p
 		Next 
@@ -8166,19 +8149,19 @@ SortList:
 			ReDim id_list(UBound(list))
 			ReDim strkey_list(UBound(list))
 			
-			'Invalid_string_refer_to_original_code
+			'選択出来ないスペシャルパワーをマスク
 			For i = 1 To UBound(ListItemFlag)
 				ListItemFlag(i) = flist(i)
 			Next 
 			
-			'Invalid_string_refer_to_original_code
+			'スペシャルパワーの解説を設定
 			For i = 1 To UBound(ListItemComment)
 				ListItemComment(i) = SPDList.Item(list(i)).Comment
 			Next 
 			
-			'Invalid_string_refer_to_original_code
+			'検索するスペシャルパワーを選択
 			TopItem = 1
-			ret = MultiColumnListBox(Term("繧ｹ繝壹す繝｣繝ｫ繝代Ρ繝ｼ") & "讀懃ｴ｢", list, True)
+			ret = MultiColumnListBox(Term("スペシャルパワー") & "検索", list, True)
 			If ret = 0 Then
 				CancelCommand()
 				UnlockGUI()
@@ -8186,27 +8169,26 @@ SortList:
 			End If
 			SelectedSpecialPower = list(ret)
 			
-			'Invalid_string_refer_to_original_code
+			'選択されたスペシャルパワーを使用できるパイロットの一覧を作成
 			ReDim list2(0)
 			ReDim ListItemFlag(0)
 			ReDim id_list(0)
 			ReDim pid(0)
 			For	Each p In PList
 				With p
-					'Invalid_string_refer_to_original_code
-					If .Party <> "蜻ｳ譁ｹ" Then
+					'選択したスペシャルパワーを使用できるパイロットかどうか判定
+					If .Party <> "味方" Then
 						GoTo NextLoop
 					End If
 					If .Unit_Renamed Is Nothing Then
 						GoTo NextLoop
 					End If
-					'Invalid_string_refer_to_original_code
-					'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-					GoTo NextLoop
-					'End If
+					If .Unit_Renamed.Status_Renamed <> "出撃" Then
+						GoTo NextLoop
+					End If
 					If .Unit_Renamed.CountPilot > 0 Then
 						If .ID = .Unit_Renamed.Pilot(1).ID And .ID <> .Unit_Renamed.MainPilot.ID Then
-							'Invalid_string_refer_to_original_code
+							'追加パイロットのため、使用されていない
 							GoTo NextLoop
 						End If
 					End If
@@ -8214,7 +8196,7 @@ SortList:
 						GoTo NextLoop
 					End If
 					
-					'Invalid_string_refer_to_original_code
+					'パイロットをリストに追加
 					ReDim Preserve list2(UBound(list2) + 1)
 					ReDim Preserve ListItemFlag(UBound(list2))
 					ReDim Preserve id_list(UBound(list2))
@@ -8231,10 +8213,10 @@ SortList:
 					list2(UBound(list2)) = list2(UBound(list2)) & RightPaddedString(buf, 12)
 					
 					If .SP < .SpecialPowerCost(SelectedSpecialPower) Then
-						list2(UBound(list2)) = list2(UBound(list2)) & " " & Term("Invalid_string_refer_to_original_code", p.Unit_Renamed) & "荳崎ｶｳ"
+						list2(UBound(list2)) = list2(UBound(list2)) & " " & Term("ＳＰ", p.Unit_Renamed) & "不足"
 					End If
 					If .Unit_Renamed.Action = 0 Then
-						list2(UBound(list2)) = list2(UBound(list2)) & "Invalid_string_refer_to_original_code"
+						list2(UBound(list2)) = list2(UBound(list2)) & " 行動済"
 					End If
 				End With
 NextLoop: 
@@ -8242,32 +8224,26 @@ NextLoop:
 			
 			SelectedSpecialPower = ""
 			
-			'Invalid_string_refer_to_original_code
+			'検索をかけるパイロットの選択
 			TopItem = 1
 			EnlargeListBoxHeight()
-			'Invalid_string_refer_to_original_code
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			'Invalid_string_refer_to_original_code_
-			'Invalid_string_refer_to_original_code_
-			'& "  " & Term("繧ｹ繝壹す繝｣繝ｫ繝代Ρ繝ｼ"))
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			'Invalid_string_refer_to_original_code_
-			'Invalid_string_refer_to_original_code_
-			'& "  " & Term("繧ｹ繝壹す繝｣繝ｫ繝代Ρ繝ｼ"))
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			'End If
+			If IsOptionDefined("等身大基準") Then
+				ret = ListBox("ユニット選択", list2, "ユニット           " & Term("SP", Nothing, 2) & "/Max" & Term("SP", Nothing, 2) & "  " & Term("スペシャルパワー"))
+			Else
+				ret = ListBox("パイロット選択", list2, "パイロット         " & Term("SP", Nothing, 2) & "/Max" & Term("SP", Nothing, 2) & "  " & Term("スペシャルパワー"))
+			End If
 			ReduceListBoxHeight()
 			
-			'Invalid_string_refer_to_original_code
+			'パイロットの乗るユニットを画面中央に表示
 			If ret > 0 Then
 				With PList.Item(pid(ret))
 					Center(.Unit_Renamed.X, .Unit_Renamed.Y)
 					RefreshScreen()
 					DisplayUnitStatus(.Unit_Renamed)
 					
-					'Invalid_string_refer_to_original_code
+					'カーソル自動移動
 					If AutoMoveCursor Then
-						MoveCursorPos("Invalid_string_refer_to_original_code")
+						MoveCursorPos("ユニット選択", .Unit_Renamed)
 					End If
 				End With
 				
@@ -8279,55 +8255,51 @@ NextLoop:
 		Loop 
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'リスタートコマンド
 	' MOD START MARGE
 	'Public Sub RestartCommand()
 	Private Sub RestartCommand()
 		' MOD END MARGE
 		Dim ret As Short
 		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+		'リスタートを行うか確認
+		ret = MsgBox("リスタートしますか？", MsgBoxStyle.OKCancel + MsgBoxStyle.Question, "リスタート")
 		If ret = MsgBoxResult.Cancel Then
 			Exit Sub
 		End If
 		
 		LockGUI()
 		
-		RestoreData(ScenarioPath & "Invalid_string_refer_to_original_code", True)
+		RestoreData(ScenarioPath & "_リスタート.src", True)
 		
 		UnlockGUI()
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'クイックロードコマンド
 	' MOD START MARGE
 	'Public Sub QuickLoadCommand()
 	Private Sub QuickLoadCommand()
 		' MOD END MARGE
 		Dim ret As Short
 		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code_
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+		'ロードを行うか確認
+		ret = MsgBox("データをロードしますか？", MsgBoxStyle.OKCancel + MsgBoxStyle.Question, "クイックロード")
 		If ret = MsgBoxResult.Cancel Then
 			Exit Sub
 		End If
 		
 		LockGUI()
 		
-		RestoreData(ScenarioPath & "Invalid_string_refer_to_original_code", True)
+		RestoreData(ScenarioPath & "_クイックセーブ.src", True)
 		
-		'Invalid_string_refer_to_original_code
+		'画面を書き直してステータスを表示
 		RedrawScreen()
 		DisplayGlobalStatus()
 		
 		UnlockGUI()
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'クイックセーブコマンド
 	' MOD START MARGE
 	'Public Sub QuickSaveCommand()
 	Private Sub QuickSaveCommand()
@@ -8335,22 +8307,22 @@ NextLoop:
 		
 		LockGUI()
 		
-		'繝槭え繧ｹ繧ｫ繝ｼ繧ｽ繝ｫ繧堤よ凾險医↓
+		'マウスカーソルを砂時計に
 		'UPGRADE_WARNING: Screen プロパティ Screen.MousePointer には新しい動作が含まれます。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6BA9B8D2-2A32-4B6E-8D36-44949974A5B4"' をクリックしてください。
 		System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.WaitCursor
 		
-		'Invalid_string_refer_to_original_code
-		DumpData(ScenarioPath & "Invalid_string_refer_to_original_code")
+		'中断データをセーブ
+		DumpData(ScenarioPath & "_クイックセーブ.src")
 		
 		UnlockGUI()
 		
-		'Invalid_string_refer_to_original_code
+		'マウスカーソルを元に戻す
 		'UPGRADE_WARNING: Screen プロパティ Screen.MousePointer には新しい動作が含まれます。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6BA9B8D2-2A32-4B6E-8D36-44949974A5B4"' をクリックしてください。
 		System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.Default
 	End Sub
 	
 	
-	'Invalid_string_refer_to_original_code
+	'プレイを中断し、中断用データをセーブする
 	' MOD START MARGE
 	'Public Sub DumpCommand()
 	Private Sub DumpCommand()
@@ -8358,67 +8330,59 @@ NextLoop:
 		Dim fname, save_path As String
 		Dim ret, i As Short
 		
-		'Invalid_string_refer_to_original_code
-		'Invalid_string_refer_to_original_code_
-		'vbOKCancel + vbQuestion, "荳ｭ譁ｭ")
-		'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+		'プレイを中断するか確認
+		ret = MsgBox("プレイを中断しますか？", MsgBoxStyle.OKCancel + MsgBoxStyle.Question, "中断")
 		If ret = MsgBoxResult.Cancel Then
 			Exit Sub
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'中断データをセーブするファイル名を決定
 		For i = 1 To Len(ScenarioFileName)
 			If Mid(ScenarioFileName, Len(ScenarioFileName) - i + 1, 1) = "\" Then
 				Exit For
 			End If
 		Next 
 		fname = Mid(ScenarioFileName, Len(ScenarioFileName) - i + 2, i - 5)
-		fname = fname & "繧剃ｸｭ譁ｭ.src"
+		fname = fname & "を中断.src"
 		
-		'Invalid_string_refer_to_original_code_
-		'ScenarioPath, fname, _
-		'Invalid_string_refer_to_original_code
-		'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
+		fname = SaveFileDialog("データセーブ", ScenarioPath, fname, 2, "ｾｰﾌﾞﾃﾞｰﾀ", "src")
 		
 		If fname = "" Then
-			'繧ｭ繝｣繝ｳ繧ｻ繝ｫ
+			'キャンセル
 			Exit Sub
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'セーブ先はシナリオフォルダ？
 		If InStr(fname, "\") > 0 Then
 			save_path = Left(fname, InStr2(fname, "\"))
 		End If
 		'UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
 		If Dir(save_path) <> Dir(ScenarioPath) Then
-			'Invalid_string_refer_to_original_code_
-			'Invalid_string_refer_to_original_code_
-			'Then
-			'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-			Exit Sub
+			If MsgBox("セーブファイルはシナリオフォルダにないと読み込めません。" & vbCr & vbLf & "このままセーブしますか？", MsgBoxStyle.OKCancel + MsgBoxStyle.Question) <> 1 Then
+				Exit Sub
+			End If
 		End If
-		'End If
 		
 		'UPGRADE_WARNING: Screen プロパティ Screen.MousePointer には新しい動作が含まれます。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6BA9B8D2-2A32-4B6E-8D36-44949974A5B4"' をクリックしてください。
-		System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.WaitCursor '繝槭え繧ｹ繧ｫ繝ｼ繧ｽ繝ｫ繧堤よ凾險医↓
+		System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.WaitCursor 'マウスカーソルを砂時計に
 		
 		LockGUI()
 		
-		'Invalid_string_refer_to_original_code
+		'中断データをセーブ
 		DumpData(fname)
 		
-		'Invalid_string_refer_to_original_code
+		'マウスカーソルを元に戻す
 		'UPGRADE_WARNING: Screen プロパティ Screen.MousePointer には新しい動作が含まれます。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6BA9B8D2-2A32-4B6E-8D36-44949974A5B4"' をクリックしてください。
 		System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.Default
 		
 		MainForm.Hide()
 		
-		'Invalid_string_refer_to_original_code
+		'ゲームを終了
 		ExitGame()
 	End Sub
 	
 	
-	'Invalid_string_refer_to_original_code
+	'全体マップの表示
 	' MOD START MARGE
 	'Public Sub GlobalMapCommand()
 	Private Sub GlobalMapCommand()
@@ -8435,13 +8399,13 @@ NextLoop:
 		LockGUI()
 		
 		With MainForm
-			'Invalid_string_refer_to_original_code
+			'見やすいように背景を設定
 			'UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 			.picMain(0).BackColor = &HC0C0C0
 			'UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 			.picMain(0) = System.Drawing.Image.FromFile("")
 			
-			'Invalid_string_refer_to_original_code
+			'マップの縦横の比率を元に縮小マップの大きさを決める
 			If MapWidth > MapHeight Then
 				mwidth = 300
 				mheight = 300 * MapHeight \ MapWidth
@@ -8450,7 +8414,7 @@ NextLoop:
 				mwidth = 300 * MapWidth \ MapHeight
 			End If
 			
-			'Invalid_string_refer_to_original_code
+			'マップの全体画像を作成
 			'UPGRADE_ISSUE: Control picTmp は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 			pic = .picTmp
 			With pic
@@ -8468,44 +8432,43 @@ NextLoop:
 					u = MapDataForUnit(i, j)
 					If Not u Is Nothing Then
 						If u.BitmapID > 0 Then
-							'Invalid_string_refer_to_original_code
-							'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-							'Invalid_string_refer_to_original_code
-							'UPGRADE_ISSUE: Control picUnitBitmap は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-							'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-							ret = GUI.BitBlt(pic.hDC, xx, yy, 32, 32, .picUnitBitmap.hDC, 32 * (u.BitmapID Mod 15), 96 * (u.BitmapID \ 15), SRCCOPY)
-						Else
-							'Invalid_string_refer_to_original_code
-							'UPGRADE_ISSUE: Control picUnitBitmap は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-							'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-							ret = GUI.BitBlt(pic.hDC, xx, yy, 32, 32, .picUnitBitmap.hDC, 32 * (u.BitmapID Mod 15), 96 * (u.BitmapID \ 15) + 32, SRCCOPY)
-						End If
-						
-						'Invalid_string_refer_to_original_code
-						Select Case u.Area
-							Case "遨ｺ荳ｭ"
-								'UPGRADE_ISSUE: PictureBox メソッド pic.Line はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-								pic.Line (xx, yy + 28) - (xx + 31, yy + 28), System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Black)
-							Case "豌ｴ荳ｭ"
-								'UPGRADE_ISSUE: PictureBox メソッド pic.Line はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-								pic.Line (xx, yy + 3) - (xx + 31, yy + 3), System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Black)
-							Case "蝨ｰ荳ｭ"
-								'UPGRADE_ISSUE: PictureBox メソッド pic.Line はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-								pic.Line (xx, yy + 28) - (xx + 31, yy + 28), System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Black)
-								'UPGRADE_ISSUE: PictureBox メソッド pic.Line はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-								pic.Line (xx, yy + 3) - (xx + 31, yy + 3), System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Black)
-							Case "Invalid_string_refer_to_original_code"
-								If TerrainClass(i, j) = "譛磯擇" Then
+							If u.Action > 0 Or u.IsFeatureAvailable("地形ユニット") Then
+								'ユニット
+								'UPGRADE_ISSUE: Control picUnitBitmap は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+								'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+								ret = GUI.BitBlt(pic.hDC, xx, yy, 32, 32, .picUnitBitmap.hDC, 32 * (u.BitmapID Mod 15), 96 * (u.BitmapID \ 15), SRCCOPY)
+							Else
+								'行動済のユニット
+								'UPGRADE_ISSUE: Control picUnitBitmap は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+								'UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+								ret = GUI.BitBlt(pic.hDC, xx, yy, 32, 32, .picUnitBitmap.hDC, 32 * (u.BitmapID Mod 15), 96 * (u.BitmapID \ 15) + 32, SRCCOPY)
+							End If
+							
+							'ユニットのいる場所に合わせて表示を変更
+							Select Case u.Area
+								Case "空中"
 									'UPGRADE_ISSUE: PictureBox メソッド pic.Line はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
 									pic.Line (xx, yy + 28) - (xx + 31, yy + 28), System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Black)
-								End If
-						End Select
+								Case "水中"
+									'UPGRADE_ISSUE: PictureBox メソッド pic.Line はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+									pic.Line (xx, yy + 3) - (xx + 31, yy + 3), System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Black)
+								Case "地中"
+									'UPGRADE_ISSUE: PictureBox メソッド pic.Line はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+									pic.Line (xx, yy + 28) - (xx + 31, yy + 28), System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Black)
+									'UPGRADE_ISSUE: PictureBox メソッド pic.Line はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+									pic.Line (xx, yy + 3) - (xx + 31, yy + 3), System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Black)
+								Case "宇宙"
+									If TerrainClass(i, j) = "月面" Then
+										'UPGRADE_ISSUE: PictureBox メソッド pic.Line はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+										pic.Line (xx, yy + 28) - (xx + 31, yy + 28), System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Black)
+									End If
+							End Select
+						End If
 					End If
-					'End If
 				Next 
 			Next 
 			
-			'Invalid_string_refer_to_original_code
+			'マップ全体を縮小して描画
 			'UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 			smode = GetStretchBltMode(.picMain(0).hDC)
 			'UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
@@ -8516,43 +8479,42 @@ NextLoop:
 			'UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 			ret = SetStretchBltMode(.picMain(0).hDC, smode)
 			
-			'Invalid_string_refer_to_original_code
+			'マップ全体画像を破棄
 			With pic
 				.Image = System.Drawing.Image.FromFile("")
 				.Width = VB6.TwipsToPixelsX(32)
 				.Height = VB6.TwipsToPixelsY(32)
 			End With
 			
-			'逕ｻ髱｢繧呈峩譁ｰ
+			'画面を更新
 			'UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 			.picMain(0).Refresh()
 		End With
 		
-		'Invalid_string_refer_to_original_code
+		'味方ユニット数、敵ユニット数のカウント
 		For	Each u In UList
 			With u
-				'Invalid_string_refer_to_original_code
-				'UPGRADE_ISSUE: 前の行を解析できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="82EBB1AE-1FCB-4FEF-9E6C-8736A316F8A7"' をクリックしてください。
-				If .Party0 = "蜻ｳ譁ｹ" Or .Party0 = "Invalid_string_refer_to_original_code" Then
-					num = num + 1
-				Else
-					num2 = num2 + 1
+				If .Status_Renamed = "出撃" Or .Status_Renamed = "格納" Then
+					If .Party0 = "味方" Or .Party0 = "ＮＰＣ" Then
+						num = num + 1
+					Else
+						num2 = num2 + 1
+					End If
 				End If
-				'End If
 			End With
 		Next u
 		
-		'Invalid_string_refer_to_original_code
+		'各ユニット数の表示
 		prev_mode = AutoMessageMode
 		AutoMessageMode = False
 		
 		OpenMessageForm()
-		DisplayMessage("Invalid_string_refer_to_original_code", "Invalid_string_refer_to_original_code" & VB6.Format(num) & ";" & "Invalid_string_refer_to_original_code" & VB6.Format(num2))
+		DisplayMessage("システム", "味方ユニット： " & VB6.Format(num) & ";" & "敵ユニット  ： " & VB6.Format(num2))
 		CloseMessageForm()
 		
 		AutoMessageMode = prev_mode
 		
-		'Invalid_string_refer_to_original_code
+		'画面を元に戻す
 		'UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
 		MainForm.picMain(0).BackColor = &HFFFFFF
 		RefreshScreen()
@@ -8561,12 +8523,12 @@ NextLoop:
 	End Sub
 	
 	
-	'迴ｾ蝨ｨ縺ｮ驕ｸ謚樒憾豕√ｒ險倬鹸
+	'現在の選択状況を記録
 	Public Sub SaveSelections()
-		'Invalid_string_refer_to_original_code
+		'スタックのインデックスを増やす
 		SelectionStackIndex = SelectionStackIndex + 1
 		
-		'Invalid_string_refer_to_original_code
+		'スタック領域確保
 		ReDim Preserve SavedSelectedUnit(SelectionStackIndex)
 		ReDim Preserve SavedSelectedTarget(SelectionStackIndex)
 		ReDim Preserve SavedSelectedUnitForEvent(SelectionStackIndex)
@@ -8581,7 +8543,7 @@ NextLoop:
 		ReDim Preserve SavedSelectedX(SelectionStackIndex)
 		ReDim Preserve SavedSelectedY(SelectionStackIndex)
 		
-		'遒ｺ菫昴＠縺滄伜沺縺ｫ驕ｸ謚樒憾豕√ｒ險倬鹸
+		'確保した領域に選択状況を記録
 		SavedSelectedUnit(SelectionStackIndex) = SelectedUnit
 		SavedSelectedTarget(SelectionStackIndex) = SelectedTarget
 		SavedSelectedUnitForEvent(SelectionStackIndex) = SelectedUnitForEvent
@@ -8597,14 +8559,14 @@ NextLoop:
 		SavedSelectedY(SelectionStackIndex) = SelectedY
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
+	'選択状況を復元
 	Public Sub RestoreSelections()
-		'Invalid_string_refer_to_original_code
+		'スタックに積まれていない？
 		If SelectionStackIndex = 0 Then
 			Exit Sub
 		End If
 		
-		'Invalid_string_refer_to_original_code
+		'スタックトップから記録された選択状況を取り出す
 		If Not SavedSelectedUnit(SelectionStackIndex) Is Nothing Then
 			SelectedUnit = SavedSelectedUnit(SelectionStackIndex).CurrentForm
 		Else
@@ -8639,10 +8601,10 @@ NextLoop:
 		SelectedX = SavedSelectedX(SelectionStackIndex)
 		SelectedY = SavedSelectedY(SelectionStackIndex)
 		
-		'Invalid_string_refer_to_original_code
+		'スタックのインデックスを１減らす
 		SelectionStackIndex = SelectionStackIndex - 1
 		
-		'Invalid_string_refer_to_original_code
+		'スタックの領域を開放
 		ReDim Preserve SavedSelectedUnit(SelectionStackIndex)
 		ReDim Preserve SavedSelectedTarget(SelectionStackIndex)
 		ReDim Preserve SavedSelectedUnitForEvent(SelectionStackIndex)
@@ -8658,7 +8620,7 @@ NextLoop:
 		ReDim Preserve SavedSelectedY(SelectionStackIndex)
 	End Sub
 	
-	'驕ｸ謚槭ｒ蜈･繧梧崛縺医ｋ
+	'選択を入れ替える
 	Public Sub SwapSelections()
 		Dim u, t As Unit
 		Dim w, tw As Short

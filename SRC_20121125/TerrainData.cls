@@ -10,37 +10,37 @@ Attribute VB_Exposed = False
 Option Explicit
 
 ' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯ãƒ•ãƒªãƒ¼ã‚½ãƒ•ãƒˆã§ã‚ã‚Šã€ç„¡ä¿è¨¼ã§ã™ã€‚
-' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯GNU General Public License(Ver.3ã¾ãŸã¯ãã‚Œä»¥é™)ãŒå®šã‚ã‚‹æ¡ä»¶ã®ä¸‹ã§
-' å†é ’å¸ƒã¾ãŸã¯æ”¹å¤‰ã™ã‚‹ã“ã¨ãŒã§ãã¾ã™ã€‚
+' –{ƒvƒƒOƒ‰ƒ€‚ÍƒtƒŠ[ƒ\ƒtƒg‚Å‚ ‚èA–³•ÛØ‚Å‚·B
+' –{ƒvƒƒOƒ‰ƒ€‚ÍGNU General Public License(Ver.3‚Ü‚½‚Í‚»‚êˆÈ~)‚ª’è‚ß‚éğŒ‚Ì‰º‚Å
+' Ä”Ğ•z‚Ü‚½‚Í‰ü•Ï‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B
 
-'åœ°å½¢ãƒ‡ãƒ¼ã‚¿ã®ã‚¯ãƒ©ã‚¹
+'’nŒ`ƒf[ƒ^‚ÌƒNƒ‰ƒX
 
-'è­˜åˆ¥ç•ªå·
+'¯•Ê”Ô†
 Public ID As Integer
-'åç§°
+'–¼Ì
 Public Name As String
-'ãƒ“ãƒƒãƒˆãƒãƒƒãƒ—å
+'ƒrƒbƒgƒ}ƒbƒv–¼
 Public Bitmap As String
-'åœ°å½¢ã‚¿ã‚¤ãƒ—
+'’nŒ`ƒ^ƒCƒv
 Public Class As String
-'ç§»å‹•ã‚³ã‚¹ãƒˆ
+'ˆÚ“®ƒRƒXƒg
 Public MoveCost As Integer
-'å‘½ä¸­ä¿®æ­£
+'–½’†C³
 Public HitMod As Integer
-'ãƒ€ãƒ¡ãƒ¼ã‚¸ä¿®æ­£
+'ƒ_ƒ[ƒWC³
 Public DamageMod As Integer
 
-'åœ°å½¢åŠ¹æœ
+'’nŒ`Œø‰Ê
 Public colFeature As Collection
 
 
-'ã‚¯ãƒ©ã‚¹ã®åˆæœŸåŒ–
+'ƒNƒ‰ƒX‚Ì‰Šú‰»
 Private Sub Class_Initialize()
     ID = -1
 End Sub
 
-'ã‚¯ãƒ©ã‚¹ã®è§£æ”¾
+'ƒNƒ‰ƒX‚Ì‰ğ•ú
 Private Sub Class_Terminate()
 Dim i As Integer
     
@@ -55,7 +55,7 @@ Dim i As Integer
 End Sub
 
 
-'åœ°å½¢åŠ¹æœã‚’è¿½åŠ 
+'’nŒ`Œø‰Ê‚ğ’Ç‰Á
 Public Sub AddFeature(fdef As String)
 Dim fd As FeatureData
 Dim ftype As String, flevel As Double, fdata As String
@@ -68,7 +68,7 @@ Dim buf As String
     
     buf = fdef
     
-    'åœ°å½¢åŠ¹æœã®ç¨®é¡ã€ãƒ¬ãƒ™ãƒ«ã€ãƒ‡ãƒ¼ã‚¿ã‚’åˆ‡ã‚Šå‡ºã—
+    '’nŒ`Œø‰Ê‚Ìí—ŞAƒŒƒxƒ‹Aƒf[ƒ^‚ğØ‚èo‚µ
     flevel = DEFAULT_LEVEL
     i = InStr(buf, "Lv")
     j = InStr(buf, "=")
@@ -90,7 +90,7 @@ Dim buf As String
         ftype = buf
     End If
     
-    'åœ°å½¢åŠ¹æœã‚’ç™»éŒ²
+    '’nŒ`Œø‰Ê‚ğ“o˜^
     Set fd = New FeatureData
     With fd
         .Name = ftype
@@ -104,7 +104,7 @@ Dim buf As String
     End If
 End Sub
 
-'åœ°å½¢åŠ¹æœã®ç·æ•°
+'’nŒ`Œø‰Ê‚Ì‘”
 Public Function CountFeature() As Integer
     If colFeature Is Nothing Then
         Exit Function
@@ -112,7 +112,7 @@ Public Function CountFeature() As Integer
     CountFeature = colFeature.Count
 End Function
 
-'åœ°å½¢åŠ¹æœ
+'’nŒ`Œø‰Ê
 Public Function Feature(Index As Variant) As String
 Dim fd As FeatureData
 
@@ -120,7 +120,7 @@ Dim fd As FeatureData
     Feature = fd.Name
 End Function
 
-'åœ°å½¢åŠ¹æœã®åç§°
+'’nŒ`Œø‰Ê‚Ì–¼Ì
 Public Function FeatureName(Index As Variant) As String
 Dim fd As FeatureData
 
@@ -136,7 +136,7 @@ Dim fd As FeatureData
     End With
 End Function
 
-'åœ°å½¢åŠ¹æœã®ãƒ¬ãƒ™ãƒ«
+'’nŒ`Œø‰Ê‚ÌƒŒƒxƒ‹
 Public Function FeatureLevel(Index As Variant) As Double
 Dim fd As FeatureData
 
@@ -152,7 +152,7 @@ ErrorHandler:
     FeatureLevel = 0
 End Function
 
-'åœ°å½¢åŠ¹æœã®ãƒ‡ãƒ¼ã‚¿
+'’nŒ`Œø‰Ê‚Ìƒf[ƒ^
 Public Function FeatureData(Index As Variant) As String
 Dim fd As FeatureData
 
@@ -165,7 +165,7 @@ ErrorHandler:
     FeatureData = ""
 End Function
 
-'æŒ‡å®šã—ãŸåœ°å½¢åŠ¹æœã‚’æŒã£ã¦ã„ã‚‹ã‹ï¼Ÿ
+'w’è‚µ‚½’nŒ`Œø‰Ê‚ğ‚Á‚Ä‚¢‚é‚©H
 Public Function IsFeatureAvailable(fname As String) As Boolean
 Dim fd As FeatureData
 
@@ -181,7 +181,7 @@ Dim fd As FeatureData
     IsFeatureAvailable = False
 End Function
 
-'æŒ‡å®šã—ãŸåœ°å½¢åŠ¹æœã¯ãƒ¬ãƒ™ãƒ«æŒ‡å®šãŒã•ã‚Œã¦ã„ã‚‹ã‹ï¼Ÿ
+'w’è‚µ‚½’nŒ`Œø‰Ê‚ÍƒŒƒxƒ‹w’è‚ª‚³‚ê‚Ä‚¢‚é‚©H
 Public Function IsFeatureLevelSpecified(Index As Variant) As Boolean
 Dim fd As FeatureData
     
@@ -199,7 +199,7 @@ ErrorHandler:
     IsFeatureLevelSpecified = False
 End Function
 
-'ãƒ‡ãƒ¼ã‚¿ã‚’ã‚¯ãƒªã‚¢
+'ƒf[ƒ^‚ğƒNƒŠƒA
 Public Sub Clear()
 Dim i As Integer
     

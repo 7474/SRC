@@ -3,20 +3,20 @@ Option Explicit On
 Friend Class BattleConfigData
 	
 	' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
+	' 本プログラムはフリーソフトであり、無保証です。
+	' 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
+	' 再頒布または改変することができます。
 	
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
+	'バトルコンフィグデータのクラス
+	' --- ダメージ計算、命中率算出など、バトルに関連するエリアスを定義します。
 	
-	'蜷咲ｧｰ
+	'名称
 	Public Name As String
 	
-	'Invalid_string_refer_to_original_code
+	'計算式
 	Public ConfigCalc As String
 	
-	'Invalid_string_refer_to_original_code
+	'クラスの初期化
 	'UPGRADE_NOTE: Class_Initialize は Class_Initialize_Renamed にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
 	Private Sub Class_Initialize_Renamed()
 		ConfigCalc = ""
@@ -26,21 +26,21 @@ Friend Class BattleConfigData
 		Class_Initialize_Renamed()
 	End Sub
 	
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
+	'バトルコンフィグデータに基づいた置換＆計算の実行
+	'実行前に使う可能性のある変数を事前に代入しておくこと
 	Public Function Calculate() As Double
 		Dim expr As String
 		Dim morales As Integer
 		
 		expr = ConfigCalc
 		
-		'繧ｳ繝ｳ繝輔ぅ繧ｰ螟画焚繧呈怏蜉ｹ縺ｫ縺吶ｋ
+		'コンフィグ変数を有効にする
 		BCVariable.IsConfig = True
 		
-		'蠑上ｒ隧穂ｾ｡縺吶ｋ
+		'式を評価する
 		Calculate = GetValueAsDouble(expr)
 		
-		'繧ｳ繝ｳ繝輔ぅ繧ｰ螟画焚繧堤┌蜉ｹ縺ｫ縺吶ｋ
+		'コンフィグ変数を無効にする
 		BCVariable.IsConfig = False
 	End Function
 End Class

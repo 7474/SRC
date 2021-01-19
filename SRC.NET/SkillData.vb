@@ -3,18 +3,18 @@ Option Explicit On
 Friend Class SkillData
 	
 	' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
+	' 本プログラムはフリーソフトであり、無保証です。
+	' 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
+	' 再頒布または改変することができます。
 	
-	'Invalid_string_refer_to_original_code
+	'パイロット用特殊能力のクラス
 	
-	'蜷咲ｧｰ
+	'名称
 	Public Name As String
-	'Invalid_string_refer_to_original_code
+	'レベル (レベル指定のない能力の場合はDEFAULT_LEVEL)
 	Public Level As Double
-	'Invalid_string_refer_to_original_code
+	'データ
 	Public StrData As String
-	'鄙貞ｾ励Ξ繝吶Ν
+	'習得レベル
 	Public NecessaryLevel As Short
 End Class

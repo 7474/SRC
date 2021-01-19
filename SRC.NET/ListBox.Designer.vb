@@ -109,7 +109,7 @@
 		Me.Timer2.Enabled = True
 		Me.txtComment.AutoSize = False
 		Me.txtComment.Enabled = False
-		Me.txtComment.Font = New System.Drawing.Font("Invalid_string_refer_to_original_code", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
+		Me.txtComment.Font = New System.Drawing.Font("‚l‚r ƒSƒVƒbƒN", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
 		Me.txtComment.Size = New System.Drawing.Size(637, 38)
 		Me.txtComment.Location = New System.Drawing.Point(6, 141)
 		Me.txtComment.MultiLine = True
@@ -131,7 +131,7 @@
 		Me.txtComment.Name = "txtComment"
 		Me.txtMorale2.AutoSize = False
 		Me.txtMorale2.BackColor = System.Drawing.Color.FromARGB(192, 192, 192)
-		Me.txtMorale2.Font = New System.Drawing.Font("Invalid_string_refer_to_original_code", 9.75!, System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
+		Me.txtMorale2.Font = New System.Drawing.Font("‚l‚r –¾’©", 9.75!, System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
 		Me.txtMorale2.Size = New System.Drawing.Size(25, 13)
 		Me.txtMorale2.Location = New System.Drawing.Point(385, 23)
 		Me.txtMorale2.TabIndex = 22
@@ -154,7 +154,7 @@
 		Me.txtMorale2.Name = "txtMorale2"
 		Me.txtMorale1.AutoSize = False
 		Me.txtMorale1.BackColor = System.Drawing.Color.FromARGB(192, 192, 192)
-		Me.txtMorale1.Font = New System.Drawing.Font("Invalid_string_refer_to_original_code", 9.75!, System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
+		Me.txtMorale1.Font = New System.Drawing.Font("‚l‚r –¾’©", 9.75!, System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
 		Me.txtMorale1.Size = New System.Drawing.Size(25, 13)
 		Me.txtMorale1.Location = New System.Drawing.Point(59, 22)
 		Me.txtMorale1.TabIndex = 20
@@ -177,7 +177,7 @@
 		Me.txtMorale1.Name = "txtMorale1"
 		Me.txtLevel2.AutoSize = False
 		Me.txtLevel2.BackColor = System.Drawing.Color.FromARGB(192, 192, 192)
-		Me.txtLevel2.Font = New System.Drawing.Font("Invalid_string_refer_to_original_code", 9.75!, System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
+		Me.txtLevel2.Font = New System.Drawing.Font("‚l‚r –¾’©", 9.75!, System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
 		Me.txtLevel2.Size = New System.Drawing.Size(17, 13)
 		Me.txtLevel2.Location = New System.Drawing.Point(391, 7)
 		Me.txtLevel2.TabIndex = 19
@@ -200,7 +200,7 @@
 		Me.txtLevel2.Name = "txtLevel2"
 		Me.txtLevel1.AutoSize = False
 		Me.txtLevel1.BackColor = System.Drawing.Color.FromARGB(192, 192, 192)
-		Me.txtLevel1.Font = New System.Drawing.Font("Invalid_string_refer_to_original_code", 9.75!, System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
+		Me.txtLevel1.Font = New System.Drawing.Font("‚l‚r –¾’©", 9.75!, System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
 		Me.txtLevel1.Size = New System.Drawing.Size(17, 13)
 		Me.txtLevel1.Location = New System.Drawing.Point(66, 6)
 		Me.txtLevel1.TabIndex = 17
@@ -223,7 +223,7 @@
 		Me.txtLevel1.Name = "txtLevel1"
 		Me.txtHP1.AutoSize = False
 		Me.txtHP1.BackColor = System.Drawing.Color.FromARGB(192, 192, 192)
-		Me.txtHP1.Font = New System.Drawing.Font("Invalid_string_refer_to_original_code", 9.75!, System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
+		Me.txtHP1.Font = New System.Drawing.Font("‚l‚r –¾’©", 9.75!, System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
 		Me.txtHP1.Size = New System.Drawing.Size(88, 13)
 		Me.txtHP1.Location = New System.Drawing.Point(148, 8)
 		Me.txtHP1.TabIndex = 11
@@ -276,7 +276,7 @@
 		Me.picEN1.Name = "picEN1"
 		Me.txtEN1.AutoSize = False
 		Me.txtEN1.BackColor = System.Drawing.Color.FromARGB(192, 192, 192)
-		Me.txtEN1.Font = New System.Drawing.Font("Invalid_string_refer_to_original_code", 9.75!, System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
+		Me.txtEN1.Font = New System.Drawing.Font("‚l‚r –¾’©", 9.75!, System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
 		Me.txtEN1.Size = New System.Drawing.Size(57, 13)
 		Me.txtEN1.Location = New System.Drawing.Point(263, 8)
 		Me.txtEN1.TabIndex = 8
@@ -299,7 +299,7 @@
 		Me.txtEN1.Name = "txtEN1"
 		Me.txtEN2.AutoSize = False
 		Me.txtEN2.BackColor = System.Drawing.Color.FromARGB(192, 192, 192)
-		Me.txtEN2.Font = New System.Drawing.Font("Invalid_string_refer_to_original_code", 9.75!, System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
+		Me.txtEN2.Font = New System.Drawing.Font("‚l‚r –¾’©", 9.75!, System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
 		Me.txtEN2.Size = New System.Drawing.Size(57, 13)
 		Me.txtEN2.Location = New System.Drawing.Point(587, 8)
 		Me.txtEN2.TabIndex = 7
@@ -352,7 +352,7 @@
 		Me.picHP2.Name = "picHP2"
 		Me.txtHP2.AutoSize = False
 		Me.txtHP2.BackColor = System.Drawing.Color.FromARGB(192, 192, 192)
-		Me.txtHP2.Font = New System.Drawing.Font("Invalid_string_refer_to_original_code", 9.75!, System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
+		Me.txtHP2.Font = New System.Drawing.Font("‚l‚r –¾’©", 9.75!, System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
 		Me.txtHP2.Size = New System.Drawing.Size(88, 13)
 		Me.txtHP2.Location = New System.Drawing.Point(473, 8)
 		Me.txtHP2.TabIndex = 4
@@ -406,7 +406,7 @@
 		Me.Timer1.Enabled = False
 		Me.Timer1.Interval = 100
 		Me.lstItems.BackColor = System.Drawing.Color.White
-		Me.lstItems.Font = New System.Drawing.Font("Invalid_string_refer_to_original_code", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
+		Me.lstItems.Font = New System.Drawing.Font("‚l‚r –¾’©", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
 		Me.lstItems.ForeColor = System.Drawing.Color.Black
 		Me.lstItems.Size = New System.Drawing.Size(643, 103)
 		Me.lstItems.Location = New System.Drawing.Point(6, 32)
@@ -439,7 +439,7 @@
 		Me.picBar.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
 		Me.picBar.Name = "picBar"
 		Me.labCaption.BackColor = System.Drawing.Color.White
-		Me.labCaption.Font = New System.Drawing.Font("Invalid_string_refer_to_original_code", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
+		Me.labCaption.Font = New System.Drawing.Font("‚l‚r –¾’©", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
 		Me.labCaption.ForeColor = System.Drawing.Color.Black
 		Me.labCaption.Size = New System.Drawing.Size(643, 23)
 		Me.labCaption.Location = New System.Drawing.Point(6, 5)
@@ -455,7 +455,7 @@
 		Me.labCaption.Name = "labCaption"
 		Me.labMorale2.BackColor = System.Drawing.Color.FromARGB(192, 192, 192)
 		Me.labMorale2.Text = "M"
-		Me.labMorale2.Font = New System.Drawing.Font("Invalid_string_refer_to_original_code", 11.25!, System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
+		Me.labMorale2.Font = New System.Drawing.Font("‚l‚r ‚o–¾’©", 11.25!, System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
 		Me.labMorale2.ForeColor = System.Drawing.Color.Black
 		Me.labMorale2.Size = New System.Drawing.Size(12, 17)
 		Me.labMorale2.Location = New System.Drawing.Point(372, 22)
@@ -471,7 +471,7 @@
 		Me.labMorale2.Name = "labMorale2"
 		Me.labMorale1.BackColor = System.Drawing.Color.FromARGB(192, 192, 192)
 		Me.labMorale1.Text = "M"
-		Me.labMorale1.Font = New System.Drawing.Font("Invalid_string_refer_to_original_code", 11.25!, System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
+		Me.labMorale1.Font = New System.Drawing.Font("‚l‚r ‚o–¾’©", 11.25!, System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
 		Me.labMorale1.ForeColor = System.Drawing.Color.Black
 		Me.labMorale1.Size = New System.Drawing.Size(12, 17)
 		Me.labMorale1.Location = New System.Drawing.Point(46, 20)
@@ -487,7 +487,7 @@
 		Me.labMorale1.Name = "labMorale1"
 		Me.labLevel2.BackColor = System.Drawing.Color.FromARGB(192, 192, 192)
 		Me.labLevel2.Text = "Lv"
-		Me.labLevel2.Font = New System.Drawing.Font("Invalid_string_refer_to_original_code", 12!, System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
+		Me.labLevel2.Font = New System.Drawing.Font("‚l‚r ‚o–¾’©", 12!, System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
 		Me.labLevel2.ForeColor = System.Drawing.Color.Black
 		Me.labLevel2.Size = New System.Drawing.Size(20, 17)
 		Me.labLevel2.Location = New System.Drawing.Point(370, 4)
@@ -511,7 +511,7 @@
 		Me.imgPilot2.Name = "imgPilot2"
 		Me.labLevel1.BackColor = System.Drawing.Color.FromARGB(192, 192, 192)
 		Me.labLevel1.Text = "Lv"
-		Me.labLevel1.Font = New System.Drawing.Font("Invalid_string_refer_to_original_code", 12!, System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
+		Me.labLevel1.Font = New System.Drawing.Font("‚l‚r ‚o–¾’©", 12!, System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
 		Me.labLevel1.ForeColor = System.Drawing.Color.Black
 		Me.labLevel1.Size = New System.Drawing.Size(20, 17)
 		Me.labLevel1.Location = New System.Drawing.Point(45, 4)
@@ -535,7 +535,7 @@
 		Me.imgPilot1.Name = "imgPilot1"
 		Me.labHP1.BackColor = System.Drawing.Color.FromARGB(192, 192, 192)
 		Me.labHP1.Text = "HP"
-		Me.labHP1.Font = New System.Drawing.Font("Invalid_string_refer_to_original_code", 12!, System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
+		Me.labHP1.Font = New System.Drawing.Font("‚l‚r ‚o–¾’©", 12!, System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
 		Me.labHP1.ForeColor = System.Drawing.Color.Black
 		Me.labHP1.Size = New System.Drawing.Size(23, 17)
 		Me.labHP1.Location = New System.Drawing.Point(121, 6)
@@ -551,7 +551,7 @@
 		Me.labHP1.Name = "labHP1"
 		Me.labEN1.BackColor = System.Drawing.Color.FromARGB(192, 192, 192)
 		Me.labEN1.Text = "EN"
-		Me.labEN1.Font = New System.Drawing.Font("Invalid_string_refer_to_original_code", 12!, System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
+		Me.labEN1.Font = New System.Drawing.Font("‚l‚r ‚o–¾’©", 12!, System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
 		Me.labEN1.ForeColor = System.Drawing.Color.Black
 		Me.labEN1.Size = New System.Drawing.Size(22, 17)
 		Me.labEN1.Location = New System.Drawing.Point(238, 6)
@@ -567,7 +567,7 @@
 		Me.labEN1.Name = "labEN1"
 		Me.labEN2.BackColor = System.Drawing.Color.FromARGB(192, 192, 192)
 		Me.labEN2.Text = "EN"
-		Me.labEN2.Font = New System.Drawing.Font("Invalid_string_refer_to_original_code", 12!, System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
+		Me.labEN2.Font = New System.Drawing.Font("‚l‚r ‚o–¾’©", 12!, System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
 		Me.labEN2.ForeColor = System.Drawing.Color.Black
 		Me.labEN2.Size = New System.Drawing.Size(25, 17)
 		Me.labEN2.Location = New System.Drawing.Point(563, 6)
@@ -583,7 +583,7 @@
 		Me.labEN2.Name = "labEN2"
 		Me.labHP2.BackColor = System.Drawing.Color.FromARGB(192, 192, 192)
 		Me.labHP2.Text = "HP"
-		Me.labHP2.Font = New System.Drawing.Font("Invalid_string_refer_to_original_code", 12!, System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
+		Me.labHP2.Font = New System.Drawing.Font("‚l‚r ‚o–¾’©", 12!, System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
 		Me.labHP2.ForeColor = System.Drawing.Color.Black
 		Me.labHP2.Size = New System.Drawing.Size(25, 17)
 		Me.labHP2.Location = New System.Drawing.Point(448, 6)

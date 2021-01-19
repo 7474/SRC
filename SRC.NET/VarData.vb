@@ -3,18 +3,18 @@ Option Explicit On
 Friend Class VarData
 	
 	' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
-	'Invalid_string_refer_to_original_code
+	' 本プログラムはフリーソフトであり、無保証です。
+	' 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
+	' 再頒布または改変することができます。
 	
-	'螟画焚縺ｮ繧ｯ繝ｩ繧ｹ
+	'変数のクラス
 	
-	'蜷咲ｧｰ
+	'名称
 	Public Name As String
-	'Invalid_string_refer_to_original_code
+	'型
 	Public VariableType As Expression.ValueType
-	'Invalid_string_refer_to_original_code
+	'文字列値
 	Public StringValue As String
-	'謨ｰ蛟､
+	'数値
 	Public NumericValue As Double
 End Class

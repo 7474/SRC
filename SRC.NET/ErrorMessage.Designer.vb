@@ -30,7 +30,7 @@
 		Me.ToolTip1.Active = True
 		Me.BackColor = System.Drawing.Color.FromARGB(192, 192, 192)
 		Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
-		Me.Text = "„Ç®„É©„Éº"
+		Me.Text = "ÉGÉâÅ["
 		Me.ClientSize = New System.Drawing.Size(671, 118)
 		Me.Location = New System.Drawing.Point(3, 22)
 		Me.Icon = CType(resources.GetObject("frmErrorMessage.Icon"), System.Drawing.Icon)
@@ -49,7 +49,7 @@
 		Me.Name = "frmErrorMessage"
 		Me.txtMessage.AutoSize = False
 		Me.txtMessage.BackColor = System.Drawing.Color.White
-		Me.txtMessage.Font = New System.Drawing.Font("Invalid_string_refer_to_original_code", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
+		Me.txtMessage.Font = New System.Drawing.Font("ÇlÇr ÉSÉVÉbÉN", 12!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(128, Byte))
 		Me.txtMessage.ForeColor = System.Drawing.Color.Black
 		Me.txtMessage.Size = New System.Drawing.Size(659, 106)
 		Me.txtMessage.Location = New System.Drawing.Point(6, 6)

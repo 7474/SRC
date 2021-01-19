@@ -10,24 +10,24 @@ Attribute VB_Exposed = False
 Option Explicit
 
 ' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯ãƒ•ãƒªãƒ¼ã‚½ãƒ•ãƒˆã§ã‚ã‚Šã€ç„¡ä¿è¨¼ã§ã™ã€‚
-' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯GNU General Public License(Ver.3ã¾ãŸã¯ãã‚Œä»¥é™)ãŒå®šã‚ã‚‹æ¡ä»¶ã®ä¸‹ã§
-' å†é ’å¸ƒã¾ãŸã¯æ”¹å¤‰ã™ã‚‹ã“ã¨ãŒã§ãã¾ã™ã€‚
+' –{ƒvƒƒOƒ‰ƒ€‚ÍƒtƒŠ[ƒ\ƒtƒg‚Å‚ ‚èA–³•ÛØ‚Å‚·B
+' –{ƒvƒƒOƒ‰ƒ€‚ÍGNU General Public License(Ver.3‚Ü‚½‚Í‚»‚êˆÈ~)‚ª’è‚ß‚éğŒ‚Ì‰º‚Å
+' Ä”Ğ•z‚Ü‚½‚Í‰ü•Ï‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B
 
-'å…¨åœ°å½¢ãƒ‡ãƒ¼ã‚¿ã‚’ç®¡ç†ã™ã‚‹ãƒªã‚¹ãƒˆã®ã‚¯ãƒ©ã‚¹
+'‘S’nŒ`ƒf[ƒ^‚ğŠÇ—‚·‚éƒŠƒXƒg‚ÌƒNƒ‰ƒX
 
-'åœ°å½¢ãƒ‡ãƒ¼ã‚¿ã®ç™»éŒ²æ•°
+'’nŒ`ƒf[ƒ^‚Ì“o˜^”
 Public Count As Integer
 
-'åœ°å½¢ãƒ‡ãƒ¼ã‚¿ã®é…åˆ—
-'ä»–ã®ãƒªã‚¹ãƒˆç®¡ç†ç”¨ã‚¯ãƒ©ã‚¹ã¨ç•°ãªã‚Šé…åˆ—ã‚’ä½¿ã£ã¦ã„ã‚‹ã®ã¯ã‚¢ã‚¯ã‚»ã‚¹ã‚’é«˜é€ŸåŒ–ã™ã‚‹ãŸã‚
+'’nŒ`ƒf[ƒ^‚Ì”z—ñ
+'‘¼‚ÌƒŠƒXƒgŠÇ——pƒNƒ‰ƒX‚ÆˆÙ‚È‚è”z—ñ‚ğg‚Á‚Ä‚¢‚é‚Ì‚ÍƒAƒNƒZƒX‚ğ‚‘¬‰»‚·‚é‚½‚ß
 Private TerrainDataList(0 To MAX_TERRAIN_DATA_NUM) As TerrainData
 
-'åœ°å½¢ãƒ‡ãƒ¼ã‚¿ã®ç™»éŒ²é †ã‚’è¨˜éŒ²ã™ã‚‹ãŸã‚ã®é…åˆ—
+'’nŒ`ƒf[ƒ^‚Ì“o˜^‡‚ğ‹L˜^‚·‚é‚½‚ß‚Ì”z—ñ
 Private OrderList(1 To MAX_TERRAIN_DATA_NUM) As Integer
 
 
-'ã‚¯ãƒ©ã‚¹ã®åˆæœŸåŒ–
+'ƒNƒ‰ƒX‚Ì‰Šú‰»
 Private Sub Class_Initialize()
 Dim i As Integer
     
@@ -36,7 +36,7 @@ Dim i As Integer
     Next
 End Sub
 
-'ã‚¯ãƒ©ã‚¹ã®è§£æ”¾
+'ƒNƒ‰ƒX‚Ì‰ğ•ú
 Private Sub Class_Terminate()
 Dim i As Integer
     
@@ -46,7 +46,7 @@ Dim i As Integer
 End Sub
 
 
-'æŒ‡å®šã—ãŸãƒ‡ãƒ¼ã‚¿ã¯ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ã‹ï¼Ÿ
+'w’è‚µ‚½ƒf[ƒ^‚Í“o˜^‚³‚ê‚Ä‚¢‚é‚©H
 Public Function IsDefined(ByVal ID As Integer) As Boolean
     If TerrainDataList(ID).ID >= 0 Then
         IsDefined = True
@@ -56,43 +56,43 @@ Public Function IsDefined(ByVal ID As Integer) As Boolean
 End Function
 
 
-'åœ°å½¢ãƒ‡ãƒ¼ã‚¿ãƒªã‚¹ãƒˆã‹ã‚‰æŒ‡å®šã—ãŸãƒ‡ãƒ¼ã‚¿ã‚’å–ã‚Šå‡ºã™
+'’nŒ`ƒf[ƒ^ƒŠƒXƒg‚©‚çw’è‚µ‚½ƒf[ƒ^‚ğæ‚èo‚·
 Public Function Item(ByVal ID As Integer) As TerrainData
     Set Item = TerrainDataList(ID)
 End Function
 
-'æŒ‡å®šã—ãŸãƒ‡ãƒ¼ã‚¿ã®åç§°
+'w’è‚µ‚½ƒf[ƒ^‚Ì–¼Ì
 Public Function Name(ByVal ID As Integer) As String
     Name = TerrainDataList(ID).Name
 End Function
 
-'æŒ‡å®šã—ãŸãƒ‡ãƒ¼ã‚¿ã®ç”»åƒãƒ•ã‚¡ã‚¤ãƒ«å
+'w’è‚µ‚½ƒf[ƒ^‚Ì‰æ‘œƒtƒ@ƒCƒ‹–¼
 Public Function Bitmap(ByVal ID As Integer) As String
     Bitmap = TerrainDataList(ID).Bitmap
 End Function
 
-'æŒ‡å®šã—ãŸãƒ‡ãƒ¼ã‚¿ã®ã‚¯ãƒ©ã‚¹
+'w’è‚µ‚½ƒf[ƒ^‚ÌƒNƒ‰ƒX
 Public Function Class(ByVal ID As Integer) As String
     Class = TerrainDataList(ID).Class
 End Function
 
-'æŒ‡å®šã—ãŸãƒ‡ãƒ¼ã‚¿ã®ç§»å‹•ã‚³ã‚¹ãƒˆ
+'w’è‚µ‚½ƒf[ƒ^‚ÌˆÚ“®ƒRƒXƒg
 Public Function MoveCost(ByVal ID As Integer) As Integer
     MoveCost = TerrainDataList(ID).MoveCost
 End Function
 
-'æŒ‡å®šã—ãŸãƒ‡ãƒ¼ã‚¿ã®å‘½ä¸­ä¿®æ­£
+'w’è‚µ‚½ƒf[ƒ^‚Ì–½’†C³
 Public Function HitMod(ByVal ID As Integer) As Integer
     HitMod = TerrainDataList(ID).HitMod
 End Function
 
-'æŒ‡å®šã—ãŸãƒ‡ãƒ¼ã‚¿ã®ãƒ€ãƒ¡ãƒ¼ã‚¸ä¿®æ­£
+'w’è‚µ‚½ƒf[ƒ^‚Ìƒ_ƒ[ƒWC³
 Public Function DamageMod(ByVal ID As Integer) As Integer
     DamageMod = TerrainDataList(ID).DamageMod
 End Function
 
 
-'æŒ‡å®šã—ãŸãƒ‡ãƒ¼ã‚¿ã®ç‰¹æ®Šèƒ½åŠ›
+'w’è‚µ‚½ƒf[ƒ^‚Ì“Áê”\—Í
 
 Public Function IsFeatureAvailable(ByVal ID As Integer, ftype As String) As Boolean
     IsFeatureAvailable = TerrainDataList(ID).IsFeatureAvailable(ftype)
@@ -107,13 +107,13 @@ Public Function FeatureData(ByVal ID As Integer, ftype As String) As String
 End Function
 
 
-'ï¼®ç•ªç›®ã«ç™»éŒ²ã—ãŸãƒ‡ãƒ¼ã‚¿ã®ç•ªå·
+'‚m”Ô–Ú‚É“o˜^‚µ‚½ƒf[ƒ^‚Ì”Ô†
 Public Function OrderedID(ByVal n As Integer) As Integer
     OrderedID = OrderList(n)
 End Function
 
 
-'ãƒ‡ãƒ¼ã‚¿ãƒ•ã‚¡ã‚¤ãƒ« fname ã‹ã‚‰ãƒ‡ãƒ¼ã‚¿ã‚’ãƒ­ãƒ¼ãƒ‰
+'ƒf[ƒ^ƒtƒ@ƒCƒ‹ fname ‚©‚çƒf[ƒ^‚ğƒ[ƒh
 Public Sub Load(fname As String)
 Dim FileNumber As Integer
 Dim ret As Integer, line_num As Long
@@ -142,22 +142,22 @@ Dim in_quote As Boolean
             GetLine FileNumber, line_buf, line_num
         Loop While Len(line_buf) = 0
         
-        'ç•ªå·
+        '”Ô†
         If IsNumeric(line_buf) Then
             data_id = CInt(line_buf)
         Else
-            err_msg = "ç•ªå·ã®è¨­å®šãŒé–“é•ã£ã¦ã„ã¾ã™ã€‚"
+            err_msg = "”Ô†‚Ìİ’è‚ªŠÔˆá‚Á‚Ä‚¢‚Ü‚·B"
             Error 0
         End If
         If data_id < 0 Or data_id >= MAX_TERRAIN_DATA_NUM Then
-            err_msg = "ç•ªå·ã®è¨­å®šãŒé–“é•ã£ã¦ã„ã¾ã™ã€‚"
+            err_msg = "”Ô†‚Ìİ’è‚ªŠÔˆá‚Á‚Ä‚¢‚Ü‚·B"
             Error 0
         End If
         
         Set td = TerrainDataList(data_id)
         
         With td
-            'æ–°è¦ç™»éŒ²ï¼Ÿ
+            'V‹K“o˜^H
             If .ID < 0 Then
                 Count = Count + 1
                 OrderList(Count) = data_id
@@ -166,43 +166,43 @@ Dim in_quote As Boolean
             End If
             .ID = data_id
             
-            'åç§°, ç”»åƒãƒ•ã‚¡ã‚¤ãƒ«å
+            '–¼Ì, ‰æ‘œƒtƒ@ƒCƒ‹–¼
             GetLine FileNumber, line_buf, line_num
             
-            'åç§°
+            '–¼Ì
             ret = InStr(line_buf, ",")
             If ret = 0 Then
-                err_msg = "ç”»åƒãƒ•ã‚¡ã‚¤ãƒ«åãŒæŠœã‘ã¦ã„ã¾ã™ã€‚"
+                err_msg = "‰æ‘œƒtƒ@ƒCƒ‹–¼‚ª”²‚¯‚Ä‚¢‚Ü‚·B"
                 Error 0
             End If
             data_name = Trim$(Left$(line_buf, ret - 1))
             .Name = data_name
             buf = Mid$(line_buf, ret + 1)
             
-            'ç”»åƒãƒ•ã‚¡ã‚¤ãƒ«å
+            '‰æ‘œƒtƒ@ƒCƒ‹–¼
             .Bitmap = Trim$(buf)
             If Len(.Bitmap) = 0 Then
-                err_msg = "ç”»åƒãƒ•ã‚¡ã‚¤ãƒ«åãŒæŒ‡å®šã•ã‚Œã¦ã„ã¾ã›ã‚“ã€‚"
+                err_msg = "‰æ‘œƒtƒ@ƒCƒ‹–¼‚ªw’è‚³‚ê‚Ä‚¢‚Ü‚¹‚ñB"
                 Error 0
             End If
             
-            'åœ°å½¢ã‚¿ã‚¤ãƒ—, ç§»å‹•ã‚³ã‚¹ãƒˆ, å‘½ä¸­ä¿®æ­£, ãƒ€ãƒ¡ãƒ¼ã‚¸ä¿®æ­£
+            '’nŒ`ƒ^ƒCƒv, ˆÚ“®ƒRƒXƒg, –½’†C³, ƒ_ƒ[ƒWC³
             GetLine FileNumber, line_buf, line_num
             
-            'åœ°å½¢ã‚¿ã‚¤ãƒ—
+            '’nŒ`ƒ^ƒCƒv
             ret = InStr(line_buf, ",")
             If ret = 0 Then
-                err_msg = "ç§»å‹•ã‚³ã‚¹ãƒˆãŒæŠœã‘ã¦ã„ã¾ã™ã€‚"
+                err_msg = "ˆÚ“®ƒRƒXƒg‚ª”²‚¯‚Ä‚¢‚Ü‚·B"
                 Error 0
             End If
             buf2 = Trim$(Left$(line_buf, ret - 1))
             buf = Mid$(line_buf, ret + 1)
             .Class = buf2
             
-            'ç§»å‹•ã‚³ã‚¹ãƒˆ
+            'ˆÚ“®ƒRƒXƒg
             ret = InStr(buf, ",")
             If ret = 0 Then
-                err_msg = "å‘½ä¸­ä¿®æ­£ãŒæŠœã‘ã¦ã„ã¾ã™ã€‚"
+                err_msg = "–½’†C³‚ª”²‚¯‚Ä‚¢‚Ü‚·B"
                 Error 0
             End If
             buf2 = Trim$(Left$(buf, ret - 1))
@@ -210,18 +210,18 @@ Dim in_quote As Boolean
             If buf2 = "-" Then
                 .MoveCost = 1000
             ElseIf IsNumeric(buf2) Then
-                '0.5åˆ»ã¿ã®ç§»å‹•ã‚³ã‚¹ãƒˆã‚’ä½¿ãˆã‚‹ã‚ˆã†ã«ã™ã‚‹ãŸã‚ã€å®Ÿéš›ã®ï¼’å€ã®å€¤ã§è¨˜éŒ²ã™ã‚‹
+                '0.5‚İ‚ÌˆÚ“®ƒRƒXƒg‚ğg‚¦‚é‚æ‚¤‚É‚·‚é‚½‚ßAÀÛ‚Ì‚Q”{‚Ì’l‚Å‹L˜^‚·‚é
                 .MoveCost = CInt(2 * CDbl(buf2))
             End If
             If .MoveCost <= 0 Then
-                DataErrorMessage "ç§»å‹•ã‚³ã‚¹ãƒˆã®è¨­å®šãŒé–“é•ã£ã¦ã„ã¾ã™ã€‚", _
+                DataErrorMessage "ˆÚ“®ƒRƒXƒg‚Ìİ’è‚ªŠÔˆá‚Á‚Ä‚¢‚Ü‚·B", _
                     fname, line_num, line_buf, data_name
             End If
             
-            'å‘½ä¸­ä¿®æ­£
+            '–½’†C³
             ret = InStr(buf, ",")
             If ret = 0 Then
-                err_msg = "ãƒ€ãƒ¡ãƒ¼ã‚¸ä¿®æ­£ãŒæŠœã‘ã¦ã„ã¾ã™ã€‚"
+                err_msg = "ƒ_ƒ[ƒWC³‚ª”²‚¯‚Ä‚¢‚Ü‚·B"
                 Error 0
             End If
             buf2 = Trim$(Left$(buf, ret - 1))
@@ -229,25 +229,25 @@ Dim in_quote As Boolean
             If IsNumeric(buf2) Then
                 .HitMod = CInt(buf2)
             Else
-                DataErrorMessage "å‘½ä¸­ä¿®æ­£ã®è¨­å®šãŒé–“é•ã£ã¦ã„ã¾ã™ã€‚", _
+                DataErrorMessage "–½’†C³‚Ìİ’è‚ªŠÔˆá‚Á‚Ä‚¢‚Ü‚·B", _
                     fname, line_num, line_buf, data_name
             End If
             
-            'ãƒ€ãƒ¡ãƒ¼ã‚¸ä¿®æ­£
+            'ƒ_ƒ[ƒWC³
             ret = InStr(buf, ",")
             If ret > 0 Then
-                err_msg = "ä½™åˆ†ãªã€Œ,ã€ãŒæŒ‡å®šã•ã‚Œã¦ã„ã¾ã™ã€‚"
+                err_msg = "—]•ª‚Èu,v‚ªw’è‚³‚ê‚Ä‚¢‚Ü‚·B"
                 Error 0
             End If
             buf2 = Trim$(buf)
             If IsNumeric(buf2) Then
                 .DamageMod = CInt(buf2)
             Else
-                DataErrorMessage "ãƒ€ãƒ¡ãƒ¼ã‚¸ä¿®æ­£ã®è¨­å®šãŒé–“é•ã£ã¦ã„ã¾ã™ã€‚", _
+                DataErrorMessage "ƒ_ƒ[ƒWC³‚Ìİ’è‚ªŠÔˆá‚Á‚Ä‚¢‚Ü‚·B", _
                     fname, line_num, line_buf, data_name
             End If
             
-            'åœ°å½¢åŠ¹æœ
+            '’nŒ`Œø‰Ê
             GetLine FileNumber, line_buf, line_num
             Do While Len(line_buf) > 0
                 buf = line_buf
@@ -280,8 +280,8 @@ Dim in_quote As Boolean
                     If buf2 <> "" Then
                         .AddFeature buf2
                     Else
-                        DataErrorMessage "è¡Œé ­ã‹ã‚‰" & Format$(i) & _
-                            "ç•ªç›®ã®åœ°å½¢åŠ¹æœã®è¨­å®šãŒé–“é•ã£ã¦ã„ã¾ã™ã€‚", _
+                        DataErrorMessage "s“ª‚©‚ç" & Format$(i) & _
+                            "”Ô–Ú‚Ì’nŒ`Œø‰Ê‚Ìİ’è‚ªŠÔˆá‚Á‚Ä‚¢‚Ü‚·B", _
                             fname, line_num, line_buf, data_name
                     End If
                 Loop
@@ -297,9 +297,9 @@ Dim in_quote As Boolean
     Loop
     
 ErrorHandler:
-    'ã‚¨ãƒ©ãƒ¼å‡¦ç†
+    'ƒGƒ‰[ˆ—
     If line_num = 0 Then
-        ErrorMessage fname & "ãŒé–‹ã‘ã¾ã›ã‚“ã€‚"
+        ErrorMessage fname & "‚ªŠJ‚¯‚Ü‚¹‚ñB"
     Else
         Close #FileNumber
         DataErrorMessage err_msg, fname, line_num, line_buf, data_name
@@ -308,7 +308,7 @@ ErrorHandler:
     End
 End Sub
 
-'ãƒªã‚¹ãƒˆã‚’ã‚¯ãƒªã‚¢
+'ƒŠƒXƒg‚ğƒNƒŠƒA
 Public Sub Clear()
 Dim i As Integer
     

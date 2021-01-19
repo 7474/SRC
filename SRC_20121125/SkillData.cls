@@ -10,18 +10,18 @@ Attribute VB_Exposed = False
 Option Explicit
 
 ' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-' 本プログラムはフリーソフトであり、無保証です。
-' 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
-' 再頒布または改変することができます。
+' �{�v���O�����̓t���[�\�t�g�ł���A���ۏ؂ł��B
+' �{�v���O������GNU General Public License(Ver.3�܂��͂���ȍ~)����߂�����̉���
+' �ĔЕz�܂��͉��ς��邱�Ƃ��ł��܂��B
 
-'パイロット用特殊能力のクラス
+'�p�C���b�g�p����\�͂̃N���X
 
-'名称
+'����
 Public Name As String
-'レベル (レベル指定のない能力の場合はDEFAULT_LEVEL)
+'���x�� (���x���w��̂Ȃ��\�͂̏ꍇ��DEFAULT_LEVEL)
 Public Level As Double
-'データ
+'�f�[�^
 Public StrData As String
-'習得レベル
+'�K�����x��
 Public NecessaryLevel As Integer
 
