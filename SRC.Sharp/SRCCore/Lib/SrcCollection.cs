@@ -2,13 +2,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Text;
 
 namespace SRC.Core.Lib
 {
+    // VBのCollectionの代替え実装。
+    // （ジェネリクスは欲しいので）
     public class SrcCollection<V> : IList<V>, IDictionary<string, V>
     {
-        private OrderedDictionary dict = new OrderedDictionary();
+        private OrderedDictionary dict;
+
+        public SrcCollection()
+        {
+            dict = new OrderedDictionary();
+        }
 
         public V this[int index] { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public V this[string key] { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
@@ -26,6 +32,16 @@ namespace SRC.Core.Lib
             throw new NotImplementedException();
         }
 
+        // Obsolete して string, string での呼び出しを警告しつつ Value, Key での追加を可能にしておく。
+        [Obsolete]
+        public void Add(string key, string value)
+        {
+            throw new NotImplementedException();
+        }
+        public void Add(V value, string key)
+        {
+            Add(key, value);
+        }
         public void Add(string key, V value)
         {
             throw new NotImplementedException();

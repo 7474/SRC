@@ -1,17 +1,13 @@
-﻿using Microsoft.VisualBasic;
+﻿// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
+// 本プログラムはフリーソフトであり、無保証です。
+// 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
+// 再頒布または改変することができます。
 
-namespace Project1
+namespace SRC.Core.Models
 {
-    internal class WeaponData
+    // 武器データクラス
+    public class WeaponData
     {
-
-        // Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-        // 本プログラムはフリーソフトであり、無保証です。
-        // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
-        // 再頒布または改変することができます。
-
-        // 武器データクラス
-
         // 武器名
         public string Name;
         // 攻撃力
@@ -40,36 +36,36 @@ namespace Project1
         // 必要条件
         public string NecessaryCondition;
 
-        // 武器愛称
-        public string Nickname()
-        {
-            string NicknameRet = default;
-            NicknameRet = Name;
-            Expression.ReplaceSubExpression(ref NicknameRet);
-            if (Strings.InStr(NicknameRet, "(") > 0)
-            {
-                NicknameRet = Strings.Left(NicknameRet, Strings.InStr(NicknameRet, "(") - 1);
-            }
+        //// 武器愛称
+        //public string Nickname()
+        //{
+        //    string NicknameRet = default;
+        //    NicknameRet = Name;
+        //    Expression.ReplaceSubExpression(ref NicknameRet);
+        //    if (Strings.InStr(NicknameRet, "(") > 0)
+        //    {
+        //        NicknameRet = Strings.Left(NicknameRet, Strings.InStr(NicknameRet, "(") - 1);
+        //    }
 
-            return NicknameRet;
-        }
+        //    return NicknameRet;
+        //}
 
-        // 使い捨てアイテムによる武器かどうかを返す
-        public bool IsItem()
-        {
-            bool IsItemRet = default;
-            short i;
-            var loopTo = GeneralLib.LLength(ref NecessarySkill);
-            for (i = 1; i <= loopTo; i++)
-            {
-                if (GeneralLib.LIndex(ref NecessarySkill, i) == "アイテム")
-                {
-                    IsItemRet = true;
-                    return IsItemRet;
-                }
-            }
+        //// 使い捨てアイテムによる武器かどうかを返す
+        //public bool IsItem()
+        //{
+        //    bool IsItemRet = default;
+        //    short i;
+        //    var loopTo = GeneralLib.LLength(ref NecessarySkill);
+        //    for (i = 1; i <= loopTo; i++)
+        //    {
+        //        if (GeneralLib.LIndex(ref NecessarySkill, i) == "アイテム")
+        //        {
+        //            IsItemRet = true;
+        //            return IsItemRet;
+        //        }
+        //    }
 
-            return IsItemRet;
-        }
+        //    return IsItemRet;
+        //}
     }
 }
