@@ -11,32 +11,32 @@ namespace SRC.Core.Expressions
     public static partial class Expression
     {
         // str に対して式置換を行う
-        // UPGRADE_NOTE: str は str_Renamed にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
-        public static void ReplaceSubExpression(ref string str_Renamed)
+        // TODO ref -> return
+        public static void ReplaceSubExpression(ref string str)
         {
-            short start_idx, end_idx = default;
-            short str_len;
-            short i, n;
+            int start_idx, end_idx = default;
+            int str_len;
+            int i, n;
             while (true)
             {
                 // 式置換が存在する？
-                start_idx = (short)Strings.InStr(str_Renamed, "$(");
+                start_idx = Strings.InStr(str, "$(");
                 if (start_idx == 0)
                 {
                     return;
                 }
 
                 // 式置換の終了位置を調べる
-                str_len = (short)Strings.Len(str_Renamed);
+                str_len = Strings.Len(str);
                 n = 1;
                 var loopTo = str_len;
-                for (i = (short)(start_idx + 2); i <= loopTo; i++)
+                for (i = (start_idx + 2); i <= loopTo; i++)
                 {
-                    switch (Strings.Mid(str_Renamed, i, 1) ?? "")
+                    switch (Strings.Mid(str, i, 1) ?? "")
                     {
                         case ")":
                             {
-                                n = (short)(n - 1);
+                                n = n - 1;
                                 if (n == 0)
                                 {
                                     end_idx = i;
@@ -48,7 +48,7 @@ namespace SRC.Core.Expressions
 
                         case "(":
                             {
-                                n = (short)(n + 1);
+                                n = n + 1;
                                 break;
                             }
                     }
@@ -60,9 +60,12 @@ namespace SRC.Core.Expressions
                 }
 
                 // 式置換を実施
-                string localGetValueAsString(string localStr) { string argexpr = Strings.Mid(localStr, start_idx + 2, end_idx - start_idx - 2); var ret = GetValueAsString(ref argexpr); return ret; }
-
-                str_Renamed = Strings.Left(str_Renamed, start_idx - 1) + localGetValueAsString(str_Renamed) + Strings.Right(str_Renamed, str_len - end_idx);
+                string localGetValueAsString(string localStr)
+                {
+                    string argexpr = Strings.Mid(localStr, start_idx + 2, end_idx - start_idx - 2);
+                    return GetValueAsString(argexpr);
+                }
+                str = Strings.Left(str, start_idx - 1) + localGetValueAsString(str) + Strings.Right(str, str_len - end_idx);
             }
         }
     }

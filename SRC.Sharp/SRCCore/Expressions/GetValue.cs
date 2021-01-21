@@ -9,20 +9,18 @@ namespace SRC.Core.Expressions
     public static partial class Expression
     {
         // 式を文字列として評価
-        public static string GetValueAsString(ref string expr, bool is_term = false)
+        public static string GetValueAsString(string expr, bool is_term = false)
         {
-            string GetValueAsStringRet = default;
-            var num = default(double);
+            string result;
             if (is_term)
             {
-                EvalTerm(expr, ValueType.StringType, out GetValueAsStringRet, out num);
+                EvalTerm(expr, ValueType.StringType, out result, out _);
             }
             else
             {
-                EvalExpr(expr, ValueType.StringType, out GetValueAsStringRet, out num);
+                EvalExpr(expr, ValueType.StringType, out result, out _);
             }
-
-            return GetValueAsStringRet;
+            return result;
         }
     }
 }
