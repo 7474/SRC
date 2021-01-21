@@ -5,6 +5,7 @@
 
 using SRC.Core.VB;
 using System;
+using SRC.Core.Expressions;
 
 namespace SRC.Core.Models
 {
@@ -80,8 +81,7 @@ namespace SRC.Core.Models
                 //    NicknameRet = Expression.GetValueAsString(ref argexpr);
                 //}
 
-                //Expression.ReplaceSubExpression(ref NicknameRet);
-                return NicknameRet;
+                return Expression.ReplaceSubExpression(NicknameRet);
             }
 
             set
@@ -115,8 +115,7 @@ namespace SRC.Core.Models
                 //    }
                 //}
 
-                //Expression.ReplaceSubExpression(ref KanaNameRet);
-                return KanaNameRet;
+                return Expression.ReplaceSubExpression(KanaNameRet);
             }
 
             set
