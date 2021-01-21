@@ -1,0 +1,11 @@
+Asc
+InStr
+LCase
+Left
+Len
+Mid
+Right
+Space
+StrComp
+StrConv
+Trim
