@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 
-namespace SRC.Core.Lib
+namespace SRC.Core.VB
 {
     // VBのCollectionの代替え実装。
     // （ジェネリクスは欲しいので）
