@@ -11,7 +11,7 @@ namespace SRC.Core.Expressions
     public static partial class Expression
     {
         // str に対して式置換を行う
-        public static string ReplaceSubExpression(string str)
+        public static void ReplaceSubExpression(ref string str)
         {
             int start_idx, end_idx = default;
             int str_len;
@@ -22,7 +22,7 @@ namespace SRC.Core.Expressions
                 start_idx = Strings.InStr(str, "$(");
                 if (start_idx == 0)
                 {
-                    return str;
+                    return;
                 }
 
                 // 式置換の終了位置を調べる
@@ -55,7 +55,7 @@ namespace SRC.Core.Expressions
 
                 if (i > str_len)
                 {
-                    return str;
+                    return;
                 }
 
                 // 式置換を実施

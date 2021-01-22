@@ -81,7 +81,8 @@ namespace SRC.Core.Models
                 //    NicknameRet = Expression.GetValueAsString(ref argexpr);
                 //}
 
-                return Expression.ReplaceSubExpression(NicknameRet);
+                Expression.ReplaceSubExpression(ref NicknameRet);
+                return NicknameRet;
             }
 
             set
@@ -115,7 +116,8 @@ namespace SRC.Core.Models
                 //    }
                 //}
 
-                return Expression.ReplaceSubExpression(KanaNameRet);
+                Expression.ReplaceSubExpression(ref KanaNameRet);
+                return KanaNameRet;
             }
 
             set
