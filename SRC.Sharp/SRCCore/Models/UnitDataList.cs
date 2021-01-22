@@ -1,28 +1,31 @@
-﻿using Microsoft.VisualBasic;
-using Microsoft.VisualBasic.CompilerServices;
+﻿// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
+// 本プログラムはフリーソフトであり、無保証です。
+// 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
+// 再頒布または改変することができます。
 
-namespace Project1
+using SRC.Core.VB;
+using System;
+
+
+namespace SRC.Core.Models
 {
-    internal class UnitDataList
+    // 全ユニットデータを管理するリストのクラス
+    public class UnitDataList
     {
-
-        // Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-        // 本プログラムはフリーソフトであり、無保証です。
-        // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
-        // 再頒布または改変することができます。
-
-        // 全ユニットデータを管理するリストのクラス
-
         // ユニットデータ用コレクション
-        private Collection colUnitDataList = new Collection();
+        private SrcCollection<UnitData> colUnitDataList;
 
         // ID作成用変数
         private int IDNum;
 
-        // クラスの初期化
-        // UPGRADE_NOTE: Class_Initialize は Class_Initialize_Renamed にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
-        private void Class_Initialize_Renamed()
+        public UnitDataList()
         {
+            colUnitDataList = new SrcCollection<UnitData>();
+        }
+
+        private void AddDummyData()
+        {
+
             var ud = new UnitData();
             ud.Name = "ステータス表示用ダミーユニット";
             ud.Nickname = "ユニット無し";
@@ -31,37 +34,12 @@ namespace Project1
             ud.Adaption = "AAAA";
             ud.Bitmap = ".bmp";
             string argfdef = "ダミーユニット=システム用非表示能力";
-            ud.AddFeature(ref argfdef);
+            ud.AddFeature(argfdef);
             colUnitDataList.Add(ud, ud.Name);
         }
 
-        public UnitDataList() : base()
-        {
-            Class_Initialize_Renamed();
-        }
-
-        // クラスの解放
-        // UPGRADE_NOTE: Class_Terminate は Class_Terminate_Renamed にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
-        private void Class_Terminate_Renamed()
-        {
-            short i;
-            {
-                var withBlock = colUnitDataList;
-                var loopTo = (short)withBlock.Count;
-                for (i = 1; i <= loopTo; i++)
-                    withBlock.Remove(1);
-            }
-            // UPGRADE_NOTE: オブジェクト colUnitDataList をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-            colUnitDataList = null;
-        }
-
-        ~UnitDataList()
-        {
-            Class_Terminate_Renamed();
-        }
-
         // ユニットデータリストにデータを追加
-        public UnitData Add(ref string uname)
+        public UnitData Add(string uname)
         {
             UnitData AddRet = default;
             var ud = new UnitData();
@@ -82,54 +60,35 @@ namespace Project1
         }
 
         // ユニットデータリストからデータを削除
-        public void Delete(ref object Index)
+        public void Delete(int Index)
         {
-            colUnitDataList.Remove(Index);
+            colUnitDataList.RemoveAt(Index);
         }
 
         // ユニットデータリストからデータを取り出す
-        public UnitData Item(ref object Index)
+        public UnitData Item(int Index)
         {
-            UnitData ItemRet = default;
-            ;
-#error Cannot convert OnErrorGoToStatementSyntax - see comment for details
-            /* Cannot convert OnErrorGoToStatementSyntax, CONVERSION ERROR: Conversion for OnErrorGoToLabelStatement not implemented, please report this issue in 'On Error GoTo ErrorHandler' at character 2372
-
-
-            Input:
-                    On Error GoTo ErrorHandler
-
-             */
-            ItemRet = (UnitData)colUnitDataList[Index];
-            return ItemRet;
-        ErrorHandler:
-            ;
-
-            // UPGRADE_NOTE: オブジェクト Item をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-            ItemRet = null;
+            try
+            {
+                return colUnitDataList[Index];
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         // ユニットデータリストに登録されているか？
-        public bool IsDefined(ref object Index)
+        public bool IsDefined(int Index)
         {
-            bool IsDefinedRet = default;
-            UnitData dummy;
-            ;
-#error Cannot convert OnErrorGoToStatementSyntax - see comment for details
-            /* Cannot convert OnErrorGoToStatementSyntax, CONVERSION ERROR: Conversion for OnErrorGoToLabelStatement not implemented, please report this issue in 'On Error GoTo ErrorHandler' at character 2841
-
-
-            Input:
-
-                    On Error GoTo ErrorHandler
-
-             */
-            dummy = (UnitData)colUnitDataList[Index];
-            IsDefinedRet = true;
-            return IsDefinedRet;
-        ErrorHandler:
-            ;
-            IsDefinedRet = false;
+            try
+            {
+                return colUnitDataList[Index] != null;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         // データファイル fname からデータをロード
