@@ -25,6 +25,8 @@ namespace SRC.Core.Models
             colUnitDataList = new SrcCollection<UnitData>();
         }
 
+        public IList<UnitData> Items => colUnitDataList;
+
         private void AddDummyData()
         {
 
@@ -1234,6 +1236,7 @@ namespace SRC.Core.Models
                 {
                     continuesErrors.Add(reader.InvalidData(@sname + "の属性のレベル指定が間違っています。", data_name));
                 }
+                line_buf = reader.GetLine();
             }
             return ud;
         }
