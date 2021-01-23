@@ -10,18 +10,16 @@ namespace SRC.Core.VB
     // （ジェネリクスは欲しいので）
     public class SrcCollection<V> : IList<V>, IDictionary<string, V>
     {
-        private IList<V> list;
         private OrderedDictionary dict;
 
         public SrcCollection()
         {
             dict = new OrderedDictionary();
-            list = new List<V>();
         }
 
         public V this[int index]
         {
-            get => list[index];
+            get => (V)dict[index];
             set => throw new NotImplementedException();
         }
 
@@ -37,7 +35,7 @@ namespace SRC.Core.VB
 
         public ICollection<string> Keys => dict.Keys.Cast<string>().ToList();
 
-        public ICollection<V> Values => list;
+        public ICollection<V> Values => dict.Values.Cast<V>().ToList();
 
         public void Add(V item)
         {
@@ -58,7 +56,6 @@ namespace SRC.Core.VB
         {
             // TODO 既存だった時の振る舞いどうなってんねん
             dict.Add(key, value);
-            UpdateList();
         }
 
         public void Add(KeyValuePair<string, V> item)
@@ -69,12 +66,11 @@ namespace SRC.Core.VB
         public void Clear()
         {
             dict.Clear();
-            list.Clear();
         }
 
         public bool Contains(V item)
         {
-            return list.Contains(item);
+            return dict.Values.Cast<V>().Contains(item);
         }
 
         public bool Contains(KeyValuePair<string, V> item)
@@ -104,7 +100,7 @@ namespace SRC.Core.VB
 
         public int IndexOf(V item)
         {
-            return list.IndexOf(item);
+            return dict.Values.Cast<V>().ToList().IndexOf(item);
         }
 
         public void Insert(int index, V item)
@@ -130,7 +126,6 @@ namespace SRC.Core.VB
             if (ContainsKey(key))
             {
                 dict.Remove(key);
-                UpdateList();
                 return true;
             }
             return false;
@@ -144,7 +139,6 @@ namespace SRC.Core.VB
         public void RemoveAt(int index)
         {
             Remove(this[index]);
-            UpdateList();
         }
 
         public bool TryGetValue(string key, out V value)
@@ -163,7 +157,7 @@ namespace SRC.Core.VB
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return list.GetEnumerator();
+            return dict.Values.GetEnumerator();
         }
 
         IEnumerator<KeyValuePair<string, V>> IEnumerable<KeyValuePair<string, V>>.GetEnumerator()
@@ -171,12 +165,6 @@ namespace SRC.Core.VB
             return dict.Keys.Cast<string>()
                 .Select(k => new KeyValuePair<string, V>(k, (V)dict[k]))
                 .GetEnumerator();
-        }
-
-        private void UpdateList()
-        {
-            // XXX reallocもったいない。参照時にCastしてListしたほうがいい？
-            list = dict.Values.Cast<V>().ToList();
         }
     }
 }
