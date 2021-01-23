@@ -7,14 +7,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using SRC.Core;
 
 namespace SRCTestForm
 {
-    public partial class frmMain : Form
+    public partial class frmMain : Form, IGUI
     {
+        public SRC.Core.SRC SRC;
+
         public frmMain()
         {
             InitializeComponent();
+
+            SRC = new SRC.Core.SRC();
+            SRC.GUI = this;
         }
 
         private void menuLoadData_Click(object sender, EventArgs e)
@@ -32,7 +38,7 @@ namespace SRCTestForm
                     try
                     {
                         SetStatusText($"Load data [{fbd.SelectedPath}].");
-                        // TODO
+                        SRC.LoadDirectory(fbd.SelectedPath);
                         SetStatusText("Loaded.");
                     }
                     catch (Exception ex)
@@ -52,6 +58,15 @@ namespace SRCTestForm
         {
             toolStripProgressBar.Value = value;
             toolStripProgressBar.Maximum = max;
+        }
+
+        void IGUI.DisplayLoadingProgress()
+        {
+        }
+
+        void IGUI.ErrorMessage(string str)
+        {
+            SetStatusText(str);
         }
     }
 }
