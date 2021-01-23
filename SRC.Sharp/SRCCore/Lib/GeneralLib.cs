@@ -5,6 +5,7 @@
 
 using SRC.Core.VB;
 using System;
+using System.IO;
 using System.Runtime.InteropServices;
 
 namespace SRC.Core.Lib
@@ -1285,19 +1286,11 @@ namespace SRC.Core.Lib
         //            return ReplaceStringRet;
         //        }
 
-
-        //        // ファイル fname が存在するか判定
-        //        public static bool FileExists(ref string fname)
-        //        {
-        //            bool FileExistsRet = default;
-        //            if (GeneralLib.GetFileAttributes(ref fname) != -1)
-        //            {
-        //                FileExistsRet = true;
-        //            }
-
-        //            return FileExistsRet;
-        //        }
-
+        // ファイル fname が存在するか判定
+        public static bool FileExists(string fname)
+        {
+            return File.Exists(fname);
+        }
 
         //        // データファイルfnumからデータを一行読み込み、line_bufに格納するとともに
         //        // 行番号line_numを更新する。
