@@ -101,20 +101,20 @@ namespace SRC.Core.Models
         }
         public void Load(string fname, Stream stream)
         {
-            try
+            //try
+            //{
+            using (var reader = new SrcReader(fname, stream))
             {
-                using (var reader = new SrcReader(fname, stream))
+                while (reader.HasMore)
                 {
-                    while (reader.HasMore)
-                    {
-                        UnitData ud = LoadUnit(reader); ;
-                    }
+                    UnitData ud = LoadUnit(reader); ;
                 }
             }
-            catch (InvalidSrcDataException)
-            {
-                throw;
-            }
+            //}
+            //catch (InvalidSrcDataException)
+            //{
+            //    throw;
+            //}
         }
 
         // reader から１つユニットを読み込む。
@@ -184,10 +184,10 @@ namespace SRC.Core.Models
                 throw reader.InvalidDataException(@"読み仮名の後に余分なデータが指定されています。", data_name);
                 ;
             }
-
             ud.KanaName = buf;
 
             // 愛称, 読み仮名, ユニットクラス, パイロット数, アイテム数
+            line_buf = reader.GetLine();
             // 書式チェックのため、コンマの数を数えておく
             int comma_num = 0;
             var loopTo = Strings.Len(line_buf);
@@ -414,6 +414,155 @@ namespace SRC.Core.Models
             else
             {
                 continuesErrors.Add(reader.InvalidData(@"経験値の設定が間違っています。", data_name));
+            }
+
+            // 特殊能力データ
+            line_buf = reader.GetLine();
+            if (line_buf == "特殊能力なし")
+            {
+                line_buf = reader.GetLine();
+            }
+            else if (line_buf == "特殊能力")
+            {
+                // 新形式による特殊能力表記
+                line_buf = reader.GetLine();
+                buf = line_buf;
+                int i = 0;
+                while (true)
+                {
+                    i = i + 1;
+                    ret = 0;
+                    bool in_quote = false;
+                    var loopTo1 = Strings.Len(buf);
+                    int j;
+                    for (j = 1; j <= loopTo1; j++)
+                    {
+                        switch (Strings.Mid(buf, j, 1) ?? "")
+                        {
+                            case ",":
+                                {
+                                    if (!in_quote)
+                                    {
+                                        ret = j;
+                                        break;
+                                    }
+                                    break;
+                                }
+
+                            case "\"":
+                                {
+                                    in_quote = !in_quote;
+                                    break;
+                                }
+                        }
+                    }
+
+                    if (ret > 0)
+                    {
+                        buf2 = Strings.Trim(Strings.Left(buf, ret - 1));
+                        if (j == 1)
+                        {
+                            if (Information.IsNumeric(buf2))
+                            {
+                                break;
+                            }
+                        }
+                        buf = Strings.Trim(Strings.Mid(buf, ret + 1));
+                    }
+                    else
+                    {
+                        buf2 = buf;
+                        buf = "";
+                    }
+
+                    if (Information.IsNumeric(buf2))
+                    {
+                        break;
+                    }
+                    else if (string.IsNullOrEmpty(buf2) | Information.IsNumeric(buf2))
+                    {
+                        string argmsg11 = "行頭から" + i + "番目の特殊能力の設定が間違っています。";
+                        continuesErrors.Add(reader.InvalidData(argmsg11, data_name));
+                    }
+                    else
+                    {
+                        ud.AddFeature(buf2);
+                    }
+
+                    if (string.IsNullOrEmpty(buf))
+                    {
+                        line_buf = reader.GetLine();
+                        buf = line_buf;
+                        i = 0;
+                    }
+                }
+            }
+            else if (Strings.InStr(line_buf, "特殊能力,") == 1)
+            {
+                // 旧形式による特殊能力表記
+                buf = Strings.Mid(line_buf, 6);
+                ret = 0;
+                bool in_quote = false;
+                var loopTo2 = Strings.Len(buf);
+                int k;
+                for (k = 1; k <= loopTo2; k++)
+                {
+                    switch (Strings.Mid(buf, k, 1) ?? "")
+                    {
+                        case ",":
+                            {
+                                if (!in_quote)
+                                {
+                                    ret = k;
+                                    break;
+                                }
+
+                                break;
+                            }
+
+                        case "\"":
+                            {
+                                in_quote = !in_quote;
+                                break;
+                            }
+                    }
+                }
+
+                int i = 0;
+                while (ret > 0)
+                {
+                    i = (i + 1);
+                    buf2 = Strings.Trim(Strings.Left(buf, ret - 1));
+                    buf = Strings.Mid(buf, ret + 1);
+                    ret = Strings.InStr(buf, ",");
+                    if (!string.IsNullOrEmpty(buf2))
+                    {
+                        ud.AddFeature(buf2);
+                    }
+                    else
+                    {
+                        string argmsg12 = SrcFormatter.Format(i + "番目の特殊能力の設定が間違っています。");
+                        continuesErrors.Add(reader.InvalidData(argmsg12, data_name));
+                    }
+                }
+
+                i = (i + 1);
+                buf2 = Strings.Trim(buf);
+                if (!string.IsNullOrEmpty(buf2))
+                {
+                    ud.AddFeature(buf2);
+                }
+                else
+                {
+                    string argmsg13 = SrcFormatter.Format(i + "番目の特殊能力の設定が間違っています。");
+                    continuesErrors.Add(reader.InvalidData(argmsg13, data_name));
+                }
+
+                line_buf = reader.GetLine();
+            }
+            else
+            {
+                throw reader.InvalidDataException(@"特殊能力の設定が抜けています。", data_name);
             }
 
             // 最大ＨＰ
