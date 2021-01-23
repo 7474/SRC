@@ -92,6 +92,13 @@ namespace SRC.Core.Models
         }
 
         // データファイル fname からデータをロード
+        public void Load(string fname)
+        {
+            using (var stream = new FileStream(fname, FileMode.Open))
+            {
+                Load(fname, stream);
+            }
+        }
         public void Load(string fname, Stream stream)
         {
             try
