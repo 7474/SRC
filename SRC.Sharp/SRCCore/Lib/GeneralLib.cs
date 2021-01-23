@@ -1106,37 +1106,17 @@ namespace SRC.Core.Lib
             return Strings.StrConv(str, VbStrConv.Hiragana);
         }
 
-        //        // aとbの最大値を返す
-        //        public static int MaxLng(int a, int b)
-        //        {
-        //            int MaxLngRet = default;
-        //            if (a > b)
-        //            {
-        //                MaxLngRet = a;
-        //            }
-        //            else
-        //            {
-        //                MaxLngRet = b;
-        //            }
+        // aとbの最大値を返す
+        public static int MaxLng(int a, int b)
+        {
+            return Math.Max(a, b);
+        }
 
-        //            return MaxLngRet;
-        //        }
-
-        //        // aとbの最小値を返す
-        //        public static int MinLng(int a, int b)
-        //        {
-        //            int MinLngRet = default;
-        //            if (a < b)
-        //            {
-        //                MinLngRet = a;
-        //            }
-        //            else
-        //            {
-        //                MinLngRet = b;
-        //            }
-
-        //            return MinLngRet;
-        //        }
+        // aとbの最小値を返す
+        public static int MinLng(int a, int b)
+        {
+            return Math.Min(a, b);
+        }
 
         //        // aとbの最大値を返す (Double)
         //        public static double MaxDbl(double a, double b)
