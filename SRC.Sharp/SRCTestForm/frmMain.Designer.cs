@@ -36,8 +36,8 @@ namespace SRCTestForm
             this.toolStripProgressBar = new System.Windows.Forms.ToolStripProgressBar();
             this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.panel2 = new System.Windows.Forms.Panel();
             this.treeViewData = new System.Windows.Forms.TreeView();
+            this.panel2 = new System.Windows.Forms.Panel();
             this.textMain = new System.Windows.Forms.TextBox();
             this.menu.SuspendLayout();
             this.status.SuspendLayout();
@@ -101,6 +101,15 @@ namespace SRCTestForm
             this.panel1.Size = new System.Drawing.Size(200, 398);
             this.panel1.TabIndex = 2;
             // 
+            // treeViewData
+            // 
+            this.treeViewData.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.treeViewData.Location = new System.Drawing.Point(0, 0);
+            this.treeViewData.Name = "treeViewData";
+            this.treeViewData.Size = new System.Drawing.Size(200, 398);
+            this.treeViewData.TabIndex = 0;
+            this.treeViewData.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeViewData_AfterSelect);
+            // 
             // panel2
             // 
             this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -112,20 +121,13 @@ namespace SRCTestForm
             this.panel2.Size = new System.Drawing.Size(594, 398);
             this.panel2.TabIndex = 3;
             // 
-            // treeViewData
-            // 
-            this.treeViewData.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.treeViewData.Location = new System.Drawing.Point(0, 0);
-            this.treeViewData.Name = "treeViewData";
-            this.treeViewData.Size = new System.Drawing.Size(200, 398);
-            this.treeViewData.TabIndex = 0;
-            // 
             // textMain
             // 
             this.textMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.textMain.Location = new System.Drawing.Point(0, 0);
             this.textMain.Multiline = true;
             this.textMain.Name = "textMain";
+            this.textMain.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.textMain.Size = new System.Drawing.Size(594, 398);
             this.textMain.TabIndex = 0;
             // 

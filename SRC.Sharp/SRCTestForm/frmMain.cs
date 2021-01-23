@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using SRC.Core;
+using SRCTestForm.FormLib;
 
 namespace SRCTestForm
 {
@@ -26,6 +27,15 @@ namespace SRCTestForm
         private void menuLoadData_Click(object sender, EventArgs e)
         {
             LoadData();
+            UpdateDataTree();
+        }
+        private void treeViewData_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            var srcNode = e.Node as SrcTreeNode;
+            if (srcNode != null)
+            {
+                SetMainText(srcNode.DataJson());
+            }
         }
 
         private void LoadData()
@@ -37,9 +47,9 @@ namespace SRCTestForm
                 {
                     //try
                     //{
-                        SetStatusText($"Load data [{fbd.SelectedPath}].");
-                        SRC.LoadDirectory(fbd.SelectedPath);
-                        SetStatusText("Loaded.");
+                    SetStatusText($"Load data [{fbd.SelectedPath}].");
+                    SRC.LoadDirectory(fbd.SelectedPath);
+                    SetStatusText("Loaded.");
                     //}
                     //catch (Exception ex)
                     //{
@@ -48,6 +58,15 @@ namespace SRCTestForm
                     //}
                 }
             }
+        }
+
+        private void UpdateDataTree()
+        {
+            treeViewData.Nodes.Clear();
+            var unitNodes = SRC.UDList.Items.Select(ud => new SrcTreeNode(ud.Name, ud)).ToArray();
+            var unitListNode = new TreeNode("Unit", unitNodes);
+
+            treeViewData.Nodes.Add(unitListNode);
         }
 
         private void SetMainText(string text)
