@@ -44,7 +44,7 @@ namespace SRC.Core.VB
         // https://docs.microsoft.com/ja-jp/dotnet/api/microsoft.visualbasic.strings.instr?view=net-5.0
         public static int InStr(int Start, string String1, string String2)
         {
-            return String1.IndexOf(String2, Start - 1);
+            return String1.IndexOf(String2, Start - 1) + 1;
         }
 
         // https://docs.microsoft.com/ja-jp/dotnet/api/microsoft.visualbasic.strings.lcase?view=net-5.0
@@ -62,6 +62,7 @@ namespace SRC.Core.VB
         // https://docs.microsoft.com/ja-jp/dotnet/api/microsoft.visualbasic.strings.left?view=net-5.0
         public static string Left(string str, int Length)
         {
+            if (string.IsNullOrEmpty(str)) { return ""; }
             return str.Substring(0, Length);
         }
 
@@ -78,6 +79,7 @@ namespace SRC.Core.VB
         // https://docs.microsoft.com/ja-jp/dotnet/api/microsoft.visualbasic.strings.mid?view=net-5.0
         public static string Mid(string str, int Start)
         {
+            if (string.IsNullOrEmpty(str)) { return ""; }
             return Mid(str, Start, str.Length);
         }
 
