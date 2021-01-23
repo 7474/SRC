@@ -1,46 +1,42 @@
-﻿using System;
-using Microsoft.VisualBasic;
-using Microsoft.VisualBasic.CompilerServices;
+﻿// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
+// 本プログラムはフリーソフトであり、無保証です。
+// 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
+// 再頒布または改変することができます。
+using SRC.Core.VB;
+using System;
+using System.Collections.Generic;
 
-namespace Project1
+namespace SRC.Core.Models
 {
-    internal class PilotData
+    // パイロットデータのクラス
+    public class PilotData
     {
-
-        // Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-        // 本プログラムはフリーソフトであり、無保証です。
-        // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
-        // 再頒布または改変することができます。
-
-        // パイロットデータのクラス
-
         // 名称
         public string Name;
         // 性別
         public string Sex;
         // クラス
-        // UPGRADE_NOTE: Class は Class_Renamed にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
-        public string Class_Renamed;
+        public string Class;
         // 地形適応
         public string Adaption;
         // 経験値
-        public short ExpValue;
+        public int ExpValue;
         // 格闘
-        public short Infight;
+        public int Infight;
         // 射撃
-        public short Shooting;
+        public int Shooting;
         // 命中
-        public short Hit;
+        public int Hit;
         // 回避
-        public short Dodge;
+        public int Dodge;
         // 反応
-        public short Intuition;
+        public int Intuition;
         // 技量
-        public short Technique;
+        public int Technique;
         // 性格
         public string Personality;
         // ＳＰ
-        public short SP;
+        public int SP;
         // ＭＩＤＩ
         public string BGM;
 
@@ -55,106 +51,48 @@ namespace Project1
         public bool IsBitmapMissing;
 
         // スペシャルパワー
-        private string[] SpecialPowerName;
-        private short[] SpecialPowerNecessaryLevel;
-        private short[] SpecialPowerSPConsumption;
+        private IList<string> SpecialPowerName;
+        private IList<int> SpecialPowerNecessaryLevel;
+        private IList<int> SpecialPowerSPConsumption;
 
         // 特殊能力
-        public Collection colSkill = new Collection();
+        public SrcCollection<SkillData> colSkill;
 
         // ユニットに付加するデータ
         // 特殊能力
-        public Collection colFeature;
+        private SrcCollection<FeatureData> colFeature;
         // 武器データ
-        private Collection colWeaponData;
+        private SrcCollection<WeaponData> colWeaponData;
         // アビリティデータ
-        private Collection colAbilityData;
-
-
-        // クラスの初期化
-        // UPGRADE_NOTE: Class_Initialize は Class_Initialize_Renamed にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
-        private void Class_Initialize_Renamed()
-        {
-            SpecialPowerName = new string[1];
-            SpecialPowerNecessaryLevel = new short[1];
-            SpecialPowerSPConsumption = new short[1];
-        }
+        private SrcCollection<AbilityData> colAbilityData;
 
         public PilotData() : base()
         {
-            Class_Initialize_Renamed();
+            SpecialPowerName = new List<string>();
+            SpecialPowerNecessaryLevel = new List<int>();
+            SpecialPowerSPConsumption = new List<int>();
+
+            colSkill = new SrcCollection<SkillData>();
+            colFeature = new SrcCollection<FeatureData>();
+            colAbilityData = new SrcCollection<AbilityData>();
         }
 
-        // クラスの解放
-        // UPGRADE_NOTE: Class_Terminate は Class_Terminate_Renamed にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
-        private void Class_Terminate_Renamed()
-        {
-            short i;
-            {
-                var withBlock = colSkill;
-                var loopTo = (short)withBlock.Count;
-                for (i = 1; i <= loopTo; i++)
-                    withBlock.Remove(1);
-            }
-            // UPGRADE_NOTE: オブジェクト colSkill をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-            colSkill = null;
-            if (colFeature is object)
-            {
-                {
-                    var withBlock1 = colFeature;
-                    var loopTo1 = (short)withBlock1.Count;
-                    for (i = 1; i <= loopTo1; i++)
-                        withBlock1.Remove(1);
-                }
-                // UPGRADE_NOTE: オブジェクト colFeature をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-                colFeature = null;
-            }
-
-            if (colWeaponData is object)
-            {
-                {
-                    var withBlock2 = colWeaponData;
-                    var loopTo2 = (short)withBlock2.Count;
-                    for (i = 1; i <= loopTo2; i++)
-                        withBlock2.Remove(1);
-                }
-                // UPGRADE_NOTE: オブジェクト colWeaponData をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-                colWeaponData = null;
-            }
-
-            if (colAbilityData is object)
-            {
-                {
-                    var withBlock3 = colAbilityData;
-                    var loopTo3 = (short)withBlock3.Count;
-                    for (i = 1; i <= loopTo3; i++)
-                        withBlock3.Remove(1);
-                }
-                // UPGRADE_NOTE: オブジェクト colAbilityData をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-                colAbilityData = null;
-            }
-        }
-
-        ~PilotData()
-        {
-            Class_Terminate_Renamed();
-        }
 
         // 愛称
-
         public string Nickname
         {
             get
             {
                 string NicknameRet = default;
                 NicknameRet = proNickname;
-                if (Strings.InStr(NicknameRet, "主人公") == 1 | Strings.InStr(NicknameRet, "ヒロイン") == 1)
-                {
-                    string argexpr = NicknameRet + "愛称";
-                    NicknameRet = Expression.GetValueAsString(ref argexpr);
-                }
+                // TODO Impl
+                //if (Strings.InStr(NicknameRet, "主人公") == 1 | Strings.InStr(NicknameRet, "ヒロイン") == 1)
+                //{
+                //    string argexpr = NicknameRet + "愛称";
+                //    NicknameRet = Expression.GetValueAsString(ref argexpr);
+                //}
 
-                Expression.ReplaceSubExpression(ref NicknameRet);
+                //Expression.ReplaceSubExpression(ref NicknameRet);
                 return NicknameRet;
             }
 
@@ -165,31 +103,30 @@ namespace Project1
         }
 
         // 読み仮名
-
         public string KanaName
         {
             get
             {
                 string KanaNameRet = default;
                 KanaNameRet = proKanaName;
-                if (Strings.InStr(KanaNameRet, "主人公") == 1 | Strings.InStr(KanaNameRet, "ヒロイン") == 1 | Strings.InStr(KanaNameRet, "ひろいん") == 1)
-                {
-                    string argvar_name = KanaNameRet + "読み仮名";
-                    if (Expression.IsVariableDefined(ref argvar_name))
-                    {
-                        string argexpr = KanaNameRet + "読み仮名";
-                        KanaNameRet = Expression.GetValueAsString(ref argexpr);
-                    }
-                    else
-                    {
-                        string localGetValueAsString() { string argexpr = KanaNameRet + "愛称"; var ret = Expression.GetValueAsString(ref argexpr); return ret; }
+                // TODO Impl
+                //if (Strings.InStr(KanaNameRet, "主人公") == 1 | Strings.InStr(KanaNameRet, "ヒロイン") == 1 | Strings.InStr(KanaNameRet, "ひろいん") == 1)
+                //{
+                //    string argvar_name = KanaNameRet + "読み仮名";
+                //    if (Expression.IsVariableDefined(ref argvar_name))
+                //    {
+                //        string argexpr = KanaNameRet + "読み仮名";
+                //        KanaNameRet = Expression.GetValueAsString(ref argexpr);
+                //    }
+                //    else
+                //    {
+                //        string localGetValueAsString() { string argexpr = KanaNameRet + "愛称"; var ret = Expression.GetValueAsString(ref argexpr); return ret; }
 
-                        string argstr_Renamed = localGetValueAsString();
-                        KanaNameRet = GeneralLib.StrToHiragana(ref argstr_Renamed);
-                    }
-                }
-
-                Expression.ReplaceSubExpression(ref KanaNameRet);
+                //        string argstr_Renamed = localGetValueAsString();
+                //        KanaNameRet = GeneralLib.StrToHiragana(ref argstr_Renamed);
+                //    }
+                //}
+                //Expression.ReplaceSubExpression(ref KanaNameRet);
                 return KanaNameRet;
             }
 
@@ -235,10 +172,10 @@ namespace Project1
 
 
         // 特殊能力を追加
-        public void AddSkill(ref string sname, double slevel, string sdata, short lv)
+        public void AddSkill(ref string sname, double slevel, string sdata, int lv)
         {
             SkillData sd;
-            short i;
+            int i;
             ;
 
             // データ定義が省略されている場合は前回と同じ物を使う
@@ -277,7 +214,7 @@ namespace Project1
 
                             if (withBlock.get_AliasLevelIsPlusMod(i))
                             {
-                                if (slevel == SRC.DEFAULT_LEVEL)
+                                if (slevel == Constants.DEFAULT_LEVEL)
                                 {
                                     slevel = 1d;
                                 }
@@ -286,14 +223,14 @@ namespace Project1
                             }
                             else if (withBlock.get_AliasLevelIsMultMod(i))
                             {
-                                if (slevel == SRC.DEFAULT_LEVEL)
+                                if (slevel == Constants.DEFAULT_LEVEL)
                                 {
                                     slevel = 1d;
                                 }
 
                                 sd.Level = slevel * withBlock.get_AliasLevel(i);
                             }
-                            else if (slevel != SRC.DEFAULT_LEVEL)
+                            else if (slevel != Constants.DEFAULT_LEVEL)
                             {
                                 sd.Level = slevel;
                             }
@@ -339,12 +276,12 @@ namespace Project1
         }
 
         // 指定したレベルの時点で所有しているパイロット用特殊能力を列挙
-        public string Skill(short lv)
+        public string Skill(int lv)
         {
             string SkillRet = default;
-            short skill_num;
+            int skill_num;
             var skill_name = new string[33];
-            short i;
+            int i;
             skill_num = 0;
             foreach (SkillData sd in colSkill)
             {
@@ -359,11 +296,11 @@ namespace Project1
                         }
                     }
 
-                    skill_num = (short)(skill_num + 1);
+                    skill_num = (skill_num + 1);
                     skill_name[skill_num] = sd.Name;
                 }
 
-                NextLoop:
+            NextLoop:
                 ;
             }
 
@@ -375,7 +312,7 @@ namespace Project1
         }
 
         // 指定したレベルで特殊能力snameが使えるか？
-        public bool IsSkillAvailable(short lv, ref string sname)
+        public bool IsSkillAvailable(int lv, ref string sname)
         {
             bool IsSkillAvailableRet = default;
             foreach (SkillData sd in colSkill)
@@ -394,10 +331,10 @@ namespace Project1
         }
 
         // 指定したレベルでの特殊能力snameのレベル
-        public double SkillLevel(short lv, ref string sname)
+        public double SkillLevel(int lv, ref string sname)
         {
             double SkillLevelRet = default;
-            short lv2;
+            int lv2;
             lv2 = 0;
             foreach (SkillData sd in colSkill)
             {
@@ -416,7 +353,7 @@ namespace Project1
                 }
             }
 
-            if (SkillLevelRet == SRC.DEFAULT_LEVEL)
+            if (SkillLevelRet == Constants.DEFAULT_LEVEL)
             {
                 SkillLevelRet = 1d;
             }
@@ -425,10 +362,10 @@ namespace Project1
         }
 
         // 必要技能判定用(別名でも判定)
-        public short SkillLevel2(short lv, ref string sname)
+        public int SkillLevel2(int lv, ref string sname)
         {
-            short SkillLevel2Ret = default;
-            short lv2;
+            int SkillLevel2Ret = default;
+            int lv2;
             lv2 = 0;
             foreach (SkillData sd in colSkill)
             {
@@ -442,12 +379,12 @@ namespace Project1
                     if (sd.NecessaryLevel > lv2)
                     {
                         lv2 = sd.NecessaryLevel;
-                        SkillLevel2Ret = (short)sd.Level;
+                        SkillLevel2Ret = sd.Level;
                     }
                 }
             }
 
-            if (SkillLevel2Ret == SRC.DEFAULT_LEVEL)
+            if (SkillLevel2Ret == Constants.DEFAULT_LEVEL)
             {
                 SkillLevel2Ret = 1;
             }
@@ -456,10 +393,10 @@ namespace Project1
         }
 
         // 指定したレベルでの特殊能力Nameのデータ
-        public string SkillData(short lv, ref string sname)
+        public string SkillData(int lv, ref string sname)
         {
             string SkillDataRet = default;
-            short lv2;
+            int lv2;
             lv2 = 0;
             foreach (SkillData sd in colSkill)
             {
@@ -482,10 +419,10 @@ namespace Project1
         }
 
         // 指定したレベルでの特殊能力Nameの名称
-        public string SkillName(short lv, ref string sname)
+        public string SkillName(int lv, ref string sname)
         {
             string SkillNameRet = default;
-            short lv2;
+            int lv2;
             SkillNameRet = sname;
             lv2 = 0;
             foreach (SkillData sd in colSkill)
@@ -529,7 +466,7 @@ namespace Project1
 
                         if (sname != "同調率" & sname != "霊力")
                         {
-                            if (sd.Level != SRC.DEFAULT_LEVEL & Strings.InStr(SkillNameRet, "Lv") == 0)
+                            if (sd.Level != Constants.DEFAULT_LEVEL & Strings.InStr(SkillNameRet, "Lv") == 0)
                             {
                                 SkillNameRet = SkillNameRet + "Lv" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(sd.Level);
                             }
@@ -537,7 +474,7 @@ namespace Project1
                     }
                 }
 
-                NextLoop:
+            NextLoop:
                 ;
             }
 
@@ -570,7 +507,7 @@ namespace Project1
 
 
         // スペシャルパワーを追加
-        public void AddSpecialPower(ref string sname, short lv, short sp_consumption)
+        public void AddSpecialPower(ref string sname, int lv, int sp_consumption)
         {
             Array.Resize(ref SpecialPowerName, Information.UBound(SpecialPowerName) + 1 + 1);
             Array.Resize(ref SpecialPowerNecessaryLevel, Information.UBound(SpecialPowerName) + 1);
@@ -581,16 +518,16 @@ namespace Project1
         }
 
         // 指定したレベルで使用可能なスペシャルパワーの個数
-        public short CountSpecialPower(short lv)
+        public int CountSpecialPower(int lv)
         {
-            short CountSpecialPowerRet = default;
-            short i;
-            var loopTo = (short)Information.UBound(SpecialPowerName);
+            int CountSpecialPowerRet = default;
+            int i;
+            var loopTo = Information.UBound(SpecialPowerName);
             for (i = 1; i <= loopTo; i++)
             {
                 if (SpecialPowerNecessaryLevel[i] <= lv)
                 {
-                    CountSpecialPowerRet = (short)(CountSpecialPowerRet + 1);
+                    CountSpecialPowerRet = (CountSpecialPowerRet + 1);
                 }
             }
 
@@ -598,17 +535,17 @@ namespace Project1
         }
 
         // 指定したレベルで使用可能なidx番目のスペシャルパワー
-        public string SpecialPower(short lv, short idx)
+        public string SpecialPower(int lv, int idx)
         {
             string SpecialPowerRet = default;
-            short i, n;
+            int i, n;
             n = 0;
-            var loopTo = (short)Information.UBound(SpecialPowerName);
+            var loopTo = Information.UBound(SpecialPowerName);
             for (i = 1; i <= loopTo; i++)
             {
                 if (SpecialPowerNecessaryLevel[i] <= lv)
                 {
-                    n = (short)(n + 1);
+                    n = (n + 1);
                     if (idx == n)
                     {
                         SpecialPowerRet = SpecialPowerName[i];
@@ -621,11 +558,11 @@ namespace Project1
         }
 
         // 指定したレベルでスペシャルパワーsnameを使えるか？
-        public bool IsSpecialPowerAvailable(short lv, ref string sname)
+        public bool IsSpecialPowerAvailable(int lv, ref string sname)
         {
             bool IsSpecialPowerAvailableRet = default;
-            short i;
-            var loopTo = (short)Information.UBound(SpecialPowerName);
+            int i;
+            var loopTo = Information.UBound(SpecialPowerName);
             for (i = 1; i <= loopTo; i++)
             {
                 if ((SpecialPowerName[i] ?? "") == (sname ?? ""))
@@ -644,13 +581,13 @@ namespace Project1
         }
 
         // 指定したスペシャルパワーsnameのＳＰ消費量
-        public short SpecialPowerCost(string sname)
+        public int SpecialPowerCost(string sname)
         {
-            short SpecialPowerCostRet = default;
-            short i;
+            int SpecialPowerCostRet = default;
+            int i;
 
             // パイロットデータ側でＳＰ消費量が定義されているか検索
-            var loopTo = (short)Information.UBound(SpecialPowerName);
+            var loopTo = Information.UBound(SpecialPowerName);
             for (i = 1; i <= loopTo; i++)
             {
                 if ((SpecialPowerName[i] ?? "") == (sname ?? ""))
@@ -676,13 +613,13 @@ namespace Project1
         // データを消去
         public void Clear()
         {
-            short i;
+            int i;
             SpecialPowerName = new string[1];
-            SpecialPowerNecessaryLevel = new short[1];
-            SpecialPowerSPConsumption = new short[1];
+            SpecialPowerNecessaryLevel = new int[1];
+            SpecialPowerSPConsumption = new int[1];
             {
                 var withBlock = colSkill;
-                var loopTo = (short)withBlock.Count;
+                var loopTo = withBlock.Count;
                 for (i = 1; i <= loopTo; i++)
                     withBlock.Remove(1);
             }
@@ -691,7 +628,7 @@ namespace Project1
             {
                 {
                     var withBlock1 = colFeature;
-                    var loopTo1 = (short)withBlock1.Count;
+                    var loopTo1 = withBlock1.Count;
                     for (i = 1; i <= loopTo1; i++)
                         withBlock1.Remove(1);
                 }
@@ -701,7 +638,7 @@ namespace Project1
             {
                 {
                     var withBlock2 = colWeaponData;
-                    var loopTo2 = (short)withBlock2.Count;
+                    var loopTo2 = withBlock2.Count;
                     for (i = 1; i <= loopTo2; i++)
                         withBlock2.Remove(1);
                 }
@@ -711,7 +648,7 @@ namespace Project1
             {
                 {
                     var withBlock3 = colAbilityData;
-                    var loopTo3 = (short)withBlock3.Count;
+                    var loopTo3 = withBlock3.Count;
                     for (i = 1; i <= loopTo3; i++)
                         withBlock3.Remove(1);
                 }
@@ -726,7 +663,7 @@ namespace Project1
             string ftype, fdata = default;
             double flevel;
             string nskill = default, ncondition = default;
-            short i, j;
+            int i, j;
             string buf;
             if (colFeature is null)
             {
@@ -736,7 +673,7 @@ namespace Project1
             // 必要技能の切り出し
             if (Strings.Right(fdef, 1) == ")")
             {
-                i = (short)Strings.InStr(fdef, " (");
+                i = Strings.InStr(fdef, " (");
                 if (i > 0)
                 {
                     nskill = Strings.Trim(Strings.Mid(fdef, i + 2, Strings.Len(fdef) - i - 2));
@@ -760,7 +697,7 @@ namespace Project1
             // 必要条件の切り出し
             if (Strings.Right(buf, 1) == ">")
             {
-                i = (short)Strings.InStr(buf, " <");
+                i = Strings.InStr(buf, " <");
                 if (i > 0)
                 {
                     ncondition = Strings.Trim(Strings.Mid(buf, i + 2, Strings.Len(buf) - i - 2));
@@ -774,9 +711,9 @@ namespace Project1
             }
 
             // 特殊能力の種類、レベル、データを切り出し
-            flevel = SRC.DEFAULT_LEVEL;
-            i = (short)Strings.InStr(buf, "Lv");
-            j = (short)Strings.InStr(buf, "=");
+            flevel = Constants.DEFAULT_LEVEL;
+            i = Strings.InStr(buf, "Lv");
+            j = Strings.InStr(buf, "=");
             if (i > 0 & j > 0 & i > j)
             {
                 i = 0;
@@ -834,12 +771,12 @@ namespace Project1
                             {
                                 if (withBlock.get_AliasLevelIsPlusMod(i))
                                 {
-                                    if (flevel == SRC.DEFAULT_LEVEL)
+                                    if (flevel == Constants.DEFAULT_LEVEL)
                                     {
                                         flevel = 1d;
                                     }
 
-                                    if (withBlock.get_AliasLevel(i) == SRC.DEFAULT_LEVEL)
+                                    if (withBlock.get_AliasLevel(i) == Constants.DEFAULT_LEVEL)
                                     {
                                         fd.Level = flevel + 1d;
                                     }
@@ -850,12 +787,12 @@ namespace Project1
                                 }
                                 else if (withBlock.get_AliasLevelIsMultMod(i))
                                 {
-                                    if (flevel == SRC.DEFAULT_LEVEL)
+                                    if (flevel == Constants.DEFAULT_LEVEL)
                                     {
                                         flevel = 1d;
                                     }
 
-                                    if (withBlock.get_AliasLevel(i) == SRC.DEFAULT_LEVEL)
+                                    if (withBlock.get_AliasLevel(i) == Constants.DEFAULT_LEVEL)
                                     {
                                         fd.Level = flevel;
                                     }
@@ -864,7 +801,7 @@ namespace Project1
                                         fd.Level = flevel * withBlock.get_AliasLevel(i);
                                     }
                                 }
-                                else if (flevel != SRC.DEFAULT_LEVEL)
+                                else if (flevel != Constants.DEFAULT_LEVEL)
                                 {
                                     fd.Level = flevel;
                                 }
@@ -875,7 +812,7 @@ namespace Project1
 
                                 if (!string.IsNullOrEmpty(fdata) & Strings.InStr(withBlock.get_AliasData(i), "非表示") != 1)
                                 {
-                                    string localListTail() { string arglist = withBlock.get_AliasData(i); var ret = GeneralLib.ListTail(ref arglist, (short)(GeneralLib.LLength(ref fdata) + 1)); withBlock.get_AliasData(i) = arglist; return ret; }
+                                    string localListTail() { string arglist = withBlock.get_AliasData(i); var ret = GeneralLib.ListTail(ref arglist, (GeneralLib.LLength(ref fdata) + 1)); withBlock.get_AliasData(i) = arglist; return ret; }
 
                                     fd.StrData = fdata + " " + localListTail();
                                 }
@@ -956,15 +893,15 @@ namespace Project1
         }
 
         // 特殊能力の総数
-        public short CountFeature()
+        public int CountFeature()
         {
-            short CountFeatureRet = default;
+            int CountFeatureRet = default;
             if (colFeature is null)
             {
                 return CountFeatureRet;
             }
 
-            CountFeatureRet = (short)colFeature.Count;
+            CountFeatureRet = colFeature.Count;
             return CountFeatureRet;
         }
 
@@ -988,7 +925,7 @@ namespace Project1
             {
                 FeatureNameRet = GeneralLib.ListIndex(ref fd.StrData, 1);
             }
-            else if (fd.Level != SRC.DEFAULT_LEVEL)
+            else if (fd.Level != Constants.DEFAULT_LEVEL)
             {
                 FeatureNameRet = fd.Name + "Lv" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(fd.Level);
             }
@@ -1017,13 +954,13 @@ namespace Project1
              */
             fd = (FeatureData)colFeature[Index];
             FeatureLevelRet = fd.Level;
-            if (FeatureLevelRet == SRC.DEFAULT_LEVEL)
+            if (FeatureLevelRet == Constants.DEFAULT_LEVEL)
             {
                 FeatureLevelRet = 1d;
             }
 
             return FeatureLevelRet;
-            ErrorHandler:
+        ErrorHandler:
             ;
             FeatureLevelRet = 0d;
         }
@@ -1046,7 +983,7 @@ namespace Project1
             fd = (FeatureData)colFeature[Index];
             FeatureDataRet = fd.StrData;
             return FeatureDataRet;
-            ErrorHandler:
+        ErrorHandler:
             ;
             FeatureDataRet = "";
         }
@@ -1083,15 +1020,15 @@ namespace Project1
         }
 
         // 武器の総数
-        public short CountWeapon()
+        public int CountWeapon()
         {
-            short CountWeaponRet = default;
+            int CountWeaponRet = default;
             if (colWeaponData is null)
             {
                 return CountWeaponRet;
             }
 
-            CountWeaponRet = (short)colWeaponData.Count;
+            CountWeaponRet = colWeaponData.Count;
             return CountWeaponRet;
         }
 
@@ -1121,15 +1058,15 @@ namespace Project1
         }
 
         // アビリティの総数
-        public short CountAbility()
+        public int CountAbility()
         {
-            short CountAbilityRet = default;
+            int CountAbilityRet = default;
             if (colAbilityData is null)
             {
                 return CountAbilityRet;
             }
 
-            CountAbilityRet = (short)colAbilityData.Count;
+            CountAbilityRet = colAbilityData.Count;
             return CountAbilityRet;
         }
 

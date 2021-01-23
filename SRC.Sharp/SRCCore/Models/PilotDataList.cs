@@ -1,24 +1,24 @@
-﻿using Microsoft.VisualBasic;
-using Microsoft.VisualBasic.CompilerServices;
+﻿// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
+// 本プログラムはフリーソフトであり、無保証です。
+// 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
+// 再頒布または改変することができます。
 
-namespace Project1
+using SRC.Core.VB;
+
+namespace SRC.Core.Models
 {
-    internal class PilotDataList
+    // 全パイロットデータを管理するリストのクラス
+    public class PilotDataList
     {
-
-        // Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-        // 本プログラムはフリーソフトであり、無保証です。
-        // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
-        // 再頒布または改変することができます。
-
-        // 全パイロットデータを管理するリストのクラス
-
         // パイロットデータのコレクション
-        private Collection colPilotDataList = new Collection();
+        private SrcCollection<PilotData> colPilotDataList;
 
-        // クラスの初期化
-        // UPGRADE_NOTE: Class_Initialize は Class_Initialize_Renamed にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
-        private void Class_Initialize_Renamed()
+        public PilotDataList()
+        {
+            colPilotDataList = new SrcCollection<PilotData>();
+            AddDummyData();
+        }
+        private void AddDummyData()
         {
             var pd = new PilotData();
 
@@ -30,33 +30,8 @@ namespace Project1
             colPilotDataList.Add(pd, pd.Name);
         }
 
-        public PilotDataList() : base()
-        {
-            Class_Initialize_Renamed();
-        }
-
-        // クラスの解放
-        // UPGRADE_NOTE: Class_Terminate は Class_Terminate_Renamed にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
-        private void Class_Terminate_Renamed()
-        {
-            short i;
-            {
-                var withBlock = colPilotDataList;
-                var loopTo = (short)withBlock.Count;
-                for (i = 1; i <= loopTo; i++)
-                    withBlock.Remove(1);
-            }
-            // UPGRADE_NOTE: オブジェクト colPilotDataList をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-            colPilotDataList = null;
-        }
-
-        ~PilotDataList()
-        {
-            Class_Terminate_Renamed();
-        }
-
         // パイロットデータリストにデータを追加
-        public PilotData Add(ref string pname)
+        public PilotData Add(string pname)
         {
             PilotData AddRet = default;
             var new_pilot_data = new PilotData();
@@ -67,117 +42,67 @@ namespace Project1
         }
 
         // パイロットデータリストに登録されているデータの総数
-        public short Count()
+        public int Count()
         {
-            short CountRet = default;
-            CountRet = (short)colPilotDataList.Count;
+            int CountRet = default;
+            CountRet = colPilotDataList.Count;
             return CountRet;
         }
 
         // パイロットデータリストから指定したデータを消去
-        public void Delete(ref object Index)
+        public void Delete(string Index)
         {
             colPilotDataList.Remove(Index);
         }
 
         // パイロットデータリストから指定したデータを取り出す
-        public PilotData Item(ref object Index)
+        public PilotData Item(string Index)
         {
-            PilotData ItemRet = default;
-            string pname;
-            ;
-#error Cannot convert OnErrorGoToStatementSyntax - see comment for details
-            /* Cannot convert OnErrorGoToStatementSyntax, CONVERSION ERROR: Conversion for OnErrorGoToLabelStatement not implemented, please report this issue in 'On Error GoTo ErrorHandler' at character 2350
-
-
-            Input:
-
-                    On Error GoTo ErrorHandler
-
-             */
-            ItemRet = (PilotData)colPilotDataList[Index];
-            return ItemRet;
-            ErrorHandler:
-            ;
-
-            // UPGRADE_WARNING: オブジェクト Index の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            pname = Conversions.ToString(Index);
-            foreach (PilotData pd in colPilotDataList)
+            try
             {
-                if ((pd.Nickname ?? "") == (pname ?? ""))
+                var pilot = colPilotDataList[Index];
+                if (pilot != null) { return pilot; }
+                var pname = Conversions.ToString(Index);
+                foreach (PilotData pd in colPilotDataList)
                 {
-                    ItemRet = pd;
-                    return ItemRet;
+                    if ((pd.Nickname ?? "") == (pname ?? ""))
+                    {
+                        return pd;
+                    }
                 }
             }
+            catch
+            {
+                return null;
+            }
+            return null;
         }
 
         // パイロットデータリストに指定したデータが登録されているか？
-        public bool IsDefined(ref object Index)
+        public bool IsDefined(string Index)
         {
-            bool IsDefinedRet = default;
-            PilotData pd;
-            string pname;
-            ;
-#error Cannot convert OnErrorGoToStatementSyntax - see comment for details
-            /* Cannot convert OnErrorGoToStatementSyntax, CONVERSION ERROR: Conversion for OnErrorGoToLabelStatement not implemented, please report this issue in 'On Error GoTo ErrorHandler' at character 2965
-
-
-            Input:
-
-                    On Error GoTo ErrorHandler
-
-             */
-            pd = (PilotData)colPilotDataList[Index];
-            IsDefinedRet = true;
-            return IsDefinedRet;
-            ErrorHandler:
-            ;
-
-            // UPGRADE_WARNING: オブジェクト Index の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            pname = Conversions.ToString(Index);
-            foreach (PilotData currentPd in colPilotDataList)
-            {
-                pd = currentPd;
-                if ((pd.Nickname ?? "") == (pname ?? ""))
-                {
-                    IsDefinedRet = true;
-                    return IsDefinedRet;
-                }
-            }
-
-            IsDefinedRet = false;
+            return Item(Index) != null;
         }
 
         // パイロットデータリストに指定したデータが登録されているか？ (愛称は見ない)
-        public bool IsDefined2(ref object Index)
+        public bool IsDefined2(string Index)
         {
-            bool IsDefined2Ret = default;
-            PilotData pd;
-            ;
-#error Cannot convert OnErrorGoToStatementSyntax - see comment for details
-            /* Cannot convert OnErrorGoToStatementSyntax, CONVERSION ERROR: Conversion for OnErrorGoToLabelStatement not implemented, please report this issue in 'On Error GoTo ErrorHandler' at character 3613
-
-
-            Input:
-
-                    On Error GoTo ErrorHandler
-
-             */
-            pd = (PilotData)colPilotDataList[Index];
-            IsDefined2Ret = true;
-            return IsDefined2Ret;
-            ErrorHandler:
-            ;
-            IsDefined2Ret = false;
+            try
+            {
+                return colPilotDataList[Index] != null;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         // データファイル fname からデータをロード
-        public void Load(ref string fname)
+        public void Load(string fname)
         {
-            short FileNumber;
+            int FileNumber;
             int line_num;
-            short i, j;
+            int i, j;
             int ret, n, ret2;
             string buf, line_buf = default, buf2;
             PilotData pd;
@@ -188,9 +113,9 @@ namespace Project1
             WeaponData wd;
             AbilityData sd;
             string wname, sname = default;
-            short sp_cost;
+            int sp_cost;
             bool in_quote;
-            short comma_num;
+            int comma_num;
             ;
 #error Cannot convert OnErrorGoToStatementSyntax - see comment for details
             /* Cannot convert OnErrorGoToStatementSyntax, CONVERSION ERROR: Conversion for OnErrorGoToLabelStatement not implemented, please report this issue in 'On Error GoTo ErrorHandler' at character 4329
@@ -201,7 +126,7 @@ namespace Project1
                     On Error GoTo ErrorHandler
 
              */
-            FileNumber = (short)FileSystem.FreeFile();
+            FileNumber = FileSystem.FreeFile();
             FileSystem.FileOpen(FileNumber, fname, OpenMode.Input, OpenAccess.Read);
             line_num = 0;
             while (true)
@@ -209,13 +134,13 @@ namespace Project1
                 data_name = "";
                 do
                 {
-                    if (FileSystem.EOF((int)FileNumber))
+                    if (FileSystem.EOF(FileNumber))
                     {
-                        FileSystem.FileClose((int)FileNumber);
+                        FileSystem.FileClose(FileNumber);
                         return;
                     }
 
-                    GeneralLib.GetLine(ref FileNumber, ref line_buf, ref line_num);
+                    GeneralLib.GetLine(FileNumber, line_buf, line_num);
                 }
                 while (Strings.Len(line_buf) == 0);
                 if (Strings.InStr(line_buf, ",") > 0)
@@ -277,41 +202,41 @@ namespace Project1
                 }
 
                 object argIndex2 = (object)data_name;
-                if (IsDefined(ref argIndex2))
+                if (IsDefined(argIndex2))
                 {
                     // すでに定義済みのパイロットの場合はデータを置き換え
-                    PilotData localItem() { object argIndex1 = (object)data_name; var ret = Item(ref argIndex1); return ret; }
+                    PilotData localItem() { object argIndex1 = (object)data_name; var ret = Item(argIndex1); return ret; }
 
                     if ((localItem().Name ?? "") == (data_name ?? ""))
                     {
                         object argIndex1 = (object)data_name;
-                        pd = Item(ref argIndex1);
+                        pd = Item(argIndex1);
                         pd.Clear();
                     }
                     else
                     {
-                        pd = Add(ref data_name);
+                        pd = Add(data_name);
                     }
                 }
                 else
                 {
-                    pd = Add(ref data_name);
+                    pd = Add(data_name);
                 }
                 // 愛称, 読み仮名, 性別, クラス, 地形適応, 経験値
-                GeneralLib.GetLine(ref FileNumber, ref line_buf, ref line_num);
+                GeneralLib.GetLine(FileNumber, line_buf, line_num);
 
                 // 書式チェックのため、コンマの数を数えておく
-                comma_num = (short)0;
-                var loopTo = (short)Strings.Len(line_buf);
-                for (i = (short)1; i <= loopTo; i++)
+                comma_num = 0;
+                var loopTo = Strings.Len(line_buf);
+                for (i = 1; i <= loopTo; i++)
                 {
-                    if (Strings.Mid(line_buf, (int)i, 1) == ",")
+                    if (Strings.Mid(line_buf, i, 1) == ",")
                     {
-                        comma_num = (short)((int)comma_num + 1);
+                        comma_num = (comma_num + 1);
                     }
                 }
 
-                if ((int)comma_num < 3)
+                if (comma_num < 3)
                 {
                     err_msg = "設定に抜けがあります。";
                     ;
@@ -324,7 +249,7 @@ namespace Project1
 
                      */
                 }
-                else if ((int)comma_num > 5)
+                else if (comma_num > 5)
                 {
                     err_msg = "余分な「,」があります。";
                     ;
@@ -372,7 +297,7 @@ namespace Project1
                                 case "-":
                                     {
                                         string argstr_Renamed = pd.Nickname;
-                                        pd.KanaName = GeneralLib.StrToHiragana(ref argstr_Renamed);
+                                        pd.KanaName = GeneralLib.StrToHiragana(argstr_Renamed);
                                         pd.Nickname = argstr_Renamed;
                                         pd.Sex = buf2;
                                         break;
@@ -401,9 +326,9 @@ namespace Project1
                                 case "-":
                                     {
                                         string argmsg = "読み仮名の設定が抜けています。";
-                                        GUI.DataErrorMessage(ref argmsg, ref fname, (short)line_num, ref line_buf, ref data_name);
+                                        GUI.DataErrorMessage(argmsg, fname, line_num, line_buf, data_name);
                                         string argstr_Renamed1 = pd.Nickname;
-                                        pd.KanaName = GeneralLib.StrToHiragana(ref argstr_Renamed1);
+                                        pd.KanaName = GeneralLib.StrToHiragana(argstr_Renamed1);
                                         pd.Nickname = argstr_Renamed1;
                                         break;
                                     }
@@ -432,7 +357,7 @@ namespace Project1
                                 default:
                                     {
                                         string argmsg1 = "性別の設定が間違っています。";
-                                        GUI.DataErrorMessage(ref argmsg1, ref fname, (short)line_num, ref line_buf, ref data_name);
+                                        GUI.DataErrorMessage(argmsg1, fname, line_num, line_buf, data_name);
                                         break;
                                     }
                             }
@@ -443,7 +368,7 @@ namespace Project1
                     default:
                         {
                             string argstr_Renamed2 = pd.Nickname;
-                            pd.KanaName = GeneralLib.StrToHiragana(ref argstr_Renamed2);
+                            pd.KanaName = GeneralLib.StrToHiragana(argstr_Renamed2);
                             pd.Nickname = argstr_Renamed2;
                             break;
                         }
@@ -455,12 +380,12 @@ namespace Project1
                 buf = Strings.Mid(buf, ret + 1);
                 if (!Information.IsNumeric(buf2))
                 {
-                    pd.Class_Renamed = buf2;
+                    pd.Class = buf2;
                 }
                 else
                 {
                     string argmsg2 = "クラスの設定が間違っています。";
-                    GUI.DataErrorMessage(ref argmsg2, ref fname, (short)line_num, ref line_buf, ref data_name);
+                    GUI.DataErrorMessage(argmsg2, fname, line_num, line_buf, data_name);
                 }
 
                 // 地形適応
@@ -474,7 +399,7 @@ namespace Project1
                 else
                 {
                     string argmsg3 = "地形適応の設定が間違っています。";
-                    GUI.DataErrorMessage(ref argmsg3, ref fname, (short)line_num, ref line_buf, ref data_name);
+                    GUI.DataErrorMessage(argmsg3, fname, line_num, line_buf, data_name);
                     pd.Adaption = "AAAA";
                 }
 
@@ -482,30 +407,30 @@ namespace Project1
                 buf2 = Strings.Trim(buf);
                 if (Information.IsNumeric(buf2))
                 {
-                    pd.ExpValue = (short)GeneralLib.MinLng(Conversions.ToInteger(buf2), 9999);
+                    pd.ExpValue = GeneralLib.MinLng(Conversions.ToInteger(buf2), 9999);
                 }
                 else
                 {
                     string argmsg4 = "経験値の設定が間違っています。";
-                    GUI.DataErrorMessage(ref argmsg4, ref fname, (short)line_num, ref line_buf, ref data_name);
+                    GUI.DataErrorMessage(argmsg4, fname, line_num, line_buf, data_name);
                 }
 
                 // 特殊能力データ
-                GeneralLib.GetLine(ref FileNumber, ref line_buf, ref line_num);
+                GeneralLib.GetLine(FileNumber, line_buf, line_num);
                 if (line_buf == "特殊能力なし")
                 {
-                    GeneralLib.GetLine(ref FileNumber, ref line_buf, ref line_num);
+                    GeneralLib.GetLine(FileNumber, line_buf, line_num);
                 }
                 else if (line_buf == "特殊能力")
                 {
                     // 新形式による特殊能力表記
-                    GeneralLib.GetLine(ref FileNumber, ref line_buf, ref line_num);
+                    GeneralLib.GetLine(FileNumber, line_buf, line_num);
                     buf = line_buf;
-                    i = (short)0;
+                    i = 0;
                     aname = "";
                     while (true)
                     {
-                        i = (short)((int)i + 1);
+                        i = (i + 1);
 
                         // コンマの位置を検索
                         ret = Strings.InStr(buf, ",");
@@ -515,10 +440,10 @@ namespace Project1
                         {
                             // 「"」が見つかった場合、次の「"」後のコンマを検索
                             in_quote = true;
-                            j = (short)(ret2 + 1);
-                            while ((int)j <= Strings.Len(buf))
+                            j = (ret2 + 1);
+                            while (j <= Strings.Len(buf))
                             {
-                                switch (Strings.Mid(buf, (int)j, 1) ?? "")
+                                switch (Strings.Mid(buf, j, 1) ?? "")
                                 {
                                     case "\"":
                                         {
@@ -530,18 +455,18 @@ namespace Project1
                                         {
                                             if (!in_quote)
                                             {
-                                                buf2 = Strings.Left(buf, (int)j - 1);
-                                                buf = Strings.Mid(buf, (int)j + 1);
+                                                buf2 = Strings.Left(buf, j - 1);
+                                                buf = Strings.Mid(buf, j + 1);
                                             }
 
                                             break;
                                         }
                                 }
 
-                                j = (short)((int)j + 1);
+                                j = (j + 1);
                             }
 
-                            if ((int)j == Strings.Len(buf))
+                            if (j == Strings.Len(buf))
                             {
                                 buf2 = buf;
                                 buf = "";
@@ -558,7 +483,7 @@ namespace Project1
                             // コンマの後ろの文字列が空白の場合
                             if (string.IsNullOrEmpty(buf))
                             {
-                                if ((int)i % 2 == 1)
+                                if (i % 2 == 1)
                                 {
                                     err_msg = "行末の「,」の後に特殊能力指定が抜けています。";
                                 }
@@ -583,13 +508,13 @@ namespace Project1
                             buf = "";
                         }
 
-                        if ((int)i % 2 == 1)
+                        if (i % 2 == 1)
                         {
                             // 特殊能力名＆レベル
 
                             if (Information.IsNumeric(buf2))
                             {
-                                if ((int)i == 1)
+                                if (i == 1)
                                 {
                                     // 特殊能力の指定は終り。能力値の指定へ
                                     buf = buf2 + ", " + buf;
@@ -597,8 +522,8 @@ namespace Project1
                                 }
                                 else
                                 {
-                                    string argmsg5 = "行頭から" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((object)(((int)i + 1) / 2)) + "番目の特殊能力名の設定が間違っています。";
-                                    GUI.DataErrorMessage(ref argmsg5, ref fname, (short)line_num, ref line_buf, ref data_name);
+                                    string argmsg5 = "行頭から" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((object)((i + 1) / 2)) + "番目の特殊能力名の設定が間違っています。";
+                                    GUI.DataErrorMessage(argmsg5, fname, line_num, line_buf, data_name);
                                 }
                             }
 
@@ -608,7 +533,7 @@ namespace Project1
                                 {
                                     if (string.IsNullOrEmpty(aname))
                                     {
-                                        err_msg = "行頭から" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((object)(((int)i + 1) / 2)) + "番目の特殊能力「" + Strings.Trim(Strings.Left(buf2, Strings.InStr(buf2, " "))) + "」の指定の後に「,」が抜けています。";
+                                        err_msg = "行頭から" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((object)((i + 1) / 2)) + "番目の特殊能力「" + Strings.Trim(Strings.Left(buf2, Strings.InStr(buf2, " "))) + "」の指定の後に「,」が抜けています。";
                                     }
                                     else
                                     {
@@ -626,11 +551,11 @@ namespace Project1
                             }
 
                             // 特殊能力の別名指定がある？
-                            j = (short)Strings.InStr(buf2, "=");
-                            if ((int)j > 0)
+                            j = Strings.InStr(buf2, "=");
+                            if (j > 0)
                             {
-                                adata = Strings.Mid(buf2, (int)j + 1);
-                                buf2 = Strings.Left(buf2, (int)j - 1);
+                                adata = Strings.Mid(buf2, j + 1);
+                                buf2 = Strings.Left(buf2, j - 1);
                             }
                             else
                             {
@@ -638,7 +563,7 @@ namespace Project1
                             }
 
                             // 特殊能力のレベル指定を切り出す
-                            j = (short)Strings.InStr(buf2, "Lv");
+                            j = Strings.InStr(buf2, "Lv");
                             switch (j)
                             {
                                 case 0:
@@ -652,17 +577,17 @@ namespace Project1
                                 case 1:
                                     {
                                         // レベル指定のみあり
-                                        if (!Information.IsNumeric(Strings.Mid(buf2, (int)j + 2)))
+                                        if (!Information.IsNumeric(Strings.Mid(buf2, j + 2)))
                                         {
                                             string argmsg6 = "特殊能力「" + aname + "」のレベル指定が不正です。";
-                                            GUI.DataErrorMessage(ref argmsg6, ref fname, (short)line_num, ref line_buf, ref data_name);
+                                            GUI.DataErrorMessage(argmsg6, fname, line_num, line_buf, data_name);
                                         }
 
-                                        alevel = (double)Conversions.ToShort(Strings.Mid(buf2, (int)j + 2));
+                                        alevel = (double)Conversions.Toint(Strings.Mid(buf2, j + 2));
                                         if (string.IsNullOrEmpty(aname))
                                         {
-                                            string argmsg7 = "行頭から" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((object)(((int)i + 1) / 2)) + "番目の特殊能力名の設定が間違っています。";
-                                            GUI.DataErrorMessage(ref argmsg7, ref fname, (short)line_num, ref line_buf, ref data_name);
+                                            string argmsg7 = "行頭から" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((object)((i + 1) / 2)) + "番目の特殊能力名の設定が間違っています。";
+                                            GUI.DataErrorMessage(argmsg7, fname, line_num, line_buf, data_name);
                                         }
 
                                         break;
@@ -671,8 +596,8 @@ namespace Project1
                                 default:
                                     {
                                         // 特殊能力名とレベルの両方が指定されている
-                                        aname = Strings.Left(buf2, (int)j - 1);
-                                        alevel = Conversions.ToDouble(Strings.Mid(buf2, (int)j + 2));
+                                        aname = Strings.Left(buf2, j - 1);
+                                        alevel = Conversions.ToDouble(Strings.Mid(buf2, j + 2));
                                         break;
                                     }
                             }
@@ -680,22 +605,22 @@ namespace Project1
                         // 特殊能力修得レベル
                         else if (Information.IsNumeric(buf2))
                         {
-                            pd.AddSkill(ref aname, alevel, adata, Conversions.ToShort(buf2));
+                            pd.AddSkill(aname, alevel, adata, Conversions.Toint(buf2));
                         }
                         else
                         {
                             if (alevel > 0d)
                             {
                                 string argmsg8 = "特殊能力「" + aname + "Lv" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((object)alevel) + "」の修得レベルが間違っています。";
-                                GUI.DataErrorMessage(ref argmsg8, ref fname, (short)line_num, ref line_buf, ref data_name);
+                                GUI.DataErrorMessage(argmsg8, fname, line_num, line_buf, data_name);
                             }
                             else
                             {
                                 string argmsg9 = "特殊能力「" + aname + "」の修得レベルが間違っています。";
-                                GUI.DataErrorMessage(ref argmsg9, ref fname, (short)line_num, ref line_buf, ref data_name);
+                                GUI.DataErrorMessage(argmsg9, fname, line_num, line_buf, data_name);
                             }
 
-                            pd.AddSkill(ref aname, alevel, adata, (short)1);
+                            pd.AddSkill(aname, alevel, adata, 1);
                         }
 
                         if (string.IsNullOrEmpty(buf))
@@ -703,23 +628,23 @@ namespace Project1
                             // ここでこの行は終り
 
                             // iが奇数の場合は修得レベルが抜けている
-                            if ((int)i % 2 == 1)
+                            if (i % 2 == 1)
                             {
                                 if (alevel > 0d)
                                 {
                                     string argmsg10 = "特殊能力「" + aname + "Lv" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((object)alevel) + "」の修得レベルが間違っています。";
-                                    GUI.DataErrorMessage(ref argmsg10, ref fname, (short)line_num, ref line_buf, ref data_name);
+                                    GUI.DataErrorMessage(argmsg10, fname, line_num, line_buf, data_name);
                                 }
                                 else
                                 {
                                     string argmsg11 = "特殊能力「" + aname + "」の修得レベルが間違っています。";
-                                    GUI.DataErrorMessage(ref argmsg11, ref fname, (short)line_num, ref line_buf, ref data_name);
+                                    GUI.DataErrorMessage(argmsg11, fname, line_num, line_buf, data_name);
                                 }
                             }
 
-                            GeneralLib.GetLine(ref FileNumber, ref line_buf, ref line_num);
+                            GeneralLib.GetLine(FileNumber, line_buf, line_num);
                             buf = line_buf;
-                            i = (short)0;
+                            i = 0;
                             aname = "";
                         }
                     }
@@ -728,11 +653,11 @@ namespace Project1
                 {
                     // 旧形式による特殊能力表記
                     buf = Strings.Mid(line_buf, 6);
-                    i = (short)0;
+                    i = 0;
                     aname = "";
                     do
                     {
-                        i = (short)((int)i + 1);
+                        i = (i + 1);
 
                         // コンマの位置を検索
                         ret = Strings.InStr(buf, ",");
@@ -742,10 +667,10 @@ namespace Project1
                         {
                             // 「"」が見つかった場合、次の「"」後のコンマを検索
                             in_quote = true;
-                            j = (short)(ret2 + 1);
-                            while ((int)j <= Strings.Len(buf))
+                            j = (ret2 + 1);
+                            while (j <= Strings.Len(buf))
                             {
-                                switch (Strings.Mid(buf, (int)j, 1) ?? "")
+                                switch (Strings.Mid(buf, j, 1) ?? "")
                                 {
                                     case "\"":
                                         {
@@ -757,18 +682,18 @@ namespace Project1
                                         {
                                             if (!in_quote)
                                             {
-                                                buf2 = Strings.Left(buf, (int)j - 1);
-                                                buf = Strings.Mid(buf, (int)j + 1);
+                                                buf2 = Strings.Left(buf, j - 1);
+                                                buf = Strings.Mid(buf, j + 1);
                                             }
 
                                             break;
                                         }
                                 }
 
-                                j = (short)((int)j + 1);
+                                j = (j + 1);
                             }
 
-                            if ((int)j == Strings.Len(buf))
+                            if (j == Strings.Len(buf))
                             {
                                 buf2 = buf;
                                 buf = "";
@@ -785,7 +710,7 @@ namespace Project1
                             // コンマの後ろの文字列が空白の場合
                             if (string.IsNullOrEmpty(buf))
                             {
-                                if ((int)i % 2 == 1)
+                                if (i % 2 == 1)
                                 {
                                     err_msg = "行末の「,」の後に特殊能力指定が抜けています。";
                                 }
@@ -810,7 +735,7 @@ namespace Project1
                             buf = "";
                         }
 
-                        if ((int)i % 2 == 1)
+                        if (i % 2 == 1)
                         {
                             // 特殊能力名＆レベル
 
@@ -818,7 +743,7 @@ namespace Project1
                             {
                                 if (string.IsNullOrEmpty(aname))
                                 {
-                                    err_msg = "行頭から" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((object)(((int)i + 1) / 2)) + "番目の特殊能力の指定の後に「,」が抜けています。";
+                                    err_msg = "行頭から" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((object)((i + 1) / 2)) + "番目の特殊能力の指定の後に「,」が抜けています。";
                                 }
                                 else
                                 {
@@ -835,11 +760,11 @@ namespace Project1
                             }
 
                             // 特殊能力の別名指定がある？
-                            j = (short)Strings.InStr(buf2, "=");
-                            if ((int)j > 0)
+                            j = Strings.InStr(buf2, "=");
+                            if (j > 0)
                             {
-                                adata = Strings.Mid(buf2, (int)j + 1);
-                                buf2 = Strings.Left(buf2, (int)j - 1);
+                                adata = Strings.Mid(buf2, j + 1);
+                                buf2 = Strings.Left(buf2, j - 1);
                             }
                             else
                             {
@@ -847,7 +772,7 @@ namespace Project1
                             }
 
                             // 特殊能力のレベル指定を切り出す
-                            j = (short)Strings.InStr(buf2, "Lv");
+                            j = Strings.InStr(buf2, "Lv");
                             switch (j)
                             {
                                 case 0:
@@ -861,7 +786,7 @@ namespace Project1
                                 case 1:
                                     {
                                         // レベル指定のみあり
-                                        if (!Information.IsNumeric(Strings.Mid(buf2, (int)j + 2)))
+                                        if (!Information.IsNumeric(Strings.Mid(buf2, j + 2)))
                                         {
                                             err_msg = "特殊能力「" + aname + "」のレベル指定が不正です";
                                             ;
@@ -875,10 +800,10 @@ namespace Project1
                                              */
                                         }
 
-                                        alevel = Conversions.ToDouble(Strings.Mid(buf2, (int)j + 2));
+                                        alevel = Conversions.ToDouble(Strings.Mid(buf2, j + 2));
                                         if (string.IsNullOrEmpty(aname))
                                         {
-                                            err_msg = "行頭から" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((object)(((int)i + 1) / 2)) + "番目の特殊能力の名前「" + buf2 + "」が不正です";
+                                            err_msg = "行頭から" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((object)((i + 1) / 2)) + "番目の特殊能力の名前「" + buf2 + "」が不正です";
                                             ;
 #error Cannot convert ErrorStatementSyntax - see comment for details
                                             /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 19057
@@ -896,8 +821,8 @@ namespace Project1
                                 default:
                                     {
                                         // 特殊能力名とレベルの両方が指定されている
-                                        aname = Strings.Left(buf2, (int)j - 1);
-                                        alevel = Conversions.ToDouble(Strings.Mid(buf2, (int)j + 2));
+                                        aname = Strings.Left(buf2, j - 1);
+                                        alevel = Conversions.ToDouble(Strings.Mid(buf2, j + 2));
                                         break;
                                     }
                             }
@@ -905,42 +830,42 @@ namespace Project1
                         // 特殊能力修得レベル
                         else if (Information.IsNumeric(buf2))
                         {
-                            pd.AddSkill(ref aname, alevel, adata, Conversions.ToShort(buf2));
+                            pd.AddSkill(aname, alevel, adata, Conversions.Toint(buf2));
                         }
                         else
                         {
                             if (alevel > 0d)
                             {
                                 string argmsg12 = "特殊能力「" + aname + "Lv" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((object)alevel) + "」の修得レベルが間違っています。";
-                                GUI.DataErrorMessage(ref argmsg12, ref fname, (short)line_num, ref line_buf, ref data_name);
+                                GUI.DataErrorMessage(argmsg12, fname, line_num, line_buf, data_name);
                             }
                             else
                             {
                                 string argmsg13 = "特殊能力「" + aname + "」の修得レベルが間違っています。";
-                                GUI.DataErrorMessage(ref argmsg13, ref fname, (short)line_num, ref line_buf, ref data_name);
+                                GUI.DataErrorMessage(argmsg13, fname, line_num, line_buf, data_name);
                             }
 
-                            pd.AddSkill(ref aname, alevel, adata, (short)1);
+                            pd.AddSkill(aname, alevel, adata, 1);
                         }
                     }
                     while (ret > 0);
 
                     // iが奇数の場合は修得レベルが抜けている
-                    if ((int)i % 2 == 1)
+                    if (i % 2 == 1)
                     {
                         if (alevel > 0d)
                         {
                             string argmsg14 = "特殊能力「" + aname + "Lv" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((object)alevel) + "」の修得レベルが間違っています。";
-                            GUI.DataErrorMessage(ref argmsg14, ref fname, (short)line_num, ref line_buf, ref data_name);
+                            GUI.DataErrorMessage(argmsg14, fname, line_num, line_buf, data_name);
                         }
                         else
                         {
                             string argmsg15 = "特殊能力「" + aname + "」の修得レベルが間違っています。";
-                            GUI.DataErrorMessage(ref argmsg15, ref fname, (short)line_num, ref line_buf, ref data_name);
+                            GUI.DataErrorMessage(argmsg15, fname, line_num, line_buf, data_name);
                         }
                     }
 
-                    GeneralLib.GetLine(ref FileNumber, ref line_buf, ref line_num);
+                    GeneralLib.GetLine(FileNumber, line_buf, line_num);
                 }
                 else
                 {
@@ -990,12 +915,12 @@ namespace Project1
                 buf = Strings.Mid(line_buf, ret + 1);
                 if (Information.IsNumeric(buf2))
                 {
-                    pd.Infight = (short)GeneralLib.MinLng(Conversions.ToInteger(buf2), 9999);
+                    pd.Infight = GeneralLib.MinLng(Conversions.ToInteger(buf2), 9999);
                 }
                 else
                 {
                     string argmsg16 = "格闘攻撃力の設定が間違っています。";
-                    GUI.DataErrorMessage(ref argmsg16, ref fname, (short)line_num, ref line_buf, ref data_name);
+                    GUI.DataErrorMessage(argmsg16, fname, line_num, line_buf, data_name);
                 }
 
                 // 射撃
@@ -1018,12 +943,12 @@ namespace Project1
                 buf = Strings.Mid(buf, ret + 1);
                 if (Information.IsNumeric(buf2))
                 {
-                    pd.Shooting = (short)GeneralLib.MinLng(Conversions.ToInteger(buf2), 9999);
+                    pd.Shooting = GeneralLib.MinLng(Conversions.ToInteger(buf2), 9999);
                 }
                 else
                 {
                     string argmsg17 = "射撃攻撃力の設定が間違っています。";
-                    GUI.DataErrorMessage(ref argmsg17, ref fname, (short)line_num, ref line_buf, ref data_name);
+                    GUI.DataErrorMessage(argmsg17, fname, line_num, line_buf, data_name);
                 }
 
                 // 命中
@@ -1046,12 +971,12 @@ namespace Project1
                 buf = Strings.Mid(buf, ret + 1);
                 if (Information.IsNumeric(buf2))
                 {
-                    pd.Hit = (short)GeneralLib.MinLng(Conversions.ToInteger(buf2), 9999);
+                    pd.Hit = GeneralLib.MinLng(Conversions.ToInteger(buf2), 9999);
                 }
                 else
                 {
                     string argmsg18 = "命中の設定が間違っています。";
-                    GUI.DataErrorMessage(ref argmsg18, ref fname, (short)line_num, ref line_buf, ref data_name);
+                    GUI.DataErrorMessage(argmsg18, fname, line_num, line_buf, data_name);
                 }
 
                 // 回避
@@ -1074,12 +999,12 @@ namespace Project1
                 buf = Strings.Mid(buf, ret + 1);
                 if (Information.IsNumeric(buf2))
                 {
-                    pd.Dodge = (short)GeneralLib.MinLng(Conversions.ToInteger(buf2), 9999);
+                    pd.Dodge = GeneralLib.MinLng(Conversions.ToInteger(buf2), 9999);
                 }
                 else
                 {
                     string argmsg19 = "回避の設定が間違っています。";
-                    GUI.DataErrorMessage(ref argmsg19, ref fname, (short)line_num, ref line_buf, ref data_name);
+                    GUI.DataErrorMessage(argmsg19, fname, line_num, line_buf, data_name);
                 }
 
                 // 技量
@@ -1102,12 +1027,12 @@ namespace Project1
                 buf = Strings.Mid(buf, ret + 1);
                 if (Information.IsNumeric(buf2))
                 {
-                    pd.Technique = (short)GeneralLib.MinLng(Conversions.ToInteger(buf2), 9999);
+                    pd.Technique = GeneralLib.MinLng(Conversions.ToInteger(buf2), 9999);
                 }
                 else
                 {
                     string argmsg20 = "技量の設定が間違っています。";
-                    GUI.DataErrorMessage(ref argmsg20, ref fname, (short)line_num, ref line_buf, ref data_name);
+                    GUI.DataErrorMessage(argmsg20, fname, line_num, line_buf, data_name);
                 }
 
                 // 反応
@@ -1130,12 +1055,12 @@ namespace Project1
                 buf = Strings.Mid(buf, ret + 1);
                 if (Information.IsNumeric(buf2))
                 {
-                    pd.Intuition = (short)GeneralLib.MinLng(Conversions.ToInteger(buf2), 9999);
+                    pd.Intuition = GeneralLib.MinLng(Conversions.ToInteger(buf2), 9999);
                 }
                 else
                 {
                     string argmsg21 = "反応の設定が間違っています。";
-                    GUI.DataErrorMessage(ref argmsg21, ref fname, (short)line_num, ref line_buf, ref data_name);
+                    GUI.DataErrorMessage(argmsg21, fname, line_num, line_buf, data_name);
                 }
 
                 // 性格
@@ -1157,7 +1082,7 @@ namespace Project1
                 if (Strings.InStr(buf2, ",") > 0)
                 {
                     string argmsg22 = "行末に余分なコンマが付けられています。";
-                    GUI.DataErrorMessage(ref argmsg22, ref fname, (short)line_num, ref line_buf, ref data_name);
+                    GUI.DataErrorMessage(argmsg22, fname, line_num, line_buf, data_name);
                     buf2 = Strings.Trim(Strings.Left(buf2, Strings.InStr(buf2, ",") - 1));
                 }
 
@@ -1168,11 +1093,11 @@ namespace Project1
                 else
                 {
                     string argmsg23 = "性格の設定が間違っています。";
-                    GUI.DataErrorMessage(ref argmsg23, ref fname, (short)line_num, ref line_buf, ref data_name);
+                    GUI.DataErrorMessage(argmsg23, fname, line_num, line_buf, data_name);
                 }
 
                 // スペシャルパワー
-                GeneralLib.GetLine(ref FileNumber, ref line_buf, ref line_num);
+                GeneralLib.GetLine(FileNumber, line_buf, line_num);
                 switch (line_buf ?? "")
                 {
                     // スペシャルパワーを持っていない
@@ -1245,13 +1170,13 @@ namespace Project1
 
                             if (Information.IsNumeric(buf2))
                             {
-                                pd.SP = (short)GeneralLib.MinLng(Conversions.ToInteger(buf2), 9999);
+                                pd.SP = GeneralLib.MinLng(Conversions.ToInteger(buf2), 9999);
                             }
                             else
                             {
                                 string argmsg24 = "ＳＰの設定が間違っています。";
-                                GUI.DataErrorMessage(ref argmsg24, ref fname, (short)line_num, ref line_buf, ref data_name);
-                                pd.SP = (short)1;
+                                GUI.DataErrorMessage(argmsg24, fname, line_num, line_buf, data_name);
+                                pd.SP = 1;
                             }
 
                             // スペシャルパワーと獲得レベル
@@ -1265,12 +1190,12 @@ namespace Project1
                                 if (Strings.InStr(sname, "=") > 0)
                                 {
                                     string argexpr = Strings.Mid(sname, Strings.InStr(sname, "=") + 1);
-                                    sp_cost = (short)GeneralLib.StrToLng(ref argexpr);
+                                    sp_cost = GeneralLib.StrToLng(argexpr);
                                     sname = Strings.Left(sname, Strings.InStr(sname, "=") - 1);
                                 }
                                 else
                                 {
-                                    sp_cost = (short)0;
+                                    sp_cost = 0;
                                 }
 
                                 ret = Strings.InStr(buf, ",");
@@ -1285,27 +1210,27 @@ namespace Project1
                                     buf = Strings.Mid(buf, ret + 1);
                                 }
 
-                                bool localIsDefined() { object argIndex1 = (object)sname; var ret = SRC.SPDList.IsDefined(ref argIndex1); return ret; }
+                                bool localIsDefined() { object argIndex1 = (object)sname; var ret = SRC.SPDList.IsDefined(argIndex1); return ret; }
 
                                 if (string.IsNullOrEmpty(sname))
                                 {
                                     string argmsg25 = "スペシャルパワーの指定が抜けています。";
-                                    GUI.DataErrorMessage(ref argmsg25, ref fname, (short)line_num, ref line_buf, ref data_name);
+                                    GUI.DataErrorMessage(argmsg25, fname, line_num, line_buf, data_name);
                                 }
                                 else if (!localIsDefined())
                                 {
                                     string argmsg26 = sname + "というスペシャルパワーは存在しません。";
-                                    GUI.DataErrorMessage(ref argmsg26, ref fname, (short)line_num, ref line_buf, ref data_name);
+                                    GUI.DataErrorMessage(argmsg26, fname, line_num, line_buf, data_name);
                                 }
                                 else if (!Information.IsNumeric(buf2))
                                 {
                                     string argmsg27 = "スペシャルパワー「" + sname + "」の獲得レベルが間違っています。";
-                                    GUI.DataErrorMessage(ref argmsg27, ref fname, (short)line_num, ref line_buf, ref data_name);
-                                    pd.AddSpecialPower(ref sname, (short)1, sp_cost);
+                                    GUI.DataErrorMessage(argmsg27, fname, line_num, line_buf, data_name);
+                                    pd.AddSpecialPower(sname, 1, sp_cost);
                                 }
                                 else
                                 {
-                                    pd.AddSpecialPower(ref sname, Conversions.ToShort(buf2), sp_cost);
+                                    pd.AddSpecialPower(sname, Conversions.Toint(buf2), sp_cost);
                                 }
 
                                 ret = Strings.InStr(buf, ",");
@@ -1314,7 +1239,7 @@ namespace Project1
                             if (!string.IsNullOrEmpty(buf))
                             {
                                 string argmsg28 = "スペシャルパワー「" + Strings.Trim(sname) + "」の獲得レベル指定が抜けています。";
-                                GUI.DataErrorMessage(ref argmsg28, ref fname, (short)line_num, ref line_buf, ref data_name);
+                                GUI.DataErrorMessage(argmsg28, fname, line_num, line_buf, data_name);
                             }
 
                             break;
@@ -1322,7 +1247,7 @@ namespace Project1
                 }
 
                 // ビットマップ, ＭＩＤＩ
-                GeneralLib.GetLine(ref FileNumber, ref line_buf, ref line_num);
+                GeneralLib.GetLine(FileNumber, line_buf, line_num);
 
                 // ビットマップ
                 if (Strings.Len(line_buf) == 0)
@@ -1363,7 +1288,7 @@ namespace Project1
                 else
                 {
                     string argmsg29 = "ビットマップの設定が間違っています。";
-                    GUI.DataErrorMessage(ref argmsg29, ref fname, (short)line_num, ref line_buf, ref data_name);
+                    GUI.DataErrorMessage(argmsg29, fname, line_num, line_buf, data_name);
                     pd.IsBitmapMissing = true;
                 }
 
@@ -1386,7 +1311,7 @@ namespace Project1
                     case var case1 when case1 == "":
                         {
                             string argmsg30 = "ＭＩＤＩの設定が抜けています。";
-                            GUI.DataErrorMessage(ref argmsg30, ref fname, (short)line_num, ref line_buf, ref data_name);
+                            GUI.DataErrorMessage(argmsg30, fname, line_num, line_buf, data_name);
                             pd.Bitmap = "-.mid";
                             break;
                         }
@@ -1394,43 +1319,43 @@ namespace Project1
                     default:
                         {
                             string argmsg31 = "ＭＩＤＩの設定が間違っています。";
-                            GUI.DataErrorMessage(ref argmsg31, ref fname, (short)line_num, ref line_buf, ref data_name);
+                            GUI.DataErrorMessage(argmsg31, fname, line_num, line_buf, data_name);
                             pd.Bitmap = "-.mid";
                             break;
                         }
                 }
 
-                if (FileSystem.EOF((int)FileNumber))
+                if (FileSystem.EOF(FileNumber))
                 {
-                    FileSystem.FileClose((int)FileNumber);
+                    FileSystem.FileClose(FileNumber);
                     return;
                 }
 
-                GeneralLib.GetLine(ref FileNumber, ref line_buf, ref line_num);
+                GeneralLib.GetLine(FileNumber, line_buf, line_num);
                 if (line_buf != "===")
                 {
                     goto SkipRest;
                 }
 
                 // 特殊能力データ
-                GeneralLib.GetLine(ref FileNumber, ref line_buf, ref line_num);
+                GeneralLib.GetLine(FileNumber, line_buf, line_num);
                 buf = line_buf;
-                i = (short)0;
+                i = 0;
                 while (line_buf != "===")
                 {
-                    i = (short)((int)i + 1);
+                    i = (i + 1);
                     ret = 0;
                     in_quote = false;
-                    var loopTo1 = (short)Strings.Len(buf);
-                    for (j = (short)1; j <= loopTo1; j++)
+                    var loopTo1 = Strings.Len(buf);
+                    for (j = 1; j <= loopTo1; j++)
                     {
-                        switch (Strings.Mid(buf, (int)j, 1) ?? "")
+                        switch (Strings.Mid(buf, j, 1) ?? "")
                         {
                             case ",":
                                 {
                                     if (!in_quote)
                                     {
-                                        ret = (int)j;
+                                        ret = j;
                                         break;
                                     }
 
@@ -1459,24 +1384,24 @@ namespace Project1
                     if (string.IsNullOrEmpty(buf2) | Information.IsNumeric(buf2))
                     {
                         string argmsg32 = "行頭から" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((object)i) + "番目の特殊能力の設定が間違っています。";
-                        GUI.DataErrorMessage(ref argmsg32, ref fname, (short)line_num, ref line_buf, ref data_name);
+                        GUI.DataErrorMessage(argmsg32, fname, line_num, line_buf, data_name);
                     }
                     else
                     {
-                        pd.AddFeature(ref buf2);
+                        pd.AddFeature(buf2);
                     }
 
                     if (string.IsNullOrEmpty(buf))
                     {
-                        if (FileSystem.EOF((int)FileNumber))
+                        if (FileSystem.EOF(FileNumber))
                         {
-                            FileSystem.FileClose((int)FileNumber);
+                            FileSystem.FileClose(FileNumber);
                             return;
                         }
 
-                        GeneralLib.GetLine(ref FileNumber, ref line_buf, ref line_num);
+                        GeneralLib.GetLine(FileNumber, line_buf, line_num);
                         buf = line_buf;
-                        i = (short)0;
+                        i = 0;
                         if (string.IsNullOrEmpty(line_buf) | line_buf == "===")
                         {
                             break;
@@ -1490,7 +1415,7 @@ namespace Project1
                 }
 
                 // 武器データ
-                GeneralLib.GetLine(ref FileNumber, ref line_buf, ref line_num);
+                GeneralLib.GetLine(FileNumber, line_buf, line_num);
                 while (Strings.Len(line_buf) > 0 & line_buf != "===")
                 {
                     // 武器名
@@ -1526,7 +1451,7 @@ namespace Project1
                     }
 
                     // 武器を登録
-                    wd = pd.AddWeapon(ref wname);
+                    wd = pd.AddWeapon(wname);
 
                     // 攻撃力
                     ret = Strings.InStr(buf, ",");
@@ -1557,12 +1482,12 @@ namespace Project1
                     else
                     {
                         string argmsg33 = wname + "の攻撃力の設定が間違っています。";
-                        GUI.DataErrorMessage(ref argmsg33, ref fname, (short)line_num, ref line_buf, ref data_name);
-                        if ((int)GeneralLib.LLength(ref buf2) > 1)
+                        GUI.DataErrorMessage(argmsg33, fname, line_num, line_buf, data_name);
+                        if (GeneralLib.LLength(buf2) > 1)
                         {
-                            buf = GeneralLib.LIndex(ref buf2, (short)2) + "," + buf;
-                            string argexpr1 = GeneralLib.LIndex(ref buf2, (short)1);
-                            wd.Power = GeneralLib.StrToLng(ref argexpr1);
+                            buf = GeneralLib.LIndex(buf2, 2) + "," + buf;
+                            string argexpr1 = GeneralLib.LIndex(buf2, 1);
+                            wd.Power = GeneralLib.StrToLng(argexpr1);
                         }
                     }
 
@@ -1586,18 +1511,18 @@ namespace Project1
                     buf = Strings.Mid(buf, ret + 1);
                     if (Information.IsNumeric(buf2))
                     {
-                        wd.MinRange = Conversions.ToShort(buf2);
+                        wd.MinRange = Conversions.Toint(buf2);
                     }
                     else
                     {
                         string argmsg34 = wname + "の最小射程の設定が間違っています。";
-                        GUI.DataErrorMessage(ref argmsg34, ref fname, (short)line_num, ref line_buf, ref data_name);
-                        wd.MinRange = (short)1;
-                        if ((int)GeneralLib.LLength(ref buf2) > 1)
+                        GUI.DataErrorMessage(argmsg34, fname, line_num, line_buf, data_name);
+                        wd.MinRange = 1;
+                        if (GeneralLib.LLength(buf2) > 1)
                         {
-                            buf = GeneralLib.LIndex(ref buf2, (short)2) + "," + buf;
-                            string argexpr2 = GeneralLib.LIndex(ref buf2, (short)1);
-                            wd.MinRange = (short)GeneralLib.StrToLng(ref argexpr2);
+                            buf = GeneralLib.LIndex(buf2, 2) + "," + buf;
+                            string argexpr2 = GeneralLib.LIndex(buf2, 1);
+                            wd.MinRange = GeneralLib.StrToLng(argexpr2);
                         }
                     }
 
@@ -1621,18 +1546,18 @@ namespace Project1
                     buf = Strings.Mid(buf, ret + 1);
                     if (Information.IsNumeric(buf2))
                     {
-                        wd.MaxRange = (short)GeneralLib.MinLng(Conversions.ToInteger(buf2), 99);
+                        wd.MaxRange = GeneralLib.MinLng(Conversions.ToInteger(buf2), 99);
                     }
                     else
                     {
                         string argmsg35 = wname + "の最大射程の設定が間違っています。";
-                        GUI.DataErrorMessage(ref argmsg35, ref fname, (short)line_num, ref line_buf, ref data_name);
-                        wd.MaxRange = (short)1;
-                        if ((int)GeneralLib.LLength(ref buf2) > 1)
+                        GUI.DataErrorMessage(argmsg35, fname, line_num, line_buf, data_name);
+                        wd.MaxRange = 1;
+                        if (GeneralLib.LLength(buf2) > 1)
                         {
-                            buf = GeneralLib.LIndex(ref buf2, (short)2) + "," + buf;
-                            string argexpr3 = GeneralLib.LIndex(ref buf2, (short)1);
-                            wd.MaxRange = (short)GeneralLib.StrToLng(ref argexpr3);
+                            buf = GeneralLib.LIndex(buf2, 2) + "," + buf;
+                            string argexpr3 = GeneralLib.LIndex(buf2, 1);
+                            wd.MaxRange = GeneralLib.StrToLng(argexpr3);
                         }
                     }
 
@@ -1666,17 +1591,17 @@ namespace Project1
                             n = -999;
                         }
 
-                        wd.Precision = (short)n;
+                        wd.Precision = n;
                     }
                     else
                     {
                         string argmsg36 = wname + "の命中率の設定が間違っています。";
-                        GUI.DataErrorMessage(ref argmsg36, ref fname, (short)line_num, ref line_buf, ref data_name);
-                        if ((int)GeneralLib.LLength(ref buf2) > 1)
+                        GUI.DataErrorMessage(argmsg36, fname, line_num, line_buf, data_name);
+                        if (GeneralLib.LLength(buf2) > 1)
                         {
-                            buf = GeneralLib.LIndex(ref buf2, (short)2) + "," + buf;
-                            string argexpr4 = GeneralLib.LIndex(ref buf2, (short)1);
-                            wd.Precision = (short)GeneralLib.StrToLng(ref argexpr4);
+                            buf = GeneralLib.LIndex(buf2, 2) + "," + buf;
+                            string argexpr4 = GeneralLib.LIndex(buf2, 1);
+                            wd.Precision = GeneralLib.StrToLng(argexpr4);
                         }
                     }
 
@@ -1702,17 +1627,17 @@ namespace Project1
                     {
                         if (Information.IsNumeric(buf2))
                         {
-                            wd.Bullet = (short)GeneralLib.MinLng(Conversions.ToInteger(buf2), 99);
+                            wd.Bullet = GeneralLib.MinLng(Conversions.ToInteger(buf2), 99);
                         }
                         else
                         {
                             string argmsg37 = wname + "の弾数の設定が間違っています。";
-                            GUI.DataErrorMessage(ref argmsg37, ref fname, (short)line_num, ref line_buf, ref data_name);
-                            if ((int)GeneralLib.LLength(ref buf2) > 1)
+                            GUI.DataErrorMessage(argmsg37, fname, line_num, line_buf, data_name);
+                            if (GeneralLib.LLength(buf2) > 1)
                             {
-                                buf = GeneralLib.LIndex(ref buf2, (short)2) + "," + buf;
-                                string argexpr5 = GeneralLib.LIndex(ref buf2, (short)1);
-                                wd.Bullet = (short)GeneralLib.StrToLng(ref argexpr5);
+                                buf = GeneralLib.LIndex(buf2, 2) + "," + buf;
+                                string argexpr5 = GeneralLib.LIndex(buf2, 1);
+                                wd.Bullet = GeneralLib.StrToLng(argexpr5);
                             }
                         }
                     }
@@ -1739,17 +1664,17 @@ namespace Project1
                     {
                         if (Information.IsNumeric(buf2))
                         {
-                            wd.ENConsumption = (short)GeneralLib.MinLng(Conversions.ToInteger(buf2), 999);
+                            wd.ENConsumption = GeneralLib.MinLng(Conversions.ToInteger(buf2), 999);
                         }
                         else
                         {
                             string argmsg38 = wname + "の消費ＥＮの設定が間違っています。";
-                            GUI.DataErrorMessage(ref argmsg38, ref fname, (short)line_num, ref line_buf, ref data_name);
-                            if ((int)GeneralLib.LLength(ref buf2) > 1)
+                            GUI.DataErrorMessage(argmsg38, fname, line_num, line_buf, data_name);
+                            if (GeneralLib.LLength(buf2) > 1)
                             {
-                                buf = GeneralLib.LIndex(ref buf2, (short)2) + "," + buf;
-                                string argexpr6 = GeneralLib.LIndex(ref buf2, (short)1);
-                                wd.ENConsumption = (short)GeneralLib.StrToLng(ref argexpr6);
+                                buf = GeneralLib.LIndex(buf2, 2) + "," + buf;
+                                string argexpr6 = GeneralLib.LIndex(buf2, 1);
+                                wd.ENConsumption = GeneralLib.StrToLng(argexpr6);
                             }
                         }
                     }
@@ -1786,17 +1711,17 @@ namespace Project1
                                 n = 0;
                             }
 
-                            wd.NecessaryMorale = (short)n;
+                            wd.NecessaryMorale = n;
                         }
                         else
                         {
                             string argmsg39 = wname + "の必要気力の設定が間違っています。";
-                            GUI.DataErrorMessage(ref argmsg39, ref fname, (short)line_num, ref line_buf, ref data_name);
-                            if ((int)GeneralLib.LLength(ref buf2) > 1)
+                            GUI.DataErrorMessage(argmsg39, fname, line_num, line_buf, data_name);
+                            if (GeneralLib.LLength(buf2) > 1)
                             {
-                                buf = GeneralLib.LIndex(ref buf2, (short)2) + "," + buf;
-                                string argexpr7 = GeneralLib.LIndex(ref buf2, (short)1);
-                                wd.NecessaryMorale = (short)GeneralLib.StrToLng(ref argexpr7);
+                                buf = GeneralLib.LIndex(buf2, 2) + "," + buf;
+                                string argexpr7 = GeneralLib.LIndex(buf2, 1);
+                                wd.NecessaryMorale = GeneralLib.StrToLng(argexpr7);
                             }
                         }
                     }
@@ -1826,12 +1751,12 @@ namespace Project1
                     else
                     {
                         string argmsg40 = wname + "の地形適応の設定が間違っています。";
-                        GUI.DataErrorMessage(ref argmsg40, ref fname, (short)line_num, ref line_buf, ref data_name);
+                        GUI.DataErrorMessage(argmsg40, fname, line_num, line_buf, data_name);
                         wd.Adaption = "----";
-                        if ((int)GeneralLib.LLength(ref buf2) > 1)
+                        if (GeneralLib.LLength(buf2) > 1)
                         {
-                            buf = GeneralLib.LIndex(ref buf2, (short)2) + "," + buf;
-                            wd.Adaption = GeneralLib.LIndex(ref buf2, (short)1);
+                            buf = GeneralLib.LIndex(buf2, 2) + "," + buf;
+                            wd.Adaption = GeneralLib.LIndex(buf2, 1);
                         }
                     }
 
@@ -1865,17 +1790,17 @@ namespace Project1
                             n = -999;
                         }
 
-                        wd.Critical = (short)n;
+                        wd.Critical = n;
                     }
                     else
                     {
                         string argmsg41 = wname + "のクリティカル率の設定が間違っています。";
-                        GUI.DataErrorMessage(ref argmsg41, ref fname, (short)line_num, ref line_buf, ref data_name);
-                        if ((int)GeneralLib.LLength(ref buf2) > 1)
+                        GUI.DataErrorMessage(argmsg41, fname, line_num, line_buf, data_name);
+                        if (GeneralLib.LLength(buf2) > 1)
                         {
-                            buf = GeneralLib.LIndex(ref buf2, (short)2) + "," + buf;
-                            string argexpr8 = GeneralLib.LIndex(ref buf2, (short)1);
-                            wd.Critical = (short)GeneralLib.StrToLng(ref argexpr8);
+                            buf = GeneralLib.LIndex(buf2, 2) + "," + buf;
+                            string argexpr8 = GeneralLib.LIndex(buf2, 1);
+                            wd.Critical = GeneralLib.StrToLng(argexpr8);
                         }
                     }
 
@@ -1884,7 +1809,7 @@ namespace Project1
                     if (Strings.Len(buf) == 0)
                     {
                         string argmsg42 = wname + "の武器属性の設定が間違っています。";
-                        GUI.DataErrorMessage(ref argmsg42, ref fname, (short)line_num, ref line_buf, ref data_name);
+                        GUI.DataErrorMessage(argmsg42, fname, line_num, line_buf, data_name);
                     }
 
                     if (Strings.Right(buf, 1) == ")")
@@ -1932,16 +1857,16 @@ namespace Project1
                     if (Strings.InStr(wd.Class_Renamed, "Lv") > 0)
                     {
                         string argmsg43 = wname + "の属性のレベル指定が間違っています。";
-                        GUI.DataErrorMessage(ref argmsg43, ref fname, (short)line_num, ref line_buf, ref data_name);
+                        GUI.DataErrorMessage(argmsg43, fname, line_num, line_buf, data_name);
                     }
 
-                    if (FileSystem.EOF((int)FileNumber))
+                    if (FileSystem.EOF(FileNumber))
                     {
-                        FileSystem.FileClose((int)FileNumber);
+                        FileSystem.FileClose(FileNumber);
                         return;
                     }
 
-                    GeneralLib.GetLine(ref FileNumber, ref line_buf, ref line_num);
+                    GeneralLib.GetLine(FileNumber, line_buf, line_num);
                 }
 
                 if (line_buf != "===")
@@ -1950,7 +1875,7 @@ namespace Project1
                 }
 
                 // アビリティデータ
-                GeneralLib.GetLine(ref FileNumber, ref line_buf, ref line_num);
+                GeneralLib.GetLine(FileNumber, line_buf, line_num);
                 while (Strings.Len(line_buf) > 0)
                 {
                     // アビリティ名
@@ -1986,7 +1911,7 @@ namespace Project1
                     }
 
                     // アビリティを登録
-                    sd = pd.AddAbility(ref sname);
+                    sd = pd.AddAbility(sname);
 
                     // 効果
                     ret = Strings.InStr(buf, ",");
@@ -2006,10 +1931,10 @@ namespace Project1
 
                     buf2 = Strings.Trim(Strings.Left(buf, ret - 1));
                     buf = Strings.Mid(buf, ret + 1);
-                    sd.SetEffect(ref buf2);
+                    sd.SetEffect(buf2);
 
                     // 射程
-                    sd.MinRange = (short)0;
+                    sd.MinRange = 0;
                     ret = Strings.InStr(buf, ",");
                     if (ret == 0)
                     {
@@ -2029,21 +1954,21 @@ namespace Project1
                     buf = Strings.Mid(buf, ret + 1);
                     if (Information.IsNumeric(buf2))
                     {
-                        sd.MaxRange = (short)GeneralLib.MinLng(Conversions.ToInteger(buf2), 99);
+                        sd.MaxRange = GeneralLib.MinLng(Conversions.ToInteger(buf2), 99);
                     }
                     else if (buf2 == "-")
                     {
-                        sd.MaxRange = (short)0;
+                        sd.MaxRange = 0;
                     }
                     else
                     {
                         string argmsg44 = sname + "の射程の設定が間違っています。";
-                        GUI.DataErrorMessage(ref argmsg44, ref fname, (short)line_num, ref line_buf, ref data_name);
-                        if ((int)GeneralLib.LLength(ref buf2) > 1)
+                        GUI.DataErrorMessage(argmsg44, fname, line_num, line_buf, data_name);
+                        if (GeneralLib.LLength(buf2) > 1)
                         {
-                            buf = GeneralLib.LIndex(ref buf2, (short)2) + "," + buf;
-                            string argexpr9 = GeneralLib.LIndex(ref buf2, (short)1);
-                            sd.MaxRange = (short)GeneralLib.StrToLng(ref argexpr9);
+                            buf = GeneralLib.LIndex(buf2, 2) + "," + buf;
+                            string argexpr9 = GeneralLib.LIndex(buf2, 1);
+                            sd.MaxRange = GeneralLib.StrToLng(argexpr9);
                         }
                     }
 
@@ -2069,17 +1994,17 @@ namespace Project1
                     {
                         if (Information.IsNumeric(buf2))
                         {
-                            sd.Stock = (short)GeneralLib.MinLng(Conversions.ToInteger(buf2), 99);
+                            sd.Stock = GeneralLib.MinLng(Conversions.ToInteger(buf2), 99);
                         }
                         else
                         {
                             string argmsg45 = sname + "の回数の設定が間違っています。";
-                            GUI.DataErrorMessage(ref argmsg45, ref fname, (short)line_num, ref line_buf, ref data_name);
-                            if ((int)GeneralLib.LLength(ref buf2) > 1)
+                            GUI.DataErrorMessage(argmsg45, fname, line_num, line_buf, data_name);
+                            if (GeneralLib.LLength(buf2) > 1)
                             {
-                                buf = GeneralLib.LIndex(ref buf2, (short)2) + "," + buf;
-                                string argexpr10 = GeneralLib.LIndex(ref buf2, (short)1);
-                                sd.Stock = (short)GeneralLib.StrToLng(ref argexpr10);
+                                buf = GeneralLib.LIndex(buf2, 2) + "," + buf;
+                                string argexpr10 = GeneralLib.LIndex(buf2, 1);
+                                sd.Stock = GeneralLib.StrToLng(argexpr10);
                             }
                         }
                     }
@@ -2106,17 +2031,17 @@ namespace Project1
                     {
                         if (Information.IsNumeric(buf2))
                         {
-                            sd.ENConsumption = (short)GeneralLib.MinLng(Conversions.ToInteger(buf2), 999);
+                            sd.ENConsumption = GeneralLib.MinLng(Conversions.ToInteger(buf2), 999);
                         }
                         else
                         {
                             string argmsg46 = sname + "の消費ＥＮの設定が間違っています。";
-                            GUI.DataErrorMessage(ref argmsg46, ref fname, (short)line_num, ref line_buf, ref data_name);
-                            if ((int)GeneralLib.LLength(ref buf2) > 1)
+                            GUI.DataErrorMessage(argmsg46, fname, line_num, line_buf, data_name);
+                            if (GeneralLib.LLength(buf2) > 1)
                             {
-                                buf = GeneralLib.LIndex(ref buf2, (short)2) + "," + buf;
-                                string argexpr11 = GeneralLib.LIndex(ref buf2, (short)1);
-                                sd.ENConsumption = (short)GeneralLib.StrToLng(ref argexpr11);
+                                buf = GeneralLib.LIndex(buf2, 2) + "," + buf;
+                                string argexpr11 = GeneralLib.LIndex(buf2, 1);
+                                sd.ENConsumption = GeneralLib.StrToLng(argexpr11);
                             }
                         }
                     }
@@ -2153,17 +2078,17 @@ namespace Project1
                                 n = 0;
                             }
 
-                            sd.NecessaryMorale = (short)n;
+                            sd.NecessaryMorale = n;
                         }
                         else
                         {
                             string argmsg47 = sname + "の必要気力の設定が間違っています。";
-                            GUI.DataErrorMessage(ref argmsg47, ref fname, (short)line_num, ref line_buf, ref data_name);
-                            if ((int)GeneralLib.LLength(ref buf2) > 1)
+                            GUI.DataErrorMessage(argmsg47, fname, line_num, line_buf, data_name);
+                            if (GeneralLib.LLength(buf2) > 1)
                             {
-                                buf = GeneralLib.LIndex(ref buf2, (short)2) + "," + buf;
-                                string argexpr12 = GeneralLib.LIndex(ref buf2, (short)1);
-                                sd.NecessaryMorale = (short)GeneralLib.StrToLng(ref argexpr12);
+                                buf = GeneralLib.LIndex(buf2, 2) + "," + buf;
+                                string argexpr12 = GeneralLib.LIndex(buf2, 1);
+                                sd.NecessaryMorale = GeneralLib.StrToLng(argexpr12);
                             }
                         }
                     }
@@ -2173,7 +2098,7 @@ namespace Project1
                     if (Strings.Len(buf) == 0)
                     {
                         string argmsg48 = sname + "のアビリティ属性の設定が間違っています。";
-                        GUI.DataErrorMessage(ref argmsg48, ref fname, (short)line_num, ref line_buf, ref data_name);
+                        GUI.DataErrorMessage(argmsg48, fname, line_num, line_buf, data_name);
                     }
 
                     if (Strings.Right(buf, 1) == ")")
@@ -2221,35 +2146,35 @@ namespace Project1
                     if (Strings.InStr(sd.Class_Renamed, "Lv") > 0)
                     {
                         string argmsg49 = sname + "の属性のレベル指定が間違っています。";
-                        GUI.DataErrorMessage(ref argmsg49, ref fname, (short)line_num, ref line_buf, ref data_name);
+                        GUI.DataErrorMessage(argmsg49, fname, line_num, line_buf, data_name);
                     }
 
-                    if (FileSystem.EOF((int)FileNumber))
+                    if (FileSystem.EOF(FileNumber))
                     {
-                        FileSystem.FileClose((int)FileNumber);
+                        FileSystem.FileClose(FileNumber);
                         return;
                     }
 
-                    GeneralLib.GetLine(ref FileNumber, ref line_buf, ref line_num);
+                    GeneralLib.GetLine(FileNumber, line_buf, line_num);
                 }
 
-                SkipRest:
+            SkipRest:
                 ;
             }
 
-            ErrorHandler:
+        ErrorHandler:
             ;
 
             // エラー処理
             if (line_num == 0)
             {
                 string argmsg50 = fname + "が開けません";
-                GUI.ErrorMessage(ref argmsg50);
+                GUI.ErrorMessage(argmsg50);
             }
             else
             {
-                FileSystem.FileClose((int)FileNumber);
-                GUI.DataErrorMessage(ref err_msg, ref fname, (short)line_num, ref line_buf, ref data_name);
+                FileSystem.FileClose(FileNumber);
+                GUI.DataErrorMessage(err_msg, fname, line_num, line_buf, data_name);
             }
 
             SRC.TerminateSRC();
