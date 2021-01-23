@@ -168,12 +168,14 @@ namespace SRC.Core.VB
 
         IEnumerator<KeyValuePair<string, V>> IEnumerable<KeyValuePair<string, V>>.GetEnumerator()
         {
-            throw new NotImplementedException();
+            return dict.Keys.Cast<string>()
+                .Select(k => new KeyValuePair<string, V>(k, (V)dict[k]))
+                .GetEnumerator();
         }
 
         private void UpdateList()
         {
-            // XXX reallocもったいない
+            // XXX reallocもったいない。参照時にCastしてListしたほうがいい？
             list = dict.Values.Cast<V>().ToList();
         }
     }
