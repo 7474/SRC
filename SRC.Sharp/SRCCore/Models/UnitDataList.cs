@@ -155,7 +155,7 @@ namespace SRC.Core.Models
 
             if (Strings.InStr(data_name, " ") > 0)
             {
-                throw reader.InvalidDataException("名称に半角スペースは使用出来ません。", data_name);
+                throw reader.InvalidDataException(@"名称に半角スペースは使用出来ません。", data_name);
             }
 
             if (Strings.InStr(data_name, "（") > 0 | Strings.InStr(data_name, "）") > 0)
@@ -419,153 +419,7 @@ namespace SRC.Core.Models
             }
 
             // 特殊能力データ
-            line_buf = reader.GetLine();
-            if (line_buf == "特殊能力なし")
-            {
-                line_buf = reader.GetLine();
-            }
-            else if (line_buf == "特殊能力")
-            {
-                // 新形式による特殊能力表記
-                line_buf = reader.GetLine();
-                buf = line_buf;
-                int i = 0;
-                while (true)
-                {
-                    i = i + 1;
-                    ret = 0;
-                    bool in_quote = false;
-                    var loopTo1 = Strings.Len(buf);
-                    int j;
-                    for (j = 1; j <= loopTo1; j++)
-                    {
-                        switch (Strings.Mid(buf, j, 1) ?? "")
-                        {
-                            case ",":
-                                {
-                                    if (!in_quote)
-                                    {
-                                        ret = j;
-                                        break;
-                                    }
-                                    break;
-                                }
-
-                            case "\"":
-                                {
-                                    in_quote = !in_quote;
-                                    break;
-                                }
-                        }
-                    }
-
-                    if (ret > 0)
-                    {
-                        buf2 = Strings.Trim(Strings.Left(buf, ret - 1));
-                        if (j == 1)
-                        {
-                            if (Information.IsNumeric(buf2))
-                            {
-                                break;
-                            }
-                        }
-                        buf = Strings.Trim(Strings.Mid(buf, ret + 1));
-                    }
-                    else
-                    {
-                        buf2 = buf;
-                        buf = "";
-                    }
-
-                    if (Information.IsNumeric(buf2))
-                    {
-                        break;
-                    }
-                    else if (string.IsNullOrEmpty(buf2) | Information.IsNumeric(buf2))
-                    {
-                        string argmsg11 = "行頭から" + i + "番目の特殊能力の設定が間違っています。";
-                        continuesErrors.Add(reader.InvalidData(argmsg11, data_name));
-                    }
-                    else
-                    {
-                        ud.AddFeature(buf2);
-                    }
-
-                    if (string.IsNullOrEmpty(buf))
-                    {
-                        line_buf = reader.GetLine();
-                        buf = line_buf;
-                        i = 0;
-                    }
-                }
-            }
-            else if (Strings.InStr(line_buf, "特殊能力,") == 1)
-            {
-                // 旧形式による特殊能力表記
-                buf = Strings.Mid(line_buf, 6);
-                ret = 0;
-                bool in_quote = false;
-                var loopTo2 = Strings.Len(buf);
-                int k;
-                for (k = 1; k <= loopTo2; k++)
-                {
-                    switch (Strings.Mid(buf, k, 1) ?? "")
-                    {
-                        case ",":
-                            {
-                                if (!in_quote)
-                                {
-                                    ret = k;
-                                    break;
-                                }
-
-                                break;
-                            }
-
-                        case "\"":
-                            {
-                                in_quote = !in_quote;
-                                break;
-                            }
-                    }
-                }
-
-                int i = 0;
-                while (ret > 0)
-                {
-                    i = (i + 1);
-                    buf2 = Strings.Trim(Strings.Left(buf, ret - 1));
-                    buf = Strings.Mid(buf, ret + 1);
-                    ret = Strings.InStr(buf, ",");
-                    if (!string.IsNullOrEmpty(buf2))
-                    {
-                        ud.AddFeature(buf2);
-                    }
-                    else
-                    {
-                        string argmsg12 = SrcFormatter.Format(i + "番目の特殊能力の設定が間違っています。");
-                        continuesErrors.Add(reader.InvalidData(argmsg12, data_name));
-                    }
-                }
-
-                i = (i + 1);
-                buf2 = Strings.Trim(buf);
-                if (!string.IsNullOrEmpty(buf2))
-                {
-                    ud.AddFeature(buf2);
-                }
-                else
-                {
-                    string argmsg13 = SrcFormatter.Format(i + "番目の特殊能力の設定が間違っています。");
-                    continuesErrors.Add(reader.InvalidData(argmsg13, data_name));
-                }
-
-                line_buf = reader.GetLine();
-            }
-            else
-            {
-                throw reader.InvalidDataException(@"特殊能力の設定が抜けています。", data_name);
-            }
+            line_buf = LoadFeature(data_name, ud, reader, continuesErrors);
 
             // 最大ＨＰ
             ret = Strings.InStr(line_buf, ",");
@@ -684,7 +538,188 @@ namespace SRC.Core.Models
             }
 
             // 武器データ
-            line_buf = reader.GetLine();
+            line_buf = LoadWepon(data_name, ud, reader, continuesErrors);
+
+            if (line_buf != "===")
+            {
+                return ud;
+            }
+
+            // アビリティデータ
+            line_buf = LoadAbility(data_name, ud, reader, continuesErrors);
+            return ud;
+        }
+
+        private static string LoadFeatureOuter(string data_name, IUnitDataElements ud, SrcReader reader, List<InvalidSrcData> continuesErrors)
+        {
+            int ret;
+            string buf;
+            string buf2;
+            string line_buf = reader.GetLine();
+            if (line_buf == "特殊能力なし")
+            {
+                line_buf = reader.GetLine();
+            }
+            else if (line_buf == "特殊能力")
+            {
+                // 新形式による特殊能力表記
+                AddFeature(string data_name, IUnitDataElements ud, SrcReader reader, List < InvalidSrcData > continuesErrors);
+            }
+            else if (Strings.InStr(line_buf, "特殊能力,") == 1)
+            {
+                // 旧形式による特殊能力表記
+                buf = Strings.Mid(line_buf, 6);
+                ret = 0;
+                bool in_quote = false;
+                var loopTo2 = Strings.Len(buf);
+                int k;
+                for (k = 1; k <= loopTo2; k++)
+                {
+                    switch (Strings.Mid(buf, k, 1) ?? "")
+                    {
+                        case ",":
+                            {
+                                if (!in_quote)
+                                {
+                                    ret = k;
+                                    break;
+                                }
+
+                                break;
+                            }
+
+                        case "\"":
+                            {
+                                in_quote = !in_quote;
+                                break;
+                            }
+                    }
+                }
+
+                int i = 0;
+                while (ret > 0)
+                {
+                    i = (i + 1);
+                    buf2 = Strings.Trim(Strings.Left(buf, ret - 1));
+                    buf = Strings.Mid(buf, ret + 1);
+                    ret = Strings.InStr(buf, ",");
+                    if (!string.IsNullOrEmpty(buf2))
+                    {
+                        ud.AddFeature(buf2);
+                    }
+                    else
+                    {
+                        string argmsg12 = SrcFormatter.Format(i + "番目の特殊能力の設定が間違っています。");
+                        continuesErrors.Add(reader.InvalidData(argmsg12, data_name));
+                    }
+                }
+
+                i = (i + 1);
+                buf2 = Strings.Trim(buf);
+                if (!string.IsNullOrEmpty(buf2))
+                {
+                    ud.AddFeature(buf2);
+                }
+                else
+                {
+                    string argmsg13 = SrcFormatter.Format(i + "番目の特殊能力の設定が間違っています。");
+                    continuesErrors.Add(reader.InvalidData(argmsg13, data_name));
+                }
+
+                line_buf = reader.GetLine();
+            }
+            else
+            {
+                throw reader.InvalidDataException(@"特殊能力の設定が抜けています。", data_name);
+            }
+
+            return line_buf;
+        }
+
+        public static string AddFeature(string data_name, IUnitDataElements ud, SrcReader reader, List<InvalidSrcData> continuesErrors)
+        {
+            string line_buf = reader.GetLine();
+            string buf = line_buf;
+            string buf2;
+            int i = 0;
+            while (true)
+            {
+                if (string.IsNullOrEmpty(line_buf) || line_buf == "===")
+                    i = i + 1;
+                int ret = 0;
+                bool in_quote = false;
+                var loopTo1 = Strings.Len(buf);
+                int j;
+                for (j = 1; j <= loopTo1; j++)
+                {
+                    switch (Strings.Mid(buf, j, 1) ?? "")
+                    {
+                        case ",":
+                            {
+                                if (!in_quote)
+                                {
+                                    ret = j;
+                                    break;
+                                }
+                                break;
+                            }
+
+                        case "\"":
+                            {
+                                in_quote = !in_quote;
+                                break;
+                            }
+                    }
+                }
+
+                if (ret > 0)
+                {
+                    buf2 = Strings.Trim(Strings.Left(buf, ret - 1));
+                    if (j == 1)
+                    {
+                        if (Information.IsNumeric(buf2))
+                        {
+                            break;
+                        }
+                    }
+                    buf = Strings.Trim(Strings.Mid(buf, ret + 1));
+                }
+                else
+                {
+                    buf2 = buf;
+                    buf = "";
+                }
+
+                if (Information.IsNumeric(buf2))
+                {
+                    break;
+                }
+                else if (string.IsNullOrEmpty(buf2) | Information.IsNumeric(buf2))
+                {
+                    string argmsg11 = "行頭から" + i + "番目の特殊能力の設定が間違っています。";
+                    continuesErrors.Add(reader.InvalidData(argmsg11, data_name));
+                }
+                else
+                {
+                    ud.AddFeature(buf2);
+                }
+
+                if (string.IsNullOrEmpty(buf))
+                {
+                    line_buf = reader.GetLine();
+                    buf = line_buf;
+                    i = 0;
+                }
+            }
+            return line_buf;
+        }
+
+        public static string LoadWepon(string data_name, IUnitDataElements ud, SrcReader reader, List<InvalidSrcData> continuesErrors)
+        {
+            int ret;
+            string buf;
+            string buf2;
+            string line_buf = reader.GetLine();
             while (Strings.Len(line_buf) > 0 & line_buf != "===")
             {
                 // 武器名
@@ -1007,32 +1042,33 @@ namespace SRC.Core.Models
                     }
                 }
 
-                wd.Class_Renamed = buf;
-                if (wd.Class_Renamed == "-")
+                wd.Class = buf;
+                if (wd.Class == "-")
                 {
-                    wd.Class_Renamed = "";
+                    wd.Class = "";
                 }
 
-                if (Strings.InStr(wd.Class_Renamed, "Lv") > 0)
+                if (Strings.InStr(wd.Class, "Lv") > 0)
                 {
                     continuesErrors.Add(reader.InvalidData(@wname + "の属性のレベル指定が間違っています。", data_name));
                 }
 
                 if (reader.EOT)
                 {
-                    return ud;
+                    return "";
                 }
 
                 line_buf = reader.GetLine();
             }
+            return line_buf;
+        }
 
-            if (line_buf != "===")
-            {
-                return ud;
-            }
-
-            // アビリティデータ
-            line_buf = reader.GetLine();
+        public static string LoadAbility(string data_name, IUnitDataElements ud, SrcReader reader, List<InvalidSrcData> continuesErrors)
+        {
+            int ret;
+            string buf;
+            string buf2;
+            string line_buf = reader.GetLine();
             while (Strings.Len(line_buf) > 0)
             {
                 // アビリティ名
@@ -1238,7 +1274,8 @@ namespace SRC.Core.Models
                 }
                 line_buf = reader.GetLine();
             }
-            return ud;
+
+            return line_buf;
         }
     }
 }

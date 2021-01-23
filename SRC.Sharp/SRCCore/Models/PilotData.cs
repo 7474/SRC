@@ -10,7 +10,7 @@ using System.Collections.Generic;
 namespace SRC.Core.Models
 {
     // パイロットデータのクラス
-    public class PilotData
+    public class PilotData : IUnitDataElements
     {
         // 名称
         public string Name;
@@ -57,7 +57,7 @@ namespace SRC.Core.Models
         private IList<int> SpecialPowerSPConsumption;
 
         // 特殊能力
-        public SrcCollection<SkillData> colSkill;
+        private SrcCollection<SkillData> colSkill;
 
         // ユニットに付加するデータ
         // 特殊能力
@@ -66,6 +66,11 @@ namespace SRC.Core.Models
         private SrcCollection<WeaponData> colWeaponData;
         // アビリティデータ
         private SrcCollection<AbilityData> colAbilityData;
+
+        public IList<SkillData> Skills => colSkill;
+        public IList<FeatureData> Features => colFeature;
+        public IList<WeaponData> Weapons => colWeaponData;
+        public IList<AbilityData> Abilities => colAbilityData;
 
         public PilotData() : base()
         {
@@ -501,7 +506,6 @@ namespace SRC.Core.Models
             return SkillTypeRet;
         }
 
-
         // スペシャルパワーを追加
         public void AddSpecialPower(string sname, int lv, int sp_consumption)
         {
@@ -927,7 +931,6 @@ namespace SRC.Core.Models
             return IsFeatureAvailableRet;
         }
 
-
         // 武器データ
         public WeaponData Weapon(string Index)
         {
@@ -948,7 +951,6 @@ namespace SRC.Core.Models
             colWeaponData.Add(new_wdata, wname + SrcFormatter.Format(CountWeapon()));
             return new_wdata;
         }
-
 
         // アビリティデータ
         public AbilityData Ability(string Index)

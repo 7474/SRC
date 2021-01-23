@@ -11,7 +11,7 @@ using System.Collections.Generic;
 namespace SRC.Core.Models
 {
     // ユニットデータのクラス
-    public class UnitData
+    public class UnitData : IUnitDataElements
     {
         // 名称
         public string Name;

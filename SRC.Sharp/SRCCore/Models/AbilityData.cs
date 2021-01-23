@@ -275,7 +275,7 @@ namespace SRC.Core.Models
         //                for (i = 1; i <= loopTo; i++)
         //                {
         //                    string argstring2 = GeneralLib.GetClassBundle(ref buf, ref i);
-        //                    if (GeneralLib.InStrNotNest(ref Class_Renamed, ref argstring2) > 0)
+        //                    if (GeneralLib.InStrNotNest(ref Class, ref argstring2) > 0)
         //                    {
         //                        elevel = 1.2d * elevel;
         //                        elevel2 = 1.4d * elevel2;
@@ -294,7 +294,7 @@ namespace SRC.Core.Models
         //                for (i = 1; i <= loopTo1; i++)
         //                {
         //                    string argstring21 = GeneralLib.GetClassBundle(ref buf, ref i);
-        //                    if (GeneralLib.InStrNotNest(ref Class_Renamed, ref argstring21) > 0)
+        //                    if (GeneralLib.InStrNotNest(ref Class, ref argstring21) > 0)
         //                    {
         //                        elevel = 0.8d * elevel;
         //                        elevel2 = 0.6d * elevel2;
@@ -305,7 +305,7 @@ namespace SRC.Core.Models
 
         //            // 術アビリティの場合は魔力によって効果レベルが修正を受ける
         //            string argstring22 = "術";
-        //            if (GeneralLib.InStrNotNest(ref Class_Renamed, ref argstring22) > 0)
+        //            if (GeneralLib.InStrNotNest(ref Class, ref argstring22) > 0)
         //            {
         //                elevel = elevel * withBlock.Shooting / 100d;
         //            }

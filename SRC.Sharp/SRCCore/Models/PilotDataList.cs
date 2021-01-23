@@ -3,7 +3,11 @@
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
 
+using SRC.Core.Exceptions;
+using SRC.Core.Lib;
 using SRC.Core.VB;
+using System.Collections.Generic;
+using System.IO;
 
 namespace SRC.Core.Models
 {
@@ -100,117 +104,66 @@ namespace SRC.Core.Models
         // データファイル fname からデータをロード
         public void Load(string fname)
         {
-            int FileNumber;
-            int line_num;
-            int i, j;
-            int ret, n, ret2;
-            string buf, line_buf = default, buf2;
+            using (var stream = new FileStream(fname, FileMode.Open))
+            {
+                Load(fname, stream);
+            }
+        }
+
+        public void Load(string fname, Stream stream)
+        {
+            using (var reader = new SrcReader(fname, stream))
+            {
+                while (reader.HasMore)
+                {
+                    PilotData pd = LoadPilot(reader); ;
+                }
+            }
+        }
+
+        public PilotData LoadPilot(SrcReader reader)
+        {
             PilotData pd;
+            var continuesErrors = new List<InvalidSrcData>();
+            string buf, line_buf, buf2;
             string data_name;
-            string err_msg;
-            string aname, adata = default;
-            var alevel = default(double);
-            WeaponData wd;
-            AbilityData sd;
-            string wname, sname = default;
-            int sp_cost;
-            bool in_quote;
-            int comma_num;
-            ;
-#error Cannot convert OnErrorGoToStatementSyntax - see comment for details
-            /* Cannot convert OnErrorGoToStatementSyntax, CONVERSION ERROR: Conversion for OnErrorGoToLabelStatement not implemented, please report this issue in 'On Error GoTo ErrorHandler' at character 4329
 
-
-            Input:
-
-                    On Error GoTo ErrorHandler
-
-             */
-            FileNumber = FileSystem.FreeFile();
-            FileSystem.FileOpen(FileNumber, fname, OpenMode.Input, OpenAccess.Read);
-            line_num = 0;
             while (true)
             {
                 data_name = "";
-                do
-                {
-                    if (FileSystem.EOF(FileNumber))
-                    {
-                        FileSystem.FileClose(FileNumber);
-                        return;
-                    }
+                line_buf = reader.GetLine();
+                while (Strings.Len(line_buf) == 0) ;
 
-                    GeneralLib.GetLine(FileNumber, line_buf, line_num);
-                }
-                while (Strings.Len(line_buf) == 0);
                 if (Strings.InStr(line_buf, ",") > 0)
                 {
-                    err_msg = "名称の設定が抜けています。";
-                    ;
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                    /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 5081
-
-
-                    Input:
-                                    Error(0)
-
-                     */
+                    throw reader.InvalidDataException(@"名称の設定が抜けています。", data_name);
                 }
 
                 // 名称
                 data_name = line_buf;
                 if (Strings.InStr(data_name, " ") > 0)
                 {
-                    err_msg = "名称に半角スペースは使用出来ません。";
-                    ;
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                    /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 5260
-
-
-                    Input:
-                                    Error(0)
-
-                     */
+                    throw reader.InvalidDataException(@"名称に半角スペースは使用出来ません。", data_name);
                 }
 
                 if (Strings.InStr(data_name, "（") > 0 | Strings.InStr(data_name, "）") > 0)
                 {
-                    err_msg = "名称に全角括弧は使用出来ません";
-                    ;
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                    /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 5459
-
-
-                    Input:
-                                    Error(0)
-
-                     */
+                    throw reader.InvalidDataException(@"名称に全角括弧は使用出来ません", data_name);
                 }
 
                 if (Strings.InStr(data_name, "\"") > 0)
                 {
-                    err_msg = "名称に\"は使用出来ません。";
-                    ;
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                    /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 5592
-
-
-                    Input:
-                                    Error(0)
-
-                     */
+                    throw reader.InvalidDataException("名称に\"は使用出来ません。", data_name);
                 }
 
-                object argIndex2 = (object)data_name;
-                if (IsDefined(argIndex2))
+                if (IsDefined(data_name))
                 {
                     // すでに定義済みのパイロットの場合はデータを置き換え
                     PilotData localItem() { object argIndex1 = (object)data_name; var ret = Item(argIndex1); return ret; }
 
                     if ((localItem().Name ?? "") == (data_name ?? ""))
                     {
-                        object argIndex1 = (object)data_name;
-                        pd = Item(argIndex1);
+                        pd = Item(data_name);
                         pd.Clear();
                     }
                     else
@@ -222,13 +175,14 @@ namespace SRC.Core.Models
                 {
                     pd = Add(data_name);
                 }
+
                 // 愛称, 読み仮名, 性別, クラス, 地形適応, 経験値
-                GeneralLib.GetLine(FileNumber, line_buf, line_num);
+                line_buf = reader.GetLine();
 
                 // 書式チェックのため、コンマの数を数えておく
-                comma_num = 0;
+                int comma_num = 0;
                 var loopTo = Strings.Len(line_buf);
-                for (i = 1; i <= loopTo; i++)
+                for (int i = 1; i <= loopTo; i++)
                 {
                     if (Strings.Mid(line_buf, i, 1) == ",")
                     {
@@ -238,47 +192,20 @@ namespace SRC.Core.Models
 
                 if (comma_num < 3)
                 {
-                    err_msg = "設定に抜けがあります。";
-                    ;
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                    /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 6331
-
-
-                    Input:
-                                        Error(0)
-
-                     */
+                    throw reader.InvalidDataException(@"設定に抜けがあります。", data_name);
                 }
                 else if (comma_num > 5)
                 {
-                    err_msg = "余分な「,」があります。";
-                    ;
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                    /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 6409
-
-
-                    Input:
-                                        Error(0)
-
-                     */
+                    throw reader.InvalidDataException(@"余分な「,」があります。", data_name);
                 }
 
                 // 愛称
-                ret = Strings.InStr(line_buf, ",");
+                int ret = Strings.InStr(line_buf, ",");
                 buf2 = Strings.Trim(Strings.Left(line_buf, ret - 1));
                 buf = Strings.Mid(line_buf, ret + 1);
                 if (Strings.Len(buf2) == 0)
                 {
-                    err_msg = "愛称の設定が抜けています。";
-                    ;
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                    /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 6805
-
-
-                    Input:
-                                        Error(0)
-
-                     */
+                    throw reader.InvalidDataException(@"愛称の設定が抜けています。", data_name);
                 }
 
                 pd.Nickname = buf2;
@@ -326,7 +253,7 @@ namespace SRC.Core.Models
                                 case "-":
                                     {
                                         string argmsg = "読み仮名の設定が抜けています。";
-                                        GUI.DataErrorMessage(argmsg, fname, line_num, line_buf, data_name);
+                                        continuesErrors.Add(reader.InvalidData(@argmsg, data_name));
                                         string argstr_Renamed1 = pd.Nickname;
                                         pd.KanaName = GeneralLib.StrToHiragana(argstr_Renamed1);
                                         pd.Nickname = argstr_Renamed1;
@@ -357,7 +284,7 @@ namespace SRC.Core.Models
                                 default:
                                     {
                                         string argmsg1 = "性別の設定が間違っています。";
-                                        GUI.DataErrorMessage(argmsg1, fname, line_num, line_buf, data_name);
+                                        continuesErrors.Add(reader.InvalidData(@argmsg1, data_name));
                                         break;
                                     }
                             }
@@ -385,7 +312,7 @@ namespace SRC.Core.Models
                 else
                 {
                     string argmsg2 = "クラスの設定が間違っています。";
-                    GUI.DataErrorMessage(argmsg2, fname, line_num, line_buf, data_name);
+                    continuesErrors.Add(reader.InvalidData(@argmsg2, data_name));
                 }
 
                 // 地形適応
@@ -399,7 +326,7 @@ namespace SRC.Core.Models
                 else
                 {
                     string argmsg3 = "地形適応の設定が間違っています。";
-                    GUI.DataErrorMessage(argmsg3, fname, line_num, line_buf, data_name);
+                    continuesErrors.Add(reader.InvalidData(@argmsg3, data_name));
                     pd.Adaption = "AAAA";
                 }
 
@@ -412,19 +339,19 @@ namespace SRC.Core.Models
                 else
                 {
                     string argmsg4 = "経験値の設定が間違っています。";
-                    GUI.DataErrorMessage(argmsg4, fname, line_num, line_buf, data_name);
+                    continuesErrors.Add(reader.InvalidData(@argmsg4, data_name));
                 }
 
                 // 特殊能力データ
-                GeneralLib.GetLine(FileNumber, line_buf, line_num);
+                line_buf = reader.GetLine();
                 if (line_buf == "特殊能力なし")
                 {
-                    GeneralLib.GetLine(FileNumber, line_buf, line_num);
+                    line_buf = reader.GetLine();
                 }
                 else if (line_buf == "特殊能力")
                 {
                     // 新形式による特殊能力表記
-                    GeneralLib.GetLine(FileNumber, line_buf, line_num);
+                    line_buf = reader.GetLine();
                     buf = line_buf;
                     i = 0;
                     aname = "";
@@ -485,20 +412,12 @@ namespace SRC.Core.Models
                             {
                                 if (i % 2 == 1)
                                 {
-                                    err_msg = "行末の「,」の後に特殊能力指定が抜けています。";
+                                    throw reader.InvalidDataException(@"行末の「,」の後に特殊能力指定が抜けています。", data_name);
                                 }
                                 else
                                 {
-                                    err_msg = "行末の「,」の後に特殊能力レベル指定が抜けています。";
+                                    throw reader.InvalidDataException(@"行末の「,」の後に特殊能力レベル指定が抜けています。", data_name);
                                 };
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 11688
-
-
-                                Input:
-                                                                Error(0)
-
-                                 */
                             }
                         }
                         else
@@ -523,7 +442,7 @@ namespace SRC.Core.Models
                                 else
                                 {
                                     string argmsg5 = "行頭から" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((object)((i + 1) / 2)) + "番目の特殊能力名の設定が間違っています。";
-                                    GUI.DataErrorMessage(argmsg5, fname, line_num, line_buf, data_name);
+                                    continuesErrors.Add(reader.InvalidData(@argmsg5, data_name));
                                 }
                             }
 
@@ -533,20 +452,12 @@ namespace SRC.Core.Models
                                 {
                                     if (string.IsNullOrEmpty(aname))
                                     {
-                                        err_msg = "行頭から" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((object)((i + 1) / 2)) + "番目の特殊能力「" + Strings.Trim(Strings.Left(buf2, Strings.InStr(buf2, " "))) + "」の指定の後に「,」が抜けています。";
+                                        throw reader.InvalidDataException(@"行頭から" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((object)((i + 1) / 2)) + "番目の特殊能力「" + Strings.Trim(Strings.Left(buf2, Strings.InStr(buf2, " "))) + "」の指定の後に「,」が抜けています。", data_name);
                                     }
                                     else
                                     {
-                                        err_msg = "特殊能力「" + aname + "」のレベル指定の後に「,」が抜けています。";
+                                        throw reader.InvalidDataException(@"特殊能力「" + aname + "」のレベル指定の後に「,」が抜けています。", data_name);
                                     };
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                                    /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 13110
-
-
-                                    Input:
-                                                                        Error(0)
-
-                                     */
                                 }
                             }
 
@@ -580,14 +491,14 @@ namespace SRC.Core.Models
                                         if (!Information.IsNumeric(Strings.Mid(buf2, j + 2)))
                                         {
                                             string argmsg6 = "特殊能力「" + aname + "」のレベル指定が不正です。";
-                                            GUI.DataErrorMessage(argmsg6, fname, line_num, line_buf, data_name);
+                                            continuesErrors.Add(reader.InvalidData(@argmsg6, data_name));
                                         }
 
                                         alevel = (double)Conversions.Toint(Strings.Mid(buf2, j + 2));
                                         if (string.IsNullOrEmpty(aname))
                                         {
                                             string argmsg7 = "行頭から" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((object)((i + 1) / 2)) + "番目の特殊能力名の設定が間違っています。";
-                                            GUI.DataErrorMessage(argmsg7, fname, line_num, line_buf, data_name);
+                                            continuesErrors.Add(reader.InvalidData(@argmsg7, data_name));
                                         }
 
                                         break;
@@ -612,12 +523,12 @@ namespace SRC.Core.Models
                             if (alevel > 0d)
                             {
                                 string argmsg8 = "特殊能力「" + aname + "Lv" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((object)alevel) + "」の修得レベルが間違っています。";
-                                GUI.DataErrorMessage(argmsg8, fname, line_num, line_buf, data_name);
+                                continuesErrors.Add(reader.InvalidData(@argmsg8, data_name));
                             }
                             else
                             {
                                 string argmsg9 = "特殊能力「" + aname + "」の修得レベルが間違っています。";
-                                GUI.DataErrorMessage(argmsg9, fname, line_num, line_buf, data_name);
+                                continuesErrors.Add(reader.InvalidData(@argmsg9, data_name));
                             }
 
                             pd.AddSkill(aname, alevel, adata, 1);
@@ -633,16 +544,16 @@ namespace SRC.Core.Models
                                 if (alevel > 0d)
                                 {
                                     string argmsg10 = "特殊能力「" + aname + "Lv" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((object)alevel) + "」の修得レベルが間違っています。";
-                                    GUI.DataErrorMessage(argmsg10, fname, line_num, line_buf, data_name);
+                                    continuesErrors.Add(reader.InvalidData(@argmsg10, data_name));
                                 }
                                 else
                                 {
                                     string argmsg11 = "特殊能力「" + aname + "」の修得レベルが間違っています。";
-                                    GUI.DataErrorMessage(argmsg11, fname, line_num, line_buf, data_name);
+                                    continuesErrors.Add(reader.InvalidData(@argmsg11, data_name));
                                 }
                             }
 
-                            GeneralLib.GetLine(FileNumber, line_buf, line_num);
+                            line_buf = reader.GetLine();
                             buf = line_buf;
                             i = 0;
                             aname = "";
@@ -712,20 +623,12 @@ namespace SRC.Core.Models
                             {
                                 if (i % 2 == 1)
                                 {
-                                    err_msg = "行末の「,」の後に特殊能力指定が抜けています。";
+                                    throw reader.InvalidDataException(@"行末の「,」の後に特殊能力指定が抜けています。", data_name);
                                 }
                                 else
                                 {
-                                    err_msg = "行末の「,」の後に特殊能力レベル指定が抜けています。";
+                                    throw reader.InvalidDataException(@"行末の「,」の後に特殊能力レベル指定が抜けています。", data_name);
                                 };
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 17476
-
-
-                                Input:
-                                                                Error(0)
-
-                                 */
                             }
                         }
                         else
@@ -743,20 +646,12 @@ namespace SRC.Core.Models
                             {
                                 if (string.IsNullOrEmpty(aname))
                                 {
-                                    err_msg = "行頭から" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((object)((i + 1) / 2)) + "番目の特殊能力の指定の後に「,」が抜けています。";
+                                    throw reader.InvalidDataException(@"行頭から" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((object)((i + 1) / 2)) + "番目の特殊能力の指定の後に「,」が抜けています。", data_name);
                                 }
                                 else
                                 {
-                                    err_msg = "特殊能力「" + aname + "」のレベル指定の後に「,」が抜けています。";
+                                    throw reader.InvalidDataException(@"特殊能力「" + aname + "」のレベル指定の後に「,」が抜けています。", data_name);
                                 };
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 17969
-
-
-                                Input:
-                                                                Error(0)
-
-                                 */
                             }
 
                             // 特殊能力の別名指定がある？
@@ -788,31 +683,13 @@ namespace SRC.Core.Models
                                         // レベル指定のみあり
                                         if (!Information.IsNumeric(Strings.Mid(buf2, j + 2)))
                                         {
-                                            err_msg = "特殊能力「" + aname + "」のレベル指定が不正です";
-                                            ;
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                                            /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 18768
-
-
-                                            Input:
-                                                                                    Error(0)
-
-                                             */
+                                            throw reader.InvalidDataException(@"特殊能力「" + aname + "」のレベル指定が不正です", data_name);
                                         }
 
                                         alevel = Conversions.ToDouble(Strings.Mid(buf2, j + 2));
                                         if (string.IsNullOrEmpty(aname))
                                         {
-                                            err_msg = "行頭から" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((object)((i + 1) / 2)) + "番目の特殊能力の名前「" + buf2 + "」が不正です";
-                                            ;
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                                            /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 19057
-
-
-                                            Input:
-                                                                                    Error(0)
-
-                                             */
+                                            throw reader.InvalidDataException(@"行頭から" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((object)((i + 1) / 2)) + "番目の特殊能力の名前「" + buf2 + "」が不正です", data_name);
                                         }
 
                                         break;
@@ -837,12 +714,12 @@ namespace SRC.Core.Models
                             if (alevel > 0d)
                             {
                                 string argmsg12 = "特殊能力「" + aname + "Lv" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((object)alevel) + "」の修得レベルが間違っています。";
-                                GUI.DataErrorMessage(argmsg12, fname, line_num, line_buf, data_name);
+                                continuesErrors.Add(reader.InvalidData(@argmsg12, data_name));
                             }
                             else
                             {
                                 string argmsg13 = "特殊能力「" + aname + "」の修得レベルが間違っています。";
-                                GUI.DataErrorMessage(argmsg13, fname, line_num, line_buf, data_name);
+                                continuesErrors.Add(reader.InvalidData(@argmsg13, data_name));
                             }
 
                             pd.AddSkill(aname, alevel, adata, 1);
@@ -856,59 +733,32 @@ namespace SRC.Core.Models
                         if (alevel > 0d)
                         {
                             string argmsg14 = "特殊能力「" + aname + "Lv" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((object)alevel) + "」の修得レベルが間違っています。";
-                            GUI.DataErrorMessage(argmsg14, fname, line_num, line_buf, data_name);
+                            continuesErrors.Add(reader.InvalidData(@argmsg14, data_name));
                         }
                         else
                         {
                             string argmsg15 = "特殊能力「" + aname + "」の修得レベルが間違っています。";
-                            GUI.DataErrorMessage(argmsg15, fname, line_num, line_buf, data_name);
+                            continuesErrors.Add(reader.InvalidData(@argmsg15, data_name));
                         }
                     }
 
-                    GeneralLib.GetLine(FileNumber, line_buf, line_num);
+                    line_buf = reader.GetLine();
                 }
                 else
                 {
-                    err_msg = "特殊能力の設定が抜けています。";
-                    ;
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                    /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 20520
-
-
-                    Input:
-                                        Error(0)
-
-                     */
+                    throw reader.InvalidDataException(@"特殊能力の設定が抜けています。", data_name);
                 }
 
                 // 格闘
                 if (Strings.Len(line_buf) == 0)
                 {
-                    err_msg = "格闘攻撃力の設定が抜けています。";
-                    ;
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                    /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 20665
-
-
-                    Input:
-                                        Error(0)
-
-                     */
+                    throw reader.InvalidDataException(@"格闘攻撃力の設定が抜けています。", data_name);
                 }
 
                 ret = Strings.InStr(line_buf, ",");
                 if (ret == 0)
                 {
-                    err_msg = "射撃攻撃力の設定が抜けています。";
-                    ;
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                    /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 20817
-
-
-                    Input:
-                                        Error(0)
-
-                     */
+                    throw reader.InvalidDataException(@"射撃攻撃力の設定が抜けています。", data_name);
                 }
 
                 buf2 = Strings.Trim(Strings.Left(line_buf, ret - 1));
@@ -920,23 +770,14 @@ namespace SRC.Core.Models
                 else
                 {
                     string argmsg16 = "格闘攻撃力の設定が間違っています。";
-                    GUI.DataErrorMessage(argmsg16, fname, line_num, line_buf, data_name);
+                    continuesErrors.Add(reader.InvalidData(@argmsg16, data_name));
                 }
 
                 // 射撃
                 ret = Strings.InStr(buf, ",");
                 if (ret == 0)
                 {
-                    err_msg = "命中の設定が抜けています。";
-                    ;
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                    /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 21428
-
-
-                    Input:
-                                        Error(0)
-
-                     */
+                    throw reader.InvalidDataException(@"命中の設定が抜けています。", data_name);
                 }
 
                 buf2 = Strings.Trim(Strings.Left(buf, ret - 1));
@@ -948,23 +789,14 @@ namespace SRC.Core.Models
                 else
                 {
                     string argmsg17 = "射撃攻撃力の設定が間違っています。";
-                    GUI.DataErrorMessage(argmsg17, fname, line_num, line_buf, data_name);
+                    continuesErrors.Add(reader.InvalidData(@argmsg17, data_name));
                 }
 
                 // 命中
                 ret = Strings.InStr(buf, ",");
                 if (ret == 0)
                 {
-                    err_msg = "回避の設定が抜けています。";
-                    ;
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                    /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 22030
-
-
-                    Input:
-                                        Error(0)
-
-                     */
+                    throw reader.InvalidDataException(@"回避の設定が抜けています。", data_name);
                 }
 
                 buf2 = Strings.Trim(Strings.Left(buf, ret - 1));
@@ -976,23 +808,14 @@ namespace SRC.Core.Models
                 else
                 {
                     string argmsg18 = "命中の設定が間違っています。";
-                    GUI.DataErrorMessage(argmsg18, fname, line_num, line_buf, data_name);
+                    continuesErrors.Add(reader.InvalidData(@argmsg18, data_name));
                 }
 
                 // 回避
                 ret = Strings.InStr(buf, ",");
                 if (ret == 0)
                 {
-                    err_msg = "技量の設定が抜けています。";
-                    ;
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                    /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 22624
-
-
-                    Input:
-                                        Error(0)
-
-                     */
+                    throw reader.InvalidDataException(@"技量の設定が抜けています。", data_name);
                 }
 
                 buf2 = Strings.Trim(Strings.Left(buf, ret - 1));
@@ -1004,23 +827,14 @@ namespace SRC.Core.Models
                 else
                 {
                     string argmsg19 = "回避の設定が間違っています。";
-                    GUI.DataErrorMessage(argmsg19, fname, line_num, line_buf, data_name);
+                    continuesErrors.Add(reader.InvalidData(@argmsg19, data_name));
                 }
 
                 // 技量
                 ret = Strings.InStr(buf, ",");
                 if (ret == 0)
                 {
-                    err_msg = "反応の設定が抜けています。";
-                    ;
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                    /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 23220
-
-
-                    Input:
-                                        Error(0)
-
-                     */
+                    throw reader.InvalidDataException(@"反応の設定が抜けています。", data_name);
                 }
 
                 buf2 = Strings.Trim(Strings.Left(buf, ret - 1));
@@ -1032,23 +846,14 @@ namespace SRC.Core.Models
                 else
                 {
                     string argmsg20 = "技量の設定が間違っています。";
-                    GUI.DataErrorMessage(argmsg20, fname, line_num, line_buf, data_name);
+                    continuesErrors.Add(reader.InvalidData(@argmsg20, data_name));
                 }
 
                 // 反応
                 ret = Strings.InStr(buf, ",");
                 if (ret == 0)
                 {
-                    err_msg = "性格の設定が抜けています。";
-                    ;
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                    /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 23820
-
-
-                    Input:
-                                        Error(0)
-
-                     */
+                    throw reader.InvalidDataException(@"性格の設定が抜けています。", data_name);
                 }
 
                 buf2 = Strings.Trim(Strings.Left(buf, ret - 1));
@@ -1060,29 +865,20 @@ namespace SRC.Core.Models
                 else
                 {
                     string argmsg21 = "反応の設定が間違っています。";
-                    GUI.DataErrorMessage(argmsg21, fname, line_num, line_buf, data_name);
+                    continuesErrors.Add(reader.InvalidData(@argmsg21, data_name));
                 }
 
                 // 性格
                 buf2 = Strings.Trim(buf);
                 if (Strings.Len(buf2) == 0)
                 {
-                    err_msg = "性格の設定が抜けています。";
-                    ;
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                    /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 24458
-
-
-                    Input:
-                                        Error(0)
-
-                     */
+                    throw reader.InvalidDataException(@"性格の設定が抜けています。", data_name);
                 }
 
                 if (Strings.InStr(buf2, ",") > 0)
                 {
                     string argmsg22 = "行末に余分なコンマが付けられています。";
-                    GUI.DataErrorMessage(argmsg22, fname, line_num, line_buf, data_name);
+                    continuesErrors.Add(reader.InvalidData(@argmsg22, data_name));
                     buf2 = Strings.Trim(Strings.Left(buf2, Strings.InStr(buf2, ",") - 1));
                 }
 
@@ -1093,11 +889,11 @@ namespace SRC.Core.Models
                 else
                 {
                     string argmsg23 = "性格の設定が間違っています。";
-                    GUI.DataErrorMessage(argmsg23, fname, line_num, line_buf, data_name);
+                    continuesErrors.Add(reader.InvalidData(@argmsg23, data_name));
                 }
 
                 // スペシャルパワー
-                GeneralLib.GetLine(FileNumber, line_buf, line_num);
+                line_buf = reader.GetLine();
                 switch (line_buf ?? "")
                 {
                     // スペシャルパワーを持っていない
@@ -1109,17 +905,7 @@ namespace SRC.Core.Models
 
                     case var @case when @case == "":
                         {
-                            err_msg = "スペシャルパワーの設定が抜けています。";
-                            ;
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                            /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 25279
-
-
-                            Input:
-                                                    Error(0)
-
-                             */
-                            break;
+                            throw reader.InvalidDataException(@"スペシャルパワーの設定が抜けています。", data_name);
                         }
 
                     default:
@@ -1127,32 +913,14 @@ namespace SRC.Core.Models
                             ret = Strings.InStr(line_buf, ",");
                             if (ret == 0)
                             {
-                                err_msg = "ＳＰ値の設定が抜けています。";
-                                ;
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 25441
-
-
-                                Input:
-                                                            Error(0)
-
-                                 */
+                                throw reader.InvalidDataException(@"ＳＰ値の設定が抜けています。", data_name);
                             }
 
                             buf2 = Strings.Trim(Strings.Left(line_buf, ret - 1));
                             buf = Strings.Mid(line_buf, ret + 1);
                             if (buf2 != "ＳＰ" & buf2 != "精神")
                             {
-                                err_msg = "スペシャルパワーの設定が抜けています。";
-                                ;
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 25750
-
-
-                                Input:
-                                                            Error(0)
-
-                                 */
+                                throw reader.InvalidDataException(@"スペシャルパワーの設定が抜けています。", data_name);
                             }
 
                             // ＳＰ値
@@ -1175,7 +943,7 @@ namespace SRC.Core.Models
                             else
                             {
                                 string argmsg24 = "ＳＰの設定が間違っています。";
-                                GUI.DataErrorMessage(argmsg24, fname, line_num, line_buf, data_name);
+                                continuesErrors.Add(reader.InvalidData(@argmsg24, data_name));
                                 pd.SP = 1;
                             }
 
@@ -1215,17 +983,17 @@ namespace SRC.Core.Models
                                 if (string.IsNullOrEmpty(sname))
                                 {
                                     string argmsg25 = "スペシャルパワーの指定が抜けています。";
-                                    GUI.DataErrorMessage(argmsg25, fname, line_num, line_buf, data_name);
+                                    continuesErrors.Add(reader.InvalidData(@argmsg25, data_name));
                                 }
                                 else if (!localIsDefined())
                                 {
                                     string argmsg26 = sname + "というスペシャルパワーは存在しません。";
-                                    GUI.DataErrorMessage(argmsg26, fname, line_num, line_buf, data_name);
+                                    continuesErrors.Add(reader.InvalidData(@argmsg26, data_name));
                                 }
                                 else if (!Information.IsNumeric(buf2))
                                 {
                                     string argmsg27 = "スペシャルパワー「" + sname + "」の獲得レベルが間違っています。";
-                                    GUI.DataErrorMessage(argmsg27, fname, line_num, line_buf, data_name);
+                                    continuesErrors.Add(reader.InvalidData(@argmsg27, data_name));
                                     pd.AddSpecialPower(sname, 1, sp_cost);
                                 }
                                 else
@@ -1239,7 +1007,7 @@ namespace SRC.Core.Models
                             if (!string.IsNullOrEmpty(buf))
                             {
                                 string argmsg28 = "スペシャルパワー「" + Strings.Trim(sname) + "」の獲得レベル指定が抜けています。";
-                                GUI.DataErrorMessage(argmsg28, fname, line_num, line_buf, data_name);
+                                continuesErrors.Add(reader.InvalidData(@argmsg28, data_name));
                             }
 
                             break;
@@ -1247,36 +1015,18 @@ namespace SRC.Core.Models
                 }
 
                 // ビットマップ, ＭＩＤＩ
-                GeneralLib.GetLine(FileNumber, line_buf, line_num);
+                line_buf = reader.GetLine();
 
                 // ビットマップ
                 if (Strings.Len(line_buf) == 0)
                 {
-                    err_msg = "ビットマップの設定が抜けています。";
-                    ;
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                    /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 28808
-
-
-                    Input:
-                                        Error(0)
-
-                     */
+                    throw reader.InvalidDataException(@"ビットマップの設定が抜けています。", data_name);
                 }
 
                 ret = Strings.InStr(line_buf, ",");
                 if (ret == 0)
                 {
-                    err_msg = "ＭＩＤＩの設定が抜けています。";
-                    ;
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                    /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 28959
-
-
-                    Input:
-                                        Error(0)
-
-                     */
+                    throw reader.InvalidDataException(@"ＭＩＤＩの設定が抜けています。", data_name);
                 }
 
                 buf2 = Strings.Trim(Strings.Left(line_buf, ret - 1));
@@ -1288,7 +1038,7 @@ namespace SRC.Core.Models
                 else
                 {
                     string argmsg29 = "ビットマップの設定が間違っています。";
-                    GUI.DataErrorMessage(argmsg29, fname, line_num, line_buf, data_name);
+                    continuesErrors.Add(reader.InvalidData(@argmsg29, data_name));
                     pd.IsBitmapMissing = true;
                 }
 
@@ -1311,7 +1061,7 @@ namespace SRC.Core.Models
                     case var case1 when case1 == "":
                         {
                             string argmsg30 = "ＭＩＤＩの設定が抜けています。";
-                            GUI.DataErrorMessage(argmsg30, fname, line_num, line_buf, data_name);
+                            continuesErrors.Add(reader.InvalidData(@argmsg30, data_name));
                             pd.Bitmap = "-.mid";
                             break;
                         }
@@ -1319,26 +1069,26 @@ namespace SRC.Core.Models
                     default:
                         {
                             string argmsg31 = "ＭＩＤＩの設定が間違っています。";
-                            GUI.DataErrorMessage(argmsg31, fname, line_num, line_buf, data_name);
+                            continuesErrors.Add(reader.InvalidData(@argmsg31, data_name));
                             pd.Bitmap = "-.mid";
                             break;
                         }
                 }
 
-                if (FileSystem.EOF(FileNumber))
+                if (reader.EOT)
                 {
-                    FileSystem.FileClose(FileNumber);
-                    return;
+                    return pd;
                 }
 
-                GeneralLib.GetLine(FileNumber, line_buf, line_num);
+                line_buf = reader.GetLine();
                 if (line_buf != "===")
                 {
-                    goto SkipRest;
+                    return pd;
                 }
 
                 // 特殊能力データ
-                GeneralLib.GetLine(FileNumber, line_buf, line_num);
+                UnitDataList.AddFeature(data_name, pd, reader, continuesErrors);
+                line_buf = reader.GetLine();
                 buf = line_buf;
                 i = 0;
                 while (line_buf != "===")
@@ -1384,7 +1134,7 @@ namespace SRC.Core.Models
                     if (string.IsNullOrEmpty(buf2) | Information.IsNumeric(buf2))
                     {
                         string argmsg32 = "行頭から" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((object)i) + "番目の特殊能力の設定が間違っています。";
-                        GUI.DataErrorMessage(argmsg32, fname, line_num, line_buf, data_name);
+                        continuesErrors.Add(reader.InvalidData(@argmsg32, data_name));
                     }
                     else
                     {
@@ -1399,7 +1149,7 @@ namespace SRC.Core.Models
                             return;
                         }
 
-                        GeneralLib.GetLine(FileNumber, line_buf, line_num);
+                        line_buf = reader.GetLine();
                         buf = line_buf;
                         i = 0;
                         if (string.IsNullOrEmpty(line_buf) | line_buf == "===")
@@ -1415,39 +1165,21 @@ namespace SRC.Core.Models
                 }
 
                 // 武器データ
-                GeneralLib.GetLine(FileNumber, line_buf, line_num);
+                line_buf = reader.GetLine();
                 while (Strings.Len(line_buf) > 0 & line_buf != "===")
                 {
                     // 武器名
                     ret = Strings.InStr(line_buf, ",");
                     if (ret == 0)
                     {
-                        err_msg = "武器データの終りには空行を置いてください。";
-                        ;
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 32533
-
-
-                        Input:
-                                                Error(0)
-
-                         */
+                        throw reader.InvalidDataException(@"武器データの終りには空行を置いてください。", data_name);
                     }
 
                     wname = Strings.Trim(Strings.Left(line_buf, ret - 1));
                     buf = Strings.Mid(line_buf, ret + 1);
                     if (string.IsNullOrEmpty(wname))
                     {
-                        err_msg = "武器名の設定が間違っています。";
-                        ;
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 32821
-
-
-                        Input:
-                                                Error(0)
-
-                         */
+                        throw reader.InvalidDataException(@"武器名の設定が間違っています。", data_name);
                     }
 
                     // 武器を登録
@@ -1457,16 +1189,7 @@ namespace SRC.Core.Models
                     ret = Strings.InStr(buf, ",");
                     if (ret == 0)
                     {
-                        err_msg = wname + "の最小射程が抜けています。";
-                        ;
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 33045
-
-
-                        Input:
-                                                Error(0)
-
-                         */
+                        throw reader.InvalidDataException(@wname + "の最小射程が抜けています。", data_name);
                     }
 
                     buf2 = Strings.Trim(Strings.Left(buf, ret - 1));
@@ -1482,7 +1205,7 @@ namespace SRC.Core.Models
                     else
                     {
                         string argmsg33 = wname + "の攻撃力の設定が間違っています。";
-                        GUI.DataErrorMessage(argmsg33, fname, line_num, line_buf, data_name);
+                        continuesErrors.Add(reader.InvalidData(@argmsg33, data_name));
                         if (GeneralLib.LLength(buf2) > 1)
                         {
                             buf = GeneralLib.LIndex(buf2, 2) + "," + buf;
@@ -1495,16 +1218,7 @@ namespace SRC.Core.Models
                     ret = Strings.InStr(buf, ",");
                     if (ret == 0)
                     {
-                        err_msg = wname + "の最大射程の設定が抜けています。";
-                        ;
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 33972
-
-
-                        Input:
-                                                Error(0)
-
-                         */
+                        throw reader.InvalidDataException(@wname + "の最大射程の設定が抜けています。", data_name);
                     }
 
                     buf2 = Strings.Trim(Strings.Left(buf, ret - 1));
@@ -1516,7 +1230,7 @@ namespace SRC.Core.Models
                     else
                     {
                         string argmsg34 = wname + "の最小射程の設定が間違っています。";
-                        GUI.DataErrorMessage(argmsg34, fname, line_num, line_buf, data_name);
+                        continuesErrors.Add(reader.InvalidData(@argmsg34, data_name));
                         wd.MinRange = 1;
                         if (GeneralLib.LLength(buf2) > 1)
                         {
@@ -1530,16 +1244,7 @@ namespace SRC.Core.Models
                     ret = Strings.InStr(buf, ",");
                     if (ret == 0)
                     {
-                        err_msg = wname + "の命中率の設定が抜けています。";
-                        ;
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 34839
-
-
-                        Input:
-                                                Error(0)
-
-                         */
+                        throw reader.InvalidDataException(@wname + "の命中率の設定が抜けています。", data_name);
                     }
 
                     buf2 = Strings.Trim(Strings.Left(buf, ret - 1));
@@ -1551,7 +1256,7 @@ namespace SRC.Core.Models
                     else
                     {
                         string argmsg35 = wname + "の最大射程の設定が間違っています。";
-                        GUI.DataErrorMessage(argmsg35, fname, line_num, line_buf, data_name);
+                        continuesErrors.Add(reader.InvalidData(@argmsg35, data_name));
                         wd.MaxRange = 1;
                         if (GeneralLib.LLength(buf2) > 1)
                         {
@@ -1565,16 +1270,7 @@ namespace SRC.Core.Models
                     ret = Strings.InStr(buf, ",");
                     if (ret == 0)
                     {
-                        err_msg = wname + "の弾数の設定が抜けています。";
-                        ;
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 35741
-
-
-                        Input:
-                                                Error(0)
-
-                         */
+                        throw reader.InvalidDataException(@wname + "の弾数の設定が抜けています。", data_name);
                     }
 
                     buf2 = Strings.Trim(Strings.Left(buf, ret - 1));
@@ -1596,7 +1292,7 @@ namespace SRC.Core.Models
                     else
                     {
                         string argmsg36 = wname + "の命中率の設定が間違っています。";
-                        GUI.DataErrorMessage(argmsg36, fname, line_num, line_buf, data_name);
+                        continuesErrors.Add(reader.InvalidData(@argmsg36, data_name));
                         if (GeneralLib.LLength(buf2) > 1)
                         {
                             buf = GeneralLib.LIndex(buf2, 2) + "," + buf;
@@ -1609,16 +1305,7 @@ namespace SRC.Core.Models
                     ret = Strings.InStr(buf, ",");
                     if (ret == 0)
                     {
-                        err_msg = wname + "の消費ＥＮの設定が抜けています。";
-                        ;
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 36695
-
-
-                        Input:
-                                                Error(0)
-
-                         */
+                        throw reader.InvalidDataException(@wname + "の消費ＥＮの設定が抜けています。", data_name);
                     }
 
                     buf2 = Strings.Trim(Strings.Left(buf, ret - 1));
@@ -1632,7 +1319,7 @@ namespace SRC.Core.Models
                         else
                         {
                             string argmsg37 = wname + "の弾数の設定が間違っています。";
-                            GUI.DataErrorMessage(argmsg37, fname, line_num, line_buf, data_name);
+                            continuesErrors.Add(reader.InvalidData(@argmsg37, data_name));
                             if (GeneralLib.LLength(buf2) > 1)
                             {
                                 buf = GeneralLib.LIndex(buf2, 2) + "," + buf;
@@ -1646,16 +1333,7 @@ namespace SRC.Core.Models
                     ret = Strings.InStr(buf, ",");
                     if (ret == 0)
                     {
-                        err_msg = wname + "の必要気力が抜けています。";
-                        ;
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 37616
-
-
-                        Input:
-                                                Error(0)
-
-                         */
+                        throw reader.InvalidDataException(@wname + "の必要気力が抜けています。", data_name);
                     }
 
                     buf2 = Strings.Trim(Strings.Left(buf, ret - 1));
@@ -1669,7 +1347,7 @@ namespace SRC.Core.Models
                         else
                         {
                             string argmsg38 = wname + "の消費ＥＮの設定が間違っています。";
-                            GUI.DataErrorMessage(argmsg38, fname, line_num, line_buf, data_name);
+                            continuesErrors.Add(reader.InvalidData(@argmsg38, data_name));
                             if (GeneralLib.LLength(buf2) > 1)
                             {
                                 buf = GeneralLib.LIndex(buf2, 2) + "," + buf;
@@ -1683,16 +1361,7 @@ namespace SRC.Core.Models
                     ret = Strings.InStr(buf, ",");
                     if (ret == 0)
                     {
-                        err_msg = wname + "の地形適応が抜けています。";
-                        ;
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 38554
-
-
-                        Input:
-                                                Error(0)
-
-                         */
+                        throw reader.InvalidDataException(@wname + "の地形適応が抜けています。", data_name);
                     }
 
                     buf2 = Strings.Trim(Strings.Left(buf, ret - 1));
@@ -1716,7 +1385,7 @@ namespace SRC.Core.Models
                         else
                         {
                             string argmsg39 = wname + "の必要気力の設定が間違っています。";
-                            GUI.DataErrorMessage(argmsg39, fname, line_num, line_buf, data_name);
+                            continuesErrors.Add(reader.InvalidData(@argmsg39, data_name));
                             if (GeneralLib.LLength(buf2) > 1)
                             {
                                 buf = GeneralLib.LIndex(buf2, 2) + "," + buf;
@@ -1730,16 +1399,7 @@ namespace SRC.Core.Models
                     ret = Strings.InStr(buf, ",");
                     if (ret == 0)
                     {
-                        err_msg = wname + "のクリティカル率が抜けています。";
-                        ;
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 39573
-
-
-                        Input:
-                                                Error(0)
-
-                         */
+                        throw reader.InvalidDataException(@wname + "のクリティカル率が抜けています。", data_name);
                     }
 
                     buf2 = Strings.Trim(Strings.Left(buf, ret - 1));
@@ -1751,7 +1411,7 @@ namespace SRC.Core.Models
                     else
                     {
                         string argmsg40 = wname + "の地形適応の設定が間違っています。";
-                        GUI.DataErrorMessage(argmsg40, fname, line_num, line_buf, data_name);
+                        continuesErrors.Add(reader.InvalidData(@argmsg40, data_name));
                         wd.Adaption = "----";
                         if (GeneralLib.LLength(buf2) > 1)
                         {
@@ -1764,16 +1424,7 @@ namespace SRC.Core.Models
                     ret = Strings.InStr(buf, ",");
                     if (ret == 0)
                     {
-                        err_msg = wname + "の武器属性が抜けています。";
-                        ;
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 40395
-
-
-                        Input:
-                                                Error(0)
-
-                         */
+                        throw reader.InvalidDataException(@wname + "の武器属性が抜けています。", data_name);
                     }
 
                     buf2 = Strings.Trim(Strings.Left(buf, ret - 1));
@@ -1795,7 +1446,7 @@ namespace SRC.Core.Models
                     else
                     {
                         string argmsg41 = wname + "のクリティカル率の設定が間違っています。";
-                        GUI.DataErrorMessage(argmsg41, fname, line_num, line_buf, data_name);
+                        continuesErrors.Add(reader.InvalidData(@argmsg41, data_name));
                         if (GeneralLib.LLength(buf2) > 1)
                         {
                             buf = GeneralLib.LIndex(buf2, 2) + "," + buf;
@@ -1809,7 +1460,7 @@ namespace SRC.Core.Models
                     if (Strings.Len(buf) == 0)
                     {
                         string argmsg42 = wname + "の武器属性の設定が間違っています。";
-                        GUI.DataErrorMessage(argmsg42, fname, line_num, line_buf, data_name);
+                        continuesErrors.Add(reader.InvalidData(@argmsg42, data_name));
                     }
 
                     if (Strings.Right(buf, 1) == ")")
@@ -1848,16 +1499,16 @@ namespace SRC.Core.Models
                         }
                     }
 
-                    wd.Class_Renamed = buf;
-                    if (wd.Class_Renamed == "-")
+                    wd.Class = buf;
+                    if (wd.Class == "-")
                     {
-                        wd.Class_Renamed = "";
+                        wd.Class = "";
                     }
 
-                    if (Strings.InStr(wd.Class_Renamed, "Lv") > 0)
+                    if (Strings.InStr(wd.Class, "Lv") > 0)
                     {
                         string argmsg43 = wname + "の属性のレベル指定が間違っています。";
-                        GUI.DataErrorMessage(argmsg43, fname, line_num, line_buf, data_name);
+                        continuesErrors.Add(reader.InvalidData(@argmsg43, data_name));
                     }
 
                     if (FileSystem.EOF(FileNumber))
@@ -1866,7 +1517,7 @@ namespace SRC.Core.Models
                         return;
                     }
 
-                    GeneralLib.GetLine(FileNumber, line_buf, line_num);
+                    line_buf = reader.GetLine();
                 }
 
                 if (line_buf != "===")
@@ -1875,39 +1526,21 @@ namespace SRC.Core.Models
                 }
 
                 // アビリティデータ
-                GeneralLib.GetLine(FileNumber, line_buf, line_num);
+                line_buf = reader.GetLine();
                 while (Strings.Len(line_buf) > 0)
                 {
                     // アビリティ名
                     ret = Strings.InStr(line_buf, ",");
                     if (ret == 0)
                     {
-                        err_msg = "アビリティデータの終りには空行を置いてください。";
-                        ;
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 44047
-
-
-                        Input:
-                                                Error(0)
-
-                         */
+                        throw reader.InvalidDataException(@"アビリティデータの終りには空行を置いてください。", data_name);
                     }
 
                     sname = Strings.Trim(Strings.Left(line_buf, ret - 1));
                     buf = Strings.Mid(line_buf, ret + 1);
                     if (string.IsNullOrEmpty(sname))
                     {
-                        err_msg = "アビリティ名の設定が間違っています。";
-                        ;
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 44338
-
-
-                        Input:
-                                                Error(0)
-
-                         */
+                        throw reader.InvalidDataException(@"アビリティ名の設定が間違っています。", data_name);
                     }
 
                     // アビリティを登録
@@ -1917,16 +1550,7 @@ namespace SRC.Core.Models
                     ret = Strings.InStr(buf, ",");
                     if (ret == 0)
                     {
-                        err_msg = sname + "の射程の設定が抜けています。";
-                        ;
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 44566
-
-
-                        Input:
-                                                Error(0)
-
-                         */
+                        throw reader.InvalidDataException(@sname + "の射程の設定が抜けています。", data_name);
                     }
 
                     buf2 = Strings.Trim(Strings.Left(buf, ret - 1));
@@ -1938,7 +1562,7 @@ namespace SRC.Core.Models
                     ret = Strings.InStr(buf, ",");
                     if (ret == 0)
                     {
-                        err_msg = sname + "の回数の設定が抜けています。";
+                        throw reader.InvalidDataException(@sname + "の回数の設定が抜けています。", data_name);
                         ;
 #error Cannot convert ErrorStatementSyntax - see comment for details
                         /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 44969
@@ -1963,7 +1587,7 @@ namespace SRC.Core.Models
                     else
                     {
                         string argmsg44 = sname + "の射程の設定が間違っています。";
-                        GUI.DataErrorMessage(argmsg44, fname, line_num, line_buf, data_name);
+                        continuesErrors.Add(reader.InvalidData(@argmsg44, data_name));
                         if (GeneralLib.LLength(buf2) > 1)
                         {
                             buf = GeneralLib.LIndex(buf2, 2) + "," + buf;
@@ -1976,16 +1600,7 @@ namespace SRC.Core.Models
                     ret = Strings.InStr(buf, ",");
                     if (ret == 0)
                     {
-                        err_msg = sname + "の消費ＥＮの設定が抜けています。";
-                        ;
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 45900
-
-
-                        Input:
-                                                Error(0)
-
-                         */
+                        throw reader.InvalidDataException(@sname + "の消費ＥＮの設定が抜けています。", data_name);
                     }
 
                     buf2 = Strings.Trim(Strings.Left(buf, ret - 1));
@@ -1999,7 +1614,7 @@ namespace SRC.Core.Models
                         else
                         {
                             string argmsg45 = sname + "の回数の設定が間違っています。";
-                            GUI.DataErrorMessage(argmsg45, fname, line_num, line_buf, data_name);
+                            continuesErrors.Add(reader.InvalidData(@argmsg45, data_name));
                             if (GeneralLib.LLength(buf2) > 1)
                             {
                                 buf = GeneralLib.LIndex(buf2, 2) + "," + buf;
@@ -2013,16 +1628,7 @@ namespace SRC.Core.Models
                     ret = Strings.InStr(buf, ",");
                     if (ret == 0)
                     {
-                        err_msg = sname + "の必要気力の設定が抜けています。";
-                        ;
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 46822
-
-
-                        Input:
-                                                Error(0)
-
-                         */
+                        throw reader.InvalidDataException(@sname + "の必要気力の設定が抜けています。", data_name);
                     }
 
                     buf2 = Strings.Trim(Strings.Left(buf, ret - 1));
@@ -2036,7 +1642,7 @@ namespace SRC.Core.Models
                         else
                         {
                             string argmsg46 = sname + "の消費ＥＮの設定が間違っています。";
-                            GUI.DataErrorMessage(argmsg46, fname, line_num, line_buf, data_name);
+                            continuesErrors.Add(reader.InvalidData(@argmsg46, data_name));
                             if (GeneralLib.LLength(buf2) > 1)
                             {
                                 buf = GeneralLib.LIndex(buf2, 2) + "," + buf;
@@ -2050,16 +1656,7 @@ namespace SRC.Core.Models
                     ret = Strings.InStr(buf, ",");
                     if (ret == 0)
                     {
-                        err_msg = sname + "のアビリティ属性の設定が抜けています。";
-                        ;
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 47766
-
-
-                        Input:
-                                                Error(0)
-
-                         */
+                        throw reader.InvalidDataException(@sname + "のアビリティ属性の設定が抜けています。", data_name);
                     }
 
                     buf2 = Strings.Trim(Strings.Left(buf, ret - 1));
@@ -2083,7 +1680,7 @@ namespace SRC.Core.Models
                         else
                         {
                             string argmsg47 = sname + "の必要気力の設定が間違っています。";
-                            GUI.DataErrorMessage(argmsg47, fname, line_num, line_buf, data_name);
+                            continuesErrors.Add(reader.InvalidData(@argmsg47, data_name));
                             if (GeneralLib.LLength(buf2) > 1)
                             {
                                 buf = GeneralLib.LIndex(buf2, 2) + "," + buf;
@@ -2098,7 +1695,7 @@ namespace SRC.Core.Models
                     if (Strings.Len(buf) == 0)
                     {
                         string argmsg48 = sname + "のアビリティ属性の設定が間違っています。";
-                        GUI.DataErrorMessage(argmsg48, fname, line_num, line_buf, data_name);
+                        continuesErrors.Add(reader.InvalidData(@argmsg48, data_name));
                     }
 
                     if (Strings.Right(buf, 1) == ")")
@@ -2137,16 +1734,16 @@ namespace SRC.Core.Models
                         }
                     }
 
-                    sd.Class_Renamed = buf;
-                    if (sd.Class_Renamed == "-")
+                    sd.Class = buf;
+                    if (sd.Class == "-")
                     {
-                        sd.Class_Renamed = "";
+                        sd.Class = "";
                     }
 
-                    if (Strings.InStr(sd.Class_Renamed, "Lv") > 0)
+                    if (Strings.InStr(sd.Class, "Lv") > 0)
                     {
                         string argmsg49 = sname + "の属性のレベル指定が間違っています。";
-                        GUI.DataErrorMessage(argmsg49, fname, line_num, line_buf, data_name);
+                        continuesErrors.Add(reader.InvalidData(@argmsg49, data_name));
                     }
 
                     if (FileSystem.EOF(FileNumber))
@@ -2155,29 +1752,10 @@ namespace SRC.Core.Models
                         return;
                     }
 
-                    GeneralLib.GetLine(FileNumber, line_buf, line_num);
+                    line_buf = reader.GetLine();
                 }
-
-            SkipRest:
-                ;
             }
-
-        ErrorHandler:
-            ;
-
-            // エラー処理
-            if (line_num == 0)
-            {
-                string argmsg50 = fname + "が開けません";
-                GUI.ErrorMessage(argmsg50);
-            }
-            else
-            {
-                FileSystem.FileClose(FileNumber);
-                GUI.DataErrorMessage(err_msg, fname, line_num, line_buf, data_name);
-            }
-
-            SRC.TerminateSRC();
+            return pd;
         }
     }
 }
