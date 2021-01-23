@@ -27,47 +27,28 @@ namespace SRC.Core.Models
         public string NecessarySkill;
         // 必要条件
         public string NecessaryCondition;
-        
+
         //// 効果
         //private Collection colEffects = new Collection();
 
-        //// クラスの解放
-        //// UPGRADE_NOTE: Class_Terminate は Class_Terminate_Renamed にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
-        //private void Class_Terminate_Renamed()
-        //{
-        //    int i;
-        //    {
-        //        var withBlock = colEffects;
-        //        var loopTo = withBlock.Count;
-        //        for (i = 1; i <= loopTo; i++)
-        //            withBlock.Remove(1);
-        //    }
-        //    // UPGRADE_NOTE: オブジェクト colEffects をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-        //    colEffects = null;
-        //}
+        // アビリティ愛称
+        public string Nickname()
+        {
+            string NicknameRet = default;
+            NicknameRet = Name;
+            // TODO Impl
+            //Expression.ReplaceSubExpression(ref NicknameRet);
+            //if (Strings.InStr(NicknameRet, "(") > 0)
+            //{
+            //    NicknameRet = Strings.Left(NicknameRet, Strings.InStr(NicknameRet, "(") - 1);
+            //}
 
-        //~AbilityData()
-        //{
-        //    Class_Terminate_Renamed();
-        //}
+            return NicknameRet;
+        }
 
-        //// アビリティ愛称
-        //public string Nickname()
-        //{
-        //    string NicknameRet = default;
-        //    NicknameRet = Name;
-        //    Expression.ReplaceSubExpression(ref NicknameRet);
-        //    if (Strings.InStr(NicknameRet, "(") > 0)
-        //    {
-        //        NicknameRet = Strings.Left(NicknameRet, Strings.InStr(NicknameRet, "(") - 1);
-        //    }
-
-        //    return NicknameRet;
-        //}
-
-        //// アビリティに効果を追加
-        //public void SetEffect(ref string elist)
-        //{
+        // アビリティに効果を追加
+        public void SetEffect(string elist) { }
+        // TODO Impl
         //    int j, i, k;
         //    string buf;
         //    AbilityEffect dat;
