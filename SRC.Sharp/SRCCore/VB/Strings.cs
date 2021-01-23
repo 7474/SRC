@@ -6,7 +6,8 @@ namespace SRC.Core.VB
     public enum VbStrConv
     {
         Wide,
-        Narrow
+        Narrow,
+        Hiragana
     }
 
     // VB6の文字列処理（Microsoft.VisualBasic.Strings）のうちSRCで使用していたものの仮実装。
@@ -130,8 +131,6 @@ namespace SRC.Core.VB
             // TODO 要る分だけ実装ないし完全に置き換える
             switch (Conversion)
             {
-                case VbStrConv.Wide:
-                case VbStrConv.Narrow:
                 default:
                     return str;
             }
