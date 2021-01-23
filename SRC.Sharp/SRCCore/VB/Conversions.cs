@@ -7,6 +7,11 @@ namespace SRC.Core.VB
     // VBの Microsoft.VisualBasic.Conversions のうちSRCで使用していたものの仮実装。
     public static class Conversions
     {
+        public static string ToString(object Value)
+        {
+            return Value?.ToString() ?? "";
+        }
+
         public static int ToInteger(string Value)
         {
             try
