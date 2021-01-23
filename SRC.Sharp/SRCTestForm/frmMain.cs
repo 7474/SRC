@@ -17,5 +17,41 @@ namespace SRCTestForm
             InitializeComponent();
         }
 
+        private void menuLoadData_Click(object sender, EventArgs e)
+        {
+            LoadData();
+        }
+
+        private void LoadData()
+        {
+            using (var fbd = new FolderBrowserDialog())
+            {
+                var res = fbd.ShowDialog();
+                if (res == DialogResult.OK)
+                {
+                    try
+                    {
+                        SetStatusText($"Load data [{fbd.SelectedPath}].");
+                        // TODO
+                        SetStatusText("Loaded.");
+                    }
+                    catch (Exception ex)
+                    {
+                        SetStatusText(ex.Message);
+                    }
+                }
+            }
+        }
+
+        private void SetStatusText(string text)
+        {
+            toolStripStatusLabel.Text = text;
+        }
+
+        private void SetProgress(int value, int max)
+        {
+            toolStripProgressBar.Value = value;
+            toolStripProgressBar.Maximum = max;
+        }
     }
 }
