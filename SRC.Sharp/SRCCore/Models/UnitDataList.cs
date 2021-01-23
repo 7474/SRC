@@ -23,13 +23,13 @@ namespace SRC.Core.Models
         public UnitDataList()
         {
             colUnitDataList = new SrcCollection<UnitData>();
+            AddDummyData();
         }
 
         public IList<UnitData> Items => colUnitDataList;
 
         private void AddDummyData()
         {
-
             var ud = new UnitData();
             ud.Name = "ステータス表示用ダミーユニット";
             ud.Nickname = "ユニット無し";
