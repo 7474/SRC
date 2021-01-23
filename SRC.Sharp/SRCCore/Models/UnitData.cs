@@ -21,29 +21,29 @@ namespace SRC.Core.Models
         // UPGRADE_NOTE: Class は Class_Renamed にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
         public string Class_Renamed;
         // パイロット数 (マイナスの場合は括弧つきの指定)
-        public short PilotNum;
+        public int PilotNum;
         // アイテム数
-        public short ItemNum;
+        public int ItemNum;
         // 地形適応
         public string Adaption;
         // ＨＰ
         public int HP;
         // ＥＮ
-        public short EN;
+        public int EN;
         // 移動タイプ
         public string Transportation;
         // 移動力
-        public short Speed;
+        public int Speed;
         // サイズ
         public string Size;
         // 装甲
         public int Armor;
         // 運動性
-        public short Mobility;
+        public int Mobility;
         // 修理費
         public int Value;
         // 経験値
-        public short ExpValue;
+        public int ExpValue;
 
         // 愛称
         private string proNickname;

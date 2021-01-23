@@ -13,21 +13,21 @@ namespace SRC.Core.Models
         // 攻撃力
         public int Power;
         // 最小射程
-        public short MinRange;
+        public int MinRange;
         // 最大射程
-        public short MaxRange;
+        public int MaxRange;
         // 命中率
-        public short Precision;
+        public int Precision;
         // 弾数
-        public short Bullet;
+        public int Bullet;
         // 消費ＥＮ
-        public short ENConsumption;
+        public int ENConsumption;
         // 必要気力
-        public short NecessaryMorale;
+        public int NecessaryMorale;
         // 地形適応
         public string Adaption;
         // ＣＴ率
-        public short Critical;
+        public int Critical;
         // 属性
         // UPGRADE_NOTE: Class は Class_Renamed にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
         public string Class_Renamed;
@@ -54,7 +54,7 @@ namespace SRC.Core.Models
         //public bool IsItem()
         //{
         //    bool IsItemRet = default;
-        //    short i;
+        //    int i;
         //    var loopTo = GeneralLib.LLength(ref NecessarySkill);
         //    for (i = 1; i <= loopTo; i++)
         //    {

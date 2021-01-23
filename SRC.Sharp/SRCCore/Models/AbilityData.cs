@@ -11,15 +11,15 @@ namespace SRC.Core.Models
         // 名称
         public string Name;
         // 使用可能回数
-        public short Stock;
+        public int Stock;
         // ＥＮ消費量
-        public short ENConsumption;
+        public int ENConsumption;
         // 必要気力
-        public short NecessaryMorale;
+        public int NecessaryMorale;
         // 最小射程
-        public short MinRange;
+        public int MinRange;
         // 最大射程
-        public short MaxRange;
+        public int MaxRange;
         // 属性
         // UPGRADE_NOTE: Class は Class_Renamed にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
         public string Class_Renamed;
@@ -35,10 +35,10 @@ namespace SRC.Core.Models
         //// UPGRADE_NOTE: Class_Terminate は Class_Terminate_Renamed にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
         //private void Class_Terminate_Renamed()
         //{
-        //    short i;
+        //    int i;
         //    {
         //        var withBlock = colEffects;
-        //        var loopTo = (short)withBlock.Count;
+        //        var loopTo = withBlock.Count;
         //        for (i = 1; i <= loopTo; i++)
         //            withBlock.Remove(1);
         //    }
@@ -68,7 +68,7 @@ namespace SRC.Core.Models
         //// アビリティに効果を追加
         //public void SetEffect(ref string elist)
         //{
-        //    short j, i, k;
+        //    int j, i, k;
         //    string buf;
         //    AbilityEffect dat;
         //    string elevel, etype, edata;
@@ -78,8 +78,8 @@ namespace SRC.Core.Models
         //    {
         //        dat = NewAbilityEffect();
         //        buf = GeneralLib.ListIndex(ref elist, i);
-        //        j = (short)Strings.InStr(buf, "Lv");
-        //        k = (short)Strings.InStr(buf, "=");
+        //        j = Strings.InStr(buf, "Lv");
+        //        k = Strings.InStr(buf, "=");
         //        if (j > 0 & (k == 0 | j < k))
         //        {
         //            // レベル指定のある効果(データ指定があるものを含む)
@@ -94,8 +94,8 @@ namespace SRC.Core.Models
         //                    buf = Strings.Mid(buf, 2, Strings.Len(buf) - 2);
         //                }
 
-        //                j = (short)Strings.InStr(buf, "Lv");
-        //                k = (short)Strings.InStr(buf, "=");
+        //                j = Strings.InStr(buf, "Lv");
+        //                k = Strings.InStr(buf, "=");
         //                if (j > 0 & (k == 0 | j < k))
         //                {
         //                    // データ指定内にレベル指定がある
@@ -149,8 +149,8 @@ namespace SRC.Core.Models
         //                buf = Strings.Mid(buf, 2, Strings.Len(buf) - 2);
         //            }
 
-        //            j = (short)Strings.InStr(buf, "Lv");
-        //            k = (short)Strings.InStr(buf, "=");
+        //            j = Strings.InStr(buf, "Lv");
+        //            k = Strings.InStr(buf, "=");
         //            if (dat.Name == "解説")
         //            {
         //                // 解説の指定
@@ -206,7 +206,7 @@ namespace SRC.Core.Models
         //        {
         //            if ((dat.Name ?? "") == (dat2.Name ?? ""))
         //            {
-        //                j = (short)(j + 1);
+        //                j = (j + 1);
         //            }
         //        }
 
@@ -230,10 +230,10 @@ namespace SRC.Core.Models
         //}
 
         //// 効果の総数
-        //public short CountEffect()
+        //public int CountEffect()
         //{
-        //    short CountEffectRet = default;
-        //    CountEffectRet = (short)colEffects.Count;
+        //    int CountEffectRet = default;
+        //    CountEffectRet = colEffects.Count;
         //    return CountEffectRet;
         //}
 
@@ -273,7 +273,7 @@ namespace SRC.Core.Models
         //    string uname, wclass = default;
         //    double flevel;
         //    double heal_lv = default, supply_lv = default;
-        //    short i;
+        //    int i;
         //    string buf;
         //    string cname, aname;
         //    ae = (AbilityEffect)colEffects[Index];
@@ -291,7 +291,7 @@ namespace SRC.Core.Models
         //            {
         //                object argIndex1 = "得意技";
         //                buf = withBlock.SkillData(ref argIndex1);
-        //                var loopTo = (short)Strings.Len(buf);
+        //                var loopTo = Strings.Len(buf);
         //                for (i = 1; i <= loopTo; i++)
         //                {
         //                    string argstring2 = GeneralLib.GetClassBundle(ref buf, ref i);
@@ -310,7 +310,7 @@ namespace SRC.Core.Models
         //            {
         //                object argIndex2 = "不得手";
         //                buf = withBlock.SkillData(ref argIndex2);
-        //                var loopTo1 = (short)Strings.Len(buf);
+        //                var loopTo1 = Strings.Len(buf);
         //                for (i = 1; i <= loopTo1; i++)
         //                {
         //                    string argstring21 = GeneralLib.GetClassBundle(ref buf, ref i);
@@ -356,7 +356,7 @@ namespace SRC.Core.Models
         //    // アビリティの効果は最低でも１ターン持続
         //    if (elevel2 != 0d)
         //    {
-        //        elevel2 = GeneralLib.MaxLng((int)elevel2, 1);
+        //        elevel2 = GeneralLib.MaxLng(elevel2, 1);
         //    }
 
         //    switch (ae.Name ?? "")
@@ -368,11 +368,11 @@ namespace SRC.Core.Models
         //                EffectNameRet = Expression.Term(ref argtname, u: ref argu) + "を";
         //                if (elevel > 0d)
         //                {
-        //                    EffectNameRet = EffectNameRet + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)((long)(500d * elevel * (10d + heal_lv)) / 10L)) + "回復";
+        //                    EffectNameRet = EffectNameRet + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(((long)(500d * elevel * (10d + heal_lv)) / 10L)) + "回復";
         //                }
         //                else if (elevel < 0d)
         //                {
-        //                    EffectNameRet = EffectNameRet + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)(-500 * elevel)) + "減少";
+        //                    EffectNameRet = EffectNameRet + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((-500 * elevel)) + "減少";
         //                }
 
         //                break;
@@ -385,11 +385,11 @@ namespace SRC.Core.Models
         //                EffectNameRet = Expression.Term(ref argtname1, u: ref argu1) + "を";
         //                if (elevel > 0d)
         //                {
-        //                    EffectNameRet = EffectNameRet + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)(50d * elevel * (10d + supply_lv)) / 10) + "回復";
+        //                    EffectNameRet = EffectNameRet + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((50d * elevel * (10d + supply_lv)) / 10) + "回復";
         //                }
         //                else if (elevel < 0d)
         //                {
-        //                    EffectNameRet = EffectNameRet + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)(-50 * elevel)) + "減少";
+        //                    EffectNameRet = EffectNameRet + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((-50 * elevel)) + "減少";
         //                }
 
         //                break;
@@ -410,11 +410,11 @@ namespace SRC.Core.Models
 
         //                if (elevel > 0d)
         //                {
-        //                    EffectNameRet = EffectNameRet + "を" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)(10d * elevel)) + "回復";
+        //                    EffectNameRet = EffectNameRet + "を" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((10d * elevel)) + "回復";
         //                }
         //                else if (elevel < 0d)
         //                {
-        //                    EffectNameRet = EffectNameRet + "を" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)(-10 * elevel)) + "減少";
+        //                    EffectNameRet = EffectNameRet + "を" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((-10 * elevel)) + "減少";
         //                }
 
         //                break;
@@ -427,11 +427,11 @@ namespace SRC.Core.Models
         //                EffectNameRet = Expression.Term(ref argtname2, u: ref argu2) + "を";
         //                if (elevel > 0d)
         //                {
-        //                    EffectNameRet = EffectNameRet + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)(10d * elevel)) + "回復";
+        //                    EffectNameRet = EffectNameRet + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((10d * elevel)) + "回復";
         //                }
         //                else if (elevel < 0d)
         //                {
-        //                    EffectNameRet = EffectNameRet + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)(-10 * elevel)) + "減少";
+        //                    EffectNameRet = EffectNameRet + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((-10 * elevel)) + "減少";
         //                }
 
         //                break;
@@ -444,11 +444,11 @@ namespace SRC.Core.Models
         //                EffectNameRet = Expression.Term(ref argtname3, u: ref argu3) + "を";
         //                if (elevel > 0d)
         //                {
-        //                    EffectNameRet = EffectNameRet + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)(10d * elevel)) + "増加";
+        //                    EffectNameRet = EffectNameRet + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((10d * elevel)) + "増加";
         //                }
         //                else if (elevel < 0d)
         //                {
-        //                    EffectNameRet = EffectNameRet + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)(-10 * elevel)) + "減少";
+        //                    EffectNameRet = EffectNameRet + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((-10 * elevel)) + "減少";
         //                }
 
         //                break;
@@ -591,7 +591,7 @@ namespace SRC.Core.Models
 
         //                if (0d < elevel2 & elevel2 <= 10d)
         //                {
-        //                    EffectNameRet = cname + "(" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)elevel2) + "ターン)";
+        //                    EffectNameRet = cname + "(" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(elevel2) + "ターン)";
         //                }
         //                else
         //                {
@@ -979,7 +979,7 @@ namespace SRC.Core.Models
         //                {
         //                    if (0d < elevel2 & elevel2 <= 10d)
         //                    {
-        //                        EffectNameRet = EffectNameRet + "(" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)elevel2) + "ターン)";
+        //                        EffectNameRet = EffectNameRet + "(" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(elevel2) + "ターン)";
         //                    }
         //                }
 
@@ -1004,7 +1004,7 @@ namespace SRC.Core.Models
 
         //                if (0d < elevel2 & elevel2 <= 10d)
         //                {
-        //                    EffectNameRet = EffectNameRet + "強化(" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)elevel2) + "ターン)";
+        //                    EffectNameRet = EffectNameRet + "強化(" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(elevel2) + "ターン)";
         //                }
 
         //                break;
@@ -1025,7 +1025,7 @@ namespace SRC.Core.Models
         //                {
         //                    UnitData localItem() { object argIndex1 = ae.Data; var ret = SRC.UDList.Item(ref argIndex1); return ret; }
 
-        //                    EffectNameRet = localItem().Nickname + "を" + Strings.StrConv(Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)elevel2), VbStrConv.Wide) + "体召喚";
+        //                    EffectNameRet = localItem().Nickname + "を" + Strings.StrConv(Microsoft.VisualBasic.Compatibility.VB6.Support.Format(elevel2), VbStrConv.Wide) + "体召喚";
         //                }
         //                else
         //                {
@@ -1053,7 +1053,7 @@ namespace SRC.Core.Models
         //                {
         //                    UnitData localItem2() { object argIndex1 = uname; var ret = SRC.UDList.Item(ref argIndex1); return ret; }
 
-        //                    EffectNameRet = localItem2().Nickname + "に変身" + "(" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)elevel2) + "ターン)";
+        //                    EffectNameRet = localItem2().Nickname + "に変身" + "(" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(elevel2) + "ターン)";
         //                }
         //                else
         //                {
@@ -1069,7 +1069,7 @@ namespace SRC.Core.Models
         //            {
         //                if (0d < elevel2 & elevel2 <= 10d)
         //                {
-        //                    EffectNameRet = "任意の味方ユニットに変身" + "(" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((int)elevel2) + "ターン)";
+        //                    EffectNameRet = "任意の味方ユニットに変身" + "(" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(elevel2) + "ターン)";
         //                }
         //                else
         //                {
@@ -1132,7 +1132,7 @@ namespace SRC.Core.Models
         //public bool IsItem()
         //{
         //    bool IsItemRet = default;
-        //    short i;
+        //    int i;
         //    var loopTo = GeneralLib.LLength(ref NecessarySkill);
         //    for (i = 1; i <= loopTo; i++)
         //    {
