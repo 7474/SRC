@@ -240,12 +240,12 @@ namespace SRC.Core.Models
             buf = Strings.Mid(buf, ret + 1);
             if (!Information.IsNumeric(buf2))
             {
-                ud.Class_Renamed = buf2;
+                ud.Class = buf2;
             }
             else
             {
                 continuesErrors.Add(reader.InvalidData(@"ユニットクラスの設定が間違っています。", data_name));
-                ud.Class_Renamed = "汎用";
+                ud.Class = "汎用";
             }
 
             // パイロット数
@@ -1226,13 +1226,13 @@ namespace SRC.Core.Models
                     }
                 }
 
-                sd.Class_Renamed = buf;
-                if (sd.Class_Renamed == "-")
+                sd.Class = buf;
+                if (sd.Class == "-")
                 {
-                    sd.Class_Renamed = "";
+                    sd.Class = "";
                 }
 
-                if (Strings.InStr(sd.Class_Renamed, "Lv") > 0)
+                if (Strings.InStr(sd.Class, "Lv") > 0)
                 {
                     continuesErrors.Add(reader.InvalidData(@sname + "の属性のレベル指定が間違っています。", data_name));
                 }
