@@ -100,7 +100,7 @@ namespace SRC.Core.Models
                 {
                     while (reader.HasMore)
                     {
-                        UnitData ud = Load1Unit(reader); ;
+                        UnitData ud = LoadUnit(reader); ;
                     }
                 }
             }
@@ -112,7 +112,7 @@ namespace SRC.Core.Models
 
         // reader から１つユニットを読み込む。
         // 返却したUnitDataはリストに追加されている状態。
-        private UnitData Load1Unit(SrcReader reader)
+        private UnitData LoadUnit(SrcReader reader)
         {
             UnitData ud;
             var continuesErrors = new List<InvalidSrcData>();
@@ -125,10 +125,13 @@ namespace SRC.Core.Models
             {
                 line_buf = reader.GetLine();
             }
-
+            if (reader.EOT)
+            {
+                return null;
+            }
 
             // 名称
-            string data_name = "";
+            string data_name;
             ret = Strings.InStr(line_buf, ",");
             if (ret > 0)
             {
