@@ -2,28 +2,28 @@ Attribute VB_Name = "Graphics"
 Option Explicit
 
 ' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-' –{ƒvƒƒOƒ‰ƒ€‚ÍƒtƒŠ[ƒ\ƒtƒg‚Å‚ ‚èA–³•ÛØ‚Å‚·B
-' –{ƒvƒƒOƒ‰ƒ€‚ÍGNU General Public License(Ver.3‚Ü‚½‚Í‚»‚êˆÈ~)‚ª’è‚ß‚éğŒ‚Ì‰º‚Å
-' Ä”Ğ•z‚Ü‚½‚Í‰ü•Ï‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B
+' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯ãƒ•ãƒªãƒ¼ã‚½ãƒ•ãƒˆã§ã‚ã‚Šã€ç„¡ä¿è¨¼ã§ã™ã€‚
+' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯GNU General Public License(Ver.3ã¾ãŸã¯ãã‚Œä»¥é™)ãŒå®šã‚ã‚‹æ¡ä»¶ã®ä¸‹ã§
+' å†é ’å¸ƒã¾ãŸã¯æ”¹å¤‰ã™ã‚‹ã“ã¨ãŒã§ãã¾ã™ã€‚
 
-'‰æ‘œˆ—‚ğs‚¤ƒ‚ƒWƒ…[ƒ‹
+'ç”»åƒå‡¦ç†ã‚’è¡Œã†ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«
 
-' BITMAPINFO\‘¢‘Ì
+' BITMAPINFOæ§‹é€ ä½“
 Public Type BITMAPINFOHEADER
-    biSize          As Long 'bmiHeader‚ÌƒTƒCƒY
-    biWidth         As Long 'ƒrƒbƒgƒ}ƒbƒv‚Ì•‚ğ•\‚·ƒsƒNƒZƒ‹”
-    biHeight        As Long 'ƒrƒbƒgƒ}ƒbƒv‚Ì‚‚³‚ğ•\‚·ƒsƒNƒZƒ‹”
-    biPlanes        As Integer 'í‚É‚P
-    biBitCount      As Integer 'ƒsƒNƒZƒ‹‚ ‚½‚è‚Ìƒrƒbƒg”
-    biCompression   As Long 'ˆ³k‚Ìí—Ş
-    biSizeImage     As Long '‰æ‘œƒf[ƒ^‚ÌƒTƒCƒY‚ğ•\‚·ƒoƒCƒg”
-    biXPelsPerMeter As Long '…•½•ûŒü‚Ì‰ğ‘œ“x‚ğ•\‚·ƒ[ƒgƒ‹‚ ‚½‚è‚ÌƒsƒNƒZƒ‹”
-    biYPelsPerMeter As Long '‚’¼•ûŒü‚Ì‰ğ‘œ“x‚ğ•\‚·ƒ[ƒgƒ‹‚ ‚½‚è‚ÌƒsƒNƒZƒ‹”
-    biClrUsed       As Long 'ƒrƒbƒgƒ}ƒbƒv‚ªÀÛ‚Ég—p‚·‚éF‚Ì”
-    biClrImportant  As Long 'd—v‚ÈF‚Ì”(0‚Ìê‡‚Í‚·‚×‚Ä‚ÌF‚ªd—v)
+    biSize          As Long 'bmiHeaderã®ã‚µã‚¤ã‚º
+    biWidth         As Long 'ãƒ“ãƒƒãƒˆãƒãƒƒãƒ—ã®å¹…ã‚’è¡¨ã™ãƒ”ã‚¯ã‚»ãƒ«æ•°
+    biHeight        As Long 'ãƒ“ãƒƒãƒˆãƒãƒƒãƒ—ã®é«˜ã•ã‚’è¡¨ã™ãƒ”ã‚¯ã‚»ãƒ«æ•°
+    biPlanes        As Integer 'å¸¸ã«ï¼‘
+    biBitCount      As Integer 'ãƒ”ã‚¯ã‚»ãƒ«ã‚ãŸã‚Šã®ãƒ“ãƒƒãƒˆæ•°
+    biCompression   As Long 'åœ§ç¸®ã®ç¨®é¡
+    biSizeImage     As Long 'ç”»åƒãƒ‡ãƒ¼ã‚¿ã®ã‚µã‚¤ã‚ºã‚’è¡¨ã™ãƒã‚¤ãƒˆæ•°
+    biXPelsPerMeter As Long 'æ°´å¹³æ–¹å‘ã®è§£åƒåº¦ã‚’è¡¨ã™ãƒ¡ãƒ¼ãƒˆãƒ«ã‚ãŸã‚Šã®ãƒ”ã‚¯ã‚»ãƒ«æ•°
+    biYPelsPerMeter As Long 'å‚ç›´æ–¹å‘ã®è§£åƒåº¦ã‚’è¡¨ã™ãƒ¡ãƒ¼ãƒˆãƒ«ã‚ãŸã‚Šã®ãƒ”ã‚¯ã‚»ãƒ«æ•°
+    biClrUsed       As Long 'ãƒ“ãƒƒãƒˆãƒãƒƒãƒ—ãŒå®Ÿéš›ã«ä½¿ç”¨ã™ã‚‹è‰²ã®æ•°
+    biClrImportant  As Long 'é‡è¦ãªè‰²ã®æ•°(0ã®å ´åˆã¯ã™ã¹ã¦ã®è‰²ãŒé‡è¦)
 End Type
 
-' ƒpƒŒƒbƒgƒGƒ“ƒgƒŠ\‘¢‘Ì
+' ãƒ‘ãƒ¬ãƒƒãƒˆã‚¨ãƒ³ãƒˆãƒªæ§‹é€ ä½“
 Public Type RGBQUAD
     rgbBlue         As Byte
     rgbGreen        As Byte
@@ -31,7 +31,7 @@ Public Type RGBQUAD
     rgbReserved     As Byte
 End Type
 
-' ƒrƒbƒgƒ}ƒbƒvî•ñ
+' ãƒ“ãƒƒãƒˆãƒãƒƒãƒ—æƒ…å ±
 Public Type BITMAPINFO
     bmiHeader As BITMAPINFOHEADER
     bmiColors(0 To 255)  As RGBQUAD
@@ -67,7 +67,7 @@ Const DIB_RGB_COLORS = 0
 Const BI_RGB = 0
 
 
-' ƒrƒbƒgƒ}ƒbƒv\‘¢‘Ì
+' ãƒ“ãƒƒãƒˆãƒãƒƒãƒ—æ§‹é€ ä½“
 Public Type Bitmap
     bmType As Long
     bmWidth As Long
@@ -91,25 +91,25 @@ Public Declare Function CreateDIBitmap Lib "gdi32" (ByVal hDC As Long, _
     lpInfoHeader As BITMAPINFOHEADER, ByVal dwUsage As Long, lpInitBits As Any, _
     lpInitInfo As BITMAPINFOHEADER, ByVal wUsage As Long) As Long
 
-'w’èˆÊ’u‚ÌƒsƒNƒZƒ‹F‚ğæ“¾‚·‚é
+'æŒ‡å®šä½ç½®ã®ãƒ”ã‚¯ã‚»ãƒ«è‰²ã‚’å–å¾—ã™ã‚‹
 Public Declare Function GetPixel Lib "gdi32" (ByVal hDC As Long, _
     ByVal X As Long, ByVal Y As Long) As Long
 
-' RGB\‘¢‘Ì
+' RGBæ§‹é€ ä½“
 Public Type RGBq
     Blue As Byte
     Green As Byte
     Red As Byte
 End Type
 
-Dim PixBuf() As RGBq 'ƒsƒNƒZƒ‹‚ÌFî•ñ”z—ñ
-Dim PixBuf2() As RGBq 'ƒsƒNƒZƒ‹‚ÌFî•ñ”z—ñ
-Dim PixWidth As Long  'ƒoƒbƒtƒ@‚Ì“à—e‚Ì•
-Dim PixHeight As Long 'ƒoƒbƒtƒ@‚Ì“à—e‚Ì‚‚³
-Dim PicWidth As Long  '‰æ‘œ‚Ì•
-Dim PicHeight As Long '‰æ‘œ‚Ì‚‚³
+Dim PixBuf() As RGBq 'ãƒ”ã‚¯ã‚»ãƒ«ã®è‰²æƒ…å ±é…åˆ—
+Dim PixBuf2() As RGBq 'ãƒ”ã‚¯ã‚»ãƒ«ã®è‰²æƒ…å ±é…åˆ—
+Dim PixWidth As Long  'ãƒãƒƒãƒ•ã‚¡ã®å†…å®¹ã®å¹…
+Dim PixHeight As Long 'ãƒãƒƒãƒ•ã‚¡ã®å†…å®¹ã®é«˜ã•
+Dim PicWidth As Long  'ç”»åƒã®å¹…
+Dim PicHeight As Long 'ç”»åƒã®é«˜ã•
 
-'ƒtƒF[ƒhƒCƒ“•ƒAƒEƒg—p•Ï”
+'ãƒ•ã‚§ãƒ¼ãƒ‰ã‚¤ãƒ³ï¼†ã‚¢ã‚¦ãƒˆç”¨å¤‰æ•°
 Dim BmpInfo() As BITMAPINFO
 Dim NewDC As Long
 Dim MemDC As Long
@@ -120,7 +120,7 @@ Dim FadeCMap() As Byte
 
 
 '
-'ƒtƒF[ƒhƒCƒ“•ƒtƒF[ƒhƒAƒEƒg
+'ãƒ•ã‚§ãƒ¼ãƒ‰ã‚¤ãƒ³ï¼†ãƒ•ã‚§ãƒ¼ãƒ‰ã‚¢ã‚¦ãƒˆ
 '
 Public Sub InitFade(pic As PictureBox, _
     ByVal times As Long, Optional ByVal white_out As Boolean)
@@ -131,10 +131,10 @@ Dim ret As Long
 Dim cmap(255) As RGBq
 Dim rgb As Long
     
-    'ƒtƒF[ƒhˆ—‚Í‰æ‘œ‚ğ256F‚É•ÏŠ·‚µ‚Äs‚¤
-    '‚±‚Ì‚½‚ß‚Ì256F‚ÌƒJƒ‰[ƒ}ƒbƒv‚ğì¬‚·‚é
+    'ãƒ•ã‚§ãƒ¼ãƒ‰å‡¦ç†ã¯ç”»åƒã‚’256è‰²ã«å¤‰æ›ã—ã¦è¡Œã†
+    'ã“ã®ãŸã‚ã®256è‰²ã®ã‚«ãƒ©ãƒ¼ãƒãƒƒãƒ—ã‚’ä½œæˆã™ã‚‹
     
-    '‚Ü‚¸‚ÍŒˆ‚ß‘Å‚¿‚Å0`195”Ô‚ÌF‚ğì¬
+    'ã¾ãšã¯æ±ºã‚æ‰“ã¡ã§0ï½195ç•ªã®è‰²ã‚’ä½œæˆ
     i = 0
     For j = 0 To 6
         Select Case j
@@ -194,7 +194,7 @@ Dim rgb As Long
         Next
     Next
     
-    '196`255”Ô‚ÌF‚ÍŒ³‰æ‘œ‚ÌF‚ğƒTƒ“ƒvƒŠƒ“ƒO‚µ‚Äì¬
+    '196ï½255ç•ªã®è‰²ã¯å…ƒç”»åƒã®è‰²ã‚’ã‚µãƒ³ãƒ—ãƒªãƒ³ã‚°ã—ã¦ä½œæˆ
     With pic
         j = 0
         Do While i <= 220
@@ -271,7 +271,7 @@ Dim rgb As Long
         .Blue = b
     End With
     
-    'BmpInfo‚ğƒJƒ‰[ƒpƒŒƒbƒg‚ğ•Ï‚¦‚È‚ª‚çtimes+1ŒÂì¬
+    'BmpInfoã‚’ã‚«ãƒ©ãƒ¼ãƒ‘ãƒ¬ãƒƒãƒˆã‚’å¤‰ãˆãªãŒã‚‰times+1å€‹ä½œæˆ
     ReDim BmpInfo(times) As BITMAPINFO
     For i = 0 To times
         With BmpInfo(i).bmiHeader
@@ -288,7 +288,7 @@ Dim rgb As Long
             .biClrImportant = 0
         End With
         
-        'ƒJƒ‰[ƒpƒŒƒbƒgİ’è
+        'ã‚«ãƒ©ãƒ¼ãƒ‘ãƒ¬ãƒƒãƒˆè¨­å®š
         If white_out Then
             For j = 0 To 255
                 With cmap(j)
@@ -318,16 +318,16 @@ Dim rgb As Long
         End If
     Next
     
-    'DIB‚ÆƒEƒCƒ“ƒhƒEDC‚©‚çDIBSection‚ğì¬
+    'DIBã¨ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦DCã‹ã‚‰DIBSectionã‚’ä½œæˆ
     NewDC = CreateDIBSection(MainForm.hDC, BmpInfo(times), DIB_RGB_COLORS, lpBit, 0, 0)
     
-    'ƒƒ‚ƒŠDC‚Ìì¬
+    'ãƒ¡ãƒ¢ãƒªDCã®ä½œæˆ
     MemDC = CreateCompatibleDC(pic.hDC)
     
-    'ƒƒ‚ƒŠDC‚ÉDIBSection‚ğ‘I‘ğ‚µAŒ³‚Ìƒrƒbƒgƒ}ƒbƒv‚Ìƒnƒ“ƒhƒ‹‚ğ•Û‘¶
+    'ãƒ¡ãƒ¢ãƒªDCã«DIBSectionã‚’é¸æŠã—ã€å…ƒã®ãƒ“ãƒƒãƒˆãƒãƒƒãƒ—ã®ãƒãƒ³ãƒ‰ãƒ«ã‚’ä¿å­˜
     OrigPicDC = SelectObject(MemDC, NewDC)
     
-    'BitBlt‚ğg‚Á‚ÄŒ³‚Ì‰æ‘œ‚ğlpBit‚É”½‰f
+    'BitBltã‚’ä½¿ã£ã¦å…ƒã®ç”»åƒã‚’lpBitã«åæ˜ 
     ret = BitBlt(MemDC, 0, 0, pic.Width, pic.Height, pic.hDC, 0, 0, SRCCOPY)
     
 End Sub
@@ -335,12 +335,12 @@ End Sub
 Public Sub DoFade(pic As PictureBox, ByVal times As Long)
 Dim ret As Long
     
-    '”ÍˆÍŠO‚Ìê‡‚Í”²‚¯‚é
+    'ç¯„å›²å¤–ã®å ´åˆã¯æŠœã‘ã‚‹
     If times < 0 Or UBound(BmpInfo) < times Then
         Exit Sub
     End If
     
-    'BmpInfo‚ğ•ÏX‚µ‚ÄƒJƒ‰[ƒpƒŒƒbƒg‚ğ•ÏX
+    'BmpInfoã‚’å¤‰æ›´ã—ã¦ã‚«ãƒ©ãƒ¼ãƒ‘ãƒ¬ãƒƒãƒˆã‚’å¤‰æ›´
     With pic
         ret = StretchDIBits(.hDC, _
             0, 0, .Width, .Height, _
@@ -352,51 +352,51 @@ End Sub
 Public Sub FinishFade()
 Dim ret As Long
     
-    'Œ³‚Ìƒrƒbƒgƒ}ƒbƒv‚Ìƒnƒ“ƒhƒ‹‚ğ‘I‘ğ
+    'å…ƒã®ãƒ“ãƒƒãƒˆãƒãƒƒãƒ—ã®ãƒãƒ³ãƒ‰ãƒ«ã‚’é¸æŠ
     ret = SelectObject(MemDC, OrigPicDC)
-    'ƒfƒoƒCƒXƒRƒ“ƒeƒLƒXƒgŠJ•ú
+    'ãƒ‡ãƒã‚¤ã‚¹ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆé–‹æ”¾
     ret = DeleteDC(MemDC)
-    'ƒrƒbƒgƒ}ƒbƒvŠJ•ú
+    'ãƒ“ãƒƒãƒˆãƒãƒƒãƒ—é–‹æ”¾
     ret = DeleteObject(NewDC)
 End Sub
 
 
 '
-' ƒ}ƒXƒNì¬—p‚ÌƒTƒuƒ‹[ƒ`ƒ“
+' ãƒã‚¹ã‚¯ä½œæˆç”¨ã®ã‚µãƒ–ãƒ«ãƒ¼ãƒãƒ³
 '
 Public Sub MakeMask(src_dc As Long, dest_dc As Long, w As Long, h As Long, tcolor As Long)
 Dim mask_dc As Long
 Dim mask_bmp As Long, orig_mask_bmp As Long
 Dim ret As Long
 
-    'ƒƒ‚ƒŠDC‚Ìì¬
+    'ãƒ¡ãƒ¢ãƒªDCã®ä½œæˆ
     mask_dc = CreateCompatibleDC(src_dc)
-    'ƒ‚ƒmƒNƒƒrƒbƒgƒ}ƒbƒv‚Ìì¬
+    'ãƒ¢ãƒã‚¯ãƒ­ãƒ“ãƒƒãƒˆãƒãƒƒãƒ—ã®ä½œæˆ
     mask_bmp = CreateBitmap(w, h, 1, 1, ByVal 0)
-    'ƒƒ‚ƒŠDC‚Éƒrƒbƒgƒ}ƒbƒv‚ğ‘I‘ğ‚µŒ³‚Ìƒrƒbƒgƒ}ƒbƒv‚Ìƒnƒ“ƒhƒ‹‚ğ•Û‘¶
+    'ãƒ¡ãƒ¢ãƒªDCã«ãƒ“ãƒƒãƒˆãƒãƒƒãƒ—ã‚’é¸æŠã—å…ƒã®ãƒ“ãƒƒãƒˆãƒãƒƒãƒ—ã®ãƒãƒ³ãƒ‰ãƒ«ã‚’ä¿å­˜
     orig_mask_bmp = SelectObject(mask_dc, mask_bmp)
     
-    '”wŒiF(=“§–¾F)‚Ìİ’è
+    'èƒŒæ™¯è‰²(=é€æ˜è‰²)ã®è¨­å®š
     ret = SetBkColor(src_dc, tcolor)
         
     ret = BitBlt(mask_dc, 0, 0, w, h, src_dc, 0, 0, SRCCOPY)
     
-    '”wŒiF‚ğ”’‚É–ß‚·
+    'èƒŒæ™¯è‰²ã‚’ç™½ã«æˆ»ã™
     If tcolor <> vbWhite Then
         ret = SetBkColor(dest_dc, vbWhite)
     End If
     
     ret = BitBlt(dest_dc, 0, 0, w, h, mask_dc, 0, 0, SRCCOPY)
     
-    'Œ³‚Ìƒrƒbƒgƒ}ƒbƒv‚Ìƒnƒ“ƒhƒ‹‚ğ‘I‘ğ
+    'å…ƒã®ãƒ“ãƒƒãƒˆãƒãƒƒãƒ—ã®ãƒãƒ³ãƒ‰ãƒ«ã‚’é¸æŠ
     ret = SelectObject(mask_dc, orig_mask_bmp)
-    'ƒfƒoƒCƒXƒRƒ“ƒeƒLƒXƒgŠJ•ú
+    'ãƒ‡ãƒã‚¤ã‚¹ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆé–‹æ”¾
     ret = DeleteDC(mask_dc)
-    'ƒrƒbƒgƒ}ƒbƒvŠJ•ú
+    'ãƒ“ãƒƒãƒˆãƒãƒƒãƒ—é–‹æ”¾
     ret = DeleteObject(mask_bmp)
 End Sub
 
-'‰æ‘œƒCƒ[ƒWpic‚ğPixBuf‚Éû“¾
+'ç”»åƒã‚¤ãƒ¡ãƒ¼ã‚¸picã‚’PixBufã«åå¾—
 Public Sub GetImage(pic As PictureBox)
 Dim pic_bmp As Long, tmp_bmp As Long
 Dim bm_info As BITMAPINFOHEADER
@@ -434,7 +434,7 @@ Dim bmp As Bitmap
     ret = DeleteObject(tmp_bmp)
 End Sub
 
-'PixBuf‚Ì‰æ‘œƒCƒ[ƒW‚ğpic‚É•`‚«‚Ş
+'PixBufã®ç”»åƒã‚¤ãƒ¡ãƒ¼ã‚¸ã‚’picã«æãè¾¼ã‚€
 Public Sub SetImage(pic As PictureBox)
 Dim pic_bmp As Long, tmp_bmp As Long
 Dim bm_info As BITMAPINFOHEADER
@@ -464,7 +464,7 @@ Dim ret As Long
     'ReDim PixBuf(0)
 End Sub
 
-'PixBuf‚Ì“à—e‚ğÁ‹
+'PixBufã®å†…å®¹ã‚’æ¶ˆå»
 Public Sub ClearImage()
     If UBound(PixBuf) > 0 Then
         ReDim PixBuf(0)
@@ -472,7 +472,7 @@ Public Sub ClearImage()
     ReDim PixBuf2(0)
 End Sub
 
-'PixBuf‚Ì“à—e‚ğPixBuf2‚ÉƒRƒs[
+'PixBufã®å†…å®¹ã‚’PixBuf2ã«ã‚³ãƒ”ãƒ¼
 Public Sub CopyImage()
 Dim i As Long
     
@@ -482,7 +482,7 @@ Dim i As Long
     Next
 End Sub
 
-'ƒ}ƒXƒN‰æ‘œ‚Ìì¬
+'ãƒã‚¹ã‚¯ç”»åƒã®ä½œæˆ
 Public Sub CreateMask(tcolor As Long)
 Dim i As Long, j As Long, k As Long
 
@@ -504,7 +504,7 @@ Dim i As Long, j As Long, k As Long
     Next i
 End Sub
 
-'•`‚«‚İ‰æ‘œ‚Ìì¬
+'æãè¾¼ã¿ç”»åƒã®ä½œæˆ
 Public Sub CreateImage(tcolor As Long)
 Dim i As Long, j As Long, k As Long
 
@@ -522,7 +522,7 @@ Dim i As Long, j As Long, k As Long
     Next i
 End Sub
 
-'ƒtƒF[ƒhˆ—‚Ì‰Šú‰»
+'ãƒ•ã‚§ãƒ¼ãƒ‰å‡¦ç†ã®åˆæœŸåŒ–
 Public Sub FadeInit(ByVal num As Long)
 Dim i As Integer, j As Integer
     
@@ -535,7 +535,7 @@ Dim i As Integer, j As Integer
     Next
 End Sub
 
-'ƒtƒF[ƒhƒCƒ“EƒAƒEƒgÀs
+'ãƒ•ã‚§ãƒ¼ãƒ‰ã‚¤ãƒ³ãƒ»ã‚¢ã‚¦ãƒˆå®Ÿè¡Œ
 Public Sub FadeInOut(ByVal ind As Long, ByVal num As Long)
 Dim i As Long, r As Long, g As Long, b As Long
     
@@ -558,7 +558,7 @@ Dim i As Long, r As Long, g As Long, b As Long
     Next
 End Sub
 
-'ƒzƒƒCƒgƒCƒ“EƒAƒEƒgÀs
+'ãƒ›ãƒ¯ã‚¤ãƒˆã‚¤ãƒ³ãƒ»ã‚¢ã‚¦ãƒˆå®Ÿè¡Œ
 Public Sub WhiteInOut(ByVal ind As Long, ByVal num As Long)
 Dim i As Long, r As Long, g As Long, b As Long
     
@@ -576,13 +576,13 @@ Dim i As Long, r As Long, g As Long, b As Long
     Next
 End Sub
 
-'‰æ‘œ‚ğ–¾‚é‚­
+'ç”»åƒã‚’æ˜ã‚‹ã
 Public Sub Bright(Optional ByVal is_transparent As Boolean)
 Dim i As Long, rgb As Long
 Dim r As Long, g As Long, b As Long
     
     If is_transparent Then
-        '”wŒiF‚ğRGB‚É•ª‰ğ
+        'èƒŒæ™¯è‰²ã‚’RGBã«åˆ†è§£
         rgb = BGColor
         r = rgb Mod &H100
         rgb = rgb - r
@@ -617,13 +617,13 @@ Dim r As Long, g As Long, b As Long
     End If
 End Sub
 
-'‰æ‘œ‚ğˆÃ‚­
+'ç”»åƒã‚’æš—ã
 Public Sub Dark(Optional ByVal is_transparent As Boolean)
 Dim i As Long, rgb As Long
 Dim r As Long, g As Long, b As Long
     
     If is_transparent Then
-        '”wŒiF‚ğRGB‚É•ª‰ğ
+        'èƒŒæ™¯è‰²ã‚’RGBã«åˆ†è§£
         rgb = BGColor
         r = rgb Mod &H100
         rgb = rgb - r
@@ -652,13 +652,13 @@ Dim r As Long, g As Long, b As Long
     End If
 End Sub
 
-'‰æ‘œ‚ğ”’•‚É
+'ç”»åƒã‚’ç™½é»’ã«
 Public Sub Monotone(Optional ByVal is_transparent As Boolean)
 Dim i As Long, rgb As Long
 Dim r As Long, g As Long, b As Long
     
     If is_transparent Then
-        '”wŒiF‚ğRGB‚É•ª‰ğ
+        'èƒŒæ™¯è‰²ã‚’RGBã«åˆ†è§£
         rgb = BGColor
         r = rgb Mod &H100
         rgb = rgb - r
@@ -689,13 +689,13 @@ Dim r As Long, g As Long, b As Long
     End If
 End Sub
 
-'‰æ‘œ‚ğƒZƒsƒAF‚É
+'ç”»åƒã‚’ã‚»ãƒ”ã‚¢è‰²ã«
 Public Sub Sepia(Optional ByVal is_transparent As Boolean)
 Dim i As Long, rgb As Long
 Dim r As Long, g As Long, b As Long
     
     If is_transparent Then
-        '”wŒiF‚ğRGB‚É•ª‰ğ
+        'èƒŒæ™¯è‰²ã‚’RGBã«åˆ†è§£
         rgb = BGColor
         r = rgb Mod &H100
         rgb = rgb - r
@@ -726,13 +726,13 @@ Dim r As Long, g As Long, b As Long
     End If
 End Sub
 
-'‰æ‘œ‚ğ—[Ä‚¯•—‚É
+'ç”»åƒã‚’å¤•ç„¼ã‘é¢¨ã«
 Public Sub Sunset(Optional ByVal is_transparent As Boolean)
 Dim i As Long, rgb As Long
 Dim r As Long, g As Long, b As Long
     
     If is_transparent Then
-        '”wŒiF‚ğRGB‚É•ª‰ğ
+        'èƒŒæ™¯è‰²ã‚’RGBã«åˆ†è§£
         rgb = BGColor
         r = rgb Mod &H100
         rgb = rgb - r
@@ -763,13 +763,13 @@ Dim r As Long, g As Long, b As Long
     End If
 End Sub
 
-'‰æ‘œ‚ğ…’†•—‚É
+'ç”»åƒã‚’æ°´ä¸­é¢¨ã«
 Public Sub Water(Optional ByVal is_transparent As Boolean)
 Dim i As Long, rgb As Long
 Dim r As Long, g As Long, b As Long
     
     If is_transparent Then
-        '”wŒiF‚ğRGB‚É•ª‰ğ
+        'èƒŒæ™¯è‰²ã‚’RGBã«åˆ†è§£
         rgb = BGColor
         r = rgb Mod &H100
         rgb = rgb - r
@@ -800,7 +800,7 @@ Dim r As Long, g As Long, b As Long
     End If
 End Sub
 
-'‰æ‘œ‚ğ¶‰E”½“]
+'ç”»åƒã‚’å·¦å³åè»¢
 Public Sub HReverse()
 Dim i As Long, j As Long
 Dim tmp As RGBq
@@ -814,7 +814,7 @@ Dim tmp As RGBq
     Next i
 End Sub
 
-'‰æ‘œ‚ğã‰º”½“]
+'ç”»åƒã‚’ä¸Šä¸‹åè»¢
 Public Sub VReverse()
 Dim i As Long, j As Long
 Dim tmp As RGBq
@@ -828,13 +828,13 @@ Dim tmp As RGBq
     Next i
 End Sub
 
-'‰æ‘œ‚ğƒlƒKƒ|ƒW”½“]
+'ç”»åƒã‚’ãƒã‚¬ãƒã‚¸åè»¢
 Public Sub NegPosReverse(Optional ByVal is_transparent As Boolean)
 Dim i As Long, rgb As Long
 Dim r As Long, g As Long, b As Long
     
     If is_transparent Then
-        '”wŒiF‚ğRGB‚É•ª‰ğ
+        'èƒŒæ™¯è‰²ã‚’RGBã«åˆ†è§£
         rgb = BGColor
         r = rgb Mod &H100
         rgb = rgb - r
@@ -863,12 +863,12 @@ Dim r As Long, g As Long, b As Long
     End If
 End Sub
 
-'‰æ‘œ‚©‚çƒVƒ‹ƒGƒbƒg’Šo
+'ç”»åƒã‹ã‚‰ã‚·ãƒ«ã‚¨ãƒƒãƒˆæŠ½å‡º
 Public Sub Silhouette()
 Dim i As Long, rgb As Long
 Dim r As Long, g As Long, b As Long
     
-    '”wŒiF‚ğRGB‚É•ª‰ğ
+    'èƒŒæ™¯è‰²ã‚’RGBã«åˆ†è§£
     rgb = BGColor
     r = rgb Mod &H100
     rgb = rgb - r
@@ -892,8 +892,8 @@ Dim r As Long, g As Long, b As Long
     Next
 End Sub
 
-'‰æ‘œ‚ğ‰E•ûŒü‚Éangle“x‰ñ“]‚³‚¹‚é
-'do_same‚ªTrue‚Ìê‡‚Í‰ñ“]Šp“x‚ª90“x‚Ì”{”‚Å‚ ‚éÛ‚Ì•`‰æÅ“K‰»‚ğs‚í‚È‚¢
+'ç”»åƒã‚’å³æ–¹å‘ã«angleåº¦å›è»¢ã•ã›ã‚‹
+'do_sameãŒTrueã®å ´åˆã¯å›è»¢è§’åº¦ãŒ90åº¦ã®å€æ•°ã§ã‚ã‚‹éš›ã®æç”»æœ€é©åŒ–ã‚’è¡Œã‚ãªã„
 Public Sub Rotate(ByVal angle As Long, Optional ByVal do_same As Boolean)
 Dim i As Long, j As Long
 Dim xsrc As Long, ysrc As Long
@@ -903,16 +903,16 @@ Dim xoffset As Double, yoffset As Double
 Dim rad As Double, dsin As Double, dcos As Double
 Dim bg As RGBq, rgb As Long, r As Long, g As Long, b As Long
 
-    '360“x‚Åˆê‰ñ“]
+    '360åº¦ã§ä¸€å›è»¢
     angle = angle Mod 360
-    '•‰‚Ìê‡‚Í³‚ÌŠp“x‚É
+    'è² ã®å ´åˆã¯æ­£ã®è§’åº¦ã«
     If angle < 0 Then
         angle = 360 + angle
     End If
     
-    '‰ñ“]Šp“x‚ª90“x‚Ì”{”‚Å‚ ‚éê‡‚Íˆ—‚ªŠÈ’PB
-    '‚½‚¾‚µA90“xˆÈŠO‚ÌŠp“x‚Å˜A‘±‰ñ“]‚³‚¹‚éê‡‚ÍAˆ—ŠÔ‚ğˆê’è‚É‚·‚é‚½‚ß
-    '‚±‚ÌÅ“K‰»‚Íg‚í‚È‚¢B
+    'å›è»¢è§’åº¦ãŒ90åº¦ã®å€æ•°ã§ã‚ã‚‹å ´åˆã¯å‡¦ç†ãŒç°¡å˜ã€‚
+    'ãŸã ã—ã€90åº¦ä»¥å¤–ã®è§’åº¦ã§é€£ç¶šå›è»¢ã•ã›ã‚‹å ´åˆã¯ã€å‡¦ç†æ™‚é–“ã‚’ä¸€å®šã«ã™ã‚‹ãŸã‚
+    'ã“ã®æœ€é©åŒ–ã¯ä½¿ã‚ãªã„ã€‚
     If Not do_same Then
         Select Case angle
             Case 0
@@ -951,19 +951,19 @@ Dim bg As RGBq, rgb As Long, r As Long, g As Long, b As Long
         End Select
     End If
     
-    '”CˆÓ‚ÌŠp“x‚Ìê‡‚ÍOŠpŠÖ”‚ğg‚¤•K—v‚ª‚ ‚é
+    'ä»»æ„ã®è§’åº¦ã®å ´åˆã¯ä¸‰è§’é–¢æ•°ã‚’ä½¿ã†å¿…è¦ãŒã‚ã‚‹
     
-    'À•W‚ÌŒvZ‚Í‰æ‘œ‚Ì’†S‚ğÀ•WŒ´“_‚É‚µ‚Äs‚¤
+    'åº§æ¨™ã®è¨ˆç®—ã¯ç”»åƒã®ä¸­å¿ƒã‚’åº§æ¨™åŸç‚¹ã«ã—ã¦è¡Œã†
     xbase = (PicWidth - 1) / 2
     ybase = (PicHeight - 1) / 2
     
-    '‰ñ“]‚É‚æ‚éƒxƒNƒgƒ‹
+    'å›è»¢ã«ã‚ˆã‚‹ãƒ™ã‚¯ãƒˆãƒ«
     angle = 90 - angle
     rad = CDbl(angle) * 3.14159265 / 180
     dsin = Sin(rad)
     dcos = Cos(rad)
     
-    '”wŒiF‚ğRGB‚É•ª‰ğ
+    'èƒŒæ™¯è‰²ã‚’RGBã«åˆ†è§£
     rgb = BGColor
     r = rgb Mod &H100
     rgb = rgb - r
@@ -971,17 +971,17 @@ Dim bg As RGBq, rgb As Long, r As Long, g As Long, b As Long
     rgb = rgb - g
     g = g \ &H100
     b = rgb \ &H10000
-    '‡¬
+    'åˆæˆ
     With bg
         .Red = r
         .Green = g
         .Blue = b
     End With
     
-    '‰æ‘œƒf[ƒ^‚ÌƒRƒs[‚ğæ‚Á‚Ä‚¨‚­
+    'ç”»åƒãƒ‡ãƒ¼ã‚¿ã®ã‚³ãƒ”ãƒ¼ã‚’å–ã£ã¦ãŠã
     CopyImage
     
-    'ŠeƒsƒNƒZƒ‹‚É‘Î‚µ‚Ä‰ñ“]ˆ—
+    'å„ãƒ”ã‚¯ã‚»ãƒ«ã«å¯¾ã—ã¦å›è»¢å‡¦ç†
     For i = 0 To PicHeight - 1
         yoffset = i - ybase
         xsrc0 = xbase + yoffset * dcos
@@ -990,7 +990,7 @@ Dim bg As RGBq, rgb As Long, r As Long, g As Long, b As Long
         For j = 0 To PicWidth - 1
             xoffset = j - xbase
             
-            '–{“–‚Í‰º‹L‚Ì®‚Åˆê“x‚ÉŒvZ‚Å‚«‚é‚ªA‚‘¬‰»‚Ì‚½‚ß®‚ğ•ªŠ„
+            'æœ¬å½“ã¯ä¸‹è¨˜ã®å¼ã§ä¸€åº¦ã«è¨ˆç®—ã§ãã‚‹ãŒã€é«˜é€ŸåŒ–ã®ãŸã‚å¼ã‚’åˆ†å‰²
             'xsrc = xbase + xoffset * dsin + yoffset * dcos
             'ysrc = ybase - xoffset * dcos + yoffset * dsin
             xsrc = CLng(xsrc0 + xoffset * dsin)
@@ -999,7 +999,7 @@ Dim bg As RGBq, rgb As Long, r As Long, g As Long, b As Long
             If xsrc < 0 Or PicWidth <= xsrc _
                 Or ysrc < 0 Or PicHeight <= ysrc _
             Then
-                '”ÍˆÍŠO‚ÌƒsƒNƒZƒ‹‚Ìê‡‚Í”wŒiF‚Å•`‰æ
+                'ç¯„å›²å¤–ã®ãƒ”ã‚¯ã‚»ãƒ«ã®å ´åˆã¯èƒŒæ™¯è‰²ã§æç”»
                 PixBuf(PicWidth * i + j) = bg
             Else
                 PixBuf(PicWidth * i + j) = PixBuf2(PicWidth * ysrc + xsrc)
@@ -1008,22 +1008,22 @@ Dim bg As RGBq, rgb As Long, r As Long, g As Long, b As Long
     Next
 End Sub
 
-'“§‰ß—¦trans_par‚Åfcolor‚É‚æ‚é”¼“§–¾•`‰æ‚ğs‚¤
+'é€éç‡trans_parã§fcolorã«ã‚ˆã‚‹åŠé€æ˜æç”»ã‚’è¡Œã†
 Public Sub ColorFilter(fcolor As Long, trans_par As Double, Optional ByVal is_transparent As Boolean)
 Dim i As Long, rgb As Long
 Dim r As Long, g As Long, b As Long
 Dim r2 As Byte, g2 As Byte, b2 As Byte
 Dim tratio As Long
     
-    '“§‰ß—¦‚ğƒp[ƒZƒ“ƒg‚É’¼‚·
+    'é€éç‡ã‚’ãƒ‘ãƒ¼ã‚»ãƒ³ãƒˆã«ç›´ã™
     tratio = MinLng(MaxLng(100 * trans_par, 0), 100)
     
     If tratio = 0 Then
-        '“§‰ß‚µ‚È‚¢ê‡‚Í‚»‚Ì‚Ü‚ÜI—¹
+        'é€éã—ãªã„å ´åˆã¯ãã®ã¾ã¾çµ‚äº†
         Exit Sub
     End If
     
-    '”¼“§–¾•`‰æF‚ğRGB‚É•ª‰ğ
+    'åŠé€æ˜æç”»è‰²ã‚’RGBã«åˆ†è§£
     rgb = fcolor
     r = rgb Mod &H100
     rgb = rgb - r
@@ -1036,7 +1036,7 @@ Dim tratio As Long
     b2 = b
     
     If is_transparent Then
-        '”wŒiF‚ğRGB‚É•ª‰ğ
+        'èƒŒæ™¯è‰²ã‚’RGBã«åˆ†è§£
         rgb = BGColor
         r = rgb Mod &H100
         rgb = rgb - r
@@ -1045,8 +1045,8 @@ Dim tratio As Long
         g = g \ &H100
         b = rgb \ &H10000
         
-        '”wŒiF‚Æ”¼“§–¾•`‰æF‚ª“¯ˆê‚¾‚Á‚½ê‡A”¼“§–¾•`‰æF‚ğ”wŒiF‚©‚ç­‚µ‚¸‚ç‚·
-        '‚½‚¾‚µ‚±‚Ìˆ—‚ª‰Â”\‚È‚Ì‚Í”wŒiF‚ª”’“™‚Ìê‡‚Ì‚İ
+        'èƒŒæ™¯è‰²ã¨åŠé€æ˜æç”»è‰²ãŒåŒä¸€ã ã£ãŸå ´åˆã€åŠé€æ˜æç”»è‰²ã‚’èƒŒæ™¯è‰²ã‹ã‚‰å°‘ã—ãšã‚‰ã™
+        'ãŸã ã—ã“ã®å‡¦ç†ãŒå¯èƒ½ãªã®ã¯èƒŒæ™¯è‰²ãŒç™½ç­‰ã®å ´åˆã®ã¿
         If r = r2 And g = g2 And b = b2 Then
             If r2 = 255 Then
                 r2 = 254

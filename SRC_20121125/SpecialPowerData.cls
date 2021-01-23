@@ -10,41 +10,41 @@ Attribute VB_Exposed = False
 Option Explicit
 
 ' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-' –{ƒvƒƒOƒ‰ƒ€‚ÍƒtƒŠ[ƒ\ƒtƒg‚Å‚ ‚èA–³•ÛØ‚Å‚·B
-' –{ƒvƒƒOƒ‰ƒ€‚ÍGNU General Public License(Ver.3‚Ü‚½‚Í‚»‚êˆÈ~)‚ª’è‚ß‚éğŒ‚Ì‰º‚Å
-' Ä”Ğ•z‚Ü‚½‚Í‰ü•Ï‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B
+' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯ãƒ•ãƒªãƒ¼ã‚½ãƒ•ãƒˆã§ã‚ã‚Šã€ç„¡ä¿è¨¼ã§ã™ã€‚
+' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯GNU General Public License(Ver.3ã¾ãŸã¯ãã‚Œä»¥é™)ãŒå®šã‚ã‚‹æ¡ä»¶ã®ä¸‹ã§
+' å†é ’å¸ƒã¾ãŸã¯æ”¹å¤‰ã™ã‚‹ã“ã¨ãŒã§ãã¾ã™ã€‚
 
-'ƒXƒyƒVƒƒƒ‹ƒpƒ[ƒf[ƒ^‚ÌƒNƒ‰ƒX
+'ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼ãƒ‡ãƒ¼ã‚¿ã®ã‚¯ãƒ©ã‚¹
 
-'ƒXƒyƒVƒƒƒ‹ƒpƒ[–¼
+'ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼å
 Public Name As String
-'ƒXƒyƒVƒƒƒ‹ƒpƒ[–¼‚Ì“Ç‚İ‰¼–¼
+'ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼åã®èª­ã¿ä»®å
 Public KanaName As String
-'ƒXƒyƒVƒƒƒ‹ƒpƒ[–¼‚Ì’ZkŒ`
+'ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼åã®çŸ­ç¸®å½¢
 Public ShortName As String
-'Á”ï‚r‚o
+'æ¶ˆè²»ï¼³ï¼°
 Public SPConsumption As Integer
-'‘ÎÛ
+'å¯¾è±¡
 Public TargetType As String
-'Œø‰ÊŠÔ
+'åŠ¹æœæ™‚é–“
 Public Duration As String
-'“K—pğŒ
+'é©ç”¨æ¡ä»¶
 Public NecessaryCondition As String
-'ƒAƒjƒ
+'ã‚¢ãƒ‹ãƒ¡
 Public Animation As String
 
-'Œø‰Ê–¼
+'åŠ¹æœå
 Private strEffectType() As String
-'Œø‰ÊƒŒƒxƒ‹
+'åŠ¹æœãƒ¬ãƒ™ãƒ«
 Private dblEffectLevel() As Double
-'Œø‰Êƒf[ƒ^
+'åŠ¹æœãƒ‡ãƒ¼ã‚¿
 Private strEffectData() As String
 
-'‰ğà
+'è§£èª¬
 Public Comment As String
 
 
-'ƒNƒ‰ƒX‚Ì‰Šú‰»
+'ã‚¯ãƒ©ã‚¹ã®åˆæœŸåŒ–
 Private Sub Class_Initialize()
     ReDim strEffectType(0)
     ReDim dblEffectLevel(0)
@@ -52,7 +52,7 @@ Private Sub Class_Initialize()
 End Sub
 
 
-'ƒXƒyƒVƒƒƒ‹ƒpƒ[‚ÉŒø‰Ê‚ğ’Ç‰Á
+'ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼ã«åŠ¹æœã‚’è¿½åŠ 
 Public Sub SetEffect(elist As String)
 Dim i As Integer, j As Integer, k As Integer
 Dim buf As String
@@ -68,11 +68,11 @@ Dim etype As String, elevel As String, edata As String
         j = InStr(buf, "Lv")
         k = InStr(buf, "=")
         If j > 0 And (k = 0 Or j < k) Then
-            'ƒŒƒxƒ‹w’è‚Ì‚ ‚éŒø‰Ê(ƒf[ƒ^w’è‚ğ”º‚¤‚à‚Ì‚ğŠÜ‚Ş)
+            'ãƒ¬ãƒ™ãƒ«æŒ‡å®šã®ã‚ã‚‹åŠ¹æœ(ãƒ‡ãƒ¼ã‚¿æŒ‡å®šã‚’ä¼´ã†ã‚‚ã®ã‚’å«ã‚€)
             strEffectType(i) = Left$(buf, j - 1)
             
             If k > 0 Then
-                'ƒf[ƒ^w’è‚ğ”º‚¤‚à‚Ì
+                'ãƒ‡ãƒ¼ã‚¿æŒ‡å®šã‚’ä¼´ã†ã‚‚ã®
                 dblEffectLevel(i) = CDbl(Mid$(buf, j + 2, k - (j + 2)))
                 
                 buf = Mid$(buf, k + 1)
@@ -84,7 +84,7 @@ Dim etype As String, elevel As String, edata As String
                 k = InStr(buf, "=")
                 
                 If j > 0 And (k = 0 Or j < k) Then
-                    'ƒf[ƒ^w’è’†‚ÉƒŒƒxƒ‹w’è‚ª‚ ‚é‚à‚Ì
+                    'ãƒ‡ãƒ¼ã‚¿æŒ‡å®šä¸­ã«ãƒ¬ãƒ™ãƒ«æŒ‡å®šãŒã‚ã‚‹ã‚‚ã®
                     etype = Left$(buf, j - 1)
                     If k > 0 Then
                         elevel = Mid$(buf, j + 2, k - (j + 2))
@@ -94,28 +94,28 @@ Dim etype As String, elevel As String, edata As String
                         edata = ""
                     End If
                 ElseIf k > 0 Then
-                    'ƒf[ƒ^w’è’†‚Éƒf[ƒ^w’è‚ª‚ ‚é‚à‚Ì
+                    'ãƒ‡ãƒ¼ã‚¿æŒ‡å®šä¸­ã«ãƒ‡ãƒ¼ã‚¿æŒ‡å®šãŒã‚ã‚‹ã‚‚ã®
                     etype = Left$(buf, k - 1)
                     elevel = ""
                     edata = Mid$(buf, k + 1)
                 Else
-                    'ƒf[ƒ^w’è‚Ì‚İ
+                    'ãƒ‡ãƒ¼ã‚¿æŒ‡å®šã®ã¿
                     etype = buf
                     elevel = ""
                     edata = ""
                 End If
                 
-                If Name = "•t‰Á" And elevel = "" Then
+                If Name = "ä»˜åŠ " And elevel = "" Then
                     elevel = Format$(DEFAULT_LEVEL)
                 End If
                 
                 strEffectData(i) = Trim$(etype & " " & elevel & " " & edata)
             Else
-                'ƒf[ƒ^w’è‚ğ”º‚í‚È‚¢‚à‚Ì
+                'ãƒ‡ãƒ¼ã‚¿æŒ‡å®šã‚’ä¼´ã‚ãªã„ã‚‚ã®
                 dblEffectLevel(i) = CDbl(Mid$(buf, j + 2))
             End If
         ElseIf k > 0 Then
-            'ƒf[ƒ^w’è‚ğ”º‚¤Œø‰Ê
+            'ãƒ‡ãƒ¼ã‚¿æŒ‡å®šã‚’ä¼´ã†åŠ¹æœ
             strEffectType(i) = Left$(buf, k - 1)
             
             buf = Mid$(buf, k + 1)
@@ -127,7 +127,7 @@ Dim etype As String, elevel As String, edata As String
             k = InStr(buf, "=")
             
             If j > 0 Then
-                'ƒf[ƒ^w’è’†‚ÉƒŒƒxƒ‹w’è‚ª‚ ‚é‚à‚Ì
+                'ãƒ‡ãƒ¼ã‚¿æŒ‡å®šä¸­ã«ãƒ¬ãƒ™ãƒ«æŒ‡å®šãŒã‚ã‚‹ã‚‚ã®
                 etype = Left$(buf, j - 1)
                 If k > 0 Then
                     elevel = Mid$(buf, j + 2, k - (j + 2))
@@ -137,51 +137,51 @@ Dim etype As String, elevel As String, edata As String
                     edata = ""
                 End If
             ElseIf k > 0 Then
-                'ƒf[ƒ^w’è’†‚Éƒf[ƒ^w’è‚ª‚ ‚é‚à‚Ì
+                'ãƒ‡ãƒ¼ã‚¿æŒ‡å®šä¸­ã«ãƒ‡ãƒ¼ã‚¿æŒ‡å®šãŒã‚ã‚‹ã‚‚ã®
                 etype = Left$(buf, k - 1)
                 elevel = ""
                 edata = Mid$(buf, k + 1)
             Else
-                'ƒf[ƒ^w’è‚Ì‚İ
+                'ãƒ‡ãƒ¼ã‚¿æŒ‡å®šã®ã¿
                 etype = buf
                 elevel = ""
                 edata = ""
             End If
             
-            If Name = "•t‰Á" And elevel = "" Then
+            If Name = "ä»˜åŠ " And elevel = "" Then
                 elevel = Format$(DEFAULT_LEVEL)
             End If
             
             strEffectData(i) = Trim$(etype & " " & elevel & " " & edata)
         Else
-            'Œø‰Ê–¼‚Ì‚İ
+            'åŠ¹æœåã®ã¿
             strEffectType(i) = buf
         End If
     Next
 End Sub
 
 
-'“ÁêŒø‰Ê‚ÌŒÂ”
+'ç‰¹æ®ŠåŠ¹æœã®å€‹æ•°
 Public Function CountEffect() As Integer
     CountEffect = UBound(strEffectType)
 End Function
 
-'idx”Ô–Ú‚Ì“ÁêŒø‰Êƒ^ƒCƒv
+'idxç•ªç›®ã®ç‰¹æ®ŠåŠ¹æœã‚¿ã‚¤ãƒ—
 Public Function EffectType(ByVal idx As Integer) As String
     EffectType = strEffectType(idx)
 End Function
 
-'idx”Ô–Ú‚Ì“ÁêŒø‰ÊƒŒƒxƒ‹
+'idxç•ªç›®ã®ç‰¹æ®ŠåŠ¹æœãƒ¬ãƒ™ãƒ«
 Public Function EffectLevel(ByVal idx As Integer) As Double
     EffectLevel = dblEffectLevel(idx)
 End Function
 
-'idx”Ô–Ú‚Ì“ÁêŒø‰Êƒf[ƒ^
+'idxç•ªç›®ã®ç‰¹æ®ŠåŠ¹æœãƒ‡ãƒ¼ã‚¿
 Public Function EffectData(ByVal idx As Integer) As String
     EffectData = strEffectData(idx)
 End Function
 
-'“ÁêŒø‰Ê ename ‚ğ‚Á‚Ä‚¢‚é‚©
+'ç‰¹æ®ŠåŠ¹æœ ename ã‚’æŒã£ã¦ã„ã‚‹ã‹
 Public Function IsEffectAvailable(ename As String)
 Dim i As Integer
 
@@ -191,7 +191,7 @@ Dim i As Integer
             Exit Function
         End If
         
-        If EffectType(i) = "ƒXƒyƒVƒƒƒ‹ƒpƒ[" Then
+        If EffectType(i) = "ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼" Then
             If SPDList.Item(EffectData(i)).IsEffectAvailable(ename) Then
                 IsEffectAvailable = True
                 Exit Function
@@ -201,31 +201,31 @@ Dim i As Integer
 End Function
 
 
-'ƒXƒyƒVƒƒƒ‹ƒpƒ[‚ª‚»‚Ì“_‚Å–ğ‚É—§‚Â‚©‚Ç‚¤‚©
-'(ƒpƒCƒƒbƒg p ‚ªg—p‚µ‚½ê‡)
+'ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼ãŒãã®æ™‚ç‚¹ã§å½¹ã«ç«‹ã¤ã‹ã©ã†ã‹
+'(ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆ p ãŒä½¿ç”¨ã—ãŸå ´åˆ)
 Public Function Useful(p As Pilot) As Boolean
 Dim u As Unit, i As Integer
 
     Select Case TargetType
-        Case "©•ª"
+        Case "è‡ªåˆ†"
             Useful = Effective(p, p.Unit)
             Exit Function
             
-        Case "–¡•û", "‘S–¡•û"
+        Case "å‘³æ–¹", "å…¨å‘³æ–¹"
             For Each u In UList
                 With u
-                    'oŒ‚‚µ‚Ä‚¢‚éH
-                    If .Status <> "oŒ‚" Then
+                    'å‡ºæ’ƒã—ã¦ã„ã‚‹ï¼Ÿ
+                    If .Status <> "å‡ºæ’ƒ" Then
                         GoTo NextUnit1
                     End If
                     
-                    '–¡•ûƒ†ƒjƒbƒgH
+                    'å‘³æ–¹ãƒ¦ãƒ‹ãƒƒãƒˆï¼Ÿ
                     Select Case p.Party
-                        Case "–¡•û", "‚m‚o‚b"
-                            If .Party <> "–¡•û" _
-                                And .Party0 <> "–¡•û" _
-                                And .Party <> "‚m‚o‚b" _
-                                And .Party0 <> "‚m‚o‚b" _
+                        Case "å‘³æ–¹", "ï¼®ï¼°ï¼£"
+                            If .Party <> "å‘³æ–¹" _
+                                And .Party0 <> "å‘³æ–¹" _
+                                And .Party <> "ï¼®ï¼°ï¼£" _
+                                And .Party0 <> "ï¼®ï¼°ï¼£" _
                             Then
                                 GoTo NextUnit1
                             End If
@@ -235,7 +235,7 @@ Dim u As Unit, i As Integer
                             End If
                     End Select
                     
-                    'Œø‰Ê‚ª‚ ‚éH
+                    'åŠ¹æœãŒã‚ã‚‹ï¼Ÿ
                     If Effective(p, u) Then
                         Useful = True
                         Exit Function
@@ -244,20 +244,20 @@ Dim u As Unit, i As Integer
 NextUnit1:
             Next
             
-        Case "”j‰ó–¡•û"
+        Case "ç ´å£Šå‘³æ–¹"
             For Each u In UList
                 With u
-                    '”j‰ó‚³‚ê‚Ä‚¢‚éH
-                    If .Status <> "”j‰ó" Then
+                    'ç ´å£Šã•ã‚Œã¦ã„ã‚‹ï¼Ÿ
+                    If .Status <> "ç ´å£Š" Then
                         GoTo NextUnit2
                     End If
                     
-                    '–¡•ûƒ†ƒjƒbƒgH
+                    'å‘³æ–¹ãƒ¦ãƒ‹ãƒƒãƒˆï¼Ÿ
                     If p.Party <> .Party0 Then
                         GoTo NextUnit2
                     End If
                     
-                    'Œø‰Ê‚ª‚ ‚éH
+                    'åŠ¹æœãŒã‚ã‚‹ï¼Ÿ
                     If Effective(p, u) Then
                         Useful = True
                         Exit Function
@@ -266,21 +266,21 @@ NextUnit1:
 NextUnit2:
             Next
             
-        Case "“G", "‘S“G"
+        Case "æ•µ", "å…¨æ•µ"
             For Each u In UList
                 With u
-                    'oŒ‚‚µ‚Ä‚¢‚éH
-                    If .Status <> "oŒ‚" Then
+                    'å‡ºæ’ƒã—ã¦ã„ã‚‹ï¼Ÿ
+                    If .Status <> "å‡ºæ’ƒ" Then
                         GoTo NextUnit3
                     End If
                     
-                    '“Gƒ†ƒjƒbƒgH
+                    'æ•µãƒ¦ãƒ‹ãƒƒãƒˆï¼Ÿ
                     Select Case p.Party
-                        Case "–¡•û", "‚m‚o‚b"
-                            If (.Party = "–¡•û" _
-                                   And .Party0 = "–¡•û") _
-                               Or (.Party = "‚m‚o‚b" _
-                                   And .Party0 = "‚m‚o‚b") _
+                        Case "å‘³æ–¹", "ï¼®ï¼°ï¼£"
+                            If (.Party = "å‘³æ–¹" _
+                                   And .Party0 = "å‘³æ–¹") _
+                               Or (.Party = "ï¼®ï¼°ï¼£" _
+                                   And .Party0 = "ï¼®ï¼°ï¼£") _
                             Then
                                 GoTo NextUnit3
                             End If
@@ -290,7 +290,7 @@ NextUnit2:
                             End If
                     End Select
                     
-                    'Œø‰Ê‚ª‚ ‚éH
+                    'åŠ¹æœãŒã‚ã‚‹ï¼Ÿ
                     If Effective(p, u) Then
                         Useful = True
                         Exit Function
@@ -299,11 +299,11 @@ NextUnit2:
 NextUnit3:
             Next
             
-        Case "”CˆÓ", "‘S"
+        Case "ä»»æ„", "å…¨"
             For Each u In UList
-                'oŒ‚‚µ‚Ä‚¢‚éH
-                If u.Status = "oŒ‚" Then
-                    'Œø‰Ê‚ª‚ ‚éH
+                'å‡ºæ’ƒã—ã¦ã„ã‚‹ï¼Ÿ
+                If u.Status = "å‡ºæ’ƒ" Then
+                    'åŠ¹æœãŒã‚ã‚‹ï¼Ÿ
                     If Effective(p, u) Then
                         Useful = True
                         Exit Function
@@ -313,42 +313,42 @@ NextUnit3:
     End Select
 End Function
 
-'ƒXƒyƒVƒƒƒ‹ƒpƒ[‚ªƒ†ƒjƒbƒg t ‚É‘Î‚µ‚ÄŒø‰Ê‚ª‚ ‚é‚©‚Ç‚¤‚©
-'(ƒpƒCƒƒbƒg p ‚ªg—p‚µ‚½ê‡)
+'ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼ãŒãƒ¦ãƒ‹ãƒƒãƒˆ t ã«å¯¾ã—ã¦åŠ¹æœãŒã‚ã‚‹ã‹ã©ã†ã‹
+'(ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆ p ãŒä½¿ç”¨ã—ãŸå ´åˆ)
 Public Function Effective(p As Pilot, t As Unit) As Boolean
 Dim i As Integer, j As Integer
 Dim ncond As String
 Dim my_unit As Unit
 
-    '“¯‚¶’Ç‰ÁƒpƒCƒƒbƒg‚ğ‚Âƒ†ƒjƒbƒg‚ª•¡”‚¢‚éê‡AƒpƒCƒƒbƒg‚ÌUnit‚ª
-    '•Ï‰»‚µ‚Ä‚µ‚Ü‚¤‚±‚Æ‚ª‚ ‚é‚½‚ßAŒ³‚ÌUnit‚ğ‹L˜^‚µ‚Ä‚¨‚­
+    'åŒã˜è¿½åŠ ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‚’æŒã¤ãƒ¦ãƒ‹ãƒƒãƒˆãŒè¤‡æ•°ã„ã‚‹å ´åˆã€ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®UnitãŒ
+    'å¤‰åŒ–ã—ã¦ã—ã¾ã†ã“ã¨ãŒã‚ã‚‹ãŸã‚ã€å…ƒã®Unitã‚’è¨˜éŒ²ã—ã¦ãŠã
     Set my_unit = p.Unit
     
     With t
-        '“K—pğŒ‚ğ–‚½‚µ‚Ä‚¢‚éH
+        'é©ç”¨æ¡ä»¶ã‚’æº€ãŸã—ã¦ã„ã‚‹ï¼Ÿ
         For i = 1 To LLength(NecessaryCondition)
             ncond = LIndex(NecessaryCondition, i)
             Select Case ncond
-                Case "‹Z—Ê"
+                Case "æŠ€é‡"
                     If p.Technique < .MainPilot.Technique Then
                         GoTo ExitFunc
                     End If
-                Case "”ñƒ{ƒX"
+                Case "éãƒœã‚¹"
                     If .BossRank >= 0 Then
                         GoTo ExitFunc
                     End If
-                Case "x‰‡"
+                Case "æ”¯æ´"
                     If my_unit Is t Then
                         GoTo ExitFunc
                     End If
-                Case "—×Ú"
+                Case "éš£æ¥"
                     With my_unit
                         If Abs(.X - t.X) + Abs(.Y - t.Y) <> 1 Then
                             GoTo ExitFunc
                         End If
                     End With
                 Case Else
-                    If InStr(ncond, "Ë’öLv") = 1 Then
+                    If InStr(ncond, "å°„ç¨‹Lv") = 1 Then
                         With my_unit
                             If Abs(.X - t.X) + Abs(.Y - t.Y) > StrToLng(Mid$(ncond, 5)) Then
                                 GoTo ExitFunc
@@ -357,31 +357,31 @@ Dim my_unit As Unit
                     End If
             End Select
             
-            'Unit‚ª•Ï‰»‚µ‚Ä‚µ‚Ü‚Á‚½ê‡‚ÍŒ³‚É–ß‚µ‚Ä‚¨‚­
+            'UnitãŒå¤‰åŒ–ã—ã¦ã—ã¾ã£ãŸå ´åˆã¯å…ƒã«æˆ»ã—ã¦ãŠã
             If Not my_unit Is p.Unit Then
                 my_unit.MainPilot
             End If
         Next
         
-        '–³Œø‰»‚³‚ê‚Ä‚¢‚éH
+        'ç„¡åŠ¹åŒ–ã•ã‚Œã¦ã„ã‚‹ï¼Ÿ
         Select Case TargetType
-            Case "“G", "‘S“G", "”CˆÓ", "‘S"
-                If .IsConditionSatisfied("ƒXƒyƒVƒƒƒ‹ƒpƒ[–³Œø‰»") _
-                    Or .IsConditionSatisfied("¸_ƒRƒ}ƒ“ƒh–³Œø‰»") _
+            Case "æ•µ", "å…¨æ•µ", "ä»»æ„", "å…¨"
+                If .IsConditionSatisfied("ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼ç„¡åŠ¹åŒ–") _
+                    Or .IsConditionSatisfied("ç²¾ç¥ã‚³ãƒãƒ³ãƒ‰ç„¡åŠ¹åŒ–") _
                 Then
                     GoTo ExitFunc
                 End If
         End Select
         
-        '‘±Œø‰Ê‚ª‚ ‚é‚à‚Ì‚Í“¯‚¶ƒXƒyƒVƒƒƒ‹ƒpƒ[‚ªŠù‚É“K—p‚³‚ê‚Ä‚¢‚È‚¯‚ê‚Î
-        'Œø‰Ê‚ª‚ ‚é‚Æ‚İ‚È‚·
-        If Duration <> "‘¦Œø" Then
+        'æŒç¶šåŠ¹æœãŒã‚ã‚‹ã‚‚ã®ã¯åŒã˜ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼ãŒæ—¢ã«é©ç”¨ã•ã‚Œã¦ã„ãªã‘ã‚Œã°
+        'åŠ¹æœãŒã‚ã‚‹ã¨ã¿ãªã™
+        If Duration <> "å³åŠ¹" Then
             If Not .IsSpecialPowerInEffect(Name) Then
                 Effective = True
             End If
             
-            '‚½‚¾‚µ‚İ‚ª‚í‚è‚Í©•ª©g‚É‚Íg‚¦‚È‚¢‚Ì‚Åƒ`ƒFƒbƒN‚µ‚Ä‚¨‚­
-            If EffectType(1) = "‚İ‚ª‚í‚è" Then
+            'ãŸã ã—ã¿ãŒã‚ã‚Šã¯è‡ªåˆ†è‡ªèº«ã«ã¯ä½¿ãˆãªã„ã®ã§ãƒã‚§ãƒƒã‚¯ã—ã¦ãŠã
+            If EffectType(1) = "ã¿ãŒã‚ã‚Š" Then
                 If my_unit Is t Then
                     Effective = False
                     GoTo ExitFunc
@@ -391,51 +391,51 @@ Dim my_unit As Unit
             GoTo ExitFunc
         End If
         
-        'ŒÂX‚ÌŒø‰Ê‚ÉŠÖ‚µ‚Ä—LŒø‚©‚Ç‚¤‚©”»’è
+        'å€‹ã€…ã®åŠ¹æœã«é–¢ã—ã¦æœ‰åŠ¹ã‹ã©ã†ã‹åˆ¤å®š
         For i = 1 To CountEffect
             Select Case EffectType(i)
-                Case "‚g‚o‰ñ•œ", "‚g‚o‘‰Á"
+                Case "ï¼¨ï¼°å›å¾©", "ï¼¨ï¼°å¢—åŠ "
                     If EffectLevel(i) < 0 Then
                         Effective = True
                         GoTo ExitFunc
                     End If
-                    If .IsConditionSatisfied("ƒ]ƒ“ƒr") Then
+                    If .IsConditionSatisfied("ã‚¾ãƒ³ãƒ“") Then
                         GoTo NextEffect
                     End If
                     If .HP < .MaxHP Then
                         Effective = True
                         GoTo ExitFunc
                     End If
-                Case "‚d‚m‰ñ•œ", "‚d‚m‘‰Á"
+                Case "ï¼¥ï¼®å›å¾©", "ï¼¥ï¼®å¢—åŠ "
                     If EffectLevel(i) < 0 Then
                         Effective = True
                         GoTo ExitFunc
                     End If
-                    If .IsConditionSatisfied("ƒ]ƒ“ƒr") Then
+                    If .IsConditionSatisfied("ã‚¾ãƒ³ãƒ“") Then
                         GoTo NextEffect
                     End If
                     If .EN < .MaxEN Then
                         Effective = True
                         GoTo ExitFunc
                     End If
-                Case "—ì—Í‰ñ•œ", "—ì—Í‘‰Á"
+                Case "éœŠåŠ›å›å¾©", "éœŠåŠ›å¢—åŠ "
                     If EffectLevel(i) < 0 Then
                         Effective = True
                         GoTo ExitFunc
                     End If
-                    If .IsConditionSatisfied("ƒ]ƒ“ƒr") Then
+                    If .IsConditionSatisfied("ã‚¾ãƒ³ãƒ“") Then
                         GoTo NextEffect
                     End If
                     If .MainPilot.Plana < .MainPilot.MaxPlana Then
                         Effective = True
                         GoTo ExitFunc
                     End If
-                Case "‚r‚o‰ñ•œ"
+                Case "ï¼³ï¼°å›å¾©"
                     If EffectLevel(i) < 0 Then
                         Effective = True
                         GoTo ExitFunc
                     End If
-                    If .IsConditionSatisfied("ƒ]ƒ“ƒr") Then
+                    If .IsConditionSatisfied("ã‚¾ãƒ³ãƒ“") Then
                         GoTo NextEffect
                     End If
                     If .MainPilot.SP < .MainPilot.MaxSP Then
@@ -454,41 +454,41 @@ Dim my_unit As Unit
                             GoTo ExitFunc
                         End If
                     Next
-                    If .IsFeatureAvailable("’Ç‰ÁƒTƒ|[ƒg") Then
+                    If .IsFeatureAvailable("è¿½åŠ ã‚µãƒãƒ¼ãƒˆ") Then
                         If .AdditionalSupport.SP < .AdditionalSupport.MaxSP Then
                             Effective = True
                             GoTo ExitFunc
                         End If
                     End If
-                Case "ó‘Ô‰ñ•œ"
-                    If .ConditionLifetime("UŒ‚•s”\") > 0 _
-                        Or .ConditionLifetime("ˆÚ“®•s”\") > 0 _
-                        Or .ConditionLifetime("‘•b—ò‰»") > 0 _
-                        Or .ConditionLifetime("¬—") > 0 _
-                        Or .ConditionLifetime("–£—¹") > 0 _
-                        Or .ConditionLifetime("œßˆË") > 0 _
-                        Or .ConditionLifetime("Î‰»") > 0 _
-                        Or .ConditionLifetime("“€Œ‹") > 0 _
-                        Or .ConditionLifetime("–ƒáƒ") > 0 _
-                        Or .ConditionLifetime("‡–°") > 0 _
-                        Or .ConditionLifetime("“Å") > 0 _
-                        Or .ConditionLifetime("–Ó–Ú") > 0 _
-                        Or .ConditionLifetime("Šh—") > 0 _
-                        Or .ConditionLifetime("‹°•|") > 0 _
-                        Or .ConditionLifetime("’¾–Ù") > 0 _
-                        Or .ConditionLifetime("ƒ]ƒ“ƒr") > 0 _
-                        Or .ConditionLifetime("‰ñ•œ•s”\") > 0 _
-                        Or .ConditionLifetime("ƒI[ƒ‰g—p•s”\") > 0 Or .ConditionLifetime("’´”\—Íg—p•s”\") > 0 _
-                        Or .ConditionLifetime("“¯’²—¦g—p•s”\") > 0 Or .ConditionLifetime("’´Š´Šog—p•s”\") > 0 _
-                        Or .ConditionLifetime("’mŠo‹­‰»g—p•s”\") > 0 Or .ConditionLifetime("—ì—Íg—p•s”\") > 0 _
-                        Or .ConditionLifetime("pg—p•s”\") > 0 Or .ConditionLifetime("‹Zg—p•s”\") > 0 _
+                Case "çŠ¶æ…‹å›å¾©"
+                    If .ConditionLifetime("æ”»æ’ƒä¸èƒ½") > 0 _
+                        Or .ConditionLifetime("ç§»å‹•ä¸èƒ½") > 0 _
+                        Or .ConditionLifetime("è£…ç”²åŠ£åŒ–") > 0 _
+                        Or .ConditionLifetime("æ··ä¹±") > 0 _
+                        Or .ConditionLifetime("é­…äº†") > 0 _
+                        Or .ConditionLifetime("æ†‘ä¾") > 0 _
+                        Or .ConditionLifetime("çŸ³åŒ–") > 0 _
+                        Or .ConditionLifetime("å‡çµ") > 0 _
+                        Or .ConditionLifetime("éº»ç—º") > 0 _
+                        Or .ConditionLifetime("ç¡çœ ") > 0 _
+                        Or .ConditionLifetime("æ¯’") > 0 _
+                        Or .ConditionLifetime("ç›²ç›®") > 0 _
+                        Or .ConditionLifetime("æ’¹ä¹±") > 0 _
+                        Or .ConditionLifetime("ææ€–") > 0 _
+                        Or .ConditionLifetime("æ²ˆé»™") > 0 _
+                        Or .ConditionLifetime("ã‚¾ãƒ³ãƒ“") > 0 _
+                        Or .ConditionLifetime("å›å¾©ä¸èƒ½") > 0 _
+                        Or .ConditionLifetime("ã‚ªãƒ¼ãƒ©ä½¿ç”¨ä¸èƒ½") > 0 Or .ConditionLifetime("è¶…èƒ½åŠ›ä½¿ç”¨ä¸èƒ½") > 0 _
+                        Or .ConditionLifetime("åŒèª¿ç‡ä½¿ç”¨ä¸èƒ½") > 0 Or .ConditionLifetime("è¶…æ„Ÿè¦šä½¿ç”¨ä¸èƒ½") > 0 _
+                        Or .ConditionLifetime("çŸ¥è¦šå¼·åŒ–ä½¿ç”¨ä¸èƒ½") > 0 Or .ConditionLifetime("éœŠåŠ›ä½¿ç”¨ä¸èƒ½") > 0 _
+                        Or .ConditionLifetime("è¡“ä½¿ç”¨ä¸èƒ½") > 0 Or .ConditionLifetime("æŠ€ä½¿ç”¨ä¸èƒ½") > 0 _
                     Then
                         Effective = True
                         GoTo ExitFunc
                     Else
                         For j = 1 To .CountCondition
                             If Len(.Condition(j)) > 6 Then
-                                If Right$(.Condition(j), 6) = "‘®«g—p•s”\" Then
+                                If Right$(.Condition(j), 6) = "å±æ€§ä½¿ç”¨ä¸èƒ½" Then
                                     If .ConditionLifetime(.Condition(j)) > 0 Then
                                         Effective = True
                                         GoTo ExitFunc
@@ -497,19 +497,19 @@ Dim my_unit As Unit
                             End If
                         Next
                     End If
-                Case "‘•“U"
+                Case "è£…å¡«"
                     For j = 1 To .CountWeapon
                         If .Bullet(j) < .MaxBullet(j) Then
                             Effective = True
                             GoTo ExitFunc
                         End If
                     Next
-                Case "s“®”‰ñ•œ"
+                Case "è¡Œå‹•æ•°å›å¾©"
                     If .Action = 0 And .MaxAction > 0 Then
                         Effective = True
                         GoTo ExitFunc
                     End If
-                Case "s“®”‘‰Á"
+                Case "è¡Œå‹•æ•°å¢—åŠ "
                     If EffectLevel(i) < 0 Then
                         Effective = True
                         GoTo ExitFunc
@@ -518,41 +518,41 @@ Dim my_unit As Unit
                         Effective = True
                         GoTo ExitFunc
                     End If
-                Case "ƒXƒyƒVƒƒƒ‹ƒpƒ[", "¸_ƒRƒ}ƒ“ƒh"
+                Case "ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼", "ç²¾ç¥ã‚³ãƒãƒ³ãƒ‰"
                     If Not .IsSpecialPowerInEffect(EffectData(i)) Then
                         Effective = True
                         GoTo ExitFunc
                     End If
-                Case "‹C—Í‘‰Á"
-                    If .MainPilot.Personality <> "‹@ŠB" _
+                Case "æ°—åŠ›å¢—åŠ "
+                    If .MainPilot.Personality <> "æ©Ÿæ¢°" _
                         And .MainPilot.Morale < .MainPilot.MaxMorale _
                     Then
                         Effective = True
                         GoTo ExitFunc
                     End If
                     For j = 2 To .CountPilot
-                        If .Pilot(j).Personality <> "‹@ŠB" _
+                        If .Pilot(j).Personality <> "æ©Ÿæ¢°" _
                             And .Pilot(j).Morale < .MainPilot.MaxMorale _
                         Then
                             Effective = True
                             GoTo ExitFunc
                         End If
                     Next
-                Case "‹C—Í’á‰º"
-                    If .MainPilot.Personality = "‹@ŠB" Then
+                Case "æ°—åŠ›ä½ä¸‹"
+                    If .MainPilot.Personality = "æ©Ÿæ¢°" Then
                         GoTo NextEffect
                     End If
                     If .MainPilot.Morale > .MainPilot.MinMorale Then
                         Effective = True
                         GoTo ExitFunc
                     End If
-                Case "ƒ‰ƒ“ƒ_ƒ€ƒ_ƒ[ƒW", "‚g‚oŒ¸­", "‚d‚mŒ¸­"
-                    If Not .IsConditionSatisfied("–³“G") Then
+                Case "ãƒ©ãƒ³ãƒ€ãƒ ãƒ€ãƒ¡ãƒ¼ã‚¸", "ï¼¨ï¼°æ¸›å°‘", "ï¼¥ï¼®æ¸›å°‘"
+                    If Not .IsConditionSatisfied("ç„¡æ•µ") Then
                         Effective = True
                         GoTo ExitFunc
                     End If
-                Case "‹C—Í‘‰Á", "©”š", "•œŠˆ", "’ã@", _
-                    "–¡•ûƒXƒyƒVƒƒƒ‹ƒpƒ[Às", "ƒCƒxƒ“ƒg"
+                Case "æ°—åŠ›å¢—åŠ ", "è‡ªçˆ†", "å¾©æ´»", "åµå¯Ÿ", _
+                    "å‘³æ–¹ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼å®Ÿè¡Œ", "ã‚¤ãƒ™ãƒ³ãƒˆ"
                     Effective = True
                     GoTo ExitFunc
             End Select
@@ -562,25 +562,25 @@ NextEffect:
     
 ExitFunc:
     
-    'Unit‚ª•Ï‰»‚µ‚Ä‚µ‚Ü‚Á‚½ê‡‚ÍŒ³‚É–ß‚µ‚Ä‚¨‚­
+    'UnitãŒå¤‰åŒ–ã—ã¦ã—ã¾ã£ãŸå ´åˆã¯å…ƒã«æˆ»ã—ã¦ãŠã
     If Not my_unit Is p.Unit Then
         my_unit.MainPilot
     End If
 End Function
 
 
-'ƒXƒyƒVƒƒƒ‹ƒpƒ[‚ğg—p‚·‚é
-'(ƒpƒCƒƒbƒg p ‚ªg—p‚µ‚½ê‡)
+'ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼ã‚’ä½¿ç”¨ã™ã‚‹
+'(ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆ p ãŒä½¿ç”¨ã—ãŸå ´åˆ)
 Public Sub Execute(p As Pilot, Optional ByVal is_event As Boolean)
 Dim u As Unit, i As Integer, j As Integer
 
     Select Case TargetType
-        Case "©•ª"
+        Case "è‡ªåˆ†"
             If Apply(p, p.Unit, is_event) And Not is_event Then
                 Sleep 300
             End If
             
-        Case "‘S–¡•û"
+        Case "å…¨å‘³æ–¹"
             For i = 1 To MapWidth
                 For j = 1 To MapHeight
                     Set u = MapDataForUnit(i, j)
@@ -588,13 +588,13 @@ Dim u As Unit, i As Integer, j As Integer
                         GoTo NextUnit1
                     End If
                     With u
-                        '–¡•ûƒ†ƒjƒbƒgH
+                        'å‘³æ–¹ãƒ¦ãƒ‹ãƒƒãƒˆï¼Ÿ
                         Select Case p.Party
-                            Case "–¡•û", "‚m‚o‚b"
-                                If .Party <> "–¡•û" _
-                                    And .Party0 <> "–¡•û" _
-                                    And .Party <> "‚m‚o‚b" _
-                                    And .Party0 <> "‚m‚o‚b" _
+                            Case "å‘³æ–¹", "ï¼®ï¼°ï¼£"
+                                If .Party <> "å‘³æ–¹" _
+                                    And .Party0 <> "å‘³æ–¹" _
+                                    And .Party <> "ï¼®ï¼°ï¼£" _
+                                    And .Party0 <> "ï¼®ï¼°ï¼£" _
                                 Then
                                     GoTo NextUnit1
                                 End If
@@ -613,7 +613,7 @@ NextUnit1:
                 Sleep 300
             End If
             
-        Case "‘S“G"
+        Case "å…¨æ•µ"
             For i = 1 To MapWidth
                 For j = 1 To MapHeight
                     Set u = MapDataForUnit(i, j)
@@ -621,11 +621,11 @@ NextUnit1:
                         GoTo NextUnit2
                     End If
                     With u
-                        '“Gƒ†ƒjƒbƒgH
+                        'æ•µãƒ¦ãƒ‹ãƒƒãƒˆï¼Ÿ
                         Select Case p.Party
-                            Case "–¡•û", "‚m‚o‚b"
-                                If .Party = "–¡•û" _
-                                    Or .Party = "‚m‚o‚b" _
+                            Case "å‘³æ–¹", "ï¼®ï¼°ï¼£"
+                                If .Party = "å‘³æ–¹" _
+                                    Or .Party = "ï¼®ï¼°ï¼£" _
                                 Then
                                     GoTo NextUnit2
                                 End If
@@ -644,7 +644,7 @@ NextUnit2:
                 Sleep 300
             End If
             
-        Case "‘S"
+        Case "å…¨"
             For i = 1 To MapWidth
                 For j = 1 To MapHeight
                     Set u = MapDataForUnit(i, j)
@@ -669,9 +669,9 @@ NextUnit2:
     End If
 End Sub
 
-'ƒXƒyƒVƒƒƒ‹ƒpƒ[‚ğƒ†ƒjƒbƒg t ‚É‘Î‚µ‚Ä“K—p
-'(ƒpƒCƒƒbƒg p ‚ªg—p)
-'ÀsŒã‚ÉƒEƒFƒCƒg‚ª•K—v‚©‚Ç‚¤‚©‚ğ•Ô‚·
+'ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼ã‚’ãƒ¦ãƒ‹ãƒƒãƒˆ t ã«å¯¾ã—ã¦é©ç”¨
+'(ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆ p ãŒä½¿ç”¨)
+'å®Ÿè¡Œå¾Œã«ã‚¦ã‚§ã‚¤ãƒˆãŒå¿…è¦ã‹ã©ã†ã‹ã‚’è¿”ã™
 Public Function Apply(p As Pilot, ByVal t As Unit, Optional ByVal is_event As Boolean, _
     Optional ByVal as_instant As Boolean) As Boolean
 Dim i As Integer, j As Integer, n As Integer, tmp As Long
@@ -679,35 +679,35 @@ Dim is_invalid As Boolean, need_update As Boolean, displayed_string As Boolean
 Dim msg As String, ncond As String
 Dim my_unit As Unit
 
-    '“¯‚¶’Ç‰ÁƒpƒCƒƒbƒg‚ğ‚Âƒ†ƒjƒbƒg‚ª•¡”‚¢‚éê‡AƒpƒCƒƒbƒg‚ÌUnit‚ª
-    '•Ï‰»‚µ‚Ä‚µ‚Ü‚¤‚±‚Æ‚ª‚ ‚é‚½‚ßAŒ³‚ÌUnit‚ğ‹L˜^‚µ‚Ä‚¨‚­
+    'åŒã˜è¿½åŠ ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã‚’æŒã¤ãƒ¦ãƒ‹ãƒƒãƒˆãŒè¤‡æ•°ã„ã‚‹å ´åˆã€ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®UnitãŒ
+    'å¤‰åŒ–ã—ã¦ã—ã¾ã†ã“ã¨ãŒã‚ã‚‹ãŸã‚ã€å…ƒã®Unitã‚’è¨˜éŒ²ã—ã¦ãŠã
     Set my_unit = p.Unit
     
     With t
-        '“K—pğŒ‚ğ–‚½‚µ‚Ä‚¢‚éH
+        'é©ç”¨æ¡ä»¶ã‚’æº€ãŸã—ã¦ã„ã‚‹ï¼Ÿ
         For i = 1 To LLength(NecessaryCondition)
             ncond = LIndex(NecessaryCondition, i)
             Select Case ncond
-                Case "‹Z—Ê"
+                Case "æŠ€é‡"
                     If p.Technique < .MainPilot.Technique Then
                         is_invalid = True
                     End If
-                Case "”ñƒ{ƒX"
+                Case "éãƒœã‚¹"
                     If .BossRank >= 0 Then
                         is_invalid = True
                     End If
-                Case "x‰‡"
+                Case "æ”¯æ´"
                     If my_unit Is t Then
                         is_invalid = True
                     End If
-                Case "—×Ú"
+                Case "éš£æ¥"
                     With my_unit
                         If Abs(.X - t.X) + Abs(.Y - t.Y) <> 1 Then
                             is_invalid = True
                         End If
                     End With
                 Case Else
-                    If InStr(ncond, "Ë’öLv") = 1 Then
+                    If InStr(ncond, "å°„ç¨‹Lv") = 1 Then
                         With my_unit
                             If Abs(.X - t.X) + Abs(.Y - t.Y) > StrToLng(Mid$(ncond, 5)) Then
                                 is_invalid = True
@@ -716,42 +716,42 @@ Dim my_unit As Unit
                     End If
             End Select
             
-            'Unit‚ª•Ï‰»‚µ‚Ä‚µ‚Ü‚Á‚½ê‡‚ÍŒ³‚É–ß‚µ‚Ä‚¨‚­
+            'UnitãŒå¤‰åŒ–ã—ã¦ã—ã¾ã£ãŸå ´åˆã¯å…ƒã«æˆ»ã—ã¦ãŠã
             If Not my_unit Is p.Unit Then
                 my_unit.CurrentForm.MainPilot
             End If
         Next
         
-        '–³Œø‰»‚³‚ê‚Ä‚¢‚éH
+        'ç„¡åŠ¹åŒ–ã•ã‚Œã¦ã„ã‚‹ï¼Ÿ
         Select Case TargetType
-            Case "“G", "‘S“G"
-                If .IsConditionSatisfied("ƒXƒyƒVƒƒƒ‹ƒpƒ[–³Œø") Then
+            Case "æ•µ", "å…¨æ•µ"
+                If .IsConditionSatisfied("ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼ç„¡åŠ¹") Then
                     is_invalid = True
                 End If
         End Select
         
-        'ƒXƒyƒVƒƒƒ‹ƒpƒ[‚ª“K—p‰Â”\H
+        'ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼ãŒé©ç”¨å¯èƒ½ï¼Ÿ
         If is_invalid Then
             Exit Function
         End If
         
-        '‘±Œø‰Ê‚ª‚ ‚éê‡‚Í’P‚ÉƒXƒyƒVƒƒƒ‹ƒpƒ[‚ÌŒø‰Ê‚ğ•t‰Á‚·‚é‚¾‚¯‚Å‚æ‚¢
-        If Duration <> "‘¦Œø" And Not as_instant Then
+        'æŒç¶šåŠ¹æœãŒã‚ã‚‹å ´åˆã¯å˜ã«ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼ã®åŠ¹æœã‚’ä»˜åŠ ã™ã‚‹ã ã‘ã§ã‚ˆã„
+        If Duration <> "å³åŠ¹" And Not as_instant Then
             .MakeSpecialPowerInEffect Name, my_unit.MainPilot.ID
             Exit Function
         End If
     End With
     
-    '‚±‚êˆÈ~‚Í‘±Œø‰Ê‚ª‘¦Œø‚Å‚ ‚éƒXƒyƒVƒƒƒ‹ƒpƒ[‚Ìˆ—
+    'ã“ã‚Œä»¥é™ã¯æŒç¶šåŠ¹æœãŒå³åŠ¹ã§ã‚ã‚‹ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼ã®å‡¦ç†
     
-    'ŒÂX‚ÌŒø‰Ê‚ğ“K—p
+    'å€‹ã€…ã®åŠ¹æœã‚’é©ç”¨
     For i = 1 To CountEffect
         With t
             Select Case EffectType(i)
-                Case "‚g‚o‰ñ•œ", "‚g‚o‘‰Á"
-                    'Œø‰Ê‚ª“K—p‰Â”\‚©‚Ç‚¤‚©”»’è
+                Case "ï¼¨ï¼°å›å¾©", "ï¼¨ï¼°å¢—åŠ "
+                    'åŠ¹æœãŒé©ç”¨å¯èƒ½ã‹ã©ã†ã‹åˆ¤å®š
                     If EffectLevel(i) > 0 Then
-                        If .IsConditionSatisfied("ƒ]ƒ“ƒr") Then
+                        If .IsConditionSatisfied("ã‚¾ãƒ³ãƒ“") Then
                             GoTo NextEffect
                         End If
                         If .HP = .MaxHP Then
@@ -776,9 +776,9 @@ Dim my_unit As Unit
                         Sleep 150
                     End If
                     
-                    '‚g‚o‚ğ‰ñ•œ‚³‚¹‚é
+                    'ï¼¨ï¼°ã‚’å›å¾©ã•ã›ã‚‹
                     tmp = .HP
-                    If EffectType(i) = "‚g‚o‘‰Á" Then
+                    If EffectType(i) = "ï¼¨ï¼°å¢—åŠ " Then
                         .HP = .HP + 1000 * EffectLevel(i)
                     Else
                         .RecoverHP 10 * EffectLevel(i)
@@ -801,20 +801,20 @@ Dim my_unit As Unit
                         End If
                         
                         If EffectLevel(i) >= 0 Then
-                            DisplaySysMessage .Nickname & "‚Ì" & Term("‚g‚o", t) & "‚ª" _
-                                & Format$(.HP - tmp) & "‰ñ•œ‚µ‚½B"
+                            DisplaySysMessage .Nickname & "ã®" & Term("ï¼¨ï¼°", t) & "ãŒ" _
+                                & Format$(.HP - tmp) & "å›å¾©ã—ãŸã€‚"
                         Else
-                            DisplaySysMessage .Nickname & "‚Ì" & Term("‚g‚o", t) & "‚ª" _
-                                & Format$(tmp - .HP) & "Œ¸­‚µ‚½B"
+                            DisplaySysMessage .Nickname & "ã®" & Term("ï¼¨ï¼°", t) & "ãŒ" _
+                                & Format$(tmp - .HP) & "æ¸›å°‘ã—ãŸã€‚"
                         End If
                     End If
                     
                     need_update = True
                     
-                Case "‚d‚m‰ñ•œ", "‚d‚m‘‰Á"
-                    'Œø‰Ê‚ª“K—p‰Â”\‚©‚Ç‚¤‚©”»’è
+                Case "ï¼¥ï¼®å›å¾©", "ï¼¥ï¼®å¢—åŠ "
+                    'åŠ¹æœãŒé©ç”¨å¯èƒ½ã‹ã©ã†ã‹åˆ¤å®š
                     If EffectLevel(i) > 0 Then
-                        If .IsConditionSatisfied("ƒ]ƒ“ƒr") Then
+                        If .IsConditionSatisfied("ã‚¾ãƒ³ãƒ“") Then
                             GoTo NextEffect
                         End If
                         If .EN = .MaxEN Then
@@ -839,9 +839,9 @@ Dim my_unit As Unit
                         Sleep 150
                     End If
                     
-                    '‚d‚m‚ğ‰ñ•œ‚³‚¹‚é
+                    'ï¼¥ï¼®ã‚’å›å¾©ã•ã›ã‚‹
                     tmp = .EN
-                    If EffectType(i) = "‚d‚m‘‰Á" Then
+                    If EffectType(i) = "ï¼¥ï¼®å¢—åŠ " Then
                         .EN = .EN + 10 * EffectLevel(i)
                     Else
                         .RecoverEN 10 * EffectLevel(i)
@@ -864,20 +864,20 @@ Dim my_unit As Unit
                         End If
                         
                         If EffectLevel(i) >= 0 Then
-                            DisplaySysMessage .Nickname & "‚Ì" & Term("‚d‚m", t) & "‚ª" _
-                                & Format$(.EN - tmp) & "‰ñ•œ‚µ‚½B"
+                            DisplaySysMessage .Nickname & "ã®" & Term("ï¼¥ï¼®", t) & "ãŒ" _
+                                & Format$(.EN - tmp) & "å›å¾©ã—ãŸã€‚"
                         Else
-                            DisplaySysMessage .Nickname & "‚Ì" & Term("‚d‚m", t) & "‚ª" _
-                                & Format$(tmp - .EN) & "Œ¸­‚µ‚½B"
+                            DisplaySysMessage .Nickname & "ã®" & Term("ï¼¥ï¼®", t) & "ãŒ" _
+                                & Format$(tmp - .EN) & "æ¸›å°‘ã—ãŸã€‚"
                         End If
                     End If
                     
                     need_update = True
                     
-                Case "—ì—Í‰ñ•œ", "—ì—Í‘‰Á"
-                    'Œø‰Ê‚ª“K—p‰Â”\‚©‚Ç‚¤‚©”»’è
+                Case "éœŠåŠ›å›å¾©", "éœŠåŠ›å¢—åŠ "
+                    'åŠ¹æœãŒé©ç”¨å¯èƒ½ã‹ã©ã†ã‹åˆ¤å®š
                     If EffectLevel(i) > 0 Then
-                        If .IsConditionSatisfied("ƒ]ƒ“ƒr") Then
+                        If .IsConditionSatisfied("ã‚¾ãƒ³ãƒ“") Then
                             GoTo NextEffect
                         End If
                         If .MainPilot.Plana = .MainPilot.MaxPlana Then
@@ -902,10 +902,10 @@ Dim my_unit As Unit
                         Sleep 150
                     End If
                     
-                    '—ì—Í‚ğ‰ñ•œ‚³‚¹‚é
+                    'éœŠåŠ›ã‚’å›å¾©ã•ã›ã‚‹
                     With .MainPilot
                         tmp = .Plana
-                        If EffectType(i) = "—ì—Í‘‰Á" Then
+                        If EffectType(i) = "éœŠåŠ›å¢—åŠ " Then
                             .Plana = .Plana + 10 * EffectLevel(i)
                         Else
                             .Plana = .Plana + .MaxPlana * EffectLevel(i) \ 10
@@ -929,20 +929,20 @@ Dim my_unit As Unit
                         End If
                         
                         If EffectLevel(i) >= 0 Then
-                            DisplaySysMessage .Nickname & "‚Ì" & .MainPilot.SkillName0("—ì—Í") _
-                                & "‚ª" & Format$(.MainPilot.Plana - tmp) & "‰ñ•œ‚µ‚½B"
+                            DisplaySysMessage .Nickname & "ã®" & .MainPilot.SkillName0("éœŠåŠ›") _
+                                & "ãŒ" & Format$(.MainPilot.Plana - tmp) & "å›å¾©ã—ãŸã€‚"
                         Else
-                            DisplaySysMessage .Nickname & "‚Ì" & .MainPilot.SkillName0("—ì—Í") _
-                                & "‚ª" & Format$(tmp - .MainPilot.Plana) & "Œ¸­‚µ‚½B"
+                            DisplaySysMessage .Nickname & "ã®" & .MainPilot.SkillName0("éœŠåŠ›") _
+                                & "ãŒ" & Format$(tmp - .MainPilot.Plana) & "æ¸›å°‘ã—ãŸã€‚"
                         End If
                     End If
                     
                     need_update = True
                     
-                Case "‚r‚o‰ñ•œ"
-                    'Œø‰Ê‚ª“K—p‰Â”\‚©‚Ç‚¤‚©”»’è
+                Case "ï¼³ï¼°å›å¾©"
+                    'åŠ¹æœãŒé©ç”¨å¯èƒ½ã‹ã©ã†ã‹åˆ¤å®š
                     If EffectLevel(i) > 0 Then
-                        If .IsConditionSatisfied("ƒ]ƒ“ƒr") Then
+                        If .IsConditionSatisfied("ã‚¾ãƒ³ãƒ“") Then
                             GoTo NextEffect
                         End If
                     End If
@@ -964,15 +964,15 @@ Dim my_unit As Unit
                         Sleep 150
                     End If
                     
-                    '‰ñ•œ‘ÎÛ‚Æ‚È‚éƒpƒCƒƒbƒg”‚ğZo
+                    'å›å¾©å¯¾è±¡ã¨ãªã‚‹ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆæ•°ã‚’ç®—å‡º
                     n = .CountPilot + .CountSupport
-                    If .IsFeatureAvailable("’Ç‰ÁƒTƒ|[ƒg") Then
+                    If .IsFeatureAvailable("è¿½åŠ ã‚µãƒãƒ¼ãƒˆ") Then
                         n = n + 1
                     End If
                     
-                    '‚r‚o‚ğ‰ñ•œ
+                    'ï¼³ï¼°ã‚’å›å¾©
                     If n = 1 Then
-                        'ƒƒCƒ“ƒpƒCƒƒbƒg‚Ì‚İ‚Ì‚r‚o‚ğ‰ñ•œ
+                        'ãƒ¡ã‚¤ãƒ³ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®ã¿ã®ï¼³ï¼°ã‚’å›å¾©
                         tmp = .MainPilot.SP
                         .MainPilot.SP = .MainPilot.SP + 10 * EffectLevel(i)
                         
@@ -987,17 +987,17 @@ Dim my_unit As Unit
                             displayed_string = True
                             
                             If EffectLevel(i) >= 0 Then
-                                DisplaySysMessage .MainPilot.Nickname & "‚Ì" _
-                                    & Term("‚r‚o", t) & "‚ª" _
-                                    & Format$(.MainPilot.SP - tmp) & "‰ñ•œ‚µ‚½B"
+                                DisplaySysMessage .MainPilot.Nickname & "ã®" _
+                                    & Term("ï¼³ï¼°", t) & "ãŒ" _
+                                    & Format$(.MainPilot.SP - tmp) & "å›å¾©ã—ãŸã€‚"
                             Else
-                                DisplaySysMessage .MainPilot.Nickname & "‚Ì" _
-                                    & Term("‚r‚o", t) & "‚ª" _
-                                    & Format$(tmp - .MainPilot.SP) & "Œ¸­‚µ‚½B"
+                                DisplaySysMessage .MainPilot.Nickname & "ã®" _
+                                    & Term("ï¼³ï¼°", t) & "ãŒ" _
+                                    & Format$(tmp - .MainPilot.SP) & "æ¸›å°‘ã—ãŸã€‚"
                             End If
                         End If
                     Else
-                        'ƒƒCƒ“ƒpƒCƒƒbƒg‚Ì‚r‚o‚ğ‰ñ•œ
+                        'ãƒ¡ã‚¤ãƒ³ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®ï¼³ï¼°ã‚’å›å¾©
                         tmp = .MainPilot.SP
                         .MainPilot.SP = .MainPilot.SP _
                             + 2 * EffectLevel(i) + 10 * EffectLevel(i) \ n
@@ -1013,17 +1013,17 @@ Dim my_unit As Unit
                             displayed_string = True
                             
                             If EffectLevel(i) >= 0 Then
-                                DisplaySysMessage .MainPilot.Nickname & "‚Ì" _
-                                    & Term("‚r‚o", t) & "‚ª" _
-                                    & Format$(.MainPilot.SP - tmp) & "‰ñ•œ‚µ‚½B"
+                                DisplaySysMessage .MainPilot.Nickname & "ã®" _
+                                    & Term("ï¼³ï¼°", t) & "ãŒ" _
+                                    & Format$(.MainPilot.SP - tmp) & "å›å¾©ã—ãŸã€‚"
                             Else
-                                DisplaySysMessage .MainPilot.Nickname & "‚Ì" _
-                                    & Term("‚r‚o", t) & "‚ª" _
-                                    & Format$(tmp - .MainPilot.SP) & "Œ¸­‚µ‚½B"
+                                DisplaySysMessage .MainPilot.Nickname & "ã®" _
+                                    & Term("ï¼³ï¼°", t) & "ãŒ" _
+                                    & Format$(tmp - .MainPilot.SP) & "æ¸›å°‘ã—ãŸã€‚"
                             End If
                         End If
                         
-                        'ƒTƒuƒpƒCƒƒbƒg‚Ì‚r‚o‚ğ‰ñ•œ
+                        'ã‚µãƒ–ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®ï¼³ï¼°ã‚’å›å¾©
                         For j = 2 To .CountPilot
                             With .Pilot(j)
                                 tmp = .SP
@@ -1031,20 +1031,20 @@ Dim my_unit As Unit
                                 If Not is_event Then
                                     If .SP <> tmp Then
                                         If EffectLevel(i) >= 0 Then
-                                            DisplaySysMessage .Nickname & "‚Ì" _
-                                                & Term("‚r‚o", t) & "‚ª" _
-                                                & Format$(.SP - tmp) & "‰ñ•œ‚µ‚½B"
+                                            DisplaySysMessage .Nickname & "ã®" _
+                                                & Term("ï¼³ï¼°", t) & "ãŒ" _
+                                                & Format$(.SP - tmp) & "å›å¾©ã—ãŸã€‚"
                                         Else
-                                            DisplaySysMessage .Nickname & "‚Ì" _
-                                                & Term("‚r‚o", t) & "‚ª" _
-                                                & Format$(tmp - .SP) & "Œ¸­‚µ‚½B"
+                                            DisplaySysMessage .Nickname & "ã®" _
+                                                & Term("ï¼³ï¼°", t) & "ãŒ" _
+                                                & Format$(tmp - .SP) & "æ¸›å°‘ã—ãŸã€‚"
                                         End If
                                     End If
                                 End If
                             End With
                         Next
                         
-                        'ƒTƒ|[ƒgƒpƒCƒƒbƒg‚Ì‚r‚o‚ğ‰ñ•œ
+                        'ã‚µãƒãƒ¼ãƒˆãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®ï¼³ï¼°ã‚’å›å¾©
                         For j = 1 To .CountSupport
                             With .Support(j)
                                 tmp = .SP
@@ -1052,34 +1052,34 @@ Dim my_unit As Unit
                                 If Not is_event Then
                                     If .SP <> tmp Then
                                         If EffectLevel(i) >= 0 Then
-                                            DisplaySysMessage .Nickname & "‚Ì" _
-                                                & Term("‚r‚o", t) & "‚ª" _
-                                                & Format$(.SP - tmp) & "‰ñ•œ‚µ‚½B"
+                                            DisplaySysMessage .Nickname & "ã®" _
+                                                & Term("ï¼³ï¼°", t) & "ãŒ" _
+                                                & Format$(.SP - tmp) & "å›å¾©ã—ãŸã€‚"
                                         Else
-                                            DisplaySysMessage .Nickname & "‚Ì" _
-                                                & Term("‚r‚o", t) & "‚ª" _
-                                                & Format$(tmp - .SP) & "Œ¸­‚µ‚½B"
+                                            DisplaySysMessage .Nickname & "ã®" _
+                                                & Term("ï¼³ï¼°", t) & "ãŒ" _
+                                                & Format$(tmp - .SP) & "æ¸›å°‘ã—ãŸã€‚"
                                         End If
                                     End If
                                 End If
                             End With
                         Next
                         
-                        '’Ç‰ÁƒTƒ|[ƒgƒpƒCƒƒbƒg‚Ì‚r‚o‚ğ‰ñ•œ
-                        If .IsFeatureAvailable("’Ç‰ÁƒTƒ|[ƒg") Then
+                        'è¿½åŠ ã‚µãƒãƒ¼ãƒˆãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®ï¼³ï¼°ã‚’å›å¾©
+                        If .IsFeatureAvailable("è¿½åŠ ã‚µãƒãƒ¼ãƒˆ") Then
                             With .AdditionalSupport
                                 tmp = .SP
                                 .SP = .SP + 2 * EffectLevel(i) + 10 * EffectLevel(i) \ n
                                 If Not is_event Then
                                     If .SP <> tmp Then
                                         If EffectLevel(i) >= 0 Then
-                                            DisplaySysMessage .Nickname & "‚Ì" _
-                                                & Term("‚r‚o", t) & "‚ª" _
-                                                & Format$(.SP - tmp) & "‰ñ•œ‚µ‚½B"
+                                            DisplaySysMessage .Nickname & "ã®" _
+                                                & Term("ï¼³ï¼°", t) & "ãŒ" _
+                                                & Format$(.SP - tmp) & "å›å¾©ã—ãŸã€‚"
                                         Else
-                                            DisplaySysMessage .Nickname & "‚Ì" _
-                                                & Term("‚r‚o", t) & "‚ª" _
-                                                & Format$(tmp - .SP) & "Œ¸­‚µ‚½B"
+                                            DisplaySysMessage .Nickname & "ã®" _
+                                                & Term("ï¼³ï¼°", t) & "ãŒ" _
+                                                & Format$(tmp - .SP) & "æ¸›å°‘ã—ãŸã€‚"
                                         End If
                                     End If
                                 End If
@@ -1088,13 +1088,13 @@ Dim my_unit As Unit
                     End If
                     
                     If Not is_event Then
-                        If TargetType = "‘S–¡•û" Then
+                        If TargetType = "å…¨å‘³æ–¹" Then
                             Sleep 150
                         End If
                     End If
                     
-                Case "‘•“U"
-                    'Œø‰Ê‚ª“K—p‰Â”\‚©‚Ç‚¤‚©”»’è
+                Case "è£…å¡«"
+                    'åŠ¹æœãŒé©ç”¨å¯èƒ½ã‹ã©ã†ã‹åˆ¤å®š
                     For j = 1 To .CountWeapon
                         If .Bullet(j) < .MaxBullet(j) Then
                             Exit For
@@ -1120,40 +1120,40 @@ Dim my_unit As Unit
                         End If
                     End If
                     
-                    '’e–ò‚ğ•â‹‹
+                    'å¼¾è–¬ã‚’è£œçµ¦
                     .BulletSupply
                     
                     If Not is_event Then
-                        DisplaySysMessage .Nickname & "‚Ì’e”‚ª‘S‰õ‚µ‚½B"
+                        DisplaySysMessage .Nickname & "ã®å¼¾æ•°ãŒå…¨å¿«ã—ãŸã€‚"
                     End If
                     
-                Case "ó‘Ô‰ñ•œ"
-                    If .ConditionLifetime("UŒ‚•s”\") <= 0 _
-                        And .ConditionLifetime("ˆÚ“®•s”\") <= 0 _
-                        And .ConditionLifetime("‘•b—ò‰»") <= 0 _
-                        And .ConditionLifetime("¬—") <= 0 _
-                        And .ConditionLifetime("–£—¹") <= 0 _
-                        And .ConditionLifetime("œßˆË") <= 0 _
-                        And .ConditionLifetime("Î‰»") <= 0 _
-                        And .ConditionLifetime("“€Œ‹") <= 0 _
-                        And .ConditionLifetime("–ƒáƒ") <= 0 _
-                        And .ConditionLifetime("‡–°") <= 0 _
-                        And .ConditionLifetime("“Å") <= 0 _
-                        And .ConditionLifetime("–Ó–Ú") <= 0 _
-                        And .ConditionLifetime("Šh—") <= 0 _
-                        And .ConditionLifetime("‹°•|") <= 0 _
-                        And .ConditionLifetime("’¾–Ù") <= 0 _
-                        And .ConditionLifetime("ƒ]ƒ“ƒr") <= 0 _
-                        And .ConditionLifetime("‰ñ•œ•s”\") <= 0 _
-                        And .ConditionLifetime("ƒI[ƒ‰g—p•s”\") <= 0 And .ConditionLifetime("’´”\—Íg—p•s”\") <= 0 _
-                        And .ConditionLifetime("“¯’²—¦g—p•s”\") <= 0 And .ConditionLifetime("’´Š´Šog—p•s”\") <= 0 _
-                        And .ConditionLifetime("’mŠo‹­‰»g—p•s”\") <= 0 And .ConditionLifetime("—ì—Íg—p•s”\") <= 0 _
-                        And .ConditionLifetime("pg—p•s”\") <= 0 And .ConditionLifetime("‹Zg—p•s”\") <= 0 _
+                Case "çŠ¶æ…‹å›å¾©"
+                    If .ConditionLifetime("æ”»æ’ƒä¸èƒ½") <= 0 _
+                        And .ConditionLifetime("ç§»å‹•ä¸èƒ½") <= 0 _
+                        And .ConditionLifetime("è£…ç”²åŠ£åŒ–") <= 0 _
+                        And .ConditionLifetime("æ··ä¹±") <= 0 _
+                        And .ConditionLifetime("é­…äº†") <= 0 _
+                        And .ConditionLifetime("æ†‘ä¾") <= 0 _
+                        And .ConditionLifetime("çŸ³åŒ–") <= 0 _
+                        And .ConditionLifetime("å‡çµ") <= 0 _
+                        And .ConditionLifetime("éº»ç—º") <= 0 _
+                        And .ConditionLifetime("ç¡çœ ") <= 0 _
+                        And .ConditionLifetime("æ¯’") <= 0 _
+                        And .ConditionLifetime("ç›²ç›®") <= 0 _
+                        And .ConditionLifetime("æ’¹ä¹±") <= 0 _
+                        And .ConditionLifetime("ææ€–") <= 0 _
+                        And .ConditionLifetime("æ²ˆé»™") <= 0 _
+                        And .ConditionLifetime("ã‚¾ãƒ³ãƒ“") <= 0 _
+                        And .ConditionLifetime("å›å¾©ä¸èƒ½") <= 0 _
+                        And .ConditionLifetime("ã‚ªãƒ¼ãƒ©ä½¿ç”¨ä¸èƒ½") <= 0 And .ConditionLifetime("è¶…èƒ½åŠ›ä½¿ç”¨ä¸èƒ½") <= 0 _
+                        And .ConditionLifetime("åŒèª¿ç‡ä½¿ç”¨ä¸èƒ½") <= 0 And .ConditionLifetime("è¶…æ„Ÿè¦šä½¿ç”¨ä¸èƒ½") <= 0 _
+                        And .ConditionLifetime("çŸ¥è¦šå¼·åŒ–ä½¿ç”¨ä¸èƒ½") <= 0 And .ConditionLifetime("éœŠåŠ›ä½¿ç”¨ä¸èƒ½") <= 0 _
+                        And .ConditionLifetime("è¡“ä½¿ç”¨ä¸èƒ½") <= 0 And .ConditionLifetime("æŠ€ä½¿ç”¨ä¸èƒ½") <= 0 _
                     Then
                         For j = 1 To .CountCondition
                             If Len(.Condition(j)) > 6 Then
-                                'ãAŒø‘®«‚Íó‘Ô‰ñ•œ‚©‚çœŠOB
-                                If Right$(.Condition(j), 6) = "‘®«g—p•s”\" Then
+                                'å¼±ã€åŠ¹å±æ€§ã¯çŠ¶æ…‹å›å¾©ã‹ã‚‰é™¤å¤–ã€‚
+                                If Right$(.Condition(j), 6) = "å±æ€§ä½¿ç”¨ä¸èƒ½" Then
                                     If .ConditionLifetime(.Condition(j)) > 0 Then
                                         Exit For
                                     End If
@@ -1181,87 +1181,87 @@ Dim my_unit As Unit
                         End If
                     End If
                     
-                    '‘S‚Ä‚ÌƒXƒe[ƒ^ƒXˆÙí‚ğ‰ñ•œ
-                    If .ConditionLifetime("UŒ‚•s”\") > 0 Then
-                        .DeleteCondition "UŒ‚•s”\"
+                    'å…¨ã¦ã®ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ç•°å¸¸ã‚’å›å¾©
+                    If .ConditionLifetime("æ”»æ’ƒä¸èƒ½") > 0 Then
+                        .DeleteCondition "æ”»æ’ƒä¸èƒ½"
                     End If
-                    If .ConditionLifetime("ˆÚ“®•s”\") > 0 Then
-                        .DeleteCondition "ˆÚ“®•s”\"
+                    If .ConditionLifetime("ç§»å‹•ä¸èƒ½") > 0 Then
+                        .DeleteCondition "ç§»å‹•ä¸èƒ½"
                     End If
-                    If .ConditionLifetime("‘•b—ò‰»") > 0 Then
-                        .DeleteCondition "‘•b—ò‰»"
+                    If .ConditionLifetime("è£…ç”²åŠ£åŒ–") > 0 Then
+                        .DeleteCondition "è£…ç”²åŠ£åŒ–"
                     End If
-                    If .ConditionLifetime("¬—") > 0 Then
-                        .DeleteCondition "¬—"
+                    If .ConditionLifetime("æ··ä¹±") > 0 Then
+                        .DeleteCondition "æ··ä¹±"
                     End If
-                    If .ConditionLifetime("–£—¹") > 0 Then
-                        .DeleteCondition "–£—¹"
+                    If .ConditionLifetime("é­…äº†") > 0 Then
+                        .DeleteCondition "é­…äº†"
                     End If
-                    If .ConditionLifetime("œßˆË") > 0 Then
-                        .DeleteCondition "œßˆË"
+                    If .ConditionLifetime("æ†‘ä¾") > 0 Then
+                        .DeleteCondition "æ†‘ä¾"
                     End If
-                    If .ConditionLifetime("Î‰»") > 0 Then
-                        .DeleteCondition "Î‰»"
+                    If .ConditionLifetime("çŸ³åŒ–") > 0 Then
+                        .DeleteCondition "çŸ³åŒ–"
                     End If
-                    If .ConditionLifetime("“€Œ‹") > 0 Then
-                        .DeleteCondition "“€Œ‹"
+                    If .ConditionLifetime("å‡çµ") > 0 Then
+                        .DeleteCondition "å‡çµ"
                     End If
-                    If .ConditionLifetime("–ƒáƒ") > 0 Then
-                        .DeleteCondition "–ƒáƒ"
+                    If .ConditionLifetime("éº»ç—º") > 0 Then
+                        .DeleteCondition "éº»ç—º"
                     End If
-                    If .ConditionLifetime("‡–°") > 0 Then
-                        .DeleteCondition "‡–°"
+                    If .ConditionLifetime("ç¡çœ ") > 0 Then
+                        .DeleteCondition "ç¡çœ "
                     End If
-                    If .ConditionLifetime("“Å") > 0 Then
-                        .DeleteCondition "“Å"
+                    If .ConditionLifetime("æ¯’") > 0 Then
+                        .DeleteCondition "æ¯’"
                     End If
-                    If .ConditionLifetime("–Ó–Ú") > 0 Then
-                        .DeleteCondition "–Ó–Ú"
+                    If .ConditionLifetime("ç›²ç›®") > 0 Then
+                        .DeleteCondition "ç›²ç›®"
                     End If
-                    If .ConditionLifetime("Šh—") > 0 Then
-                        .DeleteCondition "Šh—"
+                    If .ConditionLifetime("æ’¹ä¹±") > 0 Then
+                        .DeleteCondition "æ’¹ä¹±"
                     End If
-                    If .ConditionLifetime("‹°•|") > 0 Then
-                        .DeleteCondition "‹°•|"
+                    If .ConditionLifetime("ææ€–") > 0 Then
+                        .DeleteCondition "ææ€–"
                     End If
-                    If .ConditionLifetime("’¾–Ù") > 0 Then
-                        .DeleteCondition "’¾–Ù"
+                    If .ConditionLifetime("æ²ˆé»™") > 0 Then
+                        .DeleteCondition "æ²ˆé»™"
                     End If
-                    If .ConditionLifetime("ƒ]ƒ“ƒr") > 0 Then
-                        .DeleteCondition "ƒ]ƒ“ƒr"
+                    If .ConditionLifetime("ã‚¾ãƒ³ãƒ“") > 0 Then
+                        .DeleteCondition "ã‚¾ãƒ³ãƒ“"
                     End If
-                    If .ConditionLifetime("‰ñ•œ•s”\") > 0 Then
-                        .DeleteCondition "‰ñ•œ•s”\"
+                    If .ConditionLifetime("å›å¾©ä¸èƒ½") > 0 Then
+                        .DeleteCondition "å›å¾©ä¸èƒ½"
                     End If
                     
-                    If .ConditionLifetime("ƒI[ƒ‰g—p•s”\") > 0 Then
-                        .DeleteCondition "ƒI[ƒ‰g—p•s”\"
+                    If .ConditionLifetime("ã‚ªãƒ¼ãƒ©ä½¿ç”¨ä¸èƒ½") > 0 Then
+                        .DeleteCondition "ã‚ªãƒ¼ãƒ©ä½¿ç”¨ä¸èƒ½"
                     End If
-                    If .ConditionLifetime("’´”\—Íg—p•s”\") > 0 Then
-                        .DeleteCondition "’´”\—Íg—p•s”\"
+                    If .ConditionLifetime("è¶…èƒ½åŠ›ä½¿ç”¨ä¸èƒ½") > 0 Then
+                        .DeleteCondition "è¶…èƒ½åŠ›ä½¿ç”¨ä¸èƒ½"
                     End If
-                    If .ConditionLifetime("“¯’²—¦g—p•s”\") > 0 Then
-                        .DeleteCondition "“¯’²—¦g—p•s”\"
+                    If .ConditionLifetime("åŒèª¿ç‡ä½¿ç”¨ä¸èƒ½") > 0 Then
+                        .DeleteCondition "åŒèª¿ç‡ä½¿ç”¨ä¸èƒ½"
                     End If
-                    If .ConditionLifetime("’´Š´Šog—p•s”\") > 0 Then
-                        .DeleteCondition "’´Š´Šog—p•s”\"
+                    If .ConditionLifetime("è¶…æ„Ÿè¦šä½¿ç”¨ä¸èƒ½") > 0 Then
+                        .DeleteCondition "è¶…æ„Ÿè¦šä½¿ç”¨ä¸èƒ½"
                     End If
-                    If .ConditionLifetime("’mŠo‹­‰»g—p•s”\") > 0 Then
-                        .DeleteCondition "’mŠo‹­‰»g—p•s”\"
+                    If .ConditionLifetime("çŸ¥è¦šå¼·åŒ–ä½¿ç”¨ä¸èƒ½") > 0 Then
+                        .DeleteCondition "çŸ¥è¦šå¼·åŒ–ä½¿ç”¨ä¸èƒ½"
                     End If
-                    If .ConditionLifetime("—ì—Íg—p•s”\") > 0 Then
-                        .DeleteCondition "—ì—Íg—p•s”\"
+                    If .ConditionLifetime("éœŠåŠ›ä½¿ç”¨ä¸èƒ½") > 0 Then
+                        .DeleteCondition "éœŠåŠ›ä½¿ç”¨ä¸èƒ½"
                     End If
-                    If .ConditionLifetime("pg—p•s”\") > 0 Then
-                        .DeleteCondition "pg—p•s”\"
+                    If .ConditionLifetime("è¡“ä½¿ç”¨ä¸èƒ½") > 0 Then
+                        .DeleteCondition "è¡“ä½¿ç”¨ä¸èƒ½"
                     End If
-                    If .ConditionLifetime("‹Zg—p•s”\") > 0 Then
-                        .DeleteCondition "‹Zg—p•s”\"
+                    If .ConditionLifetime("æŠ€ä½¿ç”¨ä¸èƒ½") > 0 Then
+                        .DeleteCondition "æŠ€ä½¿ç”¨ä¸èƒ½"
                     End If
                     For j = 1 To .CountCondition
                         If Len(.Condition(j)) > 6 Then
-                            'ãAŒø‘®«‚Íó‘Ô‰ñ•œ‚©‚çœŠOB
-                            If Right$(.Condition(j), 6) = "‘®«g—p•s”\" Then
+                            'å¼±ã€åŠ¹å±æ€§ã¯çŠ¶æ…‹å›å¾©ã‹ã‚‰é™¤å¤–ã€‚
+                            If Right$(.Condition(j), 6) = "å±æ€§ä½¿ç”¨ä¸èƒ½" Then
                                 If .ConditionLifetime(.Condition(j)) > 0 Then
                                     .DeleteCondition .Condition(j)
                                 End If
@@ -1270,20 +1270,20 @@ Dim my_unit As Unit
                     Next
                     
                     If Not is_event Then
-                        DisplaySysMessage .Nickname & "‚Ìó‘Ô‚ª‰ñ•œ‚µ‚½B"
+                        DisplaySysMessage .Nickname & "ã®çŠ¶æ…‹ãŒå›å¾©ã—ãŸã€‚"
                     End If
                     
-                Case "s“®”‰ñ•œ"
-                    'Œø‰Ê‚ª“K—p‰Â”\‚©‚Ç‚¤‚©”»’è
+                Case "è¡Œå‹•æ•°å›å¾©"
+                    'åŠ¹æœãŒé©ç”¨å¯èƒ½ã‹ã©ã†ã‹åˆ¤å®š
                     If .Action > 0 Or .MaxAction = 0 Then
                         GoTo NextEffect
                     End If
                     
-                    's“®”‚ğ‰ñ•œ‚³‚¹‚é
+                    'è¡Œå‹•æ•°ã‚’å›å¾©ã•ã›ã‚‹
                     .UsedAction = .UsedAction - 1
                     
-                    '‘¼‚ÌŒø‰Ê‚Ì•\¦‚Ì‚½‚ß‚ÉƒƒbƒZ[ƒWƒEƒBƒ“ƒhƒE‚ª•\¦‚³‚ê‚Ä‚¢‚é‚Ì‚Å
-                    '‚È‚¯‚ê‚Î“Á‚ÉƒƒbƒZ[ƒW‚Í•\¦‚µ‚È‚¢ (Œø‰Ê‚ÍŒ©‚ê‚Î•ª‚©‚é‚Ì‚Å)
+                    'ä»–ã®åŠ¹æœã®è¡¨ç¤ºã®ãŸã‚ã«ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãŒè¡¨ç¤ºã•ã‚Œã¦ã„ã‚‹ã®ã§
+                    'ãªã‘ã‚Œã°ç‰¹ã«ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã¯è¡¨ç¤ºã—ãªã„ (åŠ¹æœã¯è¦‹ã‚Œã°åˆ†ã‹ã‚‹ã®ã§)
                     If Not is_event Then
                         If frmMessage.Visible Then
                             If t Is SelectedUnit Then
@@ -1292,17 +1292,17 @@ Dim my_unit As Unit
                                 UpdateMessageForm t, SelectedUnit
                             End If
                             
-                            DisplaySysMessage .Nickname & "‚Ís“®‰Â”\‚É‚È‚Á‚½B"
+                            DisplaySysMessage .Nickname & "ã¯è¡Œå‹•å¯èƒ½ã«ãªã£ãŸã€‚"
                         End If
                     End If
                     
-                Case "s“®”‘‰Á"
-                    'Œø‰Ê‚ª“K—p‰Â”\‚©‚Ç‚¤‚©”»’è
+                Case "è¡Œå‹•æ•°å¢—åŠ "
+                    'åŠ¹æœãŒé©ç”¨å¯èƒ½ã‹ã©ã†ã‹åˆ¤å®š
                     If .Action > 3 Or .MaxAction = 0 Then
                         GoTo NextEffect
                     End If
                     
-                    's“®”‚ğ‘‚â‚·
+                    'è¡Œå‹•æ•°ã‚’å¢—ã‚„ã™
                     .UsedAction = .UsedAction - 1
                     
                     If Not is_event Then
@@ -1320,28 +1320,28 @@ Dim my_unit As Unit
                             End If
                         End If
                         
-                        DisplaySysMessage .Nickname & "‚Í" & _
-                            StrConv(Format$(.Action), vbWide) & "‰ñs“®‰Â”\‚É‚È‚Á‚½B"
+                        DisplaySysMessage .Nickname & "ã¯" & _
+                            StrConv(Format$(.Action), vbWide) & "å›è¡Œå‹•å¯èƒ½ã«ãªã£ãŸã€‚"
                     End If
                     
-                Case "ƒXƒyƒVƒƒƒ‹ƒpƒ[", "¸_ƒRƒ}ƒ“ƒh"
+                Case "ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼", "ç²¾ç¥ã‚³ãƒãƒ³ãƒ‰"
                     If SPDList.IsDefined(EffectData(i)) Then
                         .MakeSpecialPowerInEffect EffectData(i), my_unit.MainPilot.ID
                     Else
-                        ErrorMessage "ƒXƒyƒVƒƒƒ‹ƒpƒ[u" & Name _
-                            & "v‚Åg‚í‚ê‚Ä‚¢‚éƒXƒyƒVƒƒƒ‹ƒpƒ[u" _
-                            & EffectData(i) & "v‚Í’è‹`‚³‚ê‚Ä‚¢‚Ü‚¹‚ñB"
+                        ErrorMessage "ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼ã€Œ" & Name _
+                            & "ã€ã§ä½¿ã‚ã‚Œã¦ã„ã‚‹ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼ã€Œ" _
+                            & EffectData(i) & "ã€ã¯å®šç¾©ã•ã‚Œã¦ã„ã¾ã›ã‚“ã€‚"
                     End If
                     
-                Case "‹C—Í‘‰Á"
-                    If .MainPilot.Personality = "‹@ŠB" Then
+                Case "æ°—åŠ›å¢—åŠ "
+                    If .MainPilot.Personality = "æ©Ÿæ¢°" Then
                         GoTo NextEffect
                     End If
                     If .MainPilot.Morale = .MainPilot.MaxMorale Then
                         GoTo NextEffect
                     End If
                     
-                    '‹C—Í‚ğ‘‰Á‚³‚¹‚é
+                    'æ°—åŠ›ã‚’å¢—åŠ ã•ã›ã‚‹
                     tmp = .MainPilot.Morale
                     .IncreaseMorale 10 * EffectLevel(i)
                     
@@ -1354,21 +1354,21 @@ Dim my_unit As Unit
                     
                     need_update = True
                     
-                Case "‹C—Í’á‰º"
-                    'Œø‰Ê‚ª“K—p‰Â”\‚©‚Ç‚¤‚©”»’è
-                    If .MainPilot.Personality = "‹@ŠB" Then
+                Case "æ°—åŠ›ä½ä¸‹"
+                    'åŠ¹æœãŒé©ç”¨å¯èƒ½ã‹ã©ã†ã‹åˆ¤å®š
+                    If .MainPilot.Personality = "æ©Ÿæ¢°" Then
                         GoTo NextEffect
                     End If
                     If .MainPilot.Morale = .MainPilot.MinMorale Then
                         GoTo NextEffect
                     End If
                     
-                    '‹C—Í‚ğ’á‰º‚³‚¹‚é
+                    'æ°—åŠ›ã‚’ä½ä¸‹ã•ã›ã‚‹
                     tmp = .MainPilot.Morale
                     .IncreaseMorale -10 * EffectLevel(i)
                     
                     If Not is_event Then
-                        If TargetType = "“G" Or TargetType = "‘S“G" Then
+                        If TargetType = "æ•µ" Or TargetType = "å…¨æ•µ" Then
                             If Not displayed_string Then
                                 DrawSysString .X, .Y, Format$(.MainPilot.Morale - tmp)
                                 displayed_string = True
@@ -1378,9 +1378,9 @@ Dim my_unit As Unit
                     
                     need_update = True
                     
-                Case "ƒ‰ƒ“ƒ_ƒ€ƒ_ƒ[ƒW"
-                    'Œø‰Ê‚ª“K—p‰Â”\‚©‚Ç‚¤‚©”»’è
-                    If .IsConditionSatisfied("–³“G") Then
+                Case "ãƒ©ãƒ³ãƒ€ãƒ ãƒ€ãƒ¡ãƒ¼ã‚¸"
+                    'åŠ¹æœãŒé©ç”¨å¯èƒ½ã‹ã©ã†ã‹åˆ¤å®š
+                    If .IsConditionSatisfied("ç„¡æ•µ") Then
                         GoTo NextEffect
                     End If
                     
@@ -1400,19 +1400,19 @@ Dim my_unit As Unit
                         End If
                     End If
                     
-                    'ƒ_ƒ[ƒW‚ğ—^‚¦‚é
+                    'ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆã‚‹
                     tmp = .HP
                     .HP = MaxLng(.HP - 10 * Dice(10 * EffectLevel(i)), 10)
-                    If TargetType = "‘S“G" Then
+                    If TargetType = "å…¨æ•µ" Then
                         Sleep 150
                     End If
                     
-                    '“Áê”\—Íu•sˆÀ’èv‚É‚æ‚é–\‘–ƒ`ƒFƒbƒN
-                    If .IsFeatureAvailable("•sˆÀ’è") Then
+                    'ç‰¹æ®Šèƒ½åŠ›ã€Œä¸å®‰å®šã€ã«ã‚ˆã‚‹æš´èµ°ãƒã‚§ãƒƒã‚¯
+                    If .IsFeatureAvailable("ä¸å®‰å®š") Then
                         If .HP <= .MaxHP \ 4 _
-                            And Not .IsConditionSatisfied("–\‘–") _
+                            And Not .IsConditionSatisfied("æš´èµ°") _
                         Then
-                            .AddCondition "–\‘–", -1
+                            .AddCondition "æš´èµ°", -1
                         End If
                     End If
                     
@@ -1428,15 +1428,15 @@ Dim my_unit As Unit
                             UpdateMessageForm t, SelectedUnit
                         End If
                         
-                        DisplaySysMessage .Nickname & "‚É" & Format$(tmp - .HP) _
-                            & "‚Ìƒ_ƒ[ƒW‚ğ—^‚¦‚½B"
+                        DisplaySysMessage .Nickname & "ã«" & Format$(tmp - .HP) _
+                            & "ã®ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä¸ãˆãŸã€‚"
                     End If
                     
                     need_update = True
                     
-                Case "‚g‚oŒ¸­"
-                    'Œø‰Ê‚ª“K—p‰Â”\‚©‚Ç‚¤‚©”»’è
-                    If .IsConditionSatisfied("–³“G") Then
+                Case "ï¼¨ï¼°æ¸›å°‘"
+                    'åŠ¹æœãŒé©ç”¨å¯èƒ½ã‹ã©ã†ã‹åˆ¤å®š
+                    If .IsConditionSatisfied("ç„¡æ•µ") Then
                         GoTo NextEffect
                     End If
                     
@@ -1456,19 +1456,19 @@ Dim my_unit As Unit
                         End If
                     End If
                     
-                    '‚g‚o‚ğŒ¸­‚³‚¹‚é
+                    'ï¼¨ï¼°ã‚’æ¸›å°‘ã•ã›ã‚‹
                     tmp = .HP
                     .HP = .HP - .HP * EffectLevel(i) \ 10
-                    If TargetType = "‘S“G" Then
+                    If TargetType = "å…¨æ•µ" Then
                         Sleep 150
                     End If
                     
-                    '“Áê”\—Íu•sˆÀ’èv‚É‚æ‚é–\‘–ƒ`ƒFƒbƒN
-                    If .IsFeatureAvailable("•sˆÀ’è") Then
+                    'ç‰¹æ®Šèƒ½åŠ›ã€Œä¸å®‰å®šã€ã«ã‚ˆã‚‹æš´èµ°ãƒã‚§ãƒƒã‚¯
+                    If .IsFeatureAvailable("ä¸å®‰å®š") Then
                         If .HP <= .MaxHP \ 4 _
-                            And Not .IsConditionSatisfied("–\‘–") _
+                            And Not .IsConditionSatisfied("æš´èµ°") _
                         Then
-                            .AddCondition "–\‘–", -1
+                            .AddCondition "æš´èµ°", -1
                         End If
                     End If
                     
@@ -1485,19 +1485,19 @@ Dim my_unit As Unit
                         End If
                         
                         If SelectedUnit Is t Then
-                            DisplaySysMessage .Nickname & "‚Ì" & Term("‚g‚o", t) & "‚ª" _
-                                & Format$(tmp - .HP) & "Œ¸­‚µ‚½B"
+                            DisplaySysMessage .Nickname & "ã®" & Term("ï¼¨ï¼°", t) & "ãŒ" _
+                                & Format$(tmp - .HP) & "æ¸›å°‘ã—ãŸã€‚"
                         Else
-                            DisplaySysMessage .Nickname & "‚Ì" & Term("‚g‚o", t) & "‚ğ" _
-                                & Format$(tmp - .HP) & "Œ¸­‚³‚¹‚½B"
+                            DisplaySysMessage .Nickname & "ã®" & Term("ï¼¨ï¼°", t) & "ã‚’" _
+                                & Format$(tmp - .HP) & "æ¸›å°‘ã•ã›ãŸã€‚"
                         End If
                     End If
                     
                     need_update = True
                     
-                Case "‚d‚mŒ¸­"
-                    'Œø‰Ê‚ª“K—p‰Â”\‚©‚Ç‚¤‚©”»’è
-                    If .IsConditionSatisfied("–³“G") Then
+                Case "ï¼¥ï¼®æ¸›å°‘"
+                    'åŠ¹æœãŒé©ç”¨å¯èƒ½ã‹ã©ã†ã‹åˆ¤å®š
+                    If .IsConditionSatisfied("ç„¡æ•µ") Then
                         GoTo NextEffect
                     End If
                     
@@ -1517,10 +1517,10 @@ Dim my_unit As Unit
                         End If
                     End If
                     
-                    '‚d‚m‚ğŒ¸­‚³‚¹‚é
+                    'ï¼¥ï¼®ã‚’æ¸›å°‘ã•ã›ã‚‹
                     tmp = .EN
                     .EN = .EN - .EN * EffectLevel(i) \ 10
-                    If TargetType = "‘S“G" Then
+                    If TargetType = "å…¨æ•µ" Then
                         Sleep 150
                     End If
                     
@@ -1536,109 +1536,109 @@ Dim my_unit As Unit
                     End If
                     
                     If SelectedUnit Is t Then
-                        DisplaySysMessage .Nickname & "‚Ì" & Term("‚d‚m", t) & "‚ª" _
-                            & Format$(tmp - .EN) & "Œ¸­‚µ‚½B"
+                        DisplaySysMessage .Nickname & "ã®" & Term("ï¼¥ï¼®", t) & "ãŒ" _
+                            & Format$(tmp - .EN) & "æ¸›å°‘ã—ãŸã€‚"
                     Else
-                        DisplaySysMessage .Nickname & "‚Ì" & Term("‚d‚m", t) & "‚ğ" _
-                            & Format$(tmp - .EN) & "Œ¸­‚³‚¹‚½B"
+                        DisplaySysMessage .Nickname & "ã®" & Term("ï¼¥ï¼®", t) & "ã‚’" _
+                            & Format$(tmp - .EN) & "æ¸›å°‘ã•ã›ãŸã€‚"
                     End If
                     
                     need_update = True
                     
-                Case "’ã@"
-                    '–¢¯•Ê‚Ìƒ†ƒjƒbƒg‚Í¯•Ê‚µ‚Ä‚¨‚­
-                    If IsOptionDefined("ƒ†ƒjƒbƒgî•ñ‰B•Á") Then
-                        If Not .IsConditionSatisfied("¯•ÊÏ‚İ") Then
-                            .AddCondition "¯•ÊÏ‚İ", -1, 0, "”ñ•\¦"
+                Case "åµå¯Ÿ"
+                    'æœªè­˜åˆ¥ã®ãƒ¦ãƒ‹ãƒƒãƒˆã¯è­˜åˆ¥ã—ã¦ãŠã
+                    If IsOptionDefined("ãƒ¦ãƒ‹ãƒƒãƒˆæƒ…å ±éš è”½") Then
+                        If Not .IsConditionSatisfied("è­˜åˆ¥æ¸ˆã¿") Then
+                            .AddCondition "è­˜åˆ¥æ¸ˆã¿", -1, 0, "éè¡¨ç¤º"
                             DisplayUnitStatus t
                         End If
                     End If
-                    If .IsConditionSatisfied("ƒ†ƒjƒbƒgî•ñ‰B•Á") Then
-                        .DeleteCondition "ƒ†ƒjƒbƒgî•ñ‰B•Á"
+                    If .IsConditionSatisfied("ãƒ¦ãƒ‹ãƒƒãƒˆæƒ…å ±éš è”½") Then
+                        .DeleteCondition "ãƒ¦ãƒ‹ãƒƒãƒˆæƒ…å ±éš è”½"
                         DisplayUnitStatus t
                     End If
                     
                     If Not frmMessage.Visible Then
                         OpenMessageForm
                     End If
-                    DisplayMessage "ƒVƒXƒeƒ€", _
-                          Term("‚g‚o", t, 6) & "F" _
+                    DisplayMessage "ã‚·ã‚¹ãƒ†ãƒ ", _
+                          Term("ï¼¨ï¼°", t, 6) & "ï¼š" _
                             & Format$(.HP) & "/" & Format$(.MaxHP) & ";" _
-                        & Term("‚d‚m", t, 6) & "F" _
+                        & Term("ï¼¥ï¼®", t, 6) & "ï¼š" _
                             & Format$(.EN) & "/" & Format$(.MaxEN) & ";" _
-                        & Term("‘‹à", t, 6) & "F" _
+                        & Term("è³‡é‡‘", t, 6) & "ï¼š" _
                             & Format$(.Value \ 2) & ";" _
-                        & "ŒoŒ±’lF" _
+                        & "çµŒé¨“å€¤ï¼š" _
                             & Format$(.ExpValue + .MainPilot.ExpValue)
-                    If .IsFeatureAvailable("ƒAƒCƒeƒ€Š—L") Then
-                        If IDList.IsDefined(.FeatureData("ƒAƒCƒeƒ€Š—L")) Then
-                            msg = IDList.Item(.FeatureData("ƒAƒCƒeƒ€Š—L")).Nickname _
-                                & "‚ğ“‚Ş‚±‚Æ‚ªo—ˆ‚éB;"
+                    If .IsFeatureAvailable("ã‚¢ã‚¤ãƒ†ãƒ æ‰€æœ‰") Then
+                        If IDList.IsDefined(.FeatureData("ã‚¢ã‚¤ãƒ†ãƒ æ‰€æœ‰")) Then
+                            msg = IDList.Item(.FeatureData("ã‚¢ã‚¤ãƒ†ãƒ æ‰€æœ‰")).Nickname _
+                                & "ã‚’ç›—ã‚€ã“ã¨ãŒå‡ºæ¥ã‚‹ã€‚;"
                         Else
-                            ErrorMessage .Name & "‚ÌŠ—LƒAƒCƒeƒ€u" _
-                                & .FeatureData("ƒAƒCƒeƒ€Š—L") _
-                                & "v‚Ìƒf[ƒ^‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ"
+                            ErrorMessage .Name & "ã®æ‰€æœ‰ã‚¢ã‚¤ãƒ†ãƒ ã€Œ" _
+                                & .FeatureData("ã‚¢ã‚¤ãƒ†ãƒ æ‰€æœ‰") _
+                                & "ã€ã®ãƒ‡ãƒ¼ã‚¿ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“"
                         End If
                     End If
-                    If .IsFeatureAvailable("ƒŒƒAƒAƒCƒeƒ€Š—L") Then
-                        If IDList.IsDefined(.FeatureData("ƒŒƒAƒAƒCƒeƒ€Š—L")) Then
+                    If .IsFeatureAvailable("ãƒ¬ã‚¢ã‚¢ã‚¤ãƒ†ãƒ æ‰€æœ‰") Then
+                        If IDList.IsDefined(.FeatureData("ãƒ¬ã‚¢ã‚¢ã‚¤ãƒ†ãƒ æ‰€æœ‰")) Then
                             If Len(msg) > 0 Then
-                                msg = msg & "‚Ü‚½A"
+                                msg = msg & "ã¾ãŸã€"
                             End If
-                            msg = msg & "‚Ü‚ê‚É" _
-                                & IDList.Item(.FeatureData("ƒŒƒAƒAƒCƒeƒ€Š—L")).Nickname _
-                                & "‚ğ“‚Ş‚±‚Æ‚ªo—ˆ‚éB;"
+                            msg = msg & "ã¾ã‚Œã«" _
+                                & IDList.Item(.FeatureData("ãƒ¬ã‚¢ã‚¢ã‚¤ãƒ†ãƒ æ‰€æœ‰")).Nickname _
+                                & "ã‚’ç›—ã‚€ã“ã¨ãŒå‡ºæ¥ã‚‹ã€‚;"
                          Else
-                            ErrorMessage .Name & "‚ÌŠ—LƒŒƒAƒAƒCƒeƒ€u" _
-                                & .FeatureData("ƒŒƒAƒAƒCƒeƒ€Š—L") _
-                                & "v‚Ìƒf[ƒ^‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ"
+                            ErrorMessage .Name & "ã®æ‰€æœ‰ãƒ¬ã‚¢ã‚¢ã‚¤ãƒ†ãƒ ã€Œ" _
+                                & .FeatureData("ãƒ¬ã‚¢ã‚¢ã‚¤ãƒ†ãƒ æ‰€æœ‰") _
+                                & "ã€ã®ãƒ‡ãƒ¼ã‚¿ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“"
                          End If
                     End If
-                    If .IsFeatureAvailable("ƒ‰[ƒjƒ“ƒO‰Â”\‹Z") Then
-                        msg = msg & "u" & .FeatureData("ƒ‰[ƒjƒ“ƒO‰Â”\‹Z") _
-                            & "v‚ğƒ‰[ƒjƒ“ƒO‰Â”\B"
+                    If .IsFeatureAvailable("ãƒ©ãƒ¼ãƒ‹ãƒ³ã‚°å¯èƒ½æŠ€") Then
+                        msg = msg & "ã€Œ" & .FeatureData("ãƒ©ãƒ¼ãƒ‹ãƒ³ã‚°å¯èƒ½æŠ€") _
+                            & "ã€ã‚’ãƒ©ãƒ¼ãƒ‹ãƒ³ã‚°å¯èƒ½ã€‚"
                     End If
                     If Len(msg) > 0 Then
-                        DisplayMessage "ƒVƒXƒeƒ€", msg
+                        DisplayMessage "ã‚·ã‚¹ãƒ†ãƒ ", msg
                     End If
                     
-                Case "©”š"
+                Case "è‡ªçˆ†"
                     OpenMessageForm t
                     .SuicidalExplosion
                     Exit Function
                     
-                Case "•œŠˆ"
-                    If Duration = "”j‰ó" Then
-                        '”j‰ó’¼Œã‚É•œŠˆ‚·‚éê‡
+                Case "å¾©æ´»"
+                    If Duration = "ç ´å£Š" Then
+                        'ç ´å£Šç›´å¾Œã«å¾©æ´»ã™ã‚‹å ´åˆ
                         .HP = .MaxHP
                     Else
-                        '”j‰óŒã‚É‘¼‚ÌƒpƒCƒƒbƒg‚Ì—Í‚Å•œŠˆ‚·‚éê‡
+                        'ç ´å£Šå¾Œã«ä»–ã®ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®åŠ›ã§å¾©æ´»ã™ã‚‹å ´åˆ
                         
-                        '•œŠˆ‚Í’ÊíŒ`‘Ô‚É–ß‚é
-                        If .IsFeatureAvailable("ƒm[ƒ}ƒ‹ƒ‚[ƒh") Then
-                            .Transform LIndex(.FeatureData("ƒm[ƒ}ƒ‹ƒ‚[ƒh"), 1)
+                        'å¾©æ´»æ™‚ã¯é€šå¸¸å½¢æ…‹ã«æˆ»ã‚‹
+                        If .IsFeatureAvailable("ãƒãƒ¼ãƒãƒ«ãƒ¢ãƒ¼ãƒ‰") Then
+                            .Transform LIndex(.FeatureData("ãƒãƒ¼ãƒãƒ«ãƒ¢ãƒ¼ãƒ‰"), 1)
                             Set t = .CurrentForm
                             n = 0
                         Else
-                            n = .ConditionLifetime("c‚èŠÔ")
+                            n = .ConditionLifetime("æ®‹ã‚Šæ™‚é–“")
                             
-                            'Œã‚ÌRest‚Åc‚èŠÔ‚ª0‚É‚È‚ç‚È‚¢‚æ‚¤‚Éˆê’UŠÔ‚ğŠª‚«–ß‚·
+                            'å¾Œã®Restã§æ®‹ã‚Šæ™‚é–“ãŒ0ã«ãªã‚‰ãªã„ã‚ˆã†ã«ä¸€æ—¦æ™‚é–“ã‚’å·»ãæˆ»ã™
                             If n > 0 Then
-                                .AddCondition "c‚èŠÔ", 10
+                                .AddCondition "æ®‹ã‚Šæ™‚é–“", 10
                             End If
                         End If
                         
-                        'ƒ†ƒjƒbƒg‚ğ•œŠˆ‚³‚¹‚é
+                        'ãƒ¦ãƒ‹ãƒƒãƒˆã‚’å¾©æ´»ã•ã›ã‚‹
                         With t
                             .FullRecover
                             .UsedAction = 0
                             .StandBy my_unit.X, my_unit.Y
                             .Rest
                             
-                            'c‚èŠÔ‚ğŒ³‚É–ß‚·
+                            'æ®‹ã‚Šæ™‚é–“ã‚’å…ƒã«æˆ»ã™
                             If n > 0 Then
-                                .DeleteCondition "c‚èŠÔ"
-                                .AddCondition "c‚èŠÔ", n
+                                .DeleteCondition "æ®‹ã‚Šæ™‚é–“"
+                                .AddCondition "æ®‹ã‚Šæ™‚é–“", n
                             End If
                             
                             RedrawScreen
@@ -1649,35 +1649,35 @@ Dim my_unit As Unit
                         If Not frmMessage.Visible Then
                             OpenMessageForm
                         End If
-                        If .IsMessageDefined("•œŠˆ") Then
-                            .PilotMessage "•œŠˆ"
+                        If .IsMessageDefined("å¾©æ´»") Then
+                            .PilotMessage "å¾©æ´»"
                         End If
-                        If .IsAnimationDefined("•œŠˆ") Then
-                            .PlayAnimation "•œŠˆ"
+                        If .IsAnimationDefined("å¾©æ´»") Then
+                            .PlayAnimation "å¾©æ´»"
                         Else
-                            .SpecialEffect "•œŠˆ"
+                            .SpecialEffect "å¾©æ´»"
                         End If
-                        DisplaySysMessage .Nickname & "‚Í•œŠˆ‚µ‚½B"
+                        DisplaySysMessage .Nickname & "ã¯å¾©æ´»ã—ãŸã€‚"
                     End With
                     
-                Case "ƒCƒxƒ“ƒg"
-                    'ƒCƒxƒ“ƒgƒRƒ}ƒ“ƒh‚Å’è‹`‚³‚ê‚½ƒXƒyƒVƒƒƒ‹ƒpƒ[
-                    '‘ÎÛƒ†ƒjƒbƒg‚h‚c‹y‚Ñ‘Šèƒ†ƒjƒbƒg‚h‚c‚ğİ’è
+                Case "ã‚¤ãƒ™ãƒ³ãƒˆ"
+                    'ã‚¤ãƒ™ãƒ³ãƒˆã‚³ãƒãƒ³ãƒ‰ã§å®šç¾©ã•ã‚ŒãŸã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼
+                    'å¯¾è±¡ãƒ¦ãƒ‹ãƒƒãƒˆï¼©ï¼¤åŠã³ç›¸æ‰‹ãƒ¦ãƒ‹ãƒƒãƒˆï¼©ï¼¤ã‚’è¨­å®š
                     Set SelectedUnitForEvent = my_unit.CurrentForm
                     Set SelectedTargetForEvent = .CurrentForm
-                    'w’è‚³‚ê‚½ƒTƒuƒ‹[ƒ`ƒ“‚ğÀs
+                    'æŒ‡å®šã•ã‚ŒãŸã‚µãƒ–ãƒ«ãƒ¼ãƒãƒ³ã‚’å®Ÿè¡Œ
                     GetValueAsString "Call(" & EffectData(i) & ")"
             End Select
         End With
 NextEffect:
     Next
     
-    'Unit‚ª•Ï‰»‚µ‚Ä‚µ‚Ü‚Á‚½ê‡‚ÍŒ³‚É–ß‚µ‚Ä‚¨‚­
+    'UnitãŒå¤‰åŒ–ã—ã¦ã—ã¾ã£ãŸå ´åˆã¯å…ƒã«æˆ»ã—ã¦ãŠã
     If Not my_unit Is p.Unit Then
         my_unit.CurrentForm.MainPilot
     End If
     
-    'ƒXƒe[ƒ^ƒX‚ÌXV‚ª•K—vH
+    'ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã®æ›´æ–°ãŒå¿…è¦ï¼Ÿ
     If need_update Then
         With t
             .CheckAutoHyperMode
@@ -1691,32 +1691,32 @@ NextEffect:
 End Function
 
 
-'ƒXƒyƒVƒƒƒ‹ƒpƒ[‚ª—LŒø‚Èƒ^[ƒQƒbƒg‚Ì‘”‚ğ•Ô‚·
-'(ƒpƒCƒƒbƒg p ‚ªg—p‚µ‚½ê‡)
+'ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼ãŒæœ‰åŠ¹ãªã‚¿ãƒ¼ã‚²ãƒƒãƒˆã®ç·æ•°ã‚’è¿”ã™
+'(ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆ p ãŒä½¿ç”¨ã—ãŸå ´åˆ)
 Public Function CountTarget(p As Pilot) As Integer
 Dim u As Unit, i As Integer
 
     Select Case TargetType
-        Case "©•ª"
+        Case "è‡ªåˆ†"
             If Effective(p, p.Unit) Then
                 CountTarget = 1
             End If
             
-        Case "–¡•û", "‘S–¡•û"
+        Case "å‘³æ–¹", "å…¨å‘³æ–¹"
             For Each u In UList
                 With u
-                    'oŒ‚‚µ‚Ä‚¢‚éH
-                    If .Status <> "oŒ‚" Then
+                    'å‡ºæ’ƒã—ã¦ã„ã‚‹ï¼Ÿ
+                    If .Status <> "å‡ºæ’ƒ" Then
                         GoTo NextUnit1
                     End If
                     
-                    '–¡•ûƒ†ƒjƒbƒgH
+                    'å‘³æ–¹ãƒ¦ãƒ‹ãƒƒãƒˆï¼Ÿ
                     Select Case p.Party
-                        Case "–¡•û", "‚m‚o‚b"
-                            If .Party <> "–¡•û" _
-                                And .Party0 <> "–¡•û" _
-                                And .Party <> "‚m‚o‚b" _
-                                And .Party0 <> "‚m‚o‚b" _
+                        Case "å‘³æ–¹", "ï¼®ï¼°ï¼£"
+                            If .Party <> "å‘³æ–¹" _
+                                And .Party0 <> "å‘³æ–¹" _
+                                And .Party <> "ï¼®ï¼°ï¼£" _
+                                And .Party0 <> "ï¼®ï¼°ï¼£" _
                             Then
                                 GoTo NextUnit1
                             End If
@@ -1726,7 +1726,7 @@ Dim u As Unit, i As Integer
                             End If
                     End Select
                     
-                    'Œø‰Ê‚ª‚ ‚éH
+                    'åŠ¹æœãŒã‚ã‚‹ï¼Ÿ
                     If Effective(p, u) Then
                         CountTarget = CountTarget + 1
                     End If
@@ -1734,20 +1734,20 @@ Dim u As Unit, i As Integer
 NextUnit1:
             Next
             
-        Case "”j‰ó–¡•û"
+        Case "ç ´å£Šå‘³æ–¹"
             For Each u In UList
                 With u
-                    '”j‰ó‚³‚ê‚Ä‚¢‚éH
-                    If .Status <> "”j‰ó" Then
+                    'ç ´å£Šã•ã‚Œã¦ã„ã‚‹ï¼Ÿ
+                    If .Status <> "ç ´å£Š" Then
                         GoTo NextUnit2
                     End If
                     
-                    '–¡•ûƒ†ƒjƒbƒgH
+                    'å‘³æ–¹ãƒ¦ãƒ‹ãƒƒãƒˆï¼Ÿ
                     If p.Party <> .Party0 Then
                         GoTo NextUnit2
                     End If
                     
-                    'Œø‰Ê‚ª‚ ‚éH
+                    'åŠ¹æœãŒã‚ã‚‹ï¼Ÿ
                     If Effective(p, u) Then
                         CountTarget = CountTarget + 1
                     End If
@@ -1755,21 +1755,21 @@ NextUnit1:
 NextUnit2:
             Next
             
-        Case "“G", "‘S“G"
+        Case "æ•µ", "å…¨æ•µ"
             For Each u In UList
                 With u
-                    'oŒ‚‚µ‚Ä‚¢‚éH
-                    If .Status <> "oŒ‚" Then
+                    'å‡ºæ’ƒã—ã¦ã„ã‚‹ï¼Ÿ
+                    If .Status <> "å‡ºæ’ƒ" Then
                         GoTo NextUnit3
                     End If
                     
-                    '“Gƒ†ƒjƒbƒgH
+                    'æ•µãƒ¦ãƒ‹ãƒƒãƒˆï¼Ÿ
                     Select Case p.Party
-                        Case "–¡•û", "‚m‚o‚b"
-                            If (.Party = "–¡•û" _
-                                   And .Party0 = "–¡•û") _
-                               Or (.Party = "‚m‚o‚b" _
-                                   And .Party0 = "‚m‚o‚b") _
+                        Case "å‘³æ–¹", "ï¼®ï¼°ï¼£"
+                            If (.Party = "å‘³æ–¹" _
+                                   And .Party0 = "å‘³æ–¹") _
+                               Or (.Party = "ï¼®ï¼°ï¼£" _
+                                   And .Party0 = "ï¼®ï¼°ï¼£") _
                             Then
                                 GoTo NextUnit3
                             End If
@@ -1779,7 +1779,7 @@ NextUnit2:
                             End If
                     End Select
                     
-                    'Œø‰Ê‚ª‚ ‚éH
+                    'åŠ¹æœãŒã‚ã‚‹ï¼Ÿ
                     If Effective(p, u) Then
                         CountTarget = CountTarget + 1
                     End If
@@ -1787,11 +1787,11 @@ NextUnit2:
 NextUnit3:
             Next
             
-        Case "”CˆÓ", "‘S"
+        Case "ä»»æ„", "å…¨"
             For Each u In UList
-                'oŒ‚‚µ‚Ä‚¢‚éH
-                If u.Status = "oŒ‚" Then
-                    'Œø‰Ê‚ª‚ ‚éH
+                'å‡ºæ’ƒã—ã¦ã„ã‚‹ï¼Ÿ
+                If u.Status = "å‡ºæ’ƒ" Then
+                    'åŠ¹æœãŒã‚ã‚‹ï¼Ÿ
                     If Effective(p, u) Then
                         CountTarget = CountTarget + 1
                     End If
@@ -1800,7 +1800,7 @@ NextUnit3:
     End Select
 End Function
 
-'ƒXƒyƒVƒƒƒ‹ƒpƒ[‚ÌƒAƒjƒ[ƒVƒ‡ƒ“‚ğ•\¦
+'ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’è¡¨ç¤º
 Public Function PlayAnimation() As Boolean
 Dim anime As String, animes() As String, anime_head As Integer
 Dim buf As String, ret As Double, i As Integer, j As Integer
@@ -1821,14 +1821,14 @@ Dim prev_obj_draw_option As String
         Exit Function
     End If
     
-    'ƒAƒjƒw’è‚ª‚È‚³‚ê‚Ä‚¢‚È‚¢ê‡‚ÍƒAƒjƒ•\¦—pƒTƒuƒ‹[ƒ`ƒ“‚ªŒ©‚Â‚ç‚È‚¯‚ê‚Î‚»‚Ì‚Ü‚ÜI—¹
+    'ã‚¢ãƒ‹ãƒ¡æŒ‡å®šãŒãªã•ã‚Œã¦ã„ãªã„å ´åˆã¯ã‚¢ãƒ‹ãƒ¡è¡¨ç¤ºç”¨ã‚µãƒ–ãƒ«ãƒ¼ãƒãƒ³ãŒè¦‹ã¤ã‚‰ãªã‘ã‚Œã°ãã®ã¾ã¾çµ‚äº†
     If Animation = Name Then
-        If FindNormalLabel("‚r‚oƒAƒjƒ_" & Animation) = 0 Then
-            If Name <> "©”š" _
-                And Name <> "‹F‚è" _
+        If FindNormalLabel("ï¼³ï¼°ã‚¢ãƒ‹ãƒ¡_" & Animation) = 0 Then
+            If Name <> "è‡ªçˆ†" _
+                And Name <> "ç¥ˆã‚Š" _
             Then
-                If IsLabelDefined("“ÁêŒø‰Ê " & Name) Then
-                    HandleEvent "“ÁêŒø‰Ê", Name
+                If IsLabelDefined("ç‰¹æ®ŠåŠ¹æœ " & Name) Then
+                    HandleEvent "ç‰¹æ®ŠåŠ¹æœ", Name
                     PlayAnimation = True
                 End If
             End If
@@ -1836,27 +1836,27 @@ Dim prev_obj_draw_option As String
         End If
     End If
     
-    '‰EƒNƒŠƒbƒN’†‚ÍƒAƒjƒ•\¦‚ğƒXƒLƒbƒv
+    'å³ã‚¯ãƒªãƒƒã‚¯ä¸­ã¯ã‚¢ãƒ‹ãƒ¡è¡¨ç¤ºã‚’ã‚¹ã‚­ãƒƒãƒ—
     If IsRButtonPressed() Then
         PlayAnimation = True
         Exit Function
     End If
     
-    'ƒIƒuƒWƒFƒNƒgF“™‚ğ‹L˜^‚µ‚Ä‚¨‚­
+    'ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆè‰²ç­‰ã‚’è¨˜éŒ²ã—ã¦ãŠã
     prev_obj_color = ObjColor
     prev_obj_fill_color = ObjFillColor
     prev_obj_fill_style = ObjFillStyle
     prev_obj_draw_width = ObjDrawWidth
     prev_obj_draw_option = ObjDrawOption
     
-    'ƒIƒuƒWƒFƒNƒgF“™‚ğƒfƒtƒHƒ‹ƒg‚É–ß‚·
+    'ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆè‰²ç­‰ã‚’ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã«æˆ»ã™
     ObjColor = vbWhite
     ObjFillColor = vbWhite
     ObjFillStyle = vbFSTransparent
     ObjDrawWidth = 1
     ObjDrawOption = ""
     
-    'ƒAƒjƒw’è‚ğ•ªŠ„
+    'ã‚¢ãƒ‹ãƒ¡æŒ‡å®šã‚’åˆ†å‰²
     ReDim animes(1)
     anime_head = 1
     For i = 1 To Len(Animation)
@@ -1873,20 +1873,20 @@ Dim prev_obj_draw_option As String
     For i = 1 To UBound(animes)
         anime = animes(i)
         
-        '®•]‰¿
+        'å¼è©•ä¾¡
         FormatMessage anime
         
-        '‰æ–ÊƒNƒŠƒAH
+        'ç”»é¢ã‚¯ãƒªã‚¢ï¼Ÿ
         If LCase$(anime) = "clear" Then
             ClearPicture
             MainForm.picMain(0).Refresh
             GoTo NextAnime
         End If
         
-        'í“¬ƒAƒjƒˆÈŠO‚Ì“ÁêŒø‰Ê
+        'æˆ¦é—˜ã‚¢ãƒ‹ãƒ¡ä»¥å¤–ã®ç‰¹æ®ŠåŠ¹æœ
         Select Case LCase$(Right$(LIndex(anime, 1), 4))
             Case ".wav", ".mp3"
-                'Œø‰Ê‰¹
+                'åŠ¹æœéŸ³
                 PlayWave anime
                 If wait_time > 0 Then
                     Sleep wait_time
@@ -1895,7 +1895,7 @@ Dim prev_obj_draw_option As String
                 GoTo NextAnime
                 
             Case ".bmp", ".jpg", ".gif", ".png"
-                'ƒJƒbƒgƒCƒ“‚Ì•\¦
+                'ã‚«ãƒƒãƒˆã‚¤ãƒ³ã®è¡¨ç¤º
                 If wait_time > 0 Then
                     anime = Format$(wait_time / 100) & ";" & anime
                     wait_time = 0
@@ -1907,7 +1907,7 @@ Dim prev_obj_draw_option As String
         Select Case LCase$(LIndex(anime, 1))
             Case "line", "circle", "arc", "oval", _
                 "color", "fillcolor", "fillstyle", "drawwidth"
-                '‰æ–Êˆ—ƒRƒ}ƒ“ƒh
+                'ç”»é¢å‡¦ç†ã‚³ãƒãƒ³ãƒ‰
                 If wait_time > 0 Then
                     anime = Format$(wait_time / 100) & ";" & anime
                     wait_time = 0
@@ -1915,7 +1915,7 @@ Dim prev_obj_draw_option As String
                 DisplayBattleMessage "", anime
                 GoTo NextAnime
             Case "center"
-                'w’è‚µ‚½ƒ†ƒjƒbƒg‚ğ’†‰›•\¦
+                'æŒ‡å®šã—ãŸãƒ¦ãƒ‹ãƒƒãƒˆã‚’ä¸­å¤®è¡¨ç¤º
                 buf = GetValueAsString(ListIndex(anime, 2))
                 If UList.IsDefined(buf) Then
                     With UList.Item(buf)
@@ -1926,24 +1926,24 @@ Dim prev_obj_draw_option As String
                 GoTo NextAnime
         End Select
         
-        'ƒEƒFƒCƒgH
+        'ã‚¦ã‚§ã‚¤ãƒˆï¼Ÿ
         If IsNumeric(anime) Then
             wait_time = 100 * CDbl(anime)
             GoTo NextAnime
         End If
         
-        'ƒTƒuƒ‹[ƒ`ƒ“‚ÌŒÄ‚Ño‚µ‚ªŠm’è
+        'ã‚µãƒ–ãƒ«ãƒ¼ãƒãƒ³ã®å‘¼ã³å‡ºã—ãŒç¢ºå®š
         
-        'í“¬ƒAƒjƒÄ¶‘O‚ÉƒEƒFƒCƒg‚ğ“ü‚ê‚éH
+        'æˆ¦é—˜ã‚¢ãƒ‹ãƒ¡å†ç”Ÿå‰ã«ã‚¦ã‚§ã‚¤ãƒˆã‚’å…¥ã‚Œã‚‹ï¼Ÿ
         If wait_time > 0 Then
             Sleep wait_time
             wait_time = 0
         End If
         
-        'ƒTƒuƒ‹[ƒ`ƒ“ŒÄ‚Ño‚µ‚Ì‚½‚ß‚Ì®‚ğì¬
+        'ã‚µãƒ–ãƒ«ãƒ¼ãƒãƒ³å‘¼ã³å‡ºã—ã®ãŸã‚ã®å¼ã‚’ä½œæˆ
         If Left$(anime, 1) = "@" Then
             expr = Mid$(ListIndex(anime, 1), 2) & "("
-            'ˆø”‚Ì\’z
+            'å¼•æ•°ã®æ§‹ç¯‰
             For j = 2 To ListLength(anime)
                 If j > 2 Then
                     expr = expr & ","
@@ -1952,20 +1952,20 @@ Dim prev_obj_draw_option As String
             Next
             expr = expr & ")"
         ElseIf Not SelectedTarget Is Nothing Then
-            expr = "‚r‚oƒAƒjƒ_" & anime & "(" & SelectedUnit.ID & "," & SelectedTarget.ID & ")"
+            expr = "ï¼³ï¼°ã‚¢ãƒ‹ãƒ¡_" & anime & "(" & SelectedUnit.ID & "," & SelectedTarget.ID & ")"
         Else
-            expr = "‚r‚oƒAƒjƒ_" & anime & "(" & SelectedUnit.ID & ",-)"
+            expr = "ï¼³ï¼°ã‚¢ãƒ‹ãƒ¡_" & anime & "(" & SelectedUnit.ID & ",-)"
         End If
         
-        '‰æ‘œ•`‰æ‚ªs‚í‚ê‚½‚©‚Ç‚¤‚©‚Ì”»’è‚Ì‚½‚ß‚Éƒtƒ‰ƒO‚ğ‰Šú‰»
+        'ç”»åƒæç”»ãŒè¡Œã‚ã‚ŒãŸã‹ã©ã†ã‹ã®åˆ¤å®šã®ãŸã‚ã«ãƒ•ãƒ©ã‚°ã‚’åˆæœŸåŒ–
         IsPictureDrawn = False
         
-        'ƒAƒjƒÄ¶
+        'ã‚¢ãƒ‹ãƒ¡å†ç”Ÿ
         SaveBasePoint
         CallFunction expr, StringType, buf, ret
         RestoreBasePoint
         
-        '‰æ‘œ‚ğÁ‹‚µ‚Ä‚¨‚­
+        'ç”»åƒã‚’æ¶ˆå»ã—ã¦ãŠã
         If IsPictureDrawn And LCase$(buf) <> "keep" Then
             ClearPicture
             MainForm.picMain(0).Refresh
@@ -1974,16 +1974,16 @@ Dim prev_obj_draw_option As String
 NextAnime:
     Next
     
-    'í“¬ƒAƒjƒÄ¶Œã‚ÉƒEƒFƒCƒg‚ğ“ü‚ê‚éH
+    'æˆ¦é—˜ã‚¢ãƒ‹ãƒ¡å†ç”Ÿå¾Œã«ã‚¦ã‚§ã‚¤ãƒˆã‚’å…¥ã‚Œã‚‹ï¼Ÿ
     If wait_time > 0 Then
         Sleep wait_time
         wait_time = 0
     End If
     
-    'ƒƒbƒZ[ƒWƒEƒBƒ“ƒhƒE‚ğ•Â‚¶‚é
+    'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’é–‰ã˜ã‚‹
     CloseMessageForm
     
-    'ƒIƒuƒWƒFƒNƒgF“™‚ğŒ³‚É–ß‚·
+    'ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆè‰²ç­‰ã‚’å…ƒã«æˆ»ã™
     ObjColor = prev_obj_color
     ObjFillColor = prev_obj_fill_color
     ObjFillStyle = prev_obj_fill_style
@@ -1995,7 +1995,7 @@ NextAnime:
     
 ErrorHandler:
     
-    'ƒAƒjƒÄ¶’†‚É”­¶‚µ‚½ƒGƒ‰[‚Ìˆ—
+    'ã‚¢ãƒ‹ãƒ¡å†ç”Ÿä¸­ã«ç™ºç”Ÿã—ãŸã‚¨ãƒ©ãƒ¼ã®å‡¦ç†
     If Len(EventErrorMessage) > 0 Then
         DisplayEventErrorMessage CurrentLineNum, EventErrorMessage
         EventErrorMessage = ""

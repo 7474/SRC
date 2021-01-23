@@ -1,6 +1,6 @@
 VERSION 5.00
 Begin VB.Form frmToolTip 
-   BorderStyle     =   0  '‚È‚µ
+   BorderStyle     =   0  'ãªã—
    ClientHeight    =   1710
    ClientLeft      =   0
    ClientTop       =   0
@@ -9,7 +9,7 @@ Begin VB.Form frmToolTip
    LinkTopic       =   "Form2"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   PaletteMode     =   1  'Z µ°ÀŞ°
+   PaletteMode     =   1  'Z ï½µï½°ï¾€ï¾ï½°
    ScaleHeight     =   1710
    ScaleWidth      =   3465
    ShowInTaskbar   =   0   'False
@@ -17,13 +17,13 @@ Begin VB.Form frmToolTip
    Begin VB.PictureBox picMessage 
       AutoRedraw      =   -1  'True
       BackColor       =   &H80000018&
-      BorderStyle     =   0  '‚È‚µ
+      BorderStyle     =   0  'ãªã—
       ClipControls    =   0   'False
       ForeColor       =   &H00000000&
       Height          =   1560
       Left            =   0
       ScaleHeight     =   104
-      ScaleMode       =   3  'Ëß¸¾Ù
+      ScaleMode       =   3  'ï¾‹ï¾Ÿï½¸ï½¾ï¾™
       ScaleWidth      =   193
       TabIndex        =   0
       Top             =   0
@@ -38,21 +38,21 @@ Attribute VB_Exposed = False
 Option Explicit
 
 ' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-' –{ƒvƒƒOƒ‰ƒ€‚ÍƒtƒŠ[ƒ\ƒtƒg‚Å‚ ‚èA–³•ÛØ‚Å‚·B
-' –{ƒvƒƒOƒ‰ƒ€‚ÍGNU General Public License(Ver.3‚Ü‚½‚Í‚»‚êˆÈ~)‚ª’è‚ß‚éğŒ‚Ì‰º‚Å
-' Ä”Ğ•z‚Ü‚½‚Í‰ü•Ï‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B
+' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯ãƒ•ãƒªãƒ¼ã‚½ãƒ•ãƒˆã§ã‚ã‚Šã€ç„¡ä¿è¨¼ã§ã™ã€‚
+' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯GNU General Public License(Ver.3ã¾ãŸã¯ãã‚Œä»¥é™)ãŒå®šã‚ã‚‹æ¡ä»¶ã®ä¸‹ã§
+' å†é ’å¸ƒã¾ãŸã¯æ”¹å¤‰ã™ã‚‹ã“ã¨ãŒã§ãã¾ã™ã€‚
 
-'ƒc[ƒ‹ƒ`ƒbƒv—pƒtƒH[ƒ€
+'ãƒ„ãƒ¼ãƒ«ãƒãƒƒãƒ—ç”¨ãƒ•ã‚©ãƒ¼ãƒ 
 
-'ƒtƒH[ƒ€‚ğƒ[ƒh
+'ãƒ•ã‚©ãƒ¼ãƒ ã‚’ãƒ­ãƒ¼ãƒ‰
 Private Sub Form_Load()
 Dim ret As Long
     
-    'í‚Éè‘O‚É•\¦
+    'å¸¸ã«æ‰‹å‰ã«è¡¨ç¤º
     ret = SetWindowPos(frmToolTip.hwnd, -1, 0, 0, 0, 0, &H3)
 End Sub
 
-'ƒc[ƒ‹ƒ`ƒbƒv‚ğ•\¦
+'ãƒ„ãƒ¼ãƒ«ãƒãƒƒãƒ—ã‚’è¡¨ç¤º
 Public Sub ShowToolTip(msg As String)
 Dim ret As Long
 Dim PT As POINTAPI
@@ -64,7 +64,7 @@ Static cur_msg As String
     If msg <> cur_msg Then
         cur_msg = msg
         With frmToolTip.picMessage
-            'ƒƒbƒZ[ƒW’·‚ÉƒTƒCƒY‚ğ‡‚í‚¹‚é
+            'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸é•·ã«ã‚µã‚¤ã‚ºã‚’åˆã‚ã›ã‚‹
             .Width = (.TextWidth(msg) + 6) * tw
             .Height = (.TextHeight(msg) + 4) * tw
             frmToolTip.Width = .Width
@@ -79,7 +79,7 @@ Static cur_msg As String
             frmToolTip.picMessage.Line (0, (.Height - 1) \ tw)-(.Width \ tw, (.Height - 1) \ tw)
             frmToolTip.picMessage.Line ((.Width - 1) \ tw, 0)-((.Width - 1) \ tw, .Height \ tw)
             
-            'ƒƒbƒZ[ƒW‚ğ‘‚«‚İ
+            'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’æ›¸ãè¾¼ã¿
             .CurrentX = 3
             .CurrentY = 2
             frmToolTip.picMessage.Print msg
@@ -89,12 +89,12 @@ Static cur_msg As String
         End With
     End If
     
-    'ƒtƒH[ƒ€‚ÌˆÊ’u‚ğİ’è
+    'ãƒ•ã‚©ãƒ¼ãƒ ã®ä½ç½®ã‚’è¨­å®š
     ret = GetCursorPos(PT)
     frmToolTip.Left = PT.X * tw + 0
     frmToolTip.Top = (PT.Y + 24) * tw
     
-    'ƒtƒH[ƒ€‚ğ”ñƒAƒNƒeƒBƒu‚Å•\¦
+    'ãƒ•ã‚©ãƒ¼ãƒ ã‚’éã‚¢ã‚¯ãƒ†ã‚£ãƒ–ã§è¡¨ç¤º
     ret = ShowWindow(frmToolTip.hwnd, SW_SHOWNA)
 End Sub
 

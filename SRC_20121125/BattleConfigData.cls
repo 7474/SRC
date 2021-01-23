@@ -10,39 +10,39 @@ Attribute VB_Exposed = False
 Option Explicit
 
 ' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-' �{�v���O�����̓t���[�\�t�g�ł���A���ۏ؂ł��B
-' �{�v���O������GNU General Public License(Ver.3�܂��͂���ȍ~)����߂�����̉���
-' �ĔЕz�܂��͉��ς��邱�Ƃ��ł��܂��B
+' 本プログラムはフリーソフトであり、無保証です。
+' 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
+' 再頒布または改変することができます。
 
-'�o�g���R���t�B�O�f�[�^�̃N���X
-' --- �_���[�W�v�Z�A�������Z�o�ȂǁA�o�g���Ɋ֘A����G���A�X���`���܂��B
+'バトルコンフィグデータのクラス
+' --- ダメージ計算、命中率算出など、バトルに関連するエリアスを定義します。
 
-'����
+'名称
 Public Name As String
 
-'�v�Z��
+'計算式
 Public ConfigCalc As String
 
-'�N���X�̏�����
+'クラスの初期化
 Private Sub Class_Initialize()
     ConfigCalc = ""
 End Sub
 
-'�o�g���R���t�B�O�f�[�^�Ɋ�Â����u�����v�Z�̎��s
-'���s�O�Ɏg���\���̂���ϐ������O�ɑ�����Ă�������
+'バトルコンフィグデータに基づいた置換＆計算の実行
+'実行前に使う可能性のある変数を事前に代入しておくこと
 Public Function Calculate() As Double
 Dim expr As String
 Dim morales As Long
     
     expr = ConfigCalc
     
-    '�R���t�B�O�ϐ���L���ɂ���
+    'コンフィグ変数を有効にする
     BCVariable.IsConfig = True
     
-    '����]������
+    '式を評価する
     Calculate = GetValueAsDouble(expr)
     
-    '�R���t�B�O�ϐ��𖳌��ɂ���
+    'コンフィグ変数を無効にする
     BCVariable.IsConfig = False
 End Function
 

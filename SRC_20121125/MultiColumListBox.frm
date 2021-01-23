@@ -1,7 +1,7 @@
 VERSION 5.00
 Begin VB.Form frmMultiColumnListBox 
    BackColor       =   &H00C0C0C0&
-   BorderStyle     =   1  'ŒÅ’è(Àü)
+   BorderStyle     =   1  'å›ºå®š(å®Ÿç·š)
    Caption         =   "MultiColumListBox"
    ClientHeight    =   6690
    ClientLeft      =   1080
@@ -11,15 +11,15 @@ Begin VB.Form frmMultiColumnListBox
    Icon            =   "MultiColumListBox.frx":0000
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
-   PaletteMode     =   1  'Z µ°ÀŞ°
+   PaletteMode     =   1  'Z ï½µï½°ï¾€ï¾ï½°
    ScaleHeight     =   446
-   ScaleMode       =   3  'Ëß¸¾Ù
+   ScaleMode       =   3  'ï¾‹ï¾Ÿï½¸ï½¾ï¾™
    ScaleWidth      =   670
    Begin VB.ListBox lstItems 
       BackColor       =   &H00FFFFFF&
       Columns         =   4
       BeginProperty Font 
-         Name            =   "‚l‚r –¾’©"
+         Name            =   "ï¼­ï¼³ æ˜æœ"
          Size            =   12
          Charset         =   128
          Weight          =   400
@@ -38,9 +38,9 @@ Begin VB.Form frmMultiColumnListBox
    End
    Begin VB.Label labCaption 
       BackColor       =   &H00FFFFFF&
-      BorderStyle     =   1  'Àü
+      BorderStyle     =   1  'å®Ÿç·š
       BeginProperty Font 
-         Name            =   "‚l‚r –¾’©"
+         Name            =   "ï¼­ï¼³ æ˜æœ"
          Size            =   12
          Charset         =   128
          Weight          =   400
@@ -64,27 +64,27 @@ Attribute VB_Exposed = False
 Option Explicit
 
 ' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-' –{ƒvƒƒOƒ‰ƒ€‚ÍƒtƒŠ[ƒ\ƒtƒg‚Å‚ ‚èA–³•ÛØ‚Å‚·B
-' –{ƒvƒƒOƒ‰ƒ€‚ÍGNU General Public License(Ver.3‚Ü‚½‚Í‚»‚êˆÈ~)‚ª’è‚ß‚éğŒ‚Ì‰º‚Å
-' Ä”Ğ•z‚Ü‚½‚Í‰ü•Ï‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B
+' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯ãƒ•ãƒªãƒ¼ã‚½ãƒ•ãƒˆã§ã‚ã‚Šã€ç„¡ä¿è¨¼ã§ã™ã€‚
+' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯GNU General Public License(Ver.3ã¾ãŸã¯ãã‚Œä»¥é™)ãŒå®šã‚ã‚‹æ¡ä»¶ã®ä¸‹ã§
+' å†é ’å¸ƒã¾ãŸã¯æ”¹å¤‰ã™ã‚‹ã“ã¨ãŒã§ãã¾ã™ã€‚
 
-'‘½’i‚ÌƒŠƒXƒgƒ{ƒbƒNƒX‚ÌƒtƒH[ƒ€
+'å¤šæ®µã®ãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹ã®ãƒ•ã‚©ãƒ¼ãƒ 
 
-'ƒtƒH[ƒ€‚ğ•\¦
+'ãƒ•ã‚©ãƒ¼ãƒ ã‚’è¡¨ç¤º
 Private Sub Form_Activate()
     SelectedItem = 0
     labCaption.Caption = ""
 End Sub
 
-'ƒtƒH[ƒ€‚ğƒ[ƒh
+'ãƒ•ã‚©ãƒ¼ãƒ ã‚’ãƒ­ãƒ¼ãƒ‰
 Private Sub Form_Load()
 Dim ret As Long
     
-    'í‚Éè‘O‚É•\¦
+    'å¸¸ã«æ‰‹å‰ã«è¡¨ç¤º
     ret = SetWindowPos(hwnd, -1, 0, 0, 0, 0, &H3)
 End Sub
 
-'ƒtƒH[ƒ€‚ğ•Â‚¶‚é
+'ãƒ•ã‚©ãƒ¼ãƒ ã‚’é–‰ã˜ã‚‹
 Private Sub Form_Unload(Cancel As Integer)
     TopItem = lstItems.TopIndex + 1
     IsFormClicked = True
@@ -94,11 +94,11 @@ Private Sub Form_Unload(Cancel As Integer)
     Hide
 End Sub
 
-'ƒtƒH[ƒ€ã‚Åƒ}ƒEƒXƒ{ƒ^ƒ“‚ğ‰Ÿ‚·
+'ãƒ•ã‚©ãƒ¼ãƒ ä¸Šã§ãƒã‚¦ã‚¹ãƒœã‚¿ãƒ³ã‚’æŠ¼ã™
 Private Sub lstItems_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
     Select Case Button
         Case 1
-            '‘I‘ğ
+            'é¸æŠ
             If Not Visible Then
                 Exit Sub
             End If
@@ -114,7 +114,7 @@ Private Sub lstItems_MouseDown(Button As Integer, Shift As Integer, X As Single,
             End If
             IsFormClicked = True
         Case 2
-            'ƒLƒƒƒ“ƒZƒ‹
+            'ã‚­ãƒ£ãƒ³ã‚»ãƒ«
             SelectedItem = 0
             TopItem = lstItems.TopIndex + 1
             If IsFormClicked Then
@@ -124,10 +124,10 @@ Private Sub lstItems_MouseDown(Button As Integer, Shift As Integer, X As Single,
     End Select
 End Sub
 
-'ƒtƒH[ƒ€ã‚Åƒ}ƒEƒXƒ{ƒ^ƒ“‚ğ‰Ÿ‚·
+'ãƒ•ã‚©ãƒ¼ãƒ ä¸Šã§ãƒã‚¦ã‚¹ãƒœã‚¿ãƒ³ã‚’æŠ¼ã™
 Private Sub Form_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
     If Button = 2 Then
-        'ƒLƒƒƒ“ƒZƒ‹‚Ì‚İó‚¯•t‚¯
+        'ã‚­ãƒ£ãƒ³ã‚»ãƒ«ã®ã¿å—ã‘ä»˜ã‘
         SelectedItem = 0
         TopItem = lstItems.TopIndex
         If IsFormClicked Then
@@ -137,24 +137,24 @@ Private Sub Form_MouseDown(Button As Integer, Shift As Integer, X As Single, Y A
     End If
 End Sub
 
-'ƒŠƒXƒgƒ{ƒbƒNƒXã‚Åƒ}ƒEƒXƒJ[ƒ\ƒ‹‚ğˆÚ“®
+'ãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹ä¸Šã§ãƒã‚¦ã‚¹ã‚«ãƒ¼ã‚½ãƒ«ã‚’ç§»å‹•
 Private Sub lstItems_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
 Dim itm As Integer
 Dim lines As Integer
     
     With lstItems
-        'ƒŠƒXƒgƒ{ƒbƒNƒX‚Ìs”
+        'ãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹ã®è¡Œæ•°
         lines = 25
         If .ListCount > lines * .Columns Then
             lines = lines - 1
         End If
         
-        'ƒ}ƒEƒXƒJ[ƒ\ƒ‹‚ª‚ ‚éƒAƒCƒeƒ€‚ğZo
+        'ãƒã‚¦ã‚¹ã‚«ãƒ¼ã‚½ãƒ«ãŒã‚ã‚‹ã‚¢ã‚¤ãƒ†ãƒ ã‚’ç®—å‡º
         itm = (((X * ScaleWidth) \ Width) \ (.Width \ .Columns)) * lines
         itm = itm + ((Y * ScaleWidth) \ Width + 1) \ 16
         itm = itm + .TopIndex
         
-        'ƒJ[ƒ\ƒ‹ã‚ÌƒAƒCƒeƒ€‚ğƒnƒCƒ‰ƒCƒg•\¦
+        'ã‚«ãƒ¼ã‚½ãƒ«ä¸Šã®ã‚¢ã‚¤ãƒ†ãƒ ã‚’ãƒã‚¤ãƒ©ã‚¤ãƒˆè¡¨ç¤º
         If itm < 0 Or itm >= .ListCount Then
             .ListIndex = -1
             Exit Sub
@@ -164,7 +164,7 @@ Dim lines As Integer
         End If
         .ListIndex = itm
         
-        '‰ğà‚Ì•\¦
+        'è§£èª¬ã®è¡¨ç¤º
         labCaption.Caption = ListItemComment(itm + 1)
     End With
 End Sub

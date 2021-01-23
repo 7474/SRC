@@ -1,7 +1,7 @@
 VERSION 5.00
 Begin VB.Form frmTelop 
    BackColor       =   &H00FFFFFF&
-   BorderStyle     =   0  '‚È‚µ
+   BorderStyle     =   0  'ãªã—
    ClientHeight    =   855
    ClientLeft      =   1965
    ClientTop       =   3165
@@ -11,16 +11,16 @@ Begin VB.Form frmTelop
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   PaletteMode     =   1  'Z µ°ÀŞ°
+   PaletteMode     =   1  'Z ï½µï½°ï¾€ï¾ï½°
    ScaleHeight     =   855
    ScaleWidth      =   5670
    ShowInTaskbar   =   0   'False
    Begin VB.Label Label1 
-      Alignment       =   2  '’†‰›‘µ‚¦
-      BackStyle       =   0  '“§–¾
-      Caption         =   "ƒVƒiƒŠƒIƒ^ƒCƒgƒ‹"
+      Alignment       =   2  'ä¸­å¤®æƒãˆ
+      BackStyle       =   0  'é€æ˜
+      Caption         =   "ã‚·ãƒŠãƒªã‚ªã‚¿ã‚¤ãƒˆãƒ«"
       BeginProperty Font 
-         Name            =   "‚l‚r ‚o–¾’©"
+         Name            =   "ï¼­ï¼³ ï¼°æ˜æœ"
          Size            =   15.75
          Charset         =   128
          Weight          =   700
@@ -45,8 +45,8 @@ Attribute VB_Exposed = False
 Option Explicit
 
 ' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-' –{ƒvƒƒOƒ‰ƒ€‚ÍƒtƒŠ[ƒ\ƒtƒg‚Å‚ ‚èA–³•ÛØ‚Å‚·B
-' –{ƒvƒƒOƒ‰ƒ€‚ÍGNU General Public License(Ver.3‚Ü‚½‚Í‚»‚êˆÈ~)‚ª’è‚ß‚éğŒ‚Ì‰º‚Å
-' Ä”Ğ•z‚Ü‚½‚Í‰ü•Ï‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B
+' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯ãƒ•ãƒªãƒ¼ã‚½ãƒ•ãƒˆã§ã‚ã‚Šã€ç„¡ä¿è¨¼ã§ã™ã€‚
+' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯GNU General Public License(Ver.3ã¾ãŸã¯ãã‚Œä»¥é™)ãŒå®šã‚ã‚‹æ¡ä»¶ã®ä¸‹ã§
+' å†é ’å¸ƒã¾ãŸã¯æ”¹å¤‰ã™ã‚‹ã“ã¨ãŒã§ãã¾ã™ã€‚
 
-'TelopƒRƒ}ƒ“ƒh—pƒtƒH[ƒ€
+'Telopã‚³ãƒãƒ³ãƒ‰ç”¨ãƒ•ã‚©ãƒ¼ãƒ 

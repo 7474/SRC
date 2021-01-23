@@ -2,13 +2,13 @@ Attribute VB_Name = "Expression"
 Option Explicit
 
 ' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-' –{ƒvƒƒOƒ‰ƒ€‚ÍƒtƒŠ[ƒ\ƒtƒg‚Å‚ ‚èA–³•ÛØ‚Å‚·B
-' –{ƒvƒƒOƒ‰ƒ€‚ÍGNU General Public License(Ver.3‚Ü‚½‚Í‚»‚êˆÈ~)‚ª’è‚ß‚éğŒ‚Ì‰º‚Å
-' Ä”Ğ•z‚Ü‚½‚Í‰ü•Ï‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B
+' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯ãƒ•ãƒªãƒ¼ã‚½ãƒ•ãƒˆã§ã‚ã‚Šã€ç„¡ä¿è¨¼ã§ã™ã€‚
+' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯GNU General Public License(Ver.3ã¾ãŸã¯ãã‚Œä»¥é™)ãŒå®šã‚ã‚‹æ¡ä»¶ã®ä¸‹ã§
+' å†é ’å¸ƒã¾ãŸã¯æ”¹å¤‰ã™ã‚‹ã“ã¨ãŒã§ãã¾ã™ã€‚
 
-'ƒCƒxƒ“ƒgƒf[ƒ^‚Ì®ŒvZ‚ğs‚¤ƒ‚ƒWƒ…[ƒ‹
+'ã‚¤ãƒ™ãƒ³ãƒˆãƒ‡ãƒ¼ã‚¿ã®å¼è¨ˆç®—ã‚’è¡Œã†ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«
 
-'‰‰Zq‚Ìí—Ş
+'æ¼”ç®—å­ã®ç¨®é¡
 Enum OperatorType
     PlusOp
     MinusOp
@@ -30,19 +30,19 @@ Enum OperatorType
     LikeOp
 End Enum
 
-'Œ^‚Ìí—Ş
+'å‹ã®ç¨®é¡
 Enum ValueType
     UndefinedType = 0
     StringType
     NumericType
 End Enum
 
-'³‹K•\Œ»
+'æ­£è¦è¡¨ç¾
 Private RegEx As Object
 Private Matches As Object
 
 
-'®‚ğ•]‰¿
+'å¼ã‚’è©•ä¾¡
 Public Function EvalExpr(expr As String, etype As ValueType, _
     str_result As String, num_result As Double) As ValueType
 Dim terms() As String, tnum As Integer
@@ -54,24 +54,24 @@ Dim is_lop_term As Boolean, is_rop_term As Boolean
 Dim i As Integer, ret As Integer, osize As Integer, tsize As Integer
 Dim buf As String
 
-    '®‚ğ‚ ‚ç‚©‚¶‚ß—v‘f‚É•ª‰ğ
+    'å¼ã‚’ã‚ã‚‰ã‹ã˜ã‚è¦ç´ ã«åˆ†è§£
     tnum = ListSplit(expr, terms)
     
     Select Case tnum
-        '‹ó”’
+        'ç©ºç™½
         Case 0
             EvalExpr = etype
             Exit Function
             
-        '€
+        'é …
         Case 1
             EvalExpr = EvalTerm(terms(1), etype, str_result, num_result)
             Exit Function
             
-        'Š‡ŒÊ‚Ì‘Î‰‚ªæ‚ê‚Ä‚È‚¢•¶š—ñ
+        'æ‹¬å¼§ã®å¯¾å¿œãŒå–ã‚Œã¦ãªã„æ–‡å­—åˆ—
         Case -1
             If etype = NumericType Then
-                '0‚Æ‚İ‚È‚·
+                '0ã¨ã¿ãªã™
                 EvalExpr = NumericType
             Else
                 EvalExpr = StringType
@@ -80,13 +80,13 @@ Dim buf As String
             Exit Function
     End Select
     
-    '€”‚ª‚QŒÂˆÈã‚Ìê‡‚Í‰‰Zq‚ğŠÜ‚Ş®
+    'é …æ•°ãŒï¼’å€‹ä»¥ä¸Šã®å ´åˆã¯æ¼”ç®—å­ã‚’å«ã‚€å¼
     
-    '—Dæ“x‚É‡‚í‚¹A‚Ç‚Ì‰‰Z‚ªÀs‚³‚ê‚é‚©‚ğ”»’è
+    'å„ªå…ˆåº¦ã«åˆã‚ã›ã€ã©ã®æ¼”ç®—ãŒå®Ÿè¡Œã•ã‚Œã‚‹ã‹ã‚’åˆ¤å®š
     op_idx = 0
     op_pri = 100
     For i = 1 To tnum - 1
-        '‰‰Zq‚Ìí—Ş‚ğ”»’è
+        'æ¼”ç®—å­ã®ç¨®é¡ã‚’åˆ¤å®š
         ret = Asc(terms(i))
         If ret < 0 Then
            GoTo NextTerm
@@ -241,24 +241,24 @@ NextTerm:
     Next
     
     If op_idx = 0 Then
-        '’P‚È‚é•¶š—ñ
+        'å˜ãªã‚‹æ–‡å­—åˆ—
         EvalExpr = StringType
         str_result = expr
         Exit Function
     End If
     
-    '‰‰Zq‚Ìˆø”‚Ìì¬
+    'æ¼”ç®—å­ã®å¼•æ•°ã®ä½œæˆ
     Select Case op_idx
         Case 1
-            '¶•Óˆø”–³‚µ
+            'å·¦è¾ºå¼•æ•°ç„¡ã—
             is_lop_term = True
             lop = ""
         Case 2
-            '¶•Óˆø”‚Í€
+            'å·¦è¾ºå¼•æ•°ã¯é …
             is_lop_term = True
             lop = terms(1)
         Case Else
-            '¶•Óˆø”‚Ì˜AŒ‹ˆ— (‚‘¬‰»‚Ì‚½‚ßAMid‚ğg—p)
+            'å·¦è¾ºå¼•æ•°ã®é€£çµå‡¦ç† (é«˜é€ŸåŒ–ã®ãŸã‚ã€Midã‚’ä½¿ç”¨)
             buf = String$(Len(expr), vbNullChar)
             tsize = Len(terms(1))
             Mid(buf, 1, tsize) = terms(1)
@@ -272,11 +272,11 @@ NextTerm:
             lop = Left$(buf, osize)
     End Select
     If op_idx = tnum - 1 Then
-        '‰E•Óˆø”‚Í€
+        'å³è¾ºå¼•æ•°ã¯é …
         is_rop_term = True
         rop = terms(tnum)
     Else
-        '‰E•Óˆø”‚Ì˜AŒ‹ˆ— (‚‘¬‰»‚Ì‚½‚ßAMid‚ğg—p)
+        'å³è¾ºå¼•æ•°ã®é€£çµå‡¦ç† (é«˜é€ŸåŒ–ã®ãŸã‚ã€Midã‚’ä½¿ç”¨)
         buf = String$(Len(expr), vbNullChar)
         tsize = Len(terms(op_idx + 1))
         Mid(buf, 1, tsize) = terms(op_idx + 1)
@@ -290,7 +290,7 @@ NextTerm:
         rop = Left$(buf, osize)
     End If
     
-    '‰‰Z‚ÌÀ{
+    'æ¼”ç®—ã®å®Ÿæ–½
     Select Case op_type
         Case PlusOp '+
             If is_lop_term Then
@@ -821,27 +821,27 @@ NextTerm:
     End Select
 End Function
 
-'€‚ğ•]‰¿
+'é …ã‚’è©•ä¾¡
 Public Function EvalTerm(expr As String, etype As ValueType, _
     str_result As String, num_result As Double) As ValueType
     
-    '‹ó”’H
+    'ç©ºç™½ï¼Ÿ
     If Len(expr) = 0 Then
         Exit Function
     End If
     
-    'æ“ª‚Ìˆê•¶š‚ÅŒ©•ª‚¯‚é
+    'å…ˆé ­ã®ä¸€æ–‡å­—ã§è¦‹åˆ†ã‘ã‚‹
     Select Case Asc(expr)
-        Case 9 'ƒ^ƒu
-            'ƒ^ƒu‚ğTrim‚·‚é‚½‚ßEvalExpr‚Å•]‰¿
+        Case 9 'ã‚¿ãƒ–
+            'ã‚¿ãƒ–ã‚’Trimã™ã‚‹ãŸã‚EvalExprã§è©•ä¾¡
             EvalTerm = EvalExpr(expr, etype, str_result, num_result)
             Exit Function
-        Case 32 '‹ó”’
-            'Trim‚³‚ê‚Ä‚È‚¢H
+        Case 32 'ç©ºç™½
+            'Trimã•ã‚Œã¦ãªã„ï¼Ÿ
             EvalTerm = EvalTerm(Trim$(expr), etype, str_result, num_result)
             Exit Function
         Case 34 '"
-            'ƒ_ƒuƒ‹ƒNƒH[ƒg‚ÅˆÍ‚Ü‚ê‚½•¶š—ñ
+            'ãƒ€ãƒ–ãƒ«ã‚¯ã‚©ãƒ¼ãƒˆã§å›²ã¾ã‚ŒãŸæ–‡å­—åˆ—
             If Right$(expr, 1) = """" Then
                 EvalTerm = StringType
                 str_result = Mid$(expr, 2, Len(expr) - 2)
@@ -855,12 +855,12 @@ Public Function EvalTerm(expr As String, etype As ValueType, _
             EvalTerm = StringType
             Exit Function
         Case 35 '#
-            'Fw’è
+            'è‰²æŒ‡å®š
             EvalTerm = StringType
             str_result = expr
             Exit Function
         Case 40 '(
-            'ƒJƒbƒR‚ÅˆÍ‚Ü‚ê‚½®
+            'ã‚«ãƒƒã‚³ã§å›²ã¾ã‚ŒãŸå¼
             If Right$(expr, 1) = ")" Then
                 EvalTerm = EvalExpr(Mid$(expr, 2, Len(expr) - 2), _
                     etype, str_result, num_result)
@@ -872,8 +872,8 @@ Public Function EvalTerm(expr As String, etype As ValueType, _
                 EvalTerm = StringType
             End If
             Exit Function
-        Case 43, 45, 48 To 57 '+, -, 0`9
-            '”’lH
+        Case 43, 45, 48 To 57 '+, -, 0ï½9
+            'æ•°å€¤ï¼Ÿ
             If IsNumeric(expr) Then
                 Select Case etype
                     Case StringType
@@ -886,7 +886,7 @@ Public Function EvalTerm(expr As String, etype As ValueType, _
                 Exit Function
             End If
         Case 96 '`
-            'ƒoƒbƒNƒNƒH[ƒg‚ÅˆÍ‚Ü‚ê‚½•¶š—ñ
+            'ãƒãƒƒã‚¯ã‚¯ã‚©ãƒ¼ãƒˆã§å›²ã¾ã‚ŒãŸæ–‡å­—åˆ—
             If Right$(expr, 1) = "`" Then
                 str_result = Mid$(expr, 2, Len(expr) - 2)
             Else
@@ -899,20 +899,20 @@ Public Function EvalTerm(expr As String, etype As ValueType, _
             Exit Function
     End Select
     
-    'ŠÖ”ŒÄ‚Ño‚µH
+    'é–¢æ•°å‘¼ã³å‡ºã—ï¼Ÿ
     EvalTerm = CallFunction(expr, etype, str_result, num_result)
     If EvalTerm <> UndefinedType Then
         Exit Function
     End If
     
-    '•Ï”H
+    'å¤‰æ•°ï¼Ÿ
     EvalTerm = GetVariable(expr, etype, str_result, num_result)
 End Function
 
 
-' === ŠÖ”‚ÉŠÖ‚·‚éˆ— ===
+' === é–¢æ•°ã«é–¢ã™ã‚‹å‡¦ç† ===
 
-'®‚ğŠÖ”ŒÄ‚Ño‚µ‚Æ‚µ‚Ä\•¶‰ğÍ‚µAÀs
+'å¼ã‚’é–¢æ•°å‘¼ã³å‡ºã—ã¨ã—ã¦æ§‹æ–‡è§£æã—ã€å®Ÿè¡Œ
 Public Function CallFunction(expr As String, etype As ValueType, _
     str_result As String, num_result As Double) As ValueType
 Dim fname As String
@@ -931,7 +931,7 @@ Static dir_list() As String
 Static dir_index As Integer
 Static regexp_index As Integer
     
-    'ŠÖ”ŒÄ‚Ño‚µ‚Ì‘®‚É‡‚Á‚Ä‚¢‚é‚©ƒ`ƒFƒbƒN
+    'é–¢æ•°å‘¼ã³å‡ºã—ã®æ›¸å¼ã«åˆã£ã¦ã„ã‚‹ã‹ãƒã‚§ãƒƒã‚¯
     If Right$(expr, 1) <> ")" Then
         CallFunction = UndefinedType
         Exit Function
@@ -950,9 +950,9 @@ Static regexp_index As Integer
         End If
     End If
     
-    '‚±‚±‚Ü‚Å‚­‚ê‚ÎŠÖ”ŒÄ‚Ño‚µ‚Æ’f’è
+    'ã“ã“ã¾ã§ãã‚Œã°é–¢æ•°å‘¼ã³å‡ºã—ã¨æ–­å®š
      
-    'ƒpƒ‰ƒ[ƒ^‚Ì’Šo
+    'ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®æŠ½å‡º
     pcount = 0
     start_idx = j + 1
     depth = 0
@@ -970,7 +970,7 @@ Static regexp_index As Integer
             End If
         Else
             Select Case Asc(Mid$(expr, i, 1))
-                Case 9, 32 'ƒ^ƒu, ‹ó”’
+                Case 9, 32 'ã‚¿ãƒ–, ç©ºç™½
                     If start_idx = i Then
                         start_idx = i + 1
                     Else
@@ -999,18 +999,18 @@ Static regexp_index As Integer
         params(pcount) = Mid$(expr, start_idx, num - start_idx)
     End If
     
-    'æ“ª‚Ì•¶š‚ÅŠÖ”‚Ìí—Ş‚ğ”»’f‚·‚é
+    'å…ˆé ­ã®æ–‡å­—ã§é–¢æ•°ã®ç¨®é¡ã‚’åˆ¤æ–­ã™ã‚‹
     Select Case Asc(expr)
         Case 95 '_
-            '•K‚¸ƒ†[ƒU[’è‹`ŠÖ”
+            'å¿…ãšãƒ¦ãƒ¼ã‚¶ãƒ¼å®šç¾©é–¢æ•°
             fname = Left$(expr, j - 1)
             GoTo LookUpUserDefinedID
         Case 65 To 90, 97 To 122 'A To z
-            'ƒVƒXƒeƒ€ŠÖ”‚Ì‰Â”\«‚ ‚è
+            'ã‚·ã‚¹ãƒ†ãƒ é–¢æ•°ã®å¯èƒ½æ€§ã‚ã‚Š
             fname = Left$(expr, j - 1)
         Case Else
-            'æ“ª‚ªƒAƒ‹ƒtƒ@ƒxƒbƒg‚Å‚È‚¯‚ê‚Î•K‚¸ƒ†[ƒU[’è‹`ŠÖ”
-            '‚½‚¾‚µŠ‡ŒÊ‚ğŠÜ‚Şƒ†ƒjƒbƒg–¼“™‚Å‚ ‚éê‡‚ª‚ ‚é‚½‚ßAƒ`ƒFƒbƒN‚ª•K—v
+            'å…ˆé ­ãŒã‚¢ãƒ«ãƒ•ã‚¡ãƒ™ãƒƒãƒˆã§ãªã‘ã‚Œã°å¿…ãšãƒ¦ãƒ¼ã‚¶ãƒ¼å®šç¾©é–¢æ•°
+            'ãŸã ã—æ‹¬å¼§ã‚’å«ã‚€ãƒ¦ãƒ‹ãƒƒãƒˆåç­‰ã§ã‚ã‚‹å ´åˆãŒã‚ã‚‹ãŸã‚ã€ãƒã‚§ãƒƒã‚¯ãŒå¿…è¦
             If UDList.IsDefined(expr) Then
                 CallFunction = UndefinedType
                 Exit Function
@@ -1031,11 +1031,11 @@ Static regexp_index As Integer
             GoTo LookUpUserDefinedID
     End Select
     
-    'ƒVƒXƒeƒ€ŠÖ”H
+    'ã‚·ã‚¹ãƒ†ãƒ é–¢æ•°ï¼Ÿ
     Select Case LCase$(fname)
-        '‘½—p‚³‚ê‚éŠÖ”‚ğæ‚É”»’è
+        'å¤šç”¨ã•ã‚Œã‚‹é–¢æ•°ã‚’å…ˆã«åˆ¤å®š
         Case "args"
-            'UpVarƒRƒ}ƒ“ƒh‚ÌŒÄ‚Ño‚µ‰ñ”‚ğ—İŒv
+            'UpVarã‚³ãƒãƒ³ãƒ‰ã®å‘¼ã³å‡ºã—å›æ•°ã‚’ç´¯è¨ˆ
             num = UpVarLevel
             i = CallDepth
             Do While num > 0
@@ -1050,7 +1050,7 @@ Static regexp_index As Integer
                 i = 1
             End If
             
-            'ˆø”‚Ì”ÍˆÍ“à‚É”[‚Ü‚Á‚Ä‚¢‚é‚©ƒ`ƒFƒbƒN
+            'å¼•æ•°ã®ç¯„å›²å†…ã«ç´ã¾ã£ã¦ã„ã‚‹ã‹ãƒã‚§ãƒƒã‚¯
             num = GetValueAsLong(params(1), is_term(1))
             If num <= ArgIndex - ArgIndexStack(i - 1) Then
                 str_result = ArgStack(ArgIndex - num + 1)
@@ -1065,68 +1065,68 @@ Static regexp_index As Integer
             Exit Function
             
         Case "call"
-            'ƒTƒuƒ‹[ƒ`ƒ“‚ÌêŠ‚ÍH
-            '‚Ü‚¸‚ÍƒTƒuƒ‹[ƒ`ƒ“–¼‚ª®‚Å‚È‚¢‚Æ‰¼’è‚µ‚ÄŒŸõ
+            'ã‚µãƒ–ãƒ«ãƒ¼ãƒãƒ³ã®å ´æ‰€ã¯ï¼Ÿ
+            'ã¾ãšã¯ã‚µãƒ–ãƒ«ãƒ¼ãƒãƒ³åãŒå¼ã§ãªã„ã¨ä»®å®šã—ã¦æ¤œç´¢
             ret = FindNormalLabel(params(1))
             If ret = 0 Then
-                '®‚Åw’è‚³‚ê‚Ä‚¢‚éH
+                'å¼ã§æŒ‡å®šã•ã‚Œã¦ã„ã‚‹ï¼Ÿ
                 ret = FindNormalLabel(GetValueAsString(params(1), is_term(1)))
                 If ret = 0 Then
                     DisplayEventErrorMessage CurrentLineNum, _
-                        "w’è‚³‚ê‚½ƒTƒuƒ‹[ƒ`ƒ“u" & params(1) & "v‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ"
+                        "æŒ‡å®šã•ã‚ŒãŸã‚µãƒ–ãƒ«ãƒ¼ãƒãƒ³ã€Œ" & params(1) & "ã€ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“"
                     Exit Function
                 End If
             End If
             ret = ret + 1
             
-            'ŒÄ‚Ño‚µŠK‘w‚ğƒ`ƒFƒbƒN
+            'å‘¼ã³å‡ºã—éšå±¤ã‚’ãƒã‚§ãƒƒã‚¯
             If CallDepth > MaxCallDepth Then
                 CallDepth = MaxCallDepth
                 DisplayEventErrorMessage CurrentLineNum, _
-                    FormatNum(MaxCallDepth) & "ŠK‘w‚ğ‰z‚¦‚éƒTƒuƒ‹[ƒ`ƒ“‚ÌŒÄ‚Ño‚µ‚Ío—ˆ‚Ü‚¹‚ñ"
+                    FormatNum(MaxCallDepth) & "éšå±¤ã‚’è¶Šãˆã‚‹ã‚µãƒ–ãƒ«ãƒ¼ãƒãƒ³ã®å‘¼ã³å‡ºã—ã¯å‡ºæ¥ã¾ã›ã‚“"
                 Exit Function
             End If
             
-            'ˆø”—pƒXƒ^ƒbƒN‚ªˆì‚ê‚È‚¢‚©ƒ`ƒFƒbƒN
+            'å¼•æ•°ç”¨ã‚¹ã‚¿ãƒƒã‚¯ãŒæº¢ã‚Œãªã„ã‹ãƒã‚§ãƒƒã‚¯
             If ArgIndex + pcount > MaxArgIndex Then
                 DisplayEventErrorMessage CurrentLineNum, _
-                    "ƒTƒuƒ‹[ƒ`ƒ“‚Ìˆø”‚Ì‘”‚ª" & FormatNum(MaxArgIndex) & _
-                    "ŒÂ‚ğ’´‚¦‚Ä‚¢‚Ü‚·"
+                    "ã‚µãƒ–ãƒ«ãƒ¼ãƒãƒ³ã®å¼•æ•°ã®ç·æ•°ãŒ" & FormatNum(MaxArgIndex) & _
+                    "å€‹ã‚’è¶…ãˆã¦ã„ã¾ã™"
                 Exit Function
             End If
             
-            'ˆø”‚ğ•]‰¿‚µ‚Ä‚¨‚­
+            'å¼•æ•°ã‚’è©•ä¾¡ã—ã¦ãŠã
             For i = 2 To pcount
                 params(i) = GetValueAsString(params(i), is_term(i))
             Next
             
-            'Œ»İ‚Ìó‘Ô‚ğ•Û‘¶
+            'ç¾åœ¨ã®çŠ¶æ…‹ã‚’ä¿å­˜
             CallStack(CallDepth) = CurrentLineNum
             ArgIndexStack(CallDepth) = ArgIndex
             VarIndexStack(CallDepth) = VarIndex
             ForIndexStack(CallDepth) = ForIndex
             
-            'UpVar‚ªÀs‚³‚ê‚½ê‡AUpVarÀs”‚Í—İŒv‚·‚é
+            'UpVarãŒå®Ÿè¡Œã•ã‚ŒãŸå ´åˆã€UpVarå®Ÿè¡Œæ•°ã¯ç´¯è¨ˆã™ã‚‹
             If UpVarLevel > 0 Then
                 UpVarLevelStack(CallDepth) = UpVarLevel + UpVarLevelStack(CallDepth - 1)
             Else
                 UpVarLevelStack(CallDepth) = 0
             End If
             
-            'UpVar‚ÌŠK‘w”‚ğ‰Šú‰»
+            'UpVarã®éšå±¤æ•°ã‚’åˆæœŸåŒ–
             UpVarLevel = 0
             
-            'ŒÄ‚Ño‚µŠK‘w”‚ğƒCƒ“ƒNƒŠƒƒ“ƒg
+            'å‘¼ã³å‡ºã—éšå±¤æ•°ã‚’ã‚¤ãƒ³ã‚¯ãƒªãƒ¡ãƒ³ãƒˆ
             CallDepth = CallDepth + 1
             cur_depth = CallDepth
             
-            'ˆø”‚ğƒXƒ^ƒbƒN‚ÉÏ‚Ş
+            'å¼•æ•°ã‚’ã‚¹ã‚¿ãƒƒã‚¯ã«ç©ã‚€
             ArgIndex = ArgIndex + pcount - 1
             For i = 2 To pcount
                 ArgStack(ArgIndex - i + 2) = params(i)
             Next
             
-            'ƒTƒuƒ‹[ƒ`ƒ“–{‘Ì‚ğÀs
+            'ã‚µãƒ–ãƒ«ãƒ¼ãƒãƒ³æœ¬ä½“ã‚’å®Ÿè¡Œ
             Do
                 CurrentLineNum = ret
                 If CurrentLineNum > UBound(EventCmd) Then
@@ -1142,7 +1142,7 @@ Static regexp_index As Integer
                 End With
             Loop While ret > 0
             
-            '•Ô‚è’l
+            'è¿”ã‚Šå€¤
             With EventCmd(CurrentLineNum)
                 If .ArgNum = 2 Then
                     str_result = .GetArgAsString(2)
@@ -1151,10 +1151,10 @@ Static regexp_index As Integer
                 End If
             End With
             
-            'ŒÄ‚Ño‚µŠK‘w”‚ğƒfƒNƒŠƒƒ“ƒg
+            'å‘¼ã³å‡ºã—éšå±¤æ•°ã‚’ãƒ‡ã‚¯ãƒªãƒ¡ãƒ³ãƒˆ
             CallDepth = CallDepth - 1
             
-            'ƒTƒuƒ‹[ƒ`ƒ“Às‘O‚Ìó‘Ô‚É•œ‹A
+            'ã‚µãƒ–ãƒ«ãƒ¼ãƒãƒ³å®Ÿè¡Œå‰ã®çŠ¶æ…‹ã«å¾©å¸°
             CurrentLineNum = CallStack(CallDepth)
             ArgIndex = ArgIndexStack(CallDepth)
             VarIndex = VarIndexStack(CallDepth)
@@ -1188,9 +1188,9 @@ Static regexp_index As Integer
                 i = InStr(GetValueAsString(params(1), is_term(1)), _
                     GetValueAsString(params(2), is_term(2)))
             Else
-                'params(3)‚ªw’è‚³‚ê‚Ä‚¢‚éê‡‚ÍA‚»‚ê‚ğŒŸõŠJnˆÊ’u—İ’è
-                'VB‚ÌInStr‚Íˆø”1‚ªŠJnˆÊ’u‚É‚È‚è‚Ü‚·‚ªAŒ»d—l‚Æ‚ÌŒ“‚Ë‡‚¢‚ğl‚¦A
-                'eveã‚Å‚Íˆø”3‚Éİ’è‚·‚é‚æ‚¤‚É‚µ‚Ä‚¢‚Ü‚·
+                'params(3)ãŒæŒ‡å®šã•ã‚Œã¦ã„ã‚‹å ´åˆã¯ã€ãã‚Œã‚’æ¤œç´¢é–‹å§‹ä½ç½®ä¼¼è¨­å®š
+                'VBã®InStrã¯å¼•æ•°1ãŒé–‹å§‹ä½ç½®ã«ãªã‚Šã¾ã™ãŒã€ç¾ä»•æ§˜ã¨ã®å…¼ã­åˆã„ã‚’è€ƒãˆã€
+                'eveä¸Šã§ã¯å¼•æ•°3ã«è¨­å®šã™ã‚‹ã‚ˆã†ã«ã—ã¦ã„ã¾ã™
                 i = InStr(GetValueAsLong(params(3), is_term(3)), _
                     GetValueAsString(params(1), is_term(1)), _
                     GetValueAsString(params(2), is_term(2)))
@@ -1210,9 +1210,9 @@ Static regexp_index As Integer
                 i = InStrB(StrConv(GetValueAsString(params(1), is_term(1)), vbFromUnicode), _
                     StrConv(GetValueAsString(params(2), is_term(2)), vbFromUnicode))
             Else
-                'params(3)‚ªw’è‚³‚ê‚Ä‚¢‚éê‡‚ÍA‚»‚ê‚ğŒŸõŠJnˆÊ’u—İ’è
-                'VB‚ÌInStr‚Íˆø”1‚ªŠJnˆÊ’u‚É‚È‚è‚Ü‚·‚ªAŒ»d—l‚Æ‚ÌŒ“‚Ë‡‚¢‚ğl‚¦A
-                'eveã‚Å‚Íˆø”3‚Éİ’è‚·‚é‚æ‚¤‚É‚µ‚Ä‚¢‚Ü‚·
+                'params(3)ãŒæŒ‡å®šã•ã‚Œã¦ã„ã‚‹å ´åˆã¯ã€ãã‚Œã‚’æ¤œç´¢é–‹å§‹ä½ç½®ä¼¼è¨­å®š
+                'VBã®InStrã¯å¼•æ•°1ãŒé–‹å§‹ä½ç½®ã«ãªã‚Šã¾ã™ãŒã€ç¾ä»•æ§˜ã¨ã®å…¼ã­åˆã„ã‚’è€ƒãˆã€
+                'eveä¸Šã§ã¯å¼•æ•°3ã«è¨­å®šã™ã‚‹ã‚ˆã†ã«ã—ã¦ã„ã¾ã™
                 i = InStrB(GetValueAsLong(params(3), is_term(3)), _
                     StrConv(GetValueAsString(params(1), is_term(1)), vbFromUnicode), _
                     StrConv(GetValueAsString(params(2), is_term(2)), vbFromUnicode))
@@ -1231,7 +1231,7 @@ Static regexp_index As Integer
             str_result = ListIndex(GetValueAsString(params(1), is_term(1)), _
                 GetValueAsLong(params(2), is_term(2)))
             
-            '‘S‘Ì‚ª()‚ÅˆÍ‚Ü‚ê‚Ä‚¢‚éê‡‚Í()‚ğŠO‚·
+            'å…¨ä½“ãŒ()ã§å›²ã¾ã‚Œã¦ã„ã‚‹å ´åˆã¯()ã‚’å¤–ã™
             If Left$(str_result, 1) = "(" _
                 And Right$(str_result, 1) = ")" _
             Then
@@ -1266,7 +1266,7 @@ Static regexp_index As Integer
             CallFunction = StringType
             Exit Function
             
-        '‚±‚êˆÈ~‚ÍƒAƒ‹ƒtƒ@ƒxƒbƒg‡
+        'ã“ã‚Œä»¥é™ã¯ã‚¢ãƒ«ãƒ•ã‚¡ãƒ™ãƒƒãƒˆé †
         Case "abs"
             num_result = Abs(GetValueAsDouble(params(1), is_term(1)))
             
@@ -1288,7 +1288,7 @@ Static regexp_index As Integer
                         With PList.Item(pname)
                             If Not .Unit Is Nothing Then
                                 With .Unit
-                                    If .Status = "oŒ‚" Or .Status = "Ši”[" Then
+                                    If .Status = "å‡ºæ’ƒ" Or .Status = "æ ¼ç´" Then
                                         num_result = .Action
                                     Else
                                         num_result = 0
@@ -1399,7 +1399,7 @@ Static regexp_index As Integer
             buf = Mid$(expr, 7, Len(expr) - 7) & "["
             num = 0
             
-            'ƒTƒuƒ‹[ƒ`ƒ“ƒ[ƒJƒ‹•Ï”‚ğŒŸõ
+            'ã‚µãƒ–ãƒ«ãƒ¼ãƒãƒ³ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ã‚’æ¤œç´¢
             If CallDepth > 0 Then
                 For i = VarIndexStack(CallDepth - 1) + 1 To VarIndex
                     If InStr(VarStack(i).Name, buf) = 1 Then
@@ -1418,7 +1418,7 @@ Static regexp_index As Integer
                 End If
             End If
             
-            'ƒ[ƒJƒ‹•Ï”‚ğŒŸõ
+            'ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ã‚’æ¤œç´¢
             For Each var In LocalVariableList
                 If InStr(var.Name, buf) = 1 Then
                     num = num + 1
@@ -1435,7 +1435,7 @@ Static regexp_index As Integer
                 Exit Function
             End If
             
-            'ƒOƒ[ƒoƒ‹•Ï”‚ğŒŸõ
+            'ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°ã‚’æ¤œç´¢
             For Each var In GlobalVariableList
                 If InStr(var.Name, buf) = 1 Then
                     num = num + 1
@@ -1457,7 +1457,7 @@ Static regexp_index As Integer
                     If UList.IsDefined2(pname) Then
                         num = UList.Item2(pname).CountItem
                     ElseIf Not PList.IsDefined(pname) Then
-                        If pname = "–¢‘•”õ" Then
+                        If pname = "æœªè£…å‚™" Then
                             num = 0
                             For Each it In IList
                                 With it
@@ -1580,15 +1580,15 @@ Static regexp_index As Integer
                 Case 2
                     fname = GetValueAsString(params(1), is_term(1))
                     
-                    'ƒtƒ‹ƒpƒXw’è‚Å‚È‚¯‚ê‚ÎƒVƒiƒŠƒIƒtƒHƒ‹ƒ_‚ğ‹N“_‚ÉŒŸõ
+                    'ãƒ•ãƒ«ãƒ‘ã‚¹æŒ‡å®šã§ãªã‘ã‚Œã°ã‚·ãƒŠãƒªã‚ªãƒ•ã‚©ãƒ«ãƒ€ã‚’èµ·ç‚¹ã«æ¤œç´¢
                     If Mid$(fname, 2, 1) <> ":" Then
                         fname = ScenarioPath & fname
                     End If
                     
                     Select Case GetValueAsString(params(2), is_term(2))
-                        Case "ƒtƒ@ƒCƒ‹"
+                        Case "ãƒ•ã‚¡ã‚¤ãƒ«"
                             num = vbNormal
-                        Case "ƒtƒHƒ‹ƒ_"
+                        Case "ãƒ•ã‚©ãƒ«ãƒ€"
                             num = vbDirectory
                     End Select
                     str_result = Dir$(fname, num)
@@ -1597,7 +1597,7 @@ Static regexp_index As Integer
                         Exit Function
                     End If
                     
-                    'ƒtƒ@ƒCƒ‹‘®«ƒ`ƒFƒbƒN—p‚ÉŒŸõƒpƒX‚ğì¬
+                    'ãƒ•ã‚¡ã‚¤ãƒ«å±æ€§ãƒã‚§ãƒƒã‚¯ç”¨ã«æ¤œç´¢ãƒ‘ã‚¹ã‚’ä½œæˆ
                     dir_path = fname
                     If num = vbDirectory Then
                         i = InStr2(fname, "\")
@@ -1606,10 +1606,10 @@ Static regexp_index As Integer
                         End If
                     End If
                     
-                    '’Pˆêƒtƒ@ƒCƒ‹‚ÌŒŸõH
+                    'å˜ä¸€ãƒ•ã‚¡ã‚¤ãƒ«ã®æ¤œç´¢ï¼Ÿ
                     If InStr(fname, "*") = 0 Then
-                        'ƒtƒHƒ‹ƒ_‚ÌŒŸõ‚Ìê‡‚ÍŒ©‚Â‚©‚Á‚½ƒtƒ@ƒCƒ‹‚ªƒtƒHƒ‹ƒ_
-                        '‚©‚Ç‚¤‚©ƒ`ƒFƒbƒN‚·‚é
+                        'ãƒ•ã‚©ãƒ«ãƒ€ã®æ¤œç´¢ã®å ´åˆã¯è¦‹ã¤ã‹ã£ãŸãƒ•ã‚¡ã‚¤ãƒ«ãŒãƒ•ã‚©ãƒ«ãƒ€
+                        'ã‹ã©ã†ã‹ãƒã‚§ãƒƒã‚¯ã™ã‚‹
                         If num = vbDirectory Then
                             If (GetAttr(dir_path & str_result) And num) = 0 Then
                                 str_result = ""
@@ -1625,12 +1625,12 @@ Static regexp_index As Integer
                         str_result = Dir
                     End If
                     
-                    'ŒŸõ‚³‚ê‚½ƒtƒ@ƒCƒ‹ˆê——‚ğì¬
+                    'æ¤œç´¢ã•ã‚ŒãŸãƒ•ã‚¡ã‚¤ãƒ«ä¸€è¦§ã‚’ä½œæˆ
                     ReDim dir_list(0)
                     If num = vbDirectory Then
                         Do While Len(str_result) > 0
-                            'ƒtƒHƒ‹ƒ_‚ÌŒŸõ‚Ìê‡‚ÍŒ©‚Â‚©‚Á‚½ƒtƒ@ƒCƒ‹‚ªƒtƒHƒ‹ƒ_
-                            '‚©‚Ç‚¤‚©ƒ`ƒFƒbƒN‚·‚é
+                            'ãƒ•ã‚©ãƒ«ãƒ€ã®æ¤œç´¢ã®å ´åˆã¯è¦‹ã¤ã‹ã£ãŸãƒ•ã‚¡ã‚¤ãƒ«ãŒãƒ•ã‚©ãƒ«ãƒ€
+                            'ã‹ã©ã†ã‹ãƒã‚§ãƒƒã‚¯ã™ã‚‹
                             If (GetAttr(dir_path & str_result) And num) <> 0 Then
                                 ReDim Preserve dir_list(UBound(dir_list) + 1)
                                 dir_list(UBound(dir_list)) = str_result
@@ -1656,7 +1656,7 @@ Static regexp_index As Integer
                 Case 1
                     fname = GetValueAsString(params(1), is_term(1))
                     
-                    'ƒtƒ‹ƒpƒXw’è‚Å‚È‚¯‚ê‚ÎƒVƒiƒŠƒIƒtƒHƒ‹ƒ_‚ğ‹N“_‚ÉŒŸõ
+                    'ãƒ•ãƒ«ãƒ‘ã‚¹æŒ‡å®šã§ãªã‘ã‚Œã°ã‚·ãƒŠãƒªã‚ªãƒ•ã‚©ãƒ«ãƒ€ã‚’èµ·ç‚¹ã«æ¤œç´¢
                     If Mid$(fname, 2, 1) <> ":" Then
                         fname = ScenarioPath & fname
                     End If
@@ -1667,7 +1667,7 @@ Static regexp_index As Integer
                         Exit Function
                     End If
                     
-                    '’Pˆêƒtƒ@ƒCƒ‹‚ÌŒŸõH
+                    'å˜ä¸€ãƒ•ã‚¡ã‚¤ãƒ«ã®æ¤œç´¢ï¼Ÿ
                     If InStr(fname, "*") = 0 Then
                         Exit Function
                     End If
@@ -1679,7 +1679,7 @@ Static regexp_index As Integer
                         str_result = Dir
                     End If
                     
-                    'ŒŸõ‚³‚ê‚½ƒtƒ@ƒCƒ‹ˆê——‚ğì¬
+                    'æ¤œç´¢ã•ã‚ŒãŸãƒ•ã‚¡ã‚¤ãƒ«ä¸€è¦§ã‚’ä½œæˆ
                     ReDim dir_list(0)
                     Do While Len(str_result) > 0
                         ReDim Preserve dir_list(UBound(dir_list) + 1)
@@ -1755,10 +1755,10 @@ Static regexp_index As Integer
             
         Case "font"
             Select Case GetValueAsString(params(1), is_term(1))
-                Case "ƒtƒHƒ“ƒg–¼"
+                Case "ãƒ•ã‚©ãƒ³ãƒˆå"
                     str_result = MainForm.picMain(0).Font.Name
                     CallFunction = StringType
-                Case "ƒTƒCƒY"
+                Case "ã‚µã‚¤ã‚º"
                     num_result = MainForm.picMain(0).Font.Size
                     If etype = StringType Then
                         str_result = FormatNum(num_result)
@@ -1766,7 +1766,7 @@ Static regexp_index As Integer
                     Else
                         CallFunction = NumericType
                     End If
-                Case "‘¾š"
+                Case "å¤ªå­—"
                     If MainForm.picMain(0).Font.Bold Then
                         num_result = 1
                     Else
@@ -1778,7 +1778,7 @@ Static regexp_index As Integer
                     Else
                         CallFunction = NumericType
                     End If
-                Case "Î‘Ì"
+                Case "æ–œä½“"
                     If MainForm.picMain(0).Font.Italic Then
                         num_result = 1
                     Else
@@ -1790,20 +1790,20 @@ Static regexp_index As Integer
                     Else
                         CallFunction = NumericType
                     End If
-                Case "F"
+                Case "è‰²"
                     str_result = Hex(MainForm.picMain(0).ForeColor)
                     For i = 1 To 6 - Len(str_result)
                         str_result = "0" & str_result
                     Next
                     str_result = "#" & str_result
                     CallFunction = StringType
-                Case "‘‚«‚İ"
+                Case "æ›¸ãè¾¼ã¿"
                     If PermanentStringMode Then
-                        str_result = "”wŒi"
+                        str_result = "èƒŒæ™¯"
                     ElseIf KeepStringMode Then
-                        str_result = "•Û"
+                        str_result = "ä¿æŒ"
                     Else
-                        str_result = "’Êí"
+                        str_result = "é€šå¸¸"
                     End If
                     CallFunction = StringType
             End Select
@@ -1830,10 +1830,10 @@ Static regexp_index As Integer
                 Exit Function
             End If
             
-            'ƒL[”Ô†
+            'ã‚­ãƒ¼ç•ªå·
             i = GetValueAsLong(params(1), is_term(1))
             
-            '¶—˜‚«İ’è‚É‘Î‰
+            'å·¦åˆ©ãè¨­å®šã«å¯¾å¿œ
             Select Case i
                 Case vbKeyLButton
                     i = LButtonID
@@ -1842,10 +1842,10 @@ Static regexp_index As Integer
             End Select
             
             If i = vbKeyLButton Or i = vbKeyRButton Then
-                'ƒ}ƒEƒXƒJ[ƒ\ƒ‹‚ÌˆÊ’u‚ğQÆ
+                'ãƒã‚¦ã‚¹ã‚«ãƒ¼ã‚½ãƒ«ã®ä½ç½®ã‚’å‚ç…§
                 GetCursorPos PT
                 
-                'ƒƒCƒ“ƒEƒCƒ“ƒhƒEã‚Åƒ}ƒEƒXƒ{ƒ^ƒ“‚ğ‰Ÿ‚µ‚Ä‚¢‚éH
+                'ãƒ¡ã‚¤ãƒ³ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ä¸Šã§ãƒã‚¦ã‚¹ãƒœã‚¿ãƒ³ã‚’æŠ¼ã—ã¦ã„ã‚‹ï¼Ÿ
                 If Screen.ActiveForm Is MainForm Then
                     With MainForm
                         x1 = .Left \ Screen.TwipsPerPixelX + .picMain(0).Left + 3
@@ -1863,13 +1863,13 @@ Static regexp_index As Integer
                     End With
                 End If
             Else
-                'ƒƒCƒ“ƒEƒBƒ“ƒhƒE‚ªƒAƒNƒeƒBƒu‚É‚È‚Á‚Ä‚¢‚éH
+                'ãƒ¡ã‚¤ãƒ³ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãŒã‚¢ã‚¯ãƒ†ã‚£ãƒ–ã«ãªã£ã¦ã„ã‚‹ï¼Ÿ
                 If Screen.ActiveForm Is MainForm Then
                     in_window = True
                 End If
             End If
             
-            'ƒEƒBƒ“ƒhƒE‚ª‘I‘ğ‚³‚ê‚Ä‚¢‚È‚¢ê‡‚Íí‚É0‚ğ•Ô‚·
+            'ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãŒé¸æŠã•ã‚Œã¦ã„ãªã„å ´åˆã¯å¸¸ã«0ã‚’è¿”ã™
             If Not in_window Then
                 num_result = 0
                 If etype = StringType Then
@@ -1881,7 +1881,7 @@ Static regexp_index As Integer
                 Exit Function
             End If
             
-            'ƒL[‚Ìó‘Ô‚ğQÆ
+            'ã‚­ãƒ¼ã®çŠ¶æ…‹ã‚’å‚ç…§
             If GetAsyncKeyState(i) And &H8000 Then
                 num_result = 1
             End If
@@ -1944,8 +1944,8 @@ Static regexp_index As Integer
                                 flag = False
                             Else
                                 With .Unit
-                                    If .Status = "oŒ‚" _
-                                        Or .Status = "Ši”[" _
+                                    If .Status = "å‡ºæ’ƒ" _
+                                        Or .Status = "æ ¼ç´" _
                                     Then
                                         flag = True
                                     Else
@@ -1969,8 +1969,8 @@ Static regexp_index As Integer
                                 flag = True
                             Else
                                 With .Unit
-                                    If .Status = "oŒ‚" _
-                                        Or .Status = "Ši”[" _
+                                    If .Status = "å‡ºæ’ƒ" _
+                                        Or .Status = "æ ¼ç´" _
                                     Then
                                         flag = False
                                     Else
@@ -2089,7 +2089,7 @@ Static regexp_index As Integer
                     pname = GetValueAsString(params(1), is_term(1))
                     buf = GetValueAsString(params(2), is_term(2))
                     
-                    'ƒGƒŠƒAƒX‚ª’è‹`‚³‚ê‚Ä‚¢‚éH
+                    'ã‚¨ãƒªã‚¢ã‚¹ãŒå®šç¾©ã•ã‚Œã¦ã„ã‚‹ï¼Ÿ
                     If ALDList.IsDefined(buf) Then
                         With ALDList.Item(buf)
                             For i = 1 To .Count
@@ -2120,7 +2120,7 @@ Static regexp_index As Integer
                 Case 1
                     buf = GetValueAsString(params(1), is_term(1))
                     
-                    'ƒGƒŠƒAƒX‚ª’è‹`‚³‚ê‚Ä‚¢‚éH
+                    'ã‚¨ãƒªã‚¢ã‚¹ãŒå®šç¾©ã•ã‚Œã¦ã„ã‚‹ï¼Ÿ
                     If ALDList.IsDefined(buf) Then
                         buf = ALDList.Item(buf).AliasType(1)
                     End If
@@ -2145,19 +2145,19 @@ Static regexp_index As Integer
             Select Case pcount
                 Case 2
                     Select Case GetValueAsString(params(2), is_term(2))
-                        Case "ƒpƒCƒƒbƒg"
+                        Case "ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆ"
                             If PList.IsDefined(pname) Then
                                 If PList.Item(pname).Alive Then
                                     num_result = 1
                                 End If
                             End If
-                        Case "ƒ†ƒjƒbƒg"
+                        Case "ãƒ¦ãƒ‹ãƒƒãƒˆ"
                             If UList.IsDefined(pname) Then
-                                If UList.Item(pname).Status <> "”jŠü" Then
+                                If UList.Item(pname).Status <> "ç ´æ£„" Then
                                     num_result = 1
                                 End If
                             End If
-                        Case "ƒAƒCƒeƒ€"
+                        Case "ã‚¢ã‚¤ãƒ†ãƒ "
                             If IList.IsDefined(pname) Then
                                 num_result = 1
                             End If
@@ -2168,7 +2168,7 @@ Static regexp_index As Integer
                             num_result = 1
                         End If
                     ElseIf UList.IsDefined(pname) Then
-                        If UList.Item(pname).Status <> "”jŠü" Then
+                        If UList.Item(pname).Status <> "ç ´æ£„" Then
                             num_result = 1
                         End If
                     ElseIf IList.IsDefined(pname) Then
@@ -2297,7 +2297,7 @@ Static regexp_index As Integer
                             End If
                         End With
                     ElseIf Not PList.IsDefined(pname) Then
-                        If pname = "–¢‘•”õ" Then
+                        If pname = "æœªè£…å‚™" Then
                             i = 0
                             j = GetValueAsLong(params(2), is_term(2))
                             For Each it In IList
@@ -2345,7 +2345,7 @@ Static regexp_index As Integer
                             End If
                         End With
                     ElseIf Not PList.IsDefined(pname) Then
-                        If pname = "–¢‘•”õ" Then
+                        If pname = "æœªè£…å‚™" Then
                             i = 0
                             j = GetValueAsLong(params(2), is_term(2))
                             For Each it In IList
@@ -2799,19 +2799,19 @@ Static regexp_index As Integer
                 Set RegEx = CreateObject("VBScript.RegExp")
             End If
         
-            'RegExp(•¶š—ñ, ƒpƒ^[ƒ“[,‘å¬‹æ•Ê‚ ‚è|‘å¬‹æ•Ê‚È‚µ])
+            'RegExp(æ–‡å­—åˆ—, ãƒ‘ã‚¿ãƒ¼ãƒ³[,å¤§å°åŒºåˆ¥ã‚ã‚Š|å¤§å°åŒºåˆ¥ãªã—])
             buf = ""
             If pcount > 0 Then
-                '•¶š—ñ‘S‘Ì‚ğŒŸõ
+                'æ–‡å­—åˆ—å…¨ä½“ã‚’æ¤œç´¢
                 RegEx.Global = True
-                '‘å•¶š¬•¶š‚Ì‹æ•ÊiTrue=‹æ•Ê‚µ‚È‚¢j
+                'å¤§æ–‡å­—å°æ–‡å­—ã®åŒºåˆ¥ï¼ˆTrue=åŒºåˆ¥ã—ãªã„ï¼‰
                 RegEx.IgnoreCase = False
                 If pcount >= 3 Then
-                    If GetValueAsString(params(3), is_term(3)) = "‘å¬‹æ•Ê‚È‚µ" Then
+                    If GetValueAsString(params(3), is_term(3)) = "å¤§å°åŒºåˆ¥ãªã—" Then
                         RegEx.IgnoreCase = True
                     End If
                 End If
-                'ŒŸõƒpƒ^[ƒ“
+                'æ¤œç´¢ãƒ‘ã‚¿ãƒ¼ãƒ³
                 RegEx.Pattern = GetValueAsString(params(2), is_term(2))
                 Set Matches = RegEx.Execute(GetValueAsString(params(1), is_term(1)))
                 If Matches.Count = 0 Then
@@ -2833,11 +2833,11 @@ Static regexp_index As Integer
             Exit Function
 RegExp_Error:
             DisplayEventErrorMessage CurrentLineNum, _
-                "VBScript‚ªƒCƒ“ƒXƒg[ƒ‹‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ"
+                "VBScriptãŒã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã•ã‚Œã¦ã„ã¾ã›ã‚“"
             Exit Function
             
         Case "regexpreplace"
-            'RegExpReplace(•¶š—ñ, ŒŸõƒpƒ^[ƒ“, ’uŠ·ƒpƒ^[ƒ“[,‘å¬‹æ•Ê‚ ‚è|‘å¬‹æ•Ê‚È‚µ])
+            'RegExpReplace(æ–‡å­—åˆ—, æ¤œç´¢ãƒ‘ã‚¿ãƒ¼ãƒ³, ç½®æ›ãƒ‘ã‚¿ãƒ¼ãƒ³[,å¤§å°åŒºåˆ¥ã‚ã‚Š|å¤§å°åŒºåˆ¥ãªã—])
             
             On Error GoTo RegExpReplace_Error
             
@@ -2845,19 +2845,19 @@ RegExp_Error:
                 Set RegEx = CreateObject("VBScript.RegExp")
             End If
             
-            '•¶š—ñ‘S‘Ì‚ğŒŸõ
+            'æ–‡å­—åˆ—å…¨ä½“ã‚’æ¤œç´¢
             RegEx.Global = True
-            '‘å•¶š¬•¶š‚Ì‹æ•ÊiTrue=‹æ•Ê‚µ‚È‚¢j
+            'å¤§æ–‡å­—å°æ–‡å­—ã®åŒºåˆ¥ï¼ˆTrue=åŒºåˆ¥ã—ãªã„ï¼‰
             RegEx.IgnoreCase = False
             If pcount >= 4 Then
-                If GetValueAsString(params(4), is_term(4)) = "‘å¬‹æ•Ê‚È‚µ" Then
+                If GetValueAsString(params(4), is_term(4)) = "å¤§å°åŒºåˆ¥ãªã—" Then
                     RegEx.IgnoreCase = True
                 End If
             End If
-            'ŒŸõƒpƒ^[ƒ“
+            'æ¤œç´¢ãƒ‘ã‚¿ãƒ¼ãƒ³
             RegEx.Pattern = GetValueAsString(params(2), is_term(2))
             
-            '’uŠ·Às
+            'ç½®æ›å®Ÿè¡Œ
             buf = RegEx.Replace(GetValueAsString(params(1), is_term(1)), _
                         GetValueAsString(params(3), is_term(3)))
             
@@ -2866,7 +2866,7 @@ RegExp_Error:
             Exit Function
 RegExpReplace_Error:
             DisplayEventErrorMessage CurrentLineNum, _
-                "VBScript‚ªƒCƒ“ƒXƒg[ƒ‹‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ"
+                "VBScriptãŒã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã•ã‚Œã¦ã„ã¾ã›ã‚“"
             Exit Function
             
         Case "relation"
@@ -2896,7 +2896,7 @@ RegExpReplace_Error:
             End If
             pname2 = PList.Item(pname2).Name
             
-            num_result = GetValueAsLong("ŠÖŒW:" & pname & ":" & pname2)
+            num_result = GetValueAsLong("é–¢ä¿‚:" & pname & ":" & pname2)
             
             If etype = StringType Then
                 str_result = FormatNum(num_result)
@@ -3037,7 +3037,7 @@ RegExpReplace_Error:
                     pname = GetValueAsString(params(1), is_term(1))
                     buf = GetValueAsString(params(2), is_term(2))
                     
-                    'ƒGƒŠƒAƒX‚ª’è‹`‚³‚ê‚Ä‚¢‚éH
+                    'ã‚¨ãƒªã‚¢ã‚¹ãŒå®šç¾©ã•ã‚Œã¦ã„ã‚‹ï¼Ÿ
                     If ALDList.IsDefined(buf) Then
                         buf = ALDList.Item(buf).AliasType(1)
                     End If
@@ -3050,7 +3050,7 @@ RegExpReplace_Error:
                 Case 1
                     buf = GetValueAsString(params(1), is_term(1))
                     
-                    'ƒGƒŠƒAƒX‚ª’è‹`‚³‚ê‚Ä‚¢‚éH
+                    'ã‚¨ãƒªã‚¢ã‚¹ãŒå®šç¾©ã•ã‚Œã¦ã„ã‚‹ï¼Ÿ
                     If ALDList.IsDefined(buf) Then
                         buf = ALDList.Item(buf).AliasType(1)
                     End If
@@ -3175,8 +3175,8 @@ RegExpReplace_Error:
             If Len(buf) <= 1 Then
                 str_result = String$(GetValueAsLong(params(1), is_term(1)), buf)
             Else
-                'StringŠÖ”‚Å‚Í•¶š—ñ‚Ìæ“ª‚µ‚©ŒJ‚è•Ô‚µ‚³‚ê‚È‚¢‚Ì‚ÅA
-                '’·‚³‚ª2ˆÈã‚Ì•¶š—ñ‚Ìê‡‚Í•Êˆ—
+                'Stringé–¢æ•°ã§ã¯æ–‡å­—åˆ—ã®å…ˆé ­ã—ã‹ç¹°ã‚Šè¿”ã—ã•ã‚Œãªã„ã®ã§ã€
+                'é•·ã•ãŒ2ä»¥ä¸Šã®æ–‡å­—åˆ—ã®å ´åˆã¯åˆ¥å‡¦ç†
                 str_result = ""
                 For i = 1 To GetValueAsLong(params(1), is_term(1))
                     str_result = str_result & buf
@@ -3291,9 +3291,9 @@ RegExpReplace_Error:
                 Case 1
                     pname = GetValueAsString(params(1), is_term(1))
                     Select Case pname
-                        Case "–Ú•W’n“_"
+                        Case "ç›®æ¨™åœ°ç‚¹"
                             num_result = SelectedX
-                        Case "ƒ}ƒEƒX"
+                        Case "ãƒã‚¦ã‚¹"
                             num_result = MouseX
                         Case Else
                             If UList.IsDefined2(pname) Then
@@ -3325,9 +3325,9 @@ RegExpReplace_Error:
                 Case 1
                     pname = GetValueAsString(params(1), is_term(1))
                     Select Case pname
-                        Case "–Ú•W’n“_"
+                        Case "ç›®æ¨™åœ°ç‚¹"
                             num_result = SelectedY
-                        Case "ƒ}ƒEƒX"
+                        Case "ãƒã‚¦ã‚¹"
                             num_result = MouseY
                         Case Else
                             If UList.IsDefined2(pname) Then
@@ -3380,7 +3380,7 @@ RegExpReplace_Error:
                     pname = GetValueAsString(params(1), is_term(1))
                     If IsNumber(pname) Then
                         num_result = StrToLng(pname)
-                    ElseIf pname = "–Ú•W’n“_" Then
+                    ElseIf pname = "ç›®æ¨™åœ°ç‚¹" Then
                         num_result = SelectedX
                     ElseIf UList.IsDefined2(pname) Then
                         num_result = UList.Item2(pname).x
@@ -3413,7 +3413,7 @@ RegExpReplace_Error:
                     pname = GetValueAsString(params(1), is_term(1))
                     If IsNumber(pname) Then
                         num_result = StrToLng(pname)
-                    ElseIf pname = "–Ú•W’n“_" Then
+                    ElseIf pname = "ç›®æ¨™åœ°ç‚¹" Then
                         num_result = SelectedY
                     ElseIf UList.IsDefined2(pname) Then
                         num_result = UList.Item2(pname).y
@@ -3445,7 +3445,7 @@ RegExpReplace_Error:
             CallFunction = StringType
             Exit Function
             
-        'DateŒ^‚Ìˆ—
+        'Dateå‹ã®å‡¦ç†
         Case "year"
             Select Case pcount
                 Case 1
@@ -3495,37 +3495,37 @@ RegExpReplace_Error:
                     If IsDate(buf) Then
                         Select Case WeekDay(CDate(buf))
                             Case vbSunday
-                                str_result = "“ú—j"
+                                str_result = "æ—¥æ›œ"
                             Case vbMonday
-                                str_result = "Œ—j"
+                                str_result = "æœˆæ›œ"
                             Case vbTuesday
-                                str_result = "‰Î—j"
+                                str_result = "ç«æ›œ"
                             Case vbWednesday
-                                str_result = "…—j"
+                                str_result = "æ°´æ›œ"
                             Case vbThursday
-                                str_result = "–Ø—j"
+                                str_result = "æœ¨æ›œ"
                             Case vbFriday
-                                str_result = "‹à—j"
+                                str_result = "é‡‘æ›œ"
                             Case vbSaturday
-                                str_result = "“y—j"
+                                str_result = "åœŸæ›œ"
                         End Select
                     End If
                 Case 0
                     Select Case WeekDay(Now)
                         Case vbSunday
-                            str_result = "“ú—j"
+                            str_result = "æ—¥æ›œ"
                         Case vbMonday
-                            str_result = "Œ—j"
+                            str_result = "æœˆæ›œ"
                         Case vbTuesday
-                            str_result = "‰Î—j"
+                            str_result = "ç«æ›œ"
                         Case vbWednesday
-                            str_result = "…—j"
+                            str_result = "æ°´æ›œ"
                         Case vbThursday
-                            str_result = "–Ø—j"
+                            str_result = "æœ¨æ›œ"
                         Case vbFriday
-                            str_result = "‹à—j"
+                            str_result = "é‡‘æ›œ"
                         Case vbSaturday
-                            str_result = "“y—j"
+                            str_result = "åœŸæ›œ"
                     End Select
             End Select
             CallFunction = StringType
@@ -3649,24 +3649,24 @@ RegExpReplace_Error:
             End If
             Exit Function
         
-        'ƒ_ƒCƒAƒƒO•\¦
+        'ãƒ€ã‚¤ã‚¢ãƒ­ã‚°è¡¨ç¤º
         Case "loadfiledialog"
             Select Case pcount
                 Case 2
                     str_result = _
-                        LoadFileDialog("ƒtƒ@ƒCƒ‹‚ğŠJ‚­", _
+                        LoadFileDialog("ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ã", _
                             ScenarioPath, "", 2, _
                             GetValueAsString(params(1), is_term(1)), _
                             GetValueAsString(params(2), is_term(2)))
                 Case 3
                     str_result = _
-                        LoadFileDialog("ƒtƒ@ƒCƒ‹‚ğŠJ‚­", _
+                        LoadFileDialog("ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ã", _
                             ScenarioPath, GetValueAsString(params(3), is_term(3)), 2, _
                             GetValueAsString(params(1), is_term(1)), _
                             GetValueAsString(params(2), is_term(2)))
                 Case 4
                     str_result = _
-                        LoadFileDialog("ƒtƒ@ƒCƒ‹‚ğŠJ‚­", _
+                        LoadFileDialog("ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ã", _
                             ScenarioPath & GetValueAsString(params(4), is_term(4)), _
                             GetValueAsString(params(3), is_term(3)), 2, _
                             GetValueAsString(params(1), is_term(1)), _
@@ -3675,13 +3675,13 @@ RegExpReplace_Error:
             
             CallFunction = StringType
             
-            '–{“–‚Í‚±‚ê‚¾‚¯‚Å‚¢‚¢‚Í‚¸‚¾‚¯‚Çcc
+            'æœ¬å½“ã¯ã“ã‚Œã ã‘ã§ã„ã„ã¯ãšã ã‘ã©â€¦â€¦
             If InStr(str_result, ScenarioPath) > 0 Then
                 str_result = Mid$(str_result, Len(ScenarioPath) + 1)
                 Exit Function
             End If
             
-            'ƒtƒ‹ƒpƒXw’è‚È‚ç‚±‚±‚ÅI—¹
+            'ãƒ•ãƒ«ãƒ‘ã‚¹æŒ‡å®šãªã‚‰ã“ã“ã§çµ‚äº†
             If Right$(Left$(str_result, 3), 2) = ":\" Then
                 str_result = ""
                 Exit Function
@@ -3689,7 +3689,7 @@ RegExpReplace_Error:
             
             Do Until Dir$(ScenarioPath & str_result, vbNormal) <> ""
                 If InStr(str_result, "\") = 0 Then
-                    'ƒVƒiƒŠƒIƒtƒHƒ‹ƒ_ŠO‚Ìƒtƒ@ƒCƒ‹‚¾‚Á‚½
+                    'ã‚·ãƒŠãƒªã‚ªãƒ•ã‚©ãƒ«ãƒ€å¤–ã®ãƒ•ã‚¡ã‚¤ãƒ«ã ã£ãŸ
                     str_result = ""
                     Exit Function
                 End If
@@ -3701,19 +3701,19 @@ RegExpReplace_Error:
             Select Case pcount
                 Case 2
                     str_result = _
-                        SaveFileDialog("ƒtƒ@ƒCƒ‹‚ğ•Û‘¶", _
+                        SaveFileDialog("ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ä¿å­˜", _
                             ScenarioPath, "", 2, _
                             GetValueAsString(params(1), is_term(1)), _
                             GetValueAsString(params(2), is_term(2)))
                 Case 3
                     str_result = _
-                        SaveFileDialog("ƒtƒ@ƒCƒ‹‚ğ•Û‘¶", _
+                        SaveFileDialog("ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ä¿å­˜", _
                             ScenarioPath, GetValueAsString(params(3), is_term(3)), 2, _
                             GetValueAsString(params(1), is_term(1)), _
                             GetValueAsString(params(2), is_term(2)))
                 Case 4
                     str_result = _
-                        SaveFileDialog("ƒtƒ@ƒCƒ‹‚ğ•Û‘¶", _
+                        SaveFileDialog("ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ä¿å­˜", _
                             ScenarioPath & GetValueAsString(params(4), is_term(4)), _
                             GetValueAsString(params(3), is_term(3)), 2, _
                             GetValueAsString(params(1), is_term(1)), _
@@ -3722,7 +3722,7 @@ RegExpReplace_Error:
             
             CallFunction = StringType
             
-            '–{“–‚Í‚±‚ê‚¾‚¯‚Å‚¢‚¢‚Í‚¸‚¾‚¯‚Çcc
+            'æœ¬å½“ã¯ã“ã‚Œã ã‘ã§ã„ã„ã¯ãšã ã‘ã©â€¦â€¦
             If InStr(str_result, ScenarioPath) > 0 Then
                 str_result = Mid$(str_result, Len(ScenarioPath) + 1)
                 Exit Function
@@ -3756,56 +3756,56 @@ RegExpReplace_Error:
     End Select
     
 LookUpUserDefinedID:
-    'ƒ†[ƒU[’è‹`ŠÖ”H
+    'ãƒ¦ãƒ¼ã‚¶ãƒ¼å®šç¾©é–¢æ•°ï¼Ÿ
     ret = FindNormalLabel(fname)
     If ret > 0 Then
-        'ŠÖ”‚ªŒ©‚Â‚©‚Á‚½
+        'é–¢æ•°ãŒè¦‹ã¤ã‹ã£ãŸ
         ret = ret + 1
         
-        'ŒÄ‚Ño‚µŠK‘w‚ğƒ`ƒFƒbƒN
+        'å‘¼ã³å‡ºã—éšå±¤ã‚’ãƒã‚§ãƒƒã‚¯
         If CallDepth > MaxCallDepth Then
             CallDepth = MaxCallDepth
             DisplayEventErrorMessage CurrentLineNum, _
                 FormatNum(MaxCallDepth) & _
-                "ŠK‘w‚ğ‰z‚¦‚éƒTƒuƒ‹[ƒ`ƒ“‚ÌŒÄ‚Ño‚µ‚Ío—ˆ‚Ü‚¹‚ñ"
+                "éšå±¤ã‚’è¶Šãˆã‚‹ã‚µãƒ–ãƒ«ãƒ¼ãƒãƒ³ã®å‘¼ã³å‡ºã—ã¯å‡ºæ¥ã¾ã›ã‚“"
             Exit Function
         End If
         
-        'ˆø”—pƒXƒ^ƒbƒN‚ªˆì‚ê‚È‚¢‚©ƒ`ƒFƒbƒN
+        'å¼•æ•°ç”¨ã‚¹ã‚¿ãƒƒã‚¯ãŒæº¢ã‚Œãªã„ã‹ãƒã‚§ãƒƒã‚¯
         If ArgIndex + pcount > MaxArgIndex Then
             DisplayEventErrorMessage CurrentLineNum, _
-                "ƒTƒuƒ‹[ƒ`ƒ“‚Ìˆø”‚Ì‘”‚ª" & FormatNum(MaxArgIndex) & _
-                "ŒÂ‚ğ’´‚¦‚Ä‚¢‚Ü‚·"
+                "ã‚µãƒ–ãƒ«ãƒ¼ãƒãƒ³ã®å¼•æ•°ã®ç·æ•°ãŒ" & FormatNum(MaxArgIndex) & _
+                "å€‹ã‚’è¶…ãˆã¦ã„ã¾ã™"
             Exit Function
         End If
         
-        'ˆø”‚Ì’l‚ğæ‚É‹‚ß‚Ä‚¨‚­
-        '(ƒXƒ^ƒbƒN‚ÉÏ‚İ‚È‚ª‚çŒvZ‚·‚é‚ÆAˆø”‚Å‚ÌŠÖ”ŒÄ‚Ño‚µ‚Å•s³‚É‚È‚é)
+        'å¼•æ•°ã®å€¤ã‚’å…ˆã«æ±‚ã‚ã¦ãŠã
+        '(ã‚¹ã‚¿ãƒƒã‚¯ã«ç©ã¿ãªãŒã‚‰è¨ˆç®—ã™ã‚‹ã¨ã€å¼•æ•°ã§ã®é–¢æ•°å‘¼ã³å‡ºã—ã§ä¸æ­£ã«ãªã‚‹)
         For i = 1 To pcount
             params(i) = GetValueAsString(params(i), is_term(i))
         Next
         
-        'Œ»İ‚Ìó‘Ô‚ğ•Û‘¶
+        'ç¾åœ¨ã®çŠ¶æ…‹ã‚’ä¿å­˜
         CallStack(CallDepth) = CurrentLineNum
         ArgIndexStack(CallDepth) = ArgIndex
         VarIndexStack(CallDepth) = VarIndex
         ForIndexStack(CallDepth) = ForIndex
         UpVarLevelStack(CallDepth) = UpVarLevel
         
-        'UpVar‚ÌŠK‘w”‚ğ‰Šú‰»
+        'UpVarã®éšå±¤æ•°ã‚’åˆæœŸåŒ–
         UpVarLevel = 0
         
-        'ŒÄ‚Ño‚µŠK‘w”‚ğƒCƒ“ƒNƒŠƒƒ“ƒg
+        'å‘¼ã³å‡ºã—éšå±¤æ•°ã‚’ã‚¤ãƒ³ã‚¯ãƒªãƒ¡ãƒ³ãƒˆ
         CallDepth = CallDepth + 1
         cur_depth = CallDepth
         
-        'ˆø”‚ğƒXƒ^ƒbƒN‚ÉÏ‚Ş
+        'å¼•æ•°ã‚’ã‚¹ã‚¿ãƒƒã‚¯ã«ç©ã‚€
         ArgIndex = ArgIndex + pcount
         For i = 1 To pcount
             ArgStack(ArgIndex - i + 1) = params(i)
         Next
         
-        'ƒTƒuƒ‹[ƒ`ƒ“–{‘Ì‚ğÀs
+        'ã‚µãƒ–ãƒ«ãƒ¼ãƒãƒ³æœ¬ä½“ã‚’å®Ÿè¡Œ
         Do
             CurrentLineNum = ret
             If CurrentLineNum > UBound(EventCmd) Then
@@ -3821,7 +3821,7 @@ LookUpUserDefinedID:
             End With
         Loop While ret > 0
         
-        '•Ô‚è’l
+        'è¿”ã‚Šå€¤
         With EventCmd(CurrentLineNum)
             If .ArgNum > 1 Then
                 str_result = .GetArgAsString(2)
@@ -3830,10 +3830,10 @@ LookUpUserDefinedID:
             End If
         End With
         
-        'ŒÄ‚Ño‚µŠK‘w”‚ğƒfƒNƒŠƒƒ“ƒg
+        'å‘¼ã³å‡ºã—éšå±¤æ•°ã‚’ãƒ‡ã‚¯ãƒªãƒ¡ãƒ³ãƒˆ
         CallDepth = CallDepth - 1
         
-        'ƒTƒuƒ‹[ƒ`ƒ“Às‘O‚Ìó‘Ô‚É•œ‹A
+        'ã‚µãƒ–ãƒ«ãƒ¼ãƒãƒ³å®Ÿè¡Œå‰ã®çŠ¶æ…‹ã«å¾©å¸°
         CurrentLineNum = CallStack(CallDepth)
         ArgIndex = ArgIndexStack(CallDepth)
         VarIndex = VarIndexStack(CallDepth)
@@ -3849,7 +3849,7 @@ LookUpUserDefinedID:
         Exit Function
     End If
     
-    'À‚ÍƒVƒXƒeƒ€’è‹`‚ÌƒOƒ[ƒoƒ‹•Ï”H
+    'å®Ÿã¯ã‚·ã‚¹ãƒ†ãƒ å®šç¾©ã®ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°ï¼Ÿ
     If IsGlobalVariableDefined(expr) Then
         With GlobalVariableList.Item(expr)
             Select Case etype
@@ -3880,12 +3880,12 @@ LookUpUserDefinedID:
         Exit Function
     End If
     
-    'Œ‹‹Ç‚½‚¾‚Ì•¶š—ñcc
+    'çµå±€ãŸã ã®æ–‡å­—åˆ—â€¦â€¦
     str_result = expr
     CallFunction = StringType
 End Function
 
-'InfoŠÖ”‚Ì•]‰¿
+'Infoé–¢æ•°ã®è©•ä¾¡
 Private Function EvalInfoFunc(params() As String) As String
 Dim u As Unit, ud As UnitData
 Dim p As Pilot, pd As PilotData
@@ -3908,37 +3908,37 @@ Dim max_value As Long
     Set itd = Nothing
     Set spd = Nothing
     
-    'ŠeƒIƒuƒWƒFƒNƒg‚Ìİ’è
+    'å„ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®è¨­å®š
     Select Case params(1)
-        Case "ƒ†ƒjƒbƒg"
+        Case "ãƒ¦ãƒ‹ãƒƒãƒˆ"
             Set u = UList.Item(params(2))
             idx = 3
-        Case "ƒ†ƒjƒbƒgƒf[ƒ^"
+        Case "ãƒ¦ãƒ‹ãƒƒãƒˆãƒ‡ãƒ¼ã‚¿"
             Set ud = UDList.Item(params(2))
             idx = 3
-        Case "ƒpƒCƒƒbƒg"
+        Case "ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆ"
             Set p = PList.Item(params(2))
             idx = 3
-        Case "ƒpƒCƒƒbƒgƒf[ƒ^"
+        Case "ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆãƒ‡ãƒ¼ã‚¿"
             Set pd = PDList.Item(params(2))
             idx = 3
-        Case "”ñí“¬ˆõ"
+        Case "éæˆ¦é—˜å“¡"
             Set nd = NPDList.Item(params(2))
             idx = 3
-        Case "ƒAƒCƒeƒ€"
+        Case "ã‚¢ã‚¤ãƒ†ãƒ "
             If IList.IsDefined(params(2)) Then
                 Set it = IList.Item(params(2))
             Else
                 Set itd = IDList.Item(params(2))
             End If
             idx = 3
-        Case "ƒAƒCƒeƒ€ƒf[ƒ^"
+        Case "ã‚¢ã‚¤ãƒ†ãƒ ãƒ‡ãƒ¼ã‚¿"
             Set itd = IDList.Item(params(2))
             idx = 3
-        Case "ƒXƒyƒVƒƒƒ‹ƒpƒ["
+        Case "ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼"
             Set spd = SPDList.Item(params(2))
             idx = 3
-        Case "ƒ}ƒbƒv", "ƒIƒvƒVƒ‡ƒ“"
+        Case "ãƒãƒƒãƒ—", "ã‚ªãƒ—ã‚·ãƒ§ãƒ³"
             idx = 1
         Case ""
             Exit Function
@@ -3955,7 +3955,7 @@ Dim max_value As Long
     End Select
     
     Select Case params(idx)
-        Case "–¼Ì"
+        Case "åç§°"
             If Not u Is Nothing Then
                 EvalInfoFunc = u.Name
             ElseIf Not ud Is Nothing Then
@@ -3973,7 +3973,7 @@ Dim max_value As Long
             ElseIf Not spd Is Nothing Then
                 EvalInfoFunc = spd.Name
             End If
-        Case "“Ç‚İ‰¼–¼"
+        Case "èª­ã¿ä»®å"
             If Not u Is Nothing Then
                 EvalInfoFunc = u.KanaName
             ElseIf Not ud Is Nothing Then
@@ -3989,7 +3989,7 @@ Dim max_value As Long
             ElseIf Not spd Is Nothing Then
                 EvalInfoFunc = spd.KanaName
             End If
-        Case "ˆ¤Ì"
+        Case "æ„›ç§°"
             If Not u Is Nothing Then
                 EvalInfoFunc = u.Nickname0
             ElseIf Not ud Is Nothing Then
@@ -4005,14 +4005,14 @@ Dim max_value As Long
             ElseIf Not itd Is Nothing Then
                 EvalInfoFunc = itd.Nickname
             End If
-        Case "«•Ê"
+        Case "æ€§åˆ¥"
             If Not p Is Nothing Then
                 EvalInfoFunc = p.Sex
             ElseIf Not pd Is Nothing Then
                 EvalInfoFunc = pd.Sex
             End If
             Exit Function
-        Case "ƒ†ƒjƒbƒgƒNƒ‰ƒX", "‹@‘ÌƒNƒ‰ƒX"
+        Case "ãƒ¦ãƒ‹ãƒƒãƒˆã‚¯ãƒ©ã‚¹", "æ©Ÿä½“ã‚¯ãƒ©ã‚¹"
             If Not u Is Nothing Then
                 EvalInfoFunc = u.Class
             ElseIf Not ud Is Nothing Then
@@ -4022,7 +4022,7 @@ Dim max_value As Long
             ElseIf Not pd Is Nothing Then
                 EvalInfoFunc = pd.Class
             End If
-        Case "’nŒ`“K‰"
+        Case "åœ°å½¢é©å¿œ"
             If Not u Is Nothing Then
                 For i = 1 To 4
                     Select Case u.Adaption(i)
@@ -4047,7 +4047,7 @@ Dim max_value As Long
             ElseIf Not pd Is Nothing Then
                 EvalInfoFunc = pd.Adaption
             End If
-        Case "ŒoŒ±’l"
+        Case "çµŒé¨“å€¤"
             If Not u Is Nothing Then
                 EvalInfoFunc = u.ExpValue
             ElseIf Not ud Is Nothing Then
@@ -4057,126 +4057,126 @@ Dim max_value As Long
             ElseIf Not pd Is Nothing Then
                 EvalInfoFunc = pd.ExpValue
             End If
-        Case "Ši“¬"
+        Case "æ ¼é—˜"
             If Not p Is Nothing Then
                 EvalInfoFunc = Format$(p.Infight)
             ElseIf Not pd Is Nothing Then
                 EvalInfoFunc = Format$(pd.Infight)
             End If
-        Case "ËŒ‚"
+        Case "å°„æ’ƒ"
             If Not p Is Nothing Then
                 EvalInfoFunc = Format$(p.Shooting)
             ElseIf Not pd Is Nothing Then
                 EvalInfoFunc = Format$(pd.Shooting)
             End If
             Exit Function
-        Case "–½’†"
+        Case "å‘½ä¸­"
             If Not p Is Nothing Then
                 EvalInfoFunc = Format$(p.Hit)
             ElseIf Not pd Is Nothing Then
                 EvalInfoFunc = Format$(pd.Hit)
             End If
-        Case "‰ñ”ğ"
+        Case "å›é¿"
             If Not p Is Nothing Then
                 EvalInfoFunc = Format$(p.Dodge)
             ElseIf Not pd Is Nothing Then
                 EvalInfoFunc = Format$(pd.Dodge)
             End If
-        Case "‹Z—Ê"
+        Case "æŠ€é‡"
             If Not p Is Nothing Then
                 EvalInfoFunc = Format$(p.Technique)
             ElseIf Not pd Is Nothing Then
                 EvalInfoFunc = Format$(pd.Technique)
             End If
-        Case "”½‰"
+        Case "åå¿œ"
             If Not p Is Nothing Then
                 EvalInfoFunc = Format$(p.Intuition)
             ElseIf Not pd Is Nothing Then
                 EvalInfoFunc = Format$(pd.Intuition)
             End If
-        Case "–hŒä"
+        Case "é˜²å¾¡"
             If Not p Is Nothing Then
                 EvalInfoFunc = Format$(p.Defense)
             End If
-        Case "Ši“¬Šî–{’l"
+        Case "æ ¼é—˜åŸºæœ¬å€¤"
             If Not p Is Nothing Then
                 EvalInfoFunc = Format$(p.InfightBase)
             End If
-        Case "ËŒ‚Šî–{’l"
+        Case "å°„æ’ƒåŸºæœ¬å€¤"
             If Not p Is Nothing Then
                 EvalInfoFunc = Format$(p.ShootingBase)
             End If
-        Case "–½’†Šî–{’l"
+        Case "å‘½ä¸­åŸºæœ¬å€¤"
             If Not p Is Nothing Then
                 EvalInfoFunc = Format$(p.HitBase)
             End If
-        Case "‰ñ”ğŠî–{’l"
+        Case "å›é¿åŸºæœ¬å€¤"
             If Not p Is Nothing Then
                 EvalInfoFunc = Format$(p.DodgeBase)
             End If
-        Case "‹Z—ÊŠî–{’l"
+        Case "æŠ€é‡åŸºæœ¬å€¤"
             If Not p Is Nothing Then
                 EvalInfoFunc = Format$(p.TechniqueBase)
             End If
-        Case "”½‰Šî–{’l"
+        Case "åå¿œåŸºæœ¬å€¤"
             If Not p Is Nothing Then
                 EvalInfoFunc = Format$(p.IntuitionBase)
             End If
-        Case "Ši“¬C³’l"
+        Case "æ ¼é—˜ä¿®æ­£å€¤"
             If Not p Is Nothing Then
                 EvalInfoFunc = Format$(p.InfightMod)
             End If
-        Case "ËŒ‚C³’l"
+        Case "å°„æ’ƒä¿®æ­£å€¤"
             If Not p Is Nothing Then
                 EvalInfoFunc = Format$(p.ShootingMod)
             End If
-        Case "–½’†C³’l"
+        Case "å‘½ä¸­ä¿®æ­£å€¤"
             If Not p Is Nothing Then
                 EvalInfoFunc = Format$(p.HitMod)
             End If
-        Case "‰ñ”ğC³’l"
+        Case "å›é¿ä¿®æ­£å€¤"
             If Not p Is Nothing Then
                 EvalInfoFunc = Format$(p.DodgeMod)
             End If
-        Case "‹Z—ÊC³’l"
+        Case "æŠ€é‡ä¿®æ­£å€¤"
             If Not p Is Nothing Then
                 EvalInfoFunc = Format$(p.TechniqueMod)
             End If
-        Case "”½‰C³’l"
+        Case "åå¿œä¿®æ­£å€¤"
             If Not p Is Nothing Then
                 EvalInfoFunc = Format$(p.IntuitionMod)
             End If
-        Case "Ši“¬x‰‡C³’l"
+        Case "æ ¼é—˜æ”¯æ´ä¿®æ­£å€¤"
             If Not p Is Nothing Then
                 EvalInfoFunc = Format$(p.InfightMod2)
             End If
-        Case "ËŒ‚x‰‡C³’l"
+        Case "å°„æ’ƒæ”¯æ´ä¿®æ­£å€¤"
             If Not p Is Nothing Then
                 EvalInfoFunc = Format$(p.ShootingMod2)
             End If
-        Case "–½’†x‰‡C³’l"
+        Case "å‘½ä¸­æ”¯æ´ä¿®æ­£å€¤"
             If Not p Is Nothing Then
                 EvalInfoFunc = Format$(p.HitMod2)
             End If
-        Case "‰ñ”ğx‰‡C³’l"
+        Case "å›é¿æ”¯æ´ä¿®æ­£å€¤"
             If Not p Is Nothing Then
                 EvalInfoFunc = Format$(p.DodgeMod2)
             End If
-        Case "‹Z—Êx‰‡C³’l"
+        Case "æŠ€é‡æ”¯æ´ä¿®æ­£å€¤"
             If Not p Is Nothing Then
                 EvalInfoFunc = Format$(p.TechniqueMod2)
             End If
-        Case "”½‰x‰‡C³’l"
+        Case "åå¿œæ”¯æ´ä¿®æ­£å€¤"
             If Not p Is Nothing Then
                 EvalInfoFunc = Format$(p.IntuitionMod2)
             End If
-        Case "«Ši"
+        Case "æ€§æ ¼"
             If Not p Is Nothing Then
                 EvalInfoFunc = p.Personality
             ElseIf Not pd Is Nothing Then
                 EvalInfoFunc = pd.Personality
             End If
-       Case "Å‘å‚r‚o"
+       Case "æœ€å¤§ï¼³ï¼°"
             If Not p Is Nothing Then
                 EvalInfoFunc = Format$(p.MaxSP)
                 If p.MaxSP = 0 And Not p.Unit Is Nothing Then
@@ -4187,7 +4187,7 @@ Dim max_value As Long
             ElseIf Not pd Is Nothing Then
                 EvalInfoFunc = Format$(pd.SP)
             End If
-        Case "‚r‚o"
+        Case "ï¼³ï¼°"
             If Not p Is Nothing Then
                 EvalInfoFunc = Format$(p.SP)
                 If p.MaxSP = 0 And Not p.Unit Is Nothing Then
@@ -4198,7 +4198,7 @@ Dim max_value As Long
             ElseIf Not pd Is Nothing Then
                 EvalInfoFunc = Format$(pd.SP)
             End If
-        Case "ƒOƒ‰ƒtƒBƒbƒN"
+        Case "ã‚°ãƒ©ãƒ•ã‚£ãƒƒã‚¯"
             If Not u Is Nothing Then
                 EvalInfoFunc = u.Bitmap(True)
             ElseIf Not ud Is Nothing Then
@@ -4210,43 +4210,43 @@ Dim max_value As Long
             ElseIf Not nd Is Nothing Then
                 EvalInfoFunc = nd.Bitmap0
             End If
-        Case "‚l‚h‚c‚h"
+        Case "ï¼­ï¼©ï¼¤ï¼©"
             If Not p Is Nothing Then
                 EvalInfoFunc = p.BGM
             ElseIf Not pd Is Nothing Then
                 EvalInfoFunc = pd.BGM
             End If
-        Case "ƒŒƒxƒ‹"
+        Case "ãƒ¬ãƒ™ãƒ«"
             If Not p Is Nothing Then
                 EvalInfoFunc = Format$(p.Level)
             End If
-        Case "—İÏŒoŒ±’l"
+        Case "ç´¯ç©çµŒé¨“å€¤"
             If Not p Is Nothing Then
                 EvalInfoFunc = Format$(p.Exp)
             End If
-        Case "‹C—Í"
+        Case "æ°—åŠ›"
             If Not p Is Nothing Then
                 EvalInfoFunc = Format$(p.Morale)
             End If
-        Case "Å‘å—ì—Í", "Å‘åƒvƒ‰[ƒi"
+        Case "æœ€å¤§éœŠåŠ›", "æœ€å¤§ãƒ—ãƒ©ãƒ¼ãƒŠ"
             If Not p Is Nothing Then
                 EvalInfoFunc = Format$(p.MaxPlana)
             ElseIf Not pd Is Nothing Then
-                EvalInfoFunc = Format$(pd.SkillLevel(0, "—ì—Í"))
+                EvalInfoFunc = Format$(pd.SkillLevel(0, "éœŠåŠ›"))
             End If
-        Case "—ì—Í", "ƒvƒ‰[ƒi"
+        Case "éœŠåŠ›", "ãƒ—ãƒ©ãƒ¼ãƒŠ"
             If Not p Is Nothing Then
                 EvalInfoFunc = Format$(p.Plana)
             ElseIf Not pd Is Nothing Then
-                EvalInfoFunc = Format$(pd.SkillLevel(0, "—ì—Í"))
+                EvalInfoFunc = Format$(pd.SkillLevel(0, "éœŠåŠ›"))
             End If
-        Case "“¯’²—¦", "ƒVƒ“ƒNƒ—¦"
+        Case "åŒèª¿ç‡", "ã‚·ãƒ³ã‚¯ãƒ­ç‡"
             If Not p Is Nothing Then
                 EvalInfoFunc = Format$(p.SynchroRate)
             ElseIf Not pd Is Nothing Then
-                EvalInfoFunc = Format$(pd.SkillLevel(0, "“¯’²—¦"))
+                EvalInfoFunc = Format$(pd.SkillLevel(0, "åŒèª¿ç‡"))
             End If
-        Case "ƒXƒyƒVƒƒƒ‹ƒpƒ[", "¸_ƒRƒ}ƒ“ƒh", "¸_"
+        Case "ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼", "ç²¾ç¥ã‚³ãƒãƒ³ãƒ‰", "ç²¾ç¥"
             If Not p Is Nothing Then
                 If p.MaxSP = 0 And Not p.Unit Is Nothing Then
                     If p Is p.Unit.MainPilot Then
@@ -4267,7 +4267,7 @@ Dim max_value As Long
                 End With
                 EvalInfoFunc = Trim$(EvalInfoFunc)
             End If
-        Case "ƒXƒyƒVƒƒƒ‹ƒpƒ[Š—L", "¸_ƒRƒ}ƒ“ƒhŠ—L"
+        Case "ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼æ‰€æœ‰", "ç²¾ç¥ã‚³ãƒãƒ³ãƒ‰æ‰€æœ‰"
             If Not p Is Nothing Then
                 If p.MaxSP = 0 And Not p.Unit Is Nothing Then
                     If p Is p.Unit.MainPilot Then
@@ -4286,7 +4286,7 @@ Dim max_value As Long
                     EvalInfoFunc = "0"
                 End If
             End If
-        Case "ƒXƒyƒVƒƒƒ‹ƒpƒ[ƒRƒXƒg", "¸_ƒRƒ}ƒ“ƒhƒRƒXƒg"
+        Case "ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼ã‚³ã‚¹ãƒˆ", "ç²¾ç¥ã‚³ãƒãƒ³ãƒ‰ã‚³ã‚¹ãƒˆ"
             If Not p Is Nothing Then
                 If p.MaxSP = 0 And Not p.Unit Is Nothing Then
                     If p Is p.Unit.MainPilot Then
@@ -4297,7 +4297,7 @@ Dim max_value As Long
             ElseIf Not pd Is Nothing Then
                 EvalInfoFunc = Format$(pd.SpecialPowerCost(params(idx + 1)))
             End If
-        Case "“Áê”\—Í”"
+        Case "ç‰¹æ®Šèƒ½åŠ›æ•°"
             If Not u Is Nothing Then
                 EvalInfoFunc = Format$(u.CountFeature)
             ElseIf Not ud Is Nothing Then
@@ -4311,7 +4311,7 @@ Dim max_value As Long
             ElseIf Not itd Is Nothing Then
                 EvalInfoFunc = Format$(itd.CountFeature)
             End If
-        Case "“Áê”\—Í"
+        Case "ç‰¹æ®Šèƒ½åŠ›"
             If Not u Is Nothing Then
                 If IsNumber(params(idx + 1)) Then
                     EvalInfoFunc = u.Feature(CInt(params(idx + 1)))
@@ -4337,10 +4337,10 @@ Dim max_value As Long
                     EvalInfoFunc = itd.Feature(CInt(params(idx + 1)))
                 End If
             End If
-        Case "“Áê”\—Í–¼Ì"
+        Case "ç‰¹æ®Šèƒ½åŠ›åç§°"
             aname = params(idx + 1)
             
-            'ƒGƒŠƒAƒX‚ª’è‹`‚³‚ê‚Ä‚¢‚éH
+            'ã‚¨ãƒªã‚¢ã‚¹ãŒå®šç¾©ã•ã‚Œã¦ã„ã‚‹ï¼Ÿ
             If ALDList.IsDefined(aname) Then
                 With ALDList.Item(aname)
                     For i = 1 To .Count
@@ -4393,10 +4393,10 @@ Dim max_value As Long
                     EvalInfoFunc = itd.FeatureName(aname)
                 End If
             End If
-        Case "“Áê”\—ÍŠ—L"
+        Case "ç‰¹æ®Šèƒ½åŠ›æ‰€æœ‰"
             aname = params(idx + 1)
             
-            'ƒGƒŠƒAƒX‚ª’è‹`‚³‚ê‚Ä‚¢‚éH
+            'ã‚¨ãƒªã‚¢ã‚¹ãŒå®šç¾©ã•ã‚Œã¦ã„ã‚‹ï¼Ÿ
             If ALDList.IsDefined(aname) Then
                 With ALDList.Item(aname)
                     For i = 1 To .Count
@@ -4448,10 +4448,10 @@ Dim max_value As Long
                     EvalInfoFunc = "0"
                 End If
             End If
-        Case "“Áê”\—ÍƒŒƒxƒ‹"
+        Case "ç‰¹æ®Šèƒ½åŠ›ãƒ¬ãƒ™ãƒ«"
             aname = params(idx + 1)
             
-            'ƒGƒŠƒAƒX‚ª’è‹`‚³‚ê‚Ä‚¢‚éH
+            'ã‚¨ãƒªã‚¢ã‚¹ãŒå®šç¾©ã•ã‚Œã¦ã„ã‚‹ï¼Ÿ
             If ALDList.IsDefined(aname) Then
                 With ALDList.Item(aname)
                     For i = 1 To .Count
@@ -4505,10 +4505,10 @@ Dim max_value As Long
                     EvalInfoFunc = Format$(itd.FeatureLevel(aname))
                 End If
             End If
-        Case "“Áê”\—Íƒf[ƒ^"
+        Case "ç‰¹æ®Šèƒ½åŠ›ãƒ‡ãƒ¼ã‚¿"
             aname = params(idx + 1)
             
-            'ƒGƒŠƒAƒX‚ª’è‹`‚³‚ê‚Ä‚¢‚éH
+            'ã‚¨ãƒªã‚¢ã‚¹ãŒå®šç¾©ã•ã‚Œã¦ã„ã‚‹ï¼Ÿ
             If ALDList.IsDefined(aname) Then
                 With ALDList.Item(aname)
                     For i = 1 To .Count
@@ -4560,10 +4560,10 @@ Dim max_value As Long
                     EvalInfoFunc = itd.FeatureData(aname)
                 End If
             End If
-        Case "“Áê”\—Í•K—v‹Z”\"
+        Case "ç‰¹æ®Šèƒ½åŠ›å¿…è¦æŠ€èƒ½"
             aname = params(idx + 1)
             
-            'ƒGƒŠƒAƒX‚ª’è‹`‚³‚ê‚Ä‚¢‚éH
+            'ã‚¨ãƒªã‚¢ã‚¹ãŒå®šç¾©ã•ã‚Œã¦ã„ã‚‹ï¼Ÿ
             If ALDList.IsDefined(aname) Then
                 With ALDList.Item(aname)
                     For i = 1 To .Count
@@ -4603,10 +4603,10 @@ Dim max_value As Long
                     EvalInfoFunc = itd.FeatureNecessarySkill(aname)
                 End If
             End If
-        Case "“Áê”\—Í‰ğà"
+        Case "ç‰¹æ®Šèƒ½åŠ›è§£èª¬"
             aname = params(idx + 1)
             
-            'ƒGƒŠƒAƒX‚ª’è‹`‚³‚ê‚Ä‚¢‚éH
+            'ã‚¨ãƒªã‚¢ã‚¹ãŒå®šç¾©ã•ã‚Œã¦ã„ã‚‹ï¼Ÿ
             If ALDList.IsDefined(aname) Then
                 With ALDList.Item(aname)
                     For i = 1 To .Count
@@ -4640,35 +4640,35 @@ Dim max_value As Long
                     End If
                 End If
             End If
-        Case "‹K’èƒpƒCƒƒbƒg”"
+        Case "è¦å®šãƒ‘ã‚¤ãƒ­ãƒƒãƒˆæ•°"
             If Not u Is Nothing Then
                 EvalInfoFunc = Format$(u.Data.PilotNum)
             ElseIf Not ud Is Nothing Then
                 EvalInfoFunc = Format$(ud.PilotNum)
             End If
-        Case "ƒpƒCƒƒbƒg”"
+        Case "ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆæ•°"
             If Not u Is Nothing Then
                 EvalInfoFunc = Format$(u.CountPilot)
             ElseIf Not ud Is Nothing Then
                 EvalInfoFunc = Format$(ud.PilotNum)
             End If
-        Case "ƒTƒ|[ƒg”"
+        Case "ã‚µãƒãƒ¼ãƒˆæ•°"
             If Not u Is Nothing Then
                 EvalInfoFunc = Format$(u.CountSupport)
             End If
-        Case "Å‘åƒAƒCƒeƒ€”"
+        Case "æœ€å¤§ã‚¢ã‚¤ãƒ†ãƒ æ•°"
             If Not u Is Nothing Then
                 EvalInfoFunc = Format$(u.Data.ItemNum)
             ElseIf Not ud Is Nothing Then
                 EvalInfoFunc = Format$(ud.ItemNum)
             End If
-        Case "ƒAƒCƒeƒ€”"
+        Case "ã‚¢ã‚¤ãƒ†ãƒ æ•°"
             If Not u Is Nothing Then
                 EvalInfoFunc = Format$(u.CountItem)
             ElseIf Not ud Is Nothing Then
                 EvalInfoFunc = Format$(ud.ItemNum)
             End If
-        Case "ƒAƒCƒeƒ€"
+        Case "ã‚¢ã‚¤ãƒ†ãƒ "
             If Not u Is Nothing Then
                 If IsNumber(params(idx + 1)) Then
                     i = CInt(params(idx + 1))
@@ -4677,7 +4677,7 @@ Dim max_value As Long
                     End If
                 End If
             End If
-        Case "ƒAƒCƒeƒ€‚h‚c"
+        Case "ã‚¢ã‚¤ãƒ†ãƒ ï¼©ï¼¤"
             If Not u Is Nothing Then
                 If IsNumber(params(idx + 1)) Then
                     i = CInt(params(idx + 1))
@@ -4686,67 +4686,67 @@ Dim max_value As Long
                     End If
                 End If
             End If
-        Case "ˆÚ“®‰Â”\’nŒ`"
+        Case "ç§»å‹•å¯èƒ½åœ°å½¢"
             If Not u Is Nothing Then
                 EvalInfoFunc = u.Transportation
             ElseIf Not ud Is Nothing Then
                 EvalInfoFunc = ud.Transportation
             End If
-        Case "ˆÚ“®—Í"
+        Case "ç§»å‹•åŠ›"
             If Not u Is Nothing Then
                 EvalInfoFunc = Format$(u.Speed)
             ElseIf Not ud Is Nothing Then
                 EvalInfoFunc = Format$(ud.Speed)
             End If
-        Case "ƒTƒCƒY"
+        Case "ã‚µã‚¤ã‚º"
             If Not u Is Nothing Then
                 EvalInfoFunc = u.Size
             ElseIf Not ud Is Nothing Then
                 EvalInfoFunc = ud.Size
             End If
-        Case "C—”ï"
+        Case "ä¿®ç†è²»"
             If Not u Is Nothing Then
                 EvalInfoFunc = u.Value
             ElseIf Not ud Is Nothing Then
                 EvalInfoFunc = ud.Value
             End If
-        Case "Å‘å‚g‚o"
+        Case "æœ€å¤§ï¼¨ï¼°"
             If Not u Is Nothing Then
                 EvalInfoFunc = Format$(u.MaxHP)
             ElseIf Not ud Is Nothing Then
                 EvalInfoFunc = Format$(ud.HP)
             End If
-        Case "‚g‚o"
+        Case "ï¼¨ï¼°"
             If Not u Is Nothing Then
                 EvalInfoFunc = Format$(u.HP)
             ElseIf Not ud Is Nothing Then
                 EvalInfoFunc = Format$(ud.HP)
             End If
-        Case "Å‘å‚d‚m"
+        Case "æœ€å¤§ï¼¥ï¼®"
             If Not u Is Nothing Then
                 EvalInfoFunc = Format$(u.MaxEN)
             ElseIf Not ud Is Nothing Then
                 EvalInfoFunc = Format$(ud.EN)
             End If
-        Case "‚d‚m"
+        Case "ï¼¥ï¼®"
             If Not u Is Nothing Then
                 EvalInfoFunc = Format$(u.EN)
             ElseIf Not ud Is Nothing Then
                 EvalInfoFunc = Format$(ud.EN)
             End If
-        Case "‘•b"
+        Case "è£…ç”²"
             If Not u Is Nothing Then
                 EvalInfoFunc = Format$(u.Armor)
             ElseIf Not ud Is Nothing Then
                 EvalInfoFunc = Format$(ud.Armor)
             End If
-        Case "‰^“®«"
+        Case "é‹å‹•æ€§"
             If Not u Is Nothing Then
                 EvalInfoFunc = Format$(u.Mobility)
             ElseIf Not ud Is Nothing Then
                 EvalInfoFunc = Format$(ud.Mobility)
             End If
-        Case "•Ší”"
+        Case "æ­¦å™¨æ•°"
             If Not u Is Nothing Then
                 EvalInfoFunc = Format$(u.CountWeapon)
             ElseIf Not ud Is Nothing Then
@@ -4760,11 +4760,11 @@ Dim max_value As Long
             ElseIf Not itd Is Nothing Then
                 EvalInfoFunc = Format$(itd.CountWeapon)
             End If
-        Case "•Ší"
+        Case "æ­¦å™¨"
             idx = idx + 1
             If Not u Is Nothing Then
                 With u
-                    '‰½”Ô–Ú‚Ì•Ší‚©‚ğ”»’è
+                    'ä½•ç•ªç›®ã®æ­¦å™¨ã‹ã‚’åˆ¤å®š
                     If IsNumber(params(idx)) Then
                         i = CInt(params(idx))
                     Else
@@ -4774,58 +4774,58 @@ Dim max_value As Long
                             End If
                         Next
                     End If
-                    'w’è‚µ‚½•Ší‚ğ‚Á‚Ä‚¢‚È‚¢
+                    'æŒ‡å®šã—ãŸæ­¦å™¨ã‚’æŒã£ã¦ã„ãªã„
                     If i <= 0 Or .CountWeapon < i Then
                         Exit Function
                     End If
                     
                     idx = idx + 1
                     Select Case params(idx)
-                        Case "", "–¼Ì"
+                        Case "", "åç§°"
                             EvalInfoFunc = .Weapon(i).Name
-                        Case "UŒ‚—Í"
+                        Case "æ”»æ’ƒåŠ›"
                             EvalInfoFunc = Format$(.WeaponPower(i, ""))
-                        Case "Ë’ö", "Å‘åË’ö"
+                        Case "å°„ç¨‹", "æœ€å¤§å°„ç¨‹"
                             EvalInfoFunc = Format$(.WeaponMaxRange(i))
-                        Case "Å¬Ë’ö"
+                        Case "æœ€å°å°„ç¨‹"
                             EvalInfoFunc = Format$(.Weapon(i).MinRange)
-                        Case "–½’†—¦"
+                        Case "å‘½ä¸­ç‡"
                             EvalInfoFunc = Format$(.WeaponPrecision(i))
-                        Case "Å‘å’e”"
+                        Case "æœ€å¤§å¼¾æ•°"
                             EvalInfoFunc = Format$(.MaxBullet(i))
-                        Case "’e”"
+                        Case "å¼¾æ•°"
                             EvalInfoFunc = Format$(.Bullet(i))
-                        Case "Á”ï‚d‚m"
+                        Case "æ¶ˆè²»ï¼¥ï¼®"
                             EvalInfoFunc = Format$(.WeaponENConsumption(i))
-                        Case "•K—v‹C—Í"
+                        Case "å¿…è¦æ°—åŠ›"
                             EvalInfoFunc = Format$(.Weapon(i).NecessaryMorale)
-                        Case "’nŒ`“K‰"
+                        Case "åœ°å½¢é©å¿œ"
                             EvalInfoFunc = .Weapon(i).Adaption
-                        Case "ƒNƒŠƒeƒBƒJƒ‹—¦"
+                        Case "ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ç‡"
                             EvalInfoFunc = Format$(.WeaponCritical(i))
-                        Case "‘®«"
+                        Case "å±æ€§"
                             EvalInfoFunc = .WeaponClass(i)
-                        Case "‘®«Š—L"
+                        Case "å±æ€§æ‰€æœ‰"
                             If .IsWeaponClassifiedAs(i, params(idx + 1)) Then
                                 EvalInfoFunc = "1"
                             Else
                                 EvalInfoFunc = "0"
                             End If
-                        Case "‘®«ƒŒƒxƒ‹"
+                        Case "å±æ€§ãƒ¬ãƒ™ãƒ«"
                             EvalInfoFunc = .WeaponLevel(i, params(idx + 1))
-                        Case "‘®«–¼Ì"
+                        Case "å±æ€§åç§°"
                             EvalInfoFunc = AttributeName(u, params(idx + 1), False)
-                        Case "‘®«‰ğà"
+                        Case "å±æ€§è§£èª¬"
                             EvalInfoFunc = AttributeHelpMessage(u, params(idx + 1), i, False)
-                        Case "•K—v‹Z”\"
+                        Case "å¿…è¦æŠ€èƒ½"
                             EvalInfoFunc = .Weapon(i).NecessarySkill
-                        Case "g—p‰Â"
-                            If .IsWeaponAvailable(i, "ƒXƒe[ƒ^ƒX") Then
+                        Case "ä½¿ç”¨å¯"
+                            If .IsWeaponAvailable(i, "ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹") Then
                                 EvalInfoFunc = "1"
                             Else
                                 EvalInfoFunc = "0"
                             End If
-                        Case "C“¾"
+                        Case "ä¿®å¾—"
                             If .IsWeaponMastered(i) Then
                                 EvalInfoFunc = "1"
                             Else
@@ -4835,7 +4835,7 @@ Dim max_value As Long
                 End With
             ElseIf Not ud Is Nothing Then
                 With ud
-                    '‰½”Ô–Ú‚Ì•Ší‚©‚ğ”»’è
+                    'ä½•ç•ªç›®ã®æ­¦å™¨ã‹ã‚’åˆ¤å®š
                     If IsNumber(params(idx)) Then
                         i = CInt(params(idx))
                     Else
@@ -4845,7 +4845,7 @@ Dim max_value As Long
                             End If
                         Next
                     End If
-                    'w’è‚µ‚½•Ší‚ğ‚Á‚Ä‚¢‚È‚¢
+                    'æŒ‡å®šã—ãŸæ­¦å™¨ã‚’æŒã£ã¦ã„ãªã„
                     If i <= 0 Or .CountWeapon < i Then
                         Exit Function
                     End If
@@ -4853,35 +4853,35 @@ Dim max_value As Long
                     idx = idx + 1
                     With .Weapon(i)
                         Select Case params(idx)
-                            Case "", "–¼Ì"
+                            Case "", "åç§°"
                                 EvalInfoFunc = .Name
-                            Case "UŒ‚—Í"
+                            Case "æ”»æ’ƒåŠ›"
                                 EvalInfoFunc = Format$(.Power)
-                            Case "Ë’ö", "Å‘åË’ö"
+                            Case "å°„ç¨‹", "æœ€å¤§å°„ç¨‹"
                                 EvalInfoFunc = Format$(.MaxRange)
-                            Case "Å¬Ë’ö"
+                            Case "æœ€å°å°„ç¨‹"
                                 EvalInfoFunc = Format$(.MinRange)
-                            Case "–½’†—¦"
+                            Case "å‘½ä¸­ç‡"
                                 EvalInfoFunc = Format$(.Precision)
-                            Case "Å‘å’e”", "’e”"
+                            Case "æœ€å¤§å¼¾æ•°", "å¼¾æ•°"
                                 EvalInfoFunc = Format$(.Bullet)
-                            Case "Á”ï‚d‚m"
+                            Case "æ¶ˆè²»ï¼¥ï¼®"
                                 EvalInfoFunc = Format$(.ENConsumption)
-                            Case "•K—v‹C—Í"
+                            Case "å¿…è¦æ°—åŠ›"
                                 EvalInfoFunc = Format$(.NecessaryMorale)
-                            Case "’nŒ`“K‰"
+                            Case "åœ°å½¢é©å¿œ"
                                 EvalInfoFunc = .Adaption
-                            Case "ƒNƒŠƒeƒBƒJƒ‹—¦"
+                            Case "ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ç‡"
                                 EvalInfoFunc = Format$(.Critical)
-                            Case "‘®«"
+                            Case "å±æ€§"
                                 EvalInfoFunc = .Class
-                            Case "‘®«Š—L"
+                            Case "å±æ€§æ‰€æœ‰"
                                 If InStrNotNest(.Class, params(idx + 1)) > 0 Then
                                     EvalInfoFunc = "1"
                                 Else
                                     EvalInfoFunc = "0"
                                 End If
-                            Case "‘®«ƒŒƒxƒ‹"
+                            Case "å±æ€§ãƒ¬ãƒ™ãƒ«"
                                 j = InStrNotNest(.Class, params(idx + 1) & "L")
                                 If j = 0 Then
                                     EvalInfoFunc = "0"
@@ -4898,16 +4898,16 @@ Dim max_value As Long
                                 If Not IsNumber(EvalInfoFunc) Then
                                     EvalInfoFunc = "0"
                                 End If
-                            Case "•K—v‹Z”\"
+                            Case "å¿…è¦æŠ€èƒ½"
                                 EvalInfoFunc = .NecessarySkill
-                            Case "g—p‰Â", "C“¾"
+                            Case "ä½¿ç”¨å¯", "ä¿®å¾—"
                                 EvalInfoFunc = "1"
                         End Select
                     End With
                 End With
             ElseIf Not p Is Nothing Then
                 With p.Data
-                    '‰½”Ô–Ú‚Ì•Ší‚©‚ğ”»’è
+                    'ä½•ç•ªç›®ã®æ­¦å™¨ã‹ã‚’åˆ¤å®š
                     If IsNumber(params(idx)) Then
                         i = CInt(params(idx))
                     Else
@@ -4917,7 +4917,7 @@ Dim max_value As Long
                             End If
                         Next
                     End If
-                    'w’è‚µ‚½•Ší‚ğ‚Á‚Ä‚¢‚È‚¢
+                    'æŒ‡å®šã—ãŸæ­¦å™¨ã‚’æŒã£ã¦ã„ãªã„
                     If i <= 0 Or .CountWeapon < i Then
                         Exit Function
                     End If
@@ -4925,35 +4925,35 @@ Dim max_value As Long
                     idx = idx + 1
                     With .Weapon(i)
                         Select Case params(idx)
-                            Case "", "–¼Ì"
+                            Case "", "åç§°"
                                 EvalInfoFunc = .Name
-                            Case "UŒ‚—Í"
+                            Case "æ”»æ’ƒåŠ›"
                                 EvalInfoFunc = Format$(.Power)
-                            Case "Ë’ö", "Å‘åË’ö"
+                            Case "å°„ç¨‹", "æœ€å¤§å°„ç¨‹"
                                 EvalInfoFunc = Format$(.MaxRange)
-                            Case "Å¬Ë’ö"
+                            Case "æœ€å°å°„ç¨‹"
                                 EvalInfoFunc = Format$(.MinRange)
-                            Case "–½’†—¦"
+                            Case "å‘½ä¸­ç‡"
                                 EvalInfoFunc = Format$(.Precision)
-                            Case "Å‘å’e”", "’e”"
+                            Case "æœ€å¤§å¼¾æ•°", "å¼¾æ•°"
                                 EvalInfoFunc = Format$(.Bullet)
-                            Case "Á”ï‚d‚m"
+                            Case "æ¶ˆè²»ï¼¥ï¼®"
                                 EvalInfoFunc = Format$(.ENConsumption)
-                            Case "•K—v‹C—Í"
+                            Case "å¿…è¦æ°—åŠ›"
                                 EvalInfoFunc = Format$(.NecessaryMorale)
-                            Case "’nŒ`“K‰"
+                            Case "åœ°å½¢é©å¿œ"
                                 EvalInfoFunc = .Adaption
-                            Case "ƒNƒŠƒeƒBƒJƒ‹—¦"
+                            Case "ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ç‡"
                                 EvalInfoFunc = Format$(.Critical)
-                            Case "‘®«"
+                            Case "å±æ€§"
                                 EvalInfoFunc = .Class
-                            Case "‘®«Š—L"
+                            Case "å±æ€§æ‰€æœ‰"
                                 If InStrNotNest(.Class, params(idx + 1)) > 0 Then
                                     EvalInfoFunc = "1"
                                 Else
                                     EvalInfoFunc = "0"
                                 End If
-                            Case "‘®«ƒŒƒxƒ‹"
+                            Case "å±æ€§ãƒ¬ãƒ™ãƒ«"
                                 j = InStrNotNest(.Class, params(idx + 1) & "L")
                                 If j = 0 Then
                                     EvalInfoFunc = "0"
@@ -4970,16 +4970,16 @@ Dim max_value As Long
                                 If Not IsNumber(EvalInfoFunc) Then
                                     EvalInfoFunc = "0"
                                 End If
-                            Case "•K—v‹Z”\"
+                            Case "å¿…è¦æŠ€èƒ½"
                                 EvalInfoFunc = .NecessarySkill
-                            Case "g—p‰Â", "C“¾"
+                            Case "ä½¿ç”¨å¯", "ä¿®å¾—"
                                 EvalInfoFunc = "1"
                         End Select
                     End With
                 End With
             ElseIf Not pd Is Nothing Then
                 With pd
-                    '‰½”Ô–Ú‚Ì•Ší‚©‚ğ”»’è
+                    'ä½•ç•ªç›®ã®æ­¦å™¨ã‹ã‚’åˆ¤å®š
                     If IsNumber(params(idx)) Then
                         i = CInt(params(idx))
                     Else
@@ -4989,7 +4989,7 @@ Dim max_value As Long
                             End If
                         Next
                     End If
-                    'w’è‚µ‚½•Ší‚ğ‚Á‚Ä‚¢‚È‚¢
+                    'æŒ‡å®šã—ãŸæ­¦å™¨ã‚’æŒã£ã¦ã„ãªã„
                     If i <= 0 Or .CountWeapon < i Then
                         Exit Function
                     End If
@@ -4997,35 +4997,35 @@ Dim max_value As Long
                     idx = idx + 1
                     With .Weapon(i)
                         Select Case params(idx)
-                            Case "", "–¼Ì"
+                            Case "", "åç§°"
                                 EvalInfoFunc = .Name
-                            Case "UŒ‚—Í"
+                            Case "æ”»æ’ƒåŠ›"
                                 EvalInfoFunc = Format$(.Power)
-                            Case "Ë’ö", "Å‘åË’ö"
+                            Case "å°„ç¨‹", "æœ€å¤§å°„ç¨‹"
                                 EvalInfoFunc = Format$(.MaxRange)
-                            Case "Å¬Ë’ö"
+                            Case "æœ€å°å°„ç¨‹"
                                 EvalInfoFunc = Format$(.MinRange)
-                            Case "–½’†—¦"
+                            Case "å‘½ä¸­ç‡"
                                 EvalInfoFunc = Format$(.Precision)
-                            Case "Å‘å’e”", "’e”"
+                            Case "æœ€å¤§å¼¾æ•°", "å¼¾æ•°"
                                 EvalInfoFunc = Format$(.Bullet)
-                            Case "Á”ï‚d‚m"
+                            Case "æ¶ˆè²»ï¼¥ï¼®"
                                 EvalInfoFunc = Format$(.ENConsumption)
-                            Case "•K—v‹C—Í"
+                            Case "å¿…è¦æ°—åŠ›"
                                 EvalInfoFunc = Format$(.NecessaryMorale)
-                            Case "’nŒ`“K‰"
+                            Case "åœ°å½¢é©å¿œ"
                                 EvalInfoFunc = .Adaption
-                            Case "ƒNƒŠƒeƒBƒJƒ‹—¦"
+                            Case "ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ç‡"
                                 EvalInfoFunc = Format$(.Critical)
-                            Case "‘®«"
+                            Case "å±æ€§"
                                 EvalInfoFunc = .Class
-                            Case "‘®«Š—L"
+                            Case "å±æ€§æ‰€æœ‰"
                                 If InStrNotNest(.Class, params(idx + 1)) > 0 Then
                                     EvalInfoFunc = "1"
                                 Else
                                     EvalInfoFunc = "0"
                                 End If
-                            Case "‘®«ƒŒƒxƒ‹"
+                            Case "å±æ€§ãƒ¬ãƒ™ãƒ«"
                                 j = InStrNotNest(.Class, params(idx + 1) & "L")
                                 If j = 0 Then
                                     EvalInfoFunc = "0"
@@ -5042,16 +5042,16 @@ Dim max_value As Long
                                 If Not IsNumber(EvalInfoFunc) Then
                                     EvalInfoFunc = "0"
                                 End If
-                            Case "•K—v‹Z”\"
+                            Case "å¿…è¦æŠ€èƒ½"
                                 EvalInfoFunc = .NecessarySkill
-                            Case "g—p‰Â", "C“¾"
+                            Case "ä½¿ç”¨å¯", "ä¿®å¾—"
                                 EvalInfoFunc = "1"
                         End Select
                     End With
                 End With
             ElseIf Not it Is Nothing Then
                 With it
-                    '‰½”Ô–Ú‚Ì•Ší‚©‚ğ”»’è
+                    'ä½•ç•ªç›®ã®æ­¦å™¨ã‹ã‚’åˆ¤å®š
                     If IsNumber(params(idx)) Then
                         i = CInt(params(idx))
                     Else
@@ -5061,7 +5061,7 @@ Dim max_value As Long
                             End If
                         Next
                     End If
-                    'w’è‚µ‚½•Ší‚ğ‚Á‚Ä‚¢‚È‚¢
+                    'æŒ‡å®šã—ãŸæ­¦å™¨ã‚’æŒã£ã¦ã„ãªã„
                     If i <= 0 Or .CountWeapon < i Then
                         Exit Function
                     End If
@@ -5069,35 +5069,35 @@ Dim max_value As Long
                     idx = idx + 1
                     With .Weapon(i)
                         Select Case params(idx)
-                            Case "", "–¼Ì"
+                            Case "", "åç§°"
                                 EvalInfoFunc = .Name
-                            Case "UŒ‚—Í"
+                            Case "æ”»æ’ƒåŠ›"
                                 EvalInfoFunc = Format$(.Power)
-                            Case "Ë’ö", "Å‘åË’ö"
+                            Case "å°„ç¨‹", "æœ€å¤§å°„ç¨‹"
                                 EvalInfoFunc = Format$(.MaxRange)
-                            Case "Å¬Ë’ö"
+                            Case "æœ€å°å°„ç¨‹"
                                 EvalInfoFunc = Format$(.MinRange)
-                            Case "–½’†—¦"
+                            Case "å‘½ä¸­ç‡"
                                 EvalInfoFunc = Format$(.Precision)
-                            Case "Å‘å’e”", "’e”"
+                            Case "æœ€å¤§å¼¾æ•°", "å¼¾æ•°"
                                 EvalInfoFunc = Format$(.Bullet)
-                            Case "Á”ï‚d‚m"
+                            Case "æ¶ˆè²»ï¼¥ï¼®"
                                 EvalInfoFunc = Format$(.ENConsumption)
-                            Case "•K—v‹C—Í"
+                            Case "å¿…è¦æ°—åŠ›"
                                 EvalInfoFunc = Format$(.NecessaryMorale)
-                            Case "’nŒ`“K‰"
+                            Case "åœ°å½¢é©å¿œ"
                                 EvalInfoFunc = .Adaption
-                            Case "ƒNƒŠƒeƒBƒJƒ‹—¦"
+                            Case "ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ç‡"
                                 EvalInfoFunc = Format$(.Critical)
-                            Case "‘®«"
+                            Case "å±æ€§"
                                 EvalInfoFunc = .Class
-                            Case "‘®«Š—L"
+                            Case "å±æ€§æ‰€æœ‰"
                                 If InStrNotNest(.Class, params(idx + 1)) > 0 Then
                                     EvalInfoFunc = "1"
                                 Else
                                     EvalInfoFunc = "0"
                                 End If
-                            Case "‘®«ƒŒƒxƒ‹"
+                            Case "å±æ€§ãƒ¬ãƒ™ãƒ«"
                                 j = InStrNotNest(.Class, params(idx + 1) & "L")
                                 If j = 0 Then
                                     EvalInfoFunc = "0"
@@ -5114,16 +5114,16 @@ Dim max_value As Long
                                 If Not IsNumber(EvalInfoFunc) Then
                                     EvalInfoFunc = "0"
                                 End If
-                            Case "•K—v‹Z”\"
+                            Case "å¿…è¦æŠ€èƒ½"
                                 EvalInfoFunc = .NecessarySkill
-                            Case "g—p‰Â", "C“¾"
+                            Case "ä½¿ç”¨å¯", "ä¿®å¾—"
                                 EvalInfoFunc = "1"
                         End Select
                     End With
                 End With
             ElseIf Not itd Is Nothing Then
                 With itd
-                    '‰½”Ô–Ú‚Ì•Ší‚©‚ğ”»’è
+                    'ä½•ç•ªç›®ã®æ­¦å™¨ã‹ã‚’åˆ¤å®š
                     If IsNumber(params(idx)) Then
                         i = CInt(params(idx))
                     Else
@@ -5133,7 +5133,7 @@ Dim max_value As Long
                             End If
                         Next
                     End If
-                    'w’è‚µ‚½•Ší‚ğ‚Á‚Ä‚¢‚È‚¢
+                    'æŒ‡å®šã—ãŸæ­¦å™¨ã‚’æŒã£ã¦ã„ãªã„
                     If i <= 0 Or .CountWeapon < i Then
                         Exit Function
                     End If
@@ -5141,35 +5141,35 @@ Dim max_value As Long
                     idx = idx + 1
                     With .Weapon(i)
                         Select Case params(idx)
-                            Case "", "–¼Ì"
+                            Case "", "åç§°"
                                 EvalInfoFunc = .Name
-                            Case "UŒ‚—Í"
+                            Case "æ”»æ’ƒåŠ›"
                                 EvalInfoFunc = Format$(.Power)
-                            Case "Ë’ö", "Å‘åË’ö"
+                            Case "å°„ç¨‹", "æœ€å¤§å°„ç¨‹"
                                 EvalInfoFunc = Format$(.MaxRange)
-                            Case "Å¬Ë’ö"
+                            Case "æœ€å°å°„ç¨‹"
                                 EvalInfoFunc = Format$(.MinRange)
-                            Case "–½’†—¦"
+                            Case "å‘½ä¸­ç‡"
                                 EvalInfoFunc = Format$(.Precision)
-                            Case "Å‘å’e”", "’e”"
+                            Case "æœ€å¤§å¼¾æ•°", "å¼¾æ•°"
                                 EvalInfoFunc = Format$(.Bullet)
-                            Case "Á”ï‚d‚m"
+                            Case "æ¶ˆè²»ï¼¥ï¼®"
                                 EvalInfoFunc = Format$(.ENConsumption)
-                            Case "•K—v‹C—Í"
+                            Case "å¿…è¦æ°—åŠ›"
                                 EvalInfoFunc = Format$(.NecessaryMorale)
-                            Case "’nŒ`“K‰"
+                            Case "åœ°å½¢é©å¿œ"
                                 EvalInfoFunc = .Adaption
-                            Case "ƒNƒŠƒeƒBƒJƒ‹—¦"
+                            Case "ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ç‡"
                                 EvalInfoFunc = Format$(.Critical)
-                            Case "‘®«"
+                            Case "å±æ€§"
                                 EvalInfoFunc = .Class
-                            Case "‘®«Š—L"
+                            Case "å±æ€§æ‰€æœ‰"
                                 If InStrNotNest(.Class, params(idx + 1)) > 0 Then
                                     EvalInfoFunc = "1"
                                 Else
                                     EvalInfoFunc = "0"
                                 End If
-                            Case "‘®«ƒŒƒxƒ‹"
+                            Case "å±æ€§ãƒ¬ãƒ™ãƒ«"
                                 j = InStrNotNest(.Class, params(idx + 1) & "L")
                                 If j = 0 Then
                                     EvalInfoFunc = "0"
@@ -5186,15 +5186,15 @@ Dim max_value As Long
                                 If Not IsNumber(EvalInfoFunc) Then
                                     EvalInfoFunc = "0"
                                 End If
-                            Case "•K—v‹Z”\"
+                            Case "å¿…è¦æŠ€èƒ½"
                                 EvalInfoFunc = .NecessarySkill
-                            Case "g—p‰Â", "C“¾"
+                            Case "ä½¿ç”¨å¯", "ä¿®å¾—"
                                 EvalInfoFunc = "1"
                         End Select
                     End With
                 End With
             End If
-        Case "ƒAƒrƒŠƒeƒB”"
+        Case "ã‚¢ãƒ“ãƒªãƒ†ã‚£æ•°"
             If Not u Is Nothing Then
                 EvalInfoFunc = Format$(u.CountAbility)
             ElseIf Not ud Is Nothing Then
@@ -5208,11 +5208,11 @@ Dim max_value As Long
             ElseIf Not itd Is Nothing Then
                 EvalInfoFunc = Format$(itd.CountAbility)
             End If
-        Case "ƒAƒrƒŠƒeƒB"
+        Case "ã‚¢ãƒ“ãƒªãƒ†ã‚£"
             idx = idx + 1
             If Not u Is Nothing Then
                 With u
-                    '‰½”Ô–Ú‚ÌƒAƒrƒŠƒeƒB‚©‚ğ”»’è
+                    'ä½•ç•ªç›®ã®ã‚¢ãƒ“ãƒªãƒ†ã‚£ã‹ã‚’åˆ¤å®š
                     If IsNumber(params(idx)) Then
                         i = CInt(params(idx))
                     Else
@@ -5222,19 +5222,19 @@ Dim max_value As Long
                             End If
                         Next
                     End If
-                    'w’è‚µ‚½ƒAƒrƒŠƒeƒB‚ğ‚Á‚Ä‚¢‚È‚¢
+                    'æŒ‡å®šã—ãŸã‚¢ãƒ“ãƒªãƒ†ã‚£ã‚’æŒã£ã¦ã„ãªã„
                     If i <= 0 Or .CountAbility < i Then
                         Exit Function
                     End If
                     
                     idx = idx + 1
                     Select Case params(idx)
-                        Case "", "–¼Ì"
+                        Case "", "åç§°"
                             EvalInfoFunc = .Ability(i).Name
-                        Case "Œø‰Ê”"
+                        Case "åŠ¹æœæ•°"
                             EvalInfoFunc = Format$(.Ability(i).CountEffect)
-                        Case "Œø‰Êƒ^ƒCƒv"
-                            '‰½”Ô–Ú‚ÌŒø‰Ê‚©‚ğ”»’è
+                        Case "åŠ¹æœã‚¿ã‚¤ãƒ—"
+                            'ä½•ç•ªç›®ã®åŠ¹æœã‹ã‚’åˆ¤å®š
                             If IsNumber(params(idx + 1)) Then
                                 j = CInt(params(idx + 1))
                             End If
@@ -5242,8 +5242,8 @@ Dim max_value As Long
                                 Exit Function
                             End If
                             EvalInfoFunc = .Ability(i).EffectType(j)
-                        Case "Œø‰ÊƒŒƒxƒ‹"
-                            '‰½”Ô–Ú‚ÌŒø‰Ê‚©‚ğ”»’è
+                        Case "åŠ¹æœãƒ¬ãƒ™ãƒ«"
+                            'ä½•ç•ªç›®ã®åŠ¹æœã‹ã‚’åˆ¤å®š
                             If IsNumber(params(idx + 1)) Then
                                 j = CInt(params(idx + 1))
                             End If
@@ -5251,8 +5251,8 @@ Dim max_value As Long
                                 Exit Function
                             End If
                             EvalInfoFunc = Format$(.Ability(i).EffectLevel(j))
-                        Case "Œø‰Êƒf[ƒ^"
-                            '‰½”Ô–Ú‚ÌŒø‰Ê‚©‚ğ”»’è
+                        Case "åŠ¹æœãƒ‡ãƒ¼ã‚¿"
+                            'ä½•ç•ªç›®ã®åŠ¹æœã‹ã‚’åˆ¤å®š
                             If IsNumber(params(idx + 1)) Then
                                 j = CInt(params(idx + 1))
                             End If
@@ -5260,41 +5260,41 @@ Dim max_value As Long
                                 Exit Function
                             End If
                             EvalInfoFunc = .Ability(i).EffectData(j)
-                        Case "Ë’ö", "Å‘åË’ö"
+                        Case "å°„ç¨‹", "æœ€å¤§å°„ç¨‹"
                             EvalInfoFunc = Format$(.AbilityMaxRange(i))
-                        Case "Å¬Ë’ö"
+                        Case "æœ€å°å°„ç¨‹"
                             EvalInfoFunc = Format$(.AbilityMinRange(i))
-                        Case "Å‘åg—p‰ñ”"
+                        Case "æœ€å¤§ä½¿ç”¨å›æ•°"
                             EvalInfoFunc = Format$(.MaxStock(i))
-                        Case "g—p‰ñ”"
+                        Case "ä½¿ç”¨å›æ•°"
                             EvalInfoFunc = Format$(.Stock(i))
-                        Case "Á”ï‚d‚m"
+                        Case "æ¶ˆè²»ï¼¥ï¼®"
                             EvalInfoFunc = Format$(.AbilityENConsumption(i))
-                        Case "•K—v‹C—Í"
+                        Case "å¿…è¦æ°—åŠ›"
                             EvalInfoFunc = Format$(.Ability(i).NecessaryMorale)
-                        Case "‘®«"
+                        Case "å±æ€§"
                             EvalInfoFunc = .Ability(i).Class
-                        Case "‘®«Š—L"
+                        Case "å±æ€§æ‰€æœ‰"
                             If .IsAbilityClassifiedAs(i, params(idx + 1)) Then
                                 EvalInfoFunc = "1"
                             Else
                                 EvalInfoFunc = "0"
                             End If
-                        Case "‘®«ƒŒƒxƒ‹"
+                        Case "å±æ€§ãƒ¬ãƒ™ãƒ«"
                             EvalInfoFunc = .AbilityLevel(i, params(idx + 1))
-                        Case "‘®«–¼Ì"
+                        Case "å±æ€§åç§°"
                             EvalInfoFunc = AttributeName(u, params(idx + 1), True)
-                        Case "‘®«‰ğà"
+                        Case "å±æ€§è§£èª¬"
                             EvalInfoFunc = AttributeHelpMessage(u, params(idx + 1), i, True)
-                        Case "•K—v‹Z”\"
+                        Case "å¿…è¦æŠ€èƒ½"
                             EvalInfoFunc = .Ability(i).NecessarySkill
-                        Case "g—p‰Â"
-                            If .IsAbilityAvailable(i, "ˆÚ“®‘O") Then
+                        Case "ä½¿ç”¨å¯"
+                            If .IsAbilityAvailable(i, "ç§»å‹•å‰") Then
                                 EvalInfoFunc = "1"
                             Else
                                 EvalInfoFunc = "0"
                             End If
-                        Case "C“¾"
+                        Case "ä¿®å¾—"
                             If .IsAbilityMastered(i) Then
                                 EvalInfoFunc = "1"
                             Else
@@ -5304,7 +5304,7 @@ Dim max_value As Long
                 End With
             ElseIf Not ud Is Nothing Then
                 With ud
-                    '‰½”Ô–Ú‚ÌƒAƒrƒŠƒeƒB‚©‚ğ”»’è
+                    'ä½•ç•ªç›®ã®ã‚¢ãƒ“ãƒªãƒ†ã‚£ã‹ã‚’åˆ¤å®š
                     If IsNumber(params(idx)) Then
                         i = CInt(params(idx))
                     Else
@@ -5314,7 +5314,7 @@ Dim max_value As Long
                             End If
                         Next
                     End If
-                    'w’è‚µ‚½ƒAƒrƒŠƒeƒB‚ğ‚Á‚Ä‚¢‚È‚¢
+                    'æŒ‡å®šã—ãŸã‚¢ãƒ“ãƒªãƒ†ã‚£ã‚’æŒã£ã¦ã„ãªã„
                     If i <= 0 Or .CountAbility < i Then
                         Exit Function
                     End If
@@ -5322,12 +5322,12 @@ Dim max_value As Long
                     idx = idx + 1
                     With .Ability(i)
                         Select Case params(idx)
-                            Case "", "–¼Ì"
+                            Case "", "åç§°"
                                 EvalInfoFunc = .Name
-                            Case "Œø‰Ê”"
+                            Case "åŠ¹æœæ•°"
                                 EvalInfoFunc = Format$(.CountEffect)
-                            Case "Œø‰Êƒ^ƒCƒv"
-                                '‰½”Ô–Ú‚ÌŒø‰Ê‚©‚ğ”»’è
+                            Case "åŠ¹æœã‚¿ã‚¤ãƒ—"
+                                'ä½•ç•ªç›®ã®åŠ¹æœã‹ã‚’åˆ¤å®š
                                 If IsNumber(params(idx + 1)) Then
                                     j = CInt(params(idx + 1))
                                 End If
@@ -5335,8 +5335,8 @@ Dim max_value As Long
                                     Exit Function
                                 End If
                                 EvalInfoFunc = .EffectType(j)
-                            Case "Œø‰ÊƒŒƒxƒ‹"
-                                '‰½”Ô–Ú‚ÌŒø‰Ê‚©‚ğ”»’è
+                            Case "åŠ¹æœãƒ¬ãƒ™ãƒ«"
+                                'ä½•ç•ªç›®ã®åŠ¹æœã‹ã‚’åˆ¤å®š
                                 If IsNumber(params(idx + 1)) Then
                                     j = CInt(params(idx + 1))
                                 End If
@@ -5344,8 +5344,8 @@ Dim max_value As Long
                                     Exit Function
                                 End If
                                 EvalInfoFunc = Format$(.EffectLevel(j))
-                            Case "Œø‰Êƒf[ƒ^"
-                                '‰½”Ô–Ú‚ÌŒø‰Ê‚©‚ğ”»’è
+                            Case "åŠ¹æœãƒ‡ãƒ¼ã‚¿"
+                                'ä½•ç•ªç›®ã®åŠ¹æœã‹ã‚’åˆ¤å®š
                                 If IsNumber(params(idx + 1)) Then
                                     j = CInt(params(idx + 1))
                                 End If
@@ -5353,25 +5353,25 @@ Dim max_value As Long
                                     Exit Function
                                 End If
                                 EvalInfoFunc = .EffectData(j)
-                            Case "Ë’ö", "Å‘åË’ö"
+                            Case "å°„ç¨‹", "æœ€å¤§å°„ç¨‹"
                                 EvalInfoFunc = Format$(.MaxRange)
-                            Case "Å¬Ë’ö"
+                            Case "æœ€å°å°„ç¨‹"
                                 EvalInfoFunc = Format$(.MinRange)
-                            Case "Å‘åg—p‰ñ”", "g—p‰ñ”"
+                            Case "æœ€å¤§ä½¿ç”¨å›æ•°", "ä½¿ç”¨å›æ•°"
                                 EvalInfoFunc = Format$(.Stock)
-                            Case "Á”ï‚d‚m"
+                            Case "æ¶ˆè²»ï¼¥ï¼®"
                                 EvalInfoFunc = Format$(.ENConsumption)
-                            Case "•K—v‹C—Í"
+                            Case "å¿…è¦æ°—åŠ›"
                                 EvalInfoFunc = Format$(.NecessaryMorale)
-                            Case "‘®«"
+                            Case "å±æ€§"
                                 EvalInfoFunc = .Class
-                            Case "‘®«Š—L"
+                            Case "å±æ€§æ‰€æœ‰"
                                 If InStrNotNest(.Class, params(idx + 1)) > 0 Then
                                     EvalInfoFunc = "1"
                                 Else
                                     EvalInfoFunc = "0"
                                 End If
-                            Case "‘®«ƒŒƒxƒ‹"
+                            Case "å±æ€§ãƒ¬ãƒ™ãƒ«"
                                 j = InStrNotNest(.Class, params(idx + 1) & "L")
                                 If j = 0 Then
                                     EvalInfoFunc = "0"
@@ -5388,16 +5388,16 @@ Dim max_value As Long
                                 If Not IsNumber(EvalInfoFunc) Then
                                     EvalInfoFunc = "0"
                                 End If
-                            Case "•K—v‹Z”\"
+                            Case "å¿…è¦æŠ€èƒ½"
                                 EvalInfoFunc = .NecessarySkill
-                            Case "g—p‰Â", "C“¾"
+                            Case "ä½¿ç”¨å¯", "ä¿®å¾—"
                                 EvalInfoFunc = "1"
                         End Select
                     End With
                 End With
             ElseIf Not p Is Nothing Then
                 With p.Data
-                    '‰½”Ô–Ú‚ÌƒAƒrƒŠƒeƒB‚©‚ğ”»’è
+                    'ä½•ç•ªç›®ã®ã‚¢ãƒ“ãƒªãƒ†ã‚£ã‹ã‚’åˆ¤å®š
                     If IsNumber(params(idx)) Then
                         i = CInt(params(idx))
                     Else
@@ -5407,7 +5407,7 @@ Dim max_value As Long
                             End If
                         Next
                     End If
-                    'w’è‚µ‚½ƒAƒrƒŠƒeƒB‚ğ‚Á‚Ä‚¢‚È‚¢
+                    'æŒ‡å®šã—ãŸã‚¢ãƒ“ãƒªãƒ†ã‚£ã‚’æŒã£ã¦ã„ãªã„
                     If i <= 0 Or .CountAbility < i Then
                         Exit Function
                     End If
@@ -5415,12 +5415,12 @@ Dim max_value As Long
                     idx = idx + 1
                     With .Ability(i)
                         Select Case params(idx)
-                            Case "", "–¼Ì"
+                            Case "", "åç§°"
                                 EvalInfoFunc = .Name
-                            Case "Œø‰Ê”"
+                            Case "åŠ¹æœæ•°"
                                 EvalInfoFunc = Format$(.CountEffect)
-                            Case "Œø‰Êƒ^ƒCƒv"
-                                '‰½”Ô–Ú‚ÌŒø‰Ê‚©‚ğ”»’è
+                            Case "åŠ¹æœã‚¿ã‚¤ãƒ—"
+                                'ä½•ç•ªç›®ã®åŠ¹æœã‹ã‚’åˆ¤å®š
                                 If IsNumber(params(idx + 1)) Then
                                     j = CInt(params(idx + 1))
                                 End If
@@ -5428,8 +5428,8 @@ Dim max_value As Long
                                     Exit Function
                                 End If
                                 EvalInfoFunc = .EffectType(j)
-                            Case "Œø‰ÊƒŒƒxƒ‹"
-                                '‰½”Ô–Ú‚ÌŒø‰Ê‚©‚ğ”»’è
+                            Case "åŠ¹æœãƒ¬ãƒ™ãƒ«"
+                                'ä½•ç•ªç›®ã®åŠ¹æœã‹ã‚’åˆ¤å®š
                                 If IsNumber(params(idx + 1)) Then
                                     j = CInt(params(idx + 1))
                                 End If
@@ -5437,8 +5437,8 @@ Dim max_value As Long
                                     Exit Function
                                 End If
                                 EvalInfoFunc = Format$(.EffectLevel(j))
-                            Case "Œø‰Êƒf[ƒ^"
-                                '‰½”Ô–Ú‚ÌŒø‰Ê‚©‚ğ”»’è
+                            Case "åŠ¹æœãƒ‡ãƒ¼ã‚¿"
+                                'ä½•ç•ªç›®ã®åŠ¹æœã‹ã‚’åˆ¤å®š
                                 If IsNumber(params(idx + 1)) Then
                                     j = CInt(params(idx + 1))
                                 End If
@@ -5446,25 +5446,25 @@ Dim max_value As Long
                                     Exit Function
                                 End If
                                 EvalInfoFunc = .EffectData(j)
-                            Case "Ë’ö", "Å‘åË’ö"
+                            Case "å°„ç¨‹", "æœ€å¤§å°„ç¨‹"
                                 EvalInfoFunc = Format$(.MaxRange)
-                            Case "Å¬Ë’ö"
+                            Case "æœ€å°å°„ç¨‹"
                                 EvalInfoFunc = Format$(.MinRange)
-                            Case "Å‘åg—p‰ñ”", "g—p‰ñ”"
+                            Case "æœ€å¤§ä½¿ç”¨å›æ•°", "ä½¿ç”¨å›æ•°"
                                 EvalInfoFunc = Format$(.Stock)
-                            Case "Á”ï‚d‚m"
+                            Case "æ¶ˆè²»ï¼¥ï¼®"
                                 EvalInfoFunc = Format$(.ENConsumption)
-                            Case "•K—v‹C—Í"
+                            Case "å¿…è¦æ°—åŠ›"
                                 EvalInfoFunc = Format$(.NecessaryMorale)
-                            Case "‘®«"
+                            Case "å±æ€§"
                                 EvalInfoFunc = .Class
-                            Case "‘®«Š—L"
+                            Case "å±æ€§æ‰€æœ‰"
                                 If InStrNotNest(.Class, params(idx + 1)) > 0 Then
                                     EvalInfoFunc = "1"
                                 Else
                                     EvalInfoFunc = "0"
                                 End If
-                            Case "‘®«ƒŒƒxƒ‹"
+                            Case "å±æ€§ãƒ¬ãƒ™ãƒ«"
                                 j = InStrNotNest(.Class, params(idx + 1) & "L")
                                 If j = 0 Then
                                     EvalInfoFunc = "0"
@@ -5481,16 +5481,16 @@ Dim max_value As Long
                                 If Not IsNumber(EvalInfoFunc) Then
                                     EvalInfoFunc = "0"
                                 End If
-                            Case "•K—v‹Z”\"
+                            Case "å¿…è¦æŠ€èƒ½"
                                 EvalInfoFunc = .NecessarySkill
-                            Case "g—p‰Â", "C“¾"
+                            Case "ä½¿ç”¨å¯", "ä¿®å¾—"
                                 EvalInfoFunc = "1"
                         End Select
                     End With
                 End With
             ElseIf Not pd Is Nothing Then
                 With pd
-                    '‰½”Ô–Ú‚ÌƒAƒrƒŠƒeƒB‚©‚ğ”»’è
+                    'ä½•ç•ªç›®ã®ã‚¢ãƒ“ãƒªãƒ†ã‚£ã‹ã‚’åˆ¤å®š
                     If IsNumber(params(idx)) Then
                         i = CInt(params(idx))
                     Else
@@ -5500,7 +5500,7 @@ Dim max_value As Long
                             End If
                         Next
                     End If
-                    'w’è‚µ‚½ƒAƒrƒŠƒeƒB‚ğ‚Á‚Ä‚¢‚È‚¢
+                    'æŒ‡å®šã—ãŸã‚¢ãƒ“ãƒªãƒ†ã‚£ã‚’æŒã£ã¦ã„ãªã„
                     If i <= 0 Or .CountAbility < i Then
                         Exit Function
                     End If
@@ -5508,12 +5508,12 @@ Dim max_value As Long
                     idx = idx + 1
                     With .Ability(i)
                         Select Case params(idx)
-                            Case "", "–¼Ì"
+                            Case "", "åç§°"
                                 EvalInfoFunc = .Name
-                            Case "Œø‰Ê”"
+                            Case "åŠ¹æœæ•°"
                                 EvalInfoFunc = Format$(.CountEffect)
-                            Case "Œø‰Êƒ^ƒCƒv"
-                                '‰½”Ô–Ú‚ÌŒø‰Ê‚©‚ğ”»’è
+                            Case "åŠ¹æœã‚¿ã‚¤ãƒ—"
+                                'ä½•ç•ªç›®ã®åŠ¹æœã‹ã‚’åˆ¤å®š
                                 If IsNumber(params(idx + 1)) Then
                                     j = CInt(params(idx + 1))
                                 End If
@@ -5521,8 +5521,8 @@ Dim max_value As Long
                                     Exit Function
                                 End If
                                 EvalInfoFunc = .EffectType(j)
-                            Case "Œø‰ÊƒŒƒxƒ‹"
-                                '‰½”Ô–Ú‚ÌŒø‰Ê‚©‚ğ”»’è
+                            Case "åŠ¹æœãƒ¬ãƒ™ãƒ«"
+                                'ä½•ç•ªç›®ã®åŠ¹æœã‹ã‚’åˆ¤å®š
                                 If IsNumber(params(idx + 1)) Then
                                     j = CInt(params(idx + 1))
                                 End If
@@ -5530,8 +5530,8 @@ Dim max_value As Long
                                     Exit Function
                                 End If
                                 EvalInfoFunc = Format$(.EffectLevel(j))
-                            Case "Œø‰Êƒf[ƒ^"
-                                '‰½”Ô–Ú‚ÌŒø‰Ê‚©‚ğ”»’è
+                            Case "åŠ¹æœãƒ‡ãƒ¼ã‚¿"
+                                'ä½•ç•ªç›®ã®åŠ¹æœã‹ã‚’åˆ¤å®š
                                 If IsNumber(params(idx + 1)) Then
                                     j = CInt(params(idx + 1))
                                 End If
@@ -5539,25 +5539,25 @@ Dim max_value As Long
                                     Exit Function
                                 End If
                                 EvalInfoFunc = .EffectData(j)
-                            Case "Ë’ö", "Å‘åË’ö"
+                            Case "å°„ç¨‹", "æœ€å¤§å°„ç¨‹"
                                 EvalInfoFunc = Format$(.MaxRange)
-                            Case "Å¬Ë’ö"
+                            Case "æœ€å°å°„ç¨‹"
                                 EvalInfoFunc = Format$(.MinRange)
-                            Case "Å‘åg—p‰ñ”", "g—p‰ñ”"
+                            Case "æœ€å¤§ä½¿ç”¨å›æ•°", "ä½¿ç”¨å›æ•°"
                                 EvalInfoFunc = Format$(.Stock)
-                            Case "Á”ï‚d‚m"
+                            Case "æ¶ˆè²»ï¼¥ï¼®"
                                 EvalInfoFunc = Format$(.ENConsumption)
-                            Case "•K—v‹C—Í"
+                            Case "å¿…è¦æ°—åŠ›"
                                 EvalInfoFunc = Format$(.NecessaryMorale)
-                            Case "‘®«"
+                            Case "å±æ€§"
                                 EvalInfoFunc = .Class
-                            Case "‘®«Š—L"
+                            Case "å±æ€§æ‰€æœ‰"
                                 If InStrNotNest(.Class, params(idx + 1)) > 0 Then
                                     EvalInfoFunc = "1"
                                 Else
                                     EvalInfoFunc = "0"
                                 End If
-                            Case "‘®«ƒŒƒxƒ‹"
+                            Case "å±æ€§ãƒ¬ãƒ™ãƒ«"
                                 j = InStrNotNest(.Class, params(idx + 1) & "L")
                                 If j = 0 Then
                                     EvalInfoFunc = "0"
@@ -5574,16 +5574,16 @@ Dim max_value As Long
                                 If Not IsNumber(EvalInfoFunc) Then
                                     EvalInfoFunc = "0"
                                 End If
-                            Case "•K—v‹Z”\"
+                            Case "å¿…è¦æŠ€èƒ½"
                                 EvalInfoFunc = .NecessarySkill
-                            Case "g—p‰Â", "C“¾"
+                            Case "ä½¿ç”¨å¯", "ä¿®å¾—"
                                 EvalInfoFunc = "1"
                         End Select
                     End With
                 End With
             ElseIf Not it Is Nothing Then
                 With it
-                    '‰½”Ô–Ú‚ÌƒAƒrƒŠƒeƒB‚©‚ğ”»’è
+                    'ä½•ç•ªç›®ã®ã‚¢ãƒ“ãƒªãƒ†ã‚£ã‹ã‚’åˆ¤å®š
                     If IsNumber(params(idx)) Then
                         i = CInt(params(idx))
                     Else
@@ -5593,7 +5593,7 @@ Dim max_value As Long
                             End If
                         Next
                     End If
-                    'w’è‚µ‚½ƒAƒrƒŠƒeƒB‚ğ‚Á‚Ä‚¢‚È‚¢
+                    'æŒ‡å®šã—ãŸã‚¢ãƒ“ãƒªãƒ†ã‚£ã‚’æŒã£ã¦ã„ãªã„
                     If i <= 0 Or .CountAbility < i Then
                         Exit Function
                     End If
@@ -5601,12 +5601,12 @@ Dim max_value As Long
                     idx = idx + 1
                     With .Ability(i)
                         Select Case params(idx)
-                            Case "", "–¼Ì"
+                            Case "", "åç§°"
                                 EvalInfoFunc = .Name
-                            Case "Œø‰Ê”"
+                            Case "åŠ¹æœæ•°"
                                 EvalInfoFunc = Format$(.CountEffect)
-                            Case "Œø‰Êƒ^ƒCƒv"
-                                '‰½”Ô–Ú‚ÌŒø‰Ê‚©‚ğ”»’è
+                            Case "åŠ¹æœã‚¿ã‚¤ãƒ—"
+                                'ä½•ç•ªç›®ã®åŠ¹æœã‹ã‚’åˆ¤å®š
                                 If IsNumber(params(idx + 1)) Then
                                     j = CInt(params(idx + 1))
                                 End If
@@ -5614,8 +5614,8 @@ Dim max_value As Long
                                     Exit Function
                                 End If
                                 EvalInfoFunc = .EffectType(j)
-                            Case "Œø‰ÊƒŒƒxƒ‹"
-                                '‰½”Ô–Ú‚ÌŒø‰Ê‚©‚ğ”»’è
+                            Case "åŠ¹æœãƒ¬ãƒ™ãƒ«"
+                                'ä½•ç•ªç›®ã®åŠ¹æœã‹ã‚’åˆ¤å®š
                                 If IsNumber(params(idx + 1)) Then
                                     j = CInt(params(idx + 1))
                                 End If
@@ -5623,8 +5623,8 @@ Dim max_value As Long
                                     Exit Function
                                 End If
                                 EvalInfoFunc = Format$(.EffectLevel(j))
-                            Case "Œø‰Êƒf[ƒ^"
-                                '‰½”Ô–Ú‚ÌŒø‰Ê‚©‚ğ”»’è
+                            Case "åŠ¹æœãƒ‡ãƒ¼ã‚¿"
+                                'ä½•ç•ªç›®ã®åŠ¹æœã‹ã‚’åˆ¤å®š
                                 If IsNumber(params(idx + 1)) Then
                                     j = CInt(params(idx + 1))
                                 End If
@@ -5632,25 +5632,25 @@ Dim max_value As Long
                                     Exit Function
                                 End If
                                 EvalInfoFunc = .EffectData(j)
-                            Case "Ë’ö", "Å‘åË’ö"
+                            Case "å°„ç¨‹", "æœ€å¤§å°„ç¨‹"
                                 EvalInfoFunc = Format$(.MaxRange)
-                            Case "Å¬Ë’ö"
+                            Case "æœ€å°å°„ç¨‹"
                                 EvalInfoFunc = Format$(.MinRange)
-                            Case "Å‘åg—p‰ñ”", "g—p‰ñ”"
+                            Case "æœ€å¤§ä½¿ç”¨å›æ•°", "ä½¿ç”¨å›æ•°"
                                 EvalInfoFunc = Format$(.Stock)
-                            Case "Á”ï‚d‚m"
+                            Case "æ¶ˆè²»ï¼¥ï¼®"
                                 EvalInfoFunc = Format$(.ENConsumption)
-                            Case "•K—v‹C—Í"
+                            Case "å¿…è¦æ°—åŠ›"
                                 EvalInfoFunc = Format$(.NecessaryMorale)
-                            Case "‘®«"
+                            Case "å±æ€§"
                                 EvalInfoFunc = .Class
-                            Case "‘®«Š—L"
+                            Case "å±æ€§æ‰€æœ‰"
                                 If InStrNotNest(.Class, params(idx + 1)) > 0 Then
                                     EvalInfoFunc = "1"
                                 Else
                                     EvalInfoFunc = "0"
                                 End If
-                            Case "‘®«ƒŒƒxƒ‹"
+                            Case "å±æ€§ãƒ¬ãƒ™ãƒ«"
                                 j = InStrNotNest(.Class, params(idx + 1) & "L")
                                 If j = 0 Then
                                     EvalInfoFunc = "0"
@@ -5667,16 +5667,16 @@ Dim max_value As Long
                                 If Not IsNumber(EvalInfoFunc) Then
                                     EvalInfoFunc = "0"
                                 End If
-                            Case "•K—v‹Z”\"
+                            Case "å¿…è¦æŠ€èƒ½"
                                 EvalInfoFunc = .NecessarySkill
-                            Case "g—p‰Â", "C“¾"
+                            Case "ä½¿ç”¨å¯", "ä¿®å¾—"
                                 EvalInfoFunc = "1"
                         End Select
                     End With
                 End With
             ElseIf Not itd Is Nothing Then
                 With itd
-                    '‰½”Ô–Ú‚ÌƒAƒrƒŠƒeƒB‚©‚ğ”»’è
+                    'ä½•ç•ªç›®ã®ã‚¢ãƒ“ãƒªãƒ†ã‚£ã‹ã‚’åˆ¤å®š
                     If IsNumber(params(idx)) Then
                         i = CInt(params(idx))
                     Else
@@ -5686,7 +5686,7 @@ Dim max_value As Long
                             End If
                         Next
                     End If
-                    'w’è‚µ‚½ƒAƒrƒŠƒeƒB‚ğ‚Á‚Ä‚¢‚È‚¢
+                    'æŒ‡å®šã—ãŸã‚¢ãƒ“ãƒªãƒ†ã‚£ã‚’æŒã£ã¦ã„ãªã„
                     If i <= 0 Or .CountAbility < i Then
                         Exit Function
                     End If
@@ -5694,12 +5694,12 @@ Dim max_value As Long
                     idx = idx + 1
                     With .Ability(i)
                         Select Case params(idx)
-                            Case "", "–¼Ì"
+                            Case "", "åç§°"
                                 EvalInfoFunc = .Name
-                            Case "Œø‰Ê”"
+                            Case "åŠ¹æœæ•°"
                                 EvalInfoFunc = Format$(.CountEffect)
-                            Case "Œø‰Êƒ^ƒCƒv"
-                                '‰½”Ô–Ú‚ÌŒø‰Ê‚©‚ğ”»’è
+                            Case "åŠ¹æœã‚¿ã‚¤ãƒ—"
+                                'ä½•ç•ªç›®ã®åŠ¹æœã‹ã‚’åˆ¤å®š
                                 If IsNumber(params(idx + 1)) Then
                                     j = CInt(params(idx + 1))
                                 End If
@@ -5707,8 +5707,8 @@ Dim max_value As Long
                                     Exit Function
                                 End If
                                 EvalInfoFunc = .EffectType(j)
-                            Case "Œø‰ÊƒŒƒxƒ‹"
-                                '‰½”Ô–Ú‚ÌŒø‰Ê‚©‚ğ”»’è
+                            Case "åŠ¹æœãƒ¬ãƒ™ãƒ«"
+                                'ä½•ç•ªç›®ã®åŠ¹æœã‹ã‚’åˆ¤å®š
                                 If IsNumber(params(idx + 1)) Then
                                     j = CInt(params(idx + 1))
                                 End If
@@ -5716,8 +5716,8 @@ Dim max_value As Long
                                     Exit Function
                                 End If
                                 EvalInfoFunc = Format$(.EffectLevel(j))
-                            Case "Œø‰Êƒf[ƒ^"
-                                '‰½”Ô–Ú‚ÌŒø‰Ê‚©‚ğ”»’è
+                            Case "åŠ¹æœãƒ‡ãƒ¼ã‚¿"
+                                'ä½•ç•ªç›®ã®åŠ¹æœã‹ã‚’åˆ¤å®š
                                 If IsNumber(params(idx + 1)) Then
                                     j = CInt(params(idx + 1))
                                 End If
@@ -5725,25 +5725,25 @@ Dim max_value As Long
                                     Exit Function
                                 End If
                                 EvalInfoFunc = .EffectData(j)
-                            Case "Ë’ö", "Å‘åË’ö"
+                            Case "å°„ç¨‹", "æœ€å¤§å°„ç¨‹"
                                 EvalInfoFunc = Format$(.MaxRange)
-                            Case "Å¬Ë’ö"
+                            Case "æœ€å°å°„ç¨‹"
                                 EvalInfoFunc = Format$(.MinRange)
-                            Case "Å‘åg—p‰ñ”", "g—p‰ñ”"
+                            Case "æœ€å¤§ä½¿ç”¨å›æ•°", "ä½¿ç”¨å›æ•°"
                                 EvalInfoFunc = Format$(.Stock)
-                            Case "Á”ï‚d‚m"
+                            Case "æ¶ˆè²»ï¼¥ï¼®"
                                 EvalInfoFunc = Format$(.ENConsumption)
-                            Case "•K—v‹C—Í"
+                            Case "å¿…è¦æ°—åŠ›"
                                 EvalInfoFunc = Format$(.NecessaryMorale)
-                            Case "‘®«"
+                            Case "å±æ€§"
                                 EvalInfoFunc = .Class
-                            Case "‘®«Š—L"
+                            Case "å±æ€§æ‰€æœ‰"
                                 If InStrNotNest(.Class, params(idx + 1)) > 0 Then
                                     EvalInfoFunc = "1"
                                 Else
                                     EvalInfoFunc = "0"
                                 End If
-                            Case "‘®«ƒŒƒxƒ‹"
+                            Case "å±æ€§ãƒ¬ãƒ™ãƒ«"
                                 j = InStrNotNest(.Class, params(idx + 1) & "L")
                                 If j = 0 Then
                                     EvalInfoFunc = "0"
@@ -5760,38 +5760,38 @@ Dim max_value As Long
                                 If Not IsNumber(EvalInfoFunc) Then
                                     EvalInfoFunc = "0"
                                 End If
-                            Case "•K—v‹Z”\"
+                            Case "å¿…è¦æŠ€èƒ½"
                                 EvalInfoFunc = .NecessarySkill
-                            Case "g—p‰Â", "C“¾"
+                            Case "ä½¿ç”¨å¯", "ä¿®å¾—"
                                 EvalInfoFunc = "1"
                         End Select
                     End With
                 End With
             End If
-        Case "ƒ‰ƒ“ƒN"
+        Case "ãƒ©ãƒ³ã‚¯"
             If Not u Is Nothing Then
                 EvalInfoFunc = Format$(u.Rank)
             End If
-        Case "ƒ{ƒXƒ‰ƒ“ƒN"
+        Case "ãƒœã‚¹ãƒ©ãƒ³ã‚¯"
             If Not u Is Nothing Then
                 EvalInfoFunc = Format$(u.BossRank)
             End If
-        Case "ƒGƒŠƒA"
+        Case "ã‚¨ãƒªã‚¢"
             If Not u Is Nothing Then
                 EvalInfoFunc = u.Area
             End If
-        Case "vlƒ‚[ƒh"
+        Case "æ€è€ƒãƒ¢ãƒ¼ãƒ‰"
             If Not u Is Nothing Then
                 EvalInfoFunc = u.Mode
             End If
-        Case "Å‘åUŒ‚—Í"
+        Case "æœ€å¤§æ”»æ’ƒåŠ›"
             If Not u Is Nothing Then
                 With u
                     max_value = 0
                     For i = 1 To .CountWeapon
                         If .IsWeaponMastered(i) _
                             And Not .IsDisabled(.Weapon(i).Name) _
-                            And Not .IsWeaponClassifiedAs(i, "‡") _
+                            And Not .IsWeaponClassifiedAs(i, "åˆ") _
                         Then
                             If .WeaponPower(i, "") > max_value Then
                                 max_value = .WeaponPower(i, "")
@@ -5804,7 +5804,7 @@ Dim max_value As Long
                 With ud
                     max_value = 0
                     For i = 1 To .CountWeapon
-                        If InStr(.Weapon(i).Class, "‡") = 0 Then
+                        If InStr(.Weapon(i).Class, "åˆ") = 0 Then
                             If .Weapon(i).Power > max_value Then
                                 max_value = .Weapon(i).Power
                             End If
@@ -5813,14 +5813,14 @@ Dim max_value As Long
                     EvalInfoFunc = Format$(max_value)
                 End With
             End If
-        Case "Å’·Ë’ö"
+        Case "æœ€é•·å°„ç¨‹"
             If Not u Is Nothing Then
                 With u
                     max_value = 0
                     For i = 1 To .CountWeapon
                         If .IsWeaponMastered(i) _
                             And Not .IsDisabled(.Weapon(i).Name) _
-                            And Not .IsWeaponClassifiedAs(i, "‡") _
+                            And Not .IsWeaponClassifiedAs(i, "åˆ") _
                         Then
                             If .WeaponMaxRange(i) > max_value Then
                                 max_value = .WeaponMaxRange(i)
@@ -5833,7 +5833,7 @@ Dim max_value As Long
                 With ud
                     max_value = 0
                     For i = 1 To .CountWeapon
-                        If InStr(.Weapon(i).Class, "‡") = 0 Then
+                        If InStr(.Weapon(i).Class, "åˆ") = 0 Then
                             If .Weapon(i).MaxRange > max_value Then
                                 max_value = .Weapon(i).MaxRange
                             End If
@@ -5842,73 +5842,73 @@ Dim max_value As Long
                     EvalInfoFunc = Format$(max_value)
                 End With
             End If
-        Case "c‚èƒTƒ|[ƒgƒAƒ^ƒbƒN”"
+        Case "æ®‹ã‚Šã‚µãƒãƒ¼ãƒˆã‚¢ã‚¿ãƒƒã‚¯æ•°"
             If Not u Is Nothing Then
                 EvalInfoFunc = Format$(u.MaxSupportAttack - u.UsedSupportAttack)
             End If
-        Case "c‚èƒTƒ|[ƒgƒK[ƒh”"
+        Case "æ®‹ã‚Šã‚µãƒãƒ¼ãƒˆã‚¬ãƒ¼ãƒ‰æ•°"
             If Not u Is Nothing Then
                 EvalInfoFunc = Format$(u.MaxSupportGuard - u.UsedSupportGuard)
             End If
-        Case "c‚è“¯‰‡ŒìUŒ‚”"
+        Case "æ®‹ã‚ŠåŒæ™‚æ´è­·æ”»æ’ƒæ•°"
             If Not u Is Nothing Then
                 EvalInfoFunc = Format$(u.MaxSyncAttack - u.UsedSyncAttack)
             End If
-        Case "c‚èƒJƒEƒ“ƒ^[UŒ‚”"
+        Case "æ®‹ã‚Šã‚«ã‚¦ãƒ³ã‚¿ãƒ¼æ”»æ’ƒæ•°"
             If Not u Is Nothing Then
                 EvalInfoFunc = Format$(u.MaxCounterAttack - u.UsedCounterAttack)
             End If
-        Case "‰ü‘¢”ï"
+        Case "æ”¹é€ è²»"
             If Not u Is Nothing Then
                 EvalInfoFunc = Format$(RankUpCost(u))
             End If
-        Case "Å‘å‰ü‘¢”"
+        Case "æœ€å¤§æ”¹é€ æ•°"
             If Not u Is Nothing Then
                 EvalInfoFunc = Format$(MaxRank(u))
             End If
-        Case "ƒAƒCƒeƒ€ƒNƒ‰ƒX"
+        Case "ã‚¢ã‚¤ãƒ†ãƒ ã‚¯ãƒ©ã‚¹"
             If Not it Is Nothing Then
                 EvalInfoFunc = it.Class
             ElseIf Not itd Is Nothing Then
                 EvalInfoFunc = itd.Class
             End If
-        Case "‘•”õŒÂŠ"
+        Case "è£…å‚™å€‹æ‰€"
             If Not it Is Nothing Then
                 EvalInfoFunc = it.Part
             ElseIf Not itd Is Nothing Then
                 EvalInfoFunc = itd.Part
             End If
-        Case "Å‘å‚g‚oC³’l"
+        Case "æœ€å¤§ï¼¨ï¼°ä¿®æ­£å€¤"
             If Not it Is Nothing Then
                 EvalInfoFunc = Format$(it.HP)
             ElseIf Not itd Is Nothing Then
                 EvalInfoFunc = Format$(itd.HP)
             End If
-        Case "Å‘å‚d‚mC³’l"
+        Case "æœ€å¤§ï¼¥ï¼®ä¿®æ­£å€¤"
             If Not it Is Nothing Then
                 EvalInfoFunc = Format$(it.EN)
             ElseIf Not itd Is Nothing Then
                 EvalInfoFunc = Format$(itd.EN)
             End If
-        Case "‘•bC³’l"
+        Case "è£…ç”²ä¿®æ­£å€¤"
             If Not it Is Nothing Then
                 EvalInfoFunc = Format$(it.Armor)
             ElseIf Not itd Is Nothing Then
                 EvalInfoFunc = Format$(itd.Armor)
             End If
-        Case "‰^“®«C³’l"
+        Case "é‹å‹•æ€§ä¿®æ­£å€¤"
             If Not it Is Nothing Then
                 EvalInfoFunc = Format$(it.Mobility)
             ElseIf Not itd Is Nothing Then
                 EvalInfoFunc = Format$(itd.Mobility)
             End If
-        Case "ˆÚ“®—ÍC³’l"
+        Case "ç§»å‹•åŠ›ä¿®æ­£å€¤"
             If Not it Is Nothing Then
                 EvalInfoFunc = Format$(it.Speed)
             ElseIf Not itd Is Nothing Then
                 EvalInfoFunc = Format$(itd.Speed)
             End If
-        Case "‰ğà•¶", "ƒRƒƒ“ƒg"
+        Case "è§£èª¬æ–‡", "ã‚³ãƒ¡ãƒ³ãƒˆ"
             If Not it Is Nothing Then
                 EvalInfoFunc = it.Data.Comment
                 ReplaceString EvalInfoFunc, vbCr & vbLf, " "
@@ -5918,35 +5918,35 @@ Dim max_value As Long
             ElseIf Not spd Is Nothing Then
                 EvalInfoFunc = spd.Comment
             End If
-        Case "’Zk–¼"
+        Case "çŸ­ç¸®å"
             If Not spd Is Nothing Then
                 EvalInfoFunc = spd.ShortName
             End If
-        Case "Á”ï‚r‚o"
+        Case "æ¶ˆè²»ï¼³ï¼°"
             If Not spd Is Nothing Then
                 EvalInfoFunc = Format$(spd.SPConsumption)
             End If
-        Case "‘ÎÛ"
+        Case "å¯¾è±¡"
             If Not spd Is Nothing Then
                 EvalInfoFunc = spd.TargetType
             End If
-        Case "‘±ŠúŠÔ"
+        Case "æŒç¶šæœŸé–“"
             If Not spd Is Nothing Then
                 EvalInfoFunc = spd.Duration
             End If
-        Case "“K—pğŒ"
+        Case "é©ç”¨æ¡ä»¶"
             If Not spd Is Nothing Then
                 EvalInfoFunc = spd.NecessaryCondition
             End If
-        Case "ƒAƒjƒ"
+        Case "ã‚¢ãƒ‹ãƒ¡"
             If Not spd Is Nothing Then
                 EvalInfoFunc = spd.Animation
             End If
-        Case "Œø‰Ê”"
+        Case "åŠ¹æœæ•°"
             If Not spd Is Nothing Then
                 EvalInfoFunc = Format$(spd.CountEffect)
             End If
-        Case "Œø‰Êƒ^ƒCƒv"
+        Case "åŠ¹æœã‚¿ã‚¤ãƒ—"
             If Not spd Is Nothing Then
                 idx = idx + 1
                 i = StrToLng(params(idx))
@@ -5954,7 +5954,7 @@ Dim max_value As Long
                     EvalInfoFunc = spd.EffectType(i)
                 End If
             End If
-        Case "Œø‰ÊƒŒƒxƒ‹"
+        Case "åŠ¹æœãƒ¬ãƒ™ãƒ«"
             If Not spd Is Nothing Then
                 idx = idx + 1
                 i = StrToLng(params(idx))
@@ -5962,7 +5962,7 @@ Dim max_value As Long
                     EvalInfoFunc = Format$(spd.EffectLevel(i))
                 End If
             End If
-        Case "Œø‰Êƒf[ƒ^"
+        Case "åŠ¹æœãƒ‡ãƒ¼ã‚¿"
             If Not spd Is Nothing Then
                 idx = idx + 1
                 i = StrToLng(params(idx))
@@ -5970,21 +5970,21 @@ Dim max_value As Long
                     EvalInfoFunc = spd.EffectData(i)
                 End If
             End If
-        Case "ƒ}ƒbƒv"
+        Case "ãƒãƒƒãƒ—"
             idx = idx + 1
             Select Case params(idx)
-                Case "ƒtƒ@ƒCƒ‹–¼"
+                Case "ãƒ•ã‚¡ã‚¤ãƒ«å"
                     EvalInfoFunc = MapFileName
                     If Len(EvalInfoFunc) > Len(ScenarioPath) Then
                         If Left$(EvalInfoFunc, Len(ScenarioPath)) = ScenarioPath Then
                             EvalInfoFunc = Mid$(EvalInfoFunc, Len(ScenarioPath) + 1)
                         End If
                     End If
-                Case "•"
+                Case "å¹…"
                     EvalInfoFunc = Format$(MapWidth)
-                Case "ŠÔ‘Ñ"
+                Case "æ™‚é–“å¸¯"
                     If MapDrawMode <> "" Then
-                        If MapDrawMode = "ƒtƒBƒ‹ƒ^" Then
+                        If MapDrawMode = "ãƒ•ã‚£ãƒ«ã‚¿" Then
                             buf = Hex(MapDrawFilterColor)
                             For i = 1 To 6 - Len(buf)
                                 buf = "0" & buf
@@ -5995,13 +5995,13 @@ Dim max_value As Long
                             buf = MapDrawMode
                         End If
                         If MapDrawIsMapOnly Then
-                            buf = buf & " ƒ}ƒbƒvŒÀ’è"
+                            buf = buf & " ãƒãƒƒãƒ—é™å®š"
                         End If
                         EvalInfoFunc = buf
                     Else
-                        EvalInfoFunc = "’‹"
+                        EvalInfoFunc = "æ˜¼"
                     End If
-                Case "‚‚³"
+                Case "é«˜ã•"
                     EvalInfoFunc = Format$(MapHeight)
                 Case Else
                     Dim mx As Integer, my As Integer
@@ -6022,23 +6022,23 @@ Dim max_value As Long
                     
                     idx = idx + 1
                     Select Case params(idx)
-                        Case "’nŒ`–¼"
+                        Case "åœ°å½¢å"
                             EvalInfoFunc = TerrainName(mx, my)
-                        Case "’nŒ`ƒ^ƒCƒv", "’nŒ`ƒNƒ‰ƒX"
+                        Case "åœ°å½¢ã‚¿ã‚¤ãƒ—", "åœ°å½¢ã‚¯ãƒ©ã‚¹"
                             EvalInfoFunc = TerrainClass(mx, my)
-                        Case "ˆÚ“®ƒRƒXƒg"
-                            '0.5‚İ‚ÌˆÚ“®ƒRƒXƒg‚ğg‚¦‚é‚æ‚¤‚É‚·‚é‚½‚ßAˆÚ“®ƒRƒXƒg‚Í
-                            'ÀÛ‚Ì‚Q”{‚Ì’l‚Å‹L˜^‚³‚ê‚Ä‚¢‚é
+                        Case "ç§»å‹•ã‚³ã‚¹ãƒˆ"
+                            '0.5åˆ»ã¿ã®ç§»å‹•ã‚³ã‚¹ãƒˆã‚’ä½¿ãˆã‚‹ã‚ˆã†ã«ã™ã‚‹ãŸã‚ã€ç§»å‹•ã‚³ã‚¹ãƒˆã¯
+                            'å®Ÿéš›ã®ï¼’å€ã®å€¤ã§è¨˜éŒ²ã•ã‚Œã¦ã„ã‚‹
                             EvalInfoFunc = Format$(TerrainMoveCost(mx, my) / 2)
-                        Case "‰ñ”ğC³"
+                        Case "å›é¿ä¿®æ­£"
                             EvalInfoFunc = Format$(TerrainEffectForHit(mx, my))
-                        Case "ƒ_ƒ[ƒWC³"
+                        Case "ãƒ€ãƒ¡ãƒ¼ã‚¸ä¿®æ­£"
                             EvalInfoFunc = Format$(TerrainEffectForDamage(mx, my))
-                        Case "‚g‚o‰ñ•œ—Ê"
+                        Case "ï¼¨ï¼°å›å¾©é‡"
                             EvalInfoFunc = Format$(TerrainEffectForHPRecover(mx, my))
-                        Case "‚d‚m‰ñ•œ—Ê"
+                        Case "ï¼¥ï¼®å›å¾©é‡"
                             EvalInfoFunc = Format$(TerrainEffectForENRecover(mx, my))
-                        Case "ƒrƒbƒgƒ}ƒbƒv–¼"
+                        Case "ãƒ“ãƒƒãƒˆãƒãƒƒãƒ—å"
 'MOD START 240a
 '                            Select Case MapImageFileTypeData(mx, my)
 '                                Case SeparateDirMapImageFileType
@@ -6072,7 +6072,7 @@ Dim max_value As Long
                             End Select
 'MOD  END  240a
 'ADD START 240a
-                        Case "ƒŒƒCƒ„[ƒrƒbƒgƒ}ƒbƒv–¼"
+                        Case "ãƒ¬ã‚¤ãƒ¤ãƒ¼ãƒ“ãƒƒãƒˆãƒãƒƒãƒ—å"
                             Select Case MapImageFileTypeData(mx, my)
                                 Case SeparateDirMapImageFileType
                                     EvalInfoFunc = _
@@ -6089,13 +6089,13 @@ Dim max_value As Long
                                         Format$(MapData(mx, my, MapDataIndex.LayerBitmapNo)) & ".bmp"
                             End Select
 'ADD  END  240a
-                        Case "ƒ†ƒjƒbƒg‚h‚c"
+                        Case "ãƒ¦ãƒ‹ãƒƒãƒˆï¼©ï¼¤"
                             If Not MapDataForUnit(mx, my) Is Nothing Then
                                 EvalInfoFunc = MapDataForUnit(mx, my).ID
                             End If
                     End Select
             End Select
-        Case "ƒIƒvƒVƒ‡ƒ“"
+        Case "ã‚ªãƒ—ã‚·ãƒ§ãƒ³"
             idx = idx + 1
             Select Case params(idx)
                 Case "MessageWait"
@@ -6139,7 +6139,7 @@ Dim max_value As Long
 '                    "BattleAnimation", "WeaponAnimation", "MoveAnimation", _
 '                    "ImageBufferNum", "MaxImageBufferSize", "KeepStretchedImage", _
 '                    "UseTransparentBlt"
-' uNewGUIv‚Å’T‚µ‚É—ˆ‚½‚çINI‚Ìó‘Ô‚ğ•Ô‚·BuV‚f‚t‚hv‚Å’T‚µ‚É—ˆ‚½‚çOption‚Ìó‘Ô‚ğ•Ô‚·B
+' ã€ŒNewGUIã€ã§æ¢ã—ã«æ¥ãŸã‚‰INIã®çŠ¶æ…‹ã‚’è¿”ã™ã€‚ã€Œæ–°ï¼§ï¼µï¼©ã€ã§æ¢ã—ã«æ¥ãŸã‚‰Optionã®çŠ¶æ…‹ã‚’è¿”ã™ã€‚
                 Case "Turn", "Square", "KeepEnemyBGM", "MidiReset", _
                     "AutoMoveCursor", "DebugMode", "LastFolder", _
                     "MIDIPortID", "MP3Volume", _
@@ -6149,7 +6149,7 @@ Dim max_value As Long
 ' MOD END MARGE
                     EvalInfoFunc = ReadIni("Option", params(idx))
                 Case Else
-                    'OptionƒRƒ}ƒ“ƒh‚ÌƒIƒvƒVƒ‡ƒ“‚ğQÆ
+                    'Optionã‚³ãƒãƒ³ãƒ‰ã®ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã‚’å‚ç…§
                     If IsOptionDefined(params(idx)) Then
                         EvalInfoFunc = "On"
                     Else
@@ -6160,9 +6160,9 @@ Dim max_value As Long
 End Function
 
 
-' === •Ï”‚ÉŠÖ‚·‚éˆ— ===
+' === å¤‰æ•°ã«é–¢ã™ã‚‹å‡¦ç† ===
 
-'•Ï”‚Ì’l‚ğ•]‰¿
+'å¤‰æ•°ã®å€¤ã‚’è©•ä¾¡
 Public Function GetVariable(var_name As String, etype As ValueType, _
     str_result As String, num_result As Double) As ValueType
 Dim vname As String
@@ -6176,10 +6176,10 @@ Dim is_term As Boolean
 
     vname = var_name
     
-    '–¢’è‹`’l‚Ìİ’è
+    'æœªå®šç¾©å€¤ã®è¨­å®š
     str_result = var_name
     
-    '•Ï”‚ª”z—ñH
+    'å¤‰æ•°ãŒé…åˆ—ï¼Ÿ
     ret = InStr(vname, "[")
     If ret = 0 Then
         GoTo SkipArrayHandling
@@ -6188,12 +6188,12 @@ Dim is_term As Boolean
         GoTo SkipArrayHandling
     End If
     
-    '‚±‚±‚©‚ç”z—ñê—p‚Ìˆ—
+    'ã“ã“ã‹ã‚‰é…åˆ—å°‚ç”¨ã®å‡¦ç†
     
-    'ƒCƒ“ƒfƒbƒNƒX•”•ª‚ÌØ‚è‚¾‚µ
+    'ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹éƒ¨åˆ†ã®åˆ‡ã‚Šã ã—
     idx = Mid$(vname, ret + 1, Len(vname) - ret - 1)
     
-    '‘½ŸŒ³”z—ñ‚Ìˆ—
+    'å¤šæ¬¡å…ƒé…åˆ—ã®å‡¦ç†
     If InStr(idx, ",") > 0 Then
         start_idx = 1
         depth = 0
@@ -6209,7 +6209,7 @@ Dim is_term As Boolean
                 End If
             Else
                 Select Case Asc(Mid$(idx, i, 1))
-                    Case 9, 32 'ƒ^ƒu, ‹ó”’
+                    Case 9, 32 'ã‚¿ãƒ–, ç©ºç™½
                         If start_idx = i Then
                             start_idx = i + 1
                         Else
@@ -6246,19 +6246,19 @@ Dim is_term As Boolean
         idx = GetValueAsString(idx)
     End If
     
-    '•Ï”–¼‚ğ”z—ñ‚ÌƒCƒ“ƒfƒbƒNƒX•”‚ğŒvZ‚µ‚ÄÄ\’z
+    'å¤‰æ•°åã‚’é…åˆ—ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹éƒ¨ã‚’è¨ˆç®—ã—ã¦å†æ§‹ç¯‰
     vname = Left$(vname, ret) & idx & "]"
     
-    '’è‹`‚³‚ê‚Ä‚¢‚È‚¢—v‘f‚ğg‚Á‚Ä”z—ñ‚ğ“Ç‚İo‚µ‚½ê‡‚Í‹ó•¶š—ñ‚ğ•Ô‚·
+    'å®šç¾©ã•ã‚Œã¦ã„ãªã„è¦ç´ ã‚’ä½¿ã£ã¦é…åˆ—ã‚’èª­ã¿å‡ºã—ãŸå ´åˆã¯ç©ºæ–‡å­—åˆ—ã‚’è¿”ã™
     str_result = ""
     
-    '”z—ñê—p‚Ìˆ—‚ªI—¹
+    'é…åˆ—å°‚ç”¨ã®å‡¦ç†ãŒçµ‚äº†
     
 SkipArrayHandling:
     
-    '‚±‚±‚©‚ç”z—ñ‚Æ’Êí•Ï”‚Ì‹¤’Êˆ—
+    'ã“ã“ã‹ã‚‰é…åˆ—ã¨é€šå¸¸å¤‰æ•°ã®å…±é€šå‡¦ç†
     
-    'ƒTƒuƒ‹[ƒ`ƒ“ƒ[ƒJƒ‹•Ï”
+    'ã‚µãƒ–ãƒ«ãƒ¼ãƒãƒ³ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°
     If CallDepth > 0 Then
         For i = VarIndexStack(CallDepth - 1) + 1 To VarIndex
             With VarStack(i)
@@ -6293,7 +6293,7 @@ SkipArrayHandling:
         Next
     End If
     
-    'ƒ[ƒJƒ‹•Ï”
+    'ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°
     If IsLocalVariableDefined(vname) Then
         With LocalVariableList.Item(vname)
             Select Case etype
@@ -6324,7 +6324,7 @@ SkipArrayHandling:
         Exit Function
     End If
     
-    'ƒOƒ[ƒoƒ‹•Ï”
+    'ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°
     If IsGlobalVariableDefined(vname) Then
         With GlobalVariableList.Item(vname)
             Select Case etype
@@ -6355,9 +6355,9 @@ SkipArrayHandling:
         Exit Function
     End If
     
-    'ƒVƒXƒeƒ€•Ï”H
+    'ã‚·ã‚¹ãƒ†ãƒ å¤‰æ•°ï¼Ÿ
     Select Case vname
-        Case "‘ÎÛƒ†ƒjƒbƒg", "‘ÎÛƒpƒCƒƒbƒg"
+        Case "å¯¾è±¡ãƒ¦ãƒ‹ãƒƒãƒˆ", "å¯¾è±¡ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆ"
             If Not SelectedUnitForEvent Is Nothing Then
                 With SelectedUnitForEvent
                     If .CountPilot > 0 Then
@@ -6372,7 +6372,7 @@ SkipArrayHandling:
             GetVariable = StringType
             Exit Function
             
-        Case "‘Šèƒ†ƒjƒbƒg", "‘ŠèƒpƒCƒƒbƒg"
+        Case "ç›¸æ‰‹ãƒ¦ãƒ‹ãƒƒãƒˆ", "ç›¸æ‰‹ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆ"
             If Not SelectedTargetForEvent Is Nothing Then
                 With SelectedTargetForEvent
                     If .CountPilot > 0 Then
@@ -6387,7 +6387,7 @@ SkipArrayHandling:
             GetVariable = StringType
             Exit Function
             
-        Case "‘ÎÛƒ†ƒjƒbƒg‚h‚c"
+        Case "å¯¾è±¡ãƒ¦ãƒ‹ãƒƒãƒˆï¼©ï¼¤"
             If Not SelectedUnitForEvent Is Nothing Then
                 str_result = SelectedUnitForEvent.ID
             Else
@@ -6396,7 +6396,7 @@ SkipArrayHandling:
             GetVariable = StringType
             Exit Function
             
-        Case "‘Šèƒ†ƒjƒbƒg‚h‚c"
+        Case "ç›¸æ‰‹ãƒ¦ãƒ‹ãƒƒãƒˆï¼©ï¼¤"
             If Not SelectedTargetForEvent Is Nothing Then
                 str_result = SelectedTargetForEvent.ID
             Else
@@ -6405,7 +6405,7 @@ SkipArrayHandling:
             GetVariable = StringType
             Exit Function
             
-        Case "‘ÎÛƒ†ƒjƒbƒgg—p•Ší"
+        Case "å¯¾è±¡ãƒ¦ãƒ‹ãƒƒãƒˆä½¿ç”¨æ­¦å™¨"
             str_result = ""
             If SelectedUnitForEvent Is SelectedUnit Then
                 With SelectedUnitForEvent
@@ -6427,7 +6427,7 @@ SkipArrayHandling:
             GetVariable = StringType
             Exit Function
             
-        Case "‘Šèƒ†ƒjƒbƒgg—p•Ší"
+        Case "ç›¸æ‰‹ãƒ¦ãƒ‹ãƒƒãƒˆä½¿ç”¨æ­¦å™¨"
             str_result = ""
             If SelectedTargetForEvent Is SelectedTarget Then
                 With SelectedTargetForEvent
@@ -6449,7 +6449,7 @@ SkipArrayHandling:
             GetVariable = StringType
             Exit Function
             
-        Case "‘ÎÛƒ†ƒjƒbƒgg—p•Ší”Ô†"
+        Case "å¯¾è±¡ãƒ¦ãƒ‹ãƒƒãƒˆä½¿ç”¨æ­¦å™¨ç•ªå·"
             str_result = ""
             If SelectedUnitForEvent Is SelectedUnit Then
                 With SelectedUnitForEvent
@@ -6474,7 +6474,7 @@ SkipArrayHandling:
             End If
             Exit Function
             
-        Case "‘Šèƒ†ƒjƒbƒgg—p•Ší”Ô†"
+        Case "ç›¸æ‰‹ãƒ¦ãƒ‹ãƒƒãƒˆä½¿ç”¨æ­¦å™¨ç•ªå·"
             str_result = ""
             If SelectedTargetForEvent Is SelectedTarget Then
                 With SelectedTargetForEvent
@@ -6499,7 +6499,7 @@ SkipArrayHandling:
             End If
             Exit Function
             
-        Case "‘ÎÛƒ†ƒjƒbƒgg—pƒAƒrƒŠƒeƒB"
+        Case "å¯¾è±¡ãƒ¦ãƒ‹ãƒƒãƒˆä½¿ç”¨ã‚¢ãƒ“ãƒªãƒ†ã‚£"
             str_result = ""
             If SelectedUnitForEvent Is SelectedUnit Then
                 With SelectedUnitForEvent
@@ -6513,7 +6513,7 @@ SkipArrayHandling:
             GetVariable = StringType
             Exit Function
             
-        Case "‘ÎÛƒ†ƒjƒbƒgg—pƒAƒrƒŠƒeƒB”Ô†"
+        Case "å¯¾è±¡ãƒ¦ãƒ‹ãƒƒãƒˆä½¿ç”¨ã‚¢ãƒ“ãƒªãƒ†ã‚£ç•ªå·"
             str_result = ""
             If SelectedUnitForEvent Is SelectedUnit Then
                 With SelectedUnitForEvent
@@ -6528,7 +6528,7 @@ SkipArrayHandling:
             End If
             Exit Function
             
-        Case "‘ÎÛƒ†ƒjƒbƒgg—pƒXƒyƒVƒƒƒ‹ƒpƒ["
+        Case "å¯¾è±¡ãƒ¦ãƒ‹ãƒƒãƒˆä½¿ç”¨ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼"
             str_result = ""
             If SelectedUnitForEvent Is SelectedUnit Then
                 str_result = SelectedSpecialPower
@@ -6536,7 +6536,7 @@ SkipArrayHandling:
             GetVariable = StringType
             Exit Function
             
-        Case "ƒTƒ|[ƒgƒAƒ^ƒbƒNƒ†ƒjƒbƒg‚h‚c"
+        Case "ã‚µãƒãƒ¼ãƒˆã‚¢ã‚¿ãƒƒã‚¯ãƒ¦ãƒ‹ãƒƒãƒˆï¼©ï¼¤"
             If Not SupportAttackUnit Is Nothing Then
                 str_result = SupportAttackUnit.ID
             Else
@@ -6545,7 +6545,7 @@ SkipArrayHandling:
             GetVariable = StringType
             Exit Function
             
-        Case "ƒTƒ|[ƒgƒK[ƒhƒ†ƒjƒbƒg‚h‚c"
+        Case "ã‚µãƒãƒ¼ãƒˆã‚¬ãƒ¼ãƒ‰ãƒ¦ãƒ‹ãƒƒãƒˆï¼©ï¼¤"
             If Not SupportGuardUnit Is Nothing Then
                 str_result = SupportGuardUnit.ID
             Else
@@ -6554,7 +6554,7 @@ SkipArrayHandling:
             GetVariable = StringType
             Exit Function
             
-        Case "‘I‘ğ"
+        Case "é¸æŠ"
             If etype = NumericType Then
                 num_result = StrToDbl(SelectedAlternative)
                 GetVariable = NumericType
@@ -6564,7 +6564,7 @@ SkipArrayHandling:
             End If
             Exit Function
             
-        Case "ƒ^[ƒ“”"
+        Case "ã‚¿ãƒ¼ãƒ³æ•°"
             If etype = StringType Then
                 str_result = Format$(Turn)
                 GetVariable = StringType
@@ -6574,7 +6574,7 @@ SkipArrayHandling:
             End If
             Exit Function
             
-        Case "‘ƒ^[ƒ“”"
+        Case "ç·ã‚¿ãƒ¼ãƒ³æ•°"
             If etype = StringType Then
                 str_result = Format$(TotalTurn)
                 GetVariable = StringType
@@ -6584,17 +6584,17 @@ SkipArrayHandling:
             End If
             Exit Function
             
-        Case "ƒtƒFƒCƒY"
+        Case "ãƒ•ã‚§ã‚¤ã‚º"
             str_result = Stage
             GetVariable = StringType
             Exit Function
             
-        Case "–¡•û”"
+        Case "å‘³æ–¹æ•°"
             num = 0
             For Each u In UList
                 With u
-                    If .Party0 = "–¡•û" _
-                        And (.Status = "oŒ‚" Or .Status = "Ši”[") _
+                    If .Party0 = "å‘³æ–¹" _
+                        And (.Status = "å‡ºæ’ƒ" Or .Status = "æ ¼ç´") _
                     Then
                         num = num + 1
                     End If
@@ -6609,12 +6609,12 @@ SkipArrayHandling:
             End If
             Exit Function
             
-        Case "‚m‚o‚b”"
+        Case "ï¼®ï¼°ï¼£æ•°"
             num = 0
             For Each u In UList
                 With u
-                    If .Party0 = "‚m‚o‚b" _
-                        And (.Status = "oŒ‚" Or .Status = "Ši”[") _
+                    If .Party0 = "ï¼®ï¼°ï¼£" _
+                        And (.Status = "å‡ºæ’ƒ" Or .Status = "æ ¼ç´") _
                     Then
                         num = num + 1
                     End If
@@ -6629,12 +6629,12 @@ SkipArrayHandling:
             End If
             Exit Function
             
-        Case "“G”"
+        Case "æ•µæ•°"
             num = 0
             For Each u In UList
                 With u
-                    If .Party0 = "“G" _
-                        And (.Status = "oŒ‚" Or .Status = "Ši”[") _
+                    If .Party0 = "æ•µ" _
+                        And (.Status = "å‡ºæ’ƒ" Or .Status = "æ ¼ç´") _
                     Then
                         num = num + 1
                     End If
@@ -6649,12 +6649,12 @@ SkipArrayHandling:
             End If
             Exit Function
             
-        Case "’†—§”"
+        Case "ä¸­ç«‹æ•°"
             num = 0
             For Each u In UList
                 With u
-                    If .Party0 = "’†—§" _
-                        And (.Status = "oŒ‚" Or .Status = "Ši”[") _
+                    If .Party0 = "ä¸­ç«‹" _
+                        And (.Status = "å‡ºæ’ƒ" Or .Status = "æ ¼ç´") _
                     Then
                         num = num + 1
                     End If
@@ -6669,7 +6669,7 @@ SkipArrayHandling:
             End If
             Exit Function
             
-        Case "‘‹à"
+        Case "è³‡é‡‘"
             If etype = StringType Then
                 str_result = FormatNum(Money)
                 GetVariable = StringType
@@ -6680,7 +6680,7 @@ SkipArrayHandling:
             Exit Function
             
         Case Else
-            'ƒAƒ‹ƒtƒ@ƒxƒbƒg‚Ì•Ï”–¼‚Ílow case‚Å”»•Ê
+            'ã‚¢ãƒ«ãƒ•ã‚¡ãƒ™ãƒƒãƒˆã®å¤‰æ•°åã¯low caseã§åˆ¤åˆ¥
             Select Case LCase$(vname)
                 Case "apppath"
                     str_result = AppPath
@@ -6701,7 +6701,7 @@ SkipArrayHandling:
                     Exit Function
                     
                 Case "argnum"
-                    'UpVar‚ÌŒÄ‚Ño‚µ‰ñ”‚ğ—İŒv
+                    'UpVarã®å‘¼ã³å‡ºã—å›æ•°ã‚’ç´¯è¨ˆ
                     num = UpVarLevel
                     i = CallDepth
                     Do While num > 0
@@ -6785,10 +6785,10 @@ SkipArrayHandling:
             End Select
     End Select
     
-    'ƒRƒ“ƒtƒBƒO•Ï”H
+    'ã‚³ãƒ³ãƒ•ã‚£ã‚°å¤‰æ•°ï¼Ÿ
     If BCVariable.IsConfig Then
         Select Case vname
-            Case "UŒ‚’l"
+            Case "æ”»æ’ƒå€¤"
                 If etype = StringType Then
                     str_result = Format$(BCVariable.AttackExp)
                     GetVariable = StringType
@@ -6797,17 +6797,17 @@ SkipArrayHandling:
                     GetVariable = NumericType
                 End If
                 Exit Function
-            Case "UŒ‚‘¤ƒ†ƒjƒbƒg‚h‚c"
+            Case "æ”»æ’ƒå´ãƒ¦ãƒ‹ãƒƒãƒˆï¼©ï¼¤"
                 str_result = BCVariable.AtkUnit.ID
                 GetVariable = StringType
                 Exit Function
-            Case "–hŒä‘¤ƒ†ƒjƒbƒg‚h‚c"
+            Case "é˜²å¾¡å´ãƒ¦ãƒ‹ãƒƒãƒˆï¼©ï¼¤"
                 If Not BCVariable.DefUnit Is Nothing Then
                     str_result = BCVariable.DefUnit.ID
                     GetVariable = StringType
                     Exit Function
                 End If
-            Case "•Ší”Ô†"
+            Case "æ­¦å™¨ç•ªå·"
                 If etype = StringType Then
                     str_result = Format$(BCVariable.WeaponNumber)
                     GetVariable = StringType
@@ -6816,7 +6816,7 @@ SkipArrayHandling:
                     GetVariable = NumericType
                 End If
                 Exit Function
-            Case "’nŒ`“K‰"
+            Case "åœ°å½¢é©å¿œ"
                 If etype = StringType Then
                     str_result = Format$(BCVariable.TerrainAdaption)
                     GetVariable = StringType
@@ -6825,7 +6825,7 @@ SkipArrayHandling:
                     GetVariable = NumericType
                 End If
                 Exit Function
-            Case "•ŠíˆĞ—Í"
+            Case "æ­¦å™¨å¨åŠ›"
                 If etype = StringType Then
                     str_result = Format$(BCVariable.WeaponPower)
                     GetVariable = StringType
@@ -6834,7 +6834,7 @@ SkipArrayHandling:
                     GetVariable = NumericType
                 End If
                 Exit Function
-            Case "ƒTƒCƒY•â³"
+            Case "ã‚µã‚¤ã‚ºè£œæ­£"
                 If etype = StringType Then
                     str_result = Format$(BCVariable.SizeMod)
                     GetVariable = StringType
@@ -6843,7 +6843,7 @@ SkipArrayHandling:
                     GetVariable = NumericType
                 End If
                 Exit Function
-            Case "‘•b’l"
+            Case "è£…ç”²å€¤"
                 If etype = StringType Then
                     str_result = Format$(BCVariable.Armor)
                     GetVariable = StringType
@@ -6852,7 +6852,7 @@ SkipArrayHandling:
                     GetVariable = NumericType
                 End If
                 Exit Function
-            Case "ÅI’l"
+            Case "æœ€çµ‚å€¤"
                 If etype = StringType Then
                     str_result = Format$(BCVariable.LastVariable)
                     GetVariable = StringType
@@ -6861,7 +6861,7 @@ SkipArrayHandling:
                     GetVariable = NumericType
                 End If
                 Exit Function
-            Case "UŒ‚‘¤•â³"
+            Case "æ”»æ’ƒå´è£œæ­£"
                 If etype = StringType Then
                     str_result = Format$(BCVariable.AttackVariable)
                     GetVariable = StringType
@@ -6870,7 +6870,7 @@ SkipArrayHandling:
                     GetVariable = NumericType
                 End If
                 Exit Function
-            Case "–hŒä‘¤•â³"
+            Case "é˜²å¾¡å´è£œæ­£"
                 If etype = StringType Then
                     str_result = Format$(BCVariable.DffenceVariable)
                     GetVariable = StringType
@@ -6879,7 +6879,7 @@ SkipArrayHandling:
                     GetVariable = NumericType
                 End If
                 Exit Function
-            Case "ƒUƒR•â³"
+            Case "ã‚¶ã‚³è£œæ­£"
                 If etype = StringType Then
                     str_result = Format$(BCVariable.CommonEnemy)
                     GetVariable = StringType
@@ -6890,16 +6890,16 @@ SkipArrayHandling:
                 Exit Function
         End Select
         
-        'ƒpƒCƒƒbƒg‚ÉŠÖ‚·‚é•Ï”
+        'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã«é–¢ã™ã‚‹å¤‰æ•°
         With BCVariable.MeUnit.MainPilot
             Select Case vname
-                Case "‹C—Í"
+                Case "æ°—åŠ›"
                     num = 0
                     
-                    If IsOptionDefined("‹C—ÍŒø‰Ê¬") Then
-                        num = 50 + (.Morale + .MoraleMod) \ 2 ' ‹C—Í‚Ì•â³‚İ’l‚ğ‘ã“ü
+                    If IsOptionDefined("æ°—åŠ›åŠ¹æœå°") Then
+                        num = 50 + (.Morale + .MoraleMod) \ 2 ' æ°—åŠ›ã®è£œæ­£è¾¼ã¿å€¤ã‚’ä»£å…¥
                     Else
-                        num = .Morale + .MoraleMod ' ‹C—Í‚Ì•â³‚İ’l‚ğ‘ã“ü
+                        num = .Morale + .MoraleMod ' æ°—åŠ›ã®è£œæ­£è¾¼ã¿å€¤ã‚’ä»£å…¥
                     End If
                     
                     If etype = StringType Then
@@ -6910,7 +6910,7 @@ SkipArrayHandling:
                         GetVariable = NumericType
                     End If
                     Exit Function
-                Case "‘Ï‹v"
+                Case "è€ä¹…"
                     If etype = StringType Then
                         str_result = Format$(.Defense)
                         GetVariable = StringType
@@ -6919,7 +6919,7 @@ SkipArrayHandling:
                         GetVariable = NumericType
                     End If
                     Exit Function
-                Case "‚k‚u"
+                Case "ï¼¬ï¼¶"
                     If etype = StringType Then
                         str_result = Format$(.Level)
                         GetVariable = StringType
@@ -6928,7 +6928,7 @@ SkipArrayHandling:
                         GetVariable = NumericType
                     End If
                     Exit Function
-                Case "ŒoŒ±"
+                Case "çµŒé¨“"
                     If etype = StringType Then
                         str_result = Format$(.Exp)
                         GetVariable = StringType
@@ -6937,7 +6937,7 @@ SkipArrayHandling:
                         GetVariable = NumericType
                     End If
                     Exit Function
-                Case "‚r‚o"
+                Case "ï¼³ï¼°"
                     If etype = StringType Then
                         str_result = Format$(.SP)
                         GetVariable = StringType
@@ -6946,7 +6946,7 @@ SkipArrayHandling:
                         GetVariable = NumericType
                     End If
                     Exit Function
-                Case "—ì—Í"
+                Case "éœŠåŠ›"
                     If etype = StringType Then
                         str_result = Format$(.Plana)
                         GetVariable = StringType
@@ -6955,7 +6955,7 @@ SkipArrayHandling:
                         GetVariable = NumericType
                     End If
                     Exit Function
-                Case "Ši“¬"
+                Case "æ ¼é—˜"
                     If etype = StringType Then
                         str_result = Format$(.Infight)
                         GetVariable = StringType
@@ -6964,7 +6964,7 @@ SkipArrayHandling:
                         GetVariable = NumericType
                     End If
                     Exit Function
-                Case "ËŒ‚"
+                Case "å°„æ’ƒ"
                     If etype = StringType Then
                         str_result = Format$(.Shooting)
                         GetVariable = StringType
@@ -6973,7 +6973,7 @@ SkipArrayHandling:
                         GetVariable = NumericType
                     End If
                     Exit Function
-                Case "–½’†"
+                Case "å‘½ä¸­"
                     If etype = StringType Then
                         str_result = Format$(.Hit)
                         GetVariable = StringType
@@ -6982,7 +6982,7 @@ SkipArrayHandling:
                         GetVariable = NumericType
                     End If
                     Exit Function
-                Case "‰ñ”ğ"
+                Case "å›é¿"
                     If etype = StringType Then
                         str_result = Format$(.Dodge)
                         GetVariable = StringType
@@ -6991,7 +6991,7 @@ SkipArrayHandling:
                         GetVariable = NumericType
                     End If
                     Exit Function
-                Case "‹Z—Ê"
+                Case "æŠ€é‡"
                     If etype = StringType Then
                         str_result = Format$(.Technique)
                         GetVariable = StringType
@@ -7000,7 +7000,7 @@ SkipArrayHandling:
                         GetVariable = NumericType
                     End If
                     Exit Function
-                Case "”½‰"
+                Case "åå¿œ"
                     If etype = StringType Then
                         str_result = Format$(.Intuition)
                         GetVariable = StringType
@@ -7012,10 +7012,10 @@ SkipArrayHandling:
             End Select
         End With
         
-        'ƒ†ƒjƒbƒg‚ÉŠÖ‚·‚é•Ï”
+        'ãƒ¦ãƒ‹ãƒƒãƒˆã«é–¢ã™ã‚‹å¤‰æ•°
         With BCVariable.MeUnit
             Select Case vname
-                Case "Å‘å‚g‚o"
+                Case "æœ€å¤§ï¼¨ï¼°"
                     If etype = StringType Then
                         str_result = Format$(.MaxHP())
                         GetVariable = StringType
@@ -7024,7 +7024,7 @@ SkipArrayHandling:
                         GetVariable = NumericType
                     End If
                     Exit Function
-                Case "Œ»İ‚g‚o"
+                Case "ç¾åœ¨ï¼¨ï¼°"
                     If etype = StringType Then
                         str_result = Format$(.HP())
                         GetVariable = StringType
@@ -7033,7 +7033,7 @@ SkipArrayHandling:
                         GetVariable = NumericType
                     End If
                     Exit Function
-                Case "Å‘å‚d‚m"
+                Case "æœ€å¤§ï¼¥ï¼®"
                     If etype = StringType Then
                         str_result = Format$(.MaxEN())
                         GetVariable = StringType
@@ -7042,7 +7042,7 @@ SkipArrayHandling:
                         GetVariable = NumericType
                     End If
                     Exit Function
-                Case "Œ»İ‚d‚m"
+                Case "ç¾åœ¨ï¼¥ï¼®"
                     If etype = StringType Then
                         str_result = Format$(.EN())
                         GetVariable = StringType
@@ -7051,7 +7051,7 @@ SkipArrayHandling:
                         GetVariable = NumericType
                     End If
                     Exit Function
-                Case "ˆÚ“®—Í"
+                Case "ç§»å‹•åŠ›"
                     If etype = StringType Then
                         str_result = Format$(.Speed())
                         GetVariable = StringType
@@ -7060,7 +7060,7 @@ SkipArrayHandling:
                         GetVariable = NumericType
                     End If
                     Exit Function
-                Case "‘•b"
+                Case "è£…ç”²"
                     If etype = StringType Then
                         str_result = Format$(.Armor())
                         GetVariable = StringType
@@ -7069,7 +7069,7 @@ SkipArrayHandling:
                         GetVariable = NumericType
                     End If
                     Exit Function
-                Case "‰^“®«"
+                Case "é‹å‹•æ€§"
                     If etype = StringType Then
                         str_result = Format$(.Mobility())
                         GetVariable = StringType
@@ -7090,7 +7090,7 @@ SkipArrayHandling:
     End If
 End Function
 
-'w’è‚µ‚½•Ï”‚ª’è‹`‚³‚ê‚Ä‚¢‚é‚©H
+'æŒ‡å®šã—ãŸå¤‰æ•°ãŒå®šç¾©ã•ã‚Œã¦ã„ã‚‹ã‹ï¼Ÿ
 Public Function IsVariableDefined(var_name As String) As Boolean
 Dim vname As String
 Dim i As Integer, ret As Integer
@@ -7106,7 +7106,7 @@ Dim is_term As Boolean
             vname = var_name
     End Select
     
-    '•Ï”‚ª”z—ñH
+    'å¤‰æ•°ãŒé…åˆ—ï¼Ÿ
     ret = InStr(vname, "[")
     If ret = 0 Then
         GoTo SkipArrayHandling
@@ -7115,12 +7115,12 @@ Dim is_term As Boolean
         GoTo SkipArrayHandling
     End If
     
-    '‚±‚±‚©‚ç”z—ñê—p‚Ìˆ—
+    'ã“ã“ã‹ã‚‰é…åˆ—å°‚ç”¨ã®å‡¦ç†
     
-    'ƒCƒ“ƒfƒbƒNƒX•”•ª‚ÌØ‚è‚¾‚µ
+    'ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹éƒ¨åˆ†ã®åˆ‡ã‚Šã ã—
     idx = Mid$(vname, ret + 1, Len(vname) - ret - 1)
     
-    '‘½ŸŒ³”z—ñ‚Ìˆ—
+    'å¤šæ¬¡å…ƒé…åˆ—ã®å‡¦ç†
     If InStr(idx, ",") > 0 Then
         start_idx = 1
         depth = 0
@@ -7136,7 +7136,7 @@ Dim is_term As Boolean
                 End If
             Else
                 Select Case Asc(Mid$(idx, i, 1))
-                    Case 9, 32 'ƒ^ƒu, ‹ó”’
+                    Case 9, 32 'ã‚¿ãƒ–, ç©ºç™½
                         If start_idx = i Then
                             start_idx = i + 1
                         Else
@@ -7173,16 +7173,16 @@ Dim is_term As Boolean
         idx = GetValueAsString(Trim$(idx))
     End If
     
-    '•Ï”–¼‚ğ”z—ñ‚ÌƒCƒ“ƒfƒbƒNƒX•”‚ğŒvZ‚µ‚ÄÄ\’z
+    'å¤‰æ•°åã‚’é…åˆ—ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹éƒ¨ã‚’è¨ˆç®—ã—ã¦å†æ§‹ç¯‰
     vname = Left$(vname, ret) & idx & "]"
     
-    '”z—ñê—p‚Ìˆ—‚ªI—¹
+    'é…åˆ—å°‚ç”¨ã®å‡¦ç†ãŒçµ‚äº†
     
 SkipArrayHandling:
     
-    '‚±‚±‚©‚ç”z—ñ‚Æ’Êí•Ï”‚Ì‹¤’Êˆ—
+    'ã“ã“ã‹ã‚‰é…åˆ—ã¨é€šå¸¸å¤‰æ•°ã®å…±é€šå‡¦ç†
     
-    'ƒTƒuƒ‹[ƒ`ƒ“ƒ[ƒJƒ‹•Ï”
+    'ã‚µãƒ–ãƒ«ãƒ¼ãƒãƒ³ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°
     If CallDepth > 0 Then
         For i = VarIndexStack(CallDepth - 1) + 1 To VarIndex
             If vname = VarStack(i).Name Then
@@ -7192,20 +7192,20 @@ SkipArrayHandling:
         Next
     End If
     
-    'ƒ[ƒJƒ‹•Ï”
+    'ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°
     If IsLocalVariableDefined(vname) Then
         IsVariableDefined = True
         Exit Function
     End If
     
-    'ƒOƒ[ƒoƒ‹•Ï”
+    'ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°
     If IsGlobalVariableDefined(vname) Then
         IsVariableDefined = True
         Exit Function
     End If
 End Function
 
-'w’è‚µ‚½–¼‘O‚ÌƒTƒuƒ‹[ƒ`ƒ“ƒ[ƒJƒ‹•Ï”‚ª’è‹`‚³‚ê‚Ä‚¢‚é‚©H
+'æŒ‡å®šã—ãŸåå‰ã®ã‚µãƒ–ãƒ«ãƒ¼ãƒãƒ³ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ãŒå®šç¾©ã•ã‚Œã¦ã„ã‚‹ã‹ï¼Ÿ
 Public Function IsSubLocalVariableDefined(vname As String) As Boolean
 Dim i As Integer
     
@@ -7219,7 +7219,7 @@ Dim i As Integer
     End If
 End Function
 
-'w’è‚µ‚½–¼‘O‚Ìƒ[ƒJƒ‹•Ï”‚ª’è‹`‚³‚ê‚Ä‚¢‚é‚©H
+'æŒ‡å®šã—ãŸåå‰ã®ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ãŒå®šç¾©ã•ã‚Œã¦ã„ã‚‹ã‹ï¼Ÿ
 Public Function IsLocalVariableDefined(vname As String) As Boolean
 Dim dummy As VarData
     
@@ -7232,7 +7232,7 @@ ErrorHandler:
     IsLocalVariableDefined = False
 End Function
 
-'w’è‚µ‚½–¼‘O‚ÌƒOƒ[ƒoƒ‹•Ï”‚ª’è‹`‚³‚ê‚Ä‚¢‚é‚©H
+'æŒ‡å®šã—ãŸåå‰ã®ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°ãŒå®šç¾©ã•ã‚Œã¦ã„ã‚‹ã‹ï¼Ÿ
 Public Function IsGlobalVariableDefined(vname As String) As Boolean
 Dim dummy As VarData
     
@@ -7245,7 +7245,7 @@ ErrorHandler:
     IsGlobalVariableDefined = False
 End Function
 
-'•Ï”‚Ì’l‚ğİ’è
+'å¤‰æ•°ã®å€¤ã‚’è¨­å®š
 Public Sub SetVariable(var_name As String, etype As ValueType, _
     str_value As String, num_value As Double)
 Dim new_var As VarData
@@ -7263,7 +7263,7 @@ Dim is_subroutine_local_array As Boolean
     
     vname = var_name
     
-    '¶•Ó’l‚ğ”º‚¤ŠÖ”
+    'å·¦è¾ºå€¤ã‚’ä¼´ã†é–¢æ•°
     ret = InStr(vname, "(")
     If ret > 1 And Right$(vname, 1) = ")" Then
         Select Case LCase(Left$(vname, ret - 1))
@@ -7309,7 +7309,7 @@ Dim is_subroutine_local_array As Boolean
                     Else
                         u.EN = StrToLng(str_value)
                     End If
-                    If u.EN = 0 And u.Status = "oŒ‚" Then
+                    If u.EN = 0 And u.Status = "å‡ºæ’ƒ" Then
                         PaintUnitBitmap u
                     End If
                 End If
@@ -7393,7 +7393,7 @@ Dim is_subroutine_local_array As Boolean
         End Select
     End If
     
-    '•Ï”‚ª”z—ñH
+    'å¤‰æ•°ãŒé…åˆ—ï¼Ÿ
     ret = InStr(vname, "[")
     If ret = 0 Then
         GoTo SkipArrayHandling
@@ -7402,12 +7402,12 @@ Dim is_subroutine_local_array As Boolean
         GoTo SkipArrayHandling
     End If
     
-    '‚±‚±‚©‚ç”z—ñê—p‚Ìˆ—
+    'ã“ã“ã‹ã‚‰é…åˆ—å°‚ç”¨ã®å‡¦ç†
     
-    'ƒCƒ“ƒfƒbƒNƒX•”•ª‚ÌØ‚è‚¾‚µ
+    'ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹éƒ¨åˆ†ã®åˆ‡ã‚Šã ã—
     idx = Mid$(vname, ret + 1, Len(vname) - ret - 1)
     
-    '‘½ŸŒ³”z—ñ‚Ìˆ—
+    'å¤šæ¬¡å…ƒé…åˆ—ã®å‡¦ç†
     If InStr(idx, ",") > 0 Then
         start_idx = 1
         depth = 0
@@ -7423,7 +7423,7 @@ Dim is_subroutine_local_array As Boolean
                 End If
             Else
                 Select Case Asc(Mid$(idx, i, 1))
-                    Case 9, 32 'ƒ^ƒu, ‹ó”’
+                    Case 9, 32 'ã‚¿ãƒ–, ç©ºç™½
                         If start_idx = i Then
                             start_idx = i + 1
                         Else
@@ -7460,24 +7460,24 @@ Dim is_subroutine_local_array As Boolean
         idx = GetValueAsString(Trim$(idx))
     End If
     
-    '•Ï”–¼‚ğ”z—ñ‚ÌƒCƒ“ƒfƒbƒNƒX•”‚ğŒvZ‚µ‚ÄÄ\’z
+    'å¤‰æ•°åã‚’é…åˆ—ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹éƒ¨ã‚’è¨ˆç®—ã—ã¦å†æ§‹ç¯‰
     vname = Left$(vname, ret) & idx & "]"
     
-    '”z—ñ–¼
+    'é…åˆ—å
     vname0 = Left$(vname, ret - 1)
     
-    'ƒTƒuƒ‹[ƒ`ƒ“ƒ[ƒJƒ‹‚È”z—ñ‚Æ‚µ‚Ä’è‹`Ï‚İ‚©‚Ç‚¤‚©ƒ`ƒFƒbƒN
+    'ã‚µãƒ–ãƒ«ãƒ¼ãƒãƒ³ãƒ­ãƒ¼ã‚«ãƒ«ãªé…åˆ—ã¨ã—ã¦å®šç¾©æ¸ˆã¿ã‹ã©ã†ã‹ãƒã‚§ãƒƒã‚¯
     If IsSubLocalVariableDefined(vname0) Then
         is_subroutine_local_array = True
     End If
     
-    '”z—ñê—p‚Ìˆ—‚ªI—¹
+    'é…åˆ—å°‚ç”¨ã®å‡¦ç†ãŒçµ‚äº†
     
 SkipArrayHandling:
     
-    '‚±‚±‚©‚ç”z—ñ‚Æ’Êí•Ï”‚Ì‹¤’Êˆ—
+    'ã“ã“ã‹ã‚‰é…åˆ—ã¨é€šå¸¸å¤‰æ•°ã®å…±é€šå‡¦ç†
     
-    'ƒTƒuƒ‹[ƒ`ƒ“ƒ[ƒJƒ‹•Ï”‚Æ‚µ‚Ä’è‹`Ï‚İH
+    'ã‚µãƒ–ãƒ«ãƒ¼ãƒãƒ³ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ã¨ã—ã¦å®šç¾©æ¸ˆã¿ï¼Ÿ
     If CallDepth > 0 Then
         For i = VarIndexStack(CallDepth - 1) + 1 To VarIndex
             With VarStack(i)
@@ -7492,13 +7492,13 @@ SkipArrayHandling:
     End If
     
     If is_subroutine_local_array Then
-        'ƒTƒuƒ‹[ƒ`ƒ“ƒ[ƒJƒ‹•Ï”‚Ì”z—ñ‚Ì—v‘f‚Æ‚µ‚Ä’è‹`
+        'ã‚µãƒ–ãƒ«ãƒ¼ãƒãƒ³ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ã®é…åˆ—ã®è¦ç´ ã¨ã—ã¦å®šç¾©
         VarIndex = VarIndex + 1
         If VarIndex > MaxVarIndex Then
             VarIndex = MaxVarIndex
             DisplayEventErrorMessage CurrentLineNum, _
-                "ì¬‚µ‚½ƒTƒuƒ‹[ƒ`ƒ“ƒ[ƒJƒ‹•Ï”‚Ì‘”‚ª" & _
-                Format$(MaxVarIndex) & "ŒÂ‚ğ’´‚¦‚Ä‚¢‚Ü‚·"
+                "ä½œæˆã—ãŸã‚µãƒ–ãƒ«ãƒ¼ãƒãƒ³ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ã®ç·æ•°ãŒ" & _
+                Format$(MaxVarIndex) & "å€‹ã‚’è¶…ãˆã¦ã„ã¾ã™"
             Exit Sub
         End If
         With VarStack(VarIndex)
@@ -7510,7 +7510,7 @@ SkipArrayHandling:
         Exit Sub
     End If
     
-    'ƒ[ƒJƒ‹•Ï”‚Æ‚µ‚Ä’è‹`Ï‚İH
+    'ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ã¨ã—ã¦å®šç¾©æ¸ˆã¿ï¼Ÿ
     If IsLocalVariableDefined(vname) Then
         With LocalVariableList.Item(vname)
             .Name = vname
@@ -7521,7 +7521,7 @@ SkipArrayHandling:
         Exit Sub
     End If
     
-    'ƒOƒ[ƒoƒ‹•Ï”‚Æ‚µ‚Ä’è‹`Ï‚İH
+    'ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°ã¨ã—ã¦å®šç¾©æ¸ˆã¿ï¼Ÿ
     If IsGlobalVariableDefined(vname) Then
         With GlobalVariableList.Item(vname)
             .Name = vname
@@ -7532,7 +7532,7 @@ SkipArrayHandling:
         Exit Sub
     End If
     
-    'ƒVƒXƒeƒ€•Ï”H
+    'ã‚·ã‚¹ãƒ†ãƒ å¤‰æ•°ï¼Ÿ
     Select Case LCase$(vname)
         Case "basex"
             If etype = NumericType Then
@@ -7550,21 +7550,21 @@ SkipArrayHandling:
             End If
             MainForm.picMain(0).CurrentY = BaseY
             Exit Sub
-        Case "ƒ^[ƒ“”"
+        Case "ã‚¿ãƒ¼ãƒ³æ•°"
             If etype = NumericType Then
                 Turn = num_value
             Else
                 Turn = StrToLng(str_value)
             End If
             Exit Sub
-        Case "‘ƒ^[ƒ“”"
+        Case "ç·ã‚¿ãƒ¼ãƒ³æ•°"
             If etype = NumericType Then
                 TotalTurn = num_value
             Else
                 TotalTurn = StrToLng(str_value)
             End If
             Exit Sub
-        Case "‘‹à"
+        Case "è³‡é‡‘"
             Money = 0
             If etype = NumericType Then
                 IncrMoney num_value
@@ -7574,14 +7574,14 @@ SkipArrayHandling:
             Exit Sub
     End Select
     
-    '–¢’è‹`‚¾‚Á‚½ê‡
+    'æœªå®šç¾©ã ã£ãŸå ´åˆ
     
-    '”z—ñ‚Ì—v‘f‚Æ‚µ‚Äì¬
+    'é…åˆ—ã®è¦ç´ ã¨ã—ã¦ä½œæˆ
     If Len(vname0) <> 0 Then
-        'ƒ[ƒJƒ‹•Ï”‚Ì”z—ñ‚Ì—v‘f‚Æ‚µ‚Ä’è‹`
+        'ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ã®é…åˆ—ã®è¦ç´ ã¨ã—ã¦å®šç¾©
         If IsLocalVariableDefined(vname0) Then
             'Nop
-        'ƒOƒ[ƒoƒ‹•Ï”‚Ì”z—ñ‚Ì—v‘f‚Æ‚µ‚Ä’è‹`
+        'ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°ã®é…åˆ—ã®è¦ç´ ã¨ã—ã¦å®šç¾©
         ElseIf IsGlobalVariableDefined(vname0) Then
             DefineGlobalVariable vname
             With GlobalVariableList.Item(vname)
@@ -7591,24 +7591,24 @@ SkipArrayHandling:
                 .NumericValue = num_value
             End With
             Exit Sub
-        '–¢’è‹`‚Ì”z—ñ‚È‚Ì‚Åƒ[ƒJƒ‹•Ï”‚Ì”z—ñ‚ğì¬
+        'æœªå®šç¾©ã®é…åˆ—ãªã®ã§ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ã®é…åˆ—ã‚’ä½œæˆ
         Else
             Dim new_var2 As VarData
-            'ƒ[ƒJƒ‹•Ï”‚Ì”z—ñ‚ÌƒƒCƒ“‚h‚c‚ğì¬
+            'ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ã®é…åˆ—ã®ãƒ¡ã‚¤ãƒ³ï¼©ï¼¤ã‚’ä½œæˆ
             Set new_var2 = New VarData
             With new_var2
                 .Name = vname0
                 .VariableType = StringType
                 If InStr(.Name, """") > 0 Then
                     DisplayEventErrorMessage CurrentLineNum, _
-                        "•s³‚È•Ï”u" & .Name & "v‚ªì¬‚³‚ê‚Ü‚µ‚½"
+                        "ä¸æ­£ãªå¤‰æ•°ã€Œ" & .Name & "ã€ãŒä½œæˆã•ã‚Œã¾ã—ãŸ"
                 End If
             End With
             LocalVariableList.Add new_var2, vname0
         End If
     End If
     
-    'ƒ[ƒJƒ‹•Ï”‚Æ‚µ‚Äì¬
+    'ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ã¨ã—ã¦ä½œæˆ
     Set new_var = New VarData
     With new_var
         .Name = vname
@@ -7617,7 +7617,7 @@ SkipArrayHandling:
         .NumericValue = num_value
         If InStr(.Name, """") > 0 Then
             DisplayEventErrorMessage CurrentLineNum, _
-                "•s³‚È•Ï”u" & .Name & "v‚ªì¬‚³‚ê‚Ü‚µ‚½"
+                "ä¸æ­£ãªå¤‰æ•°ã€Œ" & .Name & "ã€ãŒä½œæˆã•ã‚Œã¾ã—ãŸ"
         End If
     End With
     LocalVariableList.Add new_var, vname
@@ -7635,7 +7635,7 @@ Public Sub SetVariableAsLong(vname As String, ByVal new_value As Long)
     SetVariable vname, NumericType, "", CDbl(new_value)
 End Sub
 
-'ƒOƒ[ƒoƒ‹•Ï”‚ğ’è‹`
+'ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°ã‚’å®šç¾©
 Public Sub DefineGlobalVariable(vname As String)
 Dim new_var As New VarData
 
@@ -7647,7 +7647,7 @@ Dim new_var As New VarData
     GlobalVariableList.Add new_var, vname
 End Sub
 
-'ƒ[ƒJƒ‹•Ï”‚ğ’è‹`
+'ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ã‚’å®šç¾©
 Public Sub DefineLocalVariable(vname As String)
 Dim new_var As New VarData
 
@@ -7659,7 +7659,7 @@ Dim new_var As New VarData
     LocalVariableList.Add new_var, vname
 End Sub
 
-'•Ï”‚ğÁ‹
+'å¤‰æ•°ã‚’æ¶ˆå»
 Public Sub UndefineVariable(var_name As String)
 Dim var As VarData
 Dim vname As String, vname2 As String
@@ -7675,7 +7675,7 @@ Dim is_term As Boolean
         vname = var_name
     End If
     
-    'EvalŠÖ”
+    'Evalé–¢æ•°
     If LCase$(Left$(vname, 5)) = "eval(" Then
         If Right$(vname, 1) = ")" Then
             vname = Mid$(vname, 6, Len(vname) - 6)
@@ -7683,7 +7683,7 @@ Dim is_term As Boolean
         End If
     End If
     
-    '”z—ñ‚Ì—v‘fH
+    'é…åˆ—ã®è¦ç´ ï¼Ÿ
     ret = InStr(vname, "[")
     If ret = 0 Then
         GoTo SkipArrayHandling:
@@ -7692,12 +7692,12 @@ Dim is_term As Boolean
         GoTo SkipArrayHandling:
     End If
     
-    '”z—ñ‚Ì—v‘f‚ğw’è‚³‚ê‚½ê‡
+    'é…åˆ—ã®è¦ç´ ã‚’æŒ‡å®šã•ã‚ŒãŸå ´åˆ
     
-    'ƒCƒ“ƒfƒbƒNƒX•”•ª‚ÌØ‚è‚¾‚µ
+    'ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹éƒ¨åˆ†ã®åˆ‡ã‚Šã ã—
     idx = Mid$(vname, ret + 1, Len(vname) - ret - 1)
     
-    '‘½ŸŒ³”z—ñ‚Ìˆ—
+    'å¤šæ¬¡å…ƒé…åˆ—ã®å‡¦ç†
     If InStr(idx, ",") > 0 Then
         start_idx = 1
         depth = 0
@@ -7713,7 +7713,7 @@ Dim is_term As Boolean
                 End If
             Else
                 Select Case Asc(Mid$(idx, i, 1))
-                    Case 9, 32 'ƒ^ƒu, ‹ó”’
+                    Case 9, 32 'ã‚¿ãƒ–, ç©ºç™½
                         If start_idx = i Then
                             start_idx = i + 1
                         Else
@@ -7751,10 +7751,10 @@ Dim is_term As Boolean
         idx = GetValueAsString(idx)
     End If
     
-    'ƒCƒ“ƒfƒbƒNƒX•”•ª‚ğ•]‰¿‚µ‚Ä•Ï”–¼‚ğ’u‚«Š·‚¦
+    'ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹éƒ¨åˆ†ã‚’è©•ä¾¡ã—ã¦å¤‰æ•°åã‚’ç½®ãæ›ãˆ
     vname = Left$(vname, ret) & idx & "]"
     
-    'ƒTƒuƒ‹[ƒ`ƒ“ƒ[ƒJƒ‹•Ï”H
+    'ã‚µãƒ–ãƒ«ãƒ¼ãƒãƒ³ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ï¼Ÿ
     If IsSubLocalVariableDefined(vname) Then
         For i = VarIndexStack(CallDepth - 1) + 1 To VarIndex
             With VarStack(i)
@@ -7766,28 +7766,28 @@ Dim is_term As Boolean
         Next
     End If
     
-    'ƒ[ƒJƒ‹•Ï”H
+    'ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ï¼Ÿ
     If IsLocalVariableDefined(vname) Then
         LocalVariableList.Remove vname
         Exit Sub
     End If
     
-    'ƒOƒ[ƒoƒ‹•Ï”H
+    'ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°ï¼Ÿ
     If IsGlobalVariableDefined(vname) Then
         GlobalVariableList.Remove vname
     End If
     
-    '”z—ñ‚Ìê‡‚Í‚±‚±‚ÅI—¹
+    'é…åˆ—ã®å ´åˆã¯ã“ã“ã§çµ‚äº†
     Exit Sub
     
 SkipArrayHandling:
     
-    '’Êí‚Ì•Ï”–¼‚ğw’è‚³‚ê‚½ê‡
+    'é€šå¸¸ã®å¤‰æ•°åã‚’æŒ‡å®šã•ã‚ŒãŸå ´åˆ
     
-    '”z—ñ—v‘f‚Ì”»’è—p
+    'é…åˆ—è¦ç´ ã®åˆ¤å®šç”¨
     vname2 = vname & "["
     
-    'ƒTƒuƒ‹[ƒ`ƒ“ƒ[ƒJƒ‹•Ï”H
+    'ã‚µãƒ–ãƒ«ãƒ¼ãƒãƒ³ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ï¼Ÿ
     If IsSubLocalVariableDefined(vname) Then
         For i = VarIndexStack(CallDepth - 1) + 1 To VarIndex
             With VarStack(i)
@@ -7799,7 +7799,7 @@ SkipArrayHandling:
         Exit Sub
     End If
     
-    'ƒ[ƒJƒ‹•Ï”H
+    'ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ï¼Ÿ
     If IsLocalVariableDefined(vname) Then
         LocalVariableList.Remove vname
         For Each var In LocalVariableList
@@ -7812,7 +7812,7 @@ SkipArrayHandling:
         Exit Sub
     End If
     
-    'ƒOƒ[ƒoƒ‹•Ï”H
+    'ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°ï¼Ÿ
     If IsGlobalVariableDefined(vname) Then
         GlobalVariableList.Remove vname
         For Each var In GlobalVariableList
@@ -7828,9 +7828,9 @@ End Sub
 
 
 
-' === ‚»‚Ì‘¼‚ÌŠÖ” ===
+' === ãã®ä»–ã®é–¢æ•° ===
 
-'®‚ğ•¶š—ñ‚Æ‚µ‚Ä•]‰¿
+'å¼ã‚’æ–‡å­—åˆ—ã¨ã—ã¦è©•ä¾¡
 Public Function GetValueAsString(expr As String, _
     Optional ByVal is_term As Boolean) As String
 Dim num As Double
@@ -7842,7 +7842,7 @@ Dim num As Double
      End If
 End Function
 
-'®‚ğ•‚“®¬”“_”‚Æ‚µ‚Ä•]‰¿
+'å¼ã‚’æµ®å‹•å°æ•°ç‚¹æ•°ã¨ã—ã¦è©•ä¾¡
 Public Function GetValueAsDouble(expr As String, _
     Optional ByVal is_term As Boolean) As Double
 Dim buf As String
@@ -7854,7 +7854,7 @@ Dim buf As String
      End If
 End Function
 
-'®‚ğ®”‚Æ‚µ‚Ä•]‰¿
+'å¼ã‚’æ•´æ•°ã¨ã—ã¦è©•ä¾¡
 Public Function GetValueAsLong(expr As String, _
     Optional ByVal is_term As Boolean) As Long
 Dim buf As String, num As Double
@@ -7868,8 +7868,8 @@ Dim buf As String, num As Double
 End Function
 
 
-'str‚ª®‚©‚Ç‚¤‚©ƒ`ƒFƒbƒN
-'(‹^‚í‚µ‚«‚Í®‚Æ”»’f‚µ‚Ä‚¢‚é)
+'strãŒå¼ã‹ã©ã†ã‹ãƒã‚§ãƒƒã‚¯
+'(ç–‘ã‚ã—ãã¯å¼ã¨åˆ¤æ–­ã—ã¦ã„ã‚‹)
 Public Function IsExpr(str As String) As Boolean
      Select Case Asc(str)
          Case 36 '$
@@ -7880,7 +7880,7 @@ Public Function IsExpr(str As String) As Boolean
 End Function
 
 
-'w’è‚µ‚½ƒIƒvƒVƒ‡ƒ“‚ªİ’è‚³‚ê‚Ä‚¢‚é‚©H
+'æŒ‡å®šã—ãŸã‚ªãƒ—ã‚·ãƒ§ãƒ³ãŒè¨­å®šã•ã‚Œã¦ã„ã‚‹ã‹ï¼Ÿ
 Public Function IsOptionDefined(oname As String) As Boolean
 Dim dummy As VarData
     
@@ -7894,20 +7894,20 @@ ErrorHandler:
 End Function
 
 
-'str ‚É‘Î‚µ‚Ä®’uŠ·‚ğs‚¤
+'str ã«å¯¾ã—ã¦å¼ç½®æ›ã‚’è¡Œã†
 Public Sub ReplaceSubExpression(str As String)
 Dim start_idx As Integer, end_idx As Integer
 Dim str_len As Integer
 Dim i As Integer, n As Integer
 
     Do While True
-        '®’uŠ·‚ª‘¶İ‚·‚éH
+        'å¼ç½®æ›ãŒå­˜åœ¨ã™ã‚‹ï¼Ÿ
         start_idx = InStr(str, "$(")
         If start_idx = 0 Then
             Exit Sub
         End If
         
-        '®’uŠ·‚ÌI—¹ˆÊ’u‚ğ’²‚×‚é
+        'å¼ç½®æ›ã®çµ‚äº†ä½ç½®ã‚’èª¿ã¹ã‚‹
         str_len = Len(str)
         n = 1
         For i = start_idx + 2 To str_len
@@ -7926,39 +7926,39 @@ Dim i As Integer, n As Integer
             Exit Sub
         End If
         
-        '®’uŠ·‚ğÀ{
+        'å¼ç½®æ›ã‚’å®Ÿæ–½
         str = Left$(str, start_idx - 1) & _
             GetValueAsString(Mid$(str, start_idx + 2, end_idx - start_idx - 2)) & _
             Right$(str, str_len - end_idx)
     Loop
 End Sub
 
-'msg ‚É‘Î‚µ‚Ä®’uŠ·“™‚Ìˆ—‚ğs‚¤
+'msg ã«å¯¾ã—ã¦å¼ç½®æ›ç­‰ã®å‡¦ç†ã‚’è¡Œã†
 Public Sub FormatMessage(msg As String)
-    '‚¿‚á‚ñ‚Æ‰¡–_‚ª‚Â‚È‚ª‚Á‚Ä•\¦‚³‚ê‚é‚æ‚¤‚ÉŒrü•¶š‚É’uŠ·
-    If ReplaceString(msg, "\\", "„Ÿ„Ÿ") Then
-        ReplaceString msg, "„Ÿ\", "„Ÿ„Ÿ"
-    ElseIf ReplaceString(msg, "[[", "„Ÿ„Ÿ") Then
-        ReplaceString msg, "„Ÿ[", "„Ÿ„Ÿ"
+    'ã¡ã‚ƒã‚“ã¨æ¨ªæ£’ãŒã¤ãªãŒã£ã¦è¡¨ç¤ºã•ã‚Œã‚‹ã‚ˆã†ã«ç½«ç·šæ–‡å­—ã«ç½®æ›
+    If ReplaceString(msg, "â€•â€•", "â”€â”€") Then
+        ReplaceString msg, "â”€â€•", "â”€â”€"
+    ElseIf ReplaceString(msg, "ãƒ¼ãƒ¼", "â”€â”€") Then
+        ReplaceString msg, "â”€ãƒ¼", "â”€â”€"
     End If
     
-    '®’uŠ·
+    'å¼ç½®æ›
     ReplaceSubExpression msg
 End Sub
 
 
-'—pŒêtname‚Ì•\¦–¼‚ğQÆ‚·‚é
-'tlen‚ªw’è‚³‚ê‚½ê‡‚Í•¶š—ñ’·‚ğ‹­§“I‚Étlen‚É‡‚í‚¹‚é
+'ç”¨èªtnameã®è¡¨ç¤ºåã‚’å‚ç…§ã™ã‚‹
+'tlenãŒæŒ‡å®šã•ã‚ŒãŸå ´åˆã¯æ–‡å­—åˆ—é•·ã‚’å¼·åˆ¶çš„ã«tlenã«åˆã‚ã›ã‚‹
 Public Function Term(tname As String, Optional u As Unit, _
     Optional ByVal tlen As Integer) As String
 Dim vname As String, i As Integer
 
-    'ƒ†ƒjƒbƒg‚ª—pŒê–¼”\—Í‚ğ‚Á‚Ä‚¢‚éê‡‚Í‚»‚¿‚ç‚ğ—Dæ
+    'ãƒ¦ãƒ‹ãƒƒãƒˆãŒç”¨èªåèƒ½åŠ›ã‚’æŒã£ã¦ã„ã‚‹å ´åˆã¯ãã¡ã‚‰ã‚’å„ªå…ˆ
     If Not u Is Nothing Then
         With u
-            If .IsFeatureAvailable("—pŒê–¼") Then
+            If .IsFeatureAvailable("ç”¨èªå") Then
                 For i = 1 To .CountFeature
-                    If .Feature(i) = "—pŒê–¼" Then
+                    If .Feature(i) = "ç”¨èªå" Then
                         If LIndex(.FeatureData(i), 1) = tname Then
                             Term = LIndex(.FeatureData(i), 2)
                             Exit For
@@ -7969,7 +7969,7 @@ Dim vname As String, i As Integer
         End With
     End If
     
-    'RenameTerm‚Å—pŒê–¼‚ª•ÏX‚³‚ê‚Ä‚¢‚é‚©ƒ`ƒFƒbƒN
+    'RenameTermã§ç”¨èªåãŒå¤‰æ›´ã•ã‚Œã¦ã„ã‚‹ã‹ãƒã‚§ãƒƒã‚¯
     If Len(Term) = 0 Then
         Select Case tname
             Case "HP", "EN", "SP", "CT"
@@ -7984,7 +7984,7 @@ Dim vname As String, i As Integer
         End If
     End If
     
-    '•\¦•‚Ì’²®
+    'è¡¨ç¤ºå¹…ã®èª¿æ•´
     If tlen > 0 Then
         If LenB(StrConv(Term, vbFromUnicode)) < tlen Then
             Term = RightPaddedString(Term, tlen)
@@ -7993,7 +7993,7 @@ Dim vname As String, i As Integer
 End Function
 
 
-'ˆø”1‚Åw’è‚µ‚½•Ï”‚ÌƒIƒuƒWƒFƒNƒg‚ğæ“¾
+'å¼•æ•°1ã§æŒ‡å®šã—ãŸå¤‰æ•°ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å–å¾—
 Public Function GetVariableObject(var_name As String) As VarData
 Dim vname As String
 Dim i As Integer, num As Integer
@@ -8008,7 +8008,7 @@ Dim etype As ValueType, str_result As String, num_result As Double
 
     vname = var_name
     
-    '•Ï”‚ª”z—ñH
+    'å¤‰æ•°ãŒé…åˆ—ï¼Ÿ
     ret = InStr(vname, "[")
     If ret = 0 Then
         GoTo SkipArrayHandling
@@ -8017,12 +8017,12 @@ Dim etype As ValueType, str_result As String, num_result As Double
         GoTo SkipArrayHandling
     End If
     
-    '‚±‚±‚©‚ç”z—ñê—p‚Ìˆ—
+    'ã“ã“ã‹ã‚‰é…åˆ—å°‚ç”¨ã®å‡¦ç†
     
-    'ƒCƒ“ƒfƒbƒNƒX•”•ª‚ÌØ‚è‚¾‚µ
+    'ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹éƒ¨åˆ†ã®åˆ‡ã‚Šã ã—
     idx = Mid$(vname, ret + 1, Len(vname) - ret - 1)
     
-    '‘½ŸŒ³”z—ñ‚Ìˆ—
+    'å¤šæ¬¡å…ƒé…åˆ—ã®å‡¦ç†
     If InStr(idx, ",") > 0 Then
         start_idx = 1
         depth = 0
@@ -8038,7 +8038,7 @@ Dim etype As ValueType, str_result As String, num_result As Double
                 End If
             Else
                 Select Case Asc(Mid$(idx, i, 1))
-                    Case 9, 32 'ƒ^ƒu, ‹ó”’
+                    Case 9, 32 'ã‚¿ãƒ–, ç©ºç™½
                         If start_idx = i Then
                             start_idx = i + 1
                         Else
@@ -8075,16 +8075,16 @@ Dim etype As ValueType, str_result As String, num_result As Double
         idx = GetValueAsString(idx)
     End If
     
-    '•Ï”–¼‚ğ”z—ñ‚ÌƒCƒ“ƒfƒbƒNƒX•”‚ğŒvZ‚µ‚ÄÄ\’z
+    'å¤‰æ•°åã‚’é…åˆ—ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹éƒ¨ã‚’è¨ˆç®—ã—ã¦å†æ§‹ç¯‰
     vname = Left$(vname, ret) & idx & "]"
     
-    '”z—ñê—p‚Ìˆ—‚ªI—¹
+    'é…åˆ—å°‚ç”¨ã®å‡¦ç†ãŒçµ‚äº†
     
 SkipArrayHandling:
     
-    '‚±‚±‚©‚ç”z—ñ‚Æ’Êí•Ï”‚Ì‹¤’Êˆ—
+    'ã“ã“ã‹ã‚‰é…åˆ—ã¨é€šå¸¸å¤‰æ•°ã®å…±é€šå‡¦ç†
     
-    'ƒTƒuƒ‹[ƒ`ƒ“ƒ[ƒJƒ‹•Ï”
+    'ã‚µãƒ–ãƒ«ãƒ¼ãƒãƒ³ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°
     If CallDepth > 0 Then
         For i = VarIndexStack(CallDepth - 1) + 1 To VarIndex
             If vname = VarStack(i).Name Then
@@ -8094,24 +8094,24 @@ SkipArrayHandling:
         Next
     End If
     
-    'ƒ[ƒJƒ‹•Ï”
+    'ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°
     If IsLocalVariableDefined(vname) Then
         Set GetVariableObject = LocalVariableList.Item(vname)
         Exit Function
     End If
     
-    'ƒOƒ[ƒoƒ‹•Ï”
+    'ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°
     If IsGlobalVariableDefined(vname) Then
         Set GetVariableObject = GlobalVariableList.Item(vname)
         Exit Function
     End If
     
-    'ƒVƒXƒeƒ€•Ï”H
+    'ã‚·ã‚¹ãƒ†ãƒ å¤‰æ•°ï¼Ÿ
     etype = UndefinedType
     str_result = ""
     num_result = 0
     Select Case vname
-        Case "‘ÎÛƒ†ƒjƒbƒg", "‘ÎÛƒpƒCƒƒbƒg"
+        Case "å¯¾è±¡ãƒ¦ãƒ‹ãƒƒãƒˆ", "å¯¾è±¡ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆ"
             If Not SelectedUnitForEvent Is Nothing Then
                 With SelectedUnitForEvent
                     If .CountPilot > 0 Then
@@ -8124,7 +8124,7 @@ SkipArrayHandling:
                 str_result = ""
             End If
             etype = StringType
-        Case "‘Šèƒ†ƒjƒbƒg", "‘ŠèƒpƒCƒƒbƒg"
+        Case "ç›¸æ‰‹ãƒ¦ãƒ‹ãƒƒãƒˆ", "ç›¸æ‰‹ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆ"
             If Not SelectedTargetForEvent Is Nothing Then
                 With SelectedTargetForEvent
                     If .CountPilot > 0 Then
@@ -8137,21 +8137,21 @@ SkipArrayHandling:
                 str_result = ""
             End If
             etype = StringType
-        Case "‘ÎÛƒ†ƒjƒbƒg‚h‚c"
+        Case "å¯¾è±¡ãƒ¦ãƒ‹ãƒƒãƒˆï¼©ï¼¤"
             If Not SelectedUnitForEvent Is Nothing Then
                 str_result = SelectedUnitForEvent.ID
             Else
                 str_result = ""
             End If
             etype = StringType
-        Case "‘Šèƒ†ƒjƒbƒg‚h‚c"
+        Case "ç›¸æ‰‹ãƒ¦ãƒ‹ãƒƒãƒˆï¼©ï¼¤"
             If Not SelectedTargetForEvent Is Nothing Then
                 str_result = SelectedTargetForEvent.ID
             Else
                 str_result = ""
             End If
             etype = StringType
-        Case "‘ÎÛƒ†ƒjƒbƒgg—p•Ší"
+        Case "å¯¾è±¡ãƒ¦ãƒ‹ãƒƒãƒˆä½¿ç”¨æ­¦å™¨"
             If SelectedUnitForEvent Is SelectedUnit Then
                 If SelectedWeapon > 0 Then
                     str_result = SelectedWeaponName
@@ -8166,7 +8166,7 @@ SkipArrayHandling:
                 End If
             End If
             etype = StringType
-        Case "‘Šèƒ†ƒjƒbƒgg—p•Ší"
+        Case "ç›¸æ‰‹ãƒ¦ãƒ‹ãƒƒãƒˆä½¿ç”¨æ­¦å™¨"
             If SelectedTargetForEvent Is SelectedTarget Then
                 If SelectedTWeapon > 0 Then
                     str_result = SelectedTWeaponName
@@ -8181,21 +8181,21 @@ SkipArrayHandling:
                 End If
             End If
             etype = StringType
-        Case "‘ÎÛƒ†ƒjƒbƒgg—p•Ší”Ô†"
+        Case "å¯¾è±¡ãƒ¦ãƒ‹ãƒƒãƒˆä½¿ç”¨æ­¦å™¨ç•ªå·"
             If SelectedUnitForEvent Is SelectedUnit Then
                 num_result = SelectedWeapon
             ElseIf SelectedUnitForEvent Is SelectedTarget Then
                 num_result = SelectedTWeapon
             End If
             etype = NumericType
-        Case "‘Šèƒ†ƒjƒbƒgg—p•Ší”Ô†"
+        Case "ç›¸æ‰‹ãƒ¦ãƒ‹ãƒƒãƒˆä½¿ç”¨æ­¦å™¨ç•ªå·"
             If SelectedTargetForEvent Is SelectedTarget Then
                 num_result = SelectedTWeapon
             ElseIf SelectedTargetForEvent Is SelectedUnit Then
                 num_result = SelectedWeapon
             End If
             etype = NumericType
-        Case "‘ÎÛƒ†ƒjƒbƒgg—pƒAƒrƒŠƒeƒB"
+        Case "å¯¾è±¡ãƒ¦ãƒ‹ãƒƒãƒˆä½¿ç”¨ã‚¢ãƒ“ãƒªãƒ†ã‚£"
             If SelectedUnitForEvent Is SelectedUnit Then
                 If SelectedAbility > 0 Then
                     str_result = SelectedAbilityName
@@ -8204,17 +8204,17 @@ SkipArrayHandling:
                 End If
             End If
             etype = StringType
-        Case "‘ÎÛƒ†ƒjƒbƒgg—pƒAƒrƒŠƒeƒB”Ô†"
+        Case "å¯¾è±¡ãƒ¦ãƒ‹ãƒƒãƒˆä½¿ç”¨ã‚¢ãƒ“ãƒªãƒ†ã‚£ç•ªå·"
             If SelectedUnitForEvent Is SelectedUnit Then
                 num_result = SelectedAbility
             End If
             etype = NumericType
-        Case "‘ÎÛƒ†ƒjƒbƒgg—pƒXƒyƒVƒƒƒ‹ƒpƒ["
+        Case "å¯¾è±¡ãƒ¦ãƒ‹ãƒƒãƒˆä½¿ç”¨ã‚¹ãƒšã‚·ãƒ£ãƒ«ãƒ‘ãƒ¯ãƒ¼"
             If SelectedUnitForEvent Is SelectedUnit Then
                 str_result = SelectedSpecialPower
             End If
             etype = StringType
-        Case "‘I‘ğ"
+        Case "é¸æŠ"
             If IsNumeric(SelectedAlternative) Then
                 num_result = StrToDbl(SelectedAlternative)
                 etype = NumericType
@@ -8222,21 +8222,21 @@ SkipArrayHandling:
                 str_result = SelectedAlternative
                 etype = StringType
             End If
-        Case "ƒ^[ƒ“”"
+        Case "ã‚¿ãƒ¼ãƒ³æ•°"
             num_result = Turn
             etype = NumericType
-        Case "‘ƒ^[ƒ“”"
+        Case "ç·ã‚¿ãƒ¼ãƒ³æ•°"
             num_result = TotalTurn
             etype = NumericType
-        Case "ƒtƒFƒCƒY"
+        Case "ãƒ•ã‚§ã‚¤ã‚º"
             str_result = Stage
             etype = StringType
-        Case "–¡•û”", "‚m‚o‚b”", "“G”", "’†—§”"
+        Case "å‘³æ–¹æ•°", "ï¼®ï¼°ï¼£æ•°", "æ•µæ•°", "ä¸­ç«‹æ•°"
             num = 0
             For Each u In UList
                 With u
                     If .Party0 = Left(vname, Len(vname) - 1) _
-                        And (.Status = "oŒ‚" Or .Status = "Ši”[") _
+                        And (.Status = "å‡ºæ’ƒ" Or .Status = "æ ¼ç´") _
                     Then
                         num = num + 1
                     End If
@@ -8244,11 +8244,11 @@ SkipArrayHandling:
             Next
             num_result = num
             etype = NumericType
-        Case "‘‹à"
+        Case "è³‡é‡‘"
             num_result = Money
             etype = NumericType
         Case Else
-            'ƒAƒ‹ƒtƒ@ƒxƒbƒg‚Ì•Ï”–¼‚Ílow case‚Å”»•Ê
+            'ã‚¢ãƒ«ãƒ•ã‚¡ãƒ™ãƒƒãƒˆã®å¤‰æ•°åã¯low caseã§åˆ¤åˆ¥
             Select Case LCase$(vname)
                 Case "apppath"
                     str_result = AppPath

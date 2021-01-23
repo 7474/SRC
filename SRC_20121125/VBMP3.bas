@@ -2,7 +2,7 @@ Attribute VB_Name = "VBMP3"
 Option Explicit
 
 'VBMP3.BAS
-'VisualBasic—p MP3‘€ìDLL ŠÖ”éŒ¾ƒtƒ@ƒCƒ‹
+'VisualBasicç”¨ MP3æ“ä½œDLL é–¢æ•°å®£è¨€ãƒ•ã‚¡ã‚¤ãƒ«
 Declare Function vbmp3_encodeOpen Lib "VBMP3.dll" (ByVal pszWaveName As String, pWaveForm As WAVE_FORM) As Boolean
 Declare Function vbmp3_encodeStart Lib "VBMP3.dll" (ByVal pszMp3Name As String) As Boolean
 Declare Function vbmp3_encodeStop Lib "VBMP3.dll" () As Boolean
@@ -66,7 +66,7 @@ Declare Sub vbmp3_setFadeIn Lib "VBMP3.dll" (ByVal fin As Long)
 Declare Sub vbmp3_setFadeOut Lib "VBMP3.dll" (ByVal fout As Long)
 Declare Sub vbmp3_fadeOut Lib "VBMP3.dll" ()
 
-'–¢Žg—p
+'æœªä½¿ç”¨
 Declare Sub vbmp3_startAnalyzeThread Lib "VBMP3.dll" ()
 Declare Sub vbmp3_stopAnalyzeThread Lib "VBMP3.dll" ()
 Declare Sub vbmp3_startAnalyze Lib "VBMP3.dll" ()
@@ -74,70 +74,70 @@ Declare Sub vbmp3_stopAnalyze Lib "VBMP3.dll" ()
 Declare Function vbmp3_getWaveData Lib "VBMP3.dll" (pWaveData As WAVE_DATA) As Boolean
 
 Public Type InputInfo
-    szTrackName As String * 128     '‹È–¼
-    szArtistName As String * 128    '±°Ã¨½Ä–¼
-    channels As Long                'Á¬ÝÈÙ”
-    bitRate As Long                 'ËÞ¯ÄÚ°Ä(kbit/s)
-    samplingRate As Long            '»ÝÌßÙÚ°Ä(Hz)
-    totalSec As Long                '‰‰‘tŽžŠÔ(s)
+    szTrackName As String * 128     'æ›²å
+    szArtistName As String * 128    'ï½±ï½°ï¾ƒï½¨ï½½ï¾„å
+    channels As Long                'ï¾ï½¬ï¾ï¾ˆï¾™æ•°
+    bitRate As Long                 'ï¾‹ï¾žï½¯ï¾„ï¾šï½°ï¾„(kbit/s)
+    samplingRate As Long            'ï½»ï¾ï¾Œï¾Ÿï¾™ï¾šï½°ï¾„(Hz)
+    totalSec As Long                'æ¼”å¥æ™‚é–“(s)
 End Type
 
 Public Type TAG_INFO
-    szTrackName As String * 128     '‹È–¼
-    szArtistName As String * 128    '±°Ã¨½Ä–¼
-    szAlbumName As String * 128     '±ÙÊÞÑ–¼
-    szYear As String * 5            'ØØ°½”N†
-    szComment As String * 128       'ºÒÝÄ
-    genre As Long                   '¼Þ¬ÝÙ
-    szGenreName As String * 128     '¼Þ¬ÝÙ–¼
+    szTrackName As String * 128     'æ›²å
+    szArtistName As String * 128    'ï½±ï½°ï¾ƒï½¨ï½½ï¾„å
+    szAlbumName As String * 128     'ï½±ï¾™ï¾Šï¾žï¾‘å
+    szYear As String * 5            'ï¾˜ï¾˜ï½°ï½½å¹´å·
+    szComment As String * 128       'ï½ºï¾’ï¾ï¾„
+    genre As Long                   'ï½¼ï¾žï½¬ï¾ï¾™
+    szGenreName As String * 128     'ï½¼ï¾žï½¬ï¾ï¾™å
 End Type
 
 Public Type MPEG_INFO
-    version As Long                 'ÊÞ°¼Þ®Ý        1:MPEG-1, 2:MPEG-2, 3:MPEG-2.5
-    layer As Long                   'Ú²Ô            1:Layer1. 2:Layer2, 3:Layer3
-    crcDisable As Long              '´×°•ÛŒì        0:–³Œø, 1:—LŒø
-    extension As Long               '´¸½ÃÝ¼®Ý       0:‚È‚µ, 1:Ìß×²ÍÞ°Ä
-    Mode As Long                    'Á¬ÝÈÙÓ°ÄÞ      0:Stereo, 1:Joint stereo, 3:Dual channel, 4:Mono
-    copyright As Long               '’˜ìŒ          0:’˜ìŒ •ÛŒì‚ ‚è, 1:’˜ìŒ •ÛŒì‚È‚µ
-    original As Long                'µØ¼ÞÅÙ         0:ºËß°, 1:µØ¼ÞÅÙ
-    emphasis As Long                '´ÝÌ«¼½         0:None, 1:50/15ms, 2:Reserved, 3:CCITT j.17
+    version As Long                 'ï¾Šï¾žï½°ï½¼ï¾žï½®ï¾        1:MPEG-1, 2:MPEG-2, 3:MPEG-2.5
+    layer As Long                   'ï¾šï½²ï¾”            1:Layer1. 2:Layer2, 3:Layer3
+    crcDisable As Long              'ï½´ï¾—ï½°ä¿è­·        0:ç„¡åŠ¹, 1:æœ‰åŠ¹
+    extension As Long               'ï½´ï½¸ï½½ï¾ƒï¾ï½¼ï½®ï¾       0:ãªã—, 1:ï¾Œï¾Ÿï¾—ï½²ï¾ï¾žï½°ï¾„
+    Mode As Long                    'ï¾ï½¬ï¾ï¾ˆï¾™ï¾“ï½°ï¾„ï¾ž      0:Stereo, 1:Joint stereo, 3:Dual channel, 4:Mono
+    copyright As Long               'è‘—ä½œæ¨©         0:è‘—ä½œæ¨©ä¿è­·ã‚ã‚Š, 1:è‘—ä½œæ¨©ä¿è­·ãªã—
+    original As Long                'ï½µï¾˜ï½¼ï¾žï¾…ï¾™         0:ï½ºï¾‹ï¾Ÿï½°, 1:ï½µï¾˜ï½¼ï¾žï¾…ï¾™
+    emphasis As Long                'ï½´ï¾ï¾Œï½«ï½¼ï½½         0:None, 1:50/15ms, 2:Reserved, 3:CCITT j.17
     
-    channels As Long                'Á¬ÝÈÙ”
-    bitRate As Long                 'ËÞ¯ÄÚ°Ä(kbit/s)(0 ‚È‚ç VBRŒ`Ž®)
-    samplingRate As Long            '»ÝÌßÙÚ°Ä(Hz)
-    fileSize As Long                'Ì§²Ù»²½Þ(Byte)
-    flames As Long                  'ÌÚ°Ñ”
-    totalSec As Long                '‰‰‘tŽžŠÔ(s)
+    channels As Long                'ï¾ï½¬ï¾ï¾ˆï¾™æ•°
+    bitRate As Long                 'ï¾‹ï¾žï½¯ï¾„ï¾šï½°ï¾„(kbit/s)(0 ãªã‚‰ VBRå½¢å¼)
+    samplingRate As Long            'ï½»ï¾ï¾Œï¾Ÿï¾™ï¾šï½°ï¾„(Hz)
+    fileSize As Long                'ï¾Œï½§ï½²ï¾™ï½»ï½²ï½½ï¾ž(Byte)
+    flames As Long                  'ï¾Œï¾šï½°ï¾‘æ•°
+    totalSec As Long                'æ¼”å¥æ™‚é–“(s)
 End Type
 
 Public Type DEC_OPTION
-    reduction As Long               'ƒTƒ“ƒvƒŠƒ“ƒO 0:1/1 1:1/2 2:1/4 [Default = 0]
-    convert As Long                 'ƒ`ƒƒƒ“ƒlƒ‹ 0:ƒXƒeƒŒƒI 1:ƒ‚ƒmƒ‰ƒ‹[Default = 0]
-    freqLimit As Long               'Žü”g”[Default = 24000]
+    reduction As Long               'ã‚µãƒ³ãƒ—ãƒªãƒ³ã‚° 0:1/1 1:1/2 2:1/4 [Default = 0]
+    convert As Long                 'ãƒãƒ£ãƒ³ãƒãƒ« 0:ã‚¹ãƒ†ãƒ¬ã‚ª 1:ãƒ¢ãƒŽãƒ©ãƒ«[Default = 0]
+    freqLimit As Long               'å‘¨æ³¢æ•°[Default = 24000]
 End Type
 
 Public Type VBMP3_OPTION
-    inputBlock As Long              '“ü—ÍƒtƒŒ[ƒ€”[Default = 40]
-    outputBlock As Long             'o—ÍƒtƒŒ[ƒ€”[Default = 30]
-    inputSleep As Long              '“ü—Í’¼Œã‚Ì½Ø°ÌßŽžŠÔ(ÐØ•b)[Default = 5]
-    outputSleep As Long             'o—Í’¼Œã‚Ì½Ø°ÌßŽžŠÔ(ÐØ•b)[Default = 0]
+    inputBlock As Long              'å…¥åŠ›ãƒ•ãƒ¬ãƒ¼ãƒ æ•°[Default = 40]
+    outputBlock As Long             'å‡ºåŠ›ãƒ•ãƒ¬ãƒ¼ãƒ æ•°[Default = 30]
+    inputSleep As Long              'å…¥åŠ›ç›´å¾Œã®ï½½ï¾˜ï½°ï¾Œï¾Ÿæ™‚é–“(ï¾ï¾˜ç§’)[Default = 5]
+    outputSleep As Long             'å‡ºåŠ›ç›´å¾Œã®ï½½ï¾˜ï½°ï¾Œï¾Ÿæ™‚é–“(ï¾ï¾˜ç§’)[Default = 0]
 End Type
 
 Public Type LIST_INFO
-    INAM As String * 128            '‹È–¼
-    IART As String * 128            'ƒA[ƒeƒBƒXƒg–¼
-    IPRD As String * 128            '»•i–¼
-    ICMT As String * 128            'ƒRƒƒ“ƒg•¶Žš—ñ
-    ICRD As String * 128            'ƒŠƒŠ[ƒX”N†
-    IGNR As String * 128            'ƒWƒƒƒ“ƒ‹–¼
-    ICOP As String * 128            '’˜ìŒ 
-    IENG As String * 128            'ƒGƒ“ƒWƒjƒA
-    ISRC As String * 128            'ƒ\[ƒX
-    ISFT As String * 128            'ƒ\ƒtƒgƒEƒFƒA
-    IKEY As String * 128            'ƒL[ƒ[ƒh
-    ITCH As String * 128            '‹ZpŽÒ
-    ILYC As String * 128            '‰ÌŽŒ
-    ICMS As String * 128            'ƒRƒ~ƒbƒVƒ‡ƒ“
+    INAM As String * 128            'æ›²å
+    IART As String * 128            'ã‚¢ãƒ¼ãƒ†ã‚£ã‚¹ãƒˆå
+    IPRD As String * 128            'è£½å“å
+    ICMT As String * 128            'ã‚³ãƒ¡ãƒ³ãƒˆæ–‡å­—åˆ—
+    ICRD As String * 128            'ãƒªãƒªãƒ¼ã‚¹å¹´å·
+    IGNR As String * 128            'ã‚¸ãƒ£ãƒ³ãƒ«å
+    ICOP As String * 128            'è‘—ä½œæ¨©
+    IENG As String * 128            'ã‚¨ãƒ³ã‚¸ãƒ‹ã‚¢
+    ISRC As String * 128            'ã‚½ãƒ¼ã‚¹
+    ISFT As String * 128            'ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢
+    IKEY As String * 128            'ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰
+    ITCH As String * 128            'æŠ€è¡“è€…
+    ILYC As String * 128            'æ­Œè©ž
+    ICMS As String * 128            'ã‚³ãƒŸãƒƒã‚·ãƒ§ãƒ³
 End Type
 
 Public Type LYRICS_INFO
@@ -163,7 +163,7 @@ Public Type WAVE_FORM
     dataSize As Long
 End Type
 
-'ƒtƒ@ƒCƒ‹ƒ^ƒCƒv’è”
+'ãƒ•ã‚¡ã‚¤ãƒ«ã‚¿ã‚¤ãƒ—å®šæ•°
 Public Const FT_NOMAL = 0
 Public Const FT_WAVE = 1
 Public Const FT_RMP = 2
@@ -171,7 +171,7 @@ Public Const FT_ID3V2 = 4
 Public Const FT_MAC = 8
 Public Const FT_ID3V1 = 16
 
-'ƒR[ƒ‹ƒoƒbƒNŠÖ”—p
+'ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°ç”¨
 Public Const MSG_ERROR = 0
 Public Const MSG_STOPING = 1
 Public Const MSG_PLAYING = 2
@@ -215,10 +215,10 @@ End Enum
 
 
 '---------------------------------------------------------
-'ŠÖ”FFunction NTrim()
-'‹@”\F\0 ˆÈ~‚Ì•¶Žš—ñíœ
-'ˆø”FWord  : •ÏŠ·Œ³•¶Žš—ñ
-'–ß‚è’lF•ÏŠ·Œã•¶Žš—ñ
+'é–¢æ•°ï¼šFunction NTrim()
+'æ©Ÿèƒ½ï¼š\0 ä»¥é™ã®æ–‡å­—åˆ—å‰Šé™¤
+'å¼•æ•°ï¼šWord  : å¤‰æ›å…ƒæ–‡å­—åˆ—
+'æˆ»ã‚Šå€¤ï¼šå¤‰æ›å¾Œæ–‡å­—åˆ—
 '---------------------------------------------------------
 Function NTrim(Word As String) As String
     If InStr(Word, Chr(0)) > 0 Then

@@ -10,24 +10,24 @@ Attribute VB_Exposed = False
 Option Explicit
 
 ' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-' –{ƒvƒƒOƒ‰ƒ€‚ÍƒtƒŠ[ƒ\ƒtƒg‚Å‚ ‚èA–³•ÛØ‚Å‚·B
-' –{ƒvƒƒOƒ‰ƒ€‚ÍGNU General Public License(Ver.3‚Ü‚½‚Í‚»‚êˆÈ~)‚ª’è‚ß‚éğŒ‚Ì‰º‚Å
-' Ä”Ğ•z‚Ü‚½‚Í‰ü•Ï‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B
+' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯ãƒ•ãƒªãƒ¼ã‚½ãƒ•ãƒˆã§ã‚ã‚Šã€ç„¡ä¿è¨¼ã§ã™ã€‚
+' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯GNU General Public License(Ver.3ã¾ãŸã¯ãã‚Œä»¥é™)ãŒå®šã‚ã‚‹æ¡ä»¶ã®ä¸‹ã§
+' å†é ’å¸ƒã¾ãŸã¯æ”¹å¤‰ã™ã‚‹ã“ã¨ãŒã§ãã¾ã™ã€‚
 
-'ì¬‚³‚ê‚½ƒAƒCƒeƒ€‚ÌƒNƒ‰ƒX
+'ä½œæˆã•ã‚ŒãŸã‚¢ã‚¤ãƒ†ãƒ ã®ã‚¯ãƒ©ã‚¹
 
-'¯•Êq
+'è­˜åˆ¥å­
 Public ID As String
-'ƒAƒCƒeƒ€ƒf[ƒ^‚Ö‚Ìƒ|ƒCƒ“ƒ^
+'ã‚¢ã‚¤ãƒ†ãƒ ãƒ‡ãƒ¼ã‚¿ã¸ã®ãƒã‚¤ãƒ³ã‚¿
 Public Data As ItemData
-'ƒAƒCƒeƒ€‚ğ‘•”õ‚µ‚Ä‚¢‚éƒ†ƒjƒbƒg
+'ã‚¢ã‚¤ãƒ†ãƒ ã‚’è£…å‚™ã—ã¦ã„ã‚‹ãƒ¦ãƒ‹ãƒƒãƒˆ
 Public Unit As Unit
-'ƒAƒCƒeƒ€‚ª‘¶İ‚µ‚Ä‚¢‚é‚©H (RemoveItem‚³‚ê‚Ä‚¢‚È‚¢‚©H)
+'ã‚¢ã‚¤ãƒ†ãƒ ãŒå­˜åœ¨ã—ã¦ã„ã‚‹ã‹ï¼Ÿ (RemoveItemã•ã‚Œã¦ã„ãªã„ã‹ï¼Ÿ)
 Public Exist As Boolean
-'ƒAƒCƒeƒ€‚ªŒø—Í‚ğ”­Šö‚Å‚«‚Ä‚¢‚é‚©H (•K—v‹Z”\‚â•ŠíƒNƒ‰ƒX•–h‹ïƒNƒ‰ƒX‚ğ–‚½‚µ‚Ä‚¢‚é‚©H)
+'ã‚¢ã‚¤ãƒ†ãƒ ãŒåŠ¹åŠ›ã‚’ç™ºæ®ã§ãã¦ã„ã‚‹ã‹ï¼Ÿ (å¿…è¦æŠ€èƒ½ã‚„æ­¦å™¨ã‚¯ãƒ©ã‚¹ï¼†é˜²å…·ã‚¯ãƒ©ã‚¹ã‚’æº€ãŸã—ã¦ã„ã‚‹ã‹ï¼Ÿ)
 Public Activated As Boolean
 
-'ƒNƒ‰ƒX‚Ì‰Šú‰»
+'ã‚¯ãƒ©ã‚¹ã®åˆæœŸåŒ–
 Private Sub Class_Initialize()
     Exist = True
     Activated = True
@@ -35,13 +35,13 @@ Private Sub Class_Initialize()
     Set Unit = Nothing
 End Sub
 
-'ƒNƒ‰ƒX‚Ì‰ğ•ú
+'ã‚¯ãƒ©ã‚¹ã®è§£æ”¾
 Private Sub Class_Terminate()
     Set Data = Nothing
     Set Unit = Nothing
 End Sub
 
-'–¼Ì
+'åç§°
 Public Property Get Name() As String
     Name = Data.Name
 End Property
@@ -50,33 +50,33 @@ Public Property Let Name(new_name As String)
     Set Data = IDList.Item(new_name)
 End Property
 
-'ˆ¤Ì
+'æ„›ç§°
 Public Function Nickname() As String
 Dim u As Unit
 
     Nickname = Data.Nickname
     
-    'ˆ¤Ì“à‚Ì®’uŠ·‚Ì‚½‚ßAƒfƒtƒHƒ‹ƒgƒ†ƒjƒbƒg‚ğˆê“I‚É•ÏX‚·‚é
+    'æ„›ç§°å†…ã®å¼ç½®æ›ã®ãŸã‚ã€ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆãƒ¦ãƒ‹ãƒƒãƒˆã‚’ä¸€æ™‚çš„ã«å¤‰æ›´ã™ã‚‹
     Set u = SelectedUnitForEvent
     Set SelectedUnitForEvent = Unit
     ReplaceSubExpression Nickname
     Set SelectedUnitForEvent = u
 End Function
 
-'“Ç‚İ‰¼–¼
+'èª­ã¿ä»®å
 Public Function KanaName() As String
 Dim u As Unit
 
     KanaName = Data.KanaName
     
-    '“Ç‚İ‰¼–¼“à‚Ì®’uŠ·‚Ì‚½‚ßAƒfƒtƒHƒ‹ƒgƒ†ƒjƒbƒg‚ğˆê“I‚É•ÏX‚·‚é
+    'èª­ã¿ä»®åå†…ã®å¼ç½®æ›ã®ãŸã‚ã€ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆãƒ¦ãƒ‹ãƒƒãƒˆã‚’ä¸€æ™‚çš„ã«å¤‰æ›´ã™ã‚‹
     Set u = SelectedUnitForEvent
     Set SelectedUnitForEvent = Unit
     ReplaceSubExpression KanaName
     Set SelectedUnitForEvent = u
 End Function
 
-'ƒNƒ‰ƒX
+'ã‚¯ãƒ©ã‚¹
 Public Function Class() As String
     Class = Data.Class
 End Function
@@ -86,8 +86,8 @@ Dim i As Integer, n As Integer
     
     Class0 = Data.Class
     
-    'ê—pw’è‚ğíœ
-    If Right$(Class0, 3) = "ê—p)" Then
+    'å°‚ç”¨æŒ‡å®šã‚’å‰Šé™¤
+    If Right$(Class0, 3) = "å°‚ç”¨)" Then
         n = 1
         i = Len(Class0) - 2
         Do
@@ -106,141 +106,141 @@ Dim i As Integer, n As Integer
     End If
 End Function
 
-'‘•”õŒÂŠ
+'è£…å‚™å€‹æ‰€
 Public Function Part() As String
     Part = Data.Part
 End Function
 
-'‚g‚oC³’l
+'ï¼¨ï¼°ä¿®æ­£å€¤
 Public Function HP() As Long
     HP = Data.HP
 End Function
 
-'‚d‚mC³’l
+'ï¼¥ï¼®ä¿®æ­£å€¤
 Public Function EN() As Integer
     EN = Data.EN
 End Function
 
-'‘•bC³’l
+'è£…ç”²ä¿®æ­£å€¤
 Public Function Armor() As Long
     Armor = Data.Armor
 End Function
 
-'‰^“®«C³’l
+'é‹å‹•æ€§ä¿®æ­£å€¤
 Public Function Mobility() As Integer
     Mobility = Data.Mobility
 End Function
 
-'ˆÚ“®—ÍC³’l
+'ç§»å‹•åŠ›ä¿®æ­£å€¤
 Public Function Speed() As Integer
     Speed = Data.Speed
 End Function
 
-'“Áê”\—Í‘”
+'ç‰¹æ®Šèƒ½åŠ›ç·æ•°
 Public Function CountFeature() As Integer
     CountFeature = Data.CountFeature
 End Function
 
-'“Áê”\—Í
+'ç‰¹æ®Šèƒ½åŠ›
 Public Function Feature(Index As Variant) As String
     Feature = Data.Feature(Index)
 End Function
 
-'“Áê”\—Í‚Ì–¼Ì
+'ç‰¹æ®Šèƒ½åŠ›ã®åç§°
 Public Function FeatureName(Index As Variant) As String
     FeatureName = Data.FeatureName(Index)
 End Function
 
-'“Áê”\—Í‚ÌƒŒƒxƒ‹
+'ç‰¹æ®Šèƒ½åŠ›ã®ãƒ¬ãƒ™ãƒ«
 Public Function FeatureLevel(Index As Variant) As Double
     FeatureLevel = Data.FeatureLevel(Index)
 End Function
 
-'“Áê”\—Í‚Ìƒf[ƒ^
+'ç‰¹æ®Šèƒ½åŠ›ã®ãƒ‡ãƒ¼ã‚¿
 Public Function FeatureData(Index As Variant) As String
     FeatureData = Data.FeatureData(Index)
 End Function
 
-'“Áê”\—Í‚Ì•K—v‹Z”\
+'ç‰¹æ®Šèƒ½åŠ›ã®å¿…è¦æŠ€èƒ½
 Public Function FeatureNecessarySkill(Index As Variant) As String
     FeatureNecessarySkill = Data.FeatureNecessarySkill(Index)
 End Function
 
-'w’è‚µ‚½“Áê”\—Í‚ğ‚Á‚Ä‚¢‚é‚©H
+'æŒ‡å®šã—ãŸç‰¹æ®Šèƒ½åŠ›ã‚’æŒã£ã¦ã„ã‚‹ã‹ï¼Ÿ
 Public Function IsFeatureAvailable(fname As String) As Boolean
     IsFeatureAvailable = Data.IsFeatureAvailable(fname)
 End Function
 
-'•Šíƒf[ƒ^
+'æ­¦å™¨ãƒ‡ãƒ¼ã‚¿
 Public Function Weapon(Index As Variant) As WeaponData
     Set Weapon = Data.Weapon(Index)
 End Function
 
-'•Ší‚Ì‘”
+'æ­¦å™¨ã®ç·æ•°
 Public Function CountWeapon() As Integer
     CountWeapon = Data.CountWeapon
 End Function
 
-'ƒAƒrƒŠƒeƒBƒf[ƒ^
+'ã‚¢ãƒ“ãƒªãƒ†ã‚£ãƒ‡ãƒ¼ã‚¿
 Public Function Ability(Index As Variant) As AbilityData
     Set Ability = Data.Ability(Index)
 End Function
 
-'ƒAƒrƒŠƒeƒB‚Ì‘”
+'ã‚¢ãƒ“ãƒªãƒ†ã‚£ã®ç·æ•°
 Public Function CountAbility() As Integer
     CountAbility = Data.CountAbility
 End Function
 
-'ƒTƒCƒY(ƒAƒCƒeƒ€‚ªÁ”ï‚·‚éƒAƒCƒeƒ€ƒXƒƒbƒg”)
+'ã‚µã‚¤ã‚º(ã‚¢ã‚¤ãƒ†ãƒ ãŒæ¶ˆè²»ã™ã‚‹ã‚¢ã‚¤ãƒ†ãƒ ã‚¹ãƒ­ãƒƒãƒˆæ•°)
 Public Function Size() As Integer
     Size = Data.Size
 End Function
 
 
-'ƒAƒCƒeƒ€‚ªg—p‰Â”\‚©H
+'ã‚¢ã‚¤ãƒ†ãƒ ãŒä½¿ç”¨å¯èƒ½ã‹ï¼Ÿ
 Public Function IsAvailable(u As Unit) As Boolean
 Dim i As Integer, j As Integer, k As Integer, iclass As String
 Dim sname As String, fdata As String
     
     IsAvailable = False
     
-    'ƒCƒxƒ“ƒgƒRƒ}ƒ“ƒhuDisablev
+    'ã‚¤ãƒ™ãƒ³ãƒˆã‚³ãƒãƒ³ãƒ‰ã€ŒDisableã€
     If IsGlobalVariableDefined("Disable(" & Name & ")") Then
         Exit Function
     End If
     
-    '‘•”õŒÂŠ‚É“K‡‚µ‚Ä‚¢‚é‚©
+    'è£…å‚™å€‹æ‰€ã«é©åˆã—ã¦ã„ã‚‹ã‹
     Select Case Part
-        Case "•Ğè", "—¼è", "‚"
-            If InStr(u.FeatureData("‘•”õŒÂŠ"), "˜r") = 0 Then
+        Case "ç‰‡æ‰‹", "ä¸¡æ‰‹", "ç›¾"
+            If InStr(u.FeatureData("è£…å‚™å€‹æ‰€"), "è…•") = 0 Then
                 Exit Function
             End If
-        Case "Œ¨", "—¼Œ¨"
-            If InStr(u.FeatureData("‘•”õŒÂŠ"), "Œ¨") = 0 Then
+        Case "è‚©", "ä¸¡è‚©"
+            If InStr(u.FeatureData("è£…å‚™å€‹æ‰€"), "è‚©") = 0 Then
                 Exit Function
             End If
-        Case "‘Ì"
-            If InStr(u.FeatureData("‘•”õŒÂŠ"), "‘Ì") = 0 Then
+        Case "ä½“"
+            If InStr(u.FeatureData("è£…å‚™å€‹æ‰€"), "ä½“") = 0 Then
                 Exit Function
             End If
-        Case "“ª"
-            If InStr(u.FeatureData("‘•”õŒÂŠ"), "“ª") = 0 Then
+        Case "é ­"
+            If InStr(u.FeatureData("è£…å‚™å€‹æ‰€"), "é ­") = 0 Then
                 Exit Function
             End If
     End Select
     
-    '•ŠíƒNƒ‰ƒX or –h‹ïƒNƒ‰ƒX‚É‘®‚µ‚Ä‚¢‚é‚©H
+    'æ­¦å™¨ã‚¯ãƒ©ã‚¹ or é˜²å…·ã‚¯ãƒ©ã‚¹ã«å±ã—ã¦ã„ã‚‹ã‹ï¼Ÿ
     Select Case Part
-        Case "•Ší", "•Ğè", "—¼è"
-            iclass = u.WeaponProficiency() & " ŒÅ’è ”Ä—p"
+        Case "æ­¦å™¨", "ç‰‡æ‰‹", "ä¸¡æ‰‹"
+            iclass = u.WeaponProficiency() & " å›ºå®š æ±ç”¨"
             For i = 1 To LLength(iclass)
                 If Class0 = LIndex(iclass, i) Then
                     IsAvailable = True
                     Exit For
                 End If
             Next
-        Case "‚", "‘Ì", "“ª"
-            iclass = u.ArmorProficiency() & " ŒÅ’è ”Ä—p"
+        Case "ç›¾", "ä½“", "é ­"
+            iclass = u.ArmorProficiency() & " å›ºå®š æ±ç”¨"
             For i = 1 To LLength(iclass)
                 If Class0 = LIndex(iclass, i) Then
                     IsAvailable = True
@@ -248,7 +248,7 @@ Dim sname As String, fdata As String
                 End If
             Next
         Case Else
-            '‚»‚Ì‘¼‚ÌƒAƒCƒeƒ€‚Íí‚É—˜—p‰Â”\
+            'ãã®ä»–ã®ã‚¢ã‚¤ãƒ†ãƒ ã¯å¸¸ã«åˆ©ç”¨å¯èƒ½
             IsAvailable = True
     End Select
     
@@ -256,21 +256,21 @@ Dim sname As String, fdata As String
         Exit Function
     End If
     
-    '‹Z”\ƒ`ƒFƒbƒN‚ª•K—vH
-    If Not IsFeatureAvailable("•K—v‹Z”\") _
-        And Not IsFeatureAvailable("•s•K—v‹Z”\") _
+    'æŠ€èƒ½ãƒã‚§ãƒƒã‚¯ãŒå¿…è¦ï¼Ÿ
+    If Not IsFeatureAvailable("å¿…è¦æŠ€èƒ½") _
+        And Not IsFeatureAvailable("ä¸å¿…è¦æŠ€èƒ½") _
     Then
         Exit Function
     End If
     
     With u
-        '•K—v‹Z”\‚ğƒ`ƒFƒbƒN
+        'å¿…è¦æŠ€èƒ½ã‚’ãƒã‚§ãƒƒã‚¯
         For i = 1 To CountFeature
             Select Case Feature(i)
-                Case "•K—v‹Z”\"
+                Case "å¿…è¦æŠ€èƒ½"
                     If Not .IsNecessarySkillSatisfied(FeatureData(i)) Then
-                        'ƒAƒCƒeƒ€©g‚É‚æ‚è•K—v‹Z”\‚Éw’è‚³‚ê‚½”\—Í‚ª••ˆó‚³‚ê‚Ä‚¢‚½ê‡‚Í
-                        '•K—v‹Z”\‚ğ–‚½‚µ‚Ä‚¢‚é‚Æ”»’è‚³‚¹‚é‚½‚ßAƒ`ƒFƒbƒN‚·‚é•K—v‚ª‚ ‚éB
+                        'ã‚¢ã‚¤ãƒ†ãƒ è‡ªèº«ã«ã‚ˆã‚Šå¿…è¦æŠ€èƒ½ã«æŒ‡å®šã•ã‚ŒãŸèƒ½åŠ›ãŒå°å°ã•ã‚Œã¦ã„ãŸå ´åˆã¯
+                        'å¿…è¦æŠ€èƒ½ã‚’æº€ãŸã—ã¦ã„ã‚‹ã¨åˆ¤å®šã•ã›ã‚‹ãŸã‚ã€ãƒã‚§ãƒƒã‚¯ã™ã‚‹å¿…è¦ãŒã‚ã‚‹ã€‚
                         
                         For j = 1 To .CountItem
                             If Me Is .Item(j) Then
@@ -278,7 +278,7 @@ Dim sname As String, fdata As String
                             End If
                         Next
                         If j > .CountItem Then
-                            'Šù‚É‘•”õ‚µ‚Ä‚¢‚é‚Ì‚Å‚È‚¯‚ê‚Î‘•”õ‚µ‚È‚¢
+                            'æ—¢ã«è£…å‚™ã—ã¦ã„ã‚‹ã®ã§ãªã‘ã‚Œã°è£…å‚™ã—ãªã„
                             IsAvailable = False
                             Exit Function
                         End If
@@ -289,8 +289,8 @@ Dim sname As String, fdata As String
                             sname = FeatureData(i)
                         End If
                         
-                        '•K—v‹Z”\‚ªu`‘•”õvH
-                        If Right$(sname, 2) = "‘•”õ" Then
+                        'å¿…è¦æŠ€èƒ½ãŒã€Œï½è£…å‚™ã€ï¼Ÿ
+                        If Right$(sname, 2) = "è£…å‚™" Then
                             If Left$(sname, Len(sname) - 2) = Name _
                                 Or Left$(sname, Len(sname) - 2) = Class0 _
                             Then
@@ -298,15 +298,15 @@ Dim sname As String, fdata As String
                             End If
                         End If
                         
-                        '••ˆó‚·‚é”\—Í‚ª•K—v‹Z”\‚É‚È‚Á‚Ä‚¢‚éH
+                        'å°å°ã™ã‚‹èƒ½åŠ›ãŒå¿…è¦æŠ€èƒ½ã«ãªã£ã¦ã„ã‚‹ï¼Ÿ
                         For j = 1 To CountFeature
                             Select Case Feature(j)
-                                Case "ƒpƒCƒƒbƒg”\—Í•t‰Á", "ƒpƒCƒƒbƒg”\—Í‹­‰»"
+                                Case "ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆèƒ½åŠ›ä»˜åŠ ", "ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆèƒ½åŠ›å¼·åŒ–"
                                 Case Else
                                     GoTo NextLoop1
                             End Select
                             
-                            '••ˆó‚·‚é”\—Í–¼
+                            'å°å°ã™ã‚‹èƒ½åŠ›å
                             fdata = FeatureData(j)
                             If Left$(fdata, 1) = """" Then
                                 fdata = Mid$(fdata, 2, Len(fdata) - 2)
@@ -315,7 +315,7 @@ Dim sname As String, fdata As String
                                 fdata = Left$(fdata, InStr(fdata, "=") - 1)
                             End If
                             
-                            '•K—v‹Z”\‚Æ••ˆó‚·‚é”\—Í‚ªˆê’v‚µ‚Ä‚¢‚éH
+                            'å¿…è¦æŠ€èƒ½ã¨å°å°ã™ã‚‹èƒ½åŠ›ãŒä¸€è‡´ã—ã¦ã„ã‚‹ï¼Ÿ
                             If fdata = sname Then
                                 GoTo NextLoop
                             End If
@@ -335,14 +335,14 @@ Dim sname As String, fdata As String
 NextLoop1:
                         Next
                         
-                        '•K—v‹Z”\‚ª–‚½‚³‚ê‚Ä‚¢‚È‚©‚Á‚½
+                        'å¿…è¦æŠ€èƒ½ãŒæº€ãŸã•ã‚Œã¦ã„ãªã‹ã£ãŸ
                         IsAvailable = False
                         Exit Function
                     End If
-                Case "•s•K—v‹Z”\"
+                Case "ä¸å¿…è¦æŠ€èƒ½"
                     If .IsNecessarySkillSatisfied(FeatureData(i)) Then
-                        'ƒAƒCƒeƒ€©g‚É‚æ‚è•s•K—v‹Z”\‚ª–‚½‚³‚ê‚Ä‚¢‚éê‡‚Í•s•K—v‹Z”\‚ğ
-                        '–³‹‚³‚¹‚é‚½‚ßAƒ`ƒFƒbƒN‚·‚é•K—v‚ª‚ ‚éB
+                        'ã‚¢ã‚¤ãƒ†ãƒ è‡ªèº«ã«ã‚ˆã‚Šä¸å¿…è¦æŠ€èƒ½ãŒæº€ãŸã•ã‚Œã¦ã„ã‚‹å ´åˆã¯ä¸å¿…è¦æŠ€èƒ½ã‚’
+                        'ç„¡è¦–ã•ã›ã‚‹ãŸã‚ã€ãƒã‚§ãƒƒã‚¯ã™ã‚‹å¿…è¦ãŒã‚ã‚‹ã€‚
                         
                         For j = 1 To .CountItem
                             If Me Is .Item(j) Then
@@ -350,7 +350,7 @@ NextLoop1:
                             End If
                         Next
                         If j > .CountItem Then
-                            'Šù‚É‘•”õ‚µ‚Ä‚¢‚é‚Ì‚Å‚È‚¯‚ê‚Î‘•”õ‚µ‚È‚¢
+                            'æ—¢ã«è£…å‚™ã—ã¦ã„ã‚‹ã®ã§ãªã‘ã‚Œã°è£…å‚™ã—ãªã„
                             IsAvailable = False
                             Exit Function
                         End If
@@ -361,8 +361,8 @@ NextLoop1:
                             sname = FeatureData(i)
                         End If
                         
-                        '•s•K—v‹Z”\‚ªu`‘•”õvH
-                        If Right$(sname, 2) = "‘•”õ" Then
+                        'ä¸å¿…è¦æŠ€èƒ½ãŒã€Œï½è£…å‚™ã€ï¼Ÿ
+                        If Right$(sname, 2) = "è£…å‚™" Then
                             If Left$(sname, Len(sname) - 2) = Name _
                                 Or Left$(sname, Len(sname) - 2) = Class0 _
                             Then
@@ -370,15 +370,15 @@ NextLoop1:
                             End If
                         End If
                         
-                        '•t‰Á‚·‚é”\—Í‚ª•s•K—v‹Z”\‚É‚È‚Á‚Ä‚¢‚éH
+                        'ä»˜åŠ ã™ã‚‹èƒ½åŠ›ãŒä¸å¿…è¦æŠ€èƒ½ã«ãªã£ã¦ã„ã‚‹ï¼Ÿ
                         For j = 1 To CountFeature
                             Select Case Feature(j)
-                                Case "ƒpƒCƒƒbƒg”\—Í•t‰Á", "ƒpƒCƒƒbƒg”\—Í‹­‰»"
+                                Case "ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆèƒ½åŠ›ä»˜åŠ ", "ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆèƒ½åŠ›å¼·åŒ–"
                                 Case Else
                                     GoTo NextLoop2
                             End Select
                             
-                            '•t‰Á‚·‚é”\—Í–¼
+                            'ä»˜åŠ ã™ã‚‹èƒ½åŠ›å
                             fdata = FeatureData(j)
                             If Left$(fdata, 1) = """" Then
                                 fdata = Mid$(fdata, 2, Len(fdata) - 2)
@@ -387,7 +387,7 @@ NextLoop1:
                                 fdata = Left$(fdata, InStr(fdata, "=") - 1)
                             End If
                             
-                            '•K—v‹Z”\‚Æ•t‰Á‚·‚é”\—Í‚ªˆê’v‚µ‚Ä‚¢‚éH
+                            'å¿…è¦æŠ€èƒ½ã¨ä»˜åŠ ã™ã‚‹èƒ½åŠ›ãŒä¸€è‡´ã—ã¦ã„ã‚‹ï¼Ÿ
                             If fdata = sname Then
                                 GoTo NextLoop
                             End If
@@ -407,7 +407,7 @@ NextLoop1:
 NextLoop2:
                         Next
                         
-                        '•s•K—v‹Z”\‚ª–‚½‚³‚ê‚Ä‚¢‚½
+                        'ä¸å¿…è¦æŠ€èƒ½ãŒæº€ãŸã•ã‚Œã¦ã„ãŸ
                         IsAvailable = False
                         Exit Function
                     End If
@@ -418,7 +418,7 @@ NextLoop:
 End Function
 
 
-'ˆê’†’f—pƒf[ƒ^‚ğƒtƒ@ƒCƒ‹‚ÉƒZ[ƒu‚·‚é
+'ä¸€æ™‚ä¸­æ–­ç”¨ãƒ‡ãƒ¼ã‚¿ã‚’ãƒ•ã‚¡ã‚¤ãƒ«ã«ã‚»ãƒ¼ãƒ–ã™ã‚‹
 Public Sub Dump()
     Write #SaveDataFileNumber, Name, ID, Exist
     If Unit Is Nothing Then
@@ -428,7 +428,7 @@ Public Sub Dump()
     End If
 End Sub
 
-'ˆê’†’f—pƒf[ƒ^‚ğƒtƒ@ƒCƒ‹‚©‚çƒ[ƒh‚·‚é
+'ä¸€æ™‚ä¸­æ–­ç”¨ãƒ‡ãƒ¼ã‚¿ã‚’ãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ãƒ­ãƒ¼ãƒ‰ã™ã‚‹
 Public Sub Restore()
 Dim sbuf As String, bbuf As Boolean
 
@@ -444,7 +444,7 @@ Dim sbuf As String, bbuf As Boolean
     Line Input #SaveDataFileNumber, sbuf
 End Sub
 
-'ˆê’†’f—pƒf[ƒ^‚ÌƒŠƒ“ƒNî•ñ‚ğƒtƒ@ƒCƒ‹‚©‚çƒ[ƒh‚·‚é
+'ä¸€æ™‚ä¸­æ–­ç”¨ãƒ‡ãƒ¼ã‚¿ã®ãƒªãƒ³ã‚¯æƒ…å ±ã‚’ãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ãƒ­ãƒ¼ãƒ‰ã™ã‚‹
 Public Sub RestoreLinkInfo()
 Dim sbuf As String
 
@@ -458,7 +458,7 @@ Dim sbuf As String
     End If
 End Sub
 
-''ˆê’†’f—pƒf[ƒ^‚Ìƒpƒ‰ƒ[ƒ^î•ñ‚ğƒtƒ@ƒCƒ‹‚©‚çƒ[ƒh‚·‚é
+''ä¸€æ™‚ä¸­æ–­ç”¨ãƒ‡ãƒ¼ã‚¿ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿æƒ…å ±ã‚’ãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ãƒ­ãƒ¼ãƒ‰ã™ã‚‹
 Public Sub RestoreParameter()
 Dim sbuf As String
 

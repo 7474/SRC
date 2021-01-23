@@ -2,21 +2,21 @@ Attribute VB_Name = "Effect"
 Option Explicit
 
 ' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-' –{ƒvƒƒOƒ‰ƒ€‚ÍƒtƒŠ[ƒ\ƒtƒg‚Å‚ ‚èA–³•ÛØ‚Å‚·B
-' –{ƒvƒƒOƒ‰ƒ€‚ÍGNU General Public License(Ver.3‚Ü‚½‚Í‚»‚êˆÈ~)‚ª’è‚ß‚éğŒ‚Ì‰º‚Å
-' Ä”Ğ•z‚Ü‚½‚Í‰ü•Ï‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B
+' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯ãƒ•ãƒªãƒ¼ã‚½ãƒ•ãƒˆã§ã‚ã‚Šã€ç„¡ä¿è¨¼ã§ã™ã€‚
+' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯GNU General Public License(Ver.3ã¾ãŸã¯ãã‚Œä»¥é™)ãŒå®šã‚ã‚‹æ¡ä»¶ã®ä¸‹ã§
+' å†é ’å¸ƒã¾ãŸã¯æ”¹å¤‰ã™ã‚‹ã“ã¨ãŒã§ãã¾ã™ã€‚
 
-'“ÁêŒø‰Ê‚Ì©“®‘I‘ğ•Ä¶ˆ—
+'ç‰¹æ®ŠåŠ¹æœã®è‡ªå‹•é¸æŠï¼†å†ç”Ÿå‡¦ç†
 
 
-'\‚¦‚Ä‚¢‚é•Ší‚Ìí—Ş
+'æ§‹ãˆã¦ã„ã‚‹æ­¦å™¨ã®ç¨®é¡
 Private WeaponInHand As String
 
-'UŒ‚è’i‚Ìí—Ş
+'æ”»æ’ƒæ‰‹æ®µã®ç¨®é¡
 Private CurrentWeaponType As String
 
 
-'í“¬ƒAƒjƒÄ¶—pƒTƒuƒ‹[ƒ`ƒ“
+'æˆ¦é—˜ã‚¢ãƒ‹ãƒ¡å†ç”Ÿç”¨ã‚µãƒ–ãƒ«ãƒ¼ãƒãƒ³
 Public Sub ShowAnimation(aname As String)
 Dim buf As String, ret As Double, i As Integer
 Dim expr As String
@@ -25,18 +25,18 @@ Dim expr As String
         Exit Sub
     End If
     
-    '‰EƒNƒŠƒbƒN’†‚Í“ÁêŒø‰Ê‚ğƒXƒLƒbƒv
+    'å³ã‚¯ãƒªãƒƒã‚¯ä¸­ã¯ç‰¹æ®ŠåŠ¹æœã‚’ã‚¹ã‚­ãƒƒãƒ—
     If IsRButtonPressed() Then
         Exit Sub
     End If
     
-    'ƒTƒuƒ‹[ƒ`ƒ“ŒÄ‚Ño‚µ‚Ì‚½‚ß‚Ì®‚ğì¬
+    'ã‚µãƒ–ãƒ«ãƒ¼ãƒãƒ³å‘¼ã³å‡ºã—ã®ãŸã‚ã®å¼ã‚’ä½œæˆ
     expr = LIndex(aname, 1)
-    If InStr(expr, "í“¬ƒAƒjƒ_") <> 1 Then
-        expr = "í“¬ƒAƒjƒ_" & LIndex(aname, 1)
+    If InStr(expr, "æˆ¦é—˜ã‚¢ãƒ‹ãƒ¡_") <> 1 Then
+        expr = "æˆ¦é—˜ã‚¢ãƒ‹ãƒ¡_" & LIndex(aname, 1)
     End If
     If FindNormalLabel(expr) = 0 Then
-        ErrorMessage "ƒTƒuƒ‹[ƒ`ƒ“u" & expr & "v‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ"
+        ErrorMessage "ã‚µãƒ–ãƒ«ãƒ¼ãƒãƒ³ã€Œ" & expr & "ã€ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“"
         Exit Sub
     End If
     expr = "Call(`" & expr & "`"
@@ -45,21 +45,21 @@ Dim expr As String
     Next
     expr = expr & ")"
     
-    '‰æ‘œ•`‰æ‚ªs‚í‚ê‚½‚©‚Ç‚¤‚©‚Ì”»’è‚Ì‚½‚ß‚Éƒtƒ‰ƒO‚ğ‰Šú‰»
+    'ç”»åƒæç”»ãŒè¡Œã‚ã‚ŒãŸã‹ã©ã†ã‹ã®åˆ¤å®šã®ãŸã‚ã«ãƒ•ãƒ©ã‚°ã‚’åˆæœŸåŒ–
     IsPictureDrawn = False
     
-    'ƒƒbƒZ[ƒWƒEƒBƒ“ƒhƒE‚Ìó‘Ô‚ğ‹L˜^
+    'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®çŠ¶æ…‹ã‚’è¨˜éŒ²
     SaveMessageFormStatus
     
-    'í“¬ƒAƒjƒÄ¶
+    'æˆ¦é—˜ã‚¢ãƒ‹ãƒ¡å†ç”Ÿ
     SaveBasePoint
     CallFunction expr, StringType, buf, ret
     RestoreBasePoint
     
-    'ƒƒbƒZ[ƒWƒEƒBƒ“ƒhƒE‚Ìó‘Ô‚ª•Ï‰»‚µ‚Ä‚¢‚éê‡‚Í•œŒ³
+    'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®çŠ¶æ…‹ãŒå¤‰åŒ–ã—ã¦ã„ã‚‹å ´åˆã¯å¾©å…ƒ
     KeepMessageFormStatus
     
-    '‰æ‘œ‚ğÁ‹‚µ‚Ä‚¨‚­
+    'ç”»åƒã‚’æ¶ˆå»ã—ã¦ãŠã
     If IsPictureDrawn And LCase$(buf) <> "keep" Then
         ClearPicture
         MainForm.picMain(0).Refresh
@@ -69,7 +69,7 @@ Dim expr As String
     
 ErrorHandler:
     
-    'í“¬ƒAƒjƒÀs’†‚É”­¶‚µ‚½ƒGƒ‰[‚Ìˆ—
+    'æˆ¦é—˜ã‚¢ãƒ‹ãƒ¡å®Ÿè¡Œä¸­ã«ç™ºç”Ÿã—ãŸã‚¨ãƒ©ãƒ¼ã®å‡¦ç†
     If Len(EventErrorMessage) > 0 Then
         DisplayEventErrorMessage CurrentLineNum, EventErrorMessage
         EventErrorMessage = ""
@@ -79,9 +79,9 @@ ErrorHandler:
 End Sub
 
 
-'•Ší€”õ‚Ì“ÁêŒø‰Ê
+'æ­¦å™¨æº–å‚™æ™‚ã®ç‰¹æ®ŠåŠ¹æœ
 Public Sub PrepareWeaponEffect(u As Unit, ByVal w As Integer)
-    '‰EƒNƒŠƒbƒN’†‚Í“ÁêŒø‰Ê‚ğƒXƒLƒbƒv
+    'å³ã‚¯ãƒªãƒƒã‚¯ä¸­ã¯ç‰¹æ®ŠåŠ¹æœã‚’ã‚¹ã‚­ãƒƒãƒ—
     If IsRButtonPressed() Then
         Exit Sub
     End If
@@ -93,7 +93,7 @@ Public Sub PrepareWeaponEffect(u As Unit, ByVal w As Integer)
     End If
 End Sub
 
-'•Ší€”õ‚ÌƒAƒjƒ[ƒVƒ‡ƒ“
+'æ­¦å™¨æº–å‚™æ™‚ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³
 Public Sub PrepareWeaponAnimation(u As Unit, ByVal w As Integer)
 Dim wname As String, wclass As String, wtype As String
 Dim double_weapon As Boolean
@@ -101,34 +101,34 @@ Dim aname As String, sname As String, cname As String
 Dim with_face_up As Boolean
 Dim i As Integer
 
-    'í“¬ƒAƒjƒ”ñ©“®‘I‘ğ
-    If IsOptionDefined("í“¬ƒAƒjƒ”ñ©“®‘I‘ğ") Then
+    'æˆ¦é—˜ã‚¢ãƒ‹ãƒ¡éè‡ªå‹•é¸æŠ
+    If IsOptionDefined("æˆ¦é—˜ã‚¢ãƒ‹ãƒ¡éè‡ªå‹•é¸æŠ") Then
         Exit Sub
     End If
     
     With u
-        '‚Ü‚¸€”õƒAƒjƒ•\¦‚ÌÛ‚ÉƒtƒFƒCƒXƒAƒbƒv‚ğ•\¦‚·‚é‚©Œˆ’è‚·‚é
+        'ã¾ãšæº–å‚™ã‚¢ãƒ‹ãƒ¡è¡¨ç¤ºã®éš›ã«ãƒ•ã‚§ã‚¤ã‚¹ã‚¢ãƒƒãƒ—ã‚’è¡¨ç¤ºã™ã‚‹ã‹æ±ºå®šã™ã‚‹
         If .CountWeapon >= 4 _
             And w >= .CountWeapon - 1 _
             And .Weapon(w).Power >= 1800 _
             And ((.Weapon(w).Bullet > 0 And .Weapon(w).Bullet <= 4) _
                 Or .Weapon(w).ENConsumption >= 35) _
         Then
-            '‚S‚ÂˆÈã‚Ì•Ší‚ğ‚Âƒ†ƒjƒbƒg‚ª‚»‚Ìƒ†ƒjƒbƒg‚ÌÅ‚ˆĞ—Í
-            '‚à‚µ‚­‚Í‚Q”Ô–Ú‚É‹­—Í‚È•Ší‚ğg—p‚µA
-            '‚»‚Ì•Ší‚ÌUŒ‚—Í1800ˆÈã‚Å‚©‚Â•Šíg—p‰Â”\‰ñ”‚ªŒÀ’è‚³‚ê‚Ä‚¢‚ê‚Î
-            '•KE‹Z‚ÆŒ©‚È‚µ‚ÄƒtƒFƒCƒXƒAƒbƒv•\¦
+            'ï¼”ã¤ä»¥ä¸Šã®æ­¦å™¨ã‚’æŒã¤ãƒ¦ãƒ‹ãƒƒãƒˆãŒãã®ãƒ¦ãƒ‹ãƒƒãƒˆã®æœ€é«˜å¨åŠ›
+            'ã‚‚ã—ãã¯ï¼’ç•ªç›®ã«å¼·åŠ›ãªæ­¦å™¨ã‚’ä½¿ç”¨ã—ã€
+            'ãã®æ­¦å™¨ã®æ”»æ’ƒåŠ›1800ä»¥ä¸Šã§ã‹ã¤æ­¦å™¨ä½¿ç”¨å¯èƒ½å›æ•°ãŒé™å®šã•ã‚Œã¦ã„ã‚Œã°
+            'å¿…æ®ºæŠ€ã¨è¦‹ãªã—ã¦ãƒ•ã‚§ã‚¤ã‚¹ã‚¢ãƒƒãƒ—è¡¨ç¤º
 '            with_face_up = True
         End If
         
-        '‹ó’†ˆÚ“®ê—pŒ`‘Ô‚Í•Ší‚ğè‚Å\‚¦‚È‚¢
-        If .Data.Transportation = "‹ó" Then
+        'ç©ºä¸­ç§»å‹•å°‚ç”¨å½¢æ…‹ã¯æ­¦å™¨ã‚’æ‰‹ã§æ§‹ãˆãªã„
+        If .Data.Transportation = "ç©º" Then
             WeaponInHand = ""
             GoTo SkipWeaponAnimation
         End If
         
-        '“™g‘åŠî€‚Ìê‡A”ñlŠÔƒ†ƒjƒbƒg‚ÍƒƒJ‚Å‚ ‚é‚±‚Æ‚ª‘½‚¢‚Ì‚Å“à‘ •Ší‚ğ—Dæ‚·‚é
-        If IsOptionDefined("“™g‘åŠî€") And Not .IsHero() Then
+        'ç­‰èº«å¤§åŸºæº–ã®å ´åˆã€éäººé–“ãƒ¦ãƒ‹ãƒƒãƒˆã¯ãƒ¡ã‚«ã§ã‚ã‚‹ã“ã¨ãŒå¤šã„ã®ã§å†…è”µæ­¦å™¨ã‚’å„ªå…ˆã™ã‚‹
+        If IsOptionDefined("ç­‰èº«å¤§åŸºæº–") And Not .IsHero() Then
             WeaponInHand = ""
             GoTo SkipWeaponAnimation
         End If
@@ -137,58 +137,58 @@ Dim i As Integer
         wclass = .Weapon(w).Class
     End With
     
-    '•Ší€”õ‚ÌƒAƒjƒ[ƒVƒ‡ƒ“‚ğ”ñ•\¦‚É‚·‚éƒIƒvƒVƒ‡ƒ“‚ğ‘I‘ğ‚µ‚Ä‚¢‚éH
+    'æ­¦å™¨æº–å‚™ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’éè¡¨ç¤ºã«ã™ã‚‹ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã‚’é¸æŠã—ã¦ã„ã‚‹ï¼Ÿ
 ' MOD START MARGE
-'    If Not WeaponAnimation Or IsOptionDefined("•Ší€”õƒAƒjƒ”ñ•\¦") Then
+'    If Not WeaponAnimation Or IsOptionDefined("æ­¦å™¨æº–å‚™ã‚¢ãƒ‹ãƒ¡éè¡¨ç¤º") Then
     If (Not WeaponAnimation And Not ExtendedAnimation) _
-        Or IsOptionDefined("•Ší€”õƒAƒjƒ”ñ•\¦") _
+        Or IsOptionDefined("æ­¦å™¨æº–å‚™ã‚¢ãƒ‹ãƒ¡éè¡¨ç¤º") _
     Then
 ' MOD END MARGE
         WeaponInHand = ""
         GoTo SkipWeaponAnimation
     End If
     
-    '“ñ“—¬H
-    If InStr(wname, "ƒ_ƒuƒ‹") > 0 Or InStr(wname, "ƒcƒCƒ“") > 0 _
-        Or InStr(wname, "‘o") > 0 Or InStr(wname, "“ñ“") > 0 _
+    'äºŒåˆ€æµï¼Ÿ
+    If InStr(wname, "ãƒ€ãƒ–ãƒ«") > 0 Or InStr(wname, "ãƒ„ã‚¤ãƒ³") > 0 _
+        Or InStr(wname, "åŒ") > 0 Or InStr(wname, "äºŒåˆ€") > 0 _
     Then
         double_weapon = True
     End If
     
-    'uƒu[ƒ“v‚Æ‚¢‚¤Œø‰Ê‰¹‚ğ–Â‚ç‚·H
-    If InStr(wname, "‚ü”g") > 0 Or InStr(wname, "“d¥") > 0 Then
+    'ã€Œãƒ–ãƒ¼ãƒ³ã€ã¨ã„ã†åŠ¹æœéŸ³ã‚’é³´ã‚‰ã™ï¼Ÿ
+    If InStr(wname, "é«˜å‘¨æ³¢") > 0 Or InStr(wname, "é›»ç£") > 0 Then
         sname = "BeamSaber.wav"
     End If
     
-    '‚±‚ê‚©‚ç•Ší‚Ìí—Ş‚ğ”»’è
+    'ã“ã‚Œã‹ã‚‰æ­¦å™¨ã®ç¨®é¡ã‚’åˆ¤å®š
     
-    If InStrNotNest(wclass, "•") = 0 _
-        And InStrNotNest(wclass, "“Ë") = 0 _
-        And InStrNotNest(wclass, "Ú") = 0 _
-        And InStrNotNest(wclass, "À") = 0 _
+    If InStrNotNest(wclass, "æ­¦") = 0 _
+        And InStrNotNest(wclass, "çª") = 0 _
+        And InStrNotNest(wclass, "æ¥") = 0 _
+        And InStrNotNest(wclass, "å®Ÿ") = 0 _
     Then
         GoTo SkipInfightWeapon
     End If
     
-    '•Ší–¼‚©‚ç•Ší‚Ìí—Ş‚ğ”»’è
+    'æ­¦å™¨åã‹ã‚‰æ­¦å™¨ã®ç¨®é¡ã‚’åˆ¤å®š
     wtype = CheckWeaponType(wname, wclass)
-    If wtype = "è— Œ•" Then
-        'è— Œ•‚Í\‚¦‚¸‚É‚¢‚«‚È‚è“Š‚°‚½‚Ù‚¤‚ª‚©‚Á‚±‚¢‚¢‚Æv‚¤‚Ì‚Å
+    If wtype = "æ‰‹è£å‰£" Then
+        'æ‰‹è£å‰£ã¯æ§‹ãˆãšã«ã„ããªã‚ŠæŠ•ã’ãŸã»ã†ãŒã‹ã£ã“ã„ã„ã¨æ€ã†ã®ã§
         Exit Sub
     End If
     If wtype <> "" Then
         GoTo FoundWeaponType
     End If
     
-    'Ú×‚ª•ª‚©‚ç‚È‚©‚Á‚½•Ší
-    If InStrNotNest(wclass, "•") > 0 Then
-        '‘•”õ‚µ‚Ä‚¢‚éƒAƒCƒeƒ€‚©‚ç•Ší‚ğŒŸõ
+    'è©³ç´°ãŒåˆ†ã‹ã‚‰ãªã‹ã£ãŸæ­¦å™¨
+    If InStrNotNest(wclass, "æ­¦") > 0 Then
+        'è£…å‚™ã—ã¦ã„ã‚‹ã‚¢ã‚¤ãƒ†ãƒ ã‹ã‚‰æ­¦å™¨ã‚’æ¤œç´¢
         For i = 1 To u.CountItem
             With u.Item(i)
                 If .Activated _
-                    And (.Part = "—¼è" _
-                        Or .Part = "•Ğè" _
-                        Or .Part = "•Ší") _
+                    And (.Part = "ä¸¡æ‰‹" _
+                        Or .Part = "ç‰‡æ‰‹" _
+                        Or .Part = "æ­¦å™¨") _
                 Then
                     wtype = CheckWeaponType(.Nickname, "")
                     If wtype <> "" Then
@@ -205,58 +205,58 @@ Dim i As Integer
         GoTo SkipShootingWeapon
     End If
     
-    If InStrNotNest(wclass, "“Ë") > 0 _
-        Or InStrNotNest(wclass, "Ú") > 0 _
+    If InStrNotNest(wclass, "çª") > 0 _
+        Or InStrNotNest(wclass, "æ¥") > 0 _
     Then
         GoTo SkipShootingWeapon
     End If
     
 SkipInfightWeapon:
     
-    '‚Ü‚¸‚Íƒr[ƒ€UŒ‚‚©‚Ç‚¤‚©”»’è
+    'ã¾ãšã¯ãƒ“ãƒ¼ãƒ æ”»æ’ƒã‹ã©ã†ã‹åˆ¤å®š
     If Not IsBeamWeapon(wname, wclass, cname) Then
         GoTo SkipBeamWeapon
     End If
     
-    'è‚¿H
-    If InStr(wname, "ƒ‰ƒCƒtƒ‹") > 0 Or InStr(wname, "ƒoƒY[ƒJ") > 0 _
-        Or Right$(wname, 2) = "ƒKƒ“" _
-        Or (Right$(wname, 1) = "e" And Right$(wname, 2) <> "‹@e") _
+    'æ‰‹æŒã¡ï¼Ÿ
+    If InStr(wname, "ãƒ©ã‚¤ãƒ•ãƒ«") > 0 Or InStr(wname, "ãƒã‚ºãƒ¼ã‚«") > 0 _
+        Or Right$(wname, 2) = "ã‚¬ãƒ³" _
+        Or (Right$(wname, 1) = "éŠƒ" And Right$(wname, 2) <> "æ©ŸéŠƒ") _
     Then
-        If InStrNotNest(wclass, "‚l") > 0 Then
-            wtype = "‚l‚`‚oƒoƒXƒ^[ƒr[ƒ€ƒ‰ƒCƒtƒ‹"
+        If InStrNotNest(wclass, "ï¼­") > 0 Then
+            wtype = "ï¼­ï¼¡ï¼°ãƒã‚¹ã‚¿ãƒ¼ãƒ“ãƒ¼ãƒ ãƒ©ã‚¤ãƒ•ãƒ«"
             GoTo FoundWeaponType
         End If
         
-        If InStr(wname, "ƒnƒCƒƒK") > 0 Or InStr(wname, "ƒoƒXƒ^[") > 0 _
-            Or InStr(wname, "‘å") > 0 _
-            Or Left$(wname, 2) = "ƒMƒK" _
+        If InStr(wname, "ãƒã‚¤ãƒ¡ã‚¬") > 0 Or InStr(wname, "ãƒã‚¹ã‚¿ãƒ¼") > 0 _
+            Or InStr(wname, "å¤§") > 0 _
+            Or Left$(wname, 2) = "ã‚®ã‚¬" _
         Then
-            wtype = "ƒoƒXƒ^[ƒr[ƒ€ƒ‰ƒCƒtƒ‹"
-        ElseIf InStr(wname, "ƒƒK") > 0 _
-            Or InStr(wname, "ƒnƒC") > 0 _
-            Or InStr(wname, "ƒoƒY[ƒJ") > 0 _
+            wtype = "ãƒã‚¹ã‚¿ãƒ¼ãƒ“ãƒ¼ãƒ ãƒ©ã‚¤ãƒ•ãƒ«"
+        ElseIf InStr(wname, "ãƒ¡ã‚¬") > 0 _
+            Or InStr(wname, "ãƒã‚¤") > 0 _
+            Or InStr(wname, "ãƒã‚ºãƒ¼ã‚«") > 0 _
         Then
             If double_weapon Then
-                wtype = "ƒ_ƒuƒ‹ƒr[ƒ€ƒ‰ƒ“ƒ`ƒƒ["
+                wtype = "ãƒ€ãƒ–ãƒ«ãƒ“ãƒ¼ãƒ ãƒ©ãƒ³ãƒãƒ£ãƒ¼"
             Else
-                wtype = "ƒr[ƒ€ƒ‰ƒ“ƒ`ƒƒ["
+                wtype = "ãƒ“ãƒ¼ãƒ ãƒ©ãƒ³ãƒãƒ£ãƒ¼"
             End If
-            If InStr(wname, "ƒ‰ƒCƒtƒ‹") > 0 Then
-                wtype = "ƒoƒXƒ^[ƒr[ƒ€ƒ‰ƒCƒtƒ‹"
+            If InStr(wname, "ãƒ©ã‚¤ãƒ•ãƒ«") > 0 Then
+                wtype = "ãƒã‚¹ã‚¿ãƒ¼ãƒ“ãƒ¼ãƒ ãƒ©ã‚¤ãƒ•ãƒ«"
             End If
         ElseIf CountAttack0(u, w) >= 4 Then
-            wtype = "ƒ}ƒVƒ“ƒKƒ“"
-        ElseIf InStr(wname, "ƒsƒXƒgƒ‹") > 0 _
-            Or InStr(wname, "ƒ~ƒj") > 0 _
-            Or InStr(wname, "¬") > 0 _
+            wtype = "ãƒã‚·ãƒ³ã‚¬ãƒ³"
+        ElseIf InStr(wname, "ãƒ”ã‚¹ãƒˆãƒ«") > 0 _
+            Or InStr(wname, "ãƒŸãƒ‹") > 0 _
+            Or InStr(wname, "å°") > 0 _
         Then
-            wtype = "ƒŒ[ƒU[ƒKƒ“"
+            wtype = "ãƒ¬ãƒ¼ã‚¶ãƒ¼ã‚¬ãƒ³"
         Else
             If double_weapon Then
-                wtype = "ƒ_ƒuƒ‹ƒr[ƒ€ƒ‰ƒCƒtƒ‹"
+                wtype = "ãƒ€ãƒ–ãƒ«ãƒ“ãƒ¼ãƒ ãƒ©ã‚¤ãƒ•ãƒ«"
             Else
-                wtype = "ƒr[ƒ€ƒ‰ƒCƒtƒ‹"
+                wtype = "ãƒ“ãƒ¼ãƒ ãƒ©ã‚¤ãƒ•ãƒ«"
             End If
         End If
         GoTo FoundWeaponType
@@ -264,727 +264,727 @@ SkipInfightWeapon:
     
 SkipBeamWeapon:
     
-    If InStr(wname, "‹|") > 0 _
-        Or InStr(wname, "ƒVƒ‡[ƒgƒ{ƒE") > 0 _
-        Or InStr(wname, "ƒƒ“ƒOƒ{ƒE") > 0 _
+    If InStr(wname, "å¼“") > 0 _
+        Or InStr(wname, "ã‚·ãƒ§ãƒ¼ãƒˆãƒœã‚¦") > 0 _
+        Or InStr(wname, "ãƒ­ãƒ³ã‚°ãƒœã‚¦") > 0 _
     Then
-        wtype = "‹|"
+        wtype = "å¼“"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "ƒNƒƒXƒ{ƒE") > 0 _
-        Or InStr(wname, "ƒ{ƒEƒKƒ“") > 0 _
+    If InStr(wname, "ã‚¯ãƒ­ã‚¹ãƒœã‚¦") > 0 _
+        Or InStr(wname, "ãƒœã‚¦ã‚¬ãƒ³") > 0 _
     Then
-        wtype = "ƒNƒƒXƒ{ƒE"
+        wtype = "ã‚¯ãƒ­ã‚¹ãƒœã‚¦"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "ƒoƒY[ƒJ") > 0 Then
-        wtype = "ƒoƒY[ƒJ"
+    If InStr(wname, "ãƒã‚ºãƒ¼ã‚«") > 0 Then
+        wtype = "ãƒã‚ºãƒ¼ã‚«"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "ƒTƒuƒ}ƒVƒ“ƒKƒ“") > 0 Then
-        wtype = "ƒTƒuƒ}ƒVƒ“ƒKƒ“"
+    If InStr(wname, "ã‚µãƒ–ãƒã‚·ãƒ³ã‚¬ãƒ³") > 0 Then
+        wtype = "ã‚µãƒ–ãƒã‚·ãƒ³ã‚¬ãƒ³"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "ƒ}ƒVƒ“ƒKƒ“") > 0 Or InStr(wname, "‹@ŠÖe") > 0 Then
-        If InStr(wname, "ƒwƒr[") > 0 Or InStr(wname, "d") > 0 Then
-            wtype = "ƒwƒr[ƒ}ƒVƒ“ƒKƒ“"
+    If InStr(wname, "ãƒã‚·ãƒ³ã‚¬ãƒ³") > 0 Or InStr(wname, "æ©Ÿé–¢éŠƒ") > 0 Then
+        If InStr(wname, "ãƒ˜ãƒ“ãƒ¼") > 0 Or InStr(wname, "é‡") > 0 Then
+            wtype = "ãƒ˜ãƒ“ãƒ¼ãƒã‚·ãƒ³ã‚¬ãƒ³"
         Else
-            wtype = "ƒ}ƒVƒ“ƒKƒ“"
+            wtype = "ãƒã‚·ãƒ³ã‚¬ãƒ³"
         End If
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "ƒKƒgƒŠƒ“ƒO") > 0 Then
-        wtype = "ƒKƒgƒŠƒ“ƒO"
+    If InStr(wname, "ã‚¬ãƒˆãƒªãƒ³ã‚°") > 0 Then
+        wtype = "ã‚¬ãƒˆãƒªãƒ³ã‚°"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "ƒsƒXƒgƒ‹") > 0 Or InStr(wname, "Œe") > 0 Then
-        wtype = "ƒsƒXƒgƒ‹"
+    If InStr(wname, "ãƒ”ã‚¹ãƒˆãƒ«") > 0 Or InStr(wname, "æ‹³éŠƒ") > 0 Then
+        wtype = "ãƒ”ã‚¹ãƒˆãƒ«"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "ƒŠƒ{ƒ‹ƒo[") > 0 Or InStr(wname, "ƒŠƒ{ƒ‹ƒ”ƒ@[") > 0 Then
-        wtype = "ƒŠƒ{ƒ‹ƒo["
+    If InStr(wname, "ãƒªãƒœãƒ«ãƒãƒ¼") > 0 Or InStr(wname, "ãƒªãƒœãƒ«ãƒ´ã‚¡ãƒ¼") > 0 Then
+        wtype = "ãƒªãƒœãƒ«ãƒãƒ¼"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "ƒVƒ‡ƒbƒgƒKƒ“") > 0 Or InStr(wname, "ƒ‰ƒCƒAƒbƒgƒKƒ“") > 0 Then
-        wtype = "ƒVƒ‡ƒbƒgƒKƒ“"
+    If InStr(wname, "ã‚·ãƒ§ãƒƒãƒˆã‚¬ãƒ³") > 0 Or InStr(wname, "ãƒ©ã‚¤ã‚¢ãƒƒãƒˆã‚¬ãƒ³") > 0 Then
+        wtype = "ã‚·ãƒ§ãƒƒãƒˆã‚¬ãƒ³"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "ƒX[ƒp[ƒKƒ“") > 0 Then
-        wtype = "ƒX[ƒp[ƒKƒ“"
+    If InStr(wname, "ã‚¹ãƒ¼ãƒ‘ãƒ¼ã‚¬ãƒ³") > 0 Then
+        wtype = "ã‚¹ãƒ¼ãƒ‘ãƒ¼ã‚¬ãƒ³"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "ƒX[ƒp[ƒLƒƒƒmƒ“") > 0 Then
-        wtype = "ƒX[ƒp[ƒLƒƒƒmƒ“"
+    If InStr(wname, "ã‚¹ãƒ¼ãƒ‘ãƒ¼ã‚­ãƒ£ãƒãƒ³") > 0 Then
+        wtype = "ã‚¹ãƒ¼ãƒ‘ãƒ¼ã‚­ãƒ£ãƒãƒ³"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "ƒ‰ƒCƒtƒ‹") > 0 _
-        Or (Right$(wname, 1) = "e" And Right$(wname, 2) <> "‹@e") _
-        Or Right$(wname, 2) = "ƒKƒ“" _
+    If InStr(wname, "ãƒ©ã‚¤ãƒ•ãƒ«") > 0 _
+        Or (Right$(wname, 1) = "éŠƒ" And Right$(wname, 2) <> "æ©ŸéŠƒ") _
+        Or Right$(wname, 2) = "ã‚¬ãƒ³" _
     Then
-        wtype = "ƒ‰ƒCƒtƒ‹"
+        wtype = "ãƒ©ã‚¤ãƒ•ãƒ«"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "‘ÎíÔƒ‰ƒCƒtƒ‹") > 0 Then
-        wtype = "‘ÎíÔƒ‰ƒCƒtƒ‹"
+    If InStr(wname, "å¯¾æˆ¦è»Šãƒ©ã‚¤ãƒ•ãƒ«") > 0 Then
+        wtype = "å¯¾æˆ¦è»Šãƒ©ã‚¤ãƒ•ãƒ«"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "‘Î•¨ƒ‰ƒCƒtƒ‹") > 0 Then
-        wtype = "‘Î•¨ƒ‰ƒCƒtƒ‹"
+    If InStr(wname, "å¯¾ç‰©ãƒ©ã‚¤ãƒ•ãƒ«") > 0 Then
+        wtype = "å¯¾ç‰©ãƒ©ã‚¤ãƒ•ãƒ«"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "Á‰ÎŠí") > 0 Then
-        wtype = "Á‰ÎŠí"
+    If InStr(wname, "æ¶ˆç«å™¨") > 0 Then
+        wtype = "æ¶ˆç«å™¨"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "•ú…") > 0 Or InStr(wname, "•úËŠí") > 0 Then
-        wtype = "•ú…e"
+    If InStr(wname, "æ”¾æ°´") > 0 Or InStr(wname, "æ”¾å°„å™¨") > 0 Then
+        wtype = "æ”¾æ°´éŠƒ"
         GoTo FoundWeaponType
     End If
     
 SkipShootingWeapon:
     
-    '‘Î‰‚·‚é•Ší‚ÍŒ©‚Â‚©‚ç‚È‚©‚Á‚½
+    'å¯¾å¿œã™ã‚‹æ­¦å™¨ã¯è¦‹ã¤ã‹ã‚‰ãªã‹ã£ãŸ
     WeaponInHand = ""
     GoTo SkipWeaponAnimation
     
 FoundWeaponType:
     
-    '\‚¦‚Ä‚¢‚é•Ší‚ğ‹L˜^
+    'æ§‹ãˆã¦ã„ã‚‹æ­¦å™¨ã‚’è¨˜éŒ²
     WeaponInHand = wtype
     
-    '•\¦‚·‚é€”õƒAƒjƒ‚Ìí—Ş
-    aname = wtype & "€”õ"
+    'è¡¨ç¤ºã™ã‚‹æº–å‚™ã‚¢ãƒ‹ãƒ¡ã®ç¨®é¡
+    aname = wtype & "æº–å‚™"
     
-    'F
-    If InStr(wtype, "ƒr[ƒ€ƒT[ƒxƒ‹") > 0 _
-        Or InStr(wtype, "ƒr[ƒ€ƒJƒbƒ^[") > 0 _
-        Or wtype = "ƒr[ƒ€ƒiƒCƒt" _
-        Or wtype = "ƒ‰ƒCƒgƒZƒCƒo[" _
+    'è‰²
+    If InStr(wtype, "ãƒ“ãƒ¼ãƒ ã‚µãƒ¼ãƒ™ãƒ«") > 0 _
+        Or InStr(wtype, "ãƒ“ãƒ¼ãƒ ã‚«ãƒƒã‚¿ãƒ¼") > 0 _
+        Or wtype = "ãƒ“ãƒ¼ãƒ ãƒŠã‚¤ãƒ•" _
+        Or wtype = "ãƒ©ã‚¤ãƒˆã‚»ã‚¤ãƒãƒ¼" _
     Then
-        If InStr(wname, "ƒr[ƒ€") > 0 Then
-            aname = aname & " ƒsƒ“ƒN"
-        ElseIf InStr(wname, "ƒvƒ‰ƒYƒ}") > 0 Then
-            aname = aname & " ƒOƒŠ[ƒ“"
-        ElseIf InStr(wname, "ƒŒ[ƒU[") > 0 Then
-            aname = aname & " ƒuƒ‹["
-        ElseIf InStr(wname, "ƒ‰ƒCƒg") > 0 Then
-            aname = aname & " ƒCƒGƒ["
+        If InStr(wname, "ãƒ“ãƒ¼ãƒ ") > 0 Then
+            aname = aname & " ãƒ”ãƒ³ã‚¯"
+        ElseIf InStr(wname, "ãƒ—ãƒ©ã‚ºãƒ") > 0 Then
+            aname = aname & " ã‚°ãƒªãƒ¼ãƒ³"
+        ElseIf InStr(wname, "ãƒ¬ãƒ¼ã‚¶ãƒ¼") > 0 Then
+            aname = aname & " ãƒ–ãƒ«ãƒ¼"
+        ElseIf InStr(wname, "ãƒ©ã‚¤ãƒˆ") > 0 Then
+            aname = aname & " ã‚¤ã‚¨ãƒ­ãƒ¼"
         End If
     End If
     
-    'Œø‰Ê‰¹
+    'åŠ¹æœéŸ³
     If Len(sname) > 0 Then
         aname = aname & " " & sname
     End If
     
-    '“ñ“—¬
+    'äºŒåˆ€æµ
     If double_weapon Then
-        aname = aname & " “ñ“—¬"
+        aname = aname & " äºŒåˆ€æµ"
     End If
     
-    '€”õƒAƒjƒ•\¦
+    'æº–å‚™ã‚¢ãƒ‹ãƒ¡è¡¨ç¤º
     ShowAnimation aname
     
 SkipWeaponAnimation:
     
-    '•Ší‚Ì€”õƒAƒjƒ‚ğƒXƒLƒbƒv‚·‚éê‡‚Í‚±‚±‚©‚ç
+    'æ­¦å™¨ã®æº–å‚™ã‚¢ãƒ‹ãƒ¡ã‚’ã‚¹ã‚­ãƒƒãƒ—ã™ã‚‹å ´åˆã¯ã“ã“ã‹ã‚‰
     
     If with_face_up Then
-        'ƒtƒFƒCƒXƒAƒbƒv‚ğ•\¦‚·‚é
-        aname = "ƒtƒFƒCƒXƒAƒbƒv€”õ"
+        'ãƒ•ã‚§ã‚¤ã‚¹ã‚¢ãƒƒãƒ—ã‚’è¡¨ç¤ºã™ã‚‹
+        aname = "ãƒ•ã‚§ã‚¤ã‚¹ã‚¢ãƒƒãƒ—æº–å‚™"
         
-        'ÕŒ‚‚ğ•\¦H
-        If InStrNotNest(wclass, "ƒT") > 0 Then
-            aname = aname & " ÕŒ‚"
+        'è¡æ’ƒã‚’è¡¨ç¤ºï¼Ÿ
+        If InStrNotNest(wclass, "ã‚µ") > 0 Then
+            aname = aname & " è¡æ’ƒ"
         End If
         
-        'ƒtƒFƒCƒXƒAƒbƒvƒAƒjƒ•\¦
+        'ãƒ•ã‚§ã‚¤ã‚¹ã‚¢ãƒƒãƒ—ã‚¢ãƒ‹ãƒ¡è¡¨ç¤º
         ShowAnimation aname
     End If
 End Sub
 
-'•Ší‚Ì–¼Ì‚©‚ç•Ší‚Ìí—Ş‚ğ”»’è
+'æ­¦å™¨ã®åç§°ã‹ã‚‰æ­¦å™¨ã®ç¨®é¡ã‚’åˆ¤å®š
 Private Function CheckWeaponType(wname As String, wclass As String) As String
-    If InStr(wname, "ƒr[ƒ€") > 0 _
-        Or InStr(wname, "ƒvƒ‰ƒYƒ}") > 0 _
-        Or InStr(wname, "ƒŒ[ƒU[") > 0 _
-        Or InStr(wname, "ƒuƒ‰ƒXƒ^[") > 0 _
-        Or InStr(wname, "ƒ‰ƒCƒg") > 0 _
+    If InStr(wname, "ãƒ“ãƒ¼ãƒ ") > 0 _
+        Or InStr(wname, "ãƒ—ãƒ©ã‚ºãƒ") > 0 _
+        Or InStr(wname, "ãƒ¬ãƒ¼ã‚¶ãƒ¼") > 0 _
+        Or InStr(wname, "ãƒ–ãƒ©ã‚¹ã‚¿ãƒ¼") > 0 _
+        Or InStr(wname, "ãƒ©ã‚¤ãƒˆ") > 0 _
     Then
-        If InStr(wname, "ƒT[ƒxƒ‹") > 0 _
-            Or InStr(wname, "ƒZƒCƒo[") > 0 _
-            Or InStr(wname, "ƒuƒŒ[ƒh") > 0 _
-            Or InStr(wname, "ƒ\[ƒh") > 0 _
-            Or InStr(wname, "Œ•") > 0 _
-            Or InStr(wname, "“") > 0 _
+        If InStr(wname, "ã‚µãƒ¼ãƒ™ãƒ«") > 0 _
+            Or InStr(wname, "ã‚»ã‚¤ãƒãƒ¼") > 0 _
+            Or InStr(wname, "ãƒ–ãƒ¬ãƒ¼ãƒ‰") > 0 _
+            Or InStr(wname, "ã‚½ãƒ¼ãƒ‰") > 0 _
+            Or InStr(wname, "å‰£") > 0 _
+            Or InStr(wname, "åˆ€") > 0 _
         Then
-            If InStr(wname, "ƒnƒCƒp[") > 0 Or InStr(wname, "ƒƒ“ƒO") > 0 _
-                Or InStr(wname, "‘å") > 0 Or InStr(wname, "‚") > 0 _
+            If InStr(wname, "ãƒã‚¤ãƒ‘ãƒ¼") > 0 Or InStr(wname, "ãƒ­ãƒ³ã‚°") > 0 _
+                Or InStr(wname, "å¤§") > 0 Or InStr(wname, "é«˜") > 0 _
             Then
-                CheckWeaponType = "ƒnƒCƒp[ƒr[ƒ€ƒT[ƒxƒ‹"
-            ElseIf InStr(wname, "ƒZƒCƒo[") > 0 Then
-                CheckWeaponType = "ƒ‰ƒCƒgƒZƒCƒo["
+                CheckWeaponType = "ãƒã‚¤ãƒ‘ãƒ¼ãƒ“ãƒ¼ãƒ ã‚µãƒ¼ãƒ™ãƒ«"
+            ElseIf InStr(wname, "ã‚»ã‚¤ãƒãƒ¼") > 0 Then
+                CheckWeaponType = "ãƒ©ã‚¤ãƒˆã‚»ã‚¤ãƒãƒ¼"
             Else
-                CheckWeaponType = "ƒr[ƒ€ƒT[ƒxƒ‹"
+                CheckWeaponType = "ãƒ“ãƒ¼ãƒ ã‚µãƒ¼ãƒ™ãƒ«"
             End If
             Exit Function
         End If
         
-        If InStr(wname, "ƒJƒbƒ^[") > 0 Then
-            If InStr(wname, "ƒnƒCƒp[") > 0 Or InStr(wname, "ƒƒ“ƒO") > 0 _
-                Or InStr(wname, "‘å") > 0 Or InStr(wname, "‚") > 0 _
+        If InStr(wname, "ã‚«ãƒƒã‚¿ãƒ¼") > 0 Then
+            If InStr(wname, "ãƒã‚¤ãƒ‘ãƒ¼") > 0 Or InStr(wname, "ãƒ­ãƒ³ã‚°") > 0 _
+                Or InStr(wname, "å¤§") > 0 Or InStr(wname, "é«˜") > 0 _
             Then
-                CheckWeaponType = "ƒGƒiƒW[ƒuƒŒ[ƒh"
+                CheckWeaponType = "ã‚¨ãƒŠã‚¸ãƒ¼ãƒ–ãƒ¬ãƒ¼ãƒ‰"
             Else
-                CheckWeaponType = "ƒGƒiƒW[ƒJƒbƒ^["
+                CheckWeaponType = "ã‚¨ãƒŠã‚¸ãƒ¼ã‚«ãƒƒã‚¿ãƒ¼"
             End If
             Exit Function
         End If
         
-        If InStr(wname, "ƒiƒCƒt") > 0 _
-            Or InStr(wname, "ƒ_ƒK[") > 0 _
+        If InStr(wname, "ãƒŠã‚¤ãƒ•") > 0 _
+            Or InStr(wname, "ãƒ€ã‚¬ãƒ¼") > 0 _
         Then
-            CheckWeaponType = "ƒr[ƒ€ƒiƒCƒt"
+            CheckWeaponType = "ãƒ“ãƒ¼ãƒ ãƒŠã‚¤ãƒ•"
             Exit Function
         End If
     End If
     
-    If InStr(wname, "ƒiƒCƒt") > 0 Or InStr(wname, "ƒ_ƒK[") > 0 _
-        Or InStr(wname, "’Z“") > 0 Or InStr(wname, "¬“") > 0 _
+    If InStr(wname, "ãƒŠã‚¤ãƒ•") > 0 Or InStr(wname, "ãƒ€ã‚¬ãƒ¼") > 0 _
+        Or InStr(wname, "çŸ­åˆ€") > 0 Or InStr(wname, "å°åˆ€") > 0 _
     Then
-        If InStr(wname, "“Š") > 0 Or InStr(wname, "”ò‚Ñ") > 0 _
-            Or Right$(wname, 3) = "ƒXƒ[" Or Right$(wname, 3) = "ƒXƒƒE" _
-            Or InStrNotNest(wclass, "À") > 0 _
+        If InStr(wname, "æŠ•") > 0 Or InStr(wname, "é£›ã³") > 0 _
+            Or Right$(wname, 3) = "ã‚¹ãƒ­ãƒ¼" Or Right$(wname, 3) = "ã‚¹ãƒ­ã‚¦" _
+            Or InStrNotNest(wclass, "å®Ÿ") > 0 _
         Then
-            CheckWeaponType = "“Š‚°ƒiƒCƒt"
+            CheckWeaponType = "æŠ•ã’ãƒŠã‚¤ãƒ•"
         Else
-            CheckWeaponType = "ƒiƒCƒt"
+            CheckWeaponType = "ãƒŠã‚¤ãƒ•"
         End If
         Exit Function
     End If
     
-    If InStr(wname, "ƒVƒ‡[ƒgƒ\[ƒh") > 0 Or InStr(wname, "’ZŒ•") > 0 _
-        Or InStr(wname, "ƒXƒ‚[ƒ‹ƒ\[ƒh") > 0 Or InStr(wname, "¬Œ•") > 0 _
+    If InStr(wname, "ã‚·ãƒ§ãƒ¼ãƒˆã‚½ãƒ¼ãƒ‰") > 0 Or InStr(wname, "çŸ­å‰£") > 0 _
+        Or InStr(wname, "ã‚¹ãƒ¢ãƒ¼ãƒ«ã‚½ãƒ¼ãƒ‰") > 0 Or InStr(wname, "å°å‰£") > 0 _
     Then
-        CheckWeaponType = "ƒVƒ‡[ƒgƒ\[ƒh"
+        CheckWeaponType = "ã‚·ãƒ§ãƒ¼ãƒˆã‚½ãƒ¼ãƒ‰"
         Exit Function
     End If
     
-    If InStr(wname, "ƒOƒŒ[ƒgƒ\[ƒh") > 0 Or InStr(wname, "‘åŒ•") > 0 _
-        Or InStr(wname, "ƒnƒ“ƒfƒbƒhƒ\[ƒh") > 0 Or InStr(wname, "—¼èŒ•") > 0 _
+    If InStr(wname, "ã‚°ãƒ¬ãƒ¼ãƒˆã‚½ãƒ¼ãƒ‰") > 0 Or InStr(wname, "å¤§å‰£") > 0 _
+        Or InStr(wname, "ãƒãƒ³ãƒ‡ãƒƒãƒ‰ã‚½ãƒ¼ãƒ‰") > 0 Or InStr(wname, "ä¸¡æ‰‹å‰£") > 0 _
     Then
-        CheckWeaponType = "‘åŒ•"
+        CheckWeaponType = "å¤§å‰£"
         Exit Function
     End If
     
-    If InStr(wname, "ƒƒ“ƒOƒ\[ƒh") > 0 Or InStr(wname, "’·Œ•") > 0 _
-        Or InStr(wname, "ƒoƒXƒ^[ƒhƒ\[ƒh") > 0 _
-        Or wname = "ƒ\[ƒh" _
+    If InStr(wname, "ãƒ­ãƒ³ã‚°ã‚½ãƒ¼ãƒ‰") > 0 Or InStr(wname, "é•·å‰£") > 0 _
+        Or InStr(wname, "ãƒã‚¹ã‚¿ãƒ¼ãƒ‰ã‚½ãƒ¼ãƒ‰") > 0 _
+        Or wname = "ã‚½ãƒ¼ãƒ‰" _
     Then
-        CheckWeaponType = "ƒ\[ƒh"
+        CheckWeaponType = "ã‚½ãƒ¼ãƒ‰"
         Exit Function
     End If
     
-    If InStr(wname, "è— Œ•") > 0 Then
-        CheckWeaponType = "è— Œ•"
+    If InStr(wname, "æ‰‹è£å‰£") > 0 Then
+        CheckWeaponType = "æ‰‹è£å‰£"
         Exit Function
     End If
         
-    If Right$(wname, 1) = "Œ•" _
+    If Right$(wname, 1) = "å‰£" _
         And (Len(wname) <= 3 _
-            Or Right$(wname, 2) = "‚ÌŒ•") _
+            Or Right$(wname, 2) = "ã®å‰£") _
     Then
-        If InStr(wname, "ƒuƒ‰ƒbƒN") > 0 Or InStr(wname, "•") > 0 Then
-            CheckWeaponType = "•Œ•"
+        If InStr(wname, "ãƒ–ãƒ©ãƒƒã‚¯") > 0 Or InStr(wname, "é»’") > 0 Then
+            CheckWeaponType = "é»’å‰£"
         Else
-            CheckWeaponType = "Œ•"
+            CheckWeaponType = "å‰£"
         End If
         Exit Function
     End If
     
-    If InStr(wname, "ƒ\[ƒhƒuƒŒƒCƒJ[") > 0 Then
-        CheckWeaponType = "ƒ\[ƒhƒuƒŒƒCƒJ["
+    If InStr(wname, "ã‚½ãƒ¼ãƒ‰ãƒ–ãƒ¬ã‚¤ã‚«ãƒ¼") > 0 Then
+        CheckWeaponType = "ã‚½ãƒ¼ãƒ‰ãƒ–ãƒ¬ã‚¤ã‚«ãƒ¼"
         Exit Function
     End If
     
-    If InStr(wname, "ƒŒƒCƒsƒA") > 0 Then
-        CheckWeaponType = "ƒŒƒCƒsƒA"
+    If InStr(wname, "ãƒ¬ã‚¤ãƒ”ã‚¢") > 0 Then
+        CheckWeaponType = "ãƒ¬ã‚¤ãƒ”ã‚¢"
         Exit Function
     End If
     
-    If InStr(wname, "ƒVƒ~ƒ^[") > 0 Or InStr(wname, "ƒT[ƒxƒ‹") > 0 _
-        Or InStr(wname, "ƒJƒbƒgƒ‰ƒX") > 0 Or InStr(wname, "O“úŒ“") > 0 _
+    If InStr(wname, "ã‚·ãƒŸã‚¿ãƒ¼") > 0 Or InStr(wname, "ã‚µãƒ¼ãƒ™ãƒ«") > 0 _
+        Or InStr(wname, "ã‚«ãƒƒãƒˆãƒ©ã‚¹") > 0 Or InStr(wname, "ä¸‰æ—¥æœˆåˆ€") > 0 _
     Then
-        CheckWeaponType = "ƒVƒ~ƒ^["
+        CheckWeaponType = "ã‚·ãƒŸã‚¿ãƒ¼"
         Exit Function
     End If
     
-    If InStr(wname, "ƒVƒ‡[ƒeƒ‹") > 0 Then
-        CheckWeaponType = "ƒVƒ‡[ƒeƒ‹"
+    If InStr(wname, "ã‚·ãƒ§ãƒ¼ãƒ†ãƒ«") > 0 Then
+        CheckWeaponType = "ã‚·ãƒ§ãƒ¼ãƒ†ãƒ«"
         Exit Function
     End If
     
-    If InStr(wname, "ƒiƒMƒiƒ^") > 0 Or InStr(wname, "“ã“") > 0 _
-        Or InStr(wname, "ƒOƒŒƒCƒu") > 0 _
+    If InStr(wname, "ãƒŠã‚®ãƒŠã‚¿") > 0 Or InStr(wname, "è–™åˆ€") > 0 _
+        Or InStr(wname, "ã‚°ãƒ¬ã‚¤ãƒ–") > 0 _
     Then
-        CheckWeaponType = "ƒiƒMƒiƒ^"
+        CheckWeaponType = "ãƒŠã‚®ãƒŠã‚¿"
         Exit Function
     End If
     
-    If InStr(wname, "’|“") > 0 Then
-        CheckWeaponType = "’|“"
+    If InStr(wname, "ç«¹åˆ€") > 0 Then
+        CheckWeaponType = "ç«¹åˆ€"
         Exit Function
     End If
     
-    If InStr(wname, "˜e·") > 0 Or InStr(wname, "¬‘¾“") > 0 Then
-        CheckWeaponType = "˜e·"
+    If InStr(wname, "è„‡å·®") > 0 Or InStr(wname, "å°å¤ªåˆ€") > 0 Then
+        CheckWeaponType = "è„‡å·®"
         Exit Function
     End If
     
-    If wname = "“" Or wname = "“ú–{“" _
-        Or InStr(wname, "‘¾“") > 0 _
+    If wname = "åˆ€" Or wname = "æ—¥æœ¬åˆ€" _
+        Or InStr(wname, "å¤ªåˆ€") > 0 _
     Then
-        CheckWeaponType = "“ú–{“"
+        CheckWeaponType = "æ—¥æœ¬åˆ€"
         Exit Function
     End If
     
-    If InStr(wname, "”EÒ“") > 0 Then
-        CheckWeaponType = "”EÒ“"
+    If InStr(wname, "å¿è€…åˆ€") > 0 Then
+        CheckWeaponType = "å¿è€…åˆ€"
         Exit Function
     End If
     
-    If InStr(wname, "\è") > 0 Then
-        CheckWeaponType = "\è"
+    If InStr(wname, "åæ‰‹") > 0 Then
+        CheckWeaponType = "åæ‰‹"
         Exit Function
     End If
     
-    If InStr(wname, "Â—´“") > 0 Then
-        CheckWeaponType = "Â—´“"
+    If InStr(wname, "é’é¾åˆ€") > 0 Then
+        CheckWeaponType = "é’é¾åˆ€"
         Exit Function
     End If
     
-    If InStr(wname, "ƒgƒ}ƒz[ƒN") > 0 Then
-        CheckWeaponType = "ƒgƒ}ƒz[ƒN"
+    If InStr(wname, "ãƒˆãƒãƒ›ãƒ¼ã‚¯") > 0 Then
+        CheckWeaponType = "ãƒˆãƒãƒ›ãƒ¼ã‚¯"
         Exit Function
     End If
     
-    If InStr(wname, "ƒAƒbƒNƒX") > 0 Or InStr(wname, "•€") > 0 Then
-        If InStr(wname, "ƒOƒŒ[ƒg") > 0 Or InStr(wname, "—¼") > 0 _
-            Or InStr(wname, "ƒoƒgƒ‹") > 0 _
+    If InStr(wname, "ã‚¢ãƒƒã‚¯ã‚¹") > 0 Or InStr(wname, "æ–§") > 0 Then
+        If InStr(wname, "ã‚°ãƒ¬ãƒ¼ãƒˆ") > 0 Or InStr(wname, "ä¸¡") > 0 _
+            Or InStr(wname, "ãƒãƒˆãƒ«") > 0 _
         Then
-            CheckWeaponType = "—¼n•€"
+            CheckWeaponType = "ä¸¡åˆƒæ–§"
         Else
-            CheckWeaponType = "•Ğn•€"
+            CheckWeaponType = "ç‰‡åˆƒæ–§"
         End If
         Exit Function
     End If
     
-    If InStr(wname, "ƒTƒCƒY") > 0 Or InStr(wname, "‘åŠ™") > 0 Then
-        CheckWeaponType = "‘åŠ™"
+    If InStr(wname, "ã‚µã‚¤ã‚º") > 0 Or InStr(wname, "å¤§éŒ") > 0 Then
+        CheckWeaponType = "å¤§éŒ"
         Exit Function
     End If
     
-    If InStr(wname, "Š™") > 0 Then
-        CheckWeaponType = "Š™"
+    If InStr(wname, "éŒ") > 0 Then
+        CheckWeaponType = "éŒ"
         Exit Function
     End If
     
-    If InStr(wname, "ƒXƒ^ƒbƒt") > 0 Or InStr(wname, "ñ") > 0 Then
-        CheckWeaponType = "ñ"
+    If InStr(wname, "ã‚¹ã‚¿ãƒƒãƒ•") > 0 Or InStr(wname, "æ–") > 0 Then
+        CheckWeaponType = "æ–"
         Exit Function
     End If
     
-    If InStr(wname, "–_") > 0 Then
-        CheckWeaponType = "–_"
+    If InStr(wname, "æ£æ£’") > 0 Then
+        CheckWeaponType = "æ£æ£’"
         Exit Function
     End If
     
-    If InStr(wname, "Œx–_") > 0 Then
-        CheckWeaponType = "Œx–_"
+    If InStr(wname, "è­¦æ£’") > 0 Then
+        CheckWeaponType = "è­¦æ£’"
         Exit Function
     End If
     
-    If wname = "–_" Then
-        CheckWeaponType = "–_"
+    If wname = "æ£’" Then
+        CheckWeaponType = "æ£’"
         Exit Function
     End If
     
-    If InStr(wname, "“SƒpƒCƒv") > 0 Then
-        CheckWeaponType = "“SƒpƒCƒv"
+    If InStr(wname, "é‰„ãƒ‘ã‚¤ãƒ—") > 0 Then
+        CheckWeaponType = "é‰„ãƒ‘ã‚¤ãƒ—"
         Exit Function
     End If
     
-    If InStr(wname, "ƒXƒ^ƒ“ƒƒbƒh") > 0 Then
-        CheckWeaponType = "ƒXƒ^ƒ“ƒƒbƒh"
+    If InStr(wname, "ã‚¹ã‚¿ãƒ³ãƒ­ãƒƒãƒ‰") > 0 Then
+        CheckWeaponType = "ã‚¹ã‚¿ãƒ³ãƒ­ãƒƒãƒ‰"
         Exit Function
     End If
     
-    If InStr(wname, "ƒXƒpƒi") > 0 Then
-        CheckWeaponType = "ƒXƒpƒi"
+    If InStr(wname, "ã‚¹ãƒ‘ãƒŠ") > 0 Then
+        CheckWeaponType = "ã‚¹ãƒ‘ãƒŠ"
         Exit Function
     End If
     
-    If InStr(wname, "ƒƒCƒX") > 0 Then
-        CheckWeaponType = "ƒƒCƒX"
+    If InStr(wname, "ãƒ¡ã‚¤ã‚¹") > 0 Then
+        CheckWeaponType = "ãƒ¡ã‚¤ã‚¹"
         Exit Function
     End If
     
     
-    If InStr(wname, "ƒpƒ“ƒ`") > 0 Or InStr(wname, "ƒiƒbƒNƒ‹") > 0 Then
-        'ƒnƒ“ƒ}[ƒpƒ“ƒ`“™‚ªƒnƒ“ƒ}[‚É‚Ğ‚Á‚©‚©‚é‚Æ¢‚é‚½‚ßA‚±‚±‚Å”»’è
-        If InStrNotNest(wclass, "À") > 0 Then
-            CheckWeaponType = "ƒƒPƒbƒgƒpƒ“ƒ`"
+    If InStr(wname, "ãƒ‘ãƒ³ãƒ") > 0 Or InStr(wname, "ãƒŠãƒƒã‚¯ãƒ«") > 0 Then
+        'ãƒãƒ³ãƒãƒ¼ãƒ‘ãƒ³ãƒç­‰ãŒãƒãƒ³ãƒãƒ¼ã«ã²ã£ã‹ã‹ã‚‹ã¨å›°ã‚‹ãŸã‚ã€ã“ã“ã§åˆ¤å®š
+        If InStrNotNest(wclass, "å®Ÿ") > 0 Then
+            CheckWeaponType = "ãƒ­ã‚±ãƒƒãƒˆãƒ‘ãƒ³ãƒ"
         End If
         Exit Function
     End If
     
     
-    If InStr(wname, "ƒEƒH[ƒnƒ“ƒ}[") > 0 Then
-        CheckWeaponType = "ƒEƒH[ƒnƒ“ƒ}["
+    If InStr(wname, "ã‚¦ã‚©ãƒ¼ãƒãƒ³ãƒãƒ¼") > 0 Then
+        CheckWeaponType = "ã‚¦ã‚©ãƒ¼ãƒãƒ³ãƒãƒ¼"
         Exit Function
     End If
     
-    If InStr(wname, "–Ø’Æ") > 0 Then
-        CheckWeaponType = "–Ø’Æ"
+    If InStr(wname, "æœ¨æ§Œ") > 0 Then
+        CheckWeaponType = "æœ¨æ§Œ"
         Exit Function
     End If
     
-    If InStr(wname, "ƒsƒRƒsƒRƒnƒ“ƒ}[") > 0 Then
-        CheckWeaponType = "ƒsƒRƒsƒRƒnƒ“ƒ}["
+    If InStr(wname, "ãƒ”ã‚³ãƒ”ã‚³ãƒãƒ³ãƒãƒ¼") > 0 Then
+        CheckWeaponType = "ãƒ”ã‚³ãƒ”ã‚³ãƒãƒ³ãƒãƒ¼"
         Exit Function
     End If
     
-    If InStr(wname, "ƒnƒ“ƒ}[") > 0 Then
-        If InStrNotNest(wclass, "À") > 0 Then
-            CheckWeaponType = "½“S‹…"
+    If InStr(wname, "ãƒãƒ³ãƒãƒ¼") > 0 Then
+        If InStrNotNest(wclass, "å®Ÿ") > 0 Then
+            CheckWeaponType = "é–é‰„çƒ"
         Else
-            CheckWeaponType = "ƒnƒ“ƒ}["
+            CheckWeaponType = "ãƒãƒ³ãƒãƒ¼"
         End If
         Exit Function
     End If
     
-    If InStr(wname, "’Æ") > 0 Then
-        CheckWeaponType = "ƒnƒ“ƒ}["
+    If InStr(wname, "æ§Œ") > 0 Then
+        CheckWeaponType = "ãƒãƒ³ãƒãƒ¼"
         Exit Function
     End If
     
-    If Right$(wname, 3) = "ƒ‚[ƒ‹" Then
-        CheckWeaponType = "ƒ‚[ƒ‹"
+    If Right$(wname, 3) = "ãƒ¢ãƒ¼ãƒ«" Then
+        CheckWeaponType = "ãƒ¢ãƒ¼ãƒ«"
         Exit Function
     End If
     
-    If Right$(wname, 2) = "ƒ€ƒ`" Or InStr(wname, "•Ú") > 0 _
-        Or InStr(wname, "ƒEƒBƒbƒv") > 0 _
+    If Right$(wname, 2) = "ãƒ ãƒ" Or InStr(wname, "é­") > 0 _
+        Or InStr(wname, "ã‚¦ã‚£ãƒƒãƒ—") > 0 _
     Then
-        CheckWeaponType = "•Ú"
+        CheckWeaponType = "é­"
         Exit Function
     End If
     
-    If wname = "ƒTƒC" Then
-        CheckWeaponType = "ƒTƒC"
+    If wname = "ã‚µã‚¤" Then
+        CheckWeaponType = "ã‚µã‚¤"
         Exit Function
     End If
     
-    If InStr(wname, "ƒgƒ“ƒtƒ@[") > 0 Then
-        CheckWeaponType = "ƒgƒ“ƒtƒ@["
+    If InStr(wname, "ãƒˆãƒ³ãƒ•ã‚¡ãƒ¼") > 0 Then
+        CheckWeaponType = "ãƒˆãƒ³ãƒ•ã‚¡ãƒ¼"
         Exit Function
     End If
     
-    If InStr(wname, "“S‚Ì’Ü") > 0 Then
-        CheckWeaponType = "ƒNƒ["
+    If InStr(wname, "é‰„ã®çˆª") > 0 Then
+        CheckWeaponType = "ã‚¯ãƒ­ãƒ¼"
         Exit Function
     End If
     
-    If InStr(wname, "ƒnƒ‹ƒo[ƒh") > 0 Then
-        CheckWeaponType = "ƒnƒ‹ƒo[ƒh"
-        Exit Function
-    End If
-    
-    
-    If InStr(wname, "ƒ‚[ƒjƒ“ƒOƒXƒ^[") > 0 Then
-        CheckWeaponType = "ƒ‚[ƒjƒ“ƒOƒXƒ^["
-        Exit Function
-    End If
-    
-    If InStr(wname, "ƒtƒŒƒCƒ‹") > 0 Then
-        CheckWeaponType = "ƒtƒŒƒCƒ‹"
-        Exit Function
-    End If
-    
-    If InStr(wname, "½“S‹…") > 0 Then
-        CheckWeaponType = "½“S‹…"
-        Exit Function
-    End If
-    
-    If InStr(wname, "•ª“º") > 0 Then
-        CheckWeaponType = "•ª“º"
-        Exit Function
-    End If
-    
-    If InStr(wname, "ƒkƒ“ƒ`ƒƒƒN") > 0 Then
-        CheckWeaponType = "ƒkƒ“ƒ`ƒƒƒN"
-        Exit Function
-    End If
-    
-    If InStr(wname, "Oß") > 0 Then
-        CheckWeaponType = "Oß"
-        Exit Function
-    End If
-    
-    If InStr(wname, "ƒ`ƒF[ƒ“") > 0 Then
-        CheckWeaponType = "ƒ`ƒF[ƒ“"
+    If InStr(wname, "ãƒãƒ«ãƒãƒ¼ãƒ‰") > 0 Then
+        CheckWeaponType = "ãƒãƒ«ãƒãƒ¼ãƒ‰"
         Exit Function
     End If
     
     
-    If InStr(wname, "ƒu[ƒƒ‰ƒ“") > 0 Then
-        CheckWeaponType = "ƒu[ƒƒ‰ƒ“"
+    If InStr(wname, "ãƒ¢ãƒ¼ãƒ‹ãƒ³ã‚°ã‚¹ã‚¿ãƒ¼") > 0 Then
+        CheckWeaponType = "ãƒ¢ãƒ¼ãƒ‹ãƒ³ã‚°ã‚¹ã‚¿ãƒ¼"
         Exit Function
     End If
     
-    If InStr(wname, "ƒ`ƒƒƒNƒ‰ƒ€") > 0 Then
-        CheckWeaponType = "ƒ`ƒƒƒNƒ‰ƒ€"
+    If InStr(wname, "ãƒ•ãƒ¬ã‚¤ãƒ«") > 0 Then
+        CheckWeaponType = "ãƒ•ãƒ¬ã‚¤ãƒ«"
         Exit Function
     End If
     
-    If InStr(wname, "ƒ\[ƒT[") > 0 Then
-        CheckWeaponType = "ƒ\[ƒT["
+    If InStr(wname, "é–é‰„çƒ") > 0 Then
+        CheckWeaponType = "é–é‰„çƒ"
         Exit Function
     End If
     
-    If InStr(wname, "ƒNƒiƒC") > 0 Then
-        CheckWeaponType = "ƒNƒiƒC"
+    If InStr(wname, "åˆ†éŠ…") > 0 Then
+        CheckWeaponType = "åˆ†éŠ…"
         Exit Function
     End If
     
-    If InStr(wname, "Î") > 0 Or InStr(wname, "âI") > 0 Then
-        CheckWeaponType = "Î"
+    If InStr(wname, "ãƒŒãƒ³ãƒãƒ£ã‚¯") > 0 Then
+        CheckWeaponType = "ãƒŒãƒ³ãƒãƒ£ã‚¯"
         Exit Function
     End If
     
-    If InStr(wname, "Šâ") > 0 Then
-        CheckWeaponType = "Šâ"
+    If InStr(wname, "ä¸‰ç¯€æ£") > 0 Then
+        CheckWeaponType = "ä¸‰ç¯€æ£"
         Exit Function
     End If
     
-    If InStr(wname, "“S‹…") > 0 Then
-        CheckWeaponType = "“S‹…"
+    If InStr(wname, "ãƒã‚§ãƒ¼ãƒ³") > 0 Then
+        CheckWeaponType = "ãƒã‚§ãƒ¼ãƒ³"
         Exit Function
     End If
     
-    If InStr(wname, "èÖ’e") > 0 Then
-        CheckWeaponType = "èÖ’e"
+    
+    If InStr(wname, "ãƒ–ãƒ¼ãƒ¡ãƒ©ãƒ³") > 0 Then
+        CheckWeaponType = "ãƒ–ãƒ¼ãƒ¡ãƒ©ãƒ³"
         Exit Function
     End If
     
-    If InStr(wname, "ƒ|ƒeƒgƒXƒ}ƒbƒVƒƒ[") > 0 Then
-        CheckWeaponType = "ƒ|ƒeƒgƒXƒ}ƒbƒVƒƒ["
+    If InStr(wname, "ãƒãƒ£ã‚¯ãƒ©ãƒ ") > 0 Then
+        CheckWeaponType = "ãƒãƒ£ã‚¯ãƒ©ãƒ "
         Exit Function
     End If
     
-    If InStr(wname, "ƒ_ƒCƒiƒ}ƒCƒg") > 0 Then
-        CheckWeaponType = "ƒ_ƒCƒiƒ}ƒCƒg"
+    If InStr(wname, "ã‚½ãƒ¼ã‚µãƒ¼") > 0 Then
+        CheckWeaponType = "ã‚½ãƒ¼ã‚µãƒ¼"
         Exit Function
     End If
     
-    If InStr(wname, "”š’e") > 0 Then
-        If InStr(wname, "“Š‚°") > 0 Then
-            CheckWeaponType = "”š’e"
+    If InStr(wname, "ã‚¯ãƒŠã‚¤") > 0 Then
+        CheckWeaponType = "ã‚¯ãƒŠã‚¤"
+        Exit Function
+    End If
+    
+    If InStr(wname, "çŸ³") > 0 Or InStr(wname, "ç¤«") > 0 Then
+        CheckWeaponType = "çŸ³"
+        Exit Function
+    End If
+    
+    If InStr(wname, "å²©") > 0 Then
+        CheckWeaponType = "å²©"
+        Exit Function
+    End If
+    
+    If InStr(wname, "é‰„çƒ") > 0 Then
+        CheckWeaponType = "é‰„çƒ"
+        Exit Function
+    End If
+    
+    If InStr(wname, "æ‰‹æ¦´å¼¾") > 0 Then
+        CheckWeaponType = "æ‰‹æ¦´å¼¾"
+        Exit Function
+    End If
+    
+    If InStr(wname, "ãƒãƒ†ãƒˆã‚¹ãƒãƒƒã‚·ãƒ£ãƒ¼") > 0 Then
+        CheckWeaponType = "ãƒãƒ†ãƒˆã‚¹ãƒãƒƒã‚·ãƒ£ãƒ¼"
+        Exit Function
+    End If
+    
+    If InStr(wname, "ãƒ€ã‚¤ãƒŠãƒã‚¤ãƒˆ") > 0 Then
+        CheckWeaponType = "ãƒ€ã‚¤ãƒŠãƒã‚¤ãƒˆ"
+        Exit Function
+    End If
+    
+    If InStr(wname, "çˆ†å¼¾") > 0 Then
+        If InStr(wname, "æŠ•ã’") > 0 Then
+            CheckWeaponType = "çˆ†å¼¾"
             Exit Function
         End If
     End If
     
-    If InStr(wname, "‰Î‰Š•r") > 0 Then
-        CheckWeaponType = "‰Î‰Š•r"
+    If InStr(wname, "ç«ç‚ç“¶") > 0 Then
+        CheckWeaponType = "ç«ç‚ç“¶"
         Exit Function
     End If
     
-    If InStr(wname, "ƒlƒbƒg") > 0 Or InStr(wname, "–Ô") > 0 Then
-        CheckWeaponType = "ƒlƒbƒg"
+    If InStr(wname, "ãƒãƒƒãƒˆ") > 0 Or InStr(wname, "ç¶²") > 0 Then
+        CheckWeaponType = "ãƒãƒƒãƒˆ"
         Exit Function
     End If
     
-    If InStr(wname, "èù") > 0 Then
-        CheckWeaponType = "ƒlƒbƒg"
+    If InStr(wname, "æ‰‹éŒ ") > 0 Then
+        CheckWeaponType = "ãƒãƒƒãƒˆ"
         Exit Function
     End If
     
-    If Right$(wname, 2) = "ƒRƒ}" Then
-        CheckWeaponType = "ƒRƒ}"
+    If Right$(wname, 2) = "ã‚³ãƒ" Then
+        CheckWeaponType = "ã‚³ãƒ"
         Exit Function
     End If
     
-    If InStr(wname, "D") > 0 Then
-        CheckWeaponType = "‚¨D"
-        Exit Function
-    End If
-    
-    
-    If InStr(wname, "ƒŠƒ{ƒ“") > 0 Then
-        CheckWeaponType = "ƒŠƒ{ƒ“"
-        Exit Function
-    End If
-    
-    If InStr(wname, "ƒt[ƒv") > 0 Then
-        CheckWeaponType = "ƒt[ƒv"
+    If InStr(wname, "æœ­") > 0 Then
+        CheckWeaponType = "ãŠæœ­"
         Exit Function
     End If
     
     
-    If InStr(wname, "ƒJƒ^ƒƒO") > 0 Then
-        CheckWeaponType = "ƒJƒ^ƒƒO"
+    If InStr(wname, "ãƒªãƒœãƒ³") > 0 Then
+        CheckWeaponType = "ãƒªãƒœãƒ³"
         Exit Function
     End If
     
-    If InStr(wname, "ƒtƒ‰ƒCƒpƒ“") > 0 Then
-        CheckWeaponType = "ƒtƒ‰ƒCƒpƒ“"
+    If InStr(wname, "ãƒ•ãƒ¼ãƒ—") > 0 Then
+        CheckWeaponType = "ãƒ•ãƒ¼ãƒ—"
         Exit Function
     End If
     
-    If InStr(wname, "ƒgƒ“ƒ{") > 0 Then
-        CheckWeaponType = "ƒgƒ“ƒ{"
+    
+    If InStr(wname, "ã‚«ã‚¿ãƒ­ã‚°") > 0 Then
+        CheckWeaponType = "ã‚«ã‚¿ãƒ­ã‚°"
         Exit Function
     End If
     
-    If InStr(wname, "ƒ‚ƒbƒv") > 0 Then
-        CheckWeaponType = "ƒ‚ƒbƒv"
+    If InStr(wname, "ãƒ•ãƒ©ã‚¤ãƒ‘ãƒ³") > 0 Then
+        CheckWeaponType = "ãƒ•ãƒ©ã‚¤ãƒ‘ãƒ³"
         Exit Function
     End If
     
-    If InStr(wname, "“‚P") > 0 Then
-        CheckWeaponType = "“‚P"
+    If InStr(wname, "ãƒˆãƒ³ãƒœ") > 0 Then
+        CheckWeaponType = "ãƒˆãƒ³ãƒœ"
         Exit Function
     End If
     
-    If InStr(wname, "‹à‘®ƒoƒbƒg") > 0 Then
-        CheckWeaponType = "‹à‘®ƒoƒbƒg"
+    If InStr(wname, "ãƒ¢ãƒƒãƒ—") > 0 Then
+        CheckWeaponType = "ãƒ¢ãƒƒãƒ—"
         Exit Function
     End If
     
-    If InStr(wname, "“Bƒoƒbƒg") > 0 Then
-        CheckWeaponType = "“Bƒoƒbƒg"
+    If InStr(wname, "å”å‚˜") > 0 Then
+        CheckWeaponType = "å”å‚˜"
         Exit Function
     End If
     
-    If Right$(wname, 3) = "ƒoƒbƒg" Then
-        If InStr(wname, "ƒwƒbƒhƒoƒbƒg") = 0 Then
-            CheckWeaponType = "ƒoƒbƒg"
+    If InStr(wname, "é‡‘å±ãƒãƒƒãƒˆ") > 0 Then
+        CheckWeaponType = "é‡‘å±ãƒãƒƒãƒˆ"
+        Exit Function
+    End If
+    
+    If InStr(wname, "é‡˜ãƒãƒƒãƒˆ") > 0 Then
+        CheckWeaponType = "é‡˜ãƒãƒƒãƒˆ"
+        Exit Function
+    End If
+    
+    If Right$(wname, 3) = "ãƒãƒƒãƒˆ" Then
+        If InStr(wname, "ãƒ˜ãƒƒãƒ‰ãƒãƒƒãƒˆ") = 0 Then
+            CheckWeaponType = "ãƒãƒƒãƒˆ"
             Exit Function
         End If
     End If
     
-    If InStr(wname, "îq") > 0 Then
-        CheckWeaponType = "îq"
+    If InStr(wname, "æ‰‡å­") > 0 Then
+        CheckWeaponType = "æ‰‡å­"
         Exit Function
     End If
     
-    If InStr(wname, "ƒMƒ^[") > 0 Then
-        CheckWeaponType = "ƒMƒ^["
+    If InStr(wname, "ã‚®ã‚¿ãƒ¼") > 0 Then
+        CheckWeaponType = "ã‚®ã‚¿ãƒ¼"
         Exit Function
     End If
     
-    If InStr(wname, "ƒnƒŠƒZƒ“") > 0 Then
-        CheckWeaponType = "ƒnƒŠƒZƒ“"
+    If InStr(wname, "ãƒãƒªã‚»ãƒ³") > 0 Then
+        CheckWeaponType = "ãƒãƒªã‚»ãƒ³"
         Exit Function
     End If
     
-    If wname = "ƒSƒ‹ƒtƒhƒ‰ƒCƒo[" Then
-        CheckWeaponType = "ƒSƒ‹ƒtƒhƒ‰ƒCƒo["
+    If wname = "ã‚´ãƒ«ãƒ•ãƒ‰ãƒ©ã‚¤ãƒãƒ¼" Then
+        CheckWeaponType = "ã‚´ãƒ«ãƒ•ãƒ‰ãƒ©ã‚¤ãƒãƒ¼"
         Exit Function
     End If
     
     
-    If InStr(wname, "ƒgƒ‰ƒCƒfƒ“ƒg") > 0 Or InStr(wname, "O³‘„") > 0 _
-        Or InStr(wname, "ƒWƒƒƒxƒŠƒ“") > 0 _
+    If InStr(wname, "ãƒˆãƒ©ã‚¤ãƒ‡ãƒ³ãƒˆ") > 0 Or InStr(wname, "ä¸‰å‰æ§") > 0 _
+        Or InStr(wname, "ã‚¸ãƒ£ãƒ™ãƒªãƒ³") > 0 _
     Then
-        CheckWeaponType = "ƒgƒ‰ƒCƒfƒ“ƒg"
+        CheckWeaponType = "ãƒˆãƒ©ã‚¤ãƒ‡ãƒ³ãƒˆ"
         Exit Function
     End If
     
-    If InStr(wname, "ƒXƒsƒA") > 0 Then
-        CheckWeaponType = "ƒXƒsƒA"
+    If InStr(wname, "ã‚¹ãƒ”ã‚¢") > 0 Then
+        CheckWeaponType = "ã‚¹ãƒ”ã‚¢"
         Exit Function
     End If
     
-    If InStr(wname, "‘„") > 0 Then
-        CheckWeaponType = "˜a‘„"
+    If InStr(wname, "æ§") > 0 Then
+        CheckWeaponType = "å’Œæ§"
         Exit Function
     End If
     
-    If InStr(wname, "ƒ‰ƒ“ƒX") > 0 Or InStr(wname, "ƒ‰ƒ“ƒT[") > 0 Then
-        CheckWeaponType = "ƒ‰ƒ“ƒX"
+    If InStr(wname, "ãƒ©ãƒ³ã‚¹") > 0 Or InStr(wname, "ãƒ©ãƒ³ã‚µãƒ¼") > 0 Then
+        CheckWeaponType = "ãƒ©ãƒ³ã‚¹"
         Exit Function
     End If
     
-    If InStr(wname, "ƒpƒCƒN") > 0 Then
-        CheckWeaponType = "ƒ‰ƒ“ƒX"
+    If InStr(wname, "ãƒ‘ã‚¤ã‚¯") > 0 Then
+        CheckWeaponType = "ãƒ©ãƒ³ã‚¹"
         Exit Function
     End If
     
-    If InStr(wname, "ƒGƒXƒgƒbƒN") > 0 Then
-        CheckWeaponType = "ƒGƒXƒgƒbƒN"
+    If InStr(wname, "ã‚¨ã‚¹ãƒˆãƒƒã‚¯") > 0 Then
+        CheckWeaponType = "ã‚¨ã‚¹ãƒˆãƒƒã‚¯"
         Exit Function
     End If
     
-    If wname = "ƒƒbƒh" Then
-        CheckWeaponType = "ƒƒbƒh"
+    If wname = "ãƒ­ãƒƒãƒ‰" Then
+        CheckWeaponType = "ãƒ­ãƒƒãƒ‰"
         Exit Function
     End If
     
-    If InStr(wname, "ƒhƒŠƒ‹") > 0 Then
-        CheckWeaponType = "ƒhƒŠƒ‹"
+    If InStr(wname, "ãƒ‰ãƒªãƒ«") > 0 Then
+        CheckWeaponType = "ãƒ‰ãƒªãƒ«"
         Exit Function
     End If
 End Function
 
-'•Ší€”õ‚ÌŒø‰Ê‰¹
+'æ­¦å™¨æº–å‚™æ™‚ã®åŠ¹æœéŸ³
 Public Sub PrepareWeaponSound(u As Unit, ByVal w As Integer)
 Dim wname As String, wclass As String
 
-    'ƒtƒ‰ƒO‚ğƒNƒŠƒA
+    'ãƒ•ãƒ©ã‚°ã‚’ã‚¯ãƒªã‚¢
     IsWavePlayed = False
     
     wname = u.WeaponNickname(w)
     wclass = u.Weapon(w).Class
     
-    If InStrNotNest(wclass, "•") > 0 Or InStrNotNest(wclass, "“Ë") > 0 Then
-        If InStr(wname, "ƒr[ƒ€") > 0 _
-            Or InStr(wname, "ƒvƒ‰ƒYƒ}") > 0 _
-            Or InStr(wname, "ƒŒ[ƒU[") > 0 _
-            Or InStr(wname, "ƒuƒ‰ƒXƒ^[") > 0 _
-            Or InStr(wname, "‚ü”g") > 0 _
-            Or InStr(wname, "“d¥") > 0 _
-            Or wname = "ƒZƒCƒo[" _
-            Or wname = "ƒ‰ƒCƒgƒZƒCƒo[" _
-            Or wname = "ƒ‰ƒ“ƒT[" _
+    If InStrNotNest(wclass, "æ­¦") > 0 Or InStrNotNest(wclass, "çª") > 0 Then
+        If InStr(wname, "ãƒ“ãƒ¼ãƒ ") > 0 _
+            Or InStr(wname, "ãƒ—ãƒ©ã‚ºãƒ") > 0 _
+            Or InStr(wname, "ãƒ¬ãƒ¼ã‚¶ãƒ¼") > 0 _
+            Or InStr(wname, "ãƒ–ãƒ©ã‚¹ã‚¿ãƒ¼") > 0 _
+            Or InStr(wname, "é«˜å‘¨æ³¢") > 0 _
+            Or InStr(wname, "é›»ç£") > 0 _
+            Or wname = "ã‚»ã‚¤ãƒãƒ¼" _
+            Or wname = "ãƒ©ã‚¤ãƒˆã‚»ã‚¤ãƒãƒ¼" _
+            Or wname = "ãƒ©ãƒ³ã‚µãƒ¼" _
         Then
             PlayWave "BeamSaber.wav"
         End If
     End If
     
-    'ƒtƒ‰ƒO‚ğƒNƒŠƒA
+    'ãƒ•ãƒ©ã‚°ã‚’ã‚¯ãƒªã‚¢
     IsWavePlayed = False
 End Sub
 
 
-'•Šíg—p‚Ì“ÁêŒø‰Ê
+'æ­¦å™¨ä½¿ç”¨æ™‚ã®ç‰¹æ®ŠåŠ¹æœ
 Public Sub AttackEffect(u As Unit, ByVal w As Integer)
-    '‰EƒNƒŠƒbƒN’†‚Í“ÁêŒø‰Ê‚ğƒXƒLƒbƒv
+    'å³ã‚¯ãƒªãƒƒã‚¯ä¸­ã¯ç‰¹æ®ŠåŠ¹æœã‚’ã‚¹ã‚­ãƒƒãƒ—
     If IsRButtonPressed() Then
         Exit Sub
     End If
@@ -996,7 +996,7 @@ Public Sub AttackEffect(u As Unit, ByVal w As Integer)
     End If
 End Sub
 
-'•Šíg—p‚ÌƒAƒjƒ[ƒVƒ‡ƒ“
+'æ­¦å™¨ä½¿ç”¨æ™‚ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³
 Public Sub AttackAnimation(u As Unit, ByVal w As Integer)
 Dim wname As String, wclass As String, wtype As String, wtype0 As String
 Dim aname As String, bmpname As String, cname As String, cname0 As String
@@ -1008,294 +1008,294 @@ Dim combo_attack As Boolean
 Dim is_handy_weapon As Boolean
 Dim i As Integer
 
-    'í“¬ƒAƒjƒ”ñ©“®‘I‘ğƒIƒvƒVƒ‡ƒ“
-    If IsOptionDefined("í“¬ƒAƒjƒ”ñ©“®‘I‘ğ") Then
-        ShowAnimation "ƒfƒtƒHƒ‹ƒgUŒ‚"
+    'æˆ¦é—˜ã‚¢ãƒ‹ãƒ¡éè‡ªå‹•é¸æŠã‚ªãƒ—ã‚·ãƒ§ãƒ³
+    If IsOptionDefined("æˆ¦é—˜ã‚¢ãƒ‹ãƒ¡éè‡ªå‹•é¸æŠ") Then
+        ShowAnimation "ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆæ”»æ’ƒ"
         Exit Sub
     End If
     
     wname = u.WeaponNickname(w)
     wclass = u.Weapon(w).Class
     
-    '“ñ“—¬H
-    If InStr(wname, "ƒ_ƒuƒ‹") > 0 Or InStr(wname, "ƒcƒCƒ“") > 0 _
-        Or InStr(wname, "ƒfƒ…ƒAƒ‹") > 0 _
-        Or InStr(wname, "‘o") > 0 Or InStr(wname, "“ñ“") > 0 _
-        Or InStr(wname, "‚Q˜A") > 0 Or InStr(wname, "“ñ˜A") > 0 _
-        Or InStr(wname, "˜A‘•") > 0 _
+    'äºŒåˆ€æµï¼Ÿ
+    If InStr(wname, "ãƒ€ãƒ–ãƒ«") > 0 Or InStr(wname, "ãƒ„ã‚¤ãƒ³") > 0 _
+        Or InStr(wname, "ãƒ‡ãƒ¥ã‚¢ãƒ«") > 0 _
+        Or InStr(wname, "åŒ") > 0 Or InStr(wname, "äºŒåˆ€") > 0 _
+        Or InStr(wname, "ï¼’é€£") > 0 Or InStr(wname, "äºŒé€£") > 0 _
+        Or InStr(wname, "é€£è£…") > 0 _
     Then
         double_weapon = True
     End If
     
-    '˜A‘±UŒ‚H
-    If InStr(wname, "ƒ_ƒuƒ‹") > 0 Or InStr(wname, "ƒcƒCƒ“") > 0 _
-        Or InStr(wname, "ƒRƒ“ƒrƒl[ƒVƒ‡ƒ“") > 0 _
-        Or InStr(wname, "ƒRƒ“ƒ{") > 0 _
-        Or InStr(wname, "˜A") > 0 Or InStrNotNest(wclass, "˜A") > 0 _
+    'é€£ç¶šæ”»æ’ƒï¼Ÿ
+    If InStr(wname, "ãƒ€ãƒ–ãƒ«") > 0 Or InStr(wname, "ãƒ„ã‚¤ãƒ³") > 0 _
+        Or InStr(wname, "ã‚³ãƒ³ãƒ“ãƒãƒ¼ã‚·ãƒ§ãƒ³") > 0 _
+        Or InStr(wname, "ã‚³ãƒ³ãƒœ") > 0 _
+        Or InStr(wname, "é€£") > 0 Or InStrNotNest(wclass, "é€£") > 0 _
     Then
         double_attack = True
     End If
     
-    '—‘ÅH
-    If InStr(wname, "—‘Å") > 0 Or InStr(wname, "—•‘") > 0 _
-        Or InStr(wname, "—‚ê") > 0 Or InStr(wname, "•S—ó") > 0 _
-        Or (Right$(wname, 4) = "ƒ‰ƒbƒVƒ…" _
-            And InStr(wname, "ƒNƒ‰ƒbƒVƒ…") = 0 _
-            And InStr(wname, "ƒXƒ‰ƒbƒVƒ…") = 0 _
-            And InStr(wname, "ƒXƒvƒ‰ƒbƒVƒ…") = 0 _
-            And InStr(wname, "ƒtƒ‰ƒbƒVƒ…") = 0) _
+    'ä¹±æ‰“ï¼Ÿ
+    If InStr(wname, "ä¹±æ‰“") > 0 Or InStr(wname, "ä¹±èˆ") > 0 _
+        Or InStr(wname, "ä¹±ã‚Œ") > 0 Or InStr(wname, "ç™¾çƒˆ") > 0 _
+        Or (Right$(wname, 4) = "ãƒ©ãƒƒã‚·ãƒ¥" _
+            And InStr(wname, "ã‚¯ãƒ©ãƒƒã‚·ãƒ¥") = 0 _
+            And InStr(wname, "ã‚¹ãƒ©ãƒƒã‚·ãƒ¥") = 0 _
+            And InStr(wname, "ã‚¹ãƒ—ãƒ©ãƒƒã‚·ãƒ¥") = 0 _
+            And InStr(wname, "ãƒ•ãƒ©ãƒƒã‚·ãƒ¥") = 0) _
     Then
         combo_attack = True
     End If
     
-    '‚±‚ê‚©‚ç•Ší‚Ìí—Ş‚ğ”»’è
+    'ã“ã‚Œã‹ã‚‰æ­¦å™¨ã®ç¨®é¡ã‚’åˆ¤å®š
     
-    '‚Ü‚¸‚Í”’•ºí—p•Ší‚Ì”»’è
-    If InStrNotNest(wclass, "•") = 0 _
-        And InStrNotNest(wclass, "“Ë") = 0 _
-        And InStrNotNest(wclass, "Ú") = 0 _
-        And InStrNotNest(wclass, "Ši") = 0 _
+    'ã¾ãšã¯ç™½å…µæˆ¦ç”¨æ­¦å™¨ã®åˆ¤å®š
+    If InStrNotNest(wclass, "æ­¦") = 0 _
+        And InStrNotNest(wclass, "çª") = 0 _
+        And InStrNotNest(wclass, "æ¥") = 0 _
+        And InStrNotNest(wclass, "æ ¼") = 0 _
     Then
         GoTo SkipInfightWeapon
     End If
     
-    '“Š±•Ší‚ğœ‚­
-    If InStr(wname, "“Š") > 0 Or InStr(wname, "”ò‚Ñ") > 0 _
-        Or Right$(wname, 3) = "ƒXƒ[" Or Right$(wname, 3) = "ƒXƒƒE" _
-        Or InStrNotNest(wclass, "À") > 0 _
+    'æŠ•æ“²æ­¦å™¨ã‚’é™¤ã
+    If InStr(wname, "æŠ•") > 0 Or InStr(wname, "é£›ã³") > 0 _
+        Or Right$(wname, 3) = "ã‚¹ãƒ­ãƒ¼" Or Right$(wname, 3) = "ã‚¹ãƒ­ã‚¦" _
+        Or InStrNotNest(wclass, "å®Ÿ") > 0 _
     Then
         GoTo SkipInfightWeapon
     End If
     
-    'ˆÚ“®ƒ}ƒbƒvUŒ‚
-    If InStrNotNest(wclass, "‚lˆÚ") > 0 Then
-        wtype = "‚l‚`‚oˆÚ“®ƒ^ƒbƒNƒ‹"
+    'ç§»å‹•ãƒãƒƒãƒ—æ”»æ’ƒ
+    If InStrNotNest(wclass, "ï¼­ç§»") > 0 Then
+        wtype = "ï¼­ï¼¡ï¼°ç§»å‹•ã‚¿ãƒƒã‚¯ãƒ«"
         GoTo FoundWeaponType
     End If
     
-    '“ËŒ‚Œn(•Ší‚ğ\‚¦‚Ä“Ëi‚·‚é)
+    'çªæ’ƒç³»(æ­¦å™¨ã‚’æ§‹ãˆã¦çªé€²ã™ã‚‹)
     
-    If InStr(wname, "“ËŒ‚") > 0 Or InStr(wname, "“Ëi") > 0 _
-        Or InStr(wname, "ƒ`ƒƒ[ƒW") > 0 _
+    If InStr(wname, "çªæ’ƒ") > 0 Or InStr(wname, "çªé€²") > 0 _
+        Or InStr(wname, "ãƒãƒ£ãƒ¼ã‚¸") > 0 _
     Then
         Select Case WeaponInHand
             Case ""
-                'ŠY“–‚¹‚¸
+                'è©²å½“ã›ãš
             Case Else
-                wtype = WeaponInHand & "“ËŒ‚"
+                wtype = WeaponInHand & "çªæ’ƒ"
                 GoTo FoundWeaponType
         End Select
     End If
     
-    '‘ÅŒ‚Œn‚ÌUŒ‚
+    'æ‰“æ’ƒç³»ã®æ”»æ’ƒ
     
-    If InStr(wname, "Œ–@") > 0 _
-        Or Right$(wname, 2) = "ƒA[ƒc" _
-        Or Right$(wname, 5) = "ƒXƒgƒ‰ƒCƒN" _
+    If InStr(wname, "æ‹³æ³•") > 0 _
+        Or Right$(wname, 2) = "ã‚¢ãƒ¼ãƒ„" _
+        Or Right$(wname, 5) = "ã‚¹ãƒˆãƒ©ã‚¤ã‚¯" _
     Then
-        wtype = "˜A‘Å"
+        wtype = "é€£æ‰“"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "Gè") > 0 Or InStr(wname, "G˜r") > 0 Then
-        wtype = "”’•º˜AŒ‚"
+    If InStr(wname, "è§¦æ‰‹") > 0 Or InStr(wname, "è§¦è…•") > 0 Then
+        wtype = "ç™½å…µé€£æ’ƒ"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "ƒpƒ“ƒ`") > 0 Or InStr(wname, "ƒ`ƒ‡ƒbƒv") > 0 _
-        Or InStr(wname, "ƒiƒbƒNƒ‹") > 0 Or InStr(wname, "ƒuƒ[") > 0 _
-        Or InStr(wname, "Œ") > 0 Or InStr(wname, "¶") > 0 _
-        Or InStr(wname, "‘Å") > 0 Or InStr(wname, "™¤") > 0 _
-        Or InStr(wname, "‰£") > 0 _
-        Or Right$(wname, 1) = "è" Or Right$(wname, 1) = "˜r" _
+    If InStr(wname, "ãƒ‘ãƒ³ãƒ") > 0 Or InStr(wname, "ãƒãƒ§ãƒƒãƒ—") > 0 _
+        Or InStr(wname, "ãƒŠãƒƒã‚¯ãƒ«") > 0 Or InStr(wname, "ãƒ–ãƒ­ãƒ¼") > 0 _
+        Or InStr(wname, "æ‹³") > 0 Or InStr(wname, "æŒ") > 0 _
+        Or InStr(wname, "æ‰“") > 0 Or InStr(wname, "å‹") > 0 _
+        Or InStr(wname, "æ®´") > 0 _
+        Or Right$(wname, 1) = "æ‰‹" Or Right$(wname, 1) = "è…•" _
     Then
         If combo_attack Then
-            wtype = "—‘Å"
+            wtype = "ä¹±æ‰“"
         ElseIf double_attack Then
-            wtype = "˜A‘Å"
-        ElseIf InStrNotNest(wclass, "‚i") > 0 Then
-            wtype = "ƒAƒbƒp["
+            wtype = "é€£æ‰“"
+        ElseIf InStrNotNest(wclass, "ï¼ª") > 0 Then
+            wtype = "ã‚¢ãƒƒãƒ‘ãƒ¼"
         Else
-            wtype = "‘Å“Ë"
+            wtype = "æ‰“çª"
         End If
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "Ši“¬") > 0 Or InStr(wname, "‰ö—Í") > 0 Then
-        wtype = "Ši“¬"
+    If InStr(wname, "æ ¼é—˜") > 0 Or InStr(wname, "æ€ªåŠ›") > 0 Then
+        wtype = "æ ¼é—˜"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "ƒ^ƒbƒNƒ‹") > 0 Or InStr(wname, "‘Ì“–") > 0 _
-        Or InStr(wname, "ƒ`ƒƒ[ƒW") > 0 Or InStr(wname, "‚Ô‚¿‚©‚Ü‚µ") > 0 _
-        Or InStr(wname, "‚©‚İ‚Â‚«") > 0 _
+    If InStr(wname, "ã‚¿ãƒƒã‚¯ãƒ«") > 0 Or InStr(wname, "ä½“å½“") > 0 _
+        Or InStr(wname, "ãƒãƒ£ãƒ¼ã‚¸") > 0 Or InStr(wname, "ã¶ã¡ã‹ã¾ã—") > 0 _
+        Or InStr(wname, "ã‹ã¿ã¤ã") > 0 _
     Then
-        wtype = "ƒ^ƒbƒNƒ‹"
+        wtype = "ã‚¿ãƒƒã‚¯ãƒ«"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "ƒLƒbƒN") > 0 Or InStr(wname, "R") > 0 _
-        Or InStr(wname, "‹r") > 0 Or Right$(wname, 1) = "‘«" _
+    If InStr(wname, "ã‚­ãƒƒã‚¯") > 0 Or InStr(wname, "è¹´") > 0 _
+        Or InStr(wname, "è„š") > 0 Or Right$(wname, 1) = "è¶³" _
     Then
-        wtype = "ƒLƒbƒN"
+        wtype = "ã‚­ãƒƒã‚¯"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "ƒwƒbƒhƒoƒbƒg") > 0 Or InStr(wname, "“ª“Ë") > 0 Then
-        wtype = "ƒwƒbƒhƒoƒbƒg"
+    If InStr(wname, "ãƒ˜ãƒƒãƒ‰ãƒãƒƒãƒˆ") > 0 Or InStr(wname, "é ­çª") > 0 Then
+        wtype = "ãƒ˜ãƒƒãƒ‰ãƒãƒƒãƒˆ"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "ƒAƒbƒp[") > 0 Then
-        wtype = "ƒAƒbƒp["
+    If InStr(wname, "ã‚¢ãƒƒãƒ‘ãƒ¼") > 0 Then
+        wtype = "ã‚¢ãƒƒãƒ‘ãƒ¼"
         GoTo FoundWeaponType
     End If
     
-    'U‚Á‚ÄUŒ‚‚·‚é•Ší
+    'æŒ¯ã£ã¦æ”»æ’ƒã™ã‚‹æ­¦å™¨
     
-    If InStr(wname, "ƒ\[ƒh") > 0 Or InStr(wname, "Œ•") > 0 _
-        Or InStr(wname, "ƒiƒCƒt") > 0 Or InStr(wname, "ƒ_ƒK[") > 0 _
-        Or InStr(wname, "ƒVƒ~ƒ^[") > 0 Or InStr(wname, "ƒT[ƒxƒ‹") > 0 _
-        Or InStr(wname, "ƒJƒbƒgƒ‰ƒX") > 0 Or InStr(wname, "ƒJƒbƒ^[") > 0 _
-        Or Right$(wname, 2) = "ƒ€ƒ`" Or InStr(wname, "•Ú") > 0 _
-        Or InStr(wname, "ƒEƒBƒbƒv") > 0 _
-        Or InStr(wname, "ƒnƒ“ƒ}[") > 0 Or InStr(wname, "ƒƒbƒh") > 0 _
-        Or InStr(wname, "ƒNƒ[") > 0 Or InStr(wname, "’Ü") > 0 _
-        Or InStr(wname, "‚Ğ‚Á‚©‚«") > 0 _
-        Or InStr(wname, "ƒA[ƒ€") > 0 _
-        Or Right$(wname, 1) = "”ö" _
+    If InStr(wname, "ã‚½ãƒ¼ãƒ‰") > 0 Or InStr(wname, "å‰£") > 0 _
+        Or InStr(wname, "ãƒŠã‚¤ãƒ•") > 0 Or InStr(wname, "ãƒ€ã‚¬ãƒ¼") > 0 _
+        Or InStr(wname, "ã‚·ãƒŸã‚¿ãƒ¼") > 0 Or InStr(wname, "ã‚µãƒ¼ãƒ™ãƒ«") > 0 _
+        Or InStr(wname, "ã‚«ãƒƒãƒˆãƒ©ã‚¹") > 0 Or InStr(wname, "ã‚«ãƒƒã‚¿ãƒ¼") > 0 _
+        Or Right$(wname, 2) = "ãƒ ãƒ" Or InStr(wname, "é­") > 0 _
+        Or InStr(wname, "ã‚¦ã‚£ãƒƒãƒ—") > 0 _
+        Or InStr(wname, "ãƒãƒ³ãƒãƒ¼") > 0 Or InStr(wname, "ãƒ­ãƒƒãƒ‰") > 0 _
+        Or InStr(wname, "ã‚¯ãƒ­ãƒ¼") > 0 Or InStr(wname, "çˆª") > 0 _
+        Or InStr(wname, "ã²ã£ã‹ã") > 0 _
+        Or InStr(wname, "ã‚¢ãƒ¼ãƒ ") > 0 _
+        Or Right$(wname, 1) = "å°¾" _
     Then
         If combo_attack Then
-            wtype = "”’•º—Œ‚"
+            wtype = "ç™½å…µä¹±æ’ƒ"
         ElseIf double_attack Then
-            wtype = "”’•º˜AŒ‚"
-        ElseIf InStr(wname, "‰ñ“]") > 0 Then
-            wtype = "”’•º‰ñ“]"
-        ElseIf InStrNotNest(wclass, "‚i") > 0 Then
-            wtype = "U‚èã‚°"
+            wtype = "ç™½å…µé€£æ’ƒ"
+        ElseIf InStr(wname, "å›è»¢") > 0 Then
+            wtype = "ç™½å…µå›è»¢"
+        ElseIf InStrNotNest(wclass, "ï¼ª") > 0 Then
+            wtype = "æŒ¯ã‚Šä¸Šã’"
         Else
-            wtype = "”’•º•Ší"
+            wtype = "ç™½å…µæ­¦å™¨"
         End If
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "“") > 0 Or InStr(wname, "a") > 0 _
-        Or InStr(wname, "ƒuƒŒ[ƒh") > 0 Or InStr(wname, "n") > 0 _
-        Or InStr(wname, "ƒAƒbƒNƒX") > 0 Or InStr(wname, "•€") > 0 _
-        Or InStr(wname, "ƒJƒbƒg") > 0 Or InStr(wname, "ƒJƒbƒ^[") > 0 _
-        Or InStr(wname, "ƒXƒ‰ƒbƒVƒ…") > 0 _
-        Or InStr(wname, "‹‡") > 0 _
+    If InStr(wname, "åˆ€") > 0 Or InStr(wname, "æ–¬") > 0 _
+        Or InStr(wname, "ãƒ–ãƒ¬ãƒ¼ãƒ‰") > 0 Or InStr(wname, "åˆƒ") > 0 _
+        Or InStr(wname, "ã‚¢ãƒƒã‚¯ã‚¹") > 0 Or InStr(wname, "æ–§") > 0 _
+        Or InStr(wname, "ã‚«ãƒƒãƒˆ") > 0 Or InStr(wname, "ã‚«ãƒƒã‚¿ãƒ¼") > 0 _
+        Or InStr(wname, "ã‚¹ãƒ©ãƒƒã‚·ãƒ¥") > 0 _
+        Or InStr(wname, "å±…åˆ") > 0 _
     Then
         If combo_attack Then
-            wtype = "”’•º—Œ‚"
+            wtype = "ç™½å…µä¹±æ’ƒ"
         ElseIf double_attack Then
-            wtype = "ƒ_ƒuƒ‹aŒ‚"
-        ElseIf InStr(wname, "‰ñ“]") > 0 Then
-            wtype = "”’•º‰ñ“]"
-        ElseIf InStrNotNest(wclass, "‚i") > 0 Then
-            wtype = "U‚èã‚°"
-        ElseIf InStr(wname, "ƒuƒ‰ƒbƒN") > 0 Or InStr(wname, "•") > 0 Then
-            wtype = "•aŒ‚"
+            wtype = "ãƒ€ãƒ–ãƒ«æ–¬æ’ƒ"
+        ElseIf InStr(wname, "å›è»¢") > 0 Then
+            wtype = "ç™½å…µå›è»¢"
+        ElseIf InStrNotNest(wclass, "ï¼ª") > 0 Then
+            wtype = "æŒ¯ã‚Šä¸Šã’"
+        ElseIf InStr(wname, "ãƒ–ãƒ©ãƒƒã‚¯") > 0 Or InStr(wname, "é»’") > 0 Then
+            wtype = "é»’æ–¬æ’ƒ"
         Else
-            wtype = "aŒ‚"
+            wtype = "æ–¬æ’ƒ"
         End If
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "ƒTƒCƒY") > 0 Or InStr(wname, "Š™") > 0 _
-        Or InStr(wname, "ƒOƒŒƒCƒu") > 0 Or InStr(wname, "ƒiƒMƒiƒ^") > 0 _
+    If InStr(wname, "ã‚µã‚¤ã‚º") > 0 Or InStr(wname, "éŒ") > 0 _
+        Or InStr(wname, "ã‚°ãƒ¬ã‚¤ãƒ–") > 0 Or InStr(wname, "ãƒŠã‚®ãƒŠã‚¿") > 0 _
     Then
-        wtype = "U‚è‰º‚ë‚µ"
+        wtype = "æŒ¯ã‚Šä¸‹ã‚ã—"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "ƒVƒ‡[ƒeƒ‹") > 0 Then
-        wtype = "ƒ_ƒuƒ‹aŒ‚"
+    If InStr(wname, "ã‚·ãƒ§ãƒ¼ãƒ†ãƒ«") > 0 Then
+        wtype = "ãƒ€ãƒ–ãƒ«æ–¬æ’ƒ"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "‰~ŒE–@") > 0 Then
-        wtype = "‰~ŒE–@"
+    If InStr(wname, "å††æœˆæ®ºæ³•") > 0 Then
+        wtype = "å††æœˆæ®ºæ³•"
         GoTo FoundWeaponType
     End If
     
-    '‘å‚«‚­U‚è‚Ü‚í‚·•Ší
+    'å¤§ããæŒ¯ã‚Šã¾ã‚ã™æ­¦å™¨
     
-    If InStr(wname, "½“S‹…") > 0 Then
-        wtype = "½“S‹…"
+    If InStr(wname, "é–é‰„çƒ") > 0 Then
+        wtype = "é–é‰„çƒ"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "ƒ‚[ƒjƒ“ƒOƒXƒ^[") > 0 Then
-        wtype = "ƒ‚[ƒjƒ“ƒOƒXƒ^["
+    If InStr(wname, "ãƒ¢ãƒ¼ãƒ‹ãƒ³ã‚°ã‚¹ã‚¿ãƒ¼") > 0 Then
+        wtype = "ãƒ¢ãƒ¼ãƒ‹ãƒ³ã‚°ã‚¹ã‚¿ãƒ¼"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "ƒtƒŒƒCƒ‹") > 0 Then
-        wtype = "ƒtƒŒƒCƒ‹"
+    If InStr(wname, "ãƒ•ãƒ¬ã‚¤ãƒ«") > 0 Then
+        wtype = "ãƒ•ãƒ¬ã‚¤ãƒ«"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "•ª“º") > 0 Then
-        wtype = "•ª“º"
+    If InStr(wname, "åˆ†éŠ…") > 0 Then
+        wtype = "åˆ†éŠ…"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "ƒ`ƒF[ƒ“") > 0 And InStr(wname, "ƒ`ƒF[ƒ“ƒ\[") = 0 Then
-        wtype = "ƒ`ƒF[ƒ“"
+    If InStr(wname, "ãƒã‚§ãƒ¼ãƒ³") > 0 And InStr(wname, "ãƒã‚§ãƒ¼ãƒ³ã‚½ãƒ¼") = 0 Then
+        wtype = "ãƒã‚§ãƒ¼ãƒ³"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "ƒkƒ“ƒ`ƒƒƒN") > 0 Then
-        wtype = "ƒkƒ“ƒ`ƒƒƒN"
+    If InStr(wname, "ãƒŒãƒ³ãƒãƒ£ã‚¯") > 0 Then
+        wtype = "ãƒŒãƒ³ãƒãƒ£ã‚¯"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "Oß") > 0 Then
-        wtype = "Oß"
+    If InStr(wname, "ä¸‰ç¯€æ£") > 0 Then
+        wtype = "ä¸‰ç¯€æ£"
         GoTo FoundWeaponType
     End If
     
-    '“Ë‚«h‚·•Ší
+    'çªãåˆºã™æ­¦å™¨
     
-    If InStr(wname, "ƒXƒsƒA") > 0 Or InStr(wname, "‘„") > 0 _
-        Or InStr(wname, "ƒ‰ƒ“ƒX") > 0 Or InStr(wname, "ƒ‰ƒ“ƒT[") > 0 _
-        Or InStr(wname, "ƒgƒ‰ƒCƒfƒ“ƒg") > 0 _
-        Or InStr(wname, "ƒWƒƒƒxƒŠƒ“") > 0 _
-        Or InStr(wname, "ƒŒƒCƒsƒA") > 0 _
-        Or wname = "ƒƒbƒh" _
+    If InStr(wname, "ã‚¹ãƒ”ã‚¢") > 0 Or InStr(wname, "æ§") > 0 _
+        Or InStr(wname, "ãƒ©ãƒ³ã‚¹") > 0 Or InStr(wname, "ãƒ©ãƒ³ã‚µãƒ¼") > 0 _
+        Or InStr(wname, "ãƒˆãƒ©ã‚¤ãƒ‡ãƒ³ãƒˆ") > 0 _
+        Or InStr(wname, "ã‚¸ãƒ£ãƒ™ãƒªãƒ³") > 0 _
+        Or InStr(wname, "ãƒ¬ã‚¤ãƒ”ã‚¢") > 0 _
+        Or wname = "ãƒ­ãƒƒãƒ‰" _
     Then
         If combo_attack Then
-            wtype = "—“Ë"
+            wtype = "ä¹±çª"
         ElseIf double_attack Then
-            wtype = "˜A“Ë"
+            wtype = "é€£çª"
         Else
-            wtype = "h“Ë"
+            wtype = "åˆºçª"
         End If
         GoTo FoundWeaponType
     End If
     
-    '“Áê‚ÈŠi“¬•Ší
+    'ç‰¹æ®Šãªæ ¼é—˜æ­¦å™¨
     
-    If InStr(wname, "ƒhƒŠƒ‹") > 0 Then
-        wtype = "ƒhƒŠƒ‹"
+    If InStr(wname, "ãƒ‰ãƒªãƒ«") > 0 Then
+        wtype = "ãƒ‰ãƒªãƒ«"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "ƒ`ƒF[ƒ“ƒ\[") > 0 Then
-        wtype = "ƒ`ƒF[ƒ“ƒ\["
+    If InStr(wname, "ãƒã‚§ãƒ¼ãƒ³ã‚½ãƒ¼") > 0 Then
+        wtype = "ãƒã‚§ãƒ¼ãƒ³ã‚½ãƒ¼"
         GoTo FoundWeaponType
     End If
     
-    'Ú×‚ª•ª‚©‚ç‚È‚©‚Á‚½•Ší
-    If InStrNotNest(wclass, "•") > 0 Then
-        '‘•”õ‚µ‚Ä‚¢‚éƒAƒCƒeƒ€‚©‚ç•Ší‚ğŒŸõ
+    'è©³ç´°ãŒåˆ†ã‹ã‚‰ãªã‹ã£ãŸæ­¦å™¨
+    If InStrNotNest(wclass, "æ­¦") > 0 Then
+        'è£…å‚™ã—ã¦ã„ã‚‹ã‚¢ã‚¤ãƒ†ãƒ ã‹ã‚‰æ­¦å™¨ã‚’æ¤œç´¢
         For i = 1 To u.CountItem
             With u.Item(i)
                 If .Activated _
-                    And (.Part = "—¼è" _
-                        Or .Part = "•Ğè" _
-                        Or .Part = "•Ší") _
+                    And (.Part = "ä¸¡æ‰‹" _
+                        Or .Part = "ç‰‡æ‰‹" _
+                        Or .Part = "æ­¦å™¨") _
                 Then
                     wtype = CheckWeaponType(.Nickname, "")
                     If wtype = "" Then
@@ -1306,330 +1306,330 @@ Dim i As Integer
             End With
         Next
         Select Case wtype
-            Case "ƒXƒsƒA", "ƒ‰ƒ“ƒX", "ƒgƒ‰ƒCƒfƒ“ƒg", "˜a‘„", _
-                "ƒGƒXƒgƒbƒN"
+            Case "ã‚¹ãƒ”ã‚¢", "ãƒ©ãƒ³ã‚¹", "ãƒˆãƒ©ã‚¤ãƒ‡ãƒ³ãƒˆ", "å’Œæ§", _
+                "ã‚¨ã‚¹ãƒˆãƒƒã‚¯"
                 If combo_attack Then
-                    wtype = "—“Ë"
+                    wtype = "ä¹±çª"
                 ElseIf double_attack Then
-                    wtype = "˜A“Ë"
+                    wtype = "é€£çª"
                 Else
-                    wtype = "h“Ë"
+                    wtype = "åˆºçª"
                 End If
             Case Else
                 If combo_attack Then
-                    wtype = "”’•º—Œ‚"
+                    wtype = "ç™½å…µä¹±æ’ƒ"
                 ElseIf double_attack Then
-                    wtype = "”’•º˜AŒ‚"
-                ElseIf InStr(wname, "‰ñ“]") > 0 Then
-                    wtype = "”’•º‰ñ“]"
-                ElseIf InStrNotNest(wclass, "‚i") > 0 Then
-                    wtype = "U‚èã‚°"
+                    wtype = "ç™½å…µé€£æ’ƒ"
+                ElseIf InStr(wname, "å›è»¢") > 0 Then
+                    wtype = "ç™½å…µå›è»¢"
+                ElseIf InStrNotNest(wclass, "ï¼ª") > 0 Then
+                    wtype = "æŒ¯ã‚Šä¸Šã’"
                 Else
-                    wtype = "”’•º•Ší"
+                    wtype = "ç™½å…µæ­¦å™¨"
                 End If
         End Select
         GoTo FoundWeaponType
     End If
     
-    'Ú×‚ª•ª‚©‚ç‚È‚©‚Á‚½‹ßÚ‹Z
-    If InStrNotNest(wclass, "“Ë") > 0 _
-        And InStrNotNest(wclass, "Ú") > 0 _
+    'è©³ç´°ãŒåˆ†ã‹ã‚‰ãªã‹ã£ãŸè¿‘æ¥æŠ€
+    If InStrNotNest(wclass, "çª") > 0 _
+        And InStrNotNest(wclass, "æ¥") > 0 _
     Then
-        wtype = "Ši“¬"
+        wtype = "æ ¼é—˜"
         GoTo FoundWeaponType
     End If
     
 SkipInfightWeapon:
     
-    If InStrNotNest(wclass, "À") = 0 Then
+    If InStrNotNest(wclass, "å®Ÿ") = 0 Then
         GoTo SkipThrowingWeapon
     End If
     
-    '“Š±•Ší
-    '(^‚Á’¼‚®”ò‚Ô•Ší)
+    'æŠ•æ“²æ­¦å™¨
+    '(çœŸã£ç›´ãé£›ã¶æ­¦å™¨)
     
-    If InStr(wname, "‘„") > 0 Or InStr(wname, "ƒXƒsƒA") > 0 Then
-        wtype = "“Š‚°‘„"
+    If InStr(wname, "æ§") > 0 Or InStr(wname, "ã‚¹ãƒ”ã‚¢") > 0 Then
+        wtype = "æŠ•ã’æ§"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "ƒiƒCƒt") > 0 Or InStr(wname, "ƒ_ƒK[") > 0 _
-        Or InStr(wname, "ƒNƒiƒC") > 0 Or InStr(wname, "‹ê–³") > 0 _
+    If InStr(wname, "ãƒŠã‚¤ãƒ•") > 0 Or InStr(wname, "ãƒ€ã‚¬ãƒ¼") > 0 _
+        Or InStr(wname, "ã‚¯ãƒŠã‚¤") > 0 Or InStr(wname, "è‹¦ç„¡") > 0 _
     Then
-        wtype = "“Š‚°ƒiƒCƒt"
+        wtype = "æŠ•ã’ãƒŠã‚¤ãƒ•"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "Î") > 0 Or InStr(wname, "âI") > 0 Then
-        wtype = "Î"
+    If InStr(wname, "çŸ³") > 0 Or InStr(wname, "ç¤«") > 0 Then
+        wtype = "çŸ³"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "Šâ") > 0 Then
-        wtype = "Šâ"
+    If InStr(wname, "å²©") > 0 Then
+        wtype = "å²©"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "“S‹…") > 0 Then
-        wtype = "“S‹…"
+    If InStr(wname, "é‰„çƒ") > 0 Then
+        wtype = "é‰„çƒ"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "ƒ_ƒCƒiƒ}ƒCƒg") > 0 Then
-        wtype = "ƒ_ƒCƒiƒ}ƒCƒg"
+    If InStr(wname, "ãƒ€ã‚¤ãƒŠãƒã‚¤ãƒˆ") > 0 Then
+        wtype = "ãƒ€ã‚¤ãƒŠãƒã‚¤ãƒˆ"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "”š’e") > 0 Then
-        If InStr(wname, "“Š‚°") > 0 Then
-            wtype = "”š’e"
+    If InStr(wname, "çˆ†å¼¾") > 0 Then
+        If InStr(wname, "æŠ•ã’") > 0 Then
+            wtype = "çˆ†å¼¾"
             GoTo FoundWeaponType
         End If
     End If
     
-    If InStr(wname, "ƒnƒ“ƒhƒOƒŒƒl[ƒh") > 0 Then
-        wtype = "ƒOƒŒƒl[ƒh“Š‚°"
+    If InStr(wname, "ãƒãƒ³ãƒ‰ã‚°ãƒ¬ãƒãƒ¼ãƒ‰") > 0 Then
+        wtype = "ã‚°ãƒ¬ãƒãƒ¼ãƒ‰æŠ•ã’"
         GoTo FoundWeaponType
     End If
     
-    '(‰ñ“]‚µ‚È‚ª‚ç”ò‚Ô•Ší)
+    '(å›è»¢ã—ãªãŒã‚‰é£›ã¶æ­¦å™¨)
     
-    If InStr(wname, "ƒgƒ}ƒz[ƒN") > 0 Then
-        wtype = "ƒgƒ}ƒz[ƒN“Š±"
+    If InStr(wname, "ãƒˆãƒãƒ›ãƒ¼ã‚¯") > 0 Then
+        wtype = "ãƒˆãƒãƒ›ãƒ¼ã‚¯æŠ•æ“²"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "ƒAƒbƒNƒX") > 0 Or InStr(wname, "•€") > 0 Then
-        If InStr(wname, "ƒOƒŒ[ƒg") > 0 Or InStr(wname, "—¼") > 0 _
-            Or InStr(wname, "ƒoƒgƒ‹") > 0 _
+    If InStr(wname, "ã‚¢ãƒƒã‚¯ã‚¹") > 0 Or InStr(wname, "æ–§") > 0 Then
+        If InStr(wname, "ã‚°ãƒ¬ãƒ¼ãƒˆ") > 0 Or InStr(wname, "ä¸¡") > 0 _
+            Or InStr(wname, "ãƒãƒˆãƒ«") > 0 _
         Then
-            wtype = "—¼n•€“Š±"
+            wtype = "ä¸¡åˆƒæ–§æŠ•æ“²"
         Else
-            wtype = "•Ğn•€“Š±"
+            wtype = "ç‰‡åˆƒæ–§æŠ•æ“²"
         End If
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "ƒTƒCƒY") > 0 Or InStr(wname, "‘åŠ™") > 0 Then
-        wtype = "‘åŠ™“Š±"
+    If InStr(wname, "ã‚µã‚¤ã‚º") > 0 Or InStr(wname, "å¤§éŒ") > 0 Then
+        wtype = "å¤§éŒæŠ•æ“²"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "Š™") > 0 Then
-        wtype = "Š™“Š±"
+    If InStr(wname, "éŒ") > 0 Then
+        wtype = "éŒæŠ•æ“²"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "ƒu[ƒƒ‰ƒ“") > 0 Then
-        wtype = "ƒu[ƒƒ‰ƒ“"
+    If InStr(wname, "ãƒ–ãƒ¼ãƒ¡ãƒ©ãƒ³") > 0 Then
+        wtype = "ãƒ–ãƒ¼ãƒ¡ãƒ©ãƒ³"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "ƒ`ƒƒƒNƒ‰ƒ€") > 0 Then
-        wtype = "ƒ`ƒƒƒNƒ‰ƒ€"
+    If InStr(wname, "ãƒãƒ£ã‚¯ãƒ©ãƒ ") > 0 Then
+        wtype = "ãƒãƒ£ã‚¯ãƒ©ãƒ "
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "è— Œ•") > 0 Then
-        wtype = "è— Œ•"
+    If InStr(wname, "æ‰‹è£å‰£") > 0 Then
+        wtype = "æ‰‹è£å‰£"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "èÖ’e") > 0 Then
-        wtype = "èÖ’e"
+    If InStr(wname, "æ‰‹æ¦´å¼¾") > 0 Then
+        wtype = "æ‰‹æ¦´å¼¾"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "ƒ|ƒeƒgƒ}ƒbƒVƒƒ[") > 0 Then
-        wtype = "ƒ|ƒeƒgƒ}ƒbƒVƒƒ["
+    If InStr(wname, "ãƒãƒ†ãƒˆãƒãƒƒã‚·ãƒ£ãƒ¼") > 0 Then
+        wtype = "ãƒãƒ†ãƒˆãƒãƒƒã‚·ãƒ£ãƒ¼"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "‰Î‰Š•r") > 0 Then
-        wtype = "‰Î‰Š•r"
+    If InStr(wname, "ç«ç‚ç“¶") > 0 Then
+        wtype = "ç«ç‚ç“¶"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "èù") > 0 Then
-        wtype = "èù"
+    If InStr(wname, "æ‰‹éŒ ") > 0 Then
+        wtype = "æ‰‹éŒ "
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "ƒt[ƒv") > 0 Then
-        wtype = "ƒt[ƒv"
+    If InStr(wname, "ãƒ•ãƒ¼ãƒ—") > 0 Then
+        wtype = "ãƒ•ãƒ¼ãƒ—"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "îq") > 0 Then
-        wtype = "îq"
+    If InStr(wname, "æ‰‡å­") > 0 Then
+        wtype = "æ‰‡å­"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "D") > 0 Then
-        wtype = "‚¨D"
+    If InStr(wname, "æœ­") > 0 Then
+        wtype = "ãŠæœ­"
         GoTo FoundWeaponType
     End If
     
-    '‹|–î
+    'å¼“çŸ¢
     
-    If InStr(wname, "‹|") > 0 _
-        Or InStr(wname, "ƒVƒ‡[ƒgƒ{ƒE") > 0 _
-        Or InStr(wname, "ƒƒ“ƒOƒ{ƒE") > 0 _
+    If InStr(wname, "å¼“") > 0 _
+        Or InStr(wname, "ã‚·ãƒ§ãƒ¼ãƒˆãƒœã‚¦") > 0 _
+        Or InStr(wname, "ãƒ­ãƒ³ã‚°ãƒœã‚¦") > 0 _
     Then
-        wtype = "‹|–î"
+        wtype = "å¼“çŸ¢"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "–î") > 0 _
-        Or InStr(wname, "ƒAƒ[") > 0 _
+    If InStr(wname, "çŸ¢") > 0 _
+        Or InStr(wname, "ã‚¢ãƒ­ãƒ¼") > 0 _
     Then
         If CountAttack0(u, w) > 1 Then
-            wtype = "–î˜AË"
+            wtype = "çŸ¢é€£å°„"
         Else
-            wtype = "–î"
+            wtype = "çŸ¢"
         End If
         GoTo FoundWeaponType
     End If
     
-    '‰“‹——£Œn‚ÌŠi“¬•Ší
+    'é è·é›¢ç³»ã®æ ¼é—˜æ­¦å™¨
     
-    'U‚é•Ší
+    'æŒ¯ã‚‹æ­¦å™¨
     
-    If Right$(wname, 2) = "ƒ€ƒ`" Or InStr(wname, "•Ú") > 0 _
-        Or InStr(wname, "ƒEƒBƒbƒv") > 0 _
+    If Right$(wname, 2) = "ãƒ ãƒ" Or InStr(wname, "é­") > 0 _
+        Or InStr(wname, "ã‚¦ã‚£ãƒƒãƒ—") > 0 _
     Then
-        wtype = "”’•º•Ší"
+        wtype = "ç™½å…µæ­¦å™¨"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "Gè") > 0 Or InStr(wname, "G˜r") > 0 Then
-        wtype = "”’•º˜AŒ‚"
+    If InStr(wname, "è§¦æ‰‹") > 0 Or InStr(wname, "è§¦è…•") > 0 Then
+        wtype = "ç™½å…µé€£æ’ƒ"
         GoTo FoundWeaponType
     End If
     
-    '‘å‚«‚­U‚è‚Ü‚í‚·•Ší
+    'å¤§ããæŒ¯ã‚Šã¾ã‚ã™æ­¦å™¨
     
-    If InStr(wname, "½“S‹…") > 0 Or InStr(wname, "ƒnƒ“ƒ}[") > 0 Then
-        wtype = "½“S‹…"
+    If InStr(wname, "é–é‰„çƒ") > 0 Or InStr(wname, "ãƒãƒ³ãƒãƒ¼") > 0 Then
+        wtype = "é–é‰„çƒ"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "•ª“º") > 0 Then
-        wtype = "•ª“º"
+    If InStr(wname, "åˆ†éŠ…") > 0 Then
+        wtype = "åˆ†éŠ…"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "ƒ`ƒF[ƒ“") > 0 Then
-        wtype = "ƒ`ƒF[ƒ“"
+    If InStr(wname, "ãƒã‚§ãƒ¼ãƒ³") > 0 Then
+        wtype = "ãƒã‚§ãƒ¼ãƒ³"
         GoTo FoundWeaponType
     End If
     
-    '‚»‚Ì‘¼Ši“¬Œn
+    'ãã®ä»–æ ¼é—˜ç³»
     
-    If InStr(wname, "ƒpƒ“ƒ`") > 0 Or InStr(wname, "ƒiƒbƒNƒ‹") > 0 Then
-        wtype = "ƒƒPƒbƒgƒpƒ“ƒ`"
+    If InStr(wname, "ãƒ‘ãƒ³ãƒ") > 0 Or InStr(wname, "ãƒŠãƒƒã‚¯ãƒ«") > 0 Then
+        wtype = "ãƒ­ã‚±ãƒƒãƒˆãƒ‘ãƒ³ãƒ"
         GoTo FoundWeaponType
     End If
     
 SkipThrowingWeapon:
     
-    '‚±‚ê‚æ‚è’ÊíËŒ‚UŒ‚
+    'ã“ã‚Œã‚ˆã‚Šé€šå¸¸å°„æ’ƒæ”»æ’ƒ
     
-    '‚Ü‚¸‚Íè‚¿•Ší‚Ì”»’è
+    'ã¾ãšã¯æ‰‹æŒã¡æ­¦å™¨ã®åˆ¤å®š
     is_handy_weapon = True
     
-    'ŒõüŒn‚ÌUŒ‚‚©‚Ç‚¤‚©‚ğ”»’è‚·‚é
+    'å…‰ç·šç³»ã®æ”»æ’ƒã‹ã©ã†ã‹ã‚’åˆ¤å®šã™ã‚‹
     
     If IsBeamWeapon(wname, wclass, cname) Then
-        wtype = "ƒr[ƒ€"
+        wtype = "ãƒ“ãƒ¼ãƒ "
         
-        'À’eŒn•Ší”»’è‚ğƒXƒLƒbƒv
+        'å®Ÿå¼¾ç³»æ­¦å™¨åˆ¤å®šã‚’ã‚¹ã‚­ãƒƒãƒ—
         GoTo SkipNormalHandWeapon
     End If
     
-    'è‚É‚ÂËŒ‚•Ší
+    'æ‰‹ã«æŒã¤å°„æ’ƒæ­¦å™¨
     
-    '(‘å‚«–Ú‚ÌÀ’e‚ğ”ò‚Î‚·ƒ^ƒCƒv)
+    '(å¤§ãç›®ã®å®Ÿå¼¾ã‚’é£›ã°ã™ã‚¿ã‚¤ãƒ—)
     
-    If InStr(wname, "ƒNƒƒXƒ{ƒE") > 0 _
-        Or InStr(wname, "ƒ{ƒEƒKƒ“") > 0 _
+    If InStr(wname, "ã‚¯ãƒ­ã‚¹ãƒœã‚¦") > 0 _
+        Or InStr(wname, "ãƒœã‚¦ã‚¬ãƒ³") > 0 _
     Then
-        wtype = "ƒNƒƒXƒ{ƒE"
+        wtype = "ã‚¯ãƒ­ã‚¹ãƒœã‚¦"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "ƒoƒY[ƒJ") > 0 Then
-        wtype = "ƒoƒY[ƒJ"
+    If InStr(wname, "ãƒã‚ºãƒ¼ã‚«") > 0 Then
+        wtype = "ãƒã‚ºãƒ¼ã‚«"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "‘ÎíÔƒ‰ƒCƒtƒ‹") > 0 Then
-        wtype = "‘ÎíÔƒ‰ƒCƒtƒ‹"
+    If InStr(wname, "å¯¾æˆ¦è»Šãƒ©ã‚¤ãƒ•ãƒ«") > 0 Then
+        wtype = "å¯¾æˆ¦è»Šãƒ©ã‚¤ãƒ•ãƒ«"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "‘Î•¨ƒ‰ƒCƒtƒ‹") > 0 Then
-        wtype = "‘Î•¨ƒ‰ƒCƒtƒ‹"
+    If InStr(wname, "å¯¾ç‰©ãƒ©ã‚¤ãƒ•ãƒ«") > 0 Then
+        wtype = "å¯¾ç‰©ãƒ©ã‚¤ãƒ•ãƒ«"
         GoTo FoundWeaponType
     End If
     
-    '(¬‚³‚È’e‚ğ’P”­‚ÅŒ‚‚Âƒ^ƒCƒv‚Ìè‚¿‰ÎŠí)
+    '(å°ã•ãªå¼¾ã‚’å˜ç™ºã§æ’ƒã¤ã‚¿ã‚¤ãƒ—ã®æ‰‹æŒã¡ç«å™¨)
     
-    If InStr(wname, "ƒsƒXƒgƒ‹") > 0 Or InStr(wname, "Œe") > 0 Then
-        wtype = "ƒsƒXƒgƒ‹"
+    If InStr(wname, "ãƒ”ã‚¹ãƒˆãƒ«") > 0 Or InStr(wname, "æ‹³éŠƒ") > 0 Then
+        wtype = "ãƒ”ã‚¹ãƒˆãƒ«"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "ƒŠƒ{ƒ‹ƒo[") > 0 Or InStr(wname, "ƒŠƒ{ƒ‹ƒ”ƒ@[") > 0 Then
-        wtype = "ƒŠƒ{ƒ‹ƒo["
+    If InStr(wname, "ãƒªãƒœãƒ«ãƒãƒ¼") > 0 Or InStr(wname, "ãƒªãƒœãƒ«ãƒ´ã‚¡ãƒ¼") > 0 Then
+        wtype = "ãƒªãƒœãƒ«ãƒãƒ¼"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "ƒ‰ƒCƒtƒ‹") > 0 _
-        Or (Right$(wname, 1) = "e" And Right$(wname, 2) <> "‹@e") _
+    If InStr(wname, "ãƒ©ã‚¤ãƒ•ãƒ«") > 0 _
+        Or (Right$(wname, 1) = "éŠƒ" And Right$(wname, 2) <> "æ©ŸéŠƒ") _
     Then
-        wtype = "ƒ‰ƒCƒtƒ‹"
+        wtype = "ãƒ©ã‚¤ãƒ•ãƒ«"
         GoTo FoundWeaponType
     End If
     
-    '(˜AË‚·‚éƒ^ƒCƒv‚Ìè‚¿‰ÎŠí)
+    '(é€£å°„ã™ã‚‹ã‚¿ã‚¤ãƒ—ã®æ‰‹æŒã¡ç«å™¨)
     
-    If InStr(wname, "ƒTƒuƒ}ƒVƒ“ƒKƒ“") > 0 Then
-        wtype = "ƒTƒuƒ}ƒVƒ“ƒKƒ“"
+    If InStr(wname, "ã‚µãƒ–ãƒã‚·ãƒ³ã‚¬ãƒ³") > 0 Then
+        wtype = "ã‚µãƒ–ãƒã‚·ãƒ³ã‚¬ãƒ³"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "ƒ}ƒVƒ“ƒKƒ“") > 0 Or InStr(wname, "‹@ŠÖe") > 0 Then
-        If InStr(wname, "ƒwƒr[") > 0 Or InStr(wname, "d") > 0 Then
-            wtype = "ƒwƒr[ƒ}ƒVƒ“ƒKƒ“"
+    If InStr(wname, "ãƒã‚·ãƒ³ã‚¬ãƒ³") > 0 Or InStr(wname, "æ©Ÿé–¢éŠƒ") > 0 Then
+        If InStr(wname, "ãƒ˜ãƒ“ãƒ¼") > 0 Or InStr(wname, "é‡") > 0 Then
+            wtype = "ãƒ˜ãƒ“ãƒ¼ãƒã‚·ãƒ³ã‚¬ãƒ³"
         Else
-            wtype = "ƒ}ƒVƒ“ƒKƒ“"
+            wtype = "ãƒã‚·ãƒ³ã‚¬ãƒ³"
         End If
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "ƒKƒgƒŠƒ“ƒO") > 0 Then
-        wtype = "ƒKƒgƒŠƒ“ƒO"
+    If InStr(wname, "ã‚¬ãƒˆãƒªãƒ³ã‚°") > 0 Then
+        wtype = "ã‚¬ãƒˆãƒªãƒ³ã‚°"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "ƒVƒ‡ƒbƒgƒKƒ“") > 0 Or InStr(wname, "ƒ‰ƒCƒAƒbƒgƒKƒ“") > 0 Then
-        wtype = "ƒVƒ‡ƒbƒgƒKƒ“"
+    If InStr(wname, "ã‚·ãƒ§ãƒƒãƒˆã‚¬ãƒ³") > 0 Or InStr(wname, "ãƒ©ã‚¤ã‚¢ãƒƒãƒˆã‚¬ãƒ³") > 0 Then
+        wtype = "ã‚·ãƒ§ãƒƒãƒˆã‚¬ãƒ³"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "ƒŒ[ƒ‹ƒKƒ“") > 0 _
-        Or InStr(wname, "ƒŠƒjƒAƒKƒ“") > 0 _
+    If InStr(wname, "ãƒ¬ãƒ¼ãƒ«ã‚¬ãƒ³") > 0 _
+        Or InStr(wname, "ãƒªãƒ‹ã‚¢ã‚¬ãƒ³") > 0 _
     Then
         PlayWave "Thunder.wav"
         Sleep 300
-        wtype = "ƒLƒƒƒmƒ“–C"
+        wtype = "ã‚­ãƒ£ãƒãƒ³ç ²"
         GoTo FoundWeaponType
     End If
     
-    '‚æ‚­•ª‚©‚ç‚È‚¢‚Ì‚Åƒ‰ƒCƒtƒ‹ˆµ‚¢
-    If Right$(wname, 2) = "ƒKƒ“" Then
-        wtype = "ƒ‰ƒCƒtƒ‹"
+    'ã‚ˆãåˆ†ã‹ã‚‰ãªã„ã®ã§ãƒ©ã‚¤ãƒ•ãƒ«æ‰±ã„
+    If Right$(wname, 2) = "ã‚¬ãƒ³" Then
+        wtype = "ãƒ©ã‚¤ãƒ•ãƒ«"
         GoTo FoundWeaponType
     End If
     
@@ -1637,52 +1637,52 @@ SkipThrowingWeapon:
     
 SkipNormalHandWeapon:
     
-    '(è‚¿‚Ìƒr[ƒ€UŒ‚)
+    '(æ‰‹æŒã¡ã®ãƒ“ãƒ¼ãƒ æ”»æ’ƒ)
     
-    If InStr(wname, "ƒ‰ƒCƒtƒ‹") > 0 Or InStr(wname, "ƒKƒ“") > 0 _
-        Or InStr(wname, "ƒsƒXƒgƒ‹") > 0 Or InStr(wname, "ƒoƒY[ƒJ") > 0 _
-        Or (Right$(wname, 1) = "e" And Right$(wname, 2) <> "‹@e") _
+    If InStr(wname, "ãƒ©ã‚¤ãƒ•ãƒ«") > 0 Or InStr(wname, "ã‚¬ãƒ³") > 0 _
+        Or InStr(wname, "ãƒ”ã‚¹ãƒˆãƒ«") > 0 Or InStr(wname, "ãƒã‚ºãƒ¼ã‚«") > 0 _
+        Or (Right$(wname, 1) = "éŠƒ" And Right$(wname, 2) <> "æ©ŸéŠƒ") _
     Then
-        If InStrNotNest(wclass, "‚l") > 0 Then
-            wtype = "‚l‚`‚oƒoƒXƒ^[ƒr[ƒ€ƒ‰ƒCƒtƒ‹"
+        If InStrNotNest(wclass, "ï¼­") > 0 Then
+            wtype = "ï¼­ï¼¡ï¼°ãƒã‚¹ã‚¿ãƒ¼ãƒ“ãƒ¼ãƒ ãƒ©ã‚¤ãƒ•ãƒ«"
             GoTo FoundWeaponType
         End If
         
-        If InStr(wname, "ƒnƒCƒƒK") > 0 Or InStr(wname, "ƒoƒXƒ^[") > 0 _
-            Or InStr(wname, "‘å") > 0 _
-            Or Left$(wname, 2) = "ƒMƒK" _
+        If InStr(wname, "ãƒã‚¤ãƒ¡ã‚¬") > 0 Or InStr(wname, "ãƒã‚¹ã‚¿ãƒ¼") > 0 _
+            Or InStr(wname, "å¤§") > 0 _
+            Or Left$(wname, 2) = "ã‚®ã‚¬" _
         Then
-            wtype = "ƒoƒXƒ^[ƒr[ƒ€ƒ‰ƒCƒtƒ‹"
-        ElseIf InStr(wname, "ƒƒK") > 0 _
-            Or InStr(wname, "ƒnƒC") > 0 _
-            Or InStr(wname, "ƒoƒY[ƒJ") > 0 _
+            wtype = "ãƒã‚¹ã‚¿ãƒ¼ãƒ“ãƒ¼ãƒ ãƒ©ã‚¤ãƒ•ãƒ«"
+        ElseIf InStr(wname, "ãƒ¡ã‚¬") > 0 _
+            Or InStr(wname, "ãƒã‚¤") > 0 _
+            Or InStr(wname, "ãƒã‚ºãƒ¼ã‚«") > 0 _
         Then
             If double_weapon Then
-                wtype = "ƒ_ƒuƒ‹ƒr[ƒ€ƒ‰ƒ“ƒ`ƒƒ["
+                wtype = "ãƒ€ãƒ–ãƒ«ãƒ“ãƒ¼ãƒ ãƒ©ãƒ³ãƒãƒ£ãƒ¼"
             Else
-                wtype = "ƒr[ƒ€ƒ‰ƒ“ƒ`ƒƒ["
+                wtype = "ãƒ“ãƒ¼ãƒ ãƒ©ãƒ³ãƒãƒ£ãƒ¼"
             End If
-            If InStr(wname, "ƒ‰ƒCƒtƒ‹") > 0 Then
+            If InStr(wname, "ãƒ©ã‚¤ãƒ•ãƒ«") > 0 Then
                 bmpname = "Weapon\EFFECT_BusterRifle01.bmp"
             End If
         ElseIf CountAttack0(u, w) >= 4 Then
-            wtype = "ƒŒ[ƒU[ƒ}ƒVƒ“ƒKƒ“"
+            wtype = "ãƒ¬ãƒ¼ã‚¶ãƒ¼ãƒã‚·ãƒ³ã‚¬ãƒ³"
             bmpname = "Weapon\EFFECT_Rifle01.bmp"
-        ElseIf InStr(wname, "ƒsƒXƒgƒ‹") > 0 _
-            Or InStr(wname, "ƒ~ƒj") > 0 _
-            Or InStr(wname, "¬") > 0 _
+        ElseIf InStr(wname, "ãƒ”ã‚¹ãƒˆãƒ«") > 0 _
+            Or InStr(wname, "ãƒŸãƒ‹") > 0 _
+            Or InStr(wname, "å°") > 0 _
         Then
-            wtype = "ƒŒ[ƒU[ƒKƒ“"
+            wtype = "ãƒ¬ãƒ¼ã‚¶ãƒ¼ã‚¬ãƒ³"
         Else
             If double_weapon Then
-                wtype = "ƒ_ƒuƒ‹ƒr[ƒ€ƒ‰ƒCƒtƒ‹"
+                wtype = "ãƒ€ãƒ–ãƒ«ãƒ“ãƒ¼ãƒ ãƒ©ã‚¤ãƒ•ãƒ«"
             Else
-                wtype = "ƒr[ƒ€ƒ‰ƒCƒtƒ‹"
+                wtype = "ãƒ“ãƒ¼ãƒ ãƒ©ã‚¤ãƒ•ãƒ«"
             End If
         End If
         
-        If wtype = "ƒoƒXƒ^[" Then
-            wtype0 = "—±qW’†"
+        If wtype = "ãƒã‚¹ã‚¿ãƒ¼" Then
+            wtype0 = "ç²’å­é›†ä¸­"
         End If
         
         GoTo FoundWeaponType
@@ -1690,50 +1690,50 @@ SkipNormalHandWeapon:
     
 SkipHandWeapon:
     
-    '“à‘ Œ^ËŒ‚•Ší
+    'å†…è”µå‹å°„æ’ƒæ­¦å™¨
     is_handy_weapon = False
     
-    '(‘åŒ^‚ÌÀ’e‰ÎŠí)
+    '(å¤§å‹ã®å®Ÿå¼¾ç«å™¨)
     
-    If InStr(wname, "ƒ~ƒTƒCƒ‹") > 0 Or InStr(wname, "ƒƒPƒbƒg") > 0 Then
-        wtype = "ƒ~ƒTƒCƒ‹"
+    If InStr(wname, "ãƒŸã‚µã‚¤ãƒ«") > 0 Or InStr(wname, "ãƒ­ã‚±ãƒƒãƒˆ") > 0 Then
+        wtype = "ãƒŸã‚µã‚¤ãƒ«"
         
-        If InStr(wname, "ƒhƒŠƒ‹") > 0 Then
-            wtype = "ƒhƒŠƒ‹ƒ~ƒTƒCƒ‹"
+        If InStr(wname, "ãƒ‰ãƒªãƒ«") > 0 Then
+            wtype = "ãƒ‰ãƒªãƒ«ãƒŸã‚µã‚¤ãƒ«"
             GoTo FoundWeaponType
         End If
         
         attack_times = CountAttack0(u, w)
         
-        If InStr(wname, "‘åŒ^") > 0 Or InStr(wname, "ƒrƒbƒO") > 0 _
-            Or InStr(wname, "‘ÎŠÍ") > 0 _
+        If InStr(wname, "å¤§å‹") > 0 Or InStr(wname, "ãƒ“ãƒƒã‚°") > 0 _
+            Or InStr(wname, "å¯¾è‰¦") > 0 _
         Then
-            wtype = "ƒX[ƒp[ƒ~ƒTƒCƒ‹"
+            wtype = "ã‚¹ãƒ¼ãƒ‘ãƒ¼ãƒŸã‚µã‚¤ãƒ«"
             attack_times = 1
-        ElseIf InStr(wname, "¬Œ^") > 0 Then
-            wtype = "¬Œ^ƒ~ƒTƒCƒ‹"
-        ElseIf InStr(wname, "ƒ‰ƒ“ƒ`ƒƒ[") > 0 Or InStr(wname, "ƒ|ƒbƒh") > 0 _
-            Or InStr(wname, "ƒ}ƒCƒNƒ") > 0 Or InStr(wname, "ƒXƒvƒŒ[") > 0 _
+        ElseIf InStr(wname, "å°å‹") > 0 Then
+            wtype = "å°å‹ãƒŸã‚µã‚¤ãƒ«"
+        ElseIf InStr(wname, "ãƒ©ãƒ³ãƒãƒ£ãƒ¼") > 0 Or InStr(wname, "ãƒãƒƒãƒ‰") > 0 _
+            Or InStr(wname, "ãƒã‚¤ã‚¯ãƒ­") > 0 Or InStr(wname, "ã‚¹ãƒ—ãƒ¬ãƒ¼") > 0 _
         Then
-            wtype = "¬Œ^ƒ~ƒTƒCƒ‹"
+            wtype = "å°å‹ãƒŸã‚µã‚¤ãƒ«"
             attack_times = 6
         End If
         
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "ƒOƒŒƒl[ƒh") > 0 _
-        Or InStr(wname, "ƒfƒBƒXƒ`ƒƒ[ƒWƒƒ[") > 0 _
+    If InStr(wname, "ã‚°ãƒ¬ãƒãƒ¼ãƒ‰") > 0 _
+        Or InStr(wname, "ãƒ‡ã‚£ã‚¹ãƒãƒ£ãƒ¼ã‚¸ãƒ£ãƒ¼") > 0 _
     Then
-        wtype = "ƒOƒŒƒl[ƒh"
+        wtype = "ã‚°ãƒ¬ãƒãƒ¼ãƒ‰"
         
         attack_times = CountAttack0(u, w)
         
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "ƒVƒ…ƒcƒ‹ƒ€ƒtƒ@ƒEƒXƒg") > 0 Then
-        wtype = "À’e”­Ë"
+    If InStr(wname, "ã‚·ãƒ¥ãƒ„ãƒ«ãƒ ãƒ•ã‚¡ã‚¦ã‚¹ãƒˆ") > 0 Then
+        wtype = "å®Ÿå¼¾ç™ºå°„"
         
         bmpname = "Bullet\EFFECT_BazookaBullet01.bmp"
         attack_times = CountAttack0(u, w)
@@ -1741,51 +1741,51 @@ SkipHandWeapon:
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "”š’e") > 0 Or InStr(wname, "”šŒ‚") > 0 _
-        Or InStr(wname, "”š—‹") > 0 _
+    If InStr(wname, "çˆ†å¼¾") > 0 Or InStr(wname, "çˆ†æ’ƒ") > 0 _
+        Or InStr(wname, "çˆ†é›·") > 0 _
     Then
         If u.Weapon(w).MaxRange = 1 Then
-            wtype = "“Š‰º”š’e"
+            wtype = "æŠ•ä¸‹çˆ†å¼¾"
         Else
-            wtype = "ƒOƒŒƒl[ƒh"
+            wtype = "ã‚°ãƒ¬ãƒãƒ¼ãƒ‰"
             attack_times = CountAttack0(u, w)
         End If
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "Œõq‹›—‹") > 0 Then
-        wtype = "Œõq‹›—‹"
+    If InStr(wname, "å…‰å­é­šé›·") > 0 Then
+        wtype = "å…‰å­é­šé›·"
         GoTo FoundWeaponType
     End If
     
-    '(‰öŒõüŒn)
+    '(æ€ªå…‰ç·šç³»)
     
-    If InStr(wname, "‰öŒõü") > 0 Then
-        wtype = "‰öŒõü"
+    If InStr(wname, "æ€ªå…‰ç·š") > 0 Then
+        wtype = "æ€ªå…‰ç·š"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "”j‰óŒõü") > 0 Then
-        wtype = "”j‰óŒõü"
+    If InStr(wname, "ç ´å£Šå…‰ç·š") > 0 Then
+        wtype = "ç ´å£Šå…‰ç·š"
         GoTo FoundWeaponType
     End If
     
-    '“Áê‚È•¨¿‚ğo‚·•Ší
+    'ç‰¹æ®Šãªç‰©è³ªã‚’å‡ºã™æ­¦å™¨
     
-    If InStr(wname, "Á‰Î") > 0 Then
-        wtype = "Á‰ÎŠí"
+    If InStr(wname, "æ¶ˆç«") > 0 Then
+        wtype = "æ¶ˆç«å™¨"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "•ú…") > 0 Or InStr(wname, "…—¬") > 0 Then
-        wtype = "•ú…e"
+    If InStr(wname, "æ”¾æ°´") > 0 Or InStr(wname, "æ°´æµ") > 0 Then
+        wtype = "æ”¾æ°´éŠƒ"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "…“S–C") > 0 Or Right$(wname, 1) = "‰t" Then
-        wtype = "À’e”­Ë"
+    If InStr(wname, "æ°´é‰„ç ²") > 0 Or Right$(wname, 1) = "æ¶²" Then
+        wtype = "å®Ÿå¼¾ç™ºå°„"
         sname = "Bow.wav"
-        If InStr(wname, "“Å") > 0 Or InStr(wname, "“Å") > 0 Then
+        If InStr(wname, "æ¯’") > 0 Or InStr(wname, "æ¯’") > 0 Then
             bmpname = "Bullet\EFFECT_Venom01.bmp"
         Else
             bmpname = "Bullet\EFFECT_WaterShot01.bmp"
@@ -1793,181 +1793,181 @@ SkipHandWeapon:
         GoTo FoundWeaponType
     End If
     
-    '•¨—Œ»ÛŒn‚ÌUŒ‚(‰Š‚âŒõ‚È‚Ç)
+    'ç‰©ç†ç¾è±¡ç³»ã®æ”»æ’ƒ(ç‚ã‚„å…‰ãªã©)
     
-    If InStr(wname, "d—Í") > 0 Or InStr(wname, "ƒOƒ‰ƒr") > 0 _
-         Or InStr(wname, "ƒuƒ‰ƒbƒNƒz[ƒ‹") > 0 _
-         Or InStr(wname, "k‘Ş") > 0 _
+    If InStr(wname, "é‡åŠ›") > 0 Or InStr(wname, "ã‚°ãƒ©ãƒ“") > 0 _
+         Or InStr(wname, "ãƒ–ãƒ©ãƒƒã‚¯ãƒ›ãƒ¼ãƒ«") > 0 _
+         Or InStr(wname, "ç¸®é€€") > 0 _
     Then
-        wtype = "d—Í’e"
+        wtype = "é‡åŠ›å¼¾"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "——‹") > 0 Or Right$(wname, 2) = "ˆîÈ" Then
-        wtype = "——‹"
+    If InStr(wname, "è½é›·") > 0 Or Right$(wname, 2) = "ç¨²å¦»" Then
+        wtype = "è½é›·"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "—‹") > 0 Or InStr(wname, "ƒ‰ƒCƒgƒjƒ“ƒO") > 0 _
-         Or InStr(wname, "ƒTƒ“ƒ_[") > 0 _
+    If InStr(wname, "é›·") > 0 Or InStr(wname, "ãƒ©ã‚¤ãƒˆãƒ‹ãƒ³ã‚°") > 0 _
+         Or InStr(wname, "ã‚µãƒ³ãƒ€ãƒ¼") > 0 _
     Then
-        If InStrNotNest(wclass, "À") = 0 Then
+        If InStrNotNest(wclass, "å®Ÿ") = 0 Then
             If u.Weapon(w).MaxRange = 1 Then
-                wtype = "”j‰óŒõü"
+                wtype = "ç ´å£Šå…‰ç·š"
                 sname = "Thunder.wav"
             Else
-                wtype = "——‹"
+                wtype = "è½é›·"
             End If
             GoTo FoundWeaponType
         End If
     End If
     
-    If InStr(wname, "“dŒ‚") > 0 Or InStr(wname, "“d—¬") > 0 _
-        Or InStr(wname, "ƒGƒŒƒNƒg") > 0 _
+    If InStr(wname, "é›»æ’ƒ") > 0 Or InStr(wname, "é›»æµ") > 0 _
+        Or InStr(wname, "ã‚¨ãƒ¬ã‚¯ãƒˆ") > 0 _
     Then
-        wtype = "”j‰óŒõü"
+        wtype = "ç ´å£Šå…‰ç·š"
         sname = "Thunder.wav"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "ƒGƒlƒ‹ƒM[’e") > 0 Then
-        wtype = "‹…“d"
+    If InStr(wname, "ã‚¨ãƒãƒ«ã‚®ãƒ¼å¼¾") > 0 Then
+        wtype = "çƒé›»"
         sname = "Beam.wav"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "–A") > 0 Or InStr(wname, "ƒoƒuƒ‹") > 0 Then
-        wtype = "–A"
+    If InStr(wname, "æ³¡") > 0 Or InStr(wname, "ãƒãƒ–ãƒ«") > 0 Then
+        wtype = "æ³¡"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "‰¹”g") > 0 Or InStr(wname, "ƒTƒEƒ“ƒh") > 0 _
-        Or InStr(wname, "ƒ\ƒjƒbƒN") > 0 _
-        Or (InStrNotNest(wclass, "‰¹") > 0 And InStr(wname, "ƒVƒ‡ƒbƒN") > 0) _
-        Or InStr(wname, "ƒEƒF[ƒu") > 0 _
-        Or InStr(wname, "‹©‚Ñ") > 0 _
-        Or (InStrNotNest(wclass, "‰¹") > 0 And InStr(wname, "™ôšK") > 0) _
+    If InStr(wname, "éŸ³æ³¢") > 0 Or InStr(wname, "ã‚µã‚¦ãƒ³ãƒ‰") > 0 _
+        Or InStr(wname, "ã‚½ãƒ‹ãƒƒã‚¯") > 0 _
+        Or (InStrNotNest(wclass, "éŸ³") > 0 And InStr(wname, "ã‚·ãƒ§ãƒƒã‚¯") > 0) _
+        Or InStr(wname, "ã‚¦ã‚§ãƒ¼ãƒ–") > 0 _
+        Or InStr(wname, "å«ã³") > 0 _
+        Or (InStrNotNest(wclass, "éŸ³") > 0 And InStr(wname, "å’†å“®") > 0) _
     Then
-        wtype = "‰¹”g"
+        wtype = "éŸ³æ³¢"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "‰Ì") > 0 Or InStr(wname, "ƒ\ƒ“ƒO") > 0 Then
-        wtype = "‰¹•„"
+    If InStr(wname, "æ­Œ") > 0 Or InStr(wname, "ã‚½ãƒ³ã‚°") > 0 Then
+        wtype = "éŸ³ç¬¦"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "j") > 0 Or InStr(wname, "ƒj[ƒhƒ‹") > 0 Then
-        wtype = "ƒj[ƒhƒ‹"
+    If InStr(wname, "é‡") > 0 Or InStr(wname, "ãƒ‹ãƒ¼ãƒ‰ãƒ«") > 0 Then
+        wtype = "ãƒ‹ãƒ¼ãƒ‰ãƒ«"
         If CountAttack0(u, w) > 1 Then
-            wtype = "ƒj[ƒhƒ‹˜AË"
+            wtype = "ãƒ‹ãƒ¼ãƒ‰ãƒ«é€£å°„"
         End If
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "’Ã”g") > 0 _
-        Or InStr(wname, "ƒ_ƒCƒ_ƒ‹") > 0 _
+    If InStr(wname, "æ´¥æ³¢") > 0 _
+        Or InStr(wname, "ãƒ€ã‚¤ãƒ€ãƒ«") > 0 _
     Then
-        wtype = "’Ã”g"
+        wtype = "æ´¥æ³¢"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "ƒRƒƒbƒg") > 0 Then
-        wtype = "—¬¯"
+    If InStr(wname, "ã‚³ãƒ¡ãƒƒãƒˆ") > 0 Then
+        wtype = "æµæ˜Ÿ"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "ƒƒeƒI") > 0 Or InStr(wname, "è¦Î") > 0 Then
-        wtype = "è¦Î"
+    If InStr(wname, "ãƒ¡ãƒ†ã‚ª") > 0 Or InStr(wname, "éš•çŸ³") > 0 Then
+        wtype = "éš•çŸ³"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "—³Šª") > 0 Or InStr(wname, "‰QŠª") > 0 _
-        Or InStr(wname, "ƒgƒ‹ƒl[ƒh") > 0 Or InStr(wname, "ƒTƒCƒNƒƒ“") > 0 _
+    If InStr(wname, "ç«œå·»") > 0 Or InStr(wname, "æ¸¦å·»") > 0 _
+        Or InStr(wname, "ãƒˆãƒ«ãƒãƒ¼ãƒ‰") > 0 Or InStr(wname, "ã‚µã‚¤ã‚¯ãƒ­ãƒ³") > 0 _
     Then
-        wtype = "—³Šª"
+        wtype = "ç«œå·»"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "‚Â‚ç‚ç") > 0 Then
-        wtype = "•X’e"
+    If InStr(wname, "ã¤ã‚‰ã‚‰") > 0 Then
+        wtype = "æ°·å¼¾"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "‚Â‚Ô‚Ä") > 0 Then
-        wtype = "Šâ’e"
+    If InStr(wname, "ã¤ã¶ã¦") > 0 Then
+        wtype = "å²©å¼¾"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "á") > 0 Or InStr(wname, "ƒuƒŠƒU[ƒh") > 0 _
-        Or InStr(wname, "ƒAƒCƒXƒXƒg[ƒ€") > 0 _
+    If InStr(wname, "å¹é›ª") > 0 Or InStr(wname, "ãƒ–ãƒªã‚¶ãƒ¼ãƒ‰") > 0 _
+        Or InStr(wname, "ã‚¢ã‚¤ã‚¹ã‚¹ãƒˆãƒ¼ãƒ ") > 0 _
     Then
-        wtype = "á"
+        wtype = "å¹é›ª"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "ƒXƒg[ƒ€") > 0 Or InStr(wname, "ƒnƒŠƒP[ƒ“") > 0 _
-        Or InStr(wname, "ƒ^ƒCƒt[ƒ“") > 0 _
-        Or InStr(wname, "‘ä•—") > 0 Or InStr(wname, "—’") > 0 _
+    If InStr(wname, "ã‚¹ãƒˆãƒ¼ãƒ ") > 0 Or InStr(wname, "ãƒãƒªã‚±ãƒ¼ãƒ³") > 0 _
+        Or InStr(wname, "ã‚¿ã‚¤ãƒ•ãƒ¼ãƒ³") > 0 _
+        Or InStr(wname, "å°é¢¨") > 0 Or InStr(wname, "åµ") > 0 _
     Then
-        wtype = "‹­•—"
+        wtype = "å¼·é¢¨"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "ƒEƒBƒ“ƒh") > 0 Or InStr(wname, "ƒEƒCƒ“ƒh") > 0 _
-        Or InStr(wname, "•—") > 0 _
+    If InStr(wname, "ã‚¦ã‚£ãƒ³ãƒ‰") > 0 Or InStr(wname, "ã‚¦ã‚¤ãƒ³ãƒ‰") > 0 _
+        Or InStr(wname, "é¢¨") > 0 _
     Then
-        wtype = "•—"
+        wtype = "é¢¨"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "‰Œ") > 0 Or InStr(wname, "ƒXƒ‚[ƒN") > 0 _
-        Or Right$(wname, 2) = "ƒKƒX" Or Right$(wname, 1) = "–¶" _
-        Or InStr(wname, "–Eq") > 0 _
+    If InStr(wname, "ç…™") > 0 Or InStr(wname, "ã‚¹ãƒ¢ãƒ¼ã‚¯") > 0 _
+        Or Right$(wname, 2) = "ã‚¬ã‚¹" Or Right$(wname, 1) = "éœ§" _
+        Or InStr(wname, "èƒå­") > 0 _
     Then
-        wtype = "‰Œ"
-        If InStr(wname, "“Å") > 0 Or InStrNotNest(wclass, "“Å") > 0 Then
-            cname = "—Î"
+        wtype = "ç…™"
+        If InStr(wname, "æ¯’") > 0 Or InStrNotNest(wclass, "æ¯’") > 0 Then
+            cname = "ç·‘"
         End If
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "‰Î‰Š’e") > 0 Then
-        wtype = "‰Î‰Š’e"
+    If InStr(wname, "ç«ç‚å¼¾") > 0 Then
+        wtype = "ç«ç‚å¼¾"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "‰Î‰Š•úË") > 0 _
-        Or Right$(wname, 2) = "‰Î‰Š" _
+    If InStr(wname, "ç«ç‚æ”¾å°„") > 0 _
+        Or Right$(wname, 2) = "ç«ç‚" _
     Then
-        wtype = "‰Î‰Š•úË"
+        wtype = "ç«ç‚æ”¾å°„"
         sname = "AntiShipMissile.wav"
         GoTo FoundWeaponType
     End If
     
-    If Right$(wname, 5) = "ƒtƒ@ƒCƒA[" _
-        Or Right$(wname, 5) = "ƒtƒ@ƒCƒ„[" _
-        Or Right$(wname, 4) = "ƒtƒ@ƒCƒA" _
-        Or Right$(wname, 4) = "ƒtƒ@ƒCƒ„" _
+    If Right$(wname, 5) = "ãƒ•ã‚¡ã‚¤ã‚¢ãƒ¼" _
+        Or Right$(wname, 5) = "ãƒ•ã‚¡ã‚¤ãƒ¤ãƒ¼" _
+        Or Right$(wname, 4) = "ãƒ•ã‚¡ã‚¤ã‚¢" _
+        Or Right$(wname, 4) = "ãƒ•ã‚¡ã‚¤ãƒ¤" _
     Then
-        If InStrNotNest(wclass, "À") = 0 And Left$(wname, 2) <> "ƒtƒ‹" Then
-            If InStrNotNest(wclass, "p") > 0 Then
-                wtype = "‰Š“ŠË"
+        If InStrNotNest(wclass, "å®Ÿ") = 0 And Left$(wname, 2) <> "ãƒ•ãƒ«" Then
+            If InStrNotNest(wclass, "è¡“") > 0 Then
+                wtype = "ç‚æŠ•å°„"
             Else
-                wtype = "‰Î‰Š•úË"
+                wtype = "ç«ç‚æ”¾å°„"
                 sname = "AntiShipMissile.wav"
             End If
             GoTo FoundWeaponType
         End If
     End If
     
-    If InStr(wname, "‘§") > 0 Or Right$(wname, 3) = "ƒuƒŒƒX" Then
-        If InStrNotNest(wclass, "À") = 0 Then
-            wtype = "‰Î‰Š•úË"
+    If InStr(wname, "æ¯") > 0 Or Right$(wname, 3) = "ãƒ–ãƒ¬ã‚¹" Then
+        If InStrNotNest(wclass, "å®Ÿ") = 0 Then
+            wtype = "ç«ç‚æ”¾å°„"
             sname = "Breath.wav"
             
             Select Case SpellColor(wname, wclass)
-                Case "Ô", "Â", "‰©", "—Î", "”’", "•"
+                Case "èµ¤", "é’", "é»„", "ç·‘", "ç™½", "é»’"
                     cname = SpellColor(wname, wclass)
             End Select
             
@@ -1975,154 +1975,154 @@ SkipHandWeapon:
         End If
     End If
     
-    If InStr(wname, "ƒGƒlƒ‹ƒM[”g") > 0 Then
-        wtype = "”g“®•úË"
+    If InStr(wname, "ã‚¨ãƒãƒ«ã‚®ãƒ¼æ³¢") > 0 Then
+        wtype = "æ³¢å‹•æ”¾å°„"
         sname = "Beam.wav"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "ÕŒ‚") > 0 Then
-        wtype = "”g“®•úË"
-        cname = "”’"
+    If InStr(wname, "è¡æ’ƒ") > 0 Then
+        wtype = "æ³¢å‹•æ”¾å°„"
+        cname = "ç™½"
         sname = "Bazooka.wav"
         GoTo FoundWeaponType
     End If
     
-    '—ì“IA–‚–@“I‚ÈUŒ‚
+    'éœŠçš„ã€é­”æ³•çš„ãªæ”»æ’ƒ
     
-    If InStr(wname, "‹C’e") > 0 Then
-        wtype = "‹C’e"
+    If InStr(wname, "æ°—å¼¾") > 0 Then
+        wtype = "æ°—å¼¾"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "ƒ\ƒjƒbƒNƒuƒŒ[ƒh") > 0 Then
-        wtype = "‹Ca"
+    If InStr(wname, "ã‚½ãƒ‹ãƒƒã‚¯ãƒ–ãƒ¬ãƒ¼ãƒ‰") > 0 Then
+        wtype = "æ°—æ–¬"
         GoTo FoundWeaponType
     End If
     
-    If u.IsSpellWeapon(w) Or InStrNotNest(wclass, "–‚") > 0 Then
-'        wtype = "–‚–@•úË"
+    If u.IsSpellWeapon(w) Or InStrNotNest(wclass, "é­”") > 0 Then
+'        wtype = "é­”æ³•æ”¾å°„"
 '        cname = SpellColor(wname, wclass)
-        wtype = "ƒfƒtƒHƒ‹ƒg"
+        wtype = "ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆ"
         sname = "Whiz.wav"
         GoTo FoundWeaponType
     End If
     
-    '(ƒr[ƒ€UŒ‚)
+    '(ãƒ“ãƒ¼ãƒ æ”»æ’ƒ)
     
-    If wtype = "ƒr[ƒ€" Then
-        If InStrNotNest(wclass, "‚l") > 0 Then
-            wtype = "‚l‚`‚oƒr[ƒ€"
+    If wtype = "ãƒ“ãƒ¼ãƒ " Then
+        If InStrNotNest(wclass, "ï¼­") > 0 Then
+            wtype = "ï¼­ï¼¡ï¼°ãƒ“ãƒ¼ãƒ "
             GoTo FoundWeaponType
         End If
         
-        If InStr(wname, "ƒnƒCƒƒK") > 0 Or InStr(wname, "ƒoƒXƒ^[") > 0 _
-            Or InStr(wname, "‘å") > 0 _
-            Or Left$(wname, 2) = "ƒMƒK" _
+        If InStr(wname, "ãƒã‚¤ãƒ¡ã‚¬") > 0 Or InStr(wname, "ãƒã‚¹ã‚¿ãƒ¼") > 0 _
+            Or InStr(wname, "å¤§") > 0 _
+            Or Left$(wname, 2) = "ã‚®ã‚¬" _
         Then
-            wtype = "‘åƒr[ƒ€"
-        ElseIf InStr(wname, "ƒƒK") > 0 _
-            Or InStr(wname, "ƒnƒC") > 0 _
+            wtype = "å¤§ãƒ“ãƒ¼ãƒ "
+        ElseIf InStr(wname, "ãƒ¡ã‚¬") > 0 _
+            Or InStr(wname, "ãƒã‚¤") > 0 _
         Then
-            wtype = "’†ƒr[ƒ€"
+            wtype = "ä¸­ãƒ“ãƒ¼ãƒ "
         ElseIf CountAttack0(u, w) >= 4 _
-            Or InStr(wname, "‘Î‹ó") > 0 _
+            Or InStr(wname, "å¯¾ç©º") > 0 _
         Then
-            wtype = "ƒj[ƒhƒ‹ƒŒ[ƒU[˜AË"
-        ElseIf InStr(wname, "ƒ~ƒj") > 0 _
-            Or InStr(wname, "¬") > 0 _
+            wtype = "ãƒ‹ãƒ¼ãƒ‰ãƒ«ãƒ¬ãƒ¼ã‚¶ãƒ¼é€£å°„"
+        ElseIf InStr(wname, "ãƒŸãƒ‹") > 0 _
+            Or InStr(wname, "å°") > 0 _
         Then
-            wtype = "ƒj[ƒhƒ‹ƒŒ[ƒU["
-        ElseIf InStr(wname, "ƒ‰ƒ“ƒ`ƒƒ[") > 0 _
-            Or InStr(wname, "ƒLƒƒƒmƒ“") > 0 _
-            Or InStr(wname, "ƒJƒmƒ“") > 0 _
-            Or InStr(wname, "–C") > 0 _
+            wtype = "ãƒ‹ãƒ¼ãƒ‰ãƒ«ãƒ¬ãƒ¼ã‚¶ãƒ¼"
+        ElseIf InStr(wname, "ãƒ©ãƒ³ãƒãƒ£ãƒ¼") > 0 _
+            Or InStr(wname, "ã‚­ãƒ£ãƒãƒ³") > 0 _
+            Or InStr(wname, "ã‚«ãƒãƒ³") > 0 _
+            Or InStr(wname, "ç ²") > 0 _
         Then
-            wtype = "’†ƒr[ƒ€"
+            wtype = "ä¸­ãƒ“ãƒ¼ãƒ "
         Else
-            wtype = "¬ƒr[ƒ€"
+            wtype = "å°ãƒ“ãƒ¼ãƒ "
         End If
         
-        If wtype = "‘åƒr[ƒ€" Then
-            wtype0 = "—±qW’†"
+        If wtype = "å¤§ãƒ“ãƒ¼ãƒ " Then
+            wtype0 = "ç²’å­é›†ä¸­"
         End If
         
         Select Case wtype
-            Case "¬ƒr[ƒ€", "’†ƒr[ƒ€"
+            Case "å°ãƒ“ãƒ¼ãƒ ", "ä¸­ãƒ“ãƒ¼ãƒ "
                 If double_weapon Then
-                    wtype = "‚Q˜A" & wtype
+                    wtype = "ï¼’é€£" & wtype
                 End If
         End Select
         
-        If InStr(wname, "ŠgU") > 0 _
-            Or InStr(wname, "•úË") > 0 _
-            Or InStr(wname, "ƒz[ƒ~ƒ“ƒO") > 0 _
-            Or InStr(wname, "—U“±") > 0 _
+        If InStr(wname, "æ‹¡æ•£") > 0 _
+            Or InStr(wname, "æ”¾å°„") > 0 _
+            Or InStr(wname, "ãƒ›ãƒ¼ãƒŸãƒ³ã‚°") > 0 _
+            Or InStr(wname, "èª˜å°") > 0 _
         Then
-            wtype = "ŠgUƒr[ƒ€"
+            wtype = "æ‹¡æ•£ãƒ“ãƒ¼ãƒ "
         End If
         
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "Œõü") > 0 Then
-        wtype = "‰öŒõü"
+    If InStr(wname, "å…‰ç·š") > 0 Then
+        wtype = "æ€ªå…‰ç·š"
         GoTo FoundWeaponType
     End If
     
-    '(¬Œ^‚Å˜AË‚·‚é‰ÎŠí)
+    '(å°å‹ã§é€£å°„ã™ã‚‹ç«å™¨)
     
-    If InStr(wname, "ƒoƒ‹ƒJƒ“") > 0 Then
-        wtype = "ƒoƒ‹ƒJƒ“"
+    If InStr(wname, "ãƒãƒ«ã‚«ãƒ³") > 0 Then
+        wtype = "ãƒãƒ«ã‚«ãƒ³"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "‹@e") > 0 Or InStr(wname, "‹@ŠÖ–C") > 0 Then
-        wtype = "‹@ŠÖ–C"
+    If InStr(wname, "æ©ŸéŠƒ") > 0 Or InStr(wname, "æ©Ÿé–¢ç ²") > 0 Then
+        wtype = "æ©Ÿé–¢ç ²"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "ƒ`ƒF[ƒ“ƒKƒ“") > 0 _
-        Or InStr(wname, "ƒKƒ“ƒ‰ƒ“ƒ`ƒƒ[") > 0 _
+    If InStr(wname, "ãƒã‚§ãƒ¼ãƒ³ã‚¬ãƒ³") > 0 _
+        Or InStr(wname, "ã‚¬ãƒ³ãƒ©ãƒ³ãƒãƒ£ãƒ¼") > 0 _
     Then
-        wtype = "“à‘ ƒKƒgƒŠƒ“ƒO"
+        wtype = "å†…è”µã‚¬ãƒˆãƒªãƒ³ã‚°"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "ƒ}ƒVƒ“ƒLƒƒƒmƒ“") > 0 _
-        Or InStr(wname, "ƒI[ƒgƒLƒƒƒmƒ“") > 0 _
-        Or InStr(wname, "‘¬Ë–C") > 0 _
+    If InStr(wname, "ãƒã‚·ãƒ³ã‚­ãƒ£ãƒãƒ³") > 0 _
+        Or InStr(wname, "ã‚ªãƒ¼ãƒˆã‚­ãƒ£ãƒãƒ³") > 0 _
+        Or InStr(wname, "é€Ÿå°„ç ²") > 0 _
     Then
-        wtype = "d‹@ŠÖ–C"
+        wtype = "é‡æ©Ÿé–¢ç ²"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "ƒxƒAƒŠƒ“ƒO") > 0 Or InStr(wname, "ƒNƒŒƒCƒ‚ƒA") > 0 Then
-        wtype = "ƒxƒAƒŠƒ“ƒO"
+    If InStr(wname, "ãƒ™ã‚¢ãƒªãƒ³ã‚°") > 0 Or InStr(wname, "ã‚¯ãƒ¬ã‚¤ãƒ¢ã‚¢") > 0 Then
+        wtype = "ãƒ™ã‚¢ãƒªãƒ³ã‚°"
         GoTo FoundWeaponType
     End If
     
-    '(ƒI[ƒ‹ƒŒƒ“ƒWUŒ‚)
+    '(ã‚ªãƒ¼ãƒ«ãƒ¬ãƒ³ã‚¸æ”»æ’ƒ)
     
-    If InStr(wname, "—Lü") > 0 Then
-        wtype = "‚Q‚v‚`‚xËo"
+    If InStr(wname, "æœ‰ç·š") > 0 Then
+        wtype = "ï¼’ï¼·ï¼¡ï¼¹å°„å‡º"
         GoTo FoundWeaponType
     End If
     
-    '”Ä—p“I‚Èu–Cv‚Ìw’è‚ÍÅŒã‚É”»’è
-    If InStr(wname, "–C") > 0 _
-        Or InStr(wname, "ƒLƒƒƒmƒ“") > 0 Or InStr(wname, "ƒJƒmƒ“") > 0 _
-        Or InStr(wname, "’e") > 0 _
+    'æ±ç”¨çš„ãªã€Œç ²ã€ã®æŒ‡å®šã¯æœ€å¾Œã«åˆ¤å®š
+    If InStr(wname, "ç ²") > 0 _
+        Or InStr(wname, "ã‚­ãƒ£ãƒãƒ³") > 0 Or InStr(wname, "ã‚«ãƒãƒ³") > 0 _
+        Or InStr(wname, "å¼¾") > 0 _
     Then
-        If InStr(wname, "ƒŠƒjƒA") > 0 _
-            Or InStr(wname, "ƒŒ[ƒ‹") > 0 _
-            Or InStr(wname, "“d¥") > 0 _
+        If InStr(wname, "ãƒªãƒ‹ã‚¢") > 0 _
+            Or InStr(wname, "ãƒ¬ãƒ¼ãƒ«") > 0 _
+            Or InStr(wname, "é›»ç£") > 0 _
         Then
             PlayWave "Thunder.wav"
             Sleep 300
         End If
         
-        wtype = "ƒLƒƒƒmƒ“–C"
+        wtype = "ã‚­ãƒ£ãƒãƒ³ç ²"
         
         attack_times = CountAttack0(u, w)
         
@@ -2131,171 +2131,171 @@ SkipHandWeapon:
     
 SkipShootingWeapon:
     
-    '‘Î‰‚·‚é•Ší‚ÍŒ©‚Â‚©‚ç‚È‚©‚Á‚½
-    wtype = "ƒfƒtƒHƒ‹ƒg"
+    'å¯¾å¿œã™ã‚‹æ­¦å™¨ã¯è¦‹ã¤ã‹ã‚‰ãªã‹ã£ãŸ
+    wtype = "ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆ"
     
 FoundWeaponType:
     
-    '‹ó’†ˆÚ“®ê—pŒ`‘Ô‚Í•Ší‚ğè‚Å\‚¦‚È‚¢B
-    '‚Ü‚½“™g‘åŠî€‚Ìê‡A”ñlŠÔƒ†ƒjƒbƒg‚ÍƒƒJ‚Å‚ ‚é‚±‚Æ‚ª‘½‚¢‚Ì‚Å‚±‚¿‚ç‚à
-    '“à‘ •Ší‚ğ—Dæ‚·‚éB
+    'ç©ºä¸­ç§»å‹•å°‚ç”¨å½¢æ…‹ã¯æ­¦å™¨ã‚’æ‰‹ã§æ§‹ãˆãªã„ã€‚
+    'ã¾ãŸç­‰èº«å¤§åŸºæº–ã®å ´åˆã€éäººé–“ãƒ¦ãƒ‹ãƒƒãƒˆã¯ãƒ¡ã‚«ã§ã‚ã‚‹ã“ã¨ãŒå¤šã„ã®ã§ã“ã¡ã‚‰ã‚‚
+    'å†…è”µæ­¦å™¨ã‚’å„ªå…ˆã™ã‚‹ã€‚
     If is_handy_weapon _
-        And (u.Data.Transportation = "‹ó" _
-            Or (IsOptionDefined("“™g‘åŠî€") And Not u.IsHero())) _
+        And (u.Data.Transportation = "ç©º" _
+            Or (IsOptionDefined("ç­‰èº«å¤§åŸºæº–") And Not u.IsHero())) _
     Then
         Select Case wtype
-            Case "‚l‚`‚oƒoƒXƒ^[ƒr[ƒ€ƒ‰ƒCƒtƒ‹"
-                wtype = "‚l‚`‚oƒr[ƒ€"
-            Case "ƒoƒXƒ^[ƒr[ƒ€ƒ‰ƒCƒtƒ‹"
-                wtype = "‘åƒr[ƒ€"
-            Case "ƒ_ƒuƒ‹ƒr[ƒ€ƒ‰ƒ“ƒ`ƒƒ["
-                wtype = "‚Q˜A’†ƒr[ƒ€"
-            Case "ƒr[ƒ€ƒ‰ƒ“ƒ`ƒƒ["
-                wtype = "’†ƒr[ƒ€"
-            Case "ƒ_ƒuƒ‹ƒr[ƒ€ƒ‰ƒCƒtƒ‹"
-                wtype = "‚Q˜A¬ƒr[ƒ€"
-            Case "ƒr[ƒ€ƒ‰ƒCƒtƒ‹"
-                wtype = "¬ƒr[ƒ€"
-            Case "ƒŒ[ƒU[ƒ}ƒVƒ“ƒKƒ“"
-                wtype = "ƒj[ƒhƒ‹ƒŒ[ƒU[˜AË"
-            Case "ƒŒ[ƒU[ƒKƒ“"
-                wtype = "ƒj[ƒhƒ‹ƒŒ[ƒU["
-            Case "ƒTƒuƒ}ƒVƒ“ƒKƒ“", "ƒ}ƒVƒ“ƒKƒ“"
-                wtype = "‹@ŠÖ–C"
-            Case "ƒwƒr[ƒ}ƒVƒ“ƒKƒ“"
-                wtype = "d‹@ŠÖ–C"
-            Case "ƒKƒgƒŠƒ“ƒO"
-                wtype = "“à‘ ƒKƒgƒŠƒ“ƒO"
-            Case "ƒVƒ‡ƒbƒgƒKƒ“"
-                wtype = "ƒxƒAƒŠƒ“ƒO"
+            Case "ï¼­ï¼¡ï¼°ãƒã‚¹ã‚¿ãƒ¼ãƒ“ãƒ¼ãƒ ãƒ©ã‚¤ãƒ•ãƒ«"
+                wtype = "ï¼­ï¼¡ï¼°ãƒ“ãƒ¼ãƒ "
+            Case "ãƒã‚¹ã‚¿ãƒ¼ãƒ“ãƒ¼ãƒ ãƒ©ã‚¤ãƒ•ãƒ«"
+                wtype = "å¤§ãƒ“ãƒ¼ãƒ "
+            Case "ãƒ€ãƒ–ãƒ«ãƒ“ãƒ¼ãƒ ãƒ©ãƒ³ãƒãƒ£ãƒ¼"
+                wtype = "ï¼’é€£ä¸­ãƒ“ãƒ¼ãƒ "
+            Case "ãƒ“ãƒ¼ãƒ ãƒ©ãƒ³ãƒãƒ£ãƒ¼"
+                wtype = "ä¸­ãƒ“ãƒ¼ãƒ "
+            Case "ãƒ€ãƒ–ãƒ«ãƒ“ãƒ¼ãƒ ãƒ©ã‚¤ãƒ•ãƒ«"
+                wtype = "ï¼’é€£å°ãƒ“ãƒ¼ãƒ "
+            Case "ãƒ“ãƒ¼ãƒ ãƒ©ã‚¤ãƒ•ãƒ«"
+                wtype = "å°ãƒ“ãƒ¼ãƒ "
+            Case "ãƒ¬ãƒ¼ã‚¶ãƒ¼ãƒã‚·ãƒ³ã‚¬ãƒ³"
+                wtype = "ãƒ‹ãƒ¼ãƒ‰ãƒ«ãƒ¬ãƒ¼ã‚¶ãƒ¼é€£å°„"
+            Case "ãƒ¬ãƒ¼ã‚¶ãƒ¼ã‚¬ãƒ³"
+                wtype = "ãƒ‹ãƒ¼ãƒ‰ãƒ«ãƒ¬ãƒ¼ã‚¶ãƒ¼"
+            Case "ã‚µãƒ–ãƒã‚·ãƒ³ã‚¬ãƒ³", "ãƒã‚·ãƒ³ã‚¬ãƒ³"
+                wtype = "æ©Ÿé–¢ç ²"
+            Case "ãƒ˜ãƒ“ãƒ¼ãƒã‚·ãƒ³ã‚¬ãƒ³"
+                wtype = "é‡æ©Ÿé–¢ç ²"
+            Case "ã‚¬ãƒˆãƒªãƒ³ã‚°"
+                wtype = "å†…è”µã‚¬ãƒˆãƒªãƒ³ã‚°"
+            Case "ã‚·ãƒ§ãƒƒãƒˆã‚¬ãƒ³"
+                wtype = "ãƒ™ã‚¢ãƒªãƒ³ã‚°"
             Case Else
-                'è‚¿•Ší‚Ì‰æ‘œ‚ğ‹ó‚É‚·‚é
+                'æ‰‹æŒã¡æ­¦å™¨ã®ç”»åƒã‚’ç©ºã«ã™ã‚‹
                 bmpname = "-.bmp"
         End Select
     End If
     
-    'ƒ}ƒbƒvUŒ‚H
-    If InStrNotNest(wclass, "‚l") > 0 Then
-        'ƒ}ƒbƒvUŒ‚‘Î‰ƒAƒjƒ‚É’u‚«Š·‚¦
+    'ãƒãƒƒãƒ—æ”»æ’ƒï¼Ÿ
+    If InStrNotNest(wclass, "ï¼­") > 0 Then
+        'ãƒãƒƒãƒ—æ”»æ’ƒå¯¾å¿œã‚¢ãƒ‹ãƒ¡ã«ç½®ãæ›ãˆ
         Select Case wtype
-            Case "–î", "¬Œ^ƒ~ƒTƒCƒ‹", "ƒ~ƒTƒCƒ‹", "ƒX[ƒp[ƒ~ƒTƒCƒ‹", _
-                "ƒOƒŒƒl[ƒh", "ƒLƒƒƒmƒ“–C", "‘åƒLƒƒƒmƒ“–C", "‚h‚b‚a‚l", _
-                "ƒVƒ…[ƒgƒJƒbƒ^[", "‹…“d", "•X’e", "‰Î‰Š’e", "Šâ’e", _
-                "”­Œõ", "——‹", "•ú“d", "•X’Œ", _
-                "‚Â‚ç‚ç", "“€Œ‹", "á", "•—", _
-                "‹­•—", "—³Šª", "’Ã”g", "–A", _
-                "‰¹•„", "ƒI[ƒ‹ƒŒƒ“ƒW", "‰Œ", _
-                "‹C’e", "˜A‹C’e", "‹Ca", "”g“®•úË"
-                wtype = "‚l‚`‚o" & wtype
-            Case "‰Š", "‰Š“ŠË", "‰Î‰Š•úË"
-                wtype = "‚l‚`‚o‰Š"
-            Case "ƒj[ƒhƒ‹", "ƒj[ƒhƒ‹˜AË"
-                wtype = "‚l‚`‚oƒj[ƒhƒ‹"
-            Case "“Š‰º”š’e"
-                wtype = "‚l‚`‚o”š”­"
-            Case "d—Í’e"
-                wtype = "‚l‚`‚oƒuƒ‰ƒbƒNƒz[ƒ‹"
+            Case "çŸ¢", "å°å‹ãƒŸã‚µã‚¤ãƒ«", "ãƒŸã‚µã‚¤ãƒ«", "ã‚¹ãƒ¼ãƒ‘ãƒ¼ãƒŸã‚µã‚¤ãƒ«", _
+                "ã‚°ãƒ¬ãƒãƒ¼ãƒ‰", "ã‚­ãƒ£ãƒãƒ³ç ²", "å¤§ã‚­ãƒ£ãƒãƒ³ç ²", "ï¼©ï¼£ï¼¢ï¼­", _
+                "ã‚·ãƒ¥ãƒ¼ãƒˆã‚«ãƒƒã‚¿ãƒ¼", "çƒé›»", "æ°·å¼¾", "ç«ç‚å¼¾", "å²©å¼¾", _
+                "ç™ºå…‰", "è½é›·", "æ”¾é›»", "æ°·æŸ±", _
+                "ã¤ã‚‰ã‚‰", "å‡çµ", "å¹é›ª", "é¢¨", _
+                "å¼·é¢¨", "ç«œå·»", "æ´¥æ³¢", "æ³¡", _
+                "éŸ³ç¬¦", "ã‚ªãƒ¼ãƒ«ãƒ¬ãƒ³ã‚¸", "ç…™", _
+                "æ°—å¼¾", "é€£æ°—å¼¾", "æ°—æ–¬", "æ³¢å‹•æ”¾å°„"
+                wtype = "ï¼­ï¼¡ï¼°" & wtype
+            Case "ç‚", "ç‚æŠ•å°„", "ç«ç‚æ”¾å°„"
+                wtype = "ï¼­ï¼¡ï¼°ç‚"
+            Case "ãƒ‹ãƒ¼ãƒ‰ãƒ«", "ãƒ‹ãƒ¼ãƒ‰ãƒ«é€£å°„"
+                wtype = "ï¼­ï¼¡ï¼°ãƒ‹ãƒ¼ãƒ‰ãƒ«"
+            Case "æŠ•ä¸‹çˆ†å¼¾"
+                wtype = "ï¼­ï¼¡ï¼°çˆ†ç™º"
+            Case "é‡åŠ›å¼¾"
+                wtype = "ï¼­ï¼¡ï¼°ãƒ–ãƒ©ãƒƒã‚¯ãƒ›ãƒ¼ãƒ«"
             Case Else
-                If InStr(wname, "ƒtƒ‰ƒbƒVƒ…") > 0 Or InStr(wname, "‘MŒõ") > 0 Then
-                    wtype = "‚l‚`‚oƒtƒ‰ƒbƒVƒ…"
-                ElseIf InStr(wname, "ƒ_[ƒN") > 0 Or InStr(wname, "ˆÅ") > 0 Then
-                    wtype = "‚l‚`‚oƒ_[ƒNƒlƒX"
-                ElseIf InStr(wname, "’nk") > 0 Or InStr(wname, "ƒNƒEƒFƒCƒN") > 0 _
-                    Or InStr(wname, "ƒNƒGƒCƒN") > 0 _
+                If InStr(wname, "ãƒ•ãƒ©ãƒƒã‚·ãƒ¥") > 0 Or InStr(wname, "é–ƒå…‰") > 0 Then
+                    wtype = "ï¼­ï¼¡ï¼°ãƒ•ãƒ©ãƒƒã‚·ãƒ¥"
+                ElseIf InStr(wname, "ãƒ€ãƒ¼ã‚¯") > 0 Or InStr(wname, "é—‡") > 0 Then
+                    wtype = "ï¼­ï¼¡ï¼°ãƒ€ãƒ¼ã‚¯ãƒã‚¹"
+                ElseIf InStr(wname, "åœ°éœ‡") > 0 Or InStr(wname, "ã‚¯ã‚¦ã‚§ã‚¤ã‚¯") > 0 _
+                    Or InStr(wname, "ã‚¯ã‚¨ã‚¤ã‚¯") > 0 _
                 Then
-                    wtype = "‚l‚`‚o’nk"
+                    wtype = "ï¼­ï¼¡ï¼°åœ°éœ‡"
                     sname = " Explode(Far).wav"
-                ElseIf InStr(wname, "Šj") > 0 Or InStr(wname, "ƒAƒgƒ~ƒbƒN") > 0 Then
-                    wtype = "‚l‚`‚oŠj”š”­"
+                ElseIf InStr(wname, "æ ¸") > 0 Or InStr(wname, "ã‚¢ãƒˆãƒŸãƒƒã‚¯") > 0 Then
+                    wtype = "ï¼­ï¼¡ï¼°æ ¸çˆ†ç™º"
                 End If
         End Select
     End If
     
     
-    'g—p‚µ‚½UŒ‚è’i‚ğ‹L˜^
+    'ä½¿ç”¨ã—ãŸæ”»æ’ƒæ‰‹æ®µã‚’è¨˜éŒ²
     CurrentWeaponType = wtype
     
-    '•`‰æF‚ğÅIŒˆ’è
-    If InStr(wname, "ƒŒƒbƒh") > 0 Or InStr(wname, "Ô") > 0 Then
-        cname = "Ô"
-    ElseIf InStr(wname, "ƒuƒ‹[") > 0 Or InStr(wname, "Â") > 0 Then
-        cname = "Â"
-    ElseIf InStr(wname, "ƒCƒGƒ[") > 0 Or InStr(wname, "‰©") > 0 Then
-        cname = "‰©"
-    ElseIf InStr(wname, "ƒOƒŠ[ƒ“") > 0 Or InStr(wname, "—Î") > 0 Then
-        cname = "—Î"
-    ElseIf InStr(wname, "ƒsƒ“ƒN") > 0 Or InStr(wname, "“") > 0 Then
-        cname = "“"
-    ElseIf InStr(wname, "ƒuƒ‰ƒEƒ“") > 0 Or InStr(wname, "ò") > 0 Then
-        cname = "ò"
-    ElseIf InStr(wname, "ƒuƒ‰ƒbƒN") > 0 Or InStr(wname, "•") > 0 _
-        Or InStr(wname, "ƒ_[ƒN") > 0 Or InStr(wname, "ˆÅ") > 0 _
+    'æç”»è‰²ã‚’æœ€çµ‚æ±ºå®š
+    If InStr(wname, "ãƒ¬ãƒƒãƒ‰") > 0 Or InStr(wname, "èµ¤") > 0 Then
+        cname = "èµ¤"
+    ElseIf InStr(wname, "ãƒ–ãƒ«ãƒ¼") > 0 Or InStr(wname, "é’") > 0 Then
+        cname = "é’"
+    ElseIf InStr(wname, "ã‚¤ã‚¨ãƒ­ãƒ¼") > 0 Or InStr(wname, "é»„") > 0 Then
+        cname = "é»„"
+    ElseIf InStr(wname, "ã‚°ãƒªãƒ¼ãƒ³") > 0 Or InStr(wname, "ç·‘") > 0 Then
+        cname = "ç·‘"
+    ElseIf InStr(wname, "ãƒ”ãƒ³ã‚¯") > 0 Or InStr(wname, "æ¡ƒ") > 0 Then
+        cname = "æ¡ƒ"
+    ElseIf InStr(wname, "ãƒ–ãƒ©ã‚¦ãƒ³") > 0 Or InStr(wname, "æ©™") > 0 Then
+        cname = "æ©™"
+    ElseIf InStr(wname, "ãƒ–ãƒ©ãƒƒã‚¯") > 0 Or InStr(wname, "é»’") > 0 _
+        Or InStr(wname, "ãƒ€ãƒ¼ã‚¯") > 0 Or InStr(wname, "é—‡") > 0 _
     Then
-        cname = "•"
-    ElseIf InStr(wname, "ƒzƒƒCƒg") > 0 Or InStr(wname, "”’") > 0 _
-        Or InStr(wname, "ƒz[ƒŠ[") > 0 Or InStr(wname, "¹") > 0 _
+        cname = "é»’"
+    ElseIf InStr(wname, "ãƒ›ãƒ¯ã‚¤ãƒˆ") > 0 Or InStr(wname, "ç™½") > 0 _
+        Or InStr(wname, "ãƒ›ãƒ¼ãƒªãƒ¼") > 0 Or InStr(wname, "è–") > 0 _
     Then
-        cname = "”’"
+        cname = "ç™½"
     End If
     
-    '‚Qí—Ş‚ÌƒAƒjƒ‚ğ‘g‚İ‡‚í‚¹‚éê‡
+    'ï¼’ç¨®é¡ã®ã‚¢ãƒ‹ãƒ¡ã‚’çµ„ã¿åˆã‚ã›ã‚‹å ´åˆ
     If Len(wtype0) > 0 Then
-        '•\¦‚·‚é€”õƒAƒjƒ‚Ìí—Ş
-        aname = wtype0 & "€”õ"
+        'è¡¨ç¤ºã™ã‚‹æº–å‚™ã‚¢ãƒ‹ãƒ¡ã®ç¨®é¡
+        aname = wtype0 & "æº–å‚™"
         
-        'F
+        'è‰²
         If Len(cname0) > 0 Then
             aname = aname & " " & cname0
         ElseIf Len(cname) > 0 Then
             aname = aname & " " & cname
         End If
         
-        'Œø‰Ê‰¹
+        'åŠ¹æœéŸ³
         If Len(sname0) > 0 Then
             aname = aname & " " & sname0
         End If
         
-        'í“¬ƒAƒjƒ•\¦
+        'æˆ¦é—˜ã‚¢ãƒ‹ãƒ¡è¡¨ç¤º
         ShowAnimation aname
     End If
     
-    '•\¦‚·‚éUŒ‚ƒAƒjƒ‚Ìí—Ş
-    aname = wtype & "UŒ‚"
+    'è¡¨ç¤ºã™ã‚‹æ”»æ’ƒã‚¢ãƒ‹ãƒ¡ã®ç¨®é¡
+    aname = wtype & "æ”»æ’ƒ"
     
-    '”­Ë‰ñ”
+    'ç™ºå°„å›æ•°
     If attack_times > 0 Then
         aname = aname & " " & Format$(attack_times)
     End If
     
-    '‰æ‘œ
+    'ç”»åƒ
     If Len(bmpname) > 0 Then
         aname = aname & " " & bmpname
     End If
     
-    'F
+    'è‰²
     If Len(cname) > 0 Then
         aname = aname & " " & cname
     End If
     
-    'Œø‰Ê‰¹
+    'åŠ¹æœéŸ³
     If Len(sname) > 0 Then
         aname = aname & " " & sname
     End If
     
-    'UŒ‚ƒAƒjƒ•\¦
+    'æ”»æ’ƒã‚¢ãƒ‹ãƒ¡è¡¨ç¤º
     ShowAnimation aname
 End Sub
 
-'•Šíg—p‚ÌŒø‰Ê‰¹
+'æ­¦å™¨ä½¿ç”¨æ™‚ã®åŠ¹æœéŸ³
 Public Sub AttackSound(u As Unit, ByVal w As Integer)
 Dim wname As String, wclass As String
 Dim sname As String, num As Integer
 Dim i As Integer
         
-    'ƒtƒ‰ƒO‚ğƒNƒŠƒA
+    'ãƒ•ãƒ©ã‚°ã‚’ã‚¯ãƒªã‚¢
     IsWavePlayed = False
     
-    '‰EƒNƒŠƒbƒN’†‚ÍŒø‰Ê‰¹‚ğƒXƒLƒbƒv
+    'å³ã‚¯ãƒªãƒƒã‚¯ä¸­ã¯åŠ¹æœéŸ³ã‚’ã‚¹ã‚­ãƒƒãƒ—
     If IsRButtonPressed() Then
         Exit Sub
     End If
@@ -2303,124 +2303,124 @@ Dim i As Integer
     wname = u.WeaponNickname(w)
     wclass = u.Weapon(w).Class
     
-    'Œø‰Ê‰¹‚ª•K—v‚È‚¢‚à‚Ì
-    If u.IsWeaponClassifiedAs(w, "•") _
-        Or u.IsWeaponClassifiedAs(w, "“Ë") _
-        Or u.IsWeaponClassifiedAs(w, "Ú") _
+    'åŠ¹æœéŸ³ãŒå¿…è¦ãªã„ã‚‚ã®
+    If u.IsWeaponClassifiedAs(w, "æ­¦") _
+        Or u.IsWeaponClassifiedAs(w, "çª") _
+        Or u.IsWeaponClassifiedAs(w, "æ¥") _
     Then
         Exit Sub
     End If
-    If InStr(wname, "ƒr[ƒ€ƒT[ƒxƒ‹") > 0 Then
+    If InStr(wname, "ãƒ“ãƒ¼ãƒ ã‚µãƒ¼ãƒ™ãƒ«") > 0 Then
         Exit Sub
     End If
-    If InStrNotNest(wclass, "•") > 0 Then
-        If InStr(wname, "eŒ•") > 0 Then
+    If InStrNotNest(wclass, "æ­¦") > 0 Then
+        If InStr(wname, "éŠƒå‰£") > 0 Then
             Exit Sub
         End If
     End If
     
-    'Œø‰Ê‰¹‚ÌÄ¶‰ñ”
+    'åŠ¹æœéŸ³ã®å†ç”Ÿå›æ•°
     num = CountAttack(u, w)
     
-    '•Ší–¼‚É‰‚¶‚ÄŒø‰Ê‰¹‚ğ‘I‘ğ
-    If InStr(wname, "å–C") > 0 Or InStr(wname, "•›–C") > 0 Then
-        If InStrNotNest(wclass, "‚a") > 0 Then
+    'æ­¦å™¨åã«å¿œã˜ã¦åŠ¹æœéŸ³ã‚’é¸æŠ
+    If InStr(wname, "ä¸»ç ²") > 0 Or InStr(wname, "å‰¯ç ²") > 0 Then
+        If InStrNotNest(wclass, "ï¼¢") > 0 Then
             sname = "Beam.wav"
         Else
             sname = "Cannon.wav"
         End If
-    ElseIf InStr(wname, "‘Î‹ó–C") > 0 Then
-        If InStrNotNest(wclass, "‚a") > 0 Then
+    ElseIf InStr(wname, "å¯¾ç©ºç ²") > 0 Then
+        If InStrNotNest(wclass, "ï¼¢") > 0 Then
             sname = "Beam.wav"
             num = 4
         Else
             sname = "MachineCannon.wav"
         End If
-    ElseIf InStr(wname, "ƒŒ[ƒU[") > 0 Or InStr(wname, "Œõü") > 0 _
-        Or InStr(wname, "‹ÃWŒõ") > 0 _
-        Or InStr(wname, "”Mü") > 0 Or InStr(wname, "—âü") > 0 _
-        Or InStr(wname, "ÕŒ‚”g") > 0 Or InStr(wname, "“d¥”g") > 0 _
-        Or InStr(wname, "“d”g") > 0 Or InStr(wname, "‰¹”g") > 0 _
-        Or InStr(wname, "¥—Í") > 0 _
-        Or InStr(wname, "ƒuƒ‰ƒbƒNƒz[ƒ‹") > 0 Or InStr(wname, "k‘Ş") > 0 _
-        Or InStr(wname, "ƒEƒF[ƒu") > 0 Or InStr(wname, "”g“®") > 0 _
-        Or InStr(wname, "ƒ\ƒjƒbƒN") > 0 Or InStr(wname, "ƒXƒp[ƒN") > 0 _
-        Or InStr(wname, "ƒGƒlƒ‹ƒM[") > 0 _
+    ElseIf InStr(wname, "ãƒ¬ãƒ¼ã‚¶ãƒ¼") > 0 Or InStr(wname, "å…‰ç·š") > 0 _
+        Or InStr(wname, "å‡é›†å…‰") > 0 _
+        Or InStr(wname, "ç†±ç·š") > 0 Or InStr(wname, "å†·ç·š") > 0 _
+        Or InStr(wname, "è¡æ’ƒæ³¢") > 0 Or InStr(wname, "é›»ç£æ³¢") > 0 _
+        Or InStr(wname, "é›»æ³¢") > 0 Or InStr(wname, "éŸ³æ³¢") > 0 _
+        Or InStr(wname, "ç£åŠ›") > 0 _
+        Or InStr(wname, "ãƒ–ãƒ©ãƒƒã‚¯ãƒ›ãƒ¼ãƒ«") > 0 Or InStr(wname, "ç¸®é€€") > 0 _
+        Or InStr(wname, "ã‚¦ã‚§ãƒ¼ãƒ–") > 0 Or InStr(wname, "æ³¢å‹•") > 0 _
+        Or InStr(wname, "ã‚½ãƒ‹ãƒƒã‚¯") > 0 Or InStr(wname, "ã‚¹ãƒ‘ãƒ¼ã‚¯") > 0 _
+        Or InStr(wname, "ã‚¨ãƒãƒ«ã‚®ãƒ¼") > 0 _
     Then
         sname = "LaserGun.wav"
-    ElseIf InStr(wname, "—±q") > 0 Or InStr(wname, "—z“dq") > 0 _
-        Or InStr(wname, "—zq") > 0 _
-        Or InStr(wname, "ƒuƒ‰ƒXƒ^[") > 0 Or InStr(wname, "ƒuƒ‰ƒXƒg") > 0 _
-        Or InStr(wname, "ƒtƒFƒCƒU[") > 0 Or InStr(wname, "ƒfƒBƒXƒ‰ƒvƒ^[") > 0 _
-        Or InStr(wname, "ƒXƒ}ƒbƒVƒƒ[") > 0 Or InStr(wname, "ƒXƒ‰ƒbƒVƒƒ[") > 0 _
-        Or InStr(wname, "ƒtƒ‰ƒbƒVƒƒ[") > 0 Or InStr(wname, "ƒfƒBƒoƒCƒ_[") > 0 _
-        Or InStr(wname, "ƒhƒ‰ƒCƒo[") > 0 Or InStr(wname, "ƒVƒ…ƒgƒ‰[ƒ‹") > 0 _
-        Or InStr(wname, "ƒjƒ…[ƒgƒƒ“") > 0 Or InStr(wname, "ƒvƒ‰ƒYƒ}") > 0 _
-        Or InStr(wname, "ƒCƒIƒ“") > 0 Or InStr(wname, "ƒvƒƒ~ƒlƒ“ƒX") > 0 _
-        Or InStr(wname, "ƒnƒCƒhƒ") > 0 Or InStr(wname, "ƒCƒ“ƒpƒ‹ƒX") > 0 _
-        Or InStr(wname, "ƒtƒŒƒCƒ€") > 0 Or InStr(wname, "ƒTƒ“ƒVƒƒƒCƒ“") > 0 _
+    ElseIf InStr(wname, "ç²’å­") > 0 Or InStr(wname, "é™½é›»å­") > 0 _
+        Or InStr(wname, "é™½å­") > 0 _
+        Or InStr(wname, "ãƒ–ãƒ©ã‚¹ã‚¿ãƒ¼") > 0 Or InStr(wname, "ãƒ–ãƒ©ã‚¹ãƒˆ") > 0 _
+        Or InStr(wname, "ãƒ•ã‚§ã‚¤ã‚¶ãƒ¼") > 0 Or InStr(wname, "ãƒ‡ã‚£ã‚¹ãƒ©ãƒ—ã‚¿ãƒ¼") > 0 _
+        Or InStr(wname, "ã‚¹ãƒãƒƒã‚·ãƒ£ãƒ¼") > 0 Or InStr(wname, "ã‚¹ãƒ©ãƒƒã‚·ãƒ£ãƒ¼") > 0 _
+        Or InStr(wname, "ãƒ•ãƒ©ãƒƒã‚·ãƒ£ãƒ¼") > 0 Or InStr(wname, "ãƒ‡ã‚£ãƒã‚¤ãƒ€ãƒ¼") > 0 _
+        Or InStr(wname, "ãƒ‰ãƒ©ã‚¤ãƒãƒ¼") > 0 Or InStr(wname, "ã‚·ãƒ¥ãƒˆãƒ©ãƒ¼ãƒ«") > 0 _
+        Or InStr(wname, "ãƒ‹ãƒ¥ãƒ¼ãƒˆãƒ­ãƒ³") > 0 Or InStr(wname, "ãƒ—ãƒ©ã‚ºãƒ") > 0 _
+        Or InStr(wname, "ã‚¤ã‚ªãƒ³") > 0 Or InStr(wname, "ãƒ—ãƒ­ãƒŸãƒãƒ³ã‚¹") > 0 _
+        Or InStr(wname, "ãƒã‚¤ãƒ‰ãƒ­") > 0 Or InStr(wname, "ã‚¤ãƒ³ãƒ‘ãƒ«ã‚¹") > 0 _
+        Or InStr(wname, "ãƒ•ãƒ¬ã‚¤ãƒ ") > 0 Or InStr(wname, "ã‚µãƒ³ã‚·ãƒ£ã‚¤ãƒ³") > 0 _
     Then
         sname = "Beam.wav"
-    ElseIf InStr(wname, "ƒVƒ…[ƒ^[") > 0 Then
-        If InStrNotNest(wclass, "À") > 0 Then
+    ElseIf InStr(wname, "ã‚·ãƒ¥ãƒ¼ã‚¿ãƒ¼") > 0 Then
+        If InStrNotNest(wclass, "å®Ÿ") > 0 Then
             sname = "Missile.wav"
         Else
             sname = "Beam.wav"
         End If
-    ElseIf InStr(wname, "ƒr[ƒ€") > 0 Then
-        If InStrNotNest(wclass, "‚a") > 0 Then
+    ElseIf InStr(wname, "ãƒ“ãƒ¼ãƒ ") > 0 Then
+        If InStrNotNest(wclass, "ï¼¢") > 0 Then
             sname = "Beam.wav"
         Else
             sname = "LaserGun.wav"
         End If
-        If InStr(wname, "ƒoƒ‹ƒJƒ“") > 0 _
-            Or InStr(wname, "ƒ}ƒVƒ“ƒKƒ“") > 0 _
+        If InStr(wname, "ãƒãƒ«ã‚«ãƒ³") > 0 _
+            Or InStr(wname, "ãƒã‚·ãƒ³ã‚¬ãƒ³") > 0 _
         Then
             num = 4
         End If
-    ElseIf InStr(wname, "‹@ŠÖe") > 0 _
-        Or InStr(wname, "‹@e") > 0 _
-        Or InStr(wname, "ƒ}ƒVƒ“ƒKƒ“") > 0 _
-        Or InStr(wname, "ƒAƒTƒ‹ƒgƒ‰ƒCƒtƒ‹") > 0 _
-        Or InStr(wname, "ƒ`ƒF[ƒ“ƒ‰ƒCƒtƒ‹") > 0 _
-        Or InStr(wname, "ƒpƒŒƒbƒgƒ‰ƒCƒtƒ‹") > 0 _
-        Or InStr(wname, "ƒ}ƒEƒ‰[–C") > 0 _
-        Or InStr(wname, "‚r‚l‚f") > 0 _
+    ElseIf InStr(wname, "æ©Ÿé–¢éŠƒ") > 0 _
+        Or InStr(wname, "æ©ŸéŠƒ") > 0 _
+        Or InStr(wname, "ãƒã‚·ãƒ³ã‚¬ãƒ³") > 0 _
+        Or InStr(wname, "ã‚¢ã‚µãƒ«ãƒˆãƒ©ã‚¤ãƒ•ãƒ«") > 0 _
+        Or InStr(wname, "ãƒã‚§ãƒ¼ãƒ³ãƒ©ã‚¤ãƒ•ãƒ«") > 0 _
+        Or InStr(wname, "ãƒ‘ãƒ¬ãƒƒãƒˆãƒ©ã‚¤ãƒ•ãƒ«") > 0 _
+        Or InStr(wname, "ãƒã‚¦ãƒ©ãƒ¼ç ²") > 0 _
+        Or InStr(wname, "ï¼³ï¼­ï¼§") > 0 _
     Then
-        If InStrNotNest(wclass, "‚a") > 0 Then
+        If InStrNotNest(wclass, "ï¼¢") > 0 Then
             sname = "LaserGun.wav"
         Else
             sname = "MachineGun.wav"
         End If
         num = 1
-    ElseIf InStr(wname, "‹@ŠÖ–C") > 0 _
-        Or InStr(wname, "‘¬Ë–C") > 0 _
-        Or InStr(wname, "ƒ}ƒVƒ“ƒLƒƒƒmƒ“") > 0 _
-        Or InStr(wname, "ƒ‚[ƒ^[ƒJƒmƒ“") > 0 _
-        Or InStr(wname, "ƒKƒ“ƒNƒ‰ƒXƒ^[") > 0 _
-        Or InStr(wname, "ƒ`ƒF[ƒ“ƒKƒ“") > 0 _
+    ElseIf InStr(wname, "æ©Ÿé–¢ç ²") > 0 _
+        Or InStr(wname, "é€Ÿå°„ç ²") > 0 _
+        Or InStr(wname, "ãƒã‚·ãƒ³ã‚­ãƒ£ãƒãƒ³") > 0 _
+        Or InStr(wname, "ãƒ¢ãƒ¼ã‚¿ãƒ¼ã‚«ãƒãƒ³") > 0 _
+        Or InStr(wname, "ã‚¬ãƒ³ã‚¯ãƒ©ã‚¹ã‚¿ãƒ¼") > 0 _
+        Or InStr(wname, "ãƒã‚§ãƒ¼ãƒ³ã‚¬ãƒ³") > 0 _
     Then
-        If InStrNotNest(wclass, "‚a") > 0 Then
+        If InStrNotNest(wclass, "ï¼¢") > 0 Then
             sname = "LaserGun.wav"
         Else
             sname = "MachineCannon.wav"
         End If
         num = 1
-    ElseIf InStr(wname, "ƒKƒ“ƒ|ƒbƒh") > 0 _
-        Or InStr(wname, "ƒoƒ‹ƒJƒ“") > 0 _
-        Or InStr(wname, "ƒKƒgƒŠƒ“ƒO") > 0 _
-        Or InStr(wname, "ƒnƒ“ƒhƒŒ[ƒ‹ƒKƒ“") > 0 _
+    ElseIf InStr(wname, "ã‚¬ãƒ³ãƒãƒƒãƒ‰") > 0 _
+        Or InStr(wname, "ãƒãƒ«ã‚«ãƒ³") > 0 _
+        Or InStr(wname, "ã‚¬ãƒˆãƒªãƒ³ã‚°") > 0 _
+        Or InStr(wname, "ãƒãƒ³ãƒ‰ãƒ¬ãƒ¼ãƒ«ã‚¬ãƒ³") > 0 _
     Then
-        If InStrNotNest(wclass, "‚a") > 0 Then
+        If InStrNotNest(wclass, "ï¼¢") > 0 Then
             sname = "LaserGun.wav"
         Else
             sname = "GunPod.wav"
         End If
         num = 1
-    ElseIf InStr(wname, "ƒŠƒjƒAƒLƒƒƒmƒ“") > 0 Or InStr(wname, "ƒŒ[ƒ‹ƒLƒƒƒmƒ“") > 0 _
-        Or InStr(wname, "ƒŠƒjƒAƒJƒmƒ“") > 0 Or InStr(wname, "ƒŒ[ƒ‹ƒJƒmƒ“") > 0 _
-        Or InStr(wname, "ƒŠƒjƒAƒKƒ“") > 0 Or InStr(wname, "ƒŒ[ƒ‹ƒKƒ“") > 0 _
-        Or (InStr(wname, "“d¥") > 0 And InStr(wname, "–C") > 0) _
+    ElseIf InStr(wname, "ãƒªãƒ‹ã‚¢ã‚­ãƒ£ãƒãƒ³") > 0 Or InStr(wname, "ãƒ¬ãƒ¼ãƒ«ã‚­ãƒ£ãƒãƒ³") > 0 _
+        Or InStr(wname, "ãƒªãƒ‹ã‚¢ã‚«ãƒãƒ³") > 0 Or InStr(wname, "ãƒ¬ãƒ¼ãƒ«ã‚«ãƒãƒ³") > 0 _
+        Or InStr(wname, "ãƒªãƒ‹ã‚¢ã‚¬ãƒ³") > 0 Or InStr(wname, "ãƒ¬ãƒ¼ãƒ«ã‚¬ãƒ³") > 0 _
+        Or (InStr(wname, "é›»ç£") > 0 And InStr(wname, "ç ²") > 0) _
     Then
         PlayWave "Thunder.wav"
         Sleep 300
@@ -2429,199 +2429,199 @@ Dim i As Integer
             Sleep 130
             PlayWave "Cannon.wav"
         Next
-    ElseIf InStr(wname, "ƒ‰ƒCƒtƒ‹") > 0 Then
-        If InStrNotNest(wclass, "‚a") > 0 Then
+    ElseIf InStr(wname, "ãƒ©ã‚¤ãƒ•ãƒ«") > 0 Then
+        If InStrNotNest(wclass, "ï¼¢") > 0 Then
             sname = "Beam.wav"
         Else
             sname = "Rifle.wav"
         End If
-    ElseIf InStr(wname, "ƒoƒY[ƒJ") > 0 _
-        Or InStr(wname, "ƒWƒƒƒCƒAƒ“ƒgƒoƒY") > 0 _
-        Or InStr(wname, "ƒVƒ…ƒcƒ‹ƒ€ƒtƒ@ƒEƒXƒg") > 0 _
-        Or InStr(wname, "ƒOƒŒƒl[ƒh") > 0 _
-        Or InStr(wname, "ƒOƒŒƒlƒCƒh") > 0 _
-        Or InStr(wname, "ƒiƒp[ƒ€") > 0 _
-        Or InStr(wname, "ƒNƒŒƒCƒ‚ƒA") > 0 _
-        Or InStr(wname, "ƒƒPƒbƒg–C") > 0 _
-        Or InStr(wname, "”—Œ‚–C") > 0 _
-        Or InStr(wname, "–³”½“®–C") > 0 _
+    ElseIf InStr(wname, "ãƒã‚ºãƒ¼ã‚«") > 0 _
+        Or InStr(wname, "ã‚¸ãƒ£ã‚¤ã‚¢ãƒ³ãƒˆãƒã‚º") > 0 _
+        Or InStr(wname, "ã‚·ãƒ¥ãƒ„ãƒ«ãƒ ãƒ•ã‚¡ã‚¦ã‚¹ãƒˆ") > 0 _
+        Or InStr(wname, "ã‚°ãƒ¬ãƒãƒ¼ãƒ‰") > 0 _
+        Or InStr(wname, "ã‚°ãƒ¬ãƒã‚¤ãƒ‰") > 0 _
+        Or InStr(wname, "ãƒŠãƒ‘ãƒ¼ãƒ ") > 0 _
+        Or InStr(wname, "ã‚¯ãƒ¬ã‚¤ãƒ¢ã‚¢") > 0 _
+        Or InStr(wname, "ãƒ­ã‚±ãƒƒãƒˆç ²") > 0 _
+        Or InStr(wname, "è¿«æ’ƒç ²") > 0 _
+        Or InStr(wname, "ç„¡åå‹•ç ²") > 0 _
     Then
-        If InStrNotNest(wclass, "‚a") > 0 Then
+        If InStrNotNest(wclass, "ï¼¢") > 0 Then
             sname = "Beam.wav"
         Else
             sname = "Bazooka.wav"
         End If
-    ElseIf InStr(wname, "©“®–C") > 0 _
-        Or InStr(wname, "ƒI[ƒgƒLƒƒƒmƒ“") > 0 _
+    ElseIf InStr(wname, "è‡ªå‹•ç ²") > 0 _
+        Or InStr(wname, "ã‚ªãƒ¼ãƒˆã‚­ãƒ£ãƒãƒ³") > 0 _
     Then
         sname = "FastGun.wav"
         num = 1
-    ElseIf InStr(wname, "‹|") > 0 _
-        Or InStr(wname, "ƒAƒ[") > 0 _
-        Or InStr(wname, "ƒ{[ƒKƒ“") > 0 _
-        Or InStr(wname, "ƒ{ƒEƒKƒ“") > 0 _
-        Or InStr(wname, "ƒƒ“ƒOƒ{ƒE") > 0 _
-        Or InStr(wname, "ƒVƒ‡[ƒgƒ{ƒE") > 0 _
-        Or InStr(wname, "j") > 0 _
-        Or InStr(wname, "”¯") > 0 _
+    ElseIf InStr(wname, "å¼“") > 0 _
+        Or InStr(wname, "ã‚¢ãƒ­ãƒ¼") > 0 _
+        Or InStr(wname, "ãƒœãƒ¼ã‚¬ãƒ³") > 0 _
+        Or InStr(wname, "ãƒœã‚¦ã‚¬ãƒ³") > 0 _
+        Or InStr(wname, "ãƒ­ãƒ³ã‚°ãƒœã‚¦") > 0 _
+        Or InStr(wname, "ã‚·ãƒ§ãƒ¼ãƒˆãƒœã‚¦") > 0 _
+        Or InStr(wname, "é‡") > 0 _
+        Or InStr(wname, "é«ª") > 0 _
     Then
         sname = "Bow.wav"
-    ElseIf InStr(wname, "ƒ}ƒCƒ“") > 0 _
-        Or InStr(wname, "ƒNƒ‰ƒbƒJ[") > 0 _
-        Or InStr(wname, "è“Š’e") > 0 _
-        Or InStr(wname, "èÖ’e") > 0 _
-        Or InStr(wname, "“Š‚°") > 0 _
-        Or InStr(wname, "ƒXƒŠƒ“ƒO") > 0 _
-        Or InStr(wname, "è— Œ•") > 0 _
-        Or InStr(wname, "‹ê–³") > 0 _
-        Or InStr(wname, "ƒNƒiƒC") > 0 _
+    ElseIf InStr(wname, "ãƒã‚¤ãƒ³") > 0 _
+        Or InStr(wname, "ã‚¯ãƒ©ãƒƒã‚«ãƒ¼") > 0 _
+        Or InStr(wname, "æ‰‹æŠ•å¼¾") > 0 _
+        Or InStr(wname, "æ‰‹æ¦´å¼¾") > 0 _
+        Or InStr(wname, "æŠ•ã’") > 0 _
+        Or InStr(wname, "ã‚¹ãƒªãƒ³ã‚°") > 0 _
+        Or InStr(wname, "æ‰‹è£å‰£") > 0 _
+        Or InStr(wname, "è‹¦ç„¡") > 0 _
+        Or InStr(wname, "ã‚¯ãƒŠã‚¤") > 0 _
     Then
         sname = "Swing.wav"
-    ElseIf InStr(wname, "”š’e") > 0 _
-        Or InStr(wname, "”š—‹") > 0 _
-        Or InStr(wname, "”šŒ‚") > 0 _
+    ElseIf InStr(wname, "çˆ†å¼¾") > 0 _
+        Or InStr(wname, "çˆ†é›·") > 0 _
+        Or InStr(wname, "çˆ†æ’ƒ") > 0 _
     Then
         sname = "Bomb.wav"
-    ElseIf InStr(wname, "‹@—‹") > 0 Then
+    ElseIf InStr(wname, "æ©Ÿé›·") > 0 Then
         sname = "Explode.wav"
-    ElseIf InStr(wname, "ƒ}ƒCƒNƒƒ~ƒTƒCƒ‹") > 0 _
-        And InStrNotNest(wclass, "‚l") > 0 _
+    ElseIf InStr(wname, "ãƒã‚¤ã‚¯ãƒ­ãƒŸã‚µã‚¤ãƒ«") > 0 _
+        And InStrNotNest(wclass, "ï¼­") > 0 _
     Then
         sname = "MicroMissile.wav"
         num = 1
-    ElseIf InStr(wname, "‘S•ûˆÊƒ~ƒTƒCƒ‹") > 0 Then
+    ElseIf InStr(wname, "å…¨æ–¹ä½ãƒŸã‚µã‚¤ãƒ«") > 0 Then
         sname = "MicroMissile.wav"
         num = 1
-    ElseIf InStr(wname, "ƒ~ƒTƒCƒ‹") > 0 Or InStr(wname, "ƒƒPƒbƒg") > 0 _
-        Or InStr(wname, "‹›—‹") > 0 Or InStr(wname, "”½‰’e") > 0 _
-        Or InStr(wname, "ƒ}ƒ‹ƒ`ƒ|ƒbƒh") > 0 Or InStr(wname, "ƒ}ƒ‹ƒ`ƒ‰ƒ“ƒ`ƒƒ[") > 0 _
-        Or InStr(wname, "ƒVƒ‡ƒbƒg") > 0 Or InStr(wname, "ƒtƒ‹ƒtƒ@ƒCƒA") > 0 _
-        Or InStr(wname, "ƒXƒgƒŠ[ƒ€") > 0 Or InStr(wname, "ƒiƒbƒNƒ‹") > 0 _
-        Or InStr(wname, "ƒpƒ“ƒ`") > 0 Or InStr(wname, "“S˜r") > 0 _
-        Or InStr(wname, "”­Ë") > 0 Or InStr(wname, "Ëo") > 0 _
-        Or InStr(wname, "ƒ‰ƒ“ƒ`ƒƒ[") > 0 _
-        Or InStr(wname, "‚`‚s‚l") > 0 Or InStr(wname, "‚`‚`‚l") > 0 _
-        Or InStr(wname, "‚`‚f‚l") > 0 _
+    ElseIf InStr(wname, "ãƒŸã‚µã‚¤ãƒ«") > 0 Or InStr(wname, "ãƒ­ã‚±ãƒƒãƒˆ") > 0 _
+        Or InStr(wname, "é­šé›·") > 0 Or InStr(wname, "åå¿œå¼¾") > 0 _
+        Or InStr(wname, "ãƒãƒ«ãƒãƒãƒƒãƒ‰") > 0 Or InStr(wname, "ãƒãƒ«ãƒãƒ©ãƒ³ãƒãƒ£ãƒ¼") > 0 _
+        Or InStr(wname, "ã‚·ãƒ§ãƒƒãƒˆ") > 0 Or InStr(wname, "ãƒ•ãƒ«ãƒ•ã‚¡ã‚¤ã‚¢") > 0 _
+        Or InStr(wname, "ã‚¹ãƒˆãƒªãƒ¼ãƒ ") > 0 Or InStr(wname, "ãƒŠãƒƒã‚¯ãƒ«") > 0 _
+        Or InStr(wname, "ãƒ‘ãƒ³ãƒ") > 0 Or InStr(wname, "é‰„è…•") > 0 _
+        Or InStr(wname, "ç™ºå°„") > 0 Or InStr(wname, "å°„å‡º") > 0 _
+        Or InStr(wname, "ãƒ©ãƒ³ãƒãƒ£ãƒ¼") > 0 _
+        Or InStr(wname, "ï¼¡ï¼´ï¼­") > 0 Or InStr(wname, "ï¼¡ï¼¡ï¼­") > 0 _
+        Or InStr(wname, "ï¼¡ï¼§ï¼­") > 0 _
     Then
-        If InStrNotNest(wclass, "‚a") > 0 Then
+        If InStrNotNest(wclass, "ï¼¢") > 0 Then
             sname = "Beam.wav"
         Else
             sname = "Missile.wav"
         End If
-    ElseIf InStr(wname, "–C") > 0 _
-        Or InStr(wname, "’e") > 0 _
-        Or InStr(wname, "ƒLƒƒƒmƒ“") > 0 _
-        Or InStr(wname, "ƒJƒmƒ“") > 0 _
-        Or InStr(wname, "ƒ{ƒ€") > 0 _
-        Or InStr(wname, "‰Î‹…") > 0 _
+    ElseIf InStr(wname, "ç ²") > 0 _
+        Or InStr(wname, "å¼¾") > 0 _
+        Or InStr(wname, "ã‚­ãƒ£ãƒãƒ³") > 0 _
+        Or InStr(wname, "ã‚«ãƒãƒ³") > 0 _
+        Or InStr(wname, "ãƒœãƒ ") > 0 _
+        Or InStr(wname, "ç«çƒ") > 0 _
     Then
-        If InStrNotNest(wclass, "‚a") > 0 Then
+        If InStrNotNest(wclass, "ï¼¢") > 0 Then
             sname = "Beam.wav"
         Else
             sname = "Cannon.wav"
         End If
-    ElseIf InStr(wname, "ƒKƒ“") > 0 _
-        Or InStr(wname, "ƒsƒXƒgƒ‹") > 0 _
-        Or InStr(wname, "ƒŠƒ{ƒ‹ƒ”ƒ@[") > 0 _
-        Or InStr(wname, "ƒ}ƒOƒiƒ€") > 0 _
-        Or InStr(wname, "ƒ‰ƒCƒAƒbƒg") > 0 _
-        Or InStr(wname, "e") > 0 _
+    ElseIf InStr(wname, "ã‚¬ãƒ³") > 0 _
+        Or InStr(wname, "ãƒ”ã‚¹ãƒˆãƒ«") > 0 _
+        Or InStr(wname, "ãƒªãƒœãƒ«ãƒ´ã‚¡ãƒ¼") > 0 _
+        Or InStr(wname, "ãƒã‚°ãƒŠãƒ ") > 0 _
+        Or InStr(wname, "ãƒ©ã‚¤ã‚¢ãƒƒãƒˆ") > 0 _
+        Or InStr(wname, "éŠƒ") > 0 _
     Then
-        If InStrNotNest(wclass, "‚a") > 0 Then
+        If InStrNotNest(wclass, "ï¼¢") > 0 Then
             sname = "Beam.wav"
         Else
             sname = "Gun.wav"
         End If
-    ElseIf InStr(wname, "ƒ\ƒjƒbƒNƒuƒŒ[ƒh") > 0 _
-        Or InStr(wname, "ƒr[ƒ€ƒJƒbƒ^[") > 0 _
-        Or InStr(wname, "ƒXƒ‰ƒCƒT[") > 0 _
+    ElseIf InStr(wname, "ã‚½ãƒ‹ãƒƒã‚¯ãƒ–ãƒ¬ãƒ¼ãƒ‰") > 0 _
+        Or InStr(wname, "ãƒ“ãƒ¼ãƒ ã‚«ãƒƒã‚¿ãƒ¼") > 0 _
+        Or InStr(wname, "ã‚¹ãƒ©ã‚¤ã‚µãƒ¼") > 0 _
     Then
         sname = "Saber.wav"
-    ElseIf InStr(wname, "d—Í") > 0 _
-        Or InStr(wname, "ƒOƒ‰ƒr") > 0 _
+    ElseIf InStr(wname, "é‡åŠ›") > 0 _
+        Or InStr(wname, "ã‚°ãƒ©ãƒ“") > 0 _
     Then
         sname = "Shock(Low).wav"
-    ElseIf InStr(wname, "ƒXƒg[ƒ€") > 0 _
-        Or InStr(wname, "ƒgƒ‹ƒl[ƒh") > 0 _
-        Or InStr(wname, "ƒnƒŠƒP[ƒ“") > 0 _
-        Or InStr(wname, "ƒ^ƒCƒt[ƒ“") > 0 _
-        Or InStr(wname, "ƒTƒCƒNƒƒ“") > 0 _
-        Or InStr(wname, "ƒuƒŠƒU[ƒh") > 0 _
-        Or InStr(wname, "—³Šª") > 0 _
-        Or InStr(wname, "‰QŠª") > 0 _
-        Or InStr(wname, "‘ä•—") > 0 _
-        Or InStr(wname, "—’") > 0 _
-        Or InStr(wname, "á") > 0 _
-        Or InStr(wname, "ƒtƒŠ[ƒU[") > 0 _
-        Or InStr(wname, "ƒeƒŒƒLƒlƒVƒX") > 0 _
+    ElseIf InStr(wname, "ã‚¹ãƒˆãƒ¼ãƒ ") > 0 _
+        Or InStr(wname, "ãƒˆãƒ«ãƒãƒ¼ãƒ‰") > 0 _
+        Or InStr(wname, "ãƒãƒªã‚±ãƒ¼ãƒ³") > 0 _
+        Or InStr(wname, "ã‚¿ã‚¤ãƒ•ãƒ¼ãƒ³") > 0 _
+        Or InStr(wname, "ã‚µã‚¤ã‚¯ãƒ­ãƒ³") > 0 _
+        Or InStr(wname, "ãƒ–ãƒªã‚¶ãƒ¼ãƒ‰") > 0 _
+        Or InStr(wname, "ç«œå·»") > 0 _
+        Or InStr(wname, "æ¸¦å·»") > 0 _
+        Or InStr(wname, "å°é¢¨") > 0 _
+        Or InStr(wname, "åµ") > 0 _
+        Or InStr(wname, "å¹é›ª") > 0 _
+        Or InStr(wname, "ãƒ•ãƒªãƒ¼ã‚¶ãƒ¼") > 0 _
+        Or InStr(wname, "ãƒ†ãƒ¬ã‚­ãƒã‚·ã‚¹") > 0 _
     Then
         sname = "Storm.wav"
         num = 1
-    ElseIf InStr(wname, "ƒu[ƒƒ‰ƒ“") > 0 _
-        Or InStr(wname, "ƒEƒFƒbƒu") > 0 _
+    ElseIf InStr(wname, "ãƒ–ãƒ¼ãƒ¡ãƒ©ãƒ³") > 0 _
+        Or InStr(wname, "ã‚¦ã‚§ãƒƒãƒ–") > 0 _
     Then
         sname = "Swing.wav"
         num = 5
-    ElseIf InStr(wname, "ƒTƒ“ƒ_[") > 0 _
-        Or InStr(wname, "ƒ‰ƒCƒgƒjƒ“ƒO") > 0 _
-        Or InStr(wname, "ƒ{ƒ‹ƒg") > 0 _
-        Or InStr(wname, "ˆîÈ") > 0 _
-        Or InStr(wname, "•ú“d") > 0 _
-        Or InStr(wname, "“dŒ‚") > 0 _
-        Or InStr(wname, "“d—¬") > 0 _
-        Or InStr(wname, "—‹") > 0 _
-        Or InStrNotNest(wclass, "—‹") > 0 _
+    ElseIf InStr(wname, "ã‚µãƒ³ãƒ€ãƒ¼") > 0 _
+        Or InStr(wname, "ãƒ©ã‚¤ãƒˆãƒ‹ãƒ³ã‚°") > 0 _
+        Or InStr(wname, "ãƒœãƒ«ãƒˆ") > 0 _
+        Or InStr(wname, "ç¨²å¦»") > 0 _
+        Or InStr(wname, "æ”¾é›»") > 0 _
+        Or InStr(wname, "é›»æ’ƒ") > 0 _
+        Or InStr(wname, "é›»æµ") > 0 _
+        Or InStr(wname, "é›·") > 0 _
+        Or InStrNotNest(wclass, "é›·") > 0 _
     Then
         sname = "Thunder.wav"
         num = 1
-    ElseIf InStr(wname, "‰Î‰Š•úË") > 0 Then
+    ElseIf InStr(wname, "ç«ç‚æ”¾å°„") > 0 Then
         sname = "AntiShipMissile.wav"
-    ElseIf InStr(wname, "‰Î‰Š") > 0 _
-        Or InStr(wname, "‰‹") > 0 _
+    ElseIf InStr(wname, "ç«ç‚") > 0 _
+        Or InStr(wname, "ç„”") > 0 _
     Then
         sname = "Fire.wav"
         num = 1
-    ElseIf InStr(wname, "–‚–@") > 0 _
-        Or InStrNotNest(wclass, "–‚") > 0 _
-        Or InStr(wname, "ƒTƒCƒRƒLƒlƒVƒX") > 0 _
-        Or InStr(wname, "…") > 0 _
-        Or InStr(wname, "ƒAƒ“ƒJ[") > 0 _
+    ElseIf InStr(wname, "é­”æ³•") > 0 _
+        Or InStrNotNest(wclass, "é­”") > 0 _
+        Or InStr(wname, "ã‚µã‚¤ã‚³ã‚­ãƒã‚·ã‚¹") > 0 _
+        Or InStr(wname, "ç³¸") > 0 _
+        Or InStr(wname, "ã‚¢ãƒ³ã‚«ãƒ¼") > 0 _
     Then
         sname = "Whiz.wav"
-    ElseIf InStr(wname, "–A") > 0 _
-        Or InStr(wname, "ƒoƒuƒ‹") > 0 _
+    ElseIf InStr(wname, "æ³¡") > 0 _
+        Or InStr(wname, "ãƒãƒ–ãƒ«") > 0 _
     Then
         sname = "Bubble.wav"
-    ElseIf Right$(wname, 1) = "‰t" Then
+    ElseIf Right$(wname, 1) = "æ¶²" Then
         sname = "Shower.wav"
-    ElseIf Right$(wname, 3) = "ƒuƒŒƒX" _
-        Or Right$(wname, 3) = "‚Ì‘§" _
+    ElseIf Right$(wname, 3) = "ãƒ–ãƒ¬ã‚¹" _
+        Or Right$(wname, 3) = "ã®æ¯" _
     Then
-        If InStrNotNest(wclass, "‰Î") > 0 Then
+        If InStrNotNest(wclass, "ç«") > 0 Then
             sname = "AntiShipMissile.wav"
-        ElseIf InStrNotNest(wclass, "—â") > 0 Then
+        ElseIf InStrNotNest(wclass, "å†·") > 0 Then
             sname = "Storm.wav"
-        ElseIf InStrNotNest(wclass, "ˆÅ") > 0 Then
+        ElseIf InStrNotNest(wclass, "é—‡") > 0 Then
             sname = "GunPod.wav"
-        ElseIf InStrNotNest(wclass, "…") > 0 Then
+        ElseIf InStrNotNest(wclass, "æ°´") > 0 Then
             sname = "Hide.wav"
         Else
             sname = "AntiShipMissile.wav"
         End If
-    ElseIf InStr(wname, "ˆêÄËŒ‚") > 0 Then
+    ElseIf InStr(wname, "ä¸€æ–‰å°„æ’ƒ") > 0 Then
         sname = "MultipleRocketLauncher(Light).wav"
         num = 1
-    ElseIf InStrNotNest(wclass, "‚a") > 0 Then
-        '‚È‚ñ‚©•ª‚©‚ç‚ñ‚¯‚Çƒr[ƒ€
+    ElseIf InStrNotNest(wclass, "ï¼¢") > 0 Then
+        'ãªã‚“ã‹åˆ†ã‹ã‚‰ã‚“ã‘ã©ãƒ“ãƒ¼ãƒ 
         sname = "Beam.wav"
-    ElseIf InStrNotNest(wclass, "e") > 0 Then
-        '‚È‚ñ‚©•ª‚©‚ç‚ñ‚¯‚Çe
+    ElseIf InStrNotNest(wclass, "éŠƒ") > 0 Then
+        'ãªã‚“ã‹åˆ†ã‹ã‚‰ã‚“ã‘ã©éŠƒ
         sname = "Gun.wav"
     End If
     
-    'Œø‰Ê‰¹‚È‚µH
+    'åŠ¹æœéŸ³ãªã—ï¼Ÿ
     If sname = "" Then
-        'ƒtƒ‰ƒO‚ğƒNƒŠƒA
+        'ãƒ•ãƒ©ã‚°ã‚’ã‚¯ãƒªã‚¢
         IsWavePlayed = False
         Exit Sub
     End If
@@ -2629,23 +2629,23 @@ Dim i As Integer
     For i = 1 To num
         PlayWave sname
         
-        'ƒEƒFƒCƒg‚ğ“ü‚ê‚é
+        'ã‚¦ã‚§ã‚¤ãƒˆã‚’å…¥ã‚Œã‚‹
         Sleep 130
         If sname = "Swing.wav" Then
             Sleep 150
         End If
     Next
     
-    'ƒtƒ‰ƒO‚ğƒNƒŠƒA
+    'ãƒ•ãƒ©ã‚°ã‚’ã‚¯ãƒªã‚¢
     IsWavePlayed = False
 End Sub
 
 
-'•Ší–½’†‚Ì“ÁêŒø‰Ê
+'æ­¦å™¨å‘½ä¸­æ™‚ã®ç‰¹æ®ŠåŠ¹æœ
 Public Sub HitEffect(u As Unit, w As Integer, t As Unit, _
     Optional ByVal hit_count As Integer)
     
-    '‰EƒNƒŠƒbƒN’†‚Í“ÁêŒø‰Ê‚ğƒXƒLƒbƒv
+    'å³ã‚¯ãƒªãƒƒã‚¯ä¸­ã¯ç‰¹æ®ŠåŠ¹æœã‚’ã‚¹ã‚­ãƒƒãƒ—
     If IsRButtonPressed() Then
         Exit Sub
     End If
@@ -2657,7 +2657,7 @@ Public Sub HitEffect(u As Unit, w As Integer, t As Unit, _
     End If
 End Sub
 
-'•Ší–½’†‚ÌƒAƒjƒ[ƒVƒ‡ƒ“
+'æ­¦å™¨å‘½ä¸­æ™‚ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³
 Public Sub HitAnimation(u As Unit, ByVal w As Integer, t As Unit, ByVal hit_count As Integer)
 Dim wname As String, wclass As String, wtype As String, wtype0 As String
 Dim aname As String, cname As String, sname As String
@@ -2667,27 +2667,27 @@ Dim double_attack As Boolean
 Dim combo_attack As Boolean
 Dim i As Integer
 
-    'í“¬ƒAƒjƒ”ñ©“®‘I‘ğƒIƒvƒVƒ‡ƒ“
-    If IsOptionDefined("í“¬ƒAƒjƒ”ñ©“®‘I‘ğ") Then
-        ShowAnimation "ƒ_ƒ[ƒW–½’†"
+    'æˆ¦é—˜ã‚¢ãƒ‹ãƒ¡éè‡ªå‹•é¸æŠã‚ªãƒ—ã‚·ãƒ§ãƒ³
+    If IsOptionDefined("æˆ¦é—˜ã‚¢ãƒ‹ãƒ¡éè‡ªå‹•é¸æŠ") Then
+        ShowAnimation "ãƒ€ãƒ¡ãƒ¼ã‚¸å‘½ä¸­"
         Exit Sub
     End If
     
     wname = u.WeaponNickname(w)
     wclass = u.Weapon(w).Class
     
-    'ƒ}ƒbƒvUŒ‚‚Ìê‡‚Í•Ší‚É‚©‚©‚í‚ç‚¸ƒ_ƒ[ƒW‚ğg‚¤
-    If InStrNotNest(wclass, "‚l") > 0 Then
-        'UŒ‚—Í0‚ÌUŒ‚‚Ìê‡‚Íuƒ_ƒ[ƒWv‚ÌƒAƒjƒ‚ğg—p‚µ‚È‚¢
+    'ãƒãƒƒãƒ—æ”»æ’ƒã®å ´åˆã¯æ­¦å™¨ã«ã‹ã‹ã‚ã‚‰ãšãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’ä½¿ã†
+    If InStrNotNest(wclass, "ï¼­") > 0 Then
+        'æ”»æ’ƒåŠ›0ã®æ”»æ’ƒã®å ´åˆã¯ã€Œãƒ€ãƒ¡ãƒ¼ã‚¸ã€ã®ã‚¢ãƒ‹ãƒ¡ã‚’ä½¿ç”¨ã—ãªã„
         If u.WeaponPower(w, "") = 0 Then
             Exit Sub
         End If
         
-        wtype = "ƒ_ƒ[ƒW"
+        wtype = "ãƒ€ãƒ¡ãƒ¼ã‚¸"
         
         If IsBeamWeapon(wname, wclass, cname) _
-            Or InStr(wname, "ƒ~ƒTƒCƒ‹") > 0 _
-            Or InStr(wname, "ƒƒPƒbƒg") > 0 _
+            Or InStr(wname, "ãƒŸã‚µã‚¤ãƒ«") > 0 _
+            Or InStr(wname, "ãƒ­ã‚±ãƒƒãƒˆ") > 0 _
         Then
             sname = "Explode.wav"
         End If
@@ -2695,114 +2695,114 @@ Dim i As Integer
         GoTo FoundWeaponType
     End If
     
-    '“ñ“—¬H
-    If InStr(wname, "ƒ_ƒuƒ‹") > 0 Or InStr(wname, "ƒcƒCƒ“") > 0 _
-        Or InStr(wname, "ƒfƒ…ƒAƒ‹") > 0 _
-        Or InStr(wname, "‘o") > 0 Or InStr(wname, "“ñ“") > 0 _
-        Or InStr(wname, "‚Q˜A") > 0 Or InStr(wname, "“ñ˜A") > 0 _
-        Or InStr(wname, "˜A‘•") > 0 _
+    'äºŒåˆ€æµï¼Ÿ
+    If InStr(wname, "ãƒ€ãƒ–ãƒ«") > 0 Or InStr(wname, "ãƒ„ã‚¤ãƒ³") > 0 _
+        Or InStr(wname, "ãƒ‡ãƒ¥ã‚¢ãƒ«") > 0 _
+        Or InStr(wname, "åŒ") > 0 Or InStr(wname, "äºŒåˆ€") > 0 _
+        Or InStr(wname, "ï¼’é€£") > 0 Or InStr(wname, "äºŒé€£") > 0 _
+        Or InStr(wname, "é€£è£…") > 0 _
     Then
         double_weapon = True
     End If
     
-    '˜A‘±UŒ‚H
-    If InStr(wname, "ƒ_ƒuƒ‹") > 0 Or InStr(wname, "ƒcƒCƒ“") > 0 _
-        Or InStr(wname, "ƒRƒ“ƒrƒl[ƒVƒ‡ƒ“") > 0 _
-        Or InStr(wname, "˜A") > 0 Or InStrNotNest(wclass, "˜A") > 0 _
+    'é€£ç¶šæ”»æ’ƒï¼Ÿ
+    If InStr(wname, "ãƒ€ãƒ–ãƒ«") > 0 Or InStr(wname, "ãƒ„ã‚¤ãƒ³") > 0 _
+        Or InStr(wname, "ã‚³ãƒ³ãƒ“ãƒãƒ¼ã‚·ãƒ§ãƒ³") > 0 _
+        Or InStr(wname, "é€£") > 0 Or InStrNotNest(wclass, "é€£") > 0 _
     Then
         double_attack = True
     End If
     
-    '—‘ÅH
-    If InStr(wname, "—‘Å") > 0 Or InStr(wname, "—•‘") > 0 _
-        Or InStr(wname, "—‚ê") > 0 Or InStr(wname, "•S—ó") > 0 _
+    'ä¹±æ‰“ï¼Ÿ
+    If InStr(wname, "ä¹±æ‰“") > 0 Or InStr(wname, "ä¹±èˆ") > 0 _
+        Or InStr(wname, "ä¹±ã‚Œ") > 0 Or InStr(wname, "ç™¾çƒˆ") > 0 _
     Then
         combo_attack = True
     End If
     
-    '‚±‚ê‚©‚ç•Ší‚Ìí—Ş‚ğ”»’è
+    'ã“ã‚Œã‹ã‚‰æ­¦å™¨ã®ç¨®é¡ã‚’åˆ¤å®š
     
-    '‚Ü‚¸‚Í”’•ºí—p•Ší‚Ì”»’è
-    If InStrNotNest(wclass, "•") = 0 _
-        And InStrNotNest(wclass, "“Ë") = 0 _
-        And InStrNotNest(wclass, "Ú") = 0 _
-        And Not (InStrNotNest(wclass, "Ši") > 0 And InStrNotNest(wclass, "À") > 0) _
+    'ã¾ãšã¯ç™½å…µæˆ¦ç”¨æ­¦å™¨ã®åˆ¤å®š
+    If InStrNotNest(wclass, "æ­¦") = 0 _
+        And InStrNotNest(wclass, "çª") = 0 _
+        And InStrNotNest(wclass, "æ¥") = 0 _
+        And Not (InStrNotNest(wclass, "æ ¼") > 0 And InStrNotNest(wclass, "å®Ÿ") > 0) _
     Then
         GoTo SkipInfightWeapon
     End If
     
-    '“ËŒ‚Œn(•Ší‚ğ\‚¦‚Ä“Ëi‚·‚é)
+    'çªæ’ƒç³»(æ­¦å™¨ã‚’æ§‹ãˆã¦çªé€²ã™ã‚‹)
     
-    If InStr(wname, "“ËŒ‚") > 0 Or InStr(wname, "“Ëi") > 0 _
-        Or InStr(wname, "ƒ`ƒƒ[ƒW") > 0 _
+    If InStr(wname, "çªæ’ƒ") > 0 Or InStr(wname, "çªé€²") > 0 _
+        Or InStr(wname, "ãƒãƒ£ãƒ¼ã‚¸") > 0 _
     Then
         Select Case WeaponInHand
             Case ""
-                'ŠY“–‚¹‚¸
+                'è©²å½“ã›ãš
             Case Else
-                wtype = WeaponInHand & "“ËŒ‚"
+                wtype = WeaponInHand & "çªæ’ƒ"
                 GoTo FoundWeaponType
         End Select
     End If
     
-    '‘ÅŒ‚Œn
+    'æ‰“æ’ƒç³»
     
-    If InStrNotNest(wclass, "À") > 0 _
-        And (InStr(wname, "ƒpƒ“ƒ`") > 0 Or InStr(wname, "ƒiƒbƒNƒ‹") > 0) _
+    If InStrNotNest(wclass, "å®Ÿ") > 0 _
+        And (InStr(wname, "ãƒ‘ãƒ³ãƒ") > 0 Or InStr(wname, "ãƒŠãƒƒã‚¯ãƒ«") > 0) _
     Then
-        wtype = "ƒƒPƒbƒgƒpƒ“ƒ`"
+        wtype = "ãƒ­ã‚±ãƒƒãƒˆãƒ‘ãƒ³ãƒ"
         GoTo FoundWeaponType
     End If
     
-    '—‘Å
-    If InStr(wname, "Œ–@") > 0 _
-        Or Right$(wname, 2) = "ƒA[ƒc" _
-        Or Right$(wname, 5) = "ƒXƒgƒ‰ƒCƒN" _
+    'ä¹±æ‰“
+    If InStr(wname, "æ‹³æ³•") > 0 _
+        Or Right$(wname, 2) = "ã‚¢ãƒ¼ãƒ„" _
+        Or Right$(wname, 5) = "ã‚¹ãƒˆãƒ©ã‚¤ã‚¯" _
     Then
-        wtype = "˜A‘Å"
+        wtype = "é€£æ‰“"
         GoTo FoundWeaponType
     End If
     
-    '’Êí‘ÅŒ‚
-    If InStr(wname, "ƒpƒ“ƒ`") > 0 Or InStr(wname, "ƒiƒbƒNƒ‹") > 0 _
-        Or InStr(wname, "ƒuƒ[") > 0 Or InStr(wname, "ƒ`ƒ‡ƒbƒv") > 0 _
-        Or InStr(wname, "ƒrƒ“ƒ^") > 0 _
-        Or InStr(wname, "‰£") > 0 _
-        Or Right$(wname, 1) = "è" Or Right$(wname, 1) = "˜r" _
-        Or InStr(wname, "Ši“¬") > 0 _
-        Or InStr(wname, "ƒgƒ“ƒtƒ@[") > 0 _
-        Or InStr(wname, "–_") > 0 Or InStr(wname, "ñ") > 0 _
-        Or InStr(wname, "ƒXƒ^ƒbƒt") > 0 Or InStr(wname, "ƒƒCƒX") > 0 _
-        Or Right$(wname, 2) = "ƒ€ƒ`" Or InStr(wname, "•Ú") > 0 _
-        Or InStr(wname, "ƒEƒBƒbƒv") > 0 Or InStr(wname, "ƒ`ƒF[ƒ“") > 0 _
-        Or InStr(wname, "ƒƒbƒh") > 0 _
-        Or InStr(wname, "ƒ‚[ƒjƒ“ƒOƒXƒ^[") > 0 Or InStr(wname, "ƒtƒŒƒCƒ‹") > 0 _
-        Or InStr(wname, "ƒkƒ“ƒ`ƒƒƒN") > 0 Or InStr(wname, "Oßª") > 0 _
-        Or (InStr(wname, "ƒ`ƒF[ƒ“") > 0 And InStr(wname, "ƒ`ƒF[ƒ“ƒ\[") = 0) _
-        Or InStr(wname, "ƒoƒbƒg") > 0 Or InStr(wname, "ƒMƒ^[") > 0 _
-        Or InStr(wname, "’|“") > 0 _
-        Or InStr(wname, "ƒnƒŠƒZƒ“") > 0 _
+    'é€šå¸¸æ‰“æ’ƒ
+    If InStr(wname, "ãƒ‘ãƒ³ãƒ") > 0 Or InStr(wname, "ãƒŠãƒƒã‚¯ãƒ«") > 0 _
+        Or InStr(wname, "ãƒ–ãƒ­ãƒ¼") > 0 Or InStr(wname, "ãƒãƒ§ãƒƒãƒ—") > 0 _
+        Or InStr(wname, "ãƒ“ãƒ³ã‚¿") > 0 _
+        Or InStr(wname, "æ®´") > 0 _
+        Or Right$(wname, 1) = "æ‰‹" Or Right$(wname, 1) = "è…•" _
+        Or InStr(wname, "æ ¼é—˜") > 0 _
+        Or InStr(wname, "ãƒˆãƒ³ãƒ•ã‚¡ãƒ¼") > 0 _
+        Or InStr(wname, "æ£’") > 0 Or InStr(wname, "æ–") > 0 _
+        Or InStr(wname, "ã‚¹ã‚¿ãƒƒãƒ•") > 0 Or InStr(wname, "ãƒ¡ã‚¤ã‚¹") > 0 _
+        Or Right$(wname, 2) = "ãƒ ãƒ" Or InStr(wname, "é­") > 0 _
+        Or InStr(wname, "ã‚¦ã‚£ãƒƒãƒ—") > 0 Or InStr(wname, "ãƒã‚§ãƒ¼ãƒ³") > 0 _
+        Or InStr(wname, "ãƒ­ãƒƒãƒ‰") > 0 _
+        Or InStr(wname, "ãƒ¢ãƒ¼ãƒ‹ãƒ³ã‚°ã‚¹ã‚¿ãƒ¼") > 0 Or InStr(wname, "ãƒ•ãƒ¬ã‚¤ãƒ«") > 0 _
+        Or InStr(wname, "ãƒŒãƒ³ãƒãƒ£ã‚¯") > 0 Or InStr(wname, "ä¸‰ç¯€æ ¹") > 0 _
+        Or (InStr(wname, "ãƒã‚§ãƒ¼ãƒ³") > 0 And InStr(wname, "ãƒã‚§ãƒ¼ãƒ³ã‚½ãƒ¼") = 0) _
+        Or InStr(wname, "ãƒãƒƒãƒˆ") > 0 Or InStr(wname, "ã‚®ã‚¿ãƒ¼") > 0 _
+        Or InStr(wname, "ç«¹åˆ€") > 0 _
+        Or InStr(wname, "ãƒãƒªã‚»ãƒ³") > 0 _
     Then
         If combo_attack Then
-            wtype = "—‘Å"
+            wtype = "ä¹±æ‰“"
         ElseIf double_attack _
-            Or InStr(wname, "Gè") > 0 Or InStr(wname, "G˜r") > 0 _
+            Or InStr(wname, "è§¦æ‰‹") > 0 Or InStr(wname, "è§¦è…•") > 0 _
         Then
-            wtype = "˜A‘Å"
+            wtype = "é€£æ‰“"
         Else
-            wtype = "‘ÅŒ‚"
+            wtype = "æ‰“æ’ƒ"
         End If
         
-        If Right$(wname, 2) = "ƒ€ƒ`" Or InStr(wname, "•Ú") > 0 _
-            Or InStr(wname, "ƒEƒBƒbƒv") > 0 Or InStr(wname, "ƒ`ƒF[ƒ“") > 0 _
-            Or InStr(wname, "Gè") > 0 Or InStr(wname, "G˜r") > 0 _
-            Or (InStr(wname, "ƒƒbƒh") > 0 And wname <> "ƒƒbƒh") _
-            Or InStr(wname, "’|“") > 0 _
-            Or InStr(wname, "ƒnƒŠƒZƒ“") > 0 _
+        If Right$(wname, 2) = "ãƒ ãƒ" Or InStr(wname, "é­") > 0 _
+            Or InStr(wname, "ã‚¦ã‚£ãƒƒãƒ—") > 0 Or InStr(wname, "ãƒã‚§ãƒ¼ãƒ³") > 0 _
+            Or InStr(wname, "è§¦æ‰‹") > 0 Or InStr(wname, "è§¦è…•") > 0 _
+            Or (InStr(wname, "ãƒ­ãƒƒãƒ‰") > 0 And wname <> "ãƒ­ãƒƒãƒ‰") _
+            Or InStr(wname, "ç«¹åˆ€") > 0 _
+            Or InStr(wname, "ãƒãƒªã‚»ãƒ³") > 0 _
         Then
             sname = "Whip.wav"
-        ElseIf InStr(wname, "’£‚èè") > 0 Or InStr(wname, "•½è") > 0 _
-            Or InStr(wname, "ƒrƒ“ƒ^") > 0 _
+        ElseIf InStr(wname, "å¼µã‚Šæ‰‹") > 0 Or InStr(wname, "å¹³æ‰‹") > 0 _
+            Or InStr(wname, "ãƒ“ãƒ³ã‚¿") > 0 _
         Then
             sname = "Slap.wav"
         End If
@@ -2810,26 +2810,26 @@ Dim i As Integer
         GoTo FoundWeaponType
     End If
     
-    '‹­‘ÅŒ‚
-    If InStr(wname, "Œ") > 0 Or InStr(wname, "¶") > 0 _
-        Or InStr(wname, "‘Å") > 0 Or InStr(wname, "™¤") > 0 _
-        Or InStr(wname, "ƒ‰ƒŠƒA[ƒg") > 0 _
-        Or InStr(wname, "ƒLƒbƒN") > 0 Or InStr(wname, "R") > 0 _
-        Or InStr(wname, "‹r") > 0 Or Right$(wname, 1) = "‘«" _
-        Or InStr(wname, "ƒwƒbƒhƒoƒbƒh") > 0 Or InStr(wname, "“ª“Ë") > 0 _
-        Or InStr(wname, "ƒnƒ“ƒ}[") > 0 Or InStr(wname, "’Æ") > 0 _
-        Or InStr(wname, "ƒ‚[ƒ‹") > 0 _
+    'å¼·æ‰“æ’ƒ
+    If InStr(wname, "æ‹³") > 0 Or InStr(wname, "æŒ") > 0 _
+        Or InStr(wname, "æ‰“") > 0 Or InStr(wname, "å‹") > 0 _
+        Or InStr(wname, "ãƒ©ãƒªã‚¢ãƒ¼ãƒˆ") > 0 _
+        Or InStr(wname, "ã‚­ãƒƒã‚¯") > 0 Or InStr(wname, "è¹´") > 0 _
+        Or InStr(wname, "è„š") > 0 Or Right$(wname, 1) = "è¶³" _
+        Or InStr(wname, "ãƒ˜ãƒƒãƒ‰ãƒãƒƒãƒ‰") > 0 Or InStr(wname, "é ­çª") > 0 _
+        Or InStr(wname, "ãƒãƒ³ãƒãƒ¼") > 0 Or InStr(wname, "æ§Œ") > 0 _
+        Or InStr(wname, "ãƒ¢ãƒ¼ãƒ«") > 0 _
     Then
         If combo_attack Then
-            wtype = "—‘Å"
+            wtype = "ä¹±æ‰“"
         ElseIf double_attack Then
-            wtype = "˜A‘Å"
+            wtype = "é€£æ‰“"
         Else
-            wtype = "‹­‘Å"
+            wtype = "å¼·æ‰“"
         End If
         
-        If InStr(wname, "Œ") > 0 Or InStr(wname, "¶") > 0 _
-            Or InStr(wname, "‘Å") > 0 Or InStr(wname, "™¤") > 0 _
+        If InStr(wname, "æ‹³") > 0 Or InStr(wname, "æŒ") > 0 _
+            Or InStr(wname, "æ‰“") > 0 Or InStr(wname, "å‹") > 0 _
         Then
             PlayWave "Bazooka.wav"
         End If
@@ -2837,277 +2837,277 @@ Dim i As Integer
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "ƒAƒbƒp[") > 0 Then
-        wtype = "ƒAƒbƒp["
+    If InStr(wname, "ã‚¢ãƒƒãƒ‘ãƒ¼") > 0 Then
+        wtype = "ã‚¢ãƒƒãƒ‘ãƒ¼"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "ƒ^ƒbƒNƒ‹") > 0 Or InStr(wname, "‘Ì“–") > 0 _
-        Or InStr(wname, "ƒ`ƒƒ[ƒW") > 0 Or InStr(wname, "‚Ô‚¿‚©‚Ü‚µ") > 0 _
-        Or InStr(wname, "ƒoƒ“ƒJ[") > 0 _
+    If InStr(wname, "ã‚¿ãƒƒã‚¯ãƒ«") > 0 Or InStr(wname, "ä½“å½“") > 0 _
+        Or InStr(wname, "ãƒãƒ£ãƒ¼ã‚¸") > 0 Or InStr(wname, "ã¶ã¡ã‹ã¾ã—") > 0 _
+        Or InStr(wname, "ãƒãƒ³ã‚«ãƒ¼") > 0 _
     Then
-        wtype = "‹­‘Å"
+        wtype = "å¼·æ‰“"
         sname = "Crash.wav"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "ƒoƒ“ƒJ[") > 0 Then
-        wtype = "‹­‘Å"
+    If InStr(wname, "ãƒãƒ³ã‚«ãƒ¼") > 0 Then
+        wtype = "å¼·æ‰“"
         sname = "Bazooka.wav"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "‰ö—Í") > 0 Then
-        wtype = "’´‘Å"
+    If InStr(wname, "æ€ªåŠ›") > 0 Then
+        wtype = "è¶…æ‰“"
         sname = "Crash.wav"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "Ši“¬") > 0 Then
-        wtype = "‘ÅŒ‚"
+    If InStr(wname, "æ ¼é—˜") > 0 Then
+        wtype = "æ‰“æ’ƒ"
         GoTo FoundWeaponType
     End If
     
-    'aŒ‚Œn
+    'æ–¬æ’ƒç³»
     
-    If InStr(wname, "ƒr[ƒ€") > 0 _
-        Or InStr(wname, "ƒvƒ‰ƒYƒ}") > 0 _
-        Or InStr(wname, "ƒŒ[ƒU[") > 0 _
-        Or InStr(wname, "ƒuƒ‰ƒXƒ^[") > 0 _
-        Or InStr(wname, "ƒ‰ƒCƒg") > 0 _
+    If InStr(wname, "ãƒ“ãƒ¼ãƒ ") > 0 _
+        Or InStr(wname, "ãƒ—ãƒ©ã‚ºãƒ") > 0 _
+        Or InStr(wname, "ãƒ¬ãƒ¼ã‚¶ãƒ¼") > 0 _
+        Or InStr(wname, "ãƒ–ãƒ©ã‚¹ã‚¿ãƒ¼") > 0 _
+        Or InStr(wname, "ãƒ©ã‚¤ãƒˆ") > 0 _
     Then
-        If InStr(wname, "ƒvƒ‰ƒYƒ}") > 0 Then
-            cname = "ƒOƒŠ[ƒ“"
-        ElseIf InStr(wname, "ƒŒ[ƒU[") > 0 Then
-            cname = "ƒuƒ‹["
-        ElseIf InStr(wname, "ƒ‰ƒCƒg") > 0 Then
-            cname = "ƒCƒGƒ["
+        If InStr(wname, "ãƒ—ãƒ©ã‚ºãƒ") > 0 Then
+            cname = "ã‚°ãƒªãƒ¼ãƒ³"
+        ElseIf InStr(wname, "ãƒ¬ãƒ¼ã‚¶ãƒ¼") > 0 Then
+            cname = "ãƒ–ãƒ«ãƒ¼"
+        ElseIf InStr(wname, "ãƒ©ã‚¤ãƒˆ") > 0 Then
+            cname = "ã‚¤ã‚¨ãƒ­ãƒ¼"
         End If
         
-        If InStr(wname, "ƒT[ƒxƒ‹") > 0 _
-            Or InStr(wname, "ƒZƒCƒo[") > 0 _
-            Or InStr(wname, "ƒuƒŒ[ƒh") > 0 _
-            Or InStr(wname, "ƒ\[ƒh") > 0 _
-            Or InStr(wname, "Œ•") > 0 _
-            Or InStr(wname, "“") > 0 _
+        If InStr(wname, "ã‚µãƒ¼ãƒ™ãƒ«") > 0 _
+            Or InStr(wname, "ã‚»ã‚¤ãƒãƒ¼") > 0 _
+            Or InStr(wname, "ãƒ–ãƒ¬ãƒ¼ãƒ‰") > 0 _
+            Or InStr(wname, "ã‚½ãƒ¼ãƒ‰") > 0 _
+            Or InStr(wname, "å‰£") > 0 _
+            Or InStr(wname, "åˆ€") > 0 _
         Then
-            If InStr(wname, "ƒnƒCƒp[") > 0 Or InStr(wname, "ƒƒ“ƒO") > 0 _
-                Or InStr(wname, "‘å") > 0 Or InStr(wname, "‚") > 0 _
+            If InStr(wname, "ãƒã‚¤ãƒ‘ãƒ¼") > 0 Or InStr(wname, "ãƒ­ãƒ³ã‚°") > 0 _
+                Or InStr(wname, "å¤§") > 0 Or InStr(wname, "é«˜") > 0 _
             Then
-                wtype = "ƒnƒCƒp[ƒr[ƒ€ƒT[ƒxƒ‹"
+                wtype = "ãƒã‚¤ãƒ‘ãƒ¼ãƒ“ãƒ¼ãƒ ã‚µãƒ¼ãƒ™ãƒ«"
             Else
-                wtype = "ƒr[ƒ€ƒT[ƒxƒ‹"
+                wtype = "ãƒ“ãƒ¼ãƒ ã‚µãƒ¼ãƒ™ãƒ«"
             End If
             
             If double_weapon Then
-                wtype = "ƒ_ƒuƒ‹" & wtype
-            ElseIf InStr(wname, "‰ñ“]") > 0 Then
-                wtype = "‰ñ“]" & wtype
+                wtype = "ãƒ€ãƒ–ãƒ«" & wtype
+            ElseIf InStr(wname, "å›è»¢") > 0 Then
+                wtype = "å›è»¢" & wtype
             End If
             
             GoTo FoundWeaponType
         End If
         
-        If InStr(wname, "ƒJƒbƒ^[") > 0 Then
-            If InStr(wname, "ƒnƒCƒp[") > 0 Or InStr(wname, "ƒƒ“ƒO") > 0 _
-                Or InStr(wname, "‘å") > 0 Or InStr(wname, "‚") > 0 _
+        If InStr(wname, "ã‚«ãƒƒã‚¿ãƒ¼") > 0 Then
+            If InStr(wname, "ãƒã‚¤ãƒ‘ãƒ¼") > 0 Or InStr(wname, "ãƒ­ãƒ³ã‚°") > 0 _
+                Or InStr(wname, "å¤§") > 0 Or InStr(wname, "é«˜") > 0 _
             Then
-                wtype = "ƒGƒiƒW[ƒuƒŒ[ƒh"
+                wtype = "ã‚¨ãƒŠã‚¸ãƒ¼ãƒ–ãƒ¬ãƒ¼ãƒ‰"
             Else
-                wtype = "ƒGƒiƒW[ƒJƒbƒ^["
+                wtype = "ã‚¨ãƒŠã‚¸ãƒ¼ã‚«ãƒƒã‚¿ãƒ¼"
             End If
             GoTo FoundWeaponType
         End If
         
-        If InStr(wname, "ƒiƒCƒt") > 0 _
-            Or InStr(wname, "ƒ_ƒK[") > 0 _
+        If InStr(wname, "ãƒŠã‚¤ãƒ•") > 0 _
+            Or InStr(wname, "ãƒ€ã‚¬ãƒ¼") > 0 _
         Then
-            wtype = "ƒr[ƒ€ƒiƒCƒt"
+            wtype = "ãƒ“ãƒ¼ãƒ ãƒŠã‚¤ãƒ•"
             GoTo FoundWeaponType
         End If
         
-        If InStr(wname, "ƒiƒMƒiƒ^") > 0 Then
-            wtype = "‰ñ“]ƒr[ƒ€ƒT[ƒxƒ‹"
+        If InStr(wname, "ãƒŠã‚®ãƒŠã‚¿") > 0 Then
+            wtype = "å›è»¢ãƒ“ãƒ¼ãƒ ã‚µãƒ¼ãƒ™ãƒ«"
             GoTo FoundWeaponType
         End If
     End If
     
-    If InStr(wname, "ƒ\[ƒh") > 0 Or InStr(wname, "Œ•") > 0 _
-        Or InStr(wname, "ƒiƒCƒt") > 0 Or InStr(wname, "ƒ_ƒK[") > 0 _
-        Or InStr(wname, "ƒVƒ~ƒ^[") > 0 Or InStr(wname, "ƒT[ƒxƒ‹") > 0 _
-        Or InStr(wname, "ƒJƒbƒgƒ‰ƒX") > 0 _
-        Or InStr(wname, "“") > 0 Or InStr(wname, "a") > 0 _
-        Or InStr(wname, "ƒuƒŒ[ƒh") > 0 Or InStr(wname, "n") > 0 _
-        Or InStr(wname, "ƒAƒbƒNƒX") > 0 Or InStr(wname, "•€") > 0 _
-        Or InStr(wname, "ƒOƒŒƒCƒu") > 0 Or InStr(wname, "ƒiƒMƒiƒ^") > 0 _
-        Or InStr(wname, "Ø") > 0 Or InStr(wname, "—ô") > 0 _
-        Or InStr(wname, "ƒJƒbƒg") > 0 Or InStr(wname, "ƒJƒbƒ^[") > 0 _
-        Or InStr(wname, "ƒXƒ‰ƒbƒVƒ…") > 0 _
-        Or InStr(wname, "‹‡") > 0 _
+    If InStr(wname, "ã‚½ãƒ¼ãƒ‰") > 0 Or InStr(wname, "å‰£") > 0 _
+        Or InStr(wname, "ãƒŠã‚¤ãƒ•") > 0 Or InStr(wname, "ãƒ€ã‚¬ãƒ¼") > 0 _
+        Or InStr(wname, "ã‚·ãƒŸã‚¿ãƒ¼") > 0 Or InStr(wname, "ã‚µãƒ¼ãƒ™ãƒ«") > 0 _
+        Or InStr(wname, "ã‚«ãƒƒãƒˆãƒ©ã‚¹") > 0 _
+        Or InStr(wname, "åˆ€") > 0 Or InStr(wname, "æ–¬") > 0 _
+        Or InStr(wname, "ãƒ–ãƒ¬ãƒ¼ãƒ‰") > 0 Or InStr(wname, "åˆƒ") > 0 _
+        Or InStr(wname, "ã‚¢ãƒƒã‚¯ã‚¹") > 0 Or InStr(wname, "æ–§") > 0 _
+        Or InStr(wname, "ã‚°ãƒ¬ã‚¤ãƒ–") > 0 Or InStr(wname, "ãƒŠã‚®ãƒŠã‚¿") > 0 _
+        Or InStr(wname, "åˆ‡") > 0 Or InStr(wname, "è£‚") > 0 _
+        Or InStr(wname, "ã‚«ãƒƒãƒˆ") > 0 Or InStr(wname, "ã‚«ãƒƒã‚¿ãƒ¼") > 0 _
+        Or InStr(wname, "ã‚¹ãƒ©ãƒƒã‚·ãƒ¥") > 0 _
+        Or InStr(wname, "å±…åˆ") > 0 _
     Then
         If combo_attack Then
-            wtype = "aŒ‚—•‘"
+            wtype = "æ–¬æ’ƒä¹±èˆ"
         ElseIf double_weapon Then
-            wtype = "˜AaŒ‚"
+            wtype = "é€£æ–¬æ’ƒ"
         ElseIf double_attack Then
-            wtype = "ƒ_ƒuƒ‹aŒ‚"
-        ElseIf InStrNotNest(wclass, "‰Î") > 0 Then
-            wtype = "‰ŠaŒ‚"
-        ElseIf InStrNotNest(wclass, "—‹") > 0 Then
-            wtype = "—‹aŒ‚"
-        ElseIf InStrNotNest(wclass, "—â") > 0 Then
-            wtype = "“€aŒ‚"
-        ElseIf InStr(wname, "“‚’|Š„") > 0 Or InStr(wname, "c") > 0 Then
-            wtype = "“‚’|Š„"
-        ElseIf InStr(wname, "‹‡") > 0 Or InStr(wname, "‰¡") > 0 Then
-            wtype = "‚È‚¬•¥‚¢"
-        ElseIf InStr(wname, "a") > 0 Then
-            wtype = "‘åaŒ‚"
-        ElseIf InStrNotNest(wclass, "‚i") > 0 Then
-            wtype = "a‚èã‚°"
-        ElseIf InStr(wname, "•") > 0 Or InStr(wname, "ˆÅ") > 0 _
-            Or InStr(wname, "€") > 0 _
-            Or InStr(wname, "ƒ_[ƒN") > 0 Or InStr(wname, "ƒfƒX") > 0 _
+            wtype = "ãƒ€ãƒ–ãƒ«æ–¬æ’ƒ"
+        ElseIf InStrNotNest(wclass, "ç«") > 0 Then
+            wtype = "ç‚æ–¬æ’ƒ"
+        ElseIf InStrNotNest(wclass, "é›·") > 0 Then
+            wtype = "é›·æ–¬æ’ƒ"
+        ElseIf InStrNotNest(wclass, "å†·") > 0 Then
+            wtype = "å‡æ–¬æ’ƒ"
+        ElseIf InStr(wname, "å”ç«¹å‰²") > 0 Or InStr(wname, "ç¸¦") > 0 Then
+            wtype = "å”ç«¹å‰²"
+        ElseIf InStr(wname, "å±…åˆ") > 0 Or InStr(wname, "æ¨ª") > 0 Then
+            wtype = "ãªãæ‰•ã„"
+        ElseIf InStr(wname, "æ–¬") > 0 Then
+            wtype = "å¤§æ–¬æ’ƒ"
+        ElseIf InStrNotNest(wclass, "ï¼ª") > 0 Then
+            wtype = "æ–¬ã‚Šä¸Šã’"
+        ElseIf InStr(wname, "é»’") > 0 Or InStr(wname, "é—‡") > 0 _
+            Or InStr(wname, "æ­»") > 0 _
+            Or InStr(wname, "ãƒ€ãƒ¼ã‚¯") > 0 Or InStr(wname, "ãƒ‡ã‚¹") > 0 _
         Then
-            wtype = "•aŒ‚"
+            wtype = "é»’æ–¬æ’ƒ"
         Else
-            wtype = "aŒ‚"
+            wtype = "æ–¬æ’ƒ"
         End If
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "ƒVƒ‡[ƒeƒ‹") > 0 Then
-        wtype = "ƒ_ƒuƒ‹aŒ‚"
+    If InStr(wname, "ã‚·ãƒ§ãƒ¼ãƒ†ãƒ«") > 0 Then
+        wtype = "ãƒ€ãƒ–ãƒ«æ–¬æ’ƒ"
         GoTo FoundWeaponType
     End If
     
-    'h“ËŒn
+    'åˆºçªç³»
     
-    If InStr(wname, "ƒXƒsƒA") > 0 Or InStr(wname, "‘„") > 0 _
-        Or InStr(wname, "ƒ‰ƒ“ƒX") > 0 Or InStr(wname, "ƒ‰ƒ“ƒT[") > 0 _
-        Or InStr(wname, "ƒgƒ‰ƒCƒfƒ“ƒg") > 0 _
-        Or InStr(wname, "ƒWƒƒƒxƒŠƒ“") > 0 _
-        Or InStr(wname, "ƒŒƒCƒsƒA") > 0 _
-        Or wname = "ƒƒbƒh" _
+    If InStr(wname, "ã‚¹ãƒ”ã‚¢") > 0 Or InStr(wname, "æ§") > 0 _
+        Or InStr(wname, "ãƒ©ãƒ³ã‚¹") > 0 Or InStr(wname, "ãƒ©ãƒ³ã‚µãƒ¼") > 0 _
+        Or InStr(wname, "ãƒˆãƒ©ã‚¤ãƒ‡ãƒ³ãƒˆ") > 0 _
+        Or InStr(wname, "ã‚¸ãƒ£ãƒ™ãƒªãƒ³") > 0 _
+        Or InStr(wname, "ãƒ¬ã‚¤ãƒ”ã‚¢") > 0 _
+        Or wname = "ãƒ­ãƒƒãƒ‰" _
     Then
         If combo_attack Then
-            wtype = "—“Ë"
+            wtype = "ä¹±çª"
         ElseIf double_attack Then
-            wtype = "˜A“Ë"
+            wtype = "é€£çª"
         Else
-            wtype = "h“Ë"
+            wtype = "åˆºçª"
         End If
         GoTo FoundWeaponType
     End If
     
-    '‚»‚Ì‘¼Ši“¬Œn
+    'ãã®ä»–æ ¼é—˜ç³»
     
-    If InStr(wname, "’Ü") > 0 Or InStr(wname, "ƒNƒ[") > 0 _
-        Or InStr(wname, "‚Ğ‚Á‚©‚«") > 0 _
+    If InStr(wname, "çˆª") > 0 Or InStr(wname, "ã‚¯ãƒ­ãƒ¼") > 0 _
+        Or InStr(wname, "ã²ã£ã‹ã") > 0 _
     Then
-        If InStr(wname, "ƒA[ƒ€") > 0 Then
-            wtype = "‘ÅŒ‚"
+        If InStr(wname, "ã‚¢ãƒ¼ãƒ ") > 0 Then
+            wtype = "æ‰“æ’ƒ"
             sname = "Crash.wav"
         Else
-            wtype = "’ÜŒ‚"
+            wtype = "çˆªæ’ƒ"
         End If
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "Šš") > 0 Or InStr(wname, "‰å") > 0 _
-        Or InStr(wname, "‚©‚İ‚Â‚«") > 0 _
+    If InStr(wname, "å™›") > 0 Or InStr(wname, "ç‰™") > 0 _
+        Or InStr(wname, "ã‹ã¿ã¤ã") > 0 _
     Then
-        wtype = "Šš‚İ•t‚«"
+        wtype = "å™›ã¿ä»˜ã"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "ƒhƒŠƒ‹") > 0 Then
-        wtype = "ƒhƒŠƒ‹"
+    If InStr(wname, "ãƒ‰ãƒªãƒ«") > 0 Then
+        wtype = "ãƒ‰ãƒªãƒ«"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "ƒŠƒ{ƒ“") > 0 Then
-        wtype = "ƒŠƒ{ƒ“"
+    If InStr(wname, "ãƒªãƒœãƒ³") > 0 Then
+        wtype = "ãƒªãƒœãƒ³"
         GoTo FoundWeaponType
     End If
     
-    '’Í‚İŒn
+    'æ´ã¿ç³»
     
-    If InStr(wname, "ƒX[ƒvƒŒƒbƒNƒX") > 0 Or InStr(wname, "“Š‚°") > 0 _
-        Or wname = "•Ô‚µ" _
+    If InStr(wname, "ã‚¹ãƒ¼ãƒ—ãƒ¬ãƒƒã‚¯ã‚¹") > 0 Or InStr(wname, "æŠ•ã’") > 0 _
+        Or wname = "è¿”ã—" _
     Then
-        wtype = "“Š‚°”ò‚Î‚µ"
+        wtype = "æŠ•ã’é£›ã°ã—"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "ƒq[ƒ‹ƒz[ƒ‹ƒh") > 0 Then
-        wtype = "‘«ŒÅ‚ß"
+    If InStr(wname, "ãƒ’ãƒ¼ãƒ«ãƒ›ãƒ¼ãƒ«ãƒ‰") > 0 Then
+        wtype = "è¶³å›ºã‚"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "ƒuƒŠ[ƒJ[") > 0 Then
-        wtype = "”w•‰‚¢ŒÅ‚ß"
+    If InStr(wname, "ãƒ–ãƒªãƒ¼ã‚«ãƒ¼") > 0 Then
+        wtype = "èƒŒè² ã„å›ºã‚"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "ŒÅ‚ß") > 0 Or InStr(wname, "ƒz[ƒ‹ƒh") > 0 _
-        Or InStr(wname, "ƒcƒCƒXƒg") > 0 _
-        Or InStr(wname, "i‚ß") > 0 Or InStr(wname, "’÷‚ß") > 0 _
-        Or InStr(wname, "Ü‚è") > 0 _
+    If InStr(wname, "å›ºã‚") > 0 Or InStr(wname, "ãƒ›ãƒ¼ãƒ«ãƒ‰") > 0 _
+        Or InStr(wname, "ãƒ„ã‚¤ã‚¹ãƒˆ") > 0 _
+        Or InStr(wname, "çµã‚") > 0 Or InStr(wname, "ç· ã‚") > 0 _
+        Or InStr(wname, "æŠ˜ã‚Š") > 0 _
     Then
-        wtype = "—§‚¿ŒÅ‚ß"
+        wtype = "ç«‹ã¡å›ºã‚"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "ƒWƒƒƒCƒAƒ“ƒgƒXƒCƒ“ƒO") > 0 Then
-        wtype = "ƒWƒƒƒCƒAƒ“ƒgƒXƒCƒ“ƒO"
+    If InStr(wname, "ã‚¸ãƒ£ã‚¤ã‚¢ãƒ³ãƒˆã‚¹ã‚¤ãƒ³ã‚°") > 0 Then
+        wtype = "ã‚¸ãƒ£ã‚¤ã‚¢ãƒ³ãƒˆã‚¹ã‚¤ãƒ³ã‚°"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "’n–Ô") > 0 Then
-        wtype = "’n–Ô"
+    If InStr(wname, "åœ°ç„è»Š") > 0 Then
+        wtype = "åœ°ç„è»Š"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "ƒuƒŒ[ƒ“ƒoƒXƒ^[") > 0 Then
-        wtype = "ƒuƒŒ[ƒ“ƒoƒXƒ^["
+    If InStr(wname, "ãƒ–ãƒ¬ãƒ¼ãƒ³ãƒã‚¹ã‚¿ãƒ¼") > 0 Then
+        wtype = "ãƒ–ãƒ¬ãƒ¼ãƒ³ãƒã‚¹ã‚¿ãƒ¼"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "ƒXƒNƒŠƒ…[ƒoƒbƒNƒhƒ‰ƒCƒo[") > 0 Then
-        wtype = "ƒXƒNƒŠƒ…[ƒoƒbƒNƒhƒ‰ƒCƒo["
+    If InStr(wname, "ã‚¹ã‚¯ãƒªãƒ¥ãƒ¼ãƒãƒƒã‚¯ãƒ‰ãƒ©ã‚¤ãƒãƒ¼") > 0 Then
+        wtype = "ã‚¹ã‚¯ãƒªãƒ¥ãƒ¼ãƒãƒƒã‚¯ãƒ‰ãƒ©ã‚¤ãƒãƒ¼"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "ƒXƒNƒŠƒ…[ƒhƒ‰ƒCƒo[") > 0 Then
-        wtype = "ƒXƒNƒŠƒ…[ƒhƒ‰ƒCƒo["
+    If InStr(wname, "ã‚¹ã‚¯ãƒªãƒ¥ãƒ¼ãƒ‰ãƒ©ã‚¤ãƒãƒ¼") > 0 Then
+        wtype = "ã‚¹ã‚¯ãƒªãƒ¥ãƒ¼ãƒ‰ãƒ©ã‚¤ãƒãƒ¼"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "ƒoƒbƒNƒhƒ‰ƒCƒo[") > 0 Then
-        wtype = "ƒoƒbƒNƒhƒ‰ƒCƒo["
+    If InStr(wname, "ãƒãƒƒã‚¯ãƒ‰ãƒ©ã‚¤ãƒãƒ¼") > 0 Then
+        wtype = "ãƒãƒƒã‚¯ãƒ‰ãƒ©ã‚¤ãƒãƒ¼"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "ƒhƒ‰ƒCƒo[") > 0 Then
-        wtype = "ƒhƒ‰ƒCƒo["
+    If InStr(wname, "ãƒ‰ãƒ©ã‚¤ãƒãƒ¼") > 0 Then
+        wtype = "ãƒ‰ãƒ©ã‚¤ãƒãƒ¼"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "“¥‚İ") > 0 Or InStr(wname, "‰Ÿ‚µ") > 0 Then
-        wtype = "“¥‚İ’×‚µ"
+    If InStr(wname, "è¸ã¿") > 0 Or InStr(wname, "æŠ¼ã—") > 0 Then
+        wtype = "è¸ã¿æ½°ã—"
         GoTo FoundWeaponType
     End If
     
-    'Ú×‚ª•ª‚©‚ç‚È‚©‚Á‚½•Ší
-    If InStrNotNest(wclass, "•") > 0 Then
-        '‘•”õ‚µ‚Ä‚¢‚éƒAƒCƒeƒ€‚©‚ç•Ší‚ğŒŸõ
+    'è©³ç´°ãŒåˆ†ã‹ã‚‰ãªã‹ã£ãŸæ­¦å™¨
+    If InStrNotNest(wclass, "æ­¦") > 0 Then
+        'è£…å‚™ã—ã¦ã„ã‚‹ã‚¢ã‚¤ãƒ†ãƒ ã‹ã‚‰æ­¦å™¨ã‚’æ¤œç´¢
         For i = 1 To u.CountItem
             With u.Item(i)
                 If .Activated _
-                    And (.Part = "—¼è" _
-                        Or .Part = "•Ğè" _
-                        Or .Part = "•Ší") _
+                    And (.Part = "ä¸¡æ‰‹" _
+                        Or .Part = "ç‰‡æ‰‹" _
+                        Or .Part = "æ­¦å™¨") _
                 Then
                     wtype = CheckWeaponType(.Nickname, "")
                     If wtype = "" Then
@@ -3118,308 +3118,308 @@ Dim i As Integer
             End With
         Next
         Select Case wtype
-            Case "ƒXƒsƒA", "ƒ‰ƒ“ƒX", "ƒgƒ‰ƒCƒfƒ“ƒg", "˜a‘„", _
-                "ƒGƒXƒgƒbƒN"
+            Case "ã‚¹ãƒ”ã‚¢", "ãƒ©ãƒ³ã‚¹", "ãƒˆãƒ©ã‚¤ãƒ‡ãƒ³ãƒˆ", "å’Œæ§", _
+                "ã‚¨ã‚¹ãƒˆãƒƒã‚¯"
                 If combo_attack Then
-                    wtype = "—“Ë"
+                    wtype = "ä¹±çª"
                 ElseIf double_attack Then
-                    wtype = "˜A“Ë"
+                    wtype = "é€£çª"
                 Else
-                    wtype = "h“Ë"
+                    wtype = "åˆºçª"
                 End If
             Case Else
                 If combo_attack Then
-                    wtype = "aŒ‚—•‘"
+                    wtype = "æ–¬æ’ƒä¹±èˆ"
                 ElseIf double_weapon Then
-                    wtype = "ƒ_ƒuƒ‹aŒ‚"
+                    wtype = "ãƒ€ãƒ–ãƒ«æ–¬æ’ƒ"
                 ElseIf double_attack Then
-                    wtype = "˜AaŒ‚"
-                ElseIf InStrNotNest(wclass, "‰Î") > 0 Then
-                    wtype = "‰ŠaŒ‚"
-                ElseIf InStrNotNest(wclass, "—‹") > 0 Then
-                    wtype = "—‹aŒ‚"
-                ElseIf InStrNotNest(wclass, "—â") > 0 Then
-                    wtype = "“€aŒ‚"
-                ElseIf InStrNotNest(wclass, "‚i") > 0 Then
-                    wtype = "a‚èã‚°"
+                    wtype = "é€£æ–¬æ’ƒ"
+                ElseIf InStrNotNest(wclass, "ç«") > 0 Then
+                    wtype = "ç‚æ–¬æ’ƒ"
+                ElseIf InStrNotNest(wclass, "é›·") > 0 Then
+                    wtype = "é›·æ–¬æ’ƒ"
+                ElseIf InStrNotNest(wclass, "å†·") > 0 Then
+                    wtype = "å‡æ–¬æ’ƒ"
+                ElseIf InStrNotNest(wclass, "ï¼ª") > 0 Then
+                    wtype = "æ–¬ã‚Šä¸Šã’"
                 Else
-                    wtype = "aŒ‚"
+                    wtype = "æ–¬æ’ƒ"
                 End If
         End Select
         GoTo FoundWeaponType
     End If
     
-    'Ú×‚ª•ª‚©‚ç‚È‚©‚Á‚½‹ßÚ‹Z
-    If InStrNotNest(wclass, "“Ë") > 0 _
-        And InStrNotNest(wclass, "Ú") > 0 _
+    'è©³ç´°ãŒåˆ†ã‹ã‚‰ãªã‹ã£ãŸè¿‘æ¥æŠ€
+    If InStrNotNest(wclass, "çª") > 0 _
+        And InStrNotNest(wclass, "æ¥") > 0 _
     Then
         If combo_attack Then
-            wtype = "—‘Å"
+            wtype = "ä¹±æ‰“"
         ElseIf double_attack Then
-            wtype = "˜A‘Å"
+            wtype = "é€£æ‰“"
         Else
-            wtype = "‘ÅŒ‚"
+            wtype = "æ‰“æ’ƒ"
         End If
         GoTo FoundWeaponType
     End If
     
 SkipInfightWeapon:
     
-    'ËŒ‚•Ší(Ši“¬“Š±)
+    'å°„æ’ƒæ­¦å™¨(æ ¼é—˜æŠ•æ“²)
     
-    If InStr(wname, "•€") > 0 Or InStr(wname, "ƒAƒbƒNƒX") > 0 _
-        Or InStr(wname, "ƒgƒ}ƒz[ƒN") > 0 _
-        Or InStr(wname, "ƒ\[ƒT[") > 0 Or InStr(wname, "ƒ`ƒƒƒNƒ‰ƒ€") > 0 _
+    If InStr(wname, "æ–§") > 0 Or InStr(wname, "ã‚¢ãƒƒã‚¯ã‚¹") > 0 _
+        Or InStr(wname, "ãƒˆãƒãƒ›ãƒ¼ã‚¯") > 0 _
+        Or InStr(wname, "ã‚½ãƒ¼ã‚µãƒ¼") > 0 Or InStr(wname, "ãƒãƒ£ã‚¯ãƒ©ãƒ ") > 0 _
     Then
-        wtype = "ƒ_ƒ[ƒW"
+        wtype = "ãƒ€ãƒ¡ãƒ¼ã‚¸"
         sname = "Saber.wav"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "ƒpƒ“ƒ`") > 0 Or InStr(wname, "ƒnƒ“ƒ}[") > 0 _
-        Or InStr(wname, "Šâ") > 0 Or InStr(wname, "“S‹…") > 0 _
+    If InStr(wname, "ãƒ‘ãƒ³ãƒ") > 0 Or InStr(wname, "ãƒãƒ³ãƒãƒ¼") > 0 _
+        Or InStr(wname, "å²©") > 0 Or InStr(wname, "é‰„çƒ") > 0 _
     Then
-        wtype = "‹­‘Å"
+        wtype = "å¼·æ‰“"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "Î") > 0 Or InStr(wname, "âI") > 0 _
-        Or InStr(wname, "•ª“º") > 0 Or InStr(wname, "ƒu[ƒƒ‰ƒ“") > 0 _
+    If InStr(wname, "çŸ³") > 0 Or InStr(wname, "ç¤«") > 0 _
+        Or InStr(wname, "åˆ†éŠ…") > 0 Or InStr(wname, "ãƒ–ãƒ¼ãƒ¡ãƒ©ãƒ³") > 0 _
     Then
-        wtype = "‘ÅŒ‚"
+        wtype = "æ‰“æ’ƒ"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "ƒiƒCƒt") > 0 Or InStr(wname, "ƒ_ƒK[") > 0 _
-        Or InStr(wname, "è— Œ•") > 0 Or InStr(wname, "ƒNƒiƒC") > 0 _
-        Or InStr(wname, "‹ê–³") > 0 _
+    If InStr(wname, "ãƒŠã‚¤ãƒ•") > 0 Or InStr(wname, "ãƒ€ã‚¬ãƒ¼") > 0 _
+        Or InStr(wname, "æ‰‹è£å‰£") > 0 Or InStr(wname, "ã‚¯ãƒŠã‚¤") > 0 _
+        Or InStr(wname, "è‹¦ç„¡") > 0 _
     Then
-        wtype = "h“Ë"
+        wtype = "åˆºçª"
         GoTo FoundWeaponType
     End If
     
-    '‚±‚ê‚æ‚è’ÊíËŒ‚UŒ‚
+    'ã“ã‚Œã‚ˆã‚Šé€šå¸¸å°„æ’ƒæ”»æ’ƒ
     
-    '‚Ü‚¸‚ÍŒõüŒn‚ÌUŒ‚‚©‚Ç‚¤‚©‚ğ”»’è‚·‚é
+    'ã¾ãšã¯å…‰ç·šç³»ã®æ”»æ’ƒã‹ã©ã†ã‹ã‚’åˆ¤å®šã™ã‚‹
     
     If IsBeamWeapon(wname, wclass, cname) Then
-        wtype = "ƒr[ƒ€"
+        wtype = "ãƒ“ãƒ¼ãƒ "
     End If
     
-    If wtype = "ƒr[ƒ€" Then
-        'À’eŒn•Ší”»’è‚ğƒXƒLƒbƒv
+    If wtype = "ãƒ“ãƒ¼ãƒ " Then
+        'å®Ÿå¼¾ç³»æ­¦å™¨åˆ¤å®šã‚’ã‚¹ã‚­ãƒƒãƒ—
         GoTo SkipNormalWeapon
     End If
     
-    'ËŒ‚•Ší(À’eŒn)
+    'å°„æ’ƒæ­¦å™¨(å®Ÿå¼¾ç³»)
     
-    If InStr(wname, "‹|") > 0 _
-        Or InStr(wname, "ƒVƒ‡[ƒgƒ{ƒE") > 0 _
-        Or InStr(wname, "ƒƒ“ƒOƒ{ƒE") > 0 _
-        Or InStr(wname, "ƒ{ƒEƒKƒ“") > 0 _
-        Or InStr(wname, "–î") > 0 Or InStr(wname, "ƒAƒ[") > 0 _
+    If InStr(wname, "å¼“") > 0 _
+        Or InStr(wname, "ã‚·ãƒ§ãƒ¼ãƒˆãƒœã‚¦") > 0 _
+        Or InStr(wname, "ãƒ­ãƒ³ã‚°ãƒœã‚¦") > 0 _
+        Or InStr(wname, "ãƒœã‚¦ã‚¬ãƒ³") > 0 _
+        Or InStr(wname, "çŸ¢") > 0 Or InStr(wname, "ã‚¢ãƒ­ãƒ¼") > 0 _
     Then
-        wtype = "–î"
+        wtype = "çŸ¢"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "ƒoƒ‹ƒJƒ“") > 0 Then
-        wtype = "ƒoƒ‹ƒJƒ“"
+    If InStr(wname, "ãƒãƒ«ã‚«ãƒ³") > 0 Then
+        wtype = "ãƒãƒ«ã‚«ãƒ³"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "ƒKƒgƒŠƒ“ƒO") > 0 Or InStr(wname, "ƒ`ƒF[ƒ“ƒKƒ“") _
-        Or InStr(wname, "ƒKƒ“ƒ‰ƒ“ƒ`ƒƒ[") _
+    If InStr(wname, "ã‚¬ãƒˆãƒªãƒ³ã‚°") > 0 Or InStr(wname, "ãƒã‚§ãƒ¼ãƒ³ã‚¬ãƒ³") _
+        Or InStr(wname, "ã‚¬ãƒ³ãƒ©ãƒ³ãƒãƒ£ãƒ¼") _
     Then
-        wtype = "ƒKƒgƒŠƒ“ƒO"
+        wtype = "ã‚¬ãƒˆãƒªãƒ³ã‚°"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "ƒ}ƒVƒ“ƒKƒ“") > 0 Or InStr(wname, "‹@ŠÖe") > 0 Then
-        If InStr(wname, "ƒwƒr[") > 0 Or InStr(wname, "d") > 0 Then
-            wtype = "ƒwƒr[ƒ}ƒVƒ“ƒKƒ“"
+    If InStr(wname, "ãƒã‚·ãƒ³ã‚¬ãƒ³") > 0 Or InStr(wname, "æ©Ÿé–¢éŠƒ") > 0 Then
+        If InStr(wname, "ãƒ˜ãƒ“ãƒ¼") > 0 Or InStr(wname, "é‡") > 0 Then
+            wtype = "ãƒ˜ãƒ“ãƒ¼ãƒã‚·ãƒ³ã‚¬ãƒ³"
         Else
-            wtype = "ƒ}ƒVƒ“ƒKƒ“"
+            wtype = "ãƒã‚·ãƒ³ã‚¬ãƒ³"
         End If
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "‹@e") > 0 Or InStr(wname, "‹@ŠÖ–C") > 0 Then
-        wtype = "ƒ}ƒVƒ“ƒKƒ“"
+    If InStr(wname, "æ©ŸéŠƒ") > 0 Or InStr(wname, "æ©Ÿé–¢ç ²") > 0 Then
+        wtype = "ãƒã‚·ãƒ³ã‚¬ãƒ³"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "ƒ}ƒVƒ“ƒLƒƒƒmƒ“") > 0 _
-        Or InStr(wname, "ƒI[ƒgƒLƒƒƒmƒ“") > 0 _
-        Or InStr(wname, "‘¬Ë–C") > 0 _
+    If InStr(wname, "ãƒã‚·ãƒ³ã‚­ãƒ£ãƒãƒ³") > 0 _
+        Or InStr(wname, "ã‚ªãƒ¼ãƒˆã‚­ãƒ£ãƒãƒ³") > 0 _
+        Or InStr(wname, "é€Ÿå°„ç ²") > 0 _
     Then
-        wtype = "ƒwƒr[ƒ}ƒVƒ“ƒKƒ“"
+        wtype = "ãƒ˜ãƒ“ãƒ¼ãƒã‚·ãƒ³ã‚¬ãƒ³"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "ƒVƒ‡ƒbƒgƒKƒ“") > 0 Or InStr(wname, "U’e") > 0 _
-        Or InStr(wname, "ŠgUƒoƒY[ƒJ") > 0 _
+    If InStr(wname, "ã‚·ãƒ§ãƒƒãƒˆã‚¬ãƒ³") > 0 Or InStr(wname, "æ•£å¼¾") > 0 _
+        Or InStr(wname, "æ‹¡æ•£ãƒã‚ºãƒ¼ã‚«") > 0 _
     Then
-        wtype = "ƒVƒ‡ƒbƒgƒKƒ“"
+        wtype = "ã‚·ãƒ§ãƒƒãƒˆã‚¬ãƒ³"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "ƒxƒAƒŠƒ“ƒO") > 0 Or InStr(wname, "ƒNƒŒƒCƒ‚ƒA") > 0 Then
-        wtype = "ƒxƒAƒŠƒ“ƒO"
+    If InStr(wname, "ãƒ™ã‚¢ãƒªãƒ³ã‚°") > 0 Or InStr(wname, "ã‚¯ãƒ¬ã‚¤ãƒ¢ã‚¢") > 0 Then
+        wtype = "ãƒ™ã‚¢ãƒªãƒ³ã‚°"
         GoTo FoundWeaponType
     End If
     
 SkipNormalWeapon:
     
-    'ËŒ‚•Ší(ƒGƒlƒ‹ƒM[Œn)
+    'å°„æ’ƒæ­¦å™¨(ã‚¨ãƒãƒ«ã‚®ãƒ¼ç³»)
     
-    If InStr(wname, "‰öŒõü") > 0 Then
-        wtype = "‰öŒõü"
+    If InStr(wname, "æ€ªå…‰ç·š") > 0 Then
+        wtype = "æ€ªå…‰ç·š"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "”j‰óŒõü") > 0 Then
-        wtype = "”j‰óŒõü"
+    If InStr(wname, "ç ´å£Šå…‰ç·š") > 0 Then
+        wtype = "ç ´å£Šå…‰ç·š"
         GoTo FoundWeaponType
     End If
     
-    If wtype = "ƒr[ƒ€" Then
-        If InStr(CurrentWeaponType, "ƒr[ƒ€") > 0 _
-            Or InStr(CurrentWeaponType, "ƒŒ[ƒU[") > 0 _
+    If wtype = "ãƒ“ãƒ¼ãƒ " Then
+        If InStr(CurrentWeaponType, "ãƒ“ãƒ¼ãƒ ") > 0 _
+            Or InStr(CurrentWeaponType, "ãƒ¬ãƒ¼ã‚¶ãƒ¼") > 0 _
         Then
-            '‰Â”\‚Å‚ ‚ê‚Î”­Ë‚ÌƒGƒtƒFƒNƒg‚Æ“ˆê‚·‚é
+            'å¯èƒ½ã§ã‚ã‚Œã°ç™ºå°„æ™‚ã®ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã¨çµ±ä¸€ã™ã‚‹
             Select Case CurrentWeaponType
-                Case "ƒr[ƒ€ƒ‰ƒCƒtƒ‹"
-                    wtype = "¬ƒr[ƒ€"
-                Case "ƒ_ƒuƒ‹ƒr[ƒ€ƒ‰ƒCƒtƒ‹"
-                    wtype = "‚Q˜A¬ƒr[ƒ€"
-                Case "ƒr[ƒ€ƒ‰ƒ“ƒ`ƒƒ["
-                    wtype = "’†ƒr[ƒ€"
-                Case "ƒ_ƒuƒ‹ƒr[ƒ€ƒ‰ƒ“ƒ`ƒƒ["
-                    wtype = "‚Q˜A’†ƒr[ƒ€"
-                Case "ƒoƒXƒ^[ƒr[ƒ€ƒ‰ƒCƒtƒ‹"
-                    wtype = "‘åƒr[ƒ€"
-                Case "ƒŒ[ƒU[ƒKƒ“"
-                    wtype = "ƒj[ƒhƒ‹ƒŒ[ƒU["
-                Case "ƒŒ[ƒU[ƒ}ƒVƒ“ƒKƒ“"
-                    wtype = "ƒj[ƒhƒ‹ƒŒ[ƒU[˜AË"
+                Case "ãƒ“ãƒ¼ãƒ ãƒ©ã‚¤ãƒ•ãƒ«"
+                    wtype = "å°ãƒ“ãƒ¼ãƒ "
+                Case "ãƒ€ãƒ–ãƒ«ãƒ“ãƒ¼ãƒ ãƒ©ã‚¤ãƒ•ãƒ«"
+                    wtype = "ï¼’é€£å°ãƒ“ãƒ¼ãƒ "
+                Case "ãƒ“ãƒ¼ãƒ ãƒ©ãƒ³ãƒãƒ£ãƒ¼"
+                    wtype = "ä¸­ãƒ“ãƒ¼ãƒ "
+                Case "ãƒ€ãƒ–ãƒ«ãƒ“ãƒ¼ãƒ ãƒ©ãƒ³ãƒãƒ£ãƒ¼"
+                    wtype = "ï¼’é€£ä¸­ãƒ“ãƒ¼ãƒ "
+                Case "ãƒã‚¹ã‚¿ãƒ¼ãƒ“ãƒ¼ãƒ ãƒ©ã‚¤ãƒ•ãƒ«"
+                    wtype = "å¤§ãƒ“ãƒ¼ãƒ "
+                Case "ãƒ¬ãƒ¼ã‚¶ãƒ¼ã‚¬ãƒ³"
+                    wtype = "ãƒ‹ãƒ¼ãƒ‰ãƒ«ãƒ¬ãƒ¼ã‚¶ãƒ¼"
+                Case "ãƒ¬ãƒ¼ã‚¶ãƒ¼ãƒã‚·ãƒ³ã‚¬ãƒ³"
+                    wtype = "ãƒ‹ãƒ¼ãƒ‰ãƒ«ãƒ¬ãƒ¼ã‚¶ãƒ¼é€£å°„"
                 Case Else
                     wtype = CurrentWeaponType
             End Select
         Else
-            If InStr(wname, "ƒnƒCƒƒK") > 0 Or InStr(wname, "ƒoƒXƒ^[") > 0 _
-                Or InStr(wname, "‘å") > 0 _
-                Or Left$(wname, 2) = "ƒMƒK" _
+            If InStr(wname, "ãƒã‚¤ãƒ¡ã‚¬") > 0 Or InStr(wname, "ãƒã‚¹ã‚¿ãƒ¼") > 0 _
+                Or InStr(wname, "å¤§") > 0 _
+                Or Left$(wname, 2) = "ã‚®ã‚¬" _
             Then
-                wtype = "‘åƒr[ƒ€"
-            ElseIf InStr(wname, "ƒƒK") > 0 _
-                Or InStr(wname, "ƒnƒC") > 0 _
-                Or InStr(wname, "ƒoƒY[ƒJ") > 0 _
+                wtype = "å¤§ãƒ“ãƒ¼ãƒ "
+            ElseIf InStr(wname, "ãƒ¡ã‚¬") > 0 _
+                Or InStr(wname, "ãƒã‚¤") > 0 _
+                Or InStr(wname, "ãƒã‚ºãƒ¼ã‚«") > 0 _
             Then
-                wtype = "’†ƒr[ƒ€"
+                wtype = "ä¸­ãƒ“ãƒ¼ãƒ "
             ElseIf CountAttack0(u, w) >= 4 _
-                Or InStr(wname, "‘Î‹ó") > 0 _
+                Or InStr(wname, "å¯¾ç©º") > 0 _
             Then
-                wtype = "ƒj[ƒhƒ‹ƒŒ[ƒU[˜AË"
-            ElseIf InStr(wname, "ƒsƒXƒgƒ‹") > 0 _
-                Or InStr(wname, "ƒ~ƒj") > 0 _
-                Or InStr(wname, "¬") > 0 _
+                wtype = "ãƒ‹ãƒ¼ãƒ‰ãƒ«ãƒ¬ãƒ¼ã‚¶ãƒ¼é€£å°„"
+            ElseIf InStr(wname, "ãƒ”ã‚¹ãƒˆãƒ«") > 0 _
+                Or InStr(wname, "ãƒŸãƒ‹") > 0 _
+                Or InStr(wname, "å°") > 0 _
             Then
-                wtype = "ƒj[ƒhƒ‹ƒŒ[ƒU["
-            ElseIf InStr(wname, "ƒ‰ƒ“ƒ`ƒƒ[") > 0 _
-                Or InStr(wname, "ƒLƒƒƒmƒ“") > 0 _
-                Or InStr(wname, "ƒJƒmƒ“") > 0 _
-                Or InStr(wname, "–C") > 0 _
+                wtype = "ãƒ‹ãƒ¼ãƒ‰ãƒ«ãƒ¬ãƒ¼ã‚¶ãƒ¼"
+            ElseIf InStr(wname, "ãƒ©ãƒ³ãƒãƒ£ãƒ¼") > 0 _
+                Or InStr(wname, "ã‚­ãƒ£ãƒãƒ³") > 0 _
+                Or InStr(wname, "ã‚«ãƒãƒ³") > 0 _
+                Or InStr(wname, "ç ²") > 0 _
             Then
-                wtype = "’†ƒr[ƒ€"
+                wtype = "ä¸­ãƒ“ãƒ¼ãƒ "
             Else
-                wtype = "¬ƒr[ƒ€"
+                wtype = "å°ãƒ“ãƒ¼ãƒ "
             End If
             
             Select Case wtype
-                Case "¬ƒr[ƒ€", "’†ƒr[ƒ€"
+                Case "å°ãƒ“ãƒ¼ãƒ ", "ä¸­ãƒ“ãƒ¼ãƒ "
                     If double_weapon Then
-                        wtype = "‚Q˜A" & wtype
+                        wtype = "ï¼’é€£" & wtype
                     End If
             End Select
             
-            If InStr(wname, "ŠgU") > 0 _
-                Or InStr(wname, "•úË") > 0 _
+            If InStr(wname, "æ‹¡æ•£") > 0 _
+                Or InStr(wname, "æ”¾å°„") > 0 _
             Then
-                wtype = "ŠgUƒr[ƒ€"
+                wtype = "æ‹¡æ•£ãƒ“ãƒ¼ãƒ "
             End If
             
-            If InStr(wname, "ƒz[ƒ~ƒ“ƒO") > 0 _
-                Or InStr(wname, "—U“±") > 0 _
+            If InStr(wname, "ãƒ›ãƒ¼ãƒŸãƒ³ã‚°") > 0 _
+                Or InStr(wname, "èª˜å°") > 0 _
             Then
-                wtype = "ƒz[ƒ~ƒ“ƒOƒŒ[ƒU["
+                wtype = "ãƒ›ãƒ¼ãƒŸãƒ³ã‚°ãƒ¬ãƒ¼ã‚¶ãƒ¼"
             End If
         End If
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "Œõü") > 0 Then
-        wtype = "‰öŒõü"
+    If InStr(wname, "å…‰ç·š") > 0 Then
+        wtype = "æ€ªå…‰ç·š"
         GoTo FoundWeaponType
     End If
     
-    '”š”­Œn
+    'çˆ†ç™ºç³»
     
-    If InStr(wname, "ƒsƒXƒgƒ‹") > 0 Or InStr(wname, "Œe") > 0 _
-        Or InStr(wname, "ƒŠƒ{ƒ‹ƒo[") > 0 Or InStr(wname, "ƒŠƒ{ƒ‹ƒ”ƒ@[") > 0 _
-        Or InStr(wname, "e") > 0 Or Right$(wname, 2) = "ƒKƒ“" _
-        Or InStr(wname, "ƒ‰ƒCƒtƒ‹") > 0 _
+    If InStr(wname, "ãƒ”ã‚¹ãƒˆãƒ«") > 0 Or InStr(wname, "æ‹³éŠƒ") > 0 _
+        Or InStr(wname, "ãƒªãƒœãƒ«ãƒãƒ¼") > 0 Or InStr(wname, "ãƒªãƒœãƒ«ãƒ´ã‚¡ãƒ¼") > 0 _
+        Or InStr(wname, "éŠƒ") > 0 Or Right$(wname, 2) = "ã‚¬ãƒ³" _
+        Or InStr(wname, "ãƒ©ã‚¤ãƒ•ãƒ«") > 0 _
     Then
-        wtype = "e’e"
+        wtype = "éŠƒå¼¾"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "”š—‹") > 0 Then
-            wtype = "”š—‹"
+    If InStr(wname, "çˆ†é›·") > 0 Then
+            wtype = "çˆ†é›·"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "”šŒ‚") > 0 Or CurrentWeaponType = "“Š‰º”š’e" Then
-            wtype = "”šŒ‚"
+    If InStr(wname, "çˆ†æ’ƒ") > 0 Or CurrentWeaponType = "æŠ•ä¸‹çˆ†å¼¾" Then
+            wtype = "çˆ†æ’ƒ"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "ƒ~ƒTƒCƒ‹") > 0 Or InStr(wname, "ƒƒPƒbƒg") > 0 _
-        Or InStr(wname, "”š’e") > 0 _
-        Or InStr(wname, "ƒ_ƒCƒiƒ}ƒCƒg") > 0 Or InStr(wname, "Ö’e") > 0 _
-        Or InStr(wname, "”½‰’e") > 0 _
-        Or InStr(wname, "ƒOƒŒƒl[ƒh") > 0 Or InStr(wname, "èÖ’e") > 0 _
-        Or InStr(wname, "ƒNƒ‰ƒbƒJ[") > 0 Or InStr(wname, "ƒfƒBƒXƒ`ƒƒ[ƒWƒƒ[") > 0 _
-        Or InStr(wname, "ƒ}ƒCƒ“") > 0 Or InStr(wname, "ƒ{ƒ€") > 0 _
-        Or InStr(wname, "‹›—‹") > 0 Or InStr(wname, "‹@—‹") > 0 _
-        Or InStr(wname, "ƒoƒY[ƒJ") > 0 _
-        Or InStr(wname, "ƒVƒ…ƒcƒ‹ƒ€ƒtƒ@ƒEƒXƒg") > 0 _
+    If InStr(wname, "ãƒŸã‚µã‚¤ãƒ«") > 0 Or InStr(wname, "ãƒ­ã‚±ãƒƒãƒˆ") > 0 _
+        Or InStr(wname, "çˆ†å¼¾") > 0 _
+        Or InStr(wname, "ãƒ€ã‚¤ãƒŠãƒã‚¤ãƒˆ") > 0 Or InStr(wname, "æ¦´å¼¾") > 0 _
+        Or InStr(wname, "åå¿œå¼¾") > 0 _
+        Or InStr(wname, "ã‚°ãƒ¬ãƒãƒ¼ãƒ‰") > 0 Or InStr(wname, "æ‰‹æ¦´å¼¾") > 0 _
+        Or InStr(wname, "ã‚¯ãƒ©ãƒƒã‚«ãƒ¼") > 0 Or InStr(wname, "ãƒ‡ã‚£ã‚¹ãƒãƒ£ãƒ¼ã‚¸ãƒ£ãƒ¼") > 0 _
+        Or InStr(wname, "ãƒã‚¤ãƒ³") > 0 Or InStr(wname, "ãƒœãƒ ") > 0 _
+        Or InStr(wname, "é­šé›·") > 0 Or InStr(wname, "æ©Ÿé›·") > 0 _
+        Or InStr(wname, "ãƒã‚ºãƒ¼ã‚«") > 0 _
+        Or InStr(wname, "ã‚·ãƒ¥ãƒ„ãƒ«ãƒ ãƒ•ã‚¡ã‚¦ã‚¹ãƒˆ") > 0 _
     Then
-        If InStr(wname, "Šj") > 0 Or InStr(wname, "”½‰") > 0 _
-            Or InStr(wname, "ƒAƒgƒ~ƒbƒN") > 0 _
-            Or InStr(wname, "’´") > 0 _
+        If InStr(wname, "æ ¸") > 0 Or InStr(wname, "åå¿œ") > 0 _
+            Or InStr(wname, "ã‚¢ãƒˆãƒŸãƒƒã‚¯") > 0 _
+            Or InStr(wname, "è¶…") > 0 _
         Then
-            wtype = "’´”š”­"
-        ElseIf InStr(wname, "‘å") > 0 Or InStr(wname, "ƒrƒbƒN") > 0 _
-            Or InStr(wname, "ƒWƒƒƒCƒAƒ“ƒg") > 0 Or InStr(wname, "ƒƒK") > 0 _
+            wtype = "è¶…çˆ†ç™º"
+        ElseIf InStr(wname, "å¤§") > 0 Or InStr(wname, "ãƒ“ãƒƒã‚¯") > 0 _
+            Or InStr(wname, "ã‚¸ãƒ£ã‚¤ã‚¢ãƒ³ãƒˆ") > 0 Or InStr(wname, "ãƒ¡ã‚¬") > 0 _
         Then
-            wtype = "‘å”š”­"
-        ElseIf InStr(wname, "¬") > 0 Or InStr(wname, "ƒ~ƒj") > 0 _
-            Or InStr(wname, "ƒ}ƒCƒNƒ") > 0 _
+            wtype = "å¤§çˆ†ç™º"
+        ElseIf InStr(wname, "å°") > 0 Or InStr(wname, "ãƒŸãƒ‹") > 0 _
+            Or InStr(wname, "ãƒã‚¤ã‚¯ãƒ­") > 0 _
         Then
-            wtype = "¬”š”­"
+            wtype = "å°çˆ†ç™º"
         Else
-            wtype = "”š”­"
+            wtype = "çˆ†ç™º"
         End If
         
-        '˜A‘±”š”­H
+        'é€£ç¶šçˆ†ç™ºï¼Ÿ
         
-        If wtype = "’´”š”­" Then
+        If wtype = "è¶…çˆ†ç™º" Then
             GoTo FoundWeaponType
         End If
         
         attack_times = CountAttack0(u, w)
-        If InStrNotNest(wclass, "˜A") > 0 Then
+        If InStrNotNest(wclass, "é€£") > 0 Then
             attack_times = hit_count
         End If
         
@@ -3428,128 +3428,128 @@ SkipNormalWeapon:
             GoTo FoundWeaponType
         End If
         
-        If wtype = "¬”š”­" Then
-            wtype = "˜A‘±”š”­"
+        If wtype = "å°çˆ†ç™º" Then
+            wtype = "é€£ç¶šçˆ†ç™º"
         Else
-            wtype = "˜A‘±" & wtype
+            wtype = "é€£ç¶š" & wtype
         End If
         
         GoTo FoundWeaponType
     End If
     
-    '‚»‚Ì‘¼“ÁêŒn
+    'ãã®ä»–ç‰¹æ®Šç³»
     
-    If InStr(wname, "“dŒ‚") > 0 Or InStr(wname, "“d—¬") > 0 _
-        Or InStr(wname, "ƒGƒŒƒNƒg") > 0 _
+    If InStr(wname, "é›»æ’ƒ") > 0 Or InStr(wname, "é›»æµ") > 0 _
+        Or InStr(wname, "ã‚¨ãƒ¬ã‚¯ãƒˆ") > 0 _
     Then
-        wtype = "”j‰óŒõü"
+        wtype = "ç ´å£Šå…‰ç·š"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "—‹") > 0 Or InStr(wname, "ƒ‰ƒCƒgƒjƒ“ƒO") > 0 _
-        Or InStr(wname, "ƒTƒ“ƒ_[") > 0 _
-        Or Right$(wname, 2) = "ˆîÈ" _
-        Or InStrNotNest(wclass, "“d") > 0 _
+    If InStr(wname, "é›·") > 0 Or InStr(wname, "ãƒ©ã‚¤ãƒˆãƒ‹ãƒ³ã‚°") > 0 _
+        Or InStr(wname, "ã‚µãƒ³ãƒ€ãƒ¼") > 0 _
+        Or Right$(wname, 2) = "ç¨²å¦»" _
+        Or InStrNotNest(wclass, "é›»") > 0 _
     Then
-        If InStrNotNest(wclass, "À") = 0 Then
-            wtype = "•ú“d"
+        If InStrNotNest(wclass, "å®Ÿ") = 0 Then
+            wtype = "æ”¾é›»"
             GoTo FoundWeaponType
         End If
     End If
     
-    If InStr(wname, "á") > 0 Or InStr(wname, "ƒuƒŠƒU[ƒh") > 0 _
-        Or InStr(wname, "ƒAƒCƒXƒXƒg[ƒ€") > 0 _
+    If InStr(wname, "å¹é›ª") > 0 Or InStr(wname, "ãƒ–ãƒªã‚¶ãƒ¼ãƒ‰") > 0 _
+        Or InStr(wname, "ã‚¢ã‚¤ã‚¹ã‚¹ãƒˆãƒ¼ãƒ ") > 0 _
     Then
-        wtype = "á"
+        wtype = "å¹é›ª"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "ƒXƒg[ƒ€") > 0 Or InStr(wname, "ƒnƒŠƒP[ƒ“") > 0 _
-        Or InStr(wname, "ƒ^ƒCƒt[ƒ“") > 0 _
-        Or InStr(wname, "‘ä•—") > 0 Or InStr(wname, "—’") > 0 _
+    If InStr(wname, "ã‚¹ãƒˆãƒ¼ãƒ ") > 0 Or InStr(wname, "ãƒãƒªã‚±ãƒ¼ãƒ³") > 0 _
+        Or InStr(wname, "ã‚¿ã‚¤ãƒ•ãƒ¼ãƒ³") > 0 _
+        Or InStr(wname, "å°é¢¨") > 0 Or InStr(wname, "åµ") > 0 _
     Then
-        wtype = "‹­•—"
+        wtype = "å¼·é¢¨"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "ƒEƒBƒ“ƒh") > 0 Or InStr(wname, "ƒEƒCƒ“ƒh") > 0 _
-        Or InStr(wname, "•—") > 0 _
+    If InStr(wname, "ã‚¦ã‚£ãƒ³ãƒ‰") > 0 Or InStr(wname, "ã‚¦ã‚¤ãƒ³ãƒ‰") > 0 _
+        Or InStr(wname, "é¢¨") > 0 _
     Then
-        wtype = "•—"
+        wtype = "é¢¨"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "ƒgƒ‹ƒl[ƒh") > 0 Or InStr(wname, "ƒTƒCƒNƒƒ“") _
-        Or InStr(wname, "—³Šª") > 0 Or InStr(wname, "‰QŠª") > 0 _
+    If InStr(wname, "ãƒˆãƒ«ãƒãƒ¼ãƒ‰") > 0 Or InStr(wname, "ã‚µã‚¤ã‚¯ãƒ­ãƒ³") _
+        Or InStr(wname, "ç«œå·»") > 0 Or InStr(wname, "æ¸¦å·»") > 0 _
     Then
-        wtype = "—³Šª"
+        wtype = "ç«œå·»"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "–A") > 0 Or InStr(wname, "ƒoƒuƒ‹") > 0 _
-        Or InStr(wname, "Á‰Î") > 0 _
+    If InStr(wname, "æ³¡") > 0 Or InStr(wname, "ãƒãƒ–ãƒ«") > 0 _
+        Or InStr(wname, "æ¶ˆç«") > 0 _
     Then
-        wtype = "–A"
+        wtype = "æ³¡"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "d—Í") > 0 Or InStr(wname, "ƒOƒ‰ƒr") > 0 _
-         Or InStr(wname, "ƒuƒ‰ƒbƒNƒz[ƒ‹") > 0 _
-         Or InStr(wname, "k‘Ş") > 0 _
+    If InStr(wname, "é‡åŠ›") > 0 Or InStr(wname, "ã‚°ãƒ©ãƒ“") > 0 _
+         Or InStr(wname, "ãƒ–ãƒ©ãƒƒã‚¯ãƒ›ãƒ¼ãƒ«") > 0 _
+         Or InStr(wname, "ç¸®é€€") > 0 _
     Then
-        wtype = "d—Íˆ³k"
+        wtype = "é‡åŠ›åœ§ç¸®"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "ƒXƒƒE") > 0 Then
-        wtype = "ŠÔ‹ts"
+    If InStr(wname, "ã‚¹ãƒ­ã‚¦") > 0 Then
+        wtype = "æ™‚é–“é€†è¡Œ"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "‰Œ") > 0 Or InStr(wname, "ƒXƒ‚[ƒN") > 0 _
-        Or Right$(wname, 2) = "ƒKƒX" Or Right$(wname, 1) = "–¶" _
-        Or InStr(wname, "–Eq") > 0 _
+    If InStr(wname, "ç…™") > 0 Or InStr(wname, "ã‚¹ãƒ¢ãƒ¼ã‚¯") > 0 _
+        Or Right$(wname, 2) = "ã‚¬ã‚¹" Or Right$(wname, 1) = "éœ§" _
+        Or InStr(wname, "èƒå­") > 0 _
     Then
-        wtype = "‰Œ"
-        If InStr(wname, "“Å") > 0 Or InStrNotNest(wclass, "“Å") > 0 Then
-            cname = "—Î"
+        wtype = "ç…™"
+        If InStr(wname, "æ¯’") > 0 Or InStrNotNest(wclass, "æ¯’") > 0 Then
+            cname = "ç·‘"
         End If
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "‰Î‰Š’e") > 0 Then
-        wtype = "‰Î‰Š’e"
+    If InStr(wname, "ç«ç‚å¼¾") > 0 Then
+        wtype = "ç«ç‚å¼¾"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "‰Î‰Š•úË") > 0 _
-        Or Right$(wname, 2) = "‰Î‰Š" _
+    If InStr(wname, "ç«ç‚æ”¾å°„") > 0 _
+        Or Right$(wname, 2) = "ç«ç‚" _
     Then
-        wtype = "‰Î‰Š•úË"
+        wtype = "ç«ç‚æ”¾å°„"
         GoTo FoundWeaponType
     End If
     
-    If Right$(wname, 5) = "ƒtƒ@ƒCƒA[" _
-        Or Right$(wname, 5) = "ƒtƒ@ƒCƒ„[" _
-        Or Right$(wname, 4) = "ƒtƒ@ƒCƒA" _
-        Or Right$(wname, 4) = "ƒtƒ@ƒCƒ„" _
+    If Right$(wname, 5) = "ãƒ•ã‚¡ã‚¤ã‚¢ãƒ¼" _
+        Or Right$(wname, 5) = "ãƒ•ã‚¡ã‚¤ãƒ¤ãƒ¼" _
+        Or Right$(wname, 4) = "ãƒ•ã‚¡ã‚¤ã‚¢" _
+        Or Right$(wname, 4) = "ãƒ•ã‚¡ã‚¤ãƒ¤" _
     Then
-        If InStrNotNest(wclass, "À") = 0 And Left$(wname, 2) <> "ƒtƒ‹" Then
-            If InStrNotNest(wclass, "p") > 0 Then
-                wtype = "‰Š"
+        If InStrNotNest(wclass, "å®Ÿ") = 0 And Left$(wname, 2) <> "ãƒ•ãƒ«" Then
+            If InStrNotNest(wclass, "è¡“") > 0 Then
+                wtype = "ç‚"
             Else
-                wtype = "‰Î‰Š•úË"
+                wtype = "ç«ç‚æ”¾å°„"
             End If
             GoTo FoundWeaponType
         End If
     End If
     
-    If InStr(wname, "‘§") > 0 Or Right$(wname, 3) = "ƒuƒŒƒX" Then
-        If InStrNotNest(wclass, "À") = 0 Then
-            wtype = "‰Î‰Š•úË"
+    If InStr(wname, "æ¯") > 0 Or Right$(wname, 3) = "ãƒ–ãƒ¬ã‚¹" Then
+        If InStrNotNest(wclass, "å®Ÿ") = 0 Then
+            wtype = "ç«ç‚æ”¾å°„"
             
             Select Case SpellColor(wname, wclass)
-                Case "Â", "‰©", "—Î", "”’", "•"
+                Case "é’", "é»„", "ç·‘", "ç™½", "é»’"
                     cname = SpellColor(wname, wclass)
                     sname = "Breath.wav"
             End Select
@@ -3558,119 +3558,119 @@ SkipNormalWeapon:
         End If
     End If
     
-    If InStr(wname, "‰Î") > 0 Or InStr(wname, "‰Š") > 0 _
-        Or InStr(wname, "‰‹") > 0 Or InStr(wname, "ƒtƒ@ƒCƒ„[") > 0 _
+    If InStr(wname, "ç«") > 0 Or InStr(wname, "ç‚") > 0 _
+        Or InStr(wname, "ç„”") > 0 Or InStr(wname, "ãƒ•ã‚¡ã‚¤ãƒ¤ãƒ¼") > 0 _
     Then
-        wtype = "‰Š"
+        wtype = "ç‚"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "…“S–C") > 0 Or InStr(wname, "•ú…") > 0 _
-        Or InStr(wname, "…—¬") > 0 Or InStr(wname, "_‚©‚¯") > 0 _
-        Or Right$(wname, 1) = "‰t" Or Right$(wname, 1) = "_" _
+    If InStr(wname, "æ°´é‰„ç ²") > 0 Or InStr(wname, "æ”¾æ°´") > 0 _
+        Or InStr(wname, "æ°´æµ") > 0 Or InStr(wname, "é…¸ã‹ã‘") > 0 _
+        Or Right$(wname, 1) = "æ¶²" Or Right$(wname, 1) = "é…¸" _
     Then
-        wtype = "”ò–—"
-        If InStr(wname, "“Å") > 0 Or InStr(wname, "“Å") > 0 Then
-            cname = "—Î"
-        ElseIf InStr(wname, "_") > 0 Then
-            cname = "”’"
+        wtype = "é£›æ²«"
+        If InStr(wname, "æ¯’") > 0 Or InStr(wname, "æ¯’") > 0 Then
+            cname = "ç·‘"
+        ElseIf InStr(wname, "é…¸") > 0 Then
+            cname = "ç™½"
         Else
-            cname = "Â"
+            cname = "é’"
         End If
         sname = "Splash.wav"
         GoTo FoundWeaponType
     End If
     
-    If InStr(wname, "‹zû") > 0 Or InStr(wname, "ƒhƒŒƒCƒ“") > 0 _
-         Or InStrNotNest(wclass, "‹z") > 0 Or InStrNotNest(wclass, "Œ¸") > 0 _
+    If InStr(wname, "å¸å") > 0 Or InStr(wname, "ãƒ‰ãƒ¬ã‚¤ãƒ³") > 0 _
+         Or InStrNotNest(wclass, "å¸") > 0 Or InStrNotNest(wclass, "æ¸›") > 0 _
     Then
-        wtype = "‹zû"
+        wtype = "å¸å"
         GoTo FoundWeaponType
     End If
     
-    'UŒ‚—Í0‚ÌUŒ‚‚Ìê‡‚Íuƒ_ƒ[ƒWv‚ÌƒAƒjƒ‚ğg—p‚µ‚È‚¢
+    'æ”»æ’ƒåŠ›0ã®æ”»æ’ƒã®å ´åˆã¯ã€Œãƒ€ãƒ¡ãƒ¼ã‚¸ã€ã®ã‚¢ãƒ‹ãƒ¡ã‚’ä½¿ç”¨ã—ãªã„
     If u.WeaponPower(w, "") = 0 Then
         Exit Sub
     End If
     
-    'ƒfƒtƒHƒ‹ƒg
-    wtype = "ƒ_ƒ[ƒW"
+    'ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆ
+    wtype = "ãƒ€ãƒ¡ãƒ¼ã‚¸"
     
 FoundWeaponType:
     
-    'ƒAƒjƒ‚Ì•s®‡‚ğ–h‚®‚½‚ßA‚«”ò‚Î‚µ‚ÍƒAƒjƒŒø‰Ê‚ğ‘ÅŒ‚‚É—}‚¦‚Ä‚¨‚­
+    'ã‚¢ãƒ‹ãƒ¡ã®ä¸æ•´åˆã‚’é˜²ããŸã‚ã€å¹ãé£›ã°ã—æ™‚ã¯ã‚¢ãƒ‹ãƒ¡åŠ¹æœã‚’æ‰“æ’ƒã«æŠ‘ãˆã¦ãŠã
     Select Case wtype
-        Case "‹­‘Å", "’´‘Å"
-            If InStrNotNest(wclass, "") > 0 Or InStrNotNest(wclass, "‚j") > 0 Then
-                wtype = "‘ÅŒ‚"
+        Case "å¼·æ‰“", "è¶…æ‰“"
+            If InStrNotNest(wclass, "å¹") > 0 Or InStrNotNest(wclass, "ï¼«") > 0 Then
+                wtype = "æ‰“æ’ƒ"
             End If
     End Select
     
-    '•\¦F‚ğÅIŒˆ’è
-    If InStr(wname, "ƒŒƒbƒh") > 0 Or InStr(wname, "Ô") > 0 Then
-        cname = "Ô"
-    ElseIf InStr(wname, "ƒuƒ‹[") > 0 Or InStr(wname, "Â") > 0 Then
-        cname = "Â"
-    ElseIf InStr(wname, "ƒCƒGƒ[") > 0 Or InStr(wname, "‰©") > 0 Then
-        cname = "‰©"
-    ElseIf InStr(wname, "ƒOƒŠ[ƒ“") > 0 Or InStr(wname, "—Î") > 0 Then
-        cname = "—Î"
-    ElseIf InStr(wname, "ƒsƒ“ƒN") > 0 Or InStr(wname, "“") > 0 Then
-        cname = "“"
-    ElseIf InStr(wname, "ƒuƒ‰ƒEƒ“") > 0 Or InStr(wname, "ò") > 0 Then
-        cname = "ò"
-    ElseIf InStr(wname, "ƒuƒ‰ƒbƒN") > 0 Or InStr(wname, "•") > 0 _
-        Or InStr(wname, "ƒ_[ƒN") > 0 Or InStr(wname, "ˆÅ") > 0 _
+    'è¡¨ç¤ºè‰²ã‚’æœ€çµ‚æ±ºå®š
+    If InStr(wname, "ãƒ¬ãƒƒãƒ‰") > 0 Or InStr(wname, "èµ¤") > 0 Then
+        cname = "èµ¤"
+    ElseIf InStr(wname, "ãƒ–ãƒ«ãƒ¼") > 0 Or InStr(wname, "é’") > 0 Then
+        cname = "é’"
+    ElseIf InStr(wname, "ã‚¤ã‚¨ãƒ­ãƒ¼") > 0 Or InStr(wname, "é»„") > 0 Then
+        cname = "é»„"
+    ElseIf InStr(wname, "ã‚°ãƒªãƒ¼ãƒ³") > 0 Or InStr(wname, "ç·‘") > 0 Then
+        cname = "ç·‘"
+    ElseIf InStr(wname, "ãƒ”ãƒ³ã‚¯") > 0 Or InStr(wname, "æ¡ƒ") > 0 Then
+        cname = "æ¡ƒ"
+    ElseIf InStr(wname, "ãƒ–ãƒ©ã‚¦ãƒ³") > 0 Or InStr(wname, "æ©™") > 0 Then
+        cname = "æ©™"
+    ElseIf InStr(wname, "ãƒ–ãƒ©ãƒƒã‚¯") > 0 Or InStr(wname, "é»’") > 0 _
+        Or InStr(wname, "ãƒ€ãƒ¼ã‚¯") > 0 Or InStr(wname, "é—‡") > 0 _
     Then
-        cname = "•"
-    ElseIf InStr(wname, "ƒzƒƒCƒg") > 0 Or InStr(wname, "”’") > 0 _
-        Or InStr(wname, "ƒz[ƒŠ[") > 0 Or InStr(wname, "¹") > 0 _
+        cname = "é»’"
+    ElseIf InStr(wname, "ãƒ›ãƒ¯ã‚¤ãƒˆ") > 0 Or InStr(wname, "ç™½") > 0 _
+        Or InStr(wname, "ãƒ›ãƒ¼ãƒªãƒ¼") > 0 Or InStr(wname, "è–") > 0 _
     Then
-        cname = "”’"
+        cname = "ç™½"
     End If
     
-    '‚Qí—Ş‚ÌƒAƒjƒ‚ğ‘g‚İ‡‚í‚¹‚éê‡
+    'ï¼’ç¨®é¡ã®ã‚¢ãƒ‹ãƒ¡ã‚’çµ„ã¿åˆã‚ã›ã‚‹å ´åˆ
     If Len(wtype0) > 0 Then
-        '•\¦‚·‚é–½’†ƒAƒjƒ‚Ìí—Ş
-        aname = wtype0 & "–½’†"
+        'è¡¨ç¤ºã™ã‚‹å‘½ä¸­ã‚¢ãƒ‹ãƒ¡ã®ç¨®é¡
+        aname = wtype0 & "å‘½ä¸­"
         
-        'F
+        'è‰²
         If Len(cname) > 0 Then
             aname = aname & " " & cname
         End If
         
-        '–½’†ƒAƒjƒ•\¦
+        'å‘½ä¸­ã‚¢ãƒ‹ãƒ¡è¡¨ç¤º
         ShowAnimation aname
     End If
     
-    '•\¦‚·‚é–½’†ƒAƒjƒ‚Ìí—Ş
-    aname = wtype & "–½’†"
+    'è¡¨ç¤ºã™ã‚‹å‘½ä¸­ã‚¢ãƒ‹ãƒ¡ã®ç¨®é¡
+    aname = wtype & "å‘½ä¸­"
     
-    'F
+    'è‰²
     If Len(cname) > 0 Then
         aname = aname & " " & cname
     End If
     
-    'Œø‰Ê‰¹
+    'åŠ¹æœéŸ³
     If Len(sname) > 0 Then
         aname = aname & " " & sname
     End If
     
-    '–½’†”
+    'å‘½ä¸­æ•°
     If attack_times > 0 Then
         aname = aname & " " & Format$(attack_times)
     End If
     
-    '–½’†ƒAƒjƒ•\¦
+    'å‘½ä¸­ã‚¢ãƒ‹ãƒ¡è¡¨ç¤º
     ShowAnimation aname
 End Sub
 
-'•Ší–½’†‚ÌŒø‰Ê‰¹
+'æ­¦å™¨å‘½ä¸­æ™‚ã®åŠ¹æœéŸ³
 Public Sub HitSound(u As Unit, w As Integer, t As Unit, ByVal hit_count As Integer)
 Dim wname As String, wclass As String
 Dim num As Integer, i As Integer
     
-    '‰EƒNƒŠƒbƒN’†‚ÍŒø‰Ê‰¹‚ğƒXƒLƒbƒv
+    'å³ã‚¯ãƒªãƒƒã‚¯ä¸­ã¯åŠ¹æœéŸ³ã‚’ã‚¹ã‚­ãƒƒãƒ—
     If IsRButtonPressed() Then
         Exit Sub
     End If
@@ -3678,18 +3678,18 @@ Dim num As Integer, i As Integer
     wname = u.WeaponNickname(w)
     wclass = u.Weapon(w).Class
     
-    'Œø‰Ê‰¹‚ÌÄ¶‰ñ”
+    'åŠ¹æœéŸ³ã®å†ç”Ÿå›æ•°
     num = CountAttack(u, w)
     
-    '•Ší‚É‰‚¶‚ÄŒø‰Ê‰¹‚ğÄ¶
-    If InStrNotNest(wclass, "•") > 0 _
-        Or InStrNotNest(wclass, "“Ë") > 0 _
-        Or InStrNotNest(wclass, "Ú") > 0 _
-        Or InStrNotNest(wclass, "À") > 0 _
+    'æ­¦å™¨ã«å¿œã˜ã¦åŠ¹æœéŸ³ã‚’å†ç”Ÿ
+    If InStrNotNest(wclass, "æ­¦") > 0 _
+        Or InStrNotNest(wclass, "çª") > 0 _
+        Or InStrNotNest(wclass, "æ¥") > 0 _
+        Or InStrNotNest(wclass, "å®Ÿ") > 0 _
     Then
-        If InStr(wname, "ƒfƒBƒXƒJƒbƒ^[") > 0 Or InStr(wname, "ƒŠƒbƒp[") > 0 _
-            Or InStr(wname, "ƒXƒpƒCƒh") > 0 _
-            Or InStr(wname, "‹‡") > 0 Or InStr(wname, "‘M") > 0 _
+        If InStr(wname, "ãƒ‡ã‚£ã‚¹ã‚«ãƒƒã‚¿ãƒ¼") > 0 Or InStr(wname, "ãƒªãƒƒãƒ‘ãƒ¼") > 0 _
+            Or InStr(wname, "ã‚¹ãƒ‘ã‚¤ãƒ‰") > 0 _
+            Or InStr(wname, "å±…åˆ") > 0 Or InStr(wname, "é–ƒ") > 0 _
         Then
             PlayWave "Swing.wav"
             Sleep 200
@@ -3698,40 +3698,40 @@ Dim num As Integer, i As Integer
                 Sleep 200
                 PlayWave "Sword.wav"
             Next
-        ElseIf InStr(wname, "ƒvƒƒOƒŒƒbƒVƒuƒiƒCƒt") > 0 _
-            Or InStr(wname, "ƒhƒŠƒ‹") > 0 _
+        ElseIf InStr(wname, "ãƒ—ãƒ­ã‚°ãƒ¬ãƒƒã‚·ãƒ–ãƒŠã‚¤ãƒ•") > 0 _
+            Or InStr(wname, "ãƒ‰ãƒªãƒ«") > 0 _
         Then
             PlayWave "Drill.wav"
-        ElseIf InStr(wname, "ƒT[ƒxƒ‹") > 0 Or InStr(wname, "ƒZƒCƒo[") > 0 _
-            Or InStr(wname, "ƒ\[ƒh") > 0 Or InStr(wname, "ƒuƒŒ[ƒh") > 0 _
-            Or InStr(wname, "ƒXƒpƒbƒh") > 0 Or InStr(wname, "ƒZ[ƒo[") > 0 _
-            Or InStr(wname, "ƒ_ƒK[") > 0 Or InStr(wname, "ƒiƒCƒt") > 0 _
-            Or InStr(wname, "ƒgƒ}ƒz[ƒN") > 0 Or InStr(wname, "ƒƒCƒX") > 0 _
-            Or InStr(wname, "ƒAƒbƒNƒX") > 0 _
-            Or InStr(wname, "ƒOƒŒƒCƒu") > 0 Or InStr(wname, "ƒiƒMƒiƒ^") > 0 _
-            Or InStr(wname, "ƒrƒAƒ“ƒL") > 0 Or InStr(wname, "ƒEƒFƒbƒu") > 0 _
-            Or InStr(wname, "ƒUƒ“ƒo[") > 0 Or InStr(wname, "ƒ}[ƒJ[") > 0 _
-            Or InStr(wname, "ƒoƒXƒ^[") > 0 Or InStr(wname, "ƒuƒ‰ƒXƒ^[") > 0 _
-            Or InStr(wname, "ƒNƒ[") > 0 Or InStr(wname, "ƒWƒU[ƒX") > 0 _
-            Or InStr(wname, "ƒu[ƒƒ‰ƒ“") > 0 Or InStr(wname, "ƒ\[ƒT[") > 0 _
-            Or InStr(wname, "ƒŒƒU[") > 0 Or InStr(wname, "ƒŒƒCƒo[") > 0 _
-            Or InStr(wname, "ƒTƒCƒY") > 0 Or InStr(wname, "ƒVƒ‡[ƒeƒ‹") > 0 _
-            Or InStr(wname, "ƒJƒbƒ^[") > 0 Or InStr(wname, "ƒXƒpƒCƒN") > 0 _
-            Or InStr(wname, "ƒJƒgƒ‰ƒX") > 0 Or InStr(wname, "ƒGƒbƒW") > 0 _
-            Or (InStr(wname, "Œ•") > 0 And InStr(wname, "è— Œ•") = 0) _
-            Or InStr(wname, "Ø") > 0 Or InStr(wname, "a") > 0 _
-            Or InStr(wname, "“") > 0 Or InStr(wname, "n") > 0 _
-            Or InStr(wname, "•€") > 0 Or InStr(wname, "Š™") > 0 _
-            Or InStr(wname, "‚©‚Ü") > 0 Or InStr(wname, "ƒJƒ}") > 0 _
-            Or InStr(wname, "’Ü") > 0 Or InStr(wname, "‚©‚¬‚Ã‚ß") > 0 _
-            Or InStr(wname, "ƒnƒTƒ~") > 0 Or InStr(wname, "ƒoƒTƒ~") > 0 _
-            Or InStr(wname, "‰H") > 0 _
+        ElseIf InStr(wname, "ã‚µãƒ¼ãƒ™ãƒ«") > 0 Or InStr(wname, "ã‚»ã‚¤ãƒãƒ¼") > 0 _
+            Or InStr(wname, "ã‚½ãƒ¼ãƒ‰") > 0 Or InStr(wname, "ãƒ–ãƒ¬ãƒ¼ãƒ‰") > 0 _
+            Or InStr(wname, "ã‚¹ãƒ‘ãƒƒãƒ‰") > 0 Or InStr(wname, "ã‚»ãƒ¼ãƒãƒ¼") > 0 _
+            Or InStr(wname, "ãƒ€ã‚¬ãƒ¼") > 0 Or InStr(wname, "ãƒŠã‚¤ãƒ•") > 0 _
+            Or InStr(wname, "ãƒˆãƒãƒ›ãƒ¼ã‚¯") > 0 Or InStr(wname, "ãƒ¡ã‚¤ã‚¹") > 0 _
+            Or InStr(wname, "ã‚¢ãƒƒã‚¯ã‚¹") > 0 _
+            Or InStr(wname, "ã‚°ãƒ¬ã‚¤ãƒ–") > 0 Or InStr(wname, "ãƒŠã‚®ãƒŠã‚¿") > 0 _
+            Or InStr(wname, "ãƒ“ã‚¢ãƒ³ã‚­") > 0 Or InStr(wname, "ã‚¦ã‚§ãƒƒãƒ–") > 0 _
+            Or InStr(wname, "ã‚¶ãƒ³ãƒãƒ¼") > 0 Or InStr(wname, "ãƒãƒ¼ã‚«ãƒ¼") > 0 _
+            Or InStr(wname, "ãƒã‚¹ã‚¿ãƒ¼") > 0 Or InStr(wname, "ãƒ–ãƒ©ã‚¹ã‚¿ãƒ¼") > 0 _
+            Or InStr(wname, "ã‚¯ãƒ­ãƒ¼") > 0 Or InStr(wname, "ã‚¸ã‚¶ãƒ¼ã‚¹") > 0 _
+            Or InStr(wname, "ãƒ–ãƒ¼ãƒ¡ãƒ©ãƒ³") > 0 Or InStr(wname, "ã‚½ãƒ¼ã‚µãƒ¼") > 0 _
+            Or InStr(wname, "ãƒ¬ã‚¶ãƒ¼") > 0 Or InStr(wname, "ãƒ¬ã‚¤ãƒãƒ¼") > 0 _
+            Or InStr(wname, "ã‚µã‚¤ã‚º") > 0 Or InStr(wname, "ã‚·ãƒ§ãƒ¼ãƒ†ãƒ«") > 0 _
+            Or InStr(wname, "ã‚«ãƒƒã‚¿ãƒ¼") > 0 Or InStr(wname, "ã‚¹ãƒ‘ã‚¤ã‚¯") > 0 _
+            Or InStr(wname, "ã‚«ãƒˆãƒ©ã‚¹") > 0 Or InStr(wname, "ã‚¨ãƒƒã‚¸") > 0 _
+            Or (InStr(wname, "å‰£") > 0 And InStr(wname, "æ‰‹è£å‰£") = 0) _
+            Or InStr(wname, "åˆ‡") > 0 Or InStr(wname, "æ–¬") > 0 _
+            Or InStr(wname, "åˆ€") > 0 Or InStr(wname, "åˆƒ") > 0 _
+            Or InStr(wname, "æ–§") > 0 Or InStr(wname, "éŒ") > 0 _
+            Or InStr(wname, "ã‹ã¾") > 0 Or InStr(wname, "ã‚«ãƒ") > 0 _
+            Or InStr(wname, "çˆª") > 0 Or InStr(wname, "ã‹ãã¥ã‚") > 0 _
+            Or InStr(wname, "ãƒã‚µãƒŸ") > 0 Or InStr(wname, "ãƒã‚µãƒŸ") > 0 _
+            Or InStr(wname, "ç¾½") > 0 _
         Then
             If Not t.IsHero _
-                Or InStr(wname, "ƒr[ƒ€") > 0 _
-                Or InStr(wname, "ƒvƒ‰ƒYƒ}") > 0 _
-                Or InStr(wname, "ƒŒ[ƒU[") > 0 _
-                Or InStr(wname, "ƒZƒCƒo[") > 0 _
+                Or InStr(wname, "ãƒ“ãƒ¼ãƒ ") > 0 _
+                Or InStr(wname, "ãƒ—ãƒ©ã‚ºãƒ") > 0 _
+                Or InStr(wname, "ãƒ¬ãƒ¼ã‚¶ãƒ¼") > 0 _
+                Or InStr(wname, "ã‚»ã‚¤ãƒãƒ¼") > 0 _
             Then
                 PlayWave "Saber.wav"
                 For i = 2 To num
@@ -3747,20 +3747,20 @@ Dim num As Integer, i As Integer
                     PlayWave "Slash.wav"
                 Next
             End If
-        ElseIf InStr(wname, "ƒ‰ƒ“ƒT[") > 0 _
-            Or InStr(wname, "ƒ‰ƒ“ƒX") > 0 Or InStr(wname, "ƒXƒsƒA") > 0 _
-            Or InStr(wname, "ƒgƒ‰ƒCƒfƒ“ƒg") > 0 Or InStr(wname, "ƒn[ƒPƒ“") > 0 _
-            Or InStr(wname, "‘„") > 0 Or InStr(wname, "‚à‚è") > 0 _
-            Or InStr(wname, "è— Œ•") > 0 _
-            Or InStr(wname, "‹ê–³") > 0 Or InStr(wname, "ƒNƒiƒC") > 0 _
-            Or (InStr(wname, "“Ë‚«") > 0 _
-                And InStr(wname, "Œ") = 0 And InStr(wname, "“ª") = 0) _
+        ElseIf InStr(wname, "ãƒ©ãƒ³ã‚µãƒ¼") > 0 _
+            Or InStr(wname, "ãƒ©ãƒ³ã‚¹") > 0 Or InStr(wname, "ã‚¹ãƒ”ã‚¢") > 0 _
+            Or InStr(wname, "ãƒˆãƒ©ã‚¤ãƒ‡ãƒ³ãƒˆ") > 0 Or InStr(wname, "ãƒãƒ¼ã‚±ãƒ³") > 0 _
+            Or InStr(wname, "æ§") > 0 Or InStr(wname, "ã‚‚ã‚Š") > 0 _
+            Or InStr(wname, "æ‰‹è£å‰£") > 0 _
+            Or InStr(wname, "è‹¦ç„¡") > 0 Or InStr(wname, "ã‚¯ãƒŠã‚¤") > 0 _
+            Or (InStr(wname, "çªã") > 0 _
+                And InStr(wname, "æ‹³") = 0 And InStr(wname, "é ­") = 0) _
         Then
             If Not t.IsHero _
-                Or InStr(wname, "ƒr[ƒ€") > 0 _
-                Or InStr(wname, "ƒvƒ‰ƒYƒ}") > 0 _
-                Or InStr(wname, "ƒŒ[ƒU[") > 0 _
-                Or InStr(wname, "ƒ‰ƒ“ƒT[") > 0 _
+                Or InStr(wname, "ãƒ“ãƒ¼ãƒ ") > 0 _
+                Or InStr(wname, "ãƒ—ãƒ©ã‚ºãƒ") > 0 _
+                Or InStr(wname, "ãƒ¬ãƒ¼ã‚¶ãƒ¼") > 0 _
+                Or InStr(wname, "ãƒ©ãƒ³ã‚µãƒ¼") > 0 _
             Then
                 PlayWave "Saber.wav"
                 For i = 2 To num
@@ -3776,9 +3776,9 @@ Dim num As Integer, i As Integer
                     PlayWave "Stab.wav"
                 Next
             End If
-        ElseIf InStr(wname, "‰å") > 0 Or InStr(wname, "ƒtƒ@ƒ“ƒO") > 0 _
-            Or InStr(wname, "Šš") > 0 Or InStr(wname, "‚©‚İ‚Â‚«") > 0 _
-            Or InStr(wname, "Š{") > 0 _
+        ElseIf InStr(wname, "ç‰™") > 0 Or InStr(wname, "ãƒ•ã‚¡ãƒ³ã‚°") > 0 _
+            Or InStr(wname, "å™›") > 0 Or InStr(wname, "ã‹ã¿ã¤ã") > 0 _
+            Or InStr(wname, "é¡") > 0 _
         Then
             If Not t.IsHero Then
                 PlayWave "Saber.wav"
@@ -3793,104 +3793,104 @@ Dim num As Integer, i As Integer
                     PlayWave "Stab.wav"
                 Next
             End If
-        ElseIf InStr(wname, "ƒXƒgƒ‰ƒCƒN") > 0 _
-            Or InStr(wname, "ƒA[ƒc") > 0 _
-            Or InStr(wname, "Œ–@") > 0 _
-            Or InStr(wname, "U“®Œ") > 0 _
+        ElseIf InStr(wname, "ã‚¹ãƒˆãƒ©ã‚¤ã‚¯") > 0 _
+            Or InStr(wname, "ã‚¢ãƒ¼ãƒ„") > 0 _
+            Or InStr(wname, "æ‹³æ³•") > 0 _
+            Or InStr(wname, "æŒ¯å‹•æ‹³") > 0 _
         Then
             PlayWave "Combo.wav"
-        ElseIf InStr(wname, "Ši“¬") > 0 Or InStr(wname, "ƒpƒ“ƒ`") > 0 _
-            Or InStr(wname, "ƒLƒbƒN") > 0 Or InStr(wname, "ƒ`ƒ‡ƒbƒv") > 0 _
-            Or InStr(wname, "ƒiƒbƒNƒ‹") > 0 Or InStr(wname, "ƒuƒ[") > 0 _
-            Or InStr(wname, "ƒnƒ“ƒ}[") > 0 Or InStr(wname, "ƒgƒ“ƒtƒ@[") > 0 _
-            Or InStr(wname, "ƒkƒ“ƒ`ƒƒƒN") > 0 Or InStr(wname, "ƒpƒCƒv") > 0 _
-            Or InStr(wname, "ƒ‰ƒŠƒAƒbƒg") > 0 Or InStr(wname, "ƒA[ƒ€") > 0 _
-            Or InStr(wname, "ƒwƒbƒhƒoƒbƒg") > 0 Or InStr(wname, "ƒXƒŠƒ“ƒO") > 0 _
-            Or InStr(wname, "“ª“Ë‚«") > 0 _
-            Or InStr(wname, "‹r") > 0 _
-            Or InStr(wname, "R") > 0 _
-            Or InStr(wname, "–_") > 0 _
-            Or InStr(wname, "Î") > 0 _
-            Or InStr(wname, "Šp") > 0 _
-            Or InStr(wname, "K”ö") > 0 _
-            Or InStr(wname, "“S˜r") > 0 _
+        ElseIf InStr(wname, "æ ¼é—˜") > 0 Or InStr(wname, "ãƒ‘ãƒ³ãƒ") > 0 _
+            Or InStr(wname, "ã‚­ãƒƒã‚¯") > 0 Or InStr(wname, "ãƒãƒ§ãƒƒãƒ—") > 0 _
+            Or InStr(wname, "ãƒŠãƒƒã‚¯ãƒ«") > 0 Or InStr(wname, "ãƒ–ãƒ­ãƒ¼") > 0 _
+            Or InStr(wname, "ãƒãƒ³ãƒãƒ¼") > 0 Or InStr(wname, "ãƒˆãƒ³ãƒ•ã‚¡ãƒ¼") > 0 _
+            Or InStr(wname, "ãƒŒãƒ³ãƒãƒ£ã‚¯") > 0 Or InStr(wname, "ãƒ‘ã‚¤ãƒ—") > 0 _
+            Or InStr(wname, "ãƒ©ãƒªã‚¢ãƒƒãƒˆ") > 0 Or InStr(wname, "ã‚¢ãƒ¼ãƒ ") > 0 _
+            Or InStr(wname, "ãƒ˜ãƒƒãƒ‰ãƒãƒƒãƒˆ") > 0 Or InStr(wname, "ã‚¹ãƒªãƒ³ã‚°") > 0 _
+            Or InStr(wname, "é ­çªã") > 0 _
+            Or InStr(wname, "è„š") > 0 _
+            Or InStr(wname, "è¹´") > 0 _
+            Or InStr(wname, "æ£’") > 0 _
+            Or InStr(wname, "çŸ³") > 0 _
+            Or InStr(wname, "è§’") > 0 _
+            Or InStr(wname, "å°»å°¾") > 0 _
+            Or InStr(wname, "é‰„è…•") > 0 _
         Then
             PlayWave "Punch.wav"
             For i = 2 To num
                 Sleep 120
                 PlayWave "Punch.wav"
             Next
-        ElseIf InStr(wname, "‘Ì“–‚½‚è") > 0 _
-            Or InStr(wname, "ƒ^ƒbƒNƒ‹") > 0 _
-            Or InStr(wname, "‚Ô‚¿‚©‚Ü‚µ") > 0 _
-            Or InStr(wname, "“Ëi") > 0 _
-            Or InStr(wname, "“ËŒ‚") > 0 _
-            Or InStr(wname, "‰ö—Í") > 0 _
-            Or InStr(wname, "“SŒ") > 0 _
-            Or InStr(wname, "ƒƒKƒgƒ“ƒpƒ“ƒ`") > 0 _
-            Or InStr(wname, "“S‹…") > 0 _
-            Or InStr(wname, "ƒ{[ƒ‹") > 0 _
-            Or InStr(wname, "Ô—Ö") > 0 _
-            Or InStr(wname, "ƒLƒƒƒ^ƒsƒ‰") > 0 _
-            Or InStr(wname, "ƒV[ƒ‹ƒh") > 0 _
+        ElseIf InStr(wname, "ä½“å½“ãŸã‚Š") > 0 _
+            Or InStr(wname, "ã‚¿ãƒƒã‚¯ãƒ«") > 0 _
+            Or InStr(wname, "ã¶ã¡ã‹ã¾ã—") > 0 _
+            Or InStr(wname, "çªé€²") > 0 _
+            Or InStr(wname, "çªæ’ƒ") > 0 _
+            Or InStr(wname, "æ€ªåŠ›") > 0 _
+            Or InStr(wname, "é‰„æ‹³") > 0 _
+            Or InStr(wname, "ãƒ¡ã‚¬ãƒˆãƒ³ãƒ‘ãƒ³ãƒ") > 0 _
+            Or InStr(wname, "é‰„çƒ") > 0 _
+            Or InStr(wname, "ãƒœãƒ¼ãƒ«") > 0 _
+            Or InStr(wname, "è»Šè¼ª") > 0 _
+            Or InStr(wname, "ã‚­ãƒ£ã‚¿ãƒ”ãƒ©") > 0 _
+            Or InStr(wname, "ã‚·ãƒ¼ãƒ«ãƒ‰") > 0 _
         Then
             PlayWave "Crash.wav"
-        ElseIf InStr(wname, "Œ") > 0 _
-            Or InStr(wname, "¶") > 0 _
-            Or InStr(wname, "‘Å") > 0 _
-            Or InStr(wname, "™¤") > 0 _
+        ElseIf InStr(wname, "æ‹³") > 0 _
+            Or InStr(wname, "æŒ") > 0 _
+            Or InStr(wname, "æ‰“") > 0 _
+            Or InStr(wname, "å‹") > 0 _
         Then
             PlayWave "Bazooka.wav"
             For i = 2 To num
                 Sleep 120
                 PlayWave "Bazooka.wav"
             Next
-        ElseIf InStr(wname, "“¥‚İ") > 0 _
-            Or InStr(wname, "‰Ÿ‚µ") > 0 _
-            Or InStr(wname, "ƒhƒƒbƒv") > 0 _
+        ElseIf InStr(wname, "è¸ã¿") > 0 _
+            Or InStr(wname, "æŠ¼ã—") > 0 _
+            Or InStr(wname, "ãƒ‰ãƒ­ãƒƒãƒ—") > 0 _
         Then
             PlayWave "Shock(Low).wav"
-        ElseIf InStr(wname, "’£‚èè") > 0 _
-            Or InStr(wname, "ƒrƒ“ƒ^") > 0 _
+        ElseIf InStr(wname, "å¼µã‚Šæ‰‹") > 0 _
+            Or InStr(wname, "ãƒ“ãƒ³ã‚¿") > 0 _
         Then
             PlayWave "Slap.wav"
             For i = 2 To num
                 Sleep 120
                 PlayWave "Slap.wav"
             Next
-        ElseIf InStr(wname, "‹|") > 0 _
-            Or InStr(wname, "–î") > 0 _
-            Or InStr(wname, "ƒAƒ[") > 0 _
-            Or InStr(wname, "ƒ{[ƒKƒ“") > 0 _
-            Or InStr(wname, "ƒ{ƒEƒKƒ“") > 0 _
-            Or InStr(wname, "ƒVƒ‡[ƒgƒ{ƒE") > 0 _
-            Or InStr(wname, "ƒƒ“ƒOƒ{ƒE") > 0 _
-            Or InStr(wname, "j") > 0 _
-            Or InStr(wname, "ƒj[ƒhƒ‹") > 0 _
+        ElseIf InStr(wname, "å¼“") > 0 _
+            Or InStr(wname, "çŸ¢") > 0 _
+            Or InStr(wname, "ã‚¢ãƒ­ãƒ¼") > 0 _
+            Or InStr(wname, "ãƒœãƒ¼ã‚¬ãƒ³") > 0 _
+            Or InStr(wname, "ãƒœã‚¦ã‚¬ãƒ³") > 0 _
+            Or InStr(wname, "ã‚·ãƒ§ãƒ¼ãƒˆãƒœã‚¦") > 0 _
+            Or InStr(wname, "ãƒ­ãƒ³ã‚°ãƒœã‚¦") > 0 _
+            Or InStr(wname, "é‡") > 0 _
+            Or InStr(wname, "ãƒ‹ãƒ¼ãƒ‰ãƒ«") > 0 _
         Then
             PlayWave "Stab.wav"
             For i = 2 To num
                 Sleep 120
                 PlayWave "Stab.wav"
             Next
-        ElseIf InStr(wname, "•Ú") > 0 _
-            Or InStr(wname, "ƒ€ƒ`") > 0 _
-            Or InStr(wname, "ƒEƒCƒbƒv") > 0 _
-            Or InStr(wname, "ƒ`ƒF[ƒ“") > 0 _
-            Or InStr(wname, "ƒƒbƒh") > 0 _
-            Or InStr(wname, "ƒeƒ“ƒ^ƒN") > 0 _
-            Or InStr(wname, "ƒeƒCƒ‹") > 0 _
-            Or InStr(wname, "”ö") > 0 _
-            Or InStr(wname, "Gè") > 0 _
-            Or InStr(wname, "G˜r") > 0 _
-            Or InStr(wname, "ã") > 0 _
-            Or InStr(wname, "Šª‚«") > 0 _
-            Or InStr(wname, "…") > 0 _
+        ElseIf InStr(wname, "é­") > 0 _
+            Or InStr(wname, "ãƒ ãƒ") > 0 _
+            Or InStr(wname, "ã‚¦ã‚¤ãƒƒãƒ—") > 0 _
+            Or InStr(wname, "ãƒã‚§ãƒ¼ãƒ³") > 0 _
+            Or InStr(wname, "ãƒ­ãƒƒãƒ‰") > 0 _
+            Or InStr(wname, "ãƒ†ãƒ³ã‚¿ã‚¯") > 0 _
+            Or InStr(wname, "ãƒ†ã‚¤ãƒ«") > 0 _
+            Or InStr(wname, "å°¾") > 0 _
+            Or InStr(wname, "è§¦æ‰‹") > 0 _
+            Or InStr(wname, "è§¦è…•") > 0 _
+            Or InStr(wname, "èˆŒ") > 0 _
+            Or InStr(wname, "å·»ã") > 0 _
+            Or InStr(wname, "ç³¸") > 0 _
         Then
             PlayWave "Whip.wav"
-        ElseIf InStr(wname, "“Š‚°") > 0 _
-            Or InStr(wname, "ƒX[ƒvƒŒƒbƒN") > 0 _
-            Or (InStr(wname, "•Ô‚µ") > 0 And InStrNotNest(wclass, "“Ë") > 0) _
+        ElseIf InStr(wname, "æŠ•ã’") > 0 _
+            Or InStr(wname, "ã‚¹ãƒ¼ãƒ—ãƒ¬ãƒƒã‚¯") > 0 _
+            Or (InStr(wname, "è¿”ã—") > 0 And InStrNotNest(wclass, "çª") > 0) _
         Then
             PlayWave "Swing.wav"
             Sleep 500
@@ -3901,7 +3901,7 @@ Dim num As Integer, i As Integer
                 Sleep 500
                 PlayWave "Shock(Low).wav"
             Next
-        ElseIf InStr(wname, "‘åáR‚¨‚ë‚µ") > 0 Then
+        ElseIf InStr(wname, "å¤§é›ªå±±ãŠã‚ã—") > 0 Then
             PlayWave "Swing.wav"
             Sleep 700
             PlayWave "Swing.wav"
@@ -3909,49 +3909,49 @@ Dim num As Integer, i As Integer
             PlayWave "Swing.wav"
             Sleep 300
             PlayWave "Shock(Low).wav"
-        ElseIf InStr(wname, "ŠÖß") > 0 _
-            Or InStr(wname, "ŒÅ‚ß") > 0 _
-            Or InStr(wname, "Ü‚è") > 0 _
-            Or InStr(wname, "’÷‚ß") > 0 _
-            Or InStr(wname, "i‚ß") > 0 _
-            Or InStr(wname, "ƒA[ƒ€ƒƒbƒN") > 0 _
-            Or InStr(wname, "ƒz[ƒ‹ƒh") > 0 _
+        ElseIf InStr(wname, "é–¢ç¯€") > 0 _
+            Or InStr(wname, "å›ºã‚") > 0 _
+            Or InStr(wname, "æŠ˜ã‚Š") > 0 _
+            Or InStr(wname, "ç· ã‚") > 0 _
+            Or InStr(wname, "çµã‚") > 0 _
+            Or InStr(wname, "ã‚¢ãƒ¼ãƒ ãƒ­ãƒƒã‚¯") > 0 _
+            Or InStr(wname, "ãƒ›ãƒ¼ãƒ«ãƒ‰") > 0 _
         Then
             PlayWave "Swing.wav"
             Sleep 190
             PlayWave "BreakOff.wav"
-        ElseIf InStrNotNest(wclass, "Šj") > 0 _
-            Or InStr(wname, "Šj") > 0 _
-            Or InStr(wname, "”½‰’e") > 0 _
+        ElseIf InStrNotNest(wclass, "æ ¸") > 0 _
+            Or InStr(wname, "æ ¸") > 0 _
+            Or InStr(wname, "åå¿œå¼¾") > 0 _
         Then
             PlayWave "Explode(Nuclear).wav"
-        ElseIf InStr(wname, "ƒ~ƒTƒCƒ‹") > 0 _
-            Or InStr(wname, "ƒƒPƒbƒg") > 0 _
-            Or InStr(wname, "‹›—‹") > 0 _
-            Or InStr(wname, "ƒ}ƒ‹ƒ`ƒ|ƒbƒh") > 0 _
-            Or InStr(wname, "ƒ}ƒ‹ƒ`ƒ‰ƒ“ƒ`ƒƒ[") > 0 _
-            Or InStr(wname, "”š’e") > 0 _
-            Or InStr(wname, "”š—‹") > 0 _
-            Or InStr(wname, "”šŒ‚") > 0 _
-            Or Right$(wname, 3) = "ƒ}ƒCƒ“" _
-            Or Right$(wname, 2) = "ƒ{ƒ€" _
+        ElseIf InStr(wname, "ãƒŸã‚µã‚¤ãƒ«") > 0 _
+            Or InStr(wname, "ãƒ­ã‚±ãƒƒãƒˆ") > 0 _
+            Or InStr(wname, "é­šé›·") > 0 _
+            Or InStr(wname, "ãƒãƒ«ãƒãƒãƒƒãƒ‰") > 0 _
+            Or InStr(wname, "ãƒãƒ«ãƒãƒ©ãƒ³ãƒãƒ£ãƒ¼") > 0 _
+            Or InStr(wname, "çˆ†å¼¾") > 0 _
+            Or InStr(wname, "çˆ†é›·") > 0 _
+            Or InStr(wname, "çˆ†æ’ƒ") > 0 _
+            Or Right$(wname, 3) = "ãƒã‚¤ãƒ³" _
+            Or Right$(wname, 2) = "ãƒœãƒ " _
         Then
             PlayWave "Explode(Small).wav"
             For i = 2 To num
                 Sleep 130
                 PlayWave "Explode(Small).wav"
             Next
-        ElseIf InStr(wname, "ƒAƒ“ƒJ[") > 0 Then
-            '–³‰¹
-        ElseIf InStrNotNest(wclass, "•") > 0 Then
-            '‚È‚ñ‚©•ª‚©‚ç‚ñ‚¯‚Ç•Ší
+        ElseIf InStr(wname, "ã‚¢ãƒ³ã‚«ãƒ¼") > 0 Then
+            'ç„¡éŸ³
+        ElseIf InStrNotNest(wclass, "æ­¦") > 0 Then
+            'ãªã‚“ã‹åˆ†ã‹ã‚‰ã‚“ã‘ã©æ­¦å™¨
             PlayWave "Saber.wav"
             For i = 2 To num
                 Sleep 350
                 PlayWave "Saber.wav"
             Next
-        ElseIf InStrNotNest(wclass, "“Ë") > 0 Then
-            '‚È‚ñ‚©•ª‚©‚ç‚ñ‚¯‚Ç“Ëi‹Z
+        ElseIf InStrNotNest(wclass, "çª") > 0 Then
+            'ãªã‚“ã‹åˆ†ã‹ã‚‰ã‚“ã‘ã©çªé€²æŠ€
             PlayWave "Punch.wav"
             For i = 2 To num
                 Sleep 120
@@ -3967,29 +3967,29 @@ Dim num As Integer, i As Integer
             End If
         End If
     Else
-        If InStr(wname, "ƒXƒg[ƒ€") > 0 _
-            Or InStr(wname, "ƒgƒ‹ƒl[ƒh") > 0 _
-            Or InStr(wname, "ƒnƒŠƒP[ƒ“") > 0 _
-            Or InStr(wname, "ƒ^ƒCƒt[ƒ“") > 0 _
-            Or InStr(wname, "ƒTƒCƒNƒƒ“") > 0 _
-            Or InStr(wname, "ƒuƒŠƒU[ƒh") > 0 _
-            Or InStr(wname, "—³Šª") > 0 _
-            Or InStr(wname, "‰QŠª") > 0 _
-            Or InStr(wname, "‘ä•—") > 0 _
-            Or InStr(wname, "—’") > 0 _
+        If InStr(wname, "ã‚¹ãƒˆãƒ¼ãƒ ") > 0 _
+            Or InStr(wname, "ãƒˆãƒ«ãƒãƒ¼ãƒ‰") > 0 _
+            Or InStr(wname, "ãƒãƒªã‚±ãƒ¼ãƒ³") > 0 _
+            Or InStr(wname, "ã‚¿ã‚¤ãƒ•ãƒ¼ãƒ³") > 0 _
+            Or InStr(wname, "ã‚µã‚¤ã‚¯ãƒ­ãƒ³") > 0 _
+            Or InStr(wname, "ãƒ–ãƒªã‚¶ãƒ¼ãƒ‰") > 0 _
+            Or InStr(wname, "ç«œå·»") > 0 _
+            Or InStr(wname, "æ¸¦å·»") > 0 _
+            Or InStr(wname, "å°é¢¨") > 0 _
+            Or InStr(wname, "åµ") > 0 _
         Then
-            '–½’†‚Í–³‰¹
-        ElseIf Right$(wname, 1) = "‰t" Then
+            'å‘½ä¸­æ™‚ã¯ç„¡éŸ³
+        ElseIf Right$(wname, 1) = "æ¶²" Then
             PlayWave "Inori.wav"
-        ElseIf InStr(wname, "”­‰Î") > 0 _
-            Or InStr(wname, "ƒpƒCƒƒLƒlƒVƒX") > 0 _
+        ElseIf InStr(wname, "ç™ºç«") > 0 _
+            Or InStr(wname, "ãƒ‘ã‚¤ãƒ­ã‚­ãƒã‚·ã‚¹") > 0 _
         Then
             PlayWave "Fire.wav"
-        ElseIf wname = "ƒeƒŒƒLƒlƒVƒX" Then
+        ElseIf wname = "ãƒ†ãƒ¬ã‚­ãƒã‚·ã‚¹" Then
             PlayWave "Crash.wav"
-        ElseIf InStr(wname, "‹zû") > 0 Then
+        ElseIf InStr(wname, "å¸å") > 0 Then
             PlayWave "Charge.wav"
-        ElseIf InStrNotNest(wclass, "Šj") > 0 Then
+        ElseIf InStrNotNest(wclass, "æ ¸") > 0 Then
             PlayWave "Explode(Nuclear).wav"
         Else
             If Not t.IsHero Then
@@ -4002,11 +4002,11 @@ Dim num As Integer, i As Integer
         End If
     End If
     
-    'ƒtƒ‰ƒO‚ğƒNƒŠƒA
+    'ãƒ•ãƒ©ã‚°ã‚’ã‚¯ãƒªã‚¢
     IsWavePlayed = False
 End Sub
 
-'‰ñ”ğ‚ÌŒø‰Ê‰¹
+'å›é¿æ™‚ã®åŠ¹æœéŸ³
 Public Sub DodgeEffect(u As Unit, w As Integer)
 Dim wname As String, wclass As String
 Dim sname As String
@@ -4014,9 +4014,9 @@ Dim sname As String
     wname = u.WeaponNickname(w)
     wclass = u.Weapon(w).Class
     
-    '“ÁêŒø‰Ê‚ªw’è‚³‚ê‚Ä‚¢‚ê‚Î‚»‚ê‚ğg—p
-    If u.IsSpecialEffectDefined(wname & "(‰ñ”ğ)") Then
-        u.SpecialEffect wname & "(‰ñ”ğ)"
+    'ç‰¹æ®ŠåŠ¹æœãŒæŒ‡å®šã•ã‚Œã¦ã„ã‚Œã°ãã‚Œã‚’ä½¿ç”¨
+    If u.IsSpecialEffectDefined(wname & "(å›é¿)") Then
+        u.SpecialEffect wname & "(å›é¿)"
         Exit Sub
     End If
     
@@ -4024,7 +4024,7 @@ Dim sname As String
         Exit Sub
     End If
     
-    'UŒ‚‚ÌŒø‰Ê‰¹‚ª•—Ø‚è‰¹‚Ì‚İ‚Å‚ ‚ê‚Î•—Ø‚è‰¹‚Í•s—v
+    'æ”»æ’ƒæ™‚ã®åŠ¹æœéŸ³ãŒé¢¨åˆ‡ã‚ŠéŸ³ã®ã¿ã§ã‚ã‚Œã°é¢¨åˆ‡ã‚ŠéŸ³ã¯ä¸è¦
     sname = u.SpecialEffectData(wname)
     If InStr(sname, ";") > 0 Then
         sname = Mid$(sname, InStr(sname, ";"))
@@ -4033,39 +4033,39 @@ Dim sname As String
         Exit Sub
     End If
     
-    '•—Ø‚è‰¹‚ª•K—v‚©‚Ç‚¤‚©”»’è
-    If InStrNotNest(wclass, "•") _
-        Or InStrNotNest(wclass, "“Ë") _
-        Or InStrNotNest(wclass, "Ú") _
+    'é¢¨åˆ‡ã‚ŠéŸ³ãŒå¿…è¦ã‹ã©ã†ã‹åˆ¤å®š
+    If InStrNotNest(wclass, "æ­¦") _
+        Or InStrNotNest(wclass, "çª") _
+        Or InStrNotNest(wclass, "æ¥") _
     Then
         PlayWave "Swing.wav"
-    ElseIf InStrNotNest(wclass, "À") Then
-        If InStr(wname, "•Ú") > 0 _
-            Or InStr(wname, "ƒ€ƒ`") > 0 _
-            Or InStr(wname, "ƒEƒCƒbƒv") > 0 _
-            Or InStr(wname, "ƒ`ƒF[ƒ“") > 0 _
-            Or InStr(wname, "ƒƒbƒh") > 0 _
-            Or InStr(wname, "ƒeƒ“ƒ^ƒN") > 0 _
-            Or InStr(wname, "ƒeƒCƒ‹") > 0 _
-            Or InStr(wname, "”ö") > 0 _
-            Or InStr(wname, "Gè") > 0 _
-            Or InStr(wname, "G˜r") > 0 _
-            Or InStr(wname, "ã") > 0 _
-            Or InStr(wname, "Šª‚«") > 0 _
-            Or InStr(wname, "…") > 0 _
+    ElseIf InStrNotNest(wclass, "å®Ÿ") Then
+        If InStr(wname, "é­") > 0 _
+            Or InStr(wname, "ãƒ ãƒ") > 0 _
+            Or InStr(wname, "ã‚¦ã‚¤ãƒƒãƒ—") > 0 _
+            Or InStr(wname, "ãƒã‚§ãƒ¼ãƒ³") > 0 _
+            Or InStr(wname, "ãƒ­ãƒƒãƒ‰") > 0 _
+            Or InStr(wname, "ãƒ†ãƒ³ã‚¿ã‚¯") > 0 _
+            Or InStr(wname, "ãƒ†ã‚¤ãƒ«") > 0 _
+            Or InStr(wname, "å°¾") > 0 _
+            Or InStr(wname, "è§¦æ‰‹") > 0 _
+            Or InStr(wname, "è§¦è…•") > 0 _
+            Or InStr(wname, "èˆŒ") > 0 _
+            Or InStr(wname, "å·»ã") > 0 _
+            Or InStr(wname, "ç³¸") > 0 _
         Then
             PlayWave "Swing.wav"
         End If
     End If
 End Sub
 
-'•ŠíØ‚è•¥‚¢‚ÌŒø‰Ê‰¹
+'æ­¦å™¨åˆ‡ã‚Šæ‰•ã„æ™‚ã®åŠ¹æœéŸ³
 Public Sub ParryEffect(u As Unit, w As Integer, t As Unit)
 Dim wname As String, wclass As String
 Dim sname As String, num As Integer
 Dim i As Integer
     
-    '‰EƒNƒŠƒbƒN’†‚ÍŒø‰Ê‰¹‚ğƒXƒLƒbƒv
+    'å³ã‚¯ãƒªãƒƒã‚¯ä¸­ã¯åŠ¹æœéŸ³ã‚’ã‚¹ã‚­ãƒƒãƒ—
     If IsRButtonPressed() Then
         Exit Sub
     End If
@@ -4073,36 +4073,36 @@ Dim i As Integer
     wname = u.WeaponNickname(w)
     wclass = u.Weapon(w).Class
     
-    'Œø‰Ê‰¹¶¬‰ñ”‚ğİ’è
+    'åŠ¹æœéŸ³ç”Ÿæˆå›æ•°ã‚’è¨­å®š
     num = CountAttack(u, w)
-    If InStr(wname, "ƒ}ƒVƒ“ƒKƒ“") > 0 _
-        Or InStr(wname, "‹@ŠÖe") > 0 _
-        Or InStr(wname, "ƒAƒTƒ‹ƒgƒ‰ƒCƒtƒ‹") > 0 _
-        Or InStr(wname, "ƒoƒ‹ƒJƒ“") > 0 _
+    If InStr(wname, "ãƒã‚·ãƒ³ã‚¬ãƒ³") > 0 _
+        Or InStr(wname, "æ©Ÿé–¢éŠƒ") > 0 _
+        Or InStr(wname, "ã‚¢ã‚µãƒ«ãƒˆãƒ©ã‚¤ãƒ•ãƒ«") > 0 _
+        Or InStr(wname, "ãƒãƒ«ã‚«ãƒ³") > 0 _
     Then
         num = 4
     End If
     
-    '–½’†‰¹‚ğİ’è
-    If InStrNotNest(wclass, "e") Or InStrNotNest(wclass, "Ši") _
-        Or InStrNotNest(wclass, "•") Or InStrNotNest(wclass, "“Ë") _
-        Or InStr(wname, "‹|") > 0 Or InStr(wname, "ƒAƒ[") > 0 _
-        Or InStr(wname, "ƒƒ“ƒOƒ{ƒE") > 0 Or InStr(wname, "ƒVƒ‡[ƒgƒ{ƒE") > 0 _
-        Or InStr(wname, "ƒ{[ƒKƒ“") > 0 Or InStr(wname, "ƒ{ƒEƒKƒ“") > 0 _
-        Or InStr(wname, "j") > 0 Or InStr(wname, "ƒj[ƒhƒ‹") > 0 _
-        Or InStr(wname, "ƒ‰ƒ“ƒT[") > 0 Or InStr(wname, "ƒ_ƒK[") > 0 _
-        Or InStr(wname, "Œ•") > 0 _
+    'å‘½ä¸­éŸ³ã‚’è¨­å®š
+    If InStrNotNest(wclass, "éŠƒ") Or InStrNotNest(wclass, "æ ¼") _
+        Or InStrNotNest(wclass, "æ­¦") Or InStrNotNest(wclass, "çª") _
+        Or InStr(wname, "å¼“") > 0 Or InStr(wname, "ã‚¢ãƒ­ãƒ¼") > 0 _
+        Or InStr(wname, "ãƒ­ãƒ³ã‚°ãƒœã‚¦") > 0 Or InStr(wname, "ã‚·ãƒ§ãƒ¼ãƒˆãƒœã‚¦") > 0 _
+        Or InStr(wname, "ãƒœãƒ¼ã‚¬ãƒ³") > 0 Or InStr(wname, "ãƒœã‚¦ã‚¬ãƒ³") > 0 _
+        Or InStr(wname, "é‡") > 0 Or InStr(wname, "ãƒ‹ãƒ¼ãƒ‰ãƒ«") > 0 _
+        Or InStr(wname, "ãƒ©ãƒ³ã‚µãƒ¼") > 0 Or InStr(wname, "ãƒ€ã‚¬ãƒ¼") > 0 _
+        Or InStr(wname, "å‰£") > 0 _
     Then
         sname = "Sword.wav"
-    ElseIf InStrNotNest(wclass, "À") Then
+    ElseIf InStrNotNest(wclass, "å®Ÿ") Then
         sname = "Explode(Small).wav"
-    ElseIf InStrNotNest(wclass, "‚a") Then
+    ElseIf InStrNotNest(wclass, "ï¼¢") Then
         sname = "BeamCoat.wav"
     Else
         sname = "Explode(Small).wav"
     End If
     
-    'Ø‚è•¥‚¢‰¹‚ğÄ¶
+    'åˆ‡ã‚Šæ‰•ã„éŸ³ã‚’å†ç”Ÿ
     PlayWave "Saber.wav"
     Sleep 100
     PlayWave sname
@@ -4113,44 +4113,44 @@ Dim i As Integer
         PlayWave sname
     Next
     
-    'ƒtƒ‰ƒO‚ğƒNƒŠƒA
+    'ãƒ•ãƒ©ã‚°ã‚’ã‚¯ãƒªã‚¢
     IsWavePlayed = False
 End Sub
 
-'ƒV[ƒ‹ƒh–hŒä‚Ì“ÁêŒø‰Ê
+'ã‚·ãƒ¼ãƒ«ãƒ‰é˜²å¾¡æ™‚ã®ç‰¹æ®ŠåŠ¹æœ
 Public Sub ShieldEffect(u As Unit)
-    'í“¬ƒAƒjƒ”ñ©“®‘I‘ğƒIƒvƒVƒ‡ƒ“
-    If IsOptionDefined("í“¬ƒAƒjƒ”ñ©“®‘I‘ğ") Then
-        ShowAnimation "ƒV[ƒ‹ƒh–hŒä”­“®"
+    'æˆ¦é—˜ã‚¢ãƒ‹ãƒ¡éè‡ªå‹•é¸æŠã‚ªãƒ—ã‚·ãƒ§ãƒ³
+    If IsOptionDefined("æˆ¦é—˜ã‚¢ãƒ‹ãƒ¡éè‡ªå‹•é¸æŠ") Then
+        ShowAnimation "ã‚·ãƒ¼ãƒ«ãƒ‰é˜²å¾¡ç™ºå‹•"
         Exit Sub
     End If
     
-    'ƒV[ƒ‹ƒh‚Ìƒ^ƒCƒv‚ğ¯•Ê
+    'ã‚·ãƒ¼ãƒ«ãƒ‰ã®ã‚¿ã‚¤ãƒ—ã‚’è­˜åˆ¥
     With u
-        If .IsFeatureAvailable("ƒGƒlƒ‹ƒM[ƒV[ƒ‹ƒh") Then
-            ShowAnimation "ƒr[ƒ€ƒV[ƒ‹ƒh”­“®"
-        ElseIf .IsFeatureAvailable("¬Œ^ƒV[ƒ‹ƒh") Then
-            ShowAnimation "ƒV[ƒ‹ƒh–hŒä”­“® 28"
-        ElseIf .IsFeatureAvailable("‘åŒ^ƒV[ƒ‹ƒh") Then
-            ShowAnimation "ƒV[ƒ‹ƒh–hŒä”­“® 40"
+        If .IsFeatureAvailable("ã‚¨ãƒãƒ«ã‚®ãƒ¼ã‚·ãƒ¼ãƒ«ãƒ‰") Then
+            ShowAnimation "ãƒ“ãƒ¼ãƒ ã‚·ãƒ¼ãƒ«ãƒ‰ç™ºå‹•"
+        ElseIf .IsFeatureAvailable("å°å‹ã‚·ãƒ¼ãƒ«ãƒ‰") Then
+            ShowAnimation "ã‚·ãƒ¼ãƒ«ãƒ‰é˜²å¾¡ç™ºå‹• 28"
+        ElseIf .IsFeatureAvailable("å¤§å‹ã‚·ãƒ¼ãƒ«ãƒ‰") Then
+            ShowAnimation "ã‚·ãƒ¼ãƒ«ãƒ‰é˜²å¾¡ç™ºå‹• 40"
         Else
-            ShowAnimation "ƒV[ƒ‹ƒh–hŒä”­“®"
+            ShowAnimation "ã‚·ãƒ¼ãƒ«ãƒ‰é˜²å¾¡ç™ºå‹•"
         End If
     End With
 End Sub
 
-'‹zûE—Z‡‚Ì“ÁêŒø‰Ê
+'å¸åãƒ»èåˆã®ç‰¹æ®ŠåŠ¹æœ
 Public Sub AbsorbEffect(u As Unit, w As Integer, t As Unit)
 Dim wname As String, wclass As String, cname As String
 
-    '‰EƒNƒŠƒbƒN’†‚Í“ÁêŒø‰Ê‚ğƒXƒLƒbƒv
+    'å³ã‚¯ãƒªãƒƒã‚¯ä¸­ã¯ç‰¹æ®ŠåŠ¹æœã‚’ã‚¹ã‚­ãƒƒãƒ—
     If IsRButtonPressed() Then
         Exit Sub
     End If
     
-    'í“¬ƒAƒjƒƒIƒt‚Ìê‡‚ÍŒø‰Ê‰¹Ä¶‚Ì‚İ
+    'æˆ¦é—˜ã‚¢ãƒ‹ãƒ¡ã‚ªãƒ•ã®å ´åˆã¯åŠ¹æœéŸ³å†ç”Ÿã®ã¿
     If Not BattleAnimation _
-        Or IsOptionDefined("í“¬ƒAƒjƒ”ñ©“®‘I‘ğ") _
+        Or IsOptionDefined("æˆ¦é—˜ã‚¢ãƒ‹ãƒ¡éè‡ªå‹•é¸æŠ") _
     Then
         PlayWave "Charge.wav"
         Exit Sub
@@ -4161,41 +4161,41 @@ Dim wname As String, wclass As String, cname As String
         wclass = .Class
     End With
     
-    '•`‰æF‚ğŒˆ’è
+    'æç”»è‰²ã‚’æ±ºå®š
     cname = SpellColor(wname, wclass)
     If cname = "" Then
         IsBeamWeapon wname, wclass, cname
     End If
     
-    'ƒAƒjƒ‚ğ•\¦
-    ShowAnimation "—±qW’†”­“® " & cname
+    'ã‚¢ãƒ‹ãƒ¡ã‚’è¡¨ç¤º
+    ShowAnimation "ç²’å­é›†ä¸­ç™ºå‹• " & cname
 End Sub
 
 
-'ó‘Ô•Ï‰»‚Ì“ÁêŒø‰Ê
+'çŠ¶æ…‹å¤‰åŒ–æ™‚ã®ç‰¹æ®ŠåŠ¹æœ
 Public Sub CriticalEffect(ctype As String, ByVal w As Integer, ByVal ignore_death As Boolean)
 Dim aname As String, sname As String
 Dim i As Integer
     
     If Len(ctype) = 0 Then
-        ShowAnimation "ƒfƒtƒHƒ‹ƒgƒNƒŠƒeƒBƒJƒ‹"
+        ShowAnimation "ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«"
     Else
         For i = 1 To LLength(ctype)
-            aname = LIndex(ctype, i) & "ƒNƒŠƒeƒBƒJƒ‹"
+            aname = LIndex(ctype, i) & "ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«"
             
-            If aname = "‘¦€ƒNƒŠƒeƒBƒJƒ‹" And ignore_death Then
+            If aname = "å³æ­»ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«" And ignore_death Then
                 GoTo NextLoop
             End If
             
-            If FindNormalLabel("í“¬ƒAƒjƒ_" & aname) = 0 Then
+            If FindNormalLabel("æˆ¦é—˜ã‚¢ãƒ‹ãƒ¡_" & aname) = 0 Then
                 GoTo NextLoop
             End If
             
             sname = ""
             
-            If aname = "ƒVƒ‡ƒbƒNƒNƒŠƒeƒBƒJƒ‹" Then
-                If SelectedUnit.IsWeaponClassifiedAs(w, "—â") Then
-                    '—â‹C‚É‚æ‚éUŒ‚‚Ås“®•s”\‚É‚È‚Á‚½ê‡‚ÍŒø‰Ê‰¹‚ğƒIƒt
+            If aname = "ã‚·ãƒ§ãƒƒã‚¯ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«" Then
+                If SelectedUnit.IsWeaponClassifiedAs(w, "å†·") Then
+                    'å†·æ°—ã«ã‚ˆã‚‹æ”»æ’ƒã§è¡Œå‹•ä¸èƒ½ã«ãªã£ãŸå ´åˆã¯åŠ¹æœéŸ³ã‚’ã‚ªãƒ•
                     sname = "-.wav"
                 End If
             End If
@@ -4211,17 +4211,17 @@ NextLoop:
 End Sub
 
 
-'Œø‰Ê‰¹‚ÌÄ¶‰ñ”‚ğŒˆ’è
+'åŠ¹æœéŸ³ã®å†ç”Ÿå›æ•°ã‚’æ±ºå®š
 Private Function CountAttack(u As Unit, ByVal w As Integer, _
     Optional ByVal hit_count As Integer) As Integer
-    'ƒƒbƒZ[ƒWƒXƒs[ƒh‚ªu’´‚‘¬v‚È‚çŒJ‚è•Ô‚µ”‚ğ‚P‚Éİ’è
+    'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚¹ãƒ”ãƒ¼ãƒ‰ãŒã€Œè¶…é«˜é€Ÿã€ãªã‚‰ç¹°ã‚Šè¿”ã—æ•°ã‚’ï¼‘ã«è¨­å®š
     If MessageWait <= 200 Then
         CountAttack = 1
         Exit Function
     End If
     
-    '˜A‘±UŒ‚‚Ìê‡A–½’†”‚ªw’è‚³‚ê‚½‚È‚ç‚»‚¿‚ç‚É‚ ‚í‚¹‚é
-    If hit_count > 0 And InStr(u.Weapon(w).Class, "˜A") > 0 Then
+    'é€£ç¶šæ”»æ’ƒã®å ´åˆã€å‘½ä¸­æ•°ãŒæŒ‡å®šã•ã‚ŒãŸãªã‚‰ãã¡ã‚‰ã«ã‚ã‚ã›ã‚‹
+    If hit_count > 0 And InStr(u.Weapon(w).Class, "é€£") > 0 Then
         CountAttack = hit_count
         Exit Function
     End If
@@ -4235,84 +4235,84 @@ Dim wname As String, wclass As String
     wname = u.WeaponNickname(w)
     wclass = u.Weapon(w).Class
     
-    '˜A‘±UŒ‚‚Ìê‡‚ÍUŒ‚‰ñ”‚É‚ ‚í‚¹‚é
-    If InStrNotNest(wclass, "˜A") > 0 Then
-        CountAttack0 = u.WeaponLevel(w, "˜A")
+    'é€£ç¶šæ”»æ’ƒã®å ´åˆã¯æ”»æ’ƒå›æ•°ã«ã‚ã‚ã›ã‚‹
+    If InStrNotNest(wclass, "é€£") > 0 Then
+        CountAttack0 = u.WeaponLevel(w, "é€£")
         Exit Function
     End If
     
-    If InStr(wname, "˜A") > 0 Then
-        If InStr(wname, "‚Q‚S˜A") > 0 Then
+    If InStr(wname, "é€£") > 0 Then
+        If InStr(wname, "ï¼’ï¼”é€£") > 0 Then
             CountAttack0 = 8
             Exit Function
         End If
-        If InStr(wname, "‚Q‚Q˜A") > 0 Then
+        If InStr(wname, "ï¼’ï¼’é€£") > 0 Then
             CountAttack0 = 8
             Exit Function
         End If
-        If InStr(wname, "‚Q‚O˜A") > 0 Or InStr(wname, "“ñ\˜A") > 0 Then
+        If InStr(wname, "ï¼’ï¼é€£") > 0 Or InStr(wname, "äºŒåé€£") > 0 Then
             CountAttack0 = 8
             Exit Function
         End If
-        If InStr(wname, "‚P‚W˜A") > 0 Or InStr(wname, "\”ª˜A") > 0 Then
+        If InStr(wname, "ï¼‘ï¼˜é€£") > 0 Or InStr(wname, "åå…«é€£") > 0 Then
             CountAttack0 = 7
             Exit Function
         End If
-        If InStr(wname, "‚P‚U˜A") > 0 Or InStr(wname, "\˜Z˜A") > 0 Then
+        If InStr(wname, "ï¼‘ï¼–é€£") > 0 Or InStr(wname, "åå…­é€£") > 0 Then
             CountAttack0 = 7
             Exit Function
         End If
-        If InStr(wname, "‚P‚S˜A") > 0 Or InStr(wname, "\l˜A") > 0 Then
+        If InStr(wname, "ï¼‘ï¼”é€£") > 0 Or InStr(wname, "åå››é€£") > 0 Then
             CountAttack0 = 7
             Exit Function
         End If
-        If InStr(wname, "‚P‚Q˜A") > 0 Or InStr(wname, "\“ñ˜A") > 0 Then
+        If InStr(wname, "ï¼‘ï¼’é€£") > 0 Or InStr(wname, "åäºŒé€£") > 0 Then
             CountAttack0 = 6
             Exit Function
         End If
-        If InStr(wname, "‚P˜A") > 0 Or InStr(wname, "ˆê˜A") > 0 Then
+        If InStr(wname, "ï¼‘é€£") > 0 Or InStr(wname, "ä¸€é€£") > 0 Then
             CountAttack0 = 6
             Exit Function
         End If
-        If InStr(wname, "‚P‚O˜A") > 0 Or InStr(wname, "\˜A") > 0 Then
+        If InStr(wname, "ï¼‘ï¼é€£") > 0 Or InStr(wname, "åé€£") > 0 Then
             CountAttack0 = 6
             Exit Function
         End If
-        If InStr(wname, "‚X˜A") > 0 Or InStr(wname, "‹ã˜A") > 0 Then
+        If InStr(wname, "ï¼™é€£") > 0 Or InStr(wname, "ä¹é€£") > 0 Then
             CountAttack0 = 5
             Exit Function
         End If
-        If InStr(wname, "‚W˜A") > 0 Or InStr(wname, "”ª˜A") > 0 Then
+        If InStr(wname, "ï¼˜é€£") > 0 Or InStr(wname, "å…«é€£") > 0 Then
             CountAttack0 = 5
             Exit Function
         End If
-        If InStr(wname, "‚V˜A") > 0 Or InStr(wname, "µ˜A") > 0 Then
+        If InStr(wname, "ï¼—é€£") > 0 Or InStr(wname, "ä¸ƒé€£") > 0 Then
             CountAttack0 = 5
             Exit Function
         End If
-        If InStr(wname, "‚U˜A") > 0 Or InStr(wname, "˜Z˜A") > 0 Then
+        If InStr(wname, "ï¼–é€£") > 0 Or InStr(wname, "å…­é€£") > 0 Then
             CountAttack0 = 4
             Exit Function
         End If
-        If InStr(wname, "‚T˜A") > 0 Or InStr(wname, "ŒÜ˜A") > 0 Then
+        If InStr(wname, "ï¼•é€£") > 0 Or InStr(wname, "äº”é€£") > 0 Then
             CountAttack0 = 4
         End If
-        If InStr(wname, "‚S˜A") > 0 Or InStr(wname, "l˜A") > 0 Then
+        If InStr(wname, "ï¼”é€£") > 0 Or InStr(wname, "å››é€£") > 0 Then
             CountAttack0 = 4
             Exit Function
         End If
-        If InStr(wname, "‚R˜A") > 0 Or InStr(wname, "O˜A") > 0 Then
+        If InStr(wname, "ï¼“é€£") > 0 Or InStr(wname, "ä¸‰é€£") > 0 Then
             CountAttack0 = 3
             Exit Function
         End If
-        If InStr(wname, "‚Q˜A") > 0 Or InStr(wname, "“ñ˜A") > 0 Then
+        If InStr(wname, "ï¼’é€£") > 0 Or InStr(wname, "äºŒé€£") > 0 Then
             CountAttack0 = 2
             Exit Function
         End If
         
-        If InStr(wname, "˜A‘Å") > 0 _
-            Or InStr(wname, "˜AË") > 0 _
-            Or InStr(wname, "‘½˜A") > 0 _
+        If InStr(wname, "é€£æ‰“") > 0 _
+            Or InStr(wname, "é€£å°„") > 0 _
+            Or InStr(wname, "å¤šé€£") > 0 _
         Then
             CountAttack0 = 3
             Exit Function
@@ -4322,56 +4322,56 @@ Dim wname As String, wclass As String
         Exit Function
     End If
     
-    If InStr(wname, "‘S’e") > 0 Or InStr(wname, "Ä") > 0 _
-        Or InStr(wname, "—Ë") > 0 _
-        Or InStr(wname, "ƒtƒ‹ƒtƒ@ƒCƒA") > 0 _
-        Or InStr(wname, "ƒXƒvƒŠƒbƒg") > 0 _
-        Or InStr(wname, "ƒ}ƒ‹ƒ`") > 0 _
-        Or InStr(wname, "ƒpƒ‰ƒŒƒ‹") > 0 _
-        Or InStr(wname, "•ªg") > 0 _
-        Or InStr(wname, "—‘Å") > 0 Or InStr(wname, "—•‘") > 0 _
-        Or InStr(wname, "—‚ê") > 0 Or InStr(wname, "•S—ó") > 0 _
-        Or InStr(wname, "ç–{") > 0 Or InStr(wname, "çè") > 0 _
-        Or InStr(wname, "ƒtƒ@ƒ“ƒlƒ‹") > 0 _
-        Or InStr(wname, "ƒrƒbƒg") > 0 _
+    If InStr(wname, "å…¨å¼¾") > 0 Or InStr(wname, "æ–‰") > 0 _
+        Or InStr(wname, "ä¹±å°„") > 0 _
+        Or InStr(wname, "ãƒ•ãƒ«ãƒ•ã‚¡ã‚¤ã‚¢") > 0 _
+        Or InStr(wname, "ã‚¹ãƒ—ãƒªãƒƒãƒˆ") > 0 _
+        Or InStr(wname, "ãƒãƒ«ãƒ") > 0 _
+        Or InStr(wname, "ãƒ‘ãƒ©ãƒ¬ãƒ«") > 0 _
+        Or InStr(wname, "åˆ†èº«") > 0 _
+        Or InStr(wname, "ä¹±æ‰“") > 0 Or InStr(wname, "ä¹±èˆ") > 0 _
+        Or InStr(wname, "ä¹±ã‚Œ") > 0 Or InStr(wname, "ç™¾çƒˆ") > 0 _
+        Or InStr(wname, "åƒæœ¬") > 0 Or InStr(wname, "åƒæ‰‹") > 0 _
+        Or InStr(wname, "ãƒ•ã‚¡ãƒ³ãƒãƒ«") > 0 _
+        Or InStr(wname, "ãƒ“ãƒƒãƒˆ") > 0 _
     Then
         CountAttack0 = 4
         Exit Function
     End If
     
-    If InStr(wname, "ƒ}ƒVƒ“ƒKƒ“") > 0 Or InStr(wname, "‹@e") > 0 _
-        Or InStr(wname, "‹@ŠÖe") > 0 _
-        Or InStr(wname, "ƒoƒ‹ƒJƒ“") > 0 _
-        Or InStr(wname, "ƒKƒgƒŠƒ“ƒO") > 0 _
-        Or (InStr(wname, "ƒpƒ‹ƒX") > 0 And InStr(wname, "ƒCƒ“ƒpƒ‹ƒX") = 0) _
-        Or InStr(wname, "‘¬Ë") > 0 _
-        Or InStr(wname, "ƒƒPƒbƒgƒ‰ƒ“ƒ`ƒƒ[") > 0 _
-        Or InStr(wname, "ƒ~ƒTƒCƒ‹ƒ‰ƒ“ƒ`ƒƒ[") > 0 _
-        Or InStr(wname, "ƒ~ƒTƒCƒ‹ƒ|ƒbƒh") > 0 _
+    If InStr(wname, "ãƒã‚·ãƒ³ã‚¬ãƒ³") > 0 Or InStr(wname, "æ©ŸéŠƒ") > 0 _
+        Or InStr(wname, "æ©Ÿé–¢éŠƒ") > 0 _
+        Or InStr(wname, "ãƒãƒ«ã‚«ãƒ³") > 0 _
+        Or InStr(wname, "ã‚¬ãƒˆãƒªãƒ³ã‚°") > 0 _
+        Or (InStr(wname, "ãƒ‘ãƒ«ã‚¹") > 0 And InStr(wname, "ã‚¤ãƒ³ãƒ‘ãƒ«ã‚¹") = 0) _
+        Or InStr(wname, "é€Ÿå°„") > 0 _
+        Or InStr(wname, "ãƒ­ã‚±ãƒƒãƒˆãƒ©ãƒ³ãƒãƒ£ãƒ¼") > 0 _
+        Or InStr(wname, "ãƒŸã‚µã‚¤ãƒ«ãƒ©ãƒ³ãƒãƒ£ãƒ¼") > 0 _
+        Or InStr(wname, "ãƒŸã‚µã‚¤ãƒ«ãƒãƒƒãƒ‰") > 0 _
     Then
         CountAttack0 = 4
         Exit Function
     End If
     
-    If InStr(wname, "ƒgƒŠƒvƒ‹") > 0 _
-        Or InStr(wname, "ƒCƒ“ƒRƒ€") > 0 _
-        Or InStr(wname, "ƒtƒ@ƒ~ƒŠƒA") > 0 _
-        Or InStr(wname, "”šŒ‚") > 0 _
-        Or InStr(wname, "”š’e") > 0 _
-        Or InStr(wname, "”š—‹") > 0 _
-        Or InStr(wname, "ŠÍÚ‹@") > 0 _
+    If InStr(wname, "ãƒˆãƒªãƒ—ãƒ«") > 0 _
+        Or InStr(wname, "ã‚¤ãƒ³ã‚³ãƒ ") > 0 _
+        Or InStr(wname, "ãƒ•ã‚¡ãƒŸãƒªã‚¢") > 0 _
+        Or InStr(wname, "çˆ†æ’ƒ") > 0 _
+        Or InStr(wname, "çˆ†å¼¾") > 0 _
+        Or InStr(wname, "çˆ†é›·") > 0 _
+        Or InStr(wname, "è‰¦è¼‰æ©Ÿ") > 0 _
     Then
         CountAttack0 = 3
         Exit Function
     End If
     
-    If InStr(wname, "ƒcƒCƒ“") > 0 _
-        Or InStr(wname, "ƒ_ƒuƒ‹") > 0 _
-        Or InStr(wname, "ƒfƒ…ƒAƒ‹") > 0 _
-        Or InStr(wname, "ƒ}ƒCƒNƒ") > 0 _
-        Or InStr(wname, "‘o") > 0 _
-        Or InStr(wname, "“ñ’š") > 0 _
-        Or InStr(wname, "“ñ“") > 0 _
+    If InStr(wname, "ãƒ„ã‚¤ãƒ³") > 0 _
+        Or InStr(wname, "ãƒ€ãƒ–ãƒ«") > 0 _
+        Or InStr(wname, "ãƒ‡ãƒ¥ã‚¢ãƒ«") > 0 _
+        Or InStr(wname, "ãƒã‚¤ã‚¯ãƒ­") > 0 _
+        Or InStr(wname, "åŒ") > 0 _
+        Or InStr(wname, "äºŒä¸") > 0 _
+        Or InStr(wname, "äºŒåˆ€") > 0 _
     Then
         CountAttack0 = 2
         Exit Function
@@ -4380,197 +4380,197 @@ Dim wname As String, wclass As String
     CountAttack0 = 1
 End Function
 
-'ŒõüŒn‚ÌUŒ‚‚©‚Ç‚¤‚©‚ğ”»’è‚µA•\¦F‚ğŒˆ’è
+'å…‰ç·šç³»ã®æ”»æ’ƒã‹ã©ã†ã‹ã‚’åˆ¤å®šã—ã€è¡¨ç¤ºè‰²ã‚’æ±ºå®š
 Private Function IsBeamWeapon(wname As String, ByVal wclass As String, cname As String) As Boolean
-    If InStrNotNest(wclass, "À") > 0 Then
-        'ŒõüŒnUŒ‚‚Å‚Í‚ ‚è“¾‚È‚¢
+    If InStrNotNest(wclass, "å®Ÿ") > 0 Then
+        'å…‰ç·šç³»æ”»æ’ƒã§ã¯ã‚ã‚Šå¾—ãªã„
         Exit Function
     End If
     
-    If InStr(wname, "ƒr[ƒ€") > 0 _
-        Or InStrNotNest(wclass, "‚a") > 0 _
+    If InStr(wname, "ãƒ“ãƒ¼ãƒ ") > 0 _
+        Or InStrNotNest(wclass, "ï¼¢") > 0 _
     Then
         IsBeamWeapon = True
     Else
-        If Right$(wname, 2) = "ƒKƒX" Then
+        If Right$(wname, 2) = "ã‚¬ã‚¹" Then
             Exit Function
         End If
     End If
     
-    If InStr(wname, "”½•¨¿") > 0 _
-        Or InStr(wname, "”Mü") > 0 _
-        Or InStr(wname, "ƒuƒ‰ƒXƒ^[") > 0 _
+    If InStr(wname, "åç‰©è³ª") > 0 _
+        Or InStr(wname, "ç†±ç·š") > 0 _
+        Or InStr(wname, "ãƒ–ãƒ©ã‚¹ã‚¿ãƒ¼") > 0 _
     Then
         IsBeamWeapon = True
-        cname = "ƒŒƒbƒh"
-    ElseIf InStr(wname, "ƒtƒFƒCƒU[") > 0 _
-        Or InStr(wname, "—±q") > 0 _
+        cname = "ãƒ¬ãƒƒãƒ‰"
+    ElseIf InStr(wname, "ãƒ•ã‚§ã‚¤ã‚¶ãƒ¼") > 0 _
+        Or InStr(wname, "ç²’å­") > 0 _
     Then
         IsBeamWeapon = True
-        If InStr(wname, "ƒƒK—±q") > 0 Then
-            cname = "ƒCƒGƒ["
+        If InStr(wname, "ãƒ¡ã‚¬ç²’å­") > 0 Then
+            cname = "ã‚¤ã‚¨ãƒ­ãƒ¼"
         Else
-            cname = "ƒsƒ“ƒN"
+            cname = "ãƒ”ãƒ³ã‚¯"
         End If
-    ElseIf InStr(wname, "—â“€") > 0 _
-        Or InStr(wname, "—âü") > 0 _
-        Or InStr(wname, "ƒtƒŠ[ƒU[") > 0 _
+    ElseIf InStr(wname, "å†·å‡") > 0 _
+        Or InStr(wname, "å†·ç·š") > 0 _
+        Or InStr(wname, "ãƒ•ãƒªãƒ¼ã‚¶ãƒ¼") > 0 _
     Then
         IsBeamWeapon = True
-        cname = "ƒuƒ‹["
-    ElseIf InStr(wname, "’†ŠÔq") > 0 _
-        Or InStr(wname, "’†«q") > 0 _
-        Or InStr(wname, "ƒjƒ…[ƒgƒƒ“") > 0 _
-        Or InStr(wname, "ƒjƒ…[ƒgƒŠƒm") > 0 _
+        cname = "ãƒ–ãƒ«ãƒ¼"
+    ElseIf InStr(wname, "ä¸­é–“å­") > 0 _
+        Or InStr(wname, "ä¸­æ€§å­") > 0 _
+        Or InStr(wname, "ãƒ‹ãƒ¥ãƒ¼ãƒˆãƒ­ãƒ³") > 0 _
+        Or InStr(wname, "ãƒ‹ãƒ¥ãƒ¼ãƒˆãƒªãƒ") > 0 _
     Then
         IsBeamWeapon = True
-        cname = "ƒOƒŠ[ƒ“"
-    ElseIf InStr(wname, "ƒvƒ‰ƒYƒ}") > 0 Then
+        cname = "ã‚°ãƒªãƒ¼ãƒ³"
+    ElseIf InStr(wname, "ãƒ—ãƒ©ã‚ºãƒ") > 0 Then
         IsBeamWeapon = True
-        cname = "ƒIƒŒƒ“ƒW"
-    ElseIf InStr(wname, "ƒŒ[ƒU[") > 0 _
-        Or InStr(wname, "Œõq") > 0 _
+        cname = "ã‚ªãƒ¬ãƒ³ã‚¸"
+    ElseIf InStr(wname, "ãƒ¬ãƒ¼ã‚¶ãƒ¼") > 0 _
+        Or InStr(wname, "å…‰å­") > 0 _
     Then
         IsBeamWeapon = True
-        cname = "ƒCƒGƒ["
-    ElseIf InStr(wname, "—zq") > 0 Then
+        cname = "ã‚¤ã‚¨ãƒ­ãƒ¼"
+    ElseIf InStr(wname, "é™½å­") > 0 Then
         IsBeamWeapon = True
-        cname = "ƒzƒƒCƒg"
+        cname = "ãƒ›ãƒ¯ã‚¤ãƒˆ"
     End If
     
     If cname = "" Then
-        If InStr(wname, "—±q") > 0 Then
-            If InStr(wname, "ƒƒK—±q") > 0 Then
-                cname = "ƒCƒGƒ["
+        If InStr(wname, "ç²’å­") > 0 Then
+            If InStr(wname, "ãƒ¡ã‚¬ç²’å­") > 0 Then
+                cname = "ã‚¤ã‚¨ãƒ­ãƒ¼"
             Else
-                cname = "ƒsƒ“ƒN"
+                cname = "ãƒ”ãƒ³ã‚¯"
             End If
-        ElseIf InStr(wname, "ƒCƒIƒ“") > 0 _
-            Or InStr(wname, "—â“€") > 0 _
-            Or InStr(wname, "“dq") > 0 _
+        ElseIf InStr(wname, "ã‚¤ã‚ªãƒ³") > 0 _
+            Or InStr(wname, "å†·å‡") > 0 _
+            Or InStr(wname, "é›»å­") > 0 _
         Then
-            cname = "ƒuƒ‹["
+            cname = "ãƒ–ãƒ«ãƒ¼"
         End If
     End If
     
     If Not IsBeamWeapon And cname <> "" Then
-        If Right$(wname, 2) = "Œõü" _
-            Or Right$(wname, 1) = "–C" _
-            Or Right$(wname, 1) = "e" _
+        If Right$(wname, 2) = "å…‰ç·š" _
+            Or Right$(wname, 1) = "ç ²" _
+            Or Right$(wname, 1) = "éŠƒ" _
         Then
             IsBeamWeapon = True
         End If
     End If
 End Function
 
-'–‚–@‚Ì•\¦F
+'é­”æ³•ã®è¡¨ç¤ºè‰²
 Private Function SpellColor(wname As String, ByVal wclass As String) As String
 Dim sclass As String
 Dim i As Integer
     
     sclass = wname & wclass
     
-    '•Ší–¼•‘®«‚ÉŠÜ‚Ü‚ê‚éŠ¿š‚©‚ç”»’è
+    'æ­¦å™¨åï¼†å±æ€§ã«å«ã¾ã‚Œã‚‹æ¼¢å­—ã‹ã‚‰åˆ¤å®š
     For i = 1 To Len(sclass)
         Select Case Mid$(sclass, i, 1)
-            Case "‰Š", "‰‹", "‰Î", "ŒŒ", "Ü", "”M", "—n"
-                SpellColor = "Ô"
+            Case "ç‚", "ç„”", "ç«", "è¡€", "ç¼", "ç†±", "æº¶"
+                SpellColor = "èµ¤"
                 Exit Function
-            Case "…", "ŠC", "—¬", "”g", "‰Í"
-                SpellColor = "Â"
+            Case "æ°´", "æµ·", "æµ", "æ³¢", "æ²³"
+                SpellColor = "é’"
                 Exit Function
-            Case "•—", "—’", "ù", "÷", "–Ø", "‘", "—t", "‰è", "“Å"
-                SpellColor = "—Î"
+            Case "é¢¨", "åµ", "æ—‹", "æ¨¹", "æœ¨", "è‰", "è‘‰", "èŠ½", "æ¯’"
+                SpellColor = "ç·‘"
                 Exit Function
-            Case "×", "ˆÅ", "ˆÃ", "€", "–»", "–", "ˆ«", "–é", "d", "‰e", "‰A", "ô", "E"
-                SpellColor = "•"
+            Case "é‚ª", "é—‡", "æš—", "æ­»", "å†¥", "ç„", "æ‚ª", "å¤œ", "é‡", "å½±", "é™°", "å‘ª", "æ®º"
+                SpellColor = "é»’"
                 Exit Function
-            Case "“y", "’n", "‹à", "»", "Šâ", "Î", "R", "Šx"
-                SpellColor = "‰©"
+            Case "åœŸ", "åœ°", "é‡‘", "ç ‚", "å²©", "çŸ³", "å±±", "å²³"
+                SpellColor = "é»„"
                 Exit Function
-            Case "¶", "–½", "–£", "—U", "—", "‰", "Š"
-                SpellColor = "“"
+            Case "ç”Ÿ", "å‘½", "é­…", "èª˜", "ä¹±", "â™‚", "â™€"
+                SpellColor = "æ¡ƒ"
                 Exit Function
-            Case "¹", "Œõ", "¯", "Œ", "•X", "á", "—â", "“€", "“~"
-                SpellColor = "”’"
+            Case "è–", "å…‰", "æ˜Ÿ", "æœˆ", "æ°·", "é›ª", "å†·", "å‡", "å†¬"
+                SpellColor = "ç™½"
                 Exit Function
-            Case "“ú", "—z"
-                SpellColor = "ò"
+            Case "æ—¥", "é™½"
+                SpellColor = "æ©™"
                 Exit Function
         End Select
     Next
     
-    '•Ší–¼‚©‚ç”»’è
-    If InStr(wname, "ƒtƒ@ƒCƒ„[") > 0 _
-        Or InStr(wname, "ƒtƒŒƒA") > 0 _
-        Or InStr(wname, "ƒq[ƒg") > 0 _
-        Or InStr(wname, "ƒuƒ‰ƒbƒh") > 0 _
+    'æ­¦å™¨åã‹ã‚‰åˆ¤å®š
+    If InStr(wname, "ãƒ•ã‚¡ã‚¤ãƒ¤ãƒ¼") > 0 _
+        Or InStr(wname, "ãƒ•ãƒ¬ã‚¢") > 0 _
+        Or InStr(wname, "ãƒ’ãƒ¼ãƒˆ") > 0 _
+        Or InStr(wname, "ãƒ–ãƒ©ãƒƒãƒ‰") > 0 _
     Then
-        SpellColor = "Ô"
+        SpellColor = "èµ¤"
         Exit Function
     End If
     
-    If InStr(wname, "ƒEƒH[ƒ^[") > 0 _
-        Or InStr(wname, "ƒAƒNƒA") > 0 _
+    If InStr(wname, "ã‚¦ã‚©ãƒ¼ã‚¿ãƒ¼") > 0 _
+        Or InStr(wname, "ã‚¢ã‚¯ã‚¢") > 0 _
     Then
-        SpellColor = "Â"
+        SpellColor = "é’"
         Exit Function
     End If
     
-    If InStr(wname, "ƒEƒbƒh") > 0 _
-        Or InStr(wname, "ƒtƒHƒŒƒXƒg") > 0 _
-        Or InStr(wname, "ƒ|ƒCƒYƒ“") > 0 _
+    If InStr(wname, "ã‚¦ãƒƒãƒ‰") > 0 _
+        Or InStr(wname, "ãƒ•ã‚©ãƒ¬ã‚¹ãƒˆ") > 0 _
+        Or InStr(wname, "ãƒã‚¤ã‚ºãƒ³") > 0 _
     Then
-        SpellColor = "—Î"
+        SpellColor = "ç·‘"
         Exit Function
     End If
     
-    If InStr(wname, "ƒCƒrƒ‹") > 0 _
-        Or InStr(wname, "ƒGƒrƒ‹") > 0 _
-        Or InStr(wname, "ƒ_[ƒN") > 0 _
-        Or InStr(wname, "ƒfƒX") > 0 _
-        Or InStr(wname, "ƒiƒCƒg") > 0 _
-        Or InStr(wname, "ƒVƒƒƒhƒE") > 0 _
-        Or InStr(wname, "ƒJ[ƒX") > 0 _
-        Or InStr(wname, "ƒJ[ƒY") > 0 _
+    If InStr(wname, "ã‚¤ãƒ“ãƒ«") > 0 _
+        Or InStr(wname, "ã‚¨ãƒ“ãƒ«") > 0 _
+        Or InStr(wname, "ãƒ€ãƒ¼ã‚¯") > 0 _
+        Or InStr(wname, "ãƒ‡ã‚¹") > 0 _
+        Or InStr(wname, "ãƒŠã‚¤ãƒˆ") > 0 _
+        Or InStr(wname, "ã‚·ãƒ£ãƒ‰ã‚¦") > 0 _
+        Or InStr(wname, "ã‚«ãƒ¼ã‚¹") > 0 _
+        Or InStr(wname, "ã‚«ãƒ¼ã‚º") > 0 _
     Then
-        SpellColor = "•"
+        SpellColor = "é»’"
         Exit Function
     End If
     
-    If InStr(wname, "ƒA[ƒX") > 0 _
-        Or InStr(wname, "ƒTƒ“ƒh") > 0 _
-        Or InStr(wname, "ƒƒbƒN") > 0 _
-        Or InStr(wname, "ƒXƒg[ƒ“") > 0 _
+    If InStr(wname, "ã‚¢ãƒ¼ã‚¹") > 0 _
+        Or InStr(wname, "ã‚µãƒ³ãƒ‰") > 0 _
+        Or InStr(wname, "ãƒ­ãƒƒã‚¯") > 0 _
+        Or InStr(wname, "ã‚¹ãƒˆãƒ¼ãƒ³") > 0 _
     Then
-        SpellColor = "‰©"
+        SpellColor = "é»„"
         Exit Function
     End If
     
-    If InStr(wname, "ƒ‰ƒCƒt") > 0 Then
-        SpellColor = "“"
+    If InStr(wname, "ãƒ©ã‚¤ãƒ•") > 0 Then
+        SpellColor = "æ¡ƒ"
         Exit Function
     End If
     
-    If InStr(wname, "ƒz[ƒŠ[") > 0 _
-        Or InStr(wname, "ƒXƒ^[") > 0 _
-        Or InStr(wname, "ƒ€[ƒ“") > 0 _
-        Or InStr(wname, "ƒR[ƒ‹ƒh") > 0 _
-        Or InStr(wname, "ƒAƒCƒX") > 0 _
-        Or InStr(wname, "ƒtƒŠ[ƒY") > 0 _
+    If InStr(wname, "ãƒ›ãƒ¼ãƒªãƒ¼") > 0 _
+        Or InStr(wname, "ã‚¹ã‚¿ãƒ¼") > 0 _
+        Or InStr(wname, "ãƒ ãƒ¼ãƒ³") > 0 _
+        Or InStr(wname, "ã‚³ãƒ¼ãƒ«ãƒ‰") > 0 _
+        Or InStr(wname, "ã‚¢ã‚¤ã‚¹") > 0 _
+        Or InStr(wname, "ãƒ•ãƒªãƒ¼ã‚º") > 0 _
     Then
-        SpellColor = "”’"
+        SpellColor = "ç™½"
         Exit Function
     End If
     
-    If InStr(wname, "ƒTƒ“") Then
-        SpellColor = "ò"
+    If InStr(wname, "ã‚µãƒ³") Then
+        SpellColor = "æ©™"
         Exit Function
     End If
 End Function
 
 
-'”j‰óƒAƒjƒ[ƒVƒ‡ƒ“‚ğ•\¦‚·‚é
+'ç ´å£Šã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’è¡¨ç¤ºã™ã‚‹
 Public Sub DieAnimation(u As Unit)
 Dim i As Integer
 Dim PT As POINTAPI
@@ -4579,7 +4579,7 @@ Dim fname As String, draw_mode As String
     With u
         EraseUnitBitmap .X, .Y
         
-        'lŠÔƒ†ƒjƒbƒg‚Å‚È‚¢ê‡‚Í”š”­‚ğ•\¦
+        'äººé–“ãƒ¦ãƒ‹ãƒƒãƒˆã§ãªã„å ´åˆã¯çˆ†ç™ºã‚’è¡¨ç¤º
         If Not .IsHero Then
             ExplodeAnimation .Size, .X, .Y
             Exit Sub
@@ -4587,7 +4587,7 @@ Dim fname As String, draw_mode As String
         
         GetCursorPos PT
         
-        'ƒƒbƒZ[ƒWƒEƒCƒ“ƒhƒEã‚Åƒ}ƒEƒXƒ{ƒ^ƒ“‚ğ‰Ÿ‚µ‚½ê‡
+        'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ä¸Šã§ãƒã‚¦ã‚¹ãƒœã‚¿ãƒ³ã‚’æŠ¼ã—ãŸå ´åˆ
         If Screen.ActiveForm Is frmMessage Then
             With frmMessage
                 If .Left \ Screen.TwipsPerPixelX <= PT.X _
@@ -4596,14 +4596,14 @@ Dim fname As String, draw_mode As String
                     And PT.Y <= (.Top + .Height) \ Screen.TwipsPerPixelY _
                 Then
                     If (GetAsyncKeyState(RButtonID) And &H8000) <> 0 Then
-                        '‰Eƒ{ƒ^ƒ“‚Å”š”­ƒXƒLƒbƒv
+                        'å³ãƒœã‚¿ãƒ³ã§çˆ†ç™ºã‚¹ã‚­ãƒƒãƒ—
                         Exit Sub
                     End If
                 End If
             End With
         End If
         
-        'ƒƒCƒ“ƒEƒCƒ“ƒhƒEã‚Åƒ}ƒEƒXƒ{ƒ^ƒ“‚ğ‰Ÿ‚µ‚½ê‡
+        'ãƒ¡ã‚¤ãƒ³ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ä¸Šã§ãƒã‚¦ã‚¹ãƒœã‚¿ãƒ³ã‚’æŠ¼ã—ãŸå ´åˆ
         If Screen.ActiveForm Is MainForm Then
             With MainForm
                 If .Left \ Screen.TwipsPerPixelX <= PT.X _
@@ -4612,42 +4612,42 @@ Dim fname As String, draw_mode As String
                     And PT.Y <= (.Top + .Height) \ Screen.TwipsPerPixelY _
                 Then
                     If (GetAsyncKeyState(RButtonID) And &H8000) <> 0 Then
-                        '‰Eƒ{ƒ^ƒ“‚Å”š”­ƒXƒLƒbƒv
+                        'å³ãƒœã‚¿ãƒ³ã§çˆ†ç™ºã‚¹ã‚­ãƒƒãƒ—
                         Exit Sub
                     End If
                 End If
             End With
         End If
         
-        '“|‚ê‚é‰¹
+        'å€’ã‚Œã‚‹éŸ³
         Select Case .Area
-            Case "’nã"
+            Case "åœ°ä¸Š"
                 PlayWave "FallDown.wav"
-            Case "‹ó’†"
+            Case "ç©ºä¸­"
                 If MessageWait > 0 Then
                     PlayWave "Bomb.wav"
                     Sleep 500
                 End If
-                If TerrainClass(.X, .Y) = "…" Or TerrainClass(.X, .Y) = "[ŠC" Then
+                If TerrainClass(.X, .Y) = "æ°´" Or TerrainClass(.X, .Y) = "æ·±æµ·" Then
                     PlayWave "Splash.wav"
                 Else
                     PlayWave "FallDown.wav"
                 End If
         End Select
         
-        'ƒ†ƒjƒbƒgÁ–Å‚ÌƒAƒjƒ[ƒVƒ‡ƒ“
+        'ãƒ¦ãƒ‹ãƒƒãƒˆæ¶ˆæ»…ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³
         
-        'ƒƒbƒZ[ƒW‚ªƒEƒGƒCƒg–³‚µ‚È‚çƒAƒjƒ[ƒVƒ‡ƒ“‚àƒXƒLƒbƒv
+        'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãŒã‚¦ã‚¨ã‚¤ãƒˆç„¡ã—ãªã‚‰ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚‚ã‚¹ã‚­ãƒƒãƒ—
         If MessageWait = 0 Then
             Exit Sub
         End If
         
         Select Case .Party0
-            Case "–¡•û", "‚m‚o‚b"
+            Case "å‘³æ–¹", "ï¼®ï¼°ï¼£"
                 fname = "Bitmap\Anime\Common\EFFECT_Tile(Ally)"
-            Case "“G"
+            Case "æ•µ"
                 fname = "Bitmap\Anime\Common\EFFECT_Tile(Enemy)"
-            Case "’†—§"
+            Case "ä¸­ç«‹"
                 fname = "Bitmap\Anime\Common\EFFECT_Tile(Neutral)"
         End Select
         If FileExists(ScenarioPath & fname & ".bmp") Then
@@ -4660,8 +4660,8 @@ Dim fname As String, draw_mode As String
         End If
         
         Select Case MapDrawMode
-            Case "–é"
-                draw_mode = "ˆÃ"
+            Case "å¤œ"
+                draw_mode = "æš—"
             Case Else
                 draw_mode = MapDrawMode
         End Select
@@ -4672,10 +4672,10 @@ Dim fname As String, draw_mode As String
                 32, 32, 0, 0, 0, 0, draw_mode
             DrawPicture "Unit\" & .Bitmap, _
                 MapToPixelX(.X), MapToPixelY(.Y), _
-                32, 32, 0, 0, 0, 0, "“§‰ß " & draw_mode
+                32, 32, 0, 0, 0, 0, "é€é " & draw_mode
             DrawPicture fname & "0" & Format$(i) & ".bmp", _
                 MapToPixelX(.X), MapToPixelY(.Y), _
-                32, 32, 0, 0, 0, 0, "“§‰ß " & draw_mode
+                32, 32, 0, 0, 0, 0, "é€é " & draw_mode
             MainForm.picMain(0).Refresh
             Sleep 50
         Next
@@ -4684,7 +4684,7 @@ Dim fname As String, draw_mode As String
     End With
 End Sub
 
-'”š”­ƒAƒjƒ[ƒVƒ‡ƒ“‚ğ•\¦‚·‚é
+'çˆ†ç™ºã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’è¡¨ç¤ºã™ã‚‹
 Public Sub ExplodeAnimation(tsize As String, ByVal tx As Integer, ByVal ty As Integer)
 Dim i As Integer
 Dim PT As POINTAPI
@@ -4692,9 +4692,9 @@ Static init_explode_animation As Boolean
 Static explode_image_path As String
 Static explode_image_num As Integer
 
-    '‰‚ß‚ÄÀs‚·‚éÛ‚ÉA”š”­—p‰æ‘œ‚ª‚ ‚éƒtƒHƒ‹ƒ_‚ğƒ`ƒFƒbƒN
+    'åˆã‚ã¦å®Ÿè¡Œã™ã‚‹éš›ã«ã€çˆ†ç™ºç”¨ç”»åƒãŒã‚ã‚‹ãƒ•ã‚©ãƒ«ãƒ€ã‚’ãƒã‚§ãƒƒã‚¯
     If Not init_explode_animation Then
-        '”š”­—p‰æ‘œ‚ÌƒpƒX
+        'çˆ†ç™ºç”¨ç”»åƒã®ãƒ‘ã‚¹
         If FileExists(ScenarioPath & "Bitmap\Anime\Explode\EFFECT_Explode01.bmp") Then
             explode_image_path = ScenarioPath & "Bitmap\Anime\Explode\EFFECT_Explode"
         ElseIf FileExists(ScenarioPath & "Bitmap\Event\Explode01.bmp") Then
@@ -4705,7 +4705,7 @@ Static explode_image_num As Integer
             explode_image_path = AppPath & "Bitmap\Event\Explode"
         End If
         
-        '”š”­—p‰æ‘œ‚ÌŒÂ”
+        'çˆ†ç™ºç”¨ç”»åƒã®å€‹æ•°
         i = 2
         Do While FileExists(explode_image_path & Format$(i, "00") & ".bmp")
             i = i + 1
@@ -4715,7 +4715,7 @@ Static explode_image_num As Integer
     
     GetCursorPos PT
     
-    'ƒƒbƒZ[ƒWƒEƒCƒ“ƒhƒEã‚Åƒ}ƒEƒXƒ{ƒ^ƒ“‚ğ‰Ÿ‚µ‚½ê‡
+    'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ä¸Šã§ãƒã‚¦ã‚¹ãƒœã‚¿ãƒ³ã‚’æŠ¼ã—ãŸå ´åˆ
     If Screen.ActiveForm Is frmMessage Then
         With frmMessage
             If .Left \ Screen.TwipsPerPixelX <= PT.X _
@@ -4724,14 +4724,14 @@ Static explode_image_num As Integer
                 And PT.Y <= (.Top + .Height) \ Screen.TwipsPerPixelY _
             Then
                 If (GetAsyncKeyState(RButtonID) And &H8000) <> 0 Then
-                    '‰Eƒ{ƒ^ƒ“‚Å”š”­ƒXƒLƒbƒv
+                    'å³ãƒœã‚¿ãƒ³ã§çˆ†ç™ºã‚¹ã‚­ãƒƒãƒ—
                     Exit Sub
                 End If
             End If
         End With
     End If
     
-    'ƒƒCƒ“ƒEƒCƒ“ƒhƒEã‚Åƒ}ƒEƒXƒ{ƒ^ƒ“‚ğ‰Ÿ‚µ‚½ê‡
+    'ãƒ¡ã‚¤ãƒ³ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ä¸Šã§ãƒã‚¦ã‚¹ãƒœã‚¿ãƒ³ã‚’æŠ¼ã—ãŸå ´åˆ
     If Screen.ActiveForm Is MainForm Then
         With MainForm
             If .Left \ Screen.TwipsPerPixelX <= PT.X _
@@ -4740,14 +4740,14 @@ Static explode_image_num As Integer
                 And PT.Y <= (.Top + .Height) \ Screen.TwipsPerPixelY _
             Then
                 If (GetAsyncKeyState(RButtonID) And &H8000) <> 0 Then
-                    '‰Eƒ{ƒ^ƒ“‚Å”š”­ƒXƒLƒbƒv
+                    'å³ãƒœã‚¿ãƒ³ã§çˆ†ç™ºã‚¹ã‚­ãƒƒãƒ—
                     Exit Sub
                 End If
             End If
         End With
     End If
     
-    '”š”­‰¹
+    'çˆ†ç™ºéŸ³
     Select Case tsize
         Case "XL", "LL"
             PlayWave "Explode(Far).wav"
@@ -4755,21 +4755,21 @@ Static explode_image_num As Integer
             PlayWave "Explode.wav"
     End Select
     
-    'ƒƒbƒZ[ƒW‚ªƒEƒGƒCƒg–³‚µ‚È‚ç”š”­‚àƒXƒLƒbƒv
+    'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãŒã‚¦ã‚¨ã‚¤ãƒˆç„¡ã—ãªã‚‰çˆ†ç™ºã‚‚ã‚¹ã‚­ãƒƒãƒ—
     If MessageWait = 0 Then
         Exit Sub
     End If
     
-    '”š”­‚Ì•\¦
+    'çˆ†ç™ºã®è¡¨ç¤º
     If InStr(explode_image_path, "\Anime\") > 0 Then
-        'í“¬ƒAƒjƒ”Å‚Ì‰æ‘œ‚ğg—p
+        'æˆ¦é—˜ã‚¢ãƒ‹ãƒ¡ç‰ˆã®ç”»åƒã‚’ä½¿ç”¨
         Select Case tsize
             Case "XL"
                 For i = 1 To explode_image_num
                     ClearPicture
                     DrawPicture explode_image_path & Format$(i, "00") & ".bmp", _
                         MapToPixelX(tx) - 64, MapToPixelY(ty) - 64, _
-                        160, 160, 0, 0, 0, 0, "“§‰ß"
+                        160, 160, 0, 0, 0, 0, "é€é"
                     MainForm.picMain(0).Refresh
                     Sleep 130
                 Next
@@ -4778,7 +4778,7 @@ Static explode_image_num As Integer
                     ClearPicture
                     DrawPicture explode_image_path & Format$(i, "00") & ".bmp", _
                         MapToPixelX(tx) - 56, MapToPixelY(ty) - 56, _
-                        144, 144, 0, 0, 0, 0, "“§‰ß"
+                        144, 144, 0, 0, 0, 0, "é€é"
                     MainForm.picMain(0).Refresh
                     Sleep 100
                 Next
@@ -4787,7 +4787,7 @@ Static explode_image_num As Integer
                     ClearPicture
                     DrawPicture explode_image_path & Format$(i, "00") & ".bmp", _
                         MapToPixelX(tx) - 48, MapToPixelY(ty) - 48, _
-                        128, 128, 0, 0, 0, 0, "“§‰ß"
+                        128, 128, 0, 0, 0, 0, "é€é"
                     MainForm.picMain(0).Refresh
                     Sleep 70
                 Next
@@ -4796,7 +4796,7 @@ Static explode_image_num As Integer
                     ClearPicture
                     DrawPicture explode_image_path & Format$(i, "00") & ".bmp", _
                         MapToPixelX(tx) - 40, MapToPixelY(ty) - 40, _
-                        112, 112, 0, 0, 0, 0, "“§‰ß"
+                        112, 112, 0, 0, 0, 0, "é€é"
                     MainForm.picMain(0).Refresh
                     Sleep 50
                 Next
@@ -4805,7 +4805,7 @@ Static explode_image_num As Integer
                     ClearPicture
                     DrawPicture explode_image_path & Format$(i, "00") & ".bmp", _
                         MapToPixelX(tx) - 24, MapToPixelY(ty) - 24, _
-                        80, 80, 0, 0, 0, 0, "“§‰ß"
+                        80, 80, 0, 0, 0, 0, "é€é"
                     MainForm.picMain(0).Refresh
                     Sleep 40
                 Next
@@ -4814,7 +4814,7 @@ Static explode_image_num As Integer
                     ClearPicture
                     DrawPicture explode_image_path & Format$(i, "00") & ".bmp", _
                         MapToPixelX(tx) - 8, MapToPixelY(ty) - 8, _
-                        48, 48, 0, 0, 0, 0, "“§‰ß"
+                        48, 48, 0, 0, 0, 0, "é€é"
                     MainForm.picMain(0).Refresh
                     Sleep 40
                 Next
@@ -4822,13 +4822,13 @@ Static explode_image_num As Integer
         ClearPicture
         MainForm.picMain(0).Refresh
     Else
-        '”Ä—pƒCƒxƒ“ƒg‰æ‘œ”Å‚Ì‰æ‘œ‚ğg—p
+        'æ±ç”¨ã‚¤ãƒ™ãƒ³ãƒˆç”»åƒç‰ˆã®ç”»åƒã‚’ä½¿ç”¨
         Select Case tsize
             Case "XL"
                 For i = 1 To explode_image_num
                     DrawPicture explode_image_path & Format$(i, "00") & ".bmp", _
                         MapToPixelX(tx) - 64, MapToPixelY(ty) - 64, _
-                        160, 160, 0, 0, 0, 0, "“§‰ß"
+                        160, 160, 0, 0, 0, 0, "é€é"
                     MainForm.picMain(0).Refresh
                     Sleep 130
                 Next
@@ -4836,7 +4836,7 @@ Static explode_image_num As Integer
                 For i = 1 To explode_image_num
                     DrawPicture explode_image_path & Format$(i, "00") & ".bmp", _
                         MapToPixelX(tx) - 48, MapToPixelY(ty) - 48, _
-                        128, 128, 0, 0, 0, 0, "“§‰ß"
+                        128, 128, 0, 0, 0, 0, "é€é"
                     MainForm.picMain(0).Refresh
                     Sleep 100
                 Next
@@ -4844,7 +4844,7 @@ Static explode_image_num As Integer
                 For i = 1 To explode_image_num
                     DrawPicture explode_image_path & Format$(i, "00") & ".bmp", _
                         MapToPixelX(tx) - 32, MapToPixelY(ty) - 32, _
-                        96, 96, 0, 0, 0, 0, "“§‰ß"
+                        96, 96, 0, 0, 0, 0, "é€é"
                     MainForm.picMain(0).Refresh
                     Sleep 70
                 Next
@@ -4852,7 +4852,7 @@ Static explode_image_num As Integer
                 For i = 1 To explode_image_num
                     DrawPicture explode_image_path & Format$(i, "00") & ".bmp", _
                         MapToPixelX(tx) - 16, MapToPixelY(ty) - 16, _
-                        64, 64, 0, 0, 0, 0, "“§‰ß"
+                        64, 64, 0, 0, 0, 0, "é€é"
                     MainForm.picMain(0).Refresh
                     Sleep 50
                 Next
@@ -4860,7 +4860,7 @@ Static explode_image_num As Integer
                 For i = 1 To explode_image_num
                     DrawPicture explode_image_path & Format$(i, "00") & ".bmp", _
                         MapToPixelX(tx) - 8, MapToPixelY(ty) - 8, _
-                        48, 48, 0, 0, 0, 0, "“§‰ß"
+                        48, 48, 0, 0, 0, 0, "é€é"
                     MainForm.picMain(0).Refresh
                     Sleep 40
                 Next
@@ -4868,7 +4868,7 @@ Static explode_image_num As Integer
                 For i = 1 To explode_image_num
                     DrawPicture explode_image_path & Format$(i, "00") & ".bmp", _
                         MapToPixelX(tx), MapToPixelY(ty), _
-                        32, 32, 0, 0, 0, 0, "“§‰ß"
+                        32, 32, 0, 0, 0, 0, "é€é"
                     MainForm.picMain(0).Refresh
                     Sleep 40
                 Next
@@ -4878,96 +4878,96 @@ Static explode_image_num As Integer
     End If
 End Sub
 
-'UŒ‚–³Œø‰»‚Ì“ÁêŒø‰Ê‚ÆƒƒbƒZ[ƒW‚ğ•\¦‚·‚é
+'æ”»æ’ƒç„¡åŠ¹åŒ–æ™‚ã®ç‰¹æ®ŠåŠ¹æœã¨ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’è¡¨ç¤ºã™ã‚‹
 Public Sub NegateEffect(u As Unit, t As Unit, _
     ByVal w As Integer, wname As String, ByVal dmg As Long, _
     fname As String, fdata As String, ByVal ecost As Integer, _
     msg As String, ByVal be_quiet As Boolean)
 Dim defined As Boolean
 
-    If LIndex(fdata, 1) = "‚a" _
-        Or LIndex(fdata, 2) = "‚a" _
-        Or LIndex(fdata, 3) = "‚a" _
+    If LIndex(fdata, 1) = "ï¼¢" _
+        Or LIndex(fdata, 2) = "ï¼¢" _
+        Or LIndex(fdata, 3) = "ï¼¢" _
     Then
         If Not be_quiet Then
-            If t.IsMessageDefined("ƒr[ƒ€–³Œø‰»(" & fname & ")") Then
-                t.PilotMessage "ƒr[ƒ€–³Œø‰»(" & fname & ")"
+            If t.IsMessageDefined("ãƒ“ãƒ¼ãƒ ç„¡åŠ¹åŒ–(" & fname & ")") Then
+                t.PilotMessage "ãƒ“ãƒ¼ãƒ ç„¡åŠ¹åŒ–(" & fname & ")"
             Else
-                t.PilotMessage "ƒr[ƒ€–³Œø‰»"
+                t.PilotMessage "ãƒ“ãƒ¼ãƒ ç„¡åŠ¹åŒ–"
             End If
         End If
         
-        If t.IsAnimationDefined("ƒr[ƒ€–³Œø‰»", fname) Then
-            t.PlayAnimation "ƒr[ƒ€–³Œø‰»", fname
-        ElseIf t.IsSpecialEffectDefined("ƒr[ƒ€–³Œø‰»", fname) Then
-            t.SpecialEffect "ƒr[ƒ€–³Œø‰»", fname
+        If t.IsAnimationDefined("ãƒ“ãƒ¼ãƒ ç„¡åŠ¹åŒ–", fname) Then
+            t.PlayAnimation "ãƒ“ãƒ¼ãƒ ç„¡åŠ¹åŒ–", fname
+        ElseIf t.IsSpecialEffectDefined("ãƒ“ãƒ¼ãƒ ç„¡åŠ¹åŒ–", fname) Then
+            t.SpecialEffect "ãƒ“ãƒ¼ãƒ ç„¡åŠ¹åŒ–", fname
         ElseIf dmg < 0 Then
             AbsorbEffect u, w, t
         ElseIf BattleAnimation Then
-            ShowAnimation "ƒr[ƒ€ƒR[ƒg”­“® - " & fname
+            ShowAnimation "ãƒ“ãƒ¼ãƒ ã‚³ãƒ¼ãƒˆç™ºå‹• - " & fname
         ElseIf Not IsWavePlayed Then
             PlayWave "BeamCoat.wav"
         End If
         
-        If u.IsAnimationDefined(wname & "(UŒ‚–³Œø‰»)") Then
-            u.PlayAnimation wname & "(UŒ‚–³Œø‰»)"
-        ElseIf u.IsSpecialEffectDefined(wname & "(UŒ‚–³Œø‰»)") Then
-            u.SpecialEffect wname & "(UŒ‚–³Œø‰»)"
+        If u.IsAnimationDefined(wname & "(æ”»æ’ƒç„¡åŠ¹åŒ–)") Then
+            u.PlayAnimation wname & "(æ”»æ’ƒç„¡åŠ¹åŒ–)"
+        ElseIf u.IsSpecialEffectDefined(wname & "(æ”»æ’ƒç„¡åŠ¹åŒ–)") Then
+            u.SpecialEffect wname & "(æ”»æ’ƒç„¡åŠ¹åŒ–)"
         End If
         
-        If t.IsSysMessageDefined("ƒr[ƒ€–³Œø‰»", fname) Then
-            t.SysMessage "ƒr[ƒ€–³Œø‰»", fname
+        If t.IsSysMessageDefined("ãƒ“ãƒ¼ãƒ ç„¡åŠ¹åŒ–", fname) Then
+            t.SysMessage "ãƒ“ãƒ¼ãƒ ç„¡åŠ¹åŒ–", fname
         ElseIf fname = "" Then
             If dmg < 0 Then
-                DisplaySysMessage msg & t.Nickname & "‚ªUŒ‚‚ğ‹zû‚µ‚½B"
+                DisplaySysMessage msg & t.Nickname & "ãŒæ”»æ’ƒã‚’å¸åã—ãŸã€‚"
             Else
-                DisplaySysMessage msg & t.Nickname & "‚ªUŒ‚‚ğ–h‚¢‚¾B"
+                DisplaySysMessage msg & t.Nickname & "ãŒæ”»æ’ƒã‚’é˜²ã„ã ã€‚"
             End If
         Else
             If dmg < 0 Then
-                DisplaySysMessage msg & t.Nickname & "‚Ì[" _
-                    & fname & "]‚ªUŒ‚‚ğ‹zû‚µ‚½B"
+                DisplaySysMessage msg & t.Nickname & "ã®[" _
+                    & fname & "]ãŒæ”»æ’ƒã‚’å¸åã—ãŸã€‚"
             Else
-                DisplaySysMessage msg & t.Nickname & "‚Ì[" _
-                    & fname & "]‚ªUŒ‚‚ğ–h‚¢‚¾B"
+                DisplaySysMessage msg & t.Nickname & "ã®[" _
+                    & fname & "]ãŒæ”»æ’ƒã‚’é˜²ã„ã ã€‚"
             End If
         End If
     Else
         If Not be_quiet Then
-            If t.IsMessageDefined("UŒ‚–³Œø‰»(" & fname & ")") Then
-                t.PilotMessage "UŒ‚–³Œø‰»(" & fname & ")"
+            If t.IsMessageDefined("æ”»æ’ƒç„¡åŠ¹åŒ–(" & fname & ")") Then
+                t.PilotMessage "æ”»æ’ƒç„¡åŠ¹åŒ–(" & fname & ")"
             Else
-                t.PilotMessage "UŒ‚–³Œø‰»"
+                t.PilotMessage "æ”»æ’ƒç„¡åŠ¹åŒ–"
             End If
         End If
         
-        If t.IsAnimationDefined("UŒ‚–³Œø‰»", fname) Then
-            t.PlayAnimation "UŒ‚–³Œø‰»", fname
+        If t.IsAnimationDefined("æ”»æ’ƒç„¡åŠ¹åŒ–", fname) Then
+            t.PlayAnimation "æ”»æ’ƒç„¡åŠ¹åŒ–", fname
             defined = True
-        ElseIf t.IsSpecialEffectDefined("UŒ‚–³Œø‰»", fname) Then
-            t.SpecialEffect "UŒ‚–³Œø‰»", fname
+        ElseIf t.IsSpecialEffectDefined("æ”»æ’ƒç„¡åŠ¹åŒ–", fname) Then
+            t.SpecialEffect "æ”»æ’ƒç„¡åŠ¹åŒ–", fname
             defined = True
         ElseIf dmg < 0 Then
             AbsorbEffect u, w, t
             defined = True
         ElseIf BattleAnimation Then
-            If InStr(fdata, "ƒoƒŠƒA–³Œø‰»–³Œø") = 0 Or ecost > 0 Then
-                If fname = "ƒoƒŠƒA" Then
-                    ShowAnimation "ƒoƒŠƒA”­“®"
+            If InStr(fdata, "ãƒãƒªã‚¢ç„¡åŠ¹åŒ–ç„¡åŠ¹") = 0 Or ecost > 0 Then
+                If fname = "ãƒãƒªã‚¢" Then
+                    ShowAnimation "ãƒãƒªã‚¢ç™ºå‹•"
                 ElseIf fname = "" Then
-                    ShowAnimation "ƒoƒŠƒA”­“® - UŒ‚–³Œø‰»"
+                    ShowAnimation "ãƒãƒªã‚¢ç™ºå‹• - æ”»æ’ƒç„¡åŠ¹åŒ–"
                 Else
-                    ShowAnimation "ƒoƒŠƒA”­“® - " & fname
+                    ShowAnimation "ãƒãƒªã‚¢ç™ºå‹• - " & fname
                 End If
                 defined = True
             End If
         End If
         
-        If u.IsAnimationDefined(wname & "(UŒ‚–³Œø‰»)") Then
-            u.PlayAnimation wname & "(UŒ‚–³Œø‰»)"
+        If u.IsAnimationDefined(wname & "(æ”»æ’ƒç„¡åŠ¹åŒ–)") Then
+            u.PlayAnimation wname & "(æ”»æ’ƒç„¡åŠ¹åŒ–)"
             defined = True
-        ElseIf u.IsSpecialEffectDefined(wname & "(UŒ‚–³Œø‰»)") Then
-            u.SpecialEffect wname & "(UŒ‚–³Œø‰»)"
+        ElseIf u.IsSpecialEffectDefined(wname & "(æ”»æ’ƒç„¡åŠ¹åŒ–)") Then
+            u.SpecialEffect wname & "(æ”»æ’ƒç„¡åŠ¹åŒ–)"
             defined = True
         End If
         
@@ -4975,21 +4975,21 @@ Dim defined As Boolean
             HitEffect u, w, t
         End If
         
-        If t.IsSysMessageDefined("UŒ‚–³Œø‰»", fname) Then
-            t.SysMessage "UŒ‚–³Œø‰»", fname
+        If t.IsSysMessageDefined("æ”»æ’ƒç„¡åŠ¹åŒ–", fname) Then
+            t.SysMessage "æ”»æ’ƒç„¡åŠ¹åŒ–", fname
         ElseIf fname = "" Then
             If dmg < 0 Then
-                DisplaySysMessage msg & t.Nickname & "‚ÍUŒ‚‚ğ‹zû‚µ‚½B"
+                DisplaySysMessage msg & t.Nickname & "ã¯æ”»æ’ƒã‚’å¸åã—ãŸã€‚"
             Else
-                DisplaySysMessage msg & t.Nickname & "‚ÍUŒ‚‚ğ–h‚¢‚¾B"
+                DisplaySysMessage msg & t.Nickname & "ã¯æ”»æ’ƒã‚’é˜²ã„ã ã€‚"
             End If
         Else
             If dmg < 0 Then
-                DisplaySysMessage msg & t.Nickname & "‚Ì[" _
-                    & fname & "]‚ªUŒ‚‚ğ‹zû‚µ‚½B"
+                DisplaySysMessage msg & t.Nickname & "ã®[" _
+                    & fname & "]ãŒæ”»æ’ƒã‚’å¸åã—ãŸã€‚"
             Else
-                DisplaySysMessage msg & t.Nickname & "‚Ì[" _
-                    & fname & "]‚ªUŒ‚‚ğ–h‚¢‚¾B"
+                DisplaySysMessage msg & t.Nickname & "ã®[" _
+                    & fname & "]ãŒæ”»æ’ƒã‚’é˜²ã„ã ã€‚"
             End If
         End If
     End If

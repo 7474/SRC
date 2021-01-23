@@ -10,33 +10,33 @@ Attribute VB_Exposed = False
 Option Explicit
 
 ' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-' –{ƒvƒƒOƒ‰ƒ€‚ÍƒtƒŠ[ƒ\ƒtƒg‚Å‚ ‚èA–³•ÛØ‚Å‚·B
-' –{ƒvƒƒOƒ‰ƒ€‚ÍGNU General Public License(Ver.3‚Ü‚½‚Í‚»‚êˆÈ~)‚ª’è‚ß‚éğŒ‚Ì‰º‚Å
-' Ä”Ğ•z‚Ü‚½‚Í‰ü•Ï‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B
+' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯ãƒ•ãƒªãƒ¼ã‚½ãƒ•ãƒˆã§ã‚ã‚Šã€ç„¡ä¿è¨¼ã§ã™ã€‚
+' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯GNU General Public License(Ver.3ã¾ãŸã¯ãã‚Œä»¥é™)ãŒå®šã‚ã‚‹æ¡ä»¶ã®ä¸‹ã§
+' å†é ’å¸ƒã¾ãŸã¯æ”¹å¤‰ã™ã‚‹ã“ã¨ãŒã§ãã¾ã™ã€‚
 
-'ƒ_ƒCƒAƒƒO‚ÌƒNƒ‰ƒX
+'ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã®ã‚¯ãƒ©ã‚¹
 
-'ƒ_ƒCƒAƒƒO‚ÉŠÜ‚Ü‚ê‚éƒƒbƒZ[ƒW”
+'ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã«å«ã¾ã‚Œã‚‹ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸æ•°
 Private intMessageNum
-'ƒƒbƒZ[ƒW‚Ì˜bÒ
+'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã®è©±è€…
 Private strName() As String
-'ƒƒbƒZ[ƒW
+'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
 Private strMessage() As String
 
-'ƒNƒ‰ƒX‚Ì‰Šú‰»
+'ã‚¯ãƒ©ã‚¹ã®åˆæœŸåŒ–
 Private Sub Class_Initialize()
     intMessageNum = 0
     ReDim strName(0)
     ReDim strMessage(0)
 End Sub
 
-'ƒNƒ‰ƒX‚Ì’Ç‰Á
+'ã‚¯ãƒ©ã‚¹ã®è¿½åŠ 
 Private Sub Class_Terminate()
     ReDim strName(0)
     ReDim strMessage(0)
 End Sub
 
-'ƒ_ƒCƒAƒƒO‚ÉƒƒbƒZ[ƒW‚ğ’Ç‰Á
+'ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã«ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’è¿½åŠ 
 Public Sub AddMessage(Name As String, Message As String)
     intMessageNum = intMessageNum + 1
     ReDim Preserve strName(intMessageNum)
@@ -45,22 +45,22 @@ Public Sub AddMessage(Name As String, Message As String)
     strMessage(intMessageNum) = Message
 End Sub
 
-'ƒ_ƒCƒAƒƒO‚ÉŠÜ‚Ü‚ê‚éƒƒbƒZ[ƒW”
+'ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã«å«ã¾ã‚Œã‚‹ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸æ•°
 Public Property Get Count() As Integer
     Count = intMessageNum
 End Property
 
-'idx”Ô–Ú‚ÌƒƒbƒZ[ƒW‚Ì˜bÒ
+'idxç•ªç›®ã®ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã®è©±è€…
 Public Function Name(ByVal idx As Integer) As String
     Name = strName(idx)
 End Function
 
-'idx”Ô–Ú‚ÌƒƒbƒZ[ƒW
+'idxç•ªç›®ã®ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
 Public Function Message(ByVal idx As Integer) As String
     Message = strMessage(idx)
 End Function
 
-'ƒ_ƒCƒAƒƒO‚Ég‚í‚ê‚Ä‚¢‚éƒpƒCƒƒbƒg‚ª‘S‚Ä—˜—p‰Â”\‚©”»’è
+'ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã«ä½¿ã‚ã‚Œã¦ã„ã‚‹ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆãŒå…¨ã¦åˆ©ç”¨å¯èƒ½ã‹åˆ¤å®š
 Public Property Get IsAvailable(u As Unit, ByVal ignore_condition As Boolean) As Boolean
 Dim pname As String, pname2 As String
 Dim i As Integer, j As Integer
@@ -75,13 +75,13 @@ Dim mpname As String, mpnickname As String, mtype As String
     For i = 1 To Count
         pname = strName(i)
         
-        '‡‘Ì‹Z‚Ìƒp[ƒgƒi[‚ªw’è‚³‚ê‚Ä‚¢‚éê‡
+        'åˆä½“æŠ€ã®ãƒ‘ãƒ¼ãƒˆãƒŠãƒ¼ãŒæŒ‡å®šã•ã‚Œã¦ã„ã‚‹å ´åˆ
         If Left$(pname, 1) = "@" Then
             pname = Mid$(pname, 2)
             For j = 1 To UBound(SelectedPartners)
                 With SelectedPartners(j)
                     If .CountPilot > 0 Then
-                        'ƒp[ƒgƒi[‚Ì–¼‘O‚Æˆê’v‚·‚éH
+                        'ãƒ‘ãƒ¼ãƒˆãƒŠãƒ¼ã®åå‰ã¨ä¸€è‡´ã™ã‚‹ï¼Ÿ
                         With .MainPilot
                             If pname <> .Name _
                                 And InStr(pname, .Name & "(") <> 1 _
@@ -92,21 +92,21 @@ Dim mpname As String, mpnickname As String, mtype As String
                             End If
                         End With
                         
-                        '’‚ê‚é‚©‚Ç‚¤‚©ƒ`ƒFƒbƒN
+                        'å–‹ã‚Œã‚‹ã‹ã©ã†ã‹ãƒã‚§ãƒƒã‚¯
                         If Not ignore_condition Then
-                            If .IsConditionSatisfied("‡–°") _
-                                Or .IsConditionSatisfied("–ƒáƒ") _
-                                Or .IsConditionSatisfied("Î‰»") _
-                                Or .IsConditionSatisfied("‹°•|") _
-                                Or .IsConditionSatisfied("’¾–Ù") _
-                                Or .IsConditionSatisfied("¬—") _
+                            If .IsConditionSatisfied("ç¡çœ ") _
+                                Or .IsConditionSatisfied("éº»ç—º") _
+                                Or .IsConditionSatisfied("çŸ³åŒ–") _
+                                Or .IsConditionSatisfied("ææ€–") _
+                                Or .IsConditionSatisfied("æ²ˆé»™") _
+                                Or .IsConditionSatisfied("æ··ä¹±") _
                             Then
                                 IsAvailable = False
                                 Exit Property
                             End If
                         End If
                         
-                        'ƒƒbƒZ[ƒW‚Íg—p‰Â”\
+                        'ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã¯ä½¿ç”¨å¯èƒ½
                         GoTo NextMessage
                     End If
                 End With
@@ -117,12 +117,12 @@ NextPartner:
             Exit Property
         End If
         
-        '•\îƒpƒ^[ƒ“‚ªw’è‚³‚ê‚Ä‚¢‚éH
+        'è¡¨æƒ…ãƒ‘ã‚¿ãƒ¼ãƒ³ãŒæŒ‡å®šã•ã‚Œã¦ã„ã‚‹ï¼Ÿ
         If InStr(pname, "(") > 0 Then
             If Not PDList.IsDefined2(pname) _
                 And NPDList.IsDefined2(pname) _
             Then
-                'Š‡ŒÊ•”•ª‚ğíœ
+                'æ‹¬å¼§éƒ¨åˆ†ã‚’å‰Šé™¤
                 For j = 2 To Len(pname)
                     If Mid$(pname, Len(pname) - j, 1) = "(" Then
                         pname2 = Left$(pname, Len(pname) - j - 1)
@@ -130,17 +130,17 @@ NextPartner:
                     End If
                 Next
                 
-                '•\îƒpƒ^[ƒ“‚©‚Ç‚¤‚©”»’è
+                'è¡¨æƒ…ãƒ‘ã‚¿ãƒ¼ãƒ³ã‹ã©ã†ã‹åˆ¤å®š
                 If PDList.IsDefined2(pname2) _
                     Or NPDList.IsDefined2(pname2) _
                 Then
-                    '•\îƒpƒ^[ƒ“‚Æ‚İ‚È‚·
+                    'è¡¨æƒ…ãƒ‘ã‚¿ãƒ¼ãƒ³ã¨ã¿ãªã™
                     pname = pname2
                 End If
             End If
         End If
         
-        'ƒƒCƒ“ƒpƒCƒƒbƒg‚Íí‚É‘¶İ
+        'ãƒ¡ã‚¤ãƒ³ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã¯å¸¸ã«å­˜åœ¨
         If pname = mpname Then
             GoTo NextMessage
         End If
@@ -151,7 +151,7 @@ NextPartner:
             GoTo NextMessage
         End If
         
-        'ƒmƒ“ƒpƒCƒƒbƒg‚ÍLeave‚µ‚Ä‚¢‚È‚¢ŒÀ‚èí‚É‘¶İ
+        'ãƒãƒ³ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã¯Leaveã—ã¦ã„ãªã„é™ã‚Šå¸¸ã«å­˜åœ¨
         If NPDList.IsDefined(pname) Then
             If IsGlobalVariableDefined("IsAway(" & pname & ")") Then
                 IsAvailable = False
@@ -161,30 +161,30 @@ NextPartner:
         End If
         
         If PDList.IsDefined(pname) Then
-            'ƒpƒCƒƒbƒg‚Ìê‡
+            'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆã®å ´åˆ
             
-            'ƒpƒCƒƒbƒg‚ªì¬‚³‚ê‚Ä‚¢‚È‚¢H
+            'ãƒ‘ã‚¤ãƒ­ãƒƒãƒˆãŒä½œæˆã•ã‚Œã¦ã„ãªã„ï¼Ÿ
             If Not PList.IsDefined(pname) Then
                 IsAvailable = False
                 Exit Property
             End If
             
             With PList.Item(pname)
-                'Leave’†H
+                'Leaveä¸­ï¼Ÿ
                 If .Away Then
                     IsAvailable = False
                     Exit Property
                 End If
                 
-                '’‚ê‚é‚©‚Ç‚¤‚©ƒ`ƒFƒbƒN
+                'å–‹ã‚Œã‚‹ã‹ã©ã†ã‹ãƒã‚§ãƒƒã‚¯
                 If Not ignore_condition And Not .Unit Is Nothing Then
                     With .Unit
-                        If .IsConditionSatisfied("‡–°") _
-                            Or .IsConditionSatisfied("–ƒáƒ") _
-                            Or .IsConditionSatisfied("Î‰»") _
-                            Or .IsConditionSatisfied("‹°•|") _
-                            Or .IsConditionSatisfied("’¾–Ù") _
-                            Or .IsConditionSatisfied("¬—") _
+                        If .IsConditionSatisfied("ç¡çœ ") _
+                            Or .IsConditionSatisfied("éº»ç—º") _
+                            Or .IsConditionSatisfied("çŸ³åŒ–") _
+                            Or .IsConditionSatisfied("ææ€–") _
+                            Or .IsConditionSatisfied("æ²ˆé»™") _
+                            Or .IsConditionSatisfied("æ··ä¹±") _
                         Then
                             IsAvailable = False
                             Exit Property

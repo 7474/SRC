@@ -10,18 +10,18 @@ Attribute VB_Exposed = False
 Option Explicit
 
 ' Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-' –{ƒvƒƒOƒ‰ƒ€‚ÍƒtƒŠ[ƒ\ƒtƒg‚Å‚ ‚èA–³•ÛØ‚Å‚·B
-' –{ƒvƒƒOƒ‰ƒ€‚ÍGNU General Public License(Ver.3‚Ü‚½‚Í‚»‚êˆÈ~)‚ª’è‚ß‚éğŒ‚Ì‰º‚Å
-' Ä”Ğ•z‚Ü‚½‚Í‰ü•Ï‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B
+' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯ãƒ•ãƒªãƒ¼ã‚½ãƒ•ãƒˆã§ã‚ã‚Šã€ç„¡ä¿è¨¼ã§ã™ã€‚
+' æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯GNU General Public License(Ver.3ã¾ãŸã¯ãã‚Œä»¥é™)ãŒå®šã‚ã‚‹æ¡ä»¶ã®ä¸‹ã§
+' å†é ’å¸ƒã¾ãŸã¯æ”¹å¤‰ã™ã‚‹ã“ã¨ãŒã§ãã¾ã™ã€‚
 
-'ƒoƒgƒ‹ƒRƒ“ƒtƒBƒOƒf[ƒ^‚ğŠÇ—‚·‚éƒNƒ‰ƒX
-' --- ƒ_ƒ[ƒWŒvZA–½’†—¦Zo‚È‚ÇAƒoƒgƒ‹‚ÉŠÖ˜A‚·‚éƒGƒŠƒAƒX‚Ì’è‹`‚ğİ’è‚µ‚Ü‚·B
+'ãƒãƒˆãƒ«ã‚³ãƒ³ãƒ•ã‚£ã‚°ãƒ‡ãƒ¼ã‚¿ã‚’ç®¡ç†ã™ã‚‹ã‚¯ãƒ©ã‚¹
+' --- ãƒ€ãƒ¡ãƒ¼ã‚¸è¨ˆç®—ã€å‘½ä¸­ç‡ç®—å‡ºãªã©ã€ãƒãƒˆãƒ«ã«é–¢é€£ã™ã‚‹ã‚¨ãƒªã‚¢ã‚¹ã®å®šç¾©ã‚’è¨­å®šã—ã¾ã™ã€‚
 
-'ƒoƒgƒ‹ƒRƒ“ƒtƒBƒOƒf[ƒ^‚ÌƒRƒŒƒNƒVƒ‡ƒ“
+'ãƒãƒˆãƒ«ã‚³ãƒ³ãƒ•ã‚£ã‚°ãƒ‡ãƒ¼ã‚¿ã®ã‚³ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³
 Private colBattleConfigData As New Collection
 
 
-'ƒNƒ‰ƒX‚Ì‰ğ•ú
+'ã‚¯ãƒ©ã‚¹ã®è§£æ”¾
 Private Sub Class_Terminate()
 Dim i As Integer
 
@@ -33,7 +33,7 @@ Dim i As Integer
     Set colBattleConfigData = Nothing
 End Sub
 
-'ƒoƒgƒ‹ƒRƒ“ƒtƒBƒOƒf[ƒ^ƒŠƒXƒg‚Éƒf[ƒ^‚ğ’Ç‰Á
+'ãƒãƒˆãƒ«ã‚³ãƒ³ãƒ•ã‚£ã‚°ãƒ‡ãƒ¼ã‚¿ãƒªã‚¹ãƒˆã«ãƒ‡ãƒ¼ã‚¿ã‚’è¿½åŠ 
 Public Function Add(cname As String) As BattleConfigData
 Dim cd As New BattleConfigData
 
@@ -42,22 +42,22 @@ Dim cd As New BattleConfigData
     Set Add = cd
 End Function
 
-'ƒoƒgƒ‹ƒRƒ“ƒtƒBƒOƒf[ƒ^ƒŠƒXƒg‚É“o˜^‚³‚ê‚Ä‚¢‚éƒf[ƒ^‚Ì‘”
+'ãƒãƒˆãƒ«ã‚³ãƒ³ãƒ•ã‚£ã‚°ãƒ‡ãƒ¼ã‚¿ãƒªã‚¹ãƒˆã«ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ãƒ‡ãƒ¼ã‚¿ã®ç·æ•°
 Public Function Count() As Integer
     Count = colBattleConfigData.Count
 End Function
 
-'ƒoƒgƒ‹ƒRƒ“ƒtƒBƒOƒf[ƒ^ƒŠƒXƒg‚©‚çƒf[ƒ^‚ğíœ
+'ãƒãƒˆãƒ«ã‚³ãƒ³ãƒ•ã‚£ã‚°ãƒ‡ãƒ¼ã‚¿ãƒªã‚¹ãƒˆã‹ã‚‰ãƒ‡ãƒ¼ã‚¿ã‚’å‰Šé™¤
 Public Sub Delete(Index As Variant)
     colBattleConfigData.Remove Index
 End Sub
 
-'ƒoƒgƒ‹ƒRƒ“ƒtƒBƒOƒf[ƒ^ƒŠƒXƒg‚©‚çƒf[ƒ^‚ğæ‚èo‚·
+'ãƒãƒˆãƒ«ã‚³ãƒ³ãƒ•ã‚£ã‚°ãƒ‡ãƒ¼ã‚¿ãƒªã‚¹ãƒˆã‹ã‚‰ãƒ‡ãƒ¼ã‚¿ã‚’å–ã‚Šå‡ºã™
 Public Function Item(Index As String) As BattleConfigData
     Set Item = colBattleConfigData.Item(Index)
 End Function
 
-'ƒoƒgƒ‹ƒRƒ“ƒtƒBƒOƒf[ƒ^ƒŠƒXƒg‚Éw’è‚µ‚½ƒf[ƒ^‚ª’è‹`‚³‚ê‚Ä‚¢‚é‚©H
+'ãƒãƒˆãƒ«ã‚³ãƒ³ãƒ•ã‚£ã‚°ãƒ‡ãƒ¼ã‚¿ãƒªã‚¹ãƒˆã«æŒ‡å®šã—ãŸãƒ‡ãƒ¼ã‚¿ãŒå®šç¾©ã•ã‚Œã¦ã„ã‚‹ã‹ï¼Ÿ
 Public Function IsDefined(Index As Variant) As Boolean
 Dim cd As BattleConfigData
 
@@ -70,7 +70,7 @@ ErrorHandler:
     IsDefined = False
 End Function
 
-'ƒf[ƒ^ƒtƒ@ƒCƒ‹ fname ‚©‚çƒf[ƒ^‚ğƒ[ƒh
+'ãƒ‡ãƒ¼ã‚¿ãƒ•ã‚¡ã‚¤ãƒ« fname ã‹ã‚‰ãƒ‡ãƒ¼ã‚¿ã‚’ãƒ­ãƒ¼ãƒ‰
 Public Sub Load(fname As String)
 Dim FileNumber As Integer
 Dim line_num As Long
@@ -100,7 +100,7 @@ Dim err_msg As String
         data_name = line_buf
         
         If IsDefined(data_name) Then
-            '‚·‚Å‚É’è‹`‚³‚ê‚Ä‚¢‚éƒGƒŠƒAƒX‚Ìƒf[ƒ^‚Å‚ ‚ê‚Î’u‚«Š·‚¦‚é
+            'ã™ã§ã«å®šç¾©ã•ã‚Œã¦ã„ã‚‹ã‚¨ãƒªã‚¢ã‚¹ã®ãƒ‡ãƒ¼ã‚¿ã§ã‚ã‚Œã°ç½®ãæ›ãˆã‚‹
             Delete data_name
         End If
         Set cd = Add(data_name)
@@ -124,9 +124,9 @@ Dim err_msg As String
     Loop
     
 ErrorHandler:
-    'ƒGƒ‰[ˆ—
+    'ã‚¨ãƒ©ãƒ¼å‡¦ç†
     If line_num = 0 Then
-        ErrorMessage fname & "‚ªŠJ‚¯‚Ü‚¹‚ñB"
+        ErrorMessage fname & "ãŒé–‹ã‘ã¾ã›ã‚“ã€‚"
     Else
         Close #FileNumber
         DataErrorMessage err_msg, fname, line_num, line_buf, data_name
