@@ -108,77 +108,77 @@ namespace SRC.Core.Lib
         //        }
 
 
-        //        // リスト list から idx 番目の要素を返す
-        //        public static string LIndex(ref string list, int idx)
-        //        {
-        //            string LIndexRet = default;
-        //            int i, n;
-        //            int list_len;
-        //            int begin;
+        // リスト list から idx 番目の要素を返す
+        public static string LIndex(string list, int idx)
+        {
+            string LIndexRet = default;
+            int i, n;
+            int list_len;
+            int begin;
 
-        //            // idxが正の数でなければ空文字列を返す
-        //            if (idx < 1)
-        //            {
-        //                return LIndexRet;
-        //            }
+            // idxが正の数でなければ空文字列を返す
+            if (idx < 1)
+            {
+                return LIndexRet;
+            }
 
-        //            list_len = Strings.Len(list);
+            list_len = Strings.Len(list);
 
-        //            // idx番目の要素まで読み飛ばす
-        //            n = 0;
-        //            i = 0;
-        //            while (true)
-        //            {
-        //                // 空白を読み飛ばす
-        //                do
-        //                {
-        //                    i = (i + 1);
-        //                    if (i > list_len)
-        //                    {
-        //                        return LIndexRet;
-        //                    }
-        //                }
-        //                while (Strings.Mid(list, i, 1) == " ");
+            // idx番目の要素まで読み飛ばす
+            n = 0;
+            i = 0;
+            while (true)
+            {
+                // 空白を読み飛ばす
+                do
+                {
+                    i = (i + 1);
+                    if (i > list_len)
+                    {
+                        return LIndexRet;
+                    }
+                }
+                while (Strings.Mid(list, i, 1) == " ");
 
-        //                // 要素数を１つ増やす
-        //                n = (n + 1);
+                // 要素数を１つ増やす
+                n = (n + 1);
 
-        //                // 求める要素？
-        //                if (n == idx)
-        //                {
-        //                    break;
-        //                }
+                // 求める要素？
+                if (n == idx)
+                {
+                    break;
+                }
 
-        //                // 要素を読み飛ばす
-        //                do
-        //                {
-        //                    i = (i + 1);
-        //                    if (i > list_len)
-        //                    {
-        //                        return LIndexRet;
-        //                    }
-        //                }
-        //                while (Strings.Mid(list, i, 1) != " ");
-        //            }
+                // 要素を読み飛ばす
+                do
+                {
+                    i = (i + 1);
+                    if (i > list_len)
+                    {
+                        return LIndexRet;
+                    }
+                }
+                while (Strings.Mid(list, i, 1) != " ");
+            }
 
-        //            // 求める要素を読み込む
-        //            begin = i;
-        //            do
-        //            {
-        //                i = (i + 1);
-        //                if (i > list_len)
-        //                {
-        //                    LIndexRet = Strings.Mid(list, begin);
-        //                    return LIndexRet;
-        //                }
-        //            }
-        //            while (Strings.Mid(list, i, 1) != " ");
-        //            LIndexRet = Strings.Mid(list, begin, i - begin);
-        //            return LIndexRet;
-        //        }
+            // 求める要素を読み込む
+            begin = i;
+            do
+            {
+                i = (i + 1);
+                if (i > list_len)
+                {
+                    LIndexRet = Strings.Mid(list, begin);
+                    return LIndexRet;
+                }
+            }
+            while (Strings.Mid(list, i, 1) != " ");
+            LIndexRet = Strings.Mid(list, begin, i - begin);
+            return LIndexRet;
+        }
 
         // リスト list の要素数を返す
-        public static int LLength(ref string list)
+        public static int LLength(string list)
         {
             int LLengthRet = default;
             int i;
@@ -215,50 +215,50 @@ namespace SRC.Core.Lib
             }
         }
 
-        //        // リスト list から、リストの要素の配列 larray を作成し、
-        //        // リストの要素数を返す
-        //        public static int LSplit(ref string list, ref string[] larray)
-        //        {
-        //            int LSplitRet = default;
-        //            int i;
-        //            int list_len;
-        //            int begin;
-        //            LSplitRet = 0;
-        //            list_len = Strings.Len(list);
-        //            larray = new string[1];
-        //            i = 0;
-        //            while (true)
-        //            {
-        //                // 空白を読み飛ばす
-        //                do
-        //                {
-        //                    i = (i + 1);
-        //                    if (i > list_len)
-        //                    {
-        //                        return LSplitRet;
-        //                    }
-        //                }
-        //                while (Strings.Mid(list, i, 1) == " ");
+        // リスト list から、リストの要素の配列 larray を作成し、
+        // リストの要素数を返す
+        public static int LSplit(string list, out string[] larray)
+        {
+            int LSplitRet = default;
+            int i;
+            int list_len;
+            int begin;
+            LSplitRet = 0;
+            list_len = Strings.Len(list);
+            larray = new string[1];
+            i = 0;
+            while (true)
+            {
+                // 空白を読み飛ばす
+                do
+                {
+                    i = (i + 1);
+                    if (i > list_len)
+                    {
+                        return LSplitRet;
+                    }
+                }
+                while (Strings.Mid(list, i, 1) == " ");
 
-        //                // 要素数を１つ増やす
-        //                LSplitRet = (LSplitRet + 1);
+                // 要素数を１つ増やす
+                LSplitRet = (LSplitRet + 1);
 
-        //                // 要素を読み込む
-        //                Array.Resize(ref larray, LSplitRet + 1);
-        //                begin = i;
-        //                do
-        //                {
-        //                    i = (i + 1);
-        //                    if (i > list_len)
-        //                    {
-        //                        larray[LSplitRet] = Strings.Mid(list, begin);
-        //                        return LSplitRet;
-        //                    }
-        //                }
-        //                while (Strings.Mid(list, i, 1) != " ");
-        //                larray[LSplitRet] = Strings.Mid(list, begin, i - begin);
-        //            }
-        //        }
+                // 要素を読み込む
+                Array.Resize(ref larray, LSplitRet + 1);
+                begin = i;
+                do
+                {
+                    i = (i + 1);
+                    if (i > list_len)
+                    {
+                        larray[LSplitRet] = Strings.Mid(list, begin);
+                        return LSplitRet;
+                    }
+                }
+                while (Strings.Mid(list, i, 1) != " ");
+                larray[LSplitRet] = Strings.Mid(list, begin, i - begin);
+            }
+        }
 
         //        // 文字列 ch が空白かどうか調べる
         //        public static bool IsSpace(ref string ch)
@@ -1075,28 +1075,19 @@ namespace SRC.Core.Lib
         //            return StrToDblRet;
         //        }
 
-        //        // 文字列をLongに変換
-        //        public static int StrToLng(ref string expr)
-        //        {
-        //            int StrToLngRet = default;
-        //            ;
-        //#error Cannot convert OnErrorGoToStatementSyntax - see comment for details
-        //            /* Cannot convert OnErrorGoToStatementSyntax, CONVERSION ERROR: Conversion for OnErrorGoToLabelStatement not implemented, please report this issue in 'On Error GoTo ErrorHandler' at character 19518
-
-
-        //            Input:
-        //                    On Error GoTo ErrorHandler
-
-        //             */
-        //            if (Information.IsNumeric(expr))
-        //            {
-        //                StrToLngRet = Conversions.ToInteger(expr);
-        //            }
-
-        //            return StrToLngRet;
-        //        ErrorHandler:
-        //            ;
-        //        }
+        // 文字列をLongに変換
+        // memo: VBのLongは32bit
+        public static int StrToLng(string expr)
+        {
+            try
+            {
+                return Conversions.ToInteger(expr);
+            }
+            catch
+            {
+                return 0;
+            }
+        }
 
         // 文字列をひらがなに変換
         // ひらがなへの変換は日本語以外のOSを使うとエラーが発生するようなので
