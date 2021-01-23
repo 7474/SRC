@@ -24,6 +24,7 @@ namespace SRC.Core.Lib
             FileName = fname;
         }
 
+        public bool EOT => !HasMore;
         public bool HasMore => Peek() >= 0;
 
         // From GeneralLib#GetLine
