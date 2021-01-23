@@ -563,7 +563,7 @@ namespace SRC.Core.Models
             else if (line_buf == "特殊能力")
             {
                 // 新形式による特殊能力表記
-                AddFeature(string data_name, IUnitDataElements ud, SrcReader reader, List < InvalidSrcData > continuesErrors);
+                LoadFeature(data_name, ud, reader, continuesErrors);
             }
             else if (Strings.InStr(line_buf, "特殊能力,") == 1)
             {
@@ -636,7 +636,7 @@ namespace SRC.Core.Models
             return line_buf;
         }
 
-        public static string AddFeature(string data_name, IUnitDataElements ud, SrcReader reader, List<InvalidSrcData> continuesErrors)
+        public static string LoadFeature(string data_name, IUnitDataElements ud, SrcReader reader, List<InvalidSrcData> continuesErrors)
         {
             string line_buf = reader.GetLine();
             string buf = line_buf;
