@@ -40,6 +40,12 @@ namespace SRC.Core.Lib
                 var buf = ReadLine().Trim();
                 LineNumber++;
 
+                // 空行はそのまま返す
+                if (string.IsNullOrEmpty(buf))
+                {
+                    break;
+                }
+
                 // コメント行はスキップ
                 if (Strings.Left(buf, 1) == "#")
                 {

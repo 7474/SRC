@@ -56,11 +56,15 @@ namespace SRC.Core.Models
         public bool IsBitmapMissing;
 
         // 特殊能力
-        public SrcCollection<FeatureData> colFeature;
+        private SrcCollection<FeatureData> colFeature;
         // 武器データ
         private SrcCollection<WeaponData> colWeaponData;
         // アビリティデータ
         private SrcCollection<AbilityData> colAbilityData;
+
+        public IList<FeatureData> Features => colFeature;
+        public IList<WeaponData> Weapons => colWeaponData;
+        public IList<AbilityData> Abilities => colAbilityData;
 
         public UnitData()
         {
