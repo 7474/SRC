@@ -23,5 +23,17 @@ namespace SRC.Core.VB
                 return 0;
             }
         }
+
+        public static double ToDouble(string Value)
+        {
+            try
+            {
+                return Convert.ToDouble(Value);
+            }
+            catch
+            {
+                return 0d;
+            }
+        }
     }
 }
