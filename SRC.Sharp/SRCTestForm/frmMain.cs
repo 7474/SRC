@@ -35,18 +35,24 @@ namespace SRCTestForm
                 var res = fbd.ShowDialog();
                 if (res == DialogResult.OK)
                 {
-                    try
-                    {
+                    //try
+                    //{
                         SetStatusText($"Load data [{fbd.SelectedPath}].");
                         SRC.LoadDirectory(fbd.SelectedPath);
                         SetStatusText("Loaded.");
-                    }
-                    catch (Exception ex)
-                    {
-                        SetStatusText(ex.Message);
-                    }
+                    //}
+                    //catch (Exception ex)
+                    //{
+                    //    SetStatusText(ex.Message);
+                    //    SetMainText(ex.ToString());
+                    //}
                 }
             }
+        }
+
+        private void SetMainText(string text)
+        {
+            textMain.Text = text;
         }
 
         private void SetStatusText(string text)
