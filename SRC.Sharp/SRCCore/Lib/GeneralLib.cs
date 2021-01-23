@@ -54,7 +54,7 @@ namespace SRC.Core.Lib
         //        [DllImport("kernel32", EntryPoint = "GetVersionExA")]
         //        static extern int GetVersionEx(ref OSVERSIONINFO lpVersionInformation);
 
-        //        private const short VER_PLATFORM_WIN32_NT = 2;
+        //        private const int VER_PLATFORM_WIN32_NT = 2;
 
 
         //        // 乱数発生用シード値
@@ -64,17 +64,17 @@ namespace SRC.Core.Lib
         //        private static float[] RndHistory = new float[4097];
 
         //        // 乱数系列の中で現在使用している値のインデックス
-        //        public static short RndIndex;
+        //        public static int RndIndex;
 
         //        // 乱数系列のリセット
         //        public static void RndReset()
         //        {
-        //            short i;
+        //            int i;
         //            VBMath.Randomize(RndSeed);
 
         //            // 乱数系列のセーブ＆ロードが出来るよう乱数系列をあらかじめ
         //            // 配列に保存して確定させる
-        //            var loopTo = (short)Information.UBound(RndHistory);
+        //            var loopTo = Information.UBound(RndHistory);
         //            for (i = 1; i <= loopTo; i++)
         //                RndHistory[i] = VBMath.Rnd();
         //            RndIndex = 0;
@@ -93,28 +93,28 @@ namespace SRC.Core.Lib
         //            string argoname = "乱数系列非保存";
         //            if (Expression.IsOptionDefined(ref argoname))
         //            {
-        //                DiceRet = (int)Conversion.Int(max * VBMath.Rnd() + 1f);
+        //                DiceRet = Conversion.Int(max * VBMath.Rnd() + 1f);
         //                return DiceRet;
         //            }
 
-        //            RndIndex = (short)(RndIndex + 1);
+        //            RndIndex = (RndIndex + 1);
         //            if (RndIndex > Information.UBound(RndHistory))
         //            {
         //                RndIndex = 1;
         //            }
 
-        //            DiceRet = (int)Conversion.Int(max * RndHistory[RndIndex] + 1f);
+        //            DiceRet = Conversion.Int(max * RndHistory[RndIndex] + 1f);
         //            return DiceRet;
         //        }
 
 
         //        // リスト list から idx 番目の要素を返す
-        //        public static string LIndex(ref string list, short idx)
+        //        public static string LIndex(ref string list, int idx)
         //        {
         //            string LIndexRet = default;
-        //            short i, n;
-        //            short list_len;
-        //            short begin;
+        //            int i, n;
+        //            int list_len;
+        //            int begin;
 
         //            // idxが正の数でなければ空文字列を返す
         //            if (idx < 1)
@@ -122,7 +122,7 @@ namespace SRC.Core.Lib
         //                return LIndexRet;
         //            }
 
-        //            list_len = (short)Strings.Len(list);
+        //            list_len = Strings.Len(list);
 
         //            // idx番目の要素まで読み飛ばす
         //            n = 0;
@@ -132,7 +132,7 @@ namespace SRC.Core.Lib
         //                // 空白を読み飛ばす
         //                do
         //                {
-        //                    i = (short)(i + 1);
+        //                    i = (i + 1);
         //                    if (i > list_len)
         //                    {
         //                        return LIndexRet;
@@ -141,7 +141,7 @@ namespace SRC.Core.Lib
         //                while (Strings.Mid(list, i, 1) == " ");
 
         //                // 要素数を１つ増やす
-        //                n = (short)(n + 1);
+        //                n = (n + 1);
 
         //                // 求める要素？
         //                if (n == idx)
@@ -152,7 +152,7 @@ namespace SRC.Core.Lib
         //                // 要素を読み飛ばす
         //                do
         //                {
-        //                    i = (short)(i + 1);
+        //                    i = (i + 1);
         //                    if (i > list_len)
         //                    {
         //                        return LIndexRet;
@@ -165,7 +165,7 @@ namespace SRC.Core.Lib
         //            begin = i;
         //            do
         //            {
-        //                i = (short)(i + 1);
+        //                i = (i + 1);
         //                if (i > list_len)
         //                {
         //                    LIndexRet = Strings.Mid(list, begin);
@@ -177,54 +177,54 @@ namespace SRC.Core.Lib
         //            return LIndexRet;
         //        }
 
-        //        // リスト list の要素数を返す
-        //        public static short LLength(ref string list)
-        //        {
-        //            short LLengthRet = default;
-        //            short i;
-        //            short list_len;
-        //            LLengthRet = 0;
-        //            list_len = (short)Strings.Len(list);
-        //            i = 0;
-        //            while (true)
-        //            {
-        //                // 空白を読み飛ばす
-        //                do
-        //                {
-        //                    i = (short)(i + 1);
-        //                    if (i > list_len)
-        //                    {
-        //                        return LLengthRet;
-        //                    }
-        //                }
-        //                while (Strings.Mid(list, i, 1) == " ");
+        // リスト list の要素数を返す
+        public static int LLength(ref string list)
+        {
+            int LLengthRet = default;
+            int i;
+            int list_len;
+            LLengthRet = 0;
+            list_len = Strings.Len(list);
+            i = 0;
+            while (true)
+            {
+                // 空白を読み飛ばす
+                do
+                {
+                    i = (i + 1);
+                    if (i > list_len)
+                    {
+                        return LLengthRet;
+                    }
+                }
+                while (Strings.Mid(list, i, 1) == " ");
 
-        //                // 要素数を１つ増やす
-        //                LLengthRet = (short)(LLengthRet + 1);
+                // 要素数を１つ増やす
+                LLengthRet = (LLengthRet + 1);
 
-        //                // 要素を読み飛ばす
-        //                do
-        //                {
-        //                    i = (short)(i + 1);
-        //                    if (i > list_len)
-        //                    {
-        //                        return LLengthRet;
-        //                    }
-        //                }
-        //                while (Strings.Mid(list, i, 1) != " ");
-        //            }
-        //        }
+                // 要素を読み飛ばす
+                do
+                {
+                    i = (i + 1);
+                    if (i > list_len)
+                    {
+                        return LLengthRet;
+                    }
+                }
+                while (Strings.Mid(list, i, 1) != " ");
+            }
+        }
 
         //        // リスト list から、リストの要素の配列 larray を作成し、
         //        // リストの要素数を返す
-        //        public static short LSplit(ref string list, ref string[] larray)
+        //        public static int LSplit(ref string list, ref string[] larray)
         //        {
-        //            short LSplitRet = default;
-        //            short i;
-        //            short list_len;
-        //            short begin;
+        //            int LSplitRet = default;
+        //            int i;
+        //            int list_len;
+        //            int begin;
         //            LSplitRet = 0;
-        //            list_len = (short)Strings.Len(list);
+        //            list_len = Strings.Len(list);
         //            larray = new string[1];
         //            i = 0;
         //            while (true)
@@ -232,7 +232,7 @@ namespace SRC.Core.Lib
         //                // 空白を読み飛ばす
         //                do
         //                {
-        //                    i = (short)(i + 1);
+        //                    i = (i + 1);
         //                    if (i > list_len)
         //                    {
         //                        return LSplitRet;
@@ -241,14 +241,14 @@ namespace SRC.Core.Lib
         //                while (Strings.Mid(list, i, 1) == " ");
 
         //                // 要素数を１つ増やす
-        //                LSplitRet = (short)(LSplitRet + 1);
+        //                LSplitRet = (LSplitRet + 1);
 
         //                // 要素を読み込む
         //                Array.Resize(ref larray, LSplitRet + 1);
         //                begin = i;
         //                do
         //                {
-        //                    i = (short)(i + 1);
+        //                    i = (i + 1);
         //                    if (i > list_len)
         //                    {
         //                        larray[LSplitRet] = Strings.Mid(list, begin);
@@ -306,10 +306,10 @@ namespace SRC.Core.Lib
 
         //        // リスト list に str が登場する位置を返す
         //        // UPGRADE_NOTE: str は str_Renamed にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
-        //        public static short SearchList(ref string list, ref string str_Renamed)
+        //        public static int SearchList(ref string list, ref string str_Renamed)
         //        {
-        //            short SearchListRet = default;
-        //            short i;
+        //            int SearchListRet = default;
+        //            int i;
         //            var loopTo = LLength(ref list);
         //            for (i = 1; i <= loopTo; i++)
         //            {
@@ -326,11 +326,11 @@ namespace SRC.Core.Lib
 
 
         //        // リスト list から idx 番目の要素を返す (括弧を考慮)
-        //        public static string ListIndex(ref string list, short idx)
+        //        public static string ListIndex(ref string list, int idx)
         //        {
         //            string ListIndexRet = default;
-        //            short n, i, ch;
-        //            short paren = default, list_len, begin;
+        //            int n, i, ch;
+        //            int paren = default, list_len, begin;
         //            bool in_single_quote = default, in_double_quote = default;
 
         //            // idxが正の数でなければ空文字列を返す
@@ -339,7 +339,7 @@ namespace SRC.Core.Lib
         //                return ListIndexRet;
         //            }
 
-        //            list_len = (short)Strings.Len(list);
+        //            list_len = Strings.Len(list);
 
         //            // idx番目の要素まで読み飛ばす
         //            n = 0;
@@ -349,7 +349,7 @@ namespace SRC.Core.Lib
         //                // 空白を読み飛ばす
         //                while (true)
         //                {
-        //                    i = (short)(i + 1);
+        //                    i = (i + 1);
 
         //                    // 文字列の終り？
         //                    if (i > list_len)
@@ -358,7 +358,7 @@ namespace SRC.Core.Lib
         //                    }
 
         //                    // 次の文字
-        //                    ch = (short)Strings.Asc(Strings.Mid(list, i, 1));
+        //                    ch = Strings.Asc(Strings.Mid(list, i, 1));
 
         //                    // 空白でない？
         //                    switch (ch)
@@ -378,7 +378,7 @@ namespace SRC.Core.Lib
         //                }
 
         //                // 要素数を１つ増やす
-        //                n = (short)(n + 1);
+        //                n = (n + 1);
 
         //                // 求める要素？
         //                if (n == idx)
@@ -410,14 +410,14 @@ namespace SRC.Core.Lib
         //                            case 40:
         //                            case 91: // "(", "["
         //                                {
-        //                                    paren = (short)(paren + 1);
+        //                                    paren = (paren + 1);
         //                                    break;
         //                                }
 
         //                            case 41:
         //                            case 93: // ")", "]"
         //                                {
-        //                                    paren = (short)(paren - 1);
+        //                                    paren = (paren - 1);
         //                                    if (paren < 0)
         //                                    {
         //                                        // 括弧の対応が取れていない
@@ -441,7 +441,7 @@ namespace SRC.Core.Lib
         //                        }
         //                    }
 
-        //                    i = (short)(i + 1);
+        //                    i = (i + 1);
 
         //                    // 文字列の終り？
         //                    if (i > list_len)
@@ -450,7 +450,7 @@ namespace SRC.Core.Lib
         //                    }
 
         //                    // 次の文字
-        //                    ch = (short)Strings.Asc(Strings.Mid(list, i, 1));
+        //                    ch = Strings.Asc(Strings.Mid(list, i, 1));
 
         //                    // 要素の末尾か判定
         //                    if (!in_single_quote & !in_double_quote & paren == 0)
@@ -493,14 +493,14 @@ namespace SRC.Core.Lib
         //                        case 40:
         //                        case 91: // "(", "["
         //                            {
-        //                                paren = (short)(paren + 1);
+        //                                paren = (paren + 1);
         //                                break;
         //                            }
 
         //                        case 41:
         //                        case 93: // ")", "]"
         //                            {
-        //                                paren = (short)(paren - 1);
+        //                                paren = (paren - 1);
         //                                if (paren < 0)
         //                                {
         //                                    // 括弧の対応が取れていない
@@ -524,7 +524,7 @@ namespace SRC.Core.Lib
         //                    }
         //                }
 
-        //                i = (short)(i + 1);
+        //                i = (i + 1);
 
         //                // 文字列の終り？
         //                if (i > list_len)
@@ -534,7 +534,7 @@ namespace SRC.Core.Lib
         //                }
 
         //                // 次の文字
-        //                ch = (short)Strings.Asc(Strings.Mid(list, i, 1));
+        //                ch = Strings.Asc(Strings.Mid(list, i, 1));
 
         //                // 要素の末尾か判定
         //                if (!in_single_quote & !in_double_quote & paren == 0)
@@ -556,21 +556,21 @@ namespace SRC.Core.Lib
         //        }
 
         //        // リスト list の要素数を返す (括弧を考慮)
-        //        public static short ListLength(ref string list)
+        //        public static int ListLength(ref string list)
         //        {
-        //            short ListLengthRet = default;
-        //            short i, ch;
-        //            short list_len, paren = default;
+        //            int ListLengthRet = default;
+        //            int i, ch;
+        //            int list_len, paren = default;
         //            bool in_single_quote = default, in_double_quote = default;
         //            ListLengthRet = 0;
-        //            list_len = (short)Strings.Len(list);
+        //            list_len = Strings.Len(list);
         //            i = 0;
         //            while (true)
         //            {
         //                // 空白を読み飛ばす
         //                while (true)
         //                {
-        //                    i = (short)(i + 1);
+        //                    i = (i + 1);
 
         //                    // 文字列の終り？
         //                    if (i > list_len)
@@ -579,7 +579,7 @@ namespace SRC.Core.Lib
         //                    }
 
         //                    // 次の文字
-        //                    ch = (short)Strings.Asc(Strings.Mid(list, i, 1));
+        //                    ch = Strings.Asc(Strings.Mid(list, i, 1));
 
         //                    // 空白でない？
         //                    switch (ch)
@@ -599,7 +599,7 @@ namespace SRC.Core.Lib
         //                }
 
         //                // 要素数を１つ増やす
-        //                ListLengthRet = (short)(ListLengthRet + 1);
+        //                ListLengthRet = (ListLengthRet + 1);
 
         //                // 要素を読み飛ばす
         //                while (true)
@@ -625,14 +625,14 @@ namespace SRC.Core.Lib
         //                            case 40:
         //                            case 91: // "(", "["
         //                                {
-        //                                    paren = (short)(paren + 1);
+        //                                    paren = (paren + 1);
         //                                    break;
         //                                }
 
         //                            case 41:
         //                            case 93: // ")", "]"
         //                                {
-        //                                    paren = (short)(paren - 1);
+        //                                    paren = (paren - 1);
         //                                    if (paren < 0)
         //                                    {
         //                                        // 括弧の対応が取れていない
@@ -657,7 +657,7 @@ namespace SRC.Core.Lib
         //                        }
         //                    }
 
-        //                    i = (short)(i + 1);
+        //                    i = (i + 1);
 
         //                    // 文字列の終り？
         //                    if (i > list_len)
@@ -672,7 +672,7 @@ namespace SRC.Core.Lib
         //                    }
 
         //                    // 次の文字
-        //                    ch = (short)Strings.Asc(Strings.Mid(list, i, 1));
+        //                    ch = Strings.Asc(Strings.Mid(list, i, 1));
 
         //                    // 要素の末尾か判定
         //                    if (!in_single_quote & !in_double_quote & paren == 0)
@@ -693,14 +693,14 @@ namespace SRC.Core.Lib
 
         //        // リスト list から、リストの要素の配列 larray を作成し、
         //        // リストの要素数を返す (括弧を考慮)
-        //        public static short ListSplit(ref string list, ref string[] larray)
+        //        public static int ListSplit(ref string list, ref string[] larray)
         //        {
-        //            short ListSplitRet = default;
-        //            short n, i, ch;
-        //            short paren = default, list_len, begin;
+        //            int ListSplitRet = default;
+        //            int n, i, ch;
+        //            int paren = default, list_len, begin;
         //            bool in_single_quote = default, in_double_quote = default;
         //            ListSplitRet = -1;
-        //            list_len = (short)Strings.Len(list);
+        //            list_len = Strings.Len(list);
         //            larray = new string[1];
         //            n = 0;
         //            i = 0;
@@ -709,7 +709,7 @@ namespace SRC.Core.Lib
         //                // 空白を読み飛ばす
         //                while (true)
         //                {
-        //                    i = (short)(i + 1);
+        //                    i = (i + 1);
 
         //                    // 文字列の終り？
         //                    if (i > list_len)
@@ -719,7 +719,7 @@ namespace SRC.Core.Lib
         //                    }
 
         //                    // 次の文字
-        //                    ch = (short)Strings.Asc(Strings.Mid(list, i, 1));
+        //                    ch = Strings.Asc(Strings.Mid(list, i, 1));
 
         //                    // 空白でない？
         //                    switch (ch)
@@ -739,7 +739,7 @@ namespace SRC.Core.Lib
         //                }
 
         //                // 要素数を１つ増やす
-        //                n = (short)(n + 1);
+        //                n = (n + 1);
 
         //                // 要素を読み込む
         //                Array.Resize(ref larray, n + 1);
@@ -767,14 +767,14 @@ namespace SRC.Core.Lib
         //                            case 40:
         //                            case 91: // "(", "["
         //                                {
-        //                                    paren = (short)(paren + 1);
+        //                                    paren = (paren + 1);
         //                                    break;
         //                                }
 
         //                            case 41:
         //                            case 93: // ")", "]"
         //                                {
-        //                                    paren = (short)(paren - 1);
+        //                                    paren = (paren - 1);
         //                                    if (paren < 0)
         //                                    {
         //                                        // 括弧の対応が取れていない
@@ -799,7 +799,7 @@ namespace SRC.Core.Lib
         //                        }
         //                    }
 
-        //                    i = (short)(i + 1);
+        //                    i = (i + 1);
 
         //                    // 文字列の終り？
         //                    if (i > list_len)
@@ -815,7 +815,7 @@ namespace SRC.Core.Lib
         //                    }
 
         //                    // 次の文字
-        //                    ch = (short)Strings.Asc(Strings.Mid(list, i, 1));
+        //                    ch = Strings.Asc(Strings.Mid(list, i, 1));
 
         //                    // 要素の末尾か判定
         //                    if (!in_single_quote & !in_double_quote & paren == 0)
@@ -837,11 +837,11 @@ namespace SRC.Core.Lib
         //        }
 
         //        // リスト list から idx 番目以降の全要素を返す (括弧を考慮)
-        //        public static string ListTail(ref string list, short idx)
+        //        public static string ListTail(ref string list, int idx)
         //        {
         //            string ListTailRet = default;
-        //            short n, i, ch;
-        //            short list_len, paren = default;
+        //            int n, i, ch;
+        //            int list_len, paren = default;
         //            bool in_single_quote = default, in_double_quote = default;
 
         //            // idxが正の数でなければ空文字列を返す
@@ -850,7 +850,7 @@ namespace SRC.Core.Lib
         //                return ListTailRet;
         //            }
 
-        //            list_len = (short)Strings.Len(list);
+        //            list_len = Strings.Len(list);
 
         //            // idx番目の要素まで読み飛ばす
         //            n = 0;
@@ -860,7 +860,7 @@ namespace SRC.Core.Lib
         //                // 空白を読み飛ばす
         //                while (true)
         //                {
-        //                    i = (short)(i + 1);
+        //                    i = (i + 1);
 
         //                    // 文字列の終り？
         //                    if (i > list_len)
@@ -869,7 +869,7 @@ namespace SRC.Core.Lib
         //                    }
 
         //                    // 次の文字
-        //                    ch = (short)Strings.Asc(Strings.Mid(list, i, 1));
+        //                    ch = Strings.Asc(Strings.Mid(list, i, 1));
 
         //                    // 空白でない？
         //                    switch (ch)
@@ -889,7 +889,7 @@ namespace SRC.Core.Lib
         //                }
 
         //                // 要素数を１つ増やす
-        //                n = (short)(n + 1);
+        //                n = (n + 1);
 
         //                // 求める要素？
         //                if (n == idx)
@@ -921,14 +921,14 @@ namespace SRC.Core.Lib
         //                            case 40:
         //                            case 91: // "(", "["
         //                                {
-        //                                    paren = (short)(paren + 1);
+        //                                    paren = (paren + 1);
         //                                    break;
         //                                }
 
         //                            case 41:
         //                            case 93: // ")", "]"
         //                                {
-        //                                    paren = (short)(paren - 1);
+        //                                    paren = (paren - 1);
         //                                    if (paren < 0)
         //                                    {
         //                                        // 括弧の対応が取れていない
@@ -952,7 +952,7 @@ namespace SRC.Core.Lib
         //                        }
         //                    }
 
-        //                    i = (short)(i + 1);
+        //                    i = (i + 1);
 
         //                    // 文字列の終り？
         //                    if (i > list_len)
@@ -961,7 +961,7 @@ namespace SRC.Core.Lib
         //                    }
 
         //                    // 次の文字
-        //                    ch = (short)Strings.Asc(Strings.Mid(list, i, 1));
+        //                    ch = Strings.Asc(Strings.Mid(list, i, 1));
 
         //                    // 要素の末尾か判定
         //                    if (!in_single_quote & !in_double_quote & paren == 0)
@@ -988,8 +988,8 @@ namespace SRC.Core.Lib
         //        // UPGRADE_NOTE: str は str_Renamed にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
         //        public static void TrimString(ref string str_Renamed)
         //        {
-        //            short j, i, lstr;
-        //            lstr = (short)Strings.Len(str_Renamed);
+        //            int j, i, lstr;
+        //            lstr = Strings.Len(str_Renamed);
         //            i = 1;
         //            j = lstr;
 
@@ -1002,7 +1002,7 @@ namespace SRC.Core.Lib
         //                    case 32:
         //                    case -32448:
         //                        {
-        //                            i = (short)(i + 1);
+        //                            i = (i + 1);
         //                            break;
         //                        }
 
@@ -1022,7 +1022,7 @@ namespace SRC.Core.Lib
         //                    case 32:
         //                    case -32448:
         //                        {
-        //                            j = (short)(j - 1);
+        //                            j = (j - 1);
         //                            break;
         //                        }
 
@@ -1042,12 +1042,12 @@ namespace SRC.Core.Lib
 
         //        // 文字列 str 中に str2 が出現する位置を末尾から検索
         //        // UPGRADE_NOTE: str は str_Renamed にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
-        //        public static short InStr2(ref string str_Renamed, ref string str2)
+        //        public static int InStr2(ref string str_Renamed, ref string str2)
         //        {
-        //            short InStr2Ret = default;
-        //            short slen, i;
-        //            slen = (short)Strings.Len(str2);
-        //            i = (short)(Strings.Len(str_Renamed) - slen + 1);
+        //            int InStr2Ret = default;
+        //            int slen, i;
+        //            slen = Strings.Len(str2);
+        //            i = (Strings.Len(str_Renamed) - slen + 1);
         //            while (i > 0)
         //            {
         //                if ((Strings.Mid(str_Renamed, i, slen) ?? "") == (str2 ?? ""))
@@ -1056,7 +1056,7 @@ namespace SRC.Core.Lib
         //                    return InStr2Ret;
         //                }
 
-        //                i = (short)(i - 1);
+        //                i = (i - 1);
         //            }
 
         //            return InStr2Ret;
@@ -1152,7 +1152,7 @@ namespace SRC.Core.Lib
 
 
         //        // 文字列 buf の長さが length になるように左側にスペースを付加する
-        //        public static string LeftPaddedString(ref string buf, short length)
+        //        public static string LeftPaddedString(ref string buf, int length)
         //        {
         //            string LeftPaddedStringRet = default;
         //            // UPGRADE_ISSUE: 定数 vbFromUnicode はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="55B59875-9A95-4B71-9D6A-7C294BF7139D"' をクリックしてください。
@@ -1162,7 +1162,7 @@ namespace SRC.Core.Lib
         //        }
 
         //        // 文字列 buf の長さが length になるように右側にスペースを付加する
-        //        public static string RightPaddedString(ref string buf, short length)
+        //        public static string RightPaddedString(ref string buf, int length)
         //        {
         //            string RightPaddedStringRet = default;
         //            // UPGRADE_ISSUE: 定数 vbFromUnicode はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="55B59875-9A95-4B71-9D6A-7C294BF7139D"' をクリックしてください。
@@ -1177,7 +1177,7 @@ namespace SRC.Core.Lib
         //        {
         //            string ReadIniRet = default;
         //            var s = new Microsoft.VisualBasic.Compatibility.VB6.FixedLengthString(1024);
-        //            var ret = default(int);
+        //            var ret = default;
 
         //            // シナリオ側に Src.ini ファイルがあればそちらを優先
         //            string argfname = SRC.ScenarioPath + "Src.ini";
@@ -1210,7 +1210,7 @@ namespace SRC.Core.Lib
         //        public static void WriteIni(ref string ini_section, ref string ini_entry, ref string ini_data)
         //        {
         //            var s = new Microsoft.VisualBasic.Compatibility.VB6.FixedLengthString(1024);
-        //            var ret = default(int);
+        //            var ret = default;
 
         //            // LastFolderの設定のみは必ず本体側の Src.ini に書き込む
         //            if (ini_entry == "LastFolder")
@@ -1253,9 +1253,9 @@ namespace SRC.Core.Lib
         //        {
         //            bool ReplaceStringRet = default;
         //            string buf;
-        //            short len2, len3;
-        //            short idx;
-        //            idx = (short)Strings.InStr(s1, s2);
+        //            int len2, len3;
+        //            int idx;
+        //            idx = Strings.InStr(s1, s2);
 
         //            // 置換が必要？
         //            if (idx == 0)
@@ -1263,8 +1263,8 @@ namespace SRC.Core.Lib
         //                return ReplaceStringRet;
         //            }
 
-        //            len2 = (short)Strings.Len(s2);
-        //            len3 = (short)Strings.Len(s3);
+        //            len2 = Strings.Len(s2);
+        //            len3 = Strings.Len(s3);
 
         //            // &は遅いので出来るだけMidを使う
         //            if (len2 == len3)
@@ -1272,7 +1272,7 @@ namespace SRC.Core.Lib
         //                do
         //                {
         //                    StringType.MidStmtStr(ref s1, idx, len2, s3);
-        //                    idx = (short)Strings.InStr(s1, s2);
+        //                    idx = Strings.InStr(s1, s2);
         //                }
         //                while (idx > 0);
         //            }
@@ -1284,7 +1284,7 @@ namespace SRC.Core.Lib
         //                {
         //                    s1 = s1 + Strings.Left(buf, idx - 1) + s3;
         //                    buf = Strings.Mid(buf, idx + len2);
-        //                    idx = (short)Strings.InStr(buf, s2);
+        //                    idx = Strings.InStr(buf, s2);
         //                }
         //                while (idx > 0);
         //                s1 = s1 + buf;
@@ -1313,10 +1313,10 @@ namespace SRC.Core.Lib
         //        // 行頭に「#」がある場合は行の読み飛ばしを行う。
         //        // 行中に「//」がある場合、そこからはコメントと見なして無視する。
         //        // 行末に「_」がある場合は行の結合を行う。
-        //        public static void GetLine(ref short fnum, ref string line_buf, ref int line_num)
+        //        public static void GetLine(ref int fnum, ref string line_buf, ref int line_num)
         //        {
         //            string buf;
-        //            short idx;
+        //            int idx;
         //            line_buf = "";
         //            while (!FileSystem.EOF(fnum))
         //            {
@@ -1330,7 +1330,7 @@ namespace SRC.Core.Lib
         //                }
 
         //                // コメント部分を削除
-        //                idx = (short)Strings.InStr(buf, "//");
+        //                idx = Strings.InStr(buf, "//");
         //                if (idx > 0)
         //                {
         //                    buf = Strings.Left(buf, idx - 1);
@@ -1358,9 +1358,9 @@ namespace SRC.Core.Lib
 
 
         //        // Windowsのバージョンを判定する
-        //        public static short GetWinVersion()
+        //        public static int GetWinVersion()
         //        {
-        //            short GetWinVersionRet = default;
+        //            int GetWinVersionRet = default;
         //            var vinfo = default(OSVERSIONINFO);
         //            int ret;
         //            {
@@ -1375,7 +1375,7 @@ namespace SRC.Core.Lib
         //                    return GetWinVersionRet;
         //                }
 
-        //                GetWinVersionRet = (short)(withBlock.dwMajorVersion * 100 + withBlock.dwMinorVersion);
+        //                GetWinVersionRet = (withBlock.dwMajorVersion * 100 + withBlock.dwMinorVersion);
         //            }
 
         //            return GetWinVersionRet;
@@ -1427,10 +1427,10 @@ namespace SRC.Core.Lib
         //        // 検索文字列 aname
         //        // 検索位置 idx (検索終了位置を返す)
         //        // 取得文字長 length (特殊効果数カウント用。基本的に0(属性取得)か1(属性頭文字取得))
-        //        public static string GetClassBundle(ref string aname, ref short idx, short length = 0)
+        //        public static string GetClassBundle(ref string aname, ref int idx, int length = 0)
         //        {
         //            string GetClassBundleRet = default;
-        //            short i;
+        //            int i;
         //            string ch;
         //            i = idx;
         //            ch = Strings.Mid(aname, i, 1);
@@ -1441,13 +1441,13 @@ namespace SRC.Core.Lib
         //                // 属性指定の最後の文字が弱効剋だった場合、属性なし
         //                if (i >= Strings.Len(aname))
         //                    goto NotFoundClass;
-        //                i = (short)(i + 1);
+        //                i = (i + 1);
         //                ch = Strings.Mid(aname, i, 1);
         //            }
         //            // 低があればその次の文字まで一緒に取得する。
         //            if (ch == "低")
         //            {
-        //                i = (short)(i + 1);
+        //                i = (i + 1);
         //                // midの開始位置指定は文字数を超えていても大丈夫なはずですが念の為
         //                if (i > Strings.Len(aname))
         //                {
@@ -1477,12 +1477,12 @@ namespace SRC.Core.Lib
         //        }
 
         //        // InStrと同じ動作。ただし見つかった文字の前に「弱」「効」「剋」があった場合、別属性と判定する)
-        //        public static short InStrNotNest(ref string string1, ref string string2, short start = 1)
+        //        public static int InStrNotNest(ref string string1, ref string string2, int start = 1)
         //        {
-        //            short InStrNotNestRet = default;
-        //            short i;
+        //            int InStrNotNestRet = default;
+        //            int i;
         //            string c;
-        //            i = (short)Strings.InStr(start, string1, string2);
+        //            i = Strings.InStr(start, string1, string2);
         //            // 先頭一致か、一致なしのとき、ここで取得
         //            if (i <= 1)
         //            {
@@ -1501,7 +1501,7 @@ namespace SRC.Core.Lib
         //                    // 検知した文字の前の文字が弱効剋だったら、再度文字列を探索する
         //                    if (i < Strings.Len(string1))
         //                    {
-        //                        i = (short)Strings.InStr(i + 1, string1, string2);
+        //                        i = Strings.InStr(i + 1, string1, string2);
         //                    }
         //                    else
         //                    {
