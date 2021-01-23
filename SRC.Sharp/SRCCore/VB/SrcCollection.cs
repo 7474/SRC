@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Linq;
 
 namespace SRC.Core.VB
 {
@@ -9,23 +10,34 @@ namespace SRC.Core.VB
     // （ジェネリクスは欲しいので）
     public class SrcCollection<V> : IList<V>, IDictionary<string, V>
     {
+        private IList<V> list;
         private OrderedDictionary dict;
 
         public SrcCollection()
         {
             dict = new OrderedDictionary();
+            list = new List<V>();
         }
 
-        public V this[int index] { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public V this[string key] { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public V this[int index]
+        {
+            get => list[index];
+            set => throw new NotImplementedException();
+        }
 
-        public int Count => throw new NotImplementedException();
+        public V this[string key]
+        {
+            get => (V)dict[key];
+            set => throw new NotImplementedException();
+        }
 
-        public bool IsReadOnly => throw new NotImplementedException();
+        public int Count => dict.Count;
 
-        public ICollection<string> Keys => throw new NotImplementedException();
+        public bool IsReadOnly => dict.IsReadOnly;
 
-        public ICollection<V> Values => throw new NotImplementedException();
+        public ICollection<string> Keys => dict.Keys.Cast<string>().ToList();
+
+        public ICollection<V> Values => list;
 
         public void Add(V item)
         {
@@ -44,32 +56,35 @@ namespace SRC.Core.VB
         }
         public void Add(string key, V value)
         {
-            throw new NotImplementedException();
+            // TODO 既存だった時の振る舞いどうなってんねん
+            dict.Add(key, value);
+            UpdateList();
         }
 
         public void Add(KeyValuePair<string, V> item)
         {
-            throw new NotImplementedException();
+            Add(item.Key, item.Value);
         }
 
         public void Clear()
         {
-            throw new NotImplementedException();
+            dict.Clear();
+            list.Clear();
         }
 
         public bool Contains(V item)
         {
-            throw new NotImplementedException();
+            return list.Contains(item);
         }
 
         public bool Contains(KeyValuePair<string, V> item)
         {
-            throw new NotImplementedException();
+            return ContainsKey(item.Key) && Contains(item.Value);
         }
 
         public bool ContainsKey(string key)
         {
-            throw new NotImplementedException();
+            return dict.Contains(key);
         }
 
         public void CopyTo(V[] array, int arrayIndex)
@@ -84,12 +99,12 @@ namespace SRC.Core.VB
 
         public IEnumerator<V> GetEnumerator()
         {
-            throw new NotImplementedException();
+            return dict.Values.Cast<V>().GetEnumerator();
         }
 
         public int IndexOf(V item)
         {
-            throw new NotImplementedException();
+            return list.IndexOf(item);
         }
 
         public void Insert(int index, V item)
@@ -99,37 +114,67 @@ namespace SRC.Core.VB
 
         public bool Remove(V item)
         {
-            throw new NotImplementedException();
+            // XXX 本当にこんな処理になるのか？
+            foreach (string key in dict.Keys.Cast<string>())
+            {
+                if (dict[key].Equals(item))
+                {
+                    return Remove(key);
+                }
+            }
+            return false;
         }
 
         public bool Remove(string key)
         {
-            throw new NotImplementedException();
+            if (ContainsKey(key))
+            {
+                dict.Remove(key);
+                UpdateList();
+                return true;
+            }
+            return false;
         }
 
         public bool Remove(KeyValuePair<string, V> item)
         {
-            throw new NotImplementedException();
+            return Remove(item.Key);
         }
 
         public void RemoveAt(int index)
         {
-            throw new NotImplementedException();
+            Remove(this[index]);
+            UpdateList();
         }
 
         public bool TryGetValue(string key, out V value)
         {
-            throw new NotImplementedException();
+            if (ContainsKey(key))
+            {
+                value = this[key];
+                return true;
+            }
+            else
+            {
+                value = default;
+                return false;
+            }
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            throw new NotImplementedException();
+            return list.GetEnumerator();
         }
 
         IEnumerator<KeyValuePair<string, V>> IEnumerable<KeyValuePair<string, V>>.GetEnumerator()
         {
             throw new NotImplementedException();
+        }
+
+        private void UpdateList()
+        {
+            // XXX reallocもったいない
+            list = dict.Values.Cast<V>().ToList();
         }
     }
 }
