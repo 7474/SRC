@@ -1,130 +1,123 @@
-﻿using System;
-using System.Drawing;
-using System.Windows.Forms;
-using VB = Microsoft.VisualBasic;
-using Microsoft.VisualBasic;
-using Microsoft.VisualBasic.CompilerServices;
+﻿// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
+// 本プログラムはフリーソフトであり、無保証です。
+// 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
+// 再頒布または改変することができます。
 
-namespace Project1
+namespace SRC.Core
 {
-    static class SRC
+    public class SRC
     {
 
-        // Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-        // 本プログラムはフリーソフトであり、無保証です。
-        // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
-        // 再頒布または改変することができます。
-
         // パイロットデータのリスト
-        public static PilotDataList PDList = new PilotDataList();
+        public PilotDataList PDList = new PilotDataList();
         // ノンパイロットデータのリスト
-        public static NonPilotDataList NPDList = new NonPilotDataList();
+        public NonPilotDataList NPDList = new NonPilotDataList();
         // ユニットデータのリスト
-        public static UnitDataList UDList = new UnitDataList();
+        public UnitDataList UDList = new UnitDataList();
         // アイテムデータのリスト
-        public static ItemDataList IDList = new ItemDataList();
+        public ItemDataList IDList = new ItemDataList();
         // メッセージデータのリスト
-        public static MessageDataList MDList = new MessageDataList();
+        public MessageDataList MDList = new MessageDataList();
         // 特殊効果データのリスト
-        public static MessageDataList EDList = new MessageDataList();
+        public MessageDataList EDList = new MessageDataList();
         // 戦闘アニメデータのリスト
-        public static MessageDataList ADList = new MessageDataList();
+        public MessageDataList ADList = new MessageDataList();
         // 拡張戦闘アニメデータのリスト
-        public static MessageDataList EADList = new MessageDataList();
+        public MessageDataList EADList = new MessageDataList();
         // ダイアログデータのリスト
-        public static DialogDataList DDList = new DialogDataList();
+        public DialogDataList DDList = new DialogDataList();
         // スペシャルパワーデータのリスト
-        public static SpecialPowerDataList SPDList = new SpecialPowerDataList();
+        public SpecialPowerDataList SPDList = new SpecialPowerDataList();
         // エリアスデータのリスト
-        public static AliasDataList ALDList = new AliasDataList();
+        public AliasDataList ALDList = new AliasDataList();
         // 地形データのリスト
-        public static TerrainDataList TDList = new TerrainDataList();
+        public TerrainDataList TDList = new TerrainDataList();
         // バトルコンフィグデータのリスト
-        public static BattleConfigDataList BCList = new BattleConfigDataList();
+        public BattleConfigDataList BCList = new BattleConfigDataList();
 
 
         // パイロットのリスト
-        public static Pilots PList = new Pilots();
+        public Pilots PList = new Pilots();
         // ユニットのリスト
-        public static Units UList = new Units();
+        public Units UList = new Units();
         // アイテムのリスト
-        public static Items IList = new Items();
+        public Items IList = new Items();
 
         // イベントファイル名
-        public static string ScenarioFileName;
+        public string ScenarioFileName;
         // イベントファイル名のあるフォルダ
-        public static string ScenarioPath;
+        public string ScenarioPath;
         // セーブデータのファイルディスクリプタ
-        public static short SaveDataFileNumber;
+        public short SaveDataFileNumber;
         // セーブデータのバージョン
-        public static int SaveDataVersion;
+        public int SaveDataVersion;
 
         // そのステージが終了したかを示すフラグ
-        public static bool IsScenarioFinished;
+        public bool IsScenarioFinished;
         // インターミッションコマンドによるステージかどうかを示すフラグ
-        public static bool IsSubStage;
+        public bool IsSubStage;
         // コマンドがキャンセルされたかどうかを示すフラグ
-        public static bool IsCanceled;
+        public bool IsCanceled;
 
         // フェイズ名
-        public static string Stage;
+        public string Stage;
         // ターン数
-        public static short Turn;
+        public short Turn;
         // 総ターン数
-        public static int TotalTurn;
+        public int TotalTurn;
         // 総資金
-        public static int Money;
+        public int Money;
         // 読み込まれているデータ数
-        public static string[] Titles;
+        public string[] Titles;
         // ローカルデータが読み込まれているか？
-        public static bool IsLocalDataLoaded;
+        public bool IsLocalDataLoaded;
 
         // 最新のセーブデータのファイル名
-        public static string LastSaveDataFileName;
+        public string LastSaveDataFileName;
         // リスタート用セーブデータが利用可能かどうか
-        public static bool IsRestartSaveDataAvailable;
+        public bool IsRestartSaveDataAvailable;
         // クイックロード用セーブデータが利用可能かどうか
-        public static bool IsQuickSaveDataAvailable;
+        public bool IsQuickSaveDataAvailable;
 
         // システムオプション
         // マス目の表示をするか
-        public static bool ShowSquareLine;
+        public bool ShowSquareLine;
         // 敵フェイズにはＢＧＭを変更しないか
-        public static bool KeepEnemyBGM;
+        public bool KeepEnemyBGM;
         // 拡張データフォルダへのパス
-        public static string ExtDataPath;
-        public static string ExtDataPath2;
+        public string ExtDataPath;
+        public string ExtDataPath2;
         // MIDI音源リセットの種類
-        public static string MidiResetType;
+        public string MidiResetType;
         // 自動防御モードを使うか
-        public static bool AutoMoveCursor;
+        public bool AutoMoveCursor;
         // スペシャルパワーアニメを表示するか
-        public static bool SpecialPowerAnimation;
+        public bool SpecialPowerAnimation;
         // 戦闘アニメを表示するか
-        public static bool BattleAnimation;
+        public bool BattleAnimation;
         // 武器準備アニメを表示するか
-        public static bool WeaponAnimation;
+        public bool WeaponAnimation;
         // 拡大戦闘アニメを表示するか
-        public static bool ExtendedAnimation;
+        public bool ExtendedAnimation;
         // 移動アニメを表示するか
-        public static bool MoveAnimation;
+        public bool MoveAnimation;
         // 画像バッファの枚数
-        public static short ImageBufferSize;
+        public short ImageBufferSize;
         // 画像バッファの最大バイト数
-        public static int MaxImageBufferByteSize;
+        public int MaxImageBufferByteSize;
         // 拡大画像を画像バッファに保存するか
-        public static bool KeepStretchedImage;
+        public bool KeepStretchedImage;
         // 透過描画にTransparentBltを使うか
-        public static bool UseTransparentBlt;
+        public bool UseTransparentBlt;
 
         // SRC.exeのある場所
-        public static string AppPath;
+        public string AppPath;
 
         // データ中にレベル指定を省略した場合のデフォルトのレベル値
         public const short DEFAULT_LEVEL = -1000;
 
         // UPGRADE_WARNING: Sub Main() が完了したときにアプリケーションは終了します。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="E08DDC71-66BA-424F-A612-80AF11498FF8"' をクリックしてください。
-        public static void Main()
+        public void Main()
         {
             string fname;
             short i;
@@ -1409,7 +1402,7 @@ namespace Project1
         }
 
         // INIファイルを作成する
-        public static void CreateIniFile()
+        public void CreateIniFile()
         {
             short f;
             ;
@@ -1570,7 +1563,7 @@ namespace Project1
 
         // KeepStretchedImageを使用すべきか決定するため、BitBltと
         // StretchBltの速度差を測定
-        private static object IsBitBltFasterThanStretchBlt()
+        private object IsBitBltFasterThanStretchBlt()
         {
             object IsBitBltFasterThanStretchBltRet = default;
             int stime, etime;
@@ -1654,7 +1647,7 @@ namespace Project1
 
 
         // イベントファイルfnameを実行
-        public static void StartScenario(string fname)
+        public void StartScenario(string fname)
         {
             short i;
             int ret;
@@ -1914,7 +1907,7 @@ namespace Project1
         }
 
         // 陣営upartyのフェイズを実行
-        public static void StartTurn(ref string uparty)
+        public void StartTurn(ref string uparty)
         {
             short num, i, phase;
             Unit u;
@@ -2641,7 +2634,7 @@ namespace Project1
         }
 
         // ゲームオーバー
-        public static void GameOver()
+        public void GameOver()
         {
             var fname = default(string);
             Sound.KeepBGM = false;
@@ -2697,13 +2690,13 @@ namespace Project1
         }
 
         // ゲームクリア
-        public static void GameClear()
+        public void GameClear()
         {
             TerminateSRC();
         }
 
         // ゲームを途中終了
-        public static void ExitGame()
+        public void ExitGame()
         {
             var fname = default(string);
             Sound.KeepBGM = false;
@@ -2761,7 +2754,7 @@ namespace Project1
         }
 
         // SRCを終了
-        public static void TerminateSRC()
+        public void TerminateSRC()
         {
             short i, j;
 
@@ -2887,7 +2880,7 @@ namespace Project1
 
 
         // データをセーブ
-        public static void SaveData(ref string fname)
+        public void SaveData(ref string fname)
         {
             short i;
             int num;
@@ -2934,7 +2927,7 @@ namespace Project1
         }
 
         // データをロード
-        public static void LoadData(ref string fname)
+        public void LoadData(ref string fname)
         {
             short i, num = default;
             var fname2 = default(string);
@@ -3132,7 +3125,7 @@ namespace Project1
 
 
         // 一時中断用データをファイルにセーブする
-        public static void DumpData(ref string fname)
+        public void DumpData(ref string fname)
         {
             short i;
             int num;
@@ -3202,7 +3195,7 @@ namespace Project1
         }
 
         // 一時中断用データをロード
-        public static void RestoreData(ref string fname, ref bool quick_load)
+        public void RestoreData(ref string fname, ref bool quick_load)
         {
             short i, num = default;
             var fname2 = default(string);
@@ -3599,7 +3592,7 @@ namespace Project1
         // 旧形式のユニットＩＤを新形式に変換
         // 旧形式）ユニット名称+数値
         // 新形式）ユニット名称+":"+数値
-        public static void ConvertUnitID(ref string ID)
+        public void ConvertUnitID(ref string ID)
         {
             short i;
             if (Strings.InStr(ID, ":") > 0)
@@ -3633,7 +3626,7 @@ namespace Project1
         }
 
         // 作品new_titleのデータを読み込み
-        public static void IncludeData(ref string new_title)
+        public void IncludeData(ref string new_title)
         {
             string fpath;
 
@@ -3766,7 +3759,7 @@ namespace Project1
         }
 
         // データフォルダ fname を検索
-        public static string SearchDataFolder(ref string fname)
+        public string SearchDataFolder(ref string fname)
         {
             string SearchDataFolderRet = default;
             string fname2;
@@ -3789,7 +3782,7 @@ namespace Project1
                場所 ICSharpCode.CodeConverter.CSharp.CommentConvertingMethodBodyVisitor.<DefaultVisitInnerAsync>d__3.MoveNext()
 
             Input:
-                    Static init_search_data_folder As Boolean
+                    init_search_data_folder As Boolean
 
              */
             ;
@@ -3811,7 +3804,7 @@ namespace Project1
                場所 ICSharpCode.CodeConverter.CSharp.CommentConvertingMethodBodyVisitor.<DefaultVisitInnerAsync>d__3.MoveNext()
 
             Input:
-                    Static scenario_data_dir_exists As Boolean
+                    scenario_data_dir_exists As Boolean
 
              */
             ;
@@ -3833,7 +3826,7 @@ namespace Project1
                場所 ICSharpCode.CodeConverter.CSharp.CommentConvertingMethodBodyVisitor.<DefaultVisitInnerAsync>d__3.MoveNext()
 
             Input:
-                    Static extdata_data_dir_exists As Boolean
+                    extdata_data_dir_exists As Boolean
 
              */
             ;
@@ -3855,7 +3848,7 @@ namespace Project1
                場所 ICSharpCode.CodeConverter.CSharp.CommentConvertingMethodBodyVisitor.<DefaultVisitInnerAsync>d__3.MoveNext()
 
             Input:
-                    Static extdata2_data_dir_exists As Boolean
+                    extdata2_data_dir_exists As Boolean
 
              */
             ;
@@ -3947,7 +3940,7 @@ namespace Project1
         }
 
         // 資金の量を変更する
-        public static void IncrMoney(int earnings)
+        public void IncrMoney(int earnings)
         {
             Money = GeneralLib.MinLng(Money + earnings, 999999999);
             Money = GeneralLib.MaxLng(Money, 0);
