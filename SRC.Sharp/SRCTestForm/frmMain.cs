@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -48,8 +49,11 @@ namespace SRCTestForm
                     //try
                     //{
                     SetStatusText($"Load data [{fbd.SelectedPath}].");
+                    var sw = new Stopwatch();
+                    sw.Start();
                     SRC.LoadDirectory(fbd.SelectedPath);
-                    SetStatusText("Loaded.");
+                    sw.Stop();
+                    SetStatusText($"Loaded. {sw.ElapsedMilliseconds}ms");
                     //}
                     //catch (Exception ex)
                     //{
@@ -77,6 +81,7 @@ namespace SRCTestForm
         private void SetStatusText(string text)
         {
             toolStripStatusLabel.Text = text;
+            Update();
         }
 
         private void SetProgress(int value, int max)
