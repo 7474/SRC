@@ -2,6 +2,7 @@
 // 本プログラムはフリーソフトであり、無保証です。
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
+using SRC.Core.Lib;
 using SRC.Core.VB;
 using System;
 using System.Collections.Generic;
@@ -89,10 +90,10 @@ namespace SRC.Core.Models
                 //if (Strings.InStr(NicknameRet, "主人公") == 1 | Strings.InStr(NicknameRet, "ヒロイン") == 1)
                 //{
                 //    string argexpr = NicknameRet + "愛称";
-                //    NicknameRet = Expression.GetValueAsString(ref argexpr);
+                //    NicknameRet = Expression.GetValueAsString(argexpr);
                 //}
 
-                //Expression.ReplaceSubExpression(ref NicknameRet);
+                //Expression.ReplaceSubExpression(NicknameRet);
                 return NicknameRet;
             }
 
@@ -113,20 +114,20 @@ namespace SRC.Core.Models
                 //if (Strings.InStr(KanaNameRet, "主人公") == 1 | Strings.InStr(KanaNameRet, "ヒロイン") == 1 | Strings.InStr(KanaNameRet, "ひろいん") == 1)
                 //{
                 //    string argvar_name = KanaNameRet + "読み仮名";
-                //    if (Expression.IsVariableDefined(ref argvar_name))
+                //    if (Expression.IsVariableDefined(argvar_name))
                 //    {
                 //        string argexpr = KanaNameRet + "読み仮名";
-                //        KanaNameRet = Expression.GetValueAsString(ref argexpr);
+                //        KanaNameRet = Expression.GetValueAsString(argexpr);
                 //    }
                 //    else
                 //    {
-                //        string localGetValueAsString() { string argexpr = KanaNameRet + "愛称"; var ret = Expression.GetValueAsString(ref argexpr); return ret; }
+                //        string localGetValueAsString() { string argexpr = KanaNameRet + "愛称"; var ret = Expression.GetValueAsString(argexpr); return ret; }
 
                 //        string argstr_Renamed = localGetValueAsString();
-                //        KanaNameRet = GeneralLib.StrToHiragana(ref argstr_Renamed);
+                //        KanaNameRet = GeneralLib.StrToHiragana(argstr_Renamed);
                 //    }
                 //}
-                //Expression.ReplaceSubExpression(ref KanaNameRet);
+                //Expression.ReplaceSubExpression(KanaNameRet);
                 return KanaNameRet;
             }
 
@@ -171,108 +172,106 @@ namespace SRC.Core.Models
         }
 
 
+        private string last_sname;
+        private string last_sdata;
         // 特殊能力を追加
-        public void AddSkill(ref string sname, double slevel, string sdata, int lv)
+        public void AddSkill(string sname, double slevel, string sdata, int lv)
         {
-            SkillData sd;
-            int i;
-            ;
-
             // データ定義が省略されている場合は前回と同じ物を使う
             if ((last_sname ?? "") == (sname ?? "") & Strings.Len(sdata) == 0)
             {
                 sdata = last_sdata;
             }
-
             last_sname = sname;
             last_sdata = sdata;
 
-            // エリアスが定義されている？
-            object argIndex2 = sname;
-            if (SRC.ALDList.IsDefined(ref argIndex2))
-            {
-                if (GeneralLib.LIndex(ref sdata, 1) != "解説")
-                {
-                    object argIndex1 = sname;
-                    {
-                        var withBlock = SRC.ALDList.Item(ref argIndex1);
-                        var loopTo = withBlock.Count;
-                        for (i = 1; i <= loopTo; i++)
-                        {
-                            // エリアスの定義に従って特殊能力定義を置き換える
-                            sd = new SkillData();
-                            sd.Name = withBlock.get_AliasType(i);
-                            string localLIndex() { string arglist = withBlock.get_AliasData(i); var ret = GeneralLib.LIndex(ref arglist, 1); withBlock.get_AliasData(i) = arglist; return ret; }
+            // TODO Impl
+            //// エリアスが定義されている？
+            //object argIndex2 = sname;
+            //if (SRC.ALDList.IsDefined(argIndex2))
+            //{
+            //    if (GeneralLib.LIndex(sdata, 1) != "解説")
+            //    {
+            //        object argIndex1 = sname;
+            //        {
+            //            var withBlock = SRC.ALDList.Item(argIndex1);
+            //            var loopTo = withBlock.Count;
+            //            for (i = 1; i <= loopTo; i++)
+            //            {
+            //                // エリアスの定義に従って特殊能力定義を置き換える
+            //                sd = new SkillData();
+            //                sd.Name = withBlock.get_AliasType(i);
+            //                string localLIndex() { string arglist = withBlock.get_AliasData(i); var ret = GeneralLib.LIndex(arglist, 1); withBlock.get_AliasData(i) = arglist; return ret; }
 
-                            if (localLIndex() == "解説")
-                            {
-                                if (!string.IsNullOrEmpty(sdata))
-                                {
-                                    sd.Name = GeneralLib.LIndex(ref sdata, 1);
-                                }
-                            }
+            //                if (localLIndex() == "解説")
+            //                {
+            //                    if (!string.IsNullOrEmpty(sdata))
+            //                    {
+            //                        sd.Name = GeneralLib.LIndex(sdata, 1);
+            //                    }
+            //                }
 
-                            if (withBlock.get_AliasLevelIsPlusMod(i))
-                            {
-                                if (slevel == Constants.DEFAULT_LEVEL)
-                                {
-                                    slevel = 1d;
-                                }
+            //                if (withBlock.get_AliasLevelIsPlusMod(i))
+            //                {
+            //                    if (slevel == Constants.DEFAULT_LEVEL)
+            //                    {
+            //                        slevel = 1d;
+            //                    }
 
-                                sd.Level = slevel + withBlock.get_AliasLevel(i);
-                            }
-                            else if (withBlock.get_AliasLevelIsMultMod(i))
-                            {
-                                if (slevel == Constants.DEFAULT_LEVEL)
-                                {
-                                    slevel = 1d;
-                                }
+            //                    sd.Level = slevel + withBlock.get_AliasLevel(i);
+            //                }
+            //                else if (withBlock.get_AliasLevelIsMultMod(i))
+            //                {
+            //                    if (slevel == Constants.DEFAULT_LEVEL)
+            //                    {
+            //                        slevel = 1d;
+            //                    }
 
-                                sd.Level = slevel * withBlock.get_AliasLevel(i);
-                            }
-                            else if (slevel != Constants.DEFAULT_LEVEL)
-                            {
-                                sd.Level = slevel;
-                            }
-                            else
-                            {
-                                sd.Level = withBlock.get_AliasLevel(i);
-                            }
+            //                    sd.Level = slevel * withBlock.get_AliasLevel(i);
+            //                }
+            //                else if (slevel != Constants.DEFAULT_LEVEL)
+            //                {
+            //                    sd.Level = slevel;
+            //                }
+            //                else
+            //                {
+            //                    sd.Level = withBlock.get_AliasLevel(i);
+            //                }
 
-                            sd.StrData = withBlock.get_AliasData(i);
-                            if (!string.IsNullOrEmpty(sdata))
-                            {
-                                string localLIndex1() { string arglist = withBlock.get_AliasData(i); var ret = GeneralLib.LIndex(ref arglist, 1); withBlock.get_AliasData(i) = arglist; return ret; }
+            //                sd.StrData = withBlock.get_AliasData(i);
+            //                if (!string.IsNullOrEmpty(sdata))
+            //                {
+            //                    string localLIndex1() { string arglist = withBlock.get_AliasData(i); var ret = GeneralLib.LIndex(arglist, 1); withBlock.get_AliasData(i) = arglist; return ret; }
 
-                                if (withBlock.get_AliasData(i) != "非表示" & localLIndex1() != "解説")
-                                {
-                                    string localListTail() { string arglist = withBlock.get_AliasData(i); var ret = GeneralLib.ListTail(ref arglist, 2); withBlock.get_AliasData(i) = arglist; return ret; }
+            //                    if (withBlock.get_AliasData(i) != "非表示" & localLIndex1() != "解説")
+            //                    {
+            //                        string localListTail() { string arglist = withBlock.get_AliasData(i); var ret = GeneralLib.ListTail(arglist, 2); withBlock.get_AliasData(i) = arglist; return ret; }
 
-                                    sd.StrData = Strings.Trim(sdata + " " + localListTail());
-                                }
-                            }
+            //                        sd.StrData = Strings.Trim(sdata + " " + localListTail());
+            //                    }
+            //                }
 
-                            if (withBlock.get_AliasLevelIsPlusMod(i) | withBlock.get_AliasLevelIsMultMod(i))
-                            {
-                                sd.StrData = sd.StrData + "Lv" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(slevel);
-                            }
+            //                if (withBlock.get_AliasLevelIsPlusMod(i) | withBlock.get_AliasLevelIsMultMod(i))
+            //                {
+            //                    sd.StrData = sd.StrData + "Lv" + SrcFormatter.Format(slevel);
+            //                }
 
-                            sd.NecessaryLevel = lv;
-                            colSkill.Add(sd, sname + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(colSkill.Count));
-                        }
-                    }
+            //                sd.NecessaryLevel = lv;
+            //                colSkill.Add(sd, sname + SrcFormatter.Format(colSkill.Count));
+            //            }
+            //        }
 
-                    return;
-                }
-            }
+            //        return;
+            //    }
+            //}
 
             // 特殊能力を登録
-            sd = new SkillData();
+            var sd = new SkillData();
             sd.Name = sname;
             sd.Level = slevel;
             sd.StrData = sdata;
             sd.NecessaryLevel = lv;
-            colSkill.Add(sd, sname + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(colSkill.Count));
+            colSkill.Add(sd, sname + SrcFormatter.Format(colSkill.Count));
         }
 
         // 指定したレベルの時点で所有しているパイロット用特殊能力を列挙
@@ -292,16 +291,13 @@ namespace SRC.Core.Models
                     {
                         if ((sd.Name ?? "") == (skill_name[i] ?? ""))
                         {
-                            goto NextLoop;
+                            continue;
                         }
                     }
 
                     skill_num = (skill_num + 1);
                     skill_name[skill_num] = sd.Name;
                 }
-
-            NextLoop:
-                ;
             }
 
             SkillRet = "";
@@ -312,7 +308,7 @@ namespace SRC.Core.Models
         }
 
         // 指定したレベルで特殊能力snameが使えるか？
-        public bool IsSkillAvailable(int lv, ref string sname)
+        public bool IsSkillAvailable(int lv, string sname)
         {
             bool IsSkillAvailableRet = default;
             foreach (SkillData sd in colSkill)
@@ -331,7 +327,7 @@ namespace SRC.Core.Models
         }
 
         // 指定したレベルでの特殊能力snameのレベル
-        public double SkillLevel(int lv, ref string sname)
+        public double SkillLevel(int lv, string sname)
         {
             double SkillLevelRet = default;
             int lv2;
@@ -362,7 +358,7 @@ namespace SRC.Core.Models
         }
 
         // 必要技能判定用(別名でも判定)
-        public int SkillLevel2(int lv, ref string sname)
+        public int SkillLevel2(int lv, string sname)
         {
             int SkillLevel2Ret = default;
             int lv2;
@@ -379,7 +375,7 @@ namespace SRC.Core.Models
                     if (sd.NecessaryLevel > lv2)
                     {
                         lv2 = sd.NecessaryLevel;
-                        SkillLevel2Ret = sd.Level;
+                        SkillLevel2Ret = (int)sd.Level;
                     }
                 }
             }
@@ -393,7 +389,7 @@ namespace SRC.Core.Models
         }
 
         // 指定したレベルでの特殊能力Nameのデータ
-        public string SkillData(int lv, ref string sname)
+        public string SkillData(int lv, string sname)
         {
             string SkillDataRet = default;
             int lv2;
@@ -419,7 +415,7 @@ namespace SRC.Core.Models
         }
 
         // 指定したレベルでの特殊能力Nameの名称
-        public string SkillName(int lv, ref string sname)
+        public string SkillName(int lv, string sname)
         {
             string SkillNameRet = default;
             int lv2;
@@ -439,7 +435,7 @@ namespace SRC.Core.Models
                         lv2 = sd.NecessaryLevel;
                         if (Strings.Len(sd.StrData) > 0)
                         {
-                            SkillNameRet = GeneralLib.LIndex(ref sd.StrData, 1);
+                            SkillNameRet = GeneralLib.LIndex(sd.StrData, 1);
                             switch (SkillNameRet ?? "")
                             {
                                 case "非表示":
@@ -468,7 +464,7 @@ namespace SRC.Core.Models
                         {
                             if (sd.Level != Constants.DEFAULT_LEVEL & Strings.InStr(SkillNameRet, "Lv") == 0)
                             {
-                                SkillNameRet = SkillNameRet + "Lv" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(sd.Level);
+                                SkillNameRet = SkillNameRet + "Lv" + SrcFormatter.Format(sd.Level);
                             }
                         }
                     }
@@ -488,7 +484,7 @@ namespace SRC.Core.Models
         }
 
         // 特殊能力Nameの種類 (愛称=>名称)
-        public string SkillType(ref string sname)
+        public string SkillType(string sname)
         {
             string SkillTypeRet = default;
             foreach (SkillData sd in colSkill)
@@ -507,14 +503,11 @@ namespace SRC.Core.Models
 
 
         // スペシャルパワーを追加
-        public void AddSpecialPower(ref string sname, int lv, int sp_consumption)
+        public void AddSpecialPower(string sname, int lv, int sp_consumption)
         {
-            Array.Resize(ref SpecialPowerName, Information.UBound(SpecialPowerName) + 1 + 1);
-            Array.Resize(ref SpecialPowerNecessaryLevel, Information.UBound(SpecialPowerName) + 1);
-            Array.Resize(ref SpecialPowerSPConsumption, Information.UBound(SpecialPowerName) + 1);
-            SpecialPowerName[Information.UBound(SpecialPowerName)] = sname;
-            SpecialPowerNecessaryLevel[Information.UBound(SpecialPowerName)] = lv;
-            SpecialPowerSPConsumption[Information.UBound(SpecialPowerName)] = sp_consumption;
+            SpecialPowerName.Add(sname);
+            SpecialPowerNecessaryLevel.Add(lv);
+            SpecialPowerSPConsumption.Add(sp_consumption);
         }
 
         // 指定したレベルで使用可能なスペシャルパワーの個数
@@ -522,8 +515,7 @@ namespace SRC.Core.Models
         {
             int CountSpecialPowerRet = default;
             int i;
-            var loopTo = Information.UBound(SpecialPowerName);
-            for (i = 1; i <= loopTo; i++)
+            for (i = 0; i < SpecialPowerName.Count; i++)
             {
                 if (SpecialPowerNecessaryLevel[i] <= lv)
                 {
@@ -540,8 +532,7 @@ namespace SRC.Core.Models
             string SpecialPowerRet = default;
             int i, n;
             n = 0;
-            var loopTo = Information.UBound(SpecialPowerName);
-            for (i = 1; i <= loopTo; i++)
+            for (i = 0; i < SpecialPowerName.Count; i++)
             {
                 if (SpecialPowerNecessaryLevel[i] <= lv)
                 {
@@ -558,12 +549,11 @@ namespace SRC.Core.Models
         }
 
         // 指定したレベルでスペシャルパワーsnameを使えるか？
-        public bool IsSpecialPowerAvailable(int lv, ref string sname)
+        public bool IsSpecialPowerAvailable(int lv, string sname)
         {
             bool IsSpecialPowerAvailableRet = default;
             int i;
-            var loopTo = Information.UBound(SpecialPowerName);
-            for (i = 1; i <= loopTo; i++)
+            for (i = 0; i < SpecialPowerName.Count; i++)
             {
                 if ((SpecialPowerName[i] ?? "") == (sname ?? ""))
                 {
@@ -587,8 +577,7 @@ namespace SRC.Core.Models
             int i;
 
             // パイロットデータ側でＳＰ消費量が定義されているか検索
-            var loopTo = Information.UBound(SpecialPowerName);
-            for (i = 1; i <= loopTo; i++)
+            for (i = 0; i < SpecialPowerName.Count; i++)
             {
                 if ((SpecialPowerName[i] ?? "") == (sname ?? ""))
                 {
@@ -597,14 +586,15 @@ namespace SRC.Core.Models
                 }
             }
 
-            // パイロットデータ側でＳＰ消費量が定義されていなければ
-            // デフォルトの値を使う
-            if (SpecialPowerCostRet == 0)
-            {
-                SpecialPowerData localItem() { object argIndex1 = sname; var ret = SRC.SPDList.Item(ref argIndex1); return ret; }
+            // TODO Impl
+            //// パイロットデータ側でＳＰ消費量が定義されていなければ
+            //// デフォルトの値を使う
+            //if (SpecialPowerCostRet == 0)
+            //{
+            //    SpecialPowerData localItem() { object argIndex1 = sname; var ret = SRC.SPDList.Item(argIndex1); return ret; }
 
-                SpecialPowerCostRet = localItem().SPConsumption;
-            }
+            //    SpecialPowerCostRet = localItem().SPConsumption;
+            //}
 
             return SpecialPowerCostRet;
         }
@@ -613,62 +603,23 @@ namespace SRC.Core.Models
         // データを消去
         public void Clear()
         {
-            int i;
-            SpecialPowerName = new string[1];
-            SpecialPowerNecessaryLevel = new int[1];
-            SpecialPowerSPConsumption = new int[1];
-            {
-                var withBlock = colSkill;
-                var loopTo = withBlock.Count;
-                for (i = 1; i <= loopTo; i++)
-                    withBlock.Remove(1);
-            }
-
-            if (colFeature is object)
-            {
-                {
-                    var withBlock1 = colFeature;
-                    var loopTo1 = withBlock1.Count;
-                    for (i = 1; i <= loopTo1; i++)
-                        withBlock1.Remove(1);
-                }
-            }
-
-            if (colWeaponData is object)
-            {
-                {
-                    var withBlock2 = colWeaponData;
-                    var loopTo2 = withBlock2.Count;
-                    for (i = 1; i <= loopTo2; i++)
-                        withBlock2.Remove(1);
-                }
-            }
-
-            if (colAbilityData is object)
-            {
-                {
-                    var withBlock3 = colAbilityData;
-                    var loopTo3 = withBlock3.Count;
-                    for (i = 1; i <= loopTo3; i++)
-                        withBlock3.Remove(1);
-                }
-            }
+            SpecialPowerName.Clear();
+            SpecialPowerNecessaryLevel.Clear();
+            SpecialPowerSPConsumption.Clear();
+            colSkill.Clear();
+            colFeature.Clear();
+            colWeaponData.Clear();
+            colAbilityData.Clear();
         }
 
-
         // 特殊能力を追加
-        public void AddFeature(ref string fdef)
+        public void AddFeature(string fdef)
         {
-            FeatureData fd;
             string ftype, fdata = default;
             double flevel;
             string nskill = default, ncondition = default;
             int i, j;
             string buf;
-            if (colFeature is null)
-            {
-                colFeature = new Collection();
-            }
 
             // 必要技能の切り出し
             if (Strings.Right(fdef, 1) == ")")
@@ -751,140 +702,141 @@ namespace SRC.Core.Models
                 }
             }
 
-            // エリアスが定義されている？
-            object argIndex2 = ftype;
-            if (SRC.ALDList.IsDefined(ref argIndex2))
-            {
-                if (GeneralLib.LIndex(ref fdata, 1) != "解説")
-                {
-                    object argIndex1 = ftype;
-                    {
-                        var withBlock = SRC.ALDList.Item(ref argIndex1);
-                        var loopTo = withBlock.Count;
-                        for (i = 1; i <= loopTo; i++)
-                        {
-                            fd = new FeatureData();
+            // Imple
+            //エリアスが定義されている？
+            //object argIndex2 = ftype;
+            //if (SRC.ALDList.IsDefined(argIndex2))
+            //{
+            //    if (GeneralLib.LIndex(fdata, 1) != "解説")
+            //    {
+            //        object argIndex1 = ftype;
+            //        {
+            //            var withBlock = SRC.ALDList.Item(argIndex1);
+            //            var loopTo = withBlock.Count;
+            //            for (i = 1; i <= loopTo; i++)
+            //            {
+            //                fd = new FeatureData();
 
-                            // エリアスの定義に従って特殊能力定義を置き換える
-                            fd.Name = withBlock.get_AliasType(i);
-                            if ((withBlock.get_AliasType(i) ?? "") != (ftype ?? ""))
-                            {
-                                if (withBlock.get_AliasLevelIsPlusMod(i))
-                                {
-                                    if (flevel == Constants.DEFAULT_LEVEL)
-                                    {
-                                        flevel = 1d;
-                                    }
+            //                エリアスの定義に従って特殊能力定義を置き換える
+            //                fd.Name = withBlock.get_AliasType(i);
+            //                if ((withBlock.get_AliasType(i) ?? "") != (ftype ?? ""))
+            //                {
+            //                    if (withBlock.get_AliasLevelIsPlusMod(i))
+            //                    {
+            //                        if (flevel == Constants.DEFAULT_LEVEL)
+            //                        {
+            //                            flevel = 1d;
+            //                        }
 
-                                    if (withBlock.get_AliasLevel(i) == Constants.DEFAULT_LEVEL)
-                                    {
-                                        fd.Level = flevel + 1d;
-                                    }
-                                    else
-                                    {
-                                        fd.Level = flevel + withBlock.get_AliasLevel(i);
-                                    }
-                                }
-                                else if (withBlock.get_AliasLevelIsMultMod(i))
-                                {
-                                    if (flevel == Constants.DEFAULT_LEVEL)
-                                    {
-                                        flevel = 1d;
-                                    }
+            //                        if (withBlock.get_AliasLevel(i) == Constants.DEFAULT_LEVEL)
+            //                        {
+            //                            fd.Level = flevel + 1d;
+            //                        }
+            //                        else
+            //                        {
+            //                            fd.Level = flevel + withBlock.get_AliasLevel(i);
+            //                        }
+            //                    }
+            //                    else if (withBlock.get_AliasLevelIsMultMod(i))
+            //                    {
+            //                        if (flevel == Constants.DEFAULT_LEVEL)
+            //                        {
+            //                            flevel = 1d;
+            //                        }
 
-                                    if (withBlock.get_AliasLevel(i) == Constants.DEFAULT_LEVEL)
-                                    {
-                                        fd.Level = flevel;
-                                    }
-                                    else
-                                    {
-                                        fd.Level = flevel * withBlock.get_AliasLevel(i);
-                                    }
-                                }
-                                else if (flevel != Constants.DEFAULT_LEVEL)
-                                {
-                                    fd.Level = flevel;
-                                }
-                                else
-                                {
-                                    fd.Level = withBlock.get_AliasLevel(i);
-                                }
+            //                        if (withBlock.get_AliasLevel(i) == Constants.DEFAULT_LEVEL)
+            //                        {
+            //                            fd.Level = flevel;
+            //                        }
+            //                        else
+            //                        {
+            //                            fd.Level = flevel * withBlock.get_AliasLevel(i);
+            //                        }
+            //                    }
+            //                    else if (flevel != Constants.DEFAULT_LEVEL)
+            //                    {
+            //                        fd.Level = flevel;
+            //                    }
+            //                    else
+            //                    {
+            //                        fd.Level = withBlock.get_AliasLevel(i);
+            //                    }
 
-                                if (!string.IsNullOrEmpty(fdata) & Strings.InStr(withBlock.get_AliasData(i), "非表示") != 1)
-                                {
-                                    string localListTail() { string arglist = withBlock.get_AliasData(i); var ret = GeneralLib.ListTail(ref arglist, (GeneralLib.LLength(ref fdata) + 1)); withBlock.get_AliasData(i) = arglist; return ret; }
+            //                    if (!string.IsNullOrEmpty(fdata) & Strings.InStr(withBlock.get_AliasData(i), "非表示") != 1)
+            //                    {
+            //                        string localListTail() { string arglist = withBlock.get_AliasData(i); var ret = GeneralLib.ListTail(arglist, (GeneralLib.LLength(fdata) + 1)); withBlock.get_AliasData(i) = arglist; return ret; }
 
-                                    fd.StrData = fdata + " " + localListTail();
-                                }
-                                else
-                                {
-                                    fd.StrData = withBlock.get_AliasData(i);
-                                }
+            //                        fd.StrData = fdata + " " + localListTail();
+            //                    }
+            //                    else
+            //                    {
+            //                        fd.StrData = withBlock.get_AliasData(i);
+            //                    }
 
-                                if (withBlock.get_AliasLevelIsMultMod(i))
-                                {
-                                    buf = fd.StrData;
-                                    string args2 = "Lv1";
-                                    string args3 = "Lv" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(flevel);
-                                    GeneralLib.ReplaceString(ref buf, ref args2, ref args3);
-                                    fd.StrData = buf;
-                                }
-                            }
-                            else
-                            {
-                                // 特殊能力解説の定義
-                                if (!string.IsNullOrEmpty(fdata) & GeneralLib.LIndex(ref fdata, 1) != "非表示")
-                                {
-                                    fd.Name = GeneralLib.LIndex(ref fdata, 1);
-                                }
+            //                    if (withBlock.get_AliasLevelIsMultMod(i))
+            //                    {
+            //                        buf = fd.StrData;
+            //                        string args2 = "Lv1";
+            //                        string args3 = "Lv" + SrcFormatter.Format(flevel);
+            //                        GeneralLib.ReplaceString(buf, args2, args3);
+            //                        fd.StrData = buf;
+            //                    }
+            //                }
+            //                else
+            //                {
+            //                    特殊能力解説の定義
+            //                    if (!string.IsNullOrEmpty(fdata) & GeneralLib.LIndex(fdata, 1) != "非表示")
+            //                    {
+            //                        fd.Name = GeneralLib.LIndex(fdata, 1);
+            //                    }
 
-                                fd.StrData = withBlock.get_AliasData(i);
-                            }
+            //                    fd.StrData = withBlock.get_AliasData(i);
+            //                }
 
-                            if (!string.IsNullOrEmpty(nskill))
-                            {
-                                fd.NecessarySkill = nskill;
-                            }
-                            else
-                            {
-                                fd.NecessarySkill = withBlock.get_AliasNecessarySkill(i);
-                            }
+            //                if (!string.IsNullOrEmpty(nskill))
+            //                {
+            //                    fd.NecessarySkill = nskill;
+            //                }
+            //                else
+            //                {
+            //                    fd.NecessarySkill = withBlock.get_AliasNecessarySkill(i);
+            //                }
 
-                            if (!string.IsNullOrEmpty(ncondition))
-                            {
-                                fd.NecessaryCondition = ncondition;
-                            }
-                            else
-                            {
-                                fd.NecessaryCondition = withBlock.get_AliasNecessaryCondition(i);
-                            }
+            //                if (!string.IsNullOrEmpty(ncondition))
+            //                {
+            //                    fd.NecessaryCondition = ncondition;
+            //                }
+            //                else
+            //                {
+            //                    fd.NecessaryCondition = withBlock.get_AliasNecessaryCondition(i);
+            //                }
 
-                            // 特殊能力を登録
-                            if (IsFeatureAvailable(ref fd.Name))
-                            {
-                                colFeature.Add(fd, fd.Name + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(CountFeature()));
-                            }
-                            else
-                            {
-                                colFeature.Add(fd, fd.Name);
-                            }
-                        }
-                    }
+            //                特殊能力を登録
+            //                if (IsFeatureAvailable(fd.Name))
+            //                {
+            //                    colFeature.Add(fd, fd.Name + SrcFormatter.Format(CountFeature()));
+            //                }
+            //                else
+            //                {
+            //                    colFeature.Add(fd, fd.Name);
+            //                }
+            //            }
+            //        }
 
-                    return;
-                }
-            }
+            //        return;
+            //    }
+            //}
 
             // 特殊能力を登録
-            fd = new FeatureData();
+            var fd = new FeatureData();
             fd.Name = ftype;
             fd.Level = flevel;
             fd.StrData = fdata;
             fd.NecessarySkill = nskill;
             fd.NecessaryCondition = ncondition;
-            if (IsFeatureAvailable(ref ftype))
+            if (IsFeatureAvailable(ftype))
             {
-                colFeature.Add(fd, ftype + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(CountFeature()));
+                colFeature.Add(fd, ftype + SrcFormatter.Format(CountFeature()));
             }
             else
             {
@@ -895,39 +847,28 @@ namespace SRC.Core.Models
         // 特殊能力の総数
         public int CountFeature()
         {
-            int CountFeatureRet = default;
-            if (colFeature is null)
-            {
-                return CountFeatureRet;
-            }
-
-            CountFeatureRet = colFeature.Count;
-            return CountFeatureRet;
+            return colFeature.Count;
         }
 
         // 特殊能力
-        public string Feature(ref object Index)
+        public string Feature(string Index)
         {
-            string FeatureRet = default;
-            FeatureData fd;
-            fd = (FeatureData)colFeature[Index];
-            FeatureRet = fd.Name;
-            return FeatureRet;
+            // XXX 例外処理要らんの？
+            return colFeature[Index].Name;
         }
 
         // 特殊能力の名称
-        public string FeatureName(ref object Index)
+        public string FeatureName(string Index)
         {
             string FeatureNameRet = default;
-            FeatureData fd;
-            fd = (FeatureData)colFeature[Index];
+            FeatureData fd = colFeature[Index];
             if (Strings.Len(fd.StrData) > 0)
             {
-                FeatureNameRet = GeneralLib.ListIndex(ref fd.StrData, 1);
+                FeatureNameRet = GeneralLib.ListIndex(fd.StrData, 1);
             }
             else if (fd.Level != Constants.DEFAULT_LEVEL)
             {
-                FeatureNameRet = fd.Name + "Lv" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(fd.Level);
+                FeatureNameRet = fd.Name + "Lv" + SrcFormatter.Format(fd.Level);
             }
             else
             {
@@ -938,58 +879,34 @@ namespace SRC.Core.Models
         }
 
         // 特殊能力のレベル
-        public double FeatureLevel(ref object Index)
+        public double FeatureLevel(string Index)
         {
-            double FeatureLevelRet = default;
-            FeatureData fd;
-            ;
-#error Cannot convert OnErrorGoToStatementSyntax - see comment for details
-            /* Cannot convert OnErrorGoToStatementSyntax, CONVERSION ERROR: Conversion for OnErrorGoToLabelStatement not implemented, please report this issue in 'On Error GoTo ErrorHandler' at character 22565
-
-
-            Input:
-
-                    On Error GoTo ErrorHandler
-
-             */
-            fd = (FeatureData)colFeature[Index];
-            FeatureLevelRet = fd.Level;
-            if (FeatureLevelRet == Constants.DEFAULT_LEVEL)
+            try
             {
-                FeatureLevelRet = 1d;
+                FeatureData fd = colFeature[Index];
+                return fd.Level == Constants.DEFAULT_LEVEL ? 1d : fd.Level;
             }
-
-            return FeatureLevelRet;
-        ErrorHandler:
-            ;
-            FeatureLevelRet = 0d;
+            catch
+            {
+                return 0d;
+            }
         }
 
         // 特殊能力のデータ
-        public string FeatureData(ref object Index)
+        public string FeatureData(string Index)
         {
-            string FeatureDataRet = default;
-            FeatureData fd;
-            ;
-#error Cannot convert OnErrorGoToStatementSyntax - see comment for details
-            /* Cannot convert OnErrorGoToStatementSyntax, CONVERSION ERROR: Conversion for OnErrorGoToLabelStatement not implemented, please report this issue in 'On Error GoTo ErrorHandler' at character 22942
-
-
-            Input:
-
-                    On Error GoTo ErrorHandler
-
-             */
-            fd = (FeatureData)colFeature[Index];
-            FeatureDataRet = fd.StrData;
-            return FeatureDataRet;
-        ErrorHandler:
-            ;
-            FeatureDataRet = "";
+            try
+            {
+                return colFeature[Index].StrData ?? "";
+            }
+            catch
+            {
+                return "";
+            }
         }
 
         // 指定した特殊能力を持っているか？
-        public bool IsFeatureAvailable(ref string fname)
+        public bool IsFeatureAvailable(string fname)
         {
             bool IsFeatureAvailableRet = default;
             if (colFeature is null)
@@ -1012,78 +929,46 @@ namespace SRC.Core.Models
 
 
         // 武器データ
-        public WeaponData Weapon(ref object Index)
+        public WeaponData Weapon(string Index)
         {
-            WeaponData WeaponRet = default;
-            WeaponRet = (WeaponData)colWeaponData[Index];
-            return WeaponRet;
+            return colWeaponData[Index];
         }
 
         // 武器の総数
         public int CountWeapon()
         {
-            int CountWeaponRet = default;
-            if (colWeaponData is null)
-            {
-                return CountWeaponRet;
-            }
-
-            CountWeaponRet = colWeaponData.Count;
-            return CountWeaponRet;
+            return colWeaponData.Count;
         }
 
         // 武器を追加
-        public WeaponData AddWeapon(ref string wname)
+        public WeaponData AddWeapon(string wname)
         {
-            WeaponData AddWeaponRet = default;
             var new_wdata = new WeaponData();
-            if (colWeaponData is null)
-            {
-                colWeaponData = new Collection();
-            }
-
             new_wdata.Name = wname;
-            colWeaponData.Add(new_wdata, wname + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(CountWeapon()));
-            AddWeaponRet = new_wdata;
-            return AddWeaponRet;
+            colWeaponData.Add(new_wdata, wname + SrcFormatter.Format(CountWeapon()));
+            return new_wdata;
         }
 
 
         // アビリティデータ
-        public AbilityData Ability(ref object Index)
+        public AbilityData Ability(string Index)
         {
-            AbilityData AbilityRet = default;
-            AbilityRet = (AbilityData)colAbilityData[Index];
-            return AbilityRet;
+            return colAbilityData[Index];
         }
 
         // アビリティの総数
         public int CountAbility()
         {
-            int CountAbilityRet = default;
-            if (colAbilityData is null)
-            {
-                return CountAbilityRet;
-            }
-
-            CountAbilityRet = colAbilityData.Count;
-            return CountAbilityRet;
+            return colAbilityData.Count;
         }
 
         // アビリティを追加
-        public AbilityData AddAbility(ref string aname)
+        public AbilityData AddAbility(string aname)
         {
-            AbilityData AddAbilityRet = default;
             var new_adata = new AbilityData();
-            if (colAbilityData is null)
-            {
-                colAbilityData = new Collection();
-            }
-
             new_adata.Name = aname;
-            colAbilityData.Add(new_adata, aname + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(CountAbility()));
-            AddAbilityRet = new_adata;
-            return AddAbilityRet;
+            colAbilityData.Add(new_adata, aname + SrcFormatter.Format(CountAbility()));
+            return new_adata;
         }
     }
 }
