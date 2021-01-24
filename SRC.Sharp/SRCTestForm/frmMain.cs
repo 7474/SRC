@@ -70,7 +70,11 @@ namespace SRCTestForm
             var unitNodes = SRC.UDList.Items.Select(ud => new SrcTreeNode(ud.Name, ud)).ToArray();
             var unitListNode = new TreeNode("Unit", unitNodes);
 
+            var pilotNodes = SRC.PDList.Items.Select(pd => new SrcTreeNode(pd.Name, pd)).ToArray();
+            var pilotListNode = new TreeNode("Pilot", pilotNodes);
+
             treeViewData.Nodes.Add(unitListNode);
+            treeViewData.Nodes.Add(pilotListNode);
         }
 
         private void SetMainText(string text)
