@@ -7,6 +7,22 @@ SRCを眺めたり弄ってみたりするためのリポジトリ。
 - http://www.src-srpg.jpn.org/
 - http://www.src-srpg.jpn.org/development_beta.shtml
 
+## Solution/Project
+
+- [SRC_20121125](./SRC_20121125)
+    - 元にしたSRCのコピー
+    - 参照用にUTF-8に文字コードを変更してある
+- [SRC.NET](./SRC.NET)
+    - SRC_20121125をツールで.NETにコンバートしたのもの
+- [SRC.Sharp](./SRC.Sharp)
+    - SRCのC#実装の一部
+    - [SRCCore](./SRC.Sharp/SRCCore)
+        - SRCのコア部分
+        - .NET Standard
+    - [SRCTestForm](./SRC.Sharp/SRCTestForm)
+        - 動作の確認用フォーム
+        - .NET 5
+
 ## Convert log
 
 - VB6 -> VB.NET
