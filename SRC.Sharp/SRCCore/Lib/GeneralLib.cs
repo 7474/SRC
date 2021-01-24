@@ -108,7 +108,7 @@ namespace SRC.Core.Lib
         //            return DiceRet;
         //        }
 
-        private static IList<string> ToList(string list)
+        public static IList<string> ToList(string list)
         {
             bool in_single_quote = false;
             bool in_double_quote = false;
@@ -129,6 +129,7 @@ namespace SRC.Core.Lib
                         continue;
                     }
                 }
+                bool append = true;
 
                 if (in_single_quote)
                 {
@@ -151,6 +152,7 @@ namespace SRC.Core.Lib
                         case '(':
                         case '[': // "(", "["
                             paren = (paren + 1);
+                            if (paren == 1) { append = false; }
                             break;
 
                         case ')':
@@ -162,6 +164,7 @@ namespace SRC.Core.Lib
                                 //return ListIndexRet;
                                 throw new NotSupportedException("括弧の対応が取れていない");
                             }
+                            if (paren == 0) { append = false; }
                             break;
 
                         case '\'': // "`"
@@ -173,7 +176,14 @@ namespace SRC.Core.Lib
                             break;
                     }
                 }
-                current += c;
+                if (append)
+                {
+                    current += c;
+                }
+            }
+            if (!string.IsNullOrEmpty(current))
+            {
+                result.Add(current);
             }
             return result;
         }

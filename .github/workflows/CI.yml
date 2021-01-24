@@ -18,14 +18,14 @@ jobs:
         dotnet-version: 5.0.x
 
     - name: Restore dependencies SRCCore
-      run: dotnet restore SRC.Sharp/SRCCore
-    - name: Restore dependencies
-      run: dotnet restore SRC.Sharp/SRCCoreTests
+      run: dotnet restore SRC.Sharp/SRCCore/SRCCore.csproj
+    - name: Restore dependencies SRCCoreTests
+      run: dotnet restore SRC.Sharp/SRCCoreTests/SRCCoreTests.csproj
 
     - name: Build SRCCore
-      run: dotnet build SRC.Sharp/SRCCore --no-restore
+      run: dotnet build SRC.Sharp/SRCCore/SRCCore.csproj --no-restore
     - name: Build SRCCoreTests
-      run: dotnet build SRC.Sharp/SRCCoreTests --no-restore
+      run: dotnet build SRC.Sharp/SRCCoreTests/SRCCoreTests.csproj --no-restore
 
     - name: Test SRCCoreTests
-      run: dotnet test SRC.Sharp/SRCCoreTests --no-build --verbosity normal
+      run: dotnet test SRC.Sharp/SRCCoreTests/SRCCoreTests.csproj --no-build --verbosity normal
