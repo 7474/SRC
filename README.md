@@ -22,6 +22,9 @@ SRCを眺めたり弄ってみたりするためのリポジトリ。
     - [SRCTestForm](./SRC.Sharp/SRCTestForm)
         - 動作の確認用フォーム
         - .NET 5
+    - [SRCTestBlazor](./SRC.Sharp/SRCTestBlazor)
+        - 動作確認用Blazor WebAssemblyアプリケーション
+        - .NET 5
 
 ## Convert log
 
