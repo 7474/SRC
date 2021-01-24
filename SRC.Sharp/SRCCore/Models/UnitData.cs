@@ -11,15 +11,14 @@ using System.Collections.Generic;
 namespace SRC.Core.Models
 {
     // ユニットデータのクラス
-    public class UnitData
+    public class UnitData : IUnitDataElements
     {
         // 名称
         public string Name;
         // 識別子
         public int ID;
         // クラス
-        // UPGRADE_NOTE: Class は Class_Renamed にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
-        public string Class_Renamed;
+        public string Class;
         // パイロット数 (マイナスの場合は括弧つきの指定)
         public int PilotNum;
         // アイテム数

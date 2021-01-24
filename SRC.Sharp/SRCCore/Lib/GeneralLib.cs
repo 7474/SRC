@@ -5,8 +5,8 @@
 
 using SRC.Core.VB;
 using System;
+using System.Collections.Generic;
 using System.IO;
-using System.Runtime.InteropServices;
 
 namespace SRC.Core.Lib
 {
@@ -108,6 +108,75 @@ namespace SRC.Core.Lib
         //            return DiceRet;
         //        }
 
+        private static IList<string> ToList(string list)
+        {
+            bool in_single_quote = false;
+            bool in_double_quote = false;
+            int paren = 0;
+            var current = "";
+            var result = new List<string>();
+            foreach (var c in list.ToCharArray())
+            {
+                if (!in_single_quote & !in_double_quote & paren == 0)
+                {
+                    if (c == ' ' || c == '\t')
+                    {
+                        if (!string.IsNullOrEmpty(current))
+                        {
+                            result.Add(current);
+                            current = "";
+                        }
+                        continue;
+                    }
+                }
+
+                if (in_single_quote)
+                {
+                    if (c == '\'') // "`"
+                    {
+                        in_single_quote = false;
+                    }
+                }
+                else if (in_double_quote)
+                {
+                    if (c == '"') // """"
+                    {
+                        in_double_quote = false;
+                    }
+                }
+                else
+                {
+                    switch (c)
+                    {
+                        case '(':
+                        case '[': // "(", "["
+                            paren = (paren + 1);
+                            break;
+
+                        case ')':
+                        case ']': // ")", "]"
+                            paren = (paren - 1);
+                            if (paren < 0)
+                            {
+                                // 括弧の対応が取れていない
+                                //return ListIndexRet;
+                                throw new NotSupportedException("括弧の対応が取れていない");
+                            }
+                            break;
+
+                        case '\'': // "`"
+                            in_single_quote = true;
+                            break;
+
+                        case '"': // """"
+                            in_double_quote = true;
+                            break;
+                    }
+                }
+                current += c;
+            }
+            return result;
+        }
 
         // リスト list から idx 番目の要素を返す
         public static string LIndex(string list, int idx)
@@ -325,236 +394,18 @@ namespace SRC.Core.Lib
         //            return SearchListRet;
         //        }
 
+        // リスト list から idx 番目の要素を返す (括弧を考慮)
+        public static string ListIndex(string list, int idx)
+        {
+            // idxが正の数でなければ空文字列を返す
+            if (idx < 1)
+            {
+                return "";
+            }
+            var listList = ToList(list);
+            return listList.Count >= idx ? listList[idx - 1] : "";
 
-        //        // リスト list から idx 番目の要素を返す (括弧を考慮)
-        //        public static string ListIndex(ref string list, int idx)
-        //        {
-        //            string ListIndexRet = default;
-        //            int n, i, ch;
-        //            int paren = default, list_len, begin;
-        //            bool in_single_quote = default, in_double_quote = default;
-
-        //            // idxが正の数でなければ空文字列を返す
-        //            if (idx < 1)
-        //            {
-        //                return ListIndexRet;
-        //            }
-
-        //            list_len = Strings.Len(list);
-
-        //            // idx番目の要素まで読み飛ばす
-        //            n = 0;
-        //            i = 0;
-        //            while (true)
-        //            {
-        //                // 空白を読み飛ばす
-        //                while (true)
-        //                {
-        //                    i = (i + 1);
-
-        //                    // 文字列の終り？
-        //                    if (i > list_len)
-        //                    {
-        //                        return ListIndexRet;
-        //                    }
-
-        //                    // 次の文字
-        //                    ch = Strings.Asc(Strings.Mid(list, i, 1));
-
-        //                    // 空白でない？
-        //                    switch (ch)
-        //                    {
-        //                        // スキップ
-        //                        case 9:
-        //                        case 32:
-        //                            {
-        //                                break;
-        //                            }
-
-        //                        default:
-        //                            {
-        //                                break;
-        //                            }
-        //                    }
-        //                }
-
-        //                // 要素数を１つ増やす
-        //                n = (n + 1);
-
-        //                // 求める要素？
-        //                if (n == idx)
-        //                {
-        //                    break;
-        //                }
-
-        //                // 要素を読み飛ばす
-        //                while (true)
-        //                {
-        //                    if (in_single_quote)
-        //                    {
-        //                        if (ch == 96) // "`"
-        //                        {
-        //                            in_single_quote = false;
-        //                        }
-        //                    }
-        //                    else if (in_double_quote)
-        //                    {
-        //                        if (ch == 34) // """"
-        //                        {
-        //                            in_double_quote = false;
-        //                        }
-        //                    }
-        //                    else
-        //                    {
-        //                        switch (ch)
-        //                        {
-        //                            case 40:
-        //                            case 91: // "(", "["
-        //                                {
-        //                                    paren = (paren + 1);
-        //                                    break;
-        //                                }
-
-        //                            case 41:
-        //                            case 93: // ")", "]"
-        //                                {
-        //                                    paren = (paren - 1);
-        //                                    if (paren < 0)
-        //                                    {
-        //                                        // 括弧の対応が取れていない
-        //                                        return ListIndexRet;
-        //                                    }
-
-        //                                    break;
-        //                                }
-
-        //                            case 96: // "`"
-        //                                {
-        //                                    in_single_quote = true;
-        //                                    break;
-        //                                }
-
-        //                            case 34: // """"
-        //                                {
-        //                                    in_double_quote = true;
-        //                                    break;
-        //                                }
-        //                        }
-        //                    }
-
-        //                    i = (i + 1);
-
-        //                    // 文字列の終り？
-        //                    if (i > list_len)
-        //                    {
-        //                        return ListIndexRet;
-        //                    }
-
-        //                    // 次の文字
-        //                    ch = Strings.Asc(Strings.Mid(list, i, 1));
-
-        //                    // 要素の末尾か判定
-        //                    if (!in_single_quote & !in_double_quote & paren == 0)
-        //                    {
-        //                        // 空白？
-        //                        switch (ch)
-        //                        {
-        //                            case 9:
-        //                            case 32:
-        //                                {
-        //                                    break;
-        //                                }
-        //                        }
-        //                    }
-        //                }
-        //            }
-
-        //            // 求める要素を読み込む
-        //            begin = i;
-        //            while (true)
-        //            {
-        //                if (in_single_quote)
-        //                {
-        //                    if (ch == 96) // "`"
-        //                    {
-        //                        in_single_quote = false;
-        //                    }
-        //                }
-        //                else if (in_double_quote)
-        //                {
-        //                    if (ch == 34) // """"
-        //                    {
-        //                        in_double_quote = false;
-        //                    }
-        //                }
-        //                else
-        //                {
-        //                    switch (ch)
-        //                    {
-        //                        case 40:
-        //                        case 91: // "(", "["
-        //                            {
-        //                                paren = (paren + 1);
-        //                                break;
-        //                            }
-
-        //                        case 41:
-        //                        case 93: // ")", "]"
-        //                            {
-        //                                paren = (paren - 1);
-        //                                if (paren < 0)
-        //                                {
-        //                                    // 括弧の対応が取れていない
-        //                                    return ListIndexRet;
-        //                                }
-
-        //                                break;
-        //                            }
-
-        //                        case 96: // "`"
-        //                            {
-        //                                in_single_quote = true;
-        //                                break;
-        //                            }
-
-        //                        case 34: // """"
-        //                            {
-        //                                in_double_quote = true;
-        //                                break;
-        //                            }
-        //                    }
-        //                }
-
-        //                i = (i + 1);
-
-        //                // 文字列の終り？
-        //                if (i > list_len)
-        //                {
-        //                    ListIndexRet = Strings.Mid(list, begin);
-        //                    return ListIndexRet;
-        //                }
-
-        //                // 次の文字
-        //                ch = Strings.Asc(Strings.Mid(list, i, 1));
-
-        //                // 要素の末尾か判定
-        //                if (!in_single_quote & !in_double_quote & paren == 0)
-        //                {
-        //                    // 空白？
-        //                    switch (ch)
-        //                    {
-        //                        case 9:
-        //                        case 32:
-        //                            {
-        //                                break;
-        //                            }
-        //                    }
-        //                }
-        //            }
-
-        //            ListIndexRet = Strings.Mid(list, begin, i - begin);
-        //            return ListIndexRet;
-        //        }
+        }
 
         //        // リスト list の要素数を返す (括弧を考慮)
         //        public static int ListLength(ref string list)
