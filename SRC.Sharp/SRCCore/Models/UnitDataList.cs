@@ -644,8 +644,10 @@ namespace SRC.Core.Models
             int i = 0;
             while (true)
             {
-                if (string.IsNullOrEmpty(line_buf) || line_buf == "===")
-                    i = i + 1;
+                // パイロットデータ時には空行やデータ区切りでブレークする。
+                if (string.IsNullOrEmpty(line_buf) || line_buf == "===") { break; }
+
+                i = i + 1;
                 int ret = 0;
                 bool in_quote = false;
                 var loopTo1 = Strings.Len(buf);

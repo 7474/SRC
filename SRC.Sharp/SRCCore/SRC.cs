@@ -15,8 +15,8 @@ namespace SRC.Core
     {
         public IGUI GUI;
 
-        //// パイロットデータのリスト
-        //public PilotDataList PDList = new PilotDataList();
+        // パイロットデータのリスト
+        public PilotDataList PDList = new PilotDataList();
         //// ノンパイロットデータのリスト
         //public NonPilotDataList NPDList = new NonPilotDataList();
         // ユニットデータのリスト
@@ -41,7 +41,6 @@ namespace SRC.Core
         //public TerrainDataList TDList = new TerrainDataList();
         //// バトルコンフィグデータのリスト
         //public BattleConfigDataList BCList = new BattleConfigDataList();
-
 
         //// パイロットのリスト
         //public Pilots PList = new Pilots();
@@ -3689,12 +3688,11 @@ namespace SRC.Core
             //    SPDList.Load(ref argfname3);
             //}
 
-            //string argfname6 = fpath + @"\pilot.txt";
-            //if (GeneralLib.FileExists(ref argfname6))
-            //{
-            //    string argfname5 = fpath + @"\pilot.txt";
-            //    PDList.Load(ref argfname5);
-            //}
+            var pilotFilePath = Path.Combine(fpath, "pilot.txt");
+            if (GeneralLib.FileExists(pilotFilePath))
+            {
+                PDList.Load(pilotFilePath);
+            }
 
             //string argfname8 = fpath + @"\non_pilot.txt";
             //if (GeneralLib.FileExists(ref argfname8))

@@ -17,6 +17,8 @@ namespace SRC.Core.Models
         // パイロットデータのコレクション
         private SrcCollection<PilotData> colPilotDataList;
 
+        public IList<PilotData> Items => colPilotDataList;
+
         public PilotDataList()
         {
             colPilotDataList = new SrcCollection<PilotData>();
@@ -116,7 +118,7 @@ namespace SRC.Core.Models
             {
                 while (reader.HasMore)
                 {
-                    PilotData pd = LoadPilot(reader); ;
+                    PilotData pd = LoadPilot(reader);
                 }
             }
         }

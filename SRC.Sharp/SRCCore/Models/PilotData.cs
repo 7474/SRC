@@ -80,6 +80,7 @@ namespace SRC.Core.Models
 
             colSkill = new SrcCollection<SkillData>();
             colFeature = new SrcCollection<FeatureData>();
+            colWeaponData = new SrcCollection<WeaponData>();
             colAbilityData = new SrcCollection<AbilityData>();
         }
 
