@@ -13,7 +13,7 @@ SRCを眺めたり弄ってみたりするためのリポジトリ。
     - 元にしたSRCのコピー
     - 参照用にUTF-8に文字コードを変更してある
 - [SRC.NET](./SRC.NET)
-    - SRC_20121125をツールで.NETにコンバートしたのもの
+    - SRC_20121125をツールで.NETにコンバートしたもの
 - [SRC.Sharp](./SRC.Sharp)
     - SRCのC#実装の一部
     - [SRCCore](./SRC.Sharp/SRCCore)
