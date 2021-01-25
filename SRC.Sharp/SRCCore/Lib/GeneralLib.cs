@@ -7,6 +7,7 @@ using SRC.Core.VB;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 
 namespace SRC.Core.Lib
 {
@@ -107,86 +108,6 @@ namespace SRC.Core.Lib
         //            DiceRet = Conversion.Int(max * RndHistory[RndIndex] + 1f);
         //            return DiceRet;
         //        }
-
-        public static IList<string> ToList(string list)
-        {
-            bool in_single_quote = false;
-            bool in_double_quote = false;
-            int paren = 0;
-            var current = "";
-            var result = new List<string>();
-            foreach (var c in list.ToCharArray())
-            {
-                if (!in_single_quote & !in_double_quote & paren == 0)
-                {
-                    if (c == ' ' || c == '\t')
-                    {
-                        if (!string.IsNullOrEmpty(current))
-                        {
-                            result.Add(current);
-                            current = "";
-                        }
-                        continue;
-                    }
-                }
-                bool append = true;
-
-                if (in_single_quote)
-                {
-                    if (c == '\'') // "`"
-                    {
-                        in_single_quote = false;
-                    }
-                }
-                else if (in_double_quote)
-                {
-                    if (c == '"') // """"
-                    {
-                        in_double_quote = false;
-                    }
-                }
-                else
-                {
-                    switch (c)
-                    {
-                        case '(':
-                        case '[': // "(", "["
-                            paren = (paren + 1);
-                            if (paren == 1) { append = false; }
-                            break;
-
-                        case ')':
-                        case ']': // ")", "]"
-                            paren = (paren - 1);
-                            if (paren < 0)
-                            {
-                                // 括弧の対応が取れていない
-                                //return ListIndexRet;
-                                throw new NotSupportedException("括弧の対応が取れていない");
-                            }
-                            if (paren == 0) { append = false; }
-                            break;
-
-                        case '\'': // "`"
-                            in_single_quote = true;
-                            break;
-
-                        case '"': // """"
-                            in_double_quote = true;
-                            break;
-                    }
-                }
-                if (append)
-                {
-                    current += c;
-                }
-            }
-            if (!string.IsNullOrEmpty(current))
-            {
-                result.Add(current);
-            }
-            return result;
-        }
 
         // リスト list から idx 番目の要素を返す
         public static string LIndex(string list, int idx)
@@ -403,6 +324,87 @@ namespace SRC.Core.Lib
         //            SearchListRet = 0;
         //            return SearchListRet;
         //        }
+
+        // リスト list の要素を分割して返す (括弧を考慮)
+        public static IList<string> ToList(string list)
+        {
+            bool in_single_quote = false;
+            bool in_double_quote = false;
+            int paren = 0;
+            var current = new StringBuilder();
+            var result = new List<string>();
+            foreach (var c in list.ToCharArray())
+            {
+                if (!in_single_quote & !in_double_quote & paren == 0)
+                {
+                    if (c == ' ' || c == '\t')
+                    {
+                        if (current.Length > 0)
+                        {
+                            result.Add(current.ToString());
+                            current.Clear();
+                        }
+                        continue;
+                    }
+                }
+                bool append = true;
+
+                if (in_single_quote)
+                {
+                    if (c == '\'') // "`"
+                    {
+                        in_single_quote = false;
+                    }
+                }
+                else if (in_double_quote)
+                {
+                    if (c == '"') // """"
+                    {
+                        in_double_quote = false;
+                    }
+                }
+                else
+                {
+                    switch (c)
+                    {
+                        case '(':
+                        case '[': // "(", "["
+                            paren = (paren + 1);
+                            if (paren == 1) { append = false; }
+                            break;
+
+                        case ')':
+                        case ']': // ")", "]"
+                            paren = (paren - 1);
+                            if (paren < 0)
+                            {
+                                // 括弧の対応が取れていない
+                                //return ListIndexRet;
+                                throw new NotSupportedException("括弧の対応が取れていない");
+                            }
+                            if (paren == 0) { append = false; }
+                            break;
+
+                        case '\'': // "`"
+                            in_single_quote = true;
+                            break;
+
+                        case '"': // """"
+                            in_double_quote = true;
+                            break;
+                    }
+                }
+                if (append)
+                {
+                    current.Append(c);
+                }
+            }
+            if (current.Length > 0)
+            {
+                result.Add(current.ToString());
+            }
+            return result;
+        }
 
         // リスト list から idx 番目の要素を返す (括弧を考慮)
         public static string ListIndex(string list, int idx)
