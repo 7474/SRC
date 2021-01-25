@@ -3,6 +3,7 @@
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
 
+using SRC.Core.Expressions;
 using SRC.Core.Lib;
 using SRC.Core.Models;
 using SRC.Core.VB;
@@ -14,6 +15,8 @@ namespace SRC.Core
     public class SRC
     {
         public IGUI GUI;
+
+        public Expression Expression { get; }
 
         // パイロットデータのリスト
         public PilotDataList PDList = new PilotDataList();
@@ -121,6 +124,7 @@ namespace SRC.Core
 
         public SRC()
         {
+            Expression = new Expression();
         }
 
         #region TODO

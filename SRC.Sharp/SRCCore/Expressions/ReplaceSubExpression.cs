@@ -8,10 +8,10 @@ using SRC.Core.VB;
 
 namespace SRC.Core.Expressions
 {
-    public static partial class Expression
+    public partial class Expression
     {
         // str に対して式置換を行う
-        public static void ReplaceSubExpression(ref string str)
+        public void ReplaceSubExpression(ref string str)
         {
             int start_idx, end_idx = default;
             int str_len;

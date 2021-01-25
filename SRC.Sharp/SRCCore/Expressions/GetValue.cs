@@ -6,10 +6,10 @@
 
 namespace SRC.Core.Expressions
 {
-    public static partial class Expression
+    public partial class Expression
     {
         // 式を文字列として評価
-        public static string GetValueAsString(string expr, bool is_term = false)
+        public string GetValueAsString(string expr, bool is_term = false)
         {
             string result;
             if (is_term)

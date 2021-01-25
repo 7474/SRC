@@ -8,16 +8,16 @@ using System;
 
 namespace SRC.Core.Expressions
 {
-    public static partial class Expression
+    public partial class Expression
     {
         // 式を評価
-        public static ValueType EvalExpr(string expr, ValueType etype, out string str_result, out double num_result)
+        public ValueType EvalExpr(string expr, ValueType etype, out string str_result, out double num_result)
         {
             throw new NotImplementedException();
         }
 
         // 項を評価
-        public static ValueType EvalTerm(string expr, ValueType etype, out string str_result, out double num_result)
+        public ValueType EvalTerm(string expr, ValueType etype, out string str_result, out double num_result)
         {
             throw new NotImplementedException();
         }
