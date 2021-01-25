@@ -6,29 +6,6 @@
 
 namespace SRC.Core.Expressions
 {
-    // 演算子の種類
-    public enum OperatorType
-    {
-        PlusOp,
-        MinusOp,
-        MultOp,
-        DivOp,
-        IntDivOp,
-        ExpoOp,
-        ModOp,
-        CatOp,
-        EqOp,
-        NotEqOp,
-        LtOp,
-        LtEqOp,
-        GtOp,
-        GtEqOp,
-        NotOp,
-        AndOp,
-        OrOp,
-        LikeOp
-    }
-
     // 型の種類
     public enum ValueType
     {
