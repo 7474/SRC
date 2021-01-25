@@ -7,6 +7,7 @@ using SRC.Core.VB;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace SRC.Core.Lib
@@ -330,11 +331,13 @@ namespace SRC.Core.Lib
         {
             bool in_single_quote = false;
             bool in_double_quote = false;
+            int i = -1;
             int paren = 0;
             var current = new StringBuilder();
             var result = new List<string>();
             foreach (var c in list.ToCharArray())
             {
+                i++;
                 if (!in_single_quote & !in_double_quote & paren == 0)
                 {
                     if (c == ' ' || c == '\t')
@@ -379,8 +382,9 @@ namespace SRC.Core.Lib
                             if (paren < 0)
                             {
                                 // 括弧の対応が取れていない
-                                //return ListIndexRet;
-                                throw new NotSupportedException("括弧の対応が取れていない");
+                                result.Add(current.ToString());
+                                result.Add(new string(list.ToCharArray().Skip(i).ToArray()));
+                                return result;
                             }
                             if (paren == 0) { append = false; }
                             break;
