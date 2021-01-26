@@ -4,6 +4,8 @@
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
 
+using SRC.Core.Lib;
+using SRC.Core.VB;
 using System;
 
 namespace SRC.Core.Expressions
@@ -13,34 +15,36 @@ namespace SRC.Core.Expressions
         // 式を評価
         public ValueType EvalExpr(string expr, ValueType etype, out string str_result, out double num_result)
         {
-            ValueType EvalExprRet = default;
-            var terms = default(string[]);
-            short tnum;
-            short op_idx, op_pri;
+            ValueType EvalExprRet = ValueType.UndefinedType;
+            str_result = "";
+            num_result = 0d;
+
+            string[] terms;
+            int tnum;
+            int op_idx, op_pri;
             var op_type = default(OperatorType);
             string lop, rop;
             string lstr = default, rstr = default;
             double lnum = default, rnum = default;
             bool is_lop_term = default, is_rop_term = default;
-            short osize, i, ret, tsize;
+            int osize, i, ret, tsize;
             string buf;
 
             // 式をあらかじめ要素に分解
-            tnum = GeneralLib.ListSplit(ref expr, ref terms);
+            tnum = GeneralLib.ListSplit(expr, out terms);
             switch (tnum)
             {
                 // 空白
                 case 0:
                     {
-                        EvalExprRet = etype;
-                        return EvalExprRet;
+                        return etype;
                     }
 
                 // 項
                 case 1:
                     {
-                        EvalExprRet = EvalTerm(ref terms[1], ref etype, ref str_result, ref num_result);
-                        return EvalExprRet;
+                        // XXX これ、Arrayのオフセットどうなってんの？
+                        return EvalTerm(terms[1], etype, out str_result, out num_result);
                     }
 
                 // 括弧の対応が取れてない文字列
@@ -66,11 +70,11 @@ namespace SRC.Core.Expressions
             // 優先度に合わせ、どの演算が実行されるかを判定
             op_idx = 0;
             op_pri = 100;
-            var loopTo = (short)(tnum - 1);
+            var loopTo = (tnum - 1);
             for (i = 1; i <= loopTo; i++)
             {
                 // 演算子の種類を判定
-                ret = (short)Strings.Asc(terms[i]);
+                ret = Strings.Asc(terms[i]);
                 if (ret < 0)
                 {
                     goto NextTerm;
@@ -408,18 +412,18 @@ namespace SRC.Core.Expressions
                     {
                         // 左辺引数の連結処理 (高速化のため、Midを使用)
                         buf = new string(Conversions.ToChar(Constants.vbNullChar), Strings.Len(expr));
-                        tsize = (short)Strings.Len(terms[1]);
+                        tsize = Strings.Len(terms[1]);
                         var midTmp = terms[1];
                         StringType.MidStmtStr(ref buf, 1, tsize, midTmp);
                         osize = tsize;
-                        var loopTo1 = (short)(op_idx - 1);
+                        var loopTo1 = (op_idx - 1);
                         for (i = 2; i <= loopTo1; i++)
                         {
                             StringType.MidStmtStr(ref buf, osize + 1, 1, " ");
-                            tsize = (short)Strings.Len(terms[i]);
+                            tsize = Strings.Len(terms[i]);
                             var midTmp1 = terms[i];
                             StringType.MidStmtStr(ref buf, osize + 2, tsize, midTmp1);
-                            osize = (short)(osize + tsize + 1);
+                            osize = (osize + tsize + 1);
                         }
 
                         lop = Strings.Left(buf, osize);
@@ -437,18 +441,18 @@ namespace SRC.Core.Expressions
             {
                 // 右辺引数の連結処理 (高速化のため、Midを使用)
                 buf = new string(Conversions.ToChar(Constants.vbNullChar), Strings.Len(expr));
-                tsize = (short)Strings.Len(terms[op_idx + 1]);
+                tsize = Strings.Len(terms[op_idx + 1]);
                 var midTmp2 = terms[op_idx + 1];
                 StringType.MidStmtStr(ref buf, 1, tsize, midTmp2);
                 osize = tsize;
                 var loopTo2 = tnum;
-                for (i = (short)(op_idx + 2); i <= loopTo2; i++)
+                for (i = (op_idx + 2); i <= loopTo2; i++)
                 {
                     StringType.MidStmtStr(ref buf, osize + 1, 1, " ");
-                    tsize = (short)Strings.Len(terms[i]);
+                    tsize = Strings.Len(terms[i]);
                     var midTmp3 = terms[i];
                     StringType.MidStmtStr(ref buf, osize + 2, tsize, midTmp3);
-                    osize = (short)(osize + tsize + 1);
+                    osize = (osize + tsize + 1);
                 }
 
                 rop = Strings.Left(buf, osize);
@@ -1354,33 +1358,35 @@ namespace SRC.Core.Expressions
         // 項を評価
         public ValueType EvalTerm(string expr, ValueType etype, out string str_result, out double num_result)
         {
-            ValueType EvalTermRet = default;
+            ValueType EvalTermRet = ValueType.UndefinedType;
+            str_result = "";
+            num_result = 0d;
 
             // 空白？
-            if (Strings.Len(expr) == 0)
+            if (string.IsNullOrEmpty(expr))
             {
                 return EvalTermRet;
             }
 
             // 先頭の一文字で見分ける
-            switch (Strings.Asc(expr))
+            switch (expr[0])
             {
-                case 9: // タブ
+                case '\t': // タブ
                     {
                         // タブをTrimするためEvalExprで評価
-                        EvalTermRet = EvalExpr(ref expr, ref etype, ref str_result, ref num_result);
+                        EvalTermRet = EvalExpr(expr, etype, out str_result, out num_result);
                         return EvalTermRet;
                     }
 
-                case 32: // 空白
+                case ' ': // 空白
                     {
                         // Trimされてない？
                         string argexpr = Strings.Trim(expr);
-                        EvalTermRet = EvalTerm(ref argexpr, ref etype, ref str_result, ref num_result);
+                        EvalTermRet = EvalTerm(argexpr, etype, out str_result, out num_result);
                         return EvalTermRet;
                     }
 
-                case 34: // "
+                case '"': // "
                     {
                         // ダブルクォートで囲まれた文字列
                         if (Strings.Right(expr, 1) == "\"")
@@ -1396,14 +1402,14 @@ namespace SRC.Core.Expressions
 
                         if (etype != ValueType.StringType)
                         {
-                            num_result = GeneralLib.StrToDbl(ref str_result);
+                            num_result = Conversions.ToDouble(str_result);
                         }
 
                         EvalTermRet = ValueType.StringType;
                         return EvalTermRet;
                     }
 
-                case 35: // #
+                case '#': // #
                     {
                         // 色指定
                         EvalTermRet = ValueType.StringType;
@@ -1411,20 +1417,20 @@ namespace SRC.Core.Expressions
                         return EvalTermRet;
                     }
 
-                case 40: // (
+                case '(': // (
                     {
                         // カッコで囲まれた式
                         if (Strings.Right(expr, 1) == ")")
                         {
                             string argexpr1 = Strings.Mid(expr, 2, Strings.Len(expr) - 2);
-                            EvalTermRet = EvalExpr(ref argexpr1, ref etype, ref str_result, ref num_result);
+                            EvalTermRet = EvalExpr(argexpr1, etype, out str_result, out num_result);
                         }
                         else
                         {
                             str_result = expr;
                             if (etype != ValueType.StringType)
                             {
-                                num_result = GeneralLib.StrToDbl(ref str_result);
+                                num_result = Conversions.ToDouble(str_result);
                             }
 
                             EvalTermRet = ValueType.StringType;
@@ -1433,9 +1439,10 @@ namespace SRC.Core.Expressions
                         return EvalTermRet;
                     }
 
-                case 43:
-                case 45:
-                case var @case when 48 <= @case && @case <= 57: // +, -, 0～9
+                case '+':
+                case '-':
+                case char x when x >= '0' && x <= '9':
+                    // +, -, 0～9
                     {
                         // 数値？
                         if (Information.IsNumeric(expr))
@@ -1464,7 +1471,7 @@ namespace SRC.Core.Expressions
                         break;
                     }
 
-                case 96: // `
+                case '`': // `
                     {
                         // バッククォートで囲まれた文字列
                         if (Strings.Right(expr, 1) == "`")
@@ -1478,7 +1485,7 @@ namespace SRC.Core.Expressions
 
                         if (etype != ValueType.StringType)
                         {
-                            num_result = GeneralLib.StrToDbl(ref str_result);
+                            num_result = Conversions.ToDouble(str_result);
                         }
 
                         EvalTermRet = ValueType.StringType;
@@ -1486,15 +1493,16 @@ namespace SRC.Core.Expressions
                     }
             }
 
-            // 関数呼び出し？
-            EvalTermRet = CallFunction(ref expr, ref etype, ref str_result, ref num_result);
-            if (EvalTermRet != ValueType.UndefinedType)
-            {
-                return EvalTermRet;
-            }
+            // TODO Impl
+            //// 関数呼び出し？
+            //EvalTermRet = CallFunction(ref expr, ref etype, ref str_result, ref num_result);
+            //if (EvalTermRet != ValueType.UndefinedType)
+            //{
+            //    return EvalTermRet;
+            //}
 
             // 変数？
-            EvalTermRet = GetVariable(ref expr, ref etype, ref str_result, ref num_result);
+            EvalTermRet = GetVariable(expr, etype, out str_result, out num_result);
             return EvalTermRet;
         }
 
