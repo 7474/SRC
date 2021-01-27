@@ -7,6 +7,8 @@
 using SRC.Core.Lib;
 using SRC.Core.VB;
 using System;
+using System.Linq;
+using System.Text;
 
 namespace SRC.Core.Expressions
 {
@@ -24,11 +26,8 @@ namespace SRC.Core.Expressions
             int op_idx, op_pri;
             var op_type = default(OperatorType);
             string lop, rop;
-            string lstr = default, rstr = default;
-            double lnum = default, rnum = default;
             bool is_lop_term = default, is_rop_term = default;
-            int osize, i, ret, tsize;
-            string buf;
+            int i, ret;
 
             // 式をあらかじめ要素に分解
             tnum = GeneralLib.ListSplit(expr, out terms);
@@ -410,23 +409,25 @@ namespace SRC.Core.Expressions
 
                 default:
                     {
-                        // 左辺引数の連結処理 (高速化のため、Midを使用)
-                        buf = new string(Conversions.ToChar(Constants.vbNullChar), Strings.Len(expr));
-                        tsize = Strings.Len(terms[1]);
-                        var midTmp = terms[1];
-                        StringType.MidStmtStr(ref buf, 1, tsize, midTmp);
-                        osize = tsize;
-                        var loopTo1 = (op_idx - 1);
-                        for (i = 2; i <= loopTo1; i++)
-                        {
-                            StringType.MidStmtStr(ref buf, osize + 1, 1, " ");
-                            tsize = Strings.Len(terms[i]);
-                            var midTmp1 = terms[i];
-                            StringType.MidStmtStr(ref buf, osize + 2, tsize, midTmp1);
-                            osize = (osize + tsize + 1);
-                        }
+                        //// 左辺引数の連結処理 (高速化のため、Midを使用)
+                        //buf = new string(Conversions.ToChar(Constants.vbNullChar), Strings.Len(expr));
+                        //tsize = Strings.Len(terms[1]);
+                        //var midTmp = terms[1];
+                        //StringType.MidStmtStr(buf, 1, tsize, midTmp);
+                        //osize = tsize;
+                        //var loopTo1 = (op_idx - 1);
+                        //for (i = 2; i <= loopTo1; i++)
+                        //{
+                        //    StringType.MidStmtStr(buf, osize + 1, 1, " ");
+                        //    tsize = Strings.Len(terms[i]);
+                        //    var midTmp1 = terms[i];
+                        //    StringType.MidStmtStr(buf, osize + 2, tsize, midTmp1);
+                        //    osize = (osize + tsize + 1);
+                        //}
 
-                        lop = Strings.Left(buf, osize);
+                        //lop = Strings.Left(buf, osize);
+                        // XXX 多分こうでいいんだよな？　配列のIndexは見直さないとダメかも
+                        lop = string.Join(" ", terms.Skip(op_idx - 1));
                         break;
                     }
             }
@@ -439,25 +440,31 @@ namespace SRC.Core.Expressions
             }
             else
             {
-                // 右辺引数の連結処理 (高速化のため、Midを使用)
-                buf = new string(Conversions.ToChar(Constants.vbNullChar), Strings.Len(expr));
-                tsize = Strings.Len(terms[op_idx + 1]);
-                var midTmp2 = terms[op_idx + 1];
-                StringType.MidStmtStr(ref buf, 1, tsize, midTmp2);
-                osize = tsize;
-                var loopTo2 = tnum;
-                for (i = (op_idx + 2); i <= loopTo2; i++)
-                {
-                    StringType.MidStmtStr(ref buf, osize + 1, 1, " ");
-                    tsize = Strings.Len(terms[i]);
-                    var midTmp3 = terms[i];
-                    StringType.MidStmtStr(ref buf, osize + 2, tsize, midTmp3);
-                    osize = (osize + tsize + 1);
-                }
+                //// 右辺引数の連結処理 (高速化のため、Midを使用)
+                //buf = new string(Conversions.ToChar(Constants.vbNullChar), Strings.Len(expr));
+                //tsize = Strings.Len(terms[op_idx + 1]);
+                //var midTmp2 = terms[op_idx + 1];
+                //StringType.MidStmtStr(buf, 1, tsize, midTmp2);
+                //osize = tsize;
+                //var loopTo2 = tnum;
+                //for (i = (op_idx + 2); i <= loopTo2; i++)
+                //{
+                //    StringType.MidStmtStr(buf, osize + 1, 1, " ");
+                //    tsize = Strings.Len(terms[i]);
+                //    var midTmp3 = terms[i];
+                //    StringType.MidStmtStr(buf, osize + 2, tsize, midTmp3);
+                //    osize = (osize + tsize + 1);
+                //}
 
-                rop = Strings.Left(buf, osize);
+                //rop = Strings.Left(buf, osize);
+                // XXX 多分こうでいいんだよな？　配列のIndexは見直さないとダメかも
+                rop = string.Join(" ", terms.Skip(op_idx));
             }
 
+            string lstr;
+            double lnum;
+            string rstr;
+            double rnum;
             // 演算の実施
             switch (op_type)
             {
@@ -465,20 +472,20 @@ namespace SRC.Core.Expressions
                     {
                         if (is_lop_term)
                         {
-                            EvalTerm(ref lop, ref ValueType.NumericType, ref lstr, ref lnum);
+                            EvalTerm(lop, ValueType.NumericType, out lstr, out lnum);
                         }
                         else
                         {
-                            EvalExpr(ref lop, ref ValueType.NumericType, ref lstr, ref lnum);
+                            EvalExpr(lop, ValueType.NumericType, out lstr, out lnum);
                         }
 
                         if (is_rop_term)
                         {
-                            EvalTerm(ref rop, ref ValueType.NumericType, ref rstr, ref rnum);
+                            EvalTerm(rop, ValueType.NumericType, out rstr, out rnum);
                         }
                         else
                         {
-                            EvalExpr(ref rop, ref ValueType.NumericType, ref rstr, ref rnum);
+                            EvalExpr(rop, ValueType.NumericType, out rstr, out rnum);
                         }
 
                         if (etype == ValueType.StringType)
@@ -499,20 +506,20 @@ namespace SRC.Core.Expressions
                     {
                         if (is_lop_term)
                         {
-                            EvalTerm(ref lop, ref ValueType.NumericType, ref lstr, ref lnum);
+                            EvalTerm(lop, ValueType.NumericType, out lstr, out lnum);
                         }
                         else
                         {
-                            EvalExpr(ref lop, ref ValueType.NumericType, ref lstr, ref lnum);
+                            EvalExpr(lop, ValueType.NumericType, out lstr, out lnum);
                         }
 
                         if (is_rop_term)
                         {
-                            EvalTerm(ref rop, ref ValueType.NumericType, ref rstr, ref rnum);
+                            EvalTerm(rop, ValueType.NumericType, out rstr, out rnum);
                         }
                         else
                         {
-                            EvalExpr(ref rop, ref ValueType.NumericType, ref rstr, ref rnum);
+                            EvalExpr(rop, ValueType.NumericType, out rstr, out rnum);
                         }
 
                         if (etype == ValueType.StringType)
@@ -533,20 +540,20 @@ namespace SRC.Core.Expressions
                     {
                         if (is_lop_term)
                         {
-                            EvalTerm(ref lop, ref ValueType.NumericType, ref lstr, ref lnum);
+                            EvalTerm(lop, ValueType.NumericType, out lstr, out lnum);
                         }
                         else
                         {
-                            EvalExpr(ref lop, ref ValueType.NumericType, ref lstr, ref lnum);
+                            EvalExpr(lop, ValueType.NumericType, out lstr, out lnum);
                         }
 
                         if (is_rop_term)
                         {
-                            EvalTerm(ref rop, ref ValueType.NumericType, ref rstr, ref rnum);
+                            EvalTerm(rop, ValueType.NumericType, out rstr, out rnum);
                         }
                         else
                         {
-                            EvalExpr(ref rop, ref ValueType.NumericType, ref rstr, ref rnum);
+                            EvalExpr(rop, ValueType.NumericType, out rstr, out rnum);
                         }
 
                         if (etype == ValueType.StringType)
@@ -567,20 +574,20 @@ namespace SRC.Core.Expressions
                     {
                         if (is_lop_term)
                         {
-                            EvalTerm(ref lop, ref ValueType.NumericType, ref lstr, ref lnum);
+                            EvalTerm(lop, ValueType.NumericType, out lstr, out lnum);
                         }
                         else
                         {
-                            EvalExpr(ref lop, ref ValueType.NumericType, ref lstr, ref lnum);
+                            EvalExpr(lop, ValueType.NumericType, out lstr, out lnum);
                         }
 
                         if (is_rop_term)
                         {
-                            EvalTerm(ref rop, ref ValueType.NumericType, ref rstr, ref rnum);
+                            EvalTerm(rop, ValueType.NumericType, out rstr, out rnum);
                         }
                         else
                         {
-                            EvalExpr(ref rop, ref ValueType.NumericType, ref rstr, ref rnum);
+                            EvalExpr(rop, ValueType.NumericType, out rstr, out rnum);
                         }
 
                         if (rnum != 0d)
@@ -609,20 +616,20 @@ namespace SRC.Core.Expressions
                     {
                         if (is_lop_term)
                         {
-                            EvalTerm(ref lop, ref ValueType.NumericType, ref lstr, ref lnum);
+                            EvalTerm(lop, ValueType.NumericType, out lstr, out lnum);
                         }
                         else
                         {
-                            EvalExpr(ref lop, ref ValueType.NumericType, ref lstr, ref lnum);
+                            EvalExpr(lop, ValueType.NumericType, out lstr, out lnum);
                         }
 
                         if (is_rop_term)
                         {
-                            EvalTerm(ref rop, ref ValueType.NumericType, ref rstr, ref rnum);
+                            EvalTerm(rop, ValueType.NumericType, out rstr, out rnum);
                         }
                         else
                         {
-                            EvalExpr(ref rop, ref ValueType.NumericType, ref rstr, ref rnum);
+                            EvalExpr(rop, ValueType.NumericType, out rstr, out rnum);
                         }
 
                         if (rnum != 0d)
@@ -651,20 +658,20 @@ namespace SRC.Core.Expressions
                     {
                         if (is_lop_term)
                         {
-                            EvalTerm(ref lop, ref ValueType.NumericType, ref lstr, ref lnum);
+                            EvalTerm(lop, ValueType.NumericType, out lstr, out lnum);
                         }
                         else
                         {
-                            EvalExpr(ref lop, ref ValueType.NumericType, ref lstr, ref lnum);
+                            EvalExpr(lop, ValueType.NumericType, out lstr, out lnum);
                         }
 
                         if (is_rop_term)
                         {
-                            EvalTerm(ref rop, ref ValueType.NumericType, ref rstr, ref rnum);
+                            EvalTerm(rop, ValueType.NumericType, out rstr, out rnum);
                         }
                         else
                         {
-                            EvalExpr(ref rop, ref ValueType.NumericType, ref rstr, ref rnum);
+                            EvalExpr(rop, ValueType.NumericType, out rstr, out rnum);
                         }
 
                         if (etype == ValueType.StringType)
@@ -687,20 +694,20 @@ namespace SRC.Core.Expressions
                     {
                         if (is_lop_term)
                         {
-                            EvalTerm(ref lop, ref ValueType.NumericType, ref lstr, ref lnum);
+                            EvalTerm(lop, ValueType.NumericType, out lstr, out lnum);
                         }
                         else
                         {
-                            EvalExpr(ref lop, ref ValueType.NumericType, ref lstr, ref lnum);
+                            EvalExpr(lop, ValueType.NumericType, out lstr, out lnum);
                         }
 
                         if (is_rop_term)
                         {
-                            EvalTerm(ref rop, ref ValueType.NumericType, ref rstr, ref rnum);
+                            EvalTerm(rop, ValueType.NumericType, out rstr, out rnum);
                         }
                         else
                         {
-                            EvalExpr(ref rop, ref ValueType.NumericType, ref rstr, ref rnum);
+                            EvalExpr(rop, ValueType.NumericType, out rstr, out rnum);
                         }
 
                         if (etype == ValueType.StringType)
@@ -721,27 +728,27 @@ namespace SRC.Core.Expressions
                     {
                         if (is_lop_term)
                         {
-                            EvalTerm(ref lop, ref ValueType.StringType, ref lstr, ref lnum);
+                            EvalTerm(lop, ValueType.StringType, out lstr, out lnum);
                         }
                         else
                         {
-                            EvalExpr(ref lop, ref ValueType.StringType, ref lstr, ref lnum);
+                            EvalExpr(lop, ValueType.StringType, out lstr, out lnum);
                         }
 
                         if (is_rop_term)
                         {
-                            EvalTerm(ref rop, ref ValueType.StringType, ref rstr, ref rnum);
+                            EvalTerm(rop, ValueType.StringType, out rstr, out rnum);
                         }
                         else
                         {
-                            EvalExpr(ref rop, ref ValueType.StringType, ref rstr, ref rnum);
+                            EvalExpr(rop, ValueType.StringType, out rstr, out rnum);
                         }
 
                         if (etype == ValueType.NumericType)
                         {
                             EvalExprRet = ValueType.NumericType;
                             string argexpr = lstr + rstr;
-                            num_result = GeneralLib.StrToDbl(ref argexpr);
+                            num_result = Conversions.ToDouble(argexpr);
                         }
                         else
                         {
@@ -754,24 +761,24 @@ namespace SRC.Core.Expressions
 
                 case OperatorType.EqOp: // =
                     {
-                        if (GeneralLib.IsNumber(ref lop) | GeneralLib.IsNumber(ref rop))
+                        if (GeneralLib.IsNumber(lop) | GeneralLib.IsNumber(rop))
                         {
                             if (is_lop_term)
                             {
-                                EvalTerm(ref lop, ref ValueType.NumericType, ref lstr, ref lnum);
+                                EvalTerm(lop, ValueType.NumericType, out lstr, out lnum);
                             }
                             else
                             {
-                                EvalExpr(ref lop, ref ValueType.NumericType, ref lstr, ref lnum);
+                                EvalExpr(lop, ValueType.NumericType, out lstr, out lnum);
                             }
 
                             if (is_rop_term)
                             {
-                                EvalTerm(ref rop, ref ValueType.NumericType, ref rstr, ref rnum);
+                                EvalTerm(rop, ValueType.NumericType, out rstr, out rnum);
                             }
                             else
                             {
-                                EvalExpr(ref rop, ref ValueType.NumericType, ref rstr, ref rnum);
+                                EvalExpr(rop, ValueType.NumericType, out rstr, out rnum);
                             }
 
                             if (etype == ValueType.StringType)
@@ -803,20 +810,20 @@ namespace SRC.Core.Expressions
                         {
                             if (is_lop_term)
                             {
-                                EvalTerm(ref lop, ref ValueType.StringType, ref lstr, ref lnum);
+                                EvalTerm(lop, ValueType.StringType, out lstr, out lnum);
                             }
                             else
                             {
-                                EvalExpr(ref lop, ref ValueType.StringType, ref lstr, ref lnum);
+                                EvalExpr(lop, ValueType.StringType, out lstr, out lnum);
                             }
 
                             if (is_rop_term)
                             {
-                                EvalTerm(ref rop, ref ValueType.StringType, ref rstr, ref rnum);
+                                EvalTerm(rop, ValueType.StringType, out rstr, out rnum);
                             }
                             else
                             {
-                                EvalExpr(ref rop, ref ValueType.StringType, ref rstr, ref rnum);
+                                EvalExpr(rop, ValueType.StringType, out rstr, out rnum);
                             }
 
                             if (etype == ValueType.StringType)
@@ -850,24 +857,24 @@ namespace SRC.Core.Expressions
 
                 case OperatorType.NotEqOp: // <>, !=
                     {
-                        if (GeneralLib.IsNumber(ref lop) | GeneralLib.IsNumber(ref rop))
+                        if (GeneralLib.IsNumber(lop) | GeneralLib.IsNumber(rop))
                         {
                             if (is_lop_term)
                             {
-                                EvalTerm(ref lop, ref ValueType.NumericType, ref lstr, ref lnum);
+                                EvalTerm(lop, ValueType.NumericType, out lstr, out lnum);
                             }
                             else
                             {
-                                EvalExpr(ref lop, ref ValueType.NumericType, ref lstr, ref lnum);
+                                EvalExpr(lop, ValueType.NumericType, out lstr, out lnum);
                             }
 
                             if (is_rop_term)
                             {
-                                EvalTerm(ref rop, ref ValueType.NumericType, ref rstr, ref rnum);
+                                EvalTerm(rop, ValueType.NumericType, out rstr, out rnum);
                             }
                             else
                             {
-                                EvalExpr(ref rop, ref ValueType.NumericType, ref rstr, ref rnum);
+                                EvalExpr(rop, ValueType.NumericType, out rstr, out rnum);
                             }
 
                             if (etype == ValueType.StringType)
@@ -899,20 +906,20 @@ namespace SRC.Core.Expressions
                         {
                             if (is_lop_term)
                             {
-                                EvalTerm(ref lop, ref ValueType.StringType, ref lstr, ref lnum);
+                                EvalTerm(lop, ValueType.StringType, out lstr, out lnum);
                             }
                             else
                             {
-                                EvalExpr(ref lop, ref ValueType.StringType, ref lstr, ref lnum);
+                                EvalExpr(lop, ValueType.StringType, out lstr, out lnum);
                             }
 
                             if (is_rop_term)
                             {
-                                EvalTerm(ref rop, ref ValueType.StringType, ref rstr, ref rnum);
+                                EvalTerm(rop, ValueType.StringType, out rstr, out rnum);
                             }
                             else
                             {
-                                EvalExpr(ref rop, ref ValueType.StringType, ref rstr, ref rnum);
+                                EvalExpr(rop, ValueType.StringType, out rstr, out rnum);
                             }
 
                             if (etype == ValueType.StringType)
@@ -948,20 +955,20 @@ namespace SRC.Core.Expressions
                     {
                         if (is_lop_term)
                         {
-                            EvalTerm(ref lop, ref ValueType.NumericType, ref lstr, ref lnum);
+                            EvalTerm(lop, ValueType.NumericType, out lstr, out lnum);
                         }
                         else
                         {
-                            EvalExpr(ref lop, ref ValueType.NumericType, ref lstr, ref lnum);
+                            EvalExpr(lop, ValueType.NumericType, out lstr, out lnum);
                         }
 
                         if (is_rop_term)
                         {
-                            EvalTerm(ref rop, ref ValueType.NumericType, ref rstr, ref rnum);
+                            EvalTerm(rop, ValueType.NumericType, out rstr, out rnum);
                         }
                         else
                         {
-                            EvalExpr(ref rop, ref ValueType.NumericType, ref rstr, ref rnum);
+                            EvalExpr(rop, ValueType.NumericType, out rstr, out rnum);
                         }
 
                         if (etype == ValueType.StringType)
@@ -996,20 +1003,20 @@ namespace SRC.Core.Expressions
                     {
                         if (is_lop_term)
                         {
-                            EvalTerm(ref lop, ref ValueType.NumericType, ref lstr, ref lnum);
+                            EvalTerm(lop, ValueType.NumericType, out lstr, out lnum);
                         }
                         else
                         {
-                            EvalExpr(ref lop, ref ValueType.NumericType, ref lstr, ref lnum);
+                            EvalExpr(lop, ValueType.NumericType, out lstr, out lnum);
                         }
 
                         if (is_rop_term)
                         {
-                            EvalTerm(ref rop, ref ValueType.NumericType, ref rstr, ref rnum);
+                            EvalTerm(rop, ValueType.NumericType, out rstr, out rnum);
                         }
                         else
                         {
-                            EvalExpr(ref rop, ref ValueType.NumericType, ref rstr, ref rnum);
+                            EvalExpr(rop, ValueType.NumericType, out rstr, out rnum);
                         }
 
                         if (etype == ValueType.StringType)
@@ -1044,20 +1051,20 @@ namespace SRC.Core.Expressions
                     {
                         if (is_lop_term)
                         {
-                            EvalTerm(ref lop, ref ValueType.NumericType, ref lstr, ref lnum);
+                            EvalTerm(lop, ValueType.NumericType, out lstr, out lnum);
                         }
                         else
                         {
-                            EvalExpr(ref lop, ref ValueType.NumericType, ref lstr, ref lnum);
+                            EvalExpr(lop, ValueType.NumericType, out lstr, out lnum);
                         }
 
                         if (is_rop_term)
                         {
-                            EvalTerm(ref rop, ref ValueType.NumericType, ref rstr, ref rnum);
+                            EvalTerm(rop, ValueType.NumericType, out rstr, out rnum);
                         }
                         else
                         {
-                            EvalExpr(ref rop, ref ValueType.NumericType, ref rstr, ref rnum);
+                            EvalExpr(rop, ValueType.NumericType, out rstr, out rnum);
                         }
 
                         if (etype == ValueType.StringType)
@@ -1092,20 +1099,20 @@ namespace SRC.Core.Expressions
                     {
                         if (is_lop_term)
                         {
-                            EvalTerm(ref lop, ref ValueType.NumericType, ref lstr, ref lnum);
+                            EvalTerm(lop, ValueType.NumericType, out lstr, out lnum);
                         }
                         else
                         {
-                            EvalExpr(ref lop, ref ValueType.NumericType, ref lstr, ref lnum);
+                            EvalExpr(lop, ValueType.NumericType, out lstr, out lnum);
                         }
 
                         if (is_rop_term)
                         {
-                            EvalTerm(ref rop, ref ValueType.NumericType, ref rstr, ref rnum);
+                            EvalTerm(rop, ValueType.NumericType, out rstr, out rnum);
                         }
                         else
                         {
-                            EvalExpr(ref rop, ref ValueType.NumericType, ref rstr, ref rnum);
+                            EvalExpr(rop, ValueType.NumericType, out rstr, out rnum);
                         }
 
                         if (etype == ValueType.StringType)
@@ -1140,26 +1147,28 @@ namespace SRC.Core.Expressions
                     {
                         if (is_lop_term)
                         {
-                            EvalTerm(ref lop, ref ValueType.StringType, ref lstr, ref lnum);
+                            EvalTerm(lop, ValueType.StringType, out lstr, out lnum);
                         }
                         else
                         {
-                            EvalExpr(ref lop, ref ValueType.StringType, ref lstr, ref lnum);
+                            EvalExpr(lop, ValueType.StringType, out lstr, out lnum);
                         }
 
                         if (is_rop_term)
                         {
-                            EvalTerm(ref rop, ref ValueType.StringType, ref rstr, ref rnum);
+                            EvalTerm(rop, ValueType.StringType, out rstr, out rnum);
                         }
                         else
                         {
-                            EvalExpr(ref rop, ref ValueType.StringType, ref rstr, ref rnum);
+                            EvalExpr(rop, ValueType.StringType, out rstr, out rnum);
                         }
 
                         if (etype == ValueType.StringType)
                         {
                             EvalExprRet = ValueType.StringType;
-                            if (LikeOperator.LikeString(lstr, rstr, CompareMethod.Binary))
+                            // XXX カルチャ次第で落ちるかも？
+                            //if (LikeOperator.LikeString(lstr, rstr, CompareMethod.Binary))
+                            if (lstr == rstr)
                             {
                                 str_result = "1";
                             }
@@ -1171,7 +1180,8 @@ namespace SRC.Core.Expressions
                         else
                         {
                             EvalExprRet = ValueType.NumericType;
-                            if (LikeOperator.LikeString(lstr, rstr, CompareMethod.Binary))
+                            // XXX カルチャ次第で落ちるかも？
+                            if (lstr == rstr)
                             {
                                 num_result = 1d;
                             }
@@ -1188,11 +1198,11 @@ namespace SRC.Core.Expressions
                     {
                         if (is_rop_term)
                         {
-                            EvalTerm(ref rop, ref ValueType.NumericType, ref rstr, ref rnum);
+                            EvalTerm(rop, ValueType.NumericType, out rstr, out rnum);
                         }
                         else
                         {
-                            EvalExpr(ref rop, ref ValueType.NumericType, ref rstr, ref rnum);
+                            EvalExpr(rop, ValueType.NumericType, out rstr, out rnum);
                         }
 
                         if (etype == ValueType.StringType)
@@ -1227,11 +1237,11 @@ namespace SRC.Core.Expressions
                     {
                         if (is_lop_term)
                         {
-                            EvalTerm(ref lop, ref ValueType.NumericType, ref lstr, ref lnum);
+                            EvalTerm(lop, ValueType.NumericType, out lstr, out lnum);
                         }
                         else
                         {
-                            EvalExpr(ref lop, ref ValueType.NumericType, ref lstr, ref lnum);
+                            EvalExpr(lop, ValueType.NumericType, out lstr, out lnum);
                         }
 
                         if (lnum == 0d)
@@ -1252,11 +1262,11 @@ namespace SRC.Core.Expressions
 
                         if (is_rop_term)
                         {
-                            EvalTerm(ref rop, ref ValueType.NumericType, ref rstr, ref rnum);
+                            EvalTerm(rop, ValueType.NumericType, out rstr, out rnum);
                         }
                         else
                         {
-                            EvalExpr(ref rop, ref ValueType.NumericType, ref rstr, ref rnum);
+                            EvalExpr(rop, ValueType.NumericType, out rstr, out rnum);
                         }
 
                         if (etype == ValueType.StringType)
@@ -1291,11 +1301,11 @@ namespace SRC.Core.Expressions
                     {
                         if (is_lop_term)
                         {
-                            EvalTerm(ref lop, ref ValueType.NumericType, ref lstr, ref lnum);
+                            EvalTerm(lop, ValueType.NumericType, out lstr, out lnum);
                         }
                         else
                         {
-                            EvalExpr(ref lop, ref ValueType.NumericType, ref lstr, ref lnum);
+                            EvalExpr(lop, ValueType.NumericType, out lstr, out lnum);
                         }
 
                         if (lnum != 0d)
@@ -1316,11 +1326,11 @@ namespace SRC.Core.Expressions
 
                         if (is_rop_term)
                         {
-                            EvalTerm(ref rop, ref ValueType.NumericType, ref rstr, ref rnum);
+                            EvalTerm(rop, ValueType.NumericType, out rstr, out rnum);
                         }
                         else
                         {
-                            EvalExpr(ref rop, ref ValueType.NumericType, ref rstr, ref rnum);
+                            EvalExpr(rop, ValueType.NumericType, out rstr, out rnum);
                         }
 
                         if (etype == ValueType.StringType)
@@ -1495,7 +1505,7 @@ namespace SRC.Core.Expressions
 
             // TODO Impl
             //// 関数呼び出し？
-            //EvalTermRet = CallFunction(ref expr, ref etype, ref str_result, ref num_result);
+            //EvalTermRet = CallFunction(expr, etype, str_result, num_result);
             //if (EvalTermRet != ValueType.UndefinedType)
             //{
             //    return EvalTermRet;
@@ -1505,6 +1515,5 @@ namespace SRC.Core.Expressions
             EvalTermRet = GetVariable(expr, etype, out str_result, out num_result);
             return EvalTermRet;
         }
-
     }
 }

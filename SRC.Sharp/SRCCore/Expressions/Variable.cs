@@ -30,12 +30,6 @@ namespace SRC.Core.Expressions
             ValueType GetVariableRet = default;
             string vname = var_name;
 
-            int i;
-            string ipara, idx, buf = default;
-            int start_idx, depth;
-            bool in_single_quote = default, in_double_quote = default;
-            bool is_term;
-
             // 未定義値の設定
             str_result = var_name;
             num_result = 0d;
@@ -43,124 +37,7 @@ namespace SRC.Core.Expressions
             // 変数が配列？
             if (isArray(vname))
             {
-                // ここから配列専用の処理
-
-                // XXX 正規表現のほうが楽に書けそうではある
-                // インデックス部分の切りだし
-                var bracketPos = Strings.InStr(vname, "[");
-                idx = Strings.Mid(vname, bracketPos + 1, Strings.Len(vname) - bracketPos - 1);
-
-                // 多次元配列の処理
-                if (Strings.InStr(idx, ",") > 0)
-                {
-                    start_idx = 1;
-                    depth = 0;
-                    is_term = true;
-                    var loopTo = Strings.Len(idx);
-                    for (i = 1; i <= loopTo; i++)
-                    {
-                        if (in_single_quote)
-                        {
-                            if (Strings.Asc(Strings.Mid(idx, i, 1)) == 96) // `
-                            {
-                                in_single_quote = false;
-                            }
-                        }
-                        else if (in_double_quote)
-                        {
-                            if (Strings.Asc(Strings.Mid(idx, i, 1)) == 34) // "
-                            {
-                                in_double_quote = false;
-                            }
-                        }
-                        else
-                        {
-                            switch (Strings.Asc(Strings.Mid(idx, i, 1)))
-                            {
-                                case 9:
-                                case 32: // タブ, 空白
-                                    {
-                                        if (start_idx == i)
-                                        {
-                                            start_idx = (i + 1);
-                                        }
-                                        else
-                                        {
-                                            is_term = false;
-                                        }
-
-                                        break;
-                                    }
-
-                                case 40:
-                                case 91: // (, [
-                                    {
-                                        depth = (depth + 1);
-                                        break;
-                                    }
-
-                                case 41:
-                                case 93: // ), ]
-                                    {
-                                        depth = (depth - 1);
-                                        break;
-                                    }
-
-                                case 44: // ,
-                                    {
-                                        if (depth == 0)
-                                        {
-                                            if (Strings.Len(buf) > 0)
-                                            {
-                                                buf = buf + ",";
-                                            }
-
-                                            ipara = Strings.Trim(Strings.Mid(idx, start_idx, i - start_idx));
-                                            buf = buf + GetValueAsString(ipara, is_term);
-                                            start_idx = (i + 1);
-                                            is_term = true;
-                                        }
-
-                                        break;
-                                    }
-
-                                case 96: // `
-                                    {
-                                        in_single_quote = true;
-                                        break;
-                                    }
-
-                                case 34: // "
-                                    {
-                                        in_double_quote = true;
-                                        break;
-                                    }
-                            }
-                        }
-                    }
-
-                    ipara = Strings.Trim(Strings.Mid(idx, start_idx, i - start_idx));
-                    if (Strings.Len(buf) > 0)
-                    {
-                        idx = buf + "," + GetValueAsString(ipara, is_term);
-                    }
-                    else
-                    {
-                        idx = GetValueAsString(ipara, is_term);
-                    }
-                }
-                else
-                {
-                    idx = GetValueAsString(idx);
-                }
-
-                // 変数名を配列のインデックス部を計算して再構築
-                vname = Strings.Left(vname, bracketPos) + idx + "]";
-
-                // 定義されていない要素を使って配列を読み出した場合は空文字列を返す
-                str_result = "";
-
-                // 配列専用の処理が終了
+                vname = ResolveArrayVarName(vname);
             }
 
             // ここから配列と通常変数の共通処理
@@ -169,7 +46,7 @@ namespace SRC.Core.Expressions
             if (Event.CallDepth > 0)
             {
                 var loopTo1 = Event.VarIndex;
-                for (i = (Event.VarIndexStack[Event.CallDepth - 1] + 1); i <= loopTo1; i++)
+                for (int i = (Event.VarIndexStack[Event.CallDepth - 1] + 1); i <= loopTo1; i++)
                 {
                     {
                         var withBlock = Event.VarStack[i];
@@ -233,13 +110,13 @@ namespace SRC.Core.Expressions
             // ローカル変数
             if (IsLocalVariableDefined(vname))
             {
-                return CollectVariable(etype, Event.LocalVariableList[vname], out str_result, out num_result);
+                return ReferenceValue(etype, Event.LocalVariableList[vname], out str_result, out num_result);
             }
 
             // グローバル変数
             if (IsGlobalVariableDefined(vname))
             {
-                return CollectVariable(etype, Event.GlobalVariableList[vname], out str_result, out num_result);
+                return ReferenceValue(etype, Event.GlobalVariableList[vname], out str_result, out num_result);
             }
 
             // システム変数？
@@ -1433,545 +1310,26 @@ namespace SRC.Core.Expressions
             return GetVariableRet;
         }
 
-        private static ValueType CollectVariable(ValueType etype, VarData withBlock1, out string str_result, out double num_result)
+        private string ResolveArrayVarName(string vname)
         {
-            str_result = "";
-            num_result = 0d;
-            switch (etype)
-            {
-                case ValueType.NumericType:
-                    {
-                        if (withBlock1.VariableType == ValueType.NumericType)
-                        {
-                            num_result = withBlock1.NumericValue;
-                        }
-                        else
-                        {
-                            num_result = Conversions.ToDouble(withBlock1.StringValue);
-                        }
-                        return ValueType.NumericType;
-                    }
-
-                case ValueType.StringType:
-                    {
-                        if (withBlock1.VariableType == ValueType.StringType)
-                        {
-                            str_result = withBlock1.StringValue;
-                        }
-                        else
-                        {
-                            str_result = GeneralLib.FormatNum(withBlock1.NumericValue);
-                        }
-                        return ValueType.StringType;
-                    }
-
-                case ValueType.UndefinedType:
-                default:
-                    {
-                        // XXX 逆の側の型に値入れなくていいの？
-                        if (withBlock1.VariableType == ValueType.StringType)
-                        {
-                            str_result = withBlock1.StringValue;
-                            return ValueType.StringType;
-                        }
-                        else
-                        {
-                            num_result = withBlock1.NumericValue;
-                            return ValueType.NumericType;
-                        }
-                    }
-            }
-        }
-
-        // 指定した変数が定義されているか？
-        public bool IsVariableDefined(string var_name)
-        {
-            bool IsVariableDefinedRet = default;
-            string vname;
-            int i, ret;
-            string ipara, idx, buf = default;
-            int start_idx, depth;
-            bool in_single_quote = default, in_double_quote = default;
-            bool is_term;
-            switch (Strings.Asc(var_name))
-            {
-                case 36: // $
-                    {
-                        vname = Strings.Mid(var_name, 2);
-                        break;
-                    }
-
-                default:
-                    {
-                        vname = var_name;
-                        break;
-                    }
-            }
-
-            // 変数が配列？
-            ret = Strings.InStr(vname, "[");
-            if (ret == 0)
-            {
-                goto SkipArrayHandling;
-            }
-
-            if (Strings.Right(vname, 1) != "]")
-            {
-                goto SkipArrayHandling;
-            }
-
-            // ここから配列専用の処理
-
+            // XXX 正規表現のほうが楽に書けそうではある
             // インデックス部分の切りだし
-            idx = Strings.Mid(vname, ret + 1, Strings.Len(vname) - ret - 1);
+            var bracketPos = Strings.InStr(vname, "[");
+            var idx = Strings.Mid(vname, bracketPos + 1, Strings.Len(vname) - bracketPos - 1);
 
             // 多次元配列の処理
             if (Strings.InStr(idx, ",") > 0)
             {
-                start_idx = 1;
-                depth = 0;
-                is_term = true;
+                int start_idx = 1;
+                int depth = 0;
+                bool is_term = true;
+                bool in_single_quote = false;
+                bool in_double_quote = false;
+                // XXX StringBuilder
+                string buf = "";
+                string ipara;
                 var loopTo = Strings.Len(idx);
-                for (i = 1; i <= loopTo; i++)
-                {
-                    if (in_single_quote)
-                    {
-                        if (Strings.Asc(Strings.Mid(idx, i, 1)) == 96) // `
-                        {
-                            in_single_quote = false;
-                        }
-                    }
-                    else if (in_double_quote)
-                    {
-                        if (Strings.Asc(Strings.Mid(idx, i, 1)) == 34) // "
-                        {
-                            in_double_quote = false;
-                        }
-                    }
-                    else
-                    {
-                        switch (Strings.Asc(Strings.Mid(idx, i, 1)))
-                        {
-                            case 9:
-                            case 32: // タブ, 空白
-                                {
-                                    if (start_idx == i)
-                                    {
-                                        start_idx = (i + 1);
-                                    }
-                                    else
-                                    {
-                                        is_term = false;
-                                    }
-
-                                    break;
-                                }
-
-                            case 40:
-                            case 91: // (, 
-                                {
-                                    depth = (depth + 1);
-                                    break;
-                                }
-
-                            case 41:
-                            case 93: // ), 
-                                {
-                                    depth = (depth - 1);
-                                    break;
-                                }
-
-                            case 44: // ,
-                                {
-                                    if (depth == 0)
-                                    {
-                                        if (Strings.Len(buf) > 0)
-                                        {
-                                            buf = buf + ",";
-                                        }
-
-                                        ipara = Strings.Trim(Strings.Mid(idx, start_idx, i - start_idx));
-                                        buf = buf + GetValueAsString(ipara, is_term);
-                                        start_idx = (i + 1);
-                                        is_term = true;
-                                    }
-
-                                    break;
-                                }
-
-                            case 96: // `
-                                {
-                                    in_single_quote = true;
-                                    break;
-                                }
-
-                            case 34: // "
-                                {
-                                    in_double_quote = true;
-                                    break;
-                                }
-                        }
-                    }
-                }
-
-                ipara = Strings.Trim(Strings.Mid(idx, start_idx, i - start_idx));
-                if (Strings.Len(buf) > 0)
-                {
-                    idx = buf + "," + GetValueAsString(ipara, is_term);
-                }
-                else
-                {
-                    idx = GetValueAsString(ipara, is_term);
-                }
-            }
-            else
-            {
-                string argexpr = Strings.Trim(idx);
-                idx = GetValueAsString(argexpr);
-            }
-
-            // 変数名を配列のインデックス部を計算して再構築
-            vname = Strings.Left(vname, ret) + idx + "]";
-
-        // 配列専用の処理が終了
-
-        SkipArrayHandling:
-            ;
-
-
-            // ここから配列と通常変数の共通処理
-
-            // サブルーチンローカル変数
-            if (Event.CallDepth > 0)
-            {
-                var loopTo1 = Event.VarIndex;
-                for (i = (Event.VarIndexStack[Event.CallDepth - 1] + 1); i <= loopTo1; i++)
-                {
-                    if ((vname ?? "") == (Event.VarStack[i].Name ?? ""))
-                    {
-                        IsVariableDefinedRet = true;
-                        return IsVariableDefinedRet;
-                    }
-                }
-            }
-
-            // ローカル変数
-            if (IsLocalVariableDefined(vname))
-            {
-                IsVariableDefinedRet = true;
-                return IsVariableDefinedRet;
-            }
-
-            // グローバル変数
-            if (IsGlobalVariableDefined(vname))
-            {
-                IsVariableDefinedRet = true;
-                return IsVariableDefinedRet;
-            }
-
-            return IsVariableDefinedRet;
-        }
-
-        // 指定した名前のサブルーチンローカル変数が定義されているか？
-        public bool IsSubLocalVariableDefined(string vname)
-        {
-            bool IsSubLocalVariableDefinedRet = default;
-            int i;
-            if (Event.CallDepth > 0)
-            {
-                var loopTo = Event.VarIndex;
-                for (i = (Event.VarIndexStack[Event.CallDepth - 1] + 1); i <= loopTo; i++)
-                {
-                    if ((vname ?? "") == (Event.VarStack[i].Name ?? ""))
-                    {
-                        IsSubLocalVariableDefinedRet = true;
-                        return IsSubLocalVariableDefinedRet;
-                    }
-                }
-            }
-
-            return IsSubLocalVariableDefinedRet;
-        }
-
-        // 指定した名前のローカル変数が定義されているか？
-        public bool IsLocalVariableDefined(string vname)
-        {
-            return Event.LocalVariableList.ContainsKey(vname);
-        }
-
-        // 指定した名前のグローバル変数が定義されているか？
-        public bool IsGlobalVariableDefined(string vname)
-        {
-            return Event.GlobalVariableList.ContainsKey(vname);
-        }
-
-        // 変数の値を設定
-        public void SetVariable(string var_name, ValueType etype, string str_value, double num_value)
-        {
-            VarData new_var;
-            string vname;
-            int i, ret;
-            string ipara, idx, buf = default;
-            var vname0 = default(string);
-            Pilot p;
-            Unit u;
-            int start_idx, depth;
-            bool in_single_quote = default, in_double_quote = default;
-            bool is_term;
-            var is_subroutine_local_array = default(bool);
-
-            // Debug.Print "Set " & vname & " " & new_value
-
-            vname = var_name;
-
-            // 左辺値を伴う関数
-            ret = Strings.InStr(vname, "(");
-            if (ret > 1 & Strings.Right(vname, 1) == ")")
-            {
-                switch (Strings.LCase(Strings.Left(vname, ret - 1)) ?? "")
-                {
-                    case "hp":
-                        {
-                            idx = Strings.Mid(vname, ret + 1, Strings.Len(vname) - ret - 1);
-                            idx = GetValueAsString(idx);
-                            bool localIsDefined() { object argIndex1 = idx; var ret = SRC.PList.IsDefined(argIndex1); return ret; }
-
-                            object argIndex2 = idx;
-                            if (SRC.UList.IsDefined2(argIndex2))
-                            {
-                                object argIndex1 = idx;
-                                u = SRC.UList.Item2(argIndex1);
-                            }
-                            else if (localIsDefined())
-                            {
-                                Pilot localItem() { object argIndex1 = idx; var ret = SRC.PList.Item(argIndex1); return ret; }
-
-                                u = localItem().Unit_Renamed;
-                            }
-                            else
-                            {
-                                u = Event.SelectedUnitForEvent;
-                            }
-
-                            if (u is object)
-                            {
-                                if (etype == ValueType.NumericType)
-                                {
-                                    u.HP = num_value;
-                                }
-                                else
-                                {
-                                    u.HP = GeneralLib.StrToLng(str_value);
-                                }
-
-                                if (u.HP <= 0)
-                                {
-                                    u.HP = 1;
-                                }
-                            }
-
-                            return;
-                        }
-
-                    case "en":
-                        {
-                            idx = Strings.Mid(vname, ret + 1, Strings.Len(vname) - ret - 1);
-                            idx = GetValueAsString(idx);
-                            bool localIsDefined1() { object argIndex1 = idx; var ret = SRC.PList.IsDefined(argIndex1); return ret; }
-
-                            object argIndex4 = idx;
-                            if (SRC.UList.IsDefined2(argIndex4))
-                            {
-                                object argIndex3 = idx;
-                                u = SRC.UList.Item2(argIndex3);
-                            }
-                            else if (localIsDefined1())
-                            {
-                                Pilot localItem1() { object argIndex1 = idx; var ret = SRC.PList.Item(argIndex1); return ret; }
-
-                                u = localItem1().Unit_Renamed;
-                            }
-                            else
-                            {
-                                u = Event.SelectedUnitForEvent;
-                            }
-
-                            if (u is object)
-                            {
-                                if (etype == ValueType.NumericType)
-                                {
-                                    u.EN = num_value;
-                                }
-                                else
-                                {
-                                    u.EN = GeneralLib.StrToLng(str_value);
-                                }
-
-                                if (u.EN == 0 & u.Status_Renamed == "出撃")
-                                {
-                                    GUI.PaintUnitBitmap(u);
-                                }
-                            }
-
-                            return;
-                        }
-
-                    case "sp":
-                        {
-                            idx = Strings.Mid(vname, ret + 1, Strings.Len(vname) - ret - 1);
-                            idx = GetValueAsString(idx);
-                            bool localIsDefined2() { object argIndex1 = idx; var ret = SRC.PList.IsDefined(argIndex1); return ret; }
-
-                            object argIndex6 = idx;
-                            if (SRC.UList.IsDefined2(argIndex6))
-                            {
-                                Unit localItem2() { object argIndex1 = idx; var ret = SRC.UList.Item2(argIndex1); return ret; }
-
-                                p = localItem2().MainPilot();
-                            }
-                            else if (localIsDefined2())
-                            {
-                                object argIndex5 = idx;
-                                p = SRC.PList.Item(argIndex5);
-                            }
-                            else
-                            {
-                                p = Event.SelectedUnitForEvent.MainPilot();
-                            }
-
-                            if (p is object)
-                            {
-                                {
-                                    var withBlock = p;
-                                    if (withBlock.MaxSP > 0)
-                                    {
-                                        if (etype == ValueType.NumericType)
-                                        {
-                                            withBlock.SP = num_value;
-                                        }
-                                        else
-                                        {
-                                            withBlock.SP = GeneralLib.StrToLng(str_value);
-                                        }
-                                    }
-                                }
-                            }
-
-                            return;
-                        }
-
-                    case "plana":
-                        {
-                            idx = Strings.Mid(vname, ret + 1, Strings.Len(vname) - ret - 1);
-                            idx = GetValueAsString(idx);
-                            bool localIsDefined3() { object argIndex1 = idx; var ret = SRC.PList.IsDefined(argIndex1); return ret; }
-
-                            object argIndex8 = idx;
-                            if (SRC.UList.IsDefined2(argIndex8))
-                            {
-                                Unit localItem21() { object argIndex1 = idx; var ret = SRC.UList.Item2(argIndex1); return ret; }
-
-                                p = localItem21().MainPilot();
-                            }
-                            else if (localIsDefined3())
-                            {
-                                object argIndex7 = idx;
-                                p = SRC.PList.Item(argIndex7);
-                            }
-                            else
-                            {
-                                p = Event.SelectedUnitForEvent.MainPilot();
-                            }
-
-                            if (p is object)
-                            {
-                                if (p.MaxPlana() > 0)
-                                {
-                                    if (etype == ValueType.NumericType)
-                                    {
-                                        p.Plana = num_value;
-                                    }
-                                    else
-                                    {
-                                        p.Plana = GeneralLib.StrToLng(str_value);
-                                    }
-                                }
-                            }
-
-                            return;
-                        }
-
-                    case "action":
-                        {
-                            idx = Strings.Mid(vname, ret + 1, Strings.Len(vname) - ret - 1);
-                            idx = GetValueAsString(idx);
-                            bool localIsDefined4() { object argIndex1 = idx; var ret = SRC.PList.IsDefined(argIndex1); return ret; }
-
-                            object argIndex10 = idx;
-                            if (SRC.UList.IsDefined2(argIndex10))
-                            {
-                                object argIndex9 = idx;
-                                u = SRC.UList.Item2(argIndex9);
-                            }
-                            else if (localIsDefined4())
-                            {
-                                Pilot localItem3() { object argIndex1 = idx; var ret = SRC.PList.Item(argIndex1); return ret; }
-
-                                u = localItem3().Unit_Renamed;
-                            }
-                            else
-                            {
-                                u = Event.SelectedUnitForEvent;
-                            }
-
-                            if (u is object)
-                            {
-                                if (etype == ValueType.NumericType)
-                                {
-                                    u.UsedAction = (u.MaxAction() - num_value);
-                                }
-                                else
-                                {
-                                    u.UsedAction = (u.MaxAction() - GeneralLib.StrToLng(str_value));
-                                }
-                            }
-
-                            return;
-                        }
-
-                    case "eval":
-                        {
-                            vname = Strings.Trim(Strings.Mid(vname, ret + 1, Strings.Len(vname) - ret - 1));
-                            vname = GetValueAsString(vname);
-                            break;
-                        }
-                }
-            }
-
-            // 変数が配列？
-            ret = Strings.InStr(vname, "[");
-            if (ret == 0)
-            {
-                goto SkipArrayHandling;
-            }
-
-            if (Strings.Right(vname, 1) != "]")
-            {
-                goto SkipArrayHandling;
-            }
-
-            // ここから配列専用の処理
-
-            // インデックス部分の切りだし
-            idx = Strings.Mid(vname, ret + 1, Strings.Len(vname) - ret - 1);
-
-            // 多次元配列の処理
-            if (Strings.InStr(idx, ",") > 0)
-            {
-                start_idx = 1;
-                depth = 0;
-                is_term = true;
-                var loopTo = Strings.Len(idx);
+                int i;
                 for (i = 1; i <= loopTo; i++)
                 {
                     if (in_single_quote)
@@ -2066,27 +1424,405 @@ namespace SRC.Core.Expressions
             }
             else
             {
-                string argexpr = Strings.Trim(idx);
-                idx = GetValueAsString(argexpr);
+                idx = GetValueAsString(idx);
             }
 
             // 変数名を配列のインデックス部を計算して再構築
-            vname = Strings.Left(vname, ret) + idx + "]";
+            return Strings.Left(vname, bracketPos) + idx + "]";
+        }
 
-            // 配列名
-            vname0 = Strings.Left(vname, ret - 1);
-
-            // サブルーチンローカルな配列として定義済みかどうかチェック
-            if (IsSubLocalVariableDefined(vname0))
+        private static ValueType ReferenceValue(ValueType etype, VarData withBlock1, out string str_result, out double num_result)
+        {
+            str_result = "";
+            num_result = 0d;
+            switch (etype)
             {
-                is_subroutine_local_array = true;
+                case ValueType.NumericType:
+                    {
+                        if (withBlock1.VariableType == ValueType.NumericType)
+                        {
+                            num_result = withBlock1.NumericValue;
+                        }
+                        else
+                        {
+                            num_result = Conversions.ToDouble(withBlock1.StringValue);
+                        }
+                        return ValueType.NumericType;
+                    }
+
+                case ValueType.StringType:
+                    {
+                        if (withBlock1.VariableType == ValueType.StringType)
+                        {
+                            str_result = withBlock1.StringValue;
+                        }
+                        else
+                        {
+                            str_result = GeneralLib.FormatNum(withBlock1.NumericValue);
+                        }
+                        return ValueType.StringType;
+                    }
+
+                case ValueType.UndefinedType:
+                default:
+                    {
+                        // XXX 逆の側の型に値入れなくていいの？
+                        if (withBlock1.VariableType == ValueType.StringType)
+                        {
+                            str_result = withBlock1.StringValue;
+                            return ValueType.StringType;
+                        }
+                        else
+                        {
+                            num_result = withBlock1.NumericValue;
+                            return ValueType.NumericType;
+                        }
+                    }
+            }
+        }
+
+        // 指定した変数が定義されているか？
+        public bool IsVariableDefined(string var_name)
+        {
+            bool IsVariableDefinedRet = default;
+            string vname;
+            switch (Strings.Asc(var_name))
+            {
+                case 36: // $
+                    {
+                        vname = Strings.Mid(var_name, 2);
+                        break;
+                    }
+
+                default:
+                    {
+                        vname = var_name;
+                        break;
+                    }
             }
 
-        // 配列専用の処理が終了
+            // 変数が配列？
+            if (isArray(vname))
+            {
+                vname = ResolveArrayVarName(vname);
+            }
 
-        SkipArrayHandling:
-            ;
+            // ここから配列と通常変数の共通処理
 
+            // サブルーチンローカル変数
+            if (Event.CallDepth > 0)
+            {
+                var loopTo1 = Event.VarIndex;
+                for (int i = (Event.VarIndexStack[Event.CallDepth - 1] + 1); i <= loopTo1; i++)
+                {
+                    if ((vname ?? "") == (Event.VarStack[i].Name ?? ""))
+                    {
+                        IsVariableDefinedRet = true;
+                        return IsVariableDefinedRet;
+                    }
+                }
+            }
+
+            // ローカル変数
+            if (IsLocalVariableDefined(vname))
+            {
+                IsVariableDefinedRet = true;
+                return IsVariableDefinedRet;
+            }
+
+            // グローバル変数
+            if (IsGlobalVariableDefined(vname))
+            {
+                IsVariableDefinedRet = true;
+                return IsVariableDefinedRet;
+            }
+
+            return IsVariableDefinedRet;
+        }
+
+        // 指定した名前のサブルーチンローカル変数が定義されているか？
+        public bool IsSubLocalVariableDefined(string vname)
+        {
+            bool IsSubLocalVariableDefinedRet = default;
+            int i;
+            if (Event.CallDepth > 0)
+            {
+                var loopTo = Event.VarIndex;
+                for (i = (Event.VarIndexStack[Event.CallDepth - 1] + 1); i <= loopTo; i++)
+                {
+                    if ((vname ?? "") == (Event.VarStack[i].Name ?? ""))
+                    {
+                        IsSubLocalVariableDefinedRet = true;
+                        return IsSubLocalVariableDefinedRet;
+                    }
+                }
+            }
+
+            return IsSubLocalVariableDefinedRet;
+        }
+
+        // 指定した名前のローカル変数が定義されているか？
+        public bool IsLocalVariableDefined(string vname)
+        {
+            return Event.LocalVariableList.ContainsKey(vname);
+        }
+
+        // 指定した名前のグローバル変数が定義されているか？
+        public bool IsGlobalVariableDefined(string vname)
+        {
+            return Event.GlobalVariableList.ContainsKey(vname);
+        }
+
+        // 変数の値を設定
+        public void SetVariable(string var_name, ValueType etype, string str_value, double num_value)
+        {
+            VarData new_var;
+            string vname = var_name;
+            int i, ret;
+            var vname0 = default(string);
+            var is_subroutine_local_array = default(bool);
+
+            // Debug.Print "Set " & vname & " " & new_value
+
+            // 左辺値を伴う関数
+            // TODO Impl
+            ret = Strings.InStr(vname, "(");
+            if (ret > 1 & Strings.Right(vname, 1) == ")")
+            {
+                //    switch (Strings.LCase(Strings.Left(vname, ret - 1)) ?? "")
+                //    {
+                //        case "hp":
+                //            {
+                //                idx = Strings.Mid(vname, ret + 1, Strings.Len(vname) - ret - 1);
+                //                idx = GetValueAsString(idx);
+                //                bool localIsDefined() { object argIndex1 = idx; var ret = SRC.PList.IsDefined(argIndex1); return ret; }
+
+                //                object argIndex2 = idx;
+                //                if (SRC.UList.IsDefined2(argIndex2))
+                //                {
+                //                    object argIndex1 = idx;
+                //                    u = SRC.UList.Item2(argIndex1);
+                //                }
+                //                else if (localIsDefined())
+                //                {
+                //                    Pilot localItem() { object argIndex1 = idx; var ret = SRC.PList.Item(argIndex1); return ret; }
+
+                //                    u = localItem().Unit_Renamed;
+                //                }
+                //                else
+                //                {
+                //                    u = Event.SelectedUnitForEvent;
+                //                }
+
+                //                if (u is object)
+                //                {
+                //                    if (etype == ValueType.NumericType)
+                //                    {
+                //                        u.HP = num_value;
+                //                    }
+                //                    else
+                //                    {
+                //                        u.HP = GeneralLib.StrToLng(str_value);
+                //                    }
+
+                //                    if (u.HP <= 0)
+                //                    {
+                //                        u.HP = 1;
+                //                    }
+                //                }
+
+                //                return;
+                //            }
+
+                //        case "en":
+                //            {
+                //                idx = Strings.Mid(vname, ret + 1, Strings.Len(vname) - ret - 1);
+                //                idx = GetValueAsString(idx);
+                //                bool localIsDefined1() { object argIndex1 = idx; var ret = SRC.PList.IsDefined(argIndex1); return ret; }
+
+                //                object argIndex4 = idx;
+                //                if (SRC.UList.IsDefined2(argIndex4))
+                //                {
+                //                    object argIndex3 = idx;
+                //                    u = SRC.UList.Item2(argIndex3);
+                //                }
+                //                else if (localIsDefined1())
+                //                {
+                //                    Pilot localItem1() { object argIndex1 = idx; var ret = SRC.PList.Item(argIndex1); return ret; }
+
+                //                    u = localItem1().Unit_Renamed;
+                //                }
+                //                else
+                //                {
+                //                    u = Event.SelectedUnitForEvent;
+                //                }
+
+                //                if (u is object)
+                //                {
+                //                    if (etype == ValueType.NumericType)
+                //                    {
+                //                        u.EN = num_value;
+                //                    }
+                //                    else
+                //                    {
+                //                        u.EN = GeneralLib.StrToLng(str_value);
+                //                    }
+
+                //                    if (u.EN == 0 & u.Status_Renamed == "出撃")
+                //                    {
+                //                        GUI.PaintUnitBitmap(u);
+                //                    }
+                //                }
+
+                //                return;
+                //            }
+
+                //        case "sp":
+                //            {
+                //                idx = Strings.Mid(vname, ret + 1, Strings.Len(vname) - ret - 1);
+                //                idx = GetValueAsString(idx);
+                //                bool localIsDefined2() { object argIndex1 = idx; var ret = SRC.PList.IsDefined(argIndex1); return ret; }
+
+                //                object argIndex6 = idx;
+                //                if (SRC.UList.IsDefined2(argIndex6))
+                //                {
+                //                    Unit localItem2() { object argIndex1 = idx; var ret = SRC.UList.Item2(argIndex1); return ret; }
+
+                //                    p = localItem2().MainPilot();
+                //                }
+                //                else if (localIsDefined2())
+                //                {
+                //                    object argIndex5 = idx;
+                //                    p = SRC.PList.Item(argIndex5);
+                //                }
+                //                else
+                //                {
+                //                    p = Event.SelectedUnitForEvent.MainPilot();
+                //                }
+
+                //                if (p is object)
+                //                {
+                //                    {
+                //                        var withBlock = p;
+                //                        if (withBlock.MaxSP > 0)
+                //                        {
+                //                            if (etype == ValueType.NumericType)
+                //                            {
+                //                                withBlock.SP = num_value;
+                //                            }
+                //                            else
+                //                            {
+                //                                withBlock.SP = GeneralLib.StrToLng(str_value);
+                //                            }
+                //                        }
+                //                    }
+                //                }
+
+                //                return;
+                //            }
+
+                //        case "plana":
+                //            {
+                //                idx = Strings.Mid(vname, ret + 1, Strings.Len(vname) - ret - 1);
+                //                idx = GetValueAsString(idx);
+                //                bool localIsDefined3() { object argIndex1 = idx; var ret = SRC.PList.IsDefined(argIndex1); return ret; }
+
+                //                object argIndex8 = idx;
+                //                if (SRC.UList.IsDefined2(argIndex8))
+                //                {
+                //                    Unit localItem21() { object argIndex1 = idx; var ret = SRC.UList.Item2(argIndex1); return ret; }
+
+                //                    p = localItem21().MainPilot();
+                //                }
+                //                else if (localIsDefined3())
+                //                {
+                //                    object argIndex7 = idx;
+                //                    p = SRC.PList.Item(argIndex7);
+                //                }
+                //                else
+                //                {
+                //                    p = Event.SelectedUnitForEvent.MainPilot();
+                //                }
+
+                //                if (p is object)
+                //                {
+                //                    if (p.MaxPlana() > 0)
+                //                    {
+                //                        if (etype == ValueType.NumericType)
+                //                        {
+                //                            p.Plana = num_value;
+                //                        }
+                //                        else
+                //                        {
+                //                            p.Plana = GeneralLib.StrToLng(str_value);
+                //                        }
+                //                    }
+                //                }
+
+                //                return;
+                //            }
+
+                //        case "action":
+                //            {
+                //                idx = Strings.Mid(vname, ret + 1, Strings.Len(vname) - ret - 1);
+                //                idx = GetValueAsString(idx);
+                //                bool localIsDefined4() { object argIndex1 = idx; var ret = SRC.PList.IsDefined(argIndex1); return ret; }
+
+                //                object argIndex10 = idx;
+                //                if (SRC.UList.IsDefined2(argIndex10))
+                //                {
+                //                    object argIndex9 = idx;
+                //                    u = SRC.UList.Item2(argIndex9);
+                //                }
+                //                else if (localIsDefined4())
+                //                {
+                //                    Pilot localItem3() { object argIndex1 = idx; var ret = SRC.PList.Item(argIndex1); return ret; }
+
+                //                    u = localItem3().Unit_Renamed;
+                //                }
+                //                else
+                //                {
+                //                    u = Event.SelectedUnitForEvent;
+                //                }
+
+                //                if (u is object)
+                //                {
+                //                    if (etype == ValueType.NumericType)
+                //                    {
+                //                        u.UsedAction = (u.MaxAction() - num_value);
+                //                    }
+                //                    else
+                //                    {
+                //                        u.UsedAction = (u.MaxAction() - GeneralLib.StrToLng(str_value));
+                //                    }
+                //                }
+
+                //                return;
+                //            }
+
+                //        case "eval":
+                //            {
+                //                vname = Strings.Trim(Strings.Mid(vname, ret + 1, Strings.Len(vname) - ret - 1));
+                //                vname = GetValueAsString(vname);
+                //                break;
+                //            }
+                //    }
+            }
+
+            // 変数が配列？
+            if (isArray(vname))
+            {
+                vname = ResolveArrayVarName(vname);
+
+                // 配列名
+                vname0 = Strings.Left(vname, Strings.InStr(vname, "[") - 1);
+
+                // サブルーチンローカルな配列として定義済みかどうかチェック
+                if (IsSubLocalVariableDefined(vname0))
+                {
+                    is_subroutine_local_array = true;
+                }
+            }
 
             // ここから配列と通常変数の共通処理
 
@@ -2113,10 +1849,10 @@ namespace SRC.Core.Expressions
             {
                 // サブルーチンローカル変数の配列の要素として定義
                 Event.VarIndex = (Event.VarIndex + 1);
-                if (Event.VarIndex > Event.MaxVarIndex)
+                if (Event.VarIndex > Events.Event.MaxVarIndex)
                 {
-                    Event.VarIndex = Event.MaxVarIndex;
-                    Event.DisplayEventErrorMessage(Event.CurrentLineNum, "作成したサブルーチンローカル変数の総数が" + VB.Compatibility.VB6.Support.Format(Event.MaxVarIndex) + "個を超えています");
+                    Event.VarIndex = Events.Event.MaxVarIndex;
+                    Event.DisplayEventErrorMessage(Event.CurrentLineNum, "作成したサブルーチンローカル変数の総数が" + SrcFormatter.Format(Events.Event.MaxVarIndex) + "個を超えています");
                     return;
                 }
 
@@ -2174,14 +1910,15 @@ namespace SRC.Core.Expressions
                     {
                         if (etype == ValueType.NumericType)
                         {
-                            Event.BaseX = num_value;
+                            Event.BaseX = (int)num_value;
                         }
                         else
                         {
                             Event.BaseX = GeneralLib.StrToLng(str_value);
                         }
-                        // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-                        GUI.MainForm.picMain(0).CurrentX = Event.BaseX;
+                        // TODO GUI
+                        //// UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+                        //GUI.MainForm.picMain(0).CurrentX = Event.BaseX;
                         return;
                     }
 
@@ -2189,14 +1926,15 @@ namespace SRC.Core.Expressions
                     {
                         if (etype == ValueType.NumericType)
                         {
-                            Event.BaseY = num_value;
+                            Event.BaseY = (int)num_value;
                         }
                         else
                         {
                             Event.BaseY = GeneralLib.StrToLng(str_value);
                         }
-                        // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-                        GUI.MainForm.picMain(0).CurrentY = Event.BaseY;
+                        // TODO GUI
+                        //// UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+                        //GUI.MainForm.picMain(0).CurrentY = Event.BaseY;
                         return;
                     }
 
@@ -2204,7 +1942,7 @@ namespace SRC.Core.Expressions
                     {
                         if (etype == ValueType.NumericType)
                         {
-                            SRC.Turn = num_value;
+                            SRC.Turn = (int)num_value;
                         }
                         else
                         {
@@ -2218,7 +1956,7 @@ namespace SRC.Core.Expressions
                     {
                         if (etype == ValueType.NumericType)
                         {
-                            SRC.TotalTurn = num_value;
+                            SRC.TotalTurn = (int)num_value;
                         }
                         else
                         {
@@ -2233,7 +1971,7 @@ namespace SRC.Core.Expressions
                         SRC.Money = 0;
                         if (etype == ValueType.NumericType)
                         {
-                            SRC.IncrMoney(num_value);
+                            SRC.IncrMoney((int)num_value);
                         }
                         else
                         {
@@ -2285,7 +2023,7 @@ namespace SRC.Core.Expressions
                         Event.DisplayEventErrorMessage(Event.CurrentLineNum, "不正な変数「" + new_var2.Name + "」が作成されました");
                     }
 
-                    Event.LocalVariableList.Add(new_var2, vname0);
+                    Event.LocalVariableList.Add(vname0, new_var2);
                 }
             }
 
@@ -2300,7 +2038,7 @@ namespace SRC.Core.Expressions
                 Event.DisplayEventErrorMessage(Event.CurrentLineNum, "不正な変数「" + new_var.Name + "」が作成されました");
             }
 
-            Event.LocalVariableList.Add(new_var, vname);
+            Event.LocalVariableList.Add(vname, new_var);
         }
 
         public void SetVariableAsString(string vname, string new_value)
@@ -2329,7 +2067,7 @@ namespace SRC.Core.Expressions
             new_var.Name = vname;
             new_var.VariableType = ValueType.StringType;
             new_var.StringValue = "";
-            Event.GlobalVariableList.Add(new_var, vname);
+            Event.GlobalVariableList.Add(vname, new_var);
         }
 
         // ローカル変数を定義
@@ -2339,13 +2077,12 @@ namespace SRC.Core.Expressions
             new_var.Name = vname;
             new_var.VariableType = ValueType.StringType;
             new_var.StringValue = "";
-            Event.LocalVariableList.Add(new_var, vname);
+            Event.LocalVariableList.Add(vname, new_var);
         }
 
         // 変数を消去
         public void UndefineVariable(string var_name)
         {
-            VarData var;
             string vname, vname2;
             int i, ret;
             string idx, buf = default;
@@ -2453,9 +2190,8 @@ namespace SRC.Core.Expressions
                                             buf = buf + ",";
                                         }
 
-                                        string localGetValueAsString() { string argexpr = Strings.Mid(idx, start_idx, i - start_idx); var ret = GetValueAsString(argexpr, is_term); return ret; }
-
-                                        buf = buf + localGetValueAsString();
+                                        string argexpr = Strings.Mid(idx, start_idx, i - start_idx);
+                                        buf = buf + GetValueAsString(argexpr, is_term);
                                         start_idx = (i + 1);
                                         is_term = true;
                                     }
@@ -2480,9 +2216,8 @@ namespace SRC.Core.Expressions
 
                 if (Strings.Len(buf) > 0)
                 {
-                    string localGetValueAsString1() { string argexpr = Strings.Mid(idx, start_idx, i - start_idx); var ret = GetValueAsString(argexpr, is_term); return ret; }
-
-                    idx = buf + "," + localGetValueAsString1();
+                    string argexpr = Strings.Mid(idx, start_idx, i - start_idx);
+                    idx = buf + "," + GetValueAsString(argexpr, is_term);
                 }
                 else
                 {
@@ -2561,12 +2296,11 @@ namespace SRC.Core.Expressions
             if (IsLocalVariableDefined(vname))
             {
                 Event.LocalVariableList.Remove(vname);
-                foreach (VarData currentVar in Event.LocalVariableList)
+                foreach (VarData currentVar in Event.LocalVariableList.Values)
                 {
-                    var = currentVar;
-                    if (Strings.InStr(var.Name, vname2) == 1)
+                    if (Strings.InStr(currentVar.Name, vname2) == 1)
                     {
-                        Event.LocalVariableList.Remove(var.Name);
+                        Event.LocalVariableList.Remove(currentVar.Name);
                     }
                 }
 
@@ -2577,18 +2311,16 @@ namespace SRC.Core.Expressions
             if (IsGlobalVariableDefined(vname))
             {
                 Event.GlobalVariableList.Remove(vname);
-                foreach (VarData currentVar1 in Event.GlobalVariableList)
+                foreach (VarData currentVar in Event.GlobalVariableList.Values)
                 {
-                    var = currentVar1;
-                    if (Strings.InStr(var.Name, vname2) == 1)
+                    if (Strings.InStr(currentVar.Name, vname2) == 1)
                     {
-                        Event.GlobalVariableList.Remove(var.Name);
+                        Event.GlobalVariableList.Remove(currentVar.Name);
                     }
                 }
 
                 return;
             }
         }
-
     }
 }

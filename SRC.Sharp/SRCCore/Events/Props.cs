@@ -14,9 +14,9 @@ namespace SRC.Core.Events
         // イベントコマンドリスト
         public CmdData[] EventCmd;
         // 個々の行がどのイベントファイルに属しているか
-        public short[] EventFileID;
+        public int[] EventFileID;
         // 個々の行がイベントファイルの何行目に位置するか
-        public short[] EventLineNum;
+        public int[] EventLineNum;
         // イベントファイルのファイル名リスト
         public string[] EventFileNames;
         // Requireコマンドで追加されたイベントファイルのファイル名リスト
@@ -25,7 +25,7 @@ namespace SRC.Core.Events
         // システム側のイベントデータのサイズ(行数)
         private int SysEventDataSize;
         // システム側のイベントファイル数
-        private short SysEventFileNum;
+        private int SysEventFileNum;
         // シナリオ添付のシステムファイルがチェックされたかどうか
         private bool ScenarioLibChecked;
 
@@ -56,33 +56,33 @@ namespace SRC.Core.Events
         // 関数呼び出し用変数
 
         // 最大呼び出し階層数
-        public const short MaxCallDepth = 50;
+        public const int MaxCallDepth = 50;
         // 引数の最大数
-        public const short MaxArgIndex = 200;
+        public const int MaxArgIndex = 200;
         // サブルーチンローカル変数の最大数
-        public const short MaxVarIndex = 2000;
+        public const int MaxVarIndex = 2000;
 
         // 呼び出し履歴
-        public short CallDepth;
+        public int CallDepth;
         public int[] CallStack = new int[(MaxCallDepth + 1)];
         // 引数スタック
-        public short ArgIndex;
-        public short[] ArgIndexStack = new short[(MaxCallDepth + 1)];
+        public int ArgIndex;
+        public int[] ArgIndexStack = new int[(MaxCallDepth + 1)];
         public string[] ArgStack = new string[(MaxArgIndex + 1)];
         // UpVarコマンドによって引数が何段階シフトしているか
-        public short UpVarLevel;
-        public short[] UpVarLevelStack = new short[(MaxCallDepth + 1)];
+        public int UpVarLevel;
+        public int[] UpVarLevelStack = new int[(MaxCallDepth + 1)];
         // サブルーチンローカル変数スタック
-        public short VarIndex;
-        public short[] VarIndexStack = new short[(MaxCallDepth + 1)];
+        public int VarIndex;
+        public int[] VarIndexStack = new int[(MaxCallDepth + 1)];
         public VarData[] VarStack = new VarData[(MaxVarIndex + 1)];
         // Forインデックス用スタック
-        public short ForIndex;
-        public short[] ForIndexStack = new short[(MaxCallDepth + 1)];
+        public int ForIndex;
+        public int[] ForIndexStack = new int[(MaxCallDepth + 1)];
         public int[] ForLimitStack = new int[(MaxCallDepth + 1)];
 
         // ForEachコマンド用変数
-        public short ForEachIndex;
+        public int ForEachIndex;
         public string[] ForEachSet;
 
         // Rideコマンド用パイロット搭乗履歴

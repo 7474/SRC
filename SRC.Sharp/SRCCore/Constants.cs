@@ -9,5 +9,7 @@ namespace SRC.Core
     {
         // データ中にレベル指定を省略した場合のデフォルトのレベル値
         public const int DEFAULT_LEVEL = -1000;
+        public const string vbCr = "\r";
+        public const string vbLf = "\n";
     }
 }

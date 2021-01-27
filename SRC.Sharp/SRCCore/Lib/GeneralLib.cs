@@ -1113,25 +1113,24 @@ namespace SRC.Core.Lib
         }
 
 
-        //        // 文字列 str が数値かどうか調べる
-        //        // UPGRADE_NOTE: str は str_Renamed にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
-        //        public static bool IsNumber(ref string str_Renamed)
-        //        {
-        //            bool IsNumberRet = default;
-        //            if (!Information.IsNumeric(str_Renamed))
-        //            {
-        //                return IsNumberRet;
-        //            }
+        // 文字列 str が数値かどうか調べる
+        public static bool IsNumber( string str)
+        {
+            bool IsNumberRet = default;
+            if (!Information.IsNumeric(str))
+            {
+                return IsNumberRet;
+            }
 
-        //            // "(1)"のような文字列が数値と判定されてしまうのを防ぐ
-        //            if (Strings.Asc(str_Renamed) == 40)
-        //            {
-        //                return IsNumberRet;
-        //            }
+            // "(1)"のような文字列が数値と判定されてしまうのを防ぐ
+            if (Strings.Asc(str) == 40)
+            {
+                return IsNumberRet;
+            }
 
-        //            IsNumberRet = true;
-        //            return IsNumberRet;
-        //        }
+            IsNumberRet = true;
+            return IsNumberRet;
+        }
 
 
         //        // 武器属性処理用の関数群。
