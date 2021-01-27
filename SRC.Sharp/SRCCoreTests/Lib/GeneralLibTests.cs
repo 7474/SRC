@@ -34,5 +34,12 @@ namespace SRC.Core.Lib.Tests
                 Assert.IsTrue(c.expected.SequenceEqual(actual), $"case: {c.input}");
             }
         }
+
+        [TestMethod()]
+        public void FormatNumTest()
+        {
+            Assert.AreEqual("100000000000000000000", GeneralLib.FormatNum(1e20));
+            Assert.AreEqual("0.1", GeneralLib.FormatNum(1e-1));
+        }
     }
 }
