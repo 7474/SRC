@@ -1096,21 +1096,21 @@ namespace SRC.Core.Lib
         //        }
 
 
-        //        // 数値を指数表記を使わずに文字列表記する
-        //        public static string FormatNum(double n)
-        //        {
-        //            string FormatNumRet = default;
-        //            if (n == Conversion.Int(n))
-        //            {
-        //                FormatNumRet = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(n, "0");
-        //            }
-        //            else
-        //            {
-        //                FormatNumRet = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(n, "0.#######################################################################");
-        //            }
+        // 数値を指数表記を使わずに文字列表記する
+        public static string FormatNum(double n)
+        {
+            string FormatNumRet = default;
+            if (n % 1 == 0d)
+            {
+                FormatNumRet = n.ToString("0");
+            }
+            else
+            {
+                FormatNumRet = n.ToString("0.#######################################################################");
+            }
 
-        //            return FormatNumRet;
-        //        }
+            return FormatNumRet;
+        }
 
 
         //        // 文字列 str が数値かどうか調べる
