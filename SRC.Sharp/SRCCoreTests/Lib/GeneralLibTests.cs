@@ -25,6 +25,7 @@ namespace SRC.Core.Lib.Tests
                 new ToListTestCase{ input= "This is a pen.", expected= new List<string>{ "This", "is", "a", "pen." } },
                 new ToListTestCase{ input= "a (b c) (d (e f))", expected= new List<string>{ "a", "b c", "d (e f)" } },
                 new ToListTestCase{ input= "こぶた たぬき きつね ねこ", expected= new List<string>{ "こぶた", "たぬき", "きつね", "ねこ" } },
+                new ToListTestCase{ input= "a (b c)) (d (e f))", expected= new List<string>{ "a", "b c", ") (d (e f))" } },
             };
             foreach (var c in cases)
             {
@@ -32,6 +33,13 @@ namespace SRC.Core.Lib.Tests
                 Console.WriteLine(c.input + ": " + JsonConvert.SerializeObject(actual));
                 Assert.IsTrue(c.expected.SequenceEqual(actual), $"case: {c.input}");
             }
+        }
+
+        [TestMethod()]
+        public void FormatNumTest()
+        {
+            Assert.AreEqual("100000000000000000000", GeneralLib.FormatNum(1e20));
+            Assert.AreEqual("0.1", GeneralLib.FormatNum(1e-1));
         }
     }
 }

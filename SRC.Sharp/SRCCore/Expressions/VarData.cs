@@ -3,13 +3,18 @@
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
 
-namespace SRC.Core
+namespace SRC.Core.Expressions
 {
-    public static class Constants
+    // 変数のクラス
+    public class VarData
     {
-        // データ中にレベル指定を省略した場合のデフォルトのレベル値
-        public const int DEFAULT_LEVEL = -1000;
-        public const string vbCr = "\r";
-        public const string vbLf = "\n";
+        // 名称
+        public string Name;
+        // 型
+        public ValueType VariableType;
+        // 文字列値
+        public string StringValue;
+        // 数値
+        public double NumericValue;
     }
 }

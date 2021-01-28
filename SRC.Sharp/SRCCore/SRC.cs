@@ -3,6 +3,8 @@
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
 
+using SRC.Core.Events;
+using SRC.Core.Expressions;
 using SRC.Core.Lib;
 using SRC.Core.Models;
 using SRC.Core.VB;
@@ -14,6 +16,9 @@ namespace SRC.Core
     public class SRC
     {
         public IGUI GUI;
+
+        public Expression Expression { get; }
+        public Event Event { get; }
 
         // パイロットデータのリスト
         public PilotDataList PDList = new PilotDataList();
@@ -54,7 +59,7 @@ namespace SRC.Core
         // イベントファイル名のあるフォルダ
         public string ScenarioPath;
         // セーブデータのファイルディスクリプタ
-        public short SaveDataFileNumber;
+        public int SaveDataFileNumber;
         // セーブデータのバージョン
         public int SaveDataVersion;
 
@@ -68,7 +73,7 @@ namespace SRC.Core
         // フェイズ名
         public string Stage;
         // ターン数
-        public short Turn;
+        public int Turn;
         // 総ターン数
         public int TotalTurn;
         // 総資金
@@ -108,7 +113,7 @@ namespace SRC.Core
         // 移動アニメを表示するか
         public bool MoveAnimation;
         // 画像バッファの枚数
-        public short ImageBufferSize;
+        public int ImageBufferSize;
         // 画像バッファの最大バイト数
         public int MaxImageBufferByteSize;
         // 拡大画像を画像バッファに保存するか
@@ -121,6 +126,8 @@ namespace SRC.Core
 
         public SRC()
         {
+            Event = new Event(this);
+            Expression = new Expression(this);
         }
 
         #region TODO
@@ -128,7 +135,7 @@ namespace SRC.Core
         //        public void Main()
         //        {
         //            string fname;
-        //            short i;
+        //            int i;
         //            string buf;
         //            int ret;
 
@@ -385,7 +392,7 @@ namespace SRC.Core
         //            }
         //            else
         //            {
-        //                Sound.MP3Volume = (short)GeneralLib.StrToLng(ref buf);
+        //                Sound.MP3Volume = GeneralLib.StrToLng(ref buf);
         //                if (Sound.MP3Volume < 0)
         //                {
         //                    string argini_section10 = "Option";
@@ -565,7 +572,7 @@ namespace SRC.Core
         //                // ダイアログを表示して読み込むファイルを指定する場合
 
         //                // ダイアログの初期フォルダを設定
-        //                i = (short)0;
+        //                i = 0;
         //                string argini_section40 = "Log";
         //                string argini_entry40 = "LastFolder";
         //                ScenarioPath = GeneralLib.ReadIni(ref argini_section40, ref argini_entry40);
@@ -588,22 +595,22 @@ namespace SRC.Core
         //                    // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
         //                    if (!string.IsNullOrEmpty(FileSystem.Dir(ScenarioPath + "*.src")))
         //                    {
-        //                        i = (short)3;
+        //                        i = 3;
         //                    }
 
         //                    if (Strings.InStr(ScenarioPath, "テストデータ") > 0)
         //                    {
-        //                        i = (short)2;
+        //                        i = 2;
         //                    }
 
         //                    if (Strings.InStr(ScenarioPath, "戦闘アニメテスト") > 0)
         //                    {
-        //                        i = (short)2;
+        //                        i = 2;
         //                    }
         //                    // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
         //                    if (!string.IsNullOrEmpty(FileSystem.Dir(ScenarioPath + "test.eve")))
         //                    {
-        //                        i = (short)2;
+        //                        i = 2;
         //                    }
         //                }
         //                else
@@ -692,16 +699,16 @@ namespace SRC.Core
         //                // シナリオのあるフォルダのパスを収得
         //                if (Strings.InStr(fname, @"\") > 0)
         //                {
-        //                    var loopTo = (short)Strings.Len(fname);
-        //                    for (i = (short)1; i <= loopTo; i++)
+        //                    var loopTo = Strings.Len(fname);
+        //                    for (i = 1; i <= loopTo; i++)
         //                    {
-        //                        if (Strings.Mid(fname, Strings.Len(fname) - (int)i + 1, 1) == @"\")
+        //                        if (Strings.Mid(fname, Strings.Len(fname) - i + 1, 1) == @"\")
         //                        {
         //                            break;
         //                        }
         //                    }
 
-        //                    ScenarioPath = Strings.Left(fname, Strings.Len(fname) - (int)i);
+        //                    ScenarioPath = Strings.Left(fname, Strings.Len(fname) - i);
         //                }
         //                else
         //                {
@@ -752,16 +759,16 @@ namespace SRC.Core
         //                // シナリオのあるフォルダのパスを収得
         //                if (Strings.InStr(fname, @"\") > 0)
         //                {
-        //                    var loopTo1 = (short)Strings.Len(fname);
-        //                    for (i = (short)1; i <= loopTo1; i++)
+        //                    var loopTo1 = Strings.Len(fname);
+        //                    for (i = 1; i <= loopTo1; i++)
         //                    {
-        //                        if (Strings.Mid(fname, Strings.Len(fname) - (int)i + 1, 1) == @"\")
+        //                        if (Strings.Mid(fname, Strings.Len(fname) - i + 1, 1) == @"\")
         //                        {
         //                            break;
         //                        }
         //                    }
 
-        //                    ScenarioPath = Strings.Left(fname, Strings.Len(fname) - (int)i);
+        //                    ScenarioPath = Strings.Left(fname, Strings.Len(fname) - i);
         //                }
         //                else
         //                {
@@ -1120,7 +1127,7 @@ namespace SRC.Core
         //            buf = GeneralLib.ReadIni(ref argini_section75, ref argini_entry75);
         //            if (Information.IsNumeric(buf))
         //            {
-        //                ImageBufferSize = Conversions.ToShort(buf);
+        //                ImageBufferSize = Conversions.Toint(buf);
         //                if (ImageBufferSize < 5)
         //                {
         //                    // 最低でも5枚のバッファを使う
@@ -1146,7 +1153,7 @@ namespace SRC.Core
         //            buf = GeneralLib.ReadIni(ref argini_section77, ref argini_entry77);
         //            if (Information.IsNumeric(buf))
         //            {
-        //                MaxImageBufferByteSize = (int)(Conversions.ToDouble(buf) * 1024d * 1024d);
+        //                MaxImageBufferByteSize = (Conversions.ToDouble(buf) * 1024d * 1024d);
         //                if (MaxImageBufferByteSize < 1 * 1024 * 1024)
         //                {
         //                    // 最低でも1MBのバッファを使う
@@ -1335,11 +1342,11 @@ namespace SRC.Core
         //            Map.InitMap();
 
         //            // 乱数系列を初期化
-        //            GeneralLib.RndSeed = (int)Conversion.Int(1000000f * VBMath.Rnd());
+        //            GeneralLib.RndSeed = Conversion.Int(1000000f * VBMath.Rnd());
         //            GeneralLib.RndReset();
         //            if (Strings.LCase(Strings.Right(fname, 4)) == ".src")
         //            {
-        //                SaveDataFileNumber = (short)FileSystem.FreeFile();
+        //                SaveDataFileNumber = FileSystem.FreeFile();
         //                FileSystem.FileOpen(SaveDataFileNumber, fname, OpenMode.Input);
         //                // 第１項目を読み込み
         //                FileSystem.Input(SaveDataFileNumber, ref buf);
@@ -1353,7 +1360,7 @@ namespace SRC.Core
         //                    }
         //                }
 
-        //                FileSystem.FileClose((int)SaveDataFileNumber);
+        //                FileSystem.FileClose(SaveDataFileNumber);
 
         //                // データの種類を判定
         //                if (Information.IsNumeric(buf))
@@ -1412,7 +1419,7 @@ namespace SRC.Core
         //        // INIファイルを作成する
         //        public void CreateIniFile()
         //        {
-        //            short f;
+        //            int f;
         //            ;
         //#error Cannot convert OnErrorGoToStatementSyntax - see comment for details
         //            /* Cannot convert OnErrorGoToStatementSyntax, CONVERSION ERROR: Conversion for OnErrorGoToLabelStatement not implemented, please report this issue in 'On Error GoTo ErrorHandler' at character 40882
@@ -1423,7 +1430,7 @@ namespace SRC.Core
         //                    On Error GoTo ErrorHandler
 
         //             */
-        //            f = (short)FileSystem.FreeFile();
+        //            f = FileSystem.FreeFile();
         //            FileSystem.FileOpen(f, AppPath + "Src.ini", OpenMode.Output, OpenAccess.Write);
         //            FileSystem.PrintLine(f, ";SRCの設定ファイルです。");
         //            FileSystem.PrintLine(f, ";項目の内容に関してはヘルプの");
@@ -1562,7 +1569,7 @@ namespace SRC.Core
         //            FileSystem.PrintLine(f, ";戦闘時のデフォルトMIDI");
         //            FileSystem.PrintLine(f, "default=default.mid");
         //            FileSystem.PrintLine(f, "");
-        //            FileSystem.FileClose((int)f);
+        //            FileSystem.FileClose(f);
         //        ErrorHandler:
         //            ;
 
@@ -1577,7 +1584,7 @@ namespace SRC.Core
         //            int stime, etime;
         //            int bb_time, sb_time;
         //            int ret;
-        //            short i;
+        //            int i;
         //            {
         //                var withBlock = GUI.MainForm;
         //                // 描画領域を設定
@@ -1657,7 +1664,7 @@ namespace SRC.Core
         //        // イベントファイルfnameを実行
         //        public void StartScenario(string fname)
         //        {
-        //            short i;
+        //            int i;
         //            int ret;
         //            Font sf;
 
@@ -1754,7 +1761,7 @@ namespace SRC.Core
         //                string argvname2 = "次ステージ";
         //                string argnew_value = "";
         //                Expression.SetVariableAsString(ref argvname2, ref argnew_value);
-        //                var loopTo = (short)Strings.Len(fname);
+        //                var loopTo = Strings.Len(fname);
         //                for (i = 1; i <= loopTo; i++)
         //                {
         //                    if (Strings.Mid(fname, Strings.Len(fname) - i + 1, 1) == @"\")
@@ -1917,7 +1924,7 @@ namespace SRC.Core
         //        // 陣営upartyのフェイズを実行
         //        public void StartTurn(ref string uparty)
         //        {
-        //            short num, i, phase;
+        //            int num, i, phase;
         //            Unit u;
         //            Stage = uparty;
         //            Sound.BossBGM = false;
@@ -1931,7 +1938,7 @@ namespace SRC.Core
         //                    // ターン数を進める
         //                    if (!string.IsNullOrEmpty(Map.MapFileName))
         //                    {
-        //                        Turn = (short)(Turn + 1);
+        //                        Turn = (Turn + 1);
         //                        TotalTurn = TotalTurn + 1;
         //                    }
 
@@ -2061,7 +2068,7 @@ namespace SRC.Core
         //                            var withBlock2 = u;
         //                            if (withBlock2.Party == "味方" & (withBlock2.Status == "出撃" | withBlock2.Status == "格納") & withBlock2.Action > 0)
         //                            {
-        //                                num = (short)(num + 1);
+        //                                num = (num + 1);
         //                            }
         //                        }
         //                    }
@@ -2081,7 +2088,7 @@ namespace SRC.Core
         //                            var withBlock3 = u;
         //                            if (withBlock3.Party != "味方" & withBlock3.Status == "出撃")
         //                            {
-        //                                num = (short)(num + 1);
+        //                                num = (num + 1);
         //                            }
         //                        }
         //                    }
@@ -2265,7 +2272,7 @@ namespace SRC.Core
         //                }
         //            }
 
-        //            short max_lv;
+        //            int max_lv;
         //            var max_unit = default(Unit);
         //            if (uparty == "味方")
         //            {
@@ -2548,7 +2555,7 @@ namespace SRC.Core
         //                                if (Map.MapDataForUnit[withBlock13.x - 1, withBlock13.y] is object)
         //                                {
         //                                    Commands.SelectedTarget = Map.MapDataForUnit[withBlock13.x - 1, withBlock13.y];
-        //                                    Event_Renamed.HandleEvent("接触", withBlock13.MainPilot().ID, Map.MapDataForUnit[(int)withBlock13.x - 1, withBlock13.y].MainPilot.ID);
+        //                                    Event_Renamed.HandleEvent("接触", withBlock13.MainPilot().ID, Map.MapDataForUnit[withBlock13.x - 1, withBlock13.y].MainPilot.ID);
         //                                    if (IsScenarioFinished)
         //                                    {
         //                                        return;
@@ -2564,7 +2571,7 @@ namespace SRC.Core
         //                                if (Map.MapDataForUnit[withBlock14.x + 1, withBlock14.y] is object)
         //                                {
         //                                    Commands.SelectedTarget = Map.MapDataForUnit[withBlock14.x + 1, withBlock14.y];
-        //                                    Event_Renamed.HandleEvent("接触", withBlock14.MainPilot().ID, Map.MapDataForUnit[(int)withBlock14.x + 1, withBlock14.y].MainPilot.ID);
+        //                                    Event_Renamed.HandleEvent("接触", withBlock14.MainPilot().ID, Map.MapDataForUnit[withBlock14.x + 1, withBlock14.y].MainPilot.ID);
         //                                    if (IsScenarioFinished)
         //                                    {
         //                                        return;
@@ -2580,7 +2587,7 @@ namespace SRC.Core
         //                                if (Map.MapDataForUnit[withBlock15.x, withBlock15.y - 1] is object)
         //                                {
         //                                    Commands.SelectedTarget = Map.MapDataForUnit[withBlock15.x, withBlock15.y - 1];
-        //                                    Event_Renamed.HandleEvent("接触", withBlock15.MainPilot().ID, Map.MapDataForUnit[withBlock15.x, (int)withBlock15.y - 1].MainPilot.ID);
+        //                                    Event_Renamed.HandleEvent("接触", withBlock15.MainPilot().ID, Map.MapDataForUnit[withBlock15.x, withBlock15.y - 1].MainPilot.ID);
         //                                    if (IsScenarioFinished)
         //                                    {
         //                                        return;
@@ -2596,7 +2603,7 @@ namespace SRC.Core
         //                                if (Map.MapDataForUnit[withBlock16.x, withBlock16.y + 1] is object)
         //                                {
         //                                    Commands.SelectedTarget = Map.MapDataForUnit[withBlock16.x, withBlock16.y + 1];
-        //                                    Event_Renamed.HandleEvent("接触", withBlock16.MainPilot().ID, Map.MapDataForUnit[withBlock16.x, (int)withBlock16.y + 1].MainPilot.ID);
+        //                                    Event_Renamed.HandleEvent("接触", withBlock16.MainPilot().ID, Map.MapDataForUnit[withBlock16.x, withBlock16.y + 1].MainPilot.ID);
         //                                    if (IsScenarioFinished)
         //                                    {
         //                                        return;
@@ -2767,7 +2774,7 @@ namespace SRC.Core
             throw new Exception("TerminateSRC");
         }
         //        {
-        //            short i, j;
+        //            int i, j;
 
         //            // ウィンドウを閉じる
         //            if (GUI.MainForm is object)
@@ -2830,7 +2837,7 @@ namespace SRC.Core
 
         //            {
         //                var withBlock = Event_Renamed.GlobalVariableList;
-        //                var loopTo2 = (short)withBlock.Count;
+        //                var loopTo2 = withBlock.Count;
         //                for (i = 1; i <= loopTo2; i++)
         //                    withBlock.Remove(1);
         //            }
@@ -2838,7 +2845,7 @@ namespace SRC.Core
         //            Event_Renamed.GlobalVariableList = null;
         //            {
         //                var withBlock1 = Event_Renamed.LocalVariableList;
-        //                var loopTo3 = (short)withBlock1.Count;
+        //                var loopTo3 = withBlock1.Count;
         //                for (i = 1; i <= loopTo3; i++)
         //                    withBlock1.Remove(1);
         //            }
@@ -2893,7 +2900,7 @@ namespace SRC.Core
         //        // データをセーブ
         //        public void SaveData(ref string fname)
         //        {
-        //            short i;
+        //            int i;
         //            int num;
         //            ;
         //#error Cannot convert OnErrorGoToStatementSyntax - see comment for details
@@ -2905,7 +2912,7 @@ namespace SRC.Core
         //                    On Error GoTo ErrorHandler
 
         //             */
-        //            SaveDataFileNumber = (short)FileSystem.FreeFile();
+        //            SaveDataFileNumber = FileSystem.FreeFile();
         //            FileSystem.FileOpen(SaveDataFileNumber, fname, OpenMode.Output, OpenAccess.Write);
 
         //            // UPGRADE_ISSUE: App オブジェクト はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6B85A2A7-FE9F-4FBE-AA0C-CF11AC86A305"' をクリックしてください。
@@ -2916,7 +2923,7 @@ namespace SRC.Core
 
         //            FileSystem.WriteLine(SaveDataFileNumber, (object)num);
         //            FileSystem.WriteLine(SaveDataFileNumber, (object)Information.UBound(Titles));
-        //            var loopTo = (short)Information.UBound(Titles);
+        //            var loopTo = Information.UBound(Titles);
         //            for (i = 1; i <= loopTo; i++)
         //                FileSystem.WriteLine(SaveDataFileNumber, Titles[i]);
         //            string argexpr = "次ステージ";
@@ -2928,19 +2935,19 @@ namespace SRC.Core
         //            PList.Save();
         //            UList.Save();
         //            IList.Save();
-        //            FileSystem.FileClose((int)SaveDataFileNumber);
+        //            FileSystem.FileClose(SaveDataFileNumber);
         //            return;
         //        ErrorHandler:
         //            ;
         //            string argmsg = "セーブ中にエラーが発生しました";
         //            GUI.ErrorMessage(ref argmsg);
-        //            FileSystem.FileClose((int)SaveDataFileNumber);
+        //            FileSystem.FileClose(SaveDataFileNumber);
         //        }
 
         //        // データをロード
         //        public void LoadData(ref string fname)
         //        {
-        //            short i, num = default;
+        //            int i, num = default;
         //            var fname2 = default(string);
         //            var dummy = default(string);
         //            ;
@@ -2953,7 +2960,7 @@ namespace SRC.Core
         //                    On Error GoTo ErrorHandler
 
         //             */
-        //            SaveDataFileNumber = (short)FileSystem.FreeFile();
+        //            SaveDataFileNumber = FileSystem.FreeFile();
         //            FileSystem.FileOpen(SaveDataFileNumber, fname, OpenMode.Input);
         //            FileSystem.Input(SaveDataFileNumber, ref SaveDataVersion);
         //            if (SaveDataVersion > 10000)
@@ -2962,10 +2969,10 @@ namespace SRC.Core
         //            }
         //            else
         //            {
-        //                num = (short)SaveDataVersion;
+        //                num = SaveDataVersion;
         //            }
 
-        //            GUI.SetLoadImageSize((short)(num * 2 + 5));
+        //            GUI.SetLoadImageSize((num * 2 + 5));
         //            Titles = new string[(num + 1)];
         //            var loopTo = num;
         //            for (i = 1; i <= loopTo; i++)
@@ -3085,11 +3092,11 @@ namespace SRC.Core
         //            PList.Load();
         //            UList.Load();
         //            IList.Load();
-        //            FileSystem.FileClose((int)SaveDataFileNumber);
+        //            FileSystem.FileClose(SaveDataFileNumber);
 
         //            // リンクデータを処理するため、セーブファイルを一旦閉じてから再度読み込み
 
-        //            SaveDataFileNumber = (short)FileSystem.FreeFile();
+        //            SaveDataFileNumber = FileSystem.FreeFile();
         //            FileSystem.FileOpen(SaveDataFileNumber, fname, OpenMode.Input);
         //            if (SaveDataVersion > 10000)
         //            {
@@ -3112,7 +3119,7 @@ namespace SRC.Core
         //            PList.LoadLinkInfo();
         //            UList.LoadLinkInfo();
         //            IList.LoadLinkInfo();
-        //            FileSystem.FileClose((int)SaveDataFileNumber);
+        //            FileSystem.FileClose(SaveDataFileNumber);
         //            GUI.DisplayLoadingProgress();
 
         //            // ユニットの状態を回復
@@ -3130,7 +3137,7 @@ namespace SRC.Core
         //            ;
         //            string argmsg = "ロード中にエラーが発生しました";
         //            GUI.ErrorMessage(ref argmsg);
-        //            FileSystem.FileClose((int)SaveDataFileNumber);
+        //            FileSystem.FileClose(SaveDataFileNumber);
         //            TerminateSRC();
         //        }
 
@@ -3138,12 +3145,12 @@ namespace SRC.Core
         //        // 一時中断用データをファイルにセーブする
         //        public void DumpData(ref string fname)
         //        {
-        //            short i;
+        //            int i;
         //            int num;
         //            ;
 
         //            // 中断データをセーブ
-        //            SaveDataFileNumber = (short)FileSystem.FreeFile();
+        //            SaveDataFileNumber = FileSystem.FreeFile();
         //            FileSystem.FileOpen(SaveDataFileNumber, fname, OpenMode.Output, OpenAccess.Write);
 
         //            // UPGRADE_ISSUE: App オブジェクト はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6B85A2A7-FE9F-4FBE-AA0C-CF11AC86A305"' をクリックしてください。
@@ -3155,7 +3162,7 @@ namespace SRC.Core
         //            FileSystem.WriteLine(SaveDataFileNumber, (object)num);
         //            FileSystem.WriteLine(SaveDataFileNumber, Strings.Mid(ScenarioFileName, Strings.Len(ScenarioPath) + 1));
         //            FileSystem.WriteLine(SaveDataFileNumber, (object)Information.UBound(Titles));
-        //            var loopTo = (short)Information.UBound(Titles);
+        //            var loopTo = Information.UBound(Titles);
         //            for (i = 1; i <= loopTo; i++)
         //                FileSystem.WriteLine(SaveDataFileNumber, Titles[i]);
         //            FileSystem.WriteLine(SaveDataFileNumber, (object)Turn);
@@ -3186,7 +3193,7 @@ namespace SRC.Core
         //            FileSystem.WriteLine(SaveDataFileNumber, (object)Sound.BossBGM);
         //            FileSystem.WriteLine(SaveDataFileNumber, (object)GeneralLib.RndSeed);
         //            FileSystem.WriteLine(SaveDataFileNumber, (object)GeneralLib.RndIndex);
-        //            FileSystem.FileClose((int)SaveDataFileNumber);
+        //            FileSystem.FileClose(SaveDataFileNumber);
         //            LastSaveDataFileName = fname;
         //            if (Strings.InStr(fname, @"\_リスタート.src") > 0)
         //            {
@@ -3202,13 +3209,13 @@ namespace SRC.Core
         //            ;
         //            string argmsg = "セーブ中にエラーが発生しました";
         //            GUI.ErrorMessage(ref argmsg);
-        //            FileSystem.FileClose((int)SaveDataFileNumber);
+        //            FileSystem.FileClose(SaveDataFileNumber);
         //        }
 
         //        // 一時中断用データをロード
         //        public void RestoreData(ref string fname, ref bool quick_load)
         //        {
-        //            short i, num = default;
+        //            int i, num = default;
         //            var fname2 = default(string);
         //            string dummy;
         //            var scenario_file_is_different = default(bool);
@@ -3232,7 +3239,7 @@ namespace SRC.Core
         //                GUI.OpenNowLoadingForm();
         //            }
 
-        //            SaveDataFileNumber = (short)FileSystem.FreeFile();
+        //            SaveDataFileNumber = FileSystem.FreeFile();
         //            FileSystem.FileOpen(SaveDataFileNumber, fname, OpenMode.Input);
         //            FileSystem.Input(SaveDataFileNumber, ref fname2);
         //            if (Information.IsNumeric(fname2))
@@ -3258,7 +3265,7 @@ namespace SRC.Core
         //            // 使用するデータをロード
         //            if (!quick_load)
         //            {
-        //                GUI.SetLoadImageSize((short)(num * 2 + 5));
+        //                GUI.SetLoadImageSize((num * 2 + 5));
         //                Titles = new string[(num + 1)];
         //                var loopTo = num;
         //                for (i = 1; i <= loopTo; i++)
@@ -3426,11 +3433,11 @@ namespace SRC.Core
         //                GUI.DisplayLoadingProgress();
         //            }
 
-        //            FileSystem.FileClose((int)SaveDataFileNumber);
+        //            FileSystem.FileClose(SaveDataFileNumber);
 
         //            // リンクデータを処理するため、セーブファイルを一旦閉じてから再度読み込み
 
-        //            SaveDataFileNumber = (short)FileSystem.FreeFile();
+        //            SaveDataFileNumber = FileSystem.FreeFile();
         //            FileSystem.FileOpen(SaveDataFileNumber, fname, OpenMode.Input);
 
         //            // SaveDataVersion
@@ -3458,13 +3465,13 @@ namespace SRC.Core
         //            PList.RestoreLinkInfo();
         //            IList.RestoreLinkInfo();
         //            UList.RestoreLinkInfo();
-        //            FileSystem.FileClose((int)SaveDataFileNumber);
+        //            FileSystem.FileClose(SaveDataFileNumber);
 
         //            // パラメータ情報を処理するため、セーブファイルを一旦閉じてから再度読み込み。
         //            // 霊力やＨＰ、ＥＮといったパラメータは最大値が特殊能力で変動するため、
         //            // 特殊能力の設定が終わってから改めて設定してやる必要がある。
 
-        //            SaveDataFileNumber = (short)FileSystem.FreeFile();
+        //            SaveDataFileNumber = FileSystem.FreeFile();
         //            FileSystem.FileOpen(SaveDataFileNumber, fname, OpenMode.Input);
 
         //            // SaveDataVersion
@@ -3495,7 +3502,7 @@ namespace SRC.Core
         //            PList.UpdateSupportMod();
 
         //            // 背景書き換え
-        //            short map_x, map_y;
+        //            int map_x, map_y;
         //            if (Map.IsMapDirty)
         //            {
         //                map_x = GUI.MapX;
@@ -3531,7 +3538,7 @@ namespace SRC.Core
 
         //            // 画面更新
         //            GUI.Center(GUI.MapX, GUI.MapY);
-        //            FileSystem.FileClose((int)SaveDataFileNumber);
+        //            FileSystem.FileClose(SaveDataFileNumber);
         //            if (!quick_load)
         //            {
         //                GUI.DisplayLoadingProgress();
@@ -3595,7 +3602,7 @@ namespace SRC.Core
         //            ;
         //            string argmsg = "ロード中にエラーが発生しました";
         //            GUI.ErrorMessage(ref argmsg);
-        //            FileSystem.FileClose((int)SaveDataFileNumber);
+        //            FileSystem.FileClose(SaveDataFileNumber);
         //            TerminateSRC();
         //        }
 
@@ -3605,14 +3612,14 @@ namespace SRC.Core
         //        // 新形式）ユニット名称+":"+数値
         //        public void ConvertUnitID(ref string ID)
         //        {
-        //            short i;
+        //            int i;
         //            if (Strings.InStr(ID, ":") > 0)
         //            {
         //                return;
         //            }
 
         //            // 数値部分を読み飛ばす
-        //            i = (short)Strings.Len(ID);
+        //            i = Strings.Len(ID);
         //            while (i > 0)
         //            {
         //                switch (Strings.Asc(Strings.Mid(ID, i, 1)))
@@ -3629,7 +3636,7 @@ namespace SRC.Core
         //                        }
         //                }
 
-        //                i = (short)(i - 1);
+        //                i = (i - 1);
         //            }
 
         //            // ユニット名称と数値部分の間に「:」を挿入

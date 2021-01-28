@@ -7,6 +7,8 @@ using SRC.Core.VB;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Text;
 
 namespace SRC.Core.Lib
 {
@@ -107,86 +109,6 @@ namespace SRC.Core.Lib
         //            DiceRet = Conversion.Int(max * RndHistory[RndIndex] + 1f);
         //            return DiceRet;
         //        }
-
-        public static IList<string> ToList(string list)
-        {
-            bool in_single_quote = false;
-            bool in_double_quote = false;
-            int paren = 0;
-            var current = "";
-            var result = new List<string>();
-            foreach (var c in list.ToCharArray())
-            {
-                if (!in_single_quote & !in_double_quote & paren == 0)
-                {
-                    if (c == ' ' || c == '\t')
-                    {
-                        if (!string.IsNullOrEmpty(current))
-                        {
-                            result.Add(current);
-                            current = "";
-                        }
-                        continue;
-                    }
-                }
-                bool append = true;
-
-                if (in_single_quote)
-                {
-                    if (c == '\'') // "`"
-                    {
-                        in_single_quote = false;
-                    }
-                }
-                else if (in_double_quote)
-                {
-                    if (c == '"') // """"
-                    {
-                        in_double_quote = false;
-                    }
-                }
-                else
-                {
-                    switch (c)
-                    {
-                        case '(':
-                        case '[': // "(", "["
-                            paren = (paren + 1);
-                            if (paren == 1) { append = false; }
-                            break;
-
-                        case ')':
-                        case ']': // ")", "]"
-                            paren = (paren - 1);
-                            if (paren < 0)
-                            {
-                                // 括弧の対応が取れていない
-                                //return ListIndexRet;
-                                throw new NotSupportedException("括弧の対応が取れていない");
-                            }
-                            if (paren == 0) { append = false; }
-                            break;
-
-                        case '\'': // "`"
-                            in_single_quote = true;
-                            break;
-
-                        case '"': // """"
-                            in_double_quote = true;
-                            break;
-                    }
-                }
-                if (append)
-                {
-                    current += c;
-                }
-            }
-            if (!string.IsNullOrEmpty(current))
-            {
-                result.Add(current);
-            }
-            return result;
-        }
 
         // リスト list から idx 番目の要素を返す
         public static string LIndex(string list, int idx)
@@ -404,6 +326,90 @@ namespace SRC.Core.Lib
         //            return SearchListRet;
         //        }
 
+        // リスト list の要素を分割して返す (括弧を考慮)
+        public static IList<string> ToList(string list)
+        {
+            bool in_single_quote = false;
+            bool in_double_quote = false;
+            int i = -1;
+            int paren = 0;
+            var current = new StringBuilder();
+            var result = new List<string>();
+            foreach (var c in list.ToCharArray())
+            {
+                i++;
+                if (!in_single_quote & !in_double_quote & paren == 0)
+                {
+                    if (c == ' ' || c == '\t')
+                    {
+                        if (current.Length > 0)
+                        {
+                            result.Add(current.ToString());
+                            current.Clear();
+                        }
+                        continue;
+                    }
+                }
+                bool append = true;
+
+                if (in_single_quote)
+                {
+                    if (c == '\'') // "`"
+                    {
+                        in_single_quote = false;
+                    }
+                }
+                else if (in_double_quote)
+                {
+                    if (c == '"') // """"
+                    {
+                        in_double_quote = false;
+                    }
+                }
+                else
+                {
+                    switch (c)
+                    {
+                        case '(':
+                        case '[': // "(", "["
+                            paren = (paren + 1);
+                            if (paren == 1) { append = false; }
+                            break;
+
+                        case ')':
+                        case ']': // ")", "]"
+                            paren = (paren - 1);
+                            if (paren < 0)
+                            {
+                                // 括弧の対応が取れていない
+                                result.Add(current.ToString());
+                                result.Add(new string(list.ToCharArray().Skip(i).ToArray()));
+                                return result;
+                            }
+                            if (paren == 0) { append = false; }
+                            break;
+
+                        case '\'': // "`"
+                            in_single_quote = true;
+                            break;
+
+                        case '"': // """"
+                            in_double_quote = true;
+                            break;
+                    }
+                }
+                if (append)
+                {
+                    current.Append(c);
+                }
+            }
+            if (current.Length > 0)
+            {
+                result.Add(current.ToString());
+            }
+            return result;
+        }
+
         // リスト list から idx 番目の要素を返す (括弧を考慮)
         public static string ListIndex(string list, int idx)
         {
@@ -553,150 +559,14 @@ namespace SRC.Core.Lib
         //            }
         //        }
 
-        //        // リスト list から、リストの要素の配列 larray を作成し、
-        //        // リストの要素数を返す (括弧を考慮)
-        //        public static int ListSplit(ref string list, ref string[] larray)
-        //        {
-        //            int ListSplitRet = default;
-        //            int n, i, ch;
-        //            int paren = default, list_len, begin;
-        //            bool in_single_quote = default, in_double_quote = default;
-        //            ListSplitRet = -1;
-        //            list_len = Strings.Len(list);
-        //            larray = new string[1];
-        //            n = 0;
-        //            i = 0;
-        //            while (true)
-        //            {
-        //                // 空白を読み飛ばす
-        //                while (true)
-        //                {
-        //                    i = (i + 1);
-
-        //                    // 文字列の終り？
-        //                    if (i > list_len)
-        //                    {
-        //                        ListSplitRet = n;
-        //                        return ListSplitRet;
-        //                    }
-
-        //                    // 次の文字
-        //                    ch = Strings.Asc(Strings.Mid(list, i, 1));
-
-        //                    // 空白でない？
-        //                    switch (ch)
-        //                    {
-        //                        // スキップ
-        //                        case 9:
-        //                        case 32:
-        //                            {
-        //                                break;
-        //                            }
-
-        //                        default:
-        //                            {
-        //                                break;
-        //                            }
-        //                    }
-        //                }
-
-        //                // 要素数を１つ増やす
-        //                n = (n + 1);
-
-        //                // 要素を読み込む
-        //                Array.Resize(ref larray, n + 1);
-        //                begin = i;
-        //                while (true)
-        //                {
-        //                    if (in_single_quote)
-        //                    {
-        //                        if (ch == 96) // "`"
-        //                        {
-        //                            in_single_quote = false;
-        //                        }
-        //                    }
-        //                    else if (in_double_quote)
-        //                    {
-        //                        if (ch == 34) // """"
-        //                        {
-        //                            in_double_quote = false;
-        //                        }
-        //                    }
-        //                    else
-        //                    {
-        //                        switch (ch)
-        //                        {
-        //                            case 40:
-        //                            case 91: // "(", "["
-        //                                {
-        //                                    paren = (paren + 1);
-        //                                    break;
-        //                                }
-
-        //                            case 41:
-        //                            case 93: // ")", "]"
-        //                                {
-        //                                    paren = (paren - 1);
-        //                                    if (paren < 0)
-        //                                    {
-        //                                        // 括弧の対応が取れていない
-        //                                        larray[n] = Strings.Mid(list, begin);
-        //                                        return ListSplitRet;
-        //                                    }
-
-        //                                    break;
-        //                                }
-
-        //                            case 96: // "`"
-        //                                {
-        //                                    in_single_quote = true;
-        //                                    break;
-        //                                }
-
-        //                            case 34: // """"
-        //                                {
-        //                                    in_double_quote = true;
-        //                                    break;
-        //                                }
-        //                        }
-        //                    }
-
-        //                    i = (i + 1);
-
-        //                    // 文字列の終り？
-        //                    if (i > list_len)
-        //                    {
-        //                        larray[n] = Strings.Mid(list, begin);
-        //                        // クォートや括弧の対応が取れている？
-        //                        if (!in_single_quote & !in_double_quote & paren == 0)
-        //                        {
-        //                            ListSplitRet = n;
-        //                        }
-
-        //                        return ListSplitRet;
-        //                    }
-
-        //                    // 次の文字
-        //                    ch = Strings.Asc(Strings.Mid(list, i, 1));
-
-        //                    // 要素の末尾か判定
-        //                    if (!in_single_quote & !in_double_quote & paren == 0)
-        //                    {
-        //                        // 空白？
-        //                        switch (ch)
-        //                        {
-        //                            case 9:
-        //                            case 32:
-        //                                {
-        //                                    break;
-        //                                }
-        //                        }
-        //                    }
-        //                }
-
-        //                larray[n] = Strings.Mid(list, begin, i - begin);
-        //            }
-        //        }
+        // リスト list から、リストの要素の配列 larray を作成し、
+        // リストの要素数を返す (括弧を考慮)
+        // Convert: VBの配列と違って0オフセットな点に注意すること。
+        public static int ListSplit(string list, out string[] larray)
+        {
+            larray = ToList(list).ToArray();
+            return larray.Length;
+        }
 
         //        // リスト list から idx 番目以降の全要素を返す (括弧を考慮)
         //        public static string ListTail(ref string list, int idx)
@@ -1227,42 +1097,41 @@ namespace SRC.Core.Lib
         //        }
 
 
-        //        // 数値を指数表記を使わずに文字列表記する
-        //        public static string FormatNum(double n)
-        //        {
-        //            string FormatNumRet = default;
-        //            if (n == Conversion.Int(n))
-        //            {
-        //                FormatNumRet = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(n, "0");
-        //            }
-        //            else
-        //            {
-        //                FormatNumRet = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(n, "0.#######################################################################");
-        //            }
+        // 数値を指数表記を使わずに文字列表記する
+        public static string FormatNum(double n)
+        {
+            string FormatNumRet = default;
+            if (n % 1 == 0d)
+            {
+                FormatNumRet = n.ToString("0");
+            }
+            else
+            {
+                FormatNumRet = n.ToString("0.#######################################################################");
+            }
 
-        //            return FormatNumRet;
-        //        }
+            return FormatNumRet;
+        }
 
 
-        //        // 文字列 str が数値かどうか調べる
-        //        // UPGRADE_NOTE: str は str_Renamed にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
-        //        public static bool IsNumber(ref string str_Renamed)
-        //        {
-        //            bool IsNumberRet = default;
-        //            if (!Information.IsNumeric(str_Renamed))
-        //            {
-        //                return IsNumberRet;
-        //            }
+        // 文字列 str が数値かどうか調べる
+        public static bool IsNumber( string str)
+        {
+            bool IsNumberRet = default;
+            if (!Information.IsNumeric(str))
+            {
+                return IsNumberRet;
+            }
 
-        //            // "(1)"のような文字列が数値と判定されてしまうのを防ぐ
-        //            if (Strings.Asc(str_Renamed) == 40)
-        //            {
-        //                return IsNumberRet;
-        //            }
+            // "(1)"のような文字列が数値と判定されてしまうのを防ぐ
+            if (Strings.Asc(str) == 40)
+            {
+                return IsNumberRet;
+            }
 
-        //            IsNumberRet = true;
-        //            return IsNumberRet;
-        //        }
+            IsNumberRet = true;
+            return IsNumberRet;
+        }
 
 
         //        // 武器属性処理用の関数群。
