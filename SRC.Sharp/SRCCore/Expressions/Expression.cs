@@ -4,6 +4,7 @@
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
 
+using Newtonsoft.Json;
 using SRC.Core.Events;
 using System;
 
@@ -27,6 +28,11 @@ namespace SRC.Core.Expressions
         {
             // XXX これでいいかは知らん。
             _src = new WeakReference<SRC>(src, true);
+        }
+
+        public string DumpVariables()
+        {
+            return JsonConvert.SerializeObject(Event);
         }
     }
 }

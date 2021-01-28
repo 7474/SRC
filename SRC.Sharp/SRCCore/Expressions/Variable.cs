@@ -19,7 +19,7 @@ namespace SRC.Core.Expressions
     {
         private static bool isArray(string vname)
         {
-            return string.IsNullOrEmpty(vname)
+            return !string.IsNullOrEmpty(vname)
                 && Strings.InStr(vname, "[") > 0
                 && Strings.Right(vname, 1) == "]";
         }
