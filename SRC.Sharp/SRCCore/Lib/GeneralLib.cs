@@ -561,6 +561,7 @@ namespace SRC.Core.Lib
 
         // リスト list から、リストの要素の配列 larray を作成し、
         // リストの要素数を返す (括弧を考慮)
+        // Convert: VBの配列と違って0オフセットな点に注意すること。
         public static int ListSplit(string list, out string[] larray)
         {
             larray = ToList(list).ToArray();

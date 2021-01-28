@@ -42,8 +42,7 @@ namespace SRC.Core.Expressions
                 // 項
                 case 1:
                     {
-                        // XXX これ、Arrayのオフセットどうなってんの？
-                        return EvalTerm(terms[1], etype, out str_result, out num_result);
+                        return EvalTerm(terms[0], etype, out str_result, out num_result);
                     }
 
                 // 括弧の対応が取れてない文字列

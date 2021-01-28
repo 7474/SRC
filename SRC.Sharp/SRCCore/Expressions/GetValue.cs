@@ -11,16 +11,48 @@ namespace SRC.Core.Expressions
         // 式を文字列として評価
         public string GetValueAsString(string expr, bool is_term = false)
         {
-            string result;
+            string str;
             if (is_term)
             {
-                EvalTerm(expr, ValueType.StringType, out result, out _);
+                EvalTerm(expr, ValueType.StringType, out str, out _);
             }
             else
             {
-                EvalExpr(expr, ValueType.StringType, out result, out _);
+                EvalExpr(expr, ValueType.StringType, out str, out _);
             }
-            return result;
+            return str;
+        }
+
+        // 式を浮動小数点数として評価
+        public double GetValueAsDouble(string expr, bool is_term = false)
+        {
+            double num;
+            if (is_term)
+            {
+                EvalTerm(expr, ValueType.NumericType, out _, out num);
+            }
+            else
+            {
+                EvalExpr(expr, ValueType.NumericType, out _, out num);
+            }
+
+            return num;
+        }
+
+        // 式を整数として評価
+        public int GetValueAsLong(string expr, bool is_term = false)
+        {
+            double num;
+            if (is_term)
+            {
+                EvalTerm(expr, ValueType.NumericType, out _, out num);
+            }
+            else
+            {
+                EvalExpr(expr, ValueType.NumericType, out _, out num);
+            }
+
+            return (int)num;
         }
     }
 }
