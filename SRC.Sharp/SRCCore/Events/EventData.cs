@@ -1,118 +1,99 @@
-﻿using System;
+﻿using SRC.Core.CmdDatas;
+using SRC.Core.Expressions;
+using SRC.Core.Lib;
+using SRC.Core.VB;
+using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Linq;
 using System.Text;
 
 namespace SRC.Core.Events
 {
     public partial class Event
     {
+        // TODO 全般に1オフセットをどうするのかどっかで考えないといけない。
         // イベントデータを初期化
-        public  void InitEventData()
+        public void InitEventData()
         {
-            int i;
-            SRC.Titles = new string[1];
-            EventData = new string[1];
-            EventCmd = new CmdData[50001];
-            EventQue = new string[1];
-
-            // オブジェクトの生成には時間がかかるので、
-            // あらかじめCmdDataオブジェクトを生成しておく。
-            var loopTo = Information.UBound(EventCmd);
-            for (i = 1; i <= loopTo; i++)
-            {
-                EventCmd[i] = new CmdData();
-                EventCmd[i].LineNum = i;
-            }
+            SRC.Titles = new List<string>();
+            EventData = new List<EventDataLine>();
+            EventFileNames = new List<string>();
+            EventCmd = new List<CmdData>();
+            EventQue = new Queue<string>();
 
             // 本体側のシナリオデータをチェックする
-            string argfname = "";
-            string argload_mode = "システム";
-            LoadEventData(ref argfname, ref argload_mode);
+            LoadEventData("", "システム");
         }
 
         // イベントファイルのロード
-        public  void LoadEventData(ref string fname, [Optional, DefaultParameterValue("")] ref string load_mode)
+        public void LoadEventData(string fname, string load_mode = "")
         {
             string buf, buf2;
             string tname, tfolder;
-            string[] new_titles;
+            var new_titles = new List<string>();
             int i, num;
-            short j;
+            int j;
             var CmdStack = new CmdType[51];
-            short CmdStackIdx;
+            int CmdStackIdx;
             var CmdPosStack = new int[51];
-            short CmdPosStackIdx;
+            int CmdPosStackIdx;
             var error_found = default(bool);
-            var sys_event_data_size = default(int);
-            var sys_event_file_num = default(int);
+            int sys_event_data_size = default;
+            int sys_event_file_num = default;
 
             // データの初期化
-            Array.Resize(ref EventData, SysEventDataSize + 1);
-            Array.Resize(ref EventFileID, SysEventDataSize + 1);
-            Array.Resize(ref EventLineNum, SysEventDataSize + 1);
-            Array.Resize(ref EventFileNames, SysEventFileNum + 1);
-            AdditionalEventFileNames = new string[1];
+            EventData = EventData.Where(x => x.IsSystemData).ToList();
+            EventFileNames = EventData.Where(x => x.IsSystemData).Select(x => x.File).ToList();
+            AdditionalEventFileNames = new List<string>();
             CurrentLineNum = SysEventDataSize;
             CallDepth = 0;
+            CallStack.Clear();
             ArgIndex = 0;
+            ArgIndexStack.Clear();
+            ArgStack.Clear();
             UpVarLevel = 0;
+            UpVarLevelStack.Clear();
             VarIndex = 0;
-            if (VarStack[1] is null)
-            {
-                var loopTo = Information.UBound(VarStack);
-                for (i = 1; i <= loopTo; i++)
-                    VarStack[i] = new VarData();
-            }
-
+            VarIndexStack.Clear();
+            VarStack.Clear();
             ForIndex = 0;
-            new_titles = new string[1];
-            HotPointList = new HotPoint[1];
-            ObjColor = ColorTranslator.ToOle(Color.White);
-            ObjFillColor = ColorTranslator.ToOle(Color.White);
+            ForIndexStack.Clear();
+            ForLimitStack.Clear();
+
+            HotPointList = new List<HotPoint>();
+            ObjColor = Color.White;
+            ObjFillColor = Color.White;
+            // XXX マッピング先が微妙。実装見て見直す。
             // UPGRADE_ISSUE: 定数 vbFSTransparent はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="55B59875-9A95-4B71-9D6A-7C294BF7139D"' をクリックしてください。
-            ObjFillStyle = vbFSTransparent;
+            ObjFillStyle = HatchStyle.Min;
             ObjDrawWidth = 1;
             ObjDrawOption = "";
 
             // ラベルの初期化
+            colNormalLabelList.Clear();
+            var systemLabels = colEventLabelList.Values.Take(SysEventDataSize + 1).ToList();
+            colEventLabelList.Clear();
+            systemLabels.ForEach(x =>
             {
-                var withBlock = colNormalLabelList;
-                var loopTo1 = withBlock.Count;
-                for (i = 1; i <= loopTo1; i++)
-                    withBlock.Remove(1);
-            }
-
-            i = 1;
-            {
-                var withBlock1 = colEventLabelList;
-                while (i <= withBlock1.Count)
-                {
-                    // UPGRADE_WARNING: オブジェクト colEventLabelList.Item(i).LineNum の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                    if (Conversions.ToBoolean(Operators.ConditionalCompareObjectGreater(withBlock1[i].LineNum, SysEventDataSize, false)))
-                    {
-                        withBlock1.Remove(i);
-                    }
-                    else
-                    {
-                        i = i + 1;
-                    }
-                }
-            }
+                colEventLabelList.Add(x);
+            });
 
             // デバッグモードの設定
             string argini_section = "Option";
             string argini_entry = "DebugMode";
-            if (Strings.LCase(GeneralLib.ReadIni(ref argini_section, ref argini_entry)) == "on")
+            if (Strings.LCase(GeneralLib.ReadIni(argini_section, argini_entry)) == "on")
             {
                 string argoname = "デバッグ";
-                if (!Expression.IsOptionDefined(ref argoname))
+                if (!Expression.IsOptionDefined(argoname))
                 {
                     string argvname = "Option(デバッグ)";
-                    Expression.DefineGlobalVariable(ref argvname);
+                    Expression.DefineGlobalVariable(argvname);
                 }
 
                 string argvname1 = "Option(デバッグ)";
-                Expression.SetVariableAsLong(ref argvname1, 1);
+                Expression.SetVariableAsLong(argvname1, 1);
             }
 
             // システム側のイベントデータのロード
@@ -121,75 +102,75 @@ namespace SRC.Core.Events
                 // 本体側のシステムデータをチェック
 
                 // スペシャルパワーアニメ用インクルードファイルをダウンロード
-                bool localFileExists() { string argfname = SRC.ExtDataPath2 + @"Lib\スペシャルパワー.eve"; var ret = GeneralLib.FileExists(ref argfname); return ret; }
+                bool localFileExists() { string argfname = SRC.ExtDataPath2 + @"Lib\スペシャルパワー.eve"; var ret = GeneralLib.FileExists(argfname); return ret; }
 
-                bool localFileExists1() { string argfname = SRC.AppPath + @"Lib\スペシャルパワー.eve"; var ret = GeneralLib.FileExists(ref argfname); return ret; }
+                bool localFileExists1() { string argfname = SRC.AppPath + @"Lib\スペシャルパワー.eve"; var ret = GeneralLib.FileExists(argfname); return ret; }
 
-                bool localFileExists2() { string argfname = SRC.ExtDataPath + @"Lib\精神コマンド.eve"; var ret = GeneralLib.FileExists(ref argfname); return ret; }
+                bool localFileExists2() { string argfname = SRC.ExtDataPath + @"Lib\精神コマンド.eve"; var ret = GeneralLib.FileExists(argfname); return ret; }
 
-                bool localFileExists3() { string argfname = SRC.ExtDataPath2 + @"Lib\精神コマンド.eve"; var ret = GeneralLib.FileExists(ref argfname); return ret; }
+                bool localFileExists3() { string argfname = SRC.ExtDataPath2 + @"Lib\精神コマンド.eve"; var ret = GeneralLib.FileExists(argfname); return ret; }
 
-                bool localFileExists4() { string argfname = SRC.AppPath + @"Lib\精神コマンド.eve"; var ret = GeneralLib.FileExists(ref argfname); return ret; }
+                bool localFileExists4() { string argfname = SRC.AppPath + @"Lib\精神コマンド.eve"; var ret = GeneralLib.FileExists(argfname); return ret; }
 
                 string argfname6 = SRC.ExtDataPath + @"Lib\スペシャルパワー.eve";
-                if (GeneralLib.FileExists(ref argfname6))
+                if (GeneralLib.FileExists(argfname6))
                 {
                     string argfname = SRC.ExtDataPath + @"Lib\スペシャルパワー.eve";
-                    LoadEventData2(ref argfname);
+                    LoadEventData2(argfname);
                 }
                 else if (localFileExists())
                 {
                     string argfname1 = SRC.ExtDataPath2 + @"Lib\スペシャルパワー.eve";
-                    LoadEventData2(ref argfname1);
+                    LoadEventData2(argfname1);
                 }
                 else if (localFileExists1())
                 {
                     string argfname2 = SRC.AppPath + @"Lib\スペシャルパワー.eve";
-                    LoadEventData2(ref argfname2);
+                    LoadEventData2(argfname2);
                 }
                 else if (localFileExists2())
                 {
                     string argfname3 = SRC.ExtDataPath + @"Lib\精神コマンド.eve";
-                    LoadEventData2(ref argfname3);
+                    LoadEventData2(argfname3);
                 }
                 else if (localFileExists3())
                 {
                     string argfname4 = SRC.ExtDataPath2 + @"Lib\精神コマンド.eve";
-                    LoadEventData2(ref argfname4);
+                    LoadEventData2(argfname4);
                 }
                 else if (localFileExists4())
                 {
                     string argfname5 = SRC.AppPath + @"Lib\精神コマンド.eve";
-                    LoadEventData2(ref argfname5);
+                    LoadEventData2(argfname5);
                 }
 
                 // 汎用戦闘アニメ用インクルードファイルをダウンロード
                 string argini_section1 = "Option";
                 string argini_entry1 = "BattleAnimation";
-                if (Strings.LCase(GeneralLib.ReadIni(ref argini_section1, ref argini_entry1)) != "off")
+                if (Strings.LCase(GeneralLib.ReadIni(argini_section1, argini_entry1)) != "off")
                 {
                     SRC.BattleAnimation = true;
                 }
 
-                bool localFileExists5() { string argfname = SRC.ExtDataPath2 + @"Lib\汎用戦闘アニメ\include.eve"; var ret = GeneralLib.FileExists(ref argfname); return ret; }
+                bool localFileExists5() { string argfname = SRC.ExtDataPath2 + @"Lib\汎用戦闘アニメ\include.eve"; var ret = GeneralLib.FileExists(argfname); return ret; }
 
-                bool localFileExists6() { string argfname = SRC.AppPath + @"Lib\汎用戦闘アニメ\include.eve"; var ret = GeneralLib.FileExists(ref argfname); return ret; }
+                bool localFileExists6() { string argfname = SRC.AppPath + @"Lib\汎用戦闘アニメ\include.eve"; var ret = GeneralLib.FileExists(argfname); return ret; }
 
                 string argfname10 = SRC.ExtDataPath + @"Lib\汎用戦闘アニメ\include.eve";
-                if (GeneralLib.FileExists(ref argfname10))
+                if (GeneralLib.FileExists(argfname10))
                 {
                     string argfname7 = SRC.ExtDataPath + @"Lib\汎用戦闘アニメ\include.eve";
-                    LoadEventData2(ref argfname7);
+                    LoadEventData2(argfname7);
                 }
                 else if (localFileExists5())
                 {
                     string argfname8 = SRC.ExtDataPath2 + @"Lib\汎用戦闘アニメ\include.eve";
-                    LoadEventData2(ref argfname8);
+                    LoadEventData2(argfname8);
                 }
                 else if (localFileExists6())
                 {
                     string argfname9 = SRC.AppPath + @"Lib\汎用戦闘アニメ\include.eve";
-                    LoadEventData2(ref argfname9);
+                    LoadEventData2(argfname9);
                 }
                 else
                 {
@@ -206,18 +187,18 @@ namespace SRC.Core.Events
                 // シナリオ側のシステムデータをチェック
 
                 ScenarioLibChecked = true;
-                bool localFileExists17() { string argfname = SRC.ScenarioPath + @"Lib\スペシャルパワー.eve"; var ret = GeneralLib.FileExists(ref argfname); return ret; }
+                bool localFileExists17() { string argfname = SRC.ScenarioPath + @"Lib\スペシャルパワー.eve"; var ret = GeneralLib.FileExists(argfname); return ret; }
 
-                bool localFileExists18() { string argfname = SRC.ScenarioPath + @"Lib\精神コマンド.eve"; var ret = GeneralLib.FileExists(ref argfname); return ret; }
+                bool localFileExists18() { string argfname = SRC.ScenarioPath + @"Lib\精神コマンド.eve"; var ret = GeneralLib.FileExists(argfname); return ret; }
 
-                bool localFileExists19() { string argfname = SRC.ScenarioPath + @"Lib\汎用戦闘アニメ\include.eve"; var ret = GeneralLib.FileExists(ref argfname); return ret; }
+                bool localFileExists19() { string argfname = SRC.ScenarioPath + @"Lib\汎用戦闘アニメ\include.eve"; var ret = GeneralLib.FileExists(argfname); return ret; }
 
                 if (localFileExists17() | localFileExists18() | localFileExists19())
                 {
                     // システムデータのロードをやり直す
                     EventData = new string[1];
-                    EventFileID = new short[1];
-                    EventLineNum = new short[1];
+                    EventFileID = new int[1];
+                    EventLineNum = new int[1];
                     EventFileNames = new string[1];
                     CurrentLineNum = 0;
                     SysEventDataSize = 0;
@@ -244,96 +225,96 @@ namespace SRC.Core.Events
                     }
 
                     // スペシャルパワーアニメ用インクルードファイルをダウンロード
-                    bool localFileExists7() { string argfname = SRC.ScenarioPath + @"Lib\精神コマンド.eve"; var ret = GeneralLib.FileExists(ref argfname); return ret; }
+                    bool localFileExists7() { string argfname = SRC.ScenarioPath + @"Lib\精神コマンド.eve"; var ret = GeneralLib.FileExists(argfname); return ret; }
 
-                    bool localFileExists8() { string argfname = SRC.ExtDataPath + @"Lib\スペシャルパワー.eve"; var ret = GeneralLib.FileExists(ref argfname); return ret; }
+                    bool localFileExists8() { string argfname = SRC.ExtDataPath + @"Lib\スペシャルパワー.eve"; var ret = GeneralLib.FileExists(argfname); return ret; }
 
-                    bool localFileExists9() { string argfname = SRC.ExtDataPath2 + @"Lib\スペシャルパワー.eve"; var ret = GeneralLib.FileExists(ref argfname); return ret; }
+                    bool localFileExists9() { string argfname = SRC.ExtDataPath2 + @"Lib\スペシャルパワー.eve"; var ret = GeneralLib.FileExists(argfname); return ret; }
 
-                    bool localFileExists10() { string argfname = SRC.AppPath + @"Lib\スペシャルパワー.eve"; var ret = GeneralLib.FileExists(ref argfname); return ret; }
+                    bool localFileExists10() { string argfname = SRC.AppPath + @"Lib\スペシャルパワー.eve"; var ret = GeneralLib.FileExists(argfname); return ret; }
 
-                    bool localFileExists11() { string argfname = SRC.ExtDataPath + @"Lib\精神コマンド.eve"; var ret = GeneralLib.FileExists(ref argfname); return ret; }
+                    bool localFileExists11() { string argfname = SRC.ExtDataPath + @"Lib\精神コマンド.eve"; var ret = GeneralLib.FileExists(argfname); return ret; }
 
-                    bool localFileExists12() { string argfname = SRC.ExtDataPath2 + @"Lib\精神コマンド.eve"; var ret = GeneralLib.FileExists(ref argfname); return ret; }
+                    bool localFileExists12() { string argfname = SRC.ExtDataPath2 + @"Lib\精神コマンド.eve"; var ret = GeneralLib.FileExists(argfname); return ret; }
 
-                    bool localFileExists13() { string argfname = SRC.AppPath + @"Lib\精神コマンド.eve"; var ret = GeneralLib.FileExists(ref argfname); return ret; }
+                    bool localFileExists13() { string argfname = SRC.AppPath + @"Lib\精神コマンド.eve"; var ret = GeneralLib.FileExists(argfname); return ret; }
 
                     string argfname19 = SRC.ScenarioPath + @"Lib\スペシャルパワー.eve";
-                    if (GeneralLib.FileExists(ref argfname19))
+                    if (GeneralLib.FileExists(argfname19))
                     {
                         string argfname11 = SRC.ScenarioPath + @"Lib\スペシャルパワー.eve";
-                        LoadEventData2(ref argfname11);
+                        LoadEventData2(argfname11);
                     }
                     else if (localFileExists7())
                     {
                         string argfname12 = SRC.ScenarioPath + @"Lib\精神コマンド.eve";
-                        LoadEventData2(ref argfname12);
+                        LoadEventData2(argfname12);
                     }
                     else if (localFileExists8())
                     {
                         string argfname13 = SRC.ExtDataPath + @"Lib\スペシャルパワー.eve";
-                        LoadEventData2(ref argfname13);
+                        LoadEventData2(argfname13);
                     }
                     else if (localFileExists9())
                     {
                         string argfname14 = SRC.ExtDataPath2 + @"Lib\スペシャルパワー.eve";
-                        LoadEventData2(ref argfname14);
+                        LoadEventData2(argfname14);
                     }
                     else if (localFileExists10())
                     {
                         string argfname15 = SRC.AppPath + @"Lib\スペシャルパワー.eve";
-                        LoadEventData2(ref argfname15);
+                        LoadEventData2(argfname15);
                     }
                     else if (localFileExists11())
                     {
                         string argfname16 = SRC.ExtDataPath + @"Lib\精神コマンド.eve";
-                        LoadEventData2(ref argfname16);
+                        LoadEventData2(argfname16);
                     }
                     else if (localFileExists12())
                     {
                         string argfname17 = SRC.ExtDataPath2 + @"Lib\精神コマンド.eve";
-                        LoadEventData2(ref argfname17);
+                        LoadEventData2(argfname17);
                     }
                     else if (localFileExists13())
                     {
                         string argfname18 = SRC.AppPath + @"Lib\精神コマンド.eve";
-                        LoadEventData2(ref argfname18);
+                        LoadEventData2(argfname18);
                     }
 
                     // 汎用戦闘アニメ用インクルードファイルをダウンロード
                     string argini_section2 = "Option";
                     string argini_entry2 = "BattleAnimation";
-                    if (Strings.LCase(GeneralLib.ReadIni(ref argini_section2, ref argini_entry2)) != "off")
+                    if (Strings.LCase(GeneralLib.ReadIni(argini_section2, argini_entry2)) != "off")
                     {
                         SRC.BattleAnimation = true;
                     }
 
-                    bool localFileExists14() { string argfname = SRC.ExtDataPath + @"Lib\汎用戦闘アニメ\include.eve"; var ret = GeneralLib.FileExists(ref argfname); return ret; }
+                    bool localFileExists14() { string argfname = SRC.ExtDataPath + @"Lib\汎用戦闘アニメ\include.eve"; var ret = GeneralLib.FileExists(argfname); return ret; }
 
-                    bool localFileExists15() { string argfname = SRC.ExtDataPath2 + @"Lib\汎用戦闘アニメ\include.eve"; var ret = GeneralLib.FileExists(ref argfname); return ret; }
+                    bool localFileExists15() { string argfname = SRC.ExtDataPath2 + @"Lib\汎用戦闘アニメ\include.eve"; var ret = GeneralLib.FileExists(argfname); return ret; }
 
-                    bool localFileExists16() { string argfname = SRC.AppPath + @"Lib\汎用戦闘アニメ\include.eve"; var ret = GeneralLib.FileExists(ref argfname); return ret; }
+                    bool localFileExists16() { string argfname = SRC.AppPath + @"Lib\汎用戦闘アニメ\include.eve"; var ret = GeneralLib.FileExists(argfname); return ret; }
 
                     string argfname24 = SRC.ScenarioPath + @"Lib\汎用戦闘アニメ\include.eve";
-                    if (GeneralLib.FileExists(ref argfname24))
+                    if (GeneralLib.FileExists(argfname24))
                     {
                         string argfname20 = SRC.ScenarioPath + @"Lib\汎用戦闘アニメ\include.eve";
-                        LoadEventData2(ref argfname20);
+                        LoadEventData2(argfname20);
                     }
                     else if (localFileExists14())
                     {
                         string argfname21 = SRC.ExtDataPath + @"Lib\汎用戦闘アニメ\include.eve";
-                        LoadEventData2(ref argfname21);
+                        LoadEventData2(argfname21);
                     }
                     else if (localFileExists15())
                     {
                         string argfname22 = SRC.ExtDataPath2 + @"Lib\汎用戦闘アニメ\include.eve";
-                        LoadEventData2(ref argfname22);
+                        LoadEventData2(argfname22);
                     }
                     else if (localFileExists16())
                     {
                         string argfname23 = SRC.AppPath + @"Lib\汎用戦闘アニメ\include.eve";
-                        LoadEventData2(ref argfname23);
+                        LoadEventData2(argfname23);
                     }
                     else
                     {
@@ -344,10 +325,10 @@ namespace SRC.Core.Events
 
                 // シナリオ添付の汎用インクルードファイルをダウンロード
                 string argfname26 = SRC.ScenarioPath + @"Lib\include.eve";
-                if (GeneralLib.FileExists(ref argfname26))
+                if (GeneralLib.FileExists(argfname26))
                 {
                     string argfname25 = SRC.ScenarioPath + @"Lib\include.eve";
-                    LoadEventData2(ref argfname25);
+                    LoadEventData2(argfname25);
                 }
 
                 // システム側のイベントデータの総行数＆ファイル数を記録しておく
@@ -355,100 +336,82 @@ namespace SRC.Core.Events
                 sys_event_file_num = Information.UBound(EventFileNames);
 
                 // シナリオ側のイベントデータのロード
-                LoadEventData2(ref fname);
+                LoadEventData2(fname);
             }
             else
             {
                 // シナリオ側のイベントデータのロード
-                LoadEventData2(ref fname);
+                LoadEventData2(fname);
             }
 
-            // エラー表示用にサイズを大きく取っておく
-            Array.Resize(ref EventData, Information.UBound(EventData) + 1 + 1);
-            Array.Resize(ref EventLineNum, Information.UBound(EventData) + 1);
-            EventData[Information.UBound(EventData)] = "";
-            EventLineNum[Information.UBound(EventData)] = (short)(EventLineNum[Information.UBound(EventData) - 1] + 1);
-
             // データ読みこみ指定
-            var loopTo5 = Information.UBound(EventData);
-            for (i = SysEventDataSize + 1; i <= loopTo5; i++)
+            foreach (var line in EventData.Where(x => !x.IsSystemData))
             {
-                if (Strings.Left(EventData[i], 1) == "@")
+                if (Strings.Left(line.Data, 1) == "@")
                 {
-                    tname = Strings.Mid(EventData[i], 2);
+                    tname = Strings.Mid(line.Data, 2);
 
                     // 既にそのデータが読み込まれているかチェック
-                    var loopTo6 = (short)Information.UBound(SRC.Titles);
-                    for (j = 1; j <= loopTo6; j++)
-                    {
-                        if ((tname ?? "") == (SRC.Titles[j] ?? ""))
-                        {
-                            break;
-                        }
-                    }
-
-                    if (j > Information.UBound(SRC.Titles))
+                    if (!SRC.Titles.Contains(tname))
                     {
                         // フォルダを検索
-                        tfolder = SRC.SearchDataFolder(ref tname);
+                        tfolder = SRC.SearchDataFolder(tname);
                         if (Strings.Len(tfolder) == 0)
                         {
-                            DisplayEventErrorMessage(i, "データ「" + tname + "」のフォルダが見つかりません");
+                            DisplayEventErrorMessage(line.ID, "データ「" + tname + "」のフォルダが見つかりません");
                         }
                         else
                         {
-                            Array.Resize(ref new_titles, Information.UBound(new_titles) + 1 + 1);
-                            Array.Resize(ref SRC.Titles, Information.UBound(SRC.Titles) + 1 + 1);
-                            new_titles[Information.UBound(new_titles)] = tname;
-                            SRC.Titles[Information.UBound(SRC.Titles)] = tname;
+                            new_titles.Add(tname);
+                            SRC.Titles.Add(tname);
                         }
                     }
                 }
             }
 
             // 各作品データのinclude.eveを読み込む
+            // XXX 未処理
             if (load_mode != "システム")
             {
                 // 作品毎のインクルードファイル
-                var loopTo7 = Information.UBound(SRC.Titles);
-                for (i = 1; i <= loopTo7; i++)
+                foreach (var title in SRC.Titles)
                 {
-                    tfolder = SRC.SearchDataFolder(ref SRC.Titles[i]);
+                    tfolder = SRC.SearchDataFolder(title);
                     string argfname28 = tfolder + @"\include.eve";
-                    if (GeneralLib.FileExists(ref argfname28))
+                    if (GeneralLib.FileExists(argfname28))
                     {
                         string argfname27 = tfolder + @"\include.eve";
-                        LoadEventData2(ref argfname27);
+                        LoadEventData2(argfname27);
                     }
                 }
 
                 // 汎用Dataインクルードファイルをロード
-                bool localFileExists20() { string argfname = SRC.ExtDataPath + @"Data\include.eve"; var ret = GeneralLib.FileExists(ref argfname); return ret; }
+                bool localFileExists20() { string argfname = SRC.ExtDataPath + @"Data\include.eve"; var ret = GeneralLib.FileExists(argfname); return ret; }
 
-                bool localFileExists21() { string argfname = SRC.ExtDataPath2 + @"Data\include.eve"; var ret = GeneralLib.FileExists(ref argfname); return ret; }
+                bool localFileExists21() { string argfname = SRC.ExtDataPath2 + @"Data\include.eve"; var ret = GeneralLib.FileExists(argfname); return ret; }
 
-                bool localFileExists22() { string argfname = SRC.AppPath + @"Data\include.eve"; var ret = GeneralLib.FileExists(ref argfname); return ret; }
+                bool localFileExists22() { string argfname = SRC.AppPath + @"Data\include.eve"; var ret = GeneralLib.FileExists(argfname); return ret; }
 
                 string argfname33 = SRC.ScenarioPath + @"Data\include.eve";
-                if (GeneralLib.FileExists(ref argfname33))
+                if (GeneralLib.FileExists(argfname33))
                 {
                     string argfname29 = SRC.ScenarioPath + @"Data\include.eve";
-                    LoadEventData2(ref argfname29);
+                    LoadEventData2(argfname29);
                 }
                 else if (localFileExists20())
                 {
                     string argfname30 = SRC.ExtDataPath + @"Data\include.eve";
-                    LoadEventData2(ref argfname30);
+                    LoadEventData2(argfname30);
                 }
                 else if (localFileExists21())
                 {
                     string argfname31 = SRC.ExtDataPath2 + @"Data\include.eve";
-                    LoadEventData2(ref argfname31);
+                    LoadEventData2(argfname31);
                 }
                 else if (localFileExists22())
                 {
                     string argfname32 = SRC.AppPath + @"Data\include.eve";
-                    LoadEventData2(ref argfname32);
+                    LoadEventData2(argfname32);
                 }
             }
 
@@ -464,106 +427,48 @@ namespace SRC.Core.Events
             }
 
             // ラベルの登録
-            num = CurrentLineNum;
-            if (load_mode == "システム")
+            foreach (var line in EventData)
             {
-                var loopTo9 = Information.UBound(EventData);
-                for (CurrentLineNum = 1; CurrentLineNum <= loopTo9; CurrentLineNum++)
+                buf = line.Data;
+                switch (Strings.Right(buf, 1) ?? "")
                 {
-                    buf = EventData[CurrentLineNum];
-                    if (Strings.Right(buf, 1) == ":")
-                    {
-                        string arglname = Strings.Left(buf, Strings.Len(buf) - 1);
-                        AddSysLabel(ref arglname, CurrentLineNum);
-                    }
-                }
-            }
-            else if (sys_event_data_size > 0)
-            {
-                // システム側へのイベントデータの追加があった場合
-                var loopTo11 = sys_event_data_size;
-                for (CurrentLineNum = 1; CurrentLineNum <= loopTo11; CurrentLineNum++)
-                {
-                    buf = EventData[CurrentLineNum];
-                    switch (Strings.Right(buf, 1) ?? "")
-                    {
-                        case ":":
+                    case ":":
+                        {
+                            string labelName = Strings.Left(buf, Strings.Len(buf) - 1);
+                            if (line.IsSystemData)
                             {
-                                string arglname2 = Strings.Left(buf, Strings.Len(buf) - 1);
-                                AddSysLabel(ref arglname2, CurrentLineNum);
-                                break;
+                                AddSysLabel(labelName, line.ID);
                             }
+                            else
+                            {
+                                AddLabel(labelName, line.ID);
 
-                        case "：":
-                            {
-                                DisplayEventErrorMessage(CurrentLineNum, "ラベルの末尾が全角文字になっています");
-                                error_found = true;
-                                break;
                             }
-                    }
-                }
+                            break;
+                        }
 
-                var loopTo12 = Information.UBound(EventData);
-                for (CurrentLineNum = sys_event_data_size + 1; CurrentLineNum <= loopTo12; CurrentLineNum++)
-                {
-                    buf = EventData[CurrentLineNum];
-                    switch (Strings.Right(buf, 1) ?? "")
-                    {
-                        case ":":
-                            {
-                                string arglname3 = Strings.Left(buf, Strings.Len(buf) - 1);
-                                AddLabel(ref arglname3, CurrentLineNum);
-                                break;
-                            }
-
-                        case "：":
-                            {
-                                DisplayEventErrorMessage(CurrentLineNum, "ラベルの末尾が全角文字になっています");
-                                error_found = true;
-                                break;
-                            }
-                    }
-                }
-            }
-            else
-            {
-                var loopTo10 = Information.UBound(EventData);
-                for (CurrentLineNum = SysEventDataSize + 1; CurrentLineNum <= loopTo10; CurrentLineNum++)
-                {
-                    buf = EventData[CurrentLineNum];
-                    switch (Strings.Right(buf, 1) ?? "")
-                    {
-                        case ":":
-                            {
-                                string arglname1 = Strings.Left(buf, Strings.Len(buf) - 1);
-                                AddLabel(ref arglname1, CurrentLineNum);
-                                break;
-                            }
-
-                        case "：":
-                            {
-                                DisplayEventErrorMessage(CurrentLineNum, "ラベルの末尾が全角文字になっています");
-                                error_found = true;
-                                break;
-                            }
-                    }
+                    case "：":
+                        {
+                            DisplayEventErrorMessage(CurrentLineNum, "ラベルの末尾が全角文字になっています");
+                            error_found = true;
+                            break;
+                        }
                 }
             }
 
-            CurrentLineNum = num;
-
-            // コマンドデータ配列を設定
-            if (Information.UBound(EventData) > Information.UBound(EventCmd))
-            {
-                num = Information.UBound(EventCmd);
-                Array.Resize(ref EventCmd, Information.UBound(EventData) + 1);
-                var loopTo13 = Information.UBound(EventCmd);
-                for (i = num + 1; i <= loopTo13; i++)
-                {
-                    EventCmd[i] = new CmdData();
-                    EventCmd[i].LineNum = i;
-                }
-            }
+            // XXX 多分要らん
+            //// コマンドデータ配列を設定
+            //if (Information.UBound(EventData) > Information.UBound(EventCmd))
+            //{
+            //    num = Information.UBound(EventCmd);
+            //    Array.Resize(EventCmd, Information.UBound(EventData) + 1);
+            //    var loopTo13 = Information.UBound(EventCmd);
+            //    for (i = num + 1; i <= loopTo13; i++)
+            //    {
+            //        EventCmd[i] = new CmdData();
+            //        EventCmd[i].LineNum = i;
+            //    }
+            //}
 
             // 書式チェックはシナリオ側にのみ実施
             if (load_mode != "システム")
@@ -585,7 +490,7 @@ namespace SRC.Core.Events
                     {
                         var withBlock5 = EventCmd[CurrentLineNum];
                         // コマンドの構文解析
-                        if (!withBlock5.Parse(ref EventData[CurrentLineNum]))
+                        if (!withBlock5.Parse(EventData[CurrentLineNum]))
                         {
                             error_found = true;
                         }
@@ -622,15 +527,15 @@ namespace SRC.Core.Events
                                     {
                                         num = CmdPosStack[CmdPosStackIdx];
                                         DisplayEventErrorMessage(num, "Talkに対応するEndがありません");
-                                        CmdStackIdx = (short)(CmdStackIdx - 1);
-                                        CmdPosStackIdx = (short)(CmdPosStackIdx - 1);
+                                        CmdStackIdx = (CmdStackIdx - 1);
+                                        CmdPosStackIdx = (CmdPosStackIdx - 1);
                                         error_found = true;
                                     }
 
                                     if (withBlock5.GetArg(4) == "then")
                                     {
-                                        CmdStackIdx = (short)(CmdStackIdx + 1);
-                                        CmdPosStackIdx = (short)(CmdPosStackIdx + 1);
+                                        CmdStackIdx = (CmdStackIdx + 1);
+                                        CmdPosStackIdx = (CmdPosStackIdx + 1);
                                         CmdStack[CmdStackIdx] = CmdType.IfCmd;
                                         CmdPosStack[CmdPosStackIdx] = CurrentLineNum;
                                     }
@@ -644,8 +549,8 @@ namespace SRC.Core.Events
                                     {
                                         num = CmdPosStack[CmdPosStackIdx];
                                         DisplayEventErrorMessage(num, "Talkに対応するEndがありません");
-                                        CmdStackIdx = (short)(CmdStackIdx - 1);
-                                        CmdPosStackIdx = (short)(CmdPosStackIdx - 1);
+                                        CmdStackIdx = (CmdStackIdx - 1);
+                                        CmdPosStackIdx = (CmdPosStackIdx - 1);
                                         error_found = true;
                                     }
 
@@ -653,8 +558,8 @@ namespace SRC.Core.Events
                                     {
                                         DisplayEventErrorMessage(CurrentLineNum, "ElseIfに対応するIfがありません");
                                         error_found = true;
-                                        CmdStackIdx = (short)(CmdStackIdx + 1);
-                                        CmdPosStackIdx = (short)(CmdPosStackIdx + 1);
+                                        CmdStackIdx = (CmdStackIdx + 1);
+                                        CmdPosStackIdx = (CmdPosStackIdx + 1);
                                         CmdStack[CmdStackIdx] = CmdType.IfCmd;
                                         CmdPosStack[CmdPosStackIdx] = CurrentLineNum;
                                     }
@@ -668,8 +573,8 @@ namespace SRC.Core.Events
                                     {
                                         num = CmdPosStack[CmdPosStackIdx];
                                         DisplayEventErrorMessage(num, "Talkに対応するEndがありません");
-                                        CmdStackIdx = (short)(CmdStackIdx - 1);
-                                        CmdPosStackIdx = (short)(CmdPosStackIdx - 1);
+                                        CmdStackIdx = (CmdStackIdx - 1);
+                                        CmdPosStackIdx = (CmdPosStackIdx - 1);
                                         error_found = true;
                                     }
 
@@ -677,8 +582,8 @@ namespace SRC.Core.Events
                                     {
                                         DisplayEventErrorMessage(CurrentLineNum, "Elseに対応するIfがありません");
                                         error_found = true;
-                                        CmdStackIdx = (short)(CmdStackIdx + 1);
-                                        CmdPosStackIdx = (short)(CmdPosStackIdx + 1);
+                                        CmdStackIdx = (CmdStackIdx + 1);
+                                        CmdPosStackIdx = (CmdPosStackIdx + 1);
                                         CmdStack[CmdStackIdx] = CmdType.IfCmd;
                                         CmdPosStack[CmdPosStackIdx] = CurrentLineNum;
                                     }
@@ -692,15 +597,15 @@ namespace SRC.Core.Events
                                     {
                                         num = CmdPosStack[CmdPosStackIdx];
                                         DisplayEventErrorMessage(num, "Talkに対応するEndがありません");
-                                        CmdStackIdx = (short)(CmdStackIdx - 1);
-                                        CmdPosStackIdx = (short)(CmdPosStackIdx - 1);
+                                        CmdStackIdx = (CmdStackIdx - 1);
+                                        CmdPosStackIdx = (CmdPosStackIdx - 1);
                                         error_found = true;
                                     }
 
                                     if (CmdStack[CmdStackIdx] == CmdType.IfCmd)
                                     {
-                                        CmdStackIdx = (short)(CmdStackIdx - 1);
-                                        CmdPosStackIdx = (short)(CmdPosStackIdx - 1);
+                                        CmdStackIdx = (CmdStackIdx - 1);
+                                        CmdPosStackIdx = (CmdPosStackIdx - 1);
                                     }
                                     else
                                     {
@@ -717,13 +622,13 @@ namespace SRC.Core.Events
                                     {
                                         num = CmdPosStack[CmdPosStackIdx];
                                         DisplayEventErrorMessage(num, "Talkに対応するEndがありません");
-                                        CmdStackIdx = (short)(CmdStackIdx - 1);
-                                        CmdPosStackIdx = (short)(CmdPosStackIdx - 1);
+                                        CmdStackIdx = (CmdStackIdx - 1);
+                                        CmdPosStackIdx = (CmdPosStackIdx - 1);
                                         error_found = true;
                                     }
 
-                                    CmdStackIdx = (short)(CmdStackIdx + 1);
-                                    CmdPosStackIdx = (short)(CmdPosStackIdx + 1);
+                                    CmdStackIdx = (CmdStackIdx + 1);
+                                    CmdPosStackIdx = (CmdPosStackIdx + 1);
                                     CmdStack[CmdStackIdx] = CmdType.DoCmd;
                                     CmdPosStack[CmdPosStackIdx] = CurrentLineNum;
                                     break;
@@ -735,15 +640,15 @@ namespace SRC.Core.Events
                                     {
                                         num = CmdPosStack[CmdPosStackIdx];
                                         DisplayEventErrorMessage(num, "Talkに対応するEndがありません");
-                                        CmdStackIdx = (short)(CmdStackIdx - 1);
-                                        CmdPosStackIdx = (short)(CmdPosStackIdx - 1);
+                                        CmdStackIdx = (CmdStackIdx - 1);
+                                        CmdPosStackIdx = (CmdPosStackIdx - 1);
                                         error_found = true;
                                     }
 
                                     if (CmdStack[CmdStackIdx] == CmdType.DoCmd)
                                     {
-                                        CmdStackIdx = (short)(CmdStackIdx - 1);
-                                        CmdPosStackIdx = (short)(CmdPosStackIdx - 1);
+                                        CmdStackIdx = (CmdStackIdx - 1);
+                                        CmdPosStackIdx = (CmdPosStackIdx - 1);
                                     }
                                     else
                                     {
@@ -761,13 +666,13 @@ namespace SRC.Core.Events
                                     {
                                         num = CmdPosStack[CmdPosStackIdx];
                                         DisplayEventErrorMessage(num, "Talkに対応するEndがありません");
-                                        CmdStackIdx = (short)(CmdStackIdx - 1);
-                                        CmdPosStackIdx = (short)(CmdPosStackIdx - 1);
+                                        CmdStackIdx = (CmdStackIdx - 1);
+                                        CmdPosStackIdx = (CmdPosStackIdx - 1);
                                         error_found = true;
                                     }
 
-                                    CmdStackIdx = (short)(CmdStackIdx + 1);
-                                    CmdPosStackIdx = (short)(CmdPosStackIdx + 1);
+                                    CmdStackIdx = (CmdStackIdx + 1);
+                                    CmdPosStackIdx = (CmdPosStackIdx + 1);
                                     CmdStack[CmdStackIdx] = withBlock5.Name;
                                     CmdPosStack[CmdPosStackIdx] = CurrentLineNum;
                                     break;
@@ -781,8 +686,8 @@ namespace SRC.Core.Events
                                         {
                                             num = CmdPosStack[CmdPosStackIdx];
                                             DisplayEventErrorMessage(num, "Talkに対応するEndがありません");
-                                            CmdStackIdx = (short)(CmdStackIdx - 1);
-                                            CmdPosStackIdx = (short)(CmdPosStackIdx - 1);
+                                            CmdStackIdx = (CmdStackIdx - 1);
+                                            CmdPosStackIdx = (CmdPosStackIdx - 1);
                                             error_found = true;
                                         }
 
@@ -791,8 +696,8 @@ namespace SRC.Core.Events
                                             case CmdType.ForCmd:
                                             case CmdType.ForEachCmd:
                                                 {
-                                                    CmdStackIdx = (short)(CmdStackIdx - 1);
-                                                    CmdPosStackIdx = (short)(CmdPosStackIdx - 1);
+                                                    CmdStackIdx = (CmdStackIdx - 1);
+                                                    CmdPosStackIdx = (CmdPosStackIdx - 1);
                                                     break;
                                                 }
 
@@ -811,8 +716,8 @@ namespace SRC.Core.Events
                                             case CmdType.ForCmd:
                                             case CmdType.ForEachCmd:
                                                 {
-                                                    CmdStackIdx = (short)(CmdStackIdx - 1);
-                                                    CmdPosStackIdx = (short)(CmdPosStackIdx - 1);
+                                                    CmdStackIdx = (CmdStackIdx - 1);
+                                                    CmdPosStackIdx = (CmdPosStackIdx - 1);
                                                     break;
                                                 }
 
@@ -837,8 +742,8 @@ namespace SRC.Core.Events
                                         error_found = true;
                                     }
 
-                                    CmdStackIdx = (short)(CmdStackIdx + 1);
-                                    CmdPosStackIdx = (short)(CmdPosStackIdx + 1);
+                                    CmdStackIdx = (CmdStackIdx + 1);
+                                    CmdPosStackIdx = (CmdPosStackIdx + 1);
                                     CmdStack[CmdStackIdx] = CmdType.SwitchCmd;
                                     CmdPosStack[CmdPosStackIdx] = CurrentLineNum;
                                     break;
@@ -851,8 +756,8 @@ namespace SRC.Core.Events
                                     {
                                         num = CmdPosStack[CmdPosStackIdx];
                                         DisplayEventErrorMessage(num, "Talkに対応するEndがありません");
-                                        CmdStackIdx = (short)(CmdStackIdx - 1);
-                                        CmdPosStackIdx = (short)(CmdPosStackIdx - 1);
+                                        CmdStackIdx = (CmdStackIdx - 1);
+                                        CmdPosStackIdx = (CmdPosStackIdx - 1);
                                         error_found = true;
                                     }
 
@@ -860,8 +765,8 @@ namespace SRC.Core.Events
                                     {
                                         DisplayEventErrorMessage(CurrentLineNum, "Caseに対応するSwitchがありません");
                                         error_found = true;
-                                        CmdStackIdx = (short)(CmdStackIdx + 1);
-                                        CmdPosStackIdx = (short)(CmdPosStackIdx + 1);
+                                        CmdStackIdx = (CmdStackIdx + 1);
+                                        CmdPosStackIdx = (CmdPosStackIdx + 1);
                                         CmdStack[CmdStackIdx] = CmdType.SwitchCmd;
                                         CmdPosStack[CmdPosStackIdx] = CurrentLineNum;
                                     }
@@ -875,15 +780,15 @@ namespace SRC.Core.Events
                                     {
                                         num = CmdPosStack[CmdPosStackIdx];
                                         DisplayEventErrorMessage(num, "Talkに対応するEndがありません");
-                                        CmdStackIdx = (short)(CmdStackIdx - 1);
-                                        CmdPosStackIdx = (short)(CmdPosStackIdx - 1);
+                                        CmdStackIdx = (CmdStackIdx - 1);
+                                        CmdPosStackIdx = (CmdPosStackIdx - 1);
                                         error_found = true;
                                     }
 
                                     if (CmdStack[CmdStackIdx] == CmdType.SwitchCmd)
                                     {
-                                        CmdStackIdx = (short)(CmdStackIdx - 1);
-                                        CmdPosStackIdx = (short)(CmdPosStackIdx - 1);
+                                        CmdStackIdx = (CmdStackIdx - 1);
+                                        CmdPosStackIdx = (CmdPosStackIdx - 1);
                                     }
                                     else
                                     {
@@ -899,8 +804,8 @@ namespace SRC.Core.Events
                                 {
                                     if (CmdStack[CmdStackIdx] != withBlock5.Name)
                                     {
-                                        CmdStackIdx = (short)(CmdStackIdx + 1);
-                                        CmdPosStackIdx = (short)(CmdPosStackIdx + 1);
+                                        CmdStackIdx = (CmdStackIdx + 1);
+                                        CmdPosStackIdx = (CmdPosStackIdx + 1);
                                         CmdStack[CmdStackIdx] = withBlock5.Name;
                                         CmdPosStack[CmdPosStackIdx] = CurrentLineNum;
                                     }
@@ -914,15 +819,15 @@ namespace SRC.Core.Events
                                     {
                                         num = CmdPosStack[CmdPosStackIdx];
                                         DisplayEventErrorMessage(num, "Talkに対応するEndがありません");
-                                        CmdStackIdx = (short)(CmdStackIdx - 1);
-                                        CmdPosStackIdx = (short)(CmdPosStackIdx - 1);
+                                        CmdStackIdx = (CmdStackIdx - 1);
+                                        CmdPosStackIdx = (CmdPosStackIdx - 1);
                                         error_found = true;
                                     }
 
                                     i = withBlock5.ArgNum;
                                     while (i > 1)
                                     {
-                                        switch (withBlock5.GetArg((short)i) ?? "")
+                                        switch (withBlock5.GetArg(i) ?? "")
                                         {
                                             case "通常":
                                                 {
@@ -961,8 +866,8 @@ namespace SRC.Core.Events
 
                                     if (i < 3)
                                     {
-                                        CmdStackIdx = (short)(CmdStackIdx + 1);
-                                        CmdPosStackIdx = (short)(CmdPosStackIdx + 1);
+                                        CmdStackIdx = (CmdStackIdx + 1);
+                                        CmdPosStackIdx = (CmdPosStackIdx + 1);
                                         CmdStack[CmdStackIdx] = CmdType.AskCmd;
                                         CmdPosStack[CmdPosStackIdx] = CurrentLineNum;
                                     }
@@ -976,8 +881,8 @@ namespace SRC.Core.Events
                                     {
                                         num = CmdPosStack[CmdPosStackIdx];
                                         DisplayEventErrorMessage(num, "Talkに対応するEndがありません");
-                                        CmdStackIdx = (short)(CmdStackIdx - 1);
-                                        CmdPosStackIdx = (short)(CmdPosStackIdx - 1);
+                                        CmdStackIdx = (CmdStackIdx - 1);
+                                        CmdPosStackIdx = (CmdPosStackIdx - 1);
                                         error_found = true;
                                     }
 
@@ -1023,8 +928,8 @@ namespace SRC.Core.Events
 
                                     if (i < 4)
                                     {
-                                        CmdStackIdx = (short)(CmdStackIdx + 1);
-                                        CmdPosStackIdx = (short)(CmdPosStackIdx + 1);
+                                        CmdStackIdx = (CmdStackIdx + 1);
+                                        CmdPosStackIdx = (CmdPosStackIdx + 1);
                                         CmdStack[CmdStackIdx] = CmdType.QuestionCmd;
                                         CmdPosStack[CmdPosStackIdx] = CurrentLineNum;
                                     }
@@ -1041,8 +946,8 @@ namespace SRC.Core.Events
                                         case CmdType.AskCmd:
                                         case CmdType.QuestionCmd:
                                             {
-                                                CmdStackIdx = (short)(CmdStackIdx - 1);
-                                                CmdPosStackIdx = (short)(CmdPosStackIdx - 1);
+                                                CmdStackIdx = (CmdStackIdx - 1);
+                                                CmdPosStackIdx = (CmdPosStackIdx - 1);
                                                 break;
                                             }
 
@@ -1064,8 +969,8 @@ namespace SRC.Core.Events
                                         case CmdType.TalkCmd:
                                         case CmdType.AutoTalkCmd:
                                             {
-                                                CmdStackIdx = (short)(CmdStackIdx - 1);
-                                                CmdPosStackIdx = (short)(CmdPosStackIdx - 1);
+                                                CmdStackIdx = (CmdStackIdx - 1);
+                                                CmdPosStackIdx = (CmdPosStackIdx - 1);
                                                 break;
                                             }
 
@@ -1093,8 +998,8 @@ namespace SRC.Core.Events
                                             {
                                                 num = CmdPosStack[CmdPosStackIdx];
                                                 DisplayEventErrorMessage(num, "Talkに対応するEndがありません");
-                                                CmdStackIdx = (short)(CmdStackIdx - 1);
-                                                CmdPosStackIdx = (short)(CmdPosStackIdx - 1);
+                                                CmdStackIdx = (CmdStackIdx - 1);
+                                                CmdPosStackIdx = (CmdPosStackIdx - 1);
                                                 error_found = true;
                                                 break;
                                             }
@@ -1123,13 +1028,13 @@ namespace SRC.Core.Events
                                                     {
                                                         num = CmdPosStack[CmdPosStackIdx];
                                                         DisplayEventErrorMessage(num, "Talkに対応するEndがありません");
-                                                        CmdStackIdx = (short)(CmdStackIdx - 1);
-                                                        CmdPosStackIdx = (short)(CmdPosStackIdx - 1);
+                                                        CmdStackIdx = (CmdStackIdx - 1);
+                                                        CmdPosStackIdx = (CmdPosStackIdx - 1);
                                                         error_found = true;
                                                     }
                                                     else
                                                     {
-                                                        buf = Strings.LCase(GeneralLib.ListIndex(ref EventData[CurrentLineNum + 1], 1));
+                                                        buf = Strings.LCase(GeneralLib.ListIndex(EventData[CurrentLineNum + 1], 1));
                                                         switch (CmdStack[CmdStackIdx])
                                                         {
                                                             case CmdType.TalkCmd:
@@ -1168,8 +1073,8 @@ namespace SRC.Core.Events
                                                         {
                                                             num = CmdPosStack[CmdPosStackIdx];
                                                             DisplayEventErrorMessage(num, "Talkに対応するEndがありません");
-                                                            CmdStackIdx = (short)(CmdStackIdx - 1);
-                                                            CmdPosStackIdx = (short)(CmdPosStackIdx - 1);
+                                                            CmdStackIdx = (CmdStackIdx - 1);
+                                                            CmdPosStackIdx = (CmdPosStackIdx - 1);
                                                             error_found = true;
                                                         }
                                                     }
@@ -1314,7 +1219,7 @@ namespace SRC.Core.Events
             // CmdDataクラスのインスタンスの生成のみ行っておく
             else if (CurrentLineNum > Information.UBound(EventCmd))
             {
-                Array.Resize(ref EventCmd, CurrentLineNum + 1);
+                Array.Resize(EventCmd, CurrentLineNum + 1);
                 i = CurrentLineNum;
                 while (EventCmd[i] is null)
                 {
@@ -1329,7 +1234,7 @@ namespace SRC.Core.Events
             if (sys_event_data_size > 0)
             {
                 SysEventDataSize = sys_event_data_size;
-                SysEventFileNum = (short)sys_event_file_num;
+                SysEventFileNum = sys_event_file_num;
             }
 
             // クイックロードやリスタートの場合はシナリオデータの再ロードのみ
@@ -1337,7 +1242,8 @@ namespace SRC.Core.Events
             {
                 case "リストア":
                     {
-                        SRC.ADList.AddDefaultAnimation();
+                        // TODO Impl
+                        //SRC.ADList.AddDefaultAnimation();
                         return;
                     }
 
@@ -1370,7 +1276,7 @@ namespace SRC.Core.Events
             }
 
             string argfname34 = Strings.Left(fname, Strings.Len(fname) - 4) + ".map";
-            if (GeneralLib.FileExists(ref argfname34))
+            if (GeneralLib.FileExists(argfname34))
             {
                 num = num + 1;
             }
@@ -1386,106 +1292,106 @@ namespace SRC.Core.Events
             GUI.OpenNowLoadingForm();
 
             // ロードサイズを設定
-            GUI.SetLoadImageSize((short)num);
+            GUI.SetLoadImageSize(num);
 
             // 使用しているタイトルのデータをロード
             var loopTo16 = Information.UBound(new_titles);
             for (i = 1; i <= loopTo16; i++)
-                SRC.IncludeData(ref new_titles[i]);
+                SRC.IncludeData(new_titles[i]);
 
             // ローカルデータの読みこみ
             if (!SRC.IsLocalDataLoaded | Information.UBound(new_titles) > 0)
             {
                 string argfname36 = SRC.ScenarioPath + @"Data\alias.txt";
-                if (GeneralLib.FileExists(ref argfname36))
+                if (GeneralLib.FileExists(argfname36))
                 {
                     string argfname35 = SRC.ScenarioPath + @"Data\alias.txt";
-                    SRC.ALDList.Load(ref argfname35);
+                    SRC.ALDList.Load(argfname35);
                 }
 
-                bool localFileExists23() { string argfname = SRC.ScenarioPath + @"Data\mind.txt"; var ret = GeneralLib.FileExists(ref argfname); return ret; }
+                bool localFileExists23() { string argfname = SRC.ScenarioPath + @"Data\mind.txt"; var ret = GeneralLib.FileExists(argfname); return ret; }
 
                 string argfname39 = SRC.ScenarioPath + @"Data\sp.txt";
-                if (GeneralLib.FileExists(ref argfname39))
+                if (GeneralLib.FileExists(argfname39))
                 {
                     string argfname37 = SRC.ScenarioPath + @"Data\sp.txt";
-                    SRC.SPDList.Load(ref argfname37);
+                    SRC.SPDList.Load(argfname37);
                 }
                 else if (localFileExists23())
                 {
                     string argfname38 = SRC.ScenarioPath + @"Data\mind.txt";
-                    SRC.SPDList.Load(ref argfname38);
+                    SRC.SPDList.Load(argfname38);
                 }
 
                 string argfname41 = SRC.ScenarioPath + @"Data\pilot.txt";
-                if (GeneralLib.FileExists(ref argfname41))
+                if (GeneralLib.FileExists(argfname41))
                 {
                     string argfname40 = SRC.ScenarioPath + @"Data\pilot.txt";
-                    SRC.PDList.Load(ref argfname40);
+                    SRC.PDList.Load(argfname40);
                 }
 
                 string argfname43 = SRC.ScenarioPath + @"Data\non_pilot.txt";
-                if (GeneralLib.FileExists(ref argfname43))
+                if (GeneralLib.FileExists(argfname43))
                 {
                     string argfname42 = SRC.ScenarioPath + @"Data\non_pilot.txt";
-                    SRC.NPDList.Load(ref argfname42);
+                    SRC.NPDList.Load(argfname42);
                 }
 
                 string argfname45 = SRC.ScenarioPath + @"Data\robot.txt";
-                if (GeneralLib.FileExists(ref argfname45))
+                if (GeneralLib.FileExists(argfname45))
                 {
                     string argfname44 = SRC.ScenarioPath + @"Data\robot.txt";
-                    SRC.UDList.Load(ref argfname44);
+                    SRC.UDList.Load(argfname44);
                 }
 
                 string argfname47 = SRC.ScenarioPath + @"Data\unit.txt";
-                if (GeneralLib.FileExists(ref argfname47))
+                if (GeneralLib.FileExists(argfname47))
                 {
                     string argfname46 = SRC.ScenarioPath + @"Data\unit.txt";
-                    SRC.UDList.Load(ref argfname46);
+                    SRC.UDList.Load(argfname46);
                 }
 
                 GUI.DisplayLoadingProgress();
                 string argfname49 = SRC.ScenarioPath + @"Data\pilot_message.txt";
-                if (GeneralLib.FileExists(ref argfname49))
+                if (GeneralLib.FileExists(argfname49))
                 {
                     string argfname48 = SRC.ScenarioPath + @"Data\pilot_message.txt";
-                    SRC.MDList.Load(ref argfname48);
+                    SRC.MDList.Load(argfname48);
                 }
 
                 string argfname51 = SRC.ScenarioPath + @"Data\pilot_dialog.txt";
-                if (GeneralLib.FileExists(ref argfname51))
+                if (GeneralLib.FileExists(argfname51))
                 {
                     string argfname50 = SRC.ScenarioPath + @"Data\pilot_dialog.txt";
-                    SRC.DDList.Load(ref argfname50);
+                    SRC.DDList.Load(argfname50);
                 }
 
                 string argfname53 = SRC.ScenarioPath + @"Data\effect.txt";
-                if (GeneralLib.FileExists(ref argfname53))
+                if (GeneralLib.FileExists(argfname53))
                 {
                     string argfname52 = SRC.ScenarioPath + @"Data\effect.txt";
-                    SRC.EDList.Load(ref argfname52);
+                    SRC.EDList.Load(argfname52);
                 }
 
                 string argfname55 = SRC.ScenarioPath + @"Data\animation.txt";
-                if (GeneralLib.FileExists(ref argfname55))
+                if (GeneralLib.FileExists(argfname55))
                 {
                     string argfname54 = SRC.ScenarioPath + @"Data\animation.txt";
-                    SRC.ADList.Load(ref argfname54);
+                    SRC.ADList.Load(argfname54);
                 }
 
                 string argfname57 = SRC.ScenarioPath + @"Data\ext_animation.txt";
-                if (GeneralLib.FileExists(ref argfname57))
+                if (GeneralLib.FileExists(argfname57))
                 {
                     string argfname56 = SRC.ScenarioPath + @"Data\ext_animation.txt";
-                    SRC.EADList.Load(ref argfname56);
+                    SRC.EADList.Load(argfname56);
                 }
 
                 string argfname59 = SRC.ScenarioPath + @"Data\item.txt";
-                if (GeneralLib.FileExists(ref argfname59))
+                if (GeneralLib.FileExists(argfname59))
                 {
                     string argfname58 = SRC.ScenarioPath + @"Data\item.txt";
-                    SRC.IDList.Load(ref argfname58);
+                    SRC.IDList.Load(argfname58);
                 }
 
                 GUI.DisplayLoadingProgress();
@@ -1497,15 +1403,15 @@ namespace SRC.Core.Events
 
             // マップデータをロード
             string argfname61 = Strings.Left(fname, Strings.Len(fname) - 4) + ".map";
-            if (GeneralLib.FileExists(ref argfname61))
+            if (GeneralLib.FileExists(argfname61))
             {
                 string argfname60 = Strings.Left(fname, Strings.Len(fname) - 4) + ".map";
-                Map.LoadMapData(ref argfname60);
+                Map.LoadMapData(argfname60);
                 string argdraw_mode = "";
                 string argdraw_option = "";
                 int argfilter_color = 0;
                 double argfilter_trans_par = 0d;
-                GUI.SetupBackground(draw_mode: ref argdraw_mode, draw_option: ref argdraw_option, filter_color: ref argfilter_color, filter_trans_par: ref argfilter_trans_par);
+                GUI.SetupBackground(draw_mode: argdraw_mode, draw_option: argdraw_option, filter_color: argfilter_color, filter_trans_par: argfilter_trans_par);
                 GUI.RedrawScreen();
                 GUI.DisplayLoadingProgress();
             }
@@ -1515,12 +1421,12 @@ namespace SRC.Core.Events
         }
 
         // イベントファイルの読み込み
-        public  void LoadEventData2(ref string fname, int lnum = 0)
+        public void LoadEventData2(string fname, int lnum = 0)
         {
-            short FileNumber, CurrentLineNum2;
-            short i;
+            int FileNumber, CurrentLineNum2;
+            int i;
             string buf, fname2;
-            short fid;
+            int fid;
             bool in_single_quote, in_double_quote;
             if (string.IsNullOrEmpty(fname))
             {
@@ -1528,13 +1434,13 @@ namespace SRC.Core.Events
             }
 
             // イベントファイル名を記録しておく (エラー表示用)
-            Array.Resize(ref EventFileNames, Information.UBound(EventFileNames) + 1 + 1);
+            Array.Resize(EventFileNames, Information.UBound(EventFileNames) + 1 + 1);
             EventFileNames[Information.UBound(EventFileNames)] = fname;
-            fid = (short)Information.UBound(EventFileNames);
+            fid = Information.UBound(EventFileNames);
             ;
 
             // ファイルを開く
-            FileNumber = (short)FileSystem.FreeFile();
+            FileNumber = FileSystem.FreeFile();
             FileSystem.FileOpen(FileNumber, fname, OpenMode.Input, OpenAccess.Read);
 
             // 行番号の設定
@@ -1549,16 +1455,16 @@ namespace SRC.Core.Events
             while (!FileSystem.EOF(FileNumber))
             {
                 CurrentLineNum = CurrentLineNum + 1;
-                CurrentLineNum2 = (short)(CurrentLineNum2 + 1);
+                CurrentLineNum2 = (CurrentLineNum2 + 1);
 
                 // データ領域確保
-                Array.Resize(ref EventData, CurrentLineNum + 1);
-                Array.Resize(ref EventFileID, CurrentLineNum + 1);
-                Array.Resize(ref EventLineNum, CurrentLineNum + 1);
+                Array.Resize(EventData, CurrentLineNum + 1);
+                Array.Resize(EventFileID, CurrentLineNum + 1);
+                Array.Resize(EventLineNum, CurrentLineNum + 1);
 
                 // 行の読み込み
                 buf = FileSystem.LineInput(FileNumber);
-                GeneralLib.TrimString(ref buf);
+                GeneralLib.TrimString(buf);
 
                 // コメントを削除
                 if (Strings.Left(buf, 1) == "#")
@@ -1569,7 +1475,7 @@ namespace SRC.Core.Events
                 {
                     in_single_quote = false;
                     in_double_quote = false;
-                    var loopTo = (short)Strings.Len(buf);
+                    var loopTo = Strings.Len(buf);
                     for (i = 1; i <= loopTo; i++)
                     {
                         switch (Strings.Mid(buf, i, 1) ?? "")
@@ -1640,25 +1546,25 @@ namespace SRC.Core.Events
                             if (Strings.Len(FileSystem.Dir(SRC.ScenarioPath + fname2)) > 0)
                             {
                                 string argfname = SRC.ScenarioPath + fname2;
-                                LoadEventData2(ref argfname);
+                                LoadEventData2(argfname);
                             }
                             // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
                             else if (Strings.Len(FileSystem.Dir(SRC.ExtDataPath + fname2)) > 0)
                             {
                                 string argfname1 = SRC.ExtDataPath + fname2;
-                                LoadEventData2(ref argfname1);
+                                LoadEventData2(argfname1);
                             }
                             // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
                             else if (Strings.Len(FileSystem.Dir(SRC.ExtDataPath2 + fname2)) > 0)
                             {
                                 string argfname2 = SRC.ExtDataPath2 + fname2;
-                                LoadEventData2(ref argfname2);
+                                LoadEventData2(argfname2);
                             }
                             // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
                             else if (Strings.Len(FileSystem.Dir(SRC.AppPath + fname2)) > 0)
                             {
                                 string argfname3 = SRC.AppPath + fname2;
-                                LoadEventData2(ref argfname3);
+                                LoadEventData2(argfname3);
                             }
                         }
                     }
@@ -1666,23 +1572,22 @@ namespace SRC.Core.Events
             }
 
             // ファイルを閉じる
-            FileSystem.FileClose((int)FileNumber);
+            FileSystem.FileClose(FileNumber);
             return;
         ErrorHandler:
             ;
             if (Strings.Len(buf) == 0)
             {
                 string argmsg = fname + "が開けません";
-                GUI.ErrorMessage(ref argmsg);
+                GUI.ErrorMessage(argmsg);
             }
             else
             {
                 string argmsg1 = fname + "のロード中にエラーが発生しました" + Constants.vbCr + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(CurrentLineNum2) + "行目のイベントデータが不正です";
-                GUI.ErrorMessage(ref argmsg1);
+                GUI.ErrorMessage(argmsg1);
             }
 
             SRC.TerminateSRC();
         }
-
     }
 }

@@ -9,6 +9,7 @@ using SRC.Core.Lib;
 using SRC.Core.Models;
 using SRC.Core.VB;
 using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace SRC.Core
@@ -79,7 +80,7 @@ namespace SRC.Core
         // 総資金
         public int Money;
         // 読み込まれているデータ数
-        public string[] Titles;
+        public IList<string> Titles;
         // ローカルデータが読み込まれているか？
         public bool IsLocalDataLoaded;
 

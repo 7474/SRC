@@ -1,4 +1,6 @@
-﻿using System;
+﻿using SRC.Core.Lib;
+using SRC.Core.VB;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -7,54 +9,38 @@ namespace SRC.Core.Events
     public partial class Event
     {
         // ラベルが定義されているか
-        public static bool IsLabelDefined(ref object Index)
+        public bool IsLabelDefined(string Index)
         {
-            bool IsLabelDefinedRet = default;
-            LabelData lab;
-            ;
-#error Cannot convert OnErrorGoToStatementSyntax - see comment for details
-            /* Cannot convert OnErrorGoToStatementSyntax, CONVERSION ERROR: Conversion for OnErrorGoToLabelStatement not implemented, please report this issue in 'On Error GoTo ErrorHandler' at character 95875
-
-
-            Input:
-
-                    On Error GoTo ErrorHandler
-
-             */
-            lab = (LabelData)colEventLabelList[Index];
-            IsLabelDefinedRet = true;
-            return IsLabelDefinedRet;
-        ErrorHandler:
-            ;
-            IsLabelDefinedRet = false;
+            try
+            {
+                return colEventLabelList.ContainsKey(Index);
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         // ラベルを追加
-        public static void AddLabel(ref string lname, int lnum)
+        public void AddLabel(string lname, int lnum)
         {
+            SrcCollection<LabelData> normalLabelList = colNormalLabelList;
+            SrcCollection<LabelData> eventLabelList = colEventLabelList;
+
+
             var new_label = new LabelData();
             string lname2;
-            short i;
-            ;
-#error Cannot convert OnErrorGoToStatementSyntax - see comment for details
-            /* Cannot convert OnErrorGoToStatementSyntax, CONVERSION ERROR: Conversion for OnErrorGoToLabelStatement not implemented, please report this issue in 'On Error GoTo ErrorHandler' at character 96254
-
-
-            Input:
-
-                    On Error GoTo ErrorHandler
-
-             */
             new_label.Data = lname;
             new_label.LineNum = lnum;
             new_label.Enable = true;
             if (new_label.Name == LabelType.NormalLabel)
             {
                 // 通常ラベルを追加
-                if (FindNormalLabel0(ref lname) == 0)
+                if (FindNormalLabel0(lname) == 0)
                 {
                     colNormalLabelList.Add(new_label, lname);
                 }
+                // 通常ラベルが重複定義されている場合は無視
             }
             else
             {
@@ -62,35 +48,27 @@ namespace SRC.Core.Events
 
                 // パラメータ間の文字列の違いによる不一致をなくすため、
                 // 文字列を半角スペース一文字に直しておく
-                lname2 = GeneralLib.ListIndex(ref lname, 1);
-                var loopTo = GeneralLib.ListLength(ref lname);
-                for (i = 2; i <= loopTo; i++)
-                    lname2 = lname2 + " " + GeneralLib.ListIndex(ref lname, i);
-                bool localIsLabelDefined() { object argIndex1 = lname2; var ret = IsLabelDefined(ref argIndex1); return ret; }
+                lname2 = string.Join(" ", GeneralLib.ToList(lname));
 
-                if (!localIsLabelDefined())
+                if (!IsLabelDefined(lname2))
                 {
                     colEventLabelList.Add(new_label, lname2);
                 }
                 else
                 {
-                    colEventLabelList.Add(new_label, lname2 + "(" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(lnum) + ")");
+                    colEventLabelList.Add(new_label, lname2 + "(" + SrcFormatter.Format(lnum) + ")");
                 }
             }
 
             return;
-        ErrorHandler:
-            ;
-
-            // 通常ラベルが重複定義されている場合は無視
         }
 
         // システム側のラベルを追加
-        public static void AddSysLabel(ref string lname, int lnum)
+        public void AddSysLabel(string lname, int lnum)
         {
             var new_label = new LabelData();
             string lname2;
-            short i;
+            int i;
             ;
 #error Cannot convert OnErrorGoToStatementSyntax - see comment for details
             /* Cannot convert OnErrorGoToStatementSyntax, CONVERSION ERROR: Conversion for OnErrorGoToLabelStatement not implemented, please report this issue in 'On Error GoTo ErrorHandler' at character 97526
@@ -107,7 +85,7 @@ namespace SRC.Core.Events
             if (new_label.Name == LabelType.NormalLabel)
             {
                 // 通常ラベルを追加
-                if (FindSysNormalLabel(ref lname) == 0)
+                if (FindSysNormalLabel(lname) == 0)
                 {
                     colSysNormalLabelList.Add(new_label, lname);
                 }
@@ -123,11 +101,11 @@ namespace SRC.Core.Events
 
                 // パラメータ間の文字列の違いによる不一致をなくすため、
                 // 文字列を半角スペース一文字に直しておく
-                lname2 = GeneralLib.ListIndex(ref lname, 1);
-                var loopTo = GeneralLib.ListLength(ref lname);
+                lname2 = GeneralLib.ListIndex(lname, 1);
+                var loopTo = GeneralLib.ListLength(lname);
                 for (i = 2; i <= loopTo; i++)
-                    lname2 = lname2 + " " + GeneralLib.ListIndex(ref lname, i);
-                bool localIsLabelDefined() { object argIndex1 = lname2; var ret = IsLabelDefined(ref argIndex1); return ret; }
+                    lname2 = lname2 + " " + GeneralLib.ListIndex(lname, i);
+                bool localIsLabelDefined() { object argIndex1 = lname2; var ret = IsLabelDefined(argIndex1); return ret; }
 
                 if (!localIsLabelDefined())
                 {
@@ -135,7 +113,7 @@ namespace SRC.Core.Events
                 }
                 else
                 {
-                    colEventLabelList.Add(new_label, lname2 + "(" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(lnum) + ")");
+                    colEventLabelList.Add(new_label, lname2 + "(" + SrcFormatter.Format(lnum) + ")");
                 }
             }
 
@@ -147,10 +125,10 @@ namespace SRC.Core.Events
         }
 
         // ラベルを消去
-        public static void ClearLabel(int lnum)
+        public void ClearLabel(int lnum)
         {
             LabelData lab;
-            short i;
+            int i;
 
             // 行番号lnumにあるラベルを探す
             foreach (LabelData currentLab in colEventLabelList)
@@ -179,7 +157,7 @@ namespace SRC.Core.Events
         }
 
         // ラベルを復活
-        public static void RestoreLabel(ref string lname)
+        public void RestoreLabel(string lname)
         {
             foreach (LabelData lab in colEventLabelList)
             {
@@ -192,21 +170,21 @@ namespace SRC.Core.Events
         }
 
         // ラベルを探す
-        public static int FindLabel(ref string lname)
+        public int FindLabel(string lname)
         {
             int FindLabelRet = default;
             string lname2;
-            short i;
+            int i;
 
             // 通常ラベルから検索
-            FindLabelRet = FindNormalLabel(ref lname);
+            FindLabelRet = FindNormalLabel(lname);
             if (FindLabelRet > 0)
             {
                 return FindLabelRet;
             }
 
             // イベントラベルから検索
-            FindLabelRet = FindEventLabel(ref lname);
+            FindLabelRet = FindEventLabel(lname);
             if (FindLabelRet > 0)
             {
                 return FindLabelRet;
@@ -214,18 +192,18 @@ namespace SRC.Core.Events
 
             // パラメータ間の文字列の違いで一致しなかった可能性があるので
             // 文字列を半角スペース一文字のみにして検索してみる
-            lname2 = GeneralLib.ListIndex(ref lname, 1);
-            var loopTo = GeneralLib.ListLength(ref lname);
+            lname2 = GeneralLib.ListIndex(lname, 1);
+            var loopTo = GeneralLib.ListLength(lname);
             for (i = 2; i <= loopTo; i++)
-                lname2 = lname2 + " " + GeneralLib.ListIndex(ref lname, i);
+                lname2 = lname2 + " " + GeneralLib.ListIndex(lname, i);
 
             // イベントラベルから検索
-            FindLabelRet = FindEventLabel(ref lname2);
+            FindLabelRet = FindEventLabel(lname2);
             return FindLabelRet;
         }
 
         // イベントラベルを探す
-        public static int FindEventLabel(ref string lname)
+        public int FindEventLabel(string lname)
         {
             int FindEventLabelRet = default;
             LabelData lab;
@@ -248,20 +226,20 @@ namespace SRC.Core.Events
         }
 
         // 通常ラベルを探す
-        public static int FindNormalLabel(ref string lname)
+        public int FindNormalLabel(string lname)
         {
             int FindNormalLabelRet = default;
-            FindNormalLabelRet = FindNormalLabel0(ref lname);
+            FindNormalLabelRet = FindNormalLabel0(lname);
             if (FindNormalLabelRet == 0)
             {
-                FindNormalLabelRet = FindSysNormalLabel(ref lname);
+                FindNormalLabelRet = FindSysNormalLabel(lname);
             }
 
             return FindNormalLabelRet;
         }
 
         // シナリオ側の通常ラベルを探す
-        private static int FindNormalLabel0(ref string lname)
+        private int FindNormalLabel0(string lname)
         {
             int FindNormalLabel0Ret = default;
             LabelData lab;
@@ -284,7 +262,7 @@ namespace SRC.Core.Events
         }
 
         // システム側の通常ラベルを探す
-        private static int FindSysNormalLabel(ref string lname)
+        private int FindSysNormalLabel(string lname)
         {
             int FindSysNormalLabelRet = default;
             LabelData lab;
