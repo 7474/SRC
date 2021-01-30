@@ -673,7 +673,7 @@ namespace SRC.Core.Maps
 
 
         // マップファイル fname のデータをロード
-        public static void LoadMapData(ref string fname)
+        public static void LoadMapData(string fname)
         {
             throw new NotImplementedException();
             //    int FileNumber;

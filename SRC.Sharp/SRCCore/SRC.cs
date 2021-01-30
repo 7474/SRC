@@ -29,14 +29,14 @@ namespace SRC.Core
         public UnitDataList UDList = new UnitDataList();
         //// アイテムデータのリスト
         //public ItemDataList IDList = new ItemDataList();
-        //// メッセージデータのリスト
-        //public MessageDataList MDList = new MessageDataList();
-        //// 特殊効果データのリスト
-        //public MessageDataList EDList = new MessageDataList();
-        //// 戦闘アニメデータのリスト
-        //public MessageDataList ADList = new MessageDataList();
-        //// 拡張戦闘アニメデータのリスト
-        //public MessageDataList EADList = new MessageDataList();
+        // メッセージデータのリスト
+        public MessageDataList MDList = new MessageDataList();
+        // 特殊効果データのリスト
+        public MessageDataList EDList = new MessageDataList();
+        // 戦闘アニメデータのリスト
+        public MessageDataList ADList = new MessageDataList();
+        // 拡張戦闘アニメデータのリスト
+        public MessageDataList EADList = new MessageDataList();
         //// ダイアログデータのリスト
         //public DialogDataList DDList = new DialogDataList();
         //// スペシャルパワーデータのリスト
