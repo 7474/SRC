@@ -5,15 +5,11 @@
 using SRC.Core.Events;
 using SRC.Core.Lib;
 using SRC.Core.VB;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace SRC.Core.CmdDatas
 {
-
-
     // イベントコマンドのクラス
     public partial class CmdData
     {
@@ -55,13 +51,8 @@ namespace SRC.Core.CmdDatas
         {
             try
             {
-                bool ParseRet = default;
-                string buf = default, expr;
-                var list = default(string[]);
-                int i;
-
                 // 正常に解析が終了した場合はTrueを返すこと
-                ParseRet = true;
+                bool ParseRet = true;
 
                 // 空行は無視
                 if (Strings.Len(edata) == 0)
@@ -80,6 +71,7 @@ namespace SRC.Core.CmdDatas
                 }
 
                 // コマンドのパラメータ分割
+                string[] list;
                 ArgNum = GeneralLib.ListSplit(edata, out list);
 
                 // 空行は無視
@@ -363,7 +355,7 @@ namespace SRC.Core.CmdDatas
                             CmdName = CmdType.DoCmd;
                             if (ArgNum == 3)
                             {
-                                strArgs[2] = Strings.LCase(strArgs[2]);
+                                args[1].strArg = Strings.LCase(args[1].strArg);
                             }
 
                             break;
@@ -374,7 +366,7 @@ namespace SRC.Core.CmdDatas
                             CmdName = CmdType.LoopCmd;
                             if (ArgNum == 3)
                             {
-                                strArgs[2] = Strings.LCase(strArgs[2]);
+                                args[1].strArg = Strings.LCase(args[1].strArg);
                             }
 
                             break;
@@ -1239,531 +1231,533 @@ namespace SRC.Core.CmdDatas
 
                     default:
                         {
-                            // 定義済みのイベントコマンドではない
-                            if (ArgNum >= 3)
-                            {
-                                if (list[2] == "=")
-                                {
-                                    // 代入式
+                            // TODO Impl
+                            //// 定義済みのイベントコマンドではない
+                            //if (ArgNum >= 3)
+                            //{
+                            //    if (list[2] == "=")
+                            //    {
+                            //        // 代入式
 
-                                    CmdName = CmdType.SetCmd;
-                                    // UPGRADE_WARNING: 配列 strArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
-                                    Array.Resize(strArgs, 4);
-                                    // UPGRADE_WARNING: 配列 lngArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
-                                    Array.Resize(lngArgs, 4);
-                                    // UPGRADE_WARNING: 配列 dblArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
-                                    Array.Resize(dblArgs, 4);
-                                    // UPGRADE_WARNING: 配列 ArgsType の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
-                                    Array.Resize(ArgsType, 4);
+                            //        CmdName = CmdType.SetCmd;
+                            //        // UPGRADE_WARNING: 配列 strArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
+                            //        Array.Resize(strArgs, 4);
+                            //        // UPGRADE_WARNING: 配列 lngArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
+                            //        Array.Resize(lngArgs, 4);
+                            //        // UPGRADE_WARNING: 配列 dblArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
+                            //        Array.Resize(dblArgs, 4);
+                            //        // UPGRADE_WARNING: 配列 ArgsType の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
+                            //        Array.Resize(ArgsType, 4);
 
-                                    // 代入先の変数名
-                                    strArgs[2] = list[1];
-                                    ArgsType[2] = Expressions.ValueType.StringType;
+                            //        // 代入先の変数名
+                            //        strArgs[2] = list[1];
+                            //        ArgsType[2] = Expressions.ValueType.StringType;
 
-                                    // 代入する値
-                                    // (値が項の場合は既に引数の処理が済んでいるのでなにもしなくてよい)
-                                    if (ArgNum > 3)
-                                    {
-                                        ArgsType[3] = Expressions.ValueType.UndefinedType;
-                                        // GetValueAsStringの呼び出しの際に、Argsの内容は必ず項と仮定
-                                        // されているので、わざと項にしておく
-                                        strArgs[3] = "(" + GeneralLib.ListTail(edata, 3) + ")";
-                                    }
+                            //        // 代入する値
+                            //        // (値が項の場合は既に引数の処理が済んでいるのでなにもしなくてよい)
+                            //        if (ArgNum > 3)
+                            //        {
+                            //            ArgsType[3] = Expressions.ValueType.UndefinedType;
+                            //            // GetValueAsStringの呼び出しの際に、Argsの内容は必ず項と仮定
+                            //            // されているので、わざと項にしておく
+                            //            strArgs[3] = "(" + GeneralLib.ListTail(edata, 3) + ")";
+                            //        }
 
-                                    ArgNum = 3;
-                                    return ParseRet;
-                                }
-                            }
+                            //        ArgNum = 3;
+                            //        return ParseRet;
+                            //    }
+                            //}
 
-                            if (ArgNum == -1)
-                            {
-                                CmdName = CmdType.NopCmd;
-                                return ParseRet;
-                            }
+                            //if (ArgNum == -1)
+                            //{
+                            //    CmdName = CmdType.NopCmd;
+                            //    return ParseRet;
+                            //}
 
-                            // サブルーチンコール？
-                            CmdName = CmdType.CallCmd;
-                            // UPGRADE_WARNING: 配列 strArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
-                            Array.Resize(strArgs, ArgNum + 1 + 1);
-                            // UPGRADE_WARNING: 配列 lngArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
-                            Array.Resize(lngArgs, ArgNum + 1 + 1);
-                            // UPGRADE_WARNING: 配列 dblArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
-                            Array.Resize(dblArgs, ArgNum + 1 + 1);
-                            // UPGRADE_WARNING: 配列 ArgsType の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
-                            Array.Resize(ArgsType, ArgNum + 1 + 1);
-                            // 引数を１個ずらす
-                            var loopTo1 = (int)(ArgNum - 2);
-                            for (i = 0; i <= loopTo1; i++)
-                            {
-                                strArgs[ArgNum + 1 - i] = strArgs[ArgNum - i];
-                                lngArgs[ArgNum + 1 - i] = lngArgs[ArgNum - i];
-                                dblArgs[ArgNum + 1 - i] = dblArgs[ArgNum - i];
-                                ArgsType[ArgNum + 1 - i] = ArgsType[ArgNum - i];
-                            }
+                            //// サブルーチンコール？
+                            //CmdName = CmdType.CallCmd;
+                            //// UPGRADE_WARNING: 配列 strArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
+                            //Array.Resize(strArgs, ArgNum + 1 + 1);
+                            //// UPGRADE_WARNING: 配列 lngArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
+                            //Array.Resize(lngArgs, ArgNum + 1 + 1);
+                            //// UPGRADE_WARNING: 配列 dblArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
+                            //Array.Resize(dblArgs, ArgNum + 1 + 1);
+                            //// UPGRADE_WARNING: 配列 ArgsType の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
+                            //Array.Resize(ArgsType, ArgNum + 1 + 1);
+                            //// 引数を１個ずらす
+                            //var loopTo1 = (int)(ArgNum - 2);
+                            //for (i = 0; i <= loopTo1; i++)
+                            //{
+                            //    strArgs[ArgNum + 1 - i] = strArgs[ArgNum - i];
+                            //    lngArgs[ArgNum + 1 - i] = lngArgs[ArgNum - i];
+                            //    dblArgs[ArgNum + 1 - i] = dblArgs[ArgNum - i];
+                            //    ArgsType[ArgNum + 1 - i] = ArgsType[ArgNum - i];
+                            //}
 
-                            ArgNum = (int)(ArgNum + 1);
-                            // 第２引数をサブルーチン名に設定
-                            strArgs[2] = list[1];
-                            if (Event_Renamed.FindNormalLabel(list[1]) > 0)
-                            {
-                                ArgsType[2] = Expressions.ValueType.StringType;
-                            }
-                            else
-                            {
-                                ArgsType[2] = Expressions.ValueType.UndefinedType;
-                            }
+                            //ArgNum = (int)(ArgNum + 1);
+                            //// 第２引数をサブルーチン名に設定
+                            //strArgs[2] = list[1];
+                            //if (Event_Renamed.FindNormalLabel(list[1]) > 0)
+                            //{
+                            //    ArgsType[2] = Expressions.ValueType.StringType;
+                            //}
+                            //else
+                            //{
+                            //    ArgsType[2] = Expressions.ValueType.UndefinedType;
+                            //}
 
                             return ParseRet;
                         }
                 }
 
-                if (CmdName == CmdType.IfCmd | CmdName == CmdType.ElseIfCmd)
-                {
-                    // If文の処理の高速化のため、あらかじめ構文解析しておく
-                    if (ArgNum == 1)
-                    {
-                        // 書式エラー
-                        Event_Renamed.DisplayEventErrorMessage(Event_Renamed.CurrentLineNum, "Ifコマンドの書式に合っていません");
-                        ParseRet = false;
-                        return ParseRet;
-                    }
+                // TODO Impl
+                //if (CmdName == CmdType.IfCmd | CmdName == CmdType.ElseIfCmd)
+                //{
+                //    // If文の処理の高速化のため、あらかじめ構文解析しておく
+                //    if (ArgNum == 1)
+                //    {
+                //        // 書式エラー
+                //        Event_Renamed.DisplayEventErrorMessage(Event_Renamed.CurrentLineNum, "Ifコマンドの書式に合っていません");
+                //        ParseRet = false;
+                //        return ParseRet;
+                //    }
 
-                    expr = list[2];
-                    var loopTo2 = ArgNum;
-                    for (i = 3; i <= loopTo2; i++)
-                    {
-                        buf = list[i];
-                        switch (Strings.LCase(buf) ?? "")
-                        {
-                            case "then":
-                            case "exit":
-                                {
-                                    // UPGRADE_WARNING: 配列 strArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
-                                    strArgs = new string[5];
-                                    // UPGRADE_WARNING: 配列 lngArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
-                                    lngArgs = new int[5];
-                                    // UPGRADE_WARNING: 配列 dblArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
-                                    dblArgs = new double[5];
-                                    // UPGRADE_WARNING: 配列 ArgsType の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
-                                    ArgsType = new Expressions.ValueType[5];
-                                    strArgs[2] = expr;
-                                    lngArgs[3] = ArgNum - 2;
-                                    ArgsType[3] = Expressions.ValueType.NumericType;
-                                    strArgs[4] = Strings.LCase(buf);
-                                    break;
-                                }
+                //    expr = list[2];
+                //    var loopTo2 = ArgNum;
+                //    for (i = 3; i <= loopTo2; i++)
+                //    {
+                //        buf = list[i];
+                //        switch (Strings.LCase(buf) ?? "")
+                //        {
+                //            case "then":
+                //            case "exit":
+                //                {
+                //                    // UPGRADE_WARNING: 配列 strArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
+                //                    strArgs = new string[5];
+                //                    // UPGRADE_WARNING: 配列 lngArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
+                //                    lngArgs = new int[5];
+                //                    // UPGRADE_WARNING: 配列 dblArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
+                //                    dblArgs = new double[5];
+                //                    // UPGRADE_WARNING: 配列 ArgsType の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
+                //                    ArgsType = new Expressions.ValueType[5];
+                //                    strArgs[2] = expr;
+                //                    lngArgs[3] = ArgNum - 2;
+                //                    ArgsType[3] = Expressions.ValueType.NumericType;
+                //                    strArgs[4] = Strings.LCase(buf);
+                //                    break;
+                //                }
 
-                            case "goto":
-                                {
-                                    buf = GetArg((int)(i + 1));
-                                    // UPGRADE_WARNING: 配列 strArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
-                                    strArgs = new string[6];
-                                    // UPGRADE_WARNING: 配列 lngArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
-                                    lngArgs = new int[6];
-                                    // UPGRADE_WARNING: 配列 dblArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
-                                    dblArgs = new double[6];
-                                    // UPGRADE_WARNING: 配列 ArgsType の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
-                                    ArgsType = new Expressions.ValueType[6];
-                                    strArgs[2] = expr;
-                                    lngArgs[3] = ArgNum - 3;
-                                    ArgsType[3] = Expressions.ValueType.NumericType;
-                                    strArgs[4] = "goto";
-                                    strArgs[5] = buf;
-                                    break;
-                                }
+                //            case "goto":
+                //                {
+                //                    buf = GetArg((int)(i + 1));
+                //                    // UPGRADE_WARNING: 配列 strArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
+                //                    strArgs = new string[6];
+                //                    // UPGRADE_WARNING: 配列 lngArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
+                //                    lngArgs = new int[6];
+                //                    // UPGRADE_WARNING: 配列 dblArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
+                //                    dblArgs = new double[6];
+                //                    // UPGRADE_WARNING: 配列 ArgsType の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
+                //                    ArgsType = new Expressions.ValueType[6];
+                //                    strArgs[2] = expr;
+                //                    lngArgs[3] = ArgNum - 3;
+                //                    ArgsType[3] = Expressions.ValueType.NumericType;
+                //                    strArgs[4] = "goto";
+                //                    strArgs[5] = buf;
+                //                    break;
+                //                }
 
-                            case var case1 when case1 == "":
-                                {
-                                    buf = "\"\"";
-                                    break;
-                                }
-                        }
+                //            case var case1 when case1 == "":
+                //                {
+                //                    buf = "\"\"";
+                //                    break;
+                //                }
+                //        }
 
-                        expr = expr + " " + buf;
-                    }
+                //        expr = expr + " " + buf;
+                //    }
 
-                    if (i > ArgNum)
-                    {
-                        if (CmdName == CmdType.IfCmd)
-                        {
-                            Event_Renamed.DisplayEventErrorMessage(LineNum, "Ifに対応する Then または Exit または Goto がありません");
-                        }
-                        else
-                        {
-                            Event_Renamed.DisplayEventErrorMessage(LineNum, "ElseIfに対応する Then または Exit または Goto がありません");
-                        }
+                //    if (i > ArgNum)
+                //    {
+                //        if (CmdName == CmdType.IfCmd)
+                //        {
+                //            Event_Renamed.DisplayEventErrorMessage(LineNum, "Ifに対応する Then または Exit または Goto がありません");
+                //        }
+                //        else
+                //        {
+                //            Event_Renamed.DisplayEventErrorMessage(LineNum, "ElseIfに対応する Then または Exit または Goto がありません");
+                //        }
 
-                        SRC.TerminateSRC();
-                    }
+                //        SRC.TerminateSRC();
+                //    }
 
-                    // 条件式が式であることが確定していれば条件式の項数を0に
-                    switch (lngArgs[3])
-                    {
-                        case 0:
-                            {
-                                if (CmdName == CmdType.IfCmd)
-                                {
-                                    Event_Renamed.DisplayEventErrorMessage(LineNum, "Ifコマンドの条件式がありません");
-                                }
-                                else
-                                {
-                                    Event_Renamed.DisplayEventErrorMessage(LineNum, "ElseIfコマンドの条件式がありません");
-                                }
+                //    // 条件式が式であることが確定していれば条件式の項数を0に
+                //    switch (lngArgs[3])
+                //    {
+                //        case 0:
+                //            {
+                //                if (CmdName == CmdType.IfCmd)
+                //                {
+                //                    Event_Renamed.DisplayEventErrorMessage(LineNum, "Ifコマンドの条件式がありません");
+                //                }
+                //                else
+                //                {
+                //                    Event_Renamed.DisplayEventErrorMessage(LineNum, "ElseIfコマンドの条件式がありません");
+                //                }
 
-                                SRC.TerminateSRC();
-                                break;
-                            }
+                //                SRC.TerminateSRC();
+                //                break;
+                //            }
 
-                        case 1:
-                            {
-                                switch (Strings.Asc(expr))
-                                {
-                                    case 36: // $
-                                        {
-                                            lngArgs[3] = 0;
-                                            break;
-                                        }
+                //        case 1:
+                //            {
+                //                switch (Strings.Asc(expr))
+                //                {
+                //                    case 36: // $
+                //                        {
+                //                            lngArgs[3] = 0;
+                //                            break;
+                //                        }
 
-                                    case 40: // (
-                                        {
-                                            // ()を除去
-                                            strArgs[2] = Strings.Mid(expr, 2, Strings.Len(expr) - 2);
-                                            lngArgs[3] = 0;
-                                            break;
-                                        }
-                                }
+                //                    case 40: // (
+                //                        {
+                //                            // ()を除去
+                //                            strArgs[2] = Strings.Mid(expr, 2, Strings.Len(expr) - 2);
+                //                            lngArgs[3] = 0;
+                //                            break;
+                //                        }
+                //                }
 
-                                break;
-                            }
+                //                break;
+                //            }
 
-                        case 2:
-                            {
-                                if (Strings.LCase(GeneralLib.LIndex(expr, 1)) == "not")
-                                {
-                                    switch (Strings.Asc(GeneralLib.ListIndex(expr, 2)))
-                                    {
-                                        case 36:
-                                        case 40: // $, (
-                                            {
-                                                lngArgs[3] = 0;
-                                                break;
-                                            }
-                                    }
-                                }
-                                else
-                                {
-                                    lngArgs[3] = 0;
-                                }
+                //        case 2:
+                //            {
+                //                if (Strings.LCase(GeneralLib.LIndex(expr, 1)) == "not")
+                //                {
+                //                    switch (Strings.Asc(GeneralLib.ListIndex(expr, 2)))
+                //                    {
+                //                        case 36:
+                //                        case 40: // $, (
+                //                            {
+                //                                lngArgs[3] = 0;
+                //                                break;
+                //                            }
+                //                    }
+                //                }
+                //                else
+                //                {
+                //                    lngArgs[3] = 0;
+                //                }
 
-                                break;
-                            }
+                //                break;
+                //            }
 
-                        default:
-                            {
-                                lngArgs[3] = 0;
-                                break;
-                            }
-                    }
+                //        default:
+                //            {
+                //                lngArgs[3] = 0;
+                //                break;
+                //            }
+                //    }
 
-                    return ParseRet;
-                }
+                //    return ParseRet;
+                //}
 
-                if (CmdName == CmdType.PaintStringCmd)
-                {
-                    // PaintString文の処理の高速化のため、あらかじめ構文解析しておく
+                //if (CmdName == CmdType.PaintStringCmd)
+                //{
+                //    // PaintString文の処理の高速化のため、あらかじめ構文解析しておく
 
-                    // 「;」を含む場合は改めて項に分解
-                    // (正しくリストの処理が行えないため)
-                    if (Strings.Right(buf, 1) == ";")
-                    {
-                        buf = edata;
-                        CmdName = CmdType.PaintStringRCmd;
-                        buf = Strings.Left(buf, Strings.Len(buf) - 1);
-                        if (Strings.Right(buf, 1) == " ")
-                        {
-                            // メッセージが空文字列
-                            buf = buf + "\"\"";
-                        }
+                //    // 「;」を含む場合は改めて項に分解
+                //    // (正しくリストの処理が行えないため)
+                //    if (Strings.Right(buf, 1) == ";")
+                //    {
+                //        buf = edata;
+                //        CmdName = CmdType.PaintStringRCmd;
+                //        buf = Strings.Left(buf, Strings.Len(buf) - 1);
+                //        if (Strings.Right(buf, 1) == " ")
+                //        {
+                //            // メッセージが空文字列
+                //            buf = buf + "\"\"";
+                //        }
 
-                        ArgNum = GeneralLib.ListSplit(buf, list);
-                    }
+                //        ArgNum = GeneralLib.ListSplit(buf, list);
+                //    }
 
-                    switch (ArgNum)
-                    {
-                        case 2:
-                            {
-                                // 引数が１個の場合
-                                ArgNum = 2;
-                                // UPGRADE_WARNING: 配列 strArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
-                                strArgs = new string[3];
-                                // UPGRADE_WARNING: 配列 lngArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
-                                lngArgs = new int[3];
-                                // UPGRADE_WARNING: 配列 dblArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
-                                dblArgs = new double[3];
-                                // UPGRADE_WARNING: 配列 ArgsType の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
-                                ArgsType = new Expressions.ValueType[3];
-                                buf = list[2];
+                //    switch (ArgNum)
+                //    {
+                //        case 2:
+                //            {
+                //                // 引数が１個の場合
+                //                ArgNum = 2;
+                //                // UPGRADE_WARNING: 配列 strArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
+                //                strArgs = new string[3];
+                //                // UPGRADE_WARNING: 配列 lngArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
+                //                lngArgs = new int[3];
+                //                // UPGRADE_WARNING: 配列 dblArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
+                //                dblArgs = new double[3];
+                //                // UPGRADE_WARNING: 配列 ArgsType の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
+                //                ArgsType = new Expressions.ValueType[3];
+                //                buf = list[2];
 
-                                // 表示文字列が式の場合にも対応
-                                if (Strings.Left(buf, 1) == "\"" & Strings.Right(buf, 1) == "\"")
-                                {
-                                    if (Strings.InStr(buf, "$(") > 0)
-                                    {
-                                        strArgs[2] = buf;
-                                    }
-                                    else
-                                    {
-                                        strArgs[2] = Strings.Mid(buf, 2, Strings.Len(buf) - 2);
-                                        ArgsType[2] = Expressions.ValueType.StringType;
-                                    }
-                                }
-                                else if (Strings.Left(buf, 1) == "`" & Strings.Right(buf, 1) == "`")
-                                {
-                                    strArgs[2] = Strings.Mid(buf, 2, Strings.Len(buf) - 2);
-                                    ArgsType[2] = Expressions.ValueType.StringType;
-                                }
-                                else if (Strings.InStr(buf, "$(") > 0)
-                                {
-                                    strArgs[2] = "\"" + buf + "\"";
-                                }
-                                else
-                                {
-                                    strArgs[2] = buf;
-                                }
+                //                // 表示文字列が式の場合にも対応
+                //                if (Strings.Left(buf, 1) == "\"" & Strings.Right(buf, 1) == "\"")
+                //                {
+                //                    if (Strings.InStr(buf, "$(") > 0)
+                //                    {
+                //                        strArgs[2] = buf;
+                //                    }
+                //                    else
+                //                    {
+                //                        strArgs[2] = Strings.Mid(buf, 2, Strings.Len(buf) - 2);
+                //                        ArgsType[2] = Expressions.ValueType.StringType;
+                //                    }
+                //                }
+                //                else if (Strings.Left(buf, 1) == "`" & Strings.Right(buf, 1) == "`")
+                //                {
+                //                    strArgs[2] = Strings.Mid(buf, 2, Strings.Len(buf) - 2);
+                //                    ArgsType[2] = Expressions.ValueType.StringType;
+                //                }
+                //                else if (Strings.InStr(buf, "$(") > 0)
+                //                {
+                //                    strArgs[2] = "\"" + buf + "\"";
+                //                }
+                //                else
+                //                {
+                //                    strArgs[2] = buf;
+                //                }
 
-                                break;
-                            }
+                //                break;
+                //            }
 
-                        case 3:
-                            {
-                                // 引数が２個の場合
-                                ArgNum = 2;
-                                // UPGRADE_WARNING: 配列 strArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
-                                strArgs = new string[3];
-                                // UPGRADE_WARNING: 配列 lngArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
-                                lngArgs = new int[3];
-                                // UPGRADE_WARNING: 配列 dblArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
-                                dblArgs = new double[3];
-                                // UPGRADE_WARNING: 配列 ArgsType の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
-                                ArgsType = new Expressions.ValueType[3];
+                //        case 3:
+                //            {
+                //                // 引数が２個の場合
+                //                ArgNum = 2;
+                //                // UPGRADE_WARNING: 配列 strArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
+                //                strArgs = new string[3];
+                //                // UPGRADE_WARNING: 配列 lngArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
+                //                lngArgs = new int[3];
+                //                // UPGRADE_WARNING: 配列 dblArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
+                //                dblArgs = new double[3];
+                //                // UPGRADE_WARNING: 配列 ArgsType の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
+                //                ArgsType = new Expressions.ValueType[3];
 
-                                // 表示文字列は必ず文字列
-                                buf = GeneralLib.ListTail(edata, 2);
-                                if (Strings.InStr(buf, "$(") > 0)
-                                {
-                                    strArgs[2] = "\"" + buf + "\"";
-                                }
-                                else
-                                {
-                                    strArgs[2] = buf;
-                                    ArgsType[2] = Expressions.ValueType.StringType;
-                                }
+                //                // 表示文字列は必ず文字列
+                //                buf = GeneralLib.ListTail(edata, 2);
+                //                if (Strings.InStr(buf, "$(") > 0)
+                //                {
+                //                    strArgs[2] = "\"" + buf + "\"";
+                //                }
+                //                else
+                //                {
+                //                    strArgs[2] = buf;
+                //                    ArgsType[2] = Expressions.ValueType.StringType;
+                //                }
 
-                                break;
-                            }
+                //                break;
+                //            }
 
-                        case 4:
-                            {
-                                // 引数が３個の場合
+                //        case 4:
+                //            {
+                //                // 引数が３個の場合
 
-                                // 座標指定があるかどうかが確定しているか？
-                                if ((list[2] == "-" | Information.IsNumeric(list[2]) | Expression.IsExpr(list[2])) & (list[3] == "-" | Information.IsNumeric(list[3]) | Expression.IsExpr(list[3])))
-                                {
-                                    // 座標指定があることが確定
-                                    ArgNum = 4;
-                                    // UPGRADE_WARNING: 配列 strArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
-                                    strArgs = new string[5];
-                                    // UPGRADE_WARNING: 配列 lngArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
-                                    lngArgs = new int[5];
-                                    // UPGRADE_WARNING: 配列 dblArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
-                                    dblArgs = new double[5];
-                                    // UPGRADE_WARNING: 配列 ArgsType の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
-                                    ArgsType = new Expressions.ValueType[5];
-                                    strArgs[2] = list[2];
-                                    strArgs[3] = list[3];
-                                    if (!Expression.IsExpr(list[2]))
-                                    {
-                                        ArgsType[2] = Expressions.ValueType.StringType;
-                                    }
+                //                // 座標指定があるかどうかが確定しているか？
+                //                if ((list[2] == "-" | Information.IsNumeric(list[2]) | Expression.IsExpr(list[2])) & (list[3] == "-" | Information.IsNumeric(list[3]) | Expression.IsExpr(list[3])))
+                //                {
+                //                    // 座標指定があることが確定
+                //                    ArgNum = 4;
+                //                    // UPGRADE_WARNING: 配列 strArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
+                //                    strArgs = new string[5];
+                //                    // UPGRADE_WARNING: 配列 lngArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
+                //                    lngArgs = new int[5];
+                //                    // UPGRADE_WARNING: 配列 dblArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
+                //                    dblArgs = new double[5];
+                //                    // UPGRADE_WARNING: 配列 ArgsType の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
+                //                    ArgsType = new Expressions.ValueType[5];
+                //                    strArgs[2] = list[2];
+                //                    strArgs[3] = list[3];
+                //                    if (!Expression.IsExpr(list[2]))
+                //                    {
+                //                        ArgsType[2] = Expressions.ValueType.StringType;
+                //                    }
 
-                                    if (!Expression.IsExpr(list[3]))
-                                    {
-                                        ArgsType[3] = Expressions.ValueType.StringType;
-                                    }
-                                }
-                                else
-                                {
-                                    // 実行時まで座標指定があるかどうか不明
-                                    ArgNum = 5;
-                                    // UPGRADE_WARNING: 配列 strArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
-                                    strArgs = new string[6];
-                                    // UPGRADE_WARNING: 配列 lngArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
-                                    lngArgs = new int[6];
-                                    // UPGRADE_WARNING: 配列 dblArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
-                                    dblArgs = new double[6];
-                                    // UPGRADE_WARNING: 配列 ArgsType の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
-                                    ArgsType = new Expressions.ValueType[6];
-                                    strArgs[2] = list[2];
-                                    strArgs[3] = list[3];
+                //                    if (!Expression.IsExpr(list[3]))
+                //                    {
+                //                        ArgsType[3] = Expressions.ValueType.StringType;
+                //                    }
+                //                }
+                //                else
+                //                {
+                //                    // 実行時まで座標指定があるかどうか不明
+                //                    ArgNum = 5;
+                //                    // UPGRADE_WARNING: 配列 strArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
+                //                    strArgs = new string[6];
+                //                    // UPGRADE_WARNING: 配列 lngArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
+                //                    lngArgs = new int[6];
+                //                    // UPGRADE_WARNING: 配列 dblArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
+                //                    dblArgs = new double[6];
+                //                    // UPGRADE_WARNING: 配列 ArgsType の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
+                //                    ArgsType = new Expressions.ValueType[6];
+                //                    strArgs[2] = list[2];
+                //                    strArgs[3] = list[3];
 
-                                    // 座標指定がなかった場合の表示文字列
-                                    buf = GeneralLib.ListTail(edata, 2);
-                                    if (Strings.InStr(buf, "$(") > 0)
-                                    {
-                                        strArgs[5] = "\"" + buf + "\"";
-                                    }
-                                    else
-                                    {
-                                        strArgs[5] = buf;
-                                        ArgsType[5] = Expressions.ValueType.StringType;
-                                    }
-                                }
+                //                    // 座標指定がなかった場合の表示文字列
+                //                    buf = GeneralLib.ListTail(edata, 2);
+                //                    if (Strings.InStr(buf, "$(") > 0)
+                //                    {
+                //                        strArgs[5] = "\"" + buf + "\"";
+                //                    }
+                //                    else
+                //                    {
+                //                        strArgs[5] = buf;
+                //                        ArgsType[5] = Expressions.ValueType.StringType;
+                //                    }
+                //                }
 
-                                // 座標指定があった場合の表示文字列
-                                buf = list[4];
-                                if (Strings.Left(buf, 1) == "\"" & Strings.Right(buf, 1) == "\"")
-                                {
-                                    if (Strings.InStr(buf, "$(") > 0)
-                                    {
-                                        strArgs[4] = buf;
-                                    }
-                                    else
-                                    {
-                                        strArgs[4] = Strings.Mid(buf, 2, Strings.Len(buf) - 2);
-                                        ArgsType[4] = Expressions.ValueType.StringType;
-                                    }
-                                }
-                                else if (Strings.Left(buf, 1) == "`" & Strings.Right(buf, 1) == "`")
-                                {
-                                    strArgs[4] = Strings.Mid(buf, 2, Strings.Len(buf) - 2);
-                                    ArgsType[4] = Expressions.ValueType.StringType;
-                                }
-                                else if (Strings.InStr(buf, "$(") > 0)
-                                {
-                                    strArgs[4] = "\"" + buf + "\"";
-                                }
-                                else
-                                {
-                                    strArgs[4] = buf;
-                                }
+                //                // 座標指定があった場合の表示文字列
+                //                buf = list[4];
+                //                if (Strings.Left(buf, 1) == "\"" & Strings.Right(buf, 1) == "\"")
+                //                {
+                //                    if (Strings.InStr(buf, "$(") > 0)
+                //                    {
+                //                        strArgs[4] = buf;
+                //                    }
+                //                    else
+                //                    {
+                //                        strArgs[4] = Strings.Mid(buf, 2, Strings.Len(buf) - 2);
+                //                        ArgsType[4] = Expressions.ValueType.StringType;
+                //                    }
+                //                }
+                //                else if (Strings.Left(buf, 1) == "`" & Strings.Right(buf, 1) == "`")
+                //                {
+                //                    strArgs[4] = Strings.Mid(buf, 2, Strings.Len(buf) - 2);
+                //                    ArgsType[4] = Expressions.ValueType.StringType;
+                //                }
+                //                else if (Strings.InStr(buf, "$(") > 0)
+                //                {
+                //                    strArgs[4] = "\"" + buf + "\"";
+                //                }
+                //                else
+                //                {
+                //                    strArgs[4] = buf;
+                //                }
 
-                                break;
-                            }
+                //                break;
+                //            }
 
-                        default:
-                            {
-                                // 引数が４個以上の場合
+                //        default:
+                //            {
+                //                // 引数が４個以上の場合
 
-                                // 座標指定があるかどうかが確定しているか？
-                                if ((list[2] == "-" | Information.IsNumeric(list[2]) | Expression.IsExpr(list[2])) & (list[3] == "-" | Information.IsNumeric(list[3]) | Expression.IsExpr(list[3])))
-                                {
-                                    // 座標指定があることが確定
-                                    ArgNum = 4;
-                                    // UPGRADE_WARNING: 配列 strArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
-                                    strArgs = new string[5];
-                                    // UPGRADE_WARNING: 配列 lngArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
-                                    lngArgs = new int[5];
-                                    // UPGRADE_WARNING: 配列 dblArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
-                                    dblArgs = new double[5];
-                                    // UPGRADE_WARNING: 配列 ArgsType の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
-                                    ArgsType = new Expressions.ValueType[5];
-                                    strArgs[2] = list[2];
-                                    strArgs[3] = list[3];
-                                    if (!Expression.IsExpr(list[2]))
-                                    {
-                                        ArgsType[2] = Expressions.ValueType.StringType;
-                                    }
+                //                // 座標指定があるかどうかが確定しているか？
+                //                if ((list[2] == "-" | Information.IsNumeric(list[2]) | Expression.IsExpr(list[2])) & (list[3] == "-" | Information.IsNumeric(list[3]) | Expression.IsExpr(list[3])))
+                //                {
+                //                    // 座標指定があることが確定
+                //                    ArgNum = 4;
+                //                    // UPGRADE_WARNING: 配列 strArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
+                //                    strArgs = new string[5];
+                //                    // UPGRADE_WARNING: 配列 lngArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
+                //                    lngArgs = new int[5];
+                //                    // UPGRADE_WARNING: 配列 dblArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
+                //                    dblArgs = new double[5];
+                //                    // UPGRADE_WARNING: 配列 ArgsType の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
+                //                    ArgsType = new Expressions.ValueType[5];
+                //                    strArgs[2] = list[2];
+                //                    strArgs[3] = list[3];
+                //                    if (!Expression.IsExpr(list[2]))
+                //                    {
+                //                        ArgsType[2] = Expressions.ValueType.StringType;
+                //                    }
 
-                                    if (!Expression.IsExpr(list[3]))
-                                    {
-                                        ArgsType[3] = Expressions.ValueType.StringType;
-                                    }
-                                }
-                                else
-                                {
-                                    // 実行時まで座標指定があるかどうか不明
-                                    ArgNum = 5;
-                                    // UPGRADE_WARNING: 配列 strArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
-                                    strArgs = new string[6];
-                                    // UPGRADE_WARNING: 配列 lngArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
-                                    lngArgs = new int[6];
-                                    // UPGRADE_WARNING: 配列 dblArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
-                                    dblArgs = new double[6];
-                                    // UPGRADE_WARNING: 配列 ArgsType の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
-                                    ArgsType = new Expressions.ValueType[6];
-                                    strArgs[2] = list[2];
-                                    strArgs[3] = list[3];
+                //                    if (!Expression.IsExpr(list[3]))
+                //                    {
+                //                        ArgsType[3] = Expressions.ValueType.StringType;
+                //                    }
+                //                }
+                //                else
+                //                {
+                //                    // 実行時まで座標指定があるかどうか不明
+                //                    ArgNum = 5;
+                //                    // UPGRADE_WARNING: 配列 strArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
+                //                    strArgs = new string[6];
+                //                    // UPGRADE_WARNING: 配列 lngArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
+                //                    lngArgs = new int[6];
+                //                    // UPGRADE_WARNING: 配列 dblArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
+                //                    dblArgs = new double[6];
+                //                    // UPGRADE_WARNING: 配列 ArgsType の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
+                //                    ArgsType = new Expressions.ValueType[6];
+                //                    strArgs[2] = list[2];
+                //                    strArgs[3] = list[3];
 
-                                    // 座標指定がなかった場合の表示文字列
-                                    buf = GeneralLib.ListTail(edata, 2);
-                                    if (Strings.InStr(buf, "$(") > 0)
-                                    {
-                                        strArgs[5] = "\"" + buf + "\"";
-                                    }
-                                    else
-                                    {
-                                        strArgs[5] = buf;
-                                        ArgsType[5] = Expressions.ValueType.StringType;
-                                    }
-                                }
+                //                    // 座標指定がなかった場合の表示文字列
+                //                    buf = GeneralLib.ListTail(edata, 2);
+                //                    if (Strings.InStr(buf, "$(") > 0)
+                //                    {
+                //                        strArgs[5] = "\"" + buf + "\"";
+                //                    }
+                //                    else
+                //                    {
+                //                        strArgs[5] = buf;
+                //                        ArgsType[5] = Expressions.ValueType.StringType;
+                //                    }
+                //                }
 
-                                // 座標指定があった場合の表示文字列
-                                buf = GeneralLib.ListTail(edata, 4);
-                                if (Strings.InStr(buf, "$(") > 0)
-                                {
-                                    strArgs[4] = "\"" + buf + "\"";
-                                }
-                                else
-                                {
-                                    strArgs[4] = buf;
-                                    ArgsType[4] = Expressions.ValueType.StringType;
-                                }
+                //                // 座標指定があった場合の表示文字列
+                //                buf = GeneralLib.ListTail(edata, 4);
+                //                if (Strings.InStr(buf, "$(") > 0)
+                //                {
+                //                    strArgs[4] = "\"" + buf + "\"";
+                //                }
+                //                else
+                //                {
+                //                    strArgs[4] = buf;
+                //                    ArgsType[4] = Expressions.ValueType.StringType;
+                //                }
 
-                                break;
-                            }
-                    }
+                //                break;
+                //            }
+                //    }
 
-                    return ParseRet;
-                }
+                //    return ParseRet;
+                //}
 
-                if (CmdName == CmdType.CallCmd)
-                {
-                    // Callコマンドのサブルーチン指定が式かどうか調べておく
-                    if (Event_Renamed.FindNormalLabel(strArgs[2]) > 0)
-                    {
-                        ArgsType[2] = Expressions.ValueType.StringType;
-                    }
-                    else
-                    {
-                        ArgsType[2] = Expressions.ValueType.UndefinedType;
-                    }
-                }
+                //if (CmdName == CmdType.CallCmd)
+                //{
+                //    // Callコマンドのサブルーチン指定が式かどうか調べておく
+                //    if (Event_Renamed.FindNormalLabel(strArgs[2]) > 0)
+                //    {
+                //        ArgsType[2] = Expressions.ValueType.StringType;
+                //    }
+                //    else
+                //    {
+                //        ArgsType[2] = Expressions.ValueType.UndefinedType;
+                //    }
+                //}
 
-                if (CmdName == CmdType.LocalCmd)
-                {
-                    if (ArgNum > 4)
-                    {
-                        if (list[3] == "=")
-                        {
-                            // Localコマンドが複数項から成る代入式を伴う場合
+                //if (CmdName == CmdType.LocalCmd)
+                //{
+                //    if (ArgNum > 4)
+                //    {
+                //        if (list[3] == "=")
+                //        {
+                //            // Localコマンドが複数項から成る代入式を伴う場合
 
-                            // UPGRADE_WARNING: 配列 strArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
-                            Array.Resize(strArgs, 5);
-                            // UPGRADE_WARNING: 配列 lngArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
-                            Array.Resize(lngArgs, 5);
-                            // UPGRADE_WARNING: 配列 dblArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
-                            Array.Resize(dblArgs, 5);
-                            // UPGRADE_WARNING: 配列 ArgsType の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
-                            Array.Resize(ArgsType, 5);
+                //            // UPGRADE_WARNING: 配列 strArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
+                //            Array.Resize(strArgs, 5);
+                //            // UPGRADE_WARNING: 配列 lngArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
+                //            Array.Resize(lngArgs, 5);
+                //            // UPGRADE_WARNING: 配列 dblArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
+                //            Array.Resize(dblArgs, 5);
+                //            // UPGRADE_WARNING: 配列 ArgsType の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
+                //            Array.Resize(ArgsType, 5);
 
-                            // 代入する値
-                            ArgsType[4] = Expressions.ValueType.UndefinedType;
-                            strArgs[4] = "(" + GeneralLib.ListTail(edata, 4) + ")";
-                            ArgNum = 4;
-                            return ParseRet;
-                        }
-                    }
-                }
+                //            // 代入する値
+                //            ArgsType[4] = Expressions.ValueType.UndefinedType;
+                //            strArgs[4] = "(" + GeneralLib.ListTail(edata, 4) + ")";
+                //            ArgNum = 4;
+                //            return ParseRet;
+                //        }
+                //    }
+                //}
 
                 return ParseRet;
             }
