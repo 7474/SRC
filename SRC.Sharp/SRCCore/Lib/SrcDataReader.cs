@@ -12,14 +12,14 @@ using System.Text;
 
 namespace SRC.Core.Lib
 {
-    public class SrcReader : StreamReader
+    public class SrcDataReader : StreamReader
     {
         public string FileName { get; }
         public int LineNumber { get; private set; }
         public string LastLine { get; private set; }
 
         // TODO Encoding
-        public SrcReader(string fname, Stream stream) : base(stream)
+        public SrcDataReader(string fname, Stream stream) : base(stream)
         {
             FileName = fname;
         }
