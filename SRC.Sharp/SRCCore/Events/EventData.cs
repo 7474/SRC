@@ -1,6 +1,7 @@
 ﻿using SRC.Core.CmdDatas;
 using SRC.Core.Expressions;
 using SRC.Core.Lib;
+using SRC.Core.Maps;
 using SRC.Core.VB;
 using System;
 using System.Collections.Generic;
@@ -31,7 +32,6 @@ namespace SRC.Core.Events
         public void LoadEventData(string fname, string load_mode = "")
         {
             string buf, buf2;
-            string tname, tfolder;
             var new_titles = new List<string>();
             int i, num;
             int j;
@@ -81,20 +81,21 @@ namespace SRC.Core.Events
             });
 
             // デバッグモードの設定
-            string argini_section = "Option";
-            string argini_entry = "DebugMode";
-            if (Strings.LCase(GeneralLib.ReadIni(argini_section, argini_entry)) == "on")
-            {
-                string argoname = "デバッグ";
-                if (!Expression.IsOptionDefined(argoname))
-                {
-                    string argvname = "Option(デバッグ)";
-                    Expression.DefineGlobalVariable(argvname);
-                }
+            // TODO Impl
+            //string argini_section = "Option";
+            //string argini_entry = "DebugMode";
+            //if (Strings.LCase(GeneralLib.ReadIni(argini_section, argini_entry)) == "on")
+            //{
+            //    string argoname = "デバッグ";
+            //    if (!Expression.IsOptionDefined(argoname))
+            //    {
+            //        string argvname = "Option(デバッグ)";
+            //        Expression.DefineGlobalVariable(argvname);
+            //    }
 
-                string argvname1 = "Option(デバッグ)";
-                Expression.SetVariableAsLong(argvname1, 1);
-            }
+            //    string argvname1 = "Option(デバッグ)";
+            //    Expression.SetVariableAsLong(argvname1, 1);
+            //}
 
             // システム側のイベントデータのロード
             if (load_mode == "システム")
@@ -102,221 +103,87 @@ namespace SRC.Core.Events
                 // 本体側のシステムデータをチェック
 
                 // スペシャルパワーアニメ用インクルードファイルをダウンロード
-                bool localFileExists() { string argfname = SRC.ExtDataPath2 + @"Lib\スペシャルパワー.eve"; var ret = GeneralLib.FileExists(argfname); return ret; }
-
-                bool localFileExists1() { string argfname = SRC.AppPath + @"Lib\スペシャルパワー.eve"; var ret = GeneralLib.FileExists(argfname); return ret; }
-
-                bool localFileExists2() { string argfname = SRC.ExtDataPath + @"Lib\精神コマンド.eve"; var ret = GeneralLib.FileExists(argfname); return ret; }
-
-                bool localFileExists3() { string argfname = SRC.ExtDataPath2 + @"Lib\精神コマンド.eve"; var ret = GeneralLib.FileExists(argfname); return ret; }
-
-                bool localFileExists4() { string argfname = SRC.AppPath + @"Lib\精神コマンド.eve"; var ret = GeneralLib.FileExists(argfname); return ret; }
-
-                string argfname6 = SRC.ExtDataPath + @"Lib\スペシャルパワー.eve";
-                if (GeneralLib.FileExists(argfname6))
-                {
-                    string argfname = SRC.ExtDataPath + @"Lib\スペシャルパワー.eve";
-                    LoadEventData2(argfname);
-                }
-                else if (localFileExists())
-                {
-                    string argfname1 = SRC.ExtDataPath2 + @"Lib\スペシャルパワー.eve";
-                    LoadEventData2(argfname1);
-                }
-                else if (localFileExists1())
-                {
-                    string argfname2 = SRC.AppPath + @"Lib\スペシャルパワー.eve";
-                    LoadEventData2(argfname2);
-                }
-                else if (localFileExists2())
-                {
-                    string argfname3 = SRC.ExtDataPath + @"Lib\精神コマンド.eve";
-                    LoadEventData2(argfname3);
-                }
-                else if (localFileExists3())
-                {
-                    string argfname4 = SRC.ExtDataPath2 + @"Lib\精神コマンド.eve";
-                    LoadEventData2(argfname4);
-                }
-                else if (localFileExists4())
-                {
-                    string argfname5 = SRC.AppPath + @"Lib\精神コマンド.eve";
-                    LoadEventData2(argfname5);
-                }
+                bool spAnimeIncludeLoaded =
+                    LoadEventData2IfExist(Path.Combine(SRC.ExtDataPath, "Lib", "スペシャルパワー.eve"), EventDataSource.System)
+                    || LoadEventData2IfExist(Path.Combine(SRC.ExtDataPath2, "Lib", "スペシャルパワー.eve"), EventDataSource.System)
+                    || LoadEventData2IfExist(Path.Combine(SRC.AppPath, "Lib", "スペシャルパワー.eve"), EventDataSource.System)
+                    || LoadEventData2IfExist(Path.Combine(SRC.ExtDataPath, "Lib", "精神コマンド.eve"), EventDataSource.System)
+                    || LoadEventData2IfExist(Path.Combine(SRC.ExtDataPath2, "Lib", "精神コマンド.eve"), EventDataSource.System)
+                    || LoadEventData2IfExist(Path.Combine(SRC.AppPath, "Lib", "精神コマンド.eve"), EventDataSource.System);
 
                 // 汎用戦闘アニメ用インクルードファイルをダウンロード
-                string argini_section1 = "Option";
-                string argini_entry1 = "BattleAnimation";
-                if (Strings.LCase(GeneralLib.ReadIni(argini_section1, argini_entry1)) != "off")
-                {
-                    SRC.BattleAnimation = true;
-                }
+                // TODO Impl
+                //string argini_section1 = "Option";
+                //string argini_entry1 = "BattleAnimation";
+                //if (Strings.LCase(GeneralLib.ReadIni(argini_section1, argini_entry1)) != "off")
+                //{
+                //    SRC.BattleAnimation = true;
+                //}
 
-                bool localFileExists5() { string argfname = SRC.ExtDataPath2 + @"Lib\汎用戦闘アニメ\include.eve"; var ret = GeneralLib.FileExists(argfname); return ret; }
-
-                bool localFileExists6() { string argfname = SRC.AppPath + @"Lib\汎用戦闘アニメ\include.eve"; var ret = GeneralLib.FileExists(argfname); return ret; }
-
-                string argfname10 = SRC.ExtDataPath + @"Lib\汎用戦闘アニメ\include.eve";
-                if (GeneralLib.FileExists(argfname10))
-                {
-                    string argfname7 = SRC.ExtDataPath + @"Lib\汎用戦闘アニメ\include.eve";
-                    LoadEventData2(argfname7);
-                }
-                else if (localFileExists5())
-                {
-                    string argfname8 = SRC.ExtDataPath2 + @"Lib\汎用戦闘アニメ\include.eve";
-                    LoadEventData2(argfname8);
-                }
-                else if (localFileExists6())
-                {
-                    string argfname9 = SRC.AppPath + @"Lib\汎用戦闘アニメ\include.eve";
-                    LoadEventData2(argfname9);
-                }
-                else
+                bool battleAnimeIncludeLoaded =
+                    LoadEventData2IfExist(Path.Combine(SRC.ExtDataPath, "Lib", "汎用戦闘アニメ", "include.eve"), EventDataSource.System)
+                    || LoadEventData2IfExist(Path.Combine(SRC.ExtDataPath2, "Lib", "汎用戦闘アニメ", "include.eve"), EventDataSource.System)
+                    || LoadEventData2IfExist(Path.Combine(SRC.AppPath, "Lib", "汎用戦闘アニメ", "include.eve"), EventDataSource.System);
+                if (!battleAnimeIncludeLoaded)
                 {
                     // 戦闘アニメ表示切り替えコマンドを非表示に
                     SRC.BattleAnimation = false;
                 }
 
                 // システム側のイベントデータの総行数＆ファイル数を記録しておく
-                sys_event_data_size = Information.UBound(EventData);
-                sys_event_file_num = Information.UBound(EventFileNames);
+                // XXX 要らんのでは
+                sys_event_data_size = EventData.Count;
+                sys_event_file_num = EventFileNames.Count;
             }
             else if (!ScenarioLibChecked)
             {
                 // シナリオ側のシステムデータをチェック
-
                 ScenarioLibChecked = true;
-                bool localFileExists17() { string argfname = SRC.ScenarioPath + @"Lib\スペシャルパワー.eve"; var ret = GeneralLib.FileExists(argfname); return ret; }
 
-                bool localFileExists18() { string argfname = SRC.ScenarioPath + @"Lib\精神コマンド.eve"; var ret = GeneralLib.FileExists(argfname); return ret; }
-
-                bool localFileExists19() { string argfname = SRC.ScenarioPath + @"Lib\汎用戦闘アニメ\include.eve"; var ret = GeneralLib.FileExists(argfname); return ret; }
-
-                if (localFileExists17() | localFileExists18() | localFileExists19())
+                // XXX この辺がある時だけ再ロードするようにする
+                //bool localFileExists17() { string argfname = SRC.ScenarioPath + @"Lib\スペシャルパワー.eve"; var ret = GeneralLib.FileExists(argfname); return ret; }
+                //bool localFileExists18() { string argfname = SRC.ScenarioPath + @"Lib\精神コマンド.eve"; var ret = GeneralLib.FileExists(argfname); return ret; }
+                //bool localFileExists19() { string argfname = SRC.ScenarioPath + @"Lib\汎用戦闘アニメ\include.eve"; var ret = GeneralLib.FileExists(argfname); return ret; }
+                var hasScenarioSystemData = true;
+                if (hasScenarioSystemData)
                 {
                     // システムデータのロードをやり直す
-                    EventData = new string[1];
-                    EventFileID = new int[1];
-                    EventLineNum = new int[1];
-                    EventFileNames = new string[1];
+                    EventData.Clear();
+                    EventFileNames.Clear();
                     CurrentLineNum = 0;
                     SysEventDataSize = 0;
                     SysEventFileNum = 0;
-                    {
-                        var withBlock2 = colSysNormalLabelList;
-                        var loopTo2 = withBlock2.Count;
-                        for (i = 1; i <= loopTo2; i++)
-                            withBlock2.Remove(1);
-                    }
-
-                    {
-                        var withBlock3 = colNormalLabelList;
-                        var loopTo3 = withBlock3.Count;
-                        for (i = 1; i <= loopTo3; i++)
-                            withBlock3.Remove(1);
-                    }
-
-                    {
-                        var withBlock4 = colEventLabelList;
-                        var loopTo4 = withBlock4.Count;
-                        for (i = 1; i <= loopTo4; i++)
-                            withBlock4.Remove(1);
-                    }
+                    colSysNormalLabelList.Clear();
+                    colNormalLabelList.Clear();
+                    colEventLabelList.Clear();
 
                     // スペシャルパワーアニメ用インクルードファイルをダウンロード
-                    bool localFileExists7() { string argfname = SRC.ScenarioPath + @"Lib\精神コマンド.eve"; var ret = GeneralLib.FileExists(argfname); return ret; }
-
-                    bool localFileExists8() { string argfname = SRC.ExtDataPath + @"Lib\スペシャルパワー.eve"; var ret = GeneralLib.FileExists(argfname); return ret; }
-
-                    bool localFileExists9() { string argfname = SRC.ExtDataPath2 + @"Lib\スペシャルパワー.eve"; var ret = GeneralLib.FileExists(argfname); return ret; }
-
-                    bool localFileExists10() { string argfname = SRC.AppPath + @"Lib\スペシャルパワー.eve"; var ret = GeneralLib.FileExists(argfname); return ret; }
-
-                    bool localFileExists11() { string argfname = SRC.ExtDataPath + @"Lib\精神コマンド.eve"; var ret = GeneralLib.FileExists(argfname); return ret; }
-
-                    bool localFileExists12() { string argfname = SRC.ExtDataPath2 + @"Lib\精神コマンド.eve"; var ret = GeneralLib.FileExists(argfname); return ret; }
-
-                    bool localFileExists13() { string argfname = SRC.AppPath + @"Lib\精神コマンド.eve"; var ret = GeneralLib.FileExists(argfname); return ret; }
-
-                    string argfname19 = SRC.ScenarioPath + @"Lib\スペシャルパワー.eve";
-                    if (GeneralLib.FileExists(argfname19))
-                    {
-                        string argfname11 = SRC.ScenarioPath + @"Lib\スペシャルパワー.eve";
-                        LoadEventData2(argfname11);
-                    }
-                    else if (localFileExists7())
-                    {
-                        string argfname12 = SRC.ScenarioPath + @"Lib\精神コマンド.eve";
-                        LoadEventData2(argfname12);
-                    }
-                    else if (localFileExists8())
-                    {
-                        string argfname13 = SRC.ExtDataPath + @"Lib\スペシャルパワー.eve";
-                        LoadEventData2(argfname13);
-                    }
-                    else if (localFileExists9())
-                    {
-                        string argfname14 = SRC.ExtDataPath2 + @"Lib\スペシャルパワー.eve";
-                        LoadEventData2(argfname14);
-                    }
-                    else if (localFileExists10())
-                    {
-                        string argfname15 = SRC.AppPath + @"Lib\スペシャルパワー.eve";
-                        LoadEventData2(argfname15);
-                    }
-                    else if (localFileExists11())
-                    {
-                        string argfname16 = SRC.ExtDataPath + @"Lib\精神コマンド.eve";
-                        LoadEventData2(argfname16);
-                    }
-                    else if (localFileExists12())
-                    {
-                        string argfname17 = SRC.ExtDataPath2 + @"Lib\精神コマンド.eve";
-                        LoadEventData2(argfname17);
-                    }
-                    else if (localFileExists13())
-                    {
-                        string argfname18 = SRC.AppPath + @"Lib\精神コマンド.eve";
-                        LoadEventData2(argfname18);
-                    }
+                    bool spAnimeIncludeLoaded =
+                        LoadEventData2IfExist(Path.Combine(SRC.ScenarioPath, "Lib", "スペシャルパワー.eve"), EventDataSource.System)
+                        || LoadEventData2IfExist(Path.Combine(SRC.ScenarioPath, "Lib", "精神コマンド.eve"), EventDataSource.System)
+                        || LoadEventData2IfExist(Path.Combine(SRC.ExtDataPath, "Lib", "スペシャルパワー.eve"), EventDataSource.System)
+                        || LoadEventData2IfExist(Path.Combine(SRC.ExtDataPath2, "Lib", "スペシャルパワー.eve"), EventDataSource.System)
+                        || LoadEventData2IfExist(Path.Combine(SRC.AppPath, "Lib", "スペシャルパワー.eve"), EventDataSource.System)
+                        || LoadEventData2IfExist(Path.Combine(SRC.ExtDataPath, "Lib", "精神コマンド.eve"), EventDataSource.System)
+                        || LoadEventData2IfExist(Path.Combine(SRC.ExtDataPath2, "Lib", "精神コマンド.eve"), EventDataSource.System)
+                        || LoadEventData2IfExist(Path.Combine(SRC.AppPath, "Lib", "精神コマンド.eve"), EventDataSource.System);
 
                     // 汎用戦闘アニメ用インクルードファイルをダウンロード
-                    string argini_section2 = "Option";
-                    string argini_entry2 = "BattleAnimation";
-                    if (Strings.LCase(GeneralLib.ReadIni(argini_section2, argini_entry2)) != "off")
-                    {
-                        SRC.BattleAnimation = true;
-                    }
+                    // TODO Impl
+                    //string argini_section2 = "Option";
+                    //string argini_entry2 = "BattleAnimation";
+                    //if (Strings.LCase(GeneralLib.ReadIni(argini_section2, argini_entry2)) != "off")
+                    //{
+                    //    SRC.BattleAnimation = true;
+                    //}
 
-                    bool localFileExists14() { string argfname = SRC.ExtDataPath + @"Lib\汎用戦闘アニメ\include.eve"; var ret = GeneralLib.FileExists(argfname); return ret; }
 
-                    bool localFileExists15() { string argfname = SRC.ExtDataPath2 + @"Lib\汎用戦闘アニメ\include.eve"; var ret = GeneralLib.FileExists(argfname); return ret; }
-
-                    bool localFileExists16() { string argfname = SRC.AppPath + @"Lib\汎用戦闘アニメ\include.eve"; var ret = GeneralLib.FileExists(argfname); return ret; }
-
-                    string argfname24 = SRC.ScenarioPath + @"Lib\汎用戦闘アニメ\include.eve";
-                    if (GeneralLib.FileExists(argfname24))
-                    {
-                        string argfname20 = SRC.ScenarioPath + @"Lib\汎用戦闘アニメ\include.eve";
-                        LoadEventData2(argfname20);
-                    }
-                    else if (localFileExists14())
-                    {
-                        string argfname21 = SRC.ExtDataPath + @"Lib\汎用戦闘アニメ\include.eve";
-                        LoadEventData2(argfname21);
-                    }
-                    else if (localFileExists15())
-                    {
-                        string argfname22 = SRC.ExtDataPath2 + @"Lib\汎用戦闘アニメ\include.eve";
-                        LoadEventData2(argfname22);
-                    }
-                    else if (localFileExists16())
-                    {
-                        string argfname23 = SRC.AppPath + @"Lib\汎用戦闘アニメ\include.eve";
-                        LoadEventData2(argfname23);
-                    }
-                    else
+                    bool battleAnimeIncludeLoaded =
+                        LoadEventData2IfExist(Path.Combine(SRC.ScenarioPath, "Lib", "汎用戦闘アニメ", "include.eve"), EventDataSource.System)
+                        || LoadEventData2IfExist(Path.Combine(SRC.ExtDataPath, "Lib", "汎用戦闘アニメ", "include.eve"), EventDataSource.System)
+                        || LoadEventData2IfExist(Path.Combine(SRC.ExtDataPath2, "Lib", "汎用戦闘アニメ", "include.eve"), EventDataSource.System)
+                        || LoadEventData2IfExist(Path.Combine(SRC.AppPath, "Lib", "汎用戦闘アニメ", "include.eve"), EventDataSource.System);
+                    if (!battleAnimeIncludeLoaded)
                     {
                         // 戦闘アニメ表示切り替えコマンドを非表示に
                         SRC.BattleAnimation = false;
@@ -324,24 +191,20 @@ namespace SRC.Core.Events
                 }
 
                 // シナリオ添付の汎用インクルードファイルをダウンロード
-                string argfname26 = SRC.ScenarioPath + @"Lib\include.eve";
-                if (GeneralLib.FileExists(argfname26))
-                {
-                    string argfname25 = SRC.ScenarioPath + @"Lib\include.eve";
-                    LoadEventData2(argfname25);
-                }
+                LoadEventData2IfExist(Path.Combine(SRC.ScenarioPath, "Lib", "include.eve"), EventDataSource.System);
 
                 // システム側のイベントデータの総行数＆ファイル数を記録しておく
-                sys_event_data_size = Information.UBound(EventData);
-                sys_event_file_num = Information.UBound(EventFileNames);
+                // XXX 要らんのでは
+                sys_event_data_size = EventData.Count;
+                sys_event_file_num = EventFileNames.Count;
 
                 // シナリオ側のイベントデータのロード
-                LoadEventData2(fname);
+                LoadEventData2(fname, EventDataSource.Scenario);
             }
             else
             {
                 // シナリオ側のイベントデータのロード
-                LoadEventData2(fname);
+                LoadEventData2(fname, EventDataSource.Scenario);
             }
 
             // データ読みこみ指定
@@ -349,13 +212,13 @@ namespace SRC.Core.Events
             {
                 if (Strings.Left(line.Data, 1) == "@")
                 {
-                    tname = Strings.Mid(line.Data, 2);
+                    var tname = Strings.Mid(line.Data, 2);
 
                     // 既にそのデータが読み込まれているかチェック
                     if (!SRC.Titles.Contains(tname))
                     {
                         // フォルダを検索
-                        tfolder = SRC.SearchDataFolder(tname);
+                        var tfolder = SRC.SearchDataFolder(tname);
                         if (Strings.Len(tfolder) == 0)
                         {
                             DisplayEventErrorMessage(line.ID, "データ「" + tname + "」のフォルダが見つかりません");
@@ -370,61 +233,33 @@ namespace SRC.Core.Events
             }
 
             // 各作品データのinclude.eveを読み込む
-            // XXX 未処理
             if (load_mode != "システム")
             {
                 // 作品毎のインクルードファイル
                 foreach (var title in SRC.Titles)
                 {
-                    tfolder = SRC.SearchDataFolder(title);
-                    string argfname28 = tfolder + @"\include.eve";
-                    if (GeneralLib.FileExists(argfname28))
-                    {
-                        string argfname27 = tfolder + @"\include.eve";
-                        LoadEventData2(argfname27);
-                    }
+                    var tfolder = SRC.SearchDataFolder(title);
+                    LoadEventData2IfExist(Path.Combine(tfolder, "include.eve"), EventDataSource.Scenario);
                 }
-
                 // 汎用Dataインクルードファイルをロード
-                bool localFileExists20() { string argfname = SRC.ExtDataPath + @"Data\include.eve"; var ret = GeneralLib.FileExists(argfname); return ret; }
+                LoadEventData2IfExist(Path.Combine(SRC.ScenarioPath, "Data", "include.eve"), EventDataSource.Scenario);
+                LoadEventData2IfExist(Path.Combine(SRC.ExtDataPath, "Data", "include.eve"), EventDataSource.Scenario);
+                LoadEventData2IfExist(Path.Combine(SRC.ExtDataPath2, "Data", "include.eve"), EventDataSource.Scenario);
+                LoadEventData2IfExist(Path.Combine(SRC.AppPath, "Data", "include.eve"), EventDataSource.Scenario);
 
-                bool localFileExists21() { string argfname = SRC.ExtDataPath2 + @"Data\include.eve"; var ret = GeneralLib.FileExists(argfname); return ret; }
-
-                bool localFileExists22() { string argfname = SRC.AppPath + @"Data\include.eve"; var ret = GeneralLib.FileExists(argfname); return ret; }
-
-                string argfname33 = SRC.ScenarioPath + @"Data\include.eve";
-                if (GeneralLib.FileExists(argfname33))
-                {
-                    string argfname29 = SRC.ScenarioPath + @"Data\include.eve";
-                    LoadEventData2(argfname29);
-                }
-                else if (localFileExists20())
-                {
-                    string argfname30 = SRC.ExtDataPath + @"Data\include.eve";
-                    LoadEventData2(argfname30);
-                }
-                else if (localFileExists21())
-                {
-                    string argfname31 = SRC.ExtDataPath2 + @"Data\include.eve";
-                    LoadEventData2(argfname31);
-                }
-                else if (localFileExists22())
-                {
-                    string argfname32 = SRC.AppPath + @"Data\include.eve";
-                    LoadEventData2(argfname32);
-                }
             }
 
-            // 複数行に分割されたコマンドを結合
-            var loopTo8 = Information.UBound(EventData) - 1;
-            for (i = SysEventDataSize + 1; i <= loopTo8; i++)
-            {
-                if (Strings.Right(EventData[i], 1) == "_")
-                {
-                    EventData[i + 1] = Strings.Left(EventData[i], Strings.Len(EventData[i]) - 1) + EventData[i + 1];
-                    EventData[i] = " ";
-                }
-            }
+            // XXX 多分要らん
+            //// 複数行に分割されたコマンドを結合
+            //var loopTo8 = Information.UBound(EventData) - 1;
+            //for (i = SysEventDataSize + 1; i <= loopTo8; i++)
+            //{
+            //    if (Strings.Right(EventData[i], 1) == "_")
+            //    {
+            //        EventData[i + 1] = Strings.Left(EventData[i], Strings.Len(EventData[i]) - 1) + EventData[i + 1];
+            //        EventData[i] = " ";
+            //    }
+            //}
 
             // ラベルの登録
             foreach (var line in EventData)
@@ -1216,18 +1051,19 @@ namespace SRC.Core.Events
 
             // システム側のイベントデータの場合の処理
 
-            // CmdDataクラスのインスタンスの生成のみ行っておく
-            else if (CurrentLineNum > Information.UBound(EventCmd))
-            {
-                Array.Resize(EventCmd, CurrentLineNum + 1);
-                i = CurrentLineNum;
-                while (EventCmd[i] is null)
-                {
-                    EventCmd[i] = new CmdData();
-                    EventCmd[i].LineNum = i;
-                    i = i - 1;
-                }
-            }
+            // XXX 多分要らん
+            //// CmdDataクラスのインスタンスの生成のみ行っておく
+            //else if (CurrentLineNum > Information.UBound(EventCmd))
+            //{
+            //    Array.Resize(EventCmd, CurrentLineNum + 1);
+            //    i = CurrentLineNum;
+            //    while (EventCmd[i] is null)
+            //    {
+            //        EventCmd[i] = new CmdData();
+            //        EventCmd[i].LineNum = i;
+            //        i = i - 1;
+            //    }
+            //}
 
             // イベントデータの読み込みが終了したのでシステム側イベントデータのサイズを決定。
             // システム側イベントデータは読み込みを一度だけやればよい。
@@ -1261,27 +1097,33 @@ namespace SRC.Core.Events
                 return;
             }
 
+            LoadData(fname, new_titles);
+        }
+
+        private void LoadData(string fname, IList<string> new_titles)
+        {
+
             // ロードするデータ数をカウント
-            num = 2 * Information.UBound(new_titles);
+            var progressMax = new_titles.Count;
             if (SRC.IsLocalDataLoaded)
             {
-                if (num > 0)
+                if (progressMax > 0)
                 {
-                    num = num + 2;
+                    progressMax = progressMax + 2;
                 }
             }
             else
             {
-                num = num + 2;
+                progressMax = progressMax + 2;
             }
 
-            string argfname34 = Strings.Left(fname, Strings.Len(fname) - 4) + ".map";
-            if (GeneralLib.FileExists(argfname34))
+            string mapFileName = Strings.Left(fname, Strings.Len(fname) - 4) + ".map";
+            if (GeneralLib.FileExists(mapFileName))
             {
-                num = num + 1;
+                progressMax = progressMax + 1;
             }
 
-            if (num == 0 & SRC.IsLocalDataLoaded)
+            if (progressMax == 0 && SRC.IsLocalDataLoaded)
             {
                 // デフォルトの戦闘アニメデータを設定
                 SRC.ADList.AddDefaultAnimation();
@@ -1292,15 +1134,16 @@ namespace SRC.Core.Events
             GUI.OpenNowLoadingForm();
 
             // ロードサイズを設定
-            GUI.SetLoadImageSize(num);
+            GUI.SetLoadImageSize(progressMax);
 
             // 使用しているタイトルのデータをロード
-            var loopTo16 = Information.UBound(new_titles);
-            for (i = 1; i <= loopTo16; i++)
-                SRC.IncludeData(new_titles[i]);
+            foreach (var title in new_titles)
+            {
+                SRC.IncludeData(title);
+            }
 
             // ローカルデータの読みこみ
-            if (!SRC.IsLocalDataLoaded | Information.UBound(new_titles) > 0)
+            if (!SRC.IsLocalDataLoaded || new_titles.Any())
             {
                 string argfname36 = SRC.ScenarioPath + @"Data\alias.txt";
                 if (GeneralLib.FileExists(argfname36))
@@ -1402,11 +1245,9 @@ namespace SRC.Core.Events
             SRC.ADList.AddDefaultAnimation();
 
             // マップデータをロード
-            string argfname61 = Strings.Left(fname, Strings.Len(fname) - 4) + ".map";
-            if (GeneralLib.FileExists(argfname61))
+            if (GeneralLib.FileExists(mapFileName))
             {
-                string argfname60 = Strings.Left(fname, Strings.Len(fname) - 4) + ".map";
-                Map.LoadMapData(argfname60);
+                Map.LoadMapData(mapFileName);
                 string argdraw_mode = "";
                 string argdraw_option = "";
                 int argfilter_color = 0;
@@ -1418,6 +1259,16 @@ namespace SRC.Core.Events
 
             // ロード画面を閉じる
             GUI.CloseNowLoadingForm();
+        }
+
+        public bool LoadEventData2IfExist(string fname, EventDataSource source)
+        {
+            if (GeneralLib.FileExists(fname))
+            {
+                LoadEventData2(fname, source);
+                return true;
+            }
+            return false;
         }
 
         // イベントファイルの読み込み
@@ -1439,7 +1290,7 @@ namespace SRC.Core.Events
                         var line = reader.GetLine();
                         lineNumber = reader.LineNumber;
 
-                        var isIncludeLine = Strings.Left(line, 1) == "<" && Strings.InStr(line, ">") == Strings.Len(line) && line != "<>");
+                        var isIncludeLine = Strings.Left(line, 1) == "<" && Strings.InStr(line, ">") == Strings.Len(line) && line != "<>";
                         if (!isIncludeLine)
                         {
                             var eventLine = new EventDataLine(EventData.Count + 1, source, reader.FileName, reader.LineNumber, line);
@@ -1483,6 +1334,7 @@ namespace SRC.Core.Events
             }
             catch
             {
+                // XXX
                 string argmsg1 = fname + "のロード中にエラーが発生しました" + Constants.vbCr + SrcFormatter.Format(lineNumber) + "行目のイベントデータが不正です";
                 GUI.ErrorMessage(argmsg1);
                 SRC.TerminateSRC();
