@@ -31,14 +31,8 @@ namespace SRC.Core.Events
         // イベントファイルのロード
         public void LoadEventData(string fname, string load_mode = "")
         {
-            string buf, buf2;
+            string buf;
             var new_titles = new List<string>();
-            int i, num;
-            int j;
-            var CmdStack = new CmdType[51];
-            int CmdStackIdx;
-            var CmdPosStack = new int[51];
-            int CmdPosStackIdx;
             var error_found = default(bool);
             int sys_event_data_size = default;
             int sys_event_file_num = default;
@@ -284,7 +278,7 @@ namespace SRC.Core.Events
 
                     case "：":
                         {
-                            DisplayEventErrorMessage(CurrentLineNum, "ラベルの末尾が全角文字になっています");
+                            DisplayEventErrorMessage(line.ID, "ラベルの末尾が全角文字になっています");
                             error_found = true;
                             break;
                         }
@@ -308,743 +302,8 @@ namespace SRC.Core.Events
             // 書式チェックはシナリオ側にのみ実施
             if (load_mode != "システム")
             {
-
-                // 構文解析と書式チェックその１
-                // 制御構造
-                CmdStackIdx = 0;
-                CmdPosStackIdx = 0;
-                var loopTo14 = Information.UBound(EventData);
-                for (CurrentLineNum = SysEventDataSize + 1; CurrentLineNum <= loopTo14; CurrentLineNum++)
-                {
-                    if (EventCmd[CurrentLineNum] is null)
-                    {
-                        EventCmd[CurrentLineNum] = new CmdData();
-                        EventCmd[CurrentLineNum].LineNum = CurrentLineNum;
-                    }
-
-                    {
-                        var withBlock5 = EventCmd[CurrentLineNum];
-                        // コマンドの構文解析
-                        if (!withBlock5.Parse(EventData[CurrentLineNum]))
-                        {
-                            error_found = true;
-                        }
-
-                        // リスト長がマイナスのときは括弧の対応が取れていない
-                        if (withBlock5.ArgNum == -1)
-                        {
-                            switch (CmdStack[CmdStackIdx])
-                            {
-                                // これらのコマンドの入力の場合は無視する
-                                case CmdType.AskCmd:
-                                case CmdType.AutoTalkCmd:
-                                case CmdType.QuestionCmd:
-                                case CmdType.TalkCmd:
-                                    {
-                                        break;
-                                    }
-
-                                default:
-                                    {
-                                        DisplayEventErrorMessage(CurrentLineNum, "括弧の対応が取れていません");
-                                        error_found = true;
-                                        break;
-                                    }
-                            }
-                        }
-
-                        // コマンドに応じて制御構造をチェック
-                        switch (withBlock5.Name)
-                        {
-                            case CmdType.IfCmd:
-                                {
-                                    if (CmdStack[CmdStackIdx] == CmdType.TalkCmd)
-                                    {
-                                        num = CmdPosStack[CmdPosStackIdx];
-                                        DisplayEventErrorMessage(num, "Talkに対応するEndがありません");
-                                        CmdStackIdx = (CmdStackIdx - 1);
-                                        CmdPosStackIdx = (CmdPosStackIdx - 1);
-                                        error_found = true;
-                                    }
-
-                                    if (withBlock5.GetArg(4) == "then")
-                                    {
-                                        CmdStackIdx = (CmdStackIdx + 1);
-                                        CmdPosStackIdx = (CmdPosStackIdx + 1);
-                                        CmdStack[CmdStackIdx] = CmdType.IfCmd;
-                                        CmdPosStack[CmdPosStackIdx] = CurrentLineNum;
-                                    }
-
-                                    break;
-                                }
-
-                            case CmdType.ElseIfCmd:
-                                {
-                                    if (CmdStack[CmdStackIdx] == CmdType.TalkCmd)
-                                    {
-                                        num = CmdPosStack[CmdPosStackIdx];
-                                        DisplayEventErrorMessage(num, "Talkに対応するEndがありません");
-                                        CmdStackIdx = (CmdStackIdx - 1);
-                                        CmdPosStackIdx = (CmdPosStackIdx - 1);
-                                        error_found = true;
-                                    }
-
-                                    if (CmdStack[CmdStackIdx] != CmdType.IfCmd)
-                                    {
-                                        DisplayEventErrorMessage(CurrentLineNum, "ElseIfに対応するIfがありません");
-                                        error_found = true;
-                                        CmdStackIdx = (CmdStackIdx + 1);
-                                        CmdPosStackIdx = (CmdPosStackIdx + 1);
-                                        CmdStack[CmdStackIdx] = CmdType.IfCmd;
-                                        CmdPosStack[CmdPosStackIdx] = CurrentLineNum;
-                                    }
-
-                                    break;
-                                }
-
-                            case CmdType.ElseCmd:
-                                {
-                                    if (CmdStack[CmdStackIdx] == CmdType.TalkCmd)
-                                    {
-                                        num = CmdPosStack[CmdPosStackIdx];
-                                        DisplayEventErrorMessage(num, "Talkに対応するEndがありません");
-                                        CmdStackIdx = (CmdStackIdx - 1);
-                                        CmdPosStackIdx = (CmdPosStackIdx - 1);
-                                        error_found = true;
-                                    }
-
-                                    if (CmdStack[CmdStackIdx] == CmdType.TalkCmd)
-                                    {
-                                        DisplayEventErrorMessage(CurrentLineNum, "Elseに対応するIfがありません");
-                                        error_found = true;
-                                        CmdStackIdx = (CmdStackIdx + 1);
-                                        CmdPosStackIdx = (CmdPosStackIdx + 1);
-                                        CmdStack[CmdStackIdx] = CmdType.IfCmd;
-                                        CmdPosStack[CmdPosStackIdx] = CurrentLineNum;
-                                    }
-
-                                    break;
-                                }
-
-                            case CmdType.EndIfCmd:
-                                {
-                                    if (CmdStack[CmdStackIdx] == CmdType.TalkCmd)
-                                    {
-                                        num = CmdPosStack[CmdPosStackIdx];
-                                        DisplayEventErrorMessage(num, "Talkに対応するEndがありません");
-                                        CmdStackIdx = (CmdStackIdx - 1);
-                                        CmdPosStackIdx = (CmdPosStackIdx - 1);
-                                        error_found = true;
-                                    }
-
-                                    if (CmdStack[CmdStackIdx] == CmdType.IfCmd)
-                                    {
-                                        CmdStackIdx = (CmdStackIdx - 1);
-                                        CmdPosStackIdx = (CmdPosStackIdx - 1);
-                                    }
-                                    else
-                                    {
-                                        DisplayEventErrorMessage(CurrentLineNum, "EndIfに対応するIfがありません");
-                                        error_found = true;
-                                    }
-
-                                    break;
-                                }
-
-                            case CmdType.DoCmd:
-                                {
-                                    if (CmdStack[CmdStackIdx] == CmdType.TalkCmd)
-                                    {
-                                        num = CmdPosStack[CmdPosStackIdx];
-                                        DisplayEventErrorMessage(num, "Talkに対応するEndがありません");
-                                        CmdStackIdx = (CmdStackIdx - 1);
-                                        CmdPosStackIdx = (CmdPosStackIdx - 1);
-                                        error_found = true;
-                                    }
-
-                                    CmdStackIdx = (CmdStackIdx + 1);
-                                    CmdPosStackIdx = (CmdPosStackIdx + 1);
-                                    CmdStack[CmdStackIdx] = CmdType.DoCmd;
-                                    CmdPosStack[CmdPosStackIdx] = CurrentLineNum;
-                                    break;
-                                }
-
-                            case CmdType.LoopCmd:
-                                {
-                                    if (CmdStack[CmdStackIdx] == CmdType.TalkCmd)
-                                    {
-                                        num = CmdPosStack[CmdPosStackIdx];
-                                        DisplayEventErrorMessage(num, "Talkに対応するEndがありません");
-                                        CmdStackIdx = (CmdStackIdx - 1);
-                                        CmdPosStackIdx = (CmdPosStackIdx - 1);
-                                        error_found = true;
-                                    }
-
-                                    if (CmdStack[CmdStackIdx] == CmdType.DoCmd)
-                                    {
-                                        CmdStackIdx = (CmdStackIdx - 1);
-                                        CmdPosStackIdx = (CmdPosStackIdx - 1);
-                                    }
-                                    else
-                                    {
-                                        DisplayEventErrorMessage(CurrentLineNum, "Loopに対応するDoがありません");
-                                        error_found = true;
-                                    }
-
-                                    break;
-                                }
-
-                            case CmdType.ForCmd:
-                            case CmdType.ForEachCmd:
-                                {
-                                    if (CmdStack[CmdStackIdx] == CmdType.TalkCmd)
-                                    {
-                                        num = CmdPosStack[CmdPosStackIdx];
-                                        DisplayEventErrorMessage(num, "Talkに対応するEndがありません");
-                                        CmdStackIdx = (CmdStackIdx - 1);
-                                        CmdPosStackIdx = (CmdPosStackIdx - 1);
-                                        error_found = true;
-                                    }
-
-                                    CmdStackIdx = (CmdStackIdx + 1);
-                                    CmdPosStackIdx = (CmdPosStackIdx + 1);
-                                    CmdStack[CmdStackIdx] = withBlock5.Name;
-                                    CmdPosStack[CmdPosStackIdx] = CurrentLineNum;
-                                    break;
-                                }
-
-                            case CmdType.NextCmd:
-                                {
-                                    if (withBlock5.ArgNum == 1 | withBlock5.ArgNum == 2)
-                                    {
-                                        if (CmdStack[CmdStackIdx] == CmdType.TalkCmd)
-                                        {
-                                            num = CmdPosStack[CmdPosStackIdx];
-                                            DisplayEventErrorMessage(num, "Talkに対応するEndがありません");
-                                            CmdStackIdx = (CmdStackIdx - 1);
-                                            CmdPosStackIdx = (CmdPosStackIdx - 1);
-                                            error_found = true;
-                                        }
-
-                                        switch (CmdStack[CmdStackIdx])
-                                        {
-                                            case CmdType.ForCmd:
-                                            case CmdType.ForEachCmd:
-                                                {
-                                                    CmdStackIdx = (CmdStackIdx - 1);
-                                                    CmdPosStackIdx = (CmdPosStackIdx - 1);
-                                                    break;
-                                                }
-
-                                            default:
-                                                {
-                                                    DisplayEventErrorMessage(CurrentLineNum, "Nextに対応するコマンドがありません");
-                                                    error_found = true;
-                                                    break;
-                                                }
-                                        }
-                                    }
-                                    else if (CmdStack[CmdStackIdx] == CmdType.TalkCmd)
-                                    {
-                                        switch (CmdStack[CmdStackIdx])
-                                        {
-                                            case CmdType.ForCmd:
-                                            case CmdType.ForEachCmd:
-                                                {
-                                                    CmdStackIdx = (CmdStackIdx - 1);
-                                                    CmdPosStackIdx = (CmdPosStackIdx - 1);
-                                                    break;
-                                                }
-
-                                            default:
-                                                {
-                                                    DisplayEventErrorMessage(CurrentLineNum, "Nextに対応するコマンドがありません");
-                                                    error_found = true;
-                                                    break;
-                                                }
-                                        }
-                                    }
-
-                                    break;
-                                }
-
-                            case CmdType.SwitchCmd:
-                                {
-                                    if (CmdStack[CmdStackIdx] == CmdType.TalkCmd)
-                                    {
-                                        num = CmdPosStack[CmdPosStackIdx];
-                                        DisplayEventErrorMessage(num, "Talkに対応するEndがありません");
-                                        error_found = true;
-                                    }
-
-                                    CmdStackIdx = (CmdStackIdx + 1);
-                                    CmdPosStackIdx = (CmdPosStackIdx + 1);
-                                    CmdStack[CmdStackIdx] = CmdType.SwitchCmd;
-                                    CmdPosStack[CmdPosStackIdx] = CurrentLineNum;
-                                    break;
-                                }
-
-                            case CmdType.CaseCmd:
-                            case CmdType.CaseElseCmd:
-                                {
-                                    if (CmdStack[CmdStackIdx] == CmdType.TalkCmd)
-                                    {
-                                        num = CmdPosStack[CmdPosStackIdx];
-                                        DisplayEventErrorMessage(num, "Talkに対応するEndがありません");
-                                        CmdStackIdx = (CmdStackIdx - 1);
-                                        CmdPosStackIdx = (CmdPosStackIdx - 1);
-                                        error_found = true;
-                                    }
-
-                                    if (CmdStack[CmdStackIdx] != CmdType.SwitchCmd)
-                                    {
-                                        DisplayEventErrorMessage(CurrentLineNum, "Caseに対応するSwitchがありません");
-                                        error_found = true;
-                                        CmdStackIdx = (CmdStackIdx + 1);
-                                        CmdPosStackIdx = (CmdPosStackIdx + 1);
-                                        CmdStack[CmdStackIdx] = CmdType.SwitchCmd;
-                                        CmdPosStack[CmdPosStackIdx] = CurrentLineNum;
-                                    }
-
-                                    break;
-                                }
-
-                            case CmdType.EndSwCmd:
-                                {
-                                    if (CmdStack[CmdStackIdx] == CmdType.TalkCmd)
-                                    {
-                                        num = CmdPosStack[CmdPosStackIdx];
-                                        DisplayEventErrorMessage(num, "Talkに対応するEndがありません");
-                                        CmdStackIdx = (CmdStackIdx - 1);
-                                        CmdPosStackIdx = (CmdPosStackIdx - 1);
-                                        error_found = true;
-                                    }
-
-                                    if (CmdStack[CmdStackIdx] == CmdType.SwitchCmd)
-                                    {
-                                        CmdStackIdx = (CmdStackIdx - 1);
-                                        CmdPosStackIdx = (CmdPosStackIdx - 1);
-                                    }
-                                    else
-                                    {
-                                        DisplayEventErrorMessage(CurrentLineNum, "EndSwに対応するSwitchがありません");
-                                        error_found = true;
-                                    }
-
-                                    break;
-                                }
-
-                            case CmdType.TalkCmd:
-                            case CmdType.AutoTalkCmd:
-                                {
-                                    if (CmdStack[CmdStackIdx] != withBlock5.Name)
-                                    {
-                                        CmdStackIdx = (CmdStackIdx + 1);
-                                        CmdPosStackIdx = (CmdPosStackIdx + 1);
-                                        CmdStack[CmdStackIdx] = withBlock5.Name;
-                                        CmdPosStack[CmdPosStackIdx] = CurrentLineNum;
-                                    }
-
-                                    break;
-                                }
-
-                            case CmdType.AskCmd:
-                                {
-                                    if (CmdStack[CmdStackIdx] == CmdType.TalkCmd)
-                                    {
-                                        num = CmdPosStack[CmdPosStackIdx];
-                                        DisplayEventErrorMessage(num, "Talkに対応するEndがありません");
-                                        CmdStackIdx = (CmdStackIdx - 1);
-                                        CmdPosStackIdx = (CmdPosStackIdx - 1);
-                                        error_found = true;
-                                    }
-
-                                    i = withBlock5.ArgNum;
-                                    while (i > 1)
-                                    {
-                                        switch (withBlock5.GetArg(i) ?? "")
-                                        {
-                                            case "通常":
-                                                {
-                                                    break;
-                                                }
-
-                                            case "拡大":
-                                                {
-                                                    break;
-                                                }
-
-                                            case "連続表示":
-                                                {
-                                                    break;
-                                                }
-
-                                            case "キャンセル可":
-                                                {
-                                                    break;
-                                                }
-
-                                            case "終了":
-                                                {
-                                                    i = 3;
-                                                    break;
-                                                }
-
-                                            default:
-                                                {
-                                                    break;
-                                                }
-                                        }
-
-                                        i = i - 1;
-                                    }
-
-                                    if (i < 3)
-                                    {
-                                        CmdStackIdx = (CmdStackIdx + 1);
-                                        CmdPosStackIdx = (CmdPosStackIdx + 1);
-                                        CmdStack[CmdStackIdx] = CmdType.AskCmd;
-                                        CmdPosStack[CmdPosStackIdx] = CurrentLineNum;
-                                    }
-
-                                    break;
-                                }
-
-                            case CmdType.QuestionCmd:
-                                {
-                                    if (CmdStack[CmdStackIdx] == CmdType.TalkCmd)
-                                    {
-                                        num = CmdPosStack[CmdPosStackIdx];
-                                        DisplayEventErrorMessage(num, "Talkに対応するEndがありません");
-                                        CmdStackIdx = (CmdStackIdx - 1);
-                                        CmdPosStackIdx = (CmdPosStackIdx - 1);
-                                        error_found = true;
-                                    }
-
-                                    i = withBlock5.ArgNum;
-                                    while (i > 1)
-                                    {
-                                        switch (withBlock5.GetArg(withBlock5.ArgNum) ?? "")
-                                        {
-                                            case "通常":
-                                                {
-                                                    break;
-                                                }
-
-                                            case "拡大":
-                                                {
-                                                    break;
-                                                }
-
-                                            case "連続表示":
-                                                {
-                                                    break;
-                                                }
-
-                                            case "キャンセル可":
-                                                {
-                                                    break;
-                                                }
-
-                                            case "終了":
-                                                {
-                                                    i = 4;
-                                                    break;
-                                                }
-
-                                            default:
-                                                {
-                                                    break;
-                                                }
-                                        }
-
-                                        i = i - 1;
-                                    }
-
-                                    if (i < 4)
-                                    {
-                                        CmdStackIdx = (CmdStackIdx + 1);
-                                        CmdPosStackIdx = (CmdPosStackIdx + 1);
-                                        CmdStack[CmdStackIdx] = CmdType.QuestionCmd;
-                                        CmdPosStack[CmdPosStackIdx] = CurrentLineNum;
-                                    }
-
-                                    break;
-                                }
-
-                            case CmdType.EndCmd:
-                                {
-                                    switch (CmdStack[CmdStackIdx])
-                                    {
-                                        case CmdType.TalkCmd:
-                                        case CmdType.AutoTalkCmd:
-                                        case CmdType.AskCmd:
-                                        case CmdType.QuestionCmd:
-                                            {
-                                                CmdStackIdx = (CmdStackIdx - 1);
-                                                CmdPosStackIdx = (CmdPosStackIdx - 1);
-                                                break;
-                                            }
-
-                                        default:
-                                            {
-                                                DisplayEventErrorMessage(CurrentLineNum, "Endに対応するTalkがありません");
-                                                error_found = true;
-                                                break;
-                                            }
-                                    }
-
-                                    break;
-                                }
-
-                            case CmdType.SuspendCmd:
-                                {
-                                    switch (CmdStack[CmdStackIdx])
-                                    {
-                                        case CmdType.TalkCmd:
-                                        case CmdType.AutoTalkCmd:
-                                            {
-                                                CmdStackIdx = (CmdStackIdx - 1);
-                                                CmdPosStackIdx = (CmdPosStackIdx - 1);
-                                                break;
-                                            }
-
-                                        default:
-                                            {
-                                                DisplayEventErrorMessage(CurrentLineNum, "Suspendに対応するTalkがありません");
-                                                error_found = true;
-                                                break;
-                                            }
-                                    }
-
-                                    break;
-                                }
-
-                            case CmdType.ExitCmd:
-                            case CmdType.PlaySoundCmd:
-                            case CmdType.WaitCmd:
-                                {
-                                    switch (CmdStack[CmdStackIdx])
-                                    {
-                                        case CmdType.TalkCmd:
-                                        case CmdType.AutoTalkCmd:
-                                        case CmdType.AskCmd:
-                                        case CmdType.QuestionCmd:
-                                            {
-                                                num = CmdPosStack[CmdPosStackIdx];
-                                                DisplayEventErrorMessage(num, "Talkに対応するEndがありません");
-                                                CmdStackIdx = (CmdStackIdx - 1);
-                                                CmdPosStackIdx = (CmdPosStackIdx - 1);
-                                                error_found = true;
-                                                break;
-                                            }
-                                    }
-
-                                    break;
-                                }
-
-                            case CmdType.NopCmd:
-                                {
-                                    if (EventData[CurrentLineNum] == " ")
-                                    {
-                                        // "_"で消去された行。Talk中の改行に対応するためのダミーの空白
-                                        EventData[CurrentLineNum] = "";
-                                    }
-                                    else
-                                    {
-                                        switch (CmdStack[CmdStackIdx])
-                                        {
-                                            case CmdType.TalkCmd:
-                                            case CmdType.AutoTalkCmd:
-                                            case CmdType.AskCmd:
-                                            case CmdType.QuestionCmd:
-                                                {
-                                                    if (CurrentLineNum == Information.UBound(EventData))
-                                                    {
-                                                        num = CmdPosStack[CmdPosStackIdx];
-                                                        DisplayEventErrorMessage(num, "Talkに対応するEndがありません");
-                                                        CmdStackIdx = (CmdStackIdx - 1);
-                                                        CmdPosStackIdx = (CmdPosStackIdx - 1);
-                                                        error_found = true;
-                                                    }
-                                                    else
-                                                    {
-                                                        buf = Strings.LCase(GeneralLib.ListIndex(EventData[CurrentLineNum + 1], 1));
-                                                        switch (CmdStack[CmdStackIdx])
-                                                        {
-                                                            case CmdType.TalkCmd:
-                                                                {
-                                                                    buf2 = "talk";
-                                                                    break;
-                                                                }
-
-                                                            case CmdType.AutoTalkCmd:
-                                                                {
-                                                                    buf2 = "autotalk";
-                                                                    break;
-                                                                }
-
-                                                            case CmdType.AskCmd:
-                                                                {
-                                                                    buf2 = "ask";
-                                                                    break;
-                                                                }
-
-                                                            case CmdType.QuestionCmd:
-                                                                {
-                                                                    buf2 = "question";
-                                                                    break;
-                                                                }
-
-                                                            default:
-                                                                {
-                                                                    buf2 = "";
-                                                                    break;
-                                                                }
-                                                        }
-                                                        // UPGRADE_ISSUE: 定数 vbFromUnicode はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="55B59875-9A95-4B71-9D6A-7C294BF7139D"' をクリックしてください。
-                                                        // UPGRADE_ISSUE: LenB 関数はサポートされません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="367764E5-F3F8-4E43-AC3E-7FE0B5E074E2"' をクリックしてください。
-                                                        if ((buf ?? "") != (buf2 ?? "") & buf != "end" & buf != "suspend" & Strings.Len(buf) == LenB(Strings.StrConv(buf, vbFromUnicode)))
-                                                        {
-                                                            num = CmdPosStack[CmdPosStackIdx];
-                                                            DisplayEventErrorMessage(num, "Talkに対応するEndがありません");
-                                                            CmdStackIdx = (CmdStackIdx - 1);
-                                                            CmdPosStackIdx = (CmdPosStackIdx - 1);
-                                                            error_found = true;
-                                                        }
-                                                    }
-
-                                                    break;
-                                                }
-                                        }
-                                    }
-
-                                    break;
-                                }
-                        }
-                    }
-                }
-
-                // ファイルの末尾まで読んでもコマンドの終わりがなかった？
-                if (CmdStackIdx > 0)
-                {
-                    num = CmdPosStack[CmdPosStackIdx];
-                    switch (CmdStack[CmdStackIdx])
-                    {
-                        case CmdType.AskCmd:
-                            {
-                                DisplayEventErrorMessage(num, "Askに対応するEndがありません");
-                                break;
-                            }
-
-                        case CmdType.AutoTalkCmd:
-                            {
-                                DisplayEventErrorMessage(num, "AutoTalkに対応するEndがありません");
-                                break;
-                            }
-
-                        case CmdType.DoCmd:
-                            {
-                                DisplayEventErrorMessage(num, "Doに対応するLoopがありません");
-                                break;
-                            }
-
-                        case CmdType.ForCmd:
-                            {
-                                DisplayEventErrorMessage(num, "Forに対応するNextがありません");
-                                break;
-                            }
-
-                        case CmdType.ForEachCmd:
-                            {
-                                DisplayEventErrorMessage(num, "ForEachに対応するNextがありません");
-                                break;
-                            }
-
-                        case CmdType.IfCmd:
-                            {
-                                DisplayEventErrorMessage(num, "Ifに対応するEndIfがありません");
-                                break;
-                            }
-
-                        case CmdType.QuestionCmd:
-                            {
-                                DisplayEventErrorMessage(num, "Questionに対応するEndがありません");
-                                break;
-                            }
-
-                        case CmdType.SwitchCmd:
-                            {
-                                DisplayEventErrorMessage(num, "Switchに対応するEndSwがありません");
-                                break;
-                            }
-
-                        case CmdType.TalkCmd:
-                            {
-                                DisplayEventErrorMessage(num, "Talkに対応するEndがありません");
-                                break;
-                            }
-                    }
-
-                    error_found = true;
-                }
-
-                // 書式エラーが見つかった場合はSRCを終了
-                if (error_found)
-                {
-                    SRC.TerminateSRC();
-                }
-
-                // 書式チェックその２
-                // 主なコマンドの引数の数をチェック
-                var loopTo15 = Information.UBound(EventData);
-                for (CurrentLineNum = SysEventDataSize + 1; CurrentLineNum <= loopTo15; CurrentLineNum++)
-                {
-                    {
-                        var withBlock6 = EventCmd[CurrentLineNum];
-                        switch (withBlock6.Name)
-                        {
-                            case CmdType.CreateCmd:
-                                {
-                                    if (withBlock6.ArgNum < 8)
-                                    {
-                                        DisplayEventErrorMessage(CurrentLineNum, "Createコマンドのパラメータ数が違います");
-                                        error_found = true;
-                                    }
-
-                                    break;
-                                }
-
-                            case CmdType.PilotCmd:
-                                {
-                                    if (withBlock6.ArgNum < 3)
-                                    {
-                                        DisplayEventErrorMessage(CurrentLineNum, "Pilotコマンドのパラメータ数が違います");
-                                        error_found = true;
-                                    }
-
-                                    break;
-                                }
-
-                            case CmdType.UnitCmd:
-                                {
-                                    if (withBlock6.ArgNum != 3)
-                                    {
-                                        DisplayEventErrorMessage(CurrentLineNum, "Unitコマンドのパラメータ数が違います");
-                                        error_found = true;
-                                    }
-
-                                    break;
-                                }
-                        }
-                    }
-                }
-
-                // 書式エラーが見つかった場合はSRCを終了
-                if (error_found)
-                {
-                    SRC.TerminateSRC();
-                }
+                ParseCommand();
+                ValidateCommandArgs();
             }
 
             // シナリオ側のイベントデータの場合はここまでスキップ
@@ -1078,8 +337,7 @@ namespace SRC.Core.Events
             {
                 case "リストア":
                     {
-                        // TODO Impl
-                        //SRC.ADList.AddDefaultAnimation();
+                        SRC.ADList.AddDefaultAnimation();
                         return;
                     }
 
@@ -1100,9 +358,715 @@ namespace SRC.Core.Events
             LoadData(fname, new_titles);
         }
 
+        private void ParseCommand()
+        {
+            // 構文解析と書式チェックその１
+            // 制御構造
+            var error_found = false;
+            var cmdStack = new Stack<CmdType>();
+            var cmdPosStack = new Stack<int>();
+            EventCmd.Clear();
+            foreach (var eventDataLine in EventData.Where(x => !x.IsSystemData))
+            {
+                var command = new CmdData()
+                {
+                    EventDataId = eventDataLine.ID,
+                };
+                EventCmd.Add(command);
+                // コマンドの構文解析
+                if (!command.Parse(eventDataLine.Data))
+                {
+                    error_found = true;
+                }
+
+                // リスト長がマイナスのときは括弧の対応が取れていない
+                if (command.ArgNum == -1)
+                {
+                    switch (cmdStack.Peek())
+                    {
+                        // これらのコマンドの入力の場合は無視する
+                        case CmdType.AskCmd:
+                        case CmdType.AutoTalkCmd:
+                        case CmdType.QuestionCmd:
+                        case CmdType.TalkCmd:
+                            {
+                                break;
+                            }
+
+                        default:
+                            {
+                                DisplayEventErrorMessage(command.EventDataId, "括弧の対応が取れていません");
+                                error_found = true;
+                                break;
+                            }
+                    }
+                }
+
+                // コマンドに応じて制御構造をチェック
+                switch (command.Name)
+                {
+                    case CmdType.IfCmd:
+                        {
+                            if (cmdStack.Peek() == CmdType.TalkCmd)
+                            {
+                                DisplayEventErrorMessage(cmdPosStack.Peek(), "Talkに対応するEndがありません");
+                                cmdStack.Pop();
+                                cmdPosStack.Pop();
+                                error_found = true;
+                            }
+
+                            if (command.GetArg(4) == "then")
+                            {
+                                cmdStack.Push(CmdType.IfCmd);
+                                cmdPosStack.Push(command.EventDataId);
+                            }
+
+                            break;
+                        }
+
+                    case CmdType.ElseIfCmd:
+                        {
+                            if (cmdStack.Peek() == CmdType.TalkCmd)
+                            {
+                                DisplayEventErrorMessage(cmdPosStack.Peek(), "Talkに対応するEndがありません");
+                                cmdStack.Pop();
+                                cmdPosStack.Pop();
+                                error_found = true;
+                            }
+
+                            if (cmdStack.Peek() != CmdType.IfCmd)
+                            {
+                                DisplayEventErrorMessage(command.EventDataId, "ElseIfに対応するIfがありません");
+                                error_found = true;
+                                cmdStack.Push(CmdType.IfCmd);
+                                cmdPosStack.Push(command.EventDataId);
+                            }
+
+                            break;
+                        }
+
+                    case CmdType.ElseCmd:
+                        {
+                            if (cmdStack.Peek() == CmdType.TalkCmd)
+                            {
+                                DisplayEventErrorMessage(cmdPosStack.Peek(), "Talkに対応するEndがありません");
+                                cmdStack.Pop();
+                                cmdPosStack.Pop();
+                                error_found = true;
+                            }
+
+                            if (cmdStack.Peek() == CmdType.TalkCmd)
+                            {
+                                DisplayEventErrorMessage(command.EventDataId, "Elseに対応するIfがありません");
+                                error_found = true;
+                                cmdStack.Push(CmdType.IfCmd);
+                                cmdPosStack.Push(command.EventDataId);
+                            }
+
+                            break;
+                        }
+
+                    case CmdType.EndIfCmd:
+                        {
+                            if (cmdStack.Peek() == CmdType.TalkCmd)
+                            {
+                                DisplayEventErrorMessage(cmdPosStack.Peek(), "Talkに対応するEndがありません");
+                                cmdStack.Pop();
+                                cmdPosStack.Pop();
+                                error_found = true;
+                            }
+
+                            if (cmdStack.Peek() == CmdType.IfCmd)
+                            {
+                                cmdStack.Pop();
+                                cmdPosStack.Pop();
+                            }
+                            else
+                            {
+                                DisplayEventErrorMessage(command.EventDataId, "EndIfに対応するIfがありません");
+                                error_found = true;
+                            }
+
+                            break;
+                        }
+
+                    case CmdType.DoCmd:
+                        {
+                            if (cmdStack.Peek() == CmdType.TalkCmd)
+                            {
+                                DisplayEventErrorMessage(cmdPosStack.Peek(), "Talkに対応するEndがありません");
+                                cmdStack.Pop();
+                                cmdPosStack.Pop();
+                                error_found = true;
+                            }
+
+                            cmdStack.Push(CmdType.DoCmd);
+                            cmdPosStack.Push(command.EventDataId);
+                            break;
+                        }
+
+                    case CmdType.LoopCmd:
+                        {
+                            if (cmdStack.Peek() == CmdType.TalkCmd)
+                            {
+                                DisplayEventErrorMessage(cmdPosStack.Peek(), "Talkに対応するEndがありません");
+                                cmdStack.Pop();
+                                cmdPosStack.Pop();
+                                error_found = true;
+                            }
+
+                            if (cmdStack.Peek() == CmdType.DoCmd)
+                            {
+                                cmdStack.Pop();
+                                cmdPosStack.Pop();
+                            }
+                            else
+                            {
+                                DisplayEventErrorMessage(command.EventDataId, "Loopに対応するDoがありません");
+                                error_found = true;
+                            }
+
+                            break;
+                        }
+
+                    case CmdType.ForCmd:
+                    case CmdType.ForEachCmd:
+                        {
+                            if (cmdStack.Peek() == CmdType.TalkCmd)
+                            {
+                                DisplayEventErrorMessage(cmdPosStack.Peek(), "Talkに対応するEndがありません");
+                                cmdStack.Pop();
+                                cmdPosStack.Pop();
+                                error_found = true;
+                            }
+
+                            cmdStack.Push(command.Name);
+                            cmdPosStack.Push(command.EventDataId);
+                            break;
+                        }
+
+                    case CmdType.NextCmd:
+                        {
+                            if (command.ArgNum == 1 | command.ArgNum == 2)
+                            {
+                                if (cmdStack.Peek() == CmdType.TalkCmd)
+                                {
+                                    DisplayEventErrorMessage(cmdPosStack.Peek(), "Talkに対応するEndがありません");
+                                    cmdStack.Pop();
+                                    cmdPosStack.Pop();
+                                    error_found = true;
+                                }
+
+                                switch (cmdStack.Peek())
+                                {
+                                    case CmdType.ForCmd:
+                                    case CmdType.ForEachCmd:
+                                        {
+                                            cmdStack.Pop();
+                                            cmdPosStack.Pop();
+                                            break;
+                                        }
+
+                                    default:
+                                        {
+                                            DisplayEventErrorMessage(command.EventDataId, "Nextに対応するコマンドがありません");
+                                            error_found = true;
+                                            break;
+                                        }
+                                }
+                            }
+                            else if (cmdStack.Peek() == CmdType.TalkCmd)
+                            {
+                                switch (cmdStack.Peek())
+                                {
+                                    case CmdType.ForCmd:
+                                    case CmdType.ForEachCmd:
+                                        {
+                                            cmdStack.Pop();
+                                            cmdPosStack.Pop();
+                                            break;
+                                        }
+
+                                    default:
+                                        {
+                                            DisplayEventErrorMessage(command.EventDataId, "Nextに対応するコマンドがありません");
+                                            error_found = true;
+                                            break;
+                                        }
+                                }
+                            }
+
+                            break;
+                        }
+
+                    case CmdType.SwitchCmd:
+                        {
+                            if (cmdStack.Peek() == CmdType.TalkCmd)
+                            {
+                                DisplayEventErrorMessage(cmdPosStack.Peek(), "Talkに対応するEndがありません");
+                                error_found = true;
+                            }
+
+                            cmdStack.Push(CmdType.SwitchCmd);
+                            cmdPosStack.Push(command.EventDataId);
+                            break;
+                        }
+
+                    case CmdType.CaseCmd:
+                    case CmdType.CaseElseCmd:
+                        {
+                            if (cmdStack.Peek() == CmdType.TalkCmd)
+                            {
+                                DisplayEventErrorMessage(cmdPosStack.Peek(), "Talkに対応するEndがありません");
+                                cmdStack.Pop();
+                                cmdPosStack.Pop();
+                                error_found = true;
+                            }
+
+                            if (cmdStack.Peek() != CmdType.SwitchCmd)
+                            {
+                                DisplayEventErrorMessage(command.EventDataId, "Caseに対応するSwitchがありません");
+                                error_found = true;
+                                cmdStack.Push(CmdType.SwitchCmd);
+                                cmdPosStack.Push(command.EventDataId);
+                            }
+
+                            break;
+                        }
+
+                    case CmdType.EndSwCmd:
+                        {
+                            if (cmdStack.Peek() == CmdType.TalkCmd)
+                            {
+                                DisplayEventErrorMessage(cmdPosStack.Peek(), "Talkに対応するEndがありません");
+                                cmdStack.Pop();
+                                cmdPosStack.Pop();
+                                error_found = true;
+                            }
+
+                            if (cmdStack.Peek() == CmdType.SwitchCmd)
+                            {
+                                cmdStack.Pop();
+                                cmdPosStack.Pop();
+                            }
+                            else
+                            {
+                                DisplayEventErrorMessage(command.EventDataId, "EndSwに対応するSwitchがありません");
+                                error_found = true;
+                            }
+
+                            break;
+                        }
+
+                    case CmdType.TalkCmd:
+                    case CmdType.AutoTalkCmd:
+                        {
+                            if (cmdStack.Peek() != command.Name)
+                            {
+                                cmdStack.Push(command.Name);
+                                cmdPosStack.Push(command.EventDataId);
+                            }
+
+                            break;
+                        }
+
+                    case CmdType.AskCmd:
+                        {
+                            if (cmdStack.Peek() == CmdType.TalkCmd)
+                            {
+                                DisplayEventErrorMessage(cmdPosStack.Peek(), "Talkに対応するEndがありません");
+                                cmdStack.Pop();
+                                cmdPosStack.Pop();
+                                error_found = true;
+                            }
+
+                            var i = command.ArgNum;
+                            while (i > 1)
+                            {
+                                switch (command.GetArg(i) ?? "")
+                                {
+                                    case "通常":
+                                        {
+                                            break;
+                                        }
+
+                                    case "拡大":
+                                        {
+                                            break;
+                                        }
+
+                                    case "連続表示":
+                                        {
+                                            break;
+                                        }
+
+                                    case "キャンセル可":
+                                        {
+                                            break;
+                                        }
+
+                                    case "終了":
+                                        {
+                                            i = 3;
+                                            break;
+                                        }
+
+                                    default:
+                                        {
+                                            break;
+                                        }
+                                }
+
+                                i = i - 1;
+                            }
+
+                            if (i < 3)
+                            {
+                                cmdStack.Push(CmdType.AskCmd);
+                                cmdPosStack.Push(command.EventDataId);
+                            }
+
+                            break;
+                        }
+
+                    case CmdType.QuestionCmd:
+                        {
+                            if (cmdStack.Peek() == CmdType.TalkCmd)
+                            {
+                                DisplayEventErrorMessage(cmdPosStack.Peek(), "Talkに対応するEndがありません");
+                                cmdStack.Pop();
+                                cmdPosStack.Pop();
+                                error_found = true;
+                            }
+
+                            var i = command.ArgNum;
+                            while (i > 1)
+                            {
+                                switch (command.GetArg(command.ArgNum) ?? "")
+                                {
+                                    case "通常":
+                                        {
+                                            break;
+                                        }
+
+                                    case "拡大":
+                                        {
+                                            break;
+                                        }
+
+                                    case "連続表示":
+                                        {
+                                            break;
+                                        }
+
+                                    case "キャンセル可":
+                                        {
+                                            break;
+                                        }
+
+                                    case "終了":
+                                        {
+                                            i = 4;
+                                            break;
+                                        }
+
+                                    default:
+                                        {
+                                            break;
+                                        }
+                                }
+
+                                i = i - 1;
+                            }
+
+                            if (i < 4)
+                            {
+                                cmdStack.Push(CmdType.QuestionCmd);
+                                cmdPosStack.Push(command.EventDataId);
+                            }
+
+                            break;
+                        }
+
+                    case CmdType.EndCmd:
+                        {
+                            switch (cmdStack.Peek())
+                            {
+                                case CmdType.TalkCmd:
+                                case CmdType.AutoTalkCmd:
+                                case CmdType.AskCmd:
+                                case CmdType.QuestionCmd:
+                                    {
+                                        cmdStack.Pop();
+                                        cmdPosStack.Pop();
+                                        break;
+                                    }
+
+                                default:
+                                    {
+                                        DisplayEventErrorMessage(command.EventDataId, "Endに対応するTalkがありません");
+                                        error_found = true;
+                                        break;
+                                    }
+                            }
+
+                            break;
+                        }
+
+                    case CmdType.SuspendCmd:
+                        {
+                            switch (cmdStack.Peek())
+                            {
+                                case CmdType.TalkCmd:
+                                case CmdType.AutoTalkCmd:
+                                    {
+                                        cmdStack.Pop();
+                                        cmdPosStack.Pop();
+                                        break;
+                                    }
+
+                                default:
+                                    {
+                                        DisplayEventErrorMessage(command.EventDataId, "Suspendに対応するTalkがありません");
+                                        error_found = true;
+                                        break;
+                                    }
+                            }
+
+                            break;
+                        }
+
+                    case CmdType.ExitCmd:
+                    case CmdType.PlaySoundCmd:
+                    case CmdType.WaitCmd:
+                        {
+                            switch (cmdStack.Peek())
+                            {
+                                case CmdType.TalkCmd:
+                                case CmdType.AutoTalkCmd:
+                                case CmdType.AskCmd:
+                                case CmdType.QuestionCmd:
+                                    {
+                                        DisplayEventErrorMessage(cmdPosStack.Peek(), "Talkに対応するEndがありません");
+                                        cmdStack.Pop();
+                                        cmdPosStack.Pop();
+                                        error_found = true;
+                                        break;
+                                    }
+                            }
+
+                            break;
+                        }
+
+                    case CmdType.NopCmd:
+                        {
+                            if (eventDataLine.Data == " ")
+                            {
+                                // "_"で消去された行。Talk中の改行に対応するためのダミーの空白
+                                // XXX これ消しとかないとまずいの？
+                                //eventDataLine.Data = "";
+                            }
+                            else
+                            {
+                                // TODO Impl
+                                // XXX これ要るの？
+                                //        switch (cmdStack.Peek())
+                                //        {
+                                //            case CmdType.TalkCmd:
+                                //            case CmdType.AutoTalkCmd:
+                                //            case CmdType.AskCmd:
+                                //            case CmdType.QuestionCmd:
+                                //                {
+                                //                    if (CurrentLineNum == Information.UBound(EventData))
+                                //                    {
+                                //                        DisplayEventErrorMessage(cmdPosStack.Peek(), "Talkに対応するEndがありません");
+                                //                        cmdStack.Pop();
+                                //                        cmdPosStack.Pop();
+                                //                        error_found = true;
+                                //                    }
+                                //                    else
+                                //                    {
+                                //                        string buf = Strings.LCase(GeneralLib.ListIndex(EventData[CurrentLineNum + 1], 1));
+                                //                        string buf2;
+                                //                        switch (cmdStack.Peek())
+                                //                        {
+                                //                            case CmdType.TalkCmd:
+                                //                                {
+                                //                                    buf2 = "talk";
+                                //                                    break;
+                                //                                }
+
+                                //                            case CmdType.AutoTalkCmd:
+                                //                                {
+                                //                                    buf2 = "autotalk";
+                                //                                    break;
+                                //                                }
+
+                                //                            case CmdType.AskCmd:
+                                //                                {
+                                //                                    buf2 = "ask";
+                                //                                    break;
+                                //                                }
+
+                                //                            case CmdType.QuestionCmd:
+                                //                                {
+                                //                                    buf2 = "question";
+                                //                                    break;
+                                //                                }
+
+                                //                            default:
+                                //                                {
+                                //                                    buf2 = "";
+                                //                                    break;
+                                //                                }
+                                //                        }
+                                //                        // UPGRADE_ISSUE: 定数 vbFromUnicode はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="55B59875-9A95-4B71-9D6A-7C294BF7139D"' をクリックしてください。
+                                //                        // UPGRADE_ISSUE: LenB 関数はサポートされません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="367764E5-F3F8-4E43-AC3E-7FE0B5E074E2"' をクリックしてください。
+                                //                        if ((buf ?? "") != (buf2 ?? "") & buf != "end" & buf != "suspend" & Strings.Len(buf) == LenB(Strings.StrConv(buf, vbFromUnicode)))
+                                //                        {
+                                //                            DisplayEventErrorMessage(cmdPosStack.Peek(), "Talkに対応するEndがありません");
+                                //                            cmdStack.Pop();
+                                //                            cmdPosStack.Pop();
+                                //                            error_found = true;
+                                //                        }
+                                //                    }
+
+                                //                    break;
+                                //                }
+                                //        }
+                            }
+
+                            break;
+                        }
+                }
+            }
+
+            // ファイルの末尾まで読んでもコマンドの終わりがなかった？
+            if (cmdStack.Count > 0)
+            {
+                switch (cmdStack.Peek())
+                {
+                    case CmdType.AskCmd:
+                        {
+                            DisplayEventErrorMessage(cmdPosStack.Peek(), "Askに対応するEndがありません");
+                            break;
+                        }
+
+                    case CmdType.AutoTalkCmd:
+                        {
+                            DisplayEventErrorMessage(cmdPosStack.Peek(), "AutoTalkに対応するEndがありません");
+                            break;
+                        }
+
+                    case CmdType.DoCmd:
+                        {
+                            DisplayEventErrorMessage(cmdPosStack.Peek(), "Doに対応するLoopがありません");
+                            break;
+                        }
+
+                    case CmdType.ForCmd:
+                        {
+                            DisplayEventErrorMessage(cmdPosStack.Peek(), "Forに対応するNextがありません");
+                            break;
+                        }
+
+                    case CmdType.ForEachCmd:
+                        {
+                            DisplayEventErrorMessage(cmdPosStack.Peek(), "ForEachに対応するNextがありません");
+                            break;
+                        }
+
+                    case CmdType.IfCmd:
+                        {
+                            DisplayEventErrorMessage(cmdPosStack.Peek(), "Ifに対応するEndIfがありません");
+                            break;
+                        }
+
+                    case CmdType.QuestionCmd:
+                        {
+                            DisplayEventErrorMessage(cmdPosStack.Peek(), "Questionに対応するEndがありません");
+                            break;
+                        }
+
+                    case CmdType.SwitchCmd:
+                        {
+                            DisplayEventErrorMessage(cmdPosStack.Peek(), "Switchに対応するEndSwがありません");
+                            break;
+                        }
+
+                    case CmdType.TalkCmd:
+                        {
+                            DisplayEventErrorMessage(cmdPosStack.Peek(), "Talkに対応するEndがありません");
+                            break;
+                        }
+                }
+
+                error_found = true;
+            }
+
+            // 書式エラーが見つかった場合はSRCを終了
+            if (error_found)
+            {
+                SRC.TerminateSRC();
+            }
+        }
+
+        private bool ValidateCommandArgs()
+        {
+            bool error_found = false;
+
+            // 書式チェックその２
+            // 主なコマンドの引数の数をチェック
+            foreach (var command in EventCmd)
+            {
+                switch (command.Name)
+                {
+                    case CmdType.CreateCmd:
+                        {
+                            if (command.ArgNum < 8)
+                            {
+                                DisplayEventErrorMessage(command.EventDataId, "Createコマンドのパラメータ数が違います");
+                                error_found = true;
+                            }
+
+                            break;
+                        }
+
+                    case CmdType.PilotCmd:
+                        {
+                            if (command.ArgNum < 3)
+                            {
+                                DisplayEventErrorMessage(command.EventDataId, "Pilotコマンドのパラメータ数が違います");
+                                error_found = true;
+                            }
+
+                            break;
+                        }
+
+                    case CmdType.UnitCmd:
+                        {
+                            if (command.ArgNum != 3)
+                            {
+                                DisplayEventErrorMessage(command.EventDataId, "Unitコマンドのパラメータ数が違います");
+                                error_found = true;
+                            }
+
+                            break;
+                        }
+                }
+            }
+
+            // 書式エラーが見つかった場合はSRCを終了
+            if (error_found)
+            {
+                SRC.TerminateSRC();
+            }
+
+            return error_found;
+        }
+
         private void LoadData(string fname, IList<string> new_titles)
         {
-
             // ロードするデータ数をカウント
             var progressMax = new_titles.Count;
             if (SRC.IsLocalDataLoaded)
@@ -1145,97 +1109,98 @@ namespace SRC.Core.Events
             // ローカルデータの読みこみ
             if (!SRC.IsLocalDataLoaded || new_titles.Any())
             {
-                string argfname36 = SRC.ScenarioPath + @"Data\alias.txt";
-                if (GeneralLib.FileExists(argfname36))
-                {
-                    string argfname35 = SRC.ScenarioPath + @"Data\alias.txt";
-                    SRC.ALDList.Load(argfname35);
-                }
+                // TODO Impl
+                //string argfname36 = SRC.ScenarioPath + @"Data\alias.txt";
+                //if (GeneralLib.FileExists(argfname36))
+                //{
+                //    string argfname35 = SRC.ScenarioPath + @"Data\alias.txt";
+                //    SRC.ALDList.Load(argfname35);
+                //}
 
-                bool localFileExists23() { string argfname = SRC.ScenarioPath + @"Data\mind.txt"; var ret = GeneralLib.FileExists(argfname); return ret; }
+                //bool localFileExists23() { string argfname = SRC.ScenarioPath + @"Data\mind.txt"; var ret = GeneralLib.FileExists(argfname); return ret; }
 
-                string argfname39 = SRC.ScenarioPath + @"Data\sp.txt";
-                if (GeneralLib.FileExists(argfname39))
-                {
-                    string argfname37 = SRC.ScenarioPath + @"Data\sp.txt";
-                    SRC.SPDList.Load(argfname37);
-                }
-                else if (localFileExists23())
-                {
-                    string argfname38 = SRC.ScenarioPath + @"Data\mind.txt";
-                    SRC.SPDList.Load(argfname38);
-                }
+                //string argfname39 = SRC.ScenarioPath + @"Data\sp.txt";
+                //if (GeneralLib.FileExists(argfname39))
+                //{
+                //    string argfname37 = SRC.ScenarioPath + @"Data\sp.txt";
+                //    SRC.SPDList.Load(argfname37);
+                //}
+                //else if (localFileExists23())
+                //{
+                //    string argfname38 = SRC.ScenarioPath + @"Data\mind.txt";
+                //    SRC.SPDList.Load(argfname38);
+                //}
 
-                string argfname41 = SRC.ScenarioPath + @"Data\pilot.txt";
-                if (GeneralLib.FileExists(argfname41))
-                {
-                    string argfname40 = SRC.ScenarioPath + @"Data\pilot.txt";
-                    SRC.PDList.Load(argfname40);
-                }
+                //string argfname41 = SRC.ScenarioPath + @"Data\pilot.txt";
+                //if (GeneralLib.FileExists(argfname41))
+                //{
+                //    string argfname40 = SRC.ScenarioPath + @"Data\pilot.txt";
+                //    SRC.PDList.Load(argfname40);
+                //}
 
-                string argfname43 = SRC.ScenarioPath + @"Data\non_pilot.txt";
-                if (GeneralLib.FileExists(argfname43))
-                {
-                    string argfname42 = SRC.ScenarioPath + @"Data\non_pilot.txt";
-                    SRC.NPDList.Load(argfname42);
-                }
+                //string argfname43 = SRC.ScenarioPath + @"Data\non_pilot.txt";
+                //if (GeneralLib.FileExists(argfname43))
+                //{
+                //    string argfname42 = SRC.ScenarioPath + @"Data\non_pilot.txt";
+                //    SRC.NPDList.Load(argfname42);
+                //}
 
-                string argfname45 = SRC.ScenarioPath + @"Data\robot.txt";
-                if (GeneralLib.FileExists(argfname45))
-                {
-                    string argfname44 = SRC.ScenarioPath + @"Data\robot.txt";
-                    SRC.UDList.Load(argfname44);
-                }
+                //string argfname45 = SRC.ScenarioPath + @"Data\robot.txt";
+                //if (GeneralLib.FileExists(argfname45))
+                //{
+                //    string argfname44 = SRC.ScenarioPath + @"Data\robot.txt";
+                //    SRC.UDList.Load(argfname44);
+                //}
 
-                string argfname47 = SRC.ScenarioPath + @"Data\unit.txt";
-                if (GeneralLib.FileExists(argfname47))
-                {
-                    string argfname46 = SRC.ScenarioPath + @"Data\unit.txt";
-                    SRC.UDList.Load(argfname46);
-                }
+                //string argfname47 = SRC.ScenarioPath + @"Data\unit.txt";
+                //if (GeneralLib.FileExists(argfname47))
+                //{
+                //    string argfname46 = SRC.ScenarioPath + @"Data\unit.txt";
+                //    SRC.UDList.Load(argfname46);
+                //}
 
-                GUI.DisplayLoadingProgress();
-                string argfname49 = SRC.ScenarioPath + @"Data\pilot_message.txt";
-                if (GeneralLib.FileExists(argfname49))
-                {
-                    string argfname48 = SRC.ScenarioPath + @"Data\pilot_message.txt";
-                    SRC.MDList.Load(argfname48);
-                }
+                //GUI.DisplayLoadingProgress();
+                //string argfname49 = SRC.ScenarioPath + @"Data\pilot_message.txt";
+                //if (GeneralLib.FileExists(argfname49))
+                //{
+                //    string argfname48 = SRC.ScenarioPath + @"Data\pilot_message.txt";
+                //    SRC.MDList.Load(argfname48);
+                //}
 
-                string argfname51 = SRC.ScenarioPath + @"Data\pilot_dialog.txt";
-                if (GeneralLib.FileExists(argfname51))
-                {
-                    string argfname50 = SRC.ScenarioPath + @"Data\pilot_dialog.txt";
-                    SRC.DDList.Load(argfname50);
-                }
+                //string argfname51 = SRC.ScenarioPath + @"Data\pilot_dialog.txt";
+                //if (GeneralLib.FileExists(argfname51))
+                //{
+                //    string argfname50 = SRC.ScenarioPath + @"Data\pilot_dialog.txt";
+                //    SRC.DDList.Load(argfname50);
+                //}
 
-                string argfname53 = SRC.ScenarioPath + @"Data\effect.txt";
-                if (GeneralLib.FileExists(argfname53))
-                {
-                    string argfname52 = SRC.ScenarioPath + @"Data\effect.txt";
-                    SRC.EDList.Load(argfname52);
-                }
+                //string argfname53 = SRC.ScenarioPath + @"Data\effect.txt";
+                //if (GeneralLib.FileExists(argfname53))
+                //{
+                //    string argfname52 = SRC.ScenarioPath + @"Data\effect.txt";
+                //    SRC.EDList.Load(argfname52);
+                //}
 
-                string argfname55 = SRC.ScenarioPath + @"Data\animation.txt";
-                if (GeneralLib.FileExists(argfname55))
-                {
-                    string argfname54 = SRC.ScenarioPath + @"Data\animation.txt";
-                    SRC.ADList.Load(argfname54);
-                }
+                //string argfname55 = SRC.ScenarioPath + @"Data\animation.txt";
+                //if (GeneralLib.FileExists(argfname55))
+                //{
+                //    string argfname54 = SRC.ScenarioPath + @"Data\animation.txt";
+                //    SRC.ADList.Load(argfname54);
+                //}
 
-                string argfname57 = SRC.ScenarioPath + @"Data\ext_animation.txt";
-                if (GeneralLib.FileExists(argfname57))
-                {
-                    string argfname56 = SRC.ScenarioPath + @"Data\ext_animation.txt";
-                    SRC.EADList.Load(argfname56);
-                }
+                //string argfname57 = SRC.ScenarioPath + @"Data\ext_animation.txt";
+                //if (GeneralLib.FileExists(argfname57))
+                //{
+                //    string argfname56 = SRC.ScenarioPath + @"Data\ext_animation.txt";
+                //    SRC.EADList.Load(argfname56);
+                //}
 
-                string argfname59 = SRC.ScenarioPath + @"Data\item.txt";
-                if (GeneralLib.FileExists(argfname59))
-                {
-                    string argfname58 = SRC.ScenarioPath + @"Data\item.txt";
-                    SRC.IDList.Load(argfname58);
-                }
+                //string argfname59 = SRC.ScenarioPath + @"Data\item.txt";
+                //if (GeneralLib.FileExists(argfname59))
+                //{
+                //    string argfname58 = SRC.ScenarioPath + @"Data\item.txt";
+                //    SRC.IDList.Load(argfname58);
+                //}
 
                 GUI.DisplayLoadingProgress();
                 SRC.IsLocalDataLoaded = true;
