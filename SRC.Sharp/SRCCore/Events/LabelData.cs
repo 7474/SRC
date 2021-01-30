@@ -13,7 +13,7 @@ namespace SRC.Core.Events
         // ラベル名
         public LabelType Name;
         // 行番号
-        public int LineNum;
+        public int EventDataId;
         // ラベルが有効か？
         public bool Enable;
         // アスタリスクの指定状況
@@ -68,13 +68,7 @@ namespace SRC.Core.Events
                 StrData = value;
             }
         }
-        //{
-        //    get
-        //    {
-        //        DataControl = StrData;
-        //        return default;
-        //    }
-
+        // TODO Impl
         //    set
         //    {
         //        int i;
