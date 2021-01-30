@@ -114,7 +114,7 @@ namespace SRC.Core.Models
 
         public void Load(string fname, Stream stream)
         {
-            using (var reader = new SrcReader(fname, stream))
+            using (var reader = new SrcDataReader(fname, stream))
             {
                 while (reader.HasMore)
                 {
@@ -123,7 +123,7 @@ namespace SRC.Core.Models
             }
         }
 
-        public PilotData LoadPilot(SrcReader reader)
+        public PilotData LoadPilot(SrcDataReader reader)
         {
             PilotData pd;
             var continuesErrors = new List<InvalidSrcData>();
