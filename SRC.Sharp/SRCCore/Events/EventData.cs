@@ -6,8 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.IO;
 using System.Linq;
-using System.Text;
 
 namespace SRC.Core.Events
 {
@@ -1421,173 +1421,73 @@ namespace SRC.Core.Events
         }
 
         // イベントファイルの読み込み
-        public void LoadEventData2(string fname, int lnum = 0)
+        public void LoadEventData2(string fname, EventDataSource source)
         {
-            int FileNumber, CurrentLineNum2;
-            int i;
-            string buf, fname2;
-            int fid;
-            bool in_single_quote, in_double_quote;
             if (string.IsNullOrEmpty(fname))
             {
                 return;
             }
 
-            // イベントファイル名を記録しておく (エラー表示用)
-            Array.Resize(EventFileNames, Information.UBound(EventFileNames) + 1 + 1);
-            EventFileNames[Information.UBound(EventFileNames)] = fname;
-            fid = Information.UBound(EventFileNames);
-            ;
-
-            // ファイルを開く
-            FileNumber = FileSystem.FreeFile();
-            FileSystem.FileOpen(FileNumber, fname, OpenMode.Input, OpenAccess.Read);
-
-            // 行番号の設定
-            if (lnum > 0)
+            var lineNumber = -1;
+            try
             {
-                CurrentLineNum = lnum;
-            }
-
-            CurrentLineNum2 = 0;
-
-            // 各行の読み込み
-            while (!FileSystem.EOF(FileNumber))
-            {
-                CurrentLineNum = CurrentLineNum + 1;
-                CurrentLineNum2 = (CurrentLineNum2 + 1);
-
-                // データ領域確保
-                Array.Resize(EventData, CurrentLineNum + 1);
-                Array.Resize(EventFileID, CurrentLineNum + 1);
-                Array.Resize(EventLineNum, CurrentLineNum + 1);
-
-                // 行の読み込み
-                buf = FileSystem.LineInput(FileNumber);
-                GeneralLib.TrimString(buf);
-
-                // コメントを削除
-                if (Strings.Left(buf, 1) == "#")
+                using (var stream = new FileStream(fname, FileMode.Open))
+                using (var reader = new SrcEveReader(fname, stream))
                 {
-                    buf = " ";
-                }
-                else if (Strings.InStr(buf, "//") > 0)
-                {
-                    in_single_quote = false;
-                    in_double_quote = false;
-                    var loopTo = Strings.Len(buf);
-                    for (i = 1; i <= loopTo; i++)
+                    while (reader.HasMore)
                     {
-                        switch (Strings.Mid(buf, i, 1) ?? "")
+                        var line = reader.GetLine();
+                        lineNumber = reader.LineNumber;
+
+                        var isIncludeLine = Strings.Left(line, 1) == "<" && Strings.InStr(line, ">") == Strings.Len(line) && line != "<>");
+                        if (!isIncludeLine)
                         {
-                            case "`":
-                                {
-                                    // シングルクオート
-                                    if (!in_double_quote)
-                                    {
-                                        in_single_quote = !in_single_quote;
-                                    }
-
-                                    break;
-                                }
-
-                            case "\"":
-                                {
-                                    // ダブルクオート
-                                    if (!in_single_quote)
-                                    {
-                                        in_double_quote = !in_double_quote;
-                                    }
-
-                                    break;
-                                }
-
-                            case "/":
-                                {
-                                    // コメント？
-                                    if (!in_double_quote & !in_single_quote)
-                                    {
-                                        if (i > 1)
-                                        {
-                                            if (Strings.Mid(buf, i - 1, 1) == "/")
-                                            {
-                                                buf = Strings.Left(buf, i - 2);
-                                                if (string.IsNullOrEmpty(buf))
-                                                {
-                                                    buf = " ";
-                                                }
-
-                                                break;
-                                            }
-                                        }
-                                    }
-
-                                    break;
-                                }
+                            var eventLine = new EventDataLine(EventData.Count + 1, source, reader.FileName, reader.LineNumber, line);
+                            EventData.Add(eventLine);
                         }
-                    }
-                }
-
-                // 行を保存
-                EventData[CurrentLineNum] = buf;
-                EventFileID[CurrentLineNum] = fid;
-                EventLineNum[CurrentLineNum] = CurrentLineNum2;
-
-                // 他のイベントファイルの読み込み
-                if (Strings.Left(buf, 1) == "<")
-                {
-                    if (Strings.InStr(buf, ">") == Strings.Len(buf) & buf != "<>")
-                    {
-                        CurrentLineNum = CurrentLineNum - 1;
-                        fname2 = Strings.Mid(buf, 2, Strings.Len(buf) - 2);
-                        if (fname2 != @"Lib\スペシャルパワー.eve" & fname2 != @"Lib\汎用戦闘アニメ\include.eve" & fname2 != @"Lib\include.eve")
+                        else
                         {
-                            // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
-                            if (Strings.Len(FileSystem.Dir(SRC.ScenarioPath + fname2)) > 0)
+                            // 他のイベントファイルの読み込み
+                            // TODO Impl
+                            var fname2 = Strings.Mid(line, 2, Strings.Len(line) - 2);
+                            if (fname2 != @"Lib\スペシャルパワー.eve" & fname2 != @"Lib\汎用戦闘アニメ\include.eve" & fname2 != @"Lib\include.eve")
                             {
-                                string argfname = SRC.ScenarioPath + fname2;
-                                LoadEventData2(argfname);
-                            }
-                            // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
-                            else if (Strings.Len(FileSystem.Dir(SRC.ExtDataPath + fname2)) > 0)
-                            {
-                                string argfname1 = SRC.ExtDataPath + fname2;
-                                LoadEventData2(argfname1);
-                            }
-                            // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
-                            else if (Strings.Len(FileSystem.Dir(SRC.ExtDataPath2 + fname2)) > 0)
-                            {
-                                string argfname2 = SRC.ExtDataPath2 + fname2;
-                                LoadEventData2(argfname2);
-                            }
-                            // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
-                            else if (Strings.Len(FileSystem.Dir(SRC.AppPath + fname2)) > 0)
-                            {
-                                string argfname3 = SRC.AppPath + fname2;
-                                LoadEventData2(argfname3);
+                                // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
+                                if (Strings.Len(FileSystem.Dir(SRC.ScenarioPath + fname2)) > 0)
+                                {
+                                    string argfname = SRC.ScenarioPath + fname2;
+                                    LoadEventData2(argfname, source);
+                                }
+                                // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
+                                else if (Strings.Len(FileSystem.Dir(SRC.ExtDataPath + fname2)) > 0)
+                                {
+                                    string argfname1 = SRC.ExtDataPath + fname2;
+                                    LoadEventData2(argfname1, source);
+                                }
+                                // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
+                                else if (Strings.Len(FileSystem.Dir(SRC.ExtDataPath2 + fname2)) > 0)
+                                {
+                                    string argfname2 = SRC.ExtDataPath2 + fname2;
+                                    LoadEventData2(argfname2, source);
+                                }
+                                // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
+                                else if (Strings.Len(FileSystem.Dir(SRC.AppPath + fname2)) > 0)
+                                {
+                                    string argfname3 = SRC.AppPath + fname2;
+                                    LoadEventData2(argfname3, source);
+                                }
                             }
                         }
                     }
                 }
             }
-
-            // ファイルを閉じる
-            FileSystem.FileClose(FileNumber);
-            return;
-        ErrorHandler:
-            ;
-            if (Strings.Len(buf) == 0)
+            catch
             {
-                string argmsg = fname + "が開けません";
-                GUI.ErrorMessage(argmsg);
-            }
-            else
-            {
-                string argmsg1 = fname + "のロード中にエラーが発生しました" + Constants.vbCr + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(CurrentLineNum2) + "行目のイベントデータが不正です";
+                string argmsg1 = fname + "のロード中にエラーが発生しました" + Constants.vbCr + SrcFormatter.Format(lineNumber) + "行目のイベントデータが不正です";
                 GUI.ErrorMessage(argmsg1);
+                SRC.TerminateSRC();
+                throw;
             }
-
-            SRC.TerminateSRC();
         }
     }
 }
