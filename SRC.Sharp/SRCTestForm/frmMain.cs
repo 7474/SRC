@@ -47,7 +47,7 @@ namespace SRCTestForm
                     SetStatusText($"Load data [{fbd.SelectedPath}].");
                     var sw = new Stopwatch();
                     sw.Start();
-                    SRC.LoadDirectory(fbd.SelectedPath);
+                    SRC.LoadDataDirectory(fbd.SelectedPath);
                     sw.Stop();
                     SetStatusText($"Loaded. {sw.ElapsedMilliseconds}ms");
                     //}
