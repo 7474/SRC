@@ -3,7 +3,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using Microsoft.VisualBasic.CompilerServices;
 
-namespace Project1
+namespace SRCTestForm
 {
     [DesignerGenerated()]
     internal partial class frmNowLoading
@@ -40,69 +40,72 @@ namespace Project1
         [DebuggerStepThrough()]
         private void InitializeComponent()
         {
-            var resources = new System.Resources.ResourceManager(typeof(frmNowLoading));
-            components = new System.ComponentModel.Container();
-            ToolTip1 = new ToolTip(components);
-            picBar = new PictureBox();
-            Label1 = new Label();
-            SuspendLayout();
-            ToolTip1.Active = true;
-            StartPosition = FormStartPosition.Manual;
-            BackColor = Color.FromArgb(192, 192, 192);
-            FormBorderStyle = FormBorderStyle.FixedDialog;
-            Text = "SRC";
-            ClientSize = new Size(214, 88);
-            Location = new Point(76, 107);
-            ForeColor = Color.Black;
-            Icon = (Icon)resources.GetObject("frmNowLoading.Icon");
-            MaximizeBox = false;
-            AutoScaleMode = AutoScaleMode.Font;
-            ControlBox = true;
-            Enabled = true;
-            KeyPreview = false;
-            MinimizeBox = true;
-            Cursor = Cursors.Default;
-            RightToLeft = RightToLeft.No;
-            ShowInTaskbar = true;
-            HelpButton = false;
-            WindowState = FormWindowState.Normal;
-            Name = "frmNowLoading";
-            picBar.BackColor = Color.White;
-            picBar.ForeColor = Color.FromArgb(0, 0, 128);
-            picBar.Size = new Size(183, 13);
-            picBar.Location = new Point(16, 56);
-            picBar.TabIndex = 1;
-            picBar.Dock = DockStyle.None;
-            picBar.CausesValidation = true;
-            picBar.Enabled = true;
-            picBar.Cursor = Cursors.Default;
-            picBar.RightToLeft = RightToLeft.No;
-            picBar.TabStop = true;
-            picBar.Visible = true;
-            picBar.SizeMode = PictureBoxSizeMode.Normal;
-            picBar.BorderStyle = BorderStyle.Fixed3D;
-            picBar.Name = "picBar";
-            Label1.BackColor = Color.FromArgb(192, 192, 192);
-            Label1.Text = "Now Loading ...";
-            Label1.Font = new Font("Times New Roman", 18f, FontStyle.Bold | FontStyle.Regular, GraphicsUnit.Point, Conversions.ToByte(0));
-            Label1.ForeColor = Color.Black;
-            Label1.Size = new Size(169, 33);
-            Label1.Location = new Point(24, 16);
-            Label1.TabIndex = 0;
-            Label1.TextAlign = ContentAlignment.TopLeft;
-            Label1.Enabled = true;
-            Label1.Cursor = Cursors.Default;
-            Label1.RightToLeft = RightToLeft.No;
-            Label1.UseMnemonic = true;
-            Label1.Visible = true;
-            Label1.AutoSize = false;
-            Label1.BorderStyle = BorderStyle.None;
-            Label1.Name = "Label1";
-            Controls.Add(picBar);
-            Controls.Add(Label1);
-            ResumeLayout(false);
-            PerformLayout();
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmNowLoading));
+            this.ToolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.picBar = new System.Windows.Forms.PictureBox();
+            this.Label1 = new System.Windows.Forms.Label();
+            this.progressBar = new System.Windows.Forms.ProgressBar();
+            ((System.ComponentModel.ISupportInitialize)(this.picBar)).BeginInit();
+            this.SuspendLayout();
+            // 
+            // picBar
+            // 
+            this.picBar.BackColor = System.Drawing.Color.White;
+            this.picBar.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.picBar.Cursor = System.Windows.Forms.Cursors.Default;
+            this.picBar.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(128)))));
+            this.picBar.Location = new System.Drawing.Point(16, 56);
+            this.picBar.Name = "picBar";
+            this.picBar.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.picBar.Size = new System.Drawing.Size(183, 13);
+            this.picBar.TabIndex = 1;
+            // 
+            // Label1
+            // 
+            this.Label1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.Label1.Cursor = System.Windows.Forms.Cursors.Default;
+            this.Label1.Font = new System.Drawing.Font("Times New Roman", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.Label1.ForeColor = System.Drawing.Color.Black;
+            this.Label1.Location = new System.Drawing.Point(24, 16);
+            this.Label1.Name = "Label1";
+            this.Label1.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.Label1.Size = new System.Drawing.Size(169, 33);
+            this.Label1.TabIndex = 0;
+            this.Label1.Text = "Now Loading ...";
+            // 
+            // progressBar
+            // 
+            this.progressBar.Location = new System.Drawing.Point(16, 52);
+            this.progressBar.Name = "progressBar";
+            this.progressBar.Size = new System.Drawing.Size(186, 23);
+            this.progressBar.TabIndex = 2;
+            // 
+            // frmNowLoading
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.ClientSize = new System.Drawing.Size(214, 88);
+            this.Controls.Add(this.progressBar);
+            this.Controls.Add(this.picBar);
+            this.Controls.Add(this.Label1);
+            this.Cursor = System.Windows.Forms.Cursors.Default;
+            this.ForeColor = System.Drawing.Color.Black;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Location = new System.Drawing.Point(76, 107);
+            this.MaximizeBox = false;
+            this.Name = "frmNowLoading";
+            this.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
+            this.Text = "SRC";
+            ((System.ComponentModel.ISupportInitialize)(this.picBar)).EndInit();
+            this.ResumeLayout(false);
+
         }
+
+        private ProgressBar progressBar;
         /* TODO ERROR: Skipped EndRegionDirectiveTrivia */
     }
 }
