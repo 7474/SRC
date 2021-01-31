@@ -77,8 +77,8 @@ namespace SRC.Core.Events
         public Stack<int> UpVarLevelStack = new Stack<int>(MaxCallDepth);
         // サブルーチンローカル変数スタック
         public int VarIndex;
-        public Stack<int> VarIndexStack = new Stack<int>(MaxCallDepth);
-        public Stack<VarData> VarStack = new Stack<VarData>(MaxVarIndex);
+        public IList<int> VarIndexStack = new List<int>(MaxCallDepth);
+        public IList<VarData> VarStack = new List<VarData>(MaxVarIndex);
         // Forインデックス用スタック
         public int ForIndex;
         public Stack<int> ForIndexStack = new Stack<int>(MaxCallDepth);
