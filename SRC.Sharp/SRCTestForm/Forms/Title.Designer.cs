@@ -4,7 +4,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using Microsoft.VisualBasic.CompilerServices;
 
-namespace Project1
+namespace SRCTestForm
 {
     [DesignerGenerated()]
     internal partial class frmTitle
@@ -33,9 +33,8 @@ namespace Project1
         // Windows フォーム デザイナで必要です。
         private System.ComponentModel.IContainer components;
         public ToolTip ToolTip1;
-        public PictureBox Picture1;
         public PictureBox Image1;
-        public Label labAuthor;
+        public Label labOrgAuthor;
         public Label labVersion;
         public GroupBox Frame1;
         public Label labLicense;
@@ -45,130 +44,154 @@ namespace Project1
         [DebuggerStepThrough()]
         private void InitializeComponent()
         {
-            var resources = new System.Resources.ResourceManager(typeof(frmTitle));
-            components = new System.ComponentModel.Container();
-            ToolTip1 = new ToolTip(components);
-            Picture1 = new PictureBox();
-            Frame1 = new GroupBox();
-            Image1 = new PictureBox();
-            labAuthor = new Label();
-            labVersion = new Label();
-            labLicense = new Label();
-            Frame1.SuspendLayout();
-            SuspendLayout();
-            ToolTip1.Active = true;
-            StartPosition = FormStartPosition.Manual;
-            FormBorderStyle = FormBorderStyle.None;
-            Text = "SRC";
-            ClientSize = new Size(386, 233);
-            Location = new Point(180, 197);
-            Icon = (Icon)resources.GetObject("frmTitle.Icon");
-            MaximizeBox = false;
-            MinimizeBox = false;
-            ShowInTaskbar = false;
-            AutoScaleMode = AutoScaleMode.Font;
-            BackColor = SystemColors.Control;
-            ControlBox = true;
-            Enabled = true;
-            KeyPreview = false;
-            Cursor = Cursors.Default;
-            RightToLeft = RightToLeft.No;
-            HelpButton = false;
-            WindowState = FormWindowState.Normal;
-            Name = "frmTitle";
-            Picture1.Size = new Size(200, 40);
-            Picture1.Location = new Point(168, 88);
-            Picture1.Image = (Image)resources.GetObject("Picture1.Image");
-            Picture1.TabIndex = 0;
-            Picture1.Dock = DockStyle.None;
-            Picture1.BackColor = SystemColors.Control;
-            Picture1.CausesValidation = true;
-            Picture1.Enabled = true;
-            Picture1.ForeColor = SystemColors.ControlText;
-            Picture1.Cursor = Cursors.Default;
-            Picture1.RightToLeft = RightToLeft.No;
-            Picture1.TabStop = true;
-            Picture1.Visible = true;
-            Picture1.SizeMode = PictureBoxSizeMode.AutoSize;
-            Picture1.BorderStyle = BorderStyle.None;
-            Picture1.Name = "Picture1";
-            Frame1.Size = new Size(337, 201);
-            Frame1.Location = new Point(24, 8);
-            Frame1.TabIndex = 1;
-            Frame1.BackColor = SystemColors.Control;
-            Frame1.Enabled = true;
-            Frame1.ForeColor = SystemColors.ControlText;
-            Frame1.RightToLeft = RightToLeft.No;
-            Frame1.Visible = true;
-            Frame1.Padding = new Padding(0);
-            Frame1.Name = "Frame1";
-            Image1.Size = new Size(96, 96);
-            Image1.Location = new Point(16, 56);
-            Image1.Image = (Image)resources.GetObject("Image1.Image");
-            Image1.SizeMode = PictureBoxSizeMode.StretchImage;
-            Image1.Enabled = true;
-            Image1.Cursor = Cursors.Default;
-            Image1.Visible = true;
-            Image1.BorderStyle = BorderStyle.None;
-            Image1.Name = "Image1";
-            labAuthor.TextAlign = ContentAlignment.TopRight;
-            labAuthor.Text = "Kei Sakamoto / Inui Tetsuyuki";
-            labAuthor.Font = new Font("Times New Roman", 11.25f, FontStyle.Regular, GraphicsUnit.Point, Conversions.ToByte(0));
-            labAuthor.Size = new Size(193, 17);
-            labAuthor.Location = new Point(128, 168);
-            labAuthor.TabIndex = 3;
-            labAuthor.BackColor = SystemColors.Control;
-            labAuthor.Enabled = true;
-            labAuthor.ForeColor = SystemColors.ControlText;
-            labAuthor.Cursor = Cursors.Default;
-            labAuthor.RightToLeft = RightToLeft.No;
-            labAuthor.UseMnemonic = true;
-            labAuthor.Visible = true;
-            labAuthor.AutoSize = false;
-            labAuthor.BorderStyle = BorderStyle.None;
-            labAuthor.Name = "labAuthor";
-            labVersion.TextAlign = ContentAlignment.TopRight;
-            labVersion.Text = "Ver 1.7.*";
-            labVersion.Font = new Font("Times New Roman", 15.75f, FontStyle.Regular, GraphicsUnit.Point, Conversions.ToByte(0));
-            labVersion.Size = new Size(177, 25);
-            labVersion.Location = new Point(144, 136);
-            labVersion.TabIndex = 2;
-            labVersion.BackColor = SystemColors.Control;
-            labVersion.Enabled = true;
-            labVersion.ForeColor = SystemColors.ControlText;
-            labVersion.Cursor = Cursors.Default;
-            labVersion.RightToLeft = RightToLeft.No;
-            labVersion.UseMnemonic = true;
-            labVersion.Visible = true;
-            labVersion.AutoSize = false;
-            labVersion.BorderStyle = BorderStyle.None;
-            labVersion.Name = "labVersion";
-            labLicense.TextAlign = ContentAlignment.TopCenter;
-            labLicense.Text = "This program is distributed under the terms of GPL";
-            labLicense.Size = new Size(369, 17);
-            labLicense.Location = new Point(8, 216);
-            labLicense.TabIndex = 4;
-            labLicense.BackColor = SystemColors.Control;
-            labLicense.Enabled = true;
-            labLicense.ForeColor = SystemColors.ControlText;
-            labLicense.Cursor = Cursors.Default;
-            labLicense.RightToLeft = RightToLeft.No;
-            labLicense.UseMnemonic = true;
-            labLicense.Visible = true;
-            labLicense.AutoSize = false;
-            labLicense.BorderStyle = BorderStyle.None;
-            labLicense.Name = "labLicense";
-            Controls.Add(Picture1);
-            Controls.Add(Frame1);
-            Controls.Add(labLicense);
-            Frame1.Controls.Add(Image1);
-            Frame1.Controls.Add(labAuthor);
-            Frame1.Controls.Add(labVersion);
-            Frame1.ResumeLayout(false);
-            Load += new EventHandler(frmTitle_Load);
-            ResumeLayout(false);
-            PerformLayout();
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmTitle));
+            this.ToolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.Frame1 = new System.Windows.Forms.GroupBox();
+            this.labAuthor = new System.Windows.Forms.Label();
+            this.labTitle = new System.Windows.Forms.Label();
+            this.Image1 = new System.Windows.Forms.PictureBox();
+            this.labOrgAuthor = new System.Windows.Forms.Label();
+            this.labVersion = new System.Windows.Forms.Label();
+            this.labLicense = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.Frame1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Image1)).BeginInit();
+            this.SuspendLayout();
+            // 
+            // Frame1
+            // 
+            this.Frame1.BackColor = System.Drawing.SystemColors.Control;
+            this.Frame1.Controls.Add(this.label1);
+            this.Frame1.Controls.Add(this.labAuthor);
+            this.Frame1.Controls.Add(this.labTitle);
+            this.Frame1.Controls.Add(this.Image1);
+            this.Frame1.Controls.Add(this.labOrgAuthor);
+            this.Frame1.Controls.Add(this.labVersion);
+            this.Frame1.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.Frame1.Location = new System.Drawing.Point(24, 8);
+            this.Frame1.Name = "Frame1";
+            this.Frame1.Padding = new System.Windows.Forms.Padding(0);
+            this.Frame1.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.Frame1.Size = new System.Drawing.Size(337, 201);
+            this.Frame1.TabIndex = 1;
+            this.Frame1.TabStop = false;
+            // 
+            // labAuthor
+            // 
+            this.labAuthor.AutoSize = true;
+            this.labAuthor.Font = new System.Drawing.Font("Times New Roman", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.labAuthor.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.labAuthor.Location = new System.Drawing.Point(257, 156);
+            this.labAuthor.Name = "labAuthor";
+            this.labAuthor.Size = new System.Drawing.Size(64, 17);
+            this.labAuthor.TabIndex = 5;
+            this.labAuthor.Text = "koudenpa";
+            this.labAuthor.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // labTitle
+            // 
+            this.labTitle.AutoSize = true;
+            this.labTitle.BackColor = System.Drawing.SystemColors.Control;
+            this.labTitle.Font = new System.Drawing.Font("Times New Roman", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.labTitle.Location = new System.Drawing.Point(118, 56);
+            this.labTitle.Name = "labTitle";
+            this.labTitle.Size = new System.Drawing.Size(181, 31);
+            this.labTitle.TabIndex = 4;
+            this.labTitle.Text = "SRC#TestForm";
+            // 
+            // Image1
+            // 
+            this.Image1.Cursor = System.Windows.Forms.Cursors.Default;
+            this.Image1.Image = ((System.Drawing.Image)(resources.GetObject("Image1.Image")));
+            this.Image1.Location = new System.Drawing.Point(16, 56);
+            this.Image1.Name = "Image1";
+            this.Image1.Size = new System.Drawing.Size(96, 96);
+            this.Image1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.Image1.TabIndex = 0;
+            this.Image1.TabStop = false;
+            // 
+            // labOrgAuthor
+            // 
+            this.labOrgAuthor.BackColor = System.Drawing.SystemColors.Control;
+            this.labOrgAuthor.Cursor = System.Windows.Forms.Cursors.Default;
+            this.labOrgAuthor.Font = new System.Drawing.Font("Times New Roman", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.labOrgAuthor.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.labOrgAuthor.Location = new System.Drawing.Point(16, 173);
+            this.labOrgAuthor.Name = "labOrgAuthor";
+            this.labOrgAuthor.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.labOrgAuthor.Size = new System.Drawing.Size(305, 17);
+            this.labOrgAuthor.TabIndex = 3;
+            this.labOrgAuthor.Text = "SRC by Kei Sakamoto / Inui Tetsuyuki";
+            this.labOrgAuthor.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // labVersion
+            // 
+            this.labVersion.BackColor = System.Drawing.SystemColors.Control;
+            this.labVersion.Cursor = System.Windows.Forms.Cursors.Default;
+            this.labVersion.Font = new System.Drawing.Font("Times New Roman", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.labVersion.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.labVersion.Location = new System.Drawing.Point(144, 127);
+            this.labVersion.Name = "labVersion";
+            this.labVersion.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.labVersion.Size = new System.Drawing.Size(177, 25);
+            this.labVersion.TabIndex = 2;
+            this.labVersion.Text = "Ver x.x.x";
+            this.labVersion.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // labLicense
+            // 
+            this.labLicense.BackColor = System.Drawing.SystemColors.Control;
+            this.labLicense.Cursor = System.Windows.Forms.Cursors.Default;
+            this.labLicense.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.labLicense.Location = new System.Drawing.Point(8, 216);
+            this.labLicense.Name = "labLicense";
+            this.labLicense.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.labLicense.Size = new System.Drawing.Size(369, 17);
+            this.labLicense.TabIndex = 4;
+            this.labLicense.Text = "This program is distributed under the terms of GPL";
+            this.labLicense.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Rockwell Nova", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label1.Location = new System.Drawing.Point(118, 87);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(212, 18);
+            this.label1.TabIndex = 6;
+            this.label1.Text = "- Simulation RPG Construction -";
+            // 
+            // frmTitle
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.Control;
+            this.ClientSize = new System.Drawing.Size(386, 233);
+            this.Controls.Add(this.Frame1);
+            this.Controls.Add(this.labLicense);
+            this.Cursor = System.Windows.Forms.Cursors.Default;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Location = new System.Drawing.Point(180, 197);
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
+            this.Name = "frmTitle";
+            this.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
+            this.Text = "SRC";
+            this.Load += new System.EventHandler(this.frmTitle_Load);
+            this.Frame1.ResumeLayout(false);
+            this.Frame1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Image1)).EndInit();
+            this.ResumeLayout(false);
+
         }
+
+        private Label labAuthor;
+        private Label labTitle;
+        private Label label1;
         /* TODO ERROR: Skipped EndRegionDirectiveTrivia */
     }
 }
