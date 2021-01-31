@@ -10,6 +10,34 @@ namespace SRC.Core
     // ユーザーインターフェースと画面描画の処理を行うためのインタフェース
     public interface IGUI
     {
+        // GUIから入力可能かどうか
+        bool IsGUILocked { get; set; }
+
+        // リストボックス内で表示位置
+        short TopItem { get; set; }
+
+        // メッセージウインドウにに関する情報
+        bool MessageWindowIsOut { get; set; }
+
+        // フォームがクリックされたか
+        bool IsFormClicked { get; set; }
+        // フォームがモーダルか
+        bool IsMordal { get; set; }
+
+        // メッセージ表示のウェイト
+        int MessageWait { get; set; }
+
+        // メッセージが自働送りかどうか
+        bool AutoMessageMode { get; set; }
+
+        // PaintStringの中央表示の設定
+        bool HCentering { get; set; }
+        bool VCentering { get; set; }
+        // PaintStringの書きこみが背景に行われるかどうか
+        bool PermanentStringMode { get; set; }
+        // PaintStringの書きこみが持続性かどうか
+        bool KeepStringMode { get; set; }
+
         // メインウィンドウのロードとFlashの登録を行う
         void LoadMainFormAndRegisterFlash();
         // 各ウィンドウをロード

@@ -11,6 +11,18 @@ namespace SRCCoreTests.TestLib
 {
     class MockGUI : IGUI
     {
+        public bool IsGUILocked { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public short TopItem { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public bool MessageWindowIsOut { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public bool IsFormClicked { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public bool IsMordal { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public int MessageWait { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public bool AutoMessageMode { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public bool HCentering { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public bool VCentering { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public bool PermanentStringMode { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public bool KeepStringMode { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
         public int AbilityListBox(Unit u, string caption_msg, string lb_mode, bool is_item = false)
         {
             throw new NotImplementedException();
@@ -63,8 +75,6 @@ namespace SRCCoreTests.TestLib
 
         public void DataErrorMessage(string msg, string fname, int line_num, string line_buf, string dname)
         {
-            throw new NotImplementedException();
-
             Console.Error.WriteLine(msg);
         }
 
