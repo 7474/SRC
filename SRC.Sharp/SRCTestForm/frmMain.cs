@@ -404,5 +404,11 @@ namespace SRCTestForm
         {
             throw new NotImplementedException();
         }
+
+        public void SetTitle(string title)
+        {
+            // XXX 別のフォームに設定
+            Name = title;
+        }
     }
 }

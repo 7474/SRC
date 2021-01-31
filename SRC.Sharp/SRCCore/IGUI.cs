@@ -182,5 +182,8 @@ namespace SRC.Core
         bool IsRButtonPressed(bool ignore_message_wait = false);
         // Telopコマンド用描画ルーチン
         void DisplayTelop(string msg);
+
+        // ウィンドウなどのタイトルを設定する
+        void SetTitle(string title);
     }
 }

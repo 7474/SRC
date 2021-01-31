@@ -308,6 +308,11 @@ namespace SRCCoreTests.TestLib
             throw new NotImplementedException();
         }
 
+        public void SetTitle(string title)
+        {
+            throw new NotImplementedException();
+        }
+
         public void SetupBackground(string draw_mode = "", string draw_option = "", int filter_color = 0, double filter_trans_par = 0)
         {
             throw new NotImplementedException();
