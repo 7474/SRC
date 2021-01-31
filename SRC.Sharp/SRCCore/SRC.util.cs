@@ -1,5 +1,7 @@
 ﻿using SRC.Core.Lib;
 using SRC.Core.VB;
+using System;
+using System.Reflection;
 
 namespace SRC.Core
 {
@@ -47,5 +49,9 @@ namespace SRC.Core
             Money = GeneralLib.MinLng(Money + earnings, 999999999);
             Money = GeneralLib.MaxLng(Money, 0);
         }
+
+        // バージョンを取得、設定する
+        // 既定値は実行ファイルのバージョン
+        public Version Version { get; set; } = Assembly.GetExecutingAssembly().GetName().Version;
     }
 }
