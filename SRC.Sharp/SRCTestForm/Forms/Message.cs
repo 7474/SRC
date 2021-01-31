@@ -1,18 +1,19 @@
-﻿using System;
+﻿// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
+// 本プログラムはフリーソフトであり、無保証です。
+// 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
+// 再頒布または改変することができます。
+using System;
 using System.Windows.Forms;
 using Microsoft.VisualBasic;
+using SRC.Core;
 
-namespace Project1
+namespace SRCTestForm
 {
+    // メッセージウィンドウのフォーム
     internal partial class frmMessage : Form
     {
-
-        // Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-        // 本プログラムはフリーソフトであり、無保証です。
-        // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
-        // 再頒布または改変することができます。
-
-        // メッセージウィンドウのフォーム
+        public SRC.Core.SRC SRC { get; set; }
+        public IGUI GUI => SRC.GUI;
 
         // フォーム上をクリック
         private void frmMessage_Click(object eventSender, EventArgs eventArgs)
@@ -65,7 +66,7 @@ namespace Project1
                     {
                         // 終了をキャンセル
                         // UPGRADE_ISSUE: Event パラメータ Cancel はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="FB723E3C-1C06-4D2B-B083-E6CD0D334DA8"' をクリックしてください。
-                        Cancel = 1;
+                        //Cancel = 1;
                         break;
                     }
             }
