@@ -66,7 +66,7 @@ namespace SRC.Core.Maps
         // 地形情報テーブルを初期化
         public static void InitMap()
         {
-            throw new NotImplementedException();
+            // TODO Impl
             //int i, j;
             //SetMapSize(GUI.MainWidth, GUI.MainHeight);
             //var loopTo = MapWidth;

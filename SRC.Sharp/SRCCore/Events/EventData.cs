@@ -33,7 +33,6 @@ namespace SRC.Core.Events
         {
             string buf;
             var new_titles = new List<string>();
-            var error_found = default(bool);
             int sys_event_data_size = default;
             int sys_event_file_num = default;
 
@@ -279,7 +278,6 @@ namespace SRC.Core.Events
                     case "：":
                         {
                             DisplayEventErrorMessage(line.ID, "ラベルの末尾が全角文字になっています");
-                            error_found = true;
                             break;
                         }
                 }

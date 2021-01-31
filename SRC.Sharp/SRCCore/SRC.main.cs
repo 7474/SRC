@@ -746,8 +746,8 @@ namespace SRC.Core
             //                GeneralLib.WriteIni(argini_section74, argini_entry74, argini_data32);
             //            }
 
-            //            // 各ウィンドウをロード (メインウィンドウは先にロード済み)
-            //            GUI.LoadForms();
+            // 各ウィンドウをロード (メインウィンドウは先にロード済み)
+            GUI.LoadForms();
 
             //            // 画像バッファの枚数
             //            string argini_section75 = "Option";

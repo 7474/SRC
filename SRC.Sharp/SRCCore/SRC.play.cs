@@ -9,7 +9,6 @@ namespace SRC.Core
         // イベントファイルfnameを実行
         public void StartScenario(string fname)
         {
-            throw new NotImplementedException();
             //int i;
             //int ret;
             //Font sf;
