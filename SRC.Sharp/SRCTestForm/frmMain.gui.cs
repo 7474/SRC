@@ -11,27 +11,29 @@ namespace SRCTestForm
 {
     public partial class frmMain : IGUI
     {
-        bool IGUI.IsGUILocked { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        short IGUI.TopItem { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        bool IGUI.MessageWindowIsOut { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        bool IGUI.IsFormClicked { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        bool IGUI.IsMordal { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        int IGUI.MessageWait { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        bool IGUI.AutoMessageMode { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        bool IGUI.HCentering { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        bool IGUI.VCentering { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        bool IGUI.PermanentStringMode { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        bool IGUI.KeepStringMode { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public bool IsGUILocked { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public short TopItem { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public bool MessageWindowIsOut { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public bool IsFormClicked { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public bool IsMordal { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public int MessageWait { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public bool AutoMessageMode { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public bool HCentering { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public bool VCentering { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public bool PermanentStringMode { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public bool KeepStringMode { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         private frmNowLoading frmNowLoading;
         private frmTitle frmTitle;
 
-        void IGUI.LoadMainFormAndRegisterFlash()
+        private frmMessage frmMessage;
+
+        public void LoadMainFormAndRegisterFlash()
         {
             Console.WriteLine("LoadMainFormAndRegisterFlash");
         }
 
-        void IGUI.LoadForms()
+        public void LoadForms()
         {
             Console.WriteLine("LoadForms");
 
@@ -39,11 +41,12 @@ namespace SRCTestForm
 
             //// UPGRADE_ISSUE: Load ステートメント はサポートされていません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="B530EFF2-3132-48F8-B8BC-D88AF543D321"' をクリックしてください。
             //Load(My.MyProject.Forms.frmToolTip);
-            //// UPGRADE_ISSUE: Load ステートメント はサポートされていません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="B530EFF2-3132-48F8-B8BC-D88AF543D321"' をクリックしてください。
-            //Load(My.MyProject.Forms.frmMessage);
-            //// UPGRADE_ISSUE: Load ステートメント はサポートされていません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="B530EFF2-3132-48F8-B8BC-D88AF543D321"' をクリックしてください。
+            frmMessage = new frmMessage()
+            {
+                SRC = SRC
+            };
             //Load(My.MyProject.Forms.frmListBox);
-            //LockGUI();
+            LockGUI();
             //Commands.CommandState = "ユニット選択";
 
             //// マップ画面に表示できるマップのサイズ
@@ -196,320 +199,320 @@ namespace SRCTestForm
             //}
         }
 
-        void IGUI.SetNewGUIMode()
+        public void SetNewGUIMode()
         {
             throw new NotImplementedException();
         }
 
-        void IGUI.OpenMessageForm(Unit u1, Unit u2)
+        public void OpenMessageForm(Unit u1, Unit u2)
         {
             throw new NotImplementedException();
         }
 
-        void IGUI.CloseMessageForm()
+        public void CloseMessageForm()
         {
             throw new NotImplementedException();
         }
 
-        void IGUI.ClearMessageForm()
+        public void ClearMessageForm()
         {
             throw new NotImplementedException();
         }
 
-        void IGUI.UpdateMessageForm(Unit u1, Unit u2)
+        public void UpdateMessageForm(Unit u1, Unit u2)
         {
             throw new NotImplementedException();
         }
 
-        void IGUI.SaveMessageFormStatus()
+        public void SaveMessageFormStatus()
         {
             throw new NotImplementedException();
         }
 
-        void IGUI.KeepMessageFormStatus()
+        public void KeepMessageFormStatus()
         {
             throw new NotImplementedException();
         }
 
-        void IGUI.DisplayMessage(string pname, string msg, string msg_mode)
+        public void DisplayMessage(string pname, string msg, string msg_mode)
         {
             throw new NotImplementedException();
         }
 
-        void IGUI.PrintMessage(string msg, bool is_sys_msg)
+        public void PrintMessage(string msg, bool is_sys_msg)
         {
             throw new NotImplementedException();
         }
 
-        int IGUI.MessageLen(string msg)
+        public int MessageLen(string msg)
         {
             throw new NotImplementedException();
         }
 
-        void IGUI.DisplayBattleMessage(string pname, string msg, string msg_mode)
+        public void DisplayBattleMessage(string pname, string msg, string msg_mode)
         {
             throw new NotImplementedException();
         }
 
-        void IGUI.DisplaySysMessage(string msg, bool int_wait)
+        public void DisplaySysMessage(string msg, bool int_wait)
         {
             throw new NotImplementedException();
         }
 
-        void IGUI.SetupBackground(string draw_mode, string draw_option, int filter_color, double filter_trans_par)
+        public void SetupBackground(string draw_mode, string draw_option, int filter_color, double filter_trans_par)
         {
             throw new NotImplementedException();
         }
 
-        void IGUI.RedrawScreen(bool late_refresh)
+        public void RedrawScreen(bool late_refresh)
         {
             throw new NotImplementedException();
         }
 
-        void IGUI.MaskScreen()
+        public void MaskScreen()
         {
             throw new NotImplementedException();
         }
 
-        void IGUI.RefreshScreen(bool without_refresh, bool delay_refresh)
+        public void RefreshScreen(bool without_refresh, bool delay_refresh)
         {
             throw new NotImplementedException();
         }
 
-        void IGUI.Center(int new_x, int new_y)
+        public void Center(int new_x, int new_y)
         {
             throw new NotImplementedException();
         }
 
-        int IGUI.MapToPixelX(int X)
+        public int MapToPixelX(int X)
         {
             throw new NotImplementedException();
         }
 
-        int IGUI.MapToPixelY(int Y)
+        public int MapToPixelY(int Y)
         {
             throw new NotImplementedException();
         }
 
-        int IGUI.PixelToMapX(int X)
+        public int PixelToMapX(int X)
         {
             throw new NotImplementedException();
         }
 
-        int IGUI.PixelToMapY(int Y)
+        public int PixelToMapY(int Y)
         {
             throw new NotImplementedException();
         }
 
-        int IGUI.MakeUnitBitmap(Unit u)
+        public int MakeUnitBitmap(Unit u)
         {
             throw new NotImplementedException();
         }
 
-        void IGUI.PaintUnitBitmap(Unit u, string smode)
+        public void PaintUnitBitmap(Unit u, string smode)
         {
             throw new NotImplementedException();
         }
 
-        void IGUI.EraseUnitBitmap(int X, int Y, bool do_refresh)
+        public void EraseUnitBitmap(int X, int Y, bool do_refresh)
         {
             throw new NotImplementedException();
         }
 
-        void IGUI.MoveUnitBitmap(Unit u, int x1, int y1, int x2, int y2, int wait_time0, int division)
+        public void MoveUnitBitmap(Unit u, int x1, int y1, int x2, int y2, int wait_time0, int division)
         {
             throw new NotImplementedException();
         }
 
-        void IGUI.MoveUnitBitmap2(Unit u, int wait_time0, int division)
+        public void MoveUnitBitmap2(Unit u, int wait_time0, int division)
         {
             throw new NotImplementedException();
         }
 
-        int IGUI.ListBox(string lb_caption, string[] list, string lb_info, string lb_mode)
+        public int ListBox(string lb_caption, string[] list, string lb_info, string lb_mode)
         {
             throw new NotImplementedException();
         }
 
-        void IGUI.EnlargeListBoxHeight()
+        public void EnlargeListBoxHeight()
         {
             throw new NotImplementedException();
         }
 
-        void IGUI.ReduceListBoxHeight()
+        public void ReduceListBoxHeight()
         {
             throw new NotImplementedException();
         }
 
-        void IGUI.EnlargeListBoxWidth()
+        public void EnlargeListBoxWidth()
         {
             throw new NotImplementedException();
         }
 
-        void IGUI.ReduceListBoxWidth()
+        public void ReduceListBoxWidth()
         {
             throw new NotImplementedException();
         }
 
-        void IGUI.AddPartsToListBox()
+        public void AddPartsToListBox()
         {
             throw new NotImplementedException();
         }
 
-        void IGUI.RemovePartsOnListBox()
+        public void RemovePartsOnListBox()
         {
             throw new NotImplementedException();
         }
 
-        int IGUI.WeaponListBox(Unit u, string caption_msg, string lb_mode, string BGM)
+        public int WeaponListBox(Unit u, string caption_msg, string lb_mode, string BGM)
         {
             throw new NotImplementedException();
         }
 
-        int IGUI.AbilityListBox(Unit u, string caption_msg, string lb_mode, bool is_item)
+        public int AbilityListBox(Unit u, string caption_msg, string lb_mode, bool is_item)
         {
             throw new NotImplementedException();
         }
 
-        int IGUI.LIPS(string lb_caption, string[] list, string lb_info, int time_limit)
+        public int LIPS(string lb_caption, string[] list, string lb_info, int time_limit)
         {
             throw new NotImplementedException();
         }
 
-        int IGUI.MultiColumnListBox(string lb_caption, string[] list, bool is_center)
+        public int MultiColumnListBox(string lb_caption, string[] list, bool is_center)
         {
             throw new NotImplementedException();
         }
 
-        int IGUI.MultiSelectListBox(string lb_caption, string[] list, string lb_info, int max_num)
+        public int MultiSelectListBox(string lb_caption, string[] list, string lb_info, int max_num)
         {
             throw new NotImplementedException();
         }
 
-        bool IGUI.DrawPicture(string fname, int dx, int dy, int dw, int dh, int sx, int sy, int sw, int sh, string draw_option)
+        public bool DrawPicture(string fname, int dx, int dy, int dw, int dh, int sx, int sy, int sw, int sh, string draw_option)
         {
             throw new NotImplementedException();
         }
 
-        void IGUI.MakePicBuf()
+        public void MakePicBuf()
         {
             throw new NotImplementedException();
         }
 
-        void IGUI.DrawString(string msg, int X, int Y, bool without_cr)
+        public void DrawString(string msg, int X, int Y, bool without_cr)
         {
             throw new NotImplementedException();
         }
 
-        void IGUI.DrawSysString(int X, int Y, string msg, bool without_refresh)
+        public void DrawSysString(int X, int Y, string msg, bool without_refresh)
         {
             throw new NotImplementedException();
         }
 
-        void IGUI.SaveScreen()
+        public void SaveScreen()
         {
             throw new NotImplementedException();
         }
 
-        void IGUI.ClearPicture()
+        public void ClearPicture()
         {
             throw new NotImplementedException();
         }
 
-        void IGUI.ClearPicture2(int x1, int y1, int x2, int y2)
+        public void ClearPicture2(int x1, int y1, int x2, int y2)
         {
             throw new NotImplementedException();
         }
 
-        void IGUI.LockGUI()
+        public void LockGUI()
         {
             throw new NotImplementedException();
         }
 
-        void IGUI.UnlockGUI()
+        public void UnlockGUI()
         {
             throw new NotImplementedException();
         }
 
-        void IGUI.SaveCursorPos()
+        public void SaveCursorPos()
         {
             throw new NotImplementedException();
         }
 
-        void IGUI.MoveCursorPos(string cursor_mode, Unit t)
+        public void MoveCursorPos(string cursor_mode, Unit t)
         {
             throw new NotImplementedException();
         }
 
-        void IGUI.RestoreCursorPos()
+        public void RestoreCursorPos()
         {
             throw new NotImplementedException();
         }
 
-        void IGUI.OpenTitleForm()
+        public void OpenTitleForm()
         {
             frmTitle = new frmTitle();
             frmTitle.Show(this);
         }
 
-        void IGUI.CloseTitleForm()
+        public void CloseTitleForm()
         {
             frmTitle.Close();
             frmTitle.Dispose();
             frmTitle = null;
         }
 
-        void IGUI.OpenNowLoadingForm()
+        public void OpenNowLoadingForm()
         {
             frmNowLoading = new frmNowLoading();
             frmNowLoading.Show(this);
         }
 
-        void IGUI.CloseNowLoadingForm()
+        public void CloseNowLoadingForm()
         {
             frmNowLoading.Close();
             frmNowLoading.Dispose();
             frmNowLoading = null;
         }
 
-        void IGUI.DisplayLoadingProgress()
+        public void DisplayLoadingProgress()
         {
             frmNowLoading.Progress();
             Application.DoEvents();
         }
 
-        void IGUI.SetLoadImageSize(int new_size)
+        public void SetLoadImageSize(int new_size)
         {
             frmNowLoading.Value = 0;
             frmNowLoading.Max = new_size;
         }
 
-        void IGUI.ChangeDisplaySize(int w, int h)
+        public void ChangeDisplaySize(int w, int h)
         {
             throw new NotImplementedException();
         }
 
-        void IGUI.ErrorMessage(string msg)
+        public void ErrorMessage(string msg)
         {
             SetStatusText(msg);
         }
 
-        void IGUI.DataErrorMessage(string msg, string fname, int line_num, string line_buf, string dname)
+        public void DataErrorMessage(string msg, string fname, int line_num, string line_buf, string dname)
         {
             throw new NotImplementedException();
         }
 
-        bool IGUI.IsRButtonPressed(bool ignore_message_wait)
+        public bool IsRButtonPressed(bool ignore_message_wait)
         {
             throw new NotImplementedException();
         }
 
-        void IGUI.DisplayTelop(string msg)
+        public void DisplayTelop(string msg)
         {
             Console.WriteLine("DisplayTelop: " + msg);
         }
 
-        void IGUI.SetTitle(string title)
+        public void SetTitle(string title)
         {
             // XXX 別のフォームに設定
             Name = title;
