@@ -1144,7 +1144,7 @@ namespace SRC.Core.CmdDatas
                             CmdName = CmdType.CaseCmd;
                             if (ArgNum == 2)
                             {
-                                if (Strings.LCase(list[2]) == "else")
+                                if (Strings.LCase(list[1]) == "else")
                                 {
                                     CmdName = CmdType.CaseElseCmd;
                                 }
@@ -1881,8 +1881,15 @@ namespace SRC.Core.CmdDatas
         // idx番目の引数を式として評価せずにそのまま返す
         public string GetArg(int idx)
         {
-            // コマンド名とオフセット分引いた値を返す
-            return args[idx - 2].strArg;
+            if (idx - 2 < args.Count)
+            {
+                // コマンド名とオフセット分引いた値を返す
+                return args[idx - 2].strArg;
+            }
+            else
+            {
+                return "";
+            }
         }
     }
 }

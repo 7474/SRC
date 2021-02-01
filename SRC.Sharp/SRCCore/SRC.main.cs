@@ -1051,11 +1051,11 @@ namespace SRC.Core
             //    string argbgm_name1 = Sound.BGMName(argbgm_name);
             //    Sound.StartBGM(argbgm_name1, true);
 
-            //    // イベントデータを初期化
-            //    Event.InitEventData();
+            // イベントデータを初期化
+            Event.InitEventData();
 
-            //    // タイトル画面を閉じる
-            //    GUI.CloseTitleForm();
+            // タイトル画面を閉じる
+            GUI.CloseTitleForm();
 
             //    // マウスカーソルを元に戻す
             //    // UPGRADE_WARNING: Screen プロパティ Screen.MousePointer には新しい動作が含まれます。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6BA9B8D2-2A32-4B6E-8D36-44949974A5B4"' をクリックしてください。
@@ -1155,8 +1155,8 @@ namespace SRC.Core
             //string argbgm_name2 = "Opening";
             //string argbgm_name3 = Sound.BGMName(argbgm_name2);
             //Sound.StartBGM(argbgm_name3, true);
-            //Event.InitEventData();
-            //GUI.CloseTitleForm();
+            Event.InitEventData();
+            GUI.CloseTitleForm();
 
             //// UPGRADE_WARNING: Screen プロパティ Screen.MousePointer には新しい動作が含まれます。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6BA9B8D2-2A32-4B6E-8D36-44949974A5B4"' をクリックしてください。
             //Cursor.Current = Cursors.Default;

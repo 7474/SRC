@@ -56,9 +56,9 @@ namespace SRC.Core
         //public Items IList = new Items();
 
         // イベントファイル名
-        public string ScenarioFileName;
+        public string ScenarioFileName = "";
         // イベントファイル名のあるフォルダ
-        public string ScenarioPath;
+        public string ScenarioPath = "";
         // セーブデータのファイルディスクリプタ
         public int SaveDataFileNumber;
         // セーブデータのバージョン
@@ -97,8 +97,8 @@ namespace SRC.Core
         // 敵フェイズにはＢＧＭを変更しないか
         public bool KeepEnemyBGM;
         // 拡張データフォルダへのパス
-        public string ExtDataPath;
-        public string ExtDataPath2;
+        public string ExtDataPath = "";
+        public string ExtDataPath2 = "";
         // MIDI音源リセットの種類
         public string MidiResetType;
         // 自動防御モードを使うか
@@ -123,7 +123,7 @@ namespace SRC.Core
         public bool UseTransparentBlt;
 
         // SRC.exeのある場所
-        public string AppPath;
+        public string AppPath = "";
 
         public SRC()
         {

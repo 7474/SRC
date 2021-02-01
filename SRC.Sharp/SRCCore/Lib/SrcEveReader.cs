@@ -112,7 +112,7 @@ namespace SRC.Core.Lib
                 // 行末が「_」の場合は行を結合
                 line_buf = line_buf + Strings.Left(buf, Strings.Len(buf) - 1);
             }
-            return LastLine;
+            return line_buf;
         }
 
         public InvalidSrcData InvalidData(string msg, string dname)

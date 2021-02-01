@@ -532,9 +532,6 @@ namespace SRC.Core.Events
         // ラベルを追加
         public void AddLabel(string lname, int eventDataId)
         {
-            SrcCollection<LabelData> normalLabelList = colNormalLabelList;
-            SrcCollection<LabelData> eventLabelList = colEventLabelList;
-
             var new_label = new LabelData();
             string lname2;
             new_label.Data = lname;
@@ -712,7 +709,7 @@ namespace SRC.Core.Events
         {
             try
             {
-                return colNormalLabelList[lname].EventDataId;
+                return colNormalLabelList[lname]?.EventDataId ?? -1;
             }
             catch
             {
@@ -726,7 +723,7 @@ namespace SRC.Core.Events
         {
             try
             {
-                return colSysNormalLabelList[lname].EventDataId;
+                return colSysNormalLabelList[lname]?.EventDataId ?? -1;
             }
             catch
             {
