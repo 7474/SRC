@@ -11,17 +11,47 @@ namespace SRCTestForm
 {
     public partial class frmMain : IGUI
     {
-        public bool IsGUILocked { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public short TopItem { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public bool MessageWindowIsOut { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public bool IsFormClicked { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public bool IsMordal { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public int MessageWait { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public bool AutoMessageMode { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public bool HCentering { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public bool VCentering { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public bool PermanentStringMode { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public bool KeepStringMode { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public bool IsGUILocked { get; set; }
+        public short TopItem { get; set; }
+        public bool MessageWindowIsOut { get; set; }
+        public bool IsFormClicked { get; set; }
+        public bool IsMordal { get; set; }
+        public int MessageWait { get; set; }
+        public bool AutoMessageMode { get; set; }
+        public bool HCentering { get; set; }
+        public bool VCentering { get; set; }
+        public bool PermanentStringMode { get; set; }
+        public bool KeepStringMode { get; set; }
+        public int MainWidth { get; set; }
+        public int MainHeight { get; set; }
+        public int MainPWidth { get; set; }
+        public int MainPHeight { get; set; }
+        public int MapPWidth { get; set; }
+        public int MapPHeight { get; set; }
+        public bool ScreenIsMasked { get; set; }
+        public bool ScreenIsSaved { get; set; }
+        public int MapX { get; set; }
+        public int MapY { get; set; }
+        public int PrevMapX { get; set; }
+        public int PrevMapY { get; set; }
+        public int MouseButton { get; set; }
+        public float MouseX { get; set; }
+        public float MouseY { get; set; }
+        public float PrevMouseX { get; set; }
+        public float PrevMouseY { get; set; }
+        public int PrevUnitX { get; set; }
+        public int PrevUnitY { get; set; }
+        public string PrevUnitArea { get; set; }
+        public string PrevCommand { get; set; }
+        public bool IsPictureDrawn { get; set; }
+        public bool IsPictureVisible { get; set; }
+        public int PaintedAreaX1 { get; set; }
+        public int PaintedAreaY1 { get; set; }
+        public int PaintedAreaX2 { get; set; }
+        public int PaintedAreaY2 { get; set; }
+        public bool IsCursorVisible { get; set; }
+        public int BGColor { get; set; }
+        int IGUI.TopItem { get; set; }
 
         private frmNowLoading frmNowLoading;
         private frmTitle frmTitle;

@@ -10,11 +10,68 @@ namespace SRC.Core
     // ユーザーインターフェースと画面描画の処理を行うためのインタフェース
     public interface IGUI
     {
+        // マップ画面に表示できるマップのサイズ
+        int MainWidth { get; set; }
+        int MainHeight { get; set; }
+
+        // マップ画面のサイズ（ピクセル）
+        int MainPWidth { get; set; }
+        int MainPHeight { get; set; }
+
+        // マップのサイズ（ピクセル）
+        int MapPWidth { get; set; }
+        int MapPHeight { get; set; }
+
+
+        // 現在マップウィンドウがマスク表示されているか
+        bool ScreenIsMasked { get; set; }
+        // 現在マップウィンドウが保存されているか
+        bool ScreenIsSaved { get; set; }
+
+        // 現在表示されているマップの座標
+        int MapX { get; set; }
+        int MapY { get; set; }
+
+        // ドラッグ前のマップの座標
+        int PrevMapX { get; set; }
+        int PrevMapY { get; set; }
+
+        // 最後に押されたマウスボタン
+        int MouseButton { get; set; }
+
+        // 現在のマウスの座標
+        float MouseX { get; set; }
+        float MouseY { get; set; }
+
+        // ドラッグ前のマウスの座標
+        float PrevMouseX { get; set; }
+        float PrevMouseY { get; set; }
+
+        // 移動前のユニットの情報
+        int PrevUnitX { get; set; }
+        int PrevUnitY { get; set; }
+        string PrevUnitArea { get; set; }
+        string PrevCommand { get; set; }
+
+        // PaintPictureで画像が描き込まれたか
+        bool IsPictureDrawn { get; set; }
+        // PaintPictureで画像が描かれているか
+        bool IsPictureVisible { get; set; }
+        // PaintPictureで描画した画像領域
+        int PaintedAreaX1 { get; set; }
+        int PaintedAreaY1 { get; set; }
+        int PaintedAreaX2 { get; set; }
+        int PaintedAreaY2 { get; set; }
+        // カーソル画像が表示されているか
+        bool IsCursorVisible { get; set; }
+        // 背景色
+        int BGColor { get; set; }
+
         // GUIから入力可能かどうか
         bool IsGUILocked { get; set; }
 
         // リストボックス内で表示位置
-        short TopItem { get; set; }
+        int TopItem { get; set; }
 
         // メッセージウインドウにに関する情報
         bool MessageWindowIsOut { get; set; }

@@ -12,7 +12,7 @@ namespace SRCCoreTests.TestLib
     class MockGUI : IGUI
     {
         public bool IsGUILocked { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public short TopItem { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public int TopItem { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public bool MessageWindowIsOut { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public bool IsFormClicked { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public bool IsMordal { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
@@ -22,6 +22,35 @@ namespace SRCCoreTests.TestLib
         public bool VCentering { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public bool PermanentStringMode { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public bool KeepStringMode { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public int MainWidth { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public int MainHeight { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public int MainPWidth { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public int MainPHeight { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public int MapPWidth { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public int MapPHeight { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public bool ScreenIsMasked { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public bool ScreenIsSaved { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public int MapX { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public int MapY { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public int PrevMapX { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public int PrevMapY { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public int MouseButton { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public float MouseX { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public float MouseY { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public float PrevMouseX { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public float PrevMouseY { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public int PrevUnitX { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public int PrevUnitY { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public string PrevUnitArea { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public string PrevCommand { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public bool IsPictureDrawn { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public bool IsPictureVisible { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public int PaintedAreaX1 { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public int PaintedAreaY1 { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public int PaintedAreaX2 { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public int PaintedAreaY2 { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public bool IsCursorVisible { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public int BGColor { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public int AbilityListBox(Unit u, string caption_msg, string lb_mode, bool is_item = false)
         {
