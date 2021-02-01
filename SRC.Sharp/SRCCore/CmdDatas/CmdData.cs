@@ -13,6 +13,8 @@ namespace SRC.Core.CmdDatas
     // イベントコマンドのクラス
     public partial class CmdData
     {
+        private Event Event;
+
         // コマンドの種類
         private CmdType CmdName;
         // 引数の数
@@ -44,6 +46,11 @@ namespace SRC.Core.CmdDatas
             {
                 CmdName = value;
             }
+        }
+
+        public CmdData(Event e)
+        {
+            Event = e;
         }
 
         // イベントデータ行を読み込んで解析する
