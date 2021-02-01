@@ -1,9 +1,11 @@
 ﻿using SRC.Core;
+using SRC.Core.Lib;
 using SRC.Core.Units;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -236,17 +238,21 @@ namespace SRCTestForm
 
         public void OpenMessageForm(Unit u1, Unit u2)
         {
-            throw new NotImplementedException();
+            frmMessage.ClearForm();
+            frmMessage.Show(this);
+            Application.DoEvents();
         }
 
         public void CloseMessageForm()
         {
-            throw new NotImplementedException();
+            frmMessage.Hide();
+            Application.DoEvents();
         }
 
         public void ClearMessageForm()
         {
-            throw new NotImplementedException();
+            frmMessage.ClearForm();
+            Application.DoEvents();
         }
 
         public void UpdateMessageForm(Unit u1, Unit u2)
@@ -266,7 +272,16 @@ namespace SRCTestForm
 
         public void DisplayMessage(string pname, string msg, string msg_mode)
         {
-            throw new NotImplementedException();
+            frmMessage.SetMessage(msg);
+            Application.DoEvents();
+
+            // 次のメッセージ待ち
+            IsFormClicked = false;
+            while (!IsFormClicked)
+            {
+                Thread.Sleep(100);
+                Application.DoEvents();
+            }
         }
 
         public void PrintMessage(string msg, bool is_sys_msg)
@@ -456,12 +471,12 @@ namespace SRCTestForm
 
         public void LockGUI()
         {
-            throw new NotImplementedException();
+            IsGUILocked = true;
         }
 
         public void UnlockGUI()
         {
-            throw new NotImplementedException();
+            IsGUILocked = false;
         }
 
         public void SaveCursorPos()
@@ -487,9 +502,12 @@ namespace SRCTestForm
 
         public void CloseTitleForm()
         {
-            frmTitle.Close();
-            frmTitle.Dispose();
-            frmTitle = null;
+            if (frmTitle != null)
+            {
+                frmTitle.Close();
+                frmTitle.Dispose();
+                frmTitle = null;
+            }
         }
 
         public void OpenNowLoadingForm()

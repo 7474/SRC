@@ -3,6 +3,7 @@
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
 using System;
+using System.Drawing;
 using System.Windows.Forms;
 using Microsoft.VisualBasic;
 using SRC.Core;
@@ -14,6 +15,17 @@ namespace SRCTestForm
     {
         public SRC.Core.SRC SRC { get; set; }
         public IGUI GUI => SRC.GUI;
+
+        public void ClearForm()
+        {
+            picFace.Image = null;
+            picMessage.Image = null;
+        }
+
+        public void SetMessage(string message)
+        {
+            labKariText.Text = message;
+        }
 
         // フォーム上をクリック
         private void frmMessage_Click(object eventSender, EventArgs eventArgs)
