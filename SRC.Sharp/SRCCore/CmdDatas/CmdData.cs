@@ -5,6 +5,7 @@
 using SRC.Core.Events;
 using SRC.Core.Lib;
 using SRC.Core.VB;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -13,7 +14,24 @@ namespace SRC.Core.CmdDatas
     // イベントコマンドのクラス
     public partial class CmdData
     {
-        private Event Event;
+        private WeakReference<SRC> _src;
+        private SRC SRC
+        {
+            get
+            {
+                SRC res;
+                _src.TryGetTarget(out res);
+                return res;
+            }
+        }
+        private IGUI GUI => SRC.GUI;
+        private Event Event => SRC.Event;
+
+        public CmdData(SRC src)
+        {
+            // XXX これでいいかは知らん。
+            _src = new WeakReference<SRC>(src, true);
+        }
 
         // コマンドの種類
         private CmdType CmdName;
@@ -46,11 +64,6 @@ namespace SRC.Core.CmdDatas
             {
                 CmdName = value;
             }
-        }
-
-        public CmdData(Event e)
-        {
-            Event = e;
         }
 
         // イベントデータ行を読み込んで解析する

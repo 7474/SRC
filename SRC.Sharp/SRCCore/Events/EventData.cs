@@ -366,7 +366,7 @@ namespace SRC.Core.Events
             EventCmd.Clear();
             foreach (var eventDataLine in EventData.Where(x => !x.IsSystemData))
             {
-                var command = new CmdData(this)
+                var command = new CmdData(SRC)
                 {
                     EventDataId = eventDataLine.ID,
                 };
