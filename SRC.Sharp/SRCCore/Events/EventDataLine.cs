@@ -22,6 +22,9 @@ namespace SRC.Core.Events
 
         public bool IsSystemData => Source == EventDataSource.System;
 
+        // 常時イベントラベルらしき行かどうか
+        public bool IsAlwaysEventLabel => Data[0] == '*';
+
         public EventDataLine(int id, EventDataSource source, string file, int lineNum, string data)
         {
             ID = id;

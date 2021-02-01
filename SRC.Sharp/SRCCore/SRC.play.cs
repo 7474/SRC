@@ -49,7 +49,7 @@ namespace SRC.Core
             //    GUI.MainForm.Text = "SRC開発版";
             //}
 
-            //ScenarioFileName = fname;
+            ScenarioFileName = fname;
             //if (!IsSubStage)
             //{
             //    // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
@@ -144,18 +144,17 @@ namespace SRC.Core
 
             //GUI.ScreenIsSaved = true;
 
-            //// イベントデータの読み込み
-            //string argload_mode = "";
-            //Event.LoadEventData(fname, load_mode: argload_mode);
+            // イベントデータの読み込み
+            Event.LoadEventData(fname, "");
 
-            //// 各種変数の初期化
-            //Turn = 0;
-            //IsScenarioFinished = false;
-            //GUI.IsPictureVisible = false;
-            //GUI.IsCursorVisible = false;
-            //LastSaveDataFileName = "";
-            //IsRestartSaveDataAvailable = false;
-            //IsQuickSaveDataAvailable = false;
+            // 各種変数の初期化
+            Turn = 0;
+            IsScenarioFinished = false;
+            GUI.IsPictureVisible = false;
+            GUI.IsCursorVisible = false;
+            LastSaveDataFileName = "";
+            IsRestartSaveDataAvailable = false;
+            IsQuickSaveDataAvailable = false;
             //Commands.CommandState = "ユニット選択";
             //Commands.SelectedPartners = new Unit[1];
 
@@ -198,24 +197,23 @@ namespace SRC.Core
             //    Map.SetMapSize(15, 15);
             //}
 
-            //// プロローグ
-            //Stage = "プロローグ";
-            //string arglname = "プロローグ";
-            //if (!IsSubStage & Event.IsEventDefined(arglname, true))
-            //{
-            //    Sound.StopBGM();
-            //    string argbgm_name = "Briefing";
-            //    string argbgm_name1 = Sound.BGMName(argbgm_name);
-            //    Sound.StartBGM(argbgm_name1);
-            //}
+            // プロローグ
+            Stage = "プロローグ";
+            if (!IsSubStage & Event.IsEventDefined("プロローグ", true))
+            {
+                //Sound.StopBGM();
+                //string argbgm_name = "Briefing";
+                //string argbgm_name1 = Sound.BGMName(argbgm_name);
+                //Sound.StartBGM(argbgm_name1);
+            }
 
-            //Event.HandleEvent("プロローグ");
-            //if (IsScenarioFinished)
-            //{
-            //    IsScenarioFinished = false;
-            //    GUI.UnlockGUI();
-            //    return;
-            //}
+            Event.HandleEvent("プロローグ");
+            if (IsScenarioFinished)
+            {
+                IsScenarioFinished = false;
+                GUI.UnlockGUI();
+                return;
+            }
 
             //string arglname1 = "スタート";
             //if (!Event.IsEventDefined(arglname1))
