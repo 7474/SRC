@@ -239,7 +239,10 @@ namespace SRCTestForm
         public void OpenMessageForm(Unit u1, Unit u2)
         {
             frmMessage.ClearForm();
-            frmMessage.Show(this);
+            if (!frmMessage.Visible)
+            {
+                frmMessage.Show(this);
+            }
             Application.DoEvents();
         }
 

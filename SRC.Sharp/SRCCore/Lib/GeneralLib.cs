@@ -423,141 +423,11 @@ namespace SRC.Core.Lib
 
         }
 
-        //        // リスト list の要素数を返す (括弧を考慮)
-        //        public static int ListLength(ref string list)
-        //        {
-        //            int ListLengthRet = default;
-        //            int i, ch;
-        //            int list_len, paren = default;
-        //            bool in_single_quote = default, in_double_quote = default;
-        //            ListLengthRet = 0;
-        //            list_len = Strings.Len(list);
-        //            i = 0;
-        //            while (true)
-        //            {
-        //                // 空白を読み飛ばす
-        //                while (true)
-        //                {
-        //                    i = (i + 1);
-
-        //                    // 文字列の終り？
-        //                    if (i > list_len)
-        //                    {
-        //                        return ListLengthRet;
-        //                    }
-
-        //                    // 次の文字
-        //                    ch = Strings.Asc(Strings.Mid(list, i, 1));
-
-        //                    // 空白でない？
-        //                    switch (ch)
-        //                    {
-        //                        // スキップ
-        //                        case 9:
-        //                        case 32:
-        //                            {
-        //                                break;
-        //                            }
-
-        //                        default:
-        //                            {
-        //                                break;
-        //                            }
-        //                    }
-        //                }
-
-        //                // 要素数を１つ増やす
-        //                ListLengthRet = (ListLengthRet + 1);
-
-        //                // 要素を読み飛ばす
-        //                while (true)
-        //                {
-        //                    if (in_single_quote)
-        //                    {
-        //                        if (ch == 96) // "`"
-        //                        {
-        //                            in_single_quote = false;
-        //                        }
-        //                    }
-        //                    else if (in_double_quote)
-        //                    {
-        //                        if (ch == 34) // """"
-        //                        {
-        //                            in_double_quote = false;
-        //                        }
-        //                    }
-        //                    else
-        //                    {
-        //                        switch (ch)
-        //                        {
-        //                            case 40:
-        //                            case 91: // "(", "["
-        //                                {
-        //                                    paren = (paren + 1);
-        //                                    break;
-        //                                }
-
-        //                            case 41:
-        //                            case 93: // ")", "]"
-        //                                {
-        //                                    paren = (paren - 1);
-        //                                    if (paren < 0)
-        //                                    {
-        //                                        // 括弧の対応が取れていない
-        //                                        ListLengthRet = -1;
-        //                                        return ListLengthRet;
-        //                                    }
-
-        //                                    break;
-        //                                }
-
-        //                            case 96: // "`"
-        //                                {
-        //                                    in_single_quote = true;
-        //                                    break;
-        //                                }
-
-        //                            case 34: // """"
-        //                                {
-        //                                    in_double_quote = true;
-        //                                    break;
-        //                                }
-        //                        }
-        //                    }
-
-        //                    i = (i + 1);
-
-        //                    // 文字列の終り？
-        //                    if (i > list_len)
-        //                    {
-        //                        // クォートや括弧の対応が取れている？
-        //                        if (in_single_quote | in_double_quote | paren != 0)
-        //                        {
-        //                            ListLengthRet = -1;
-        //                        }
-
-        //                        return ListLengthRet;
-        //                    }
-
-        //                    // 次の文字
-        //                    ch = Strings.Asc(Strings.Mid(list, i, 1));
-
-        //                    // 要素の末尾か判定
-        //                    if (!in_single_quote & !in_double_quote & paren == 0)
-        //                    {
-        //                        // 空白？
-        //                        switch (ch)
-        //                        {
-        //                            case 9:
-        //                            case 32:
-        //                                {
-        //                                    break;
-        //                                }
-        //                        }
-        //                    }
-        //                }
-        //            }
-        //        }
+        // リスト list の要素数を返す (括弧を考慮)
+        public static int ListLength(string list)
+        {
+            return ToList(list).Count;
+        }
 
         // リスト list から、リストの要素の配列 larray を作成し、
         // リストの要素数を返す (括弧を考慮)
@@ -1115,7 +985,7 @@ namespace SRC.Core.Lib
 
 
         // 文字列 str が数値かどうか調べる
-        public static bool IsNumber( string str)
+        public static bool IsNumber(string str)
         {
             bool IsNumberRet = default;
             if (!Information.IsNumeric(str))

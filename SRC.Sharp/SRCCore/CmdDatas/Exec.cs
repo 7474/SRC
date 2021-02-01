@@ -1043,11 +1043,11 @@ namespace SRC.Core.CmdDatas
                     //        break;
                     //    }
 
-                    //case Events.CmdType.TalkCmd:
-                    //    {
-                    //        ExecRet = ExecTalkCmd();
-                    //        break;
-                    //    }
+                    case Events.CmdType.TalkCmd:
+                        {
+                            ExecRet = ExecTalkCmd();
+                            break;
+                        }
 
                     //case Events.CmdType.TelopCmd:
                     //    {
