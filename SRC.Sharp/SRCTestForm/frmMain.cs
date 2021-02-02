@@ -1,19 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using SRC.Core;
+using SRC.Core.Units;
+using SRCTestForm.FormLib;
+using System;
 using System.Data;
 using System.Diagnostics;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using SRC.Core;
-using SRCTestForm.FormLib;
 
 namespace SRCTestForm
 {
-    public partial class frmMain : Form, IGUI
+    public partial class frmMain : Form
     {
         public SRC.Core.SRC SRC;
 
@@ -30,6 +26,11 @@ namespace SRCTestForm
             LoadData();
             UpdateDataTree();
         }
+        private void menuLoadEve_Click(object sender, EventArgs e)
+        {
+            LoadEve();
+        }
+
         private void treeViewData_AfterSelect(object sender, TreeViewEventArgs e)
         {
             var srcNode = e.Node as SrcTreeNode;
@@ -51,9 +52,30 @@ namespace SRCTestForm
                     SetStatusText($"Load data [{fbd.SelectedPath}].");
                     var sw = new Stopwatch();
                     sw.Start();
-                    SRC.LoadDirectory(fbd.SelectedPath);
+                    SRC.LoadDataDirectory(fbd.SelectedPath);
                     sw.Stop();
                     SetStatusText($"Loaded. {sw.ElapsedMilliseconds}ms");
+                    //}
+                    //catch (Exception ex)
+                    //{
+                    //    SetStatusText(ex.Message);
+                    //    SetMainText(ex.ToString());
+                    //}
+                }
+            }
+        }
+
+        private void LoadEve()
+        {
+            using (var fbd = new OpenFileDialog())
+            {
+                var res = fbd.ShowDialog();
+                if (res == DialogResult.OK)
+                {
+                    //try
+                    //{
+                    SetStatusText($"Load file [{fbd.FileName}].");
+                    SRC.Execute(fbd.FileName);
                     //}
                     //catch (Exception ex)
                     //{
@@ -92,15 +114,6 @@ namespace SRCTestForm
         {
             toolStripProgressBar.Value = value;
             toolStripProgressBar.Maximum = max;
-        }
-
-        void IGUI.DisplayLoadingProgress()
-        {
-        }
-
-        void IGUI.ErrorMessage(string str)
-        {
-            SetStatusText(str);
         }
     }
 }

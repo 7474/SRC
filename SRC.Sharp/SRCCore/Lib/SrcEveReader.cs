@@ -12,14 +12,14 @@ using System.Text;
 
 namespace SRC.Core.Lib
 {
-    public class SrcReader : StreamReader
+    public class SrcEveReader : StreamReader
     {
         public string FileName { get; }
         public int LineNumber { get; private set; }
         public string LastLine { get; private set; }
 
         // TODO Encoding
-        public SrcReader(string fname, Stream stream) : base(stream)
+        public SrcEveReader(string fname, Stream stream) : base(stream)
         {
             FileName = fname;
         }
@@ -53,10 +53,53 @@ namespace SRC.Core.Lib
                 }
 
                 // コメント部分を削除
-                var idx = Strings.InStr(buf, "//");
-                if (idx > 0)
+
+
+                if (Strings.InStr(buf, "//") > 0)
                 {
-                    buf = Strings.Left(buf, idx - 1);
+                    var in_single_quote = false;
+                    var in_double_quote = false;
+                    char lastChar = default;
+                    for (var i = 0; i < buf.Length; i++)
+                    {
+                        var c = buf[i];
+                        switch (c)
+                        {
+                            case '\'':
+                                {
+                                    // シングルクオート
+                                    if (!in_double_quote)
+                                    {
+                                        in_single_quote = !in_single_quote;
+                                    }
+
+                                    break;
+                                }
+
+                            case '"':
+                                {
+                                    // ダブルクオート
+                                    if (!in_single_quote)
+                                    {
+                                        in_double_quote = !in_double_quote;
+                                    }
+
+                                    break;
+                                }
+
+                            case '/':
+                                {
+                                    // コメント？
+                                    if (!in_double_quote && !in_single_quote && lastChar == '/')
+                                    {
+                                        buf = Strings.Left(buf, i);
+                                    }
+
+                                    break;
+                                }
+                        }
+                        lastChar = c;
+                    }
                 }
 
                 // 行末が「_」でなければ行の読み込みを完了
@@ -69,10 +112,7 @@ namespace SRC.Core.Lib
                 // 行末が「_」の場合は行を結合
                 line_buf = line_buf + Strings.Left(buf, Strings.Len(buf) - 1);
             }
-
-            // 全角カンマ -> 半角カンマ
-            LastLine = line_buf.Replace("，", ", ");
-            return LastLine;
+            return line_buf;
         }
 
         public InvalidSrcData InvalidData(string msg, string dname)

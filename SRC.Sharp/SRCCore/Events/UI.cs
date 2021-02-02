@@ -9,22 +9,23 @@ namespace SRC.Core.Events
         // イベントエラー表示
         public void DisplayEventErrorMessage(int lnum, string msg)
         {
+            var line = EventData[lnum];
             string buf;
 
-            // XXX 多分配列のIndex処理しないと落ちる
             // エラーが起こったファイル、行番号、エラーメッセージを表示
-            buf = EventFileNames[EventFileID[lnum]] + "：" + EventLineNum[lnum] + "行目" + Constants.vbCr + Constants.vbLf + msg + Constants.vbCr + Constants.vbLf;
+            buf = line.File + "：" + line.LineNum + "行目" + Constants.vbCr + Constants.vbLf + msg + Constants.vbCr + Constants.vbLf;
 
             // エラーが起こった行とその前後の行の内容を表示
-            if (lnum > 1)
+            if (lnum > 0)
             {
-                buf = buf + EventLineNum[lnum - 1] + ": " + EventData[lnum - 1] + Constants.vbCr + Constants.vbLf;
+                var preLine = EventData[lnum];
+                buf = buf + preLine.LineNum + ": " + preLine.Data + Constants.vbCr + Constants.vbLf;
             }
-
-            buf = buf + EventLineNum[lnum] + ": " + EventData[lnum] + Constants.vbCr + Constants.vbLf;
-            if (lnum < EventData.Length)
+            buf = buf + line.LineNum + ": " + line.Data + Constants.vbCr + Constants.vbLf;
+            if (lnum < EventData.Count - 1)
             {
-                buf = buf + EventLineNum[lnum + 1] + ": " + EventData[lnum + 1] + Constants.vbCr + Constants.vbLf;
+                var afterLine = EventData[lnum];
+                buf = buf + afterLine.LineNum + ": " + afterLine.Data + Constants.vbCr + Constants.vbLf;
             }
 
             GUI.ErrorMessage(buf);

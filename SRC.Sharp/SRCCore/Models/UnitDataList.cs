@@ -105,7 +105,7 @@ namespace SRC.Core.Models
         {
             //try
             //{
-            using (var reader = new SrcReader(fname, stream))
+            using (var reader = new SrcDataReader(fname, stream))
             {
                 while (reader.HasMore)
                 {
@@ -121,7 +121,7 @@ namespace SRC.Core.Models
 
         // reader から１つユニットを読み込む。
         // 返却したUnitDataはリストに追加されている状態。
-        private UnitData LoadUnit(SrcReader reader)
+        private UnitData LoadUnit(SrcDataReader reader)
         {
             UnitData ud;
             var continuesErrors = new List<InvalidSrcData>();
@@ -550,7 +550,7 @@ namespace SRC.Core.Models
             return ud;
         }
 
-        private static string LoadFeatureOuter(string data_name, IUnitDataElements ud, SrcReader reader, List<InvalidSrcData> continuesErrors)
+        private static string LoadFeatureOuter(string data_name, IUnitDataElements ud, SrcDataReader reader, List<InvalidSrcData> continuesErrors)
         {
             int ret;
             string buf;
@@ -636,7 +636,7 @@ namespace SRC.Core.Models
             return line_buf;
         }
 
-        public static string LoadFeature(string data_name, IUnitDataElements ud, SrcReader reader, List<InvalidSrcData> continuesErrors)
+        public static string LoadFeature(string data_name, IUnitDataElements ud, SrcDataReader reader, List<InvalidSrcData> continuesErrors)
         {
             string line_buf = reader.GetLine();
             string buf = line_buf;
@@ -716,7 +716,7 @@ namespace SRC.Core.Models
             return line_buf;
         }
 
-        public static string LoadWepon(string data_name, IUnitDataElements ud, SrcReader reader, List<InvalidSrcData> continuesErrors)
+        public static string LoadWepon(string data_name, IUnitDataElements ud, SrcDataReader reader, List<InvalidSrcData> continuesErrors)
         {
             int ret;
             string buf;
@@ -1065,7 +1065,7 @@ namespace SRC.Core.Models
             return line_buf;
         }
 
-        public static string LoadAbility(string data_name, IUnitDataElements ud, SrcReader reader, List<InvalidSrcData> continuesErrors)
+        public static string LoadAbility(string data_name, IUnitDataElements ud, SrcDataReader reader, List<InvalidSrcData> continuesErrors)
         {
             int ret;
             string buf;

@@ -45,64 +45,13 @@ namespace SRC.Core.Expressions
             // サブルーチンローカル変数
             if (Event.CallDepth > 0)
             {
-                var loopTo1 = Event.VarIndex;
-                for (int i = (Event.VarIndexStack[Event.CallDepth - 1] + 1); i <= loopTo1; i++)
+                // XXX ローカル変数の参照の仕方
+                for (int i = Event.VarIndexStack[Event.CallDepth - 1]; i <= Event.VarIndex; i++)
                 {
+                    var withBlock = Event.VarStack[i];
+                    if ((vname ?? "") == (withBlock.Name ?? ""))
                     {
-                        var withBlock = Event.VarStack[i];
-                        if ((vname ?? "") == (withBlock.Name ?? ""))
-                        {
-                            switch (etype)
-                            {
-                                case ValueType.NumericType:
-                                    {
-                                        if (withBlock.VariableType == ValueType.NumericType)
-                                        {
-                                            num_result = withBlock.NumericValue;
-                                        }
-                                        else
-                                        {
-                                            num_result = Conversions.ToDouble(withBlock.StringValue);
-                                        }
-
-                                        GetVariableRet = ValueType.NumericType;
-                                        break;
-                                    }
-
-                                case ValueType.StringType:
-                                    {
-                                        if (withBlock.VariableType == ValueType.StringType)
-                                        {
-                                            str_result = withBlock.StringValue;
-                                        }
-                                        else
-                                        {
-                                            str_result = GeneralLib.FormatNum(withBlock.NumericValue);
-                                        }
-
-                                        GetVariableRet = ValueType.StringType;
-                                        break;
-                                    }
-
-                                case ValueType.UndefinedType:
-                                    {
-                                        if (withBlock.VariableType == ValueType.StringType)
-                                        {
-                                            str_result = withBlock.StringValue;
-                                            GetVariableRet = ValueType.StringType;
-                                        }
-                                        else
-                                        {
-                                            num_result = withBlock.NumericValue;
-                                            GetVariableRet = ValueType.NumericType;
-                                        }
-
-                                        break;
-                                    }
-                            }
-
-                            return GetVariableRet;
-                        }
+                        return ReferenceValue(etype, withBlock, out str_result, out num_result);
                     }
                 }
             }

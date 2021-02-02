@@ -1,0 +1,189 @@
+        public static Form MainForm;
+        public static bool IsFlashAvailable;
+        public static bool NewGUIMode;
+        public static short MainWidth;
+        public static short MainHeight;
+        public static short MainPWidth;
+        public static short MainPHeight;
+        public static short MapPWidth;
+        public static short MapPHeight;
+        public const short GauageWidth = 88;
+        public static bool ScreenIsMasked;
+        public static bool ScreenIsSaved;
+        public static short MapX;
+        public static short MapY;
+        public static short PrevMapX;
+        public static short PrevMapY;
+        public static short MouseButton;
+        public static float MouseX;
+        public static float MouseY;
+        public static float PrevMouseX;
+        public static float PrevMouseY;
+        public static short PrevUnitX;
+        public static short PrevUnitY;
+        public static string PrevUnitArea;
+        public static string PrevCommand;
+        public static bool IsPictureDrawn;
+        public static bool IsPictureVisible;
+        public static short PaintedAreaX1;
+        public static short PaintedAreaY1;
+        public static short PaintedAreaX2;
+        public static short PaintedAreaY2;
+        public static bool IsCursorVisible;
+        public static int BGColor;
+        public static bool IsGUILocked;
+        public static short TopItem;
+        public static bool MessageWindowIsOut;
+        public static bool IsFormClicked;
+        public static bool IsMordal;
+        public static int MessageWait;
+        public static bool AutoMessageMode;
+        public static bool HCentering;
+        public static bool VCentering;
+        public static bool PermanentStringMode;
+        public static bool KeepStringMode;
+        public static bool[] ListItemFlag;
+        public static string[] ListItemComment;
+        public static string[] ListItemID;
+        public static short MaxListItem;
+        public const int BLACKNESS = 0x42;
+        public const int DSTINVERT = 0x550009;
+        public const int MERGECOPY = 0xC000CA;
+        public const int MERGEPAINT = 0xBB0226;
+        public const int NOTSRCCOPY = 0x330008;
+        public const int NOTSRCERASE = 0x1100A6;
+        public const int PATCOPY = 0xF00021;
+        public const int PATINVERT = 0x5A0049;
+        public const int PATPAINT = 0xFB0A09;
+        public const int SRCAND = 0x8800C6;
+        public const int SRCCOPY = 0xCC0020;
+        public const int SRCERASE = 0x440328;
+        public const int SRCINVERT = 0x660046;
+        public const int SRCPAINT = 0xEE0086;
+        public const int WHITENESS = 0xFF0062;
+        public const int STATUSBACK = 0xC0C0C0;
+        public const short STRETCH_ANDSCANS = 1;
+        public const short STRETCH_ORSCANS = 2;
+        public const short STRETCH_DELETESCANS = 3;
+        public const short STRETCH_HALFTONE = 4;
+        public const short SW_SHOWNA = 8; // 非アクティブで表示
+        public struct POINTAPI
+            public int X;
+            public int Y;
+        public static int RButtonID;
+        public static int LButtonID;
+        public const short SM_SWAPBUTTON = 23; // 左右のボタンが交換されているか否か
+        public static extern int GetForegroundWindow();
+        public static extern int Polygon(int hDC, ref POINTAPI lpPoint, int nCount);
+        public struct DEVMODE
+            public char[] dmDeviceName;
+            public short dmSpecVersion;
+            public short dmDriverVersion;
+            public short dmSize;
+            public short dmDriverExtra;
+            public int dmFields;
+            public short dmOrientation;
+            public short dmPaperSize;
+            public short dmPaperLength;
+            public short dmPaperWidth;
+            public short dmScale;
+            public short dmCopies;
+            public short dmDefaultSource;
+            public short dmPrintQuality;
+            public short dmColor;
+            public short dmDuplex;
+            public short dmYResolution;
+            public short dmTTOption;
+            public short dmCollate;
+            public char[] dmFormName;
+            public short dmUnusedPadding;
+            public short dmBitsPerPixel;
+            public int dmPelsWidth;
+            public int dmPelsHeight;
+            public int dmDisplayFlags;
+            public int dmDisplayFrequency;
+            public int dmICMMethod;
+            public int dmICMIntent;
+            public int dmMediaType;
+            public int dmDitherType;
+            public int dmReserved1;
+            public int dmReserved2;
+            public int dmPanningWidth;
+            public int dmPanningHeight;
+        public static extern int EnumDisplaySettings(string lpszDeviceName, int iModeNum, ref DEVMODE lpDevMode);
+        public const short ENUM_CURRENT_SETTINGS = -1;
+        public static extern int ChangeDisplaySettings(ref Any lpDevMode, int dwFlags);
+        public const int CDS_UPDATEREGISTRY = 0x1;
+        public const int CDS_TEST = 0x2;
+        public const int CDS_FULLSCREEN = 0x4;
+        public const short DISP_CHANGE_SUCCESSFUL = 0;
+        public const short DISP_CHANGE_RESTART = 1;
+        public static extern int GetDeviceCaps(int hDC, int nIndex);
+        public const short SPI_GETFONTSMOOTHING = 74;
+        public const short SPI_SETFONTSMOOTHING = 75;
+        public const int SPIF_UPDATEINIFILE = 0x1;
+        public const int SPIF_SENDWININICHANGE = 0x2;
+        public static void LoadMainFormAndRegisterFlash()
+        public static void LoadForms()
+        public static void SetNewGUIMode()
+        public static void OpenMessageForm([Optional, DefaultParameterValue(null)] ref Unit u1, [Optional, DefaultParameterValue(null)] ref Unit u2)
+        public static void CloseMessageForm()
+        public static void ClearMessageForm()
+        public static void UpdateMessageForm(ref Unit u1, [Optional, DefaultParameterValue(null)] ref object u2)
+        public static void SaveMessageFormStatus()
+        public static void KeepMessageFormStatus()
+        public static void DisplayMessage(ref string pname, string msg, string msg_mode = "")
+        public static void PrintMessage(ref string msg, bool is_sys_msg = false)
+        public static short MessageLen(string msg)
+        public static void DisplayBattleMessage(ref string pname, string msg, [Optional, DefaultParameterValue("")] ref string msg_mode)
+        public static void DisplaySysMessage(string msg, bool short_wait = false)
+        public static void SetupBackground([Optional, DefaultParameterValue("")] ref string draw_mode, [Optional, DefaultParameterValue("")] ref string draw_option, [Optional, DefaultParameterValue(0)] ref int filter_color, [Optional, DefaultParameterValue(0d)] ref double filter_trans_par)
+        public static void RedrawScreen(bool late_refresh = false)
+        public static void MaskScreen()
+        public static void RefreshScreen(bool without_refresh = false, bool delay_refresh = false)
+        public static void Center(short new_x, short new_y)
+        public static short MapToPixelX(short X)
+        public static short MapToPixelY(short Y)
+        public static short PixelToMapX(short X)
+        public static short PixelToMapY(short Y)
+        public static short MakeUnitBitmap(ref Unit u)
+        public static void LoadUnitBitmap(ref Unit u, ref PictureBox pic, short dx, short dy, bool use_orig_color = false, [Optional, DefaultParameterValue("")] ref string fname)
+        public static void PaintUnitBitmap(ref Unit u, string smode = "")
+        public static void EraseUnitBitmap(short X, short Y, bool do_refresh = true)
+        public static void MoveUnitBitmap(ref Unit u, short x1, short y1, short x2, short y2, int wait_time0, short division = 2)
+        public static void MoveUnitBitmap2(ref Unit u, int wait_time0, short division = 2)
+        public static short ListBox(ref string lb_caption, ref string[] list, ref string lb_info, [Optional, DefaultParameterValue("")] ref string lb_mode)
+        public static void EnlargeListBoxHeight()
+        public static void ReduceListBoxHeight()
+        public static void EnlargeListBoxWidth()
+        public static void ReduceListBoxWidth()
+        public static void AddPartsToListBox()
+        public static void RemovePartsOnListBox()
+        public static short WeaponListBox(ref Unit u, ref string caption_msg, ref string lb_mode, [Optional, DefaultParameterValue("")] ref string BGM)
+        public static short AbilityListBox(ref Unit u, ref string caption_msg, ref string lb_mode, bool is_item = false)
+        public static short LIPS(ref string lb_caption, ref string[] list, ref string lb_info, short time_limit)
+        public static short MultiColumnListBox(ref string lb_caption, ref string[] list, bool is_center)
+        public static short MultiSelectListBox(string lb_caption, ref string[] list, string lb_info, short max_num)
+        public static bool DrawPicture(ref string fname, int dx, int dy, int dw, int dh, int sx, int sy, int sw, int sh, ref string draw_option)
+        public static void MakePicBuf()
+        public static void DrawString(ref string msg, int X, int Y, bool without_cr = false)
+        public static void DrawSysString(short X, short Y, ref string msg, bool without_refresh = false)
+        public static void SaveScreen()
+        public static void ClearPicture()
+        public static void ClearPicture2(int x1, int y1, int x2, int y2)
+        public static void LockGUI()
+        public static void UnlockGUI()
+        public static void SaveCursorPos()
+        public static void MoveCursorPos(ref string cursor_mode, Unit t = null)
+        public static void RestoreCursorPos()
+        public static void OpenTitleForm()
+        public static void CloseTitleForm()
+        public static void OpenNowLoadingForm()
+        public static void CloseNowLoadingForm()
+        public static void DisplayLoadingProgress()
+        public static void SetLoadImageSize(short new_size)
+        public static void ChangeDisplaySize(short w, short h)
+        public static void ErrorMessage(ref string msg)
+        public static void DataErrorMessage(ref string msg, ref string fname, short line_num, ref string line_buf, ref string dname)
+        public static bool IsRButtonPressed(bool ignore_message_wait = false)
+        public static void DisplayTelop(ref string msg)

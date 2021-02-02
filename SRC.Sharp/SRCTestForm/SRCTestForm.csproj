@@ -14,4 +14,8 @@
     <ProjectReference Include="..\SRCCore\SRCCore.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Forms\" />
+  </ItemGroup>
+
 </Project>

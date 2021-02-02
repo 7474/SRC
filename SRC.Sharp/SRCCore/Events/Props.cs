@@ -1,26 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Text;
 using SRC.Core.CmdDatas;
 using SRC.Core.Expressions;
 using SRC.Core.Units;
+using SRC.Core.VB;
 
 namespace SRC.Core.Events
 {
     public partial class Event
     {
         // イベントデータ
-        public string[] EventData;
-        // イベントコマンドリスト
-        public CmdData[] EventCmd;
-        // 個々の行がどのイベントファイルに属しているか
-        public int[] EventFileID;
-        // 個々の行がイベントファイルの何行目に位置するか
-        public int[] EventLineNum;
+        public IList<EventDataLine> EventData;
         // イベントファイルのファイル名リスト
-        public string[] EventFileNames;
+        public IList<string> EventFileNames;
         // Requireコマンドで追加されたイベントファイルのファイル名リスト
-        public string[] AdditionalEventFileNames;
+        public IList<string> AdditionalEventFileNames;
+
+        // イベントコマンドリスト
+        public IList<CmdData> EventCmd;
 
         // システム側のイベントデータのサイズ(行数)
         private int SysEventDataSize;
@@ -33,6 +33,9 @@ namespace SRC.Core.Events
         //public Collection colEventLabelList = new Collection();
         //private Collection colSysNormalLabelList = new Collection();
         //private Collection colNormalLabelList = new Collection();
+        public SrcCollection<LabelData> colEventLabelList = new SrcCollection<LabelData>();
+        private SrcCollection<LabelData> colSysNormalLabelList = new SrcCollection<LabelData>();
+        private SrcCollection<LabelData> colNormalLabelList = new SrcCollection<LabelData>();
 
         // 変数用のコレクション
         public IDictionary<string, VarData> GlobalVariableList = new Dictionary<string, VarData>();
@@ -46,7 +49,7 @@ namespace SRC.Core.Events
         public Unit SelectedTargetForEvent;
 
         // イベント呼び出しのキュー
-        public string[] EventQue;
+        public Queue<string> EventQue;
         // 現在実行中のイベントラベル
         public int CurrentLabel;
 
@@ -64,30 +67,30 @@ namespace SRC.Core.Events
 
         // 呼び出し履歴
         public int CallDepth;
-        public int[] CallStack = new int[(MaxCallDepth + 1)];
+        public Stack<int> CallStack = new Stack<int>(MaxCallDepth);
         // 引数スタック
         public int ArgIndex;
-        public int[] ArgIndexStack = new int[(MaxCallDepth + 1)];
-        public string[] ArgStack = new string[(MaxArgIndex + 1)];
+        public Stack<int> ArgIndexStack = new Stack<int>(MaxCallDepth);
+        public Stack<string> ArgStack = new Stack<string>(MaxArgIndex);
         // UpVarコマンドによって引数が何段階シフトしているか
         public int UpVarLevel;
-        public int[] UpVarLevelStack = new int[(MaxCallDepth + 1)];
+        public Stack<int> UpVarLevelStack = new Stack<int>(MaxCallDepth);
         // サブルーチンローカル変数スタック
         public int VarIndex;
-        public int[] VarIndexStack = new int[(MaxCallDepth + 1)];
-        public VarData[] VarStack = new VarData[(MaxVarIndex + 1)];
+        public IList<int> VarIndexStack = new List<int>(MaxCallDepth);
+        public IList<VarData> VarStack = new List<VarData>(MaxVarIndex);
         // Forインデックス用スタック
         public int ForIndex;
-        public int[] ForIndexStack = new int[(MaxCallDepth + 1)];
-        public int[] ForLimitStack = new int[(MaxCallDepth + 1)];
+        public Stack<int> ForIndexStack = new Stack<int>(MaxCallDepth);
+        public Stack<int> ForLimitStack = new Stack<int>(MaxCallDepth);
 
         // ForEachコマンド用変数
         public int ForEachIndex;
-        public string[] ForEachSet;
+        public IList<string> ForEachSet;
 
         // Rideコマンド用パイロット搭乗履歴
         public string LastUnitName;
-        public string[] LastPilotID;
+        public IList<string> LastPilotID;
 
         // Wait開始時刻
         public int WaitStartTime;
@@ -101,18 +104,18 @@ namespace SRC.Core.Events
         private int BasePointIndex;
 
         // オブジェクトの色
-        public int ObjColor;
+        public Color ObjColor;
         // オブジェクトの線の太さ
         public int ObjDrawWidth;
         // オブジェクトの背景色
-        public int ObjFillColor;
+        public Color ObjFillColor;
         // オブジェクトの背景描画方法
-        public int ObjFillStyle;
+        public HatchStyle ObjFillStyle;
         // オブジェクトの描画方法
         public string ObjDrawOption;
 
         // ホットポイント
-        public HotPoint[] HotPointList;
+        public IList<HotPoint> HotPointList;
 
         // イベントコマンドエラーメッセージ
         public string EventErrorMessage;
