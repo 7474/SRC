@@ -11,7 +11,7 @@
     </button>
 </div>
 
-<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+<div class="@NavMenuCssClass" @onclick="ToggleNavMenu" style="overflow-y: scroll; height: 100%">
     <input type="hidden" @bind="IndexUri" />
     <input class="form-control mr-sm-2" type="search" placeholder="Filter" @onchange="OnChangeFilter" />
     <ul class="nav flex-column">

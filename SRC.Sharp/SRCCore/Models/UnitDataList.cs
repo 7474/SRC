@@ -42,6 +42,11 @@ namespace SRC.Core.Models
             colUnitDataList.Add(ud, ud.Name);
         }
 
+        public void Clear()
+        {
+            colUnitDataList.Clear();
+        }
+
         // ユニットデータリストにデータを追加
         public UnitData Add(string uname)
         {

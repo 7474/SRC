@@ -35,6 +35,11 @@ namespace SRC.Core.Models
             pd.Bitmap = ".bmp";
             colPilotDataList.Add(pd, pd.Name);
         }
+        public void Clear()
+        {
+            colPilotDataList.Clear();
+        }
+
 
         // パイロットデータリストにデータを追加
         public PilotData Add(string pname)

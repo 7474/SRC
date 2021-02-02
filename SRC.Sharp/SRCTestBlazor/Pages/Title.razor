@@ -1,64 +1,112 @@
 ﻿@page "/titles/{dataPath}"
-@using Microsoft.AspNetCore.Components.Forms
 @*@using System.Text.Json*@
 @using Newtonsoft.Json
-@using SRCTestBlazor.Extensions
 @using System.Diagnostics;
+@using System.Net.Http
+@using System.Web
+@using System.IO
 
-<ul>
-    <li>
-        Unit
-        <ul>
-            @foreach (var ud in SRC.UDList.Items)
-            {
-                var bindItem = ud;
-                <li><a href="#" data-name="@ud.Name" @onclick="@(e => OnClickItem(bindItem))">@ud.Name</a></li>
-            }
-        </ul>
-    </li>
-    <li>
-        Pilot
-        <ul>
-            @foreach (var pd in SRC.PDList.Items)
-            {
-                var bindItem = pd;
-                <li><a href="#" data-name="@pd.Name" @onclick="(e => OnClickItem(bindItem))">@pd.Name</a></li>
-            }
-        </ul>
-    </li>
-</ul>
-<div id="status">@StatusText</div>
-<pre id="preview">@PreviewText</pre>
+@implements IDisposable
+@inject NavigationManager NavigationManager
+@inject HttpClient Http
+
+<style type="text/css">
+    .data-previewr ul {
+        margin: 0;
+        padding: 0;
+    }
+
+    .data-previewr li {
+        margin: 4px;
+        padding: 0;
+    }
+</style>
+<h2>@DataTitle</h2>
+<div class="container data-previewr">
+    <div class="row">
+        <div class="col-md-4">
+            <ul style="overflow-y: scroll; height: 100vh;">
+                <li>
+                    Unit
+                    <ul>
+                        @foreach (var ud in SRC.UDList.Items)
+                        {
+                            var bindItem = ud;
+                            <li><a href="#" data-name="@ud.Name" @onclick:preventDefault @onclick="@(e => OnClickItem(bindItem))">@ud.Name</a></li>
+                        }
+                    </ul>
+                </li>
+                <li>
+                    Pilot
+                    <ul>
+                        @foreach (var pd in SRC.PDList.Items)
+                        {
+                            var bindItem = pd;
+                            <li><a href="#" data-name="@pd.Name" @onclick:preventDefault @onclick="(e => OnClickItem(bindItem))">@pd.Name</a></li>
+                        }
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-8" style="overflow-y: scroll; height: 100vh;">
+            <div id="status">@StatusText</div>
+            <pre id="preview">@PreviewText</pre>
+        </div>
+    </div>
+</div>
+
 
 @code {
     [Parameter]
     public string DataPath { get; set; }
+
     private SRC SRC = new SRC();
     private string StatusText = "";
     private string PreviewText = "{}";
+    private string DataTitle { get; set; }
 
     protected override async Task OnInitializedAsync()
+    {
+        NavigationManager.LocationChanged += HandleLocationChanged;
+        await UpdateData();
+    }
+
+    public void Dispose()
+    {
+        NavigationManager.LocationChanged -= HandleLocationChanged;
+    }
+
+    private void HandleLocationChanged(object sender, LocationChangedEventArgs e)
+    {
+        UpdateData();
+    }
+
+    private async Task UpdateData()
     {
         var sw = new Stopwatch();
         sw.Start();
 
-        //try
-        //{
-        //        switch (file.Name.ToLower())
-        //        {
-        //            case "unit.txt":
-        //            case "robot.txt":
-        //                SRC.UDList.Load(file.Name, await file.OpenReadStream().ToSyncStreamAsync());
-        //                break;
-        //            case "pilot.txt":
-        //                SRC.PDList.Load(file.Name, await file.OpenReadStream().ToSyncStreamAsync());
-        //                break;
+        SRC.UDList.Clear();
+        SRC.PDList.Clear();
 
-        //        }
-        //catch
-        //    {
-        //        // ignore
-        //    }
+        var baseUri = HttpUtility.UrlDecode(DataPath);
+        DataTitle = Path.GetFileName(baseUri);
+        try
+        {
+            SRC.UDList.Load("/unit.txt", await Http.GetStreamAsync(baseUri + "/unit.txt"));
+        }
+        catch { }
+        try
+        {
+            SRC.UDList.Load("/robot.txt", await Http.GetStreamAsync(baseUri + "/robot.txt"));
+        }
+        catch { }
+        try
+        {
+            SRC.PDList.Load("/pilot.txt", await Http.GetStreamAsync(baseUri + "/pilot.txt"));
+        }
+        catch { }
+
         sw.Stop();
         Console.WriteLine(sw.ElapsedMilliseconds);
         StatusText = $"{sw.ElapsedMilliseconds}ms";
@@ -69,4 +117,5 @@
     {
         PreviewText = JsonConvert.SerializeObject(item, Formatting.Indented);
     }
+
 }
