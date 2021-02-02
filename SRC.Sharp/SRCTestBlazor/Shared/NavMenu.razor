@@ -1,4 +1,10 @@
-﻿<div class="top-row pl-4 navbar navbar-dark">
+﻿@using SRCTestBlazor.Models
+@using System.Net.Http
+@using System.Web
+
+@inject HttpClient Http
+
+<div class="top-row pl-4 navbar navbar-dark">
     <a class="navbar-brand" href="">SRCTestBlazor</a>
     <button class="navbar-toggler" @onclick="ToggleNavMenu">
         <span class="navbar-toggler-icon"></span>
@@ -6,18 +12,59 @@
 </div>
 
 <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+    <input type="hidden" @bind="IndexUri" />
+    <input class="form-control mr-sm-2" type="search" placeholder="Filter" @onchange="OnChangeFilter" />
     <ul class="nav flex-column">
-        @*
-            <li class="nav-item px-3">
-                <NavLink class="nav-link" href="fetchdata">
-                    <span class="oi oi-list-rich" aria-hidden="true"></span> Fetch data
-                </NavLink>
-            </li>
-        *@
+        @if (Titles != null)
+        {
+            foreach (var title in Titles)
+            {
+                <li class="nav-item">
+                    <NavLink class="nav-link" href="@ToTitlePathParam(title.Path)">
+                        @title.Title
+                    </NavLink>
+                </li>
+            }
+        }
     </ul>
 </div>
 
 @code {
+    private string IndexUri { get; set; }
+    private string IndexBase { get; set; }
+    private string FilterValue { get; set; }
+
+    private SrcDataIndex SrcDataIndex { get; set; }
+    private ICollection<TitleData> Titles { get; set; }
+
+    private void OnChangeFilter(ChangeEventArgs e)
+    {
+        FilterValue = e.Value?.ToString() ?? "";
+
+        Titles = SrcDataIndex.Titles.Where(x => x.Path.Contains(FilterValue)).ToList();
+        StateHasChanged();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        IndexUri = "https://raw.githubusercontent.com/7474/SRC-Data/master/index.json";
+        IndexBase = "https://raw.githubusercontent.com/7474/SRC-Data/master/";
+
+        await UpdateIndex();
+    }
+
+    private async Task UpdateIndex()
+    {
+        SrcDataIndex = await Http.GetFromJsonAsync<SrcDataIndex>(IndexUri);
+        Titles = SrcDataIndex.Titles;
+        StateHasChanged();
+    }
+
+    private string ToTitlePathParam(string path)
+    {
+        return "titles/" + HttpUtility.UrlEncode(IndexBase + path);
+    }
+
     private bool collapseNavMenu = true;
 
     private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;

@@ -1,0 +1,72 @@
+﻿@page "/titles/{dataPath}"
+@using Microsoft.AspNetCore.Components.Forms
+@*@using System.Text.Json*@
+@using Newtonsoft.Json
+@using SRCTestBlazor.Extensions
+@using System.Diagnostics;
+
+<ul>
+    <li>
+        Unit
+        <ul>
+            @foreach (var ud in SRC.UDList.Items)
+            {
+                var bindItem = ud;
+                <li><a href="#" data-name="@ud.Name" @onclick="@(e => OnClickItem(bindItem))">@ud.Name</a></li>
+            }
+        </ul>
+    </li>
+    <li>
+        Pilot
+        <ul>
+            @foreach (var pd in SRC.PDList.Items)
+            {
+                var bindItem = pd;
+                <li><a href="#" data-name="@pd.Name" @onclick="(e => OnClickItem(bindItem))">@pd.Name</a></li>
+            }
+        </ul>
+    </li>
+</ul>
+<div id="status">@StatusText</div>
+<pre id="preview">@PreviewText</pre>
+
+@code {
+    [Parameter]
+    public string DataPath { get; set; }
+    private SRC SRC = new SRC();
+    private string StatusText = "";
+    private string PreviewText = "{}";
+
+    protected override async Task OnInitializedAsync()
+    {
+        var sw = new Stopwatch();
+        sw.Start();
+
+        //try
+        //{
+        //        switch (file.Name.ToLower())
+        //        {
+        //            case "unit.txt":
+        //            case "robot.txt":
+        //                SRC.UDList.Load(file.Name, await file.OpenReadStream().ToSyncStreamAsync());
+        //                break;
+        //            case "pilot.txt":
+        //                SRC.PDList.Load(file.Name, await file.OpenReadStream().ToSyncStreamAsync());
+        //                break;
+
+        //        }
+        //catch
+        //    {
+        //        // ignore
+        //    }
+        sw.Stop();
+        Console.WriteLine(sw.ElapsedMilliseconds);
+        StatusText = $"{sw.ElapsedMilliseconds}ms";
+        StateHasChanged();
+    }
+
+    private void OnClickItem(object item)
+    {
+        PreviewText = JsonConvert.SerializeObject(item, Formatting.Indented);
+    }
+}
