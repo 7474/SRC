@@ -1,13 +1,18 @@
-﻿using SRC.Core.Units;
+﻿using SRC.Core.Events;
+using SRC.Core.Units;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace SRC.Core.CmdDatas
 {
-    public partial class CmdData
+    public class TalkCmd : CmdData
     {
-        private int ExecTalkCmd()
+        public TalkCmd(SRC src, EventDataLine eventData) : base(src, CmdType.TalkCmd, eventData)
+        {
+        }
+
+        protected override int ExecInternal()
         {
             string pname, current_pname = default;
             Unit u;
@@ -21,7 +26,7 @@ namespace SRC.Core.CmdDatas
             string cname;
             int tcolor;
 
-            for (i = EventDataId; i < Event.EventData.Count; i++)
+            for (i = EventData.ID; i < Event.EventData.Count; i++)
             {
                 var currentCmd = Event.EventCmd[i];
                 switch (currentCmd.Name)
