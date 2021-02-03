@@ -43,7 +43,7 @@ namespace SRC.Core.CmdDatas
         public EventDataLine EventData { get; }
 
         // 引数の数
-        public int ArgNum => Math.Max(0, args.Count - 1);
+        public int ArgNum => args.Count;
 
         // 引数
         private IList<CmdArgument> args = new List<CmdArgument>();

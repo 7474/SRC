@@ -1090,11 +1090,11 @@ namespace SRC.Core.CmdDatas
                     case "talk":
                         return new TalkCmd(src, data);
 
-                    //case "end":
-                    //    {
-                    //        CmdName = CmdType.EndCmd;
-                    //        break;
-                    //    }
+                    case "end":
+                        return new EndCmd(src, data);
+
+                    case "suspend":
+                        return new SuspendCmd(src, data);
 
                     //case "suspend":
                     //    {

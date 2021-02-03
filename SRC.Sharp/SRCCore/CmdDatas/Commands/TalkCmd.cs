@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace SRC.Core.CmdDatas
+namespace SRC.Core.CmdDatas.Commands
 {
     public class TalkCmd : CmdData
     {
@@ -31,7 +31,7 @@ namespace SRC.Core.CmdDatas
                 var currentCmd = Event.EventCmd[i];
                 switch (currentCmd.Name)
                 {
-                    case Events.CmdType.TalkCmd:
+                    case CmdType.TalkCmd:
                         {
                             // Impl
                             //                            if (currentCmd.ArgNum > 1)
@@ -325,7 +325,7 @@ namespace SRC.Core.CmdDatas
                             break;
                         }
 
-                    case Events.CmdType.EndCmd:
+                    case CmdType.EndCmd:
                         {
                             GUI.CloseMessageForm();
                             GUI.MessageWindowIsOut = false;
@@ -338,7 +338,7 @@ namespace SRC.Core.CmdDatas
                             break;
                         }
 
-                    case Events.CmdType.SuspendCmd:
+                    case CmdType.SuspendCmd:
                         {
                             if (currentCmd.ArgNum != 1)
                             {
