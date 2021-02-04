@@ -65,14 +65,10 @@ namespace SRC.Core.Events
             ObjDrawOption = "";
 
             // ラベルの初期化
-            // XXX 消し方
             colNormalLabelList.Clear();
-            var systemLabels = colEventLabelList.Values.Take(SysEventDataSize + 1).ToList();
-            colEventLabelList.Clear();
-            systemLabels.ForEach(x =>
-            {
-                colEventLabelList.Add(x);
-            });
+            var maxEventId = EventData.Any() ? EventData.Max(x => x.ID) : -1;
+            colEventLabelList.Values.Where(x => x.EventDataId > maxEventId).ToList()
+                .ForEach(x => colEventLabelList.Remove(x));
 
             // デバッグモードの設定
             // TODO Impl

@@ -30,9 +30,6 @@ namespace SRC.Core.Events
         private bool ScenarioLibChecked;
 
         //// ラベルのリスト
-        //public Collection colEventLabelList = new Collection();
-        //private Collection colSysNormalLabelList = new Collection();
-        //private Collection colNormalLabelList = new Collection();
         public SrcCollection<LabelData> colEventLabelList = new SrcCollection<LabelData>();
         private SrcCollection<LabelData> colSysNormalLabelList = new SrcCollection<LabelData>();
         private SrcCollection<LabelData> colNormalLabelList = new SrcCollection<LabelData>();
