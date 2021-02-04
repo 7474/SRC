@@ -3,6 +3,7 @@
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
 using SRC.Core.Events;
+using SRC.Core.Exceptions;
 using SRC.Core.Lib;
 using SRC.Core.VB;
 using System;
@@ -42,7 +43,7 @@ namespace SRC.Core.CmdDatas
         // コマンドのEventData
         public EventDataLine EventData { get; }
 
-        // 引数の数
+        // 引数の数（コマンド名も含む点に留意すること）
         public int ArgNum => args.Count;
 
         // 引数
@@ -54,15 +55,15 @@ namespace SRC.Core.CmdDatas
             {
                 return ExecInternal();
             }
+            catch (EventErrorException ex)
+            {
+                Event.DisplayEventErrorMessage(EventData.ID, ex.Message);
+                return -1;
+            }
             catch
             {
                 // TODO Impl
-                if (Strings.Len(Event.EventErrorMessage) > 0)
-                {
-                    Event.DisplayEventErrorMessage(EventData.ID, Event.EventErrorMessage);
-                    Event.EventErrorMessage = "";
-                }
-                else if (Strings.LCase(GeneralLib.ListIndex(EventData.Data, 1)) == "talk")
+                if (Strings.LCase(GeneralLib.ListIndex(EventData.Data, 1)) == "talk")
                 {
                     Event.DisplayEventErrorMessage(EventData.ID, "Talkコマンド実行中に不正な処理が行われました。" + "MIDIがソフトウェアシンセサイザで演奏されているか、" + "フォントキャッシュが壊れている可能性があります。" + "詳しくはSRC公式ホームページの「よくある質問集」をご覧下さい。");
                 }

@@ -114,9 +114,6 @@ namespace SRC.Core.Events
         // ホットポイント
         public IList<HotPoint> HotPointList;
 
-        // イベントコマンドエラーメッセージ
-        public string EventErrorMessage;
-
         // ユニットがセンタリングされたか？
         public bool IsUnitCenter;
     }

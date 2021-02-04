@@ -1,4 +1,5 @@
 ﻿using SRC.Core.Events;
+using SRC.Core.Exceptions;
 using SRC.Core.Units;
 using System;
 using System.Collections.Generic;
@@ -331,9 +332,8 @@ namespace SRC.Core.CmdDatas.Commands
                             GUI.MessageWindowIsOut = false;
                             if (currentCmd.ArgNum != 1)
                             {
-                                Event.EventErrorMessage = "End部分の引数の数が違います";
-                                ////LineNum = i; // XXX これ要るの？ // XXX これ要るの？
-                                throw new Exception();
+                                ////LineNum = i; // XXX これ要るの？
+                                throw new EventErrorException("End部分の引数の数が違います");
                             }
                             break;
                         }
@@ -342,9 +342,8 @@ namespace SRC.Core.CmdDatas.Commands
                         {
                             if (currentCmd.ArgNum != 1)
                             {
-                                Event.EventErrorMessage = "Suspend部分の引数の数が違います";
                                 //LineNum = i; // XXX これ要るの？
-                                throw new Exception();
+                                throw new EventErrorException("Suspend部分の引数の数が違います");
                             }
                             break;
                         }
@@ -367,10 +366,8 @@ namespace SRC.Core.CmdDatas.Commands
 
             if (i >= Event.EventData.Count)
             {
-                // Impl
-                //GUI.CloseMessageForm();
-                //Event.EventErrorMessage = "TalkとEndが対応していません";
-                throw new Exception();
+                GUI.CloseMessageForm();
+                throw new EventErrorException("TalkとEndが対応していません");
             }
 
             return i + 1;
