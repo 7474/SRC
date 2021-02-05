@@ -6,6 +6,14 @@ namespace SRC.Core.CmdDatas
 {
     public class CmdArgument
     {
+        public static readonly CmdArgument Empty = new CmdArgument
+        {
+            argType = Expressions.ValueType.UndefinedType,
+            lngArg = 0,
+            dblArg = 0d,
+            strArg = ""
+        };
+
         // 引数の値
         public int lngArg { get; set; }
         public double dblArg { get; set; }

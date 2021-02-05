@@ -27,6 +27,7 @@ namespace SRC.Core.CmdDatas
         }
         protected IGUI GUI => SRC.GUI;
         protected Event Event => SRC.Event;
+        protected Expressions.Expression Expression => SRC.Expression;
 
         public CmdData(SRC src, CmdType name, EventDataLine eventData)
         {
@@ -81,17 +82,80 @@ namespace SRC.Core.CmdDatas
 
         protected abstract int ExecInternal();
 
-        // idx番目の引数を式として評価せずにそのまま返す
-        public string GetArg(int idx)
+        // idx番目の引数を返す
+        public CmdArgument GetArgRaw(int idx)
         {
             if (idx - 2 < args.Count)
             {
                 // コマンド名とオフセット分引いた値を返す
-                return args[idx - 2].strArg;
+                return args[idx - 2];
             }
             else
             {
-                return "";
+                return CmdArgument.Empty;
+            }
+        }
+
+        // idx番目の引数を式として評価せずにそのまま返す
+        public string GetArg(int idx)
+        {
+            return GetArgRaw(idx).strArg;
+        }
+
+        // idx番目の引数の値を文字列として返す
+        public string GetArgAsString(int idx)
+        {
+            var arg = GetArgRaw(idx);
+            switch (arg.argType)
+            {
+                case Expressions.ValueType.UndefinedType:
+                    return Expression.GetValueAsString(arg.strArg, true);
+
+                case Expressions.ValueType.StringType:
+                    return arg.strArg;
+
+                case Expressions.ValueType.NumericType:
+                    return SrcFormatter.Format(arg.dblArg);
+                default:
+                    throw new InvalidOperationException();
+            }
+        }
+
+        // idx番目の引数の値をLongとして返す
+        public int GetArgAsLong(int idx)
+        {
+            var arg = GetArgRaw(idx);
+            switch (arg.argType)
+            {
+                case Expressions.ValueType.UndefinedType:
+                    return Expression.GetValueAsLong(arg.strArg, true);
+
+                case Expressions.ValueType.StringType:
+                    return 0;
+
+                case Expressions.ValueType.NumericType:
+                    return arg.lngArg;
+                default:
+                    throw new InvalidOperationException();
+            }
+        }
+
+        // idx番目の引数の値をDoubleとして返す
+        public double GetArgAsDouble(int idx)
+        {
+            var arg = GetArgRaw(idx);
+            switch (arg.argType)
+            {
+                case Expressions.ValueType.UndefinedType:
+                    return Expression.GetValueAsDouble(arg.strArg, true);
+
+                case Expressions.ValueType.StringType:
+                    return 0d;
+
+                case Expressions.ValueType.NumericType:
+                    return arg.dblArg;
+                default:
+                    throw new InvalidOperationException();
             }
         }
 

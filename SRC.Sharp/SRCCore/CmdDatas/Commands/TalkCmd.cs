@@ -1,6 +1,7 @@
 ﻿using SRC.Core.Events;
 using SRC.Core.Exceptions;
 using SRC.Core.Units;
+using SRC.Core.VB;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -34,293 +35,268 @@ namespace SRC.Core.CmdDatas.Commands
                 {
                     case CmdType.TalkCmd:
                         {
-                            // Impl
-                            //                            if (currentCmd.ArgNum > 1)
-                            //                            {
-                            //                                pname = currentCmd.GetArgAsString(2);
-                            //                            }
-                            //                            else
-                            //                            {
-                            //                                pname = "";
-                            //                            }
+                            if (currentCmd.ArgNum > 1)
+                            {
+                                pname = currentCmd.GetArgAsString(2);
+                            }
+                            else
+                            {
+                                pname = "";
+                            }
 
-                            //                            if (Strings.Left(pname, 1) == "@")
-                            //                            {
-                            //                                // メインパイロットの強制指定
-                            //                                pname = Strings.Mid(pname, 2);
-                            //                                object argIndex2 = (object)pname;
-                            //                                if (SRC.PList.IsDefined(ref argIndex2))
-                            //                                {
-                            //                                    object argIndex1 = (object)pname;
-                            //                                    {
-                            //                                        var withBlock1 = SRC.PList.Item(ref argIndex1);
-                            //                                        if (withBlock1.Unit_Renamed is object)
-                            //                                        {
-                            //                                            pname = withBlock1.Unit_Renamed.MainPilot().Name;
-                            //                                        }
-                            //                                    }
-                            //                                }
-                            //                            }
+                            // TODO Impl
+                            //if (Strings.Left(pname, 1) == "@")
+                            //{
+                            //    // メインパイロットの強制指定
+                            //    pname = Strings.Mid(pname, 2);
+                            //    if (SRC.PList.IsDefined(pname))
+                            //    {
+                            //        var p = SRC.PList.Item(pname);
+                            //        if (p.Unit_Renamed != null)
+                            //        {
+                            //            pname = p.Unit_Renamed.MainPilot().Name;
+                            //        }
+                            //    }
+                            //}
 
-                            //                            // 話者名チェック
-                            //                            bool localIsDefined() { object argIndex1 = (object)pname; var ret = SRC.PList.IsDefined(ref argIndex1); return ret; }
+                            // 話者名チェック
+                            if (
+                                 //!SRC.PList.IsDefined(pname)
+                                 !SRC.PDList.IsDefined(pname)
+                                //& !SRC.NPDList.IsDefined(pname)
+                                & !(pname == "システム")
+                                & !string.IsNullOrEmpty(pname))
+                            {
+                                //LineNum = i; // XXX これ要るの？
+                                throw new EventErrorException("「" + pname + "」というパイロットが定義されていません");
 
-                            //                            bool localIsDefined1() { object argIndex1 = (object)pname; var ret = SRC.PDList.IsDefined(ref argIndex1); return ret; }
+                            }
 
-                            //                            bool localIsDefined2() { object argIndex1 = (object)pname; var ret = SRC.NPDList.IsDefined(ref argIndex1); return ret; }
+                            if (currentCmd.ArgNum > 1)
+                            {
+                                options = "";
+                                without_cursor = false;
+                                j = 2;
+                                lnum = 1;
+                                while (j <= currentCmd.ArgNum)
+                                {
+                                    opt = currentCmd.GetArgAsString(j);
+                                    switch (opt ?? "")
+                                    {
+                                        case "非表示":
+                                            {
+                                                without_cursor = true;
+                                                break;
+                                            }
 
-                            //                            if (!localIsDefined() & !localIsDefined1() & !localIsDefined2() & !(pname == "システム") & !string.IsNullOrEmpty(pname))
-                            //                            {
-                            //                                Event.EventErrorMessage = "「" + pname + "」というパイロットが定義されていません";
-                            //                                //LineNum = i; // XXX これ要るの？
-                            //                            }
+                                        case "枠外":
+                                            {
+                                                GUI.MessageWindowIsOut = true;
+                                                break;
+                                            }
 
-                            //                            if (currentCmd.ArgNum > 1)
-                            //                            {
-                            //                                options = "";
-                            //                                without_cursor = false;
-                            //                                j = 2;
-                            //                                lnum = 1;
-                            //                                while (j <= currentCmd.ArgNum)
-                            //                                {
-                            //                                    opt = currentCmd.GetArgAsString(j);
-                            //                                    switch (opt ?? "")
-                            //                                    {
-                            //                                        case "非表示":
-                            //                                            {
-                            //                                                without_cursor = true;
-                            //                                                break;
-                            //                                            }
+                                        case "白黒":
+                                        case "セピア":
+                                        case "明":
+                                        case "暗":
+                                        case "上下反転":
+                                        case "左右反転":
+                                        case "上半分":
+                                        case "下半分":
+                                        case "右半分":
+                                        case "左半分":
+                                        case "右上":
+                                        case "左上":
+                                        case "右下":
+                                        case "左下":
+                                        case "ネガポジ反転":
+                                        case "シルエット":
+                                        case "夕焼け":
+                                        case "水中":
+                                        case "通常":
+                                            {
+                                                if (j > 2)
+                                                {
+                                                    // これらのパイロット画像描画に関するオプションは
+                                                    // パイロット名が指定されている場合にのみ有効
+                                                    options = options + opt + " ";
+                                                }
+                                                else
+                                                {
+                                                    lnum = j;
+                                                }
 
-                            //                                        case "枠外":
-                            //                                            {
-                            //                                                GUI.MessageWindowIsOut = true;
-                            //                                                break;
-                            //                                            }
+                                                break;
+                                            }
 
-                            //                                        case "白黒":
-                            //                                        case "セピア":
-                            //                                        case "明":
-                            //                                        case "暗":
-                            //                                        case "上下反転":
-                            //                                        case "左右反転":
-                            //                                        case "上半分":
-                            //                                        case "下半分":
-                            //                                        case "右半分":
-                            //                                        case "左半分":
-                            //                                        case "右上":
-                            //                                        case "左上":
-                            //                                        case "右下":
-                            //                                        case "左下":
-                            //                                        case "ネガポジ反転":
-                            //                                        case "シルエット":
-                            //                                        case "夕焼け":
-                            //                                        case "水中":
-                            //                                        case "通常":
-                            //                                            {
-                            //                                                if (j > 2)
-                            //                                                {
-                            //                                                    // これらのパイロット画像描画に関するオプションは
-                            //                                                    // パイロット名が指定されている場合にのみ有効
-                            //                                                    options = options + opt + " ";
-                            //                                                }
-                            //                                                else
-                            //                                                {
-                            //                                                    lnum = j;
-                            //                                                }
+                                        case "右回転":
+                                            {
+                                                j = (j + 1);
+                                                options = options + "右回転 " + currentCmd.GetArgAsString(j) + " ";
+                                                break;
+                                            }
 
-                            //                                                break;
-                            //                                            }
+                                        case "左回転":
+                                            {
+                                                j = (j + 1);
+                                                options = options + "左回転 " + currentCmd.GetArgAsString(j) + " ";
+                                                break;
+                                            }
 
-                            //                                        case "右回転":
-                            //                                            {
-                            //                                                j = (j + 1);
-                            //                                                options = options + "右回転 " + currentCmd.GetArgAsString(j) + " ";
-                            //                                                break;
-                            //                                            }
+                                        // TODO 色指定の処理全般保留
+                                        //case "フィルタ":
+                                        //    {
+                                        //        j = (j + 1);
+                                        //        buf = currentCmd.GetArgAsString(j);
+                                        //        cname = new string(Conversions.ToChar(Constants.vbNullChar), 8);
+                                        //        StringType.MidStmtStr(cname, 1, 2, "&H");
+                                        //        var midTmp = Strings.Mid(buf, 6, 2);
+                                        //        StringType.MidStmtStr(cname, 3, 2, midTmp);
+                                        //        var midTmp1 = Strings.Mid(buf, 4, 2);
+                                        //        StringType.MidStmtStr(cname, 5, 2, midTmp1);
+                                        //        var midTmp2 = Strings.Mid(buf, 2, 2);
+                                        //        StringType.MidStmtStr(cname, 7, 2, midTmp2);
+                                        //        tcolor = Conversions.ToInteger(cname);
+                                        //        j = (j + 1);
+                                        //        // 空白のオプションをスキップ
+                                        //        options = options + "フィルタ " + SrcFormatter.Format(tcolor) + " " + currentCmd.GetArgAsString(j) + " ";
+                                        //        break;
+                                        //    }
 
-                            //                                        case "左回転":
-                            //                                            {
-                            //                                                j = (j + 1);
-                            //                                                options = options + "左回転 " + currentCmd.GetArgAsString(j) + " ";
-                            //                                                break;
-                            //                                            }
+                                        case var @case when @case == "":
+                                            {
+                                                break;
+                                            }
 
-                            //                                        case "フィルタ":
-                            //                                            {
-                            //                                                j = (j + 1);
-                            //                                                buf = currentCmd.GetArgAsString(j);
-                            //                                                cname = new string(Conversions.ToChar(Constants.vbNullChar), 8);
-                            //                                                StringType.MidStmtStr(ref cname, 1, 2, "&H");
-                            //                                                var midTmp = Strings.Mid(buf, 6, 2);
-                            //                                                StringType.MidStmtStr(ref cname, 3, 2, midTmp);
-                            //                                                var midTmp1 = Strings.Mid(buf, 4, 2);
-                            //                                                StringType.MidStmtStr(ref cname, 5, 2, midTmp1);
-                            //                                                var midTmp2 = Strings.Mid(buf, 2, 2);
-                            //                                                StringType.MidStmtStr(ref cname, 7, 2, midTmp2);
-                            //                                                tcolor = Conversions.ToInteger(cname);
-                            //                                                j = (j + 1);
-                            //                                                // 空白のオプションをスキップ
-                            //                                                options = options + "フィルタ " + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((object)tcolor) + " " + currentCmd.GetArgAsString(j) + " ";
-                            //                                                break;
-                            //                                            }
+                                        default:
+                                            {
+                                                // 通常の引数をスキップ
+                                                lnum = j;
+                                                break;
+                                            }
+                                    }
 
-                            //                                        case var @case when @case == "":
-                            //                                            {
-                            //                                                break;
-                            //                                            }
+                                    j = (j + 1);
+                                }
+                            }
+                            else
+                            {
+                                lnum = 1;
+                            }
 
-                            //                                        default:
-                            //                                            {
-                            //                                                // 通常の引数をスキップ
-                            //                                                lnum = j;
-                            //                                                break;
-                            //                                            }
-                            //                                    }
+                            switch (lnum)
+                            {
+                                case 0:
+                                case 1:
+                                    {
+                                        // 引数なし
+                                        // TODO Impl
+                                        //if (!My.MyProject.Forms.frmMessage.Visible)
+                                        //{
+                                        //    Unit argu1 = null;
+                                        //    Unit argu2 = null;
+                                        //    GUI.OpenMessageForm(u1: argu1, u2: argu2);
+                                        //}
 
-                            //                                    j = (j + 1);
-                            //                                }
-                            //                            }
-                            //                            else
-                            //                            {
-                            //                                lnum = 1;
-                            //                            }
+                                        // メッセージウィンドウのパイロット画像を以前指定された
+                                        // ものに確定させる
+                                        if (!string.IsNullOrEmpty(current_pname))
+                                        {
+                                            GUI.DisplayMessage(current_pname, "", options);
+                                        }
 
-                            //                            switch (lnum)
-                            //                            {
-                            //                                case 0:
-                            //                                case 1:
-                            //                                    {
-                            //                                        // 引数なし
+                                        current_pname = "";
+                                        break;
+                                    }
 
-                            //                                        if (!My.MyProject.Forms.frmMessage.Visible)
-                            //                                        {
-                            //                                            Unit argu1 = null;
-                            //                                            Unit argu2 = null;
-                            //                                            GUI.OpenMessageForm(u1: ref argu1, u2: ref argu2);
-                            //                                        }
+                                case 2:
+                                    {
+                                        // パイロット名のみ指定
+                                        current_pname = pname;
 
-                            //                                        // メッセージウィンドウのパイロット画像を以前指定された
-                            //                                        // ものに確定させる
-                            //                                        if (!string.IsNullOrEmpty(current_pname))
-                            //                                        {
-                            //                                            GUI.DisplayMessage(ref current_pname, "", options);
-                            //                                        }
+                                        // TODO Impl
+                                        //// 話者中心に画面位置を変更
+                                        //// プロローグイベントやエピローグイベント時はキャンセル
+                                        //if (SRC.Stage == "プロローグ" | SRC.Stage == "エピローグ")
+                                        //{
+                                        //    goto NextLoop;
+                                        //}
 
-                            //                                        current_pname = "";
-                            //                                        break;
-                            //                                    }
+                                        //// 画面書き換え可能？
+                                        //if (!GUI.MainForm.Visible)
+                                        //{
+                                        //    goto NextLoop;
+                                        //}
 
-                            //                                case 2:
-                            //                                    {
-                            //                                        // パイロット名のみ指定
-                            //                                        current_pname = pname;
+                                        //if (GUI.IsPictureVisible)
+                                        //{
+                                        //    goto NextLoop;
+                                        //}
 
-                            //                                        // 話者中心に画面位置を変更
+                                        //if (string.IsNullOrEmpty(Map.MapFileName))
+                                        //{
+                                        //    goto NextLoop;
+                                        //}
 
-                            //                                        // プロローグイベントやエピローグイベント時はキャンセル
-                            //                                        if (SRC.Stage == "プロローグ" | SRC.Stage == "エピローグ")
-                            //                                        {
-                            //                                            goto NextLoop;
-                            //                                        }
+                                        //// 話者を中央表示
+                                        //CenterUnit(pname, without_cursor);
+                                        break;
+                                    }
 
-                            //                                        // 画面書き換え可能？
-                            //                                        if (!GUI.MainForm.Visible)
-                            //                                        {
-                            //                                            goto NextLoop;
-                            //                                        }
+                                // TODO Impl
+                                //case 3:
+                                //    {
+                                //        current_pname = pname;
+                                //        switch (currentCmd.GetArgAsString(3) ?? "")
+                                //        {
+                                //            case "母艦":
+                                //                {
+                                //                    // 母艦の中央表示
+                                //                    CenterUnit("母艦", without_cursor);
+                                //                    break;
+                                //                }
 
-                            //                                        if (GUI.IsPictureVisible)
-                            //                                        {
-                            //                                            goto NextLoop;
-                            //                                        }
+                                //            case "中央":
+                                //                {
+                                //                    // 話者の中央表示
+                                //                    CenterUnit(pname, without_cursor);
+                                //                    break;
+                                //                }
 
-                            //                                        if (string.IsNullOrEmpty(Map.MapFileName))
-                            //                                        {
-                            //                                            goto NextLoop;
-                            //                                        }
+                                //            case "固定":
+                                //                {
+                                //                    break;
+                                //                }
+                                //                // 表示位置固定
+                                //        }
 
-                            //                                        // 話者を中央表示
-                            //                                        CenterUnit(pname, without_cursor);
-                            //                                        break;
-                            //                                    }
+                                //        break;
+                                //    }
 
-                            //                                case 3:
-                            //                                    {
-                            //                                        current_pname = pname;
-                            //                                        switch (currentCmd.GetArgAsString(3) ?? "")
-                            //                                        {
-                            //                                            case "母艦":
-                            //                                                {
-                            //                                                    // 母艦の中央表示
-                            //                                                    CenterUnit("母艦", without_cursor);
-                            //                                                    break;
-                            //                                                }
+                                //case 4:
+                                //    {
+                                //        // 表示の座標指定あり
+                                //        current_pname = pname;
+                                //        CenterUnit(pname, without_cursor, currentCmd.GetArgAsLong(3), currentCmd.GetArgAsLong(4));
+                                //        break;
+                                //    }
 
-                            //                                            case "中央":
-                            //                                                {
-                            //                                                    // 話者の中央表示
-                            //                                                    CenterUnit(pname, without_cursor);
-                            //                                                    break;
-                            //                                                }
+                                case -1:
+                                    //LineNum = i; // XXX これ要るの？
+                                    throw new EventErrorException("Talkコマンドのパラメータの括弧の対応が取れていません");
 
-                            //                                            case "固定":
-                            //                                                {
-                            //                                                    break;
-                            //                                                }
-                            //                                                // 表示位置固定
-                            //                                        }
+                                default:
+                                    //throw new EventErrorException("Talkコマンドの引数の数が違います");
+                                    break;
+                            }
 
-                            //                                        break;
-                            //                                    }
-
-                            //                                case 4:
-                            //                                    {
-                            //                                        // 表示の座標指定あり
-                            //                                        current_pname = pname;
-                            //                                        CenterUnit(pname, without_cursor, currentCmd.GetArgAsLong(3), currentCmd.GetArgAsLong(4));
-                            //                                        break;
-                            //                                    }
-
-                            //                                case -1:
-                            //                                    {
-                            //                                        Event.EventErrorMessage = "Talkコマンドのパラメータの括弧の対応が取れていません";
-                            //                                        //LineNum = i; // XXX これ要るの？
-                            //                                        ;
-                            //#error Cannot convert ErrorStatementSyntax - see comment for details
-                            //                                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 511026
-
-
-                            //                                        Input:
-                            //                                                                        Error(0)
-
-                            //                                         */
-                            //                                        break;
-                            //                                    }
-
-                            //                                default:
-                            //                                    {
-                            //                                        Event.EventErrorMessage = "Talkコマンドの引数の数が違います";
-                            //                                        //LineNum = i; // XXX これ要るの？
-                            //                                        ;
-                            //#error Cannot convert ErrorStatementSyntax - see comment for details
-                            //                                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 511176
-
-
-                            //                                        Input:
-                            //                                                                        Error(0)
-
-                            //                                         */
-                            //                                        break;
-                            //                                    }
-                            //                            }
-
-                            //                            if (!My.MyProject.Forms.frmMessage.Visible)
-                            //                            {
-                            //                                Unit argu11 = null;
-                            //                                Unit argu21 = null;
-                            //                                GUI.OpenMessageForm(u1: ref argu11, u2: ref argu21);
-                            //                            }
+                            // TODO Impl
+                            //if (!My.MyProject.Forms.frmMessage.Visible)
+                            //{
+                            //    Unit argu11 = null;
+                            //    Unit argu21 = null;
+                            //    GUI.OpenMessageForm(u1: argu11, u2: argu21);
+                            //}
 
                             GUI.OpenMessageForm();
                             break;
@@ -354,7 +330,7 @@ namespace SRC.Core.CmdDatas.Commands
                             //{
                             //    Unit argu12 = null;
                             //    Unit argu22 = null;
-                            //    GUI.OpenMessageForm(u1: ref argu12, u2: ref argu22);
+                            //    GUI.OpenMessageForm(u1: argu12, u2: argu22);
                             //}
 
                             GUI.OpenMessageForm();
