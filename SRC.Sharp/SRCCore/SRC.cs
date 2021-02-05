@@ -48,10 +48,10 @@ namespace SRC.Core
         //// バトルコンフィグデータのリスト
         //public BattleConfigDataList BCList = new BattleConfigDataList();
 
-        //// パイロットのリスト
-        //public Pilots PList = new Pilots();
-        //// ユニットのリスト
-        //public Units UList = new Units();
+        // パイロットのリスト
+        public Pilots.Pilots PList;
+        // ユニットのリスト
+        public Units.Units UList;
         //// アイテムのリスト
         //public Items IList = new Items();
 
@@ -129,6 +129,8 @@ namespace SRC.Core
         {
             Event = new Event(this);
             Expression = new Expression(this);
+            PList = new Pilots.Pilots(this);
+            UList = new Units.Units(this);
         }
     }
 }

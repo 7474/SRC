@@ -4,9 +4,6 @@
 // 再頒布または改変することができます。
 using SRC.Core.Models;
 using SRC.Core.Pilots;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace SRC.Core.Units
 {

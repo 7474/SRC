@@ -6,8 +6,6 @@ using SRC.Core.Models;
 using SRC.Core.Units;
 using SRC.Core.VB;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace SRC.Core.Pilots
 {
@@ -93,5 +91,31 @@ namespace SRC.Core.Pilots
 
         // 特殊能力
         private SrcCollection<SkillData> colSkill = new SrcCollection<SkillData>();
+
+        // 名称
+        public string Name => Data.Name;
+
+        private WeakReference<SRC> _src;
+        private SRC SRC
+        {
+            get
+            {
+                SRC res;
+                _src.TryGetTarget(out res);
+                return res;
+            }
+        }
+        private IGUI GUI => SRC.GUI;
+
+        public Pilot(SRC src, PilotData data)
+        {
+            // XXX これでいいかは知らん。
+            _src = new WeakReference<SRC>(src, true);
+
+            Data = data;
+
+            // Impl
+            //Update();
+        }
     }
 }
