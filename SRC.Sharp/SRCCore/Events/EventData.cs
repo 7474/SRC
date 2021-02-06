@@ -1260,7 +1260,7 @@ namespace SRC.Core.Events
                         var isIncludeLine = Strings.Left(line, 1) == "<" && Strings.InStr(line, ">") == Strings.Len(line) && line != "<>";
                         if (!isIncludeLine)
                         {
-                            var eventLine = new EventDataLine(EventData.Count + 1, source, reader.FileName, reader.LineNumber, line);
+                            var eventLine = new EventDataLine(EventData.Count, source, reader.FileName, reader.LineNumber, line);
                             EventData.Add(eventLine);
                         }
                         else
