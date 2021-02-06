@@ -280,15 +280,15 @@ namespace SRC.Core.CmdDatas.Commands
                                     throw new EventErrorException("Talkコマンドの引数の数が違います");
                             }
 
-                            // TODO Impl
-                            //if (!My.MyProject.Forms.frmMessage.Visible)
-                            //{
-                            //    Unit argu11 = null;
-                            //    Unit argu21 = null;
-                            //    GUI.OpenMessageForm(u1: argu11, u2: argu21);
-                            //}
+                            if (!GUI.MessageFormVisible)
+                            {
+                                // TODO Impl
+                                //Unit argu11 = null;
+                                //Unit argu21 = null;
+                                //GUI.OpenMessageForm(u1: argu11, u2: argu21);
+                                GUI.OpenMessageForm();
+                            }
 
-                            GUI.OpenMessageForm();
                             break;
                         }
 
@@ -316,14 +316,14 @@ namespace SRC.Core.CmdDatas.Commands
 
                     default:
                         {
-                            //if (!My.MyProject.Forms.frmMessage.Visible)
-                            //{
-                            //    Unit argu12 = null;
-                            //    Unit argu22 = null;
-                            //    GUI.OpenMessageForm(u1: argu12, u2: argu22);
-                            //}
+                            if (!GUI.MessageFormVisible)
+                            {
+                                //Unit argu12 = null;
+                                //Unit argu22 = null;
+                                //GUI.OpenMessageForm(u1: argu12, u2: argu22);
+                                GUI.OpenMessageForm();
+                            }
 
-                            GUI.OpenMessageForm();
                             GUI.DisplayMessage(current_pname, Event.EventData[i].Data, options);
                             break;
                         }

@@ -51,6 +51,7 @@ namespace SRCCoreTests.TestLib
         public int PaintedAreaY2 { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public bool IsCursorVisible { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public int BGColor { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public bool MessageFormVisible { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public int AbilityListBox(Unit u, string caption_msg, string lb_mode, bool is_item = false)
         {

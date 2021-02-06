@@ -105,6 +105,7 @@ namespace SRC.Core
 
         // === メッセージウィンドウに関する処理 ===
 
+        bool MessageFormVisible { get; }
         // メッセージウィンドウを開く
         // 戦闘メッセージ画面など、ユニット表示を行う場合は u1, u2 に指定
         void OpenMessageForm(Unit u1 = null, Unit u2 = null);

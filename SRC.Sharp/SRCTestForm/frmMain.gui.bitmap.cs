@@ -2,6 +2,7 @@
 using SRC.Core.VB;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -822,7 +823,7 @@ namespace SRCTestForm
 
             if (!string.IsNullOrEmpty(filePath))
             {
-                pic.ImageLocation = filePath;
+                pic.Image = Image.FromFile(filePath);
             }
 
             #region TODO

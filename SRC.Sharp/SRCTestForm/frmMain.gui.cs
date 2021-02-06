@@ -238,11 +238,21 @@ namespace SRCTestForm
             throw new NotImplementedException();
         }
 
+        public bool MessageFormVisible => frmMessage.Visible;
+        private string DisplayedPilot;
+        private string DisplayMode;
+        private Unit RightUnit;
+        private Unit LeftUnit;
+        private double RightUnitHPRatio;
+        private double LeftUnitHPRatio;
+        private double RightUnitENRatio;
+        private double LeftUnitENRatio;
+
         public void OpenMessageForm(Unit u1, Unit u2)
         {
-            frmMessage.ClearForm();
             if (!frmMessage.Visible)
             {
+                frmMessage.ClearForm();
                 frmMessage.Show(this);
             }
             Application.DoEvents();
@@ -256,6 +266,10 @@ namespace SRCTestForm
 
         public void ClearMessageForm()
         {
+            DisplayedPilot = "";
+            RightUnit = null;
+            LeftUnit = null;
+
             frmMessage.ClearForm();
             Application.DoEvents();
         }
@@ -275,8 +289,6 @@ namespace SRCTestForm
             throw new NotImplementedException();
         }
 
-        private string DisplayedPilot;
-        private string DisplayMode;
         public void DisplayMessage(string pname, string msg, string msg_mode)
         {
             string pnickname;
@@ -343,7 +355,7 @@ namespace SRCTestForm
                 if (fname != "-.bmp")
                 {
                     fname = Path.Combine("Pilot", fname);
-                    if ((DisplayedPilot ?? "") != (fname ?? "") | (DisplayMode ?? "") != (msg_mode ?? ""))
+                    if ((DisplayedPilot ?? "") != (fname ?? "") || (DisplayMode ?? "") != (msg_mode ?? ""))
                     {
                         string argdraw_option = "メッセージ " + msg_mode;
                         if (DrawPicture(fname, 0, 0, 64, 64, 0, 0, 0, 0, argdraw_option))
