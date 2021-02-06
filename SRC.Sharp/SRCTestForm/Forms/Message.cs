@@ -57,30 +57,22 @@ namespace SRCTestForm
             GUI.IsFormClicked = true;
         }
 
-        // フォームを閉じる
-        private void frmMessage_FormClosed(object eventSender, FormClosedEventArgs eventArgs)
+        private void frmMessage_FormClosing(object sender, FormClosingEventArgs e)
         {
-            short ret;
-
             // SRCを終了するか確認
-            ret = (short)Interaction.MsgBox("SRCを終了しますか？", (MsgBoxStyle)((int)MsgBoxStyle.OkCancel + (int)MsgBoxStyle.Question), "終了");
+            var ret = Interaction.MsgBox("SRCを終了しますか？", (MsgBoxStyle)((int)MsgBoxStyle.OkCancel + (int)MsgBoxStyle.Question), "終了");
             switch (ret)
             {
-                case 1:
-                    {
-                        // SRCを終了
-                        Hide();
-                        SRC.TerminateSRC();
-                        break;
-                    }
+                case MsgBoxResult.Ok:
+                    // SRCを終了
+                    Hide();
+                    SRC.TerminateSRC();
+                    break;
 
-                case 2:
-                    {
-                        // 終了をキャンセル
-                        // UPGRADE_ISSUE: Event パラメータ Cancel はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="FB723E3C-1C06-4D2B-B083-E6CD0D334DA8"' をクリックしてください。
-                        //Cancel = 1;
-                        break;
-                    }
+                default:
+                    // 終了をキャンセル
+                    e.Cancel = true;
+                    break;
             }
         }
 

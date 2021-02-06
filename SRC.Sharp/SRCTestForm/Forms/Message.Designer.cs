@@ -405,7 +405,7 @@ namespace SRCTestForm
             this.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "メッセージ";
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frmMessage_FormClosed);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmMessage_FormClosing);
             this.Click += new System.EventHandler(this.frmMessage_Click);
             this.DoubleClick += new System.EventHandler(this.frmMessage_DoubleClick);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.frmMessage_KeyDown);
