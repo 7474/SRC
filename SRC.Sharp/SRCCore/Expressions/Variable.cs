@@ -45,15 +45,16 @@ namespace SRC.Core.Expressions
             // サブルーチンローカル変数
             if (Event.CallDepth > 0)
             {
+                // TODO ちゃんと作ってないので死ぬ
                 // XXX ローカル変数の参照の仕方
-                for (int i = Event.VarIndexStack[Event.CallDepth - 1]; i <= Event.VarIndex; i++)
-                {
-                    var withBlock = Event.VarStack[i];
-                    if ((vname ?? "") == (withBlock.Name ?? ""))
-                    {
-                        return ReferenceValue(etype, withBlock, out str_result, out num_result);
-                    }
-                }
+                //for (int i = Event.VarIndexStack[Event.CallDepth - 1]; i <= Event.VarIndex; i++)
+                //{
+                //    var withBlock = Event.VarStack[i];
+                //    if ((vname ?? "") == (withBlock.Name ?? ""))
+                //    {
+                //        return ReferenceValue(etype, withBlock, out str_result, out num_result);
+                //    }
+                //}
             }
 
             // ローカル変数

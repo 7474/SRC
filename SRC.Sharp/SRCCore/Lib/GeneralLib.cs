@@ -329,6 +329,13 @@ namespace SRC.Core.Lib
         // リスト list の要素を分割して返す (括弧を考慮)
         public static IList<string> ToList(string list)
         {
+            bool hasError;
+            return ToListInternal(list, out hasError);
+        }
+
+        private static IList<string> ToListInternal(string list, out bool hasError)
+        {
+            hasError = false;
             bool in_single_quote = false;
             bool in_double_quote = false;
             int i = -1;
@@ -382,6 +389,7 @@ namespace SRC.Core.Lib
                             if (paren < 0)
                             {
                                 // 括弧の対応が取れていない
+                                hasError = true;
                                 result.Add(current.ToString());
                                 result.Add(new string(list.ToCharArray().Skip(i).ToArray()));
                                 return result;
@@ -434,8 +442,9 @@ namespace SRC.Core.Lib
         // Convert: VBの配列と違って0オフセットな点に注意すること。
         public static int ListSplit(string list, out string[] larray)
         {
-            larray = ToList(list).ToArray();
-            return larray.Length;
+            bool hasError;
+            larray = ToListInternal(list, out hasError).ToArray();
+            return hasError ? -1 : larray.Length;
         }
 
         //        // リスト list から idx 番目以降の全要素を返す (括弧を考慮)

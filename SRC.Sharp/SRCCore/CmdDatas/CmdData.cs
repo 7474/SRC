@@ -35,7 +35,7 @@ namespace SRC.Core.CmdDatas
             _src = new WeakReference<SRC>(src, true);
             Name = name;
             EventData = eventData;
-            ParseArgs(GeneralLib.ToList(eventData.Data));
+            ParseArgs(eventData.Data);
         }
 
         // コマンドの種類
@@ -45,7 +45,7 @@ namespace SRC.Core.CmdDatas
         public EventDataLine EventData { get; }
 
         // 引数の数（コマンド名も含む点に留意すること）
-        public int ArgNum => args.Count;
+        public int ArgNum { get; private set; }
 
         // 引数
         private IList<CmdArgument> args = new List<CmdArgument>();
@@ -85,10 +85,10 @@ namespace SRC.Core.CmdDatas
         // idx番目の引数を返す
         public CmdArgument GetArgRaw(int idx)
         {
-            if (idx - 2 < args.Count)
+            if (idx - 1 < args.Count)
             {
-                // コマンド名とオフセット分引いた値を返す
-                return args[idx - 2];
+                // オフセット分引いた値を返す
+                return args[idx - 1];
             }
             else
             {
@@ -159,10 +159,13 @@ namespace SRC.Core.CmdDatas
             }
         }
 
-        private void ParseArgs(ICollection<string> list)
+        private void ParseArgs(string list)
         {
-            // コマンド名を飛ばす
-            foreach (var buf in list.Skip(1))
+            string[] rawArgs;
+            ArgNum = GeneralLib.ListSplit(list, out rawArgs);
+
+            // コマンド名も含める
+            foreach (var buf in rawArgs)
             {
                 var arg = new CmdArgument()
                 {

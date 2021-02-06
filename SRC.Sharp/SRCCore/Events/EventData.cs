@@ -370,7 +370,7 @@ namespace SRC.Core.Events
 
                 // TODO Impl
                 // リスト長がマイナスのときは括弧の対応が取れていない
-                if (command.ArgNum == -1)
+                if (command.ArgNum <= -1)
                 {
                     switch (cmdStack.Peek())
                     {

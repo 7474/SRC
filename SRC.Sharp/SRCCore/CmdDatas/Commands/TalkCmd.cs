@@ -69,7 +69,6 @@ namespace SRC.Core.CmdDatas.Commands
                             {
                                 //LineNum = i; // XXX これ要るの？
                                 throw new EventErrorException("「" + pname + "」というパイロットが定義されていません");
-
                             }
 
                             if (currentCmd.ArgNum > 1)
@@ -210,84 +209,75 @@ namespace SRC.Core.CmdDatas.Commands
                                     }
 
                                 case 2:
-                                    {
-                                        // パイロット名のみ指定
-                                        current_pname = pname;
+                                    // パイロット名のみ指定
+                                    current_pname = pname;
 
-                                        // TODO Impl
-                                        //// 話者中心に画面位置を変更
-                                        //// プロローグイベントやエピローグイベント時はキャンセル
-                                        //if (SRC.Stage == "プロローグ" | SRC.Stage == "エピローグ")
-                                        //{
-                                        //    goto NextLoop;
-                                        //}
+                                    // TODO Impl
+                                    //// 話者中心に画面位置を変更
+                                    //// プロローグイベントやエピローグイベント時はキャンセル
+                                    //if (SRC.Stage == "プロローグ" | SRC.Stage == "エピローグ")
+                                    //{
+                                    //    goto NextLoop;
+                                    //}
 
-                                        //// 画面書き換え可能？
-                                        //if (!GUI.MainForm.Visible)
-                                        //{
-                                        //    goto NextLoop;
-                                        //}
+                                    //// 画面書き換え可能？
+                                    //if (!GUI.MainForm.Visible)
+                                    //{
+                                    //    goto NextLoop;
+                                    //}
 
-                                        //if (GUI.IsPictureVisible)
-                                        //{
-                                        //    goto NextLoop;
-                                        //}
+                                    //if (GUI.IsPictureVisible)
+                                    //{
+                                    //    goto NextLoop;
+                                    //}
 
-                                        //if (string.IsNullOrEmpty(Map.MapFileName))
-                                        //{
-                                        //    goto NextLoop;
-                                        //}
+                                    //if (string.IsNullOrEmpty(Map.MapFileName))
+                                    //{
+                                    //    goto NextLoop;
+                                    //}
 
-                                        //// 話者を中央表示
-                                        //CenterUnit(pname, without_cursor);
-                                        break;
-                                    }
+                                    //// 話者を中央表示
+                                    //CenterUnit(pname, without_cursor);
+                                    break;
 
                                 // TODO Impl
-                                //case 3:
-                                //    {
-                                //        current_pname = pname;
-                                //        switch (currentCmd.GetArgAsString(3) ?? "")
-                                //        {
-                                //            case "母艦":
-                                //                {
-                                //                    // 母艦の中央表示
-                                //                    CenterUnit("母艦", without_cursor);
-                                //                    break;
-                                //                }
+                                case 3:
+                                    current_pname = pname;
+                                    //        switch (currentCmd.GetArgAsString(3) ?? "")
+                                    //        {
+                                    //            case "母艦":
+                                    //                {
+                                    //                    // 母艦の中央表示
+                                    //                    CenterUnit("母艦", without_cursor);
+                                    //                    break;
+                                    //                }
 
-                                //            case "中央":
-                                //                {
-                                //                    // 話者の中央表示
-                                //                    CenterUnit(pname, without_cursor);
-                                //                    break;
-                                //                }
+                                    //            case "中央":
+                                    //                {
+                                    //                    // 話者の中央表示
+                                    //                    CenterUnit(pname, without_cursor);
+                                    //                    break;
+                                    //                }
 
-                                //            case "固定":
-                                //                {
-                                //                    break;
-                                //                }
-                                //                // 表示位置固定
-                                //        }
+                                    //            case "固定":
+                                    //                {
+                                    //                    break;
+                                    //                }
+                                    //                // 表示位置固定
+                                    //        }
+                                    break;
 
-                                //        break;
-                                //    }
-
-                                //case 4:
-                                //    {
-                                //        // 表示の座標指定あり
-                                //        current_pname = pname;
-                                //        CenterUnit(pname, without_cursor, currentCmd.GetArgAsLong(3), currentCmd.GetArgAsLong(4));
-                                //        break;
-                                //    }
+                                case 4:
+                                    current_pname = pname;
+                                    //        CenterUnit(pname, without_cursor, currentCmd.GetArgAsLong(3), currentCmd.GetArgAsLong(4));
+                                    break;
 
                                 case -1:
                                     //LineNum = i; // XXX これ要るの？
                                     throw new EventErrorException("Talkコマンドのパラメータの括弧の対応が取れていません");
 
                                 default:
-                                    //throw new EventErrorException("Talkコマンドの引数の数が違います");
-                                    break;
+                                    throw new EventErrorException("Talkコマンドの引数の数が違います");
                             }
 
                             // TODO Impl
@@ -311,7 +301,7 @@ namespace SRC.Core.CmdDatas.Commands
                                 ////LineNum = i; // XXX これ要るの？
                                 throw new EventErrorException("End部分の引数の数が違います");
                             }
-                            break;
+                            return i + 1;
                         }
 
                     case CmdType.SuspendCmd:
@@ -321,7 +311,7 @@ namespace SRC.Core.CmdDatas.Commands
                                 //LineNum = i; // XXX これ要るの？
                                 throw new EventErrorException("Suspend部分の引数の数が違います");
                             }
-                            break;
+                            return i + 1;
                         }
 
                     default:

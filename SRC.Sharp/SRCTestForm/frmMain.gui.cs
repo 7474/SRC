@@ -3,6 +3,8 @@ using SRC.Core.Lib;
 using SRC.Core.Units;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -72,12 +74,12 @@ namespace SRCTestForm
             //short X, Y;
 
             //// UPGRADE_ISSUE: Load ステートメント はサポートされていません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="B530EFF2-3132-48F8-B8BC-D88AF543D321"' をクリックしてください。
-            //Load(My.MyProject.Forms.frmToolTip);
+            //Load(frmToolTip);
             frmMessage = new frmMessage()
             {
                 SRC = SRC
             };
-            //Load(My.MyProject.Forms.frmListBox);
+            //Load(frmListBox);
             LockGUI();
             //Commands.CommandState = "ユニット選択";
 
@@ -273,8 +275,14 @@ namespace SRCTestForm
             throw new NotImplementedException();
         }
 
+        private string DisplayedPilot;
+        private string DisplayMode;
         public void DisplayMessage(string pname, string msg, string msg_mode)
         {
+            string pnickname;
+            string left_margin;
+            DisplayMessagePilot(pname, msg_mode, out pnickname, out left_margin);
+
             frmMessage.SetMessage(msg);
             Application.DoEvents();
 
@@ -284,6 +292,120 @@ namespace SRCTestForm
             {
                 Thread.Sleep(100);
                 Application.DoEvents();
+            }
+        }
+
+        private void DisplayMessagePilot(string pname, string msg_mode, out string pnickname, out string left_margin)
+        {
+            pnickname = "";
+            left_margin = "";
+            // キャラ表示の描き換え
+            if (pname == "システム")
+            {
+                // 「システム」
+                frmMessage.picFace.Image = Image.FromFile("");
+                frmMessage.picFace.Refresh();
+                DisplayedPilot = "";
+                left_margin = "";
+            }
+            else if (!string.IsNullOrEmpty(pname))
+            {
+                // どのキャラ画像を使うか？
+                var fname = "-.bmp";
+                // TODO
+                //if (SRC.PList.IsDefined(pname))
+                //{
+                //    Pilot localItem() { object argIndex1 = pname; var ret = SRC.PList.Item(ref argIndex1); return ret; }
+
+                //    pnickname = localItem().get_Nickname(false);
+                //    Pilot localItem1() { object argIndex1 = pname; var ret = SRC.PList.Item(ref argIndex1); return ret; }
+
+                //    fname = localItem1().get_Bitmap(false);
+                //}
+                //else
+                if (SRC.PDList.IsDefined(pname))
+                {
+                    var pd = SRC.PDList.Item(pname);
+                    pnickname = pd.Nickname;
+                    fname = pd.Bitmap;
+                }
+                //else if (SRC.NPDList.IsDefined(pname))
+                //{
+                //    NonPilotData localItem4() { object argIndex1 = pname; var ret = SRC.NPDList.Item(ref argIndex1); return ret; }
+
+                //    pnickname = localItem4().Nickname;
+                //    NonPilotData localItem5() { object argIndex1 = pname; var ret = SRC.NPDList.Item(ref argIndex1); return ret; }
+
+                //    fname = localItem5().Bitmap;
+                //}
+
+                // キャラ画像の表示
+                if (fname != "-.bmp")
+                {
+                    fname = Path.Combine("Pilot", fname);
+                    if ((DisplayedPilot ?? "") != (fname ?? "") | (DisplayMode ?? "") != (msg_mode ?? ""))
+                    {
+                        string argdraw_option = "メッセージ " + msg_mode;
+                        if (DrawPicture(fname, 0, 0, 64, 64, 0, 0, 0, 0, argdraw_option))
+                        {
+                            frmMessage.picFace.Refresh();
+                            DisplayedPilot = fname;
+                            DisplayMode = msg_mode;
+                        }
+                        else
+                        {
+                            frmMessage.picFace.Image = Image.FromFile("");
+                            frmMessage.picFace.Refresh();
+                            DisplayedPilot = "";
+                            DisplayMode = "";
+
+                            // TODO
+                            //// パイロット画像が存在しないことを記録しておく
+                            //object argIndex3 = pname;
+                            //if (SRC.PList.IsDefined(pname))
+                            //{
+                            //    object argIndex2 = pname;
+                            //    {
+                            //        var withBlock = SRC.PList.Item(ref argIndex2);
+                            //        if ((withBlock.get_Bitmap(false) ?? "") == (withBlock.Data.Bitmap ?? ""))
+                            //        {
+                            //            withBlock.Data.IsBitmapMissing = true;
+                            //        }
+                            //    }
+                            //}
+                            //else if (SRC.PDList.IsDefined(pname))
+                            //{
+                            //    PilotData localItem6() { object argIndex1 = pname; var ret = SRC.PDList.Item(ref argIndex1); return ret; }
+
+                            //    localItem6().IsBitmapMissing = true;
+                            //}
+                            //else if (SRC.NPDList.IsDefined(pname))
+                            //{
+                            //    NonPilotData localItem7() { object argIndex1 = pname; var ret = SRC.NPDList.Item(ref argIndex1); return ret; }
+
+                            //    localItem7().IsBitmapMissing = true;
+                            //}
+                        }
+                    }
+                }
+                else
+                {
+                    frmMessage.picFace.Image = Image.FromFile("");
+                    frmMessage.picFace.Refresh();
+                    DisplayedPilot = "";
+                    DisplayMode = "";
+                }
+
+                // TODO
+                left_margin = "  ";
+                //if (Expression.IsOptionDefined("会話パイロット名改行"))
+                //{
+                //    left_margin = " ";
+                //}
+                //else
+                //{
+                //    left_margin = "  ";
+                //}
             }
         }
 

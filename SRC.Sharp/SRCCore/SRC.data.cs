@@ -145,14 +145,14 @@ namespace SRC.Core
             // 初めて実行する際に、各フォルダにDataフォルダがあるかチェック
             if (!init_search_data_folder)
             {
-                if (Strings.Len(FileSystem.Dir(ScenarioPath + "Data", FileAttribute.Directory)) > 0)
+                if (Strings.Len(FileSystem.Dir(Path.Combine(ScenarioPath, "Data"), FileAttribute.Directory)) > 0)
                 {
                     scenario_data_dir_exists = true;
                 }
 
                 if (Strings.Len(ExtDataPath) > 0 & (ScenarioPath ?? "") != (ExtDataPath ?? ""))
                 {
-                    if (Strings.Len(FileSystem.Dir(ExtDataPath + "Data", FileAttribute.Directory)) > 0)
+                    if (Strings.Len(FileSystem.Dir(Path.Combine(ExtDataPath, "Data"), FileAttribute.Directory)) > 0)
                     {
                         extdata_data_dir_exists = true;
                     }
@@ -160,7 +160,7 @@ namespace SRC.Core
 
                 if (Strings.Len(ExtDataPath2) > 0 & (ScenarioPath ?? "") != (ExtDataPath2 ?? ""))
                 {
-                    if (Strings.Len(FileSystem.Dir(ExtDataPath2 + "Data", FileAttribute.Directory)) > 0)
+                    if (Strings.Len(FileSystem.Dir(Path.Combine(ExtDataPath2, "Data"), FileAttribute.Directory)) > 0)
                     {
                         extdata2_data_dir_exists = true;
                     }
@@ -168,7 +168,7 @@ namespace SRC.Core
 
                 if ((ScenarioPath ?? "") != (AppPath ?? ""))
                 {
-                    if (Strings.Len(FileSystem.Dir(AppPath + "Data", FileAttribute.Directory)) > 0)
+                    if (Strings.Len(FileSystem.Dir(Path.Combine(AppPath, "Data"), FileAttribute.Directory)) > 0)
                     {
                         src_data_dir_exists = true;
                     }
@@ -178,11 +178,10 @@ namespace SRC.Core
             }
 
             // フォルダを検索
-            // TODO 全般にPath対応
             fname2 = Path.Combine("Data", fname);
             if (scenario_data_dir_exists)
             {
-                SearchDataFolderRet = ScenarioPath + fname2;
+                SearchDataFolderRet = Path.Combine(ScenarioPath, fname2);
                 if (Strings.Len(FileSystem.Dir(SearchDataFolderRet, FileAttribute.Directory)) > 0)
                 {
                     return SearchDataFolderRet;
@@ -191,7 +190,7 @@ namespace SRC.Core
 
             if (extdata_data_dir_exists)
             {
-                SearchDataFolderRet = ExtDataPath + fname2;
+                SearchDataFolderRet = Path.Combine(ExtDataPath, fname2);
                 if (Strings.Len(FileSystem.Dir(SearchDataFolderRet, FileAttribute.Directory)) > 0)
                 {
                     return SearchDataFolderRet;
@@ -200,7 +199,7 @@ namespace SRC.Core
 
             if (extdata2_data_dir_exists)
             {
-                SearchDataFolderRet = ExtDataPath2 + fname2;
+                SearchDataFolderRet = Path.Combine(ExtDataPath2, fname2);
                 if (Strings.Len(FileSystem.Dir(SearchDataFolderRet, FileAttribute.Directory)) > 0)
                 {
                     return SearchDataFolderRet;
@@ -209,7 +208,7 @@ namespace SRC.Core
 
             if (src_data_dir_exists)
             {
-                SearchDataFolderRet = AppPath + fname2;
+                SearchDataFolderRet = Path.Combine(AppPath, fname2);
                 if (Strings.Len(FileSystem.Dir(SearchDataFolderRet, FileAttribute.Directory)) > 0)
                 {
                     return SearchDataFolderRet;
