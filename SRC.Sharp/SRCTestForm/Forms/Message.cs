@@ -115,5 +115,20 @@ namespace SRCTestForm
             float Y = eventArgs.Y;
             GUI.IsFormClicked = true;
         }
+
+        private void labKariText_DoubleClick(object sender, EventArgs e)
+        {
+            GUI.IsFormClicked = true;
+        }
+
+        private void labKariText_MouseDown(object sender, MouseEventArgs eventArgs)
+        {
+            short Button = (short)((int)eventArgs.Button / 0x100000);
+            short Shift = (short)((int)ModifierKeys / 0x10000);
+            float X = eventArgs.X;
+            float Y = eventArgs.Y;
+            GUI.IsFormClicked = true;
+        }
+
     }
 }

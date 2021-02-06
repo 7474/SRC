@@ -151,6 +151,7 @@ namespace SRCTestForm
             this._picFace.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this._picFace.Size = new System.Drawing.Size(68, 68);
             this._picFace.TabIndex = 15;
+            this._picFace.TabStop = false;
             this._picFace.MouseDown += new System.Windows.Forms.MouseEventHandler(this.picFace_MouseDown);
             // 
             // picUnit1
@@ -163,6 +164,7 @@ namespace SRCTestForm
             this.picUnit1.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.picUnit1.Size = new System.Drawing.Size(32, 32);
             this.picUnit1.TabIndex = 14;
+            this.picUnit1.TabStop = false;
             this.picUnit1.Visible = false;
             // 
             // picUnit2
@@ -175,6 +177,7 @@ namespace SRCTestForm
             this.picUnit2.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.picUnit2.Size = new System.Drawing.Size(32, 32);
             this.picUnit2.TabIndex = 13;
+            this.picUnit2.TabStop = false;
             this.picUnit2.Visible = false;
             // 
             // txtHP2
@@ -204,6 +207,7 @@ namespace SRCTestForm
             this.picHP2.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.picHP2.Size = new System.Drawing.Size(116, 8);
             this.picHP2.TabIndex = 9;
+            this.picHP2.TabStop = false;
             // 
             // picEN2
             // 
@@ -216,6 +220,7 @@ namespace SRCTestForm
             this.picEN2.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.picEN2.Size = new System.Drawing.Size(82, 8);
             this.picEN2.TabIndex = 8;
+            this.picEN2.TabStop = false;
             // 
             // txtEN2
             // 
@@ -260,6 +265,7 @@ namespace SRCTestForm
             this.picEN1.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.picEN1.Size = new System.Drawing.Size(83, 8);
             this.picEN1.TabIndex = 5;
+            this.picEN1.TabStop = false;
             // 
             // picHP1
             // 
@@ -272,6 +278,7 @@ namespace SRCTestForm
             this.picHP1.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.picHP1.Size = new System.Drawing.Size(116, 8);
             this.picHP1.TabIndex = 3;
+            this.picHP1.TabStop = false;
             // 
             // txtHP1
             // 
@@ -301,6 +308,7 @@ namespace SRCTestForm
             this._picMessage.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this._picMessage.Size = new System.Drawing.Size(417, 70);
             this._picMessage.TabIndex = 0;
+            this._picMessage.TabStop = false;
             this._picMessage.DoubleClick += new System.EventHandler(this.picMessage_DoubleClick);
             this._picMessage.MouseDown += new System.Windows.Forms.MouseEventHandler(this.picMessage_MouseDown);
             // 
@@ -355,10 +363,12 @@ namespace SRCTestForm
             // labKariText
             // 
             this.labKariText.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.labKariText.Location = new System.Drawing.Point(84, 43);
+            this.labKariText.Location = new System.Drawing.Point(84, 42);
             this.labKariText.Name = "labKariText";
-            this.labKariText.Size = new System.Drawing.Size(412, 66);
+            this.labKariText.Size = new System.Drawing.Size(416, 70);
             this.labKariText.TabIndex = 16;
+            this.labKariText.DoubleClick += new System.EventHandler(this.labKariText_DoubleClick);
+            this.labKariText.MouseDown += new System.Windows.Forms.MouseEventHandler(this.labKariText_MouseDown);
             // 
             // frmMessage
             // 
@@ -409,6 +419,7 @@ namespace SRCTestForm
             ((System.ComponentModel.ISupportInitialize)(this.picHP1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this._picMessage)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 

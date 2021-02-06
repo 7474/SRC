@@ -1114,7 +1114,6 @@ namespace SRC.Core
         // SRCを終了
         public void TerminateSRC()
         {
-            throw new NotImplementedException("TerminateSRC");
             //// ウィンドウを閉じる
             //if (GUI.MainForm is object)
             //{
@@ -1160,7 +1159,7 @@ namespace SRC.Core
             //// なぜかこれがないと不正終了する……
             //Application.DoEvents();
 
-            //Environment.Exit(0);
+            Environment.Exit(0);
         }
     }
 }
