@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 namespace SRCTestForm
 {
-    public partial class frmMain : Form
+    public partial class frmMain : Form, IGUI
     {
         public SRC.Core.SRC SRC;
 

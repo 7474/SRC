@@ -11,7 +11,7 @@ using System.Windows.Forms;
 
 namespace SRCTestForm
 {
-    public partial class frmMain : IGUI
+    public partial class frmMain
     {
         public bool IsGUILocked { get; set; }
         public short TopItem { get; set; }
@@ -433,11 +433,6 @@ namespace SRCTestForm
         }
 
         public int MultiSelectListBox(string lb_caption, string[] list, string lb_info, int max_num)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool DrawPicture(string fname, int dx, int dy, int dw, int dh, int sx, int sy, int sw, int sh, string draw_option)
         {
             throw new NotImplementedException();
         }
