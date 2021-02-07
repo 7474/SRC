@@ -134,70 +134,7 @@ namespace SRCTestForm
             MainHeight = 15;
 
             MainForm.InitMapSize(MainWidth, MainHeight);
-
-            //    // ステータスウィンドウを設置
-            //    // MOD START MARGE
-            //    // If MainWidth = 15 Then
-            //    // .picFace.Move MainPWidth + 24, 4
-            //    // .picPilotStatus.Move MainPWidth + 24 + 68 + 4, 4, 155, 72
-            //    // .picUnitStatus.Move MainPWidth + 24, 4 + 68 + 4, _
-            //    // '                225 + 5, MainPHeight - 64 + 16
-            //    // Else
-            //    // .picUnitStatus.Move MainPWidth - 230 - 10, 10, 230, MainPHeight - 20
-            //    // .picUnitStatus.Visible = False
-            //    // .picPilotStatus.Visible = False
-            //    // .picFace.Visible = False
-            //    // End If
-            //    if (NewGUIMode)
-            //    {
-            //        // UPGRADE_ISSUE: Control picUnitStatus は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-            //        withBlock.picUnitStatus.Move(MainPWidth - 230 - 10, 10, 230, MainPHeight - 20);
-            //        // UPGRADE_ISSUE: Control picUnitStatus は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-            //        withBlock.picUnitStatus.Visible = false;
-            //        // UPGRADE_ISSUE: Control picPilotStatus は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-            //        withBlock.picPilotStatus.Visible = false;
-            //        // UPGRADE_ISSUE: Control picFace は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-            //        withBlock.picFace.Visible = false;
-            //        Status.StatusWindowBackBolor = STATUSBACK;
-            //        Status.StatusWindowFrameColor = STATUSBACK;
-            //        Status.StatusWindowFrameWidth = 1;
-            //        // UPGRADE_ISSUE: Control picUnitStatus は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-            //        withBlock.picUnitStatus.BackColor = Status.StatusWindowBackBolor;
-            //        Status.StatusFontColorAbilityName = Information.RGB(0, 0, 150);
-            //        Status.StatusFontColorAbilityEnable = ColorTranslator.ToOle(Color.Blue);
-            //        Status.StatusFontColorAbilityDisable = Information.RGB(150, 0, 0);
-            //        Status.StatusFontColorNormalString = ColorTranslator.ToOle(Color.Black);
-            //    }
-            //    else
-            //    {
-            //        // UPGRADE_ISSUE: Control picFace は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-            //        withBlock.picFace.Move(MainPWidth + 24, 4);
-            //        // UPGRADE_ISSUE: Control picPilotStatus は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-            //        withBlock.picPilotStatus.Move(MainPWidth + 24 + 68 + 4, 4, 155, 72);
-            //        // UPGRADE_ISSUE: Control picUnitStatus は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-            //        withBlock.picUnitStatus.Move(MainPWidth + 24, 4 + 68 + 4, 225 + 5, MainPHeight - 64 + 16);
-            //    }
-            //    // MOD END MARGE
-
-            //    // マップウィンドウのサイズを設定
-            //    // MOD START MARGE
-            //    // If MainWidth = 15 Then
-            //    if (!NewGUIMode)
-            //    {
-            //        // MOD END MARGE
-            //        // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-            //        withBlock.picMain(0).Move(4, 4, MainPWidth, MainPHeight);
-            //        // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-            //        withBlock.picMain(1).Move(4, 4, MainPWidth, MainPHeight);
-            //    }
-            //    else
-            //    {
-            //        // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-            //        withBlock.picMain(0).Move(0, 0, MainPWidth, MainPHeight);
-            //        // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-            //        withBlock.picMain(1).Move(0, 0, MainPWidth, MainPHeight);
-            //    }
-            //}
+            MainForm.InitStatus();
         }
 
         public void SetNewGUIMode()
