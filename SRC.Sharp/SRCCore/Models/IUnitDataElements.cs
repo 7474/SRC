@@ -5,7 +5,7 @@
 
 using System.Collections.Generic;
 
-namespace SRC.Core.Models
+namespace SRCCore.Models
 {
     public interface IUnitDataElements
     {

@@ -2,10 +2,10 @@
 // 本プログラムはフリーソフトであり、無保証です。
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
-using SRC.Core.VB;
+using SRCCore.VB;
 
 // 全メッセージデータ(または特殊効果データ)を管理するコレクションクラス
-namespace SRC.Core.Models
+namespace SRCCore.Models
 {
     public class MessageDataList
     {

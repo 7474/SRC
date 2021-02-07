@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
-using SRC.Core;
-using SRC.Core.Lib;
-using SRC.Core.Units;
+using SRCCore;
+using SRCCore.Lib;
+using SRCCore.Units;
 using System;
 using System.Collections.Generic;
 using System.Drawing;

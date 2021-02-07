@@ -5,10 +5,10 @@
 // 再頒布または改変することができます。
 
 using Newtonsoft.Json;
-using SRC.Core.Events;
+using SRCCore.Events;
 using System;
 
-namespace SRC.Core.Expressions
+namespace SRCCore.Expressions
 {
     public partial class Expression
     {

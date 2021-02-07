@@ -3,9 +3,9 @@
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
 
-using SRC.Core.Units;
+using SRCCore.Units;
 
-namespace SRC.Core
+namespace SRCCore
 {
     // マップのGUIインタフェース
     public interface IGUIMap

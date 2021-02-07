@@ -1,10 +1,10 @@
-﻿using SRC.Core.CmdDatas;
-using SRC.Core.Events;
+﻿using SRCCore.CmdDatas;
+using SRCCore.Events;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace SRC.Core.Exceptions
+namespace SRCCore.Exceptions
 {
     public class EventErrorException : Exception
     {

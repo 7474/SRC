@@ -1,12 +1,12 @@
-﻿using SRC.Core.Events;
-using SRC.Core.Exceptions;
-using SRC.Core.Units;
-using SRC.Core.VB;
+﻿using SRCCore.Events;
+using SRCCore.Exceptions;
+using SRCCore.Units;
+using SRCCore.VB;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace SRC.Core.CmdDatas.Commands
+namespace SRCCore.CmdDatas.Commands
 {
     public class TalkCmd : CmdData
     {

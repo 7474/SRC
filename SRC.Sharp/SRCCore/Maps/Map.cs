@@ -2,11 +2,11 @@
 // 本プログラムはフリーソフトであり、無保証です。
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
-using SRC.Core.Units;
+using SRCCore.Units;
 using System;
 using System.Drawing;
 
-namespace SRC.Core.Maps
+namespace SRCCore.Maps
 {
     // マップデータに関する各種処理を行うモジュール
     public class Map

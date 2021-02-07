@@ -1,9 +1,9 @@
-﻿using SRC.Core.Lib;
-using SRC.Core.VB;
+﻿using SRCCore.Lib;
+using SRCCore.VB;
 using System;
 using System.Reflection;
 
-namespace SRC.Core
+namespace SRCCore
 {
     public partial class SRC
     {

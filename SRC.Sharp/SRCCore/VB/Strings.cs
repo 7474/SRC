@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SRC.Core.VB
+namespace SRCCore.VB
 {
 
     public enum VbStrConv

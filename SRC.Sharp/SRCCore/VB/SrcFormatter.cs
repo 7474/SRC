@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SRC.Core.VB
+namespace SRCCore.VB
 {
     public static class SrcFormatter
     {

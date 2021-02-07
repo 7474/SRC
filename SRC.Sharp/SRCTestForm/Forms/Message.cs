@@ -6,14 +6,14 @@ using System;
 using System.Drawing;
 using System.Windows.Forms;
 using Microsoft.VisualBasic;
-using SRC.Core;
+using SRCCore;
 
 namespace SRCTestForm
 {
     // メッセージウィンドウのフォーム
     internal partial class frmMessage : Form
     {
-        public SRC.Core.SRC SRC { get; set; }
+        public SRCCore.SRC SRC { get; set; }
         public IGUI GUI => SRC.GUI;
 
         public void ClearForm()

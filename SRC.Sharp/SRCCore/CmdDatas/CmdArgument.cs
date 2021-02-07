@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SRC.Core.CmdDatas
+namespace SRCCore.CmdDatas
 {
     public class CmdArgument
     {

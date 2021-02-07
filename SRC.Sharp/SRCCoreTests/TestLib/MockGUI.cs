@@ -1,5 +1,5 @@
-﻿using SRC.Core;
-using SRC.Core.Units;
+﻿using SRCCore;
+using SRCCore.Units;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

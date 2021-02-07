@@ -4,13 +4,13 @@
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
 
-using SRC.Core.Lib;
-using SRC.Core.VB;
+using SRCCore.Lib;
+using SRCCore.VB;
 using System;
 using System.Linq;
 using System.Text;
 
-namespace SRC.Core.Expressions
+namespace SRCCore.Expressions
 {
     public partial class Expression
     {

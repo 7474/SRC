@@ -1,9 +1,9 @@
-﻿using SRC.Core.Events;
+﻿using SRCCore.Events;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace SRC.Core.CmdDatas.Commands
+namespace SRCCore.CmdDatas.Commands
 {
     public class NopCmd : CmdData
     {

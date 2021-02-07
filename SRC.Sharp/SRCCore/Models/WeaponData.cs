@@ -3,9 +3,9 @@
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
 
-using SRC.Core.Lib;
+using SRCCore.Lib;
 
-namespace SRC.Core.Models
+namespace SRCCore.Models
 {
     // 武器データクラス
     public class WeaponData
