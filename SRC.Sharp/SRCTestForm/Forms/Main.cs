@@ -18,7 +18,6 @@ namespace SRCTestForm
         // マップウィンドウがドラッグされているか？
         private bool IsDragging;
 
-
         // フォーム上でキーを押す
         private void frmMain_KeyDown(object eventSender, KeyEventArgs eventArgs)
         {

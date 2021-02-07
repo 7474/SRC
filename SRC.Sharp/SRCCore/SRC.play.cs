@@ -264,7 +264,7 @@ namespace SRC.Core
         // 陣営upartyのフェイズを実行
         public void StartTurn(string uparty)
         {
-            throw new NotImplementedException();
+            // TODO ImplS
             //int num, i, phase;
             //Unit u;
             //Stage = uparty;

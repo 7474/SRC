@@ -16,6 +16,8 @@ namespace SRC.Core.Models
         // ノンパイロットデータのコレクション
         private SrcCollection<NonPilotData> colNonPilotDataList = new SrcCollection<NonPilotData>();
 
+        public IList<NonPilotData> Items => colNonPilotDataList;
+
         public NonPilotDataList()
         {
             // Talkコマンド用

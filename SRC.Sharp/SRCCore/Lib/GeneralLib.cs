@@ -406,7 +406,8 @@ namespace SRC.Core.Lib
                             break;
                     }
                 }
-                if (append)
+                // XXX リスト中のカッコ消えちゃうと困るしもとは消してないっぽいから消さないでおく
+                //if (append)
                 {
                     current.Append(c);
                 }

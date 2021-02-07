@@ -42,18 +42,12 @@ namespace SRCTestForm
         // フォーム上でキーを押す
         private void frmMessage_KeyDown(object eventSender, KeyEventArgs eventArgs)
         {
-            short KeyCode = (short)eventArgs.KeyCode;
-            short Shift = (short)((int)eventArgs.KeyData / 0x10000);
             GUI.IsFormClicked = true;
         }
 
         // フォーム上でマウスボタンを押す
         private void frmMessage_MouseDown(object eventSender, MouseEventArgs eventArgs)
         {
-            short Button = (short)((int)eventArgs.Button / 0x100000);
-            short Shift = (short)((int)ModifierKeys / 0x10000);
-            float X = eventArgs.X;
-            float Y = eventArgs.Y;
             GUI.IsFormClicked = true;
         }
 
@@ -79,10 +73,6 @@ namespace SRCTestForm
         // パイロット画面上でクリック
         private void picFace_MouseDown(object eventSender, MouseEventArgs eventArgs)
         {
-            short Button = (short)((int)eventArgs.Button / 0x100000);
-            short Shift = (short)((int)ModifierKeys / 0x10000);
-            float X = eventArgs.X;
-            float Y = eventArgs.Y;
             // 自動メッセージ送りモードに移行
             if (GUI.MessageWait < 10000)
             {
@@ -101,10 +91,6 @@ namespace SRCTestForm
         // メッセージ欄上でマウスボタンを押す
         private void picMessage_MouseDown(object eventSender, MouseEventArgs eventArgs)
         {
-            short Button = (short)((int)eventArgs.Button / 0x100000);
-            short Shift = (short)((int)ModifierKeys / 0x10000);
-            float X = eventArgs.X;
-            float Y = eventArgs.Y;
             GUI.IsFormClicked = true;
         }
 
@@ -115,10 +101,6 @@ namespace SRCTestForm
 
         private void labKariText_MouseDown(object sender, MouseEventArgs eventArgs)
         {
-            short Button = (short)((int)eventArgs.Button / 0x100000);
-            short Shift = (short)((int)ModifierKeys / 0x10000);
-            float X = eventArgs.X;
-            float Y = eventArgs.Y;
             GUI.IsFormClicked = true;
         }
 

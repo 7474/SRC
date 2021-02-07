@@ -362,11 +362,8 @@ namespace SRC.Core.CmdDatas
                     //        break;
                     //    }
 
-                    //case "exit":
-                    //    {
-                    //        CmdName = CmdType.ExitCmd;
-                    //        break;
-                    //    }
+                    case "exit":
+                        return new ExitCmd(src, data);
 
                     //case "explode":
                     //    {

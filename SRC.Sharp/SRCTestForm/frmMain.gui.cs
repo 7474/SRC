@@ -14,7 +14,7 @@ using System.Windows.Forms;
 
 namespace SRCTestForm
 {
-    public partial class frmTeatMain
+    public partial class frmTeatMain : IGUI
     {
         public bool IsGUILocked { get; set; }
         public short TopItem { get; set; }
@@ -62,10 +62,16 @@ namespace SRCTestForm
         private frmTitle frmTitle;
 
         private frmMessage frmMessage;
+        private frmMain MainForm;
 
         public void LoadMainFormAndRegisterFlash()
         {
-            Console.WriteLine("LoadMainFormAndRegisterFlash");
+            MainForm = new frmMain()
+            {
+                SRC = SRC,
+            };
+            SRC.GUIMap = MainForm;
+            Program.Log.LogDebug("LoadMainFormAndRegisterFlash");
         }
 
         public void LoadForms()
@@ -124,50 +130,10 @@ namespace SRCTestForm
             //}
             //// ADD END MARGE
             //MainHeight = 15;
+            MainWidth = 15;
+            MainHeight = 15;
 
-            //// マップ画面のサイズ（ピクセル）
-            //MainPWidth = (short)(MainWidth * 32);
-            //MainPHeight = (short)(MainHeight * 32);
-            //{
-            //    var withBlock = MainForm;
-            //    // メインウィンドウの位置＆サイズを設定
-            //    X = (short)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsPerPixelX();
-            //    Y = (short)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsPerPixelY();
-            //    // MOD START MARGE
-            //    // If MainWidth = 15 Then
-            //    if (!NewGUIMode)
-            //    {
-            //        // MOD END MARGE
-            //        withBlock.Width = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsX(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock.Width) - Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock.ClientRectangle.Width) * X + (MainPWidth + 24 + 225 + 4) * X);
-            //        withBlock.Height = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsY(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock.Height) - Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock.ClientRectangle.Height) * Y + (MainPHeight + 24) * Y);
-            //    }
-            //    else
-            //    {
-            //        withBlock.Width = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsX(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock.Width) - Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock.ClientRectangle.Width) * X + MainPWidth * X);
-            //        withBlock.Height = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsY(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock.Height) - Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock.ClientRectangle.Height) * Y + MainPHeight * Y);
-            //    }
-
-            //    withBlock.Left = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsX((Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(Screen.PrimaryScreen.Bounds.Width) - Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock.Width)) / 2d);
-            //    withBlock.Top = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsY((Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(Screen.PrimaryScreen.Bounds.Height) - Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock.Height)) / 2d);
-
-            //    // スクロールバーの位置を設定
-            //    // MOD START MARGE
-            //    // If MainWidth = 15 Then
-            //    if (!NewGUIMode)
-            //    {
-            //        // MOD END MARGE
-            //        // UPGRADE_ISSUE: Control VScroll は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-            //        withBlock.VScroll.Move(MainPWidth + 4, 4, 16, MainPWidth);
-            //        // UPGRADE_ISSUE: Control HScroll は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-            //        withBlock.HScroll.Move(4, MainPHeight + 4, MainPWidth, 16);
-            //    }
-            //    else
-            //    {
-            //        // UPGRADE_ISSUE: Control VScroll は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-            //        withBlock.VScroll.Visible = false;
-            //        // UPGRADE_ISSUE: Control HScroll は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-            //        withBlock.HScroll.Visible = false;
-            //    }
+            MainForm.InitMapSize(MainWidth, MainHeight);
 
             //    // ステータスウィンドウを設置
             //    // MOD START MARGE
@@ -238,8 +204,18 @@ namespace SRCTestForm
         {
             throw new NotImplementedException();
         }
+        public void MainFormShow()
+        {
+            if (!MainFormVisible)
+            {
+                MainForm.Show();
+            }
+        }
 
         public bool MessageFormVisible => frmMessage.Visible;
+
+        public bool MainFormVisible => MainForm.Visible;
+
         private string DisplayedPilot;
         private string DisplayMode;
         private Unit RightUnit;
@@ -251,11 +227,165 @@ namespace SRCTestForm
 
         public void OpenMessageForm(Unit u1, Unit u2)
         {
+            // ユニット表示を伴う場合はキャプションから「(自動送り)」を削除
+            if (u1 is object)
+            {
+                if (frmMessage.Text == "メッセージ (自動送り)")
+                {
+                    frmMessage.Text = "メッセージ";
+                }
+            }
+
+            // メッセージウィンドウを強制的に最小化解除
+            if (frmMessage.WindowState != FormWindowState.Normal)
+            {
+                frmMessage.WindowState = FormWindowState.Normal;
+                frmMessage.Show(MainForm);
+                frmMessage.Activate();
+            }
+
+            //if (u1 is null)
+            //{
+            //    // ユニット表示なし
+            //    frmMessage.labHP1.Visible = false;
+            //    frmMessage.labHP2.Visible = false;
+            //    frmMessage.labEN1.Visible = false;
+            //    frmMessage.labEN2.Visible = false;
+            //    frmMessage.picHP1.Visible = false;
+            //    frmMessage.picHP2.Visible = false;
+            //    frmMessage.picEN1.Visible = false;
+            //    frmMessage.picEN2.Visible = false;
+            //    frmMessage.txtHP1.Visible = false;
+            //    frmMessage.txtHP2.Visible = false;
+            //    frmMessage.txtEN1.Visible = false;
+            //    frmMessage.txtEN2.Visible = false;
+            //    frmMessage.picUnit1.Visible = false;
+            //    frmMessage.picUnit2.Visible = false;
+            //    frmMessage.Width = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsX(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(frmMessage.Width) - frmMessage.ClientRectangle.Width * tppx + 508 * tppx);
+            //    frmMessage.Height = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsY(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(frmMessage.Height) - frmMessage.ClientRectangle.Height * tppy + 84 * tppy);
+            //    frmMessage.picFace.Top = 8;
+            //    frmMessage.picFace.Left = 8;
+            //    frmMessage.picMessage.Top = 7;
+            //    frmMessage.picMessage.Left = 84;
+            //}
+            //else if (u2 is null)
+            //{
+            //    // ユニット表示１体のみ
+            //    if (u1.Party == "味方" | u1.Party == "ＮＰＣ")
+            //    {
+            //        frmMessage.labHP1.Visible = false;
+            //        frmMessage.labEN1.Visible = false;
+            //        frmMessage.picHP1.Visible = false;
+            //        frmMessage.picEN1.Visible = false;
+            //        frmMessage.txtHP1.Visible = false;
+            //        frmMessage.txtEN1.Visible = false;
+            //        frmMessage.picUnit1.Visible = false;
+            //        frmMessage.labHP2.Visible = true;
+            //        frmMessage.labEN2.Visible = true;
+            //        frmMessage.picHP2.Visible = true;
+            //        frmMessage.picEN2.Visible = true;
+            //        frmMessage.txtHP2.Visible = true;
+            //        frmMessage.txtEN2.Visible = true;
+            //        frmMessage.picUnit2.Visible = true;
+            //    }
+            //    else
+            //    {
+            //        frmMessage.labHP1.Visible = true;
+            //        frmMessage.labEN1.Visible = true;
+            //        frmMessage.picHP1.Visible = true;
+            //        frmMessage.picEN1.Visible = true;
+            //        frmMessage.txtHP1.Visible = true;
+            //        frmMessage.txtEN1.Visible = true;
+            //        frmMessage.picUnit1.Visible = true;
+            //        frmMessage.labHP2.Visible = false;
+            //        frmMessage.labEN2.Visible = false;
+            //        frmMessage.picHP2.Visible = false;
+            //        frmMessage.picEN2.Visible = false;
+            //        frmMessage.txtHP2.Visible = false;
+            //        frmMessage.txtEN2.Visible = false;
+            //        frmMessage.picUnit2.Visible = false;
+            //    }
+
+            //    object argu21 = null;
+            //    UpdateMessageForm(ref u1, u2: ref argu21);
+            //    frmMessage.Width = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsX(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(frmMessage.Width) - frmMessage.ClientRectangle.Width * tppx + 508 * tppx);
+            //    frmMessage.Height = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsY(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(frmMessage.Height) - frmMessage.ClientRectangle.Height * tppy + 118 * tppy);
+            //    frmMessage.picFace.Top = 42;
+            //    frmMessage.picFace.Left = 8;
+            //    frmMessage.picMessage.Top = 41;
+            //    frmMessage.picMessage.Left = 84;
+            //}
+            //else
+            //{
+            //    // ユニットを２体表示
+            //    frmMessage.labHP1.Visible = true;
+            //    frmMessage.labHP2.Visible = true;
+            //    frmMessage.labEN1.Visible = true;
+            //    frmMessage.labEN2.Visible = true;
+            //    frmMessage.picHP1.Visible = true;
+            //    frmMessage.picHP2.Visible = true;
+            //    frmMessage.picEN1.Visible = true;
+            //    frmMessage.picEN2.Visible = true;
+            //    frmMessage.txtHP1.Visible = true;
+            //    frmMessage.txtHP2.Visible = true;
+            //    frmMessage.txtEN1.Visible = true;
+            //    frmMessage.txtEN2.Visible = true;
+            //    frmMessage.picUnit1.Visible = true;
+            //    frmMessage.picUnit2.Visible = true;
+            //    object argu2 = u2;
+            //    UpdateMessageForm(ref u1, ref argu2);
+            //    frmMessage.Width = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsX(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(frmMessage.Width) - frmMessage.ClientRectangle.Width * tppx + 508 * tppx);
+            //    frmMessage.Height = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsY(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(frmMessage.Height) - frmMessage.ClientRectangle.Height * tppy + 118 * tppy);
+            //    frmMessage.picFace.Top = 42;
+            //    frmMessage.picFace.Left = 8;
+            //    frmMessage.picMessage.Top = 41;
+            //    frmMessage.picMessage.Left = 84;
+            //}
+
+            // メッセージウィンドウの位置設定
+            if (MainForm.Visible && MainForm.WindowState != FormWindowState.Minimized)
+            {
+                // メインウィンドウが表示されていればメインウィンドウの下端に合わせて表示
+                if (!frmMessage.Visible)
+                {
+                    if (MainWidth == 15)
+                    {
+                        frmMessage.Left = MainForm.Left;
+                    }
+                    else
+                    {
+                        frmMessage.Left = MainForm.Left - (MainForm.Width - frmMessage.Width) / 2;
+                    }
+
+                    if (MessageWindowIsOut)
+                    {
+                        frmMessage.Top = MainForm.Top + MainForm.Height;// - 350;
+                    }
+                    else
+                    {
+                        frmMessage.Top = MainForm.Top + MainForm.Height - frmMessage.Height;
+                    }
+                }
+            }
+            else
+            {
+                //// メインウィンドウが表示されていない場合は画面中央に表示
+                //frmMessage.Left = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsX((Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(Screen.PrimaryScreen.Bounds.Width) - Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(frmMessage.Width)) / 2d);
+                //frmMessage.Top = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsY((Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(Screen.PrimaryScreen.Bounds.Height) - Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(frmMessage.Height)) / 2d);
+            }
+
+            // ウィンドウをクリアしておく
+            ClearMessageForm();
+
+            // ウィンドウを表示
             if (!frmMessage.Visible)
             {
-                frmMessage.ClearForm();
-                frmMessage.Show(this);
+                frmMessage.Show(MainForm);
             }
+
+            // 常に手前に表示する
+            frmMessage.TopMost = true;
+
             Application.DoEvents();
         }
 
@@ -446,7 +576,15 @@ namespace SRCTestForm
 
         public void RedrawScreen(bool late_refresh)
         {
-            throw new NotImplementedException();
+            // TODO Impl
+            //ScreenIsMasked = False
+
+            //'画面を更新
+            //RefreshScreen False, late_refresh
+
+            //'カーソルを再描画
+            //GetCursorPos PT
+            //ret = SetCursorPos(PT.X, PT.Y)
         }
 
         public void MaskScreen()
@@ -627,7 +765,7 @@ namespace SRCTestForm
         public void OpenTitleForm()
         {
             frmTitle = new frmTitle();
-            frmTitle.Show(this);
+            frmTitle.Show(MainForm);
         }
 
         public void CloseTitleForm()
@@ -643,7 +781,7 @@ namespace SRCTestForm
         public void OpenNowLoadingForm()
         {
             frmNowLoading = new frmNowLoading();
-            frmNowLoading.Show(this);
+            frmNowLoading.Show(MainForm);
         }
 
         public void CloseNowLoadingForm()
@@ -698,12 +836,13 @@ namespace SRCTestForm
 
         public void LogDebug(string message)
         {
-            Program.Log.Log(LogLevel.Debug, message);
+            Program.Log.LogDebug(message);
         }
 
         public void LogInfo(string message)
         {
-            Program.Log.Log(LogLevel.Information, message);
+            Program.Log.LogInformation(message);
         }
+
     }
 }

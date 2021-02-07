@@ -17,4 +17,10 @@
     <ProjectReference Include="..\SRCCore\SRCCore.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Forms\frmMain.guimap.cs">
+      <SubType>Form</SubType>
+    </Compile>
+  </ItemGroup>
+
 </Project>
