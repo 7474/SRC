@@ -11,30 +11,47 @@
 @implements IDisposable
 @inject NavigationManager NavigationManager
 @inject HttpClient Http
-
-<DataNavMenu OnChangeSrcDataKind="@OnChangeSrcDataKind" />
-<h2>@DataTitle</h2>
-<div>
-    <h3>Unit</h3>
-    <ul>
+<div style="position: fixed; width: 100%;" class="bg-light">
+    <DataNavMenu OnChangeSrcDataKind="@OnChangeSrcDataKind" />
+    <div style="@(currentKind != SrcDataKind.Unit ? "display: none; ": "") white-space: nowrap; width: 100%; overflow-x: scroll;">
         @foreach (var ud in SRC.UDList.Items)
         {
-            <UnitDataView Data="@ud" />
+            var name = ud.Name;
+            <a href="#@name" class="btn"
+               @onclick:preventDefault
+               @onclick="@(e => OnClickAnchor(name))">@name</a>
         }
-    </ul>
+    </div>
+    <div style="@(currentKind != SrcDataKind.Pilot ? "display: none; ": "") white-space: nowrap; width: 100%; overflow-x: scroll;">
+        @foreach (var pd in SRC.PDList.Items)
+        {
+            var name = pd.Name;
+            <a href="#@name" class="btn"
+               @onclick:preventDefault
+               @onclick="@(e => OnClickAnchor(name))">@name</a>
+        }
+    </div>
+</div>
+<h2 style="margin-top: 5em;">@DataTitle</h2>
+<div>
+    <h3>Unit</h3>
+    @foreach (var ud in SRC.UDList.Items)
+    {
+        <UnitDataView Data="@ud" />
+    }
 </div>
 <div>
     <h3>Pilot</h3>
-    <ul>
-        @foreach (var pd in SRC.PDList.Items)
-        {
-            <PilotDataView Data="@pd" />
-        }
-    </ul>
+    @foreach (var pd in SRC.PDList.Items)
+    {
+        <PilotDataView Data="@pd" />
+    }
 </div>
 <div id="status">@StatusText</div>
 
 @code {
+    [Inject]
+    protected IJSRuntime JsInterop { get; set; }
     [Parameter]
     public string DataPath { get; set; }
 
@@ -42,6 +59,7 @@
     private string StatusText = "";
     private string PreviewText = "{}";
     private string DataTitle { get; set; }
+    private SrcDataKind currentKind = SrcDataKind.Unit;
 
     protected override async Task OnInitializedAsync()
     {
@@ -96,8 +114,16 @@
         PreviewText = JsonConvert.SerializeObject(item, Formatting.Indented);
     }
 
+    private async Task OnClickAnchor(string targetId)
+    {
+        // 要素までスクロールしてヘッダ分戻る
+        await JsInterop.InvokeVoidAsync("anchor.scrollTo", targetId);
+        await JsInterop.InvokeVoidAsync("scrollBy", 0, -192);
+    }
+
     private void OnChangeSrcDataKind(SrcDataKind kind)
     {
+        currentKind = kind;
         Console.WriteLine(kind);
     }
 }
