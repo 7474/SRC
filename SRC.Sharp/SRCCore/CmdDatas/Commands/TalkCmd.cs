@@ -68,7 +68,7 @@ namespace SRC.Core.CmdDatas.Commands
                                 & !string.IsNullOrEmpty(pname))
                             {
                                 //LineNum = i; // XXX これ要るの？
-                                throw new EventErrorException("「" + pname + "」というパイロットが定義されていません");
+                                throw new EventErrorException(currentCmd, "「" + pname + "」というパイロットが定義されていません");
                             }
 
                             if (currentCmd.ArgNum > 1)
@@ -274,10 +274,10 @@ namespace SRC.Core.CmdDatas.Commands
 
                                 case -1:
                                     //LineNum = i; // XXX これ要るの？
-                                    throw new EventErrorException("Talkコマンドのパラメータの括弧の対応が取れていません");
+                                    throw new EventErrorException(currentCmd, "Talkコマンドのパラメータの括弧の対応が取れていません");
 
                                 default:
-                                    throw new EventErrorException("Talkコマンドの引数の数が違います");
+                                    throw new EventErrorException(currentCmd, "Talkコマンドの引数の数が違います");
                             }
 
                             if (!GUI.MessageFormVisible)
@@ -299,7 +299,7 @@ namespace SRC.Core.CmdDatas.Commands
                             if (currentCmd.ArgNum != 1)
                             {
                                 ////LineNum = i; // XXX これ要るの？
-                                throw new EventErrorException("End部分の引数の数が違います");
+                                throw new EventErrorException(currentCmd, "End部分の引数の数が違います");
                             }
                             return i + 1;
                         }
@@ -309,7 +309,7 @@ namespace SRC.Core.CmdDatas.Commands
                             if (currentCmd.ArgNum != 1)
                             {
                                 //LineNum = i; // XXX これ要るの？
-                                throw new EventErrorException("Suspend部分の引数の数が違います");
+                                throw new EventErrorException(currentCmd, "Suspend部分の引数の数が違います");
                             }
                             return i + 1;
                         }
@@ -333,7 +333,7 @@ namespace SRC.Core.CmdDatas.Commands
             if (i >= Event.EventData.Count)
             {
                 GUI.CloseMessageForm();
-                throw new EventErrorException("TalkとEndが対応していません");
+                throw new EventErrorException(this, "TalkとEndが対応していません");
             }
 
             return i + 1;

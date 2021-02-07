@@ -58,7 +58,7 @@ namespace SRC.Core.CmdDatas
             }
             catch (EventErrorException ex)
             {
-                Event.DisplayEventErrorMessage(EventData.ID, ex.Message);
+                Event.DisplayEventErrorMessage(ex.EventData.ID, ex.Message);
                 return -1;
             }
             catch

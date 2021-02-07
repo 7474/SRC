@@ -21,7 +21,6 @@ namespace SRCTestForm
             {
                 builder
                     .SetMinimumLevel(LogLevel.Debug)
-                    .AddConsole()
                     .AddDebug();
             });
             Log = loggerFactory.CreateLogger("SRCTestForm");
