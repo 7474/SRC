@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Windows.Forms;
 using Microsoft.VisualBasic.CompilerServices;
 
-namespace Project1
+namespace SRCTestForm
 {
     [DesignerGenerated()]
     internal partial class frmMain
@@ -219,95 +219,94 @@ namespace Project1
         public PictureBox picMask;
         public PictureBox picTmp;
         public PictureBox picBack;
-        public FlashObject FlashObject;
         public Panel _picMain_0;
-        private Microsoft.VisualBasic.Compatibility.VB6.ToolStripMenuItemArray _mnuMapCommandItem;
+        //private Microsoft.VisualBasic.Compatibility.VB6.ToolStripMenuItemArray _mnuMapCommandItem;
 
-        public Microsoft.VisualBasic.Compatibility.VB6.ToolStripMenuItemArray mnuMapCommandItem
-        {
-            [MethodImpl(MethodImplOptions.Synchronized)]
-            get
-            {
-                return _mnuMapCommandItem;
-            }
+        //public Microsoft.VisualBasic.Compatibility.VB6.ToolStripMenuItemArray mnuMapCommandItem
+        //{
+        //    [MethodImpl(MethodImplOptions.Synchronized)]
+        //    get
+        //    {
+        //        return _mnuMapCommandItem;
+        //    }
 
-            [MethodImpl(MethodImplOptions.Synchronized)]
-            set
-            {
-                if (_mnuMapCommandItem != null)
-                {
-                    _mnuMapCommandItem.Click -= mnuMapCommandItem_Click;
-                }
+        //    [MethodImpl(MethodImplOptions.Synchronized)]
+        //    set
+        //    {
+        //        if (_mnuMapCommandItem != null)
+        //        {
+        //            _mnuMapCommandItem.Click -= mnuMapCommandItem_Click;
+        //        }
 
-                _mnuMapCommandItem = value;
-                if (_mnuMapCommandItem != null)
-                {
-                    _mnuMapCommandItem.Click += mnuMapCommandItem_Click;
-                }
-            }
-        }
+        //        _mnuMapCommandItem = value;
+        //        if (_mnuMapCommandItem != null)
+        //        {
+        //            _mnuMapCommandItem.Click += mnuMapCommandItem_Click;
+        //        }
+        //    }
+        //}
 
-        private Microsoft.VisualBasic.Compatibility.VB6.ToolStripMenuItemArray _mnuUnitCommandItem;
+        //private Microsoft.VisualBasic.Compatibility.VB6.ToolStripMenuItemArray _mnuUnitCommandItem;
 
-        public Microsoft.VisualBasic.Compatibility.VB6.ToolStripMenuItemArray mnuUnitCommandItem
-        {
-            [MethodImpl(MethodImplOptions.Synchronized)]
-            get
-            {
-                return _mnuUnitCommandItem;
-            }
+        //public Microsoft.VisualBasic.Compatibility.VB6.ToolStripMenuItemArray mnuUnitCommandItem
+        //{
+        //    [MethodImpl(MethodImplOptions.Synchronized)]
+        //    get
+        //    {
+        //        return _mnuUnitCommandItem;
+        //    }
 
-            [MethodImpl(MethodImplOptions.Synchronized)]
-            set
-            {
-                if (_mnuUnitCommandItem != null)
-                {
-                    _mnuUnitCommandItem.Click -= mnuUnitCommandItem_Click;
-                }
+        //    [MethodImpl(MethodImplOptions.Synchronized)]
+        //    set
+        //    {
+        //        if (_mnuUnitCommandItem != null)
+        //        {
+        //            _mnuUnitCommandItem.Click -= mnuUnitCommandItem_Click;
+        //        }
 
-                _mnuUnitCommandItem = value;
-                if (_mnuUnitCommandItem != null)
-                {
-                    _mnuUnitCommandItem.Click += mnuUnitCommandItem_Click;
-                }
-            }
-        }
+        //        _mnuUnitCommandItem = value;
+        //        if (_mnuUnitCommandItem != null)
+        //        {
+        //            _mnuUnitCommandItem.Click += mnuUnitCommandItem_Click;
+        //        }
+        //    }
+        //}
 
-        public Microsoft.VisualBasic.Compatibility.VB6.PictureBoxArray picBuf;
-        private Microsoft.VisualBasic.Compatibility.VB6.PanelArray _picMain;
+        //public Microsoft.VisualBasic.Compatibility.VB6.PictureBoxArray picBuf;
+        //private Microsoft.VisualBasic.Compatibility.VB6.PanelArray _picMain;
 
-        public Microsoft.VisualBasic.Compatibility.VB6.PanelArray picMain
-        {
-            [MethodImpl(MethodImplOptions.Synchronized)]
-            get
-            {
-                return _picMain;
-            }
+        //public Microsoft.VisualBasic.Compatibility.VB6.PanelArray picMain
+        //{
+        //    [MethodImpl(MethodImplOptions.Synchronized)]
+        //    get
+        //    {
+        //        return _picMain;
+        //    }
 
-            [MethodImpl(MethodImplOptions.Synchronized)]
-            set
-            {
-                if (_picMain != null)
-                {
-                    _picMain.DoubleClick -= picMain_DoubleClick;
-                    _picMain.MouseDown -= picMain_MouseDown;
-                    _picMain.MouseMove -= picMain_MouseMove;
-                    _picMain.MouseUp -= picMain_MouseUp;
-                }
+        //    [MethodImpl(MethodImplOptions.Synchronized)]
+        //    set
+        //    {
+        //        if (_picMain != null)
+        //        {
+        //            _picMain.DoubleClick -= picMain_DoubleClick;
+        //            _picMain.MouseDown -= picMain_MouseDown;
+        //            _picMain.MouseMove -= picMain_MouseMove;
+        //            _picMain.MouseUp -= picMain_MouseUp;
+        //        }
 
-                _picMain = value;
-                if (_picMain != null)
-                {
-                    _picMain.DoubleClick += picMain_DoubleClick;
-                    _picMain.MouseDown += picMain_MouseDown;
-                    _picMain.MouseMove += picMain_MouseMove;
-                    _picMain.MouseUp += picMain_MouseUp;
-                }
-            }
-        }
+        //        _picMain = value;
+        //        if (_picMain != null)
+        //        {
+        //            _picMain.DoubleClick += picMain_DoubleClick;
+        //            _picMain.MouseDown += picMain_MouseDown;
+        //            _picMain.MouseMove += picMain_MouseMove;
+        //            _picMain.MouseUp += picMain_MouseUp;
+        //        }
+        //    }
+        //}
 
-        public Microsoft.VisualBasic.Compatibility.VB6.PictureBoxArray picStretchedTmp;
-        public Microsoft.VisualBasic.Compatibility.VB6.PictureBoxArray picTmp32;
+        //public Microsoft.VisualBasic.Compatibility.VB6.PictureBoxArray picStretchedTmp;
+        //public Microsoft.VisualBasic.Compatibility.VB6.PictureBoxArray picTmp32;
         // メモ: 以下のプロシージャは Windows フォーム デザイナで必要です。
         // Windows フォーム デザイナを使って変更できます。
         // コード エディタを使用して、変更しないでください。
@@ -404,29 +403,28 @@ namespace Project1
             picTmp = new PictureBox();
             picBack = new PictureBox();
             _picMain_0 = new Panel();
-            FlashObject = new FlashObject();
-            _mnuMapCommandItem = new Microsoft.VisualBasic.Compatibility.VB6.ToolStripMenuItemArray(components);
-            _mnuMapCommandItem.Click += new EventHandler(mnuMapCommandItem_Click);
-            _mnuUnitCommandItem = new Microsoft.VisualBasic.Compatibility.VB6.ToolStripMenuItemArray(components);
-            _mnuUnitCommandItem.Click += new EventHandler(mnuUnitCommandItem_Click);
-            picBuf = new Microsoft.VisualBasic.Compatibility.VB6.PictureBoxArray(components);
-            _picMain = new Microsoft.VisualBasic.Compatibility.VB6.PanelArray(components);
-            _picMain.DoubleClick += new EventHandler(picMain_DoubleClick);
-            _picMain.MouseDown += new MouseEventHandler(picMain_MouseDown);
-            _picMain.MouseMove += new MouseEventHandler(picMain_MouseMove);
-            _picMain.MouseUp += new MouseEventHandler(picMain_MouseUp);
-            picStretchedTmp = new Microsoft.VisualBasic.Compatibility.VB6.PictureBoxArray(components);
-            picTmp32 = new Microsoft.VisualBasic.Compatibility.VB6.PictureBoxArray(components);
+            //_mnuMapCommandItem = new Microsoft.VisualBasic.Compatibility.VB6.ToolStripMenuItemArray(components);
+            //_mnuMapCommandItem.Click += new EventHandler(mnuMapCommandItem_Click);
+            //_mnuUnitCommandItem = new Microsoft.VisualBasic.Compatibility.VB6.ToolStripMenuItemArray(components);
+            //_mnuUnitCommandItem.Click += new EventHandler(mnuUnitCommandItem_Click);
+            //picBuf = new Microsoft.VisualBasic.Compatibility.VB6.PictureBoxArray(components);
+            //_picMain = new Microsoft.VisualBasic.Compatibility.VB6.PanelArray(components);
+            //_picMain.DoubleClick += new EventHandler(picMain_DoubleClick);
+            //_picMain.MouseDown += new MouseEventHandler(picMain_MouseDown);
+            //_picMain.MouseMove += new MouseEventHandler(picMain_MouseMove);
+            //_picMain.MouseUp += new MouseEventHandler(picMain_MouseUp);
+            //picStretchedTmp = new Microsoft.VisualBasic.Compatibility.VB6.PictureBoxArray(components);
+            //picTmp32 = new Microsoft.VisualBasic.Compatibility.VB6.PictureBoxArray(components);
             MainMenu1.SuspendLayout();
             _picMain_0.SuspendLayout();
             SuspendLayout();
             ToolTip1.Active = true;
-            ((System.ComponentModel.ISupportInitialize)_mnuMapCommandItem).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)_mnuUnitCommandItem).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)picBuf).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)_picMain).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)picStretchedTmp).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)picTmp32).BeginInit();
+            //((System.ComponentModel.ISupportInitialize)_mnuMapCommandItem).BeginInit();
+            //((System.ComponentModel.ISupportInitialize)_mnuUnitCommandItem).BeginInit();
+            //((System.ComponentModel.ISupportInitialize)picBuf).BeginInit();
+            //((System.ComponentModel.ISupportInitialize)_picMain).BeginInit();
+            //((System.ComponentModel.ISupportInitialize)picStretchedTmp).BeginInit();
+            //((System.ComponentModel.ISupportInitialize)picTmp32).BeginInit();
             StartPosition = FormStartPosition.Manual;
             BackColor = Color.FromArgb(192, 192, 192);
             FormBorderStyle = FormBorderStyle.FixedSingle;
@@ -1086,11 +1084,6 @@ namespace Project1
             _picMain_0.Visible = true;
             _picMain_0.BorderStyle = BorderStyle.None;
             _picMain_0.Name = "_picMain_0";
-            FlashObject.Size = new Size(33, 33);
-            FlashObject.Location = new Point(0, 0);
-            FlashObject.TabIndex = 22;
-            FlashObject.Visible = 0;
-            FlashObject.Name = "FlashObject";
             Controls.Add(_picStretchedTmp_1);
             Controls.Add(_picStretchedTmp_0);
             Controls.Add(_picMain_1);
@@ -1113,78 +1106,77 @@ namespace Project1
             Controls.Add(picTmp);
             Controls.Add(picBack);
             Controls.Add(_picMain_0);
-            _picMain_0.Controls.Add(FlashObject);
-            _mnuMapCommandItem.SetIndex(_mnuMapCommandItem_0, Conversions.ToShort(0));
-            _mnuMapCommandItem.SetIndex(_mnuMapCommandItem_1, Conversions.ToShort(1));
-            _mnuMapCommandItem.SetIndex(_mnuMapCommandItem_2, Conversions.ToShort(2));
-            _mnuMapCommandItem.SetIndex(_mnuMapCommandItem_3, Conversions.ToShort(3));
-            _mnuMapCommandItem.SetIndex(_mnuMapCommandItem_4, Conversions.ToShort(4));
-            _mnuMapCommandItem.SetIndex(_mnuMapCommandItem_5, Conversions.ToShort(5));
-            _mnuMapCommandItem.SetIndex(_mnuMapCommandItem_6, Conversions.ToShort(6));
-            _mnuMapCommandItem.SetIndex(_mnuMapCommandItem_7, Conversions.ToShort(7));
-            _mnuMapCommandItem.SetIndex(_mnuMapCommandItem_8, Conversions.ToShort(8));
-            _mnuMapCommandItem.SetIndex(_mnuMapCommandItem_9, Conversions.ToShort(9));
-            _mnuMapCommandItem.SetIndex(_mnuMapCommandItem_10, Conversions.ToShort(10));
-            _mnuMapCommandItem.SetIndex(_mnuMapCommandItem_11, Conversions.ToShort(11));
-            _mnuMapCommandItem.SetIndex(_mnuMapCommandItem_12, Conversions.ToShort(12));
-            _mnuMapCommandItem.SetIndex(_mnuMapCommandItem_13, Conversions.ToShort(13));
-            _mnuMapCommandItem.SetIndex(_mnuMapCommandItem_14, Conversions.ToShort(14));
-            _mnuMapCommandItem.SetIndex(_mnuMapCommandItem_15, Conversions.ToShort(15));
-            _mnuMapCommandItem.SetIndex(_mnuMapCommandItem_16, Conversions.ToShort(16));
-            _mnuMapCommandItem.SetIndex(_mnuMapCommandItem_17, Conversions.ToShort(17));
-            _mnuMapCommandItem.SetIndex(_mnuMapCommandItem_18, Conversions.ToShort(18));
-            _mnuMapCommandItem.SetIndex(_mnuMapCommandItem_19, Conversions.ToShort(19));
-            _mnuMapCommandItem.SetIndex(_mnuMapCommandItem_20, Conversions.ToShort(20));
-            _mnuUnitCommandItem.SetIndex(_mnuUnitCommandItem_0, Conversions.ToShort(0));
-            _mnuUnitCommandItem.SetIndex(_mnuUnitCommandItem_1, Conversions.ToShort(1));
-            _mnuUnitCommandItem.SetIndex(_mnuUnitCommandItem_2, Conversions.ToShort(2));
-            _mnuUnitCommandItem.SetIndex(_mnuUnitCommandItem_3, Conversions.ToShort(3));
-            _mnuUnitCommandItem.SetIndex(_mnuUnitCommandItem_4, Conversions.ToShort(4));
-            _mnuUnitCommandItem.SetIndex(_mnuUnitCommandItem_5, Conversions.ToShort(5));
-            _mnuUnitCommandItem.SetIndex(_mnuUnitCommandItem_6, Conversions.ToShort(6));
-            _mnuUnitCommandItem.SetIndex(_mnuUnitCommandItem_7, Conversions.ToShort(7));
-            _mnuUnitCommandItem.SetIndex(_mnuUnitCommandItem_8, Conversions.ToShort(8));
-            _mnuUnitCommandItem.SetIndex(_mnuUnitCommandItem_9, Conversions.ToShort(9));
-            _mnuUnitCommandItem.SetIndex(_mnuUnitCommandItem_10, Conversions.ToShort(10));
-            _mnuUnitCommandItem.SetIndex(_mnuUnitCommandItem_11, Conversions.ToShort(11));
-            _mnuUnitCommandItem.SetIndex(_mnuUnitCommandItem_12, Conversions.ToShort(12));
-            _mnuUnitCommandItem.SetIndex(_mnuUnitCommandItem_13, Conversions.ToShort(13));
-            _mnuUnitCommandItem.SetIndex(_mnuUnitCommandItem_14, Conversions.ToShort(14));
-            _mnuUnitCommandItem.SetIndex(_mnuUnitCommandItem_15, Conversions.ToShort(15));
-            _mnuUnitCommandItem.SetIndex(_mnuUnitCommandItem_16, Conversions.ToShort(16));
-            _mnuUnitCommandItem.SetIndex(_mnuUnitCommandItem_17, Conversions.ToShort(17));
-            _mnuUnitCommandItem.SetIndex(_mnuUnitCommandItem_18, Conversions.ToShort(18));
-            _mnuUnitCommandItem.SetIndex(_mnuUnitCommandItem_19, Conversions.ToShort(19));
-            _mnuUnitCommandItem.SetIndex(_mnuUnitCommandItem_20, Conversions.ToShort(20));
-            _mnuUnitCommandItem.SetIndex(_mnuUnitCommandItem_21, Conversions.ToShort(21));
-            _mnuUnitCommandItem.SetIndex(_mnuUnitCommandItem_22, Conversions.ToShort(22));
-            _mnuUnitCommandItem.SetIndex(_mnuUnitCommandItem_23, Conversions.ToShort(23));
-            _mnuUnitCommandItem.SetIndex(_mnuUnitCommandItem_24, Conversions.ToShort(24));
-            _mnuUnitCommandItem.SetIndex(_mnuUnitCommandItem_25, Conversions.ToShort(25));
-            _mnuUnitCommandItem.SetIndex(_mnuUnitCommandItem_26, Conversions.ToShort(26));
-            _mnuUnitCommandItem.SetIndex(_mnuUnitCommandItem_27, Conversions.ToShort(27));
-            _mnuUnitCommandItem.SetIndex(_mnuUnitCommandItem_28, Conversions.ToShort(28));
-            _mnuUnitCommandItem.SetIndex(_mnuUnitCommandItem_29, Conversions.ToShort(29));
-            _mnuUnitCommandItem.SetIndex(_mnuUnitCommandItem_30, Conversions.ToShort(30));
-            _mnuUnitCommandItem.SetIndex(_mnuUnitCommandItem_31, Conversions.ToShort(31));
-            _mnuUnitCommandItem.SetIndex(_mnuUnitCommandItem_32, Conversions.ToShort(32));
-            _mnuUnitCommandItem.SetIndex(_mnuUnitCommandItem_33, Conversions.ToShort(33));
-            _mnuUnitCommandItem.SetIndex(_mnuUnitCommandItem_34, Conversions.ToShort(34));
-            _mnuUnitCommandItem.SetIndex(_mnuUnitCommandItem_35, Conversions.ToShort(35));
-            picBuf.SetIndex(_picBuf_0, Conversions.ToShort(0));
-            _picMain.SetIndex(_picMain_1, Conversions.ToShort(1));
-            _picMain.SetIndex(_picMain_0, Conversions.ToShort(0));
-            picStretchedTmp.SetIndex(_picStretchedTmp_1, Conversions.ToShort(1));
-            picStretchedTmp.SetIndex(_picStretchedTmp_0, Conversions.ToShort(0));
-            picTmp32.SetIndex(_picTmp32_2, Conversions.ToShort(2));
-            picTmp32.SetIndex(_picTmp32_1, Conversions.ToShort(1));
-            picTmp32.SetIndex(_picTmp32_0, Conversions.ToShort(0));
-            ((System.ComponentModel.ISupportInitialize)picTmp32).EndInit();
-            ((System.ComponentModel.ISupportInitialize)picStretchedTmp).EndInit();
-            ((System.ComponentModel.ISupportInitialize)_picMain).EndInit();
-            ((System.ComponentModel.ISupportInitialize)picBuf).EndInit();
-            ((System.ComponentModel.ISupportInitialize)_mnuUnitCommandItem).EndInit();
-            ((System.ComponentModel.ISupportInitialize)_mnuMapCommandItem).EndInit();
+            //_mnuMapCommandItem.SetIndex(_mnuMapCommandItem_0, Conversions.ToShort(0));
+            //_mnuMapCommandItem.SetIndex(_mnuMapCommandItem_1, Conversions.ToShort(1));
+            //_mnuMapCommandItem.SetIndex(_mnuMapCommandItem_2, Conversions.ToShort(2));
+            //_mnuMapCommandItem.SetIndex(_mnuMapCommandItem_3, Conversions.ToShort(3));
+            //_mnuMapCommandItem.SetIndex(_mnuMapCommandItem_4, Conversions.ToShort(4));
+            //_mnuMapCommandItem.SetIndex(_mnuMapCommandItem_5, Conversions.ToShort(5));
+            //_mnuMapCommandItem.SetIndex(_mnuMapCommandItem_6, Conversions.ToShort(6));
+            //_mnuMapCommandItem.SetIndex(_mnuMapCommandItem_7, Conversions.ToShort(7));
+            //_mnuMapCommandItem.SetIndex(_mnuMapCommandItem_8, Conversions.ToShort(8));
+            //_mnuMapCommandItem.SetIndex(_mnuMapCommandItem_9, Conversions.ToShort(9));
+            //_mnuMapCommandItem.SetIndex(_mnuMapCommandItem_10, Conversions.ToShort(10));
+            //_mnuMapCommandItem.SetIndex(_mnuMapCommandItem_11, Conversions.ToShort(11));
+            //_mnuMapCommandItem.SetIndex(_mnuMapCommandItem_12, Conversions.ToShort(12));
+            //_mnuMapCommandItem.SetIndex(_mnuMapCommandItem_13, Conversions.ToShort(13));
+            //_mnuMapCommandItem.SetIndex(_mnuMapCommandItem_14, Conversions.ToShort(14));
+            //_mnuMapCommandItem.SetIndex(_mnuMapCommandItem_15, Conversions.ToShort(15));
+            //_mnuMapCommandItem.SetIndex(_mnuMapCommandItem_16, Conversions.ToShort(16));
+            //_mnuMapCommandItem.SetIndex(_mnuMapCommandItem_17, Conversions.ToShort(17));
+            //_mnuMapCommandItem.SetIndex(_mnuMapCommandItem_18, Conversions.ToShort(18));
+            //_mnuMapCommandItem.SetIndex(_mnuMapCommandItem_19, Conversions.ToShort(19));
+            //_mnuMapCommandItem.SetIndex(_mnuMapCommandItem_20, Conversions.ToShort(20));
+            //_mnuUnitCommandItem.SetIndex(_mnuUnitCommandItem_0, Conversions.ToShort(0));
+            //_mnuUnitCommandItem.SetIndex(_mnuUnitCommandItem_1, Conversions.ToShort(1));
+            //_mnuUnitCommandItem.SetIndex(_mnuUnitCommandItem_2, Conversions.ToShort(2));
+            //_mnuUnitCommandItem.SetIndex(_mnuUnitCommandItem_3, Conversions.ToShort(3));
+            //_mnuUnitCommandItem.SetIndex(_mnuUnitCommandItem_4, Conversions.ToShort(4));
+            //_mnuUnitCommandItem.SetIndex(_mnuUnitCommandItem_5, Conversions.ToShort(5));
+            //_mnuUnitCommandItem.SetIndex(_mnuUnitCommandItem_6, Conversions.ToShort(6));
+            //_mnuUnitCommandItem.SetIndex(_mnuUnitCommandItem_7, Conversions.ToShort(7));
+            //_mnuUnitCommandItem.SetIndex(_mnuUnitCommandItem_8, Conversions.ToShort(8));
+            //_mnuUnitCommandItem.SetIndex(_mnuUnitCommandItem_9, Conversions.ToShort(9));
+            //_mnuUnitCommandItem.SetIndex(_mnuUnitCommandItem_10, Conversions.ToShort(10));
+            //_mnuUnitCommandItem.SetIndex(_mnuUnitCommandItem_11, Conversions.ToShort(11));
+            //_mnuUnitCommandItem.SetIndex(_mnuUnitCommandItem_12, Conversions.ToShort(12));
+            //_mnuUnitCommandItem.SetIndex(_mnuUnitCommandItem_13, Conversions.ToShort(13));
+            //_mnuUnitCommandItem.SetIndex(_mnuUnitCommandItem_14, Conversions.ToShort(14));
+            //_mnuUnitCommandItem.SetIndex(_mnuUnitCommandItem_15, Conversions.ToShort(15));
+            //_mnuUnitCommandItem.SetIndex(_mnuUnitCommandItem_16, Conversions.ToShort(16));
+            //_mnuUnitCommandItem.SetIndex(_mnuUnitCommandItem_17, Conversions.ToShort(17));
+            //_mnuUnitCommandItem.SetIndex(_mnuUnitCommandItem_18, Conversions.ToShort(18));
+            //_mnuUnitCommandItem.SetIndex(_mnuUnitCommandItem_19, Conversions.ToShort(19));
+            //_mnuUnitCommandItem.SetIndex(_mnuUnitCommandItem_20, Conversions.ToShort(20));
+            //_mnuUnitCommandItem.SetIndex(_mnuUnitCommandItem_21, Conversions.ToShort(21));
+            //_mnuUnitCommandItem.SetIndex(_mnuUnitCommandItem_22, Conversions.ToShort(22));
+            //_mnuUnitCommandItem.SetIndex(_mnuUnitCommandItem_23, Conversions.ToShort(23));
+            //_mnuUnitCommandItem.SetIndex(_mnuUnitCommandItem_24, Conversions.ToShort(24));
+            //_mnuUnitCommandItem.SetIndex(_mnuUnitCommandItem_25, Conversions.ToShort(25));
+            //_mnuUnitCommandItem.SetIndex(_mnuUnitCommandItem_26, Conversions.ToShort(26));
+            //_mnuUnitCommandItem.SetIndex(_mnuUnitCommandItem_27, Conversions.ToShort(27));
+            //_mnuUnitCommandItem.SetIndex(_mnuUnitCommandItem_28, Conversions.ToShort(28));
+            //_mnuUnitCommandItem.SetIndex(_mnuUnitCommandItem_29, Conversions.ToShort(29));
+            //_mnuUnitCommandItem.SetIndex(_mnuUnitCommandItem_30, Conversions.ToShort(30));
+            //_mnuUnitCommandItem.SetIndex(_mnuUnitCommandItem_31, Conversions.ToShort(31));
+            //_mnuUnitCommandItem.SetIndex(_mnuUnitCommandItem_32, Conversions.ToShort(32));
+            //_mnuUnitCommandItem.SetIndex(_mnuUnitCommandItem_33, Conversions.ToShort(33));
+            //_mnuUnitCommandItem.SetIndex(_mnuUnitCommandItem_34, Conversions.ToShort(34));
+            //_mnuUnitCommandItem.SetIndex(_mnuUnitCommandItem_35, Conversions.ToShort(35));
+            //picBuf.SetIndex(_picBuf_0, Conversions.ToShort(0));
+            //_picMain.SetIndex(_picMain_1, Conversions.ToShort(1));
+            //_picMain.SetIndex(_picMain_0, Conversions.ToShort(0));
+            //picStretchedTmp.SetIndex(_picStretchedTmp_1, Conversions.ToShort(1));
+            //picStretchedTmp.SetIndex(_picStretchedTmp_0, Conversions.ToShort(0));
+            //picTmp32.SetIndex(_picTmp32_2, Conversions.ToShort(2));
+            //picTmp32.SetIndex(_picTmp32_1, Conversions.ToShort(1));
+            //picTmp32.SetIndex(_picTmp32_0, Conversions.ToShort(0));
+            //((System.ComponentModel.ISupportInitialize)picTmp32).EndInit();
+            //((System.ComponentModel.ISupportInitialize)picStretchedTmp).EndInit();
+            //((System.ComponentModel.ISupportInitialize)_picMain).EndInit();
+            //((System.ComponentModel.ISupportInitialize)picBuf).EndInit();
+            //((System.ComponentModel.ISupportInitialize)_mnuUnitCommandItem).EndInit();
+            //((System.ComponentModel.ISupportInitialize)_mnuMapCommandItem).EndInit();
             MainMenu1.Items.AddRange(new ToolStripItem[] { mnuUnitCommand, mnuMapCommand });
             mnuUnitCommand.DropDownItems.AddRange(new ToolStripItem[] { _mnuUnitCommandItem_0, _mnuUnitCommandItem_1, _mnuUnitCommandItem_2, _mnuUnitCommandItem_3, _mnuUnitCommandItem_4, _mnuUnitCommandItem_5, _mnuUnitCommandItem_6, _mnuUnitCommandItem_7, _mnuUnitCommandItem_8, _mnuUnitCommandItem_9, _mnuUnitCommandItem_10, _mnuUnitCommandItem_11, _mnuUnitCommandItem_12, _mnuUnitCommandItem_13, _mnuUnitCommandItem_14, _mnuUnitCommandItem_15, _mnuUnitCommandItem_16, _mnuUnitCommandItem_17, _mnuUnitCommandItem_18, _mnuUnitCommandItem_19, _mnuUnitCommandItem_20, _mnuUnitCommandItem_21, _mnuUnitCommandItem_22, _mnuUnitCommandItem_23, _mnuUnitCommandItem_24, _mnuUnitCommandItem_25, _mnuUnitCommandItem_26, _mnuUnitCommandItem_27, _mnuUnitCommandItem_28, _mnuUnitCommandItem_29, _mnuUnitCommandItem_30, _mnuUnitCommandItem_31, _mnuUnitCommandItem_32, _mnuUnitCommandItem_33, _mnuUnitCommandItem_34, _mnuUnitCommandItem_35 });
             mnuMapCommand.DropDownItems.AddRange(new ToolStripItem[] { _mnuMapCommandItem_0, _mnuMapCommandItem_1, _mnuMapCommandItem_2, _mnuMapCommandItem_3, _mnuMapCommandItem_4, _mnuMapCommandItem_5, _mnuMapCommandItem_6, _mnuMapCommandItem_7, _mnuMapCommandItem_8, _mnuMapCommandItem_9, _mnuMapCommandItem_10, _mnuMapCommandItem_11, _mnuMapCommandItem_12, _mnuMapCommandItem_13, _mnuMapCommandItem_14, _mnuMapCommandItem_15, _mnuMapCommandItem_16, _mnuMapCommandItem_17, _mnuMapCommandItem_18, _mnuMapCommandItem_19, _mnuMapCommandItem_20 });
