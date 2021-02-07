@@ -6,6 +6,7 @@
 using SRC.Core.Events;
 using SRC.Core.Expressions;
 using SRC.Core.Lib;
+using SRC.Core.Maps;
 using SRC.Core.Models;
 using SRC.Core.VB;
 using System;
@@ -20,6 +21,7 @@ namespace SRC.Core
 
         public Expression Expression { get; }
         public Event Event { get; }
+        public Map Map { get; }
 
         // パイロットデータのリスト
         public PilotDataList PDList = new PilotDataList();
@@ -129,6 +131,8 @@ namespace SRC.Core
         {
             Event = new Event(this);
             Expression = new Expression(this);
+            Map = new Map(this);
+
             PList = new Pilots.Pilots(this);
             UList = new Units.Units(this);
         }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SRC.Core.Maps;
+using System;
 
 namespace SRC.Core.Events
 {
@@ -15,6 +16,7 @@ namespace SRC.Core.Events
             }
         }
         private IGUI GUI => SRC.GUI;
+        private Map Map => SRC.Map;
 
         public Event(SRC src)
         {
