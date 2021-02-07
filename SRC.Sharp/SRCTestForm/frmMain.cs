@@ -1,4 +1,5 @@
-﻿using SRC.Core;
+﻿using Microsoft.Extensions.Logging;
+using SRC.Core;
 using SRC.Core.Units;
 using SRCTestForm.FormLib;
 using System;
@@ -76,6 +77,7 @@ namespace SRCTestForm
                     //try
                     //{
                     SetStatusText($"Load file [{fbd.FileName}].");
+                    Hide();
                     SRC.Execute(fbd.FileName);
                     //}
                     //catch (Exception ex)
@@ -107,6 +109,7 @@ namespace SRCTestForm
 
         private void SetStatusText(string text)
         {
+            Program.Log.LogDebug(text);
             toolStripStatusLabel.Text = text;
             Update();
         }
