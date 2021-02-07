@@ -1,0 +1,9 @@
+﻿@using SRCCore.Models
+<pre>@DataJson</pre>
+
+@code {
+    [Parameter]
+    public UnitData Data { get; set; }
+
+    private string DataJson => JsonConvert.SerializeObject(Data, Formatting.Indented);
+}

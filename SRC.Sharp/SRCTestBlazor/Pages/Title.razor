@@ -5,56 +5,34 @@
 @using System.Net.Http
 @using System.Web
 @using System.IO
+@using SRCTestBlazor.Components
+@using SRCCore.Models
 
 @implements IDisposable
 @inject NavigationManager NavigationManager
 @inject HttpClient Http
 
-<style type="text/css">
-    .data-previewr ul {
-        margin: 0;
-        padding: 0;
-    }
-
-    .data-previewr li {
-        margin: 4px;
-        padding: 0;
-    }
-</style>
+<DataNavMenu OnChangeSrcDataKind="@OnChangeSrcDataKind" />
 <h2>@DataTitle</h2>
-<div class="container data-previewr">
-    <div class="row">
-        <div class="col-md-4">
-            <ul style="overflow-y: scroll; height: 100vh;">
-                <li>
-                    Unit
-                    <ul>
-                        @foreach (var ud in SRC.UDList.Items)
-                        {
-                            var bindItem = ud;
-                            <li><a href="#" data-name="@ud.Name" @onclick:preventDefault @onclick="@(e => OnClickItem(bindItem))">@ud.Name</a></li>
-                        }
-                    </ul>
-                </li>
-                <li>
-                    Pilot
-                    <ul>
-                        @foreach (var pd in SRC.PDList.Items)
-                        {
-                            var bindItem = pd;
-                            <li><a href="#" data-name="@pd.Name" @onclick:preventDefault @onclick="(e => OnClickItem(bindItem))">@pd.Name</a></li>
-                        }
-                    </ul>
-                </li>
-            </ul>
-        </div>
-        <div class="col-md-8" style="overflow-y: scroll; height: 100vh;">
-            <div id="status">@StatusText</div>
-            <pre id="preview">@PreviewText</pre>
-        </div>
-    </div>
+<div>
+    <h3>Unit</h3>
+    <ul>
+        @foreach (var ud in SRC.UDList.Items)
+        {
+            <UnitDataView Data="@ud" />
+        }
+    </ul>
 </div>
-
+<div>
+    <h3>Pilot</h3>
+    <ul>
+        @foreach (var pd in SRC.PDList.Items)
+        {
+            <PilotDataView Data="@pd" />
+        }
+    </ul>
+</div>
+<div id="status">@StatusText</div>
 
 @code {
     [Parameter]
@@ -118,4 +96,8 @@
         PreviewText = JsonConvert.SerializeObject(item, Formatting.Indented);
     }
 
+    private void OnChangeSrcDataKind(SrcDataKind kind)
+    {
+        Console.WriteLine(kind);
+    }
 }
