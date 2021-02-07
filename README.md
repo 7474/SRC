@@ -25,6 +25,7 @@ SRCを眺めたり弄ってみたりするためのリポジトリ。
     - [SRCTestBlazor](./SRC.Sharp/SRCTestBlazor)
         - 動作確認用Blazor WebAssemblyアプリケーション
         - .NET 5
+        - https://7474.github.io/SRC/
 
 ## Convert log
 
