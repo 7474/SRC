@@ -1,7 +1,7 @@
-﻿using SRC.Core.Maps;
+﻿using SRCCore.Maps;
 using System;
 
-namespace SRC.Core.Events
+namespace SRCCore.Events
 {
     public partial class Event
     {

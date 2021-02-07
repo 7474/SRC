@@ -4,15 +4,15 @@
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
 
-using SRC.Core.Lib;
-using SRC.Core.Pilots;
-using SRC.Core.Units;
-using SRC.Core.VB;
+using SRCCore.Lib;
+using SRCCore.Pilots;
+using SRCCore.Units;
+using SRCCore.VB;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace SRC.Core.Expressions
+namespace SRCCore.Expressions
 {
     // === 変数に関する処理 ===
     public partial class Expression

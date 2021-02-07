@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace SRC.Core.Lib
+namespace SRCCore.Lib
 {
 
     // VBの Microsoft.VisualBasic.FileSystem のうちSRCで使用していたものの仮実装。

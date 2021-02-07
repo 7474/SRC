@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SRC.Core.Events
+namespace SRCCore.Events
 {
     public partial class Event
     {

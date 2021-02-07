@@ -1,8 +1,8 @@
-﻿using SRC.Core.Lib;
-using SRC.Core.VB;
+﻿using SRCCore.Lib;
+using SRCCore.VB;
 using System.IO;
 
-namespace SRC.Core
+namespace SRCCore
 {
     public partial class SRC
     {

@@ -1,9 +1,9 @@
-﻿using SRC.Core.Events;
-using SRC.Core.Exceptions;
-using SRC.Core.Pilots;
-using SRC.Core.Units;
+﻿using SRCCore.Events;
+using SRCCore.Exceptions;
+using SRCCore.Pilots;
+using SRCCore.Units;
 
-namespace SRC.Core.CmdDatas.Commands
+namespace SRCCore.CmdDatas.Commands
 {
     public class CreateCmd : CmdData
     {

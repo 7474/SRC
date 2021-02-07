@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SRC.Core
+namespace SRCCore
 {
     public partial class SRC
     {

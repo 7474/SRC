@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Text;
-using SRC.Core.CmdDatas;
-using SRC.Core.Expressions;
-using SRC.Core.Units;
-using SRC.Core.VB;
+using SRCCore.CmdDatas;
+using SRCCore.Expressions;
+using SRCCore.Units;
+using SRCCore.VB;
 
-namespace SRC.Core.Events
+namespace SRCCore.Events
 {
     public partial class Event
     {

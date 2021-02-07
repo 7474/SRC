@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SRC.Core.Exceptions
+namespace SRCCore.Exceptions
 {
     public class InvalidSrcData
     {

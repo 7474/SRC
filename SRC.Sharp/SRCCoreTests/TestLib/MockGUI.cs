@@ -1,5 +1,5 @@
-﻿using SRC.Core;
-using SRC.Core.Units;
+﻿using SRCCore;
+using SRCCore.Units;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -52,6 +52,8 @@ namespace SRCCoreTests.TestLib
         public bool IsCursorVisible { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public int BGColor { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public bool MessageFormVisible { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+        public bool MainFormVisible => throw new NotImplementedException();
 
         public int AbilityListBox(Unit u, string caption_msg, string lb_mode, bool is_item = false)
         {
@@ -199,6 +201,11 @@ namespace SRCCoreTests.TestLib
         }
 
         public void LockGUI()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void MainFormShow()
         {
             throw new NotImplementedException();
         }

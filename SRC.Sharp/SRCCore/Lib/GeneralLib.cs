@@ -3,14 +3,14 @@
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
 
-using SRC.Core.VB;
+using SRCCore.VB;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace SRC.Core.Lib
+namespace SRCCore.Lib
 {
     // 汎用的な処理を行うモジュール
     public static class GeneralLib

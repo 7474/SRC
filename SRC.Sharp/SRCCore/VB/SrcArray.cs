@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SRC.Core.VB
+namespace SRCCore.VB
 {
     // VB配列っぽいものをとりあえず置き換えておくための実装
     public class SrcArray<T> : List<T>

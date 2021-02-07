@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
-using SRC.Core;
-using SRC.Core.Units;
+using SRCCore;
+using SRCCore.Units;
 using SRCTestForm.FormLib;
 using System;
 using System.Data;
@@ -12,14 +12,14 @@ namespace SRCTestForm
 {
     public partial class frmTeatMain : Form
     {
-        public SRC.Core.SRC SRC;
-        public SRC.Core.Expressions.Expression Expression => SRC.Expression;
+        public SRCCore.SRC SRC;
+        public SRCCore.Expressions.Expression Expression => SRC.Expression;
 
         public frmTeatMain()
         {
             InitializeComponent();
 
-            SRC = new SRC.Core.SRC();
+            SRC = new SRCCore.SRC();
             SRC.GUI = this;
         }
 

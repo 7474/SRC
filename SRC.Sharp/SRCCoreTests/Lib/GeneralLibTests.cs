@@ -1,12 +1,12 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
-using SRC.Core.Lib;
+using SRCCore.Lib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace SRC.Core.Lib.Tests
+namespace SRCCore.Lib.Tests
 {
     [TestClass()]
     public class GeneralLibTests

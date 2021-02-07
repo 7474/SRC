@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace SRC.Core.Events
+namespace SRCCore.Events
 {
     public enum EventDataSource
     {

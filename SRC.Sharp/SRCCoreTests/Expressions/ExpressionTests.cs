@@ -1,5 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SRC.Core.Expressions;
+using SRCCore.Expressions;
 using SRCCoreTests.TestLib;
 using System;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SRC.Core.Expressions.Tests
+namespace SRCCore.Expressions.Tests
 {
     [TestClass()]
     public class ExpressionTests

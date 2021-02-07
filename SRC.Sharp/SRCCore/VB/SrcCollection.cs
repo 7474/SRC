@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
 
-namespace SRC.Core.VB
+namespace SRCCore.VB
 {
     // VBのCollectionの代替え実装。
     // （ジェネリクスは欲しいので）

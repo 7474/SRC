@@ -1,13 +1,13 @@
-﻿using SRC.Core.Lib;
-using SRC.Core.Maps;
-using SRC.Core.VB;
+﻿using SRCCore.Lib;
+using SRCCore.Maps;
+using SRCCore.VB;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Text;
 
-namespace SRC.Core
+namespace SRCCore
 {
     public partial class SRC
     {

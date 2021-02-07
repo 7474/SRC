@@ -1,8 +1,8 @@
-﻿using SRC.Core.CmdDatas;
-using SRC.Core.Expressions;
-using SRC.Core.Lib;
-using SRC.Core.Maps;
-using SRC.Core.VB;
+﻿using SRCCore.CmdDatas;
+using SRCCore.Expressions;
+using SRCCore.Lib;
+using SRCCore.Maps;
+using SRCCore.VB;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -10,7 +10,7 @@ using System.Drawing.Drawing2D;
 using System.IO;
 using System.Linq;
 
-namespace SRC.Core.Events
+namespace SRCCore.Events
 {
     public partial class Event
     {

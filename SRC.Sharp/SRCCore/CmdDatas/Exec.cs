@@ -1,11 +1,11 @@
-﻿using SRC.Core.Events;
-using SRC.Core.Lib;
-using SRC.Core.VB;
+﻿using SRCCore.Events;
+using SRCCore.Lib;
+using SRCCore.VB;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace SRC.Core.CmdDatas
+namespace SRCCore.CmdDatas
 {
     public class CmdDataBkup
     {

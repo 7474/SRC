@@ -3,17 +3,17 @@
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
 
-using SRC.Core.Events;
-using SRC.Core.Expressions;
-using SRC.Core.Lib;
-using SRC.Core.Maps;
-using SRC.Core.Models;
-using SRC.Core.VB;
+using SRCCore.Events;
+using SRCCore.Expressions;
+using SRCCore.Lib;
+using SRCCore.Maps;
+using SRCCore.Models;
+using SRCCore.VB;
 using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace SRC.Core
+namespace SRCCore
 {
     public partial class SRC
     {

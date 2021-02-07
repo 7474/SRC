@@ -1,8 +1,8 @@
 ﻿
-using SRC.Core.Units;
-using SRC.Core.VB;
+using SRCCore.Units;
+using SRCCore.VB;
 
-namespace SRC.Core.Events
+namespace SRCCore.Events
 {
     public partial class Event
     {

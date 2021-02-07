@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace SRC.Core.VB
+namespace SRCCore.VB
 {
     // VBの Microsoft.VisualBasic.Information のうちSRCで使用していたものの仮実装。
     public static class Information
