@@ -95,23 +95,12 @@ namespace SRC.Core.Pilots
         // 名称
         public string Name => Data.Name;
 
-        private WeakReference<SRC> _src;
-        private SRC SRC
-        {
-            get
-            {
-                SRC res;
-                _src.TryGetTarget(out res);
-                return res;
-            }
-        }
+        protected SRC SRC { get; }
         private IGUI GUI => SRC.GUI;
 
         public Pilot(SRC src, PilotData data)
         {
-            // XXX これでいいかは知らん。
-            _src = new WeakReference<SRC>(src, true);
-
+            SRC = src;
             Data = data;
 
             // Impl

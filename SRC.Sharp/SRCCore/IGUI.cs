@@ -103,6 +103,9 @@ namespace SRC.Core
         // Optionによる新ＧＵＩが有効かどうかを再設定する
         void SetNewGUIMode();
 
+        bool MainFormVisible { get; }
+        void MainFormShow();
+
         // === メッセージウィンドウに関する処理 ===
 
         bool MessageFormVisible { get; }

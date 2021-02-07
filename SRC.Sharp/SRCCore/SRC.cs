@@ -17,7 +17,8 @@ namespace SRC.Core
 {
     public partial class SRC
     {
-        public IGUI GUI;
+        public IGUI GUI { get; set; }
+        public IGUIMap GUIMap { get; set; }
 
         public Expression Expression { get; }
         public Event Event { get; }

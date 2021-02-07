@@ -11,22 +11,13 @@ namespace SRC.Core.Maps
     // マップデータに関する各種処理を行うモジュール
     public class Map
     {
-        private WeakReference<SRC> _src;
-        private SRC SRC
-        {
-            get
-            {
-                SRC res;
-                _src.TryGetTarget(out res);
-                return res;
-            }
-        }
+        protected SRC SRC { get; }
         private IGUI GUI => SRC.GUI;
+        private IGUIMap GUIMap => SRC.GUIMap;
 
         public Map(SRC src)
         {
-            // XXX これでいいかは知らん。
-            _src = new WeakReference<SRC>(src, true);
+            SRC = src;
         }
 
         // 管理可能な地形データの総数
@@ -84,9 +75,9 @@ namespace SRC.Core.Maps
         // 地形情報テーブルを初期化
         public void InitMap()
         {
+            SetMapSize(GUI.MainWidth, GUI.MainHeight);
             // TODO Impl
             //int i, j;
-            //SetMapSize(GUI.MainWidth, GUI.MainHeight);
             //var loopTo = MapWidth;
             //for (i = 1; i <= loopTo; i++)
             //{
@@ -833,77 +824,16 @@ namespace SRC.Core.Maps
         // マップサイズを設定
         public void SetMapSize(int w, int h)
         {
-            throw new NotImplementedException();
             //int i, j;
             //int ret;
-            //MapWidth = w;
-            //MapHeight = h;
+            MapWidth = w;
+            MapHeight = h;
+            // XXX MapのGUIインタフェースと実装に追い出す
             //GUI.MapPWidth = (32 * w);
             //GUI.MapPHeight = (32 * h);
-            //GUI.MapX = ((GUI.MainWidth + 1) / 2);
-            //GUI.MapY = ((GUI.MainHeight + 1) / 2);
-
-            //// マップ画像サイズを決定
-            //// UPGRADE_ISSUE: Control picBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-            //{
-            //    var withBlock = GUI.MainForm.picBack;
-            //    // UPGRADE_ISSUE: Control picBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-            //    withBlock.Picture = Image.FromFile("");
-            //    // UPGRADE_ISSUE: Control picBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-            //    withBlock.Move(0, 0, GUI.MapPWidth, GUI.MapPHeight);
-            //    // UPGRADE_ISSUE: Control picBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-            //    ret = GUI.PatBlt(withBlock.hDC, 0, 0, withBlock.width, withBlock.Height, GUI.BLACKNESS);
-            //}
-            //// UPGRADE_ISSUE: Control picMaskedBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-            //{
-            //    var withBlock1 = GUI.MainForm.picMaskedBack;
-            //    // UPGRADE_ISSUE: Control picMaskedBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-            //    withBlock1.Picture = Image.FromFile("");
-            //    // UPGRADE_ISSUE: Control picMaskedBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-            //    withBlock1.Move(0, 0, GUI.MapPWidth, GUI.MapPHeight);
-            //}
-
-            //// スクロールバーの移動範囲を決定
-            //// UPGRADE_ISSUE: Control HScroll は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-            //{
-            //    var withBlock2 = GUI.MainForm.HScroll;
-            //    // UPGRADE_ISSUE: Control HScroll は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-            //    if (withBlock2.max != MapWidth)
-            //    {
-            //        // UPGRADE_ISSUE: Control HScroll は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-            //        withBlock2.Visible = false;
-            //        // UPGRADE_ISSUE: Control HScroll は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-            //        withBlock2.max = MapWidth;
-            //        // MOD START 240a
-            //        // If MainWidth = 15 Then
-            //        if (!GUI.NewGUIMode)
-            //        {
-            //            // MOD  END  240a
-            //            // UPGRADE_ISSUE: Control HScroll は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-            //            withBlock2.Visible = true;
-            //        }
-            //    }
-            //}
-            //// UPGRADE_ISSUE: Control VScroll は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-            //{
-            //    var withBlock3 = GUI.MainForm.VScroll;
-            //    // UPGRADE_ISSUE: Control VScroll は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-            //    if (withBlock3.max != MapHeight)
-            //    {
-            //        // UPGRADE_ISSUE: Control VScroll は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-            //        withBlock3.Visible = false;
-            //        // UPGRADE_ISSUE: Control VScroll は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-            //        withBlock3.max = MapHeight;
-            //        // MOD START 240a
-            //        // If MainWidth = 15 Then
-            //        if (!GUI.NewGUIMode)
-            //        {
-            //            // MOD  END  240a
-            //            // UPGRADE_ISSUE: Control VScroll は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-            //            withBlock3.Visible = true;
-            //        }
-            //    }
-            //}
+            GUI.MapX = ((GUI.MainWidth + 1) / 2);
+            GUI.MapY = ((GUI.MainHeight + 1) / 2);
+            GUIMap.SetMapSize(w, h);
 
             //// マップデータ用配列の領域確保
             //// MOD START 240a

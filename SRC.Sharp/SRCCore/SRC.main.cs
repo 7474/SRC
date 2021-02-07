@@ -69,7 +69,6 @@ namespace SRC.Core
             ConfigureExecuteFile(fname);
 
             // Src.iniから各種パラメータの読み込み
-
             LoadIni();
 
             // マップを初期化

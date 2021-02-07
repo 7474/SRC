@@ -17,22 +17,12 @@ namespace SRC.Core.Units
         // ユニット一覧
         private SrcCollection<Unit> colUnits = new SrcCollection<Unit>();
 
-        private WeakReference<SRC> _src;
-        private SRC SRC
-        {
-            get
-            {
-                SRC res;
-                _src.TryGetTarget(out res);
-                return res;
-            }
-        }
+        protected SRC SRC { get; }
         private IGUI GUI => SRC.GUI;
 
         public Units(SRC src)
         {
-            // XXX これでいいかは知らん。
-            _src = new WeakReference<SRC>(src, true);
+            SRC = src;
         }
 
         public IEnumerator GetEnumerator()

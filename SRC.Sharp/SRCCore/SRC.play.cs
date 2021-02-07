@@ -234,15 +234,15 @@ namespace SRC.Core
             //}
 
             //// スタートイベントが始まった場合は通常のステージとみなす
-            //IsSubStage = false;
+            IsSubStage = false;
             //Status.ClearUnitStatus();
-            //if (!GUI.MainForm.Visible)
-            //{
-            //    GUI.MainForm.Show();
-            //    GUI.MainForm.Refresh();
-            //}
+            if (!GUI.MainFormVisible)
+            {
+                GUI.MainFormShow();
+                //GUI.MainForm.Refresh();
+            }
 
-            //GUI.RedrawScreen();
+            GUI.RedrawScreen();
 
             // スタートイベント
             Event.HandleEvent("スタート");

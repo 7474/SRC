@@ -15,24 +15,14 @@ namespace SRC.Core.CmdDatas
     // イベントコマンドのクラス
     public abstract class CmdData
     {
-        private WeakReference<SRC> _src;
-        protected SRC SRC
-        {
-            get
-            {
-                SRC res;
-                _src.TryGetTarget(out res);
-                return res;
-            }
-        }
+        protected SRC SRC { get; }
         protected IGUI GUI => SRC.GUI;
         protected Event Event => SRC.Event;
         protected Expressions.Expression Expression => SRC.Expression;
 
         public CmdData(SRC src, CmdType name, EventDataLine eventData)
         {
-            // XXX これでいいかは知らん。
-            _src = new WeakReference<SRC>(src, true);
+            SRC = src;
             Name = name;
             EventData = eventData;
             ParseArgs(eventData.Data);
