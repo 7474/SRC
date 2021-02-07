@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace SRCTestForm
 {
-    public partial class frmTeatMain : Form, IGUI
+    public partial class frmTeatMain : Form
     {
         public SRC.Core.SRC SRC;
         public SRC.Core.Expressions.Expression Expression => SRC.Expression;
@@ -98,8 +98,12 @@ namespace SRCTestForm
             var pilotNodes = SRC.PDList.Items.Select(pd => new SrcTreeNode(pd.Name, pd)).ToArray();
             var pilotListNode = new TreeNode("Pilot", pilotNodes);
 
+            var nonPilotNodes = SRC.NPDList.Items.Select(pd => new SrcTreeNode(pd.Name, pd)).ToArray();
+            var nonPilotListNode = new TreeNode("NonPilot", nonPilotNodes);
+
             treeViewData.Nodes.Add(unitListNode);
             treeViewData.Nodes.Add(pilotListNode);
+            treeViewData.Nodes.Add(nonPilotListNode);
         }
 
         private void SetMainText(string text)
