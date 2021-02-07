@@ -131,6 +131,7 @@ namespace SRC.Core.Models
         public PilotData LoadPilot(SrcDataReader reader)
         {
             PilotData pd;
+            // TODO Log
             var continuesErrors = new List<InvalidSrcData>();
             string buf, buf2;
 

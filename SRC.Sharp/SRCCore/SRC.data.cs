@@ -63,12 +63,11 @@ namespace SRC.Core
                 PDList.Load(pilotFilePath);
             }
 
-            //string argfname8 = fpath + @"\non_pilot.txt";
-            //if (GeneralLib.FileExists(ref argfname8))
-            //{
-            //    string argfname7 = fpath + @"\non_pilot.txt";
-            //    NPDList.Load(ref argfname7);
-            //}
+            var nonPilotFilePath = Path.Combine(fpath, "non_pilot.txt");
+            if (GeneralLib.FileExists(nonPilotFilePath))
+            {
+                NPDList.Load(nonPilotFilePath);
+            }
 
             var robotFilePath = Path.Combine(fpath, "robot.txt");
             if (GeneralLib.FileExists(robotFilePath))

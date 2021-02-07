@@ -342,15 +342,12 @@ namespace SRCTestForm
                     pnickname = pd.Nickname;
                     fname = pd.Bitmap;
                 }
-                //else if (SRC.NPDList.IsDefined(pname))
-                //{
-                //    NonPilotData localItem4() { object argIndex1 = pname; var ret = SRC.NPDList.Item(ref argIndex1); return ret; }
-
-                //    pnickname = localItem4().Nickname;
-                //    NonPilotData localItem5() { object argIndex1 = pname; var ret = SRC.NPDList.Item(ref argIndex1); return ret; }
-
-                //    fname = localItem5().Bitmap;
-                //}
+                else if (SRC.NPDList.IsDefined(pname))
+                {
+                    var pd = SRC.NPDList.Item(pname);
+                    pnickname = pd.Nickname;
+                    fname = pd.Bitmap;
+                }
 
                 // キャラ画像の表示
                 if (fname != "-.bmp")

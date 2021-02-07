@@ -63,7 +63,7 @@ namespace SRC.Core.CmdDatas.Commands
                             if (
                                  //!SRC.PList.IsDefined(pname)
                                  !SRC.PDList.IsDefined(pname)
-                                //& !SRC.NPDList.IsDefined(pname)
+                                & !SRC.NPDList.IsDefined(pname)
                                 & !(pname == "システム")
                                 & !string.IsNullOrEmpty(pname))
                             {

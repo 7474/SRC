@@ -23,8 +23,8 @@ namespace SRC.Core
 
         // パイロットデータのリスト
         public PilotDataList PDList = new PilotDataList();
-        //// ノンパイロットデータのリスト
-        //public NonPilotDataList NPDList = new NonPilotDataList();
+        // ノンパイロットデータのリスト
+        public NonPilotDataList NPDList = new NonPilotDataList();
         // ユニットデータのリスト
         public UnitDataList UDList = new UnitDataList();
         //// アイテムデータのリスト
