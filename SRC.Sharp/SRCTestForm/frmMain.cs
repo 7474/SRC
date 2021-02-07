@@ -1,4 +1,5 @@
-﻿using SRC.Core;
+﻿using Microsoft.Extensions.Logging;
+using SRC.Core;
 using SRC.Core.Units;
 using SRCTestForm.FormLib;
 using System;
@@ -9,11 +10,12 @@ using System.Windows.Forms;
 
 namespace SRCTestForm
 {
-    public partial class frmMain : Form
+    public partial class frmTeatMain : Form
     {
         public SRC.Core.SRC SRC;
+        public SRC.Core.Expressions.Expression Expression => SRC.Expression;
 
-        public frmMain()
+        public frmTeatMain()
         {
             InitializeComponent();
 
@@ -75,6 +77,7 @@ namespace SRCTestForm
                     //try
                     //{
                     SetStatusText($"Load file [{fbd.FileName}].");
+                    Hide();
                     SRC.Execute(fbd.FileName);
                     //}
                     //catch (Exception ex)
@@ -95,8 +98,12 @@ namespace SRCTestForm
             var pilotNodes = SRC.PDList.Items.Select(pd => new SrcTreeNode(pd.Name, pd)).ToArray();
             var pilotListNode = new TreeNode("Pilot", pilotNodes);
 
+            var nonPilotNodes = SRC.NPDList.Items.Select(pd => new SrcTreeNode(pd.Name, pd)).ToArray();
+            var nonPilotListNode = new TreeNode("NonPilot", nonPilotNodes);
+
             treeViewData.Nodes.Add(unitListNode);
             treeViewData.Nodes.Add(pilotListNode);
+            treeViewData.Nodes.Add(nonPilotListNode);
         }
 
         private void SetMainText(string text)
@@ -106,6 +113,7 @@ namespace SRCTestForm
 
         private void SetStatusText(string text)
         {
+            Program.Log.LogDebug(text);
             toolStripStatusLabel.Text = text;
             Update();
         }

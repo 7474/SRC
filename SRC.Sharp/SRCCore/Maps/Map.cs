@@ -9,8 +9,17 @@ using System.Drawing;
 namespace SRC.Core.Maps
 {
     // マップデータに関する各種処理を行うモジュール
-    static class Map
+    public class Map
     {
+        protected SRC SRC { get; }
+        private IGUI GUI => SRC.GUI;
+        private IGUIMap GUIMap => SRC.GUIMap;
+
+        public Map(SRC src)
+        {
+            SRC = src;
+        }
+
         // 管理可能な地形データの総数
         public const int MAX_TERRAIN_DATA_NUM = 2000;
 
@@ -20,23 +29,23 @@ namespace SRC.Core.Maps
         // ADD  END  240a
 
         // マップファイル名
-        public static string MapFileName;
+        public string MapFileName;
         // マップの横サイズ
-        public static int MapWidth;
+        public int MapWidth;
         // マップの縦サイズ
-        public static int MapHeight;
+        public int MapHeight;
 
         // マップの描画モード
-        public static string MapDrawMode;
+        public string MapDrawMode;
         // フィルタ色
-        public static int MapDrawFilterColor;
+        public int MapDrawFilterColor;
         // フィルタの透過度
-        public static double MapDrawFilterTransPercent;
+        public double MapDrawFilterTransPercent;
         // フィルタやSepiaコマンドなどでユニットの色を変更するか
-        public static bool MapDrawIsMapOnly;
+        public bool MapDrawIsMapOnly;
 
         // マップに画像の書き込みがなされたか
-        public static bool IsMapDirty;
+        public bool IsMapDirty;
 
         // マップデータを記録する配列
         // MapData(*,*,0)は地形の種類
@@ -47,28 +56,28 @@ namespace SRC.Core.Maps
         // MapData(*,*,3)はビットマップの番号。未設定はNO_LAYER_NUM
         // MapData(*,*,4)はマスのデータタイプ。1:下層 2:上層 3:上層データのみ 4:上層見た目のみ
         // ADD  END  240a
-        public static MapCell[][] MapData;
+        public MapCell[][] MapData;
 
-        public static MapImageFileType[] MapImageFileTypeData;
+        public MapImageFileType[] MapImageFileTypeData;
 
         // マップ上に存在するユニットを記録する配列
-        public static Unit[] MapDataForUnit;
+        public Unit[] MapDataForUnit;
 
         // マップ上でターゲットを選択する際のマスク情報
-        public static bool[] MaskData;
+        public bool[] MaskData;
 
         // 現在地点からその地点まで移動するのに必要な移動力の配列
-        public static int[] TotalMoveCost;
+        public int[] TotalMoveCost;
 
         // 各地点がＺＯＣの影響下にあるかどうか
-        public static int[] PointInZOC;
+        public int[] PointInZOC;
 
         // 地形情報テーブルを初期化
-        public static void InitMap()
+        public void InitMap()
         {
+            SetMapSize(GUI.MainWidth, GUI.MainHeight);
             // TODO Impl
             //int i, j;
-            //SetMapSize(GUI.MainWidth, GUI.MainHeight);
             //var loopTo = MapWidth;
             //for (i = 1; i <= loopTo; i++)
             //{
@@ -89,7 +98,7 @@ namespace SRC.Core.Maps
         }
 
         // (X,Y)地点の命中修正
-        public static int TerrainEffectForHit(int X, int Y)
+        public int TerrainEffectForHit(int X, int Y)
         {
             throw new NotImplementedException();
             //    int TerrainEffectForHitRet = default;
@@ -118,7 +127,7 @@ namespace SRC.Core.Maps
         }
 
         // (X,Y)地点のダメージ修正
-        public static int TerrainEffectForDamage(int X, int Y)
+        public int TerrainEffectForDamage(int X, int Y)
         {
             throw new NotImplementedException();
             //    int TerrainEffectForDamageRet = default;
@@ -147,7 +156,7 @@ namespace SRC.Core.Maps
         }
 
         // (X,Y)地点のＨＰ回復率
-        public static int TerrainEffectForHPRecover(int X, int Y)
+        public int TerrainEffectForHPRecover(int X, int Y)
         {
             throw new NotImplementedException();
             //int TerrainEffectForHPRecoverRet = default;
@@ -178,7 +187,7 @@ namespace SRC.Core.Maps
         }
 
         // (X,Y)地点のＥＮ回復率
-        public static int TerrainEffectForENRecover(int X, int Y)
+        public int TerrainEffectForENRecover(int X, int Y)
         {
             throw new NotImplementedException();
             //int TerrainEffectForENRecoverRet = default;
@@ -209,7 +218,7 @@ namespace SRC.Core.Maps
         }
 
         // (X,Y)地点の地形名称
-        public static string TerrainName(int X, int Y)
+        public string TerrainName(int X, int Y)
         {
             throw new NotImplementedException();
             //string TerrainNameRet = default;
@@ -238,7 +247,7 @@ namespace SRC.Core.Maps
         }
 
         // (X,Y)地点の地形クラス
-        public static string TerrainClass(int X, int Y)
+        public string TerrainClass(int X, int Y)
         {
             throw new NotImplementedException();
             //string TerrainClassRet = default;
@@ -267,7 +276,7 @@ namespace SRC.Core.Maps
         }
 
         // (X,Y)地点の移動コスト
-        public static int TerrainMoveCost(int X, int Y)
+        public int TerrainMoveCost(int X, int Y)
         {
             throw new NotImplementedException();
             //int TerrainMoveCostRet = default;
@@ -296,7 +305,7 @@ namespace SRC.Core.Maps
         }
 
         // (X,Y)地点に障害物があるか (吹き飛ばし時に衝突するか)
-        public static bool TerrainHasObstacle(int X, int Y)
+        public bool TerrainHasObstacle(int X, int Y)
         {
             throw new NotImplementedException();
             //bool TerrainHasObstacleRet = default;
@@ -328,7 +337,7 @@ namespace SRC.Core.Maps
 
         // ADD START 240a
         // (X,Y)地点が移動停止か
-        public static bool TerrainHasMoveStop(int X, int Y)
+        public bool TerrainHasMoveStop(int X, int Y)
         {
             throw new NotImplementedException();
             //bool TerrainHasMoveStopRet = default;
@@ -356,7 +365,7 @@ namespace SRC.Core.Maps
         }
 
         // (X,Y)地点が進入禁止か
-        public static bool TerrainDoNotEnter(int X, int Y)
+        public bool TerrainDoNotEnter(int X, int Y)
         {
             throw new NotImplementedException();
             //bool ret;
@@ -398,7 +407,7 @@ namespace SRC.Core.Maps
         }
 
         // (X,Y)地点が指定した能力を持っているか
-        public static bool TerrainHasFeature(int X, int Y, ref string Feature)
+        public bool TerrainHasFeature(int X, int Y, ref string Feature)
         {
             throw new NotImplementedException();
             //bool TerrainHasFeatureRet = default;
@@ -425,7 +434,7 @@ namespace SRC.Core.Maps
         // ADD  END  240a
 
         // (X,Y)地点にいるユニット
-        public static Unit UnitAtPoint(int X, int Y)
+        public Unit UnitAtPoint(int X, int Y)
         {
             throw new NotImplementedException();
             //Unit UnitAtPointRet = default;
@@ -448,7 +457,7 @@ namespace SRC.Core.Maps
         }
 
         // 指定したマップ画像を検索する
-        public static string SearchTerrainImageFile(int tid, int tbitmap, int tx, int ty)
+        public string SearchTerrainImageFile(int tid, int tbitmap, int tx, int ty)
         {
             throw new NotImplementedException();
             //            string SearchTerrainImageFileRet = default;
@@ -473,7 +482,7 @@ namespace SRC.Core.Maps
             //               場所 ICSharpCode.CodeConverter.CSharp.CommentConvertingMethodBodyVisitor.<DefaultVisitInnerAsync>d__3.MoveNext()
 
             //            Input:
-            //                    Static init_setup_background As Boolean
+            //                    init_setup_background As Boolean
 
             //             */
             //            ;
@@ -495,7 +504,7 @@ namespace SRC.Core.Maps
             //               場所 ICSharpCode.CodeConverter.CSharp.CommentConvertingMethodBodyVisitor.<DefaultVisitInnerAsync>d__3.MoveNext()
 
             //            Input:
-            //                    Static scenario_map_dir_exists As Boolean
+            //                    scenario_map_dir_exists As Boolean
 
             //             */
             //            ;
@@ -517,7 +526,7 @@ namespace SRC.Core.Maps
             //               場所 ICSharpCode.CodeConverter.CSharp.CommentConvertingMethodBodyVisitor.<DefaultVisitInnerAsync>d__3.MoveNext()
 
             //            Input:
-            //                    Static extdata_map_dir_exists As Boolean
+            //                    extdata_map_dir_exists As Boolean
 
             //             */
             //            ;
@@ -673,7 +682,7 @@ namespace SRC.Core.Maps
 
 
         // マップファイル fname のデータをロード
-        public static void LoadMapData(string fname)
+        public void LoadMapData(string fname)
         {
             throw new NotImplementedException();
             //    int FileNumber;
@@ -813,79 +822,18 @@ namespace SRC.Core.Maps
         }
 
         // マップサイズを設定
-        public static void SetMapSize(int w, int h)
+        public void SetMapSize(int w, int h)
         {
-            throw new NotImplementedException();
             //int i, j;
             //int ret;
-            //MapWidth = w;
-            //MapHeight = h;
+            MapWidth = w;
+            MapHeight = h;
+            // XXX MapのGUIインタフェースと実装に追い出す
             //GUI.MapPWidth = (32 * w);
             //GUI.MapPHeight = (32 * h);
-            //GUI.MapX = ((GUI.MainWidth + 1) / 2);
-            //GUI.MapY = ((GUI.MainHeight + 1) / 2);
-
-            //// マップ画像サイズを決定
-            //// UPGRADE_ISSUE: Control picBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-            //{
-            //    var withBlock = GUI.MainForm.picBack;
-            //    // UPGRADE_ISSUE: Control picBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-            //    withBlock.Picture = Image.FromFile("");
-            //    // UPGRADE_ISSUE: Control picBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-            //    withBlock.Move(0, 0, GUI.MapPWidth, GUI.MapPHeight);
-            //    // UPGRADE_ISSUE: Control picBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-            //    ret = GUI.PatBlt(withBlock.hDC, 0, 0, withBlock.width, withBlock.Height, GUI.BLACKNESS);
-            //}
-            //// UPGRADE_ISSUE: Control picMaskedBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-            //{
-            //    var withBlock1 = GUI.MainForm.picMaskedBack;
-            //    // UPGRADE_ISSUE: Control picMaskedBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-            //    withBlock1.Picture = Image.FromFile("");
-            //    // UPGRADE_ISSUE: Control picMaskedBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-            //    withBlock1.Move(0, 0, GUI.MapPWidth, GUI.MapPHeight);
-            //}
-
-            //// スクロールバーの移動範囲を決定
-            //// UPGRADE_ISSUE: Control HScroll は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-            //{
-            //    var withBlock2 = GUI.MainForm.HScroll;
-            //    // UPGRADE_ISSUE: Control HScroll は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-            //    if (withBlock2.max != MapWidth)
-            //    {
-            //        // UPGRADE_ISSUE: Control HScroll は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-            //        withBlock2.Visible = false;
-            //        // UPGRADE_ISSUE: Control HScroll は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-            //        withBlock2.max = MapWidth;
-            //        // MOD START 240a
-            //        // If MainWidth = 15 Then
-            //        if (!GUI.NewGUIMode)
-            //        {
-            //            // MOD  END  240a
-            //            // UPGRADE_ISSUE: Control HScroll は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-            //            withBlock2.Visible = true;
-            //        }
-            //    }
-            //}
-            //// UPGRADE_ISSUE: Control VScroll は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-            //{
-            //    var withBlock3 = GUI.MainForm.VScroll;
-            //    // UPGRADE_ISSUE: Control VScroll は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-            //    if (withBlock3.max != MapHeight)
-            //    {
-            //        // UPGRADE_ISSUE: Control VScroll は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-            //        withBlock3.Visible = false;
-            //        // UPGRADE_ISSUE: Control VScroll は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-            //        withBlock3.max = MapHeight;
-            //        // MOD START 240a
-            //        // If MainWidth = 15 Then
-            //        if (!GUI.NewGUIMode)
-            //        {
-            //            // MOD  END  240a
-            //            // UPGRADE_ISSUE: Control VScroll は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-            //            withBlock3.Visible = true;
-            //        }
-            //    }
-            //}
+            GUI.MapX = ((GUI.MainWidth + 1) / 2);
+            GUI.MapY = ((GUI.MainHeight + 1) / 2);
+            GUIMap.SetMapSize(w, h);
 
             //// マップデータ用配列の領域確保
             //// MOD START 240a
@@ -926,7 +874,7 @@ namespace SRC.Core.Maps
         }
 
         // マップデータをクリア
-        public static void ClearMap()
+        public void ClearMap()
         {
             throw new NotImplementedException();
             //int ret;
@@ -981,7 +929,7 @@ namespace SRC.Core.Maps
 
 
         // 中断用セーブデータにマップデータをセーブ
-        public static void DumpMapData()
+        public void DumpMapData()
         {
             throw new NotImplementedException();
             //int i, j;
@@ -1036,7 +984,7 @@ namespace SRC.Core.Maps
         // MOD START 240a
         // Sub→Functionに
         // Public Sub RestoreMapData() As String
-        public static string RestoreMapData()
+        public string RestoreMapData()
         {
             throw new NotImplementedException();
             //string RestoreMapDataRet = default;
@@ -1223,7 +1171,7 @@ namespace SRC.Core.Maps
 
         // (X,Y)を中心とする min_range - max_range のエリアを選択
         // エリア内のユニットは uparty の指示に従い選択
-        public static void AreaInRange(int X, int Y, int max_range, int min_range, ref string uparty)
+        public void AreaInRange(int X, int Y, int max_range, int min_range, ref string uparty)
         {
             throw new NotImplementedException();
             //int x1, y1;
@@ -1460,7 +1408,7 @@ namespace SRC.Core.Maps
 
         // ユニット u から移動後使用可能な射程 max_range の武器／アビリティを使う場合の効果範囲
         // エリア内のユニットは Party の指示に従い選択
-        public static void AreaInReachable(ref Unit u, int max_range, ref string uparty)
+        public void AreaInReachable(ref Unit u, int max_range, ref string uparty)
         {
             throw new NotImplementedException();
             //bool[] tmp_mask_data;
@@ -1693,7 +1641,7 @@ namespace SRC.Core.Maps
         }
 
         // マップ全域に渡ってupartyに属するユニットが存在する場所を選択
-        public static void AreaWithUnit(ref string uparty)
+        public void AreaWithUnit(ref string uparty)
         {
             throw new NotImplementedException();
             //int i, j;
@@ -1794,7 +1742,7 @@ namespace SRC.Core.Maps
         }
 
         // 十字状のエリアを選択 (Ｍ直の攻撃方向選択用)
-        public static void AreaInCross(int X, int Y, int min_range, ref int max_range)
+        public void AreaInCross(int X, int Y, int min_range, ref int max_range)
         {
             throw new NotImplementedException();
             //int i, j;
@@ -1846,7 +1794,7 @@ namespace SRC.Core.Maps
         }
 
         // 直線状のエリアを選択 (Ｍ直の攻撃範囲設定用)
-        public static void AreaInLine(int X, int Y, int min_range, ref int max_range, ref string direction)
+        public void AreaInLine(int X, int Y, int min_range, ref int max_range, ref string direction)
         {
             throw new NotImplementedException();
             //int i, j;
@@ -1921,7 +1869,7 @@ namespace SRC.Core.Maps
         }
 
         // 幅３マスの十字状のエリアを選択 (Ｍ拡の攻撃方向選択用)
-        public static void AreaInWideCross(int X, int Y, int min_range, ref int max_range)
+        public void AreaInWideCross(int X, int Y, int min_range, ref int max_range)
         {
             throw new NotImplementedException();
             //int i, j;
@@ -2041,7 +1989,7 @@ namespace SRC.Core.Maps
         }
 
         // 幅３マスの直線状のエリアを選択 (Ｍ拡の攻撃範囲設定用)
-        public static void AreaInCone(int X, int Y, int min_range, ref int max_range, ref string direction)
+        public void AreaInCone(int X, int Y, int min_range, ref int max_range, ref string direction)
         {
             throw new NotImplementedException();
             //int i, j;
@@ -2184,7 +2132,7 @@ namespace SRC.Core.Maps
         }
 
         // 扇状のエリアを選択 (Ｍ扇の攻撃範囲設定用)
-        public static void AreaInSector(int X, int Y, int min_range, ref int max_range, ref string direction, int lv, bool without_refresh = false)
+        public void AreaInSector(int X, int Y, int min_range, ref int max_range, ref string direction, int lv, bool without_refresh = false)
         {
             throw new NotImplementedException();
             //int xx, i, yy;
@@ -2406,7 +2354,7 @@ namespace SRC.Core.Maps
         }
 
         // 十字状の扇状のエリアを選択 (Ｍ扇の攻撃方向選択用)
-        public static void AreaInSectorCross(int X, int Y, int min_range, ref int max_range, int lv)
+        public void AreaInSectorCross(int X, int Y, int min_range, ref int max_range, int lv)
         {
             throw new NotImplementedException();
             //int xx, yy;
@@ -2429,7 +2377,7 @@ namespace SRC.Core.Maps
         }
 
         // ２点間を結ぶ直線状のエリアを選択 (Ｍ線の範囲設定用)
-        public static void AreaInPointToPoint(int x1, int y1, int x2, int y2)
+        public void AreaInPointToPoint(int x1, int y1, int x2, int y2)
         {
             throw new NotImplementedException();
             //int xx, yy;
@@ -2489,7 +2437,7 @@ namespace SRC.Core.Maps
 
         // ユニット u の移動範囲を選択
         // ジャンプする場合は ByJump = True
-        public static void AreaInSpeed(ref Unit u, bool ByJump = false)
+        public void AreaInSpeed(ref Unit u, bool ByJump = false)
         {
             throw new NotImplementedException();
             //int l, j, i, k, n = default;
@@ -4169,7 +4117,7 @@ namespace SRC.Core.Maps
 
         // ユニット u がテレポートして移動できる範囲を選択
         // 最大距離 lv を指定可能。(省略時は移動力＋テレポートレベル)
-        public static void AreaInTeleport(ref Unit u, int lv = 0)
+        public void AreaInTeleport(ref Unit u, int lv = 0)
         {
             throw new NotImplementedException();
             //bool is_trans_available_on_ground;
@@ -4645,7 +4593,7 @@ namespace SRC.Core.Maps
         }
 
         // ユニット u のＭ移武器、アビリティのターゲット座標選択用
-        public static void AreaInMoveAction(ref Unit u, int max_range)
+        public void AreaInMoveAction(ref Unit u, int max_range)
         {
             throw new NotImplementedException();
             //int k, i, j, n;
@@ -5061,7 +5009,7 @@ namespace SRC.Core.Maps
         }
 
         // ２点間を結ぶ直線が壁でブロックされているか判定
-        public static bool IsLineBlocked(int x1, int y1, int x2, int y2, bool is_flying = false)
+        public bool IsLineBlocked(int x1, int y1, int x2, int y2, bool is_flying = false)
         {
             throw new NotImplementedException();
             //bool IsLineBlockedRet = default;
@@ -5175,7 +5123,7 @@ namespace SRC.Core.Maps
         }
 
         // ユニット u が (dst_x,dst_y) に行くのに最も近い移動範囲内の場所 (X,Y) はどこか検索
-        public static void NearestPoint(ref Unit u, int dst_x, int dst_y, ref int X, ref int Y)
+        public void NearestPoint(ref Unit u, int dst_x, int dst_y, ref int X, ref int Y)
         {
             throw new NotImplementedException();
             //int k, i, j, n;
@@ -5790,7 +5738,7 @@ namespace SRC.Core.Maps
         }
 
         // ユニット u が敵から最も遠くなる場所(X,Y)を検索
-        public static void SafetyPoint(ref Unit u, ref int X, ref int Y)
+        public void SafetyPoint(ref Unit u, ref int X, ref int Y)
         {
             throw new NotImplementedException();
             //    int i, j;
@@ -5883,7 +5831,7 @@ namespace SRC.Core.Maps
 
             //// 現在位置から指定した場所までの移動経路を調べる
             //// 事前にAreaInSpeedを実行しておく事が必要
-            //public static void SearchMoveRoute(ref int tx, ref int ty, ref int[] move_route_x, ref int[] move_route_y)
+            //public void SearchMoveRoute(ref int tx, ref int ty, ref int[] move_route_x, ref int[] move_route_y)
             //{
             //    int xx, yy;
             //    int nx, ny;

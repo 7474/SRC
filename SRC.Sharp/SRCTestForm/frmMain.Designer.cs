@@ -1,7 +1,7 @@
 ﻿
 namespace SRCTestForm
 {
-    partial class frmMain
+    partial class frmTeatMain
     {
         /// <summary>
         ///  Required designer variable.

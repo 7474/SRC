@@ -191,7 +191,7 @@ namespace SRC.Core
             //    UList.ClearUnitBitmap();
             //}
 
-            //GUI.LockGUI();
+            GUI.LockGUI();
             //if (Map.MapWidth == 1)
             //{
             //    Map.SetMapSize(15, 15);
@@ -215,13 +215,11 @@ namespace SRC.Core
                 return;
             }
 
-            //string arglname1 = "スタート";
-            //if (!Event.IsEventDefined(arglname1))
-            //{
-            //    string argmsg6 = "スタートイベントが定義されていません";
-            //    GUI.ErrorMessage(argmsg6);
-            //    TerminateSRC();
-            //}
+            if (!Event.IsEventDefined("スタート"))
+            {
+                GUI.ErrorMessage("スタートイベントが定義されていません");
+                TerminateSRC();
+            }
 
             //GUI.IsPictureVisible = false;
             //GUI.IsCursorVisible = false;
@@ -236,38 +234,37 @@ namespace SRC.Core
             //}
 
             //// スタートイベントが始まった場合は通常のステージとみなす
-            //IsSubStage = false;
+            IsSubStage = false;
             //Status.ClearUnitStatus();
-            //if (!GUI.MainForm.Visible)
-            //{
-            //    GUI.MainForm.Show();
-            //    GUI.MainForm.Refresh();
-            //}
+            if (!GUI.MainFormVisible)
+            {
+                GUI.MainFormShow();
+                //GUI.MainForm.Refresh();
+            }
 
-            //GUI.RedrawScreen();
+            GUI.RedrawScreen();
 
-            //// スタートイベント
-            //Event.HandleEvent("スタート");
-            //if (IsScenarioFinished)
-            //{
-            //    IsScenarioFinished = false;
-            //    GUI.UnlockGUI();
-            //    return;
-            //}
+            // スタートイベント
+            Event.HandleEvent("スタート");
+            if (IsScenarioFinished)
+            {
+                IsScenarioFinished = false;
+                GUI.UnlockGUI();
+                return;
+            }
 
-            //GUI.IsPictureVisible = false;
-            //GUI.IsCursorVisible = false;
+            GUI.IsPictureVisible = false;
+            GUI.IsCursorVisible = false;
 
-            //// クイックロードを無効にする
-            //IsQuickSaveDataAvailable = false;
-            //string arguparty = "味方";
-            //StartTurn(arguparty);
+            // クイックロードを無効にする
+            IsQuickSaveDataAvailable = false;
+            StartTurn("味方");
         }
 
         // 陣営upartyのフェイズを実行
         public void StartTurn(string uparty)
         {
-            throw new NotImplementedException();
+            // TODO ImplS
             //int num, i, phase;
             //Unit u;
             //Stage = uparty;
@@ -1117,7 +1114,6 @@ namespace SRC.Core
         // SRCを終了
         public void TerminateSRC()
         {
-            throw new NotImplementedException("TerminateSRC");
             //// ウィンドウを閉じる
             //if (GUI.MainForm is object)
             //{
@@ -1163,7 +1159,7 @@ namespace SRC.Core
             //// なぜかこれがないと不正終了する……
             //Application.DoEvents();
 
-            //Environment.Exit(0);
+            Environment.Exit(0);
         }
     }
 }

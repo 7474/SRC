@@ -65,14 +65,10 @@ namespace SRC.Core.Events
             ObjDrawOption = "";
 
             // ラベルの初期化
-            // XXX 消し方
             colNormalLabelList.Clear();
-            var systemLabels = colEventLabelList.Values.Take(SysEventDataSize + 1).ToList();
-            colEventLabelList.Clear();
-            systemLabels.ForEach(x =>
-            {
-                colEventLabelList.Add(x);
-            });
+            var maxEventId = EventData.Any() ? EventData.Max(x => x.ID) : -1;
+            colEventLabelList.Values.Where(x => x.EventDataId > maxEventId).ToList()
+                .ForEach(x => colEventLabelList.Remove(x));
 
             // デバッグモードの設定
             // TODO Impl
@@ -361,25 +357,20 @@ namespace SRC.Core.Events
         {
             // 構文解析と書式チェックその１
             // 制御構造
+            var parser = new CmdParser();
             var error_found = false;
             var cmdStack = new Stack<CmdType>();
             var cmdPosStack = new Stack<int>();
             EventCmd.Clear();
             foreach (var eventDataLine in EventData.Where(x => !x.IsSystemData))
             {
-                var command = new CmdData(SRC)
-                {
-                    EventDataId = eventDataLine.ID,
-                };
-                EventCmd.Add(command);
                 // コマンドの構文解析
-                if (!command.Parse(eventDataLine.Data))
-                {
-                    error_found = true;
-                }
+                var command = parser.Parse(SRC, eventDataLine);
+                EventCmd.Add(command);
 
+                // TODO Impl
                 // リスト長がマイナスのときは括弧の対応が取れていない
-                if (command.ArgNum == -1)
+                if (command.ArgNum <= -1)
                 {
                     switch (cmdStack.Peek())
                     {
@@ -394,7 +385,7 @@ namespace SRC.Core.Events
 
                         default:
                             {
-                                DisplayEventErrorMessage(command.EventDataId, "括弧の対応が取れていません");
+                                DisplayEventErrorMessage(command.EventData, "括弧の対応が取れていません");
                                 error_found = true;
                                 break;
                             }
@@ -417,7 +408,7 @@ namespace SRC.Core.Events
                             if (command.GetArg(4) == "then")
                             {
                                 cmdStack.Push(CmdType.IfCmd);
-                                cmdPosStack.Push(command.EventDataId);
+                                cmdPosStack.Push(command.EventData.ID);
                             }
 
                             break;
@@ -435,10 +426,10 @@ namespace SRC.Core.Events
 
                             if (cmdStack.Any() && cmdStack.Peek() != CmdType.IfCmd)
                             {
-                                DisplayEventErrorMessage(command.EventDataId, "ElseIfに対応するIfがありません");
+                                DisplayEventErrorMessage(command.EventData, "ElseIfに対応するIfがありません");
                                 error_found = true;
                                 cmdStack.Push(CmdType.IfCmd);
-                                cmdPosStack.Push(command.EventDataId);
+                                cmdPosStack.Push(command.EventData.ID);
                             }
 
                             break;
@@ -456,10 +447,10 @@ namespace SRC.Core.Events
 
                             if (cmdStack.Any() && cmdStack.Peek() == CmdType.TalkCmd)
                             {
-                                DisplayEventErrorMessage(command.EventDataId, "Elseに対応するIfがありません");
+                                DisplayEventErrorMessage(command.EventData, "Elseに対応するIfがありません");
                                 error_found = true;
                                 cmdStack.Push(CmdType.IfCmd);
-                                cmdPosStack.Push(command.EventDataId);
+                                cmdPosStack.Push(command.EventData.ID);
                             }
 
                             break;
@@ -482,7 +473,7 @@ namespace SRC.Core.Events
                             }
                             else
                             {
-                                DisplayEventErrorMessage(command.EventDataId, "EndIfに対応するIfがありません");
+                                DisplayEventErrorMessage(command.EventData, "EndIfに対応するIfがありません");
                                 error_found = true;
                             }
 
@@ -500,7 +491,7 @@ namespace SRC.Core.Events
                             }
 
                             cmdStack.Push(CmdType.DoCmd);
-                            cmdPosStack.Push(command.EventDataId);
+                            cmdPosStack.Push(command.EventData.ID);
                             break;
                         }
 
@@ -521,7 +512,7 @@ namespace SRC.Core.Events
                             }
                             else
                             {
-                                DisplayEventErrorMessage(command.EventDataId, "Loopに対応するDoがありません");
+                                DisplayEventErrorMessage(command.EventData, "Loopに対応するDoがありません");
                                 error_found = true;
                             }
 
@@ -540,7 +531,7 @@ namespace SRC.Core.Events
                             }
 
                             cmdStack.Push(command.Name);
-                            cmdPosStack.Push(command.EventDataId);
+                            cmdPosStack.Push(command.EventData.ID);
                             break;
                         }
 
@@ -570,7 +561,7 @@ namespace SRC.Core.Events
 
                                         default:
                                             {
-                                                DisplayEventErrorMessage(command.EventDataId, "Nextに対応するコマンドがありません");
+                                                DisplayEventErrorMessage(command.EventData, "Nextに対応するコマンドがありません");
                                                 error_found = true;
                                                 break;
                                             }
@@ -592,7 +583,7 @@ namespace SRC.Core.Events
 
                                     default:
                                         {
-                                            DisplayEventErrorMessage(command.EventDataId, "Nextに対応するコマンドがありません");
+                                            DisplayEventErrorMessage(command.EventData, "Nextに対応するコマンドがありません");
                                             error_found = true;
                                             break;
                                         }
@@ -611,7 +602,7 @@ namespace SRC.Core.Events
                             }
 
                             cmdStack.Push(CmdType.SwitchCmd);
-                            cmdPosStack.Push(command.EventDataId);
+                            cmdPosStack.Push(command.EventData.ID);
                             break;
                         }
 
@@ -628,10 +619,10 @@ namespace SRC.Core.Events
 
                             if (cmdStack.Any() && cmdStack.Peek() != CmdType.SwitchCmd)
                             {
-                                DisplayEventErrorMessage(command.EventDataId, "Caseに対応するSwitchがありません");
+                                DisplayEventErrorMessage(command.EventData.ID, "Caseに対応するSwitchがありません");
                                 error_found = true;
                                 cmdStack.Push(CmdType.SwitchCmd);
-                                cmdPosStack.Push(command.EventDataId);
+                                cmdPosStack.Push(command.EventData.ID);
                             }
 
                             break;
@@ -654,7 +645,7 @@ namespace SRC.Core.Events
                             }
                             else
                             {
-                                DisplayEventErrorMessage(command.EventDataId, "EndSwに対応するSwitchがありません");
+                                DisplayEventErrorMessage(command.EventData.ID, "EndSwに対応するSwitchがありません");
                                 error_found = true;
                             }
 
@@ -667,7 +658,7 @@ namespace SRC.Core.Events
                             if (cmdStack.Any() && cmdStack.Peek() != command.Name)
                             {
                                 cmdStack.Push(command.Name);
-                                cmdPosStack.Push(command.EventDataId);
+                                cmdPosStack.Push(command.EventData.ID);
                             }
 
                             break;
@@ -726,7 +717,7 @@ namespace SRC.Core.Events
                             if (i < 3)
                             {
                                 cmdStack.Push(CmdType.AskCmd);
-                                cmdPosStack.Push(command.EventDataId);
+                                cmdPosStack.Push(command.EventData.ID);
                             }
 
                             break;
@@ -785,7 +776,7 @@ namespace SRC.Core.Events
                             if (i < 4)
                             {
                                 cmdStack.Push(CmdType.QuestionCmd);
-                                cmdPosStack.Push(command.EventDataId);
+                                cmdPosStack.Push(command.EventData.ID);
                             }
 
                             break;
@@ -809,7 +800,7 @@ namespace SRC.Core.Events
 
                                     default:
                                         {
-                                            DisplayEventErrorMessage(command.EventDataId, "Endに対応するTalkがありません");
+                                            DisplayEventErrorMessage(command.EventData.ID, "Endに対応するTalkがありません");
                                             error_found = true;
                                             break;
                                         }
@@ -834,7 +825,7 @@ namespace SRC.Core.Events
 
                                     default:
                                         {
-                                            DisplayEventErrorMessage(command.EventDataId, "Suspendに対応するTalkがありません");
+                                            DisplayEventErrorMessage(command.EventData.ID, "Suspendに対応するTalkがありません");
                                             error_found = true;
                                             break;
                                         }
@@ -1036,7 +1027,7 @@ namespace SRC.Core.Events
                         {
                             if (command.ArgNum < 8)
                             {
-                                DisplayEventErrorMessage(command.EventDataId, "Createコマンドのパラメータ数が違います");
+                                DisplayEventErrorMessage(command.EventData.ID, "Createコマンドのパラメータ数が違います");
                                 error_found = true;
                             }
 
@@ -1047,7 +1038,7 @@ namespace SRC.Core.Events
                         {
                             if (command.ArgNum < 3)
                             {
-                                DisplayEventErrorMessage(command.EventDataId, "Pilotコマンドのパラメータ数が違います");
+                                DisplayEventErrorMessage(command.EventData.ID, "Pilotコマンドのパラメータ数が違います");
                                 error_found = true;
                             }
 
@@ -1058,7 +1049,7 @@ namespace SRC.Core.Events
                         {
                             if (command.ArgNum != 3)
                             {
-                                DisplayEventErrorMessage(command.EventDataId, "Unitコマンドのパラメータ数が違います");
+                                DisplayEventErrorMessage(command.EventData.ID, "Unitコマンドのパラメータ数が違います");
                                 error_found = true;
                             }
 
@@ -1269,7 +1260,7 @@ namespace SRC.Core.Events
                         var isIncludeLine = Strings.Left(line, 1) == "<" && Strings.InStr(line, ">") == Strings.Len(line) && line != "<>";
                         if (!isIncludeLine)
                         {
-                            var eventLine = new EventDataLine(EventData.Count + 1, source, reader.FileName, reader.LineNumber, line);
+                            var eventLine = new EventDataLine(EventData.Count, source, reader.FileName, reader.LineNumber, line);
                             EventData.Add(eventLine);
                         }
                         else

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace SRC.Core.Events
@@ -23,7 +24,7 @@ namespace SRC.Core.Events
         public bool IsSystemData => Source == EventDataSource.System;
 
         // 常時イベントラベルらしき行かどうか
-        public bool IsAlwaysEventLabel => Data[0] == '*';
+        public bool IsAlwaysEventLabel => Data.FirstOrDefault() == '*';
 
         public EventDataLine(int id, EventDataSource source, string file, int lineNum, string data)
         {

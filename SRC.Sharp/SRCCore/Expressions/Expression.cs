@@ -12,22 +12,12 @@ namespace SRC.Core.Expressions
 {
     public partial class Expression
     {
-        private WeakReference<SRC> _src;
-        private SRC SRC
-        {
-            get
-            {
-                SRC res;
-                _src.TryGetTarget(out res);
-                return res;
-            }
-        }
+        protected SRC SRC { get; }
         private Event Event => SRC.Event;
 
         public Expression(SRC src)
         {
-            // XXX これでいいかは知らん。
-            _src = new WeakReference<SRC>(src, true);
+            SRC = src;
         }
 
         public string DumpVariables()
