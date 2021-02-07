@@ -1,4 +1,5 @@
-﻿using SRC.Core;
+﻿using Microsoft.Extensions.Logging;
+using SRC.Core;
 using SRC.Core.Lib;
 using SRC.Core.Units;
 using System;
@@ -674,7 +675,7 @@ namespace SRCTestForm
 
         public void ErrorMessage(string msg)
         {
-            SetStatusText(msg);
+            LogInfo(msg);
         }
 
         public void DataErrorMessage(string msg, string fname, int line_num, string line_buf, string dname)
@@ -696,6 +697,16 @@ namespace SRCTestForm
         {
             // XXX 別のフォームに設定
             Name = title;
+        }
+
+        public void LogDebug(string message)
+        {
+            Program.Log.Log(LogLevel.Debug, message);
+        }
+
+        public void LogInfo(string message)
+        {
+            Program.Log.Log(LogLevel.Information, message);
         }
     }
 }
