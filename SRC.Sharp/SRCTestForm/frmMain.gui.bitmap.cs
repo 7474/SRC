@@ -11,7 +11,7 @@ using System.Windows.Forms;
 
 namespace SRCTestForm
 {
-    public partial class frmMain
+    public partial class frmTeatMain
     {
         // XXX ファイルシステム周りはインタフェースを切って環境毎に実装してやるのがよさそう。
         // SRCクラスにある XXDataPath もそちらに切り出すとよいはず。

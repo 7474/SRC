@@ -14,7 +14,7 @@ using System.Windows.Forms;
 
 namespace SRCTestForm
 {
-    public partial class frmMain
+    public partial class frmTeatMain
     {
         public bool IsGUILocked { get; set; }
         public short TopItem { get; set; }

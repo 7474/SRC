@@ -9,12 +9,12 @@ using System.Windows.Forms;
 
 namespace SRCTestForm
 {
-    public partial class frmMain : Form, IGUI
+    public partial class frmTeatMain : Form, IGUI
     {
         public SRC.Core.SRC SRC;
         public SRC.Core.Expressions.Expression Expression => SRC.Expression;
 
-        public frmMain()
+        public frmTeatMain()
         {
             InitializeComponent();
 
