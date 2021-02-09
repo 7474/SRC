@@ -7,7 +7,10 @@
 @inject HttpClient Http
 
 <section class="container">
-    <h1 class="title">@DataTitle</h1>
+    @if (!string.IsNullOrEmpty(DataTitle))
+    {
+        <h1 class="title">@DataTitle</h1>
+    }
     @* XXX Bulma の sticky サポートはないっぽい *@
     <div class="has-background-light" style="position: sticky; top: 52px;">
         <DataNavMenu OnChangeSrcDataKind="@OnChangeSrcDataKind" />
@@ -48,82 +51,17 @@
             <PilotDataView Data="@pd" />
         }
     </div>
-    <div id="status">@StatusText</div>
 </section>
 
 @code {
     [Inject]
     protected IJSRuntime JsInterop { get; set; }
     [Parameter]
-    public string DataPath { get; set; }
+    public string DataTitle { get; set; }
+    [Parameter]
+    public SRC SRC { get; set; }
 
-    private SRC SRC = new SRC();
-    private string StatusText = "";
-    private string PreviewText = "{}";
-    private string DataTitle { get; set; }
     private SrcDataKind currentKind = SrcDataKind.Unit;
-    private string renderDataPath = "";
-
-    protected override async Task OnInitializedAsync()
-    {
-        await UpdateData();
-    }
-
-    protected override async Task OnParametersSetAsync()
-    {
-        if (renderDataPath != DataPath)
-        {
-            renderDataPath = DataPath;
-            await UpdateData();
-        }
-    }
-
-    private async Task UpdateData()
-    {
-        var sw = new Stopwatch();
-        sw.Start();
-
-        SRC.UDList.Clear();
-        SRC.PDList.Clear();
-
-        var baseUri = HttpUtility.UrlDecode(DataPath);
-        DataTitle = Path.GetFileName(baseUri);
-        try
-        {
-            SRC.UDList.Load("/unit.txt", await Http.GetStreamAsync(baseUri + "/unit.txt"));
-        }
-        catch { }
-        try
-        {
-            SRC.UDList.Load("/robot.txt", await Http.GetStreamAsync(baseUri + "/robot.txt"));
-        }
-        catch { }
-        try
-        {
-            SRC.PDList.Load("/pilot.txt", await Http.GetStreamAsync(baseUri + "/pilot.txt"));
-        }
-        catch { }
-        try
-        {
-            SRC.UDList.Load("/unit.txt", await Http.GetStreamAsync(baseUri + "/Unit.txt"));
-        }
-        catch { }
-        try
-        {
-            SRC.UDList.Load("/robot.txt", await Http.GetStreamAsync(baseUri + "/Robot.txt"));
-        }
-        catch { }
-        try
-        {
-            SRC.PDList.Load("/pilot.txt", await Http.GetStreamAsync(baseUri + "/Pilot.txt"));
-        }
-        catch { }
-
-        sw.Stop();
-        Console.WriteLine(sw.ElapsedMilliseconds);
-        StatusText = $"{sw.ElapsedMilliseconds}ms";
-        StateHasChanged();
-    }
 
     private async Task OnClickAnchor(string targetId)
     {
