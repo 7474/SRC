@@ -6,45 +6,41 @@
 
 @inject HttpClient Http
 
-<div>
-    <div style="position: fixed; width: 100%;" class="bg-light">
-        <DataNavMenu OnChangeSrcDataKind="@OnChangeSrcDataKind" />
-        <div style="@(currentKind != SrcDataKind.Unit ? "display: none; ": "") white-space: nowrap; width: 100%; overflow-x: scroll;">
+<section class="container">
+    <h1 class="title">@DataTitle</h1>
+    <DataNavMenu OnChangeSrcDataKind="@OnChangeSrcDataKind" />
+    <div style="@(currentKind != SrcDataKind.Unit ? "display: none; ": "")">
+        <div>
             @foreach (var ud in SRC.UDList.Items)
             {
                 var name = ud.Name;
                 <a href="#@name" class="btn"
-                    @onclick:preventDefault
-                    @onclick="@(e => OnClickAnchor(name))">@name</a>
+                   @onclick:preventDefault
+                   @onclick="@(e => OnClickAnchor(name))">@name</a>
             }
         </div>
-        <div style="@(currentKind != SrcDataKind.Pilot ? "display: none; ": "") white-space: nowrap; width: 100%; overflow-x: scroll;">
-            @foreach (var pd in SRC.PDList.Items)
-            {
-                var name = pd.Name;
-                <a href="#@name" class="btn"
-                    @onclick:preventDefault
-                    @onclick="@(e => OnClickAnchor(name))">@name</a>
-            }
-        </div>
-    </div>
-    <h2 style="margin-top: 5em;">@DataTitle</h2>
-    <div>
-        <h3>Unit</h3>
         @foreach (var ud in SRC.UDList.Items)
         {
             <UnitDataView Data="@ud" />
         }
     </div>
-    <div>
-        <h3>Pilot</h3>
+    <div style="@(currentKind != SrcDataKind.Pilot ? "display: none; ": "")">
+        <div>
+            @foreach (var pd in SRC.PDList.Items)
+            {
+                var name = pd.Name;
+                <a href="#@name" class="btn"
+                   @onclick:preventDefault
+                   @onclick="@(e => OnClickAnchor(name))">@name</a>
+            }
+        </div>
         @foreach (var pd in SRC.PDList.Items)
         {
             <PilotDataView Data="@pd" />
         }
     </div>
     <div id="status">@StatusText</div>
-</div>
+</section>
 
 @code {
     [Inject]

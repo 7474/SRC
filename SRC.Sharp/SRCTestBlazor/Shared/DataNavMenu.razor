@@ -1,17 +1,21 @@
 ﻿@using SRCTestBlazor.Models
 
-<nav class="navbar navbar-expand navbar-light bg-light">
-    <div class="navbar-nav">
-        <button class="btn nav-item nav-link @(currentKind == SrcDataKind.Unit ? " active": "")"
-           @onclick:preventDefault
-           @onclick="@(e => ChangeKind(e, SrcDataKind.Unit))"
-           >Unit</button>
-        <button class="btn nav-item nav-link @(currentKind == SrcDataKind.Pilot ? " active": "")"
-           @onclick:preventDefault
-           @onclick="@(e => ChangeKind(e, SrcDataKind.Pilot))"
-           >Pilot</button>
-    </div>
-</nav>
+<div class="tabs">
+    <ul>
+        <li class="@(currentKind == SrcDataKind.Unit ? "is-active": "")">
+            <a @onclick:preventDefault
+               @onclick="@(e => ChangeKind(e, SrcDataKind.Unit))">
+                Unit
+            </a>
+        </li>
+        <li class="@(currentKind == SrcDataKind.Pilot ? "is-active": "")">
+            <a @onclick:preventDefault
+               @onclick="@(e => ChangeKind(e, SrcDataKind.Pilot))">
+                Pilot
+            </a>
+        </li>
+    </ul>
+</div>
 
 @code {
     [Parameter]
