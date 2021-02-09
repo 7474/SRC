@@ -1,3 +1,6 @@
+using Blazorise;
+using Blazorise.Bulma;
+using Blazorise.Icons.FontAwesome;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,7 +20,19 @@ namespace SRCTestBlazor
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("#app");
 
-            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+            builder.Services
+                .AddScoped(sp => new HttpClient
+                {
+                    BaseAddress = new Uri(builder.HostEnvironment.BaseAddress)
+                })
+              .AddBlazorise(options =>
+              {
+                  // XXXX ñ{ìñÇ…ÅH
+                  // https://blazorise.com/docs/usage/bulma/
+                  options.ChangeTextOnKeyPress = true;
+              })
+              .AddBulmaProviders()
+              .AddFontAwesomeIcons();
 
             await builder.Build().RunAsync();
         }
