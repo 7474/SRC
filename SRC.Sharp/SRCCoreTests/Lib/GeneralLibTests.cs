@@ -1,10 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
-using SRCCore.Lib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace SRCCore.Lib.Tests
 {
