@@ -6,7 +6,9 @@
 @inject HttpClient Http
 
 <TitleView SRC="@SRC" DataTitle="@DataTitle" />
-<div id="status">@StatusText</div>
+<div class="container">
+    <div id="status" class="message">@StatusText</div>
+</div>
 
 @code {
     [Parameter]
