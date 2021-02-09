@@ -1,26 +1,41 @@
 ﻿@inherits LayoutComponentBase
 
-<section class="hero">
-    <div class="hero-head">
-        <nav class="navbar" role="navigation" aria-label="main navigation">
-            <div class="navbar-brand">
-                <NavLink href="/">SRC#DataViewer</NavLink>
-            </div>
-            <div class="navbar-menu">
-                <nav class="navbar" role="navigation" aria-label="dropdown navigation">
-                    <div class="navbar-item has-dropdown">
-                        <a class="navbar-link">
-                            Titles
-                        </a>
-                        <div class="navbar-dropdown">
-                            <TitleNavMenu />
-                        </div>
-                    </div>
-                </nav>
+<nav class="navbar" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+        <NavLink class="navbar-item" href="/">SRC#DataViewer</NavLink>
+        <a role="button"
+           aria-label="menu" aria-expanded="false"
+           class="navbar-burger @(IsBurgerActive ? "is-active" : "")"
+           @onclick="OnClickBurger">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+    </div>
+    <div class="navbar-menu  @(IsBurgerActive ? "is-active" : "")">
+        <nav class="navbar" role="navigation" aria-label="dropdown navigation">
+            <div class="navbar-item has-dropdown is-hoverable">
+                <a class="navbar-link">
+                    Titles
+                </a>
+                <div class="navbar-dropdown">
+                    <TitleNavMenu />
+                </div>
             </div>
         </nav>
     </div>
+</nav>
+<section class="hero is-link is-fullheight-with-navbar">
     <main class="hero-body">
         @Body
     </main>
 </section>
+
+@code {
+    private bool IsBurgerActive = false;
+
+    private void OnClickBurger()
+    {
+        IsBurgerActive = !IsBurgerActive;
+    }
+}
