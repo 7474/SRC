@@ -1,8 +1,10 @@
-﻿@page "/titles/{dataPath}"
+﻿@page "/titles/{dataPath}/{dataFiles}"
 
-<LoadTitleView DataPath="@DataPath" />
+<LoadTitleView DataPath="@DataPath" DataFiles="@DataFiles" />
 
 @code {
     [Parameter]
     public string DataPath { get; set; }
+    [Parameter]
+    public string DataFiles { get; set; }
 }

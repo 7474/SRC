@@ -13,7 +13,7 @@
 {
     foreach (var title in Titles)
     {
-        <NavLink class="navbar-item" href="@ToTitlePathParam(title.Path)">
+        <NavLink class="navbar-item" href="@ToTitlePathParam(title)">
             @title.Title
         </NavLink>
     }
@@ -51,9 +51,11 @@
         StateHasChanged();
     }
 
-    private string ToTitlePathParam(string path)
+    private string ToTitlePathParam(TitleData title)
     {
-        return "titles/" + HttpUtility.UrlEncode(IndexBase + path);
+        return "titles/" + HttpUtility.UrlEncode(IndexBase + title.Path) 
+            + "/"
+            + string.Join("&", title.Files.Select(x => HttpUtility.UrlEncode(x)));
     }
 
     private bool collapseNavMenu = true;
