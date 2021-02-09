@@ -6,43 +6,45 @@
 
 @inject HttpClient Http
 
-<div style="position: fixed; width: 100%;" class="bg-light">
-    <DataNavMenu OnChangeSrcDataKind="@OnChangeSrcDataKind" />
-    <div style="@(currentKind != SrcDataKind.Unit ? "display: none; ": "") white-space: nowrap; width: 100%; overflow-x: scroll;">
+<div>
+    <div style="position: fixed; width: 100%;" class="bg-light">
+        <DataNavMenu OnChangeSrcDataKind="@OnChangeSrcDataKind" />
+        <div style="@(currentKind != SrcDataKind.Unit ? "display: none; ": "") white-space: nowrap; width: 100%; overflow-x: scroll;">
+            @foreach (var ud in SRC.UDList.Items)
+            {
+                var name = ud.Name;
+                <a href="#@name" class="btn"
+                    @onclick:preventDefault
+                    @onclick="@(e => OnClickAnchor(name))">@name</a>
+            }
+        </div>
+        <div style="@(currentKind != SrcDataKind.Pilot ? "display: none; ": "") white-space: nowrap; width: 100%; overflow-x: scroll;">
+            @foreach (var pd in SRC.PDList.Items)
+            {
+                var name = pd.Name;
+                <a href="#@name" class="btn"
+                    @onclick:preventDefault
+                    @onclick="@(e => OnClickAnchor(name))">@name</a>
+            }
+        </div>
+    </div>
+    <h2 style="margin-top: 5em;">@DataTitle</h2>
+    <div>
+        <h3>Unit</h3>
         @foreach (var ud in SRC.UDList.Items)
         {
-            var name = ud.Name;
-            <a href="#@name" class="btn"
-               @onclick:preventDefault
-               @onclick="@(e => OnClickAnchor(name))">@name</a>
+            <UnitDataView Data="@ud" />
         }
     </div>
-    <div style="@(currentKind != SrcDataKind.Pilot ? "display: none; ": "") white-space: nowrap; width: 100%; overflow-x: scroll;">
+    <div>
+        <h3>Pilot</h3>
         @foreach (var pd in SRC.PDList.Items)
         {
-            var name = pd.Name;
-            <a href="#@name" class="btn"
-               @onclick:preventDefault
-               @onclick="@(e => OnClickAnchor(name))">@name</a>
+            <PilotDataView Data="@pd" />
         }
     </div>
+    <div id="status">@StatusText</div>
 </div>
-<h2 style="margin-top: 5em;">@DataTitle</h2>
-<div>
-    <h3>Unit</h3>
-    @foreach (var ud in SRC.UDList.Items)
-    {
-        <UnitDataView Data="@ud" />
-    }
-</div>
-<div>
-    <h3>Pilot</h3>
-    @foreach (var pd in SRC.PDList.Items)
-    {
-        <PilotDataView Data="@pd" />
-    }
-</div>
-<div id="status">@StatusText</div>
 
 @code {
     [Inject]
