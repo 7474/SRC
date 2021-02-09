@@ -8,32 +8,40 @@
 
 <section class="container">
     <h1 class="title">@DataTitle</h1>
-    <DataNavMenu OnChangeSrcDataKind="@OnChangeSrcDataKind" />
+    @* XXX Bulma の sticky サポートはないっぽい *@
+    <div class="has-background-light" style="position: sticky; top: 52px;">
+        <DataNavMenu OnChangeSrcDataKind="@OnChangeSrcDataKind" />
+    </div>
     <div style="@(currentKind != SrcDataKind.Unit ? "display: none; ": "")">
-        <div>
-            @foreach (var ud in SRC.UDList.Items)
-            {
-                var name = ud.Name;
-                <a href="#@name" class="btn"
-                   @onclick:preventDefault
-                   @onclick="@(e => OnClickAnchor(name))">@name</a>
-            }
-        </div>
+        @* XXX この nav がメインの nav の Dropdown より前に来てる気がする *@
+        <nav class="navbar is-light is-fixed-top" style="position: sticky; top: 93px;">
+            <div class="navbar-brand">
+                @foreach (var ud in SRC.UDList.Items)
+                {
+                    var name = ud.Name;
+                    <a href="#@name" class="navbar-item"
+                       @onclick:preventDefault
+                       @onclick="@(e => OnClickAnchor(name))">@name</a>
+                }
+            </div>
+        </nav>
         @foreach (var ud in SRC.UDList.Items)
         {
             <UnitDataView Data="@ud" />
         }
     </div>
     <div style="@(currentKind != SrcDataKind.Pilot ? "display: none; ": "")">
-        <div>
-            @foreach (var pd in SRC.PDList.Items)
-            {
-                var name = pd.Name;
-                <a href="#@name" class="btn"
-                   @onclick:preventDefault
-                   @onclick="@(e => OnClickAnchor(name))">@name</a>
-            }
-        </div>
+        <nav class="navbar is-light is-fixed-top" style="position: sticky; top: 93px;">
+            <div class="navbar-brand">
+                @foreach (var pd in SRC.PDList.Items)
+                {
+                    var name = pd.Name;
+                    <a href="#@name" class="navbar-item"
+                       @onclick:preventDefault
+                       @onclick="@(e => OnClickAnchor(name))">@name</a>
+                }
+            </div>
+        </nav>
         @foreach (var pd in SRC.PDList.Items)
         {
             <PilotDataView Data="@pd" />
@@ -110,7 +118,7 @@
     {
         // 要素までスクロールしてヘッダ分戻る
         await JsInterop.InvokeVoidAsync("anchor.scrollTo", targetId);
-        await JsInterop.InvokeVoidAsync("scrollBy", 0, -192);
+        //await JsInterop.InvokeVoidAsync("scrollBy", 0, -192);
     }
 
     private void OnChangeSrcDataKind(SrcDataKind kind)
