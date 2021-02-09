@@ -4,30 +4,20 @@
 
 @inject HttpClient Http
 
-<div class="top-row pl-4 navbar navbar-dark">
-    <a class="navbar-brand" href="">SRCTestBlazor</a>
-    <button class="navbar-toggler" @onclick="ToggleNavMenu">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-</div>
-
-<div class="@NavMenuCssClass" @onclick="ToggleNavMenu" style="overflow-y: scroll; height: 100%">
+<div class="navbar-item">
     <input type="hidden" @bind="IndexUri" />
-    <input class="form-control mr-sm-2" type="search" placeholder="Filter" @onchange="OnChangeFilter" />
-    <ul class="nav flex-column">
-        @if (Titles != null)
-        {
-            foreach (var title in Titles)
-            {
-                <li class="nav-item">
-                    <NavLink class="nav-link" href="@ToTitlePathParam(title.Path)">
-                        @title.Title
-                    </NavLink>
-                </li>
-            }
-        }
-    </ul>
+    <input class="form-control mr-sm-2" type="search" placeholder="Filter" @oninput="OnChangeFilter" />
 </div>
+<hr class="navbar-divider">
+@if (Titles != null)
+{
+    foreach (var title in Titles)
+    {
+        <NavLink class="navbar-item" href="@ToTitlePathParam(title.Path)">
+            @title.Title
+        </NavLink>
+    }
+}
 
 @code {
     private string IndexUri { get; set; }
@@ -37,6 +27,7 @@
     private SrcDataIndex SrcDataIndex { get; set; }
     private ICollection<TitleData> Titles { get; set; }
 
+    // OnInputにすると結構入力に対する応答時間が厳しい
     private void OnChangeFilter(ChangeEventArgs e)
     {
         FilterValue = e.Value?.ToString() ?? "";

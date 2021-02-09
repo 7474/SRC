@@ -1,0 +1,56 @@
+﻿@page "/"
+@using Microsoft.AspNetCore.Components.Forms
+@using SRCTestBlazor.Extensions
+@using System.Diagnostics;
+
+<section class="container">
+    <div class="message is-info">
+        <div class="message-header">
+            <p>SRC#DataViewer</p>
+        </div>
+        <div class="message-body">
+            <p>SRC向けのデータのビューワです。</p>
+            <p>TitlesメニューからGSCに投稿されたデータを選択するか、以下のフォームで任意のファイルを読み込んでください。</p>
+        </div>
+    </div>
+    <div class="content mb-5">
+        <InputFile OnChange="OnInputFileChange" multiple />
+        <p>現在対応しているデータファイルは<code>robot.txt, unit.txt, pilot.txt</code>の一部分です。</p>
+        <p>文字コードは<code>UTF-8</code>にしてください。<code>Shift_JIS</code>は読み込めません。</p>
+    </div>
+</section>
+
+<TitleView SRC="@SRC" DataTitle="" />
+<div id="status">@StatusText</div>
+
+@code {
+    private SRC SRC = new SRC();
+    private string StatusText = "";
+
+    private async Task OnInputFileChange(InputFileChangeEventArgs e)
+    {
+        var sw = new Stopwatch();
+        sw.Start();
+        foreach (var file in e.GetMultipleFiles())
+        {
+            switch (file.Name.ToLower())
+            {
+                case "unit.txt":
+                case "robot.txt":
+                    SRC.UDList.Load(file.Name, await file.OpenReadStream().ToSyncStreamAsync());
+                    break;
+                case "pilot.txt":
+                    SRC.PDList.Load(file.Name, await file.OpenReadStream().ToSyncStreamAsync());
+                    break;
+                default:
+                    Console.WriteLine($"Not supported file [{file.Name}]");
+                    break;
+            }
+            Console.WriteLine($"{sw.ElapsedMilliseconds}ms [{file.Name}]");
+        }
+        sw.Stop();
+        Console.WriteLine(sw.ElapsedMilliseconds);
+        StatusText = $"{sw.ElapsedMilliseconds}ms";
+        StateHasChanged();
+    }
+}

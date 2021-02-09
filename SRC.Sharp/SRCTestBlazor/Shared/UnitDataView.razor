@@ -1,11 +1,11 @@
 ﻿@using SRCCore.Models
-<div id="@Data.Name">
+<article id="@Data.Name">
 <pre>@DataJson</pre>
-</div>
+</article>
 
 @code {
     [Parameter]
-    public PilotData Data { get; set; }
+    public UnitData Data { get; set; }
 
     private string DataJson => JsonConvert.SerializeObject(Data, Formatting.Indented);
 }

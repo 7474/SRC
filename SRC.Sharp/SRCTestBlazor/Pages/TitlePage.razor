@@ -1,0 +1,8 @@
+﻿@page "/titles/{dataPath}"
+
+<LoadTitleView DataPath="@DataPath" />
+
+@code {
+    [Parameter]
+    public string DataPath { get; set; }
+}
