@@ -1,13 +1,26 @@
 ﻿@inherits LayoutComponentBase
 
-<div class="page">
-    <div class="sidebar">
-        <TitleNavMenu />
+<section class="hero">
+    <div class="hero-head">
+        <nav class="navbar" role="navigation" aria-label="main navigation">
+            <div class="navbar-brand">
+                <NavLink href="/">SRC#DataViewer</NavLink>
+            </div>
+            <div class="navbar-menu">
+                <nav class="navbar" role="navigation" aria-label="dropdown navigation">
+                    <div class="navbar-item has-dropdown">
+                        <a class="navbar-link">
+                            Titles
+                        </a>
+                        <div class="navbar-dropdown">
+                            <TitleNavMenu />
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </nav>
     </div>
-
-    <div class="main">
-        <div class="content px-4">
-            @Body
-        </div>
-    </div>
-</div>
+    <main class="hero-body">
+        @Body
+    </main>
+</section>

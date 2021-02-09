@@ -18,23 +18,29 @@ namespace SRCTestBlazor
         public static async Task Main(string[] args)
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
-            builder.RootComponents.Add<App>("#app");
 
             builder.Services
                 .AddScoped(sp => new HttpClient
                 {
                     BaseAddress = new Uri(builder.HostEnvironment.BaseAddress)
                 })
-              .AddBlazorise(options =>
-              {
-                  // XXXX 本当に？
-                  // https://blazorise.com/docs/usage/bulma/
-                  options.ChangeTextOnKeyPress = true;
-              })
-              .AddBulmaProviders()
-              .AddFontAwesomeIcons();
+                .AddBlazorise(options =>
+                {
+                    // XXXX 本当に？
+                    // https://blazorise.com/docs/usage/bulma/
+                    options.ChangeTextOnKeyPress = true;
+                })
+                .AddBulmaProviders()
+                .AddFontAwesomeIcons();
 
-            await builder.Build().RunAsync();
+            builder.RootComponents.Add<App>("#app");
+
+            var host = builder.Build();
+
+            host.Services.UseBulmaProviders()
+                .UseFontAwesomeIcons();
+
+            await host.RunAsync();
         }
     }
 }
