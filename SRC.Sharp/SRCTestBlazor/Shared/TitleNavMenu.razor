@@ -6,7 +6,7 @@
 
 <div class="navbar-item">
     <input type="hidden" @bind="IndexUri" />
-    <input class="form-control mr-sm-2" type="search" placeholder="Filter" @onchange="OnChangeFilter" />
+    <input class="form-control mr-sm-2" type="search" placeholder="Filter" @oninput="OnChangeFilter" />
 </div>
 <hr class="navbar-divider">
 @if (Titles != null)
@@ -27,6 +27,7 @@
     private SrcDataIndex SrcDataIndex { get; set; }
     private ICollection<TitleData> Titles { get; set; }
 
+    // OnInputにすると結構入力に対する応答時間が厳しい
     private void OnChangeFilter(ChangeEventArgs e)
     {
         FilterValue = e.Value?.ToString() ?? "";
