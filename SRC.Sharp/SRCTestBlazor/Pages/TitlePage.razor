@@ -1,10 +1,13 @@
 ﻿@page "/titles/{dataPath}/{dataFiles}"
 
-<LoadTitleView DataPath="@DataPath" DataFiles="@DataFiles" />
+<LoadTitleView DataPath="@DataUrl" DataFiles="@DataFileCollection" />
 
 @code {
     [Parameter]
     public string DataPath { get; set; }
     [Parameter]
     public string DataFiles { get; set; }
+
+    private string DataUrl => HttpUtility.UrlDecode(DataPath);
+    private ICollection<string> DataFileCollection => DataFiles.Split("&").Select(x => HttpUtility.UrlDecode(x)).ToList();
 }

@@ -12,7 +12,7 @@
     [Parameter]
     public string DataPath { get; set; }
     [Parameter]
-    public string DataFiles { get; set; }
+    public ICollection<string> DataFiles { get; set; }
 
     private SRC SRC = new SRC();
     private string StatusText = "";
@@ -31,10 +31,9 @@
         SRC.UDList.Clear();
         SRC.PDList.Clear();
 
-        // XXX デコードはページ側の責務な気がする
-        var baseUri = HttpUtility.UrlDecode(DataPath);
-        var dataFiles = DataFiles.Split("&").Select(x => HttpUtility.UrlDecode(x));
-        DataTitle = Path.GetFileName(baseUri);
+        var baseUri =DataPath;
+        var dataFiles = DataFiles;
+        DataTitle = Path.GetFileName(DataPath);
         foreach (var file in dataFiles)
         {
             try
