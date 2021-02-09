@@ -102,6 +102,21 @@
             SRC.PDList.Load("/pilot.txt", await Http.GetStreamAsync(baseUri + "/pilot.txt"));
         }
         catch { }
+        try
+        {
+            SRC.UDList.Load("/unit.txt", await Http.GetStreamAsync(baseUri + "/Unit.txt"));
+        }
+        catch { }
+        try
+        {
+            SRC.UDList.Load("/robot.txt", await Http.GetStreamAsync(baseUri + "/Robot.txt"));
+        }
+        catch { }
+        try
+        {
+            SRC.PDList.Load("/pilot.txt", await Http.GetStreamAsync(baseUri + "/Pilot.txt"));
+        }
+        catch { }
 
         sw.Stop();
         Console.WriteLine(sw.ElapsedMilliseconds);
@@ -109,16 +124,11 @@
         StateHasChanged();
     }
 
-    private void OnClickItem(object item)
-    {
-        PreviewText = JsonConvert.SerializeObject(item, Formatting.Indented);
-    }
-
     private async Task OnClickAnchor(string targetId)
     {
         // 要素までスクロールしてヘッダ分戻る
         await JsInterop.InvokeVoidAsync("anchor.scrollTo", targetId);
-        //await JsInterop.InvokeVoidAsync("scrollBy", 0, -192);
+        await JsInterop.InvokeVoidAsync("scrollBy", 0, -160);
     }
 
     private void OnChangeSrcDataKind(SrcDataKind kind)
