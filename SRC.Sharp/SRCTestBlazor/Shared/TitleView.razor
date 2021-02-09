@@ -1,14 +1,11 @@
-﻿@page "/titles/{dataPath}"
-@*@using System.Text.Json*@
-@using Newtonsoft.Json
+﻿@using Newtonsoft.Json
 @using System.Diagnostics;
 @using System.Net.Http
 @using System.Web
 @using System.IO
 
-@implements IDisposable
-@inject NavigationManager NavigationManager
 @inject HttpClient Http
+
 <div style="position: fixed; width: 100%;" class="bg-light">
     <DataNavMenu OnChangeSrcDataKind="@OnChangeSrcDataKind" />
     <div style="@(currentKind != SrcDataKind.Unit ? "display: none; ": "") white-space: nowrap; width: 100%; overflow-x: scroll;">
@@ -58,21 +55,20 @@
     private string PreviewText = "{}";
     private string DataTitle { get; set; }
     private SrcDataKind currentKind = SrcDataKind.Unit;
+    private string renderDataPath = "";
 
     protected override async Task OnInitializedAsync()
     {
-        NavigationManager.LocationChanged += HandleLocationChanged;
         await UpdateData();
     }
 
-    public void Dispose()
+    protected override async Task OnParametersSetAsync()
     {
-        NavigationManager.LocationChanged -= HandleLocationChanged;
-    }
-
-    private void HandleLocationChanged(object sender, LocationChangedEventArgs e)
-    {
-        UpdateData();
+        if (renderDataPath != DataPath)
+        {
+            renderDataPath = DataPath;
+            await UpdateData();
+        }
     }
 
     private async Task UpdateData()
