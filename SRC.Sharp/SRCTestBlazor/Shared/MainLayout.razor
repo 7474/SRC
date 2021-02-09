@@ -33,7 +33,11 @@
 </main>
 
 @code {
+    [Inject]
+    protected IJSRuntime JsInterop { get; set; }
+
     private bool IsBurgerActive = false;
+
 
     private void OnClickBurger()
     {
@@ -50,10 +54,13 @@
         NavigationManager.LocationChanged -= HandleLocationChanged;
     }
 
-    private void HandleLocationChanged(object sender, LocationChangedEventArgs e)
+    private async void HandleLocationChanged(object sender, LocationChangedEventArgs e)
     {
         // ナビゲーションがあったらハンバーガーを閉じる
         IsBurgerActive = false;
+        // ドロップダウンを閉じるためにフォーカスを外す
+        await JsInterop.InvokeVoidAsync("bulma.blur", null);
+
         StateHasChanged();
     }
 }
