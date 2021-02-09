@@ -6,71 +6,60 @@
 @inject HttpClient Http
 
 <TitleView SRC="@SRC" DataTitle="@DataTitle" />
-<div id="status">@StatusText</div>
+<div class="container">
+    <div id="status" class="message">@StatusText</div>
+</div>
 
 @code {
     [Parameter]
     public string DataPath { get; set; }
+    [Parameter]
+    public ICollection<string> DataFiles { get; set; }
 
     private SRC SRC = new SRC();
     private string StatusText = "";
     private string DataTitle { get; set; }
-    private string renderDataPath = "";
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnParametersSetAsync()
     {
         await UpdateData();
     }
 
-    protected override async Task OnParametersSetAsync()
-    {
-        if (renderDataPath != DataPath)
-        {
-            renderDataPath = DataPath;
-            await UpdateData();
-        }
-    }
-
     private async Task UpdateData()
     {
+        StatusText = "Now Loading...";
+
         var sw = new Stopwatch();
         sw.Start();
 
         SRC.UDList.Clear();
         SRC.PDList.Clear();
 
-        var baseUri = HttpUtility.UrlDecode(DataPath);
-        DataTitle = Path.GetFileName(baseUri);
-        try
+        var baseUri =DataPath;
+        var dataFiles = DataFiles;
+        DataTitle = Path.GetFileName(DataPath);
+        foreach (var file in dataFiles)
         {
-            SRC.UDList.Load("/unit.txt", await Http.GetStreamAsync(baseUri + "/unit.txt"));
+            try
+            {
+                switch (file.ToLower())
+                {
+                    case "unit.txt":
+                    case "robot.txt":
+                        SRC.UDList.Load(file, await Http.GetStreamAsync($"{baseUri}/{file}"));
+                        Console.WriteLine($"{file} was loaded.");
+                        break;
+                    case "pilot.txt":
+                        SRC.PDList.Load(file, await Http.GetStreamAsync($"{baseUri}/{file}"));
+                        Console.WriteLine($"{file} was loaded.");
+                        break;
+                    default:
+                        Console.WriteLine($"{file} is not supported.");
+                        break;
+                }
+            }
+            catch { }
         }
-        catch { }
-        try
-        {
-            SRC.UDList.Load("/robot.txt", await Http.GetStreamAsync(baseUri + "/robot.txt"));
-        }
-        catch { }
-        try
-        {
-            SRC.PDList.Load("/pilot.txt", await Http.GetStreamAsync(baseUri + "/pilot.txt"));
-        }
-        catch { }
-        try
-        {
-            SRC.UDList.Load("/unit.txt", await Http.GetStreamAsync(baseUri + "/Unit.txt"));
-        }
-        catch { }
-        try
-        {
-            SRC.UDList.Load("/robot.txt", await Http.GetStreamAsync(baseUri + "/Robot.txt"));
-        }
-        catch { }
-        try
-        {
-            SRC.PDList.Load("/pilot.txt", await Http.GetStreamAsync(baseUri + "/Pilot.txt"));
-        }
-        catch { }
 
         sw.Stop();
         Console.WriteLine(sw.ElapsedMilliseconds);

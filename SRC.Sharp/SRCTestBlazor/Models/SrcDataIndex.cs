@@ -15,5 +15,6 @@ namespace SRCTestBlazor.Models
         public string Base { get; set; }
         public string Path { get; set; }
         public ICollection<string> Tags { get; set; }
+        public ICollection<string> Files { get; set; }
     }
 }
