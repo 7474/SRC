@@ -1,18 +1,20 @@
 ﻿@inherits LayoutComponentBase
+@implements IDisposable
+@inject NavigationManager NavigationManager
 
 <nav class="navbar is-fixed-top is-light" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
         <NavLink class="navbar-item" href="/">SRC#DataViewer</NavLink>
         <a role="button"
            aria-label="menu" aria-expanded="false"
-           class="navbar-burger @(IsBurgerActive ? "is-active" : "")"
+           class="navbar-burger @(IsBurgerActive ? " is-active" : "" )"
            @onclick="OnClickBurger">
             <span aria-hidden="true"></span>
             <span aria-hidden="true"></span>
             <span aria-hidden="true"></span>
         </a>
     </div>
-    <div class="navbar-menu  @(IsBurgerActive ? "is-active" : "")">
+    <div class="navbar-menu  @(IsBurgerActive ? " is-active" : "" )">
         <nav class="navbar" role="navigation" aria-label="dropdown navigation">
             <div class="navbar-item has-dropdown is-hoverable">
                 <a class="navbar-link">
@@ -36,5 +38,22 @@
     private void OnClickBurger()
     {
         IsBurgerActive = !IsBurgerActive;
+    }
+
+    protected override void OnInitialized()
+    {
+        NavigationManager.LocationChanged += HandleLocationChanged;
+    }
+
+    public void Dispose()
+    {
+        NavigationManager.LocationChanged -= HandleLocationChanged;
+    }
+
+    private void HandleLocationChanged(object sender, LocationChangedEventArgs e)
+    {
+        // ナビゲーションがあったらハンバーガーを閉じる
+        IsBurgerActive = false;
+        StateHasChanged();
     }
 }
