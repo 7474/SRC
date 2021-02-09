@@ -1,6 +1,6 @@
 ﻿@inherits LayoutComponentBase
 
-<nav class="navbar is-light" role="navigation" aria-label="main navigation">
+<nav class="navbar is-fixed-top is-light" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
         <NavLink class="navbar-item" href="/">SRC#DataViewer</NavLink>
         <a role="button"
@@ -25,11 +25,10 @@
         </nav>
     </div>
 </nav>
-<section class="hero is-link is-fullheight-with-navbar">
-    <main class="hero-body">
-        @Body
-    </main>
-</section>
+
+<main class="section">
+    @Body
+</main>
 
 @code {
     private bool IsBurgerActive = false;
