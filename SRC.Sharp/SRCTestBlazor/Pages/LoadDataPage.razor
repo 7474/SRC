@@ -28,7 +28,8 @@
     <div style="@(currentKind != SrcDataKind.Unit ? "display: none; ": "")">
         @* XXX この nav がメインの nav の Dropdown より前に来てる気がする *@
         <nav class="navbar is-light is-fixed-top" style="position: sticky; top: 93px;">
-            <div class="navbar-brand">
+            @* XXX 常に横幅が入っているとは限らない模様 *@
+            <div class="navbar-brand" style="overflow-x: scroll;">
                 @foreach (var ud in SRC.UDList.Items)
                 {
                     var name = ud.Name;
@@ -45,7 +46,7 @@
     </div>
     <div style="@(currentKind != SrcDataKind.Pilot ? "display: none; ": "")">
         <nav class="navbar is-light is-fixed-top" style="position: sticky; top: 93px;">
-            <div class="navbar-brand">
+            <div class="navbar-brand" style="overflow-x: scroll;">
                 @foreach (var pd in SRC.PDList.Items)
                 {
                     var name = pd.Name;
