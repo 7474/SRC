@@ -24,25 +24,8 @@
 <div id="status">@StatusText</div>
 
 @code {
-    [Inject]
-    protected IJSRuntime JsInterop { get; set; }
-
     private SRC SRC = new SRC();
     private string StatusText = "";
-    private SrcDataKind currentKind = SrcDataKind.Unit;
-
-    private async Task OnClickAnchor(string targetId)
-    {
-        // 要素までスクロールしてヘッダ分戻る
-        await JsInterop.InvokeVoidAsync("anchor.scrollTo", targetId);
-        await JsInterop.InvokeVoidAsync("scrollBy", 0, -160);
-    }
-
-    private void OnChangeSrcDataKind(SrcDataKind kind)
-    {
-        currentKind = kind;
-        Console.WriteLine(kind);
-    }
 
     private async Task OnInputFileChange(InputFileChangeEventArgs e)
     {
