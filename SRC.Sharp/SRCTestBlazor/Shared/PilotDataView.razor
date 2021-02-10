@@ -1,11 +1,109 @@
 ﻿@using SRCCore.Models
-<article id="@Data.Name">
-<pre>@DataJson</pre>
+
+<article class="card" id="pilot-@Data.Name">
+    <header class="card-header">
+        <div class="card-header-title">
+            <div class="media">
+                <div class="media-left">
+                    <figure class="image is-64x64">
+                        <img src="images/-.png" alt="Pilot image">
+                    </figure>
+                </div>
+                <div class="media-content">
+                    <p class="title is-4">@Data.Name</p>
+                    <p class="subtitle is-6">@Data.Nickname</p>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="card-content">
+        <div class="content">
+            <div class="level is-mobile">
+                <div class="level-item has-text-centered">
+                    <div>
+                        <p class="heading">格闘</p>
+                        <p class="title">@Data.Infight</p>
+                    </div>
+                </div>
+                <div class="level-item has-text-centered">
+                    <div>
+                        <p class="heading">射撃</p>
+                        <p class="title">@Data.Shooting</p>
+                    </div>
+                </div>
+                <div class="level-item has-text-centered">
+                    <div>
+                        <p class="heading">命中</p>
+                        <p class="title">@Data.Hit</p>
+                    </div>
+                </div>
+                <div class="level-item has-text-centered">
+                    <div>
+                        <p class="heading">回避</p>
+                        <p class="title">@Data.Dodge</p>
+                    </div>
+                </div>
+                <div class="level-item has-text-centered">
+                    <div>
+                        <p class="heading">技量</p>
+                        <p class="title">@Data.Technique</p>
+                    </div>
+                </div>
+                <div class="level-item has-text-centered">
+                    <div>
+                        <p class="heading">反応</p>
+                        <p class="title">@Data.Intuition</p>
+                    </div>
+                </div>
+            </div>
+            <div class="level is-mobile">
+                @foreach (var sp in Data.DefinedSpecialPowers())
+                {
+                    <div class="level-item has-text-centered">
+                        <div>
+                            <p class="heading">@($"{sp.NecessaryLevel}")</p>
+                            <p class="title">@sp.Name</p>
+                        </div>
+                    </div>
+                }
+                @for (var i = Data.DefinedSpecialPowers().Count; i < 6; i++)
+                {
+                    <div class="level-item has-text-centered">
+                        <div>
+                            <p class="heading">-</p>
+                            <p class="title">-</p>
+                        </div>
+                    </div>
+                }
+            </div>
+            <ul>
+                @foreach (var sdGroup in Data.Skills.GroupBy(x => x.Name))
+                {
+                    <li>
+                        @sdGroup.Key
+                        @string.Join(", ", sdGroup.Select(x => x.HasLevel
+                            ? $"Lv{x.Level}({x.NecessaryLevel})"
+                            : $"{x.StrData}({x.NecessaryLevel})"))
+                    </li>
+                }
+            </ul>
+            <button class="button is-small" @onclick="OnClickRaw">Raw</button>
+            <pre style="@(ExpandRaw ? "" : "display: none;")">@DataJson</pre>
+        </div>
+    </div>
+    <footer class="card-footer">
+    </footer>
 </article>
 
 @code {
     [Parameter]
     public PilotData Data { get; set; }
 
+    private bool ExpandRaw = false;
     private string DataJson => JsonConvert.SerializeObject(Data, Formatting.Indented);
+
+    private void OnClickRaw()
+    {
+        ExpandRaw = !ExpandRaw;
+    }
 }

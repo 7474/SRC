@@ -6,6 +6,7 @@ using SRCCore.Lib;
 using SRCCore.VB;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SRCCore.Models
 {
@@ -52,9 +53,7 @@ namespace SRCCore.Models
         public bool IsBitmapMissing;
 
         // スペシャルパワー
-        private IList<string> SpecialPowerName;
-        private IList<int> SpecialPowerNecessaryLevel;
-        private IList<int> SpecialPowerSPConsumption;
+        private IList<PilotDataSpecialPower> SpecialPowers;
 
         // 特殊能力
         private SrcCollection<SkillData> colSkill;
@@ -74,16 +73,12 @@ namespace SRCCore.Models
 
         public PilotData() : base()
         {
-            SpecialPowerName = new List<string>();
-            SpecialPowerNecessaryLevel = new List<int>();
-            SpecialPowerSPConsumption = new List<int>();
-
+            SpecialPowers = new List<PilotDataSpecialPower>();
             colSkill = new SrcCollection<SkillData>();
             colFeature = new SrcCollection<FeatureData>();
             colWeaponData = new SrcCollection<WeaponData>();
             colAbilityData = new SrcCollection<AbilityData>();
         }
-
 
         // 愛称
         public string Nickname
@@ -510,86 +505,47 @@ namespace SRCCore.Models
         // スペシャルパワーを追加
         public void AddSpecialPower(string sname, int lv, int sp_consumption)
         {
-            SpecialPowerName.Add(sname);
-            SpecialPowerNecessaryLevel.Add(lv);
-            SpecialPowerSPConsumption.Add(sp_consumption);
+            SpecialPowers.Add(new PilotDataSpecialPower(sname, lv, sp_consumption));
+        }
+
+        // 定義されているスペシャルパワー
+        public IList<PilotDataSpecialPower> DefinedSpecialPowers()
+        {
+            // XXX Readonlyにするとか
+            return SpecialPowers;
         }
 
         // 指定したレベルで使用可能なスペシャルパワーの個数
         public int CountSpecialPower(int lv)
         {
-            int CountSpecialPowerRet = default;
-            int i;
-            for (i = 0; i < SpecialPowerName.Count; i++)
-            {
-                if (SpecialPowerNecessaryLevel[i] <= lv)
-                {
-                    CountSpecialPowerRet = (CountSpecialPowerRet + 1);
-                }
-            }
-
-            return CountSpecialPowerRet;
+            return SpecialPowers.Count(x => x.NecessaryLevel <= lv);
         }
 
         // 指定したレベルで使用可能なidx番目のスペシャルパワー
         public string SpecialPower(int lv, int idx)
         {
-            string SpecialPowerRet = default;
-            int i, n;
-            n = 0;
-            for (i = 0; i < SpecialPowerName.Count; i++)
-            {
-                if (SpecialPowerNecessaryLevel[i] <= lv)
-                {
-                    n = (n + 1);
-                    if (idx == n)
-                    {
-                        SpecialPowerRet = SpecialPowerName[i];
-                        return SpecialPowerRet;
-                    }
-                }
-            }
-
-            return SpecialPowerRet;
+            return SpecialPowerDef(lv, idx)?.Name;
+        }
+        public PilotDataSpecialPower SpecialPowerDef(int lv, int idx)
+        {
+            return SpecialPowers.Where(x => x.NecessaryLevel <= lv).Skip(idx - 1).FirstOrDefault();
         }
 
         // 指定したレベルでスペシャルパワーsnameを使えるか？
         public bool IsSpecialPowerAvailable(int lv, string sname)
         {
-            bool IsSpecialPowerAvailableRet = default;
-            int i;
-            for (i = 0; i < SpecialPowerName.Count; i++)
-            {
-                if ((SpecialPowerName[i] ?? "") == (sname ?? ""))
-                {
-                    if (SpecialPowerNecessaryLevel[i] <= lv)
-                    {
-                        IsSpecialPowerAvailableRet = true;
-                    }
-
-                    return IsSpecialPowerAvailableRet;
-                }
-            }
-
-            IsSpecialPowerAvailableRet = false;
-            return IsSpecialPowerAvailableRet;
+            return SpecialPowers
+                .Where(x => x.NecessaryLevel <= lv)
+                .Where(x => x.Name == sname)
+                .Any();
         }
 
         // 指定したスペシャルパワーsnameのＳＰ消費量
         public int SpecialPowerCost(string sname)
         {
-            int SpecialPowerCostRet = default;
-            int i;
-
             // パイロットデータ側でＳＰ消費量が定義されているか検索
-            for (i = 0; i < SpecialPowerName.Count; i++)
-            {
-                if ((SpecialPowerName[i] ?? "") == (sname ?? ""))
-                {
-                    SpecialPowerCostRet = SpecialPowerSPConsumption[i];
-                    break;
-                }
-            }
+            var sp = SpecialPowers.FirstOrDefault(x => x.Name == sname);
+            int SpecialPowerCostRet = sp?.SPConsumption ?? 0;
 
             // TODO Impl
             //// パイロットデータ側でＳＰ消費量が定義されていなければ
@@ -608,9 +564,7 @@ namespace SRCCore.Models
         // データを消去
         public void Clear()
         {
-            SpecialPowerName.Clear();
-            SpecialPowerNecessaryLevel.Clear();
-            SpecialPowerSPConsumption.Clear();
+            SpecialPowers.Clear();
             colSkill.Clear();
             colFeature.Clear();
             colWeaponData.Clear();
