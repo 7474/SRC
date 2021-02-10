@@ -76,7 +76,8 @@
                 {
                     <li>
                         @fd.Name
-                        @(fd.HasLevel ? $"Lv{fd.Level}" : $"{fd.StrData}")
+                        @(fd.HasLevel ? $"Lv{fd.Level}" : "")
+                        @fd.StrData
                     </li>
                 }
             </ul>

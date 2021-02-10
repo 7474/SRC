@@ -82,7 +82,7 @@
                     <li>
                         @sdGroup.Key
                         @string.Join(", ", sdGroup.Select(x => x.HasLevel
-                            ? $"Lv{x.Level}({x.NecessaryLevel})"
+                            ? $"Lv{x.Level}{x.StrData}({x.NecessaryLevel})"
                             : $"{x.StrData}({x.NecessaryLevel})"))
                     </li>
                 }
