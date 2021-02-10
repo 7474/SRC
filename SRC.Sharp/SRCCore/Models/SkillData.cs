@@ -6,15 +6,17 @@
 namespace SRCCore.Models
 {
     // パイロット用特殊能力のクラス
-    public class SkillData
+    public class SkillData : ILevelElement
     {
         // 名称
-        public string Name;
+        public string Name { get; set; }
         // レベル (レベル指定のない能力の場合はDEFAULT_LEVEL)
-        public double Level;
+        public double Level { get; set; }
         // データ
-        public string StrData;
+        public string StrData { get; set; }
         // 習得レベル
-        public int NecessaryLevel;
+        public int NecessaryLevel { get; set; }
+
+        public bool HasLevel => Level != Constants.DEFAULT_LEVEL;
     }
 }

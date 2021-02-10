@@ -12,11 +12,11 @@
         <h1 class="title">@DataTitle</h1>
     }
     @* XXX Bulma の sticky サポートはないっぽい *@
-    <div class="has-background-light" style="position: sticky; top: 52px;">
+    @* z-index: card より前に *@
+    <div class="has-background-light" style="position: sticky; top: 52px; z-index: 999;">
         <DataNavMenu OnChangeSrcDataKind="@OnChangeSrcDataKind" />
     </div>
     <div style="@(currentKind != SrcDataKind.Unit ? "display: none; ": "")">
-        @* XXX この nav がメインの nav の Dropdown より前に来てる気がする *@
         <nav class="navbar is-light is-fixed-top" style="position: sticky; top: 93px;">
             @* XXX 常に横幅が入っているとは限らない模様 *@
             <div class="navbar-brand" style="overflow-x: scroll;">

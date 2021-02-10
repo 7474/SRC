@@ -6,18 +6,19 @@
 namespace SRCCore.Models
 {
     // 特殊能力のクラス
-    public class FeatureData
+    public class FeatureData : ILevelElement
     {
         // 名称
-        public string Name;
-        // レベル
-        // XXX 本当に double? decimal がいいのでは？
-        public double Level;
+        public string Name { get; set; }
+        // レベル (レベル指定のない能力の場合はDEFAULT_LEVEL)
+        public double Level { get; set; }
         // データ
-        public string StrData;
+        public string StrData { get; set; }
         // 必要技能
         public string NecessarySkill;
         // 必要条件
         public string NecessaryCondition;
+
+        public bool HasLevel => Level != Constants.DEFAULT_LEVEL;
     }
 }
