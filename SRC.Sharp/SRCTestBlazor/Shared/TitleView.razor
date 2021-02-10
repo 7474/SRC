@@ -23,9 +23,9 @@
                 @foreach (var ud in SRC.UDList.Items)
                 {
                     var name = ud.Name;
-                    <a href="#@name" class="navbar-item"
+                    <a href="#unit-@name" class="navbar-item"
                        @onclick:preventDefault
-                       @onclick="@(e => OnClickAnchor(name))">@name</a>
+                       @onclick="@(e => OnClickAnchor("unit-" + name))">@name</a>
                 }
             </div>
         </nav>
@@ -40,9 +40,9 @@
                 @foreach (var pd in SRC.PDList.Items)
                 {
                     var name = pd.Name;
-                    <a href="#@name" class="navbar-item"
+                    <a href="#pilot-@name" class="navbar-item"
                        @onclick:preventDefault
-                       @onclick="@(e => OnClickAnchor(name))">@name</a>
+                       @onclick="@(e => OnClickAnchor("pilot-" + name))">@name</a>
                 }
             </div>
         </nav>
@@ -63,7 +63,6 @@
 
     private SrcDataKind currentKind = SrcDataKind.Unit;
 
-    // XXX PilotとUnitでNameかぶってる適当にプレフィクスつける。
     private async Task OnClickAnchor(string targetId)
     {
         // 要素までスクロールしてヘッダ分戻る
