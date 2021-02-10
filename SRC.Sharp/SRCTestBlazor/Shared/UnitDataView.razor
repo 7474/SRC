@@ -1,11 +1,172 @@
 ﻿@using SRCCore.Models
-<article id="@Data.Name">
-<pre>@DataJson</pre>
+
+<article class="card" id="unit-@Data.Name">
+    <header class="card-header">
+        <div class="card-header-title">
+            <div class="media">
+                <div class="media-left">
+                    <figure class="image is-64x64">
+                        <img src="images/-.png" alt="Pilot image">
+                    </figure>
+                </div>
+                <div class="media-content">
+                    <p class="title is-4">@Data.Name</p>
+                    <p class="subtitle is-6">@Data.Nickname</p>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="card-content">
+        <div class="content">
+            <div class="level is-mobile">
+                <div class="level-item has-text-centered">
+                    <div>
+                        <p class="heading">格闘</p>
+                        <p class="title">@Data.HP</p>
+                    </div>
+                </div>
+                <div class="level-item has-text-centered">
+                    <div>
+                        <p class="heading">EN</p>
+                        <p class="title">@Data.EN</p>
+                    </div>
+                </div>
+                <div class="level-item has-text-centered">
+                    <div>
+                        <p class="heading">装甲</p>
+                        <p class="title">@Data.Armor</p>
+                    </div>
+                </div>
+                <div class="level-item has-text-centered">
+                    <div>
+                        <p class="heading">運動性</p>
+                        <p class="title">@Data.Mobility</p>
+                    </div>
+                </div>
+                <div class="level-item has-text-centered">
+                    <div>
+                        <p class="heading">移動力</p>
+                        <p class="title">@Data.Speed</p>
+                    </div>
+                </div>
+            </div>
+            <div class="level is-mobile">
+                <div class="level-item has-text-centered">
+                    <div>
+                        <p class="heading">移動</p>
+                        <p class="title">@Data.Transportation</p>
+                    </div>
+                </div>
+                <div class="level-item has-text-centered">
+                    <div>
+                        <p class="heading">地形</p>
+                        <p class="title">@Data.Adaption</p>
+                    </div>
+                </div>
+                <div class="level-item has-text-centered">
+                    <div>
+                        <p class="heading">サイズ</p>
+                        <p class="title">@Data.Size</p>
+                    </div>
+                </div>
+            </div>
+            <ul>
+                @* 先頭は『特殊能力』表示用なので飛ばす *@
+                @foreach (var fd in Data.Features.Skip(1))
+                {
+                    <li>
+                        @fd.Name
+                        @(fd.HasLevel ? $"Lv{fd.Level}" : $"{fd.StrData}")
+                    </li>
+                }
+            </ul>
+            @if (Data.Weapons.Any())
+            {
+                <div class="table-container">
+                    <table class="table">
+                        <thead class="is-size-7">
+                            <tr>
+                                <th>武器名</th>
+                                <th>攻撃力</th>
+                                <th>射程</th>
+                                <th>命中</th>
+                                <th>弾数</th>
+                                <th>EN</th>
+                                <th>気力</th>
+                                <th>地形</th>
+                                <th>CT率</th>
+                                <th>属性</th>
+                            </tr>
+                        </thead>
+                        <tbody class="is-size-7">
+                            @foreach (var wd in Data.Weapons)
+                            {
+                                <tr>
+                                    <td>@wd.Name</td>
+                                    <td>@wd.Power</td>
+                                    <td>@wd.MinRange ~ @wd.MaxRange</td>
+                                    <td>@(wd.Precision >= 0 ? $"+{wd.Precision}" : $"{wd.Precision}")</td>
+                                    <td>@wd.Bullet</td>
+                                    <td>@wd.ENConsumption</td>
+                                    <td>@wd.NecessaryMorale</td>
+                                    <td>@wd.Adaption</td>
+                                    <td>@wd.Critical</td>
+                                    <td>@wd.Class</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            @if (Data.Abilities.Any())
+            {
+                <div class="table-container">
+                    <table class="table">
+                        <thead class="is-size-7">
+                            <tr>
+                                <th>名称</th>
+                                <th>回数</th>
+                                <th>EN</th>
+                                <th>気力</th>
+                                <th>射程</th>
+                                <th>属性</th>
+                                <th>効果</th>
+                            </tr>
+                        </thead>
+                        <tbody class="is-size-7">
+                            @foreach (var ad in Data.Abilities)
+                            {
+                                <tr>
+                                    <td>@ad.Name</td>
+                                    <td>@ad.Stock</td>
+                                    <td>@ad.ENConsumption</td>
+                                    <td>@ad.NecessaryMorale</td>
+                                    <td>@ad.MinRange ~ @ad.MaxRange</td>
+                                    <td>@ad.Class</td>
+                                    <td>---</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            <button class="button is-small" @onclick="OnClickRaw">Raw</button>
+            <pre style="@(ExpandRaw ? "" : "display: none;")">@DataJson</pre>
+        </div>
+    </div>
+    <footer class="card-footer">
+    </footer>
 </article>
 
 @code {
     [Parameter]
     public UnitData Data { get; set; }
 
+    private bool ExpandRaw = false;
     private string DataJson => JsonConvert.SerializeObject(Data, Formatting.Indented);
+
+    private void OnClickRaw()
+    {
+        ExpandRaw = !ExpandRaw;
+    }
 }
