@@ -75,27 +75,15 @@ namespace SRCCore.Models
         // ユニットデータリストからデータを取り出す
         public UnitData Item(string Index)
         {
-            try
-            {
-                return colUnitDataList[Index];
-            }
-            catch
-            {
-                return null;
-            }
+            return colUnitDataList.ContainsKey(Index)
+                ? colUnitDataList[Index]
+                : null;
         }
 
         // ユニットデータリストに登録されているか？
         public bool IsDefined(string Index)
         {
-            try
-            {
-                return colUnitDataList[Index] != null;
-            }
-            catch
-            {
-                return false;
-            }
+            return Item(Index) != null;
         }
 
         // データファイル fname からデータをロード
