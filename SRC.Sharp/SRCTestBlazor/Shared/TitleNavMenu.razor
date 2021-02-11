@@ -3,6 +3,7 @@
 @using System.Web
 
 @inject HttpClient Http
+@inject SrcDataContainer DataContainer
 
 <div class="navbar-item">
     <input type="hidden" @bind="IndexUri" />
@@ -46,6 +47,12 @@
 
     private async Task UpdateIndex()
     {
+        DataContainer.LoadBitmapIndex(
+            Http,
+            "https://raw.githubusercontent.com/7474/SRC-Data/master/index-bitmap.json",
+            IndexBase
+            );
+
         SrcDataIndex = await Http.GetFromJsonAsync<SrcDataIndex>(IndexUri);
         Titles = SrcDataIndex.Titles;
         StateHasChanged();
@@ -53,7 +60,7 @@
 
     private string ToTitlePathParam(TitleData title)
     {
-        return "titles/" + HttpUtility.UrlEncode(IndexBase + title.Path) 
+        return "titles/" + HttpUtility.UrlEncode(IndexBase + title.Path)
             + "/"
             + string.Join("&", title.Files.Select(x => HttpUtility.UrlEncode(x)));
     }
