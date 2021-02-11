@@ -89,6 +89,22 @@
                 }
             </ul>
         </div>
+        @if (PickupMessage != null)
+        {
+            <div class="media">
+                <div class="media-left">
+                    <figure class="image is-64x64">
+                        <img src="@DataContainer.BitmapIndex.GetBitmapUri("Pilot", Data.Bitmap0)" alt="Pilot image">
+                    </figure>
+                    <button class="button is-small" @onclick="OnClickMessage">
+                        <ion-icon name="refresh-outline"></ion-icon>
+                    </button>
+                </div>
+                <div class="media-content">
+                    <p>@PickupMessage.Message</p>
+                </div>
+            </div>
+        }
         <div class="content">
             <button class="button is-small" @onclick="OnClickRaw">Raw</button>
             <pre style="@(ExpandRaw ? "" : "display: none;")">@DataJson</pre>
@@ -101,12 +117,39 @@
 @code {
     [Parameter]
     public PilotData Data { get; set; }
+    [Parameter]
+    public SRC SRC { get; set; }
+
+    [Inject]
+    private Random Random { get; set; }
+
+    private MessageData MessageData;
+    private MessageDataItem PickupMessage;
 
     private bool ExpandRaw = false;
     private string DataJson => JsonConvert.SerializeObject(Data, Formatting.Indented);
 
+    protected override void OnParametersSet()
+    {
+        MessageData = SRC.MDList.Item(Data.Name);
+        UpdatePickupMessage();
+    }
+
     private void OnClickRaw()
     {
         ExpandRaw = !ExpandRaw;
+    }
+
+    private void OnClickMessage()
+    {
+        UpdatePickupMessage();
+    }
+
+    private void UpdatePickupMessage()
+    {
+        if (MessageData != null)
+        {
+            PickupMessage = MessageData.Items[Random.Next(MessageData.Items.Count)];
+        }
     }
 }

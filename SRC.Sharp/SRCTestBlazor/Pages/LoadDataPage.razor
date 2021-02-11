@@ -44,6 +44,9 @@
                 case "pilot.txt":
                     SRC.PDList.Load(file.Name, await file.OpenReadStream().ToSyncStreamAsync());
                     break;
+                case "pilot_message.txt":
+                    SRC.MDList.Load(file.Name, false, await file.OpenReadStream().ToSyncStreamAsync());
+                    break;
                 default:
                     Console.WriteLine($"Not supported file [{file.Name}]");
                     break;

@@ -48,7 +48,7 @@
         </nav>
         @foreach (var pd in SRC.PDList.Items)
         {
-            <PilotDataView Data="@pd" />
+            <PilotDataView Data="@pd" SRC="@SRC" />
         }
     </div>
 </section>
