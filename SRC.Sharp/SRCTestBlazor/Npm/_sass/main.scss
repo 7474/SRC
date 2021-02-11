@@ -40,9 +40,24 @@ $primary-invert: $pink-invert;
             .content {
                 padding: 0 $card-content-padding;
             }
+
+            // $table-cell-padding: 0.5em 0.75em !default
+            // padding: $table-cell-padding
+            table.table {
+                th, td{
+                    padding: 0.5em 0.25em;
+                }
+            }
         }
     }
 }
+
+// 武器・アビリティテーブル
+.name-cell {
+    // データ定義の推奨合わせ
+    width: 14em;
+}
+
 
 // For Blazor
 #blazor-error-ui {
