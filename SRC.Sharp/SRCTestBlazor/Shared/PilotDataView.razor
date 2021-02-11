@@ -94,7 +94,7 @@
             <div class="media">
                 <div class="media-left">
                     <figure class="image is-64x64">
-                        <img src="@DataContainer.BitmapIndex.GetBitmapUri("Pilot", Data.Bitmap0)" alt="Pilot image">
+                        <img src="@PickupMessage.BitmapUri" alt="Pilot image">
                     </figure>
                     <button class="button is-small" @onclick="OnClickMessage">
                         <ion-icon name="refresh-outline"></ion-icon>
@@ -124,7 +124,7 @@
     private Random Random { get; set; }
 
     private MessageData MessageData;
-    private MessageDataItem PickupMessage;
+    private MessagePreviewData PickupMessage;
 
     private bool ExpandRaw = false;
     private string DataJson => JsonConvert.SerializeObject(Data, Formatting.Indented);
@@ -149,7 +149,10 @@
     {
         if (MessageData != null)
         {
-            PickupMessage = MessageData.Items[Random.Next(MessageData.Items.Count)];
+            var md = MessageData.Items[Random.Next(MessageData.Items.Count)];
+            PickupMessage = new MessagePreviewData(
+                DataContainer.BitmapIndex.GetBitmapUri("Pilot", Data.Bitmap0),
+                md.Message);
         }
     }
 }
