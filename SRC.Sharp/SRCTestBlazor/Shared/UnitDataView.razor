@@ -93,11 +93,11 @@
                             <th>攻撃力</th>
                             <th>射程</th>
                             <th>命中</th>
-                            <th>弾数</th>
+                            <th>弾</th>
                             <th>EN</th>
                             <th>気力</th>
                             <th>地形</th>
-                            <th>CT率</th>
+                            <th>CT</th>
                             <th>属性</th>
                         </tr>
                     </thead>
@@ -105,16 +105,16 @@
                         @foreach (var wd in Data.Weapons)
                         {
                             <tr>
-                                <td>@wd.Name</td>
-                                <td>@wd.Power</td>
-                                <td>@wd.MinRange ~ @wd.MaxRange</td>
-                                <td>@(wd.Precision >= 0 ? $"+{wd.Precision}" : $"{wd.Precision}")</td>
-                                <td>@wd.Bullet</td>
-                                <td>@wd.ENConsumption</td>
-                                <td>@wd.NecessaryMorale</td>
-                                <td>@wd.Adaption</td>
-                                <td>@wd.Critical</td>
-                                <td>@wd.Class</td>
+                                <td class="has-text-left name-cell">@wd.Name</td>
+                                <td class="has-text-right">@wd.Power</td>
+                                <td class="has-text-centered">@wd.MinRange ~ @wd.MaxRange</td>
+                                <td class="has-text-right">@(wd.Precision >= 0 ? $"+{wd.Precision}" : $"{wd.Precision}")</td>
+                                <td class="has-text-right">@wd.Bullet</td>
+                                <td class="has-text-right">@wd.ENConsumption</td>
+                                <td class="has-text-right">@wd.NecessaryMorale</td>
+                                <td class="has-text-left">@wd.Adaption</td>
+                                <td class="has-text-right">@wd.Critical</td>
+                                <td class="has-text-left">@wd.Class</td>
                             </tr>
                         }
                     </tbody>
@@ -140,13 +140,13 @@
                         @foreach (var ad in Data.Abilities)
                         {
                             <tr>
-                                <td>@ad.Name</td>
-                                <td>@ad.Stock</td>
-                                <td>@ad.ENConsumption</td>
-                                <td>@ad.NecessaryMorale</td>
-                                <td>@ad.MinRange ~ @ad.MaxRange</td>
-                                <td>@ad.Class</td>
-                                <td>---</td>
+                                <td class="has-text-left name-cell">@ad.Name</td>
+                                <td class="has-text-right">@ad.Stock</td>
+                                <td class="has-text-right">@ad.ENConsumption</td>
+                                <td class="has-text-right">@ad.NecessaryMorale</td>
+                                <td class="has-text-centered">@ad.MinRange ~ @ad.MaxRange</td>
+                                <td class="has-text-left">@ad.Class</td>
+                                <td class="has-text-left">---</td>
                             </tr>
                         }
                     </tbody>
