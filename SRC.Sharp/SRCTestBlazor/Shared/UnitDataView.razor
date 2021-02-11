@@ -82,76 +82,78 @@
                     </li>
                 }
             </ul>
-            @if (Data.Weapons.Any())
-            {
-                <div class="table-container">
-                    <table class="table">
-                        <thead class="is-size-7">
+        </div>
+        @if (Data.Weapons.Any())
+        {
+            <div class="table-container">
+                <table class="table">
+                    <thead class="is-size-7">
+                        <tr>
+                            <th>武器名</th>
+                            <th>攻撃力</th>
+                            <th>射程</th>
+                            <th>命中</th>
+                            <th>弾数</th>
+                            <th>EN</th>
+                            <th>気力</th>
+                            <th>地形</th>
+                            <th>CT率</th>
+                            <th>属性</th>
+                        </tr>
+                    </thead>
+                    <tbody class="is-size-7">
+                        @foreach (var wd in Data.Weapons)
+                        {
                             <tr>
-                                <th>武器名</th>
-                                <th>攻撃力</th>
-                                <th>射程</th>
-                                <th>命中</th>
-                                <th>弾数</th>
-                                <th>EN</th>
-                                <th>気力</th>
-                                <th>地形</th>
-                                <th>CT率</th>
-                                <th>属性</th>
+                                <td>@wd.Name</td>
+                                <td>@wd.Power</td>
+                                <td>@wd.MinRange ~ @wd.MaxRange</td>
+                                <td>@(wd.Precision >= 0 ? $"+{wd.Precision}" : $"{wd.Precision}")</td>
+                                <td>@wd.Bullet</td>
+                                <td>@wd.ENConsumption</td>
+                                <td>@wd.NecessaryMorale</td>
+                                <td>@wd.Adaption</td>
+                                <td>@wd.Critical</td>
+                                <td>@wd.Class</td>
                             </tr>
-                        </thead>
-                        <tbody class="is-size-7">
-                            @foreach (var wd in Data.Weapons)
-                            {
-                                <tr>
-                                    <td>@wd.Name</td>
-                                    <td>@wd.Power</td>
-                                    <td>@wd.MinRange ~ @wd.MaxRange</td>
-                                    <td>@(wd.Precision >= 0 ? $"+{wd.Precision}" : $"{wd.Precision}")</td>
-                                    <td>@wd.Bullet</td>
-                                    <td>@wd.ENConsumption</td>
-                                    <td>@wd.NecessaryMorale</td>
-                                    <td>@wd.Adaption</td>
-                                    <td>@wd.Critical</td>
-                                    <td>@wd.Class</td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-            }
-            @if (Data.Abilities.Any())
-            {
-                <div class="table-container">
-                    <table class="table">
-                        <thead class="is-size-7">
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        @if (Data.Abilities.Any())
+        {
+            <div class="table-container">
+                <table class="table">
+                    <thead class="is-size-7">
+                        <tr>
+                            <th>名称</th>
+                            <th>回数</th>
+                            <th>EN</th>
+                            <th>気力</th>
+                            <th>射程</th>
+                            <th>属性</th>
+                            <th>効果</th>
+                        </tr>
+                    </thead>
+                    <tbody class="is-size-7">
+                        @foreach (var ad in Data.Abilities)
+                        {
                             <tr>
-                                <th>名称</th>
-                                <th>回数</th>
-                                <th>EN</th>
-                                <th>気力</th>
-                                <th>射程</th>
-                                <th>属性</th>
-                                <th>効果</th>
+                                <td>@ad.Name</td>
+                                <td>@ad.Stock</td>
+                                <td>@ad.ENConsumption</td>
+                                <td>@ad.NecessaryMorale</td>
+                                <td>@ad.MinRange ~ @ad.MaxRange</td>
+                                <td>@ad.Class</td>
+                                <td>---</td>
                             </tr>
-                        </thead>
-                        <tbody class="is-size-7">
-                            @foreach (var ad in Data.Abilities)
-                            {
-                                <tr>
-                                    <td>@ad.Name</td>
-                                    <td>@ad.Stock</td>
-                                    <td>@ad.ENConsumption</td>
-                                    <td>@ad.NecessaryMorale</td>
-                                    <td>@ad.MinRange ~ @ad.MaxRange</td>
-                                    <td>@ad.Class</td>
-                                    <td>---</td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        <div class="content">
             <button class="button is-small" @onclick="OnClickRaw">Raw</button>
             <pre style="@(ExpandRaw ? "" : "display: none;")">@DataJson</pre>
         </div>
