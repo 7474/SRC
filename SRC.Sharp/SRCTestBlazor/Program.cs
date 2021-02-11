@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using SRCTestBlazor.Models;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -16,7 +17,8 @@ namespace SRCTestBlazor
                 .AddScoped(sp => new HttpClient
                 {
                     BaseAddress = new Uri(builder.HostEnvironment.BaseAddress)
-                });
+                })
+                .AddSingleton<SrcDataContainer>();
 
             builder.RootComponents.Add<App>("#app");
 
