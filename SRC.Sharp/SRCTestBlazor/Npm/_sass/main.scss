@@ -26,7 +26,23 @@ $primary-invert: $pink-invert;
 // 4. Import the rest of Bulma
 */
 
+@import "../node_modules/bulma/sass/utilities/initial-variables";
+
 @import "../node_modules/bulma/bulma";
+
+// card 内のコンテンツの余白
+@media screen and (max-width: $desktop) {
+    .card {
+        .card-content {
+            // .content 以外の左右余白をカットする
+            padding: $card-content-padding 0;
+
+            .content {
+                padding: 0 $card-content-padding;
+            }
+        }
+    }
+}
 
 // For Blazor
 #blazor-error-ui {
@@ -41,9 +57,9 @@ $primary-invert: $pink-invert;
     z-index: 1000;
 }
 
-    #blazor-error-ui .dismiss {
-        cursor: pointer;
-        position: absolute;
-        right: 0.75rem;
-        top: 0.5rem;
-    }
+#blazor-error-ui .dismiss {
+    cursor: pointer;
+    position: absolute;
+    right: 0.75rem;
+    top: 0.5rem;
+}
