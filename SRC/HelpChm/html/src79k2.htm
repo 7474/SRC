@@ -1,0 +1,85 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; shift_jis">
+<TITLE>IntermissionCommandコマンド</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="IntermissionCommandコマンド">
+</OBJECT>
+
+<P><A NAME="1kdtlcb"></A></P>
+
+<P><B>IntermissionCommand</B></P>
+
+<P>インターミッションコマンドを作成</P>
+
+<P><B>書式</B></P>
+
+<P><B>IntermissionCommand</B> <I>command</I> <I>file</I> または <B>IntermissionCommand</B> <I>command</I> 削除</P>
+
+<P><B>指定項目説明</B></P>
+
+<P><I>command</I>インターミッションコマンド名(式が使用可能)</P>
+
+<P><I>file</I>コマンドとして実行されるイベントファイルのファイル名</P>
+
+<P><B>解説</B></P>
+
+<P>インターミッションのメニューに新規のコマンド<I>command</I>を追加します。プレイヤーがコマンド<I>command</I>を選択するとイベントファイル<I>file</I>が実行されます。</P>
+
+<P><I>file</I>は通常のイベントファイルと同様に実行されます。プロローグイベントにコマンドを配置し、インターミッションコマンドの処理を行ってください。処理の終了は<A HREF="src7yw5.htm"><B>Continue</B>コマンド</A>で行います。この際、<B>Continue</B>コマンドは必ずファイル名を省略してください。</P>
+
+<P>追加したインターミッションコマンドはそれ以降のインターミッションで常に表示されます。削除したい場合は<I>file</I>の代わりに「削除」と指定して<B>IntermissionCommand</B>コマンドを実行してください。インターミッションコマンドに対応するイベントファイル名を変更したい場合は同じ<I>command</I>に対して<B>IntermissionCommand</B>コマンドを再度実行すればOKです。</P>
+
+<P>「アイテム交換」や「乗り換え」といったインターミッションコマンドは<B>IntermissionCommand</B>コマンドを使って作成するのではなく、<A HREF="src373l.htm"><B>Option</B>コマンド</A>を使って追加します。</P>
+
+<P><I>command</I>中に式を使い、インターミッション中に式置換を行いたい場合は<I>command</I>を「"」ではなく「`」で囲ってください。これは「"」で<I>command</I>で囲むとインターミッション時ではなく<B>IntermissionCommand</B>コマンドの実行時に式置換が行われてしまうためです。</P>
+
+<P><B>例</B></P>
+
+<P>#インターミッションコマンド「あらすじ」を「あらすじ.eve」を使って実現するように定義</P>
+
+<P>IntermissionCommand あらすじ あらすじ.eve</P>
+
+<P><B>イベントファイル例</B></P>
+
+<P>#通常のイベントファイルと同じようにプロローグイベントが最初の処理になる</P>
+
+<P>プロローグ:</P>
+
+<P>#BGMを変更</P>
+
+<P>StartBGM Preview.mid</P>
+
+<P>#変数「次ステージ」の値に合わせてメッセージを表示</P>
+
+<P>Switch 次ステージ</P>
+
+<P>：</P>
+
+<P>Case シナリオ-06.eve</P>
+
+<P>Talk ナレーター</P>
+
+<P>辛くも難を逃れた一行に再び襲い掛かる暗殺者の群れ</P>
+
+<P>避難所を求め、古代の寺院跡に逃れた彼らの前に現れたのは……</P>
+
+<P>次回、「過去からの呼び声」</P>
+
+<P>End</P>
+
+<P>：</P>
+
+<P>EndSw</P>
+
+<P>#インターミッションコマンドを終了</P>
+
+<P>Continue</P>
+
+</BODY>
+</HTML>

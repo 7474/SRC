@@ -1,0 +1,37 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; shift_jis">
+<TITLE>MIDIファイルのインストール</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="MIDIファイルのインストール">
+</OBJECT>
+
+<P><A NAME=".2.uep"></A></P>
+
+<P><B>MIDIファイルのインストール</B></P>
+
+<P>SRCのプレイ中にＢＧＭを鳴らすにはMIDIファイルが必要です。MIDIファイルが添付されているシナリオもありますが、多くのシナリオではあらかじめMIDIファイルを入手し、インストールしておく必要があります。</P>
+
+<P>ただし、MIDIファイルがなくてもプレイ自体には支障ありません。とりあえずSRCをプレイしてみたいという方はMIDIファイルのインストールを後回しにしていただいても結構です。</P>
+
+<P>MIDIファイルを入手するにはSRC公式ホームページのSRC WebからMIDIを公開しているホームページを訪れてみるといいでしょう。入手したMIDIファイルはMidiフォルダにコピーします。SRCとは関係なくMIDIを公開しているHPからMIDIファイルを入手した場合、ファイル名をSRC用に変更しなければならないので注意して下さい。SRC用ファイル名はSRC向けにMIDIを公開しているホームページやシナリオの注意書きなどを参照すれば分かると思います。</P>
+
+<P><IMG SRC="../images/bm0.gif" ALT="" BORDER=0>SRCに添付されているMIDIファイルは音源リセット用のものです。</P>
+
+<P>これだけではBGMの演奏はできません。</P>
+
+<P>SRCでは特に設定を行わない限り、DirectMusicによりMIDI音源を自動選択してMIDIファイルの再生を行います。しかし、PCによってはMIDI音源を変更したり、DirectMusicを使わないように設定を変更しないとうまくMIDIファイルを再生できない場合があります。このような場合はマップコマンド「<A HREF="00000052.htm">設定変更</A>」を使ってMIDI関連の設定を変更したり、<A HREF="00000052.htm">設定変更</A>のページを参照して<B>Src.ini</B>ファイルの内容を書き換えて下さい。</P>
+
+<P>MIDIファイルをソフトウェアシンセサイザー使って再生するとシステムにかける負担が大きすぎてSRCの実行を正しく行えないことがあります。SRC実行中にエラーが発生した場合はWindowsのスタートメニューから「コントロールパネル =&gt; マルチメディア =&gt; MIDI」を選択し、MIDI再生に使用するデバイスを変更して下さい。</P>
+
+<P>なお、一つの曲に複数のMIDIファイルが見つかった場合、MIDIファイル名の「.mid」の前に(2)や(3)といった文字をつけておいておけば、SRCはそれらの中からランダムにファイルを選択して演奏を行います。</P>
+
+<P><B>例</B> 標準のファイル名がHero.midなら Hero(2).mid, Hero(3).mid, …</P>
+
+</BODY>
+</HTML>

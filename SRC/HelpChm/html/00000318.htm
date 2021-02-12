@@ -1,0 +1,75 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; shift_jis">
+<TITLE>Unitコマンド</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="Unitコマンド">
+</OBJECT>
+
+<P><A NAME=".2.l.o"></A></P>
+
+<P><B>Unitコマンド</B></P>
+
+<P>ユニットを作成</P>
+
+<P><B>書式</B></P>
+
+<P><B>Unit</B> <I>name</I> <I>rank</I></P>
+
+<P><B>指定項目説明</B></P>
+
+<P><I>name</I>作成するユニットの名称</P>
+
+<P><I>rank</I>作成するユニットの<A HREF="src2ks4.htm">ユニットランク</A></P>
+
+<P>(指定出来る値の上限は999)</P>
+
+<P><B>解説</B></P>
+
+<P>ユニット <I>name</I> を<I>rank</I> の<A HREF="src2ks4.htm">ユニットランク</A>で作成します。作成されたユニットは味方に所属するとみなされ、<A HREF="00000291.htm">Rideコマンド</A>やインターミッションでの乗り換えでパイロットを載せることができます。</P>
+
+<P>ユニットを作成と同時に出撃させたくない場合には<B>Unit</B>コマンドで作成したユニットに<A HREF="00000261.htm"><B>Pilot</B>コマンド</A>で作成したパイロットを搭乗させておき、出撃させたい時点で<A HREF="00000239.htm"><B>Launch</B>コマンド</A>や<A HREF="00000257.htm"><B>Organize</B>コマンド</A>を使用します。</P>
+
+<P>合体ユニットをシナリオ中で使用するときには<B>Unit</B>コマンドの利用が不可欠です。</P>
+
+<P><B>(1)最初から合体ユニットを作成</B></P>
+
+<P><A HREF="00000198.htm"><B>Create</B>コマンド</A>または<B>Unit</B>コマンドで合体後の形態を作成しておくと同時に、分離後の形態を<B>Unit</B>コマンドで作成しておきます。これを怠ると分離時にエラーになってしまうので気をつけてください。</P>
+
+<P><IMG SRC="../images/bm0.gif" ALT="" BORDER=0> 必ずパイロットを乗せてないほうの形態を後で生成して下さい。</P>
+
+<P><B>(2)最初に分離後のユニットを作成しておき、後に合体可能にする</B></P>
+
+<P>最初は分離後のユニットだけを登場させ、シナリオの途中にユニットを合体可能にさせる時点で<B>Unit</B>コマンドを用いて合体後の形態を作成します。</P>
+
+<P>作成するユニットのデータはあらかじめロードしておかないといけません。イベントファイルの先頭に「@ユニットの所属する作品名」と書いておき、データをロードしておいてください。以前のステージですでにデータをロードしている場合には指定は不要です。</P>
+
+<P><B>例</B></P>
+
+<P>#まずパイロットが乗っている方の形態を作成</P>
+
+<P>Create 味方 龍神機 0 烈 20 3 3</P>
+
+<P>Pilot 速人 20</P>
+
+<P>Pilot 霞 20</P>
+
+<P>Ride 速人</P>
+
+<P>Ride 霞</P>
+
+<P>#次にパイロットが乗っていない方の形態を作成</P>
+
+<P>Unit 龍武神 0</P>
+
+<P>Unit 獣武神 0</P>
+
+<P>Unit 鳳武神 0</P>
+
+</BODY>
+</HTML>

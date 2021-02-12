@@ -1,0 +1,65 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; shift_jis">
+<TITLE>レベルアップイベント</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="レベルアップイベント">
+</OBJECT>
+
+<P><A NAME="1kdtmbe"></A></P>
+
+<P><B>レベルアップイベント</B></P>
+
+<P>指定したユニットのメインパイロットがレベルアップしたときに発生するイベント</P>
+
+<P><B>書式</B></P>
+
+<P><B>レベルアップ</B> <I>unit</I> :</P>
+
+<P><B>指定項目説明</B></P>
+
+<P><I>unit</I>メインパイロットがレベルアップしたユニットの<A HREF="src7ysq.htm">メインパイロット名</A>、ユニット名、または<A HREF="src7ysp.htm">陣営名</A></P>
+
+<P><B>解説</B></P>
+
+<P>ユニット<I>unit</I> のメインパイロットがレベルアップしたときに発生するイベントです。メインパイロット以外のパイロットがレベルアップしてもイベントは発生しないので注意して下さい。</P>
+
+<P>レベルアップイベントはスーテージ終了時の残りＳＰボーナスによる経験値収得や、<A HREF="00000241.htm"><B>LevelUp</B>コマンド</A>によるレベルアップでは発生しません。</P>
+
+<P><B>例</B></P>
+
+<P>#アリスがレベルアップした</P>
+
+<P>レベルアップ アリス:</P>
+
+<P>Talk アリス</P>
+
+<P>やったあ！ レベルアップ！！</P>
+
+<P>Talk 親切なおじさん</P>
+
+<P>よくがんばったね。おこずかいをあげよう</P>
+
+<P>Suspend</P>
+
+<P>#効果音を鳴らす</P>
+
+<P>PlaySound Sharara.wav</P>
+
+<P>#資金を1000増やす</P>
+
+<P>Money 1000</P>
+
+<P>Talk システム</P>
+
+<P>なぜか資金1000をもらった！</P>
+
+<P>End</P>
+
+</BODY>
+</HTML>

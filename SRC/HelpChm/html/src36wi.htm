@@ -1,0 +1,77 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; shift_jis">
+<TITLE>攻撃後イベント</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="攻撃後イベント">
+</OBJECT>
+
+<P><A NAME=".2.u_r"></A></P>
+
+<P><B>攻撃後イベント</B></P>
+
+<P>ユニットが他のユニットに攻撃をした後に発生するイベント</P>
+
+<P><B>書式</B></P>
+
+<P><B>攻撃後</B> <I>unit1</I> <I>unit2</I> :</P>
+
+<P><B>指定項目説明</B></P>
+
+<P><I>unit1</I>攻撃元のユニットの<A HREF="src7ysq.htm">メインパイロット名</A>、ユニット名、または<A HREF="src7ysp.htm">陣営名</A></P>
+
+<P><I>unit2</I>攻撃先のユニットの<A HREF="src7ysq.htm">メインパイロット名</A>、ユニット名、または<A HREF="src7ysp.htm">陣営名</A></P>
+
+<P><B>解説</B></P>
+
+<P><I>unit1</I> が <I>unit2</I> に対して攻撃した場合、あるいはその逆の場合に発生するイベントです。指定したユニットが両方とも生き残っていないとイベントは発生しません。</P>
+
+<P><B>攻撃後イベント</B>は攻撃をしかけたユニット、及び攻撃を受けたユニットの<A HREF="src36wk.htm"><B>損傷率イベント</B></A>が終了した後に発生します。</P>
+
+<P><I>unit1</I> が <I>unit2</I> に攻撃する場合のほうが優先して適用されるので <I>unit1</I> と <I>unit2</I> の順番を入れ替えた攻撃後イベントを作成し、どちらから攻撃をしかけたかによってイベント内容を変えることもできます。ただしこの場合はイベントの最後で<A HREF="src7ywb.htm"><B>ClearEvent</B>コマンド</A>を２回使う必要があるので注意して下さい。</P>
+
+<P>ユニットを<A HREF="src7ysp.htm">陣営名</A>で指定した場合に攻撃を仕掛けた、あるいは攻撃を受けるユニットを識別するにはシステム変数対象パイロット、相手パイロットまたは対象ユニットＩＤ、相手ユニットＩＤを使用します。</P>
+
+<P>攻撃後イベントは<A HREF="src7ysl.htm"><B>Attack</B>コマンド</A>や<A HREF="src373q.htm"><B>MapAttack</B>コマンド</A>などによるイベント上の戦闘では発生しません。</P>
+
+<P><B>例</B></P>
+
+<P>#リグがロディマスに攻撃をかけた後</P>
+
+<P>攻撃後 リグ ロディマス:</P>
+
+<P>#リグが攻撃側ではない場合はこのまま終了</P>
+
+<P>If 対象ユニット使用武器 = "" Exit</P>
+
+<P>#ロディマスの損傷率が10%未満の場合</P>
+
+<P>If Damage(ロディマス) &lt; 10 Then</P>
+
+<P>Talk リグ(攻撃)</P>
+
+<P>馬鹿な…なんて装甲だ…！</P>
+
+<P>Talk ロディマス</P>
+
+<P>どうした！ それで終わりか！？</P>
+
+<P>End</P>
+
+<P>EndIf</P>
+
+<P>#再度このイベントが発生しないようにイベントを消去</P>
+
+<P>ClearEvent</P>
+
+<P>#イベントを終了</P>
+
+<P>Exit</P>
+
+</BODY>
+</HTML>

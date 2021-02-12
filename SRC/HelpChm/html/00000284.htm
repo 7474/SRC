@@ -1,0 +1,67 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; shift_jis">
+<TITLE>RenameBGMコマンド</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="RenameBGMコマンド">
+</OBJECT>
+
+<P><A NAME=".2.o_r"></A></P>
+
+<P><B>RenameBGMコマンド</B></P>
+
+<P>BGMに使用されるMIDIファイル名を変更</P>
+
+<P><B>書式</B></P>
+
+<P><B>RenameBGM</B> <I>bgm file</I></P>
+
+<P><B>指定項目説明</B></P>
+
+<P><I>bgm</I>ファイル名を変更するBGM</P>
+
+<P><I>file</I>使用するMIDIファイル名</P>
+
+<P><B>解説</B></P>
+
+<P>SRCでは起動時や味方フェイズ開始時など、いくつかの場面で自動的にMIDIファイルがBGMとして再生されます。この際に使用されるMIDIファイルのファイル名をRenameBGMコマンドで変更することが出来ます。</P>
+
+<P><I>bgm</I> に指定可能なBGMのシチュエーションは以下のものがあります。</P>
+
+<P><B>Map1</B>味方フェイズ開始時</P>
+
+<P><B>Map2</B>敵フェイズ開始時</P>
+
+<P><B>Map3</B>屋内マップでの味方フェイズ開始時</P>
+
+<P><B>Map4</B>屋内マップでの敵フェイズ開始時</P>
+
+<P><B>Map5</B>宇宙マップでの味方フェイズ開始時</P>
+
+<P><B>Map6</B>宇宙マップでの敵フェイズ開始時</P>
+
+<P><B>Briefing プロローグ・エピローグ開始時</B></P>
+
+<P><B>Intermissionインターミッション時</B></P>
+
+<P><B>SubtitleTelopコマンドによるテロップ表示時</B></P>
+
+<P><B>Endゲームオーバー時</B></P>
+
+<P><B>default戦闘時にパイロットデータに設定されたMIDIファイルが見つからない際</B></P>
+
+<P><B>RenameBGMコマンドでSRC起動時に再生されるOpening.midを別のファイルに変更することは出来ません。これはRenameBGMコマンドによる設定が読み込まれる前にOpening.midが再生されるためです。SRC起動時のBGMを別のファイルに変更したい場合はシナリオのフォルダ内に<A HREF="00000052.htm">Src.ini</A>を作り、その中で[BGM]のOpeningの項目のみを設定して下さい。</B></P>
+
+<P><B>RenameBGMコマンドによる設定はセーブデータに記録され、RenameBGMコマンドを実行した後のステージにも継続して使用されます。</B></P>
+
+<P><B>例</B></P>
+
+<P><B>RenameBGM Intermission intermission2.mid</B></P>
+
+</BODY>
+</HTML>

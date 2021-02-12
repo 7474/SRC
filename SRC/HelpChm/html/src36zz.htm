@@ -1,0 +1,71 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; shift_jis">
+<TITLE>Forコマンド</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="Forコマンド">
+</OBJECT>
+
+<P><A NAME=".2.uao"></A></P>
+
+<P><B>Forコマンド</B></P>
+
+<P>一連のイベントコマンドを一定回数繰り返し実行</P>
+
+<P><B>書式</B></P>
+
+<P><B>For</B> <I>counter</I>  = <I>initial</I> <B>To</B> <I>last</I> [<B>Step</B> <I>step</I>]</P>
+
+<P><I>commands</I></P>
+
+<P><B>Next</B></P>
+
+<P><B>指定項目説明</B></P>
+
+<P><I>counter</I>繰り返し実行のカウンターとして用いる変数名</P>
+
+<P><I>initial</I>カウンターの初期値</P>
+
+<P><I>last</I>カウンターの最終値</P>
+
+<P><I>step</I>カウンターの加算値(省略可能、負の値も指定可能)</P>
+
+<P>省略した場合は1とみなされる</P>
+
+<P><I>commands</I>実行するイベントコマンド。複数行指定可能</P>
+
+<P><B>解説</B></P>
+
+<P>変数 <I>counter</I> の値を <I>initial</I> に設定し、<I>counter</I> の値が<I>last</I> になるまでイベントコマンド列<I>commands</I> を繰り返し実行します。(<I>initial</I> の値が <I>last</I> の値より大きい場合には<I>commands</I> は一度も実行されません)</P>
+
+<P><I>counter</I> の値は実行が<B>Next</B>行に達した時に<I>step</I> 増やされます(<I>step</I> を省略した場合には１増やされます)。この時、<I>counter</I> の値が<I>last</I> でなければ <I>commands</I> が再び最初から実行されます。</P>
+
+<P><I>counter</I> が今までに使用されていない場合はローカル変数として自動的に作成されます。プログラムの慣習上、<I>counter</I> として用いる変数名は i, j, k を用いることをお勧めします。</P>
+
+<P><A HREF="src2er6.htm"><B>Skip</B>コマンド</A>や<A HREF="src7yub.htm"><B>Break</B>コマンド</A>を使えば繰り返し実行をコントロールすることが可能です。</P>
+
+<P><IMG SRC="../images/bm0.gif" ALT="" BORDER=0> イベントファイルが見やすいように <I>commands</I> にはインデントをつけるようにして下さい。</P>
+
+<P><B>例</B></P>
+
+<P>Talk コーネリアス</P>
+
+<P>よし！ ドール隊１２機、全機発進！</P>
+
+<P>End</P>
+
+<P>#コーネリアスの乗るユニットの周りに12機のドールを出撃させる</P>
+
+<P>For i = 1 To 12</P>
+
+<P>Create 敵 ドール 0 一般兵士 18 X(コーネリアス) Y(コーネリアス)</P>
+
+<P>Next</P>
+
+</BODY>
+</HTML>

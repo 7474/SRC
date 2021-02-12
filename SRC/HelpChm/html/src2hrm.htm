@@ -1,0 +1,87 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; shift_jis">
+<TITLE>Lineコマンド</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="Lineコマンド">
+</OBJECT>
+
+<P><A NAME=".2.mbr"></A></P>
+
+<P><B>Lineコマンド</B></P>
+
+<P>線や長方形を描画</P>
+
+<P><B>書式</B></P>
+
+<P><B>Line</B> <I>x1 y1 x2 y2</I> [<I>options</I>]</P>
+
+<P><B>指定項目説明</B></P>
+
+<P><I>x1 y1</I>描画する図形の始点(ピクセル)</P>
+
+<P><I>x2 y2</I>描画する図形の終点(ピクセル)</P>
+
+<P><I>options</I>描画方法を示すオプション</P>
+
+<P>描画色と描画タイプ(<B>B</B>または<B>BF</B>)が指定可能</P>
+
+<P><B>解説</B></P>
+
+<P>マップウインドウの(<I>x1</I>,<I>y1</I>)から(<I>x2</I>,<I>y2</I>)に直線または長方形を描きます。描画した図形は<A HREF="src79m2.htm"><B>Refresh</B>コマンド</A>を実行した時点で表示されます。</P>
+
+<P>マップウィンドウの左上隅の座標は(0,0)、右下隅の座標は(479,479)となっています。(<I>x1</I>,<I>y1</I>)と(<I>x2</I>,<I>y2</I>)はこの範囲で指定して下さい。</P>
+
+<P>ただし、システム変数BaseX,BaseYの値を変更することで基準位置を変更することが可能です。詳しくは<A HREF="src2ks6.htm">変数</A>のページを参照してください。</P>
+
+<P><I>options</I>にオプションを指定し、描画方法を変更することができます。</P>
+
+<P><B>#rrggbb</B>ＲＧＢ16進(HTMLの色指定と同形式)で描画色を指定します。</P>
+
+<P>RGB関数を使えばＲＧＢ値からＲＧＢ16進は計算することができます。</P>
+
+<P>指定を省略した場合は<A HREF="src2hro.htm"><B>Color</B>コマンド</A>で指定した色が使われます</P>
+
+<P><B>B</B>直線の代わりに長方形を描画します。</P>
+
+<P>長方形の中は<A HREF="src2l2s.htm"><B>FillStyle</B>コマンド</A>と<A HREF="src2l2r.htm"><B>FillColor</B>コマンド</A>の設定に応じて描画されます。</P>
+
+<P>通常は透過されます。</P>
+
+<P><B>BF</B>直線の代わりに中が塗りつぶされた長方形を描画します。</P>
+
+<P>塗りつぶしに使われる色は線の色と同じです。</P>
+
+<P><B>Line</B>コマンドで描画される直線及び長方形の線の太さは通常1ピクセルです。線をより太くしたい場合は<A HREF="src2l2p.htm"><B>DrawWidth</B>コマンド</A>を使ってください。</P>
+
+<P><B>例</B></P>
+
+<P>#描画色を(0,255,0)に変更</P>
+
+<P>Color RGB(0,255,0)</P>
+
+<P>#(0,0)から(100,100)に直線を描画</P>
+
+<P>Line 0 0 100 100</P>
+
+<P>#(100,100)と(200,200)を両端とする長方形を描画</P>
+
+<P>Line 100 100 200 200 B</P>
+
+<P>#(200,200)と(300,300)を両端とする塗りつぶされた長方形を描画</P>
+
+<P>#描画色は(255,0,255)</P>
+
+<P>Line 200 200 300 300 RGB(255,0,255) BF</P>
+
+<P>#画面を更新</P>
+
+<P>Refresh</P>
+
+</BODY>
+</HTML>

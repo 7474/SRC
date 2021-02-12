@@ -1,0 +1,55 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; shift_jis">
+<TITLE>Splitコマンド</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="Splitコマンド">
+</OBJECT>
+
+<P><A NAME=".2.les"></A></P>
+
+<P><B>Splitコマンド</B></P>
+
+<P>ユニットを分離</P>
+
+<P><B>書式</B></P>
+
+<P><B>Split</B> [<I>unit</I>]</P>
+
+<P><B>指定項目説明</B></P>
+
+<P><I>unit</I>分離させるユニットの<A HREF="src7ysq.htm">メインパイロット名</A>または<A HREF="src2hpr.htm">ユニットＩＤ</A>（省略可）</P>
+
+<P><B>解説</B></P>
+
+<P><I>unit</I> を分離させます。<A HREF="src2c1b.htm"><B>Unit</B>コマンド</A>であらかじめ分離先のユニットを作成しておいて下さい。</P>
+
+<P><B>例</B></P>
+
+<P>#烈が龍神機に乗っているなら</P>
+
+<P>If Unit(烈) = 龍神機 Then</P>
+
+<P>Talk 烈</P>
+
+<P>ちっ、敵の数が多すぎるぜ。一旦分離だ！</P>
+
+<P>Talk 速人</P>
+
+<P>了解！</P>
+
+<P>End</P>
+
+<P>#烈の乗っているユニットを分離させる</P>
+
+<P>Split 烈</P>
+
+<P>EndIf</P>
+
+</BODY>
+</HTML>

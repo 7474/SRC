@@ -1,0 +1,97 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; shift_jis">
+<TITLE>DrawOptionコマンド</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="DrawOptionコマンド">
+</OBJECT>
+
+<P><A NAME="1kdtmbf"></A></P>
+
+<P><B>DrawOptionコマンド</B></P>
+
+<P>図形の描画方法を変更</P>
+
+<P><B>書式</B></P>
+
+<P><B>DrawOption</B> <I>option</I></P>
+
+<P><B>指定項目説明</B></P>
+
+<P><I>option</I>図形を描画する際のオプション</P>
+
+<P><B>解説</B></P>
+
+<P>図形を描画するコマンドの描画方法を変更するためのコマンドです。以下のオプションを指定することが出来ます。</P>
+
+<P><B>背景</B>図形をマップ背景として書き込みます。</P>
+
+<P>背景オプションを指定して書きこんだ図形はマップの図形と同等に扱われ、</P>
+
+<P><A HREF="00000175.htm"><B>ChangeMap</B>コマンド</A>でマップを変更するか、</P>
+
+<P><A HREF="00000253.htm"><B>Night</B>コマンド</A>等でマップの表示色を変更するまで消去されません。</P>
+
+<P><IMG SRC="../images/bm0.gif" ALT="" BORDER=0> 背景オプションを使って書き込んだ図形は<A HREF="00000276.htm"><B>Redraw</B>コマンド</A>を使うまで表示されません。</P>
+
+<P>背景オプションを使う場合、図形の書き込み座標は画面上での位置ではなく、</P>
+
+<P>マップ上での位置になるので注意してください。</P>
+
+<P>また、背景に描画した図形は中断データからの再開時に消去されてしまうため、</P>
+
+<P><A HREF="00000161.htm">再開イベント</A>を使って再描画するようにして下さい。</P>
+
+<P><B>保持</B>図形を<A HREF="00000185.htm"><B>ClearPicture</B>コマンド</A>で消えないようにして描画します。</P>
+
+<P>アニメーション表示時の背景等を描画する時に使います。</P>
+
+<P>保持オプションを使って描画された図形は<A HREF="00000276.htm"><B>Redraw</B>コマンド</A>や<A HREF="00000173.htm"><B>Center</B>コマンド</A>等によって</P>
+
+<P>マップウィンドウが再描画される際に消去されます。</P>
+
+<P><B>通常</B>通常の描画に戻します。</P>
+
+<P><B>DrawOption</B>コマンドの対象となるのは以下のコマンドです。</P>
+
+<P>・<A HREF="00000164.htm"><B>Arc</B>コマンド</A></P>
+
+<P>・<A HREF="00000181.htm"><B>Circle</B>コマンド</A></P>
+
+<P>・<A HREF="00000242.htm"><B>Line</B>コマンド</A></P>
+
+<P>・<A HREF="00000258.htm"><B>Oval</B>コマンド</A></P>
+
+<P>・<A HREF="00000265.htm"><B>Polygon</B>コマンド</A></P>
+
+<P>・<A HREF="00000267.htm"><B>PSet</B>コマンド</A></P>
+
+<P>ここに挙げられていない<A HREF="00000259.htm"><B>PaintPicture</B>コマンド</A>はオプションに直接描画方法を指定します。また、<A HREF="00000260.htm"><B>PaintString</B>コマンド</A>は<A HREF="00000218.htm"><B>Font</B>コマンド</A>を使って描画方法を指定します。</P>
+
+<P><B>DrawOption</B>コマンドで行った設定はイベント終了時に自動的に解除されます。</P>
+
+<P><B>例</B></P>
+
+<P>#図形をClearPictureコマンドで消えないように設定</P>
+
+<P>DrawOption 保持</P>
+
+<P>#(0,0)から(100,100)に直線を描画</P>
+
+<P>Line 0 0 100 100</P>
+
+<P>#画面を更新</P>
+
+<P>Refresh</P>
+
+<P>#描画方法を元に戻す</P>
+
+<P>DrawOption 通常</P>
+
+</BODY>
+</HTML>

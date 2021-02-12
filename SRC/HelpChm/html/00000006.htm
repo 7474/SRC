@@ -1,0 +1,239 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; shift_jis">
+<TITLE>SRCのインストール</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="SRCのインストール">
+</OBJECT>
+
+<P><A NAME="1kdtmch"></A></P>
+
+<P><B>SRCのインストール</B></P>
+
+<P>ここでは分割パッケージを使ったSRCのインストール手順について説明します。</P>
+
+<P><B>フルパッケージ版</B>を使っている場合、本作業はファイル解凍時に自動的に実行されるため不要です。次の<A HREF="00000007.htm"><B>サンプルシナリオをプレイする</B></A>まで進んでください。</P>
+
+<P><B>(1)各ファイルのダウンロード</B></P>
+
+<P>SRCをインストールするには下のファイルが必要です。まずSRC公式ホームページ(http://www.src.jpn.org/)のダウンロードコーナー(http://www.src.jpn.org/kei/download/)からこれらすべてをダウンロードしてください。</P>
+
+<P><IMG SRC="../images/bm0.gif" ALT="" BORDER=0>ダウンロードコーナーの指示に従ってダウンロードしていればこれらのファイルはダウンロード済みになっています。</P>
+
+<P></P>
+
+<P>・SRC本体</P>
+
+<P>・汎用グラフィック集</P>
+
+<P>・汎用効果音集</P>
+
+<P>・汎用戦闘アニメ</P>
+
+<P>・PNGファイル用Susieプラグイン</P>
+
+<P>・MP3ファイル用ライブラリVBMP3.dll</P>
+
+<P><B>(2)SRCの本体の解凍</B></P>
+
+<P>SRCの本体を解凍します。ダウンロードしたファイルをダブルクリックすると展開先のフォルダを聞かれますのでお好きな場所を指定してください。</P>
+
+<P>解凍が正しく行われた場合には解凍後のフォルダ内にDataフォルダ、Libフォルダ、Midiフォルダ、Sourceフォルダが生成されているはずです。</P>
+
+<P>【SRCのフォルダ】</P>
+
+<P>│</P>
+
+<P>├ FlashControl.ocx</P>
+
+<P>├ MapEdit.exe</P>
+
+<P>├ Readme.txt</P>
+
+<P>├ Src.cnt</P>
+
+<P>├ Src.exe</P>
+
+<P>├ Src.hlp</P>
+
+<P>├ Ver.2.0系からの変更点.html</P>
+
+<P>│</P>
+
+<P>├── Data</P>
+
+<P>│     └── System</P>
+
+<P>│            └── alias.txt</P>
+
+<P>│</P>
+
+<P>├── Lib</P>
+
+<P>│     ├── パイロットステータス表示.eve</P>
+
+<P>│     └── ユニットステータス表示.eve</P>
+
+<P>│</P>
+
+<P>├── Midi</P>
+
+<P>│     ├── Reset(GM).mid</P>
+
+<P>│     ├── Reset(GS).mid</P>
+
+<P>│     └── Reset(XG).mid</P>
+
+<P>│</P>
+
+<P>└── Source</P>
+
+<P>├── Readme.txt</P>
+
+<P>├── Help</P>
+
+<P>└── Src</P>
+
+<P>解凍後に生成されたフォルダを以後、<A HREF="src79kb.htm">SRCのルートフォルダ</A>と呼びます。</P>
+
+<P><B>例</B> C:\WINDOWS\ﾃﾞｽｸﾄｯﾌﾟ\Src</P>
+
+<P><B>(3)汎用グラフィック集のインストール</B></P>
+
+<P>汎用グラフィック集を解凍します。解凍するとBitmapフォルダが生成されます。このフォルダを<A HREF="src79kb.htm">SRCのルートフォルダ</A>に移します。BitmapフォルダにはEventフォルダとMapフォルダが含まれています。</P>
+
+<P><B>(4)汎用効果音集のインストール</B></P>
+
+<P>汎用効果音集の解凍後、Soundフォルダが生成されます。このフォルダを<A HREF="src79kb.htm">SRCのルートフォルダ</A>に移動させます。</P>
+
+<P><B>(5)汎用戦闘アニメのインストール</B></P>
+
+<P>汎用戦闘アニメファイルの解凍後、Bitmapフォルダ及びLibフォルダが生成されます。これらのフォルダを<A HREF="src79kb.htm">SRCのルートフォルダ</A>に移動させます。この際、フォルダを上書きするかどうかを確認するダイアログが表示されますが「すべて上書き」を選択してください。</P>
+
+<P><B>(6)PNGファイル用Susieプラグインのインストール</B></P>
+
+<P>VB5本体の機能だけではPNGファイルの画像を表示することはできません。そこでSRCではPNGファイルの画像を表示するためにSusieプラグインを利用しています。PNGファイルを用いたシナリオをプレイするにはPNGファイル用Susieプラグインをインストールする必要があります。</P>
+
+<P>ダウンロードコーナーにソフトウェア工房α（http://hp.vector.co.jp/authors/VA010446/）で作成されたPNGファイル用Susieプラグインを転載させて頂いています。このファイルはLZH形式で圧縮されているため、解凍ツールが必要です。Lhasaが定番ソフトとなっていますが、シナリオを作成したりグラフィックやデータを投稿したいと考えている方には圧縮機能を持つ+Lhacaがお勧めです。どちらもVector（http://www.vector.co.jp）で入手できます。</P>
+
+<P>このファイルを解凍して得られた<B>ifpng.spi</B>ファイルを<A HREF="src79kb.htm">SRCのルートフォルダ</A>にコピーして下さい。</P>
+
+<P><B>(7)MP3ファイル用ライブラリVBMP3.dllのインストール</B></P>
+
+<P>VB5本体の機能だけではMP3ファイルを再生することはできません。そこでSRCではMP3ファイル用ライブラリ<B>VBMP3.dll改</B>を利用してMP3ファイルを再生しています。従ってMP3ファイルを使用するにはVBMP3.dll改をインストールする必要があります。</P>
+
+<P>ダウンロードコーナーにVBMP3.dll改のアーカイブファイルをMi-Ke's Home Page ++（http://www.angel.ne.jp/~mike/）から転載させて頂いています。このファイルはLZH形式で圧縮されているので(6)のPNGファイル用Susieプラグインと同様に解凍ツールを使って解凍して下さい。</P>
+
+<P>このファイルを解凍して得られた<B>VBMP3.dll</B>ファイルを<A HREF="src79kb.htm">SRCのルートフォルダ</A>にコピーすればVBMP3.dll改のインストールは完了です。</P>
+
+<P>これでSRCのインストールは完了です。インストール作業が正しく行われた場合、フォルダの構造は下のようになります。フォルダ構造を確認してみてください。</P>
+
+<P>【SRCのフォルダ】</P>
+
+<P>│</P>
+
+<P>├ ifpng.spi</P>
+
+<P>├ ifpng.txt</P>
+
+<P>├ FlashControl.ocx</P>
+
+<P>├ MapEdit.exe</P>
+
+<P>├ Readme.txt</P>
+
+<P>├ Src.cnt</P>
+
+<P>├ Src.exe</P>
+
+<P>├ Src.hlp</P>
+
+<P>├ VBMP3.dll</P>
+
+<P>├ Ver.2.0系からの変更点.html</P>
+
+<P>├ フルパッケージ版内容.txt</P>
+
+<P>├ 汎用戦闘アニメマニュアル.html</P>
+
+<P>│</P>
+
+<P>├── Bitmap</P>
+
+<P>│     ├── Anime</P>
+
+<P>│     │     └── 汎用戦闘アニメ用画像各種(*.bmp)</P>
+
+<P>│     ├── Event</P>
+
+<P>│     │     └── イベント用画像各種(*.bmp)</P>
+
+<P>│     └── Map</P>
+
+<P>│            └── マップアイコン各種(*.bmp)</P>
+
+<P>│</P>
+
+<P>├── Data</P>
+
+<P>│     └── System</P>
+
+<P>│            ├── alias.txt</P>
+
+<P>│            ├── sp.txt</P>
+
+<P>│            └── terrain.txt</P>
+
+<P>│</P>
+
+<P>├── Lib</P>
+
+<P>│     ├── 汎用戦闘アニメ</P>
+
+<P>│     │     └── 汎用戦闘アニメ用ファイル各種</P>
+
+<P>│     ├── スペシャルパワー.eve</P>
+
+<P>│     ├── パイロットステータス表示.eve</P>
+
+<P>│     └── ユニットステータス表示.eve</P>
+
+<P>│</P>
+
+<P>├── Midi</P>
+
+<P>│     ├── Reset(GM).mid</P>
+
+<P>│     ├── Reset(GS).mid</P>
+
+<P>│     └── Reset(XG).mid</P>
+
+<P>│</P>
+
+<P>├── Sound</P>
+
+<P>│     └── 効果音ファイル各種(*.wav)</P>
+
+<P>│</P>
+
+<P>├── Source</P>
+
+<P>│     ├── Readme.txt</P>
+
+<P>│     ├── Help</P>
+
+<P>│     └── Src</P>
+
+<P>│</P>
+
+<P>└── 汎用アニメhtml</P>
+
+<P>└── 汎用戦闘アニメヘルプ用HTMLファイル(*.html)</P>
+
+</BODY>
+</HTML>

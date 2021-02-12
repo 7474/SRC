@@ -1,0 +1,43 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; shift_jis">
+<TITLE>ChangeMapコマンド</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="ChangeMapコマンド">
+</OBJECT>
+
+<P><A NAME="1kdttcg"></A></P>
+
+<P><B>ChangeMapコマンド</B></P>
+
+<P>マップを変更</P>
+
+<P><B>書式</B></P>
+
+<P><B>ChangeMap</B> <I>file</I> [<I>option</I>]</P>
+
+<P><B>指定項目説明</B></P>
+
+<P><I>file</I>使用するマップファイル名</P>
+
+<P><I>option</I>画面更新方法（省略可）</P>
+
+<P><B>解説</B></P>
+
+<P>マップを指定したファイル<I>file</I> に変更します。出撃していたユニットはすべて退却扱いになり、<B>ChangeMap</B>コマンドを使って同じマップに戻しても出撃した状態には戻りません。なお、この退却によって<A HREF="00000145.htm"><B>全滅イベント</B></A>が発生することはありません。</P>
+
+<P><IMG SRC="../images/bm0.gif" ALT="" BORDER=0> マップ変更は時間がかかる処理のため、注意して使用してください。</P>
+
+<P>表示色変更による画面更新を<B>ChangeMap</B>コマンドを実行した時点で行ないたくない場合は<I>option</I> に「非同期」を指定して下さい。この場合、<B>ChangeMap</B>コマンドによる表示色変更は<A HREF="00000277.htm"><B>Refresh</B>コマンド</A>等で画面更新が行われた際に表示されます。</P>
+
+<P><B>例</B></P>
+
+<P>ChangeMap Another.map</P>
+
+</BODY>
+</HTML>

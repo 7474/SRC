@@ -1,0 +1,57 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; shift_jis">
+<TITLE>RestoreEventコマンド</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="RestoreEventコマンド">
+</OBJECT>
+
+<P><A NAME=".2.m_p"></A></P>
+
+<P><B>RestoreEventコマンド</B></P>
+
+<P>イベントラベルを復活</P>
+
+<P><B>書式</B></P>
+
+<P><B>RestoreEvent</B> <I>label</I></P>
+
+<P><B>指定項目説明</B></P>
+
+<P><I>label</I>復活させるイベントラベル名（「:」は不要）</P>
+
+<P><B>解説</B></P>
+
+<P><A HREF="src7ywb.htm"><B>ClearEvent</B>コマンド</A>で消去したイベントラベルを復活させます。</P>
+
+<P>プロローグイベントやスタートイベントでイベントラベルを消去し、特定の条件を満たしたときに<B>RestoreEvent</B>コマンドでイベントラベルを復活させることで、条件を満たした場合にのみ会話コマンドや新規ユニットコマンドを表示させることが可能になります。</P>
+
+<P><IMG SRC="../images/bm0.gif" ALT="" BORDER=0>ラベル名は必ず「"」で括っておいてください。</P>
+
+<P><B>例</B></P>
+
+<P>#3ターン目の味方フェイズの開始時</P>
+
+<P>ターン 3 味方:</P>
+
+<P>Talk 司会者</P>
+
+<P>さあ、ショータイムの始まりです！</P>
+
+<P>End</P>
+
+<P>#霞のユニットコマンドラベルを復活させ、ユニットコマンド「隠し芸」を使用可能にする</P>
+
+<P>RestoreEvent "ユニットコマンド 隠し芸 霞"</P>
+
+<P>#イベントを終了</P>
+
+<P>Exit</P>
+
+</BODY>
+</HTML>

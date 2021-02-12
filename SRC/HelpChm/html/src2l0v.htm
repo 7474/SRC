@@ -1,0 +1,45 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; shift_jis">
+<TITLE>リスト処理関数</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="リスト処理関数">
+</OBJECT>
+
+<P><A NAME=".2.ndo"></A></P>
+
+<P><B>リスト処理関数</B></P>
+
+<P>複数の要素が空白と括弧で区切られた文字列をリストと呼びます。SRCではリストを扱うための関数が用意されています。</P>
+
+<P><B>List(要素１,要素２,……)</B></P>
+
+<P>引数の要素をすべて連結したリストを返します。</P>
+
+<P><B>例</B> List("いちご", "ニンジン", "サンダル") は「いちご ニンジン サンダル」を返す。</P>
+
+<P><B>LLength(リスト)</B></P>
+
+<P>リストの要素数を返します。</P>
+
+<P><B>例</B> LLength("This is a pen.") は 4 を LLength("a (b c) (d (e f))") は 3 を返す。</P>
+
+<P><B>LIndex(リスト,位置)</B></P>
+
+<P>リスト中の指定した位置の要素を返します。（1が先頭の要素）</P>
+
+<P><B>例</B> LIndex("a (b c) (d (e f))", 2) は 「b c」を返す。</P>
+
+<P><B>LSearch(リスト,検索値[,検索開始位置])</B></P>
+
+<P>リスト中の指定した要素の位置を返します。（1が先頭の要素）</P>
+
+<P><B>例</B> LSearch("こぶた たぬき きつね ねこ", "ねこ") は 4 を返す。</P>
+
+</BODY>
+</HTML>

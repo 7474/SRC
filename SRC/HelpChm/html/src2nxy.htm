@@ -1,0 +1,51 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; shift_jis">
+<TITLE>ColorFilterコマンド</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="ColorFilterコマンド">
+</OBJECT>
+
+<P><A NAME=".2.o_v"></A></P>
+
+<P><B>ColorFilterコマンド</B></P>
+
+<P>マップを指定した色で半透明塗りつぶし</P>
+
+<P><B>書式</B></P>
+
+<P><B>ColorFilter</B> <I>color</I> [<I>ratio option</I>]</P>
+
+<P><B>指定項目説明</B></P>
+
+<P><I>color</I>フィルタ色のＲＧＢ値</P>
+
+<P><I>ratio</I>不透明度(パーセント)。</P>
+
+<P>省略した場合は50%が指定されたと見なされる。</P>
+
+<P><I>option</I>塗りつぶし方法に関するオプション（省略可）</P>
+
+<P><B>解説</B></P>
+
+<P><I>color</I>で指定した色を使い、<I>ratio</I>パーセントの不透明度でマップを塗りつぶします。<I>ratio</I>に100%を指定すると完全な塗りつぶしになります。</P>
+
+<P><I>color</I>にはＲＧＢ16進(HTMLの色指定と同形式)で描画色を指定します。<A HREF="src2l10.htm">RGB関数</A>を使えばＲＧＢ値からＲＧＢ16進を計算することができます。</P>
+
+<P>表示色変更による画面更新を<B>ColorFilter</B>コマンドを実行した時点で行ないたくない場合は<I>option</I> に「非同期」を指定して下さい。この場合、<B>ColorFilter</B>コマンドによる表示色変更は<A HREF="src79m2.htm"><B>Refresh</B>コマンド</A>等で画面更新が行われた際に表示されます。</P>
+
+<P>塗りつぶしをマップに対してのみ行い、ユニット画像を変更しない場合は<I>option</I> に「マップ限定」を指定して下さい。</P>
+
+<P><B>例</B></P>
+
+<P>#マップを緑色にする</P>
+
+<P>ColorFilter RGB(0,255,0) 30%</P>
+
+</BODY>
+</HTML>

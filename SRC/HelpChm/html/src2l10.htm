@@ -1,0 +1,57 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; shift_jis">
+<TITLE>描画処理関数</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="描画処理関数">
+</OBJECT>
+
+<P><A NAME=".2.ndt"></A></P>
+
+<P><B>描画処理関数</B></P>
+
+<P><B>Font(オプション)</B></P>
+
+<P><A HREF="src2hpp.htm">Fontコマンド</A>で設定されたメインウィンドウのフォントに関する情報を指定されたオプションに応じて返します。</P>
+
+<P>オプションと返される情報の対応は以下の通りです。</P>
+
+<P><B>フォント名</B>フォントタイプ。「ＭＳ Ｐ明朝」など。</P>
+
+<P><B>サイズ</B>フォントサイズ。返却値は『pt』を除いた数値。</P>
+
+<P>フォントサイズは表示されているフォントの実際のサイズが返されるため、</P>
+
+<P>Fontコマンドで設定したフォントサイズとは必ずしも一致しない。</P>
+
+<P><B>色</B>文字色。返却値は『#』と16進数列。</P>
+
+<P><B>太字</B>『Bold』ありになっているか。真ならば1、偽なら0を返す。</P>
+
+<P><B>斜体</B>『Italic』ありになっているか。真ならば1、偽なら0を返す。</P>
+
+<P><B>書き込み</B>現在、『背景』『保持』『通常』がのどれになっているか。</P>
+
+<P><B>例</B> Font("フォント名")</P>
+
+<P><B>RGB(R,G,B)</B></P>
+
+<P>ＲＧＢ値をＲＧＢ16進に変換します。<A HREF="src2hpp.htm"><B>Font</B>コマンド</A>等で色を指定する際に使用します。</P>
+
+<P><B>例</B> Font RGB(255,255,255)</P>
+
+<P><B>TextHeight(文字列)</B></P>
+
+<P>指定した文字列を<A HREF="src2hpy.htm"><B>PaintString</B>コマンド</A>で描画した際の高さ(ピクセル数)を返します。</P>
+
+<P><B>TextWidth(文字列)</B></P>
+
+<P>指定した文字列を<A HREF="src2hpy.htm"><B>PaintString</B>コマンド</A>で描画した際の幅(ピクセル数)を返します。</P>
+
+</BODY>
+</HTML>

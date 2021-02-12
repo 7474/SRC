@@ -1,0 +1,71 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; shift_jis">
+<TITLE>収納イベント</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="収納イベント">
+</OBJECT>
+
+<P><A NAME=".2.l.u"></A></P>
+
+<P><B>収納イベント</B></P>
+
+<P>ユニットが母艦に着艦したときに発生するイベント</P>
+
+<P><B>書式</B></P>
+
+<P><B>収納</B> <I>unit</I> :</P>
+
+<P><B>指定項目説明</B></P>
+
+<P><I>unit</I>着艦したユニットの<A HREF="src7ysq.htm">メインパイロット名</A>、ユニット名、または<A HREF="src7ysp.htm">陣営名</A></P>
+
+<P><B>解説</B></P>
+
+<P>ユニット<I>unit</I> が母艦に着艦した場合に発生するイベントです。<A HREF="src79k5.htm"><B>Land</B>コマンド</A>でユニットを母艦に格納させた場合は発生しません。</P>
+
+<P>収納先の母艦についての情報を得たい場合はシステム変数<B>相手パイロット</B>または<B>相手ユニットＩＤ</B>を使ってください。</P>
+
+<P><B>例</B></P>
+
+<P>#味方ユニットが母艦に着艦した場合</P>
+
+<P>収納 味方:</P>
+
+<P>#マップ上に出撃しているユニット数をカウント</P>
+
+<P>出撃数 = 0</P>
+
+<P>ForEach 味方 出撃</P>
+
+<P>Incr 出撃数</P>
+
+<P>Next</P>
+
+<P>#出撃数が1ということはこのユニットが最後のユニットなのでステージを終了</P>
+
+<P>If 出撃数 = 1 Then</P>
+
+<P>Talk ロイド艦長</P>
+
+<P>よし、全員着艦したな。戦線を離脱する！</P>
+
+<P>End</P>
+
+<P>#次のステージに移行</P>
+
+<P>Continue Next.eve</P>
+
+<P>EndIf</P>
+
+<P>#イベントを終了</P>
+
+<P>Exit</P>
+
+</BODY>
+</HTML>

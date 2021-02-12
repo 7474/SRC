@@ -1,0 +1,55 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; shift_jis">
+<TITLE>Equipコマンド</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="Equipコマンド">
+</OBJECT>
+
+<P><A NAME=".2.uav"></A></P>
+
+<P><B>Equipコマンド</B></P>
+
+<P>ユニットにアイテムを装備</P>
+
+<P><B>書式</B></P>
+
+<P><B>Equip </B>[<I>unit</I>] <I>item</I></P>
+
+<P><B>指定項目説明</B></P>
+
+<P><I>unit</I>アイテムを装備させるユニットの<A HREF="src7ysq.htm">メインパイロット名</A>または<A HREF="src2hpr.htm">ユニットＩＤ</A>（省略可）</P>
+
+<P><I>item</I>装備させるアイテムの名称</P>
+
+<P><B>解説</B></P>
+
+<P>ユニット <I>unit</I> にアイテム <I>item</I> を装備させます。</P>
+
+<P><I>unit</I> が味方ユニットでない場合は<I>item</I> は自動的に作成されます。</P>
+
+<P>味方ユニットの場合には既にそのアイテムが存在すれば装備されていない物を優先して選択し、装備します。存在しなければ新たに作成して装備します。同じ種類のアイテムを複数作成・装備させる場合には<A HREF="00000235.htm"><B>Item</B>コマンド</A>を使って予めアイテムを作成した後、<B>Equip</B>コマンドを実行して下さい。</P>
+
+<P>添付データに含まれている汎用アイテムについては<A HREF="00000235.htm"><B>Item</B>コマンド</A>のページを参照してください。</P>
+
+<P><B>例</B></P>
+
+<P>Talk サラ</P>
+
+<P>見つけた！ これが最後の呪文ね！</P>
+
+<P>End</P>
+
+<P>#サラに禁呪ラグナロクを装備させる</P>
+
+<P>#禁呪ラグナロクはこれまでに作成されていないので、自動的に作成される</P>
+
+<P>Equip サラ 禁呪ラグナロク</P>
+
+</BODY>
+</HTML>
