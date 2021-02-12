@@ -508,7 +508,7 @@ namespace SRCTestForm
 
         public void SetupBackground(string draw_mode, string draw_option, int filter_color, double filter_trans_par)
         {
-            throw new NotImplementedException();
+            MainForm.SetupBackground(draw_mode, draw_option, filter_color, filter_trans_par);
         }
 
         public void RedrawScreen(bool late_refresh)
@@ -516,8 +516,8 @@ namespace SRCTestForm
             // TODO Impl
             //ScreenIsMasked = False
 
-            //'画面を更新
-            //RefreshScreen False, late_refresh
+            // 画面を更新
+            RefreshScreen(false, late_refresh);
 
             //'カーソルを再描画
             //GetCursorPos PT
@@ -531,7 +531,32 @@ namespace SRCTestForm
 
         public void RefreshScreen(bool without_refresh, bool delay_refresh)
         {
-            throw new NotImplementedException();
+            // マップデータが設定されていなければ画面書き換えを行わない
+            if (Map.MapWidth == 1)
+            {
+                return;
+            }
+
+            // 表示位置がマップ外にある場合はマップ内に合わせる
+            if (MapX < 1)
+            {
+                MapX = 1;
+            }
+            else if (MapX > Map.MapWidth)
+            {
+                MapX = Map.MapWidth;
+            }
+
+            if (MapY < 1)
+            {
+                MapY = 1;
+            }
+            else if (MapY > Map.MapHeight)
+            {
+                MapY = Map.MapHeight;
+            }
+
+            MainForm.RefreshScreen(MapX, MapY);
         }
 
         public void Center(int new_x, int new_y)

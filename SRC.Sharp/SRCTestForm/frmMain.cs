@@ -14,6 +14,7 @@ namespace SRCTestForm
     {
         public SRCCore.SRC SRC;
         public SRCCore.Expressions.Expression Expression => SRC.Expression;
+        public SRCCore.Maps.Map Map => SRC.Map;
 
         public frmTeatMain()
         {

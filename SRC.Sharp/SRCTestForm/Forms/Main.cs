@@ -6,6 +6,7 @@ using System;
 using System.Windows.Forms;
 using Microsoft.VisualBasic;
 using SRCCore;
+using SRCCore.Maps;
 
 namespace SRCTestForm
 {
@@ -14,6 +15,7 @@ namespace SRCTestForm
     {
         public SRCCore.SRC SRC { get; set; }
         public IGUI GUI => SRC.GUI;
+        public Map Map => SRC.Map;
 
         // マップウィンドウがドラッグされているか？
         private bool IsDragging;
