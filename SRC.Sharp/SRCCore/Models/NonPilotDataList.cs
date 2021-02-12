@@ -99,20 +99,17 @@ namespace SRCCore.Models
                 while (reader.HasMore)
                 {
                     line_buf = reader.GetLine();
-                    while (reader.HasMore && string.IsNullOrEmpty(line_buf))
+                    if (string.IsNullOrEmpty(line_buf))
                     {
-                        line_buf = reader.GetLine();
+                        continue;
                     }
-                    var data_name = "";
-                    NonPilotData pd;
 
+                    // 名称
+                    var data_name = line_buf;
                     if (Strings.InStr(line_buf, ",") > 0)
                     {
                         throw reader.InvalidDataException("名称の設定が抜けています。", data_name);
                     }
-
-                    // 名称
-                    data_name = line_buf;
                     if (Strings.InStr(data_name, " ") > 0)
                     {
                         throw reader.InvalidDataException("名称に半角スペースは使用出来ません。", data_name);
@@ -128,6 +125,7 @@ namespace SRCCore.Models
                         throw reader.InvalidDataException("名称に\"は使用出来ません。", data_name);
                     }
 
+                    NonPilotData pd;
                     if (IsDefined(data_name))
                     {
                         // すでに定義されているノンパイロットのデータであれば置き換える

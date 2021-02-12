@@ -40,7 +40,6 @@ namespace SRCCore.Models
             colPilotDataList.Clear();
         }
 
-
         // パイロットデータリストにデータを追加
         public PilotData Add(string pname)
         {

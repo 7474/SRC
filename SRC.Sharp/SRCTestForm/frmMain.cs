@@ -93,6 +93,7 @@ namespace SRCTestForm
         {
             treeViewData.Nodes.Clear();
 
+            treeViewData.Nodes.Add(new TreeNode("Alias", SRC.ALDList.Items.Select(x => new SrcTreeNode(x.Name, x)).ToArray()));
             treeViewData.Nodes.Add(new TreeNode("Unit", SRC.UDList.Items.Select(x => new SrcTreeNode(x.Name, x)).ToArray()));
             treeViewData.Nodes.Add(new TreeNode("Pilot", SRC.PDList.Items.Select(x => new SrcTreeNode(x.Name, x)).ToArray()));
             treeViewData.Nodes.Add(new TreeNode("NonPilot", SRC.NPDList.Items.Select(x => new SrcTreeNode(x.Name, x)).ToArray()));
