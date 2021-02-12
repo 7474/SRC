@@ -187,19 +187,19 @@ namespace SRCTestForm
         // UPGRADE_WARNING: HScrollBar イベント HScroll.Change には新しい動作が含まれます。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6BA9B8D2-2A32-4B6E-8D36-44949974A5B4"' をクリックしてください。
         private void HScroll_Change(int newScrollValue)
         {
-            //GUI.MapX = HScroll_Renamed.Value;
+            GUI.MapX = newScrollValue;
 
-            //// ステータス表示中はスクロールバーを中央に固定
-            //if (string.IsNullOrEmpty(Map.MapFileName))
-            //{
-            //    GUI.MapX = 8;
-            //}
+            // ステータス表示中はスクロールバーを中央に固定
+            if (string.IsNullOrEmpty(Map.MapFileName))
+            {
+                GUI.MapX = 8;
+            }
 
-            //// 画面書き換え
-            //if (Visible)
-            //{
-            //    GUI.RefreshScreen();
-            //}
+            // 画面書き換え
+            if (Visible)
+            {
+                GUI.RefreshScreen();
+            }
         }
 
         // マップコマンドメニューをクリック
@@ -695,19 +695,19 @@ namespace SRCTestForm
         // UPGRADE_WARNING: VScrollBar イベント VScroll.Change には新しい動作が含まれます。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6BA9B8D2-2A32-4B6E-8D36-44949974A5B4"' をクリックしてください。
         private void VScroll_Change(int newScrollValue)
         {
-            //GUI.MapY = VScroll_Renamed.Value;
-            //if (string.IsNullOrEmpty(Map.MapFileName))
-            //{
-            //    // ステータス画面の場合は移動量を制限
-            //    if (GUI.MapY < 8)
-            //    {
-            //        GUI.MapY = 8;
-            //    }
-            //    else if (GUI.MapY > Map.MapHeight - 7)
-            //    {
-            //        GUI.MapY = (Map.MapHeight - 7);
-            //    }
-            //}
+            GUI.MapY = newScrollValue;
+            if (string.IsNullOrEmpty(Map.MapFileName))
+            {
+                // ステータス画面の場合は移動量を制限
+                if (GUI.MapY < 8)
+                {
+                    GUI.MapY = 8;
+                }
+                else if (GUI.MapY > Map.MapHeight - 7)
+                {
+                    GUI.MapY = (Map.MapHeight - 7);
+                }
+            }
 
             // マップ画面を更新
             if (Visible)
