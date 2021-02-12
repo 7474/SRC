@@ -26,11 +26,6 @@ namespace SRCCore.Maps
         // 管理可能な地形データの総数
         public const int MAX_TERRAIN_DATA_NUM = 2000;
 
-        // ADD START 240a
-        // レイヤー無しの固定値
-        public const int NO_LAYER_NUM = 10000;
-        // ADD  END  240a
-
         // マップファイル名
         public string MapFileName;
         // マップの横サイズ
@@ -75,10 +70,6 @@ namespace SRCCore.Maps
         public void InitMap()
         {
             SetMapSize(GUI.MainWidth, GUI.MainHeight);
-            _mapData = Enumerable.Range(0, MapWidth)
-                .Select(x => Enumerable.Range(0, MapHeight)
-                    .Select(y => new MapCell()).ToArray())
-                .ToArray();
         }
 
         // (X,Y)地点の命中修正
@@ -725,7 +716,7 @@ namespace SRCCore.Maps
 
                     // ファイルの先頭にあるマップサイズ情報を収得
                     var lineReaded = false;
-                    buf = reader.GetLine();
+                    buf = reader.GetLine().Trim('"', '\'');
                     if (buf != "MapData")
                     {
                         // 旧形式のマップデータ
@@ -819,53 +810,22 @@ namespace SRCCore.Maps
         // マップサイズを設定
         public void SetMapSize(int w, int h)
         {
-            //int i, j;
-            //int ret;
             MapWidth = w;
             MapHeight = h;
+
+            //// マップデータ用配列の領域確保
+            //// マップデータ配列の初期化
+            _mapData = Enumerable.Range(0, MapWidth)
+                .Select(x => Enumerable.Range(0, MapHeight)
+                    .Select(y => new MapCell()).ToArray())
+                .ToArray();
+
             // XXX MapのGUIインタフェースと実装に追い出す
             //GUI.MapPWidth = (32 * w);
             //GUI.MapPHeight = (32 * h);
             GUI.MapX = ((GUI.MainWidth + 1) / 2);
             GUI.MapY = ((GUI.MainHeight + 1) / 2);
             GUIMap.SetMapSize(w, h);
-
-            //// マップデータ用配列の領域確保
-            //// MOD START 240a
-            //// ReDim MapData(1 To MapWidth, 1 To MapHeight, 1)
-            //// UPGRADE_WARNING: 配列 MapData の下限が 1,1,0 から 0,0,0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
-            //MapData = new int[(MapWidth + 1), (MapHeight + 1), 5];
-            //// MOD  END  240a
-            //// UPGRADE_WARNING: 配列 MapDataForUnit の下限が 1,1 から 0,0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
-            //MapDataForUnit = new Unit[(MapWidth + 1), (MapHeight + 1)];
-            //// UPGRADE_WARNING: 配列 MaskData の下限が 1,1 から 0,0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
-            //MaskData = new bool[(MapWidth + 1), (MapHeight + 1)];
-            //TotalMoveCost = new int[MapWidth + 1 + 1, MapHeight + 1 + 1];
-            //PointInZOC = new int[MapWidth + 1 + 1, MapHeight + 1 + 1];
-            //// UPGRADE_WARNING: 配列 MapImageFileTypeData の下限が 1,1 から 0,0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
-            //MapImageFileTypeData = new MapImageFileType[(MapWidth + 1), (MapHeight + 1)];
-
-            //// マップデータ配列の初期化
-            //var loopTo = MapWidth;
-            //for (i = 1; i <= loopTo; i++)
-            //{
-            //    var loopTo1 = MapHeight;
-            //    for (j = 1; j <= loopTo1; j++)
-            //    {
-            //        // MOD START 240a
-            //        // MapData(i, j, 0) = 0
-            //        // MapData(i, j, 1) = 0
-            //        MapData[i, j, MapDataIndex.TerrainType] = 0;
-            //        MapData[i, j, MapDataIndex.BitmapNo] = 0;
-            //        MapData[i, j, MapDataIndex.LayerType] = NO_LAYER_NUM;
-            //        MapData[i, j, MapDataIndex.LayerBitmapNo] = NO_LAYER_NUM;
-            //        MapData[i, j, MapDataIndex.BoxType] = BoxTypes.Under;
-            //        // MOD  END  240a
-            //        MaskData[i, j] = true;
-            //        // UPGRADE_NOTE: オブジェクト MapDataForUnit() をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-            //        MapDataForUnit[i, j] = null;
-            //    }
-            //}
         }
 
         // マップデータをクリア

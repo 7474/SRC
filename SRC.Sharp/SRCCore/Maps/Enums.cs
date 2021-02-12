@@ -4,15 +4,6 @@ using System.Text;
 
 namespace SRCCore.Maps
 {
-    public enum MapDataIndex
-    {
-        TerrainType = 0,
-        BitmapNo = 1,
-        LayerType = 2,
-        LayerBitmapNo = 3,
-        BoxType = 4
-    }
-
     public enum BoxTypes
     {
         Under = 1,
