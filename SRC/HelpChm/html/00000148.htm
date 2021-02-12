@@ -1,0 +1,69 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; shift_jis">
+<TITLE>会話イベント</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="会話イベント">
+</OBJECT>
+
+<P><A NAME=".2.u_s"></A></P>
+
+<P><B>会話イベント</B></P>
+
+<P><A HREF="00000023.htm">会話コマンド</A>を使った際に発生するイベント</P>
+
+<P><B>書式</B></P>
+
+<P><B>会話</B> <I>unit1</I> <I>unit2</I> :</P>
+
+<P><B>指定項目説明</B></P>
+
+<P><I>unit1</I>ユニットの<A HREF="src7ysq.htm">メインパイロット名</A>、ユニット名、または<A HREF="src7ysp.htm">陣営名</A></P>
+
+<P><I>unit2</I>ユニットの<A HREF="src7ysq.htm">メインパイロット名</A>、ユニット名、または<A HREF="src7ysp.htm">陣営名</A></P>
+
+<P><B>解説</B></P>
+
+<P><I>unit1</I> が<I>unit2</I> に<A HREF="00000023.htm">会話コマンド</A>を使って話しかけたとき(あるいはその逆)に発生するイベントです。</P>
+
+<P>味方同士での会話イベントを定義することもできます。</P>
+
+<P><B>会話イベント</B>が定義されていない場合には<A HREF="00000023.htm">会話コマンド</A>は表示されません。</P>
+
+<P>特定の条件が揃ったときにのみ会話コマンドを表示させたい場合には<A HREF="00000140.htm"><B>スタートイベント</B></A>中に会話イベントを<A HREF="00000182.htm"><B>ClearEvent</B>コマンド</A>で消去しておき、条件が整ったときに<A HREF="00000289.htm"><B>RestoreEvent</B>コマンド</A>を使ってイベントラベルを復活させて下さい。</P>
+
+<P><B>例</B></P>
+
+<P>#ミカがレウラを説得</P>
+
+<P>会話 ミカ レウラ:</P>
+
+<P>Talk ミカ</P>
+
+<P>レウラやめて！ 私達が戦うなんて馬鹿げている！</P>
+
+<P>Talk レウラ</P>
+
+<P>ミカ……それは分かっている…だけど、私は…！</P>
+
+<P>End</P>
+
+<P>#後でレウラを説得をしたかどうかチェックするためのフラグを立てる</P>
+
+<P>Set レウラ説得済</P>
+
+<P>#イベントを消去</P>
+
+<P>ClearEvent</P>
+
+<P>#イベントを終了</P>
+
+<P>Exit</P>
+
+</BODY>
+</HTML>

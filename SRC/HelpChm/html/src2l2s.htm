@@ -1,0 +1,73 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; shift_jis">
+<TITLE>FillStyleコマンド</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="FillStyleコマンド">
+</OBJECT>
+
+<P><A NAME=".2.net"></A></P>
+
+<P><B>FillStyleコマンド</B></P>
+
+<P>図形の背景の描画方法を変更</P>
+
+<P><B>書式</B></P>
+
+<P><B>FillStyle</B> <I>style</I></P>
+
+<P><B>指定項目説明</B></P>
+
+<P><I>style</I>背景の描画方法</P>
+
+<P><B>解説</B></P>
+
+<P><A HREF="src2hrm.htm"><B>Line</B>コマンド</A>などのコマンドで描画する図形の背景の描画方法を変更するためのコマンドです。</P>
+
+<P><B>FillStyle</B>コマンドが実行されてない場合、背景の描画方法は透過になっており、図形の背景にはなにも描画されません(<B>Line</B>コマンドでBFオプションを指定した場合は例外)。そのため、背景の塗りつぶしを行いたい場合は<B>FillStyle</B>コマンドで背景の描画方法を変更します。下記の描画方法が選択可能です。</P>
+
+<P><B>透明</B> (デフォルト)</P>
+
+<P><B>塗りつぶし</B></P>
+
+<P><B>横線</B></P>
+
+<P><B>縦線</B></P>
+
+<P><B>斜線</B></P>
+
+<P><B>斜線２</B></P>
+
+<P><B>網かけ</B></P>
+
+<P><B>クロス</B></P>
+
+<P>塗りつぶしの際には<A HREF="src2l2r.htm"><B>FillColor</B>コマンド</A>で指定された色が使われます。デフォルトは白色(255,255,255)です。</P>
+
+<P><B>FillStyle</B>コマンドで行った設定はイベント終了時に自動的に解除されます。</P>
+
+<P><B>例</B></P>
+
+<P>#色を変えながらランダムに円を描画</P>
+
+<P>FillStyle 塗りつぶし</P>
+
+<P>#色を変えながらランダムに円を描画</P>
+
+<P>For i = 1 To 100</P>
+
+<P>Color RGB(i, 0, 255 - i)</P>
+
+<P>FillColor RGB(i, 0, 255 - i)</P>
+
+<P>Circle (80 + Random(400)) (80 + Random(400)) 25</P>
+
+<P>Next</P>
+
+</BODY>
+</HTML>

@@ -1,0 +1,51 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; shift_jis">
+<TITLE>Incrコマンド</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="Incrコマンド">
+</OBJECT>
+
+<P><A NAME=".2.ubo"></A></P>
+
+<P><B>Incrコマンド</B></P>
+
+<P>変数の値を増加</P>
+
+<P><B>書式</B></P>
+
+<P><B>Incr</B> <I>variable</I> [<I>value</I>]</P>
+
+<P><B>指定項目説明</B></P>
+
+<P><I>variable</I>変数名</P>
+
+<P><I>value</I>値の増加量（省略可）</P>
+
+<P><B>解説</B></P>
+
+<P>変数<I>variable</I> の値を <I>value</I> だけ増加させます。<I>value</I> にマイナスの値を指定して値を減少させることもできます。<I>value</I> を指定しなければ変数の値が 1 だけ増加されます。</P>
+
+<P><I>variable</I> がいままでに<B>Set</B>コマンドや<B>Incr</B>コマンドの対象になっておらず、まだ作成されていない場合は変数<I>variable</I> が自動的に作成されます。この際、<I>variable</I> はそのマップ中にのみ有効な<A HREF="src2c1e.htm">ローカル変数</A>になります。複数のステージに渡って有効な変数を作成したい場合にはあらかじめ<A HREF="src3705.htm"><B>Global</B>コマンド</A>を使用ておいて下さい。</P>
+
+<P><B>例</B></P>
+
+<P>Talk サラ</P>
+
+<P>ウルフ ……</P>
+
+<P>End</P>
+
+<P>Incr 信頼度[サラ]</P>
+
+<P>SetRelation ウルフ サラ (信頼度[サラ] \ 10)</P>
+
+<P>SetRelation サラ ウルフ  (信頼度[サラ] \ 10)</P>
+
+</BODY>
+</HTML>

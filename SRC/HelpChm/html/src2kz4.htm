@@ -1,0 +1,83 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; shift_jis">
+<TITLE>Sortコマンド</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="Sortコマンド">
+</OBJECT>
+
+<P><A NAME=".2.ncp"></A></P>
+
+<P><B>Sortコマンド</B></P>
+
+<P>配列をソート</P>
+
+<P><B>書式</B></P>
+
+<P><B>Sort</B> <I>var</I> [<I>option</I>]</P>
+
+<P><B>指定項目説明</B></P>
+
+<P><I>var</I>ソートする配列</P>
+
+<P><I>option</I>ソート方法に関するオプション。（省略可）</P>
+
+<P><B>解説</B></P>
+
+<P>配列<I>var</I>の内容をソートします。ソートの方法をオプション<I>option</I>で指定することが出来ます。<I>option</I>の内容は順不同で省略可能です。</P>
+
+<P><I>option</I>に指定可能なオプションは以下の通りです。<B>Sort</B>コマンドはデフォルトで「昇順 数値」のオプションが指定されたかのように動作します。</P>
+
+<P><B>昇順</B> (デフォルト)</P>
+
+<P>ソートを昇順に行います。</P>
+
+<P><B>降順</B></P>
+
+<P>ソートを降順に行います。</P>
+
+<P><B>数値</B> (デフォルト)</P>
+
+<P>変数の値を数値として扱います。</P>
+
+<P><B>文字</B></P>
+
+<P>変数の値を文字として扱います。</P>
+
+<P><B>インデックスのみ</B></P>
+
+<P>変数の内容はソートを行わずに、配列に格納されている順番(ForEachコマンドやAskコマンドで適用・表示される順番)だけをインデックスをソートキーにしてソートします。</P>
+
+<P><B>文字インデックス</B></P>
+
+<P>配列のインデックスを文字列として扱います。また、インデックスに文字列が含まれる場合、変数の値でソートする際にインデックスごと順番を入れ替えます。</P>
+
+<P>(多次元配列のインデックスは、全て文字列として扱います。)</P>
+
+<P><B>例</B></P>
+
+<P>abc[a] = 2</P>
+
+<P>abc[b] = 3</P>
+
+<P>abc[c] = 1</P>
+
+<P>Sort abc 昇順</P>
+
+<P>この場合、配列abcの値が再配置されて次のようになる。</P>
+
+<P>　　　　　　</P>
+
+<P>abc[c] = 1</P>
+
+<P>abc[a] = 2</P>
+
+<P>abc[b] = 3</P>
+
+</BODY>
+</HTML>

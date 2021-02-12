@@ -1,0 +1,57 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; shift_jis">
+<TITLE>ChangeTerrainコマンド</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="ChangeTerrainコマンド">
+</OBJECT>
+
+<P><A NAME=".2.mbq"></A></P>
+
+<P><B>ChangeTerrainコマンド</B></P>
+
+<P>地形を変更</P>
+
+<P><B>書式</B></P>
+
+<P><B>ChangeTerrain</B> <I>X Y name bitmap</I></P>
+
+<P><B>指定項目説明</B></P>
+
+<P><I>X Y</I>変更する地形の座標</P>
+
+<P><I>name</I>変更先の地形の名称</P>
+
+<P><I>bitmap</I>変更先の地形のビットマップ番号</P>
+
+<P><B>解説</B></P>
+
+<P>(<I>X</I>,<I>Y</I>)の座標の地形を指定した地形に変更します。表示するビットマップは<I>bitmap</I> 番目のものが使われます。</P>
+
+<P><B>ChangeTerrain</B>コマンドを使用するだけではマップ表示は更新されません。<A HREF="00000276.htm"><B>Redraw</B>コマンド</A>を使って手動で更新してください。</P>
+
+<P>変更する地形の上にユニットが乗っている場合、変更先の地形の種類によってはユニットが強制的に移動されることがあります(壁等)。</P>
+
+<P>ローカルな地形ビットマップを使用したい場合は<I>name</I> に「地形名(ローカル)」と指定してください。ビットマップ番号は正の値で指定してください(例を参照のこと)。</P>
+
+<P><B>例</B></P>
+
+<P>#(7,8)の地形を廃墟に変更。使用するビットマップは remains1.bmp。</P>
+
+<P>ChangeTerrain 7 8 廃墟 1</P>
+
+<P>#(7,7)の地形を基地(ローカル)に変更。使用するビットマップは base-1.bmp。</P>
+
+<P>ChangeTerrain 7 8 基地(ローカル) 1</P>
+
+<P>#マップ画面を更新</P>
+
+<P>Redraw</P>
+
+</BODY>
+</HTML>

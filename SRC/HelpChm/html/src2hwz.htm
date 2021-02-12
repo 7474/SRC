@@ -1,0 +1,73 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; shift_jis">
+<TITLE>SetSkillコマンド</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<OBJECT TYPE="application/x-oleobject" CLASSID="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+	<PARAM NAME="Keyword" VALUE="SetSkillコマンド">
+</OBJECT>
+
+<P><A NAME=".2.mes"></A></P>
+
+<P><B>SetSkillコマンド</B></P>
+
+<P>パイロットに特殊能力を追加、または封印</P>
+
+<P><B>書式</B></P>
+
+<P><B>SetSkill</B> <I>pilot skill level</I> [<I>name</I>]</P>
+
+<P><B>指定項目説明</B></P>
+
+<P><I>pilot</I>特殊能力を追加するパイロットの名称</P>
+
+<P><I>skill</I>特殊能力名。レベル表示は不要</P>
+
+<P>別名での指定は無効</P>
+
+<P><I>level</I>特殊能力のレベル。特殊能力を封印する場合はレベル 0 を指定</P>
+
+<P>レベル表示を省く場合には -1 を指定</P>
+
+<P><I>name</I>特殊能力の別名（省略可）</P>
+
+<P><B>解説</B></P>
+
+<P><I>pilot</I> にパイロット用特殊能力<I>skill</I> を追加します。レベルに 0 を指定してその特殊能力を封印することもできます。</P>
+
+<P><I>pilot</I> は通常名称で指定します。ただし、ザコパイロットや汎用パイロット等、同じ名称を持つパイロットが複数存在する場合は個々のパイロットにグループＩＤを設定してグループＩＤを使って指定するか、システム変数「対象パイロット」「相手パイロット」や<A HREF="src2krx.htm">PilotID関数</A>を使って参照したパイロットＩＤを使って指定する必要があります。</P>
+
+<P>設定した特殊能力はそれ以降のステージでずっと有効です。セーブデータにもセーブされます。設定した特殊能力を解除するには<A HREF="src2hta.htm"><B>ClearSkill</B>コマンド</A>を使います。</P>
+
+<P><B>例</B></P>
+
+<P>Talk 烈</P>
+
+<P>見える！ 水の動きが見えるぞ！！</P>
+
+<P>End</P>
+
+<P>#烈に悟りを修得させる。レベル表示は行わない</P>
+
+<P>SetSkill 烈 悟り -1</P>
+
+<P>現在の特殊能力のレベルを一定レベル上昇させる場合はSkill関数を使います。</P>
+
+<P><B>例</B></P>
+
+<P>#アリスの術能力のレベルを1上げる</P>
+
+<P>SetSkill アリス 術 (Skill(アリス,術) + 1)</P>
+
+<P><B>SetSkill</B>コマンドで特殊能力を追加できるのはパイロットだけです。ユニットに対して特殊能力をイベントで追加するには装備個所が「非表示」のアイテムを装備させるか、複数のユニットデータを用意して<A HREF="src2c1c.htm"><B>Upgrade</B>コマンド</A>でユニットを切り替えるなどの方法を使ってください。</P>
+
+<P><B>SetSkill</B>コマンドは同じパイロットに対して同一の特殊能力を複数登録することは出来ません。従って「ＳＰ消費減少」等のパイロットデータで定義する場合は複数定義可能な特殊能力についても<B>SetSkill</B>コマンドで追加出来るのは１個のみになります。</P>
+
+<P>(本コマンドはSRC Ver.1.6までのSetAbilityコマンドに相当するコマンドです。)</P>
+
+</BODY>
+</HTML>
