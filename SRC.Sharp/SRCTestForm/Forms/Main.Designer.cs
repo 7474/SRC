@@ -314,6 +314,7 @@ namespace SRCTestForm
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
             this.ToolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.MainMenu1 = new System.Windows.Forms.MenuStrip();
             this.mnuUnitCommand = new System.Windows.Forms.ToolStripMenuItem();
@@ -1072,7 +1073,7 @@ namespace SRCTestForm
             this.picUnitBitmap.TabStop = false;
             this.picUnitBitmap.Visible = false;
             // 
-            // _HScroll_Renamed
+            // _HScrollBar
             // 
             this._HScrollBar.Cursor = System.Windows.Forms.Cursors.Default;
             this._HScrollBar.Enabled = false;
@@ -1080,14 +1081,14 @@ namespace SRCTestForm
             this._HScrollBar.Location = new System.Drawing.Point(60, 92);
             this._HScrollBar.Maximum = 23;
             this._HScrollBar.Minimum = 1;
-            this._HScrollBar.Name = "_HScroll_Renamed";
+            this._HScrollBar.Name = "_HScrollBar";
             this._HScrollBar.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this._HScrollBar.Size = new System.Drawing.Size(49, 17);
             this._HScrollBar.TabIndex = 5;
             this._HScrollBar.Value = 1;
             this._HScrollBar.Scroll += new System.Windows.Forms.ScrollEventHandler(this.HScroll_Renamed_Scroll);
             // 
-            // _VScroll_Renamed
+            // _VScrollBar
             // 
             this._VScrollBar.Cursor = System.Windows.Forms.Cursors.Default;
             this._VScrollBar.Enabled = false;
@@ -1095,7 +1096,7 @@ namespace SRCTestForm
             this._VScrollBar.Location = new System.Drawing.Point(116, 80);
             this._VScrollBar.Maximum = 23;
             this._VScrollBar.Minimum = 1;
-            this._VScrollBar.Name = "_VScroll_Renamed";
+            this._VScrollBar.Name = "_VScrollBar";
             this._VScrollBar.Size = new System.Drawing.Size(17, 49);
             this._VScrollBar.TabIndex = 4;
             this._VScrollBar.Value = 1;
@@ -1189,6 +1190,7 @@ namespace SRCTestForm
             this.Cursor = System.Windows.Forms.Cursors.Default;
             this.Font = new System.Drawing.Font("ＭＳ 明朝", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.Location = new System.Drawing.Point(81, 218);
             this.MaximizeBox = false;

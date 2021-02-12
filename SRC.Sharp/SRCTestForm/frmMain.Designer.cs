@@ -29,6 +29,7 @@ namespace SRCTestForm
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmTeatMain));
             this.menu = new System.Windows.Forms.MenuStrip();
             this.menuFile = new System.Windows.Forms.ToolStripMenuItem();
             this.menuLoadData = new System.Windows.Forms.ToolStripMenuItem();
@@ -140,7 +141,7 @@ namespace SRCTestForm
             this.textMain.Size = new System.Drawing.Size(594, 398);
             this.textMain.TabIndex = 0;
             // 
-            // frmMain
+            // frmTeatMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -149,7 +150,8 @@ namespace SRCTestForm
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.status);
             this.Controls.Add(this.menu);
-            this.Name = "frmMain";
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Name = "frmTeatMain";
             this.Text = "SRCTestForm";
             this.menu.ResumeLayout(false);
             this.menu.PerformLayout();
