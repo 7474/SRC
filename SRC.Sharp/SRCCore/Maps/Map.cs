@@ -2,9 +2,12 @@
 // 本プログラムはフリーソフトであり、無保証です。
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
+using SRCCore.Lib;
 using SRCCore.Units;
 using System;
 using System.Drawing;
+using System.IO;
+using System.Linq;
 
 namespace SRCCore.Maps
 {
@@ -48,15 +51,11 @@ namespace SRCCore.Maps
         public bool IsMapDirty;
 
         // マップデータを記録する配列
-        // MapData(*,*,0)は地形の種類
-        // MapData(*,*,1)はビットマップの番号
-        // ADD START 240a
-        // 2～3はマップ上層レイヤーデータ
-        // MapData(*,*,2)は地形の種類。未設定はNO_LAYER_NUM
-        // MapData(*,*,3)はビットマップの番号。未設定はNO_LAYER_NUM
-        // MapData(*,*,4)はマスのデータタイプ。1:下層 2:上層 3:上層データのみ 4:上層見た目のみ
-        // ADD  END  240a
-        public MapCell[][] MapData;
+        private MapCell[][] _mapData;
+        public MapCell MapData(int x, int y)
+        {
+            return _mapData[x - 1][y - 1];
+        }
 
         public MapImageFileType[] MapImageFileTypeData;
 
@@ -76,25 +75,10 @@ namespace SRCCore.Maps
         public void InitMap()
         {
             SetMapSize(GUI.MainWidth, GUI.MainHeight);
-            // TODO Impl
-            //int i, j;
-            //var loopTo = MapWidth;
-            //for (i = 1; i <= loopTo; i++)
-            //{
-            //    var loopTo1 = MapHeight;
-            //    for (j = 1; j <= loopTo1; j++)
-            //    {
-            //        // MOD START 240a
-            //        // MapData(i, j, 0) = 0
-            //        // MapData(i, j, 1) = 0
-            //        MapData[i, j, MapDataIndex.TerrainType] = 0;
-            //        MapData[i, j, MapDataIndex.BitmapNo] = 0;
-            //        MapData[i, j, MapDataIndex.LayerType] = 0;
-            //        MapData[i, j, MapDataIndex.LayerBitmapNo] = 0;
-            //        MapData[i, j, MapDataIndex.BoxType] = 0;
-            //        // ADD  END  240a
-            //    }
-            //}
+            _mapData = Enumerable.Range(0, MapWidth)
+                .Select(x => Enumerable.Range(0, MapHeight)
+                    .Select(y => new MapCell()).ToArray())
+                .ToArray();
         }
 
         // (X,Y)地点の命中修正
@@ -680,145 +664,156 @@ namespace SRCCore.Maps
             //            return SearchTerrainImageFileRet;
         }
 
-
         // マップファイル fname のデータをロード
         public void LoadMapData(string fname)
         {
-            throw new NotImplementedException();
-            //    int FileNumber;
-            //    int i = default, j = default;
-            //    var buf = default(string);
+            try
+            {
+                using (var stream = new FileStream(fname, FileMode.Open))
+                {
+                    LoadMapData(fname, stream);
+                }
+            }
+            catch (FileNotFoundException)
+            {
+                // TODO Impl
+                //    // ファイルが存在しない場合
+                //    if (string.IsNullOrEmpty(fname) | !GeneralLib.FileExists(ref fname))
+                //    {
+                //        MapFileName = "";
+                //        if (Strings.InStr(SRC.ScenarioFileName, "ステータス表示.") > 0 | Strings.InStr(SRC.ScenarioFileName, "ランキング.") > 0)
+                //        {
+                //            SetMapSize(GUI.MainWidth, 40);
+                //        }
+                //        else
+                //        {
+                //            SetMapSize(GUI.MainWidth, GUI.MainHeight);
+                //        }
 
-            //    // ファイルが存在しない場合
-            //    if (string.IsNullOrEmpty(fname) | !GeneralLib.FileExists(ref fname))
-            //    {
-            //        MapFileName = "";
-            //        if (Strings.InStr(SRC.ScenarioFileName, "ステータス表示.") > 0 | Strings.InStr(SRC.ScenarioFileName, "ランキング.") > 0)
-            //        {
-            //            SetMapSize(GUI.MainWidth, 40);
-            //        }
-            //        else
-            //        {
-            //            SetMapSize(GUI.MainWidth, GUI.MainHeight);
-            //        }
+                //        var loopTo = MapWidth;
+                //        for (i = 1; i <= loopTo; i++)
+                //        {
+                //            var loopTo1 = MapHeight;
+                //            for (j = 1; j <= loopTo1; j++)
+                //            {
+                //                // MOD START 240a
+                //                // MapData(i, j, 0) = MAX_TERRAIN_DATA_NUM
+                //                // MapData(i, j, 1) = 0
+                //                // ファイルが無い場合
+                //                MapData[i, j, MapDataIndex.TerrainType] = MAX_TERRAIN_DATA_NUM;
+                //                MapData[i, j, MapDataIndex.BitmapNo] = 0;
+                //                MapData[i, j, MapDataIndex.LayerType] = NO_LAYER_NUM;
+                //                MapData[i, j, MapDataIndex.LayerBitmapNo] = NO_LAYER_NUM;
+                //                MapData[i, j, MapDataIndex.BoxType] = BoxTypes.Under;
+                //                // MOD  END  240a
+                //            }
+                //        }
 
-            //        var loopTo = MapWidth;
-            //        for (i = 1; i <= loopTo; i++)
-            //        {
-            //            var loopTo1 = MapHeight;
-            //            for (j = 1; j <= loopTo1; j++)
-            //            {
-            //                // MOD START 240a
-            //                // MapData(i, j, 0) = MAX_TERRAIN_DATA_NUM
-            //                // MapData(i, j, 1) = 0
-            //                // ファイルが無い場合
-            //                MapData[i, j, MapDataIndex.TerrainType] = MAX_TERRAIN_DATA_NUM;
-            //                MapData[i, j, MapDataIndex.BitmapNo] = 0;
-            //                MapData[i, j, MapDataIndex.LayerType] = NO_LAYER_NUM;
-            //                MapData[i, j, MapDataIndex.LayerBitmapNo] = NO_LAYER_NUM;
-            //                MapData[i, j, MapDataIndex.BoxType] = BoxTypes.Under;
-            //                // MOD  END  240a
-            //            }
-            //        }
+                //        return;
+                //    };
+            }
+        }
+        public void LoadMapData(string fname, Stream stream)
+        {
+            // ファイル名を記録しておく
+            MapFileName = fname;
+            try
+            {
+                using (var reader = new SrcDataReader(fname, stream))
+                {
+                    string buf;
 
-            //        return;
-            //    };
+                    // ファイルの先頭にあるマップサイズ情報を収得
+                    var lineReaded = false;
+                    buf = reader.GetLine();
+                    if (buf != "MapData")
+                    {
+                        // 旧形式のマップデータ
+                        SetMapSize(20, 20);
+                        lineReaded = true;
+                    }
+                    else
+                    {
+                        // 2行目は予約行
+                        buf = reader.GetLine();
+                        // 3行目がマップサイズ
+                        buf = reader.GetLine();
+                        var mapWH = buf.Split(',');
+                        SetMapSize(int.Parse(mapWH[0]), int.Parse(mapWH[1]));
+                    }
 
-            //    // ファイルを開く
-            //    FileNumber = FileSystem.FreeFile();
-            //    FileSystem.FileOpen(FileNumber, fname, OpenMode.Input);
+                    // マップデータを読み込み
+                    for (var x = 1; x <= MapWidth; x++)
+                    {
+                        for (var y = 1; y <= MapHeight; y++)
+                        {
+                            if (lineReaded)
+                            {
+                                lineReaded = false;
+                            }
+                            else
+                            {
+                                buf = reader.GetLine();
+                            }
+                            var cell = MapData(x, y);
+                            var cellTrrainBitmapNo = buf.Split(',');
+                            cell.TerrainType = int.Parse(cellTrrainBitmapNo[0]);
+                            cell.BitmapNo = int.Parse(cellTrrainBitmapNo[1]);
+                            // TODO Impl
+                            //if (!SRC.TDList.IsDefined(MapData[x, y, MapDataIndex.TerrainType]))
+                            //{
+                            //    Interaction.MsgBox("定義されていない" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(MapData[x, y, MapDataIndex.TerrainType]) + "番の地形データが使われています");
+                            //    // MOD  END  240a
+                            //    FileSystem.FileClose(FileNumber);
+                            //    Environment.Exit(0);
+                            //}
+                        }
+                    }
 
-            //    // ファイル名を記録しておく
-            //    MapFileName = fname;
-
-            //    // ファイルの先頭にあるマップサイズ情報を収得
-            //    FileSystem.Input(FileNumber, ref buf);
-            //    if (buf != "MapData")
-            //    {
-            //        // 旧形式のマップデータ
-            //        SetMapSize(20, 20);
-            //        FileSystem.FileClose(FileNumber);
-            //        FileNumber = FileSystem.FreeFile();
-            //        FileSystem.FileOpen(FileNumber, fname, OpenMode.Input);
-            //    }
-            //    else
-            //    {
-            //        FileSystem.Input(FileNumber, ref buf);
-            //        FileSystem.Input(FileNumber, ref i);
-            //        FileSystem.Input(FileNumber, ref j);
-            //        SetMapSize(i, j);
-            //    }
-
-            //    // マップデータを読み込み
-            //    var loopTo2 = MapWidth;
-            //    for (i = 1; i <= loopTo2; i++)
-            //    {
-            //        var loopTo3 = MapHeight;
-            //        for (j = 1; j <= loopTo3; j++)
-            //        {
-            //            // MOD START 240a
-            //            // Input #FileNumber, MapData(i, j, 0), MapData(i, j, 1)
-            //            // If Not TDList.IsDefined(MapData(i, j, 0)) Then
-            //            // MsgBox "定義されていない" & Format$(MapData(i, j, 0)) _
-            //            // '                    & "番の地形データが使われています"
-            //            Input(FileNumber, MapData[i, j, MapDataIndex.TerrainType]);
-            //            Input(FileNumber, MapData[i, j, MapDataIndex.BitmapNo]);
-            //            if (!SRC.TDList.IsDefined(MapData[i, j, MapDataIndex.TerrainType]))
-            //            {
-            //                Interaction.MsgBox("定義されていない" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(MapData[i, j, MapDataIndex.TerrainType]) + "番の地形データが使われています");
-            //                // MOD  END  240a
-            //                FileSystem.FileClose(FileNumber);
-            //                Environment.Exit(0);
-            //            }
-            //        }
-            //    }
-
-            //    // ADD START 240a
-            //    // レイヤーデータ読み込み
-            //    if (!FileSystem.EOF(FileNumber))
-            //    {
-            //        FileSystem.Input(FileNumber, ref buf);
-            //        if (buf == "Layer")
-            //        {
-            //            var loopTo4 = MapWidth;
-            //            for (i = 1; i <= loopTo4; i++)
-            //            {
-            //                var loopTo5 = MapHeight;
-            //                for (j = 1; j <= loopTo5; j++)
-            //                {
-            //                    Input(FileNumber, MapData[i, j, MapDataIndex.LayerType]);
-            //                    Input(FileNumber, MapData[i, j, MapDataIndex.LayerBitmapNo]);
-            //                    if (MapData[i, j, MapDataIndex.LayerType] != NO_LAYER_NUM)
-            //                    {
-            //                        // 定義されていたらデータの妥当性チェック
-            //                        if (!SRC.TDList.IsDefined(MapData[i, j, MapDataIndex.LayerType]))
-            //                        {
-            //                            Interaction.MsgBox("定義されていない" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(MapData[i, j, MapDataIndex.LayerType]) + "番の地形データが使われています");
-            //                            FileSystem.FileClose(FileNumber);
-            //                            Environment.Exit(0);
-            //                        }
-            //                        // マスのタイプを上層に
-            //                        MapData[i, j, MapDataIndex.BoxType] = BoxTypes.Upper;
-            //                    }
-            //                    else
-            //                    {
-            //                        // マスのタイプを下層に（初期化時下層だが、再度明示的に設定する）
-            //                        MapData[i, j, MapDataIndex.BoxType] = BoxTypes.Under;
-            //                    }
-            //                }
-            //            }
-            //        }
-            //    }
-            //    // ADD  END  240a
-
-            //    FileSystem.FileClose(FileNumber);
-            //    return;
-            //ErrorHandler:
-            //    ;
-            //    string argmsg = "マップファイル「" + fname + "」のデータが不正です";
-            //    GUI.ErrorMessage(ref argmsg);
-            //    FileSystem.FileClose(FileNumber);
-            //    Environment.Exit(0);
+                    // TODO Impl
+                    //// ADD START 240a
+                    //// レイヤーデータ読み込み
+                    //if (!FileSystem.EOF(FileNumber))
+                    //{
+                    //    FileSystem.Input(FileNumber, ref buf);
+                    //    if (buf == "Layer")
+                    //    {
+                    //        var loopTo4 = MapWidth;
+                    //        for (i = 1; i <= loopTo4; i++)
+                    //        {
+                    //            var loopTo5 = MapHeight;
+                    //            for (j = 1; j <= loopTo5; j++)
+                    //            {
+                    //                Input(FileNumber, MapData[i, j, MapDataIndex.LayerType]);
+                    //                Input(FileNumber, MapData[i, j, MapDataIndex.LayerBitmapNo]);
+                    //                if (MapData[i, j, MapDataIndex.LayerType] != NO_LAYER_NUM)
+                    //                {
+                    //                    // 定義されていたらデータの妥当性チェック
+                    //                    if (!SRC.TDList.IsDefined(MapData[i, j, MapDataIndex.LayerType]))
+                    //                    {
+                    //                        Interaction.MsgBox("定義されていない" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(MapData[i, j, MapDataIndex.LayerType]) + "番の地形データが使われています");
+                    //                        FileSystem.FileClose(FileNumber);
+                    //                        Environment.Exit(0);
+                    //                    }
+                    //                    // マスのタイプを上層に
+                    //                    MapData[i, j, MapDataIndex.BoxType] = BoxTypes.Upper;
+                    //                }
+                    //                else
+                    //                {
+                    //                    // マスのタイプを下層に（初期化時下層だが、再度明示的に設定する）
+                    //                    MapData[i, j, MapDataIndex.BoxType] = BoxTypes.Under;
+                    //                }
+                    //            }
+                    //        }
+                    //    }
+                    //}
+                    //// ADD  END  240a
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("マップファイル「" + fname + "」のデータが不正です", ex);
+            }
         }
 
         // マップサイズを設定
