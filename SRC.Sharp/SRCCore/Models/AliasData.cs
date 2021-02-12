@@ -134,6 +134,8 @@ namespace SRCCore.Models
                 elm.strAliasType = atype;
                 elm.dblAliasLevel = alevel;
                 elm.strAliasData = adata;
+
+                Elements.Add(elm);
             }
         }
     }

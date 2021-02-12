@@ -37,13 +37,11 @@ namespace SRCCore
 
         public void LoadDataDirectory(string fpath)
         {
-            //string argfname1 = fpath + @"\alias.txt";
-            //if (GeneralLib.FileExists(ref argfname1))
-            //{
-            //    string argfname = fpath + @"\alias.txt";
-            //    ALDList.Load(ref argfname);
-            //}
-
+            var aliasFilePath = Path.Combine(fpath, "alias.txt");
+            if (GeneralLib.FileExists(aliasFilePath))
+            {
+                ALDList.Load(aliasFilePath);
+            }
 
             //string argfname3 = fpath + @"\mind.txt";
             //string argfname4 = fpath + @"\sp.txt";
