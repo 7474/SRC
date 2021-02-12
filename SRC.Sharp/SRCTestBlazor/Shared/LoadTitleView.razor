@@ -57,6 +57,10 @@
                         SRC.MDList.Load(file, false, await Http.GetStreamAsync($"{baseUri}/{file}"));
                         Console.WriteLine($"{file} was loaded.");
                         break;
+                    case "pilot_dialog.txt":
+                        SRC.DDList.Load(file, await Http.GetStreamAsync($"{baseUri}/{file}"));
+                        Console.WriteLine($"{file} was loaded.");
+                        break;
                     default:
                         Console.WriteLine($"{file} is not supported.");
                         break;

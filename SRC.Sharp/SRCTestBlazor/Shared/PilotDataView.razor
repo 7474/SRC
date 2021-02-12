@@ -124,6 +124,8 @@
     private Random Random { get; set; }
 
     private MessageData MessageData;
+    private DialogData DialogData;
+    private IList<MessagePreviewData> MessagePreviewData;
     private MessagePreviewData PickupMessage;
 
     private bool ExpandRaw = false;
@@ -132,6 +134,8 @@
     protected override void OnParametersSet()
     {
         MessageData = SRC.MDList.Item(Data.Name);
+        DialogData = SRC.DDList.Item(Data.Name);
+        BuildMessagePreviewData();
         UpdatePickupMessage();
     }
 
@@ -145,14 +149,46 @@
         UpdatePickupMessage();
     }
 
-    private void UpdatePickupMessage()
+    private string ResolveDialogBitmap(string pname)
     {
+        if (SRC.PDList.IsDefined2(pname))
+        {
+            return DataContainer.BitmapIndex.GetBitmapUri("Pilot", SRC.PDList.Item(pname).Bitmap0);
+        }
+        if (SRC.NPDList.IsDefined2(pname))
+        {
+            return DataContainer.BitmapIndex.GetBitmapUri("Pilot", SRC.NPDList.Item(pname).Bitmap0);
+        }
+        return DataContainer.BitmapIndex.GetBitmapUri("Pilot", Data.Bitmap0);
+    }
+
+    private void BuildMessagePreviewData()
+    {
+        var mpd = new List<MessagePreviewData>();
         if (MessageData != null)
         {
-            var md = MessageData.Items[Random.Next(MessageData.Items.Count)];
-            PickupMessage = new MessagePreviewData(
+            mpd.AddRange(MessageData.Items.Select(md => new MessagePreviewData(
                 DataContainer.BitmapIndex.GetBitmapUri("Pilot", Data.Bitmap0),
-                md.Message);
+                md.Message)));
+        }
+        if (DialogData != null)
+        {
+            // とりあえず1メッセージのだけにしておく
+            mpd.AddRange(DialogData.Items
+                .Where(x => x.Count == 1)
+                .Select(x => x.Items.First())
+                .Select(d => new MessagePreviewData(
+                ResolveDialogBitmap(d.strName),
+                d.strMessage)));
+        }
+        MessagePreviewData = mpd;
+    }
+
+    private void UpdatePickupMessage()
+    {
+        if (MessagePreviewData != null && MessagePreviewData.Any())
+        {
+            PickupMessage = MessagePreviewData[Random.Next(MessagePreviewData.Count)];
         }
     }
 }
