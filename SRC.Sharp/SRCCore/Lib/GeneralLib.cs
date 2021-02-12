@@ -110,6 +110,16 @@ namespace SRCCore.Lib
         //            return DiceRet;
         //        }
 
+        public static IList<string> ToL(string list)
+        {
+            return list.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+        }
+
+        public static string LNormalize(string list)
+        {
+            return string.Join(" ", ToL(list));
+        }
+
         // リスト list から idx 番目の要素を返す
         public static string LIndex(string list, int idx)
         {

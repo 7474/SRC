@@ -35,7 +35,7 @@
         SRC.UDList.Clear();
         SRC.PDList.Clear();
 
-        var baseUri =DataPath;
+        var baseUri = DataPath;
         var dataFiles = DataFiles;
         DataTitle = Path.GetFileName(DataPath);
         foreach (var file in dataFiles)
@@ -51,6 +51,14 @@
                         break;
                     case "pilot.txt":
                         SRC.PDList.Load(file, await Http.GetStreamAsync($"{baseUri}/{file}"));
+                        Console.WriteLine($"{file} was loaded.");
+                        break;
+                    case "pilot_message.txt":
+                        SRC.MDList.Load(file, false, await Http.GetStreamAsync($"{baseUri}/{file}"));
+                        Console.WriteLine($"{file} was loaded.");
+                        break;
+                    case "pilot_dialog.txt":
+                        SRC.DDList.Load(file, await Http.GetStreamAsync($"{baseUri}/{file}"));
                         Console.WriteLine($"{file} was loaded.");
                         break;
                     default:

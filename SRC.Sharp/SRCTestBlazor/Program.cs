@@ -18,7 +18,8 @@ namespace SRCTestBlazor
                 {
                     BaseAddress = new Uri(builder.HostEnvironment.BaseAddress)
                 })
-                .AddSingleton<SrcDataContainer>();
+                .AddSingleton<SrcDataContainer>()
+                .AddSingleton<Random>();
 
             builder.RootComponents.Add<App>("#app");
 

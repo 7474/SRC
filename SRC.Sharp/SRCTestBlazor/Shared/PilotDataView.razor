@@ -89,6 +89,22 @@
                 }
             </ul>
         </div>
+        @if (PickupMessage != null)
+        {
+            <div class="media">
+                <div class="media-left">
+                    <figure class="image is-64x64">
+                        <img src="@PickupMessage.BitmapUri" alt="Pilot image">
+                    </figure>
+                    <button class="button is-small" @onclick="OnClickMessage">
+                        <ion-icon name="refresh-outline"></ion-icon>
+                    </button>
+                </div>
+                <div class="media-content">
+                    <p>@PickupMessage.Message</p>
+                </div>
+            </div>
+        }
         <div class="content">
             <button class="button is-small" @onclick="OnClickRaw">Raw</button>
             <pre style="@(ExpandRaw ? "" : "display: none;")">@DataJson</pre>
@@ -101,12 +117,78 @@
 @code {
     [Parameter]
     public PilotData Data { get; set; }
+    [Parameter]
+    public SRC SRC { get; set; }
+
+    [Inject]
+    private Random Random { get; set; }
+
+    private MessageData MessageData;
+    private DialogData DialogData;
+    private IList<MessagePreviewData> MessagePreviewData;
+    private MessagePreviewData PickupMessage;
 
     private bool ExpandRaw = false;
     private string DataJson => JsonConvert.SerializeObject(Data, Formatting.Indented);
 
+    protected override void OnParametersSet()
+    {
+        MessageData = SRC.MDList.Item(Data.Name);
+        DialogData = SRC.DDList.Item(Data.Name);
+        BuildMessagePreviewData();
+        UpdatePickupMessage();
+    }
+
     private void OnClickRaw()
     {
         ExpandRaw = !ExpandRaw;
+    }
+
+    private void OnClickMessage()
+    {
+        UpdatePickupMessage();
+    }
+
+    private string ResolveDialogBitmap(string pname)
+    {
+        if (SRC.PDList.IsDefined2(pname))
+        {
+            return DataContainer.BitmapIndex.GetBitmapUri("Pilot", SRC.PDList.Item(pname).Bitmap0);
+        }
+        if (SRC.NPDList.IsDefined2(pname))
+        {
+            return DataContainer.BitmapIndex.GetBitmapUri("Pilot", SRC.NPDList.Item(pname).Bitmap0);
+        }
+        return DataContainer.BitmapIndex.GetBitmapUri("Pilot", Data.Bitmap0);
+    }
+
+    private void BuildMessagePreviewData()
+    {
+        var mpd = new List<MessagePreviewData>();
+        if (MessageData != null)
+        {
+            mpd.AddRange(MessageData.Items.Select(md => new MessagePreviewData(
+                DataContainer.BitmapIndex.GetBitmapUri("Pilot", Data.Bitmap0),
+                md.Message)));
+        }
+        if (DialogData != null)
+        {
+            // とりあえず1メッセージのだけにしておく
+            mpd.AddRange(DialogData.Items
+                .Where(x => x.Count == 1)
+                .Select(x => x.Items.First())
+                .Select(d => new MessagePreviewData(
+                ResolveDialogBitmap(d.strName),
+                d.strMessage)));
+        }
+        MessagePreviewData = mpd;
+    }
+
+    private void UpdatePickupMessage()
+    {
+        if (MessagePreviewData != null && MessagePreviewData.Any())
+        {
+            PickupMessage = MessagePreviewData[Random.Next(MessagePreviewData.Count)];
+        }
     }
 }

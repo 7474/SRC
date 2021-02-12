@@ -98,14 +98,7 @@ namespace SRCCore.Models
         // パイロットデータリストに指定したデータが登録されているか？ (愛称は見ない)
         public bool IsDefined2(string Index)
         {
-            try
-            {
-                return colPilotDataList[Index] != null;
-            }
-            catch
-            {
-                return false;
-            }
+            return colPilotDataList.ContainsKey(Index);
         }
 
         // データファイル fname からデータをロード

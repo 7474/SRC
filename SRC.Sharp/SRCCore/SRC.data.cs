@@ -87,19 +87,17 @@ namespace SRCCore
             //    GUI.DisplayLoadingProgress();
             //}
 
-            //string argfname14 = fpath + @"\pilot_message.txt";
-            //if (GeneralLib.FileExists(ref argfname14))
-            //{
-            //    string argfname13 = fpath + @"\pilot_message.txt";
-            //    MDList.Load(ref argfname13);
-            //}
+            var pilotMessageFilePath = Path.Combine(fpath, "pilot_message.txt");
+            if (GeneralLib.FileExists(pilotMessageFilePath))
+            {
+                MDList.Load(pilotMessageFilePath, false);
+            }
 
-            //string argfname16 = fpath + @"\pilot_dialog.txt";
-            //if (GeneralLib.FileExists(ref argfname16))
-            //{
-            //    string argfname15 = fpath + @"\pilot_dialog.txt";
-            //    DDList.Load(ref argfname15);
-            //}
+            var pilotDialogFilePath = Path.Combine(fpath, "pilot_dialog.txt");
+            if (GeneralLib.FileExists(pilotDialogFilePath))
+            {
+                DDList.Load(pilotDialogFilePath);
+            }
 
             //string argfname18 = fpath + @"\effect.txt";
             //if (GeneralLib.FileExists(ref argfname18))

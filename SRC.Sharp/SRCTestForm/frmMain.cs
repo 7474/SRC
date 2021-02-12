@@ -92,18 +92,12 @@ namespace SRCTestForm
         private void UpdateDataTree()
         {
             treeViewData.Nodes.Clear();
-            var unitNodes = SRC.UDList.Items.Select(ud => new SrcTreeNode(ud.Name, ud)).ToArray();
-            var unitListNode = new TreeNode("Unit", unitNodes);
 
-            var pilotNodes = SRC.PDList.Items.Select(pd => new SrcTreeNode(pd.Name, pd)).ToArray();
-            var pilotListNode = new TreeNode("Pilot", pilotNodes);
-
-            var nonPilotNodes = SRC.NPDList.Items.Select(pd => new SrcTreeNode(pd.Name, pd)).ToArray();
-            var nonPilotListNode = new TreeNode("NonPilot", nonPilotNodes);
-
-            treeViewData.Nodes.Add(unitListNode);
-            treeViewData.Nodes.Add(pilotListNode);
-            treeViewData.Nodes.Add(nonPilotListNode);
+            treeViewData.Nodes.Add(new TreeNode("Unit", SRC.UDList.Items.Select(x => new SrcTreeNode(x.Name, x)).ToArray()));
+            treeViewData.Nodes.Add(new TreeNode("Pilot", SRC.PDList.Items.Select(x => new SrcTreeNode(x.Name, x)).ToArray()));
+            treeViewData.Nodes.Add(new TreeNode("NonPilot", SRC.NPDList.Items.Select(x => new SrcTreeNode(x.Name, x)).ToArray()));
+            treeViewData.Nodes.Add(new TreeNode("Message", SRC.MDList.Items.Select(x => new SrcTreeNode(x.Name, x)).ToArray()));
+            treeViewData.Nodes.Add(new TreeNode("Dialog", SRC.DDList.Items.Select(x => new SrcTreeNode(x.Name, x)).ToArray()));
         }
 
         private void SetMainText(string text)
