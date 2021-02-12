@@ -1076,7 +1076,6 @@ namespace SRCTestForm
             // _HScrollBar
             // 
             this._HScrollBar.Cursor = System.Windows.Forms.Cursors.Default;
-            this._HScrollBar.Enabled = false;
             this._HScrollBar.LargeChange = 4;
             this._HScrollBar.Location = new System.Drawing.Point(60, 92);
             this._HScrollBar.Maximum = 23;
@@ -1091,7 +1090,6 @@ namespace SRCTestForm
             // _VScrollBar
             // 
             this._VScrollBar.Cursor = System.Windows.Forms.Cursors.Default;
-            this._VScrollBar.Enabled = false;
             this._VScrollBar.LargeChange = 4;
             this._VScrollBar.Location = new System.Drawing.Point(116, 80);
             this._VScrollBar.Maximum = 23;
