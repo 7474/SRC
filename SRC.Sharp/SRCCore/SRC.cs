@@ -40,8 +40,8 @@ namespace SRCCore
         public MessageDataList ADList = new MessageDataList();
         // 拡張戦闘アニメデータのリスト
         public MessageDataList EADList = new MessageDataList();
-        //// ダイアログデータのリスト
-        //public DialogDataList DDList = new DialogDataList();
+        // ダイアログデータのリスト
+        public DialogDataList DDList = new DialogDataList();
         //// スペシャルパワーデータのリスト
         //public SpecialPowerDataList SPDList = new SpecialPowerDataList();
         //// エリアスデータのリスト

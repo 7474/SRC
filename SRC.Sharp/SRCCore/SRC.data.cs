@@ -93,12 +93,11 @@ namespace SRCCore
                 MDList.Load(pilotMessageFilePath, false);
             }
 
-            //string argfname16 = fpath + @"\pilot_dialog.txt";
-            //if (GeneralLib.FileExists(ref argfname16))
-            //{
-            //    string argfname15 = fpath + @"\pilot_dialog.txt";
-            //    DDList.Load(ref argfname15);
-            //}
+            var pilotDialogFilePath = Path.Combine(fpath, "pilot_dialog.txt");
+            if (GeneralLib.FileExists(pilotDialogFilePath))
+            {
+                DDList.Load(pilotDialogFilePath);
+            }
 
             //string argfname18 = fpath + @"\effect.txt";
             //if (GeneralLib.FileExists(ref argfname18))
