@@ -245,7 +245,6 @@ namespace SRCTestForm
                     }
                 }
             }
-            picBack.Image.Save("picBack.png");
         }
 
         public void RefreshScreen(int mapX, int mapY)
