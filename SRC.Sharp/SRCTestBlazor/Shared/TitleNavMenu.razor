@@ -6,7 +6,7 @@
 @inject SrcDataContainer DataContainer
 
 <div class="navbar-item">
-    <input type="hidden" @bind="IndexUri" />
+    <input type="hidden" @bind="DataIndexUri" />
     <input class="form-control mr-sm-2" type="search" placeholder="Filter" @oninput="OnChangeFilter" />
 </div>
 <hr class="navbar-divider">
@@ -21,8 +21,9 @@
 }
 
 @code {
-    private string IndexUri { get; set; }
     private string IndexBase { get; set; }
+    private string DataIndexUri { get; set; }
+    private string BitmapIndexUri { get; set; }
     private string FilterValue { get; set; }
 
     private SrcDataIndex SrcDataIndex { get; set; }
@@ -38,21 +39,17 @@
 
     protected override async Task OnInitializedAsync()
     {
-        IndexUri = "https://raw.githubusercontent.com/7474/SRC-Data/master/index.json";
         IndexBase = "https://raw.githubusercontent.com/7474/SRC-Data/master/";
+        DataIndexUri = "https://raw.githubusercontent.com/7474/SRC-Data/master/index.json";
+        BitmapIndexUri = "https://raw.githubusercontent.com/7474/SRC-Data/master/index-bitmap.json";
 
         await UpdateIndex();
     }
 
     private async Task UpdateIndex()
     {
-        await DataContainer.LoadBitmapIndex(
-                  Http,
-                  "https://raw.githubusercontent.com/7474/SRC-Data/master/index-bitmap.json",
-                  IndexBase
-                  );
-
-        SrcDataIndex = await Http.GetFromJsonAsync<SrcDataIndex>(IndexUri);
+        await DataContainer.LoadBitmapIndex(Http, BitmapIndexUri, IndexBase);
+        SrcDataIndex = await Http.GetFromJsonAsync<SrcDataIndex>(DataIndexUri);
         Titles = SrcDataIndex.Titles;
     }
 
