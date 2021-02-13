@@ -29,9 +29,21 @@ namespace SRCCore.Lib
 
         private StringBuilder _rawBuffer = new StringBuilder();
         public string Raw => _rawBuffer.ToString();
+        private StringBuilder _commentBuffer = new StringBuilder();
+        public string RawComment => _commentBuffer.ToString();
+        private StringBuilder _rawDataBuffer = new StringBuilder();
+        public string RawData => _rawDataBuffer.ToString();
         public void ClearRaw()
         {
             _rawBuffer.Clear();
+        }
+        public void ClearRawComment()
+        {
+            _commentBuffer.Clear();
+        }
+        public void ClearRawData()
+        {
+            _rawDataBuffer.Clear();
         }
 
         // From GeneralLib#GetLine
@@ -51,14 +63,18 @@ namespace SRCCore.Lib
                 // 空行はそのまま返す
                 if (string.IsNullOrEmpty(buf))
                 {
+                    _commentBuffer.AppendLine(buf);
                     break;
                 }
 
                 // コメント行はスキップ
                 if (Strings.Left(buf, 1) == "#")
                 {
+                    _commentBuffer.AppendLine(buf);
                     continue;
                 }
+
+                _rawDataBuffer.AppendLine(buf);
 
                 // コメント部分を削除
                 var idx = Strings.InStr(buf, "//");

@@ -100,9 +100,10 @@ namespace SRCCore.Models
             //{
             using (var reader = new SrcDataReader(fname, stream))
             {
+                UnitData lastUd = null;
                 while (reader.HasMore)
                 {
-                    UnitData ud = LoadUnit(reader); ;
+                    lastUd = LoadUnit(reader, lastUd);
                 }
             }
             //}
@@ -114,7 +115,7 @@ namespace SRCCore.Models
 
         // reader から１つユニットを読み込む。
         // 返却したUnitDataはリストに追加されている状態。
-        private UnitData LoadUnit(SrcDataReader reader)
+        private UnitData LoadUnit(SrcDataReader reader, UnitData lastUd)
         {
             UnitData ud = null;
             try
@@ -128,6 +129,11 @@ namespace SRCCore.Models
                 while (reader.HasMore && string.IsNullOrEmpty(line_buf))
                 {
                     line_buf = reader.GetLine();
+                }
+                if (lastUd != null)
+                {
+                    lastUd.Raw += reader.RawComment;
+                    reader.ClearRawComment();
                 }
                 if (reader.EOT)
                 {
@@ -548,8 +554,8 @@ namespace SRCCore.Models
             {
                 if (ud != null)
                 {
-                    ud.Raw = reader.Raw;
-                    reader.ClearRaw();
+                    ud.Raw = reader.RawData;
+                    reader.ClearRawData();
                 }
             }
             return ud;

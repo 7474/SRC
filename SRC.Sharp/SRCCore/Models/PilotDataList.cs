@@ -113,14 +113,16 @@ namespace SRCCore.Models
         {
             using (var reader = new SrcDataReader(fname, stream))
             {
+
+                PilotData lastPd = null;
                 while (reader.HasMore)
                 {
-                    PilotData pd = LoadPilot(reader);
+                    lastPd = LoadPilot(reader, lastPd);
                 }
             }
         }
 
-        public PilotData LoadPilot(SrcDataReader reader)
+        public PilotData LoadPilot(SrcDataReader reader, PilotData lastPd)
         {
             PilotData pd = null;
             try
@@ -135,6 +137,11 @@ namespace SRCCore.Models
                 while (reader.HasMore && string.IsNullOrEmpty(line_buf))
                 {
                     line_buf = reader.GetLine();
+                }
+                if (lastPd != null)
+                {
+                    lastPd.Raw += reader.RawComment;
+                    reader.ClearRawComment();
                 }
                 if (reader.EOT)
                 {
@@ -1117,8 +1124,8 @@ namespace SRCCore.Models
             {
                 if (pd != null)
                 {
-                    pd.Raw = reader.Raw;
-                    reader.ClearRaw();
+                    pd.Raw = reader.RawData;
+                    reader.ClearRawData();
                 }
             }
             return pd;
