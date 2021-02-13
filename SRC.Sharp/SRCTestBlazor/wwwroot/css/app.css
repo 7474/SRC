@@ -7810,7 +7810,9 @@ a.has-text-danger-dark:hover, a.has-text-danger-dark:focus {
   font-size: 0.875em;
   margin: 0;
   padding: 0.75rem 0.5rem;
-  white-space: pre-wrap; }
+  white-space: pre-wrap;
+  word-break: break-word;
+  word-wrap: break-word; }
 
 .src-raw {
   font-family: monospace;
@@ -7820,6 +7822,7 @@ a.has-text-danger-dark:hover, a.has-text-danger-dark:focus {
   margin: 0;
   padding: 0.75rem 0.5rem;
   white-space: pre;
+  word-break: normal;
   word-wrap: normal;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch; }
