@@ -60,6 +60,27 @@
         }
     }
 }
+.src-comment {
+    font-family: $code-family;
+    background-color: $pre-background;
+    color: $pre;
+    font-size: $pre-font-size;
+    margin: 0;
+    padding: 0.75rem 0.5rem;
+    white-space: pre-wrap;
+}
+.src-raw {
+    font-family: $code-family;
+    background-color: $pre-background;
+    color: $pre;
+    font-size: $pre-font-size;
+    margin: 0;
+    padding: 0.75rem 0.5rem;
+    white-space: pre;
+    word-wrap: normal;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
 
 // For Blazor
 #blazor-error-ui {

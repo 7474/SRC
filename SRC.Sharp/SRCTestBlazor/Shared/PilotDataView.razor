@@ -97,7 +97,7 @@
                         <img src="@PickupMessage.BitmapUri" alt="Pilot image">
                     </figure>
                     <button class="button is-small" @onclick="OnClickMessage">
-                        <ion-icon name="refresh-outline"></ion-icon>
+                        <i class="fas fa-sync"></i>
                     </button>
                 </div>
                 <div class="media-content message-preview">
@@ -106,8 +106,12 @@
             </div>
         }
         <div class="content">
+            @if (!string.IsNullOrEmpty(Data.Comment))
+            {
+                <div class="src-comment">@Data.Comment</div>
+            }
             <button class="button is-small" @onclick="OnClickRaw">Raw</button>
-            <pre style="@(ExpandRaw ? "" : "display: none;")">@DataJson</pre>
+            <div class="src-raw" style="@(ExpandRaw ? "" : "display: none;")">@Data.Raw</div>
         </div>
     </div>
     <footer class="card-footer">
@@ -129,7 +133,6 @@
     private MessagePreviewData PickupMessage;
 
     private bool ExpandRaw = false;
-    private string DataJson => JsonConvert.SerializeObject(Data, Formatting.Indented);
 
     protected override void OnParametersSet()
     {

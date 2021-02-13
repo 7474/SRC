@@ -2,11 +2,8 @@
 @using System.Net.Http
 @using System.Web
 
-@inject HttpClient Http
-@inject SrcDataContainer DataContainer
-
 <div class="navbar-item">
-    <input type="hidden" @bind="IndexUri" />
+    <input type="hidden" @bind="DataIndexUri" />
     <input class="form-control mr-sm-2" type="search" placeholder="Filter" @oninput="OnChangeFilter" />
 </div>
 <hr class="navbar-divider">
@@ -21,41 +18,47 @@
 }
 
 @code {
-    private string IndexUri { get; set; }
+    [Inject]
+    private HttpClient Http { get; set; }
+    [Inject]
+    private SrcDataContainer DataContainer { get; set; }
+
     private string IndexBase { get; set; }
+    private string DataIndexUri { get; set; }
+    private string BitmapIndexUri { get; set; }
     private string FilterValue { get; set; }
 
-    private SrcDataIndex SrcDataIndex { get; set; }
     private ICollection<TitleData> Titles { get; set; }
 
     // OnInputにすると結構入力に対する応答時間が厳しい
     private void OnChangeFilter(ChangeEventArgs e)
     {
+        DataContainer.IndexBusy = true;
         FilterValue = e.Value?.ToString() ?? "";
 
-        Titles = SrcDataIndex.Titles.Where(x => x.Path.Contains(FilterValue)).ToList();
-        StateHasChanged();
+        Titles = DataContainer.DataIndex.Titles.Where(x => x.Path.Contains(FilterValue)).ToList();
+        // XXX レンダリングの待ち時間をこのfalseまで待てていない
+        DataContainer.IndexBusy = false;
     }
 
     protected override async Task OnInitializedAsync()
     {
-        IndexUri = "https://raw.githubusercontent.com/7474/SRC-Data/master/index.json";
         IndexBase = "https://raw.githubusercontent.com/7474/SRC-Data/master/";
+        DataIndexUri = "https://raw.githubusercontent.com/7474/SRC-Data/master/index.json";
+        BitmapIndexUri = "https://raw.githubusercontent.com/7474/SRC-Data/master/index-bitmap.json";
 
         await UpdateIndex();
     }
 
     private async Task UpdateIndex()
     {
-        DataContainer.LoadBitmapIndex(
-            Http,
-            "https://raw.githubusercontent.com/7474/SRC-Data/master/index-bitmap.json",
-            IndexBase
-            );
+        DataContainer.IndexBusy = true;
+        await DataContainer.LoadBitmapIndex(Http, BitmapIndexUri, IndexBase);
+        await DataContainer.LoadDataIndex(Http, DataIndexUri);
 
-        SrcDataIndex = await Http.GetFromJsonAsync<SrcDataIndex>(IndexUri);
-        Titles = SrcDataIndex.Titles;
-        StateHasChanged();
+        Titles = DataContainer.DataIndex.Titles;
+        // XXX こっちも多分待ててないんじゃないかな？
+        DataContainer.IndexBusy = false;
     }
 
     private string ToTitlePathParam(TitleData title)

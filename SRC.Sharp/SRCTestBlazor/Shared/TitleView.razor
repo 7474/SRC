@@ -29,6 +29,12 @@
                 }
             </div>
         </nav>
+        @if (!string.IsNullOrEmpty(SRC.UDList.Comment))
+        {
+            <div class="content">
+                <div class="src-comment">@SRC.UDList.Comment</div>
+            </div>
+        }
         @foreach (var ud in SRC.UDList.Items)
         {
             <UnitDataView Data="@ud" />
@@ -46,6 +52,12 @@
                 }
             </div>
         </nav>
+        @if (!string.IsNullOrEmpty(SRC.PDList.Comment))
+        {
+            <div class="content">
+                <div class="src-comment">@SRC.PDList.Comment</div>
+            </div>
+        }
         @foreach (var pd in SRC.PDList.Items)
         {
             <PilotDataView Data="@pd" SRC="@SRC" />
