@@ -4,7 +4,7 @@
 
 <div class="navbar-item">
     <input type="hidden" @bind="DataIndexUri" />
-    <input class="form-control mr-sm-2" type="search" placeholder="Filter" @oninput="OnChangeFilter" />
+    <input class="form-control mr-sm-2" type="search" placeholder="Filter" @oninput="OnChangeFilterAsync" />
 </div>
 <hr class="navbar-divider">
 @if (Titles != null)
@@ -28,17 +28,27 @@
     private string BitmapIndexUri { get; set; }
     private string FilterValue { get; set; }
 
+    // コレクションのインスタンスが変わった時だけ再レンダリングする。
     private ICollection<TitleData> Titles { get; set; }
+    private int lastTitles;
+    protected override bool ShouldRender() => lastTitles != Titles.GetHashCode();
+    protected override void OnAfterRender(bool firstRender)
+    {
+        lastTitles = Titles.GetHashCode();
+    }
 
-    // OnInputにすると結構入力に対する応答時間が厳しい
-    private void OnChangeFilter(ChangeEventArgs e)
+    // OnInputにすると結構入力に対する応答時間が厳しい。
+    // 全件表示以外ならさほど遅くもないので『全件だけ構築済を表示する』のような形で回避できるかもしれない。
+    private async Task OnChangeFilterAsync(ChangeEventArgs e)
     {
         DataContainer.IndexBusy = true;
         FilterValue = e.Value?.ToString() ?? "";
 
-        Titles = DataContainer.DataIndex.Titles.Where(x => x.Path.Contains(FilterValue)).ToList();
-        // XXX レンダリングの待ち時間をこのfalseまで待てていない
-        DataContainer.IndexBusy = false;
+        await Task.Run(() =>
+        {
+            Titles = DataContainer.DataIndex.Titles.Where(x => x.Path.Contains(FilterValue)).ToList();
+            DataContainer.IndexBusy = false;
+        });
     }
 
     protected override async Task OnInitializedAsync()
@@ -52,12 +62,12 @@
 
     private async Task UpdateIndex()
     {
+        Titles = new List<TitleData>();
         DataContainer.IndexBusy = true;
         await DataContainer.LoadBitmapIndex(Http, BitmapIndexUri, IndexBase);
         await DataContainer.LoadDataIndex(Http, DataIndexUri);
 
         Titles = DataContainer.DataIndex.Titles;
-        // XXX こっちも多分待ててないんじゃないかな？
         DataContainer.IndexBusy = false;
     }
 
