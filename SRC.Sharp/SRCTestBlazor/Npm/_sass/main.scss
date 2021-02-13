@@ -60,6 +60,7 @@
         }
     }
 }
+
 .src-comment {
     font-family: $code-family;
     background-color: $pre-background;
@@ -68,7 +69,10 @@
     margin: 0;
     padding: 0.75rem 0.5rem;
     white-space: pre-wrap;
+    word-break: break-word;
+    word-wrap: break-word;
 }
+
 .src-raw {
     font-family: $code-family;
     background-color: $pre-background;
@@ -77,6 +81,7 @@
     margin: 0;
     padding: 0.75rem 0.5rem;
     white-space: pre;
+    word-break: normal;
     word-wrap: normal;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
