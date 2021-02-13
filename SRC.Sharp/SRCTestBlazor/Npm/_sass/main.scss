@@ -1,6 +1,12 @@
 ﻿@charset "utf-8";
 
+@font-face {
+    font-family: "IPA Gothic";
+    src: url('../fonts/ipag.ttf');
+}
+
 @import "../node_modules/bulma/sass/utilities/initial-variables";
+$code-family: "IPA Gothic", monospace;
 
 @import "../node_modules/bulma/bulma";
 
