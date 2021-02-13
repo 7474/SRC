@@ -109,11 +109,11 @@
                                 <td class="has-text-right">@wd.Power</td>
                                 <td class="has-text-centered">@wd.MinRange ~ @wd.MaxRange</td>
                                 <td class="has-text-right">@(wd.Precision >= 0 ? $"+{wd.Precision}" : $"{wd.Precision}")</td>
-                                <td class="has-text-right">@wd.Bullet</td>
-                                <td class="has-text-right">@wd.ENConsumption</td>
-                                <td class="has-text-right">@wd.NecessaryMorale</td>
+                                <td class="has-text-right">@(wd.Bullet > 0 ? wd.Bullet : "-")</td>
+                                <td class="has-text-right">@(wd.ENConsumption > 0 ? wd.ENConsumption : "-")</td>
+                                <td class="has-text-right">@(wd.NecessaryMorale > 0 ? wd.NecessaryMorale : "-")</td>
                                 <td class="has-text-left">@wd.Adaption</td>
-                                <td class="has-text-right">@wd.Critical</td>
+                                <td class="has-text-right">@(wd.Critical >= 0 ? $"+{wd.Critical}" : $"{wd.Critical}")</td>
                                 <td class="has-text-left">@wd.Class</td>
                             </tr>
                         }
@@ -143,9 +143,9 @@
                                 <td class="has-text-left name-cell">@ad.Name</td>
                                 <td class="has-text-left">---</td>
                                 <td class="has-text-centered">@ad.MinRange ~ @ad.MaxRange</td>
-                                <td class="has-text-right">@ad.Stock</td>
-                                <td class="has-text-right">@ad.ENConsumption</td>
-                                <td class="has-text-right">@ad.NecessaryMorale</td>
+                                <td class="has-text-right">@(ad.Stock > 0 ? ad.Stock : "-")</td>
+                                <td class="has-text-right">@(ad.ENConsumption > 0 ? ad.ENConsumption : "-")</td>
+                                <td class="has-text-right">@(ad.NecessaryMorale > 0 ? ad.NecessaryMorale : "-")</td>
                                 <td class="has-text-left">@ad.Class</td>
                             </tr>
                         }
