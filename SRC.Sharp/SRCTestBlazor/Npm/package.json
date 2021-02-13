@@ -6,7 +6,7 @@
     "css-deploy": "npm run css-build && npm run css-postcss",
     "css-build": "node-sass _sass/main.scss ../wwwroot/css/app.css",
     "css-postcss": "postcss --use autoprefixer --no-map --output ../wwwroot/css/app.css  ../wwwroot/css/app.css",
-    "css-watch": "npm run css-build -- --watch",
+    "css-watch": "npm run css-deploy -- --watch",
     "crean": "npm run css-deploy",
     "build": "npm run css-deploy",
     "start": "npm-run-all --parallel css-watch"
