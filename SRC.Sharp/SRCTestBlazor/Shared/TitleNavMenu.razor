@@ -34,7 +34,6 @@
         FilterValue = e.Value?.ToString() ?? "";
 
         Titles = SrcDataIndex.Titles.Where(x => x.Path.Contains(FilterValue)).ToList();
-        StateHasChanged();
     }
 
     protected override async Task OnInitializedAsync()
@@ -47,15 +46,14 @@
 
     private async Task UpdateIndex()
     {
-        DataContainer.LoadBitmapIndex(
-            Http,
-            "https://raw.githubusercontent.com/7474/SRC-Data/master/index-bitmap.json",
-            IndexBase
-            );
+        await DataContainer.LoadBitmapIndex(
+                  Http,
+                  "https://raw.githubusercontent.com/7474/SRC-Data/master/index-bitmap.json",
+                  IndexBase
+                  );
 
         SrcDataIndex = await Http.GetFromJsonAsync<SrcDataIndex>(IndexUri);
         Titles = SrcDataIndex.Titles;
-        StateHasChanged();
     }
 
     private string ToTitlePathParam(TitleData title)
