@@ -116,430 +116,442 @@ namespace SRCCore.Models
         // 返却したUnitDataはリストに追加されている状態。
         private UnitData LoadUnit(SrcDataReader reader)
         {
-            UnitData ud;
-            var continuesErrors = new List<InvalidSrcData>();
-            int ret;
-            string buf, buf2;
-            var line_buf = "";
+            UnitData ud = null;
+            try
+            {
+                var continuesErrors = new List<InvalidSrcData>();
+                int ret;
+                string buf, buf2;
+                var line_buf = "";
 
-            // 空行をスキップ
-            while (reader.HasMore && string.IsNullOrEmpty(line_buf))
-            {
-                line_buf = reader.GetLine();
-            }
-            if (reader.EOT)
-            {
-                return null;
-            }
-
-            // 名称
-            string data_name;
-            ret = Strings.InStr(line_buf, ",");
-            if (ret > 0)
-            {
-                data_name = Strings.Trim(Strings.Left(line_buf, ret - 1));
-                buf = Strings.Mid(line_buf, ret + 1);
-            }
-            else
-            {
-                data_name = line_buf;
-                buf = "";
-            }
-
-            if (Strings.InStr(data_name, " ") > 0)
-            {
-                throw reader.InvalidDataException(@"名称に半角スペースは使用出来ません。", data_name);
-            }
-
-            if (Strings.InStr(data_name, "（") > 0 | Strings.InStr(data_name, "）") > 0)
-            {
-                throw reader.InvalidDataException(@"名称に全角括弧は使用出来ません。", data_name);
-            }
-
-            if (Strings.InStr(data_name, "\"") > 0)
-            {
-                throw reader.InvalidDataException(@"名称に\は使用出来ません。", data_name);
-            }
-
-            object argIndex2 = (object)data_name;
-            if (IsDefined(data_name))
-            {
-                object argIndex1 = (object)data_name;
-                ud = Item(data_name);
-                ud.Clear();
-            }
-            else
-            {
-                ud = Add(data_name);
-            }
-            // 読み仮名
-            ret = Strings.InStr(buf, ",");
-            if (ret > 0)
-            {
-                throw reader.InvalidDataException(@"読み仮名の後に余分なデータが指定されています。", data_name);
-                ;
-            }
-            ud.KanaName = buf;
-
-            // 愛称, 読み仮名, ユニットクラス, パイロット数, アイテム数
-            line_buf = reader.GetLine();
-            // 書式チェックのため、コンマの数を数えておく
-            int comma_num = 0;
-            var loopTo = Strings.Len(line_buf);
-            for (int i = 1; i <= loopTo; i++)
-            {
-                if (Strings.Mid(line_buf, i, 1) == ",")
+                // 空行をスキップ
+                while (reader.HasMore && string.IsNullOrEmpty(line_buf))
                 {
-                    comma_num = (comma_num + 1);
+                    line_buf = reader.GetLine();
                 }
-            }
+                if (reader.EOT)
+                {
+                    return null;
+                }
 
-            if (comma_num < 3)
-            {
-                throw reader.InvalidDataException(@"設定に抜けがあります。", data_name);
-            }
-            else if (comma_num > 4)
-            {
-                throw reader.InvalidDataException(@"余分な「,」があります。", data_name);
-            }
+                // 名称
+                string data_name;
+                ret = Strings.InStr(line_buf, ",");
+                if (ret > 0)
+                {
+                    data_name = Strings.Trim(Strings.Left(line_buf, ret - 1));
+                    buf = Strings.Mid(line_buf, ret + 1);
+                }
+                else
+                {
+                    data_name = line_buf;
+                    buf = "";
+                }
 
-            // 愛称
-            if (Strings.Len(line_buf) == 0)
-            {
-                throw reader.InvalidDataException(@"愛称の設定が抜けています。", data_name);
-            }
+                if (Strings.InStr(data_name, " ") > 0)
+                {
+                    throw reader.InvalidDataException(@"名称に半角スペースは使用出来ません。", data_name);
+                }
 
-            ret = Strings.InStr(line_buf, ",");
-            buf2 = Strings.Trim(Strings.Left(line_buf, ret - 1));
-            buf = Strings.Mid(line_buf, ret + 1);
-            ud.Nickname = buf2;
+                if (Strings.InStr(data_name, "（") > 0 | Strings.InStr(data_name, "）") > 0)
+                {
+                    throw reader.InvalidDataException(@"名称に全角括弧は使用出来ません。", data_name);
+                }
 
-            // 読み仮名
-            if (comma_num == 4)
-            {
+                if (Strings.InStr(data_name, "\"") > 0)
+                {
+                    throw reader.InvalidDataException(@"名称に\は使用出来ません。", data_name);
+                }
+
+                object argIndex2 = (object)data_name;
+                if (IsDefined(data_name))
+                {
+                    object argIndex1 = (object)data_name;
+                    ud = Item(data_name);
+                    ud.Clear();
+                }
+                else
+                {
+                    ud = Add(data_name);
+                }
+                // 読み仮名
+                ret = Strings.InStr(buf, ",");
+                if (ret > 0)
+                {
+                    throw reader.InvalidDataException(@"読み仮名の後に余分なデータが指定されています。", data_name);
+                    ;
+                }
+                ud.KanaName = buf;
+
+                // 愛称, 読み仮名, ユニットクラス, パイロット数, アイテム数
+                line_buf = reader.GetLine();
+                // 書式チェックのため、コンマの数を数えておく
+                int comma_num = 0;
+                var loopTo = Strings.Len(line_buf);
+                for (int i = 1; i <= loopTo; i++)
+                {
+                    if (Strings.Mid(line_buf, i, 1) == ",")
+                    {
+                        comma_num = (comma_num + 1);
+                    }
+                }
+
+                if (comma_num < 3)
+                {
+                    throw reader.InvalidDataException(@"設定に抜けがあります。", data_name);
+                }
+                else if (comma_num > 4)
+                {
+                    throw reader.InvalidDataException(@"余分な「,」があります。", data_name);
+                }
+
+                // 愛称
+                if (Strings.Len(line_buf) == 0)
+                {
+                    throw reader.InvalidDataException(@"愛称の設定が抜けています。", data_name);
+                }
+
+                ret = Strings.InStr(line_buf, ",");
+                buf2 = Strings.Trim(Strings.Left(line_buf, ret - 1));
+                buf = Strings.Mid(line_buf, ret + 1);
+                ud.Nickname = buf2;
+
+                // 読み仮名
+                if (comma_num == 4)
+                {
+                    ret = Strings.InStr(buf, ",");
+                    buf2 = Strings.Trim(Strings.Left(buf, ret - 1));
+                    buf = Strings.Mid(buf, ret + 1);
+                    ud.KanaName = buf2;
+                }
+                else
+                {
+                    ud.KanaName = GeneralLib.StrToHiragana(ud.Nickname);
+                }
+
+                // ユニットクラス
                 ret = Strings.InStr(buf, ",");
                 buf2 = Strings.Trim(Strings.Left(buf, ret - 1));
                 buf = Strings.Mid(buf, ret + 1);
-                ud.KanaName = buf2;
-            }
-            else
-            {
-                ud.KanaName = GeneralLib.StrToHiragana(ud.Nickname);
-            }
-
-            // ユニットクラス
-            ret = Strings.InStr(buf, ",");
-            buf2 = Strings.Trim(Strings.Left(buf, ret - 1));
-            buf = Strings.Mid(buf, ret + 1);
-            if (!Information.IsNumeric(buf2))
-            {
-                ud.Class = buf2;
-            }
-            else
-            {
-                continuesErrors.Add(reader.InvalidData(@"ユニットクラスの設定が間違っています。", data_name));
-                ud.Class = "汎用";
-            }
-
-            // パイロット数
-            ret = Strings.InStr(buf, ",");
-            buf2 = Strings.Trim(Strings.Left(buf, ret - 1));
-            buf = Strings.Mid(buf, ret + 1);
-            if (Strings.Left(buf2, 1) != "(")
-            {
-                if (Information.IsNumeric(buf2))
+                if (!Information.IsNumeric(buf2))
                 {
-                    ud.PilotNum = GeneralLib.MinLng(Conversions.ToInteger(buf2), 99);
+                    ud.Class = buf2;
                 }
                 else
                 {
-                    continuesErrors.Add(reader.InvalidData(@"パイロット数の設定が間違っています。", data_name));
-                    ud.PilotNum = 1;
-                }
-                if (ud.PilotNum < 1)
-                {
-                    continuesErrors.Add(reader.InvalidData(@"パイロット数の設定が間違っています。", data_name));
-                    ud.PilotNum = 1;
-                }
-            }
-            else
-            {
-                if (Strings.Right(buf2, 1) != ")")
-                {
-                    throw reader.InvalidDataException(@"パイロット数の設定が間違っています。", data_name);
+                    continuesErrors.Add(reader.InvalidData(@"ユニットクラスの設定が間違っています。", data_name));
+                    ud.Class = "汎用";
                 }
 
-                buf2 = Strings.Mid(buf2, 2, Strings.Len(buf2) - 2);
-                if (Information.IsNumeric(buf2))
+                // パイロット数
+                ret = Strings.InStr(buf, ",");
+                buf2 = Strings.Trim(Strings.Left(buf, ret - 1));
+                buf = Strings.Mid(buf, ret + 1);
+                if (Strings.Left(buf2, 1) != "(")
                 {
-                    ud.PilotNum = GeneralLib.MinLng(Conversions.ToInteger(buf2), 99);
+                    if (Information.IsNumeric(buf2))
+                    {
+                        ud.PilotNum = GeneralLib.MinLng(Conversions.ToInteger(buf2), 99);
+                    }
+                    else
+                    {
+                        continuesErrors.Add(reader.InvalidData(@"パイロット数の設定が間違っています。", data_name));
+                        ud.PilotNum = 1;
+                    }
+                    if (ud.PilotNum < 1)
+                    {
+                        continuesErrors.Add(reader.InvalidData(@"パイロット数の設定が間違っています。", data_name));
+                        ud.PilotNum = 1;
+                    }
                 }
                 else
                 {
-                    continuesErrors.Add(reader.InvalidData(@"パイロット数の設定が間違っています。", data_name));
-                    ud.PilotNum = 1;
+                    if (Strings.Right(buf2, 1) != ")")
+                    {
+                        throw reader.InvalidDataException(@"パイロット数の設定が間違っています。", data_name);
+                    }
+
+                    buf2 = Strings.Mid(buf2, 2, Strings.Len(buf2) - 2);
+                    if (Information.IsNumeric(buf2))
+                    {
+                        ud.PilotNum = GeneralLib.MinLng(Conversions.ToInteger(buf2), 99);
+                    }
+                    else
+                    {
+                        continuesErrors.Add(reader.InvalidData(@"パイロット数の設定が間違っています。", data_name));
+                        ud.PilotNum = 1;
+                    }
+
+                    if (ud.PilotNum < 1)
+                    {
+                        continuesErrors.Add(reader.InvalidData(@"パイロット数の設定が間違っています。", data_name));
+                        ud.PilotNum = 1;
+                    }
+
+                    // XXX 何で負数にしてるの？
+                    ud.PilotNum = -ud.PilotNum;
                 }
 
-                if (ud.PilotNum < 1)
+                // アイテム数
+                buf = Strings.Trim(buf);
+                if (Strings.Len(buf) == 0)
                 {
-                    continuesErrors.Add(reader.InvalidData(@"パイロット数の設定が間違っています。", data_name));
-                    ud.PilotNum = 1;
+                    throw reader.InvalidDataException(@"アイテム数の設定が抜けています。", data_name);
                 }
 
-                // XXX 何で負数にしてるの？
-                ud.PilotNum = -ud.PilotNum;
-            }
+                if (Information.IsNumeric(buf))
+                {
+                    ud.ItemNum = GeneralLib.MinLng(Conversions.ToInteger(buf), 99);
+                }
+                else
+                {
+                    continuesErrors.Add(reader.InvalidData(@"アイテム数の設定が間違っています。", data_name));
+                    ud.ItemNum = 4;
+                }
 
-            // アイテム数
-            buf = Strings.Trim(buf);
-            if (Strings.Len(buf) == 0)
-            {
-                throw reader.InvalidDataException(@"アイテム数の設定が抜けています。", data_name);
-            }
+                // 移動可能地形, 移動力, サイズ, 修理費, 経験値
+                line_buf = reader.GetLine();
 
-            if (Information.IsNumeric(buf))
-            {
-                ud.ItemNum = GeneralLib.MinLng(Conversions.ToInteger(buf), 99);
-            }
-            else
-            {
-                continuesErrors.Add(reader.InvalidData(@"アイテム数の設定が間違っています。", data_name));
-                ud.ItemNum = 4;
-            }
+                // 移動可能地形
+                ret = Strings.InStr(line_buf, ",");
+                if (ret == 0)
+                {
+                    throw reader.InvalidDataException(@"移動力の設定が抜けています。", data_name);
+                }
 
-            // 移動可能地形, 移動力, サイズ, 修理費, 経験値
-            line_buf = reader.GetLine();
+                buf2 = Strings.Trim(Strings.Left(line_buf, ret - 1));
+                buf = Strings.Mid(line_buf, ret + 1);
+                if (!Information.IsNumeric(buf2))
+                {
+                    ud.Transportation = buf2;
+                }
+                else
+                {
+                    continuesErrors.Add(reader.InvalidData(@"移動可能地形の設定が間違っています。", data_name));
+                    ud.Transportation = "陸";
+                }
 
-            // 移動可能地形
-            ret = Strings.InStr(line_buf, ",");
-            if (ret == 0)
-            {
-                throw reader.InvalidDataException(@"移動力の設定が抜けています。", data_name);
-            }
+                // 移動力
+                ret = Strings.InStr(buf, ",");
+                if (ret == 0)
+                {
+                    throw reader.InvalidDataException(@"サイズの設定が抜けています。", data_name);
+                }
 
-            buf2 = Strings.Trim(Strings.Left(line_buf, ret - 1));
-            buf = Strings.Mid(line_buf, ret + 1);
-            if (!Information.IsNumeric(buf2))
-            {
-                ud.Transportation = buf2;
-            }
-            else
-            {
-                continuesErrors.Add(reader.InvalidData(@"移動可能地形の設定が間違っています。", data_name));
-                ud.Transportation = "陸";
-            }
+                buf2 = Strings.Trim(Strings.Left(buf, ret - 1));
+                buf = Strings.Mid(buf, ret + 1);
+                if (Information.IsNumeric(buf2))
+                {
+                    ud.Speed = GeneralLib.MinLng(Conversions.ToInteger(buf2), 99);
+                }
+                else
+                {
+                    continuesErrors.Add(reader.InvalidData(@"移動力の設定が間違っています。", data_name));
+                }
 
-            // 移動力
-            ret = Strings.InStr(buf, ",");
-            if (ret == 0)
-            {
-                throw reader.InvalidDataException(@"サイズの設定が抜けています。", data_name);
-            }
+                // サイズ
+                ret = Strings.InStr(buf, ",");
+                if (ret == 0)
+                {
+                    throw reader.InvalidDataException(@"経験値の設定が抜けています。", data_name);
+                }
 
-            buf2 = Strings.Trim(Strings.Left(buf, ret - 1));
-            buf = Strings.Mid(buf, ret + 1);
-            if (Information.IsNumeric(buf2))
-            {
-                ud.Speed = GeneralLib.MinLng(Conversions.ToInteger(buf2), 99);
-            }
-            else
-            {
-                continuesErrors.Add(reader.InvalidData(@"移動力の設定が間違っています。", data_name));
-            }
+                buf2 = Strings.Trim(Strings.Left(buf, ret - 1));
+                buf = Strings.Mid(buf, ret + 1);
+                switch (buf2 ?? "")
+                {
+                    case "XL":
+                    case "LL":
+                    case "L":
+                    case "M":
+                    case "S":
+                    case "SS":
+                        {
+                            ud.Size = buf2;
+                            break;
+                        }
 
-            // サイズ
-            ret = Strings.InStr(buf, ",");
-            if (ret == 0)
-            {
-                throw reader.InvalidDataException(@"経験値の設定が抜けています。", data_name);
-            }
+                    default:
+                        {
+                            continuesErrors.Add(reader.InvalidData(@"サイズの設定が間違っています。", data_name));
+                            ud.Size = "M";
+                            break;
+                        }
+                }
 
-            buf2 = Strings.Trim(Strings.Left(buf, ret - 1));
-            buf = Strings.Mid(buf, ret + 1);
-            switch (buf2 ?? "")
-            {
-                case "XL":
-                case "LL":
-                case "L":
-                case "M":
-                case "S":
-                case "SS":
-                    {
-                        ud.Size = buf2;
-                        break;
-                    }
+                // 修理費
+                ret = Strings.InStr(buf, ",");
+                if (ret == 0)
+                {
+                    throw reader.InvalidDataException(@"経験値の設定が抜けています。", data_name);
+                }
 
-                default:
-                    {
-                        continuesErrors.Add(reader.InvalidData(@"サイズの設定が間違っています。", data_name));
-                        ud.Size = "M";
-                        break;
-                    }
-            }
+                buf2 = Strings.Trim(Strings.Left(buf, ret - 1));
+                buf = Strings.Mid(buf, ret + 1);
+                if (Information.IsNumeric(buf2))
+                {
+                    ud.Value = GeneralLib.MinLng(Conversions.ToInteger(buf2), 9999999);
+                }
+                else
+                {
+                    continuesErrors.Add(reader.InvalidData(@"修理費の設定が間違っています。", data_name));
+                }
 
-            // 修理費
-            ret = Strings.InStr(buf, ",");
-            if (ret == 0)
-            {
-                throw reader.InvalidDataException(@"経験値の設定が抜けています。", data_name);
-            }
+                // 経験値
+                buf = Strings.Trim(buf);
+                if (Strings.Len(buf) == 0)
+                {
+                    throw reader.InvalidDataException(@"経験値の設定が抜けています。", data_name);
+                }
 
-            buf2 = Strings.Trim(Strings.Left(buf, ret - 1));
-            buf = Strings.Mid(buf, ret + 1);
-            if (Information.IsNumeric(buf2))
-            {
-                ud.Value = GeneralLib.MinLng(Conversions.ToInteger(buf2), 9999999);
-            }
-            else
-            {
-                continuesErrors.Add(reader.InvalidData(@"修理費の設定が間違っています。", data_name));
-            }
+                if (Information.IsNumeric(buf))
+                {
+                    ud.ExpValue = GeneralLib.MinLng(Conversions.ToInteger(buf), 9999);
+                }
+                else
+                {
+                    continuesErrors.Add(reader.InvalidData(@"経験値の設定が間違っています。", data_name));
+                }
 
-            // 経験値
-            buf = Strings.Trim(buf);
-            if (Strings.Len(buf) == 0)
-            {
-                throw reader.InvalidDataException(@"経験値の設定が抜けています。", data_name);
-            }
+                // 特殊能力データ
+                line_buf = LoadFeature(data_name, ud, reader, continuesErrors);
 
-            if (Information.IsNumeric(buf))
-            {
-                ud.ExpValue = GeneralLib.MinLng(Conversions.ToInteger(buf), 9999);
-            }
-            else
-            {
-                continuesErrors.Add(reader.InvalidData(@"経験値の設定が間違っています。", data_name));
-            }
+                // 最大ＨＰ
+                ret = Strings.InStr(line_buf, ",");
+                if (ret == 0)
+                {
+                    throw reader.InvalidDataException(@"最大ＥＮの設定が抜けています。", data_name);
+                }
 
-            // 特殊能力データ
-            line_buf = LoadFeature(data_name, ud, reader, continuesErrors);
+                buf2 = Strings.Trim(Strings.Left(line_buf, ret - 1));
+                buf = Strings.Mid(line_buf, ret + 1);
+                if (Information.IsNumeric(buf2))
+                {
+                    ud.HP = GeneralLib.MinLng(Conversions.ToInteger(buf2), 9999999);
+                }
+                else
+                {
+                    continuesErrors.Add(reader.InvalidData(@"最大ＨＰの設定が間違っています。", data_name));
+                    ud.HP = 1000;
+                }
 
-            // 最大ＨＰ
-            ret = Strings.InStr(line_buf, ",");
-            if (ret == 0)
-            {
-                throw reader.InvalidDataException(@"最大ＥＮの設定が抜けています。", data_name);
-            }
+                // 最大ＥＮ
+                ret = Strings.InStr(buf, ",");
+                if (ret == 0)
+                {
+                    throw reader.InvalidDataException(@"装甲の設定が抜けています。", data_name);
+                }
 
-            buf2 = Strings.Trim(Strings.Left(line_buf, ret - 1));
-            buf = Strings.Mid(line_buf, ret + 1);
-            if (Information.IsNumeric(buf2))
-            {
-                ud.HP = GeneralLib.MinLng(Conversions.ToInteger(buf2), 9999999);
-            }
-            else
-            {
-                continuesErrors.Add(reader.InvalidData(@"最大ＨＰの設定が間違っています。", data_name));
-                ud.HP = 1000;
-            }
+                buf2 = Strings.Trim(Strings.Left(buf, ret - 1));
+                buf = Strings.Mid(buf, ret + 1);
+                if (Information.IsNumeric(buf2))
+                {
+                    ud.EN = GeneralLib.MinLng(Conversions.ToInteger(buf2), 9999);
+                }
+                else
+                {
+                    continuesErrors.Add(reader.InvalidData(@"最大ＥＮの設定が間違っています。", data_name));
+                    ud.EN = 100;
+                }
 
-            // 最大ＥＮ
-            ret = Strings.InStr(buf, ",");
-            if (ret == 0)
-            {
-                throw reader.InvalidDataException(@"装甲の設定が抜けています。", data_name);
-            }
+                // 装甲
+                ret = Strings.InStr(buf, ",");
+                if (ret == 0)
+                {
+                    throw reader.InvalidDataException(@"運動性の設定が抜けています。", data_name);
+                }
 
-            buf2 = Strings.Trim(Strings.Left(buf, ret - 1));
-            buf = Strings.Mid(buf, ret + 1);
-            if (Information.IsNumeric(buf2))
-            {
-                ud.EN = GeneralLib.MinLng(Conversions.ToInteger(buf2), 9999);
-            }
-            else
-            {
-                continuesErrors.Add(reader.InvalidData(@"最大ＥＮの設定が間違っています。", data_name));
-                ud.EN = 100;
-            }
+                buf2 = Strings.Trim(Strings.Left(buf, ret - 1));
+                buf = Strings.Mid(buf, ret + 1);
+                if (Information.IsNumeric(buf2))
+                {
+                    ud.Armor = GeneralLib.MinLng(Conversions.ToInteger(buf2), 99999);
+                }
+                else
+                {
+                    continuesErrors.Add(reader.InvalidData(@"装甲の設定が間違っています。", data_name));
+                }
 
-            // 装甲
-            ret = Strings.InStr(buf, ",");
-            if (ret == 0)
-            {
-                throw reader.InvalidDataException(@"運動性の設定が抜けています。", data_name);
-            }
+                // 運動性
+                buf2 = Strings.Trim(buf);
+                if (Strings.Len(buf2) == 0)
+                {
+                    throw reader.InvalidDataException(@"運動性の設定が抜けています。", data_name);
+                }
 
-            buf2 = Strings.Trim(Strings.Left(buf, ret - 1));
-            buf = Strings.Mid(buf, ret + 1);
-            if (Information.IsNumeric(buf2))
-            {
-                ud.Armor = GeneralLib.MinLng(Conversions.ToInteger(buf2), 99999);
-            }
-            else
-            {
-                continuesErrors.Add(reader.InvalidData(@"装甲の設定が間違っています。", data_name));
-            }
+                if (Information.IsNumeric(buf2))
+                {
+                    ud.Mobility = GeneralLib.MinLng(Conversions.ToInteger(buf2), 9999);
+                }
+                else
+                {
+                    continuesErrors.Add(reader.InvalidData(@"運動性の設定が間違っています。", data_name));
+                }
 
-            // 運動性
-            buf2 = Strings.Trim(buf);
-            if (Strings.Len(buf2) == 0)
-            {
-                throw reader.InvalidDataException(@"運動性の設定が抜けています。", data_name);
-            }
+                // 地形適応, ビットマップ
+                line_buf = reader.GetLine();
 
-            if (Information.IsNumeric(buf2))
-            {
-                ud.Mobility = GeneralLib.MinLng(Conversions.ToInteger(buf2), 9999);
-            }
-            else
-            {
-                continuesErrors.Add(reader.InvalidData(@"運動性の設定が間違っています。", data_name));
-            }
+                // 地形適応
+                ret = Strings.InStr(line_buf, ",");
+                if (ret == 0)
+                {
+                    throw reader.InvalidDataException(@"ビットマップの設定が抜けています。", data_name);
+                }
 
-            // 地形適応, ビットマップ
-            line_buf = reader.GetLine();
+                buf2 = Strings.Trim(Strings.Left(line_buf, ret - 1));
+                buf = Strings.Mid(line_buf, ret + 1);
+                if (Strings.Len(buf2) == 4)
+                {
+                    ud.Adaption = buf2;
+                }
+                else
+                {
+                    continuesErrors.Add(reader.InvalidData(@"地形適応の設定が間違っています。", data_name));
+                    ud.Adaption = "AAAA";
+                }
 
-            // 地形適応
-            ret = Strings.InStr(line_buf, ",");
-            if (ret == 0)
-            {
-                throw reader.InvalidDataException(@"ビットマップの設定が抜けています。", data_name);
-            }
+                // ビットマップ
+                buf = Strings.Trim(buf);
+                if (Strings.Len(buf) == 0)
+                {
+                    throw reader.InvalidDataException(@"ビットマップの設定が抜けています。", data_name);
+                }
 
-            buf2 = Strings.Trim(Strings.Left(line_buf, ret - 1));
-            buf = Strings.Mid(line_buf, ret + 1);
-            if (Strings.Len(buf2) == 4)
-            {
-                ud.Adaption = buf2;
-            }
-            else
-            {
-                continuesErrors.Add(reader.InvalidData(@"地形適応の設定が間違っています。", data_name));
-                ud.Adaption = "AAAA";
-            }
+                if (Strings.LCase(Strings.Right(buf, 4)) == ".bmp")
+                {
+                    ud.Bitmap = buf;
+                }
+                else
+                {
+                    continuesErrors.Add(reader.InvalidData(@"ビットマップの設定が間違っています。", data_name));
+                    ud.IsBitmapMissing = true;
+                }
 
-            // ビットマップ
-            buf = Strings.Trim(buf);
-            if (Strings.Len(buf) == 0)
-            {
-                throw reader.InvalidDataException(@"ビットマップの設定が抜けています。", data_name);
-            }
+                if (reader.EOT)
+                {
+                    return ud;
+                }
 
-            if (Strings.LCase(Strings.Right(buf, 4)) == ".bmp")
-            {
-                ud.Bitmap = buf;
-            }
-            else
-            {
-                continuesErrors.Add(reader.InvalidData(@"ビットマップの設定が間違っています。", data_name));
-                ud.IsBitmapMissing = true;
-            }
+                // 武器データ
+                line_buf = LoadWepon(data_name, ud, reader, continuesErrors);
 
-            if (reader.EOT)
-            {
-                return ud;
+                if (line_buf != "===")
+                {
+                    return ud;
+                }
+
+                // アビリティデータ
+                line_buf = LoadAbility(data_name, ud, reader, continuesErrors);
+
             }
-
-            // 武器データ
-            line_buf = LoadWepon(data_name, ud, reader, continuesErrors);
-
-            if (line_buf != "===")
+            finally
             {
-                return ud;
+                if (ud != null)
+                {
+                    ud.Raw = reader.Raw;
+                    reader.ClearRaw();
+                }
             }
-
-            // アビリティデータ
-            line_buf = LoadAbility(data_name, ud, reader, continuesErrors);
             return ud;
         }
 

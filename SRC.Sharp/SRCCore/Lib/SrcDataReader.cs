@@ -27,6 +27,13 @@ namespace SRCCore.Lib
         public bool EOT => !HasMore;
         public bool HasMore => Peek() >= 0;
 
+        private StringBuilder _rawBuffer = new StringBuilder();
+        public string Raw => _rawBuffer.ToString();
+        public void ClearRaw()
+        {
+            _rawBuffer.Clear();
+        }
+
         // From GeneralLib#GetLine
         // 行頭に「#」がある場合は行の読み飛ばしを行う。
         // 行中に「//」がある場合、そこからはコメントと見なして無視する。
@@ -38,6 +45,7 @@ namespace SRCCore.Lib
             {
                 // 完全な互換性にはこだわらないので先にTrimしてしまう
                 var buf = ReadLine().Trim();
+                _rawBuffer.AppendLine(buf);
                 LineNumber++;
 
                 // 空行はそのまま返す

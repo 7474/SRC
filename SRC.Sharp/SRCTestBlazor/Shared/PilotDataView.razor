@@ -107,7 +107,7 @@
         }
         <div class="content">
             <button class="button is-small" @onclick="OnClickRaw">Raw</button>
-            <pre style="@(ExpandRaw ? "" : "display: none;")">@DataJson</pre>
+            <pre style="@(ExpandRaw ? "" : "display: none;")">@Data.Raw</pre>
         </div>
     </div>
     <footer class="card-footer">
@@ -129,7 +129,6 @@
     private MessagePreviewData PickupMessage;
 
     private bool ExpandRaw = false;
-    private string DataJson => JsonConvert.SerializeObject(Data, Formatting.Indented);
 
     protected override void OnParametersSet()
     {

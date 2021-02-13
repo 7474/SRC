@@ -71,6 +71,8 @@ namespace SRCCore.Models
         public IList<WeaponData> Weapons => colWeaponData;
         public IList<AbilityData> Abilities => colAbilityData;
 
+        public string Raw;
+
         public PilotData() : base()
         {
             SpecialPowers = new List<PilotDataSpecialPower>();
