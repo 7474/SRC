@@ -3,7 +3,7 @@
 @using SRCTestBlazor.Extensions
 @using System.Diagnostics;
 
-<section class="container">
+<section class="mt-5 mb-5">
     <div class="message">
         <div class="message-header">
             <p>SRC#DataViewer</p>
@@ -13,17 +13,16 @@
             <p>Titlesメニューから<a href="http://www.gsc.ne.jp/" target="_blank">GSC</a>に投稿されたデータを選択するか、以下のフォームで任意のファイルを読み込んでください。</p>
         </div>
     </div>
-    <div class="content mb-5">
+    <div class="content">
         <InputFile OnChange="OnInputFileChange" multiple />
-        <p>現在対応しているデータファイルは<code>robot.txt, unit.txt, pilot.txt</code>の一部分です。</p>
+        <p>現在対応しているデータファイルは<code>robot.txt, unit.txt, pilot.txt, pilot_message.txt, pilot_dialog.txt</code>の一部分です。</p>
+        <p>データフォルダ内のファイルを全選択するなど、複数のファイルを一括読み込みできます。対応していないファイルは無視されます。</p>
         <p>文字コードは<code>UTF-8</code>にしてください。<code>Shift_JIS</code>は読み込めません。</p>
     </div>
 </section>
 
 <TitleView SRC="@SRC" DataTitle="" />
-<div class="container">
-    <div id="status" class="message">@StatusText</div>
-</div>
+<div id="status" class="message">@StatusText</div>
 
 @code {
     private SRC SRC = new SRC();

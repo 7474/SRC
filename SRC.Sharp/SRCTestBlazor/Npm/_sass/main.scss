@@ -4,34 +4,62 @@
 
 @import "../node_modules/bulma/bulma";
 
-// card 内のコンテンツの余白
-@media screen and (max-width: $desktop) {
-    .card {
-        .card-content {
-            // .content 以外の左右余白をカットする
+// ユニット・パイロットのデータ
+.card.src-data {
+    .card-content {
+        // card 内のコンテンツの余白
+        // $desktop だとまだ余裕がある。ブレークポイントは特にBulmaとは関係ない感覚値。
+        @media screen and (max-width: 640px) {
+            // 左右余白をカットする
             padding: $card-content-padding 0;
+            //.media {
+            //    padding: 0 $card-content-padding;
+            //}
+        }
 
-            .content, .media {
-                padding: 0 $card-content-padding;
-            }
-
+        @media screen and (max-width: $desktop) {
             // $table-cell-padding: 0.5em 0.75em !default
             // padding: $table-cell-padding
             table.table {
-                th, td{
+                th, td {
                     padding: 0.5em 0.25em;
                 }
             }
         }
+
+        font-size: 0.75rem;
+        // メインの数値
+        .level {
+            max-width: 480px;
+            margin-bottom: 0.5rem;
+
+            .level-item {
+                .heading {
+                    font-size: 0.75rem;
+                    margin-bottom: 0;
+                }
+
+                .title {
+                    font-size: 1rem;
+                }
+            }
+        }
+        // 特殊能力
+        ul {
+            margin-left: 0;
+            list-style-type: none;
+        }
+        // 武器・アビリティテーブル
+        .name-cell {
+            // データ定義の推奨合わせ
+            width: 14em;
+        }
+        // メッセージのプレビュー
+        .message-preview {
+            font-size: 1rem;
+        }
     }
 }
-
-// 武器・アビリティテーブル
-.name-cell {
-    // データ定義の推奨合わせ
-    width: 14em;
-}
-
 
 // For Blazor
 #blazor-error-ui {
