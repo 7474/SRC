@@ -65,6 +65,7 @@
 
     public void Dispose()
     {
+        DataContainer.OnChange -= StateHasChanged;
         NavigationManager.LocationChanged -= HandleLocationChanged;
     }
 

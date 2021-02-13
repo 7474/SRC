@@ -37,7 +37,7 @@
         FilterValue = e.Value?.ToString() ?? "";
 
         Titles = DataContainer.DataIndex.Titles.Where(x => x.Path.Contains(FilterValue)).ToList();
-
+        // XXX レンダリングの待ち時間をこのfalseまで待てていない
         DataContainer.IndexBusy = false;
     }
 
@@ -57,6 +57,7 @@
         await DataContainer.LoadDataIndex(Http, DataIndexUri);
 
         Titles = DataContainer.DataIndex.Titles;
+        // XXX こっちも多分待ててないんじゃないかな？
         DataContainer.IndexBusy = false;
     }
 
