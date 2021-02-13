@@ -18,18 +18,17 @@
         <nav class="navbar" role="navigation" aria-label="dropdown navigation">
             <div class="navbar-item has-dropdown is-hoverable">
                 <a class="navbar-link">
-                    Titles
-                    <span style="width: 1.2em; margin-left: 4px; display: inline-block;">
+                    <span class="icon">
                         @if (TitlesBusy)
                         {
-                            <span>Busy</span>
-                            <ion-icon name="sync-outline"></ion-icon>
+                            <i class="fas fa-spinner"></i>
                         }
                         else
                         {
-                            <span>End</span>
+                            <i class="far fa-folder"></i>
                         }
                     </span>
+                    <span>Titles</span>
                 </a>
                 <div class="navbar-dropdown">
                     <TitleNavMenu />
