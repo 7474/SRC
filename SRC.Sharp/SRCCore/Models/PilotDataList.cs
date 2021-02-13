@@ -6,8 +6,10 @@
 using SRCCore.Exceptions;
 using SRCCore.Lib;
 using SRCCore.VB;
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace SRCCore.Models
 {
@@ -41,6 +43,8 @@ namespace SRCCore.Models
         public void Clear()
         {
             colPilotDataList.Clear();
+            Raw = "";
+            Comment = "";
         }
 
         // パイロットデータリストにデータを追加
@@ -148,7 +152,11 @@ namespace SRCCore.Models
                 }
                 else
                 {
-                    Comment = Comment + reader.RawComment;
+                    Comment = string.Join(Environment.NewLine + Environment.NewLine,
+                        new string[]{
+                            Comment,
+                            reader.RawComment.Trim(),
+                        }.Where(x => !string.IsNullOrEmpty(x)));
                 }
                 reader.ClearRawComment();
                 if (reader.EOT)
