@@ -22,13 +22,13 @@
             <div class="level is-mobile">
                 <div class="level-item has-text-centered">
                     <div>
-                        <p class="heading">格闘</p>
+                        <p class="heading">ＨＰ</p>
                         <p class="title">@Data.HP</p>
                     </div>
                 </div>
                 <div class="level-item has-text-centered">
                     <div>
-                        <p class="heading">EN</p>
+                        <p class="heading">ＥＮ</p>
                         <p class="title">@Data.EN</p>
                     </div>
                 </div>
@@ -54,13 +54,13 @@
             <div class="level is-mobile">
                 <div class="level-item has-text-centered">
                     <div>
-                        <p class="heading">移動</p>
+                        <p class="heading">タイプ</p>
                         <p class="title">@Data.Transportation</p>
                     </div>
                 </div>
                 <div class="level-item has-text-centered">
                     <div>
-                        <p class="heading">地形</p>
+                        <p class="heading">適応</p>
                         <p class="title">@Data.Adaption</p>
                     </div>
                 </div>
@@ -89,16 +89,16 @@
                 <table class="table">
                     <thead class="is-size-7">
                         <tr>
-                            <th>武器名</th>
-                            <th>攻撃力</th>
+                            <th>名称</th>
+                            <th>攻撃</th>
                             <th>射程</th>
-                            <th>命中</th>
+                            <th>命</th>
                             <th>弾</th>
                             <th>EN</th>
                             <th>気力</th>
-                            <th>地形</th>
+                            <th>適応</th>
                             <th>CT</th>
-                            <th>属性</th>
+                            <th>分類</th>
                         </tr>
                     </thead>
                     <tbody class="is-size-7">
@@ -128,26 +128,26 @@
                     <thead class="is-size-7">
                         <tr>
                             <th>名称</th>
-                            <th>回数</th>
+                            <th>効果</th>
+                            <th>射程</th>
+                            <th>数</th>
                             <th>EN</th>
                             <th>気力</th>
-                            <th>射程</th>
-                            <th>属性</th>
-                            <th>効果</th>
+                            <th>分類</th>
                         </tr>
                     </thead>
                     <tbody class="is-size-7">
                         @foreach (var ad in Data.Abilities)
                         {
-                            <tr>
-                                <td class="has-text-left name-cell">@ad.Name</td>
-                                <td class="has-text-right">@ad.Stock</td>
-                                <td class="has-text-right">@ad.ENConsumption</td>
-                                <td class="has-text-right">@ad.NecessaryMorale</td>
-                                <td class="has-text-centered">@ad.MinRange ~ @ad.MaxRange</td>
-                                <td class="has-text-left">@ad.Class</td>
-                                <td class="has-text-left">---</td>
-                            </tr>
+                        <tr>
+                            <td class="has-text-left name-cell">@ad.Name</td>
+                            <td class="has-text-left">---</td>
+                            <td class="has-text-centered">@ad.MinRange ~ @ad.MaxRange</td>
+                            <td class="has-text-right">@ad.Stock</td>
+                            <td class="has-text-right">@ad.ENConsumption</td>
+                            <td class="has-text-right">@ad.NecessaryMorale</td>
+                            <td class="has-text-left">@ad.Class</td>
+                        </tr>
                         }
                     </tbody>
                 </table>
