@@ -17,51 +17,10 @@
         <DataNavMenu OnChangeSrcDataKind="@OnChangeSrcDataKind" />
     </div>
     <div style="@(currentKind != SrcDataKind.Unit ? "display: none; ": "")">
-        <nav class="navbar is-light is-fixed-top" style="position: sticky; top: 93px;">
-            @* XXX 常に横幅が入っているとは限らない模様 *@
-            <div class="navbar-brand" style="overflow-x: scroll;">
-                @foreach (var ud in SRC.UDList.Items)
-                {
-                    var name = ud.Name;
-                    <a href="#unit-@name" class="navbar-item"
-                       @onclick:preventDefault
-                       @onclick="@(e => OnClickAnchor("unit-" + name))">@name</a>
-                }
-            </div>
-        </nav>
-        @if (!string.IsNullOrEmpty(SRC.UDList.Comment))
-        {
-            <div class="content">
-                <div class="src-comment">@SRC.UDList.Comment</div>
-            </div>
-        }
-        @foreach (var ud in SRC.UDList.Items)
-        {
-            <UnitDataView Data="@ud" />
-        }
+        <UnitDataListView SRC="@SRC" />
     </div>
     <div style="@(currentKind != SrcDataKind.Pilot ? "display: none; ": "")">
-        <nav class="navbar is-light is-fixed-top" style="position: sticky; top: 93px;">
-            <div class="navbar-brand" style="overflow-x: scroll;">
-                @foreach (var pd in SRC.PDList.Items)
-                {
-                    var name = pd.Name;
-                    <a href="#pilot-@name" class="navbar-item"
-                       @onclick:preventDefault
-                       @onclick="@(e => OnClickAnchor("pilot-" + name))">@name</a>
-                }
-            </div>
-        </nav>
-        @if (!string.IsNullOrEmpty(SRC.PDList.Comment))
-        {
-            <div class="content">
-                <div class="src-comment">@SRC.PDList.Comment</div>
-            </div>
-        }
-        @foreach (var pd in SRC.PDList.Items)
-        {
-            <PilotDataView Data="@pd" SRC="@SRC" />
-        }
+        <PilotDataListView SRC="@SRC" />
     </div>
 </section>
 
