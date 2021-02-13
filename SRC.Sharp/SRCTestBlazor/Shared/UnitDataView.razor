@@ -1,7 +1,7 @@
 ﻿@using SRCCore.Models
 @inject SrcDataContainer DataContainer
 
-<article class="card" id="unit-@Data.Name">
+<article class="card src-data" id="unit-@Data.Name">
     <header class="card-header">
         <div class="card-header-title">
             <div class="media">
@@ -87,7 +87,7 @@
         {
             <div class="table-container">
                 <table class="table">
-                    <thead class="is-size-7">
+                    <thead>
                         <tr>
                             <th>名称</th>
                             <th>攻撃</th>
@@ -101,7 +101,7 @@
                             <th>分類</th>
                         </tr>
                     </thead>
-                    <tbody class="is-size-7">
+                    <tbody>
                         @foreach (var wd in Data.Weapons)
                         {
                             <tr>

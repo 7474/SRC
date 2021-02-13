@@ -1,7 +1,7 @@
 ﻿@using SRCCore.Models
 @inject SrcDataContainer DataContainer
 
-<article class="card" id="pilot-@Data.Name">
+<article class="card src-data" id="pilot-@Data.Name">
     <header class="card-header">
         <div class="card-header-title">
             <div class="media">
@@ -100,7 +100,7 @@
                         <ion-icon name="refresh-outline"></ion-icon>
                     </button>
                 </div>
-                <div class="media-content">
+                <div class="media-content message-preview">
                     <p>@PickupMessage.Message</p>
                 </div>
             </div>
