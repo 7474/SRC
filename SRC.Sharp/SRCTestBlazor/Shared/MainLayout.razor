@@ -19,6 +19,17 @@
             <div class="navbar-item has-dropdown is-hoverable">
                 <a class="navbar-link">
                     Titles
+                    <span style="width: 1.2em; margin-left: 4px; display: inline-block;">
+                        @if (TitlesBusy)
+                        {
+                            <span>Busy</span>
+                            <ion-icon name="sync-outline"></ion-icon>
+                        }
+                        else
+                        {
+                            <span>End</span>
+                        }
+                    </span>
                 </a>
                 <div class="navbar-dropdown">
                     <TitleNavMenu />
@@ -35,9 +46,11 @@
 @code {
     [Inject]
     protected IJSRuntime JsInterop { get; set; }
+    [Inject]
+    private SrcDataContainer DataContainer { get; set; }
 
     private bool IsBurgerActive = false;
-
+    private bool TitlesBusy => DataContainer.IndexBusy;
 
     private void OnClickBurger()
     {
@@ -47,6 +60,7 @@
     protected override void OnInitialized()
     {
         NavigationManager.LocationChanged += HandleLocationChanged;
+        DataContainer.OnChange += StateHasChanged;
     }
 
     public void Dispose()
