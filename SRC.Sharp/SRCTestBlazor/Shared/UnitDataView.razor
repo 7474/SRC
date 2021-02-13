@@ -156,10 +156,10 @@
         <div class="content">
             @if (!string.IsNullOrEmpty(Data.Comment))
             {
-                <pre>@Data.Comment</pre>
+                <div class="src-comment">@Data.Comment</div>
             }
             <button class="button is-small" @onclick="OnClickRaw">Raw</button>
-            <pre style="@(ExpandRaw ? "" : "display: none;")">@Data.Raw</pre>
+            <div class="src-raw" style="@(ExpandRaw ? "" : "display: none;")">@Data.Raw</div>
         </div>
     </div>
     <footer class="card-footer">
