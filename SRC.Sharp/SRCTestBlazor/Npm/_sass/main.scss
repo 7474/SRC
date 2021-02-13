@@ -5,7 +5,8 @@
 @import "../node_modules/bulma/bulma";
 
 // card 内のコンテンツの余白
-@media screen and (max-width: $desktop) {
+// $desktop だとまだ余裕がある。ブレークポイントは特にBulmaとは関係ない感覚値。
+@media screen and (max-width: 640px) {
     .card {
         .card-content {
             // .content 以外の左右余白をカットする
@@ -14,11 +15,16 @@
             .content, .media {
                 padding: 0 $card-content-padding;
             }
-
+        }
+    }
+}
+@media screen and (max-width: $desktop) {
+    .card {
+        .card-content {
             // $table-cell-padding: 0.5em 0.75em !default
             // padding: $table-cell-padding
             table.table {
-                th, td{
+                th, td {
                     padding: 0.5em 0.25em;
                 }
             }

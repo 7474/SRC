@@ -7779,13 +7779,15 @@ a.has-text-danger-dark:hover, a.has-text-danger-dark:focus {
   background-color: #fafafa;
   padding: 3rem 1.5rem 6rem; }
 
-@media screen and (max-width: 1024px) {
+@media screen and (max-width: 640px) {
   .card .card-content {
     padding: 1.5rem 0; }
     .card .card-content .content, .card .card-content .media {
-      padding: 0 1.5rem; }
-    .card .card-content table.table th, .card .card-content table.table td {
-      padding: 0.5em 0.25em; } }
+      padding: 0 1.5rem; } }
+
+@media screen and (max-width: 1024px) {
+  .card .card-content table.table th, .card .card-content table.table td {
+    padding: 0.5em 0.25em; } }
 
 .name-cell {
   width: 14em; }
