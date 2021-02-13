@@ -65,7 +65,8 @@ namespace SRCCore.Models
         public IList<WeaponData> Weapons => colWeaponData;
         public IList<AbilityData> Abilities => colAbilityData;
 
-        public string Raw;
+        public string Raw = "";
+        public string Comment = "";
 
         public UnitData()
         {

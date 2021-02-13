@@ -106,6 +106,10 @@
             </div>
         }
         <div class="content">
+            @if (!string.IsNullOrEmpty(Data.Comment))
+            {
+                <pre>@Data.Comment</pre>
+            }
             <button class="button is-small" @onclick="OnClickRaw">Raw</button>
             <pre style="@(ExpandRaw ? "" : "display: none;")">@Data.Raw</pre>
         </div>

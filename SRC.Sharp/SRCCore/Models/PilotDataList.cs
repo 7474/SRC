@@ -19,6 +19,9 @@ namespace SRCCore.Models
 
         public IList<PilotData> Items => colPilotDataList;
 
+        public string Raw = "";
+        public string Comment = "";
+
         public PilotDataList()
         {
             colPilotDataList = new SrcCollection<PilotData>();
@@ -119,6 +122,7 @@ namespace SRCCore.Models
                 {
                     lastPd = LoadPilot(reader, lastPd);
                 }
+                Raw = reader.Raw;
             }
         }
 
@@ -140,9 +144,13 @@ namespace SRCCore.Models
                 }
                 if (lastPd != null)
                 {
-                    lastPd.Raw += reader.RawComment;
-                    reader.ClearRawComment();
+                    lastPd.Comment = reader.RawComment.Trim();
                 }
+                else
+                {
+                    Comment = Comment + reader.RawComment;
+                }
+                reader.ClearRawComment();
                 if (reader.EOT)
                 {
                     return null;

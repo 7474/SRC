@@ -139,21 +139,25 @@
                     <tbody class="is-size-7">
                         @foreach (var ad in Data.Abilities)
                         {
-                        <tr>
-                            <td class="has-text-left name-cell">@ad.Name</td>
-                            <td class="has-text-left">---</td>
-                            <td class="has-text-centered">@ad.MinRange ~ @ad.MaxRange</td>
-                            <td class="has-text-right">@ad.Stock</td>
-                            <td class="has-text-right">@ad.ENConsumption</td>
-                            <td class="has-text-right">@ad.NecessaryMorale</td>
-                            <td class="has-text-left">@ad.Class</td>
-                        </tr>
+                            <tr>
+                                <td class="has-text-left name-cell">@ad.Name</td>
+                                <td class="has-text-left">---</td>
+                                <td class="has-text-centered">@ad.MinRange ~ @ad.MaxRange</td>
+                                <td class="has-text-right">@ad.Stock</td>
+                                <td class="has-text-right">@ad.ENConsumption</td>
+                                <td class="has-text-right">@ad.NecessaryMorale</td>
+                                <td class="has-text-left">@ad.Class</td>
+                            </tr>
                         }
                     </tbody>
                 </table>
             </div>
         }
         <div class="content">
+            @if (!string.IsNullOrEmpty(Data.Comment))
+            {
+                <pre>@Data.Comment</pre>
+            }
             <button class="button is-small" @onclick="OnClickRaw">Raw</button>
             <pre style="@(ExpandRaw ? "" : "display: none;")">@Data.Raw</pre>
         </div>

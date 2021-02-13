@@ -20,8 +20,12 @@ namespace SRCCore.Models
         // ID作成用変数
         private int IDNum;
 
+        public string Raw = "";
+        public string Comment = "";
+
         public UnitDataList()
         {
+            IDNum = 0;
             colUnitDataList = new SrcCollection<UnitData>();
             AddDummyData();
         }
@@ -105,6 +109,7 @@ namespace SRCCore.Models
                 {
                     lastUd = LoadUnit(reader, lastUd);
                 }
+                Raw = reader.Raw;
             }
             //}
             //catch (InvalidSrcDataException)
@@ -132,9 +137,13 @@ namespace SRCCore.Models
                 }
                 if (lastUd != null)
                 {
-                    lastUd.Raw += reader.RawComment;
-                    reader.ClearRawComment();
+                    lastUd.Comment = reader.RawComment.Trim();
                 }
+                else
+                {
+                    Comment = Comment + reader.RawComment;
+                }
+                reader.ClearRawComment();
                 if (reader.EOT)
                 {
                     return null;
