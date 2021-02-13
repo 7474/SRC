@@ -33,8 +33,9 @@
     // OnInputにすると結構入力に対する応答時間が厳しい
     private async Task OnChangeFilterAsync(ChangeEventArgs e)
     {
+        Titles = new List<TitleData>();
         DataContainer.IndexBusy = true;
-        // XXX の変化に伴う親の StateHasChanged でこちらも再レンダリングされて時間がかかる
+        // XXX の変化に伴う親の StateHasChanged 時の時間軽減。ただしちらつく。
 
         FilterValue = e.Value?.ToString() ?? "";
 
