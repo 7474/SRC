@@ -4,7 +4,7 @@
 
 <div class="navbar-item">
     <input type="hidden" @bind="DataIndexUri" />
-    <input class="form-control mr-sm-2" type="search" placeholder="Filter" @oninput="OnChangeFilter" />
+    <input class="form-control mr-sm-2" type="search" placeholder="Filter" @oninput="OnChangeFilterAsync" />
 </div>
 <hr class="navbar-divider">
 @if (Titles != null)
@@ -31,14 +31,18 @@
     private ICollection<TitleData> Titles { get; set; }
 
     // OnInputにすると結構入力に対する応答時間が厳しい
-    private void OnChangeFilter(ChangeEventArgs e)
+    private async Task OnChangeFilterAsync(ChangeEventArgs e)
     {
         DataContainer.IndexBusy = true;
+        // XXX の変化に伴う親の StateHasChanged でこちらも再レンダリングされて時間がかかる
+
         FilterValue = e.Value?.ToString() ?? "";
 
-        Titles = DataContainer.DataIndex.Titles.Where(x => x.Path.Contains(FilterValue)).ToList();
-        // XXX レンダリングの待ち時間をこのfalseまで待てていない
-        DataContainer.IndexBusy = false;
+        await Task.Run(() =>
+        {
+            Titles = DataContainer.DataIndex.Titles.Where(x => x.Path.Contains(FilterValue)).ToList();
+            DataContainer.IndexBusy = false;
+        });
     }
 
     protected override async Task OnInitializedAsync()
@@ -50,6 +54,13 @@
         await UpdateIndex();
     }
 
+    protected override void OnAfterRender(bool firstRender)
+    {
+        //if (!firstRender)
+        //{
+        //}
+    }
+
     private async Task UpdateIndex()
     {
         DataContainer.IndexBusy = true;
@@ -57,7 +68,6 @@
         await DataContainer.LoadDataIndex(Http, DataIndexUri);
 
         Titles = DataContainer.DataIndex.Titles;
-        // XXX こっちも多分待ててないんじゃないかな？
         DataContainer.IndexBusy = false;
     }
 
