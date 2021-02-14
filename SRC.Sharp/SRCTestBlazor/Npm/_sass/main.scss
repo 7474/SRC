@@ -74,6 +74,16 @@ $code-family: "IPA Gothic", monospace;
     overflow-x: hidden;
 }
 
+.src-sub-nuvbar.navbar {
+    position: sticky;
+    top: 93px;
+    display: block;
+
+    .navbar-brand {
+        overflow-x: scroll;
+    }
+}
+
 .src-comment {
     font-family: $code-family;
     background-color: $pre-background;
