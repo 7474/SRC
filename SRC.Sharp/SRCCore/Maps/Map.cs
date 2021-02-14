@@ -2,10 +2,10 @@
 // 本プログラムはフリーソフトであり、無保証です。
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
+using SRCCore.Exceptions;
 using SRCCore.Lib;
 using SRCCore.Units;
 using System;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 
@@ -432,227 +432,81 @@ namespace SRCCore.Maps
         }
 
         // 指定したマップ画像を検索する
-        public string SearchTerrainImageFile(int tid, int tbitmap, int tx, int ty)
+        // XXX レイヤ対応はしてない
+        public string SearchTerrainImageFile(MapCell cell)
         {
-            throw new NotImplementedException();
-            //            string SearchTerrainImageFileRet = default;
-            //            string tbmpname;
-            //            string fname2, fname1, fname3;
-            //            ;
-            //#error Cannot convert LocalDeclarationStatementSyntax - see comment for details
-            //            /* Cannot convert LocalDeclarationStatementSyntax, System.NotSupportedException: StaticKeyword not supported!
-            //               場所 ICSharpCode.CodeConverter.CSharp.SyntaxKindExtensions.ConvertToken(SyntaxKind t, TokenContext context)
-            //               場所 ICSharpCode.CodeConverter.CSharp.CommonConversions.ConvertModifier(SyntaxToken m, TokenContext context)
-            //               場所 ICSharpCode.CodeConverter.CSharp.CommonConversions.<ConvertModifiersCore>d__43.MoveNext()
-            //               場所 System.Linq.Enumerable.<ConcatIterator>d__59`1.MoveNext()
-            //               場所 System.Linq.Enumerable.WhereEnumerableIterator`1.MoveNext()
-            //               場所 System.Linq.Buffer`1..ctor(IEnumerable`1 source)
-            //               場所 System.Linq.OrderedEnumerable`1.<GetEnumerator>d__1.MoveNext()
-            //               場所 Microsoft.CodeAnalysis.SyntaxTokenList.CreateNode(IEnumerable`1 tokens)
-            //               場所 ICSharpCode.CodeConverter.CSharp.CommonConversions.ConvertModifiers(SyntaxNode node, IReadOnlyCollection`1 modifiers, TokenContext context, Boolean isVariableOrConst, SyntaxKind[] extraCsModifierKinds)
-            //               場所 ICSharpCode.CodeConverter.CSharp.MethodBodyExecutableStatementVisitor.<VisitLocalDeclarationStatement>d__31.MoveNext()
-            //            --- 直前に例外がスローされた場所からのスタック トレースの終わり ---
-            //               場所 ICSharpCode.CodeConverter.CSharp.HoistedNodeStateVisitor.<AddLocalVariablesAsync>d__6.MoveNext()
-            //            --- 直前に例外がスローされた場所からのスタック トレースの終わり ---
-            //               場所 ICSharpCode.CodeConverter.CSharp.CommentConvertingMethodBodyVisitor.<DefaultVisitInnerAsync>d__3.MoveNext()
+            //// ADD START 240a
+            //// 画像無が確定してるなら処理しない
+            //if (tid == NO_LAYER_NUM)
+            //{
+            //    return SearchTerrainImageFileRet;
+            //}
+            //else if (tbitmap == NO_LAYER_NUM)
+            //{
+            //    return SearchTerrainImageFileRet;
+            //}
+            //// ADD  END  240a
 
-            //            Input:
-            //                    init_setup_background As Boolean
+            //// 初めて実行する際に、各フォルダにBitmap\Mapフォルダがあるかチェック
+            //if (!init_setup_background)
+            //{
+            //    // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
+            //    if (Strings.Len(FileSystem.Dir(SRC.ScenarioPath + @"Bitmap\Map", FileAttribute.Directory)) > 0)
+            //    {
+            //        scenario_map_dir_exists = true;
+            //    }
+            //    // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
+            //    if (Strings.Len(FileSystem.Dir(SRC.ExtDataPath + @"Bitmap\Map", FileAttribute.Directory)) > 0)
+            //    {
+            //        extdata_map_dir_exists = true;
+            //    }
+            //    // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
+            //    if (Strings.Len(FileSystem.Dir(SRC.ExtDataPath2 + @"Bitmap\Map", FileAttribute.Directory)) > 0)
+            //    {
+            //        extdata2_map_dir_exists = true;
+            //    }
 
-            //             */
-            //            ;
-            //#error Cannot convert LocalDeclarationStatementSyntax - see comment for details
-            //            /* Cannot convert LocalDeclarationStatementSyntax, System.NotSupportedException: StaticKeyword not supported!
-            //               場所 ICSharpCode.CodeConverter.CSharp.SyntaxKindExtensions.ConvertToken(SyntaxKind t, TokenContext context)
-            //               場所 ICSharpCode.CodeConverter.CSharp.CommonConversions.ConvertModifier(SyntaxToken m, TokenContext context)
-            //               場所 ICSharpCode.CodeConverter.CSharp.CommonConversions.<ConvertModifiersCore>d__43.MoveNext()
-            //               場所 System.Linq.Enumerable.<ConcatIterator>d__59`1.MoveNext()
-            //               場所 System.Linq.Enumerable.WhereEnumerableIterator`1.MoveNext()
-            //               場所 System.Linq.Buffer`1..ctor(IEnumerable`1 source)
-            //               場所 System.Linq.OrderedEnumerable`1.<GetEnumerator>d__1.MoveNext()
-            //               場所 Microsoft.CodeAnalysis.SyntaxTokenList.CreateNode(IEnumerable`1 tokens)
-            //               場所 ICSharpCode.CodeConverter.CSharp.CommonConversions.ConvertModifiers(SyntaxNode node, IReadOnlyCollection`1 modifiers, TokenContext context, Boolean isVariableOrConst, SyntaxKind[] extraCsModifierKinds)
-            //               場所 ICSharpCode.CodeConverter.CSharp.MethodBodyExecutableStatementVisitor.<VisitLocalDeclarationStatement>d__31.MoveNext()
-            //            --- 直前に例外がスローされた場所からのスタック トレースの終わり ---
-            //               場所 ICSharpCode.CodeConverter.CSharp.HoistedNodeStateVisitor.<AddLocalVariablesAsync>d__6.MoveNext()
-            //            --- 直前に例外がスローされた場所からのスタック トレースの終わり ---
-            //               場所 ICSharpCode.CodeConverter.CSharp.CommentConvertingMethodBodyVisitor.<DefaultVisitInnerAsync>d__3.MoveNext()
+            //    init_setup_background = true;
+            //}
 
-            //            Input:
-            //                    scenario_map_dir_exists As Boolean
-
-            //             */
-            //            ;
-            //#error Cannot convert LocalDeclarationStatementSyntax - see comment for details
-            //            /* Cannot convert LocalDeclarationStatementSyntax, System.NotSupportedException: StaticKeyword not supported!
-            //               場所 ICSharpCode.CodeConverter.CSharp.SyntaxKindExtensions.ConvertToken(SyntaxKind t, TokenContext context)
-            //               場所 ICSharpCode.CodeConverter.CSharp.CommonConversions.ConvertModifier(SyntaxToken m, TokenContext context)
-            //               場所 ICSharpCode.CodeConverter.CSharp.CommonConversions.<ConvertModifiersCore>d__43.MoveNext()
-            //               場所 System.Linq.Enumerable.<ConcatIterator>d__59`1.MoveNext()
-            //               場所 System.Linq.Enumerable.WhereEnumerableIterator`1.MoveNext()
-            //               場所 System.Linq.Buffer`1..ctor(IEnumerable`1 source)
-            //               場所 System.Linq.OrderedEnumerable`1.<GetEnumerator>d__1.MoveNext()
-            //               場所 Microsoft.CodeAnalysis.SyntaxTokenList.CreateNode(IEnumerable`1 tokens)
-            //               場所 ICSharpCode.CodeConverter.CSharp.CommonConversions.ConvertModifiers(SyntaxNode node, IReadOnlyCollection`1 modifiers, TokenContext context, Boolean isVariableOrConst, SyntaxKind[] extraCsModifierKinds)
-            //               場所 ICSharpCode.CodeConverter.CSharp.MethodBodyExecutableStatementVisitor.<VisitLocalDeclarationStatement>d__31.MoveNext()
-            //            --- 直前に例外がスローされた場所からのスタック トレースの終わり ---
-            //               場所 ICSharpCode.CodeConverter.CSharp.HoistedNodeStateVisitor.<AddLocalVariablesAsync>d__6.MoveNext()
-            //            --- 直前に例外がスローされた場所からのスタック トレースの終わり ---
-            //               場所 ICSharpCode.CodeConverter.CSharp.CommentConvertingMethodBodyVisitor.<DefaultVisitInnerAsync>d__3.MoveNext()
-
-            //            Input:
-            //                    extdata_map_dir_exists As Boolean
-
-            //             */
-            //            ;
-
-            //            // ADD START 240a
-            //            // 画像無が確定してるなら処理しない
-            //            if (tid == NO_LAYER_NUM)
-            //            {
-            //                return SearchTerrainImageFileRet;
-            //            }
-            //            else if (tbitmap == NO_LAYER_NUM)
-            //            {
-            //                return SearchTerrainImageFileRet;
-            //            }
-            //            // ADD  END  240a
-
-            //            // 初めて実行する際に、各フォルダにBitmap\Mapフォルダがあるかチェック
-            //            if (!init_setup_background)
-            //            {
-            //                // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
-            //                if (Strings.Len(FileSystem.Dir(SRC.ScenarioPath + @"Bitmap\Map", FileAttribute.Directory)) > 0)
-            //                {
-            //                    scenario_map_dir_exists = true;
-            //                }
-            //                // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
-            //                if (Strings.Len(FileSystem.Dir(SRC.ExtDataPath + @"Bitmap\Map", FileAttribute.Directory)) > 0)
-            //                {
-            //                    extdata_map_dir_exists = true;
-            //                }
-            //                // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
-            //                if (Strings.Len(FileSystem.Dir(SRC.ExtDataPath2 + @"Bitmap\Map", FileAttribute.Directory)) > 0)
-            //                {
-            //                    extdata2_map_dir_exists = true;
-            //                }
-
-            //                init_setup_background = true;
-            //            }
-
-            //            // マップ画像のファイル名を作成
-            //            tbmpname = SRC.TDList.Bitmap(tid);
-            //            fname1 = @"\Bitmap\Map\" + tbmpname + @"\" + tbmpname + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(tbitmap, "0000") + ".bmp";
-            //            fname2 = @"\Bitmap\Map\" + tbmpname + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(tbitmap, "0000") + ".bmp";
-            //            fname3 = @"\Bitmap\Map\" + tbmpname + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(tbitmap) + ".bmp";
-
-            //            // ビットマップを探す
-            //            if (scenario_map_dir_exists)
-            //            {
-            //                string argfname = SRC.ScenarioPath + fname1;
-            //                if (GeneralLib.FileExists(ref argfname))
-            //                {
-            //                    SearchTerrainImageFileRet = SRC.ScenarioPath + fname1;
-            //                    MapImageFileTypeData[tx, ty] = MapImageFileType.SeparateDirMapImageFileType;
-            //                    return SearchTerrainImageFileRet;
-            //                }
-
-            //                string argfname1 = SRC.ScenarioPath + fname2;
-            //                if (GeneralLib.FileExists(ref argfname1))
-            //                {
-            //                    SearchTerrainImageFileRet = SRC.ScenarioPath + fname2;
-            //                    MapImageFileTypeData[tx, ty] = MapImageFileType.FourFiguresMapImageFileType;
-            //                    return SearchTerrainImageFileRet;
-            //                }
-
-            //                string argfname2 = SRC.ScenarioPath + fname3;
-            //                if (GeneralLib.FileExists(ref argfname2))
-            //                {
-            //                    SearchTerrainImageFileRet = SRC.ScenarioPath + fname3;
-            //                    MapImageFileTypeData[tx, ty] = MapImageFileType.OldMapImageFileType;
-            //                    return SearchTerrainImageFileRet;
-            //                }
-            //            }
-
-            //            if (extdata_map_dir_exists)
-            //            {
-            //                string argfname3 = SRC.ExtDataPath + fname1;
-            //                if (GeneralLib.FileExists(ref argfname3))
-            //                {
-            //                    SearchTerrainImageFileRet = SRC.ExtDataPath + fname1;
-            //                    MapImageFileTypeData[tx, ty] = MapImageFileType.SeparateDirMapImageFileType;
-            //                    return SearchTerrainImageFileRet;
-            //                }
-
-            //                string argfname4 = SRC.ExtDataPath + fname2;
-            //                if (GeneralLib.FileExists(ref argfname4))
-            //                {
-            //                    SearchTerrainImageFileRet = SRC.ExtDataPath + fname2;
-            //                    MapImageFileTypeData[tx, ty] = MapImageFileType.FourFiguresMapImageFileType;
-            //                    return SearchTerrainImageFileRet;
-            //                }
-
-            //                string argfname5 = SRC.ExtDataPath + fname3;
-            //                if (GeneralLib.FileExists(ref argfname5))
-            //                {
-            //                    SearchTerrainImageFileRet = SRC.ExtDataPath + fname3;
-            //                    MapImageFileTypeData[tx, ty] = MapImageFileType.OldMapImageFileType;
-            //                    return SearchTerrainImageFileRet;
-            //                }
-            //            }
-
-            //            if (extdata2_map_dir_exists)
-            //            {
-            //                string argfname6 = SRC.ExtDataPath2 + fname1;
-            //                if (GeneralLib.FileExists(ref argfname6))
-            //                {
-            //                    SearchTerrainImageFileRet = SRC.ExtDataPath2 + fname1;
-            //                    MapImageFileTypeData[tx, ty] = MapImageFileType.SeparateDirMapImageFileType;
-            //                    return SearchTerrainImageFileRet;
-            //                }
-
-            //                string argfname7 = SRC.ExtDataPath2 + fname2;
-            //                if (GeneralLib.FileExists(ref argfname7))
-            //                {
-            //                    SearchTerrainImageFileRet = SRC.ExtDataPath2 + fname2;
-            //                    MapImageFileTypeData[tx, ty] = MapImageFileType.FourFiguresMapImageFileType;
-            //                    return SearchTerrainImageFileRet;
-            //                }
-
-            //                string argfname8 = SRC.ExtDataPath2 + fname3;
-            //                if (GeneralLib.FileExists(ref argfname8))
-            //                {
-            //                    SearchTerrainImageFileRet = SRC.ExtDataPath2 + fname3;
-            //                    MapImageFileTypeData[tx, ty] = MapImageFileType.OldMapImageFileType;
-            //                    return SearchTerrainImageFileRet;
-            //                }
-            //            }
-
-            //            string argfname9 = SRC.AppPath + fname1;
-            //            if (GeneralLib.FileExists(ref argfname9))
-            //            {
-            //                SearchTerrainImageFileRet = SRC.AppPath + fname1;
-            //                MapImageFileTypeData[tx, ty] = MapImageFileType.SeparateDirMapImageFileType;
-            //                return SearchTerrainImageFileRet;
-            //            }
-
-            //            string argfname10 = SRC.AppPath + fname2;
-            //            if (GeneralLib.FileExists(ref argfname10))
-            //            {
-            //                SearchTerrainImageFileRet = SRC.AppPath + fname2;
-            //                MapImageFileTypeData[tx, ty] = MapImageFileType.FourFiguresMapImageFileType;
-            //                return SearchTerrainImageFileRet;
-            //            }
-
-            //            string argfname11 = SRC.AppPath + fname3;
-            //            if (GeneralLib.FileExists(ref argfname11))
-            //            {
-            //                SearchTerrainImageFileRet = SRC.AppPath + fname3;
-            //                MapImageFileTypeData[tx, ty] = MapImageFileType.OldMapImageFileType;
-            //                return SearchTerrainImageFileRet;
-            //            }
-
-            //            return SearchTerrainImageFileRet;
+            // マップ画像のファイル名を作成
+            var tbmpname = cell.Terrain.Bitmap;
+            var tbitmap = cell.BitmapNo;
+            var fnames = new string[]
+            {
+                Path.Combine("Bitmap", "Map", tbmpname, string.Format("{0}{1:0000}.bmp", tbmpname, tbitmap)),
+                Path.Combine("Bitmap", "Map", string.Format("{0}{1:0000}.bmp", tbmpname, tbitmap)),
+                Path.Combine("Bitmap", "Map", string.Format("{0}{1}.bmp", tbmpname, tbitmap)),
+            };
+            var dnames = new string[]
+            {
+                SRC.ScenarioPath,
+                SRC.ExtDataPath,
+                SRC.ExtDataPath2,
+                SRC.AppPath,
+            };
+            // ビットマップを探す
+            foreach (var dir in dnames)
+            {
+                //if (scenario_map_dir_exists)
+                //if (extdata_map_dir_exists)
+                //if (extdata2_map_dir_exists)
+                //string argfname9 = SRC.AppPath + fname1;
+                if (Directory.Exists(dir))
+                {
+                    foreach (var file in fnames)
+                    {
+                        var fpath = Path.Combine(dir, file);
+                        if (File.Exists(fpath))
+                        {
+                            // TODO ビットマップ名記録
+                            //MapImageFileTypeData[tx, ty] = MapImageFileType.SeparateDirMapImageFileType;
+                            return fpath;
+                        }
+                    }
+                }
+            }
+            return null;
         }
 
         // マップファイル fname のデータをロード
@@ -750,14 +604,14 @@ namespace SRCCore.Maps
                             var cellTrrainBitmapNo = buf.Split(',');
                             cell.TerrainType = int.Parse(cellTrrainBitmapNo[0]);
                             cell.BitmapNo = int.Parse(cellTrrainBitmapNo[1]);
-                            // TODO Impl
-                            //if (!SRC.TDList.IsDefined(MapData[x, y, MapDataIndex.TerrainType]))
-                            //{
-                            //    Interaction.MsgBox("定義されていない" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(MapData[x, y, MapDataIndex.TerrainType]) + "番の地形データが使われています");
-                            //    // MOD  END  240a
-                            //    FileSystem.FileClose(FileNumber);
-                            //    Environment.Exit(0);
-                            //}
+                            if (SRC.TDList.IsDefined(cell.TerrainType))
+                            {
+                                cell.Terrain = SRC.TDList.Item(cell.TerrainType);
+                            }
+                            else
+                            {
+                                throw reader.InvalidDataException("定義されていない" + cell.TerrainType + "番の地形データが使われています", fname);
+                            }
                         }
                     }
 
@@ -803,7 +657,7 @@ namespace SRCCore.Maps
             }
             catch (Exception ex)
             {
-                throw new ApplicationException("マップファイル「" + fname + "」のデータが不正です", ex);
+                throw new TerminateException("マップファイル「" + fname + "」のデータが不正です", ex);
             }
         }
 

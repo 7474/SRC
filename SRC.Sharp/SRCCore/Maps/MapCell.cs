@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SRCCore.Models;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -9,9 +10,9 @@ namespace SRCCore.Maps
         // レイヤー無しの固定値
         public const int NO_LAYER_NUM = 10000;
 
-        // XXX Enumにするとか
         // 地形の種類
         public int TerrainType { get; set; }
+        public TerrainData Terrain { get; set; }
         // ビットマップの番号
         public int BitmapNo { get; set; }
         // マップ上層レイヤーデータ

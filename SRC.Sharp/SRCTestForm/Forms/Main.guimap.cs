@@ -225,9 +225,17 @@ namespace SRCTestForm
                         var ypx = (y - 1) * MapCellPx;
 
                         // 画像を描き込み
-                        g.FillRectangle(Brushes.Black, xpx, ypx, MapCellPx, MapCellPx);
-                        g.DrawString($"{cell.TerrainType}", SystemFonts.DefaultFont, Brushes.Gray, xpx + 2, ypx + 2);
-                        //ret = BitBlt(withBlock.picBack.hDC, xx, yy, 32, 32, withBlock.picTmp32(0).hDC, 0, 0, SRCCOPY);
+                        var bitmapPath = Map.SearchTerrainImageFile(cell);
+                        if (!string.IsNullOrEmpty(bitmapPath))
+                        {
+                            // XXX 初回だけとはいえキャッシュはしたほうがいいやろな
+                            g.DrawImage(Image.FromFile(bitmapPath), xpx, ypx);
+                        }
+                        else
+                        {
+                            g.FillRectangle(Brushes.Black, xpx, ypx, MapCellPx, MapCellPx);
+                        }
+                        //g.DrawString($"{cell.TerrainType}", SystemFonts.DefaultFont, Brushes.Gray, xpx + 2, ypx + 2);
                     }
                 }
 

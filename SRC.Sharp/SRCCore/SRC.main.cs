@@ -1,11 +1,10 @@
-﻿using SRCCore.Lib;
+﻿using SRCCore.Exceptions;
+using SRCCore.Lib;
 using SRCCore.Maps;
 using SRCCore.VB;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using System.Text;
 
 namespace SRCCore
 {
@@ -930,26 +929,22 @@ namespace SRCCore
             //                string argfname9 = AppPath + @"Data\System\item.txt";
             //                IDList.Load(argfname9);
             //            }
-            //            // 地形データをロード
-            //            string argfname12 = AppPath + @"Data\System\terrain.txt";
-            //            if (GeneralLib.FileExists(argfname12))
-            //            {
-            //                string argfname11 = AppPath + @"Data\System\terrain.txt";
-            //                TDList.Load(argfname11);
-            //            }
-            //            else
-            //            {
-            //                string argmsg13 = @"地形データファイル「Data\System\terrain.txt」が見つかりません";
-            //                GUI.ErrorMessage(argmsg13);
-            //                TerminateSRC();
-            //            }
+            // 地形データをロード
+            string appTerrainPath = Path.Combine(AppPath, "Data", "System", "terrain.txt");
+            if (GeneralLib.FileExists(appTerrainPath))
+            {
+                TDList.Load(appTerrainPath);
+            }
+            else
+            {
+                throw new TerminateException(@"地形データファイル「Data\System\terrain.txt」が見つかりません");
+            }
+            string scenarioTerrainPath = Path.Combine(ScenarioPath, "Data", "System", "terrain.txt");
+            if (GeneralLib.FileExists(scenarioTerrainPath))
+            {
+                TDList.Load(scenarioTerrainPath);
+            }
 
-            //            string argfname14 = ScenarioPath + @"Data\System\terrain.txt";
-            //            if (GeneralLib.FileExists(argfname14))
-            //            {
-            //                string argfname13 = ScenarioPath + @"Data\System\terrain.txt";
-            //                TDList.Load(argfname13);
-            //            }
             //            // バトルコンフィグデータをロード
             //            bool localFileExists6() { string argfname = AppPath + @"Data\System\battle.txt"; var ret = GeneralLib.FileExists(argfname); return ret; }
 
