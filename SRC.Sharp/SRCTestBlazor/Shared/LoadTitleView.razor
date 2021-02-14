@@ -1,14 +1,12 @@
 ﻿@using System.Diagnostics;
-@using System.Net.Http
-@using System.Web
 @using System.IO
-
-@inject HttpClient Http
 
 <TitleView SRC="@SRC" DataTitle="@DataTitle" />
 <div id="status" class="message">@StatusText</div>
 
 @code {
+    [Inject]
+    private HttpClient Http { get; set; }
     [Parameter]
     public string DataPath { get; set; }
     [Parameter]

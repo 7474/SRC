@@ -1,5 +1,4 @@
 ﻿@using SRCCore.Models
-@inject SrcDataContainer DataContainer
 
 <article class="card src-data" id="pilot-@Data.Name">
     <header class="card-header">
@@ -119,6 +118,8 @@
 </article>
 
 @code {
+    [Inject]
+    SrcDataContainer DataContainer { get; set; }
     [Parameter]
     public PilotData Data { get; set; }
     [Parameter]
