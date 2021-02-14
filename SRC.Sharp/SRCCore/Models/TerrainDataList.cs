@@ -12,7 +12,7 @@ using System.IO;
 namespace SRCCore.Models
 {
     // 全地形データを管理するリストのクラス
-    internal class TerrainDataList
+    public class TerrainDataList
     {
         // 地形データの配列
         // 他のリスト管理用クラスと異なり配列を使っているのはアクセスを高速化するため
@@ -308,9 +308,16 @@ namespace SRCCore.Models
                                 continuesErrors.Add(reader.InvalidData("行頭から" + SrcFormatter.Format((object)i) + "番目の地形効果の設定が間違っています。", data_name));
                             }
                         }
-
-                        TerrainList[data_id] = td;
+                        if (reader.HasMore)
+                        {
+                            line_buf = reader.GetLine();
+                        }
+                        else
+                        {
+                            break;
+                        }
                     }
+                    TerrainList[data_id] = td;
                 }
             }
         }

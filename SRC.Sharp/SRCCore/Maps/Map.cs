@@ -2,10 +2,10 @@
 // 本プログラムはフリーソフトであり、無保証です。
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
+using SRCCore.Exceptions;
 using SRCCore.Lib;
 using SRCCore.Units;
 using System;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 
@@ -803,7 +803,7 @@ namespace SRCCore.Maps
             }
             catch (Exception ex)
             {
-                throw new ApplicationException("マップファイル「" + fname + "」のデータが不正です", ex);
+                throw new TerminateException("マップファイル「" + fname + "」のデータが不正です", ex);
             }
         }
 

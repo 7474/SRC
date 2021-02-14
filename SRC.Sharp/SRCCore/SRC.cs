@@ -5,13 +5,9 @@
 
 using SRCCore.Events;
 using SRCCore.Expressions;
-using SRCCore.Lib;
 using SRCCore.Maps;
 using SRCCore.Models;
-using SRCCore.VB;
-using System;
 using System.Collections.Generic;
-using System.IO;
 
 namespace SRCCore
 {
@@ -46,8 +42,8 @@ namespace SRCCore
         //public SpecialPowerDataList SPDList = new SpecialPowerDataList();
         // エリアスデータのリスト
         public AliasDataList ALDList = new AliasDataList();
-        //// 地形データのリスト
-        //public TerrainDataList TDList = new TerrainDataList();
+        // 地形データのリスト
+        public TerrainDataList TDList = new TerrainDataList();
         //// バトルコンフィグデータのリスト
         //public BattleConfigDataList BCList = new BattleConfigDataList();
 
