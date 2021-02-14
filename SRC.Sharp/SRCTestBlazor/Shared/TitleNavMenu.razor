@@ -9,12 +9,13 @@
 <hr class="navbar-divider">
 @if (Titles != null)
 {
-    foreach (var title in Titles)
-    {
-        <NavLink class="navbar-item" href="@ToTitlePathParam(title)">
-            @title.Title
-        </NavLink>
-    }
+    <div class="src-titles-container">
+        <Virtualize Items="@Titles" Context="title" ItemSize="37">
+            <NavLink @key="title.Path" class="navbar-item" href="@ToTitlePathParam(title)">
+                @title.Title
+            </NavLink>
+        </Virtualize>
+    </div>
 }
 
 @code {
