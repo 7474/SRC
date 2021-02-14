@@ -750,14 +750,14 @@ namespace SRCCore.Maps
                             var cellTrrainBitmapNo = buf.Split(',');
                             cell.TerrainType = int.Parse(cellTrrainBitmapNo[0]);
                             cell.BitmapNo = int.Parse(cellTrrainBitmapNo[1]);
-                            // TODO Impl
-                            //if (!SRC.TDList.IsDefined(MapData[x, y, MapDataIndex.TerrainType]))
-                            //{
-                            //    Interaction.MsgBox("定義されていない" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(MapData[x, y, MapDataIndex.TerrainType]) + "番の地形データが使われています");
-                            //    // MOD  END  240a
-                            //    FileSystem.FileClose(FileNumber);
-                            //    Environment.Exit(0);
-                            //}
+                            if (SRC.TDList.IsDefined(cell.TerrainType))
+                            {
+                                cell.Terrain = SRC.TDList.Item(cell.TerrainType);
+                            }
+                            else
+                            {
+                                throw reader.InvalidDataException("定義されていない" + cell.TerrainType + "番の地形データが使われています", fname);
+                            }
                         }
                     }
 
