@@ -16,10 +16,11 @@
             <div class="src-comment">@SRC.PDList.Comment</div>
         </div>
     }
-    @foreach (var pd in SRC.PDList.Items)
-    {
-        <PilotDataView Data="@pd" SRC="@SRC" />
-    }
+    <div class="src-data-list-container">
+        <Virtualize Items="@SRC.PDList.Items" Context="pd">
+            <PilotDataView @key="pd.Name" Data="@pd" SRC="@SRC" />
+        </Virtualize>
+    </div>
 </section>
 
 @code {

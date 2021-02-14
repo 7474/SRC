@@ -17,10 +17,11 @@
             <div class="src-comment">@SRC.UDList.Comment</div>
         </div>
     }
-    @foreach (var ud in SRC.UDList.Items)
-    {
-        <UnitDataView Data="@ud" />
-    }
+    <div class="src-data-list-container">
+        <Virtualize Items="@SRC.UDList.Items" Context="ud">
+            <UnitDataView @key="ud.Name" Data="@ud" />
+        </Virtualize>
+    </div>
 </section>
 
 @code {

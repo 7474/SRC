@@ -67,6 +67,11 @@ $code-family: "IPA Gothic", monospace;
     }
 }
 
+.src-data-list-container {
+    height: calc(100vh - 150px);
+    overflow-y: auto;
+}
+
 .src-comment {
     font-family: $code-family;
     background-color: $pre-background;
