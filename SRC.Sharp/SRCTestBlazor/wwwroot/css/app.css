@@ -7807,6 +7807,12 @@ a.has-text-danger-dark:hover, a.has-text-danger-dark:focus {
   .card.src-data .card-content .message-preview {
     font-size: 1rem; }
 
+.src-titles-container {
+  min-width: 480px;
+  max-height: 80vh;
+  overflow-y: auto;
+  overflow-x: hidden; }
+
 .src-comment {
   font-family: "IPA Gothic", monospace;
   background-color: whitesmoke;

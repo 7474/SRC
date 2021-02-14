@@ -67,6 +67,13 @@ $code-family: "IPA Gothic", monospace;
     }
 }
 
+.src-titles-container {
+    min-width: 480px;
+    max-height: 80vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
 .src-comment {
     font-family: $code-family;
     background-color: $pre-background;
