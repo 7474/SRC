@@ -432,6 +432,7 @@ namespace SRCCore.Maps
         }
 
         // 指定したマップ画像を検索する
+        // XXX レイヤ対応はしてない
         public string SearchTerrainImageFile(MapCell cell)
         {
             //// ADD START 240a
@@ -479,130 +480,33 @@ namespace SRCCore.Maps
             };
             var dnames = new string[]
             {
-                // XXX
                 SRC.ScenarioPath,
+                SRC.ExtDataPath,
+                SRC.ExtDataPath2,
                 SRC.AppPath,
             };
+            // ビットマップを探す
             foreach (var dir in dnames)
             {
-                foreach (var file in fnames)
+                //if (scenario_map_dir_exists)
+                //if (extdata_map_dir_exists)
+                //if (extdata2_map_dir_exists)
+                //string argfname9 = SRC.AppPath + fname1;
+                if (Directory.Exists(dir))
                 {
-                    var fpath = Path.Combine(dir, file);
-                    if (File.Exists(fpath))
+                    foreach (var file in fnames)
                     {
-                        return fpath;
+                        var fpath = Path.Combine(dir, file);
+                        if (File.Exists(fpath))
+                        {
+                            // TODO ビットマップ名記録
+                            //MapImageFileTypeData[tx, ty] = MapImageFileType.SeparateDirMapImageFileType;
+                            return fpath;
+                        }
                     }
                 }
             }
             return null;
-
-            //// ビットマップを探す
-            //if (scenario_map_dir_exists)
-            //{
-            //    string argfname = SRC.ScenarioPath + fname1;
-            //    if (GeneralLib.FileExists(ref argfname))
-            //    {
-            //        SearchTerrainImageFileRet = SRC.ScenarioPath + fname1;
-            //        MapImageFileTypeData[tx, ty] = MapImageFileType.SeparateDirMapImageFileType;
-            //        return SearchTerrainImageFileRet;
-            //    }
-
-            //    string argfname1 = SRC.ScenarioPath + fname2;
-            //    if (GeneralLib.FileExists(ref argfname1))
-            //    {
-            //        SearchTerrainImageFileRet = SRC.ScenarioPath + fname2;
-            //        MapImageFileTypeData[tx, ty] = MapImageFileType.FourFiguresMapImageFileType;
-            //        return SearchTerrainImageFileRet;
-            //    }
-
-            //    string argfname2 = SRC.ScenarioPath + fname3;
-            //    if (GeneralLib.FileExists(ref argfname2))
-            //    {
-            //        SearchTerrainImageFileRet = SRC.ScenarioPath + fname3;
-            //        MapImageFileTypeData[tx, ty] = MapImageFileType.OldMapImageFileType;
-            //        return SearchTerrainImageFileRet;
-            //    }
-            //}
-
-            //if (extdata_map_dir_exists)
-            //{
-            //    string argfname3 = SRC.ExtDataPath + fname1;
-            //    if (GeneralLib.FileExists(ref argfname3))
-            //    {
-            //        SearchTerrainImageFileRet = SRC.ExtDataPath + fname1;
-            //        MapImageFileTypeData[tx, ty] = MapImageFileType.SeparateDirMapImageFileType;
-            //        return SearchTerrainImageFileRet;
-            //    }
-
-            //    string argfname4 = SRC.ExtDataPath + fname2;
-            //    if (GeneralLib.FileExists(ref argfname4))
-            //    {
-            //        SearchTerrainImageFileRet = SRC.ExtDataPath + fname2;
-            //        MapImageFileTypeData[tx, ty] = MapImageFileType.FourFiguresMapImageFileType;
-            //        return SearchTerrainImageFileRet;
-            //    }
-
-            //    string argfname5 = SRC.ExtDataPath + fname3;
-            //    if (GeneralLib.FileExists(ref argfname5))
-            //    {
-            //        SearchTerrainImageFileRet = SRC.ExtDataPath + fname3;
-            //        MapImageFileTypeData[tx, ty] = MapImageFileType.OldMapImageFileType;
-            //        return SearchTerrainImageFileRet;
-            //    }
-            //}
-
-            //if (extdata2_map_dir_exists)
-            //{
-            //    string argfname6 = SRC.ExtDataPath2 + fname1;
-            //    if (GeneralLib.FileExists(ref argfname6))
-            //    {
-            //        SearchTerrainImageFileRet = SRC.ExtDataPath2 + fname1;
-            //        MapImageFileTypeData[tx, ty] = MapImageFileType.SeparateDirMapImageFileType;
-            //        return SearchTerrainImageFileRet;
-            //    }
-
-            //    string argfname7 = SRC.ExtDataPath2 + fname2;
-            //    if (GeneralLib.FileExists(ref argfname7))
-            //    {
-            //        SearchTerrainImageFileRet = SRC.ExtDataPath2 + fname2;
-            //        MapImageFileTypeData[tx, ty] = MapImageFileType.FourFiguresMapImageFileType;
-            //        return SearchTerrainImageFileRet;
-            //    }
-
-            //    string argfname8 = SRC.ExtDataPath2 + fname3;
-            //    if (GeneralLib.FileExists(ref argfname8))
-            //    {
-            //        SearchTerrainImageFileRet = SRC.ExtDataPath2 + fname3;
-            //        MapImageFileTypeData[tx, ty] = MapImageFileType.OldMapImageFileType;
-            //        return SearchTerrainImageFileRet;
-            //    }
-            //}
-
-            //string argfname9 = SRC.AppPath + fname1;
-            //if (GeneralLib.FileExists(ref argfname9))
-            //{
-            //    SearchTerrainImageFileRet = SRC.AppPath + fname1;
-            //    MapImageFileTypeData[tx, ty] = MapImageFileType.SeparateDirMapImageFileType;
-            //    return SearchTerrainImageFileRet;
-            //}
-
-            //string argfname10 = SRC.AppPath + fname2;
-            //if (GeneralLib.FileExists(ref argfname10))
-            //{
-            //    SearchTerrainImageFileRet = SRC.AppPath + fname2;
-            //    MapImageFileTypeData[tx, ty] = MapImageFileType.FourFiguresMapImageFileType;
-            //    return SearchTerrainImageFileRet;
-            //}
-
-            //string argfname11 = SRC.AppPath + fname3;
-            //if (GeneralLib.FileExists(ref argfname11))
-            //{
-            //    SearchTerrainImageFileRet = SRC.AppPath + fname3;
-            //    MapImageFileTypeData[tx, ty] = MapImageFileType.OldMapImageFileType;
-            //    return SearchTerrainImageFileRet;
-            //}
-
-            //return SearchTerrainImageFileRet;
         }
 
         // マップファイル fname のデータをロード
