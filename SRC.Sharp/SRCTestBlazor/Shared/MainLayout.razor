@@ -1,6 +1,4 @@
 ﻿@inherits LayoutComponentBase
-@implements IDisposable
-@inject NavigationManager NavigationManager
 @* XXX HACK https://github.com/jgthms/bulma/issues/1655 *@
 <nav class="navbar is-fixed-top is-light" style="z-index: 1000;" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
@@ -42,7 +40,10 @@
     @Body
 </main>
 
+@implements IDisposable
 @code {
+    [Inject]
+    protected NavigationManager NavigationManager { get; set; }
     [Inject]
     protected IJSRuntime JsInterop { get; set; }
     [Inject]
