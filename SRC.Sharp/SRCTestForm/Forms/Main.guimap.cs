@@ -220,7 +220,7 @@ namespace SRCTestForm
                 {
                     for (var y = 1; y <= Map.MapHeight; y++)
                     {
-                        var cell = Map.MapData(x, y);
+                        var cell = Map.MapData[x, y];
                         var xpx = (x - 1) * MapCellPx;
                         var ypx = (y - 1) * MapCellPx;
 
