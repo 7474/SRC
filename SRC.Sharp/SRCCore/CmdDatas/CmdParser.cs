@@ -268,11 +268,8 @@ namespace SRCCore.CmdDatas
                     //        break;
                     //    }
 
-                    //case "create":
-                    //    {
-                    //        CmdName = CmdType.CreateCmd;
-                    //        break;
-                    //    }
+                    case "create":
+                        return new CreateCmd(src, data);
 
                     //case "createfolder":
                     //    {

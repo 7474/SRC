@@ -561,7 +561,31 @@ namespace SRCTestForm
 
         public void Center(int new_x, int new_y)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty(Map.MapFileName))
+            {
+                return;
+            }
+
+            // XXX スクロールバーのMax見るでいいの？
+            MapX = new_x;
+            if (MapX < 1)
+            {
+                MapX = 1;
+            }
+            else if (MapX > MainForm.HScrollBar.Maximum)
+            {
+                MapX = MainForm.HScrollBar.Maximum;
+            }
+
+            MapY = new_y;
+            if (MapY < 1)
+            {
+                MapY = 1;
+            }
+            else if (MapY > MainForm.VScrollBar.Maximum)
+            {
+                MapY = MainForm.VScrollBar.Maximum;
+            }
         }
 
         public int MapToPixelX(int X)
