@@ -9,6 +9,13 @@ namespace SRCCore.Units
 {
     public partial class Unit
     {
+        private SRC SRC { get; }
+
+        public Unit(SRC src)
+        {
+            SRC = src;
+        }
+
         // データ
         public UnitData Data;
 
