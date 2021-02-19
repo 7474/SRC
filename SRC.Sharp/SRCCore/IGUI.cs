@@ -103,8 +103,6 @@ namespace SRCCore
         // Optionによる新ＧＵＩが有効かどうかを再設定する
         void SetNewGUIMode();
 
-        bool MainFormVisible { get; }
-        void MainFormShow();
 
         // === メッセージウィンドウに関する処理 ===
 
@@ -274,5 +272,11 @@ namespace SRCCore
 
         // ウィンドウなどのタイトルを設定する
         void SetTitle(string title);
+
+
+        // === MainForm 操作へのバイパス ===
+
+        bool MainFormVisible { get; }
+        void MainFormShow();
     }
 }

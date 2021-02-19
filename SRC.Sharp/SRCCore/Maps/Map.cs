@@ -46,25 +46,21 @@ namespace SRCCore.Maps
         public bool IsMapDirty;
 
         // マップデータを記録する配列
-        private MapCell[][] _mapData;
-        public MapCell MapData(int x, int y)
-        {
-            return _mapData[x - 1][y - 1];
-        }
+        public Src2DArray<MapCell> MapData;
 
-        public MapImageFileType[] MapImageFileTypeData;
+        public Src2DArray<MapImageFileType> MapImageFileTypeData;
 
         // マップ上に存在するユニットを記録する配列
-        public Unit[] MapDataForUnit;
+        public Src2DArray<Unit> MapDataForUnit;
 
         // マップ上でターゲットを選択する際のマスク情報
-        public bool[] MaskData;
+        public Src2DArray<bool> MaskData;
 
         // 現在地点からその地点まで移動するのに必要な移動力の配列
-        public int[] TotalMoveCost;
+        public Src2DArray<int> TotalMoveCost;
 
         // 各地点がＺＯＣの影響下にあるかどうか
-        public int[] PointInZOC;
+        public Src2DArray<int> PointInZOC;
 
         // 地形情報テーブルを初期化
         public void InitMap()
@@ -600,7 +596,7 @@ namespace SRCCore.Maps
                             {
                                 buf = reader.GetLine();
                             }
-                            var cell = MapData(x, y);
+                            var cell = MapData[x, y];
                             var cellTrrainBitmapNo = buf.Split(',');
                             cell.TerrainType = int.Parse(cellTrrainBitmapNo[0]);
                             cell.BitmapNo = int.Parse(cellTrrainBitmapNo[1]);
@@ -669,10 +665,19 @@ namespace SRCCore.Maps
 
             //// マップデータ用配列の領域確保
             //// マップデータ配列の初期化
-            _mapData = Enumerable.Range(0, MapWidth)
-                .Select(x => Enumerable.Range(0, MapHeight)
-                    .Select(y => new MapCell()).ToArray())
-                .ToArray();
+            MapData = new Src2DArray<MapCell>(MapWidth, MapHeight);
+            foreach (var x in MapData.XRange)
+            {
+                foreach (var y in MapData.YRange)
+                {
+                    MapData[x, y] = new MapCell
+                    {
+                        X = x,
+                        Y = y,
+                    };
+                }
+            }
+            MapDataForUnit = new Src2DArray<Unit>(MapWidth, MapHeight);
 
             // XXX MapのGUIインタフェースと実装に追い出す
             //GUI.MapPWidth = (32 * w);

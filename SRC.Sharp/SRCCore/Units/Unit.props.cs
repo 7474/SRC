@@ -187,30 +187,23 @@ namespace SRCCore.Units
             }
         }
 
-        //// ボスランク
+        // ボスランク
+        public int BossRank
+        {
+            get => intBossRank;
+            set
+            {
+                if (intBossRank == value)
+                {
+                    return;
+                }
 
-        //public int BossRank
-        //{
-        //    get
-        //    {
-        //        int BossRankRet = default;
-        //        BossRankRet = intBossRank;
-        //        return BossRankRet;
-        //    }
+                intBossRank = value;
 
-        //    set
-        //    {
-        //        if (intBossRank == value)
-        //        {
-        //            return;
-        //        }
-
-        //        intBossRank = value;
-
-        //        // パラメータを更新
-        //        Update();
-        //    }
-        //}
+                // パラメータを更新
+                Update();
+            }
+        }
 
         //// ユニットクラス
         //// UPGRADE_NOTE: Class は Class_Renamed にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。

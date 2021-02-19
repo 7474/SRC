@@ -10,6 +10,9 @@ namespace SRCCore.Maps
         // レイヤー無しの固定値
         public const int NO_LAYER_NUM = 10000;
 
+        public int X { get; set; }
+        public int Y { get; set; }
+
         // 地形の種類
         public int TerrainType { get; set; }
         public TerrainData Terrain { get; set; }

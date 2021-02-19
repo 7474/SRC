@@ -12,6 +12,18 @@ namespace SRCCore.Pilots
     // 作成されたパイロットのクラス
     public partial class Pilot
     {
+        protected SRC SRC { get; }
+        private IGUI GUI => SRC.GUI;
+
+        public Pilot(SRC src, PilotData data)
+        {
+            SRC = src;
+            Data = data;
+
+            // Impl
+            //Update();
+        }
+
         // パイロットデータへのポインタ
         public PilotData Data;
 
@@ -91,20 +103,5 @@ namespace SRCCore.Pilots
 
         // 特殊能力
         private SrcCollection<SkillData> colSkill = new SrcCollection<SkillData>();
-
-        // 名称
-        public string Name => Data.Name;
-
-        protected SRC SRC { get; }
-        private IGUI GUI => SRC.GUI;
-
-        public Pilot(SRC src, PilotData data)
-        {
-            SRC = src;
-            Data = data;
-
-            // Impl
-            //Update();
-        }
     }
 }
