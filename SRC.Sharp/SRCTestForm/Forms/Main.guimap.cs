@@ -391,7 +391,7 @@ namespace SRCTestForm
             switch (u.Party0 ?? "")
             {
                 case "味方":
-                case "ｎｐｃ":
+                case "ＮＰＣ":
                     g.DrawImage(picUnit.Image, destRect);
                     break;
                 case "敵":

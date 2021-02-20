@@ -19,16 +19,16 @@ namespace SRCCore.Pilots
             double plana_ratio;
 
             // 既に乗っていればなにもしない
-            if (ReferenceEquals(Unit_Renamed, u))
+            if (ReferenceEquals(Unit, u))
             {
                 return;
             }
 
             // TODO Impl
             {
-                //var withBlock = u;
-                //hp_ratio = 100 * withBlock.HP / (double)withBlock.MaxHP;
-                //en_ratio = 100 * withBlock.EN / (double)withBlock.MaxEN;
+                //var u = u;
+                //hp_ratio = 100 * u.HP / (double)u.MaxHP;
+                //en_ratio = 100 * u.EN / (double)u.MaxEN;
 
                 //// 現在の霊力値を記録
                 //if (MaxPlana() > 0)
@@ -40,17 +40,19 @@ namespace SRCCore.Pilots
                 //    plana_ratio = -1;
                 //}
 
-                Unit_Renamed = u;
+                // XXX 仮
+                Unit = u;
+                u.AddPilot(this);
                 //short localInStrNotNest1() { string argstring1 = Class_Renamed; string argstring2 = "サポート)"; var ret = GeneralLib.InStrNotNest(argstring1, argstring2); this.Class_Renamed = argstring1; return ret; }
 
                 //short localLLength() { string arglist = Class_Renamed; var ret = GeneralLib.LLength(arglist); this.Class_Renamed = arglist; return ret; }
 
                 //string argfname = "ダミーユニット";
-                //if (localInStrNotNest1() > 0 & localLLength() == 1 & !withBlock.IsFeatureAvailable(argfname))
+                //if (localInStrNotNest1() > 0 & localLLength() == 1 & !u.IsFeatureAvailable(argfname))
                 //{
                 //    // サポートにしかなれないパイロットの場合
                 //    var argp = this;
-                //    withBlock.AddSupport(argp);
+                //    u.AddSupport(argp);
                 //}
                 //else if (IsSupport(u))
                 //{
@@ -58,35 +60,35 @@ namespace SRCCore.Pilots
                 //    // がいける場合は通常パイロットを優先
                 //    short localInStrNotNest() { string argstring1 = Class_Renamed; string argstring2 = u.Class0 + " "; var ret = GeneralLib.InStrNotNest(argstring1, argstring2); this.Class_Renamed = argstring1; return ret; }
 
-                //    if (withBlock.CountPilot() < Math.Abs(withBlock.Data.PilotNum) & localInStrNotNest() > 0 & !is_support)
+                //    if (u.CountPilot() < Math.Abs(u.Data.PilotNum) & localInStrNotNest() > 0 & !is_support)
                 //    {
                 //        var argp2 = this;
-                //        withBlock.AddPilot(argp2);
+                //        u.AddPilot(argp2);
                 //    }
                 //    else
                 //    {
                 //        var argp3 = this;
-                //        withBlock.AddSupport(argp3);
+                //        u.AddSupport(argp3);
                 //    }
                 //}
                 //else
                 //{
                 //    // パイロットが既に規定数の場合は全パイロットを降ろす
-                //    if (withBlock.CountPilot() == Math.Abs(withBlock.Data.PilotNum))
+                //    if (u.CountPilot() == Math.Abs(u.Data.PilotNum))
                 //    {
                 //        object argIndex1 = 1;
-                //        withBlock.Pilot(argIndex1).GetOff();
+                //        u.Pilot(argIndex1).GetOff();
                 //    }
 
                 //    var argp1 = this;
-                //    withBlock.AddPilot(argp1);
+                //    u.AddPilot(argp1);
                 //}
 
                 //// Pilotコマンドで作成されたパイロットは全て味方なので搭乗時に変更が必要
-                //Party = withBlock.Party0;
+                //Party = u.Party0;
 
                 //// ユニットのステータスをアップデート
-                //withBlock.Update();
+                //u.Update();
 
                 //// 霊力値のアップデート
                 //if (plana_ratio >= 0d)
@@ -99,8 +101,8 @@ namespace SRCCore.Pilots
                 //}
 
                 //// パイロットが乗り込むことによるＨＰ＆ＥＮの増減に対応
-                //withBlock.HP = (int)((long)(withBlock.MaxHP * hp_ratio) / 100L);
-                //withBlock.EN = (int)((long)(withBlock.MaxEN * en_ratio) / 100L);
+                //u.HP = (int)((long)(u.MaxHP * hp_ratio) / 100L);
+                //u.EN = (int)((long)(u.MaxEN * en_ratio) / 100L);
             }
         }
 
@@ -110,7 +112,7 @@ namespace SRCCore.Pilots
             short i;
 
             // 既に降りている？
-            if (Unit_Renamed is null)
+            if (Unit is null)
             {
                 return;
             }
@@ -172,7 +174,7 @@ namespace SRCCore.Pilots
             //}
 
             // UPGRADE_NOTE: オブジェクト Unit_Renamed をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-            Unit_Renamed = null;
+            Unit = null;
             Update();
         }
 

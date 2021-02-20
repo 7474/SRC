@@ -11,8 +11,10 @@ namespace SRCCore.Units
         // ユニットを(new_x,new_y)に配置
         public void StandBy(int new_x, int new_y, string smode = "")
         {
+            // XXX
             x = new_x;
             y = new_y;
+            Status = "出撃";
             //    int j, i, k;
 
             //    // とりあえず地形を考慮せずにデフォルトのポジションを決めておく

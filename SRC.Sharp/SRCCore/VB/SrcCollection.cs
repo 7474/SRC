@@ -19,9 +19,10 @@ namespace SRCCore.VB
             list = new List<V>();
         }
 
+        // 1オフセット
         public V this[int index]
         {
-            get => list[index];
+            get => list[index - 1];
             set => throw new NotImplementedException();
         }
 

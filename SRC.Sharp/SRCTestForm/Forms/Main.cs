@@ -4,7 +4,9 @@
 // 再頒布または改変することができます。
 using System;
 using System.Windows.Forms;
+using Microsoft.Extensions.Logging;
 using Microsoft.VisualBasic;
+using Newtonsoft.Json;
 using SRCCore;
 using SRCCore.Maps;
 
@@ -28,6 +30,7 @@ namespace SRCTestForm
         // フォーム上でキーを押す
         private void frmMain_KeyDown(object eventSender, KeyEventArgs eventArgs)
         {
+            Program.Log.LogDebug("frmMain_KeyDown {0}", JsonConvert.SerializeObject(eventArgs));
             var KeyCode = eventArgs.KeyCode;
             bool Shift = eventArgs.KeyData.HasFlag(Keys.Shift);
             // ＧＵＩをロック中？
@@ -130,6 +133,7 @@ namespace SRCTestForm
         // フォーム上でマウスを動かす
         private void frmMain_MouseMove(object eventSender, MouseEventArgs eventArgs)
         {
+            //Program.Log.LogDebug("frmMain_MouseMove {0}", JsonConvert.SerializeObject(eventArgs));
             //int Button = (eventArgs.Button / 0x100000);
             //int Shift = (ModifierKeys / 0x10000);
             //float X = eventArgs.X;
@@ -146,6 +150,8 @@ namespace SRCTestForm
         // マップコマンドメニューをクリック
         public void mnuMapCommandItem_Click(object eventSender, EventArgs eventArgs)
         {
+            Program.Log.LogDebug("mnuMapCommandItem_Click {0}", JsonConvert.SerializeObject(eventArgs));
+
             //int Index = mnuMapCommandItem.GetIndex((ToolStripMenuItem)eventSender);
             //if (GUI.GetAsyncKeyState(GUI.RButtonID) == 1)
             //{
@@ -161,6 +167,8 @@ namespace SRCTestForm
         // ユニットコマンドメニューをクリック
         public void mnuUnitCommandItem_Click(object eventSender, EventArgs eventArgs)
         {
+            Program.Log.LogDebug("mnuUnitCommandItem_Click {0}", JsonConvert.SerializeObject(eventArgs));
+
             //int Index = mnuUnitCommandItem.GetIndex((ToolStripMenuItem)eventSender);
             //if (GUI.GetAsyncKeyState(GUI.RButtonID) == 1)
             //{
@@ -176,6 +184,8 @@ namespace SRCTestForm
         // ステータスウィンドウのパイロット画像上をクリック
         private void picFace_Click(object eventSender, EventArgs eventArgs)
         {
+            Program.Log.LogDebug("picFace_Click {0}", JsonConvert.SerializeObject(eventArgs));
+
             int n;
 
             // ＧＵＩのロック中は無視
@@ -230,6 +240,8 @@ namespace SRCTestForm
         // マップ画面上でダブルクリック
         private void picMain_DoubleClick(object eventSender, EventArgs eventArgs)
         {
+            Program.Log.LogDebug("picMain_DoubleClick {0}", JsonConvert.SerializeObject(eventArgs));
+
             if (GUI.IsGUILocked)
             {
                 // ＧＵＩクロック中は単なるクリックとみなす
@@ -272,6 +284,8 @@ namespace SRCTestForm
         // マップ画面上でマウスをクリック
         private void picMain_MouseDown(object eventSender, MouseEventArgs eventArgs)
         {
+            Program.Log.LogDebug("picMain_MouseDown {0}", JsonConvert.SerializeObject(eventArgs));
+
             GuiButton Button = ResolveMouseButton(eventArgs);
             //var Shift = ModifierKeys.HasFlag(Keys.Shift);
             var X = eventArgs.X;
@@ -378,6 +392,8 @@ namespace SRCTestForm
         // マップ画面上でマウスカーソルを移動
         private void picMain_MouseMove(object eventSender, MouseEventArgs eventArgs)
         {
+            //Program.Log.LogDebug("picMain_MouseMove {0}", JsonConvert.SerializeObject(eventArgs));
+
             //int Button = (eventArgs.Button / 0x100000);
             //int Shift = (ModifierKeys / 0x10000);
             //float X = (float)Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(eventArgs.X);
@@ -575,6 +591,8 @@ namespace SRCTestForm
         // マップ画面上でマウスボタンを離す
         private void picMain_MouseUp(object eventSender, MouseEventArgs eventArgs)
         {
+            Program.Log.LogDebug("picMain_MouseUp {0}", JsonConvert.SerializeObject(eventArgs));
+
             if (GUI.IsGUILocked)
             {
                 return;
@@ -586,6 +604,8 @@ namespace SRCTestForm
         // ＢＧＭ連続再生用タイマー
         private void Timer1_Tick(object eventSender, EventArgs eventArgs)
         {
+            Program.Log.LogDebug("Timer1_Tick {0}", JsonConvert.SerializeObject(eventArgs));
+
             //if (!string.IsNullOrEmpty(Sound.BGMFileName))
             //{
             //    if (Sound.RepeatMode)

@@ -38,8 +38,7 @@ namespace SRCCore.Pilots
             new_pilot.Party = pparty;
             new_pilot.FullRecover();
             new_pilot.Alive = true;
-            // UPGRADE_NOTE: オブジェクト new_pilot.Unit をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-            new_pilot.Unit_Renamed = null;
+            new_pilot.Unit = null;
             if (string.IsNullOrEmpty(gid))
             {
                 // グループＩＤが指定されていない場合

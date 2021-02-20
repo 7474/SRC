@@ -1136,23 +1136,7 @@ namespace SRCCore.Units
         //    }
         //}
 
-        //// 残り行動数
-        //public int Action
-        //{
-        //    get
-        //    {
-        //        int ActionRet = default;
-        //        if (MaxAction() > 0)
-        //        {
-        //            ActionRet = (int)GeneralLib.MaxLng(MaxAction() - UsedAction, 0);
-        //        }
-        //        else
-        //        {
-        //            ActionRet = 0;
-        //        }
-
-        //        return ActionRet;
-        //    }
-        //}
+        // 残り行動数
+        public int Action => Math.Max(MaxAction() - UsedAction, 0);
     }
 }

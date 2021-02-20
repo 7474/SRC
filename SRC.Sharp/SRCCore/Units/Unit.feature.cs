@@ -16,7 +16,7 @@ namespace SRCCore.Units
 //        }
 
 //        // 特殊能力
-//        public string Feature(ref object Index)
+//        public string Feature(object Index)
 //        {
 //            string FeatureRet = default;
 //            FeatureData fd;
@@ -26,14 +26,14 @@ namespace SRCCore.Units
 //        }
 
 //        // 特殊能力の名称
-//        public string FeatureName(ref object Index)
+//        public string FeatureName(object Index)
 //        {
 //            string FeatureNameRet = default;
-//            FeatureNameRet = FeatureNameInt(ref Index, ref colFeature);
+//            FeatureNameRet = FeatureNameInt(Index, colFeature);
 //            return FeatureNameRet;
 //        }
 
-//        private string FeatureNameInt(ref object Index, ref Collection feature_list)
+//        private string FeatureNameInt(object Index, Collection feature_list)
 //        {
 //            string FeatureNameIntRet = default;
 //            FeatureData fd;
@@ -160,7 +160,7 @@ namespace SRCCore.Units
 //            if (Strings.Len(fd.StrData) > 0)
 //            {
 //                // 別名の指定あり
-//                FeatureNameIntRet = GeneralLib.ListIndex(ref fd.StrData, 1);
+//                FeatureNameIntRet = GeneralLib.ListIndex(fd.StrData, 1);
 //                if (FeatureNameIntRet == "非表示" | FeatureNameIntRet == "解説")
 //                {
 //                    FeatureNameIntRet = "";
@@ -252,10 +252,10 @@ namespace SRCCore.Units
 //            FeatureNameIntRet = Conversions.ToString(Index);
 //        }
 
-//        public string FeatureName0(ref object Index)
+//        public string FeatureName0(object Index)
 //        {
 //            string FeatureName0Ret = default;
-//            FeatureName0Ret = FeatureName(ref Index);
+//            FeatureName0Ret = FeatureName(Index);
 //            if (Strings.InStr(FeatureName0Ret, "Lv") > 0)
 //            {
 //                FeatureName0Ret = Strings.Left(FeatureName0Ret, Strings.InStr(FeatureName0Ret, "Lv") - 1);
@@ -265,7 +265,7 @@ namespace SRCCore.Units
 //        }
 
 //        // 特殊能力のレベル
-//        public double FeatureLevel(ref object Index)
+//        public double FeatureLevel(object Index)
 //        {
 //            double FeatureLevelRet = default;
 //            FeatureData fd;
@@ -293,7 +293,7 @@ namespace SRCCore.Units
 //        }
 
 //        // 特殊能力のデータ
-//        public string FeatureData(ref object Index)
+//        public string FeatureData(object Index)
 //        {
 //            string FeatureDataRet = default;
 //            FeatureData fd;
@@ -316,7 +316,7 @@ namespace SRCCore.Units
 //        }
 
 //        // 特殊能力の必要技能
-//        public string FeatureNecessarySkill(ref object Index)
+//        public string FeatureNecessarySkill(object Index)
 //        {
 //            string FeatureNecessarySkillRet = default;
 //            FeatureData fd;
@@ -338,31 +338,14 @@ namespace SRCCore.Units
 //            FeatureNecessarySkillRet = "";
 //        }
 
-//        // 指定した特殊能力を所有しているか？
-//        public bool IsFeatureAvailable(ref string fname)
-//        {
-//            bool IsFeatureAvailableRet = default;
-//            FeatureData fd;
-//            ;
-//#error Cannot convert OnErrorGoToStatementSyntax - see comment for details
-//            /* Cannot convert OnErrorGoToStatementSyntax, CONVERSION ERROR: Conversion for OnErrorGoToLabelStatement not implemented, please report this issue in 'On Error GoTo ErrorHandler' at character 35278
-
-
-//            Input:
-
-//                    On Error GoTo ErrorHandler
-
-//             */
-//            fd = (FeatureData)colFeature[fname];
-//            IsFeatureAvailableRet = true;
-//            return IsFeatureAvailableRet;
-//        ErrorHandler:
-//            ;
-//            IsFeatureAvailableRet = false;
-//        }
+        // 指定した特殊能力を所有しているか？
+        public bool IsFeatureAvailable(string fname)
+        {
+            return colFeature.ContainsKey(fname);
+        }
 
 //        // 特殊能力にレベル指定がされている？
-//        public bool IsFeatureLevelSpecified(ref object Index)
+//        public bool IsFeatureLevelSpecified(object Index)
 //        {
 //            bool IsFeatureLevelSpecifiedRet = default;
 //            FeatureData fd;
@@ -401,7 +384,7 @@ namespace SRCCore.Units
 //        }
 
 //        // 特殊能力(必要条件を満たさないものを含む)
-//        public string AllFeature(ref object Index)
+//        public string AllFeature(object Index)
 //        {
 //            string AllFeatureRet = default;
 //            FeatureData fd;
@@ -411,15 +394,15 @@ namespace SRCCore.Units
 //        }
 
 //        // 特殊能力の名称(必要条件を満たさないものを含む)
-//        public string AllFeatureName(ref object Index)
+//        public string AllFeatureName(object Index)
 //        {
 //            string AllFeatureNameRet = default;
-//            AllFeatureNameRet = FeatureNameInt(ref Index, ref colAllFeature);
+//            AllFeatureNameRet = FeatureNameInt(Index, colAllFeature);
 //            return AllFeatureNameRet;
 //        }
 
 //        // 特殊能力のレベル(必要条件を満たさないものを含む)
-//        public double AllFeatureLevel(ref object Index)
+//        public double AllFeatureLevel(object Index)
 //        {
 //            double AllFeatureLevelRet = default;
 //            FeatureData fd;
@@ -447,7 +430,7 @@ namespace SRCCore.Units
 //        }
 
 //        // 特殊能力のレベルが指定されているか(必要条件を満たさないものを含む)
-//        public bool AllFeatureLevelSpecified(ref object Index)
+//        public bool AllFeatureLevelSpecified(object Index)
 //        {
 //            bool AllFeatureLevelSpecifiedRet = default;
 //            FeatureData fd;
@@ -474,7 +457,7 @@ namespace SRCCore.Units
 //        }
 
 //        // 特殊能力のデータ(必要条件を満たさないものを含む)
-//        public string AllFeatureData(ref object Index)
+//        public string AllFeatureData(object Index)
 //        {
 //            string AllFeatureDataRet = default;
 //            FeatureData fd;
@@ -497,7 +480,7 @@ namespace SRCCore.Units
 //        }
 
 //        // 特殊能力にレベル指定がされている？(必要条件を満たさないものを含む)
-//        public bool IsAllFeatureLevelSpecified(ref object Index)
+//        public bool IsAllFeatureLevelSpecified(object Index)
 //        {
 //            bool IsAllFeatureLevelSpecifiedRet = default;
 //            FeatureData fd;
@@ -528,7 +511,7 @@ namespace SRCCore.Units
 //        }
 
 //        // 特殊能力が必要条件を満たしているか
-//        public bool IsFeatureActivated(ref object Index)
+//        public bool IsFeatureActivated(object Index)
 //        {
 //            bool IsFeatureActivatedRet = default;
 //            FeatureData fd;
@@ -560,7 +543,7 @@ namespace SRCCore.Units
 //        }
 
 //        // 特殊能力を登録
-//        private void AddFeatures(ref Collection fdc, bool is_item = false)
+//        private void AddFeatures(Collection fdc, bool is_item = false)
 //        {
 //            if (fdc is null)
 //            {
@@ -588,15 +571,15 @@ namespace SRCCore.Units
 //                }
 
 //                // 封印されている？
-//                bool localIsDisabled() { string argfname = GeneralLib.LIndex(ref fd.StrData, 1); var ret = IsDisabled(ref argfname); return ret; }
+//                bool localIsDisabled() { string argfname = GeneralLib.LIndex(fd.StrData, 1); var ret = IsDisabled(argfname); return ret; }
 
-//                if (IsDisabled(ref fd.Name) | localIsDisabled())
+//                if (IsDisabled(fd.Name) | localIsDisabled())
 //                {
 //                    goto NextFeature;
 //                }
 
 //                // 既にその能力が登録されている？
-//                if (!IsFeatureRegistered(ref fd.Name))
+//                if (!IsFeatureRegistered(fd.Name))
 //                {
 //                    colFeature.Add(fd, fd.Name);
 //                }
@@ -611,7 +594,7 @@ namespace SRCCore.Units
 //        }
 
 //        // 特殊能力を登録済み？
-//        private bool IsFeatureRegistered(ref string fname)
+//        private bool IsFeatureRegistered(string fname)
 //        {
 //            bool IsFeatureRegisteredRet = default;
 //            FeatureData fd;
@@ -634,7 +617,7 @@ namespace SRCCore.Units
 //        }
 
 //        // 特殊能力を登録済み？(必要条件を満たさない特殊能力を含む)
-//        private bool IsAllFeatureRegistered(ref string fname)
+//        private bool IsAllFeatureRegistered(string fname)
 //        {
 //            bool IsAllFeatureRegisteredRet = default;
 //            FeatureData fd;
@@ -679,9 +662,9 @@ namespace SRCCore.Units
 //                        {
 //                            // UPGRADE_WARNING: オブジェクト colFeature.Item().NecessaryCondition の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
 //                            // UPGRADE_WARNING: オブジェクト colFeature.Item().NecessarySkill の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-//                            bool localIsNecessarySkillSatisfied() { string argnabilities = Conversions.ToString(withBlock[(int)i].NecessarySkill); Pilot argp = null; var ret = IsNecessarySkillSatisfied(ref argnabilities, p: ref argp); return ret; }
+//                            bool localIsNecessarySkillSatisfied() { string argnabilities = Conversions.ToString(withBlock[(int)i].NecessarySkill); Pilot argp = null; var ret = IsNecessarySkillSatisfied(argnabilities, p: argp); return ret; }
 
-//                            bool localIsNecessarySkillSatisfied1() { string argnabilities = Conversions.ToString(withBlock[(int)i].NecessaryCondition); Pilot argp = null; var ret = IsNecessarySkillSatisfied(ref argnabilities, p: ref argp); return ret; }
+//                            bool localIsNecessarySkillSatisfied1() { string argnabilities = Conversions.ToString(withBlock[(int)i].NecessaryCondition); Pilot argp = null; var ret = IsNecessarySkillSatisfied(argnabilities, p: argp); return ret; }
 
 //                            if (!localIsNecessarySkillSatisfied() | !localIsNecessarySkillSatisfied1())
 //                            {
@@ -712,7 +695,7 @@ namespace SRCCore.Units
 //                    {
 //                        // 必要技能を満たしている？
 //                        // UPGRADE_WARNING: オブジェクト colFeature.Item().NecessarySkill の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-//                        bool localIsNecessarySkillSatisfied2() { string argnabilities = Conversions.ToString(withBlock1[(int)i].NecessarySkill); Pilot argp = null; var ret = IsNecessarySkillSatisfied(ref argnabilities, p: ref argp); return ret; }
+//                        bool localIsNecessarySkillSatisfied2() { string argnabilities = Conversions.ToString(withBlock1[(int)i].NecessarySkill); Pilot argp = null; var ret = IsNecessarySkillSatisfied(argnabilities, p: argp); return ret; }
 
 //                        if (!localIsNecessarySkillSatisfied2())
 //                        {
@@ -739,7 +722,7 @@ namespace SRCCore.Units
 //                    foreach (FeatureData currentFd1 in colFeature)
 //                    {
 //                        fd = currentFd1;
-//                        if (!IsAllFeatureRegistered(ref fd.Name))
+//                        if (!IsAllFeatureRegistered(fd.Name))
 //                        {
 //                            withBlock2.Add(fd, fd.Name);
 //                        }
@@ -758,7 +741,7 @@ namespace SRCCore.Units
 //                    {
 //                        // 必要条件を満たしている？
 //                        // UPGRADE_WARNING: オブジェクト colFeature.Item().NecessaryCondition の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-//                        bool localIsNecessarySkillSatisfied3() { string argnabilities = Conversions.ToString(withBlock3[(int)i].NecessaryCondition); Pilot argp = null; var ret = IsNecessarySkillSatisfied(ref argnabilities, p: ref argp); return ret; }
+//                        bool localIsNecessarySkillSatisfied3() { string argnabilities = Conversions.ToString(withBlock3[(int)i].NecessaryCondition); Pilot argp = null; var ret = IsNecessarySkillSatisfied(argnabilities, p: argp); return ret; }
 
 //                        if (!localIsNecessarySkillSatisfied3())
 //                        {
@@ -790,7 +773,7 @@ namespace SRCCore.Units
 //                    var loopTo2 = (short)Information.UBound(farray);
 //                    for (i = 1; i <= loopTo2; i++)
 //                    {
-//                        if (!IsFeatureRegistered(ref farray[i].Name))
+//                        if (!IsFeatureRegistered(farray[i].Name))
 //                        {
 //                            withBlock4.Add(farray[i], farray[i].Name);
 //                        }

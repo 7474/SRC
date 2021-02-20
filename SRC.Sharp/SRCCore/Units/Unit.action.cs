@@ -7,6 +7,111 @@ namespace SRCCore.Units
     // === 行動パターンを規定するパラメータ関連処理 ===
     public partial class Unit
     {
+        public bool CanAction => (Status == "出撃" || Status == "格納") && this.Action > 0;
+
+        // === 行動数関連処理 ===
+
+        // １ターンに可能な行動数
+        public int MaxAction(bool ignore_en = false)
+        {
+            int MaxActionRet = default;
+            //// ステータス異常？
+            //object argIndex1 = "行動不能";
+            //object argIndex2 = "麻痺";
+            //object argIndex3 = "石化";
+            //object argIndex4 = "凍結";
+            //object argIndex5 = "睡眠";
+            //object argIndex6 = "チャージ";
+            //object argIndex7 = "消耗";
+            //string argsptype = "行動不能";
+            //if (IsConditionSatisfied(ref argIndex1) | IsConditionSatisfied(ref argIndex2) | IsConditionSatisfied(ref argIndex3) | IsConditionSatisfied(ref argIndex4) | IsConditionSatisfied(ref argIndex5) | IsConditionSatisfied(ref argIndex6) | IsConditionSatisfied(ref argIndex7) | IsUnderSpecialPowerEffect(ref argsptype))
+            //{
+            //    return MaxActionRet;
+            //}
+
+            //// ＥＮ切れ？
+            //if (!ignore_en)
+            //{
+            //    if (EN == 0)
+            //    {
+            //        string argoname = "ＥＮ０時行動可";
+            //        if (!Expression.IsOptionDefined(ref argoname))
+            //        {
+            //            return MaxActionRet;
+            //        }
+            //    }
+            //}
+
+            //if (CountPilot() == 0)
+            //{
+            //    return MaxActionRet;
+            //}
+
+            //// ２回行動可能？
+            //string argoname1 = "２回行動能力使用";
+            //if (Expression.IsOptionDefined(ref argoname1))
+            //{
+            //    string argsname = "２回行動";
+            //    if (MainPilot().IsSkillAvailable(ref argsname))
+            //    {
+            //        MaxActionRet = 2;
+            //    }
+            //    else
+            //    {
+            //        MaxActionRet = 1;
+            //    }
+            //}
+            //else
+            if (MainPilot().Intuition >= 200)
+            {
+                MaxActionRet = 2;
+            }
+            else
+            {
+                MaxActionRet = 1;
+            }
+
+            return MaxActionRet;
+        }
+
+        // 行動数を消費
+        public void UseAction()
+        {
+            UsedAction = UsedAction + 1;
+            // TODO これ厳密にみる必要あるの？
+            //int max_action;
+
+            //// ２回行動可能？
+            //string argoname = "２回行動能力使用";
+            //if (CountPilot() == 0)
+            //{
+            //    max_action = 1;
+            //}
+            //else if (Expression.IsOptionDefined(ref argoname))
+            //{
+            //    string argsname = "２回行動";
+            //    if (MainPilot().IsSkillAvailable(ref argsname))
+            //    {
+            //        max_action = 2;
+            //    }
+            //    else
+            //    {
+            //        max_action = 1;
+            //    }
+            //}
+            //else if (this.MainPilot().Intuition >= 200)
+            //{
+            //    max_action = 2;
+            //}
+            //else
+            //{
+            //    max_action = 1;
+            //}
+
+            //// 最大行動数まで行動消費量をカウント
+            //UsedAction = (int)GeneralLib.MinLng(UsedAction + 1, max_action);
+        }
+
         // 陣営
         public string Party0 => strParty;
 
@@ -66,7 +171,7 @@ namespace SRCCore.Units
         //    get
         //    {
         //        string ModeRet = default;
-        //        short i;
+        //        int i;
         //        string argsptype = "挑発";
         //        if (IsUnderSpecialPowerEffect(ref argsptype))
         //        {

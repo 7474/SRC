@@ -71,6 +71,7 @@ namespace SRCTestForm
                 SRC = SRC,
             };
             SRC.GUIMap = MainForm;
+            SRC.GUIStatus = MainForm;
             MainForm.Init();
             Program.Log.LogDebug("LoadMainFormAndRegisterFlash");
         }
@@ -732,6 +733,7 @@ namespace SRCTestForm
         public void UnlockGUI()
         {
             IsGUILocked = false;
+            Application.DoEvents();
         }
 
         public void SaveCursorPos()

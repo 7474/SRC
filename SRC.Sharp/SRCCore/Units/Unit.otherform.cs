@@ -11,9 +11,9 @@ namespace SRCCore.Units
         // ユニットが現在とっている形態
         public Unit CurrentForm()
         {
-            if (Status_Renamed == "他形態")
+            if (Status == "他形態")
             {
-                var cf = OtherForms.FirstOrDefault(x => x.Status_Renamed != "他形態");
+                var cf = OtherForms.FirstOrDefault(x => x.Status != "他形態");
                 if (cf != null)
                 {
                     return cf;
@@ -83,7 +83,7 @@ namespace SRCCore.Units
                     BossRank = BossRank,
                     Party = Party0,
                     ID = SRC.UList.CreateID(uname),
-                    Status_Renamed = "他形態",
+                    Status = "他形態",
                     x = x,
                     y = y,
                 };

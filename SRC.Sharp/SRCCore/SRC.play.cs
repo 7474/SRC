@@ -1,5 +1,8 @@
-﻿using System;
+﻿using SRCCore.Units;
+using SRCCore.VB;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace SRCCore
@@ -168,7 +171,7 @@ namespace SRCCore
             //    if (withBlock1.Font.Name != "ＭＳ Ｐ明朝")
             //    {
             //        sf = (Font)Control.DefaultFont.Clone();
-            //        sf = VB.Compatibility.VB6.Support.FontChangeName(sf, "ＭＳ Ｐ明朝");
+            //        sf = SrcFormatter.FontChangeName(sf, "ＭＳ Ｐ明朝");
             //        // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
             //        withBlock1.Font = sf;
             //    }
@@ -267,425 +270,371 @@ namespace SRCCore
             // TODO ImplS
             //int num, i, phase;
             //Unit u;
-            //Stage = uparty;
+            Stage = uparty;
             //Sound.BossBGM = false;
-            //if (uparty == "味方")
-            //{
-            //    do
-            //    {
-            //        // 味方フェイズ
-            //        Stage = "味方";
+            if (uparty == "味方")
+            {
+                do
+                {
+                    // 味方フェイズ
+                    Stage = "味方";
 
-            //        // ターン数を進める
-            //        if (!string.IsNullOrEmpty(Map.MapFileName))
-            //        {
-            //            Turn = (Turn + 1);
-            //            TotalTurn = TotalTurn + 1;
-            //        }
+                    // ターン数を進める
+                    if (!string.IsNullOrEmpty(Map.MapFileName))
+                    {
+                        Turn = (Turn + 1);
+                        TotalTurn = TotalTurn + 1;
+                    }
 
-            //        // 状態回復
-            //        foreach (Unit currentSelectedUnit in UList)
-            //        {
-            //            Commands.SelectedUnit = currentSelectedUnit;
-            //            {
-            //                var withBlock = Commands.SelectedUnit;
-            //                switch (withBlock.Status)
-            //                {
-            //                    case "出撃":
-            //                    case "格納":
-            //                        {
-            //                            if ((withBlock.Party ?? "") == (uparty ?? ""))
-            //                            {
-            //                                if (string.IsNullOrEmpty(Map.MapFileName))
-            //                                {
-            //                                    withBlock.UsedAction = 0;
-            //                                }
-            //                                else
-            //                                {
-            //                                    withBlock.Rest();
-            //                                }
+                    // 状態回復
+                    foreach (var currentUnit in UList.Items)
+                    {
+                        Commands.SelectedUnit = currentUnit;
+                        switch (currentUnit.Status)
+                        {
+                            case "出撃":
+                            case "格納":
+                                {
+                                    if ((currentUnit.Party ?? "") == (uparty ?? ""))
+                                    {
+                                        if (string.IsNullOrEmpty(Map.MapFileName))
+                                        {
+                                            currentUnit.UsedAction = 0;
+                                        }
+                                        else
+                                        {
+                                            currentUnit.Rest();
+                                        }
 
-            //                                if (IsScenarioFinished)
-            //                                {
-            //                                    GUI.UnlockGUI();
-            //                                    return;
-            //                                }
-            //                            }
-            //                            else
-            //                            {
-            //                                withBlock.UsedAction = 0;
-            //                            }
+                                        if (IsScenarioFinished)
+                                        {
+                                            GUI.UnlockGUI();
+                                            return;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        currentUnit.UsedAction = 0;
+                                    }
 
-            //                            break;
-            //                        }
+                                    break;
+                                }
 
-            //                    case "旧主形態":
-            //                    case "旧形態":
-            //                        {
-            //                            withBlock.UsedAction = 0;
-            //                            break;
-            //                        }
-            //                }
-            //            }
-            //        }
+                            case "旧主形態":
+                            case "旧形態":
+                                {
+                                    currentUnit.UsedAction = 0;
+                                    break;
+                                }
+                        }
+                    }
 
-            //        // 味方が敵にかけたスペシャルパワーを解除
-            //        foreach (Unit currentU in UList)
-            //        {
-            //            u = currentU;
-            //            {
-            //                var withBlock1 = u;
-            //                switch (withBlock1.Status)
-            //                {
-            //                    case "出撃":
-            //                    case "格納":
-            //                        {
-            //                            string argstype = "敵ターン";
-            //                            withBlock1.RemoveSpecialPowerInEffect(argstype);
-            //                            break;
-            //                        }
-            //                }
-            //            }
-            //        }
+                    // 味方が敵にかけたスペシャルパワーを解除
+                    foreach (var currentU in UList.Items)
+                    {
+                        switch (currentU.Status)
+                        {
+                            case "出撃":
+                            case "格納":
+                                {
+                                    string argstype = "敵ターン";
+                                    currentU.RemoveSpecialPowerInEffect(argstype);
+                                    break;
+                                }
+                        }
+                    }
 
-            //        GUI.RedrawScreen();
+                    GUI.RedrawScreen();
 
-            //        // 味方フェイズ用ＢＧＭを演奏
-            //        if (!string.IsNullOrEmpty(Map.MapFileName))
-            //        {
-            //            switch (Map.TerrainClass(1, 1) ?? "")
-            //            {
-            //                case "屋内":
-            //                    {
-            //                        string argbgm_name = "Map3";
-            //                        string argbgm_name1 = Sound.BGMName(argbgm_name);
-            //                        Sound.StartBGM(argbgm_name1);
-            //                        break;
-            //                    }
+                    //// 味方フェイズ用ＢＧＭを演奏
+                    //if (!string.IsNullOrEmpty(Map.MapFileName))
+                    //{
+                    //    switch (Map.TerrainClass(1, 1) ?? "")
+                    //    {
+                    //        case "屋内":
+                    //            {
+                    //                string argbgm_name = "Map3";
+                    //                string argbgm_name1 = Sound.BGMName(argbgm_name);
+                    //                Sound.StartBGM(argbgm_name1);
+                    //                break;
+                    //            }
 
-            //                case "宇宙":
-            //                    {
-            //                        string argbgm_name2 = "Map5";
-            //                        string argbgm_name3 = Sound.BGMName(argbgm_name2);
-            //                        Sound.StartBGM(argbgm_name3);
-            //                        break;
-            //                    }
+                    //        case "宇宙":
+                    //            {
+                    //                string argbgm_name2 = "Map5";
+                    //                string argbgm_name3 = Sound.BGMName(argbgm_name2);
+                    //                Sound.StartBGM(argbgm_name3);
+                    //                break;
+                    //            }
 
-            //                default:
-            //                    {
-            //                        if (Map.TerrainName(1, 1) == "壁")
-            //                        {
-            //                            string argbgm_name4 = "Map3";
-            //                            string argbgm_name5 = Sound.BGMName(argbgm_name4);
-            //                            Sound.StartBGM(argbgm_name5);
-            //                        }
-            //                        else
-            //                        {
-            //                            string argbgm_name6 = "Map1";
-            //                            string argbgm_name7 = Sound.BGMName(argbgm_name6);
-            //                            Sound.StartBGM(argbgm_name7);
-            //                        }
+                    //        default:
+                    //            {
+                    //                if (Map.TerrainName(1, 1) == "壁")
+                    //                {
+                    //                    string argbgm_name4 = "Map3";
+                    //                    string argbgm_name5 = Sound.BGMName(argbgm_name4);
+                    //                    Sound.StartBGM(argbgm_name5);
+                    //                }
+                    //                else
+                    //                {
+                    //                    string argbgm_name6 = "Map1";
+                    //                    string argbgm_name7 = Sound.BGMName(argbgm_name6);
+                    //                    Sound.StartBGM(argbgm_name7);
+                    //                }
 
-            //                        break;
-            //                    }
-            //            }
-            //        }
+                    //                break;
+                    //            }
+                    //    }
+                    //}
 
-            //        // ターンイベント
-            //        Event.IsUnitCenter = false;
-            //        Event.HandleEvent("ターン", Turn, "味方");
-            //        if (IsScenarioFinished)
-            //        {
-            //            GUI.UnlockGUI();
-            //            return;
-            //        }
+                    // ターンイベント
+                    Event.IsUnitCenter = false;
+                    Event.HandleEvent("ターン", Turn.ToString(), "味方");
+                    if (IsScenarioFinished)
+                    {
+                        GUI.UnlockGUI();
+                        return;
+                    }
 
-            //        // 操作可能なユニットがいるかどうかチェック
-            //        num = 0;
-            //        foreach (Unit currentU1 in UList)
-            //        {
-            //            u = currentU1;
-            //            {
-            //                var withBlock2 = u;
-            //                if (withBlock2.Party == "味方" & (withBlock2.Status == "出撃" | withBlock2.Status == "格納") & withBlock2.Action > 0)
-            //                {
-            //                    num = (num + 1);
-            //                }
-            //            }
-            //        }
+                    // 操作可能なユニットがいるかどうかチェック
+                    if (UList.Items.Count(x => x.Party == "味方" && x.CanAction) > 0
+                        || Expression.IsOptionDefined("味方フェイズ強制発動"))
+                    {
+                        break;
+                    }
 
-            //        string argoname = "味方フェイズ強制発動";
-            //        if (num > 0 | Expression.IsOptionDefined(argoname))
-            //        {
-            //            break;
-            //        }
+                    // CPUが操作するユニットがいるかどうかチェック
+                    if (UList.Items.Count(x => x.Party != "味方" && x.Status == "出撃") > 0)
+                    {
+                        break;
+                    }
 
-            //        // CPUが操作するユニットがいるかどうかチェック
-            //        num = 0;
-            //        foreach (Unit currentU2 in UList)
-            //        {
-            //            u = currentU2;
-            //            {
-            //                var withBlock3 = u;
-            //                if (withBlock3.Party != "味方" & withBlock3.Status == "出撃")
-            //                {
-            //                    num = (num + 1);
-            //                }
-            //            }
-            //        }
+                    // 敵フェイズ
+                    StartTurn("敵");
+                    if (IsScenarioFinished)
+                    {
+                        IsScenarioFinished = false;
+                        return;
+                    }
 
-            //        if (num == 0)
-            //        {
-            //            break;
-            //        }
+                    // 中立フェイズ
+                    StartTurn("中立");
+                    if (IsScenarioFinished)
+                    {
+                        IsScenarioFinished = false;
+                        return;
+                    }
 
-            //        // 敵フェイズ
-            //        string arguparty = "敵";
-            //        StartTurn(arguparty);
-            //        if (IsScenarioFinished)
-            //        {
-            //            IsScenarioFinished = false;
-            //            return;
-            //        }
+                    // ＮＰＣフェイズ
+                    StartTurn("ＮＰＣ");
+                    if (IsScenarioFinished)
+                    {
+                        IsScenarioFinished = false;
+                        return;
+                    }
+                }
+                while (true);
+            }
+            else
+            {
+                // 味方フェイズ以外
 
-            //        // 中立フェイズ
-            //        string arguparty1 = "中立";
-            //        StartTurn(arguparty1);
-            //        if (IsScenarioFinished)
-            //        {
-            //            IsScenarioFinished = false;
-            //            return;
-            //        }
+                // 状態回復
+                foreach (var currentUnit in UList.Items)
+                {
+                    Commands.SelectedUnit = currentUnit;
+                    switch (currentUnit.Status)
+                    {
+                        case "出撃":
+                        case "格納":
+                            {
+                                if ((currentUnit.Party ?? "") == (uparty ?? ""))
+                                {
+                                    currentUnit.Rest();
+                                    if (IsScenarioFinished)
+                                    {
+                                        GUI.UnlockGUI();
+                                        return;
+                                    }
+                                }
+                                else
+                                {
+                                    currentUnit.UsedAction = 0;
+                                }
 
-            //        // ＮＰＣフェイズ
-            //        string arguparty2 = "ＮＰＣ";
-            //        StartTurn(arguparty2);
-            //        if (IsScenarioFinished)
-            //        {
-            //            IsScenarioFinished = false;
-            //            return;
-            //        }
-            //    }
-            //    while (true);
-            //}
-            //else
-            //{
-            //    // 味方フェイズ以外
+                                break;
+                            }
 
-            //    // 状態回復
-            //    foreach (Unit currentSelectedUnit1 in UList)
-            //    {
-            //        Commands.SelectedUnit = currentSelectedUnit1;
-            //        {
-            //            var withBlock4 = Commands.SelectedUnit;
-            //            switch (withBlock4.Status)
-            //            {
-            //                case "出撃":
-            //                case "格納":
-            //                    {
-            //                        if ((withBlock4.Party ?? "") == (uparty ?? ""))
-            //                        {
-            //                            withBlock4.Rest();
-            //                            if (IsScenarioFinished)
-            //                            {
-            //                                GUI.UnlockGUI();
-            //                                return;
-            //                            }
-            //                        }
-            //                        else
-            //                        {
-            //                            withBlock4.UsedAction = 0;
-            //                        }
+                        case "旧主形態":
+                        case "旧形態":
+                            {
+                                currentUnit.UsedAction = 0;
+                                break;
+                            }
+                    }
+                }
 
-            //                        break;
-            //                    }
+                // 敵ユニットが味方にかけたスペシャルパワーを解除
+                foreach (var currentUnit in UList.Items)
+                {
+                    switch (currentUnit.Status)
+                    {
+                        case "出撃":
+                        case "格納":
+                            {
+                                string argstype1 = "敵ターン";
+                                currentUnit.RemoveSpecialPowerInEffect(argstype1);
+                                break;
+                            }
+                    }
+                }
 
-            //                case "旧主形態":
-            //                case "旧形態":
-            //                    {
-            //                        withBlock4.UsedAction = 0;
-            //                        break;
-            //                    }
-            //            }
-            //        }
-            //    }
+                GUI.RedrawScreen();
 
-            //    // 敵ユニットが味方にかけたスペシャルパワーを解除
-            //    foreach (Unit currentU3 in UList)
-            //    {
-            //        u = currentU3;
-            //        {
-            //            var withBlock5 = u;
-            //            switch (withBlock5.Status)
-            //            {
-            //                case "出撃":
-            //                case "格納":
-            //                    {
-            //                        string argstype1 = "敵ターン";
-            //                        withBlock5.RemoveSpecialPowerInEffect(argstype1);
-            //                        break;
-            //                    }
-            //            }
-            //        }
-            //    }
+                //// 敵(ＮＰＣ)フェイズ用ＢＧＭを演奏
+                //switch (Map.TerrainClass(1, 1) ?? "")
+                //{
+                //    case "屋内":
+                //        {
+                //            if (Stage == "ＮＰＣ")
+                //            {
+                //                string argbgm_name8 = "Map3";
+                //                string argbgm_name9 = Sound.BGMName(argbgm_name8);
+                //                Sound.StartBGM(argbgm_name9);
+                //            }
+                //            else
+                //            {
+                //                string argbgm_name10 = "Map4";
+                //                string argbgm_name11 = Sound.BGMName(argbgm_name10);
+                //                Sound.StartBGM(argbgm_name11);
+                //            }
 
-            //    GUI.RedrawScreen();
+                //            break;
+                //        }
 
-            //    // 敵(ＮＰＣ)フェイズ用ＢＧＭを演奏
-            //    switch (Map.TerrainClass(1, 1) ?? "")
-            //    {
-            //        case "屋内":
-            //            {
-            //                if (Stage == "ＮＰＣ")
-            //                {
-            //                    string argbgm_name8 = "Map3";
-            //                    string argbgm_name9 = Sound.BGMName(argbgm_name8);
-            //                    Sound.StartBGM(argbgm_name9);
-            //                }
-            //                else
-            //                {
-            //                    string argbgm_name10 = "Map4";
-            //                    string argbgm_name11 = Sound.BGMName(argbgm_name10);
-            //                    Sound.StartBGM(argbgm_name11);
-            //                }
+                //    case "宇宙":
+                //        {
+                //            if (Stage == "ＮＰＣ")
+                //            {
+                //                string argbgm_name12 = "Map5";
+                //                string argbgm_name13 = Sound.BGMName(argbgm_name12);
+                //                Sound.StartBGM(argbgm_name13);
+                //            }
+                //            else
+                //            {
+                //                string argbgm_name14 = "Map6";
+                //                string argbgm_name15 = Sound.BGMName(argbgm_name14);
+                //                Sound.StartBGM(argbgm_name15);
+                //            }
 
-            //                break;
-            //            }
+                //            break;
+                //        }
 
-            //        case "宇宙":
-            //            {
-            //                if (Stage == "ＮＰＣ")
-            //                {
-            //                    string argbgm_name12 = "Map5";
-            //                    string argbgm_name13 = Sound.BGMName(argbgm_name12);
-            //                    Sound.StartBGM(argbgm_name13);
-            //                }
-            //                else
-            //                {
-            //                    string argbgm_name14 = "Map6";
-            //                    string argbgm_name15 = Sound.BGMName(argbgm_name14);
-            //                    Sound.StartBGM(argbgm_name15);
-            //                }
+                //    default:
+                //        {
+                //            if (Stage == "ＮＰＣ")
+                //            {
+                //                if (Map.TerrainName(1, 1) == "壁")
+                //                {
+                //                    string argbgm_name16 = "Map3";
+                //                    string argbgm_name17 = Sound.BGMName(argbgm_name16);
+                //                    Sound.StartBGM(argbgm_name17);
+                //                }
+                //                else
+                //                {
+                //                    string argbgm_name18 = "Map1";
+                //                    string argbgm_name19 = Sound.BGMName(argbgm_name18);
+                //                    Sound.StartBGM(argbgm_name19);
+                //                }
+                //            }
+                //            else if (Map.TerrainName(1, 1) == "壁")
+                //            {
+                //                string argbgm_name20 = "Map4";
+                //                string argbgm_name21 = Sound.BGMName(argbgm_name20);
+                //                Sound.StartBGM(argbgm_name21);
+                //            }
+                //            else
+                //            {
+                //                string argbgm_name22 = "Map2";
+                //                string argbgm_name23 = Sound.BGMName(argbgm_name22);
+                //                Sound.StartBGM(argbgm_name23);
+                //            }
 
-            //                break;
-            //            }
+                //            break;
+                //        }
+                //}
 
-            //        default:
-            //            {
-            //                if (Stage == "ＮＰＣ")
-            //                {
-            //                    if (Map.TerrainName(1, 1) == "壁")
-            //                    {
-            //                        string argbgm_name16 = "Map3";
-            //                        string argbgm_name17 = Sound.BGMName(argbgm_name16);
-            //                        Sound.StartBGM(argbgm_name17);
-            //                    }
-            //                    else
-            //                    {
-            //                        string argbgm_name18 = "Map1";
-            //                        string argbgm_name19 = Sound.BGMName(argbgm_name18);
-            //                        Sound.StartBGM(argbgm_name19);
-            //                    }
-            //                }
-            //                else if (Map.TerrainName(1, 1) == "壁")
-            //                {
-            //                    string argbgm_name20 = "Map4";
-            //                    string argbgm_name21 = Sound.BGMName(argbgm_name20);
-            //                    Sound.StartBGM(argbgm_name21);
-            //                }
-            //                else
-            //                {
-            //                    string argbgm_name22 = "Map2";
-            //                    string argbgm_name23 = Sound.BGMName(argbgm_name22);
-            //                    Sound.StartBGM(argbgm_name23);
-            //                }
+                // ターンイベント
+                Event.HandleEvent("ターン", Turn.ToString(), uparty);
+                if (IsScenarioFinished)
+                {
+                    GUI.UnlockGUI();
+                    return;
+                }
+            }
 
-            //                break;
-            //            }
-            //    }
+            int max_lv;
+            Unit max_unit = null;
+            if (uparty == "味方")
+            {
+                // 味方フェイズのプレイヤーによるユニット操作前の処理
 
-            //    // ターンイベント
-            //    Event.HandleEvent("ターン", Turn, uparty);
-            //    if (IsScenarioFinished)
-            //    {
-            //        GUI.UnlockGUI();
-            //        return;
-            //    }
-            //}
+                // ターン数を表示
+                if (Turn > 1 & Expression.IsOptionDefined("デバッグ"))
+                {
+                    string argmsg = "ターン" + SrcFormatter.Format(Turn);
+                    GUI.DisplayTelop(argmsg);
+                }
 
-            //int max_lv;
-            //var max_unit = default(Unit);
-            //if (uparty == "味方")
-            //{
-            //    // 味方フェイズのプレイヤーによるユニット操作前の処理
+                // 通常のステージでは母艦ユニットまたはレベルがもっとも高い
+                // ユニットを中央に配置
+                if (!string.IsNullOrEmpty(Map.MapFileName) & !Event.IsUnitCenter)
+                {
+                    foreach (Unit currentUnit in UList.Items)
+                    {
+                        if (currentUnit.Party == "味方" & currentUnit.Status == "出撃" & currentUnit.Action > 0)
+                        {
+                            if (currentUnit.IsFeatureAvailable("母艦"))
+                            {
+                                GUI.Center(currentUnit.x, currentUnit.y);
+                                GUIStatus.DisplayUnitStatus(currentUnit);
+                                GUI.RedrawScreen();
+                                GUI.UnlockGUI();
+                                return;
+                            }
+                        }
+                    }
 
-            //    // ターン数を表示
-            //    string argoname1 = "デバッグ";
-            //    if (Turn > 1 & Expression.IsOptionDefined(argoname1))
-            //    {
-            //        string argmsg = "ターン" + VB.Compatibility.VB6.Support.Format(Turn);
-            //        GUI.DisplayTelop(argmsg);
-            //    }
+                    max_lv = 0;
+                    foreach (Unit cuttentUnit in UList.Items)
+                    {
+                        if (cuttentUnit.Party == "味方" & cuttentUnit.Status == "出撃")
+                        {
+                            if (cuttentUnit.MainPilot().Level > max_lv)
+                            {
+                                max_unit = cuttentUnit;
+                                max_lv = cuttentUnit.MainPilot().Level;
+                            }
+                        }
+                    }
 
-            //    // 通常のステージでは母艦ユニットまたはレベルがもっとも高い
-            //    // ユニットを中央に配置
-            //    if (!string.IsNullOrEmpty(Map.MapFileName) & !Event.IsUnitCenter)
-            //    {
-            //        foreach (Unit currentU4 in UList)
-            //        {
-            //            u = currentU4;
-            //            {
-            //                var withBlock6 = u;
-            //                if (withBlock6.Party == "味方" & withBlock6.Status == "出撃" & withBlock6.Action > 0)
-            //                {
-            //                    string argfname = "母艦";
-            //                    if (withBlock6.IsFeatureAvailable(argfname))
-            //                    {
-            //                        GUI.Center(withBlock6.x, withBlock6.y);
-            //                        Status.DisplayUnitStatus(u);
-            //                        GUI.RedrawScreen();
-            //                        GUI.UnlockGUI();
-            //                        return;
-            //                    }
-            //                }
-            //            }
-            //        }
+                    if (max_unit != null)
+                    {
+                        GUI.Center(max_unit.x, max_unit.y);
+                    }
+                }
 
-            //        max_lv = 0;
-            //        foreach (Unit currentU5 in UList)
-            //        {
-            //            u = currentU5;
-            //            {
-            //                var withBlock7 = u;
-            //                if (withBlock7.Party == "味方" & withBlock7.Status == "出撃")
-            //                {
-            //                    if (withBlock7.MainPilot().Level > max_lv)
-            //                    {
-            //                        max_unit = u;
-            //                        max_lv = withBlock7.MainPilot().Level;
-            //                    }
-            //                }
-            //            }
-            //        }
+                // ステータスを表示
+                if (!string.IsNullOrEmpty(Map.MapFileName))
+                {
+                    GUIStatus.DisplayGlobalStatus();
+                }
 
-            //        if (max_unit is object)
-            //        {
-            //            GUI.Center(max_unit.x, max_unit.y);
-            //        }
-            //    }
-
-            //    // ステータスを表示
-            //    if (!string.IsNullOrEmpty(Map.MapFileName))
-            //    {
-            //        Status.DisplayGlobalStatus();
-            //    }
-
-            //    // プレイヤーによる味方ユニット操作に移行
-            //    GUI.RedrawScreen();
-            //    Application.DoEvents();
-            //    GUI.UnlockGUI();
-            //    return;
-            //}
+                // プレイヤーによる味方ユニット操作に移行
+                GUI.RedrawScreen();
+                GUI.UnlockGUI();
+                return;
+            }
 
             //GUI.LockGUI();
 
@@ -985,8 +934,8 @@ namespace SRCCore
             //    }
             //}
 
-            //// ステータスウィンドウの表示を消去
-            //Status.ClearUnitStatus();
+            // ステータスウィンドウの表示を消去
+            GUIStatus.ClearUnitStatus();
         }
 
         // ゲームオーバー
