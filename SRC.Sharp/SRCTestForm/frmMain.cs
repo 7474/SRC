@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using SRCCore;
+using SRCCore.Filesystem;
 using SRCCore.Units;
 using SRCTestForm.FormLib;
 using System;
@@ -22,6 +23,7 @@ namespace SRCTestForm
 
             SRC = new SRCCore.SRC();
             SRC.GUI = this;
+            SRC.Filesystem = new LocalFilesystem();
         }
 
         private void menuLoadData_Click(object sender, EventArgs e)

@@ -831,5 +831,20 @@ namespace SRCTestForm
             Program.Log.LogInformation(message);
         }
 
+        public void ChangeStatus(GuiStatus status)
+        {
+            switch(status)
+            {
+                case GuiStatus.WaitCursor:
+                    Cursor.Current = Cursors.WaitCursor;
+                    break;
+                case GuiStatus.IBeam:
+                    Cursor.Current = Cursors.IBeam;
+                    break;
+                default:
+                    Cursor.Current = Cursors.Default;
+                    break;
+            }
+        }
     }
 }

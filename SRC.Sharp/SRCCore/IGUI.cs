@@ -278,5 +278,14 @@ namespace SRCCore
 
         bool MainFormVisible { get; }
         void MainFormShow();
+
+        void ChangeStatus(GuiStatus status);
+    }
+
+    public enum GuiStatus
+    {
+        Default,
+        WaitCursor,
+        IBeam,
     }
 }

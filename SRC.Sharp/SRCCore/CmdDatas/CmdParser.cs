@@ -122,11 +122,8 @@ namespace SRCCore.CmdDatas
                     //        break;
                     //    }
                     //// ADD  END  240a
-                    //case "changemap":
-                    //    {
-                    //        CmdName = CmdType.ChangeMapCmd;
-                    //        break;
-                    //    }
+                    case "changemap":
+                        return new ChangeMapCmd(src, data);
 
                     //case "changemode":
                     //    {
