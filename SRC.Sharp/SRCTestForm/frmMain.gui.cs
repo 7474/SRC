@@ -71,6 +71,7 @@ namespace SRCTestForm
                 SRC = SRC,
             };
             SRC.GUIMap = MainForm;
+            MainForm.Init();
             Program.Log.LogDebug("LoadMainFormAndRegisterFlash");
         }
 

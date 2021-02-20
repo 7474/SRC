@@ -1,15 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
-using SRCCore;
-using SRCCore.Lib;
-using SRCCore.Units;
-using System;
-using System.Collections.Generic;
+﻿using SRCCore;
+using SRCTestForm.Resoruces;
 using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace SRCTestForm
@@ -29,6 +20,13 @@ namespace SRCTestForm
         private Bitmap MaskedBackBitmap;
 
         private Pen MapLinePen = new Pen(Color.FromArgb(100, 100, 100));
+
+        private ImageBuffer imageBuffer;
+
+        public void Init()
+        {
+            imageBuffer = new ImageBuffer(SRC);
+        }
 
         public void InitStatus()
         {
@@ -281,7 +279,6 @@ namespace SRCTestForm
                 // 一旦マップウィンドウの内容を消去
                 g.FillRectangle(Brushes.Black, 0, 0, MainPWidth, MainPHeight);
 
-
                 // マップ画像の転送元と転送先を計算する
                 var mx = (mapX - (GUI.MainWidth + 1) / 2 + 1);
                 var my = (mapY - (GUI.MainHeight + 1) / 2 + 1);
@@ -335,6 +332,10 @@ namespace SRCTestForm
                     dh = GUI.MainHeight;
                 }
 
+                // 表示内容を更新
+                // TODO マスク
+                //if (!ScreenIsMasked)
+                //{
                 for (var i = 0; i < dw; i++)
                 {
                     var xx = MapCellPx * (dx + i - 1);
@@ -346,15 +347,43 @@ namespace SRCTestForm
                         }
 
                         var yy = MapCellPx * (dy + j - 1);
-                        //var cell = Map.MapData(sx + i, sy + j);
+                        var cell = Map.MapData[sx + i, sy + j];
+                        var u = Map.MapDataForUnit[sx + i, sy + j];
+                        // XXX ユニット画像は専用のPictureboxをバッファにしてタイル状に並べていたみたい
+                        //ret = BitBlt(pic.hDC, xx, yy, 32, 32, withBlock.picUnitBitmap.hDC, 32 * ((int)u.BitmapID % 15), 96 * ((int)u.BitmapID / 15), SRCCOPY);
 
                         var destRect = new Rectangle(xx, yy, MapCellPx, MapCellPx);
                         var fromRect = new Rectangle(MapCellPx * (sx + i - 1), MapCellPx * (sy + j - 1), MapCellPx, MapCellPx);
                         // 地形
                         // XXX これバルクで転送でいいんじゃないかな。バッファの関係だろうか。ダブルバッファすればいい？
                         g.DrawImage(picBack.Image, destRect, fromRect, GraphicsUnit.Pixel);
+
+                        if (u != null)
+                        {
+                            // XXX BitmapMissing
+                            var image = imageBuffer.Get("Unit", u.CurrentForm().Data.Bitmap);
+                            if (image != null)
+                            {
+                                g.DrawImage(image, destRect);
+                            }
+                            else
+                            {
+                                u.CurrentForm().Data.IsBitmapMissing = true;
+                            }
+                        }
                     }
                 }
+
+                //// 描画色を元に戻しておく
+                //pic.ForeColor = ColorTranslator.FromOle(prev_color);
+
+                //// 画面が書き換えられたことを記録
+                //ScreenIsSaved = false;
+                //if (!without_refresh & !delay_refresh)
+                //{
+                //    // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+                //    withBlock.picMain(0).Refresh();
+                //}
             }
         }
     }
