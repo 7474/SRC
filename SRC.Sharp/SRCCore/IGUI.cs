@@ -37,15 +37,15 @@ namespace SRCCore
         int PrevMapY { get; set; }
 
         // 最後に押されたマウスボタン
-        int MouseButton { get; set; }
+        GuiButton MouseButton { get; set; }
 
         // 現在のマウスの座標
-        float MouseX { get; set; }
-        float MouseY { get; set; }
+        double MouseX { get; set; }
+        double MouseY { get; set; }
 
         // ドラッグ前のマウスの座標
-        float PrevMouseX { get; set; }
-        float PrevMouseY { get; set; }
+        double PrevMouseX { get; set; }
+        double PrevMouseY { get; set; }
 
         // 移動前のユニットの情報
         int PrevUnitX { get; set; }
@@ -287,5 +287,10 @@ namespace SRCCore
         Default,
         WaitCursor,
         IBeam,
+    }
+    public enum GuiButton
+    {
+        Left,
+        Right,
     }
 }

@@ -34,11 +34,11 @@ namespace SRCCoreTests.TestLib
         public int MapY { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public int PrevMapX { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public int PrevMapY { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public int MouseButton { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public float MouseX { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public float MouseY { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public float PrevMouseX { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public float PrevMouseY { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public GuiButton MouseButton { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public double MouseX { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public double MouseY { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public double PrevMouseX { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public double PrevMouseY { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public int PrevUnitX { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public int PrevUnitY { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public string PrevUnitArea { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }

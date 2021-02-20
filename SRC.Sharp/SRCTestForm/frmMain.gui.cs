@@ -39,11 +39,11 @@ namespace SRCTestForm
         public int MapY { get; set; }
         public int PrevMapX { get; set; }
         public int PrevMapY { get; set; }
-        public int MouseButton { get; set; }
-        public float MouseX { get; set; }
-        public float MouseY { get; set; }
-        public float PrevMouseX { get; set; }
-        public float PrevMouseY { get; set; }
+        public GuiButton MouseButton { get; set; }
+        public double MouseX { get; set; }
+        public double MouseY { get; set; }
+        public double PrevMouseX { get; set; }
+        public double PrevMouseY { get; set; }
         public int PrevUnitX { get; set; }
         public int PrevUnitY { get; set; }
         public string PrevUnitArea { get; set; }
@@ -833,7 +833,7 @@ namespace SRCTestForm
 
         public void ChangeStatus(GuiStatus status)
         {
-            switch(status)
+            switch (status)
             {
                 case GuiStatus.WaitCursor:
                     Cursor.Current = Cursors.WaitCursor;

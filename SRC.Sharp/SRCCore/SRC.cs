@@ -22,6 +22,7 @@ namespace SRCCore
         public Expression Expression { get; }
         public Event Event { get; }
         public Map Map { get; }
+        public Commands.Command Commands { get; }
 
         // パイロットデータのリスト
         public PilotDataList PDList = new PilotDataList();
@@ -132,6 +133,7 @@ namespace SRCCore
             Event = new Event(this);
             Expression = new Expression(this);
             Map = new Map(this);
+            Commands = new Commands.Command(this);
 
             PList = new Pilots.Pilots(this);
             UList = new Units.Units(this);

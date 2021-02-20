@@ -876,7 +876,7 @@ namespace SRCTestForm
             this.picMaskedBack.TabStop = false;
             this.picMaskedBack.Visible = false;
             // 
-            // _Timer1
+            // Timer1
             // 
             this.Timer1.Interval = 1000;
             this.Timer1.Tick += new System.EventHandler(this.Timer1_Tick);
@@ -1058,6 +1058,10 @@ namespace SRCTestForm
             this._picMain_0.Size = new System.Drawing.Size(81, 32);
             this._picMain_0.TabIndex = 0;
             this._picMain_0.TabStop = true;
+            this._picMain_0.DoubleClick += new System.EventHandler(this.picMain_DoubleClick);
+            this._picMain_0.MouseDown += new System.Windows.Forms.MouseEventHandler(this.picMain_MouseDown);
+            this._picMain_0.MouseMove += new System.Windows.Forms.MouseEventHandler(this.picMain_MouseMove);
+            this._picMain_0.MouseUp += new System.Windows.Forms.MouseEventHandler(this.picMain_MouseUp);
             // 
             // frmMain
             // 
