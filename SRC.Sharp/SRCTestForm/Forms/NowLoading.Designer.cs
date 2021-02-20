@@ -60,6 +60,7 @@ namespace SRCTestForm
             this.picBar.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.picBar.Size = new System.Drawing.Size(183, 13);
             this.picBar.TabIndex = 1;
+            this.picBar.TabStop = false;
             // 
             // Label1
             // 

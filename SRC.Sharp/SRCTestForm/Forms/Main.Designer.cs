@@ -1000,9 +1000,9 @@ namespace SRCTestForm
             this.picNeautral.BackColor = System.Drawing.SystemColors.Control;
             this.picNeautral.Cursor = System.Windows.Forms.Cursors.Default;
             this.picNeautral.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.picNeautral.Image = ((System.Drawing.Image)(resources.GetObject("picNeautral.Image")));
             this.picNeautral.Location = new System.Drawing.Point(176, 140);
             this.picNeautral.Name = "picNeautral";
-            this.picNeautral.Image = (Image)resources.GetObject("picNeautral.Image");
             this.picNeautral.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.picNeautral.Size = new System.Drawing.Size(32, 32);
             this.picNeautral.TabIndex = 11;
@@ -1014,9 +1014,9 @@ namespace SRCTestForm
             this.picEnemy.BackColor = System.Drawing.SystemColors.Control;
             this.picEnemy.Cursor = System.Windows.Forms.Cursors.Default;
             this.picEnemy.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.picEnemy.Image = ((System.Drawing.Image)(resources.GetObject("picEnemy.Image")));
             this.picEnemy.Location = new System.Drawing.Point(124, 140);
             this.picEnemy.Name = "picEnemy";
-            this.picEnemy.Image = (Image)resources.GetObject("picEnemy.Image");
             this.picEnemy.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.picEnemy.Size = new System.Drawing.Size(32, 32);
             this.picEnemy.TabIndex = 10;
@@ -1028,9 +1028,9 @@ namespace SRCTestForm
             this.picUnit.BackColor = System.Drawing.SystemColors.Control;
             this.picUnit.Cursor = System.Windows.Forms.Cursors.Default;
             this.picUnit.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.picUnit.Image = ((System.Drawing.Image)(resources.GetObject("picUnit.Image")));
             this.picUnit.Location = new System.Drawing.Point(76, 140);
             this.picUnit.Name = "picUnit";
-            this.picUnit.Image = (Image)resources.GetObject("picUnit.Image");
             this.picUnit.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.picUnit.Size = new System.Drawing.Size(32, 32);
             this.picUnit.TabIndex = 9;

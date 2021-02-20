@@ -57,6 +57,7 @@ namespace SRCTestForm
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMessage));
             this.ToolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.picFace = new System.Windows.Forms.PictureBox();
             this.picUnit1 = new System.Windows.Forms.PictureBox();
@@ -342,6 +343,7 @@ namespace SRCTestForm
             this.Font = new System.Drawing.Font("ＭＳ Ｐ明朝", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.ForeColor = System.Drawing.Color.Black;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.Location = new System.Drawing.Point(93, 101);
             this.MaximizeBox = false;
