@@ -16,8 +16,6 @@ namespace SRCTestForm
         {
             // この呼び出しは、Windows フォーム デザイナで必要です。
             InitializeComponent();
-            _picFace.Name = "picFace";
-            _picMessage.Name = "picMessage";
         }
         // Form は、コンポーネント一覧に後処理を実行するために dispose をオーバーライドします。
         [DebuggerNonUserCode()]
@@ -36,32 +34,7 @@ namespace SRCTestForm
         // Windows フォーム デザイナで必要です。
         private System.ComponentModel.IContainer components;
         public ToolTip ToolTip1;
-        private PictureBox _picFace;
-
-        public PictureBox picFace
-        {
-            [MethodImpl(MethodImplOptions.Synchronized)]
-            get
-            {
-                return _picFace;
-            }
-
-            [MethodImpl(MethodImplOptions.Synchronized)]
-            set
-            {
-                if (_picFace != null)
-                {
-                    _picFace.MouseDown -= picFace_MouseDown;
-                }
-
-                _picFace = value;
-                if (_picFace != null)
-                {
-                    _picFace.MouseDown += picFace_MouseDown;
-                }
-            }
-        }
-
+        public PictureBox picFace;
         public PictureBox picUnit1;
         public PictureBox picUnit2;
         public TextBox txtHP2;
@@ -72,34 +45,7 @@ namespace SRCTestForm
         public PictureBox picEN1;
         public PictureBox picHP1;
         public TextBox txtHP1;
-        private PictureBox _picMessage;
-
-        public PictureBox picMessage
-        {
-            [MethodImpl(MethodImplOptions.Synchronized)]
-            get
-            {
-                return _picMessage;
-            }
-
-            [MethodImpl(MethodImplOptions.Synchronized)]
-            set
-            {
-                if (_picMessage != null)
-                {
-                    _picMessage.DoubleClick -= picMessage_DoubleClick;
-                    _picMessage.MouseDown -= picMessage_MouseDown;
-                }
-
-                _picMessage = value;
-                if (_picMessage != null)
-                {
-                    _picMessage.DoubleClick += picMessage_DoubleClick;
-                    _picMessage.MouseDown += picMessage_MouseDown;
-                }
-            }
-        }
-
+        private PictureBox picMessage;
         public Label labHP2;
         public Label labEN2;
         public Label labEN1;
@@ -111,9 +57,8 @@ namespace SRCTestForm
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMessage));
             this.ToolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this._picFace = new System.Windows.Forms.PictureBox();
+            this.picFace = new System.Windows.Forms.PictureBox();
             this.picUnit1 = new System.Windows.Forms.PictureBox();
             this.picUnit2 = new System.Windows.Forms.PictureBox();
             this.txtHP2 = new System.Windows.Forms.TextBox();
@@ -124,35 +69,35 @@ namespace SRCTestForm
             this.picEN1 = new System.Windows.Forms.PictureBox();
             this.picHP1 = new System.Windows.Forms.PictureBox();
             this.txtHP1 = new System.Windows.Forms.TextBox();
-            this._picMessage = new System.Windows.Forms.PictureBox();
+            this.picMessage = new System.Windows.Forms.PictureBox();
             this.labHP2 = new System.Windows.Forms.Label();
             this.labEN2 = new System.Windows.Forms.Label();
             this.labEN1 = new System.Windows.Forms.Label();
             this.labHP1 = new System.Windows.Forms.Label();
             this.labKariText = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this._picFace)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picFace)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picUnit1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picUnit2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picHP2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picEN2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picEN1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picHP1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this._picMessage)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picMessage)).BeginInit();
             this.SuspendLayout();
             // 
-            // _picFace
+            // picFace
             // 
-            this._picFace.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
-            this._picFace.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this._picFace.Cursor = System.Windows.Forms.Cursors.Default;
-            this._picFace.ForeColor = System.Drawing.SystemColors.ControlText;
-            this._picFace.Location = new System.Drawing.Point(8, 43);
-            this._picFace.Name = "_picFace";
-            this._picFace.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this._picFace.Size = new System.Drawing.Size(68, 68);
-            this._picFace.TabIndex = 15;
-            this._picFace.TabStop = false;
-            this._picFace.MouseDown += new System.Windows.Forms.MouseEventHandler(this.picFace_MouseDown);
+            this.picFace.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.picFace.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.picFace.Cursor = System.Windows.Forms.Cursors.Default;
+            this.picFace.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.picFace.Location = new System.Drawing.Point(8, 43);
+            this.picFace.Name = "picFace";
+            this.picFace.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.picFace.Size = new System.Drawing.Size(68, 68);
+            this.picFace.TabIndex = 15;
+            this.picFace.TabStop = false;
+            this.picFace.Click += new System.EventHandler(this.picFace_Click);
             // 
             // picUnit1
             // 
@@ -296,21 +241,21 @@ namespace SRCTestForm
             this.txtHP1.TabIndex = 2;
             this.txtHP1.Text = "99999/99999";
             // 
-            // _picMessage
+            // picMessage
             // 
-            this._picMessage.BackColor = System.Drawing.Color.White;
-            this._picMessage.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this._picMessage.Cursor = System.Windows.Forms.Cursors.Default;
-            this._picMessage.Font = new System.Drawing.Font("ＭＳ Ｐ明朝", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this._picMessage.ForeColor = System.Drawing.Color.Black;
-            this._picMessage.Location = new System.Drawing.Point(84, 42);
-            this._picMessage.Name = "_picMessage";
-            this._picMessage.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this._picMessage.Size = new System.Drawing.Size(417, 70);
-            this._picMessage.TabIndex = 0;
-            this._picMessage.TabStop = false;
-            this._picMessage.DoubleClick += new System.EventHandler(this.picMessage_DoubleClick);
-            this._picMessage.MouseDown += new System.Windows.Forms.MouseEventHandler(this.picMessage_MouseDown);
+            this.picMessage.BackColor = System.Drawing.Color.White;
+            this.picMessage.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.picMessage.Cursor = System.Windows.Forms.Cursors.Default;
+            this.picMessage.Font = new System.Drawing.Font("ＭＳ Ｐ明朝", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.picMessage.ForeColor = System.Drawing.Color.Black;
+            this.picMessage.Location = new System.Drawing.Point(84, 42);
+            this.picMessage.Name = "picMessage";
+            this.picMessage.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.picMessage.Size = new System.Drawing.Size(417, 70);
+            this.picMessage.TabIndex = 0;
+            this.picMessage.TabStop = false;
+            this.picMessage.Click += new System.EventHandler(this.picMessage_Click);
+            this.picMessage.DoubleClick += new System.EventHandler(this.picMessage_DoubleClick);
             // 
             // labHP2
             // 
@@ -363,12 +308,12 @@ namespace SRCTestForm
             // labKariText
             // 
             this.labKariText.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.labKariText.Location = new System.Drawing.Point(84, 42);
+            this.labKariText.Location = new System.Drawing.Point(85, 43);
             this.labKariText.Name = "labKariText";
             this.labKariText.Size = new System.Drawing.Size(416, 70);
             this.labKariText.TabIndex = 16;
+            this.labKariText.Click += new System.EventHandler(this.labKariText_Click);
             this.labKariText.DoubleClick += new System.EventHandler(this.labKariText_DoubleClick);
-            this.labKariText.MouseDown += new System.Windows.Forms.MouseEventHandler(this.labKariText_MouseDown);
             // 
             // frmMessage
             // 
@@ -377,7 +322,7 @@ namespace SRCTestForm
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
             this.ClientSize = new System.Drawing.Size(508, 118);
             this.Controls.Add(this.labKariText);
-            this.Controls.Add(this._picFace);
+            this.Controls.Add(this.picFace);
             this.Controls.Add(this.picUnit1);
             this.Controls.Add(this.picUnit2);
             this.Controls.Add(this.txtHP2);
@@ -388,7 +333,7 @@ namespace SRCTestForm
             this.Controls.Add(this.picEN1);
             this.Controls.Add(this.picHP1);
             this.Controls.Add(this.txtHP1);
-            this.Controls.Add(this._picMessage);
+            this.Controls.Add(this.picMessage);
             this.Controls.Add(this.labHP2);
             this.Controls.Add(this.labEN2);
             this.Controls.Add(this.labEN1);
@@ -397,7 +342,6 @@ namespace SRCTestForm
             this.Font = new System.Drawing.Font("ＭＳ Ｐ明朝", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.ForeColor = System.Drawing.Color.Black;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.Location = new System.Drawing.Point(93, 101);
             this.MaximizeBox = false;
@@ -409,15 +353,14 @@ namespace SRCTestForm
             this.Click += new System.EventHandler(this.frmMessage_Click);
             this.DoubleClick += new System.EventHandler(this.frmMessage_DoubleClick);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.frmMessage_KeyDown);
-            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.frmMessage_MouseDown);
-            ((System.ComponentModel.ISupportInitialize)(this._picFace)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picFace)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picUnit1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picUnit2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picHP2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picEN2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picEN1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picHP1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this._picMessage)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picMessage)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

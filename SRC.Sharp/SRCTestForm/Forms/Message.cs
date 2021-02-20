@@ -59,7 +59,14 @@ namespace SRCTestForm
             }
 
             GUI.IsFormClicked = true;
-            Program.Log.LogDebug("picFace_MouseDown");
+            Program.Log.LogDebug("picFace_Click");
+        }
+
+        // メッセージ欄上でクリック
+        private void picMessage_Click(object sender, EventArgs e)
+        {
+            GUI.IsFormClicked = true;
+            Program.Log.LogDebug("picMessage_Click");
         }
 
         // メッセージ欄上でダブルクリック
@@ -67,6 +74,12 @@ namespace SRCTestForm
         {
             GUI.IsFormClicked = true;
             Program.Log.LogDebug("picMessage_DoubleClick");
+        }
+
+        private void labKariText_Click(object sender, EventArgs e)
+        {
+            GUI.IsFormClicked = true;
+            Program.Log.LogDebug("labKariText_Click");
         }
 
         private void labKariText_DoubleClick(object sender, EventArgs e)
@@ -93,5 +106,6 @@ namespace SRCTestForm
                     break;
             }
         }
+
     }
 }
