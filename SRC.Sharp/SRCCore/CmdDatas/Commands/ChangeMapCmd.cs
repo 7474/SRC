@@ -59,11 +59,7 @@ namespace SRCCore.CmdDatas.Commands
             fname = GetArgAsString(2);
             if (Strings.Len(fname) > 0)
             {
-                // XXX パス解決してストリーム開くのどこでやるか
-                using (var stream = SRC.Filesystem.Open(SRC.ScenarioPath, fname))
-                {
-                    Map.LoadMapData(fname, stream);
-                }
+                    Map.LoadMapData(SRC.Filesystem.ToPath(SRC.ScenarioPath, fname));
             }
             else
             {
