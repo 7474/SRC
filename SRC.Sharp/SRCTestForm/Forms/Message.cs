@@ -5,6 +5,7 @@
 using System;
 using System.Drawing;
 using System.Windows.Forms;
+using Microsoft.Extensions.Logging;
 using Microsoft.VisualBasic;
 using SRCCore;
 
@@ -31,24 +32,47 @@ namespace SRCTestForm
         private void frmMessage_Click(object eventSender, EventArgs eventArgs)
         {
             GUI.IsFormClicked = true;
+            Program.Log.LogDebug("frmMessage_Click");
         }
 
         // フォーム上をダブルクリック
         private void frmMessage_DoubleClick(object eventSender, EventArgs eventArgs)
         {
             GUI.IsFormClicked = true;
+            Program.Log.LogDebug("frmMessage_DoubleClick");
         }
 
         // フォーム上でキーを押す
         private void frmMessage_KeyDown(object eventSender, KeyEventArgs eventArgs)
         {
             GUI.IsFormClicked = true;
+            Program.Log.LogDebug("frmMessage_KeyDown");
         }
 
-        // フォーム上でマウスボタンを押す
-        private void frmMessage_MouseDown(object eventSender, MouseEventArgs eventArgs)
+        // パイロット画面上でクリック
+        private void picFace_Click(object eventSender, EventArgs eventArgs)
+        {
+            // 自動メッセージ送りモードに移行
+            if (GUI.MessageWait < 10000)
+            {
+                GUI.AutoMessageMode = !GUI.AutoMessageMode;
+            }
+
+            GUI.IsFormClicked = true;
+            Program.Log.LogDebug("picFace_MouseDown");
+        }
+
+        // メッセージ欄上でダブルクリック
+        private void picMessage_DoubleClick(object eventSender, EventArgs eventArgs)
         {
             GUI.IsFormClicked = true;
+            Program.Log.LogDebug("picMessage_DoubleClick");
+        }
+
+        private void labKariText_DoubleClick(object sender, EventArgs e)
+        {
+            GUI.IsFormClicked = true;
+            Program.Log.LogDebug("labKariText_DoubleClick");
         }
 
         private void frmMessage_FormClosing(object sender, FormClosingEventArgs e)
@@ -69,40 +93,5 @@ namespace SRCTestForm
                     break;
             }
         }
-
-        // パイロット画面上でクリック
-        private void picFace_MouseDown(object eventSender, MouseEventArgs eventArgs)
-        {
-            // 自動メッセージ送りモードに移行
-            if (GUI.MessageWait < 10000)
-            {
-                GUI.AutoMessageMode = !GUI.AutoMessageMode;
-            }
-
-            GUI.IsFormClicked = true;
-        }
-
-        // メッセージ欄上でダブルクリック
-        private void picMessage_DoubleClick(object eventSender, EventArgs eventArgs)
-        {
-            GUI.IsFormClicked = true;
-        }
-
-        // メッセージ欄上でマウスボタンを押す
-        private void picMessage_MouseDown(object eventSender, MouseEventArgs eventArgs)
-        {
-            GUI.IsFormClicked = true;
-        }
-
-        private void labKariText_DoubleClick(object sender, EventArgs e)
-        {
-            GUI.IsFormClicked = true;
-        }
-
-        private void labKariText_MouseDown(object sender, MouseEventArgs eventArgs)
-        {
-            GUI.IsFormClicked = true;
-        }
-
     }
 }
