@@ -1,4 +1,5 @@
 ﻿using SRCCore;
+using SRCCore.Maps;
 using SRCTestForm.Resoruces;
 using System.Drawing;
 using System.Windows.Forms;
@@ -349,8 +350,6 @@ namespace SRCTestForm
                         var yy = MapCellPx * (dy + j - 1);
                         var cell = Map.MapData[sx + i, sy + j];
                         var u = Map.MapDataForUnit[sx + i, sy + j];
-                        // XXX ユニット画像は専用のPictureboxをバッファにしてタイル状に並べていたみたい
-                        //ret = BitBlt(pic.hDC, xx, yy, 32, 32, withBlock.picUnitBitmap.hDC, 32 * ((int)u.BitmapID % 15), 96 * ((int)u.BitmapID / 15), SRCCOPY);
 
                         var destRect = new Rectangle(xx, yy, MapCellPx, MapCellPx);
                         var fromRect = new Rectangle(MapCellPx * (sx + i - 1), MapCellPx * (sy + j - 1), MapCellPx, MapCellPx);
@@ -360,17 +359,16 @@ namespace SRCTestForm
 
                         if (u != null)
                         {
-                            // XXX BitmapMissing
-                            var image = imageBuffer.Get("Unit", u.CurrentForm().Data.Bitmap);
-                            if (image != null)
-                            {
-                                g.DrawImage(image, destRect);
-                            }
-                            else
-                            {
-                                u.CurrentForm().Data.IsBitmapMissing = true;
-                            }
+                            DrawUnit(g, cell, u, destRect);
                         }
+
+                        // XXX マスク
+                        //// マスク入りの画像を作成
+                        //// UPGRADE_ISSUE: Control picUnitBitmap は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+                        //ret = BitBlt(withBlock.picUnitBitmap.hDC, xx, (int)yy + 64, 32, 32, withBlock.picUnitBitmap.hDC, xx, (int)yy + 32, SRCCOPY);
+                        //// UPGRADE_ISSUE: Control picMask2 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+                        //// UPGRADE_ISSUE: Control picUnitBitmap は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+                        //ret = BitBlt(withBlock.picUnitBitmap.hDC, xx, (int)yy + 64, 32, 32, withBlock.picMask2.hDC, 0, 0, SRCINVERT);
                     }
                 }
 
@@ -384,6 +382,217 @@ namespace SRCTestForm
                 //    // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 //    withBlock.picMain(0).Refresh();
                 //}
+            }
+        }
+
+        private void DrawUnit(Graphics g, MapCell cell, SRCCore.Units.Unit u, Rectangle destRect)
+        {
+            // タイル
+            switch (u.Party0 ?? "")
+            {
+                case "味方":
+                case "ｎｐｃ":
+                    g.DrawImage(picUnit.Image, destRect);
+                    break;
+                case "敵":
+                    g.DrawImage(picEnemy.Image, destRect);
+                    break;
+                case "中立":
+                    g.DrawImage(picNeautral.Image, destRect);
+                    break;
+            }
+
+            // XXX BitmapMissing
+            var image = imageBuffer.Get("Unit", u.CurrentForm().Data.Bitmap);
+            if (image != null)
+            {
+                g.DrawImage(image, destRect);
+            }
+            else
+            {
+                u.CurrentForm().Data.IsBitmapMissing = true;
+            }
+
+            // フィルタ
+            //            string argfname1 = "地形ユニット";
+            //            if (u.IsFeatureAvailable(ref argfname1))
+            //            {
+            //                // 地形ユニットの場合は画像をそのまま使う
+            //                // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+            //                ret = BitBlt(withBlock.picTmp32(1).hDC, 0, 0, 32, 32, withBlock.picTmp32(0).hDC, 0, 0, SRCCOPY);
+            //            }
+            //            else
+            //            {
+            //                // BitBltを使ってユニット画像とタイルを重ね合わせる
+
+            //                // マスクを作成
+            //                // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+            //                int argw = 32;
+            //                int argh = 32;
+            //                int argtcolor = ColorTranslator.ToOle(Color.White);
+            //                Graphics.MakeMask(ref withBlock.picTmp32(0).hDC, ref withBlock.picTmp32(2).hDC, ref argw, ref argh, ref argtcolor);
+
+
+            //                // 画像の重ね合わせ
+            //                // (発光している場合は２度塗りを防ぐため描画しない)
+            //                if (!emit_light)
+            //                {
+            //                    // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+            //                    ret = BitBlt(withBlock.picTmp32(1).hDC, 0, 0, 32, 32, withBlock.picTmp32(2).hDC, 0, 0, SRCERASE);
+            //                    // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+            //                    ret = BitBlt(withBlock.picTmp32(1).hDC, 0, 0, 32, 32, withBlock.picTmp32(0).hDC, 0, 0, SRCINVERT);
+            //                }
+            //            }
+            //                // 色をステージの状況に合わせて変更
+            //                if (!use_orig_color & !Map.MapDrawIsMapOnly)
+            //{
+            //    switch (Map.MapDrawMode ?? "")
+            //    {
+            //        case "夜":
+            //            {
+            //                // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+            //                var argpic = withBlock.picTmp32(1);
+            //                Graphics.GetImage(ref argpic);
+            //                Graphics.Dark();
+            //                // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+            //                var argpic1 = withBlock.picTmp32(1);
+            //                Graphics.SetImage(ref argpic1);
+            //                // ユニットが"発光"の特殊能力を持つ場合、
+            //                // ユニット画像を、暗くしたタイル画像の上に描画する。
+            //                if (emit_light)
+            //                {
+            //                    if (SRC.UseTransparentBlt)
+            //                    {
+            //                        // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+            //                        ret = TransparentBlt(withBlock.picTmp32(1).hDC, 0, 0, 32, 32, withBlock.picTmp32(0).hDC, 0, 0, 32, 32, ColorTranslator.ToOle(Color.White));
+            //                    }
+            //                    else
+            //                    {
+            //                        // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+            //                        ret = BitBlt(withBlock.picTmp32(1).hDC, 0, 0, 32, 32, withBlock.picTmp32(2).hDC, 0, 0, SRCERASE);
+            //                        // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+            //                        ret = BitBlt(withBlock.picTmp32(1).hDC, 0, 0, 32, 32, withBlock.picTmp32(0).hDC, 0, 0, SRCINVERT);
+            //                    }
+            //                }
+
+            //                break;
+            //            }
+
+            //        case "セピア":
+            //            {
+            //                // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+            //                var argpic2 = withBlock.picTmp32(1);
+            //                Graphics.GetImage(ref argpic2);
+            //                Graphics.Sepia();
+            //                // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+            //                var argpic3 = withBlock.picTmp32(1);
+            //                Graphics.SetImage(ref argpic3);
+            //                break;
+            //            }
+
+            //        case "白黒":
+            //            {
+            //                // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+            //                var argpic4 = withBlock.picTmp32(1);
+            //                Graphics.GetImage(ref argpic4);
+            //                Graphics.Monotone();
+            //                // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+            //                var argpic5 = withBlock.picTmp32(1);
+            //                Graphics.SetImage(ref argpic5);
+            //                break;
+            //            }
+
+            //        case "夕焼け":
+            //            {
+            //                // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+            //                var argpic6 = withBlock.picTmp32(1);
+            //                Graphics.GetImage(ref argpic6);
+            //                Graphics.Sunset();
+            //                // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+            //                var argpic7 = withBlock.picTmp32(1);
+            //                Graphics.SetImage(ref argpic7);
+            //                break;
+            //            }
+
+            //        case "水中":
+            //            {
+            //                // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+            //                var argpic8 = withBlock.picTmp32(1);
+            //                Graphics.GetImage(ref argpic8);
+            //                Graphics.Water();
+            //                // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+            //                var argpic9 = withBlock.picTmp32(1);
+            //                Graphics.SetImage(ref argpic9);
+            //                break;
+            //            }
+
+            //        case "フィルタ":
+            //            {
+            //                // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+            //                var argpic10 = withBlock.picTmp32(1);
+            //                Graphics.GetImage(ref argpic10);
+            //                Graphics.ColorFilter(ref Map.MapDrawFilterColor, ref Map.MapDrawFilterTransPercent);
+            //                // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+            //                var argpic11 = withBlock.picTmp32(1);
+            //                Graphics.SetImage(ref argpic11);
+            //                break;
+            //            }
+            //    }
+            //}
+
+            // 行動済のフィルタ
+            //// 行動済みの際の画像を作成
+            //// UPGRADE_ISSUE: Control picUnitBitmap は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+            //ret = BitBlt(withBlock.picUnitBitmap.hDC, xx, (int)yy + 32, 32, 32, withBlock.picUnitBitmap.hDC, xx, yy, SRCCOPY);
+            //// UPGRADE_ISSUE: Control picMask は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+            //// UPGRADE_ISSUE: Control picUnitBitmap は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+            //ret = BitBlt(withBlock.picUnitBitmap.hDC, xx, (int)yy + 32, 32, 32, withBlock.picMask.hDC, 0, 0, SRCAND);
+            //if (u.Action > 0 | u.IsFeatureAvailable("地形ユニット"))
+            //{
+            //    // ユニット
+            //    ret = BitBlt(pic.hDC, xx, yy, 32, 32, withBlock.picUnitBitmap.hDC, 32 * ((int)u.BitmapID % 15), 96 * ((int)u.BitmapID / 15), SRCCOPY);
+            //}
+            //else
+            //{
+            //    // 行動済のユニット
+            //    ret = BitBlt(pic.hDC, xx, yy, 32, 32, withBlock.picUnitBitmap.hDC, 32 * ((int)u.BitmapID % 15), 96 * ((int)u.BitmapID / 15) + 32, SRCCOPY);
+            //}
+
+            // ユニットのいる場所に合わせて表示を変更
+            var unitAreaPen = Pens.Black;
+            switch (u.Area ?? "")
+            {
+                case "空中":
+                    // XXX Cellサイズに対応する
+                    g.DrawLine(unitAreaPen,
+                        destRect.Left, destRect.Top + 28,
+                        destRect.Left + 31, destRect.Top + 28);
+                    break;
+
+                case "水中":
+                    g.DrawLine(unitAreaPen,
+                        destRect.Left, destRect.Top + 3,
+                        destRect.Left + 31, destRect.Top + 3);
+                    break;
+
+                case "地中":
+                    g.DrawLine(unitAreaPen,
+                        destRect.Left, destRect.Top + 28,
+                        destRect.Left + 31, destRect.Top + 28);
+                    break;
+                    g.DrawLine(unitAreaPen,
+                        destRect.Left, destRect.Top + 3,
+                        destRect.Left + 31, destRect.Top + 3);
+                    break;
+
+                case "宇宙":
+                    if (cell.TerrainClass == "月面")
+                    {
+                        g.DrawLine(unitAreaPen,
+                            destRect.Left, destRect.Top + 28,
+                            destRect.Left + 31, destRect.Top + 28);
+                    }
+                    break;
             }
         }
     }

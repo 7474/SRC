@@ -26,6 +26,32 @@ namespace SRCCore.Maps
         // マスのデータタイプ。1:下層 2:上層 3:上層データのみ 4:上層見た目のみ
         public BoxTypes BoxType { get; set; }
 
+        public string TerrainClass
+        {
+            get
+            {
+                return Terrain.Class;
+                // TODO レイヤ対応
+                //switch (BoxType)
+                //{
+                //    case BoxTypes.Under:
+                //    case BoxTypes.UpperBmpOnly:
+                //        // 上層レイヤが無い場合と上層が画像情報しか持っていない場合は下層のデータを返す
+                //        {
+                //            TerrainClassRet = SRC.TDList.Class_Renamed(MapData[X, Y, MapDataIndex.TerrainType]);
+                //            break;
+                //        }
+
+                //    default:
+                //        {
+                //            // 上層レイヤが両方持っている場合と情報のみ持っている場合は上層のデータを返す
+                //            TerrainClassRet = SRC.TDList.Class_Renamed(MapData[X, Y, MapDataIndex.LayerType]);
+                //            break;
+                //        }
+                //}
+            }
+        }
+
         public MapCell()
         {
             TerrainType = 0;
