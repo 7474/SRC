@@ -384,7 +384,7 @@ namespace SRCTestForm
             if (pname == "システム")
             {
                 // 「システム」
-                frmMessage.picFace.Image = Image.FromFile("");
+                frmMessage.picFace.Image = null;
                 frmMessage.picFace.Refresh();
                 DisplayedPilot = "";
                 left_margin = "";
@@ -432,7 +432,7 @@ namespace SRCTestForm
                         }
                         else
                         {
-                            frmMessage.picFace.Image = Image.FromFile("");
+                            frmMessage.picFace.Image = null;
                             frmMessage.picFace.Refresh();
                             DisplayedPilot = "";
                             DisplayMode = "";
@@ -468,7 +468,7 @@ namespace SRCTestForm
                 }
                 else
                 {
-                    frmMessage.picFace.Image = Image.FromFile("");
+                    frmMessage.picFace.Image = null;
                     frmMessage.picFace.Refresh();
                     DisplayedPilot = "";
                     DisplayMode = "";
