@@ -205,17 +205,8 @@ namespace SRCCore.Units
             }
         }
 
-        //// ユニットクラス
-        //// UPGRADE_NOTE: Class は Class_Renamed にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
-        //public string Class_Renamed
-        //{
-        //    get
-        //    {
-        //        string Class_RenamedRet = default;
-        //        Class_RenamedRet = Data.Class_Renamed;
-        //        return Class_RenamedRet;
-        //    }
-        //}
+        // ユニットクラス
+        public string Class => Data.Class;
 
         //// ユニットクラスから余分な指定を除いたもの
         //public string Class0
@@ -325,41 +316,41 @@ namespace SRCCore.Units
         //    }
         //}
 
-        //// 最大ＥＮ値
-        //public int MaxEN
-        //{
-        //    get
-        //    {
-        //        int MaxENRet = default;
-        //        MaxENRet = intMaxEN;
+        // 最大ＥＮ値
+        public int MaxEN
+        {
+            get
+            {
+                int MaxENRet = intMaxEN;
 
-        //        // パイロットによる修正
-        //        if (CountPilot() > 0)
-        //        {
-        //            // 霊力変換器装備ユニットは霊力に応じて最大ＥＮが変化
-        //            string argfname = "霊力変換器";
-        //            if (IsFeatureAvailable(ref argfname))
-        //            {
-        //                MaxENRet = (int)(MaxENRet + 0.5d * PlanaLevel());
-        //            }
+                // TODO Impl
+                //// パイロットによる修正
+                //if (CountPilot() > 0)
+                //{
+                //    // 霊力変換器装備ユニットは霊力に応じて最大ＥＮが変化
+                //    string argfname = "霊力変換器";
+                //    if (IsFeatureAvailable(ref argfname))
+                //    {
+                //        MaxENRet = (int)(MaxENRet + 0.5d * PlanaLevel());
+                //    }
 
-        //            // オーラ変換器装備ユニットはオーラレベルに応じて最大ＥＮが変化
-        //            string argfname1 = "オーラ変換器";
-        //            if (IsFeatureAvailable(ref argfname1))
-        //            {
-        //                MaxENRet = (int)(MaxENRet + 10d * AuraLevel());
-        //            }
-        //        }
+                //    // オーラ変換器装備ユニットはオーラレベルに応じて最大ＥＮが変化
+                //    string argfname1 = "オーラ変換器";
+                //    if (IsFeatureAvailable(ref argfname1))
+                //    {
+                //        MaxENRet = (int)(MaxENRet + 10d * AuraLevel());
+                //    }
+                //}
 
-        //        // 最大ＥＮは最低でも5
-        //        if (MaxENRet < 5)
-        //        {
-        //            MaxENRet = 5;
-        //        }
+                // 最大ＥＮは最低でも5
+                if (MaxENRet < 5)
+                {
+                    MaxENRet = 5;
+                }
 
-        //        return MaxENRet;
-        //    }
-        //}
+                return MaxENRet;
+            }
+        }
 
         //// ＨＰ
 
@@ -388,29 +379,22 @@ namespace SRCCore.Units
 
         //// ＥＮ
 
-        //public int EN
-        //{
-        //    get
-        //    {
-        //        int ENRet = default;
-        //        ENRet = intEN;
-        //        return ENRet;
-        //    }
-
-        //    set
-        //    {
-        //        intEN = (int)value;
-        //        if (intEN > MaxEN)
-        //        {
-        //            intEN = MaxEN;
-        //        }
-        //        else if (intEN < 0)
-        //        {
-        //            intEN = 0;
-        //        }
-        //    }
-        //}
-
+        public int EN
+        {
+            get => intEN;
+            set
+            {
+                intEN = value;
+                if (intEN > MaxEN)
+                {
+                    intEN = MaxEN;
+                }
+                else if (intEN < 0)
+                {
+                    intEN = 0;
+                }
+            }
+        }
 
         //// 移動力
         //public int Speed0
