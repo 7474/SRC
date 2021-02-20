@@ -9,6 +9,10 @@ namespace SRCCore.Commands
     public partial class Command
     {
         private SRC SRC;
+        private Events.Event Event => SRC.Event;
+        private IGUI GUI => SRC.GUI;
+        private Maps.Map Map => SRC.Map;
+        private Expressions.Expression Expression => SRC.Expression;
 
         public Command(SRC src)
         {

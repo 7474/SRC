@@ -1,4 +1,6 @@
-﻿using System;
+﻿using SRCCore.Pilots;
+using SRCCore.Units;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -36,9 +38,7 @@ namespace SRCCore.Commands
         public int SelectedItem; // リストボックス中のアイテム
         public string SelectedSpecialPower; // スペシャルパワー
         public Unit[] SelectedPartners; // 合体技のパートナー
-                                        // ADD START MARGE
         public int SelectedUnitMoveCost; // 選択したユニットの移動力消費量
-                                         // ADD END MARGE
 
         // 選択状況の記録用変数
         public int SelectionStackIndex;

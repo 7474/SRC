@@ -16,6 +16,7 @@ namespace SRCCore
     {
         public IGUI GUI { get; set; }
         public IGUIMap GUIMap { get; set; }
+        public IGUIStatus GUIStatus { get; set; }
         public IFilesystem Filesystem { get; set; }
 
         public Expression Expression { get; }
