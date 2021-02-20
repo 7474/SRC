@@ -2,13 +2,24 @@
 // 本プログラムはフリーソフトであり、無保証です。
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
+using SRCCore.Maps;
 using SRCCore.Models;
 using SRCCore.Pilots;
+using SRCCore.VB;
+using System.Collections.Generic;
 
 namespace SRCCore.Units
 {
     public partial class Unit
     {
+        private SRC SRC { get; }
+        private Map Map => SRC.Map;
+
+        public Unit(SRC src)
+        {
+            SRC = src;
+        }
+
         // データ
         public UnitData Data;
 
@@ -79,18 +90,19 @@ namespace SRCCore.Units
         // 移動力
         private int intSpeed;
 
-        //// 搭乗しているパイロット
-        //private Collection colPilot = new Collection();
+        // 搭乗しているパイロット
+        private SrcCollection<Pilot> colPilot = new SrcCollection<Pilot>();
 
-        //// 搭乗しているサポートパイロット
-        //private Collection colSupport = new Collection();
+        // 搭乗しているサポートパイロット
+        private SrcCollection<Pilot> colSupport = new SrcCollection<Pilot>();
 
-        //// 関連するユニット
-        //// 変形ユニットにおける他形態等
-        //private Collection colOtherForm = new Collection();
+        // 関連するユニット
+        // 変形ユニットにおける他形態等
+        private SrcCollection<Unit> colOtherForm = new SrcCollection<Unit>();
+        public IList<Unit> OtherForms => colOtherForm;
 
-        //// 格納したユニット
-        //private Collection colUnitOnBoard = new Collection();
+        // 格納したユニット
+        private SrcCollection<Unit> colUnitOnBoard = new SrcCollection<Unit>();
 
         //// 装備しているアイテム
         //private Collection colItem = new Collection();

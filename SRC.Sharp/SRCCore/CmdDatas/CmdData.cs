@@ -19,6 +19,7 @@ namespace SRCCore.CmdDatas
         protected IGUI GUI => SRC.GUI;
         protected Event Event => SRC.Event;
         protected Expressions.Expression Expression => SRC.Expression;
+        protected Maps.Map Map => SRC.Map;
 
         public CmdData(SRC src, CmdType name, EventDataLine eventData)
         {
