@@ -91,7 +91,7 @@ namespace SRCTestForm
         private void frmMessage_FormClosing(object sender, FormClosingEventArgs e)
         {
             // SRCを終了するか確認
-            var ret = Interaction.MsgBox("SRCを終了しますか？", (MsgBoxStyle)((int)MsgBoxStyle.OkCancel + (int)MsgBoxStyle.Question), "終了");
+            var ret = Interaction.MsgBox("SRCを終了しますか？", MsgBoxStyle.OkCancel | MsgBoxStyle.Question, "終了");
             switch (ret)
             {
                 case MsgBoxResult.Ok:
@@ -106,6 +106,5 @@ namespace SRCTestForm
                     break;
             }
         }
-
     }
 }

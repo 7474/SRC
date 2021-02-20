@@ -138,70 +138,6 @@ namespace SRCTestForm
             //}
         }
 
-        // フォームを閉じる
-        private void frmMain_FormClosed(object eventSender, FormClosedEventArgs eventArgs)
-        {
-            int ret;
-            var IsErrorMessageVisible = default(bool);
-
-            //// エラーメッセージのダイアログは一番上に重ねられるため消去する必要がある
-            //if (My.MyProject.Forms.m_frmErrorMessage is object)
-            //{
-            //    IsErrorMessageVisible = My.MyProject.Forms.frmErrorMessage.Visible;
-            //}
-
-            //if (IsErrorMessageVisible)
-            //{
-            //    My.MyProject.Forms.frmErrorMessage.Hide();
-            //}
-
-            //// SRCの終了を確認
-            //ret = Interaction.MsgBox("SRCを終了しますか？", (MsgBoxStyle)(MsgBoxStyle.OkCancel + MsgBoxStyle.Question), "終了");
-            //switch (ret)
-            //{
-            //    case 1:
-            //        {
-            //            // SRCを終了
-            //            SRC.TerminateSRC();
-            //            break;
-            //        }
-
-            //    case 2:
-            //        {
-            //            // 終了をキャンセル
-            //            // UPGRADE_ISSUE: Event パラメータ Cancel はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="FB723E3C-1C06-4D2B-B083-E6CD0D334DA8"' をクリックしてください。
-            //            Cancel = 1;
-            //            break;
-            //        }
-            //}
-
-            //// エラーメッセージを表示
-            //if (IsErrorMessageVisible)
-            //{
-            //    My.MyProject.Forms.frmErrorMessage.Show();
-            //}
-        }
-
-        // マップ画面の横スクロールバーを操作
-        // UPGRADE_NOTE: HScroll.Change はイベントからプロシージャに変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="4E2DC008-5EDA-4547-8317-C9316952674F"' をクリックしてください。
-        // UPGRADE_WARNING: HScrollBar イベント HScroll.Change には新しい動作が含まれます。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6BA9B8D2-2A32-4B6E-8D36-44949974A5B4"' をクリックしてください。
-        private void HScroll_Change(int newScrollValue)
-        {
-            GUI.MapX = newScrollValue;
-
-            // ステータス表示中はスクロールバーを中央に固定
-            if (string.IsNullOrEmpty(Map.MapFileName))
-            {
-                GUI.MapX = 8;
-            }
-
-            // 画面書き換え
-            if (Visible)
-            {
-                GUI.RefreshScreen();
-            }
-        }
-
         // マップコマンドメニューをクリック
         public void mnuMapCommandItem_Click(object eventSender, EventArgs eventArgs)
         {
@@ -690,9 +626,25 @@ namespace SRCTestForm
             //}
         }
 
+        // マップ画面の横スクロールバーを操作
+        private void HScroll_Change(int newScrollValue)
+        {
+            GUI.MapX = newScrollValue;
+
+            // ステータス表示中はスクロールバーを中央に固定
+            if (string.IsNullOrEmpty(Map.MapFileName))
+            {
+                GUI.MapX = 8;
+            }
+
+            // 画面書き換え
+            if (Visible)
+            {
+                GUI.RefreshScreen();
+            }
+        }
+
         // マップウィンドウの縦スクロールを操作
-        // UPGRADE_NOTE: VScroll.Change はイベントからプロシージャに変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="4E2DC008-5EDA-4547-8317-C9316952674F"' をクリックしてください。
-        // UPGRADE_WARNING: VScrollBar イベント VScroll.Change には新しい動作が含まれます。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6BA9B8D2-2A32-4B6E-8D36-44949974A5B4"' をクリックしてください。
         private void VScroll_Change(int newScrollValue)
         {
             GUI.MapY = newScrollValue;
@@ -716,28 +668,63 @@ namespace SRCTestForm
             }
         }
 
-        private void HScroll_Renamed_Scroll(object eventSender, ScrollEventArgs eventArgs)
+        private void HScroll_Scroll(object eventSender, ScrollEventArgs eventArgs)
         {
             switch (eventArgs.Type)
             {
                 case ScrollEventType.EndScroll:
-                    {
-                        HScroll_Change(eventArgs.NewValue);
-                        break;
-                    }
+                    HScroll_Change(eventArgs.NewValue);
+                    break;
             }
         }
 
-        private void VScroll_Renamed_Scroll(object eventSender, ScrollEventArgs eventArgs)
+        private void VScroll_Scroll(object eventSender, ScrollEventArgs eventArgs)
         {
             switch (eventArgs.Type)
             {
                 case ScrollEventType.EndScroll:
-                    {
-                        VScroll_Change(eventArgs.NewValue);
-                        break;
-                    }
+                    VScroll_Change(eventArgs.NewValue);
+                    break;
             }
+        }
+
+        // フォームを閉じる
+        private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            var IsErrorMessageVisible = default(bool);
+
+            //// エラーメッセージのダイアログは一番上に重ねられるため消去する必要がある
+            //if (My.MyProject.Forms.m_frmErrorMessage is object)
+            //{
+            //    IsErrorMessageVisible = My.MyProject.Forms.frmErrorMessage.Visible;
+            //}
+
+            //if (IsErrorMessageVisible)
+            //{
+            //    My.MyProject.Forms.frmErrorMessage.Hide();
+            //}
+
+            // SRCを終了するか確認
+            var ret = Interaction.MsgBox("SRCを終了しますか？", MsgBoxStyle.OkCancel | MsgBoxStyle.Question, "終了");
+            switch (ret)
+            {
+                case MsgBoxResult.Ok:
+                    // SRCを終了
+                    Hide();
+                    SRC.TerminateSRC();
+                    break;
+
+                default:
+                    // 終了をキャンセル
+                    e.Cancel = true;
+                    break;
+            }
+
+            //// エラーメッセージを表示
+            //if (IsErrorMessageVisible)
+            //{
+            //    My.MyProject.Forms.frmErrorMessage.Show();
+            //}
         }
     }
 }

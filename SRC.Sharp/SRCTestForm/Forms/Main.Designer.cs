@@ -16,9 +16,6 @@ namespace SRCTestForm
         {
             // この呼び出しは、Windows フォーム デザイナで必要です。
             InitializeComponent();
-            _picFace.Name = "picFace";
-            _HScrollBar.Name = "HScroll_Renamed";
-            _VScrollBar.Name = "VScroll_Renamed";
         }
         // Form は、コンポーネント一覧に後処理を実行するために dispose をオーバーライドします。
         [DebuggerNonUserCode()]
@@ -103,59 +100,12 @@ namespace SRCTestForm
         public PictureBox _picBuf_0;
         public PictureBox _picTmp32_2;
         public PictureBox _picTmp32_1;
-        private PictureBox _picFace;
+        public PictureBox picFace;
 
-        public PictureBox picFace
-        {
-            [MethodImpl(MethodImplOptions.Synchronized)]
-            get
-            {
-                return _picFace;
-            }
-
-            [MethodImpl(MethodImplOptions.Synchronized)]
-            set
-            {
-                if (_picFace != null)
-                {
-                    _picFace.Click -= picFace_Click;
-                }
-
-                _picFace = value;
-                if (_picFace != null)
-                {
-                    _picFace.Click += picFace_Click;
-                }
-            }
-        }
 
         public PictureBox _picTmp32_0;
         public PictureBox picMaskedBack;
-        private Timer _Timer1;
-
-        public Timer Timer1
-        {
-            [MethodImpl(MethodImplOptions.Synchronized)]
-            get
-            {
-                return _Timer1;
-            }
-
-            [MethodImpl(MethodImplOptions.Synchronized)]
-            set
-            {
-                if (_Timer1 != null)
-                {
-                    _Timer1.Tick -= Timer1_Tick;
-                }
-
-                _Timer1 = value;
-                if (_Timer1 != null)
-                {
-                    _Timer1.Tick += Timer1_Tick;
-                }
-            }
-        }
+        public Timer Timer1;
 
         public PictureBox picMask2;
         public PictureBox picNeautral;
@@ -164,58 +114,8 @@ namespace SRCTestForm
         public PictureBox picPilotStatus;
         public PictureBox picUnitStatus;
         public PictureBox picUnitBitmap;
-        private HScrollBar _HScrollBar;
-
-        public HScrollBar HScrollBar
-        {
-            [MethodImpl(MethodImplOptions.Synchronized)]
-            get
-            {
-                return _HScrollBar;
-            }
-
-            [MethodImpl(MethodImplOptions.Synchronized)]
-            set
-            {
-                if (_HScrollBar != null)
-                {
-                    _HScrollBar.Scroll -= HScroll_Renamed_Scroll;
-                }
-
-                _HScrollBar = value;
-                if (_HScrollBar != null)
-                {
-                    _HScrollBar.Scroll += HScroll_Renamed_Scroll;
-                }
-            }
-        }
-
-        private VScrollBar _VScrollBar;
-
-        public VScrollBar VScrollBar
-        {
-            [MethodImpl(MethodImplOptions.Synchronized)]
-            get
-            {
-                return _VScrollBar;
-            }
-
-            [MethodImpl(MethodImplOptions.Synchronized)]
-            set
-            {
-                if (_VScrollBar != null)
-                {
-                    _VScrollBar.Scroll -= VScroll_Renamed_Scroll;
-                }
-
-                _VScrollBar = value;
-                if (_VScrollBar != null)
-                {
-                    _VScrollBar.Scroll += VScroll_Renamed_Scroll;
-                }
-            }
-        }
-
+        public HScrollBar HScrollBar;
+        public VScrollBar VScrollBar;
         public PictureBox picMask;
         public PictureBox picTmp;
         public PictureBox picBack;
@@ -382,10 +282,10 @@ namespace SRCTestForm
             this._picBuf_0 = new System.Windows.Forms.PictureBox();
             this._picTmp32_2 = new System.Windows.Forms.PictureBox();
             this._picTmp32_1 = new System.Windows.Forms.PictureBox();
-            this._picFace = new System.Windows.Forms.PictureBox();
+            this.picFace = new System.Windows.Forms.PictureBox();
             this._picTmp32_0 = new System.Windows.Forms.PictureBox();
             this.picMaskedBack = new System.Windows.Forms.PictureBox();
-            this._Timer1 = new System.Windows.Forms.Timer(this.components);
+            this.Timer1 = new System.Windows.Forms.Timer(this.components);
             this.picMask2 = new System.Windows.Forms.PictureBox();
             this.picNeautral = new System.Windows.Forms.PictureBox();
             this.picEnemy = new System.Windows.Forms.PictureBox();
@@ -393,8 +293,8 @@ namespace SRCTestForm
             this.picPilotStatus = new System.Windows.Forms.PictureBox();
             this.picUnitStatus = new System.Windows.Forms.PictureBox();
             this.picUnitBitmap = new System.Windows.Forms.PictureBox();
-            this._HScrollBar = new System.Windows.Forms.HScrollBar();
-            this._VScrollBar = new System.Windows.Forms.VScrollBar();
+            this.HScrollBar = new System.Windows.Forms.HScrollBar();
+            this.VScrollBar = new System.Windows.Forms.VScrollBar();
             this.picMask = new System.Windows.Forms.PictureBox();
             this.picTmp = new System.Windows.Forms.PictureBox();
             this.picBack = new System.Windows.Forms.PictureBox();
@@ -405,7 +305,7 @@ namespace SRCTestForm
             ((System.ComponentModel.ISupportInitialize)(this._picBuf_0)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._picTmp32_2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._picTmp32_1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this._picFace)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picFace)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._picTmp32_0)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picMaskedBack)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picMask2)).BeginInit();
@@ -936,19 +836,19 @@ namespace SRCTestForm
             this._picTmp32_1.TabStop = false;
             this._picTmp32_1.Visible = false;
             // 
-            // _picFace
+            // picFace
             // 
-            this._picFace.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
-            this._picFace.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this._picFace.Cursor = System.Windows.Forms.Cursors.Default;
-            this._picFace.ForeColor = System.Drawing.SystemColors.ControlText;
-            this._picFace.Location = new System.Drawing.Point(8, 192);
-            this._picFace.Name = "_picFace";
-            this._picFace.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this._picFace.Size = new System.Drawing.Size(68, 68);
-            this._picFace.TabIndex = 16;
-            this._picFace.TabStop = false;
-            this._picFace.Click += new System.EventHandler(this.picFace_Click);
+            this.picFace.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.picFace.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.picFace.Cursor = System.Windows.Forms.Cursors.Default;
+            this.picFace.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.picFace.Location = new System.Drawing.Point(8, 192);
+            this.picFace.Name = "picFace";
+            this.picFace.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.picFace.Size = new System.Drawing.Size(68, 68);
+            this.picFace.TabIndex = 16;
+            this.picFace.TabStop = false;
+            this.picFace.Click += new System.EventHandler(this.picFace_Click);
             // 
             // _picTmp32_0
             // 
@@ -978,8 +878,8 @@ namespace SRCTestForm
             // 
             // _Timer1
             // 
-            this._Timer1.Interval = 1000;
-            this._Timer1.Tick += new System.EventHandler(this.Timer1_Tick);
+            this.Timer1.Interval = 1000;
+            this.Timer1.Tick += new System.EventHandler(this.Timer1_Tick);
             // 
             // picMask2
             // 
@@ -1076,32 +976,32 @@ namespace SRCTestForm
             this.picUnitBitmap.TabStop = false;
             this.picUnitBitmap.Visible = false;
             // 
-            // _HScrollBar
+            // HScrollBar
             // 
-            this._HScrollBar.Cursor = System.Windows.Forms.Cursors.Default;
-            this._HScrollBar.LargeChange = 4;
-            this._HScrollBar.Location = new System.Drawing.Point(60, 92);
-            this._HScrollBar.Maximum = 23;
-            this._HScrollBar.Minimum = 1;
-            this._HScrollBar.Name = "_HScrollBar";
-            this._HScrollBar.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this._HScrollBar.Size = new System.Drawing.Size(49, 17);
-            this._HScrollBar.TabIndex = 5;
-            this._HScrollBar.Value = 1;
-            this._HScrollBar.Scroll += new System.Windows.Forms.ScrollEventHandler(this.HScroll_Renamed_Scroll);
+            this.HScrollBar.Cursor = System.Windows.Forms.Cursors.Default;
+            this.HScrollBar.LargeChange = 4;
+            this.HScrollBar.Location = new System.Drawing.Point(60, 92);
+            this.HScrollBar.Maximum = 23;
+            this.HScrollBar.Minimum = 1;
+            this.HScrollBar.Name = "HScrollBar";
+            this.HScrollBar.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.HScrollBar.Size = new System.Drawing.Size(49, 17);
+            this.HScrollBar.TabIndex = 5;
+            this.HScrollBar.Value = 1;
+            this.HScrollBar.Scroll += new System.Windows.Forms.ScrollEventHandler(this.HScroll_Scroll);
             // 
-            // _VScrollBar
+            // VScrollBar
             // 
-            this._VScrollBar.Cursor = System.Windows.Forms.Cursors.Default;
-            this._VScrollBar.LargeChange = 4;
-            this._VScrollBar.Location = new System.Drawing.Point(116, 80);
-            this._VScrollBar.Maximum = 23;
-            this._VScrollBar.Minimum = 1;
-            this._VScrollBar.Name = "_VScrollBar";
-            this._VScrollBar.Size = new System.Drawing.Size(17, 49);
-            this._VScrollBar.TabIndex = 4;
-            this._VScrollBar.Value = 1;
-            this._VScrollBar.Scroll += new System.Windows.Forms.ScrollEventHandler(this.VScroll_Renamed_Scroll);
+            this.VScrollBar.Cursor = System.Windows.Forms.Cursors.Default;
+            this.VScrollBar.LargeChange = 4;
+            this.VScrollBar.Location = new System.Drawing.Point(116, 80);
+            this.VScrollBar.Maximum = 23;
+            this.VScrollBar.Minimum = 1;
+            this.VScrollBar.Name = "VScrollBar";
+            this.VScrollBar.Size = new System.Drawing.Size(17, 49);
+            this.VScrollBar.TabIndex = 4;
+            this.VScrollBar.Value = 1;
+            this.VScrollBar.Scroll += new System.Windows.Forms.ScrollEventHandler(this.VScroll_Scroll);
             // 
             // picMask
             // 
@@ -1171,7 +1071,7 @@ namespace SRCTestForm
             this.Controls.Add(this._picBuf_0);
             this.Controls.Add(this._picTmp32_2);
             this.Controls.Add(this._picTmp32_1);
-            this.Controls.Add(this._picFace);
+            this.Controls.Add(this.picFace);
             this.Controls.Add(this._picTmp32_0);
             this.Controls.Add(this.picMaskedBack);
             this.Controls.Add(this.picMask2);
@@ -1181,8 +1081,8 @@ namespace SRCTestForm
             this.Controls.Add(this.picPilotStatus);
             this.Controls.Add(this.picUnitStatus);
             this.Controls.Add(this.picUnitBitmap);
-            this.Controls.Add(this._HScrollBar);
-            this.Controls.Add(this._VScrollBar);
+            this.Controls.Add(this.HScrollBar);
+            this.Controls.Add(this.VScrollBar);
             this.Controls.Add(this.picMask);
             this.Controls.Add(this.picTmp);
             this.Controls.Add(this.picBack);
@@ -1199,7 +1099,7 @@ namespace SRCTestForm
             this.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "SRC#";
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frmMain_FormClosed);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmMain_FormClosing);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.frmMain_KeyDown);
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.frmMain_MouseMove);
             this.MainMenu1.ResumeLayout(false);
@@ -1209,7 +1109,7 @@ namespace SRCTestForm
             ((System.ComponentModel.ISupportInitialize)(this._picBuf_0)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this._picTmp32_2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this._picTmp32_1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this._picFace)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picFace)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this._picTmp32_0)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picMaskedBack)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picMask2)).EndInit();
