@@ -8,5 +8,11 @@ namespace SRCCore.Commands
     // ユニット＆マップコマンドの実行を行うモジュール
     public partial class Command
     {
+        private SRC SRC;
+
+        public Command(SRC src)
+        {
+            SRC = src;
+        }
     }
 }

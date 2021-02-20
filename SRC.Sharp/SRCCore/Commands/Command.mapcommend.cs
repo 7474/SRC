@@ -8,7 +8,7 @@ namespace SRCCore.Commands
     public partial class Command
     {
         // マップコマンド実行
-        public static void MapCommand(short idx)
+        public void MapCommand(int idx)
         {
             CommandState = "ユニット選択";
             switch (idx)
@@ -93,8 +93,8 @@ namespace SRCCore.Commands
                     {
                         // UPGRADE_ISSUE: Load ステートメント はサポートされていません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="B530EFF2-3132-48F8-B8BC-D88AF543D321"' をクリックしてください。
                         Load(My.MyProject.Forms.frmConfiguration);
-                        My.MyProject.Forms.frmConfiguration.Left = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsX((Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(Screen.PrimaryScreen.Bounds.Width) - Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(My.MyProject.Forms.frmConfiguration.Width)) / 2d);
-                        My.MyProject.Forms.frmConfiguration.Top = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsY((Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(Screen.PrimaryScreen.Bounds.Height) - Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(My.MyProject.Forms.frmConfiguration.Height)) / 3d);
+                        My.MyProject.Forms.frmConfiguration.Left = Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsX((Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(Screen.PrimaryScreen.Bounds.Width) - Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(My.MyProject.Forms.frmConfiguration.Width)) / 2d);
+                        My.MyProject.Forms.frmConfiguration.Top = Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsY((Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(Screen.PrimaryScreen.Bounds.Height) - Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(My.MyProject.Forms.frmConfiguration.Height)) / 3d);
                         My.MyProject.Forms.frmConfiguration.ShowDialog();
                         My.MyProject.Forms.frmConfiguration.Close();
                         // UPGRADE_NOTE: オブジェクト frmConfiguration をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
@@ -127,11 +127,11 @@ namespace SRCCore.Commands
         // 「ターン終了」コマンド
         // MOD START MARGE
         // Public Sub EndTurnCommand()
-        private static void EndTurnCommand()
+        private void EndTurnCommand()
         {
             // MOD END MARGE
-            short num;
-            short ret;
+            int num;
+            int ret;
 
             // 行動していない味方ユニットの数を数える
             num = 0;
@@ -139,14 +139,14 @@ namespace SRCCore.Commands
             {
                 if (u.Party == "味方" & (u.Status_Renamed == "出撃" | u.Status_Renamed == "格納") & u.Action > 0)
                 {
-                    num = (short)(num + 1);
+                    num = (num + 1);
                 }
             }
 
             // 行動していないユニットがいれば警告
             if (num > 0)
             {
-                ret = (short)Interaction.MsgBox("行動していないユニットが" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(num) + "体あります" + Constants.vbCr + "このターンを終了しますか？", (MsgBoxStyle)((int)MsgBoxStyle.OkCancel + (int)MsgBoxStyle.Question), "終了");
+                ret = Interaction.MsgBox("行動していないユニットが" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(num) + "体あります" + Constants.vbCr + "このターンを終了しますか？", (MsgBoxStyle)(MsgBoxStyle.OkCancel + MsgBoxStyle.Question), "終了");
             }
             else
             {
@@ -219,17 +219,17 @@ namespace SRCCore.Commands
         // ユニット一覧の表示
         // MOD START MARGE
         // Public Sub UnitListCommand()
-        private static void UnitListCommand()
+        private void UnitListCommand()
         {
             // MOD END MARGE
             string[] list;
             string[] id_list;
-            short j, i, ret;
+            int j, i, ret;
             string uparty, sort_mode;
             string[] mode_list;
             int[] key_list;
             string[] strkey_list;
-            short max_item;
+            int max_item;
             int max_value;
             string max_str;
             string buf;
@@ -342,13 +342,13 @@ namespace SRCCore.Commands
                                 var loopTo = withBlock1.CountSpecialPower;
                                 for (i = 1; i <= loopTo; i++)
                                 {
-                                    short localSpecialPowerCost() { string argsname = withBlock1.get_SpecialPower(i); var ret = withBlock1.SpecialPowerCost(ref argsname); withBlock1.get_SpecialPower(i) = argsname; return ret; }
+                                    int localSpecialPowerCost() { string argsname = withBlock1.get_SpecialPower(i); var ret = withBlock1.SpecialPowerCost(ref argsname); withBlock1.get_SpecialPower(i) = argsname; return ret; }
 
                                     if (withBlock1.SP >= localSpecialPowerCost())
                                     {
                                         SpecialPowerData localItem() { object argIndex1 = withBlock1.get_SpecialPower(i); var ret = SRC.SPDList.Item(ref argIndex1); withBlock1.get_SpecialPower(i) = Conversions.ToString(argIndex1); return ret; }
 
-                                        list[Information.UBound(list)] = list[Information.UBound(list)] + localItem().ShortName;
+                                        list[Information.UBound(list)] = list[Information.UBound(list)] + localItem().intName;
                                     }
                                 }
                             }
@@ -390,7 +390,7 @@ namespace SRCCore.Commands
                     {
                         case "ＨＰ":
                             {
-                                var loopTo1 = (short)Information.UBound(list);
+                                var loopTo1 = Information.UBound(list);
                                 for (i = 2; i <= loopTo1; i++)
                                 {
                                     Unit localItem1() { var tmp = id_list; object argIndex1 = tmp[i]; var ret = withBlock2.Item(ref argIndex1); return ret; }
@@ -403,7 +403,7 @@ namespace SRCCore.Commands
 
                         case "ＥＮ":
                             {
-                                var loopTo2 = (short)Information.UBound(list);
+                                var loopTo2 = Information.UBound(list);
                                 for (i = 2; i <= loopTo2; i++)
                                 {
                                     Unit localItem2() { var tmp = id_list; object argIndex1 = tmp[i]; var ret = withBlock2.Item(ref argIndex1); return ret; }
@@ -417,7 +417,7 @@ namespace SRCCore.Commands
                         case "レベル":
                         case "パイロットレベル":
                             {
-                                var loopTo3 = (short)Information.UBound(list);
+                                var loopTo3 = Information.UBound(list);
                                 for (i = 2; i <= loopTo3; i++)
                                 {
                                     var tmp = id_list;
@@ -440,13 +440,13 @@ namespace SRCCore.Commands
                 }
 
                 // キーを使って並べ換え
-                var loopTo4 = (short)(Information.UBound(list) - 1);
+                var loopTo4 = (Information.UBound(list) - 1);
                 for (i = 2; i <= loopTo4; i++)
                 {
                     max_item = i;
                     max_value = key_list[i];
-                    var loopTo5 = (short)Information.UBound(list);
-                    for (j = (short)(i + 1); j <= loopTo5; j++)
+                    var loopTo5 = Information.UBound(list);
+                    for (j = (i + 1); j <= loopTo5; j++)
                     {
                         if (key_list[j] > max_value)
                         {
@@ -480,7 +480,7 @@ namespace SRCCore.Commands
                         case "名称":
                         case "ユニット名称":
                             {
-                                var loopTo6 = (short)Information.UBound(list);
+                                var loopTo6 = Information.UBound(list);
                                 for (i = 2; i <= loopTo6; i++)
                                 {
                                     Unit localItem3() { var tmp = id_list; object argIndex1 = tmp[i]; var ret = withBlock5.Item(ref argIndex1); return ret; }
@@ -493,7 +493,7 @@ namespace SRCCore.Commands
 
                         case "パイロット名称":
                             {
-                                var loopTo7 = (short)Information.UBound(list);
+                                var loopTo7 = Information.UBound(list);
                                 for (i = 2; i <= loopTo7; i++)
                                 {
                                     var tmp1 = id_list;
@@ -513,13 +513,13 @@ namespace SRCCore.Commands
                 }
 
                 // キーを使って並べ換え
-                var loopTo8 = (short)(Information.UBound(strkey_list) - 1);
+                var loopTo8 = (Information.UBound(strkey_list) - 1);
                 for (i = 2; i <= loopTo8; i++)
                 {
                     max_item = i;
                     max_str = strkey_list[i];
-                    var loopTo9 = (short)Information.UBound(strkey_list);
-                    for (j = (short)(i + 1); j <= loopTo9; j++)
+                    var loopTo9 = Information.UBound(strkey_list);
+                    for (j = (i + 1); j <= loopTo9; j++)
                     {
                         if (Strings.StrComp(strkey_list[j], max_str, (CompareMethod)1) == -1)
                         {
@@ -543,7 +543,7 @@ namespace SRCCore.Commands
 
             GUI.ListItemFlag = new bool[1];
             GUI.ListItemID = new string[Information.UBound(list) + 1];
-            var loopTo10 = (short)Information.UBound(list);
+            var loopTo10 = Information.UBound(list);
             for (i = 1; i <= loopTo10; i++)
                 GUI.ListItemID[i] = id_list[i];
 
@@ -695,10 +695,10 @@ namespace SRCCore.Commands
         // スペシャルパワー検索コマンド
         // MOD START MARGE
         // Public Sub SearchSpecialPowerCommand()
-        private static void SearchSpecialPowerCommand()
+        private void SearchSpecialPowerCommand()
         {
             // MOD END MARGE
-            short j, i, ret;
+            int j, i, ret;
             string[] list;
             string[] list2;
             bool[] flist;
@@ -707,7 +707,7 @@ namespace SRCCore.Commands
             Pilot p;
             string[] id_list;
             var strkey_list = default(string[]);
-            short max_item;
+            int max_item;
             string max_str;
             bool found;
             GUI.LockGUI();
@@ -720,7 +720,7 @@ namespace SRCCore.Commands
                 object argIndex1 = i;
                 {
                     var withBlock = SRC.SPDList.Item(ref argIndex1);
-                    if (withBlock.ShortName != "非表示")
+                    if (withBlock.intName != "非表示")
                     {
                         Array.Resize(ref list, Information.UBound(list) + 1 + 1);
                         Array.Resize(ref strkey_list, Information.UBound(list) + 1);
@@ -731,13 +731,13 @@ namespace SRCCore.Commands
             }
 
             // ソート
-            var loopTo1 = (short)(Information.UBound(strkey_list) - 1);
+            var loopTo1 = (Information.UBound(strkey_list) - 1);
             for (i = 1; i <= loopTo1; i++)
             {
                 max_item = i;
                 max_str = strkey_list[i];
-                var loopTo2 = (short)Information.UBound(strkey_list);
-                for (j = (short)(i + 1); j <= loopTo2; j++)
+                var loopTo2 = Information.UBound(strkey_list);
+                for (j = (i + 1); j <= loopTo2; j++)
                 {
                     if (Strings.StrComp(strkey_list[j], max_str, (CompareMethod)1) == -1)
                     {
@@ -760,7 +760,7 @@ namespace SRCCore.Commands
             // 個々のスペシャルパワーに対して、そのスペシャルパワーを使用可能なパイロットが
             // いるかどうか判定
             flist = new bool[Information.UBound(list) + 1];
-            var loopTo3 = (short)Information.UBound(list);
+            var loopTo3 = Information.UBound(list);
             for (i = 1; i <= loopTo3; i++)
             {
                 flist[i] = true;
@@ -837,12 +837,12 @@ namespace SRCCore.Commands
                 strkey_list = new string[Information.UBound(list) + 1];
 
                 // 選択出来ないスペシャルパワーをマスク
-                var loopTo6 = (short)Information.UBound(GUI.ListItemFlag);
+                var loopTo6 = Information.UBound(GUI.ListItemFlag);
                 for (i = 1; i <= loopTo6; i++)
                     GUI.ListItemFlag[i] = flist[i];
 
                 // スペシャルパワーの解説を設定
-                var loopTo7 = (short)Information.UBound(GUI.ListItemComment);
+                var loopTo7 = Information.UBound(GUI.ListItemComment);
                 for (i = 1; i <= loopTo7; i++)
                 {
                     SpecialPowerData localItem() { var tmp = list; object argIndex1 = tmp[i]; var ret = SRC.SPDList.Item(ref argIndex1); return ret; }
@@ -923,7 +923,7 @@ namespace SRCCore.Commands
                     {
                         SpecialPowerData localItem1() { object argIndex1 = p.get_SpecialPower(j); var ret = SRC.SPDList.Item(ref argIndex1); p.get_SpecialPower(j) = Conversions.ToString(argIndex1); return ret; }
 
-                        buf = buf + localItem1().ShortName;
+                        buf = buf + localItem1().intName;
                     }
 
                     list2[Information.UBound(list2)] = list2[Information.UBound(list2)] + GeneralLib.RightPaddedString(ref buf, 12);
@@ -1006,14 +1006,14 @@ namespace SRCCore.Commands
         // リスタートコマンド
         // MOD START MARGE
         // Public Sub RestartCommand()
-        private static void RestartCommand()
+        private void RestartCommand()
         {
             // MOD END MARGE
-            short ret;
+            int ret;
 
             // リスタートを行うか確認
-            ret = (short)Interaction.MsgBox("リスタートしますか？", (MsgBoxStyle)((int)MsgBoxStyle.OkCancel + (int)MsgBoxStyle.Question), "リスタート");
-            if (ret == (int)MsgBoxResult.Cancel)
+            ret = Interaction.MsgBox("リスタートしますか？", (MsgBoxStyle)(MsgBoxStyle.OkCancel + MsgBoxStyle.Question), "リスタート");
+            if (ret == MsgBoxResult.Cancel)
             {
                 return;
             }
@@ -1028,14 +1028,14 @@ namespace SRCCore.Commands
         // クイックロードコマンド
         // MOD START MARGE
         // Public Sub QuickLoadCommand()
-        private static void QuickLoadCommand()
+        private void QuickLoadCommand()
         {
             // MOD END MARGE
-            short ret;
+            int ret;
 
             // ロードを行うか確認
-            ret = (short)Interaction.MsgBox("データをロードしますか？", (MsgBoxStyle)((int)MsgBoxStyle.OkCancel + (int)MsgBoxStyle.Question), "クイックロード");
-            if (ret == (int)MsgBoxResult.Cancel)
+            ret = Interaction.MsgBox("データをロードしますか？", (MsgBoxStyle)(MsgBoxStyle.OkCancel + MsgBoxStyle.Question), "クイックロード");
+            if (ret == MsgBoxResult.Cancel)
             {
                 return;
             }
@@ -1054,7 +1054,7 @@ namespace SRCCore.Commands
         // クイックセーブコマンド
         // MOD START MARGE
         // Public Sub QuickSaveCommand()
-        private static void QuickSaveCommand()
+        private void QuickSaveCommand()
         {
             // MOD END MARGE
 
@@ -1078,21 +1078,21 @@ namespace SRCCore.Commands
         // プレイを中断し、中断用データをセーブする
         // MOD START MARGE
         // Public Sub DumpCommand()
-        private static void DumpCommand()
+        private void DumpCommand()
         {
             // MOD END MARGE
             string fname, save_path = default;
-            short ret, i;
+            int ret, i;
 
             // プレイを中断するか確認
-            ret = (short)Interaction.MsgBox("プレイを中断しますか？", (MsgBoxStyle)((int)MsgBoxStyle.OkCancel + (int)MsgBoxStyle.Question), "中断");
-            if (ret == (int)MsgBoxResult.Cancel)
+            ret = Interaction.MsgBox("プレイを中断しますか？", (MsgBoxStyle)(MsgBoxStyle.OkCancel + MsgBoxStyle.Question), "中断");
+            if (ret == MsgBoxResult.Cancel)
             {
                 return;
             }
 
             // 中断データをセーブするファイル名を決定
-            var loopTo = (short)Strings.Len(SRC.ScenarioFileName);
+            var loopTo = Strings.Len(SRC.ScenarioFileName);
             for (i = 1; i <= loopTo; i++)
             {
                 if (Strings.Mid(SRC.ScenarioFileName, Strings.Len(SRC.ScenarioFileName) - i + 1, 1) == @"\")
@@ -1126,7 +1126,7 @@ namespace SRCCore.Commands
             // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
             if ((FileSystem.Dir(save_path) ?? "") != (FileSystem.Dir(SRC.ScenarioPath) ?? ""))
             {
-                if ((int)Interaction.MsgBox("セーブファイルはシナリオフォルダにないと読み込めません。" + Constants.vbCr + Constants.vbLf + "このままセーブしますか？", (MsgBoxStyle)((int)MsgBoxStyle.OkCancel + (int)MsgBoxStyle.Question)) != 1)
+                if (Interaction.MsgBox("セーブファイルはシナリオフォルダにないと読み込めません。" + Constants.vbCr + Constants.vbLf + "このままセーブしますか？", (MsgBoxStyle)(MsgBoxStyle.OkCancel + MsgBoxStyle.Question)) != 1)
                 {
                     return;
                 }
@@ -1152,16 +1152,16 @@ namespace SRCCore.Commands
         // 全体マップの表示
         // MOD START MARGE
         // Public Sub GlobalMapCommand()
-        private static void GlobalMapCommand()
+        private void GlobalMapCommand()
         {
             // MOD END MARGE
             PictureBox pic;
-            short xx, yy;
-            short num = default, num2 = default;
+            int xx, yy;
+            int num = default, num2 = default;
             int mwidth, mheight;
             int ret, smode;
             Unit u;
-            short i, j;
+            int i, j;
             bool prev_mode;
             GUI.LockGUI();
             {
@@ -1188,19 +1188,19 @@ namespace SRCCore.Commands
                 // UPGRADE_ISSUE: Control picTmp は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 pic = withBlock.picTmp;
                 pic.Image = Image.FromFile("");
-                pic.Width = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsX(GUI.MapPWidth);
-                pic.Height = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsY(GUI.MapPHeight);
+                pic.Width = Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsX(GUI.MapPWidth);
+                pic.Height = Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsY(GUI.MapPHeight);
                 // UPGRADE_ISSUE: Control picBack は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                 // UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                 ret = GUI.BitBlt(pic.hDC, 0, 0, GUI.MapPWidth, GUI.MapPHeight, withBlock.picBack.hDC, 0, 0, GUI.SRCCOPY);
                 var loopTo = Map.MapWidth;
                 for (i = 1; i <= loopTo; i++)
                 {
-                    xx = (short)(32 * (i - 1));
+                    xx = (32 * (i - 1));
                     var loopTo1 = Map.MapHeight;
                     for (j = 1; j <= loopTo1; j++)
                     {
-                        yy = (short)(32 * (j - 1));
+                        yy = (32 * (j - 1));
                         u = Map.MapDataForUnit[i, j];
                         if (u is object)
                         {
@@ -1277,8 +1277,8 @@ namespace SRCCore.Commands
 
                 // マップ全体画像を破棄
                 pic.Image = Image.FromFile("");
-                pic.Width = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsX(32d);
-                pic.Height = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsY(32d);
+                pic.Width = Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsX(32d);
+                pic.Height = Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsY(32d);
 
                 // 画面を更新
                 // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
@@ -1293,11 +1293,11 @@ namespace SRCCore.Commands
                 {
                     if (u.Party0 == "味方" | u.Party0 == "ＮＰＣ")
                     {
-                        num = (short)(num + 1);
+                        num = (num + 1);
                     }
                     else
                     {
-                        num2 = (short)(num2 + 1);
+                        num2 = (num2 + 1);
                     }
                 }
             }

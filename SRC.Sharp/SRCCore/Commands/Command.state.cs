@@ -9,10 +9,10 @@ namespace SRCCore.Commands
     public partial class Command
     {
         // 現在の選択状況を記録
-        public static void SaveSelections()
+        public void SaveSelections()
         {
             // スタックのインデックスを増やす
-            SelectionStackIndex = (short)(SelectionStackIndex + 1);
+            SelectionStackIndex = (SelectionStackIndex + 1);
 
             // スタック領域確保
             Array.Resize(ref SavedSelectedUnit, SelectionStackIndex + 1);
@@ -46,7 +46,7 @@ namespace SRCCore.Commands
         }
 
         // 選択状況を復元
-        public static void RestoreSelections()
+        public void RestoreSelections()
         {
             // スタックに積まれていない？
             if (SelectionStackIndex == 0)
@@ -106,7 +106,7 @@ namespace SRCCore.Commands
             SelectedY = SavedSelectedY[SelectionStackIndex];
 
             // スタックのインデックスを１減らす
-            SelectionStackIndex = (short)(SelectionStackIndex - 1);
+            SelectionStackIndex = (SelectionStackIndex - 1);
 
             // スタックの領域を開放
             Array.Resize(ref SavedSelectedUnit, SelectionStackIndex + 1);
@@ -125,10 +125,10 @@ namespace SRCCore.Commands
         }
 
         // 選択を入れ替える
-        public static void SwapSelections()
+        public void SwapSelections()
         {
             Unit u, t;
-            short w, tw;
+            int w, tw;
             string wname, twname;
             u = SelectedUnit;
             t = SelectedTarget;

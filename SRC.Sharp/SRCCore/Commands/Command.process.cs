@@ -9,9 +9,9 @@ namespace SRCCore.Commands
     {
         // コマンドの処理を進める
         // by_cancel = True の場合はコマンドをキャンセルした場合の処理
-        public static void ProceedCommand(bool by_cancel = false)
+        public void ProceedCommand(bool by_cancel = false)
         {
-            short j, i, n;
+            int j, i, n;
             Unit u;
             string uname;
             string buf;
@@ -49,15 +49,15 @@ namespace SRCCore.Commands
                         // ADD START MARGE
                         SelectedUnitMoveCost = 0;
                         // ADD END MARGE
-                        if (1 <= GUI.PixelToMapX((short)GUI.MouseX) & GUI.PixelToMapX((short)GUI.MouseX) <= Map.MapWidth & 1 <= GUI.PixelToMapY((short)GUI.MouseY) & GUI.PixelToMapY((short)GUI.MouseY) <= Map.MapHeight)
+                        if (1 <= GUI.PixelToMapX(GUI.MouseX) & GUI.PixelToMapX(GUI.MouseX) <= Map.MapWidth & 1 <= GUI.PixelToMapY(GUI.MouseY) & GUI.PixelToMapY(GUI.MouseY) <= Map.MapHeight)
                         {
-                            SelectedUnit = Map.MapDataForUnit[GUI.PixelToMapX((short)GUI.MouseX), GUI.PixelToMapY((short)GUI.MouseY)];
+                            SelectedUnit = Map.MapDataForUnit[GUI.PixelToMapX(GUI.MouseX), GUI.PixelToMapY(GUI.MouseY)];
                         }
 
                         if (SelectedUnit is null)
                         {
-                            SelectedX = GUI.PixelToMapX((short)GUI.MouseX);
-                            SelectedY = GUI.PixelToMapY((short)GUI.MouseY);
+                            SelectedX = GUI.PixelToMapX(GUI.MouseX);
+                            SelectedY = GUI.PixelToMapY(GUI.MouseY);
                             if (!string.IsNullOrEmpty(Map.MapFileName))
                             {
                                 // 通常のステージ
@@ -277,7 +277,7 @@ namespace SRCCore.Commands
                                             // UPGRADE_ISSUE: Control mnuMapCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                                             GUI.MainForm.mnuMapCommandItem(i).Caption = lab.Para(2);
                                             MapCommandLabelList[i - MapCommand1CmdID + 1] = lab.LineNum.ToString();
-                                            i = (short)(i + 1);
+                                            i = (i + 1);
                                             if (i > MapCommand10CmdID)
                                             {
                                                 break;
@@ -706,7 +706,7 @@ namespace SRCCore.Commands
                                                     string argfname4 = "召喚ユニット";
                                                     if (!withBlock6.IsFeatureAvailable(ref argfname4))
                                                     {
-                                                        n = (short)(n + Math.Abs(withBlock6.PilotNum));
+                                                        n = (n + Math.Abs(withBlock6.PilotNum));
                                                     }
                                                 }
                                             }
@@ -771,7 +771,7 @@ namespace SRCCore.Commands
                                                         break;
                                                     }
 
-                                                    n = (short)(n + 1);
+                                                    n = (n + 1);
                                                 }
 
                                                 // 合体先のユニットが作成されているか？
@@ -789,7 +789,7 @@ namespace SRCCore.Commands
                                                 // すべての条件を満たしている場合
                                                 string localFeatureData4() { object argIndex1 = i; var ret = withBlock4.FeatureData(ref argIndex1); return ret; }
 
-                                                short localLLength() { string arglist = hs57a7b11782d04866bf1e5d24ed51c504(); var ret = GeneralLib.LLength(ref arglist); return ret; }
+                                                int localLLength() { string arglist = hs57a7b11782d04866bf1e5d24ed51c504(); var ret = GeneralLib.LLength(ref arglist); return ret; }
 
                                                 if (n == localLLength() - 2)
                                                 {
@@ -978,7 +978,7 @@ namespace SRCCore.Commands
                                                 // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                                                 GUI.MainForm.mnuUnitCommandItem(i).Caption = lab.Para(2);
                                                 UnitCommandLabelList[i - UnitCommand1CmdID + 1] = lab.LineNum.ToString();
-                                                i = (short)(i + 1);
+                                                i = (i + 1);
                                                 if (i > UnitCommand10CmdID)
                                                 {
                                                     break;
@@ -1092,7 +1092,7 @@ namespace SRCCore.Commands
                                             // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                                             GUI.MainForm.mnuUnitCommandItem(i).Caption = lab.Para(2);
                                             UnitCommandLabelList[i - UnitCommand1CmdID + 1] = lab.LineNum.ToString();
-                                            i = (short)(i + 1);
+                                            i = (i + 1);
                                             if (i > UnitCommand10CmdID)
                                             {
                                                 break;
@@ -1148,7 +1148,7 @@ namespace SRCCore.Commands
 
                                     string localLIndex5() { object argIndex1 = "テレポート"; string arglist = withBlock4.FeatureData(ref argIndex1); var ret = GeneralLib.LIndex(ref arglist, 2); return ret; }
 
-                                    if (withBlock4.EN >= Conversions.ToShort(localLIndex5()))
+                                    if (withBlock4.EN >= Conversions.Toint(localLIndex5()))
                                     {
                                         // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                                         GUI.MainForm.mnuUnitCommandItem(TeleportCmdID).Visible = true;
@@ -1203,7 +1203,7 @@ namespace SRCCore.Commands
 
                                     string localLIndex8() { object argIndex1 = "ジャンプ"; string arglist = withBlock4.FeatureData(ref argIndex1); var ret = GeneralLib.LIndex(ref arglist, 2); return ret; }
 
-                                    if (withBlock4.EN >= Conversions.ToShort(localLIndex8()))
+                                    if (withBlock4.EN >= Conversions.Toint(localLIndex8()))
                                     {
                                         // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                                         GUI.MainForm.mnuUnitCommandItem(JumpCmdID).Visible = true;
@@ -1407,7 +1407,7 @@ namespace SRCCore.Commands
 
                                         string localLIndex11() { object argIndex1 = "修理装置"; string arglist = withBlock4.FeatureData(ref argIndex1); var ret = GeneralLib.LIndex(ref arglist, 2); return ret; }
 
-                                        if (withBlock4.EN < Conversions.ToShort(localLIndex11()))
+                                        if (withBlock4.EN < Conversions.Toint(localLIndex11()))
                                         {
                                             // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                                             GUI.MainForm.mnuUnitCommandItem(FixCmdID).Visible = false;
@@ -1528,7 +1528,7 @@ namespace SRCCore.Commands
 
                                         string localLIndex14() { object argIndex1 = "補給装置"; string arglist = withBlock4.FeatureData(ref argIndex1); var ret = GeneralLib.LIndex(ref arglist, 2); return ret; }
 
-                                        if (withBlock4.EN < Conversions.ToShort(localLIndex14()) | withBlock4.MainPilot().Morale < 100)
+                                        if (withBlock4.EN < Conversions.Toint(localLIndex14()) | withBlock4.MainPilot().Morale < 100)
                                         {
                                             // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                                             GUI.MainForm.mnuUnitCommandItem(SupplyCmdID).Visible = false;
@@ -1549,7 +1549,7 @@ namespace SRCCore.Commands
                             {
                                 if (!withBlock4.Ability(i).IsItem() & withBlock4.IsAbilityMastered(i))
                                 {
-                                    n = (short)(n + 1);
+                                    n = (n + 1);
                                     string argref_mode2 = "移動前";
                                     if (withBlock4.IsAbilityUseful(i, ref argref_mode2))
                                     {
@@ -1747,7 +1747,7 @@ namespace SRCCore.Commands
                                             string argfname21 = "召喚ユニット";
                                             if (!withBlock11.IsFeatureAvailable(ref argfname21))
                                             {
-                                                n = (short)(n + Math.Abs(withBlock11.PilotNum));
+                                                n = (n + Math.Abs(withBlock11.PilotNum));
                                             }
                                         }
                                     }
@@ -1787,7 +1787,7 @@ namespace SRCCore.Commands
 
                                     string localFeatureData10() { object argIndex1 = i; var ret = withBlock4.FeatureData(ref argIndex1); return ret; }
 
-                                    short localLLength2() { string arglist = hsc81ad842db7849b2b1585eed09bb5348(); var ret = GeneralLib.LLength(ref arglist); return ret; }
+                                    int localLLength2() { string arglist = hsc81ad842db7849b2b1585eed09bb5348(); var ret = GeneralLib.LLength(ref arglist); return ret; }
 
                                     if (localFeature() == "合体" & !string.IsNullOrEmpty(localFeatureName()) & localLLength2() > 3)
                                     {
@@ -1821,12 +1821,12 @@ namespace SRCCore.Commands
                                                 break;
                                             }
 
-                                            if (Math.Abs((short)(withBlock4.x - u.CurrentForm().x)) + Math.Abs((short)(withBlock4.y - u.CurrentForm().y)) > 2)
+                                            if (Math.Abs((withBlock4.x - u.CurrentForm().x)) + Math.Abs((withBlock4.y - u.CurrentForm().y)) > 2)
                                             {
                                                 break;
                                             }
 
-                                            n = (short)(n + 1);
+                                            n = (n + 1);
                                         }
 
                                         // 合体先のユニットが作成され、かつ合体可能な状態にあるか？
@@ -1849,7 +1849,7 @@ namespace SRCCore.Commands
                                         // すべての条件を満たしている場合
                                         string localFeatureData9() { object argIndex1 = i; var ret = withBlock4.FeatureData(ref argIndex1); return ret; }
 
-                                        short localLLength1() { string arglist = hs7cff35930ba14e62b7ee40e2d0172e97(); var ret = GeneralLib.LLength(ref arglist); return ret; }
+                                        int localLLength1() { string arglist = hs7cff35930ba14e62b7ee40e2d0172e97(); var ret = GeneralLib.LLength(ref arglist); return ret; }
 
                                         if (n == localLLength1() - 2)
                                         {
@@ -1878,7 +1878,7 @@ namespace SRCCore.Commands
                                 object argIndex83 = "ハイパーモード";
                                 object argIndex84 = "形態固定";
                                 object argIndex85 = "機体固定";
-                                if (withBlock4.IsFeatureAvailable(ref argfname26) & (withBlock4.MainPilot().Morale >= (short)(10d * withBlock4.FeatureLevel(ref argIndex80)) + 100 | withBlock4.HP <= withBlock4.MaxHP / 4 & Strings.InStr(withBlock4.FeatureData(ref argIndex81), "気力発動") == 0) & Strings.InStr(withBlock4.FeatureData(ref argIndex82), "自動発動") == 0 & !string.IsNullOrEmpty(withBlock4.FeatureName(ref argIndex83)) & !withBlock4.IsConditionSatisfied(ref argIndex84) & !withBlock4.IsConditionSatisfied(ref argIndex85))
+                                if (withBlock4.IsFeatureAvailable(ref argfname26) & (withBlock4.MainPilot().Morale >= (10d * withBlock4.FeatureLevel(ref argIndex80)) + 100 | withBlock4.HP <= withBlock4.MaxHP / 4 & Strings.InStr(withBlock4.FeatureData(ref argIndex81), "気力発動") == 0) & Strings.InStr(withBlock4.FeatureData(ref argIndex82), "自動発動") == 0 & !string.IsNullOrEmpty(withBlock4.FeatureName(ref argIndex83)) & !withBlock4.IsConditionSatisfied(ref argIndex84) & !withBlock4.IsConditionSatisfied(ref argIndex85))
                                 {
                                     object argIndex76 = "ハイパーモード";
                                     string arglist20 = withBlock4.FeatureData(ref argIndex76);
@@ -2147,7 +2147,7 @@ namespace SRCCore.Commands
                                         // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                                         GUI.MainForm.mnuUnitCommandItem(i).Caption = lab.Para(2);
                                         UnitCommandLabelList[i - UnitCommand1CmdID + 1] = lab.LineNum.ToString();
-                                        i = (short)(i + 1);
+                                        i = (i + 1);
                                         if (i > UnitCommand10CmdID)
                                         {
                                             break;
@@ -2389,7 +2389,7 @@ namespace SRCCore.Commands
 
                                         string localLIndex18() { object argIndex1 = "修理装置"; string arglist = withBlock14.FeatureData(ref argIndex1); var ret = GeneralLib.LIndex(ref arglist, 2); return ret; }
 
-                                        if (withBlock14.EN < Conversions.ToShort(localLIndex18()))
+                                        if (withBlock14.EN < Conversions.Toint(localLIndex18()))
                                         {
                                             // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                                             GUI.MainForm.mnuUnitCommandItem(FixCmdID).Visible = false;
@@ -2511,7 +2511,7 @@ namespace SRCCore.Commands
 
                                         string localLIndex21() { object argIndex1 = "補給装置"; string arglist = withBlock14.FeatureData(ref argIndex1); var ret = GeneralLib.LIndex(ref arglist, 2); return ret; }
 
-                                        if (withBlock14.EN < Conversions.ToShort(localLIndex21()) | withBlock14.MainPilot().Morale < 100)
+                                        if (withBlock14.EN < Conversions.Toint(localLIndex21()) | withBlock14.MainPilot().Morale < 100)
                                         {
                                             // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                                             GUI.MainForm.mnuUnitCommandItem(SupplyCmdID).Visible = false;
@@ -2542,7 +2542,7 @@ namespace SRCCore.Commands
                             {
                                 if (!withBlock14.Ability(i).IsItem())
                                 {
-                                    n = (short)(n + 1);
+                                    n = (n + 1);
                                     string argref_mode7 = "移動後";
                                     if (withBlock14.IsAbilityUseful(i, ref argref_mode7))
                                     {
@@ -2604,7 +2604,7 @@ namespace SRCCore.Commands
 
                                     string localFeatureData17() { object argIndex1 = i; var ret = withBlock14.FeatureData(ref argIndex1); return ret; }
 
-                                    short localLLength4() { string arglist = hs9469e7ffcaeb496ca82716c7891638cc(); var ret = GeneralLib.LLength(ref arglist); return ret; }
+                                    int localLLength4() { string arglist = hs9469e7ffcaeb496ca82716c7891638cc(); var ret = GeneralLib.LLength(ref arglist); return ret; }
 
                                     if (localFeature1() == "合体" & !string.IsNullOrEmpty(localFeatureName1()) & localLLength4() > 3)
                                     {
@@ -2637,12 +2637,12 @@ namespace SRCCore.Commands
                                                 break;
                                             }
 
-                                            if (Math.Abs((short)(withBlock14.x - u.CurrentForm().x)) + Math.Abs((short)(withBlock14.y - u.CurrentForm().y)) > 2)
+                                            if (Math.Abs((withBlock14.x - u.CurrentForm().x)) + Math.Abs((withBlock14.y - u.CurrentForm().y)) > 2)
                                             {
                                                 break;
                                             }
 
-                                            n = (short)(n + 1);
+                                            n = (n + 1);
                                         }
 
                                         string localFeatureData14() { object argIndex1 = i; var ret = withBlock14.FeatureData(ref argIndex1); return ret; }
@@ -2663,7 +2663,7 @@ namespace SRCCore.Commands
 
                                         string localFeatureData16() { object argIndex1 = i; var ret = withBlock14.FeatureData(ref argIndex1); return ret; }
 
-                                        short localLLength3() { string arglist = hse55df985d6054cfe94b90350a9c471f6(); var ret = GeneralLib.LLength(ref arglist); return ret; }
+                                        int localLLength3() { string arglist = hse55df985d6054cfe94b90350a9c471f6(); var ret = GeneralLib.LLength(ref arglist); return ret; }
 
                                         if (n == localLLength3() - 2)
                                         {
@@ -2784,7 +2784,7 @@ namespace SRCCore.Commands
                                         // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                                         GUI.MainForm.mnuUnitCommandItem(i).Caption = lab.Para(2);
                                         UnitCommandLabelList[i - UnitCommand1CmdID + 1] = lab.LineNum.ToString();
-                                        i = (short)(i + 1);
+                                        i = (i + 1);
                                         if (i > UnitCommand10CmdID)
                                         {
                                             break;
@@ -2824,10 +2824,10 @@ namespace SRCCore.Commands
                 case "ターゲット選択":
                 case "移動後ターゲット選択":
                     {
-                        if (!Map.MaskData[GUI.PixelToMapX((short)GUI.MouseX), GUI.PixelToMapY((short)GUI.MouseY)])
+                        if (!Map.MaskData[GUI.PixelToMapX(GUI.MouseX), GUI.PixelToMapY(GUI.MouseY)])
                         {
-                            SelectedX = GUI.PixelToMapX((short)GUI.MouseX);
-                            SelectedY = GUI.PixelToMapY((short)GUI.MouseY);
+                            SelectedX = GUI.PixelToMapX(GUI.MouseX);
+                            SelectedY = GUI.PixelToMapY(GUI.MouseY);
 
                             // 自分自身を選択された場合
                             if (SelectedUnit.x == SelectedX & SelectedUnit.y == SelectedY)
@@ -2980,11 +2980,11 @@ namespace SRCCore.Commands
                 case "マップ攻撃使用":
                 case "移動後マップ攻撃使用":
                     {
-                        if (1 <= GUI.PixelToMapX((short)GUI.MouseX) & GUI.PixelToMapX((short)GUI.MouseX) <= Map.MapWidth)
+                        if (1 <= GUI.PixelToMapX(GUI.MouseX) & GUI.PixelToMapX(GUI.MouseX) <= Map.MapWidth)
                         {
-                            if (1 <= GUI.PixelToMapY((short)GUI.MouseY) & GUI.PixelToMapY((short)GUI.MouseY) <= Map.MapHeight)
+                            if (1 <= GUI.PixelToMapY(GUI.MouseY) & GUI.PixelToMapY(GUI.MouseY) <= Map.MapHeight)
                             {
-                                if (!Map.MaskData[GUI.PixelToMapX((short)GUI.MouseX), GUI.PixelToMapY((short)GUI.MouseY)])
+                                if (!Map.MaskData[GUI.PixelToMapX(GUI.MouseX), GUI.PixelToMapY(GUI.MouseY)])
                                 {
                                     // 効果範囲内でクリックされればマップ攻撃発動
                                     if (SelectedCommand == "マップ攻撃")
@@ -3007,9 +3007,9 @@ namespace SRCCore.Commands
         }
 
         // ＧＵＩの処理をキャンセル
-        public static void CancelCommand()
+        public void CancelCommand()
         {
-            short tmp_x, tmp_y;
+            int tmp_x, tmp_y;
             {
                 var withBlock = SelectedUnit;
                 switch (CommandState ?? "")
@@ -3140,7 +3140,7 @@ namespace SRCCore.Commands
                                             var withBlock1 = SelectedTarget;
                                             string localLIndex() { object argIndex1 = "テレポート"; string arglist = withBlock1.FeatureData(ref argIndex1); var ret = GeneralLib.LIndex(ref arglist, 2); return ret; }
 
-                                            short localLLength() { object argIndex1 = "ジャンプ"; string arglist = withBlock1.FeatureData(ref argIndex1); var ret = GeneralLib.LLength(ref arglist); return ret; }
+                                            int localLLength() { object argIndex1 = "ジャンプ"; string arglist = withBlock1.FeatureData(ref argIndex1); var ret = GeneralLib.LLength(ref arglist); return ret; }
 
                                             string localLIndex1() { object argIndex1 = "ジャンプ"; string arglist = withBlock1.FeatureData(ref argIndex1); var ret = GeneralLib.LIndex(ref arglist, 2); return ret; }
 
@@ -3209,7 +3209,7 @@ namespace SRCCore.Commands
                                 string argattr3 = "Ｍ移";
                                 if (withBlock.IsAbilityClassifiedAs(SelectedAbility, ref argattr2))
                                 {
-                                    short argmax_range = withBlock.AbilityMinRange(SelectedAbility);
+                                    int argmax_range = withBlock.AbilityMinRange(SelectedAbility);
                                     Map.AreaInCross(withBlock.x, withBlock.y, withBlock.AbilityMaxRange(SelectedAbility), ref argmax_range);
                                 }
                                 else if (withBlock.IsAbilityClassifiedAs(SelectedAbility, ref argattr3))

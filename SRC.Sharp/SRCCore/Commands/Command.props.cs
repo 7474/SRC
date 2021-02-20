@@ -7,84 +7,84 @@ namespace SRCCore.Commands
     public partial class Command
     {
         // 現在のコマンドの進行状況
-        public static string CommandState;
+        public string CommandState;
 
         // クリック待ちモード
-        public static bool WaitClickMode;
+        public bool WaitClickMode;
         // 閲覧モード
-        public static bool ViewMode;
+        public bool ViewMode;
 
         // マップコマンドラベルのリスト
-        private static string[] MapCommandLabelList = new string[11];
+        private string[] MapCommandLabelList = new string[11];
         // ユニットコマンドラベルのリスト
-        private static string[] UnitCommandLabelList = new string[11];
+        private string[] UnitCommandLabelList = new string[11];
 
         // 現在選択されているもの
-        public static Unit SelectedUnit; // ユニット
-        public static string SelectedCommand; // コマンド
-        public static Unit SelectedTarget; // ターゲット
-        public static short SelectedX; // Ｘ座標
-        public static short SelectedY; // Ｙ座標
-        public static short SelectedWeapon; // 武器
-        public static string SelectedWeaponName;
-        public static short SelectedTWeapon; // 反撃武器
-        public static string SelectedTWeaponName;
-        public static string SelectedDefenseOption; // 防御方法
-        public static short SelectedAbility; // アビリティ
-        public static string SelectedAbilityName;
-        public static Pilot SelectedPilot; // パイロット
-        public static short SelectedItem; // リストボックス中のアイテム
-        public static string SelectedSpecialPower; // スペシャルパワー
-        public static Unit[] SelectedPartners; // 合体技のパートナー
-                                               // ADD START MARGE
-        public static short SelectedUnitMoveCost; // 選択したユニットの移動力消費量
-                                                  // ADD END MARGE
+        public Unit SelectedUnit; // ユニット
+        public string SelectedCommand; // コマンド
+        public Unit SelectedTarget; // ターゲット
+        public int SelectedX; // Ｘ座標
+        public int SelectedY; // Ｙ座標
+        public int SelectedWeapon; // 武器
+        public string SelectedWeaponName;
+        public int SelectedTWeapon; // 反撃武器
+        public string SelectedTWeaponName;
+        public string SelectedDefenseOption; // 防御方法
+        public int SelectedAbility; // アビリティ
+        public string SelectedAbilityName;
+        public Pilot SelectedPilot; // パイロット
+        public int SelectedItem; // リストボックス中のアイテム
+        public string SelectedSpecialPower; // スペシャルパワー
+        public Unit[] SelectedPartners; // 合体技のパートナー
+                                        // ADD START MARGE
+        public int SelectedUnitMoveCost; // 選択したユニットの移動力消費量
+                                         // ADD END MARGE
 
         // 選択状況の記録用変数
-        public static short SelectionStackIndex;
-        public static Unit[] SavedSelectedUnit;
-        public static Unit[] SavedSelectedTarget;
-        public static Unit[] SavedSelectedUnitForEvent;
-        public static Unit[] SavedSelectedTargetForEvent;
-        public static short[] SavedSelectedWeapon;
-        public static string[] SavedSelectedWeaponName;
-        public static short[] SavedSelectedTWeapon;
-        public static string[] SavedSelectedTWeaponName;
-        public static string[] SavedSelectedDefenseOption;
-        public static short[] SavedSelectedAbility;
-        public static string[] SavedSelectedAbilityName;
-        public static short[] SavedSelectedX;
-        public static short[] SavedSelectedY;
+        public int SelectionStackIndex;
+        public Unit[] SavedSelectedUnit;
+        public Unit[] SavedSelectedTarget;
+        public Unit[] SavedSelectedUnitForEvent;
+        public Unit[] SavedSelectedTargetForEvent;
+        public int[] SavedSelectedWeapon;
+        public string[] SavedSelectedWeaponName;
+        public int[] SavedSelectedTWeapon;
+        public string[] SavedSelectedTWeaponName;
+        public string[] SavedSelectedDefenseOption;
+        public int[] SavedSelectedAbility;
+        public string[] SavedSelectedAbilityName;
+        public int[] SavedSelectedX;
+        public int[] SavedSelectedY;
 
         // 援護を使うかどうか
-        public static bool UseSupportAttack;
-        public static bool UseSupportGuard;
+        public bool UseSupportAttack;
+        public bool UseSupportGuard;
 
         // 「味方スペシャルパワー実行」を使ってスペシャルパワーを使用するかどうか
-        private static bool WithDoubleSPConsumption;
+        private bool WithDoubleSPConsumption;
 
         // 攻撃を行うユニット
-        public static Unit AttackUnit;
+        public Unit AttackUnit;
         // 援護攻撃を行うユニット
-        public static Unit SupportAttackUnit;
+        public Unit SupportAttackUnit;
         // 援護防御を行うユニット
-        public static Unit SupportGuardUnit;
+        public Unit SupportGuardUnit;
         // 援護防御を行うユニットのＨＰ値
-        public static double SupportGuardUnitHPRatio;
+        public double SupportGuardUnitHPRatio;
         // 援護防御を行うユニット(反撃時)
-        public static Unit SupportGuardUnit2;
+        public Unit SupportGuardUnit2;
         // 援護防御を行うユニットのＨＰ値(反撃時)
-        public static double SupportGuardUnitHPRatio2;
+        public double SupportGuardUnitHPRatio2;
 
         // 移動前のユニットの情報
-        private static short PrevUnitX;
-        private static short PrevUnitY;
-        private static string PrevUnitArea;
-        private static short PrevUnitEN;
-        private static string PrevCommand;
+        private int PrevUnitX;
+        private int PrevUnitY;
+        private string PrevUnitArea;
+        private int PrevUnitEN;
+        private string PrevCommand;
 
         // 移動したユニットの情報
-        public static Unit MovedUnit;
-        public static short MovedUnitSpeed;
+        public Unit MovedUnit;
+        public int MovedUnitSpeed;
     }
 }

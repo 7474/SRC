@@ -8,9 +8,9 @@ namespace SRCCore.Commands
     public partial class Command
     {
         // ユニットコマンドを実行
-        public static void UnitCommand(short idx)
+        public void UnitCommand(int idx)
         {
-            short prev_used_action;
+            int prev_used_action;
             PrevCommand = SelectedCommand;
             {
                 var withBlock = SelectedUnit;
@@ -419,7 +419,7 @@ namespace SRCCore.Commands
         // 「移動」コマンドを開始
         // MOD START MARGE
         // Public Sub StartMoveCommand()
-        private static void StartMoveCommand()
+        private void StartMoveCommand()
         {
             // MOD END MARGE
             SelectedCommand = "移動";
@@ -446,17 +446,17 @@ namespace SRCCore.Commands
         // 「移動」コマンドを終了
         // MOD START MARGE
         // Public Sub FinishMoveCommand()
-        private static void FinishMoveCommand()
+        private void FinishMoveCommand()
         {
             // MOD END MARGE
-            short ret;
+            int ret;
             GUI.LockGUI();
             {
                 var withBlock = SelectedUnit;
                 PrevUnitX = withBlock.x;
                 PrevUnitY = withBlock.y;
                 PrevUnitArea = withBlock.Area;
-                PrevUnitEN = (short)withBlock.EN;
+                PrevUnitEN = withBlock.EN;
 
                 // 移動後に着艦or合体する場合はプレイヤーに確認を取る
                 if (Map.MapDataForUnit[SelectedX, SelectedY] is object)
@@ -465,14 +465,14 @@ namespace SRCCore.Commands
                     string argfname1 = "母艦";
                     if (Map.MapDataForUnit[SelectedX, SelectedY].IsFeatureAvailable(ref argfname) & !withBlock.IsFeatureAvailable(ref argfname1))
                     {
-                        ret = (short)Interaction.MsgBox("着艦しますか？", (MsgBoxStyle)((int)MsgBoxStyle.OkCancel + (int)MsgBoxStyle.Question), "着艦");
+                        ret = Interaction.MsgBox("着艦しますか？", (MsgBoxStyle)(MsgBoxStyle.OkCancel + MsgBoxStyle.Question), "着艦");
                     }
                     else
                     {
-                        ret = (short)Interaction.MsgBox("合体しますか？", (MsgBoxStyle)((int)MsgBoxStyle.OkCancel + (int)MsgBoxStyle.Question), "合体");
+                        ret = Interaction.MsgBox("合体しますか？", (MsgBoxStyle)(MsgBoxStyle.OkCancel + MsgBoxStyle.Question), "合体");
                     }
 
-                    if (ret == (int)MsgBoxResult.Cancel)
+                    if (ret == MsgBoxResult.Cancel)
                     {
                         CancelCommand();
                         GUI.UnlockGUI();
@@ -570,7 +570,7 @@ namespace SRCCore.Commands
                     return;
                 }
 
-                SelectedUnitMoveCost = (short)Map.TotalMoveCost[withBlock.x, withBlock.y];
+                SelectedUnitMoveCost = Map.TotalMoveCost[withBlock.x, withBlock.y];
                 // ADD END MARGE
             }
 
@@ -583,7 +583,7 @@ namespace SRCCore.Commands
         // 「テレポート」コマンドを開始
         // MOD START MARGE
         // Public Sub StartTeleportCommand()
-        private static void StartTeleportCommand()
+        private void StartTeleportCommand()
         {
             // MOD END MARGE
             SelectedCommand = "テレポート";
@@ -610,17 +610,17 @@ namespace SRCCore.Commands
         // 「テレポート」コマンドを終了
         // MOD START MARGE
         // Public Sub FinishTeleportCommand()
-        private static void FinishTeleportCommand()
+        private void FinishTeleportCommand()
         {
             // MOD END MARGE
-            short ret;
+            int ret;
             GUI.LockGUI();
             {
                 var withBlock = SelectedUnit;
                 PrevUnitX = withBlock.x;
                 PrevUnitY = withBlock.y;
                 PrevUnitArea = withBlock.Area;
-                PrevUnitEN = (short)withBlock.EN;
+                PrevUnitEN = withBlock.EN;
 
                 // テレポート後に着艦or合体する場合はプレイヤーに確認を取る
                 if (Map.MapDataForUnit[SelectedX, SelectedY] is object)
@@ -628,14 +628,14 @@ namespace SRCCore.Commands
                     string argfname = "母艦";
                     if (Map.MapDataForUnit[SelectedX, SelectedY].IsFeatureAvailable(ref argfname))
                     {
-                        ret = (short)Interaction.MsgBox("着艦しますか？", (MsgBoxStyle)((int)MsgBoxStyle.OkCancel + (int)MsgBoxStyle.Question), "着艦");
+                        ret = Interaction.MsgBox("着艦しますか？", (MsgBoxStyle)(MsgBoxStyle.OkCancel + MsgBoxStyle.Question), "着艦");
                     }
                     else
                     {
-                        ret = (short)Interaction.MsgBox("合体しますか？", (MsgBoxStyle)((int)MsgBoxStyle.OkCancel + (int)MsgBoxStyle.Question), "合体");
+                        ret = Interaction.MsgBox("合体しますか？", (MsgBoxStyle)(MsgBoxStyle.OkCancel + MsgBoxStyle.Question), "合体");
                     }
 
-                    if (ret == (int)MsgBoxResult.Cancel)
+                    if (ret == MsgBoxResult.Cancel)
                     {
                         CancelCommand();
                         GUI.UnlockGUI();
@@ -710,7 +710,7 @@ namespace SRCCore.Commands
 
                     string localLIndex1() { object argIndex1 = "テレポート"; string arglist = withBlock.FeatureData(ref argIndex1); var ret = GeneralLib.LIndex(ref arglist, 2); return ret; }
 
-                    withBlock.EN = PrevUnitEN - Conversions.ToShort(localLIndex1());
+                    withBlock.EN = PrevUnitEN - Conversions.Toint(localLIndex1());
                 }
                 else
                 {
@@ -814,7 +814,7 @@ namespace SRCCore.Commands
         // 「ジャンプ」コマンドを開始
         // MOD START MARGE
         // Public Sub StartJumpCommand()
-        private static void StartJumpCommand()
+        private void StartJumpCommand()
         {
             // MOD END MARGE
             SelectedCommand = "ジャンプ";
@@ -841,17 +841,17 @@ namespace SRCCore.Commands
         // 「ジャンプ」コマンドを終了
         // MOD START MARGE
         // Public Sub FinishJumpCommand()
-        private static void FinishJumpCommand()
+        private void FinishJumpCommand()
         {
             // MOD END MARGE
-            short ret;
+            int ret;
             GUI.LockGUI();
             {
                 var withBlock = SelectedUnit;
                 PrevUnitX = withBlock.x;
                 PrevUnitY = withBlock.y;
                 PrevUnitArea = withBlock.Area;
-                PrevUnitEN = (short)withBlock.EN;
+                PrevUnitEN = withBlock.EN;
 
                 // ジャンプ後に着艦or合体する場合はプレイヤーに確認を取る
                 if (Map.MapDataForUnit[SelectedX, SelectedY] is object)
@@ -859,14 +859,14 @@ namespace SRCCore.Commands
                     string argfname = "母艦";
                     if (Map.MapDataForUnit[SelectedX, SelectedY].IsFeatureAvailable(ref argfname))
                     {
-                        ret = (short)Interaction.MsgBox("着艦しますか？", (MsgBoxStyle)((int)MsgBoxStyle.OkCancel + (int)MsgBoxStyle.Question), "着艦");
+                        ret = Interaction.MsgBox("着艦しますか？", (MsgBoxStyle)(MsgBoxStyle.OkCancel + MsgBoxStyle.Question), "着艦");
                     }
                     else
                     {
-                        ret = (short)Interaction.MsgBox("合体しますか？", (MsgBoxStyle)((int)MsgBoxStyle.OkCancel + (int)MsgBoxStyle.Question), "合体");
+                        ret = Interaction.MsgBox("合体しますか？", (MsgBoxStyle)(MsgBoxStyle.OkCancel + MsgBoxStyle.Question), "合体");
                     }
 
-                    if (ret == (int)MsgBoxResult.Cancel)
+                    if (ret == MsgBoxResult.Cancel)
                     {
                         CancelCommand();
                         GUI.UnlockGUI();
@@ -935,7 +935,7 @@ namespace SRCCore.Commands
 
                     string localLIndex1() { object argIndex1 = "ジャンプ"; string arglist = withBlock.FeatureData(ref argIndex1); var ret = GeneralLib.LIndex(ref arglist, 2); return ret; }
 
-                    withBlock.EN = PrevUnitEN - Conversions.ToShort(localLIndex1());
+                    withBlock.EN = PrevUnitEN - Conversions.Toint(localLIndex1());
                 }
 
                 // ユニットを移動
@@ -1035,12 +1035,12 @@ namespace SRCCore.Commands
         // 「攻撃」コマンドを開始
         // MOD START MARGE
         // Public Sub StartAttackCommand()
-        private static void StartAttackCommand()
+        private void StartAttackCommand()
         {
             // MOD END MARGE
-            short i, j;
+            int i, j;
             Unit t;
-            short min_range, max_range;
+            int min_range, max_range;
             var BGM = default(string);
             GUI.LockGUI();
             var partners = default(Unit[]);
@@ -1161,7 +1161,7 @@ namespace SRCCore.Commands
                 else if (withBlock.IsWeaponClassifiedAs(SelectedWeapon, ref argattr4))
                 {
                     string argattr1 = "Ｍ扇";
-                    Map.AreaInSectorCross(withBlock.x, withBlock.y, min_range, ref max_range, (short)withBlock.WeaponLevel(SelectedWeapon, ref argattr1));
+                    Map.AreaInSectorCross(withBlock.x, withBlock.y, min_range, ref max_range, withBlock.WeaponLevel(SelectedWeapon, ref argattr1));
                 }
                 else if (withBlock.IsWeaponClassifiedAs(SelectedWeapon, ref argattr5) | withBlock.IsWeaponClassifiedAs(SelectedWeapon, ref argattr6) | withBlock.IsWeaponClassifiedAs(SelectedWeapon, ref argattr7))
                 {
@@ -1250,11 +1250,11 @@ namespace SRCCore.Commands
                 string argattr16 = "Ｍ線";
                 if (!withBlock.IsWeaponClassifiedAs(SelectedWeapon, ref argattr15) & !withBlock.IsWeaponClassifiedAs(SelectedWeapon, ref argattr16))
                 {
-                    var loopTo1 = (short)GeneralLib.MinLng(withBlock.x + max_range, Map.MapWidth);
-                    for (i = (short)GeneralLib.MaxLng(withBlock.x - max_range, 1); i <= loopTo1; i++)
+                    var loopTo1 = GeneralLib.MinLng(withBlock.x + max_range, Map.MapWidth);
+                    for (i = GeneralLib.MaxLng(withBlock.x - max_range, 1); i <= loopTo1; i++)
                     {
-                        var loopTo2 = (short)GeneralLib.MinLng(withBlock.y + max_range, Map.MapHeight);
-                        for (j = (short)GeneralLib.MaxLng(withBlock.y - max_range, 1); j <= loopTo2; j++)
+                        var loopTo2 = GeneralLib.MinLng(withBlock.y + max_range, Map.MapHeight);
+                        for (j = GeneralLib.MaxLng(withBlock.y - max_range, 1); j <= loopTo2; j++)
                         {
                             if (Map.MaskData[i, j])
                             {
@@ -1371,7 +1371,7 @@ namespace SRCCore.Commands
                         }
                         else if (u.HP == t.HP)
                         {
-                            if (Math.Pow(Math.Abs((short)(SelectedUnit.x - u.x)), 2d) + Math.Pow(Math.Abs((short)(SelectedUnit.y - u.y)), 2d) < Math.Pow(Math.Abs((short)(SelectedUnit.x - t.x)), 2d) + Math.Pow(Math.Abs((short)(SelectedUnit.y - t.y)), 2d))
+                            if (Math.Pow(Math.Abs((SelectedUnit.x - u.x)), 2d) + Math.Pow(Math.Abs((SelectedUnit.y - u.y)), 2d) < Math.Pow(Math.Abs((SelectedUnit.x - t.x)), 2d) + Math.Pow(Math.Abs((SelectedUnit.y - t.y)), 2d))
                             {
                                 t = u;
                             }
@@ -1402,17 +1402,17 @@ namespace SRCCore.Commands
         // 「攻撃」コマンドを終了
         // MOD START MARGE
         // Public Sub FinishAttackCommand()
-        private static void FinishAttackCommand()
+        private void FinishAttackCommand()
         {
             // MOD END MARGE
-            short i;
-            var earnings = default(int);
+            int i;
+            var earnings = default;
             string def_mode;
             var partners = default(Unit[]);
             var BGM = default(string);
             var is_suiside = default(bool);
             string wname, twname = default;
-            short tx, ty;
+            int tx, ty;
             Unit attack_target;
             double attack_target_hp_ratio;
             Unit defense_target;
@@ -1420,7 +1420,7 @@ namespace SRCCore.Commands
             Unit defense_target2;
             var defense_target2_hp_ratio = default(double);
             var support_attack_done = default(bool);
-            short w2;
+            int w2;
             // ADD START MARGE
             bool is_p_weapon;
             // ADD END MARGE
@@ -1658,7 +1658,7 @@ namespace SRCCore.Commands
                 }
 
                 // 合体技パートナーのハイライト表示
-                var loopTo1 = (short)Information.UBound(partners);
+                var loopTo1 = Information.UBound(partners);
                 for (i = 1; i <= loopTo1; i++)
                 {
                     {
@@ -1749,7 +1749,7 @@ namespace SRCCore.Commands
                             }
 
                             // カウンター攻撃の残り回数を減少
-                            withBlock5.UsedCounterAttack = (short)(withBlock5.UsedCounterAttack + 1);
+                            withBlock5.UsedCounterAttack = (withBlock5.UsedCounterAttack + 1);
 
                             // カウンター攻撃を実施
                             withBlock5.Attack(SelectedTWeapon, SelectedUnit, "カウンター", "");
@@ -1987,10 +1987,10 @@ namespace SRCCore.Commands
                             }
 
                             // サポートアタックの残り回数を減らす
-                            withBlock9.UsedSupportAttack = (short)(withBlock9.UsedSupportAttack + 1);
+                            withBlock9.UsedSupportAttack = (withBlock9.UsedSupportAttack + 1);
 
                             // 同時援護攻撃の残り回数を減らす
-                            SelectedUnit.UsedSyncAttack = (short)(SelectedUnit.UsedSyncAttack + 1);
+                            SelectedUnit.UsedSyncAttack = (SelectedUnit.UsedSyncAttack + 1);
                         }
                     }
 
@@ -2179,7 +2179,7 @@ namespace SRCCore.Commands
                     // サポートアタックの残り回数を減らす
                     if (w2 > 0)
                     {
-                        withBlock12.UsedSupportAttack = (short)(withBlock12.UsedSupportAttack + 1);
+                        withBlock12.UsedSupportAttack = (withBlock12.UsedSupportAttack + 1);
                     }
                 }
 
@@ -2210,7 +2210,7 @@ namespace SRCCore.Commands
                         string argoname = "合体技パートナー経験値無効";
                         if (!Expression.IsOptionDefined(ref argoname))
                         {
-                            var loopTo2 = (short)Information.UBound(partners);
+                            var loopTo2 = Information.UBound(partners);
                             for (i = 1; i <= loopTo2; i++)
                             {
                                 string argexp_situation1 = "破壊";
@@ -2227,7 +2227,7 @@ namespace SRCCore.Commands
                         if (withBlock13.IsUnderSpecialPowerEffect(ref argsptype1))
                         {
                             string argsname = "獲得資金増加";
-                            earnings = (int)(earnings * (1d + 0.1d * withBlock13.SpecialPowerEffectLevel(ref argsname)));
+                            earnings = (earnings * (1d + 0.1d * withBlock13.SpecialPowerEffectLevel(ref argsname)));
                         }
 
                         // パイロット能力による獲得資金増加
@@ -2238,7 +2238,7 @@ namespace SRCCore.Commands
                             string argoname1 = "収得効果重複";
                             if (!withBlock13.IsUnderSpecialPowerEffect(ref argsptype2) | Expression.IsOptionDefined(ref argoname1))
                             {
-                                earnings = (int)GeneralLib.MinDbl(earnings * ((10d + withBlock13.SkillLevel("資金獲得", 5d)) / 10d), 999999999d);
+                                earnings = GeneralLib.MinDbl(earnings * ((10d + withBlock13.SkillLevel("資金獲得", 5d)) / 10d), 999999999d);
                             }
                         }
 
@@ -2254,7 +2254,7 @@ namespace SRCCore.Commands
                         string argsptype3 = "敵破壊時再行動";
                         if (withBlock13.IsUnderSpecialPowerEffect(ref argsptype3))
                         {
-                            withBlock13.UsedAction = (short)(withBlock13.UsedAction - 1);
+                            withBlock13.UsedAction = (withBlock13.UsedAction - 1);
                         }
                     }
                     else
@@ -2268,7 +2268,7 @@ namespace SRCCore.Commands
                         string argoname2 = "合体技パートナー経験値無効";
                         if (!Expression.IsOptionDefined(ref argoname2))
                         {
-                            var loopTo3 = (short)Information.UBound(partners);
+                            var loopTo3 = Information.UBound(partners);
                             for (i = 1; i <= loopTo3; i++)
                             {
                                 string argexp_situation3 = "攻撃";
@@ -2542,7 +2542,7 @@ namespace SRCCore.Commands
             string argoname3 = "合体技パートナー行動数無消費";
             if (!Expression.IsOptionDefined(ref argoname3))
             {
-                var loopTo4 = (short)Information.UBound(partners);
+                var loopTo4 = Information.UBound(partners);
                 for (i = 1; i <= loopTo4; i++)
                     partners[i].CurrentForm().UseAction();
             }
@@ -2611,10 +2611,10 @@ namespace SRCCore.Commands
         // マップ攻撃による「攻撃」コマンドを終了
         // MOD START MARGE
         // Public Sub MapAttackCommand()
-        private static void MapAttackCommand()
+        private void MapAttackCommand()
         {
             // MOD END MARGE
-            short i;
+            int i;
             var partners = default(Unit[]);
             // ADD START MARGE
             bool is_p_weapon;
@@ -2646,8 +2646,8 @@ namespace SRCCore.Commands
                         }
 
                         // 攻撃目標地点
-                        SelectedX = GUI.PixelToMapX((short)GUI.MouseX);
-                        SelectedY = GUI.PixelToMapY((short)GUI.MouseY);
+                        SelectedX = GUI.PixelToMapX(GUI.MouseX);
+                        SelectedY = GUI.PixelToMapY(GUI.MouseY);
 
                         // 攻撃範囲を設定
                         string argattr3 = "識";
@@ -2656,13 +2656,13 @@ namespace SRCCore.Commands
                         {
                             string argattr1 = "Ｍ投";
                             string arguparty = "味方の敵";
-                            Map.AreaInRange(SelectedX, SelectedY, (short)withBlock.WeaponLevel(SelectedWeapon, ref argattr1), 1, ref arguparty);
+                            Map.AreaInRange(SelectedX, SelectedY, withBlock.WeaponLevel(SelectedWeapon, ref argattr1), 1, ref arguparty);
                         }
                         else
                         {
                             string argattr2 = "Ｍ投";
                             string arguparty1 = "すべて";
-                            Map.AreaInRange(SelectedX, SelectedY, (short)withBlock.WeaponLevel(SelectedWeapon, ref argattr2), 1, ref arguparty1);
+                            Map.AreaInRange(SelectedX, SelectedY, withBlock.WeaponLevel(SelectedWeapon, ref argattr2), 1, ref arguparty1);
                         }
 
                         GUI.MaskScreen();
@@ -2671,8 +2671,8 @@ namespace SRCCore.Commands
                     else if (withBlock.IsWeaponClassifiedAs(SelectedWeapon, ref argattr5))
                     {
                         // 攻撃目標地点
-                        SelectedX = GUI.PixelToMapX((short)GUI.MouseX);
-                        SelectedY = GUI.PixelToMapY((short)GUI.MouseY);
+                        SelectedX = GUI.PixelToMapX(GUI.MouseX);
+                        SelectedY = GUI.PixelToMapY(GUI.MouseY);
 
                         // 攻撃目標地点に他のユニットがいては駄目
                         if (Map.MapDataForUnit[SelectedX, SelectedY] is object)
@@ -2707,8 +2707,8 @@ namespace SRCCore.Commands
                         }
 
                         // 攻撃目標地点
-                        SelectedX = GUI.PixelToMapX((short)GUI.MouseX);
-                        SelectedY = GUI.PixelToMapY((short)GUI.MouseY);
+                        SelectedX = GUI.PixelToMapX(GUI.MouseX);
+                        SelectedY = GUI.PixelToMapY(GUI.MouseY);
 
                         // 攻撃範囲を設定
                         Map.AreaInPointToPoint(withBlock.x, withBlock.y, SelectedX, SelectedY);
@@ -2764,7 +2764,7 @@ namespace SRCCore.Commands
             string argoname = "合体技パートナー行動数無消費";
             if (!Expression.IsOptionDefined(ref argoname))
             {
-                var loopTo = (short)Information.UBound(partners);
+                var loopTo = Information.UBound(partners);
                 for (i = 1; i <= loopTo; i++)
                     partners[i].CurrentForm().UseAction();
             }
@@ -2831,12 +2831,12 @@ namespace SRCCore.Commands
         // is_item=True の場合は「アイテム」コマンドによる使い捨てアイテムのアビリティ
         // MOD STAR MARGE
         // Public Sub StartAbilityCommand(Optional ByVal is_item As Boolean)
-        private static void StartAbilityCommand(bool is_item = false)
+        private void StartAbilityCommand(bool is_item = false)
         {
             // MOD END MARGE
-            short i, j;
+            int i, j;
             Unit t;
-            short min_range, max_range;
+            int min_range, max_range;
             string cap;
             GUI.LockGUI();
 
@@ -3080,7 +3080,7 @@ namespace SRCCore.Commands
                 else if (withBlock3.IsAbilityClassifiedAs(SelectedAbility, ref argattr5))
                 {
                     string argattr2 = "Ｍ扇";
-                    Map.AreaInSectorCross(withBlock3.x, withBlock3.y, min_range, ref max_range, (short)withBlock3.AbilityLevel(SelectedAbility, ref argattr2));
+                    Map.AreaInSectorCross(withBlock3.x, withBlock3.y, min_range, ref max_range, withBlock3.AbilityLevel(SelectedAbility, ref argattr2));
                 }
                 else if (withBlock3.IsAbilityClassifiedAs(SelectedAbility, ref argattr6))
                 {
@@ -3165,11 +3165,11 @@ namespace SRCCore.Commands
                 string argattr11 = "Ｍ移";
                 if (!withBlock3.IsAbilityClassifiedAs(SelectedAbility, ref argattr9) & !withBlock3.IsAbilityClassifiedAs(SelectedAbility, ref argattr10) & !withBlock3.IsAbilityClassifiedAs(SelectedAbility, ref argattr11))
                 {
-                    var loopTo2 = (short)GeneralLib.MinLng(withBlock3.x + max_range, Map.MapWidth);
-                    for (i = (short)GeneralLib.MaxLng(withBlock3.x - max_range, 1); i <= loopTo2; i++)
+                    var loopTo2 = GeneralLib.MinLng(withBlock3.x + max_range, Map.MapWidth);
+                    for (i = GeneralLib.MaxLng(withBlock3.x - max_range, 1); i <= loopTo2; i++)
                     {
-                        var loopTo3 = (short)GeneralLib.MinLng(withBlock3.y + max_range, Map.MapHeight);
-                        for (j = (short)GeneralLib.MaxLng(withBlock3.y - max_range, 1); j <= loopTo3; j++)
+                        var loopTo3 = GeneralLib.MinLng(withBlock3.y + max_range, Map.MapHeight);
+                        for (j = GeneralLib.MaxLng(withBlock3.y - max_range, 1); j <= loopTo3; j++)
                         {
                             if (!Map.MaskData[i, j])
                             {
@@ -3239,7 +3239,7 @@ namespace SRCCore.Commands
                         {
                             t = u;
                         }
-                        else if (Math.Pow(Math.Abs((short)(SelectedUnit.x - u.x)), 2d) + Math.Pow(Math.Abs((short)(SelectedUnit.y - u.y)), 2d) < Math.Pow(Math.Abs((short)(SelectedUnit.x - t.x)), 2d) + Math.Pow(Math.Abs((short)(SelectedUnit.y - t.y)), 2d))
+                        else if (Math.Pow(Math.Abs((SelectedUnit.x - u.x)), 2d) + Math.Pow(Math.Abs((SelectedUnit.y - u.y)), 2d) < Math.Pow(Math.Abs((SelectedUnit.x - t.x)), 2d) + Math.Pow(Math.Abs((SelectedUnit.y - t.y)), 2d))
                         {
                             t = u;
                         }
@@ -3269,10 +3269,10 @@ namespace SRCCore.Commands
         // 「アビリティ」コマンドを終了
         // MOD START MARGE
         // Public Sub FinishAbilityCommand()
-        private static void FinishAbilityCommand()
+        private void FinishAbilityCommand()
         {
             // MOD END MARGE
-            short i;
+            int i;
             var partners = default(Unit[]);
             string aname;
             // ADD START MARGE
@@ -3355,7 +3355,7 @@ namespace SRCCore.Commands
                 string argattr3 = "合";
                 if (withBlock1.IsAbilityClassifiedAs(SelectedAbility, ref argattr3))
                 {
-                    var loopTo = (short)Information.UBound(partners);
+                    var loopTo = Information.UBound(partners);
                     for (i = 1; i <= loopTo; i++)
                     {
                         {
@@ -3437,7 +3437,7 @@ namespace SRCCore.Commands
             string argoname = "合体技パートナー行動数無消費";
             if (!Expression.IsOptionDefined(ref argoname))
             {
-                var loopTo1 = (short)Information.UBound(partners);
+                var loopTo1 = Information.UBound(partners);
                 for (i = 1; i <= loopTo1; i++)
                     partners[i].CurrentForm().UseAction();
             }
@@ -3502,10 +3502,10 @@ namespace SRCCore.Commands
         // マップ型「アビリティ」コマンドを終了
         // MOD START MARGE
         // Public Sub MapAbilityCommand()
-        private static void MapAbilityCommand()
+        private void MapAbilityCommand()
         {
             // MOD END MARGE
-            short i;
+            int i;
             var partners = default(Unit[]);
             // ADD START MARGE
             bool is_p_ability;
@@ -3539,20 +3539,20 @@ namespace SRCCore.Commands
                         }
 
                         // 目標地点
-                        SelectedX = GUI.PixelToMapX((short)GUI.MouseX);
-                        SelectedY = GUI.PixelToMapY((short)GUI.MouseY);
+                        SelectedX = GUI.PixelToMapX(GUI.MouseX);
+                        SelectedY = GUI.PixelToMapY(GUI.MouseY);
 
                         // 効果範囲を設定
                         string argattr2 = "Ｍ投";
                         string arguparty = "味方";
-                        Map.AreaInRange(SelectedX, SelectedY, (short)withBlock.AbilityLevel(SelectedAbility, ref argattr2), 1, ref arguparty);
+                        Map.AreaInRange(SelectedX, SelectedY, withBlock.AbilityLevel(SelectedAbility, ref argattr2), 1, ref arguparty);
                         GUI.MaskScreen();
                         return;
                     }
                     else if (withBlock.IsAbilityClassifiedAs(SelectedAbility, ref argattr4))
                     {
-                        SelectedX = GUI.PixelToMapX((short)GUI.MouseX);
-                        SelectedY = GUI.PixelToMapY((short)GUI.MouseY);
+                        SelectedX = GUI.PixelToMapX(GUI.MouseX);
+                        SelectedY = GUI.PixelToMapY(GUI.MouseY);
                         if (Map.MapDataForUnit[SelectedX, SelectedY] is object)
                         {
                             GUI.MaskScreen();
@@ -3586,8 +3586,8 @@ namespace SRCCore.Commands
                         }
 
                         // 目標地点
-                        SelectedX = GUI.PixelToMapX((short)GUI.MouseX);
-                        SelectedY = GUI.PixelToMapY((short)GUI.MouseY);
+                        SelectedX = GUI.PixelToMapX(GUI.MouseX);
+                        SelectedY = GUI.PixelToMapY(GUI.MouseY);
 
                         // 効果範囲を設定
                         Map.AreaInPointToPoint(withBlock.x, withBlock.y, SelectedX, SelectedY);
@@ -3642,7 +3642,7 @@ namespace SRCCore.Commands
             string argoname = "合体技パートナー行動数無消費";
             if (!Expression.IsOptionDefined(ref argoname))
             {
-                var loopTo = (short)Information.UBound(partners);
+                var loopTo = Information.UBound(partners);
                 for (i = 1; i <= loopTo; i++)
                     partners[i].CurrentForm().UseAction();
             }
@@ -3708,10 +3708,10 @@ namespace SRCCore.Commands
         // スペシャルパワーコマンドを開始
         // MOD START MARGE
         // Public Sub StartSpecialPowerCommand()
-        private static void StartSpecialPowerCommand()
+        private void StartSpecialPowerCommand()
         {
             // MOD END MARGE
-            short n, i, j, ret;
+            int n, i, j, ret;
             string[] pname_list;
             string[] pid_list;
             string[] sp_list;
@@ -3722,7 +3722,7 @@ namespace SRCCore.Commands
             Unit u;
             Pilot p;
             var strkey_list = default(string[]);
-            short max_item;
+            int max_item;
             string max_str;
             string buf;
             bool found;
@@ -3735,11 +3735,11 @@ namespace SRCCore.Commands
                 GUI.ListItemFlag = new bool[1];
 
                 // スペシャルパワーを使用可能なパイロットの一覧を作成
-                n = (short)(withBlock.CountPilot() + withBlock.CountSupport());
+                n = (withBlock.CountPilot() + withBlock.CountSupport());
                 string argfname = "追加サポート";
                 if (withBlock.IsFeatureAvailable(ref argfname))
                 {
-                    n = (short)(n + 1);
+                    n = (n + 1);
                 }
 
                 var loopTo = n;
@@ -3809,11 +3809,11 @@ namespace SRCCore.Commands
                             {
                                 SpecialPowerData localItem() { object argIndex1 = sname; var ret = SRC.SPDList.Item(ref argIndex1); return ret; }
 
-                                pname_list[Information.UBound(pname_list)] = pname_list[Information.UBound(pname_list)] + localItem().ShortName;
+                                pname_list[Information.UBound(pname_list)] = pname_list[Information.UBound(pname_list)] + localItem().intName;
                             }
                         }
                     }
-                    else if (i <= (short)(withBlock.CountPilot() + withBlock.CountSupport()))
+                    else if (i <= (withBlock.CountPilot() + withBlock.CountSupport()))
                     {
                         // サポートパイロット
                         object argIndex5 = i - withBlock.CountPilot();
@@ -3842,7 +3842,7 @@ namespace SRCCore.Commands
                                 {
                                     SpecialPowerData localItem2() { object argIndex1 = sname; var ret = SRC.SPDList.Item(ref argIndex1); return ret; }
 
-                                    pname_list[Information.UBound(pname_list)] = pname_list[Information.UBound(pname_list)] + localItem2().ShortName;
+                                    pname_list[Information.UBound(pname_list)] = pname_list[Information.UBound(pname_list)] + localItem2().intName;
                                 }
                             }
                         }
@@ -3875,7 +3875,7 @@ namespace SRCCore.Commands
                                 {
                                     SpecialPowerData localItem1() { object argIndex1 = sname; var ret = SRC.SPDList.Item(ref argIndex1); return ret; }
 
-                                    pname_list[Information.UBound(pname_list)] = pname_list[Information.UBound(pname_list)] + localItem1().ShortName;
+                                    pname_list[Information.UBound(pname_list)] = pname_list[Information.UBound(pname_list)] + localItem1().intName;
                                 }
                             }
                         }
@@ -4014,7 +4014,7 @@ namespace SRCCore.Commands
                     object argIndex7 = i;
                     {
                         var withBlock5 = SRC.SPDList.Item(ref argIndex7);
-                        if (withBlock5.EffectType(1) != "味方スペシャルパワー実行" & withBlock5.ShortName != "非表示")
+                        if (withBlock5.EffectType(1) != "味方スペシャルパワー実行" & withBlock5.intName != "非表示")
                         {
                             Array.Resize(ref list, Information.UBound(list) + 1 + 1);
                             Array.Resize(ref strkey_list, Information.UBound(list) + 1);
@@ -4027,13 +4027,13 @@ namespace SRCCore.Commands
                 GUI.ListItemFlag = new bool[Information.UBound(list) + 1];
 
                 // ソート
-                var loopTo7 = (short)(Information.UBound(strkey_list) - 1);
+                var loopTo7 = (Information.UBound(strkey_list) - 1);
                 for (i = 1; i <= loopTo7; i++)
                 {
                     max_item = i;
                     max_str = strkey_list[i];
-                    var loopTo8 = (short)Information.UBound(strkey_list);
-                    for (j = (short)(i + 1); j <= loopTo8; j++)
+                    var loopTo8 = Information.UBound(strkey_list);
+                    for (j = (i + 1); j <= loopTo8; j++)
                     {
                         if (Strings.StrComp(strkey_list[j], max_str, (CompareMethod)1) == -1)
                         {
@@ -4054,7 +4054,7 @@ namespace SRCCore.Commands
                 }
 
                 // スペシャルパワーを使用可能なパイロットがいるかどうかを判定
-                var loopTo9 = (short)Information.UBound(list);
+                var loopTo9 = Information.UBound(list);
                 for (i = 1; i <= loopTo9; i++)
                 {
                     GUI.ListItemFlag[i] = true;
@@ -4126,7 +4126,7 @@ namespace SRCCore.Commands
                 // 各スペシャルパワーが使用可能か判定
                 {
                     var withBlock7 = SelectedPilot;
-                    var loopTo12 = (short)Information.UBound(list);
+                    var loopTo12 = Information.UBound(list);
                     for (i = 1; i <= loopTo12; i++)
                     {
                         if (!GUI.ListItemFlag[i] & withBlock7.SP >= 2 * withBlock7.SpecialPowerCost(ref list[i]))
@@ -4145,7 +4145,7 @@ namespace SRCCore.Commands
 
                 // スペシャルパワーの解説を設定
                 GUI.ListItemComment = new string[Information.UBound(list) + 1];
-                var loopTo13 = (short)Information.UBound(list);
+                var loopTo13 = Information.UBound(list);
                 for (i = 1; i <= loopTo13; i++)
                 {
                     SpecialPowerData localItem4() { var tmp = list; object argIndex1 = tmp[i]; var ret = SRC.SPDList.Item(ref argIndex1); return ret; }
@@ -4324,8 +4324,8 @@ namespace SRCCore.Commands
             string argename = "自爆";
             if (Conversions.ToBoolean(sd.IsEffectAvailable(ref argename)))
             {
-                ret = (short)Interaction.MsgBox("自爆させますか？", (MsgBoxStyle)((int)MsgBoxStyle.OkCancel + (int)MsgBoxStyle.Question), "自爆");
-                if (ret == (int)MsgBoxResult.Cancel)
+                ret = Interaction.MsgBox("自爆させますか？", (MsgBoxStyle)(MsgBoxStyle.OkCancel + MsgBoxStyle.Question), "自爆");
+                if (ret == MsgBoxResult.Cancel)
                 {
                     GUI.UnlockGUI();
                     return;
@@ -4390,10 +4390,10 @@ namespace SRCCore.Commands
         // スペシャルパワーコマンドを終了
         // MOD START MARGE
         // Public Sub FinishSpecialPowerCommand()
-        private static void FinishSpecialPowerCommand()
+        private void FinishSpecialPowerCommand()
         {
             // MOD END MARGE
-            short i, ret;
+            int i, ret;
             GUI.LockGUI();
 
             // 自爆を選択した場合は確認を取る
@@ -4405,8 +4405,8 @@ namespace SRCCore.Commands
                 {
                     if (withBlock.EffectType(i) == "自爆")
                     {
-                        ret = (short)Interaction.MsgBox("自爆させますか？", (MsgBoxStyle)((int)MsgBoxStyle.OkCancel + (int)MsgBoxStyle.Question), "自爆");
-                        if (ret == (int)MsgBoxResult.Cancel)
+                        ret = Interaction.MsgBox("自爆させますか？", (MsgBoxStyle)(MsgBoxStyle.OkCancel + MsgBoxStyle.Question), "自爆");
+                        if (ret == MsgBoxResult.Cancel)
                         {
                             CommandState = "ユニット選択";
                             GUI.UnlockGUI();
@@ -4478,10 +4478,10 @@ namespace SRCCore.Commands
         // 「修理」コマンドを開始
         // MOD START MARGE
         // Public Sub StartFixCommand()
-        private static void StartFixCommand()
+        private void StartFixCommand()
         {
             // MOD END MARGE
-            short j, i, k;
+            int j, i, k;
             Unit t;
             string fname;
             SelectedCommand = "修理";
@@ -4512,7 +4512,7 @@ namespace SRCCore.Commands
                                 {
                                     object argIndex5 = "修理不可";
                                     object argIndex6 = "修理不可";
-                                    var loopTo2 = (short)Conversions.ToInteger(withBlock1.FeatureData(ref argIndex6));
+                                    var loopTo2 = Conversions.ToInteger(withBlock1.FeatureData(ref argIndex6));
                                     for (k = 2; k <= loopTo2; k++)
                                     {
                                         object argIndex2 = "修理不可";
@@ -4598,7 +4598,7 @@ namespace SRCCore.Commands
         // 「修理」コマンドを終了
         // MOD START MARGE
         // Public Sub FinishFixCommand()
-        private static void FinishFixCommand()
+        private void FinishFixCommand()
         {
             // MOD END MARGE
             int tmp;
@@ -4677,7 +4677,7 @@ namespace SRCCore.Commands
 
                     string localLIndex1() { object argIndex1 = "修理装置"; string arglist = withBlock.FeatureData(ref argIndex1); var ret = GeneralLib.LIndex(ref arglist, 2); return ret; }
 
-                    withBlock.EN = withBlock.EN - Conversions.ToShort(localLIndex1());
+                    withBlock.EN = withBlock.EN - Conversions.Toint(localLIndex1());
                 }
 
                 string argmsg = "+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(SelectedTarget.HP - tmp);
@@ -4712,10 +4712,10 @@ namespace SRCCore.Commands
         // 「補給」コマンドを開始
         // MOD START MARGE
         // Public Sub StartSupplyCommand()
-        private static void StartSupplyCommand()
+        private void StartSupplyCommand()
         {
             // MOD END MARGE
-            short j, i, k;
+            int j, i, k;
             Unit t;
             SelectedCommand = "補給";
 
@@ -4815,7 +4815,7 @@ namespace SRCCore.Commands
         // 「補給」コマンドを終了
         // MOD START MARGE
         // Public Sub FinishSupplyCommand()
-        private static void FinishSupplyCommand()
+        private void FinishSupplyCommand()
         {
             // MOD END MARGE
 
@@ -4868,7 +4868,7 @@ namespace SRCCore.Commands
 
                     string localLIndex1() { object argIndex1 = "補給装置"; string arglist = withBlock.FeatureData(ref argIndex1); var ret = GeneralLib.LIndex(ref arglist, 2); return ret; }
 
-                    withBlock.EN = withBlock.EN - Conversions.ToShort(localLIndex1());
+                    withBlock.EN = withBlock.EN - Conversions.Toint(localLIndex1());
                 }
 
                 object argu2 = SelectedUnit;
@@ -4900,15 +4900,15 @@ namespace SRCCore.Commands
         // 「チャージ」コマンド
         // MOD START MARGE
         // Public Sub ChargeCommand()
-        private static void ChargeCommand()
+        private void ChargeCommand()
         {
             // MOD END MARGE
-            short ret;
+            int ret;
             Unit[] partners;
-            short i;
+            int i;
             GUI.LockGUI();
-            ret = (short)Interaction.MsgBox("チャージを開始しますか？", (MsgBoxStyle)((int)MsgBoxStyle.OkCancel + (int)MsgBoxStyle.Question), "チャージ開始");
-            if (ret == (int)MsgBoxResult.Cancel)
+            ret = Interaction.MsgBox("チャージを開始しますか？", (MsgBoxStyle)(MsgBoxStyle.OkCancel + MsgBoxStyle.Question), "チャージ開始");
+            if (ret == MsgBoxResult.Cancel)
             {
                 CancelCommand();
                 GUI.UnlockGUI();
@@ -5016,7 +5016,7 @@ namespace SRCCore.Commands
                 withBlock.AddCondition(ref argcname, 1, cdata: ref argcdata);
 
                 // チャージ攻撃のパートナーもチャージ中にする
-                var loopTo2 = (short)Information.UBound(partners);
+                var loopTo2 = Information.UBound(partners);
                 for (i = 1; i <= loopTo2; i++)
                 {
                     {
@@ -5055,10 +5055,10 @@ namespace SRCCore.Commands
         // 「会話」コマンドを開始
         // MOD START MARGE
         // Public Sub StartTalkCommand()
-        private static void StartTalkCommand()
+        private void StartTalkCommand()
         {
             // MOD END MARGE
-            short i, j;
+            int i, j;
             Unit t;
             SelectedCommand = "会話";
 
@@ -5121,7 +5121,7 @@ namespace SRCCore.Commands
         // 「会話」コマンドを終了
         // MOD START MARGE
         // Public Sub FinishTalkCommand()
-        private static void FinishTalkCommand()
+        private void FinishTalkCommand()
         {
             // MOD END MARGE
             Pilot p;
@@ -5162,13 +5162,13 @@ namespace SRCCore.Commands
         // 「変形」コマンド
         // MOD START MARGE
         // Public Sub TransformCommand()
-        private static void TransformCommand()
+        private void TransformCommand()
         {
             // MOD END MARGE
             string[] list;
             string[] list_id;
-            short i;
-            short ret;
+            int i;
+            int ret;
             string uname, fdata;
             string prev_uname;
 
@@ -5230,7 +5230,7 @@ namespace SRCCore.Commands
                     }
 
                     // 変形を実施
-                    Unit localOtherForm() { var tmp = list_id; object argIndex1 = tmp[(int)ret]; var ret = withBlock.OtherForm(ref argIndex1); return ret; }
+                    Unit localOtherForm() { var tmp = list_id; object argIndex1 = tmp[ret]; var ret = withBlock.OtherForm(ref argIndex1); return ret; }
 
                     string argnew_form = localOtherForm().Name;
                     withBlock.Transform(ref argnew_form);
@@ -5488,8 +5488,8 @@ namespace SRCCore.Commands
             // 変形をキャンセルする？
             if (SelectedUnit.Action == 0)
             {
-                ret = (short)Interaction.MsgBox("この形態ではこれ以上の行動が出来ません。" + Constants.vbCr + Constants.vbLf + "それでも変形しますか？", (MsgBoxStyle)((int)MsgBoxStyle.OkCancel + (int)MsgBoxStyle.Question), "変形");
-                if (ret == (int)MsgBoxResult.Cancel)
+                ret = Interaction.MsgBox("この形態ではこれ以上の行動が出来ません。" + Constants.vbCr + Constants.vbLf + "それでも変形しますか？", (MsgBoxStyle)(MsgBoxStyle.OkCancel + MsgBoxStyle.Question), "変形");
+                if (ret == MsgBoxResult.Cancel)
                 {
                     SelectedUnit.Transform(ref prev_uname);
                     SelectedUnit = Map.MapDataForUnit[SelectedUnit.x, SelectedUnit.y];
@@ -5545,11 +5545,11 @@ namespace SRCCore.Commands
         // 「ハイパーモード」コマンド
         // MOD START MARGE
         // Public Sub HyperModeCommand()
-        private static void HyperModeCommand()
+        private void HyperModeCommand()
         {
             // MOD END MARGE
             string uname, fname;
-            short i;
+            int i;
 
             // MOD START MARGE
             // If MainWidth <> 15 Then
@@ -5832,10 +5832,10 @@ namespace SRCCore.Commands
         // 「変身解除」コマンド
         // MOD START MARGE
         // Public Sub CancelTransformationCommand()
-        private static void CancelTransformationCommand()
+        private void CancelTransformationCommand()
         {
             // MOD END MARGE
-            short ret;
+            int ret;
 
             // MOD START MARGE
             // If MainWidth <> 15 Then
@@ -5865,14 +5865,14 @@ namespace SRCCore.Commands
 
                 if (withBlock.IsHero())
                 {
-                    ret = (short)Interaction.MsgBox("変身を解除しますか？", (MsgBoxStyle)((int)MsgBoxStyle.OkCancel + (int)MsgBoxStyle.Question), "変身解除");
+                    ret = Interaction.MsgBox("変身を解除しますか？", (MsgBoxStyle)(MsgBoxStyle.OkCancel + MsgBoxStyle.Question), "変身解除");
                 }
                 else
                 {
-                    ret = (short)Interaction.MsgBox("特殊モードを解除しますか？", (MsgBoxStyle)((int)MsgBoxStyle.OkCancel + (int)MsgBoxStyle.Question), "特殊モード解除");
+                    ret = Interaction.MsgBox("特殊モードを解除しますか？", (MsgBoxStyle)(MsgBoxStyle.OkCancel + MsgBoxStyle.Question), "特殊モード解除");
                 }
 
-                if (ret == (int)MsgBoxResult.Cancel)
+                if (ret == MsgBoxResult.Cancel)
                 {
                     GUI.UnlockGUI();
                     CancelCommand();
@@ -5907,11 +5907,11 @@ namespace SRCCore.Commands
         // 「分離」コマンド
         // MOD START MARGE
         // Public Sub SplitCommand()
-        private static void SplitCommand()
+        private void SplitCommand()
         {
             // MOD END MARGE
             string uname, tname, fname;
-            short ret;
+            int ret;
             string BGM;
 
             // MOD START MARGE
@@ -5965,8 +5965,8 @@ namespace SRCCore.Commands
                 {
                     // パーツ分離を行う場合
 
-                    ret = (short)Interaction.MsgBox("パーツを分離しますか？", (MsgBoxStyle)((int)MsgBoxStyle.OkCancel + (int)MsgBoxStyle.Question), "パーツ分離");
-                    if (ret == (int)MsgBoxResult.Cancel)
+                    ret = Interaction.MsgBox("パーツを分離しますか？", (MsgBoxStyle)(MsgBoxStyle.OkCancel + MsgBoxStyle.Question), "パーツ分離");
+                    if (ret == MsgBoxResult.Cancel)
                     {
                         GUI.UnlockGUI();
                         CancelCommand();
@@ -6101,8 +6101,8 @@ namespace SRCCore.Commands
                 {
                     // 通常の分離を行う場合
 
-                    ret = (short)Interaction.MsgBox("分離しますか？", (MsgBoxStyle)((int)MsgBoxStyle.OkCancel + (int)MsgBoxStyle.Question), "分離");
-                    if (ret == (int)MsgBoxResult.Cancel)
+                    ret = Interaction.MsgBox("分離しますか？", (MsgBoxStyle)(MsgBoxStyle.OkCancel + MsgBoxStyle.Question), "分離");
+                    if (ret == MsgBoxResult.Cancel)
                     {
                         GUI.UnlockGUI();
                         CancelCommand();
@@ -6258,10 +6258,10 @@ namespace SRCCore.Commands
         // 「合体」コマンド
         // MOD START MARGE
         // Public Sub CombineCommand()
-        private static void CombineCommand()
+        private void CombineCommand()
         {
             // MOD END MARGE
-            short i, j;
+            int i, j;
             string[] list;
             Unit u;
 
@@ -6313,7 +6313,7 @@ namespace SRCCore.Commands
 
                     string localFeatureData4() { object argIndex1 = i; var ret = withBlock.FeatureData(ref argIndex1); return ret; }
 
-                    short localLLength() { string arglist = hsdebc20cc3cfc47d3be3b16b45d9b88b4(); var ret = GeneralLib.LLength(ref arglist); return ret; }
+                    int localLLength() { string arglist = hsdebc20cc3cfc47d3be3b16b45d9b88b4(); var ret = GeneralLib.LLength(ref arglist); return ret; }
 
                     if (localFeature() == "合体" & (localLLength() > 3 | string.IsNullOrEmpty(Map.MapFileName)))
                     {
@@ -6358,7 +6358,7 @@ namespace SRCCore.Commands
 
                             if (!string.IsNullOrEmpty(Map.MapFileName))
                             {
-                                if (Math.Abs((short)(withBlock.x - u.CurrentForm().x)) > 2 | Math.Abs((short)(withBlock.y - u.CurrentForm().y)) > 2)
+                                if (Math.Abs((withBlock.x - u.CurrentForm().x)) > 2 | Math.Abs((withBlock.y - u.CurrentForm().y)) > 2)
                                 {
                                     goto NextLoop;
                                 }
@@ -6466,14 +6466,14 @@ namespace SRCCore.Commands
         // 「換装」コマンド
         // MOD START MARGE
         // Public Sub ExchangeFormCommand()
-        public static void ExchangeFormCommand()
+        public void ExchangeFormCommand()
         {
             // MOD END MARGE
             string[] list;
             string[] id_list;
-            short j, i, k;
+            int j, i, k;
             int max_value;
-            short ret;
+            int ret;
             string fdata;
             string[] farray;
             GUI.LockGUI();
@@ -6572,7 +6572,7 @@ namespace SRCCore.Commands
                                 if (!string.IsNullOrEmpty(withBlock1.FeatureName(ref argIndex4)))
                                 {
                                     // 重複する特殊能力は表示しないようチェック
-                                    var loopTo4 = (short)Information.UBound(farray);
+                                    var loopTo4 = Information.UBound(farray);
                                     for (k = 1; k <= loopTo4; k++)
                                     {
                                         object argIndex2 = j;
@@ -6621,7 +6621,7 @@ namespace SRCCore.Commands
                 }
 
                 // 換装を実施
-                Unit localOtherForm() { var tmp = id_list; object argIndex1 = tmp[(int)ret]; var ret = withBlock.OtherForm(ref argIndex1); return ret; }
+                Unit localOtherForm() { var tmp = id_list; object argIndex1 = tmp[ret]; var ret = withBlock.OtherForm(ref argIndex1); return ret; }
 
                 string argnew_form = localOtherForm().Name;
                 withBlock.Transform(ref argnew_form);
@@ -6649,10 +6649,10 @@ namespace SRCCore.Commands
         // 「発進」コマンドを開始
         // MOD START MARGE
         // Public Sub StartLaunchCommand()
-        private static void StartLaunchCommand()
+        private void StartLaunchCommand()
         {
             // MOD END MARGE
-            short i, ret;
+            int i, ret;
             string[] list;
             {
                 var withBlock = SelectedUnit;
@@ -6722,7 +6722,7 @@ namespace SRCCore.Commands
                 withBlock2.y = SelectedUnit.y;
                 string localLIndex() { object argIndex1 = "テレポート"; string arglist = withBlock2.FeatureData(ref argIndex1); var ret = GeneralLib.LIndex(ref arglist, 2); return ret; }
 
-                short localLLength() { object argIndex1 = "ジャンプ"; string arglist = withBlock2.FeatureData(ref argIndex1); var ret = GeneralLib.LLength(ref arglist); return ret; }
+                int localLLength() { object argIndex1 = "ジャンプ"; string arglist = withBlock2.FeatureData(ref argIndex1); var ret = GeneralLib.LLength(ref arglist); return ret; }
 
                 string localLIndex1() { object argIndex1 = "ジャンプ"; string arglist = withBlock2.FeatureData(ref argIndex1); var ret = GeneralLib.LIndex(ref arglist, 2); return ret; }
 
@@ -6779,10 +6779,10 @@ namespace SRCCore.Commands
         // 「発進」コマンドを終了
         // MOD START MARGE
         // Public Sub FinishLaunchCommand()
-        private static void FinishLaunchCommand()
+        private void FinishLaunchCommand()
         {
             // MOD END MARGE
-            short ret;
+            int ret;
             GUI.LockGUI();
             {
                 var withBlock = SelectedTarget;
@@ -6792,14 +6792,14 @@ namespace SRCCore.Commands
                     string argfname = "母艦";
                     if (Map.MapDataForUnit[SelectedX, SelectedY].IsFeatureAvailable(ref argfname))
                     {
-                        ret = (short)Interaction.MsgBox("着艦しますか？", (MsgBoxStyle)((int)MsgBoxStyle.OkCancel + (int)MsgBoxStyle.Question), "着艦");
+                        ret = Interaction.MsgBox("着艦しますか？", (MsgBoxStyle)(MsgBoxStyle.OkCancel + MsgBoxStyle.Question), "着艦");
                     }
                     else
                     {
-                        ret = (short)Interaction.MsgBox("合体しますか？", (MsgBoxStyle)((int)MsgBoxStyle.OkCancel + (int)MsgBoxStyle.Question), "合体");
+                        ret = Interaction.MsgBox("合体しますか？", (MsgBoxStyle)(MsgBoxStyle.OkCancel + MsgBoxStyle.Question), "合体");
                     }
 
-                    if (ret == (int)MsgBoxResult.Cancel)
+                    if (ret == MsgBoxResult.Cancel)
                     {
                         CancelCommand();
                         GUI.UnlockGUI();
@@ -6836,7 +6836,7 @@ namespace SRCCore.Commands
                 withBlock.SpecialEffect(ref argmain_situation2, ref argsub_situation);
                 withBlock.Name = argsub_situation;
                 PrevUnitArea = withBlock.Area;
-                PrevUnitEN = (short)withBlock.EN;
+                PrevUnitEN = withBlock.EN;
                 withBlock.Status_Renamed = "出撃";
 
                 // 指定した位置に発進したユニットを移動
@@ -6876,11 +6876,11 @@ namespace SRCCore.Commands
         // 「命令」コマンドを開始
         // MOD START MARGE
         // Public Sub StartOrderCommand()
-        private static void StartOrderCommand()
+        private void StartOrderCommand()
         {
             // MOD END MARGE
             string[] list;
-            short i, ret, j;
+            int i, ret, j;
             GUI.LockGUI();
             list = new string[5];
             GUI.ListItemFlag = new bool[5];
@@ -6988,7 +6988,7 @@ namespace SRCCore.Commands
         // 「命令」コマンドを終了
         // MOD START MARGE
         // Public Sub FinishOrderCommand()
-        private static void FinishOrderCommand()
+        private void FinishOrderCommand()
         {
             // MOD END MARGE
             switch (SelectedCommand ?? "")
@@ -7020,14 +7020,14 @@ namespace SRCCore.Commands
         // 「特殊能力一覧」コマンド
         // MOD START MARGE
         // Public Sub FeatureListCommand()
-        private static void FeatureListCommand()
+        private void FeatureListCommand()
         {
             // MOD END MARGE
             string[] list;
             var id_list = default(string[]);
             bool[] is_unit_feature;
-            short i, j;
-            var ret = default(short);
+            int i, j;
+            var ret = default;
             string fname0, fname, ftype;
             GUI.LockGUI();
 
@@ -7088,7 +7088,7 @@ namespace SRCCore.Commands
                     }
 
                     // 既に表示されていればスキップ
-                    var loopTo1 = (short)Information.UBound(list);
+                    var loopTo1 = Information.UBound(list);
                     for (j = 1; j <= loopTo1; j++)
                     {
                         if ((list[j] ?? "") == (fname ?? ""))
@@ -7159,7 +7159,7 @@ namespace SRCCore.Commands
                     }
 
                     // 既に表示していればスキップ
-                    var loopTo3 = (short)Information.UBound(list);
+                    var loopTo3 = Information.UBound(list);
                     for (j = 1; j <= loopTo3; j++)
                     {
                         if ((list[j] ?? "") == (fname ?? ""))
@@ -7183,7 +7183,7 @@ namespace SRCCore.Commands
                 // 付加された特殊能力より先に固有の特殊能力を表示
                 if (withBlock2.CountAllFeature() > withBlock2.AdditionalFeaturesNum)
                 {
-                    i = (short)(withBlock2.AdditionalFeaturesNum + 1);
+                    i = (withBlock2.AdditionalFeaturesNum + 1);
                 }
                 else
                 {
@@ -7214,7 +7214,7 @@ namespace SRCCore.Commands
                     }
 
                     // 既に表示していればスキップ
-                    var loopTo4 = (short)Information.UBound(list);
+                    var loopTo4 = Information.UBound(list);
                     for (j = 1; j <= loopTo4; j++)
                     {
                         string localAllFeatureName() { object argIndex1 = i; var ret = withBlock2.AllFeatureName(ref argIndex1); return ret; }
@@ -7248,7 +7248,7 @@ namespace SRCCore.Commands
                         }
                     }
 
-                    i = (short)(i + 1);
+                    i = (i + 1);
                 }
 
                 // アビリティで付加・強化されたパイロット用特殊能力
@@ -7312,7 +7312,7 @@ namespace SRCCore.Commands
                     }
 
                     // 付加されたユニット用特殊能力として既に表示していればスキップ
-                    var loopTo6 = (short)Information.UBound(list);
+                    var loopTo6 = Information.UBound(list);
                     for (j = 1; j <= loopTo6; j++)
                     {
                         if ((list[j] ?? "") == (fname ?? ""))
@@ -7333,7 +7333,7 @@ namespace SRCCore.Commands
                     }
 
                     // パイロット用特殊能力として既に表示していればスキップ
-                    var loopTo7 = (short)Information.UBound(list);
+                    var loopTo7 = Information.UBound(list);
                     for (j = 1; j <= loopTo7; j++)
                     {
                         if ((list[j] ?? "") == (fname ?? "") | (list[j] ?? "") == (fname0 ?? ""))
@@ -7446,18 +7446,18 @@ namespace SRCCore.Commands
         // 「武器一覧」コマンド
         // MOD START MARGE
         // Public Sub WeaponListCommand()
-        private static void WeaponListCommand()
+        private void WeaponListCommand()
         {
             // MOD END MARGE
             string[] list;
-            short i;
+            int i;
             string buf;
-            short w;
+            int w;
             string wclass;
             string atype, alevel;
             string c;
             GUI.LockGUI();
-            short min_range, max_range;
+            int min_range, max_range;
             while (true)
             {
                 string argcaption_msg = "武装一覧";
@@ -7487,7 +7487,7 @@ namespace SRCCore.Commands
                     wclass = withBlock.WeaponClass(w);
                     while (i <= Strings.Len(wclass))
                     {
-                        i = (short)(i + 1);
+                        i = (i + 1);
                         buf = GeneralLib.GetClassBundle(ref wclass, ref i);
                         atype = "";
                         alevel = "";
@@ -7501,23 +7501,23 @@ namespace SRCCore.Commands
                         // Ｍ属性
                         if (Strings.Mid(wclass, i, 1) == "Ｍ")
                         {
-                            i = (short)(i + 1);
+                            i = (i + 1);
                             buf = buf + Strings.Mid(wclass, i, 1);
                         }
 
                         // レベル指定
                         if (Strings.Mid(wclass, i + 1, 1) == "L")
                         {
-                            i = (short)(i + 2);
+                            i = (i + 2);
                             c = Strings.Mid(wclass, i, 1);
                             while (Information.IsNumeric(c) | c == "." | c == "-")
                             {
                                 alevel = alevel + c;
-                                i = (short)(i + 1);
+                                i = (i + 1);
                                 c = Strings.Mid(wclass, i, 1);
                             }
 
-                            i = (short)(i - 1);
+                            i = (i - 1);
                         }
 
                         // 属性の名称
@@ -7601,7 +7601,7 @@ namespace SRCCore.Commands
                                 else if (withBlock.IsWeaponClassifiedAs(w, ref argattr7))
                                 {
                                     string argattr = "Ｍ扇";
-                                    Map.AreaInSectorCross(withBlock.x, withBlock.y, min_range, ref max_range, (short)withBlock.WeaponLevel(w, ref argattr));
+                                    Map.AreaInSectorCross(withBlock.x, withBlock.y, min_range, ref max_range, withBlock.WeaponLevel(w, ref argattr));
                                 }
                                 else if (withBlock.IsWeaponClassifiedAs(w, ref argattr8) | withBlock.IsWeaponClassifiedAs(w, ref argattr9))
                                 {
@@ -7611,10 +7611,10 @@ namespace SRCCore.Commands
                                 else if (withBlock.IsWeaponClassifiedAs(w, ref argattr10))
                                 {
                                     string argattr1 = "Ｍ投";
-                                    max_range = (short)(max_range + withBlock.WeaponLevel(w, ref argattr1));
+                                    max_range = (max_range + withBlock.WeaponLevel(w, ref argattr1));
                                     string argattr2 = "Ｍ投";
-                                    min_range = (short)(min_range - withBlock.WeaponLevel(w, ref argattr2));
-                                    min_range = (short)GeneralLib.MaxLng(min_range, 1);
+                                    min_range = (min_range - withBlock.WeaponLevel(w, ref argattr2));
+                                    min_range = GeneralLib.MaxLng(min_range, 1);
                                     string arguparty3 = "すべて";
                                     Map.AreaInRange(withBlock.x, withBlock.y, max_range, min_range, ref arguparty3);
                                 }
@@ -7669,17 +7669,17 @@ namespace SRCCore.Commands
         // 「アビリティ一覧」コマンド
         // MOD START MARGE
         // Public Sub AbilityListCommand()
-        private static void AbilityListCommand()
+        private void AbilityListCommand()
         {
             // MOD END MARGE
             string[] list;
-            short i;
+            int i;
             string buf;
-            short a;
+            int a;
             string alevel, atype, aclass;
             string c;
             GUI.LockGUI();
-            short min_range, max_range;
+            int min_range, max_range;
             while (true)
             {
                 string argtname = "アビリティ";
@@ -7709,7 +7709,7 @@ namespace SRCCore.Commands
                     aclass = withBlock.Ability(a).Class_Renamed;
                     while (i <= Strings.Len(aclass))
                     {
-                        i = (short)(i + 1);
+                        i = (i + 1);
                         buf = GeneralLib.GetClassBundle(ref aclass, ref i);
                         atype = "";
                         alevel = "";
@@ -7723,23 +7723,23 @@ namespace SRCCore.Commands
                         // Ｍ属性
                         if (Strings.Mid(aclass, i, 1) == "Ｍ")
                         {
-                            i = (short)(i + 1);
+                            i = (i + 1);
                             buf = buf + Strings.Mid(aclass, i, 1);
                         }
 
                         // レベル指定
                         if (Strings.Mid(aclass, i + 1, 1) == "L")
                         {
-                            i = (short)(i + 2);
+                            i = (i + 2);
                             c = Strings.Mid(aclass, i, 1);
                             while (Information.IsNumeric(c) | c == "." | c == "-")
                             {
                                 alevel = alevel + c;
-                                i = (short)(i + 1);
+                                i = (i + 1);
                                 c = Strings.Mid(aclass, i, 1);
                             }
 
-                            i = (short)(i - 1);
+                            i = (i - 1);
                         }
 
                         // 属性の名称
@@ -7821,15 +7821,15 @@ namespace SRCCore.Commands
                                 else if (withBlock.IsAbilityClassifiedAs(a, ref argattr7))
                                 {
                                     string argattr = "Ｍ扇";
-                                    Map.AreaInSectorCross(withBlock.x, withBlock.y, min_range, ref max_range, (short)withBlock.AbilityLevel(a, ref argattr));
+                                    Map.AreaInSectorCross(withBlock.x, withBlock.y, min_range, ref max_range, withBlock.AbilityLevel(a, ref argattr));
                                 }
                                 else if (withBlock.IsAbilityClassifiedAs(a, ref argattr8))
                                 {
                                     string argattr1 = "Ｍ投";
-                                    max_range = (short)(max_range + withBlock.AbilityLevel(a, ref argattr1));
+                                    max_range = (max_range + withBlock.AbilityLevel(a, ref argattr1));
                                     string argattr2 = "Ｍ投";
-                                    min_range = (short)(min_range - withBlock.AbilityLevel(a, ref argattr2));
-                                    min_range = (short)GeneralLib.MaxLng(min_range, 1);
+                                    min_range = (min_range - withBlock.AbilityLevel(a, ref argattr2));
+                                    min_range = GeneralLib.MaxLng(min_range, 1);
                                     string arguparty2 = "すべて";
                                     Map.AreaInRange(withBlock.x, withBlock.y, max_range, min_range, ref arguparty2);
                                 }
@@ -7884,7 +7884,7 @@ namespace SRCCore.Commands
         // 「移動範囲」コマンド
         // MOD START MARGE
         // Public Sub ShowAreaInSpeedCommand()
-        private static void ShowAreaInSpeedCommand()
+        private void ShowAreaInSpeedCommand()
         {
             // MOD END MARGE
             SelectedCommand = "移動範囲";
@@ -7905,10 +7905,10 @@ namespace SRCCore.Commands
         // 「射程範囲」コマンド
         // MOD START MARGE
         // Public Sub ShowAreaInRangeCommand()
-        private static void ShowAreaInRangeCommand()
+        private void ShowAreaInRangeCommand()
         {
             // MOD END MARGE
-            short w, i, max_range;
+            int w, i, max_range;
             SelectedCommand = "射程範囲";
 
             // MOD START MARGE
@@ -7956,11 +7956,11 @@ namespace SRCCore.Commands
         // MOD START MARGE
         // Public Sub WaitCommand(Optional ByVal WithoutAction As Boolean)
         // 今後どうしてもPrivateじゃダメな処理が出たら戻してください
-        private static void WaitCommand(bool WithoutAction = false)
+        private void WaitCommand(bool WithoutAction = false)
         {
             // MOD END MARGE
             Pilot p;
-            short i;
+            int i;
 
             // コマンド終了時はターゲットを解除
             // UPGRADE_NOTE: オブジェクト SelectedTarget をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
