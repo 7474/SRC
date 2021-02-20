@@ -75,6 +75,11 @@ namespace SRCCoreTests.TestLib
             throw new NotImplementedException();
         }
 
+        public void ChangeStatus(GuiStatus status)
+        {
+            throw new NotImplementedException();
+        }
+
         public void ClearMessageForm()
         {
             throw new NotImplementedException();
