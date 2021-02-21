@@ -22,10 +22,12 @@ namespace SRCTestForm
 
         private Pen MapLinePen = new Pen(Color.FromArgb(100, 100, 100));
 
+        private Image mainBuffer;
         private ImageBuffer imageBuffer;
 
         public void Init()
         {
+            mainBuffer = new Bitmap(1, 1);
             imageBuffer = new ImageBuffer(SRC);
         }
 
@@ -142,6 +144,7 @@ namespace SRCTestForm
             _picMain_0.Size = new Size(MainPWidth, MainPHeight);
             _picMain_1.Location = new Point(0, 0);
             _picMain_1.Size = new Size(MainPWidth, MainPHeight);
+            mainBuffer = new Bitmap(MainPWidth, MainPHeight);
             //    // MOD START MARGE
             //    // If MainWidth = 15 Then
             //    if (!NewGUIMode)
@@ -257,7 +260,7 @@ namespace SRCTestForm
         public void RefreshScreen(int mapX, int mapY)
         {
             // XXX _picMain_0 picturebox じゃなくて panel なんだけど
-            using (var g = _picMain_0.CreateGraphics())
+            using (var g = Graphics.FromImage(mainBuffer))
             {
                 // マップウィンドウのスクロールバーの位置を変更
                 if (!GUI.IsGUILocked)
@@ -371,13 +374,17 @@ namespace SRCTestForm
                 //// 描画色を元に戻しておく
                 //pic.ForeColor = ColorTranslator.FromOle(prev_color);
 
-                //// 画面が書き換えられたことを記録
-                //ScreenIsSaved = false;
-                //if (!without_refresh & !delay_refresh)
-                //{
-                //    // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-                //    withBlock.picMain(0).Refresh();
-                //}
+            }
+            //// 画面が書き換えられたことを記録
+            //ScreenIsSaved = false;
+            //if (!without_refresh & !delay_refresh)
+            //{
+            //    // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+            //    withBlock.picMain(0).Refresh();
+            //}
+            using (var g = _picMain_0.CreateGraphics())
+            {
+                g.DrawImage(mainBuffer, 0, 0);
             }
         }
 
