@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using SRCCore;
+using SRCCore.Commands;
 using SRCCore.Lib;
 using SRCCore.Units;
 using System;
@@ -881,6 +882,37 @@ namespace SRCTestForm
                     Cursor.Current = Cursors.Default;
                     break;
             }
+        }
+
+        // XXX 実装は frmMain にあるべきだな。
+        public void ShowUnitCommandMenu(IList<UiCommand> commands)
+        {
+            MainForm.mnuUnitCommand.DropDownItems.Clear();
+            MainForm.mnuUnitCommand.DropDownItems.AddRange(commands.Select(x => new ToolStripMenuItem(
+                x.Label,
+                null,
+                MainForm.mnuUnitCommandItem_Click
+                )
+            {
+                Width = 172,
+                Tag = x,
+            }).ToArray());
+            MainForm.mnuUnitCommand.ShowDropDown();
+        }
+
+        public void ShowMapCommandMenu(IList<UiCommand> commands)
+        {
+            MainForm.mnuMapCommand.DropDownItems.Clear();
+            MainForm.mnuMapCommand.DropDownItems.AddRange(commands.Select(x => new ToolStripMenuItem(
+                x.Label,
+                null,
+                MainForm.mnuMapCommandItem_Click
+                )
+            {
+                Width = 172,
+                Tag = x,
+            }).ToArray());
+            MainForm.mnuMapCommand.ShowDropDown();
         }
     }
 }

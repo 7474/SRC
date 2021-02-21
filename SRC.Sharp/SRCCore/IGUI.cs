@@ -3,7 +3,9 @@
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
 
+using SRCCore.Commands;
 using SRCCore.Units;
+using System.Collections.Generic;
 
 namespace SRCCore
 {
@@ -280,6 +282,10 @@ namespace SRCCore
         void MainFormShow();
 
         void ChangeStatus(GuiStatus status);
+
+        // === コンテキストメニュー操作 ===
+        void ShowUnitCommandMenu(IList<UiCommand> commands);
+        void ShowMapCommandMenu(IList<UiCommand> commands);
     }
 
     public enum GuiStatus

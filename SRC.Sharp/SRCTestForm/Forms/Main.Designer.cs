@@ -34,66 +34,9 @@ namespace SRCTestForm
         // Windows フォーム デザイナで必要です。
         private System.ComponentModel.IContainer components;
         public ToolTip ToolTip1;
-        public ToolStripMenuItem _mnuUnitCommandItem_0;
-        public ToolStripMenuItem _mnuUnitCommandItem_1;
-        public ToolStripMenuItem _mnuUnitCommandItem_2;
-        public ToolStripMenuItem _mnuUnitCommandItem_3;
-        public ToolStripMenuItem _mnuUnitCommandItem_4;
-        public ToolStripMenuItem _mnuUnitCommandItem_5;
-        public ToolStripMenuItem _mnuUnitCommandItem_6;
-        public ToolStripMenuItem _mnuUnitCommandItem_7;
-        public ToolStripMenuItem _mnuUnitCommandItem_8;
-        public ToolStripMenuItem _mnuUnitCommandItem_9;
-        public ToolStripMenuItem _mnuUnitCommandItem_10;
-        public ToolStripMenuItem _mnuUnitCommandItem_11;
-        public ToolStripMenuItem _mnuUnitCommandItem_12;
-        public ToolStripMenuItem _mnuUnitCommandItem_13;
-        public ToolStripMenuItem _mnuUnitCommandItem_14;
-        public ToolStripMenuItem _mnuUnitCommandItem_15;
-        public ToolStripMenuItem _mnuUnitCommandItem_16;
-        public ToolStripMenuItem _mnuUnitCommandItem_17;
-        public ToolStripMenuItem _mnuUnitCommandItem_18;
-        public ToolStripMenuItem _mnuUnitCommandItem_19;
-        public ToolStripMenuItem _mnuUnitCommandItem_20;
-        public ToolStripMenuItem _mnuUnitCommandItem_21;
-        public ToolStripMenuItem _mnuUnitCommandItem_22;
-        public ToolStripMenuItem _mnuUnitCommandItem_23;
-        public ToolStripMenuItem _mnuUnitCommandItem_24;
-        public ToolStripMenuItem _mnuUnitCommandItem_25;
-        public ToolStripMenuItem _mnuUnitCommandItem_26;
-        public ToolStripMenuItem _mnuUnitCommandItem_27;
-        public ToolStripMenuItem _mnuUnitCommandItem_28;
-        public ToolStripMenuItem _mnuUnitCommandItem_29;
-        public ToolStripMenuItem _mnuUnitCommandItem_30;
-        public ToolStripMenuItem _mnuUnitCommandItem_31;
-        public ToolStripMenuItem _mnuUnitCommandItem_32;
-        public ToolStripMenuItem _mnuUnitCommandItem_33;
-        public ToolStripMenuItem _mnuUnitCommandItem_34;
-        public ToolStripMenuItem _mnuUnitCommandItem_35;
         public ToolStripMenuItem mnuUnitCommand;
-        public ToolStripMenuItem _mnuMapCommandItem_0;
-        public ToolStripMenuItem _mnuMapCommandItem_1;
-        public ToolStripMenuItem _mnuMapCommandItem_2;
-        public ToolStripMenuItem _mnuMapCommandItem_3;
-        public ToolStripMenuItem _mnuMapCommandItem_4;
-        public ToolStripMenuItem _mnuMapCommandItem_5;
-        public ToolStripMenuItem _mnuMapCommandItem_6;
-        public ToolStripMenuItem _mnuMapCommandItem_7;
-        public ToolStripMenuItem _mnuMapCommandItem_8;
-        public ToolStripMenuItem _mnuMapCommandItem_9;
-        public ToolStripMenuItem _mnuMapCommandItem_10;
-        public ToolStripMenuItem _mnuMapCommandItem_11;
-        public ToolStripMenuItem _mnuMapCommandItem_12;
-        public ToolStripMenuItem _mnuMapCommandItem_13;
-        public ToolStripMenuItem _mnuMapCommandItem_14;
-        public ToolStripMenuItem _mnuMapCommandItem_15;
-        public ToolStripMenuItem _mnuMapCommandItem_16;
-        public ToolStripMenuItem _mnuMapCommandItem_17;
-        public ToolStripMenuItem _mnuMapCommandItem_18;
-        public ToolStripMenuItem _mnuMapCommandItem_19;
-        public ToolStripMenuItem _mnuMapCommandItem_20;
         public ToolStripMenuItem mnuMapCommand;
-        public MenuStrip MainMenu1;
+        public MenuStrip MainMenu;
         public PictureBox _picStretchedTmp_1;
         public PictureBox _picStretchedTmp_0;
         public Panel _picMain_1;
@@ -216,66 +159,9 @@ namespace SRCTestForm
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
             this.ToolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.MainMenu1 = new System.Windows.Forms.MenuStrip();
+            this.MainMenu = new System.Windows.Forms.MenuStrip();
             this.mnuUnitCommand = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuUnitCommandItem_0 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuUnitCommandItem_1 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuUnitCommandItem_2 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuUnitCommandItem_3 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuUnitCommandItem_4 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuUnitCommandItem_5 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuUnitCommandItem_6 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuUnitCommandItem_7 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuUnitCommandItem_8 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuUnitCommandItem_9 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuUnitCommandItem_10 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuUnitCommandItem_11 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuUnitCommandItem_12 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuUnitCommandItem_13 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuUnitCommandItem_14 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuUnitCommandItem_15 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuUnitCommandItem_16 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuUnitCommandItem_17 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuUnitCommandItem_18 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuUnitCommandItem_19 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuUnitCommandItem_20 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuUnitCommandItem_21 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuUnitCommandItem_22 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuUnitCommandItem_23 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuUnitCommandItem_24 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuUnitCommandItem_25 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuUnitCommandItem_26 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuUnitCommandItem_27 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuUnitCommandItem_28 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuUnitCommandItem_29 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuUnitCommandItem_30 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuUnitCommandItem_31 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuUnitCommandItem_32 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuUnitCommandItem_33 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuUnitCommandItem_34 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuUnitCommandItem_35 = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuMapCommand = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuMapCommandItem_0 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuMapCommandItem_1 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuMapCommandItem_2 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuMapCommandItem_3 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuMapCommandItem_4 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuMapCommandItem_5 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuMapCommandItem_6 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuMapCommandItem_7 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuMapCommandItem_8 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuMapCommandItem_9 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuMapCommandItem_10 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuMapCommandItem_11 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuMapCommandItem_12 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuMapCommandItem_13 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuMapCommandItem_14 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuMapCommandItem_15 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuMapCommandItem_16 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuMapCommandItem_17 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuMapCommandItem_18 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuMapCommandItem_19 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuMapCommandItem_20 = new System.Windows.Forms.ToolStripMenuItem();
             this._picStretchedTmp_1 = new System.Windows.Forms.PictureBox();
             this._picStretchedTmp_0 = new System.Windows.Forms.PictureBox();
             this._picMain_1 = new System.Windows.Forms.Panel();
@@ -299,7 +185,7 @@ namespace SRCTestForm
             this.picTmp = new System.Windows.Forms.PictureBox();
             this.picBack = new System.Windows.Forms.PictureBox();
             this._picMain_0 = new System.Windows.Forms.Panel();
-            this.MainMenu1.SuspendLayout();
+            this.MainMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this._picStretchedTmp_1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._picStretchedTmp_0)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._picBuf_0)).BeginInit();
@@ -320,438 +206,29 @@ namespace SRCTestForm
             ((System.ComponentModel.ISupportInitialize)(this.picBack)).BeginInit();
             this.SuspendLayout();
             // 
-            // MainMenu1
+            // MainMenu
             // 
-            this.MainMenu1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MainMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.mnuUnitCommand,
             this.mnuMapCommand});
-            this.MainMenu1.Location = new System.Drawing.Point(0, 0);
-            this.MainMenu1.Name = "MainMenu1";
-            this.MainMenu1.Size = new System.Drawing.Size(508, 24);
-            this.MainMenu1.TabIndex = 22;
+            this.MainMenu.Location = new System.Drawing.Point(0, 0);
+            this.MainMenu.Name = "MainMenu";
+            this.MainMenu.Size = new System.Drawing.Size(508, 24);
+            this.MainMenu.TabIndex = 22;
             // 
             // mnuUnitCommand
             // 
-            this.mnuUnitCommand.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this._mnuUnitCommandItem_0,
-            this._mnuUnitCommandItem_1,
-            this._mnuUnitCommandItem_2,
-            this._mnuUnitCommandItem_3,
-            this._mnuUnitCommandItem_4,
-            this._mnuUnitCommandItem_5,
-            this._mnuUnitCommandItem_6,
-            this._mnuUnitCommandItem_7,
-            this._mnuUnitCommandItem_8,
-            this._mnuUnitCommandItem_9,
-            this._mnuUnitCommandItem_10,
-            this._mnuUnitCommandItem_11,
-            this._mnuUnitCommandItem_12,
-            this._mnuUnitCommandItem_13,
-            this._mnuUnitCommandItem_14,
-            this._mnuUnitCommandItem_15,
-            this._mnuUnitCommandItem_16,
-            this._mnuUnitCommandItem_17,
-            this._mnuUnitCommandItem_18,
-            this._mnuUnitCommandItem_19,
-            this._mnuUnitCommandItem_20,
-            this._mnuUnitCommandItem_21,
-            this._mnuUnitCommandItem_22,
-            this._mnuUnitCommandItem_23,
-            this._mnuUnitCommandItem_24,
-            this._mnuUnitCommandItem_25,
-            this._mnuUnitCommandItem_26,
-            this._mnuUnitCommandItem_27,
-            this._mnuUnitCommandItem_28,
-            this._mnuUnitCommandItem_29,
-            this._mnuUnitCommandItem_30,
-            this._mnuUnitCommandItem_31,
-            this._mnuUnitCommandItem_32,
-            this._mnuUnitCommandItem_33,
-            this._mnuUnitCommandItem_34,
-            this._mnuUnitCommandItem_35});
             this.mnuUnitCommand.Name = "mnuUnitCommand";
             this.mnuUnitCommand.Size = new System.Drawing.Size(88, 20);
             this.mnuUnitCommand.Text = "ユニットコマンド";
             this.mnuUnitCommand.Visible = false;
             // 
-            // _mnuUnitCommandItem_0
-            // 
-            this._mnuUnitCommandItem_0.Name = "_mnuUnitCommandItem_0";
-            this._mnuUnitCommandItem_0.Size = new System.Drawing.Size(148, 22);
-            this._mnuUnitCommandItem_0.Text = "移動";
-            // 
-            // _mnuUnitCommandItem_1
-            // 
-            this._mnuUnitCommandItem_1.Name = "_mnuUnitCommandItem_1";
-            this._mnuUnitCommandItem_1.Size = new System.Drawing.Size(148, 22);
-            this._mnuUnitCommandItem_1.Text = "テレポート";
-            this._mnuUnitCommandItem_1.Visible = false;
-            // 
-            // _mnuUnitCommandItem_2
-            // 
-            this._mnuUnitCommandItem_2.Name = "_mnuUnitCommandItem_2";
-            this._mnuUnitCommandItem_2.Size = new System.Drawing.Size(148, 22);
-            this._mnuUnitCommandItem_2.Text = "ジャンプ";
-            this._mnuUnitCommandItem_2.Visible = false;
-            // 
-            // _mnuUnitCommandItem_3
-            // 
-            this._mnuUnitCommandItem_3.Name = "_mnuUnitCommandItem_3";
-            this._mnuUnitCommandItem_3.Size = new System.Drawing.Size(148, 22);
-            this._mnuUnitCommandItem_3.Text = "会話";
-            this._mnuUnitCommandItem_3.Visible = false;
-            // 
-            // _mnuUnitCommandItem_4
-            // 
-            this._mnuUnitCommandItem_4.Name = "_mnuUnitCommandItem_4";
-            this._mnuUnitCommandItem_4.Size = new System.Drawing.Size(148, 22);
-            this._mnuUnitCommandItem_4.Text = "攻撃";
-            // 
-            // _mnuUnitCommandItem_5
-            // 
-            this._mnuUnitCommandItem_5.Name = "_mnuUnitCommandItem_5";
-            this._mnuUnitCommandItem_5.Size = new System.Drawing.Size(148, 22);
-            this._mnuUnitCommandItem_5.Text = "修理";
-            // 
-            // _mnuUnitCommandItem_6
-            // 
-            this._mnuUnitCommandItem_6.Name = "_mnuUnitCommandItem_6";
-            this._mnuUnitCommandItem_6.Size = new System.Drawing.Size(148, 22);
-            this._mnuUnitCommandItem_6.Text = "補給";
-            // 
-            // _mnuUnitCommandItem_7
-            // 
-            this._mnuUnitCommandItem_7.Name = "_mnuUnitCommandItem_7";
-            this._mnuUnitCommandItem_7.Size = new System.Drawing.Size(148, 22);
-            this._mnuUnitCommandItem_7.Text = "アビリティ";
-            // 
-            // _mnuUnitCommandItem_8
-            // 
-            this._mnuUnitCommandItem_8.Name = "_mnuUnitCommandItem_8";
-            this._mnuUnitCommandItem_8.Size = new System.Drawing.Size(148, 22);
-            this._mnuUnitCommandItem_8.Text = "チャージ";
-            this._mnuUnitCommandItem_8.Visible = false;
-            // 
-            // _mnuUnitCommandItem_9
-            // 
-            this._mnuUnitCommandItem_9.Name = "_mnuUnitCommandItem_9";
-            this._mnuUnitCommandItem_9.Size = new System.Drawing.Size(148, 22);
-            this._mnuUnitCommandItem_9.Text = "スペシャルパワー";
-            // 
-            // _mnuUnitCommandItem_10
-            // 
-            this._mnuUnitCommandItem_10.Name = "_mnuUnitCommandItem_10";
-            this._mnuUnitCommandItem_10.Size = new System.Drawing.Size(148, 22);
-            this._mnuUnitCommandItem_10.Text = "変形";
-            // 
-            // _mnuUnitCommandItem_11
-            // 
-            this._mnuUnitCommandItem_11.Name = "_mnuUnitCommandItem_11";
-            this._mnuUnitCommandItem_11.Size = new System.Drawing.Size(148, 22);
-            this._mnuUnitCommandItem_11.Text = "分離";
-            this._mnuUnitCommandItem_11.Visible = false;
-            // 
-            // _mnuUnitCommandItem_12
-            // 
-            this._mnuUnitCommandItem_12.Name = "_mnuUnitCommandItem_12";
-            this._mnuUnitCommandItem_12.Size = new System.Drawing.Size(148, 22);
-            this._mnuUnitCommandItem_12.Text = "合体";
-            this._mnuUnitCommandItem_12.Visible = false;
-            // 
-            // _mnuUnitCommandItem_13
-            // 
-            this._mnuUnitCommandItem_13.Name = "_mnuUnitCommandItem_13";
-            this._mnuUnitCommandItem_13.Size = new System.Drawing.Size(148, 22);
-            this._mnuUnitCommandItem_13.Text = "ハイパーモード";
-            // 
-            // _mnuUnitCommandItem_14
-            // 
-            this._mnuUnitCommandItem_14.Name = "_mnuUnitCommandItem_14";
-            this._mnuUnitCommandItem_14.Size = new System.Drawing.Size(148, 22);
-            this._mnuUnitCommandItem_14.Text = "地上";
-            // 
-            // _mnuUnitCommandItem_15
-            // 
-            this._mnuUnitCommandItem_15.Name = "_mnuUnitCommandItem_15";
-            this._mnuUnitCommandItem_15.Size = new System.Drawing.Size(148, 22);
-            this._mnuUnitCommandItem_15.Text = "空中";
-            // 
-            // _mnuUnitCommandItem_16
-            // 
-            this._mnuUnitCommandItem_16.Name = "_mnuUnitCommandItem_16";
-            this._mnuUnitCommandItem_16.Size = new System.Drawing.Size(148, 22);
-            this._mnuUnitCommandItem_16.Text = "地中";
-            // 
-            // _mnuUnitCommandItem_17
-            // 
-            this._mnuUnitCommandItem_17.Name = "_mnuUnitCommandItem_17";
-            this._mnuUnitCommandItem_17.Size = new System.Drawing.Size(148, 22);
-            this._mnuUnitCommandItem_17.Text = "水中";
-            // 
-            // _mnuUnitCommandItem_18
-            // 
-            this._mnuUnitCommandItem_18.Name = "_mnuUnitCommandItem_18";
-            this._mnuUnitCommandItem_18.Size = new System.Drawing.Size(148, 22);
-            this._mnuUnitCommandItem_18.Text = "発進";
-            // 
-            // _mnuUnitCommandItem_19
-            // 
-            this._mnuUnitCommandItem_19.Name = "_mnuUnitCommandItem_19";
-            this._mnuUnitCommandItem_19.Size = new System.Drawing.Size(148, 22);
-            this._mnuUnitCommandItem_19.Text = "アイテム";
-            // 
-            // _mnuUnitCommandItem_20
-            // 
-            this._mnuUnitCommandItem_20.Name = "_mnuUnitCommandItem_20";
-            this._mnuUnitCommandItem_20.Size = new System.Drawing.Size(148, 22);
-            this._mnuUnitCommandItem_20.Text = "召喚解除";
-            // 
-            // _mnuUnitCommandItem_21
-            // 
-            this._mnuUnitCommandItem_21.Name = "_mnuUnitCommandItem_21";
-            this._mnuUnitCommandItem_21.Size = new System.Drawing.Size(148, 22);
-            this._mnuUnitCommandItem_21.Text = "命令";
-            // 
-            // _mnuUnitCommandItem_22
-            // 
-            this._mnuUnitCommandItem_22.Name = "_mnuUnitCommandItem_22";
-            this._mnuUnitCommandItem_22.Size = new System.Drawing.Size(148, 22);
-            this._mnuUnitCommandItem_22.Text = "特殊能力一覧";
-            // 
-            // _mnuUnitCommandItem_23
-            // 
-            this._mnuUnitCommandItem_23.Name = "_mnuUnitCommandItem_23";
-            this._mnuUnitCommandItem_23.Size = new System.Drawing.Size(148, 22);
-            this._mnuUnitCommandItem_23.Text = "武装一覧";
-            // 
-            // _mnuUnitCommandItem_24
-            // 
-            this._mnuUnitCommandItem_24.Name = "_mnuUnitCommandItem_24";
-            this._mnuUnitCommandItem_24.Size = new System.Drawing.Size(148, 22);
-            this._mnuUnitCommandItem_24.Text = "アビリティ一覧";
-            // 
-            // _mnuUnitCommandItem_25
-            // 
-            this._mnuUnitCommandItem_25.Name = "_mnuUnitCommandItem_25";
-            this._mnuUnitCommandItem_25.Size = new System.Drawing.Size(148, 22);
-            this._mnuUnitCommandItem_25.Visible = false;
-            // 
-            // _mnuUnitCommandItem_26
-            // 
-            this._mnuUnitCommandItem_26.Name = "_mnuUnitCommandItem_26";
-            this._mnuUnitCommandItem_26.Size = new System.Drawing.Size(148, 22);
-            this._mnuUnitCommandItem_26.Visible = false;
-            // 
-            // _mnuUnitCommandItem_27
-            // 
-            this._mnuUnitCommandItem_27.Name = "_mnuUnitCommandItem_27";
-            this._mnuUnitCommandItem_27.Size = new System.Drawing.Size(148, 22);
-            this._mnuUnitCommandItem_27.Visible = false;
-            // 
-            // _mnuUnitCommandItem_28
-            // 
-            this._mnuUnitCommandItem_28.Name = "_mnuUnitCommandItem_28";
-            this._mnuUnitCommandItem_28.Size = new System.Drawing.Size(148, 22);
-            this._mnuUnitCommandItem_28.Visible = false;
-            // 
-            // _mnuUnitCommandItem_29
-            // 
-            this._mnuUnitCommandItem_29.Name = "_mnuUnitCommandItem_29";
-            this._mnuUnitCommandItem_29.Size = new System.Drawing.Size(148, 22);
-            this._mnuUnitCommandItem_29.Visible = false;
-            // 
-            // _mnuUnitCommandItem_30
-            // 
-            this._mnuUnitCommandItem_30.Name = "_mnuUnitCommandItem_30";
-            this._mnuUnitCommandItem_30.Size = new System.Drawing.Size(148, 22);
-            this._mnuUnitCommandItem_30.Visible = false;
-            // 
-            // _mnuUnitCommandItem_31
-            // 
-            this._mnuUnitCommandItem_31.Name = "_mnuUnitCommandItem_31";
-            this._mnuUnitCommandItem_31.Size = new System.Drawing.Size(148, 22);
-            this._mnuUnitCommandItem_31.Visible = false;
-            // 
-            // _mnuUnitCommandItem_32
-            // 
-            this._mnuUnitCommandItem_32.Name = "_mnuUnitCommandItem_32";
-            this._mnuUnitCommandItem_32.Size = new System.Drawing.Size(148, 22);
-            this._mnuUnitCommandItem_32.Visible = false;
-            // 
-            // _mnuUnitCommandItem_33
-            // 
-            this._mnuUnitCommandItem_33.Name = "_mnuUnitCommandItem_33";
-            this._mnuUnitCommandItem_33.Size = new System.Drawing.Size(148, 22);
-            this._mnuUnitCommandItem_33.Visible = false;
-            // 
-            // _mnuUnitCommandItem_34
-            // 
-            this._mnuUnitCommandItem_34.Name = "_mnuUnitCommandItem_34";
-            this._mnuUnitCommandItem_34.Size = new System.Drawing.Size(148, 22);
-            this._mnuUnitCommandItem_34.Visible = false;
-            // 
-            // _mnuUnitCommandItem_35
-            // 
-            this._mnuUnitCommandItem_35.Name = "_mnuUnitCommandItem_35";
-            this._mnuUnitCommandItem_35.Size = new System.Drawing.Size(148, 22);
-            this._mnuUnitCommandItem_35.Text = "待機";
-            // 
             // mnuMapCommand
             // 
-            this.mnuMapCommand.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this._mnuMapCommandItem_0,
-            this._mnuMapCommandItem_1,
-            this._mnuMapCommandItem_2,
-            this._mnuMapCommandItem_3,
-            this._mnuMapCommandItem_4,
-            this._mnuMapCommandItem_5,
-            this._mnuMapCommandItem_6,
-            this._mnuMapCommandItem_7,
-            this._mnuMapCommandItem_8,
-            this._mnuMapCommandItem_9,
-            this._mnuMapCommandItem_10,
-            this._mnuMapCommandItem_11,
-            this._mnuMapCommandItem_12,
-            this._mnuMapCommandItem_13,
-            this._mnuMapCommandItem_14,
-            this._mnuMapCommandItem_15,
-            this._mnuMapCommandItem_16,
-            this._mnuMapCommandItem_17,
-            this._mnuMapCommandItem_18,
-            this._mnuMapCommandItem_19,
-            this._mnuMapCommandItem_20});
             this.mnuMapCommand.Name = "mnuMapCommand";
             this.mnuMapCommand.Size = new System.Drawing.Size(79, 20);
             this.mnuMapCommand.Text = "マップコマンド";
             this.mnuMapCommand.Visible = false;
-            // 
-            // _mnuMapCommandItem_0
-            // 
-            this._mnuMapCommandItem_0.Name = "_mnuMapCommandItem_0";
-            this._mnuMapCommandItem_0.Size = new System.Drawing.Size(172, 22);
-            this._mnuMapCommandItem_0.Text = "ターン終了";
-            // 
-            // _mnuMapCommandItem_1
-            // 
-            this._mnuMapCommandItem_1.Name = "_mnuMapCommandItem_1";
-            this._mnuMapCommandItem_1.Size = new System.Drawing.Size(172, 22);
-            this._mnuMapCommandItem_1.Text = "中断";
-            // 
-            // _mnuMapCommandItem_2
-            // 
-            this._mnuMapCommandItem_2.Name = "_mnuMapCommandItem_2";
-            this._mnuMapCommandItem_2.Size = new System.Drawing.Size(172, 22);
-            this._mnuMapCommandItem_2.Text = "部隊表";
-            // 
-            // _mnuMapCommandItem_3
-            // 
-            this._mnuMapCommandItem_3.Name = "_mnuMapCommandItem_3";
-            this._mnuMapCommandItem_3.Size = new System.Drawing.Size(172, 22);
-            this._mnuMapCommandItem_3.Text = "スペシャルパワー検索";
-            // 
-            // _mnuMapCommandItem_4
-            // 
-            this._mnuMapCommandItem_4.Name = "_mnuMapCommandItem_4";
-            this._mnuMapCommandItem_4.Size = new System.Drawing.Size(172, 22);
-            this._mnuMapCommandItem_4.Text = "全体マップ";
-            // 
-            // _mnuMapCommandItem_5
-            // 
-            this._mnuMapCommandItem_5.Name = "_mnuMapCommandItem_5";
-            this._mnuMapCommandItem_5.Size = new System.Drawing.Size(172, 22);
-            this._mnuMapCommandItem_5.Text = "作戦目的";
-            this._mnuMapCommandItem_5.Visible = false;
-            // 
-            // _mnuMapCommandItem_6
-            // 
-            this._mnuMapCommandItem_6.Name = "_mnuMapCommandItem_6";
-            this._mnuMapCommandItem_6.Size = new System.Drawing.Size(172, 22);
-            this._mnuMapCommandItem_6.Visible = false;
-            // 
-            // _mnuMapCommandItem_7
-            // 
-            this._mnuMapCommandItem_7.Name = "_mnuMapCommandItem_7";
-            this._mnuMapCommandItem_7.Size = new System.Drawing.Size(172, 22);
-            this._mnuMapCommandItem_7.Visible = false;
-            // 
-            // _mnuMapCommandItem_8
-            // 
-            this._mnuMapCommandItem_8.Name = "_mnuMapCommandItem_8";
-            this._mnuMapCommandItem_8.Size = new System.Drawing.Size(172, 22);
-            this._mnuMapCommandItem_8.Visible = false;
-            // 
-            // _mnuMapCommandItem_9
-            // 
-            this._mnuMapCommandItem_9.Name = "_mnuMapCommandItem_9";
-            this._mnuMapCommandItem_9.Size = new System.Drawing.Size(172, 22);
-            this._mnuMapCommandItem_9.Visible = false;
-            // 
-            // _mnuMapCommandItem_10
-            // 
-            this._mnuMapCommandItem_10.Name = "_mnuMapCommandItem_10";
-            this._mnuMapCommandItem_10.Size = new System.Drawing.Size(172, 22);
-            this._mnuMapCommandItem_10.Visible = false;
-            // 
-            // _mnuMapCommandItem_11
-            // 
-            this._mnuMapCommandItem_11.Name = "_mnuMapCommandItem_11";
-            this._mnuMapCommandItem_11.Size = new System.Drawing.Size(172, 22);
-            this._mnuMapCommandItem_11.Visible = false;
-            // 
-            // _mnuMapCommandItem_12
-            // 
-            this._mnuMapCommandItem_12.Name = "_mnuMapCommandItem_12";
-            this._mnuMapCommandItem_12.Size = new System.Drawing.Size(172, 22);
-            this._mnuMapCommandItem_12.Visible = false;
-            // 
-            // _mnuMapCommandItem_13
-            // 
-            this._mnuMapCommandItem_13.Name = "_mnuMapCommandItem_13";
-            this._mnuMapCommandItem_13.Size = new System.Drawing.Size(172, 22);
-            this._mnuMapCommandItem_13.Visible = false;
-            // 
-            // _mnuMapCommandItem_14
-            // 
-            this._mnuMapCommandItem_14.Name = "_mnuMapCommandItem_14";
-            this._mnuMapCommandItem_14.Size = new System.Drawing.Size(172, 22);
-            this._mnuMapCommandItem_14.Visible = false;
-            // 
-            // _mnuMapCommandItem_15
-            // 
-            this._mnuMapCommandItem_15.Name = "_mnuMapCommandItem_15";
-            this._mnuMapCommandItem_15.Size = new System.Drawing.Size(172, 22);
-            this._mnuMapCommandItem_15.Visible = false;
-            // 
-            // _mnuMapCommandItem_16
-            // 
-            this._mnuMapCommandItem_16.Name = "_mnuMapCommandItem_16";
-            this._mnuMapCommandItem_16.Size = new System.Drawing.Size(172, 22);
-            this._mnuMapCommandItem_16.Text = "自動反撃モード";
-            // 
-            // _mnuMapCommandItem_17
-            // 
-            this._mnuMapCommandItem_17.Name = "_mnuMapCommandItem_17";
-            this._mnuMapCommandItem_17.Size = new System.Drawing.Size(172, 22);
-            this._mnuMapCommandItem_17.Text = "設定変更";
-            // 
-            // _mnuMapCommandItem_18
-            // 
-            this._mnuMapCommandItem_18.Name = "_mnuMapCommandItem_18";
-            this._mnuMapCommandItem_18.Size = new System.Drawing.Size(172, 22);
-            this._mnuMapCommandItem_18.Text = "リスタート";
-            this._mnuMapCommandItem_18.Visible = false;
-            // 
-            // _mnuMapCommandItem_19
-            // 
-            this._mnuMapCommandItem_19.Name = "_mnuMapCommandItem_19";
-            this._mnuMapCommandItem_19.Size = new System.Drawing.Size(172, 22);
-            this._mnuMapCommandItem_19.Text = "クイックロード";
-            // 
-            // _mnuMapCommandItem_20
-            // 
-            this._mnuMapCommandItem_20.Name = "_mnuMapCommandItem_20";
-            this._mnuMapCommandItem_20.Size = new System.Drawing.Size(172, 22);
-            this._mnuMapCommandItem_20.Text = "クイックセーブ";
             // 
             // _picStretchedTmp_1
             // 
@@ -1092,7 +569,7 @@ namespace SRCTestForm
             this.Controls.Add(this.picTmp);
             this.Controls.Add(this.picBack);
             this.Controls.Add(this._picMain_0);
-            this.Controls.Add(this.MainMenu1);
+            this.Controls.Add(this.MainMenu);
             this.Cursor = System.Windows.Forms.Cursors.Default;
             this.Font = new System.Drawing.Font("ＭＳ 明朝", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -1107,8 +584,8 @@ namespace SRCTestForm
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmMain_FormClosing);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.frmMain_KeyDown);
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.frmMain_MouseMove);
-            this.MainMenu1.ResumeLayout(false);
-            this.MainMenu1.PerformLayout();
+            this.MainMenu.ResumeLayout(false);
+            this.MainMenu.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this._picStretchedTmp_1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this._picStretchedTmp_0)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this._picBuf_0)).EndInit();

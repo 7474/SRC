@@ -3,11 +3,13 @@
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
 using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualBasic;
 using Newtonsoft.Json;
 using SRCCore;
+using SRCCore.Commands;
 using SRCCore.Maps;
 
 namespace SRCTestForm
@@ -150,7 +152,9 @@ namespace SRCTestForm
         // マップコマンドメニューをクリック
         public void mnuMapCommandItem_Click(object eventSender, EventArgs eventArgs)
         {
-            Program.Log.LogDebug("mnuMapCommandItem_Click {0}", JsonConvert.SerializeObject(eventArgs));
+            Program.Log.LogDebug("mnuMapCommandItem_Click {0}",
+                JsonConvert.SerializeObject(eventSender),
+                JsonConvert.SerializeObject(eventArgs));
 
             //int Index = mnuMapCommandItem.GetIndex((ToolStripMenuItem)eventSender);
             //if (GUI.GetAsyncKeyState(GUI.RButtonID) == 1)
@@ -167,7 +171,9 @@ namespace SRCTestForm
         // ユニットコマンドメニューをクリック
         public void mnuUnitCommandItem_Click(object eventSender, EventArgs eventArgs)
         {
-            Program.Log.LogDebug("mnuUnitCommandItem_Click {0}", JsonConvert.SerializeObject(eventArgs));
+            Program.Log.LogDebug("mnuUnitCommandItem_Click {0}",
+                JsonConvert.SerializeObject(eventSender),
+                JsonConvert.SerializeObject(eventArgs));
 
             //int Index = mnuUnitCommandItem.GetIndex((ToolStripMenuItem)eventSender);
             //if (GUI.GetAsyncKeyState(GUI.RButtonID) == 1)
@@ -271,6 +277,7 @@ namespace SRCTestForm
             var cellUnit = mapCellClick ? Map.MapDataForUnit[xx, yy] : null;
             Program.Log.LogDebug("xx:{0} yy:{1} Unit:{2}", xx, yy, cellUnit?.ID);
 
+            // TODO Commandsの側に追い出す
             if (Button == GuiButton.Left)
             {
                 // 左クリック
@@ -316,6 +323,11 @@ namespace SRCTestForm
 
             if (Button == GuiButton.Right)
             {
+                GUI.ShowMapCommandMenu(new List<UiCommand>
+                        {
+new                            UiCommand(1, "test1"),
+new                            UiCommand(2, "test2"),
+                        });
                 // 右クリック
                 switch (Commands.CommandState ?? "")
                 {
