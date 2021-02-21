@@ -1059,6 +1059,7 @@ namespace SRCTestForm
             this._picMain_0.TabIndex = 0;
             this._picMain_0.TabStop = true;
             this._picMain_0.DoubleClick += new System.EventHandler(this.picMain_DoubleClick);
+            this._picMain_0.MouseClick += new System.Windows.Forms.MouseEventHandler(this.picMain_MouseClick);
             this._picMain_0.MouseDown += new System.Windows.Forms.MouseEventHandler(this.picMain_MouseDown);
             this._picMain_0.MouseMove += new System.Windows.Forms.MouseEventHandler(this.picMain_MouseMove);
             this._picMain_0.MouseUp += new System.Windows.Forms.MouseEventHandler(this.picMain_MouseUp);

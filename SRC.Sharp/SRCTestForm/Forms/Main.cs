@@ -237,6 +237,103 @@ namespace SRCTestForm
             }
         }
 
+        private static GuiButton ResolveMouseButton(MouseEventArgs eventArgs)
+        {
+            // 右でなければ左とみなす
+            return eventArgs.Button.HasFlag(MouseButtons.Right)
+                ? GuiButton.Right
+                : GuiButton.Left;
+        }
+
+        // マップ画面上でマウスをクリック
+        private void picMain_MouseClick(object sender, MouseEventArgs eventArgs)
+        {
+            Program.Log.LogDebug("picMain_Click {0}", JsonConvert.SerializeObject(eventArgs));
+
+            GuiButton Button = ResolveMouseButton(eventArgs);
+            //var Shift = ModifierKeys.HasFlag(Keys.Shift);
+            var X = eventArgs.X;
+            var Y = eventArgs.Y;
+
+            // ＧＵＩロック中は単なるクリックとして処理
+            if (GUI.IsGUILocked)
+            {
+                SimpleClick();
+                return;
+            }
+
+            var xx = GUI.PixelToMapX(X);
+            var yy = GUI.PixelToMapY(Y);
+            var mapCellClick = 1 <= xx
+                && xx <= Map.MapWidth
+                && 1 <= yy
+                && yy <= Map.MapHeight;
+            var cellUnit = mapCellClick ? Map.MapDataForUnit[xx, yy] : null;
+            Program.Log.LogDebug("xx:{0} yy:{1} Unit:{2}", xx, yy, cellUnit?.ID);
+
+            if (Button == GuiButton.Left)
+            {
+                // 左クリック
+                switch (Commands.CommandState ?? "")
+                {
+                    case "マップコマンド":
+                        {
+                            Commands.CommandState = "ユニット選択";
+                            break;
+                        }
+
+                    case "ユニット選択":
+                        if (mapCellClick && cellUnit != null)
+                        {
+                            Commands.ProceedCommand();
+                        }
+                        break;
+                    case "ターゲット選択":
+                    case "移動後ターゲット選択":
+                        if (mapCellClick && cellUnit != null)
+                        {
+                            Commands.ProceedCommand();
+                        }
+                        break;
+                    case "コマンド選択":
+                        Commands.CancelCommand();
+                        // もし新しいクリック地点がユニットなら、ユニット選択の処理を進める
+                        if (mapCellClick && cellUnit != null)
+                        {
+                            Commands.ProceedCommand();
+                        }
+                        break;
+
+                    case "移動後コマンド選択":
+                        Commands.CancelCommand();
+                        break;
+
+                    default:
+                        Commands.ProceedCommand();
+                        break;
+                }
+            }
+
+            if (Button == GuiButton.Right)
+            {
+                // 右クリック
+                switch (Commands.CommandState ?? "")
+                {
+                    case "マップコマンド":
+                        Commands.CommandState = "ユニット選択";
+                        break;
+
+                    case "ユニット選択":
+                        Commands.ProceedCommand(true);
+                        break;
+
+                    default:
+                        Commands.CancelCommand();
+                        break;
+                }
+            }
+        }
+
         // マップ画面上でダブルクリック
         private void picMain_DoubleClick(object eventSender, EventArgs eventArgs)
         {
@@ -273,21 +370,11 @@ namespace SRCTestForm
             }
         }
 
-        private static GuiButton ResolveMouseButton(MouseEventArgs eventArgs)
-        {
-            // 右でなければ左とみなす
-            return eventArgs.Button.HasFlag(MouseButtons.Right)
-                ? GuiButton.Left
-                : GuiButton.Right;
-        }
-
-        // マップ画面上でマウスをクリック
         private void picMain_MouseDown(object eventSender, MouseEventArgs eventArgs)
         {
             Program.Log.LogDebug("picMain_MouseDown {0}", JsonConvert.SerializeObject(eventArgs));
 
             GuiButton Button = ResolveMouseButton(eventArgs);
-            //var Shift = ModifierKeys.HasFlag(Keys.Shift);
             var X = eventArgs.X;
             var Y = eventArgs.Y;
 
@@ -296,96 +383,13 @@ namespace SRCTestForm
             GUI.MouseX = X;
             GUI.MouseY = Y;
 
-            // ＧＵＩロック中は単なるクリックとして処理
-            if (GUI.IsGUILocked)
-            {
-                SimpleClick();
-                return;
-            }
-
-            var xx = GUI.PixelToMapX(X);
-            var yy = GUI.PixelToMapY(Y);
-            var mapCellClick = 1 <= xx
-                && xx <= Map.MapWidth
-                && 1 <= yy || yy <= Map.MapHeight;
-            var cellUnit = mapCellClick ? Map.MapDataForUnit[xx, yy] : null;
-
             if (Button == GuiButton.Left)
             {
-                // 左クリック
                 GUI.PrevMapX = GUI.MapX;
                 GUI.PrevMapY = GUI.MapY;
                 GUI.PrevMouseX = X;
                 GUI.PrevMouseY = Y;
-                switch (Commands.CommandState ?? "")
-                {
-                    case "マップコマンド":
-                        {
-                            Commands.CommandState = "ユニット選択";
-                            break;
-                        }
-
-                    case "ユニット選択":
-                        if (mapCellClick && cellUnit != null)
-                        {
-                            Commands.ProceedCommand();
-                        }
-                        else
-                        {
-                            IsDragging = true;
-                        }
-                        break;
-                    case "ターゲット選択":
-                    case "移動後ターゲット選択":
-                        if (mapCellClick && cellUnit != null)
-                        {
-                            Commands.ProceedCommand();
-                        }
-                        else
-                        {
-                            IsDragging = true;
-                        }
-                        break;
-                    case "コマンド選択":
-                        Commands.CancelCommand();
-                        // もし新しいクリック地点がユニットなら、ユニット選択の処理を進める
-                        if (mapCellClick && cellUnit != null)
-                        {
-                            Commands.ProceedCommand();
-                        }
-                        else
-                        {
-                            IsDragging = true;
-                        }
-                        break;
-
-                    case "移動後コマンド選択":
-                        Commands.CancelCommand();
-                        break;
-
-                    default:
-                        Commands.ProceedCommand();
-                        break;
-                }
-            }
-
-            if (Button == GuiButton.Right)
-            {
-                // 右クリック
-                switch (Commands.CommandState ?? "")
-                {
-                    case "マップコマンド":
-                        Commands.CommandState = "ユニット選択";
-                        break;
-
-                    case "ユニット選択":
-                        Commands.ProceedCommand(true);
-                        break;
-
-                    default:
-                        Commands.CancelCommand();
-                        break;
-                }
+                IsDragging = true;
             }
         }
 
@@ -476,7 +480,8 @@ namespace SRCTestForm
             var yy = GUI.PixelToMapY(Y);
             var mapCellClick = 1 <= xx
                 && xx <= Map.MapWidth
-                && 1 <= yy || yy <= Map.MapHeight;
+                && 1 <= yy
+                && yy <= Map.MapHeight;
             var cellUnit = mapCellClick ? Map.MapDataForUnit[xx, yy] : null;
 
             //// MOD START 240a
@@ -715,5 +720,6 @@ namespace SRCTestForm
             //    My.MyProject.Forms.frmErrorMessage.Show();
             //}
         }
+
     }
 }

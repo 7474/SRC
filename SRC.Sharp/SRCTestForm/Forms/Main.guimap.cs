@@ -9,13 +9,13 @@ namespace SRCTestForm
     // TODO インタフェースの切り方見直す
     internal partial class frmMain : IGUIMap
     {
-        const int MapCellPx = 32;
+        public const int MapCellPx = 32;
         private int MapWidth;
         private int MapHeight;
-        private int MapPWidth => MapWidth * MapCellPx;
-        private int MapPHeight => MapHeight * MapCellPx;
-        private int MainPWidth => GUI.MainWidth * MapCellPx;
-        private int MainPHeight => GUI.MainHeight * MapCellPx;
+        public int MapPWidth => MapWidth * MapCellPx;
+        public int MapPHeight => MapHeight * MapCellPx;
+        public int MainPWidth => GUI.MainWidth * MapCellPx;
+        public int MainPHeight => GUI.MainHeight * MapCellPx;
 
         private Bitmap BackBitmap;
         private Bitmap MaskedBackBitmap;
@@ -259,24 +259,20 @@ namespace SRCTestForm
             // XXX _picMain_0 picturebox じゃなくて panel なんだけど
             using (var g = _picMain_0.CreateGraphics())
             {
-                //// マップウィンドウのスクロールバーの位置を変更
-                //if (!IsGUILocked)
-                //{
-                //    // UPGRADE_ISSUE: Control HScroll は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-                //    if (withBlock.HScroll.Value != MapX)
-                //    {
-                //        // UPGRADE_ISSUE: Control HScroll は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-                //        withBlock.HScroll.Value = MapX;
-                //        return;
-                //    }
-                //    // UPGRADE_ISSUE: Control VScroll は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-                //    if (withBlock.VScroll.Value != MapY)
-                //    {
-                //        // UPGRADE_ISSUE: Control VScroll は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-                //        withBlock.VScroll.Value = MapY;
-                //        return;
-                //    }
-                //}
+                // マップウィンドウのスクロールバーの位置を変更
+                if (!GUI.IsGUILocked)
+                {
+                    if (HScrollBar.Value != GUI.MapX)
+                    {
+                        HScrollBar.Value = GUI.MapX;
+                        return;
+                    }
+                    if (VScrollBar.Value != GUI.MapY)
+                    {
+                        VScrollBar.Value = GUI.MapY;
+                        return;
+                    }
+                }
                 // 一旦マップウィンドウの内容を消去
                 g.FillRectangle(Brushes.Black, 0, 0, MainPWidth, MainPHeight);
 

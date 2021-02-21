@@ -29,10 +29,26 @@ namespace SRCTestForm
         public bool KeepStringMode { get; set; }
         public int MainWidth { get; set; }
         public int MainHeight { get; set; }
-        public int MainPWidth { get; set; }
-        public int MainPHeight { get; set; }
-        public int MapPWidth { get; set; }
-        public int MapPHeight { get; set; }
+        public int MainPWidth
+        {
+            get => MainForm.MainPWidth;
+            set => throw new NotSupportedException();
+        }
+        public int MainPHeight
+        {
+            get => MainForm.MainPHeight;
+            set => throw new NotSupportedException();
+        }
+        public int MapPWidth
+        {
+            get => MainForm.MapPWidth;
+            set => throw new NotSupportedException();
+        }
+        public int MapPHeight
+        {
+            get => MainForm.MapPHeight;
+            set => throw new NotSupportedException();
+        }
         public bool ScreenIsMasked { get; set; }
         public bool ScreenIsSaved { get; set; }
         public int MapX { get; set; }
@@ -592,22 +608,40 @@ namespace SRCTestForm
 
         public int MapToPixelX(int X)
         {
-            throw new NotImplementedException();
+            return frmMain.MapCellPx * ((MainWidth + 1) / 2 - 1 - (MapX - X));
         }
 
         public int MapToPixelY(int Y)
         {
-            throw new NotImplementedException();
+            return frmMain.MapCellPx * ((MainHeight + 1) / 2 - 1 - (MapY - Y));
         }
 
         public int PixelToMapX(int X)
         {
-            throw new NotImplementedException();
+            if (X < 0)
+            {
+                X = 0;
+            }
+            else if (X >= MainPWidth)
+            {
+                X = MainPWidth - 1;
+            }
+
+            return X / frmMain.MapCellPx + 1 + MapX - (MainWidth + 1) / 2;
         }
 
         public int PixelToMapY(int Y)
         {
-            throw new NotImplementedException();
+            if (Y < 0)
+            {
+                Y = 0;
+            }
+            else if (Y >= MainPHeight)
+            {
+                Y = MainPHeight - 1;
+            }
+
+            return Y / frmMain.MapCellPx + 1 + MapY - (MainHeight + 1) / 2;
         }
 
         public int MakeUnitBitmap(Unit u)
