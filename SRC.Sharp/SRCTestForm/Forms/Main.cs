@@ -73,49 +73,38 @@ namespace SRCTestForm
                 // 方向キーを押した場合はマップを動かす
                 switch (KeyCode)
                 {
+                    // XXX なんか他方の軸も動く。どこで動いてるのか分からん。
                     case Keys.Left:
+                        if (GUI.MapX > 1)
                         {
-                            if (GUI.MapX > 1)
-                            {
-                                GUI.MapX = (GUI.MapX - 1);
-                                GUI.RefreshScreen();
-                            }
-
-                            break;
+                            GUI.MapX = (GUI.MapX - 1);
+                            GUI.RefreshScreen();
                         }
+                        break;
 
                     case Keys.Up:
+                        if (GUI.MapY > 1)
                         {
-                            if (GUI.MapY > 1)
-                            {
-                                GUI.MapY = (GUI.MapY - 1);
-                                GUI.RefreshScreen();
-                            }
-
-                            break;
+                            GUI.MapY = (GUI.MapY - 1);
+                            GUI.RefreshScreen();
                         }
+                        break;
 
-                        //case Keys.Right:
-                        //    {
-                        //        if (GUI.MapX < HScroll_Renamed.Maximum - HScroll_Renamed.LargeChange + 1)
-                        //        {
-                        //            GUI.MapX = (GUI.MapX + 1);
-                        //            GUI.RefreshScreen();
-                        //        }
+                    case Keys.Right:
+                        if (GUI.MapX < HScrollBar.Maximum - HScrollBar.LargeChange + 1)
+                        {
+                            GUI.MapX = (GUI.MapX + 1);
+                            GUI.RefreshScreen();
+                        }
+                        break;
 
-                        //        break;
-                        //    }
-
-                        //case Keys.Down:
-                        //    {
-                        //        if (GUI.MapY < VScroll_Renamed.Maximum - VScroll_Renamed.LargeChange + 1)
-                        //        {
-                        //            GUI.MapY = (GUI.MapY + 1);
-                        //            GUI.RefreshScreen();
-                        //        }
-
-                        //        break;
-                        //    }
+                    case Keys.Down:
+                        if (GUI.MapY < VScrollBar.Maximum - VScrollBar.LargeChange + 1)
+                        {
+                            GUI.MapY = (GUI.MapY + 1);
+                            GUI.RefreshScreen();
+                        }
+                        break;
 
                         //case Keys.Escape:
                         //case Keys.Delete:
