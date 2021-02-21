@@ -884,35 +884,14 @@ namespace SRCTestForm
             }
         }
 
-        // XXX 実装は frmMain にあるべきだな。
         public void ShowUnitCommandMenu(IList<UiCommand> commands)
         {
-            MainForm.mnuUnitCommand.Items.Clear();
-            MainForm.mnuUnitCommand.Items.AddRange(commands.Select(x => new ToolStripMenuItem(
-                x.Label,
-                null,
-                MainForm.mnuUnitCommandItem_Click
-                )
-            {
-                Width = 172,
-                Tag = x,
-            }).ToArray());
-            MainForm.mnuUnitCommand.Show(MainForm._picMain_0, new Point((int)MouseX, (int)MouseY));
+            MainForm.ShowUnitCommandMenu(commands);
         }
 
         public void ShowMapCommandMenu(IList<UiCommand> commands)
         {
-            MainForm.mnuMapCommand.Items.Clear();
-            MainForm.mnuMapCommand.Items.AddRange(commands.Select(x => new ToolStripMenuItem(
-                x.Label,
-                null,
-                MainForm.mnuMapCommandItem_Click
-                )
-            {
-                Width = 172,
-                Tag = x,
-            }).ToArray());
-            MainForm.mnuMapCommand.Show(MainForm._picMain_0, new Point((int)MouseX, (int)MouseY));
+            MainForm.ShowMapCommandMenu(commands);
         }
     }
 }

@@ -4,6 +4,8 @@
 // 再頒布または改変することができます。
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualBasic;
@@ -187,6 +189,36 @@ namespace SRCTestForm
 
             //// ユニットコマンドを実行
             //Commands.UnitCommand(Index);
+        }
+
+        public void ShowUnitCommandMenu(IList<UiCommand> commands)
+        {
+            mnuUnitCommand.Items.Clear();
+            mnuUnitCommand.Items.AddRange(commands.Select(x => new ToolStripMenuItem(
+                x.Label,
+                null,
+                mnuUnitCommandItem_Click
+                )
+            {
+                Width = 172,
+                Tag = x,
+            }).ToArray());
+            mnuUnitCommand.Show(_picMain_0, new Point((int)GUI.MouseX, (int)GUI.MouseY));
+        }
+
+        public void ShowMapCommandMenu(IList<UiCommand> commands)
+        {
+            mnuMapCommand.Items.Clear();
+            mnuMapCommand.Items.AddRange(commands.Select(x => new ToolStripMenuItem(
+                x.Label,
+                null,
+                mnuMapCommandItem_Click
+                )
+            {
+                Width = 172,
+                Tag = x,
+            }).ToArray());
+            mnuMapCommand.Show(_picMain_0, new Point((int)GUI.MouseX, (int)GUI.MouseY));
         }
 
         // ステータスウィンドウのパイロット画像上をクリック
