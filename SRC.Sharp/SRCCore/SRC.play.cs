@@ -1,9 +1,7 @@
 ﻿using SRCCore.Units;
 using SRCCore.VB;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace SRCCore
 {
@@ -158,7 +156,7 @@ namespace SRCCore
             LastSaveDataFileName = "";
             IsRestartSaveDataAvailable = false;
             IsQuickSaveDataAvailable = false;
-            //Commands.CommandState = "ユニット選択";
+            Commands.CommandState = "ユニット選択";
             //Commands.SelectedPartners = new Unit[1];
 
             //// フォント設定をデフォルトに戻す

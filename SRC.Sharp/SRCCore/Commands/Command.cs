@@ -11,6 +11,7 @@ namespace SRCCore.Commands
         private SRC SRC;
         private Events.Event Event => SRC.Event;
         private IGUI GUI => SRC.GUI;
+        private IGUIStatus Status => SRC.GUIStatus;
         private Maps.Map Map => SRC.Map;
         private Expressions.Expression Expression => SRC.Expression;
 

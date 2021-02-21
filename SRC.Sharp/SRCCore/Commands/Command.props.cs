@@ -1,8 +1,7 @@
-﻿using SRCCore.Pilots;
+﻿using SRCCore.Events;
+using SRCCore.Pilots;
 using SRCCore.Units;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace SRCCore.Commands
 {
@@ -17,9 +16,9 @@ namespace SRCCore.Commands
         public bool ViewMode;
 
         // マップコマンドラベルのリスト
-        private string[] MapCommandLabelList = new string[11];
+        private IDictionary<int, LabelData> MapCommandLabelList = new Dictionary<int, LabelData>();
         // ユニットコマンドラベルのリスト
-        private string[] UnitCommandLabelList = new string[11];
+        private IDictionary<int, LabelData> UnitCommandLabelList = new Dictionary<int, LabelData>();
 
         // 現在選択されているもの
         public Unit SelectedUnit; // ユニット

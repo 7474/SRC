@@ -188,6 +188,8 @@ namespace SRCTestForm
 
         public void ShowUnitCommandMenu(IList<UiCommand> commands)
         {
+            //    GUI.MainForm.PopupMenu(GUI.MainForm.mnuUnitCommand, 6, GUI.MouseX, GUI.MouseY + 5f);
+            //    GUI.MainForm.PopupMenu(GUI.MainForm.mnuUnitCommand, 6, GUI.MouseX, GUI.MouseY - 6f);
             mnuUnitCommand.Items.Clear();
             mnuUnitCommand.Items.AddRange(commands.Select(x => new ToolStripMenuItem(
                 x.Label,
@@ -203,6 +205,7 @@ namespace SRCTestForm
 
         public void ShowMapCommandMenu(IList<UiCommand> commands)
         {
+            //GUI.MainForm.PopupMenu(GUI.MainForm.mnuMapCommand, 6, GUI.MouseX, GUI.MouseY + 6f);
             mnuMapCommand.Items.Clear();
             mnuMapCommand.Items.AddRange(commands.Select(x => new ToolStripMenuItem(
                 x.Label,

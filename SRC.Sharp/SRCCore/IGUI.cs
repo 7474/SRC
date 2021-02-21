@@ -296,6 +296,7 @@ namespace SRCCore
     }
     public enum GuiButton
     {
+        None,
         Left,
         Right,
     }
