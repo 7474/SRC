@@ -887,8 +887,8 @@ namespace SRCTestForm
         // XXX 実装は frmMain にあるべきだな。
         public void ShowUnitCommandMenu(IList<UiCommand> commands)
         {
-            MainForm.mnuUnitCommand.DropDownItems.Clear();
-            MainForm.mnuUnitCommand.DropDownItems.AddRange(commands.Select(x => new ToolStripMenuItem(
+            MainForm.mnuUnitCommand.Items.Clear();
+            MainForm.mnuUnitCommand.Items.AddRange(commands.Select(x => new ToolStripMenuItem(
                 x.Label,
                 null,
                 MainForm.mnuUnitCommandItem_Click
@@ -897,13 +897,13 @@ namespace SRCTestForm
                 Width = 172,
                 Tag = x,
             }).ToArray());
-            MainForm.mnuUnitCommand.ShowDropDown();
+            MainForm.mnuUnitCommand.Show(MainForm._picMain_0, new Point((int)MouseX, (int)MouseY));
         }
 
         public void ShowMapCommandMenu(IList<UiCommand> commands)
         {
-            MainForm.mnuMapCommand.DropDownItems.Clear();
-            MainForm.mnuMapCommand.DropDownItems.AddRange(commands.Select(x => new ToolStripMenuItem(
+            MainForm.mnuMapCommand.Items.Clear();
+            MainForm.mnuMapCommand.Items.AddRange(commands.Select(x => new ToolStripMenuItem(
                 x.Label,
                 null,
                 MainForm.mnuMapCommandItem_Click
@@ -912,7 +912,7 @@ namespace SRCTestForm
                 Width = 172,
                 Tag = x,
             }).ToArray());
-            MainForm.mnuMapCommand.ShowDropDown();
+            MainForm.mnuMapCommand.Show(MainForm._picMain_0, new Point((int)MouseX, (int)MouseY));
         }
     }
 }

@@ -34,9 +34,8 @@ namespace SRCTestForm
         // Windows フォーム デザイナで必要です。
         private System.ComponentModel.IContainer components;
         public ToolTip ToolTip1;
-        public ToolStripMenuItem mnuUnitCommand;
-        public ToolStripMenuItem mnuMapCommand;
-        public MenuStrip MainMenu;
+        public ContextMenuStrip mnuUnitCommand;
+        public ContextMenuStrip mnuMapCommand;
         public PictureBox _picStretchedTmp_1;
         public PictureBox _picStretchedTmp_0;
         public Panel _picMain_1;
@@ -44,12 +43,9 @@ namespace SRCTestForm
         public PictureBox _picTmp32_2;
         public PictureBox _picTmp32_1;
         public PictureBox picFace;
-
-
         public PictureBox _picTmp32_0;
         public PictureBox picMaskedBack;
         public Timer Timer1;
-
         public PictureBox picMask2;
         public PictureBox picNeautral;
         public PictureBox picEnemy;
@@ -63,93 +59,6 @@ namespace SRCTestForm
         public PictureBox picTmp;
         public PictureBox picBack;
         public Panel _picMain_0;
-        //private Microsoft.VisualBasic.Compatibility.VB6.ToolStripMenuItemArray _mnuMapCommandItem;
-
-        //public Microsoft.VisualBasic.Compatibility.VB6.ToolStripMenuItemArray mnuMapCommandItem
-        //{
-        //    [MethodImpl(MethodImplOptions.Synchronized)]
-        //    get
-        //    {
-        //        return _mnuMapCommandItem;
-        //    }
-
-        //    [MethodImpl(MethodImplOptions.Synchronized)]
-        //    set
-        //    {
-        //        if (_mnuMapCommandItem != null)
-        //        {
-        //            _mnuMapCommandItem.Click -= mnuMapCommandItem_Click;
-        //        }
-
-        //        _mnuMapCommandItem = value;
-        //        if (_mnuMapCommandItem != null)
-        //        {
-        //            _mnuMapCommandItem.Click += mnuMapCommandItem_Click;
-        //        }
-        //    }
-        //}
-
-        //private Microsoft.VisualBasic.Compatibility.VB6.ToolStripMenuItemArray _mnuUnitCommandItem;
-
-        //public Microsoft.VisualBasic.Compatibility.VB6.ToolStripMenuItemArray mnuUnitCommandItem
-        //{
-        //    [MethodImpl(MethodImplOptions.Synchronized)]
-        //    get
-        //    {
-        //        return _mnuUnitCommandItem;
-        //    }
-
-        //    [MethodImpl(MethodImplOptions.Synchronized)]
-        //    set
-        //    {
-        //        if (_mnuUnitCommandItem != null)
-        //        {
-        //            _mnuUnitCommandItem.Click -= mnuUnitCommandItem_Click;
-        //        }
-
-        //        _mnuUnitCommandItem = value;
-        //        if (_mnuUnitCommandItem != null)
-        //        {
-        //            _mnuUnitCommandItem.Click += mnuUnitCommandItem_Click;
-        //        }
-        //    }
-        //}
-
-        //public Microsoft.VisualBasic.Compatibility.VB6.PictureBoxArray picBuf;
-        //private Microsoft.VisualBasic.Compatibility.VB6.PanelArray _picMain;
-
-        //public Microsoft.VisualBasic.Compatibility.VB6.PanelArray picMain
-        //{
-        //    [MethodImpl(MethodImplOptions.Synchronized)]
-        //    get
-        //    {
-        //        return _picMain;
-        //    }
-
-        //    [MethodImpl(MethodImplOptions.Synchronized)]
-        //    set
-        //    {
-        //        if (_picMain != null)
-        //        {
-        //            _picMain.DoubleClick -= picMain_DoubleClick;
-        //            _picMain.MouseDown -= picMain_MouseDown;
-        //            _picMain.MouseMove -= picMain_MouseMove;
-        //            _picMain.MouseUp -= picMain_MouseUp;
-        //        }
-
-        //        _picMain = value;
-        //        if (_picMain != null)
-        //        {
-        //            _picMain.DoubleClick += picMain_DoubleClick;
-        //            _picMain.MouseDown += picMain_MouseDown;
-        //            _picMain.MouseMove += picMain_MouseMove;
-        //            _picMain.MouseUp += picMain_MouseUp;
-        //        }
-        //    }
-        //}
-
-        //public Microsoft.VisualBasic.Compatibility.VB6.PictureBoxArray picStretchedTmp;
-        //public Microsoft.VisualBasic.Compatibility.VB6.PictureBoxArray picTmp32;
         // メモ: 以下のプロシージャは Windows フォーム デザイナで必要です。
         // Windows フォーム デザイナを使って変更できます。
         // コード エディタを使用して、変更しないでください。
@@ -159,9 +68,8 @@ namespace SRCTestForm
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
             this.ToolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.MainMenu = new System.Windows.Forms.MenuStrip();
-            this.mnuUnitCommand = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnuMapCommand = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuUnitCommand = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.mnuMapCommand = new System.Windows.Forms.ContextMenuStrip(this.components);
             this._picStretchedTmp_1 = new System.Windows.Forms.PictureBox();
             this._picStretchedTmp_0 = new System.Windows.Forms.PictureBox();
             this._picMain_1 = new System.Windows.Forms.Panel();
@@ -185,7 +93,6 @@ namespace SRCTestForm
             this.picTmp = new System.Windows.Forms.PictureBox();
             this.picBack = new System.Windows.Forms.PictureBox();
             this._picMain_0 = new System.Windows.Forms.Panel();
-            this.MainMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this._picStretchedTmp_1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._picStretchedTmp_0)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._picBuf_0)).BeginInit();
@@ -206,29 +113,17 @@ namespace SRCTestForm
             ((System.ComponentModel.ISupportInitialize)(this.picBack)).BeginInit();
             this.SuspendLayout();
             // 
-            // MainMenu
-            // 
-            this.MainMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.mnuUnitCommand,
-            this.mnuMapCommand});
-            this.MainMenu.Location = new System.Drawing.Point(0, 0);
-            this.MainMenu.Name = "MainMenu";
-            this.MainMenu.Size = new System.Drawing.Size(508, 24);
-            this.MainMenu.TabIndex = 22;
-            // 
             // mnuUnitCommand
             // 
             this.mnuUnitCommand.Name = "mnuUnitCommand";
-            this.mnuUnitCommand.Size = new System.Drawing.Size(88, 20);
+            this.mnuUnitCommand.Size = new System.Drawing.Size(61, 4);
             this.mnuUnitCommand.Text = "ユニットコマンド";
-            this.mnuUnitCommand.Visible = false;
             // 
             // mnuMapCommand
             // 
             this.mnuMapCommand.Name = "mnuMapCommand";
-            this.mnuMapCommand.Size = new System.Drawing.Size(79, 20);
+            this.mnuMapCommand.Size = new System.Drawing.Size(61, 4);
             this.mnuMapCommand.Text = "マップコマンド";
-            this.mnuMapCommand.Visible = false;
             // 
             // _picStretchedTmp_1
             // 
@@ -569,7 +464,6 @@ namespace SRCTestForm
             this.Controls.Add(this.picTmp);
             this.Controls.Add(this.picBack);
             this.Controls.Add(this._picMain_0);
-            this.Controls.Add(this.MainMenu);
             this.Cursor = System.Windows.Forms.Cursors.Default;
             this.Font = new System.Drawing.Font("ＭＳ 明朝", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -584,8 +478,6 @@ namespace SRCTestForm
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmMain_FormClosing);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.frmMain_KeyDown);
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.frmMain_MouseMove);
-            this.MainMenu.ResumeLayout(false);
-            this.MainMenu.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this._picStretchedTmp_1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this._picStretchedTmp_0)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this._picBuf_0)).EndInit();

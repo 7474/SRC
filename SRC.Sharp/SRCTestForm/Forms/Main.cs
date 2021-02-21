@@ -152,9 +152,10 @@ namespace SRCTestForm
         // マップコマンドメニューをクリック
         public void mnuMapCommandItem_Click(object eventSender, EventArgs eventArgs)
         {
-            Program.Log.LogDebug("mnuMapCommandItem_Click {0}",
-                JsonConvert.SerializeObject(eventSender),
-                JsonConvert.SerializeObject(eventArgs));
+            Program.Log.LogDebug("mnuMapCommandItem_Click {0}", JsonConvert.SerializeObject(eventArgs));
+
+            var uiCommand = (eventSender as ToolStripItem)?.Tag;
+            if (uiCommand != null) { Program.Log.LogDebug(JsonConvert.SerializeObject(uiCommand)); }
 
             //int Index = mnuMapCommandItem.GetIndex((ToolStripMenuItem)eventSender);
             //if (GUI.GetAsyncKeyState(GUI.RButtonID) == 1)
@@ -171,9 +172,10 @@ namespace SRCTestForm
         // ユニットコマンドメニューをクリック
         public void mnuUnitCommandItem_Click(object eventSender, EventArgs eventArgs)
         {
-            Program.Log.LogDebug("mnuUnitCommandItem_Click {0}",
-                JsonConvert.SerializeObject(eventSender),
-                JsonConvert.SerializeObject(eventArgs));
+            Program.Log.LogDebug("mnuUnitCommandItem_Click {0}", JsonConvert.SerializeObject(eventArgs));
+
+            var uiCommand = (eventSender as ToolStripItem)?.Tag;
+            if (uiCommand != null) { Program.Log.LogDebug(JsonConvert.SerializeObject(uiCommand)); }
 
             //int Index = mnuUnitCommandItem.GetIndex((ToolStripMenuItem)eventSender);
             //if (GUI.GetAsyncKeyState(GUI.RButtonID) == 1)
@@ -324,10 +326,10 @@ namespace SRCTestForm
             if (Button == GuiButton.Right)
             {
                 GUI.ShowMapCommandMenu(new List<UiCommand>
-                        {
-new                            UiCommand(1, "test1"),
-new                            UiCommand(2, "test2"),
-                        });
+                {
+                    new UiCommand(1, "test1"),
+                    new UiCommand(2, "test2"),
+                });
                 // 右クリック
                 switch (Commands.CommandState ?? "")
                 {
