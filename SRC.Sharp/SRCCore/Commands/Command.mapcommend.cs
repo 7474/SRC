@@ -3,126 +3,134 @@
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
 
+using Newtonsoft.Json;
+using System;
+
 namespace SRCCore.Commands
 {
     public partial class Command
     {
-        //// マップコマンド実行
-        //public void MapCommand(int idx)
-        //{
-        //    CommandState = "ユニット選択";
-        //    switch (idx)
-        //    {
-        //        case EndTurnCmdID: // ターン終了
-        //            {
-        //                if (ViewMode)
-        //                {
-        //                    ViewMode = false;
-        //                    return;
-        //                }
+        // マップコマンド実行
+        public void MapCommand(UiCommand command)
+        {
+            CommandState = "ユニット選択";
+            switch (command.Id)
+            {
+                default:
+                    throw new NotSupportedException(JsonConvert.SerializeObject(command));
+            }
+            //    switch (idx)
+            //    {
+            //        case EndTurnCmdID: // ターン終了
+            //            {
+            //                if (ViewMode)
+            //                {
+            //                    ViewMode = false;
+            //                    return;
+            //                }
 
-        //                EndTurnCommand();
-        //                break;
-        //            }
+            //                EndTurnCommand();
+            //                break;
+            //            }
 
-        //        case DumpCmdID: // 中断
-        //            {
-        //                DumpCommand();
-        //                break;
-        //            }
+            //        case DumpCmdID: // 中断
+            //            {
+            //                DumpCommand();
+            //                break;
+            //            }
 
-        //        case UnitListCmdID: // 部隊表
-        //            {
-        //                UnitListCommand();
-        //                break;
-        //            }
+            //        case UnitListCmdID: // 部隊表
+            //            {
+            //                UnitListCommand();
+            //                break;
+            //            }
 
-        //        case SearchSpecialPowerCmdID: // スペシャルパワー検索
-        //            {
-        //                SearchSpecialPowerCommand();
-        //                break;
-        //            }
+            //        case SearchSpecialPowerCmdID: // スペシャルパワー検索
+            //            {
+            //                SearchSpecialPowerCommand();
+            //                break;
+            //            }
 
-        //        case GlobalMapCmdID: // 全体マップ
-        //            {
-        //                GlobalMapCommand();
-        //                break;
-        //            }
+            //        case GlobalMapCmdID: // 全体マップ
+            //            {
+            //                GlobalMapCommand();
+            //                break;
+            //            }
 
-        //        case OperationObjectCmdID: // 作戦目的
-        //            {
-        //                GUI.LockGUI();
-        //                Event_Renamed.HandleEvent("勝利条件");
-        //                GUI.RedrawScreen();
-        //                GUI.UnlockGUI();
-        //                break;
-        //            }
+            //        case OperationObjectCmdID: // 作戦目的
+            //            {
+            //                GUI.LockGUI();
+            //                Event_Renamed.HandleEvent("勝利条件");
+            //                GUI.RedrawScreen();
+            //                GUI.UnlockGUI();
+            //                break;
+            //            }
 
-        //        case var @case when MapCommand1CmdID <= @case && @case <= MapCommand10CmdID: // マップコマンド
-        //            {
-        //                GUI.LockGUI();
-        //                Event_Renamed.HandleEvent(MapCommandLabelList[idx - MapCommand1CmdID + 1]);
-        //                GUI.UnlockGUI();
-        //                break;
-        //            }
+            //        case var @case when MapCommand1CmdID <= @case && @case <= MapCommand10CmdID: // マップコマンド
+            //            {
+            //                GUI.LockGUI();
+            //                Event_Renamed.HandleEvent(MapCommandLabelList[idx - MapCommand1CmdID + 1]);
+            //                GUI.UnlockGUI();
+            //                break;
+            //            }
 
-        //        case AutoDefenseCmdID: // 自動反撃モード
-        //            {
-        //                // UPGRADE_ISSUE: Control mnuMapCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-        //                GUI.MainForm.mnuMapCommandItem(AutoDefenseCmdID).Checked = !GUI.MainForm.mnuMapCommandItem(AutoDefenseCmdID).Checked;
-        //                // UPGRADE_ISSUE: Control mnuMapCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-        //                if (GUI.MainForm.mnuMapCommandItem(AutoDefenseCmdID).Checked)
-        //                {
-        //                    string argini_section = "Option";
-        //                    string argini_entry = "AutoDefense";
-        //                    string argini_data = "On";
-        //                    GeneralLib.WriteIni(ref argini_section, ref argini_entry, ref argini_data);
-        //                }
-        //                else
-        //                {
-        //                    string argini_section1 = "Option";
-        //                    string argini_entry1 = "AutoDefense";
-        //                    string argini_data1 = "Off";
-        //                    GeneralLib.WriteIni(ref argini_section1, ref argini_entry1, ref argini_data1);
-        //                }
+            //        case AutoDefenseCmdID: // 自動反撃モード
+            //            {
+            //                // UPGRADE_ISSUE: Control mnuMapCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+            //                GUI.MainForm.mnuMapCommandItem(AutoDefenseCmdID).Checked = !GUI.MainForm.mnuMapCommandItem(AutoDefenseCmdID).Checked;
+            //                // UPGRADE_ISSUE: Control mnuMapCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+            //                if (GUI.MainForm.mnuMapCommandItem(AutoDefenseCmdID).Checked)
+            //                {
+            //                    string argini_section = "Option";
+            //                    string argini_entry = "AutoDefense";
+            //                    string argini_data = "On";
+            //                    GeneralLib.WriteIni(ref argini_section, ref argini_entry, ref argini_data);
+            //                }
+            //                else
+            //                {
+            //                    string argini_section1 = "Option";
+            //                    string argini_entry1 = "AutoDefense";
+            //                    string argini_data1 = "Off";
+            //                    GeneralLib.WriteIni(ref argini_section1, ref argini_entry1, ref argini_data1);
+            //                }
 
-        //                break;
-        //            }
+            //                break;
+            //            }
 
-        //        case ConfigurationCmdID: // 設定変更
-        //            {
-        //                // UPGRADE_ISSUE: Load ステートメント はサポートされていません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="B530EFF2-3132-48F8-B8BC-D88AF543D321"' をクリックしてください。
-        //                Load(My.MyProject.Forms.frmConfiguration);
-        //                My.MyProject.Forms.frmConfiguration.Left = Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsX((Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(Screen.PrimaryScreen.Bounds.Width) - Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(My.MyProject.Forms.frmConfiguration.Width)) / 2d);
-        //                My.MyProject.Forms.frmConfiguration.Top = Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsY((Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(Screen.PrimaryScreen.Bounds.Height) - Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(My.MyProject.Forms.frmConfiguration.Height)) / 3d);
-        //                My.MyProject.Forms.frmConfiguration.ShowDialog();
-        //                My.MyProject.Forms.frmConfiguration.Close();
-        //                // UPGRADE_NOTE: オブジェクト frmConfiguration をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-        //                My.MyProject.Forms.frmConfiguration = null;
-        //                break;
-        //            }
+            //        case ConfigurationCmdID: // 設定変更
+            //            {
+            //                // UPGRADE_ISSUE: Load ステートメント はサポートされていません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="B530EFF2-3132-48F8-B8BC-D88AF543D321"' をクリックしてください。
+            //                Load(My.MyProject.Forms.frmConfiguration);
+            //                My.MyProject.Forms.frmConfiguration.Left = Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsX((Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(Screen.PrimaryScreen.Bounds.Width) - Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(My.MyProject.Forms.frmConfiguration.Width)) / 2d);
+            //                My.MyProject.Forms.frmConfiguration.Top = Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsY((Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(Screen.PrimaryScreen.Bounds.Height) - Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(My.MyProject.Forms.frmConfiguration.Height)) / 3d);
+            //                My.MyProject.Forms.frmConfiguration.ShowDialog();
+            //                My.MyProject.Forms.frmConfiguration.Close();
+            //                // UPGRADE_NOTE: オブジェクト frmConfiguration をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
+            //                My.MyProject.Forms.frmConfiguration = null;
+            //                break;
+            //            }
 
-        //        case RestartCmdID: // リスタート
-        //            {
-        //                RestartCommand();
-        //                break;
-        //            }
+            //        case RestartCmdID: // リスタート
+            //            {
+            //                RestartCommand();
+            //                break;
+            //            }
 
-        //        case QuickLoadCmdID: // クイックロード
-        //            {
-        //                QuickLoadCommand();
-        //                break;
-        //            }
+            //        case QuickLoadCmdID: // クイックロード
+            //            {
+            //                QuickLoadCommand();
+            //                break;
+            //            }
 
-        //        case QuickSaveCmdID: // クイックセーブ
-        //            {
-        //                QuickSaveCommand();
-        //                break;
-        //            }
-        //    }
+            //        case QuickSaveCmdID: // クイックセーブ
+            //            {
+            //                QuickSaveCommand();
+            //                break;
+            //            }
+            //    }
 
-        //    SRC.IsScenarioFinished = false;
-        //}
+            SRC.IsScenarioFinished = false;
+        }
 
         //// 「ターン終了」コマンド
         //// MOD START MARGE

@@ -1,4 +1,5 @@
 ﻿using SRCCore.Events;
+using SRCCore.Maps;
 using SRCCore.Units;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,76 @@ namespace SRCCore.Commands
     // ユニット＆マップコマンドの実行を行うモジュール
     public partial class Command
     {
+        public void ProceedInput(GuiButton button, MapCell cell, Unit unit)
+        {
+            if (button == GuiButton.Left)
+            {
+                // 左クリック
+                switch (CommandState ?? "")
+                {
+                    case "マップコマンド":
+                        {
+                            CommandState = "ユニット選択";
+                            break;
+                        }
+
+                    case "ユニット選択":
+                        if (unit != null)
+                        {
+                            ProceedCommand();
+                        }
+                        break;
+                    case "ターゲット選択":
+                    case "移動後ターゲット選択":
+                        if (unit != null)
+                        {
+                            ProceedCommand();
+                        }
+                        break;
+                    case "コマンド選択":
+                        CancelCommand();
+                        // もし新しいクリック地点がユニットなら、ユニット選択の処理を進める
+                        if (unit != null)
+                        {
+                            ProceedCommand();
+                        }
+                        break;
+
+                    case "移動後コマンド選択":
+                        CancelCommand();
+                        break;
+
+                    default:
+                        ProceedCommand();
+                        break;
+                }
+            }
+
+            if (button == GuiButton.Right)
+            {
+                GUI.ShowMapCommandMenu(new List<UiCommand>
+                {
+                    new UiCommand(1, "test1"),
+                    new UiCommand(2, "test2"),
+                });
+                // 右クリック
+                switch (CommandState ?? "")
+                {
+                    case "マップコマンド":
+                        CommandState = "ユニット選択";
+                        break;
+
+                    case "ユニット選択":
+                        ProceedCommand(true);
+                        break;
+
+                    default:
+                        CancelCommand();
+                        break;
+                }
+            }
+        }
+
         // コマンドの処理を進める
         // by_cancel = True の場合はコマンドをキャンセルした場合の処理
         public void ProceedCommand(bool by_cancel = false)

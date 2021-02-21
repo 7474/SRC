@@ -11,15 +11,24 @@ namespace SRCCore.Commands
     public partial class Command
     {
         // ユニットコマンドを実行
-        public void UnitCommand(int idx)
+        public void UnitCommand(UiCommand command)
         {
-            //int prev_used_action;
-            //PrevCommand = SelectedCommand;
-            //{
-            //    var withBlock = SelectedUnit;
-            //    prev_used_action = withBlock.UsedAction;
-            //    switch (idx)
-            //    {
+            PrevCommand = SelectedCommand;
+            var unit = SelectedUnit;
+            var prev_used_action = unit.UsedAction;
+            switch (command.Id)
+            {
+                default:
+                    // なんらかの原因により、ユニットコマンドの選択がうまくいかなかった場合は
+                    // 移動後のコマンド選択をやり直す
+                    if (CommandState == "移動後コマンド選択")
+                    {
+                        // XXX
+                        //Application.DoEvents();
+                        return;
+                    }
+                    break;
+            }
             //        case MoveCmdID: // 移動
             //            {
             //                // なんらかの原因により、ユニットコマンドの選択がうまくいかなかった場合は
@@ -403,18 +412,6 @@ namespace SRCCore.Commands
             //                break;
             //            }
 
-            //        default:
-            //            {
-            //                // なんらかの原因により、ユニットコマンドの選択がうまくいかなかった場合は
-            //                // 移動後のコマンド選択をやり直す
-            //                if (CommandState == "移動後コマンド選択")
-            //                {
-            //                    Application.DoEvents();
-            //                    return;
-            //                }
-
-            //                break;
-            //            }
             //    }
             //}
         }

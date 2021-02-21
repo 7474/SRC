@@ -145,19 +145,22 @@ namespace SRCTestForm
         {
             Program.Log.LogDebug("mnuMapCommandItem_Click {0}", JsonConvert.SerializeObject(eventArgs));
 
-            var uiCommand = (eventSender as ToolStripItem)?.Tag;
-            if (uiCommand != null) { Program.Log.LogDebug(JsonConvert.SerializeObject(uiCommand)); }
+            var uiCommand = (eventSender as ToolStripItem)?.Tag as UiCommand;
+            if (uiCommand != null) { 
+                Program.Log.LogDebug(JsonConvert.SerializeObject(uiCommand));
 
-            //int Index = mnuMapCommandItem.GetIndex((ToolStripMenuItem)eventSender);
-            //if (GUI.GetAsyncKeyState(GUI.RButtonID) == 1)
-            //{
-            //    // 右ボタンでキャンセル
-            //    Commands.CancelCommand();
-            //    return;
-            //}
+                //var Shift = ModifierKeys.HasFlag(Keys.Shift);
+                //int Index = mnuMapCommandItem.GetIndex((ToolStripMenuItem)eventSender);
+                //if (GUI.GetAsyncKeyState(GUI.RButtonID) == 1)
+                //{
+                //    // 右ボタンでキャンセル
+                //    Commands.CancelCommand();
+                //    return;
+                //}
 
-            //// マップコマンドを実行
-            //Commands.MapCommand(Index);
+                //// マップコマンドを実行
+                Commands.MapCommand(uiCommand);
+            }
         }
 
         // ユニットコマンドメニューをクリック
@@ -165,19 +168,22 @@ namespace SRCTestForm
         {
             Program.Log.LogDebug("mnuUnitCommandItem_Click {0}", JsonConvert.SerializeObject(eventArgs));
 
-            var uiCommand = (eventSender as ToolStripItem)?.Tag;
-            if (uiCommand != null) { Program.Log.LogDebug(JsonConvert.SerializeObject(uiCommand)); }
+            var uiCommand = (eventSender as ToolStripItem)?.Tag as UiCommand;
+            if (uiCommand != null)
+            {
+                Program.Log.LogDebug(JsonConvert.SerializeObject(uiCommand));
 
-            //int Index = mnuUnitCommandItem.GetIndex((ToolStripMenuItem)eventSender);
-            //if (GUI.GetAsyncKeyState(GUI.RButtonID) == 1)
-            //{
-            //    // 右ボタンでキャンセル
-            //    Commands.CancelCommand();
-            //    return;
-            //}
+                //int Index = mnuUnitCommandItem.GetIndex((ToolStripMenuItem)eventSender);
+                //if (GUI.GetAsyncKeyState(GUI.RButtonID) == 1)
+                //{
+                //    // 右ボタンでキャンセル
+                //    Commands.CancelCommand();
+                //    return;
+                //}
 
-            //// ユニットコマンドを実行
-            //Commands.UnitCommand(Index);
+                // ユニットコマンドを実行
+                Commands.UnitCommand(uiCommand);
+            }
         }
 
         public void ShowUnitCommandMenu(IList<UiCommand> commands)
@@ -279,8 +285,7 @@ namespace SRCTestForm
         {
             Program.Log.LogDebug("picMain_Click {0}", JsonConvert.SerializeObject(eventArgs));
 
-            GuiButton Button = ResolveMouseButton(eventArgs);
-            //var Shift = ModifierKeys.HasFlag(Keys.Shift);
+            GuiButton button = ResolveMouseButton(eventArgs);
             var X = eventArgs.X;
             var Y = eventArgs.Y;
 
@@ -297,76 +302,11 @@ namespace SRCTestForm
                 && xx <= Map.MapWidth
                 && 1 <= yy
                 && yy <= Map.MapHeight;
+            var mapCell = mapCellClick ? Map.MapData[xx, yy] : null;
             var cellUnit = mapCellClick ? Map.MapDataForUnit[xx, yy] : null;
             Program.Log.LogDebug("xx:{0} yy:{1} Unit:{2}", xx, yy, cellUnit?.ID);
 
-            // TODO Commandsの側に追い出す
-            if (Button == GuiButton.Left)
-            {
-                // 左クリック
-                switch (Commands.CommandState ?? "")
-                {
-                    case "マップコマンド":
-                        {
-                            Commands.CommandState = "ユニット選択";
-                            break;
-                        }
-
-                    case "ユニット選択":
-                        if (mapCellClick && cellUnit != null)
-                        {
-                            Commands.ProceedCommand();
-                        }
-                        break;
-                    case "ターゲット選択":
-                    case "移動後ターゲット選択":
-                        if (mapCellClick && cellUnit != null)
-                        {
-                            Commands.ProceedCommand();
-                        }
-                        break;
-                    case "コマンド選択":
-                        Commands.CancelCommand();
-                        // もし新しいクリック地点がユニットなら、ユニット選択の処理を進める
-                        if (mapCellClick && cellUnit != null)
-                        {
-                            Commands.ProceedCommand();
-                        }
-                        break;
-
-                    case "移動後コマンド選択":
-                        Commands.CancelCommand();
-                        break;
-
-                    default:
-                        Commands.ProceedCommand();
-                        break;
-                }
-            }
-
-            if (Button == GuiButton.Right)
-            {
-                GUI.ShowMapCommandMenu(new List<UiCommand>
-                {
-                    new UiCommand(1, "test1"),
-                    new UiCommand(2, "test2"),
-                });
-                // 右クリック
-                switch (Commands.CommandState ?? "")
-                {
-                    case "マップコマンド":
-                        Commands.CommandState = "ユニット選択";
-                        break;
-
-                    case "ユニット選択":
-                        Commands.ProceedCommand(true);
-                        break;
-
-                    default:
-                        Commands.CancelCommand();
-                        break;
-                }
-            }
+            Commands.ProceedInput(button, mapCell, cellUnit);
         }
 
         // マップ画面上でダブルクリック
