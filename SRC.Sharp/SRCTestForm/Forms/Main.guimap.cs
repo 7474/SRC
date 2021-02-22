@@ -228,9 +228,25 @@ namespace SRCTestForm
         }
         public void SetupBackground(string draw_mode, string draw_option, int filter_color, double filter_trans_par)
         {
+            Map.IsMapDirty = false;
+            GUI.IsPictureVisible = false;
+            GUI.IsCursorVisible = false;
+
             // TODO Impl
             using (var g = Graphics.FromImage(picBack.Image))
             {
+                switch (draw_option ?? "")
+                {
+                    case "ステータス":
+                        g.FillRectangle(Brushes.Black, 0, 0, picBack.Image.Width, picBack.Image.Height);
+                        return;
+
+                    default:
+                        GUI.MapX = (GUI.MainWidth / 2 + 1);
+                        GUI.MapY = (GUI.MainHeight / 2 + 1);
+                        break;
+                }
+
                 // 各マスのマップ画像を表示
                 for (var x = 1; x <= Map.MapWidth; x++)
                 {
@@ -268,6 +284,12 @@ namespace SRCTestForm
                         g.DrawLine(MapLinePen, 0, y * MapCellPx, MapPWidth, y * MapCellPx);
                     }
                 }
+            }
+
+            // 画面を更新
+            if (!string.IsNullOrEmpty(Map.MapFileName) && string.IsNullOrEmpty(draw_option))
+            {
+                GUI.RefreshScreen();
             }
         }
 
