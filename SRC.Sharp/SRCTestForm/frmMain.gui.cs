@@ -3,6 +3,7 @@ using SRCCore;
 using SRCCore.Commands;
 using SRCCore.Lib;
 using SRCCore.Units;
+using SRCTestForm.Resoruces;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -81,15 +82,20 @@ namespace SRCTestForm
         private frmMessage frmMessage;
         private frmMain MainForm;
 
+        private ImageBuffer imageBuffer;
+
         public void LoadMainFormAndRegisterFlash()
         {
+            imageBuffer = new ImageBuffer(SRC);
+
             MainForm = new frmMain()
             {
                 SRC = SRC,
             };
             SRC.GUIMap = MainForm;
             SRC.GUIStatus = MainForm;
-            MainForm.Init();
+            MainForm.Init(imageBuffer);
+
             Program.Log.LogDebug("LoadMainFormAndRegisterFlash");
         }
 
@@ -815,6 +821,8 @@ namespace SRCTestForm
             frmNowLoading.Close();
             frmNowLoading.Dispose();
             frmNowLoading = null;
+            // XXX シナリオのパスが決まってるタイミングでという意味でファイルシステムの状態を再処理してる。カス。
+            imageBuffer.InitFileSystemInfo();
         }
 
         public void DisplayLoadingProgress()

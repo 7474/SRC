@@ -50,12 +50,6 @@ namespace SRCTestForm
             double trans_par;
             string tnum, tdir, tname;
 
-            // 初回実行時に各種情報の初期化を行う
-            if (!init_draw_pitcure)
-            {
-                InitFileSystemInfo();
-            }
-
             // ダミーのファイル名？
             switch (fname ?? "")
             {
@@ -342,6 +336,8 @@ namespace SRCTestForm
             //            pic_option2 = Strings.Trim(pic_option2);
 
             #endregion
+
+
             on_msg_window = true;
 
             // 描画先を設定
@@ -818,13 +814,8 @@ namespace SRCTestForm
             #endregion
 
             // 各フォルダを検索する
-            var filePath = ResolveBitmapFile(fname);
-            // TODO Map ディレクトリ
-
-            if (!string.IsNullOrEmpty(filePath))
-            {
-                pic.Image = Image.FromFile(filePath);
-            }
+            var image = imageBuffer.Get(fname);
+            pic.Image = image;
 
             #region TODO
             //    // 表示を中止
@@ -1835,113 +1826,6 @@ namespace SRCTestForm
 
             DrawPictureRet = true;
             return DrawPictureRet;
-        }
-
-        private void InitFileSystemInfo()
-        {
-            // 各フォルダにBitmapフォルダがあるかチェック
-            var baseDirectories = new List<string>()
-            {
-                SRC.ScenarioPath,
-                SRC.ExtDataPath,
-                SRC.ExtDataPath2,
-                SRC.AppPath,
-            }.Where(x => !string.IsNullOrEmpty(FileSystem.Dir(x, FileAttribute.Directory)))
-            .ToList();
-            var subDirectories = new List<string>()
-            {
-                Path.Combine("Bitmap"),
-                Path.Combine("Bitmap", "Anime"),
-                Path.Combine("Bitmap", "Event"),
-                Path.Combine("Bitmap", "Cutin"),
-                Path.Combine("Bitmap", "Pilot"),
-                Path.Combine("Bitmap", "Unit"),
-                Path.Combine("Bitmap", "Map"),
-            };
-            existBitmapDirectories = baseDirectories
-                .SelectMany(x => subDirectories.Select(y => Path.Combine(x, y)))
-                .Where(x => !string.IsNullOrEmpty(FileSystem.Dir(x, FileAttribute.Directory)))
-                .ToList();
-            existMapBitmapDirectories = existBitmapDirectories.Where(x => x.EndsWith("Map")).ToList();
-
-            //// 画面の色数を参照
-            //// UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-            //display_byte_pixel = GetDeviceCaps(MainForm.picMain(0).hDC, BITSPIXEL) / 8;
-            init_draw_pitcure = true;
-        }
-
-        private string ResolveMapBitmapFile(string fname, string tdir, string tname)
-        {
-            //if (scenario_map_bitmap_dir_exists)
-            //{
-            //    if (!string.IsNullOrEmpty(tdir))
-            //    {
-            //        string argfname18 = SRC.ScenarioPath + @"Bitmap\Map\" + tdir + fname;
-            //        if (GeneralLib.FileExists(ref argfname18))
-            //        {
-            //            fpath = SRC.ScenarioPath + @"Bitmap\Map\" + tdir;
-            //            last_path = fpath;
-            //            goto FoundPicture;
-            //        }
-
-            //        string argfname19 = SRC.ScenarioPath + @"Bitmap\Map\" + tdir + tname;
-            //        if (GeneralLib.FileExists(ref argfname19))
-            //        {
-            //            fname = tname;
-            //            fpath = SRC.ScenarioPath + @"Bitmap\Map\" + tdir;
-            //            last_path = fpath;
-            //            // 登録を避けるため
-            //            in_history = true;
-            //            goto FoundPicture;
-            //        }
-
-            //        string argfname20 = SRC.ScenarioPath + @"Bitmap\Map\" + tname;
-            //        if (GeneralLib.FileExists(ref argfname20))
-            //        {
-            //            fname = tname;
-            //            fpath = SRC.ScenarioPath + @"Bitmap\Map\";
-            //            last_path = fpath;
-            //            // 登録を避けるため
-            //            in_history = true;
-            //            goto FoundPicture;
-            //        }
-            //    }
-
-            //    string argfname21 = SRC.ScenarioPath + @"Bitmap\Map\" + fname;
-            //    if (GeneralLib.FileExists(ref argfname21))
-            //    {
-            //        fpath = SRC.ScenarioPath + @"Bitmap\Map\";
-            //        last_path = fpath;
-            //        goto FoundPicture;
-            //    }
-            ////}
-            throw new NotImplementedException();
-        }
-
-        private string ResolveBitmapFile(string fname)
-        {
-            var filePath = existBitmapDirectories
-                .Select(x => Path.Combine(x, fname))
-                .FirstOrDefault(x => GeneralLib.FileExists(x));
-
-            // TODO impl
-            //if (string.IsNullOrEmpty(filePath))
-            //{
-            //    // 見つからなかった……
-
-            //    // 履歴に記録しておく
-            //    fpath_history.Add("", fname);
-            //}
-            //else
-            //{
-            //    // 履歴に記録しておく
-            //    if (!in_history)
-            //    {
-            //        fpath_history.Add(fpath, fname);
-            //    }
-            //}
-
-            return filePath;
         }
     }
 }

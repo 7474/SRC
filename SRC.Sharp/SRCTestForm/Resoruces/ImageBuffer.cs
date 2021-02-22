@@ -1,4 +1,5 @@
 ﻿using SRCCore;
+using SRCCore.Lib;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -16,9 +17,13 @@ namespace SRCTestForm.Resoruces
         private IDictionary<string, Image> buffer = new Dictionary<string, Image>();
         private SRC SRC;
 
+        private IList<string> existBitmapDirectories;
+        private IList<string> existMapBitmapDirectories;
+
         public ImageBuffer(SRC src)
         {
             SRC = src;
+            InitFileSystemInfo();
         }
 
         public bool Load(string type, string name)
@@ -30,6 +35,18 @@ namespace SRCTestForm.Resoruces
             }
             var image = NormalizeImage(path, Image.FromFile(path));
             buffer[ToKey(type, name)] = image;
+            return true;
+        }
+
+        public bool Load(string name)
+        {
+            var path = SearchFile(name);
+            if (string.IsNullOrEmpty(path))
+            {
+                return false;
+            }
+            var image = NormalizeImage(path, Image.FromFile(path));
+            buffer[ToKey(name)] = image;
             return true;
         }
 
@@ -79,9 +96,31 @@ namespace SRCTestForm.Resoruces
             }
         }
 
+        public Image Get(string name)
+        {
+            var key = ToKey(name);
+            if (buffer.ContainsKey(key))
+            {
+                return buffer[key];
+            }
+            if (Load(name))
+            {
+                return buffer[key];
+            }
+            else
+            {
+                return null;
+            }
+        }
+
         public string ToKey(string type, string name)
         {
-            return Path.Combine(type, name);
+            return ToKey(Path.Combine(type, name));
+        }
+
+        public string ToKey(string name)
+        {
+            return name.ToLower();
         }
 
         public string SearchFile(string type, string name)
@@ -91,15 +130,51 @@ namespace SRCTestForm.Resoruces
                 .FirstOrDefault(x => File.Exists(x));
         }
 
+        public string SearchFile(string name)
+        {
+            return ImageFilders()
+                .Select(x => Path.Combine(x, name))
+                .FirstOrDefault(x => File.Exists(x));
+        }
+
         private IEnumerable<string> ImageFilders()
         {
-            return new string[]
+            return existBitmapDirectories;
+        }
+
+        public void InitFileSystemInfo()
+        {
+            // 各フォルダにBitmapフォルダがあるかチェック
+            var baseDirectories = new List<string>()
             {
                 SRC.ScenarioPath,
                 SRC.ExtDataPath,
                 SRC.ExtDataPath2,
                 SRC.AppPath,
-            }.Select(x => Path.Combine(x, "Bitmap"));
+            }.Where(x => !string.IsNullOrEmpty(FileSystem.Dir(x, FileAttribute.Directory)))
+            .ToList();
+
+            var subDirectories = new List<string>()
+            {
+                Path.Combine("Bitmap"),
+                Path.Combine("Bitmap", "Anime"),
+                Path.Combine("Bitmap", "Event"),
+                Path.Combine("Bitmap", "Cutin"),
+                Path.Combine("Bitmap", "Pilot"),
+                Path.Combine("Bitmap", "Unit"),
+                Path.Combine("Bitmap", "Map"),
+            };
+
+            // XXX 走査順
+            existBitmapDirectories = subDirectories
+                .SelectMany(x => baseDirectories.Select(y => Path.Combine(y, x)))
+                .Where(x => !string.IsNullOrEmpty(FileSystem.Dir(x, FileAttribute.Directory)))
+                .ToList();
+            existMapBitmapDirectories = existBitmapDirectories.Where(x => x.EndsWith("Map")).ToList();
+
+            //// 画面の色数を参照
+            //display_byte_pixel = GetDeviceCaps(MainForm.picMain(0).hDC, BITSPIXEL) / 8;
+            //init_draw_pitcure = true;
         }
     }
 }

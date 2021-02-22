@@ -30,10 +30,10 @@ namespace SRCTestForm
         private Image mainBufferBack;
         private ImageBuffer imageBuffer;
 
-        public void Init()
+        public void Init(ImageBuffer imageBuffer)
         {
             InitMainBuffer(1, 1);
-            imageBuffer = new ImageBuffer(SRC);
+            this.imageBuffer = imageBuffer;
         }
 
         private void InitMainBuffer(int w, int h)
