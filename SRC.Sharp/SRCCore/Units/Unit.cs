@@ -14,6 +14,7 @@ namespace SRCCore.Units
     {
         private SRC SRC { get; }
         private Map Map => SRC.Map;
+        private IGUI GUI => SRC.GUI;
 
         public Unit(SRC src)
         {
@@ -54,7 +55,7 @@ namespace SRCCore.Units
         // 旧形態：分離ユニットが合体前に取っていた形態
         // 離脱：Leaveコマンドにより戦線を離脱。Organizeコマンドでも表示されない
         // UPGRADE_NOTE: Status は Status_Renamed にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
-        public string Status_Renamed;
+        public string Status;
 
         //// ユニットに対して使用されているスペシャルパワー
         //private Collection colSpecialPowerInEffect = new Collection();
@@ -116,11 +117,11 @@ namespace SRCCore.Units
         // アビリティの残り使用回数
         private double[] dblStock;
 
-        //// 特殊能力
-        //private Collection colFeature = new Collection();
+        // 特殊能力
+        private SrcCollection<FeatureData> colFeature = new SrcCollection<FeatureData>();
 
-        //// 特殊能力(必要条件を満たさないものを含む)
-        //private Collection colAllFeature = new Collection();
+        // 特殊能力(必要条件を満たさないものを含む)
+        private SrcCollection<FeatureData> colAllFeature = new SrcCollection<FeatureData>();
 
         // 付加された特殊能力数
         public int AdditionalFeaturesNum;

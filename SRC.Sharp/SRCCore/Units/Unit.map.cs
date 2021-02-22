@@ -11,8 +11,10 @@ namespace SRCCore.Units
         // ユニットを(new_x,new_y)に配置
         public void StandBy(int new_x, int new_y, string smode = "")
         {
+            // XXX
             x = new_x;
             y = new_y;
+            Status = "出撃";
             //    int j, i, k;
 
             //    // とりあえず地形を考慮せずにデフォルトのポジションを決めておく
@@ -428,15 +430,11 @@ namespace SRCCore.Units
         // ユニットを(new_x,new_y)に移動
         public void Move(int new_x, int new_y, bool without_en_consumption = false, bool by_cancel = false, bool by_teleport_or_jump = false)
         {
-            //    int prev_x, prev_y;
-            //    int i;
-
-            //    // ユニットをマップからいったん削除
-            //    if (ReferenceEquals(Map.MapDataForUnit[x, y], this))
-            //    {
-            //        // UPGRADE_NOTE: オブジェクト MapDataForUnit() をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-            //        Map.MapDataForUnit[x, y] = null;
-            //    }
+            // ユニットをマップからいったん削除
+            if (Map.MapDataForUnit[x, y]?.ID == ID)
+            {
+                Map.MapDataForUnit[x, y] = null;
+            }
 
             //    if (GUI.IsPictureVisible)
             //    {
@@ -449,21 +447,16 @@ namespace SRCCore.Units
 
             //    SRC.PList.UpdateSupportMod(this);
 
-            //    // ユニット位置を指定された座標に
-            //    prev_x = x;
-            //    prev_y = y;
-            //    x = new_x;
-            //    y = new_y;
-            //    var loopTo = CountOtherForm();
-            //    for (i = 1; i <= loopTo; i++)
-            //    {
-            //        object argIndex1 = i;
-            //        {
-            //            var withBlock = OtherForm(argIndex1);
-            //            withBlock.x = x;
-            //            withBlock.y = y;
-            //        }
-            //    }
+            // ユニット位置を指定された座標に
+            var prev_x = x;
+            var prev_y = y;
+            x = new_x;
+            y = new_y;
+            foreach (var of in OtherForms)
+            {
+                of.x = x;
+                of.y = y;
+            }
 
             //    var loopTo1 = CountUnitOnBoard();
             //    for (i = 1; i <= loopTo1; i++)
@@ -649,58 +642,51 @@ namespace SRCCore.Units
             //            }
             //    }
 
-            //    // マップにユニットを登録
-            //    Map.MapDataForUnit[x, y] = this;
+            // マップにユニットを登録
+            Map.MapDataForUnit[x, y] = this;
 
-            //    // ユニット描画
-            //    if (!GUI.IsPictureVisible)
-            //    {
-            //        if (SRC.MoveAnimation & !by_cancel & !by_teleport_or_jump)
-            //        {
-            //            var argu = this;
-            //            GUI.MoveUnitBitmap2(argu, 20);
-            //        }
-            //        else
-            //        {
-            //            var argu1 = this;
-            //            GUI.PaintUnitBitmap(argu1);
-            //        }
-            //    }
+            // ユニット描画
+            if (!GUI.IsPictureVisible)
+            {
+                if (SRC.MoveAnimation && !by_cancel && !by_teleport_or_jump)
+                {
+                    var argu = this;
+                    GUI.MoveUnitBitmap2(argu, 20);
+                }
+                else
+                {
+                    var argu1 = this;
+                    GUI.PaintUnitBitmap(argu1);
+                }
+            }
 
-            //    // 移動によるＥＮ消費
-            //    if (!without_en_consumption)
-            //    {
-            //        switch (Area ?? "")
-            //        {
-            //            case "地上":
-            //            case "水上":
-            //                {
-            //                    string argfname1 = "ホバー移動";
-            //                    if (IsFeatureAvailable(argfname1))
-            //                    {
-            //                        EN = EN - 5;
-            //                    }
+            // 移動によるＥＮ消費
+            if (!without_en_consumption)
+            {
+                switch (Area ?? "")
+                {
+                    case "地上":
+                    case "水上":
+                        if (IsFeatureAvailable("ホバー移動"))
+                        {
+                            EN = EN - 5;
+                        }
 
-            //                    break;
-            //                }
+                        break;
 
-            //            case "空中":
-            //            case "宇宙":
-            //                {
-            //                    EN = EN - 5;
-            //                    break;
-            //                }
+                    case "空中":
+                    case "宇宙":
+                        EN = EN - 5;
+                        break;
 
-            //            case "地中":
-            //                {
-            //                    EN = EN - 10;
-            //                    break;
-            //                }
-            //        }
-            //    }
+                    case "地中":
+                        EN = EN - 10;
+                        break;
+                }
+            }
 
-            //    // 情報更新
-            //    Update();
+            // 情報更新
+            Update();
             //    SRC.PList.UpdateSupportMod(this);
         }
 

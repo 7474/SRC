@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using SRCCore;
+using SRCCore.Commands;
 using SRCCore.Lib;
 using SRCCore.Units;
 using System;
@@ -29,21 +30,37 @@ namespace SRCTestForm
         public bool KeepStringMode { get; set; }
         public int MainWidth { get; set; }
         public int MainHeight { get; set; }
-        public int MainPWidth { get; set; }
-        public int MainPHeight { get; set; }
-        public int MapPWidth { get; set; }
-        public int MapPHeight { get; set; }
+        public int MainPWidth
+        {
+            get => MainForm.MainPWidth;
+            set => throw new NotSupportedException();
+        }
+        public int MainPHeight
+        {
+            get => MainForm.MainPHeight;
+            set => throw new NotSupportedException();
+        }
+        public int MapPWidth
+        {
+            get => MainForm.MapPWidth;
+            set => throw new NotSupportedException();
+        }
+        public int MapPHeight
+        {
+            get => MainForm.MapPHeight;
+            set => throw new NotSupportedException();
+        }
         public bool ScreenIsMasked { get; set; }
         public bool ScreenIsSaved { get; set; }
         public int MapX { get; set; }
         public int MapY { get; set; }
         public int PrevMapX { get; set; }
         public int PrevMapY { get; set; }
-        public int MouseButton { get; set; }
-        public float MouseX { get; set; }
-        public float MouseY { get; set; }
-        public float PrevMouseX { get; set; }
-        public float PrevMouseY { get; set; }
+        public GuiButton MouseButton { get; set; }
+        public double MouseX { get; set; }
+        public double MouseY { get; set; }
+        public double PrevMouseX { get; set; }
+        public double PrevMouseY { get; set; }
         public int PrevUnitX { get; set; }
         public int PrevUnitY { get; set; }
         public string PrevUnitArea { get; set; }
@@ -71,6 +88,7 @@ namespace SRCTestForm
                 SRC = SRC,
             };
             SRC.GUIMap = MainForm;
+            SRC.GUIStatus = MainForm;
             MainForm.Init();
             Program.Log.LogDebug("LoadMainFormAndRegisterFlash");
         }
@@ -514,8 +532,7 @@ namespace SRCTestForm
 
         public void RedrawScreen(bool late_refresh)
         {
-            // TODO Impl
-            //ScreenIsMasked = False
+            ScreenIsMasked = false;
 
             // 画面を更新
             RefreshScreen(false, late_refresh);
@@ -527,10 +544,13 @@ namespace SRCTestForm
 
         public void MaskScreen()
         {
-            throw new NotImplementedException();
+            ScreenIsMasked = true;
+
+            // 画面を更新
+            RefreshScreen();
         }
 
-        public void RefreshScreen(bool without_refresh, bool delay_refresh)
+        public void RefreshScreen(bool without_refresh = false, bool delay_refresh = false)
         {
             // マップデータが設定されていなければ画面書き換えを行わない
             if (Map.MapWidth == 1)
@@ -557,7 +577,7 @@ namespace SRCTestForm
                 MapY = Map.MapHeight;
             }
 
-            MainForm.RefreshScreen(MapX, MapY);
+            MainForm.RefreshScreen(MapX, MapY, without_refresh, delay_refresh);
         }
 
         public void Center(int new_x, int new_y)
@@ -591,22 +611,40 @@ namespace SRCTestForm
 
         public int MapToPixelX(int X)
         {
-            throw new NotImplementedException();
+            return frmMain.MapCellPx * ((MainWidth + 1) / 2 - 1 - (MapX - X));
         }
 
         public int MapToPixelY(int Y)
         {
-            throw new NotImplementedException();
+            return frmMain.MapCellPx * ((MainHeight + 1) / 2 - 1 - (MapY - Y));
         }
 
         public int PixelToMapX(int X)
         {
-            throw new NotImplementedException();
+            if (X < 0)
+            {
+                X = 0;
+            }
+            else if (X >= MainPWidth)
+            {
+                X = MainPWidth - 1;
+            }
+
+            return X / frmMain.MapCellPx + 1 + MapX - (MainWidth + 1) / 2;
         }
 
         public int PixelToMapY(int Y)
         {
-            throw new NotImplementedException();
+            if (Y < 0)
+            {
+                Y = 0;
+            }
+            else if (Y >= MainPHeight)
+            {
+                Y = MainPHeight - 1;
+            }
+
+            return Y / frmMain.MapCellPx + 1 + MapY - (MainHeight + 1) / 2;
         }
 
         public int MakeUnitBitmap(Unit u)
@@ -616,7 +654,7 @@ namespace SRCTestForm
 
         public void PaintUnitBitmap(Unit u, string smode)
         {
-            throw new NotImplementedException();
+            MainForm.PaintUnitBitmap(u, smode);
         }
 
         public void EraseUnitBitmap(int X, int Y, bool do_refresh)
@@ -711,7 +749,7 @@ namespace SRCTestForm
 
         public void SaveScreen()
         {
-            throw new NotImplementedException();
+            MainForm.SaveScreen();
         }
 
         public void ClearPicture()
@@ -732,6 +770,7 @@ namespace SRCTestForm
         public void UnlockGUI()
         {
             IsGUILocked = false;
+            Application.DoEvents();
         }
 
         public void SaveCursorPos()
@@ -833,7 +872,7 @@ namespace SRCTestForm
 
         public void ChangeStatus(GuiStatus status)
         {
-            switch(status)
+            switch (status)
             {
                 case GuiStatus.WaitCursor:
                     Cursor.Current = Cursors.WaitCursor;
@@ -845,6 +884,16 @@ namespace SRCTestForm
                     Cursor.Current = Cursors.Default;
                     break;
             }
+        }
+
+        public void ShowUnitCommandMenu(IList<UiCommand> commands)
+        {
+            MainForm.ShowUnitCommandMenu(commands);
+        }
+
+        public void ShowMapCommandMenu(IList<UiCommand> commands)
+        {
+            MainForm.ShowMapCommandMenu(commands);
         }
     }
 }

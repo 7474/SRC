@@ -3,7 +3,9 @@
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
 
+using SRCCore.Commands;
 using SRCCore.Units;
+using System.Collections.Generic;
 
 namespace SRCCore
 {
@@ -37,15 +39,15 @@ namespace SRCCore
         int PrevMapY { get; set; }
 
         // 最後に押されたマウスボタン
-        int MouseButton { get; set; }
+        GuiButton MouseButton { get; set; }
 
         // 現在のマウスの座標
-        float MouseX { get; set; }
-        float MouseY { get; set; }
+        double MouseX { get; set; }
+        double MouseY { get; set; }
 
         // ドラッグ前のマウスの座標
-        float PrevMouseX { get; set; }
-        float PrevMouseY { get; set; }
+        double PrevMouseX { get; set; }
+        double PrevMouseY { get; set; }
 
         // 移動前のユニットの情報
         int PrevUnitX { get; set; }
@@ -280,6 +282,10 @@ namespace SRCCore
         void MainFormShow();
 
         void ChangeStatus(GuiStatus status);
+
+        // === コンテキストメニュー操作 ===
+        void ShowUnitCommandMenu(IList<UiCommand> commands);
+        void ShowMapCommandMenu(IList<UiCommand> commands);
     }
 
     public enum GuiStatus
@@ -287,5 +293,11 @@ namespace SRCCore
         Default,
         WaitCursor,
         IBeam,
+    }
+    public enum GuiButton
+    {
+        None,
+        Left,
+        Right,
     }
 }

@@ -1,11 +1,8 @@
 ﻿using SRCCore;
+using SRCCore.Commands;
 using SRCCore.Units;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SRCCoreTests.TestLib
 {
@@ -34,11 +31,11 @@ namespace SRCCoreTests.TestLib
         public int MapY { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public int PrevMapX { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public int PrevMapY { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public int MouseButton { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public float MouseX { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public float MouseY { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public float PrevMouseX { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public float PrevMouseY { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public GuiButton MouseButton { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public double MouseX { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public double MouseY { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public double PrevMouseX { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public double PrevMouseY { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public int PrevUnitX { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public int PrevUnitY { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public string PrevUnitArea { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
@@ -366,6 +363,16 @@ namespace SRCCoreTests.TestLib
         }
 
         public void SetupBackground(string draw_mode = "", string draw_option = "", int filter_color = 0, double filter_trans_par = 0)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ShowMapCommandMenu(IList<UiCommand> commands)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ShowUnitCommandMenu(IList<UiCommand> commands)
         {
             throw new NotImplementedException();
         }

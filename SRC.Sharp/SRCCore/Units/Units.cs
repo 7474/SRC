@@ -409,7 +409,7 @@ namespace SRCCore.Units
             {
                 if ((u.Name ?? "") == (uname ?? ""))
                 {
-                    if (u.Status_Renamed != "破棄")
+                    if (u.Status != "破棄")
                     {
                         return u;
                     }
