@@ -668,11 +668,8 @@ namespace SRCCore.CmdDatas
                     //        break;
                     //    }
 
-                    //case "paintpicture":
-                    //    {
-                    //        CmdName = CmdType.PaintPictureCmd;
-                    //        break;
-                    //    }
+                    case "paintpicture":
+                        return new PaintPictureCmd(src, data);
 
                     case "paintstring":
                         return new PaintStringCmd(src, data);
