@@ -743,11 +743,6 @@ namespace SRCTestForm
             throw new NotImplementedException();
         }
 
-        public void DrawString(string msg, int X, int Y, bool without_cr)
-        {
-            throw new NotImplementedException();
-        }
-
         public void DrawSysString(int X, int Y, string msg, bool without_refresh)
         {
             throw new NotImplementedException();

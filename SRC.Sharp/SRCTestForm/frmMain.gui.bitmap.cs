@@ -549,7 +549,7 @@ namespace SRCTestForm
                 //                if (scenario_anime_bitmap_dir_exists)
                 //                {
                 //                    string argfname = SRC.ScenarioPath + @"Bitmap\Anime\" + fname;
-                //                    if (GeneralLib.FileExists(ref argfname))
+                //                    if (GeneralLib.FileExists(argfname))
                 //                    {
                 //                        fpath = SRC.ScenarioPath + @"Bitmap\Anime\";
                 //                        last_path = "";
@@ -560,7 +560,7 @@ namespace SRCTestForm
                 //                if (extdata_anime_bitmap_dir_exists)
                 //                {
                 //                    string argfname1 = SRC.ExtDataPath + @"Bitmap\Anime\" + fname;
-                //                    if (GeneralLib.FileExists(ref argfname1))
+                //                    if (GeneralLib.FileExists(argfname1))
                 //                    {
                 //                        fpath = SRC.ExtDataPath + @"Bitmap\Anime\";
                 //                        last_path = "";
@@ -571,7 +571,7 @@ namespace SRCTestForm
                 //                if (extdata2_anime_bitmap_dir_exists)
                 //                {
                 //                    string argfname2 = SRC.ExtDataPath2 + @"Bitmap\Anime\" + fname;
-                //                    if (GeneralLib.FileExists(ref argfname2))
+                //                    if (GeneralLib.FileExists(argfname2))
                 //                    {
                 //                        fpath = SRC.ExtDataPath2 + @"Bitmap\Anime\";
                 //                        last_path = "";
@@ -580,7 +580,7 @@ namespace SRCTestForm
                 //                }
 
                 //                string argfname3 = SRC.AppPath + @"Bitmap\Anime\" + fname;
-                //                if (GeneralLib.FileExists(ref argfname3))
+                //                if (GeneralLib.FileExists(argfname3))
                 //                {
                 //                    fpath = SRC.AppPath + @"Bitmap\Anime\";
                 //                    last_path = "";
@@ -592,7 +592,7 @@ namespace SRCTestForm
                 //            if (Strings.Len(last_path) > 0)
                 //            {
                 //                string argfname4 = last_path + fname;
-                //                if (GeneralLib.FileExists(ref argfname4))
+                //                if (GeneralLib.FileExists(argfname4))
                 //                {
                 //                    fpath = last_path;
                 //                    goto FoundPicture;
@@ -605,7 +605,7 @@ namespace SRCTestForm
                 //                if (scenario_bitmap_dir_exists)
                 //                {
                 //                    string argfname5 = SRC.ScenarioPath + fname;
-                //                    if (GeneralLib.FileExists(ref argfname5))
+                //                    if (GeneralLib.FileExists(argfname5))
                 //                    {
                 //                        fpath = SRC.ScenarioPath;
                 //                        last_path = fpath;
@@ -614,7 +614,7 @@ namespace SRCTestForm
                 //                }
 
                 //                string argfname6 = SRC.AppPath + fname;
-                //                if (GeneralLib.FileExists(ref argfname6))
+                //                if (GeneralLib.FileExists(argfname6))
                 //                {
                 //                    fpath = SRC.AppPath;
                 //                    last_path = "";
@@ -635,7 +635,7 @@ namespace SRCTestForm
                 //                if (scenario_bitmap_dir_exists)
                 //                {
                 //                    string argfname7 = SRC.ScenarioPath + @"Bitmap\" + fname;
-                //                    if (GeneralLib.FileExists(ref argfname7))
+                //                    if (GeneralLib.FileExists(argfname7))
                 //                    {
                 //                        fpath = SRC.ScenarioPath + @"Bitmap\";
                 //                        last_path = fpath;
@@ -646,7 +646,7 @@ namespace SRCTestForm
                 //                if (extdata_bitmap_dir_exists)
                 //                {
                 //                    string argfname8 = SRC.ExtDataPath + @"Bitmap\" + fname;
-                //                    if (GeneralLib.FileExists(ref argfname8))
+                //                    if (GeneralLib.FileExists(argfname8))
                 //                    {
                 //                        fpath = SRC.ExtDataPath + @"Bitmap\";
                 //                        last_path = "";
@@ -657,7 +657,7 @@ namespace SRCTestForm
                 //                if (extdata2_bitmap_dir_exists)
                 //                {
                 //                    string argfname9 = SRC.ExtDataPath2 + @"Bitmap\" + fname;
-                //                    if (GeneralLib.FileExists(ref argfname9))
+                //                    if (GeneralLib.FileExists(argfname9))
                 //                    {
                 //                        fpath = SRC.ExtDataPath2 + @"Bitmap\";
                 //                        last_path = "";
@@ -666,7 +666,7 @@ namespace SRCTestForm
                 //                }
 
                 //                string argfname10 = SRC.AppPath + @"Bitmap\" + fname;
-                //                if (GeneralLib.FileExists(ref argfname10))
+                //                if (GeneralLib.FileExists(argfname10))
                 //                {
                 //                    fpath = SRC.AppPath + @"Bitmap\";
                 //                    last_path = "";
@@ -693,7 +693,7 @@ namespace SRCTestForm
                 //                        {
                 //                            tdir = Strings.Left(tname, i) + @"\";
                 //                            tnum = Strings.Mid(tname, i + 1, Strings.Len(tname) - i - 4);
-                //                            tname = Strings.Left(tname, i) + SrcFormatter.Format(GeneralLib.StrToLng(ref tnum), "0000") + ".bmp";
+                //                            tname = Strings.Left(tname, i) + SrcFormatter.Format(GeneralLib.StrToLng(tnum), "0000") + ".bmp";
                 //                        }
                 //                    }
                 //                }
@@ -723,7 +723,7 @@ namespace SRCTestForm
                 //                            if (tdir == withBlock4.Item(withBlock4.OrderedID(j)).Bitmap)
                 //                            {
                 //                                tnum = Strings.Mid(fname, i + 1, Strings.Len(fname) - i - 4);
-                //                                tname = Strings.Left(fname, i) + SrcFormatter.Format(GeneralLib.StrToLng(ref tnum), "0000") + ".bmp";
+                //                                tname = Strings.Left(fname, i) + SrcFormatter.Format(GeneralLib.StrToLng(tnum), "0000") + ".bmp";
                 //                                break;
                 //                            }
                 //                        }
@@ -908,12 +908,12 @@ namespace SRCTestForm
                     //        if (orig_width * orig_height % 4 != 0)
                     //        {
                     //            string argmsg = fname + "の画像サイズが4の倍数になっていません";
-                    //            ErrorMessage(ref argmsg);
+                    //            ErrorMessage(argmsg);
                     //            return DrawPictureRet;
                     //        }
 
                     //        // イメージをバッファに取り込み
-                    //        Graphics.GetImage(ref orig_pic);
+                    //        Graphics.GetImage(orig_pic);
 
                     //        // 白黒
                     //        if (is_monotone)
@@ -959,7 +959,7 @@ namespace SRCTestForm
                     //                trans_par = 0.5d;
                     //            }
 
-                    //            Graphics.ColorFilter(ref fcolor, ref trans_par, transparent);
+                    //            Graphics.ColorFilter(fcolor, trans_par, transparent);
                     //        }
 
                     //        // 明 (多段指定可能)
@@ -993,7 +993,7 @@ namespace SRCTestForm
                     //        }
 
                     //        // 変更した内容をイメージに変換
-                    //        Graphics.SetImage(ref orig_pic);
+                    //        Graphics.SetImage(orig_pic);
 
                     //        // バッファを破棄
                     //        Graphics.ClearImage();
@@ -1135,5 +1135,146 @@ namespace SRCTestForm
 
             return true;
         }
+
+        // ＭＳ Ｐ明朝、16pt、Bold、白色
+        private Font currentFont = new Font("ＭＳ Ｐ明朝", 16, FontStyle.Bold, GraphicsUnit.Point);
+        private Brush currentFontColor = Brushes.White;
+        private PointF currentStringPoint = new PointF();
+
+        public void DrawString(string msg, int X, int Y, bool without_cr = false)
+        {
+            Graphics g;
+            if (PermanentStringMode)
+            {
+                // 背景書き込み
+                //// 背景への描画
+                MainForm.picBack.NewImageIfNull();
+                g = Graphics.FromImage(MainForm.picBack.Image);
+                //// フォント設定を変更
+                //{
+                //    var withBlock = MainForm.picBack;
+                //    withBlock.ForeColor = MainForm.picMain(0).ForeColor;
+                //    if (withBlock.Font.Name != MainForm.picMain(0).Font.Name)
+                //    {
+                //        sf = (Font)Control.DefaultFont.Clone();
+                //        sf = Microsoft.VisualBasic.Compatibility.VB6.Support.FontChangeName(sf, MainForm.picMain(0).Font.Name);
+                //        withBlock.Font = sf;
+                //    }
+                //    withBlock.Font.Size = MainForm.picMain(0).Font.Size;
+                //    withBlock.Font.Bold = MainForm.picMain(0).Font.Bold;
+                //    withBlock.Font.Italic = MainForm.picMain(0).Font.Italic;
+                //}
+                //{
+                //    var withBlock1 = MainForm.picMaskedBack;
+                //    withBlock1.ForeColor = MainForm.picMain(0).ForeColor;
+                //    if (withBlock1.Font.Name != MainForm.picMain(0).Font.Name)
+                //    {
+                //        sf = (Font)Control.DefaultFont.Clone();
+                //        sf = Microsoft.VisualBasic.Compatibility.VB6.Support.FontChangeName(sf, MainForm.picMain(0).Font.Name);
+                //        withBlock1.Font = sf;
+                //    }
+                //    withBlock1.Font.Size = MainForm.picMain(0).Font.Size;
+                //    withBlock1.Font.Bold = MainForm.picMain(0).Font.Bold;
+                //    withBlock1.Font.Italic = MainForm.picMain(0).Font.Italic;
+                //}
+            }
+            else
+            {
+                //// マップウィンドウへの通常の描画
+                // 通常の書き込み
+                g = Graphics.FromImage(MainForm.MainBuffer);
+                SaveScreen();
+            }
+
+            try
+            {
+                //// フォントがスムージング表示されているか参照
+                //if (!init_draw_string)
+                //{
+                //    GUI.GetSystemParametersInfo((int)SPI_GETFONTSMOOTHING, 0, font_smoothing, 0);
+                //    init_draw_string = true;
+                //}
+
+                //// フォントをスムージングするように設定
+                //if (font_smoothing == 0)
+                //{
+                //    SetSystemParametersInfo(SPI_SETFONTSMOOTHING, 1, 0, 0);
+                //}
+                // 現在のX位置を記録しておく
+                var prev_cx = currentStringPoint.X;
+                float tx = currentStringPoint.X;
+                float ty = currentStringPoint.Y;
+                var msgSize = g.MeasureString(msg, currentFont);
+                // 書き込み先の座標を求める
+                if (HCentering)
+                {
+                    tx = (g.VisibleClipBounds.Width - msgSize.Width) / 2;
+                }
+                else if (X != Constants.DEFAULT_LEVEL)
+                {
+                    tx = X;
+                }
+
+                if (VCentering)
+                {
+                    ty = (g.VisibleClipBounds.Height - msgSize.Height) / 2;
+                }
+                else if (Y != Constants.DEFAULT_LEVEL)
+                {
+                    ty = Y;
+                }
+
+                g.DrawString(msg, currentFont, currentFontColor, tx, ty);
+
+                // 背景書き込みの場合
+                if (PermanentStringMode)
+                {
+                    // XXX マスクは使ってない
+                    //{
+                    //    var withBlock2 = MainForm.picMaskedBack;
+                    //    withBlock2.CurrentX = tx;
+                    //    withBlock2.CurrentY = ty;
+                    //}
+                    //MainForm.picMaskedBack.Print(msg);
+                    Map.IsMapDirty = true;
+                }
+
+                // 保持オプション使用時
+                if (KeepStringMode)
+                {
+                    // picMain(1)にも描画
+                    using (var gBack = Graphics.FromImage(MainForm.MainBufferBack))
+                    {
+                        gBack.DrawString(msg, currentFont, currentFontColor, tx, ty);
+                    }
+                }
+
+                // 次回の書き込みのため、X座標位置を設定し直す
+                // XXX 改行って高さどうなん？
+                currentStringPoint = new PointF(
+                    X != Constants.DEFAULT_LEVEL ? X : prev_cx,
+                    without_cr ? ty : ty + msgSize.Height);
+
+                //// フォントのスムージングに関する設定を元に戻す
+                //if (font_smoothing == 0)
+                //{
+                //    SetSystemParametersInfo(SPI_SETFONTSMOOTHING, 0, 0, 0);
+                //}
+
+                if (!PermanentStringMode)
+                {
+                    IsPictureVisible = true;
+                    PaintedAreaX1 = 0;
+                    PaintedAreaY1 = 0;
+                    PaintedAreaX2 = (MainPWidth - 1);
+                    PaintedAreaY2 = (MainPHeight - 1);
+                }
+            }
+            finally
+            {
+                g.Dispose();
+            }
+        }
+
     }
 }
