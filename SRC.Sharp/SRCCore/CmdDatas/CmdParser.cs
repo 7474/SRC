@@ -1126,11 +1126,8 @@ namespace SRCCore.CmdDatas
                     //        break;
                     //    }
 
-                    //case "wait":
-                    //    {
-                    //        CmdName = CmdType.WaitCmd;
-                    //        break;
-                    //    }
+                    case "wait":
+                        return new WaitCmd(src, data);
 
                     //case "water":
                     //    {

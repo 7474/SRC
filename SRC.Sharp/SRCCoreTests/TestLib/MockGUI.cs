@@ -377,6 +377,11 @@ namespace SRCCoreTests.TestLib
             throw new NotImplementedException();
         }
 
+        public void Sleep(int dwMilliseconds, bool withEvents = true)
+        {
+            throw new NotImplementedException();
+        }
+
         public void UnlockGUI()
         {
             throw new NotImplementedException();
