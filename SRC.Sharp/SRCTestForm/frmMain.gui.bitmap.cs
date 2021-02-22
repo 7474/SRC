@@ -1110,10 +1110,11 @@ namespace SRCTestForm
                 else if (!on_msg_window && !on_status_window)
                 {
                     // 表示画像を消去する際に使う描画領域を設定
-                    PaintedAreaX1 = GeneralLib.MinLng(PaintedAreaX1, GeneralLib.MaxLng(dx, 0));
-                    PaintedAreaY1 = GeneralLib.MinLng(PaintedAreaY1, GeneralLib.MaxLng(dy, 0));
-                    PaintedAreaX2 = GeneralLib.MaxLng(PaintedAreaX2, GeneralLib.MinLng(dx + dw, MainPWidth - 1));
-                    PaintedAreaY2 = GeneralLib.MaxLng(PaintedAreaY2, GeneralLib.MinLng(dy + dh, MainPHeight - 1));
+                    // XXX ダーティエリアは使わない
+                    //PaintedAreaX1 = GeneralLib.MinLng(PaintedAreaX1, GeneralLib.MaxLng(dx, 0));
+                    //PaintedAreaY1 = GeneralLib.MinLng(PaintedAreaY1, GeneralLib.MaxLng(dy, 0));
+                    //PaintedAreaX2 = GeneralLib.MaxLng(PaintedAreaX2, GeneralLib.MinLng(dx + dw, MainPWidth - 1));
+                    //PaintedAreaY2 = GeneralLib.MaxLng(PaintedAreaY2, GeneralLib.MinLng(dy + dh, MainPHeight - 1));
                     IsPictureDrawn = true;
                     IsPictureVisible = true;
                     IsCursorVisible = false;
