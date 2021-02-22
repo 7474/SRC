@@ -300,6 +300,8 @@ namespace SRCTestForm
             {
                 if (!without_refresh)
                 {
+                    GUI.IsPictureVisible = false;
+                    GUI.IsCursorVisible = false;
                     // マップウィンドウのスクロールバーの位置を変更
                     if (!GUI.IsGUILocked)
                     {
