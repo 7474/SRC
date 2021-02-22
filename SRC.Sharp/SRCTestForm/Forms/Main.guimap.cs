@@ -2,8 +2,7 @@
 using SRCCore.Maps;
 using SRCTestForm.Resoruces;
 using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Windows.Forms;
+using System.IO;
 
 namespace SRCTestForm
 {
@@ -41,6 +40,9 @@ namespace SRCTestForm
             mainBuffer = new Bitmap(w, h);
             mainBufferBack = new Bitmap(w, h);
         }
+
+        public Image MainBuffer => mainBuffer;
+        public Image MainBufferBack => mainBufferBack;
 
         public void InitStatus()
         {
@@ -432,7 +434,7 @@ namespace SRCTestForm
             }
 
             // XXX BitmapMissing
-            var image = imageBuffer.Get("Unit", u.CurrentForm().Data.Bitmap);
+            var image = imageBuffer.GetTransparent(Path.Combine("Unit", u.CurrentForm().Data.Bitmap));
             if (image != null)
             {
                 g.DrawImage(image, destRect);
