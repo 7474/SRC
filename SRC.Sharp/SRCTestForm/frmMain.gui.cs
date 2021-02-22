@@ -743,11 +743,6 @@ namespace SRCTestForm
             throw new NotImplementedException();
         }
 
-        public void DrawString(string msg, int X, int Y, bool without_cr)
-        {
-            throw new NotImplementedException();
-        }
-
         public void DrawSysString(int X, int Y, string msg, bool without_refresh)
         {
             throw new NotImplementedException();
@@ -882,7 +877,51 @@ namespace SRCTestForm
 
         public bool IsRButtonPressed(bool ignore_message_wait)
         {
-            throw new NotImplementedException();
+            // メッセージがウエイト無しならスキップ
+            if (!ignore_message_wait & MessageWait == 0)
+            {
+                return true;
+            }
+
+            // TODO Impl ネイティブAPIでシビアに取る？
+            if (MouseButtons.HasFlag(MouseButtons.Right))
+            {
+                return true;
+            }
+            //// メインウインドウ上でマウスボタンを押した場合
+            //if (MainForm.Handle.ToInt32() == GetForegroundWindow())
+            //{
+            //    GetCursorPos(ref PT);
+            //    {
+            //        var withBlock = MainForm;
+            //        if ((long)Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock.Left) / (long)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsPerPixelX() <= PT.X & PT.X <= (long)(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock.Left) + Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock.Width)) / (long)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsPerPixelX() & (long)Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock.Top) / (long)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsPerPixelY() <= PT.Y & PT.Y <= (long)(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock.Top) + Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock.Height)) / (long)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsPerPixelY())
+            //        {
+            //            if ((GetAsyncKeyState(RButtonID) & 0x8000) != 0)
+            //            {
+            //                // 右ボタンでスキップ
+            //                return true;
+            //            }
+            //        }
+            //    }
+            //}
+            //// メッセージウインドウ上でマウスボタンを押した場合
+            //else if (My.MyProject.Forms.frmMessage.Handle.ToInt32() == GetForegroundWindow())
+            //{
+            //    GetCursorPos(ref PT);
+            //    {
+            //        var withBlock1 = My.MyProject.Forms.frmMessage;
+            //        if ((long)Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock1.Left) / (long)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsPerPixelX() <= PT.X & PT.X <= (long)(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock1.Left) + Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(withBlock1.Width)) / (long)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsPerPixelX() & (long)Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock1.Top) / (long)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsPerPixelY() <= PT.Y & PT.Y <= (long)(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock1.Top) + Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock1.Height)) / (long)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsPerPixelY())
+            //        {
+            //            if ((GetAsyncKeyState(RButtonID) & 0x8000) != 0)
+            //            {
+            //                // 右ボタンでスキップ
+            //                return true;
+            //            }
+            //        }
+            //    }
+            //}
+
+            return false;
         }
 
         public void DisplayTelop(string msg)
@@ -935,6 +974,15 @@ namespace SRCTestForm
         public void UpdateScreen()
         {
             MainForm.UpdateScreen();
+        }
+
+        public void Sleep(int dwMilliseconds, bool withEvents = true)
+        {
+            if (withEvents)
+            {
+                Application.DoEvents();
+            }
+            Thread.Sleep(dwMilliseconds);
         }
     }
 }

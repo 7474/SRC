@@ -12,6 +12,10 @@ namespace SRCCore
     // ユーザーインターフェースと画面描画の処理を行うためのインタフェース
     public interface IGUI
     {
+        void Sleep(int dwMilliseconds, bool withEvents = true);
+        //// XXX 要プロパティ更新、戻り値で返したほうがいい気はする。そもそも実行をロックしたくない。
+        //void StartWaitClick();
+
         // マップ画面に表示できるマップのサイズ
         int MainWidth { get; set; }
         int MainHeight { get; set; }

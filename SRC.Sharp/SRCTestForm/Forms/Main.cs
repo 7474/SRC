@@ -64,11 +64,11 @@ namespace SRCTestForm
                     GUI.IsFormClicked = true;
                 }
 
-                //// クリック待ちであれば待ちを解除
-                //if (Commands.WaitClickMode)
-                //{
-                //    GUI.IsFormClicked = true;
-                //}
+                // クリック待ちであれば待ちを解除
+                if (Commands.WaitClickMode)
+                {
+                    GUI.IsFormClicked = true;
+                }
 
                 return;
             }

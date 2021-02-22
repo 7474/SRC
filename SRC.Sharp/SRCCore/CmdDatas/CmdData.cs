@@ -9,7 +9,6 @@ using SRCCore.Units;
 using SRCCore.VB;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace SRCCore.CmdDatas
 {
@@ -21,6 +20,7 @@ namespace SRCCore.CmdDatas
         protected Event Event => SRC.Event;
         protected Expressions.Expression Expression => SRC.Expression;
         protected Maps.Map Map => SRC.Map;
+        protected SRCCore.Commands.Command Commands => SRC.Commands;
 
         public CmdData(SRC src, CmdType name, EventDataLine eventData)
         {

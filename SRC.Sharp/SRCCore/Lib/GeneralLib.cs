@@ -6,6 +6,7 @@
 using SRCCore.VB;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -27,7 +28,16 @@ namespace SRCCore.Lib
 
         //        // Windowsが起動してからの時間を返す(ミリ秒)
         //        [DllImport("winmm.dll")]
-        //        static extern int timeGetTime();
+        private static Stopwatch sw = new Stopwatch();
+        public static int timeGetTime()
+        {
+            if (!sw.IsRunning)
+            {
+                sw.Start();
+            }
+            // XXX
+            return (int)sw.ElapsedMilliseconds;
+        }
 
         //        // 時間処理の解像度を変更する
         //        [DllImport("winmm.dll")]
@@ -130,7 +140,7 @@ namespace SRCCore.Lib
             }
 
             var l = ToL(list);
-            if(l.Count <= idx)
+            if (l.Count <= idx)
             {
                 return l[idx - 1];
             }
