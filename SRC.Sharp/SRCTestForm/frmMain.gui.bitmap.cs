@@ -73,45 +73,43 @@ namespace SRCTestForm
                 switch (opt ?? "")
                 {
                     case "背景":
+                        permanent = true;
+                        // 背景書き込みで夜やセピア色のマップの場合は指定がなくても特殊効果を付ける
+                        switch (Map.MapDrawMode ?? "")
                         {
-                            permanent = true;
-                            // 背景書き込みで夜やセピア色のマップの場合は指定がなくても特殊効果を付ける
-                            switch (Map.MapDrawMode ?? "")
-                            {
-                                case "夜":
-                                    dark_count = (dark_count + 1);
-                                    pic_option = pic_option + " 暗";
-                                    break;
+                            case "夜":
+                                dark_count = (dark_count + 1);
+                                pic_option = pic_option + " 暗";
+                                break;
 
-                                case "白黒":
-                                    is_monotone = true;
-                                    pic_option = pic_option + " 白黒";
-                                    break;
+                            case "白黒":
+                                is_monotone = true;
+                                pic_option = pic_option + " 白黒";
+                                break;
 
-                                case "セピア":
-                                    is_sepia = true;
-                                    pic_option = pic_option + " セピア";
-                                    break;
+                            case "セピア":
+                                is_sepia = true;
+                                pic_option = pic_option + " セピア";
+                                break;
 
-                                case "夕焼け":
-                                    is_sunset = true;
-                                    pic_option = pic_option + " 夕焼け";
-                                    break;
+                            case "夕焼け":
+                                is_sunset = true;
+                                pic_option = pic_option + " 夕焼け";
+                                break;
 
-                                case "水中":
-                                    is_water = true;
-                                    pic_option = pic_option + " 水中";
-                                    break;
+                            case "水中":
+                                is_water = true;
+                                pic_option = pic_option + " 水中";
+                                break;
 
-                                case "フィルタ":
-                                    is_colorfilter = true;
-                                    fcolor = Map.MapDrawFilterColor;
-                                    pic_option2 = pic_option2 + " フィルタ=" + Map.MapDrawFilterColor.ToString();
-                                    break;
-                            }
-
-                            break;
+                            case "フィルタ":
+                                is_colorfilter = true;
+                                fcolor = Map.MapDrawFilterColor;
+                                pic_option2 = pic_option2 + " フィルタ=" + Map.MapDrawFilterColor.ToString();
+                                break;
                         }
+
+                        break;
 
                     case "透過":
                         transparent = true;
@@ -164,11 +162,9 @@ namespace SRCTestForm
                         break;
 
                     case "シルエット":
-                        {
-                            is_sil = true;
-                            pic_option = pic_option + " " + opt;
-                            break;
-                        }
+                        is_sil = true;
+                        pic_option = pic_option + " " + opt;
+                        break;
 
                     case "上半分":
                         top_part = true;
@@ -258,8 +254,6 @@ namespace SRCTestForm
 
                         break;
                 }
-
-                i = (i + 1);
             }
 
             pic_option = Strings.Trim(pic_option);
