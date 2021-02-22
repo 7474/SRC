@@ -12,7 +12,7 @@ namespace SRCCore.Exceptions
 
         public EventErrorException(CmdData cmd, string message) : base(message)
         {
-            EventData = cmd.EventData;
+            EventData = cmd?.EventData;
         }
     }
 }
