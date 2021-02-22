@@ -15,9 +15,13 @@ namespace SRCCore.VB
             try
             {
                 // 空白は無視して判断してるっぽい（ユニットのHP行判断）
-                Convert.ToDecimal(
-                    whiteSpace.Replace(Expression.ToString(), "")
-                );
+                var str = whiteSpace.Replace(Expression?.ToString() ?? "", "");
+                decimal dumy;
+                if (decimal.TryParse(str, out dumy))
+                {
+                    return true;
+                }
+                Convert.ToDecimal(str);
                 return true;
             }
             catch
