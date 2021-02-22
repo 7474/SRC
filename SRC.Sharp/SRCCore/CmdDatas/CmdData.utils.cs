@@ -2,14 +2,8 @@
 // 本プログラムはフリーソフトであり、無保証です。
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
-using SRCCore.Events;
-using SRCCore.Exceptions;
-using SRCCore.Lib;
 using SRCCore.Units;
 using SRCCore.VB;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace SRCCore.CmdDatas
 {
