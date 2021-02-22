@@ -2,6 +2,7 @@
 using SRCCore.Maps;
 using SRCTestForm.Resoruces;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 
 namespace SRCTestForm
@@ -21,6 +22,8 @@ namespace SRCTestForm
         private Bitmap MaskedBackBitmap;
 
         private Pen MapLinePen = new Pen(Color.FromArgb(100, 100, 100));
+        //private Brush MapMaskBrush = new HatchBrush(HatchStyle.BackwardDiagonal, Color.FromArgb(0, 0x39, 0x6b));
+        private Brush MapMaskBrush = new SolidBrush(Color.FromArgb(127, 0, 0x39, 0x6b));
 
         private Image mainBuffer;
         private ImageBuffer imageBuffer;
@@ -333,9 +336,6 @@ namespace SRCTestForm
                 }
 
                 // 表示内容を更新
-                // TODO マスク
-                //if (!ScreenIsMasked)
-                //{
                 for (var i = 0; i < dw; i++)
                 {
                     var xx = MapCellPx * (dx + i - 1);
@@ -361,12 +361,17 @@ namespace SRCTestForm
                             DrawUnit(g, cell, u, destRect);
                         }
 
+                        // マスク
+                        if (GUI.ScreenIsMasked)
+                        {
+                            if (Map.MaskData[cell.X, cell.Y])
+                            {
+                                g.FillRectangle(MapMaskBrush, destRect);
+                            }
+                        }
                         // XXX マスク
                         //// マスク入りの画像を作成
-                        //// UPGRADE_ISSUE: Control picUnitBitmap は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                         //ret = BitBlt(withBlock.picUnitBitmap.hDC, xx, (int)yy + 64, 32, 32, withBlock.picUnitBitmap.hDC, xx, (int)yy + 32, SRCCOPY);
-                        //// UPGRADE_ISSUE: Control picMask2 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-                        //// UPGRADE_ISSUE: Control picUnitBitmap は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                         //ret = BitBlt(withBlock.picUnitBitmap.hDC, xx, (int)yy + 64, 32, 32, withBlock.picMask2.hDC, 0, 0, SRCINVERT);
                     }
                 }
@@ -589,7 +594,7 @@ namespace SRCTestForm
                     break;
 
                 case "宇宙":
-                    if (cell.TerrainClass == "月面")
+                    if (cell.Terrain.Class == "月面")
                     {
                         g.DrawLine(unitAreaPen,
                             destRect.Left, destRect.Top + 28,

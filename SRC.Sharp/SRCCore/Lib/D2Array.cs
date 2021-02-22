@@ -14,9 +14,11 @@ namespace SRCCore.Lib
         private int x;
         private int y;
         private T[,] data;
+        public int X => x;
+        public int Y => y;
+        public IEnumerable<int> XRange => Enumerable.Range(1, X);
+        public IEnumerable<int> YRange => Enumerable.Range(1, Y);
 
-        public IEnumerable<int> XRange => Enumerable.Range(1, x);
-        public IEnumerable<int> YRange => Enumerable.Range(1, y);
         public T this[int x, int y]
         {
             get { return data[x - 1, y - 1]; }

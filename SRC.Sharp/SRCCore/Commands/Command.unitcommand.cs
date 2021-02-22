@@ -18,6 +18,25 @@ namespace SRCCore.Commands
             var prev_used_action = unit.UsedAction;
             switch (command.Id)
             {
+                case MoveCmdID: // 移動
+                    // なんらかの原因により、ユニットコマンドの選択がうまくいかなかった場合は
+                    // 移動後のコマンド選択をやり直す
+                    if (CommandState == "移動後コマンド選択")
+                    {
+                        //Application.DoEvents();
+                        return;
+                    }
+
+                    if (command.Label == "移動")
+                    {
+                        StartMoveCommand();
+                    }
+                    else
+                    {
+                        ShowAreaInSpeedCommand();
+                    }
+                    break;
+
                 default:
                     // なんらかの原因により、ユニットコマンドの選択がうまくいかなかった場合は
                     // 移動後のコマンド選択をやり直す
@@ -29,28 +48,6 @@ namespace SRCCore.Commands
                     }
                     break;
             }
-            //        case MoveCmdID: // 移動
-            //            {
-            //                // なんらかの原因により、ユニットコマンドの選択がうまくいかなかった場合は
-            //                // 移動後のコマンド選択をやり直す
-            //                if (CommandState == "移動後コマンド選択")
-            //                {
-            //                    Application.DoEvents();
-            //                    return;
-            //                }
-
-            //                // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-            //                if (GUI.MainForm.mnuUnitCommandItem.Item(MoveCmdID).Caption == "移動")
-            //                {
-            //                    StartMoveCommand();
-            //                }
-            //                else
-            //                {
-            //                    ShowAreaInSpeedCommand();
-            //                }
-
-            //                break;
-            //            }
 
             //        case TeleportCmdID: // テレポート
             //            {

@@ -532,8 +532,7 @@ namespace SRCTestForm
 
         public void RedrawScreen(bool late_refresh)
         {
-            // TODO Impl
-            //ScreenIsMasked = False
+            ScreenIsMasked = false;
 
             // 画面を更新
             RefreshScreen(false, late_refresh);
@@ -545,10 +544,13 @@ namespace SRCTestForm
 
         public void MaskScreen()
         {
-            throw new NotImplementedException();
+            ScreenIsMasked = true;
+
+            // 画面を更新
+            RefreshScreen();
         }
 
-        public void RefreshScreen(bool without_refresh, bool delay_refresh)
+        public void RefreshScreen(bool without_refresh = false, bool delay_refresh = false)
         {
             // マップデータが設定されていなければ画面書き換えを行わない
             if (Map.MapWidth == 1)
