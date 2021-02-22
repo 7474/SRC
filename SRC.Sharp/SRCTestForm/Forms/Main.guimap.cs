@@ -23,7 +23,8 @@ namespace SRCTestForm
 
         private Pen MapLinePen = new Pen(Color.FromArgb(100, 100, 100));
         //private Brush MapMaskBrush = new HatchBrush(HatchStyle.BackwardDiagonal, Color.FromArgb(0, 0x39, 0x6b));
-        private Brush MapMaskBrush = new SolidBrush(Color.FromArgb(127, 0, 0x39, 0x6b));
+        //private Brush MapMaskBrush = new SolidBrush(Color.FromArgb(127, 0, 0x39, 0x6b));
+        private Brush MapMaskBrush = new SolidBrush(Color.FromArgb(127, 100, 100, 100));
 
         private Image mainBuffer;
         private ImageBuffer imageBuffer;
@@ -260,27 +261,28 @@ namespace SRCTestForm
             }
         }
 
-        public void RefreshScreen(int mapX, int mapY)
+        public void RefreshScreen(int mapX, int mapY, bool without_refresh, bool delay_refresh)
         {
             // XXX _picMain_0 picturebox じゃなくて panel なんだけど
             using (var g = Graphics.FromImage(mainBuffer))
             {
-                // マップウィンドウのスクロールバーの位置を変更
-                if (!GUI.IsGUILocked)
+                if (!without_refresh)
                 {
-                    if (HScrollBar.Value != GUI.MapX)
+                    // マップウィンドウのスクロールバーの位置を変更
+                    if (!GUI.IsGUILocked)
                     {
-                        HScrollBar.Value = GUI.MapX;
-                        return;
-                    }
-                    if (VScrollBar.Value != GUI.MapY)
-                    {
-                        VScrollBar.Value = GUI.MapY;
-                        return;
+                        if (HScrollBar.Value != GUI.MapX)
+                        {
+                            HScrollBar.Value = GUI.MapX;
+                            return;
+                        }
+                        if (VScrollBar.Value != GUI.MapY)
+                        {
+                            VScrollBar.Value = GUI.MapY;
+                            return;
+                        }
                     }
                 }
-                // 一旦マップウィンドウの内容を消去
-                g.FillRectangle(Brushes.Black, 0, 0, MainPWidth, MainPHeight);
 
                 // マップ画像の転送元と転送先を計算する
                 var mx = (mapX - (GUI.MainWidth + 1) / 2 + 1);
@@ -335,6 +337,9 @@ namespace SRCTestForm
                     dh = GUI.MainHeight;
                 }
 
+                // 一旦マップウィンドウの内容を消去
+                g.FillRectangle(Brushes.Black, 0, 0, MainPWidth, MainPHeight);
+
                 // 表示内容を更新
                 for (var i = 0; i < dw; i++)
                 {
@@ -380,16 +385,15 @@ namespace SRCTestForm
                 //pic.ForeColor = ColorTranslator.FromOle(prev_color);
 
             }
-            //// 画面が書き換えられたことを記録
-            //ScreenIsSaved = false;
-            //if (!without_refresh & !delay_refresh)
-            //{
-            //    // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-            //    withBlock.picMain(0).Refresh();
-            //}
-            using (var g = _picMain_0.CreateGraphics())
+            // 画面が書き換えられたことを記録
+            GUI.ScreenIsSaved = false;
+            if (!without_refresh && !delay_refresh)
             {
-                g.DrawImage(mainBuffer, 0, 0);
+                using (var g = _picMain_0.CreateGraphics())
+                {
+                    g.DrawImage(mainBuffer, 0, 0);
+                }
+                _picMain_0.Update();
             }
         }
 

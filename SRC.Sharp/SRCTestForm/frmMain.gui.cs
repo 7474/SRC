@@ -577,7 +577,7 @@ namespace SRCTestForm
                 MapY = Map.MapHeight;
             }
 
-            MainForm.RefreshScreen(MapX, MapY);
+            MainForm.RefreshScreen(MapX, MapY, without_refresh, delay_refresh);
         }
 
         public void Center(int new_x, int new_y)
