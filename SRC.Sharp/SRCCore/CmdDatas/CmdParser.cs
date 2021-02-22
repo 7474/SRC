@@ -786,11 +786,8 @@ namespace SRCCore.CmdDatas
                     //        break;
                     //    }
 
-                    //case "refresh":
-                    //    {
-                    //        CmdName = CmdType.RefreshCmd;
-                    //        break;
-                    //    }
+                    case "refresh":
+                        return new RefreshCmd(src, data);
 
                     //case "release":
                     //    {

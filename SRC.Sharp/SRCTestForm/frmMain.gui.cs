@@ -755,7 +755,14 @@ namespace SRCTestForm
 
         public void SaveScreen()
         {
-            MainForm.SaveScreen();
+            if (!ScreenIsSaved)
+            {
+                // XXX 何で半端にMainFormに追い出してあるんだ。
+                // 画像をpicMain(1)に保存
+                MainForm.SaveScreen();
+
+                ScreenIsSaved = true;
+            }
         }
 
         public void ClearPicture()
