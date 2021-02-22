@@ -156,7 +156,7 @@ namespace SRCTestForm
             var uiCommand = (eventSender as ToolStripItem)?.Tag as UiCommand;
             if (uiCommand != null)
             {
-                Program.Log.LogDebug(JsonConvert.SerializeObject(uiCommand));
+                Program.Log.LogDebug("{0} {1}", Commands.CommandState, JsonConvert.SerializeObject(uiCommand));
 
                 //var Shift = ModifierKeys.HasFlag(Keys.Shift);
                 //int Index = mnuMapCommandItem.GetIndex((ToolStripMenuItem)eventSender);
@@ -180,7 +180,7 @@ namespace SRCTestForm
             var uiCommand = (eventSender as ToolStripItem)?.Tag as UiCommand;
             if (uiCommand != null)
             {
-                Program.Log.LogDebug(JsonConvert.SerializeObject(uiCommand));
+                Program.Log.LogDebug("{0} {1}", Commands.CommandState, JsonConvert.SerializeObject(uiCommand));
 
                 //int Index = mnuUnitCommandItem.GetIndex((ToolStripMenuItem)eventSender);
                 //if (GUI.GetAsyncKeyState(GUI.RButtonID) == 1)
