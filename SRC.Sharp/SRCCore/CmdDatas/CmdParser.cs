@@ -2,10 +2,6 @@
 using SRCCore.Events;
 using SRCCore.Lib;
 using SRCCore.VB;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace SRCCore.CmdDatas
 {
@@ -777,11 +773,8 @@ namespace SRCCore.CmdDatas
                     //        break;
                     //    }
 
-                    //case "redraw":
-                    //    {
-                    //        CmdName = CmdType.RedrawCmd;
-                    //        break;
-                    //    }
+                    case "redraw":
+                        return new RedrawCmd(src, data);
 
                     case "refresh":
                         return new RefreshCmd(src, data);
