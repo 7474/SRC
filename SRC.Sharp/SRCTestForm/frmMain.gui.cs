@@ -760,12 +760,33 @@ namespace SRCTestForm
 
         public void ClearPicture()
         {
-            throw new NotImplementedException();
+            if (!ScreenIsSaved)
+            {
+                return;
+            }
+
+            IsPictureVisible = false;
+            IsCursorVisible = false;
+
+            // XXX 全体クリアしておく
+            using (var g = Graphics.FromImage(MainForm.MainBuffer))
+            {
+                g.DrawImage(MainForm.MainBufferBack, 0, 0);
+            }
         }
 
         public void ClearPicture2(int x1, int y1, int x2, int y2)
         {
-            throw new NotImplementedException();
+            if (!ScreenIsSaved)
+            {
+                return;
+            }
+
+            using (var g = Graphics.FromImage(MainForm.MainBuffer))
+            {
+                var rect = new Rectangle(x1, y1, x2 - x1, y2 - y1);
+                g.DrawImage(MainForm.MainBufferBack, rect, rect, GraphicsUnit.Pixel);
+            }
         }
 
         public void LockGUI()

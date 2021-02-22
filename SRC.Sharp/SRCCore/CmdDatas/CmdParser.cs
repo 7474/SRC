@@ -182,11 +182,8 @@ namespace SRCCore.CmdDatas
                     //        break;
                     //    }
 
-                    //case "clearpicture":
-                    //    {
-                    //        CmdName = CmdType.ClearPictureCmd;
-                    //        break;
-                    //    }
+                    case "clearpicture":
+                        return new ClearPictureCmd(src, data);
 
                     //case "clearskill":
                     //case "clearability":
