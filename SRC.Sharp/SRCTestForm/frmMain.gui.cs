@@ -895,5 +895,10 @@ namespace SRCTestForm
         {
             MainForm.ShowMapCommandMenu(commands);
         }
+
+        public void UpdateScreen()
+        {
+            MainForm.UpdateScreen();
+        }
     }
 }

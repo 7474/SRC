@@ -14,7 +14,7 @@ using System.Linq;
 namespace SRCCore.CmdDatas
 {
     // イベントコマンドのクラス
-    public abstract class CmdData
+    public abstract partial class CmdData
     {
         protected SRC SRC { get; }
         protected IGUI GUI => SRC.GUI;

@@ -401,7 +401,7 @@ namespace SRCTestForm
             }
         }
 
-        private void UpdateScreen()
+        public void UpdateScreen()
         {
             GUI.ScreenIsSaved = false;
             if (Visible)
