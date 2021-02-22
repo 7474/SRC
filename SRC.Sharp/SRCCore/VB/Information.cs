@@ -21,8 +21,9 @@ namespace SRCCore.VB
                 {
                     return true;
                 }
-                Convert.ToDecimal(str);
-                return true;
+                // XXX
+                //Convert.ToDecimal(str);
+                return false;
             }
             catch
             {
