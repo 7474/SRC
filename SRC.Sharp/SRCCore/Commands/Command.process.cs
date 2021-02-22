@@ -31,7 +31,7 @@ namespace SRCCore.Commands
                         break;
                     case "ターゲット選択":
                     case "移動後ターゲット選択":
-                        if (unit != null)
+                        if (cell != null && !Map.MaskData[cell.X, cell.Y])
                         {
                             ProceedCommand(false, button, cell, unit);
                         }

@@ -654,7 +654,7 @@ namespace SRCTestForm
 
         public void PaintUnitBitmap(Unit u, string smode)
         {
-            throw new NotImplementedException();
+            MainForm.PaintUnitBitmap(u, smode);
         }
 
         public void EraseUnitBitmap(int X, int Y, bool do_refresh)
@@ -749,7 +749,7 @@ namespace SRCTestForm
 
         public void SaveScreen()
         {
-            throw new NotImplementedException();
+            MainForm.SaveScreen();
         }
 
         public void ClearPicture()

@@ -27,12 +27,19 @@ namespace SRCTestForm
         private Brush MapMaskBrush = new SolidBrush(Color.FromArgb(127, 100, 100, 100));
 
         private Image mainBuffer;
+        private Image mainBufferBack;
         private ImageBuffer imageBuffer;
 
         public void Init()
         {
-            mainBuffer = new Bitmap(1, 1);
+            InitMainBuffer(1, 1);
             imageBuffer = new ImageBuffer(SRC);
+        }
+
+        private void InitMainBuffer(int w, int h)
+        {
+            mainBuffer = new Bitmap(w, h);
+            mainBufferBack = new Bitmap(w, h);
         }
 
         public void InitStatus()
@@ -148,7 +155,8 @@ namespace SRCTestForm
             _picMain_0.Size = new Size(MainPWidth, MainPHeight);
             _picMain_1.Location = new Point(0, 0);
             _picMain_1.Size = new Size(MainPWidth, MainPHeight);
-            mainBuffer = new Bitmap(MainPWidth, MainPHeight);
+            InitMainBuffer(MainPWidth, MainPHeight);
+
             //    // MOD START MARGE
             //    // If MainWidth = 15 Then
             //    if (!NewGUIMode)
@@ -389,6 +397,15 @@ namespace SRCTestForm
             GUI.ScreenIsSaved = false;
             if (!without_refresh && !delay_refresh)
             {
+                UpdateScreen();
+            }
+        }
+
+        private void UpdateScreen()
+        {
+            GUI.ScreenIsSaved = false;
+            if (Visible)
+            {
                 using (var g = _picMain_0.CreateGraphics())
                 {
                     g.DrawImage(mainBuffer, 0, 0);
@@ -606,6 +623,14 @@ namespace SRCTestForm
                     }
                     break;
             }
+        }
+
+        private bool IsInsideWindow(int x, int y)
+        {
+            return x >= GUI.MapX - (GUI.MainWidth + 1) / 2
+                || GUI.MapX + (GUI.MainWidth + 1) / 2 >= x
+                || y >= GUI.MapY - (GUI.MainHeight + 1) / 2
+                || GUI.MapY + (GUI.MainHeight + 1) / 2 >= y;
         }
     }
 }

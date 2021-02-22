@@ -37,6 +37,10 @@ namespace SRCCore.Commands
                     }
                     break;
 
+                case WaitCmdID: // 待機
+                    WaitCommand();
+                    break;
+
                 default:
                     // なんらかの原因により、ユニットコマンドの選択がうまくいかなかった場合は
                     // 移動後のコマンド選択をやり直す
@@ -417,12 +421,8 @@ namespace SRCCore.Commands
         // 他のコマンドの終了処理にも使われる
         private void WaitCommand(bool WithoutAction = false)
         {
-            //Pilot p;
-            //int i;
-
-            //// コマンド終了時はターゲットを解除
-            //// UPGRADE_NOTE: オブジェクト SelectedTarget をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-            //SelectedTarget = null;
+            // コマンド終了時はターゲットを解除
+            SelectedTarget = null;
 
             //// ユニットにパイロットが乗っていない？
             //if (SelectedUnit.CountPilot() == 0)
@@ -433,20 +433,19 @@ namespace SRCCore.Commands
             //    return;
             //}
 
-            //if (!WithoutAction)
-            //{
-            //    // 残り行動数を減少させる
-            //    SelectedUnit.UseAction();
+            if (!WithoutAction)
+            {
+                // 残り行動数を減少させる
+                SelectedUnit.UseAction();
 
-            //    // 持続期間が「移動」のスペシャルパワー効果を削除
-            //    if (Strings.InStr(CommandState, "移動後") > 0)
-            //    {
-            //        string argstype = "移動";
-            //        SelectedUnit.RemoveSpecialPowerInEffect(argstype);
-            //    }
-            //}
+                // 持続期間が「移動」のスペシャルパワー効果を削除
+                if (Strings.InStr(CommandState, "移動後") > 0)
+                {
+                    SelectedUnit.RemoveSpecialPowerInEffect("移動");
+                }
+            }
 
-            //CommandState = "ユニット選択";
+            CommandState = "ユニット選択";
 
             //// アップデート
             //SelectedUnit.Update();
@@ -460,8 +459,8 @@ namespace SRCCore.Commands
             //    return;
             //}
 
-            //GUI.LockGUI();
-            //GUI.RedrawScreen();
+            GUI.LockGUI();
+            GUI.RedrawScreen();
             //object argIndex1 = 1;
             //p = SelectedUnit.Pilot(argIndex1);
 
@@ -587,12 +586,12 @@ namespace SRCCore.Commands
             //// ハイパーモード・ノーマルモードの自動発動をチェック
             //SelectedUnit.CurrentForm().CheckAutoHyperMode();
             //SelectedUnit.CurrentForm().CheckAutoNormalMode();
-            //if (GUI.IsPictureVisible | GUI.IsCursorVisible)
-            //{
-            //    GUI.RedrawScreen();
-            //}
+            if (GUI.IsPictureVisible || GUI.IsCursorVisible)
+            {
+                GUI.RedrawScreen();
+            }
 
-            //GUI.UnlockGUI();
+            GUI.UnlockGUI();
 
             //// ステータスウィンドウの表示内容を更新
             //if (SelectedUnit.Status_Renamed == "出撃" & GUI.MainWidth == 15)
