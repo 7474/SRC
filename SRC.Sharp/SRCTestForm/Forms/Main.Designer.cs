@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Runtime.CompilerServices;
 using System.Windows.Forms;
 using Microsoft.VisualBasic.CompilerServices;
+using SRCTestForm.FormLib;
 
 namespace SRCTestForm
 {
@@ -53,8 +54,8 @@ namespace SRCTestForm
         public PictureBox picPilotStatus;
         public PictureBox picUnitStatus;
         public PictureBox picUnitBitmap;
-        public HScrollBar HScrollBar;
-        public VScrollBar VScrollBar;
+        public SrcHScrollBar HScrollBar;
+        public SrcVScrollBar VScrollBar;
         public PictureBox picMask;
         public PictureBox picTmp;
         public PictureBox picBack;
@@ -87,8 +88,8 @@ namespace SRCTestForm
             this.picPilotStatus = new System.Windows.Forms.PictureBox();
             this.picUnitStatus = new System.Windows.Forms.PictureBox();
             this.picUnitBitmap = new System.Windows.Forms.PictureBox();
-            this.HScrollBar = new System.Windows.Forms.HScrollBar();
-            this.VScrollBar = new System.Windows.Forms.VScrollBar();
+            this.HScrollBar = new SRCTestForm.FormLib.SrcHScrollBar();
+            this.VScrollBar = new SRCTestForm.FormLib.SrcVScrollBar();
             this.picMask = new System.Windows.Forms.PictureBox();
             this.picTmp = new System.Windows.Forms.PictureBox();
             this.picBack = new System.Windows.Forms.PictureBox();
@@ -361,6 +362,8 @@ namespace SRCTestForm
             this.HScrollBar.TabIndex = 5;
             this.HScrollBar.Value = 1;
             this.HScrollBar.Scroll += new System.Windows.Forms.ScrollEventHandler(this.HScroll_Scroll);
+            this.HScrollBar.ValueChanged += new System.EventHandler(this.HScrollBar_ValueChanged);
+            this.HScrollBar.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.VScrollBar_PreviewKeyDown);
             // 
             // VScrollBar
             // 
@@ -374,6 +377,8 @@ namespace SRCTestForm
             this.VScrollBar.TabIndex = 4;
             this.VScrollBar.Value = 1;
             this.VScrollBar.Scroll += new System.Windows.Forms.ScrollEventHandler(this.VScroll_Scroll);
+            this.VScrollBar.ValueChanged += new System.EventHandler(this.VScrollBar_ValueChanged);
+            this.VScrollBar.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.VScrollBar_PreviewKeyDown);
             // 
             // picMask
             // 
@@ -478,6 +483,7 @@ namespace SRCTestForm
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmMain_FormClosing);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.frmMain_KeyDown);
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.frmMain_MouseMove);
+            this.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.frmMain_PreviewKeyDown);
             ((System.ComponentModel.ISupportInitialize)(this._picStretchedTmp_1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this._picStretchedTmp_0)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this._picBuf_0)).EndInit();

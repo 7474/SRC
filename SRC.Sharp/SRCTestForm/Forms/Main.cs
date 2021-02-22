@@ -31,6 +31,11 @@ namespace SRCTestForm
         private int LastMapX;
         private int LastMapY;
 
+        private void frmMain_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            ActiveControl = null;
+        }
+
         // フォーム上でキーを押す
         private void frmMain_KeyDown(object eventSender, KeyEventArgs eventArgs)
         {
@@ -70,10 +75,13 @@ namespace SRCTestForm
 
             if (!Shift)
             {
+                Program.Log.LogDebug("Focus: {0}", ActiveControl?.Name);
+                // XXX なんか他方の軸も動く。
+                // フォーカスが当たっているスクロールバーがキー処理してしまってる様子。
+                // キー処理の殺し方が分からん。
                 // 方向キーを押した場合はマップを動かす
                 switch (KeyCode)
                 {
-                    // XXX なんか他方の軸も動く。どこで動いてるのか分からん。
                     case Keys.Left:
                         if (GUI.MapX > 1)
                         {
@@ -146,7 +154,8 @@ namespace SRCTestForm
             Program.Log.LogDebug("mnuMapCommandItem_Click {0}", JsonConvert.SerializeObject(eventArgs));
 
             var uiCommand = (eventSender as ToolStripItem)?.Tag as UiCommand;
-            if (uiCommand != null) { 
+            if (uiCommand != null)
+            {
                 Program.Log.LogDebug(JsonConvert.SerializeObject(uiCommand));
 
                 //var Shift = ModifierKeys.HasFlag(Keys.Shift);
@@ -642,22 +651,36 @@ namespace SRCTestForm
 
         private void HScroll_Scroll(object eventSender, ScrollEventArgs eventArgs)
         {
-            switch (eventArgs.Type)
-            {
-                case ScrollEventType.EndScroll:
-                    HScroll_Change(eventArgs.NewValue);
-                    break;
-            }
+            Program.Log.LogDebug("HScroll_Scroll {0}", JsonConvert.SerializeObject(eventArgs));
+            //switch (eventArgs.Type)
+            //{
+            //    case ScrollEventType.EndScroll:
+            //        HScroll_Change(eventArgs.NewValue);
+            //        break;
+            //}
         }
 
         private void VScroll_Scroll(object eventSender, ScrollEventArgs eventArgs)
         {
-            switch (eventArgs.Type)
-            {
-                case ScrollEventType.EndScroll:
-                    VScroll_Change(eventArgs.NewValue);
-                    break;
-            }
+            Program.Log.LogDebug("VScroll_Scroll {0}", JsonConvert.SerializeObject(eventArgs));
+            //switch (eventArgs.Type)
+            //{
+            //    case ScrollEventType.EndScroll:
+            //        VScroll_Change(eventArgs.NewValue);
+            //        break;
+            //}
+        }
+
+        private void HScrollBar_ValueChanged(object sender, EventArgs e)
+        {
+            Program.Log.LogDebug("HScrollBar_ValueChanged {0}", JsonConvert.SerializeObject(e));
+            HScroll_Change(HScrollBar.Value);
+        }
+
+        private void VScrollBar_ValueChanged(object sender, EventArgs e)
+        {
+            Program.Log.LogDebug("VScrollBar_ValueChanged {0}", JsonConvert.SerializeObject(e));
+            VScroll_Change(VScrollBar.Value);
         }
 
         // フォームを閉じる
@@ -699,5 +722,8 @@ namespace SRCTestForm
             //}
         }
 
+        private void VScrollBar_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+        }
     }
 }
