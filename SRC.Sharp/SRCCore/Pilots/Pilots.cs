@@ -99,9 +99,7 @@ namespace SRCCore.Pilots
         // 登録されているパイロットの総数
         public int Count()
         {
-            int CountRet = default;
-            CountRet = colPilots.Count;
-            return CountRet;
+            return colPilots.Count;
         }
 
         // リストからパイロットを削除
@@ -114,7 +112,7 @@ namespace SRCCore.Pilots
         public Pilot Item(string Index)
         {
             Pilot p = colPilots[Index];
-            if (p.Alive)
+            if (p?.Alive ?? false)
             {
                 return p;
             }

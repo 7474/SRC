@@ -104,11 +104,8 @@ namespace SRCCore.CmdDatas
                     //        break;
                     //    }
 
-                    //case "center":
-                    //    {
-                    //        CmdName = CmdType.CenterCmd;
-                    //        break;
-                    //    }
+                    case "center":
+                        return new CenterCmd(src, data);
 
                     //case "changearea":
                     //    {

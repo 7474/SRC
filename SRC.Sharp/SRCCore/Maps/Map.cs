@@ -5842,5 +5842,13 @@ namespace SRCCore.Maps
             //        Commands.MovedUnitSpeed = (Commands.MovedUnitSpeed + 1);
             //    }
         }
+
+        public bool IsInside(int x, int y)
+        {
+            return x >= 1
+                && MapWidth >= x
+                && y >= 1
+                && MapHeight >= y;
+        }
     }
 }

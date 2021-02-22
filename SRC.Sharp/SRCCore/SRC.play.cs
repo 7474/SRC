@@ -222,9 +222,9 @@ namespace SRCCore
                 TerminateSRC();
             }
 
-            //GUI.IsPictureVisible = false;
-            //GUI.IsCursorVisible = false;
-            //Stage = "味方";
+            GUI.IsPictureVisible = false;
+            GUI.IsCursorVisible = false;
+            Stage = "味方";
             //Sound.StopBGM();
 
             //// リスタート用にデータをセーブ

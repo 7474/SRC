@@ -10,7 +10,7 @@ namespace SRCCore.CmdDatas.Commands
 {
     public class ChangeMapCmd : CmdData
     {
-        public ChangeMapCmd(SRC src, EventDataLine eventData) : base(src, CmdType.ExitCmd, eventData)
+        public ChangeMapCmd(SRC src, EventDataLine eventData) : base(src, CmdType.ChangeMapCmd, eventData)
         {
         }
 
@@ -59,7 +59,7 @@ namespace SRCCore.CmdDatas.Commands
             fname = GetArgAsString(2);
             if (Strings.Len(fname) > 0)
             {
-                    Map.LoadMapData(SRC.Filesystem.ToPath(SRC.ScenarioPath, fname));
+                Map.LoadMapData(SRC.Filesystem.ToPath(SRC.ScenarioPath, fname));
             }
             else
             {

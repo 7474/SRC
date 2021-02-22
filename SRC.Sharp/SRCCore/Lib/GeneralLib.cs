@@ -123,153 +123,32 @@ namespace SRCCore.Lib
         // リスト list から idx 番目の要素を返す
         public static string LIndex(string list, int idx)
         {
-            string LIndexRet = default;
-            int i, n;
-            int list_len;
-            int begin;
-
             // idxが正の数でなければ空文字列を返す
             if (idx < 1)
             {
-                return LIndexRet;
+                return "";
             }
 
-            list_len = Strings.Len(list);
-
-            // idx番目の要素まで読み飛ばす
-            n = 0;
-            i = 0;
-            while (true)
+            var l = ToL(list);
+            if(l.Count <= idx)
             {
-                // 空白を読み飛ばす
-                do
-                {
-                    i = (i + 1);
-                    if (i > list_len)
-                    {
-                        return LIndexRet;
-                    }
-                }
-                while (Strings.Mid(list, i, 1) == " ");
-
-                // 要素数を１つ増やす
-                n = (n + 1);
-
-                // 求める要素？
-                if (n == idx)
-                {
-                    break;
-                }
-
-                // 要素を読み飛ばす
-                do
-                {
-                    i = (i + 1);
-                    if (i > list_len)
-                    {
-                        return LIndexRet;
-                    }
-                }
-                while (Strings.Mid(list, i, 1) != " ");
+                return l[idx - 1];
             }
-
-            // 求める要素を読み込む
-            begin = i;
-            do
-            {
-                i = (i + 1);
-                if (i > list_len)
-                {
-                    LIndexRet = Strings.Mid(list, begin);
-                    return LIndexRet;
-                }
-            }
-            while (Strings.Mid(list, i, 1) != " ");
-            LIndexRet = Strings.Mid(list, begin, i - begin);
-            return LIndexRet;
+            return "";
         }
 
         // リスト list の要素数を返す
         public static int LLength(string list)
         {
-            int LLengthRet = default;
-            int i;
-            int list_len;
-            LLengthRet = 0;
-            list_len = Strings.Len(list);
-            i = 0;
-            while (true)
-            {
-                // 空白を読み飛ばす
-                do
-                {
-                    i = (i + 1);
-                    if (i > list_len)
-                    {
-                        return LLengthRet;
-                    }
-                }
-                while (Strings.Mid(list, i, 1) == " ");
-
-                // 要素数を１つ増やす
-                LLengthRet = (LLengthRet + 1);
-
-                // 要素を読み飛ばす
-                do
-                {
-                    i = (i + 1);
-                    if (i > list_len)
-                    {
-                        return LLengthRet;
-                    }
-                }
-                while (Strings.Mid(list, i, 1) != " ");
-            }
+            return ToL(list).Count;
         }
 
         // リスト list から、リストの要素の配列 larray を作成し、
         // リストの要素数を返す
         public static int LSplit(string list, out string[] larray)
         {
-            int LSplitRet = default;
-            int i;
-            int list_len;
-            int begin;
-            LSplitRet = 0;
-            list_len = Strings.Len(list);
-            larray = new string[1];
-            i = 0;
-            while (true)
-            {
-                // 空白を読み飛ばす
-                do
-                {
-                    i = (i + 1);
-                    if (i > list_len)
-                    {
-                        return LSplitRet;
-                    }
-                }
-                while (Strings.Mid(list, i, 1) == " ");
-
-                // 要素数を１つ増やす
-                LSplitRet = (LSplitRet + 1);
-
-                // 要素を読み込む
-                Array.Resize(ref larray, LSplitRet + 1);
-                begin = i;
-                do
-                {
-                    i = (i + 1);
-                    if (i > list_len)
-                    {
-                        larray[LSplitRet] = Strings.Mid(list, begin);
-                        return LSplitRet;
-                    }
-                }
-                while (Strings.Mid(list, i, 1) != " ");
-                larray[LSplitRet] = Strings.Mid(list, begin, i - begin);
-            }
+            larray = ToL(list).ToArray();
+            return larray.Length;
         }
 
         //        // 文字列 ch が空白かどうか調べる

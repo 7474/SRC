@@ -387,6 +387,11 @@ namespace SRCCoreTests.TestLib
             throw new NotImplementedException();
         }
 
+        public void UpdateScreen()
+        {
+            throw new NotImplementedException();
+        }
+
         public int WeaponListBox(Unit u, string caption_msg, string lb_mode, string BGM = "")
         {
             throw new NotImplementedException();

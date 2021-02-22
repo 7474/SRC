@@ -282,6 +282,7 @@ namespace SRCCore
         void MainFormShow();
 
         void ChangeStatus(GuiStatus status);
+        void UpdateScreen();
 
         // === コンテキストメニュー操作 ===
         void ShowUnitCommandMenu(IList<UiCommand> commands);

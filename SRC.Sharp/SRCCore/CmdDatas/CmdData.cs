@@ -5,6 +5,7 @@
 using SRCCore.Events;
 using SRCCore.Exceptions;
 using SRCCore.Lib;
+using SRCCore.Units;
 using SRCCore.VB;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ using System.Linq;
 namespace SRCCore.CmdDatas
 {
     // イベントコマンドのクラス
-    public abstract class CmdData
+    public abstract partial class CmdData
     {
         protected SRC SRC { get; }
         protected IGUI GUI => SRC.GUI;
@@ -49,7 +50,7 @@ namespace SRCCore.CmdDatas
             }
             catch (EventErrorException ex)
             {
-                Event.DisplayEventErrorMessage(ex.EventData.ID, ex.Message);
+                Event.DisplayEventErrorMessage(ex?.EventData.ID ?? EventData.ID, ex.Message);
                 return -1;
             }
             catch
@@ -148,6 +149,31 @@ namespace SRCCore.CmdDatas
                 default:
                     throw new InvalidOperationException();
             }
+        }
+
+        // idx番目の引数が示すユニットを返す
+        public Unit GetArgAsUnit(int idx, bool ignore_error = false)
+        {
+            string pname = GetArgAsString(idx);
+            Unit GetArgAsUnitRet = SRC.UList.Item2(pname);
+            if (GetArgAsUnitRet is null)
+            {
+                if (!SRC.PList.IsDefined(pname))
+                {
+                    throw new EventErrorException(this, "「" + pname + "」というパイロットが見つかりません");
+                }
+
+                GetArgAsUnitRet = SRC.PList.Item(pname).Unit;
+                if (!ignore_error)
+                {
+                    if (GetArgAsUnitRet is null)
+                    {
+                        throw new EventErrorException(this, "「" + pname + "」はユニットに乗っていません");
+                    }
+                }
+            }
+
+            return GetArgAsUnitRet;
         }
 
         private void ParseArgs(string list)
