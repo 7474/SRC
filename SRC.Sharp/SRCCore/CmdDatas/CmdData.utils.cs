@@ -99,7 +99,10 @@ namespace SRCCore.CmdDatas
             {
                 // Impl
                 bool tmp = GUI.IsPictureVisible;
-                //    GUI.DrawPicture(@"Event\cursor.bmp", Constants.DEFAULT_LEVEL, Constants.DEFAULT_LEVEL, Constants.DEFAULT_LEVEL, Constants.DEFAULT_LEVEL, 0, 0, 0, 0, "透過");
+                GUI.DrawPicture(@"Event\cursor.bmp",
+                    Constants.DEFAULT_LEVEL, Constants.DEFAULT_LEVEL, Constants.DEFAULT_LEVEL, Constants.DEFAULT_LEVEL,
+                    0, 0, 0, 0,
+                    "透過");
                 GUI.IsPictureVisible = tmp;
                 GUI.IsCursorVisible = true;
             }

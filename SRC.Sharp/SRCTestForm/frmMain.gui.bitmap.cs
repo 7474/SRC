@@ -750,39 +750,12 @@ namespace SRCTestForm
                     // 表示を中止
                     return false;
                 }
-                // XXX とりあえず宛先のサイズに合わせて描く
-                g.DrawImage(image, g.VisibleClipBounds);
 
                 //FoundPicture:
                 //    // ファイル名を記録しておく
                 //    last_fname = fname;
                 //    last_exists = true;
                 //    pfname = fpath + fname;
-                {
-                    //    // 使用するバッファを選択
-                    //    i = GetPicBuf();
-                    //    // UPGRADE_ISSUE: Control picBuf は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-                    //    orig_pic = MainForm.picBuf(i);
-                    //    PicBufFname[i] = fname;
-                    //    PicBufOption[i] = "";
-                    //    PicBufOption2[i] = "";
-                    //    PicBufDW[i] =  Constants.DEFAULT_LEVEL;
-                    //    PicBufDH[i] =  Constants.DEFAULT_LEVEL;
-                    //    PicBufSX[i] = 0;
-                    //    PicBufSY[i] = 0;
-                    //    PicBufSW[i] = 0;
-                    //    PicBufSH[i] = 0;
-                    //    PicBufIsMask[i] = false;
-                    //    // Debug.Print "Use " & Format$(i) & " As Orig"
-
-                    //    Susie.LoadPicture2(ref orig_pic, ref pfname);
-
-                    //    // 読み込んだ画像のサイズ(バイト数)をバッファ情報に記録しておく
-                    //    {
-                    //        var withBlock5 = orig_pic;
-                    //        PicBufSize[i] = (int)((double)display_byte_pixel * SrcFormatter.PixelsToTwipsX(withBlock5.Width) * SrcFormatter.PixelsToTwipsY(withBlock5.Height));
-                    //    }
-                }
                 //LoadedOrigPicture:
 
                 var orig_width = image.Width;

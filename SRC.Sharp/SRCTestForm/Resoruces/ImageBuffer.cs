@@ -94,6 +94,10 @@ namespace SRCTestForm.Resoruces
                 return transparentBuffer[key];
             }
             var image = Get(name);
+            if (image == null)
+            {
+                return null;
+            }
             return Transparent(key, image, transparentColor);
         }
 
