@@ -1,5 +1,6 @@
 ﻿using SRCCore;
 using SRCCore.Maps;
+using SRCCore.Models;
 using SRCCore.Pilots;
 using SRCCore.Units;
 using SRCTestForm.Resoruces;
@@ -11,28 +12,44 @@ namespace SRCTestForm
     // TODO インタフェースの切り方見直す
     internal partial class frmMain : IGUIStatus
     {
+        public Unit DisplayedUnit { get; set; }
+        public Pilot DisplayedPilot { get; set; }
+
+        // XXX
+        // ステータス画面の背景色
+        public Color StatusWindowBackBolor;
+        // ステータス画面の枠色
+        public Color StatusWindowFrameColor;
+        // ステータス画面の枠幅
+        public int StatusWindowFrameWidth;
+        // ステータス画面 能力名のフォントカラー
+        public Color StatusFontColorAbilityName;
+        // ステータス画面 有効な能力のフォントカラー
+        public Color StatusFontColorAbilityEnable;
+        // ステータス画面 無効な能力のフォントカラー
+        public Color StatusFontColorAbilityDisable;
+        // ステータス画面 その他通常描画のフォントカラー
+        public Color StatusFontColorNormalString;
+
         public void DisplayGlobalStatus()
         {
-            short X, Y;
+            int X, Y;
             PictureBox pic;
             TerrainData td;
-            // ADD START 240a
             string fname;
-            var wHeight = default(short);
+            var wHeight = default(int);
             int lineStart, ret, color, lineEnd;
-            // ADD  END  240a
 
             // ステータスウィンドウを消去
             ClearUnitStatus();
 
-            // UPGRADE_ISSUE: Control picUnitStatus は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-            pic = GUI.MainForm.picUnitStatus;
+            var pic = picUnitStatus;
             pic.Font = Microsoft.VisualBasic.Compatibility.VB6.Support.FontChangeSize(pic.Font, 12f);
 
             // ADD START 240a
             // マウスカーソルの位置は？
-            X = GUI.PixelToMapX((short)GUI.MouseX);
-            Y = GUI.PixelToMapY((short)GUI.MouseY);
+            X = GUI.PixelToMapX((int)GUI.MouseX);
+            Y = GUI.PixelToMapY((int)GUI.MouseY);
             if (GUI.NewGUIMode)
             {
                 // Global変数が宣言されていれば、ステータス画面用変数の同期を取る
@@ -49,7 +66,7 @@ namespace SRCTestForm
                 // 一旦高さを最大にする
                 pic.Width = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsX(235d);
                 pic.Height = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsY(GUI.MapPHeight - 20);
-                wHeight = (short)GetGlobalStatusSize(ref X, ref Y);
+                wHeight = (int)GetGlobalStatusSize(X, Y);
                 // 枠線を引く
                 // UPGRADE_ISSUE: PictureBox メソッド pic.Line はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                 pic.Line(lineStart, lineStart); /* TODO ERROR: Skipped SkippedTokensTrivia *//* TODO ERROR: Skipped SkippedTokensTrivia */
@@ -77,7 +94,7 @@ namespace SRCTestForm
             // UPGRADE_ISSUE: PictureBox メソッド pic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
             string argtname = "資金";
             Unit argu = null;
-            pic.Print(Expression.Term(ref argtname, ref argu, 8) + " " + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(SRC.Money));
+            pic.Print(Expression.Term(argtname, argu, 8) + " " + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(SRC.Money));
 
             // MOV START 240a ↑に移動
             // 'マウスカーソルの位置は？
@@ -177,7 +194,7 @@ namespace SRCTestForm
                 // UPGRADE_ISSUE: PictureBox メソッド pic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                 string argtname1 = "ＨＰ";
                 Unit argu1 = null;
-                pic.Print(Expression.Term(ref argtname1, u: ref argu1) + " +" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(Map.TerrainEffectForHPRecover(X, Y)) + "%  ");
+                pic.Print(Expression.Term(argtname1, u: argu1) + " +" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(Map.TerrainEffectForHPRecover(X, Y)) + "%  ");
             }
 
             // ＥＮ回復率
@@ -186,7 +203,7 @@ namespace SRCTestForm
                 // UPGRADE_ISSUE: PictureBox メソッド pic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                 string argtname2 = "ＥＮ";
                 Unit argu2 = null;
-                pic.Print(Expression.Term(ref argtname2, u: ref argu2) + " +" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(Map.TerrainEffectForENRecover(X, Y)) + "%");
+                pic.Print(Expression.Term(argtname2, u: argu2) + " +" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(Map.TerrainEffectForENRecover(X, Y)) + "%");
             }
 
             if (Map.TerrainEffectForHPRecover(X, Y) > 0 | Map.TerrainEffectForENRecover(X, Y) > 0)
@@ -200,8 +217,8 @@ namespace SRCTestForm
             // マスのタイプに応じて参照先を変更
             switch (Map.MapData[X, Y, Map.MapDataIndex.BoxType])
             {
-                case (short)Map.BoxTypes.Under:
-                case (short)Map.BoxTypes.UpperBmpOnly:
+                case (int)Map.BoxTypes.Under:
+                case (int)Map.BoxTypes.UpperBmpOnly:
                     {
                         td = SRC.TDList.Item(Map.MapData[X, Y, Map.MapDataIndex.TerrainType]);
                         break;
@@ -224,30 +241,30 @@ namespace SRCTestForm
             // ADD  END  240a
             // ＨＰ＆ＥＮ減少
             string argfname = "ＨＰ減少";
-            if (td.IsFeatureAvailable(ref argfname))
+            if (td.IsFeatureAvailable(argfname))
             {
                 // UPGRADE_ISSUE: PictureBox メソッド pic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                 string argtname3 = "ＨＰ";
                 Unit argu3 = null;
                 object argIndex1 = "ＨＰ減少";
                 object argIndex2 = "ＨＰ減少";
-                pic.Print(Expression.Term(ref argtname3, u: ref argu3) + " -" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(10d * td.FeatureLevel(ref argIndex1)) + "% (" + td.FeatureData(ref argIndex2) + ")  ");
+                pic.Print(Expression.Term(argtname3, u: argu3) + " -" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(10d * td.FeatureLevel(argIndex1)) + "% (" + td.FeatureData(argIndex2) + ")  ");
             }
 
             string argfname1 = "ＥＮ減少";
-            if (td.IsFeatureAvailable(ref argfname1))
+            if (td.IsFeatureAvailable(argfname1))
             {
                 // UPGRADE_ISSUE: PictureBox メソッド pic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                 string argtname4 = "ＥＮ";
                 Unit argu4 = null;
                 object argIndex3 = "ＥＮ減少";
                 object argIndex4 = "ＥＮ減少";
-                pic.Print(Expression.Term(ref argtname4, u: ref argu4) + " -" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(10d * td.FeatureLevel(ref argIndex3)) + "% (" + td.FeatureData(ref argIndex4) + ")  ");
+                pic.Print(Expression.Term(argtname4, u: argu4) + " -" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(10d * td.FeatureLevel(argIndex3)) + "% (" + td.FeatureData(argIndex4) + ")  ");
             }
 
             string argfname2 = "ＨＰ減少";
             string argfname3 = "ＥＮ減少";
-            if (td.IsFeatureAvailable(ref argfname2) | td.IsFeatureAvailable(ref argfname3))
+            if (td.IsFeatureAvailable(argfname2) | td.IsFeatureAvailable(argfname3))
             {
                 // UPGRADE_ISSUE: PictureBox メソッド pic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                 pic.Print();
@@ -262,28 +279,28 @@ namespace SRCTestForm
             // ADD  END  240a
             // ＨＰ＆ＥＮ増加
             string argfname4 = "ＨＰ増加";
-            if (td.IsFeatureAvailable(ref argfname4))
+            if (td.IsFeatureAvailable(argfname4))
             {
                 // UPGRADE_ISSUE: PictureBox メソッド pic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                 string argtname5 = "ＨＰ";
                 Unit argu5 = null;
                 object argIndex5 = "ＨＰ増加";
-                pic.Print(Expression.Term(ref argtname5, u: ref argu5) + " +" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(1000d * td.FeatureLevel(ref argIndex5)) + "  ");
+                pic.Print(Expression.Term(argtname5, u: argu5) + " +" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(1000d * td.FeatureLevel(argIndex5)) + "  ");
             }
 
             string argfname5 = "ＥＮ増加";
-            if (td.IsFeatureAvailable(ref argfname5))
+            if (td.IsFeatureAvailable(argfname5))
             {
                 // UPGRADE_ISSUE: PictureBox メソッド pic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                 string argtname6 = "ＥＮ";
                 Unit argu6 = null;
                 object argIndex6 = "ＥＮ増加";
-                pic.Print(Expression.Term(ref argtname6, u: ref argu6) + " +" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(10d * td.FeatureLevel(ref argIndex6)) + "  ");
+                pic.Print(Expression.Term(argtname6, u: argu6) + " +" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(10d * td.FeatureLevel(argIndex6)) + "  ");
             }
 
             string argfname6 = "ＨＰ増加";
             string argfname7 = "ＥＮ増加";
-            if (td.IsFeatureAvailable(ref argfname6) | td.IsFeatureAvailable(ref argfname7))
+            if (td.IsFeatureAvailable(argfname6) | td.IsFeatureAvailable(argfname7))
             {
                 // UPGRADE_ISSUE: PictureBox メソッド pic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                 pic.Print();
@@ -299,28 +316,28 @@ namespace SRCTestForm
             // ADD  END  240a
             // ＨＰ＆ＥＮ低下
             string argfname8 = "ＨＰ低下";
-            if (td.IsFeatureAvailable(ref argfname8))
+            if (td.IsFeatureAvailable(argfname8))
             {
                 // UPGRADE_ISSUE: PictureBox メソッド pic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                 string argtname7 = "ＨＰ";
                 Unit argu7 = null;
                 object argIndex7 = "ＨＰ低下";
-                pic.Print(Expression.Term(ref argtname7, u: ref argu7) + " -" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(1000d * td.FeatureLevel(ref argIndex7)) + "  ");
+                pic.Print(Expression.Term(argtname7, u: argu7) + " -" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(1000d * td.FeatureLevel(argIndex7)) + "  ");
             }
 
             string argfname9 = "ＥＮ低下";
-            if (td.IsFeatureAvailable(ref argfname9))
+            if (td.IsFeatureAvailable(argfname9))
             {
                 // UPGRADE_ISSUE: PictureBox メソッド pic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                 string argtname8 = "ＥＮ";
                 Unit argu8 = null;
                 object argIndex8 = "ＥＮ低下";
-                pic.Print(Expression.Term(ref argtname8, u: ref argu8) + " -" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(10d * td.FeatureLevel(ref argIndex8)) + "  ");
+                pic.Print(Expression.Term(argtname8, u: argu8) + " -" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(10d * td.FeatureLevel(argIndex8)) + "  ");
             }
 
             string argfname10 = "ＨＰ低下";
             string argfname11 = "ＥＮ低下";
-            if (td.IsFeatureAvailable(ref argfname10) | td.IsFeatureAvailable(ref argfname11))
+            if (td.IsFeatureAvailable(argfname10) | td.IsFeatureAvailable(argfname11))
             {
                 // UPGRADE_ISSUE: PictureBox メソッド pic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                 pic.Print();
@@ -335,40 +352,40 @@ namespace SRCTestForm
             // ADD  END  240a
             // 摩擦
             string argfname12 = "摩擦";
-            if (td.IsFeatureAvailable(ref argfname12))
+            if (td.IsFeatureAvailable(argfname12))
             {
                 // UPGRADE_ISSUE: PictureBox メソッド pic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                 object argIndex9 = "摩擦";
-                pic.Print("摩擦Lv" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(td.FeatureLevel(ref argIndex9)));
+                pic.Print("摩擦Lv" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(td.FeatureLevel(argIndex9)));
             }
             // ADD START MARGE
             // 状態異常付加
             string argfname13 = "状態付加";
-            if (td.IsFeatureAvailable(ref argfname13))
+            if (td.IsFeatureAvailable(argfname13))
             {
                 // UPGRADE_ISSUE: PictureBox メソッド pic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                 object argIndex10 = "状態付加";
-                pic.Print(td.FeatureData(ref argIndex10) + "状態付加");
+                pic.Print(td.FeatureData(argIndex10) + "状態付加");
             }
             // ADD END MARGE
         }
 
-        public void DisplayUnitStatus(Unit u, short pindex = 0)
+        public void DisplayUnitStatus(Unit u, int pindex = 0)
         {
             Pilot p;
-            short k, i, j, n;
+            int k, i, j, n;
             int ret;
             string buf;
             string fdata, fname, opt;
             string stype, sname, slevel;
-            short cx, cy;
-            short[] warray;
+            int cx, cy;
+            int[] warray;
             int[] wpower;
             PictureBox ppic, upic;
-            short nmorale, ecost, pmorale;
+            int nmorale, ecost, pmorale;
             string[] flist;
             var is_unknown = default(bool);
-            short prob, w, cprob;
+            int prob, w, cprob;
             int dmg;
             string def_mode;
             string[] name_list;
@@ -453,7 +470,7 @@ namespace SRCTestForm
                 string argoname = "ユニット情報隠蔽";
                 object argIndex1 = "識別済み";
                 object argIndex2 = "ユニット情報隠蔽";
-                if (Expression.IsOptionDefined(ref argoname) & !withBlock.IsConditionSatisfied(ref argIndex1) & (withBlock.Party0 == "敵" | withBlock.Party0 == "中立") | withBlock.IsConditionSatisfied(ref argIndex2))
+                if (Expression.IsOptionDefined(argoname) & !withBlock.IsConditionSatisfied(argIndex1) & (withBlock.Party0 == "敵" | withBlock.Party0 == "中立") | withBlock.IsConditionSatisfied(argIndex2))
                 {
                     is_unknown = true;
                 }
@@ -471,7 +488,7 @@ namespace SRCTestForm
                     {
                         string argfname = "white.bmp";
                         string argdraw_option = "ステータス";
-                        GUI.DrawPicture(ref argfname, 2, 2, 64, 64, 0, 0, 0, 0, ref argdraw_option);
+                        GUI.DrawPicture(argfname, 2, 2, 64, 64, 0, 0, 0, 0, argdraw_option);
                     }
                     // MOD START 240a
                     // ppic.ForeColor = rgb(0, 0, 150)
@@ -487,7 +504,7 @@ namespace SRCTestForm
                     }
                     // UPGRADE_ISSUE: PictureBox メソッド ppic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                     string argtname = "レベル";
-                    ppic.Print(Expression.Term(ref argtname, ref u));
+                    ppic.Print(Expression.Term(argtname, u));
                     // MOD START 240a
                     // If MainWidth <> 15 Then
                     if (GUI.NewGUIMode)
@@ -498,7 +515,7 @@ namespace SRCTestForm
                     }
                     // UPGRADE_ISSUE: PictureBox メソッド ppic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                     string argtname1 = "気力";
-                    ppic.Print(Expression.Term(ref argtname1, ref u));
+                    ppic.Print(Expression.Term(argtname1, u));
                     // MOD START 240a
                     // ppic.ForeColor = rgb(0, 0, 0)
                     ppic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorNormalString, Information.RGB(0, 0, 0))));
@@ -519,7 +536,7 @@ namespace SRCTestForm
                     // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                     string argtname2 = "格闘";
                     string argtname3 = "射撃";
-                    upic.Print(Expression.Term(ref argtname2, ref u, 4) + "               " + Expression.Term(ref argtname3, ref u));
+                    upic.Print(Expression.Term(argtname2, u, 4) + "               " + Expression.Term(argtname3, u));
                     // MOD START 240a
                     // If MainWidth <> 15 Then
                     if (GUI.NewGUIMode)
@@ -531,7 +548,7 @@ namespace SRCTestForm
                     // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                     string argtname4 = "命中";
                     string argtname5 = "回避";
-                    upic.Print(Expression.Term(ref argtname4, ref u, 4) + "               " + Expression.Term(ref argtname5, ref u));
+                    upic.Print(Expression.Term(argtname4, u, 4) + "               " + Expression.Term(argtname5, u));
                     // MOD START 240a
                     // If MainWidth <> 15 Then
                     if (GUI.NewGUIMode)
@@ -543,7 +560,7 @@ namespace SRCTestForm
                     // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                     string argtname6 = "技量";
                     string argtname7 = "反応";
-                    upic.Print(Expression.Term(ref argtname6, ref u, 4) + "               " + Expression.Term(ref argtname7, ref u));
+                    upic.Print(Expression.Term(argtname6, u, 4) + "               " + Expression.Term(argtname7, u));
                     // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                     upic.Print();
                     // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
@@ -562,7 +579,7 @@ namespace SRCTestForm
                     // メインパイロット
                     p = withBlock.MainPilot();
                     object argIndex3 = 1;
-                    if ((withBlock.MainPilot().get_Nickname(false) ?? "") == (withBlock.Pilot(ref argIndex3).get_Nickname(false) ?? "") | withBlock.Data.PilotNum == 1)
+                    if ((withBlock.MainPilot().get_Nickname(false) ?? "") == (withBlock.Pilot(argIndex3).get_Nickname(false) ?? "") | withBlock.Data.PilotNum == 1)
                     {
                         DisplayedPilotInd = 1;
                     }
@@ -571,10 +588,10 @@ namespace SRCTestForm
                 {
                     // メインパイロットまたは１番目のパイロット
                     object argIndex5 = 1;
-                    if ((withBlock.MainPilot().get_Nickname(false) ?? "") != (withBlock.Pilot(ref argIndex5).get_Nickname(false) ?? "") & withBlock.Data.PilotNum != 1)
+                    if ((withBlock.MainPilot().get_Nickname(false) ?? "") != (withBlock.Pilot(argIndex5).get_Nickname(false) ?? "") & withBlock.Data.PilotNum != 1)
                     {
                         object argIndex4 = 1;
-                        p = withBlock.Pilot(ref argIndex4);
+                        p = withBlock.Pilot(argIndex4);
                     }
                     else
                     {
@@ -585,13 +602,13 @@ namespace SRCTestForm
                 {
                     // サブパイロット
                     object argIndex6 = pindex;
-                    p = withBlock.Pilot(ref argIndex6);
+                    p = withBlock.Pilot(argIndex6);
                 }
-                else if (pindex <= (short)(withBlock.CountPilot() + withBlock.CountSupport()))
+                else if (pindex <= (int)(withBlock.CountPilot() + withBlock.CountSupport()))
                 {
                     // サポートパイロット
                     object argIndex7 = pindex - withBlock.CountPilot();
-                    p = withBlock.Support(ref argIndex7);
+                    p = withBlock.Support(argIndex7);
                 }
                 else
                 {
@@ -614,13 +631,13 @@ namespace SRCTestForm
                 }
 
                 // 画像ファイルを検索
-                bool localFileExists() { string argfname = SRC.ScenarioPath + fname; var ret = GeneralLib.FileExists(ref argfname); return ret; }
+                bool localFileExists() { string argfname = SRC.ScenarioPath + fname; var ret = GeneralLib.FileExists(argfname); return ret; }
 
-                bool localFileExists1() { string argfname = SRC.ExtDataPath + fname; var ret = GeneralLib.FileExists(ref argfname); return ret; }
+                bool localFileExists1() { string argfname = SRC.ExtDataPath + fname; var ret = GeneralLib.FileExists(argfname); return ret; }
 
-                bool localFileExists2() { string argfname = SRC.ExtDataPath2 + fname; var ret = GeneralLib.FileExists(ref argfname); return ret; }
+                bool localFileExists2() { string argfname = SRC.ExtDataPath2 + fname; var ret = GeneralLib.FileExists(argfname); return ret; }
 
-                bool localFileExists3() { string argfname = SRC.AppPath + fname; var ret = GeneralLib.FileExists(ref argfname); return ret; }
+                bool localFileExists3() { string argfname = SRC.AppPath + fname; var ret = GeneralLib.FileExists(argfname); return ret; }
 
                 if (Strings.InStr(fname, @"\-.bmp") > 0)
                 {
@@ -679,14 +696,14 @@ namespace SRCTestForm
                 else if (!string.IsNullOrEmpty(fname))
                 {
                     string argdraw_option1 = "ステータス";
-                    GUI.DrawPicture(ref fname, 2, 2, 64, 64, 0, 0, 0, 0, ref argdraw_option1);
+                    GUI.DrawPicture(fname, 2, 2, 64, 64, 0, 0, 0, 0, argdraw_option1);
                 }
                 else
                 {
                     // 画像ファイルが見つからなかった場合はキャラ画面をクリア
                     string argfname1 = "white.bmp";
                     string argdraw_option2 = "ステータス";
-                    GUI.DrawPicture(ref argfname1, 2, 2, 64, 64, 0, 0, 0, 0, ref argdraw_option2);
+                    GUI.DrawPicture(argfname1, 2, 2, 64, 64, 0, 0, 0, 0, argdraw_option2);
                 }
 
                 // パイロット愛称
@@ -722,7 +739,7 @@ namespace SRCTestForm
                     }
                     // UPGRADE_ISSUE: PictureBox メソッド ppic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                     string argtname8 = "レベル";
-                    ppic.Print(Expression.Term(ref argtname8, ref u));
+                    ppic.Print(Expression.Term(argtname8, u));
                     // MOD START 240a
                     // If MainWidth <> 15 Then
                     if (GUI.NewGUIMode)
@@ -733,7 +750,7 @@ namespace SRCTestForm
                     }
                     // UPGRADE_ISSUE: PictureBox メソッド ppic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                     string argtname9 = "気力";
-                    ppic.Print(Expression.Term(ref argtname9, ref u));
+                    ppic.Print(Expression.Term(argtname9, u));
                     // MOD START 240a
                     // ppic.ForeColor = rgb(0, 0, 0)
                     ppic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorNormalString, Information.RGB(0, 0, 0))));
@@ -754,7 +771,7 @@ namespace SRCTestForm
                     // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                     string argtname10 = "格闘";
                     string argtname11 = "射撃";
-                    upic.Print(Expression.Term(ref argtname10, ref u, 4) + "               " + Expression.Term(ref argtname11, ref u));
+                    upic.Print(Expression.Term(argtname10, u, 4) + "               " + Expression.Term(argtname11, u));
                     // MOD START 240a
                     // If MainWidth <> 15 Then
                     if (GUI.NewGUIMode)
@@ -766,7 +783,7 @@ namespace SRCTestForm
                     // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                     string argtname12 = "命中";
                     string argtname13 = "回避";
-                    upic.Print(Expression.Term(ref argtname12, ref u, 4) + "               " + Expression.Term(ref argtname13, ref u));
+                    upic.Print(Expression.Term(argtname12, u, 4) + "               " + Expression.Term(argtname13, u));
                     // MOD START 240a
                     // If MainWidth <> 15 Then
                     if (GUI.NewGUIMode)
@@ -778,7 +795,7 @@ namespace SRCTestForm
                     // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                     string argtname14 = "技量";
                     string argtname15 = "反応";
-                    upic.Print(Expression.Term(ref argtname14, ref u, 4) + "               " + Expression.Term(ref argtname15, ref u));
+                    upic.Print(Expression.Term(argtname14, u, 4) + "               " + Expression.Term(argtname15, u));
                     // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                     upic.Print();
                     // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
@@ -805,7 +822,7 @@ namespace SRCTestForm
                 }
                 // UPGRADE_ISSUE: PictureBox メソッド ppic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                 string argtname16 = "レベル";
-                ppic.Print(Expression.Term(ref argtname16, ref u) + " ");
+                ppic.Print(Expression.Term(argtname16, u) + " ");
                 // MOD START 240a
                 // ppic.ForeColor = rgb(0, 0, 0)
                 ppic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorNormalString, Information.RGB(0, 0, 0))));
@@ -884,7 +901,7 @@ namespace SRCTestForm
                 }
                 // UPGRADE_ISSUE: PictureBox メソッド ppic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                 string argtname17 = "気力";
-                ppic.Print(Expression.Term(ref argtname17, ref u) + " ");
+                ppic.Print(Expression.Term(argtname17, u) + " ");
                 // MOD START 240a
                 // ppic.ForeColor = rgb(0, 0, 0)
                 ppic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorNormalString, Information.RGB(0, 0, 0))));
@@ -922,7 +939,7 @@ namespace SRCTestForm
                     }
                     // UPGRADE_ISSUE: PictureBox メソッド ppic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                     string argtname18 = "ＳＰ";
-                    ppic.Print(Expression.Term(ref argtname18, ref u) + " ");
+                    ppic.Print(Expression.Term(argtname18, u) + " ");
                     // MOD START 240a
                     // ppic.ForeColor = rgb(0, 0, 0)
                     ppic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorNormalString, Information.RGB(0, 0, 0))));
@@ -993,7 +1010,7 @@ namespace SRCTestForm
                 // MOD  END  240a
                 // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                 string argtname19 = "格闘";
-                upic.Print(Expression.Term(ref argtname19, ref u, 4) + " ");
+                upic.Print(Expression.Term(argtname19, u, 4) + " ");
                 // MOD START 240a
                 // upic.ForeColor = rgb(0, 0, 0)
                 upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorNormalString, Information.RGB(0, 0, 0))));
@@ -1002,18 +1019,18 @@ namespace SRCTestForm
                 {
                     // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                     string argbuf = "？";
-                    upic.Print(GeneralLib.LeftPaddedString(ref argbuf, 4) + Strings.Space(10));
+                    upic.Print(GeneralLib.LeftPaddedString(argbuf, 4) + Strings.Space(10));
                 }
                 else if (p.Data.Infight > 1)
                 {
-                    switch ((short)(p.InfightMod + p.InfightMod2))
+                    switch ((int)(p.InfightMod + p.InfightMod2))
                     {
                         case var @case when @case > 0:
                             {
                                 // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-                                string localLeftPaddedString() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.InfightBase); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
+                                string localLeftPaddedString() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.InfightBase); var ret = GeneralLib.LeftPaddedString(argbuf, 5); return ret; }
 
-                                string localRightPaddedString() { string argbuf = "+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.InfightMod + p.InfightMod2); var ret = GeneralLib.RightPaddedString(ref argbuf, 9); return ret; }
+                                string localRightPaddedString() { string argbuf = "+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.InfightMod + p.InfightMod2); var ret = GeneralLib.RightPaddedString(argbuf, 9); return ret; }
 
                                 upic.Print(localLeftPaddedString() + localRightPaddedString());
                                 break;
@@ -1022,9 +1039,9 @@ namespace SRCTestForm
                         case var case1 when case1 < 0:
                             {
                                 // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-                                string localLeftPaddedString1() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.InfightBase); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
+                                string localLeftPaddedString1() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.InfightBase); var ret = GeneralLib.LeftPaddedString(argbuf, 5); return ret; }
 
-                                string localRightPaddedString1() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.InfightMod + p.InfightMod2); var ret = GeneralLib.RightPaddedString(ref argbuf, 9); return ret; }
+                                string localRightPaddedString1() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.InfightMod + p.InfightMod2); var ret = GeneralLib.RightPaddedString(argbuf, 9); return ret; }
 
                                 upic.Print(localLeftPaddedString1() + localRightPaddedString1());
                                 break;
@@ -1033,7 +1050,7 @@ namespace SRCTestForm
                         case 0:
                             {
                                 // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-                                string localLeftPaddedString2() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.Infight); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
+                                string localLeftPaddedString2() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.Infight); var ret = GeneralLib.LeftPaddedString(argbuf, 5); return ret; }
 
                                 upic.Print(localLeftPaddedString2() + Strings.Space(9));
                                 break;
@@ -1044,7 +1061,7 @@ namespace SRCTestForm
                 {
                     // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                     string argbuf1 = "--";
-                    upic.Print(GeneralLib.LeftPaddedString(ref argbuf1, 5) + Strings.Space(9));
+                    upic.Print(GeneralLib.LeftPaddedString(argbuf1, 5) + Strings.Space(9));
                 }
 
                 // 射撃
@@ -1056,13 +1073,13 @@ namespace SRCTestForm
                 {
                     // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                     string argtname20 = "射撃";
-                    upic.Print(Expression.Term(ref argtname20, ref u, 4) + " ");
+                    upic.Print(Expression.Term(argtname20, u, 4) + " ");
                 }
                 else
                 {
                     // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                     string argtname21 = "魔力";
-                    upic.Print(Expression.Term(ref argtname21, ref u, 4) + " ");
+                    upic.Print(Expression.Term(argtname21, u, 4) + " ");
                 }
                 // MOD START 240a
                 // upic.ForeColor = rgb(0, 0, 0)
@@ -1072,18 +1089,18 @@ namespace SRCTestForm
                 {
                     // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                     string argbuf2 = "？";
-                    upic.Print(GeneralLib.LeftPaddedString(ref argbuf2, 4));
+                    upic.Print(GeneralLib.LeftPaddedString(argbuf2, 4));
                 }
                 else if (p.Data.Shooting > 1)
                 {
-                    switch ((short)(p.ShootingMod + p.ShootingMod2))
+                    switch ((int)(p.ShootingMod + p.ShootingMod2))
                     {
                         case var case2 when case2 > 0:
                             {
                                 // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-                                string localLeftPaddedString3() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.ShootingBase); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
+                                string localLeftPaddedString3() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.ShootingBase); var ret = GeneralLib.LeftPaddedString(argbuf, 5); return ret; }
 
-                                string localRightPaddedString2() { string argbuf = "+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.ShootingMod + p.ShootingMod2); var ret = GeneralLib.RightPaddedString(ref argbuf, 5); return ret; }
+                                string localRightPaddedString2() { string argbuf = "+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.ShootingMod + p.ShootingMod2); var ret = GeneralLib.RightPaddedString(argbuf, 5); return ret; }
 
                                 upic.Print(localLeftPaddedString3() + localRightPaddedString2());
                                 break;
@@ -1092,9 +1109,9 @@ namespace SRCTestForm
                         case var case3 when case3 < 0:
                             {
                                 // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-                                string localLeftPaddedString4() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.ShootingBase); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
+                                string localLeftPaddedString4() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.ShootingBase); var ret = GeneralLib.LeftPaddedString(argbuf, 5); return ret; }
 
-                                string localRightPaddedString3() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.ShootingMod + p.ShootingMod2); var ret = GeneralLib.RightPaddedString(ref argbuf, 5); return ret; }
+                                string localRightPaddedString3() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.ShootingMod + p.ShootingMod2); var ret = GeneralLib.RightPaddedString(argbuf, 5); return ret; }
 
                                 upic.Print(localLeftPaddedString4() + localRightPaddedString3());
                                 break;
@@ -1103,7 +1120,7 @@ namespace SRCTestForm
                         case 0:
                             {
                                 // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-                                string localLeftPaddedString5() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.Shooting); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
+                                string localLeftPaddedString5() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.Shooting); var ret = GeneralLib.LeftPaddedString(argbuf, 5); return ret; }
 
                                 upic.Print(localLeftPaddedString5() + Strings.Space(5));
                                 break;
@@ -1114,7 +1131,7 @@ namespace SRCTestForm
                 {
                     // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                     string argbuf3 = "--";
-                    upic.Print(GeneralLib.LeftPaddedString(ref argbuf3, 5) + Strings.Space(5));
+                    upic.Print(GeneralLib.LeftPaddedString(argbuf3, 5) + Strings.Space(5));
                 }
 
                 // ADD START 240a
@@ -1131,7 +1148,7 @@ namespace SRCTestForm
                 // MOD  END  240a
                 // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                 string argtname22 = "命中";
-                upic.Print(Expression.Term(ref argtname22, ref u, 4) + " ");
+                upic.Print(Expression.Term(argtname22, u, 4) + " ");
                 // MOD START 240a
                 // upic.ForeColor = rgb(0, 0, 0)
                 upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorNormalString, Information.RGB(0, 0, 0))));
@@ -1140,18 +1157,18 @@ namespace SRCTestForm
                 {
                     // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                     string argbuf4 = "？";
-                    upic.Print(GeneralLib.LeftPaddedString(ref argbuf4, 4) + Strings.Space(10));
+                    upic.Print(GeneralLib.LeftPaddedString(argbuf4, 4) + Strings.Space(10));
                 }
                 else if (p.Data.Hit > 1)
                 {
-                    switch ((short)(p.HitMod + p.HitMod2))
+                    switch ((int)(p.HitMod + p.HitMod2))
                     {
                         case var case4 when case4 > 0:
                             {
                                 // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-                                string localLeftPaddedString6() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.HitBase); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
+                                string localLeftPaddedString6() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.HitBase); var ret = GeneralLib.LeftPaddedString(argbuf, 5); return ret; }
 
-                                string localRightPaddedString4() { string argbuf = "+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.HitMod + p.HitMod2); var ret = GeneralLib.RightPaddedString(ref argbuf, 9); return ret; }
+                                string localRightPaddedString4() { string argbuf = "+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.HitMod + p.HitMod2); var ret = GeneralLib.RightPaddedString(argbuf, 9); return ret; }
 
                                 upic.Print(localLeftPaddedString6() + localRightPaddedString4());
                                 break;
@@ -1160,9 +1177,9 @@ namespace SRCTestForm
                         case var case5 when case5 < 0:
                             {
                                 // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-                                string localLeftPaddedString7() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.HitBase); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
+                                string localLeftPaddedString7() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.HitBase); var ret = GeneralLib.LeftPaddedString(argbuf, 5); return ret; }
 
-                                string localRightPaddedString5() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.HitMod + p.HitMod2); var ret = GeneralLib.RightPaddedString(ref argbuf, 9); return ret; }
+                                string localRightPaddedString5() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.HitMod + p.HitMod2); var ret = GeneralLib.RightPaddedString(argbuf, 9); return ret; }
 
                                 upic.Print(localLeftPaddedString7() + localRightPaddedString5());
                                 break;
@@ -1171,7 +1188,7 @@ namespace SRCTestForm
                         case 0:
                             {
                                 // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-                                string localLeftPaddedString8() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.Hit); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
+                                string localLeftPaddedString8() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.Hit); var ret = GeneralLib.LeftPaddedString(argbuf, 5); return ret; }
 
                                 upic.Print(localLeftPaddedString8() + Strings.Space(9));
                                 break;
@@ -1182,7 +1199,7 @@ namespace SRCTestForm
                 {
                     // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                     string argbuf5 = "--";
-                    upic.Print(GeneralLib.LeftPaddedString(ref argbuf5, 5) + Strings.Space(9));
+                    upic.Print(GeneralLib.LeftPaddedString(argbuf5, 5) + Strings.Space(9));
                 }
 
                 // 回避
@@ -1192,7 +1209,7 @@ namespace SRCTestForm
                 // MOD  END  240a
                 // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                 string argtname23 = "回避";
-                upic.Print(Expression.Term(ref argtname23, ref u, 4) + " ");
+                upic.Print(Expression.Term(argtname23, u, 4) + " ");
                 // MOD START 240a
                 // upic.ForeColor = rgb(0, 0, 0)
                 upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorNormalString, Information.RGB(0, 0, 0))));
@@ -1201,18 +1218,18 @@ namespace SRCTestForm
                 {
                     // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                     string argbuf6 = "？";
-                    upic.Print(GeneralLib.LeftPaddedString(ref argbuf6, 4));
+                    upic.Print(GeneralLib.LeftPaddedString(argbuf6, 4));
                 }
                 else if (p.Data.Dodge > 1)
                 {
-                    switch ((short)(p.DodgeMod + p.DodgeMod2))
+                    switch ((int)(p.DodgeMod + p.DodgeMod2))
                     {
                         case var case6 when case6 > 0:
                             {
                                 // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-                                string localLeftPaddedString9() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.DodgeBase); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
+                                string localLeftPaddedString9() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.DodgeBase); var ret = GeneralLib.LeftPaddedString(argbuf, 5); return ret; }
 
-                                string localRightPaddedString6() { string argbuf = "+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.DodgeMod + p.DodgeMod2); var ret = GeneralLib.RightPaddedString(ref argbuf, 9); return ret; }
+                                string localRightPaddedString6() { string argbuf = "+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.DodgeMod + p.DodgeMod2); var ret = GeneralLib.RightPaddedString(argbuf, 9); return ret; }
 
                                 upic.Print(localLeftPaddedString9() + localRightPaddedString6());
                                 break;
@@ -1221,9 +1238,9 @@ namespace SRCTestForm
                         case var case7 when case7 < 0:
                             {
                                 // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-                                string localLeftPaddedString10() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.DodgeBase); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
+                                string localLeftPaddedString10() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.DodgeBase); var ret = GeneralLib.LeftPaddedString(argbuf, 5); return ret; }
 
-                                string localRightPaddedString7() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.DodgeMod + p.DodgeMod2); var ret = GeneralLib.RightPaddedString(ref argbuf, 9); return ret; }
+                                string localRightPaddedString7() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.DodgeMod + p.DodgeMod2); var ret = GeneralLib.RightPaddedString(argbuf, 9); return ret; }
 
                                 upic.Print(localLeftPaddedString10() + localRightPaddedString7());
                                 break;
@@ -1232,7 +1249,7 @@ namespace SRCTestForm
                         case 0:
                             {
                                 // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-                                string localLeftPaddedString11() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.Dodge); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
+                                string localLeftPaddedString11() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.Dodge); var ret = GeneralLib.LeftPaddedString(argbuf, 5); return ret; }
 
                                 upic.Print(localLeftPaddedString11() + Strings.Space(9));
                                 break;
@@ -1243,7 +1260,7 @@ namespace SRCTestForm
                 {
                     // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                     string argbuf7 = "--";
-                    upic.Print(GeneralLib.LeftPaddedString(ref argbuf7, 5) + Strings.Space(9));
+                    upic.Print(GeneralLib.LeftPaddedString(argbuf7, 5) + Strings.Space(9));
                 }
 
                 // ADD START 240a
@@ -1260,7 +1277,7 @@ namespace SRCTestForm
                 // MOD  END  240a
                 // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                 string argtname24 = "技量";
-                upic.Print(Expression.Term(ref argtname24, ref u, 4) + " ");
+                upic.Print(Expression.Term(argtname24, u, 4) + " ");
                 // MOD START 240a
                 // upic.ForeColor = rgb(0, 0, 0)
                 upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorNormalString, Information.RGB(0, 0, 0))));
@@ -1269,18 +1286,18 @@ namespace SRCTestForm
                 {
                     // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                     string argbuf8 = "？";
-                    upic.Print(GeneralLib.LeftPaddedString(ref argbuf8, 4) + Strings.Space(10));
+                    upic.Print(GeneralLib.LeftPaddedString(argbuf8, 4) + Strings.Space(10));
                 }
                 else if (p.Data.Technique > 1)
                 {
-                    switch ((short)(p.TechniqueMod + p.TechniqueMod2))
+                    switch ((int)(p.TechniqueMod + p.TechniqueMod2))
                     {
                         case var case8 when case8 > 0:
                             {
                                 // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-                                string localLeftPaddedString12() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.TechniqueBase); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
+                                string localLeftPaddedString12() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.TechniqueBase); var ret = GeneralLib.LeftPaddedString(argbuf, 5); return ret; }
 
-                                string localRightPaddedString8() { string argbuf = "+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.TechniqueMod + p.TechniqueMod2); var ret = GeneralLib.RightPaddedString(ref argbuf, 9); return ret; }
+                                string localRightPaddedString8() { string argbuf = "+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.TechniqueMod + p.TechniqueMod2); var ret = GeneralLib.RightPaddedString(argbuf, 9); return ret; }
 
                                 upic.Print(localLeftPaddedString12() + localRightPaddedString8());
                                 break;
@@ -1289,9 +1306,9 @@ namespace SRCTestForm
                         case var case9 when case9 < 0:
                             {
                                 // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-                                string localLeftPaddedString13() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.TechniqueBase); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
+                                string localLeftPaddedString13() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.TechniqueBase); var ret = GeneralLib.LeftPaddedString(argbuf, 5); return ret; }
 
-                                string localRightPaddedString9() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.TechniqueMod + p.TechniqueMod2); var ret = GeneralLib.RightPaddedString(ref argbuf, 9); return ret; }
+                                string localRightPaddedString9() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.TechniqueMod + p.TechniqueMod2); var ret = GeneralLib.RightPaddedString(argbuf, 9); return ret; }
 
                                 upic.Print(localLeftPaddedString13() + localRightPaddedString9());
                                 break;
@@ -1300,7 +1317,7 @@ namespace SRCTestForm
                         case 0:
                             {
                                 // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-                                string localLeftPaddedString14() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.Technique); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
+                                string localLeftPaddedString14() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.Technique); var ret = GeneralLib.LeftPaddedString(argbuf, 5); return ret; }
 
                                 upic.Print(localLeftPaddedString14() + Strings.Space(9));
                                 break;
@@ -1311,7 +1328,7 @@ namespace SRCTestForm
                 {
                     // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                     string argbuf9 = "--";
-                    upic.Print(GeneralLib.LeftPaddedString(ref argbuf9, 5) + Strings.Space(9));
+                    upic.Print(GeneralLib.LeftPaddedString(argbuf9, 5) + Strings.Space(9));
                 }
 
                 // 反応
@@ -1321,7 +1338,7 @@ namespace SRCTestForm
                 // MOD  END  240a
                 // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                 string argtname25 = "反応";
-                upic.Print(Expression.Term(ref argtname25, ref u, 4) + " ");
+                upic.Print(Expression.Term(argtname25, u, 4) + " ");
                 // MOD START 240a
                 // upic.ForeColor = rgb(0, 0, 0)
                 upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorNormalString, Information.RGB(0, 0, 0))));
@@ -1330,18 +1347,18 @@ namespace SRCTestForm
                 {
                     // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                     string argbuf10 = "？";
-                    upic.Print(GeneralLib.LeftPaddedString(ref argbuf10, 4));
+                    upic.Print(GeneralLib.LeftPaddedString(argbuf10, 4));
                 }
                 else if (p.Data.Intuition > 1)
                 {
-                    switch ((short)(p.IntuitionMod + p.IntuitionMod2))
+                    switch ((int)(p.IntuitionMod + p.IntuitionMod2))
                     {
                         case var case10 when case10 > 0:
                             {
                                 // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-                                string localLeftPaddedString15() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.IntuitionBase); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
+                                string localLeftPaddedString15() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.IntuitionBase); var ret = GeneralLib.LeftPaddedString(argbuf, 5); return ret; }
 
-                                string localRightPaddedString10() { string argbuf = "+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.IntuitionMod + p.IntuitionMod2); var ret = GeneralLib.RightPaddedString(ref argbuf, 9); return ret; }
+                                string localRightPaddedString10() { string argbuf = "+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.IntuitionMod + p.IntuitionMod2); var ret = GeneralLib.RightPaddedString(argbuf, 9); return ret; }
 
                                 upic.Print(localLeftPaddedString15() + localRightPaddedString10());
                                 break;
@@ -1350,9 +1367,9 @@ namespace SRCTestForm
                         case var case11 when case11 < 0:
                             {
                                 // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-                                string localLeftPaddedString16() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.IntuitionBase); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
+                                string localLeftPaddedString16() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.IntuitionBase); var ret = GeneralLib.LeftPaddedString(argbuf, 5); return ret; }
 
-                                string localRightPaddedString11() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.IntuitionMod + p.IntuitionMod2); var ret = GeneralLib.RightPaddedString(ref argbuf, 9); return ret; }
+                                string localRightPaddedString11() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.IntuitionMod + p.IntuitionMod2); var ret = GeneralLib.RightPaddedString(argbuf, 9); return ret; }
 
                                 upic.Print(localLeftPaddedString16() + localRightPaddedString11());
                                 break;
@@ -1361,7 +1378,7 @@ namespace SRCTestForm
                         case 0:
                             {
                                 // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-                                string localLeftPaddedString17() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.Intuition); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
+                                string localLeftPaddedString17() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.Intuition); var ret = GeneralLib.LeftPaddedString(argbuf, 5); return ret; }
 
                                 upic.Print(localLeftPaddedString17() + Strings.Space(9));
                                 break;
@@ -1372,12 +1389,12 @@ namespace SRCTestForm
                 {
                     // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                     string argbuf11 = "--";
-                    upic.Print(GeneralLib.LeftPaddedString(ref argbuf11, 5) + Strings.Space(9));
+                    upic.Print(GeneralLib.LeftPaddedString(argbuf11, 5) + Strings.Space(9));
                 }
 
                 string argoname1 = "防御力成長";
                 string argoname2 = "防御力レベルアップ";
-                if (Expression.IsOptionDefined(ref argoname1) | Expression.IsOptionDefined(ref argoname2))
+                if (Expression.IsOptionDefined(argoname1) | Expression.IsOptionDefined(argoname2))
                 {
                     if (GUI.NewGUIMode)
                     {
@@ -1391,7 +1408,7 @@ namespace SRCTestForm
                     // MOD  END  240a
                     // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                     string argtname26 = "防御";
-                    upic.Print(Expression.Term(ref argtname26, ref u) + " ");
+                    upic.Print(Expression.Term(argtname26, u) + " ");
                     // MOD START 240a
                     // upic.ForeColor = rgb(0, 0, 0)
                     upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorNormalString, Information.RGB(0, 0, 0))));
@@ -1400,12 +1417,12 @@ namespace SRCTestForm
                     {
                         // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                         string argbuf12 = "？";
-                        upic.Print(GeneralLib.LeftPaddedString(ref argbuf12, 4));
+                        upic.Print(GeneralLib.LeftPaddedString(argbuf12, 4));
                     }
-                    else if (!p.IsSupport(ref u))
+                    else if (!p.IsSupport(u))
                     {
                         // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-                        string localLeftPaddedString18() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.Defense); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
+                        string localLeftPaddedString18() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(p.Defense); var ret = GeneralLib.LeftPaddedString(argbuf, 5); return ret; }
 
                         upic.Print(localLeftPaddedString18());
                     }
@@ -1413,7 +1430,7 @@ namespace SRCTestForm
                     {
                         // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                         string argbuf13 = "--";
-                        upic.Print(GeneralLib.LeftPaddedString(ref argbuf13, 5));
+                        upic.Print(GeneralLib.LeftPaddedString(argbuf13, 5));
                     }
                 }
 
@@ -1433,7 +1450,7 @@ namespace SRCTestForm
                     // MOD  END  240a
                     // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                     string argtname27 = "スペシャルパワー";
-                    upic.Print(Expression.Term(ref argtname27, ref u, 18) + " ");
+                    upic.Print(Expression.Term(argtname27, u, 18) + " ");
                     // MOD START 240a
                     // upic.ForeColor = rgb(0, 0, 0)
                     upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorNormalString, Information.RGB(0, 0, 0))));
@@ -1443,7 +1460,7 @@ namespace SRCTestForm
                         var loopTo = p.CountSpecialPower;
                         for (i = 1; i <= loopTo; i++)
                         {
-                            short localSpecialPowerCost() { string argsname = p.get_SpecialPower(i); var ret = p.SpecialPowerCost(ref argsname); p.get_SpecialPower(i) = argsname; return ret; }
+                            int localSpecialPowerCost() { string argsname = p.get_SpecialPower(i); var ret = p.SpecialPowerCost(argsname); p.get_SpecialPower(i) = argsname; return ret; }
 
                             if (p.SP < localSpecialPowerCost())
                             {
@@ -1454,9 +1471,9 @@ namespace SRCTestForm
 
                             }
                             // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-                            SpecialPowerData localItem() { object argIndex1 = p.get_SpecialPower(i); var ret = SRC.SPDList.Item(ref argIndex1); p.get_SpecialPower(i) = Conversions.ToString(argIndex1); return ret; }
+                            SpecialPowerData localItem() { object argIndex1 = p.get_SpecialPower(i); var ret = SRC.SPDList.Item(argIndex1); p.get_SpecialPower(i) = Conversions.ToString(argIndex1); return ret; }
 
-                            upic.Print(localItem().ShortName);
+                            upic.Print(localItem().intName);
                             // MOD START 240a
                             // upic.ForeColor = rgb(0, 0, 0)
                             upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorNormalString, Information.RGB(0, 0, 0))));
@@ -1492,17 +1509,17 @@ namespace SRCTestForm
                 if (p.MaxPlana() > 0)
                 {
                     string argsname = "霊力";
-                    if (p.IsSkillAvailable(ref argsname))
+                    if (p.IsSkillAvailable(argsname))
                     {
                         object argIndex8 = "霊力";
-                        sname = p.SkillName(ref argIndex8);
+                        sname = p.SkillName(argIndex8);
                     }
                     else
                     {
                         // 追加パイロットは第１パイロットの霊力を代わりに使うので
                         object argIndex9 = 1;
                         object argIndex10 = "霊力";
-                        sname = u.Pilot(ref argIndex9).SkillName(ref argIndex10);
+                        sname = u.Pilot(argIndex9).SkillName(argIndex10);
                     }
 
                     if (Strings.InStr(sname, "非表示") == 0)
@@ -1544,7 +1561,7 @@ namespace SRCTestForm
                 if (p.SynchroRate() > 0)
                 {
                     object argIndex12 = "同調率";
-                    if (Strings.InStr(p.SkillName(ref argIndex12), "非表示") == 0)
+                    if (Strings.InStr(p.SkillName(argIndex12), "非表示") == 0)
                     {
                         // MOD START 240a
                         // upic.ForeColor = rgb(0, 0, 150)
@@ -1552,7 +1569,7 @@ namespace SRCTestForm
                         // MOD  END  240a
                         // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                         object argIndex11 = "同調率";
-                        upic.Print(p.SkillName(ref argIndex11) + " ");
+                        upic.Print(p.SkillName(argIndex11) + " ");
                         // MOD START 240a
                         // upic.ForeColor = rgb(0, 0, 0)
                         upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorNormalString, Information.RGB(0, 0, 0))));
@@ -1583,9 +1600,9 @@ namespace SRCTestForm
                 // 得意技＆不得手
                 n = 0;
                 string argsname1 = "得意技";
-                if (p.IsSkillAvailable(ref argsname1))
+                if (p.IsSkillAvailable(argsname1))
                 {
-                    n = (short)(n + 1);
+                    n = (int)(n + 1);
                     // MOD START 240a
                     // upic.ForeColor = rgb(0, 0, 150)
                     upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorAbilityName, Information.RGB(0, 0, 150))));
@@ -1597,15 +1614,15 @@ namespace SRCTestForm
                     upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorNormalString, Information.RGB(0, 0, 0))));
                     // MOD  END  240a
                     // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-                    string localRightPaddedString12() { object argIndex1 = "得意技"; string argbuf = p.SkillData(ref argIndex1); var ret = GeneralLib.RightPaddedString(ref argbuf, 12); return ret; }
+                    string localRightPaddedString12() { object argIndex1 = "得意技"; string argbuf = p.SkillData(argIndex1); var ret = GeneralLib.RightPaddedString(argbuf, 12); return ret; }
 
                     upic.Print(localRightPaddedString12());
                 }
 
                 string argsname2 = "不得手";
-                if (p.IsSkillAvailable(ref argsname2))
+                if (p.IsSkillAvailable(argsname2))
                 {
-                    n = (short)(n + 1);
+                    n = (int)(n + 1);
                     // MOD START 240a
                     // upic.ForeColor = rgb(0, 0, 150)
                     upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorAbilityName, Information.RGB(0, 0, 150))));
@@ -1618,7 +1635,7 @@ namespace SRCTestForm
                     // MOD  END  240a
                     // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                     object argIndex13 = "不得手";
-                    upic.Print(p.SkillData(ref argIndex13));
+                    upic.Print(p.SkillData(argIndex13));
                 }
 
                 if (n > 0)
@@ -1633,26 +1650,26 @@ namespace SRCTestForm
                 for (i = 1; i <= loopTo1; i++)
                 {
                     object argIndex14 = i;
-                    name_list[i] = p.Skill(ref argIndex14);
+                    name_list[i] = p.Skill(argIndex14);
                 }
                 // 付加されたパイロット特殊能力
                 var loopTo2 = u.CountCondition();
                 for (i = 1; i <= loopTo2; i++)
                 {
                     object argIndex15 = i;
-                    if (u.ConditionLifetime(ref argIndex15) != 0)
+                    if (u.ConditionLifetime(argIndex15) != 0)
                     {
-                        string localCondition2() { object argIndex1 = i; var ret = u.Condition(ref argIndex1); return ret; }
+                        string localCondition2() { object argIndex1 = i; var ret = u.Condition(argIndex1); return ret; }
 
                         switch (Strings.Right(localCondition2(), 3) ?? "")
                         {
                             case "付加２":
                             case "強化２":
                                 {
-                                    string localConditionData() { object argIndex1 = i; var ret = u.ConditionData(ref argIndex1); return ret; }
+                                    string localConditionData() { object argIndex1 = i; var ret = u.ConditionData(argIndex1); return ret; }
 
                                     string arglist = localConditionData();
-                                    switch (GeneralLib.LIndex(ref arglist, 1) ?? "")
+                                    switch (GeneralLib.LIndex(arglist, 1) ?? "")
                                     {
                                         // 非表示の能力
                                         case "非表示":
@@ -1663,9 +1680,9 @@ namespace SRCTestForm
 
                                         default:
                                             {
-                                                string localCondition() { object argIndex1 = i; var ret = u.Condition(ref argIndex1); return ret; }
+                                                string localCondition() { object argIndex1 = i; var ret = u.Condition(argIndex1); return ret; }
 
-                                                string localCondition1() { object argIndex1 = i; var ret = u.Condition(ref argIndex1); return ret; }
+                                                string localCondition1() { object argIndex1 = i; var ret = u.Condition(argIndex1); return ret; }
 
                                                 stype = Strings.Left(localCondition(), Strings.Len(localCondition1()) - 3);
                                                 switch (stype ?? "")
@@ -1675,7 +1692,7 @@ namespace SRCTestForm
                                                     case "スペシャルパワー自動発動":
                                                         {
                                                             // 重複可能な能力
-                                                            Array.Resize(ref name_list, Information.UBound(name_list) + 1 + 1);
+                                                            Array.Resize(name_list, Information.UBound(name_list) + 1 + 1);
                                                             name_list[Information.UBound(name_list)] = stype;
                                                             break;
                                                         }
@@ -1683,7 +1700,7 @@ namespace SRCTestForm
                                                     default:
                                                         {
                                                             // 既に所有している能力であればスキップ
-                                                            var loopTo3 = (short)Information.UBound(name_list);
+                                                            var loopTo3 = (int)Information.UBound(name_list);
                                                             for (j = 1; j <= loopTo3; j++)
                                                             {
                                                                 if ((stype ?? "") == (name_list[j] ?? ""))
@@ -1694,7 +1711,7 @@ namespace SRCTestForm
 
                                                             if (j > Information.UBound(name_list))
                                                             {
-                                                                Array.Resize(ref name_list, Information.UBound(name_list) + 1 + 1);
+                                                                Array.Resize(name_list, Information.UBound(name_list) + 1 + 1);
                                                                 name_list[Information.UBound(name_list)] = stype;
                                                             }
 
@@ -1714,7 +1731,7 @@ namespace SRCTestForm
 
                 // パイロット能力を表示
                 n = 0;
-                var loopTo4 = (short)Information.UBound(name_list);
+                var loopTo4 = (int)Information.UBound(name_list);
                 for (i = 1; i <= loopTo4; i++)
                 {
                     // ADD START 240a
@@ -1725,20 +1742,20 @@ namespace SRCTestForm
                     if (i <= p.CountSkill())
                     {
                         object argIndex16 = i;
-                        sname = p.SkillName(ref argIndex16);
-                        double localSkillLevel() { object argIndex1 = i; string argref_mode = ""; var ret = p.SkillLevel(ref argIndex1, ref_mode: ref argref_mode); return ret; }
+                        sname = p.SkillName(argIndex16);
+                        double localSkillLevel() { object argIndex1 = i; string argref_mode = ""; var ret = p.SkillLevel(argIndex1, ref_mode: argref_mode); return ret; }
 
-                        double localSkillLevel1() { object argIndex1 = i; string argref_mode = ""; var ret = p.SkillLevel(ref argIndex1, ref_mode: ref argref_mode); return ret; }
+                        double localSkillLevel1() { object argIndex1 = i; string argref_mode = ""; var ret = p.SkillLevel(argIndex1, ref_mode: argref_mode); return ret; }
 
                         slevel = localSkillLevel1().ToString();
                     }
                     else
                     {
                         object argIndex17 = stype;
-                        sname = p.SkillName(ref argIndex17);
-                        double localSkillLevel2() { object argIndex1 = stype; string argref_mode = ""; var ret = p.SkillLevel(ref argIndex1, ref_mode: ref argref_mode); return ret; }
+                        sname = p.SkillName(argIndex17);
+                        double localSkillLevel2() { object argIndex1 = stype; string argref_mode = ""; var ret = p.SkillLevel(argIndex1, ref_mode: argref_mode); return ret; }
 
-                        double localSkillLevel3() { object argIndex1 = stype; string argref_mode = ""; var ret = p.SkillLevel(ref argIndex1, ref_mode: ref argref_mode); return ret; }
+                        double localSkillLevel3() { object argIndex1 = stype; string argref_mode = ""; var ret = p.SkillLevel(argIndex1, ref_mode: argref_mode); return ret; }
 
                         slevel = localSkillLevel3().ToString();
                     }
@@ -1837,11 +1854,11 @@ namespace SRCTestForm
                             {
                                 if (i <= p.CountSkill())
                                 {
-                                    string localSkillData() { object argIndex1 = i; var ret = p.SkillData(ref argIndex1); return ret; }
+                                    string localSkillData() { object argIndex1 = i; var ret = p.SkillData(argIndex1); return ret; }
 
-                                    string localLIndex() { string arglist = hs4c6b0a8a8b874cdb8c87b94121d03278(); var ret = GeneralLib.LIndex(ref arglist, 3); return ret; }
+                                    string localLIndex() { string arglist = hs4c6b0a8a8b874cdb8c87b94121d03278(); var ret = GeneralLib.LIndex(arglist, 3); return ret; }
 
-                                    int localStrToLng() { string argexpr = hs23c31b1421414ea0be207e3875c77613(); var ret = GeneralLib.StrToLng(ref argexpr); return ret; }
+                                    int localStrToLng() { string argexpr = hs23c31b1421414ea0be207e3875c77613(); var ret = GeneralLib.StrToLng(argexpr); return ret; }
 
                                     if (p.Morale >= localStrToLng())
                                     {
@@ -1853,11 +1870,11 @@ namespace SRCTestForm
                                 }
                                 else
                                 {
-                                    string localSkillData1() { object argIndex1 = stype; var ret = p.SkillData(ref argIndex1); return ret; }
+                                    string localSkillData1() { object argIndex1 = stype; var ret = p.SkillData(argIndex1); return ret; }
 
-                                    string localLIndex1() { string arglist = hs5a6fb85244614ee5b61690cdbec6b0f9(); var ret = GeneralLib.LIndex(ref arglist, 3); return ret; }
+                                    string localLIndex1() { string arglist = hs5a6fb85244614ee5b61690cdbec6b0f9(); var ret = GeneralLib.LIndex(arglist, 3); return ret; }
 
-                                    int localStrToLng1() { string argexpr = hsa5a03d2c426146729603becc658cd7bc(); var ret = GeneralLib.StrToLng(ref argexpr); return ret; }
+                                    int localStrToLng1() { string argexpr = hsa5a03d2c426146729603becc658cd7bc(); var ret = GeneralLib.StrToLng(argexpr); return ret; }
 
                                     if (p.Morale >= localStrToLng1())
                                     {
@@ -1887,7 +1904,7 @@ namespace SRCTestForm
                                 object argIndex20 = "反射";
                                 object argIndex21 = "当て身技";
                                 object argIndex22 = "自動反撃";
-                                if (!u.IsFeatureAvailable(ref argfname2) & !u.IsFeatureAvailable(ref argfname3) & !u.IsFeatureAvailable(ref argfname4) & !u.IsFeatureAvailable(ref argfname5) & !u.IsFeatureAvailable(ref argfname6) & !u.IsFeatureAvailable(ref argfname7) & !u.IsFeatureAvailable(ref argfname8) & !u.IsFeatureAvailable(ref argfname9) & !u.IsFeatureAvailable(ref argfname10) & Strings.InStr(u.FeatureData(ref argIndex18), "Ｓ防御") == 0 & Strings.InStr(u.FeatureData(ref argIndex19), "Ｓ防御") == 0 & Strings.InStr(u.FeatureData(ref argIndex20), "Ｓ防御") == 0 & Strings.InStr(u.FeatureData(ref argIndex21), "Ｓ防御") == 0 & Strings.InStr(u.FeatureData(ref argIndex22), "Ｓ防御") == 0 & !string.IsNullOrEmpty(Map.MapFileName))
+                                if (!u.IsFeatureAvailable(argfname2) & !u.IsFeatureAvailable(argfname3) & !u.IsFeatureAvailable(argfname4) & !u.IsFeatureAvailable(argfname5) & !u.IsFeatureAvailable(argfname6) & !u.IsFeatureAvailable(argfname7) & !u.IsFeatureAvailable(argfname8) & !u.IsFeatureAvailable(argfname9) & !u.IsFeatureAvailable(argfname10) & Strings.InStr(u.FeatureData(argIndex18), "Ｓ防御") == 0 & Strings.InStr(u.FeatureData(argIndex19), "Ｓ防御") == 0 & Strings.InStr(u.FeatureData(argIndex20), "Ｓ防御") == 0 & Strings.InStr(u.FeatureData(argIndex21), "Ｓ防御") == 0 & Strings.InStr(u.FeatureData(argIndex22), "Ｓ防御") == 0 & !string.IsNullOrEmpty(Map.MapFileName))
                                 {
                                     // MOD START 240a
                                     // upic.ForeColor = rgb(150, 0, 0)
@@ -1904,9 +1921,9 @@ namespace SRCTestForm
                                 for (j = 1; j <= loopTo5; j++)
                                 {
                                     string argattr = "武";
-                                    if (u.IsWeaponClassifiedAs(j, ref argattr))
+                                    if (u.IsWeaponClassifiedAs(j, argattr))
                                     {
-                                        if (!u.IsDisabled(ref u.Weapon(j).Name))
+                                        if (!u.IsDisabled(u.Weapon(j).Name))
                                         {
                                             break;
                                         }
@@ -1914,7 +1931,7 @@ namespace SRCTestForm
                                 }
 
                                 string argfname11 = "格闘武器";
-                                if (u.IsFeatureAvailable(ref argfname11))
+                                if (u.IsFeatureAvailable(argfname11))
                                 {
                                     j = 0;
                                 }
@@ -1924,7 +1941,7 @@ namespace SRCTestForm
                                 object argIndex25 = "反射";
                                 object argIndex26 = "当て身技";
                                 object argIndex27 = "自動反撃";
-                                if (j > u.CountWeapon() & Strings.InStr(u.FeatureData(ref argIndex23), "切り払い") == 0 & Strings.InStr(u.FeatureData(ref argIndex24), "切り払い") == 0 & Strings.InStr(u.FeatureData(ref argIndex25), "切り払い") == 0 & Strings.InStr(u.FeatureData(ref argIndex26), "切り払い") == 0 & Strings.InStr(u.FeatureData(ref argIndex27), "切り払い") == 0 & !string.IsNullOrEmpty(Map.MapFileName))
+                                if (j > u.CountWeapon() & Strings.InStr(u.FeatureData(argIndex23), "切り払い") == 0 & Strings.InStr(u.FeatureData(argIndex24), "切り払い") == 0 & Strings.InStr(u.FeatureData(argIndex25), "切り払い") == 0 & Strings.InStr(u.FeatureData(argIndex26), "切り払い") == 0 & Strings.InStr(u.FeatureData(argIndex27), "切り払い") == 0 & !string.IsNullOrEmpty(Map.MapFileName))
                                 {
                                     // MOD START 240a
                                     // upic.ForeColor = rgb(150, 0, 0)
@@ -1942,14 +1959,14 @@ namespace SRCTestForm
                                 {
                                     string argref_mode = "移動後";
                                     string argattr1 = "射撃系";
-                                    if (u.IsWeaponAvailable(j, ref argref_mode) & u.IsWeaponClassifiedAs(j, ref argattr1) & (u.Weapon(j).Bullet >= 10 | u.Weapon(j).Bullet == 0 & u.Weapon(j).ENConsumption <= 5))
+                                    if (u.IsWeaponAvailable(j, argref_mode) & u.IsWeaponClassifiedAs(j, argattr1) & (u.Weapon(j).Bullet >= 10 | u.Weapon(j).Bullet == 0 & u.Weapon(j).ENConsumption <= 5))
                                     {
                                         break;
                                     }
                                 }
 
                                 string argfname12 = "迎撃武器";
-                                if (u.IsFeatureAvailable(ref argfname12))
+                                if (u.IsFeatureAvailable(argfname12))
                                 {
                                     j = 0;
                                 }
@@ -1959,7 +1976,7 @@ namespace SRCTestForm
                                 object argIndex30 = "反射";
                                 object argIndex31 = "当て身技";
                                 object argIndex32 = "自動反撃";
-                                if (j > u.CountWeapon() & Strings.InStr(u.FeatureData(ref argIndex28), "迎撃") == 0 & Strings.InStr(u.FeatureData(ref argIndex29), "迎撃") == 0 & Strings.InStr(u.FeatureData(ref argIndex30), "迎撃") == 0 & Strings.InStr(u.FeatureData(ref argIndex31), "迎撃") == 0 & Strings.InStr(u.FeatureData(ref argIndex32), "迎撃") == 0 & !string.IsNullOrEmpty(Map.MapFileName))
+                                if (j > u.CountWeapon() & Strings.InStr(u.FeatureData(argIndex28), "迎撃") == 0 & Strings.InStr(u.FeatureData(argIndex29), "迎撃") == 0 & Strings.InStr(u.FeatureData(argIndex30), "迎撃") == 0 & Strings.InStr(u.FeatureData(argIndex31), "迎撃") == 0 & Strings.InStr(u.FeatureData(argIndex32), "迎撃") == 0 & !string.IsNullOrEmpty(Map.MapFileName))
                                 {
                                     // MOD START 240a
                                     // upic.ForeColor = rgb(150, 0, 0)
@@ -1976,9 +1993,9 @@ namespace SRCTestForm
                                 for (j = 1; j <= loopTo7; j++)
                                 {
                                     string argattr2 = "浄";
-                                    if (u.IsWeaponClassifiedAs(j, ref argattr2))
+                                    if (u.IsWeaponClassifiedAs(j, argattr2))
                                     {
-                                        if (!u.IsDisabled(ref u.Weapon(j).Name))
+                                        if (!u.IsDisabled(u.Weapon(j).Name))
                                         {
                                             break;
                                         }
@@ -2007,7 +2024,7 @@ namespace SRCTestForm
                                     else
                                     {
                                         string argsptype = "サポートガード不能";
-                                        if (u.IsUnderSpecialPowerEffect(ref argsptype))
+                                        if (u.IsUnderSpecialPowerEffect(argsptype))
                                         {
                                             // MOD START 240a
                                             // upic.ForeColor = rgb(150, 0, 0)
@@ -2057,7 +2074,7 @@ namespace SRCTestForm
                                 {
                                     ret = GeneralLib.MaxLng(u.MaxSupportGuard() - u.UsedSupportGuard, 0);
                                     string argsptype1 = "サポートガード不能";
-                                    if (ret == 0 | u.IsUnderSpecialPowerEffect(ref argsptype1))
+                                    if (ret == 0 | u.IsUnderSpecialPowerEffect(argsptype1))
                                     {
                                         // MOD START 240a
                                         // upic.ForeColor = rgb(150, 0, 0)
@@ -2133,7 +2150,7 @@ namespace SRCTestForm
                             {
                                 string argoname3 = "防御力成長";
                                 string argoname4 = "防御力レベルアップ";
-                                if (Expression.IsOptionDefined(ref argoname3) | Expression.IsOptionDefined(ref argoname4))
+                                if (Expression.IsOptionDefined(argoname3) | Expression.IsOptionDefined(argoname4))
                                 {
                                     goto NextSkill;
                                 }
@@ -2175,8 +2192,8 @@ namespace SRCTestForm
                     else
                     {
                         // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-                        upic.Print(GeneralLib.RightPaddedString(ref sname, 19));
-                        n = (short)(n + 1);
+                        upic.Print(GeneralLib.RightPaddedString(sname, 19));
+                        n = (int)(n + 1);
                     }
 
                     upic.ForeColor = Color.Black;
@@ -2221,7 +2238,7 @@ namespace SRCTestForm
 
                 // パイロットステータス表示用のダミーユニットの場合はここで表示を終了
                 string argfname13 = "ダミーユニット";
-                if (withBlock.IsFeatureAvailable(ref argfname13))
+                if (withBlock.IsFeatureAvailable(argfname13))
                 {
                     goto UpdateStatusWindow;
                 }
@@ -2313,7 +2330,7 @@ namespace SRCTestForm
                         // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                         string argtname28 = "ＨＰ";
                         Unit argu = null;
-                        upic.Print(" " + Strings.Left(Expression.Term(ref argtname28, u: ref argu), 1) + "+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(Map.TerrainEffectForHPRecover(withBlock.x, withBlock.y)) + "%");
+                        upic.Print(" " + Strings.Left(Expression.Term(argtname28, u: argu), 1) + "+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(Map.TerrainEffectForHPRecover(withBlock.x, withBlock.y)) + "%");
                     }
 
                     if (Map.TerrainEffectForENRecover(withBlock.x, withBlock.y) > 0)
@@ -2321,7 +2338,7 @@ namespace SRCTestForm
                         // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                         string argtname29 = "ＥＮ";
                         Unit argu1 = null;
-                        upic.Print(" " + Strings.Left(Expression.Term(ref argtname29, u: ref argu1), 1) + "+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(Map.TerrainEffectForENRecover(withBlock.x, withBlock.y)) + "%");
+                        upic.Print(" " + Strings.Left(Expression.Term(argtname29, u: argu1), 1) + "+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(Map.TerrainEffectForENRecover(withBlock.x, withBlock.y)) + "%");
                     }
 
                     // MOD START 240a
@@ -2329,8 +2346,8 @@ namespace SRCTestForm
                     // マスのタイプに応じて参照先を変更
                     switch (Map.MapData[withBlock.x, withBlock.y, Map.MapDataIndex.BoxType])
                     {
-                        case (short)Map.BoxTypes.Under:
-                        case (short)Map.BoxTypes.UpperBmpOnly:
+                        case (int)Map.BoxTypes.Under:
+                        case (int)Map.BoxTypes.UpperBmpOnly:
                             {
                                 td = SRC.TDList.Item(Map.MapData[withBlock.x, withBlock.y, Map.MapDataIndex.TerrainType]);
                                 break;
@@ -2345,74 +2362,74 @@ namespace SRCTestForm
                     // MOD START 240a
                     // ＨＰ＆ＥＮ減少
                     string argfname14 = "ＨＰ減少";
-                    if (td.IsFeatureAvailable(ref argfname14))
+                    if (td.IsFeatureAvailable(argfname14))
                     {
                         // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                         string argtname30 = "ＨＰ";
                         Unit argu2 = null;
                         object argIndex33 = "ＨＰ減少";
-                        upic.Print(" " + Strings.Left(Expression.Term(ref argtname30, u: ref argu2), 1) + "-" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(10d * td.FeatureLevel(ref argIndex33)) + "%");
+                        upic.Print(" " + Strings.Left(Expression.Term(argtname30, u: argu2), 1) + "-" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(10d * td.FeatureLevel(argIndex33)) + "%");
                     }
 
                     string argfname15 = "ＥＮ減少";
-                    if (td.IsFeatureAvailable(ref argfname15))
+                    if (td.IsFeatureAvailable(argfname15))
                     {
                         // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                         string argtname31 = "ＥＮ";
                         Unit argu3 = null;
                         object argIndex34 = "ＥＮ減少";
-                        upic.Print(" " + Strings.Left(Expression.Term(ref argtname31, u: ref argu3), 1) + "-" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(10d * td.FeatureLevel(ref argIndex34)) + "%");
+                        upic.Print(" " + Strings.Left(Expression.Term(argtname31, u: argu3), 1) + "-" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(10d * td.FeatureLevel(argIndex34)) + "%");
                     }
 
                     // ＨＰ＆ＥＮ増加
                     string argfname16 = "ＨＰ増加";
-                    if (td.IsFeatureAvailable(ref argfname16))
+                    if (td.IsFeatureAvailable(argfname16))
                     {
                         // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                         string argtname32 = "ＨＰ";
                         Unit argu4 = null;
                         object argIndex35 = "ＨＰ増加";
-                        upic.Print(" " + Strings.Left(Expression.Term(ref argtname32, u: ref argu4), 1) + "+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(1000d * td.FeatureLevel(ref argIndex35)));
+                        upic.Print(" " + Strings.Left(Expression.Term(argtname32, u: argu4), 1) + "+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(1000d * td.FeatureLevel(argIndex35)));
                     }
 
                     string argfname17 = "ＥＮ増加";
-                    if (td.IsFeatureAvailable(ref argfname17))
+                    if (td.IsFeatureAvailable(argfname17))
                     {
                         // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                         string argtname33 = "ＥＮ";
                         Unit argu5 = null;
                         object argIndex36 = "ＥＮ増加";
-                        upic.Print(" " + Strings.Left(Expression.Term(ref argtname33, u: ref argu5), 1) + "+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(10d * td.FeatureLevel(ref argIndex36)));
+                        upic.Print(" " + Strings.Left(Expression.Term(argtname33, u: argu5), 1) + "+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(10d * td.FeatureLevel(argIndex36)));
                     }
 
                     // ＨＰ＆ＥＮ低下
                     string argfname18 = "ＨＰ低下";
-                    if (td.IsFeatureAvailable(ref argfname18))
+                    if (td.IsFeatureAvailable(argfname18))
                     {
                         // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                         string argtname34 = "ＨＰ";
                         Unit argu6 = null;
                         object argIndex37 = "ＨＰ低下";
-                        upic.Print(" " + Strings.Left(Expression.Term(ref argtname34, u: ref argu6), 1) + "-" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(1000d * td.FeatureLevel(ref argIndex37)));
+                        upic.Print(" " + Strings.Left(Expression.Term(argtname34, u: argu6), 1) + "-" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(1000d * td.FeatureLevel(argIndex37)));
                     }
 
                     string argfname19 = "ＥＮ低下";
-                    if (td.IsFeatureAvailable(ref argfname19))
+                    if (td.IsFeatureAvailable(argfname19))
                     {
                         // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                         string argtname35 = "ＥＮ";
                         Unit argu7 = null;
                         object argIndex38 = "ＥＮ低下";
-                        upic.Print(" " + Strings.Left(Expression.Term(ref argtname35, u: ref argu7), 1) + "-" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(10d * td.FeatureLevel(ref argIndex38)));
+                        upic.Print(" " + Strings.Left(Expression.Term(argtname35, u: argu7), 1) + "-" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(10d * td.FeatureLevel(argIndex38)));
                     }
 
                     // 摩擦
                     string argfname20 = "摩擦";
-                    if (td.IsFeatureAvailable(ref argfname20))
+                    if (td.IsFeatureAvailable(argfname20))
                     {
                         // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                         object argIndex39 = "摩擦";
-                        upic.Print(" 摩L" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(td.FeatureLevel(ref argIndex39)));
+                        upic.Print(" 摩L" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(td.FeatureLevel(argIndex39)));
                     }
 
                     // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
@@ -2452,7 +2469,7 @@ namespace SRCTestForm
                     // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                     string argtname36 = "ＨＰ";
                     Unit argu8 = null;
-                    upic.Print(Expression.Term(ref argtname36, ref argu8, 6) + " ");
+                    upic.Print(Expression.Term(argtname36, argu8, 6) + " ");
                     // MOD START 240a
                     // upic.ForeColor = rgb(0, 0, 0)
                     upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorNormalString, Information.RGB(0, 0, 0))));
@@ -2475,7 +2492,7 @@ namespace SRCTestForm
                     // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                     string argtname37 = "ＥＮ";
                     Unit argu9 = null;
-                    upic.Print(Expression.Term(ref argtname37, ref argu9, 6) + " ");
+                    upic.Print(Expression.Term(argtname37, argu9, 6) + " ");
                     // MOD START 240a
                     // upic.ForeColor = rgb(0, 0, 0)
                     upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorNormalString, Information.RGB(0, 0, 0))));
@@ -2498,14 +2515,14 @@ namespace SRCTestForm
                     // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                     string argtname38 = "装甲";
                     Unit argu10 = null;
-                    upic.Print(Expression.Term(ref argtname38, ref argu10, 6) + " ");
+                    upic.Print(Expression.Term(argtname38, argu10, 6) + " ");
                     // MOD START 240a
                     // upic.ForeColor = rgb(0, 0, 0)
                     upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorNormalString, Information.RGB(0, 0, 0))));
                     // MOD  END  240a
                     // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                     string argbuf14 = "？";
-                    upic.Print(GeneralLib.RightPaddedString(ref argbuf14, 12));
+                    upic.Print(GeneralLib.RightPaddedString(argbuf14, 12));
 
                     // 運動性
                     // MOD START 240a
@@ -2515,7 +2532,7 @@ namespace SRCTestForm
                     // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                     string argtname39 = "運動性";
                     Unit argu11 = null;
-                    upic.Print(Expression.Term(ref argtname39, ref argu11, 6) + " ");
+                    upic.Print(Expression.Term(argtname39, argu11, 6) + " ");
                     // MOD START 240a
                     // upic.ForeColor = rgb(0, 0, 0)
                     upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorNormalString, Information.RGB(0, 0, 0))));
@@ -2538,14 +2555,14 @@ namespace SRCTestForm
                     // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                     string argtname40 = "タイプ";
                     Unit argu12 = null;
-                    upic.Print(Expression.Term(ref argtname40, ref argu12, 6) + " ");
+                    upic.Print(Expression.Term(argtname40, argu12, 6) + " ");
                     // MOD START 240a
                     // upic.ForeColor = rgb(0, 0, 0)
                     upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorNormalString, Information.RGB(0, 0, 0))));
                     // MOD  END  240a
                     // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                     string argbuf15 = "？";
-                    upic.Print(GeneralLib.RightPaddedString(ref argbuf15, 12));
+                    upic.Print(GeneralLib.RightPaddedString(argbuf15, 12));
 
                     // 移動力
                     // MOD START 240a
@@ -2555,7 +2572,7 @@ namespace SRCTestForm
                     // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                     string argtname41 = "移動力";
                     Unit argu13 = null;
-                    upic.Print(Expression.Term(ref argtname41, ref argu13, 6) + " ");
+                    upic.Print(Expression.Term(argtname41, argu13, 6) + " ");
                     // MOD START 240a
                     // upic.ForeColor = rgb(0, 0, 0)
                     upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorNormalString, Information.RGB(0, 0, 0))));
@@ -2583,7 +2600,7 @@ namespace SRCTestForm
                     // MOD  END  240a
                     // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                     string argbuf16 = "？";
-                    upic.Print(GeneralLib.RightPaddedString(ref argbuf16, 12));
+                    upic.Print(GeneralLib.RightPaddedString(argbuf16, 12));
 
                     // ユニットサイズ
                     // MOD START 240a
@@ -2593,7 +2610,7 @@ namespace SRCTestForm
                     // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                     string argtname42 = "サイズ";
                     Unit argu14 = null;
-                    upic.Print(Expression.Term(ref argtname42, ref argu14, 6) + " ");
+                    upic.Print(Expression.Term(argtname42, argu14, 6) + " ");
                     // MOD START 240a
                     // upic.ForeColor = rgb(0, 0, 0)
                     upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorNormalString, Information.RGB(0, 0, 0))));
@@ -2607,7 +2624,7 @@ namespace SRCTestForm
                         object argIndex40 = "暴走";
                         object argIndex41 = "魅了";
                         object argIndex42 = "憑依";
-                        if (withBlock.Party == "敵" | withBlock.Party == "中立" | withBlock.IsConditionSatisfied(ref argIndex40) | withBlock.IsConditionSatisfied(ref argIndex41) | withBlock.IsConditionSatisfied(ref argIndex42))
+                        if (withBlock.Party == "敵" | withBlock.Party == "中立" | withBlock.IsConditionSatisfied(argIndex40) | withBlock.IsConditionSatisfied(argIndex41) | withBlock.IsConditionSatisfied(argIndex42))
                         {
                             // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                             upic.Print();
@@ -2628,9 +2645,9 @@ namespace SRCTestForm
                             // サポートアタックを得られる？
                             string argattr3 = "合";
                             string argattr4 = "Ｍ";
-                            if (!Commands.SelectedUnit.IsWeaponClassifiedAs(Commands.SelectedWeapon, ref argattr3) & !Commands.SelectedUnit.IsWeaponClassifiedAs(Commands.SelectedWeapon, ref argattr4))
+                            if (!Commands.SelectedUnit.IsWeaponClassifiedAs(Commands.SelectedWeapon, argattr3) & !Commands.SelectedUnit.IsWeaponClassifiedAs(Commands.SelectedWeapon, argattr4))
                             {
-                                if (Commands.SelectedUnit.LookForSupportAttack(ref u) is object)
+                                if (Commands.SelectedUnit.LookForSupportAttack(u) is object)
                                 {
                                     // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                                     upic.Print(" [援]");
@@ -2647,12 +2664,12 @@ namespace SRCTestForm
                 object argIndex47 = "恐怖";
                 object argIndex48 = "暴走";
                 object argIndex49 = "狂戦士";
-                if (withBlock.Party == "ＮＰＣ" & !withBlock.IsConditionSatisfied(ref argIndex46) & !withBlock.IsConditionSatisfied(ref argIndex47) & !withBlock.IsConditionSatisfied(ref argIndex48) & !withBlock.IsConditionSatisfied(ref argIndex49))
+                if (withBlock.Party == "ＮＰＣ" & !withBlock.IsConditionSatisfied(argIndex46) & !withBlock.IsConditionSatisfied(argIndex47) & !withBlock.IsConditionSatisfied(argIndex48) & !withBlock.IsConditionSatisfied(argIndex49))
                 {
                     // 思考モードを見れば実行している命令が分かるので……
                     buf = "";
                     object argIndex43 = "魅了";
-                    if (withBlock.IsConditionSatisfied(ref argIndex43))
+                    if (withBlock.IsConditionSatisfied(argIndex43))
                     {
                         if (withBlock.Master is object)
                         {
@@ -2665,7 +2682,7 @@ namespace SRCTestForm
 
                     string argfname21 = "召喚ユニット";
                     object argIndex44 = "魅了";
-                    if (withBlock.IsFeatureAvailable(ref argfname21) & !withBlock.IsConditionSatisfied(ref argIndex44))
+                    if (withBlock.IsFeatureAvailable(argfname21) & !withBlock.IsConditionSatisfied(argIndex44))
                     {
                         if (withBlock.Summoner is object)
                         {
@@ -2676,7 +2693,7 @@ namespace SRCTestForm
                         }
                     }
 
-                    bool localIsDefined() { object argIndex1 = buf; var ret = SRC.PList.IsDefined(ref argIndex1); return ret; }
+                    bool localIsDefined() { object argIndex1 = buf; var ret = SRC.PList.IsDefined(argIndex1); return ret; }
 
                     if (buf == "通常")
                     {
@@ -2688,7 +2705,7 @@ namespace SRCTestForm
                         // 思考モードにパイロット名が指定されている場合
                         object argIndex45 = buf;
                         {
-                            var withBlock1 = SRC.PList.Item(ref argIndex45);
+                            var withBlock1 = SRC.PList.Item(argIndex45);
                             if (withBlock1.Unit_Renamed is object)
                             {
                                 {
@@ -2712,11 +2729,11 @@ namespace SRCTestForm
                             }
                         }
                     }
-                    else if (GeneralLib.LLength(ref buf) == 2)
+                    else if (GeneralLib.LLength(buf) == 2)
                     {
                         // 思考モードに座標が指定されている場合
                         // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-                        upic.Print("(" + GeneralLib.LIndex(ref buf, 1) + "," + GeneralLib.LIndex(ref buf, 2) + ")に移動中");
+                        upic.Print("(" + GeneralLib.LIndex(buf, 1) + "," + GeneralLib.LIndex(buf, 2) + ")に移動中");
                     }
                 }
 
@@ -2727,13 +2744,13 @@ namespace SRCTestForm
                 {
                     // 時間切れ？
                     object argIndex50 = i;
-                    if (withBlock.ConditionLifetime(ref argIndex50) == 0)
+                    if (withBlock.ConditionLifetime(argIndex50) == 0)
                     {
                         goto NextCondition;
                     }
 
                     // 非表示？
-                    string localConditionData1() { object argIndex1 = i; var ret = withBlock.ConditionData(ref argIndex1); return ret; }
+                    string localConditionData1() { object argIndex1 = i; var ret = withBlock.ConditionData(argIndex1); return ret; }
 
                     if (Strings.InStr(localConditionData1(), "非表示") > 0)
                     {
@@ -2741,10 +2758,10 @@ namespace SRCTestForm
                     }
 
                     // 解説？
-                    string localConditionData2() { object argIndex1 = i; var ret = withBlock.ConditionData(ref argIndex1); return ret; }
+                    string localConditionData2() { object argIndex1 = i; var ret = withBlock.ConditionData(argIndex1); return ret; }
 
                     string arglist1 = localConditionData2();
-                    if (GeneralLib.LIndex(ref arglist1, 1) == "解説")
+                    if (GeneralLib.LIndex(arglist1, 1) == "解説")
                     {
                         goto NextCondition;
                     }
@@ -2756,7 +2773,7 @@ namespace SRCTestForm
                     }
                     // ADD  END  240a
                     object argIndex60 = i;
-                    switch (withBlock.Condition(ref argIndex60) ?? "")
+                    switch (withBlock.Condition(argIndex60) ?? "")
                     {
                         case "データ不明":
                         case "形態固定":
@@ -2788,14 +2805,14 @@ namespace SRCTestForm
                         // 非表示
                         case "残り時間":
                             {
-                                short localConditionLifetime1() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
+                                int localConditionLifetime1() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(argIndex1); return ret; }
 
-                                short localConditionLifetime2() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
+                                int localConditionLifetime2() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(argIndex1); return ret; }
 
                                 if (0 < localConditionLifetime1() & localConditionLifetime2() < 100)
                                 {
                                     // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-                                    short localConditionLifetime() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
+                                    int localConditionLifetime() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(argIndex1); return ret; }
 
                                     upic.Print("残り時間" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(localConditionLifetime()) + "ターン");
                                 }
@@ -2809,19 +2826,19 @@ namespace SRCTestForm
                         case "弱点付加":
                             {
                                 // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-                                string localConditionData3() { object argIndex1 = i; var ret = withBlock.ConditionData(ref argIndex1); return ret; }
+                                string localConditionData3() { object argIndex1 = i; var ret = withBlock.ConditionData(argIndex1); return ret; }
 
-                                string localCondition3() { object argIndex1 = i; var ret = withBlock.Condition(ref argIndex1); return ret; }
+                                string localCondition3() { object argIndex1 = i; var ret = withBlock.Condition(argIndex1); return ret; }
 
                                 upic.Print(localConditionData3() + localCondition3());
-                                short localConditionLifetime4() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
+                                int localConditionLifetime4() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(argIndex1); return ret; }
 
-                                short localConditionLifetime5() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
+                                int localConditionLifetime5() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(argIndex1); return ret; }
 
                                 if (0 < localConditionLifetime4() & localConditionLifetime5() < 100)
                                 {
                                     // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-                                    short localConditionLifetime3() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
+                                    int localConditionLifetime3() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(argIndex1); return ret; }
 
                                     upic.Print(" " + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(localConditionLifetime3()) + "T");
                                 }
@@ -2833,17 +2850,17 @@ namespace SRCTestForm
                         case "特殊効果無効化付加":
                             {
                                 // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-                                string localConditionData4() { object argIndex1 = i; var ret = withBlock.ConditionData(ref argIndex1); return ret; }
+                                string localConditionData4() { object argIndex1 = i; var ret = withBlock.ConditionData(argIndex1); return ret; }
 
                                 upic.Print(localConditionData4() + "無効化付加");
-                                short localConditionLifetime7() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
+                                int localConditionLifetime7() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(argIndex1); return ret; }
 
-                                short localConditionLifetime8() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
+                                int localConditionLifetime8() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(argIndex1); return ret; }
 
                                 if (0 < localConditionLifetime7() & localConditionLifetime8() < 100)
                                 {
                                     // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-                                    short localConditionLifetime6() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
+                                    int localConditionLifetime6() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(argIndex1); return ret; }
 
                                     upic.Print(" 残り" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(localConditionLifetime6()) + "ターン");
                                 }
@@ -2855,19 +2872,19 @@ namespace SRCTestForm
                         case "攻撃属性付加":
                             {
                                 // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-                                string localConditionData5() { object argIndex1 = i; var ret = withBlock.ConditionData(ref argIndex1); return ret; }
+                                string localConditionData5() { object argIndex1 = i; var ret = withBlock.ConditionData(argIndex1); return ret; }
 
-                                string localLIndex2() { string arglist = hs755742c2c238431abd43e11d0920ad14(); var ret = GeneralLib.LIndex(ref arglist, 1); return ret; }
+                                string localLIndex2() { string arglist = hs755742c2c238431abd43e11d0920ad14(); var ret = GeneralLib.LIndex(arglist, 1); return ret; }
 
                                 upic.Print(localLIndex2() + "属性付加");
-                                short localConditionLifetime10() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
+                                int localConditionLifetime10() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(argIndex1); return ret; }
 
-                                short localConditionLifetime11() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
+                                int localConditionLifetime11() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(argIndex1); return ret; }
 
                                 if (0 < localConditionLifetime10() & localConditionLifetime11() < 100)
                                 {
                                     // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-                                    short localConditionLifetime9() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
+                                    int localConditionLifetime9() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(argIndex1); return ret; }
 
                                     upic.Print(" 残り" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(localConditionLifetime9()) + "ターン");
                                 }
@@ -2879,26 +2896,26 @@ namespace SRCTestForm
                         case "武器強化付加":
                             {
                                 // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-                                double localConditionLevel() { object argIndex1 = i; var ret = withBlock.ConditionLevel(ref argIndex1); return ret; }
+                                double localConditionLevel() { object argIndex1 = i; var ret = withBlock.ConditionLevel(argIndex1); return ret; }
 
                                 upic.Print("武器強化Lv" + localConditionLevel() + "付加");
                                 object argIndex51 = i;
-                                if (!string.IsNullOrEmpty(withBlock.ConditionData(ref argIndex51)))
+                                if (!string.IsNullOrEmpty(withBlock.ConditionData(argIndex51)))
                                 {
                                     // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-                                    string localConditionData6() { object argIndex1 = i; var ret = withBlock.ConditionData(ref argIndex1); return ret; }
+                                    string localConditionData6() { object argIndex1 = i; var ret = withBlock.ConditionData(argIndex1); return ret; }
 
                                     upic.Print("(" + localConditionData6() + ")");
                                 }
 
-                                short localConditionLifetime13() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
+                                int localConditionLifetime13() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(argIndex1); return ret; }
 
-                                short localConditionLifetime14() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
+                                int localConditionLifetime14() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(argIndex1); return ret; }
 
                                 if (0 < localConditionLifetime13() & localConditionLifetime14() < 100)
                                 {
                                     // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-                                    short localConditionLifetime12() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
+                                    int localConditionLifetime12() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(argIndex1); return ret; }
 
                                     upic.Print(" 残り" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(localConditionLifetime12()) + "ターン");
                                 }
@@ -2910,26 +2927,26 @@ namespace SRCTestForm
                         case "命中率強化付加":
                             {
                                 // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-                                double localConditionLevel1() { object argIndex1 = i; var ret = withBlock.ConditionLevel(ref argIndex1); return ret; }
+                                double localConditionLevel1() { object argIndex1 = i; var ret = withBlock.ConditionLevel(argIndex1); return ret; }
 
                                 upic.Print("命中率強化Lv" + localConditionLevel1() + "付加");
                                 object argIndex52 = i;
-                                if (!string.IsNullOrEmpty(withBlock.ConditionData(ref argIndex52)))
+                                if (!string.IsNullOrEmpty(withBlock.ConditionData(argIndex52)))
                                 {
                                     // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-                                    string localConditionData7() { object argIndex1 = i; var ret = withBlock.ConditionData(ref argIndex1); return ret; }
+                                    string localConditionData7() { object argIndex1 = i; var ret = withBlock.ConditionData(argIndex1); return ret; }
 
                                     upic.Print("(" + localConditionData7() + ")");
                                 }
 
-                                short localConditionLifetime16() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
+                                int localConditionLifetime16() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(argIndex1); return ret; }
 
-                                short localConditionLifetime17() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
+                                int localConditionLifetime17() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(argIndex1); return ret; }
 
                                 if (0 < localConditionLifetime16() & localConditionLifetime17() < 100)
                                 {
                                     // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-                                    short localConditionLifetime15() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
+                                    int localConditionLifetime15() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(argIndex1); return ret; }
 
                                     upic.Print(" 残り" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(localConditionLifetime15()) + "ターン");
                                 }
@@ -2941,26 +2958,26 @@ namespace SRCTestForm
                         case "ＣＴ率強化付加":
                             {
                                 // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-                                double localConditionLevel2() { object argIndex1 = i; var ret = withBlock.ConditionLevel(ref argIndex1); return ret; }
+                                double localConditionLevel2() { object argIndex1 = i; var ret = withBlock.ConditionLevel(argIndex1); return ret; }
 
                                 upic.Print("ＣＴ率強化Lv" + localConditionLevel2() + "付加");
                                 object argIndex53 = i;
-                                if (!string.IsNullOrEmpty(withBlock.ConditionData(ref argIndex53)))
+                                if (!string.IsNullOrEmpty(withBlock.ConditionData(argIndex53)))
                                 {
                                     // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-                                    string localConditionData8() { object argIndex1 = i; var ret = withBlock.ConditionData(ref argIndex1); return ret; }
+                                    string localConditionData8() { object argIndex1 = i; var ret = withBlock.ConditionData(argIndex1); return ret; }
 
                                     upic.Print("(" + localConditionData8() + ")");
                                 }
 
-                                short localConditionLifetime19() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
+                                int localConditionLifetime19() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(argIndex1); return ret; }
 
-                                short localConditionLifetime20() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
+                                int localConditionLifetime20() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(argIndex1); return ret; }
 
                                 if (0 < localConditionLifetime19() & localConditionLifetime20() < 100)
                                 {
                                     // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-                                    short localConditionLifetime18() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
+                                    int localConditionLifetime18() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(argIndex1); return ret; }
 
                                     upic.Print(" 残り" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(localConditionLifetime18()) + "ターン");
                                 }
@@ -2972,26 +2989,26 @@ namespace SRCTestForm
                         case "特殊効果発動率強化付加":
                             {
                                 // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-                                double localConditionLevel3() { object argIndex1 = i; var ret = withBlock.ConditionLevel(ref argIndex1); return ret; }
+                                double localConditionLevel3() { object argIndex1 = i; var ret = withBlock.ConditionLevel(argIndex1); return ret; }
 
                                 upic.Print("特殊効果発動率強化Lv" + localConditionLevel3() + "付加");
                                 object argIndex54 = i;
-                                if (!string.IsNullOrEmpty(withBlock.ConditionData(ref argIndex54)))
+                                if (!string.IsNullOrEmpty(withBlock.ConditionData(argIndex54)))
                                 {
                                     // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-                                    string localConditionData9() { object argIndex1 = i; var ret = withBlock.ConditionData(ref argIndex1); return ret; }
+                                    string localConditionData9() { object argIndex1 = i; var ret = withBlock.ConditionData(argIndex1); return ret; }
 
                                     upic.Print("(" + localConditionData9() + ")");
                                 }
 
-                                short localConditionLifetime22() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
+                                int localConditionLifetime22() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(argIndex1); return ret; }
 
-                                short localConditionLifetime23() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
+                                int localConditionLifetime23() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(argIndex1); return ret; }
 
                                 if (0 < localConditionLifetime22() & localConditionLifetime23() < 100)
                                 {
                                     // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-                                    short localConditionLifetime21() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
+                                    int localConditionLifetime21() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(argIndex1); return ret; }
 
                                     upic.Print(" 残り" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(localConditionLifetime21()) + "ターン");
                                 }
@@ -3004,14 +3021,14 @@ namespace SRCTestForm
                             {
                                 // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                                 upic.Print("地形適応変更付加");
-                                short localConditionLifetime25() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
+                                int localConditionLifetime25() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(argIndex1); return ret; }
 
-                                short localConditionLifetime26() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
+                                int localConditionLifetime26() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(argIndex1); return ret; }
 
                                 if (0 < localConditionLifetime25() & localConditionLifetime26() < 100)
                                 {
                                     // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-                                    short localConditionLifetime24() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
+                                    int localConditionLifetime24() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(argIndex1); return ret; }
 
                                     upic.Print(" 残り" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(localConditionLifetime24()) + "ターン");
                                 }
@@ -3023,23 +3040,23 @@ namespace SRCTestForm
                         case "盾付加":
                             {
                                 // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-                                string localConditionData10() { object argIndex1 = i; var ret = withBlock.ConditionData(ref argIndex1); return ret; }
+                                string localConditionData10() { object argIndex1 = i; var ret = withBlock.ConditionData(argIndex1); return ret; }
 
-                                string localLIndex3() { string arglist = hsba8faef602a144028d0b911086dca487(); var ret = GeneralLib.LIndex(ref arglist, 1); return ret; }
+                                string localLIndex3() { string arglist = hsba8faef602a144028d0b911086dca487(); var ret = GeneralLib.LIndex(arglist, 1); return ret; }
 
                                 upic.Print(localLIndex3() + "付加");
                                 // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-                                double localConditionLevel4() { object argIndex1 = i; var ret = withBlock.ConditionLevel(ref argIndex1); return ret; }
+                                double localConditionLevel4() { object argIndex1 = i; var ret = withBlock.ConditionLevel(argIndex1); return ret; }
 
                                 upic.Print("(" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(localConditionLevel4()) + ")");
-                                short localConditionLifetime28() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
+                                int localConditionLifetime28() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(argIndex1); return ret; }
 
-                                short localConditionLifetime29() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
+                                int localConditionLifetime29() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(argIndex1); return ret; }
 
                                 if (0 < localConditionLifetime28() & localConditionLifetime29() < 100)
                                 {
                                     // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-                                    short localConditionLifetime27() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
+                                    int localConditionLifetime27() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(argIndex1); return ret; }
 
                                     upic.Print(" 残り" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(localConditionLifetime27()) + "ターン");
                                 }
@@ -3051,13 +3068,13 @@ namespace SRCTestForm
                         case "ダミー破壊":
                             {
                                 object argIndex55 = "ダミー";
-                                buf = withBlock.FeatureName(ref argIndex55);
+                                buf = withBlock.FeatureName(argIndex55);
                                 if (Strings.InStr(buf, "Lv") > 0)
                                 {
                                     buf = Strings.Left(buf, Strings.InStr(buf, "Lv") - 1);
                                 }
                                 // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-                                double localConditionLevel5() { object argIndex1 = i; var ret = withBlock.ConditionLevel(ref argIndex1); return ret; }
+                                double localConditionLevel5() { object argIndex1 = i; var ret = withBlock.ConditionLevel(argIndex1); return ret; }
 
                                 upic.Print(buf + Strings.StrConv(Microsoft.VisualBasic.Compatibility.VB6.Support.Format(localConditionLevel5()), VbStrConv.Wide) + "体破壊");
                                 break;
@@ -3066,18 +3083,18 @@ namespace SRCTestForm
                         case "ダミー付加":
                             {
                                 // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-                                double localConditionLevel6() { object argIndex1 = i; var ret = withBlock.ConditionLevel(ref argIndex1); return ret; }
+                                double localConditionLevel6() { object argIndex1 = i; var ret = withBlock.ConditionLevel(argIndex1); return ret; }
 
                                 object argIndex56 = "ダミー";
-                                upic.Print(withBlock.FeatureName(ref argIndex56) + "残り" + Strings.StrConv(Microsoft.VisualBasic.Compatibility.VB6.Support.Format(localConditionLevel6()), VbStrConv.Wide) + "体");
-                                short localConditionLifetime31() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
+                                upic.Print(withBlock.FeatureName(argIndex56) + "残り" + Strings.StrConv(Microsoft.VisualBasic.Compatibility.VB6.Support.Format(localConditionLevel6()), VbStrConv.Wide) + "体");
+                                int localConditionLifetime31() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(argIndex1); return ret; }
 
-                                short localConditionLifetime32() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
+                                int localConditionLifetime32() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(argIndex1); return ret; }
 
                                 if (0 < localConditionLifetime31() & localConditionLifetime32() < 100)
                                 {
                                     // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-                                    short localConditionLifetime30() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
+                                    int localConditionLifetime30() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(argIndex1); return ret; }
 
                                     upic.Print(" 残り" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(localConditionLifetime30()) + "ターン");
                                 }
@@ -3089,10 +3106,10 @@ namespace SRCTestForm
                         case "バリア発動":
                             {
                                 object argIndex57 = i;
-                                if (!string.IsNullOrEmpty(withBlock.ConditionData(ref argIndex57)))
+                                if (!string.IsNullOrEmpty(withBlock.ConditionData(argIndex57)))
                                 {
                                     // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-                                    string localConditionData11() { object argIndex1 = i; var ret = withBlock.ConditionData(ref argIndex1); return ret; }
+                                    string localConditionData11() { object argIndex1 = i; var ret = withBlock.ConditionData(argIndex1); return ret; }
 
                                     upic.Print(localConditionData11());
                                 }
@@ -3102,7 +3119,7 @@ namespace SRCTestForm
                                     upic.Print("バリア発動");
                                 }
                                 // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-                                short localConditionLifetime33() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
+                                int localConditionLifetime33() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(argIndex1); return ret; }
 
                                 upic.Print(" 残り" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(localConditionLifetime33()) + "ターン");
                                 break;
@@ -3111,10 +3128,10 @@ namespace SRCTestForm
                         case "フィールド発動":
                             {
                                 object argIndex58 = i;
-                                if (!string.IsNullOrEmpty(withBlock.ConditionData(ref argIndex58)))
+                                if (!string.IsNullOrEmpty(withBlock.ConditionData(argIndex58)))
                                 {
                                     // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-                                    string localConditionData12() { object argIndex1 = i; var ret = withBlock.ConditionData(ref argIndex1); return ret; }
+                                    string localConditionData12() { object argIndex1 = i; var ret = withBlock.ConditionData(argIndex1); return ret; }
 
                                     upic.Print(localConditionData12());
                                 }
@@ -3124,7 +3141,7 @@ namespace SRCTestForm
                                     upic.Print("フィールド発動");
                                 }
                                 // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-                                short localConditionLifetime34() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
+                                int localConditionLifetime34() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(argIndex1); return ret; }
 
                                 upic.Print(" 残り" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(localConditionLifetime34()) + "ターン");
                                 break;
@@ -3134,15 +3151,15 @@ namespace SRCTestForm
                             {
                                 // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                                 string argtname43 = "装甲";
-                                upic.Print(Expression.Term(ref argtname43, ref u) + "劣化");
-                                short localConditionLifetime36() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
+                                upic.Print(Expression.Term(argtname43, u) + "劣化");
+                                int localConditionLifetime36() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(argIndex1); return ret; }
 
-                                short localConditionLifetime37() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
+                                int localConditionLifetime37() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(argIndex1); return ret; }
 
                                 if (0 < localConditionLifetime36() & localConditionLifetime37() < 20)
                                 {
                                     // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-                                    short localConditionLifetime35() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
+                                    int localConditionLifetime35() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(argIndex1); return ret; }
 
                                     upic.Print(" 残り" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(localConditionLifetime35()) + "ターン");
                                 }
@@ -3155,15 +3172,15 @@ namespace SRCTestForm
                             {
                                 // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                                 string argtname44 = "運動性";
-                                upic.Print(Expression.Term(ref argtname44, ref u) + "ＵＰ");
-                                short localConditionLifetime39() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
+                                upic.Print(Expression.Term(argtname44, u) + "ＵＰ");
+                                int localConditionLifetime39() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(argIndex1); return ret; }
 
-                                short localConditionLifetime40() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
+                                int localConditionLifetime40() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(argIndex1); return ret; }
 
                                 if (0 < localConditionLifetime39() & localConditionLifetime40() < 20)
                                 {
                                     // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-                                    short localConditionLifetime38() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
+                                    int localConditionLifetime38() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(argIndex1); return ret; }
 
                                     upic.Print(" 残り" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(localConditionLifetime38()) + "ターン");
                                 }
@@ -3176,15 +3193,15 @@ namespace SRCTestForm
                             {
                                 // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                                 string argtname45 = "運動性";
-                                upic.Print(Expression.Term(ref argtname45, ref u) + "ＤＯＷＮ");
-                                short localConditionLifetime42() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
+                                upic.Print(Expression.Term(argtname45, u) + "ＤＯＷＮ");
+                                int localConditionLifetime42() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(argIndex1); return ret; }
 
-                                short localConditionLifetime43() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
+                                int localConditionLifetime43() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(argIndex1); return ret; }
 
                                 if (0 < localConditionLifetime42() & localConditionLifetime43() < 20)
                                 {
                                     // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-                                    short localConditionLifetime41() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
+                                    int localConditionLifetime41() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(argIndex1); return ret; }
 
                                     upic.Print(" 残り" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(localConditionLifetime41()) + "ターン");
                                 }
@@ -3197,15 +3214,15 @@ namespace SRCTestForm
                             {
                                 // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                                 string argtname46 = "移動力";
-                                upic.Print(Expression.Term(ref argtname46, ref u) + "ＵＰ");
-                                short localConditionLifetime45() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
+                                upic.Print(Expression.Term(argtname46, u) + "ＵＰ");
+                                int localConditionLifetime45() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(argIndex1); return ret; }
 
-                                short localConditionLifetime46() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
+                                int localConditionLifetime46() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(argIndex1); return ret; }
 
                                 if (0 < localConditionLifetime45() & localConditionLifetime46() < 20)
                                 {
                                     // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-                                    short localConditionLifetime44() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
+                                    int localConditionLifetime44() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(argIndex1); return ret; }
 
                                     upic.Print(" 残り" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(localConditionLifetime44()) + "ターン");
                                 }
@@ -3218,15 +3235,15 @@ namespace SRCTestForm
                             {
                                 // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                                 string argtname47 = "移動力";
-                                upic.Print(Expression.Term(ref argtname47, ref u) + "ＤＯＷＮ");
-                                short localConditionLifetime48() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
+                                upic.Print(Expression.Term(argtname47, u) + "ＤＯＷＮ");
+                                int localConditionLifetime48() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(argIndex1); return ret; }
 
-                                short localConditionLifetime49() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
+                                int localConditionLifetime49() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(argIndex1); return ret; }
 
                                 if (0 < localConditionLifetime48() & localConditionLifetime49() < 20)
                                 {
                                     // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-                                    short localConditionLifetime47() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
+                                    int localConditionLifetime47() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(argIndex1); return ret; }
 
                                     upic.Print(" 残り" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(localConditionLifetime47()) + "ターン");
                                 }
@@ -3238,16 +3255,16 @@ namespace SRCTestForm
                         default:
                             {
                                 // 充填中？
-                                string localCondition7() { object argIndex1 = i; var ret = withBlock.Condition(ref argIndex1); return ret; }
+                                string localCondition7() { object argIndex1 = i; var ret = withBlock.Condition(argIndex1); return ret; }
 
                                 if (Strings.Right(localCondition7(), 3) == "充填中")
                                 {
                                     if (withBlock.IsHero())
                                     {
                                         // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-                                        string localCondition4() { object argIndex1 = i; var ret = withBlock.Condition(ref argIndex1); return ret; }
+                                        string localCondition4() { object argIndex1 = i; var ret = withBlock.Condition(argIndex1); return ret; }
 
-                                        string localCondition5() { object argIndex1 = i; var ret = withBlock.Condition(ref argIndex1); return ret; }
+                                        string localCondition5() { object argIndex1 = i; var ret = withBlock.Condition(argIndex1); return ret; }
 
                                         upic.Print(Strings.Left(localCondition4(), Strings.Len(localCondition5()) - 3));
                                         // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
@@ -3256,63 +3273,63 @@ namespace SRCTestForm
                                     else
                                     {
                                         // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-                                        string localCondition6() { object argIndex1 = i; var ret = withBlock.Condition(ref argIndex1); return ret; }
+                                        string localCondition6() { object argIndex1 = i; var ret = withBlock.Condition(argIndex1); return ret; }
 
                                         upic.Print(localCondition6());
                                     }
                                     // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-                                    short localConditionLifetime50() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
+                                    int localConditionLifetime50() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(argIndex1); return ret; }
 
                                     upic.Print(" 残り" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(localConditionLifetime50()) + "ターン");
                                     goto NextCondition;
                                 }
 
                                 // パイロット特殊能力付加＆強化による状態は表示しない
-                                string localCondition8() { object argIndex1 = i; var ret = withBlock.Condition(ref argIndex1); return ret; }
+                                string localCondition8() { object argIndex1 = i; var ret = withBlock.Condition(argIndex1); return ret; }
 
-                                string localCondition9() { object argIndex1 = i; var ret = withBlock.Condition(ref argIndex1); return ret; }
+                                string localCondition9() { object argIndex1 = i; var ret = withBlock.Condition(argIndex1); return ret; }
 
                                 if (Strings.Right(localCondition8(), 3) == "付加２" | Strings.Right(localCondition9(), 3) == "強化２")
                                 {
                                     goto NextCondition;
                                 }
 
-                                string localCondition12() { object argIndex1 = i; var ret = withBlock.Condition(ref argIndex1); return ret; }
+                                string localCondition12() { object argIndex1 = i; var ret = withBlock.Condition(argIndex1); return ret; }
 
-                                string localConditionData15() { object argIndex1 = i; var ret = withBlock.ConditionData(ref argIndex1); return ret; }
+                                string localConditionData15() { object argIndex1 = i; var ret = withBlock.ConditionData(argIndex1); return ret; }
 
-                                string localCondition13() { object argIndex1 = i; var ret = withBlock.Condition(ref argIndex1); return ret; }
+                                string localCondition13() { object argIndex1 = i; var ret = withBlock.Condition(argIndex1); return ret; }
 
-                                string localConditionData16() { object argIndex1 = i; var ret = withBlock.ConditionData(ref argIndex1); return ret; }
+                                string localConditionData16() { object argIndex1 = i; var ret = withBlock.ConditionData(argIndex1); return ret; }
 
-                                double localConditionLevel9() { object argIndex1 = i; var ret = withBlock.ConditionLevel(ref argIndex1); return ret; }
+                                double localConditionLevel9() { object argIndex1 = i; var ret = withBlock.ConditionLevel(argIndex1); return ret; }
 
                                 if (Strings.Right(localCondition12(), 2) == "付加" & !string.IsNullOrEmpty(localConditionData15()))
                                 {
-                                    string localConditionData13() { object argIndex1 = i; var ret = withBlock.ConditionData(ref argIndex1); return ret; }
+                                    string localConditionData13() { object argIndex1 = i; var ret = withBlock.ConditionData(argIndex1); return ret; }
 
                                     string arglist2 = localConditionData13();
-                                    buf = GeneralLib.LIndex(ref arglist2, 1) + "付加";
+                                    buf = GeneralLib.LIndex(arglist2, 1) + "付加";
                                 }
                                 else if (Strings.Right(localCondition13(), 2) == "強化" & !string.IsNullOrEmpty(localConditionData16()))
                                 {
                                     // 強化アビリティ
-                                    string localConditionData14() { object argIndex1 = i; var ret = withBlock.ConditionData(ref argIndex1); return ret; }
+                                    string localConditionData14() { object argIndex1 = i; var ret = withBlock.ConditionData(argIndex1); return ret; }
 
-                                    string localLIndex4() { string arglist = hs68f2e5d1358d41f987f02a7379e2b562(); var ret = GeneralLib.LIndex(ref arglist, 1); return ret; }
+                                    string localLIndex4() { string arglist = hs68f2e5d1358d41f987f02a7379e2b562(); var ret = GeneralLib.LIndex(arglist, 1); return ret; }
 
-                                    double localConditionLevel7() { object argIndex1 = i; var ret = withBlock.ConditionLevel(ref argIndex1); return ret; }
+                                    double localConditionLevel7() { object argIndex1 = i; var ret = withBlock.ConditionLevel(argIndex1); return ret; }
 
                                     buf = localLIndex4() + "強化Lv" + localConditionLevel7();
                                 }
                                 else if (localConditionLevel9() > 0d)
                                 {
                                     // 付加アビリティ(レベル指定あり)
-                                    string localCondition10() { object argIndex1 = i; var ret = withBlock.Condition(ref argIndex1); return ret; }
+                                    string localCondition10() { object argIndex1 = i; var ret = withBlock.Condition(argIndex1); return ret; }
 
-                                    string localCondition11() { object argIndex1 = i; var ret = withBlock.Condition(ref argIndex1); return ret; }
+                                    string localCondition11() { object argIndex1 = i; var ret = withBlock.Condition(argIndex1); return ret; }
 
-                                    double localConditionLevel8() { object argIndex1 = i; var ret = withBlock.ConditionLevel(ref argIndex1); return ret; }
+                                    double localConditionLevel8() { object argIndex1 = i; var ret = withBlock.ConditionLevel(argIndex1); return ret; }
 
                                     buf = Strings.Left(localCondition10(), Strings.Len(localCondition11()) - 2) + "Lv" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(localConditionLevel8()) + "付加";
                                 }
@@ -3320,11 +3337,11 @@ namespace SRCTestForm
                                 {
                                     // 付加アビリティ(レベル指定なし)
                                     object argIndex59 = i;
-                                    buf = withBlock.Condition(ref argIndex59);
+                                    buf = withBlock.Condition(argIndex59);
                                 }
 
                                 // エリアスされた特殊能力の付加表示がたぶらないように
-                                var loopTo9 = (short)Information.UBound(name_list);
+                                var loopTo9 = (int)Information.UBound(name_list);
                                 for (j = 1; j <= loopTo9; j++)
                                 {
                                     if ((buf ?? "") == (name_list[j] ?? ""))
@@ -3338,19 +3355,19 @@ namespace SRCTestForm
                                     goto NextCondition;
                                 }
 
-                                Array.Resize(ref name_list, Information.UBound(name_list) + 1 + 1);
+                                Array.Resize(name_list, Information.UBound(name_list) + 1 + 1);
                                 name_list[Information.UBound(name_list)] = buf;
 
                                 // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                                 upic.Print(buf);
-                                short localConditionLifetime52() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
+                                int localConditionLifetime52() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(argIndex1); return ret; }
 
-                                short localConditionLifetime53() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
+                                int localConditionLifetime53() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(argIndex1); return ret; }
 
                                 if (0 < localConditionLifetime52() & localConditionLifetime53() < 20)
                                 {
                                     // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-                                    short localConditionLifetime51() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(ref argIndex1); return ret; }
+                                    int localConditionLifetime51() { object argIndex1 = i; var ret = withBlock.ConditionLifetime(argIndex1); return ret; }
 
                                     upic.Print(" 残り" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(localConditionLifetime51()) + "ターン");
                                 }
@@ -3401,13 +3418,13 @@ namespace SRCTestForm
                 // MOD  END  240a
                 // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                 string argtname48 = "ＨＰ";
-                upic.Print(Expression.Term(ref argtname48, ref u, 6) + " ");
+                upic.Print(Expression.Term(argtname48, u, 6) + " ");
                 // MOD START 240a
                 // upic.ForeColor = rgb(0, 0, 0)
                 upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorNormalString, Information.RGB(0, 0, 0))));
                 // MOD  END  240a
                 object argIndex61 = "データ不明";
-                if (withBlock.IsConditionSatisfied(ref argIndex61))
+                if (withBlock.IsConditionSatisfied(argIndex61))
                 {
                     // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                     upic.Print("?????/?????");
@@ -3475,13 +3492,13 @@ namespace SRCTestForm
                 // MOD  END  240a
                 // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                 string argtname49 = "ＥＮ";
-                upic.Print(Expression.Term(ref argtname49, ref u, 6) + " ");
+                upic.Print(Expression.Term(argtname49, u, 6) + " ");
                 // MOD START 240a
                 // upic.ForeColor = rgb(0, 0, 0)
                 upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorNormalString, Information.RGB(0, 0, 0))));
                 // MOD  END  240a
                 object argIndex62 = "データ不明";
-                if (withBlock.IsConditionSatisfied(ref argIndex62))
+                if (withBlock.IsConditionSatisfied(argIndex62))
                 {
                     // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                     upic.Print("???/???");
@@ -3526,7 +3543,7 @@ namespace SRCTestForm
                 // MOD  END  240a
                 // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                 string argtname50 = "装甲";
-                upic.Print(Expression.Term(ref argtname50, ref u, 6) + " ");
+                upic.Print(Expression.Term(argtname50, u, 6) + " ");
                 // MOD START 240a
                 // upic.ForeColor = rgb(0, 0, 0)
                 upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorNormalString, Information.RGB(0, 0, 0))));
@@ -3536,7 +3553,7 @@ namespace SRCTestForm
                     case var case13 when case13 > 0:
                         {
                             // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-                            string localRightPaddedString13() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.get_Armor("基本値")) + "+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.get_Armor("修正値")); var ret = GeneralLib.RightPaddedString(ref argbuf, 12); return ret; }
+                            string localRightPaddedString13() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.get_Armor("基本値")) + "+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.get_Armor("修正値")); var ret = GeneralLib.RightPaddedString(argbuf, 12); return ret; }
 
                             upic.Print(localRightPaddedString13());
                             break;
@@ -3545,7 +3562,7 @@ namespace SRCTestForm
                     case var case14 when case14 < 0:
                         {
                             // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-                            string localRightPaddedString14() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.get_Armor("基本値")) + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.get_Armor("修正値")); var ret = GeneralLib.RightPaddedString(ref argbuf, 12); return ret; }
+                            string localRightPaddedString14() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.get_Armor("基本値")) + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.get_Armor("修正値")); var ret = GeneralLib.RightPaddedString(argbuf, 12); return ret; }
 
                             upic.Print(localRightPaddedString14());
                             break;
@@ -3554,7 +3571,7 @@ namespace SRCTestForm
                     case 0:
                         {
                             // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-                            string localRightPaddedString15() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.get_Armor("")); var ret = GeneralLib.RightPaddedString(ref argbuf, 12); return ret; }
+                            string localRightPaddedString15() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.get_Armor("")); var ret = GeneralLib.RightPaddedString(argbuf, 12); return ret; }
 
                             upic.Print(localRightPaddedString15());
                             break;
@@ -3568,7 +3585,7 @@ namespace SRCTestForm
                 // MOD  END  240a
                 // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                 string argtname51 = "運動性";
-                upic.Print(Expression.Term(ref argtname51, ref u, 6) + " ");
+                upic.Print(Expression.Term(argtname51, u, 6) + " ");
                 // MOD START 240a
                 // upic.ForeColor = rgb(0, 0, 0)
                 upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorNormalString, Information.RGB(0, 0, 0))));
@@ -3611,13 +3628,13 @@ namespace SRCTestForm
                 // MOD  END  240a
                 // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                 string argtname52 = "タイプ";
-                upic.Print(Expression.Term(ref argtname52, ref u, 6) + " ");
+                upic.Print(Expression.Term(argtname52, u, 6) + " ");
                 // MOD START 240a
                 // upic.ForeColor = rgb(0, 0, 0)
                 upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorNormalString, Information.RGB(0, 0, 0))));
                 // MOD  END  240a
                 // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-                string localRightPaddedString16() { string argbuf = withBlock.Transportation; var ret = GeneralLib.RightPaddedString(ref argbuf, 12); withBlock.Transportation = argbuf; return ret; }
+                string localRightPaddedString16() { string argbuf = withBlock.Transportation; var ret = GeneralLib.RightPaddedString(argbuf, 12); withBlock.Transportation = argbuf; return ret; }
 
                 upic.Print(localRightPaddedString16());
 
@@ -3628,19 +3645,19 @@ namespace SRCTestForm
                 // MOD  END  240a
                 // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                 string argtname53 = "移動力";
-                upic.Print(Expression.Term(ref argtname53, ref u, 6) + " ");
+                upic.Print(Expression.Term(argtname53, u, 6) + " ");
                 // MOD START 240a
                 // upic.ForeColor = rgb(0, 0, 0)
                 upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorNormalString, Information.RGB(0, 0, 0))));
                 // MOD  END  240a
-                string localLIndex5() { object argIndex1 = "テレポート"; string arglist = withBlock.FeatureData(ref argIndex1); var ret = GeneralLib.LIndex(ref arglist, 2); return ret; }
+                string localLIndex5() { object argIndex1 = "テレポート"; string arglist = withBlock.FeatureData(argIndex1); var ret = GeneralLib.LIndex(arglist, 2); return ret; }
 
                 string argfname22 = "テレポート";
-                if (withBlock.IsFeatureAvailable(ref argfname22) & (withBlock.Data.Speed == 0 | localLIndex5() == "0"))
+                if (withBlock.IsFeatureAvailable(argfname22) & (withBlock.Data.Speed == 0 | localLIndex5() == "0"))
                 {
                     // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                     object argIndex63 = "テレポート";
-                    upic.Print(Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.Speed + withBlock.FeatureLevel(ref argIndex63)));
+                    upic.Print(Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.Speed + withBlock.FeatureLevel(argIndex63)));
                 }
                 else
                 {
@@ -3723,7 +3740,7 @@ namespace SRCTestForm
                 // MOD  END  240a
                 // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                 string argtname54 = "サイズ";
-                upic.Print(Expression.Term(ref argtname54, ref u, 6) + " ");
+                upic.Print(Expression.Term(argtname54, u, 6) + " ");
                 // MOD START 240a
                 // upic.ForeColor = rgb(0, 0, 0)
                 upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorNormalString, Information.RGB(0, 0, 0))));
@@ -3765,8 +3782,8 @@ namespace SRCTestForm
                     upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorNormalString, Information.RGB(0, 0, 0))));
                     // MOD  END  240a
                     // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-                    upic.Print(GeneralLib.RightPaddedString(ref withBlock.strAbsorb, 12));
-                    n = (short)(n + 1);
+                    upic.Print(GeneralLib.RightPaddedString(withBlock.strAbsorb, 12));
+                    n = (int)(n + 1);
                     if (n > 1)
                     {
                         // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
@@ -3813,8 +3830,8 @@ namespace SRCTestForm
                     upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorNormalString, Information.RGB(0, 0, 0))));
                     // MOD  END  240a
                     // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-                    upic.Print(GeneralLib.RightPaddedString(ref withBlock.strImmune, 12));
-                    n = (short)(n + 1);
+                    upic.Print(GeneralLib.RightPaddedString(withBlock.strImmune, 12));
+                    n = (int)(n + 1);
                     if (n > 1)
                     {
                         // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
@@ -3867,8 +3884,8 @@ namespace SRCTestForm
                     upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorNormalString, Information.RGB(0, 0, 0))));
                     // MOD  END  240a
                     // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-                    upic.Print(GeneralLib.RightPaddedString(ref withBlock.strResist, 12));
-                    n = (short)(n + 1);
+                    upic.Print(GeneralLib.RightPaddedString(withBlock.strResist, 12));
+                    n = (int)(n + 1);
                     if (n > 1)
                     {
                         // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
@@ -3921,8 +3938,8 @@ namespace SRCTestForm
                     upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorNormalString, Information.RGB(0, 0, 0))));
                     // MOD  END  240a
                     // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-                    upic.Print(GeneralLib.RightPaddedString(ref withBlock.strWeakness, 12));
-                    n = (short)(n + 1);
+                    upic.Print(GeneralLib.RightPaddedString(withBlock.strWeakness, 12));
+                    n = (int)(n + 1);
                     if (n > 1)
                     {
                         // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
@@ -3975,8 +3992,8 @@ namespace SRCTestForm
                     upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorNormalString, Information.RGB(0, 0, 0))));
                     // MOD  END  240a
                     // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-                    upic.Print(GeneralLib.RightPaddedString(ref withBlock.strEffective, 12));
-                    n = (short)(n + 1);
+                    upic.Print(GeneralLib.RightPaddedString(withBlock.strEffective, 12));
+                    n = (int)(n + 1);
                     if (n > 1)
                     {
                         // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
@@ -4029,8 +4046,8 @@ namespace SRCTestForm
                     upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorNormalString, Information.RGB(0, 0, 0))));
                     // MOD  END  240a
                     // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-                    upic.Print(GeneralLib.RightPaddedString(ref withBlock.strSpecialEffectImmune, 12));
-                    n = (short)(n + 1);
+                    upic.Print(GeneralLib.RightPaddedString(withBlock.strSpecialEffectImmune, 12));
+                    n = (int)(n + 1);
                     if (n > 1)
                     {
                         // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
@@ -4072,11 +4089,11 @@ namespace SRCTestForm
                 // 武器・防具クラス
                 flist = new string[1];
                 string argoname5 = "アイテム交換";
-                if (Expression.IsOptionDefined(ref argoname5))
+                if (Expression.IsOptionDefined(argoname5))
                 {
                     string argfname23 = "武器クラス";
                     string argfname24 = "防具クラス";
-                    if (withBlock.IsFeatureAvailable(ref argfname23) | withBlock.IsFeatureAvailable(ref argfname24))
+                    if (withBlock.IsFeatureAvailable(argfname23) | withBlock.IsFeatureAvailable(argfname24))
                     {
                         if (GUI.NewGUIMode)
                         {
@@ -4085,10 +4102,10 @@ namespace SRCTestForm
                         }
                         // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                         string argbuf17 = "武器・防具クラス";
-                        upic.Print(GeneralLib.RightPaddedString(ref argbuf17, 19));
-                        Array.Resize(ref flist, 2);
+                        upic.Print(GeneralLib.RightPaddedString(argbuf17, 19));
+                        Array.Resize(flist, 2);
                         flist[1] = "武器・防具クラス";
-                        n = (short)(n + 1);
+                        n = (int)(n + 1);
                     }
                 }
 
@@ -4111,10 +4128,10 @@ namespace SRCTestForm
                 // ADD  END  240a
                 // 特殊能力一覧
                 var loopTo10 = withBlock.CountAllFeature();
-                for (i = (short)(withBlock.AdditionalFeaturesNum + 1); i <= loopTo10; i++)
+                for (i = (int)(withBlock.AdditionalFeaturesNum + 1); i <= loopTo10; i++)
                 {
                     object argIndex64 = i;
-                    fname = withBlock.AllFeatureName(ref argIndex64);
+                    fname = withBlock.AllFeatureName(argIndex64);
 
                     // ユニットステータスコマンド時は通常は非表示のパーツ合体、
                     // ノーマルモード、換装も表示
@@ -4123,18 +4140,18 @@ namespace SRCTestForm
                         if (string.IsNullOrEmpty(Map.MapFileName))
                         {
                             object argIndex66 = i;
-                            switch (withBlock.AllFeature(ref argIndex66) ?? "")
+                            switch (withBlock.AllFeature(argIndex66) ?? "")
                             {
                                 case "パーツ合体":
                                 case "ノーマルモード":
                                     {
                                         // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-                                        string localAllFeature() { object argIndex1 = i; var ret = withBlock.AllFeature(ref argIndex1); return ret; }
+                                        string localAllFeature() { object argIndex1 = i; var ret = withBlock.AllFeature(argIndex1); return ret; }
 
-                                        string localRightPaddedString17() { string argbuf = hs5fe6f1588051411f97aaada3678aab3c(); var ret = GeneralLib.RightPaddedString(ref argbuf, 19); return ret; }
+                                        string localRightPaddedString17() { string argbuf = hs5fe6f1588051411f97aaada3678aab3c(); var ret = GeneralLib.RightPaddedString(argbuf, 19); return ret; }
 
                                         upic.Print(localRightPaddedString17());
-                                        n = (short)(n + 1);
+                                        n = (int)(n + 1);
                                         if (n > 1)
                                         {
                                             // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
@@ -4164,7 +4181,7 @@ namespace SRCTestForm
                                             {
                                                 object argIndex65 = j;
                                                 {
-                                                    var withBlock4 = withBlock3.Item(ref argIndex65);
+                                                    var withBlock4 = withBlock3.Item(argIndex65);
                                                     if (withBlock4.get_AliasType(1) == "換装")
                                                     {
                                                         fname = withBlock4.Name;
@@ -4175,8 +4192,8 @@ namespace SRCTestForm
                                         }
 
                                         // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-                                        upic.Print(GeneralLib.RightPaddedString(ref fname, 19));
-                                        n = (short)(n + 1);
+                                        upic.Print(GeneralLib.RightPaddedString(fname, 19));
+                                        n = (int)(n + 1);
                                         if (n > 1)
                                         {
                                             // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
@@ -4200,7 +4217,7 @@ namespace SRCTestForm
                     }
 
                     // 既に表示しているかを判定
-                    var loopTo12 = (short)Information.UBound(flist);
+                    var loopTo12 = (int)Information.UBound(flist);
                     for (j = 1; j <= loopTo12; j++)
                     {
                         if ((fname ?? "") == (flist[j] ?? ""))
@@ -4209,28 +4226,28 @@ namespace SRCTestForm
                         }
                     }
 
-                    Array.Resize(ref flist, Information.UBound(flist) + 1 + 1);
+                    Array.Resize(flist, Information.UBound(flist) + 1 + 1);
                     flist[Information.UBound(flist)] = fname;
 
                     // 使用可否によって表示色を変える
                     object argIndex67 = i;
-                    fdata = withBlock.AllFeatureData(ref argIndex67);
+                    fdata = withBlock.AllFeatureData(argIndex67);
                     object argIndex79 = i;
-                    switch (withBlock.AllFeature(ref argIndex79) ?? "")
+                    switch (withBlock.AllFeature(argIndex79) ?? "")
                     {
                         case "合体":
                             {
-                                bool localIsDefined1() { object argIndex1 = GeneralLib.LIndex(ref fdata, 2); var ret = SRC.UList.IsDefined(ref argIndex1); return ret; }
+                                bool localIsDefined1() { object argIndex1 = GeneralLib.LIndex(fdata, 2); var ret = SRC.UList.IsDefined(argIndex1); return ret; }
 
                                 if (!localIsDefined1())
                                 {
                                     goto NextFeature;
                                 }
 
-                                Unit localItem1() { object argIndex1 = GeneralLib.LIndex(ref fdata, 2); var ret = SRC.UList.Item(ref argIndex1); return ret; }
+                                Unit localItem1() { object argIndex1 = GeneralLib.LIndex(fdata, 2); var ret = SRC.UList.Item(argIndex1); return ret; }
 
                                 object argIndex68 = "行動不能";
-                                if (localItem1().IsConditionSatisfied(ref argIndex68))
+                                if (localItem1().IsConditionSatisfied(argIndex68))
                                 {
                                     // MOD START 240a
                                     // upic.ForeColor = rgb(150, 0, 0)
@@ -4244,24 +4261,24 @@ namespace SRCTestForm
                         case "分離":
                             {
                                 k = 0;
-                                var loopTo13 = GeneralLib.LLength(ref fdata);
+                                var loopTo13 = GeneralLib.LLength(fdata);
                                 for (j = 2; j <= loopTo13; j++)
                                 {
-                                    bool localIsDefined2() { object argIndex1 = GeneralLib.LIndex(ref fdata, j); var ret = SRC.UList.IsDefined(ref argIndex1); return ret; }
+                                    bool localIsDefined2() { object argIndex1 = GeneralLib.LIndex(fdata, j); var ret = SRC.UList.IsDefined(argIndex1); return ret; }
 
                                     if (!localIsDefined2())
                                     {
                                         goto NextFeature;
                                     }
 
-                                    Unit localItem2() { object argIndex1 = GeneralLib.LIndex(ref fdata, j); var ret = SRC.UList.Item(ref argIndex1); return ret; }
+                                    Unit localItem2() { object argIndex1 = GeneralLib.LIndex(fdata, j); var ret = SRC.UList.Item(argIndex1); return ret; }
 
                                     {
                                         var withBlock5 = localItem2().Data;
                                         string argfname25 = "召喚ユニット";
-                                        if (withBlock5.IsFeatureAvailable(ref argfname25))
+                                        if (withBlock5.IsFeatureAvailable(argfname25))
                                         {
-                                            k = (short)(k + Math.Abs(withBlock5.PilotNum));
+                                            k = (int)(k + Math.Abs(withBlock5.PilotNum));
                                         }
                                     }
                                 }
@@ -4279,18 +4296,18 @@ namespace SRCTestForm
 
                         case "ハイパーモード":
                             {
-                                double localFeatureLevel() { object argIndex1 = i; var ret = withBlock.FeatureLevel(ref argIndex1); return ret; }
+                                double localFeatureLevel() { object argIndex1 = i; var ret = withBlock.FeatureLevel(argIndex1); return ret; }
 
-                                double localFeatureLevel1() { object argIndex1 = i; var ret = withBlock.FeatureLevel(ref argIndex1); return ret; }
+                                double localFeatureLevel1() { object argIndex1 = i; var ret = withBlock.FeatureLevel(argIndex1); return ret; }
                                 // MOD  END  240a
                                 object argIndex69 = "ノーマルモード付加";
-                                if (pmorale < (short)(10d * localFeatureLevel1()) + 100 & withBlock.HP > withBlock.MaxHP / 4)
+                                if (pmorale < (int)(10d * localFeatureLevel1()) + 100 & withBlock.HP > withBlock.MaxHP / 4)
                                 {
                                     // MOD START 240a
                                     // upic.ForeColor = rgb(150, 0, 0)
                                     upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorAbilityDisable, Information.RGB(150, 0, 0))));
                                 }
-                                else if (withBlock.IsConditionSatisfied(ref argIndex69))
+                                else if (withBlock.IsConditionSatisfied(argIndex69))
                                 {
                                     // MOD START 240a
                                     // upic.ForeColor = rgb(150, 0, 0)
@@ -4304,9 +4321,9 @@ namespace SRCTestForm
                         case "修理装置":
                         case "補給装置":
                             {
-                                if (Information.IsNumeric(GeneralLib.LIndex(ref fdata, 2)))
+                                if (Information.IsNumeric(GeneralLib.LIndex(fdata, 2)))
                                 {
-                                    if (withBlock.EN < Conversions.ToShort(GeneralLib.LIndex(ref fdata, 2)))
+                                    if (withBlock.EN < Conversions.Toint(GeneralLib.LIndex(fdata, 2)))
                                     {
                                         // MOD START 240a
                                         // upic.ForeColor = rgb(150, 0, 0)
@@ -4320,9 +4337,9 @@ namespace SRCTestForm
 
                         case "テレポート":
                             {
-                                if (Information.IsNumeric(GeneralLib.LIndex(ref fdata, 2)))
+                                if (Information.IsNumeric(GeneralLib.LIndex(fdata, 2)))
                                 {
-                                    if (withBlock.EN < Conversions.ToShort(GeneralLib.LIndex(ref fdata, 2)))
+                                    if (withBlock.EN < Conversions.Toint(GeneralLib.LIndex(fdata, 2)))
                                     {
                                         // MOD START 240a
                                         // upic.ForeColor = rgb(150, 0, 0)
@@ -4356,18 +4373,18 @@ namespace SRCTestForm
 
                         case "超回避":
                             {
-                                if (Information.IsNumeric(GeneralLib.LIndex(ref fdata, 2)))
+                                if (Information.IsNumeric(GeneralLib.LIndex(fdata, 2)))
                                 {
-                                    ecost = Conversions.ToShort(GeneralLib.LIndex(ref fdata, 2));
+                                    ecost = Conversions.Toint(GeneralLib.LIndex(fdata, 2));
                                 }
                                 else
                                 {
                                     ecost = 0;
                                 }
 
-                                if (Information.IsNumeric(GeneralLib.LIndex(ref fdata, 3)))
+                                if (Information.IsNumeric(GeneralLib.LIndex(fdata, 3)))
                                 {
-                                    nmorale = Conversions.ToShort(GeneralLib.LIndex(ref fdata, 3));
+                                    nmorale = Conversions.Toint(GeneralLib.LIndex(fdata, 3));
                                 }
                                 else
                                 {
@@ -4387,18 +4404,18 @@ namespace SRCTestForm
 
                         case "緊急テレポート":
                             {
-                                if (Information.IsNumeric(GeneralLib.LIndex(ref fdata, 3)))
+                                if (Information.IsNumeric(GeneralLib.LIndex(fdata, 3)))
                                 {
-                                    ecost = Conversions.ToShort(GeneralLib.LIndex(ref fdata, 3));
+                                    ecost = Conversions.Toint(GeneralLib.LIndex(fdata, 3));
                                 }
                                 else
                                 {
                                     ecost = 0;
                                 }
 
-                                if (Information.IsNumeric(GeneralLib.LIndex(ref fdata, 4)))
+                                if (Information.IsNumeric(GeneralLib.LIndex(fdata, 4)))
                                 {
-                                    nmorale = Conversions.ToShort(GeneralLib.LIndex(ref fdata, 4));
+                                    nmorale = Conversions.Toint(GeneralLib.LIndex(fdata, 4));
                                 }
                                 else
                                 {
@@ -4434,18 +4451,18 @@ namespace SRCTestForm
                         case "プロテクション":
                         case "アクティブプロテクション":
                             {
-                                if (Information.IsNumeric(GeneralLib.LIndex(ref fdata, 3)))
+                                if (Information.IsNumeric(GeneralLib.LIndex(fdata, 3)))
                                 {
-                                    ecost = Conversions.ToShort(GeneralLib.LIndex(ref fdata, 3));
+                                    ecost = Conversions.Toint(GeneralLib.LIndex(fdata, 3));
                                 }
                                 else
                                 {
                                     ecost = 10;
                                 }
 
-                                if (Information.IsNumeric(GeneralLib.LIndex(ref fdata, 4)))
+                                if (Information.IsNumeric(GeneralLib.LIndex(fdata, 4)))
                                 {
-                                    nmorale = Conversions.ToShort(GeneralLib.LIndex(ref fdata, 4));
+                                    nmorale = Conversions.Toint(GeneralLib.LIndex(fdata, 4));
                                 }
                                 else
                                 {
@@ -4453,7 +4470,7 @@ namespace SRCTestForm
                                 }
 
                                 object argIndex70 = "バリア無効化";
-                                if (withBlock.EN < ecost | pmorale < nmorale | withBlock.IsConditionSatisfied(ref argIndex70) & Strings.InStr(fdata, "バリア無効化無効") == 0)
+                                if (withBlock.EN < ecost | pmorale < nmorale | withBlock.IsConditionSatisfied(argIndex70) & Strings.InStr(fdata, "バリア無効化無効") == 0)
                                 {
                                     // MOD START 240a
                                     // upic.ForeColor = rgb(150, 0, 0)
@@ -4462,10 +4479,10 @@ namespace SRCTestForm
                                 // MOD  END  240a
                                 else if (Strings.InStr(fdata, "能力必要") > 0)
                                 {
-                                    var loopTo14 = GeneralLib.LLength(ref fdata);
+                                    var loopTo14 = GeneralLib.LLength(fdata);
                                     for (j = 5; j <= loopTo14; j++)
                                     {
-                                        opt = GeneralLib.LIndex(ref fdata, j);
+                                        opt = GeneralLib.LIndex(fdata, j);
                                         if (Strings.InStr(opt, "*") > 0)
                                         {
                                             opt = Strings.Left(opt, Strings.InStr(opt, "*") - 1);
@@ -4521,18 +4538,18 @@ namespace SRCTestForm
                         case "フィールド":
                         case "アクティブフィールド":
                             {
-                                if (Information.IsNumeric(GeneralLib.LIndex(ref fdata, 3)))
+                                if (Information.IsNumeric(GeneralLib.LIndex(fdata, 3)))
                                 {
-                                    ecost = Conversions.ToShort(GeneralLib.LIndex(ref fdata, 3));
+                                    ecost = Conversions.Toint(GeneralLib.LIndex(fdata, 3));
                                 }
                                 else
                                 {
                                     ecost = 0;
                                 }
 
-                                if (Information.IsNumeric(GeneralLib.LIndex(ref fdata, 4)))
+                                if (Information.IsNumeric(GeneralLib.LIndex(fdata, 4)))
                                 {
-                                    nmorale = Conversions.ToShort(GeneralLib.LIndex(ref fdata, 4));
+                                    nmorale = Conversions.Toint(GeneralLib.LIndex(fdata, 4));
                                 }
                                 else
                                 {
@@ -4540,7 +4557,7 @@ namespace SRCTestForm
                                 }
 
                                 object argIndex71 = "バリア無効化";
-                                if (withBlock.EN < ecost | pmorale < nmorale | withBlock.IsConditionSatisfied(ref argIndex71) & Strings.InStr(fdata, "バリア無効化無効") == 0)
+                                if (withBlock.EN < ecost | pmorale < nmorale | withBlock.IsConditionSatisfied(argIndex71) & Strings.InStr(fdata, "バリア無効化無効") == 0)
                                 {
                                     // MOD START 240a
                                     // upic.ForeColor = rgb(150, 0, 0)
@@ -4549,10 +4566,10 @@ namespace SRCTestForm
                                 // MOD  END  240a
                                 else if (Strings.InStr(fdata, "能力必要") > 0)
                                 {
-                                    var loopTo15 = GeneralLib.LLength(ref fdata);
+                                    var loopTo15 = GeneralLib.LLength(fdata);
                                     for (j = 5; j <= loopTo15; j++)
                                     {
-                                        opt = GeneralLib.LIndex(ref fdata, j);
+                                        opt = GeneralLib.LIndex(fdata, j);
                                         if (Strings.InStr(opt, "*") > 0)
                                         {
                                             opt = Strings.Left(opt, Strings.InStr(opt, "*") - 1);
@@ -4609,22 +4626,22 @@ namespace SRCTestForm
                         case "広域フィールド":
                         case "広域プロテクション":
                             {
-                                if (Information.IsNumeric(GeneralLib.LIndex(ref fdata, 4)))
+                                if (Information.IsNumeric(GeneralLib.LIndex(fdata, 4)))
                                 {
-                                    ecost = Conversions.ToShort(GeneralLib.LIndex(ref fdata, 4));
+                                    ecost = Conversions.Toint(GeneralLib.LIndex(fdata, 4));
                                 }
-                                else if (Information.IsNumeric(GeneralLib.LIndex(ref fdata, 2)))
+                                else if (Information.IsNumeric(GeneralLib.LIndex(fdata, 2)))
                                 {
-                                    ecost = (short)(20 * Conversions.ToShort(GeneralLib.LIndex(ref fdata, 2)));
+                                    ecost = (int)(20 * Conversions.Toint(GeneralLib.LIndex(fdata, 2)));
                                 }
                                 else
                                 {
                                     ecost = 0;
                                 }
 
-                                if (Information.IsNumeric(GeneralLib.LIndex(ref fdata, 5)))
+                                if (Information.IsNumeric(GeneralLib.LIndex(fdata, 5)))
                                 {
-                                    nmorale = Conversions.ToShort(GeneralLib.LIndex(ref fdata, 5));
+                                    nmorale = Conversions.Toint(GeneralLib.LIndex(fdata, 5));
                                 }
                                 else
                                 {
@@ -4632,7 +4649,7 @@ namespace SRCTestForm
                                 }
 
                                 object argIndex72 = "バリア無効化";
-                                if (withBlock.EN < ecost | pmorale < nmorale | withBlock.IsConditionSatisfied(ref argIndex72) & Strings.InStr(fdata, "バリア無効化無効") == 0)
+                                if (withBlock.EN < ecost | pmorale < nmorale | withBlock.IsConditionSatisfied(argIndex72) & Strings.InStr(fdata, "バリア無効化無効") == 0)
                                 {
                                     // MOD START 240a
                                     // upic.ForeColor = rgb(150, 0, 0)
@@ -4640,16 +4657,16 @@ namespace SRCTestForm
                                     // MOD  END  240a
                                 }
 
-                                fname = fname + "(範囲" + GeneralLib.LIndex(ref fdata, 2) + "マス)";
+                                fname = fname + "(範囲" + GeneralLib.LIndex(fdata, 2) + "マス)";
                                 break;
                             }
 
                         case "アーマー":
                         case "レジスト":
                             {
-                                if (Information.IsNumeric(GeneralLib.LIndex(ref fdata, 3)))
+                                if (Information.IsNumeric(GeneralLib.LIndex(fdata, 3)))
                                 {
-                                    nmorale = Conversions.ToShort(GeneralLib.LIndex(ref fdata, 3));
+                                    nmorale = Conversions.Toint(GeneralLib.LIndex(fdata, 3));
                                 }
                                 else
                                 {
@@ -4665,10 +4682,10 @@ namespace SRCTestForm
                                 // MOD  END  240a
                                 else if (Strings.InStr(fdata, "能力必要") > 0)
                                 {
-                                    var loopTo16 = GeneralLib.LLength(ref fdata);
+                                    var loopTo16 = GeneralLib.LLength(fdata);
                                     for (j = 4; j <= loopTo16; j++)
                                     {
-                                        opt = GeneralLib.LIndex(ref fdata, j);
+                                        opt = GeneralLib.LIndex(fdata, j);
                                         if (Strings.InStr(opt, "*") > 0)
                                         {
                                             opt = Strings.Left(opt, Strings.InStr(opt, "*") - 1);
@@ -4714,9 +4731,9 @@ namespace SRCTestForm
 
                         case "攻撃回避":
                             {
-                                if (Information.IsNumeric(GeneralLib.LIndex(ref fdata, 3)))
+                                if (Information.IsNumeric(GeneralLib.LIndex(fdata, 3)))
                                 {
-                                    nmorale = Conversions.ToShort(GeneralLib.LIndex(ref fdata, 3));
+                                    nmorale = Conversions.Toint(GeneralLib.LIndex(fdata, 3));
                                 }
                                 else
                                 {
@@ -4737,18 +4754,18 @@ namespace SRCTestForm
                         case "反射":
                         case "阻止":
                             {
-                                if (Information.IsNumeric(GeneralLib.LIndex(ref fdata, 4)))
+                                if (Information.IsNumeric(GeneralLib.LIndex(fdata, 4)))
                                 {
-                                    ecost = Conversions.ToShort(GeneralLib.LIndex(ref fdata, 4));
+                                    ecost = Conversions.Toint(GeneralLib.LIndex(fdata, 4));
                                 }
                                 else
                                 {
                                     ecost = 0;
                                 }
 
-                                if (Information.IsNumeric(GeneralLib.LIndex(ref fdata, 5)))
+                                if (Information.IsNumeric(GeneralLib.LIndex(fdata, 5)))
                                 {
-                                    nmorale = Conversions.ToShort(GeneralLib.LIndex(ref fdata, 5));
+                                    nmorale = Conversions.Toint(GeneralLib.LIndex(fdata, 5));
                                 }
                                 else
                                 {
@@ -4764,10 +4781,10 @@ namespace SRCTestForm
                                 // MOD  END  240a
                                 else if (Strings.InStr(fdata, "能力必要") > 0)
                                 {
-                                    var loopTo17 = GeneralLib.LLength(ref fdata);
+                                    var loopTo17 = GeneralLib.LLength(fdata);
                                     for (j = 6; j <= loopTo17; j++)
                                     {
-                                        opt = GeneralLib.LIndex(ref fdata, j);
+                                        opt = GeneralLib.LIndex(fdata, j);
                                         if (Strings.InStr(opt, "*") > 0)
                                         {
                                             opt = Strings.Left(opt, Strings.InStr(opt, "*") - 1);
@@ -4822,18 +4839,18 @@ namespace SRCTestForm
 
                         case "広域阻止":
                             {
-                                if (Information.IsNumeric(GeneralLib.LIndex(ref fdata, 5)))
+                                if (Information.IsNumeric(GeneralLib.LIndex(fdata, 5)))
                                 {
-                                    ecost = Conversions.ToShort(GeneralLib.LIndex(ref fdata, 5));
+                                    ecost = Conversions.Toint(GeneralLib.LIndex(fdata, 5));
                                 }
                                 else
                                 {
                                     ecost = 0;
                                 }
 
-                                if (Information.IsNumeric(GeneralLib.LIndex(ref fdata, 6)))
+                                if (Information.IsNumeric(GeneralLib.LIndex(fdata, 6)))
                                 {
-                                    nmorale = Conversions.ToShort(GeneralLib.LIndex(ref fdata, 6));
+                                    nmorale = Conversions.Toint(GeneralLib.LIndex(fdata, 6));
                                 }
                                 else
                                 {
@@ -4848,25 +4865,25 @@ namespace SRCTestForm
                                     // MOD  END  240a
                                 }
 
-                                fname = fname + "(範囲" + GeneralLib.LIndex(ref fdata, 2) + "マス)";
+                                fname = fname + "(範囲" + GeneralLib.LIndex(fdata, 2) + "マス)";
                                 break;
                             }
 
                         case "当て身技":
                         case "自動反撃":
                             {
-                                if (Information.IsNumeric(GeneralLib.LIndex(ref fdata, 5)))
+                                if (Information.IsNumeric(GeneralLib.LIndex(fdata, 5)))
                                 {
-                                    ecost = Conversions.ToShort(GeneralLib.LIndex(ref fdata, 5));
+                                    ecost = Conversions.Toint(GeneralLib.LIndex(fdata, 5));
                                 }
                                 else
                                 {
                                     ecost = 0;
                                 }
 
-                                if (Information.IsNumeric(GeneralLib.LIndex(ref fdata, 6)))
+                                if (Information.IsNumeric(GeneralLib.LIndex(fdata, 6)))
                                 {
-                                    nmorale = Conversions.ToShort(GeneralLib.LIndex(ref fdata, 6));
+                                    nmorale = Conversions.Toint(GeneralLib.LIndex(fdata, 6));
                                 }
                                 else
                                 {
@@ -4882,10 +4899,10 @@ namespace SRCTestForm
                                 // MOD  END  240a
                                 else if (Strings.InStr(fdata, "能力必要") > 0)
                                 {
-                                    var loopTo18 = GeneralLib.LLength(ref fdata);
+                                    var loopTo18 = GeneralLib.LLength(fdata);
                                     for (j = 7; j <= loopTo18; j++)
                                     {
-                                        opt = GeneralLib.LIndex(ref fdata, j);
+                                        opt = GeneralLib.LIndex(fdata, j);
                                         if (Strings.InStr(opt, "*") > 0)
                                         {
                                             opt = Strings.Left(opt, Strings.InStr(opt, "*") - 1);
@@ -4955,7 +4972,7 @@ namespace SRCTestForm
                             {
                                 object argIndex73 = "盾ダメージ";
                                 object argIndex74 = "盾";
-                                if (withBlock.ConditionLevel(ref argIndex73) >= withBlock.AllFeatureLevel(ref argIndex74))
+                                if (withBlock.ConditionLevel(argIndex73) >= withBlock.AllFeatureLevel(argIndex74))
                                 {
                                     // MOD START 240a
                                     // upic.ForeColor = rgb(150, 0, 0)
@@ -4966,7 +4983,7 @@ namespace SRCTestForm
                                 object argIndex75 = "盾";
                                 object argIndex76 = "盾ダメージ";
                                 object argIndex77 = "盾";
-                                fname = fname + "(" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(GeneralLib.MaxLng((int)(withBlock.AllFeatureLevel(ref argIndex75) - withBlock.ConditionLevel(ref argIndex76)), 0)) + "/" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.AllFeatureLevel(ref argIndex77)) + ")";
+                                fname = fname + "(" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(GeneralLib.MaxLng((int)(withBlock.AllFeatureLevel(argIndex75) - withBlock.ConditionLevel(argIndex76)), 0)) + "/" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.AllFeatureLevel(argIndex77)) + ")";
                                 break;
                             }
 
@@ -4977,7 +4994,7 @@ namespace SRCTestForm
                                 // If .IsConditionSatisfied("回復不能") Then
                                 object argIndex78 = "回復不能";
                                 string argsname3 = "回復不能";
-                                if (withBlock.IsConditionSatisfied(ref argIndex78) | withBlock.IsSpecialPowerInEffect(ref argsname3))
+                                if (withBlock.IsConditionSatisfied(argIndex78) | withBlock.IsSpecialPowerInEffect(argsname3))
                                 {
                                     // MOD END MARGE
                                     // MOD START 240a
@@ -5005,9 +5022,9 @@ namespace SRCTestForm
                         case "装甲割合強化":
                         case "運動性割合強化":
                             {
-                                if (Information.IsNumeric(GeneralLib.LIndex(ref fdata, 2)))
+                                if (Information.IsNumeric(GeneralLib.LIndex(fdata, 2)))
                                 {
-                                    int localStrToLng2() { string argexpr = GeneralLib.LIndex(ref fdata, 2); var ret = GeneralLib.StrToLng(ref argexpr); return ret; }
+                                    int localStrToLng2() { string argexpr = GeneralLib.LIndex(fdata, 2); var ret = GeneralLib.StrToLng(argexpr); return ret; }
 
                                     if (pmorale >= localStrToLng2())
                                     {
@@ -5023,19 +5040,19 @@ namespace SRCTestForm
 
                         case "ＺＯＣ":
                             {
-                                if (GeneralLib.LLength(ref fdata) < 2)
+                                if (GeneralLib.LLength(fdata) < 2)
                                 {
                                     j = 1;
                                 }
                                 else
                                 {
-                                    j = Conversions.ToShort(GeneralLib.LIndex(ref fdata, 2));
+                                    j = Conversions.Toint(GeneralLib.LIndex(fdata, 2));
                                 }
 
                                 if (j >= 1)
                                 {
                                     string args3 = " ";
-                                    GeneralLib.ReplaceString(ref fdata, ref Constants.vbTab, ref args3);
+                                    GeneralLib.ReplaceString(fdata, Constants.vbTab, args3);
                                     if (Strings.InStr(fdata, " 直線") > 0 | Strings.InStr(fdata, " 垂直") > 0 & Strings.InStr(fdata, " 水平") > 0)
                                     {
                                         buf = "直線";
@@ -5061,24 +5078,24 @@ namespace SRCTestForm
 
                         case "広域ＺＯＣ無効化":
                             {
-                                fname = fname + "(範囲" + GeneralLib.LIndex(ref fdata, 2) + "マス)";
+                                fname = fname + "(範囲" + GeneralLib.LIndex(fdata, 2) + "マス)";
                                 break;
                             }
 
                         case "追加攻撃":
                             {
-                                if (Information.IsNumeric(GeneralLib.LIndex(ref fdata, 5)))
+                                if (Information.IsNumeric(GeneralLib.LIndex(fdata, 5)))
                                 {
-                                    ecost = Conversions.ToShort(GeneralLib.LIndex(ref fdata, 5));
+                                    ecost = Conversions.Toint(GeneralLib.LIndex(fdata, 5));
                                 }
                                 else
                                 {
                                     ecost = 0;
                                 }
 
-                                if (Information.IsNumeric(GeneralLib.LIndex(ref fdata, 6)))
+                                if (Information.IsNumeric(GeneralLib.LIndex(fdata, 6)))
                                 {
-                                    nmorale = Conversions.ToShort(GeneralLib.LIndex(ref fdata, 6));
+                                    nmorale = Conversions.Toint(GeneralLib.LIndex(fdata, 6));
                                 }
                                 else
                                 {
@@ -5098,7 +5115,7 @@ namespace SRCTestForm
                     }
 
                     // 必要条件を満たさない特殊能力は赤色で表示
-                    bool localIsFeatureActivated() { object argIndex1 = i; var ret = withBlock.IsFeatureActivated(ref argIndex1); return ret; }
+                    bool localIsFeatureActivated() { object argIndex1 = i; var ret = withBlock.IsFeatureActivated(argIndex1); return ret; }
 
                     if (!localIsFeatureActivated())
                     {
@@ -5132,8 +5149,8 @@ namespace SRCTestForm
                     else
                     {
                         // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-                        upic.Print(GeneralLib.RightPaddedString(ref fname, 19));
-                        n = (short)(n + 1);
+                        upic.Print(GeneralLib.RightPaddedString(fname, 19));
+                        n = (int)(n + 1);
                     }
 
                     // 必要に応じて改行
@@ -5182,10 +5199,10 @@ namespace SRCTestForm
                     {
                         object argIndex80 = i;
                         {
-                            var withBlock6 = withBlock.Item(ref argIndex80);
+                            var withBlock6 = withBlock.Item(argIndex80);
                             // 表示指定を持つアイテムのみ表示する
                             string argfname26 = "表示";
-                            if (!withBlock6.IsFeatureAvailable(ref argfname26))
+                            if (!withBlock6.IsFeatureAvailable(argfname26))
                             {
                                 goto NextItem;
                             }
@@ -5212,8 +5229,8 @@ namespace SRCTestForm
                             else
                             {
                                 // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-                                upic.Print(GeneralLib.RightPaddedString(ref withBlock6.Nickname(), 19));
-                                j = (short)(j + 1);
+                                upic.Print(GeneralLib.RightPaddedString(withBlock6.Nickname(), 19));
+                                j = (int)(j + 1);
                             }
 
                             if (j == 2)
@@ -5267,7 +5284,7 @@ namespace SRCTestForm
                 object argIndex83 = "憑依";
                 object argIndex84 = "混乱";
                 object argIndex85 = "睡眠";
-                if (withBlock.Party != "敵" & withBlock.Party != "中立" & !withBlock.IsConditionSatisfied(ref argIndex81) & !withBlock.IsConditionSatisfied(ref argIndex82) & !withBlock.IsConditionSatisfied(ref argIndex83) & !withBlock.IsConditionSatisfied(ref argIndex84) & !withBlock.IsConditionSatisfied(ref argIndex85))
+                if (withBlock.Party != "敵" & withBlock.Party != "中立" & !withBlock.IsConditionSatisfied(argIndex81) & !withBlock.IsConditionSatisfied(argIndex82) & !withBlock.IsConditionSatisfied(argIndex83) & !withBlock.IsConditionSatisfied(argIndex84) & !withBlock.IsConditionSatisfied(argIndex85))
                 {
                     goto SkipAttackExpResult;
                 }
@@ -5298,9 +5315,9 @@ namespace SRCTestForm
                 // サポートアタックを得られる？
                 string argattr5 = "合";
                 string argattr6 = "Ｍ";
-                if (!Commands.SelectedUnit.IsWeaponClassifiedAs(Commands.SelectedWeapon, ref argattr5) & !Commands.SelectedUnit.IsWeaponClassifiedAs(Commands.SelectedWeapon, ref argattr6) & Commands.UseSupportAttack)
+                if (!Commands.SelectedUnit.IsWeaponClassifiedAs(Commands.SelectedWeapon, argattr5) & !Commands.SelectedUnit.IsWeaponClassifiedAs(Commands.SelectedWeapon, argattr6) & Commands.UseSupportAttack)
                 {
-                    if (Commands.SelectedUnit.LookForSupportAttack(ref u) is object)
+                    if (Commands.SelectedUnit.LookForSupportAttack(u) is object)
                     {
                         // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                         upic.Print(" [援]");
@@ -5320,7 +5337,7 @@ namespace SRCTestForm
                 // 反撃を受ける？
                 string argattr7 = "Ｍ";
                 string argattr8 = "間";
-                if (withBlock.MaxAction() == 0 | Commands.SelectedUnit.IsWeaponClassifiedAs(Commands.SelectedWeapon, ref argattr7) | Commands.SelectedUnit.IsWeaponClassifiedAs(Commands.SelectedWeapon, ref argattr8))
+                if (withBlock.MaxAction() == 0 | Commands.SelectedUnit.IsWeaponClassifiedAs(Commands.SelectedWeapon, argattr7) | Commands.SelectedUnit.IsWeaponClassifiedAs(Commands.SelectedWeapon, argattr8))
                 {
                     w = 0;
                 }
@@ -5329,12 +5346,12 @@ namespace SRCTestForm
                     string argamode = "反撃";
                     int argmax_prob = 0;
                     int argmax_dmg = 0;
-                    w = COM.SelectWeapon(ref u, ref Commands.SelectedUnit, ref argamode, max_prob: ref argmax_prob, max_dmg: ref argmax_dmg);
+                    w = COM.SelectWeapon(u, Commands.SelectedUnit, argamode, max_prob: argmax_prob, max_dmg: argmax_dmg);
                 }
 
                 // 敵の防御行動を設定
                 // UPGRADE_WARNING: オブジェクト SelectDefense() の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                def_mode = Conversions.ToString(COM.SelectDefense(ref Commands.SelectedUnit, ref Commands.SelectedWeapon, ref u, ref w));
+                def_mode = Conversions.ToString(COM.SelectDefense(Commands.SelectedUnit, Commands.SelectedWeapon, u, w));
                 if (!string.IsNullOrEmpty(def_mode))
                 {
                     w = 0;
@@ -5349,7 +5366,7 @@ namespace SRCTestForm
                 // ADD  END  240a
                 // 予測ダメージ
                 string argoname6 = "予測ダメージ非表示";
-                if (!Expression.IsOptionDefined(ref argoname6))
+                if (!Expression.IsOptionDefined(argoname6))
                 {
                     // MOD START 240a
                     // upic.ForeColor = rgb(0, 0, 150)
@@ -5357,14 +5374,14 @@ namespace SRCTestForm
                     // MOD  END  240a
                     // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                     upic.Print("ダメージ ");
-                    dmg = Commands.SelectedUnit.Damage(Commands.SelectedWeapon, ref u, true);
+                    dmg = Commands.SelectedUnit.Damage(Commands.SelectedWeapon, u, true);
                     if (def_mode == "防御")
                     {
                         dmg = dmg / 2;
                     }
 
                     object argIndex86 = "データ不明";
-                    if (dmg >= withBlock.HP & !withBlock.IsConditionSatisfied(ref argIndex86))
+                    if (dmg >= withBlock.HP & !withBlock.IsConditionSatisfied(argIndex86))
                     {
                         upic.ForeColor = ColorTranslator.FromOle(Information.RGB(190, 0, 0));
                     }
@@ -5388,7 +5405,7 @@ namespace SRCTestForm
                 // ADD  END  240a
                 // 予測命中率
                 string argoname7 = "予測命中率非表示";
-                if (!Expression.IsOptionDefined(ref argoname7))
+                if (!Expression.IsOptionDefined(argoname7))
                 {
                     // MOD START 240a
                     // upic.ForeColor = rgb(0, 0, 150)
@@ -5400,13 +5417,13 @@ namespace SRCTestForm
                     // upic.ForeColor = rgb(0, 0, 0)
                     upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorNormalString, Information.RGB(0, 0, 0))));
                     // MOD  END  240a
-                    prob = Commands.SelectedUnit.HitProbability(Commands.SelectedWeapon, ref u, true);
+                    prob = Commands.SelectedUnit.HitProbability(Commands.SelectedWeapon, u, true);
                     if (def_mode == "回避")
                     {
-                        prob = (short)(prob / 2);
+                        prob = (int)(prob / 2);
                     }
 
-                    cprob = Commands.SelectedUnit.CriticalProbability(Commands.SelectedWeapon, ref u, def_mode);
+                    cprob = Commands.SelectedUnit.CriticalProbability(Commands.SelectedWeapon, u, def_mode);
                     // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                     upic.Print(GeneralLib.MinLng(prob, 100) + "％（" + cprob + "％）");
                     // MOD START 240a
@@ -5438,7 +5455,7 @@ namespace SRCTestForm
                     // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                     upic.Print(withBlock.WeaponNickname(w));
                     // サポートガードを受けられる？
-                    if (u.LookForSupportGuard(ref Commands.SelectedUnit, Commands.SelectedWeapon) is object)
+                    if (u.LookForSupportGuard(Commands.SelectedUnit, Commands.SelectedWeapon) is object)
                     {
                         // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                         upic.Print(" [援]");
@@ -5458,7 +5475,7 @@ namespace SRCTestForm
                     // ADD  END  240a
                     // 予測ダメージ
                     string argoname8 = "予測ダメージ非表示";
-                    if (!Expression.IsOptionDefined(ref argoname8))
+                    if (!Expression.IsOptionDefined(argoname8))
                     {
                         // MOD START 240a
                         // upic.ForeColor = rgb(0, 0, 150)
@@ -5466,7 +5483,7 @@ namespace SRCTestForm
                         // MOD  END  240a
                         // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                         upic.Print("ダメージ ");
-                        dmg = withBlock.Damage(w, ref Commands.SelectedUnit, true);
+                        dmg = withBlock.Damage(w, Commands.SelectedUnit, true);
                         if (dmg >= Commands.SelectedUnit.HP)
                         {
                             upic.ForeColor = ColorTranslator.FromOle(Information.RGB(190, 0, 0));
@@ -5491,7 +5508,7 @@ namespace SRCTestForm
                     // ADD  END  240a
                     // 予測命中率
                     string argoname9 = "予測命中率非表示";
-                    if (!Expression.IsOptionDefined(ref argoname9))
+                    if (!Expression.IsOptionDefined(argoname9))
                     {
                         // MOD START 240a
                         // upic.ForeColor = rgb(0, 0, 150)
@@ -5503,8 +5520,8 @@ namespace SRCTestForm
                         // upic.ForeColor = rgb(0, 0, 0)
                         upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorNormalString, Information.RGB(0, 0, 0))));
                         // MOD  END  240a
-                        prob = withBlock.HitProbability(w, ref Commands.SelectedUnit, true);
-                        cprob = withBlock.CriticalProbability(w, ref Commands.SelectedUnit);
+                        prob = withBlock.HitProbability(w, Commands.SelectedUnit, true);
+                        cprob = withBlock.CriticalProbability(w, Commands.SelectedUnit);
                         // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                         upic.Print(Microsoft.VisualBasic.Compatibility.VB6.Support.Format(GeneralLib.MinLng(prob, 100)) + "％（" + cprob + "％）");
                     }
@@ -5531,7 +5548,7 @@ namespace SRCTestForm
                     upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorNormalString, Information.RGB(0, 0, 0))));
                     // MOD  END  240a
                     // サポートガードを受けられる？
-                    if (u.LookForSupportGuard(ref Commands.SelectedUnit, Commands.SelectedWeapon) is object)
+                    if (u.LookForSupportGuard(Commands.SelectedUnit, Commands.SelectedWeapon) is object)
                     {
                         // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                         upic.Print(" [援]");
@@ -5570,20 +5587,20 @@ namespace SRCTestForm
                 upic.ForeColor = ColorTranslator.FromOle(Conversions.ToInteger(Interaction.IIf(GUI.NewGUIMode, StatusFontColorNormalString, Information.RGB(0, 0, 0))));
                 // MOD  END  240a
 
-                warray = new short[(withBlock.CountWeapon() + 1)];
+                warray = new int[(withBlock.CountWeapon() + 1)];
                 wpower = new int[(withBlock.CountWeapon() + 1)];
                 var loopTo20 = withBlock.CountWeapon();
                 for (i = 1; i <= loopTo20; i++)
                 {
                     string argtarea = "";
-                    wpower[i] = withBlock.WeaponPower(i, ref argtarea);
+                    wpower[i] = withBlock.WeaponPower(i, argtarea);
                 }
 
                 // 攻撃力でソート
                 var loopTo21 = withBlock.CountWeapon();
                 for (i = 1; i <= loopTo21; i++)
                 {
-                    var loopTo22 = (short)(i - 1);
+                    var loopTo22 = (int)(i - 1);
                     for (j = 1; j <= loopTo22; j++)
                     {
                         if (wpower[i] > wpower[warray[i - j]])
@@ -5606,14 +5623,14 @@ namespace SRCTestForm
                                     break;
                                 }
                             }
-                            else if (withBlock.Weapon((short)(i - j)).ENConsumption == 0 & withBlock.Weapon(warray[i - j]).Bullet == 0)
+                            else if (withBlock.Weapon((int)(i - j)).ENConsumption == 0 & withBlock.Weapon(warray[i - j]).Bullet == 0)
                             {
                                 break;
                             }
                         }
                     }
 
-                    var loopTo23 = (short)(j - 1);
+                    var loopTo23 = (int)(j - 1);
                     for (k = 1; k <= loopTo23; k++)
                         warray[i - k + 1] = warray[i - k];
                     warray[i - j + 1] = i;
@@ -5631,7 +5648,7 @@ namespace SRCTestForm
 
                     w = warray[i];
                     string argref_mode1 = "ステータス";
-                    if (!withBlock.IsWeaponAvailable(w, ref argref_mode1))
+                    if (!withBlock.IsWeaponAvailable(w, argref_mode1))
                     {
                         // 習得していない技は表示しない
                         if (!withBlock.IsWeaponMastered(w))
@@ -5639,13 +5656,13 @@ namespace SRCTestForm
                             goto NextWeapon;
                         }
                         // Disableコマンドで使用不可になった武器も同様
-                        if (withBlock.IsDisabled(ref withBlock.Weapon(w).Name))
+                        if (withBlock.IsDisabled(withBlock.Weapon(w).Name))
                         {
                             goto NextWeapon;
                         }
                         // フォーメーションを満たしていない合体技も
                         string argattr9 = "合";
-                        if (withBlock.IsWeaponClassifiedAs(w, ref argattr9))
+                        if (withBlock.IsWeaponClassifiedAs(w, argattr9))
                         {
                             if (!withBlock.IsCombinationAttackAvailable(w, true))
                             {
@@ -5660,19 +5677,19 @@ namespace SRCTestForm
 
                     // 武器の表示
                     string argtarea1 = "";
-                    if (withBlock.WeaponPower(w, ref argtarea1) < 10000)
+                    if (withBlock.WeaponPower(w, argtarea1) < 10000)
                     {
                         string argbuf18 = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.WeaponNickname(w));
-                        buf = GeneralLib.RightPaddedString(ref argbuf18, 25);
-                        string localLeftPaddedString19() { string argtarea = ""; string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.WeaponPower(w, ref argtarea)); var ret = GeneralLib.LeftPaddedString(ref argbuf, 4); return ret; }
+                        buf = GeneralLib.RightPaddedString(argbuf18, 25);
+                        string localLeftPaddedString19() { string argtarea = ""; string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.WeaponPower(w, argtarea)); var ret = GeneralLib.LeftPaddedString(argbuf, 4); return ret; }
 
                         buf = buf + localLeftPaddedString19();
                     }
                     else
                     {
                         string argbuf19 = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.WeaponNickname(w));
-                        buf = GeneralLib.RightPaddedString(ref argbuf19, 24);
-                        string localLeftPaddedString20() { string argtarea = ""; string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.WeaponPower(w, ref argtarea)); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
+                        buf = GeneralLib.RightPaddedString(argbuf19, 24);
+                        string localLeftPaddedString20() { string argtarea = ""; string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.WeaponPower(w, argtarea)); var ret = GeneralLib.LeftPaddedString(argbuf, 5); return ret; }
 
                         buf = buf + localLeftPaddedString20();
                     }
@@ -5682,12 +5699,12 @@ namespace SRCTestForm
                     {
                         // UPGRADE_ISSUE: 定数 vbFromUnicode はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="55B59875-9A95-4B71-9D6A-7C294BF7139D"' をクリックしてください。
                         // UPGRADE_ISSUE: LenB 関数はサポートされません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="367764E5-F3F8-4E43-AC3E-7FE0B5E074E2"' をクリックしてください。
-                        string localLeftPaddedString21() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.Weapon(w).MinRange) + "-" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.WeaponMaxRange(w)); var ret = GeneralLib.LeftPaddedString(ref argbuf, 34 - LenB(Strings.StrConv(buf, vbFromUnicode))); return ret; }
+                        string localLeftPaddedString21() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.Weapon(w).MinRange) + "-" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.WeaponMaxRange(w)); var ret = GeneralLib.LeftPaddedString(argbuf, 34 - LenB(Strings.StrConv(buf, vbFromUnicode))); return ret; }
 
                         buf = buf + localLeftPaddedString21();
                         // 移動後攻撃可能
                         string argattr10 = "Ｐ";
-                        if (withBlock.IsWeaponClassifiedAs(w, ref argattr10))
+                        if (withBlock.IsWeaponClassifiedAs(w, argattr10))
                         {
                             buf = buf + "P";
                         }
@@ -5697,11 +5714,11 @@ namespace SRCTestForm
                         // UPGRADE_ISSUE: 定数 vbFromUnicode はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="55B59875-9A95-4B71-9D6A-7C294BF7139D"' をクリックしてください。
                         // UPGRADE_ISSUE: LenB 関数はサポートされません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="367764E5-F3F8-4E43-AC3E-7FE0B5E074E2"' をクリックしてください。
                         string argbuf20 = "1";
-                        buf = buf + GeneralLib.LeftPaddedString(ref argbuf20, 34 - LenB(Strings.StrConv(buf, vbFromUnicode)));
+                        buf = buf + GeneralLib.LeftPaddedString(argbuf20, 34 - LenB(Strings.StrConv(buf, vbFromUnicode)));
                         // ADD START MARGE
                         // 移動後攻撃不可
                         string argattr11 = "Ｑ";
-                        if (withBlock.IsWeaponClassifiedAs(w, ref argattr11))
+                        if (withBlock.IsWeaponClassifiedAs(w, argattr11))
                         {
                             buf = buf + "Q";
                         }
@@ -5709,7 +5726,7 @@ namespace SRCTestForm
                     }
                     // マップ攻撃
                     string argattr12 = "Ｍ";
-                    if (withBlock.IsWeaponClassifiedAs(w, ref argattr12))
+                    if (withBlock.IsWeaponClassifiedAs(w, argattr12))
                     {
                         buf = buf + "M";
                     }
@@ -5746,7 +5763,7 @@ namespace SRCTestForm
                     }
 
                     string argref_mode2 = "ステータス";
-                    if (!withBlock.IsAbilityAvailable(i, ref argref_mode2))
+                    if (!withBlock.IsAbilityAvailable(i, argref_mode2))
                     {
                         // 習得していない技は表示しない
                         if (!withBlock.IsAbilityMastered(i))
@@ -5754,13 +5771,13 @@ namespace SRCTestForm
                             goto NextAbility;
                         }
                         // Disableコマンドで使用不可になった武器も同様
-                        if (withBlock.IsDisabled(ref withBlock.Ability(i).Name))
+                        if (withBlock.IsDisabled(withBlock.Ability(i).Name))
                         {
                             goto NextAbility;
                         }
                         // フォーメーションを満たしていない合体技も
                         string argattr13 = "合";
-                        if (withBlock.IsAbilityClassifiedAs(i, ref argattr13))
+                        if (withBlock.IsAbilityClassifiedAs(i, argattr13))
                         {
                             if (!withBlock.IsCombinationAbilityAvailable(i, true))
                             {
@@ -5782,24 +5799,24 @@ namespace SRCTestForm
                     // ADD  END  240a
                     // アビリティの表示
                     // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-                    string localRightPaddedString18() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.AbilityNickname(i)); var ret = GeneralLib.RightPaddedString(ref argbuf, 29); return ret; }
+                    string localRightPaddedString18() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.AbilityNickname(i)); var ret = GeneralLib.RightPaddedString(argbuf, 29); return ret; }
 
                     upic.Print(localRightPaddedString18());
                     if (withBlock.AbilityMaxRange(i) > 1)
                     {
                         // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
-                        string localLeftPaddedString22() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.AbilityMinRange(i)) + "-" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.AbilityMaxRange(i)); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
+                        string localLeftPaddedString22() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.AbilityMinRange(i)) + "-" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.AbilityMaxRange(i)); var ret = GeneralLib.LeftPaddedString(argbuf, 5); return ret; }
 
                         upic.Print(localLeftPaddedString22());
                         string argattr14 = "Ｐ";
-                        if (withBlock.IsAbilityClassifiedAs(i, ref argattr14))
+                        if (withBlock.IsAbilityClassifiedAs(i, argattr14))
                         {
                             // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                             upic.Print("P");
                         }
 
                         string argattr15 = "Ｍ";
-                        if (withBlock.IsAbilityClassifiedAs(i, ref argattr15))
+                        if (withBlock.IsAbilityClassifiedAs(i, argattr15))
                         {
                             // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                             upic.Print("M");
@@ -5813,14 +5830,14 @@ namespace SRCTestForm
                         upic.Print("    1");
                         // ADD START MARGE
                         string argattr16 = "Ｑ";
-                        if (withBlock.IsAbilityClassifiedAs(i, ref argattr16))
+                        if (withBlock.IsAbilityClassifiedAs(i, argattr16))
                         {
                             // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                             upic.Print("Q");
                         }
                         // ADD END MARGE
                         string argattr17 = "Ｍ";
-                        if (withBlock.IsAbilityClassifiedAs(i, ref argattr17))
+                        if (withBlock.IsAbilityClassifiedAs(i, argattr17))
                         {
                             // UPGRADE_ISSUE: PictureBox メソッド upic.Print はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
                             upic.Print("M");
@@ -5886,19 +5903,19 @@ namespace SRCTestForm
         ErrorHandler:
             ;
             string argmsg = "パイロット用画像ファイル" + Constants.vbCr + Constants.vbLf + fname + Constants.vbCr + Constants.vbLf + "の読み込み中にエラーが発生しました。" + Constants.vbCr + Constants.vbLf + "画像ファイルが壊れていないか確認して下さい。";
-            GUI.ErrorMessage(ref argmsg);
+            GUI.ErrorMessage(argmsg);
         }
 
         public void DisplayPilotStatus(Pilot p)
         {
-            short i;
+            int i;
             DisplayedUnit = p.Unit_Renamed;
             {
                 var withBlock = DisplayedUnit;
                 if (ReferenceEquals(p, withBlock.MainPilot()))
                 {
                     // メインパイロット
-                    DisplayUnitStatus(ref DisplayedUnit, 0);
+                    DisplayUnitStatus(DisplayedUnit, 0);
                 }
                 else
                 {
@@ -5906,11 +5923,11 @@ namespace SRCTestForm
                     var loopTo = withBlock.CountPilot();
                     for (i = 1; i <= loopTo; i++)
                     {
-                        Pilot localPilot() { object argIndex1 = i; var ret = withBlock.Pilot(ref argIndex1); return ret; }
+                        Pilot localPilot() { object argIndex1 = i; var ret = withBlock.Pilot(argIndex1); return ret; }
 
                         if (ReferenceEquals(p, localPilot()))
                         {
-                            DisplayUnitStatus(ref DisplayedUnit, i);
+                            DisplayUnitStatus(DisplayedUnit, i);
                             return;
                         }
                     }
@@ -5919,26 +5936,26 @@ namespace SRCTestForm
                     var loopTo1 = withBlock.CountSupport();
                     for (i = 1; i <= loopTo1; i++)
                     {
-                        Pilot localSupport() { object argIndex1 = i; var ret = withBlock.Support(ref argIndex1); return ret; }
+                        Pilot localSupport() { object argIndex1 = i; var ret = withBlock.Support(argIndex1); return ret; }
 
                         if (ReferenceEquals(p, localSupport()))
                         {
-                            DisplayUnitStatus(ref DisplayedUnit, (short)(i + withBlock.CountPilot()));
+                            DisplayUnitStatus(DisplayedUnit, (int)(i + withBlock.CountPilot()));
                             return;
                         }
                     }
 
                     // 追加サポート
                     string argfname = "追加サポート";
-                    if (withBlock.IsFeatureAvailable(ref argfname))
+                    if (withBlock.IsFeatureAvailable(argfname))
                     {
-                        DisplayUnitStatus(ref DisplayedUnit, (short)(withBlock.CountPilot() + withBlock.CountSupport() + 1));
+                        DisplayUnitStatus(DisplayedUnit, (int)(withBlock.CountPilot() + withBlock.CountSupport() + 1));
                     }
                 }
             }
         }
 
-        public void InstantUnitStatusDisplay(short X, short Y)
+        public void InstantUnitStatusDisplay(int X, int Y)
         {
             Unit u;
 
@@ -5968,35 +5985,31 @@ namespace SRCTestForm
                 return;
             }
 
-            DisplayUnitStatus(ref u);
+            DisplayUnitStatus(u);
         }
 
         public void ClearUnitStatus()
         {
-            if (GUI.MainWidth == 15)
-            {
-                // UPGRADE_ISSUE: Control picFace は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-                GUI.MainForm.picFace = Image.FromFile("");
-                // UPGRADE_ISSUE: Control picPilotStatus は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-                GUI.MainForm.picPilotStatus.Cls();
-                // UPGRADE_ISSUE: Control picUnitStatus は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-                GUI.MainForm.picUnitStatus.Cls();
-                // UPGRADE_NOTE: オブジェクト DisplayedUnit をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-                DisplayedUnit = null;
-            }
-            else
-            {
-                // UPGRADE_ISSUE: Control picUnitStatus は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-                GUI.MainForm.picUnitStatus.Visible = false;
-                // UPGRADE_ISSUE: Control picUnitStatus は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-                GUI.MainForm.picUnitStatus.Cls();
-                IsStatusWindowDisabled = true;
-                Application.DoEvents();
-                IsStatusWindowDisabled = false;
-                // ADD
-                // UPGRADE_NOTE: オブジェクト DisplayedUnit をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-                DisplayedUnit = null;
-            }
+            //if (GUI.MainWidth == 15)
+            //{
+            picFace.Image = null;
+            picPilotStatus.Image = null;
+            picUnitStatus.Image = null;
+            DisplayedUnit = null;
+            //}
+            //else
+            //{
+            //    // UPGRADE_ISSUE: Control picUnitStatus は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+            //    GUI.MainForm.picUnitStatus.Visible = false;
+            //    // UPGRADE_ISSUE: Control picUnitStatus は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+            //    GUI.MainForm.picUnitStatus.Cls();
+            //    IsStatusWindowDisabled = true;
+            //    Application.DoEvents();
+            //    IsStatusWindowDisabled = false;
+            //    // ADD
+            //    // UPGRADE_NOTE: オブジェクト DisplayedUnit をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
+            //    DisplayedUnit = null;
+            //}
         }
     }
 }
