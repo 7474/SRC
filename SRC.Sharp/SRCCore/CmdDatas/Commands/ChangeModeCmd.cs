@@ -61,17 +61,8 @@ namespace SRCCore.CmdDatas.Commands
                                         throw new EventErrorException(this, "「" + pname + "」というパイロットが見つかりません");
                                     }
                                     targetUnits.Add(SRC.PList.Item(pname).Unit);
-                                    // TODO グループID対応
-                                    //i = 2;
-                                    //object argIndex2 = (pname + ":" + SrcFormatter.Format(i));
-                                    //while (withBlock.IsDefined(ref argIndex2))
-                                    //{
-                                    //    Array.Resize(ref uarray, Information.UBound(uarray) + 1 + 1);
-                                    //    Pilot localItem1() { object argIndex1 = (pname + ":" + SrcFormatter.Format(i)); var ret = withBlock.Item(ref argIndex1); return ret; }
-
-                                    //    uarray[Information.UBound(uarray)] = localItem1().Unit_Renamed;
-                                    //    i = ((int)i + 1);
-                                    //}
+                                    targetUnits.AddRange(
+                                        SRC.PList.ItemsByGroupId(pname, true).Select(x => x.Unit).Where(x => x != null));
                                 }
                                 break;
                         }
@@ -105,17 +96,8 @@ namespace SRCCore.CmdDatas.Commands
                                         throw new EventErrorException(this, "「" + pname + "」というパイロットが見つかりません");
                                     }
                                     targetUnits.Add(SRC.PList.Item(pname).Unit);
-                                    // TODO グループID対応
-                                    //i = 2;
-                                    //object argIndex2 = (pname + ":" + SrcFormatter.Format(i));
-                                    //while (withBlock.IsDefined(ref argIndex2))
-                                    //{
-                                    //    Array.Resize(ref uarray, Information.UBound(uarray) + 1 + 1);
-                                    //    Pilot localItem1() { object argIndex1 = (pname + ":" + SrcFormatter.Format(i)); var ret = withBlock.Item(ref argIndex1); return ret; }
-
-                                    //    uarray[Information.UBound(uarray)] = localItem1().Unit_Renamed;
-                                    //    i = ((int)i + 1);
-                                    //}
+                                    targetUnits.AddRange(
+                                        SRC.PList.ItemsByGroupId(pname, true).Select(x => x.Unit).Where(x => x != null));
                                 }
                                 break;
                         }

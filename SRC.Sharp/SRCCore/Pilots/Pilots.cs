@@ -97,6 +97,22 @@ namespace SRCCore.Pilots
             return new_pilot;
         }
 
+        public IEnumerable<Pilot> ItemsByGroupId(string gid, bool without_first)
+        {
+            var results = new List<Pilot>();
+            var first = Item2(gid);
+            if (first != null)
+            {
+                if (!without_first)
+                {
+                    results.Add(first);
+                }
+                results.AddRange(Items.Where(x => x.ID.StartsWith(gid + ":")));
+
+            }
+            return results;
+        }
+
         // 登録されているパイロットの総数
         public int Count()
         {
