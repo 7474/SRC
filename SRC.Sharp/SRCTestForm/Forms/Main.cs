@@ -2,17 +2,17 @@
 // 本プログラムはフリーソフトであり、無保証です。
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Windows.Forms;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualBasic;
 using Newtonsoft.Json;
 using SRCCore;
 using SRCCore.Commands;
 using SRCCore.Maps;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
+using System.Windows.Forms;
 
 namespace SRCTestForm
 {
@@ -23,6 +23,7 @@ namespace SRCTestForm
         public IGUI GUI => SRC.GUI;
         public Map Map => SRC.Map;
         public SRCCore.Commands.Command Commands => SRC.Commands;
+        public IGUIStatus Status => SRC.GUIStatus;
 
         // マップウィンドウがドラッグされているか？
         private bool IsDragging;
@@ -310,12 +311,8 @@ namespace SRCTestForm
 
             var xx = GUI.PixelToMapX(X);
             var yy = GUI.PixelToMapY(Y);
-            var mapCellClick = 1 <= xx
-                && xx <= Map.MapWidth
-                && 1 <= yy
-                && yy <= Map.MapHeight;
-            var mapCell = mapCellClick ? Map.MapData[xx, yy] : null;
-            var cellUnit = mapCellClick ? Map.MapDataForUnit[xx, yy] : null;
+            var mapCell = Map.CellAtPoint(xx, yy);
+            var cellUnit = Map.UnitAtPoint(xx, yy);
             Program.Log.LogDebug("xx:{0} yy:{1} Unit:{2}", xx, yy, cellUnit?.ID);
 
             Commands.ProceedInput(button, mapCell, cellUnit);
@@ -465,36 +462,28 @@ namespace SRCTestForm
             // カーソル上にユニットがいればステータスウィンドウにそのユニットを表示
             var xx = GUI.PixelToMapX(X);
             var yy = GUI.PixelToMapY(Y);
-            var mapCellClick = 1 <= xx
-                && xx <= Map.MapWidth
-                && 1 <= yy
-                && yy <= Map.MapHeight;
-            var cellUnit = mapCellClick ? Map.MapDataForUnit[xx, yy] : null;
+            var cellUnit = Map.UnitAtPoint(xx, yy);
 
             //// MOD START 240a
             //// If MainWidth = 15 Then
             //if (!GUI.NewGUIMode)
             //{
             //    // MOD  END
-            //    if (1 <= xx & xx <= Map.MapWidth & 1 <= yy & yy <= Map.MapHeight)
-            //    {
-            //        // MOD START 240a
-            //        // If Not MapDataForUnit(xx, yy) Is Nothing Then
-            //        // InstantUnitStatusDisplay xx, yy
-            //        // End If
-            //        if (Map.MapDataForUnit[xx, yy] is null)
-            //        {
-            //            if (!string.IsNullOrEmpty(Map.MapFileName))
-            //            {
-            //                // ユニットがいない、かつステータス表示でなければ地形情報を表示
-            //                Status.DisplayGlobalStatus();
-            //            }
-            //        }
-            //        else
-            //        {
-            //            Status.InstantUnitStatusDisplay(xx, yy);
-            //        }
-            //    }
+            if (Map.IsInside(xx, yy))
+            {
+                if (cellUnit == null)
+                {
+                    if (!string.IsNullOrEmpty(Map.MapFileName))
+                    {
+                        // ユニットがいない、かつステータス表示でなければ地形情報を表示
+                        Status.DisplayGlobalStatus();
+                    }
+                }
+                else
+                {
+                    Status.InstantUnitStatusDisplay(xx, yy);
+                }
+            }
             //    // MOD  END
             //    // ADD START 240a
             //    else
