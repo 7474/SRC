@@ -19,7 +19,7 @@ namespace SRCCore
 
         // ユニットステータスを表示
         // pindexはステータス表示に使うパイロットを指定
-        void DisplayUnitStatus(Unit u, int pindex = 0);
+        void DisplayUnitStatus(Unit u, Pilot p = null);
 
         // 指定されたパイロットのステータスをステータスウィンドウに表示
         void DisplayPilotStatus(Pilot p);
