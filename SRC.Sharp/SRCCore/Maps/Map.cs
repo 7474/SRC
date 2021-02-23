@@ -407,27 +407,23 @@ namespace SRCCore.Maps
         }
         // ADD  END  240a
 
+        public bool IsInside(int x, int y)
+        {
+            return x >= 1
+                && MapWidth >= x
+                && y >= 1
+                && MapHeight >= y;
+        }
+
+        public MapCell CellAtPoint(int x, int y)
+        {
+            return IsInside(x, y) ? MapData[x, y] : null;
+        }
+
         // (X,Y)地点にいるユニット
         public Unit UnitAtPoint(int X, int Y)
         {
-            throw new NotImplementedException();
-            //Unit UnitAtPointRet = default;
-            //if (X < 1 | MapWidth < X)
-            //{
-            //    // UPGRADE_NOTE: オブジェクト UnitAtPoint をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-            //    UnitAtPointRet = null;
-            //    return UnitAtPointRet;
-            //}
-
-            //if (Y < 1 | MapHeight < Y)
-            //{
-            //    // UPGRADE_NOTE: オブジェクト UnitAtPoint をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-            //    UnitAtPointRet = null;
-            //    return UnitAtPointRet;
-            //}
-
-            //UnitAtPointRet = MapDataForUnit[X, Y];
-            //return UnitAtPointRet;
+            return IsInside(X, Y) ? MapDataForUnit[X, Y] : null;
         }
 
         // 指定したマップ画像を検索する
@@ -5843,12 +5839,5 @@ namespace SRCCore.Maps
             //    }
         }
 
-        public bool IsInside(int x, int y)
-        {
-            return x >= 1
-                && MapWidth >= x
-                && y >= 1
-                && MapHeight >= y;
-        }
     }
 }
