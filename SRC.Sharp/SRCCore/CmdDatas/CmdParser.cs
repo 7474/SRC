@@ -379,11 +379,8 @@ namespace SRCCore.CmdDatas
                     //        break;
                     //    }
 
-                    //case "finish":
-                    //    {
-                    //        CmdName = CmdType.FinishCmd;
-                    //        break;
-                    //    }
+                    case "finish":
+                        return new FinishCmd(src, data);
 
                     //case "fix":
                     //    {

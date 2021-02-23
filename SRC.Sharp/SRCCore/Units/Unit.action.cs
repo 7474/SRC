@@ -14,7 +14,7 @@ namespace SRCCore.Units
         // １ターンに可能な行動数
         public int MaxAction(bool ignore_en = false)
         {
-            int MaxActionRet = default;
+            int MaxActionRet;
             //// ステータス異常？
             //object argIndex1 = "行動不能";
             //object argIndex2 = "麻痺";
@@ -78,7 +78,7 @@ namespace SRCCore.Units
         public void UseAction()
         {
             UsedAction = UsedAction + 1;
-            // TODO これ厳密にみる必要あるの？
+            // TODO これ厳密にみる必要あるの？　貫通していると再動何かに影響がある？
             //int max_action;
 
             //// ２回行動可能？
@@ -165,7 +165,6 @@ namespace SRCCore.Units
         }
 
         //// 思考モード
-
         public string Mode
         {
             get

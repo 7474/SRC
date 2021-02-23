@@ -18,61 +18,36 @@ namespace SRCCore.CmdDatas.Commands
             switch (ArgNum)
             {
                 case 2:
-                    {
-                        u = GetArgAsUnit((short)2, true);
-                        break;
-                    }
+                    u = GetArgAsUnit(2, true);
+                    break;
 
                 case 1:
-                    {
-                        u = Event_Renamed.SelectedUnitForEvent;
-                        break;
-                    }
+                    u = Event.SelectedUnitForEvent;
+                    break;
 
                 default:
-                    {
-                        Event_Renamed.EventErrorMessage = "Finishコマンドの引数の数が違います";
-                        ;
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 249131
-
-
-                        Input:
-                                        Error(0)
-
-                         */
-                        break;
-                    }
+                    throw new EventErrorException(this, "Finishコマンドの引数の数が違います");
             }
 
-            if (u is object)
+            if (u != null)
             {
+                switch (u.Action)
                 {
-                    var withBlock = u;
-                    switch (withBlock.Action)
-                    {
-                        case 1:
-                            {
-                                withBlock.UseAction();
-                                if (withBlock.Status_Renamed == "出撃")
-                                {
-                                    GUI.PaintUnitBitmap(ref u);
-                                }
+                    case 1:
+                        u.UseAction();
+                        if (u.Status == "出撃")
+                        {
+                            GUI.PaintUnitBitmap(u);
+                        }
 
-                                break;
-                            }
-                        // なにもしない
-                        case 0:
-                            {
-                                break;
-                            }
+                        break;
+                    // なにもしない
+                    case 0:
+                        break;
 
-                        default:
-                            {
-                                withBlock.UseAction();
-                                break;
-                            }
-                    }
+                    default:
+                        u.UseAction();
+                        break;
                 }
             }
 
