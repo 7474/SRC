@@ -24,6 +24,7 @@ namespace SRCTestForm
         //private Brush MapMaskBrush = new HatchBrush(HatchStyle.BackwardDiagonal, Color.FromArgb(0, 0x39, 0x6b));
         //private Brush MapMaskBrush = new SolidBrush(Color.FromArgb(127, 0, 0x39, 0x6b));
         private Brush MapMaskBrush = new SolidBrush(Color.FromArgb(127, 100, 100, 100));
+        private Brush UnitMaskBrush = new SolidBrush(Color.FromArgb(127, 100, 100, 100));
 
         private Image mainBuffer;
         private Image mainBufferBack;
@@ -596,22 +597,11 @@ namespace SRCTestForm
             //}
 
             // 行動済のフィルタ
-            //// 行動済みの際の画像を作成
-            //// UPGRADE_ISSUE: Control picUnitBitmap は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-            //ret = BitBlt(withBlock.picUnitBitmap.hDC, xx, (int)yy + 32, 32, 32, withBlock.picUnitBitmap.hDC, xx, yy, SRCCOPY);
-            //// UPGRADE_ISSUE: Control picMask は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-            //// UPGRADE_ISSUE: Control picUnitBitmap は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-            //ret = BitBlt(withBlock.picUnitBitmap.hDC, xx, (int)yy + 32, 32, 32, withBlock.picMask.hDC, 0, 0, SRCAND);
-            //if (u.Action > 0 | u.IsFeatureAvailable("地形ユニット"))
-            //{
-            //    // ユニット
-            //    ret = BitBlt(pic.hDC, xx, yy, 32, 32, withBlock.picUnitBitmap.hDC, 32 * ((int)u.BitmapID % 15), 96 * ((int)u.BitmapID / 15), SRCCOPY);
-            //}
-            //else
-            //{
-            //    // 行動済のユニット
-            //    ret = BitBlt(pic.hDC, xx, yy, 32, 32, withBlock.picUnitBitmap.hDC, 32 * ((int)u.BitmapID % 15), 96 * ((int)u.BitmapID / 15) + 32, SRCCOPY);
-            //}
+            if (u.Action <= 0 && !u.IsFeatureAvailable("地形ユニット"))
+            {
+                // 行動済のユニット
+                g.FillRectangle(UnitMaskBrush, destRect);
+            }
 
             // ユニットのいる場所に合わせて表示を変更
             var unitAreaPen = Pens.Black;
