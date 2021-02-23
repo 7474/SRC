@@ -118,11 +118,8 @@ namespace SRCCore.CmdDatas
                     case "changemap":
                         return new ChangeMapCmd(src, data);
 
-                    //case "changemode":
-                    //    {
-                    //        CmdName = CmdType.ChangeModeCmd;
-                    //        break;
-                    //    }
+                    case "changemode":
+                        return new ChangeModeCmd(src, data);
 
                     case "changeparty":
                         return new ChangePartyCmd(src, data);
