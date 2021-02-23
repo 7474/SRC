@@ -124,11 +124,8 @@ namespace SRCCore.CmdDatas
                     //        break;
                     //    }
 
-                    //case "changeparty":
-                    //    {
-                    //        CmdName = CmdType.ChangePartyCmd;
-                    //        break;
-                    //    }
+                    case "changeparty":
+                        return new ChangePartyCmd(src, data);
 
                     //case "changeterrain":
                     //    {

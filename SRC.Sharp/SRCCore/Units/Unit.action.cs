@@ -166,69 +166,71 @@ namespace SRCCore.Units
 
         //// 思考モード
 
-        //public string Mode
-        //{
-        //    get
-        //    {
-        //        string ModeRet = default;
-        //        int i;
-        //        string argsptype = "挑発";
-        //        if (IsUnderSpecialPowerEffect(ref argsptype))
-        //        {
-        //            // 挑発を最優先
-        //            var loopTo = CountSpecialPower();
-        //            for (i = 1; i <= loopTo; i++)
-        //            {
-        //                // UPGRADE_WARNING: オブジェクト SpecialPower(i).IsEffectAvailable(挑発) の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-        //                SpecialPowerData localSpecialPower() { object argIndex1 = i; var ret = SpecialPower(ref argIndex1); return ret; }
+        public string Mode
+        {
+            get
+            {
+                return strMode;
+                // TODO Impl
+                //string ModeRet = default;
+                //int i;
+                //string argsptype = "挑発";
+                //if (IsUnderSpecialPowerEffect(ref argsptype))
+                //{
+                //    // 挑発を最優先
+                //    var loopTo = CountSpecialPower();
+                //    for (i = 1; i <= loopTo; i++)
+                //    {
+                //        // UPGRADE_WARNING: オブジェクト SpecialPower(i).IsEffectAvailable(挑発) の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
+                //        SpecialPowerData localSpecialPower() { object argIndex1 = i; var ret = SpecialPower(ref argIndex1); return ret; }
 
-        //                string argename = "挑発";
-        //                if (Conversions.ToBoolean(localSpecialPower().IsEffectAvailable(ref argename)))
-        //                {
-        //                    object argIndex1 = i;
-        //                    ModeRet = SpecialPowerData(ref argIndex1);
-        //                    return default;
-        //                }
-        //            }
-        //        }
+                //        string argename = "挑発";
+                //        if (Conversions.ToBoolean(localSpecialPower().IsEffectAvailable(ref argename)))
+                //        {
+                //            object argIndex1 = i;
+                //            ModeRet = SpecialPowerData(ref argIndex1);
+                //            return default;
+                //        }
+                //    }
+                //}
 
-        //        object argIndex2 = "暴走";
-        //        object argIndex3 = "混乱";
-        //        object argIndex4 = "憑依";
-        //        object argIndex5 = "狂戦士";
-        //        if (IsConditionSatisfied(ref argIndex2) | IsConditionSatisfied(ref argIndex3) | IsConditionSatisfied(ref argIndex4) | IsConditionSatisfied(ref argIndex5))
-        //        {
-        //            // 正常な判断が出来ない場合は当初の目的を忘れてしまうため
-        //            // 常に通常モードとして扱う
-        //            ModeRet = "通常";
-        //            return default;
-        //        }
+                //object argIndex2 = "暴走";
+                //object argIndex3 = "混乱";
+                //object argIndex4 = "憑依";
+                //object argIndex5 = "狂戦士";
+                //if (IsConditionSatisfied(ref argIndex2) | IsConditionSatisfied(ref argIndex3) | IsConditionSatisfied(ref argIndex4) | IsConditionSatisfied(ref argIndex5))
+                //{
+                //    // 正常な判断が出来ない場合は当初の目的を忘れてしまうため
+                //    // 常に通常モードとして扱う
+                //    ModeRet = "通常";
+                //    return default;
+                //}
 
-        //        object argIndex6 = "恐怖";
-        //        if (IsConditionSatisfied(ref argIndex6))
-        //        {
-        //            // 恐怖にかられた場合は逃亡
-        //            ModeRet = "逃亡";
-        //            return default;
-        //        }
+                //object argIndex6 = "恐怖";
+                //if (IsConditionSatisfied(ref argIndex6))
+                //{
+                //    // 恐怖にかられた場合は逃亡
+                //    ModeRet = "逃亡";
+                //    return default;
+                //}
 
-        //        object argIndex7 = "踊り";
-        //        if (IsConditionSatisfied(ref argIndex7))
-        //        {
-        //            // 踊るのに忙しい……
-        //            ModeRet = "固定";
-        //            return default;
-        //        }
+                //object argIndex7 = "踊り";
+                //if (IsConditionSatisfied(ref argIndex7))
+                //{
+                //    // 踊るのに忙しい……
+                //    ModeRet = "固定";
+                //    return default;
+                //}
 
-        //        ModeRet = strMode;
-        //        return ModeRet;
-        //    }
+                //ModeRet = strMode;
+                //return ModeRet;
+            }
 
-        //    set
-        //    {
-        //        strMode = value;
-        //    }
-        //}
+            set
+            {
+                strMode = value;
+            }
+        }
 
         //// 地形 area_name での移動が可能かどうか
         //public bool IsTransAvailable(ref string area_name)

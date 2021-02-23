@@ -2,6 +2,7 @@
 // 本プログラムはフリーソフトであり、無保証です。
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
+using SRCCore.Units;
 using SRCCore.VB;
 using System;
 using System.Collections;
@@ -573,135 +574,136 @@ namespace SRCCore.Pilots
         //        }
 
 
-        //        // パイロットの支援修正を更新
-        //        public void UpdateSupportMod(Unit u = null)
-        //        {
-        //            int xx, i, yy;
-        //            int max_range, range;
-        //            if (string.IsNullOrEmpty(Map.MapFileName))
-        //            {
-        //                return;
-        //            }
+        // パイロットの支援修正を更新
+        public void UpdateSupportMod(Unit u = null)
+        {
+            // TODO Impl
+            //int xx, i, yy;
+            //int max_range, range;
+            //if (string.IsNullOrEmpty(Map.MapFileName))
+            //{
+            //    return;
+            //}
 
-        //            // ユニット指定がなければ全パイロットを更新
-        //            if (u is null)
-        //            {
-        //                foreach (Pilot p in colPilots)
-        //                    p.UpdateSupportMod();
-        //                return;
-        //            }
-        //            // ユニットにパイロットが乗っていなければそのまま終了
-        //            if (u.CountPilot() == 0)
-        //            {
-        //                return;
-        //            }
+            //// ユニット指定がなければ全パイロットを更新
+            //if (u is null)
+            //{
+            //    foreach (Pilot p in colPilots)
+            //        p.UpdateSupportMod();
+            //    return;
+            //}
+            //// ユニットにパイロットが乗っていなければそのまま終了
+            //if (u.CountPilot() == 0)
+            //{
+            //    return;
+            //}
 
-        //            {
-        //                var withBlock = u.MainPilot();
-        //                // メインパイロットを更新
-        //                withBlock.UpdateSupportMod();
+            //{
+            //    var withBlock = u.MainPilot();
+            //    // メインパイロットを更新
+            //    withBlock.UpdateSupportMod();
 
-        //                // 支援範囲を算出
-        //                max_range = withBlock.CommandRange();
-        //                string argsname = "広域サポート";
-        //                if (withBlock.IsSkillAvailable(argsname))
-        //                {
-        //                    max_range = GeneralLib.MaxLng(max_range, 2);
-        //                }
+            //    // 支援範囲を算出
+            //    max_range = withBlock.CommandRange();
+            //    string argsname = "広域サポート";
+            //    if (withBlock.IsSkillAvailable(argsname))
+            //    {
+            //        max_range = GeneralLib.MaxLng(max_range, 2);
+            //    }
 
-        //                string argoname1 = "信頼補正";
-        //                if (Expression.IsOptionDefined(argoname1) & Strings.InStr(withBlock.Name, "(ザコ)") == 0)
-        //                {
-        //                    string argoname = "信頼補正範囲拡大";
-        //                    if (Expression.IsOptionDefined(argoname))
-        //                    {
-        //                        max_range = GeneralLib.MaxLng(max_range, 2);
-        //                    }
-        //                    else
-        //                    {
-        //                        max_range = GeneralLib.MaxLng(max_range, 1);
-        //                    }
-        //                }
-        //            }
+            //    string argoname1 = "信頼補正";
+            //    if (Expression.IsOptionDefined(argoname1) & Strings.InStr(withBlock.Name, "(ザコ)") == 0)
+            //    {
+            //        string argoname = "信頼補正範囲拡大";
+            //        if (Expression.IsOptionDefined(argoname))
+            //        {
+            //            max_range = GeneralLib.MaxLng(max_range, 2);
+            //        }
+            //        else
+            //        {
+            //            max_range = GeneralLib.MaxLng(max_range, 1);
+            //        }
+            //    }
+            //}
 
-        //            // 他のパイロットを更新
-        //            var loopTo = u.CountPilot();
-        //            for (i = 2; i <= loopTo; i++)
-        //            {
-        //                Pilot localPilot() { object argIndex1 = i; var ret = u.Pilot(argIndex1); return ret; }
+            //// 他のパイロットを更新
+            //var loopTo = u.CountPilot();
+            //for (i = 2; i <= loopTo; i++)
+            //{
+            //    Pilot localPilot() { object argIndex1 = i; var ret = u.Pilot(argIndex1); return ret; }
 
-        //                localPilot().UpdateSupportMod();
-        //            }
+            //    localPilot().UpdateSupportMod();
+            //}
 
-        //            var loopTo1 = u.CountSupport();
-        //            for (i = 1; i <= loopTo1; i++)
-        //            {
-        //                Pilot localSupport() { object argIndex1 = i; var ret = u.Support(argIndex1); return ret; }
+            //var loopTo1 = u.CountSupport();
+            //for (i = 1; i <= loopTo1; i++)
+            //{
+            //    Pilot localSupport() { object argIndex1 = i; var ret = u.Support(argIndex1); return ret; }
 
-        //                localSupport().UpdateSupportMod();
-        //            }
+            //    localSupport().UpdateSupportMod();
+            //}
 
-        //            // 支援範囲が無いなら他のユニットに乗っているパイロットには影響無し
-        //            if (max_range == 0)
-        //            {
-        //                return;
-        //            }
+            //// 支援範囲が無いなら他のユニットに乗っているパイロットには影響無し
+            //if (max_range == 0)
+            //{
+            //    return;
+            //}
 
-        //            // 周りのユニットに乗っているパイロットの支援修正を更新
-        //            var loopTo2 = GeneralLib.MinLng(u.x + max_range, Map.MapWidth);
-        //            for (xx = GeneralLib.MaxLng(u.x - max_range, 1); xx <= loopTo2; xx++)
-        //            {
-        //                var loopTo3 = GeneralLib.MinLng(u.y + max_range, Map.MapHeight);
-        //                for (yy = GeneralLib.MaxLng(u.y - max_range, 1); yy <= loopTo3; yy++)
-        //                {
-        //                    if (Map.MapDataForUnit[xx, yy] is null)
-        //                    {
-        //                        goto NextPoint;
-        //                    }
+            //// 周りのユニットに乗っているパイロットの支援修正を更新
+            //var loopTo2 = GeneralLib.MinLng(u.x + max_range, Map.MapWidth);
+            //for (xx = GeneralLib.MaxLng(u.x - max_range, 1); xx <= loopTo2; xx++)
+            //{
+            //    var loopTo3 = GeneralLib.MinLng(u.y + max_range, Map.MapHeight);
+            //    for (yy = GeneralLib.MaxLng(u.y - max_range, 1); yy <= loopTo3; yy++)
+            //    {
+            //        if (Map.MapDataForUnit[xx, yy] is null)
+            //        {
+            //            goto NextPoint;
+            //        }
 
-        //                    // 支援範囲内にいるかチェック
-        //                    range = (Math.Abs((u.x - xx)) + Math.Abs((u.y - yy)));
-        //                    if (range > max_range)
-        //                    {
-        //                        goto NextPoint;
-        //                    }
+            //        // 支援範囲内にいるかチェック
+            //        range = (Math.Abs((u.x - xx)) + Math.Abs((u.y - yy)));
+            //        if (range > max_range)
+            //        {
+            //            goto NextPoint;
+            //        }
 
-        //                    if (range == 0)
-        //                    {
-        //                        goto NextPoint;
-        //                    }
+            //        if (range == 0)
+            //        {
+            //            goto NextPoint;
+            //        }
 
-        //                    // 乗っているパイロット全員の支援修正を更新
-        //                    {
-        //                        var withBlock1 = Map.MapDataForUnit[xx, yy];
-        //                        if (withBlock1.CountPilot() == 0)
-        //                        {
-        //                            goto NextPoint;
-        //                        }
+            //        // 乗っているパイロット全員の支援修正を更新
+            //        {
+            //            var withBlock1 = Map.MapDataForUnit[xx, yy];
+            //            if (withBlock1.CountPilot() == 0)
+            //            {
+            //                goto NextPoint;
+            //            }
 
-        //                        withBlock1.MainPilot().UpdateSupportMod();
-        //                        var loopTo4 = withBlock1.CountPilot();
-        //                        for (i = 2; i <= loopTo4; i++)
-        //                        {
-        //                            Pilot localPilot1() { object argIndex1 = i; var ret = withBlock1.Pilot(argIndex1); return ret; }
+            //            withBlock1.MainPilot().UpdateSupportMod();
+            //            var loopTo4 = withBlock1.CountPilot();
+            //            for (i = 2; i <= loopTo4; i++)
+            //            {
+            //                Pilot localPilot1() { object argIndex1 = i; var ret = withBlock1.Pilot(argIndex1); return ret; }
 
-        //                            localPilot1().UpdateSupportMod();
-        //                        }
+            //                localPilot1().UpdateSupportMod();
+            //            }
 
-        //                        var loopTo5 = withBlock1.CountSupport();
-        //                        for (i = 1; i <= loopTo5; i++)
-        //                        {
-        //                            Pilot localSupport1() { object argIndex1 = i; var ret = withBlock1.Support(argIndex1); return ret; }
+            //            var loopTo5 = withBlock1.CountSupport();
+            //            for (i = 1; i <= loopTo5; i++)
+            //            {
+            //                Pilot localSupport1() { object argIndex1 = i; var ret = withBlock1.Support(argIndex1); return ret; }
 
-        //                            localSupport1().UpdateSupportMod();
-        //                        }
-        //                    }
+            //                localSupport1().UpdateSupportMod();
+            //            }
+            //        }
 
-        //                NextPoint:
-        //                    ;
-        //                }
-        //            }
-        //        }
+            //    NextPoint:
+            //        ;
+            //    }
+            //}
+        }
 
         // 破棄されたパイロットを削除する
         public void Clean()
