@@ -1,0 +1,22 @@
+﻿{
+  "problemMatcher": [
+    {
+      "owner": "src-lint",
+      "pattern": [
+        {
+          // Matches the 1st line in the output
+          "regexp": "^([^\\s].*)$",
+          "file": 1
+        },
+        {
+          // Matches the 2nd line in the output
+          "regexp": "^\\s*(\\d+):\\s*(error|warning|info)\\s+(.*)$",
+          "line": 1,
+          "severity": 2,
+          "message": 3,
+          "loop": true
+        }
+      ]
+    }
+  ]
+}
