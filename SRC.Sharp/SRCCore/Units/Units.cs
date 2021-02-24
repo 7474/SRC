@@ -18,7 +18,7 @@ namespace SRCCore.Units
 
         // ユニット一覧
         private SrcCollection<Unit> colUnits = new SrcCollection<Unit>();
-        public IList<Unit> Items => colUnits;
+        public IList<Unit> Items => colUnits.List;
 
         protected SRC SRC { get; }
         private IGUI GUI => SRC.GUI;

@@ -93,16 +93,16 @@ namespace SRCCore.Units
 
         // 搭乗しているパイロット
         private SrcCollection<Pilot> colPilot = new SrcCollection<Pilot>();
-        public IList<Pilot> Pilots => colPilot;
+        public IList<Pilot> Pilots => colPilot.List;
 
         // 搭乗しているサポートパイロット
         private SrcCollection<Pilot> colSupport = new SrcCollection<Pilot>();
-        public IList<Pilot> SupportPilots => colSupport;
+        public IList<Pilot> SupportPilots => colSupport.List;
 
         // 関連するユニット
         // 変形ユニットにおける他形態等
         private SrcCollection<Unit> colOtherForm = new SrcCollection<Unit>();
-        public IList<Unit> OtherForms => colOtherForm;
+        public IList<Unit> OtherForms => colOtherForm.List;
 
         // 格納したユニット
         private SrcCollection<Unit> colUnitOnBoard = new SrcCollection<Unit>();

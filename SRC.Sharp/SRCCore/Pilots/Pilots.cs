@@ -16,7 +16,7 @@ namespace SRCCore.Pilots
     {
         // パイロット一覧
         private SrcCollection<Pilot> colPilots = new SrcCollection<Pilot>();
-        public IList<Pilot> Items => colPilots;
+        public IList<Pilot> Items => colPilots.List;
         public IEnumerable<Pilot> AlivePilots => Items.Where(x => x.Alive);
 
         protected SRC SRC { get; }

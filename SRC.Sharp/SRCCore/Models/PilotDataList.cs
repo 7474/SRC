@@ -19,7 +19,7 @@ namespace SRCCore.Models
         // パイロットデータのコレクション
         private SrcCollection<PilotData> colPilotDataList;
 
-        public IList<PilotData> Items => colPilotDataList;
+        public IList<PilotData> Items => colPilotDataList.List;
 
         public string Raw = "";
         public string Comment = "";

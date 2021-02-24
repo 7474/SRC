@@ -15,7 +15,7 @@ namespace SRCCore.Models
         // メッセージデータ(または特殊効果データ)一覧
         private SrcCollection<MessageData> colMessageDataList = new SrcCollection<MessageData>();
 
-        public IList<MessageData> Items => colMessageDataList;
+        public IList<MessageData> Items => colMessageDataList.List;
 
         // メッセージデータの追加
         public MessageData Add(string mname)

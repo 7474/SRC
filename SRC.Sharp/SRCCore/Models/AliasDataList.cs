@@ -14,7 +14,7 @@ namespace SRCCore.Models
     {
         private SrcCollection<AliasDataType> colAliasDataList = new SrcCollection<AliasDataType>();
 
-        public IList<AliasDataType> Items => colAliasDataList;
+        public IList<AliasDataType> Items => colAliasDataList.List;
 
         // エリアスデータリストにデータを追加
         public AliasDataType Add(string aname)

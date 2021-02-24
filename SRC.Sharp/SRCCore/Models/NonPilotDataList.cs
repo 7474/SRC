@@ -16,7 +16,7 @@ namespace SRCCore.Models
         // ノンパイロットデータのコレクション
         private SrcCollection<NonPilotData> colNonPilotDataList = new SrcCollection<NonPilotData>();
 
-        public IList<NonPilotData> Items => colNonPilotDataList;
+        public IList<NonPilotData> Items => colNonPilotDataList.List;
 
         public NonPilotDataList()
         {

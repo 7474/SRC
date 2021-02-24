@@ -32,7 +32,7 @@ namespace SRCCore.Models
             AddDummyData();
         }
 
-        public IList<UnitData> Items => colUnitDataList;
+        public IList<UnitData> Items => colUnitDataList.List;
 
         private void AddDummyData()
         {

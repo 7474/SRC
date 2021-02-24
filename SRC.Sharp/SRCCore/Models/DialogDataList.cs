@@ -15,7 +15,7 @@ namespace SRCCore.Models
         // ダイアログデータのコレクション
         private SrcCollection<DialogData> colDialogDataList = new SrcCollection<DialogData>();
 
-        public IList<DialogData> Items => colDialogDataList;
+        public IList<DialogData> Items => colDialogDataList.List;
 
         // ダイアログデータを追加
         public DialogData Add(string dname)

@@ -66,10 +66,10 @@ namespace SRCCore.Models
         // アビリティデータ
         private SrcCollection<AbilityData> colAbilityData;
 
-        public IList<SkillData> Skills => colSkill;
-        public IList<FeatureData> Features => colFeature;
-        public IList<WeaponData> Weapons => colWeaponData;
-        public IList<AbilityData> Abilities => colAbilityData;
+        public IList<SkillData> Skills => colSkill.List;
+        public IList<FeatureData> Features => colFeature.List;
+        public IList<WeaponData> Weapons => colWeaponData.List;
+        public IList<AbilityData> Abilities => colAbilityData.List;
 
         public string Raw = "";
         public string Comment = "";
