@@ -47,17 +47,16 @@ namespace SRCDataLinter
                 }
                 catch (InvalidSrcDataException ex)
                 {
-                    Console.WriteLine($"{file.FullName}");
+                    Console.WriteLine($"");
                     foreach (var id in ex.InvalidDataList)
                     {
-                        Console.WriteLine($"{id.line_num}: error {id.msg} {id.dname}");
+                        Console.Error.WriteLine($"{file.FullName}({id.line_num}): error: {id.msg}[{id.dname}]");
                     }
                     hasError = true;
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"{file.FullName}");
-                    Console.WriteLine($"1: error {ex.Message}");
+                    Console.Error.WriteLine($"{file.FullName}({1}): error: {ex.Message}");
                     hasError = true;
                 }
             }
