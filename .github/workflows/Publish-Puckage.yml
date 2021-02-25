@@ -14,7 +14,7 @@ jobs:
       with:
         dotnet-version: '5.0.x'
 
-    - run: dotnet build SRC.Sharp/SRCCore/SRCDataLinter.csproj --configuration Release
+    - run: dotnet build SRC.Sharp/SRCCore/SRCCore.csproj --configuration Release
     - run: dotnet nuget push SRC.Sharp/SRCCore/bin/Release/SRCCore.*.nupkg -k $NUGET_OLG_API_KEY -s https://api.nuget.org/v3/index.json
       env:
         NUGET_OLG_API_KEY: ${{ secrets.NUGET_OLG_API_KEY }}
