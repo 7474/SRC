@@ -12,6 +12,12 @@ namespace SRCCore.Models
 {
     public class MessageDataList
     {
+        private SRC SRC;
+        public MessageDataList(SRC src)
+        {
+            SRC = src;
+        }
+
         // メッセージデータ(または特殊効果データ)一覧
         private SrcCollection<MessageData> colMessageDataList = new SrcCollection<MessageData>();
 

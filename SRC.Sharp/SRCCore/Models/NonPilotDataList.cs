@@ -18,8 +18,10 @@ namespace SRCCore.Models
 
         public IList<NonPilotData> Items => colNonPilotDataList.List;
 
-        public NonPilotDataList()
+        private SRC SRC;
+        public NonPilotDataList(SRC src)
         {
+            SRC = src;
             // Talkコマンド用
             var npd = new NonPilotData();
             npd.Name = "ナレーター";
@@ -90,9 +92,6 @@ namespace SRCCore.Models
         }
         public void Load(string fname, Stream stream)
         {
-            // TODO Log
-            var continuesErrors = new List<InvalidSrcData>();
-
             using (var reader = new SrcDataReader(fname, stream))
             {
                 string line_buf = "";
@@ -171,7 +170,7 @@ namespace SRCCore.Models
                     }
                     else
                     {
-                        continuesErrors.Add(reader.InvalidData("ビットマップの設定が間違っています。", data_name));
+                        SRC.AddDataError(reader.InvalidData("ビットマップの設定が間違っています。", data_name));
                     }
                 }
             }

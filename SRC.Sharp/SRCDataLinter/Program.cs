@@ -22,42 +22,7 @@ namespace SRCDataLinter
             foreach (var fileMatch in macher.Execute(new DirectoryInfoWrapper(new DirectoryInfo("."))).Files)
             {
                 var file = new FileInfo(fileMatch.Path);
-                try
-                {
-                    switch (file.Name.ToLower())
-                    {
-                        case "unit.txt":
-                        case "robot.txt":
-                            SRC.UDList.Load(file.Name, file.OpenRead());
-                            break;
-                        case "pilot.txt":
-                            SRC.PDList.Load(file.Name, file.OpenRead());
-                            break;
-                        case "pilot_message.txt":
-                            SRC.MDList.Load(file.Name, false, file.OpenRead());
-                            break;
-                        case "pilot_dialog.txt":
-                            SRC.DDList.Load(file.Name, file.OpenRead());
-                            break;
-                        default:
-                            Console.WriteLine($"Not supported file [{file.Name}]");
-                            break;
-                    }
-                    //Console.WriteLine($"{sw.ElapsedMilliseconds}ms [{file.Name}]");
-                }
-                catch (InvalidSrcDataException ex)
-                {
-                    foreach (var id in ex.InvalidDataList)
-                    {
-                        Console.Error.WriteLine($"{file.FullName}({id.line_num}): error: {id.msg}[{id.dname}]");
-                    }
-                    hasError = true;
-                }
-                catch (Exception ex)
-                {
-                    Console.Error.WriteLine($"{file.FullName}({1}): error: {ex.Message}");
-                    hasError = true;
-                }
+                hasError |= ValidateFile(hasError, SRC, file);
             }
             sw.Stop();
             Console.WriteLine($"{sw.ElapsedMilliseconds}ms");
@@ -65,6 +30,53 @@ namespace SRCDataLinter
             {
                 Environment.ExitCode = -1;
             }
+        }
+
+        private static bool ValidateFile(bool hasError, SRCCore.SRC SRC, FileInfo file)
+        {
+            try
+            {
+                switch (file.Name.ToLower())
+                {
+                    case "unit.txt":
+                    case "robot.txt":
+                        SRC.UDList.Load(file.Name, file.OpenRead());
+                        break;
+                    case "pilot.txt":
+                        SRC.PDList.Load(file.Name, file.OpenRead());
+                        break;
+                    case "pilot_message.txt":
+                        SRC.MDList.Load(file.Name, false, file.OpenRead());
+                        break;
+                    case "pilot_dialog.txt":
+                        SRC.DDList.Load(file.Name, file.OpenRead());
+                        break;
+                    default:
+                        Console.WriteLine($"Not supported file [{file.Name}]");
+                        break;
+                }
+            }
+            catch (InvalidSrcDataException ex)
+            {
+                foreach (var id in ex.InvalidDataList)
+                {
+                    Console.Error.WriteLine($"{file.FullName}({id.line_num}): error: {id.msg}[{id.dname}]");
+                }
+                hasError = true;
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine($"{file.FullName}({1}): error: {ex.Message}");
+                hasError = true;
+            }
+            foreach (var id in SRC.DataErrors)
+            {
+                Console.Error.WriteLine($"{file.FullName}({id.line_num}): warning: {id.msg}[{id.dname}]");
+            }
+            hasError |= SRC.HasDataError;
+            SRC.ClearDataError();
+
+            return hasError;
         }
     }
 }

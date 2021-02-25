@@ -12,6 +12,12 @@ namespace SRCCore.Models
     // 全エリアスデータを管理するリストのクラス
     public class AliasDataList
     {
+        private SRC SRC;
+        public AliasDataList(SRC src)
+        {
+            SRC = src;
+        }
+
         private SrcCollection<AliasDataType> colAliasDataList = new SrcCollection<AliasDataType>();
 
         public IList<AliasDataType> Items => colAliasDataList.List;

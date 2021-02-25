@@ -25,14 +25,16 @@ namespace SRCCore.Models
         public string Raw = "";
         public string Comment = "";
 
-        public UnitDataList()
+        public IList<UnitData> Items => colUnitDataList.List;
+
+        private SRC SRC;
+        public UnitDataList(SRC src)
         {
+            SRC = src;
             IDNum = 0;
             colUnitDataList = new SrcCollection<UnitData>();
             AddDummyData();
         }
-
-        public IList<UnitData> Items => colUnitDataList.List;
 
         private void AddDummyData()
         {
@@ -129,7 +131,6 @@ namespace SRCCore.Models
             UnitData ud = null;
             try
             {
-                var continuesErrors = new List<InvalidSrcData>();
                 int ret;
                 string buf, buf2;
                 var line_buf = "";
@@ -202,7 +203,6 @@ namespace SRCCore.Models
                 if (ret > 0)
                 {
                     throw reader.InvalidDataException(@"読み仮名の後に余分なデータが指定されています。", data_name);
-                    ;
                 }
                 ud.KanaName = buf;
 
@@ -262,7 +262,7 @@ namespace SRCCore.Models
                 }
                 else
                 {
-                    continuesErrors.Add(reader.InvalidData(@"ユニットクラスの設定が間違っています。", data_name));
+                    SRC.AddDataError(reader.InvalidData(@"ユニットクラスの設定が間違っています。", data_name));
                     ud.Class = "汎用";
                 }
 
@@ -278,12 +278,12 @@ namespace SRCCore.Models
                     }
                     else
                     {
-                        continuesErrors.Add(reader.InvalidData(@"パイロット数の設定が間違っています。", data_name));
+                        SRC.AddDataError(reader.InvalidData(@"パイロット数の設定が間違っています。", data_name));
                         ud.PilotNum = 1;
                     }
                     if (ud.PilotNum < 1)
                     {
-                        continuesErrors.Add(reader.InvalidData(@"パイロット数の設定が間違っています。", data_name));
+                        SRC.AddDataError(reader.InvalidData(@"パイロット数の設定が間違っています。", data_name));
                         ud.PilotNum = 1;
                     }
                 }
@@ -301,13 +301,13 @@ namespace SRCCore.Models
                     }
                     else
                     {
-                        continuesErrors.Add(reader.InvalidData(@"パイロット数の設定が間違っています。", data_name));
+                        SRC.AddDataError(reader.InvalidData(@"パイロット数の設定が間違っています。", data_name));
                         ud.PilotNum = 1;
                     }
 
                     if (ud.PilotNum < 1)
                     {
-                        continuesErrors.Add(reader.InvalidData(@"パイロット数の設定が間違っています。", data_name));
+                        SRC.AddDataError(reader.InvalidData(@"パイロット数の設定が間違っています。", data_name));
                         ud.PilotNum = 1;
                     }
 
@@ -328,7 +328,7 @@ namespace SRCCore.Models
                 }
                 else
                 {
-                    continuesErrors.Add(reader.InvalidData(@"アイテム数の設定が間違っています。", data_name));
+                    SRC.AddDataError(reader.InvalidData(@"アイテム数の設定が間違っています。", data_name));
                     ud.ItemNum = 4;
                 }
 
@@ -350,7 +350,7 @@ namespace SRCCore.Models
                 }
                 else
                 {
-                    continuesErrors.Add(reader.InvalidData(@"移動可能地形の設定が間違っています。", data_name));
+                    SRC.AddDataError(reader.InvalidData(@"移動可能地形の設定が間違っています。", data_name));
                     ud.Transportation = "陸";
                 }
 
@@ -369,7 +369,7 @@ namespace SRCCore.Models
                 }
                 else
                 {
-                    continuesErrors.Add(reader.InvalidData(@"移動力の設定が間違っています。", data_name));
+                    SRC.AddDataError(reader.InvalidData(@"移動力の設定が間違っています。", data_name));
                 }
 
                 // サイズ
@@ -396,7 +396,7 @@ namespace SRCCore.Models
 
                     default:
                         {
-                            continuesErrors.Add(reader.InvalidData(@"サイズの設定が間違っています。", data_name));
+                            SRC.AddDataError(reader.InvalidData(@"サイズの設定が間違っています。", data_name));
                             ud.Size = "M";
                             break;
                         }
@@ -417,7 +417,7 @@ namespace SRCCore.Models
                 }
                 else
                 {
-                    continuesErrors.Add(reader.InvalidData(@"修理費の設定が間違っています。", data_name));
+                    SRC.AddDataError(reader.InvalidData(@"修理費の設定が間違っています。", data_name));
                 }
 
                 // 経験値
@@ -433,11 +433,11 @@ namespace SRCCore.Models
                 }
                 else
                 {
-                    continuesErrors.Add(reader.InvalidData(@"経験値の設定が間違っています。", data_name));
+                    SRC.AddDataError(reader.InvalidData(@"経験値の設定が間違っています。", data_name));
                 }
 
                 // 特殊能力データ
-                line_buf = LoadFeature(data_name, ud, reader, continuesErrors);
+                line_buf = LoadFeature(data_name, ud, reader, SRC);
 
                 // 最大ＨＰ
                 ret = Strings.InStr(line_buf, ",");
@@ -454,7 +454,7 @@ namespace SRCCore.Models
                 }
                 else
                 {
-                    continuesErrors.Add(reader.InvalidData(@"最大ＨＰの設定が間違っています。", data_name));
+                    SRC.AddDataError(reader.InvalidData(@"最大ＨＰの設定が間違っています。", data_name));
                     ud.HP = 1000;
                 }
 
@@ -473,7 +473,7 @@ namespace SRCCore.Models
                 }
                 else
                 {
-                    continuesErrors.Add(reader.InvalidData(@"最大ＥＮの設定が間違っています。", data_name));
+                    SRC.AddDataError(reader.InvalidData(@"最大ＥＮの設定が間違っています。", data_name));
                     ud.EN = 100;
                 }
 
@@ -492,7 +492,7 @@ namespace SRCCore.Models
                 }
                 else
                 {
-                    continuesErrors.Add(reader.InvalidData(@"装甲の設定が間違っています。", data_name));
+                    SRC.AddDataError(reader.InvalidData(@"装甲の設定が間違っています。", data_name));
                 }
 
                 // 運動性
@@ -508,7 +508,7 @@ namespace SRCCore.Models
                 }
                 else
                 {
-                    continuesErrors.Add(reader.InvalidData(@"運動性の設定が間違っています。", data_name));
+                    SRC.AddDataError(reader.InvalidData(@"運動性の設定が間違っています。", data_name));
                 }
 
                 // 地形適応, ビットマップ
@@ -529,7 +529,7 @@ namespace SRCCore.Models
                 }
                 else
                 {
-                    continuesErrors.Add(reader.InvalidData(@"地形適応の設定が間違っています。", data_name));
+                    SRC.AddDataError(reader.InvalidData(@"地形適応の設定が間違っています。", data_name));
                     ud.Adaption = "AAAA";
                 }
 
@@ -546,7 +546,7 @@ namespace SRCCore.Models
                 }
                 else
                 {
-                    continuesErrors.Add(reader.InvalidData(@"ビットマップの設定が間違っています。", data_name));
+                    SRC.AddDataError(reader.InvalidData(@"ビットマップの設定が間違っています。", data_name));
                     ud.IsBitmapMissing = true;
                 }
 
@@ -556,7 +556,7 @@ namespace SRCCore.Models
                 }
 
                 // 武器データ
-                line_buf = LoadWepon(data_name, ud, reader, continuesErrors);
+                line_buf = LoadWepon(data_name, ud, reader, SRC);
 
                 if (line_buf != "===")
                 {
@@ -564,7 +564,7 @@ namespace SRCCore.Models
                 }
 
                 // アビリティデータ
-                line_buf = LoadAbility(data_name, ud, reader, continuesErrors);
+                line_buf = LoadAbility(data_name, ud, reader, SRC);
 
             }
             finally
@@ -578,7 +578,7 @@ namespace SRCCore.Models
             return ud;
         }
 
-        private static string LoadFeatureOuter(string data_name, IUnitDataElements ud, SrcDataReader reader, List<InvalidSrcData> continuesErrors)
+        private static string LoadFeatureOuter(string data_name, IUnitDataElements ud, SrcDataReader reader, SRC SRC)
         {
             int ret;
             string buf;
@@ -591,7 +591,7 @@ namespace SRCCore.Models
             else if (line_buf == "特殊能力")
             {
                 // 新形式による特殊能力表記
-                LoadFeature(data_name, ud, reader, continuesErrors);
+                LoadFeature(data_name, ud, reader, SRC);
             }
             else if (Strings.InStr(line_buf, "特殊能力,") == 1)
             {
@@ -638,7 +638,7 @@ namespace SRCCore.Models
                     else
                     {
                         string argmsg12 = SrcFormatter.Format(i + "番目の特殊能力の設定が間違っています。");
-                        continuesErrors.Add(reader.InvalidData(argmsg12, data_name));
+                        SRC.AddDataError(reader.InvalidData(argmsg12, data_name));
                     }
                 }
 
@@ -651,7 +651,7 @@ namespace SRCCore.Models
                 else
                 {
                     string argmsg13 = SrcFormatter.Format(i + "番目の特殊能力の設定が間違っています。");
-                    continuesErrors.Add(reader.InvalidData(argmsg13, data_name));
+                    SRC.AddDataError(reader.InvalidData(argmsg13, data_name));
                 }
 
                 line_buf = reader.GetLine();
@@ -664,7 +664,7 @@ namespace SRCCore.Models
             return line_buf;
         }
 
-        public static string LoadFeature(string data_name, IUnitDataElements ud, SrcDataReader reader, List<InvalidSrcData> continuesErrors)
+        public static string LoadFeature(string data_name, IUnitDataElements ud, SrcDataReader reader, SRC SRC)
         {
             string line_buf = reader.GetLine();
             string buf = line_buf;
@@ -727,7 +727,7 @@ namespace SRCCore.Models
                 else if (string.IsNullOrEmpty(buf2) | Information.IsNumeric(buf2))
                 {
                     string argmsg11 = "行頭から" + i + "番目の特殊能力の設定が間違っています。";
-                    continuesErrors.Add(reader.InvalidData(argmsg11, data_name));
+                    SRC.AddDataError(reader.InvalidData(argmsg11, data_name));
                 }
                 else
                 {
@@ -744,7 +744,7 @@ namespace SRCCore.Models
             return line_buf;
         }
 
-        public static string LoadWepon(string data_name, IUnitDataElements ud, SrcDataReader reader, List<InvalidSrcData> continuesErrors)
+        public static string LoadWepon(string data_name, IUnitDataElements ud, SrcDataReader reader, SRC SRC)
         {
             int ret;
             string buf;
@@ -788,7 +788,7 @@ namespace SRCCore.Models
                 }
                 else
                 {
-                    continuesErrors.Add(reader.InvalidData(@wname + "の攻撃力の設定が間違っています。", data_name));
+                    SRC.AddDataError(reader.InvalidData(@wname + "の攻撃力の設定が間違っています。", data_name));
                     if (GeneralLib.LLength(buf2) > 1)
                     {
                         buf = GeneralLib.LIndex(buf2, 2) + "," + buf;
@@ -812,7 +812,7 @@ namespace SRCCore.Models
                 }
                 else
                 {
-                    continuesErrors.Add(reader.InvalidData(@wname + "の最小射程の設定が間違っています。", data_name));
+                    SRC.AddDataError(reader.InvalidData(@wname + "の最小射程の設定が間違っています。", data_name));
                     wd.MinRange = 1;
                     if (GeneralLib.LLength(buf2) > 1)
                     {
@@ -837,7 +837,7 @@ namespace SRCCore.Models
                 }
                 else
                 {
-                    continuesErrors.Add(reader.InvalidData(@wname + "の最大射程の設定が間違っています。", data_name));
+                    SRC.AddDataError(reader.InvalidData(@wname + "の最大射程の設定が間違っています。", data_name));
                     wd.MaxRange = 1;
                     if (GeneralLib.LLength(buf2) > 1)
                     {
@@ -872,7 +872,7 @@ namespace SRCCore.Models
                 }
                 else
                 {
-                    continuesErrors.Add(reader.InvalidData(@wname + "の命中率の設定が間違っています。", data_name));
+                    SRC.AddDataError(reader.InvalidData(@wname + "の命中率の設定が間違っています。", data_name));
                     if (GeneralLib.LLength(buf2) > 1)
                     {
                         buf = GeneralLib.LIndex(buf2, 2) + "," + buf;
@@ -898,7 +898,7 @@ namespace SRCCore.Models
                     }
                     else
                     {
-                        continuesErrors.Add(reader.InvalidData(@wname + "の弾数の設定が間違っています。", data_name));
+                        SRC.AddDataError(reader.InvalidData(@wname + "の弾数の設定が間違っています。", data_name));
                         if (GeneralLib.LLength(buf2) > 1)
                         {
                             buf = GeneralLib.LIndex(buf2, 2) + "," + buf;
@@ -925,7 +925,7 @@ namespace SRCCore.Models
                     }
                     else
                     {
-                        continuesErrors.Add(reader.InvalidData(@wname + "の消費ＥＮの設定が間違っています。", data_name));
+                        SRC.AddDataError(reader.InvalidData(@wname + "の消費ＥＮの設定が間違っています。", data_name));
                         {
                             buf = GeneralLib.LIndex(buf2, 2) + "," + buf;
                             string argexpr5 = GeneralLib.LIndex(buf2, 1);
@@ -961,7 +961,7 @@ namespace SRCCore.Models
                     }
                     else
                     {
-                        continuesErrors.Add(reader.InvalidData(@wname + "の必要気力の設定が間違っています。", data_name));
+                        SRC.AddDataError(reader.InvalidData(@wname + "の必要気力の設定が間違っています。", data_name));
                         if (GeneralLib.LLength(buf2) > 1)
                         {
                             buf = GeneralLib.LIndex(buf2, 2) + "," + buf;
@@ -986,7 +986,7 @@ namespace SRCCore.Models
                 }
                 else
                 {
-                    continuesErrors.Add(reader.InvalidData(@wname + "の地形適応の設定が間違っています。", data_name));
+                    SRC.AddDataError(reader.InvalidData(@wname + "の地形適応の設定が間違っています。", data_name));
                     wd.Adaption = "----";
                     if (GeneralLib.LLength(buf2) > 1)
                     {
@@ -1020,7 +1020,7 @@ namespace SRCCore.Models
                 }
                 else
                 {
-                    continuesErrors.Add(reader.InvalidData(@wname + "のクリティカル率の設定が間違っています。", data_name));
+                    SRC.AddDataError(reader.InvalidData(@wname + "のクリティカル率の設定が間違っています。", data_name));
                     if (GeneralLib.LLength(buf2) > 1)
                     {
                         buf = GeneralLib.LIndex(buf2, 2) + "," + buf;
@@ -1033,7 +1033,7 @@ namespace SRCCore.Models
                 buf = Strings.Trim(buf);
                 if (Strings.Len(buf) == 0)
                 {
-                    continuesErrors.Add(reader.InvalidData(@wname + "の武器属性の設定が間違っています。", data_name));
+                    SRC.AddDataError(reader.InvalidData(@wname + "の武器属性の設定が間違っています。", data_name));
                 }
 
                 if (Strings.Right(buf, 1) == ")")
@@ -1080,7 +1080,7 @@ namespace SRCCore.Models
 
                 if (Strings.InStr(wd.Class, "Lv") > 0)
                 {
-                    continuesErrors.Add(reader.InvalidData(@wname + "の属性のレベル指定が間違っています。", data_name));
+                    SRC.AddDataError(reader.InvalidData(@wname + "の属性のレベル指定が間違っています。", data_name));
                 }
 
                 if (reader.EOT)
@@ -1093,7 +1093,7 @@ namespace SRCCore.Models
             return line_buf;
         }
 
-        public static string LoadAbility(string data_name, IUnitDataElements ud, SrcDataReader reader, List<InvalidSrcData> continuesErrors)
+        public static string LoadAbility(string data_name, IUnitDataElements ud, SrcDataReader reader, SRC SRC)
         {
             int ret;
             string buf;
@@ -1149,7 +1149,7 @@ namespace SRCCore.Models
                 }
                 else
                 {
-                    continuesErrors.Add(reader.InvalidData(@sname + "の射程の設定が間違っています。", data_name));
+                    SRC.AddDataError(reader.InvalidData(@sname + "の射程の設定が間違っています。", data_name));
                     if (GeneralLib.LLength(buf2) > 1)
                     {
                         buf = GeneralLib.LIndex(buf2, 2) + "," + buf;
@@ -1175,7 +1175,7 @@ namespace SRCCore.Models
                     }
                     else
                     {
-                        continuesErrors.Add(reader.InvalidData(@sname + "の回数の設定が間違っています。", data_name));
+                        SRC.AddDataError(reader.InvalidData(@sname + "の回数の設定が間違っています。", data_name));
                         if (GeneralLib.LLength(buf2) > 1)
                         {
                             buf = GeneralLib.LIndex(buf2, 2) + "," + buf;
@@ -1202,7 +1202,7 @@ namespace SRCCore.Models
                     }
                     else
                     {
-                        continuesErrors.Add(reader.InvalidData(@sname + "の消費ＥＮの設定が間違っています。", data_name));
+                        SRC.AddDataError(reader.InvalidData(@sname + "の消費ＥＮの設定が間違っています。", data_name));
                         if (GeneralLib.LLength(buf2) > 1)
                         {
                             buf = GeneralLib.LIndex(buf2, 2) + "," + buf;
@@ -1239,7 +1239,7 @@ namespace SRCCore.Models
                     }
                     else
                     {
-                        continuesErrors.Add(reader.InvalidData(@sname + "の必要気力の設定が間違っています。", data_name));
+                        SRC.AddDataError(reader.InvalidData(@sname + "の必要気力の設定が間違っています。", data_name));
                         if (GeneralLib.LLength(buf2) > 1)
                         {
                             buf = GeneralLib.LIndex(buf2, 2) + "," + buf;
@@ -1253,7 +1253,7 @@ namespace SRCCore.Models
                 buf = Strings.Trim(buf);
                 if (Strings.Len(buf) == 0)
                 {
-                    continuesErrors.Add(reader.InvalidData(@sname + "のアビリティ属性の設定が間違っています。", data_name));
+                    SRC.AddDataError(reader.InvalidData(@sname + "のアビリティ属性の設定が間違っています。", data_name));
                 }
 
                 if (Strings.Right(buf, 1) == ")")
@@ -1300,7 +1300,7 @@ namespace SRCCore.Models
 
                 if (Strings.InStr(sd.Class, "Lv") > 0)
                 {
-                    continuesErrors.Add(reader.InvalidData(@sname + "の属性のレベル指定が間違っています。", data_name));
+                    SRC.AddDataError(reader.InvalidData(@sname + "の属性のレベル指定が間違っています。", data_name));
                 }
                 line_buf = reader.GetLine();
             }
