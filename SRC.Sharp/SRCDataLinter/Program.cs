@@ -47,7 +47,6 @@ namespace SRCDataLinter
                 }
                 catch (InvalidSrcDataException ex)
                 {
-                    Console.WriteLine($"");
                     foreach (var id in ex.InvalidDataList)
                     {
                         Console.Error.WriteLine($"{file.FullName}({id.line_num}): error: {id.msg}[{id.dname}]");
