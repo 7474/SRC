@@ -1,11 +1,26 @@
-﻿using SRCCore.Lib;
+﻿using SRCCore.Exceptions;
+using SRCCore.Lib;
 using SRCCore.VB;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace SRCCore
 {
     public partial class SRC
     {
+        private IList<InvalidSrcData> continuesErrors = new List<InvalidSrcData>();
+        public IList<InvalidSrcData> DataErrors => continuesErrors;
+        public bool HasDataError => continuesErrors.Any();
+        public void ClearDataError()
+        {
+            continuesErrors.Clear();
+        }
+        public void AddDataError(InvalidSrcData error)
+        {
+            continuesErrors.Add(error);
+        }
+
         // 作品new_titleのデータを読み込み
         public void IncludeData(string new_title)
         {

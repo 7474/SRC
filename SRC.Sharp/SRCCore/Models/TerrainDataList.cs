@@ -14,6 +14,12 @@ namespace SRCCore.Models
     // 全地形データを管理するリストのクラス
     public class TerrainDataList
     {
+        private SRC SRC;
+        public TerrainDataList(SRC src)
+        {
+            SRC = src;
+        }
+
         // 地形データの配列
         // 他のリスト管理用クラスと異なり配列を使っているのはアクセスを高速化するため
         private TerrainData[] TerrainList = new TerrainData[(Map.MAX_TERRAIN_DATA_NUM + 1)];
@@ -123,9 +129,6 @@ namespace SRCCore.Models
         }
         public void Load(string fname, Stream stream)
         {
-            // TODO Log
-            var continuesErrors = new List<InvalidSrcData>();
-
             using (var reader = new SrcDataReader(fname, stream))
             {
                 bool in_quote;
@@ -215,7 +218,7 @@ namespace SRCCore.Models
 
                     if (td.MoveCost <= 0)
                     {
-                        continuesErrors.Add(reader.InvalidData("移動コストの設定が間違っています。", data_name));
+                        SRC.AddDataError(reader.InvalidData("移動コストの設定が間違っています。", data_name));
                     }
 
                     // 命中修正
@@ -233,7 +236,7 @@ namespace SRCCore.Models
                     }
                     else
                     {
-                        continuesErrors.Add(reader.InvalidData("命中修正の設定が間違っています。", data_name));
+                        SRC.AddDataError(reader.InvalidData("命中修正の設定が間違っています。", data_name));
                     }
 
                     // ダメージ修正
@@ -250,7 +253,7 @@ namespace SRCCore.Models
                     }
                     else
                     {
-                        continuesErrors.Add(reader.InvalidData("ダメージ修正の設定が間違っています。", data_name));
+                        SRC.AddDataError(reader.InvalidData("ダメージ修正の設定が間違っています。", data_name));
                     }
 
                     // 地形効果
@@ -305,7 +308,7 @@ namespace SRCCore.Models
                             }
                             else
                             {
-                                continuesErrors.Add(reader.InvalidData("行頭から" + SrcFormatter.Format((object)i) + "番目の地形効果の設定が間違っています。", data_name));
+                                SRC.AddDataError(reader.InvalidData("行頭から" + SrcFormatter.Format((object)i) + "番目の地形効果の設定が間違っています。", data_name));
                             }
                         }
                         if (reader.HasMore)
