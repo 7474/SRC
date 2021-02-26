@@ -25,10 +25,26 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: docker/build-push-action@v1
+
+      - name: Set Tag name
+        id: vars
+        run: echo ::set-output name=tag::${GITHUB_REF#refs/*/}
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+        
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+        
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
         with:
-          context: ./SRC.Sharp/SRCDataLinter/
           username: koudenpa
           password: ${{ secrets.DOCKER_PASSWORD }}
-          repository: koudenpa/srcdatalinter
-          tag_with_ref: true
+
+      - name: Build and push
+        uses: docker/build-push-action@v2
+        with:
+          context: ./SRC.Sharp/SRCDataLinter/
+          push: true
+          tags: koudenpa/srcdatalinter:latest,koudenpa/srcdatalinter:${{ steps.vars.outputs.tag }}
