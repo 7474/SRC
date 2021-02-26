@@ -1,4 +1,4 @@
-# SRC -Simulation RPG Construction-
+# SRC - Simulation RPG Construction -
 
 SRCを眺めたり弄ってみたりするためのリポジトリ。
 
@@ -24,6 +24,10 @@ SRCを眺めたり弄ってみたりするためのリポジトリ。
     - [SRCCore](./SRC.Sharp/SRCCore)
         - SRCのコア部分
         - .NET Standard
+    - [SRCDataLinter](SRC.Sharp/SRCDataLinter)
+        - SRCデータのバリデータ
+        - .NET 5
+        - GitHub Action: https://github.com/7474/SRC-DataLinter
     - [SRCTestForm](./SRC.Sharp/SRCTestForm)
         - 動作の確認用フォーム
         - .NET 5
