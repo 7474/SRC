@@ -140,13 +140,8 @@ namespace SRCCore.Units
         public string strSpecialEffectImmune;
 
         // 武器データ
-        private WeaponData[] WData;
-        private int[] lngWeaponPower;
-        private int[] intWeaponMaxRange;
-        private int[] intWeaponPrecision;
-        private int[] intWeaponCritical;
-        private string[] strWeaponClass;
-        private int[] intMaxBullet;
+        private List<UnitWeapon> WData = new List<UnitWeapon>();
+        public IReadOnlyList<UnitWeapon> Weapons => WData.AsReadOnly();
 
         // アビリティデータ
         private AbilityData[] adata;
