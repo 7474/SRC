@@ -30,11 +30,13 @@ SRCを眺めたり弄ってみたりするためのリポジトリ。
         - GitHub Action: https://github.com/7474/SRC-DataLinter
     - [SRCTestForm](./SRC.Sharp/SRCTestForm)
         - 動作の確認用フォーム
+        - データの閲覧とWindows Forms実装のSRC#Sharp仮実行を行える
         - .NET 5
     - [SRCTestBlazor](./SRC.Sharp/SRCTestBlazor)
         - 動作確認用Blazor WebAssemblyアプリケーション
+        - データの閲覧を行える
         - .NET 5
-        - https://7474.github.io/SRC/
+        - 動作URL: https://7474.github.io/SRC/
 
 ## Convert log
 
