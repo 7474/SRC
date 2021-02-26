@@ -6,7 +6,8 @@ on:
       - 'v*'
 
 jobs:
-  publish-nuget-package:
+  push-nuget-package:
+    name: Push Nuget Package to NuGet.org
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
