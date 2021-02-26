@@ -6,7 +6,8 @@ on:
       - 'v*'
 
 jobs:
-  build-and-publish:
+  push-nuget-package:
+    name: Push Nuget Package to NuGet.org
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -19,7 +20,15 @@ jobs:
       env:
         NUGET_OLG_API_KEY: ${{ secrets.NUGET_OLG_API_KEY }}
 
-    - run: dotnet build SRC.Sharp/SRCDataLinter/SRCDataLinter.csproj --configuration Release
-    - run: dotnet nuget push SRC.Sharp/SRCDataLinter/bin/Release/SRCDataLinter.*.nupkg -k $NUGET_OLG_API_KEY -s https://api.nuget.org/v3/index.json
-      env:
-        NUGET_OLG_API_KEY: ${{ secrets.NUGET_OLG_API_KEY }}
+  push-to-dockerhub:
+    name: Push Docker image to Docker Hub
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: docker/build-push-action@v1
+        with:
+          context: ./SRC.Sharp/SRCDataLinter/
+          username: koudenpa
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          repository: koudenpa/srcdatalinter
+          tag_with_ref: true
