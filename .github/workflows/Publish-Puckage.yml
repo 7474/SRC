@@ -45,6 +45,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v2
         with:
-          context: ./SRC.Sharp/SRCDataLinter/
+          context: ./SRC.Sharp/
+          file: ./SRC.Sharp/SRCDataLinter/Dockerfile
           push: true
           tags: koudenpa/srcdatalinter:latest,koudenpa/srcdatalinter:${{ steps.vars.outputs.tag }}
