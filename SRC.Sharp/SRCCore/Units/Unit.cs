@@ -141,7 +141,7 @@ namespace SRCCore.Units
 
         // 武器データ
         private List<UnitWeapon> WData = new List<UnitWeapon>();
-        public IReadOnlyList<UnitWeapon> Weapons => WData.AsReadOnly();
+        public IList<UnitWeapon> Weapons => WData.AsReadOnly();
 
         // アビリティデータ
         private AbilityData[] adata;
