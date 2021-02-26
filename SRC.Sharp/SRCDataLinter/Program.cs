@@ -3,8 +3,6 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using Microsoft.Extensions.FileSystemGlobbing;
-using Microsoft.Extensions.FileSystemGlobbing.Abstractions;
 
 namespace SRCDataLinter
 {
@@ -12,18 +10,22 @@ namespace SRCDataLinter
     {
         static void Main(string[] args)
         {
-            var hasError = false;
-            var macher = new Matcher();
-            macher.AddIncludePatterns(args);
-
-            var SRC = new SRCCore.SRC();
             var sw = new Stopwatch();
             sw.Start();
-            foreach (var fileMatch in macher.Execute(new DirectoryInfoWrapper(new DirectoryInfo("."))).Files)
+
+            var SRC = new SRCCore.SRC();
+            var hasError = false;
+            var files = args
+                .Where(x => Directory.Exists(x))
+                .SelectMany(x => Directory.EnumerateFiles(x, "*.txt", SearchOption.AllDirectories))
+                .Concat(args.Where(x => File.Exists(x)));
+
+            foreach (var file in files)
             {
-                var file = new FileInfo(fileMatch.Path);
-                hasError |= ValidateFile(hasError, SRC, file);
+                var fileInfo = new FileInfo(file);
+                hasError |= ValidateFile(hasError, SRC, fileInfo);
             }
+
             sw.Stop();
             Console.WriteLine($"{sw.ElapsedMilliseconds}ms");
             if (hasError)
