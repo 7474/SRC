@@ -4,7 +4,9 @@ using SRCCore.Maps;
 using SRCCore.Pilots;
 using SRCCore.Units;
 using SRCTestForm.Extensions;
+using System;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.IO;
 using System.Text;
 
@@ -35,7 +37,8 @@ namespace SRCTestForm
         public Color StatusFontColorNormalString;
 
         // XXX
-        private Font StatusFont = new Font(FontFamily.GenericMonospace, 9.75f, FontStyle.Regular, GraphicsUnit.Point);
+        //private Font StatusFont = new Font("Meuryo", 9.75f, FontStyle.Regular, GraphicsUnit.Point);
+        private Font StatusFont = new Font("Meiryo UI", 10f);
         private Brush StatusNormalStringBrush = Brushes.Black;
         private Brush StatusAbilityNameBrush = Brushes.Blue;
         private Brush StatusAbilityEnableBrush = Brushes.Red;
@@ -362,6 +365,7 @@ namespace SRCTestForm
                 picPilotStatus.NewImageIfNull();
                 using (var g = Graphics.FromImage(picPilotStatus.Image))
                 {
+                    //g.SmoothingMode = SmoothingMode.AntiAlias;
                     g.DrawString(sb.ToString(), StatusFont, StatusNormalStringBrush, 0, 0);
                 }
                 // XXX get_Bitmap
@@ -374,7 +378,17 @@ namespace SRCTestForm
                 picUnitStatus.NewImageIfNull();
                 using (var g = Graphics.FromImage(picUnitStatus.Image))
                 {
-                    g.DrawString(sb.ToString(), StatusFont, StatusNormalStringBrush, 0, 0);
+                    //g.SmoothingMode = SmoothingMode.AntiAlias;
+                    var uStatus = $"HP:{u.HP}/{u.MaxHP} EN:{u.EN}/{u.MaxEN}";
+                    g.DrawString(
+                        uStatus +
+                        Environment.NewLine +
+                        sb.ToString(),
+                        StatusFont,
+                        StatusNormalStringBrush,
+                        0,
+                        0
+                    );
                 }
             }
 
