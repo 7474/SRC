@@ -15,6 +15,7 @@ namespace SRCCore.Units
         private SRC SRC { get; }
         private Map Map => SRC.Map;
         private IGUI GUI => SRC.GUI;
+        private Commands.Command Commands => SRC.Commands;
 
         public Unit(SRC src)
         {

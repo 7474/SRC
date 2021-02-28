@@ -93,32 +93,32 @@ namespace SRCCore.Lib
         //            RndIndex = 0;
         //        }
 
-        //        // 1～max の乱数を返す
-        //        public static int Dice(int max)
-        //        {
-        //            int DiceRet = default;
-        //            if (max <= 1)
-        //            {
-        //                DiceRet = max;
-        //                return DiceRet;
-        //            }
+        // 1～max の乱数を返す
+        private static Random random = new Random();
+        public static int Dice(int max)
+        {
+            if (max <= 1)
+            {
+                return max;
+            }
+            return random.Next(max) + 1;
+            // TODO Impl
+            //string argoname = "乱数系列非保存";
+            //if (Expression.IsOptionDefined(argoname))
+            //{
+            //    DiceRet = Conversion.Int(max * VBMath.Rnd() + 1f);
+            //    return DiceRet;
+            //}
 
-        //            string argoname = "乱数系列非保存";
-        //            if (Expression.IsOptionDefined(argoname))
-        //            {
-        //                DiceRet = Conversion.Int(max * VBMath.Rnd() + 1f);
-        //                return DiceRet;
-        //            }
+            //RndIndex = (RndIndex + 1);
+            //if (RndIndex > Information.UBound(RndHistory))
+            //{
+            //    RndIndex = 1;
+            //}
 
-        //            RndIndex = (RndIndex + 1);
-        //            if (RndIndex > Information.UBound(RndHistory))
-        //            {
-        //                RndIndex = 1;
-        //            }
-
-        //            DiceRet = Conversion.Int(max * RndHistory[RndIndex] + 1f);
-        //            return DiceRet;
-        //        }
+            //DiceRet = Conversion.Int(max * RndHistory[RndIndex] + 1f);
+            //return DiceRet;
+        }
 
         public static IList<string> ToL(string list)
         {
