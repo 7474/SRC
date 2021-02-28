@@ -148,7 +148,7 @@ namespace SRCTestForm
             }
             else
             {
-                Left = Screen.PrimaryScreen.Bounds.Width - Width / 2;
+                Left = (Screen.PrimaryScreen.Bounds.Width - Width) / 2;
             }
 
             if (MainForm.Visible
@@ -160,7 +160,7 @@ namespace SRCTestForm
             }
             else
             {
-                Top = Screen.PrimaryScreen.Bounds.Height - Height / 2;
+                Top = (Screen.PrimaryScreen.Bounds.Height - Height) / 2;
             }
 
             // XXX この辺からは親にいたほうがしっくりくる
