@@ -348,17 +348,12 @@ namespace SRCTestForm
         }
 
         // リストボックスを閉じる
-        private void frmListBox_FormClosed(object eventSender, FormClosedEventArgs eventArgs)
+        private void frmListBox_FormClosing(object sender, FormClosingEventArgs e)
         {
             GUI.TopItem = (lstItems.TopIndex + 1);
             GUI.IsFormClicked = true;
-            // XXX これ要る？
-            //if (!GUI.IsMordal & Visible)
-            //{
-            //    // UPGRADE_ISSUE: Event パラメータ Cancel はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="FB723E3C-1C06-4D2B-B083-E6CD0D334DA8"' をクリックしてください。
-            //    Cancel = 1;
-            //}
-
+            // インスタンスは残して非表示にだけする
+            e.Cancel = true;
             Hide();
         }
 
