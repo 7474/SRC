@@ -36,6 +36,7 @@ namespace SRCTestForm
 
         private IList<ListBoxItem> ListBoxItems;
         private ListBoxItem SelectedItem => lstItems.SelectedIndex >= 0 ? ListBoxItems[lstItems.SelectedIndex] : null;
+        // TODO フラグが0件の時にくそ動作になる
         private bool HasFlag => ListBoxItems.Any(x => x.ListItemFlag);
 
         public void ShowItems(frmMain MainForm, string lb_caption, IList<ListBoxItem> list, string lb_info, string lb_mode)
