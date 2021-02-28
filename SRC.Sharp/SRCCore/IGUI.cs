@@ -182,7 +182,7 @@ namespace SRCCore
         // === 各種リストボックスに関する処理 ===
 
         // リストボックスを表示
-        int ListBox(string lb_caption, string[] list, string lb_info, string lb_mode = "");
+        int ListBox(string lb_caption, IList<ListBoxItem> list, string lb_info, string lb_mode = "");
         // リストボックスの高さを大きくする
         void EnlargeListBoxHeight();
         // リストボックスの高さを小さくする
@@ -196,7 +196,7 @@ namespace SRCCore
         // 武器選択用リストボックスを通常のものに切り替え
         void RemovePartsOnListBox();
         // 武器選択用リストボックス
-        int WeaponListBox(Unit u, string caption_msg, string lb_mode, string BGM = "");
+        int WeaponListBox(Unit u, IList<UnitWeapon> weapons, string caption_msg, string lb_mode, string BGM = "");
         // アビリティ選択用リストボックス
         int AbilityListBox(Unit u, string caption_msg, string lb_mode, bool is_item = false);
         // 入力時間制限付きのリストボックスを表示
@@ -304,5 +304,18 @@ namespace SRCCore
         None,
         Left,
         Right,
+    }
+    public class ListBoxItem
+    {
+        // 表示するテキスト
+        public string Text { get; set; }
+
+        // 選択でき『ない』かどうか
+        // 全要素 false なら無視
+        public bool ListItemFlag { get; set; }
+        // フォーカス時に表示するコメント
+        public string ListItemComment { get; set; }
+        // リスト表示の呼び出し側での識別用ID
+        public string ListItemID { get; set; }
     }
 }

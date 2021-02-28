@@ -49,13 +49,15 @@ namespace SRCCore.Commands
             {
                 string argcaption_msg = "武器選択";
                 string arglb_mode = "移動前";
-                SelectedWeapon = GUI.WeaponListBox(SelectedUnit, argcaption_msg, arglb_mode, BGM);
+                // TODO SelectedUnit.Weapons のフィルタ
+                SelectedWeapon = GUI.WeaponListBox(SelectedUnit, SelectedUnit.Weapons, argcaption_msg, arglb_mode, BGM);
             }
             else
             {
                 string argcaption_msg1 = "武器選択";
                 string arglb_mode1 = "移動後";
-                SelectedWeapon = GUI.WeaponListBox(SelectedUnit, argcaption_msg1, arglb_mode1, BGM);
+                // TODO SelectedUnit.Weapons のフィルタ
+                SelectedWeapon = GUI.WeaponListBox(SelectedUnit, SelectedUnit.Weapons, argcaption_msg1, arglb_mode1, BGM);
             }
 
             // キャンセル

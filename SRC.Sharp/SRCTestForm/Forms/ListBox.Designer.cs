@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Windows.Forms;
 using Microsoft.VisualBasic.CompilerServices;
 
-namespace Project1
+namespace SRCTestForm
 {
     [DesignerGenerated()]
     internal partial class frmListBox
@@ -16,8 +16,6 @@ namespace Project1
         {
             // この呼び出しは、Windows フォーム デザイナで必要です。
             InitializeComponent();
-            _lstItems.Name = "lstItems";
-            _labCaption.Name = "labCaption";
         }
         // Form は、コンポーネント一覧に後処理を実行するために dispose をオーバーライドします。
         [DebuggerNonUserCode()]
@@ -103,63 +101,9 @@ namespace Project1
             }
         }
 
-        private ListBox _lstItems;
-
-        public ListBox lstItems
-        {
-            [MethodImpl(MethodImplOptions.Synchronized)]
-            get
-            {
-                return _lstItems;
-            }
-
-            [MethodImpl(MethodImplOptions.Synchronized)]
-            set
-            {
-                if (_lstItems != null)
-                {
-                    _lstItems.DoubleClick -= lstItems_DoubleClick;
-                    _lstItems.MouseDown -= lstItems_MouseDown;
-                    _lstItems.MouseMove -= lstItems_MouseMove;
-                }
-
-                _lstItems = value;
-                if (_lstItems != null)
-                {
-                    _lstItems.DoubleClick += lstItems_DoubleClick;
-                    _lstItems.MouseDown += lstItems_MouseDown;
-                    _lstItems.MouseMove += lstItems_MouseMove;
-                }
-            }
-        }
-
+        private ListBox lstItems;
         public PictureBox picBar;
-        private Label _labCaption;
-
-        public Label labCaption
-        {
-            [MethodImpl(MethodImplOptions.Synchronized)]
-            get
-            {
-                return _labCaption;
-            }
-
-            [MethodImpl(MethodImplOptions.Synchronized)]
-            set
-            {
-                if (_labCaption != null)
-                {
-                    _labCaption.MouseDown -= labCaption_MouseDown;
-                }
-
-                _labCaption = value;
-                if (_labCaption != null)
-                {
-                    _labCaption.MouseDown += labCaption_MouseDown;
-                }
-            }
-        }
-
+        private Label labCaption;
         public Label labMorale2;
         public Label labMorale1;
         public Label labLevel2;
@@ -198,13 +142,13 @@ namespace Project1
             picUnit1 = new PictureBox();
             _Timer1 = new Timer(components);
             _Timer1.Tick += new EventHandler(Timer1_Tick);
-            _lstItems = new ListBox();
-            _lstItems.DoubleClick += new EventHandler(lstItems_DoubleClick);
-            _lstItems.MouseDown += new MouseEventHandler(lstItems_MouseDown);
-            _lstItems.MouseMove += new MouseEventHandler(lstItems_MouseMove);
+            lstItems = new ListBox();
+            lstItems.DoubleClick += new EventHandler(lstItems_DoubleClick);
+            lstItems.MouseDown += new MouseEventHandler(lstItems_MouseDown);
+            lstItems.MouseMove += new MouseEventHandler(lstItems_MouseMove);
             picBar = new PictureBox();
-            _labCaption = new Label();
-            _labCaption.MouseDown += new MouseEventHandler(labCaption_MouseDown);
+            labCaption = new Label();
+            labCaption.MouseDown += new MouseEventHandler(labCaption_MouseDown);
             labMorale2 = new Label();
             labMorale1 = new Label();
             labLevel2 = new Label();
@@ -536,24 +480,24 @@ namespace Project1
             picUnit1.Name = "picUnit1";
             _Timer1.Enabled = false;
             _Timer1.Interval = 100;
-            _lstItems.BackColor = Color.White;
-            _lstItems.Font = new Font("ＭＳ 明朝", 12f, FontStyle.Regular, GraphicsUnit.Point, Conversions.ToByte(128));
-            _lstItems.ForeColor = Color.Black;
-            _lstItems.Size = new Size(643, 103);
-            _lstItems.Location = new Point(6, 32);
-            _lstItems.TabIndex = 0;
-            _lstItems.BorderStyle = BorderStyle.Fixed3D;
-            _lstItems.CausesValidation = true;
-            _lstItems.Enabled = true;
-            _lstItems.IntegralHeight = true;
-            _lstItems.Cursor = Cursors.Default;
-            _lstItems.SelectionMode = SelectionMode.One;
-            _lstItems.RightToLeft = RightToLeft.No;
-            _lstItems.Sorted = false;
-            _lstItems.TabStop = true;
-            _lstItems.Visible = true;
-            _lstItems.MultiColumn = false;
-            _lstItems.Name = "_lstItems";
+            lstItems.BackColor = Color.White;
+            lstItems.Font = new Font("ＭＳ 明朝", 12f, FontStyle.Regular, GraphicsUnit.Point, Conversions.ToByte(128));
+            lstItems.ForeColor = Color.Black;
+            lstItems.Size = new Size(643, 103);
+            lstItems.Location = new Point(6, 32);
+            lstItems.TabIndex = 0;
+            lstItems.BorderStyle = BorderStyle.Fixed3D;
+            lstItems.CausesValidation = true;
+            lstItems.Enabled = true;
+            lstItems.IntegralHeight = true;
+            lstItems.Cursor = Cursors.Default;
+            lstItems.SelectionMode = SelectionMode.One;
+            lstItems.RightToLeft = RightToLeft.No;
+            lstItems.Sorted = false;
+            lstItems.TabStop = true;
+            lstItems.Visible = true;
+            lstItems.MultiColumn = false;
+            lstItems.Name = "lstItems";
             picBar.BackColor = Color.White;
             picBar.ForeColor = Color.FromArgb(0, 0, 128);
             picBar.Size = new Size(643, 13);
@@ -569,21 +513,21 @@ namespace Project1
             picBar.SizeMode = PictureBoxSizeMode.Normal;
             picBar.BorderStyle = BorderStyle.Fixed3D;
             picBar.Name = "picBar";
-            _labCaption.BackColor = Color.White;
-            _labCaption.Font = new Font("ＭＳ 明朝", 12f, FontStyle.Regular, GraphicsUnit.Point, Conversions.ToByte(128));
-            _labCaption.ForeColor = Color.Black;
-            _labCaption.Size = new Size(643, 23);
-            _labCaption.Location = new Point(6, 5);
-            _labCaption.TabIndex = 1;
-            _labCaption.TextAlign = ContentAlignment.TopLeft;
-            _labCaption.Enabled = true;
-            _labCaption.Cursor = Cursors.Default;
-            _labCaption.RightToLeft = RightToLeft.No;
-            _labCaption.UseMnemonic = true;
-            _labCaption.Visible = true;
-            _labCaption.AutoSize = false;
-            _labCaption.BorderStyle = BorderStyle.Fixed3D;
-            _labCaption.Name = "_labCaption";
+            labCaption.BackColor = Color.White;
+            labCaption.Font = new Font("ＭＳ 明朝", 12f, FontStyle.Regular, GraphicsUnit.Point, Conversions.ToByte(128));
+            labCaption.ForeColor = Color.Black;
+            labCaption.Size = new Size(643, 23);
+            labCaption.Location = new Point(6, 5);
+            labCaption.TabIndex = 1;
+            labCaption.TextAlign = ContentAlignment.TopLeft;
+            labCaption.Enabled = true;
+            labCaption.Cursor = Cursors.Default;
+            labCaption.RightToLeft = RightToLeft.No;
+            labCaption.UseMnemonic = true;
+            labCaption.Visible = true;
+            labCaption.AutoSize = false;
+            labCaption.BorderStyle = BorderStyle.Fixed3D;
+            labCaption.Name = "labCaption";
             labMorale2.BackColor = Color.FromArgb(192, 192, 192);
             labMorale2.Text = "M";
             labMorale2.Font = new Font("ＭＳ Ｐ明朝", 11.25f, FontStyle.Bold | FontStyle.Regular, GraphicsUnit.Point, Conversions.ToByte(128));
@@ -743,9 +687,9 @@ namespace Project1
             Controls.Add(txtHP2);
             Controls.Add(picUnit2);
             Controls.Add(picUnit1);
-            Controls.Add(_lstItems);
+            Controls.Add(lstItems);
             Controls.Add(picBar);
-            Controls.Add(_labCaption);
+            Controls.Add(labCaption);
             Controls.Add(labMorale2);
             Controls.Add(labMorale1);
             Controls.Add(labLevel2);
