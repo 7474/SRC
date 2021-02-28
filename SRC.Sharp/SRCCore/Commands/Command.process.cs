@@ -83,6 +83,8 @@ namespace SRCCore.Commands
             MapCell cell = null,
             Unit unit = null)
         {
+            LogDebug();
+
             // 閲覧モードはキャンセルで終了。それ以外の入力は無視
             if (ViewMode)
             {
@@ -143,6 +145,8 @@ namespace SRCCore.Commands
             MapCell cell = null,
             Unit unit = null)
         {
+            LogDebug();
+
             SelectedUnit = unit;
             SelectedUnitMoveCost = 0;
 
@@ -355,6 +359,8 @@ namespace SRCCore.Commands
             MapCell cell = null,
             Unit unit = null)
         {
+            LogDebug();
+
             var unitCommands = new List<UiCommand>();
 
             //// MOD START 240aClearUnitStatus
@@ -2165,6 +2171,8 @@ namespace SRCCore.Commands
             MapCell cell = null,
             Unit unit = null)
         {
+            LogDebug();
+
             Event.SelectedUnitForEvent = SelectedUnit;
             var unitCommands = new List<UiCommand>();
 
@@ -2784,6 +2792,8 @@ namespace SRCCore.Commands
             MapCell cell = null,
             Unit unit = null)
         {
+            LogDebug();
+
             // TODO
             if (cell == null)
             {
@@ -2915,6 +2925,8 @@ namespace SRCCore.Commands
             MapCell cell = null,
             Unit unit = null)
         {
+            LogDebug();
+
             //if (1 <= GUI.PixelToMapX(GUI.MouseX) & GUI.PixelToMapX(GUI.MouseX) <= Map.MapWidth)
             //{
             //    if (1 <= GUI.PixelToMapY(GUI.MouseY) & GUI.PixelToMapY(GUI.MouseY) <= Map.MapHeight)
@@ -2938,6 +2950,8 @@ namespace SRCCore.Commands
         // ＧＵＩの処理をキャンセル
         public void CancelCommand()
         {
+            LogDebug();
+
             var currentUnit = SelectedUnit;
             switch (CommandState ?? "")
             {

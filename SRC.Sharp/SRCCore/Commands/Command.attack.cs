@@ -14,6 +14,8 @@ namespace SRCCore.Commands
         // 「攻撃」コマンドを開始
         private void StartAttackCommand()
         {
+            LogDebug();
+
             int i, j;
             Unit t;
             int min_range, max_range;
@@ -309,17 +311,17 @@ namespace SRCCore.Commands
             //    GUI.Center(currentUnit.x, currentUnit.y);
             //}
 
-            //GUI.MaskScreen();
+            GUI.MaskScreen();
 
-            //// ターゲット選択へ
-            //if (CommandState == "コマンド選択")
-            //{
-            //    CommandState = "ターゲット選択";
-            //}
-            //else
-            //{
-            //    CommandState = "移動後ターゲット選択";
-            //}
+            // ターゲット選択へ
+            if (CommandState == "コマンド選択")
+            {
+                CommandState = "ターゲット選択";
+            }
+            else
+            {
+                CommandState = "移動後ターゲット選択";
+            }
 
             //// カーソル自動移動を行う？
             //if (!SRC.AutoMoveCursor)
@@ -377,6 +379,8 @@ namespace SRCCore.Commands
         // 「攻撃」コマンドを終了
         private void FinishAttackCommand()
         {
+            LogDebug();
+
             int i;
             var earnings = false;
             string def_mode = "";
@@ -1551,6 +1555,8 @@ namespace SRCCore.Commands
         // マップ攻撃による「攻撃」コマンドを終了
         private void MapAttackCommand()
         {
+            LogDebug();
+
             throw new NotImplementedException();
             //// MOD END MARGE
             //int i;

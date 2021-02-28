@@ -13,6 +13,8 @@ namespace SRCCore.Commands
         // ユニットコマンドを実行
         public void UnitCommand(UiCommand command)
         {
+            LogDebug();
+
             PrevCommand = SelectedCommand;
             var unit = SelectedUnit;
             var prev_used_action = unit.UsedAction;
@@ -419,6 +421,8 @@ namespace SRCCore.Commands
         // 他のコマンドの終了処理にも使われる
         private void WaitCommand(bool WithoutAction = false)
         {
+            LogDebug();
+
             // コマンド終了時はターゲットを解除
             SelectedTarget = null;
 

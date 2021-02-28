@@ -13,6 +13,8 @@ namespace SRCCore.Commands
         // マップコマンド実行
         public void MapCommand(UiCommand command)
         {
+            LogDebug();
+
             CommandState = "ユニット選択";
             switch (command.Id)
             {

@@ -13,6 +13,8 @@ namespace SRCCore.Commands
         // 「特殊能力一覧」コマンド
         private void FeatureListCommand()
         {
+            LogDebug();
+
             throw new NotImplementedException();
             //string[] list;
             //var id_list = default(string[]);
@@ -437,6 +439,8 @@ namespace SRCCore.Commands
         // 「武器一覧」コマンド
         private void WeaponListCommand()
         {
+            LogDebug();
+
             throw new NotImplementedException();
             //string[] list;
             //int i;
@@ -658,6 +662,8 @@ namespace SRCCore.Commands
         // 「アビリティ一覧」コマンド
         private void AbilityListCommand()
         {
+            LogDebug();
+
             throw new NotImplementedException();
             //string[] list;
             //int i;
@@ -871,6 +877,8 @@ namespace SRCCore.Commands
         // 「移動範囲」コマンド
         private void ShowAreaInSpeedCommand()
         {
+            LogDebug();
+
             SelectedCommand = "移動範囲";
             //// If MainWidth <> 15 Then
             //if (GUI.NewGUIMode)
@@ -888,6 +896,8 @@ namespace SRCCore.Commands
         // 「射程範囲」コマンド
         private void ShowAreaInRangeCommand()
         {
+            LogDebug();
+
             throw new NotImplementedException();
             //int w, i, max_range;
             //SelectedCommand = "射程範囲";
@@ -931,6 +941,5 @@ namespace SRCCore.Commands
 
             //CommandState = "ターゲット選択";
         }
-
     }
 }
