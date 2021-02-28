@@ -36,6 +36,16 @@ namespace SRCCore.Commands
                         ShowAreaInSpeedCommand();
                     }
                     break;
+                case AttackCmdID: // 攻撃
+                    if (command.Label == "攻撃")
+                    {
+                        StartAttackCommand();
+                    }
+                    else
+                    {
+                        ShowAreaInRangeCommand();
+                    }
+                    break;
 
                 case WaitCmdID: // 待機
                     WaitCommand();
