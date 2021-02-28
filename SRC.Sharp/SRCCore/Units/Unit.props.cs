@@ -278,41 +278,41 @@ namespace SRCCore.Units
         //}
 
 
-        //// 最大ＨＰ値
-        //public int MaxHP
-        //{
-        //    get
-        //    {
-        //        int MaxHPRet = default;
-        //        MaxHPRet = lngMaxHP;
+        // 最大ＨＰ値
+        public int MaxHP
+        {
+            get
+            {
+                int MaxHPRet =lngMaxHP;
 
-        //        // パイロットによる修正
-        //        if (CountPilot() > 0)
-        //        {
-        //            // 霊力変換器装備ユニットは霊力に応じて最大ＨＰが変化
-        //            string argfname = "霊力変換器";
-        //            if (IsFeatureAvailable(argfname))
-        //            {
-        //                MaxHPRet = (int)(MaxHPRet + 10d * PlanaLevel());
-        //            }
+                // TODO Impl
+                //// パイロットによる修正
+                //if (CountPilot() > 0)
+                //{
+                //    // 霊力変換器装備ユニットは霊力に応じて最大ＨＰが変化
+                //    string argfname = "霊力変換器";
+                //    if (IsFeatureAvailable(argfname))
+                //    {
+                //        MaxHPRet = (int)(MaxHPRet + 10d * PlanaLevel());
+                //    }
 
-        //            // オーラ変換器装備ユニットはオーラレベルに応じて最大ＨＰが変化
-        //            string argfname1 = "オーラ変換器";
-        //            if (IsFeatureAvailable(argfname1))
-        //            {
-        //                MaxHPRet = (int)(MaxHPRet + 100d * AuraLevel());
-        //            }
-        //        }
+                //    // オーラ変換器装備ユニットはオーラレベルに応じて最大ＨＰが変化
+                //    string argfname1 = "オーラ変換器";
+                //    if (IsFeatureAvailable(argfname1))
+                //    {
+                //        MaxHPRet = (int)(MaxHPRet + 100d * AuraLevel());
+                //    }
+                //}
 
-        //        // 最大ＨＰは最低でも1
-        //        if (MaxHPRet < 1)
-        //        {
-        //            MaxHPRet = 1;
-        //        }
+                //// 最大ＨＰは最低でも1
+                //if (MaxHPRet < 1)
+                //{
+                //    MaxHPRet = 1;
+                //}
 
-        //        return MaxHPRet;
-        //    }
-        //}
+                return MaxHPRet;
+            }
+        }
 
         // 最大ＥＮ値
         public int MaxEN
@@ -350,33 +350,29 @@ namespace SRCCore.Units
             }
         }
 
-        //// ＨＰ
+        // ＨＰ
+        public int HP
+        {
+            get
+            {
+                return lngHP;
+            }
 
-        //public int HP
-        //{
-        //    get
-        //    {
-        //        int HPRet = default;
-        //        HPRet = lngHP;
-        //        return HPRet;
-        //    }
-
-        //    set
-        //    {
-        //        lngHP = value;
-        //        if (lngHP > MaxHP)
-        //        {
-        //            lngHP = MaxHP;
-        //        }
-        //        else if (lngHP < 0)
-        //        {
-        //            lngHP = 0;
-        //        }
-        //    }
-        //}
+            set
+            {
+                lngHP = value;
+                if (lngHP > MaxHP)
+                {
+                    lngHP = MaxHP;
+                }
+                else if (lngHP < 0)
+                {
+                    lngHP = 0;
+                }
+            }
+        }
 
         //// ＥＮ
-
         public int EN
         {
             get => intEN;

@@ -571,7 +571,7 @@ namespace SRCCore.Units
         // ユニットが破壊された時の処理
         public void Die(bool without_update = false)
         {
-            throw new NotImplementedException();
+            // TODO Impl
             //    short i, j;
             //    string pname;
             //    HP = 0;
@@ -586,8 +586,7 @@ namespace SRCCore.Units
             //        goto SkipExplode;
             //    }
 
-            //    // UPGRADE_NOTE: オブジェクト MapDataForUnit() をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-            //    Map.MapDataForUnit[x, y] = null;
+            Map.MapDataForUnit[x, y] = null;
 
             //    // 爆発表示
             //    GUI.ClearPicture();
@@ -668,11 +667,11 @@ namespace SRCCore.Units
             //        }
             //    }
 
-            //    // 情報更新
-            //    if (!without_update)
-            //    {
-            //        SRC.PList.UpdateSupportMod(this);
-            //    }
+            // 情報更新
+            if (!without_update)
+            {
+                SRC.PList.UpdateSupportMod(this);
+            }
         }
 
         // スペシャルパワー自爆による自爆

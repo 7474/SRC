@@ -813,10 +813,11 @@ namespace SRCCore.Pilots
         //    Intuition = (short)GeneralLib.MinLng((short)(IntuitionBase + IntuitionMod) + IntuitionMod2, 9999);
         //}
 
+        // 周りのユニットによる支援効果を更新
+        public void UpdateSupportMod()
+        {
+        }
         // TODO Impl
-        //// 周りのユニットによる支援効果を更新
-        //public void UpdateSupportMod()
-        //{
         //    Unit u, my_unit;
         //    string my_party;
         //    short my_cmd_rank;

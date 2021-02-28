@@ -2,7 +2,7 @@
 // 本プログラムはフリーソフトであり、無保証です。
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
-
+using Microsoft.Extensions.Logging;
 using SRCCore.Events;
 using SRCCore.Expressions;
 using SRCCore.Filesystem;
@@ -14,6 +14,8 @@ namespace SRCCore
 {
     public partial class SRC
     {
+        public ILogger Log { get; private set; }
+
         public IGUI GUI { get; set; }
         public IGUIMap GUIMap { get; set; }
         public IGUIStatus GUIStatus { get; set; }
@@ -130,6 +132,17 @@ namespace SRCCore
 
         public SRC()
         {
+            // TODO 外部からの注入にする
+            using (var loggerFactory = LoggerFactory.Create(builder =>
+            {
+                builder
+                    .SetMinimumLevel(LogLevel.Debug)
+                    .AddDebug();
+            }))
+            {
+                Log = loggerFactory.CreateLogger("SRCCore");
+            }
+
             Event = new Event(this);
             Expression = new Expression(this);
             Map = new Map(this);

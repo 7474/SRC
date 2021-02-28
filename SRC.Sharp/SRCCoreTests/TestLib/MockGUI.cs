@@ -187,7 +187,7 @@ namespace SRCCoreTests.TestLib
             throw new NotImplementedException();
         }
 
-        public int ListBox(string lb_caption, string[] list, string lb_info, string lb_mode = "")
+        public int ListBox(string lb_caption, IList<ListBoxItem> list, string lb_info, string lb_mode = "")
         {
             throw new NotImplementedException();
         }
@@ -397,7 +397,7 @@ namespace SRCCoreTests.TestLib
             throw new NotImplementedException();
         }
 
-        public int WeaponListBox(Unit u, string caption_msg, string lb_mode, string BGM = "")
+        public int WeaponListBox(Unit u, IList<UnitWeapon> weapons, string caption_msg, string lb_mode, string BGM = "")
         {
             throw new NotImplementedException();
         }

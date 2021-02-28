@@ -13,6 +13,8 @@ namespace SRCCore.Commands
         // 「移動」コマンドを開始
         private void StartMoveCommand()
         {
+            LogDebug();
+
             SelectedCommand = "移動";
             Map.AreaInSpeed(SelectedUnit);
             //if (!Expression.IsOptionDefined("大型マップ"))
@@ -36,6 +38,8 @@ namespace SRCCore.Commands
         // 「移動」コマンドを終了
         private void FinishMoveCommand()
         {
+            LogDebug();
+
             GUI.LockGUI();
 
             var u = SelectedUnit;

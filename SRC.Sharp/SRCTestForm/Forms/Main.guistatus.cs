@@ -4,7 +4,9 @@ using SRCCore.Maps;
 using SRCCore.Pilots;
 using SRCCore.Units;
 using SRCTestForm.Extensions;
+using System;
 using System.Drawing;
+using System.Drawing.Text;
 using System.IO;
 using System.Text;
 
@@ -35,7 +37,10 @@ namespace SRCTestForm
         public Color StatusFontColorNormalString;
 
         // XXX
-        private Font StatusFont = new Font(FontFamily.GenericMonospace, 9.75f, FontStyle.Regular, GraphicsUnit.Point);
+        private TextRenderingHint StatusTextRenderingHint = TextRenderingHint.AntiAliasGridFit;
+        //private Font StatusFont = new Font("Yu Gothic UI", 10f);
+        //private Font StatusFont = new Font("Meiryo UI", 10f);
+        private Font StatusFont = new Font("ＭＳ ゴシック", 10f);
         private Brush StatusNormalStringBrush = Brushes.Black;
         private Brush StatusAbilityNameBrush = Brushes.Blue;
         private Brush StatusAbilityEnableBrush = Brushes.Red;
@@ -62,6 +67,7 @@ namespace SRCTestForm
             picUnitStatus.NewImageIfNull();
             using (var g = Graphics.FromImage(picUnitStatus.Image))
             {
+                g.TextRenderingHint = StatusTextRenderingHint;
                 g.DrawString(sb.ToString(), StatusFont, StatusNormalStringBrush, 0, 0);
             }
 
@@ -362,6 +368,7 @@ namespace SRCTestForm
                 picPilotStatus.NewImageIfNull();
                 using (var g = Graphics.FromImage(picPilotStatus.Image))
                 {
+                    g.TextRenderingHint = StatusTextRenderingHint;
                     g.DrawString(sb.ToString(), StatusFont, StatusNormalStringBrush, 0, 0);
                 }
                 // XXX get_Bitmap
@@ -374,7 +381,17 @@ namespace SRCTestForm
                 picUnitStatus.NewImageIfNull();
                 using (var g = Graphics.FromImage(picUnitStatus.Image))
                 {
-                    g.DrawString(sb.ToString(), StatusFont, StatusNormalStringBrush, 0, 0);
+                    g.TextRenderingHint = StatusTextRenderingHint;
+                    var uStatus = $"HP:{u.HP}/{u.MaxHP} EN:{u.EN}/{u.MaxEN}";
+                    g.DrawString(
+                        uStatus +
+                        Environment.NewLine +
+                        sb.ToString(),
+                        StatusFont,
+                        StatusNormalStringBrush,
+                        0,
+                        0
+                    );
                 }
             }
 

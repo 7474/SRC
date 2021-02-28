@@ -3,6 +3,9 @@
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
 
+using Microsoft.Extensions.Logging;
+using System.Diagnostics;
+
 namespace SRCCore.Commands
 {
     // ユニット＆マップコマンドの実行を行うモジュール
@@ -18,6 +21,16 @@ namespace SRCCore.Commands
         public Command(SRC src)
         {
             SRC = src;
+        }
+
+        private void LogDebug(string message = "", params string[] param)
+        {
+            string method = new StackFrame(1).GetMethod().Name;
+            SRC.Log.LogDebug(method
+                + $"({CommandState},{(WaitClickMode ? "W" : "-")},{(ViewMode ? "V" : "-")})"
+                + message
+                + " "
+                + string.Join(", ", param));
         }
     }
 }

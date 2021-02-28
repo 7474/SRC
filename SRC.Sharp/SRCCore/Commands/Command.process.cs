@@ -83,6 +83,8 @@ namespace SRCCore.Commands
             MapCell cell = null,
             Unit unit = null)
         {
+            LogDebug();
+
             // 閲覧モードはキャンセルで終了。それ以外の入力は無視
             if (ViewMode)
             {
@@ -143,6 +145,8 @@ namespace SRCCore.Commands
             MapCell cell = null,
             Unit unit = null)
         {
+            LogDebug();
+
             SelectedUnit = unit;
             SelectedUnitMoveCost = 0;
 
@@ -355,6 +359,8 @@ namespace SRCCore.Commands
             MapCell cell = null,
             Unit unit = null)
         {
+            LogDebug();
+
             var unitCommands = new List<UiCommand>();
 
             //// MOD START 240aClearUnitStatus
@@ -1280,20 +1286,11 @@ namespace SRCCore.Commands
                     //    }
                     //}
 
-                    //// 攻撃コマンド
-                    //// UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-                    //GUI.MainForm.mnuUnitCommandItem(AttackCmdID).Caption = "攻撃";
-                    //var loopTo11 = currentUnit.CountWeapon();
-                    //for (i = 1; i <= loopTo11; i++)
-                    //{
-                    //    string argref_mode1 = "移動前";
-                    //    if (currentUnit.IsWeaponUseful(i, argref_mode1))
-                    //    {
-                    //        // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-                    //        GUI.MainForm.mnuUnitCommandItem(AttackCmdID).Visible = true;
-                    //        break;
-                    //    }
-                    //}
+                    // 攻撃コマンド
+                    if (currentUnit.Weapons.Any(x => x.IsWeaponUseful("移動前")))
+                    {
+                        unitCommands.Add(new UiCommand(AttackCmdID, "攻撃"));
+                    }
 
                     //if (currentUnit.Area == "地中")
                     //{
@@ -2174,6 +2171,8 @@ namespace SRCCore.Commands
             MapCell cell = null,
             Unit unit = null)
         {
+            LogDebug();
+
             Event.SelectedUnitForEvent = SelectedUnit;
             var unitCommands = new List<UiCommand>();
 
@@ -2255,22 +2254,11 @@ namespace SRCCore.Commands
                 //    }
                 //}
 
-                //// 攻撃コマンド
-                //// UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-                //GUI.MainForm.mnuUnitCommandItem(AttackCmdID).Caption = "攻撃";
-                //// UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-                //GUI.MainForm.mnuUnitCommandItem(AttackCmdID).Visible = false;
-                //var loopTo28 = currentUnit.CountWeapon();
-                //for (i = 1; i <= loopTo28; i++)
-                //{
-                //    string argref_mode6 = "移動後";
-                //    if (currentUnit.IsWeaponUseful(i, argref_mode6))
-                //    {
-                //        // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-                //        GUI.MainForm.mnuUnitCommandItem(AttackCmdID).Visible = true;
-                //        break;
-                //    }
-                //}
+                // 攻撃コマンド
+                if (currentUnit.Weapons.Any(x => x.IsWeaponUseful("移動後")))
+                {
+                    unitCommands.Add(new UiCommand(AttackCmdID, "攻撃"));
+                }
 
                 //if (currentUnit.Area == "地中")
                 //{
@@ -2804,6 +2792,8 @@ namespace SRCCore.Commands
             MapCell cell = null,
             Unit unit = null)
         {
+            LogDebug();
+
             // TODO
             if (cell == null)
             {
@@ -2894,38 +2884,38 @@ namespace SRCCore.Commands
 
                 // ターゲットを選択
                 SelectedTarget = Map.MapDataForUnit[SelectedX, SelectedY];
-                //switch (SelectedCommand ?? "")
-                //{
-                //    case "攻撃":
-                //        FinishAttackCommand();
-                //        break;
+                switch (SelectedCommand ?? "")
+                {
+                    case "攻撃":
+                        FinishAttackCommand();
+                        break;
 
-                //    case "アビリティ":
-                //    case "アイテム":
-                //        FinishAbilityCommand();
-                //        break;
+                        //    case "アビリティ":
+                        //    case "アイテム":
+                        //        FinishAbilityCommand();
+                        //        break;
 
-                //    case "会話":
-                //        FinishTalkCommand();
-                //        break;
+                        //    case "会話":
+                        //        FinishTalkCommand();
+                        //        break;
 
-                //    case "修理":
-                //        FinishFixCommand();
-                //        break;
+                        //    case "修理":
+                        //        FinishFixCommand();
+                        //        break;
 
-                //    case "補給":
-                //        FinishSupplyCommand();
-                //        break;
+                        //    case "補給":
+                        //        FinishSupplyCommand();
+                        //        break;
 
-                //    case "スペシャルパワー":
-                //        FinishSpecialPowerCommand();
-                //        break;
+                        //    case "スペシャルパワー":
+                        //        FinishSpecialPowerCommand();
+                        //        break;
 
-                //    case "攻撃命令":
-                //    case "護衛命令":
-                //        FinishOrderCommand();
-                //        break;
-                //}
+                        //    case "攻撃命令":
+                        //    case "護衛命令":
+                        //        FinishOrderCommand();
+                        //        break;
+                }
             }
         }
 
@@ -2935,6 +2925,8 @@ namespace SRCCore.Commands
             MapCell cell = null,
             Unit unit = null)
         {
+            LogDebug();
+
             //if (1 <= GUI.PixelToMapX(GUI.MouseX) & GUI.PixelToMapX(GUI.MouseX) <= Map.MapWidth)
             //{
             //    if (1 <= GUI.PixelToMapY(GUI.MouseY) & GUI.PixelToMapY(GUI.MouseY) <= Map.MapHeight)
@@ -2958,6 +2950,8 @@ namespace SRCCore.Commands
         // ＧＵＩの処理をキャンセル
         public void CancelCommand()
         {
+            LogDebug();
+
             var currentUnit = SelectedUnit;
             switch (CommandState ?? "")
             {

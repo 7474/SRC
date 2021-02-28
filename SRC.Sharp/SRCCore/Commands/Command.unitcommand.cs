@@ -13,6 +13,8 @@ namespace SRCCore.Commands
         // ユニットコマンドを実行
         public void UnitCommand(UiCommand command)
         {
+            LogDebug();
+
             PrevCommand = SelectedCommand;
             var unit = SelectedUnit;
             var prev_used_action = unit.UsedAction;
@@ -36,6 +38,16 @@ namespace SRCCore.Commands
                         ShowAreaInSpeedCommand();
                     }
                     break;
+                case AttackCmdID: // 攻撃
+                    if (command.Label == "攻撃")
+                    {
+                        StartAttackCommand();
+                    }
+                    else
+                    {
+                        ShowAreaInRangeCommand();
+                    }
+                    break;
 
                 case WaitCmdID: // 待機
                     WaitCommand();
@@ -52,7 +64,8 @@ namespace SRCCore.Commands
                     }
                     break;
             }
-
+            
+            //        case MoveCmdID: // 移動
             //        case TeleportCmdID: // テレポート
             //            {
             //                StartTeleportCommand();
@@ -72,19 +85,6 @@ namespace SRCCore.Commands
             //            }
 
             //        case AttackCmdID: // 攻撃
-            //            {
-            //                // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-            //                if (GUI.MainForm.mnuUnitCommandItem.Item(AttackCmdID).Caption == "攻撃")
-            //                {
-            //                    StartAttackCommand();
-            //                }
-            //                else
-            //                {
-            //                    ShowAreaInRangeCommand();
-            //                }
-
-            //                break;
-            //            }
 
             //        case FixCmdID: // 修理
             //            {
@@ -421,6 +421,8 @@ namespace SRCCore.Commands
         // 他のコマンドの終了処理にも使われる
         private void WaitCommand(bool WithoutAction = false)
         {
+            LogDebug();
+
             // コマンド終了時はターゲットを解除
             SelectedTarget = null;
 

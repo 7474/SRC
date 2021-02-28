@@ -32,8 +32,8 @@ namespace SRCCore.Commands
         //    // 確保した領域に選択状況を記録
         //    SavedSelectedUnit[SelectionStackIndex] = SelectedUnit;
         //    SavedSelectedTarget[SelectionStackIndex] = SelectedTarget;
-        //    SavedSelectedUnitForEvent[SelectionStackIndex] = Event_Renamed.SelectedUnitForEvent;
-        //    SavedSelectedTargetForEvent[SelectionStackIndex] = Event_Renamed.SelectedTargetForEvent;
+        //    SavedSelectedUnitForEvent[SelectionStackIndex] = Event.SelectedUnitForEvent;
+        //    SavedSelectedTargetForEvent[SelectionStackIndex] = Event.SelectedTargetForEvent;
         //    SavedSelectedWeapon[SelectionStackIndex] = SelectedWeapon;
         //    SavedSelectedWeaponName[SelectionStackIndex] = SelectedWeaponName;
         //    SavedSelectedTWeapon[SelectionStackIndex] = SelectedTWeapon;
@@ -45,84 +45,81 @@ namespace SRCCore.Commands
         //    SavedSelectedY[SelectionStackIndex] = SelectedY;
         //}
 
-        //// 選択状況を復元
-        //public void RestoreSelections()
-        //{
-        //    // スタックに積まれていない？
-        //    if (SelectionStackIndex == 0)
-        //    {
-        //        return;
-        //    }
+        // 選択状況を復元
+        public void RestoreSelections()
+        {
+            // TODO Impl
+            // スタックに積まれていない？
+            if (SelectionStackIndex == 0)
+            {
+                return;
+            }
 
-        //    // スタックトップから記録された選択状況を取り出す
-        //    if (SavedSelectedUnit[SelectionStackIndex] is object)
-        //    {
-        //        SelectedUnit = SavedSelectedUnit[SelectionStackIndex].CurrentForm();
-        //    }
-        //    else
-        //    {
-        //        // UPGRADE_NOTE: オブジェクト SelectedUnit をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-        //        SelectedUnit = null;
-        //    }
+            // スタックトップから記録された選択状況を取り出す
+            if (SavedSelectedUnit[SelectionStackIndex] is object)
+            {
+                SelectedUnit = SavedSelectedUnit[SelectionStackIndex].CurrentForm();
+            }
+            else
+            {
+                SelectedUnit = null;
+            }
 
-        //    if (SavedSelectedTarget[SelectionStackIndex] is object)
-        //    {
-        //        SelectedTarget = SavedSelectedTarget[SelectionStackIndex].CurrentForm();
-        //    }
-        //    else
-        //    {
-        //        // UPGRADE_NOTE: オブジェクト SelectedTarget をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-        //        SelectedTarget = null;
-        //    }
+            if (SavedSelectedTarget[SelectionStackIndex] is object)
+            {
+                SelectedTarget = SavedSelectedTarget[SelectionStackIndex].CurrentForm();
+            }
+            else
+            {
+                SelectedTarget = null;
+            }
 
-        //    if (SavedSelectedUnitForEvent[SelectionStackIndex] is object)
-        //    {
-        //        Event_Renamed.SelectedUnitForEvent = SavedSelectedUnitForEvent[SelectionStackIndex].CurrentForm();
-        //    }
-        //    else
-        //    {
-        //        // UPGRADE_NOTE: オブジェクト SelectedUnitForEvent をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-        //        Event_Renamed.SelectedUnitForEvent = null;
-        //    }
+            if (SavedSelectedUnitForEvent[SelectionStackIndex] is object)
+            {
+                Event.SelectedUnitForEvent = SavedSelectedUnitForEvent[SelectionStackIndex].CurrentForm();
+            }
+            else
+            {
+                Event.SelectedUnitForEvent = null;
+            }
 
-        //    if (SavedSelectedTargetForEvent[SelectionStackIndex] is object)
-        //    {
-        //        Event_Renamed.SelectedTargetForEvent = SavedSelectedTargetForEvent[SelectionStackIndex].CurrentForm();
-        //    }
-        //    else
-        //    {
-        //        // UPGRADE_NOTE: オブジェクト SelectedTargetForEvent をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-        //        Event_Renamed.SelectedTargetForEvent = null;
-        //    }
+            if (SavedSelectedTargetForEvent[SelectionStackIndex] is object)
+            {
+                Event.SelectedTargetForEvent = SavedSelectedTargetForEvent[SelectionStackIndex].CurrentForm();
+            }
+            else
+            {
+                Event.SelectedTargetForEvent = null;
+            }
 
-        //    SelectedWeapon = SavedSelectedWeapon[SelectionStackIndex];
-        //    SelectedWeaponName = SavedSelectedWeaponName[SelectionStackIndex];
-        //    SelectedTWeapon = SavedSelectedTWeapon[SelectionStackIndex];
-        //    SelectedTWeaponName = SavedSelectedTWeaponName[SelectionStackIndex];
-        //    SelectedDefenseOption = SavedSelectedDefenseOption[SelectionStackIndex];
-        //    SelectedAbility = SavedSelectedAbility[SelectionStackIndex];
-        //    SelectedAbilityName = SavedSelectedAbilityName[SelectionStackIndex];
-        //    SelectedX = SavedSelectedX[SelectionStackIndex];
-        //    SelectedY = SavedSelectedY[SelectionStackIndex];
+            SelectedWeapon = SavedSelectedWeapon[SelectionStackIndex];
+            SelectedWeaponName = SavedSelectedWeaponName[SelectionStackIndex];
+            SelectedTWeapon = SavedSelectedTWeapon[SelectionStackIndex];
+            SelectedTWeaponName = SavedSelectedTWeaponName[SelectionStackIndex];
+            SelectedDefenseOption = SavedSelectedDefenseOption[SelectionStackIndex];
+            SelectedAbility = SavedSelectedAbility[SelectionStackIndex];
+            SelectedAbilityName = SavedSelectedAbilityName[SelectionStackIndex];
+            SelectedX = SavedSelectedX[SelectionStackIndex];
+            SelectedY = SavedSelectedY[SelectionStackIndex];
 
-        //    // スタックのインデックスを１減らす
-        //    SelectionStackIndex = (SelectionStackIndex - 1);
+            // スタックのインデックスを１減らす
+            SelectionStackIndex = (SelectionStackIndex - 1);
 
-        //    // スタックの領域を開放
-        //    Array.Resize(ref SavedSelectedUnit, SelectionStackIndex + 1);
-        //    Array.Resize(ref SavedSelectedTarget, SelectionStackIndex + 1);
-        //    Array.Resize(ref SavedSelectedUnitForEvent, SelectionStackIndex + 1);
-        //    Array.Resize(ref SavedSelectedTargetForEvent, SelectionStackIndex + 1);
-        //    Array.Resize(ref SavedSelectedWeapon, SelectionStackIndex + 1);
-        //    Array.Resize(ref SavedSelectedWeaponName, SelectionStackIndex + 1);
-        //    Array.Resize(ref SavedSelectedTWeapon, SelectionStackIndex + 1);
-        //    Array.Resize(ref SavedSelectedTWeaponName, SelectionStackIndex + 1);
-        //    Array.Resize(ref SavedSelectedDefenseOption, SelectionStackIndex + 1);
-        //    Array.Resize(ref SavedSelectedAbility, SelectionStackIndex + 1);
-        //    Array.Resize(ref SavedSelectedAbilityName, SelectionStackIndex + 1);
-        //    Array.Resize(ref SavedSelectedX, SelectionStackIndex + 1);
-        //    Array.Resize(ref SavedSelectedY, SelectionStackIndex + 1);
-        //}
+            //// スタックの領域を開放
+            //Array.Resize(ref SavedSelectedUnit, SelectionStackIndex + 1);
+            //Array.Resize(ref SavedSelectedTarget, SelectionStackIndex + 1);
+            //Array.Resize(ref SavedSelectedUnitForEvent, SelectionStackIndex + 1);
+            //Array.Resize(ref SavedSelectedTargetForEvent, SelectionStackIndex + 1);
+            //Array.Resize(ref SavedSelectedWeapon, SelectionStackIndex + 1);
+            //Array.Resize(ref SavedSelectedWeaponName, SelectionStackIndex + 1);
+            //Array.Resize(ref SavedSelectedTWeapon, SelectionStackIndex + 1);
+            //Array.Resize(ref SavedSelectedTWeaponName, SelectionStackIndex + 1);
+            //Array.Resize(ref SavedSelectedDefenseOption, SelectionStackIndex + 1);
+            //Array.Resize(ref SavedSelectedAbility, SelectionStackIndex + 1);
+            //Array.Resize(ref SavedSelectedAbilityName, SelectionStackIndex + 1);
+            //Array.Resize(ref SavedSelectedX, SelectionStackIndex + 1);
+            //Array.Resize(ref SavedSelectedY, SelectionStackIndex + 1);
+        }
 
         //// 選択を入れ替える
         //public void SwapSelections()

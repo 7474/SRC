@@ -15,6 +15,7 @@ namespace SRCCore.Units
         private SRC SRC { get; }
         private Map Map => SRC.Map;
         private IGUI GUI => SRC.GUI;
+        private Commands.Command Commands => SRC.Commands;
 
         public Unit(SRC src)
         {
@@ -140,13 +141,8 @@ namespace SRCCore.Units
         public string strSpecialEffectImmune;
 
         // 武器データ
-        private WeaponData[] WData;
-        private int[] lngWeaponPower;
-        private int[] intWeaponMaxRange;
-        private int[] intWeaponPrecision;
-        private int[] intWeaponCritical;
-        private string[] strWeaponClass;
-        private int[] intMaxBullet;
+        private List<UnitWeapon> WData = new List<UnitWeapon>();
+        public IList<UnitWeapon> Weapons => WData.AsReadOnly();
 
         // アビリティデータ
         private AbilityData[] adata;
