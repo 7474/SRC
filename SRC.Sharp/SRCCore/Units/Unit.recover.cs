@@ -14,22 +14,15 @@ namespace SRCCore.Units
             Update();
             //    short i, j;
 
-            //    // パイロットのステータスを全回復
-            //    var loopTo = CountPilot();
-            //    for (i = 1; i <= loopTo; i++)
-            //    {
-            //        Pilot localPilot() { object argIndex1 = i; var ret = Pilot(ref argIndex1); return ret; }
-
-            //        localPilot().FullRecover();
-            //    }
-
-            //    var loopTo1 = CountSupport();
-            //    for (i = 1; i <= loopTo1; i++)
-            //    {
-            //        Pilot localSupport() { object argIndex1 = i; var ret = Support(ref argIndex1); return ret; }
-
-            //        localSupport().FullRecover();
-            //    }
+            // パイロットのステータスを全回復
+            foreach (var p in Pilots)
+            {
+                p.FullRecover();
+            }
+            foreach (var p in SupportPilots)
+            {
+                p.FullRecover();
+            }
 
             //    string argfname = "追加パイロット";
             //    if (IsFeatureAvailable(ref argfname))
@@ -44,68 +37,63 @@ namespace SRCCore.Units
             //        }
             //    }
 
-            //    {
-            //        var withBlock = CurrentForm();
-            //        // ＨＰを回復
-            //        withBlock.HP = withBlock.MaxHP;
+            {
+                var cf = CurrentForm();
+                // ＨＰを回復
+                cf.HP = cf.MaxHP;
 
-            //        // ＥＮ、弾数を回復
-            //        withBlock.FullSupply();
+                // ＥＮ、弾数を回復
+                cf.FullSupply();
 
-            //        // ステータス異常のみを消去
-            //        i = 1;
-            //        while (i <= withBlock.CountCondition())
-            //        {
-            //            string localCondition() { object argIndex1 = i; var ret = withBlock.Condition(ref argIndex1); return ret; }
+                //// ステータス異常のみを消去
+                //i = 1;
+                //while (i <= cf.CountCondition())
+                //{
+                //    string localCondition() { object argIndex1 = i; var ret = cf.Condition(ref argIndex1); return ret; }
 
-            //            string localCondition1() { object argIndex1 = i; var ret = withBlock.Condition(ref argIndex1); return ret; }
+                //    string localCondition1() { object argIndex1 = i; var ret = cf.Condition(ref argIndex1); return ret; }
 
-            //            string localCondition2() { object argIndex1 = i; var ret = withBlock.Condition(ref argIndex1); return ret; }
+                //    string localCondition2() { object argIndex1 = i; var ret = cf.Condition(ref argIndex1); return ret; }
 
-            //            string localCondition3() { object argIndex1 = i; var ret = withBlock.Condition(ref argIndex1); return ret; }
+                //    string localCondition3() { object argIndex1 = i; var ret = cf.Condition(ref argIndex1); return ret; }
 
-            //            string localCondition4() { object argIndex1 = i; var ret = withBlock.Condition(ref argIndex1); return ret; }
+                //    string localCondition4() { object argIndex1 = i; var ret = cf.Condition(ref argIndex1); return ret; }
 
-            //            string localCondition5() { object argIndex1 = i; var ret = withBlock.Condition(ref argIndex1); return ret; }
+                //    string localCondition5() { object argIndex1 = i; var ret = cf.Condition(ref argIndex1); return ret; }
 
-            //            string localCondition6() { object argIndex1 = i; var ret = withBlock.Condition(ref argIndex1); return ret; }
+                //    string localCondition6() { object argIndex1 = i; var ret = cf.Condition(ref argIndex1); return ret; }
 
-            //            if (localCondition() == "残り時間" | localCondition1() == "非操作" | Strings.Right(localCondition2(), 2) == "付加" | Strings.Right(localCondition3(), 2) == "強化" | Strings.Right(localCondition4(), 3) == "付加２" | Strings.Right(localCondition5(), 3) == "強化２" | Strings.Right(localCondition6(), 2) == "ＵＰ")
-            //            {
-            //                i = (short)(i + 1);
-            //            }
-            //            else
-            //            {
-            //                object argIndex3 = i;
-            //                withBlock.DeleteCondition(ref argIndex3);
-            //            }
-            //        }
+                //    if (localCondition() == "残り時間" | localCondition1() == "非操作" | Strings.Right(localCondition2(), 2) == "付加" | Strings.Right(localCondition3(), 2) == "強化" | Strings.Right(localCondition4(), 3) == "付加２" | Strings.Right(localCondition5(), 3) == "強化２" | Strings.Right(localCondition6(), 2) == "ＵＰ")
+                //    {
+                //        i = (short)(i + 1);
+                //    }
+                //    else
+                //    {
+                //        object argIndex3 = i;
+                //        cf.DeleteCondition(ref argIndex3);
+                //    }
+                //}
 
-            //        // サポートアタック＆ガード、同時援護攻撃、カウンター攻撃回数回復
-            //        withBlock.UsedSupportAttack = 0;
-            //        withBlock.UsedSupportGuard = 0;
-            //        withBlock.UsedSyncAttack = 0;
-            //        withBlock.UsedCounterAttack = 0;
-            //        withBlock.Mode = "通常";
+                // サポートアタック＆ガード、同時援護攻撃、カウンター攻撃回数回復
+                cf.UsedSupportAttack = 0;
+                cf.UsedSupportGuard = 0;
+                cf.UsedSyncAttack = 0;
+                cf.UsedCounterAttack = 0;
+                cf.Mode = "通常";
 
-            //        // 他形態も回復
-            //        var loopTo2 = withBlock.CountOtherForm();
-            //        for (i = 1; i <= loopTo2; i++)
-            //        {
-            //            object argIndex4 = i;
-            //            {
-            //                var withBlock1 = withBlock.OtherForm(ref argIndex4);
-            //                withBlock1.HP = withBlock1.MaxHP;
-            //                withBlock1.EN = withBlock1.MaxEN;
-            //                var loopTo3 = withBlock1.CountWeapon();
-            //                for (j = 1; j <= loopTo3; j++)
-            //                    withBlock1.SetBullet(j, withBlock1.MaxBullet(j));
-            //                var loopTo4 = withBlock1.CountAbility();
-            //                for (j = 1; j <= loopTo4; j++)
-            //                    withBlock1.SetStock(j, withBlock1.MaxStock(j));
-            //            }
-            //        }
-            //    }
+                // 他形態も回復
+                foreach(var of in OtherForms)
+                {
+                    of.HP = of.MaxHP;
+                    of.EN = of.MaxEN;
+                    //var loopTo3 = of.CountWeapon();
+                    //for (j = 1; j <= loopTo3; j++)
+                    //    of.SetBullet(j, of.MaxBullet(j));
+                    //var loopTo4 = of.CountAbility();
+                    //for (j = 1; j <= loopTo4; j++)
+                    //    of.SetStock(j, of.MaxStock(j));
+                }
+            }
         }
 
         // ＥＮ＆弾数を回復
