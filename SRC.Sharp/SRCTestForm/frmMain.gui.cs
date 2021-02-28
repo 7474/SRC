@@ -1288,7 +1288,7 @@ namespace SRCTestForm
                 list,
                 //"名称                         攻撃 命中 " + Expression.Term(argtname4, u, 2) + "   弾  " + Expression.Term(argtname5, u, 2) + " 適応 分類",
                 "名称                         攻撃 命中 CT   弾  EN 適応 分類",
-                "連続表示,カーソル移動");
+                "");
             //var WeaponListBoxRet = wlist[ret];
             var WeaponListBoxRet = ret;
             Application.DoEvents();
