@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace SRCCore.Units
@@ -1494,7 +1495,9 @@ namespace SRCCore.Units
 
             //    strSpecialEffectImmune = buf;
 
-            //    // 武器データを更新
+            // 武器データを更新
+            // XXX
+            WData = Data.Weapons.Select(x => new UnitWeapon(SRC, this, x)).ToList();
             //    prev_wdata = new WeaponData[Information.UBound(WData) + 1];
             //    prev_wbullets = new double[Information.UBound(WData) + 1];
             //    var loopTo15 = (short)Information.UBound(WData);

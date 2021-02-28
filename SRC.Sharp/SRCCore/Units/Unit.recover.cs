@@ -10,6 +10,8 @@ namespace SRCCore.Units
         // ステータスを全回復
         public void FullRecover()
         {
+            // XXX
+            Update();
             //    short i, j;
 
             //    // パイロットのステータスを全回復
@@ -188,11 +190,11 @@ namespace SRCCore.Units
         // ＥＮを percent ％回復
         public void RecoverEN(double percent)
         {
-            //    EN = (int)(EN + MaxEN * percent / 100d);
-            //    if (EN <= 0)
-            //    {
-            //        EN = 0;
-            //    }
+            EN = (int)(EN + MaxEN * percent / 100d);
+            if (EN <= 0)
+            {
+                EN = 0;
+            }
         }
 
         // ターン経過によるステータス回復
@@ -219,8 +221,8 @@ namespace SRCCore.Units
             //        return;
             //    }
 
-            //    // データ更新
-            //    Update();
+            // データ更新
+            Update();
 
             //    // 変形に対応して自分を登録
             //    u = this;
@@ -1770,8 +1772,8 @@ namespace SRCCore.Units
             //        }
             //    }
 
-            //    // データ更新
-            //    Update();
+            // データ更新
+            Update();
 
             //    // 時間切れ？
             //    if (is_time_limit)
@@ -2583,7 +2585,7 @@ namespace SRCCore.Units
             //    }
 
             //    RemoveAllSpecialPowerInEffect();
-            //    Update();
+            Update();
             //    var loopTo1 = CountPilot();
             //    for (i = 1; i <= loopTo1; i++)
             //    {
