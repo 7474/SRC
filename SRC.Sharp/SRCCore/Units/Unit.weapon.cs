@@ -18,5 +18,10 @@ namespace SRCCore.Units
         {
             return WData[w - 1];
         }
+
+        public int CountWeapon()
+        {
+            return Weapons.Count;
+        }
     }
 }

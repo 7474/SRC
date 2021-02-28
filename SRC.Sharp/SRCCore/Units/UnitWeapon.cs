@@ -45,6 +45,8 @@ namespace SRCCore.Units
             UpdatedWeaponData = wd;
         }
 
+        public string Name => WeaponData.Name;
+
         // 武器の愛称
         public string WeaponNickname()
         {
@@ -721,7 +723,10 @@ namespace SRCCore.Units
             //    return WeaponAdaptionRet;
         }
 
-        // XXX min は変化しないってことか？
+        public int WeaponMinRange()
+        {
+            return UpdatedWeaponData.MinRange;
+        }
         // 武器 w の最大射程
         public int WeaponMaxRange()
         {

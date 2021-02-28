@@ -377,7 +377,7 @@ namespace SRCCore.Commands
         {
             int i;
             var earnings = false;
-            string def_mode;
+            string def_mode = "";
             var partners = default(Unit[]);
             var BGM = default(string);
             var is_suiside = default(bool);
@@ -401,7 +401,7 @@ namespace SRCCore.Commands
             GUI.LockGUI();
             var currentUnit = SelectedUnit;
             var currentWeapon = currentUnit.Weapon(SelectedWeapon);
-            wname = currentWeapon.WeaponData.Name;
+            wname = currentWeapon.Name;
             SelectedWeaponName = wname;
 
             // 移動後使用後可能な武器か記録しておく
@@ -445,7 +445,7 @@ namespace SRCCore.Commands
             //if (SelectedTWeapon > 0)
             //{
             //    currentTWeapon = SelectedTarget.Weapon(SelectedTWeapon);
-            //    twname = currentTWeapon.WeaponData.Name;
+            //    twname = currentTWeapon.Name;
             //    SelectedTWeaponName = twname;
             //}
             //else
@@ -837,7 +837,7 @@ namespace SRCCore.Commands
                     //else
                     {
                         // 通常攻撃
-                        currentUnit.Attack(SelectedWeapon, SelectedTarget, "", def_mode);
+                        currentUnit.Attack(currentWeapon, SelectedTarget, "", def_mode);
                     }
                 }
                 //else if (SelectedWeapon == 0)
@@ -948,117 +948,117 @@ namespace SRCCore.Commands
 
             // 反撃の実施
             {
-                var withBlock10 = SelectedTarget;
-                if (def_mode != "先制攻撃")
-                {
-                    if (withBlock10.Status == "出撃" & withBlock10.Party != "味方" & SelectedUnit.Status == "出撃")
-                    {
-                        // まだ武器は使用可能か？
-                        if (SelectedTWeapon > 0)
-                        {
-                            string argref_mode4 = "移動前";
-                            if (SelectedTWeapon > withBlock10.CountWeapon())
-                            {
-                                SelectedTWeapon = -1;
-                            }
-                            else if ((twname ?? "") != (withBlock10.Weapon(SelectedTWeapon).Name ?? "") | !withBlock10.IsWeaponAvailable(SelectedTWeapon, argref_mode4))
-                            {
-                                SelectedTWeapon = -1;
-                            }
-                        }
+                //var withBlock10 = SelectedTarget;
+                //if (def_mode != "先制攻撃")
+                //{
+                //    if (withBlock10.Status == "出撃" & withBlock10.Party != "味方" & SelectedUnit.Status == "出撃")
+                //    {
+                //        // まだ武器は使用可能か？
+                //        if (SelectedTWeapon > 0)
+                //        {
+                //            string argref_mode4 = "移動前";
+                //            if (SelectedTWeapon > withBlock10.CountWeapon())
+                //            {
+                //                SelectedTWeapon = -1;
+                //            }
+                //            else if ((twname ?? "") != (withBlock10.Weapon(SelectedTWeapon).Name ?? "") | !withBlock10.IsWeaponAvailable(SelectedTWeapon, argref_mode4))
+                //            {
+                //                SelectedTWeapon = -1;
+                //            }
+                //        }
 
-                        if (SelectedTWeapon > 0)
-                        {
-                            if (!withBlock10.IsTargetWithinRange(SelectedTWeapon, SelectedUnit))
-                            {
-                                // 敵が射程外に逃げていたら武器を再選択
-                                string argamode2 = "反撃";
-                                int argmax_prob2 = 0;
-                                int argmax_dmg2 = 0;
-                                SelectedTWeapon = COM.SelectWeapon(SelectedTarget, SelectedUnit, argamode2, max_prob: argmax_prob2, max_dmg: argmax_dmg2);
-                            }
-                        }
+                //        if (SelectedTWeapon > 0)
+                //        {
+                //            if (!withBlock10.IsTargetWithinRange(SelectedTWeapon, SelectedUnit))
+                //            {
+                //                // 敵が射程外に逃げていたら武器を再選択
+                //                string argamode2 = "反撃";
+                //                int argmax_prob2 = 0;
+                //                int argmax_dmg2 = 0;
+                //                SelectedTWeapon = COM.SelectWeapon(SelectedTarget, SelectedUnit, argamode2, max_prob: argmax_prob2, max_dmg: argmax_dmg2);
+                //            }
+                //        }
 
-                        // 行動不能な場合
-                        if (withBlock10.MaxAction() == 0)
-                        {
-                            SelectedTWeapon = -1;
-                        }
+                //        // 行動不能な場合
+                //        if (withBlock10.MaxAction() == 0)
+                //        {
+                //            SelectedTWeapon = -1;
+                //        }
 
-                        // 魅了された場合
-                        object argIndex11 = "魅了";
-                        if (withBlock10.IsConditionSatisfied(argIndex11) & ReferenceEquals(withBlock10.Master, SelectedUnit))
-                        {
-                            SelectedTWeapon = -1;
-                        }
+                //        // 魅了された場合
+                //        object argIndex11 = "魅了";
+                //        if (withBlock10.IsConditionSatisfied(argIndex11) & ReferenceEquals(withBlock10.Master, SelectedUnit))
+                //        {
+                //            SelectedTWeapon = -1;
+                //        }
 
-                        // 憑依された場合
-                        object argIndex12 = "憑依";
-                        if (withBlock10.IsConditionSatisfied(argIndex12))
-                        {
-                            if ((withBlock10.Master.Party ?? "") == (SelectedUnit.Party ?? ""))
-                            {
-                                SelectedWeapon = -1;
-                            }
-                        }
+                //        // 憑依された場合
+                //        object argIndex12 = "憑依";
+                //        if (withBlock10.IsConditionSatisfied(argIndex12))
+                //        {
+                //            if ((withBlock10.Master.Party ?? "") == (SelectedUnit.Party ?? ""))
+                //            {
+                //                SelectedWeapon = -1;
+                //            }
+                //        }
 
-                        // 踊らされた場合
-                        object argIndex13 = "踊り";
-                        if (withBlock10.IsConditionSatisfied(argIndex13))
-                        {
-                            SelectedTWeapon = -1;
-                        }
+                //        // 踊らされた場合
+                //        object argIndex13 = "踊り";
+                //        if (withBlock10.IsConditionSatisfied(argIndex13))
+                //        {
+                //            SelectedTWeapon = -1;
+                //        }
 
-                        if (SelectedTWeapon > 0 & string.IsNullOrEmpty(def_mode))
-                        {
-                            // 反撃を実施
-                            string argattr10 = "自";
-                            if (withBlock10.IsWeaponClassifiedAs(SelectedTWeapon, argattr10))
-                            {
-                                is_suiside = true;
-                            }
+                //        if (SelectedTWeapon > 0 & string.IsNullOrEmpty(def_mode))
+                //        {
+                //            // 反撃を実施
+                //            string argattr10 = "自";
+                //            if (withBlock10.IsWeaponClassifiedAs(SelectedTWeapon, argattr10))
+                //            {
+                //                is_suiside = true;
+                //            }
 
-                            withBlock10.Attack(SelectedTWeapon, SelectedUnit, "", "");
+                //            withBlock10.Attack(SelectedTWeapon, SelectedUnit, "", "");
 
-                            // 攻撃側のユニットがかばわれた場合は攻撃側のターゲットを再設定
-                            if (SupportGuardUnit2 is object)
-                            {
-                                attack_target = SupportGuardUnit2;
-                                attack_target_hp_ratio = SupportGuardUnitHPRatio2;
-                            }
-                        }
-                        else if (SelectedTWeapon == 0 & withBlock10.x == tx & withBlock10.y == ty)
-                        {
-                            // 反撃出来る武器がなかった場合は射程外メッセージを表示
-                            string argmain_situation9 = "射程外";
-                            string argsub_situation9 = "";
-                            if (withBlock10.IsAnimationDefined(argmain_situation9, sub_situation: argsub_situation9))
-                            {
-                                string argmain_situation7 = "射程外";
-                                string argsub_situation7 = "";
-                                withBlock10.PlayAnimation(argmain_situation7, sub_situation: argsub_situation7);
-                            }
-                            else
-                            {
-                                string argmain_situation8 = "射程外";
-                                string argsub_situation8 = "";
-                                withBlock10.SpecialEffect(argmain_situation8, sub_situation: argsub_situation8);
-                            }
+                //            // 攻撃側のユニットがかばわれた場合は攻撃側のターゲットを再設定
+                //            if (SupportGuardUnit2 is object)
+                //            {
+                //                attack_target = SupportGuardUnit2;
+                //                attack_target_hp_ratio = SupportGuardUnitHPRatio2;
+                //            }
+                //        }
+                //        else if (SelectedTWeapon == 0 & withBlock10.x == tx & withBlock10.y == ty)
+                //        {
+                //            // 反撃出来る武器がなかった場合は射程外メッセージを表示
+                //            string argmain_situation9 = "射程外";
+                //            string argsub_situation9 = "";
+                //            if (withBlock10.IsAnimationDefined(argmain_situation9, sub_situation: argsub_situation9))
+                //            {
+                //                string argmain_situation7 = "射程外";
+                //                string argsub_situation7 = "";
+                //                withBlock10.PlayAnimation(argmain_situation7, sub_situation: argsub_situation7);
+                //            }
+                //            else
+                //            {
+                //                string argmain_situation8 = "射程外";
+                //                string argsub_situation8 = "";
+                //                withBlock10.SpecialEffect(argmain_situation8, sub_situation: argsub_situation8);
+                //            }
 
-                            string argSituation1 = "射程外";
-                            string argmsg_mode1 = "";
-                            withBlock10.PilotMessage(argSituation1, msg_mode: argmsg_mode1);
-                        }
-                        else
-                        {
-                            SelectedTWeapon = -1;
-                        }
-                    }
-                    else
-                    {
-                        SelectedTWeapon = -1;
-                    }
-                }
+                //            string argSituation1 = "射程外";
+                //            string argmsg_mode1 = "";
+                //            withBlock10.PilotMessage(argSituation1, msg_mode: argmsg_mode1);
+                //        }
+                //        else
+                //        {
+                //            SelectedTWeapon = -1;
+                //        }
+                //    }
+                //    else
+                //    {
+                //        SelectedTWeapon = -1;
+                //    }
+                //}
             }
 
             //// サポートアタック

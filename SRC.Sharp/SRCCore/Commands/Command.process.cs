@@ -1280,20 +1280,11 @@ namespace SRCCore.Commands
                     //    }
                     //}
 
-                    //// 攻撃コマンド
-                    //// UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-                    //GUI.MainForm.mnuUnitCommandItem(AttackCmdID).Caption = "攻撃";
-                    //var loopTo11 = currentUnit.CountWeapon();
-                    //for (i = 1; i <= loopTo11; i++)
-                    //{
-                    //    string argref_mode1 = "移動前";
-                    //    if (currentUnit.IsWeaponUseful(i, argref_mode1))
-                    //    {
-                    //        // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-                    //        GUI.MainForm.mnuUnitCommandItem(AttackCmdID).Visible = true;
-                    //        break;
-                    //    }
-                    //}
+                    // 攻撃コマンド
+                    if (currentUnit.Weapons.Any(x => x.IsWeaponUseful("移動前")))
+                    {
+                        unitCommands.Add(new UiCommand(AttackCmdID, "攻撃"));
+                    }
 
                     //if (currentUnit.Area == "地中")
                     //{
@@ -2255,22 +2246,11 @@ namespace SRCCore.Commands
                 //    }
                 //}
 
-                //// 攻撃コマンド
-                //// UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-                //GUI.MainForm.mnuUnitCommandItem(AttackCmdID).Caption = "攻撃";
-                //// UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-                //GUI.MainForm.mnuUnitCommandItem(AttackCmdID).Visible = false;
-                //var loopTo28 = currentUnit.CountWeapon();
-                //for (i = 1; i <= loopTo28; i++)
-                //{
-                //    string argref_mode6 = "移動後";
-                //    if (currentUnit.IsWeaponUseful(i, argref_mode6))
-                //    {
-                //        // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-                //        GUI.MainForm.mnuUnitCommandItem(AttackCmdID).Visible = true;
-                //        break;
-                //    }
-                //}
+                // 攻撃コマンド
+                if (currentUnit.Weapons.Any(x => x.IsWeaponUseful("移動後")))
+                {
+                    unitCommands.Add(new UiCommand(AttackCmdID, "攻撃"));
+                }
 
                 //if (currentUnit.Area == "地中")
                 //{
@@ -2894,38 +2874,38 @@ namespace SRCCore.Commands
 
                 // ターゲットを選択
                 SelectedTarget = Map.MapDataForUnit[SelectedX, SelectedY];
-                //switch (SelectedCommand ?? "")
-                //{
-                //    case "攻撃":
-                //        FinishAttackCommand();
-                //        break;
+                switch (SelectedCommand ?? "")
+                {
+                    case "攻撃":
+                        FinishAttackCommand();
+                        break;
 
-                //    case "アビリティ":
-                //    case "アイテム":
-                //        FinishAbilityCommand();
-                //        break;
+                        //    case "アビリティ":
+                        //    case "アイテム":
+                        //        FinishAbilityCommand();
+                        //        break;
 
-                //    case "会話":
-                //        FinishTalkCommand();
-                //        break;
+                        //    case "会話":
+                        //        FinishTalkCommand();
+                        //        break;
 
-                //    case "修理":
-                //        FinishFixCommand();
-                //        break;
+                        //    case "修理":
+                        //        FinishFixCommand();
+                        //        break;
 
-                //    case "補給":
-                //        FinishSupplyCommand();
-                //        break;
+                        //    case "補給":
+                        //        FinishSupplyCommand();
+                        //        break;
 
-                //    case "スペシャルパワー":
-                //        FinishSpecialPowerCommand();
-                //        break;
+                        //    case "スペシャルパワー":
+                        //        FinishSpecialPowerCommand();
+                        //        break;
 
-                //    case "攻撃命令":
-                //    case "護衛命令":
-                //        FinishOrderCommand();
-                //        break;
-                //}
+                        //    case "攻撃命令":
+                        //    case "護衛命令":
+                        //        FinishOrderCommand();
+                        //        break;
+                }
             }
         }
 
