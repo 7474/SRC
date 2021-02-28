@@ -7,6 +7,7 @@ using SRCCore.Maps;
 using SRCCore.Models;
 using SRCCore.Pilots;
 using SRCCore.VB;
+using System;
 using System.Collections.Generic;
 
 namespace SRCCore.Units
@@ -662,6 +663,11 @@ namespace SRCCore.Units
             //        GUI.DisplaySysMessage(msg + buf, SRC.BattleAnimation);
             //    }
             //}
+            GUI.DisplaySysMessage(
+                $"{Name}({w.Name}) -> {t.Name}" +
+                Environment.NewLine +
+                $"{dmg}",
+                SRC.BattleAnimation);
 
             //msg = "";
 

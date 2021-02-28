@@ -108,16 +108,15 @@ namespace SRCCore.Commands
             //    }
             //}
 
-            //// 選択した武器の種類により、この後のコマンドの進行の仕方が異なる
-            //string argattr = "Ｍ";
-            //if (currentUnit.IsWeaponClassifiedAs(SelectedWeapon, argattr))
-            //{
-            //    SelectedCommand = "マップ攻撃";
-            //}
-            //else
-            //{
-            //    SelectedCommand = "攻撃";
-            //}
+            // 選択した武器の種類により、この後のコマンドの進行の仕方が異なる
+            if (currentWeapon.IsWeaponClassifiedAs("Ｍ"))
+            {
+                SelectedCommand = "マップ攻撃";
+            }
+            else
+            {
+                SelectedCommand = "攻撃";
+            }
 
             // 武器の射程を求めておく
             min_range = currentWeapon.WeaponMinRange();
@@ -657,7 +656,7 @@ namespace SRCCore.Commands
             //// ターゲットの位置を記録
             //tx = SelectedTarget.x;
             //ty = SelectedTarget.y;
-            //GUI.OpenMessageForm(SelectedTarget, SelectedUnit);
+            GUI.OpenMessageForm(SelectedTarget, SelectedUnit);
 
             //// 相手の先制攻撃？
             //{

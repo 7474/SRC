@@ -533,9 +533,42 @@ namespace SRCTestForm
             throw new NotImplementedException();
         }
 
-        public void DisplaySysMessage(string msg, bool int_wait)
+        public void DisplaySysMessage(string msg, bool short_wait)
         {
-            throw new NotImplementedException();
+            // TODO Impl
+            MessageWait = 700;
+            string pnickname;
+            string left_margin;
+            DisplayMessagePilot("システム", "", out pnickname, out left_margin);
+
+            frmMessage.SetMessage(msg);
+            Application.DoEvents();
+
+            var lnum = msg.Length;
+            var wait_time = (int)((0.8d + 0.5d * lnum) * MessageWait);
+            if (short_wait)
+            {
+                wait_time = wait_time / 2;
+            }
+            IsFormClicked = false;
+            var start_time = GeneralLib.timeGetTime();
+            while (start_time + wait_time > GeneralLib.timeGetTime())
+            {
+                // 左ボタンが押されたらメッセージ送り
+                if (IsFormClicked)
+                {
+                    break;
+                }
+
+                // 右ボタンを押されていたら早送り
+                if (IsRButtonPressed())
+                {
+                    break;
+                }
+
+                Sleep(20);
+                Application.DoEvents();
+            }
         }
 
         public void SetupBackground(string draw_mode, string draw_option, int filter_color, double filter_trans_par)
@@ -1419,7 +1452,7 @@ namespace SRCTestForm
             throw new NotImplementedException();
         }
 
-        public bool IsRButtonPressed(bool ignore_message_wait)
+        public bool IsRButtonPressed(bool ignore_message_wait = false)
         {
             // メッセージがウエイト無しならスキップ
             if (!ignore_message_wait & MessageWait == 0)
