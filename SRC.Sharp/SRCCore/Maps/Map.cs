@@ -989,237 +989,203 @@ namespace SRCCore.Maps
         // エリア内のユニットは uparty の指示に従い選択
         public void AreaInRange(int X, int Y, int max_range, int min_range, string uparty)
         {
-            throw new NotImplementedException();
-            //int x1, y1;
-            //int x2, y2;
-            //int i, j;
-            //int n;
+            int x1, y1;
+            int x2, y2;
+            int i, j;
+            int n;
 
-            //// 選択情報をクリア
-            //var loopTo = MapWidth;
-            //for (i = 1; i <= loopTo; i++)
-            //{
-            //    var loopTo1 = MapHeight;
-            //    for (j = 1; j <= loopTo1; j++)
-            //        MaskData[i, j] = true;
-            //}
+            // 選択情報をクリア
+            for (i = 1; i <= MapWidth; i++)
+            {
+                for (j = 1; j <= MapHeight; j++)
+                    MaskData[i, j] = true;
+            }
 
-            //x1 = Math.Max(X - max_range, 1);
-            //x2 = Math.Min(X + max_range, MapWidth);
-            //y1 = Math.Max(Y - max_range, 1);
-            //y2 = Math.Min(Y + max_range, MapHeight);
+            x1 = Math.Max(X - max_range, 1);
+            x2 = Math.Min(X + max_range, MapWidth);
+            y1 = Math.Max(Y - max_range, 1);
+            y2 = Math.Min(Y + max_range, MapHeight);
 
-            //// max_range内かつmin_range外のエリアを選択
-            //var loopTo2 = x2;
-            //for (i = x1; i <= loopTo2; i++)
-            //{
-            //    var loopTo3 = y2;
-            //    for (j = y1; j <= loopTo3; j++)
-            //    {
-            //        n = (Math.Abs((X - i)) + Math.Abs((Y - j)));
-            //        if (n <= max_range)
-            //        {
-            //            if (n >= min_range)
-            //            {
-            //                MaskData[i, j] = false;
-            //            }
-            //        }
-            //    }
-            //}
+            // max_range内かつmin_range外のエリアを選択
+            for (i = x1; i <= x2; i++)
+            {
+                for (j = y1; j <= y2; j++)
+                {
+                    n = (Math.Abs((X - i)) + Math.Abs((Y - j)));
+                    if (n <= max_range)
+                    {
+                        if (n >= min_range)
+                        {
+                            MaskData[i, j] = false;
+                        }
+                    }
+                }
+            }
 
-            //// エリア内のユニットを選択するかそれぞれ判定
-            //switch (uparty ?? "")
-            //{
-            //    case "味方":
-            //    case "ＮＰＣ":
-            //        {
-            //            var loopTo4 = x2;
-            //            for (i = x1; i <= loopTo4; i++)
-            //            {
-            //                var loopTo5 = y2;
-            //                for (j = y1; j <= loopTo5; j++)
-            //                {
-            //                    if (!MaskData[i, j])
-            //                    {
-            //                        if (MapDataForUnit[i, j] is object)
-            //                        {
-            //                            if (!(MapDataForUnit[i, j].Party == "味方") & !(MapDataForUnit[i, j].Party == "ＮＰＣ"))
-            //                            {
-            //                                MaskData[i, j] = true;
-            //                            }
-            //                        }
-            //                    }
-            //                }
-            //            }
+            // エリア内のユニットを選択するかそれぞれ判定
+            switch (uparty ?? "")
+            {
+                case "味方":
+                case "ＮＰＣ":
+                    for (i = x1; i <= x2; i++)
+                    {
+                        for (j = y1; j <= y2; j++)
+                        {
+                            if (!MaskData[i, j])
+                            {
+                                if (MapDataForUnit[i, j] != null)
+                                {
+                                    if (!(MapDataForUnit[i, j].Party == "味方")
+                                        && !(MapDataForUnit[i, j].Party == "ＮＰＣ"))
+                                    {
+                                        MaskData[i, j] = true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    break;
 
-            //            break;
-            //        }
+                case "味方の敵":
+                case "ＮＰＣの敵":
+                    for (i = x1; i <= x2; i++)
+                    {
+                        for (j = y1; j <= y2; j++)
+                        {
+                            if (!MaskData[i, j])
+                            {
+                                if (MapDataForUnit[i, j] is object)
+                                {
+                                    {
+                                        var u = MapDataForUnit[i, j];
+                                        if ((u.Party == "味方" || u.Party == "ＮＰＣ")
+                                            // TODO Impl
+                                            //&& !u.IsConditionSatisfied("暴走")
+                                            //&& !u.IsConditionSatisfied("魅了")
+                                            //&& !u.IsConditionSatisfied("混乱")
+                                            //&& !u.IsConditionSatisfied("憑依")
+                                            //&& !u.IsConditionSatisfied("睡眠")
+                                            )
+                                        {
+                                            MaskData[i, j] = true;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
 
-            //    case "味方の敵":
-            //    case "ＮＰＣの敵":
-            //        {
-            //            var loopTo6 = x2;
-            //            for (i = x1; i <= loopTo6; i++)
-            //            {
-            //                var loopTo7 = y2;
-            //                for (j = y1; j <= loopTo7; j++)
-            //                {
-            //                    if (!MaskData[i, j])
-            //                    {
-            //                        if (MapDataForUnit[i, j] is object)
-            //                        {
-            //                            {
-            //                                var withBlock = MapDataForUnit[i, j];
-            //                                object argIndex1 = "暴走";
-            //                                object argIndex2 = "魅了";
-            //                                object argIndex3 = "混乱";
-            //                                object argIndex4 = "憑依";
-            //                                object argIndex5 = "睡眠";
-            //                                if ((withBlock.Party == "味方" | withBlock.Party == "ＮＰＣ") & !withBlock.IsConditionSatisfied(argIndex1) & !withBlock.IsConditionSatisfied(argIndex2) & !withBlock.IsConditionSatisfied(argIndex3) & !withBlock.IsConditionSatisfied(argIndex4) & !withBlock.IsConditionSatisfied(argIndex5))
-            //                                {
-            //                                    MaskData[i, j] = true;
-            //                                }
-            //                            }
-            //                        }
-            //                    }
-            //                }
-            //            }
+                    break;
 
-            //            break;
-            //        }
+                case "敵":
+                    for (i = x1; i <= x2; i++)
+                    {
+                        for (j = y1; j <= y2; j++)
+                        {
+                            if (!MaskData[i, j])
+                            {
+                                if (MapDataForUnit[i, j] is object)
+                                {
+                                    if (!(MapDataForUnit[i, j].Party == "敵"))
+                                    {
+                                        MaskData[i, j] = true;
+                                    }
+                                }
+                            }
+                        }
+                    }
 
-            //    case "敵":
-            //        {
-            //            var loopTo8 = x2;
-            //            for (i = x1; i <= loopTo8; i++)
-            //            {
-            //                var loopTo9 = y2;
-            //                for (j = y1; j <= loopTo9; j++)
-            //                {
-            //                    if (!MaskData[i, j])
-            //                    {
-            //                        if (MapDataForUnit[i, j] is object)
-            //                        {
-            //                            if (!(MapDataForUnit[i, j].Party == "敵"))
-            //                            {
-            //                                MaskData[i, j] = true;
-            //                            }
-            //                        }
-            //                    }
-            //                }
-            //            }
+                    break;
 
-            //            break;
-            //        }
+                case "敵の敵":
+                    for (i = x1; i <= x2; i++)
+                    {
+                        for (j = y1; j <= y2; j++)
+                        {
+                            if (!MaskData[i, j])
+                            {
+                                if (MapDataForUnit[i, j] is object)
+                                {
+                                    {
+                                        var withBlock1 = MapDataForUnit[i, j];
+                                        if (withBlock1.Party == "敵")
+                                        {
+                                            MaskData[i, j] = true;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
 
-            //    case "敵の敵":
-            //        {
-            //            var loopTo10 = x2;
-            //            for (i = x1; i <= loopTo10; i++)
-            //            {
-            //                var loopTo11 = y2;
-            //                for (j = y1; j <= loopTo11; j++)
-            //                {
-            //                    if (!MaskData[i, j])
-            //                    {
-            //                        if (MapDataForUnit[i, j] is object)
-            //                        {
-            //                            {
-            //                                var withBlock1 = MapDataForUnit[i, j];
-            //                                if (withBlock1.Party == "敵")
-            //                                {
-            //                                    MaskData[i, j] = true;
-            //                                }
-            //                            }
-            //                        }
-            //                    }
-            //                }
-            //            }
+                    break;
 
-            //            break;
-            //        }
+                case "中立":
+                    for (i = x1; i <= x2; i++)
+                    {
+                        for (j = y1; j <= y2; j++)
+                        {
+                            if (!MaskData[i, j])
+                            {
+                                if (MapDataForUnit[i, j] is object)
+                                {
+                                    if (!(MapDataForUnit[i, j].Party == "中立"))
+                                    {
+                                        MaskData[i, j] = true;
+                                    }
+                                }
+                            }
+                        }
+                    }
 
-            //    case "中立":
-            //        {
-            //            var loopTo12 = x2;
-            //            for (i = x1; i <= loopTo12; i++)
-            //            {
-            //                var loopTo13 = y2;
-            //                for (j = y1; j <= loopTo13; j++)
-            //                {
-            //                    if (!MaskData[i, j])
-            //                    {
-            //                        if (MapDataForUnit[i, j] is object)
-            //                        {
-            //                            if (!(MapDataForUnit[i, j].Party == "中立"))
-            //                            {
-            //                                MaskData[i, j] = true;
-            //                            }
-            //                        }
-            //                    }
-            //                }
-            //            }
+                    break;
 
-            //            break;
-            //        }
+                case "中立の敵":
+                    for (i = x1; i <= x2; i++)
+                    {
+                        for (j = y1; j <= y2; j++)
+                        {
+                            if (!MaskData[i, j])
+                            {
+                                if (MapDataForUnit[i, j] is object)
+                                {
+                                    {
+                                        var withBlock2 = MapDataForUnit[i, j];
+                                        if (withBlock2.Party == "中立")
+                                        {
+                                            MaskData[i, j] = true;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
 
-            //    case "中立の敵":
-            //        {
-            //            var loopTo14 = x2;
-            //            for (i = x1; i <= loopTo14; i++)
-            //            {
-            //                var loopTo15 = y2;
-            //                for (j = y1; j <= loopTo15; j++)
-            //                {
-            //                    if (!MaskData[i, j])
-            //                    {
-            //                        if (MapDataForUnit[i, j] is object)
-            //                        {
-            //                            {
-            //                                var withBlock2 = MapDataForUnit[i, j];
-            //                                if (withBlock2.Party == "中立")
-            //                                {
-            //                                    MaskData[i, j] = true;
-            //                                }
-            //                            }
-            //                        }
-            //                    }
-            //                }
-            //            }
+                    break;
 
-            //            break;
-            //        }
+                case "空間":
+                    for (i = x1; i <= x2; i++)
+                    {
+                        for (j = y1; j <= y2; j++)
+                        {
+                            if (!MaskData[i, j])
+                            {
+                                if (MapDataForUnit[i, j] is object)
+                                {
+                                    MaskData[i, j] = true;
+                                }
+                            }
+                        }
+                    }
+                    break;
 
-            //    case "空間":
-            //        {
-            //            var loopTo16 = x2;
-            //            for (i = x1; i <= loopTo16; i++)
-            //            {
-            //                var loopTo17 = y2;
-            //                for (j = y1; j <= loopTo17; j++)
-            //                {
-            //                    if (!MaskData[i, j])
-            //                    {
-            //                        if (MapDataForUnit[i, j] is object)
-            //                        {
-            //                            MaskData[i, j] = true;
-            //                        }
-            //                    }
-            //                }
-            //            }
+                case "全て":
+                case "無差別":
+                    break;
+            }
 
-            //            break;
-            //        }
-
-            //    case "全て":
-            //    case "無差別":
-            //        {
-            //            break;
-            //        }
-            //}
-
-            //// エリアの中心は常に選択
-            //MaskData[X, Y] = false;
+            // エリアの中心は常に選択
+            MaskData[X, Y] = false;
         }
 
         // ユニット u から移動後使用可能な射程 max_range の武器／アビリティを使う場合の効果範囲
