@@ -278,7 +278,7 @@ namespace SRCCore
                     Stage = "味方";
 
                     // ターン数を進める
-                    if (!string.IsNullOrEmpty(Map.MapFileName))
+                    if (!Map.IsStatusView)
                     {
                         Turn = (Turn + 1);
                         TotalTurn = TotalTurn + 1;
@@ -295,7 +295,7 @@ namespace SRCCore
                                 {
                                     if ((currentUnit.Party ?? "") == (uparty ?? ""))
                                     {
-                                        if (string.IsNullOrEmpty(Map.MapFileName))
+                                        if (Map.IsStatusView)
                                         {
                                             currentUnit.UsedAction = 0;
                                         }
@@ -586,7 +586,7 @@ namespace SRCCore
 
                 // 通常のステージでは母艦ユニットまたはレベルがもっとも高い
                 // ユニットを中央に配置
-                if (!string.IsNullOrEmpty(Map.MapFileName) & !Event.IsUnitCenter)
+                if (!Map.IsStatusView && !Event.IsUnitCenter)
                 {
                     foreach (Unit currentUnit in UList.Items)
                     {
@@ -623,7 +623,7 @@ namespace SRCCore
                 }
 
                 // ステータスを表示
-                if (!string.IsNullOrEmpty(Map.MapFileName))
+                if (!Map.IsStatusView)
                 {
                     GUIStatus.DisplayGlobalStatus();
                 }

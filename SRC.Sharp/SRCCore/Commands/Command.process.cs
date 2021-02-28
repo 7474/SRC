@@ -156,7 +156,7 @@ namespace SRCCore.Commands
             {
                 SelectedX = GUI.PixelToMapX((int)GUI.MouseX);
                 SelectedY = GUI.PixelToMapY((int)GUI.MouseY);
-                if (!string.IsNullOrEmpty(Map.MapFileName))
+                if (!Map.IsStatusView)
                 {
                     // 通常のステージ
                     Status.DisplayGlobalStatus();

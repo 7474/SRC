@@ -367,6 +367,11 @@ namespace SRCTestForm
             GUI.MouseX = X;
             GUI.MouseY = Y;
 
+            if (GUI.IsGUILocked)
+            {
+                return;
+            }
+
             if (Button == GuiButton.Left)
             {
                 GUI.PrevMapX = GUI.MapX;
@@ -382,14 +387,6 @@ namespace SRCTestForm
         {
             //Program.Log.LogDebug("picMain_MouseMove {0}", JsonConvert.SerializeObject(eventArgs));
 
-            //int Button = (eventArgs.Button / 0x100000);
-            //int Shift = (ModifierKeys / 0x10000);
-            //float X = (float)Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsX(eventArgs.X);
-            //float Y = (float)Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(eventArgs.Y);
-            //int Index = picMain.GetIndex((Panel)eventSender);
-            //;
-            //int xx, yy;
-            //int i;
             var X = eventArgs.X;
             var Y = eventArgs.Y;
 
@@ -473,7 +470,7 @@ namespace SRCTestForm
             {
                 if (cellUnit == null)
                 {
-                    if (!string.IsNullOrEmpty(Map.MapFileName))
+                    if (!Map.IsStatusView)
                     {
                         // ユニットがいない、かつステータス表示でなければ地形情報を表示
                         Status.DisplayGlobalStatus();
@@ -546,7 +543,7 @@ namespace SRCTestForm
                     GUI.MapY = (VScrollBar.Maximum - VScrollBar.LargeChange + 1);
                 }
 
-                if (string.IsNullOrEmpty(Map.MapFileName))
+                if (Map.IsStatusView)
                 {
                     // ステータス画面の場合は移動量を限定
                     GUI.MapX = 8;
@@ -602,7 +599,7 @@ namespace SRCTestForm
             GUI.MapX = newScrollValue;
 
             // ステータス表示中はスクロールバーを中央に固定
-            if (string.IsNullOrEmpty(Map.MapFileName))
+            if (Map.IsStatusView)
             {
                 GUI.MapX = 8;
             }
@@ -618,7 +615,7 @@ namespace SRCTestForm
         private void VScroll_Change(int newScrollValue)
         {
             GUI.MapY = newScrollValue;
-            if (string.IsNullOrEmpty(Map.MapFileName))
+            if (Map.IsStatusView)
             {
                 // ステータス画面の場合は移動量を制限
                 if (GUI.MapY < 8)

@@ -628,7 +628,7 @@ namespace SRCTestForm
 
         public void Center(int new_x, int new_y)
         {
-            if (string.IsNullOrEmpty(Map.MapFileName))
+            if (Map.IsStatusView)
             {
                 return;
             }
@@ -1371,12 +1371,15 @@ namespace SRCTestForm
         public void LockGUI()
         {
             IsGUILocked = true;
+            MainForm.VScrollBar.Enabled = false;
+            MainForm.HScrollBar.Enabled = false;
         }
 
         public void UnlockGUI()
         {
             IsGUILocked = false;
-            Application.DoEvents();
+            MainForm.VScrollBar.Enabled = true;
+            MainForm.HScrollBar.Enabled = true;
         }
 
         public void SaveCursorPos()

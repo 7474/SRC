@@ -210,7 +210,7 @@ namespace SRCCore.CmdDatas.Commands
                                     {
                                         break;
                                     }
-                                    if (string.IsNullOrEmpty(Map.MapFileName))
+                                    if (Map.IsStatusView)
                                     {
                                         break;
                                     }

@@ -31,6 +31,8 @@ namespace SRCCore.Maps
 
         // マップファイル名
         public string MapFileName;
+        // XXX
+        public bool IsStatusView => string.IsNullOrEmpty(MapFileName);
         // マップの横サイズ
         public int MapWidth;
         // マップの縦サイズ

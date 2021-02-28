@@ -288,7 +288,7 @@ namespace SRCTestForm
             }
 
             // 画面を更新
-            if (!string.IsNullOrEmpty(Map.MapFileName) && string.IsNullOrEmpty(draw_option))
+            if (!Map.IsStatusView && string.IsNullOrEmpty(draw_option))
             {
                 GUI.RefreshScreen();
             }

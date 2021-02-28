@@ -1018,7 +1018,7 @@ namespace SRCTestForm
 
                     if (dy == Constants.DEFAULT_LEVEL)
                     {
-                        if (string.IsNullOrEmpty(Map.MapFileName))
+                        if (Map.IsStatusView)
                         {
                             // XXX
                             dy = (frmMain.MapCellPx * 15 - dh) / 2;
