@@ -23,7 +23,7 @@ SRCを眺めたり弄ってみたりするためのリポジトリ。
     - SRCのC#実装の一部
     - [SRCCore](./SRC.Sharp/SRCCore)
         - SRCのコア部分
-        - .NET Standard
+        - .NET Standard 2.1
     - [SRCDataLinter](SRC.Sharp/SRCDataLinter)
         - SRCデータのバリデータ
         - .NET 5
