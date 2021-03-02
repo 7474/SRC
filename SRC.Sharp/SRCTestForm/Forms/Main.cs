@@ -32,6 +32,9 @@ namespace SRCTestForm
         private int LastMapX;
         private int LastMapY;
 
+        // ポップアップメニュー選択が右クリックだったか？
+        private bool IsRightClick;
+
         private void frmMain_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
             ActiveControl = null;
@@ -149,6 +152,18 @@ namespace SRCTestForm
             //}
         }
 
+        private void mnuUnitCommand_MouseClick(object sender, MouseEventArgs e)
+        {
+            Program.Log.LogDebug("mnuUnitCommand_MouseClick {0}", JsonConvert.SerializeObject(e));
+            IsRightClick = ResolveMouseButton(e) == GuiButton.Right;
+        }
+
+        private void mnuMapCommand_MouseClick(object sender, MouseEventArgs e)
+        {
+            Program.Log.LogDebug("mnuMapCommand_MouseClick {0}", JsonConvert.SerializeObject(e));
+            IsRightClick = ResolveMouseButton(e) == GuiButton.Right;
+        }
+
         // マップコマンドメニューをクリック
         public void mnuMapCommandItem_Click(object eventSender, EventArgs eventArgs)
         {
@@ -159,14 +174,13 @@ namespace SRCTestForm
             {
                 Program.Log.LogDebug("{0} {1}", Commands.CommandState, JsonConvert.SerializeObject(uiCommand));
 
-                //var Shift = ModifierKeys.HasFlag(Keys.Shift);
-                //int Index = mnuMapCommandItem.GetIndex((ToolStripMenuItem)eventSender);
-                //if (GUI.GetAsyncKeyState(GUI.RButtonID) == 1)
-                //{
-                //    // 右ボタンでキャンセル
-                //    Commands.CancelCommand();
-                //    return;
-                //}
+                if (IsRightClick)
+                {
+                    // 右ボタンでキャンセル
+                    Commands.CancelCommand();
+                    IsRightClick = false;
+                    return;
+                }
 
                 //// マップコマンドを実行
                 Commands.MapCommand(uiCommand);
@@ -183,13 +197,13 @@ namespace SRCTestForm
             {
                 Program.Log.LogDebug("{0} {1}", Commands.CommandState, JsonConvert.SerializeObject(uiCommand));
 
-                //int Index = mnuUnitCommandItem.GetIndex((ToolStripMenuItem)eventSender);
-                //if (GUI.GetAsyncKeyState(GUI.RButtonID) == 1)
-                //{
-                //    // 右ボタンでキャンセル
-                //    Commands.CancelCommand();
-                //    return;
-                //}
+                if (IsRightClick)
+                {
+                    // 右ボタンでキャンセル
+                    Commands.CancelCommand();
+                    IsRightClick = false;
+                    return;
+                }
 
                 // ユニットコマンドを実行
                 Commands.UnitCommand(uiCommand);
