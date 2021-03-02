@@ -143,21 +143,40 @@ namespace SRCTestForm
             }
 
             // 表示位置を設定
-            if (MainForm.Visible && HorizontalSize == "S")
+            // メインが表示されているのに画面中央に持っていかれると違和感があるので、
+            // メインが表示されているときはそちらを基準にする
+            if (MainForm.Visible)
             {
-                Left = MainForm.Left;
+                if (HorizontalSize == "S")
+                {
+                    Left = MainForm.Left;
+                }
+                else
+                {
+                    Left = Math.Max(
+                        MainForm.Left,
+                        MainForm.Left + (MainForm.Width - Width) / 2);
+                }
             }
             else
             {
                 Left = (Screen.PrimaryScreen.Bounds.Width - Width) / 2;
             }
 
-            if (MainForm.Visible
-                && MainForm.WindowState != FormWindowState.Minimized
-                && VerticalSize == "M"
-                && Strings.InStr(lb_mode, "中央表示") == 0)
+            if (MainForm.Visible)
             {
-                Top = MainForm.Top + MainForm.Height - Height;
+                if (MainForm.WindowState != FormWindowState.Minimized
+                    && VerticalSize == "M"
+                    && Strings.InStr(lb_mode, "中央表示") == 0)
+                {
+                    Top = MainForm.Top + MainForm.Height - Height;
+                }
+                else
+                {
+                    Top = Math.Max(
+                        MainForm.Top,
+                        MainForm.Top + (MainForm.Height - Height) / 2);
+                }
             }
             else
             {
@@ -569,58 +588,58 @@ namespace SRCTestForm
         // 選択されているアイテムに対応するユニットのステータス表示
         private void Timer2_Tick(object eventSender, EventArgs eventArgs)
         {
-//            Unit u;
-//            if (!Visible | !GUI.MainForm.Visible)
-//            {
-//                return;
-//            }
+            //            Unit u;
+            //            if (!Visible | !GUI.MainForm.Visible)
+            //            {
+            //                return;
+            //            }
 
-//            if (lstItems.SelectedIndex == -1)
-//            {
-//                return;
-//            };
-//#error Cannot convert OnErrorGoToStatementSyntax - see comment for details
-//            /* Cannot convert OnErrorGoToStatementSyntax, CONVERSION ERROR: Conversion for OnErrorGoToLabelStatement not implemented, please report this issue in 'On Error GoTo ErrorHandler' at character 10644
+            //            if (lstItems.SelectedIndex == -1)
+            //            {
+            //                return;
+            //            };
+            //#error Cannot convert OnErrorGoToStatementSyntax - see comment for details
+            //            /* Cannot convert OnErrorGoToStatementSyntax, CONVERSION ERROR: Conversion for OnErrorGoToLabelStatement not implemented, please report this issue in 'On Error GoTo ErrorHandler' at character 10644
 
 
-//            Input:
+            //            Input:
 
-//                    On Error GoTo ErrorHandler
+            //                    On Error GoTo ErrorHandler
 
-//             */
-//            if (lstItems.SelectedIndex >= Information.UBound(GUI.ListItemID))
-//            {
-//                return;
-//            }
+            //             */
+            //            if (lstItems.SelectedIndex >= Information.UBound(GUI.ListItemID))
+            //            {
+            //                return;
+            //            }
 
-//            // 選択されたユニットが存在する？
-//            bool localIsDefined2() { var tmp = GUI.ListItemID; object argIndex1 = tmp[lstItems.SelectedIndex + 1]; var ret = SRC.UList.IsDefined2(argIndex1); return ret; }
+            //            // 選択されたユニットが存在する？
+            //            bool localIsDefined2() { var tmp = GUI.ListItemID; object argIndex1 = tmp[lstItems.SelectedIndex + 1]; var ret = SRC.UList.IsDefined2(argIndex1); return ret; }
 
-//            if (!localIsDefined2())
-//            {
-//                return;
-//            }
+            //            if (!localIsDefined2())
+            //            {
+            //                return;
+            //            }
 
-//            var tmp = GUI.ListItemID;
-//            object argIndex1 = tmp[lstItems.SelectedIndex + 1];
-//            u = SRC.UList.Item2(argIndex1);
+            //            var tmp = GUI.ListItemID;
+            //            object argIndex1 = tmp[lstItems.SelectedIndex + 1];
+            //            u = SRC.UList.Item2(argIndex1);
 
-//            // 選択されたユニットにパイロットが乗っている？
-//            if (u.CountPilot() == 0)
-//            {
-//                return;
-//            }
+            //            // 選択されたユニットにパイロットが乗っている？
+            //            if (u.CountPilot() == 0)
+            //            {
+            //                return;
+            //            }
 
-//            // 既に表示している？
-//            if (ReferenceEquals(Status.DisplayedUnit, u))
-//            {
-//                return;
-//            }
+            //            // 既に表示している？
+            //            if (ReferenceEquals(Status.DisplayedUnit, u))
+            //            {
+            //                return;
+            //            }
 
-//            // 選択されたユニットをステータスウィンドウに表示
-//            Status.DisplayUnitStatus(u);
-//        ErrorHandler:
-//            ;
+            //            // 選択されたユニットをステータスウィンドウに表示
+            //            Status.DisplayUnitStatus(u);
+            //        ErrorHandler:
+            //            ;
         }
         private static GuiButton ResolveMouseButton(MouseEventArgs eventArgs)
         {
