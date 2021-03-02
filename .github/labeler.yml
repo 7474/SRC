@@ -1,4 +1,7 @@
+'SRCCore':
+  - SRC.Sharp/SRCCore/**/*
 'SRC#Form':
   - SRC.Sharp/SRCTestForm/**/*
 'SRCTestBlazor':
   - SRC.Sharp/SRCTestBlazor/**/*
+  
