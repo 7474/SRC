@@ -869,11 +869,8 @@ namespace SRCCore.CmdDatas
                     //        break;
                     //    }
 
-                    //case "set":
-                    //    {
-                    //        CmdName = CmdType.SetCmd;
-                    //        break;
-                    //    }
+                    case "set":
+                        return new SetCmd(src, data);
 
                     //case "setbullet":
                     //    {

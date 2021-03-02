@@ -1,5 +1,7 @@
 ﻿using SRCCore.Events;
 using SRCCore.Exceptions;
+using SRCCore.Expressions;
+using SRCCore.VB;
 
 namespace SRCCore.CmdDatas.Commands
 {
@@ -11,87 +13,60 @@ namespace SRCCore.CmdDatas.Commands
 
         protected override int ExecInternal()
         {
-            int ExecSetCmdRet = default;
-            Expression.ValueType etype;
-            var str_result = default(string);
-            var num_result = default(double);
-            short num;
-            num = ArgNum;
-            if ((int)num > 3)
+            int num = ArgNum;
+            if (num > 3)
             {
                 // 過去のバージョンのシナリオを読み込めるようにするため、
                 // Setコマンドの後ろの「#」形式のコメントは無視する
-                if (Strings.Left(GetArg((short)4), 1) == "#")
+                if (Strings.Left(GetArg(4), 1) == "#")
                 {
-                    num = (short)3;
+                    num = 3;
                 }
                 else
                 {
-                    Event_Renamed.EventErrorMessage = "Setコマンドの引数の数が違います";
-                    ;
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                    /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 449659
-
-
-                    Input:
-                                    Error(0)
-
-                     */
+                    throw new EventErrorException(this, "Setコマンドの引数の数が違います");
                 }
             }
 
             switch (num)
             {
                 case 2:
-                    {
-                        string argvname = GetArg(2);
-                        Expression.SetVariableAsLong(ref argvname, 1);
-                        break;
-                    }
+                    string argvname = GetArg(2);
+                    Expression.SetVariableAsLong(argvname, 1);
+                    break;
 
                 case 3:
+                    switch (GetArgRaw(3).argType)
                     {
-                        switch (ArgsType[3])
-                        {
-                            case Expression.ValueType.UndefinedType:
-                                {
-                                    etype = Expression.EvalTerm(ref strArgs[3], ref Expression.ValueType.UndefinedType, ref str_result, ref num_result);
-                                    if (etype == Expression.ValueType.NumericType)
-                                    {
-                                        string argvname1 = GetArg(2);
-                                        Expression.SetVariableAsDouble(ref argvname1, num_result);
-                                    }
-                                    else
-                                    {
-                                        string argvname2 = GetArg(2);
-                                        Expression.SetVariableAsString(ref argvname2, ref str_result);
-                                    }
+                        case ValueType.UndefinedType:
+                            string str_result;
+                            double num_result;
+                            var etype = Expression.EvalTerm(GetArgRaw(3).strArg, ValueType.UndefinedType, out str_result, out num_result);
+                            if (etype == ValueType.NumericType)
+                            {
+                                string argvname1 = GetArg(2);
+                                Expression.SetVariableAsDouble(argvname1, num_result);
+                            }
+                            else
+                            {
+                                string argvname2 = GetArg(2);
+                                Expression.SetVariableAsString(argvname2, str_result);
+                            }
+                            break;
 
-                                    break;
-                                }
+                        case ValueType.StringType:
+                            Expression.SetVariableAsString(GetArg(2), GetArgRaw(3).strArg);
+                            break;
 
-                            case Expression.ValueType.StringType:
-                                {
-                                    string argvname3 = GetArg(2);
-                                    Expression.SetVariableAsString(ref argvname3, ref strArgs[3]);
-                                    break;
-                                }
-
-                            case Expression.ValueType.NumericType:
-                                {
-                                    string argvname4 = GetArg(2);
-                                    Expression.SetVariableAsDouble(ref argvname4, dblArgs[3]);
-                                    break;
-                                }
-                        }
-
-                        break;
+                        case ValueType.NumericType:
+                            Expression.SetVariableAsDouble(GetArg(2), GetArgRaw(3).dblArg);
+                            break;
                     }
+
+                    break;
             }
 
-            ExecSetCmdRet = LineNum + 1;
-            return ExecSetCmdRet;
-
+            return EventData.ID + 1;
         }
     }
 }
