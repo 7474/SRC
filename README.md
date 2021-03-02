@@ -2,6 +2,18 @@
 
 SRCを眺めたり弄ってみたりするためのリポジトリ。
 
+## SRC派生ソフトウェア
+
+本リポジトリで開発・配布しているソフトウェアの使用にあたってはSRC派生版ソフトウェアの利用における基本的規則を遵守してください。
+
+SRC公式サイト[派生版解説ページ](http://www.src-srpg.jpn.org/development_hasei.shtml)内のSRC派生版ソフトウェアの利用における基本的規則
+- [規約(形式１)](http://www.src-srpg.jpn.org/hasei_kiyaku1.html)
+- [規約(形式２)](http://www.src-srpg.jpn.org/hasei_kiyaku2.html)
+
+本リポジトリへの転記
+- [規約(形式１)](src_hasei_kiyaku1.md)
+- [規約(形式２)](src_hasei_kiyaku2.md)
+
 ## Original
 
 - http://www.src-srpg.jpn.org/
