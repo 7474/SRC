@@ -154,13 +154,13 @@ namespace SRCTestForm
 
         private void mnuUnitCommand_MouseClick(object sender, MouseEventArgs e)
         {
-            Program.Log.LogDebug("mnuUnitCommand_MouseClick {0}", JsonConvert.SerializeObject(e));
+            //Program.Log.LogDebug("mnuUnitCommand_MouseClick {0}", JsonConvert.SerializeObject(e));
             IsRightClick = ResolveMouseButton(e) == GuiButton.Right;
         }
 
         private void mnuMapCommand_MouseClick(object sender, MouseEventArgs e)
         {
-            Program.Log.LogDebug("mnuMapCommand_MouseClick {0}", JsonConvert.SerializeObject(e));
+            //Program.Log.LogDebug("mnuMapCommand_MouseClick {0}", JsonConvert.SerializeObject(e));
             IsRightClick = ResolveMouseButton(e) == GuiButton.Right;
         }
 

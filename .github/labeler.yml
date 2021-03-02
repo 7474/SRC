@@ -1,4 +1,4 @@
 'SRC#Form':
-  - SRC.Sharp/SRCTestBlazor/**/*
-'SRCTestBlazor':
   - SRC.Sharp/SRCTestForm/**/*
+'SRCTestBlazor':
+  - SRC.Sharp/SRCTestBlazor/**/*
