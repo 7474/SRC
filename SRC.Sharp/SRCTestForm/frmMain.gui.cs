@@ -391,6 +391,7 @@ namespace SRCTestForm
 
         public void DisplayMessage(string pname, string msg, string msg_mode)
         {
+            // TODO 完全に仮実装
             string pnickname;
             string left_margin;
             DisplayMessagePilot(pname, msg_mode, out pnickname, out left_margin);
@@ -402,6 +403,10 @@ namespace SRCTestForm
             IsFormClicked = false;
             while (!IsFormClicked)
             {
+                if (IsRButtonPressed(true))
+                {
+                    break;
+                }
                 Thread.Sleep(100);
                 Application.DoEvents();
             }

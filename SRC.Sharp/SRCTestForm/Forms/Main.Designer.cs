@@ -119,12 +119,14 @@ namespace SRCTestForm
             this.mnuUnitCommand.Name = "mnuUnitCommand";
             this.mnuUnitCommand.Size = new System.Drawing.Size(61, 4);
             this.mnuUnitCommand.Text = "ユニットコマンド";
+            this.mnuUnitCommand.MouseClick += new System.Windows.Forms.MouseEventHandler(this.mnuUnitCommand_MouseClick);
             // 
             // mnuMapCommand
             // 
             this.mnuMapCommand.Name = "mnuMapCommand";
             this.mnuMapCommand.Size = new System.Drawing.Size(61, 4);
             this.mnuMapCommand.Text = "マップコマンド";
+            this.mnuMapCommand.MouseClick += new System.Windows.Forms.MouseEventHandler(this.mnuMapCommand_MouseClick);
             // 
             // _picStretchedTmp_1
             // 
