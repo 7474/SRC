@@ -34,9 +34,10 @@
 		<Exec WorkingDirectory="$(NpmRoot)" Command="npm install" />
 	</Target>
 
-	<!-- XXX いつターゲットするのがいいのかよく分からん -->
+	<!-- XXX いつターゲットするのがいいのかよく分からん 
 	<Target Name="BuildCSS" BeforeTargets="Build">
 		<Exec WorkingDirectory="$(NpmRoot)" Command="npm install" />
 		<Exec WorkingDirectory="$(NpmRoot)" Command="npm run build" />
 	</Target>
+	-->
 </Project>

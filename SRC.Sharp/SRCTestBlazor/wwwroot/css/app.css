@@ -160,7 +160,8 @@
     width: 32px; }
 
 .button.is-loading::after, .loader, .select.is-loading::after, .control.is-loading::after {
-  animation: spinAround 500ms infinite linear;
+  -webkit-animation: spinAround 500ms infinite linear;
+          animation: spinAround 500ms infinite linear;
   border: 2px solid #dbdbdb;
   border-radius: 290486px;
   border-right-color: transparent;
@@ -274,7 +275,9 @@ html {
   overflow-x: hidden;
   overflow-y: scroll;
   text-rendering: optimizeLegibility;
-  text-size-adjust: 100%; }
+  -webkit-text-size-adjust: 100%;
+     -moz-text-size-adjust: 100%;
+          text-size-adjust: 100%; }
 
 article,
 aside,
@@ -374,6 +377,12 @@ table th {
 
 table th {
   color: #363636; }
+
+@-webkit-keyframes spinAround {
+  from {
+    transform: rotate(0deg); }
+  to {
+    transform: rotate(359deg); } }
 
 @keyframes spinAround {
   from {
@@ -1751,10 +1760,14 @@ div.icon-text {
   .progress.is-danger:indeterminate {
     background-image: linear-gradient(to right, #f14668 30%, #ededed 30%); }
   .progress:indeterminate {
-    animation-duration: 1.5s;
-    animation-iteration-count: infinite;
-    animation-name: moveIndeterminate;
-    animation-timing-function: linear;
+    -webkit-animation-duration: 1.5s;
+            animation-duration: 1.5s;
+    -webkit-animation-iteration-count: infinite;
+            animation-iteration-count: infinite;
+    -webkit-animation-name: moveIndeterminate;
+            animation-name: moveIndeterminate;
+    -webkit-animation-timing-function: linear;
+            animation-timing-function: linear;
     background-color: #ededed;
     background-image: linear-gradient(to right, #4a4a4a 30%, #ededed 30%);
     background-position: top left;
@@ -1772,6 +1785,12 @@ div.icon-text {
     height: 1.25rem; }
   .progress.is-large {
     height: 1.5rem; }
+
+@-webkit-keyframes moveIndeterminate {
+  from {
+    background-position: 200% 0; }
+  to {
+    background-position: -200% 0; } }
 
 @keyframes moveIndeterminate {
   from {
@@ -5817,6 +5836,8 @@ label.panel-block {
   flex-basis: 0;
   flex-grow: 1;
   flex-shrink: 1;
+  min-height: -webkit-min-content;
+  min-height: -moz-min-content;
   min-height: min-content; }
   .tile.is-ancestor {
     margin-left: -0.75rem;
@@ -7793,6 +7814,7 @@ a.has-text-danger-dark:hover, a.has-text-danger-dark:focus {
   overflow-x: hidden; }
 
 .src-sub-nuvbar.navbar {
+  position: -webkit-sticky;
   position: sticky;
   top: 93px;
   display: block; }
