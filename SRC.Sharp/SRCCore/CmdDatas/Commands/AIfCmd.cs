@@ -1,9 +1,20 @@
 ﻿using SRCCore.Events;
+using SRCCore.Exceptions;
+using System;
 
 namespace SRCCore.CmdDatas.Commands
 {
+    public enum IfCmdType
+    {
+        Then,
+        Exit,
+        GoTo,
+    }
+
     public abstract class AIfCmd : CmdData
     {
+        public IfCmdType IfCmdType { get; protected set; }
+
         public AIfCmd(SRC src, CmdType name, EventDataLine eventData) : base(src, name, eventData)
         {
         }
@@ -161,6 +172,35 @@ namespace SRCCore.CmdDatas.Commands
 
             //    return ParseRet;
             //}
+        }
+
+        internal static int ToEnd(CmdData elseCmd)
+        {
+            // EndIfを探す
+            var depth = 1;
+            for (var i = elseCmd.EventData.ID + 1; i <= elseCmd.Event.EventCmd.Count; i++)
+            {
+                var cmd = elseCmd.Event.EventCmd[i];
+                switch (cmd.Name)
+                {
+                    case CmdType.IfCmd:
+                        if ((cmd as AIfCmd).IfCmdType == IfCmdType.Then)
+                        {
+                            depth = depth + 1;
+                        }
+                        break;
+
+                    case CmdType.EndIfCmd:
+                        depth = depth - 1;
+                        if (depth == 0)
+                        {
+                            return i + 1;
+                        }
+                        break;
+                }
+            }
+
+            throw new EventErrorException(elseCmd, "IfとEndIfが対応していません");
         }
     }
 }

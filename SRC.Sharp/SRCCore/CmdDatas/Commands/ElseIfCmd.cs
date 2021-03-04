@@ -11,7 +11,8 @@ namespace SRCCore.CmdDatas.Commands
 
         protected override int ExecInternal()
         {
-            return EventData.ID + 1;
+            // 直前の If や ElseIf コマンドの実行の終了を意味する。
+            return AIfCmd.ToEnd(this);
         }
     }
 }

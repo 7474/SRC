@@ -18,7 +18,7 @@ namespace SRCCore.CmdDatas
     {
         protected SRC SRC { get; }
         protected IGUI GUI => SRC.GUI;
-        protected Event Event => SRC.Event;
+        internal Event Event => SRC.Event;
         protected Expressions.Expression Expression => SRC.Expression;
         protected Maps.Map Map => SRC.Map;
         protected SRCCore.Commands.Command Commands => SRC.Commands;
