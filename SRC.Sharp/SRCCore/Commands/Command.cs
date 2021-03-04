@@ -25,6 +25,7 @@ namespace SRCCore.Commands
 
         private void LogDebug(string message = "", params string[] param)
         {
+            if (!SRC.Log.IsEnabled(LogLevel.Debug)) { return; }
             string method = new StackFrame(1).GetMethod().Name;
             SRC.Log.LogDebug(method
                 + $"({CommandState},{(WaitClickMode ? "W" : "-")},{(ViewMode ? "V" : "-")})"

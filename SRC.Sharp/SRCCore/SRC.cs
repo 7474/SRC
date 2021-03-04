@@ -9,6 +9,7 @@ using SRCCore.Filesystem;
 using SRCCore.Maps;
 using SRCCore.Models;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace SRCCore
 {
@@ -164,6 +165,17 @@ namespace SRCCore
 
             PList = new Pilots.Pilots(this);
             UList = new Units.Units(this);
+        }
+
+        public void LogDebug(string message = "", params string[] param)
+        {
+            if (!Log.IsEnabled(LogLevel.Debug)) { return; }
+            string method = new StackFrame(1).GetMethod().Name;
+            Log.LogDebug(method
+                + " "
+                + message
+                + " "
+                + string.Join(", ", param));
         }
     }
 }
