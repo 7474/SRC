@@ -994,11 +994,8 @@ namespace SRCCore.CmdDatas
                     //        break;
                     //    }
 
-                    //case "switch":
-                    //    {
-                    //        CmdName = CmdType.SwitchCmd;
-                    //        break;
-                    //    }
+                    case "switch":
+                        return new SwitchCmd(src, data);
 
                     //case "playflash":
                     //    {
@@ -1012,25 +1009,18 @@ namespace SRCCore.CmdDatas
                     //        break;
                     //    }
 
-                    //case "case":
-                    //    {
-                    //        CmdName = CmdType.CaseCmd;
-                    //        if (ArgNum == 2)
-                    //        {
-                    //            if (Strings.LCase(list[1]) == "else")
-                    //            {
-                    //                CmdName = CmdType.CaseElseCmd;
-                    //            }
-                    //        }
+                    case "case":
+                        if (list.Count == 2)
+                        {
+                            if (Strings.LCase(list[1]) == "else")
+                            {
+                                return new CaseElseCmd(src, data);
+                            }
+                        }
+                        return new CaseCmd(src, data);
 
-                    //        break;
-                    //    }
-
-                    //case "endsw":
-                    //    {
-                    //        CmdName = CmdType.EndSwCmd;
-                    //        break;
-                    //    }
+                    case "endsw":
+                        return new EndSwCmd(src, data);
 
                     case "talk":
                         return new TalkCmd(src, data);
