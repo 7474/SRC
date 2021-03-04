@@ -107,6 +107,11 @@ namespace SRCCoreTests.TestLib
             throw new NotImplementedException();
         }
 
+        public GuiDialogResult Confirm(string message, string title, GuiConfirmOption option)
+        {
+            throw new NotImplementedException();
+        }
+
         public void DataErrorMessage(string msg, string fname, int line_num, string line_buf, string dname)
         {
             Console.Error.WriteLine(msg);

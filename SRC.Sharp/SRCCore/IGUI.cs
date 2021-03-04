@@ -291,6 +291,9 @@ namespace SRCCore
         // === コンテキストメニュー操作 ===
         void ShowUnitCommandMenu(IList<UiCommand> commands);
         void ShowMapCommandMenu(IList<UiCommand> commands);
+
+        // === 確認ダイアログ ===
+        GuiDialogResult Confirm(string message, string title, GuiConfirmOption option);
     }
 
     public enum GuiStatus
@@ -304,6 +307,16 @@ namespace SRCCore
         None,
         Left,
         Right,
+    }
+    public enum GuiConfirmOption
+    {
+        OkCancel,
+        Question,
+    }
+    public enum GuiDialogResult
+    {
+        Ok,
+        Cancel,
     }
     public class ListBoxItem
     {
