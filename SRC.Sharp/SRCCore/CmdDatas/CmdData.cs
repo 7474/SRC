@@ -270,5 +270,11 @@ namespace SRCCore.CmdDatas
                 }
             }
         }
+
+        public IEnumerable<int> AfterEventIdRange()
+        {
+            var start = EventData.ID + 1;
+            return Enumerable.Range(start, Event.EventCmd.Count - start);
+        }
     }
 }

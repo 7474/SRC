@@ -16,81 +16,69 @@ namespace SRCCore.CmdDatas.Commands
                 throw new EventErrorException(this, "Switchコマンドの引数の数が違います");
             }
 
-            a = GetArgAsString(2);
-            depth = 1;
-            var loopTo = Information.UBound(Event_Renamed.EventCmd);
-            for (i = LineNum + 1; i <= loopTo; i++)
+            var a = GetArgAsString(2);
+            var depth = 1;
+            foreach (var i in this.AfterEventIdRange())
             {
+                var cmd = Event.EventCmd[i];
+                switch (cmd.Name)
                 {
-                    var withBlock = Event_Renamed.EventCmd[i];
-                    switch (withBlock.Name)
-                    {
-                        case Event_Renamed.CmdType.CaseCmd:
+                    case CmdType.CaseCmd:
+                        if (depth == 1)
+                        {
+                            for (var j = 2; j <= cmd.ArgNum; j++)
                             {
-                                if (depth == 1)
+                                var arg = cmd.GetArgRaw(j);
+                                string b;
+                                if (arg.argType == Expressions.ValueType.UndefinedType)
                                 {
-                                    var loopTo1 = withBlock.ArgNum;
-                                    for (j = 2; j <= loopTo1; j++)
+                                    // 未識別のパラメータは式として処理する
+                                    b = cmd.GetArgAsString(j);
+                                    if ((b ?? "") == (cmd.GetArg(j) ?? ""))
                                     {
-                                        if (withBlock.GetArgsType(j) == Expression.ValueType.UndefinedType)
-                                        {
-                                            // 未識別のパラメータは式として処理する
-                                            b = withBlock.GetArgAsString(j);
-                                            if ((b ?? "") == (withBlock.GetArg(j) ?? ""))
-                                            {
-                                                // 文字列として識別済みにする
-                                                withBlock.SetArgsType(j, Expression.ValueType.StringType);
-                                            }
-                                        }
-                                        else
-                                        {
-                                            // 識別済みのパラメータは文字列としてそのまま参照する
-                                            b = withBlock.GetArg(j);
-                                        }
-
-                                        if ((a ?? "") == (b ?? ""))
-                                        {
-                                            ExecSwitchCmdRet = i + 1;
-                                            return ExecSwitchCmdRet;
-                                        }
+                                        // TODO Impl
+                                        //// 文字列として識別済みにする
+                                        //cmd.SetArgsType(j, Expression.ValueType.StringType);
                                     }
-                                }
-
-                                break;
-                            }
-
-                        case Event_Renamed.CmdType.CaseElseCmd:
-                            {
-                                if (depth == 1)
-                                {
-                                    ExecSwitchCmdRet = i + 1;
-                                    return ExecSwitchCmdRet;
-                                }
-
-                                break;
-                            }
-
-                        case Event_Renamed.CmdType.EndSwCmd:
-                            {
-                                if (depth == 1)
-                                {
-                                    ExecSwitchCmdRet = i + 1;
-                                    return ExecSwitchCmdRet;
                                 }
                                 else
                                 {
-                                    depth = (short)(depth - 1);
+                                    // 識別済みのパラメータは文字列としてそのまま参照する
+                                    b = cmd.GetArg(j);
                                 }
 
-                                break;
+                                if ((a ?? "") == (b ?? ""))
+                                {
+                                    return i + 1;
+                                }
                             }
+                        }
 
-                        case Event_Renamed.CmdType.SwitchCmd:
-                            {
-                                depth = (short)(depth + 1);
-                                break;
-                            }
-                    }
+                        break;
+
+                    case CmdType.CaseElseCmd:
+                        if (depth == 1)
+                        {
+                            return i + 1;
+                        }
+
+                        break;
+
+                    case CmdType.EndSwCmd:
+                        if (depth == 1)
+                        {
+                            return i + 1;
+                        }
+                        else
+                        {
+                            depth = depth - 1;
+                        }
+
+                        break;
+
+                    case CmdType.SwitchCmd:
+                        depth = depth + 1;
+                        break;
                 }
             }
 
@@ -101,7 +89,7 @@ namespace SRCCore.CmdDatas.Commands
         {
             // 対応するEndSwを探す
             var depth = 1;
-            for (var i = caseCmd.EventData.ID + 1; i <= caseCmd.Event.EventCmd.Count; i++)
+            foreach (var i in caseCmd.AfterEventIdRange())
             {
                 var cmd = caseCmd.Event.EventCmd[i];
                 switch (cmd.Name)

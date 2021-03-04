@@ -128,7 +128,7 @@ namespace SRCCore.CmdDatas.Commands
         {
             // EndIfを探す
             var depth = 1;
-            for (var i = elseCmd.EventData.ID + 1; i <= elseCmd.Event.EventCmd.Count; i++)
+            foreach (var i in elseCmd.AfterEventIdRange())
             {
                 var cmd = elseCmd.Event.EventCmd[i];
                 switch (cmd.Name)
