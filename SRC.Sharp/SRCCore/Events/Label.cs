@@ -48,14 +48,14 @@ namespace SRCCore.Events
                         break;
                     }
 
-                //case "ターン":
-                //    ltype = LabelType.TurnEventLabel;
-                //    if (Information.IsNumeric(litem[2]))
-                //    {
-                //        is_num[2] = true;
-                //    }
-                //    lnum[2] = GeneralLib.StrToLng(litem[2]).ToString();
-                //    break;
+                case "ターン":
+                    ltype = LabelType.TurnEventLabel;
+                    if (Information.IsNumeric(litem[2]))
+                    {
+                        is_num[2] = true;
+                    }
+                    lnum[2] = GeneralLib.StrToLng(litem[2]).ToString();
+                    break;
 
                 //case "損傷率":
                 //    {
