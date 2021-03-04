@@ -11,7 +11,90 @@ namespace SRCCore.CmdDatas.Commands
 
         protected override int ExecInternal()
         {
-            return EventData.ID + 1;
+            if (ArgNum != 2)
+            {
+                throw new EventErrorException(this, "Switchコマンドの引数の数が違います");
+            }
+
+            a = GetArgAsString(2);
+            depth = 1;
+            var loopTo = Information.UBound(Event_Renamed.EventCmd);
+            for (i = LineNum + 1; i <= loopTo; i++)
+            {
+                {
+                    var withBlock = Event_Renamed.EventCmd[i];
+                    switch (withBlock.Name)
+                    {
+                        case Event_Renamed.CmdType.CaseCmd:
+                            {
+                                if (depth == 1)
+                                {
+                                    var loopTo1 = withBlock.ArgNum;
+                                    for (j = 2; j <= loopTo1; j++)
+                                    {
+                                        if (withBlock.GetArgsType(j) == Expression.ValueType.UndefinedType)
+                                        {
+                                            // 未識別のパラメータは式として処理する
+                                            b = withBlock.GetArgAsString(j);
+                                            if ((b ?? "") == (withBlock.GetArg(j) ?? ""))
+                                            {
+                                                // 文字列として識別済みにする
+                                                withBlock.SetArgsType(j, Expression.ValueType.StringType);
+                                            }
+                                        }
+                                        else
+                                        {
+                                            // 識別済みのパラメータは文字列としてそのまま参照する
+                                            b = withBlock.GetArg(j);
+                                        }
+
+                                        if ((a ?? "") == (b ?? ""))
+                                        {
+                                            ExecSwitchCmdRet = i + 1;
+                                            return ExecSwitchCmdRet;
+                                        }
+                                    }
+                                }
+
+                                break;
+                            }
+
+                        case Event_Renamed.CmdType.CaseElseCmd:
+                            {
+                                if (depth == 1)
+                                {
+                                    ExecSwitchCmdRet = i + 1;
+                                    return ExecSwitchCmdRet;
+                                }
+
+                                break;
+                            }
+
+                        case Event_Renamed.CmdType.EndSwCmd:
+                            {
+                                if (depth == 1)
+                                {
+                                    ExecSwitchCmdRet = i + 1;
+                                    return ExecSwitchCmdRet;
+                                }
+                                else
+                                {
+                                    depth = (short)(depth - 1);
+                                }
+
+                                break;
+                            }
+
+                        case Event_Renamed.CmdType.SwitchCmd:
+                            {
+                                depth = (short)(depth + 1);
+                                break;
+                            }
+                    }
+                }
+            }
+
+            throw new EventErrorException(this, "SwitchとEndSwが対応していません");
         }
 
         internal static int ToEnd(CmdData caseCmd)
