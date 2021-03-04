@@ -1569,5 +1569,34 @@ namespace SRCTestForm
             }
             Thread.Sleep(dwMilliseconds);
         }
+
+        public GuiDialogResult Confirm(string message, string title, GuiConfirmOption option)
+        {
+            IWin32Window owner = this;
+
+            if (MainForm.Visible)
+            {
+                owner = MainForm;
+            }
+            else if (frmMessage.Visible)
+            {
+                owner = frmMessage;
+            }
+
+            var buttons = MessageBoxButtons.OKCancel;
+            MessageBoxIcon? icon = option.HasFlag(GuiConfirmOption.Question) ? MessageBoxIcon.Question : null;
+
+            DialogResult res;
+            if (icon.HasValue)
+            {
+                res = MessageBox.Show(owner, message, title, buttons, icon.Value);
+
+            }
+            else
+            {
+                res = MessageBox.Show(owner, message, title, buttons);
+            }
+            return res == DialogResult.OK ? GuiDialogResult.Ok : GuiDialogResult.Cancel;
+        }
     }
 }
