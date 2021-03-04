@@ -9,6 +9,7 @@ using SRCCore.Units;
 using SRCCore.VB;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SRCCore.CmdDatas
 {
@@ -44,6 +45,7 @@ namespace SRCCore.CmdDatas
 
         public int Exec()
         {
+            SRC.LogDebug(Name.ToString(), args.Select(x => x.strArg).ToArray());
             try
             {
                 return ExecInternal();

@@ -49,23 +49,20 @@ namespace SRCCore.Events
                     }
 
                 //case "ターン":
+                //    ltype = LabelType.TurnEventLabel;
+                //    if (Information.IsNumeric(litem[2]))
                 //    {
-                //        ltype = LabelType.TurnEventLabel;
-                //        if (Information.IsNumeric(litem[2]))
-                //        {
-                //            is_num[2] = true;
-                //        }
-
-                //        lnum[2] = GeneralLib.StrToLng(ref litem[2]).ToString();
-                //        break;
+                //        is_num[2] = true;
                 //    }
+                //    lnum[2] = GeneralLib.StrToLng(litem[2]).ToString();
+                //    break;
 
                 //case "損傷率":
                 //    {
                 //        ltype = LabelType.DamageEventLabel;
                 //        is_unit[2] = true;
                 //        is_num[3] = true;
-                //        lnum[3] = GeneralLib.StrToLng(ref litem[3]).ToString();
+                //        lnum[3] = GeneralLib.StrToLng(litem[3]).ToString();
                 //        break;
                 //    }
 
@@ -126,8 +123,8 @@ namespace SRCCore.Events
                 //        {
                 //            is_num[3] = true;
                 //            is_num[4] = true;
-                //            lnum[3] = GeneralLib.StrToLng(ref litem[3]).ToString();
-                //            lnum[4] = GeneralLib.StrToLng(ref litem[4]).ToString();
+                //            lnum[3] = GeneralLib.StrToLng(litem[3]).ToString();
+                //            lnum[4] = GeneralLib.StrToLng(litem[4]).ToString();
                 //        }
 
                 //        break;
@@ -324,11 +321,11 @@ namespace SRCCore.Events
                 //        // ユニット指定として比較？
                 //        if (is_unit[i])
                 //        {
-                //            bool localIsDefined() { object argIndex1 = str2; var ret = SRC.PList.IsDefined(ref argIndex1); return ret; }
+                //            bool localIsDefined() { object argIndex1 = str2; var ret = SRC.PList.IsDefined(argIndex1); return ret; }
 
-                //            bool localIsDefined1() { object argIndex1 = str2; var ret = SRC.PDList.IsDefined(ref argIndex1); return ret; }
+                //            bool localIsDefined1() { object argIndex1 = str2; var ret = SRC.PDList.IsDefined(argIndex1); return ret; }
 
-                //            bool localIsDefined2() { object argIndex1 = str2; var ret = SRC.UDList.IsDefined(ref argIndex1); return ret; }
+                //            bool localIsDefined2() { object argIndex1 = str2; var ret = SRC.UDList.IsDefined(argIndex1); return ret; }
 
                 //            if (str2 == "味方" | str2 == "ＮＰＣ" | str2 == "敵" | str2 == "中立")
                 //            {
@@ -336,9 +333,9 @@ namespace SRCCore.Events
                 //                if (str1 != "味方" & str1 != "ＮＰＣ" & str1 != "敵" & str1 != "中立")
                 //                {
                 //                    object argIndex1 = str1;
-                //                    if (SRC.PList.IsDefined(ref argIndex1))
+                //                    if (SRC.PList.IsDefined(argIndex1))
                 //                    {
-                //                        Pilot localItem() { object argIndex1 = str1; var ret = SRC.PList.Item(ref argIndex1); return ret; }
+                //                        Pilot localItem() { object argIndex1 = str1; var ret = SRC.PList.Item(argIndex1); return ret; }
 
                 //                        str1 = localItem().Party;
                 //                    }
@@ -349,16 +346,16 @@ namespace SRCCore.Events
                 //                // パイロットで比較
                 //                object argIndex5 = str2;
                 //                {
-                //                    var withBlock = SRC.PList.Item(ref argIndex5);
+                //                    var withBlock = SRC.PList.Item(argIndex5);
                 //                    if ((str2 ?? "") == (withBlock.Data.Name ?? "") | (str2 ?? "") == (withBlock.Data.Nickname ?? ""))
                 //                    {
                 //                        // グループＩＤが付けられていない場合は
                 //                        // パイロット名で比較
                 //                        str2 = withBlock.Name;
                 //                        object argIndex3 = str1;
-                //                        if (SRC.PList.IsDefined(ref argIndex3))
+                //                        if (SRC.PList.IsDefined(argIndex3))
                 //                        {
-                //                            Pilot localItem2() { object argIndex1 = str1; var ret = SRC.PList.Item(ref argIndex1); return ret; }
+                //                            Pilot localItem2() { object argIndex1 = str1; var ret = SRC.PList.Item(argIndex1); return ret; }
 
                 //                            str1 = localItem2().Name;
                 //                        }
@@ -368,9 +365,9 @@ namespace SRCCore.Events
                 //                        // グループＩＤが付けられている場合は
                 //                        // グループＩＤで比較
                 //                        object argIndex4 = str1;
-                //                        if (SRC.PList.IsDefined(ref argIndex4))
+                //                        if (SRC.PList.IsDefined(argIndex4))
                 //                        {
-                //                            Pilot localItem3() { object argIndex1 = str1; var ret = SRC.PList.Item(ref argIndex1); return ret; }
+                //                            Pilot localItem3() { object argIndex1 = str1; var ret = SRC.PList.Item(argIndex1); return ret; }
 
                 //                            str1 = localItem3().ID;
                 //                        }
@@ -385,13 +382,13 @@ namespace SRCCore.Events
                 //            else if (localIsDefined1())
                 //            {
                 //                // パイロット名で比較
-                //                PilotData localItem4() { object argIndex1 = str2; var ret = SRC.PDList.Item(ref argIndex1); return ret; }
+                //                PilotData localItem4() { object argIndex1 = str2; var ret = SRC.PDList.Item(argIndex1); return ret; }
 
                 //                str2 = localItem4().Name;
                 //                object argIndex6 = str1;
-                //                if (SRC.PList.IsDefined(ref argIndex6))
+                //                if (SRC.PList.IsDefined(argIndex6))
                 //                {
-                //                    Pilot localItem5() { object argIndex1 = str1; var ret = SRC.PList.Item(ref argIndex1); return ret; }
+                //                    Pilot localItem5() { object argIndex1 = str1; var ret = SRC.PList.Item(argIndex1); return ret; }
 
                 //                    str1 = localItem5().Name;
                 //                }
@@ -400,11 +397,11 @@ namespace SRCCore.Events
                 //            {
                 //                // ユニット名で比較
                 //                object argIndex8 = str1;
-                //                if (SRC.PList.IsDefined(ref argIndex8))
+                //                if (SRC.PList.IsDefined(argIndex8))
                 //                {
                 //                    object argIndex7 = str1;
                 //                    {
-                //                        var withBlock1 = SRC.PList.Item(ref argIndex7);
+                //                        var withBlock1 = SRC.PList.Item(argIndex7);
                 //                        if (withBlock1.Unit_Renamed is object)
                 //                        {
                 //                            str1 = withBlock1.Unit_Renamed.Name;
@@ -417,9 +414,9 @@ namespace SRCCore.Events
                 //                // グループＩＤが付けられているおり、なおかつ同じＩＤの
                 //                // ２番目以降のユニットの場合はグループＩＤで比較
                 //                object argIndex2 = str1;
-                //                if (SRC.PList.IsDefined(ref argIndex2))
+                //                if (SRC.PList.IsDefined(argIndex2))
                 //                {
-                //                    Pilot localItem1() { object argIndex1 = str1; var ret = SRC.PList.Item(ref argIndex1); return ret; }
+                //                    Pilot localItem1() { object argIndex1 = str1; var ret = SRC.PList.Item(argIndex1); return ret; }
 
                 //                    str1 = localItem1().ID;
                 //                }
@@ -442,9 +439,9 @@ namespace SRCCore.Events
                 //            if (revrersible & !reversed)
                 //            {
                 //                // 対象と相手を入れ替えたイベントラベルが存在するか判定
-                //                string localListIndex() { string arglist = lab.Data; var ret = GeneralLib.ListIndex(ref arglist, 3); lab.Data = arglist; return ret; }
+                //                string localListIndex() { string arglist = lab.Data; var ret = GeneralLib.ListIndex(arglist, 3); lab.Data = arglist; return ret; }
 
-                //                string localListIndex1() { string arglist = lab.Data; var ret = GeneralLib.ListIndex(ref arglist, 2); lab.Data = arglist; return ret; }
+                //                string localListIndex1() { string arglist = lab.Data; var ret = GeneralLib.ListIndex(arglist, 2); lab.Data = arglist; return ret; }
 
                 //                lname2 = litem[1] + " " + localListIndex() + " " + localListIndex1();
                 //                if (lab.AsterNum > 0)
@@ -452,7 +449,7 @@ namespace SRCCore.Events
                 //                    lname2 = "*" + lname2;
                 //                }
 
-                //                if (FindLabel(ref lname2) == 0)
+                //                if (FindLabel(lname2) == 0)
                 //                {
                 //                    // 対象と相手を入れ替えて判定し直す
                 //                    reversed = true;
@@ -469,6 +466,7 @@ namespace SRCCore.Events
 
                 // ここまでたどり付けばラベルは一致している
                 SearchLabelRet = lab.EventDataId;
+                SRC.LogDebug("Found", lab.Name.ToString(), lab.Data);
 
                 //// 対象と相手を入れ替えて一致した場合はグローバル変数も入れ替え
                 //if (reversed)

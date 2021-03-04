@@ -169,13 +169,20 @@ namespace SRCCore
 
         public void LogDebug(string message = "", params string[] param)
         {
-            if (!Log.IsEnabled(LogLevel.Debug)) { return; }
-            string method = new StackFrame(1).GetMethod().Name;
-            Log.LogDebug(method
-                + " "
-                + message
-                + " "
-                + string.Join(", ", param));
+            try
+            {
+                if (!Log.IsEnabled(LogLevel.Debug)) { return; }
+                string method = new StackFrame(1).GetMethod().Name;
+                Log.LogDebug(method
+                    + " "
+                    + message
+                    + " "
+                    + string.Join(", ", param));
+            }
+            catch
+            {
+                // ignore
+            }
         }
     }
 }
