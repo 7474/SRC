@@ -25,12 +25,20 @@ namespace SRCCore.Commands
 
         private void LogDebug(string message = "", params string[] param)
         {
-            string method = new StackFrame(1).GetMethod().Name;
-            SRC.Log.LogDebug(method
-                + $"({CommandState},{(WaitClickMode ? "W" : "-")},{(ViewMode ? "V" : "-")})"
-                + message
-                + " "
-                + string.Join(", ", param));
+            try
+            {
+                if (!SRC.Log.IsEnabled(LogLevel.Debug)) { return; }
+                string method = new StackFrame(1).GetMethod().Name;
+                SRC.Log.LogDebug(method
+                    + $"({CommandState},{(WaitClickMode ? "W" : "-")},{(ViewMode ? "V" : "-")})"
+                    + message
+                    + " "
+                    + string.Join(", ", param));
+            }
+            catch
+            {
+                // ignore
+            }
         }
     }
 }

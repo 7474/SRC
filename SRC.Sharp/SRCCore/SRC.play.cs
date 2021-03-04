@@ -280,7 +280,7 @@ namespace SRCCore
                     // ターン数を進める
                     if (!Map.IsStatusView)
                     {
-                        Turn = (Turn + 1);
+                        Turn = Turn + 1;
                         TotalTurn = TotalTurn + 1;
                     }
 
