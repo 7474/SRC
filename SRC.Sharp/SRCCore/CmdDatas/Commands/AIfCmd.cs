@@ -67,6 +67,7 @@ namespace SRCCore.CmdDatas.Commands
             {
                 throw new EventErrorException(this, (Name == CmdType.IfCmd ? "If" : "ElseIf") + "に対応する Then または Exit または Goto がありません");
             }
+            IfCmdType = ifCmdType;
 
             // 条件式が式であることが確定していれば条件式の項数を0に
             switch (terms.Count)
