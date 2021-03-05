@@ -180,12 +180,10 @@ namespace SRCCore.Events
                 //        break;
                 //    }
 
-                //case "行動終了":
-                //    {
-                //        ltype = LabelType.FinishEventLabel;
-                //        is_unit[2] = true;
-                //        break;
-                //    }
+                case "行動終了":
+                    ltype = LabelType.FinishEventLabel;
+                    is_unit[2] = true;
+                    break;
 
                 //case "レベルアップ":
                 //    {
@@ -282,7 +280,7 @@ namespace SRCCore.Events
                         isMatch = IsMatch(ltype, lab, litem, lnum, is_unit, is_num, is_condition, reversed);
                     }
                 }
-                if(!isMatch)
+                if (!isMatch)
                 {
                     continue;
                 }
@@ -314,7 +312,7 @@ namespace SRCCore.Events
             string str1;
             string str2;
             // XXX 考えさせられる
-            int llen = litem.Length-1;
+            int llen = litem.Length - 1;
             for (var i = 2; i <= llen; i++)
             {
                 // コマンド関連ラベルの最後のパラメータは条件式なのでチェックを省く
