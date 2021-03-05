@@ -2,6 +2,7 @@
 // 本プログラムはフリーソフトであり、無保証です。
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
+using SRCCore.Exceptions;
 using SRCCore.Lib;
 using SRCCore.VB;
 using System;
@@ -29,6 +30,14 @@ namespace SRCCore.Events
         // パラメータが固定値？
         private bool[] blnConst;
 
+        protected SRC SRC { get; }
+        private Expressions.Expression Expression => SRC.Expression;
+
+        public LabelData(SRC src)
+        {
+            SRC = src;
+        }
+
         // パラメータの個数
         public int CountPara()
         {
@@ -47,9 +56,7 @@ namespace SRCCore.Events
                 }
                 else
                 {
-                    // TODO Impl
-                    throw new NotImplementedException();
-                    //ParaRet = Expression.GetValueAsString(ref strParas[idx], true);
+                    ParaRet = Expression.GetValueAsString(strParas[idx], true);
                 }
             }
 
@@ -297,87 +304,78 @@ namespace SRCCore.Events
 
                 // パラメータ
                 intParaNum = GeneralLib.ListLength(value);
-                //if (intParaNum == -1)
-                //{
-                //    Event.DisplayEventErrorMessage(Event.CurrentLineNum, "ラベルの引数の括弧の対応が取れていません");
-                //    return;
-                //}
+                if (intParaNum == -1)
+                {
+                    // TODO Impl
+                    throw new TerminateException("ラベルの引数の括弧の対応が取れていません");
+                    //Event.DisplayEventErrorMessage(Event.CurrentLineNum, "ラベルの引数の括弧の対応が取れていません");
+                    return;
+                }
 
-                //strParas = new string[(intParaNum + 1)];
-                //blnConst = new bool[(intParaNum + 1)];
-                //var loopTo = intParaNum;
-                //for (i = 2; i <= loopTo; i++)
-                //{
-                //    strParas[i] = GeneralLib.ListIndex(ref value, i);
-                //    // パラメータが固定値かどうか判定
-                //    bool localIsDefined() { var tmp = strParas; object argIndex1 = tmp[i]; var ret = SRC.PDList.IsDefined(ref argIndex1); return ret; }
+                strParas = new string[(intParaNum + 1)];
+                blnConst = new bool[(intParaNum + 1)];
+                var loopTo = intParaNum;
+                for (i = 2; i <= loopTo; i++)
+                {
+                    strParas[i] = GeneralLib.ListIndex(value, i);
+                    // パラメータが固定値かどうか判定
+                    if (Information.IsNumeric(strParas[i]))
+                    {
+                        blnConst[i] = true;
+                    }
+                    else if (SRC.PDList.IsDefined(strParas[i]))
+                    {
+                        if (Strings.InStr(strParas[i], "主人公") != 1 & Strings.InStr(strParas[i], "ヒロイン") != 1)
+                        {
+                            blnConst[i] = true;
+                        }
+                    }
+                    else if (SRC.UDList.IsDefined(strParas[i]))
+                    {
+                        blnConst[i] = true;
+                    }
+                    // TODO Impl
+                    //else if (SRC.IDList.IsDefined(strParas[i]))
+                    //{
+                    //    blnConst[i] = true;
+                    //}
+                    else
+                    {
+                        switch (strParas[i] ?? "")
+                        {
+                            case "味方":
+                            case "ＮＰＣ":
+                            case "敵":
+                            case "中立":
+                            case "全":
+                                blnConst[i] = true;
+                                break;
 
-                //    bool localIsDefined1() { var tmp = strParas; object argIndex1 = tmp[i]; var ret = SRC.UDList.IsDefined(ref argIndex1); return ret; }
+                            case "N":
+                            case "W":
+                            case "S":
+                            case "E":
+                                if (Name == Events.LabelType.EscapeEventLabel)
+                                {
+                                    blnConst[i] = true;
+                                }
 
-                //    bool localIsDefined2() { var tmp = strParas; object argIndex1 = tmp[i]; var ret = SRC.IDList.IsDefined(ref argIndex1); return ret; }
+                                break;
 
-                //    if (Information.IsNumeric(strParas[i]))
-                //    {
-                //        blnConst[i] = true;
-                //    }
-                //    else if (localIsDefined())
-                //    {
-                //        if (Strings.InStr(strParas[i], "主人公") != 1 & Strings.InStr(strParas[i], "ヒロイン") != 1)
-                //        {
-                //            blnConst[i] = true;
-                //        }
-                //    }
-                //    else if (localIsDefined1())
-                //    {
-                //        blnConst[i] = true;
-                //    }
-                //    else if (localIsDefined2())
-                //    {
-                //        blnConst[i] = true;
-                //    }
-                //    else
-                //    {
-                //        switch (strParas[i] ?? "")
-                //        {
-                //            case "味方":
-                //            case "ＮＰＣ":
-                //            case "敵":
-                //            case "中立":
-                //            case "全":
-                //                {
-                //                    blnConst[i] = true;
-                //                    break;
-                //                }
+                            default:
+                                if (Strings.Left(strParas[i], 1) == "\"" & Strings.Right(strParas[i], 1) == "\"")
+                                {
+                                    if (Strings.InStr(strParas[i], "$(") == 0)
+                                    {
+                                        strParas[i] = Strings.Mid(strParas[i], 2, Strings.Len(strParas[i]) - 2);
+                                        blnConst[i] = true;
+                                    }
+                                }
 
-                //            case "N":
-                //            case "W":
-                //            case "S":
-                //            case "E":
-                //                {
-                //                    if (Name == Events.LabelType.EscapeEventLabel)
-                //                    {
-                //                        blnConst[i] = true;
-                //                    }
-
-                //                    break;
-                //                }
-
-                //            default:
-                //                {
-                //                    if (Strings.Left(strParas[i], 1) == "\"" & Strings.Right(strParas[i], 1) == "\"")
-                //                    {
-                //                        if (Strings.InStr(strParas[i], "$(") == 0)
-                //                        {
-                //                            strParas[i] = Strings.Mid(strParas[i], 2, Strings.Len(strParas[i]) - 2);
-                //                            blnConst[i] = true;
-                //                        }
-                //                    }
-
-                //                    break;
-                //                }
-                //        }
-                //    }
-                //}
+                                break;
+                        }
+                    }
+                }
             }
         }
     }

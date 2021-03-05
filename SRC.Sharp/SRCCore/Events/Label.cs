@@ -1,8 +1,11 @@
 ﻿using SRCCore.Lib;
+using SRCCore.Models;
+using SRCCore.Pilots;
 using SRCCore.Units;
 using SRCCore.VB;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace SRCCore.Events
@@ -12,23 +15,21 @@ namespace SRCCore.Events
         // ラベルの検索
         public int SearchLabel(string lname, int start = -1)
         {
-            int SearchLabelRet = default;
+            // ラベルの各要素をあらかじめ解析
+            // XXX Indexがずれていて辛い。
+            string[] litem;
+            int llen = GeneralLib.ListSplit(lname, out litem);
+            // XXX 死にたい
+            litem = (new string[] { "" }).Concat(litem).ToArray();
+
+            // ラベルの種類を判定
             LabelType ltype;
-            var litem = default(string[]);
             var lnum = new string[5];
             var is_unit = new bool[5];
             var is_num = new bool[5];
             var is_condition = new bool[5];
-            string str2, str1, lname2;
-            int i;
-            Unit tmp_u;
-            bool revrersible = default, reversed;
-
-            // ラベルの各要素をあらかじめ解析
-            int llen = GeneralLib.ListSplit(lname, out litem);
-
-            // ラベルの種類を判定
-            switch (litem[0] ?? "")
+            var revrersible = false;
+            switch (litem[1] ?? "")
             {
                 case "プロローグ":
                     {
@@ -262,224 +263,204 @@ namespace SRCCore.Events
                     }
                 }
 
-                //    // 各パラメータが一致している？
-                //    reversed = false;
-                //CheckPara:
-                //    ;
-                //    var loopTo = (int)llen;
-                //    for (i = 2; i <= loopTo; i++)
-                //    {
-                //        // コマンド関連ラベルの最後のパラメータは条件式なのでチェックを省く
-                //        if (is_condition[i])
-                //        {
-                //            break;
-                //        }
+                // 各パラメータが一致している？
+                var reversed = false;
+                var isMatch = IsMatch(ltype, lab, litem, lnum, is_unit, is_num, is_condition, reversed);
+                if (!isMatch && revrersible)
+                {
+                    // 対象と相手を入れ替えたイベントラベルが存在するか判定
+                    var lname2 = litem[1] + " " + GeneralLib.ListIndex(lab.Data, 3) + " " + GeneralLib.ListIndex(lab.Data, 2);
+                    if (lab.AsterNum > 0)
+                    {
+                        lname2 = "*" + lname2;
+                    }
 
-                //        // 比較するパラメータ
-                //        str1 = litem[i];
-                //        if (reversed)
-                //        {
-                //            str2 = lab.Para((short)(5 - i));
-                //        }
-                //        else
-                //        {
-                //            str2 = lab.Para((short)i);
-                //        }
-
-                //        // 「全」は全てに一致
-                //        if (str2 == "全")
-                //        {
-                //            // だだし、「ターン 全」が２回実行されるのは防ぐ
-                //            if (ltype != LabelType.TurnEventLabel | i != 2)
-                //            {
-                //                goto NextPara;
-                //            }
-                //        }
-
-                //        // 数値として比較？
-                //        if (is_num[i])
-                //        {
-                //            if (Information.IsNumeric(str2))
-                //            {
-                //                if (Conversions.ToDouble(lnum[i]) == Conversions.ToInteger(str2))
-                //                {
-                //                    goto NextPara;
-                //                }
-                //                else if (ltype == LabelType.DamageEventLabel)
-                //                {
-                //                    // 損傷率ラベルの処理
-                //                    if (Conversions.ToDouble(lnum[i]) > Conversions.ToInteger(str2))
-                //                    {
-                //                        break;
-                //                    }
-                //                }
-                //            }
-
-                //            continue;
-                //        }
-
-                //        // ユニット指定として比較？
-                //        if (is_unit[i])
-                //        {
-                //            bool localIsDefined() { object argIndex1 = str2; var ret = SRC.PList.IsDefined(argIndex1); return ret; }
-
-                //            bool localIsDefined1() { object argIndex1 = str2; var ret = SRC.PDList.IsDefined(argIndex1); return ret; }
-
-                //            bool localIsDefined2() { object argIndex1 = str2; var ret = SRC.UDList.IsDefined(argIndex1); return ret; }
-
-                //            if (str2 == "味方" | str2 == "ＮＰＣ" | str2 == "敵" | str2 == "中立")
-                //            {
-                //                // 陣営名で比較
-                //                if (str1 != "味方" & str1 != "ＮＰＣ" & str1 != "敵" & str1 != "中立")
-                //                {
-                //                    object argIndex1 = str1;
-                //                    if (SRC.PList.IsDefined(argIndex1))
-                //                    {
-                //                        Pilot localItem() { object argIndex1 = str1; var ret = SRC.PList.Item(argIndex1); return ret; }
-
-                //                        str1 = localItem().Party;
-                //                    }
-                //                }
-                //            }
-                //            else if (localIsDefined())
-                //            {
-                //                // パイロットで比較
-                //                object argIndex5 = str2;
-                //                {
-                //                    var withBlock = SRC.PList.Item(argIndex5);
-                //                    if ((str2 ?? "") == (withBlock.Data.Name ?? "") | (str2 ?? "") == (withBlock.Data.Nickname ?? ""))
-                //                    {
-                //                        // グループＩＤが付けられていない場合は
-                //                        // パイロット名で比較
-                //                        str2 = withBlock.Name;
-                //                        object argIndex3 = str1;
-                //                        if (SRC.PList.IsDefined(argIndex3))
-                //                        {
-                //                            Pilot localItem2() { object argIndex1 = str1; var ret = SRC.PList.Item(argIndex1); return ret; }
-
-                //                            str1 = localItem2().Name;
-                //                        }
-                //                    }
-                //                    else
-                //                    {
-                //                        // グループＩＤが付けられている場合は
-                //                        // グループＩＤで比較
-                //                        object argIndex4 = str1;
-                //                        if (SRC.PList.IsDefined(argIndex4))
-                //                        {
-                //                            Pilot localItem3() { object argIndex1 = str1; var ret = SRC.PList.Item(argIndex1); return ret; }
-
-                //                            str1 = localItem3().ID;
-                //                        }
-
-                //                        if (Strings.InStr(str1, ":") > 0)
-                //                        {
-                //                            str1 = Strings.Left(str1, Strings.InStr(str1, ":") - 1);
-                //                        }
-                //                    }
-                //                }
-                //            }
-                //            else if (localIsDefined1())
-                //            {
-                //                // パイロット名で比較
-                //                PilotData localItem4() { object argIndex1 = str2; var ret = SRC.PDList.Item(argIndex1); return ret; }
-
-                //                str2 = localItem4().Name;
-                //                object argIndex6 = str1;
-                //                if (SRC.PList.IsDefined(argIndex6))
-                //                {
-                //                    Pilot localItem5() { object argIndex1 = str1; var ret = SRC.PList.Item(argIndex1); return ret; }
-
-                //                    str1 = localItem5().Name;
-                //                }
-                //            }
-                //            else if (localIsDefined2())
-                //            {
-                //                // ユニット名で比較
-                //                object argIndex8 = str1;
-                //                if (SRC.PList.IsDefined(argIndex8))
-                //                {
-                //                    object argIndex7 = str1;
-                //                    {
-                //                        var withBlock1 = SRC.PList.Item(argIndex7);
-                //                        if (withBlock1.Unit_Renamed is object)
-                //                        {
-                //                            str1 = withBlock1.Unit_Renamed.Name;
-                //                        }
-                //                    }
-                //                }
-                //            }
-                //            else
-                //            {
-                //                // グループＩＤが付けられているおり、なおかつ同じＩＤの
-                //                // ２番目以降のユニットの場合はグループＩＤで比較
-                //                object argIndex2 = str1;
-                //                if (SRC.PList.IsDefined(argIndex2))
-                //                {
-                //                    Pilot localItem1() { object argIndex1 = str1; var ret = SRC.PList.Item(argIndex1); return ret; }
-
-                //                    str1 = localItem1().ID;
-                //                }
-
-                //                if (Strings.InStr(str1, ":") > 0)
-                //                {
-                //                    str1 = Strings.Left(str1, Strings.InStr(str1, ":") - 1);
-                //                }
-
-                //                if (Strings.InStr(str2, ":") > 0)
-                //                {
-                //                    str2 = Strings.Left(str2, Strings.InStr(str2, ":") - 1);
-                //                }
-                //            }
-                //        }
-
-                //        // 一致したか？
-                //        if ((str1 ?? "") != (str2 ?? ""))
-                //        {
-                //            if (revrersible & !reversed)
-                //            {
-                //                // 対象と相手を入れ替えたイベントラベルが存在するか判定
-                //                string localListIndex() { string arglist = lab.Data; var ret = GeneralLib.ListIndex(arglist, 3); lab.Data = arglist; return ret; }
-
-                //                string localListIndex1() { string arglist = lab.Data; var ret = GeneralLib.ListIndex(arglist, 2); lab.Data = arglist; return ret; }
-
-                //                lname2 = litem[1] + " " + localListIndex() + " " + localListIndex1();
-                //                if (lab.AsterNum > 0)
-                //                {
-                //                    lname2 = "*" + lname2;
-                //                }
-
-                //                if (FindLabel(lname2) == 0)
-                //                {
-                //                    // 対象と相手を入れ替えて判定し直す
-                //                    reversed = true;
-                //                    goto CheckPara;
-                //                }
-                //            }
-
-                //            continue;
-                //        }
-
-                //    NextPara:
-                //        ;
-                //    }
+                    if (FindLabel(lname2) == 0)
+                    {
+                        // 対象と相手を入れ替えて判定し直す
+                        reversed = true;
+                        isMatch = IsMatch(ltype, lab, litem, lnum, is_unit, is_num, is_condition, reversed);
+                    }
+                }
+                if(!isMatch)
+                {
+                    continue;
+                }
 
                 // ここまでたどり付けばラベルは一致している
-                SearchLabelRet = lab.EventDataId;
                 SRC.LogDebug("Found", lab.Name.ToString(), lab.Data);
 
-                //// 対象と相手を入れ替えて一致した場合はグローバル変数も入れ替え
-                //if (reversed)
-                //{
-                //    tmp_u = SelectedUnitForEvent;
-                //    SelectedUnitForEvent = SelectedTargetForEvent;
-                //    SelectedTargetForEvent = tmp_u;
-                //}
+                // 対象と相手を入れ替えて一致した場合はグローバル変数も入れ替え
+                if (reversed)
+                {
+                    var tmp_u = SelectedUnitForEvent;
+                    SelectedUnitForEvent = SelectedTargetForEvent;
+                    SelectedTargetForEvent = tmp_u;
+                }
 
-                return SearchLabelRet;
+                return lab.EventDataId;
             }
 
             return -1;
+        }
+
+        private bool IsMatch(
+            LabelType ltype,
+            LabelData lab,
+            string[] litem,
+            string[] lnum, bool[] is_unit, bool[] is_num, bool[] is_condition,
+            bool reversed)
+        {
+            string str1;
+            string str2;
+            // XXX 考えさせられる
+            int llen = litem.Length-1;
+            for (var i = 2; i <= llen; i++)
+            {
+                // コマンド関連ラベルの最後のパラメータは条件式なのでチェックを省く
+                if (is_condition[i])
+                {
+                    return true;
+                }
+
+                // 比較するパラメータ
+                str1 = litem[i];
+                if (reversed)
+                {
+                    str2 = lab.Para((5 - i));
+                }
+                else
+                {
+                    str2 = lab.Para(i);
+                }
+
+                // 「全」は全てに一致
+                if (str2 == "全")
+                {
+                    // だだし、「ターン 全」が２回実行されるのは防ぐ
+                    // （ターン毎に「ターン 全」「ターン n」の2つのイベントが発行される）
+                    if (ltype != LabelType.TurnEventLabel || i != 2)
+                    {
+                        continue;
+                    }
+                }
+
+                // 数値として比較？
+                if (is_num[i])
+                {
+                    if (Information.IsNumeric(str2))
+                    {
+                        if (Conversions.ToDouble(lnum[i]) == Conversions.ToInteger(str2))
+                        {
+
+                            continue;
+                        }
+                        else if (ltype == LabelType.DamageEventLabel)
+                        {
+                            // 損傷率ラベルの処理
+                            if (Conversions.ToDouble(lnum[i]) > Conversions.ToInteger(str2))
+                            {
+                                return true;
+                            }
+                        }
+                    }
+                    return false;
+                }
+
+                // ユニット指定として比較？
+                if (is_unit[i])
+                {
+                    if (str2 == "味方" || str2 == "ＮＰＣ" || str2 == "敵" || str2 == "中立")
+                    {
+                        // 陣営名で比較
+                        if (str1 != "味方" && str1 != "ＮＰＣ" && str1 != "敵" && str1 != "中立")
+                        {
+                            if (SRC.PList.IsDefined(str1))
+                            {
+                                str1 = SRC.PList.Item(str1).Party;
+                            }
+                        }
+                    }
+                    else if (SRC.PList.IsDefined(str2))
+                    {
+                        // パイロットで比較
+                        var p = SRC.PList.Item(str2);
+                        if ((str2 ?? "") == (p.Data.Name ?? "") | (str2 ?? "") == (p.Data.Nickname ?? ""))
+                        {
+                            // グループＩＤが付けられていない場合は
+                            // パイロット名で比較
+                            str2 = p.Name;
+                            if (SRC.PList.IsDefined(str1))
+                            {
+                                str1 = SRC.PList.Item(str1).Name;
+                            }
+                        }
+                        else
+                        {
+                            // グループＩＤが付けられている場合は
+                            // グループＩＤで比較
+                            if (SRC.PList.IsDefined(str1))
+                            {
+                                str1 = SRC.PList.Item(str1).ID;
+                            }
+
+                            if (Strings.InStr(str1, ":") > 0)
+                            {
+                                str1 = Strings.Left(str1, Strings.InStr(str1, ":") - 1);
+                            }
+                        }
+                    }
+                    else if (SRC.PDList.IsDefined(str2))
+                    {
+                        // パイロット名で比較
+                        str2 = SRC.PDList.Item(str2).Name;
+                        if (SRC.PList.IsDefined(str1))
+                        {
+                            str1 = SRC.PList.Item(str1).Name;
+                        }
+                    }
+                    else if (SRC.UDList.IsDefined(str2))
+                    {
+                        // ユニット名で比較
+                        if (SRC.PList.IsDefined(str1))
+                        {
+                            {
+                                var u = SRC.PList.Item(str1);
+                                if (u.Unit != null)
+                                {
+                                    str1 = u.Unit.Name;
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        // グループＩＤが付けられているおり、なおかつ同じＩＤの
+                        // ２番目以降のユニットの場合はグループＩＤで比較
+                        if (SRC.PList.IsDefined(str1))
+                        {
+                            str1 = SRC.PList.Item(str1).ID;
+                        }
+
+                        if (Strings.InStr(str1, ":") > 0)
+                        {
+                            str1 = Strings.Left(str1, Strings.InStr(str1, ":") - 1);
+                        }
+
+                        if (Strings.InStr(str2, ":") > 0)
+                        {
+                            str2 = Strings.Left(str2, Strings.InStr(str2, ":") - 1);
+                        }
+                    }
+                }
+
+                // 一致したか？
+                if ((str1 ?? "") != (str2 ?? ""))
+                {
+                    return false;
+                }
+            }
+            return true;
         }
 
         // 指定したイベントへのイベントラベルが定義されているか
@@ -530,7 +511,7 @@ namespace SRCCore.Events
         // ラベルを追加
         public void AddLabel(string lname, int eventDataId)
         {
-            var new_label = new LabelData();
+            var new_label = new LabelData(SRC);
             string lname2;
             new_label.Data = lname;
             new_label.EventDataId = eventDataId;
@@ -566,7 +547,7 @@ namespace SRCCore.Events
         // システム側のラベルを追加
         public void AddSysLabel(string lname, int eventDataId)
         {
-            var new_label = new LabelData();
+            var new_label = new LabelData(SRC);
             string lname2;
 
             new_label.Data = lname;
