@@ -1,5 +1,6 @@
 ﻿using SRCCore.Events;
 using SRCCore.Exceptions;
+using SRCCore.Lib;
 using SRCCore.VB;
 using System;
 using System.Collections.Generic;
@@ -17,10 +18,10 @@ namespace SRCCore.CmdDatas.Commands
     public abstract class AIfCmd : CmdData
     {
         public IfCmdType IfCmdType { get; protected set; }
-        protected string Expr { get; set; }
+        public string Expr { get; protected set; }
         // Exprの項の数、0なら単に式として評価するべきExpr。
-        protected int ExprTermCount { get; set; }
-        protected string GoToLabel { get; set; }
+        public int ExprTermCount { get; protected set; }
+        public string GoToLabel { get; protected set; }
 
         public AIfCmd(SRC src, CmdType name, EventDataLine eventData) : base(src, name, eventData)
         {
@@ -123,6 +124,94 @@ namespace SRCCore.CmdDatas.Commands
                     break;
             }
             Expr = string.Join(" ", terms);
+        }
+
+        public bool Evaluate()
+        {
+            // Ifコマンドはあらかじめ構文解析されていて、条件式の項数が入っている
+            bool flag;
+            switch (ExprTermCount)
+            {
+                case 1:
+                    if (SRC.PList.IsDefined(Expr))
+                    {
+                        var p = SRC.PList.Item(Expr);
+                        if (p.Unit is null)
+                        {
+                            flag = false;
+                        }
+                        else
+                        {
+                            {
+                                var withBlock1 = p.Unit;
+                                if (withBlock1.Status == "出撃" | withBlock1.Status == "格納")
+                                {
+                                    flag = true;
+                                }
+                                else
+                                {
+                                    flag = false;
+                                }
+                            }
+                        }
+                    }
+                    else if (Expression.GetValueAsLong(Expr, true) != 0)
+                    {
+                        flag = true;
+                    }
+                    else
+                    {
+                        flag = false;
+                    }
+                    break;
+
+                case 2:
+                    var pname = GeneralLib.ListIndex(Expr, 2);
+                    if (SRC.PList.IsDefined(pname))
+                    {
+                        object argIndex3 = pname;
+                        {
+                            var p = SRC.PList.Item(pname);
+                            if (p.Unit is null)
+                            {
+                                flag = true;
+                            }
+                            else
+                            {
+                                if (p.Unit.Status == "出撃" | p.Unit.Status == "格納")
+                                {
+                                    flag = false;
+                                }
+                                else
+                                {
+                                    flag = true;
+                                }
+                            }
+                        }
+                    }
+                    else if (Expression.GetValueAsLong(pname, true) == 0)
+                    {
+                        flag = true;
+                    }
+                    else
+                    {
+                        flag = false;
+                    }
+                    break;
+
+                default:
+                    if (Expression.GetValueAsLong(Expr) != 0)
+                    {
+                        flag = true;
+                    }
+                    else
+                    {
+                        flag = false;
+                    }
+                    break;
+            }
+
+            return flag;
         }
 
         internal static int ToEnd(CmdData elseCmd)
