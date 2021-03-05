@@ -162,6 +162,7 @@ namespace SRCCore.Events
                 //    }
 
                 case "ターン":
+                    EventQue.Enqueue(string.Join(" ", "ターン ", "全", Args[2]));
                     EventQue.Enqueue(string.Join(" ", "ターン ", Args[1], Args[2]));
                     break;
 

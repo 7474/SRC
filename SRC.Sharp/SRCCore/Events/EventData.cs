@@ -1,4 +1,5 @@
 ﻿using SRCCore.CmdDatas;
+using SRCCore.CmdDatas.Commands;
 using SRCCore.Expressions;
 using SRCCore.Lib;
 using SRCCore.Maps;
@@ -380,16 +381,12 @@ namespace SRCCore.Events
                         case CmdType.AutoTalkCmd:
                         case CmdType.QuestionCmd:
                         case CmdType.TalkCmd:
-                            {
-                                break;
-                            }
+                            break;
 
                         default:
-                            {
-                                DisplayEventErrorMessage(command.EventData, "括弧の対応が取れていません");
-                                error_found = true;
-                                break;
-                            }
+                            DisplayEventErrorMessage(command.EventData, "括弧の対応が取れていません");
+                            error_found = true;
+                            break;
                     }
                 }
 
@@ -406,7 +403,7 @@ namespace SRCCore.Events
                                 error_found = true;
                             }
 
-                            if (command.GetArg(4) == "then")
+                            if ((command as AIfCmd)?.IfCmdType == IfCmdType.Then)
                             {
                                 cmdStack.Push(CmdType.IfCmd);
                                 cmdPosStack.Push(command.EventData.ID);
