@@ -75,11 +75,8 @@ namespace SRCCore.CmdDatas
                     case "call":
                         return new CallCmd(src, data);
 
-                    //case "return":
-                    //    {
-                    //        CmdName = CmdType.ReturnCmd;
-                    //        break;
-                    //    }
+                    case "return":
+                        return new ReturnCmd(src, data);
 
                     //case "callintermissioncommand":
                     //    {
