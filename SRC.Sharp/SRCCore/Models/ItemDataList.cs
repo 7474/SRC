@@ -20,7 +20,7 @@ namespace SRCCore.Models
         public IList<ItemData> Items => colItemDataList.List;
 
         public string Raw = "";
-        public string Comment = "";
+        public string DataComment = "";
 
         private SRC SRC;
         public ItemDataList(SRC src)
@@ -103,9 +103,9 @@ namespace SRCCore.Models
                 }
                 else
                 {
-                    Comment = string.Join(Environment.NewLine + Environment.NewLine,
+                    DataComment = string.Join(Environment.NewLine + Environment.NewLine,
                         new string[]{
-                            Comment,
+                            DataComment,
                             reader.RawComment.Trim(),
                         }.Where(x => !string.IsNullOrEmpty(x)));
                 }

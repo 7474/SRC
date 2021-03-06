@@ -22,7 +22,7 @@ namespace SRCCore.Models
         public IList<PilotData> Items => colPilotDataList.List;
 
         public string Raw = "";
-        public string Comment = "";
+        public string DataComment = "";
 
         private SRC SRC;
         public PilotDataList(SRC src)
@@ -46,7 +46,7 @@ namespace SRCCore.Models
         {
             colPilotDataList.Clear();
             Raw = "";
-            Comment = "";
+            DataComment = "";
         }
 
         // パイロットデータリストにデータを追加
@@ -147,13 +147,13 @@ namespace SRCCore.Models
                 }
                 if (lastPd != null)
                 {
-                    lastPd.Comment = reader.RawComment.Trim();
+                    lastPd.DataComment = reader.RawComment.Trim();
                 }
                 else
                 {
-                    Comment = string.Join(Environment.NewLine + Environment.NewLine,
+                    DataComment = string.Join(Environment.NewLine + Environment.NewLine,
                         new string[]{
-                            Comment,
+                            DataComment,
                             reader.RawComment.Trim(),
                         }.Where(x => !string.IsNullOrEmpty(x)));
                 }

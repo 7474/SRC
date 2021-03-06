@@ -23,7 +23,7 @@ namespace SRCCore.Models
         private int IDNum;
 
         public string Raw = "";
-        public string Comment = "";
+        public string DataComment = "";
 
         public IList<UnitData> Items => colUnitDataList.List;
 
@@ -54,7 +54,7 @@ namespace SRCCore.Models
         {
             colUnitDataList.Clear();
             Raw = "";
-            Comment = "";
+            DataComment = "";
         }
 
         // ユニットデータリストにデータを追加
@@ -142,13 +142,13 @@ namespace SRCCore.Models
                 }
                 if (lastUd != null)
                 {
-                    lastUd.Comment = reader.RawComment.Trim();
+                    lastUd.DataComment = reader.RawComment.Trim();
                 }
                 else
                 {
-                    Comment = string.Join(Environment.NewLine + Environment.NewLine,
+                    DataComment = string.Join(Environment.NewLine + Environment.NewLine,
                         new string[]{
-                            Comment,
+                            DataComment,
                             reader.RawComment.Trim(),
                         }.Where(x => !string.IsNullOrEmpty(x)));
                 }

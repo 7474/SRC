@@ -66,7 +66,7 @@ namespace SRCCore.Models
         public IList<AbilityData> Abilities => colAbilityData.List;
 
         public string Raw = "";
-        public string Comment = "";
+        public string DataComment = "";
 
         public UnitData()
         {
