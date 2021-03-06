@@ -56,6 +56,10 @@
                 }
             </ul>
         </div>
+        @if (Data.Weapons.Any())
+        {
+            <WeaponDataListView Weapons="@Data.Weapons"></WeaponDataListView>
+        }
         <div class="content">
             @if (!string.IsNullOrEmpty(Data.Comment))
             {

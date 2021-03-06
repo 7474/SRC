@@ -84,41 +84,7 @@
         </div>
         @if (Data.Weapons.Any())
         {
-            <div class="table-container">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>名称</th>
-                            <th>攻撃</th>
-                            <th>射程</th>
-                            <th>命</th>
-                            <th>弾</th>
-                            <th>EN</th>
-                            <th>気力</th>
-                            <th>適応</th>
-                            <th>CT</th>
-                            <th>分類</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var wd in Data.Weapons)
-                        {
-                            <tr>
-                                <td class="has-text-left name-cell">@wd.Name</td>
-                                <td class="has-text-right">@wd.Power</td>
-                                <td class="has-text-centered">@wd.MinRange ~ @wd.MaxRange</td>
-                                <td class="has-text-right">@(wd.Precision >= 0 ? $"+{wd.Precision}" : $"{wd.Precision}")</td>
-                                <td class="has-text-right">@(wd.Bullet > 0 ? wd.Bullet : "-")</td>
-                                <td class="has-text-right">@(wd.ENConsumption > 0 ? wd.ENConsumption : "-")</td>
-                                <td class="has-text-right">@(wd.NecessaryMorale > 0 ? wd.NecessaryMorale : "-")</td>
-                                <td class="has-text-left">@wd.Adaption</td>
-                                <td class="has-text-right">@(wd.Critical >= 0 ? $"+{wd.Critical}" : $"{wd.Critical}")</td>
-                                <td class="has-text-left">@wd.Class</td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
+            <WeaponDataListView Weapons="@Data.Weapons"></WeaponDataListView>
         }
         @if (Data.Abilities.Any())
         {
