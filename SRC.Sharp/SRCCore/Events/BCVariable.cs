@@ -1,62 +1,67 @@
-﻿
-namespace Project1
+﻿// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
+// 本プログラムはフリーソフトであり、無保証です。
+// 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
+// 再頒布または改変することができます。
+
+using SRCCore.Units;
+
+namespace SRCCore.Events
 {
-    static class BCVariable
+    public class BCVariable
     {
-
-        // Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-        // 本プログラムはフリーソフトであり、無保証です。
-        // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
-        // 再頒布または改変することができます。
-
         // バトルコンフィグデータが有効か？
-        public static bool IsConfig;
+        public bool IsConfig;
 
         // バトルコンフィグデータの各種変数を定義する
 
         // バトルコンフィグデータ対象中心ユニット定義
         // ---------かならず定義されるデータ
-        public static Unit MeUnit;
+        public Unit MeUnit;
 
         // 攻撃側ユニット定義
-        public static Unit AtkUnit;
+        public Unit AtkUnit;
 
         // 防御側ユニット定義
-        public static Unit DefUnit;
+        public Unit DefUnit;
 
         // 武器番号
-        public static short WeaponNumber;
+        public int WeaponNumber;
 
         // ---------定義されない場合もある(計算後にリセットされる)データ
         // 攻撃値
-        public static int AttackExp;
+        public int AttackExp;
 
         // 攻撃側定義変数
-        public static int AttackVariable;
+        public int AttackVariable;
 
         // 防御側定義変数
-        public static int DffenceVariable;
+        public int DffenceVariable;
 
         // 地形補正
-        public static double TerrainAdaption;
+        public double TerrainAdaption;
 
         // サイズ補正
-        public static double SizeMod;
+        public double SizeMod;
 
         // 最終値
-        public static int LastVariable;
+        public int LastVariable;
 
         // 武器攻撃力
-        public static int WeaponPower;
+        public int WeaponPower;
 
         // 装甲値
-        public static int Armor;
+        public int Armor;
 
         // ザコ補正
-        public static int CommonEnemy;
+        public int CommonEnemy;
+
+        public BCVariable()
+        {
+            DataReset();
+        }
 
         // 定義されないこともあるデータをここでリセットする
-        public static void DataReset()
+        public void DataReset()
         {
             AttackExp = 0;
             AttackVariable = 0;
