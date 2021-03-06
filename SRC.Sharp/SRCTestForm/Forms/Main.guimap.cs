@@ -624,7 +624,6 @@ namespace SRCTestForm
                     g.DrawLine(unitAreaPen,
                         destRect.Left, destRect.Top + 28,
                         destRect.Left + 31, destRect.Top + 28);
-                    break;
                     g.DrawLine(unitAreaPen,
                         destRect.Left, destRect.Top + 3,
                         destRect.Left + 31, destRect.Top + 3);
