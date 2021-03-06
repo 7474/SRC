@@ -45,8 +45,8 @@ namespace SRCCore
         public MessageDataList EADList;
         // ダイアログデータのリスト
         public DialogDataList DDList;
-        //// スペシャルパワーデータのリスト
-        //public SpecialPowerDataList SPDList;
+        // スペシャルパワーデータのリスト
+        public SpecialPowerDataList SPDList;
         // エリアスデータのリスト
         public AliasDataList ALDList;
         // 地形データのリスト
@@ -158,7 +158,7 @@ namespace SRCCore
             ADList = new MessageDataList(this);
             EADList = new MessageDataList(this);
             DDList = new DialogDataList(this);
-            //public SpecialPowerDataList SPDList = new SpecialPowerDataList();
+            SPDList = new SpecialPowerDataList(this);
             ALDList = new AliasDataList(this);
             TDList = new TerrainDataList(this);
             //public BattleConfigDataList BCList = new BattleConfigDataList();

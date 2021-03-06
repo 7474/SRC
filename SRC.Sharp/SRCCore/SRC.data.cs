@@ -58,17 +58,16 @@ namespace SRCCore
                 ALDList.Load(aliasFilePath);
             }
 
-            //string argfname3 = fpath + @"\mind.txt";
-            //string argfname4 = fpath + @"\sp.txt";
-            //if (GeneralLib.FileExists(ref argfname4))
-            //{
-            //    string argfname2 = fpath + @"\sp.txt";
-            //    SPDList.Load(ref argfname2);
-            //}
-            //else if (GeneralLib.FileExists(ref argfname3))
-            //{
-            //    SPDList.Load(ref argfname3);
-            //}
+            var mindFilePath = Path.Combine(fpath, "mind.txt");
+            var spFilePath = Path.Combine(fpath, "sp.txt");
+            if (GeneralLib.FileExists(mindFilePath))
+            {
+                SPDList.Load(mindFilePath);
+            }
+            else if (GeneralLib.FileExists(spFilePath))
+            {
+                SPDList.Load(spFilePath);
+            }
 
             var pilotFilePath = Path.Combine(fpath, "pilot.txt");
             if (GeneralLib.FileExists(pilotFilePath))

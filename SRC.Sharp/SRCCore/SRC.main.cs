@@ -887,34 +887,25 @@ namespace SRCCore
             //                string argfname1 = AppPath + @"Data\System\alias.txt";
             //                ALDList.Load(argfname1);
             //            }
-            //            // スペシャルパワーデータをロード
-            //            bool localFileExists2() { string argfname = ScenarioPath + @"Data\System\mind.txt"; var ret = GeneralLib.FileExists(argfname); return ret; }
 
-            //            bool localFileExists3() { string argfname = AppPath + @"Data\System\sp.txt"; var ret = GeneralLib.FileExists(argfname); return ret; }
+            // スペシャルパワーデータをロード
+            var spFiles = new string[]
+            {
+                Path.Combine(ScenarioPath, "Data", "System", "sp.txt"),
+                Path.Combine(ScenarioPath, "Data", "System", "mind.txt"),
+                Path.Combine(AppPath, "Data", "System", "sp.txt"),
+                Path.Combine(AppPath, "Data", "System", "mind.txt"),
+            };
+            foreach (var spFile in spFiles)
+            {
 
-            //            bool localFileExists4() { string argfname = AppPath + @"Data\System\mind.txt"; var ret = GeneralLib.FileExists(argfname); return ret; }
+                if (GeneralLib.FileExists(spFile))
+                {
+                    SPDList.Load(spFile);
+                    break;
+                }
+            }
 
-            //            string argfname7 = ScenarioPath + @"Data\System\sp.txt";
-            //            if (GeneralLib.FileExists(argfname7))
-            //            {
-            //                string argfname3 = ScenarioPath + @"Data\System\sp.txt";
-            //                SPDList.Load(argfname3);
-            //            }
-            //            else if (localFileExists2())
-            //            {
-            //                string argfname4 = ScenarioPath + @"Data\System\mind.txt";
-            //                SPDList.Load(argfname4);
-            //            }
-            //            else if (localFileExists3())
-            //            {
-            //                string argfname5 = AppPath + @"Data\System\sp.txt";
-            //                SPDList.Load(argfname5);
-            //            }
-            //            else if (localFileExists4())
-            //            {
-            //                string argfname6 = AppPath + @"Data\System\mind.txt";
-            //                SPDList.Load(argfname6);
-            //            }
             //            // 汎用アイテムデータをロード
             //            bool localFileExists5() { string argfname = AppPath + @"Data\System\item.txt"; var ret = GeneralLib.FileExists(argfname); return ret; }
 
