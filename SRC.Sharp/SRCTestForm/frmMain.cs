@@ -103,6 +103,7 @@ namespace SRCTestForm
             treeViewData.Nodes.Add(new TreeNode("NonPilot", SRC.NPDList.Items.Select(x => new SrcTreeNode(x.Name, x)).ToArray()));
             treeViewData.Nodes.Add(new TreeNode("Message", SRC.MDList.Items.Select(x => new SrcTreeNode(x.Name, x)).ToArray()));
             treeViewData.Nodes.Add(new TreeNode("Dialog", SRC.DDList.Items.Select(x => new SrcTreeNode(x.Name, x)).ToArray()));
+            treeViewData.Nodes.Add(new TreeNode("Item", SRC.IDList.Items.Select(x => new SrcTreeNode(x.Name, x)).ToArray()));
         }
 
         private void SetMainText(string text)
