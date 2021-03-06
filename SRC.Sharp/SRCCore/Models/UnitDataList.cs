@@ -23,7 +23,7 @@ namespace SRCCore.Models
         private int IDNum;
 
         public string Raw = "";
-        public string Comment = "";
+        public string DataComment = "";
 
         public IList<UnitData> Items => colUnitDataList.List;
 
@@ -54,7 +54,7 @@ namespace SRCCore.Models
         {
             colUnitDataList.Clear();
             Raw = "";
-            Comment = "";
+            DataComment = "";
         }
 
         // ユニットデータリストにデータを追加
@@ -142,13 +142,13 @@ namespace SRCCore.Models
                 }
                 if (lastUd != null)
                 {
-                    lastUd.Comment = reader.RawComment.Trim();
+                    lastUd.DataComment = reader.RawComment.Trim();
                 }
                 else
                 {
-                    Comment = string.Join(Environment.NewLine + Environment.NewLine,
+                    DataComment = string.Join(Environment.NewLine + Environment.NewLine,
                         new string[]{
-                            Comment,
+                            DataComment,
                             reader.RawComment.Trim(),
                         }.Where(x => !string.IsNullOrEmpty(x)));
                 }
@@ -437,7 +437,7 @@ namespace SRCCore.Models
                 }
 
                 // 特殊能力データ
-                line_buf = LoadFeature(data_name, ud, reader, SRC);
+                line_buf = LoadFeatureOuter(data_name, ud, reader, SRC);
 
                 // 最大ＨＰ
                 ret = Strings.InStr(line_buf, ",");
@@ -578,7 +578,7 @@ namespace SRCCore.Models
             return ud;
         }
 
-        private static string LoadFeatureOuter(string data_name, IUnitDataElements ud, SrcDataReader reader, SRC SRC)
+        public static string LoadFeatureOuter(string data_name, IUnitDataElements ud, SrcDataReader reader, SRC SRC)
         {
             int ret;
             string buf;
@@ -591,7 +591,7 @@ namespace SRCCore.Models
             else if (line_buf == "特殊能力")
             {
                 // 新形式による特殊能力表記
-                LoadFeature(data_name, ud, reader, SRC);
+                line_buf = LoadFeature(data_name, ud, reader, SRC);
             }
             else if (Strings.InStr(line_buf, "特殊能力,") == 1)
             {
@@ -720,6 +720,7 @@ namespace SRCCore.Models
                     buf = "";
                 }
 
+                // ユニットとアイテムは特殊能力に続いて数字のみの行が続く。
                 if (Information.IsNumeric(buf2))
                 {
                     break;
@@ -750,7 +751,10 @@ namespace SRCCore.Models
             string buf;
             string buf2;
             string line_buf = reader.GetLine();
-            while (Strings.Len(line_buf) > 0 & line_buf != "===")
+            // アビリティとの区切り文字かアイテムの解説行で終了
+            while (Strings.Len(line_buf) > 0
+                && line_buf != "==="
+                && !line_buf.StartsWith("*"))
             {
                 // 武器名
                 ret = Strings.InStr(line_buf, ",");
@@ -1099,7 +1103,9 @@ namespace SRCCore.Models
             string buf;
             string buf2;
             string line_buf = reader.GetLine();
-            while (Strings.Len(line_buf) > 0)
+            // アイテムの解説行で終了
+            while (Strings.Len(line_buf) > 0
+                && !line_buf.StartsWith("*"))
             {
                 // アビリティ名
                 ret = Strings.InStr(line_buf, ",");

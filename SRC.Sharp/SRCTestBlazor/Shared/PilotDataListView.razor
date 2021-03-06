@@ -10,10 +10,10 @@
             }
         </div>
     </nav>
-    @if (!string.IsNullOrEmpty(SRC.PDList.Comment))
+    @if (!string.IsNullOrEmpty(SRC.PDList.DataComment))
     {
         <div class="content">
-            <div class="src-comment">@SRC.PDList.Comment</div>
+            <div class="src-comment">@SRC.PDList.DataComment</div>
         </div>
     }
     @foreach (var pd in SRC.PDList.Items)

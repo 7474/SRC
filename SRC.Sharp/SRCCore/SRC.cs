@@ -33,8 +33,8 @@ namespace SRCCore
         public NonPilotDataList NPDList;
         // ユニットデータのリスト
         public UnitDataList UDList;
-        //// アイテムデータのリスト
-        //public ItemDataList IDList ;
+        // アイテムデータのリスト
+        public ItemDataList IDList;
         // メッセージデータのリスト
         public MessageDataList MDList;
         // 特殊効果データのリスト
@@ -152,7 +152,7 @@ namespace SRCCore
             PDList = new PilotDataList(this);
             NPDList = new NonPilotDataList(this);
             UDList = new UnitDataList(this);
-            //public ItemDataList IDList = new ItemDataList();
+            IDList = new ItemDataList(this);
             MDList = new MessageDataList(this);
             EDList = new MessageDataList(this);
             ADList = new MessageDataList(this);

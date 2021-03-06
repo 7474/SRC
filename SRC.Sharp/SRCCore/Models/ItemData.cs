@@ -2,58 +2,41 @@
 // 本プログラムはフリーソフトであり、無保証です。
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
-
+using SRCCore.Lib;
 using SRCCore.VB;
-using System;
-using SRCCore.Expressions;
 using System.Collections.Generic;
 
 namespace SRCCore.Models
 {
-    // ユニットデータのクラス
-    public class UnitData : IUnitDataElements
+    // アイテムデータのクラス
+    public class ItemData : IUnitDataElements
     {
         // 名称
         public string Name;
-        // 識別子
-        public int ID;
         // クラス
-        public string Class;
-        // パイロット数 (マイナスの場合は括弧つきの指定)
-        public int PilotNum;
-        // アイテム数
-        public int ItemNum;
-        // 地形適応
-        public string Adaption;
-        // ＨＰ
+        // UPGRADE_NOTE: Class は Class_Renamed にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
+        public string Class_Renamed;
+        // 装備個所
+        public string Part;
+        // ＨＰ修正値
         public int HP;
-        // ＥＮ
+        // ＥＮ修正値
         public int EN;
-        // 移動タイプ
-        public string Transportation;
-        // 移動力
-        public int Speed;
-        // サイズ
-        public string Size;
-        // 装甲
+        // 装甲修正値
         public int Armor;
-        // 運動性
+        // 運動性修正値
         public int Mobility;
-        // 修理費
-        public int Value;
-        // 経験値
-        public int ExpValue;
+        // 移動力修正値
+        public int Speed;
+        // 解説
+        public string Comment;
 
         // 愛称
         private string proNickname;
         // 読み仮名
         private string proKanaName;
 
-        // ビットマップ名
-        private string proBitmap;
-        // ビットマップが存在するか
-        public bool IsBitmapMissing;
-
+        // ユニットに付加するデータ
         // 特殊能力
         private SrcCollection<FeatureData> colFeature;
         // 武器データ
@@ -68,7 +51,7 @@ namespace SRCCore.Models
         public string Raw = "";
         public string DataComment = "";
 
-        public UnitData()
+        public ItemData() : base()
         {
             colFeature = new SrcCollection<FeatureData>();
             colWeaponData = new SrcCollection<WeaponData>();
@@ -80,13 +63,15 @@ namespace SRCCore.Models
         {
             get
             {
-                string NicknameRet = proNickname;
+                string NicknameRet = default;
+                NicknameRet = proNickname;
                 // TODO Impl
                 //if (Strings.InStr(NicknameRet, "主人公") == 1 | Strings.InStr(NicknameRet, "ヒロイン") == 1)
                 //{
                 //    string argexpr = NicknameRet + "愛称";
                 //    NicknameRet = Expression.GetValueAsString(ref argexpr);
                 //}
+
                 //Expression.ReplaceSubExpression(ref NicknameRet);
                 return NicknameRet;
             }
@@ -103,7 +88,8 @@ namespace SRCCore.Models
         {
             get
             {
-                string KanaNameRet = proKanaName;
+                string KanaNameRet = default;
+                KanaNameRet = proKanaName;
                 // TODO Impl
                 //if (Strings.InStr(KanaNameRet, "主人公") == 1 | Strings.InStr(KanaNameRet, "ヒロイン") == 1 | Strings.InStr(KanaNameRet, "ひろいん") == 1)
                 //{
@@ -121,6 +107,7 @@ namespace SRCCore.Models
                 //        KanaNameRet = GeneralLib.StrToHiragana(ref argstr_Renamed);
                 //    }
                 //}
+
                 //Expression.ReplaceSubExpression(ref KanaNameRet);
                 return KanaNameRet;
             }
@@ -128,22 +115,6 @@ namespace SRCCore.Models
             set
             {
                 proKanaName = value;
-            }
-        }
-
-        // ビットマップ
-        public string Bitmap0 => proBitmap;
-
-        public string Bitmap
-        {
-            get
-            {
-                return IsBitmapMissing ? "-.bmp" : proBitmap;
-            }
-
-            set
-            {
-                proBitmap = value;
             }
         }
 
@@ -210,12 +181,12 @@ namespace SRCCore.Models
                 ftype = Strings.Left(buf, i - 1);
                 if (j > 0)
                 {
-                    flevel = Convert.ToDouble(Strings.Mid(buf, i + 2, j - (i + 2)));
+                    flevel = Conversions.ToDouble(Strings.Mid(buf, i + 2, j - (i + 2)));
                     fdata = Strings.Mid(buf, j + 1);
                 }
                 else
                 {
-                    flevel = Convert.ToDouble(Strings.Mid(buf, i + 2));
+                    flevel = Conversions.ToDouble(Strings.Mid(buf, i + 2));
                 }
             }
             else if (j > 0)
@@ -237,53 +208,22 @@ namespace SRCCore.Models
                 }
             }
 
-            var fds = ApplyAliasIfDefined(ftype, fdata, flevel, nskill, ncondition);
-            // エイリアスがなければ素のままを登録する
-            if (fds.Count == 0)
-            {
-                fds.Add(new FeatureData
-                {
-                    Name = ftype,
-                    Level = flevel,
-                    StrData = fdata,
-                    NecessarySkill = nskill,
-                    NecessaryCondition = ncondition,
-                });
-            }
-
-            // 特殊能力を登録
-            foreach (var fd in fds)
-            {
-                if (IsFeatureAvailable(fd.Name))
-                {
-                    colFeature.Add(fd, fd.Name + SrcFormatter.Format(CountFeature()));
-                }
-                else
-                {
-                    colFeature.Add(fd, fd.Name);
-                }
-            }
-        }
-
-        private IList<FeatureData> ApplyAliasIfDefined(string ftype, string fdata, double flevel, string nskill, string ncondition)
-        {
-            var results = new List<FeatureData>();
-
-            //// エリアスが定義されている？
+            // Imple
+            //エリアスが定義されている？
             //object argIndex2 = ftype;
-            //if (SRC.ALDList.IsDefined(ref argIndex2))
+            //if (SRC.ALDList.IsDefined(argIndex2))
             //{
-            //    if (GeneralLib.LIndex(ref fdata, 1) != "解説")
+            //    if (GeneralLib.LIndex(fdata, 1) != "解説")
             //    {
             //        object argIndex1 = ftype;
             //        {
-            //            var withBlock = SRC.ALDList.Item(ref argIndex1);
+            //            var withBlock = SRC.ALDList.Item(argIndex1);
             //            var loopTo = withBlock.Count;
-            //            for (int i = 1; i <= loopTo; i++)
+            //            for (i = 1; i <= loopTo; i++)
             //            {
-            //                var fd = new FeatureData();
+            //                fd = new FeatureData();
 
-            //                // エリアスの定義に従って特殊能力定義を置き換える
+            //                エリアスの定義に従って特殊能力定義を置き換える
             //                fd.Name = withBlock.get_AliasType(i);
             //                if ((withBlock.get_AliasType(i) ?? "") != (ftype ?? ""))
             //                {
@@ -330,7 +270,7 @@ namespace SRCCore.Models
 
             //                    if (!string.IsNullOrEmpty(fdata) & Strings.InStr(withBlock.get_AliasData(i), "非表示") != 1)
             //                    {
-            //                        string localListTail() { string arglist = withBlock.get_AliasData(i); var ret = GeneralLib.ListTail(ref arglist, (GeneralLib.LLength(ref fdata) + 1)); withBlock.get_AliasData(i) = arglist; return ret; }
+            //                        string localListTail() { string arglist = withBlock.get_AliasData(i); var ret = GeneralLib.ListTail(arglist, (GeneralLib.LLength(fdata) + 1)); withBlock.get_AliasData(i) = arglist; return ret; }
 
             //                        fd.StrData = fdata + " " + localListTail();
             //                    }
@@ -341,19 +281,19 @@ namespace SRCCore.Models
 
             //                    if (withBlock.get_AliasLevelIsMultMod(i))
             //                    {
-            //                        string buf = fd.StrData;
+            //                        buf = fd.StrData;
             //                        string args2 = "Lv1";
-            //                        string args3 = "Lv" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(flevel);
-            //                        GeneralLib.ReplaceString(ref buf, ref args2, ref args3);
+            //                        string args3 = "Lv" + SrcFormatter.Format(flevel);
+            //                        GeneralLib.ReplaceString(buf, args2, args3);
             //                        fd.StrData = buf;
             //                    }
             //                }
             //                else
             //                {
-            //                    // 特殊能力解説の定義
-            //                    if (!string.IsNullOrEmpty(fdata) & GeneralLib.LIndex(ref fdata, 1) != "非表示")
+            //                    特殊能力解説の定義
+            //                    if (!string.IsNullOrEmpty(fdata) & GeneralLib.LIndex(fdata, 1) != "非表示")
             //                    {
-            //                        fd.Name = GeneralLib.LIndex(ref fdata, 1);
+            //                        fd.Name = GeneralLib.LIndex(fdata, 1);
             //                    }
 
             //                    fd.StrData = withBlock.get_AliasData(i);
@@ -377,12 +317,37 @@ namespace SRCCore.Models
             //                    fd.NecessaryCondition = withBlock.get_AliasNecessaryCondition(i);
             //                }
 
-            //                results.Add(fd);
+            //                特殊能力を登録
+            //                if (IsFeatureAvailable(fd.Name))
+            //                {
+            //                    colFeature.Add(fd, fd.Name + SrcFormatter.Format(CountFeature()));
+            //                }
+            //                else
+            //                {
+            //                    colFeature.Add(fd, fd.Name);
+            //                }
             //            }
             //        }
+
+            //        return;
             //    }
             //}
-            return results;
+
+            // 特殊能力を登録
+            var fd = new FeatureData();
+            fd.Name = ftype;
+            fd.Level = flevel;
+            fd.StrData = fdata;
+            fd.NecessarySkill = nskill;
+            fd.NecessaryCondition = ncondition;
+            if (IsFeatureAvailable(ftype))
+            {
+                colFeature.Add(fd, ftype + SrcFormatter.Format(CountFeature()));
+            }
+            else
+            {
+                colFeature.Add(fd, ftype);
+            }
         }
 
         // 特殊能力の総数
@@ -392,64 +357,53 @@ namespace SRCCore.Models
         }
 
         // 特殊能力
-        public string Feature(int Index)
+        public string Feature(string Index)
         {
+            // XXX 例外処理要らんの？
             return colFeature[Index].Name;
         }
 
         // 特殊能力の名称
-        public string FeatureName(int Index)
+        public string FeatureName(string Index)
         {
+            string FeatureNameRet = default;
             FeatureData fd = colFeature[Index];
             if (Strings.Len(fd.StrData) > 0)
             {
-                throw new NotImplementedException();
-                // TODO
-                //FeatureNameRet = GeneralLib.ListIndex(ref fd.StrData, 1);
+                FeatureNameRet = GeneralLib.ListIndex(fd.StrData, 1);
             }
-            else if (fd.Level > 0d)
+            else if (fd.Level != Constants.DEFAULT_LEVEL)
             {
-                return fd.Name + "Lv" + SrcFormatter.Format(fd.Level);
+                FeatureNameRet = fd.Name + "Lv" + SrcFormatter.Format(fd.Level);
             }
             else
             {
-                return fd.Name;
+                FeatureNameRet = fd.Name;
             }
+
+            return FeatureNameRet;
         }
 
         // 特殊能力のレベル
-        public double FeatureLevel(int Index)
+        public double FeatureLevel(string Index)
         {
             try
             {
-                var level = colFeature[Index].Level;
-                return level == Constants.DEFAULT_LEVEL ? 0 : level;
+                FeatureData fd = colFeature[Index];
+                return fd.Level == Constants.DEFAULT_LEVEL ? 1d : fd.Level;
             }
             catch
             {
-                return 0;
+                return 0d;
             }
         }
 
         // 特殊能力のデータ
-        public string FeatureData(int Index)
+        public string FeatureData(string Index)
         {
             try
             {
-                return colFeature[Index].StrData;
-            }
-            catch
-            {
-                return "";
-            }
-        }
-
-        // 特殊能力の必要技能
-        public string FeatureNecessarySkill(int Index)
-        {
-            try
-            {
-                return colFeature[Index].NecessarySkill;
+                return colFeature[Index].StrData ?? "";
             }
             catch
             {
@@ -460,30 +414,29 @@ namespace SRCCore.Models
         // 指定した特殊能力を持っているか？
         public bool IsFeatureAvailable(string fname)
         {
-            return colFeature.ContainsKey(fname);
+            bool IsFeatureAvailableRet = default;
+            if (colFeature is null)
+            {
+                return IsFeatureAvailableRet;
+            }
+
+            foreach (FeatureData fd in colFeature)
+            {
+                if ((fd.Name ?? "") == (fname ?? ""))
+                {
+                    IsFeatureAvailableRet = true;
+                    return IsFeatureAvailableRet;
+                }
+            }
+
+            IsFeatureAvailableRet = false;
+            return IsFeatureAvailableRet;
         }
 
-        // 指定した特殊能力がレベル指定されているか？
-        public bool IsFeatureLevelSpecified(int Index)
+        // 武器データ
+        public WeaponData Weapon(string Index)
         {
-            try
-            {
-                return colFeature[Index].Level != Constants.DEFAULT_LEVEL;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
-        // 武器を追加
-        public WeaponData AddWeapon(string wname)
-        {
-            var new_wdata = new WeaponData();
-
-            new_wdata.Name = wname;
-            colWeaponData.Add(new_wdata, wname + SrcFormatter.Format(CountWeapon()));
-            return new_wdata;
+            return colWeaponData[Index];
         }
 
         // 武器の総数
@@ -492,20 +445,19 @@ namespace SRCCore.Models
             return colWeaponData.Count;
         }
 
-        // 武器データ
-        public WeaponData Weapon(int Index)
+        // 武器を追加
+        public WeaponData AddWeapon(string wname)
         {
-            return colWeaponData[Index];
+            var new_wdata = new WeaponData();
+            new_wdata.Name = wname;
+            colWeaponData.Add(new_wdata, wname + SrcFormatter.Format(CountWeapon()));
+            return new_wdata;
         }
 
-        // アビリティを追加
-        public AbilityData AddAbility(string aname)
+        // アビリティデータ
+        public AbilityData Ability(string Index)
         {
-            var new_sadata = new AbilityData();
-
-            new_sadata.Name = aname;
-            colAbilityData.Add(new_sadata, aname + SrcFormatter.Format(CountAbility()));
-            return new_sadata;
+            return colAbilityData[Index];
         }
 
         // アビリティの総数
@@ -514,18 +466,19 @@ namespace SRCCore.Models
             return colAbilityData.Count;
         }
 
-        // アビリティデータ
-        public AbilityData Ability(int Index)
+        // アビリティを追加
+        public AbilityData AddAbility(string aname)
         {
-            return colAbilityData[Index];
+            var new_adata = new AbilityData();
+            new_adata.Name = aname;
+            colAbilityData.Add(new_adata, aname + SrcFormatter.Format(CountAbility()));
+            return new_adata;
         }
 
-        // 特殊能力、武器データ、アビリティデータを削除する
-        public void Clear()
+        // サイズ(アイテムが消費するアイテムスロット数)
+        public int Size()
         {
-            colFeature.Clear();
-            colWeaponData.Clear();
-            colAbilityData.Clear();
+            return (int)(1d + FeatureLevel("大型アイテム"));
         }
     }
 }
