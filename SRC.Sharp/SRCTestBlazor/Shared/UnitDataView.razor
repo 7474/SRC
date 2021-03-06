@@ -88,35 +88,7 @@
         }
         @if (Data.Abilities.Any())
         {
-            <div class="table-container">
-                <table class="table">
-                    <thead class="is-size-7">
-                        <tr>
-                            <th>名称</th>
-                            <th>効果</th>
-                            <th>射程</th>
-                            <th>数</th>
-                            <th>EN</th>
-                            <th>気力</th>
-                            <th>分類</th>
-                        </tr>
-                    </thead>
-                    <tbody class="is-size-7">
-                        @foreach (var ad in Data.Abilities)
-                        {
-                            <tr>
-                                <td class="has-text-left name-cell">@ad.Name</td>
-                                <td class="has-text-left">---</td>
-                                <td class="has-text-centered">@ad.MinRange ~ @ad.MaxRange</td>
-                                <td class="has-text-right">@(ad.Stock > 0 ? ad.Stock : "-")</td>
-                                <td class="has-text-right">@(ad.ENConsumption > 0 ? ad.ENConsumption : "-")</td>
-                                <td class="has-text-right">@(ad.NecessaryMorale > 0 ? ad.NecessaryMorale : "-")</td>
-                                <td class="has-text-left">@ad.Class</td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
+            <AbilitiyDataListView Abilities="@Data.Abilities"></AbilitiyDataListView>
         }
         <div class="content">
             @if (!string.IsNullOrEmpty(Data.DataComment))

@@ -60,6 +60,10 @@
         {
             <WeaponDataListView Weapons="@Data.Weapons"></WeaponDataListView>
         }
+        @if (Data.Abilities.Any())
+        {
+            <AbilitiyDataListView Abilities="@Data.Abilities"></AbilitiyDataListView>
+        }
         <div class="content">
             @if (!string.IsNullOrEmpty(Data.Comment))
             {
