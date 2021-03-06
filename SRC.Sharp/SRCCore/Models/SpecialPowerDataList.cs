@@ -79,6 +79,10 @@ namespace SRCCore.Models
                     {
                         line_buf = reader.GetLine();
                     }
+                    if (string.IsNullOrEmpty(line_buf))
+                    {
+                        break;
+                    }
 
                     // 名称
                     var ret = Strings.InStr(line_buf, ",");

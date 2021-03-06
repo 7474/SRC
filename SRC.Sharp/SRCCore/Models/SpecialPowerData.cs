@@ -3,6 +3,8 @@
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
 
+using SRCCore.Lib;
+using SRCCore.VB;
 using System.Collections.Generic;
 
 namespace SRCCore.Models
@@ -28,7 +30,8 @@ namespace SRCCore.Models
         public string Animation;
 
         // 効果
-        private IList<SpecialPowerEffectData> effects = new List<SpecialPowerEffectData>();
+        private IList<SpecialPowerEffect> effects = new List<SpecialPowerEffect>();
+        public IList<SpecialPowerEffect> Effects => effects;
 
         // 解説
         public string Comment;
@@ -36,133 +39,137 @@ namespace SRCCore.Models
         // スペシャルパワーに効果を追加
         public void SetEffect(string elist)
         {
-            //int j, i, k;
-            //string buf;
-            //string elevel, etype, edata;
-            //strEffectType = new string[(GeneralLib.ListLength(elist) + 1)];
-            //dblEffectLevel = new double[(GeneralLib.ListLength(elist) + 1)];
-            //strEffectData = new string[(GeneralLib.ListLength(elist) + 1)];
-            //GeneralLib.TrimString(elist);
-            //var loopTo = GeneralLib.ListLength(elist);
-            //for (i = 1; i <= loopTo; i++)
-            //{
-            //    buf = GeneralLib.ListIndex(elist, i);
-            //    j = Strings.InStr(buf, "Lv");
-            //    k = Strings.InStr(buf, "=");
-            //    if (j > 0 & (k == 0 | j < k))
-            //    {
-            //        // レベル指定のある効果(データ指定を伴うものを含む)
-            //        strEffectType[i] = Strings.Left(buf, j - 1);
-            //        if (k > 0)
-            //        {
-            //            // データ指定を伴うもの
-            //            dblEffectLevel[i] = Conversions.ToDouble(Strings.Mid(buf, j + 2, k - (j + 2)));
-            //            buf = Strings.Mid(buf, k + 1);
-            //            if (Strings.Left(buf, 1) == "\"")
-            //            {
-            //                buf = Strings.Mid(buf, 2, Strings.Len(buf) - 2);
-            //            }
+            var list = GeneralLib.ToList(elist.Trim());
+            foreach (var item in list)
+            {
+                var buf = item;
+                string elevel, etype, edata;
+                var j = Strings.InStr(buf, "Lv");
+                var k = Strings.InStr(buf, "=");
+                string strEffectType;
+                double dblEffectLevel = Constants.DEFAULT_LEVEL;
+                string strEffectData = null;
+                if (j > 0 && (k == 0 | j < k))
+                {
+                    // レベル指定のある効果(データ指定を伴うものを含む)
+                    strEffectType = Strings.Left(buf, j - 1);
+                    if (k > 0)
+                    {
+                        // データ指定を伴うもの
+                        dblEffectLevel = Conversions.ToDouble(Strings.Mid(buf, j + 2, k - (j + 2)));
+                        buf = Strings.Mid(buf, k + 1);
+                        if (Strings.Left(buf, 1) == "\"")
+                        {
+                            buf = Strings.Mid(buf, 2, Strings.Len(buf) - 2);
+                        }
 
-            //            j = Strings.InStr(buf, "Lv");
-            //            k = Strings.InStr(buf, "=");
-            //            if (j > 0 & (k == 0 | j < k))
-            //            {
-            //                // データ指定中にレベル指定があるもの
-            //                etype = Strings.Left(buf, j - 1);
-            //                if (k > 0)
-            //                {
-            //                    elevel = Strings.Mid(buf, j + 2, k - (j + 2));
-            //                    edata = Strings.Mid(buf, k + 1);
-            //                }
-            //                else
-            //                {
-            //                    elevel = Strings.Mid(buf, j + 2);
-            //                    edata = "";
-            //                }
-            //            }
-            //            else if (k > 0)
-            //            {
-            //                // データ指定中にデータ指定があるもの
-            //                etype = Strings.Left(buf, k - 1);
-            //                elevel = "";
-            //                edata = Strings.Mid(buf, k + 1);
-            //            }
-            //            else
-            //            {
-            //                // データ指定のみ
-            //                etype = buf;
-            //                elevel = "";
-            //                edata = "";
-            //            }
+                        j = Strings.InStr(buf, "Lv");
+                        k = Strings.InStr(buf, "=");
+                        if (j > 0 & (k == 0 | j < k))
+                        {
+                            // データ指定中にレベル指定があるもの
+                            etype = Strings.Left(buf, j - 1);
+                            if (k > 0)
+                            {
+                                elevel = Strings.Mid(buf, j + 2, k - (j + 2));
+                                edata = Strings.Mid(buf, k + 1);
+                            }
+                            else
+                            {
+                                elevel = Strings.Mid(buf, j + 2);
+                                edata = "";
+                            }
+                        }
+                        else if (k > 0)
+                        {
+                            // データ指定中にデータ指定があるもの
+                            etype = Strings.Left(buf, k - 1);
+                            elevel = "";
+                            edata = Strings.Mid(buf, k + 1);
+                        }
+                        else
+                        {
+                            // データ指定のみ
+                            etype = buf;
+                            elevel = "";
+                            edata = "";
+                        }
 
-            //            if (Name == "付加" & string.IsNullOrEmpty(elevel))
-            //            {
-            //                elevel = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(SRC.DEFAULT_LEVEL);
-            //            }
+                        if (Name == "付加" & string.IsNullOrEmpty(elevel))
+                        {
+                            elevel = SrcFormatter.Format(Constants.DEFAULT_LEVEL);
+                        }
 
-            //            strEffectData[i] = Strings.Trim(etype + " " + elevel + " " + edata);
-            //        }
-            //        else
-            //        {
-            //            // データ指定を伴わないもの
-            //            dblEffectLevel[i] = Conversions.ToDouble(Strings.Mid(buf, j + 2));
-            //        }
-            //    }
-            //    else if (k > 0)
-            //    {
-            //        // データ指定を伴う効果
-            //        strEffectType[i] = Strings.Left(buf, k - 1);
-            //        buf = Strings.Mid(buf, k + 1);
-            //        if (Strings.Asc(buf) == 34) // "
-            //        {
-            //            buf = Strings.Mid(buf, 2, Strings.Len(buf) - 2);
-            //        }
+                        strEffectData = Strings.Trim(etype + " " + elevel + " " + edata);
+                    }
+                    else
+                    {
+                        // データ指定を伴わないもの
+                        dblEffectLevel = Conversions.ToDouble(Strings.Mid(buf, j + 2));
+                    }
+                }
+                else if (k > 0)
+                {
+                    // データ指定を伴う効果
+                    strEffectType = Strings.Left(buf, k - 1);
+                    buf = Strings.Mid(buf, k + 1);
+                    if (Strings.Asc(buf) == 34) // "
+                    {
+                        buf = Strings.Mid(buf, 2, Strings.Len(buf) - 2);
+                    }
 
-            //        j = Strings.InStr(buf, "Lv");
-            //        k = Strings.InStr(buf, "=");
-            //        if (j > 0)
-            //        {
-            //            // データ指定中にレベル指定があるもの
-            //            etype = Strings.Left(buf, j - 1);
-            //            if (k > 0)
-            //            {
-            //                elevel = Strings.Mid(buf, j + 2, k - (j + 2));
-            //                edata = Strings.Mid(buf, k + 1);
-            //            }
-            //            else
-            //            {
-            //                elevel = Strings.Mid(buf, j + 2);
-            //                edata = "";
-            //            }
-            //        }
-            //        else if (k > 0)
-            //        {
-            //            // データ指定中にデータ指定があるもの
-            //            etype = Strings.Left(buf, k - 1);
-            //            elevel = "";
-            //            edata = Strings.Mid(buf, k + 1);
-            //        }
-            //        else
-            //        {
-            //            // データ指定のみ
-            //            etype = buf;
-            //            elevel = "";
-            //            edata = "";
-            //        }
+                    j = Strings.InStr(buf, "Lv");
+                    k = Strings.InStr(buf, "=");
+                    if (j > 0)
+                    {
+                        // データ指定中にレベル指定があるもの
+                        etype = Strings.Left(buf, j - 1);
+                        if (k > 0)
+                        {
+                            elevel = Strings.Mid(buf, j + 2, k - (j + 2));
+                            edata = Strings.Mid(buf, k + 1);
+                        }
+                        else
+                        {
+                            elevel = Strings.Mid(buf, j + 2);
+                            edata = "";
+                        }
+                    }
+                    else if (k > 0)
+                    {
+                        // データ指定中にデータ指定があるもの
+                        etype = Strings.Left(buf, k - 1);
+                        elevel = "";
+                        edata = Strings.Mid(buf, k + 1);
+                    }
+                    else
+                    {
+                        // データ指定のみ
+                        etype = buf;
+                        elevel = "";
+                        edata = "";
+                    }
 
-            //        if (Name == "付加" & string.IsNullOrEmpty(elevel))
-            //        {
-            //            elevel = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(SRC.DEFAULT_LEVEL);
-            //        }
+                    if (Name == "付加" & string.IsNullOrEmpty(elevel))
+                    {
+                        elevel = SrcFormatter.Format(Constants.DEFAULT_LEVEL);
+                    }
 
-            //        strEffectData[i] = Strings.Trim(etype + " " + elevel + " " + edata);
-            //    }
-            //    else
-            //    {
-            //        // 効果名のみ
-            //        strEffectType[i] = buf;
-            //    }
-            //}
+                    strEffectData = Strings.Trim(etype + " " + elevel + " " + edata);
+                }
+                else
+                {
+                    // 効果名のみ
+                    strEffectType = buf;
+                }
+
+                effects.Add(new SpecialPowerEffect
+                {
+                    strEffectType = strEffectType,
+                    dblEffectLevel = dblEffectLevel,
+                    strEffectData = strEffectData,
+                });
+            }
         }
 
         // 特殊効果の個数
@@ -1239,12 +1246,12 @@ namespace SRCCore.Models
         //                                    {
         //                                        if (EffectLevel(i) >= 0d)
         //                                        {
-        //                                            string argmsg = "+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock1.HP - tmp);
+        //                                            string argmsg = "+" + SrcFormatter.Format(withBlock1.HP - tmp);
         //                                            GUI.DrawSysString(withBlock1.x, withBlock1.y, argmsg);
         //                                        }
         //                                        else
         //                                        {
-        //                                            string argmsg1 = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock1.HP - tmp);
+        //                                            string argmsg1 = SrcFormatter.Format(withBlock1.HP - tmp);
         //                                            GUI.DrawSysString(withBlock1.x, withBlock1.y, argmsg1);
         //                                        }
         //                                    }
@@ -1264,12 +1271,12 @@ namespace SRCCore.Models
         //                                    if (EffectLevel(i) >= 0d)
         //                                    {
         //                                        string argtname = "ＨＰ";
-        //                                        GUI.DisplaySysMessage(withBlock1.Nickname + "の" + Expression.Term(argtname, t) + "が" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock1.HP - tmp) + "回復した。");
+        //                                        GUI.DisplaySysMessage(withBlock1.Nickname + "の" + Expression.Term(argtname, t) + "が" + SrcFormatter.Format(withBlock1.HP - tmp) + "回復した。");
         //                                    }
         //                                    else
         //                                    {
         //                                        string argtname1 = "ＨＰ";
-        //                                        GUI.DisplaySysMessage(withBlock1.Nickname + "の" + Expression.Term(argtname1, t) + "が" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(tmp - withBlock1.HP) + "減少した。");
+        //                                        GUI.DisplaySysMessage(withBlock1.Nickname + "の" + Expression.Term(argtname1, t) + "が" + SrcFormatter.Format(tmp - withBlock1.HP) + "減少した。");
         //                                    }
         //                                }
 
@@ -1340,12 +1347,12 @@ namespace SRCCore.Models
         //                                    {
         //                                        if (EffectLevel(i) >= 0d)
         //                                        {
-        //                                            string argmsg2 = "+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock1.EN - tmp);
+        //                                            string argmsg2 = "+" + SrcFormatter.Format(withBlock1.EN - tmp);
         //                                            GUI.DrawSysString(withBlock1.x, withBlock1.y, argmsg2);
         //                                        }
         //                                        else
         //                                        {
-        //                                            string argmsg3 = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock1.EN - tmp);
+        //                                            string argmsg3 = SrcFormatter.Format(withBlock1.EN - tmp);
         //                                            GUI.DrawSysString(withBlock1.x, withBlock1.y, argmsg3);
         //                                        }
         //                                    }
@@ -1365,12 +1372,12 @@ namespace SRCCore.Models
         //                                    if (EffectLevel(i) >= 0d)
         //                                    {
         //                                        string argtname2 = "ＥＮ";
-        //                                        GUI.DisplaySysMessage(withBlock1.Nickname + "の" + Expression.Term(argtname2, t) + "が" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock1.EN - tmp) + "回復した。");
+        //                                        GUI.DisplaySysMessage(withBlock1.Nickname + "の" + Expression.Term(argtname2, t) + "が" + SrcFormatter.Format(withBlock1.EN - tmp) + "回復した。");
         //                                    }
         //                                    else
         //                                    {
         //                                        string argtname3 = "ＥＮ";
-        //                                        GUI.DisplaySysMessage(withBlock1.Nickname + "の" + Expression.Term(argtname3, t) + "が" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(tmp - withBlock1.EN) + "減少した。");
+        //                                        GUI.DisplaySysMessage(withBlock1.Nickname + "の" + Expression.Term(argtname3, t) + "が" + SrcFormatter.Format(tmp - withBlock1.EN) + "減少した。");
         //                                    }
         //                                }
 
@@ -1444,12 +1451,12 @@ namespace SRCCore.Models
         //                                    {
         //                                        if (EffectLevel(i) >= 0d)
         //                                        {
-        //                                            string argmsg4 = "+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock1.MainPilot().Plana - tmp);
+        //                                            string argmsg4 = "+" + SrcFormatter.Format(withBlock1.MainPilot().Plana - tmp);
         //                                            GUI.DrawSysString(withBlock1.x, withBlock1.y, argmsg4);
         //                                        }
         //                                        else
         //                                        {
-        //                                            string argmsg5 = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock1.MainPilot().Plana - tmp);
+        //                                            string argmsg5 = SrcFormatter.Format(withBlock1.MainPilot().Plana - tmp);
         //                                            GUI.DrawSysString(withBlock1.x, withBlock1.y, argmsg5);
         //                                        }
         //                                    }
@@ -1469,12 +1476,12 @@ namespace SRCCore.Models
         //                                    if (EffectLevel(i) >= 0d)
         //                                    {
         //                                        object argIndex5 = "霊力";
-        //                                        GUI.DisplaySysMessage(withBlock1.Nickname + "の" + withBlock1.MainPilot().SkillName0(argIndex5) + "が" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock1.MainPilot().Plana - tmp) + "回復した。");
+        //                                        GUI.DisplaySysMessage(withBlock1.Nickname + "の" + withBlock1.MainPilot().SkillName0(argIndex5) + "が" + SrcFormatter.Format(withBlock1.MainPilot().Plana - tmp) + "回復した。");
         //                                    }
         //                                    else
         //                                    {
         //                                        object argIndex6 = "霊力";
-        //                                        GUI.DisplaySysMessage(withBlock1.Nickname + "の" + withBlock1.MainPilot().SkillName0(argIndex6) + "が" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(tmp - withBlock1.MainPilot().Plana) + "減少した。");
+        //                                        GUI.DisplaySysMessage(withBlock1.Nickname + "の" + withBlock1.MainPilot().SkillName0(argIndex6) + "が" + SrcFormatter.Format(tmp - withBlock1.MainPilot().Plana) + "減少した。");
         //                                    }
         //                                }
 
@@ -1542,12 +1549,12 @@ namespace SRCCore.Models
         //                                        {
         //                                            if (EffectLevel(i) >= 0d)
         //                                            {
-        //                                                string argmsg6 = "+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock1.MainPilot().SP - tmp);
+        //                                                string argmsg6 = "+" + SrcFormatter.Format(withBlock1.MainPilot().SP - tmp);
         //                                                GUI.DrawSysString(withBlock1.x, withBlock1.y, argmsg6);
         //                                            }
         //                                            else
         //                                            {
-        //                                                string argmsg7 = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock1.MainPilot().SP - tmp);
+        //                                                string argmsg7 = SrcFormatter.Format(withBlock1.MainPilot().SP - tmp);
         //                                                GUI.DrawSysString(withBlock1.x, withBlock1.y, argmsg7);
         //                                            }
         //                                        }
@@ -1556,12 +1563,12 @@ namespace SRCCore.Models
         //                                        if (EffectLevel(i) >= 0d)
         //                                        {
         //                                            string argtname4 = "ＳＰ";
-        //                                            GUI.DisplaySysMessage(withBlock1.MainPilot().get_Nickname(false) + "の" + Expression.Term(argtname4, t) + "が" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock1.MainPilot().SP - tmp) + "回復した。");
+        //                                            GUI.DisplaySysMessage(withBlock1.MainPilot().get_Nickname(false) + "の" + Expression.Term(argtname4, t) + "が" + SrcFormatter.Format(withBlock1.MainPilot().SP - tmp) + "回復した。");
         //                                        }
         //                                        else
         //                                        {
         //                                            string argtname5 = "ＳＰ";
-        //                                            GUI.DisplaySysMessage(withBlock1.MainPilot().get_Nickname(false) + "の" + Expression.Term(argtname5, t) + "が" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(tmp - withBlock1.MainPilot().SP) + "減少した。");
+        //                                            GUI.DisplaySysMessage(withBlock1.MainPilot().get_Nickname(false) + "の" + Expression.Term(argtname5, t) + "が" + SrcFormatter.Format(tmp - withBlock1.MainPilot().SP) + "減少した。");
         //                                        }
         //                                    }
         //                                }
@@ -1576,12 +1583,12 @@ namespace SRCCore.Models
         //                                        {
         //                                            if (EffectLevel(i) >= 0d)
         //                                            {
-        //                                                string argmsg8 = "+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock1.MainPilot().SP - tmp);
+        //                                                string argmsg8 = "+" + SrcFormatter.Format(withBlock1.MainPilot().SP - tmp);
         //                                                GUI.DrawSysString(withBlock1.x, withBlock1.y, argmsg8);
         //                                            }
         //                                            else
         //                                            {
-        //                                                string argmsg9 = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock1.MainPilot().SP - tmp);
+        //                                                string argmsg9 = SrcFormatter.Format(withBlock1.MainPilot().SP - tmp);
         //                                                GUI.DrawSysString(withBlock1.x, withBlock1.y, argmsg9);
         //                                            }
         //                                        }
@@ -1590,12 +1597,12 @@ namespace SRCCore.Models
         //                                        if (EffectLevel(i) >= 0d)
         //                                        {
         //                                            string argtname6 = "ＳＰ";
-        //                                            GUI.DisplaySysMessage(withBlock1.MainPilot().get_Nickname(false) + "の" + Expression.Term(argtname6, t) + "が" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock1.MainPilot().SP - tmp) + "回復した。");
+        //                                            GUI.DisplaySysMessage(withBlock1.MainPilot().get_Nickname(false) + "の" + Expression.Term(argtname6, t) + "が" + SrcFormatter.Format(withBlock1.MainPilot().SP - tmp) + "回復した。");
         //                                        }
         //                                        else
         //                                        {
         //                                            string argtname7 = "ＳＰ";
-        //                                            GUI.DisplaySysMessage(withBlock1.MainPilot().get_Nickname(false) + "の" + Expression.Term(argtname7, t) + "が" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(tmp - withBlock1.MainPilot().SP) + "減少した。");
+        //                                            GUI.DisplaySysMessage(withBlock1.MainPilot().get_Nickname(false) + "の" + Expression.Term(argtname7, t) + "が" + SrcFormatter.Format(tmp - withBlock1.MainPilot().SP) + "減少した。");
         //                                        }
         //                                    }
 
@@ -1615,12 +1622,12 @@ namespace SRCCore.Models
         //                                                    if (EffectLevel(i) >= 0d)
         //                                                    {
         //                                                        string argtname8 = "ＳＰ";
-        //                                                        GUI.DisplaySysMessage(withBlock3.get_Nickname(false) + "の" + Expression.Term(argtname8, t) + "が" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock3.SP - tmp) + "回復した。");
+        //                                                        GUI.DisplaySysMessage(withBlock3.get_Nickname(false) + "の" + Expression.Term(argtname8, t) + "が" + SrcFormatter.Format(withBlock3.SP - tmp) + "回復した。");
         //                                                    }
         //                                                    else
         //                                                    {
         //                                                        string argtname9 = "ＳＰ";
-        //                                                        GUI.DisplaySysMessage(withBlock3.get_Nickname(false) + "の" + Expression.Term(argtname9, t) + "が" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(tmp - withBlock3.SP) + "減少した。");
+        //                                                        GUI.DisplaySysMessage(withBlock3.get_Nickname(false) + "の" + Expression.Term(argtname9, t) + "が" + SrcFormatter.Format(tmp - withBlock3.SP) + "減少した。");
         //                                                    }
         //                                                }
         //                                            }
@@ -1643,12 +1650,12 @@ namespace SRCCore.Models
         //                                                    if (EffectLevel(i) >= 0d)
         //                                                    {
         //                                                        string argtname10 = "ＳＰ";
-        //                                                        GUI.DisplaySysMessage(withBlock4.get_Nickname(false) + "の" + Expression.Term(argtname10, t) + "が" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock4.SP - tmp) + "回復した。");
+        //                                                        GUI.DisplaySysMessage(withBlock4.get_Nickname(false) + "の" + Expression.Term(argtname10, t) + "が" + SrcFormatter.Format(withBlock4.SP - tmp) + "回復した。");
         //                                                    }
         //                                                    else
         //                                                    {
         //                                                        string argtname11 = "ＳＰ";
-        //                                                        GUI.DisplaySysMessage(withBlock4.get_Nickname(false) + "の" + Expression.Term(argtname11, t) + "が" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(tmp - withBlock4.SP) + "減少した。");
+        //                                                        GUI.DisplaySysMessage(withBlock4.get_Nickname(false) + "の" + Expression.Term(argtname11, t) + "が" + SrcFormatter.Format(tmp - withBlock4.SP) + "減少した。");
         //                                                    }
         //                                                }
         //                                            }
@@ -1670,12 +1677,12 @@ namespace SRCCore.Models
         //                                                    if (EffectLevel(i) >= 0d)
         //                                                    {
         //                                                        string argtname12 = "ＳＰ";
-        //                                                        GUI.DisplaySysMessage(withBlock5.get_Nickname(false) + "の" + Expression.Term(argtname12, t) + "が" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock5.SP - tmp) + "回復した。");
+        //                                                        GUI.DisplaySysMessage(withBlock5.get_Nickname(false) + "の" + Expression.Term(argtname12, t) + "が" + SrcFormatter.Format(withBlock5.SP - tmp) + "回復した。");
         //                                                    }
         //                                                    else
         //                                                    {
         //                                                        string argtname13 = "ＳＰ";
-        //                                                        GUI.DisplaySysMessage(withBlock5.get_Nickname(false) + "の" + Expression.Term(argtname13, t) + "が" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(tmp - withBlock5.SP) + "減少した。");
+        //                                                        GUI.DisplaySysMessage(withBlock5.get_Nickname(false) + "の" + Expression.Term(argtname13, t) + "が" + SrcFormatter.Format(tmp - withBlock5.SP) + "減少した。");
         //                                                    }
         //                                                }
         //                                            }
@@ -2111,7 +2118,7 @@ namespace SRCCore.Models
         //                                        GUI.UpdateMessageForm(t, argu228);
         //                                    }
 
-        //                                    GUI.DisplaySysMessage(withBlock1.Nickname + "は" + Strings.StrConv(Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock1.Action), VbStrConv.Wide) + "回行動可能になった。");
+        //                                    GUI.DisplaySysMessage(withBlock1.Nickname + "は" + Strings.StrConv(SrcFormatter.Format(withBlock1.Action), VbStrConv.Wide) + "回行動可能になった。");
         //                                }
 
         //                                break;
@@ -2154,7 +2161,7 @@ namespace SRCCore.Models
         //                                {
         //                                    if (!displayed_string)
         //                                    {
-        //                                        string argmsg11 = "+" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock1.MainPilot().Morale - tmp);
+        //                                        string argmsg11 = "+" + SrcFormatter.Format(withBlock1.MainPilot().Morale - tmp);
         //                                        GUI.DrawSysString(withBlock1.x, withBlock1.y, argmsg11);
         //                                    }
 
@@ -2187,7 +2194,7 @@ namespace SRCCore.Models
         //                                    {
         //                                        if (!displayed_string)
         //                                        {
-        //                                            string argmsg12 = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock1.MainPilot().Morale - tmp);
+        //                                            string argmsg12 = SrcFormatter.Format(withBlock1.MainPilot().Morale - tmp);
         //                                            GUI.DrawSysString(withBlock1.x, withBlock1.y, argmsg12);
         //                                            displayed_string = true;
         //                                        }
@@ -2258,7 +2265,7 @@ namespace SRCCore.Models
         //                                {
         //                                    if (!displayed_string)
         //                                    {
-        //                                        string argmsg13 = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(tmp - withBlock1.HP);
+        //                                        string argmsg13 = SrcFormatter.Format(tmp - withBlock1.HP);
         //                                        GUI.DrawSysString(withBlock1.x, withBlock1.y, argmsg13);
         //                                    }
 
@@ -2274,7 +2281,7 @@ namespace SRCCore.Models
         //                                        GUI.UpdateMessageForm(t, argu233);
         //                                    }
 
-        //                                    GUI.DisplaySysMessage(withBlock1.Nickname + "に" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(tmp - withBlock1.HP) + "のダメージを与えた。");
+        //                                    GUI.DisplaySysMessage(withBlock1.Nickname + "に" + SrcFormatter.Format(tmp - withBlock1.HP) + "のダメージを与えた。");
         //                                }
 
         //                                need_update = true;
@@ -2341,7 +2348,7 @@ namespace SRCCore.Models
         //                                {
         //                                    if (!displayed_string)
         //                                    {
-        //                                        string argmsg14 = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(tmp - withBlock1.HP);
+        //                                        string argmsg14 = SrcFormatter.Format(tmp - withBlock1.HP);
         //                                        GUI.DrawSysString(withBlock1.x, withBlock1.y, argmsg14);
         //                                    }
 
@@ -2360,12 +2367,12 @@ namespace SRCCore.Models
         //                                    if (ReferenceEquals(Commands.SelectedUnit, t))
         //                                    {
         //                                        string argtname14 = "ＨＰ";
-        //                                        GUI.DisplaySysMessage(withBlock1.Nickname + "の" + Expression.Term(argtname14, t) + "が" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(tmp - withBlock1.HP) + "減少した。");
+        //                                        GUI.DisplaySysMessage(withBlock1.Nickname + "の" + Expression.Term(argtname14, t) + "が" + SrcFormatter.Format(tmp - withBlock1.HP) + "減少した。");
         //                                    }
         //                                    else
         //                                    {
         //                                        string argtname15 = "ＨＰ";
-        //                                        GUI.DisplaySysMessage(withBlock1.Nickname + "の" + Expression.Term(argtname15, t) + "を" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(tmp - withBlock1.HP) + "減少させた。");
+        //                                        GUI.DisplaySysMessage(withBlock1.Nickname + "の" + Expression.Term(argtname15, t) + "を" + SrcFormatter.Format(tmp - withBlock1.HP) + "減少させた。");
         //                                    }
         //                                }
 
@@ -2418,7 +2425,7 @@ namespace SRCCore.Models
 
         //                                if (!displayed_string)
         //                                {
-        //                                    string argmsg15 = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(tmp - withBlock1.EN);
+        //                                    string argmsg15 = SrcFormatter.Format(tmp - withBlock1.EN);
         //                                    GUI.DrawSysString(withBlock1.x, withBlock1.y, argmsg15);
         //                                }
 
@@ -2437,12 +2444,12 @@ namespace SRCCore.Models
         //                                if (ReferenceEquals(Commands.SelectedUnit, t))
         //                                {
         //                                    string argtname16 = "ＥＮ";
-        //                                    GUI.DisplaySysMessage(withBlock1.Nickname + "の" + Expression.Term(argtname16, t) + "が" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(tmp - withBlock1.EN) + "減少した。");
+        //                                    GUI.DisplaySysMessage(withBlock1.Nickname + "の" + Expression.Term(argtname16, t) + "が" + SrcFormatter.Format(tmp - withBlock1.EN) + "減少した。");
         //                                }
         //                                else
         //                                {
         //                                    string argtname17 = "ＥＮ";
-        //                                    GUI.DisplaySysMessage(withBlock1.Nickname + "の" + Expression.Term(argtname17, t) + "を" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(tmp - withBlock1.EN) + "減少させた。");
+        //                                    GUI.DisplaySysMessage(withBlock1.Nickname + "の" + Expression.Term(argtname17, t) + "を" + SrcFormatter.Format(tmp - withBlock1.EN) + "減少させた。");
         //                                }
 
         //                                need_update = true;
@@ -2484,7 +2491,7 @@ namespace SRCCore.Models
         //                                string argtname18 = "ＨＰ";
         //                                string argtname19 = "ＥＮ";
         //                                string argtname20 = "資金";
-        //                                GUI.DisplayMessage(argpname, Expression.Term(argtname18, t, 6) + "：" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock1.HP) + "/" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock1.MaxHP) + ";" + Expression.Term(argtname19, t, 6) + "：" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock1.EN) + "/" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock1.MaxEN) + ";" + Expression.Term(argtname20, t, 6) + "：" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock1.Value / 2) + ";" + "経験値：" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock1.ExpValue + withBlock1.MainPilot().ExpValue));
+        //                                GUI.DisplayMessage(argpname, Expression.Term(argtname18, t, 6) + "：" + SrcFormatter.Format(withBlock1.HP) + "/" + SrcFormatter.Format(withBlock1.MaxHP) + ";" + Expression.Term(argtname19, t, 6) + "：" + SrcFormatter.Format(withBlock1.EN) + "/" + SrcFormatter.Format(withBlock1.MaxEN) + ";" + Expression.Term(argtname20, t, 6) + "：" + SrcFormatter.Format(withBlock1.Value / 2) + ";" + "経験値：" + SrcFormatter.Format(withBlock1.ExpValue + withBlock1.MainPilot().ExpValue));
         //                                string argfname4 = "アイテム所有";
         //                                if (withBlock1.IsFeatureAvailable(argfname4))
         //                                {
@@ -2999,7 +3006,7 @@ namespace SRCCore.Models
         //                            // カットインの表示
         //                            if (wait_time > 0)
         //                            {
-        //                                anime = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(wait_time / 100d) + ";" + anime;
+        //                                anime = SrcFormatter.Format(wait_time / 100d) + ";" + anime;
         //                                wait_time = 0;
         //                            }
 
@@ -3025,7 +3032,7 @@ namespace SRCCore.Models
         //                            // 画面処理コマンド
         //                            if (wait_time > 0)
         //                            {
-        //                                anime = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(wait_time / 100d) + ";" + anime;
+        //                                anime = SrcFormatter.Format(wait_time / 100d) + ";" + anime;
         //                                wait_time = 0;
         //                            }
 
