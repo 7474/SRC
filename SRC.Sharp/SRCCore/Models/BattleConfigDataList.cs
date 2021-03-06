@@ -1,178 +1,106 @@
-﻿using Microsoft.VisualBasic;
+﻿// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
+// 本プログラムはフリーソフトであり、無保証です。
+// 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
+// 再頒布または改変することができます。
+using SRCCore.Lib;
+using SRCCore.VB;
+using System.Collections.Generic;
+using System.IO;
 
-namespace Project1
+namespace SRCCore.Models
 {
-    internal class BattleConfigDataList
+    // バトルコンフィグデータを管理するクラス
+    // --- ダメージ計算、命中率算出など、バトルに関連するエリアスの定義を設定します。
+    public class BattleConfigDataList
     {
-
-        // Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-        // 本プログラムはフリーソフトであり、無保証です。
-        // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
-        // 再頒布または改変することができます。
-
-        // バトルコンフィグデータを管理するクラス
-        // --- ダメージ計算、命中率算出など、バトルに関連するエリアスの定義を設定します。
-
         // バトルコンフィグデータのコレクション
-        private Collection colBattleConfigData = new Collection();
+        private SrcCollection<BattleConfigData> colBattleConfigData = new SrcCollection<BattleConfigData>();
 
-
-        // クラスの解放
-        // UPGRADE_NOTE: Class_Terminate は Class_Terminate_Renamed にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
-        private void Class_Terminate_Renamed()
+        private SRC SRC { get; }
+        public BattleConfigDataList(SRC src)
         {
-            short i;
-            {
-                var withBlock = colBattleConfigData;
-                var loopTo = (short)withBlock.Count;
-                for (i = 1; i <= loopTo; i++)
-                    withBlock.Remove(1);
-            }
-            // UPGRADE_NOTE: オブジェクト colBattleConfigData をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-            colBattleConfigData = null;
-        }
-
-        ~BattleConfigDataList()
-        {
-            Class_Terminate_Renamed();
+            SRC = src;
         }
 
         // バトルコンフィグデータリストにデータを追加
-        public BattleConfigData Add(ref string cname)
+        public BattleConfigData Add(string cname)
         {
-            BattleConfigData AddRet = default;
-            var cd = new BattleConfigData();
+            var cd = new BattleConfigData(SRC);
             cd.Name = cname;
             colBattleConfigData.Add(cd, cname);
-            AddRet = cd;
-            return AddRet;
+            return cd;
         }
 
         // バトルコンフィグデータリストに登録されているデータの総数
-        public short Count()
+        public int Count()
         {
-            short CountRet = default;
-            CountRet = (short)colBattleConfigData.Count;
-            return CountRet;
+            return colBattleConfigData.Count;
         }
 
         // バトルコンフィグデータリストからデータを削除
-        public void Delete(ref object Index)
+        public void Delete(string Index)
         {
             colBattleConfigData.Remove(Index);
         }
 
         // バトルコンフィグデータリストからデータを取り出す
-        public BattleConfigData Item(ref string Index)
+        public BattleConfigData Item(string Index)
         {
-            BattleConfigData ItemRet = default;
-            ItemRet = (BattleConfigData)colBattleConfigData[Index];
-            return ItemRet;
+            return colBattleConfigData[Index];
         }
 
         // バトルコンフィグデータリストに指定したデータが定義されているか？
-        public bool IsDefined(ref object Index)
+        public bool IsDefined(string Index)
         {
-            bool IsDefinedRet = default;
-            BattleConfigData cd;
-            ;
-#error Cannot convert OnErrorGoToStatementSyntax - see comment for details
-            /* Cannot convert OnErrorGoToStatementSyntax, CONVERSION ERROR: Conversion for OnErrorGoToLabelStatement not implemented, please report this issue in 'On Error GoTo ErrorHandler' at character 1967
-
-
-            Input:
-
-                    On Error GoTo ErrorHandler
-
-             */
-            cd = (BattleConfigData)colBattleConfigData[Index];
-            IsDefinedRet = true;
-            return IsDefinedRet;
-            ErrorHandler:
-            ;
-            IsDefinedRet = false;
+            return Item(Index) != null;
         }
 
         // データファイル fname からデータをロード
-        public void Load(ref string fname)
+        public void Load(string fname)
         {
-            short FileNumber;
-            int line_num;
-            var line_buf = default(string);
-            BattleConfigData cd;
-            string data_name;
-            string err_msg;
-            ;
-#error Cannot convert OnErrorGoToStatementSyntax - see comment for details
-            /* Cannot convert OnErrorGoToStatementSyntax, CONVERSION ERROR: Conversion for OnErrorGoToLabelStatement not implemented, please report this issue in 'On Error GoTo ErrorHandler' at character 2386
-
-
-            Input:
-
-                    On Error GoTo ErrorHandler
-
-             */
-            FileNumber = (short)FileSystem.FreeFile();
-            FileSystem.FileOpen(FileNumber, fname, OpenMode.Input, OpenAccess.Read);
-            line_num = 0;
-            while (true)
+            using (var stream = new FileStream(fname, FileMode.Open))
             {
-                data_name = "";
-                do
+                Load(fname, stream);
+            }
+        }
+        public void Load(string fname, Stream stream)
+        {
+            using (var reader = new SrcDataReader(fname, stream))
+            {
+                while (reader.HasMore)
                 {
-                    if (FileSystem.EOF(FileNumber))
+                    string buf, buf2;
+                    string data_name = "";
+                    string line_buf = "";
+                    // 空行をスキップ
+                    while (reader.HasMore && string.IsNullOrEmpty(line_buf))
                     {
-                        FileSystem.FileClose((int)FileNumber);
-                        return;
+                        line_buf = reader.GetLine();
                     }
-
-                    GeneralLib.GetLine(ref FileNumber, ref line_buf, ref line_num);
-                }
-                while (Strings.Len(line_buf) == 0);
-                data_name = line_buf;
-                object argIndex2 = data_name;
-                if (IsDefined(ref argIndex2))
-                {
-                    // すでに定義されているエリアスのデータであれば置き換える
-                    object argIndex1 = data_name;
-                    Delete(ref argIndex1);
-                }
-
-                cd = Add(ref data_name);
-                while (true)
-                {
-                    if (FileSystem.EOF(FileNumber))
-                    {
-                        FileSystem.FileClose((int)FileNumber);
-                        return;
-                    }
-
-                    GeneralLib.GetLine(ref FileNumber, ref line_buf, ref line_num);
-                    if (Strings.Len(line_buf) == 0)
+                    if (string.IsNullOrEmpty(line_buf))
                     {
                         break;
                     }
+                    if (IsDefined(data_name))
+                    {
+                        // すでに定義されているエリアスのデータであれば置き換える
+                        Delete(data_name);
+                    }
 
-                    cd.ConfigCalc = line_buf;
+                    // XXX これでいいんか？　nullになったり上書きされそう。
+                    var cd = Add(data_name);
+                    while (reader.HasMore)
+                    {
+                        line_buf = reader.GetLine();
+                        if (string.IsNullOrEmpty(line_buf))
+                        {
+                            break;
+                        }
+
+                        cd.ConfigCalc = line_buf;
+                    }
                 }
             }
-
-            ErrorHandler:
-            ;
-
-            // エラー処理
-            if (line_num == 0)
-            {
-                string argmsg = fname + "が開けません。";
-                GUI.ErrorMessage(ref argmsg);
-            }
-            else
-            {
-                FileSystem.FileClose((int)FileNumber);
-                GUI.DataErrorMessage(ref err_msg, ref fname, (short)line_num, ref line_buf, ref data_name);
-            }
-
-            SRC.TerminateSRC();
         }
     }
 }

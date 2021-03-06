@@ -8,9 +8,9 @@ using System.Collections.Generic;
 namespace SRCCore.Models
 {
     // バトルコンフィグデータのクラス
+    // --- ダメージ計算、命中率算出など、バトルに関連するエリアスを定義します。
     public class BattleConfigData
     {
-        // --- ダメージ計算、命中率算出など、バトルに関連するエリアスを定義します。
         // 名称
         public string Name;
 
