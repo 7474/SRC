@@ -53,6 +53,9 @@ namespace SRCDataLinter
                     case "pilot_dialog.txt":
                         SRC.DDList.Load(file.Name, file.OpenRead());
                         break;
+                    case "item.txt":
+                        SRC.IDList.Load(file.Name, file.OpenRead());
+                        break;
                     default:
                         Console.WriteLine($"Not supported file [{file.Name}]");
                         break;
