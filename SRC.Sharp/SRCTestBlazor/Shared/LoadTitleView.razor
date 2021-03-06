@@ -30,6 +30,9 @@
 
         SRC.UDList.Clear();
         SRC.PDList.Clear();
+        //SRC.MDList.Clear();
+        //SRC.DDList.Clear();
+        SRC.IDList.Clear();
 
         var baseUri = DataPath;
         var dataFiles = DataFiles;
@@ -55,6 +58,10 @@
                         break;
                     case "pilot_dialog.txt":
                         SRC.DDList.Load(file, await Http.GetStreamAsync($"{baseUri}/{file}"));
+                        Console.WriteLine($"{file} was loaded.");
+                        break;
+                    case "item.txt":
+                        SRC.IDList.Load(file, await Http.GetStreamAsync($"{baseUri}/{file}"));
                         Console.WriteLine($"{file} was loaded.");
                         break;
                     default:

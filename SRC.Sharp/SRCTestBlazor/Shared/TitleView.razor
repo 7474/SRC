@@ -14,6 +14,9 @@
     <div style="@(currentKind != SrcDataKind.Pilot ? "display: none; ": "")">
         <PilotDataListView SRC="@SRC" />
     </div>
+    <div style="@(currentKind != SrcDataKind.Item ? "display: none; ": "")">
+        <ItemDataListView SRC="@SRC" />
+    </div>
 </section>
 
 @code {
