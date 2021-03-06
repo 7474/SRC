@@ -720,8 +720,8 @@ namespace SRCCore.Models
                     buf = "";
                 }
 
-                // ユニットとアイテムは特殊能力に続いて数字のみの行が続く。
-                if (Information.IsNumeric(buf2))
+                // ユニットとアイテムは特殊能力に続いて数値のみの行が続く。
+                if (Information.IsNumeric(buf2.Replace("+", "").Replace("-", "")))
                 {
                     break;
                 }
