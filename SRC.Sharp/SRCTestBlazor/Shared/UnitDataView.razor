@@ -70,17 +70,8 @@
                     </div>
                 </div>
             </div>
-            <ul>
-                @* 先頭は『特殊能力』表示用なので飛ばす *@
-                @foreach (var fd in Data.Features.Skip(1))
-                {
-                    <li>
-                        @fd.Name
-                        @(fd.HasLevel ? $"Lv{fd.Level}" : "")
-                        @fd.StrData
-                    </li>
-                }
-            </ul>
+            @* 先頭は『特殊能力』表示用なので飛ばす *@
+            <FeatureDataListView Features="@Data.Features.Skip(1)"></FeatureDataListView>
         </div>
         @if (Data.Weapons.Any())
         {
