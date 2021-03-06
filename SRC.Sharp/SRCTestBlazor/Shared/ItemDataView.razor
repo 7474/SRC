@@ -17,31 +17,31 @@
                 <div class="level-item has-text-centered">
                     <div>
                         <p class="heading">ＨＰ</p>
-                        <p class="title">@Data.HP</p>
+                        <p class="title">@ToItemEffectText(Data.HP)</p>
                     </div>
                 </div>
                 <div class="level-item has-text-centered">
                     <div>
                         <p class="heading">ＥＮ</p>
-                        <p class="title">@Data.EN</p>
+                        <p class="title">@ToItemEffectText(Data.EN)</p>
                     </div>
                 </div>
                 <div class="level-item has-text-centered">
                     <div>
                         <p class="heading">装甲</p>
-                        <p class="title">@Data.Armor</p>
+                        <p class="title">@ToItemEffectText(Data.Armor)</p>
                     </div>
                 </div>
                 <div class="level-item has-text-centered">
                     <div>
                         <p class="heading">運動性</p>
-                        <p class="title">@Data.Mobility</p>
+                        <p class="title">@ToItemEffectText(Data.Mobility)</p>
                     </div>
                 </div>
                 <div class="level-item has-text-centered">
                     <div>
                         <p class="heading">移動力</p>
-                        <p class="title">@Data.Speed</p>
+                        <p class="title">@ToItemEffectText(Data.Speed)</p>
                     </div>
                 </div>
             </div>
@@ -84,5 +84,10 @@
     private void OnClickRaw()
     {
         ExpandRaw = !ExpandRaw;
+    }
+
+    private static string ToItemEffectText(int num)
+    {
+        return num == 0 ? "-" : num > 0 ? "+" + num : num.ToString();
     }
 }
