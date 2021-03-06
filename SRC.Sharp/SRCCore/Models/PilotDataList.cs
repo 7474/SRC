@@ -122,7 +122,6 @@ namespace SRCCore.Models
         {
             using (var reader = new SrcDataReader(fname, stream))
             {
-
                 PilotData lastPd = null;
                 while (reader.HasMore)
                 {

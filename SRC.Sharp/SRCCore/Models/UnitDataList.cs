@@ -437,7 +437,7 @@ namespace SRCCore.Models
                 }
 
                 // 特殊能力データ
-                line_buf = LoadFeature(data_name, ud, reader, SRC);
+                line_buf = LoadFeatureOuter(data_name, ud, reader, SRC);
 
                 // 最大ＨＰ
                 ret = Strings.InStr(line_buf, ",");
@@ -578,7 +578,7 @@ namespace SRCCore.Models
             return ud;
         }
 
-        private static string LoadFeatureOuter(string data_name, IUnitDataElements ud, SrcDataReader reader, SRC SRC)
+        public static string LoadFeatureOuter(string data_name, IUnitDataElements ud, SrcDataReader reader, SRC SRC)
         {
             int ret;
             string buf;
@@ -591,7 +591,7 @@ namespace SRCCore.Models
             else if (line_buf == "特殊能力")
             {
                 // 新形式による特殊能力表記
-                LoadFeature(data_name, ud, reader, SRC);
+                line_buf = LoadFeature(data_name, ud, reader, SRC);
             }
             else if (Strings.InStr(line_buf, "特殊能力,") == 1)
             {
@@ -720,6 +720,7 @@ namespace SRCCore.Models
                     buf = "";
                 }
 
+                // ユニットとアイテムは特殊能力に続いて数字のみの行が続く。
                 if (Information.IsNumeric(buf2))
                 {
                     break;
