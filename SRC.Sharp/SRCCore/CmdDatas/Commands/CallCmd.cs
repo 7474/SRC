@@ -3,6 +3,7 @@ using SRCCore.Exceptions;
 using SRCCore.Pilots;
 using SRCCore.Units;
 using SRCCore.VB;
+using System.Linq;
 
 namespace SRCCore.CmdDatas.Commands
 {
@@ -14,97 +15,66 @@ namespace SRCCore.CmdDatas.Commands
 
         protected override int ExecInternal()
         {
-            int ExecCallCmdRet = default;
-            int ret;
-            short i;
-            var @params = new string[(Event_Renamed.MaxArgIndex + 1)];
-
             // サブルーチンを探す
-            string arglname = GetArgAsString(2);
-            ret = Event_Renamed.FindNormalLabel(ref arglname);
+            string subName = GetArgAsString(2);
+            var ret = Event.FindNormalLabel(subName);
 
             // 見つかった？
-            if (ret == 0)
+            if (ret < 0)
             {
-                Event_Renamed.EventErrorMessage = "サブルーチンの呼び出し先ラベルである「" + GetArgAsString((short)2) + "」がみつかりません";
-                ;
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 104107
-
-
-                Input:
-                            Error(0)
-
-                 */
+                // TODO コマンド実装し終わったら。。。
+                //throw new EventErrorException(this, "サブルーチンの呼び出し先ラベルである「" + subName + "」がみつかりません");
+                SRC.LogDebug($"{subName} is not found.");
+                return EventData.ID + 1;
             }
 
             // 呼び出し階層をチェック
-            if (Event_Renamed.CallDepth > Event_Renamed.MaxCallDepth)
+            if (Event.CallDepth > Event.MaxCallDepth)
             {
-                Event_Renamed.CallDepth = Event_Renamed.MaxCallDepth;
-                Event_Renamed.EventErrorMessage = Microsoft.VisualBasic.Compatibility.VB6.Support.Format((object)Event_Renamed.MaxCallDepth) + "階層を越えるサブルーチンの呼び出しは出来ません";
-                ;
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 104515
-
-
-                Input:
-                            Error(0)
-
-                 */
+                Event.CallDepth = Event.MaxCallDepth;
+                throw new EventErrorException(this, Event.MaxCallDepth + "階層を越えるサブルーチンの呼び出しは出来ません");
             }
 
             // 引数用スタックが溢れないかチェック
-            if (Event_Renamed.ArgIndex + ArgNum - 2 > (int)Event_Renamed.MaxArgIndex)
+            if (Event.ArgIndex + ArgNum - 2 > Event.MaxArgIndex)
             {
-                Event_Renamed.EventErrorMessage = "サブルーチンの引数の総数が" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format((object)Event_Renamed.MaxArgIndex) + "個を超えています";
-                ;
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 104856
-
-
-                Input:
-                            Error(0)
-
-                 */
+                throw new EventErrorException(this, "サブルーチンの引数の総数が" + Event.MaxArgIndex + "個を超えています");
             }
 
             // 引数の値を先に求めておく
             // (スタックに積みながら計算すると、引数での関数呼び出しで不正になる)
-            var loopTo = ArgNum;
-            for (i = 3; i <= loopTo; i++)
-                @params[i] = GetArgAsString(i);
+            var subParams = Enumerable.Range(3, ArgNum - 3).Select(x => GetArgAsString(x)).ToArray();
 
             // 現在の状態を保存
-            Event_Renamed.CallStack[Event_Renamed.CallDepth] = LineNum;
-            Event_Renamed.ArgIndexStack[Event_Renamed.CallDepth] = Event_Renamed.ArgIndex;
-            Event_Renamed.VarIndexStack[Event_Renamed.CallDepth] = Event_Renamed.VarIndex;
-            Event_Renamed.ForIndexStack[Event_Renamed.CallDepth] = Event_Renamed.ForIndex;
+            Event.CallStack[Event.CallDepth] = EventData.ID;
+            Event.ArgIndexStack[Event.CallDepth] = Event.ArgIndex;
+            Event.VarIndexStack[Event.CallDepth] = Event.VarIndex;
+            Event.ForIndexStack[Event.CallDepth] = Event.ForIndex;
 
             // UpVarが実行された場合、UpVar実行数は累計する
-            if (Event_Renamed.UpVarLevel > 0)
+            if (Event.UpVarLevel > 0)
             {
-                Event_Renamed.UpVarLevelStack[Event_Renamed.CallDepth] = (short)(Event_Renamed.UpVarLevel + Event_Renamed.UpVarLevelStack[Event_Renamed.CallDepth - 1]);
+                Event.UpVarLevelStack[Event.CallDepth] = (Event.UpVarLevel + Event.UpVarLevelStack[Event.CallDepth - 1]);
             }
             else
             {
-                Event_Renamed.UpVarLevelStack[Event_Renamed.CallDepth] = 0;
+                Event.UpVarLevelStack[Event.CallDepth] = 0;
             }
 
             // UpVarの階層数を初期化
-            Event_Renamed.UpVarLevel = 0;
+            Event.UpVarLevel = 0;
 
             // 引数をスタックに積む
-            var loopTo1 = ArgNum;
-            for (i = 3; i <= loopTo1; i++)
-                Event_Renamed.ArgStack[(short)(Event_Renamed.ArgIndex + ArgNum) - i + 1] = @params[i];
-            Event_Renamed.ArgIndex = (short)(Event_Renamed.ArgIndex + ArgNum - 2);
+            for (var i = 0; i < subParams.Length; i++)
+            {
+                Event.ArgStack[Event.ArgIndex + i + 1] = subParams[i];
+            }
+
+            Event.ArgIndex = Event.ArgIndex + subParams.Length;
 
             // 呼び出し階層数をインクリメント
-            Event_Renamed.CallDepth = (short)(Event_Renamed.CallDepth + 1);
-            ExecCallCmdRet = ret + 1;
-            return ExecCallCmdRet;
-            return EventData.ID + 1;
+            Event.CallDepth = Event.CallDepth + 1;
+            return ret + 1;
         }
     }
 }

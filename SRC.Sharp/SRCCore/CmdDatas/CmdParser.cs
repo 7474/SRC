@@ -2,6 +2,7 @@
 using SRCCore.Events;
 using SRCCore.Lib;
 using SRCCore.VB;
+using System.Collections.Generic;
 
 namespace SRCCore.CmdDatas
 {
@@ -13,9 +14,6 @@ namespace SRCCore.CmdDatas
             var edata = data.Data;
             try
             {
-                // 正常に解析が終了した場合はTrueを返すこと
-                bool ParseRet = true;
-
                 // 空行は無視
                 if (string.IsNullOrWhiteSpace(edata))
                 {
@@ -29,7 +27,8 @@ namespace SRCCore.CmdDatas
                 }
 
                 // コマンドのパラメータ分割
-                var list = GeneralLib.ToList(edata);
+                string[] list;
+                var llength = GeneralLib.ListSplit(edata, out list);
 
                 // コマンドの種類を判定
                 switch (Strings.LCase(list[0]) ?? "")
@@ -76,11 +75,8 @@ namespace SRCCore.CmdDatas
                     //        break;
                     //    }
 
-                    //case "call":
-                    //    {
-                    //        CmdName = CmdType.CallCmd;
-                    //        break;
-                    //    }
+                    case "call":
+                        return new CallCmd(src, data);
 
                     //case "return":
                     //    {
@@ -1010,7 +1006,7 @@ namespace SRCCore.CmdDatas
                     //    }
 
                     case "case":
-                        if (list.Count == 2)
+                        if (list.Length == 2)
                         {
                             if (Strings.LCase(list[1]) == "else")
                             {
@@ -1145,45 +1141,16 @@ namespace SRCCore.CmdDatas
                             //    }
                             //}
 
-                            //if (ArgNum == -1)
-                            //{
-                            //    CmdName = CmdType.NopCmd;
-                            //    return ParseRet;
-                            //}
+                            if (llength == -1)
+                            {
+                                return new NopCmd(src, data);
+                            }
 
-                            //// サブルーチンコール？
-                            //CmdName = CmdType.CallCmd;
-                            //// UPGRADE_WARNING: 配列 strArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
-                            //Array.Resize(strArgs, ArgNum + 1 + 1);
-                            //// UPGRADE_WARNING: 配列 lngArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
-                            //Array.Resize(lngArgs, ArgNum + 1 + 1);
-                            //// UPGRADE_WARNING: 配列 dblArgs の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
-                            //Array.Resize(dblArgs, ArgNum + 1 + 1);
-                            //// UPGRADE_WARNING: 配列 ArgsType の下限が 2 から 0 に変更されました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="0F1C9BE1-AF9D-476E-83B1-17D43BECFF20"' をクリックしてください。
-                            //Array.Resize(ArgsType, ArgNum + 1 + 1);
-                            //// 引数を１個ずらす
-                            //var loopTo1 = (int)(ArgNum - 2);
-                            //for (i = 0; i <= loopTo1; i++)
-                            //{
-                            //    strArgs[ArgNum + 1 - i] = strArgs[ArgNum - i];
-                            //    lngArgs[ArgNum + 1 - i] = lngArgs[ArgNum - i];
-                            //    dblArgs[ArgNum + 1 - i] = dblArgs[ArgNum - i];
-                            //    ArgsType[ArgNum + 1 - i] = ArgsType[ArgNum - i];
-                            //}
-
-                            //ArgNum = (int)(ArgNum + 1);
-                            //// 第２引数をサブルーチン名に設定
-                            //strArgs[2] = list[1];
-                            //if (Event_Renamed.FindNormalLabel(list[1]) > 0)
-                            //{
-                            //    ArgsType[2] = Expressions.ValueType.StringType;
-                            //}
-                            //else
-                            //{
-                            //    ArgsType[2] = Expressions.ValueType.UndefinedType;
-                            //}
-
-                            return new NopCmd(src, data);
+                            // サブルーチンコール？
+                            // TODO 多分Talkの中身が壊れる場面がある。
+                            return new CallCmd(src, new EventDataLine(
+                                data.ID, data.Source, data.File, data.LineNum, "Call " + data.Data
+                            ));
                         }
                 }
 
