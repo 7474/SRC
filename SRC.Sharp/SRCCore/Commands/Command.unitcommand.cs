@@ -554,13 +554,13 @@ namespace SRCCore.Commands
             //    return;
             //}
 
-            //// 行動終了イベント
-            //Event_Renamed.HandleEvent("行動終了", SelectedUnit.MainPilot().ID);
-            //if (SRC.IsScenarioFinished)
-            //{
-            //    SRC.IsScenarioFinished = false;
-            //    return;
-            //}
+            // 行動終了イベント
+            Event.HandleEvent("行動終了", SelectedUnit.MainPilot().ID);
+            if (SRC.IsScenarioFinished)
+            {
+                SRC.IsScenarioFinished = false;
+                return;
+            }
 
             //if (SelectedUnit.CountPilot() == 0)
             //{

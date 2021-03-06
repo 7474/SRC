@@ -535,7 +535,8 @@ namespace SRCTestForm
 
         public void DisplayBattleMessage(string pname, string msg, string msg_mode)
         {
-            throw new NotImplementedException();
+            // XXX バイパスしてあるだけ
+            DisplayMessage(pname, msg, msg_mode);
         }
 
         public void DisplaySysMessage(string msg, bool short_wait)
