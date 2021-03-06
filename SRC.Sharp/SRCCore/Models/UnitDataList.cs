@@ -751,7 +751,10 @@ namespace SRCCore.Models
             string buf;
             string buf2;
             string line_buf = reader.GetLine();
-            while (Strings.Len(line_buf) > 0 & line_buf != "===")
+            // アビリティとの区切り文字かアイテムの解説行で終了
+            while (Strings.Len(line_buf) > 0
+                && line_buf != "==="
+                && !line_buf.StartsWith("*"))
             {
                 // 武器名
                 ret = Strings.InStr(line_buf, ",");
@@ -1100,7 +1103,9 @@ namespace SRCCore.Models
             string buf;
             string buf2;
             string line_buf = reader.GetLine();
-            while (Strings.Len(line_buf) > 0)
+            // アイテムの解説行で終了
+            while (Strings.Len(line_buf) > 0
+                && !line_buf.StartsWith("*"))
             {
                 // アビリティ名
                 ret = Strings.InStr(line_buf, ",");

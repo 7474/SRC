@@ -133,12 +133,11 @@ namespace SRCCore
             //    EADList.Load(ref argfname21);
             //}
 
-            //string argfname24 = fpath + @"\item.txt";
-            //if (GeneralLib.FileExists(ref argfname24))
-            //{
-            //    string argfname23 = fpath + @"\item.txt";
-            //    IDList.Load(ref argfname23);
-            //}
+            var itemFilePath = Path.Combine(fpath, "item.txt");
+            if (GeneralLib.FileExists(itemFilePath))
+            {
+                IDList.Load(itemFilePath);
+            }
         }
 
         private bool init_search_data_folder = false;

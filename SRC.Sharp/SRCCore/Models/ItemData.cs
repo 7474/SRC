@@ -48,6 +48,15 @@ namespace SRCCore.Models
         public IList<WeaponData> Weapons => colWeaponData.List;
         public IList<AbilityData> Abilities => colAbilityData.List;
 
+        public string Raw = "";
+        public string DataComment = "";
+
+        public ItemData() : base()
+        {
+            colFeature = new SrcCollection<FeatureData>();
+            colWeaponData = new SrcCollection<WeaponData>();
+            colAbilityData = new SrcCollection<AbilityData>();
+        }
 
         // 愛称
         public string Nickname
