@@ -28,6 +28,13 @@ namespace SRCCore.Models
             SRC = src;
         }
 
+        public void Clear()
+        {
+            colItemDataList.Clear();
+            Raw = "";
+            DataComment = "";
+        }
+
         // アイテムデータリストにデータを追加
         public ItemData Add(string new_name)
         {
