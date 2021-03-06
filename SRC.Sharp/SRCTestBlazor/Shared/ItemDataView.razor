@@ -1,0 +1,88 @@
+﻿@using SRCCore.Models
+
+<article class="card src-data" id="item-@Data.Name">
+    <header class="card-header">
+        <div class="card-header-title">
+            <div class="media">
+                <div class="media-content">
+                    <p class="title is-4">@Data.Name</p>
+                    <p class="subtitle is-6">@Data.Nickname</p>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="card-content">
+        <div class="content">
+            <div class="level is-mobile">
+                <div class="level-item has-text-centered">
+                    <div>
+                        <p class="heading">ＨＰ</p>
+                        <p class="title">@Data.HP</p>
+                    </div>
+                </div>
+                <div class="level-item has-text-centered">
+                    <div>
+                        <p class="heading">ＥＮ</p>
+                        <p class="title">@Data.EN</p>
+                    </div>
+                </div>
+                <div class="level-item has-text-centered">
+                    <div>
+                        <p class="heading">装甲</p>
+                        <p class="title">@Data.Armor</p>
+                    </div>
+                </div>
+                <div class="level-item has-text-centered">
+                    <div>
+                        <p class="heading">運動性</p>
+                        <p class="title">@Data.Mobility</p>
+                    </div>
+                </div>
+                <div class="level-item has-text-centered">
+                    <div>
+                        <p class="heading">移動力</p>
+                        <p class="title">@Data.Speed</p>
+                    </div>
+                </div>
+            </div>
+            <ul>
+                @foreach (var fd in Data.Features)
+                {
+                    <li>
+                        @fd.Name
+                        @(fd.HasLevel ? $"Lv{fd.Level}" : "")
+                        @fd.StrData
+                    </li>
+                }
+            </ul>
+        </div>
+        <div class="content">
+            @if (!string.IsNullOrEmpty(Data.Comment))
+            {
+                <div class="src-comment">@Data.Comment</div>
+            }
+            @if (!string.IsNullOrEmpty(Data.DataComment))
+            {
+                <div class="src-comment">@Data.DataComment</div>
+            }
+            <button class="button is-small" @onclick="OnClickRaw">Raw</button>
+            <div class="src-raw" style="@(ExpandRaw ? "" : "display: none;")">@Data.Raw</div>
+        </div>
+    </div>
+    <footer class="card-footer">
+    </footer>
+</article>
+
+@code {
+    [Parameter]
+    public ItemData Data { get; set; }
+    [Parameter]
+    public SRC SRC { get; set; }
+
+    private bool ExpandRaw = false;
+
+    private void OnClickRaw()
+    {
+        ExpandRaw = !ExpandRaw;
+    }
+}
