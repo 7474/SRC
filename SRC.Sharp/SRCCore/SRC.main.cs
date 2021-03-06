@@ -936,20 +936,21 @@ namespace SRCCore
                 TDList.Load(scenarioTerrainPath);
             }
 
-            //            // バトルコンフィグデータをロード
-            //            bool localFileExists6() { string argfname = AppPath + @"Data\System\battle.txt"; var ret = GeneralLib.FileExists(argfname); return ret; }
+            // バトルコンフィグデータをロード
+            var bcFiles = new string[]
+            {
+                Path.Combine(ScenarioPath, "Data", "System", "battle.txt"),
+                Path.Combine(AppPath, "Data", "System", "battle.txt"),
+            };
+            foreach (var bcFile in bcFiles)
+            {
 
-            //            string argfname17 = ScenarioPath + @"Data\System\battle.txt";
-            //            if (GeneralLib.FileExists(argfname17))
-            //            {
-            //                string argfname15 = ScenarioPath + @"Data\System\battle.txt";
-            //                BCList.Load(argfname15);
-            //            }
-            //            else if (localFileExists6())
-            //            {
-            //                string argfname16 = AppPath + @"Data\System\battle.txt";
-            //                BCList.Load(argfname16);
-            //            }
+                if (GeneralLib.FileExists(bcFile))
+                {
+                    BCList.Load(bcFile);
+                    break;
+                }
+            }
         }
 
         private void ConfigureExecuteFile(string fname)
