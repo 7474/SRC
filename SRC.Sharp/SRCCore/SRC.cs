@@ -51,8 +51,8 @@ namespace SRCCore
         public AliasDataList ALDList;
         // 地形データのリスト
         public TerrainDataList TDList;
-        //// バトルコンフィグデータのリスト
-        //public BattleConfigDataList BCList ;
+        // バトルコンフィグデータのリスト
+        public BattleConfigDataList BCList;
 
         // パイロットのリスト
         public Pilots.Pilots PList;
@@ -161,7 +161,7 @@ namespace SRCCore
             SPDList = new SpecialPowerDataList(this);
             ALDList = new AliasDataList(this);
             TDList = new TerrainDataList(this);
-            //public BattleConfigDataList BCList = new BattleConfigDataList();
+            BCList = new BattleConfigDataList(this);
 
             PList = new Pilots.Pilots(this);
             UList = new Units.Units(this);

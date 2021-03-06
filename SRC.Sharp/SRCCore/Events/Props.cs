@@ -38,6 +38,7 @@ namespace SRCCore.Events
         // 変数用のコレクション
         public IDictionary<string, VarData> GlobalVariableList = new Dictionary<string, VarData>();
         public IDictionary<string, VarData> LocalVariableList = new Dictionary<string, VarData>();
+        public BCVariable BCVariable = new BCVariable();
 
         // 現在の行番号
         public int CurrentLineNum;
