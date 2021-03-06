@@ -17,6 +17,10 @@
 		<ProjectReference Include="..\SRCCore\SRCCore.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+		<None Include="..\.editorconfig" Link=".editorconfig" />
+	</ItemGroup>
+
 	<!--
 	<ItemGroup>
     <None Update="Assets\**"
