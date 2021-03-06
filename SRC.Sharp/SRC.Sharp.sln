@@ -11,7 +11,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SRCCoreTests", "SRCCoreTest
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SRCTestBlazor", "SRCTestBlazor\SRCTestBlazor.csproj", "{55B5C719-9B7A-409B-98DC-8871250E0171}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SRCDataLinter", "SRCDataLinter\SRCDataLinter.csproj", "{0B46627F-A02D-4D2A-A8A4-2F742F1F88C9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SRCDataLinter", "SRCDataLinter\SRCDataLinter.csproj", "{0B46627F-A02D-4D2A-A8A4-2F742F1F88C9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6608D825-FA82-4C6F-848A-98B6BDA1A186}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

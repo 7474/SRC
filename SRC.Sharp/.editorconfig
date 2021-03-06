@@ -1,0 +1,25 @@
+﻿[*.cs]
+
+# CS0168: 変数は宣言されていますが、使用されていません
+dotnet_diagnostic.CS0168.severity = suggestion
+
+# CS0219: 変数は割り当てられていますが、その値は使用されていません
+dotnet_diagnostic.CS0219.severity = suggestion
+
+# IDE0051: 使用されていないプライベート メンバーを削除する
+dotnet_diagnostic.IDE0051.severity = suggestion
+
+# CS0164: このラベルは参照されていません
+dotnet_diagnostic.CS0164.severity = suggestion
+
+# IDE0052: 読み取られていないプライベート メンバーを削除
+dotnet_diagnostic.IDE0052.severity = suggestion
+
+# CS0169: フィールド 'xxx' は使用されていません
+dotnet_diagnostic.CS0169.severity = suggestion
+
+# CS0414: フィールド 'xxx' が割り当てられていますが、値は使用されていません
+dotnet_diagnostic.CS0414.severity = suggestion
+
+# CS0649: フィールド 'xxx' は割り当てられません。常に既定値 0 を使用します
+dotnet_diagnostic.CS0649.severity = suggestion
