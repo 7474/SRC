@@ -81,6 +81,7 @@ namespace SRCCore.Models
                     {
                         break;
                     }
+                    data_name = line_buf;
                     if (IsDefined(data_name))
                     {
                         // すでに定義されているエリアスのデータであれば置き換える
