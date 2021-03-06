@@ -43,7 +43,9 @@ namespace SRCCore.CmdDatas.Commands
 
             // 引数の値を先に求めておく
             // (スタックに積みながら計算すると、引数での関数呼び出しで不正になる)
-            var subParams = Enumerable.Range(3, ArgNum - 3).Select(x => GetArgAsString(x)).ToArray();
+            var subParams = ArgNum >= 3
+                ? Enumerable.Range(3, ArgNum - 3).Select(x => GetArgAsString(x)).ToArray()
+                : new string[] { };
 
             // 現在の状態を保存
             Event.CallStack[Event.CallDepth] = EventData.ID;
