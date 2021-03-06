@@ -57,11 +57,8 @@ namespace SRCCore.CmdDatas
                     //        break;
                     //    }
 
-                    //case "autotalk":
-                    //    {
-                    //        CmdName = CmdType.AutoTalkCmd;
-                    //        break;
-                    //    }
+                    case "autotalk":
+                        return new AutoTalkCmd(src, data);
 
                     //case "bossrank":
                     //    {

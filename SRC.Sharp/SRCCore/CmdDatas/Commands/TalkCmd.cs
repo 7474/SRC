@@ -4,25 +4,22 @@ using SRCCore.Units;
 
 namespace SRCCore.CmdDatas.Commands
 {
-    public class TalkCmd : CmdData
+    public abstract class ATalkCmd : CmdData
     {
-        public TalkCmd(SRC src, EventDataLine eventData) : base(src, CmdType.TalkCmd, eventData)
+        public ATalkCmd(SRC src, CmdType cmdType, EventDataLine eventData) : base(src, cmdType, eventData)
         {
         }
 
-        protected override int ExecInternal()
+        protected abstract void DisplayMessage(string pname, string msg, string msg_mode = "");
+
+        protected int ProcessTalk()
         {
             string pname, current_pname = default;
-            Unit u;
-            int ux, uy;
             int i;
             int j;
             int lnum;
             var without_cursor = default(bool);
             string options = default, opt;
-            string buf;
-            string cname;
-            int tcolor;
 
             for (i = EventData.ID; i < Event.EventData.Count; i++)
             {
@@ -30,7 +27,14 @@ namespace SRCCore.CmdDatas.Commands
                 switch (currentCmd.Name)
                 {
                     case CmdType.TalkCmd:
+                    case CmdType.AutoTalkCmd:
                         {
+                            // XXX
+                            if (currentCmd.Name != Name)
+                            {
+                                throw new EventErrorException(this, "Talk中またはAutoTalk中に他方のコマンドが実行されました");
+                            }
+
                             if (currentCmd.ArgNum > 1)
                             {
                                 pname = currentCmd.GetArgAsString(2);
@@ -183,7 +187,7 @@ namespace SRCCore.CmdDatas.Commands
                                         // ものに確定させる
                                         if (!string.IsNullOrEmpty(current_pname))
                                         {
-                                            GUI.DisplayMessage(current_pname, "", options);
+                                            DisplayMessage(current_pname, options);
                                         }
 
                                         current_pname = "";
@@ -290,7 +294,7 @@ namespace SRCCore.CmdDatas.Commands
                                 GUI.OpenMessageForm(null, null);
                             }
 
-                            GUI.DisplayMessage(current_pname, Event.EventData[i].Data, options);
+                            DisplayMessage(current_pname, Event.EventData[i].Data, options);
                             break;
                         }
                 }
@@ -303,6 +307,23 @@ namespace SRCCore.CmdDatas.Commands
             }
 
             return i + 1;
+        }
+    }
+
+    public class TalkCmd : ATalkCmd
+    {
+        public TalkCmd(SRC src, EventDataLine eventData) : base(src, CmdType.TalkCmd, eventData)
+        {
+        }
+
+        protected override void DisplayMessage(string pname, string msg, string msg_mode = "")
+        {
+            GUI.DisplayMessage(pname, msg, msg_mode);
+        }
+
+        protected override int ExecInternal()
+        {
+            return ProcessTalk();
         }
     }
 }
