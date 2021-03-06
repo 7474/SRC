@@ -309,7 +309,7 @@ namespace SRCCore.Events
                     // TODO Impl
                     throw new TerminateException("ラベルの引数の括弧の対応が取れていません");
                     //Event.DisplayEventErrorMessage(Event.CurrentLineNum, "ラベルの引数の括弧の対応が取れていません");
-                    return;
+                    //return;
                 }
 
                 strParas = new string[(intParaNum + 1)];
