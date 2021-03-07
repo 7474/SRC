@@ -182,7 +182,7 @@ namespace SRCTestForm
         }
         public void MainFormHide()
         {
-            if (!MainFormVisible)
+            if (MainFormVisible)
             {
                 MainForm.Hide();
             }
@@ -743,6 +743,14 @@ namespace SRCTestForm
             Application.DoEvents();
 
             return ListBoxRet;
+        }
+
+        public void CloseListBox()
+        {
+            if (frmListBox.Visible)
+            {
+                frmListBox.Hide();
+            }
         }
 
         public void EnlargeListBoxHeight()
@@ -1606,12 +1614,12 @@ namespace SRCTestForm
             DialogResult res;
             if (icon.HasValue)
             {
-                res = MessageBox.Show(owner, message, title, buttons, icon.Value);
+                res = MessageBox.Show(message, title, buttons, icon.Value);
 
             }
             else
             {
-                res = MessageBox.Show(owner, message, title, buttons);
+                res = MessageBox.Show(message, title, buttons);
             }
             return res == DialogResult.OK ? GuiDialogResult.Ok : GuiDialogResult.Cancel;
         }
