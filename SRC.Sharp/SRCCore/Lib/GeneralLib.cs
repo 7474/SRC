@@ -574,17 +574,17 @@ namespace SRCCore.Lib
         //        }
 
 
-        //        // 文字列をDoubleに変換
-        //        public static double StrToDbl(string expr)
-        //        {
-        //            double StrToDblRet = default;
-        //            if (Information.IsNumeric(expr))
-        //            {
-        //                StrToDblRet = Conversions.ToDouble(expr);
-        //            }
+        // 文字列をDoubleに変換
+        public static double StrToDbl(string expr)
+        {
+            double StrToDblRet = default;
+            if (Information.IsNumeric(expr))
+            {
+                StrToDblRet = Conversions.ToDouble(expr);
+            }
 
-        //            return StrToDblRet;
-        //        }
+            return StrToDblRet;
+        }
 
         // 文字列をLongに変換
         // memo: VBのLongは32bit
