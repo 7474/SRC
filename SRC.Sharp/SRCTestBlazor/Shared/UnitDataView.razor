@@ -70,8 +70,7 @@
                     </div>
                 </div>
             </div>
-            @* 先頭は『特殊能力』表示用なので飛ばす *@
-            <FeatureDataListView Features="@Data.Features.Skip(1)"></FeatureDataListView>
+            <FeatureDataListView Features="@Data.Features"></FeatureDataListView>
         </div>
         @if (Data.Weapons.Any())
         {
