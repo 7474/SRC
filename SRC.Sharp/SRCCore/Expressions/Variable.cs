@@ -60,13 +60,13 @@ namespace SRCCore.Expressions
             // ローカル変数
             if (IsLocalVariableDefined(vname))
             {
-                return ReferenceValue(etype, Event.LocalVariableList[vname], out str_result, out num_result);
+                return Event.LocalVariableList[vname].ReferenceValue(etype, out str_result, out num_result);
             }
 
             // グローバル変数
             if (IsGlobalVariableDefined(vname))
             {
-                return ReferenceValue(etype, Event.GlobalVariableList[vname], out str_result, out num_result);
+                return Event.GlobalVariableList[vname].ReferenceValue(etype, out str_result, out num_result);
             }
 
             // システム変数？
@@ -1378,56 +1378,6 @@ namespace SRCCore.Expressions
 
             // 変数名を配列のインデックス部を計算して再構築
             return Strings.Left(vname, bracketPos) + idx + "]";
-        }
-
-        private static ValueType ReferenceValue(ValueType etype, VarData withBlock1, out string str_result, out double num_result)
-        {
-            str_result = "";
-            num_result = 0d;
-            switch (etype)
-            {
-                case ValueType.NumericType:
-                    {
-                        if (withBlock1.VariableType == ValueType.NumericType)
-                        {
-                            num_result = withBlock1.NumericValue;
-                        }
-                        else
-                        {
-                            num_result = Conversions.ToDouble(withBlock1.StringValue);
-                        }
-                        return ValueType.NumericType;
-                    }
-
-                case ValueType.StringType:
-                    {
-                        if (withBlock1.VariableType == ValueType.StringType)
-                        {
-                            str_result = withBlock1.StringValue;
-                        }
-                        else
-                        {
-                            str_result = GeneralLib.FormatNum(withBlock1.NumericValue);
-                        }
-                        return ValueType.StringType;
-                    }
-
-                case ValueType.UndefinedType:
-                default:
-                    {
-                        // XXX 逆の側の型に値入れなくていいの？
-                        if (withBlock1.VariableType == ValueType.StringType)
-                        {
-                            str_result = withBlock1.StringValue;
-                            return ValueType.StringType;
-                        }
-                        else
-                        {
-                            num_result = withBlock1.NumericValue;
-                            return ValueType.NumericType;
-                        }
-                    }
-            }
         }
 
         // 指定した変数が定義されているか？
