@@ -92,6 +92,11 @@ namespace SRCCoreTests.TestLib
             throw new NotImplementedException();
         }
 
+        public void ClearScrean()
+        {
+            throw new NotImplementedException();
+        }
+
         public void ClearScreen()
         {
             throw new NotImplementedException();
