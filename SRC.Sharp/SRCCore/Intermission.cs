@@ -72,7 +72,7 @@ namespace SRCCore
             //Map.ClearMap();
 
             // 選択用ダイアログを拡大
-            GUI.EnlargeListBoxHeight();
+            //GUI.EnlargeListBoxHeight();
             while (true)
             {
                 // 利用可能なインターミッションコマンドを選択
@@ -118,7 +118,6 @@ namespace SRCCore
                 }
 
                 // アイテム交換コマンド
-                string argoname5 = ;
                 if (Expression.IsOptionDefined("アイテム交換"))
                 {
                     cmd_list.Add("アイテム交換");
@@ -232,18 +231,17 @@ namespace SRCCore
                 switch (cmd_list[ret] ?? "")
                 {
                     case "次のステージへ":
+                        if (GUI.Confirm("次のステージへ進みますか？",
+                            "次ステージ",
+                            GuiConfirmOption.OkCancel | GuiConfirmOption.Question) == GuiDialogResult.Ok)
                         {
-                            if (Interaction.MsgBox("次のステージへ進みますか？", (MsgBoxStyle)(MsgBoxStyle.OkCancel + MsgBoxStyle.Question), "次ステージ") == 1)
-                            {
-                                SRC.UList.Update(); // 追加パイロットを消去
-                                My.MyProject.Forms.frmListBox.Hide();
-                                GUI.ReduceListBoxHeight();
-                                Sound.StopBGM();
-                                return;
-                            }
-
-                            break;
+                            //SRC.UList.Update(); // 追加パイロットを消去
+                            //My.MyProject.Forms.frmListBox.Hide();
+                            //GUI.ReduceListBoxHeight();
+                            //Sound.StopBGM();
+                            return;
                         }
+                        break;
 
                     //case "データセーブ":
                     //    {
@@ -328,16 +326,16 @@ namespace SRCCore
                     //    }
 
                     case "SRCを終了":
+                        if (GUI.Confirm("SRCを終了しますか？",
+                            "終了",
+                            GuiConfirmOption.OkCancel | GuiConfirmOption.Question) == GuiDialogResult.Ok)
                         {
-                            if (Interaction.MsgBox("SRCを終了しますか？", (MsgBoxStyle)(MsgBoxStyle.OkCancel + MsgBoxStyle.Question), "終了") == 1)
-                            {
-                                My.MyProject.Forms.frmListBox.Hide();
-                                GUI.ReduceListBoxHeight();
-                                SRC.ExitGame();
-                            }
-
-                            break;
+                            //My.MyProject.Forms.frmListBox.Hide();
+                            //GUI.ReduceListBoxHeight();
+                            SRC.ExitGame();
                         }
+
+                        break;
 
                     //case "パイロットステータス":
                     //    {
@@ -406,42 +404,42 @@ namespace SRCCore
                             break;
                         }
 
-                    // ユーザー定義のインターミッションコマンド
-                    default:
-                        {
-                            My.MyProject.Forms.frmListBox.Hide();
-                            GUI.ReduceListBoxHeight();
-                            SRC.IsSubStage = true;
-                            SRC.StartScenario(Expression.GetValueAsString(GUI.ListItemID[ret]));
-                            if (SRC.IsSubStage)
-                            {
-                                // インターミッションを再開
-                                Sound.KeepBGM = false;
-                                Sound.BossBGM = false;
-                                string argbgm_name3 = "Intermission";
-                                string argbgm_name4 = Sound.BGMName(argbgm_name3);
-                                Sound.ChangeBGM(argbgm_name4);
-                                SRC.UList.Update();
-                                SRC.PList.Update();
-                                SRC.IList.Update();
-                                Event_Renamed.ClearEventData();
-                                if (Map.MapWidth > 1)
-                                {
-                                    Map.ClearMap();
-                                }
+                    //// ユーザー定義のインターミッションコマンド
+                    //default:
+                    //    {
+                    //        My.MyProject.Forms.frmListBox.Hide();
+                    //        GUI.ReduceListBoxHeight();
+                    //        SRC.IsSubStage = true;
+                    //        SRC.StartScenario(Expression.GetValueAsString(GUI.ListItemID[ret]));
+                    //        if (SRC.IsSubStage)
+                    //        {
+                    //            // インターミッションを再開
+                    //            Sound.KeepBGM = false;
+                    //            Sound.BossBGM = false;
+                    //            string argbgm_name3 = "Intermission";
+                    //            string argbgm_name4 = Sound.BGMName(argbgm_name3);
+                    //            Sound.ChangeBGM(argbgm_name4);
+                    //            SRC.UList.Update();
+                    //            SRC.PList.Update();
+                    //            SRC.IList.Update();
+                    //            Event_Renamed.ClearEventData();
+                    //            if (Map.MapWidth > 1)
+                    //            {
+                    //                Map.ClearMap();
+                    //            }
 
-                                SRC.IsSubStage = false;
-                                GUI.EnlargeListBoxHeight();
-                            }
-                            else
-                            {
-                                // サブステージを通常のステージとして実行
-                                SRC.IsSubStage = true;
-                                return;
-                            }
+                    //            SRC.IsSubStage = false;
+                    //            GUI.EnlargeListBoxHeight();
+                    //        }
+                    //        else
+                    //        {
+                    //            // サブステージを通常のステージとして実行
+                    //            SRC.IsSubStage = true;
+                    //            return;
+                    //        }
 
-                            break;
-                        }
+                    //        break;
+                    //    }
                 }
             }
         }
