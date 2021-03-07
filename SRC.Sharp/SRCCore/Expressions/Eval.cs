@@ -1502,13 +1502,12 @@ namespace SRCCore.Expressions
                     }
             }
 
-            // TODO Impl
-            //// 関数呼び出し？
-            //EvalTermRet = CallFunction(expr, etype, str_result, num_result);
-            //if (EvalTermRet != ValueType.UndefinedType)
-            //{
-            //    return EvalTermRet;
-            //}
+            // 関数呼び出し？
+            EvalTermRet = CallFunction(expr, etype, out str_result, out num_result);
+            if (EvalTermRet != ValueType.UndefinedType)
+            {
+                return EvalTermRet;
+            }
 
             // 変数？
             EvalTermRet = GetVariable(expr, etype, out str_result, out num_result);
