@@ -1,6 +1,8 @@
-﻿using SRCCore.Units;
+﻿using SRCCore.Lib;
+using SRCCore.Units;
 using SRCCore.VB;
 using System;
+using System.IO;
 using System.Linq;
 
 namespace SRCCore
@@ -10,35 +12,21 @@ namespace SRCCore
         // イベントファイルfnameを実行
         public void StartScenario(string fname)
         {
-            //int i;
-            //int ret;
-            //Font sf;
+            // ファイルを検索
+            if (!Path.IsPathRooted(fname))
+            {
+                fname = new string[]
+                {
+                    Path.Combine(ScenarioPath, fname),
+                    Path.Combine(AppPath, fname),
+                }.FirstOrDefault(x => GeneralLib.FileExists(x)) ?? fname;
+            }
 
-            //// ファイルを検索
-            //bool localFileExists() { string argfname = ScenarioPath + fname; var ret = GeneralLib.FileExists(argfname); return ret; }
-
-            //bool localFileExists1() { string argfname = AppPath + fname; var ret = GeneralLib.FileExists(argfname); return ret; }
-
-            //if (Strings.Len(fname) == 0)
-            //{
-            //    TerminateSRC();
-            //    Environment.Exit(0);
-            //}
-            //else if (localFileExists())
-            //{
-            //    fname = ScenarioPath + fname;
-            //}
-            //else if (localFileExists1())
-            //{
-            //    fname = AppPath + fname;
-            //}
-
-            //// UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
-            //if (string.IsNullOrEmpty(FileSystem.Dir(fname, FileAttribute.Normal)))
-            //{
-            //    Interaction.MsgBox(fname + "が見つかりません");
-            //    TerminateSRC();
-            //}
+            if (string.IsNullOrEmpty(FileSystem.Dir(fname, FileAttribute.Normal)))
+            {
+                GUI.ErrorMessage(fname + "が見つかりません");
+                TerminateSRC();
+            }
 
             //// ウィンドウのタイトルを設定
             //if (My.MyProject.Application.Info.Version.Minor % 2 == 0)
@@ -236,7 +224,7 @@ namespace SRCCore
 
             //// スタートイベントが始まった場合は通常のステージとみなす
             IsSubStage = false;
-            //Status.ClearUnitStatus();
+            GUIStatus.ClearUnitStatus();
             if (!GUI.MainFormVisible)
             {
                 GUI.MainFormShow();
