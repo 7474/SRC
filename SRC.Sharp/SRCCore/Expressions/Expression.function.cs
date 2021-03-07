@@ -181,29 +181,25 @@ namespace SRCCore.Expressions
                     {
                         // 先頭がアルファベットでなければ必ずユーザー定義関数
                         // ただし括弧を含むユニット名等である場合があるため、チェックが必要
-                        object argIndex1 = expr;
-                        if (SRC.UDList.IsDefined(argIndex1))
+                        if (SRC.UDList.IsDefined(expr))
                         {
                             CallFunctionRet = ValueType.UndefinedType;
                             return CallFunctionRet;
                         }
 
-                        object argIndex2 = expr;
-                        if (SRC.PDList.IsDefined(argIndex2))
+                        if (SRC.PDList.IsDefined(expr))
                         {
                             CallFunctionRet = ValueType.UndefinedType;
                             return CallFunctionRet;
                         }
 
-                        object argIndex3 = expr;
-                        if (SRC.NPDList.IsDefined(argIndex3))
+                        if (SRC.NPDList.IsDefined(expr))
                         {
                             CallFunctionRet = ValueType.UndefinedType;
                             return CallFunctionRet;
                         }
 
-                        object argIndex4 = expr;
-                        if (SRC.IDList.IsDefined(argIndex4))
+                        if (SRC.IDList.IsDefined(expr))
                         {
                             CallFunctionRet = ValueType.UndefinedType;
                             return CallFunctionRet;
@@ -5108,75 +5104,12 @@ namespace SRCCore.Expressions
             // 実はシステム定義のグローバル変数？
             if (IsGlobalVariableDefined(expr))
             {
-                {
-                    var withBlock51 = Event.GlobalVariableList[expr];
-                    switch (etype)
-                    {
-                        case ValueType.NumericType:
-                            {
-                                // UPGRADE_WARNING: オブジェクト GlobalVariableList.Item(expr).VariableType の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                                if (Conversions.ToBoolean(Operators.ConditionalCompareObjectEqual(withBlock51.VariableType, ValueType.NumericType, false)))
-                                {
-                                    // UPGRADE_WARNING: オブジェクト GlobalVariableList.Item().NumericValue の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                                    num_result = Conversions.ToDouble(withBlock51.NumericValue);
-                                }
-                                else
-                                {
-                                    // UPGRADE_WARNING: オブジェクト GlobalVariableList.Item().StringValue の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                                    string argexpr1 = Conversions.ToString(withBlock51.StringValue);
-                                    num_result = GeneralLib.StrToDbl(argexpr1);
-                                }
-
-                                CallFunctionRet = ValueType.NumericType;
-                                break;
-                            }
-
-                        case ValueType.StringType:
-                            {
-                                // UPGRADE_WARNING: オブジェクト GlobalVariableList.Item(expr).VariableType の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                                if (Conversions.ToBoolean(Operators.ConditionalCompareObjectEqual(withBlock51.VariableType, ValueType.StringType, false)))
-                                {
-                                    // UPGRADE_WARNING: オブジェクト GlobalVariableList.Item().StringValue の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                                    str_result = Conversions.ToString(withBlock51.StringValue);
-                                }
-                                else
-                                {
-                                    // UPGRADE_WARNING: オブジェクト GlobalVariableList.Item().NumericValue の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                                    str_result = GeneralLib.FormatNum(Conversions.ToDouble(withBlock51.NumericValue));
-                                }
-
-                                CallFunctionRet = ValueType.StringType;
-                                break;
-                            }
-
-                        case ValueType.UndefinedType:
-                            {
-                                // UPGRADE_WARNING: オブジェクト GlobalVariableList.Item(expr).VariableType の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                                if (Conversions.ToBoolean(Operators.ConditionalCompareObjectEqual(withBlock51.VariableType, ValueType.StringType, false)))
-                                {
-                                    // UPGRADE_WARNING: オブジェクト GlobalVariableList.Item().StringValue の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                                    str_result = Conversions.ToString(withBlock51.StringValue);
-                                    CallFunctionRet = ValueType.StringType;
-                                }
-                                else
-                                {
-                                    // UPGRADE_WARNING: オブジェクト GlobalVariableList.Item().NumericValue の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                                    num_result = Conversions.ToDouble(withBlock51.NumericValue);
-                                    CallFunctionRet = ValueType.NumericType;
-                                }
-
-                                break;
-                            }
-                    }
-                }
-
-                return CallFunctionRet;
+                return Event.GlobalVariableList[expr].ReferenceValue(etype, out str_result, out num_result);
             }
 
             // 結局ただの文字列……
             str_result = expr;
-            CallFunctionRet = ValueType.StringType;
-            return CallFunctionRet;
+            return ValueType.StringType;
         }
     }
 }
