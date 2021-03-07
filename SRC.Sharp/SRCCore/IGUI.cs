@@ -284,6 +284,7 @@ namespace SRCCore
 
         bool MainFormVisible { get; }
         void MainFormShow();
+        void MainFormHide();
 
         void ChangeStatus(GuiStatus status);
         void UpdateScreen();

@@ -212,6 +212,11 @@ namespace SRCCoreTests.TestLib
             throw new NotImplementedException();
         }
 
+        public void MainFormHide()
+        {
+            throw new NotImplementedException();
+        }
+
         public void MainFormShow()
         {
             throw new NotImplementedException();

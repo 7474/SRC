@@ -180,6 +180,13 @@ namespace SRCTestForm
                 MainForm.Show();
             }
         }
+        public void MainFormHide()
+        {
+            if (!MainFormVisible)
+            {
+                MainForm.Hide();
+            }
+        }
 
         public bool MessageFormVisible => frmMessage.Visible;
 
