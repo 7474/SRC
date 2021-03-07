@@ -224,7 +224,7 @@ namespace SRCCore.Expressions
             if (!isUserFunc)
             {
                 IFunction systemFunc;
-                if (systemFunctionMap.TryGetValue(fname, out systemFunc))
+                if (systemFunctionMap.TryGetValue(fname.ToLower(), out systemFunc))
                 {
                     var systemFunctionRet = systemFunc.Invoke(SRC, etype, @params, pcount, is_term, out str_result, out num_result);
                     if (systemFunctionRet != ValueType.UndefinedType)
