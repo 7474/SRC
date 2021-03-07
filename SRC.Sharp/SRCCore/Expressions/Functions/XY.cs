@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SRCCore.Lib;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -8,46 +9,37 @@ namespace SRCCore.Expressions.Functions
     {
         public override ValueType Invoke(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
+            str_result = "";
+            num_result = 0d;
+
             switch (pcount)
             {
                 case 1:
                     {
-                        pname = GetValueAsString(@params[1], is_term[1]);
+                        var pname = SRC.Expression.GetValueAsString(@params[1], is_term[1]);
                         switch (pname ?? "")
                         {
                             case "目標地点":
                                 {
-                                    num_result = (double)Commands.SelectedX;
+                                    num_result = (double)SRC.Commands.SelectedX;
                                     break;
                                 }
 
                             case "マウス":
                                 {
-                                    num_result = (double)GUI.MouseX;
+                                    num_result = (double)SRC.GUI.MouseX;
                                     break;
                                 }
 
                             default:
                                 {
-                                    bool localIsDefined33() { object argIndex1 = (object)pname; var ret = SRC.PList.IsDefined(argIndex1); return ret; }
-
-                                    object argIndex74 = (object)pname;
-                                    if (SRC.UList.IsDefined2(argIndex74))
+                                    if (SRC.UList.IsDefined2(pname))
                                     {
-                                        Unit localItem220() { object argIndex1 = (object)pname; var ret = SRC.UList.Item2(argIndex1); return ret; }
-
-                                        num_result = (double)localItem220().x;
+                                        num_result = (double)SRC.UList.Item2(pname).x;
                                     }
-                                    else if (localIsDefined33())
+                                    else if (SRC.PList.IsDefined(pname))
                                     {
-                                        object argIndex73 = (object)pname;
-                                        {
-                                            var withBlock45 = SRC.PList.Item(argIndex73);
-                                            if (withBlock45.Unit is object)
-                                            {
-                                                num_result = (double)withBlock45.Unit.x;
-                                            }
-                                        }
+                                        num_result = (double)SRC.PList.Item(pname).Unit.x;
                                     }
 
                                     break;
@@ -59,9 +51,9 @@ namespace SRCCore.Expressions.Functions
 
                 case 0:
                     {
-                        if (Event.SelectedUnitForEvent is object)
+                        if (SRC.Event.SelectedUnitForEvent != null)
                         {
-                            num_result = (double)Event.SelectedUnitForEvent.x;
+                            num_result = (double)SRC.Event.SelectedUnitForEvent.x;
                         }
 
                         break;
@@ -71,14 +63,12 @@ namespace SRCCore.Expressions.Functions
             if (etype == ValueType.StringType)
             {
                 str_result = GeneralLib.FormatNum(num_result);
-                CallFunctionRet = ValueType.StringType;
+                return ValueType.StringType;
             }
             else
             {
-                CallFunctionRet = ValueType.NumericType;
+                return ValueType.NumericType;
             }
-
-            return CallFunctionRet;
         }
     }
 
@@ -86,46 +76,37 @@ namespace SRCCore.Expressions.Functions
     {
         public override ValueType Invoke(SRC SRC, ValueType etype, string[] @params, int pcount, bool[] is_term, out string str_result, out double num_result)
         {
+            str_result = "";
+            num_result = 0d;
+
             switch (pcount)
             {
                 case 1:
                     {
-                        pname = GetValueAsString(@params[1], is_term[1]);
+                        var pname = SRC.Expression.GetValueAsString(@params[1], is_term[1]);
                         switch (pname ?? "")
                         {
                             case "目標地点":
                                 {
-                                    num_result = (double)Commands.SelectedY;
+                                    num_result = (double)SRC.Commands.SelectedY;
                                     break;
                                 }
 
                             case "マウス":
                                 {
-                                    num_result = (double)GUI.MouseY;
+                                    num_result = (double)SRC.GUI.MouseY;
                                     break;
                                 }
 
                             default:
                                 {
-                                    bool localIsDefined34() { object argIndex1 = (object)pname; var ret = SRC.PList.IsDefined(argIndex1); return ret; }
-
-                                    object argIndex76 = (object)pname;
-                                    if (SRC.UList.IsDefined2(argIndex76))
+                                    if (SRC.UList.IsDefined2(pname))
                                     {
-                                        Unit localItem221() { object argIndex1 = (object)pname; var ret = SRC.UList.Item2(argIndex1); return ret; }
-
-                                        num_result = (double)localItem221().y;
+                                        num_result = (double)SRC.UList.Item2(pname).y;
                                     }
-                                    else if (localIsDefined34())
+                                    else if (SRC.PList.IsDefined(pname))
                                     {
-                                        object argIndex75 = (object)pname;
-                                        {
-                                            var withBlock46 = SRC.PList.Item(argIndex75);
-                                            if (withBlock46.Unit is object)
-                                            {
-                                                num_result = (double)withBlock46.Unit.y;
-                                            }
-                                        }
+                                        num_result = (double)SRC.PList.Item(pname).Unit.y;
                                     }
 
                                     break;
@@ -137,9 +118,9 @@ namespace SRCCore.Expressions.Functions
 
                 case 0:
                     {
-                        if (Event.SelectedUnitForEvent is object)
+                        if (SRC.Event.SelectedUnitForEvent != null)
                         {
-                            num_result = (double)Event.SelectedUnitForEvent.y;
+                            num_result = (double)SRC.Event.SelectedUnitForEvent.y;
                         }
 
                         break;
@@ -149,15 +130,12 @@ namespace SRCCore.Expressions.Functions
             if (etype == ValueType.StringType)
             {
                 str_result = GeneralLib.FormatNum(num_result);
-                CallFunctionRet = ValueType.StringType;
+                return ValueType.StringType;
             }
             else
             {
-                CallFunctionRet = ValueType.NumericType;
+                return ValueType.NumericType;
             }
-
-            return CallFunctionRet;
         }
-
     }
 }
