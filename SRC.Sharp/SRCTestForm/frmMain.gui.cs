@@ -1460,7 +1460,7 @@ namespace SRCTestForm
 
         public void ErrorMessage(string msg)
         {
-            LogInfo(msg);
+            LogError(msg);
         }
 
         public void DataErrorMessage(string msg, string fname, int line_num, string line_buf, string dname)
@@ -1536,6 +1536,10 @@ namespace SRCTestForm
         public void LogInfo(string message)
         {
             Program.Log.LogInformation(message);
+        }
+        public void LogError(string message)
+        {
+            Program.Log.LogError(message);
         }
 
         public void ChangeStatus(GuiStatus status)
