@@ -142,6 +142,8 @@ namespace SRCCore
 
         // === マップウィンドウに関する処理 ===
 
+        // 画面をクリアする
+        void ClearScrean();
         // マップ画面背景の設定
         void SetupBackground(string draw_mode = "", string draw_option = "", int filter_color = 0, double filter_trans_par = 0d);
         // 画面の書き換え (ユニット表示からやり直し)
@@ -284,6 +286,7 @@ namespace SRCCore
 
         bool MainFormVisible { get; }
         void MainFormShow();
+        void MainFormHide();
 
         void ChangeStatus(GuiStatus status);
         void UpdateScreen();

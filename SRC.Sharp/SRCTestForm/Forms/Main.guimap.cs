@@ -294,6 +294,18 @@ namespace SRCTestForm
             }
         }
 
+        public void ClearScrean()
+        {
+            // XXX _picMain_0 picturebox じゃなくて panel なんだけど
+            using (var g = Graphics.FromImage(mainBuffer))
+            {
+                // マップウィンドウの内容を消去
+                g.FillRectangle(Brushes.Black, 0, 0, MainPWidth, MainPHeight);
+            }
+            UpdateScreen();
+            GUI.ScreenIsSaved = true;
+        }
+
         public void RefreshScreen(int mapX, int mapY, bool without_refresh, bool delay_refresh)
         {
             // XXX _picMain_0 picturebox じゃなくて panel なんだけど

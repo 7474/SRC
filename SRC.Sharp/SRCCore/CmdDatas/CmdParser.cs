@@ -221,11 +221,8 @@ namespace SRCCore.CmdDatas
                     //        break;
                     //    }
 
-                    //case "continue":
-                    //    {
-                    //        CmdName = CmdType.ContinueCmd;
-                    //        break;
-                    //    }
+                    case "continue":
+                        return new ContinueCmd(src, data);
 
                     //case "copyarray":
                     //    {

@@ -180,6 +180,13 @@ namespace SRCTestForm
                 MainForm.Show();
             }
         }
+        public void MainFormHide()
+        {
+            if (!MainFormVisible)
+            {
+                MainForm.Hide();
+            }
+        }
 
         public bool MessageFormVisible => frmMessage.Visible;
 
@@ -575,6 +582,11 @@ namespace SRCTestForm
                 Sleep(20);
                 Application.DoEvents();
             }
+        }
+
+        public void ClearScrean()
+        {
+            MainForm.ClearScrean();
         }
 
         public void SetupBackground(string draw_mode, string draw_option, int filter_color, double filter_trans_par)
@@ -1453,7 +1465,7 @@ namespace SRCTestForm
 
         public void ErrorMessage(string msg)
         {
-            LogInfo(msg);
+            LogError(msg);
         }
 
         public void DataErrorMessage(string msg, string fname, int line_num, string line_buf, string dname)
@@ -1529,6 +1541,10 @@ namespace SRCTestForm
         public void LogInfo(string message)
         {
             Program.Log.LogInformation(message);
+        }
+        public void LogError(string message)
+        {
+            Program.Log.LogError(message);
         }
 
         public void ChangeStatus(GuiStatus status)
