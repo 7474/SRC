@@ -1,25 +1,22 @@
-﻿using System;
+﻿// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
+// 本プログラムはフリーソフトであり、無保証です。
+// 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
+// 再頒布または改変することができます。
+using SRCCore.Units;
+using System;
 using System.Runtime.InteropServices;
-using Microsoft.VisualBasic;
 
-namespace Project1
+namespace SRCCore
 {
-    static class InterMission
+    // インターミッションに関する処理を行うモジュール
+    public class InterMission
     {
-
-        // Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-        // 本プログラムはフリーソフトであり、無保証です。
-        // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
-        // 再頒布または改変することができます。
-
-        // インターミッションに関する処理を行うモジュール
-
         // インターミッション
-        public static void InterMissionCommand(bool skip_update = false)
+        public void InterMissionCommand(bool skip_update = false)
         {
             string[] cmd_list;
             string[] name_list;
-            short j, i, ret;
+            int j, i, ret;
             string buf;
             Unit u;
             string fname, save_path = default;
@@ -30,12 +27,12 @@ namespace Project1
             Sound.KeepBGM = false;
             Sound.BossBGM = false;
             string argbgm_name2 = "Intermission";
-            if (Strings.InStr(Sound.BGMFileName, @"\" + Sound.BGMName(ref argbgm_name2)) == 0)
+            if (Strings.InStr(Sound.BGMFileName, @"\" + Sound.BGMName(argbgm_name2)) == 0)
             {
                 Sound.StopBGM();
                 string argbgm_name = "Intermission";
-                string argbgm_name1 = Sound.BGMName(ref argbgm_name);
-                Sound.StartBGM(ref argbgm_name1);
+                string argbgm_name1 = Sound.BGMName(argbgm_name);
+                Sound.StartBGM(argbgm_name1);
             }
 
             // マップをクリア
@@ -72,31 +69,31 @@ namespace Project1
 
                 // 「次のステージへ」コマンド
                 string argexpr = "次ステージ";
-                if (!string.IsNullOrEmpty(Expression.GetValueAsString(ref argexpr)))
+                if (!string.IsNullOrEmpty(Expression.GetValueAsString(argexpr)))
                 {
-                    Array.Resize(ref cmd_list, Information.UBound(cmd_list) + 1 + 1);
-                    Array.Resize(ref GUI.ListItemFlag, Information.UBound(cmd_list) + 1);
+                    Array.Resize(cmd_list, Information.UBound(cmd_list) + 1 + 1);
+                    Array.Resize(GUI.ListItemFlag, Information.UBound(cmd_list) + 1);
                     cmd_list[Information.UBound(cmd_list)] = "次のステージへ";
                 }
 
                 // データセーブコマンド
                 string argoname = "データセーブ不可";
                 string argoname1 = "デバッグ";
-                if (!Expression.IsOptionDefined(ref argoname) | Expression.IsOptionDefined(ref argoname1))
+                if (!Expression.IsOptionDefined(argoname) | Expression.IsOptionDefined(argoname1))
                 {
-                    Array.Resize(ref cmd_list, Information.UBound(cmd_list) + 1 + 1);
-                    Array.Resize(ref GUI.ListItemFlag, Information.UBound(cmd_list) + 1);
+                    Array.Resize(cmd_list, Information.UBound(cmd_list) + 1 + 1);
+                    Array.Resize(GUI.ListItemFlag, Information.UBound(cmd_list) + 1);
                     cmd_list[Information.UBound(cmd_list)] = "データセーブ";
                 }
 
                 // 機体改造コマンド
                 string argoname3 = "改造不可";
-                if (!Expression.IsOptionDefined(ref argoname3))
+                if (!Expression.IsOptionDefined(argoname3))
                 {
-                    Array.Resize(ref cmd_list, Information.UBound(cmd_list) + 1 + 1);
-                    Array.Resize(ref GUI.ListItemFlag, Information.UBound(cmd_list) + 1);
+                    Array.Resize(cmd_list, Information.UBound(cmd_list) + 1 + 1);
+                    Array.Resize(GUI.ListItemFlag, Information.UBound(cmd_list) + 1);
                     string argoname2 = "等身大基準";
-                    if (Expression.IsOptionDefined(ref argoname2))
+                    if (Expression.IsOptionDefined(argoname2))
                     {
                         cmd_list[Information.UBound(cmd_list)] = "ユニットの強化";
                     }
@@ -120,19 +117,19 @@ namespace Project1
 
                 // 乗り換えコマンド
                 string argoname4 = "乗り換え";
-                if (Expression.IsOptionDefined(ref argoname4))
+                if (Expression.IsOptionDefined(argoname4))
                 {
-                    Array.Resize(ref cmd_list, Information.UBound(cmd_list) + 1 + 1);
-                    Array.Resize(ref GUI.ListItemFlag, Information.UBound(cmd_list) + 1);
+                    Array.Resize(cmd_list, Information.UBound(cmd_list) + 1 + 1);
+                    Array.Resize(GUI.ListItemFlag, Information.UBound(cmd_list) + 1);
                     cmd_list[Information.UBound(cmd_list)] = "乗り換え";
                 }
 
                 // アイテム交換コマンド
                 string argoname5 = "アイテム交換";
-                if (Expression.IsOptionDefined(ref argoname5))
+                if (Expression.IsOptionDefined(argoname5))
                 {
-                    Array.Resize(ref cmd_list, Information.UBound(cmd_list) + 1 + 1);
-                    Array.Resize(ref GUI.ListItemFlag, Information.UBound(cmd_list) + 1);
+                    Array.Resize(cmd_list, Information.UBound(cmd_list) + 1 + 1);
+                    Array.Resize(GUI.ListItemFlag, Information.UBound(cmd_list) + 1);
                     cmd_list[Information.UBound(cmd_list)] = "アイテム交換";
                 }
 
@@ -143,16 +140,16 @@ namespace Project1
                     if (u.Party0 == "味方" & u.Status_Renamed == "待機")
                     {
                         string argfname = "換装";
-                        if (u.IsFeatureAvailable(ref argfname))
+                        if (u.IsFeatureAvailable(argfname))
                         {
                             object argIndex1 = "換装";
-                            string arglist = u.FeatureData(ref argIndex1);
-                            var loopTo2 = GeneralLib.LLength(ref arglist);
+                            string arglist = u.FeatureData(argIndex1);
+                            var loopTo2 = GeneralLib.LLength(arglist);
                             for (i = 1; i <= loopTo2; i++)
                             {
-                                string localLIndex() { object argIndex1 = "換装"; string arglist = u.FeatureData(ref argIndex1); var ret = GeneralLib.LIndex(ref arglist, i); return ret; }
+                                string localLIndex() { object argIndex1 = "換装"; string arglist = u.FeatureData(argIndex1); var ret = GeneralLib.LIndex(arglist, i); return ret; }
 
-                                Unit localOtherForm() { object argIndex1 = (object)hs2400bc4ce27a4e82838570740e7e2b83(); var ret = u.OtherForm(ref argIndex1); return ret; }
+                                Unit localOtherForm() { object argIndex1 = (object)hs2400bc4ce27a4e82838570740e7e2b83(); var ret = u.OtherForm(argIndex1); return ret; }
 
                                 if (localOtherForm().IsAvailable())
                                 {
@@ -160,12 +157,12 @@ namespace Project1
                                 }
                             }
 
-                            short localLLength() { object argIndex1 = "換装"; string arglist = u.FeatureData(ref argIndex1); var ret = GeneralLib.LLength(ref arglist); return ret; }
+                            int localLLength() { object argIndex1 = "換装"; string arglist = u.FeatureData(argIndex1); var ret = GeneralLib.LLength(arglist); return ret; }
 
                             if (i <= localLLength())
                             {
-                                Array.Resize(ref cmd_list, Information.UBound(cmd_list) + 1 + 1);
-                                Array.Resize(ref GUI.ListItemFlag, Information.UBound(cmd_list) + 1);
+                                Array.Resize(cmd_list, Information.UBound(cmd_list) + 1 + 1);
+                                Array.Resize(GUI.ListItemFlag, Information.UBound(cmd_list) + 1);
                                 cmd_list[Information.UBound(cmd_list)] = "換装";
                                 break;
                             }
@@ -175,16 +172,16 @@ namespace Project1
 
                 // パイロットステータスコマンド
                 string argoname6 = "等身大基準";
-                if (!Expression.IsOptionDefined(ref argoname6))
+                if (!Expression.IsOptionDefined(argoname6))
                 {
-                    Array.Resize(ref cmd_list, Information.UBound(cmd_list) + 1 + 1);
-                    Array.Resize(ref GUI.ListItemFlag, Information.UBound(cmd_list) + 1);
+                    Array.Resize(cmd_list, Information.UBound(cmd_list) + 1 + 1);
+                    Array.Resize(GUI.ListItemFlag, Information.UBound(cmd_list) + 1);
                     cmd_list[Information.UBound(cmd_list)] = "パイロットステータス";
                 }
 
                 // ユニットステータスコマンド
-                Array.Resize(ref cmd_list, Information.UBound(cmd_list) + 1 + 1);
-                Array.Resize(ref GUI.ListItemFlag, Information.UBound(cmd_list) + 1);
+                Array.Resize(cmd_list, Information.UBound(cmd_list) + 1 + 1);
+                Array.Resize(GUI.ListItemFlag, Information.UBound(cmd_list) + 1);
                 cmd_list[Information.UBound(cmd_list)] = "ユニットステータス";
 
                 // ユーザー定義のインターミッションコマンド
@@ -192,26 +189,26 @@ namespace Project1
                 {
                     if (Strings.InStr(var.Name, "IntermissionCommand(") == 1)
                     {
-                        ret = (short)Strings.Len("IntermissionCommand(");
+                        ret = Strings.Len("IntermissionCommand(");
                         buf = Strings.Mid(var.Name, ret + 1, Strings.Len(var.Name) - ret - 1);
-                        buf = Expression.GetValueAsString(ref buf);
-                        Expression.FormatMessage(ref buf);
-                        Array.Resize(ref cmd_list, Information.UBound(cmd_list) + 1 + 1);
-                        Array.Resize(ref GUI.ListItemFlag, Information.UBound(cmd_list) + 1);
-                        Array.Resize(ref GUI.ListItemID, Information.UBound(cmd_list) + 1);
+                        buf = Expression.GetValueAsString(buf);
+                        Expression.FormatMessage(buf);
+                        Array.Resize(cmd_list, Information.UBound(cmd_list) + 1 + 1);
+                        Array.Resize(GUI.ListItemFlag, Information.UBound(cmd_list) + 1);
+                        Array.Resize(GUI.ListItemID, Information.UBound(cmd_list) + 1);
                         cmd_list[Information.UBound(cmd_list)] = buf;
                         GUI.ListItemID[Information.UBound(cmd_list)] = var.Name;
                     }
                 }
 
                 // 終了コマンド
-                Array.Resize(ref cmd_list, Information.UBound(cmd_list) + 1 + 1);
-                Array.Resize(ref GUI.ListItemFlag, Information.UBound(cmd_list) + 1);
+                Array.Resize(cmd_list, Information.UBound(cmd_list) + 1 + 1);
+                Array.Resize(GUI.ListItemFlag, Information.UBound(cmd_list) + 1);
                 cmd_list[Information.UBound(cmd_list)] = "SRCを終了";
 
                 // インターミッションのコマンド名称にエリアスを適用
                 name_list = new string[Information.UBound(cmd_list) + 1];
-                var loopTo3 = (short)Information.UBound(name_list);
+                var loopTo3 = Information.UBound(name_list);
                 for (i = 1; i <= loopTo3; i++)
                 {
                     name_list[i] = cmd_list[i];
@@ -222,7 +219,7 @@ namespace Project1
                         {
                             object argIndex2 = j;
                             {
-                                var withBlock1 = withBlock.Item(ref argIndex2);
+                                var withBlock1 = withBlock.Item(argIndex2);
                                 if ((withBlock1.get_AliasType(1) ?? "") == (cmd_list[i] ?? ""))
                                 {
                                     name_list[i] = withBlock1.Name;
@@ -237,17 +234,17 @@ namespace Project1
                 GUI.TopItem = 1;
                 string argtname = "資金";
                 Unit argu = null;
-                string arglb_caption = "インターミッション： 総ターン数" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(SRC.TotalTurn) + " " + Expression.Term(ref argtname, u: ref argu) + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(SRC.Money);
+                string arglb_caption = "インターミッション： 総ターン数" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(SRC.TotalTurn) + " " + Expression.Term(argtname, u: argu) + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(SRC.Money);
                 string arglb_info = "コマンド";
                 string arglb_mode = "連続表示";
-                ret = GUI.ListBox(ref arglb_caption, ref name_list, ref arglb_info, ref arglb_mode);
+                ret = GUI.ListBox(arglb_caption, name_list, arglb_info, arglb_mode);
 
                 // 選択されたインターミッションコマンドを実行
                 switch (cmd_list[ret] ?? "")
                 {
                     case "次のステージへ":
                         {
-                            if ((int)Interaction.MsgBox("次のステージへ進みますか？", (MsgBoxStyle)((int)MsgBoxStyle.OkCancel + (int)MsgBoxStyle.Question), "次ステージ") == 1)
+                            if (Interaction.MsgBox("次のステージへ進みますか？", (MsgBoxStyle)(MsgBoxStyle.OkCancel + MsgBoxStyle.Question), "次ステージ") == 1)
                             {
                                 SRC.UList.Update(); // 追加パイロットを消去
                                 My.MyProject.Forms.frmListBox.Hide();
@@ -264,24 +261,24 @@ namespace Project1
                             // 一旦「常に手前に表示」を解除
                             if (My.MyProject.Forms.frmListBox.Visible)
                             {
-                                ret = (short)GUI.SetWindowPos(My.MyProject.Forms.frmListBox.Handle.ToInt32(), -2, 0, 0, 0, 0, 0x3);
+                                ret = GUI.SetWindowPos(My.MyProject.Forms.frmListBox.Handle.ToInt32(), -2, 0, 0, 0, 0, 0x3);
                             }
 
                             string argdtitle = "データセーブ";
                             string argexpr1 = "セーブデータファイル名";
-                            string argdefault_file = Expression.GetValueAsString(ref argexpr1);
+                            string argdefault_file = Expression.GetValueAsString(argexpr1);
                             string argftype = "ｾｰﾌﾞﾃﾞｰﾀ";
                             string argfsuffix = "src";
                             string argftype2 = "";
                             string argfsuffix2 = "";
                             string argftype3 = "";
                             string argfsuffix3 = "";
-                            fname = FileDialog.SaveFileDialog(ref argdtitle, ref SRC.ScenarioPath, ref argdefault_file, 2, ref argftype, ref argfsuffix, ftype2: ref argftype2, fsuffix2: ref argfsuffix2, ftype3: ref argftype3, fsuffix3: ref argfsuffix3);
+                            fname = FileDialog.SaveFileDialog(argdtitle, SRC.ScenarioPath, argdefault_file, 2, argftype, argfsuffix, ftype2: argftype2, fsuffix2: argfsuffix2, ftype3: argftype3, fsuffix3: argfsuffix3);
 
                             // 再び「常に手前に表示」
                             if (My.MyProject.Forms.frmListBox.Visible)
                             {
-                                ret = (short)GUI.SetWindowPos(My.MyProject.Forms.frmListBox.Handle.ToInt32(), -1, 0, 0, 0, 0, 0x3);
+                                ret = GUI.SetWindowPos(My.MyProject.Forms.frmListBox.Handle.ToInt32(), -1, 0, 0, 0, 0, 0x3);
                             }
 
                             // キャンセル？
@@ -294,12 +291,12 @@ namespace Project1
                             if (Strings.InStr(fname, @"\") > 0)
                             {
                                 string argstr2 = @"\";
-                                save_path = Strings.Left(fname, GeneralLib.InStr2(ref fname, ref argstr2));
+                                save_path = Strings.Left(fname, GeneralLib.InStr2(fname, argstr2));
                             }
                             // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
                             if ((FileSystem.Dir(save_path) ?? "") != (FileSystem.Dir(SRC.ScenarioPath) ?? ""))
                             {
-                                if ((int)Interaction.MsgBox("セーブファイルはシナリオフォルダにないと読み込めません。" + Constants.vbCr + Constants.vbLf + "このままセーブしますか？", (MsgBoxStyle)((int)MsgBoxStyle.OkCancel + (int)MsgBoxStyle.Question)) != 1)
+                                if (Interaction.MsgBox("セーブファイルはシナリオフォルダにないと読み込めません。" + Constants.vbCr + Constants.vbLf + "このままセーブしますか？", (MsgBoxStyle)(MsgBoxStyle.OkCancel + MsgBoxStyle.Question)) != 1)
                                 {
                                     goto NextLoop;
                                 }
@@ -308,7 +305,7 @@ namespace Project1
                             if (!string.IsNullOrEmpty(fname))
                             {
                                 SRC.UList.Update(); // 追加パイロットを消去
-                                SRC.SaveData(ref fname);
+                                SRC.SaveData(fname);
                             }
 
                             break;
@@ -331,7 +328,7 @@ namespace Project1
                         {
                             Unit argselected_unit = null;
                             string argselected_part = "";
-                            ExchangeItemCommand(selected_unit: ref argselected_unit, selected_part: ref argselected_part);
+                            ExchangeItemCommand(selected_unit: argselected_unit, selected_part: argselected_part);
                             break;
                         }
 
@@ -343,7 +340,7 @@ namespace Project1
 
                     case "SRCを終了":
                         {
-                            if ((int)Interaction.MsgBox("SRCを終了しますか？", (MsgBoxStyle)((int)MsgBoxStyle.OkCancel + (int)MsgBoxStyle.Question), "終了") == 1)
+                            if (Interaction.MsgBox("SRCを終了しますか？", (MsgBoxStyle)(MsgBoxStyle.OkCancel + MsgBoxStyle.Question), "終了") == 1)
                             {
                                 My.MyProject.Forms.frmListBox.Hide();
                                 GUI.ReduceListBoxHeight();
@@ -358,12 +355,12 @@ namespace Project1
                             My.MyProject.Forms.frmListBox.Hide();
                             GUI.ReduceListBoxHeight();
                             SRC.IsSubStage = true;
-                            bool localFileExists() { string argfname = SRC.ExtDataPath + @"Lib\パイロットステータス表示.eve"; var ret = GeneralLib.FileExists(ref argfname); return ret; }
+                            bool localFileExists() { string argfname = SRC.ExtDataPath + @"Lib\パイロットステータス表示.eve"; var ret = GeneralLib.FileExists(argfname); return ret; }
 
-                            bool localFileExists1() { string argfname = SRC.ExtDataPath2 + @"Lib\パイロットステータス表示.eve"; var ret = GeneralLib.FileExists(ref argfname); return ret; }
+                            bool localFileExists1() { string argfname = SRC.ExtDataPath2 + @"Lib\パイロットステータス表示.eve"; var ret = GeneralLib.FileExists(argfname); return ret; }
 
                             string argfname1 = SRC.ScenarioPath + @"Lib\パイロットステータス表示.eve";
-                            if (GeneralLib.FileExists(ref argfname1))
+                            if (GeneralLib.FileExists(argfname1))
                             {
                                 SRC.StartScenario(SRC.ScenarioPath + @"Lib\パイロットステータス表示.eve");
                             }
@@ -389,12 +386,12 @@ namespace Project1
                             My.MyProject.Forms.frmListBox.Hide();
                             GUI.ReduceListBoxHeight();
                             SRC.IsSubStage = true;
-                            bool localFileExists2() { string argfname = SRC.ExtDataPath + @"Lib\ユニットステータス表示.eve"; var ret = GeneralLib.FileExists(ref argfname); return ret; }
+                            bool localFileExists2() { string argfname = SRC.ExtDataPath + @"Lib\ユニットステータス表示.eve"; var ret = GeneralLib.FileExists(argfname); return ret; }
 
-                            bool localFileExists3() { string argfname = SRC.ExtDataPath2 + @"Lib\ユニットステータス表示.eve"; var ret = GeneralLib.FileExists(ref argfname); return ret; }
+                            bool localFileExists3() { string argfname = SRC.ExtDataPath2 + @"Lib\ユニットステータス表示.eve"; var ret = GeneralLib.FileExists(argfname); return ret; }
 
                             string argfname2 = SRC.ScenarioPath + @"Lib\ユニットステータス表示.eve";
-                            if (GeneralLib.FileExists(ref argfname2))
+                            if (GeneralLib.FileExists(argfname2))
                             {
                                 SRC.StartScenario(SRC.ScenarioPath + @"Lib\ユニットステータス表示.eve");
                             }
@@ -427,15 +424,15 @@ namespace Project1
                             My.MyProject.Forms.frmListBox.Hide();
                             GUI.ReduceListBoxHeight();
                             SRC.IsSubStage = true;
-                            SRC.StartScenario(Expression.GetValueAsString(ref GUI.ListItemID[ret]));
+                            SRC.StartScenario(Expression.GetValueAsString(GUI.ListItemID[ret]));
                             if (SRC.IsSubStage)
                             {
                                 // インターミッションを再開
                                 Sound.KeepBGM = false;
                                 Sound.BossBGM = false;
                                 string argbgm_name3 = "Intermission";
-                                string argbgm_name4 = Sound.BGMName(ref argbgm_name3);
-                                Sound.ChangeBGM(ref argbgm_name4);
+                                string argbgm_name4 = Sound.BGMName(argbgm_name3);
+                                Sound.ChangeBGM(argbgm_name4);
                                 SRC.UList.Update();
                                 SRC.PList.Update();
                                 SRC.IList.Update();
@@ -459,15 +456,15 @@ namespace Project1
                         }
                 }
 
-                NextLoop:
+            NextLoop:
                 ;
             }
         }
 
         // 機体改造コマンド
-        public static void RankUpCommand()
+        public void RankUpCommand()
         {
-            short k, i, j, urank;
+            int k, i, j, urank;
             string[] list;
             string[] id_list;
             string sort_mode;
@@ -477,21 +474,21 @@ namespace Project1
             string[] item_comment_backup;
             int[] key_list;
             string[] strkey_list;
-            short max_item;
+            int max_item;
             int max_value;
             string max_str;
             Unit u;
             int cost;
             string buf;
-            short ret;
+            int ret;
             bool b;
             var use_max_rank = default(bool);
-            short name_width;
+            int name_width;
             GUI.TopItem = 1;
 
             // デフォルトのソート方法
             string argoname = "等身大基準";
-            if (Expression.IsOptionDefined(ref argoname))
+            if (Expression.IsOptionDefined(argoname))
             {
                 sort_mode = "レベル";
             }
@@ -505,7 +502,7 @@ namespace Project1
             {
                 u = currentU;
                 string argfname = "最大改造数";
-                if (u.IsFeatureAvailable(ref argfname))
+                if (u.IsFeatureAvailable(argfname))
                 {
                     use_max_rank = true;
                     break;
@@ -516,13 +513,13 @@ namespace Project1
             name_width = 33;
             if (use_max_rank)
             {
-                name_width = (short)(name_width - 2);
+                name_width = (name_width - 2);
             }
 
             string argoname1 = "等身大基準";
-            if (Expression.IsOptionDefined(ref argoname1))
+            if (Expression.IsOptionDefined(argoname1))
             {
-                name_width = (short)(name_width + 8);
+                name_width = (name_width + 8);
             }
 
             // ユニットのリストを作成
@@ -541,13 +538,13 @@ namespace Project1
                         goto NextLoop;
                     }
 
-                    Array.Resize(ref list, Information.UBound(list) + 1 + 1);
-                    Array.Resize(ref id_list, Information.UBound(list) + 1);
-                    Array.Resize(ref GUI.ListItemFlag, Information.UBound(list) + 1);
-                    Array.Resize(ref GUI.ListItemComment, Information.UBound(list) + 1);
+                    Array.Resize(list, Information.UBound(list) + 1 + 1);
+                    Array.Resize(id_list, Information.UBound(list) + 1);
+                    Array.Resize(GUI.ListItemFlag, Information.UBound(list) + 1);
+                    Array.Resize(GUI.ListItemComment, Information.UBound(list) + 1);
 
                     // 改造が可能？
-                    cost = RankUpCost(ref u);
+                    cost = RankUpCost(u);
                     if (cost > SRC.Money | cost > 10000000)
                     {
                         GUI.ListItemFlag[Information.UBound(list)] = true;
@@ -556,14 +553,14 @@ namespace Project1
                     // ユニットランク
                     if (use_max_rank)
                     {
-                        string localRightPaddedString() { string argbuf = withBlock.Nickname0; var ret = GeneralLib.RightPaddedString(ref argbuf, name_width); withBlock.Nickname0 = argbuf; return ret; }
+                        string localRightPaddedString() { string argbuf = withBlock.Nickname0; var ret = GeneralLib.RightPaddedString(argbuf, name_width); withBlock.Nickname0 = argbuf; return ret; }
 
-                        string localLeftPaddedString() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.Rank); var ret = GeneralLib.LeftPaddedString(ref argbuf, 2); return ret; }
+                        string localLeftPaddedString() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.Rank); var ret = GeneralLib.LeftPaddedString(argbuf, 2); return ret; }
 
                         list[Information.UBound(list)] = localRightPaddedString() + localLeftPaddedString() + "/";
-                        if (MaxRank(ref u) > 0)
+                        if (MaxRank(u) > 0)
                         {
-                            string localLeftPaddedString1() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(MaxRank(ref u)); var ret = GeneralLib.LeftPaddedString(ref argbuf, 2); return ret; }
+                            string localLeftPaddedString1() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(MaxRank(u)); var ret = GeneralLib.LeftPaddedString(argbuf, 2); return ret; }
 
                             list[Information.UBound(list)] = list[Information.UBound(list)] + localLeftPaddedString1();
                         }
@@ -574,13 +571,13 @@ namespace Project1
                     }
                     else if (withBlock.Rank < 10)
                     {
-                        string localRightPaddedString1() { string argbuf = withBlock.Nickname0; var ret = GeneralLib.RightPaddedString(ref argbuf, name_width); withBlock.Nickname0 = argbuf; return ret; }
+                        string localRightPaddedString1() { string argbuf = withBlock.Nickname0; var ret = GeneralLib.RightPaddedString(argbuf, name_width); withBlock.Nickname0 = argbuf; return ret; }
 
                         list[Information.UBound(list)] = localRightPaddedString1() + Strings.StrConv(Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.Rank), VbStrConv.Wide);
                     }
                     else
                     {
-                        string localRightPaddedString2() { string argbuf = withBlock.Nickname0; var ret = GeneralLib.RightPaddedString(ref argbuf, name_width); withBlock.Nickname0 = argbuf; return ret; }
+                        string localRightPaddedString2() { string argbuf = withBlock.Nickname0; var ret = GeneralLib.RightPaddedString(argbuf, name_width); withBlock.Nickname0 = argbuf; return ret; }
 
                         list[Information.UBound(list)] = localRightPaddedString2() + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.Rank);
                     }
@@ -588,42 +585,42 @@ namespace Project1
                     // 改造に必要な資金
                     if (cost < 10000000)
                     {
-                        string localLeftPaddedString2() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(cost); var ret = GeneralLib.LeftPaddedString(ref argbuf, 7); return ret; }
+                        string localLeftPaddedString2() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(cost); var ret = GeneralLib.LeftPaddedString(argbuf, 7); return ret; }
 
                         list[Information.UBound(list)] = list[Information.UBound(list)] + localLeftPaddedString2();
                     }
                     else
                     {
                         string argbuf = "----";
-                        list[Information.UBound(list)] = list[Information.UBound(list)] + GeneralLib.LeftPaddedString(ref argbuf, 7);
+                        list[Information.UBound(list)] = list[Information.UBound(list)] + GeneralLib.LeftPaddedString(argbuf, 7);
                     }
 
                     // 等身大基準の場合はパイロットレベルも表示
                     string argoname2 = "等身大基準";
-                    if (Expression.IsOptionDefined(ref argoname2))
+                    if (Expression.IsOptionDefined(argoname2))
                     {
                         if (withBlock.CountPilot() > 0)
                         {
-                            string localLeftPaddedString3() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.MainPilot().Level); var ret = GeneralLib.LeftPaddedString(ref argbuf, 3); return ret; }
+                            string localLeftPaddedString3() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.MainPilot().Level); var ret = GeneralLib.LeftPaddedString(argbuf, 3); return ret; }
 
                             list[Information.UBound(list)] = list[Information.UBound(list)] + localLeftPaddedString3();
                         }
                     }
 
                     // ユニットに関する情報
-                    string localLeftPaddedString4() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.MaxHP); var ret = GeneralLib.LeftPaddedString(ref argbuf, 6); return ret; }
+                    string localLeftPaddedString4() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.MaxHP); var ret = GeneralLib.LeftPaddedString(argbuf, 6); return ret; }
 
-                    string localLeftPaddedString5() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.MaxEN); var ret = GeneralLib.LeftPaddedString(ref argbuf, 4); return ret; }
+                    string localLeftPaddedString5() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.MaxEN); var ret = GeneralLib.LeftPaddedString(argbuf, 4); return ret; }
 
-                    string localLeftPaddedString6() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.get_Armor("")); var ret = GeneralLib.LeftPaddedString(ref argbuf, 6); return ret; }
+                    string localLeftPaddedString6() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.get_Armor("")); var ret = GeneralLib.LeftPaddedString(argbuf, 6); return ret; }
 
-                    string localLeftPaddedString7() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.get_Mobility("")); var ret = GeneralLib.LeftPaddedString(ref argbuf, 4); return ret; }
+                    string localLeftPaddedString7() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.get_Mobility("")); var ret = GeneralLib.LeftPaddedString(argbuf, 4); return ret; }
 
                     list[Information.UBound(list)] = list[Information.UBound(list)] + localLeftPaddedString4() + localLeftPaddedString5() + localLeftPaddedString6() + localLeftPaddedString7();
 
                     // 等身大基準でない場合はパイロット名を表示
                     string argoname3 = "等身大基準";
-                    if (!Expression.IsOptionDefined(ref argoname3))
+                    if (!Expression.IsOptionDefined(argoname3))
                     {
                         if (withBlock.CountPilot() > 0)
                         {
@@ -637,9 +634,9 @@ namespace Project1
                     {
                         object argIndex1 = k;
                         {
-                            var withBlock1 = withBlock.Item(ref argIndex1);
+                            var withBlock1 = withBlock.Item(argIndex1);
                             string argfname1 = "非表示";
-                            if ((withBlock1.Class_Renamed() != "固定" | !withBlock1.IsFeatureAvailable(ref argfname1)) & withBlock1.Part() != "非表示")
+                            if ((withBlock1.Class_Renamed() != "固定" | !withBlock1.IsFeatureAvailable(argfname1)) & withBlock1.Part() != "非表示")
                             {
                                 GUI.ListItemComment[Information.UBound(list)] = GUI.ListItemComment[Information.UBound(list)] + withBlock1.Nickname() + " ";
                             }
@@ -650,11 +647,11 @@ namespace Project1
                     id_list[Information.UBound(list)] = withBlock.ID;
                 }
 
-                NextLoop:
+            NextLoop:
                 ;
             }
 
-            Beginning:
+        Beginning:
             ;
 
 
@@ -671,10 +668,10 @@ namespace Project1
                     {
                         case "ＨＰ":
                             {
-                                var loopTo1 = (short)Information.UBound(list);
+                                var loopTo1 = Information.UBound(list);
                                 for (i = 2; i <= loopTo1; i++)
                                 {
-                                    Unit localItem() { var tmp = id_list; object argIndex1 = tmp[i]; var ret = withBlock2.Item(ref argIndex1); return ret; }
+                                    Unit localItem() { var tmp = id_list; object argIndex1 = tmp[i]; var ret = withBlock2.Item(argIndex1); return ret; }
 
                                     key_list[i] = localItem().MaxHP;
                                 }
@@ -684,10 +681,10 @@ namespace Project1
 
                         case "ＥＮ":
                             {
-                                var loopTo2 = (short)Information.UBound(list);
+                                var loopTo2 = Information.UBound(list);
                                 for (i = 2; i <= loopTo2; i++)
                                 {
-                                    Unit localItem1() { var tmp = id_list; object argIndex1 = tmp[i]; var ret = withBlock2.Item(ref argIndex1); return ret; }
+                                    Unit localItem1() { var tmp = id_list; object argIndex1 = tmp[i]; var ret = withBlock2.Item(argIndex1); return ret; }
 
                                     key_list[i] = localItem1().MaxEN;
                                 }
@@ -697,10 +694,10 @@ namespace Project1
 
                         case "装甲":
                             {
-                                var loopTo3 = (short)Information.UBound(list);
+                                var loopTo3 = Information.UBound(list);
                                 for (i = 2; i <= loopTo3; i++)
                                 {
-                                    Unit localItem2() { var tmp = id_list; object argIndex1 = tmp[i]; var ret = withBlock2.Item(ref argIndex1); return ret; }
+                                    Unit localItem2() { var tmp = id_list; object argIndex1 = tmp[i]; var ret = withBlock2.Item(argIndex1); return ret; }
 
                                     key_list[i] = localItem2().get_Armor("");
                                 }
@@ -710,10 +707,10 @@ namespace Project1
 
                         case "運動性":
                             {
-                                var loopTo4 = (short)Information.UBound(list);
+                                var loopTo4 = Information.UBound(list);
                                 for (i = 2; i <= loopTo4; i++)
                                 {
-                                    Unit localItem3() { var tmp = id_list; object argIndex1 = tmp[i]; var ret = withBlock2.Item(ref argIndex1); return ret; }
+                                    Unit localItem3() { var tmp = id_list; object argIndex1 = tmp[i]; var ret = withBlock2.Item(argIndex1); return ret; }
 
                                     key_list[i] = localItem3().get_Mobility("");
                                 }
@@ -723,10 +720,10 @@ namespace Project1
 
                         case "ユニットランク":
                             {
-                                var loopTo5 = (short)Information.UBound(list);
+                                var loopTo5 = Information.UBound(list);
                                 for (i = 2; i <= loopTo5; i++)
                                 {
-                                    Unit localItem4() { var tmp = id_list; object argIndex1 = tmp[i]; var ret = withBlock2.Item(ref argIndex1); return ret; }
+                                    Unit localItem4() { var tmp = id_list; object argIndex1 = tmp[i]; var ret = withBlock2.Item(argIndex1); return ret; }
 
                                     key_list[i] = localItem4().Rank;
                                 }
@@ -736,13 +733,13 @@ namespace Project1
 
                         case "レベル":
                             {
-                                var loopTo6 = (short)Information.UBound(list);
+                                var loopTo6 = Information.UBound(list);
                                 for (i = 2; i <= loopTo6; i++)
                                 {
                                     var tmp = id_list;
                                     object argIndex2 = tmp[i];
                                     {
-                                        var withBlock3 = withBlock2.Item(ref argIndex2);
+                                        var withBlock3 = withBlock2.Item(argIndex2);
                                         if (withBlock3.CountPilot() > 0)
                                         {
                                             {
@@ -759,13 +756,13 @@ namespace Project1
                 }
 
                 // キーを使って並べ換え
-                var loopTo7 = (short)(Information.UBound(list) - 1);
+                var loopTo7 = (Information.UBound(list) - 1);
                 for (i = 2; i <= loopTo7; i++)
                 {
                     max_item = i;
                     max_value = key_list[i];
-                    var loopTo8 = (short)Information.UBound(list);
-                    for (j = (short)(i + 1); j <= loopTo8; j++)
+                    var loopTo8 = Information.UBound(list);
+                    for (j = (i + 1); j <= loopTo8; j++)
                     {
                         if (key_list[j] > max_value)
                         {
@@ -805,10 +802,10 @@ namespace Project1
                         case "名称":
                         case "ユニット名称":
                             {
-                                var loopTo9 = (short)Information.UBound(list);
+                                var loopTo9 = Information.UBound(list);
                                 for (i = 2; i <= loopTo9; i++)
                                 {
-                                    Unit localItem5() { var tmp = id_list; object argIndex1 = tmp[i]; var ret = withBlock5.Item(ref argIndex1); return ret; }
+                                    Unit localItem5() { var tmp = id_list; object argIndex1 = tmp[i]; var ret = withBlock5.Item(argIndex1); return ret; }
 
                                     strkey_list[i] = localItem5().KanaName;
                                 }
@@ -818,13 +815,13 @@ namespace Project1
 
                         case "パイロット名称":
                             {
-                                var loopTo10 = (short)Information.UBound(list);
+                                var loopTo10 = Information.UBound(list);
                                 for (i = 2; i <= loopTo10; i++)
                                 {
                                     var tmp1 = id_list;
                                     object argIndex3 = tmp1[i];
                                     {
-                                        var withBlock6 = withBlock5.Item(ref argIndex3);
+                                        var withBlock6 = withBlock5.Item(argIndex3);
                                         if (withBlock6.CountPilot() > 0)
                                         {
                                             strkey_list[i] = withBlock6.MainPilot().KanaName;
@@ -838,13 +835,13 @@ namespace Project1
                 }
 
                 // キーを使って並べ換え
-                var loopTo11 = (short)(Information.UBound(strkey_list) - 1);
+                var loopTo11 = (Information.UBound(strkey_list) - 1);
                 for (i = 2; i <= loopTo11; i++)
                 {
                     max_item = i;
                     max_str = strkey_list[i];
-                    var loopTo12 = (short)Information.UBound(strkey_list);
-                    for (j = (short)(i + 1); j <= loopTo12; j++)
+                    var loopTo12 = Information.UBound(strkey_list);
+                    for (j = (i + 1); j <= loopTo12; j++)
                     {
                         if (Strings.StrComp(strkey_list[j], max_str, (CompareMethod)1) == -1)
                         {
@@ -874,13 +871,13 @@ namespace Project1
 
             // 改造するユニットを選択
             string argoname4 = "等身大基準";
-            if (Expression.IsOptionDefined(ref argoname4))
+            if (Expression.IsOptionDefined(argoname4))
             {
                 if (use_max_rank)
                 {
                     string argtname = "資金";
                     Unit argu = null;
-                    string arglb_caption = "ユニット選択： " + Expression.Term(ref argtname, u: ref argu) + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(SRC.Money);
+                    string arglb_caption = "ユニット選択： " + Expression.Term(argtname, u: argu) + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(SRC.Money);
                     string argtname1 = "ランク";
                     Unit argu1 = null;
                     string argtname2 = "ＨＰ";
@@ -891,15 +888,15 @@ namespace Project1
                     Unit argu4 = null;
                     string argtname5 = "運動";
                     Unit argu5 = null;
-                    string arglb_info = "ユニット                               " + Expression.Term(ref argtname1, ref argu1, 6) + "  費用 Lv  " + Expression.Term(ref argtname2, ref argu2, 4) + " " + Expression.Term(ref argtname3, ref argu3, 4) + " " + Expression.Term(ref argtname4, ref argu4, 4) + " " + Expression.Term(ref argtname5, u: ref argu5);
+                    string arglb_info = "ユニット                               " + Expression.Term(argtname1, argu1, 6) + "  費用 Lv  " + Expression.Term(argtname2, argu2, 4) + " " + Expression.Term(argtname3, argu3, 4) + " " + Expression.Term(argtname4, argu4, 4) + " " + Expression.Term(argtname5, u: argu5);
                     string arglb_mode = "連続表示,コメント";
-                    ret = GUI.ListBox(ref arglb_caption, ref list, ref arglb_info, ref arglb_mode);
+                    ret = GUI.ListBox(arglb_caption, list, arglb_info, arglb_mode);
                 }
                 else
                 {
                     string argtname6 = "資金";
                     Unit argu6 = null;
-                    string arglb_caption1 = "ユニット選択： " + Expression.Term(ref argtname6, u: ref argu6) + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(SRC.Money);
+                    string arglb_caption1 = "ユニット選択： " + Expression.Term(argtname6, u: argu6) + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(SRC.Money);
                     string argtname7 = "ランク";
                     Unit argu7 = null;
                     string argtname8 = "ＨＰ";
@@ -910,16 +907,16 @@ namespace Project1
                     Unit argu10 = null;
                     string argtname11 = "運動";
                     Unit argu11 = null;
-                    string arglb_info1 = "ユニット                             " + Expression.Term(ref argtname7, ref argu7, 6) + "   費用 Lv  " + Expression.Term(ref argtname8, ref argu8, 4) + " " + Expression.Term(ref argtname9, ref argu9, 4) + " " + Expression.Term(ref argtname10, ref argu10, 4) + " " + Expression.Term(ref argtname11, u: ref argu11);
+                    string arglb_info1 = "ユニット                             " + Expression.Term(argtname7, argu7, 6) + "   費用 Lv  " + Expression.Term(argtname8, argu8, 4) + " " + Expression.Term(argtname9, argu9, 4) + " " + Expression.Term(argtname10, argu10, 4) + " " + Expression.Term(argtname11, u: argu11);
                     string arglb_mode1 = "連続表示,コメント";
-                    ret = GUI.ListBox(ref arglb_caption1, ref list, ref arglb_info1, ref arglb_mode1);
+                    ret = GUI.ListBox(arglb_caption1, list, arglb_info1, arglb_mode1);
                 }
             }
             else if (use_max_rank)
             {
                 string argtname12 = "資金";
                 Unit argu12 = null;
-                string arglb_caption2 = "ユニット選択： " + Expression.Term(ref argtname12, u: ref argu12) + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(SRC.Money);
+                string arglb_caption2 = "ユニット選択： " + Expression.Term(argtname12, u: argu12) + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(SRC.Money);
                 string argtname13 = "ランク";
                 Unit argu13 = null;
                 string argtname14 = "ＨＰ";
@@ -930,15 +927,15 @@ namespace Project1
                 Unit argu16 = null;
                 string argtname17 = "運動";
                 Unit argu17 = null;
-                string arglb_info2 = "ユニット                       " + Expression.Term(ref argtname13, ref argu13, 6) + "  費用  " + Expression.Term(ref argtname14, ref argu14, 4) + " " + Expression.Term(ref argtname15, ref argu15, 4) + " " + Expression.Term(ref argtname16, ref argu16, 4) + " " + Expression.Term(ref argtname17, ref argu17, 4) + " パイロット";
+                string arglb_info2 = "ユニット                       " + Expression.Term(argtname13, argu13, 6) + "  費用  " + Expression.Term(argtname14, argu14, 4) + " " + Expression.Term(argtname15, argu15, 4) + " " + Expression.Term(argtname16, argu16, 4) + " " + Expression.Term(argtname17, argu17, 4) + " パイロット";
                 string arglb_mode2 = "連続表示,コメント";
-                ret = GUI.ListBox(ref arglb_caption2, ref list, ref arglb_info2, ref arglb_mode2);
+                ret = GUI.ListBox(arglb_caption2, list, arglb_info2, arglb_mode2);
             }
             else
             {
                 string argtname18 = "資金";
                 Unit argu18 = null;
-                string arglb_caption3 = "ユニット選択： " + Expression.Term(ref argtname18, u: ref argu18) + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(SRC.Money);
+                string arglb_caption3 = "ユニット選択： " + Expression.Term(argtname18, u: argu18) + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(SRC.Money);
                 string argtname19 = "ランク";
                 Unit argu19 = null;
                 string argtname20 = "ＨＰ";
@@ -949,9 +946,9 @@ namespace Project1
                 Unit argu22 = null;
                 string argtname23 = "運動";
                 Unit argu23 = null;
-                string arglb_info3 = "ユニット                     " + Expression.Term(ref argtname19, ref argu19, 6) + "   費用  " + Expression.Term(ref argtname20, ref argu20, 4) + " " + Expression.Term(ref argtname21, ref argu21, 4) + " " + Expression.Term(ref argtname22, ref argu22, 4) + " " + Expression.Term(ref argtname23, ref argu23, 4) + " パイロット";
+                string arglb_info3 = "ユニット                     " + Expression.Term(argtname19, argu19, 6) + "   費用  " + Expression.Term(argtname20, argu20, 4) + " " + Expression.Term(argtname21, argu21, 4) + " " + Expression.Term(argtname22, argu22, 4) + " " + Expression.Term(argtname23, argu23, 4) + " パイロット";
                 string arglb_mode3 = "連続表示,コメント";
-                ret = GUI.ListBox(ref arglb_caption3, ref list, ref arglb_info3, ref arglb_mode3);
+                ret = GUI.ListBox(arglb_caption3, list, arglb_info3, arglb_mode3);
             }
 
             switch (ret)
@@ -966,7 +963,7 @@ namespace Project1
                     {
                         // ソート方法を選択
                         string argoname5 = "等身大基準";
-                        if (Expression.IsOptionDefined(ref argoname5))
+                        if (Expression.IsOptionDefined(argoname5))
                         {
                             sort_mode_type[1] = "名称";
                             sort_mode_list[1] = "名称";
@@ -975,46 +972,46 @@ namespace Project1
                             sort_mode_type[3] = "ＨＰ";
                             string argtname24 = "ＨＰ";
                             Unit argu24 = null;
-                            sort_mode_list[3] = Expression.Term(ref argtname24, u: ref argu24);
+                            sort_mode_list[3] = Expression.Term(argtname24, u: argu24);
                             sort_mode_type[4] = "ＥＮ";
                             string argtname25 = "ＥＮ";
                             Unit argu25 = null;
-                            sort_mode_list[4] = Expression.Term(ref argtname25, u: ref argu25);
+                            sort_mode_list[4] = Expression.Term(argtname25, u: argu25);
                             sort_mode_type[5] = "装甲";
                             string argtname26 = "装甲";
                             Unit argu26 = null;
-                            sort_mode_list[5] = Expression.Term(ref argtname26, u: ref argu26);
+                            sort_mode_list[5] = Expression.Term(argtname26, u: argu26);
                             sort_mode_type[6] = "運動性";
                             string argtname27 = "運動性";
                             Unit argu27 = null;
-                            sort_mode_list[6] = Expression.Term(ref argtname27, u: ref argu27);
+                            sort_mode_list[6] = Expression.Term(argtname27, u: argu27);
                             sort_mode_type[7] = "ユニットランク";
                             string argtname28 = "ランク";
                             Unit argu28 = null;
-                            sort_mode_list[7] = Expression.Term(ref argtname28, u: ref argu28);
+                            sort_mode_list[7] = Expression.Term(argtname28, u: argu28);
                         }
                         else
                         {
                             sort_mode_type[1] = "ＨＰ";
                             string argtname29 = "ＨＰ";
                             Unit argu29 = null;
-                            sort_mode_list[1] = Expression.Term(ref argtname29, u: ref argu29);
+                            sort_mode_list[1] = Expression.Term(argtname29, u: argu29);
                             sort_mode_type[2] = "ＥＮ";
                             string argtname30 = "ＥＮ";
                             Unit argu30 = null;
-                            sort_mode_list[2] = Expression.Term(ref argtname30, u: ref argu30);
+                            sort_mode_list[2] = Expression.Term(argtname30, u: argu30);
                             sort_mode_type[3] = "装甲";
                             string argtname31 = "装甲";
                             Unit argu31 = null;
-                            sort_mode_list[3] = Expression.Term(ref argtname31, u: ref argu31);
+                            sort_mode_list[3] = Expression.Term(argtname31, u: argu31);
                             sort_mode_type[4] = "運動性";
                             string argtname32 = "運動性";
                             Unit argu32 = null;
-                            sort_mode_list[4] = Expression.Term(ref argtname32, u: ref argu32);
+                            sort_mode_list[4] = Expression.Term(argtname32, u: argu32);
                             sort_mode_type[5] = "ユニットランク";
                             string argtname33 = "ランク";
                             Unit argu33 = null;
-                            sort_mode_list[5] = Expression.Term(ref argtname33, u: ref argu33);
+                            sort_mode_list[5] = Expression.Term(argtname33, u: argu33);
                             sort_mode_type[6] = "ユニット名称";
                             sort_mode_list[6] = "ユニット名称";
                             sort_mode_type[7] = "パイロット名称";
@@ -1023,7 +1020,7 @@ namespace Project1
 
                         item_flag_backup = new bool[Information.UBound(list) + 1];
                         item_comment_backup = new string[Information.UBound(list) + 1];
-                        var loopTo13 = (short)Information.UBound(list);
+                        var loopTo13 = Information.UBound(list);
                         for (i = 2; i <= loopTo13; i++)
                         {
                             item_flag_backup[i] = GUI.ListItemFlag[i];
@@ -1035,10 +1032,10 @@ namespace Project1
                         string arglb_caption4 = "どれで並べ替えますか？";
                         string arglb_info4 = "並べ替えの方法";
                         string arglb_mode4 = "連続表示,コメント";
-                        ret = GUI.ListBox(ref arglb_caption4, ref sort_mode_list, ref arglb_info4, ref arglb_mode4);
+                        ret = GUI.ListBox(arglb_caption4, sort_mode_list, arglb_info4, arglb_mode4);
                         GUI.ListItemFlag = new bool[Information.UBound(list) + 1];
                         GUI.ListItemComment = new string[Information.UBound(list) + 1];
-                        var loopTo14 = (short)Information.UBound(list);
+                        var loopTo14 = Information.UBound(list);
                         for (i = 2; i <= loopTo14; i++)
                         {
                             GUI.ListItemFlag[i] = item_flag_backup[i];
@@ -1059,28 +1056,28 @@ namespace Project1
             // 改造するユニットを検索
             var tmp2 = id_list;
             object argIndex4 = tmp2[ret];
-            u = SRC.UList.Item(ref argIndex4);
+            u = SRC.UList.Item(argIndex4);
 
             // 改造するか確認
             if (u.IsHero())
             {
-                if ((int)Interaction.MsgBox(u.Nickname0 + "をパワーアップさせますか？", (MsgBoxStyle)((int)MsgBoxStyle.OkCancel + (int)MsgBoxStyle.Question), "パワーアップ") != 1)
+                if (Interaction.MsgBox(u.Nickname0 + "をパワーアップさせますか？", (MsgBoxStyle)(MsgBoxStyle.OkCancel + MsgBoxStyle.Question), "パワーアップ") != 1)
                 {
                     goto Beginning;
                 }
             }
-            else if ((int)Interaction.MsgBox(u.Nickname0 + "を改造しますか？", (MsgBoxStyle)((int)MsgBoxStyle.OkCancel + (int)MsgBoxStyle.Question), "改造") != 1)
+            else if (Interaction.MsgBox(u.Nickname0 + "を改造しますか？", (MsgBoxStyle)(MsgBoxStyle.OkCancel + MsgBoxStyle.Question), "改造") != 1)
             {
                 goto Beginning;
             }
 
             // 資金を減らす
-            SRC.IncrMoney(-RankUpCost(ref u));
+            SRC.IncrMoney(-RankUpCost(u));
 
             // ユニットランクを一段階上げる
             {
                 var withBlock7 = u;
-                withBlock7.Rank = (short)(withBlock7.Rank + 1);
+                withBlock7.Rank = (withBlock7.Rank + 1);
                 withBlock7.HP = withBlock7.MaxHP;
                 withBlock7.EN = withBlock7.MaxEN;
 
@@ -1088,17 +1085,17 @@ namespace Project1
                 var loopTo15 = withBlock7.CountOtherForm();
                 for (i = 1; i <= loopTo15; i++)
                 {
-                    Unit localOtherForm() { object argIndex1 = i; var ret = withBlock7.OtherForm(ref argIndex1); return ret; }
+                    Unit localOtherForm() { object argIndex1 = i; var ret = withBlock7.OtherForm(argIndex1); return ret; }
 
                     localOtherForm().Rank = withBlock7.Rank;
-                    Unit localOtherForm1() { object argIndex1 = i; var ret = withBlock7.OtherForm(ref argIndex1); return ret; }
+                    Unit localOtherForm1() { object argIndex1 = i; var ret = withBlock7.OtherForm(argIndex1); return ret; }
 
-                    Unit localOtherForm2() { object argIndex1 = i; var ret = withBlock7.OtherForm(ref argIndex1); return ret; }
+                    Unit localOtherForm2() { object argIndex1 = i; var ret = withBlock7.OtherForm(argIndex1); return ret; }
 
                     localOtherForm1().HP = localOtherForm2().MaxHP;
-                    Unit localOtherForm3() { object argIndex1 = i; var ret = withBlock7.OtherForm(ref argIndex1); return ret; }
+                    Unit localOtherForm3() { object argIndex1 = i; var ret = withBlock7.OtherForm(argIndex1); return ret; }
 
-                    Unit localOtherForm4() { object argIndex1 = i; var ret = withBlock7.OtherForm(ref argIndex1); return ret; }
+                    Unit localOtherForm4() { object argIndex1 = i; var ret = withBlock7.OtherForm(argIndex1); return ret; }
 
                     localOtherForm3().EN = localOtherForm4().MaxEN;
                 }
@@ -1106,30 +1103,30 @@ namespace Project1
                 // 合体形態が主形態の分離形態が改造された場合は他の分離形態のユニットの
                 // ランクも上げる
                 string argfname4 = "合体";
-                if (withBlock7.IsFeatureAvailable(ref argfname4))
+                if (withBlock7.IsFeatureAvailable(argfname4))
                 {
                     var loopTo16 = withBlock7.CountFeature();
                     for (i = 1; i <= loopTo16; i++)
                     {
                         object argIndex7 = i;
-                        if (withBlock7.Feature(ref argIndex7) == "合体")
+                        if (withBlock7.Feature(argIndex7) == "合体")
                         {
-                            string localFeatureData() { object argIndex1 = i; var ret = withBlock7.FeatureData(ref argIndex1); return ret; }
+                            string localFeatureData() { object argIndex1 = i; var ret = withBlock7.FeatureData(argIndex1); return ret; }
 
                             string arglist = localFeatureData();
-                            buf = GeneralLib.LIndex(ref arglist, 2);
-                            string localFeatureData1() { object argIndex1 = i; var ret = withBlock7.FeatureData(ref argIndex1); return ret; }
+                            buf = GeneralLib.LIndex(arglist, 2);
+                            string localFeatureData1() { object argIndex1 = i; var ret = withBlock7.FeatureData(argIndex1); return ret; }
 
                             string arglist1 = localFeatureData1();
-                            if (GeneralLib.LLength(ref arglist1) == 3)
+                            if (GeneralLib.LLength(arglist1) == 3)
                             {
                                 object argIndex5 = buf;
-                                if (SRC.UDList.IsDefined(ref argIndex5))
+                                if (SRC.UDList.IsDefined(argIndex5))
                                 {
-                                    UnitData localItem6() { object argIndex1 = buf; var ret = SRC.UDList.Item(ref argIndex1); return ret; }
+                                    UnitData localItem6() { object argIndex1 = buf; var ret = SRC.UDList.Item(argIndex1); return ret; }
 
                                     string argfname2 = "主形態";
-                                    if (localItem6().IsFeatureAvailable(ref argfname2))
+                                    if (localItem6().IsFeatureAvailable(argfname2))
                                     {
                                         break;
                                     }
@@ -1138,12 +1135,12 @@ namespace Project1
                             else
                             {
                                 object argIndex6 = buf;
-                                if (SRC.UDList.IsDefined(ref argIndex6))
+                                if (SRC.UDList.IsDefined(argIndex6))
                                 {
-                                    UnitData localItem7() { object argIndex1 = buf; var ret = SRC.UDList.Item(ref argIndex1); return ret; }
+                                    UnitData localItem7() { object argIndex1 = buf; var ret = SRC.UDList.Item(argIndex1); return ret; }
 
                                     string argfname3 = "制限時間";
-                                    if (!localItem7().IsFeatureAvailable(ref argfname3))
+                                    if (!localItem7().IsFeatureAvailable(argfname3))
                                     {
                                         break;
                                     }
@@ -1155,49 +1152,49 @@ namespace Project1
                     if (i <= withBlock7.CountFeature())
                     {
                         urank = withBlock7.Rank;
-                        string localFeatureData2() { object argIndex1 = i; var ret = withBlock7.FeatureData(ref argIndex1); return ret; }
+                        string localFeatureData2() { object argIndex1 = i; var ret = withBlock7.FeatureData(argIndex1); return ret; }
 
-                        string localLIndex() { string arglist = hsba79967d549343448297e0bcf57b2982(); var ret = GeneralLib.LIndex(ref arglist, 2); return ret; }
+                        string localLIndex() { string arglist = hsba79967d549343448297e0bcf57b2982(); var ret = GeneralLib.LIndex(arglist, 2); return ret; }
 
-                        UnitData localItem8() { object argIndex1 = (object)hsd871da3601884bc086fad5045542bc83(); var ret = SRC.UDList.Item(ref argIndex1); return ret; }
+                        UnitData localItem8() { object argIndex1 = (object)hsd871da3601884bc086fad5045542bc83(); var ret = SRC.UDList.Item(argIndex1); return ret; }
 
                         object argIndex8 = "分離";
-                        buf = localItem8().FeatureData(ref argIndex8);
-                        var loopTo17 = GeneralLib.LLength(ref buf);
+                        buf = localItem8().FeatureData(argIndex8);
+                        var loopTo17 = GeneralLib.LLength(buf);
                         for (i = 2; i <= loopTo17; i++)
                         {
-                            bool localIsDefined() { object argIndex1 = GeneralLib.LIndex(ref buf, i); var ret = SRC.UList.IsDefined(ref argIndex1); return ret; }
+                            bool localIsDefined() { object argIndex1 = GeneralLib.LIndex(buf, i); var ret = SRC.UList.IsDefined(argIndex1); return ret; }
 
                             if (!localIsDefined())
                             {
                                 goto NextForm;
                             }
 
-                            object argIndex9 = GeneralLib.LIndex(ref buf, i);
+                            object argIndex9 = GeneralLib.LIndex(buf, i);
                             {
-                                var withBlock8 = SRC.UList.Item(ref argIndex9);
-                                withBlock8.Rank = (short)GeneralLib.MaxLng(urank, withBlock8.Rank);
+                                var withBlock8 = SRC.UList.Item(argIndex9);
+                                withBlock8.Rank = GeneralLib.MaxLng(urank, withBlock8.Rank);
                                 withBlock8.HP = withBlock8.MaxHP;
                                 withBlock8.EN = withBlock8.MaxEN;
                                 var loopTo18 = withBlock8.CountOtherForm();
                                 for (j = 1; j <= loopTo18; j++)
                                 {
-                                    Unit localOtherForm5() { object argIndex1 = j; var ret = withBlock8.OtherForm(ref argIndex1); return ret; }
+                                    Unit localOtherForm5() { object argIndex1 = j; var ret = withBlock8.OtherForm(argIndex1); return ret; }
 
                                     localOtherForm5().Rank = withBlock8.Rank;
-                                    Unit localOtherForm6() { object argIndex1 = j; var ret = withBlock8.OtherForm(ref argIndex1); return ret; }
+                                    Unit localOtherForm6() { object argIndex1 = j; var ret = withBlock8.OtherForm(argIndex1); return ret; }
 
-                                    Unit localOtherForm7() { object argIndex1 = j; var ret = withBlock8.OtherForm(ref argIndex1); return ret; }
+                                    Unit localOtherForm7() { object argIndex1 = j; var ret = withBlock8.OtherForm(argIndex1); return ret; }
 
                                     localOtherForm6().HP = localOtherForm7().MaxHP;
-                                    Unit localOtherForm8() { object argIndex1 = j; var ret = withBlock8.OtherForm(ref argIndex1); return ret; }
+                                    Unit localOtherForm8() { object argIndex1 = j; var ret = withBlock8.OtherForm(argIndex1); return ret; }
 
-                                    Unit localOtherForm9() { object argIndex1 = j; var ret = withBlock8.OtherForm(ref argIndex1); return ret; }
+                                    Unit localOtherForm9() { object argIndex1 = j; var ret = withBlock8.OtherForm(argIndex1); return ret; }
 
                                     localOtherForm8().EN = localOtherForm9().MaxEN;
                                 }
 
-                                var loopTo19 = (short)Information.UBound(id_list);
+                                var loopTo19 = Information.UBound(id_list);
                                 for (j = 1; j <= loopTo19; j++)
                                 {
                                     if ((withBlock8.CurrentForm().ID ?? "") == (id_list[j] ?? ""))
@@ -1213,14 +1210,14 @@ namespace Project1
 
                                 if (use_max_rank)
                                 {
-                                    string localRightPaddedString3() { string argbuf = withBlock8.Nickname0; var ret = GeneralLib.RightPaddedString(ref argbuf, name_width); withBlock8.Nickname0 = argbuf; return ret; }
+                                    string localRightPaddedString3() { string argbuf = withBlock8.Nickname0; var ret = GeneralLib.RightPaddedString(argbuf, name_width); withBlock8.Nickname0 = argbuf; return ret; }
 
-                                    string localLeftPaddedString8() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock8.Rank); var ret = GeneralLib.LeftPaddedString(ref argbuf, 2); return ret; }
+                                    string localLeftPaddedString8() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock8.Rank); var ret = GeneralLib.LeftPaddedString(argbuf, 2); return ret; }
 
                                     list[j] = localRightPaddedString3() + localLeftPaddedString8() + "/";
-                                    if (MaxRank(ref u) > 0)
+                                    if (MaxRank(u) > 0)
                                     {
-                                        string localLeftPaddedString9() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(MaxRank(ref u)); var ret = GeneralLib.LeftPaddedString(ref argbuf, 2); return ret; }
+                                        string localLeftPaddedString9() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(MaxRank(u)); var ret = GeneralLib.LeftPaddedString(argbuf, 2); return ret; }
 
                                         list[j] = list[j] + localLeftPaddedString9();
                                     }
@@ -1231,51 +1228,51 @@ namespace Project1
                                 }
                                 else if (withBlock8.Rank < 10)
                                 {
-                                    string localRightPaddedString4() { string argbuf = withBlock8.Nickname0; var ret = GeneralLib.RightPaddedString(ref argbuf, name_width); withBlock8.Nickname0 = argbuf; return ret; }
+                                    string localRightPaddedString4() { string argbuf = withBlock8.Nickname0; var ret = GeneralLib.RightPaddedString(argbuf, name_width); withBlock8.Nickname0 = argbuf; return ret; }
 
                                     list[j] = localRightPaddedString4() + Strings.StrConv(Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock8.Rank), VbStrConv.Wide);
                                 }
                                 else
                                 {
-                                    string localRightPaddedString5() { string argbuf = withBlock8.Nickname0; var ret = GeneralLib.RightPaddedString(ref argbuf, name_width); withBlock8.Nickname0 = argbuf; return ret; }
+                                    string localRightPaddedString5() { string argbuf = withBlock8.Nickname0; var ret = GeneralLib.RightPaddedString(argbuf, name_width); withBlock8.Nickname0 = argbuf; return ret; }
 
                                     list[j] = localRightPaddedString5() + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock8.Rank);
                                 }
 
-                                if (RankUpCost(ref u) < 1000000)
+                                if (RankUpCost(u) < 1000000)
                                 {
-                                    string localLeftPaddedString10() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(RankUpCost(ref u)); var ret = GeneralLib.LeftPaddedString(ref argbuf, 7); return ret; }
+                                    string localLeftPaddedString10() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(RankUpCost(u)); var ret = GeneralLib.LeftPaddedString(argbuf, 7); return ret; }
 
                                     list[j] = list[j] + localLeftPaddedString10();
                                 }
                                 else
                                 {
                                     string argbuf1 = "----";
-                                    list[j] = list[j] + GeneralLib.LeftPaddedString(ref argbuf1, 7);
+                                    list[j] = list[j] + GeneralLib.LeftPaddedString(argbuf1, 7);
                                 }
 
                                 string argoname6 = "等身大基準";
-                                if (Expression.IsOptionDefined(ref argoname6))
+                                if (Expression.IsOptionDefined(argoname6))
                                 {
                                     if (withBlock8.CountPilot() > 0)
                                     {
-                                        string localLeftPaddedString11() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock8.MainPilot().Level); var ret = GeneralLib.LeftPaddedString(ref argbuf, 3); return ret; }
+                                        string localLeftPaddedString11() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock8.MainPilot().Level); var ret = GeneralLib.LeftPaddedString(argbuf, 3); return ret; }
 
                                         list[j] = list[j] + localLeftPaddedString11();
                                     }
                                 }
 
-                                string localLeftPaddedString12() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock8.MaxHP); var ret = GeneralLib.LeftPaddedString(ref argbuf, 6); return ret; }
+                                string localLeftPaddedString12() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock8.MaxHP); var ret = GeneralLib.LeftPaddedString(argbuf, 6); return ret; }
 
-                                string localLeftPaddedString13() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock8.MaxEN); var ret = GeneralLib.LeftPaddedString(ref argbuf, 4); return ret; }
+                                string localLeftPaddedString13() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock8.MaxEN); var ret = GeneralLib.LeftPaddedString(argbuf, 4); return ret; }
 
-                                string localLeftPaddedString14() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock8.get_Armor("")); var ret = GeneralLib.LeftPaddedString(ref argbuf, 6); return ret; }
+                                string localLeftPaddedString14() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock8.get_Armor("")); var ret = GeneralLib.LeftPaddedString(argbuf, 6); return ret; }
 
-                                string localLeftPaddedString15() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock8.get_Mobility("")); var ret = GeneralLib.LeftPaddedString(ref argbuf, 4); return ret; }
+                                string localLeftPaddedString15() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock8.get_Mobility("")); var ret = GeneralLib.LeftPaddedString(argbuf, 4); return ret; }
 
                                 list[j] = list[j] + localLeftPaddedString12() + localLeftPaddedString13() + localLeftPaddedString14() + localLeftPaddedString15();
                                 string argoname7 = "等身大基準";
-                                if (!Expression.IsOptionDefined(ref argoname7))
+                                if (!Expression.IsOptionDefined(argoname7))
                                 {
                                     if (withBlock8.CountPilot() > 0)
                                     {
@@ -1284,7 +1281,7 @@ namespace Project1
                                 }
                             }
 
-                            NextForm:
+                        NextForm:
                             ;
                         }
                     }
@@ -1292,37 +1289,37 @@ namespace Project1
 
                 // 合体ユニットの場合は分離形態のユニットのランクも上げる
                 string argfname5 = "分離";
-                if (withBlock7.IsFeatureAvailable(ref argfname5))
+                if (withBlock7.IsFeatureAvailable(argfname5))
                 {
                     urank = withBlock7.Rank;
                     object argIndex10 = "分離";
-                    buf = withBlock7.FeatureData(ref argIndex10);
-                    var loopTo20 = GeneralLib.LLength(ref buf);
+                    buf = withBlock7.FeatureData(argIndex10);
+                    var loopTo20 = GeneralLib.LLength(buf);
                     for (i = 2; i <= loopTo20; i++)
                     {
-                        object argIndex12 = GeneralLib.LIndex(ref buf, i);
-                        if (SRC.UList.IsDefined(ref argIndex12))
+                        object argIndex12 = GeneralLib.LIndex(buf, i);
+                        if (SRC.UList.IsDefined(argIndex12))
                         {
-                            object argIndex11 = GeneralLib.LIndex(ref buf, i);
+                            object argIndex11 = GeneralLib.LIndex(buf, i);
                             {
-                                var withBlock9 = SRC.UList.Item(ref argIndex11);
-                                withBlock9.Rank = (short)GeneralLib.MaxLng(urank, withBlock9.Rank);
+                                var withBlock9 = SRC.UList.Item(argIndex11);
+                                withBlock9.Rank = GeneralLib.MaxLng(urank, withBlock9.Rank);
                                 withBlock9.HP = withBlock9.MaxHP;
                                 withBlock9.EN = withBlock9.MaxEN;
                                 var loopTo21 = withBlock9.CountOtherForm();
                                 for (j = 1; j <= loopTo21; j++)
                                 {
-                                    Unit localOtherForm10() { object argIndex1 = j; var ret = withBlock9.OtherForm(ref argIndex1); return ret; }
+                                    Unit localOtherForm10() { object argIndex1 = j; var ret = withBlock9.OtherForm(argIndex1); return ret; }
 
                                     localOtherForm10().Rank = withBlock9.Rank;
-                                    Unit localOtherForm11() { object argIndex1 = j; var ret = withBlock9.OtherForm(ref argIndex1); return ret; }
+                                    Unit localOtherForm11() { object argIndex1 = j; var ret = withBlock9.OtherForm(argIndex1); return ret; }
 
-                                    Unit localOtherForm12() { object argIndex1 = j; var ret = withBlock9.OtherForm(ref argIndex1); return ret; }
+                                    Unit localOtherForm12() { object argIndex1 = j; var ret = withBlock9.OtherForm(argIndex1); return ret; }
 
                                     localOtherForm11().HP = localOtherForm12().MaxHP;
-                                    Unit localOtherForm13() { object argIndex1 = j; var ret = withBlock9.OtherForm(ref argIndex1); return ret; }
+                                    Unit localOtherForm13() { object argIndex1 = j; var ret = withBlock9.OtherForm(argIndex1); return ret; }
 
-                                    Unit localOtherForm14() { object argIndex1 = j; var ret = withBlock9.OtherForm(ref argIndex1); return ret; }
+                                    Unit localOtherForm14() { object argIndex1 = j; var ret = withBlock9.OtherForm(argIndex1); return ret; }
 
                                     localOtherForm13().EN = localOtherForm14().MaxEN;
                                 }
@@ -1335,14 +1332,14 @@ namespace Project1
 
                 if (use_max_rank)
                 {
-                    string localRightPaddedString6() { string argbuf = withBlock7.Nickname0; var ret = GeneralLib.RightPaddedString(ref argbuf, name_width); withBlock7.Nickname0 = argbuf; return ret; }
+                    string localRightPaddedString6() { string argbuf = withBlock7.Nickname0; var ret = GeneralLib.RightPaddedString(argbuf, name_width); withBlock7.Nickname0 = argbuf; return ret; }
 
-                    string localLeftPaddedString16() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock7.Rank); var ret = GeneralLib.LeftPaddedString(ref argbuf, 2); return ret; }
+                    string localLeftPaddedString16() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock7.Rank); var ret = GeneralLib.LeftPaddedString(argbuf, 2); return ret; }
 
                     list[ret] = localRightPaddedString6() + localLeftPaddedString16() + "/";
-                    if (MaxRank(ref u) > 0)
+                    if (MaxRank(u) > 0)
                     {
-                        string localLeftPaddedString17() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(MaxRank(ref u)); var ret = GeneralLib.LeftPaddedString(ref argbuf, 2); return ret; }
+                        string localLeftPaddedString17() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(MaxRank(u)); var ret = GeneralLib.LeftPaddedString(argbuf, 2); return ret; }
 
                         list[ret] = list[ret] + localLeftPaddedString17();
                     }
@@ -1353,51 +1350,51 @@ namespace Project1
                 }
                 else if (withBlock7.Rank < 10)
                 {
-                    string localRightPaddedString7() { string argbuf = withBlock7.Nickname0; var ret = GeneralLib.RightPaddedString(ref argbuf, name_width); withBlock7.Nickname0 = argbuf; return ret; }
+                    string localRightPaddedString7() { string argbuf = withBlock7.Nickname0; var ret = GeneralLib.RightPaddedString(argbuf, name_width); withBlock7.Nickname0 = argbuf; return ret; }
 
                     list[ret] = localRightPaddedString7() + Strings.StrConv(Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock7.Rank), VbStrConv.Wide);
                 }
                 else
                 {
-                    string localRightPaddedString8() { string argbuf = withBlock7.Nickname0; var ret = GeneralLib.RightPaddedString(ref argbuf, name_width); withBlock7.Nickname0 = argbuf; return ret; }
+                    string localRightPaddedString8() { string argbuf = withBlock7.Nickname0; var ret = GeneralLib.RightPaddedString(argbuf, name_width); withBlock7.Nickname0 = argbuf; return ret; }
 
                     list[ret] = localRightPaddedString8() + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock7.Rank);
                 }
 
-                if (RankUpCost(ref u) < 10000000)
+                if (RankUpCost(u) < 10000000)
                 {
-                    string localLeftPaddedString18() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(RankUpCost(ref u)); var ret = GeneralLib.LeftPaddedString(ref argbuf, 7); return ret; }
+                    string localLeftPaddedString18() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(RankUpCost(u)); var ret = GeneralLib.LeftPaddedString(argbuf, 7); return ret; }
 
                     list[ret] = list[ret] + localLeftPaddedString18();
                 }
                 else
                 {
                     string argbuf2 = "----";
-                    list[ret] = list[ret] + GeneralLib.LeftPaddedString(ref argbuf2, 7);
+                    list[ret] = list[ret] + GeneralLib.LeftPaddedString(argbuf2, 7);
                 }
 
                 string argoname8 = "等身大基準";
-                if (Expression.IsOptionDefined(ref argoname8))
+                if (Expression.IsOptionDefined(argoname8))
                 {
                     if (withBlock7.CountPilot() > 0)
                     {
-                        string localLeftPaddedString19() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock7.MainPilot().Level); var ret = GeneralLib.LeftPaddedString(ref argbuf, 3); return ret; }
+                        string localLeftPaddedString19() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock7.MainPilot().Level); var ret = GeneralLib.LeftPaddedString(argbuf, 3); return ret; }
 
                         list[ret] = list[ret] + localLeftPaddedString19();
                     }
                 }
 
-                string localLeftPaddedString20() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock7.MaxHP); var ret = GeneralLib.LeftPaddedString(ref argbuf, 6); return ret; }
+                string localLeftPaddedString20() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock7.MaxHP); var ret = GeneralLib.LeftPaddedString(argbuf, 6); return ret; }
 
-                string localLeftPaddedString21() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock7.MaxEN); var ret = GeneralLib.LeftPaddedString(ref argbuf, 4); return ret; }
+                string localLeftPaddedString21() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock7.MaxEN); var ret = GeneralLib.LeftPaddedString(argbuf, 4); return ret; }
 
-                string localLeftPaddedString22() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock7.get_Armor("")); var ret = GeneralLib.LeftPaddedString(ref argbuf, 6); return ret; }
+                string localLeftPaddedString22() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock7.get_Armor("")); var ret = GeneralLib.LeftPaddedString(argbuf, 6); return ret; }
 
-                string localLeftPaddedString23() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock7.get_Mobility("")); var ret = GeneralLib.LeftPaddedString(ref argbuf, 4); return ret; }
+                string localLeftPaddedString23() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock7.get_Mobility("")); var ret = GeneralLib.LeftPaddedString(argbuf, 4); return ret; }
 
                 list[ret] = list[ret] + localLeftPaddedString20() + localLeftPaddedString21() + localLeftPaddedString22() + localLeftPaddedString23();
                 string argoname9 = "等身大基準";
-                if (!Expression.IsOptionDefined(ref argoname9))
+                if (!Expression.IsOptionDefined(argoname9))
                 {
                     if (withBlock7.CountPilot() > 0)
                     {
@@ -1407,13 +1404,13 @@ namespace Project1
             }
 
             // 改めて資金と改造費を調べ、各ユニットが改造可能かチェックする
-            var loopTo22 = (short)Information.UBound(list);
+            var loopTo22 = Information.UBound(list);
             for (i = 2; i <= loopTo22; i++)
             {
-                Unit localItem9() { var tmp = id_list; object argIndex1 = tmp[i]; var ret = SRC.UList.Item(ref argIndex1); return ret; }
+                Unit localItem9() { var tmp = id_list; object argIndex1 = tmp[i]; var ret = SRC.UList.Item(argIndex1); return ret; }
 
                 var argu34 = localItem9();
-                cost = RankUpCost(ref argu34);
+                cost = RankUpCost(argu34);
                 if (cost > SRC.Money | cost > 10000000)
                 {
                     GUI.ListItemFlag[i] = true;
@@ -1428,13 +1425,13 @@ namespace Project1
         }
 
         // ユニットランクを上げるためのコストを算出
-        public static int RankUpCost(ref Unit u)
+        public int RankUpCost(Unit u)
         {
             int RankUpCostRet = default;
             {
                 var withBlock = u;
                 // これ以上改造できない？
-                if (withBlock.Rank >= MaxRank(ref u))
+                if (withBlock.Rank >= MaxRank(u))
                 {
                     RankUpCostRet = 999999999;
                     return RankUpCostRet;
@@ -1442,13 +1439,13 @@ namespace Project1
 
                 // 合体状態にある場合はそれが主形態でない限り改造不可
                 string argfname2 = "分離";
-                if (withBlock.IsFeatureAvailable(ref argfname2))
+                if (withBlock.IsFeatureAvailable(argfname2))
                 {
-                    short localLLength() { object argIndex1 = "分離"; string arglist = withBlock.FeatureData(ref argIndex1); var ret = GeneralLib.LLength(ref arglist); return ret; }
+                    int localLLength() { object argIndex1 = "分離"; string arglist = withBlock.FeatureData(argIndex1); var ret = GeneralLib.LLength(arglist); return ret; }
 
                     string argfname = "主形態";
                     string argfname1 = "制限時間";
-                    if (localLLength() == 3 & !withBlock.IsFeatureAvailable(ref argfname) | withBlock.IsFeatureAvailable(ref argfname1))
+                    if (localLLength() == 3 & !withBlock.IsFeatureAvailable(argfname) | withBlock.IsFeatureAvailable(argfname1))
                     {
                         RankUpCostRet = 999999999;
                         return RankUpCostRet;
@@ -1457,7 +1454,7 @@ namespace Project1
 
                 string argoname = "低改造費";
                 string argoname1 = "１５段階改造";
-                if (Expression.IsOptionDefined(ref argoname))
+                if (Expression.IsOptionDefined(argoname))
                 {
                     // 低改造費の場合
                     switch (withBlock.Rank)
@@ -1559,7 +1556,7 @@ namespace Project1
                             }
                     }
                 }
-                else if (Expression.IsOptionDefined(ref argoname1))
+                else if (Expression.IsOptionDefined(argoname1))
                 {
                     // 通常の１５段改造
                     // (１０段改造時よりお求め安い価格になっております……)
@@ -1737,10 +1734,10 @@ namespace Project1
 
                 // ユニット用特殊能力「改造費修正」による修正
                 string argfname3 = "改造費修正";
-                if (withBlock.IsFeatureAvailable(ref argfname3))
+                if (withBlock.IsFeatureAvailable(argfname3))
                 {
                     object argIndex1 = "改造費修正";
-                    RankUpCostRet = (int)(RankUpCostRet * (1d + withBlock.FeatureLevel(ref argIndex1) / 10d));
+                    RankUpCostRet = (RankUpCostRet * (1d + withBlock.FeatureLevel(argIndex1) / 10d));
                 }
             }
 
@@ -1748,17 +1745,17 @@ namespace Project1
         }
 
         // ユニットの最大改造数を算出
-        public static int MaxRank(ref Unit u)
+        public int MaxRank(Unit u)
         {
             int MaxRankRet = default;
             string argoname = "５段階改造";
             string argoname1 = "１５段階改造";
-            if (Expression.IsOptionDefined(ref argoname))
+            if (Expression.IsOptionDefined(argoname))
             {
                 // ５段階改造までしか出来ない
                 MaxRankRet = 5;
             }
-            else if (Expression.IsOptionDefined(ref argoname1))
+            else if (Expression.IsOptionDefined(argoname1))
             {
                 // １５段階改造まで可能
                 MaxRankRet = 15;
@@ -1770,7 +1767,7 @@ namespace Project1
             }
             // Disableコマンドで改造不可にされている？
             string argvname = "Disable(" + u.Name + ",改造)";
-            if (Expression.IsGlobalVariableDefined(ref argvname))
+            if (Expression.IsGlobalVariableDefined(argvname))
             {
                 MaxRankRet = 0;
                 return MaxRankRet;
@@ -1778,19 +1775,19 @@ namespace Project1
 
             // 最大改造数が設定されている？
             string argfname = "最大改造数";
-            if (u.IsFeatureAvailable(ref argfname))
+            if (u.IsFeatureAvailable(argfname))
             {
                 object argIndex1 = "最大改造数";
-                MaxRankRet = GeneralLib.MinLng(MaxRankRet, (int)u.FeatureLevel(ref argIndex1));
+                MaxRankRet = GeneralLib.MinLng(MaxRankRet, u.FeatureLevel(argIndex1));
             }
 
             return MaxRankRet;
         }
 
         // 乗り換えコマンド
-        public static void ExchangeUnitCommand()
+        public void ExchangeUnitCommand()
         {
-            short j, i, k;
+            int j, i, k;
             string[] list;
             string[] id_list;
             string sort_mode, sort_mode2;
@@ -1800,24 +1797,24 @@ namespace Project1
             string[] item_comment_backup;
             int[] key_list;
             string[] strkey_list;
-            short max_item;
+            int max_item;
             int max_value;
             string max_str;
             Unit u;
             Pilot p;
             string pname;
             string buf;
-            short ret;
+            int ret;
             bool b;
             bool is_support;
             string caption_str;
-            short top_item;
+            int top_item;
             top_item = 1;
 
             // デフォルトのソート方法
             sort_mode = "レベル";
             sort_mode2 = "名称";
-            Beginning:
+        Beginning:
             ;
 
 
@@ -1831,7 +1828,7 @@ namespace Project1
                 p = currentP;
                 {
                     var withBlock = p;
-                    bool localIsGlobalVariableDefined() { string argvname = "Fix(" + withBlock.Name + ")"; var ret = Expression.IsGlobalVariableDefined(ref argvname); return ret; }
+                    bool localIsGlobalVariableDefined() { string argvname = "Fix(" + withBlock.Name + ")"; var ret = Expression.IsGlobalVariableDefined(argvname); return ret; }
 
                     if (withBlock.Party != "味方" | withBlock.Away | localIsGlobalVariableDefined())
                     {
@@ -1857,7 +1854,7 @@ namespace Project1
                         if (withBlock.Unit_Renamed.CountSupport() == 1)
                         {
                             object argIndex1 = 1;
-                            if ((withBlock.ID ?? "") == (withBlock.Unit_Renamed.Support(ref argIndex1).ID ?? ""))
+                            if ((withBlock.ID ?? "") == (withBlock.Unit_Renamed.Support(argIndex1).ID ?? ""))
                             {
                                 is_support = true;
                             }
@@ -1877,21 +1874,21 @@ namespace Project1
                     if (is_support)
                     {
                         // サポートパイロットの場合
-                        Array.Resize(ref list, Information.UBound(list) + 1 + 1);
-                        Array.Resize(ref id_list, Information.UBound(list) + 1);
-                        Array.Resize(ref GUI.ListItemComment, Information.UBound(list) + 1);
+                        Array.Resize(list, Information.UBound(list) + 1 + 1);
+                        Array.Resize(id_list, Information.UBound(list) + 1);
+                        Array.Resize(GUI.ListItemComment, Information.UBound(list) + 1);
 
                         // パイロットのステータス
-                        string localLeftPaddedString() { string argbuf = Strings.StrConv(Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.Level), VbStrConv.Wide); var ret = GeneralLib.LeftPaddedString(ref argbuf, 4); return ret; }
+                        string localLeftPaddedString() { string argbuf = Strings.StrConv(Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.Level), VbStrConv.Wide); var ret = GeneralLib.LeftPaddedString(argbuf, 4); return ret; }
 
                         string argbuf = "*" + withBlock.get_Nickname(false);
-                        list[Information.UBound(list)] = GeneralLib.RightPaddedString(ref argbuf, 25) + localLeftPaddedString();
+                        list[Information.UBound(list)] = GeneralLib.RightPaddedString(argbuf, 25) + localLeftPaddedString();
                         if (withBlock.Unit_Renamed is object)
                         {
                             {
                                 var withBlock1 = withBlock.Unit_Renamed;
                                 // ユニットのステータス
-                                string localRightPaddedString() { string argbuf = withBlock1.Nickname0; var ret = GeneralLib.RightPaddedString(ref argbuf, 29); withBlock1.Nickname0 = argbuf; return ret; }
+                                string localRightPaddedString() { string argbuf = withBlock1.Nickname0; var ret = GeneralLib.RightPaddedString(argbuf, 29); withBlock1.Nickname0 = argbuf; return ret; }
 
                                 list[Information.UBound(list)] = list[Information.UBound(list)] + "  " + localRightPaddedString() + "(" + withBlock1.MainPilot().get_Nickname(false) + ")";
 
@@ -1901,9 +1898,9 @@ namespace Project1
                                 {
                                     object argIndex2 = k;
                                     {
-                                        var withBlock2 = withBlock1.Item(ref argIndex2);
+                                        var withBlock2 = withBlock1.Item(argIndex2);
                                         string argfname = "非表示";
-                                        if ((withBlock2.Class_Renamed() != "固定" | !withBlock2.IsFeatureAvailable(ref argfname)) & withBlock2.Part() != "非表示")
+                                        if ((withBlock2.Class_Renamed() != "固定" | !withBlock2.IsFeatureAvailable(argfname)) & withBlock2.Part() != "非表示")
                                         {
                                             GUI.ListItemComment[Information.UBound(list)] = GUI.ListItemComment[Information.UBound(list)] + withBlock2.Nickname() + " ";
                                         }
@@ -1918,15 +1915,15 @@ namespace Project1
                     else if (withBlock.Unit_Renamed is null)
                     {
                         // ユニットに乗っていないパイロットの場合
-                        Array.Resize(ref list, Information.UBound(list) + 1 + 1);
-                        Array.Resize(ref id_list, Information.UBound(list) + 1);
-                        Array.Resize(ref GUI.ListItemComment, Information.UBound(list) + 1);
+                        Array.Resize(list, Information.UBound(list) + 1 + 1);
+                        Array.Resize(id_list, Information.UBound(list) + 1);
+                        Array.Resize(GUI.ListItemComment, Information.UBound(list) + 1);
 
                         // パイロットのステータス
-                        string localLeftPaddedString1() { string argbuf = Strings.StrConv(Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.Level), VbStrConv.Wide); var ret = GeneralLib.LeftPaddedString(ref argbuf, 4); return ret; }
+                        string localLeftPaddedString1() { string argbuf = Strings.StrConv(Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.Level), VbStrConv.Wide); var ret = GeneralLib.LeftPaddedString(argbuf, 4); return ret; }
 
                         string argbuf1 = " " + withBlock.get_Nickname(false);
-                        list[Information.UBound(list)] = GeneralLib.RightPaddedString(ref argbuf1, 25) + localLeftPaddedString1();
+                        list[Information.UBound(list)] = GeneralLib.RightPaddedString(argbuf1, 25) + localLeftPaddedString1();
 
                         // パイロットＩＤを記録しておく
                         id_list[Information.UBound(list)] = withBlock.ID;
@@ -1934,9 +1931,9 @@ namespace Project1
                     else if (withBlock.Unit_Renamed.CountPilot() <= 2)
                     {
                         // 複数乗りのユニットに乗っているパイロットの場合
-                        Array.Resize(ref list, Information.UBound(list) + 1 + 1);
-                        Array.Resize(ref id_list, Information.UBound(list) + 1);
-                        Array.Resize(ref GUI.ListItemComment, Information.UBound(list) + 1);
+                        Array.Resize(list, Information.UBound(list) + 1 + 1);
+                        Array.Resize(id_list, Information.UBound(list) + 1);
+                        Array.Resize(GUI.ListItemComment, Information.UBound(list) + 1);
 
                         // パイロットが足りない？
                         if (withBlock.Unit_Renamed.CountPilot() < Math.Abs(withBlock.Unit_Renamed.Data.PilotNum))
@@ -1949,7 +1946,7 @@ namespace Project1
                         }
 
                         string argfname1 = "追加パイロット";
-                        if (withBlock.Unit_Renamed.IsFeatureAvailable(ref argfname1))
+                        if (withBlock.Unit_Renamed.IsFeatureAvailable(argfname1))
                         {
                             pname = withBlock.Unit_Renamed.MainPilot().get_Nickname(false);
                         }
@@ -1965,7 +1962,7 @@ namespace Project1
                             for (k = 1; k <= loopTo1; k++)
                             {
                                 object argIndex3 = k;
-                                if (ReferenceEquals(withBlock.Unit_Renamed.Pilot(ref argIndex3), p))
+                                if (ReferenceEquals(withBlock.Unit_Renamed.Pilot(argIndex3), p))
                                 {
                                     pname = pname + "(" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(k) + ")";
                                 }
@@ -1973,15 +1970,15 @@ namespace Project1
                         }
 
                         // パイロット＆ユニットのステータス
-                        string localLeftPaddedString2() { string argbuf = Strings.StrConv(Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.Level), VbStrConv.Wide); var ret = GeneralLib.LeftPaddedString(ref argbuf, 4); return ret; }
+                        string localLeftPaddedString2() { string argbuf = Strings.StrConv(Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.Level), VbStrConv.Wide); var ret = GeneralLib.LeftPaddedString(argbuf, 4); return ret; }
 
-                        string localRightPaddedString1() { string argbuf = withBlock.Unit_Renamed.Nickname0; var ret = GeneralLib.RightPaddedString(ref argbuf, 29); withBlock.Unit_Renamed.Nickname0 = argbuf; return ret; }
+                        string localRightPaddedString1() { string argbuf = withBlock.Unit_Renamed.Nickname0; var ret = GeneralLib.RightPaddedString(argbuf, 29); withBlock.Unit_Renamed.Nickname0 = argbuf; return ret; }
 
-                        list[Information.UBound(list)] = list[Information.UBound(list)] + GeneralLib.RightPaddedString(ref pname, 24) + localLeftPaddedString2() + "  " + localRightPaddedString1();
+                        list[Information.UBound(list)] = list[Information.UBound(list)] + GeneralLib.RightPaddedString(pname, 24) + localLeftPaddedString2() + "  " + localRightPaddedString1();
                         if (withBlock.Unit_Renamed.CountSupport() > 0)
                         {
                             object argIndex4 = 1;
-                            list[Information.UBound(list)] = list[Information.UBound(list)] + "(" + withBlock.Unit_Renamed.Support(ref argIndex4).get_Nickname(false) + ")";
+                            list[Information.UBound(list)] = list[Information.UBound(list)] + "(" + withBlock.Unit_Renamed.Support(argIndex4).get_Nickname(false) + ")";
                         }
 
                         // ユニットが装備しているアイテム一覧
@@ -1992,9 +1989,9 @@ namespace Project1
                             {
                                 object argIndex5 = k;
                                 {
-                                    var withBlock4 = withBlock3.Item(ref argIndex5);
+                                    var withBlock4 = withBlock3.Item(argIndex5);
                                     string argfname2 = "非表示";
-                                    if ((withBlock4.Class_Renamed() != "固定" | !withBlock4.IsFeatureAvailable(ref argfname2)) & withBlock4.Part() != "非表示")
+                                    if ((withBlock4.Class_Renamed() != "固定" | !withBlock4.IsFeatureAvailable(argfname2)) & withBlock4.Part() != "非表示")
                                     {
                                         GUI.ListItemComment[Information.UBound(list)] = GUI.ListItemComment[Information.UBound(list)] + withBlock4.Nickname() + " ";
                                     }
@@ -2007,12 +2004,12 @@ namespace Project1
                     }
                 }
 
-                NextLoop:
+            NextLoop:
                 ;
             }
 
             GUI.ListItemFlag = new bool[Information.UBound(list) + 1];
-            SortAgain:
+        SortAgain:
             ;
 
 
@@ -2025,26 +2022,26 @@ namespace Project1
                 key_list = new int[Information.UBound(list) + 1];
                 {
                     var withBlock5 = SRC.PList;
-                    var loopTo3 = (short)Information.UBound(list);
+                    var loopTo3 = Information.UBound(list);
                     for (i = 2; i <= loopTo3; i++)
                     {
                         var tmp = id_list;
                         object argIndex6 = tmp[i];
                         {
-                            var withBlock6 = withBlock5.Item(ref argIndex6);
+                            var withBlock6 = withBlock5.Item(argIndex6);
                             key_list[i] = 500 * withBlock6.Level + withBlock6.Exp;
                         }
                     }
                 }
 
                 // レベルを使って並べ換え
-                var loopTo4 = (short)(Information.UBound(list) - 1);
+                var loopTo4 = (Information.UBound(list) - 1);
                 for (i = 2; i <= loopTo4; i++)
                 {
                     max_item = i;
                     max_value = key_list[i];
-                    var loopTo5 = (short)Information.UBound(list);
-                    for (j = (short)(i + 1); j <= loopTo5; j++)
+                    var loopTo5 = Information.UBound(list);
+                    for (j = (i + 1); j <= loopTo5; j++)
                     {
                         if (key_list[j] > max_value)
                         {
@@ -2076,23 +2073,23 @@ namespace Project1
                 strkey_list = new string[Information.UBound(list) + 1];
                 {
                     var withBlock7 = SRC.PList;
-                    var loopTo6 = (short)Information.UBound(list);
+                    var loopTo6 = Information.UBound(list);
                     for (i = 2; i <= loopTo6; i++)
                     {
-                        Pilot localItem() { var tmp = id_list; object argIndex1 = tmp[i]; var ret = withBlock7.Item(ref argIndex1); return ret; }
+                        Pilot localItem() { var tmp = id_list; object argIndex1 = tmp[i]; var ret = withBlock7.Item(argIndex1); return ret; }
 
                         strkey_list[i] = localItem().KanaName;
                     }
                 }
 
                 // 読み仮名を使って並べ替え
-                var loopTo7 = (short)(Information.UBound(strkey_list) - 1);
+                var loopTo7 = (Information.UBound(strkey_list) - 1);
                 for (i = 2; i <= loopTo7; i++)
                 {
                     max_item = i;
                     max_str = strkey_list[i];
-                    var loopTo8 = (short)Information.UBound(strkey_list);
-                    for (j = (short)(i + 1); j <= loopTo8; j++)
+                    var loopTo8 = Information.UBound(strkey_list);
+                    for (j = (i + 1); j <= loopTo8; j++)
                     {
                         if (Strings.StrComp(strkey_list[j], max_str, (CompareMethod)1) == -1)
                         {
@@ -2120,19 +2117,19 @@ namespace Project1
             // パイロットを選択
             GUI.TopItem = top_item;
             string argoname = "等身大基準";
-            if (Expression.IsOptionDefined(ref argoname))
+            if (Expression.IsOptionDefined(argoname))
             {
                 caption_str = " キャラクター          レベル  ユニット";
                 string arglb_caption = "キャラクター選択";
                 string arglb_mode = "連続表示,コメント";
-                ret = GUI.ListBox(ref arglb_caption, ref list, ref caption_str, ref arglb_mode);
+                ret = GUI.ListBox(arglb_caption, list, caption_str, arglb_mode);
             }
             else
             {
                 caption_str = " パイロット            レベル  ユニット";
                 string arglb_caption1 = "パイロット選択";
                 string arglb_mode1 = "連続表示,コメント";
-                ret = GUI.ListBox(ref arglb_caption1, ref list, ref caption_str, ref arglb_mode1);
+                ret = GUI.ListBox(arglb_caption1, list, caption_str, arglb_mode1);
             }
 
             top_item = GUI.TopItem;
@@ -2152,7 +2149,7 @@ namespace Project1
                         sort_mode_list[2] = "名称";
                         item_flag_backup = new bool[Information.UBound(list) + 1];
                         item_comment_backup = new string[Information.UBound(list) + 1];
-                        var loopTo9 = (short)Information.UBound(list);
+                        var loopTo9 = Information.UBound(list);
                         for (i = 2; i <= loopTo9; i++)
                         {
                             item_flag_backup[i] = GUI.ListItemFlag[i];
@@ -2164,10 +2161,10 @@ namespace Project1
                         string arglb_caption2 = "どれで並べ替えますか？";
                         string arglb_info = "並べ替えの方法";
                         string arglb_mode2 = "連続表示,コメント";
-                        ret = GUI.ListBox(ref arglb_caption2, ref sort_mode_list, ref arglb_info, ref arglb_mode2);
+                        ret = GUI.ListBox(arglb_caption2, sort_mode_list, arglb_info, arglb_mode2);
                         GUI.ListItemFlag = new bool[Information.UBound(list) + 1];
                         GUI.ListItemComment = new string[Information.UBound(list) + 1];
-                        var loopTo10 = (short)Information.UBound(list);
+                        var loopTo10 = Information.UBound(list);
                         for (i = 2; i <= loopTo10; i++)
                         {
                             GUI.ListItemFlag[i] = item_flag_backup[i];
@@ -2188,7 +2185,7 @@ namespace Project1
             // 乗り換えさせるパイロット
             var tmp1 = id_list;
             object argIndex7 = tmp1[ret];
-            p = SRC.PList.Item(ref argIndex7);
+            p = SRC.PList.Item(argIndex7);
 
             // 乗り換え先ユニット一覧作成
             list = new string[2];
@@ -2218,13 +2215,13 @@ namespace Project1
                         goto NextUnit;
                     }
 
-                    if (!p.IsAbleToRide(ref u))
+                    if (!p.IsAbleToRide(u))
                     {
                         goto NextUnit;
                     }
 
                     // サポートキャラでなければ乗り換えられるパイロット数に制限がある
-                    if (!p.IsSupport(ref u))
+                    if (!p.IsSupport(u))
                     {
                         if (withBlock8.Data.PilotNum != 1 & Math.Abs(withBlock8.Data.PilotNum) != 2)
                         {
@@ -2235,17 +2232,17 @@ namespace Project1
                     if (withBlock8.CountPilot() > 0)
                     {
                         object argIndex8 = 1;
-                        string argvname = "Fix(" + withBlock8.Pilot(ref argIndex8).Name + ")";
-                        if (Expression.IsGlobalVariableDefined(ref argvname) & !p.IsSupport(ref u))
+                        string argvname = "Fix(" + withBlock8.Pilot(argIndex8).Name + ")";
+                        if (Expression.IsGlobalVariableDefined(argvname) & !p.IsSupport(u))
                         {
                             // Fixコマンドでパイロットが固定されたユニットはサポートでない
                             // 限り乗り換え不可
                             goto NextUnit;
                         }
 
-                        Array.Resize(ref list, Information.UBound(list) + 1 + 1);
-                        Array.Resize(ref id_list, Information.UBound(list) + 1);
-                        Array.Resize(ref GUI.ListItemComment, Information.UBound(list) + 1);
+                        Array.Resize(list, Information.UBound(list) + 1 + 1);
+                        Array.Resize(id_list, Information.UBound(list) + 1);
+                        Array.Resize(GUI.ListItemComment, Information.UBound(list) + 1);
 
                         // パイロットが足りている？
                         if (withBlock8.CountPilot() < Math.Abs(withBlock8.Data.PilotNum))
@@ -2257,9 +2254,9 @@ namespace Project1
                             list[Information.UBound(list)] = " ";
                         }
 
-                        string localRightPaddedString2() { string argbuf = withBlock8.Nickname0; var ret = GeneralLib.RightPaddedString(ref argbuf, 35); withBlock8.Nickname0 = argbuf; return ret; }
+                        string localRightPaddedString2() { string argbuf = withBlock8.Nickname0; var ret = GeneralLib.RightPaddedString(argbuf, 35); withBlock8.Nickname0 = argbuf; return ret; }
 
-                        string localRightPaddedString3() { string argbuf = withBlock8.MainPilot().get_Nickname(false); var ret = GeneralLib.RightPaddedString(ref argbuf, 21); withBlock8.MainPilot().get_Nickname(false) = argbuf; return ret; }
+                        string localRightPaddedString3() { string argbuf = withBlock8.MainPilot().get_Nickname(false); var ret = GeneralLib.RightPaddedString(argbuf, 21); withBlock8.MainPilot().get_Nickname(false) = argbuf; return ret; }
 
                         list[Information.UBound(list)] = list[Information.UBound(list)] + localRightPaddedString2() + localRightPaddedString3();
                         if (withBlock8.Rank < 10)
@@ -2274,7 +2271,7 @@ namespace Project1
                         if (withBlock8.CountSupport() > 0)
                         {
                             object argIndex9 = 1;
-                            list[Information.UBound(list)] = list[Information.UBound(list)] + " (" + withBlock8.Support(ref argIndex9).get_Nickname(false) + ")";
+                            list[Information.UBound(list)] = list[Information.UBound(list)] + " (" + withBlock8.Support(argIndex9).get_Nickname(false) + ")";
                         }
 
                         // ユニットに装備されているアイテムをコメント欄に列記
@@ -2283,9 +2280,9 @@ namespace Project1
                         {
                             object argIndex10 = j;
                             {
-                                var withBlock9 = withBlock8.Item(ref argIndex10);
+                                var withBlock9 = withBlock8.Item(argIndex10);
                                 string argfname3 = "非表示";
-                                if ((withBlock9.Class_Renamed() != "固定" | !withBlock9.IsFeatureAvailable(ref argfname3)) & withBlock9.Part() != "非表示")
+                                if ((withBlock9.Class_Renamed() != "固定" | !withBlock9.IsFeatureAvailable(argfname3)) & withBlock9.Part() != "非表示")
                                 {
                                     GUI.ListItemComment[Information.UBound(list)] = GUI.ListItemComment[Information.UBound(list)] + withBlock9.Nickname() + " ";
                                 }
@@ -2295,14 +2292,14 @@ namespace Project1
                         // ユニットＩＤを記録しておく
                         id_list[Information.UBound(list)] = withBlock8.ID;
                     }
-                    else if (!p.IsSupport(ref u))
+                    else if (!p.IsSupport(u))
                     {
                         // 誰も乗ってないユニットに乗れるのは通常パイロットのみ
 
-                        Array.Resize(ref list, Information.UBound(list) + 1 + 1);
-                        Array.Resize(ref id_list, Information.UBound(list) + 1);
-                        Array.Resize(ref GUI.ListItemComment, Information.UBound(list) + 1);
-                        string localRightPaddedString4() { string argbuf = withBlock8.Nickname0; var ret = GeneralLib.RightPaddedString(ref argbuf, 35); withBlock8.Nickname0 = argbuf; return ret; }
+                        Array.Resize(list, Information.UBound(list) + 1 + 1);
+                        Array.Resize(id_list, Information.UBound(list) + 1);
+                        Array.Resize(GUI.ListItemComment, Information.UBound(list) + 1);
+                        string localRightPaddedString4() { string argbuf = withBlock8.Nickname0; var ret = GeneralLib.RightPaddedString(argbuf, 35); withBlock8.Nickname0 = argbuf; return ret; }
 
                         list[Information.UBound(list)] = " " + localRightPaddedString4() + Strings.Space(21);
                         if (withBlock8.Rank < 10)
@@ -2320,9 +2317,9 @@ namespace Project1
                         {
                             object argIndex11 = j;
                             {
-                                var withBlock10 = withBlock8.Item(ref argIndex11);
+                                var withBlock10 = withBlock8.Item(argIndex11);
                                 string argfname4 = "非表示";
-                                if ((withBlock10.Class_Renamed() != "固定" | !withBlock10.IsFeatureAvailable(ref argfname4)) & withBlock10.Part() != "非表示")
+                                if ((withBlock10.Class_Renamed() != "固定" | !withBlock10.IsFeatureAvailable(argfname4)) & withBlock10.Part() != "非表示")
                                 {
                                     GUI.ListItemComment[Information.UBound(list)] = GUI.ListItemComment[Information.UBound(list)] + withBlock10.Nickname() + " ";
                                 }
@@ -2334,12 +2331,12 @@ namespace Project1
                     }
                 }
 
-                NextUnit:
+            NextUnit:
                 ;
             }
 
             GUI.ListItemFlag = new bool[Information.UBound(list) + 1];
-            SortAgain2:
+        SortAgain2:
             ;
 
 
@@ -2356,10 +2353,10 @@ namespace Project1
                     {
                         case "ＨＰ":
                             {
-                                var loopTo13 = (short)Information.UBound(list);
+                                var loopTo13 = Information.UBound(list);
                                 for (i = 2; i <= loopTo13; i++)
                                 {
-                                    Unit localItem1() { var tmp = id_list; object argIndex1 = tmp[i]; var ret = withBlock11.Item(ref argIndex1); return ret; }
+                                    Unit localItem1() { var tmp = id_list; object argIndex1 = tmp[i]; var ret = withBlock11.Item(argIndex1); return ret; }
 
                                     key_list[i] = localItem1().MaxHP;
                                 }
@@ -2369,10 +2366,10 @@ namespace Project1
 
                         case "ＥＮ":
                             {
-                                var loopTo14 = (short)Information.UBound(list);
+                                var loopTo14 = Information.UBound(list);
                                 for (i = 2; i <= loopTo14; i++)
                                 {
-                                    Unit localItem2() { var tmp = id_list; object argIndex1 = tmp[i]; var ret = withBlock11.Item(ref argIndex1); return ret; }
+                                    Unit localItem2() { var tmp = id_list; object argIndex1 = tmp[i]; var ret = withBlock11.Item(argIndex1); return ret; }
 
                                     key_list[i] = localItem2().MaxEN;
                                 }
@@ -2382,10 +2379,10 @@ namespace Project1
 
                         case "装甲":
                             {
-                                var loopTo15 = (short)Information.UBound(list);
+                                var loopTo15 = Information.UBound(list);
                                 for (i = 2; i <= loopTo15; i++)
                                 {
-                                    Unit localItem3() { var tmp = id_list; object argIndex1 = tmp[i]; var ret = withBlock11.Item(ref argIndex1); return ret; }
+                                    Unit localItem3() { var tmp = id_list; object argIndex1 = tmp[i]; var ret = withBlock11.Item(argIndex1); return ret; }
 
                                     key_list[i] = localItem3().get_Armor("");
                                 }
@@ -2395,10 +2392,10 @@ namespace Project1
 
                         case "運動性":
                             {
-                                var loopTo16 = (short)Information.UBound(list);
+                                var loopTo16 = Information.UBound(list);
                                 for (i = 2; i <= loopTo16; i++)
                                 {
-                                    Unit localItem4() { var tmp = id_list; object argIndex1 = tmp[i]; var ret = withBlock11.Item(ref argIndex1); return ret; }
+                                    Unit localItem4() { var tmp = id_list; object argIndex1 = tmp[i]; var ret = withBlock11.Item(argIndex1); return ret; }
 
                                     key_list[i] = localItem4().get_Mobility("");
                                 }
@@ -2408,10 +2405,10 @@ namespace Project1
 
                         case "ユニットランク":
                             {
-                                var loopTo17 = (short)Information.UBound(list);
+                                var loopTo17 = Information.UBound(list);
                                 for (i = 2; i <= loopTo17; i++)
                                 {
-                                    Unit localItem5() { var tmp = id_list; object argIndex1 = tmp[i]; var ret = withBlock11.Item(ref argIndex1); return ret; }
+                                    Unit localItem5() { var tmp = id_list; object argIndex1 = tmp[i]; var ret = withBlock11.Item(argIndex1); return ret; }
 
                                     key_list[i] = localItem5().Rank;
                                 }
@@ -2422,13 +2419,13 @@ namespace Project1
                 }
 
                 // キーを使って並べ替え
-                var loopTo18 = (short)(Information.UBound(list) - 1);
+                var loopTo18 = (Information.UBound(list) - 1);
                 for (i = 2; i <= loopTo18; i++)
                 {
                     max_item = i;
                     max_value = key_list[i];
-                    var loopTo19 = (short)Information.UBound(list);
-                    for (j = (short)(i + 1); j <= loopTo19; j++)
+                    var loopTo19 = Information.UBound(list);
+                    for (j = (i + 1); j <= loopTo19; j++)
                     {
                         if (key_list[j] > max_value)
                         {
@@ -2463,23 +2460,23 @@ namespace Project1
                 strkey_list = new string[Information.UBound(list) + 1];
                 {
                     var withBlock12 = SRC.UList;
-                    var loopTo20 = (short)Information.UBound(list);
+                    var loopTo20 = Information.UBound(list);
                     for (i = 2; i <= loopTo20; i++)
                     {
-                        Unit localItem6() { var tmp = id_list; object argIndex1 = tmp[i]; var ret = withBlock12.Item(ref argIndex1); return ret; }
+                        Unit localItem6() { var tmp = id_list; object argIndex1 = tmp[i]; var ret = withBlock12.Item(argIndex1); return ret; }
 
                         strkey_list[i] = localItem6().KanaName;
                     }
                 }
 
                 // 読み仮名を使って並べ替え
-                var loopTo21 = (short)(Information.UBound(strkey_list) - 1);
+                var loopTo21 = (Information.UBound(strkey_list) - 1);
                 for (i = 2; i <= loopTo21; i++)
                 {
                     max_item = i;
                     max_str = strkey_list[i];
-                    var loopTo22 = (short)Information.UBound(strkey_list);
-                    for (j = (short)(i + 1); j <= loopTo22; j++)
+                    var loopTo22 = Information.UBound(strkey_list);
+                    for (j = (i + 1); j <= loopTo22; j++)
                     {
                         if (Strings.StrComp(strkey_list[j], max_str, (CompareMethod)1) == -1)
                         {
@@ -2511,40 +2508,40 @@ namespace Project1
             GUI.TopItem = 1;
             u = p.Unit_Renamed;
             string argoname1 = "等身大基準";
-            if (Expression.IsOptionDefined(ref argoname1))
+            if (Expression.IsOptionDefined(argoname1))
             {
                 string argtname = "ランク";
                 Unit argu = null;
-                caption_str = " ユニット                           キャラクター       " + Expression.Term(ref argtname, u: ref argu);
+                caption_str = " ユニット                           キャラクター       " + Expression.Term(argtname, u: argu);
             }
             else
             {
                 string argtname1 = "ランク";
                 Unit argu1 = null;
-                caption_str = " ユニット                           パイロット         " + Expression.Term(ref argtname1, u: ref argu1);
+                caption_str = " ユニット                           パイロット         " + Expression.Term(argtname1, u: argu1);
             }
 
             if (u is object)
             {
                 string argfname5 = "追加パイロット";
-                if (u.IsFeatureAvailable(ref argfname5))
+                if (u.IsFeatureAvailable(argfname5))
                 {
                     string arglb_caption3 = "乗り換え先選択 ： " + u.MainPilot().get_Nickname(false) + " (" + u.Nickname + ")";
                     string arglb_mode3 = "連続表示,コメント";
-                    ret = GUI.ListBox(ref arglb_caption3, ref list, ref caption_str, ref arglb_mode3);
+                    ret = GUI.ListBox(arglb_caption3, list, caption_str, arglb_mode3);
                 }
                 else
                 {
                     string arglb_caption4 = "乗り換え先選択 ： " + p.get_Nickname(false) + " (" + u.Nickname + ")";
                     string arglb_mode4 = "連続表示,コメント";
-                    ret = GUI.ListBox(ref arglb_caption4, ref list, ref caption_str, ref arglb_mode4);
+                    ret = GUI.ListBox(arglb_caption4, list, caption_str, arglb_mode4);
                 }
             }
             else
             {
                 string arglb_caption5 = "乗り換え先選択 ： " + p.get_Nickname(false);
                 string arglb_mode5 = "連続表示,コメント";
-                ret = GUI.ListBox(ref arglb_caption5, ref list, ref caption_str, ref arglb_mode5);
+                ret = GUI.ListBox(arglb_caption5, list, caption_str, arglb_mode5);
             }
 
             switch (ret)
@@ -2561,60 +2558,60 @@ namespace Project1
                         sort_mode_type = new string[7];
                         sort_mode_list = new string[7];
                         string argoname2 = "等身大基準";
-                        if (Expression.IsOptionDefined(ref argoname2))
+                        if (Expression.IsOptionDefined(argoname2))
                         {
                             sort_mode_type[1] = "名称";
                             sort_mode_list[1] = "名称";
                             sort_mode_type[2] = "ＨＰ";
                             string argtname2 = "ＨＰ";
                             Unit argu2 = null;
-                            sort_mode_list[2] = Expression.Term(ref argtname2, u: ref argu2);
+                            sort_mode_list[2] = Expression.Term(argtname2, u: argu2);
                             sort_mode_type[3] = "ＥＮ";
                             string argtname3 = "ＥＮ";
                             Unit argu3 = null;
-                            sort_mode_list[3] = Expression.Term(ref argtname3, u: ref argu3);
+                            sort_mode_list[3] = Expression.Term(argtname3, u: argu3);
                             sort_mode_type[4] = "装甲";
                             string argtname4 = "装甲";
                             Unit argu4 = null;
-                            sort_mode_list[4] = Expression.Term(ref argtname4, u: ref argu4);
+                            sort_mode_list[4] = Expression.Term(argtname4, u: argu4);
                             sort_mode_type[5] = "運動性";
                             string argtname5 = "運動性";
                             Unit argu5 = null;
-                            sort_mode_list[5] = Expression.Term(ref argtname5, u: ref argu5);
+                            sort_mode_list[5] = Expression.Term(argtname5, u: argu5);
                             sort_mode_type[6] = "ユニットランク";
                             string argtname6 = "ランク";
                             Unit argu6 = null;
-                            sort_mode_list[6] = Expression.Term(ref argtname6, u: ref argu6);
+                            sort_mode_list[6] = Expression.Term(argtname6, u: argu6);
                         }
                         else
                         {
                             sort_mode_type[1] = "ＨＰ";
                             string argtname7 = "ＨＰ";
                             Unit argu7 = null;
-                            sort_mode_list[1] = Expression.Term(ref argtname7, u: ref argu7);
+                            sort_mode_list[1] = Expression.Term(argtname7, u: argu7);
                             sort_mode_type[2] = "ＥＮ";
                             string argtname8 = "ＥＮ";
                             Unit argu8 = null;
-                            sort_mode_list[2] = Expression.Term(ref argtname8, u: ref argu8);
+                            sort_mode_list[2] = Expression.Term(argtname8, u: argu8);
                             sort_mode_type[3] = "装甲";
                             string argtname9 = "装甲";
                             Unit argu9 = null;
-                            sort_mode_list[3] = Expression.Term(ref argtname9, u: ref argu9);
+                            sort_mode_list[3] = Expression.Term(argtname9, u: argu9);
                             sort_mode_type[4] = "運動性";
                             string argtname10 = "運動性";
                             Unit argu10 = null;
-                            sort_mode_list[4] = Expression.Term(ref argtname10, u: ref argu10);
+                            sort_mode_list[4] = Expression.Term(argtname10, u: argu10);
                             sort_mode_type[5] = "ユニットランク";
                             string argtname11 = "ランク";
                             Unit argu11 = null;
-                            sort_mode_list[5] = Expression.Term(ref argtname11, u: ref argu11);
+                            sort_mode_list[5] = Expression.Term(argtname11, u: argu11);
                             sort_mode_type[6] = "ユニット名称";
                             sort_mode_list[6] = "ユニット名称";
                         }
 
                         item_flag_backup = new bool[Information.UBound(list) + 1];
                         item_comment_backup = new string[Information.UBound(list) + 1];
-                        var loopTo23 = (short)Information.UBound(list);
+                        var loopTo23 = Information.UBound(list);
                         for (i = 2; i <= loopTo23; i++)
                         {
                             item_flag_backup[i] = GUI.ListItemFlag[i];
@@ -2627,10 +2624,10 @@ namespace Project1
                         string arglb_caption6 = "どれで並べ替えますか？";
                         string arglb_info1 = "並べ替えの方法";
                         string arglb_mode6 = "連続表示,コメント";
-                        ret = GUI.ListBox(ref arglb_caption6, ref sort_mode_list, ref arglb_info1, ref arglb_mode6);
+                        ret = GUI.ListBox(arglb_caption6, sort_mode_list, arglb_info1, arglb_mode6);
                         GUI.ListItemFlag = new bool[Information.UBound(list) + 1];
                         GUI.ListItemComment = new string[Information.UBound(list) + 1];
-                        var loopTo24 = (short)Information.UBound(list);
+                        var loopTo24 = Information.UBound(list);
                         for (i = 2; i <= loopTo24; i++)
                         {
                             GUI.ListItemFlag[i] = item_flag_backup[i];
@@ -2656,7 +2653,7 @@ namespace Project1
 
             var tmp2 = id_list;
             object argIndex12 = tmp2[ret];
-            u = SRC.UList.Item(ref argIndex12);
+            u = SRC.UList.Item(argIndex12);
 
             // 元のユニットから降ろす
             p.GetOff();
@@ -2664,13 +2661,13 @@ namespace Project1
             // 乗り換え
             {
                 var withBlock13 = u;
-                if (!p.IsSupport(ref u))
+                if (!p.IsSupport(u))
                 {
                     // 通常のパイロット
                     if (withBlock13.CountPilot() == withBlock13.Data.PilotNum)
                     {
                         object argIndex13 = 1;
-                        withBlock13.Pilot(ref argIndex13).GetOff();
+                        withBlock13.Pilot(argIndex13).GetOff();
                     }
                 }
                 else
@@ -2680,23 +2677,23 @@ namespace Project1
                     for (i = 1; i <= loopTo25; i++)
                     {
                         object argIndex14 = 1;
-                        withBlock13.Support(ref argIndex14).GetOff();
+                        withBlock13.Support(argIndex14).GetOff();
                     }
                 }
             }
 
-            Unit localItem7() { var tmp = id_list; object argIndex1 = tmp[(int)ret]; var ret = SRC.UList.Item(ref argIndex1); return ret; }
+            Unit localItem7() { var tmp = id_list; object argIndex1 = tmp[ret]; var ret = SRC.UList.Item(argIndex1); return ret; }
 
             var argu12 = localItem7();
-            p.Ride(ref argu12);
+            p.Ride(argu12);
             goto Beginning;
         }
 
         // アイテム交換コマンド
-        public static void ExchangeItemCommand([Optional, DefaultParameterValue(null)] ref Unit selected_unit, [Optional, DefaultParameterValue("")] ref string selected_part)
+        public void ExchangeItemCommand([Optional, DefaultParameterValue(null)] Unit selected_unit, [Optional, DefaultParameterValue("")] string selected_part)
         {
-            short j, i, k;
-            short inum, inum2;
+            int j, i, k;
+            int inum, inum2;
             string[] list;
             string[] id_list;
             string iid;
@@ -2707,7 +2704,7 @@ namespace Project1
             string[] item_comment_backup;
             int[] key_list;
             string[] strkey_list;
-            short max_item;
+            int max_item;
             int max_value;
             string max_str;
             string caption_str;
@@ -2715,22 +2712,22 @@ namespace Project1
             Item it;
             string iname;
             string buf;
-            short ret;
+            int ret;
             string[] part_list;
             string[] part_item;
-            short arm_point = default, shoulder_point = default;
+            int arm_point = default, shoulder_point = default;
             string ipart;
-            var empty_slot = default(short);
+            var empty_slot = default;
             var is_right_hand_available = default(bool);
             var is_left_hand_available = default(bool);
             string[] item_list;
-            short top_item1, top_item2;
+            int top_item1, top_item2;
             top_item1 = 1;
             top_item2 = 1;
 
             // デフォルトのソート方法
             string argoname = "等身大基準";
-            if (Expression.IsOptionDefined(ref argoname))
+            if (Expression.IsOptionDefined(argoname))
             {
                 sort_mode = "レベル";
             }
@@ -2750,14 +2747,14 @@ namespace Project1
                 {
                     if (!ReferenceEquals(u, Status.DisplayedUnit))
                     {
-                        Status.DisplayUnitStatus(ref u);
+                        Status.DisplayUnitStatus(u);
                     }
                 }
 
                 goto MakeEquipedItemList;
             }
 
-            Beginning:
+        Beginning:
             ;
 
 
@@ -2776,9 +2773,9 @@ namespace Project1
                         goto NextUnit;
                     }
 
-                    Array.Resize(ref list, Information.UBound(list) + 1 + 1);
-                    Array.Resize(ref id_list, Information.UBound(list) + 1);
-                    Array.Resize(ref GUI.ListItemComment, Information.UBound(list) + 1);
+                    Array.Resize(list, Information.UBound(list) + 1 + 1);
+                    Array.Resize(id_list, Information.UBound(list) + 1);
+                    Array.Resize(GUI.ListItemComment, Information.UBound(list) + 1);
 
                     // 装備しているアイテムの数を数える
                     inum = 0;
@@ -2788,18 +2785,18 @@ namespace Project1
                     {
                         object argIndex1 = i;
                         {
-                            var withBlock1 = withBlock.Item(ref argIndex1);
+                            var withBlock1 = withBlock.Item(argIndex1);
                             string argfname = "非表示";
-                            if ((withBlock1.Class_Renamed() != "固定" | !withBlock1.IsFeatureAvailable(ref argfname)) & withBlock1.Part() != "非表示")
+                            if ((withBlock1.Class_Renamed() != "固定" | !withBlock1.IsFeatureAvailable(argfname)) & withBlock1.Part() != "非表示")
                             {
                                 GUI.ListItemComment[Information.UBound(list)] = GUI.ListItemComment[Information.UBound(list)] + withBlock1.Nickname() + " ";
                                 if (withBlock1.Part() == "強化パーツ" | withBlock1.Part() == "アイテム")
                                 {
-                                    inum = (short)(inum + withBlock1.Size());
+                                    inum = (inum + withBlock1.Size());
                                 }
                                 else
                                 {
-                                    inum2 = (short)(inum2 + withBlock1.Size());
+                                    inum2 = (inum2 + withBlock1.Size());
                                 }
                             }
                         }
@@ -2807,16 +2804,16 @@ namespace Project1
 
                     // リストを作成
                     string argoname1 = "等身大基準";
-                    if (Expression.IsOptionDefined(ref argoname1))
+                    if (Expression.IsOptionDefined(argoname1))
                     {
                         string argbuf = withBlock.Nickname0;
-                        list[Information.UBound(list)] = GeneralLib.RightPaddedString(ref argbuf, 39);
+                        list[Information.UBound(list)] = GeneralLib.RightPaddedString(argbuf, 39);
                         withBlock.Nickname0 = argbuf;
                     }
                     else
                     {
                         string argbuf1 = withBlock.Nickname0;
-                        list[Information.UBound(list)] = GeneralLib.RightPaddedString(ref argbuf1, 31);
+                        list[Information.UBound(list)] = GeneralLib.RightPaddedString(argbuf1, 31);
                         withBlock.Nickname0 = argbuf1;
                     }
 
@@ -2840,27 +2837,27 @@ namespace Project1
                     }
 
                     string argoname2 = "等身大基準";
-                    if (Expression.IsOptionDefined(ref argoname2))
+                    if (Expression.IsOptionDefined(argoname2))
                     {
                         if (withBlock.CountPilot() > 0)
                         {
-                            string localLeftPaddedString() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.MainPilot().Level); var ret = GeneralLib.LeftPaddedString(ref argbuf, 3); return ret; }
+                            string localLeftPaddedString() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.MainPilot().Level); var ret = GeneralLib.LeftPaddedString(argbuf, 3); return ret; }
 
                             list[Information.UBound(list)] = list[Information.UBound(list)] + localLeftPaddedString();
                         }
                     }
 
-                    string localLeftPaddedString1() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.MaxHP); var ret = GeneralLib.LeftPaddedString(ref argbuf, 6); return ret; }
+                    string localLeftPaddedString1() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.MaxHP); var ret = GeneralLib.LeftPaddedString(argbuf, 6); return ret; }
 
-                    string localLeftPaddedString2() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.MaxEN); var ret = GeneralLib.LeftPaddedString(ref argbuf, 4); return ret; }
+                    string localLeftPaddedString2() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.MaxEN); var ret = GeneralLib.LeftPaddedString(argbuf, 4); return ret; }
 
-                    string localLeftPaddedString3() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.get_Armor("")); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
+                    string localLeftPaddedString3() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.get_Armor("")); var ret = GeneralLib.LeftPaddedString(argbuf, 5); return ret; }
 
-                    string localLeftPaddedString4() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.get_Mobility("")); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
+                    string localLeftPaddedString4() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.get_Mobility("")); var ret = GeneralLib.LeftPaddedString(argbuf, 5); return ret; }
 
                     list[Information.UBound(list)] = list[Information.UBound(list)] + localLeftPaddedString1() + localLeftPaddedString2() + localLeftPaddedString3() + localLeftPaddedString4();
                     string argoname3 = "等身大基準";
-                    if (!Expression.IsOptionDefined(ref argoname3))
+                    if (!Expression.IsOptionDefined(argoname3))
                     {
                         if (withBlock.CountPilot() > 0)
                         {
@@ -2872,12 +2869,12 @@ namespace Project1
                     id_list[Information.UBound(list)] = withBlock.ID;
                 }
 
-                NextUnit:
+            NextUnit:
                 ;
             }
 
             GUI.ListItemFlag = new bool[Information.UBound(list) + 1];
-            SortAgain:
+        SortAgain:
             ;
 
 
@@ -2894,10 +2891,10 @@ namespace Project1
                     {
                         case "ＨＰ":
                             {
-                                var loopTo1 = (short)Information.UBound(list);
+                                var loopTo1 = Information.UBound(list);
                                 for (i = 2; i <= loopTo1; i++)
                                 {
-                                    Unit localItem() { var tmp = id_list; object argIndex1 = tmp[i]; var ret = withBlock2.Item(ref argIndex1); return ret; }
+                                    Unit localItem() { var tmp = id_list; object argIndex1 = tmp[i]; var ret = withBlock2.Item(argIndex1); return ret; }
 
                                     key_list[i] = localItem().MaxHP;
                                 }
@@ -2907,10 +2904,10 @@ namespace Project1
 
                         case "ＥＮ":
                             {
-                                var loopTo2 = (short)Information.UBound(list);
+                                var loopTo2 = Information.UBound(list);
                                 for (i = 2; i <= loopTo2; i++)
                                 {
-                                    Unit localItem1() { var tmp = id_list; object argIndex1 = tmp[i]; var ret = withBlock2.Item(ref argIndex1); return ret; }
+                                    Unit localItem1() { var tmp = id_list; object argIndex1 = tmp[i]; var ret = withBlock2.Item(argIndex1); return ret; }
 
                                     key_list[i] = localItem1().MaxEN;
                                 }
@@ -2920,10 +2917,10 @@ namespace Project1
 
                         case "装甲":
                             {
-                                var loopTo3 = (short)Information.UBound(list);
+                                var loopTo3 = Information.UBound(list);
                                 for (i = 2; i <= loopTo3; i++)
                                 {
-                                    Unit localItem2() { var tmp = id_list; object argIndex1 = tmp[i]; var ret = withBlock2.Item(ref argIndex1); return ret; }
+                                    Unit localItem2() { var tmp = id_list; object argIndex1 = tmp[i]; var ret = withBlock2.Item(argIndex1); return ret; }
 
                                     key_list[i] = localItem2().get_Armor("");
                                 }
@@ -2933,10 +2930,10 @@ namespace Project1
 
                         case "運動性":
                             {
-                                var loopTo4 = (short)Information.UBound(list);
+                                var loopTo4 = Information.UBound(list);
                                 for (i = 2; i <= loopTo4; i++)
                                 {
-                                    Unit localItem3() { var tmp = id_list; object argIndex1 = tmp[i]; var ret = withBlock2.Item(ref argIndex1); return ret; }
+                                    Unit localItem3() { var tmp = id_list; object argIndex1 = tmp[i]; var ret = withBlock2.Item(argIndex1); return ret; }
 
                                     key_list[i] = localItem3().get_Mobility("");
                                 }
@@ -2946,10 +2943,10 @@ namespace Project1
 
                         case "ユニットランク":
                             {
-                                var loopTo5 = (short)Information.UBound(list);
+                                var loopTo5 = Information.UBound(list);
                                 for (i = 2; i <= loopTo5; i++)
                                 {
-                                    Unit localItem4() { var tmp = id_list; object argIndex1 = tmp[i]; var ret = withBlock2.Item(ref argIndex1); return ret; }
+                                    Unit localItem4() { var tmp = id_list; object argIndex1 = tmp[i]; var ret = withBlock2.Item(argIndex1); return ret; }
 
                                     key_list[i] = localItem4().Rank;
                                 }
@@ -2959,13 +2956,13 @@ namespace Project1
 
                         case "レベル":
                             {
-                                var loopTo6 = (short)Information.UBound(list);
+                                var loopTo6 = Information.UBound(list);
                                 for (i = 2; i <= loopTo6; i++)
                                 {
                                     var tmp = id_list;
                                     object argIndex2 = tmp[i];
                                     {
-                                        var withBlock3 = withBlock2.Item(ref argIndex2);
+                                        var withBlock3 = withBlock2.Item(argIndex2);
                                         if (withBlock3.CountPilot() > 0)
                                         {
                                             {
@@ -2982,13 +2979,13 @@ namespace Project1
                 }
 
                 // キーを使って並べ替え
-                var loopTo7 = (short)(Information.UBound(list) - 1);
+                var loopTo7 = (Information.UBound(list) - 1);
                 for (i = 2; i <= loopTo7; i++)
                 {
                     max_item = i;
                     max_value = key_list[i];
-                    var loopTo8 = (short)Information.UBound(list);
-                    for (j = (short)(i + 1); j <= loopTo8; j++)
+                    var loopTo8 = Information.UBound(list);
+                    for (j = (i + 1); j <= loopTo8; j++)
                     {
                         if (key_list[j] > max_value)
                         {
@@ -3025,10 +3022,10 @@ namespace Project1
                         case "名称":
                         case "ユニット名称":
                             {
-                                var loopTo9 = (short)Information.UBound(list);
+                                var loopTo9 = Information.UBound(list);
                                 for (i = 2; i <= loopTo9; i++)
                                 {
-                                    Unit localItem5() { var tmp = id_list; object argIndex1 = tmp[i]; var ret = withBlock5.Item(ref argIndex1); return ret; }
+                                    Unit localItem5() { var tmp = id_list; object argIndex1 = tmp[i]; var ret = withBlock5.Item(argIndex1); return ret; }
 
                                     strkey_list[i] = localItem5().KanaName;
                                 }
@@ -3038,13 +3035,13 @@ namespace Project1
 
                         case "パイロット名称":
                             {
-                                var loopTo10 = (short)Information.UBound(list);
+                                var loopTo10 = Information.UBound(list);
                                 for (i = 2; i <= loopTo10; i++)
                                 {
                                     var tmp1 = id_list;
                                     object argIndex3 = tmp1[i];
                                     {
-                                        var withBlock6 = withBlock5.Item(ref argIndex3);
+                                        var withBlock6 = withBlock5.Item(argIndex3);
                                         if (withBlock6.CountPilot() > 0)
                                         {
                                             strkey_list[i] = withBlock6.MainPilot().KanaName;
@@ -3058,13 +3055,13 @@ namespace Project1
                 }
 
                 // キーを使って並べ替え
-                var loopTo11 = (short)(Information.UBound(strkey_list) - 1);
+                var loopTo11 = (Information.UBound(strkey_list) - 1);
                 for (i = 2; i <= loopTo11; i++)
                 {
                     max_item = i;
                     max_str = strkey_list[i];
-                    var loopTo12 = (short)Information.UBound(strkey_list);
-                    for (j = (short)(i + 1); j <= loopTo12; j++)
+                    var loopTo12 = Information.UBound(strkey_list);
+                    for (j = (i + 1); j <= loopTo12; j++)
                     {
                         if (Strings.StrComp(strkey_list[j], max_str, (CompareMethod)1) == -1)
                         {
@@ -3092,7 +3089,7 @@ namespace Project1
             // アイテムを交換するユニットを選択
             GUI.TopItem = top_item1;
             string argoname4 = "等身大基準";
-            if (Expression.IsOptionDefined(ref argoname4))
+            if (Expression.IsOptionDefined(argoname4))
             {
                 string arglb_caption = "アイテムを交換するユニットを選択";
                 string argtname = "RK";
@@ -3105,9 +3102,9 @@ namespace Project1
                 Unit argu3 = null;
                 string argtname4 = "運動";
                 Unit argu4 = null;
-                string arglb_info = "ユニット                               アイテム " + Expression.Term(ref argtname, ref argu, 2) + " Lv  " + Expression.Term(ref argtname1, ref argu1, 4) + " " + Expression.Term(ref argtname2, ref argu2, 4) + " " + Expression.Term(ref argtname3, ref argu3, 4) + " " + Expression.Term(ref argtname4, u: ref argu4);
+                string arglb_info = "ユニット                               アイテム " + Expression.Term(argtname, argu, 2) + " Lv  " + Expression.Term(argtname1, argu1, 4) + " " + Expression.Term(argtname2, argu2, 4) + " " + Expression.Term(argtname3, argu3, 4) + " " + Expression.Term(argtname4, u: argu4);
                 string arglb_mode = "連続表示,コメント";
-                ret = GUI.ListBox(ref arglb_caption, ref list, ref arglb_info, ref arglb_mode);
+                ret = GUI.ListBox(arglb_caption, list, arglb_info, arglb_mode);
             }
             else
             {
@@ -3122,9 +3119,9 @@ namespace Project1
                 Unit argu8 = null;
                 string argtname9 = "運動";
                 Unit argu9 = null;
-                string arglb_info1 = "ユニット                       アイテム " + Expression.Term(ref argtname5, ref argu5, 2) + "  " + Expression.Term(ref argtname6, ref argu6, 4) + " " + Expression.Term(ref argtname7, ref argu7, 4) + " " + Expression.Term(ref argtname8, ref argu8, 4) + " " + Expression.Term(ref argtname9, ref argu9, 4) + " パイロット";
+                string arglb_info1 = "ユニット                       アイテム " + Expression.Term(argtname5, argu5, 2) + "  " + Expression.Term(argtname6, argu6, 4) + " " + Expression.Term(argtname7, argu7, 4) + " " + Expression.Term(argtname8, argu8, 4) + " " + Expression.Term(argtname9, argu9, 4) + " パイロット";
                 string arglb_mode1 = "連続表示,コメント";
-                ret = GUI.ListBox(ref arglb_caption1, ref list, ref arglb_info1, ref arglb_mode1);
+                ret = GUI.ListBox(arglb_caption1, list, arglb_info1, arglb_mode1);
             }
 
             top_item1 = GUI.TopItem;
@@ -3140,7 +3137,7 @@ namespace Project1
                     {
                         // ソート方法を選択
                         string argoname5 = "等身大基準";
-                        if (Expression.IsOptionDefined(ref argoname5))
+                        if (Expression.IsOptionDefined(argoname5))
                         {
                             sort_mode_type[1] = "名称";
                             sort_mode_list[1] = "名称";
@@ -3149,46 +3146,46 @@ namespace Project1
                             sort_mode_type[3] = "ＨＰ";
                             string argtname10 = "ＨＰ";
                             Unit argu10 = null;
-                            sort_mode_list[3] = Expression.Term(ref argtname10, u: ref argu10);
+                            sort_mode_list[3] = Expression.Term(argtname10, u: argu10);
                             sort_mode_type[4] = "ＥＮ";
                             string argtname11 = "ＥＮ";
                             Unit argu11 = null;
-                            sort_mode_list[4] = Expression.Term(ref argtname11, u: ref argu11);
+                            sort_mode_list[4] = Expression.Term(argtname11, u: argu11);
                             sort_mode_type[5] = "装甲";
                             string argtname12 = "装甲";
                             Unit argu12 = null;
-                            sort_mode_list[5] = Expression.Term(ref argtname12, u: ref argu12);
+                            sort_mode_list[5] = Expression.Term(argtname12, u: argu12);
                             sort_mode_type[6] = "運動性";
                             string argtname13 = "運動性";
                             Unit argu13 = null;
-                            sort_mode_list[6] = Expression.Term(ref argtname13, u: ref argu13);
+                            sort_mode_list[6] = Expression.Term(argtname13, u: argu13);
                             sort_mode_type[7] = "ユニットランク";
                             string argtname14 = "ランク";
                             Unit argu14 = null;
-                            sort_mode_list[7] = Expression.Term(ref argtname14, u: ref argu14);
+                            sort_mode_list[7] = Expression.Term(argtname14, u: argu14);
                         }
                         else
                         {
                             sort_mode_type[1] = "ＨＰ";
                             string argtname15 = "ＨＰ";
                             Unit argu15 = null;
-                            sort_mode_list[1] = Expression.Term(ref argtname15, u: ref argu15);
+                            sort_mode_list[1] = Expression.Term(argtname15, u: argu15);
                             sort_mode_type[2] = "ＥＮ";
                             string argtname16 = "ＥＮ";
                             Unit argu16 = null;
-                            sort_mode_list[2] = Expression.Term(ref argtname16, u: ref argu16);
+                            sort_mode_list[2] = Expression.Term(argtname16, u: argu16);
                             sort_mode_type[3] = "装甲";
                             string argtname17 = "装甲";
                             Unit argu17 = null;
-                            sort_mode_list[3] = Expression.Term(ref argtname17, u: ref argu17);
+                            sort_mode_list[3] = Expression.Term(argtname17, u: argu17);
                             sort_mode_type[4] = "運動性";
                             string argtname18 = "運動性";
                             Unit argu18 = null;
-                            sort_mode_list[4] = Expression.Term(ref argtname18, u: ref argu18);
+                            sort_mode_list[4] = Expression.Term(argtname18, u: argu18);
                             sort_mode_type[5] = "ユニットランク";
                             string argtname19 = "ランク";
                             Unit argu19 = null;
-                            sort_mode_list[5] = Expression.Term(ref argtname19, u: ref argu19);
+                            sort_mode_list[5] = Expression.Term(argtname19, u: argu19);
                             sort_mode_type[6] = "ユニット名称";
                             sort_mode_list[6] = "ユニット名称";
                             sort_mode_type[7] = "パイロット名称";
@@ -3197,7 +3194,7 @@ namespace Project1
 
                         item_flag_backup = new bool[Information.UBound(list) + 1];
                         item_comment_backup = new string[Information.UBound(list) + 1];
-                        var loopTo13 = (short)Information.UBound(list);
+                        var loopTo13 = Information.UBound(list);
                         for (i = 2; i <= loopTo13; i++)
                         {
                             item_flag_backup[i] = GUI.ListItemFlag[i];
@@ -3210,10 +3207,10 @@ namespace Project1
                         string arglb_caption2 = "どれで並べ替えますか？";
                         string arglb_info2 = "並べ替えの方法";
                         string arglb_mode2 = "連続表示,コメント";
-                        ret = GUI.ListBox(ref arglb_caption2, ref sort_mode_list, ref arglb_info2, ref arglb_mode2);
+                        ret = GUI.ListBox(arglb_caption2, sort_mode_list, arglb_info2, arglb_mode2);
                         GUI.ListItemFlag = new bool[Information.UBound(list) + 1];
                         GUI.ListItemComment = new string[Information.UBound(list) + 1];
-                        var loopTo14 = (short)Information.UBound(list);
+                        var loopTo14 = Information.UBound(list);
                         for (i = 2; i <= loopTo14; i++)
                         {
                             GUI.ListItemFlag[i] = item_flag_backup[i];
@@ -3234,8 +3231,8 @@ namespace Project1
             // ユニットを選択
             var tmp2 = id_list;
             object argIndex4 = tmp2[ret];
-            u = SRC.UList.Item(ref argIndex4);
-            MakeEquipedItemList:
+            u = SRC.UList.Item(argIndex4);
+        MakeEquipedItemList:
             ;
 
 
@@ -3248,35 +3245,35 @@ namespace Project1
                     // アイテムの装備個所一覧を作成
                     part_list = new string[1];
                     string argfname1 = "装備個所";
-                    if (withBlock7.IsFeatureAvailable(ref argfname1))
+                    if (withBlock7.IsFeatureAvailable(argfname1))
                     {
                         object argIndex5 = "装備個所";
-                        buf = withBlock7.FeatureData(ref argIndex5);
+                        buf = withBlock7.FeatureData(argIndex5);
                         if (Strings.InStr(buf, "腕") > 0)
                         {
-                            arm_point = (short)(Information.UBound(part_list) + 1);
-                            Array.Resize(ref part_list, Information.UBound(part_list) + 2 + 1);
+                            arm_point = (Information.UBound(part_list) + 1);
+                            Array.Resize(part_list, Information.UBound(part_list) + 2 + 1);
                             part_list[1] = "右手";
                             part_list[2] = "左手";
                         }
 
                         if (Strings.InStr(buf, "肩") > 0)
                         {
-                            shoulder_point = (short)(Information.UBound(part_list) + 1);
-                            Array.Resize(ref part_list, Information.UBound(part_list) + 2 + 1);
+                            shoulder_point = (Information.UBound(part_list) + 1);
+                            Array.Resize(part_list, Information.UBound(part_list) + 2 + 1);
                             part_list[Information.UBound(part_list) - 1] = "右肩";
                             part_list[Information.UBound(part_list)] = "左肩";
                         }
 
                         if (Strings.InStr(buf, "体") > 0)
                         {
-                            Array.Resize(ref part_list, Information.UBound(part_list) + 1 + 1);
+                            Array.Resize(part_list, Information.UBound(part_list) + 1 + 1);
                             part_list[Information.UBound(part_list)] = "体";
                         }
 
                         if (Strings.InStr(buf, "頭") > 0)
                         {
-                            Array.Resize(ref part_list, Information.UBound(part_list) + 1 + 1);
+                            Array.Resize(part_list, Information.UBound(part_list) + 1 + 1);
                             part_list[Information.UBound(part_list)] = "頭";
                         }
                     }
@@ -3285,10 +3282,10 @@ namespace Project1
                     for (i = 1; i <= loopTo15; i++)
                     {
                         object argIndex7 = i;
-                        if (withBlock7.Feature(ref argIndex7) == "ハードポイント")
+                        if (withBlock7.Feature(argIndex7) == "ハードポイント")
                         {
                             object argIndex6 = i;
-                            ipart = withBlock7.FeatureData(ref argIndex6);
+                            ipart = withBlock7.FeatureData(argIndex6);
                             switch (ipart ?? "")
                             {
                                 // 表示しない
@@ -3301,7 +3298,7 @@ namespace Project1
 
                                 default:
                                     {
-                                        var loopTo16 = (short)Information.UBound(part_list);
+                                        var loopTo16 = Information.UBound(part_list);
                                         for (j = 1; j <= loopTo16; j++)
                                         {
                                             if ((part_list[j] ?? "") == (ipart ?? ""))
@@ -3312,9 +3309,9 @@ namespace Project1
 
                                         if (j > Information.UBound(part_list))
                                         {
-                                            Array.Resize(ref part_list, Information.UBound(part_list) + withBlock7.ItemSlotSize(ref ipart) + 1);
-                                            var loopTo17 = (short)Information.UBound(part_list);
-                                            for (j = (short)(Information.UBound(part_list) - withBlock7.ItemSlotSize(ref ipart) + 1); j <= loopTo17; j++)
+                                            Array.Resize(part_list, Information.UBound(part_list) + withBlock7.ItemSlotSize(ipart) + 1);
+                                            var loopTo17 = Information.UBound(part_list);
+                                            for (j = (Information.UBound(part_list) - withBlock7.ItemSlotSize(ipart) + 1); j <= loopTo17; j++)
                                                 part_list[j] = ipart;
                                         }
 
@@ -3324,17 +3321,17 @@ namespace Project1
                         }
                     }
 
-                    Array.Resize(ref part_list, Information.UBound(part_list) + withBlock7.MaxItemNum() + 1);
+                    Array.Resize(part_list, Information.UBound(part_list) + withBlock7.MaxItemNum() + 1);
                     if (withBlock7.IsHero())
                     {
-                        var loopTo18 = (short)Information.UBound(part_list);
-                        for (i = (short)(Information.UBound(part_list) - withBlock7.MaxItemNum() + 1); i <= loopTo18; i++)
+                        var loopTo18 = Information.UBound(part_list);
+                        for (i = (Information.UBound(part_list) - withBlock7.MaxItemNum() + 1); i <= loopTo18; i++)
                             part_list[i] = "アイテム";
                     }
                     else
                     {
-                        var loopTo19 = (short)Information.UBound(part_list);
-                        for (i = (short)(Information.UBound(part_list) - withBlock7.MaxItemNum() + 1); i <= loopTo19; i++)
+                        var loopTo19 = Information.UBound(part_list);
+                        for (i = (Information.UBound(part_list) - withBlock7.MaxItemNum() + 1); i <= loopTo19; i++)
                             part_list[i] = "強化パーツ";
                     }
 
@@ -3342,30 +3339,30 @@ namespace Project1
                     if (!string.IsNullOrEmpty(selected_part))
                     {
                         tmp_part_list = new string[Information.UBound(part_list) + 1];
-                        var loopTo20 = (short)Information.UBound(part_list);
+                        var loopTo20 = Information.UBound(part_list);
                         for (i = 1; i <= loopTo20; i++)
                             tmp_part_list[i] = part_list[i];
                         part_list = new string[1];
                         arm_point = 0;
                         shoulder_point = 0;
-                        var loopTo21 = (short)Information.UBound(tmp_part_list);
+                        var loopTo21 = Information.UBound(tmp_part_list);
                         for (i = 1; i <= loopTo21; i++)
                         {
                             if ((tmp_part_list[i] ?? "") == (selected_part ?? "") | (selected_part == "片手" | selected_part == "両手" | selected_part == "盾") & (tmp_part_list[i] == "右手" | tmp_part_list[i] == "左手") | (selected_part == "肩" | selected_part == "両肩") & (tmp_part_list[i] == "右肩" | tmp_part_list[i] == "左肩") | (selected_part == "アイテム" | selected_part == "強化パーツ") & (tmp_part_list[i] == "アイテム" | tmp_part_list[i] == "強化パーツ"))
                             {
-                                Array.Resize(ref part_list, Information.UBound(part_list) + 1 + 1);
+                                Array.Resize(part_list, Information.UBound(part_list) + 1 + 1);
                                 part_list[Information.UBound(part_list)] = tmp_part_list[i];
                                 switch (part_list[Information.UBound(part_list)] ?? "")
                                 {
                                     case "右手":
                                         {
-                                            arm_point = (short)Information.UBound(part_list);
+                                            arm_point = Information.UBound(part_list);
                                             break;
                                         }
 
                                     case "右肩":
                                         {
-                                            shoulder_point = (short)Information.UBound(part_list);
+                                            shoulder_point = Information.UBound(part_list);
                                             break;
                                         }
                                 }
@@ -3381,9 +3378,9 @@ namespace Project1
                     {
                         object argIndex8 = i;
                         {
-                            var withBlock8 = withBlock7.Item(ref argIndex8);
+                            var withBlock8 = withBlock7.Item(argIndex8);
                             string argfname2 = "非表示";
-                            if (withBlock8.Class_Renamed() == "固定" & withBlock8.IsFeatureAvailable(ref argfname2))
+                            if (withBlock8.Class_Renamed() == "固定" & withBlock8.IsFeatureAvailable(argfname2))
                             {
                                 goto NextEquipedItem;
                             }
@@ -3471,14 +3468,14 @@ namespace Project1
                                     {
                                         if (withBlock8.Part() == "強化パーツ" | withBlock8.Part() == "アイテム")
                                         {
-                                            var loopTo23 = (short)Information.UBound(part_list);
+                                            var loopTo23 = Information.UBound(part_list);
                                             for (j = 1; j <= loopTo23; j++)
                                             {
                                                 if ((part_list[j] == "強化パーツ" | part_list[j] == "アイテム") & string.IsNullOrEmpty(part_item[j]))
                                                 {
                                                     part_item[j] = withBlock8.ID;
-                                                    var loopTo24 = (short)(j + withBlock8.Size() - 1);
-                                                    for (k = (short)(j + 1); k <= loopTo24; k++)
+                                                    var loopTo24 = (j + withBlock8.Size() - 1);
+                                                    for (k = (j + 1); k <= loopTo24; k++)
                                                     {
                                                         if (k > Information.UBound(part_item))
                                                         {
@@ -3494,14 +3491,14 @@ namespace Project1
                                         }
                                         else
                                         {
-                                            var loopTo25 = (short)Information.UBound(part_list);
+                                            var loopTo25 = Information.UBound(part_list);
                                             for (j = 1; j <= loopTo25; j++)
                                             {
                                                 if ((part_list[j] ?? "") == (withBlock8.Part() ?? "") & string.IsNullOrEmpty(part_item[j]))
                                                 {
                                                     part_item[j] = withBlock8.ID;
-                                                    var loopTo26 = (short)(j + withBlock8.Size() - 1);
-                                                    for (k = (short)(j + 1); k <= loopTo26; k++)
+                                                    var loopTo26 = (j + withBlock8.Size() - 1);
+                                                    for (k = (j + 1); k <= loopTo26; k++)
                                                     {
                                                         if (k > Information.UBound(part_item))
                                                         {
@@ -3518,8 +3515,8 @@ namespace Project1
 
                                         if (j > Information.UBound(part_list) & string.IsNullOrEmpty(selected_part))
                                         {
-                                            Array.Resize(ref part_list, Information.UBound(part_list) + 1 + 1);
-                                            Array.Resize(ref part_item, Information.UBound(part_list) + 1);
+                                            Array.Resize(part_list, Information.UBound(part_list) + 1 + 1);
+                                            Array.Resize(part_item, Information.UBound(part_list) + 1);
                                             part_list[Information.UBound(part_list)] = withBlock8.Part();
                                             part_item[Information.UBound(part_list)] = withBlock8.ID;
                                         }
@@ -3529,7 +3526,7 @@ namespace Project1
                             }
                         }
 
-                        NextEquipedItem:
+                    NextEquipedItem:
                         ;
                     }
 
@@ -3539,7 +3536,7 @@ namespace Project1
                     GUI.ListItemFlag = new bool[Information.UBound(list) + 1];
 
                     // リストを構築
-                    var loopTo27 = (short)Information.UBound(part_item);
+                    var loopTo27 = Information.UBound(part_item);
                     for (i = 1; i <= loopTo27; i++)
                     {
                         switch (part_item[i] ?? "")
@@ -3547,14 +3544,14 @@ namespace Project1
                             case var @case when @case == "":
                                 {
                                     string argbuf2 = "----";
-                                    list[i] = GeneralLib.RightPaddedString(ref argbuf2, 23) + part_list[i];
+                                    list[i] = GeneralLib.RightPaddedString(argbuf2, 23) + part_list[i];
                                     break;
                                 }
 
                             case ":":
                                 {
                                     string argbuf3 = " :  ";
-                                    list[i] = GeneralLib.RightPaddedString(ref argbuf3, 23) + part_list[i];
+                                    list[i] = GeneralLib.RightPaddedString(argbuf3, 23) + part_list[i];
                                     GUI.ListItemComment[i] = GUI.ListItemComment[i - 1];
                                     GUI.ListItemFlag[i] = GUI.ListItemFlag[i - 1];
                                     break;
@@ -3565,12 +3562,12 @@ namespace Project1
                                     var tmp3 = part_item;
                                     object argIndex9 = tmp3[i];
                                     {
-                                        var withBlock9 = SRC.IList.Item(ref argIndex9);
-                                        list[i] = GeneralLib.RightPaddedString(ref withBlock9.Nickname(), 22) + " " + part_list[i];
+                                        var withBlock9 = SRC.IList.Item(argIndex9);
+                                        list[i] = GeneralLib.RightPaddedString(withBlock9.Nickname(), 22) + " " + part_list[i];
                                         GUI.ListItemComment[i] = withBlock9.Data.Comment;
                                         id_list[i] = withBlock9.ID;
-                                        var loopTo28 = (short)(i + withBlock9.Size() - 1);
-                                        for (j = (short)(i + 1); j <= loopTo28; j++)
+                                        var loopTo28 = (i + withBlock9.Size() - 1);
+                                        for (j = (i + 1); j <= loopTo28; j++)
                                         {
                                             if (j > Information.UBound(part_item))
                                             {
@@ -3580,14 +3577,14 @@ namespace Project1
                                             id_list[j] = withBlock9.ID;
                                         }
 
-                                        bool localIsGlobalVariableDefined() { string argvname = "Fix(" + withBlock9.Name + ")"; var ret = Expression.IsGlobalVariableDefined(ref argvname); return ret; }
+                                        bool localIsGlobalVariableDefined() { string argvname = "Fix(" + withBlock9.Name + ")"; var ret = Expression.IsGlobalVariableDefined(argvname); return ret; }
 
                                         string argfname3 = "呪い";
-                                        if (localIsGlobalVariableDefined() | withBlock9.Class_Renamed() == "固定" | withBlock9.IsFeatureAvailable(ref argfname3))
+                                        if (localIsGlobalVariableDefined() | withBlock9.Class_Renamed() == "固定" | withBlock9.IsFeatureAvailable(argfname3))
                                         {
                                             GUI.ListItemFlag[i] = true;
-                                            var loopTo29 = (short)(i + withBlock9.Size() - 1);
-                                            for (j = (short)(i + 1); j <= loopTo29; j++)
+                                            var loopTo29 = (i + withBlock9.Size() - 1);
+                                            for (j = (i + 1); j <= loopTo29; j++)
                                             {
                                                 if (j > Information.UBound(part_item))
                                                 {
@@ -3609,7 +3606,7 @@ namespace Project1
                     // 交換するアイテムを選択
                     caption_str = "装備個所を選択 ： " + withBlock7.Nickname;
                     string argoname6 = "等身大基準";
-                    if (withBlock7.CountPilot() > 0 & !Expression.IsOptionDefined(ref argoname6))
+                    if (withBlock7.CountPilot() > 0 & !Expression.IsOptionDefined(argoname6))
                     {
                         caption_str = caption_str + " (" + withBlock7.MainPilot().get_Nickname(false) + ")";
                     }
@@ -3619,11 +3616,11 @@ namespace Project1
                     string argtname22 = "装甲";
                     string argtname23 = "運動性";
                     string argtname24 = "移動力";
-                    caption_str = caption_str + "  " + Expression.Term(ref argtname20, ref u) + "=" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock7.MaxHP) + " " + Expression.Term(ref argtname21, ref u) + "=" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock7.MaxEN) + " " + Expression.Term(ref argtname22, ref u) + "=" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock7.get_Armor("")) + " " + Expression.Term(ref argtname23, ref u) + "=" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock7.get_Mobility("")) + " " + Expression.Term(ref argtname24, ref u) + "=" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock7.Speed);
+                    caption_str = caption_str + "  " + Expression.Term(argtname20, u) + "=" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock7.MaxHP) + " " + Expression.Term(argtname21, u) + "=" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock7.MaxEN) + " " + Expression.Term(argtname22, u) + "=" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock7.get_Armor("")) + " " + Expression.Term(argtname23, u) + "=" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock7.get_Mobility("")) + " " + Expression.Term(argtname24, u) + "=" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock7.Speed);
                     GUI.TopItem = top_item2;
                     string arglb_info3 = "アイテム               分類";
                     string arglb_mode3 = "連続表示,コメント";
-                    ret = GUI.ListBox(ref caption_str, ref list, ref arglb_info3, ref arglb_mode3);
+                    ret = GUI.ListBox(caption_str, list, arglb_info3, arglb_mode3);
                     top_item2 = GUI.TopItem;
                     if (ret == 0)
                     {
@@ -3636,7 +3633,7 @@ namespace Project1
                         list[Information.UBound(list)] = "▽全て外す▽";
                         caption_str = "外すアイテムを選択 ： " + withBlock7.Nickname;
                         string argoname7 = "等身大基準";
-                        if (withBlock7.CountPilot() > 0 & !Expression.IsOptionDefined(ref argoname7))
+                        if (withBlock7.CountPilot() > 0 & !Expression.IsOptionDefined(argoname7))
                         {
                             caption_str = caption_str + " (" + withBlock7.MainPilot().get_Nickname(false) + ")";
                         }
@@ -3646,10 +3643,10 @@ namespace Project1
                         string argtname27 = "装甲";
                         string argtname28 = "運動性";
                         string argtname29 = "移動力";
-                        caption_str = caption_str + "  " + Expression.Term(ref argtname25, ref u) + "=" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock7.MaxHP) + " " + Expression.Term(ref argtname26, ref u) + "=" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock7.MaxEN) + " " + Expression.Term(ref argtname27, ref u) + "=" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock7.get_Armor("")) + " " + Expression.Term(ref argtname28, ref u) + "=" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock7.get_Mobility("")) + " " + Expression.Term(ref argtname29, ref u) + "=" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock7.Speed);
+                        caption_str = caption_str + "  " + Expression.Term(argtname25, u) + "=" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock7.MaxHP) + " " + Expression.Term(argtname26, u) + "=" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock7.MaxEN) + " " + Expression.Term(argtname27, u) + "=" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock7.get_Armor("")) + " " + Expression.Term(argtname28, u) + "=" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock7.get_Mobility("")) + " " + Expression.Term(argtname29, u) + "=" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock7.Speed);
                         string arglb_info4 = "アイテム               分類";
                         string arglb_mode4 = "連続表示,コメント";
-                        ret = GUI.ListBox(ref caption_str, ref list, ref arglb_info4, ref arglb_mode4);
+                        ret = GUI.ListBox(caption_str, list, arglb_info4, arglb_mode4);
                         if (ret != 0)
                         {
                             if (ret < Information.UBound(list))
@@ -3659,26 +3656,26 @@ namespace Project1
                                 {
                                     var tmp4 = id_list;
                                     object argIndex10 = tmp4[ret];
-                                    withBlock7.DeleteItem(ref argIndex10, false);
+                                    withBlock7.DeleteItem(argIndex10, false);
                                 }
-                                else if (GeneralLib.LIndex(ref list[ret], 1) == ":")
+                                else if (GeneralLib.LIndex(list[ret], 1) == ":")
                                 {
                                     var tmp5 = id_list;
                                     object argIndex11 = tmp5[ret - 1];
-                                    withBlock7.DeleteItem(ref argIndex11, false);
+                                    withBlock7.DeleteItem(argIndex11, false);
                                 }
                             }
                             else
                             {
                                 // 全てのアイテムを外す
-                                var loopTo30 = (short)(Information.UBound(list) - 1);
+                                var loopTo30 = (Information.UBound(list) - 1);
                                 for (i = 1; i <= loopTo30; i++)
                                 {
                                     if (!GUI.ListItemFlag[i] & !string.IsNullOrEmpty(id_list[i]))
                                     {
                                         var tmp6 = id_list;
                                         object argIndex12 = tmp6[i];
-                                        withBlock7.DeleteItem(ref argIndex12, false);
+                                        withBlock7.DeleteItem(argIndex12, false);
                                     }
                                 }
                             }
@@ -3690,7 +3687,7 @@ namespace Project1
 
                             if (GUI.MainForm.Visible)
                             {
-                                Status.DisplayUnitStatus(ref u);
+                                Status.DisplayUnitStatus(u);
                             }
                         }
 
@@ -3701,13 +3698,13 @@ namespace Project1
                     iid = id_list[ret];
                     if (!string.IsNullOrEmpty(iid))
                     {
-                        Item localItem6() { object argIndex1 = iid; var ret = SRC.IList.Item(ref argIndex1); return ret; }
+                        Item localItem6() { object argIndex1 = iid; var ret = SRC.IList.Item(argIndex1); return ret; }
 
                         ipart = localItem6().Part();
                     }
                     else
                     {
-                        ipart = GeneralLib.LIndex(ref list[ret], 2);
+                        ipart = GeneralLib.LIndex(list[ret], 2);
                     }
 
                     // 空きスロットを調べておく
@@ -3726,13 +3723,13 @@ namespace Project1
                                 {
                                     object argIndex13 = i;
                                     {
-                                        var withBlock10 = withBlock7.Item(ref argIndex13);
+                                        var withBlock10 = withBlock7.Item(argIndex13);
                                         if (withBlock10.Part() == "片手")
                                         {
-                                            bool localIsGlobalVariableDefined1() { string argvname = "Fix(" + withBlock10.Name + ")"; var ret = Expression.IsGlobalVariableDefined(ref argvname); return ret; }
+                                            bool localIsGlobalVariableDefined1() { string argvname = "Fix(" + withBlock10.Name + ")"; var ret = Expression.IsGlobalVariableDefined(argvname); return ret; }
 
                                             string argfname4 = "呪い";
-                                            if (localIsGlobalVariableDefined1() | withBlock10.Class_Renamed() == "固定" | withBlock10.IsFeatureAvailable(ref argfname4))
+                                            if (localIsGlobalVariableDefined1() | withBlock10.Class_Renamed() == "固定" | withBlock10.IsFeatureAvailable(argfname4))
                                             {
                                                 if (is_right_hand_available)
                                                 {
@@ -3746,10 +3743,10 @@ namespace Project1
                                         }
                                         else if (withBlock10.Part() == "盾")
                                         {
-                                            bool localIsGlobalVariableDefined2() { string argvname = "Fix(" + withBlock10.Name + ")"; var ret = Expression.IsGlobalVariableDefined(ref argvname); return ret; }
+                                            bool localIsGlobalVariableDefined2() { string argvname = "Fix(" + withBlock10.Name + ")"; var ret = Expression.IsGlobalVariableDefined(argvname); return ret; }
 
                                             string argfname5 = "呪い";
-                                            if (localIsGlobalVariableDefined2() | withBlock10.Class_Renamed() == "固定" | withBlock10.IsFeatureAvailable(ref argfname5))
+                                            if (localIsGlobalVariableDefined2() | withBlock10.Class_Renamed() == "固定" | withBlock10.IsFeatureAvailable(argfname5))
                                             {
                                                 is_left_hand_available = false;
                                             }
@@ -3770,15 +3767,15 @@ namespace Project1
                                 {
                                     object argIndex14 = i;
                                     {
-                                        var withBlock11 = withBlock7.Item(ref argIndex14);
+                                        var withBlock11 = withBlock7.Item(argIndex14);
                                         if (withBlock11.Part() == "肩")
                                         {
-                                            bool localIsGlobalVariableDefined3() { string argvname = "Fix(" + withBlock11.Name + ")"; var ret = Expression.IsGlobalVariableDefined(ref argvname); return ret; }
+                                            bool localIsGlobalVariableDefined3() { string argvname = "Fix(" + withBlock11.Name + ")"; var ret = Expression.IsGlobalVariableDefined(argvname); return ret; }
 
                                             string argfname6 = "呪い";
-                                            if (localIsGlobalVariableDefined3() | withBlock11.Class_Renamed() == "固定" | withBlock11.IsFeatureAvailable(ref argfname6))
+                                            if (localIsGlobalVariableDefined3() | withBlock11.Class_Renamed() == "固定" | withBlock11.IsFeatureAvailable(argfname6))
                                             {
-                                                empty_slot = (short)(empty_slot - 1);
+                                                empty_slot = (empty_slot - 1);
                                             }
                                         }
                                     }
@@ -3796,15 +3793,15 @@ namespace Project1
                                 {
                                     object argIndex15 = i;
                                     {
-                                        var withBlock12 = withBlock7.Item(ref argIndex15);
+                                        var withBlock12 = withBlock7.Item(argIndex15);
                                         if (withBlock12.Part() == "強化パーツ" | withBlock12.Part() == "アイテム")
                                         {
-                                            bool localIsGlobalVariableDefined4() { string argvname = "Fix(" + withBlock12.Name + ")"; var ret = Expression.IsGlobalVariableDefined(ref argvname); return ret; }
+                                            bool localIsGlobalVariableDefined4() { string argvname = "Fix(" + withBlock12.Name + ")"; var ret = Expression.IsGlobalVariableDefined(argvname); return ret; }
 
                                             string argfname7 = "呪い";
-                                            if (localIsGlobalVariableDefined4() | withBlock12.Class_Renamed() == "固定" | withBlock12.IsFeatureAvailable(ref argfname7))
+                                            if (localIsGlobalVariableDefined4() | withBlock12.Class_Renamed() == "固定" | withBlock12.IsFeatureAvailable(argfname7))
                                             {
-                                                empty_slot = (short)(empty_slot - withBlock12.Size());
+                                                empty_slot = (empty_slot - withBlock12.Size());
                                             }
                                         }
                                     }
@@ -3819,15 +3816,15 @@ namespace Project1
                                 var loopTo34 = withBlock7.CountFeature();
                                 for (i = 1; i <= loopTo34; i++)
                                 {
-                                    string localFeature() { object argIndex1 = i; var ret = withBlock7.Feature(ref argIndex1); return ret; }
+                                    string localFeature() { object argIndex1 = i; var ret = withBlock7.Feature(argIndex1); return ret; }
 
-                                    string localFeatureData() { object argIndex1 = i; var ret = withBlock7.FeatureData(ref argIndex1); return ret; }
+                                    string localFeatureData() { object argIndex1 = i; var ret = withBlock7.FeatureData(argIndex1); return ret; }
 
                                     if (localFeature() == "ハードポイント" & (localFeatureData() ?? "") == (ipart ?? ""))
                                     {
-                                        double localFeatureLevel() { object argIndex1 = i; var ret = withBlock7.FeatureLevel(ref argIndex1); return ret; }
+                                        double localFeatureLevel() { object argIndex1 = i; var ret = withBlock7.FeatureLevel(argIndex1); return ret; }
 
-                                        empty_slot = (short)(empty_slot + localFeatureLevel());
+                                        empty_slot = (empty_slot + localFeatureLevel());
                                     }
                                 }
 
@@ -3841,15 +3838,15 @@ namespace Project1
                                 {
                                     object argIndex16 = i;
                                     {
-                                        var withBlock13 = withBlock7.Item(ref argIndex16);
+                                        var withBlock13 = withBlock7.Item(argIndex16);
                                         if ((withBlock13.Part() ?? "") == (ipart ?? ""))
                                         {
-                                            bool localIsGlobalVariableDefined5() { string argvname = "Fix(" + withBlock13.Name + ")"; var ret = Expression.IsGlobalVariableDefined(ref argvname); return ret; }
+                                            bool localIsGlobalVariableDefined5() { string argvname = "Fix(" + withBlock13.Name + ")"; var ret = Expression.IsGlobalVariableDefined(argvname); return ret; }
 
                                             string argfname8 = "呪い";
-                                            if (localIsGlobalVariableDefined5() | withBlock13.Class_Renamed() == "固定" | withBlock13.IsFeatureAvailable(ref argfname8))
+                                            if (localIsGlobalVariableDefined5() | withBlock13.Class_Renamed() == "固定" | withBlock13.IsFeatureAvailable(argfname8))
                                             {
-                                                empty_slot = (short)(empty_slot - withBlock13.Size());
+                                                empty_slot = (empty_slot - withBlock13.Size());
                                             }
                                         }
                                     }
@@ -3896,7 +3893,7 @@ namespace Project1
                                                 case "片手":
                                                     {
                                                         string argfname9 = "両手持ち";
-                                                        if (u.IsFeatureAvailable(ref argfname9))
+                                                        if (u.IsFeatureAvailable(argfname9))
                                                         {
                                                             if (!is_right_hand_available & !is_left_hand_available)
                                                             {
@@ -3948,7 +3945,7 @@ namespace Project1
                                                 case "片手":
                                                     {
                                                         string argfname10 = "両手持ち";
-                                                        if (u.IsFeatureAvailable(ref argfname10))
+                                                        if (u.IsFeatureAvailable(argfname10))
                                                         {
                                                             if (!is_right_hand_available & !is_left_hand_available)
                                                             {
@@ -4054,14 +4051,14 @@ namespace Project1
 
                                     // 呪われているので外せない……
                                     string argfname11 = "呪い";
-                                    if (withBlock14.IsFeatureAvailable(ref argfname11))
+                                    if (withBlock14.IsFeatureAvailable(argfname11))
                                     {
                                         goto NextItem;
                                     }
                                 }
 
                                 // 既に登録済み？
-                                var loopTo36 = (short)Information.UBound(item_list);
+                                var loopTo36 = Information.UBound(item_list);
                                 for (i = 1; i <= loopTo36; i++)
                                 {
                                     if ((item_list[i] ?? "") == (withBlock14.Name ?? ""))
@@ -4072,14 +4069,14 @@ namespace Project1
                             }
 
                             // 装備可能？
-                            if (!withBlock7.IsAbleToEquip(ref it))
+                            if (!withBlock7.IsAbleToEquip(it))
                             {
                                 goto NextItem;
                             }
 
-                            Array.Resize(ref item_list, Information.UBound(item_list) + 1 + 1);
+                            Array.Resize(item_list, Information.UBound(item_list) + 1 + 1);
                             item_list[Information.UBound(item_list)] = it.Name;
-                            NextItem:
+                        NextItem:
                             ;
                         }
 
@@ -4089,26 +4086,26 @@ namespace Project1
                         id_list = new string[Information.UBound(item_list) + 1];
                         GUI.ListItemFlag = new bool[Information.UBound(item_list) + 1];
                         GUI.ListItemComment = new string[Information.UBound(item_list) + 1];
-                        var loopTo37 = (short)Information.UBound(item_list);
+                        var loopTo37 = Information.UBound(item_list);
                         for (i = 1; i <= loopTo37; i++)
                         {
                             iname = item_list[i];
                             object argIndex17 = iname;
                             {
-                                var withBlock16 = SRC.IDList.Item(ref argIndex17);
-                                string localRightPaddedString() { string argbuf = withBlock16.Nickname; var ret = GeneralLib.RightPaddedString(ref argbuf, 22); withBlock16.Nickname = argbuf; return ret; }
+                                var withBlock16 = SRC.IDList.Item(argIndex17);
+                                string localRightPaddedString() { string argbuf = withBlock16.Nickname; var ret = GeneralLib.RightPaddedString(argbuf, 22); withBlock16.Nickname = argbuf; return ret; }
 
                                 list[i] = localRightPaddedString() + " ";
                                 string argfname12 = "大型アイテム";
-                                if (withBlock16.IsFeatureAvailable(ref argfname12))
+                                if (withBlock16.IsFeatureAvailable(argfname12))
                                 {
-                                    string localRightPaddedString1() { string argbuf = withBlock16.Part + "[" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock16.Size()) + "]"; var ret = GeneralLib.RightPaddedString(ref argbuf, 15); return ret; }
+                                    string localRightPaddedString1() { string argbuf = withBlock16.Part + "[" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock16.Size()) + "]"; var ret = GeneralLib.RightPaddedString(argbuf, 15); return ret; }
 
                                     list[i] = list[i] + localRightPaddedString1();
                                 }
                                 else
                                 {
-                                    list[i] = list[i] + GeneralLib.RightPaddedString(ref withBlock16.Part, 15);
+                                    list[i] = list[i] + GeneralLib.RightPaddedString(withBlock16.Part, 15);
                                 }
 
                                 // アイテムの数をカウント
@@ -4125,15 +4122,15 @@ namespace Project1
                                             {
                                                 if (withBlock17.Unit_Renamed is null)
                                                 {
-                                                    inum = (short)(inum + 1);
-                                                    inum2 = (short)(inum2 + 1);
+                                                    inum = (inum + 1);
+                                                    inum2 = (inum2 + 1);
                                                 }
                                                 else if (withBlock17.Unit_Renamed.CurrentForm().Status_Renamed != "離脱")
                                                 {
                                                     string argfname13 = "呪い";
-                                                    if (!withBlock17.IsFeatureAvailable(ref argfname13))
+                                                    if (!withBlock17.IsFeatureAvailable(argfname13))
                                                     {
-                                                        inum = (short)(inum + 1);
+                                                        inum = (inum + 1);
                                                     }
                                                 }
                                             }
@@ -4141,9 +4138,9 @@ namespace Project1
                                     }
                                 }
 
-                                string localLeftPaddedString5() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(inum2); var ret = GeneralLib.LeftPaddedString(ref argbuf, 2); return ret; }
+                                string localLeftPaddedString5() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(inum2); var ret = GeneralLib.LeftPaddedString(argbuf, 2); return ret; }
 
-                                string localLeftPaddedString6() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(inum); var ret = GeneralLib.LeftPaddedString(ref argbuf, 2); return ret; }
+                                string localLeftPaddedString6() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(inum); var ret = GeneralLib.LeftPaddedString(argbuf, 2); return ret; }
 
                                 list[i] = list[i] + localLeftPaddedString5() + "/" + localLeftPaddedString6();
                                 id_list[i] = withBlock16.Name;
@@ -4153,13 +4150,13 @@ namespace Project1
                         }
 
                         // アイテムを名前順にソート
-                        var loopTo38 = (short)(Information.UBound(strkey_list) - 1);
+                        var loopTo38 = (Information.UBound(strkey_list) - 1);
                         for (i = 1; i <= loopTo38; i++)
                         {
                             max_item = i;
                             max_str = strkey_list[i];
-                            var loopTo39 = (short)Information.UBound(strkey_list);
-                            for (j = (short)(i + 1); j <= loopTo39; j++)
+                            var loopTo39 = Information.UBound(strkey_list);
+                            for (j = (i + 1); j <= loopTo39; j++)
                             {
                                 if (Strings.StrComp(strkey_list[j], max_str, (CompareMethod)1) == -1)
                                 {
@@ -4186,7 +4183,7 @@ namespace Project1
                         // 装備するアイテムの種類を選択
                         caption_str = "装備するアイテムを選択 ： " + withBlock7.Nickname;
                         string argoname8 = "等身大基準";
-                        if (withBlock7.CountPilot() > 0 & !Expression.IsOptionDefined(ref argoname8))
+                        if (withBlock7.CountPilot() > 0 & !Expression.IsOptionDefined(argoname8))
                         {
                             caption_str = caption_str + " (" + withBlock7.MainPilot().get_Nickname(false) + ")";
                         }
@@ -4196,10 +4193,10 @@ namespace Project1
                         string argtname32 = "装甲";
                         string argtname33 = "運動性";
                         string argtname34 = "移動力";
-                        caption_str = caption_str + "  " + Expression.Term(ref argtname30, ref u) + "=" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock7.MaxHP) + " " + Expression.Term(ref argtname31, ref u) + "=" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock7.MaxEN) + " " + Expression.Term(ref argtname32, ref u) + "=" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock7.get_Armor("")) + " " + Expression.Term(ref argtname33, ref u) + "=" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock7.get_Mobility("")) + " " + Expression.Term(ref argtname34, ref u) + "=" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock7.Speed);
+                        caption_str = caption_str + "  " + Expression.Term(argtname30, u) + "=" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock7.MaxHP) + " " + Expression.Term(argtname31, u) + "=" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock7.MaxEN) + " " + Expression.Term(argtname32, u) + "=" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock7.get_Armor("")) + " " + Expression.Term(argtname33, u) + "=" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock7.get_Mobility("")) + " " + Expression.Term(argtname34, u) + "=" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock7.Speed);
                         string arglb_info5 = "アイテム               分類            数量";
                         string arglb_mode5 = "連続表示,コメント";
-                        ret = GUI.ListBox(ref caption_str, ref list, ref arglb_info5, ref arglb_mode5);
+                        ret = GUI.ListBox(caption_str, list, arglb_info5, arglb_mode5);
 
                         // キャンセルされた？
                         if (ret == 0)
@@ -4223,16 +4220,16 @@ namespace Project1
                                         if (!string.IsNullOrEmpty(iid))
                                         {
                                             object argIndex18 = iid;
-                                            u.DeleteItem(ref argIndex18);
+                                            u.DeleteItem(argIndex18);
                                         }
                                         // 呪いのアイテムを装備……
                                         string argfname14 = "呪い";
-                                        if (withBlock18.IsFeatureAvailable(ref argfname14))
+                                        if (withBlock18.IsFeatureAvailable(argfname14))
                                         {
                                             Interaction.MsgBox(withBlock18.Nickname() + "は呪われていた！");
                                         }
 
-                                        u.AddItem(ref it);
+                                        u.AddItem(it);
                                         if (string.IsNullOrEmpty(Map.MapFileName))
                                         {
                                             u.FullRecover();
@@ -4240,7 +4237,7 @@ namespace Project1
 
                                         if (GUI.MainForm.Visible)
                                         {
-                                            Status.DisplayUnitStatus(ref u);
+                                            Status.DisplayUnitStatus(u);
                                         }
 
                                         break;
@@ -4254,10 +4251,10 @@ namespace Project1
                         id_list = new string[1];
                         GUI.ListItemComment = new string[1];
                         inum = 0;
-                        ItemData localItem7() { object argIndex1 = iname; var ret = SRC.IDList.Item(ref argIndex1); return ret; }
+                        ItemData localItem7() { object argIndex1 = iname; var ret = SRC.IDList.Item(argIndex1); return ret; }
 
                         string argfname16 = "呪い";
-                        if (!localItem7().IsFeatureAvailable(ref argfname16))
+                        if (!localItem7().IsFeatureAvailable(argfname16))
                         {
                             foreach (Item currentIt3 in SRC.IList)
                             {
@@ -4284,13 +4281,13 @@ namespace Project1
                                         goto NextItem2;
                                     }
 
-                                    Array.Resize(ref list, Information.UBound(list) + 1 + 1);
-                                    Array.Resize(ref id_list, Information.UBound(list) + 1);
-                                    Array.Resize(ref GUI.ListItemComment, Information.UBound(list) + 1);
+                                    Array.Resize(list, Information.UBound(list) + 1 + 1);
+                                    Array.Resize(id_list, Information.UBound(list) + 1);
+                                    Array.Resize(GUI.ListItemComment, Information.UBound(list) + 1);
                                     string argoname9 = "等身大基準";
-                                    if (!Expression.IsOptionDefined(ref argoname9) & withBlock19.CountPilot() > 0)
+                                    if (!Expression.IsOptionDefined(argoname9) & withBlock19.CountPilot() > 0)
                                     {
-                                        string localRightPaddedString2() { string argbuf = withBlock19.Nickname0; var ret = GeneralLib.RightPaddedString(ref argbuf, 36); withBlock19.Nickname0 = argbuf; return ret; }
+                                        string localRightPaddedString2() { string argbuf = withBlock19.Nickname0; var ret = GeneralLib.RightPaddedString(argbuf, 36); withBlock19.Nickname0 = argbuf; return ret; }
 
                                         list[Information.UBound(list)] = localRightPaddedString2() + " " + withBlock19.MainPilot().get_Nickname(false);
                                     }
@@ -4305,32 +4302,32 @@ namespace Project1
                                     {
                                         object argIndex19 = i;
                                         {
-                                            var withBlock20 = withBlock19.Item(ref argIndex19);
+                                            var withBlock20 = withBlock19.Item(argIndex19);
                                             string argfname15 = "非表示";
-                                            if ((withBlock20.Class_Renamed() != "固定" | !withBlock20.IsFeatureAvailable(ref argfname15)) & withBlock20.Part() != "非表示")
+                                            if ((withBlock20.Class_Renamed() != "固定" | !withBlock20.IsFeatureAvailable(argfname15)) & withBlock20.Part() != "非表示")
                                             {
                                                 GUI.ListItemComment[Information.UBound(list)] = GUI.ListItemComment[Information.UBound(list)] + withBlock20.Nickname() + " ";
                                             }
                                         }
                                     }
 
-                                    inum = (short)(inum + 1);
+                                    inum = (inum + 1);
                                 }
 
-                                NextItem2:
+                            NextItem2:
                                 ;
                             }
                         }
 
                         GUI.ListItemFlag = new bool[Information.UBound(list) + 1];
-                        Array.Resize(ref GUI.ListItemComment, Information.UBound(list) + 1);
+                        Array.Resize(GUI.ListItemComment, Information.UBound(list) + 1);
 
                         // どのアイテムを装備するか選択
-                        Item localItem8() { var tmp = id_list; object argIndex1 = tmp[1]; var ret = SRC.IList.Item(ref argIndex1); return ret; }
+                        Item localItem8() { var tmp = id_list; object argIndex1 = tmp[1]; var ret = SRC.IList.Item(argIndex1); return ret; }
 
                         caption_str = localItem8().Nickname() + "の入手先を選択 ： " + withBlock7.Nickname;
                         string argoname10 = "等身大基準";
-                        if (withBlock7.CountPilot() > 0 & !Expression.IsOptionDefined(ref argoname10))
+                        if (withBlock7.CountPilot() > 0 & !Expression.IsOptionDefined(argoname10))
                         {
                             caption_str = caption_str + " (" + withBlock7.MainPilot().get_Nickname(false) + ")";
                         }
@@ -4340,20 +4337,20 @@ namespace Project1
                         string argtname37 = "装甲";
                         string argtname38 = "運動性";
                         string argtname39 = "移動力";
-                        caption_str = caption_str + "  " + Expression.Term(ref argtname35, ref u) + "=" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock7.MaxHP) + " " + Expression.Term(ref argtname36, ref u) + "=" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock7.MaxEN) + " " + Expression.Term(ref argtname37, ref u) + "=" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock7.get_Armor("")) + " " + Expression.Term(ref argtname38, ref u) + "=" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock7.get_Mobility("")) + " " + Expression.Term(ref argtname39, ref u) + "=" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock7.Speed);
+                        caption_str = caption_str + "  " + Expression.Term(argtname35, u) + "=" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock7.MaxHP) + " " + Expression.Term(argtname36, u) + "=" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock7.MaxEN) + " " + Expression.Term(argtname37, u) + "=" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock7.get_Armor("")) + " " + Expression.Term(argtname38, u) + "=" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock7.get_Mobility("")) + " " + Expression.Term(argtname39, u) + "=" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock7.Speed);
                         GUI.TopItem = 1;
                         string argoname11 = "等身大基準";
-                        if (Expression.IsOptionDefined(ref argoname11))
+                        if (Expression.IsOptionDefined(argoname11))
                         {
                             string arglb_info6 = "ユニット";
                             string arglb_mode6 = "連続表示,コメント";
-                            ret = GUI.ListBox(ref caption_str, ref list, ref arglb_info6, ref arglb_mode6);
+                            ret = GUI.ListBox(caption_str, list, arglb_info6, arglb_mode6);
                         }
                         else
                         {
                             string arglb_info7 = "ユニット                             パイロット";
                             string arglb_mode7 = "連続表示,コメント";
-                            ret = GUI.ListBox(ref caption_str, ref list, ref arglb_info7, ref arglb_mode7);
+                            ret = GUI.ListBox(caption_str, list, arglb_info7, arglb_mode7);
                         }
 
                         // アイテムを交換
@@ -4362,31 +4359,31 @@ namespace Project1
                             if (!string.IsNullOrEmpty(iid))
                             {
                                 object argIndex20 = iid;
-                                withBlock7.DeleteItem(ref argIndex20);
+                                withBlock7.DeleteItem(argIndex20);
                             }
 
                             var tmp7 = id_list;
                             object argIndex22 = tmp7[ret];
                             {
-                                var withBlock21 = SRC.IList.Item(ref argIndex22);
+                                var withBlock21 = SRC.IList.Item(argIndex22);
                                 if (withBlock21.Unit_Renamed is object)
                                 {
                                     object argIndex21 = withBlock21.ID;
-                                    withBlock21.Unit_Renamed.DeleteItem(ref argIndex21);
+                                    withBlock21.Unit_Renamed.DeleteItem(argIndex21);
                                 }
 
                                 // 呪いのアイテムを装備……
                                 string argfname17 = "呪い";
-                                if (withBlock21.IsFeatureAvailable(ref argfname17))
+                                if (withBlock21.IsFeatureAvailable(argfname17))
                                 {
                                     Interaction.MsgBox(withBlock21.Nickname() + "は呪われていた！");
                                 }
                             }
 
-                            Item localItem9() { var tmp = id_list; object argIndex1 = tmp[(int)ret]; var ret = SRC.IList.Item(ref argIndex1); return ret; }
+                            Item localItem9() { var tmp = id_list; object argIndex1 = tmp[ret]; var ret = SRC.IList.Item(argIndex1); return ret; }
 
                             var argitm = localItem9();
-                            withBlock7.AddItem(ref argitm);
+                            withBlock7.AddItem(argitm);
                             if (string.IsNullOrEmpty(Map.MapFileName))
                             {
                                 withBlock7.FullRecover();
@@ -4394,17 +4391,17 @@ namespace Project1
 
                             if (GUI.MainForm.Visible)
                             {
-                                Status.DisplayUnitStatus(ref u);
+                                Status.DisplayUnitStatus(u);
                             }
 
                             break;
                         }
 
-                        NextLoop:
+                    NextLoop:
                         ;
                     }
 
-                    NextLoop2:
+                NextLoop2:
                     ;
                 }
             }
@@ -4420,7 +4417,7 @@ namespace Project1
                     {
                         withBlock22.txtComment.Enabled = false;
                         withBlock22.txtComment.Visible = false;
-                        withBlock22.Height = (int)Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsY(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock22.Height) - 600d);
+                        withBlock22.Height = Microsoft.VisualBasic.Compatibility.VB6.Support.TwipsToPixelsY(Microsoft.VisualBasic.Compatibility.VB6.Support.PixelsToTwipsY(withBlock22.Height) - 600d);
                     }
                 }
 
@@ -4435,22 +4432,22 @@ namespace Project1
         // 換装コマンド
         // MOD START MARGE
         // Public Sub ExchangeFormCommand()
-        private static void ExchangeFormCommand()
+        private void ExchangeFormCommand()
         {
             // MOD END MARGE
-            short j, i, k;
+            int j, i, k;
             string[] list;
             string[] id_list;
             int[] key_list;
             string[] list2;
             string[] id_list2;
-            short max_item, max_value;
+            int max_item, max_value;
             Unit u;
             string buf;
-            short ret;
-            short top_item;
+            int ret;
+            int top_item;
             string[] farray;
-            Beginning:
+        Beginning:
             ;
             top_item = 1;
 
@@ -4471,20 +4468,20 @@ namespace Project1
 
                     // 換装能力を持っている？
                     string argfname = "換装";
-                    if (!withBlock.IsFeatureAvailable(ref argfname))
+                    if (!withBlock.IsFeatureAvailable(argfname))
                     {
                         goto NextLoop;
                     }
 
                     // いずれかの形態に換装可能？
                     object argIndex1 = "換装";
-                    string arglist = withBlock.FeatureData(ref argIndex1);
-                    var loopTo = GeneralLib.LLength(ref arglist);
+                    string arglist = withBlock.FeatureData(argIndex1);
+                    var loopTo = GeneralLib.LLength(arglist);
                     for (i = 1; i <= loopTo; i++)
                     {
-                        string localLIndex() { object argIndex1 = "換装"; string arglist = withBlock.FeatureData(ref argIndex1); var ret = GeneralLib.LIndex(ref arglist, i); return ret; }
+                        string localLIndex() { object argIndex1 = "換装"; string arglist = withBlock.FeatureData(argIndex1); var ret = GeneralLib.LIndex(arglist, i); return ret; }
 
-                        Unit localOtherForm() { object argIndex1 = (object)hsfe39adde656b471593385f8a950d6e8a(); var ret = withBlock.OtherForm(ref argIndex1); return ret; }
+                        Unit localOtherForm() { object argIndex1 = (object)hsfe39adde656b471593385f8a950d6e8a(); var ret = withBlock.OtherForm(argIndex1); return ret; }
 
                         if (localOtherForm().IsAvailable())
                         {
@@ -4492,62 +4489,62 @@ namespace Project1
                         }
                     }
 
-                    short localLLength() { object argIndex1 = "換装"; string arglist = withBlock.FeatureData(ref argIndex1); var ret = GeneralLib.LLength(ref arglist); return ret; }
+                    int localLLength() { object argIndex1 = "換装"; string arglist = withBlock.FeatureData(argIndex1); var ret = GeneralLib.LLength(arglist); return ret; }
 
                     if (i > localLLength())
                     {
                         goto NextLoop;
                     }
 
-                    Array.Resize(ref list, Information.UBound(list) + 1 + 1);
-                    Array.Resize(ref id_list, Information.UBound(list) + 1);
-                    Array.Resize(ref GUI.ListItemComment, Information.UBound(list) + 1);
+                    Array.Resize(list, Information.UBound(list) + 1 + 1);
+                    Array.Resize(id_list, Information.UBound(list) + 1);
+                    Array.Resize(GUI.ListItemComment, Information.UBound(list) + 1);
 
                     // ユニットのステータスを表示
                     string argoname = "等身大基準";
-                    if (Expression.IsOptionDefined(ref argoname))
+                    if (Expression.IsOptionDefined(argoname))
                     {
                         if (withBlock.Rank < 10)
                         {
-                            string localRightPaddedString() { string argbuf = withBlock.Nickname0; var ret = GeneralLib.RightPaddedString(ref argbuf, 37); withBlock.Nickname0 = argbuf; return ret; }
+                            string localRightPaddedString() { string argbuf = withBlock.Nickname0; var ret = GeneralLib.RightPaddedString(argbuf, 37); withBlock.Nickname0 = argbuf; return ret; }
 
                             list[Information.UBound(list)] = localRightPaddedString() + Strings.StrConv(Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.Rank), VbStrConv.Wide);
                         }
                         else
                         {
-                            string localRightPaddedString1() { string argbuf = withBlock.Nickname0; var ret = GeneralLib.RightPaddedString(ref argbuf, 37); withBlock.Nickname0 = argbuf; return ret; }
+                            string localRightPaddedString1() { string argbuf = withBlock.Nickname0; var ret = GeneralLib.RightPaddedString(argbuf, 37); withBlock.Nickname0 = argbuf; return ret; }
 
                             list[Information.UBound(list)] = localRightPaddedString1() + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.Rank);
                         }
                     }
                     else if (withBlock.Rank < 10)
                     {
-                        string localRightPaddedString2() { string argbuf = withBlock.Nickname0; var ret = GeneralLib.RightPaddedString(ref argbuf, 33); withBlock.Nickname0 = argbuf; return ret; }
+                        string localRightPaddedString2() { string argbuf = withBlock.Nickname0; var ret = GeneralLib.RightPaddedString(argbuf, 33); withBlock.Nickname0 = argbuf; return ret; }
 
                         list[Information.UBound(list)] = localRightPaddedString2() + Strings.StrConv(Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.Rank), VbStrConv.Wide);
                     }
                     else
                     {
-                        string localRightPaddedString3() { string argbuf = withBlock.Nickname0; var ret = GeneralLib.RightPaddedString(ref argbuf, 33); withBlock.Nickname0 = argbuf; return ret; }
+                        string localRightPaddedString3() { string argbuf = withBlock.Nickname0; var ret = GeneralLib.RightPaddedString(argbuf, 33); withBlock.Nickname0 = argbuf; return ret; }
 
                         list[Information.UBound(list)] = localRightPaddedString3() + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.Rank);
                     }
 
-                    string localLeftPaddedString() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.MaxHP); var ret = GeneralLib.LeftPaddedString(ref argbuf, 6); return ret; }
+                    string localLeftPaddedString() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.MaxHP); var ret = GeneralLib.LeftPaddedString(argbuf, 6); return ret; }
 
-                    string localLeftPaddedString1() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.MaxEN); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
+                    string localLeftPaddedString1() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.MaxEN); var ret = GeneralLib.LeftPaddedString(argbuf, 5); return ret; }
 
-                    string localLeftPaddedString2() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.get_Armor("")); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
+                    string localLeftPaddedString2() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.get_Armor("")); var ret = GeneralLib.LeftPaddedString(argbuf, 5); return ret; }
 
-                    string localLeftPaddedString3() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.get_Mobility("")); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
+                    string localLeftPaddedString3() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.get_Mobility("")); var ret = GeneralLib.LeftPaddedString(argbuf, 5); return ret; }
 
                     list[Information.UBound(list)] = list[Information.UBound(list)] + localLeftPaddedString() + localLeftPaddedString1() + localLeftPaddedString2() + localLeftPaddedString3();
                     if (withBlock.CountPilot() > 0)
                     {
                         string argoname1 = "等身大基準";
-                        if (Expression.IsOptionDefined(ref argoname1))
+                        if (Expression.IsOptionDefined(argoname1))
                         {
-                            string localLeftPaddedString4() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.MainPilot().Level); var ret = GeneralLib.LeftPaddedString(ref argbuf, 6); return ret; }
+                            string localLeftPaddedString4() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock.MainPilot().Level); var ret = GeneralLib.LeftPaddedString(argbuf, 6); return ret; }
 
                             list[Information.UBound(list)] = list[Information.UBound(list)] + "  " + localLeftPaddedString4();
                         }
@@ -4563,9 +4560,9 @@ namespace Project1
                     {
                         object argIndex2 = k;
                         {
-                            var withBlock1 = withBlock.Item(ref argIndex2);
+                            var withBlock1 = withBlock.Item(argIndex2);
                             string argfname1 = "非表示";
-                            if ((withBlock1.Class_Renamed() != "固定" | !withBlock1.IsFeatureAvailable(ref argfname1)) & withBlock1.Part() != "非表示")
+                            if ((withBlock1.Class_Renamed() != "固定" | !withBlock1.IsFeatureAvailable(argfname1)) & withBlock1.Part() != "非表示")
                             {
                                 GUI.ListItemComment[Information.UBound(list)] = GUI.ListItemComment[Information.UBound(list)] + withBlock1.Nickname() + " ";
                             }
@@ -4576,7 +4573,7 @@ namespace Project1
                     id_list[Information.UBound(list)] = withBlock.ID;
                 }
 
-                NextLoop:
+            NextLoop:
                 ;
             }
 
@@ -4586,27 +4583,27 @@ namespace Project1
             key_list = new int[Information.UBound(list) + 1];
             {
                 var withBlock2 = SRC.UList;
-                var loopTo2 = (short)Information.UBound(list);
+                var loopTo2 = Information.UBound(list);
                 for (i = 1; i <= loopTo2; i++)
                 {
-                    Unit localItem() { var tmp = id_list; object argIndex1 = tmp[i]; var ret = withBlock2.Item(ref argIndex1); return ret; }
+                    Unit localItem() { var tmp = id_list; object argIndex1 = tmp[i]; var ret = withBlock2.Item(argIndex1); return ret; }
 
                     key_list[i] = localItem().MaxHP;
                 }
             }
 
-            var loopTo3 = (short)(Information.UBound(list) - 1);
+            var loopTo3 = (Information.UBound(list) - 1);
             for (i = 1; i <= loopTo3; i++)
             {
                 max_item = i;
-                max_value = (short)key_list[i];
-                var loopTo4 = (short)Information.UBound(list);
-                for (j = (short)(i + 1); j <= loopTo4; j++)
+                max_value = key_list[i];
+                var loopTo4 = Information.UBound(list);
+                for (j = (i + 1); j <= loopTo4; j++)
                 {
                     if (key_list[j] > max_value)
                     {
                         max_item = j;
-                        max_value = (short)key_list[j];
+                        max_value = key_list[j];
                     }
                 }
 
@@ -4628,7 +4625,7 @@ namespace Project1
             // 換装するユニットを選択
             GUI.TopItem = top_item;
             string argoname2 = "等身大基準";
-            if (Expression.IsOptionDefined(ref argoname2))
+            if (Expression.IsOptionDefined(argoname2))
             {
                 string arglb_caption = "ユニット選択";
                 string argtname = "ランク";
@@ -4641,9 +4638,9 @@ namespace Project1
                 Unit argu3 = null;
                 string argtname4 = "運動";
                 Unit argu4 = null;
-                string arglb_info = "ユニット                         " + Expression.Term(ref argtname, ref argu, 6) + "   " + Expression.Term(ref argtname1, ref argu1, 4) + " " + Expression.Term(ref argtname2, ref argu2, 4) + " " + Expression.Term(ref argtname3, ref argu3, 4) + " " + Expression.Term(ref argtname4, ref argu4, 4) + " レベル";
+                string arglb_info = "ユニット                         " + Expression.Term(argtname, argu, 6) + "   " + Expression.Term(argtname1, argu1, 4) + " " + Expression.Term(argtname2, argu2, 4) + " " + Expression.Term(argtname3, argu3, 4) + " " + Expression.Term(argtname4, argu4, 4) + " レベル";
                 string arglb_mode = "連続表示,コメント";
-                ret = GUI.ListBox(ref arglb_caption, ref list, ref arglb_info, ref arglb_mode);
+                ret = GUI.ListBox(arglb_caption, list, arglb_info, arglb_mode);
             }
             else
             {
@@ -4658,9 +4655,9 @@ namespace Project1
                 Unit argu8 = null;
                 string argtname9 = "運動";
                 Unit argu9 = null;
-                string arglb_info1 = "ユニット                     " + Expression.Term(ref argtname5, ref argu5, 6) + "   " + Expression.Term(ref argtname6, ref argu6, 4) + " " + Expression.Term(ref argtname7, ref argu7, 4) + " " + Expression.Term(ref argtname8, ref argu8, 4) + " " + Expression.Term(ref argtname9, ref argu9, 4) + " パイロット";
+                string arglb_info1 = "ユニット                     " + Expression.Term(argtname5, argu5, 6) + "   " + Expression.Term(argtname6, argu6, 4) + " " + Expression.Term(argtname7, argu7, 4) + " " + Expression.Term(argtname8, argu8, 4) + " " + Expression.Term(argtname9, argu9, 4) + " パイロット";
                 string arglb_mode1 = "連続表示,コメント";
-                ret = GUI.ListBox(ref arglb_caption1, ref list, ref arglb_info1, ref arglb_mode1);
+                ret = GUI.ListBox(arglb_caption1, list, arglb_info1, arglb_mode1);
             }
 
             top_item = GUI.TopItem;
@@ -4674,27 +4671,27 @@ namespace Project1
             // 選択されたユニットを検索
             var tmp = id_list;
             object argIndex3 = tmp[ret];
-            u = SRC.UList.Item(ref argIndex3);
+            u = SRC.UList.Item(argIndex3);
 
             // 換装可能な形態のリストを作成
             {
                 var withBlock3 = u;
                 object argIndex4 = "換装";
-                buf = withBlock3.FeatureData(ref argIndex4);
+                buf = withBlock3.FeatureData(argIndex4);
                 list2 = new string[1];
                 id_list2 = new string[1];
                 GUI.ListItemComment = new string[1];
-                var loopTo5 = GeneralLib.LLength(ref buf);
+                var loopTo5 = GeneralLib.LLength(buf);
                 for (i = 1; i <= loopTo5; i++)
                 {
-                    object argIndex8 = GeneralLib.LIndex(ref buf, i);
+                    object argIndex8 = GeneralLib.LIndex(buf, i);
                     {
-                        var withBlock4 = withBlock3.OtherForm(ref argIndex8);
+                        var withBlock4 = withBlock3.OtherForm(argIndex8);
                         if (withBlock4.IsAvailable())
                         {
-                            Array.Resize(ref list2, Information.UBound(list2) + 1 + 1);
-                            Array.Resize(ref id_list2, Information.UBound(list2) + 1);
-                            Array.Resize(ref GUI.ListItemComment, Information.UBound(list2) + 1);
+                            Array.Resize(list2, Information.UBound(list2) + 1 + 1);
+                            Array.Resize(id_list2, Information.UBound(list2) + 1);
+                            Array.Resize(GUI.ListItemComment, Information.UBound(list2) + 1);
 
                             // ユニットランクを合わせる
                             withBlock4.Rank = u.Rank;
@@ -4706,23 +4703,23 @@ namespace Project1
                             if ((u.Nickname0 ?? "") == (withBlock4.Nickname ?? ""))
                             {
                                 string argbuf = withBlock4.Name;
-                                list2[Information.UBound(list2)] = GeneralLib.RightPaddedString(ref argbuf, 27);
+                                list2[Information.UBound(list2)] = GeneralLib.RightPaddedString(argbuf, 27);
                                 withBlock4.Name = argbuf;
                             }
                             else
                             {
                                 string argbuf1 = withBlock4.Nickname0;
-                                list2[Information.UBound(list2)] = GeneralLib.RightPaddedString(ref argbuf1, 27);
+                                list2[Information.UBound(list2)] = GeneralLib.RightPaddedString(argbuf1, 27);
                                 withBlock4.Nickname0 = argbuf1;
                             }
 
-                            string localLeftPaddedString5() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock4.MaxHP); var ret = GeneralLib.LeftPaddedString(ref argbuf, 6); return ret; }
+                            string localLeftPaddedString5() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock4.MaxHP); var ret = GeneralLib.LeftPaddedString(argbuf, 6); return ret; }
 
-                            string localLeftPaddedString6() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock4.MaxEN); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
+                            string localLeftPaddedString6() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock4.MaxEN); var ret = GeneralLib.LeftPaddedString(argbuf, 5); return ret; }
 
-                            string localLeftPaddedString7() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock4.get_Armor("")); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
+                            string localLeftPaddedString7() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock4.get_Armor("")); var ret = GeneralLib.LeftPaddedString(argbuf, 5); return ret; }
 
-                            string localLeftPaddedString8() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock4.get_Mobility("")); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
+                            string localLeftPaddedString8() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(withBlock4.get_Mobility("")); var ret = GeneralLib.LeftPaddedString(argbuf, 5); return ret; }
 
                             list2[Information.UBound(list2)] = list2[Information.UBound(list2)] + localLeftPaddedString5() + localLeftPaddedString6() + localLeftPaddedString7() + localLeftPaddedString8() + " " + withBlock4.Data.Adaption;
 
@@ -4732,18 +4729,18 @@ namespace Project1
                             for (j = 1; j <= loopTo6; j++)
                             {
                                 string argattr = "合";
-                                if (withBlock4.IsWeaponMastered(j) & !withBlock4.IsDisabled(ref withBlock4.Weapon(j).Name) & !withBlock4.IsWeaponClassifiedAs(j, ref argattr))
+                                if (withBlock4.IsWeaponMastered(j) & !withBlock4.IsDisabled(withBlock4.Weapon(j).Name) & !withBlock4.IsWeaponClassifiedAs(j, argattr))
                                 {
                                     string argtarea1 = "";
-                                    if (withBlock4.WeaponPower(j, ref argtarea1) > max_value)
+                                    if (withBlock4.WeaponPower(j, argtarea1) > max_value)
                                     {
                                         string argtarea = "";
-                                        max_value = (short)withBlock4.WeaponPower(j, ref argtarea);
+                                        max_value = withBlock4.WeaponPower(j, argtarea);
                                     }
                                 }
                             }
 
-                            string localLeftPaddedString9() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(max_value); var ret = GeneralLib.LeftPaddedString(ref argbuf, 7); return ret; }
+                            string localLeftPaddedString9() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(max_value); var ret = GeneralLib.LeftPaddedString(argbuf, 7); return ret; }
 
                             list2[Information.UBound(list2)] = list2[Information.UBound(list2)] + localLeftPaddedString9();
 
@@ -4753,7 +4750,7 @@ namespace Project1
                             for (j = 1; j <= loopTo7; j++)
                             {
                                 string argattr1 = "合";
-                                if (withBlock4.IsWeaponMastered(j) & !withBlock4.IsDisabled(ref withBlock4.Weapon(j).Name) & !withBlock4.IsWeaponClassifiedAs(j, ref argattr1))
+                                if (withBlock4.IsWeaponMastered(j) & !withBlock4.IsDisabled(withBlock4.Weapon(j).Name) & !withBlock4.IsWeaponClassifiedAs(j, argattr1))
                                 {
                                     if (withBlock4.WeaponMaxRange(j) > max_value)
                                     {
@@ -4762,7 +4759,7 @@ namespace Project1
                                 }
                             }
 
-                            string localLeftPaddedString10() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(max_value); var ret = GeneralLib.LeftPaddedString(ref argbuf, 5); return ret; }
+                            string localLeftPaddedString10() { string argbuf = Microsoft.VisualBasic.Compatibility.VB6.Support.Format(max_value); var ret = GeneralLib.LeftPaddedString(argbuf, 5); return ret; }
 
                             list2[Information.UBound(list2)] = list2[Information.UBound(list2)] + localLeftPaddedString10();
 
@@ -4772,14 +4769,14 @@ namespace Project1
                             for (j = 1; j <= loopTo8; j++)
                             {
                                 object argIndex7 = j;
-                                if (!string.IsNullOrEmpty(withBlock4.FeatureName(ref argIndex7)))
+                                if (!string.IsNullOrEmpty(withBlock4.FeatureName(argIndex7)))
                                 {
                                     // 重複する特殊能力は表示しないようチェック
-                                    var loopTo9 = (short)Information.UBound(farray);
+                                    var loopTo9 = Information.UBound(farray);
                                     for (k = 1; k <= loopTo9; k++)
                                     {
                                         object argIndex5 = j;
-                                        if ((withBlock4.FeatureName(ref argIndex5) ?? "") == (farray[k] ?? ""))
+                                        if ((withBlock4.FeatureName(argIndex5) ?? "") == (farray[k] ?? ""))
                                         {
                                             break;
                                         }
@@ -4787,12 +4784,12 @@ namespace Project1
 
                                     if (k > Information.UBound(farray))
                                     {
-                                        string localFeatureName() { object argIndex1 = j; var ret = withBlock4.FeatureName(ref argIndex1); return ret; }
+                                        string localFeatureName() { object argIndex1 = j; var ret = withBlock4.FeatureName(argIndex1); return ret; }
 
                                         GUI.ListItemComment[Information.UBound(list2)] = GUI.ListItemComment[Information.UBound(list2)] + localFeatureName() + " ";
-                                        Array.Resize(ref farray, Information.UBound(farray) + 1 + 1);
+                                        Array.Resize(farray, Information.UBound(farray) + 1 + 1);
                                         object argIndex6 = j;
-                                        farray[Information.UBound(farray)] = withBlock4.FeatureName(ref argIndex6);
+                                        farray[Information.UBound(farray)] = withBlock4.FeatureName(argIndex6);
                                     }
                                 }
                             }
@@ -4809,9 +4806,9 @@ namespace Project1
                 string argtname11 = "ＥＮ";
                 string argtname12 = "装甲";
                 string argtname13 = "運動";
-                string arglb_info2 = "ユニット                     " + Expression.Term(ref argtname10, ref u, 4) + " " + Expression.Term(ref argtname11, ref u, 4) + " " + Expression.Term(ref argtname12, ref u, 4) + " " + Expression.Term(ref argtname13, ref u, 4) + " 適応 攻撃力 射程";
+                string arglb_info2 = "ユニット                     " + Expression.Term(argtname10, u, 4) + " " + Expression.Term(argtname11, u, 4) + " " + Expression.Term(argtname12, u, 4) + " " + Expression.Term(argtname13, u, 4) + " 適応 攻撃力 射程";
                 string arglb_mode2 = "連続表示,コメント";
-                ret = GUI.ListBox(ref arglb_caption2, ref list2, ref arglb_info2, ref arglb_mode2);
+                ret = GUI.ListBox(arglb_caption2, list2, arglb_info2, arglb_mode2);
 
                 // キャンセル？
                 if (ret == 0)
@@ -4820,14 +4817,14 @@ namespace Project1
                 }
 
                 // 換装を実施
-                withBlock3.Transform(ref id_list2[ret]);
+                withBlock3.Transform(id_list2[ret]);
             }
 
             goto Beginning;
         }
 
         // ステータスコマンド中かどうかを返す
-        public static bool InStatusCommand()
+        public bool InStatusCommand()
         {
             bool InStatusCommandRet = default;
             if (string.IsNullOrEmpty(Map.MapFileName))
