@@ -4136,896 +4136,753 @@ namespace SRCCore.Expressions
                 //                        return CallFunctionRet;
                 //                    }
 
-                //                case "x":
-                //                    {
-                //                        switch (pcount)
-                //                        {
-                //                            case 1:
-                //                                {
-                //                                    pname = GetValueAsString(@params[1], is_term[1]);
-                //                                    switch (pname ?? "")
-                //                                    {
-                //                                        case "目標地点":
-                //                                            {
-                //                                                num_result = (double)Commands.SelectedX;
-                //                                                break;
-                //                                            }
-
-                //                                        case "マウス":
-                //                                            {
-                //                                                num_result = (double)GUI.MouseX;
-                //                                                break;
-                //                                            }
-
-                //                                        default:
-                //                                            {
-                //                                                bool localIsDefined33() { object argIndex1 = (object)pname; var ret = SRC.PList.IsDefined(argIndex1); return ret; }
-
-                //                                                object argIndex74 = (object)pname;
-                //                                                if (SRC.UList.IsDefined2(argIndex74))
-                //                                                {
-                //                                                    Unit localItem220() { object argIndex1 = (object)pname; var ret = SRC.UList.Item2(argIndex1); return ret; }
-
-                //                                                    num_result = (double)localItem220().x;
-                //                                                }
-                //                                                else if (localIsDefined33())
-                //                                                {
-                //                                                    object argIndex73 = (object)pname;
-                //                                                    {
-                //                                                        var withBlock45 = SRC.PList.Item(argIndex73);
-                //                                                        if (withBlock45.Unit is object)
-                //                                                        {
-                //                                                            num_result = (double)withBlock45.Unit.x;
-                //                                                        }
-                //                                                    }
-                //                                                }
-
-                //                                                break;
-                //                                            }
-                //                                    }
-
-                //                                    break;
-                //                                }
-
-                //                            case 0:
-                //                                {
-                //                                    if (Event.SelectedUnitForEvent is object)
-                //                                    {
-                //                                        num_result = (double)Event.SelectedUnitForEvent.x;
-                //                                    }
-
-                //                                    break;
-                //                                }
-                //                        }
-
-                //                        if (etype == ValueType.StringType)
-                //                        {
-                //                            str_result = GeneralLib.FormatNum(num_result);
-                //                            CallFunctionRet = ValueType.StringType;
-                //                        }
-                //                        else
-                //                        {
-                //                            CallFunctionRet = ValueType.NumericType;
-                //                        }
-
-                //                        return CallFunctionRet;
-                //                    }
-
-                //                case "y":
-                //                    {
-                //                        switch (pcount)
-                //                        {
-                //                            case 1:
-                //                                {
-                //                                    pname = GetValueAsString(@params[1], is_term[1]);
-                //                                    switch (pname ?? "")
-                //                                    {
-                //                                        case "目標地点":
-                //                                            {
-                //                                                num_result = (double)Commands.SelectedY;
-                //                                                break;
-                //                                            }
-
-                //                                        case "マウス":
-                //                                            {
-                //                                                num_result = (double)GUI.MouseY;
-                //                                                break;
-                //                                            }
-
-                //                                        default:
-                //                                            {
-                //                                                bool localIsDefined34() { object argIndex1 = (object)pname; var ret = SRC.PList.IsDefined(argIndex1); return ret; }
-
-                //                                                object argIndex76 = (object)pname;
-                //                                                if (SRC.UList.IsDefined2(argIndex76))
-                //                                                {
-                //                                                    Unit localItem221() { object argIndex1 = (object)pname; var ret = SRC.UList.Item2(argIndex1); return ret; }
-
-                //                                                    num_result = (double)localItem221().y;
-                //                                                }
-                //                                                else if (localIsDefined34())
-                //                                                {
-                //                                                    object argIndex75 = (object)pname;
-                //                                                    {
-                //                                                        var withBlock46 = SRC.PList.Item(argIndex75);
-                //                                                        if (withBlock46.Unit is object)
-                //                                                        {
-                //                                                            num_result = (double)withBlock46.Unit.y;
-                //                                                        }
-                //                                                    }
-                //                                                }
-
-                //                                                break;
-                //                                            }
-                //                                    }
-
-                //                                    break;
-                //                                }
-
-                //                            case 0:
-                //                                {
-                //                                    if (Event.SelectedUnitForEvent is object)
-                //                                    {
-                //                                        num_result = (double)Event.SelectedUnitForEvent.y;
-                //                                    }
-
-                //                                    break;
-                //                                }
-                //                        }
-
-                //                        if (etype == ValueType.StringType)
-                //                        {
-                //                            str_result = GeneralLib.FormatNum(num_result);
-                //                            CallFunctionRet = ValueType.StringType;
-                //                        }
-                //                        else
-                //                        {
-                //                            CallFunctionRet = ValueType.NumericType;
-                //                        }
-
-                //                        return CallFunctionRet;
-                //                    }
-                //                // ADD START 240a
-                //                case "windowwidth":
-                //                    {
-                //                        if (etype == ValueType.NumericType)
-                //                        {
-                //                            num_result = (double)GUI.MainPWidth;
-                //                            CallFunctionRet = ValueType.NumericType;
-                //                        }
-                //                        else if (etype == ValueType.StringType)
-                //                        {
-                //                            str_result = GUI.MainPWidth.ToString();
-                //                            CallFunctionRet = ValueType.StringType;
-                //                        }
-
-                //                        return CallFunctionRet;
-                //                    }
-
-                //                case "windowheight":
-                //                    {
-                //                        if (etype == ValueType.NumericType)
-                //                        {
-                //                            num_result = (double)GUI.MainPHeight;
-                //                            CallFunctionRet = ValueType.NumericType;
-                //                        }
-                //                        else if (etype == ValueType.StringType)
-                //                        {
-                //                            str_result = GUI.MainPHeight.ToString();
-                //                            CallFunctionRet = ValueType.StringType;
-                //                        }
-
-                //                        return CallFunctionRet;
-                //                    }
-                //                // ADD  END  240a
-                //                case "wx":
-                //                    {
-                //                        switch (pcount)
-                //                        {
-                //                            case 1:
-                //                                {
-                //                                    pname = GetValueAsString(@params[1], is_term[1]);
-                //                                    bool localIsDefined210() { object argIndex1 = (object)pname; var ret = SRC.UList.IsDefined2(argIndex1); return ret; }
-
-                //                                    bool localIsDefined35() { object argIndex1 = (object)pname; var ret = SRC.PList.IsDefined(argIndex1); return ret; }
-
-                //                                    if (GeneralLib.IsNumber(pname))
-                //                                    {
-                //                                        num_result = (double)GeneralLib.StrToLng(pname);
-                //                                    }
-                //                                    else if (pname == "目標地点")
-                //                                    {
-                //                                        num_result = (double)Commands.SelectedX;
-                //                                    }
-                //                                    else if (localIsDefined210())
-                //                                    {
-                //                                        Unit localItem222() { object argIndex1 = (object)pname; var ret = SRC.UList.Item2(argIndex1); return ret; }
-
-                //                                        num_result = (double)localItem222().x;
-                //                                    }
-                //                                    else if (localIsDefined35())
-                //                                    {
-                //                                        object argIndex77 = (object)pname;
-                //                                        {
-                //                                            var withBlock47 = SRC.PList.Item(argIndex77);
-                //                                            if (withBlock47.Unit is object)
-                //                                            {
-                //                                                num_result = (double)withBlock47.Unit.x;
-                //                                            }
-                //                                        }
-                //                                    }
-
-                //                                    break;
-                //                                }
-
-                //                            case 0:
-                //                                {
-                //                                    if (Event.SelectedUnitForEvent is object)
-                //                                    {
-                //                                        num_result = (double)Event.SelectedUnitForEvent.x;
-                //                                    }
-
-                //                                    break;
-                //                                }
-                //                        }
-
-                //                        num_result = (double)GUI.MapToPixelX(num_result);
-                //                        if (etype == ValueType.StringType)
-                //                        {
-                //                            str_result = GeneralLib.FormatNum(num_result);
-                //                            CallFunctionRet = ValueType.StringType;
-                //                        }
-                //                        else
-                //                        {
-                //                            CallFunctionRet = ValueType.NumericType;
-                //                        }
-
-                //                        return CallFunctionRet;
-                //                    }
-
-                //                case "wy":
-                //                    {
-                //                        switch (pcount)
-                //                        {
-                //                            case 1:
-                //                                {
-                //                                    pname = GetValueAsString(@params[1], is_term[1]);
-                //                                    bool localIsDefined211() { object argIndex1 = (object)pname; var ret = SRC.UList.IsDefined2(argIndex1); return ret; }
-
-                //                                    bool localIsDefined36() { object argIndex1 = (object)pname; var ret = SRC.PList.IsDefined(argIndex1); return ret; }
-
-                //                                    if (GeneralLib.IsNumber(pname))
-                //                                    {
-                //                                        num_result = (double)GeneralLib.StrToLng(pname);
-                //                                    }
-                //                                    else if (pname == "目標地点")
-                //                                    {
-                //                                        num_result = (double)Commands.SelectedY;
-                //                                    }
-                //                                    else if (localIsDefined211())
-                //                                    {
-                //                                        Unit localItem223() { object argIndex1 = (object)pname; var ret = SRC.UList.Item2(argIndex1); return ret; }
-
-                //                                        num_result = (double)localItem223().y;
-                //                                    }
-                //                                    else if (localIsDefined36())
-                //                                    {
-                //                                        object argIndex78 = (object)pname;
-                //                                        {
-                //                                            var withBlock48 = SRC.PList.Item(argIndex78);
-                //                                            if (withBlock48.Unit is object)
-                //                                            {
-                //                                                num_result = (double)withBlock48.Unit.y;
-                //                                            }
-                //                                        }
-                //                                    }
-
-                //                                    break;
-                //                                }
-
-                //                            case 0:
-                //                                {
-                //                                    if (Event.SelectedUnitForEvent is object)
-                //                                    {
-                //                                        num_result = (double)Event.SelectedUnitForEvent.y;
-                //                                    }
-
-                //                                    break;
-                //                                }
-                //                        }
-
-                //                        num_result = (double)GUI.MapToPixelY(num_result);
-                //                        if (etype == ValueType.StringType)
-                //                        {
-                //                            str_result = GeneralLib.FormatNum(num_result);
-                //                            CallFunctionRet = ValueType.StringType;
-                //                        }
-                //                        else
-                //                        {
-                //                            CallFunctionRet = ValueType.NumericType;
-                //                        }
-
-                //                        return CallFunctionRet;
-                //                    }
-
-                //                case "wide":
-                //                    {
-                //                        str_result = Strings.StrConv(GetValueAsString(@params[1], is_term[1]), VbStrConv.Wide);
-                //                        CallFunctionRet = ValueType.StringType;
-                //                        return CallFunctionRet;
-                //                    }
-
-                //                // Date型の処理
-                //                case "year":
-                //                    {
-                //                        switch (pcount)
-                //                        {
-                //                            case 1:
-                //                                {
-                //                                    buf = GetValueAsString(@params[1], is_term[1]);
-                //                                    if (Information.IsDate(buf))
-                //                                    {
-                //                                        num_result = (double)DateAndTime.Year(Conversions.ToDate(buf));
-                //                                    }
-                //                                    else
-                //                                    {
-                //                                        num_result = 0d;
-                //                                    }
-
-                //                                    break;
-                //                                }
-
-                //                            case 0:
-                //                                {
-                //                                    num_result = (double)DateAndTime.Year(DateAndTime.Now);
-                //                                    break;
-                //                                }
-                //                        }
-
-                //                        if (etype == ValueType.StringType)
-                //                        {
-                //                            str_result = GeneralLib.FormatNum(num_result);
-                //                            CallFunctionRet = ValueType.StringType;
-                //                        }
-                //                        else
-                //                        {
-                //                            CallFunctionRet = ValueType.NumericType;
-                //                        }
-
-                //                        return CallFunctionRet;
-                //                    }
-
-                //                case "month":
-                //                    {
-                //                        switch (pcount)
-                //                        {
-                //                            case 1:
-                //                                {
-                //                                    buf = GetValueAsString(@params[1], is_term[1]);
-                //                                    if (Information.IsDate(buf))
-                //                                    {
-                //                                        num_result = (double)DateAndTime.Month(Conversions.ToDate(buf));
-                //                                    }
-                //                                    else
-                //                                    {
-                //                                        num_result = 0d;
-                //                                    }
-
-                //                                    break;
-                //                                }
-
-                //                            case 0:
-                //                                {
-                //                                    num_result = (double)DateAndTime.Month(DateAndTime.Now);
-                //                                    break;
-                //                                }
-                //                        }
-
-                //                        if (etype == ValueType.StringType)
-                //                        {
-                //                            str_result = GeneralLib.FormatNum(num_result);
-                //                            CallFunctionRet = ValueType.StringType;
-                //                        }
-                //                        else
-                //                        {
-                //                            CallFunctionRet = ValueType.NumericType;
-                //                        }
-
-                //                        return CallFunctionRet;
-                //                    }
-
-                //                case "weekday":
-                //                    {
-                //                        switch (pcount)
-                //                        {
-                //                            case 1:
-                //                                {
-                //                                    buf = GetValueAsString(@params[1], is_term[1]);
-                //                                    if (Information.IsDate(buf))
-                //                                    {
-                //                                        switch (DateAndTime.Weekday(Conversions.ToDate(buf)))
-                //                                        {
-                //                                            case FirstDayOfWeek.Sunday:
-                //                                                {
-                //                                                    str_result = "日曜";
-                //                                                    break;
-                //                                                }
-
-                //                                            case FirstDayOfWeek.Monday:
-                //                                                {
-                //                                                    str_result = "月曜";
-                //                                                    break;
-                //                                                }
-
-                //                                            case FirstDayOfWeek.Tuesday:
-                //                                                {
-                //                                                    str_result = "火曜";
-                //                                                    break;
-                //                                                }
-
-                //                                            case FirstDayOfWeek.Wednesday:
-                //                                                {
-                //                                                    str_result = "水曜";
-                //                                                    break;
-                //                                                }
-
-                //                                            case FirstDayOfWeek.Thursday:
-                //                                                {
-                //                                                    str_result = "木曜";
-                //                                                    break;
-                //                                                }
-
-                //                                            case FirstDayOfWeek.Friday:
-                //                                                {
-                //                                                    str_result = "金曜";
-                //                                                    break;
-                //                                                }
-
-                //                                            case FirstDayOfWeek.Saturday:
-                //                                                {
-                //                                                    str_result = "土曜";
-                //                                                    break;
-                //                                                }
-                //                                        }
-                //                                    }
-
-                //                                    break;
-                //                                }
-
-                //                            case 0:
-                //                                {
-                //                                    switch (DateAndTime.Weekday(DateAndTime.Now))
-                //                                    {
-                //                                        case FirstDayOfWeek.Sunday:
-                //                                            {
-                //                                                str_result = "日曜";
-                //                                                break;
-                //                                            }
-
-                //                                        case FirstDayOfWeek.Monday:
-                //                                            {
-                //                                                str_result = "月曜";
-                //                                                break;
-                //                                            }
-
-                //                                        case FirstDayOfWeek.Tuesday:
-                //                                            {
-                //                                                str_result = "火曜";
-                //                                                break;
-                //                                            }
-
-                //                                        case FirstDayOfWeek.Wednesday:
-                //                                            {
-                //                                                str_result = "水曜";
-                //                                                break;
-                //                                            }
-
-                //                                        case FirstDayOfWeek.Thursday:
-                //                                            {
-                //                                                str_result = "木曜";
-                //                                                break;
-                //                                            }
-
-                //                                        case FirstDayOfWeek.Friday:
-                //                                            {
-                //                                                str_result = "金曜";
-                //                                                break;
-                //                                            }
-
-                //                                        case FirstDayOfWeek.Saturday:
-                //                                            {
-                //                                                str_result = "土曜";
-                //                                                break;
-                //                                            }
-                //                                    }
-
-                //                                    break;
-                //                                }
-                //                        }
-
-                //                        CallFunctionRet = ValueType.StringType;
-                //                        return CallFunctionRet;
-                //                    }
-
-                //                case "day":
-                //                    {
-                //                        switch (pcount)
-                //                        {
-                //                            case 1:
-                //                                {
-                //                                    buf = GetValueAsString(@params[1], is_term[1]);
-                //                                    if (Information.IsDate(buf))
-                //                                    {
-                //                                        num_result = (double)DateAndTime.Day(Conversions.ToDate(buf));
-                //                                    }
-                //                                    else
-                //                                    {
-                //                                        num_result = 0d;
-                //                                    }
-
-                //                                    break;
-                //                                }
-
-                //                            case 0:
-                //                                {
-                //                                    num_result = (double)DateAndTime.Day(DateAndTime.Now);
-                //                                    break;
-                //                                }
-                //                        }
-
-                //                        if (etype == ValueType.StringType)
-                //                        {
-                //                            str_result = GeneralLib.FormatNum(num_result);
-                //                            CallFunctionRet = ValueType.StringType;
-                //                        }
-                //                        else
-                //                        {
-                //                            CallFunctionRet = ValueType.NumericType;
-                //                        }
-
-                //                        return CallFunctionRet;
-                //                    }
-
-                //                case "hour":
-                //                    {
-                //                        switch (pcount)
-                //                        {
-                //                            case 1:
-                //                                {
-                //                                    buf = GetValueAsString(@params[1], is_term[1]);
-                //                                    if (Information.IsDate(buf))
-                //                                    {
-                //                                        num_result = (double)DateAndTime.Hour(Conversions.ToDate(buf));
-                //                                    }
-                //                                    else
-                //                                    {
-                //                                        num_result = 0d;
-                //                                    }
-
-                //                                    break;
-                //                                }
-
-                //                            case 0:
-                //                                {
-                //                                    num_result = (double)DateAndTime.Hour(DateAndTime.Now);
-                //                                    break;
-                //                                }
-                //                        }
-
-                //                        if (etype == ValueType.StringType)
-                //                        {
-                //                            str_result = GeneralLib.FormatNum(num_result);
-                //                            CallFunctionRet = ValueType.StringType;
-                //                        }
-                //                        else
-                //                        {
-                //                            CallFunctionRet = ValueType.NumericType;
-                //                        }
-
-                //                        return CallFunctionRet;
-                //                    }
-
-                //                case "minute":
-                //                    {
-                //                        switch (pcount)
-                //                        {
-                //                            case 1:
-                //                                {
-                //                                    buf = GetValueAsString(@params[1], is_term[1]);
-                //                                    if (Information.IsDate(buf))
-                //                                    {
-                //                                        num_result = (double)DateAndTime.Minute(Conversions.ToDate(buf));
-                //                                    }
-                //                                    else
-                //                                    {
-                //                                        num_result = 0d;
-                //                                    }
-
-                //                                    break;
-                //                                }
-
-                //                            case 0:
-                //                                {
-                //                                    num_result = (double)DateAndTime.Minute(DateAndTime.Now);
-                //                                    break;
-                //                                }
-                //                        }
-
-                //                        if (etype == ValueType.StringType)
-                //                        {
-                //                            str_result = GeneralLib.FormatNum(num_result);
-                //                            CallFunctionRet = ValueType.StringType;
-                //                        }
-                //                        else
-                //                        {
-                //                            CallFunctionRet = ValueType.NumericType;
-                //                        }
-
-                //                        return CallFunctionRet;
-                //                    }
-
-                //                case "second":
-                //                    {
-                //                        switch (pcount)
-                //                        {
-                //                            case 1:
-                //                                {
-                //                                    buf = GetValueAsString(@params[1], is_term[1]);
-                //                                    if (Information.IsDate(buf))
-                //                                    {
-                //                                        num_result = (double)DateAndTime.Second(Conversions.ToDate(buf));
-                //                                    }
-                //                                    else
-                //                                    {
-                //                                        num_result = 0d;
-                //                                    }
-
-                //                                    break;
-                //                                }
-
-                //                            case 0:
-                //                                {
-                //                                    num_result = (double)DateAndTime.Second(DateAndTime.Now);
-                //                                    break;
-                //                                }
-                //                        }
-
-                //                        if (etype == ValueType.StringType)
-                //                        {
-                //                            str_result = GeneralLib.FormatNum(num_result);
-                //                            CallFunctionRet = ValueType.StringType;
-                //                        }
-                //                        else
-                //                        {
-                //                            CallFunctionRet = ValueType.NumericType;
-                //                        }
-
-                //                        return CallFunctionRet;
-                //                    }
-
-                //                case "difftime":
-                //                    {
-                //                        if (pcount == 2)
-                //                        {
-                //                            if (@params[1] == "Now")
-                //                            {
-                //                                d1 = DateAndTime.Now;
-                //                            }
-                //                            else
-                //                            {
-                //                                buf = GetValueAsString(@params[1], is_term[1]);
-                //                                if (!Information.IsDate(buf))
-                //                                {
-                //                                    return CallFunctionRet;
-                //                                }
-
-                //                                d1 = Conversions.ToDate(buf);
-                //                            }
-
-                //                            if (@params[2] == "Now")
-                //                            {
-                //                                d2 = DateAndTime.Now;
-                //                            }
-                //                            else
-                //                            {
-                //                                buf = GetValueAsString(@params[2], is_term[2]);
-                //                                if (!Information.IsDate(buf))
-                //                                {
-                //                                    return CallFunctionRet;
-                //                                }
-
-                //                                d2 = Conversions.ToDate(buf);
-                //                            }
-
-                //                            num_result = (double)DateAndTime.Second(DateTime.FromOADate(d2.ToOADate() - d1.ToOADate()));
-                //                        }
-
-                //                        if (etype == ValueType.StringType)
-                //                        {
-                //                            str_result = GeneralLib.FormatNum(num_result);
-                //                            CallFunctionRet = ValueType.StringType;
-                //                        }
-                //                        else
-                //                        {
-                //                            CallFunctionRet = ValueType.NumericType;
-                //                        }
-
-                //                        return CallFunctionRet;
-                //                    }
-
-                //                // ダイアログ表示
-                //                case "loadfiledialog":
-                //                    {
-                //                        switch (pcount)
-                //                        {
-                //                            case 2:
-                //                                {
-                //                                    string argdtitle = "ファイルを開く";
-                //                                    string argdefault_file = "";
-                //                                    string argftype = GetValueAsString(@params[1], is_term[1]);
-                //                                    string argfsuffix = GetValueAsString(@params[2], is_term[2]);
-                //                                    string argftype2 = "";
-                //                                    string argfsuffix2 = "";
-                //                                    string argftype3 = "";
-                //                                    string argfsuffix3 = "";
-                //                                    str_result = FileDialog.LoadFileDialog(argdtitle, SRC.ScenarioPath, argdefault_file, 2, argftype, argfsuffix, ftype2: argftype2, fsuffix2: argfsuffix2, ftype3: argftype3, fsuffix3: argfsuffix3);
-                //                                    break;
-                //                                }
-
-                //                            case 3:
-                //                                {
-                //                                    string argdtitle1 = "ファイルを開く";
-                //                                    string argdefault_file1 = GetValueAsString(@params[3], is_term[3]);
-                //                                    string argftype1 = GetValueAsString(@params[1], is_term[1]);
-                //                                    string argfsuffix1 = GetValueAsString(@params[2], is_term[2]);
-                //                                    string argftype21 = "";
-                //                                    string argfsuffix21 = "";
-                //                                    string argftype31 = "";
-                //                                    string argfsuffix31 = "";
-                //                                    str_result = FileDialog.LoadFileDialog(argdtitle1, SRC.ScenarioPath, argdefault_file1, 2, argftype1, argfsuffix1, ftype2: argftype21, fsuffix2: argfsuffix21, ftype3: argftype31, fsuffix3: argfsuffix31);
-                //                                    break;
-                //                                }
-
-                //                            case 4:
-                //                                {
-                //                                    string argdtitle2 = "ファイルを開く";
-                //                                    string argfpath = SRC.ScenarioPath + GetValueAsString(@params[4], is_term[4]);
-                //                                    string argdefault_file2 = GetValueAsString(@params[3], is_term[3]);
-                //                                    string argftype4 = GetValueAsString(@params[1], is_term[1]);
-                //                                    string argfsuffix4 = GetValueAsString(@params[2], is_term[2]);
-                //                                    string argftype22 = "";
-                //                                    string argfsuffix22 = "";
-                //                                    string argftype32 = "";
-                //                                    string argfsuffix32 = "";
-                //                                    str_result = FileDialog.LoadFileDialog(argdtitle2, argfpath, argdefault_file2, 2, argftype4, argfsuffix4, ftype2: argftype22, fsuffix2: argfsuffix22, ftype3: argftype32, fsuffix3: argfsuffix32);
-                //                                    break;
-                //                                }
-                //                        }
-
-                //                        CallFunctionRet = ValueType.StringType;
-
-                //                        // 本当はこれだけでいいはずだけど……
-                //                        if (Strings.InStr(str_result, SRC.ScenarioPath) > 0)
-                //                        {
-                //                            str_result = Strings.Mid(str_result, Strings.Len(SRC.ScenarioPath) + 1);
-                //                            return CallFunctionRet;
-                //                        }
-
-                //                        // フルパス指定ならここで終了
-                //                        if (Strings.Right(Strings.Left(str_result, 3), 2) == @":\")
-                //                        {
-                //                            str_result = "";
-                //                            return CallFunctionRet;
-                //                        }
-
-                //                        // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
-                //                        while (string.IsNullOrEmpty(FileSystem.Dir(SRC.ScenarioPath + str_result, FileAttribute.Normal)))
-                //                        {
-                //                            if (Strings.InStr(str_result, @"\") == 0)
-                //                            {
-                //                                // シナリオフォルダ外のファイルだった
-                //                                str_result = "";
-                //                                return CallFunctionRet;
-                //                            }
-
-                //                            str_result = Strings.Mid(str_result, Strings.InStr(str_result, @"\") + 1);
-                //                        }
-
-                //                        return CallFunctionRet;
-                //                    }
-
-                //                case "savefiledialog":
-                //                    {
-                //                        switch (pcount)
-                //                        {
-                //                            case 2:
-                //                                {
-                //                                    string argdtitle3 = "ファイルを保存";
-                //                                    string argdefault_file3 = "";
-                //                                    string argftype5 = GetValueAsString(@params[1], is_term[1]);
-                //                                    string argfsuffix5 = GetValueAsString(@params[2], is_term[2]);
-                //                                    string argftype23 = "";
-                //                                    string argfsuffix23 = "";
-                //                                    string argftype33 = "";
-                //                                    string argfsuffix33 = "";
-                //                                    str_result = FileDialog.SaveFileDialog(argdtitle3, SRC.ScenarioPath, argdefault_file3, 2, argftype5, argfsuffix5, ftype2: argftype23, fsuffix2: argfsuffix23, ftype3: argftype33, fsuffix3: argfsuffix33);
-                //                                    break;
-                //                                }
-
-                //                            case 3:
-                //                                {
-                //                                    string argdtitle4 = "ファイルを保存";
-                //                                    string argdefault_file4 = GetValueAsString(@params[3], is_term[3]);
-                //                                    string argftype6 = GetValueAsString(@params[1], is_term[1]);
-                //                                    string argfsuffix6 = GetValueAsString(@params[2], is_term[2]);
-                //                                    string argftype24 = "";
-                //                                    string argfsuffix24 = "";
-                //                                    string argftype34 = "";
-                //                                    string argfsuffix34 = "";
-                //                                    str_result = FileDialog.SaveFileDialog(argdtitle4, SRC.ScenarioPath, argdefault_file4, 2, argftype6, argfsuffix6, ftype2: argftype24, fsuffix2: argfsuffix24, ftype3: argftype34, fsuffix3: argfsuffix34);
-                //                                    break;
-                //                                }
-
-                //                            case 4:
-                //                                {
-                //                                    string argdtitle5 = "ファイルを保存";
-                //                                    string argfpath1 = SRC.ScenarioPath + GetValueAsString(@params[4], is_term[4]);
-                //                                    string argdefault_file5 = GetValueAsString(@params[3], is_term[3]);
-                //                                    string argftype7 = GetValueAsString(@params[1], is_term[1]);
-                //                                    string argfsuffix7 = GetValueAsString(@params[2], is_term[2]);
-                //                                    string argftype25 = "";
-                //                                    string argfsuffix25 = "";
-                //                                    string argftype35 = "";
-                //                                    string argfsuffix35 = "";
-                //                                    str_result = FileDialog.SaveFileDialog(argdtitle5, argfpath1, argdefault_file5, 2, argftype7, argfsuffix7, ftype2: argftype25, fsuffix2: argfsuffix25, ftype3: argftype35, fsuffix3: argfsuffix35);
-                //                                    break;
-                //                                }
-                //                        }
-
-                //                        CallFunctionRet = ValueType.StringType;
-
-                //                        // 本当はこれだけでいいはずだけど……
-                //                        if (Strings.InStr(str_result, SRC.ScenarioPath) > 0)
-                //                        {
-                //                            str_result = Strings.Mid(str_result, Strings.Len(SRC.ScenarioPath) + 1);
-                //                            return CallFunctionRet;
-                //                        }
-
-                //                        if (Strings.InStr(str_result, @"\") == 0)
-                //                        {
-                //                            return CallFunctionRet;
-                //                        }
-
-                //                        var loopTo13 = Strings.Len(str_result);
-                //                        for (i = 1; i <= loopTo13; i++)
-                //                        {
-                //                            if (Strings.Mid(str_result, Strings.Len(str_result) - i + 1, 1) == @"\")
-                //                            {
-                //                                break;
-                //                            }
-                //                        }
-
-                //                        buf = Strings.Left(str_result, Strings.Len(str_result) - i);
-                //                        str_result = Strings.Mid(str_result, Strings.Len(str_result) - i + 2);
-                //                        while (Strings.InStr(buf, @"\") > 0)
-                //                        {
-                //                            buf = Strings.Mid(buf, Strings.InStr(buf, @"\") + 1);
-                //                            // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
-                //                            if (!string.IsNullOrEmpty(FileSystem.Dir(SRC.ScenarioPath + buf, FileAttribute.Directory)))
-                //                            {
-                //                                str_result = buf + @"\" + str_result;
-                //                                return CallFunctionRet;
-                //                            }
-                //                        }
-
-                //                        // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
-                //                        if (!string.IsNullOrEmpty(FileSystem.Dir(SRC.ScenarioPath + buf, FileAttribute.Directory)))
-                //                        {
-                //                            str_result = buf + @"\" + str_result;
-                //                        }
-
-                //                        return CallFunctionRet;
-                //                    }
+                case "x":
+                    return this.X(etype, @params, pcount, is_term, out str_result, out num_result);
+
+                case "y":
+                    return this.Y(etype, @params, pcount, is_term, out str_result, out num_result);
+
+                    //                // ADD START 240a
+                    //                case "windowwidth":
+                    //                    {
+                    //                        if (etype == ValueType.NumericType)
+                    //                        {
+                    //                            num_result = (double)GUI.MainPWidth;
+                    //                            CallFunctionRet = ValueType.NumericType;
+                    //                        }
+                    //                        else if (etype == ValueType.StringType)
+                    //                        {
+                    //                            str_result = GUI.MainPWidth.ToString();
+                    //                            CallFunctionRet = ValueType.StringType;
+                    //                        }
+
+                    //                        return CallFunctionRet;
+                    //                    }
+
+                    //                case "windowheight":
+                    //                    {
+                    //                        if (etype == ValueType.NumericType)
+                    //                        {
+                    //                            num_result = (double)GUI.MainPHeight;
+                    //                            CallFunctionRet = ValueType.NumericType;
+                    //                        }
+                    //                        else if (etype == ValueType.StringType)
+                    //                        {
+                    //                            str_result = GUI.MainPHeight.ToString();
+                    //                            CallFunctionRet = ValueType.StringType;
+                    //                        }
+
+                    //                        return CallFunctionRet;
+                    //                    }
+                    //                // ADD  END  240a
+                    //                case "wx":
+                    //                    {
+                    //                        switch (pcount)
+                    //                        {
+                    //                            case 1:
+                    //                                {
+                    //                                    pname = GetValueAsString(@params[1], is_term[1]);
+                    //                                    bool localIsDefined210() { object argIndex1 = (object)pname; var ret = SRC.UList.IsDefined2(argIndex1); return ret; }
+
+                    //                                    bool localIsDefined35() { object argIndex1 = (object)pname; var ret = SRC.PList.IsDefined(argIndex1); return ret; }
+
+                    //                                    if (GeneralLib.IsNumber(pname))
+                    //                                    {
+                    //                                        num_result = (double)GeneralLib.StrToLng(pname);
+                    //                                    }
+                    //                                    else if (pname == "目標地点")
+                    //                                    {
+                    //                                        num_result = (double)Commands.SelectedX;
+                    //                                    }
+                    //                                    else if (localIsDefined210())
+                    //                                    {
+                    //                                        Unit localItem222() { object argIndex1 = (object)pname; var ret = SRC.UList.Item2(argIndex1); return ret; }
+
+                    //                                        num_result = (double)localItem222().x;
+                    //                                    }
+                    //                                    else if (localIsDefined35())
+                    //                                    {
+                    //                                        object argIndex77 = (object)pname;
+                    //                                        {
+                    //                                            var withBlock47 = SRC.PList.Item(argIndex77);
+                    //                                            if (withBlock47.Unit is object)
+                    //                                            {
+                    //                                                num_result = (double)withBlock47.Unit.x;
+                    //                                            }
+                    //                                        }
+                    //                                    }
+
+                    //                                    break;
+                    //                                }
+
+                    //                            case 0:
+                    //                                {
+                    //                                    if (Event.SelectedUnitForEvent is object)
+                    //                                    {
+                    //                                        num_result = (double)Event.SelectedUnitForEvent.x;
+                    //                                    }
+
+                    //                                    break;
+                    //                                }
+                    //                        }
+
+                    //                        num_result = (double)GUI.MapToPixelX(num_result);
+                    //                        if (etype == ValueType.StringType)
+                    //                        {
+                    //                            str_result = GeneralLib.FormatNum(num_result);
+                    //                            CallFunctionRet = ValueType.StringType;
+                    //                        }
+                    //                        else
+                    //                        {
+                    //                            CallFunctionRet = ValueType.NumericType;
+                    //                        }
+
+                    //                        return CallFunctionRet;
+                    //                    }
+
+                    //                case "wy":
+                    //                    {
+                    //                        switch (pcount)
+                    //                        {
+                    //                            case 1:
+                    //                                {
+                    //                                    pname = GetValueAsString(@params[1], is_term[1]);
+                    //                                    bool localIsDefined211() { object argIndex1 = (object)pname; var ret = SRC.UList.IsDefined2(argIndex1); return ret; }
+
+                    //                                    bool localIsDefined36() { object argIndex1 = (object)pname; var ret = SRC.PList.IsDefined(argIndex1); return ret; }
+
+                    //                                    if (GeneralLib.IsNumber(pname))
+                    //                                    {
+                    //                                        num_result = (double)GeneralLib.StrToLng(pname);
+                    //                                    }
+                    //                                    else if (pname == "目標地点")
+                    //                                    {
+                    //                                        num_result = (double)Commands.SelectedY;
+                    //                                    }
+                    //                                    else if (localIsDefined211())
+                    //                                    {
+                    //                                        Unit localItem223() { object argIndex1 = (object)pname; var ret = SRC.UList.Item2(argIndex1); return ret; }
+
+                    //                                        num_result = (double)localItem223().y;
+                    //                                    }
+                    //                                    else if (localIsDefined36())
+                    //                                    {
+                    //                                        object argIndex78 = (object)pname;
+                    //                                        {
+                    //                                            var withBlock48 = SRC.PList.Item(argIndex78);
+                    //                                            if (withBlock48.Unit is object)
+                    //                                            {
+                    //                                                num_result = (double)withBlock48.Unit.y;
+                    //                                            }
+                    //                                        }
+                    //                                    }
+
+                    //                                    break;
+                    //                                }
+
+                    //                            case 0:
+                    //                                {
+                    //                                    if (Event.SelectedUnitForEvent is object)
+                    //                                    {
+                    //                                        num_result = (double)Event.SelectedUnitForEvent.y;
+                    //                                    }
+
+                    //                                    break;
+                    //                                }
+                    //                        }
+
+                    //                        num_result = (double)GUI.MapToPixelY(num_result);
+                    //                        if (etype == ValueType.StringType)
+                    //                        {
+                    //                            str_result = GeneralLib.FormatNum(num_result);
+                    //                            CallFunctionRet = ValueType.StringType;
+                    //                        }
+                    //                        else
+                    //                        {
+                    //                            CallFunctionRet = ValueType.NumericType;
+                    //                        }
+
+                    //                        return CallFunctionRet;
+                    //                    }
+
+                    //                case "wide":
+                    //                    {
+                    //                        str_result = Strings.StrConv(GetValueAsString(@params[1], is_term[1]), VbStrConv.Wide);
+                    //                        CallFunctionRet = ValueType.StringType;
+                    //                        return CallFunctionRet;
+                    //                    }
+
+                    //                // Date型の処理
+                    //                case "year":
+                    //                    {
+                    //                        switch (pcount)
+                    //                        {
+                    //                            case 1:
+                    //                                {
+                    //                                    buf = GetValueAsString(@params[1], is_term[1]);
+                    //                                    if (Information.IsDate(buf))
+                    //                                    {
+                    //                                        num_result = (double)DateAndTime.Year(Conversions.ToDate(buf));
+                    //                                    }
+                    //                                    else
+                    //                                    {
+                    //                                        num_result = 0d;
+                    //                                    }
+
+                    //                                    break;
+                    //                                }
+
+                    //                            case 0:
+                    //                                {
+                    //                                    num_result = (double)DateAndTime.Year(DateAndTime.Now);
+                    //                                    break;
+                    //                                }
+                    //                        }
+
+                    //                        if (etype == ValueType.StringType)
+                    //                        {
+                    //                            str_result = GeneralLib.FormatNum(num_result);
+                    //                            CallFunctionRet = ValueType.StringType;
+                    //                        }
+                    //                        else
+                    //                        {
+                    //                            CallFunctionRet = ValueType.NumericType;
+                    //                        }
+
+                    //                        return CallFunctionRet;
+                    //                    }
+
+                    //                case "month":
+                    //                    {
+                    //                        switch (pcount)
+                    //                        {
+                    //                            case 1:
+                    //                                {
+                    //                                    buf = GetValueAsString(@params[1], is_term[1]);
+                    //                                    if (Information.IsDate(buf))
+                    //                                    {
+                    //                                        num_result = (double)DateAndTime.Month(Conversions.ToDate(buf));
+                    //                                    }
+                    //                                    else
+                    //                                    {
+                    //                                        num_result = 0d;
+                    //                                    }
+
+                    //                                    break;
+                    //                                }
+
+                    //                            case 0:
+                    //                                {
+                    //                                    num_result = (double)DateAndTime.Month(DateAndTime.Now);
+                    //                                    break;
+                    //                                }
+                    //                        }
+
+                    //                        if (etype == ValueType.StringType)
+                    //                        {
+                    //                            str_result = GeneralLib.FormatNum(num_result);
+                    //                            CallFunctionRet = ValueType.StringType;
+                    //                        }
+                    //                        else
+                    //                        {
+                    //                            CallFunctionRet = ValueType.NumericType;
+                    //                        }
+
+                    //                        return CallFunctionRet;
+                    //                    }
+
+                    //                case "weekday":
+                    //                    {
+                    //                        switch (pcount)
+                    //                        {
+                    //                            case 1:
+                    //                                {
+                    //                                    buf = GetValueAsString(@params[1], is_term[1]);
+                    //                                    if (Information.IsDate(buf))
+                    //                                    {
+                    //                                        switch (DateAndTime.Weekday(Conversions.ToDate(buf)))
+                    //                                        {
+                    //                                            case FirstDayOfWeek.Sunday:
+                    //                                                {
+                    //                                                    str_result = "日曜";
+                    //                                                    break;
+                    //                                                }
+
+                    //                                            case FirstDayOfWeek.Monday:
+                    //                                                {
+                    //                                                    str_result = "月曜";
+                    //                                                    break;
+                    //                                                }
+
+                    //                                            case FirstDayOfWeek.Tuesday:
+                    //                                                {
+                    //                                                    str_result = "火曜";
+                    //                                                    break;
+                    //                                                }
+
+                    //                                            case FirstDayOfWeek.Wednesday:
+                    //                                                {
+                    //                                                    str_result = "水曜";
+                    //                                                    break;
+                    //                                                }
+
+                    //                                            case FirstDayOfWeek.Thursday:
+                    //                                                {
+                    //                                                    str_result = "木曜";
+                    //                                                    break;
+                    //                                                }
+
+                    //                                            case FirstDayOfWeek.Friday:
+                    //                                                {
+                    //                                                    str_result = "金曜";
+                    //                                                    break;
+                    //                                                }
+
+                    //                                            case FirstDayOfWeek.Saturday:
+                    //                                                {
+                    //                                                    str_result = "土曜";
+                    //                                                    break;
+                    //                                                }
+                    //                                        }
+                    //                                    }
+
+                    //                                    break;
+                    //                                }
+
+                    //                            case 0:
+                    //                                {
+                    //                                    switch (DateAndTime.Weekday(DateAndTime.Now))
+                    //                                    {
+                    //                                        case FirstDayOfWeek.Sunday:
+                    //                                            {
+                    //                                                str_result = "日曜";
+                    //                                                break;
+                    //                                            }
+
+                    //                                        case FirstDayOfWeek.Monday:
+                    //                                            {
+                    //                                                str_result = "月曜";
+                    //                                                break;
+                    //                                            }
+
+                    //                                        case FirstDayOfWeek.Tuesday:
+                    //                                            {
+                    //                                                str_result = "火曜";
+                    //                                                break;
+                    //                                            }
+
+                    //                                        case FirstDayOfWeek.Wednesday:
+                    //                                            {
+                    //                                                str_result = "水曜";
+                    //                                                break;
+                    //                                            }
+
+                    //                                        case FirstDayOfWeek.Thursday:
+                    //                                            {
+                    //                                                str_result = "木曜";
+                    //                                                break;
+                    //                                            }
+
+                    //                                        case FirstDayOfWeek.Friday:
+                    //                                            {
+                    //                                                str_result = "金曜";
+                    //                                                break;
+                    //                                            }
+
+                    //                                        case FirstDayOfWeek.Saturday:
+                    //                                            {
+                    //                                                str_result = "土曜";
+                    //                                                break;
+                    //                                            }
+                    //                                    }
+
+                    //                                    break;
+                    //                                }
+                    //                        }
+
+                    //                        CallFunctionRet = ValueType.StringType;
+                    //                        return CallFunctionRet;
+                    //                    }
+
+                    //                case "day":
+                    //                    {
+                    //                        switch (pcount)
+                    //                        {
+                    //                            case 1:
+                    //                                {
+                    //                                    buf = GetValueAsString(@params[1], is_term[1]);
+                    //                                    if (Information.IsDate(buf))
+                    //                                    {
+                    //                                        num_result = (double)DateAndTime.Day(Conversions.ToDate(buf));
+                    //                                    }
+                    //                                    else
+                    //                                    {
+                    //                                        num_result = 0d;
+                    //                                    }
+
+                    //                                    break;
+                    //                                }
+
+                    //                            case 0:
+                    //                                {
+                    //                                    num_result = (double)DateAndTime.Day(DateAndTime.Now);
+                    //                                    break;
+                    //                                }
+                    //                        }
+
+                    //                        if (etype == ValueType.StringType)
+                    //                        {
+                    //                            str_result = GeneralLib.FormatNum(num_result);
+                    //                            CallFunctionRet = ValueType.StringType;
+                    //                        }
+                    //                        else
+                    //                        {
+                    //                            CallFunctionRet = ValueType.NumericType;
+                    //                        }
+
+                    //                        return CallFunctionRet;
+                    //                    }
+
+                    //                case "hour":
+                    //                    {
+                    //                        switch (pcount)
+                    //                        {
+                    //                            case 1:
+                    //                                {
+                    //                                    buf = GetValueAsString(@params[1], is_term[1]);
+                    //                                    if (Information.IsDate(buf))
+                    //                                    {
+                    //                                        num_result = (double)DateAndTime.Hour(Conversions.ToDate(buf));
+                    //                                    }
+                    //                                    else
+                    //                                    {
+                    //                                        num_result = 0d;
+                    //                                    }
+
+                    //                                    break;
+                    //                                }
+
+                    //                            case 0:
+                    //                                {
+                    //                                    num_result = (double)DateAndTime.Hour(DateAndTime.Now);
+                    //                                    break;
+                    //                                }
+                    //                        }
+
+                    //                        if (etype == ValueType.StringType)
+                    //                        {
+                    //                            str_result = GeneralLib.FormatNum(num_result);
+                    //                            CallFunctionRet = ValueType.StringType;
+                    //                        }
+                    //                        else
+                    //                        {
+                    //                            CallFunctionRet = ValueType.NumericType;
+                    //                        }
+
+                    //                        return CallFunctionRet;
+                    //                    }
+
+                    //                case "minute":
+                    //                    {
+                    //                        switch (pcount)
+                    //                        {
+                    //                            case 1:
+                    //                                {
+                    //                                    buf = GetValueAsString(@params[1], is_term[1]);
+                    //                                    if (Information.IsDate(buf))
+                    //                                    {
+                    //                                        num_result = (double)DateAndTime.Minute(Conversions.ToDate(buf));
+                    //                                    }
+                    //                                    else
+                    //                                    {
+                    //                                        num_result = 0d;
+                    //                                    }
+
+                    //                                    break;
+                    //                                }
+
+                    //                            case 0:
+                    //                                {
+                    //                                    num_result = (double)DateAndTime.Minute(DateAndTime.Now);
+                    //                                    break;
+                    //                                }
+                    //                        }
+
+                    //                        if (etype == ValueType.StringType)
+                    //                        {
+                    //                            str_result = GeneralLib.FormatNum(num_result);
+                    //                            CallFunctionRet = ValueType.StringType;
+                    //                        }
+                    //                        else
+                    //                        {
+                    //                            CallFunctionRet = ValueType.NumericType;
+                    //                        }
+
+                    //                        return CallFunctionRet;
+                    //                    }
+
+                    //                case "second":
+                    //                    {
+                    //                        switch (pcount)
+                    //                        {
+                    //                            case 1:
+                    //                                {
+                    //                                    buf = GetValueAsString(@params[1], is_term[1]);
+                    //                                    if (Information.IsDate(buf))
+                    //                                    {
+                    //                                        num_result = (double)DateAndTime.Second(Conversions.ToDate(buf));
+                    //                                    }
+                    //                                    else
+                    //                                    {
+                    //                                        num_result = 0d;
+                    //                                    }
+
+                    //                                    break;
+                    //                                }
+
+                    //                            case 0:
+                    //                                {
+                    //                                    num_result = (double)DateAndTime.Second(DateAndTime.Now);
+                    //                                    break;
+                    //                                }
+                    //                        }
+
+                    //                        if (etype == ValueType.StringType)
+                    //                        {
+                    //                            str_result = GeneralLib.FormatNum(num_result);
+                    //                            CallFunctionRet = ValueType.StringType;
+                    //                        }
+                    //                        else
+                    //                        {
+                    //                            CallFunctionRet = ValueType.NumericType;
+                    //                        }
+
+                    //                        return CallFunctionRet;
+                    //                    }
+
+                    //                case "difftime":
+                    //                    {
+                    //                        if (pcount == 2)
+                    //                        {
+                    //                            if (@params[1] == "Now")
+                    //                            {
+                    //                                d1 = DateAndTime.Now;
+                    //                            }
+                    //                            else
+                    //                            {
+                    //                                buf = GetValueAsString(@params[1], is_term[1]);
+                    //                                if (!Information.IsDate(buf))
+                    //                                {
+                    //                                    return CallFunctionRet;
+                    //                                }
+
+                    //                                d1 = Conversions.ToDate(buf);
+                    //                            }
+
+                    //                            if (@params[2] == "Now")
+                    //                            {
+                    //                                d2 = DateAndTime.Now;
+                    //                            }
+                    //                            else
+                    //                            {
+                    //                                buf = GetValueAsString(@params[2], is_term[2]);
+                    //                                if (!Information.IsDate(buf))
+                    //                                {
+                    //                                    return CallFunctionRet;
+                    //                                }
+
+                    //                                d2 = Conversions.ToDate(buf);
+                    //                            }
+
+                    //                            num_result = (double)DateAndTime.Second(DateTime.FromOADate(d2.ToOADate() - d1.ToOADate()));
+                    //                        }
+
+                    //                        if (etype == ValueType.StringType)
+                    //                        {
+                    //                            str_result = GeneralLib.FormatNum(num_result);
+                    //                            CallFunctionRet = ValueType.StringType;
+                    //                        }
+                    //                        else
+                    //                        {
+                    //                            CallFunctionRet = ValueType.NumericType;
+                    //                        }
+
+                    //                        return CallFunctionRet;
+                    //                    }
+
+                    //                // ダイアログ表示
+                    //                case "loadfiledialog":
+                    //                    {
+                    //                        switch (pcount)
+                    //                        {
+                    //                            case 2:
+                    //                                {
+                    //                                    string argdtitle = "ファイルを開く";
+                    //                                    string argdefault_file = "";
+                    //                                    string argftype = GetValueAsString(@params[1], is_term[1]);
+                    //                                    string argfsuffix = GetValueAsString(@params[2], is_term[2]);
+                    //                                    string argftype2 = "";
+                    //                                    string argfsuffix2 = "";
+                    //                                    string argftype3 = "";
+                    //                                    string argfsuffix3 = "";
+                    //                                    str_result = FileDialog.LoadFileDialog(argdtitle, SRC.ScenarioPath, argdefault_file, 2, argftype, argfsuffix, ftype2: argftype2, fsuffix2: argfsuffix2, ftype3: argftype3, fsuffix3: argfsuffix3);
+                    //                                    break;
+                    //                                }
+
+                    //                            case 3:
+                    //                                {
+                    //                                    string argdtitle1 = "ファイルを開く";
+                    //                                    string argdefault_file1 = GetValueAsString(@params[3], is_term[3]);
+                    //                                    string argftype1 = GetValueAsString(@params[1], is_term[1]);
+                    //                                    string argfsuffix1 = GetValueAsString(@params[2], is_term[2]);
+                    //                                    string argftype21 = "";
+                    //                                    string argfsuffix21 = "";
+                    //                                    string argftype31 = "";
+                    //                                    string argfsuffix31 = "";
+                    //                                    str_result = FileDialog.LoadFileDialog(argdtitle1, SRC.ScenarioPath, argdefault_file1, 2, argftype1, argfsuffix1, ftype2: argftype21, fsuffix2: argfsuffix21, ftype3: argftype31, fsuffix3: argfsuffix31);
+                    //                                    break;
+                    //                                }
+
+                    //                            case 4:
+                    //                                {
+                    //                                    string argdtitle2 = "ファイルを開く";
+                    //                                    string argfpath = SRC.ScenarioPath + GetValueAsString(@params[4], is_term[4]);
+                    //                                    string argdefault_file2 = GetValueAsString(@params[3], is_term[3]);
+                    //                                    string argftype4 = GetValueAsString(@params[1], is_term[1]);
+                    //                                    string argfsuffix4 = GetValueAsString(@params[2], is_term[2]);
+                    //                                    string argftype22 = "";
+                    //                                    string argfsuffix22 = "";
+                    //                                    string argftype32 = "";
+                    //                                    string argfsuffix32 = "";
+                    //                                    str_result = FileDialog.LoadFileDialog(argdtitle2, argfpath, argdefault_file2, 2, argftype4, argfsuffix4, ftype2: argftype22, fsuffix2: argfsuffix22, ftype3: argftype32, fsuffix3: argfsuffix32);
+                    //                                    break;
+                    //                                }
+                    //                        }
+
+                    //                        CallFunctionRet = ValueType.StringType;
+
+                    //                        // 本当はこれだけでいいはずだけど……
+                    //                        if (Strings.InStr(str_result, SRC.ScenarioPath) > 0)
+                    //                        {
+                    //                            str_result = Strings.Mid(str_result, Strings.Len(SRC.ScenarioPath) + 1);
+                    //                            return CallFunctionRet;
+                    //                        }
+
+                    //                        // フルパス指定ならここで終了
+                    //                        if (Strings.Right(Strings.Left(str_result, 3), 2) == @":\")
+                    //                        {
+                    //                            str_result = "";
+                    //                            return CallFunctionRet;
+                    //                        }
+
+                    //                        // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
+                    //                        while (string.IsNullOrEmpty(FileSystem.Dir(SRC.ScenarioPath + str_result, FileAttribute.Normal)))
+                    //                        {
+                    //                            if (Strings.InStr(str_result, @"\") == 0)
+                    //                            {
+                    //                                // シナリオフォルダ外のファイルだった
+                    //                                str_result = "";
+                    //                                return CallFunctionRet;
+                    //                            }
+
+                    //                            str_result = Strings.Mid(str_result, Strings.InStr(str_result, @"\") + 1);
+                    //                        }
+
+                    //                        return CallFunctionRet;
+                    //                    }
+
+                    //                case "savefiledialog":
+                    //                    {
+                    //                        switch (pcount)
+                    //                        {
+                    //                            case 2:
+                    //                                {
+                    //                                    string argdtitle3 = "ファイルを保存";
+                    //                                    string argdefault_file3 = "";
+                    //                                    string argftype5 = GetValueAsString(@params[1], is_term[1]);
+                    //                                    string argfsuffix5 = GetValueAsString(@params[2], is_term[2]);
+                    //                                    string argftype23 = "";
+                    //                                    string argfsuffix23 = "";
+                    //                                    string argftype33 = "";
+                    //                                    string argfsuffix33 = "";
+                    //                                    str_result = FileDialog.SaveFileDialog(argdtitle3, SRC.ScenarioPath, argdefault_file3, 2, argftype5, argfsuffix5, ftype2: argftype23, fsuffix2: argfsuffix23, ftype3: argftype33, fsuffix3: argfsuffix33);
+                    //                                    break;
+                    //                                }
+
+                    //                            case 3:
+                    //                                {
+                    //                                    string argdtitle4 = "ファイルを保存";
+                    //                                    string argdefault_file4 = GetValueAsString(@params[3], is_term[3]);
+                    //                                    string argftype6 = GetValueAsString(@params[1], is_term[1]);
+                    //                                    string argfsuffix6 = GetValueAsString(@params[2], is_term[2]);
+                    //                                    string argftype24 = "";
+                    //                                    string argfsuffix24 = "";
+                    //                                    string argftype34 = "";
+                    //                                    string argfsuffix34 = "";
+                    //                                    str_result = FileDialog.SaveFileDialog(argdtitle4, SRC.ScenarioPath, argdefault_file4, 2, argftype6, argfsuffix6, ftype2: argftype24, fsuffix2: argfsuffix24, ftype3: argftype34, fsuffix3: argfsuffix34);
+                    //                                    break;
+                    //                                }
+
+                    //                            case 4:
+                    //                                {
+                    //                                    string argdtitle5 = "ファイルを保存";
+                    //                                    string argfpath1 = SRC.ScenarioPath + GetValueAsString(@params[4], is_term[4]);
+                    //                                    string argdefault_file5 = GetValueAsString(@params[3], is_term[3]);
+                    //                                    string argftype7 = GetValueAsString(@params[1], is_term[1]);
+                    //                                    string argfsuffix7 = GetValueAsString(@params[2], is_term[2]);
+                    //                                    string argftype25 = "";
+                    //                                    string argfsuffix25 = "";
+                    //                                    string argftype35 = "";
+                    //                                    string argfsuffix35 = "";
+                    //                                    str_result = FileDialog.SaveFileDialog(argdtitle5, argfpath1, argdefault_file5, 2, argftype7, argfsuffix7, ftype2: argftype25, fsuffix2: argfsuffix25, ftype3: argftype35, fsuffix3: argfsuffix35);
+                    //                                    break;
+                    //                                }
+                    //                        }
+
+                    //                        CallFunctionRet = ValueType.StringType;
+
+                    //                        // 本当はこれだけでいいはずだけど……
+                    //                        if (Strings.InStr(str_result, SRC.ScenarioPath) > 0)
+                    //                        {
+                    //                            str_result = Strings.Mid(str_result, Strings.Len(SRC.ScenarioPath) + 1);
+                    //                            return CallFunctionRet;
+                    //                        }
+
+                    //                        if (Strings.InStr(str_result, @"\") == 0)
+                    //                        {
+                    //                            return CallFunctionRet;
+                    //                        }
+
+                    //                        var loopTo13 = Strings.Len(str_result);
+                    //                        for (i = 1; i <= loopTo13; i++)
+                    //                        {
+                    //                            if (Strings.Mid(str_result, Strings.Len(str_result) - i + 1, 1) == @"\")
+                    //                            {
+                    //                                break;
+                    //                            }
+                    //                        }
+
+                    //                        buf = Strings.Left(str_result, Strings.Len(str_result) - i);
+                    //                        str_result = Strings.Mid(str_result, Strings.Len(str_result) - i + 2);
+                    //                        while (Strings.InStr(buf, @"\") > 0)
+                    //                        {
+                    //                            buf = Strings.Mid(buf, Strings.InStr(buf, @"\") + 1);
+                    //                            // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
+                    //                            if (!string.IsNullOrEmpty(FileSystem.Dir(SRC.ScenarioPath + buf, FileAttribute.Directory)))
+                    //                            {
+                    //                                str_result = buf + @"\" + str_result;
+                    //                                return CallFunctionRet;
+                    //                            }
+                    //                        }
+
+                    //                        // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
+                    //                        if (!string.IsNullOrEmpty(FileSystem.Dir(SRC.ScenarioPath + buf, FileAttribute.Directory)))
+                    //                        {
+                    //                            str_result = buf + @"\" + str_result;
+                    //                        }
+
+                    //                        return CallFunctionRet;
+                    //                    }
             }
             return ValueType.UndefinedType;
         }
