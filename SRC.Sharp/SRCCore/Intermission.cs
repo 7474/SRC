@@ -236,7 +236,7 @@ namespace SRCCore
                             GuiConfirmOption.OkCancel | GuiConfirmOption.Question) == GuiDialogResult.Ok)
                         {
                             //SRC.UList.Update(); // 追加パイロットを消去
-                            //My.MyProject.Forms.frmListBox.Hide();
+                            GUI.CloseListBox();
                             //GUI.ReduceListBoxHeight();
                             //Sound.StopBGM();
                             return;
@@ -330,7 +330,7 @@ namespace SRCCore
                             "終了",
                             GuiConfirmOption.OkCancel | GuiConfirmOption.Question) == GuiDialogResult.Ok)
                         {
-                            //My.MyProject.Forms.frmListBox.Hide();
+                            GUI.CloseListBox();
                             //GUI.ReduceListBoxHeight();
                             SRC.ExitGame();
                         }

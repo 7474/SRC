@@ -182,7 +182,7 @@ namespace SRCTestForm
         }
         public void MainFormHide()
         {
-            if (!MainFormVisible)
+            if (MainFormVisible)
             {
                 MainForm.Hide();
             }
@@ -743,6 +743,14 @@ namespace SRCTestForm
             Application.DoEvents();
 
             return ListBoxRet;
+        }
+
+        public void CloseListBox()
+        {
+            if (frmListBox.Visible)
+            {
+                frmListBox.Hide();
+            }
         }
 
         public void EnlargeListBoxHeight()

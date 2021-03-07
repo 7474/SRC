@@ -185,6 +185,8 @@ namespace SRCCore
 
         // リストボックスを表示
         int ListBox(string lb_caption, IList<ListBoxItem> list, string lb_info, string lb_mode = "");
+        // リストボックスを閉じる
+        void CloseListBox();
         // リストボックスの高さを大きくする
         void EnlargeListBoxHeight();
         // リストボックスの高さを小さくする
