@@ -1,11 +1,11 @@
-﻿using NAudio.Midi;
-using NAudio.Wave;
+﻿using NAudio.Wave;
 using SRCCore;
 using System;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
+using Commons.Music.Midi;
+using System.Linq;
 
 namespace SRCTestForm.Resoruces
 {
@@ -15,14 +15,11 @@ namespace SRCTestForm.Resoruces
         private WaveOutEvent outputDevice;
         private AudioFileReader audioFile;
 
-        private MidiOut midiOut;
-        private MidiFile midiFile;
 
         public BGMStatus BGMStatus => throw new NotImplementedException();
 
         public void Dispose()
         {
-            midiOut?.Dispose();
             outputDevice?.Dispose();
             outputDevice = null;
             audioFile?.Dispose();
@@ -31,11 +28,6 @@ namespace SRCTestForm.Resoruces
 
         public void Initialize()
         {
-            if (midiOut == null)
-            {
-                // XXX 選択
-                midiOut = new MidiOut(1);
-            }
             if (outputDevice == null)
             {
                 outputDevice = new WaveOutEvent();
@@ -52,25 +44,15 @@ namespace SRCTestForm.Resoruces
             switch (Path.GetExtension(path).ToLower())
             {
                 case ".mid":
-                    midiFile = new MidiFile(path, false);
-                    var task = Task.Run(async () =>
-                    {
-                        var sw = new Stopwatch();
-                        sw.Start();
-                        var startMillis = midiFile.Events.StartAbsoluteTime;
-                        foreach (var melist in midiFile.Events)
-                        {
-                            foreach (var me in melist)
-                            {
-                                var eventTime = me.AbsoluteTime - startMillis;
-                                if (eventTime - sw.ElapsedMilliseconds > 0)
-                                {
-                                    await Task.Delay((int)Math.Max(0, eventTime - sw.ElapsedMilliseconds));
-                                }
-                                midiOut.Send(me.GetAsShortMessage());
-                            }
-                        }
-                    });
+                    var access = MidiAccessManager.Default;
+                    var output = access.OpenOutputAsync(access.Outputs.Last().Id).Result;
+                    var music = MidiMusic.Read(File.OpenRead(path));
+                    var player = new MidiPlayer(music, output);
+                    player.EventReceived += (MidiEvent e) => {
+                        if (e.EventType == MidiEvent.Program)
+                            Console.WriteLine($"Program changed: Channel:{e.Channel} Instrument:{e.Msb}");
+                    };
+                    player.Play();
                     break;
                 default:
                     audioFile = new AudioFileReader(path);
