@@ -41,7 +41,6 @@ namespace SRCCore
 
         private bool disposedValue;
 
-        private const int CH_BGM = 1;
         private const int CH_EFFECT = 2;
 
         // ＢＧＭの再生を開始する

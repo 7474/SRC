@@ -11,6 +11,8 @@ namespace SRCCore
     // 音声再生のインタフェース
     public interface IPlaySound : IDisposable
     {
+        public const int CH_BGM = 1;
+
         BGMStatus BGMStatus { get; }
 
         void Initialize();

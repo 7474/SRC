@@ -1,9 +1,11 @@
-﻿using Commons.Music.Midi;
+﻿using Melanchall.DryWetMidi.Core;
+using Melanchall.DryWetMidi.Devices;
 using NAudio.Wave;
 using SRCCore;
 using System;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace SRCTestForm.Resoruces
 {
@@ -13,21 +15,20 @@ namespace SRCTestForm.Resoruces
         private WaveOutEvent outputDevice;
         private AudioFileReader audioFile;
 
-        // https://github.com/atsushieno/managed-midi/
-        private IMidiOutput midiOutput;
-        private MidiPlayer midiPlayer;
+        // https://github.com/melanchall/drywetmidi
+        private OutputDevice midiOutput;
+        private MidiFile midiFile;
+        private Playback midiPlayback;
 
         private bool repeate;
 
-        public const int CH_MIDI = 1;
+        private const int CH_MIDI = IPlaySound.CH_BGM;
+
         public BGMStatus BGMStatus => throw new NotImplementedException();
 
         public void Dispose()
         {
-            midiPlayer?.Dispose();
-            midiPlayer = null;
-            midiOutput?.Dispose();
-            midiOutput = null;
+            ReleaseMidiPlayback();
 
             outputDevice?.Dispose();
             outputDevice = null;
@@ -57,11 +58,7 @@ namespace SRCTestForm.Resoruces
                     {
                         throw new ArgumentException($"{channel} is not support MIDI. MIDI channel is {CH_MIDI}");
                     }
-                    OpenMidiOutput();
-                    var music = MidiMusic.Read(File.OpenRead(path));
-                    midiPlayer = new MidiPlayer(music, midiOutput);
-                    midiPlayer.Finished += MidiFinished;
-                    midiPlayer.Play();
+                    StartMidiPlayback(path);
                     break;
                 default:
                     audioFile = new AudioFileReader(path);
@@ -75,37 +72,57 @@ namespace SRCTestForm.Resoruces
         {
             if (CH_MIDI == channel)
             {
-                ReleaseMidiPlayer();
+                ReleaseMidiPlayback();
             }
             outputDevice?.Stop();
         }
 
-        private void OpenMidiOutput()
+        private void StartMidiPlayback(string path)
         {
-            // Windows 10 で試した時の Default は WinMMMidiAccess だった。
-            var access = MidiAccessManager.Default;
-            var midiPort = access.Outputs.Last();
-            midiOutput = access.OpenOutputAsync(midiPort.Id).Result;
-        }
-
-        private void ReleaseMidiPlayer()
-        {
-            if (midiPlayer != null)
+            midiFile = MidiFile.Read(path);
+            try
             {
-                midiPlayer.Finished -= MidiFinished;
-                midiPlayer.Dispose();
-                midiPlayer = null;
-                // XXX コントロールをリセットしたい
-                midiOutput?.Dispose();
-                midiOutput = null;
+                midiOutput = OutputDevice.GetAll().First();
+                midiPlayback = midiFile.GetPlayback(midiOutput);
+                midiPlayback.Loop = repeate;
+                midiPlayback.Start();
+                // XXX いい感じに無音シークしたい。
+                //Task.Delay(100).Wait();
+                //midiPlayback.MoveToNextSnapPoint(midiPlayback.Snapping.SnapToNotesStarts());
+            }
+            catch
+            {
+                ReleaseMidiPlayback();
+                throw;
             }
         }
 
-        private void MidiFinished()
+        private void ReleaseMidiPlayback()
         {
-            if (repeate)
+            try
             {
-                midiPlayer?.Play();
+                if (midiPlayback != null)
+                {
+                    midiPlayback.Stop();
+                    midiPlayback.Dispose();
+                    midiPlayback = null;
+                }
+            }
+            catch
+            {
+                // ignore
+            }
+            try
+            {
+                if (midiOutput != null)
+                {
+                    midiOutput.Dispose();
+                    midiOutput = null;
+                }
+            }
+            catch
+            {
+                // ignore
             }
         }
     }
