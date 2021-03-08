@@ -1,5 +1,8 @@
 ﻿using SRCCore.Events;
 using SRCCore.Exceptions;
+using SRCCore.Lib;
+using SRCCore.VB;
+using System.Linq;
 
 namespace SRCCore.CmdDatas.Commands
 {
@@ -11,59 +14,49 @@ namespace SRCCore.CmdDatas.Commands
 
         protected override int ExecInternal()
         {
-            int ExecPlayMIDICmdRet = default;
-            var fname = default(string);
+            string fname = "";
             int play_bgm_end;
-            int i;
 
             // PlayMIDIコマンドが連続してる場合、最後のPlayMIDIコマンドの位置を検索
-            var loopTo = Information.UBound(Event_Renamed.EventCmd);
-            for (i = LineNum + 1; i <= loopTo; i++)
-            {
-                if (Event_Renamed.EventCmd[i].Name != Event_Renamed.CmdType.PlayMIDICmd)
-                {
-                    break;
-                }
-            }
-
-            play_bgm_end = i - 1;
+            var playCmds = Event.EventCmd
+                .Skip(EventData.ID)
+                .TakeWhile(x => x.Name == Name)
+                .ToList();
+            play_bgm_end = playCmds.Max(x => x.EventData.ID);
 
             // 最後のSPlayMIDIから順にMIDIファイルを検索
-            var loopTo1 = LineNum;
-            for (i = play_bgm_end; i >= loopTo1; i -= 1)
+            foreach (var cmd in playCmds.Reverse<CmdData>())
             {
-                fname = GeneralLib.ListTail(ref Event_Renamed.EventData[i], 2);
-                if (GeneralLib.ListLength(ref fname) == 1)
+                var fnameList = GeneralLib.ToList(cmd.EventData.Data).Skip(1).ToList();
+                fname = string.Join(" ", fnameList);
+                if (fnameList.Count == 1)
                 {
                     if (Strings.Left(fname, 2) == "$(")
                     {
                         fname = "\"" + fname + "\"";
                     }
 
-                    fname = Expression.GetValueAsString(ref fname, true);
+                    fname = Expression.GetValueAsString(fname, true);
                 }
                 else
                 {
                     fname = "(" + fname + ")";
                 }
 
-                fname = Sound.SearchMidiFile(ref fname);
+                fname = Sound.SearchMidiFile(fname);
                 if (!string.IsNullOrEmpty(fname))
                 {
                     // MIDIファイルが存在したので選択
                     break;
                 }
             }
-
             // MIDIファイルを再生
             Sound.KeepBGM = false;
             Sound.BossBGM = false;
-            Sound.StartBGM(ref fname, false);
+            Sound.StartBGM(fname, false);
 
             // 次のコマンド実行位置は最後のPlayMIDIコマンドの後
-            ExecPlayMIDICmdRet = play_bgm_end + 1;
-            return ExecPlayMIDICmdRet;
-            return EventData.ID + 1;
+            return play_bgm_end + 1;
         }
     }
 }

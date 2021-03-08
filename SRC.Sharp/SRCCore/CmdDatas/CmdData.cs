@@ -22,6 +22,7 @@ namespace SRCCore.CmdDatas
         protected Expressions.Expression Expression => SRC.Expression;
         protected Maps.Map Map => SRC.Map;
         protected SRCCore.Commands.Command Commands => SRC.Commands;
+        internal Sound Sound => SRC.Sound;
 
         public CmdData(SRC src, CmdType name, EventDataLine eventData)
         {
