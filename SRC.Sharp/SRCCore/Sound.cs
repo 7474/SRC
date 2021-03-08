@@ -2,18 +2,18 @@
 // 本プログラムはフリーソフトであり、無保証です。
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
-using System;
-using System.Runtime.InteropServices;
-using System.Windows.Forms;
-using Microsoft.VisualBasic;
-using Microsoft.VisualBasic.CompilerServices;
 using SRCCore.Filesystem;
+using SRCCore.Lib;
+using SRCCore.VB;
+using System;
 
 namespace SRCCore
 {
     // ＢＧＭ＆効果音再生用のモジュール
-    public class Sound
+    public class Sound : IDisposable
     {
+        public IPlaySound Player { get; set; }
+
         private SRC SRC { get; }
         private IFileSystem FileSystem => SRC.FileSystem;
 
@@ -21,23 +21,6 @@ namespace SRCCore
         {
             SRC = src;
         }
-
-        // MCI制御用API
-        [DllImport("winmm.dll", EntryPoint = "mciSendStringA")]
-        extern int mciSendString(string lpstrCommand, string lpstrReturnString, int uReturnLength, int hwndCallback);
-
-        // WAVE再生用API
-        [DllImport("winmm.dll", EntryPoint = "sndPlaySoundA")]
-        extern int sndPlaySound(string lpszSoundName, int uFlags);
-
-        public const int SND_SYNC = 0x0; // 再生終了後、制御を戻す
-        public const int SND_ASYNC = 0x1; // 関数実行後、制御を戻す
-        public const int SND_NODEFAULT = 0x2; // 指定したWAVEファイルが見つからなかった場合、
-                                              // デフォルトのWAVEファイルを再生しない
-        public const int SND_MEMORY = 0x4; // メモリファイルのWAVEを実行する
-        public const int SND_LOOP = 0x8; // 停止を命令するまで再生を繰り返す。
-        public const int SND_NOSTOP = 0x10; // 現在Waveファイルが再生中の場合、再生を中止する
-
 
         // 現在再生されているＢＧＭのファイル名
         public string BGMFileName;
@@ -54,34 +37,7 @@ namespace SRCCore
         // MIDIファイルのサーチパスの初期化が完了している？
         private bool IsMidiSearchPathInitialized;
 
-        // MIDI再生方法の手段
-        public bool UseMCI;
-        public bool UseDirectMusic;
-
-        // WAV再生方法の手段
-        public bool UseDirectSound;
-
-        // MP3再生時の音量
-        public int MP3Volume;
-
-        // DirectMusic用変数
-        // UPGRADE_ISSUE: DirectX7 オブジェクト はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6B85A2A7-FE9F-4FBE-AA0C-CF11AC86A305"' をクリックしてください。
-        private DirectX7 DXObject;
-        // UPGRADE_ISSUE: DirectMusicLoader オブジェクト はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6B85A2A7-FE9F-4FBE-AA0C-CF11AC86A305"' をクリックしてください。
-        private DirectMusicLoader DMLoader;
-        // UPGRADE_ISSUE: DirectMusicPerformance オブジェクト はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6B85A2A7-FE9F-4FBE-AA0C-CF11AC86A305"' をクリックしてください。
-        private DirectMusicPerformance DMPerformance;
-        // UPGRADE_ISSUE: DirectMusicSegment オブジェクト はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6B85A2A7-FE9F-4FBE-AA0C-CF11AC86A305"' をクリックしてください。
-        private DirectMusicSegment DMSegment;
-
-        // VBMP3.dllの初期化が完了している？
-        private bool IsMP3Supported;
-
-        // DirectSound用変数
-        // UPGRADE_ISSUE: DirectSound オブジェクト はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6B85A2A7-FE9F-4FBE-AA0C-CF11AC86A305"' をクリックしてください。
-        private DirectSound DSObject;
-        // UPGRADE_ISSUE: DirectSoundBuffer オブジェクト はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6B85A2A7-FE9F-4FBE-AA0C-CF11AC86A305"' をクリックしてください。
-        private DirectSoundBuffer DSBuffer;
+        private bool disposedValue;
 
         // ＢＧＭの再生を開始する
         public void StartBGM(string bgm_name, bool is_repeat_mode = true)
@@ -818,277 +774,6 @@ namespace SRCCore
             StartBGM(bgm_name);
         }
 
-
-        // DirectMusicの初期化
-        public void InitDirectMusic()
-        {
-            var DMUS_PC_GMINHARDWARE = default(object);
-            var DMUS_PC_GSINHARDWARE = default(object);
-            var DMUS_PC_XGINHARDWARE = default(object);
-            var DMUS_PC_EXTERNAL = default(object);
-            int port_id;
-            // UPGRADE_ISSUE: DMUS_PORTCAPS オブジェクト はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6B85A2A7-FE9F-4FBE-AA0C-CF11AC86A305"' をクリックしてください。
-            var portcaps = default(DMUS_PORTCAPS);
-            int i;
-            ;
-
-            // フラグを設定
-            UseDirectMusic = true;
-            UseMCI = false;
-
-            // DirectXオブジェクト作成
-            if (DXObject is null)
-            {
-                DXObject = CreateDirectXObject();
-            }
-
-            // Loader作成
-            // UPGRADE_WARNING: オブジェクト DXObject.DirectMusicLoaderCreate の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            DMLoader = DXObject.DirectMusicLoaderCreate;
-
-            // サーチパス設定(不要？)
-            // UPGRADE_WARNING: オブジェクト DMLoader.SetSearchDirectory の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            DMLoader.SetSearchDirectory(SRC.AppPath + "Midi");
-
-            // Performance作成
-            // UPGRADE_WARNING: オブジェクト DXObject.DirectMusicPerformanceCreate の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            DMPerformance = DXObject.DirectMusicPerformanceCreate;
-
-            // Performance初期化
-            // DirectSoundと併用する時は、最初の引数に
-            // DirectSoundのオブジェクトを入れておく
-            // UPGRADE_WARNING: オブジェクト DMPerformance.Init の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            DMPerformance.Init(DSObject, GUI.MainForm.Handle.ToInt32());
-
-            // MIDI音源一覧を作成
-            CreateMIDIPortListFile();
-
-            // ポート設定
-            string argini_section = "Option";
-            string argini_entry = "MIDIPortID";
-            string argexpr = GeneralLib.ReadIni(argini_section, argini_entry);
-            port_id = GeneralLib.StrToLng(argexpr);
-
-            // 使用ポート番号を指定されていた場合
-            if (port_id > 0)
-            {
-                // UPGRADE_WARNING: オブジェクト DMPerformance.GetPortCount の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                if (port_id > DMPerformance.GetPortCount)
-                {
-                    string argmsg = "MIDIPortIDに正しいMIDIポートが設定されていません。";
-                    GUI.ErrorMessage(argmsg);
-                    Environment.Exit(0);
-                }
-
-                // UPGRADE_WARNING: オブジェクト DMPerformance.SetPort の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                DMPerformance.SetPort(port_id, 1);
-                return;
-            }
-
-            // 指定がないのでSRC側で検索する
-
-            // MIDIマッパーがあればそれを使う
-            // UPGRADE_WARNING: オブジェクト DMPerformance.GetPortCount の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            var loopTo = DMPerformance.GetPortCount;
-            for (i = 1; i <= loopTo; i++)
-            {
-                // UPGRADE_WARNING: オブジェクト DMPerformance.GetPortName の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                if (Strings.InStr(DMPerformance.GetPortName(i), "MIDI マッパー") > 0 | Strings.InStr(DMPerformance.GetPortName(i), "MIDI Mapper") > 0)
-                {
-                    // UPGRADE_WARNING: オブジェクト DMPerformance.SetPort の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                    DMPerformance.SetPort(i, 1);
-                    return;
-                }
-            }
-
-            // まずは外部MIDI音源を捜す
-            // UPGRADE_WARNING: オブジェクト DMPerformance.GetPortCount の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            var loopTo1 = DMPerformance.GetPortCount;
-            for (i = 1; i <= loopTo1; i++)
-            {
-                // UPGRADE_WARNING: オブジェクト DMPerformance.GetPortCaps の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                DMPerformance.GetPortCaps(i, portcaps);
-                // UPGRADE_WARNING: オブジェクト portcaps.lFlags の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                if (portcaps.lFlags & DMUS_PC_EXTERNAL)
-                {
-                    // UPGRADE_WARNING: オブジェクト DMPerformance.SetPort の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                    DMPerformance.SetPort(i, 1);
-                    return;
-                }
-            }
-
-            // 次にXG対応ハード音源を捜す
-            // UPGRADE_WARNING: オブジェクト DMPerformance.GetPortCount の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            var loopTo2 = DMPerformance.GetPortCount;
-            for (i = 1; i <= loopTo2; i++)
-            {
-                // UPGRADE_WARNING: オブジェクト DMPerformance.GetPortCaps の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                DMPerformance.GetPortCaps(i, portcaps);
-                // UPGRADE_WARNING: オブジェクト portcaps.lFlags の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                if (portcaps.lFlags & DMUS_PC_XGINHARDWARE)
-                {
-                    // UPGRADE_WARNING: オブジェクト DMPerformance.SetPort の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                    DMPerformance.SetPort(i, 1);
-                    return;
-                }
-            }
-
-            // 次にGS対応ハード音源を捜す
-            // UPGRADE_WARNING: オブジェクト DMPerformance.GetPortCount の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            var loopTo3 = DMPerformance.GetPortCount;
-            for (i = 1; i <= loopTo3; i++)
-            {
-                // UPGRADE_WARNING: オブジェクト DMPerformance.GetPortCaps の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                DMPerformance.GetPortCaps(i, portcaps);
-                // UPGRADE_WARNING: オブジェクト portcaps.lFlags の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                if (portcaps.lFlags & DMUS_PC_GSINHARDWARE)
-                {
-                    // UPGRADE_WARNING: オブジェクト DMPerformance.SetPort の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                    DMPerformance.SetPort(i, 1);
-                    return;
-                }
-            }
-
-            // 次にXG対応ソフト音源を捜す
-            // UPGRADE_WARNING: オブジェクト DMPerformance.GetPortCount の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            var loopTo4 = DMPerformance.GetPortCount;
-            for (i = 1; i <= loopTo4; i++)
-            {
-                // UPGRADE_WARNING: オブジェクト DMPerformance.GetPortName の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                if (Strings.InStr(DMPerformance.GetPortName(i), "XG ") > 0)
-                {
-                    // UPGRADE_WARNING: オブジェクト DMPerformance.SetPort の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                    DMPerformance.SetPort(i, 1);
-                    return;
-                }
-            }
-
-            // 次にGS対応ソフト音源を捜す
-            // UPGRADE_WARNING: オブジェクト DMPerformance.GetPortCount の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            var loopTo5 = DMPerformance.GetPortCount;
-            for (i = 1; i <= loopTo5; i++)
-            {
-                // UPGRADE_WARNING: オブジェクト DMPerformance.GetPortName の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                if (Strings.InStr(DMPerformance.GetPortName(i), "GS ") > 0)
-                {
-                    // UPGRADE_WARNING: オブジェクト DMPerformance.SetPort の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                    DMPerformance.SetPort(i, 1);
-                    return;
-                }
-            }
-
-            // 次にGM対応ハード音源を捜す
-            // UPGRADE_WARNING: オブジェクト DMPerformance.GetPortCount の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            var loopTo6 = DMPerformance.GetPortCount;
-            for (i = 1; i <= loopTo6; i++)
-            {
-                // UPGRADE_WARNING: オブジェクト DMPerformance.GetPortCaps の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                DMPerformance.GetPortCaps(i, portcaps);
-                // UPGRADE_WARNING: オブジェクト portcaps.lFlags の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                if (portcaps.lFlags & DMUS_PC_GMINHARDWARE)
-                {
-                    // UPGRADE_WARNING: オブジェクト DMPerformance.SetPort の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                    DMPerformance.SetPort(i, 1);
-                    return;
-                }
-            }
-
-            // あきらめてデフォルトポートを使う
-            // UPGRADE_WARNING: オブジェクト DMPerformance.SetPort の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            DMPerformance.SetPort(-1, 1);
-            return;
-        ErrorHandler:
-            ;
-
-
-            // DirectMusic初期化時にエラーが発生したのでMCIを使う
-            UseDirectMusic = false;
-            UseMCI = true;
-        }
-
-        // DirectXオブジェクトを作成する
-        private DirectX7 CreateDirectXObject()
-        {
-            DirectX7 CreateDirectXObjectRet = default;
-            // UPGRADE_ISSUE: DirectX7 オブジェクト はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6B85A2A7-FE9F-4FBE-AA0C-CF11AC86A305"' をクリックしてください。
-            var new_obj = new DirectX7();
-            CreateDirectXObjectRet = new_obj;
-            return CreateDirectXObjectRet;
-        }
-
-        // 利用可能なMIDI音源の一覧を作成する
-        private void CreateMIDIPortListFile()
-        {
-            int f, i;
-            string pname;
-            ;
-#error Cannot convert OnErrorGoToStatementSyntax - see comment for details
-            /* Cannot convert OnErrorGoToStatementSyntax, CONVERSION ERROR: Conversion for OnErrorGoToLabelStatement not implemented, please report this issue in 'On Error GoTo ErrorHandler' at character 35847
-
-
-            Input:
-
-                    On Error GoTo ErrorHandler
-
-             */
-            f = FileSystem.FreeFile();
-            FileSystem.FileOpen(f, SRC.AppPath + @"Midi\MIDI音源リスト.txt", OpenMode.Output, OpenAccess.Write);
-            FileSystem.PrintLine(f, ";DirectMusicで利用可能なMIDI音源のリストです。");
-            FileSystem.PrintLine(f, ";Src.iniのMIDIPortIDに使用したい音源の番号を指定して下さい。");
-            FileSystem.PrintLine(f, "");
-
-            // 各ポートの名称を参照
-            // UPGRADE_WARNING: オブジェクト DMPerformance.GetPortCount の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            var loopTo = DMPerformance.GetPortCount;
-            for (i = 1; i <= loopTo; i++)
-            {
-                // UPGRADE_WARNING: オブジェクト DMPerformance.GetPortName の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                pname = DMPerformance.GetPortName(i);
-                if (Strings.InStr(pname, "[") > 0)
-                {
-                    pname = Strings.Left(pname, Strings.InStr(pname, "[") - 1);
-                }
-
-                FileSystem.PrintLine(f, Microsoft.VisualBasic.Compatibility.VB6.Support.Format(i) + ":" + pname);
-            }
-
-            FileSystem.FileClose(f);
-        ErrorHandler:
-            ;
-
-            // エラー発生
-        }
-
-
-        // VBMP3を初期化
-        private void InitVBMP3()
-        {
-            VBMP3.VBMP3_OPTION opt;
-            string buf;
-            bool localFileExists() { string argfname = SRC.AppPath + "VBMP3.dll"; var ret = GeneralLib.FileExists(argfname); return ret; }
-
-            if (!localFileExists())
-            {
-                return;
-            }
-
-            VBMP3.vbmp3_init();
-            VBMP3.vbmp3_setVolume(MP3Volume, MP3Volume);
-            opt.inputBlock = 30;
-            string argini_section = "Option";
-            string argini_entry = "MP3OutputBlock";
-            buf = GeneralLib.ReadIni(argini_section, argini_entry);
-            opt.outputBlock = GeneralLib.MinLng(GeneralLib.StrToLng(buf), 30);
-            string argini_section1 = "Option";
-            string argini_entry1 = "MP3InputSleep";
-            buf = GeneralLib.ReadIni(argini_section1, argini_entry1);
-            opt.inputSleep = GeneralLib.MaxLng(GeneralLib.StrToLng(buf), 0);
-            opt.outputSleep = 0;
-            VBMP3.vbmp3_setVbmp3Option(opt);
-            IsMP3Supported = true;
-        }
-
-
         // 各Midiフォルダから指定されたMIDIファイルを検索する
         public string SearchMidiFile(string midi_name)
         {
@@ -1474,7 +1159,6 @@ namespace SRCCore
             IsMidiSearchPathInitialized = false;
         }
 
-
         // ＢＧＭに割り当てられたMIDIファイル名を返す
         public string BGMName(string bgm_name)
         {
@@ -1501,36 +1185,6 @@ namespace SRCCore
             }
 
             return BGMNameRet;
-        }
-
-
-        // DirectSoundの初期化
-        public void InitDirectSound()
-        {
-            object DSSCL_PRIORITY;
-            // On Error GoTo ErrorHandler
-            return;
-
-            // フラグを設定
-            UseDirectSound = true;
-
-            // DirectXオブジェクト作成
-            if (DXObject is null)
-            {
-                DXObject = CreateDirectXObject();
-            }
-
-            // DirectSoundオブジェクト作成
-            // UPGRADE_WARNING: オブジェクト DXObject.DirectSoundCreate の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            DSObject = DXObject.DirectSoundCreate("");
-
-            // サウンドデバイスの協調レベルを設定
-            // UPGRADE_WARNING: オブジェクト DSObject.SetCooperativeLevel の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            DSObject.SetCooperativeLevel(GUI.MainForm.Handle.ToInt32(), DSSCL_PRIORITY);
-            return;
-        ErrorHandler:
-            ;
-            UseDirectSound = false;
         }
 
         // Waveファイルを再生する
@@ -1823,57 +1477,58 @@ namespace SRCCore
             }
         }
 
-
         // 本モジュールの解放処理を行う
         public void FreeSoundModule()
         {
-            // BGM演奏の停止
-            KeepBGM = false;
-            BossBGM = false;
-            StopBGM(true);
-
-            // 音源初期化
-            ResetBGM();
-
-            // WAVEファイル再生の停止
-            StopWave();
-
-            // DirectMusicの解放
-            if (UseDirectMusic)
+            try
             {
-                // 演奏停止
-                // UPGRADE_WARNING: オブジェクト DMPerformance.CloseDown の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                DMPerformance.CloseDown();
+                // BGM演奏の停止
+                KeepBGM = false;
+                BossBGM = false;
+                StopBGM(true);
 
-                // オブジェクトの解放
-                // UPGRADE_NOTE: オブジェクト DMLoader をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-                DMLoader = null;
-                // UPGRADE_NOTE: オブジェクト DMPerformance をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-                DMPerformance = null;
-                // UPGRADE_NOTE: オブジェクト DMSegment をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-                DMSegment = null;
+                // 音源初期化
+                ResetBGM();
+
+                // WAVEファイル再生の停止
+                StopWave();
             }
-
-            // DirectSoundの解放
-            if (UseDirectSound)
+            catch
             {
-                // オブジェクトの解放
-                // UPGRADE_NOTE: オブジェクト DSObject をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-                DSObject = null;
-                // UPGRADE_NOTE: オブジェクト DSBuffer をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-                DSBuffer = null;
+                // ignore
             }
+        }
 
-            // DirectXの解放
-            // UPGRADE_NOTE: オブジェクト DXObject をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-            DXObject = null;
-
-            // VBMP3.DLLの解放
-            if (IsMP3Supported)
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
             {
-                VBMP3.vbmp3_stop();
-                VBMP3.vbmp3_free();
+                if (disposing)
+                {
+                    FreeSoundModule();
+
+                    // マネージド状態を破棄します (マネージド オブジェクト)
+                    Player?.Dispose();
+                }
+
+                // アンマネージド リソース (アンマネージド オブジェクト) を解放し、ファイナライザーをオーバーライドします
+                // 大きなフィールドを null に設定します
+                disposedValue = true;
             }
+        }
+
+        // // 'Dispose(bool disposing)' にアンマネージド リソースを解放するコードが含まれる場合にのみ、ファイナライザーをオーバーライドします
+        // ~Sound()
+        // {
+        //     // このコードを変更しないでください。クリーンアップ コードを 'Dispose(bool disposing)' メソッドに記述します
+        //     Dispose(disposing: false);
+        // }
+
+        public void Dispose()
+        {
+            // このコードを変更しないでください。クリーンアップ コードを 'Dispose(bool disposing)' メソッドに記述します
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 }
