@@ -11,6 +11,24 @@ namespace SRCCore
     // 音声再生のインタフェース
     public interface IPlaySound : IDisposable
     {
+        BGMStatus BGMStatus { get; }
+
         void Initialize();
+
+        void Play(int channel, string path, PlaySoundMode mode);
+
+        void Stop(int channel);
+    }
+
+    public enum BGMStatus
+    {
+        Stopped,
+        Playing,
+    }
+
+    public enum PlaySoundMode
+    {
+        None,
+        Repeat,
     }
 }
