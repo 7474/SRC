@@ -266,11 +266,12 @@ namespace SRCCore
                 SRC.ExtDataPath,
                 SRC.ExtDataPath2,
                 SRC.AppPath,
-            }.Select(x => Path.Combine(x, "Midi"))
+            }.Where(x => Directory.Exists(x))
+                .Select(x => Path.Combine(x, "Midi"))
                 .Where(x => Directory.Exists(x))
                 .ToList();
 
-            var midiNames = midi_name.Split(new char[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
+            var midiNames = GeneralLib.ToList(midi_name, true);
             var existFile = midiNames
                 .SelectMany(x => baseDirs.Select(y => Path.Combine(y, x)))
                 .FirstOrDefault(x => File.Exists(x));
