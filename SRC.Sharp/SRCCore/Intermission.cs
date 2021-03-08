@@ -19,6 +19,7 @@ namespace SRCCore
         private Maps.Map Map => SRC.Map;
         private Events.Event Event => SRC.Event;
         private Expressions.Expression Expression => SRC.Expression;
+        private Sound Sound => SRC.Sound;
 
         public InterMission(SRC src)
         {
@@ -38,17 +39,10 @@ namespace SRCCore
             SRC.Stage = "インターミッション";
             SRC.IsSubStage = false;
 
-            //// ＢＧＭを変更
-            //Sound.KeepBGM = false;
-            //Sound.BossBGM = false;
-            //string argbgm_name2 = "Intermission";
-            //if (Strings.InStr(Sound.BGMFileName, @"\" + Sound.BGMName(argbgm_name2)) == 0)
-            //{
-            //    Sound.StopBGM();
-            //    string argbgm_name = "Intermission";
-            //    string argbgm_name1 = Sound.BGMName(argbgm_name);
-            //    Sound.StartBGM(argbgm_name1);
-            //}
+            // ＢＧＭを変更
+            Sound.KeepBGM = false;
+            Sound.BossBGM = false;
+            Sound.ChangeBGM(Sound.BGMName("Intermission"));
 
             //// マップをクリア
             //var loopTo = Map.MapWidth;
@@ -238,7 +232,7 @@ namespace SRCCore
                             //SRC.UList.Update(); // 追加パイロットを消去
                             GUI.CloseListBox();
                             //GUI.ReduceListBoxHeight();
-                            //Sound.StopBGM();
+                            Sound.StopBGM();
                             return;
                         }
                         break;
@@ -337,67 +331,67 @@ namespace SRCCore
 
                         break;
 
-                    //case "パイロットステータス":
-                    //    {
-                    //        My.MyProject.Forms.frmListBox.Hide();
-                    //        GUI.ReduceListBoxHeight();
-                    //        SRC.IsSubStage = true;
-                    //        bool localFileExists() { string argfname = SRC.ExtDataPath + @"Lib\パイロットステータス表示.eve"; var ret = GeneralLib.FileExists(argfname); return ret; }
+                        //case "パイロットステータス":
+                        //    {
+                        //        My.MyProject.Forms.frmListBox.Hide();
+                        //        GUI.ReduceListBoxHeight();
+                        //        SRC.IsSubStage = true;
+                        //        bool localFileExists() { string argfname = SRC.ExtDataPath + @"Lib\パイロットステータス表示.eve"; var ret = GeneralLib.FileExists(argfname); return ret; }
 
-                    //        bool localFileExists1() { string argfname = SRC.ExtDataPath2 + @"Lib\パイロットステータス表示.eve"; var ret = GeneralLib.FileExists(argfname); return ret; }
+                        //        bool localFileExists1() { string argfname = SRC.ExtDataPath2 + @"Lib\パイロットステータス表示.eve"; var ret = GeneralLib.FileExists(argfname); return ret; }
 
-                    //        string argfname1 = SRC.ScenarioPath + @"Lib\パイロットステータス表示.eve";
-                    //        if (GeneralLib.FileExists(argfname1))
-                    //        {
-                    //            SRC.StartScenario(SRC.ScenarioPath + @"Lib\パイロットステータス表示.eve");
-                    //        }
-                    //        else if (localFileExists())
-                    //        {
-                    //            SRC.StartScenario(SRC.ExtDataPath + @"Lib\パイロットステータス表示.eve");
-                    //        }
-                    //        else if (localFileExists1())
-                    //        {
-                    //            SRC.StartScenario(SRC.ExtDataPath2 + @"Lib\パイロットステータス表示.eve");
-                    //        }
-                    //        else
-                    //        {
-                    //            SRC.StartScenario(SRC.AppPath + @"Lib\パイロットステータス表示.eve");
-                    //        }
-                    //        // サブステージを通常のステージとして実行
-                    //        SRC.IsSubStage = true;
-                    //        return;
-                    //    }
+                        //        string argfname1 = SRC.ScenarioPath + @"Lib\パイロットステータス表示.eve";
+                        //        if (GeneralLib.FileExists(argfname1))
+                        //        {
+                        //            SRC.StartScenario(SRC.ScenarioPath + @"Lib\パイロットステータス表示.eve");
+                        //        }
+                        //        else if (localFileExists())
+                        //        {
+                        //            SRC.StartScenario(SRC.ExtDataPath + @"Lib\パイロットステータス表示.eve");
+                        //        }
+                        //        else if (localFileExists1())
+                        //        {
+                        //            SRC.StartScenario(SRC.ExtDataPath2 + @"Lib\パイロットステータス表示.eve");
+                        //        }
+                        //        else
+                        //        {
+                        //            SRC.StartScenario(SRC.AppPath + @"Lib\パイロットステータス表示.eve");
+                        //        }
+                        //        // サブステージを通常のステージとして実行
+                        //        SRC.IsSubStage = true;
+                        //        return;
+                        //    }
 
-                    //case "ユニットステータス":
-                    //    {
-                    //        My.MyProject.Forms.frmListBox.Hide();
-                    //        GUI.ReduceListBoxHeight();
-                    //        SRC.IsSubStage = true;
-                    //        bool localFileExists2() { string argfname = SRC.ExtDataPath + @"Lib\ユニットステータス表示.eve"; var ret = GeneralLib.FileExists(argfname); return ret; }
+                        //case "ユニットステータス":
+                        //    {
+                        //        My.MyProject.Forms.frmListBox.Hide();
+                        //        GUI.ReduceListBoxHeight();
+                        //        SRC.IsSubStage = true;
+                        //        bool localFileExists2() { string argfname = SRC.ExtDataPath + @"Lib\ユニットステータス表示.eve"; var ret = GeneralLib.FileExists(argfname); return ret; }
 
-                    //        bool localFileExists3() { string argfname = SRC.ExtDataPath2 + @"Lib\ユニットステータス表示.eve"; var ret = GeneralLib.FileExists(argfname); return ret; }
+                        //        bool localFileExists3() { string argfname = SRC.ExtDataPath2 + @"Lib\ユニットステータス表示.eve"; var ret = GeneralLib.FileExists(argfname); return ret; }
 
-                    //        string argfname2 = SRC.ScenarioPath + @"Lib\ユニットステータス表示.eve";
-                    //        if (GeneralLib.FileExists(argfname2))
-                    //        {
-                    //            SRC.StartScenario(SRC.ScenarioPath + @"Lib\ユニットステータス表示.eve");
-                    //        }
-                    //        else if (localFileExists2())
-                    //        {
-                    //            SRC.StartScenario(SRC.ExtDataPath + @"Lib\ユニットステータス表示.eve");
-                    //        }
-                    //        else if (localFileExists3())
-                    //        {
-                    //            SRC.StartScenario(SRC.ExtDataPath2 + @"Lib\ユニットステータス表示.eve");
-                    //        }
-                    //        else
-                    //        {
-                    //            SRC.StartScenario(SRC.AppPath + @"Lib\ユニットステータス表示.eve");
-                    //        }
-                    //        // サブステージを通常のステージとして実行
-                    //        SRC.IsSubStage = true;
-                    //        return;
-                    //    }
+                        //        string argfname2 = SRC.ScenarioPath + @"Lib\ユニットステータス表示.eve";
+                        //        if (GeneralLib.FileExists(argfname2))
+                        //        {
+                        //            SRC.StartScenario(SRC.ScenarioPath + @"Lib\ユニットステータス表示.eve");
+                        //        }
+                        //        else if (localFileExists2())
+                        //        {
+                        //            SRC.StartScenario(SRC.ExtDataPath + @"Lib\ユニットステータス表示.eve");
+                        //        }
+                        //        else if (localFileExists3())
+                        //        {
+                        //            SRC.StartScenario(SRC.ExtDataPath2 + @"Lib\ユニットステータス表示.eve");
+                        //        }
+                        //        else
+                        //        {
+                        //            SRC.StartScenario(SRC.AppPath + @"Lib\ユニットステータス表示.eve");
+                        //        }
+                        //        // サブステージを通常のステージとして実行
+                        //        SRC.IsSubStage = true;
+                        //        return;
+                        //    }
 
                         //// ユーザー定義のインターミッションコマンド
                         //default:

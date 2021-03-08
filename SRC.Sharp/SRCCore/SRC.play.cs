@@ -182,10 +182,8 @@ namespace SRCCore
             Stage = "プロローグ";
             if (!IsSubStage & Event.IsEventDefined("プロローグ", true))
             {
-                //Sound.StopBGM();
-                //string argbgm_name = "Briefing";
-                //string argbgm_name1 = Sound.BGMName(argbgm_name);
-                //Sound.StartBGM(argbgm_name1);
+                Sound.StopBGM();
+                Sound.StartBGM(Sound.BGMName("Briefing"), true);
             }
 
             Event.HandleEvent("プロローグ");

@@ -1031,11 +1031,9 @@ namespace SRCCore
             //        }
             //    }
 
-            //    // オープニング曲演奏
-            //    Sound.StopBGM(true);
-            //    string argbgm_name = "Opening";
-            //    string argbgm_name1 = Sound.BGMName(argbgm_name);
-            //    Sound.StartBGM(argbgm_name1, true);
+            // オープニング曲演奏
+            Sound.StopBGM(true);
+            Sound.StartBGM(Sound.BGMName("Opening"), true);
 
             // イベントデータを初期化
             Event.InitEventData();
@@ -1136,11 +1134,9 @@ namespace SRCCore
             //ExtDataPath = GeneralLib.ReadIni("Option", "ExtDataPath");
             //ExtDataPath2 = GeneralLib.ReadIni("Option", "ExtDataPath2");
 
-            //// オープニング曲演奏
-            //Sound.StopBGM(true);
-            //string argbgm_name2 = "Opening";
-            //string argbgm_name3 = Sound.BGMName(argbgm_name2);
-            //Sound.StartBGM(argbgm_name3, true);
+            // オープニング曲演奏
+            Sound.StopBGM(true);
+            Sound.StartBGM(Sound.BGMName("Opening"), true);
             Event.InitEventData();
             GUI.CloseTitleForm();
 

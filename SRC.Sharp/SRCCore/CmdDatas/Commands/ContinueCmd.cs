@@ -171,13 +171,11 @@ namespace SRCCore.CmdDatas.Commands
                 //    }
                 //}
 
-                //if (Event.IsEventDefined("エピローグ", true))
-                //{
-                //    Sound.StopBGM();
-                //    string argbgm_name = "Briefing";
-                //    string argbgm_name1 = Sound.BGMName(argbgm_name);
-                //    Sound.StartBGM(argbgm_name1);
-                //}
+                if (Event.IsEventDefined("エピローグ", true))
+                {
+                    SRC.Sound.StopBGM();
+                    SRC.Sound.StartBGM(SRC.Sound.BGMName("Briefing"));
+                }
 
                 SRC.Stage = "エピローグ";
                 Event.HandleEvent("エピローグ");
