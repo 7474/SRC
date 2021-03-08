@@ -41,6 +41,7 @@ namespace SRCCore
 
         private bool disposedValue;
 
+        private const int CH_BGM = IPlaySound.CH_BGM;
         private const int CH_EFFECT = 2;
 
         // ＢＧＭの再生を開始する
@@ -129,11 +130,6 @@ namespace SRCCore
             Player.Play(CH_BGM, fname, is_repeat_mode ? PlaySoundMode.Repeat : PlaySoundMode.None);
             // 演奏しているBGMのファイル名を記録
             BGMFileName = fname;
-
-            // XXX Playerに任せる
-            //// リピート再生処理を行うためのタイマーを起動
-            //// UPGRADE_ISSUE: Control Timer1 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-            //GUI.MainForm.Timer1.Enabled = true;
         }
 
         // ＢＧＭをリスタートさせる

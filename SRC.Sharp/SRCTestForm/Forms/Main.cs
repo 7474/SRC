@@ -593,20 +593,6 @@ namespace SRCTestForm
             IsDragging = false;
         }
 
-        // ＢＧＭ連続再生用タイマー
-        private void Timer1_Tick(object eventSender, EventArgs eventArgs)
-        {
-            Program.Log.LogDebug("Timer1_Tick {0}", JsonConvert.SerializeObject(eventArgs));
-
-            //if (!string.IsNullOrEmpty(Sound.BGMFileName))
-            //{
-            //    if (Sound.RepeatMode)
-            //    {
-            //        Sound.RestartBGM();
-            //    }
-            //}
-        }
-
         // マップ画面の横スクロールバーを操作
         private void HScroll_Change(int newScrollValue)
         {
