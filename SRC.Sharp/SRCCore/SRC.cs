@@ -20,12 +20,13 @@ namespace SRCCore
         public IGUI GUI { get; set; }
         public IGUIMap GUIMap { get; set; }
         public IGUIStatus GUIStatus { get; set; }
-        public IFilesystem Filesystem { get; set; }
+        public IFileSystem FileSystem { get; set; }
 
         public Expression Expression { get; }
         public Event Event { get; }
         public Map Map { get; }
         public Commands.Command Commands { get; }
+        public Sound Sound { get; }
 
         // パイロットデータのリスト
         public PilotDataList PDList;
@@ -148,6 +149,7 @@ namespace SRCCore
             Expression = new Expression(this);
             Map = new Map(this);
             Commands = new Commands.Command(this);
+            Sound = new Sound(this);
 
             PDList = new PilotDataList(this);
             NPDList = new NonPilotDataList(this);

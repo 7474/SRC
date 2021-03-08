@@ -5,7 +5,7 @@ using System.Text;
 
 namespace SRCCore.Filesystem
 {
-    public interface IFilesystem
+    public interface IFileSystem
     {
         string ToPath(params string[] paths);
         bool FileExists(params string[] paths);

@@ -652,11 +652,8 @@ namespace SRCCore.CmdDatas
                     //        break;
                     //    }
 
-                    //case "playmidi":
-                    //    {
-                    //        CmdName = CmdType.PlayMIDICmd;
-                    //        break;
-                    //    }
+                    case "playmidi":
+                        return new PlayMIDICmd(src, data);
 
                     //case "playsound":
                     //    {

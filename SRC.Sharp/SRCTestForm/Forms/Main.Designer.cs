@@ -46,7 +46,6 @@ namespace SRCTestForm
         public PictureBox picFace;
         public PictureBox _picTmp32_0;
         public PictureBox picMaskedBack;
-        public Timer Timer1;
         public PictureBox picMask2;
         public PictureBox picNeautral;
         public PictureBox picEnemy;
@@ -80,7 +79,6 @@ namespace SRCTestForm
             this.picFace = new System.Windows.Forms.PictureBox();
             this._picTmp32_0 = new System.Windows.Forms.PictureBox();
             this.picMaskedBack = new System.Windows.Forms.PictureBox();
-            this.Timer1 = new System.Windows.Forms.Timer(this.components);
             this.picMask2 = new System.Windows.Forms.PictureBox();
             this.picNeautral = new System.Windows.Forms.PictureBox();
             this.picEnemy = new System.Windows.Forms.PictureBox();
@@ -250,11 +248,6 @@ namespace SRCTestForm
             this.picMaskedBack.TabIndex = 14;
             this.picMaskedBack.TabStop = false;
             this.picMaskedBack.Visible = false;
-            // 
-            // Timer1
-            // 
-            this.Timer1.Interval = 1000;
-            this.Timer1.Tick += new System.EventHandler(this.Timer1_Tick);
             // 
             // picMask2
             // 

@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.Logging;
 using SRCCore;
 using SRCCore.Filesystem;
-using SRCCore.Units;
 using SRCTestForm.FormLib;
+using SRCTestForm.Resoruces;
 using System;
 using System.Data;
 using System.Diagnostics;
@@ -24,7 +24,8 @@ namespace SRCTestForm
 
             SRC = new SRCCore.SRC();
             SRC.GUI = this;
-            SRC.Filesystem = new LocalFilesystem();
+            SRC.FileSystem = new LocalFileSystem();
+            SRC.Sound.Player = new WindowsManagedPlayer();
         }
 
         private void menuLoadData_Click(object sender, EventArgs e)

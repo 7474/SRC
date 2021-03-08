@@ -226,13 +226,13 @@ namespace SRCCore.Lib
         //        }
 
         // リスト list の要素を分割して返す (括弧を考慮)
-        public static IList<string> ToList(string list)
+        public static IList<string> ToList(string list, bool removeKakko = false)
         {
             bool hasError;
-            return ToListInternal(list, out hasError);
+            return ToListInternal(list, out hasError, removeKakko);
         }
 
-        private static IList<string> ToListInternal(string list, out bool hasError)
+        private static IList<string> ToListInternal(string list, out bool hasError, bool removeKakko = false)
         {
             hasError = false;
             bool in_single_quote = false;
@@ -306,7 +306,7 @@ namespace SRCCore.Lib
                     }
                 }
                 // XXX リスト中のカッコ消えちゃうと困るしもとは消してないっぽいから消さないでおく
-                //if (append)
+                if (append || !removeKakko)
                 {
                     current.Append(c);
                 }

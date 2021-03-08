@@ -56,7 +56,7 @@ namespace SRCCore.CmdDatas.Commands
             fname = GetArgAsString(2);
             if (Strings.Len(fname) > 0)
             {
-                Map.LoadMapData(SRC.Filesystem.ToPath(SRC.ScenarioPath, fname));
+                Map.LoadMapData(SRC.FileSystem.ToPath(SRC.ScenarioPath, fname));
             }
             else
             {
