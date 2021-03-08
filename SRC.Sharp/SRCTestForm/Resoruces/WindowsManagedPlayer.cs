@@ -145,6 +145,15 @@ namespace SRCTestForm.Resoruces
                     midiPlayer.Finished -= MidiFinished;
                     midiPlayer.Dispose();
                     midiPlayer = null;
+                    // Reset Output
+                    for (int ch = 0; ch < 16; ch++)
+                    {
+                        //midiOutput?.Send(new byte[] { (byte)(0xB0 + ch), 0x79, 0 }, 0, 3, 0);
+                        foreach (byte d1 in new byte[] { 0x79, 0x7a, 0x7b })
+                        {
+                            midiOutput?.Send(new byte[] { (byte)(0xB0 + ch), d1, 0 }, 0, 3, 0);
+                        }
+                    }
                 }
             }
         }
