@@ -1,10 +1,13 @@
-﻿using NAudio.Wave;
+﻿using Commons.Music.Midi;
+using Commons.Music.Midi.Alsa;
+using Commons.Music.Midi.CoreMidiApi;
+using Commons.Music.Midi.PortMidi;
+using Commons.Music.Midi.RtMidi;
+using Commons.Music.Midi.WinMM;
+using NAudio.Wave;
 using SRCCore;
 using System;
-using System.Diagnostics;
 using System.IO;
-using System.Threading.Tasks;
-using Commons.Music.Midi;
 using System.Linq;
 
 namespace SRCTestForm.Resoruces
@@ -39,8 +42,60 @@ namespace SRCTestForm.Resoruces
         {
             if (midiOutput == null)
             {
+                // Windows 10 で試した時の Default は WinMMMidiAccess だった。
                 var access = MidiAccessManager.Default;
-                midiOutput = access.OpenOutputAsync(access.Outputs.Last().Id).Result;
+                var midiPort = access.Outputs.Last();
+                try
+                {
+                    var rtAccess = new RtMidiAccess();
+                    midiPort = rtAccess.Outputs.Last();
+                    access = rtAccess;
+                }
+                catch
+                {
+                    // ignore
+                }
+                try
+                {
+                    var portAccess = new PortMidiAccess();
+                    midiPort = portAccess.Outputs.Last();
+                    access = portAccess;
+                }
+                catch
+                {
+                    // ignore
+                }
+                try
+                {
+                    var mmAccess = new WinMMMidiAccess();
+                    midiPort = mmAccess.Outputs.Last();
+                    access = mmAccess;
+                }
+                catch
+                {
+                    // ignore
+                }
+                try
+                {
+                    var coreAccess = new CoreMidiAccess();
+                    midiPort = coreAccess.Outputs.Last();
+                    access = coreAccess;
+                }
+                catch
+                {
+                    // ignore
+                }
+                try
+                {
+                    var alsaAccess = new AlsaMidiAccess();
+                    midiPort = alsaAccess.Outputs.Last();
+                    access = alsaAccess;
+                }
+                catch
+                {
+                    // ignore
+                }
+                midiOutput = access.OpenOutputAsync(midiPort.Id).Result;
             }
             if (outputDevice == null)
             {
