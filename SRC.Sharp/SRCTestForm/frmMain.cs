@@ -24,7 +24,7 @@ namespace SRCTestForm
 
             SRC = new SRCCore.SRC();
             SRC.GUI = this;
-            SRC.Filesystem = new LocalFilesystem();
+            SRC.FileSystem = new LocalFileSystem();
         }
 
         private void menuLoadData_Click(object sender, EventArgs e)

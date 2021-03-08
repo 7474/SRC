@@ -22,7 +22,7 @@ namespace SRCCore
                 }.FirstOrDefault(x => GeneralLib.FileExists(x)) ?? fname;
             }
 
-            if (string.IsNullOrEmpty(FileSystem.Dir(fname, FileAttribute.Normal)))
+            if (string.IsNullOrEmpty(Lib.FileSystem.Dir(fname, FileAttribute.Normal)))
             {
                 GUI.ErrorMessage(fname + "が見つかりません");
                 TerminateSRC();

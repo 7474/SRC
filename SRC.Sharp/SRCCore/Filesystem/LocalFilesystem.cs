@@ -5,7 +5,7 @@ using System.Text;
 
 namespace SRCCore.Filesystem
 {
-    public class LocalFilesystem : IFilesystem
+    public class LocalFileSystem : IFileSystem
     {
         public string ToPath(params string[] paths)
         {

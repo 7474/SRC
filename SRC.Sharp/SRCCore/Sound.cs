@@ -1,28 +1,34 @@
-﻿using System;
+﻿// Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
+// 本プログラムはフリーソフトであり、無保証です。
+// 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
+// 再頒布または改変することができます。
+using System;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
+using SRCCore.Filesystem;
 
-namespace Project1
+namespace SRCCore
 {
-    static class Sound
+    // ＢＧＭ＆効果音再生用のモジュール
+    public class Sound
     {
+        private SRC SRC { get; }
+        private IFileSystem FileSystem => SRC.FileSystem;
 
-        // Copyright (C) 1997-2012 Kei Sakamoto / Inui Tetsuyuki
-        // 本プログラムはフリーソフトであり、無保証です。
-        // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
-        // 再頒布または改変することができます。
-
-        // ＢＧＭ＆効果音再生用のモジュール
+        public Sound(SRC src)
+        {
+            SRC = src;
+        }
 
         // MCI制御用API
         [DllImport("winmm.dll", EntryPoint = "mciSendStringA")]
-        static extern int mciSendString(string lpstrCommand, string lpstrReturnString, int uReturnLength, int hwndCallback);
+        extern int mciSendString(string lpstrCommand, string lpstrReturnString, int uReturnLength, int hwndCallback);
 
         // WAVE再生用API
         [DllImport("winmm.dll", EntryPoint = "sndPlaySoundA")]
-        static extern int sndPlaySound(string lpszSoundName, int uFlags);
+        extern int sndPlaySound(string lpszSoundName, int uFlags);
 
         public const int SND_SYNC = 0x0; // 再生終了後、制御を戻す
         public const int SND_ASYNC = 0x1; // 関数実行後、制御を戻す
@@ -34,55 +40,54 @@ namespace Project1
 
 
         // 現在再生されているＢＧＭのファイル名
-        public static string BGMFileName;
+        public string BGMFileName;
         // ＢＧＭをリピート再生する？
-        public static bool RepeatMode;
+        public bool RepeatMode;
         // 戦闘時にもＢＧＭを変更しない？
-        public static bool KeepBGM;
+        public bool KeepBGM;
         // ボス用ＢＧＭを演奏中
-        public static bool BossBGM;
+        public bool BossBGM;
 
         // Waveファイルの再生を行った？
-        public static bool IsWavePlayed;
+        public bool IsWavePlayed;
 
         // MIDIファイルのサーチパスの初期化が完了している？
-        private static bool IsMidiSearchPathInitialized;
+        private bool IsMidiSearchPathInitialized;
 
         // MIDI再生方法の手段
-        public static bool UseMCI;
-        public static bool UseDirectMusic;
+        public bool UseMCI;
+        public bool UseDirectMusic;
 
         // WAV再生方法の手段
-        public static bool UseDirectSound;
+        public bool UseDirectSound;
 
         // MP3再生時の音量
-        public static short MP3Volume;
+        public int MP3Volume;
 
         // DirectMusic用変数
         // UPGRADE_ISSUE: DirectX7 オブジェクト はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6B85A2A7-FE9F-4FBE-AA0C-CF11AC86A305"' をクリックしてください。
-        private static DirectX7 DXObject;
+        private DirectX7 DXObject;
         // UPGRADE_ISSUE: DirectMusicLoader オブジェクト はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6B85A2A7-FE9F-4FBE-AA0C-CF11AC86A305"' をクリックしてください。
-        private static DirectMusicLoader DMLoader;
+        private DirectMusicLoader DMLoader;
         // UPGRADE_ISSUE: DirectMusicPerformance オブジェクト はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6B85A2A7-FE9F-4FBE-AA0C-CF11AC86A305"' をクリックしてください。
-        private static DirectMusicPerformance DMPerformance;
+        private DirectMusicPerformance DMPerformance;
         // UPGRADE_ISSUE: DirectMusicSegment オブジェクト はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6B85A2A7-FE9F-4FBE-AA0C-CF11AC86A305"' をクリックしてください。
-        private static DirectMusicSegment DMSegment;
+        private DirectMusicSegment DMSegment;
 
         // VBMP3.dllの初期化が完了している？
-        private static bool IsMP3Supported;
+        private bool IsMP3Supported;
 
         // DirectSound用変数
         // UPGRADE_ISSUE: DirectSound オブジェクト はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6B85A2A7-FE9F-4FBE-AA0C-CF11AC86A305"' をクリックしてください。
-        private static DirectSound DSObject;
+        private DirectSound DSObject;
         // UPGRADE_ISSUE: DirectSoundBuffer オブジェクト はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6B85A2A7-FE9F-4FBE-AA0C-CF11AC86A305"' をクリックしてください。
-        private static DirectSoundBuffer DSBuffer;
-
+        private DirectSoundBuffer DSBuffer;
 
         // ＢＧＭの再生を開始する
-        public static void StartBGM(ref string bgm_name, bool is_repeat_mode = true)
+        public void StartBGM(string bgm_name, bool is_repeat_mode = true)
         {
             string fname0, fname, fname2;
-            short i;
+            int i;
 
             // ＢＧＭを固定中？
             if (KeepBGM)
@@ -99,10 +104,10 @@ namespace Project1
             // ファイル名の本体部分を抜き出す
             fname0 = Strings.Left(bgm_name, Strings.Len(bgm_name) - 4);
             string argstr21 = @"\";
-            if (GeneralLib.InStr2(ref fname0, ref argstr21) > 0)
+            if (GeneralLib.InStr2(fname0, argstr21) > 0)
             {
                 string argstr2 = @"\";
-                fname0 = Strings.Mid(fname0, GeneralLib.InStr2(ref fname0, ref argstr2) + 1);
+                fname0 = Strings.Mid(fname0, GeneralLib.InStr2(fname0, argstr2) + 1);
             }
 
             // 同じＢＧＭを演奏中であれば演奏を継続
@@ -119,7 +124,7 @@ namespace Project1
 
             // ファイルを検索
             bgm_name = "(" + bgm_name + ")";
-            fname = SearchMidiFile(ref bgm_name);
+            fname = SearchMidiFile(bgm_name);
 
             // ファイルが見つかった？
             if (Strings.Len(fname) == 0)
@@ -137,9 +142,9 @@ namespace Project1
                 // シナリオ側にファイルが見つかった場合はバリエーションもシナリオ側からのみ選択
                 do
                 {
-                    i = (short)(i + 1);
+                    i = (i + 1);
                     string argmidi_name = "(" + fname0 + "(" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(i) + ")" + Strings.Right(fname, 4) + ")";
-                    fname2 = SearchMidiFile(ref argmidi_name);
+                    fname2 = SearchMidiFile(argmidi_name);
                 }
                 while (Strings.InStr(fname2, SRC.ScenarioPath) > 0);
             }
@@ -148,25 +153,25 @@ namespace Project1
                 // そうでなければ両方から選択
                 do
                 {
-                    i = (short)(i + 1);
+                    i = (i + 1);
                     string argmidi_name1 = "(" + fname0 + "(" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(i) + ")" + Strings.Right(fname, 4) + ")";
-                    fname2 = SearchMidiFile(ref argmidi_name1);
+                    fname2 = SearchMidiFile(argmidi_name1);
                 }
                 while (!string.IsNullOrEmpty(fname2));
             }
 
-            i = (short)Conversion.Int((i - 1) * VBMath.Rnd() + 1f);
+            i = Conversion.Int((i - 1) * VBMath.Rnd() + 1f);
             if (i > 1)
             {
                 string argmidi_name2 = "(" + fname0 + "(" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(i) + ")" + Strings.Right(fname, 4) + ")";
-                fname = SearchMidiFile(ref argmidi_name2);
+                fname = SearchMidiFile(argmidi_name2);
             }
 
             // ＢＧＭを連続演奏？
             RepeatMode = is_repeat_mode;
 
             // ファイルをロードし、演奏開始
-            LoadBGM(ref fname);
+            LoadBGM(fname);
 
             // リピート再生処理を行うためのタイマーを起動
             // UPGRADE_ISSUE: Control Timer1 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
@@ -174,7 +179,7 @@ namespace Project1
         }
 
         // ＢＧＭのファイルを読み込む
-        private static void LoadBGM(ref string fname)
+        private void LoadBGM(string fname)
         {
             int ret;
             string cmd;
@@ -208,7 +213,7 @@ namespace Project1
                             if (Information.Err().Number != 0)
                             {
                                 string argmsg = "LoadSegment failed (" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(Information.Err().Number) + ")";
-                                GUI.ErrorMessage(ref argmsg);
+                                GUI.ErrorMessage(argmsg);
                             }
 
                             // UPGRADE_WARNING: オブジェクト DMSegment.SetStandardMidiFile の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
@@ -216,14 +221,14 @@ namespace Project1
                             if (Information.Err().Number != 0)
                             {
                                 string argmsg1 = "SetStandardMidiFile failed (" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(Information.Err().Number) + ")";
-                                GUI.ErrorMessage(ref argmsg1);
+                                GUI.ErrorMessage(argmsg1);
                             }
                             // UPGRADE_WARNING: オブジェクト DMPerformance.SetMasterAutoDownload の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
                             DMPerformance.SetMasterAutoDownload(true);
                             if (Information.Err().Number != 0)
                             {
                                 string argmsg2 = "SetMasterAutoDownload failed (" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(Information.Err().Number) + ")";
-                                GUI.ErrorMessage(ref argmsg2);
+                                GUI.ErrorMessage(argmsg2);
                             }
 
                             // ループ演奏の設定
@@ -233,7 +238,7 @@ namespace Project1
                             if (Information.Err().Number != 0)
                             {
                                 string argmsg3 = "SetLoopPoints failed (" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(Information.Err().Number) + ")";
-                                GUI.ErrorMessage(ref argmsg3);
+                                GUI.ErrorMessage(argmsg3);
                             }
                             // 繰り返し回数を設定
                             if (RepeatMode)
@@ -250,7 +255,7 @@ namespace Project1
                             if (Information.Err().Number != 0)
                             {
                                 string argmsg4 = "SetRepeats failed (" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(Information.Err().Number) + ")";
-                                GUI.ErrorMessage(ref argmsg4);
+                                GUI.ErrorMessage(argmsg4);
                             }
 
                             // 演奏開始
@@ -259,7 +264,7 @@ namespace Project1
                             if (Information.Err().Number != 0)
                             {
                                 string argmsg5 = "PlaySegment failed (" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(Information.Err().Number) + ")";
-                                GUI.ErrorMessage(ref argmsg5);
+                                GUI.ErrorMessage(argmsg5);
                             }
 
                             BGMFileName = fname;
@@ -306,7 +311,7 @@ namespace Project1
                         VBMP3.vbmp3_close();
 
                         // ファイルを読み込む
-                        if (VBMP3.vbmp3_open(ref fname, ref mp3_data))
+                        if (VBMP3.vbmp3_open(fname, mp3_data))
                         {
                             // '繰り返し再生時は雑音が入らないようフェードアウトさせる
                             // If RepeatMode Then
@@ -332,7 +337,7 @@ namespace Project1
 
             // ファイルを開く
             cmd = "open " + '"' + fname + '"' + cmd;
-            ret = Sound.mciSendString(ref cmd, ref Constants.vbNullString, 0, 0);
+            ret = Sound.mciSendString(cmd, Constants.vbNullString, 0, 0);
             if (ret != 0)
             {
                 // 開けなかった
@@ -341,33 +346,33 @@ namespace Project1
 
             // 演奏開始
             string arglpstrCommand = "play bgm";
-            ret = Sound.mciSendString(ref arglpstrCommand, ref Constants.vbNullString, 0, 0);
+            ret = Sound.mciSendString(arglpstrCommand, Constants.vbNullString, 0, 0);
             if (ret != 0)
             {
                 // 演奏できなかった
                 string arglpstrCommand1 = "close bgm wait";
-                ret = Sound.mciSendString(ref arglpstrCommand1, ref Constants.vbNullString, 0, 0);
+                ret = Sound.mciSendString(arglpstrCommand1, Constants.vbNullString, 0, 0);
                 return;
             }
 
             // 演奏しているBGMのファイル名を記録
             BGMFileName = fname;
             return;
-            ErrorHandler:
+        ErrorHandler:
             ;
             if (UseDirectMusic)
             {
                 // DirectMusicが使用できない場合はMCIを使ってリトライ
                 UseDirectMusic = false;
                 UseMCI = true;
-                LoadBGM(ref fname);
+                LoadBGM(fname);
             }
         }
 
         // ＢＧＭをリスタートさせる
-        public static void RestartBGM()
+        public void RestartBGM()
         {
-            var ret = default(int);
+            var ret = default;
 
             // 停止中でなければ何もしない
             if (BGMStatus() != "stopped")
@@ -384,14 +389,14 @@ namespace Project1
                         if (UseMCI)
                         {
                             string arglpstrCommand = "seek bgm to start wait";
-                            ret = Sound.mciSendString(ref arglpstrCommand, ref Constants.vbNullString, 0, 0);
+                            ret = Sound.mciSendString(arglpstrCommand, Constants.vbNullString, 0, 0);
                             if (ret != 0)
                             {
                                 return;
                             }
 
                             string arglpstrCommand1 = "play bgm";
-                            ret = Sound.mciSendString(ref arglpstrCommand1, ref Constants.vbNullString, 0, 0);
+                            ret = Sound.mciSendString(arglpstrCommand1, Constants.vbNullString, 0, 0);
                         }
 
                         break;
@@ -401,21 +406,21 @@ namespace Project1
                     {
                         // WAVEファイル
                         string arglpstrCommand2 = "seek bgm to start wait";
-                        ret = Sound.mciSendString(ref arglpstrCommand2, ref Constants.vbNullString, 0, 0);
+                        ret = Sound.mciSendString(arglpstrCommand2, Constants.vbNullString, 0, 0);
                         if (ret != 0)
                         {
                             return;
                         }
 
                         string arglpstrCommand3 = "play bgm";
-                        ret = Sound.mciSendString(ref arglpstrCommand3, ref Constants.vbNullString, 0, 0);
+                        ret = Sound.mciSendString(arglpstrCommand3, Constants.vbNullString, 0, 0);
                         break;
                     }
 
                 case ".mp3":
                     {
                         // MP3ファイル
-                        if (VBMP3.vbmp3_getState(ref ret) == 2)
+                        if (VBMP3.vbmp3_getState(ret) == 2)
                         {
                             VBMP3.vbmp3_restart();
                         }
@@ -430,7 +435,7 @@ namespace Project1
         }
 
         // ＢＧＭを停止する
-        public static void StopBGM(bool by_force = false)
+        public void StopBGM(bool by_force = false)
         {
             int ret;
 
@@ -461,17 +466,17 @@ namespace Project1
                             if (Information.Err().Number != 0)
                             {
                                 string argmsg = "DMPerformance.Stop failed (" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(Information.Err().Number) + ")";
-                                GUI.ErrorMessage(ref argmsg);
+                                GUI.ErrorMessage(argmsg);
                             }
                         }
                         else
                         {
                             // 演奏を停止
                             string arglpstrCommand = "stop bgm wait";
-                            ret = Sound.mciSendString(ref arglpstrCommand, ref Constants.vbNullString, 0, 0);
+                            ret = Sound.mciSendString(arglpstrCommand, Constants.vbNullString, 0, 0);
                             // ファイルを閉じる
                             string arglpstrCommand1 = "close bgm wait";
-                            ret = Sound.mciSendString(ref arglpstrCommand1, ref Constants.vbNullString, 0, 0);
+                            ret = Sound.mciSendString(arglpstrCommand1, Constants.vbNullString, 0, 0);
                         }
 
                         break;
@@ -482,10 +487,10 @@ namespace Project1
                         // WAVEファイル
                         // 演奏を停止
                         string arglpstrCommand2 = "stop bgm wait";
-                        ret = Sound.mciSendString(ref arglpstrCommand2, ref Constants.vbNullString, 0, 0);
+                        ret = Sound.mciSendString(arglpstrCommand2, Constants.vbNullString, 0, 0);
                         // ファイルを閉じる
                         string arglpstrCommand3 = "close bgm wait";
-                        ret = Sound.mciSendString(ref arglpstrCommand3, ref Constants.vbNullString, 0, 0);
+                        ret = Sound.mciSendString(arglpstrCommand3, Constants.vbNullString, 0, 0);
                         break;
                     }
 
@@ -509,7 +514,7 @@ namespace Project1
         }
 
         // ＭＩＤＩ音源を初期化する(MCIを使用する場合のみ)
-        private static void ResetBGM()
+        private void ResetBGM()
         {
             int ret;
             string fname, cmd;
@@ -551,7 +556,7 @@ namespace Project1
             }
 
             // ファイルがちゃんとある？
-            if (!GeneralLib.FileExists(ref fname))
+            if (!GeneralLib.FileExists(fname))
             {
                 return;
             }
@@ -595,7 +600,7 @@ namespace Project1
 
                 // ファイルをオープン
                 cmd = "open " + '"' + fname + '"' + " type sequencer alias bgm wait";
-                ret = Sound.mciSendString(ref cmd, ref Constants.vbNullString, 0, 0);
+                ret = Sound.mciSendString(cmd, Constants.vbNullString, 0, 0);
                 if (ret != 0)
                 {
                     return;
@@ -603,15 +608,15 @@ namespace Project1
 
                 // 音源リセット用MIDIファイルを演奏
                 string arglpstrCommand = "play bgm wait";
-                ret = Sound.mciSendString(ref arglpstrCommand, ref Constants.vbNullString, 0, 0);
+                ret = Sound.mciSendString(arglpstrCommand, Constants.vbNullString, 0, 0);
 
                 // ファイルをクローズ
                 string arglpstrCommand1 = "close bgm wait";
-                ret = Sound.mciSendString(ref arglpstrCommand1, ref Constants.vbNullString, 0, 0);
+                ret = Sound.mciSendString(arglpstrCommand1, Constants.vbNullString, 0, 0);
             }
 
             return;
-            ErrorHandler:
+        ErrorHandler:
             ;
 
             // DirectMusic使用時にエラーが発生したのでMCIを使う
@@ -620,7 +625,7 @@ namespace Project1
         }
 
         // ＢＧＭを再生中？
-        private static string BGMStatus()
+        private string BGMStatus()
         {
             string BGMStatusRet = default;
             string retstr;
@@ -655,7 +660,7 @@ namespace Project1
                             if (Information.Err().Number != 0)
                             {
                                 string argmsg = "DMPerformance.IsPlaying failed (" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(Information.Err().Number) + ")";
-                                GUI.ErrorMessage(ref argmsg);
+                                GUI.ErrorMessage(argmsg);
                             }
                         }
                         else
@@ -667,7 +672,7 @@ namespace Project1
 
                             // 再生状況を参照
                             string arglpstrCommand = "status bgm mode";
-                            ret = Sound.mciSendString(ref arglpstrCommand, ref retstr, 120, 0);
+                            ret = Sound.mciSendString(arglpstrCommand, retstr, 120, 0);
                             if (ret != 0)
                             {
                                 return BGMStatusRet;
@@ -688,7 +693,7 @@ namespace Project1
                         // 結果を保存する領域を確保
                         retstr = Strings.Space(120);
                         string arglpstrCommand1 = "status bgm mode";
-                        ret = Sound.mciSendString(ref arglpstrCommand1, ref retstr, 120, 0);
+                        ret = Sound.mciSendString(arglpstrCommand1, retstr, 120, 0);
                         if (ret != 0)
                         {
                             return BGMStatusRet;
@@ -703,7 +708,7 @@ namespace Project1
                 case ".mp3":
                     {
                         // MP3の再生状態と再生時間の取得
-                        ret = VBMP3.vbmp3_getState(ref sec);
+                        ret = VBMP3.vbmp3_getState(sec);
                         switch (ret)
                         {
                             case 0:
@@ -736,7 +741,7 @@ namespace Project1
         }
 
         // ＢＧＭを変更する (指定したＢＧＭをすでに演奏中ならなにもしない)
-        public static void ChangeBGM(ref string bgm_name)
+        public void ChangeBGM(string bgm_name)
         {
             string fname, fname2;
 
@@ -755,10 +760,10 @@ namespace Project1
             // ファイル名の本体部分を抜き出す
             fname = Strings.Left(bgm_name, Strings.Len(bgm_name) - 4);
             string argstr21 = @"\";
-            if (GeneralLib.InStr2(ref fname, ref argstr21) > 0)
+            if (GeneralLib.InStr2(fname, argstr21) > 0)
             {
                 string argstr2 = @"\";
-                fname = Strings.Mid(fname, GeneralLib.InStr2(ref fname, ref argstr2) + 1);
+                fname = Strings.Mid(fname, GeneralLib.InStr2(fname, argstr2) + 1);
             }
 
             // 既に同じMIDIが演奏されていればそのまま演奏し続ける
@@ -775,10 +780,10 @@ namespace Project1
             {
                 fname2 = Strings.Left(BGMFileName, Strings.Len(BGMFileName) - 4);
                 string argstr23 = @"\";
-                if (GeneralLib.InStr2(ref fname2, ref argstr23) > 0)
+                if (GeneralLib.InStr2(fname2, argstr23) > 0)
                 {
                     string argstr22 = @"\";
-                    fname2 = Strings.Mid(fname2, GeneralLib.InStr2(ref fname2, ref argstr22) + 1);
+                    fname2 = Strings.Mid(fname2, GeneralLib.InStr2(fname2, argstr22) + 1);
                 }
 
                 if (Strings.Len(fname2) > 4)
@@ -810,21 +815,21 @@ namespace Project1
             RepeatMode = true;
 
             // 演奏開始
-            StartBGM(ref bgm_name);
+            StartBGM(bgm_name);
         }
 
 
         // DirectMusicの初期化
-        public static void InitDirectMusic()
+        public void InitDirectMusic()
         {
             var DMUS_PC_GMINHARDWARE = default(object);
             var DMUS_PC_GSINHARDWARE = default(object);
             var DMUS_PC_XGINHARDWARE = default(object);
             var DMUS_PC_EXTERNAL = default(object);
-            short port_id;
+            int port_id;
             // UPGRADE_ISSUE: DMUS_PORTCAPS オブジェクト はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6B85A2A7-FE9F-4FBE-AA0C-CF11AC86A305"' をクリックしてください。
             var portcaps = default(DMUS_PORTCAPS);
-            short i;
+            int i;
             ;
 
             // フラグを設定
@@ -861,8 +866,8 @@ namespace Project1
             // ポート設定
             string argini_section = "Option";
             string argini_entry = "MIDIPortID";
-            string argexpr = GeneralLib.ReadIni(ref argini_section, ref argini_entry);
-            port_id = (short)GeneralLib.StrToLng(ref argexpr);
+            string argexpr = GeneralLib.ReadIni(argini_section, argini_entry);
+            port_id = GeneralLib.StrToLng(argexpr);
 
             // 使用ポート番号を指定されていた場合
             if (port_id > 0)
@@ -871,7 +876,7 @@ namespace Project1
                 if (port_id > DMPerformance.GetPortCount)
                 {
                     string argmsg = "MIDIPortIDに正しいMIDIポートが設定されていません。";
-                    GUI.ErrorMessage(ref argmsg);
+                    GUI.ErrorMessage(argmsg);
                     Environment.Exit(0);
                 }
 
@@ -992,7 +997,7 @@ namespace Project1
             // UPGRADE_WARNING: オブジェクト DMPerformance.SetPort の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
             DMPerformance.SetPort(-1, 1);
             return;
-            ErrorHandler:
+        ErrorHandler:
             ;
 
 
@@ -1002,7 +1007,7 @@ namespace Project1
         }
 
         // DirectXオブジェクトを作成する
-        private static DirectX7 CreateDirectXObject()
+        private DirectX7 CreateDirectXObject()
         {
             DirectX7 CreateDirectXObjectRet = default;
             // UPGRADE_ISSUE: DirectX7 オブジェクト はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6B85A2A7-FE9F-4FBE-AA0C-CF11AC86A305"' をクリックしてください。
@@ -1012,9 +1017,9 @@ namespace Project1
         }
 
         // 利用可能なMIDI音源の一覧を作成する
-        private static void CreateMIDIPortListFile()
+        private void CreateMIDIPortListFile()
         {
-            short f, i;
+            int f, i;
             string pname;
             ;
 #error Cannot convert OnErrorGoToStatementSyntax - see comment for details
@@ -1026,7 +1031,7 @@ namespace Project1
                     On Error GoTo ErrorHandler
 
              */
-            f = (short)FileSystem.FreeFile();
+            f = FileSystem.FreeFile();
             FileSystem.FileOpen(f, SRC.AppPath + @"Midi\MIDI音源リスト.txt", OpenMode.Output, OpenAccess.Write);
             FileSystem.PrintLine(f, ";DirectMusicで利用可能なMIDI音源のリストです。");
             FileSystem.PrintLine(f, ";Src.iniのMIDIPortIDに使用したい音源の番号を指定して下さい。");
@@ -1047,8 +1052,8 @@ namespace Project1
                 FileSystem.PrintLine(f, Microsoft.VisualBasic.Compatibility.VB6.Support.Format(i) + ":" + pname);
             }
 
-            FileSystem.FileClose((int)f);
-            ErrorHandler:
+            FileSystem.FileClose(f);
+        ErrorHandler:
             ;
 
             // エラー発生
@@ -1056,11 +1061,11 @@ namespace Project1
 
 
         // VBMP3を初期化
-        private static void InitVBMP3()
+        private void InitVBMP3()
         {
             VBMP3.VBMP3_OPTION opt;
             string buf;
-            bool localFileExists() { string argfname = SRC.AppPath + "VBMP3.dll"; var ret = GeneralLib.FileExists(ref argfname); return ret; }
+            bool localFileExists() { string argfname = SRC.AppPath + "VBMP3.dll"; var ret = GeneralLib.FileExists(argfname); return ret; }
 
             if (!localFileExists())
             {
@@ -1072,26 +1077,26 @@ namespace Project1
             opt.inputBlock = 30;
             string argini_section = "Option";
             string argini_entry = "MP3OutputBlock";
-            buf = GeneralLib.ReadIni(ref argini_section, ref argini_entry);
-            opt.outputBlock = GeneralLib.MinLng(GeneralLib.StrToLng(ref buf), 30);
+            buf = GeneralLib.ReadIni(argini_section, argini_entry);
+            opt.outputBlock = GeneralLib.MinLng(GeneralLib.StrToLng(buf), 30);
             string argini_section1 = "Option";
             string argini_entry1 = "MP3InputSleep";
-            buf = GeneralLib.ReadIni(ref argini_section1, ref argini_entry1);
-            opt.inputSleep = GeneralLib.MaxLng(GeneralLib.StrToLng(ref buf), 0);
+            buf = GeneralLib.ReadIni(argini_section1, argini_entry1);
+            opt.inputSleep = GeneralLib.MaxLng(GeneralLib.StrToLng(buf), 0);
             opt.outputSleep = 0;
-            VBMP3.vbmp3_setVbmp3Option(ref opt);
+            VBMP3.vbmp3_setVbmp3Option(opt);
             IsMP3Supported = true;
         }
 
 
         // 各Midiフォルダから指定されたMIDIファイルを検索する
-        public static string SearchMidiFile(ref string midi_name)
+        public string SearchMidiFile(string midi_name)
         {
             string SearchMidiFileRet = default;
             string fname, fname_mp3 = default;
             ;
 #error Cannot convert LocalDeclarationStatementSyntax - see comment for details
-            /* Cannot convert LocalDeclarationStatementSyntax, System.NotSupportedException: StaticKeyword not supported!
+            /* Cannot convert LocalDeclarationStatementSyntax, System.NotSupportedException: Keyword not supported!
                場所 ICSharpCode.CodeConverter.CSharp.SyntaxKindExtensions.ConvertToken(SyntaxKind t, TokenContext context)
                場所 ICSharpCode.CodeConverter.CSharp.CommonConversions.ConvertModifier(SyntaxToken m, TokenContext context)
                場所 ICSharpCode.CodeConverter.CSharp.CommonConversions.<ConvertModifiersCore>d__43.MoveNext()
@@ -1108,12 +1113,12 @@ namespace Project1
                場所 ICSharpCode.CodeConverter.CSharp.CommentConvertingMethodBodyVisitor.<DefaultVisitInnerAsync>d__3.MoveNext()
 
             Input:
-                    Static scenario_midi_dir_exists As Boolean
+                     scenario_midi_dir_exists As Boolean
 
              */
             ;
 #error Cannot convert LocalDeclarationStatementSyntax - see comment for details
-            /* Cannot convert LocalDeclarationStatementSyntax, System.NotSupportedException: StaticKeyword not supported!
+            /* Cannot convert LocalDeclarationStatementSyntax, System.NotSupportedException: Keyword not supported!
                場所 ICSharpCode.CodeConverter.CSharp.SyntaxKindExtensions.ConvertToken(SyntaxKind t, TokenContext context)
                場所 ICSharpCode.CodeConverter.CSharp.CommonConversions.ConvertModifier(SyntaxToken m, TokenContext context)
                場所 ICSharpCode.CodeConverter.CSharp.CommonConversions.<ConvertModifiersCore>d__43.MoveNext()
@@ -1130,12 +1135,12 @@ namespace Project1
                場所 ICSharpCode.CodeConverter.CSharp.CommentConvertingMethodBodyVisitor.<DefaultVisitInnerAsync>d__3.MoveNext()
 
             Input:
-                    Static extdata_midi_dir_exists As Boolean
+                     extdata_midi_dir_exists As Boolean
 
              */
             ;
 #error Cannot convert LocalDeclarationStatementSyntax - see comment for details
-            /* Cannot convert LocalDeclarationStatementSyntax, System.NotSupportedException: StaticKeyword not supported!
+            /* Cannot convert LocalDeclarationStatementSyntax, System.NotSupportedException: Keyword not supported!
                場所 ICSharpCode.CodeConverter.CSharp.SyntaxKindExtensions.ConvertToken(SyntaxKind t, TokenContext context)
                場所 ICSharpCode.CodeConverter.CSharp.CommonConversions.ConvertModifier(SyntaxToken m, TokenContext context)
                場所 ICSharpCode.CodeConverter.CSharp.CommonConversions.<ConvertModifiersCore>d__43.MoveNext()
@@ -1152,12 +1157,12 @@ namespace Project1
                場所 ICSharpCode.CodeConverter.CSharp.CommentConvertingMethodBodyVisitor.<DefaultVisitInnerAsync>d__3.MoveNext()
 
             Input:
-                    Static extdata2_midi_dir_exists As Boolean
+                     extdata2_midi_dir_exists As Boolean
 
              */
             ;
-            // Static fpath_history As New Collection     DEL MARGE
-            short j, i, num;
+            //  fpath_history As New Collection     DEL MARGE
+            int j, i, num;
             string buf, buf2;
             var sub_folder = default(string);
 
@@ -1193,7 +1198,7 @@ namespace Project1
 
                 // MP3が演奏可能かどうかも調べておく
                 string argfname = SRC.AppPath + "VBMP3.dll";
-                if (GeneralLib.FileExists(ref argfname))
+                if (GeneralLib.FileExists(argfname))
                 {
                     is_mp3_available = true;
                 }
@@ -1208,7 +1213,7 @@ namespace Project1
             }
 
             // 引数1として渡された文字列をリストとして扱い、左から順にMIDIを検索
-            num = GeneralLib.ListLength(ref midi_name);
+            num = GeneralLib.ListLength(midi_name);
             i = 1;
             while (i <= num)
             {
@@ -1217,7 +1222,7 @@ namespace Project1
                 var loopTo = num;
                 for (j = i; j <= loopTo; j++)
                 {
-                    buf2 = Strings.LCase(GeneralLib.ListIndex(ref midi_name, j));
+                    buf2 = Strings.LCase(GeneralLib.ListIndex(midi_name, j));
 
                     // 全体が()で囲まれている場合は()を外す
                     if (Strings.Left(buf2, 1) == "(" & Strings.Right(buf2, 1) == ")")
@@ -1245,14 +1250,14 @@ namespace Project1
                 {
                     if (is_mp3_available)
                     {
-                        if (GeneralLib.FileExists(ref fname_mp3))
+                        if (GeneralLib.FileExists(fname_mp3))
                         {
                             SearchMidiFileRet = fname_mp3;
                             return SearchMidiFileRet;
                         }
                     }
 
-                    if (GeneralLib.FileExists(ref buf))
+                    if (GeneralLib.FileExists(buf))
                     {
                         SearchMidiFileRet = buf;
                     }
@@ -1288,7 +1293,7 @@ namespace Project1
                         if (!string.IsNullOrEmpty(sub_folder))
                         {
                             fname = SRC.ScenarioPath + @"Midi\" + sub_folder + fname_mp3;
-                            if (GeneralLib.FileExists(ref fname))
+                            if (GeneralLib.FileExists(fname))
                             {
                                 SearchMidiFileRet = fname;
                                 // fpath_history.Add fname, buf   DEL MARGE
@@ -1297,7 +1302,7 @@ namespace Project1
                         }
 
                         fname = SRC.ScenarioPath + @"Midi\" + fname_mp3;
-                        if (GeneralLib.FileExists(ref fname))
+                        if (GeneralLib.FileExists(fname))
                         {
                             SearchMidiFileRet = fname;
                             // fpath_history.Add fname, buf   DEL MARGE
@@ -1308,7 +1313,7 @@ namespace Project1
                     if (!string.IsNullOrEmpty(sub_folder))
                     {
                         fname = SRC.ScenarioPath + @"Midi\" + sub_folder + buf;
-                        if (GeneralLib.FileExists(ref fname))
+                        if (GeneralLib.FileExists(fname))
                         {
                             SearchMidiFileRet = fname;
                             // fpath_history.Add fname, buf   DEL MARGE
@@ -1317,7 +1322,7 @@ namespace Project1
                     }
 
                     fname = SRC.ScenarioPath + @"Midi\" + buf;
-                    if (GeneralLib.FileExists(ref fname))
+                    if (GeneralLib.FileExists(fname))
                     {
                         SearchMidiFileRet = fname;
                         // fpath_history.Add fname, buf   DEL MARGE
@@ -1333,7 +1338,7 @@ namespace Project1
                         if (!string.IsNullOrEmpty(sub_folder))
                         {
                             fname = SRC.ExtDataPath + @"Midi\" + sub_folder + fname_mp3;
-                            if (GeneralLib.FileExists(ref fname))
+                            if (GeneralLib.FileExists(fname))
                             {
                                 SearchMidiFileRet = fname;
                                 // fpath_history.Add fname, buf   DEL MARGE
@@ -1342,7 +1347,7 @@ namespace Project1
                         }
 
                         fname = SRC.ExtDataPath + @"Midi\" + fname_mp3;
-                        if (GeneralLib.FileExists(ref fname))
+                        if (GeneralLib.FileExists(fname))
                         {
                             SearchMidiFileRet = fname;
                             // fpath_history.Add fname, buf   DEL MARGE
@@ -1353,7 +1358,7 @@ namespace Project1
                     if (!string.IsNullOrEmpty(sub_folder))
                     {
                         fname = SRC.ExtDataPath + @"Midi\" + sub_folder + buf;
-                        if (GeneralLib.FileExists(ref fname))
+                        if (GeneralLib.FileExists(fname))
                         {
                             SearchMidiFileRet = fname;
                             // fpath_history.Add fname, buf   DEL MARGE
@@ -1362,7 +1367,7 @@ namespace Project1
                     }
 
                     fname = SRC.ExtDataPath + @"Midi\" + buf;
-                    if (GeneralLib.FileExists(ref fname))
+                    if (GeneralLib.FileExists(fname))
                     {
                         SearchMidiFileRet = fname;
                         // fpath_history.Add fname, buf   DEL MARGE
@@ -1378,7 +1383,7 @@ namespace Project1
                         if (!string.IsNullOrEmpty(sub_folder))
                         {
                             fname = SRC.ExtDataPath2 + @"Midi\" + sub_folder + fname_mp3;
-                            if (GeneralLib.FileExists(ref fname))
+                            if (GeneralLib.FileExists(fname))
                             {
                                 SearchMidiFileRet = fname;
                                 // fpath_history.Add fname, buf   DEL MARGE
@@ -1387,7 +1392,7 @@ namespace Project1
                         }
 
                         fname = SRC.ExtDataPath2 + @"Midi\" + fname_mp3;
-                        if (GeneralLib.FileExists(ref fname))
+                        if (GeneralLib.FileExists(fname))
                         {
                             SearchMidiFileRet = fname;
                             // fpath_history.Add fname, buf   DEL MARGE
@@ -1398,7 +1403,7 @@ namespace Project1
                     if (!string.IsNullOrEmpty(sub_folder))
                     {
                         fname = SRC.ExtDataPath2 + @"Midi\" + sub_folder + buf;
-                        if (GeneralLib.FileExists(ref fname))
+                        if (GeneralLib.FileExists(fname))
                         {
                             SearchMidiFileRet = fname;
                             // fpath_history.Add fname, buf   DEL MARGE
@@ -1407,7 +1412,7 @@ namespace Project1
                     }
 
                     fname = SRC.ExtDataPath2 + @"Midi\" + buf;
-                    if (GeneralLib.FileExists(ref fname))
+                    if (GeneralLib.FileExists(fname))
                     {
                         SearchMidiFileRet = fname;
                         // fpath_history.Add fname, buf   DEL MARGE
@@ -1421,7 +1426,7 @@ namespace Project1
                     if (!string.IsNullOrEmpty(sub_folder))
                     {
                         fname = SRC.AppPath + @"Midi\" + sub_folder + fname_mp3;
-                        if (GeneralLib.FileExists(ref fname))
+                        if (GeneralLib.FileExists(fname))
                         {
                             SearchMidiFileRet = fname;
                             // fpath_history.Add fname, buf   DEL MARGE
@@ -1430,7 +1435,7 @@ namespace Project1
                     }
 
                     fname = SRC.AppPath + @"Midi\" + fname_mp3;
-                    if (GeneralLib.FileExists(ref fname))
+                    if (GeneralLib.FileExists(fname))
                     {
                         SearchMidiFileRet = fname;
                         // fpath_history.Add fname, buf   DEL MARGE
@@ -1441,7 +1446,7 @@ namespace Project1
                 if (!string.IsNullOrEmpty(sub_folder))
                 {
                     fname = SRC.AppPath + @"Midi\" + sub_folder + buf;
-                    if (GeneralLib.FileExists(ref fname))
+                    if (GeneralLib.FileExists(fname))
                     {
                         SearchMidiFileRet = fname;
                         // fpath_history.Add fname, buf   DEL MARGE
@@ -1450,35 +1455,35 @@ namespace Project1
                 }
 
                 fname = SRC.AppPath + @"Midi\" + buf;
-                if (GeneralLib.FileExists(ref fname))
+                if (GeneralLib.FileExists(fname))
                 {
                     SearchMidiFileRet = fname;
                     // fpath_history.Add fname, buf   DEL MARGE
                     return SearchMidiFileRet;
                 }
 
-                i = (short)(j + 1);
+                i = (j + 1);
             }
 
             return SearchMidiFileRet;
         }
 
         // MIDIファイルのサーチパスをリセットする
-        public static void ResetMidiSearchPath()
+        public void ResetMidiSearchPath()
         {
             IsMidiSearchPathInitialized = false;
         }
 
 
         // ＢＧＭに割り当てられたMIDIファイル名を返す
-        public static string BGMName(ref string bgm_name)
+        public string BGMName(string bgm_name)
         {
             string BGMNameRet = default;
             string vname;
 
             // RenameBGMコマンドでMIDIファイルが設定されていればそちらを使用
             vname = "BGM(" + bgm_name + ")";
-            if (Expression.IsGlobalVariableDefined(ref vname))
+            if (Expression.IsGlobalVariableDefined(vname))
             {
                 // UPGRADE_WARNING: オブジェクト GlobalVariableList.Item().StringValue の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
                 BGMNameRet = Conversions.ToString(Event_Renamed.GlobalVariableList[vname].StringValue);
@@ -1487,7 +1492,7 @@ namespace Project1
 
             // そうでなければSrc.iniで設定されているファイルを使用
             string argini_section = "BGM";
-            BGMNameRet = GeneralLib.ReadIni(ref argini_section, ref bgm_name);
+            BGMNameRet = GeneralLib.ReadIni(argini_section, bgm_name);
 
             // Src.iniでも設定されていなければ標準のファイルを使用
             if (string.IsNullOrEmpty(BGMNameRet))
@@ -1500,7 +1505,7 @@ namespace Project1
 
 
         // DirectSoundの初期化
-        public static void InitDirectSound()
+        public void InitDirectSound()
         {
             object DSSCL_PRIORITY;
             // On Error GoTo ErrorHandler
@@ -1523,16 +1528,16 @@ namespace Project1
             // UPGRADE_WARNING: オブジェクト DSObject.SetCooperativeLevel の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
             DSObject.SetCooperativeLevel(GUI.MainForm.Handle.ToInt32(), DSSCL_PRIORITY);
             return;
-            ErrorHandler:
+        ErrorHandler:
             ;
             UseDirectSound = false;
         }
 
         // Waveファイルを再生する
-        public static void PlayWave(ref string wave_name)
+        public void PlayWave(string wave_name)
         {
             var DSBPLAY_DEFAULT = default(object);
-            var DSBCAPS_STATIC = default(object);
+            var DSBCAPS_ = default(object);
             var DSBCAPS_CTRLVOLUME = default(object);
             var DSBCAPS_CTRLPAN = default(object);
             var DSBCAPS_CTRLFREQUENCY = default(object);
@@ -1541,7 +1546,7 @@ namespace Project1
             var mp3_data = default(VBMP3.InputInfo);
             ;
 #error Cannot convert LocalDeclarationStatementSyntax - see comment for details
-            /* Cannot convert LocalDeclarationStatementSyntax, System.NotSupportedException: StaticKeyword not supported!
+            /* Cannot convert LocalDeclarationStatementSyntax, System.NotSupportedException: Keyword not supported!
                場所 ICSharpCode.CodeConverter.CSharp.SyntaxKindExtensions.ConvertToken(SyntaxKind t, TokenContext context)
                場所 ICSharpCode.CodeConverter.CSharp.CommonConversions.ConvertModifier(SyntaxToken m, TokenContext context)
                場所 ICSharpCode.CodeConverter.CSharp.CommonConversions.<ConvertModifiersCore>d__43.MoveNext()
@@ -1558,12 +1563,12 @@ namespace Project1
                場所 ICSharpCode.CodeConverter.CSharp.CommentConvertingMethodBodyVisitor.<DefaultVisitInnerAsync>d__3.MoveNext()
 
             Input:
-                    Static init_play_wave As Boolean
+                     init_play_wave As Boolean
 
              */
             ;
 #error Cannot convert LocalDeclarationStatementSyntax - see comment for details
-            /* Cannot convert LocalDeclarationStatementSyntax, System.NotSupportedException: StaticKeyword not supported!
+            /* Cannot convert LocalDeclarationStatementSyntax, System.NotSupportedException: Keyword not supported!
                場所 ICSharpCode.CodeConverter.CSharp.SyntaxKindExtensions.ConvertToken(SyntaxKind t, TokenContext context)
                場所 ICSharpCode.CodeConverter.CSharp.CommonConversions.ConvertModifier(SyntaxToken m, TokenContext context)
                場所 ICSharpCode.CodeConverter.CSharp.CommonConversions.<ConvertModifiersCore>d__43.MoveNext()
@@ -1580,12 +1585,12 @@ namespace Project1
                場所 ICSharpCode.CodeConverter.CSharp.CommentConvertingMethodBodyVisitor.<DefaultVisitInnerAsync>d__3.MoveNext()
 
             Input:
-                    Static scenario_sound_dir_exists As Boolean
+                     scenario_sound_dir_exists As Boolean
 
              */
             ;
 #error Cannot convert LocalDeclarationStatementSyntax - see comment for details
-            /* Cannot convert LocalDeclarationStatementSyntax, System.NotSupportedException: StaticKeyword not supported!
+            /* Cannot convert LocalDeclarationStatementSyntax, System.NotSupportedException: Keyword not supported!
                場所 ICSharpCode.CodeConverter.CSharp.SyntaxKindExtensions.ConvertToken(SyntaxKind t, TokenContext context)
                場所 ICSharpCode.CodeConverter.CSharp.CommonConversions.ConvertModifier(SyntaxToken m, TokenContext context)
                場所 ICSharpCode.CodeConverter.CSharp.CommonConversions.<ConvertModifiersCore>d__43.MoveNext()
@@ -1602,7 +1607,7 @@ namespace Project1
                場所 ICSharpCode.CodeConverter.CSharp.CommentConvertingMethodBodyVisitor.<DefaultVisitInnerAsync>d__3.MoveNext()
 
             Input:
-                    Static extdata_sound_dir_exists As Boolean
+                     extdata_sound_dir_exists As Boolean
 
              */
             ;
@@ -1679,7 +1684,7 @@ namespace Project1
             if (scenario_sound_dir_exists)
             {
                 fname = SRC.ScenarioPath + @"Sound\" + wave_name;
-                if (GeneralLib.FileExists(ref fname))
+                if (GeneralLib.FileExists(fname))
                 {
                     goto FoundWave;
                 }
@@ -1689,7 +1694,7 @@ namespace Project1
             if (extdata_sound_dir_exists)
             {
                 fname = SRC.ExtDataPath + @"Sound\" + wave_name;
-                if (GeneralLib.FileExists(ref fname))
+                if (GeneralLib.FileExists(fname))
                 {
                     goto FoundWave;
                 }
@@ -1699,7 +1704,7 @@ namespace Project1
             if (extdata2_sound_dir_exists)
             {
                 fname = SRC.ExtDataPath2 + @"Sound\" + wave_name;
-                if (GeneralLib.FileExists(ref fname))
+                if (GeneralLib.FileExists(fname))
                 {
                     goto FoundWave;
                 }
@@ -1707,21 +1712,21 @@ namespace Project1
 
             // 本体側のSoundフォルダ
             fname = SRC.AppPath + @"Sound\" + wave_name;
-            if (GeneralLib.FileExists(ref fname))
+            if (GeneralLib.FileExists(fname))
             {
                 goto FoundWave;
             }
 
             // 絶対表記？
             fname = wave_name;
-            if (GeneralLib.FileExists(ref fname))
+            if (GeneralLib.FileExists(fname))
             {
                 goto FoundWave;
             }
 
             // 見つからなかった
             return;
-            FoundWave:
+        FoundWave:
             ;
 
 
@@ -1758,7 +1763,7 @@ namespace Project1
                 }
 
                 // ファイルを読み込む
-                if (VBMP3.vbmp3_open(ref fname, ref mp3_data))
+                if (VBMP3.vbmp3_open(fname, mp3_data))
                 {
                     // 再生開始
                     VBMP3.vbmp3_play();
@@ -1780,7 +1785,7 @@ namespace Project1
 
                 // サウンドバッファにWAVファイルを読み込む
                 // UPGRADE_WARNING: オブジェクト dsbd.lFlags の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                dsbd.lFlags = Operators.OrObject(Operators.OrObject(Operators.OrObject(DSBCAPS_CTRLFREQUENCY, DSBCAPS_CTRLPAN), DSBCAPS_CTRLVOLUME), DSBCAPS_STATIC);
+                dsbd.lFlags = Operators.OrObject(Operators.OrObject(Operators.OrObject(DSBCAPS_CTRLFREQUENCY, DSBCAPS_CTRLPAN), DSBCAPS_CTRLVOLUME), DSBCAPS_);
                 // UPGRADE_WARNING: オブジェクト DSObject.CreateSoundBufferFromFile の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
                 DSBuffer = DSObject.CreateSoundBufferFromFile(fname, dsbd, wf);
 
@@ -1793,7 +1798,7 @@ namespace Project1
                 // APIを使う場合
 
                 // WAVEを再生
-                ret = Sound.sndPlaySound(ref fname, SND_ASYNC + SND_NODEFAULT);
+                ret = Sound.sndPlaySound(fname, SND_ASYNC + SND_NODEFAULT);
             }
 
             // 効果音再生のフラグを立てる
@@ -1801,7 +1806,7 @@ namespace Project1
         }
 
         // Waveファイルの再生を終了する
-        public static void StopWave()
+        public void StopWave()
         {
             int ret;
             if (UseDirectSound)
@@ -1814,13 +1819,13 @@ namespace Project1
             }
             else
             {
-                ret = Sound.sndPlaySound(ref Constants.vbNullString, 0);
+                ret = Sound.sndPlaySound(Constants.vbNullString, 0);
             }
         }
 
 
         // 本モジュールの解放処理を行う
-        public static void FreeSoundModule()
+        public void FreeSoundModule()
         {
             // BGM演奏の停止
             KeepBGM = false;

@@ -511,7 +511,7 @@ namespace SRCCore.Maps
         {
             try
             {
-                using (var stream = SRC.Filesystem.Open(fname))
+                using (var stream = SRC.FileSystem.Open(fname))
                 {
                     LoadMapData(fname, stream);
                 }
