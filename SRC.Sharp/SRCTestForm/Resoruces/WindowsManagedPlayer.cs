@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace SRCTestForm.Resoruces
 {
-    public class NAudioPlayer : IPlaySound
+    public class WindowsManagedPlayer : IPlaySound
     {
         // https://github.com/naudio/NAudio/blob/master/Docs/PlayAudioFileWinForms.md
         private WaveOutEvent outputDevice;

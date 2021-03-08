@@ -25,7 +25,7 @@ namespace SRCTestForm
             SRC = new SRCCore.SRC();
             SRC.GUI = this;
             SRC.FileSystem = new LocalFileSystem();
-            SRC.Sound.Player = new NAudioPlayer();
+            SRC.Sound.Player = new WindowsManagedPlayer();
         }
 
         private void menuLoadData_Click(object sender, EventArgs e)
