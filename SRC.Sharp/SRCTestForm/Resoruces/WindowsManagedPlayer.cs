@@ -1,9 +1,4 @@
 ﻿using Commons.Music.Midi;
-using Commons.Music.Midi.Alsa;
-using Commons.Music.Midi.CoreMidiApi;
-using Commons.Music.Midi.PortMidi;
-using Commons.Music.Midi.RtMidi;
-using Commons.Music.Midi.WinMM;
 using NAudio.Wave;
 using SRCCore;
 using System;
@@ -30,7 +25,9 @@ namespace SRCTestForm.Resoruces
         public void Dispose()
         {
             midiPlayer?.Dispose();
+            midiPlayer = null;
             midiOutput?.Dispose();
+            midiOutput = null;
 
             outputDevice?.Dispose();
             outputDevice = null;
@@ -40,63 +37,6 @@ namespace SRCTestForm.Resoruces
 
         public void Initialize()
         {
-            if (midiOutput == null)
-            {
-                // Windows 10 で試した時の Default は WinMMMidiAccess だった。
-                var access = MidiAccessManager.Default;
-                var midiPort = access.Outputs.Last();
-                try
-                {
-                    var rtAccess = new RtMidiAccess();
-                    midiPort = rtAccess.Outputs.Last();
-                    access = rtAccess;
-                }
-                catch
-                {
-                    // ignore
-                }
-                try
-                {
-                    var portAccess = new PortMidiAccess();
-                    midiPort = portAccess.Outputs.Last();
-                    access = portAccess;
-                }
-                catch
-                {
-                    // ignore
-                }
-                try
-                {
-                    var mmAccess = new WinMMMidiAccess();
-                    midiPort = mmAccess.Outputs.Last();
-                    access = mmAccess;
-                }
-                catch
-                {
-                    // ignore
-                }
-                try
-                {
-                    var coreAccess = new CoreMidiAccess();
-                    midiPort = coreAccess.Outputs.Last();
-                    access = coreAccess;
-                }
-                catch
-                {
-                    // ignore
-                }
-                try
-                {
-                    var alsaAccess = new AlsaMidiAccess();
-                    midiPort = alsaAccess.Outputs.Last();
-                    access = alsaAccess;
-                }
-                catch
-                {
-                    // ignore
-                }
-                midiOutput = access.OpenOutputAsync(midiPort.Id).Result;
-            }
             if (outputDevice == null)
             {
                 outputDevice = new WaveOutEvent();
@@ -117,6 +57,7 @@ namespace SRCTestForm.Resoruces
                     {
                         throw new ArgumentException($"{channel} is not support MIDI. MIDI channel is {CH_MIDI}");
                     }
+                    OpenMidiOutput();
                     var music = MidiMusic.Read(File.OpenRead(path));
                     midiPlayer = new MidiPlayer(music, midiOutput);
                     midiPlayer.Finished += MidiFinished;
@@ -132,29 +73,31 @@ namespace SRCTestForm.Resoruces
 
         public void Stop(int channel)
         {
-            ReleaseMidiPlayer(channel);
+            if (CH_MIDI == channel)
+            {
+                ReleaseMidiPlayer();
+            }
             outputDevice?.Stop();
         }
 
-        private void ReleaseMidiPlayer(int channel)
+        private void OpenMidiOutput()
         {
-            if (CH_MIDI == channel)
+            // Windows 10 で試した時の Default は WinMMMidiAccess だった。
+            var access = MidiAccessManager.Default;
+            var midiPort = access.Outputs.Last();
+            midiOutput = access.OpenOutputAsync(midiPort.Id).Result;
+        }
+
+        private void ReleaseMidiPlayer()
+        {
+            if (midiPlayer != null)
             {
-                if (midiPlayer != null)
-                {
-                    midiPlayer.Finished -= MidiFinished;
-                    midiPlayer.Dispose();
-                    midiPlayer = null;
-                    // Reset Output
-                    for (int ch = 0; ch < 16; ch++)
-                    {
-                        //midiOutput?.Send(new byte[] { (byte)(0xB0 + ch), 0x79, 0 }, 0, 3, 0);
-                        foreach (byte d1 in new byte[] { 0x79, 0x7a, 0x7b })
-                        {
-                            midiOutput?.Send(new byte[] { (byte)(0xB0 + ch), d1, 0 }, 0, 3, 0);
-                        }
-                    }
-                }
+                midiPlayer.Finished -= MidiFinished;
+                midiPlayer.Dispose();
+                midiPlayer = null;
+                // XXX コントロールをリセットしたい
+                midiOutput?.Dispose();
+                midiOutput = null;
             }
         }
 
