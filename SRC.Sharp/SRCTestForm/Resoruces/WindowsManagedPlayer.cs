@@ -35,7 +35,7 @@ namespace SRCTestForm.Resoruces
         private MidiFile midiFile;
         private Playback midiPlayback;
 
-        private bool repeate;
+        private float volume = 0.25f;
 
         private const int CH_BGM = IPlaySound.CH_BGM;
 
@@ -101,6 +101,7 @@ namespace SRCTestForm.Resoruces
             WaveChannel waveChannel = outputMap[channel];
             waveChannel.repeat = mode.HasFlag(PlaySoundMode.Repeat);
             waveChannel.outputDevice.Init(new AudioFileReader(path));
+            waveChannel.outputDevice.Volume = volume;
             waveChannel.outputDevice.Play();
         }
 
@@ -112,6 +113,7 @@ namespace SRCTestForm.Resoruces
                 midiOutput = OutputDevice.GetAll().First();
                 midiPlayback = midiFile.GetPlayback(midiOutput);
                 midiPlayback.Loop = mode.HasFlag(PlaySoundMode.Repeat);
+                midiOutput.Volume = new Volume((ushort)(Volume.FullLeft.LeftVolume * volume));
                 midiPlayback.Start();
                 // XXX いい感じに無音シークしたい。
                 //Task.Delay(100).Wait();
