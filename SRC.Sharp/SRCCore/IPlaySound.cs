@@ -15,6 +15,7 @@ namespace SRCCore
 
         BGMStatus BGMStatus { get; }
 
+        // XXX 今呼んでない。
         void Initialize();
 
         void Play(int channel, string path, PlaySoundMode mode);

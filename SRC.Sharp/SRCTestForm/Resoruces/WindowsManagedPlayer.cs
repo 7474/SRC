@@ -3,17 +3,32 @@ using Melanchall.DryWetMidi.Devices;
 using NAudio.Wave;
 using SRCCore;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace SRCTestForm.Resoruces
 {
-    public class WindowsManagedPlayer : IPlaySound
+    class WaveChannel : IDisposable
     {
         // https://github.com/naudio/NAudio/blob/master/Docs/PlayAudioFileWinForms.md
-        private WaveOutEvent outputDevice;
-        private AudioFileReader audioFile;
+        public WaveOutEvent outputDevice;
+        //public AudioFileReader audioFile;
+        public bool repeat;
+
+        public void Dispose()
+        {
+            //audioFile?.Dispose();
+            //audioFile = null;
+            outputDevice?.Dispose();
+            outputDevice = null;
+        }
+    }
+
+    public class WindowsManagedPlayer : IPlaySound
+    {
+        private IDictionary<int, WaveChannel> outputMap = new Dictionary<int, WaveChannel>();
 
         // https://github.com/melanchall/drywetmidi
         private OutputDevice midiOutput;
@@ -22,7 +37,7 @@ namespace SRCTestForm.Resoruces
 
         private bool repeate;
 
-        private const int CH_MIDI = IPlaySound.CH_BGM;
+        private const int CH_BGM = IPlaySound.CH_BGM;
 
         public BGMStatus BGMStatus => throw new NotImplementedException();
 
@@ -30,61 +45,73 @@ namespace SRCTestForm.Resoruces
         {
             ReleaseMidiPlayback();
 
-            outputDevice?.Dispose();
-            outputDevice = null;
-            audioFile?.Dispose();
-            audioFile = null;
+            foreach (var ch in outputMap.Keys)
+            {
+                outputMap[ch].Dispose();
+                outputMap[ch] = null;
+            }
         }
 
         public void Initialize()
         {
-            if (outputDevice == null)
-            {
-                outputDevice = new WaveOutEvent();
-                //outputDevice.PlaybackStopped += OnPlaybackStopped;
-            }
+            throw new NotImplementedException();
         }
 
         public void Play(int channel, string path, PlaySoundMode mode)
         {
-            Initialize();
             Stop(channel);
 
-            repeate = mode.HasFlag(PlaySoundMode.Repeat);
             switch (Path.GetExtension(path).ToLower())
             {
                 case ".mid":
-                    if (CH_MIDI != channel)
+                    if (CH_BGM != channel)
                     {
-                        throw new ArgumentException($"{channel} is not support MIDI. MIDI channel is {CH_MIDI}");
+                        throw new ArgumentException($"{channel} is not support MIDI. MIDI channel is {CH_BGM}");
                     }
-                    StartMidiPlayback(path);
+                    StartMidiPlayback(path, mode);
                     break;
                 default:
-                    audioFile = new AudioFileReader(path);
-                    outputDevice.Init(audioFile);
-                    outputDevice.Play();
+                    StartWave(channel, path, mode);
                     break;
             }
         }
 
         public void Stop(int channel)
         {
-            if (CH_MIDI == channel)
+            if (CH_BGM == channel)
             {
                 ReleaseMidiPlayback();
             }
-            outputDevice?.Stop();
+            if (outputMap.ContainsKey(channel))
+            {
+                outputMap[channel].outputDevice.Stop();
+            }
         }
 
-        private void StartMidiPlayback(string path)
+        public void StartWave(int channel, string path, PlaySoundMode mode)
+        {
+            if (!outputMap.ContainsKey(channel))
+            {
+                outputMap[channel] = new WaveChannel()
+                {
+                    outputDevice = new WaveOutEvent(),
+                };
+                //outputDevice.PlaybackStopped += OnPlaybackStopped;
+            }
+            WaveChannel waveChannel = outputMap[channel];
+            waveChannel.repeat = mode.HasFlag(PlaySoundMode.Repeat);
+            waveChannel.outputDevice.Init(new AudioFileReader(path));
+            waveChannel.outputDevice.Play();
+        }
+
+        private void StartMidiPlayback(string path, PlaySoundMode mode)
         {
             midiFile = MidiFile.Read(path);
             try
             {
                 midiOutput = OutputDevice.GetAll().First();
                 midiPlayback = midiFile.GetPlayback(midiOutput);
-                midiPlayback.Loop = repeate;
+                midiPlayback.Loop = mode.HasFlag(PlaySoundMode.Repeat);
                 midiPlayback.Start();
                 // XXX いい感じに無音シークしたい。
                 //Task.Delay(100).Wait();
