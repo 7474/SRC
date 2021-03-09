@@ -655,11 +655,8 @@ namespace SRCCore.CmdDatas
                     case "playmidi":
                         return new PlayMIDICmd(src, data);
 
-                    //case "playsound":
-                    //    {
-                    //        CmdName = CmdType.PlaySoundCmd;
-                    //        break;
-                    //    }
+                    case "playsound":
+                        return new PlaySoundCmd(src, data);
 
                     //case "polygon":
                     //    {
@@ -942,11 +939,8 @@ namespace SRCCore.CmdDatas
                     //        break;
                     //    }
 
-                    //case "startbgm":
-                    //    {
-                    //        CmdName = CmdType.StartBGMCmd;
-                    //        break;
-                    //    }
+                    case "startbgm":
+                        return new StartBGMCmd(src, data);
 
                     //case "stopbgm":
                     //    {
