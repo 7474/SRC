@@ -629,233 +629,72 @@ namespace SRCCore
         // Waveファイルを再生する
         public void PlayWave(string wave_name)
         {
-            throw new NotImplementedException();
-            //    var DSBPLAY_DEFAULT = default(object);
-            //    var DSBCAPS_ = default(object);
-            //    var DSBCAPS_CTRLVOLUME = default(object);
-            //    var DSBCAPS_CTRLPAN = default(object);
-            //    var DSBCAPS_CTRLFREQUENCY = default(object);
-            //    int ret;
-            //    string fname;
-            //    var mp3_data = default(VBMP3.InputInfo);
-            //    ;
-            //    /* Cannot convert LocalDeclarationStatementSyntax, System.NotSupportedException: Keyword not supported!
-            //             init_play_wave As Boolean
-            //             scenario_sound_dir_exists As Boolean
-            //             extdata_sound_dir_exists As Boolean
-            //     */
-            //    ;
 
-            //    // 初めて実行する際に、各フォルダにSoundフォルダがあるかチェック
-            //    if (!init_play_wave)
-            //    {
-            //        // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
-            //        if (Strings.Len(FileSystem.Dir(SRC.ScenarioPath + "Sound", FileAttribute.Directory)) > 0)
-            //        {
-            //            scenario_sound_dir_exists = true;
-            //        }
+            // TODO Impl
+            //// 初めて実行する際に、各フォルダにSoundフォルダがあるかチェック
+            /* Cannot convert LocalDeclarationStatementSyntax, System.NotSupportedException: Keyword not supported!
+                     init_play_wave As Boolean
+                     scenario_sound_dir_exists As Boolean
+                     extdata_sound_dir_exists As Boolean
+             */
 
-            //        if (Strings.Len(SRC.ExtDataPath) > 0)
-            //        {
-            //            // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
-            //            if (Strings.Len(FileSystem.Dir(SRC.ExtDataPath + "Sound", FileAttribute.Directory)) > 0)
-            //            {
-            //                extdata_sound_dir_exists = true;
-            //            }
-            //        }
+            // 特殊なファイル名
+            switch (Strings.LCase(wave_name) ?? "")
+            {
+                case "-.wav":
+                case "-.mp3":
+                    // 再生をキャンセル
+                    return;
 
-            //        if (Strings.Len(SRC.ExtDataPath2) > 0)
-            //        {
-            //            // UPGRADE_WARNING: Dir に新しい動作が指定されています。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="9B7D5ADD-D8FE-4819-A36C-6DEDAF088CC7"' をクリックしてください。
-            //            if (Strings.Len(FileSystem.Dir(SRC.ExtDataPath2 + "Sound", FileAttribute.Directory)) > 0)
-            //            {
-            //                extdata2_sound_dir_exists = true;
-            //            }
-            //        }
+                case "null.wav":
+                case "null.mp3":
+                    // WAVE再生を停止
+                    // MP3再生を停止
+                    StopWave();
+                    return;
+            }
 
-            //        init_play_wave = true;
-            //    }
+            // 各フォルダをチェック
+            string fname;
 
-            //    // 特殊なファイル名
-            //    switch (Strings.LCase(wave_name) ?? "")
-            //    {
-            //        case "-.wav":
-            //        case "-.mp3":
-            //            {
-            //                // 再生をキャンセル
-            //                return;
-            //            }
+            // TODO FileSystemに逃がす
+            var baseDirs = new string[]
+            {
+                SRC.ScenarioPath,
+                SRC.ExtDataPath,
+                SRC.ExtDataPath2,
+                SRC.AppPath,
+            }.Where(x => Directory.Exists(x))
+                .Select(x => Path.Combine(x, "Sound"))
+                .Where(x => Directory.Exists(x))
+                .ToList();
 
-            //        case "null.wav":
-            //            {
-            //                // WAVE再生を停止
-            //                StopWave();
-            //                return;
-            //            }
+            var waveNames = GeneralLib.ToList(wave_name, true);
+            var existFile = waveNames
+                .SelectMany(x => baseDirs.Select(y => Path.Combine(y, x)))
+                .FirstOrDefault(x => File.Exists(x));
 
-            //        case "null.mp3":
-            //            {
-            //                // MP3再生を停止
-            //                if (Strings.LCase(Strings.Right(BGMFileName, 4)) == ".mp3")
-            //                {
-            //                    StopBGM(true);
-            //                }
-            //                else
-            //                {
-            //                    // 演奏を停止
-            //                    VBMP3.vbmp3_stop();
-            //                    // ファイルを閉じる
-            //                    VBMP3.vbmp3_close();
-            //                }
+            if (string.IsNullOrEmpty(existFile))
+            {
+                // 絶対表記？
+                if (!GeneralLib.FileExists(wave_name))
+                {
+                    // 見つからなかった
+                    return;
+                }
+                existFile = wave_name;
+            }
 
-            //                return;
-            //            }
-            //    }
+            Player.Play(CH_EFFECT, existFile, PlaySoundMode.None);
 
-            //    // 各フォルダをチェック
-
-            //    // シナリオ側のSoundフォルダ
-            //    if (scenario_sound_dir_exists)
-            //    {
-            //        fname = SRC.ScenarioPath + @"Sound\" + wave_name;
-            //        if (GeneralLib.FileExists(fname))
-            //        {
-            //            goto FoundWave;
-            //        }
-            //    }
-
-            //    // ExtDataPath側のSoundフォルダ
-            //    if (extdata_sound_dir_exists)
-            //    {
-            //        fname = SRC.ExtDataPath + @"Sound\" + wave_name;
-            //        if (GeneralLib.FileExists(fname))
-            //        {
-            //            goto FoundWave;
-            //        }
-            //    }
-
-            //    // ExtDataPath2側のSoundフォルダ
-            //    if (extdata2_sound_dir_exists)
-            //    {
-            //        fname = SRC.ExtDataPath2 + @"Sound\" + wave_name;
-            //        if (GeneralLib.FileExists(fname))
-            //        {
-            //            goto FoundWave;
-            //        }
-            //    }
-
-            //    // 本体側のSoundフォルダ
-            //    fname = SRC.AppPath + @"Sound\" + wave_name;
-            //    if (GeneralLib.FileExists(fname))
-            //    {
-            //        goto FoundWave;
-            //    }
-
-            //    // 絶対表記？
-            //    fname = wave_name;
-            //    if (GeneralLib.FileExists(fname))
-            //    {
-            //        goto FoundWave;
-            //    }
-
-            //    // 見つからなかった
-            //    return;
-            //FoundWave:
-            //    ;
-
-
-            //    // UPGRADE_ISSUE: WAVEFORMATEX オブジェクト はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6B85A2A7-FE9F-4FBE-AA0C-CF11AC86A305"' をクリックしてください。
-            //    var wf = default(WAVEFORMATEX);
-            //    // UPGRADE_ISSUE: DSBUFFERDESC オブジェクト はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6B85A2A7-FE9F-4FBE-AA0C-CF11AC86A305"' をクリックしてください。
-            //    var dsbd = default(DSBUFFERDESC);
-            //    if (Strings.LCase(Strings.Right(fname, 4)) == ".mp3")
-            //    {
-            //        // 効果音はMP3ファイル
-
-            //        // VBMP3.dllを初期化
-            //        if (!IsMP3Supported)
-            //        {
-            //            InitVBMP3();
-            //            if (!IsMP3Supported)
-            //            {
-            //                // VBMP3.dllが利用不能
-            //                return;
-            //            }
-            //        }
-
-            //        // MP3再生を停止
-            //        if (Strings.LCase(Strings.Right(BGMFileName, 4)) == ".mp3")
-            //        {
-            //            StopBGM(true);
-            //        }
-            //        else
-            //        {
-            //            // 演奏を停止
-            //            VBMP3.vbmp3_stop();
-            //            // ファイルを閉じる
-            //            VBMP3.vbmp3_close();
-            //        }
-
-            //        // ファイルを読み込む
-            //        if (VBMP3.vbmp3_open(fname, mp3_data))
-            //        {
-            //            // 再生開始
-            //            VBMP3.vbmp3_play();
-            //        }
-            //    }
-            //    else if (UseDirectSound)
-            //    {
-            //        // DirectSoundを使う場合
-
-
-            //        // 再生中の場合は再生をストップ
-            //        if (DSBuffer is object)
-            //        {
-            //            // UPGRADE_WARNING: オブジェクト DSBuffer.Stop の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            //            DSBuffer.Stop();
-            //            // UPGRADE_NOTE: オブジェクト DSBuffer をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-            //            DSBuffer = null;
-            //        }
-
-            //        // サウンドバッファにWAVファイルを読み込む
-            //        // UPGRADE_WARNING: オブジェクト dsbd.lFlags の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            //        dsbd.lFlags = Operators.OrObject(Operators.OrObject(Operators.OrObject(DSBCAPS_CTRLFREQUENCY, DSBCAPS_CTRLPAN), DSBCAPS_CTRLVOLUME), DSBCAPS_);
-            //        // UPGRADE_WARNING: オブジェクト DSObject.CreateSoundBufferFromFile の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            //        DSBuffer = DSObject.CreateSoundBufferFromFile(fname, dsbd, wf);
-
-            //        // WAVEを再生
-            //        // UPGRADE_WARNING: オブジェクト DSBuffer.Play の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            //        DSBuffer.Play(DSBPLAY_DEFAULT);
-            //    }
-            //    else
-            //    {
-            //        // APIを使う場合
-
-            //        // WAVEを再生
-            //        ret = Sound.sndPlaySound(fname, SND_ASYNC + SND_NODEFAULT);
-            //    }
-
-            //    // 効果音再生のフラグを立てる
-            //    IsWavePlayed = true;
+            // 効果音再生のフラグを立てる
+            IsWavePlayed = true;
         }
 
         // Waveファイルの再生を終了する
         public void StopWave()
         {
-            throw new NotImplementedException();
-            //int ret;
-            //if (UseDirectSound)
-            //{
-            //    if (DSBuffer is object)
-            //    {
-            //        // UPGRADE_WARNING: オブジェクト DSBuffer.Stop の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            //        DSBuffer.Stop();
-            //    }
-            //}
-            //else
-            //{
-            //    ret = Sound.sndPlaySound(Constants.vbNullString, 0);
-            //}
+            Player.Stop(CH_EFFECT);
         }
 
         // 本モジュールの解放処理を行う

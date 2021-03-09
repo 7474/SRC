@@ -655,11 +655,8 @@ namespace SRCCore.CmdDatas
                     case "playmidi":
                         return new PlayMIDICmd(src, data);
 
-                    //case "playsound":
-                    //    {
-                    //        CmdName = CmdType.PlaySoundCmd;
-                    //        break;
-                    //    }
+                    case "playsound":
+                        return new PlaySoundCmd(src, data);
 
                     //case "polygon":
                     //    {
