@@ -6,11 +6,13 @@ using System.Linq;
 
 namespace SRCCore.CmdDatas.Commands
 {
-    public class PlayMIDICmd : CmdData
+    public abstract class ABGMCmd : CmdData
     {
-        public PlayMIDICmd(SRC src, EventDataLine eventData) : base(src, CmdType.PlayMIDICmd, eventData)
+        public ABGMCmd(SRC src, CmdType cmdType, EventDataLine eventData) : base(src, cmdType, eventData)
         {
         }
+
+        protected abstract bool Repeat { get; }
 
         protected override int ExecInternal()
         {
@@ -53,7 +55,7 @@ namespace SRCCore.CmdDatas.Commands
             // MIDIファイルを再生
             Sound.KeepBGM = false;
             Sound.BossBGM = false;
-            Sound.StartBGM(fname, false);
+            Sound.StartBGM(fname, Repeat);
 
             // 次のコマンド実行位置は最後のPlayMIDIコマンドの後
             return play_bgm_end + 1;
