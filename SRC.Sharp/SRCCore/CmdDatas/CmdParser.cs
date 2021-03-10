@@ -501,11 +501,8 @@ namespace SRCCore.CmdDatas
                     //        break;
                     //    }
 
-                    //case "keepbgm":
-                    //    {
-                    //        CmdName = CmdType.KeepBGMCmd;
-                    //        break;
-                    //    }
+                    case "keepbgm":
+                        return new KeepBGMCmd(src, data);
 
                     //case "land":
                     //    {
