@@ -939,11 +939,8 @@ namespace SRCCore.CmdDatas
                     case "startbgm":
                         return new StartBGMCmd(src, data);
 
-                    //case "stopbgm":
-                    //    {
-                    //        CmdName = CmdType.StopBGMCmd;
-                    //        break;
-                    //    }
+                    case "stopbgm":
+                        return new StopBGMCmd(src, data);
 
                     //case "stopsummoning":
                     //    {
