@@ -11,6 +11,12 @@
             }
         </div>
     </nav>
+    @if (!string.IsNullOrEmpty(SRC.UDList.DataComment))
+    {
+        <div class="content">
+            <div class="src-comment">@SRC.UDList.DataComment</div>
+        </div>
+    }
     <div class="src-data-list-container">
         <Virtualize Items="@SRC.UDList.Items" Context="ud" ItemSize="300">
             <UnitDataView @key="ud.Name" Data="@ud" />
