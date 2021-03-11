@@ -39,7 +39,37 @@ namespace SRCTestForm.Resoruces
 
         private const int CH_BGM = IPlaySound.CH_BGM;
 
-        public BGMStatus BGMStatus => throw new NotImplementedException();
+        public BGMStatus BGMStatus
+        {
+            get
+            {
+                if (midiPlayback?.IsRunning == true)
+                {
+                    return BGMStatus.Playing;
+                }
+                if (BGMChannel?.outputDevice?.PlaybackState == PlaybackState.Playing)
+                {
+                    return BGMStatus.Playing;
+                }
+                return BGMStatus.Stopped;
+            }
+        }
+
+        private WaveChannel BGMChannel
+        {
+            get
+            {
+                WaveChannel waveChannel;
+                if (outputMap.TryGetValue(CH_BGM, out waveChannel))
+                {
+                    return waveChannel;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
 
         public void Dispose()
         {
@@ -101,7 +131,8 @@ namespace SRCTestForm.Resoruces
             }
             WaveChannel waveChannel = outputMap[channel];
             waveChannel.repeat = mode.HasFlag(PlaySoundMode.Repeat);
-            waveChannel.outputDevice.Init(new LoopStream(new AudioFileReader(path)) {
+            waveChannel.outputDevice.Init(new LoopStream(new AudioFileReader(path))
+            {
                 EnableLooping = waveChannel.repeat,
             });
             waveChannel.outputDevice.Volume = volume;
