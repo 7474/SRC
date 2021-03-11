@@ -60,13 +60,13 @@ namespace SRCCore.Expressions
             // ローカル変数
             if (IsLocalVariableDefined(vname))
             {
-                return ReferenceValue(etype, Event.LocalVariableList[vname], out str_result, out num_result);
+                return Event.LocalVariableList[vname].ReferenceValue(etype, out str_result, out num_result);
             }
 
             // グローバル変数
             if (IsGlobalVariableDefined(vname))
             {
-                return ReferenceValue(etype, Event.GlobalVariableList[vname], out str_result, out num_result);
+                return Event.GlobalVariableList[vname].ReferenceValue(etype, out str_result, out num_result);
             }
 
             // システム変数？
@@ -581,7 +581,6 @@ namespace SRCCore.Expressions
 
                 //                case "appversion":
                 //                    {
-                //                        // UPGRADE_ISSUE: App オブジェクト はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6B85A2A7-FE9F-4FBE-AA0C-CF11AC86A305"' をクリックしてください。
                 //                        {
                 //                            var withBlock15 = App;
                 //                            num = (10000 * My.MyProject.Application.Info.Version.Major + 100 * My.MyProject.Application.Info.Version.Minor + My.MyProject.Application.Info.Version.Revision);
@@ -1381,56 +1380,6 @@ namespace SRCCore.Expressions
             return Strings.Left(vname, bracketPos) + idx + "]";
         }
 
-        private static ValueType ReferenceValue(ValueType etype, VarData withBlock1, out string str_result, out double num_result)
-        {
-            str_result = "";
-            num_result = 0d;
-            switch (etype)
-            {
-                case ValueType.NumericType:
-                    {
-                        if (withBlock1.VariableType == ValueType.NumericType)
-                        {
-                            num_result = withBlock1.NumericValue;
-                        }
-                        else
-                        {
-                            num_result = Conversions.ToDouble(withBlock1.StringValue);
-                        }
-                        return ValueType.NumericType;
-                    }
-
-                case ValueType.StringType:
-                    {
-                        if (withBlock1.VariableType == ValueType.StringType)
-                        {
-                            str_result = withBlock1.StringValue;
-                        }
-                        else
-                        {
-                            str_result = GeneralLib.FormatNum(withBlock1.NumericValue);
-                        }
-                        return ValueType.StringType;
-                    }
-
-                case ValueType.UndefinedType:
-                default:
-                    {
-                        // XXX 逆の側の型に値入れなくていいの？
-                        if (withBlock1.VariableType == ValueType.StringType)
-                        {
-                            str_result = withBlock1.StringValue;
-                            return ValueType.StringType;
-                        }
-                        else
-                        {
-                            num_result = withBlock1.NumericValue;
-                            return ValueType.NumericType;
-                        }
-                    }
-            }
-        }
-
         // 指定した変数が定義されているか？
         public bool IsVariableDefined(string var_name)
         {
@@ -1779,18 +1728,15 @@ namespace SRCCore.Expressions
             // サブルーチンローカル変数として定義済み？
             if (Event.CallDepth > 0)
             {
-                var loopTo1 = Event.VarIndex;
-                for (i = (Event.VarIndexStack[Event.CallDepth - 1] + 1); i <= loopTo1; i++)
+                for (i = Event.VarIndexStack[Event.CallDepth - 1]; i <= Event.VarIndex; i++)
                 {
+                    var v = Event.VarStack[i];
+                    if ((vname ?? "") == (v.Name ?? ""))
                     {
-                        var withBlock1 = Event.VarStack[i];
-                        if ((vname ?? "") == (withBlock1.Name ?? ""))
-                        {
-                            withBlock1.VariableType = etype;
-                            withBlock1.StringValue = str_value;
-                            withBlock1.NumericValue = num_value;
-                            return;
-                        }
+                        v.VariableType = etype;
+                        v.StringValue = str_value;
+                        v.NumericValue = num_value;
+                        return;
                     }
                 }
             }
@@ -1798,7 +1744,7 @@ namespace SRCCore.Expressions
             if (is_subroutine_local_array)
             {
                 // サブルーチンローカル変数の配列の要素として定義
-                Event.VarIndex = (Event.VarIndex + 1);
+                Event.VarIndex = Event.VarIndex + 1;
                 if (Event.VarIndex > Events.Event.MaxVarIndex)
                 {
                     Event.VarIndex = Events.Event.MaxVarIndex;
@@ -1806,50 +1752,33 @@ namespace SRCCore.Expressions
                     return;
                 }
 
-                {
-                    var withBlock2 = Event.VarStack[Event.VarIndex];
-                    withBlock2.Name = vname;
-                    withBlock2.VariableType = etype;
-                    withBlock2.StringValue = str_value;
-                    withBlock2.NumericValue = num_value;
-                }
-
+                var v = Event.VarStack[Event.VarIndex];
+                v.Name = vname;
+                v.VariableType = etype;
+                v.StringValue = str_value;
+                v.NumericValue = num_value;
                 return;
             }
 
             // ローカル変数として定義済み？
             if (IsLocalVariableDefined(vname))
             {
-                {
-                    var withBlock3 = Event.LocalVariableList[vname];
-                    // UPGRADE_WARNING: オブジェクト LocalVariableList.Item().Name の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                    withBlock3.Name = vname;
-                    // UPGRADE_WARNING: オブジェクト LocalVariableList.Item().VariableType の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                    withBlock3.VariableType = etype;
-                    // UPGRADE_WARNING: オブジェクト LocalVariableList.Item().StringValue の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                    withBlock3.StringValue = str_value;
-                    // UPGRADE_WARNING: オブジェクト LocalVariableList.Item().NumericValue の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                    withBlock3.NumericValue = num_value;
-                }
-
+                var v = Event.LocalVariableList[vname];
+                v.Name = vname;
+                v.VariableType = etype;
+                v.StringValue = str_value;
+                v.NumericValue = num_value;
                 return;
             }
 
             // グローバル変数として定義済み？
             if (IsGlobalVariableDefined(vname))
             {
-                {
-                    var withBlock4 = Event.GlobalVariableList[vname];
-                    // UPGRADE_WARNING: オブジェクト GlobalVariableList.Item().Name の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                    withBlock4.Name = vname;
-                    // UPGRADE_WARNING: オブジェクト GlobalVariableList.Item().VariableType の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                    withBlock4.VariableType = etype;
-                    // UPGRADE_WARNING: オブジェクト GlobalVariableList.Item().StringValue の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                    withBlock4.StringValue = str_value;
-                    // UPGRADE_WARNING: オブジェクト GlobalVariableList.Item().NumericValue の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                    withBlock4.NumericValue = num_value;
-                }
-
+                var v = Event.GlobalVariableList[vname];
+                v.Name = vname;
+                v.VariableType = etype;
+                v.StringValue = str_value;
+                v.NumericValue = num_value;
                 return;
             }
 
@@ -1867,7 +1796,6 @@ namespace SRCCore.Expressions
                             Event.BaseX = GeneralLib.StrToLng(str_value);
                         }
                         // TODO GUI
-                        //// UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                         //GUI.MainForm.picMain(0).CurrentX = Event.BaseX;
                         return;
                     }
@@ -1883,7 +1811,6 @@ namespace SRCCore.Expressions
                             Event.BaseY = GeneralLib.StrToLng(str_value);
                         }
                         // TODO GUI
-                        //// UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
                         //GUI.MainForm.picMain(0).CurrentY = Event.BaseY;
                         return;
                     }
@@ -1947,17 +1874,11 @@ namespace SRCCore.Expressions
                 else if (IsGlobalVariableDefined(vname0))
                 {
                     DefineGlobalVariable(vname);
-                    {
-                        var withBlock5 = Event.GlobalVariableList[vname];
-                        // UPGRADE_WARNING: オブジェクト GlobalVariableList.Item().Name の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                        withBlock5.Name = vname;
-                        // UPGRADE_WARNING: オブジェクト GlobalVariableList.Item().VariableType の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                        withBlock5.VariableType = etype;
-                        // UPGRADE_WARNING: オブジェクト GlobalVariableList.Item().StringValue の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                        withBlock5.StringValue = str_value;
-                        // UPGRADE_WARNING: オブジェクト GlobalVariableList.Item().NumericValue の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                        withBlock5.NumericValue = num_value;
-                    }
+                    var v = Event.GlobalVariableList[vname];
+                    v.Name = vname;
+                    v.VariableType = etype;
+                    v.StringValue = str_value;
+                    v.NumericValue = num_value;
 
                     return;
                 }

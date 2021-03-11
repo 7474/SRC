@@ -1,6 +1,18 @@
-# SRC -Simulation RPG Construction-
+# SRC - Simulation RPG Construction -
 
 SRCを眺めたり弄ってみたりするためのリポジトリ。
+
+## SRC派生ソフトウェア
+
+本リポジトリで開発・配布しているソフトウェアの使用にあたってはSRC派生版ソフトウェアの利用における基本的規則を遵守してください。
+
+SRC公式サイト[派生版解説ページ](http://www.src-srpg.jpn.org/development_hasei.shtml)内のSRC派生版ソフトウェアの利用における基本的規則
+- [規約(形式１)](http://www.src-srpg.jpn.org/hasei_kiyaku1.html)
+- [規約(形式２)](http://www.src-srpg.jpn.org/hasei_kiyaku2.html)
+
+本リポジトリへの転記
+- [規約(形式１)](src_hasei_kiyaku1.md)
+- [規約(形式２)](src_hasei_kiyaku2.md)
 
 ## Original
 
@@ -23,14 +35,21 @@ SRCを眺めたり弄ってみたりするためのリポジトリ。
     - SRCのC#実装の一部
     - [SRCCore](./SRC.Sharp/SRCCore)
         - SRCのコア部分
-        - .NET Standard
+        - .NET Standard 2.1
+    - [SRCDataLinter](SRC.Sharp/SRCDataLinter)
+        - SRCデータのバリデータ
+        - .NET 5
+        - GitHub Action: https://github.com/7474/SRC-DataLinter
+        - Docker Image: https://hub.docker.com/r/koudenpa/srcdatalinter
     - [SRCTestForm](./SRC.Sharp/SRCTestForm)
         - 動作の確認用フォーム
+        - データの閲覧とWindows Forms実装のSRC#Sharp仮実行を行える
         - .NET 5
     - [SRCTestBlazor](./SRC.Sharp/SRCTestBlazor)
         - 動作確認用Blazor WebAssemblyアプリケーション
+        - データの閲覧を行える
         - .NET 5
-        - https://7474.github.io/SRC/
+        - 動作URL: https://7474.github.io/SRC/
 
 ## Convert log
 
@@ -49,3 +68,4 @@ SRCを眺めたり弄ってみたりするためのリポジトリ。
 - 基本的に愚直に変換する
     - static な空間は一応インスタンスにする
 - short（VB6のint）は int にする
+- 15Twip = 1Pixel

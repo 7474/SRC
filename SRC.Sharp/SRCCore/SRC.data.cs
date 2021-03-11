@@ -1,11 +1,26 @@
-﻿using SRCCore.Lib;
+﻿using SRCCore.Exceptions;
+using SRCCore.Lib;
 using SRCCore.VB;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace SRCCore
 {
     public partial class SRC
     {
+        private IList<InvalidSrcData> continuesErrors = new List<InvalidSrcData>();
+        public IList<InvalidSrcData> DataErrors => continuesErrors;
+        public bool HasDataError => continuesErrors.Any();
+        public void ClearDataError()
+        {
+            continuesErrors.Clear();
+        }
+        public void AddDataError(InvalidSrcData error)
+        {
+            continuesErrors.Add(error);
+        }
+
         // 作品new_titleのデータを読み込み
         public void IncludeData(string new_title)
         {
@@ -43,17 +58,16 @@ namespace SRCCore
                 ALDList.Load(aliasFilePath);
             }
 
-            //string argfname3 = fpath + @"\mind.txt";
-            //string argfname4 = fpath + @"\sp.txt";
-            //if (GeneralLib.FileExists(ref argfname4))
-            //{
-            //    string argfname2 = fpath + @"\sp.txt";
-            //    SPDList.Load(ref argfname2);
-            //}
-            //else if (GeneralLib.FileExists(ref argfname3))
-            //{
-            //    SPDList.Load(ref argfname3);
-            //}
+            var mindFilePath = Path.Combine(fpath, "mind.txt");
+            var spFilePath = Path.Combine(fpath, "sp.txt");
+            if (GeneralLib.FileExists(mindFilePath))
+            {
+                SPDList.Load(mindFilePath);
+            }
+            else if (GeneralLib.FileExists(spFilePath))
+            {
+                SPDList.Load(spFilePath);
+            }
 
             var pilotFilePath = Path.Combine(fpath, "pilot.txt");
             if (GeneralLib.FileExists(pilotFilePath))
@@ -118,12 +132,11 @@ namespace SRCCore
             //    EADList.Load(ref argfname21);
             //}
 
-            //string argfname24 = fpath + @"\item.txt";
-            //if (GeneralLib.FileExists(ref argfname24))
-            //{
-            //    string argfname23 = fpath + @"\item.txt";
-            //    IDList.Load(ref argfname23);
-            //}
+            var itemFilePath = Path.Combine(fpath, "item.txt");
+            if (GeneralLib.FileExists(itemFilePath))
+            {
+                IDList.Load(itemFilePath);
+            }
         }
 
         private bool init_search_data_folder = false;
@@ -140,14 +153,14 @@ namespace SRCCore
             // 初めて実行する際に、各フォルダにDataフォルダがあるかチェック
             if (!init_search_data_folder)
             {
-                if (Strings.Len(FileSystem.Dir(Path.Combine(ScenarioPath, "Data"), FileAttribute.Directory)) > 0)
+                if (Strings.Len(Lib.FileSystem.Dir(Path.Combine(ScenarioPath, "Data"), FileAttribute.Directory)) > 0)
                 {
                     scenario_data_dir_exists = true;
                 }
 
                 if (Strings.Len(ExtDataPath) > 0 & (ScenarioPath ?? "") != (ExtDataPath ?? ""))
                 {
-                    if (Strings.Len(FileSystem.Dir(Path.Combine(ExtDataPath, "Data"), FileAttribute.Directory)) > 0)
+                    if (Strings.Len(Lib.FileSystem.Dir(Path.Combine(ExtDataPath, "Data"), FileAttribute.Directory)) > 0)
                     {
                         extdata_data_dir_exists = true;
                     }
@@ -155,7 +168,7 @@ namespace SRCCore
 
                 if (Strings.Len(ExtDataPath2) > 0 & (ScenarioPath ?? "") != (ExtDataPath2 ?? ""))
                 {
-                    if (Strings.Len(FileSystem.Dir(Path.Combine(ExtDataPath2, "Data"), FileAttribute.Directory)) > 0)
+                    if (Strings.Len(Lib.FileSystem.Dir(Path.Combine(ExtDataPath2, "Data"), FileAttribute.Directory)) > 0)
                     {
                         extdata2_data_dir_exists = true;
                     }
@@ -163,7 +176,7 @@ namespace SRCCore
 
                 if ((ScenarioPath ?? "") != (AppPath ?? ""))
                 {
-                    if (Strings.Len(FileSystem.Dir(Path.Combine(AppPath, "Data"), FileAttribute.Directory)) > 0)
+                    if (Strings.Len(Lib.FileSystem.Dir(Path.Combine(AppPath, "Data"), FileAttribute.Directory)) > 0)
                     {
                         src_data_dir_exists = true;
                     }
@@ -177,7 +190,7 @@ namespace SRCCore
             if (scenario_data_dir_exists)
             {
                 SearchDataFolderRet = Path.Combine(ScenarioPath, fname2);
-                if (Strings.Len(FileSystem.Dir(SearchDataFolderRet, FileAttribute.Directory)) > 0)
+                if (Strings.Len(Lib.FileSystem.Dir(SearchDataFolderRet, FileAttribute.Directory)) > 0)
                 {
                     return SearchDataFolderRet;
                 }
@@ -186,7 +199,7 @@ namespace SRCCore
             if (extdata_data_dir_exists)
             {
                 SearchDataFolderRet = Path.Combine(ExtDataPath, fname2);
-                if (Strings.Len(FileSystem.Dir(SearchDataFolderRet, FileAttribute.Directory)) > 0)
+                if (Strings.Len(Lib.FileSystem.Dir(SearchDataFolderRet, FileAttribute.Directory)) > 0)
                 {
                     return SearchDataFolderRet;
                 }
@@ -195,7 +208,7 @@ namespace SRCCore
             if (extdata2_data_dir_exists)
             {
                 SearchDataFolderRet = Path.Combine(ExtDataPath2, fname2);
-                if (Strings.Len(FileSystem.Dir(SearchDataFolderRet, FileAttribute.Directory)) > 0)
+                if (Strings.Len(Lib.FileSystem.Dir(SearchDataFolderRet, FileAttribute.Directory)) > 0)
                 {
                     return SearchDataFolderRet;
                 }
@@ -204,7 +217,7 @@ namespace SRCCore
             if (src_data_dir_exists)
             {
                 SearchDataFolderRet = Path.Combine(AppPath, fname2);
-                if (Strings.Len(FileSystem.Dir(SearchDataFolderRet, FileAttribute.Directory)) > 0)
+                if (Strings.Len(Lib.FileSystem.Dir(SearchDataFolderRet, FileAttribute.Directory)) > 0)
                 {
                     return SearchDataFolderRet;
                 }

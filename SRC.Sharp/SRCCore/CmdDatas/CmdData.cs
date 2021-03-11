@@ -5,6 +5,7 @@
 using SRCCore.Events;
 using SRCCore.Exceptions;
 using SRCCore.Lib;
+using SRCCore.Units;
 using SRCCore.VB;
 using System;
 using System.Collections.Generic;
@@ -13,12 +14,15 @@ using System.Linq;
 namespace SRCCore.CmdDatas
 {
     // イベントコマンドのクラス
-    public abstract class CmdData
+    public abstract partial class CmdData
     {
         protected SRC SRC { get; }
         protected IGUI GUI => SRC.GUI;
-        protected Event Event => SRC.Event;
+        internal Event Event => SRC.Event;
         protected Expressions.Expression Expression => SRC.Expression;
+        protected Maps.Map Map => SRC.Map;
+        protected SRCCore.Commands.Command Commands => SRC.Commands;
+        internal Sound Sound => SRC.Sound;
 
         public CmdData(SRC src, CmdType name, EventDataLine eventData)
         {
@@ -42,13 +46,14 @@ namespace SRCCore.CmdDatas
 
         public int Exec()
         {
+            SRC.LogDebug(Name.ToString(), args.Select(x => x.strArg).ToArray());
             try
             {
                 return ExecInternal();
             }
             catch (EventErrorException ex)
             {
-                Event.DisplayEventErrorMessage(ex.EventData.ID, ex.Message);
+                Event.DisplayEventErrorMessage(ex?.EventData.ID ?? EventData.ID, ex.Message);
                 return -1;
             }
             catch
@@ -149,6 +154,31 @@ namespace SRCCore.CmdDatas
             }
         }
 
+        // idx番目の引数が示すユニットを返す
+        public Unit GetArgAsUnit(int idx, bool ignore_error = false)
+        {
+            string pname = GetArgAsString(idx);
+            Unit GetArgAsUnitRet = SRC.UList.Item2(pname);
+            if (GetArgAsUnitRet is null)
+            {
+                if (!SRC.PList.IsDefined(pname))
+                {
+                    throw new EventErrorException(this, "「" + pname + "」というパイロットが見つかりません");
+                }
+
+                GetArgAsUnitRet = SRC.PList.Item(pname).Unit;
+                if (!ignore_error)
+                {
+                    if (GetArgAsUnitRet is null)
+                    {
+                        throw new EventErrorException(this, "「" + pname + "」はユニットに乗っていません");
+                    }
+                }
+            }
+
+            return GetArgAsUnitRet;
+        }
+
         private void ParseArgs(string list)
         {
             string[] rawArgs;
@@ -240,6 +270,12 @@ namespace SRCCore.CmdDatas
                         }
                 }
             }
+        }
+
+        public IEnumerable<int> AfterEventIdRange()
+        {
+            var start = EventData.ID + 1;
+            return Enumerable.Range(start, Event.EventCmd.Count - start);
         }
     }
 }

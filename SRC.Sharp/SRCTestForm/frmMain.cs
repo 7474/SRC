@@ -1,7 +1,8 @@
 ﻿using Microsoft.Extensions.Logging;
 using SRCCore;
-using SRCCore.Units;
+using SRCCore.Filesystem;
 using SRCTestForm.FormLib;
+using SRCTestForm.Resoruces;
 using System;
 using System.Data;
 using System.Diagnostics;
@@ -15,6 +16,7 @@ namespace SRCTestForm
         public SRCCore.SRC SRC;
         public SRCCore.Expressions.Expression Expression => SRC.Expression;
         public SRCCore.Maps.Map Map => SRC.Map;
+        public SRCCore.Commands.Command Commands => SRC.Commands;
 
         public frmTeatMain()
         {
@@ -22,6 +24,8 @@ namespace SRCTestForm
 
             SRC = new SRCCore.SRC();
             SRC.GUI = this;
+            SRC.FileSystem = new LocalFileSystem();
+            SRC.Sound.Player = new WindowsManagedPlayer();
         }
 
         private void menuLoadData_Click(object sender, EventArgs e)
@@ -100,6 +104,8 @@ namespace SRCTestForm
             treeViewData.Nodes.Add(new TreeNode("NonPilot", SRC.NPDList.Items.Select(x => new SrcTreeNode(x.Name, x)).ToArray()));
             treeViewData.Nodes.Add(new TreeNode("Message", SRC.MDList.Items.Select(x => new SrcTreeNode(x.Name, x)).ToArray()));
             treeViewData.Nodes.Add(new TreeNode("Dialog", SRC.DDList.Items.Select(x => new SrcTreeNode(x.Name, x)).ToArray()));
+            treeViewData.Nodes.Add(new TreeNode("Item", SRC.IDList.Items.Select(x => new SrcTreeNode(x.Name, x)).ToArray()));
+            treeViewData.Nodes.Add(new TreeNode("SP", SRC.SPDList.Items.Select(x => new SrcTreeNode(x.Name, x)).ToArray()));
         }
 
         private void SetMainText(string text)

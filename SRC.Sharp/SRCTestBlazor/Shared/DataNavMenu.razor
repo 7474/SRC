@@ -14,6 +14,12 @@
                 Pilot
             </a>
         </li>
+        <li class="@(currentKind == SrcDataKind.Item ? "is-active": "")">
+            <a @onclick:preventDefault
+               @onclick="@(e => ChangeKind(e, SrcDataKind.Item))">
+                Item
+            </a>
+        </li>
     </ul>
 </div>
 

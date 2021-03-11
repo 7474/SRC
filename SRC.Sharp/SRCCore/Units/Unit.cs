@@ -2,13 +2,26 @@
 // 本プログラムはフリーソフトであり、無保証です。
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
+using SRCCore.Maps;
 using SRCCore.Models;
 using SRCCore.Pilots;
+using SRCCore.VB;
+using System.Collections.Generic;
 
 namespace SRCCore.Units
 {
     public partial class Unit
     {
+        private SRC SRC { get; }
+        private Map Map => SRC.Map;
+        private IGUI GUI => SRC.GUI;
+        private Commands.Command Commands => SRC.Commands;
+
+        public Unit(SRC src)
+        {
+            SRC = src;
+        }
+
         // データ
         public UnitData Data;
 
@@ -43,7 +56,7 @@ namespace SRCCore.Units
         // 旧形態：分離ユニットが合体前に取っていた形態
         // 離脱：Leaveコマンドにより戦線を離脱。Organizeコマンドでも表示されない
         // UPGRADE_NOTE: Status は Status_Renamed にアップグレードされました。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="A9E4979A-37FA-4718-9994-97DD76ED70A7"' をクリックしてください。
-        public string Status_Renamed;
+        public string Status;
 
         //// ユニットに対して使用されているスペシャルパワー
         //private Collection colSpecialPowerInEffect = new Collection();
@@ -79,18 +92,21 @@ namespace SRCCore.Units
         // 移動力
         private int intSpeed;
 
-        //// 搭乗しているパイロット
-        //private Collection colPilot = new Collection();
+        // 搭乗しているパイロット
+        private SrcCollection<Pilot> colPilot = new SrcCollection<Pilot>();
+        public IList<Pilot> Pilots => colPilot.List;
 
-        //// 搭乗しているサポートパイロット
-        //private Collection colSupport = new Collection();
+        // 搭乗しているサポートパイロット
+        private SrcCollection<Pilot> colSupport = new SrcCollection<Pilot>();
+        public IList<Pilot> SupportPilots => colSupport.List;
 
-        //// 関連するユニット
-        //// 変形ユニットにおける他形態等
-        //private Collection colOtherForm = new Collection();
+        // 関連するユニット
+        // 変形ユニットにおける他形態等
+        private SrcCollection<Unit> colOtherForm = new SrcCollection<Unit>();
+        public IList<Unit> OtherForms => colOtherForm.List;
 
-        //// 格納したユニット
-        //private Collection colUnitOnBoard = new Collection();
+        // 格納したユニット
+        private SrcCollection<Unit> colUnitOnBoard = new SrcCollection<Unit>();
 
         //// 装備しているアイテム
         //private Collection colItem = new Collection();
@@ -104,11 +120,11 @@ namespace SRCCore.Units
         // アビリティの残り使用回数
         private double[] dblStock;
 
-        //// 特殊能力
-        //private Collection colFeature = new Collection();
+        // 特殊能力
+        private SrcCollection<FeatureData> colFeature = new SrcCollection<FeatureData>();
 
-        //// 特殊能力(必要条件を満たさないものを含む)
-        //private Collection colAllFeature = new Collection();
+        // 特殊能力(必要条件を満たさないものを含む)
+        private SrcCollection<FeatureData> colAllFeature = new SrcCollection<FeatureData>();
 
         // 付加された特殊能力数
         public int AdditionalFeaturesNum;
@@ -125,13 +141,8 @@ namespace SRCCore.Units
         public string strSpecialEffectImmune;
 
         // 武器データ
-        private WeaponData[] WData;
-        private int[] lngWeaponPower;
-        private int[] intWeaponMaxRange;
-        private int[] intWeaponPrecision;
-        private int[] intWeaponCritical;
-        private string[] strWeaponClass;
-        private int[] intMaxBullet;
+        private List<UnitWeapon> WData = new List<UnitWeapon>();
+        public IList<UnitWeapon> Weapons => WData.AsReadOnly();
 
         // アビリティデータ
         private AbilityData[] adata;

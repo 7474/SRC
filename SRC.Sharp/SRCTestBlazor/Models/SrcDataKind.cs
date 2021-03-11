@@ -11,5 +11,6 @@ namespace SRCTestBlazor.Models
         Unit,
         Pilot,
         NonPilot,
+        Item,
     }
 }

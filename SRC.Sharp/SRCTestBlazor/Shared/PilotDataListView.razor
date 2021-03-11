@@ -1,6 +1,6 @@
 ﻿<section>
-    <nav class="navbar is-light is-fixed-top" style="position: sticky; top: 93px;">
-        <div class="navbar-brand" style="overflow-x: scroll;">
+    <nav class="src-sub-nuvbar navbar is-light is-fixed-top">
+        <div class="navbar-brand">
             @foreach (var pd in SRC.PDList.Items)
             {
                 var name = pd.Name;
@@ -10,14 +10,14 @@
             }
         </div>
     </nav>
-    @if (!string.IsNullOrEmpty(SRC.PDList.Comment))
+    @if (!string.IsNullOrEmpty(SRC.PDList.DataComment))
     {
         <div class="content">
-            <div class="src-comment">@SRC.PDList.Comment</div>
+            <div class="src-comment">@SRC.PDList.DataComment</div>
         </div>
     }
     <div class="src-data-list-container">
-        <Virtualize Items="@SRC.PDList.Items" Context="pd">
+        <Virtualize Items="@SRC.PDList.Items" Context="pd" ItemSize="200">
             <PilotDataView @key="pd.Name" Data="@pd" SRC="@SRC" />
         </Virtualize>
     </div>

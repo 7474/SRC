@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "SRCDataLinter": {
+      "commandName": "Project"
+    },
+    "Docker": {
+      "commandName": "Docker"
+    }
+  }
+}

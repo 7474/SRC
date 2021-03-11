@@ -1,4 +1,5 @@
 ﻿using SRCCore.CmdDatas;
+using SRCCore.CmdDatas.Commands;
 using SRCCore.Expressions;
 using SRCCore.Lib;
 using SRCCore.Maps;
@@ -37,23 +38,24 @@ namespace SRCCore.Events
             int sys_event_file_num = default;
 
             // データの初期化
+            // XXX List値それぞれの初期化
             EventData = EventData.Where(x => x.IsSystemData).ToList();
             EventFileNames = EventData.Where(x => x.IsSystemData).Select(x => x.File).ToList();
             AdditionalEventFileNames = new List<string>();
             CurrentLineNum = SysEventDataSize;
             CallDepth = 0;
-            CallStack.Clear();
+            //CallStack.Clear();
             ArgIndex = 0;
-            ArgIndexStack.Clear();
-            ArgStack.Clear();
+            //ArgIndexStack.Clear();
+            //ArgStack.Clear();
             UpVarLevel = 0;
-            UpVarLevelStack.Clear();
+            //UpVarLevelStack.Clear();
             VarIndex = 0;
-            VarIndexStack.Clear();
-            VarStack.Clear();
+            //VarIndexStack.Clear();
+            //VarStack.Clear();
             ForIndex = 0;
-            ForIndexStack.Clear();
-            ForLimitStack.Clear();
+            //ForIndexStack.Clear();
+            //ForLimitStack.Clear();
 
             HotPointList = new List<HotPoint>();
             ObjColor = Color.White;
@@ -379,16 +381,12 @@ namespace SRCCore.Events
                         case CmdType.AutoTalkCmd:
                         case CmdType.QuestionCmd:
                         case CmdType.TalkCmd:
-                            {
-                                break;
-                            }
+                            break;
 
                         default:
-                            {
-                                DisplayEventErrorMessage(command.EventData, "括弧の対応が取れていません");
-                                error_found = true;
-                                break;
-                            }
+                            DisplayEventErrorMessage(command.EventData, "括弧の対応が取れていません");
+                            error_found = true;
+                            break;
                     }
                 }
 
@@ -405,7 +403,7 @@ namespace SRCCore.Events
                                 error_found = true;
                             }
 
-                            if (command.GetArg(4) == "then")
+                            if ((command as AIfCmd)?.IfCmdType == IfCmdType.Then)
                             {
                                 cmdStack.Push(CmdType.IfCmd);
                                 cmdPosStack.Push(command.EventData.ID);

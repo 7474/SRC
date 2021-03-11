@@ -8,9 +8,9 @@ namespace SRCCore.VB
 {
     // VBのCollectionの代替え実装。
     // （ジェネリクスは欲しいので）
-    public class SrcCollection<V> : IList<V>, IDictionary<string, V>
+    public class SrcCollection<V> : IDictionary<string, V>
     {
-        private IList<V> list;
+        private List<V> list;
         private OrderedDictionary dict;
 
         public SrcCollection()
@@ -19,9 +19,12 @@ namespace SRCCore.VB
             list = new List<V>();
         }
 
+        public IList<V> List => list.AsReadOnly();
+
+        // 1オフセット
         public V this[int index]
         {
-            get => list[index];
+            get => list[index - 1];
             set => throw new NotImplementedException();
         }
 

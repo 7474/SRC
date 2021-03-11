@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Linq;
 using System.Text;
 using SRCCore.CmdDatas;
 using SRCCore.Expressions;
@@ -37,6 +38,7 @@ namespace SRCCore.Events
         // 変数用のコレクション
         public IDictionary<string, VarData> GlobalVariableList = new Dictionary<string, VarData>();
         public IDictionary<string, VarData> LocalVariableList = new Dictionary<string, VarData>();
+        public BCVariable BCVariable = new BCVariable();
 
         // 現在の行番号
         public int CurrentLineNum;
@@ -64,22 +66,22 @@ namespace SRCCore.Events
 
         // 呼び出し履歴
         public int CallDepth;
-        public Stack<int> CallStack = new Stack<int>(MaxCallDepth);
+        public IList<int> CallStack = new List<int>(Enumerable.Range(0, MaxCallDepth).Select(x => 0));
         // 引数スタック
         public int ArgIndex;
-        public Stack<int> ArgIndexStack = new Stack<int>(MaxCallDepth);
-        public Stack<string> ArgStack = new Stack<string>(MaxArgIndex);
+        public IList<int> ArgIndexStack = new List<int>(Enumerable.Range(0, MaxCallDepth).Select(x => 0));
+        public IList<string> ArgStack = new List<string>(Enumerable.Range(0, MaxArgIndex).Select(x => ""));
         // UpVarコマンドによって引数が何段階シフトしているか
         public int UpVarLevel;
-        public Stack<int> UpVarLevelStack = new Stack<int>(MaxCallDepth);
+        public IList<int> UpVarLevelStack = new List<int>(Enumerable.Range(0, MaxCallDepth).Select(x => 0));
         // サブルーチンローカル変数スタック
         public int VarIndex;
-        public IList<int> VarIndexStack = new List<int>(MaxCallDepth);
-        public IList<VarData> VarStack = new List<VarData>(MaxVarIndex);
+        public IList<int> VarIndexStack = new List<int>(Enumerable.Range(0, MaxCallDepth).Select(x => 0));
+        public IList<VarData> VarStack = new List<VarData>(Enumerable.Range(0, MaxVarIndex).Select(x => new VarData()));
         // Forインデックス用スタック
         public int ForIndex;
-        public Stack<int> ForIndexStack = new Stack<int>(MaxCallDepth);
-        public Stack<int> ForLimitStack = new Stack<int>(MaxCallDepth);
+        public IList<int> ForIndexStack = new List<int>(Enumerable.Range(0, MaxCallDepth).Select(x => 0));
+        public IList<int> ForLimitStack = new List<int>(Enumerable.Range(0, MaxCallDepth).Select(x => 0));
 
         // ForEachコマンド用変数
         public int ForEachIndex;

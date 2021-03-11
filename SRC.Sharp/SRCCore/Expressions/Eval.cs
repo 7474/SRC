@@ -21,17 +21,15 @@ namespace SRCCore.Expressions
             str_result = "";
             num_result = 0d;
 
-            string[] terms;
-            int tnum;
             int op_idx, op_pri;
             var op_type = default(OperatorType);
             string lop, rop;
             bool is_lop_term = default, is_rop_term = default;
-            int i, ret;
 
             // 式をあらかじめ要素に分解
-            tnum = GeneralLib.ListSplit(expr, out terms);
-            switch (tnum)
+            string[] terms;
+            GeneralLib.ListSplit(expr, out terms);
+            switch (terms.Length)
             {
                 // 空白
                 case 0:
@@ -66,21 +64,20 @@ namespace SRCCore.Expressions
             // 項数が２個以上の場合は演算子を含む式
 
             // 優先度に合わせ、どの演算が実行されるかを判定
-            op_idx = 0;
+            op_idx = -1;
             op_pri = 100;
-            var loopTo = (tnum - 1);
-            for (i = 1; i <= loopTo; i++)
+            for (var i = 0; i < terms.Length; i++)
             {
                 // 演算子の種類を判定
-                ret = Strings.Asc(terms[i]);
+                var ret = Strings.Asc(terms[i]);
                 if (ret < 0)
                 {
-                    goto NextTerm;
+                    continue;
                 }
 
                 if (ret > 111)
                 {
-                    goto NextTerm;
+                    continue;
                 }
 
                 switch (Strings.Len(terms[i]))
@@ -374,12 +371,9 @@ namespace SRCCore.Expressions
                             break;
                         }
                 }
-
-            NextTerm:
-                ;
             }
 
-            if (op_idx == 0)
+            if (op_idx < 0)
             {
                 // 単なる文字列
                 EvalExprRet = ValueType.StringType;
@@ -390,7 +384,7 @@ namespace SRCCore.Expressions
             // 演算子の引数の作成
             switch (op_idx)
             {
-                case 1:
+                case 0:
                     {
                         // 左辺引数無し
                         is_lop_term = true;
@@ -398,66 +392,32 @@ namespace SRCCore.Expressions
                         break;
                     }
 
-                case 2:
+                case 1:
                     {
                         // 左辺引数は項
                         is_lop_term = true;
-                        lop = terms[1];
+                        lop = terms[0];
                         break;
                     }
 
                 default:
                     {
-                        //// 左辺引数の連結処理 (高速化のため、Midを使用)
-                        //buf = new string(Conversions.ToChar(Constants.vbNullChar), Strings.Len(expr));
-                        //tsize = Strings.Len(terms[1]);
-                        //var midTmp = terms[1];
-                        //StringType.MidStmtStr(buf, 1, tsize, midTmp);
-                        //osize = tsize;
-                        //var loopTo1 = (op_idx - 1);
-                        //for (i = 2; i <= loopTo1; i++)
-                        //{
-                        //    StringType.MidStmtStr(buf, osize + 1, 1, " ");
-                        //    tsize = Strings.Len(terms[i]);
-                        //    var midTmp1 = terms[i];
-                        //    StringType.MidStmtStr(buf, osize + 2, tsize, midTmp1);
-                        //    osize = (osize + tsize + 1);
-                        //}
-
-                        //lop = Strings.Left(buf, osize);
-                        // XXX 多分こうでいいんだよな？　配列のIndexは見直さないとダメかも
-                        lop = string.Join(" ", terms.Skip(op_idx - 1));
+                        // 左辺引数の連結処理
+                        lop = string.Join(" ", terms.Take(op_idx));
                         break;
                     }
             }
 
-            if (op_idx == tnum - 1)
+            if (op_idx == terms.Length - 1)
             {
                 // 右辺引数は項
                 is_rop_term = true;
-                rop = terms[tnum];
+                rop = terms.Last();
             }
             else
             {
-                //// 右辺引数の連結処理 (高速化のため、Midを使用)
-                //buf = new string(Conversions.ToChar(Constants.vbNullChar), Strings.Len(expr));
-                //tsize = Strings.Len(terms[op_idx + 1]);
-                //var midTmp2 = terms[op_idx + 1];
-                //StringType.MidStmtStr(buf, 1, tsize, midTmp2);
-                //osize = tsize;
-                //var loopTo2 = tnum;
-                //for (i = (op_idx + 2); i <= loopTo2; i++)
-                //{
-                //    StringType.MidStmtStr(buf, osize + 1, 1, " ");
-                //    tsize = Strings.Len(terms[i]);
-                //    var midTmp3 = terms[i];
-                //    StringType.MidStmtStr(buf, osize + 2, tsize, midTmp3);
-                //    osize = (osize + tsize + 1);
-                //}
-
-                //rop = Strings.Left(buf, osize);
-                // XXX 多分こうでいいんだよな？　配列のIndexは見直さないとダメかも
-                rop = string.Join(" ", terms.Skip(op_idx));
+                //// 右辺引数の連結処理
+                rop = string.Join(" ", terms.Skip(op_idx + 1));
             }
 
             string lstr;
@@ -1502,13 +1462,12 @@ namespace SRCCore.Expressions
                     }
             }
 
-            // TODO Impl
-            //// 関数呼び出し？
-            //EvalTermRet = CallFunction(expr, etype, str_result, num_result);
-            //if (EvalTermRet != ValueType.UndefinedType)
-            //{
-            //    return EvalTermRet;
-            //}
+            // 関数呼び出し？
+            EvalTermRet = CallFunction(expr, etype, out str_result, out num_result);
+            if (EvalTermRet != ValueType.UndefinedType)
+            {
+                return EvalTermRet;
+            }
 
             // 変数？
             EvalTermRet = GetVariable(expr, etype, out str_result, out num_result);

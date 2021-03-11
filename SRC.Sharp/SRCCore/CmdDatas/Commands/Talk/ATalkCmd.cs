@@ -1,32 +1,24 @@
 ﻿using SRCCore.Events;
 using SRCCore.Exceptions;
-using SRCCore.Units;
-using SRCCore.VB;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace SRCCore.CmdDatas.Commands
 {
-    public class TalkCmd : CmdData
+    public abstract class ATalkCmd : CmdData
     {
-        public TalkCmd(SRC src, EventDataLine eventData) : base(src, CmdType.TalkCmd, eventData)
+        public ATalkCmd(SRC src, CmdType cmdType, EventDataLine eventData) : base(src, cmdType, eventData)
         {
         }
 
-        protected override int ExecInternal()
+        protected abstract void DisplayMessage(string pname, string msg, string msg_mode = "");
+
+        protected int ProcessTalk()
         {
             string pname, current_pname = default;
-            Unit u;
-            int ux, uy;
             int i;
             int j;
             int lnum;
             var without_cursor = default(bool);
             string options = default, opt;
-            string buf;
-            string cname;
-            int tcolor;
 
             for (i = EventData.ID; i < Event.EventData.Count; i++)
             {
@@ -34,7 +26,14 @@ namespace SRCCore.CmdDatas.Commands
                 switch (currentCmd.Name)
                 {
                     case CmdType.TalkCmd:
+                    case CmdType.AutoTalkCmd:
                         {
+                            // XXX
+                            if (currentCmd.Name != Name)
+                            {
+                                throw new EventErrorException(this, "Talk中またはAutoTalk中に他方のコマンドが実行されました");
+                            }
+
                             if (currentCmd.ArgNum > 1)
                             {
                                 pname = currentCmd.GetArgAsString(2);
@@ -61,11 +60,11 @@ namespace SRCCore.CmdDatas.Commands
 
                             // 話者名チェック
                             if (
-                                 //!SRC.PList.IsDefined(pname)
-                                 !SRC.PDList.IsDefined(pname)
-                                & !SRC.NPDList.IsDefined(pname)
-                                & !(pname == "システム")
-                                & !string.IsNullOrEmpty(pname))
+                                !SRC.PList.IsDefined(pname)
+                                && !SRC.PDList.IsDefined(pname)
+                                && !SRC.NPDList.IsDefined(pname)
+                                && !(pname == "システム")
+                                && !string.IsNullOrEmpty(pname))
                             {
                                 //LineNum = i; // XXX これ要るの？
                                 throw new EventErrorException(currentCmd, "「" + pname + "」というパイロットが定義されていません");
@@ -83,16 +82,12 @@ namespace SRCCore.CmdDatas.Commands
                                     switch (opt ?? "")
                                     {
                                         case "非表示":
-                                            {
-                                                without_cursor = true;
-                                                break;
-                                            }
+                                            without_cursor = true;
+                                            break;
 
                                         case "枠外":
-                                            {
-                                                GUI.MessageWindowIsOut = true;
-                                                break;
-                                            }
+                                            GUI.MessageWindowIsOut = true;
+                                            break;
 
                                         case "白黒":
                                         case "セピア":
@@ -113,34 +108,28 @@ namespace SRCCore.CmdDatas.Commands
                                         case "夕焼け":
                                         case "水中":
                                         case "通常":
+                                            if (j > 2)
                                             {
-                                                if (j > 2)
-                                                {
-                                                    // これらのパイロット画像描画に関するオプションは
-                                                    // パイロット名が指定されている場合にのみ有効
-                                                    options = options + opt + " ";
-                                                }
-                                                else
-                                                {
-                                                    lnum = j;
-                                                }
-
-                                                break;
+                                                // これらのパイロット画像描画に関するオプションは
+                                                // パイロット名が指定されている場合にのみ有効
+                                                options = options + opt + " ";
                                             }
+                                            else
+                                            {
+                                                lnum = j;
+                                            }
+
+                                            break;
 
                                         case "右回転":
-                                            {
-                                                j = (j + 1);
-                                                options = options + "右回転 " + currentCmd.GetArgAsString(j) + " ";
-                                                break;
-                                            }
+                                            j = (j + 1);
+                                            options = options + "右回転 " + currentCmd.GetArgAsString(j) + " ";
+                                            break;
 
                                         case "左回転":
-                                            {
-                                                j = (j + 1);
-                                                options = options + "左回転 " + currentCmd.GetArgAsString(j) + " ";
-                                                break;
-                                            }
+                                            j = (j + 1);
+                                            options = options + "左回転 " + currentCmd.GetArgAsString(j) + " ";
+                                            break;
 
                                         // TODO 色指定の処理全般保留
                                         //case "フィルタ":
@@ -163,16 +152,12 @@ namespace SRCCore.CmdDatas.Commands
                                         //    }
 
                                         case var @case when @case == "":
-                                            {
-                                                break;
-                                            }
+                                            break;
 
                                         default:
-                                            {
-                                                // 通常の引数をスキップ
-                                                lnum = j;
-                                                break;
-                                            }
+                                            // 通常の引数をスキップ
+                                            lnum = j;
+                                            break;
                                     }
 
                                     j = (j + 1);
@@ -201,7 +186,7 @@ namespace SRCCore.CmdDatas.Commands
                                         // ものに確定させる
                                         if (!string.IsNullOrEmpty(current_pname))
                                         {
-                                            GUI.DisplayMessage(current_pname, "", options);
+                                            DisplayMessage(current_pname, options);
                                         }
 
                                         current_pname = "";
@@ -212,64 +197,55 @@ namespace SRCCore.CmdDatas.Commands
                                     // パイロット名のみ指定
                                     current_pname = pname;
 
-                                    // TODO Impl
-                                    //// 話者中心に画面位置を変更
-                                    //// プロローグイベントやエピローグイベント時はキャンセル
-                                    //if (SRC.Stage == "プロローグ" | SRC.Stage == "エピローグ")
-                                    //{
-                                    //    goto NextLoop;
-                                    //}
+                                    // 話者中心に画面位置を変更
+                                    // プロローグイベントやエピローグイベント時はキャンセル
+                                    if (SRC.Stage == "プロローグ" | SRC.Stage == "エピローグ")
+                                    {
+                                        break;
+                                    }
 
-                                    //// 画面書き換え可能？
-                                    //if (!GUI.MainForm.Visible)
-                                    //{
-                                    //    goto NextLoop;
-                                    //}
+                                    // 画面書き換え可能？
+                                    if (!GUI.MainFormVisible)
+                                    {
+                                        break;
+                                    }
+                                    if (GUI.IsPictureVisible)
+                                    {
+                                        break;
+                                    }
+                                    if (Map.IsStatusView)
+                                    {
+                                        break;
+                                    }
 
-                                    //if (GUI.IsPictureVisible)
-                                    //{
-                                    //    goto NextLoop;
-                                    //}
-
-                                    //if (string.IsNullOrEmpty(Map.MapFileName))
-                                    //{
-                                    //    goto NextLoop;
-                                    //}
-
-                                    //// 話者を中央表示
-                                    //CenterUnit(pname, without_cursor);
+                                    // 話者を中央表示
+                                    CenterUnit(pname, without_cursor);
                                     break;
 
                                 // TODO Impl
                                 case 3:
                                     current_pname = pname;
-                                    //        switch (currentCmd.GetArgAsString(3) ?? "")
-                                    //        {
-                                    //            case "母艦":
-                                    //                {
-                                    //                    // 母艦の中央表示
-                                    //                    CenterUnit("母艦", without_cursor);
-                                    //                    break;
-                                    //                }
+                                    switch (currentCmd.GetArgAsString(3) ?? "")
+                                    {
+                                        case "母艦":
+                                            // 母艦の中央表示
+                                            CenterUnit("母艦", without_cursor);
+                                            break;
 
-                                    //            case "中央":
-                                    //                {
-                                    //                    // 話者の中央表示
-                                    //                    CenterUnit(pname, without_cursor);
-                                    //                    break;
-                                    //                }
+                                        case "中央":
+                                            // 話者の中央表示
+                                            CenterUnit(pname, without_cursor);
+                                            break;
 
-                                    //            case "固定":
-                                    //                {
-                                    //                    break;
-                                    //                }
-                                    //                // 表示位置固定
-                                    //        }
+                                        case "固定":
+                                            break;
+                                            // 表示位置固定
+                                    }
                                     break;
 
                                 case 4:
                                     current_pname = pname;
-                                    //        CenterUnit(pname, without_cursor, currentCmd.GetArgAsLong(3), currentCmd.GetArgAsLong(4));
+                                    CenterUnit(pname, without_cursor, currentCmd.GetArgAsLong(3), currentCmd.GetArgAsLong(4));
                                     break;
 
                                 case -1:
@@ -282,11 +258,7 @@ namespace SRCCore.CmdDatas.Commands
 
                             if (!GUI.MessageFormVisible)
                             {
-                                // TODO Impl
-                                //Unit argu11 = null;
-                                //Unit argu21 = null;
-                                //GUI.OpenMessageForm(u1: argu11, u2: argu21);
-                                GUI.OpenMessageForm();
+                                GUI.OpenMessageForm(null, null);
                             }
 
                             break;
@@ -318,13 +290,10 @@ namespace SRCCore.CmdDatas.Commands
                         {
                             if (!GUI.MessageFormVisible)
                             {
-                                //Unit argu12 = null;
-                                //Unit argu22 = null;
-                                //GUI.OpenMessageForm(u1: argu12, u2: argu22);
-                                GUI.OpenMessageForm();
+                                GUI.OpenMessageForm(null, null);
                             }
 
-                            GUI.DisplayMessage(current_pname, Event.EventData[i].Data, options);
+                            DisplayMessage(current_pname, Event.EventData[i].Data, options);
                             break;
                         }
                 }

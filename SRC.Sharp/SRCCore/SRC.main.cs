@@ -1,11 +1,10 @@
-﻿using SRCCore.Lib;
+﻿using SRCCore.Exceptions;
+using SRCCore.Lib;
 using SRCCore.Maps;
 using SRCCore.VB;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using System.Text;
 
 namespace SRCCore
 {
@@ -888,34 +887,25 @@ namespace SRCCore
             //                string argfname1 = AppPath + @"Data\System\alias.txt";
             //                ALDList.Load(argfname1);
             //            }
-            //            // スペシャルパワーデータをロード
-            //            bool localFileExists2() { string argfname = ScenarioPath + @"Data\System\mind.txt"; var ret = GeneralLib.FileExists(argfname); return ret; }
 
-            //            bool localFileExists3() { string argfname = AppPath + @"Data\System\sp.txt"; var ret = GeneralLib.FileExists(argfname); return ret; }
+            // スペシャルパワーデータをロード
+            var spFiles = new string[]
+            {
+                Path.Combine(ScenarioPath, "Data", "System", "sp.txt"),
+                Path.Combine(ScenarioPath, "Data", "System", "mind.txt"),
+                Path.Combine(AppPath, "Data", "System", "sp.txt"),
+                Path.Combine(AppPath, "Data", "System", "mind.txt"),
+            };
+            foreach (var spFile in spFiles)
+            {
 
-            //            bool localFileExists4() { string argfname = AppPath + @"Data\System\mind.txt"; var ret = GeneralLib.FileExists(argfname); return ret; }
+                if (GeneralLib.FileExists(spFile))
+                {
+                    SPDList.Load(spFile);
+                    break;
+                }
+            }
 
-            //            string argfname7 = ScenarioPath + @"Data\System\sp.txt";
-            //            if (GeneralLib.FileExists(argfname7))
-            //            {
-            //                string argfname3 = ScenarioPath + @"Data\System\sp.txt";
-            //                SPDList.Load(argfname3);
-            //            }
-            //            else if (localFileExists2())
-            //            {
-            //                string argfname4 = ScenarioPath + @"Data\System\mind.txt";
-            //                SPDList.Load(argfname4);
-            //            }
-            //            else if (localFileExists3())
-            //            {
-            //                string argfname5 = AppPath + @"Data\System\sp.txt";
-            //                SPDList.Load(argfname5);
-            //            }
-            //            else if (localFileExists4())
-            //            {
-            //                string argfname6 = AppPath + @"Data\System\mind.txt";
-            //                SPDList.Load(argfname6);
-            //            }
             //            // 汎用アイテムデータをロード
             //            bool localFileExists5() { string argfname = AppPath + @"Data\System\item.txt"; var ret = GeneralLib.FileExists(argfname); return ret; }
 
@@ -930,40 +920,37 @@ namespace SRCCore
             //                string argfname9 = AppPath + @"Data\System\item.txt";
             //                IDList.Load(argfname9);
             //            }
-            //            // 地形データをロード
-            //            string argfname12 = AppPath + @"Data\System\terrain.txt";
-            //            if (GeneralLib.FileExists(argfname12))
-            //            {
-            //                string argfname11 = AppPath + @"Data\System\terrain.txt";
-            //                TDList.Load(argfname11);
-            //            }
-            //            else
-            //            {
-            //                string argmsg13 = @"地形データファイル「Data\System\terrain.txt」が見つかりません";
-            //                GUI.ErrorMessage(argmsg13);
-            //                TerminateSRC();
-            //            }
+            // 地形データをロード
+            string appTerrainPath = Path.Combine(AppPath, "Data", "System", "terrain.txt");
+            if (GeneralLib.FileExists(appTerrainPath))
+            {
+                TDList.Load(appTerrainPath);
+            }
+            else
+            {
+                throw new TerminateException(@"地形データファイル「Data\System\terrain.txt」が見つかりません");
+            }
+            string scenarioTerrainPath = Path.Combine(ScenarioPath, "Data", "System", "terrain.txt");
+            if (GeneralLib.FileExists(scenarioTerrainPath))
+            {
+                TDList.Load(scenarioTerrainPath);
+            }
 
-            //            string argfname14 = ScenarioPath + @"Data\System\terrain.txt";
-            //            if (GeneralLib.FileExists(argfname14))
-            //            {
-            //                string argfname13 = ScenarioPath + @"Data\System\terrain.txt";
-            //                TDList.Load(argfname13);
-            //            }
-            //            // バトルコンフィグデータをロード
-            //            bool localFileExists6() { string argfname = AppPath + @"Data\System\battle.txt"; var ret = GeneralLib.FileExists(argfname); return ret; }
+            // バトルコンフィグデータをロード
+            var bcFiles = new string[]
+            {
+                Path.Combine(ScenarioPath, "Data", "System", "battle.txt"),
+                Path.Combine(AppPath, "Data", "System", "battle.txt"),
+            };
+            foreach (var bcFile in bcFiles)
+            {
 
-            //            string argfname17 = ScenarioPath + @"Data\System\battle.txt";
-            //            if (GeneralLib.FileExists(argfname17))
-            //            {
-            //                string argfname15 = ScenarioPath + @"Data\System\battle.txt";
-            //                BCList.Load(argfname15);
-            //            }
-            //            else if (localFileExists6())
-            //            {
-            //                string argfname16 = AppPath + @"Data\System\battle.txt";
-            //                BCList.Load(argfname16);
-            //            }
+                if (GeneralLib.FileExists(bcFile))
+                {
+                    BCList.Load(bcFile);
+                    break;
+                }
+            }
         }
 
         private void ConfigureExecuteFile(string fname)
@@ -1044,11 +1031,9 @@ namespace SRCCore
             //        }
             //    }
 
-            //    // オープニング曲演奏
-            //    Sound.StopBGM(true);
-            //    string argbgm_name = "Opening";
-            //    string argbgm_name1 = Sound.BGMName(argbgm_name);
-            //    Sound.StartBGM(argbgm_name1, true);
+            // オープニング曲演奏
+            Sound.StopBGM(true);
+            Sound.StartBGM(Sound.BGMName("Opening"), true);
 
             // イベントデータを初期化
             Event.InitEventData();
@@ -1149,11 +1134,9 @@ namespace SRCCore
             //ExtDataPath = GeneralLib.ReadIni("Option", "ExtDataPath");
             //ExtDataPath2 = GeneralLib.ReadIni("Option", "ExtDataPath2");
 
-            //// オープニング曲演奏
-            //Sound.StopBGM(true);
-            //string argbgm_name2 = "Opening";
-            //string argbgm_name3 = Sound.BGMName(argbgm_name2);
-            //Sound.StartBGM(argbgm_name3, true);
+            // オープニング曲演奏
+            Sound.StopBGM(true);
+            Sound.StartBGM(Sound.BGMName("Opening"), true);
             Event.InitEventData();
             GUI.CloseTitleForm();
 

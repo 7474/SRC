@@ -68,8 +68,25 @@ $code-family: "IPA Gothic", monospace;
 }
 
 .src-data-list-container {
-    height: calc(100vh - 150px);
+    height: calc(100vh - 180px);
     overflow-y: auto;
+}
+
+.src-titles-container {
+    min-width: 480px;
+    max-height: 80vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.src-sub-nuvbar.navbar {
+    position: sticky;
+    top: 93px;
+    display: block;
+
+    .navbar-brand {
+        overflow-x: scroll;
+    }
 }
 
 .src-comment {

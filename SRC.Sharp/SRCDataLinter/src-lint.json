@@ -1,0 +1,16 @@
+﻿{
+  "problemMatcher": [
+    {
+      "owner": "src-lint",
+      "pattern": [
+        {
+          "regexp": "^([^\\s].*)\\((\\d+)\\):\\s*(error|warning|info):\\s+(.*)$$",
+          "file": 1,
+          "line": 2,
+          "severity": 3,
+          "message": 4
+        }
+      ]
+    }
+  ]
+}

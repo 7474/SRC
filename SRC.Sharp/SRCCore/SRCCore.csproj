@@ -1,29 +1,23 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <RootNamespace>SRCCore</RootNamespace>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>0.1.4</Version>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-    <PackageReference Include="System.Collections.Specialized" Version="4.3.0" />
-    <PackageReference Include="System.Drawing.Common" Version="5.0.0" />
+    <None Include="..\.editorconfig" Link=".editorconfig" />
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Models\AbilityData.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Models\FeatureData.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Models\UnitData.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Models\WeaponData.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="5.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="System.Collections.Specialized" Version="4.3.0" />
+    <PackageReference Include="System.Drawing.Common" Version="5.0.1" />
   </ItemGroup>
 
 </Project>

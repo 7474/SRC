@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Runtime.CompilerServices;
 using System.Windows.Forms;
 using Microsoft.VisualBasic.CompilerServices;
+using SRCTestForm.FormLib;
 
 namespace SRCTestForm
 {
@@ -16,9 +17,6 @@ namespace SRCTestForm
         {
             // この呼び出しは、Windows フォーム デザイナで必要です。
             InitializeComponent();
-            _picFace.Name = "picFace";
-            _HScrollBar.Name = "HScroll_Renamed";
-            _VScrollBar.Name = "VScroll_Renamed";
         }
         // Form は、コンポーネント一覧に後処理を実行するために dispose をオーバーライドします。
         [DebuggerNonUserCode()]
@@ -37,126 +35,17 @@ namespace SRCTestForm
         // Windows フォーム デザイナで必要です。
         private System.ComponentModel.IContainer components;
         public ToolTip ToolTip1;
-        public ToolStripMenuItem _mnuUnitCommandItem_0;
-        public ToolStripMenuItem _mnuUnitCommandItem_1;
-        public ToolStripMenuItem _mnuUnitCommandItem_2;
-        public ToolStripMenuItem _mnuUnitCommandItem_3;
-        public ToolStripMenuItem _mnuUnitCommandItem_4;
-        public ToolStripMenuItem _mnuUnitCommandItem_5;
-        public ToolStripMenuItem _mnuUnitCommandItem_6;
-        public ToolStripMenuItem _mnuUnitCommandItem_7;
-        public ToolStripMenuItem _mnuUnitCommandItem_8;
-        public ToolStripMenuItem _mnuUnitCommandItem_9;
-        public ToolStripMenuItem _mnuUnitCommandItem_10;
-        public ToolStripMenuItem _mnuUnitCommandItem_11;
-        public ToolStripMenuItem _mnuUnitCommandItem_12;
-        public ToolStripMenuItem _mnuUnitCommandItem_13;
-        public ToolStripMenuItem _mnuUnitCommandItem_14;
-        public ToolStripMenuItem _mnuUnitCommandItem_15;
-        public ToolStripMenuItem _mnuUnitCommandItem_16;
-        public ToolStripMenuItem _mnuUnitCommandItem_17;
-        public ToolStripMenuItem _mnuUnitCommandItem_18;
-        public ToolStripMenuItem _mnuUnitCommandItem_19;
-        public ToolStripMenuItem _mnuUnitCommandItem_20;
-        public ToolStripMenuItem _mnuUnitCommandItem_21;
-        public ToolStripMenuItem _mnuUnitCommandItem_22;
-        public ToolStripMenuItem _mnuUnitCommandItem_23;
-        public ToolStripMenuItem _mnuUnitCommandItem_24;
-        public ToolStripMenuItem _mnuUnitCommandItem_25;
-        public ToolStripMenuItem _mnuUnitCommandItem_26;
-        public ToolStripMenuItem _mnuUnitCommandItem_27;
-        public ToolStripMenuItem _mnuUnitCommandItem_28;
-        public ToolStripMenuItem _mnuUnitCommandItem_29;
-        public ToolStripMenuItem _mnuUnitCommandItem_30;
-        public ToolStripMenuItem _mnuUnitCommandItem_31;
-        public ToolStripMenuItem _mnuUnitCommandItem_32;
-        public ToolStripMenuItem _mnuUnitCommandItem_33;
-        public ToolStripMenuItem _mnuUnitCommandItem_34;
-        public ToolStripMenuItem _mnuUnitCommandItem_35;
-        public ToolStripMenuItem mnuUnitCommand;
-        public ToolStripMenuItem _mnuMapCommandItem_0;
-        public ToolStripMenuItem _mnuMapCommandItem_1;
-        public ToolStripMenuItem _mnuMapCommandItem_2;
-        public ToolStripMenuItem _mnuMapCommandItem_3;
-        public ToolStripMenuItem _mnuMapCommandItem_4;
-        public ToolStripMenuItem _mnuMapCommandItem_5;
-        public ToolStripMenuItem _mnuMapCommandItem_6;
-        public ToolStripMenuItem _mnuMapCommandItem_7;
-        public ToolStripMenuItem _mnuMapCommandItem_8;
-        public ToolStripMenuItem _mnuMapCommandItem_9;
-        public ToolStripMenuItem _mnuMapCommandItem_10;
-        public ToolStripMenuItem _mnuMapCommandItem_11;
-        public ToolStripMenuItem _mnuMapCommandItem_12;
-        public ToolStripMenuItem _mnuMapCommandItem_13;
-        public ToolStripMenuItem _mnuMapCommandItem_14;
-        public ToolStripMenuItem _mnuMapCommandItem_15;
-        public ToolStripMenuItem _mnuMapCommandItem_16;
-        public ToolStripMenuItem _mnuMapCommandItem_17;
-        public ToolStripMenuItem _mnuMapCommandItem_18;
-        public ToolStripMenuItem _mnuMapCommandItem_19;
-        public ToolStripMenuItem _mnuMapCommandItem_20;
-        public ToolStripMenuItem mnuMapCommand;
-        public MenuStrip MainMenu1;
+        public ContextMenuStrip mnuUnitCommand;
+        public ContextMenuStrip mnuMapCommand;
         public PictureBox _picStretchedTmp_1;
         public PictureBox _picStretchedTmp_0;
         public Panel _picMain_1;
         public PictureBox _picBuf_0;
         public PictureBox _picTmp32_2;
         public PictureBox _picTmp32_1;
-        private PictureBox _picFace;
-
-        public PictureBox picFace
-        {
-            [MethodImpl(MethodImplOptions.Synchronized)]
-            get
-            {
-                return _picFace;
-            }
-
-            [MethodImpl(MethodImplOptions.Synchronized)]
-            set
-            {
-                if (_picFace != null)
-                {
-                    _picFace.Click -= picFace_Click;
-                }
-
-                _picFace = value;
-                if (_picFace != null)
-                {
-                    _picFace.Click += picFace_Click;
-                }
-            }
-        }
-
+        public PictureBox picFace;
         public PictureBox _picTmp32_0;
         public PictureBox picMaskedBack;
-        private Timer _Timer1;
-
-        public Timer Timer1
-        {
-            [MethodImpl(MethodImplOptions.Synchronized)]
-            get
-            {
-                return _Timer1;
-            }
-
-            [MethodImpl(MethodImplOptions.Synchronized)]
-            set
-            {
-                if (_Timer1 != null)
-                {
-                    _Timer1.Tick -= Timer1_Tick;
-                }
-
-                _Timer1 = value;
-                if (_Timer1 != null)
-                {
-                    _Timer1.Tick += Timer1_Tick;
-                }
-            }
-        }
-
         public PictureBox picMask2;
         public PictureBox picNeautral;
         public PictureBox picEnemy;
@@ -164,149 +53,12 @@ namespace SRCTestForm
         public PictureBox picPilotStatus;
         public PictureBox picUnitStatus;
         public PictureBox picUnitBitmap;
-        private HScrollBar _HScrollBar;
-
-        public HScrollBar HScrollBar
-        {
-            [MethodImpl(MethodImplOptions.Synchronized)]
-            get
-            {
-                return _HScrollBar;
-            }
-
-            [MethodImpl(MethodImplOptions.Synchronized)]
-            set
-            {
-                if (_HScrollBar != null)
-                {
-                    _HScrollBar.Scroll -= HScroll_Renamed_Scroll;
-                }
-
-                _HScrollBar = value;
-                if (_HScrollBar != null)
-                {
-                    _HScrollBar.Scroll += HScroll_Renamed_Scroll;
-                }
-            }
-        }
-
-        private VScrollBar _VScrollBar;
-
-        public VScrollBar VScrollBar
-        {
-            [MethodImpl(MethodImplOptions.Synchronized)]
-            get
-            {
-                return _VScrollBar;
-            }
-
-            [MethodImpl(MethodImplOptions.Synchronized)]
-            set
-            {
-                if (_VScrollBar != null)
-                {
-                    _VScrollBar.Scroll -= VScroll_Renamed_Scroll;
-                }
-
-                _VScrollBar = value;
-                if (_VScrollBar != null)
-                {
-                    _VScrollBar.Scroll += VScroll_Renamed_Scroll;
-                }
-            }
-        }
-
+        public SrcHScrollBar HScrollBar;
+        public SrcVScrollBar VScrollBar;
         public PictureBox picMask;
         public PictureBox picTmp;
         public PictureBox picBack;
         public Panel _picMain_0;
-        //private Microsoft.VisualBasic.Compatibility.VB6.ToolStripMenuItemArray _mnuMapCommandItem;
-
-        //public Microsoft.VisualBasic.Compatibility.VB6.ToolStripMenuItemArray mnuMapCommandItem
-        //{
-        //    [MethodImpl(MethodImplOptions.Synchronized)]
-        //    get
-        //    {
-        //        return _mnuMapCommandItem;
-        //    }
-
-        //    [MethodImpl(MethodImplOptions.Synchronized)]
-        //    set
-        //    {
-        //        if (_mnuMapCommandItem != null)
-        //        {
-        //            _mnuMapCommandItem.Click -= mnuMapCommandItem_Click;
-        //        }
-
-        //        _mnuMapCommandItem = value;
-        //        if (_mnuMapCommandItem != null)
-        //        {
-        //            _mnuMapCommandItem.Click += mnuMapCommandItem_Click;
-        //        }
-        //    }
-        //}
-
-        //private Microsoft.VisualBasic.Compatibility.VB6.ToolStripMenuItemArray _mnuUnitCommandItem;
-
-        //public Microsoft.VisualBasic.Compatibility.VB6.ToolStripMenuItemArray mnuUnitCommandItem
-        //{
-        //    [MethodImpl(MethodImplOptions.Synchronized)]
-        //    get
-        //    {
-        //        return _mnuUnitCommandItem;
-        //    }
-
-        //    [MethodImpl(MethodImplOptions.Synchronized)]
-        //    set
-        //    {
-        //        if (_mnuUnitCommandItem != null)
-        //        {
-        //            _mnuUnitCommandItem.Click -= mnuUnitCommandItem_Click;
-        //        }
-
-        //        _mnuUnitCommandItem = value;
-        //        if (_mnuUnitCommandItem != null)
-        //        {
-        //            _mnuUnitCommandItem.Click += mnuUnitCommandItem_Click;
-        //        }
-        //    }
-        //}
-
-        //public Microsoft.VisualBasic.Compatibility.VB6.PictureBoxArray picBuf;
-        //private Microsoft.VisualBasic.Compatibility.VB6.PanelArray _picMain;
-
-        //public Microsoft.VisualBasic.Compatibility.VB6.PanelArray picMain
-        //{
-        //    [MethodImpl(MethodImplOptions.Synchronized)]
-        //    get
-        //    {
-        //        return _picMain;
-        //    }
-
-        //    [MethodImpl(MethodImplOptions.Synchronized)]
-        //    set
-        //    {
-        //        if (_picMain != null)
-        //        {
-        //            _picMain.DoubleClick -= picMain_DoubleClick;
-        //            _picMain.MouseDown -= picMain_MouseDown;
-        //            _picMain.MouseMove -= picMain_MouseMove;
-        //            _picMain.MouseUp -= picMain_MouseUp;
-        //        }
-
-        //        _picMain = value;
-        //        if (_picMain != null)
-        //        {
-        //            _picMain.DoubleClick += picMain_DoubleClick;
-        //            _picMain.MouseDown += picMain_MouseDown;
-        //            _picMain.MouseMove += picMain_MouseMove;
-        //            _picMain.MouseUp += picMain_MouseUp;
-        //        }
-        //    }
-        //}
-
-        //public Microsoft.VisualBasic.Compatibility.VB6.PictureBoxArray picStretchedTmp;
-        //public Microsoft.VisualBasic.Compatibility.VB6.PictureBoxArray picTmp32;
         // メモ: 以下のプロシージャは Windows フォーム デザイナで必要です。
         // Windows フォーム デザイナを使って変更できます。
         // コード エディタを使用して、変更しないでください。
@@ -316,76 +68,17 @@ namespace SRCTestForm
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
             this.ToolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.MainMenu1 = new System.Windows.Forms.MenuStrip();
-            this.mnuUnitCommand = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuUnitCommandItem_0 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuUnitCommandItem_1 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuUnitCommandItem_2 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuUnitCommandItem_3 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuUnitCommandItem_4 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuUnitCommandItem_5 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuUnitCommandItem_6 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuUnitCommandItem_7 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuUnitCommandItem_8 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuUnitCommandItem_9 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuUnitCommandItem_10 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuUnitCommandItem_11 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuUnitCommandItem_12 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuUnitCommandItem_13 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuUnitCommandItem_14 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuUnitCommandItem_15 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuUnitCommandItem_16 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuUnitCommandItem_17 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuUnitCommandItem_18 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuUnitCommandItem_19 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuUnitCommandItem_20 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuUnitCommandItem_21 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuUnitCommandItem_22 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuUnitCommandItem_23 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuUnitCommandItem_24 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuUnitCommandItem_25 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuUnitCommandItem_26 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuUnitCommandItem_27 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuUnitCommandItem_28 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuUnitCommandItem_29 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuUnitCommandItem_30 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuUnitCommandItem_31 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuUnitCommandItem_32 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuUnitCommandItem_33 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuUnitCommandItem_34 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuUnitCommandItem_35 = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnuMapCommand = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuMapCommandItem_0 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuMapCommandItem_1 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuMapCommandItem_2 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuMapCommandItem_3 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuMapCommandItem_4 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuMapCommandItem_5 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuMapCommandItem_6 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuMapCommandItem_7 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuMapCommandItem_8 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuMapCommandItem_9 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuMapCommandItem_10 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuMapCommandItem_11 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuMapCommandItem_12 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuMapCommandItem_13 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuMapCommandItem_14 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuMapCommandItem_15 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuMapCommandItem_16 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuMapCommandItem_17 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuMapCommandItem_18 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuMapCommandItem_19 = new System.Windows.Forms.ToolStripMenuItem();
-            this._mnuMapCommandItem_20 = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuUnitCommand = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.mnuMapCommand = new System.Windows.Forms.ContextMenuStrip(this.components);
             this._picStretchedTmp_1 = new System.Windows.Forms.PictureBox();
             this._picStretchedTmp_0 = new System.Windows.Forms.PictureBox();
             this._picMain_1 = new System.Windows.Forms.Panel();
             this._picBuf_0 = new System.Windows.Forms.PictureBox();
             this._picTmp32_2 = new System.Windows.Forms.PictureBox();
             this._picTmp32_1 = new System.Windows.Forms.PictureBox();
-            this._picFace = new System.Windows.Forms.PictureBox();
+            this.picFace = new System.Windows.Forms.PictureBox();
             this._picTmp32_0 = new System.Windows.Forms.PictureBox();
             this.picMaskedBack = new System.Windows.Forms.PictureBox();
-            this._Timer1 = new System.Windows.Forms.Timer(this.components);
             this.picMask2 = new System.Windows.Forms.PictureBox();
             this.picNeautral = new System.Windows.Forms.PictureBox();
             this.picEnemy = new System.Windows.Forms.PictureBox();
@@ -393,19 +86,18 @@ namespace SRCTestForm
             this.picPilotStatus = new System.Windows.Forms.PictureBox();
             this.picUnitStatus = new System.Windows.Forms.PictureBox();
             this.picUnitBitmap = new System.Windows.Forms.PictureBox();
-            this._HScrollBar = new System.Windows.Forms.HScrollBar();
-            this._VScrollBar = new System.Windows.Forms.VScrollBar();
+            this.HScrollBar = new SRCTestForm.FormLib.SrcHScrollBar();
+            this.VScrollBar = new SRCTestForm.FormLib.SrcVScrollBar();
             this.picMask = new System.Windows.Forms.PictureBox();
             this.picTmp = new System.Windows.Forms.PictureBox();
             this.picBack = new System.Windows.Forms.PictureBox();
             this._picMain_0 = new System.Windows.Forms.Panel();
-            this.MainMenu1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this._picStretchedTmp_1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._picStretchedTmp_0)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._picBuf_0)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._picTmp32_2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._picTmp32_1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this._picFace)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picFace)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._picTmp32_0)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picMaskedBack)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picMask2)).BeginInit();
@@ -420,438 +112,19 @@ namespace SRCTestForm
             ((System.ComponentModel.ISupportInitialize)(this.picBack)).BeginInit();
             this.SuspendLayout();
             // 
-            // MainMenu1
-            // 
-            this.MainMenu1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.mnuUnitCommand,
-            this.mnuMapCommand});
-            this.MainMenu1.Location = new System.Drawing.Point(0, 0);
-            this.MainMenu1.Name = "MainMenu1";
-            this.MainMenu1.Size = new System.Drawing.Size(508, 24);
-            this.MainMenu1.TabIndex = 22;
-            // 
             // mnuUnitCommand
             // 
-            this.mnuUnitCommand.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this._mnuUnitCommandItem_0,
-            this._mnuUnitCommandItem_1,
-            this._mnuUnitCommandItem_2,
-            this._mnuUnitCommandItem_3,
-            this._mnuUnitCommandItem_4,
-            this._mnuUnitCommandItem_5,
-            this._mnuUnitCommandItem_6,
-            this._mnuUnitCommandItem_7,
-            this._mnuUnitCommandItem_8,
-            this._mnuUnitCommandItem_9,
-            this._mnuUnitCommandItem_10,
-            this._mnuUnitCommandItem_11,
-            this._mnuUnitCommandItem_12,
-            this._mnuUnitCommandItem_13,
-            this._mnuUnitCommandItem_14,
-            this._mnuUnitCommandItem_15,
-            this._mnuUnitCommandItem_16,
-            this._mnuUnitCommandItem_17,
-            this._mnuUnitCommandItem_18,
-            this._mnuUnitCommandItem_19,
-            this._mnuUnitCommandItem_20,
-            this._mnuUnitCommandItem_21,
-            this._mnuUnitCommandItem_22,
-            this._mnuUnitCommandItem_23,
-            this._mnuUnitCommandItem_24,
-            this._mnuUnitCommandItem_25,
-            this._mnuUnitCommandItem_26,
-            this._mnuUnitCommandItem_27,
-            this._mnuUnitCommandItem_28,
-            this._mnuUnitCommandItem_29,
-            this._mnuUnitCommandItem_30,
-            this._mnuUnitCommandItem_31,
-            this._mnuUnitCommandItem_32,
-            this._mnuUnitCommandItem_33,
-            this._mnuUnitCommandItem_34,
-            this._mnuUnitCommandItem_35});
             this.mnuUnitCommand.Name = "mnuUnitCommand";
-            this.mnuUnitCommand.Size = new System.Drawing.Size(88, 20);
+            this.mnuUnitCommand.Size = new System.Drawing.Size(61, 4);
             this.mnuUnitCommand.Text = "ユニットコマンド";
-            this.mnuUnitCommand.Visible = false;
-            // 
-            // _mnuUnitCommandItem_0
-            // 
-            this._mnuUnitCommandItem_0.Name = "_mnuUnitCommandItem_0";
-            this._mnuUnitCommandItem_0.Size = new System.Drawing.Size(148, 22);
-            this._mnuUnitCommandItem_0.Text = "移動";
-            // 
-            // _mnuUnitCommandItem_1
-            // 
-            this._mnuUnitCommandItem_1.Name = "_mnuUnitCommandItem_1";
-            this._mnuUnitCommandItem_1.Size = new System.Drawing.Size(148, 22);
-            this._mnuUnitCommandItem_1.Text = "テレポート";
-            this._mnuUnitCommandItem_1.Visible = false;
-            // 
-            // _mnuUnitCommandItem_2
-            // 
-            this._mnuUnitCommandItem_2.Name = "_mnuUnitCommandItem_2";
-            this._mnuUnitCommandItem_2.Size = new System.Drawing.Size(148, 22);
-            this._mnuUnitCommandItem_2.Text = "ジャンプ";
-            this._mnuUnitCommandItem_2.Visible = false;
-            // 
-            // _mnuUnitCommandItem_3
-            // 
-            this._mnuUnitCommandItem_3.Name = "_mnuUnitCommandItem_3";
-            this._mnuUnitCommandItem_3.Size = new System.Drawing.Size(148, 22);
-            this._mnuUnitCommandItem_3.Text = "会話";
-            this._mnuUnitCommandItem_3.Visible = false;
-            // 
-            // _mnuUnitCommandItem_4
-            // 
-            this._mnuUnitCommandItem_4.Name = "_mnuUnitCommandItem_4";
-            this._mnuUnitCommandItem_4.Size = new System.Drawing.Size(148, 22);
-            this._mnuUnitCommandItem_4.Text = "攻撃";
-            // 
-            // _mnuUnitCommandItem_5
-            // 
-            this._mnuUnitCommandItem_5.Name = "_mnuUnitCommandItem_5";
-            this._mnuUnitCommandItem_5.Size = new System.Drawing.Size(148, 22);
-            this._mnuUnitCommandItem_5.Text = "修理";
-            // 
-            // _mnuUnitCommandItem_6
-            // 
-            this._mnuUnitCommandItem_6.Name = "_mnuUnitCommandItem_6";
-            this._mnuUnitCommandItem_6.Size = new System.Drawing.Size(148, 22);
-            this._mnuUnitCommandItem_6.Text = "補給";
-            // 
-            // _mnuUnitCommandItem_7
-            // 
-            this._mnuUnitCommandItem_7.Name = "_mnuUnitCommandItem_7";
-            this._mnuUnitCommandItem_7.Size = new System.Drawing.Size(148, 22);
-            this._mnuUnitCommandItem_7.Text = "アビリティ";
-            // 
-            // _mnuUnitCommandItem_8
-            // 
-            this._mnuUnitCommandItem_8.Name = "_mnuUnitCommandItem_8";
-            this._mnuUnitCommandItem_8.Size = new System.Drawing.Size(148, 22);
-            this._mnuUnitCommandItem_8.Text = "チャージ";
-            this._mnuUnitCommandItem_8.Visible = false;
-            // 
-            // _mnuUnitCommandItem_9
-            // 
-            this._mnuUnitCommandItem_9.Name = "_mnuUnitCommandItem_9";
-            this._mnuUnitCommandItem_9.Size = new System.Drawing.Size(148, 22);
-            this._mnuUnitCommandItem_9.Text = "スペシャルパワー";
-            // 
-            // _mnuUnitCommandItem_10
-            // 
-            this._mnuUnitCommandItem_10.Name = "_mnuUnitCommandItem_10";
-            this._mnuUnitCommandItem_10.Size = new System.Drawing.Size(148, 22);
-            this._mnuUnitCommandItem_10.Text = "変形";
-            // 
-            // _mnuUnitCommandItem_11
-            // 
-            this._mnuUnitCommandItem_11.Name = "_mnuUnitCommandItem_11";
-            this._mnuUnitCommandItem_11.Size = new System.Drawing.Size(148, 22);
-            this._mnuUnitCommandItem_11.Text = "分離";
-            this._mnuUnitCommandItem_11.Visible = false;
-            // 
-            // _mnuUnitCommandItem_12
-            // 
-            this._mnuUnitCommandItem_12.Name = "_mnuUnitCommandItem_12";
-            this._mnuUnitCommandItem_12.Size = new System.Drawing.Size(148, 22);
-            this._mnuUnitCommandItem_12.Text = "合体";
-            this._mnuUnitCommandItem_12.Visible = false;
-            // 
-            // _mnuUnitCommandItem_13
-            // 
-            this._mnuUnitCommandItem_13.Name = "_mnuUnitCommandItem_13";
-            this._mnuUnitCommandItem_13.Size = new System.Drawing.Size(148, 22);
-            this._mnuUnitCommandItem_13.Text = "ハイパーモード";
-            // 
-            // _mnuUnitCommandItem_14
-            // 
-            this._mnuUnitCommandItem_14.Name = "_mnuUnitCommandItem_14";
-            this._mnuUnitCommandItem_14.Size = new System.Drawing.Size(148, 22);
-            this._mnuUnitCommandItem_14.Text = "地上";
-            // 
-            // _mnuUnitCommandItem_15
-            // 
-            this._mnuUnitCommandItem_15.Name = "_mnuUnitCommandItem_15";
-            this._mnuUnitCommandItem_15.Size = new System.Drawing.Size(148, 22);
-            this._mnuUnitCommandItem_15.Text = "空中";
-            // 
-            // _mnuUnitCommandItem_16
-            // 
-            this._mnuUnitCommandItem_16.Name = "_mnuUnitCommandItem_16";
-            this._mnuUnitCommandItem_16.Size = new System.Drawing.Size(148, 22);
-            this._mnuUnitCommandItem_16.Text = "地中";
-            // 
-            // _mnuUnitCommandItem_17
-            // 
-            this._mnuUnitCommandItem_17.Name = "_mnuUnitCommandItem_17";
-            this._mnuUnitCommandItem_17.Size = new System.Drawing.Size(148, 22);
-            this._mnuUnitCommandItem_17.Text = "水中";
-            // 
-            // _mnuUnitCommandItem_18
-            // 
-            this._mnuUnitCommandItem_18.Name = "_mnuUnitCommandItem_18";
-            this._mnuUnitCommandItem_18.Size = new System.Drawing.Size(148, 22);
-            this._mnuUnitCommandItem_18.Text = "発進";
-            // 
-            // _mnuUnitCommandItem_19
-            // 
-            this._mnuUnitCommandItem_19.Name = "_mnuUnitCommandItem_19";
-            this._mnuUnitCommandItem_19.Size = new System.Drawing.Size(148, 22);
-            this._mnuUnitCommandItem_19.Text = "アイテム";
-            // 
-            // _mnuUnitCommandItem_20
-            // 
-            this._mnuUnitCommandItem_20.Name = "_mnuUnitCommandItem_20";
-            this._mnuUnitCommandItem_20.Size = new System.Drawing.Size(148, 22);
-            this._mnuUnitCommandItem_20.Text = "召喚解除";
-            // 
-            // _mnuUnitCommandItem_21
-            // 
-            this._mnuUnitCommandItem_21.Name = "_mnuUnitCommandItem_21";
-            this._mnuUnitCommandItem_21.Size = new System.Drawing.Size(148, 22);
-            this._mnuUnitCommandItem_21.Text = "命令";
-            // 
-            // _mnuUnitCommandItem_22
-            // 
-            this._mnuUnitCommandItem_22.Name = "_mnuUnitCommandItem_22";
-            this._mnuUnitCommandItem_22.Size = new System.Drawing.Size(148, 22);
-            this._mnuUnitCommandItem_22.Text = "特殊能力一覧";
-            // 
-            // _mnuUnitCommandItem_23
-            // 
-            this._mnuUnitCommandItem_23.Name = "_mnuUnitCommandItem_23";
-            this._mnuUnitCommandItem_23.Size = new System.Drawing.Size(148, 22);
-            this._mnuUnitCommandItem_23.Text = "武装一覧";
-            // 
-            // _mnuUnitCommandItem_24
-            // 
-            this._mnuUnitCommandItem_24.Name = "_mnuUnitCommandItem_24";
-            this._mnuUnitCommandItem_24.Size = new System.Drawing.Size(148, 22);
-            this._mnuUnitCommandItem_24.Text = "アビリティ一覧";
-            // 
-            // _mnuUnitCommandItem_25
-            // 
-            this._mnuUnitCommandItem_25.Name = "_mnuUnitCommandItem_25";
-            this._mnuUnitCommandItem_25.Size = new System.Drawing.Size(148, 22);
-            this._mnuUnitCommandItem_25.Visible = false;
-            // 
-            // _mnuUnitCommandItem_26
-            // 
-            this._mnuUnitCommandItem_26.Name = "_mnuUnitCommandItem_26";
-            this._mnuUnitCommandItem_26.Size = new System.Drawing.Size(148, 22);
-            this._mnuUnitCommandItem_26.Visible = false;
-            // 
-            // _mnuUnitCommandItem_27
-            // 
-            this._mnuUnitCommandItem_27.Name = "_mnuUnitCommandItem_27";
-            this._mnuUnitCommandItem_27.Size = new System.Drawing.Size(148, 22);
-            this._mnuUnitCommandItem_27.Visible = false;
-            // 
-            // _mnuUnitCommandItem_28
-            // 
-            this._mnuUnitCommandItem_28.Name = "_mnuUnitCommandItem_28";
-            this._mnuUnitCommandItem_28.Size = new System.Drawing.Size(148, 22);
-            this._mnuUnitCommandItem_28.Visible = false;
-            // 
-            // _mnuUnitCommandItem_29
-            // 
-            this._mnuUnitCommandItem_29.Name = "_mnuUnitCommandItem_29";
-            this._mnuUnitCommandItem_29.Size = new System.Drawing.Size(148, 22);
-            this._mnuUnitCommandItem_29.Visible = false;
-            // 
-            // _mnuUnitCommandItem_30
-            // 
-            this._mnuUnitCommandItem_30.Name = "_mnuUnitCommandItem_30";
-            this._mnuUnitCommandItem_30.Size = new System.Drawing.Size(148, 22);
-            this._mnuUnitCommandItem_30.Visible = false;
-            // 
-            // _mnuUnitCommandItem_31
-            // 
-            this._mnuUnitCommandItem_31.Name = "_mnuUnitCommandItem_31";
-            this._mnuUnitCommandItem_31.Size = new System.Drawing.Size(148, 22);
-            this._mnuUnitCommandItem_31.Visible = false;
-            // 
-            // _mnuUnitCommandItem_32
-            // 
-            this._mnuUnitCommandItem_32.Name = "_mnuUnitCommandItem_32";
-            this._mnuUnitCommandItem_32.Size = new System.Drawing.Size(148, 22);
-            this._mnuUnitCommandItem_32.Visible = false;
-            // 
-            // _mnuUnitCommandItem_33
-            // 
-            this._mnuUnitCommandItem_33.Name = "_mnuUnitCommandItem_33";
-            this._mnuUnitCommandItem_33.Size = new System.Drawing.Size(148, 22);
-            this._mnuUnitCommandItem_33.Visible = false;
-            // 
-            // _mnuUnitCommandItem_34
-            // 
-            this._mnuUnitCommandItem_34.Name = "_mnuUnitCommandItem_34";
-            this._mnuUnitCommandItem_34.Size = new System.Drawing.Size(148, 22);
-            this._mnuUnitCommandItem_34.Visible = false;
-            // 
-            // _mnuUnitCommandItem_35
-            // 
-            this._mnuUnitCommandItem_35.Name = "_mnuUnitCommandItem_35";
-            this._mnuUnitCommandItem_35.Size = new System.Drawing.Size(148, 22);
-            this._mnuUnitCommandItem_35.Text = "待機";
+            this.mnuUnitCommand.MouseClick += new System.Windows.Forms.MouseEventHandler(this.mnuUnitCommand_MouseClick);
             // 
             // mnuMapCommand
             // 
-            this.mnuMapCommand.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this._mnuMapCommandItem_0,
-            this._mnuMapCommandItem_1,
-            this._mnuMapCommandItem_2,
-            this._mnuMapCommandItem_3,
-            this._mnuMapCommandItem_4,
-            this._mnuMapCommandItem_5,
-            this._mnuMapCommandItem_6,
-            this._mnuMapCommandItem_7,
-            this._mnuMapCommandItem_8,
-            this._mnuMapCommandItem_9,
-            this._mnuMapCommandItem_10,
-            this._mnuMapCommandItem_11,
-            this._mnuMapCommandItem_12,
-            this._mnuMapCommandItem_13,
-            this._mnuMapCommandItem_14,
-            this._mnuMapCommandItem_15,
-            this._mnuMapCommandItem_16,
-            this._mnuMapCommandItem_17,
-            this._mnuMapCommandItem_18,
-            this._mnuMapCommandItem_19,
-            this._mnuMapCommandItem_20});
             this.mnuMapCommand.Name = "mnuMapCommand";
-            this.mnuMapCommand.Size = new System.Drawing.Size(79, 20);
+            this.mnuMapCommand.Size = new System.Drawing.Size(61, 4);
             this.mnuMapCommand.Text = "マップコマンド";
-            this.mnuMapCommand.Visible = false;
-            // 
-            // _mnuMapCommandItem_0
-            // 
-            this._mnuMapCommandItem_0.Name = "_mnuMapCommandItem_0";
-            this._mnuMapCommandItem_0.Size = new System.Drawing.Size(172, 22);
-            this._mnuMapCommandItem_0.Text = "ターン終了";
-            // 
-            // _mnuMapCommandItem_1
-            // 
-            this._mnuMapCommandItem_1.Name = "_mnuMapCommandItem_1";
-            this._mnuMapCommandItem_1.Size = new System.Drawing.Size(172, 22);
-            this._mnuMapCommandItem_1.Text = "中断";
-            // 
-            // _mnuMapCommandItem_2
-            // 
-            this._mnuMapCommandItem_2.Name = "_mnuMapCommandItem_2";
-            this._mnuMapCommandItem_2.Size = new System.Drawing.Size(172, 22);
-            this._mnuMapCommandItem_2.Text = "部隊表";
-            // 
-            // _mnuMapCommandItem_3
-            // 
-            this._mnuMapCommandItem_3.Name = "_mnuMapCommandItem_3";
-            this._mnuMapCommandItem_3.Size = new System.Drawing.Size(172, 22);
-            this._mnuMapCommandItem_3.Text = "スペシャルパワー検索";
-            // 
-            // _mnuMapCommandItem_4
-            // 
-            this._mnuMapCommandItem_4.Name = "_mnuMapCommandItem_4";
-            this._mnuMapCommandItem_4.Size = new System.Drawing.Size(172, 22);
-            this._mnuMapCommandItem_4.Text = "全体マップ";
-            // 
-            // _mnuMapCommandItem_5
-            // 
-            this._mnuMapCommandItem_5.Name = "_mnuMapCommandItem_5";
-            this._mnuMapCommandItem_5.Size = new System.Drawing.Size(172, 22);
-            this._mnuMapCommandItem_5.Text = "作戦目的";
-            this._mnuMapCommandItem_5.Visible = false;
-            // 
-            // _mnuMapCommandItem_6
-            // 
-            this._mnuMapCommandItem_6.Name = "_mnuMapCommandItem_6";
-            this._mnuMapCommandItem_6.Size = new System.Drawing.Size(172, 22);
-            this._mnuMapCommandItem_6.Visible = false;
-            // 
-            // _mnuMapCommandItem_7
-            // 
-            this._mnuMapCommandItem_7.Name = "_mnuMapCommandItem_7";
-            this._mnuMapCommandItem_7.Size = new System.Drawing.Size(172, 22);
-            this._mnuMapCommandItem_7.Visible = false;
-            // 
-            // _mnuMapCommandItem_8
-            // 
-            this._mnuMapCommandItem_8.Name = "_mnuMapCommandItem_8";
-            this._mnuMapCommandItem_8.Size = new System.Drawing.Size(172, 22);
-            this._mnuMapCommandItem_8.Visible = false;
-            // 
-            // _mnuMapCommandItem_9
-            // 
-            this._mnuMapCommandItem_9.Name = "_mnuMapCommandItem_9";
-            this._mnuMapCommandItem_9.Size = new System.Drawing.Size(172, 22);
-            this._mnuMapCommandItem_9.Visible = false;
-            // 
-            // _mnuMapCommandItem_10
-            // 
-            this._mnuMapCommandItem_10.Name = "_mnuMapCommandItem_10";
-            this._mnuMapCommandItem_10.Size = new System.Drawing.Size(172, 22);
-            this._mnuMapCommandItem_10.Visible = false;
-            // 
-            // _mnuMapCommandItem_11
-            // 
-            this._mnuMapCommandItem_11.Name = "_mnuMapCommandItem_11";
-            this._mnuMapCommandItem_11.Size = new System.Drawing.Size(172, 22);
-            this._mnuMapCommandItem_11.Visible = false;
-            // 
-            // _mnuMapCommandItem_12
-            // 
-            this._mnuMapCommandItem_12.Name = "_mnuMapCommandItem_12";
-            this._mnuMapCommandItem_12.Size = new System.Drawing.Size(172, 22);
-            this._mnuMapCommandItem_12.Visible = false;
-            // 
-            // _mnuMapCommandItem_13
-            // 
-            this._mnuMapCommandItem_13.Name = "_mnuMapCommandItem_13";
-            this._mnuMapCommandItem_13.Size = new System.Drawing.Size(172, 22);
-            this._mnuMapCommandItem_13.Visible = false;
-            // 
-            // _mnuMapCommandItem_14
-            // 
-            this._mnuMapCommandItem_14.Name = "_mnuMapCommandItem_14";
-            this._mnuMapCommandItem_14.Size = new System.Drawing.Size(172, 22);
-            this._mnuMapCommandItem_14.Visible = false;
-            // 
-            // _mnuMapCommandItem_15
-            // 
-            this._mnuMapCommandItem_15.Name = "_mnuMapCommandItem_15";
-            this._mnuMapCommandItem_15.Size = new System.Drawing.Size(172, 22);
-            this._mnuMapCommandItem_15.Visible = false;
-            // 
-            // _mnuMapCommandItem_16
-            // 
-            this._mnuMapCommandItem_16.Name = "_mnuMapCommandItem_16";
-            this._mnuMapCommandItem_16.Size = new System.Drawing.Size(172, 22);
-            this._mnuMapCommandItem_16.Text = "自動反撃モード";
-            // 
-            // _mnuMapCommandItem_17
-            // 
-            this._mnuMapCommandItem_17.Name = "_mnuMapCommandItem_17";
-            this._mnuMapCommandItem_17.Size = new System.Drawing.Size(172, 22);
-            this._mnuMapCommandItem_17.Text = "設定変更";
-            // 
-            // _mnuMapCommandItem_18
-            // 
-            this._mnuMapCommandItem_18.Name = "_mnuMapCommandItem_18";
-            this._mnuMapCommandItem_18.Size = new System.Drawing.Size(172, 22);
-            this._mnuMapCommandItem_18.Text = "リスタート";
-            this._mnuMapCommandItem_18.Visible = false;
-            // 
-            // _mnuMapCommandItem_19
-            // 
-            this._mnuMapCommandItem_19.Name = "_mnuMapCommandItem_19";
-            this._mnuMapCommandItem_19.Size = new System.Drawing.Size(172, 22);
-            this._mnuMapCommandItem_19.Text = "クイックロード";
-            // 
-            // _mnuMapCommandItem_20
-            // 
-            this._mnuMapCommandItem_20.Name = "_mnuMapCommandItem_20";
-            this._mnuMapCommandItem_20.Size = new System.Drawing.Size(172, 22);
-            this._mnuMapCommandItem_20.Text = "クイックセーブ";
+            this.mnuMapCommand.MouseClick += new System.Windows.Forms.MouseEventHandler(this.mnuMapCommand_MouseClick);
             // 
             // _picStretchedTmp_1
             // 
@@ -936,19 +209,19 @@ namespace SRCTestForm
             this._picTmp32_1.TabStop = false;
             this._picTmp32_1.Visible = false;
             // 
-            // _picFace
+            // picFace
             // 
-            this._picFace.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
-            this._picFace.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this._picFace.Cursor = System.Windows.Forms.Cursors.Default;
-            this._picFace.ForeColor = System.Drawing.SystemColors.ControlText;
-            this._picFace.Location = new System.Drawing.Point(8, 192);
-            this._picFace.Name = "_picFace";
-            this._picFace.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this._picFace.Size = new System.Drawing.Size(68, 68);
-            this._picFace.TabIndex = 16;
-            this._picFace.TabStop = false;
-            this._picFace.Click += new System.EventHandler(this.picFace_Click);
+            this.picFace.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.picFace.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.picFace.Cursor = System.Windows.Forms.Cursors.Default;
+            this.picFace.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.picFace.Location = new System.Drawing.Point(8, 192);
+            this.picFace.Name = "picFace";
+            this.picFace.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.picFace.Size = new System.Drawing.Size(68, 68);
+            this.picFace.TabIndex = 16;
+            this.picFace.TabStop = false;
+            this.picFace.Click += new System.EventHandler(this.picFace_Click);
             // 
             // _picTmp32_0
             // 
@@ -976,11 +249,6 @@ namespace SRCTestForm
             this.picMaskedBack.TabStop = false;
             this.picMaskedBack.Visible = false;
             // 
-            // _Timer1
-            // 
-            this._Timer1.Interval = 1000;
-            this._Timer1.Tick += new System.EventHandler(this.Timer1_Tick);
-            // 
             // picMask2
             // 
             this.picMask2.BackColor = System.Drawing.SystemColors.Control;
@@ -1000,6 +268,7 @@ namespace SRCTestForm
             this.picNeautral.BackColor = System.Drawing.SystemColors.Control;
             this.picNeautral.Cursor = System.Windows.Forms.Cursors.Default;
             this.picNeautral.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.picNeautral.Image = ((System.Drawing.Image)(resources.GetObject("picNeautral.Image")));
             this.picNeautral.Location = new System.Drawing.Point(176, 140);
             this.picNeautral.Name = "picNeautral";
             this.picNeautral.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -1013,6 +282,7 @@ namespace SRCTestForm
             this.picEnemy.BackColor = System.Drawing.SystemColors.Control;
             this.picEnemy.Cursor = System.Windows.Forms.Cursors.Default;
             this.picEnemy.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.picEnemy.Image = ((System.Drawing.Image)(resources.GetObject("picEnemy.Image")));
             this.picEnemy.Location = new System.Drawing.Point(124, 140);
             this.picEnemy.Name = "picEnemy";
             this.picEnemy.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -1026,6 +296,7 @@ namespace SRCTestForm
             this.picUnit.BackColor = System.Drawing.SystemColors.Control;
             this.picUnit.Cursor = System.Windows.Forms.Cursors.Default;
             this.picUnit.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.picUnit.Image = ((System.Drawing.Image)(resources.GetObject("picUnit.Image")));
             this.picUnit.Location = new System.Drawing.Point(76, 140);
             this.picUnit.Name = "picUnit";
             this.picUnit.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -1073,32 +344,38 @@ namespace SRCTestForm
             this.picUnitBitmap.TabStop = false;
             this.picUnitBitmap.Visible = false;
             // 
-            // _HScrollBar
+            // HScrollBar
             // 
-            this._HScrollBar.Cursor = System.Windows.Forms.Cursors.Default;
-            this._HScrollBar.LargeChange = 4;
-            this._HScrollBar.Location = new System.Drawing.Point(60, 92);
-            this._HScrollBar.Maximum = 23;
-            this._HScrollBar.Minimum = 1;
-            this._HScrollBar.Name = "_HScrollBar";
-            this._HScrollBar.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this._HScrollBar.Size = new System.Drawing.Size(49, 17);
-            this._HScrollBar.TabIndex = 5;
-            this._HScrollBar.Value = 1;
-            this._HScrollBar.Scroll += new System.Windows.Forms.ScrollEventHandler(this.HScroll_Renamed_Scroll);
+            this.HScrollBar.Cursor = System.Windows.Forms.Cursors.Default;
+            this.HScrollBar.Enabled = false;
+            this.HScrollBar.LargeChange = 4;
+            this.HScrollBar.Location = new System.Drawing.Point(60, 92);
+            this.HScrollBar.Maximum = 23;
+            this.HScrollBar.Minimum = 1;
+            this.HScrollBar.Name = "HScrollBar";
+            this.HScrollBar.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.HScrollBar.Size = new System.Drawing.Size(49, 17);
+            this.HScrollBar.TabIndex = 5;
+            this.HScrollBar.Value = 1;
+            this.HScrollBar.Scroll += new System.Windows.Forms.ScrollEventHandler(this.HScroll_Scroll);
+            this.HScrollBar.ValueChanged += new System.EventHandler(this.HScrollBar_ValueChanged);
+            this.HScrollBar.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.VScrollBar_PreviewKeyDown);
             // 
-            // _VScrollBar
+            // VScrollBar
             // 
-            this._VScrollBar.Cursor = System.Windows.Forms.Cursors.Default;
-            this._VScrollBar.LargeChange = 4;
-            this._VScrollBar.Location = new System.Drawing.Point(116, 80);
-            this._VScrollBar.Maximum = 23;
-            this._VScrollBar.Minimum = 1;
-            this._VScrollBar.Name = "_VScrollBar";
-            this._VScrollBar.Size = new System.Drawing.Size(17, 49);
-            this._VScrollBar.TabIndex = 4;
-            this._VScrollBar.Value = 1;
-            this._VScrollBar.Scroll += new System.Windows.Forms.ScrollEventHandler(this.VScroll_Renamed_Scroll);
+            this.VScrollBar.Cursor = System.Windows.Forms.Cursors.Default;
+            this.VScrollBar.Enabled = false;
+            this.VScrollBar.LargeChange = 4;
+            this.VScrollBar.Location = new System.Drawing.Point(116, 80);
+            this.VScrollBar.Maximum = 23;
+            this.VScrollBar.Minimum = 1;
+            this.VScrollBar.Name = "VScrollBar";
+            this.VScrollBar.Size = new System.Drawing.Size(17, 49);
+            this.VScrollBar.TabIndex = 4;
+            this.VScrollBar.Value = 1;
+            this.VScrollBar.Scroll += new System.Windows.Forms.ScrollEventHandler(this.VScroll_Scroll);
+            this.VScrollBar.ValueChanged += new System.EventHandler(this.VScrollBar_ValueChanged);
+            this.VScrollBar.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.VScrollBar_PreviewKeyDown);
             // 
             // picMask
             // 
@@ -1155,6 +432,11 @@ namespace SRCTestForm
             this._picMain_0.Size = new System.Drawing.Size(81, 32);
             this._picMain_0.TabIndex = 0;
             this._picMain_0.TabStop = true;
+            this._picMain_0.DoubleClick += new System.EventHandler(this.picMain_DoubleClick);
+            this._picMain_0.MouseClick += new System.Windows.Forms.MouseEventHandler(this.picMain_MouseClick);
+            this._picMain_0.MouseDown += new System.Windows.Forms.MouseEventHandler(this.picMain_MouseDown);
+            this._picMain_0.MouseMove += new System.Windows.Forms.MouseEventHandler(this.picMain_MouseMove);
+            this._picMain_0.MouseUp += new System.Windows.Forms.MouseEventHandler(this.picMain_MouseUp);
             // 
             // frmMain
             // 
@@ -1168,7 +450,7 @@ namespace SRCTestForm
             this.Controls.Add(this._picBuf_0);
             this.Controls.Add(this._picTmp32_2);
             this.Controls.Add(this._picTmp32_1);
-            this.Controls.Add(this._picFace);
+            this.Controls.Add(this.picFace);
             this.Controls.Add(this._picTmp32_0);
             this.Controls.Add(this.picMaskedBack);
             this.Controls.Add(this.picMask2);
@@ -1178,13 +460,12 @@ namespace SRCTestForm
             this.Controls.Add(this.picPilotStatus);
             this.Controls.Add(this.picUnitStatus);
             this.Controls.Add(this.picUnitBitmap);
-            this.Controls.Add(this._HScrollBar);
-            this.Controls.Add(this._VScrollBar);
+            this.Controls.Add(this.HScrollBar);
+            this.Controls.Add(this.VScrollBar);
             this.Controls.Add(this.picMask);
             this.Controls.Add(this.picTmp);
             this.Controls.Add(this.picBack);
             this.Controls.Add(this._picMain_0);
-            this.Controls.Add(this.MainMenu1);
             this.Cursor = System.Windows.Forms.Cursors.Default;
             this.Font = new System.Drawing.Font("ＭＳ 明朝", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -1196,17 +477,16 @@ namespace SRCTestForm
             this.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "SRC#";
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frmMain_FormClosed);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmMain_FormClosing);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.frmMain_KeyDown);
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.frmMain_MouseMove);
-            this.MainMenu1.ResumeLayout(false);
-            this.MainMenu1.PerformLayout();
+            this.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.frmMain_PreviewKeyDown);
             ((System.ComponentModel.ISupportInitialize)(this._picStretchedTmp_1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this._picStretchedTmp_0)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this._picBuf_0)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this._picTmp32_2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this._picTmp32_1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this._picFace)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picFace)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this._picTmp32_0)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picMaskedBack)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picMask2)).EndInit();

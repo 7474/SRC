@@ -9,6 +9,8 @@ namespace SRCCore.Events
         // イベントの実行
         public void HandleEvent(params string[] Args)
         {
+            SRC.LogDebug("", Args);
+
             int event_que_idx;
             int ret;
             int i;
@@ -159,21 +161,15 @@ namespace SRCCore.Events
                 //        break;
                 //    }
 
-                //case "ターン":
-                //    {
-                //        // UPGRADE_WARNING: オブジェクト Args() の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                //        EventQue[Information.UBound(EventQue)] = Conversions.ToString(Operators.ConcatenateObject("ターン 全 ", Args[2]));
-                //        Array.Resize(ref EventQue, Information.UBound(EventQue) + 1 + 1);
-                //        // UPGRADE_WARNING: オブジェクト Args(2) の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                //        // UPGRADE_WARNING: オブジェクト Args() の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                //        EventQue[Information.UBound(EventQue)] = Conversions.ToString(Operators.ConcatenateObject("ターン " + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(Args[1]) + " ", Args[2]));
-                //        break;
-                //    }
+                case "ターン":
+                    EventQue.Enqueue(string.Join(" ", "ターン ", "全", Args[2]));
+                    EventQue.Enqueue(string.Join(" ", "ターン ", Args[1], Args[2]));
+                    break;
 
                 //case "損傷率":
                 //    {
                 //        // UPGRADE_WARNING: オブジェクト Args() の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                //        EventQue[Information.UBound(EventQue)] = Conversions.ToString(Operators.ConcatenateObject(Operators.ConcatenateObject(Operators.ConcatenateObject("損傷率 ", Args[1]), " "), Microsoft.VisualBasic.Compatibility.VB6.Support.Format(Args[2])));
+                //        EventQue[Information.UBound(EventQue)] = Conversions.ToString(Operators.ConcatenateObject(Operators.ConcatenateObject(Operators.ConcatenateObject("損傷率 ", Args[1]), " "), SrcFormatter.Format(Args[2])));
                 //        break;
                 //    }
 
@@ -212,7 +208,7 @@ namespace SRCCore.Events
                 //case "進入":
                 //    {
                 //        // UPGRADE_WARNING: オブジェクト Args() の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                //        EventQue[Information.UBound(EventQue)] = Conversions.ToString(Operators.ConcatenateObject(Operators.ConcatenateObject(Operators.ConcatenateObject(Operators.ConcatenateObject(Operators.ConcatenateObject("進入 ", Args[1]), " "), Microsoft.VisualBasic.Compatibility.VB6.Support.Format(Args[2])), " "), Microsoft.VisualBasic.Compatibility.VB6.Support.Format(Args[3])));
+                //        EventQue[Information.UBound(EventQue)] = Conversions.ToString(Operators.ConcatenateObject(Operators.ConcatenateObject(Operators.ConcatenateObject(Operators.ConcatenateObject(Operators.ConcatenateObject("進入 ", Args[1]), " "), SrcFormatter.Format(Args[2])), " "), SrcFormatter.Format(Args[3])));
                 //        Array.Resize(ref EventQue, Information.UBound(EventQue) + 1 + 1);
                 //        // UPGRADE_WARNING: オブジェクト Args() の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
                 //        EventQue[Information.UBound(EventQue)] = Conversions.ToString(Operators.ConcatenateObject(Operators.ConcatenateObject(Operators.ConcatenateObject("進入 ", Args[1]), " "), Map.TerrainName(Conversions.Toint(Args[2]), Conversions.Toint(Args[3]))));
@@ -293,16 +289,13 @@ namespace SRCCore.Events
                 //    }
 
                 default:
-                    {
-                        var item = string.Join(" ", Args);
-                        EventQue.Enqueue(item);
-                        break;
-                    }
+                    EventQue.Enqueue(string.Join(" ", Args));
+                    break;
             }
 
             //if (CallDepth > MaxCallDepth)
             //{
-            //    string argmsg = "サブルーチンの呼び出し階層が" + Microsoft.VisualBasic.Compatibility.VB6.Support.Format(MaxCallDepth) + "を超えているため、イベントの処理が出来ません";
+            //    string argmsg = "サブルーチンの呼び出し階層が" + SrcFormatter.Format(MaxCallDepth) + "を超えているため、イベントの処理が出来ません";
             //    GUI.ErrorMessage(ref argmsg);
             //    CallDepth = MaxCallDepth;
             //    return;

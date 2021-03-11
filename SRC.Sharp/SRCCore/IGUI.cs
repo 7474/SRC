@@ -3,13 +3,19 @@
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
 
+using SRCCore.Commands;
 using SRCCore.Units;
+using System.Collections.Generic;
 
 namespace SRCCore
 {
     // ユーザーインターフェースと画面描画の処理を行うためのインタフェース
     public interface IGUI
     {
+        void Sleep(int dwMilliseconds, bool withEvents = true);
+        //// XXX 要プロパティ更新、戻り値で返したほうがいい気はする。そもそも実行をロックしたくない。
+        //void StartWaitClick();
+
         // マップ画面に表示できるマップのサイズ
         int MainWidth { get; set; }
         int MainHeight { get; set; }
@@ -37,15 +43,15 @@ namespace SRCCore
         int PrevMapY { get; set; }
 
         // 最後に押されたマウスボタン
-        int MouseButton { get; set; }
+        GuiButton MouseButton { get; set; }
 
         // 現在のマウスの座標
-        float MouseX { get; set; }
-        float MouseY { get; set; }
+        double MouseX { get; set; }
+        double MouseY { get; set; }
 
         // ドラッグ前のマウスの座標
-        float PrevMouseX { get; set; }
-        float PrevMouseY { get; set; }
+        double PrevMouseX { get; set; }
+        double PrevMouseY { get; set; }
 
         // 移動前のユニットの情報
         int PrevUnitX { get; set; }
@@ -103,8 +109,6 @@ namespace SRCCore
         // Optionによる新ＧＵＩが有効かどうかを再設定する
         void SetNewGUIMode();
 
-        bool MainFormVisible { get; }
-        void MainFormShow();
 
         // === メッセージウィンドウに関する処理 ===
 
@@ -138,6 +142,8 @@ namespace SRCCore
 
         // === マップウィンドウに関する処理 ===
 
+        // 画面をクリアする
+        void ClearScrean();
         // マップ画面背景の設定
         void SetupBackground(string draw_mode = "", string draw_option = "", int filter_color = 0, double filter_trans_par = 0d);
         // 画面の書き換え (ユニット表示からやり直し)
@@ -178,7 +184,9 @@ namespace SRCCore
         // === 各種リストボックスに関する処理 ===
 
         // リストボックスを表示
-        int ListBox(string lb_caption, string[] list, string lb_info, string lb_mode = "");
+        int ListBox(string lb_caption, IList<ListBoxItem> list, string lb_info, string lb_mode = "");
+        // リストボックスを閉じる
+        void CloseListBox();
         // リストボックスの高さを大きくする
         void EnlargeListBoxHeight();
         // リストボックスの高さを小さくする
@@ -192,7 +200,7 @@ namespace SRCCore
         // 武器選択用リストボックスを通常のものに切り替え
         void RemovePartsOnListBox();
         // 武器選択用リストボックス
-        int WeaponListBox(Unit u, string caption_msg, string lb_mode, string BGM = "");
+        int WeaponListBox(Unit u, IList<UnitWeapon> weapons, string caption_msg, string lb_mode, string BGM = "");
         // アビリティ選択用リストボックス
         int AbilityListBox(Unit u, string caption_msg, string lb_mode, bool is_item = false);
         // 入力時間制限付きのリストボックスを表示
@@ -274,5 +282,58 @@ namespace SRCCore
 
         // ウィンドウなどのタイトルを設定する
         void SetTitle(string title);
+
+
+        // === MainForm 操作へのバイパス ===
+
+        bool MainFormVisible { get; }
+        void MainFormShow();
+        void MainFormHide();
+
+        void ChangeStatus(GuiStatus status);
+        void UpdateScreen();
+
+        // === コンテキストメニュー操作 ===
+        void ShowUnitCommandMenu(IList<UiCommand> commands);
+        void ShowMapCommandMenu(IList<UiCommand> commands);
+
+        // === 確認ダイアログ ===
+        GuiDialogResult Confirm(string message, string title, GuiConfirmOption option);
+    }
+
+    public enum GuiStatus
+    {
+        Default,
+        WaitCursor,
+        IBeam,
+    }
+    public enum GuiButton
+    {
+        None,
+        Left,
+        Right,
+    }
+    public enum GuiConfirmOption
+    {
+        OkCancel,
+        Question,
+    }
+    public enum GuiDialogResult
+    {
+        Ok,
+        Cancel,
+    }
+    public class ListBoxItem
+    {
+        // 表示するテキスト
+        public string Text { get; set; }
+
+        // 選択でき『ない』かどうか
+        // 全要素 false なら無視
+        public bool ListItemFlag { get; set; }
+        // フォーカス時に表示するコメント
+        public string ListItemComment { get; set; }
+        // リスト表示の呼び出し側での識別用ID
+        public string ListItemID { get; set; }
     }
 }

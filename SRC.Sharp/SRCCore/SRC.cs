@@ -2,54 +2,58 @@
 // 本プログラムはフリーソフトであり、無保証です。
 // 本プログラムはGNU General Public License(Ver.3またはそれ以降)が定める条件の下で
 // 再頒布または改変することができます。
-
+using Microsoft.Extensions.Logging;
 using SRCCore.Events;
 using SRCCore.Expressions;
-using SRCCore.Lib;
+using SRCCore.Filesystem;
 using SRCCore.Maps;
 using SRCCore.Models;
-using SRCCore.VB;
-using System;
 using System.Collections.Generic;
-using System.IO;
+using System.Diagnostics;
 
 namespace SRCCore
 {
     public partial class SRC
     {
+        public ILogger Log { get; private set; }
+
         public IGUI GUI { get; set; }
         public IGUIMap GUIMap { get; set; }
+        public IGUIStatus GUIStatus { get; set; }
+        public IFileSystem FileSystem { get; set; }
 
         public Expression Expression { get; }
         public Event Event { get; }
         public Map Map { get; }
+        public Commands.Command Commands { get; }
+        public Sound Sound { get; }
 
         // パイロットデータのリスト
-        public PilotDataList PDList = new PilotDataList();
+        public PilotDataList PDList;
         // ノンパイロットデータのリスト
-        public NonPilotDataList NPDList = new NonPilotDataList();
+        public NonPilotDataList NPDList;
         // ユニットデータのリスト
-        public UnitDataList UDList = new UnitDataList();
-        //// アイテムデータのリスト
-        //public ItemDataList IDList = new ItemDataList();
+        public UnitDataList UDList;
+        // アイテムデータのリスト
+        public ItemDataList IDList;
         // メッセージデータのリスト
-        public MessageDataList MDList = new MessageDataList();
+        public MessageDataList MDList;
         // 特殊効果データのリスト
-        public MessageDataList EDList = new MessageDataList();
+        public MessageDataList EDList;
         // 戦闘アニメデータのリスト
-        public MessageDataList ADList = new MessageDataList();
+        public MessageDataList ADList;
         // 拡張戦闘アニメデータのリスト
-        public MessageDataList EADList = new MessageDataList();
+        public MessageDataList EADList;
         // ダイアログデータのリスト
-        public DialogDataList DDList = new DialogDataList();
-        //// スペシャルパワーデータのリスト
-        //public SpecialPowerDataList SPDList = new SpecialPowerDataList();
+        public DialogDataList DDList;
+        // スペシャルパワーデータのリスト
+        public SpecialPowerDataList SPDList;
         // エリアスデータのリスト
-        public AliasDataList ALDList = new AliasDataList();
-        //// 地形データのリスト
-        //public TerrainDataList TDList = new TerrainDataList();
-        //// バトルコンフィグデータのリスト
-        //public BattleConfigDataList BCList = new BattleConfigDataList();
+        public AliasDataList ALDList;
+        // 地形データのリスト
+        public TerrainDataList TDList;
+        // バトルコンフィグデータのリスト
+        public BattleConfigDataList BCList;
 
         // パイロットのリスト
         public Pilots.Pilots PList;
@@ -130,12 +134,57 @@ namespace SRCCore
 
         public SRC()
         {
+            // TODO 外部からの注入にする
+            using (var loggerFactory = LoggerFactory.Create(builder =>
+            {
+                builder
+                    .SetMinimumLevel(LogLevel.Debug)
+                    .AddDebug();
+            }))
+            {
+                Log = loggerFactory.CreateLogger("SRCCore");
+            }
+
             Event = new Event(this);
             Expression = new Expression(this);
             Map = new Map(this);
+            Commands = new Commands.Command(this);
+            Sound = new Sound(this);
+
+            PDList = new PilotDataList(this);
+            NPDList = new NonPilotDataList(this);
+            UDList = new UnitDataList(this);
+            IDList = new ItemDataList(this);
+            MDList = new MessageDataList(this);
+            EDList = new MessageDataList(this);
+            ADList = new MessageDataList(this);
+            EADList = new MessageDataList(this);
+            DDList = new DialogDataList(this);
+            SPDList = new SpecialPowerDataList(this);
+            ALDList = new AliasDataList(this);
+            TDList = new TerrainDataList(this);
+            BCList = new BattleConfigDataList(this);
 
             PList = new Pilots.Pilots(this);
             UList = new Units.Units(this);
+        }
+
+        public void LogDebug(string message = "", params string[] param)
+        {
+            try
+            {
+                if (!Log.IsEnabled(LogLevel.Debug)) { return; }
+                string method = new StackFrame(1).GetMethod().Name;
+                Log.LogDebug(method
+                    + " "
+                    + message
+                    + " "
+                    + string.Join(", ", param));
+            }
+            catch
+            {
+                // ignore
+            }
         }
     }
 }
