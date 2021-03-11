@@ -49,5 +49,5 @@ jobs:
 #         with:
 #           context: ./SRC.Sharp/
 #           file: ./SRC.Sharp/SRCDataLinter/Dockerfile
-          push: true
-          tags: koudenpa/srcdatalinter:latest,koudenpa/srcdatalinter:${{ steps.vars.outputs.tag }}
+#           push: true
+#           tags: koudenpa/srcdatalinter:latest,koudenpa/srcdatalinter:${{ steps.vars.outputs.tag }}
