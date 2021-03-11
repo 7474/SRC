@@ -73,341 +73,347 @@ namespace SRCCore.Maps
             SetMapSize(GUI.MainWidth, GUI.MainHeight);
         }
 
-        // (X,Y)地点の命中修正
-        public int TerrainEffectForHit(int X, int Y)
+        //// (X,Y)地点の命中修正
+        //public int TerrainEffectForHit(int X, int Y)
+        //{
+        //    throw new NotImplementedException();
+        //    //    int TerrainEffectForHitRet = default;
+        //    //    // MOD START 240a
+        //    //    // TerrainEffectForHit = TDList.HitMod(MapData(X, Y, 0))
+        //    //    switch (MapData[X, Y, MapDataIndex.BoxType])
+        //    //    {
+        //    //        case BoxTypes.Under:
+        //    //        case BoxTypes.UpperBmpOnly:
+        //    //            {
+        //    //                // 上層レイヤが無い場合と上層が画像情報しか持っていない場合は下層のデータを返す
+        //    //                TerrainEffectForHitRet = SRC.TDList.HitMod(MapData[X, Y, MapDataIndex.TerrainType]);
+        //    //                break;
+        //    //            }
+
+        //    //        default:
+        //    //            {
+        //    //                // 上層レイヤが両方持っている場合と情報のみ持っている場合は上層のデータを返す
+        //    //                TerrainEffectForHitRet = SRC.TDList.HitMod(MapData[X, Y, MapDataIndex.LayerType]);
+        //    //                break;
+        //    //            }
+        //    //    }
+
+        //    //    return TerrainEffectForHitRet;
+        //    //    // MOD  END  240a
+        //}
+
+        //// (X,Y)地点のダメージ修正
+        //public int TerrainEffectForDamage(int X, int Y)
+        //{
+        //    throw new NotImplementedException();
+        //    //    int TerrainEffectForDamageRet = default;
+        //    //    // MOD START 240a
+        //    //    // TerrainEffectForDamage = TDList.DamageMod(MapData(X, Y, 0))
+        //    //    switch (MapData[X, Y, MapDataIndex.BoxType])
+        //    //    {
+        //    //        case BoxTypes.Under:
+        //    //        case BoxTypes.UpperBmpOnly:
+        //    //            {
+        //    //                // 上層レイヤが無い場合と上層が画像情報しか持っていない場合は下層のデータを返す
+        //    //                TerrainEffectForDamageRet = SRC.TDList.DamageMod(MapData[X, Y, MapDataIndex.TerrainType]);
+        //    //                break;
+        //    //            }
+
+        //    //        default:
+        //    //            {
+        //    //                // 上層レイヤが両方持っている場合と情報のみ持っている場合は上層のデータを返す
+        //    //                TerrainEffectForDamageRet = SRC.TDList.DamageMod(MapData[X, Y, MapDataIndex.LayerType]);
+        //    //                break;
+        //    //            }
+        //    //    }
+
+        //    //    return TerrainEffectForDamageRet;
+        //    //    // MOD  END  240a
+        //}
+
+        //// (X,Y)地点のＨＰ回復率
+        //public int TerrainEffectForHPRecover(int X, int Y)
+        //{
+        //    throw new NotImplementedException();
+        //    //int TerrainEffectForHPRecoverRet = default;
+        //    //// MOD START 240a
+        //    //// TerrainEffectForHPRecover = 10 * TDList.FeatureLevel(MapData(X, Y, 0), "ＨＰ回復")
+        //    //switch (MapData[X, Y, MapDataIndex.BoxType])
+        //    //{
+        //    //    case BoxTypes.Under:
+        //    //    case BoxTypes.UpperBmpOnly:
+        //    //        {
+        //    //            // 上層レイヤが無い場合と上層が画像情報しか持っていない場合は下層のデータを返す
+        //    //            string argftype = "ＨＰ回復";
+        //    //            TerrainEffectForHPRecoverRet = (10d * SRC.TDList.FeatureLevel(MapData[X, Y, MapDataIndex.TerrainType], argftype));
+        //    //            break;
+        //    //        }
+
+        //    //    default:
+        //    //        {
+        //    //            // 上層レイヤが両方持っている場合と情報のみ持っている場合は上層のデータを返す
+        //    //            string argftype1 = "ＨＰ回復";
+        //    //            TerrainEffectForHPRecoverRet = (10d * SRC.TDList.FeatureLevel(MapData[X, Y, MapDataIndex.LayerType], argftype1));
+        //    //            break;
+        //    //        }
+        //    //}
+
+        //    //return TerrainEffectForHPRecoverRet;
+        //    //// MOD  END  240a
+        //}
+
+        //// (X,Y)地点のＥＮ回復率
+        //public int TerrainEffectForENRecover(int X, int Y)
+        //{
+        //    throw new NotImplementedException();
+        //    //int TerrainEffectForENRecoverRet = default;
+        //    //// MOD START 240a
+        //    //// TerrainEffectForENRecover = 10 * TDList.FeatureLevel(MapData(X, Y, 0), "ＥＮ回復")
+        //    //switch (MapData[X, Y, MapDataIndex.BoxType])
+        //    //{
+        //    //    case BoxTypes.Under:
+        //    //    case BoxTypes.UpperBmpOnly:
+        //    //        {
+        //    //            // 上層レイヤが無い場合と上層が画像情報しか持っていない場合は下層のデータを返す
+        //    //            string argftype = "ＥＮ回復";
+        //    //            TerrainEffectForENRecoverRet = (10d * SRC.TDList.FeatureLevel(MapData[X, Y, MapDataIndex.TerrainType], argftype));
+        //    //            break;
+        //    //        }
+
+        //    //    default:
+        //    //        {
+        //    //            // 上層レイヤが両方持っている場合と情報のみ持っている場合は上層のデータを返す
+        //    //            string argftype1 = "ＥＮ回復";
+        //    //            TerrainEffectForENRecoverRet = (10d * SRC.TDList.FeatureLevel(MapData[X, Y, MapDataIndex.LayerType], argftype1));
+        //    //            break;
+        //    //        }
+        //    //}
+
+        //    //return TerrainEffectForENRecoverRet;
+        //    //// MOD  END  240a
+        //}
+
+        //// (X,Y)地点の地形名称
+        //public string TerrainName(int X, int Y)
+        //{
+        //    throw new NotImplementedException();
+        //    //string TerrainNameRet = default;
+        //    //// MOD START 240a
+        //    //// TerrainName = TDList.Name(MapData(X, Y, 0))
+        //    //switch (MapData[X, Y, MapDataIndex.BoxType])
+        //    //{
+        //    //    case BoxTypes.Under:
+        //    //    case BoxTypes.UpperBmpOnly:
+        //    //        {
+        //    //            // 上層レイヤが無い場合と上層が画像情報しか持っていない場合は下層のデータを返す
+        //    //            TerrainNameRet = SRC.TDList.Name(MapData[X, Y, MapDataIndex.TerrainType]);
+        //    //            break;
+        //    //        }
+
+        //    //    default:
+        //    //        {
+        //    //            // 上層レイヤが両方持っている場合と情報のみ持っている場合は上層のデータを返す
+        //    //            TerrainNameRet = SRC.TDList.Name(MapData[X, Y, MapDataIndex.LayerType]);
+        //    //            break;
+        //    //        }
+        //    //}
+
+        //    //return TerrainNameRet;
+        //    //// MOD  END  240a
+        //}
+
+        //// (X,Y)地点の地形クラス
+        //public string TerrainClass(int X, int Y)
+        //{
+        //    throw new NotImplementedException();
+        //    //string TerrainClassRet = default;
+        //    //// MOD START 240a
+        //    //// TerrainClass = TDList.Class(MapData(X, Y, 0))
+        //    //switch (MapData[X, Y, MapDataIndex.BoxType])
+        //    //{
+        //    //    case BoxTypes.Under:
+        //    //    case BoxTypes.UpperBmpOnly:
+        //    //        {
+        //    //            // 上層レイヤが無い場合と上層が画像情報しか持っていない場合は下層のデータを返す
+        //    //            TerrainClassRet = SRC.TDList.Class_Renamed(MapData[X, Y, MapDataIndex.TerrainType]);
+        //    //            break;
+        //    //        }
+
+        //    //    default:
+        //    //        {
+        //    //            // 上層レイヤが両方持っている場合と情報のみ持っている場合は上層のデータを返す
+        //    //            TerrainClassRet = SRC.TDList.Class_Renamed(MapData[X, Y, MapDataIndex.LayerType]);
+        //    //            break;
+        //    //        }
+        //    //}
+
+        //    //return TerrainClassRet;
+        //    //// MOD  END  240a
+        //}
+
+        //// (X,Y)地点の移動コスト
+        //public int TerrainMoveCost(int X, int Y)
+        //{
+        //    throw new NotImplementedException();
+        //    //int TerrainMoveCostRet = default;
+        //    //// MOD START 240a
+        //    //// TerrainMoveCost = TDList.MoveCost(MapData(X, Y, 0))
+        //    //switch (MapData[X, Y, MapDataIndex.BoxType])
+        //    //{
+        //    //    case BoxTypes.Under:
+        //    //    case BoxTypes.UpperBmpOnly:
+        //    //        {
+        //    //            // 上層レイヤが無い場合と上層が画像情報しか持っていない場合は下層のデータを返す
+        //    //            TerrainMoveCostRet = SRC.TDList.MoveCost(MapData[X, Y, MapDataIndex.TerrainType]);
+        //    //            break;
+        //    //        }
+
+        //    //    default:
+        //    //        {
+        //    //            // 上層レイヤが両方持っている場合と情報のみ持っている場合は上層のデータを返す
+        //    //            TerrainMoveCostRet = SRC.TDList.MoveCost(MapData[X, Y, MapDataIndex.LayerType]);
+        //    //            break;
+        //    //        }
+        //    //}
+
+        //    //return TerrainMoveCostRet;
+        //    //// MOD  END  240a
+        //}
+
+        //// (X,Y)地点に障害物があるか (吹き飛ばし時に衝突するか)
+        //public bool TerrainHasObstacle(int X, int Y)
+        //{
+        //    throw new NotImplementedException();
+        //    //bool TerrainHasObstacleRet = default;
+        //    //// MOD START 240a
+        //    //// TerrainHasObstacle = TDList.IsFeatureAvailable(MapData(X, Y, 0), "衝突")
+        //    //switch (MapData[X, Y, MapDataIndex.BoxType])
+        //    //{
+        //    //    case BoxTypes.Under:
+        //    //    case BoxTypes.UpperBmpOnly:
+        //    //        {
+        //    //            // 上層レイヤが無い場合と上層が画像情報しか持っていない場合は下層のデータを返す
+        //    //            string argftype = "衝突";
+        //    //            TerrainHasObstacleRet = SRC.TDList.IsFeatureAvailable(MapData[X, Y, MapDataIndex.TerrainType], argftype);
+        //    //            break;
+        //    //        }
+
+        //    //    default:
+        //    //        {
+        //    //            // 上層レイヤが両方持っている場合と情報のみ持っている場合は上層のデータを返す
+        //    //            string argftype1 = "衝突";
+        //    //            TerrainHasObstacleRet = SRC.TDList.IsFeatureAvailable(MapData[X, Y, MapDataIndex.LayerType], argftype1);
+        //    //            break;
+        //    //        }
+        //    //}
+
+        //    //return TerrainHasObstacleRet;
+        //    //// MOD  END  240a
+        //}
+
+        //// ADD START 240a
+        //// (X,Y)地点が移動停止か
+        //public bool TerrainHasMoveStop(int X, int Y)
+        //{
+        //    throw new NotImplementedException();
+        //    //bool TerrainHasMoveStopRet = default;
+        //    //switch (MapData[X, Y, MapDataIndex.BoxType])
+        //    //{
+        //    //    case BoxTypes.Under:
+        //    //    case BoxTypes.UpperBmpOnly:
+        //    //        {
+        //    //            // 上層レイヤが無い場合と上層が画像情報しか持っていない場合は下層のデータを返す
+        //    //            string argftype = "移動停止";
+        //    //            TerrainHasMoveStopRet = SRC.TDList.IsFeatureAvailable(MapData[X, Y, MapDataIndex.TerrainType], argftype);
+        //    //            break;
+        //    //        }
+
+        //    //    default:
+        //    //        {
+        //    //            // 上層レイヤが両方持っている場合と情報のみ持っている場合は上層のデータを返す
+        //    //            string argftype1 = "移動停止";
+        //    //            TerrainHasMoveStopRet = SRC.TDList.IsFeatureAvailable(MapData[X, Y, MapDataIndex.LayerType], argftype1);
+        //    //            break;
+        //    //        }
+        //    //}
+
+        //    //return TerrainHasMoveStopRet;
+        //}
+
+        //// (X,Y)地点が進入禁止か
+        //public bool TerrainDoNotEnter(int X, int Y)
+        //{
+        //    throw new NotImplementedException();
+        //    //bool ret;
+        //    //switch (MapData[X, Y, MapDataIndex.BoxType])
+        //    //{
+        //    //    case BoxTypes.Under:
+        //    //    case BoxTypes.UpperBmpOnly:
+        //    //        {
+        //    //            // 上層レイヤが無い場合と上層が画像情報しか持っていない場合は下層のデータを返す
+        //    //            string argftype = "進入禁止";
+        //    //            ret = SRC.TDList.IsFeatureAvailable(MapData[X, Y, MapDataIndex.TerrainType], argftype);
+        //    //            if (!ret)
+        //    //            {
+        //    //                // 互換性維持のため残している
+        //    //                string argftype1 = "侵入禁止";
+        //    //                ret = SRC.TDList.IsFeatureAvailable(MapData[X, Y, MapDataIndex.TerrainType], argftype1);
+        //    //            }
+
+        //    //            break;
+        //    //        }
+
+        //    //    default:
+        //    //        {
+        //    //            // 上層レイヤが両方持っている場合と情報のみ持っている場合は上層のデータを返す
+        //    //            string argftype2 = "進入禁止";
+        //    //            ret = SRC.TDList.IsFeatureAvailable(MapData[X, Y, MapDataIndex.LayerType], argftype2);
+        //    //            if (!ret)
+        //    //            {
+        //    //                // 互換性維持のため残している
+        //    //                string argftype3 = "侵入禁止";
+        //    //                ret = SRC.TDList.IsFeatureAvailable(MapData[X, Y, MapDataIndex.LayerType], argftype3);
+        //    //            }
+
+        //    //            break;
+        //    //        }
+        //    //}
+
+        //    //return default;
+        //}
+
+        //// (X,Y)地点が指定した能力を持っているか
+        //public bool TerrainHasFeature(int X, int Y, string Feature)
+        //{
+        //    throw new NotImplementedException();
+        //    //bool TerrainHasFeatureRet = default;
+        //    //switch (MapData[X, Y, MapDataIndex.BoxType])
+        //    //{
+        //    //    case BoxTypes.Under:
+        //    //    case BoxTypes.UpperBmpOnly:
+        //    //        {
+        //    //            // 上層レイヤが無い場合と上層が画像情報しか持っていない場合は下層のデータを返す
+        //    //            TerrainHasFeatureRet = SRC.TDList.IsFeatureAvailable(MapData[X, Y, MapDataIndex.TerrainType], Feature);
+        //    //            break;
+        //    //        }
+
+        //    //    default:
+        //    //        {
+        //    //            // 上層レイヤが両方持っている場合と情報のみ持っている場合は上層のデータを返す
+        //    //            TerrainHasFeatureRet = SRC.TDList.IsFeatureAvailable(MapData[X, Y, MapDataIndex.LayerType], Feature);
+        //    //            break;
+        //    //        }
+        //    //}
+
+        //    //return TerrainHasFeatureRet;
+        //}
+        //// ADD  END  240a
+
+        // (X,Y)地点の地形
+        public TerrainData Terrain(int X, int Y)
         {
-            throw new NotImplementedException();
-            //    int TerrainEffectForHitRet = default;
-            //    // MOD START 240a
-            //    // TerrainEffectForHit = TDList.HitMod(MapData(X, Y, 0))
-            //    switch (MapData[X, Y, MapDataIndex.BoxType])
-            //    {
-            //        case BoxTypes.Under:
-            //        case BoxTypes.UpperBmpOnly:
-            //            {
-            //                // 上層レイヤが無い場合と上層が画像情報しか持っていない場合は下層のデータを返す
-            //                TerrainEffectForHitRet = SRC.TDList.HitMod(MapData[X, Y, MapDataIndex.TerrainType]);
-            //                break;
-            //            }
-
-            //        default:
-            //            {
-            //                // 上層レイヤが両方持っている場合と情報のみ持っている場合は上層のデータを返す
-            //                TerrainEffectForHitRet = SRC.TDList.HitMod(MapData[X, Y, MapDataIndex.LayerType]);
-            //                break;
-            //            }
-            //    }
-
-            //    return TerrainEffectForHitRet;
-            //    // MOD  END  240a
+            return CellAtPoint(X, Y)?.Terrain;
         }
-
-        // (X,Y)地点のダメージ修正
-        public int TerrainEffectForDamage(int X, int Y)
-        {
-            throw new NotImplementedException();
-            //    int TerrainEffectForDamageRet = default;
-            //    // MOD START 240a
-            //    // TerrainEffectForDamage = TDList.DamageMod(MapData(X, Y, 0))
-            //    switch (MapData[X, Y, MapDataIndex.BoxType])
-            //    {
-            //        case BoxTypes.Under:
-            //        case BoxTypes.UpperBmpOnly:
-            //            {
-            //                // 上層レイヤが無い場合と上層が画像情報しか持っていない場合は下層のデータを返す
-            //                TerrainEffectForDamageRet = SRC.TDList.DamageMod(MapData[X, Y, MapDataIndex.TerrainType]);
-            //                break;
-            //            }
-
-            //        default:
-            //            {
-            //                // 上層レイヤが両方持っている場合と情報のみ持っている場合は上層のデータを返す
-            //                TerrainEffectForDamageRet = SRC.TDList.DamageMod(MapData[X, Y, MapDataIndex.LayerType]);
-            //                break;
-            //            }
-            //    }
-
-            //    return TerrainEffectForDamageRet;
-            //    // MOD  END  240a
-        }
-
-        // (X,Y)地点のＨＰ回復率
-        public int TerrainEffectForHPRecover(int X, int Y)
-        {
-            throw new NotImplementedException();
-            //int TerrainEffectForHPRecoverRet = default;
-            //// MOD START 240a
-            //// TerrainEffectForHPRecover = 10 * TDList.FeatureLevel(MapData(X, Y, 0), "ＨＰ回復")
-            //switch (MapData[X, Y, MapDataIndex.BoxType])
-            //{
-            //    case BoxTypes.Under:
-            //    case BoxTypes.UpperBmpOnly:
-            //        {
-            //            // 上層レイヤが無い場合と上層が画像情報しか持っていない場合は下層のデータを返す
-            //            string argftype = "ＨＰ回復";
-            //            TerrainEffectForHPRecoverRet = (10d * SRC.TDList.FeatureLevel(MapData[X, Y, MapDataIndex.TerrainType], argftype));
-            //            break;
-            //        }
-
-            //    default:
-            //        {
-            //            // 上層レイヤが両方持っている場合と情報のみ持っている場合は上層のデータを返す
-            //            string argftype1 = "ＨＰ回復";
-            //            TerrainEffectForHPRecoverRet = (10d * SRC.TDList.FeatureLevel(MapData[X, Y, MapDataIndex.LayerType], argftype1));
-            //            break;
-            //        }
-            //}
-
-            //return TerrainEffectForHPRecoverRet;
-            //// MOD  END  240a
-        }
-
-        // (X,Y)地点のＥＮ回復率
-        public int TerrainEffectForENRecover(int X, int Y)
-        {
-            throw new NotImplementedException();
-            //int TerrainEffectForENRecoverRet = default;
-            //// MOD START 240a
-            //// TerrainEffectForENRecover = 10 * TDList.FeatureLevel(MapData(X, Y, 0), "ＥＮ回復")
-            //switch (MapData[X, Y, MapDataIndex.BoxType])
-            //{
-            //    case BoxTypes.Under:
-            //    case BoxTypes.UpperBmpOnly:
-            //        {
-            //            // 上層レイヤが無い場合と上層が画像情報しか持っていない場合は下層のデータを返す
-            //            string argftype = "ＥＮ回復";
-            //            TerrainEffectForENRecoverRet = (10d * SRC.TDList.FeatureLevel(MapData[X, Y, MapDataIndex.TerrainType], argftype));
-            //            break;
-            //        }
-
-            //    default:
-            //        {
-            //            // 上層レイヤが両方持っている場合と情報のみ持っている場合は上層のデータを返す
-            //            string argftype1 = "ＥＮ回復";
-            //            TerrainEffectForENRecoverRet = (10d * SRC.TDList.FeatureLevel(MapData[X, Y, MapDataIndex.LayerType], argftype1));
-            //            break;
-            //        }
-            //}
-
-            //return TerrainEffectForENRecoverRet;
-            //// MOD  END  240a
-        }
-
-        // (X,Y)地点の地形名称
-        public string TerrainName(int X, int Y)
-        {
-            throw new NotImplementedException();
-            //string TerrainNameRet = default;
-            //// MOD START 240a
-            //// TerrainName = TDList.Name(MapData(X, Y, 0))
-            //switch (MapData[X, Y, MapDataIndex.BoxType])
-            //{
-            //    case BoxTypes.Under:
-            //    case BoxTypes.UpperBmpOnly:
-            //        {
-            //            // 上層レイヤが無い場合と上層が画像情報しか持っていない場合は下層のデータを返す
-            //            TerrainNameRet = SRC.TDList.Name(MapData[X, Y, MapDataIndex.TerrainType]);
-            //            break;
-            //        }
-
-            //    default:
-            //        {
-            //            // 上層レイヤが両方持っている場合と情報のみ持っている場合は上層のデータを返す
-            //            TerrainNameRet = SRC.TDList.Name(MapData[X, Y, MapDataIndex.LayerType]);
-            //            break;
-            //        }
-            //}
-
-            //return TerrainNameRet;
-            //// MOD  END  240a
-        }
-
-        // (X,Y)地点の地形クラス
-        public string TerrainClass(int X, int Y)
-        {
-            throw new NotImplementedException();
-            //string TerrainClassRet = default;
-            //// MOD START 240a
-            //// TerrainClass = TDList.Class(MapData(X, Y, 0))
-            //switch (MapData[X, Y, MapDataIndex.BoxType])
-            //{
-            //    case BoxTypes.Under:
-            //    case BoxTypes.UpperBmpOnly:
-            //        {
-            //            // 上層レイヤが無い場合と上層が画像情報しか持っていない場合は下層のデータを返す
-            //            TerrainClassRet = SRC.TDList.Class_Renamed(MapData[X, Y, MapDataIndex.TerrainType]);
-            //            break;
-            //        }
-
-            //    default:
-            //        {
-            //            // 上層レイヤが両方持っている場合と情報のみ持っている場合は上層のデータを返す
-            //            TerrainClassRet = SRC.TDList.Class_Renamed(MapData[X, Y, MapDataIndex.LayerType]);
-            //            break;
-            //        }
-            //}
-
-            //return TerrainClassRet;
-            //// MOD  END  240a
-        }
-
-        // (X,Y)地点の移動コスト
-        public int TerrainMoveCost(int X, int Y)
-        {
-            throw new NotImplementedException();
-            //int TerrainMoveCostRet = default;
-            //// MOD START 240a
-            //// TerrainMoveCost = TDList.MoveCost(MapData(X, Y, 0))
-            //switch (MapData[X, Y, MapDataIndex.BoxType])
-            //{
-            //    case BoxTypes.Under:
-            //    case BoxTypes.UpperBmpOnly:
-            //        {
-            //            // 上層レイヤが無い場合と上層が画像情報しか持っていない場合は下層のデータを返す
-            //            TerrainMoveCostRet = SRC.TDList.MoveCost(MapData[X, Y, MapDataIndex.TerrainType]);
-            //            break;
-            //        }
-
-            //    default:
-            //        {
-            //            // 上層レイヤが両方持っている場合と情報のみ持っている場合は上層のデータを返す
-            //            TerrainMoveCostRet = SRC.TDList.MoveCost(MapData[X, Y, MapDataIndex.LayerType]);
-            //            break;
-            //        }
-            //}
-
-            //return TerrainMoveCostRet;
-            //// MOD  END  240a
-        }
-
-        // (X,Y)地点に障害物があるか (吹き飛ばし時に衝突するか)
-        public bool TerrainHasObstacle(int X, int Y)
-        {
-            throw new NotImplementedException();
-            //bool TerrainHasObstacleRet = default;
-            //// MOD START 240a
-            //// TerrainHasObstacle = TDList.IsFeatureAvailable(MapData(X, Y, 0), "衝突")
-            //switch (MapData[X, Y, MapDataIndex.BoxType])
-            //{
-            //    case BoxTypes.Under:
-            //    case BoxTypes.UpperBmpOnly:
-            //        {
-            //            // 上層レイヤが無い場合と上層が画像情報しか持っていない場合は下層のデータを返す
-            //            string argftype = "衝突";
-            //            TerrainHasObstacleRet = SRC.TDList.IsFeatureAvailable(MapData[X, Y, MapDataIndex.TerrainType], argftype);
-            //            break;
-            //        }
-
-            //    default:
-            //        {
-            //            // 上層レイヤが両方持っている場合と情報のみ持っている場合は上層のデータを返す
-            //            string argftype1 = "衝突";
-            //            TerrainHasObstacleRet = SRC.TDList.IsFeatureAvailable(MapData[X, Y, MapDataIndex.LayerType], argftype1);
-            //            break;
-            //        }
-            //}
-
-            //return TerrainHasObstacleRet;
-            //// MOD  END  240a
-        }
-
-        // ADD START 240a
-        // (X,Y)地点が移動停止か
-        public bool TerrainHasMoveStop(int X, int Y)
-        {
-            throw new NotImplementedException();
-            //bool TerrainHasMoveStopRet = default;
-            //switch (MapData[X, Y, MapDataIndex.BoxType])
-            //{
-            //    case BoxTypes.Under:
-            //    case BoxTypes.UpperBmpOnly:
-            //        {
-            //            // 上層レイヤが無い場合と上層が画像情報しか持っていない場合は下層のデータを返す
-            //            string argftype = "移動停止";
-            //            TerrainHasMoveStopRet = SRC.TDList.IsFeatureAvailable(MapData[X, Y, MapDataIndex.TerrainType], argftype);
-            //            break;
-            //        }
-
-            //    default:
-            //        {
-            //            // 上層レイヤが両方持っている場合と情報のみ持っている場合は上層のデータを返す
-            //            string argftype1 = "移動停止";
-            //            TerrainHasMoveStopRet = SRC.TDList.IsFeatureAvailable(MapData[X, Y, MapDataIndex.LayerType], argftype1);
-            //            break;
-            //        }
-            //}
-
-            //return TerrainHasMoveStopRet;
-        }
-
-        // (X,Y)地点が進入禁止か
-        public bool TerrainDoNotEnter(int X, int Y)
-        {
-            throw new NotImplementedException();
-            //bool ret;
-            //switch (MapData[X, Y, MapDataIndex.BoxType])
-            //{
-            //    case BoxTypes.Under:
-            //    case BoxTypes.UpperBmpOnly:
-            //        {
-            //            // 上層レイヤが無い場合と上層が画像情報しか持っていない場合は下層のデータを返す
-            //            string argftype = "進入禁止";
-            //            ret = SRC.TDList.IsFeatureAvailable(MapData[X, Y, MapDataIndex.TerrainType], argftype);
-            //            if (!ret)
-            //            {
-            //                // 互換性維持のため残している
-            //                string argftype1 = "侵入禁止";
-            //                ret = SRC.TDList.IsFeatureAvailable(MapData[X, Y, MapDataIndex.TerrainType], argftype1);
-            //            }
-
-            //            break;
-            //        }
-
-            //    default:
-            //        {
-            //            // 上層レイヤが両方持っている場合と情報のみ持っている場合は上層のデータを返す
-            //            string argftype2 = "進入禁止";
-            //            ret = SRC.TDList.IsFeatureAvailable(MapData[X, Y, MapDataIndex.LayerType], argftype2);
-            //            if (!ret)
-            //            {
-            //                // 互換性維持のため残している
-            //                string argftype3 = "侵入禁止";
-            //                ret = SRC.TDList.IsFeatureAvailable(MapData[X, Y, MapDataIndex.LayerType], argftype3);
-            //            }
-
-            //            break;
-            //        }
-            //}
-
-            //return default;
-        }
-
-        // (X,Y)地点が指定した能力を持っているか
-        public bool TerrainHasFeature(int X, int Y, string Feature)
-        {
-            throw new NotImplementedException();
-            //bool TerrainHasFeatureRet = default;
-            //switch (MapData[X, Y, MapDataIndex.BoxType])
-            //{
-            //    case BoxTypes.Under:
-            //    case BoxTypes.UpperBmpOnly:
-            //        {
-            //            // 上層レイヤが無い場合と上層が画像情報しか持っていない場合は下層のデータを返す
-            //            TerrainHasFeatureRet = SRC.TDList.IsFeatureAvailable(MapData[X, Y, MapDataIndex.TerrainType], Feature);
-            //            break;
-            //        }
-
-            //    default:
-            //        {
-            //            // 上層レイヤが両方持っている場合と情報のみ持っている場合は上層のデータを返す
-            //            TerrainHasFeatureRet = SRC.TDList.IsFeatureAvailable(MapData[X, Y, MapDataIndex.LayerType], Feature);
-            //            break;
-            //        }
-            //}
-
-            //return TerrainHasFeatureRet;
-        }
-        // ADD  END  240a
 
         public bool IsInside(int x, int y)
         {

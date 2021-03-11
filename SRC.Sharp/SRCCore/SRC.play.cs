@@ -322,46 +322,32 @@ namespace SRCCore
 
                     GUI.RedrawScreen();
 
-                    //// 味方フェイズ用ＢＧＭを演奏
-                    //if (!string.IsNullOrEmpty(Map.MapFileName))
-                    //{
-                    //    switch (Map.TerrainClass(1, 1) ?? "")
-                    //    {
-                    //        case "屋内":
-                    //            {
-                    //                string argbgm_name = "Map3";
-                    //                string argbgm_name1 = Sound.BGMName(argbgm_name);
-                    //                Sound.StartBGM(argbgm_name1);
-                    //                break;
-                    //            }
+                    // 味方フェイズ用ＢＧＭを演奏
+                    if (!Map.IsStatusView)
+                    {
+                        var terrain = Map.Terrain(1, 1);
+                        switch (terrain?.Class ?? "")
+                        {
+                            case "屋内":
+                                Sound.StartBGM(Sound.BGMName("Map3"));
+                                break;
 
-                    //        case "宇宙":
-                    //            {
-                    //                string argbgm_name2 = "Map5";
-                    //                string argbgm_name3 = Sound.BGMName(argbgm_name2);
-                    //                Sound.StartBGM(argbgm_name3);
-                    //                break;
-                    //            }
+                            case "宇宙":
+                                Sound.StartBGM(Sound.BGMName("Map5"));
+                                break;
 
-                    //        default:
-                    //            {
-                    //                if (Map.TerrainName(1, 1) == "壁")
-                    //                {
-                    //                    string argbgm_name4 = "Map3";
-                    //                    string argbgm_name5 = Sound.BGMName(argbgm_name4);
-                    //                    Sound.StartBGM(argbgm_name5);
-                    //                }
-                    //                else
-                    //                {
-                    //                    string argbgm_name6 = "Map1";
-                    //                    string argbgm_name7 = Sound.BGMName(argbgm_name6);
-                    //                    Sound.StartBGM(argbgm_name7);
-                    //                }
-
-                    //                break;
-                    //            }
-                    //    }
-                    //}
+                            default:
+                                if (terrain?.Name == "壁")
+                                {
+                                    Sound.StartBGM(Sound.BGMName("Map3"));
+                                }
+                                else
+                                {
+                                    Sound.StartBGM(Sound.BGMName("Map1"));
+                                }
+                                break;
+                        }
+                    }
 
                     // ターンイベント
                     Event.IsUnitCenter = false;
@@ -467,78 +453,56 @@ namespace SRCCore
 
                 GUI.RedrawScreen();
 
-                //// 敵(ＮＰＣ)フェイズ用ＢＧＭを演奏
-                //switch (Map.TerrainClass(1, 1) ?? "")
-                //{
-                //    case "屋内":
-                //        {
-                //            if (Stage == "ＮＰＣ")
-                //            {
-                //                string argbgm_name8 = "Map3";
-                //                string argbgm_name9 = Sound.BGMName(argbgm_name8);
-                //                Sound.StartBGM(argbgm_name9);
-                //            }
-                //            else
-                //            {
-                //                string argbgm_name10 = "Map4";
-                //                string argbgm_name11 = Sound.BGMName(argbgm_name10);
-                //                Sound.StartBGM(argbgm_name11);
-                //            }
+                // 敵(ＮＰＣ)フェイズ用ＢＧＭを演奏
+                    var terrain = Map.Terrain(1, 1);
+                if (Stage == "ＮＰＣ")
+                {
+                    switch (terrain?.Class ?? "")
+                    {
+                        case "屋内":
+                            Sound.StartBGM(Sound.BGMName("Map3"));
+                            break;
 
-                //            break;
-                //        }
+                        case "宇宙":
+                            Sound.StartBGM(Sound.BGMName("Map5"));
+                            break;
 
-                //    case "宇宙":
-                //        {
-                //            if (Stage == "ＮＰＣ")
-                //            {
-                //                string argbgm_name12 = "Map5";
-                //                string argbgm_name13 = Sound.BGMName(argbgm_name12);
-                //                Sound.StartBGM(argbgm_name13);
-                //            }
-                //            else
-                //            {
-                //                string argbgm_name14 = "Map6";
-                //                string argbgm_name15 = Sound.BGMName(argbgm_name14);
-                //                Sound.StartBGM(argbgm_name15);
-                //            }
+                        default:
+                            if (terrain?.Name == "壁")
+                            {
+                                Sound.StartBGM(Sound.BGMName("Map3"));
+                            }
+                            else
+                            {
+                                Sound.StartBGM(Sound.BGMName("Map1"));
+                            }
+                            break;
+                    }
+                } else
+                {
 
-                //            break;
-                //        }
+                    switch (terrain?.Class ?? "")
+                    {
+                        case "屋内":
+                            Sound.StartBGM(Sound.BGMName("Map4"));
+                            break;
 
-                //    default:
-                //        {
-                //            if (Stage == "ＮＰＣ")
-                //            {
-                //                if (Map.TerrainName(1, 1) == "壁")
-                //                {
-                //                    string argbgm_name16 = "Map3";
-                //                    string argbgm_name17 = Sound.BGMName(argbgm_name16);
-                //                    Sound.StartBGM(argbgm_name17);
-                //                }
-                //                else
-                //                {
-                //                    string argbgm_name18 = "Map1";
-                //                    string argbgm_name19 = Sound.BGMName(argbgm_name18);
-                //                    Sound.StartBGM(argbgm_name19);
-                //                }
-                //            }
-                //            else if (Map.TerrainName(1, 1) == "壁")
-                //            {
-                //                string argbgm_name20 = "Map4";
-                //                string argbgm_name21 = Sound.BGMName(argbgm_name20);
-                //                Sound.StartBGM(argbgm_name21);
-                //            }
-                //            else
-                //            {
-                //                string argbgm_name22 = "Map2";
-                //                string argbgm_name23 = Sound.BGMName(argbgm_name22);
-                //                Sound.StartBGM(argbgm_name23);
-                //            }
+                        case "宇宙":
+                            Sound.StartBGM(Sound.BGMName("Map6"));
+                            break;
 
-                //            break;
-                //        }
-                //}
+                        default:
+                            if (terrain?.Name == "壁")
+                            {
+                                Sound.StartBGM(Sound.BGMName("Map4"));
+                            }
+                            else
+                            {
+                                Sound.StartBGM(Sound.BGMName("Map2"));
+                            }
+                            break;
+                    }
+                }
 
                 // ターンイベント
                 Event.HandleEvent("ターン", Turn.ToString(), uparty);

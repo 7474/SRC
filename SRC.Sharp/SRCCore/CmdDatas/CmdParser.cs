@@ -501,11 +501,8 @@ namespace SRCCore.CmdDatas
                     //        break;
                     //    }
 
-                    //case "keepbgm":
-                    //    {
-                    //        CmdName = CmdType.KeepBGMCmd;
-                    //        break;
-                    //    }
+                    case "keepbgm":
+                        return new KeepBGMCmd(src, data);
 
                     //case "land":
                     //    {
@@ -942,11 +939,8 @@ namespace SRCCore.CmdDatas
                     case "startbgm":
                         return new StartBGMCmd(src, data);
 
-                    //case "stopbgm":
-                    //    {
-                    //        CmdName = CmdType.StopBGMCmd;
-                    //        break;
-                    //    }
+                    case "stopbgm":
+                        return new StopBGMCmd(src, data);
 
                     //case "stopsummoning":
                     //    {
