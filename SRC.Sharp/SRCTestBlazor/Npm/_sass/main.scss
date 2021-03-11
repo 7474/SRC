@@ -67,6 +67,11 @@ $code-family: "IPA Gothic", monospace;
     }
 }
 
+.src-data-list-container {
+    height: calc(100vh - 180px);
+    overflow-y: auto;
+}
+
 .src-titles-container {
     min-width: 480px;
     max-height: 80vh;

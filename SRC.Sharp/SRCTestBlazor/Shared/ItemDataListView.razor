@@ -16,10 +16,11 @@
             <div class="src-comment">@SRC.IDList.DataComment</div>
         </div>
     }
-    @foreach (var id in SRC.IDList.Items)
-    {
-        <ItemDataView Data="@id" SRC="@SRC" />
-    }
+    <div class="src-data-list-container">
+        <Virtualize Items="@SRC.IDList.Items" Context="id" ItemSize="300">
+            <ItemDataView @key="id.Name" Data="@id" SRC="@SRC" />
+        </Virtualize>
+    </div>
 </section>
 
 @code {
