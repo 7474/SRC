@@ -2236,7 +2236,7 @@ namespace SRCCore.Maps
             //bool is_trans_available_in_sky;
             //bool is_trans_available_in_moon_sky;
             //var is_adaptable_in_water = default(bool);
-            //var is_adaptable_in_space = default(bool);
+            var is_adaptable_in_space = false;
             //var is_swimable = default(bool);
             //string[] adopted_terrain;
             //string[] allowed_terrains;
@@ -2302,10 +2302,9 @@ namespace SRCCore.Maps
             //    is_swimable = true;
             //}
 
-            //// 地形適応のある地形のリストを作成
-            //adopted_terrain = new string[1];
-            //string argfname5 = "地形適応";
-            //if (currentUnit.IsFeatureAvailable(argfname5))
+            // 地形適応のある地形のリストを作成
+            var adopted_terrain = new List<string>();
+            //if (currentUnit.IsFeatureAvailable("地形適応"))
             //{
             //    var loopTo = currentUnit.CountFeature();
             //    for (i = 1; i <= loopTo; i++)
@@ -2385,56 +2384,45 @@ namespace SRCCore.Maps
             // 各地形の移動コストを算出しておく
             switch (move_area ?? "")
             {
-                //case "空中":
-                //    {
-                //        var loopTo4 = x2;
-                //        for (i = x1; i <= loopTo4; i++)
-                //        {
-                //            var loopTo5 = y2;
-                //            for (j = y1; j <= loopTo5; j++)
-                //            {
-                //                switch (TerrainClass(i, j) ?? "")
-                //                {
-                //                    case "空":
-                //                        {
-                //                            move_cost[i, j] = TerrainMoveCost(i, j);
-                //                            break;
-                //                        }
+                case "空中":
+                    for (var i = x1; i <= x2; i++)
+                    {
+                        for (var j = y1; j <= y2; j++)
+                        {
+                            switch (Terrain(i, j).Class ?? "")
+                            {
+                                case "空":
+                                    move_cost[i, j] = Terrain(i, j).MoveCost;
+                                    break;
 
-                //                    case "宇宙":
-                //                        {
-                //                            if (is_adaptable_in_space)
-                //                            {
-                //                                move_cost[i, j] = TerrainMoveCost(i, j);
-                //                                var loopTo6 = Information.UBound(adopted_terrain);
-                //                                for (k = 1; k <= loopTo6; k++)
-                //                                {
-                //                                    if ((TerrainName(i, j) ?? "") == (adopted_terrain[k] ?? ""))
-                //                                    {
-                //                                        move_cost[i, j] = Math.Min(move_cost[i, j], 2);
-                //                                        break;
-                //                                    }
-                //                                }
-                //                            }
-                //                            else
-                //                            {
-                //                                move_cost[i, j] = 1000000;
-                //                            }
+                                case "宇宙":
+                                    if (is_adaptable_in_space)
+                                    {
+                                        move_cost[i, j] = Terrain(i, j).MoveCost;
+                                        for (var k = 0; k < adopted_terrain.Count; k++)
+                                        {
+                                            if ((Terrain(i, j).Name ?? "") == (adopted_terrain[k] ?? ""))
+                                            {
+                                                move_cost[i, j] = Math.Min(move_cost[i, j], 2);
+                                                break;
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        move_cost[i, j] = 1000000;
+                                    }
 
-                //                            break;
-                //                        }
+                                    break;
 
-                //                    default:
-                //                        {
-                //                            move_cost[i, j] = Math.Min(move_cost[i, j], 2);
-                //                            break;
-                //                        }
-                //                }
-                //            }
-                //        }
+                                default:
+                                    move_cost[i, j] = Math.Min(move_cost[i, j], 2);
+                                    break;
+                            }
+                        }
+                    }
 
-                //        break;
-                //    }
+                    break;
 
 
                 // XXX とりあえず地上で
