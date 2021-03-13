@@ -6,10 +6,9 @@ using SRCCore.Exceptions;
 using SRCCore.Lib;
 using SRCCore.Models;
 using SRCCore.Units;
-using SRCCore.VB;
 using System;
+using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 
 namespace SRCCore.Maps
 {
@@ -2237,7 +2236,7 @@ namespace SRCCore.Maps
             //bool is_trans_available_in_sky;
             //bool is_trans_available_in_moon_sky;
             //var is_adaptable_in_water = default(bool);
-            //var is_adaptable_in_space = default(bool);
+            var is_adaptable_in_space = false;
             //var is_swimable = default(bool);
             //string[] adopted_terrain;
             //string[] allowed_terrains;
@@ -2303,10 +2302,9 @@ namespace SRCCore.Maps
             //    is_swimable = true;
             //}
 
-            //// 地形適応のある地形のリストを作成
-            //adopted_terrain = new string[1];
-            //string argfname5 = "地形適応";
-            //if (currentUnit.IsFeatureAvailable(argfname5))
+            // 地形適応のある地形のリストを作成
+            var adopted_terrain = new List<string>();
+            //if (currentUnit.IsFeatureAvailable("地形適応"))
             //{
             //    var loopTo = currentUnit.CountFeature();
             //    for (i = 1; i <= loopTo; i++)
@@ -2386,56 +2384,45 @@ namespace SRCCore.Maps
             // 各地形の移動コストを算出しておく
             switch (move_area ?? "")
             {
-                //case "空中":
-                //    {
-                //        var loopTo4 = x2;
-                //        for (i = x1; i <= loopTo4; i++)
-                //        {
-                //            var loopTo5 = y2;
-                //            for (j = y1; j <= loopTo5; j++)
-                //            {
-                //                switch (TerrainClass(i, j) ?? "")
-                //                {
-                //                    case "空":
-                //                        {
-                //                            move_cost[i, j] = TerrainMoveCost(i, j);
-                //                            break;
-                //                        }
+                case "空中":
+                    for (var i = x1; i <= x2; i++)
+                    {
+                        for (var j = y1; j <= y2; j++)
+                        {
+                            switch (Terrain(i, j).Class ?? "")
+                            {
+                                case "空":
+                                    move_cost[i, j] = Terrain(i, j).MoveCost;
+                                    break;
 
-                //                    case "宇宙":
-                //                        {
-                //                            if (is_adaptable_in_space)
-                //                            {
-                //                                move_cost[i, j] = TerrainMoveCost(i, j);
-                //                                var loopTo6 = Information.UBound(adopted_terrain);
-                //                                for (k = 1; k <= loopTo6; k++)
-                //                                {
-                //                                    if ((TerrainName(i, j) ?? "") == (adopted_terrain[k] ?? ""))
-                //                                    {
-                //                                        move_cost[i, j] = Math.Min(move_cost[i, j], 2);
-                //                                        break;
-                //                                    }
-                //                                }
-                //                            }
-                //                            else
-                //                            {
-                //                                move_cost[i, j] = 1000000;
-                //                            }
+                                case "宇宙":
+                                    if (is_adaptable_in_space)
+                                    {
+                                        move_cost[i, j] = Terrain(i, j).MoveCost;
+                                        for (var k = 0; k < adopted_terrain.Count; k++)
+                                        {
+                                            if ((Terrain(i, j).Name ?? "") == (adopted_terrain[k] ?? ""))
+                                            {
+                                                move_cost[i, j] = Math.Min(move_cost[i, j], 2);
+                                                break;
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        move_cost[i, j] = 1000000;
+                                    }
 
-                //                            break;
-                //                        }
+                                    break;
 
-                //                    default:
-                //                        {
-                //                            move_cost[i, j] = Math.Min(move_cost[i, j], 2);
-                //                            break;
-                //                        }
-                //                }
-                //            }
-                //        }
+                                default:
+                                    move_cost[i, j] = Math.Min(move_cost[i, j], 2);
+                                    break;
+                            }
+                        }
+                    }
 
-                //        break;
-                //    }
+                    break;
 
 
                 // XXX とりあえず地上で
@@ -5601,217 +5588,208 @@ namespace SRCCore.Maps
             //            }
             //        }
             //    }
-            //}
-
-            //// 現在位置から指定した場所までの移動経路を調べる
-            //// 事前にAreaInSpeedを実行しておく事が必要
-            //public void SearchMoveRoute(int tx, int ty, int[] move_route_x, int[] move_route_y)
-            //{
-            //    int xx, yy;
-            //    int nx, ny;
-            //    int ox = default, oy = default;
-            //    int tmp;
-            //    int i;
-            //    string direction = default, prev_direction = default;
-            //    object[] move_direction;
-            //    move_route_x = new int[2];
-            //    move_route_y = new int[2];
-            //    move_direction = new object[2];
-            //    move_route_x[1] = tx;
-            //    move_route_y[1] = ty;
-
-            //    // 現在位置を調べる
-            //    var loopTo = MapWidth;
-            //    for (xx = 1; xx <= loopTo; xx++)
-            //    {
-            //        var loopTo1 = MapHeight;
-            //        for (yy = 1; yy <= loopTo1; yy++)
-            //        {
-            //            if (TotalMoveCost[xx, yy] == 0)
-            //            {
-            //                ox = xx;
-            //                oy = yy;
-            //            }
-            //        }
-            //    }
-
-            //    // 現在位置のＺＯＣは無効化する
-            //    PointInZOC[ox, oy] = 0;
-            //    xx = tx;
-            //    yy = ty;
-            //    nx = tx;
-            //    ny = ty;
-            //    while (TotalMoveCost[xx, yy] > 0)
-            //    {
-            //        tmp = TotalMoveCost[xx, yy];
-
-            //        // 周りの場所から最も必要移動力が低い場所を探す
-
-            //        // なるべく直線方向に移動させるため、前回と同じ移動方向を優先させる
-            //        switch (prev_direction ?? "")
-            //        {
-            //            case "N":
-            //                {
-            //                    if (TotalMoveCost[xx, yy - 1] < tmp & PointInZOC[xx, yy - 1] <= 0)
-            //                    {
-            //                        tmp = TotalMoveCost[xx, yy - 1];
-            //                        nx = xx;
-            //                        ny = (yy - 1);
-            //                        direction = "N";
-            //                    }
-
-            //                    break;
-            //                }
-
-            //            case "S":
-            //                {
-            //                    if (TotalMoveCost[xx, yy + 1] < tmp & PointInZOC[xx, yy + 1] <= 0)
-            //                    {
-            //                        tmp = TotalMoveCost[xx, yy + 1];
-            //                        nx = xx;
-            //                        ny = (yy + 1);
-            //                        direction = "S";
-            //                    }
-
-            //                    break;
-            //                }
-
-            //            case "W":
-            //                {
-            //                    if (TotalMoveCost[xx - 1, yy] < tmp & PointInZOC[xx - 1, yy] <= 0)
-            //                    {
-            //                        tmp = TotalMoveCost[xx - 1, yy];
-            //                        nx = (xx - 1);
-            //                        ny = yy;
-            //                        direction = "W";
-            //                    }
-
-            //                    break;
-            //                }
-
-            //            case "E":
-            //                {
-            //                    if (TotalMoveCost[xx + 1, yy] < tmp & PointInZOC[xx + 1, yy] <= 0)
-            //                    {
-            //                        tmp = TotalMoveCost[xx + 1, yy];
-            //                        nx = (xx + 1);
-            //                        ny = yy;
-            //                        direction = "E";
-            //                    }
-
-            //                    break;
-            //                }
-            //        }
-
-            //        // なるべく目標位置付近で直進させるため、目標位置との距離差の小さい
-            //        // 座標軸方向に優先して移動させる
-            //        if (Math.Abs((xx - ox)) <= Math.Abs((yy - oy)))
-            //        {
-            //            if (TotalMoveCost[xx, yy - 1] < tmp & PointInZOC[xx, yy - 1] <= 0)
-            //            {
-            //                tmp = TotalMoveCost[xx, yy - 1];
-            //                nx = xx;
-            //                ny = (yy - 1);
-            //                direction = "N";
-            //            }
-
-            //            if (TotalMoveCost[xx, yy + 1] < tmp & PointInZOC[xx, yy + 1] <= 0)
-            //            {
-            //                tmp = TotalMoveCost[xx, yy + 1];
-            //                nx = xx;
-            //                ny = (yy + 1);
-            //                direction = "S";
-            //            }
-
-            //            if (TotalMoveCost[xx - 1, yy] < tmp & PointInZOC[xx - 1, yy] <= 0)
-            //            {
-            //                tmp = TotalMoveCost[xx - 1, yy];
-            //                nx = (xx - 1);
-            //                ny = yy;
-            //                direction = "W";
-            //            }
-
-            //            if (TotalMoveCost[xx + 1, yy] < tmp & PointInZOC[xx + 1, yy] <= 0)
-            //            {
-            //                tmp = TotalMoveCost[xx + 1, yy];
-            //                nx = (xx + 1);
-            //                ny = yy;
-            //                direction = "E";
-            //            }
-            //        }
-            //        else
-            //        {
-            //            if (TotalMoveCost[xx - 1, yy] < tmp & PointInZOC[xx - 1, yy] <= 0)
-            //            {
-            //                tmp = TotalMoveCost[xx - 1, yy];
-            //                nx = (xx - 1);
-            //                ny = yy;
-            //                direction = "W";
-            //            }
-
-            //            if (TotalMoveCost[xx + 1, yy] < tmp & PointInZOC[xx + 1, yy] <= 0)
-            //            {
-            //                tmp = TotalMoveCost[xx + 1, yy];
-            //                nx = (xx + 1);
-            //                ny = yy;
-            //                direction = "E";
-            //            }
-
-            //            if (TotalMoveCost[xx, yy - 1] < tmp & PointInZOC[xx, yy - 1] <= 0)
-            //            {
-            //                tmp = TotalMoveCost[xx, yy - 1];
-            //                nx = xx;
-            //                ny = (yy - 1);
-            //                direction = "N";
-            //            }
-
-            //            if (TotalMoveCost[xx, yy + 1] < tmp & PointInZOC[xx, yy + 1] <= 0)
-            //            {
-            //                tmp = TotalMoveCost[xx, yy + 1];
-            //                nx = xx;
-            //                ny = (yy + 1);
-            //                direction = "S";
-            //            }
-            //        }
-
-            //        if (nx == xx & ny == yy)
-            //        {
-            //            // これ以上必要移動力が低い場所が見つからなかったので終了
-            //            break;
-            //        }
-
-            //        // 見つかった場所を記録
-            //        Array.Resize(move_route_x, Information.UBound(move_route_x) + 1 + 1);
-            //        Array.Resize(move_route_y, Information.UBound(move_route_y) + 1 + 1);
-            //        move_route_x[Information.UBound(move_route_x)] = nx;
-            //        move_route_y[Information.UBound(move_route_y)] = ny;
-
-            //        // 移動方向を記録
-            //        Array.Resize(move_direction, Information.UBound(move_direction) + 1 + 1);
-            //        // UPGRADE_WARNING: オブジェクト move_direction(UBound()) の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            //        move_direction[Information.UBound(move_direction)] = direction;
-            //        prev_direction = direction;
-
-            //        // 次回は今回見つかった場所を起点に検索する
-            //        xx = nx;
-            //        yy = ny;
-            //    }
-
-            //    // 直線を走った距離を計算
-            //    Commands.MovedUnitSpeed = 1;
-            //    var loopTo2 = (Information.UBound(move_direction) - 1);
-            //    for (i = 2; i <= loopTo2; i++)
-            //    {
-            //        // UPGRADE_WARNING: オブジェクト move_direction(i + 1) の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            //        // UPGRADE_WARNING: オブジェクト move_direction(i) の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-            //        if (Conversions.ToBoolean(Operators.ConditionalCompareObjectNotEqual(move_direction[i], move_direction[i + 1], false)))
-            //        {
-            //            break;
-            //        }
-
-            //        Commands.MovedUnitSpeed = (Commands.MovedUnitSpeed + 1);
-            //    }
         }
 
+        // 現在位置から指定した場所までの移動経路を調べる
+        // 事前にAreaInSpeedを実行しておく事が必要
+        public void SearchMoveRoute(int tx, int ty, out IList<int> move_route_x, out IList<int> move_route_y)
+        {
+            int xx, yy;
+            int nx, ny;
+            int ox, oy;
+            int tmp;
+            string direction = "";
+            string prev_direction = "";
+            var move_direction = new List<string>();
+            move_route_x = new List<int>();
+            move_route_y = new List<int>();
+            move_route_x.Add(tx);
+            move_route_y.Add(ty);
+
+            // 現在位置を調べる
+            ox = tx;
+            oy = ty;
+            for (xx = 1; xx <= MapWidth; xx++)
+            {
+                for (yy = 1; yy <= MapHeight; yy++)
+                {
+                    if (TotalMoveCost[xx, yy] == 0)
+                    {
+                        ox = xx;
+                        oy = yy;
+                    }
+                }
+            }
+
+            // 現在位置のＺＯＣは無効化する
+            PointInZOC[ox, oy] = 0;
+            xx = tx;
+            yy = ty;
+            nx = tx;
+            ny = ty;
+            while (TotalMoveCost[xx, yy] > 0)
+            {
+                tmp = TotalMoveCost[xx, yy];
+
+                // 周りの場所から最も必要移動力が低い場所を探す
+
+                // なるべく直線方向に移動させるため、前回と同じ移動方向を優先させる
+                switch (prev_direction ?? "")
+                {
+                    case "N":
+                        {
+                            if (TotalMoveCost[xx, yy - 1] < tmp & PointInZOC[xx, yy - 1] <= 0)
+                            {
+                                tmp = TotalMoveCost[xx, yy - 1];
+                                nx = xx;
+                                ny = (yy - 1);
+                                direction = "N";
+                            }
+
+                            break;
+                        }
+
+                    case "S":
+                        {
+                            if (TotalMoveCost[xx, yy + 1] < tmp & PointInZOC[xx, yy + 1] <= 0)
+                            {
+                                tmp = TotalMoveCost[xx, yy + 1];
+                                nx = xx;
+                                ny = (yy + 1);
+                                direction = "S";
+                            }
+
+                            break;
+                        }
+
+                    case "W":
+                        {
+                            if (TotalMoveCost[xx - 1, yy] < tmp & PointInZOC[xx - 1, yy] <= 0)
+                            {
+                                tmp = TotalMoveCost[xx - 1, yy];
+                                nx = (xx - 1);
+                                ny = yy;
+                                direction = "W";
+                            }
+
+                            break;
+                        }
+
+                    case "E":
+                        {
+                            if (TotalMoveCost[xx + 1, yy] < tmp & PointInZOC[xx + 1, yy] <= 0)
+                            {
+                                tmp = TotalMoveCost[xx + 1, yy];
+                                nx = (xx + 1);
+                                ny = yy;
+                                direction = "E";
+                            }
+
+                            break;
+                        }
+                }
+
+                // なるべく目標位置付近で直進させるため、目標位置との距離差の小さい
+                // 座標軸方向に優先して移動させる
+                if (Math.Abs((xx - ox)) <= Math.Abs((yy - oy)))
+                {
+                    if (TotalMoveCost[xx, yy - 1] < tmp & PointInZOC[xx, yy - 1] <= 0)
+                    {
+                        tmp = TotalMoveCost[xx, yy - 1];
+                        nx = xx;
+                        ny = (yy - 1);
+                        direction = "N";
+                    }
+
+                    if (TotalMoveCost[xx, yy + 1] < tmp & PointInZOC[xx, yy + 1] <= 0)
+                    {
+                        tmp = TotalMoveCost[xx, yy + 1];
+                        nx = xx;
+                        ny = (yy + 1);
+                        direction = "S";
+                    }
+
+                    if (TotalMoveCost[xx - 1, yy] < tmp & PointInZOC[xx - 1, yy] <= 0)
+                    {
+                        tmp = TotalMoveCost[xx - 1, yy];
+                        nx = (xx - 1);
+                        ny = yy;
+                        direction = "W";
+                    }
+
+                    if (TotalMoveCost[xx + 1, yy] < tmp & PointInZOC[xx + 1, yy] <= 0)
+                    {
+                        tmp = TotalMoveCost[xx + 1, yy];
+                        nx = (xx + 1);
+                        ny = yy;
+                        direction = "E";
+                    }
+                }
+                else
+                {
+                    if (TotalMoveCost[xx - 1, yy] < tmp & PointInZOC[xx - 1, yy] <= 0)
+                    {
+                        tmp = TotalMoveCost[xx - 1, yy];
+                        nx = (xx - 1);
+                        ny = yy;
+                        direction = "W";
+                    }
+
+                    if (TotalMoveCost[xx + 1, yy] < tmp & PointInZOC[xx + 1, yy] <= 0)
+                    {
+                        tmp = TotalMoveCost[xx + 1, yy];
+                        nx = (xx + 1);
+                        ny = yy;
+                        direction = "E";
+                    }
+
+                    if (TotalMoveCost[xx, yy - 1] < tmp & PointInZOC[xx, yy - 1] <= 0)
+                    {
+                        tmp = TotalMoveCost[xx, yy - 1];
+                        nx = xx;
+                        ny = (yy - 1);
+                        direction = "N";
+                    }
+
+                    if (TotalMoveCost[xx, yy + 1] < tmp & PointInZOC[xx, yy + 1] <= 0)
+                    {
+                        tmp = TotalMoveCost[xx, yy + 1];
+                        nx = xx;
+                        ny = (yy + 1);
+                        direction = "S";
+                    }
+                }
+
+                if (nx == xx & ny == yy)
+                {
+                    // これ以上必要移動力が低い場所が見つからなかったので終了
+                    break;
+                }
+
+                // 見つかった場所を記録
+                move_route_x.Add(nx);
+                move_route_y.Add(ny);
+
+                // 移動方向を記録
+                move_direction.Add(direction);
+                prev_direction = direction;
+
+                // 次回は今回見つかった場所を起点に検索する
+                xx = nx;
+                yy = ny;
+            }
+
+            // 直線を走った距離を計算
+            Commands.MovedUnitSpeed = 1;
+            for (var i = 1; i < move_direction.Count - 1; i++)
+            {
+                if (move_direction[i] == move_direction[i + 1])
+                {
+                    break;
+                }
+
+                Commands.MovedUnitSpeed = (Commands.MovedUnitSpeed + 1);
+            }
+        }
     }
 }

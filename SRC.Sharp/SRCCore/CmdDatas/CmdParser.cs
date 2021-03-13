@@ -577,11 +577,8 @@ namespace SRCCore.CmdDatas
                     //        break;
                     //    }
 
-                    //case "move":
-                    //    {
-                    //        CmdName = CmdType.MoveCmd;
-                    //        break;
-                    //    }
+                    case "move":
+                        return new MoveCmd(src, data);
 
                     //case "night":
                     //    {

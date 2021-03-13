@@ -25,8 +25,11 @@ namespace SRCCore.Pilots
         // 愛称
         public string Nickname0 => Data.Nickname;
 
-        //public string get_Nickname(bool dont_call_unit_nickname)
-        //{
+        public string get_Nickname(bool dont_call_unit_nickname)
+        {
+            return Nickname0;
+        }
+        // TODO Impl
         //    string NicknameRet = default;
         //    short idx;
         //    Unit u;
