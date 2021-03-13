@@ -119,7 +119,7 @@ namespace SRCCore
         // 拡大戦闘アニメを表示するか
         public bool ExtendedAnimation;
         // 移動アニメを表示するか
-        public bool MoveAnimation;
+        public bool MoveAnimation = true;
         // 画像バッファの枚数
         public int ImageBufferSize;
         // 画像バッファの最大バイト数
