@@ -14,12 +14,11 @@ namespace SRCCore.CmdDatas.Commands
 
         protected override int ExecInternal()
         {
-            int ExecMoveCmdRet = default;
             Unit u;
-            short ux, uy;
-            short tx, ty;
-            var opt = default(string);
-            short idx;
+            int ux, uy;
+            int tx, ty;
+            string opt = "";
+            int idx;
             if (!Information.IsNumeric(GetArgAsString(2)))
             {
                 idx = 3;
@@ -28,10 +27,10 @@ namespace SRCCore.CmdDatas.Commands
             else
             {
                 idx = 2;
-                u = Event_Renamed.SelectedUnitForEvent;
+                u = Event.SelectedUnitForEvent;
             }
 
-            tx = (short)GetArgAsLong(idx);
+            tx = GetArgAsLong(idx);
             if (tx < 1)
             {
                 tx = 1;
@@ -41,8 +40,8 @@ namespace SRCCore.CmdDatas.Commands
                 tx = Map.MapWidth;
             }
 
-            idx = (short)(idx + 1);
-            ty = (short)GetArgAsLong(idx);
+            idx = (idx + 1);
+            ty = GetArgAsLong(idx);
             if (ty < 1)
             {
                 ty = 1;
@@ -52,67 +51,48 @@ namespace SRCCore.CmdDatas.Commands
                 ty = Map.MapHeight;
             }
 
-            idx = (short)(idx + 1);
+            idx = (idx + 1);
             if (idx <= ArgNum)
             {
                 opt = GetArgAsString(idx);
             }
 
+            switch (u.Status ?? "")
             {
-                var withBlock = u;
-                switch (u.Status_Renamed ?? "")
-                {
-                    case "出撃":
-                        {
-                            if (Strings.InStr(opt, "アニメ表示") == 1)
-                            {
-                                // 現在位置を記録
-                                ux = withBlock.x;
-                                uy = withBlock.y;
+                case "出撃":
+                    if (Strings.InStr(opt, "アニメ表示") == 1)
+                    {
+                        // 現在位置を記録
+                        ux = u.x;
+                        uy = u.y;
 
-                                // 目的地にユニットがいて入れない場合があるので
-                                // 実際に移動させて到着地点を確かめる
-                                withBlock.Jump(tx, ty, false);
-                                tx = withBlock.x;
-                                ty = withBlock.y;
+                        // 目的地にユニットがいて入れない場合があるので
+                        // 実際に移動させて到着地点を確かめる
+                        u.Jump(tx, ty, false);
+                        tx = u.x;
+                        ty = u.y;
 
-                                // 一旦元の位置に戻す
-                                withBlock.Jump(ux, uy, false);
+                        // 一旦元の位置に戻す
+                        u.Jump(ux, uy, false);
 
-                                // 移動アニメ表示
-                                GUI.MoveUnitBitmap(ref u, ux, uy, tx, ty, 20);
-                            }
+                        // 移動アニメ表示
+                        GUI.MoveUnitBitmap(u, ux, uy, tx, ty, 20);
+                    }
 
-                            withBlock.Jump(tx, ty, false);
-                            break;
-                        }
+                    u.Jump(tx, ty, false);
+                    break;
 
-                    case "格納":
-                        {
-                            withBlock.StandBy(tx, ty, opt);
-                            break;
-                        }
+                case "格納":
+                    u.StandBy(tx, ty, opt);
+                    break;
 
-                    default:
-                        {
-                            Event_Renamed.EventErrorMessage = withBlock.MainPilot().get_Nickname(false) + "は出撃していません";
-                            ;
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                            /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 347546
-
-
-                            Input:
-                                                Error(0)
-
-                             */
-                            break;
-                        }
-                }
+                default:
+                    throw new EventErrorException(this, u.MainPilot().get_Nickname(false) + "は出撃していません");
             }
 
-            if (string.IsNullOrEmpty(opt) | Strings.InStr(opt, "アニメ表示") == 1)
+            if (string.IsNullOrEmpty(opt) || Strings.InStr(opt, "アニメ表示") == 1)
             {
-                if (GUI.MainForm.Visible & !GUI.IsPictureVisible)
+                if (GUI.MainFormVisible & !GUI.IsPictureVisible)
                 {
                     GUI.RedrawScreen();
                 }
@@ -123,16 +103,7 @@ namespace SRCCore.CmdDatas.Commands
             // 画面更新しない
             else
             {
-                Event_Renamed.EventErrorMessage = "Moveコマンドの引数の数が違います";
-                ;
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 347943
-
-
-                Input:
-                            Error(0)
-
-                 */
+                throw new EventErrorException(this, "Moveコマンドの引数の数が違います");
             }
 
             return EventData.ID + 1;

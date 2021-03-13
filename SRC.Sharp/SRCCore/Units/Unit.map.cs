@@ -693,15 +693,24 @@ namespace SRCCore.Units
         // ユニットを(new_x,new_y)にジャンプ
         public void Jump(int new_x, int new_y, bool do_refresh = true)
         {
+            // TODO Impl
             //    int j, i, k;
 
-            //    // ユニットを一旦マップから削除
-            //    // UPGRADE_NOTE: オブジェクト MapDataForUnit() をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
-            //    Map.MapDataForUnit[x, y] = null;
-            //    GUI.EraseUnitBitmap(x, y, do_refresh);
-            //    SRC.PList.UpdateSupportMod(this);
+            // ユニットを一旦マップから削除
+            Map.MapDataForUnit[x, y] = null;
+            GUI.EraseUnitBitmap(x, y, do_refresh);
+            SRC.PList.UpdateSupportMod(this);
 
             //    // 空き位置を検索
+            var prev_x = x;
+            var prev_y = y;
+            x = new_x;
+            y = new_y;
+            foreach (var of in OtherForms)
+            {
+                of.x = x;
+                of.y = y;
+            }
             //    for (i = 0; i <= 10; i++)
             //    {
             //        var loopTo = GeneralLib.MinLng(new_x + i, Map.MapWidth);
@@ -906,19 +915,19 @@ namespace SRCCore.Units
             //            }
             //    }
 
-            //    // マップにユニットを登録
-            //    Map.MapDataForUnit[x, y] = this;
+            // マップにユニットを登録
+            Map.MapDataForUnit[x, y] = this;
 
-            //    // 情報更新
-            //    Update();
-            //    SRC.PList.UpdateSupportMod(this);
+            // 情報更新
+            Update();
+            SRC.PList.UpdateSupportMod(this);
 
-            //    // ユニット描画
-            //    if (do_refresh)
-            //    {
-            //        var argu = this;
-            //        GUI.PaintUnitBitmap(argu);
-            //    }
+            // ユニット描画
+            if (do_refresh)
+            {
+                var argu = this;
+                GUI.PaintUnitBitmap(argu);
+            }
         }
 
         // マップ上から脱出
