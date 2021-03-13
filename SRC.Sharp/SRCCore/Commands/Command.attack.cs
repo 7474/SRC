@@ -476,34 +476,34 @@ namespace SRCCore.Commands
             SupportGuardUnit = null;
             SupportGuardUnit2 = null;
 
-            //// 攻撃側の武器使用イベント
-            //Event_Renamed.HandleEvent("使用", SelectedUnit.MainPilot().ID, wname);
-            //if (SRC.IsScenarioFinished)
-            //{
-            //    GUI.UnlockGUI();
-            //    SRC.IsScenarioFinished = false;
-            //    SelectedPartners = new Unit[1];
-            //    return;
-            //}
+            // 攻撃側の武器使用イベント
+            Event.HandleEvent("使用", SelectedUnit.MainPilot().ID, wname);
+            if (SRC.IsScenarioFinished)
+            {
+                GUI.UnlockGUI();
+                SRC.IsScenarioFinished = false;
+                SelectedPartners = new Unit[0];
+                return;
+            }
 
-            //if (SRC.IsCanceled)
-            //{
-            //    SRC.IsCanceled = false;
-            //    WaitCommand();
-            //    return;
-            //}
+            if (SRC.IsCanceled)
+            {
+                SRC.IsCanceled = false;
+                WaitCommand();
+                return;
+            }
 
             //// 敵の武器使用イベント
             //if (SelectedTWeapon > 0)
             //{
             //    SaveSelections();
             //    SwapSelections();
-            //    Event_Renamed.HandleEvent("使用", SelectedUnit.MainPilot().ID, twname);
+            //    Event.HandleEvent("使用", SelectedUnit.MainPilot().ID, twname);
             //    RestoreSelections();
             //    if (SRC.IsScenarioFinished)
             //    {
             //        SRC.IsScenarioFinished = false;
-            //        SelectedPartners = new Unit[1];
+            //SelectedPartners = new Unit[0];
             //        GUI.UnlockGUI();
             //        return;
             //    }
@@ -511,29 +511,29 @@ namespace SRCCore.Commands
             //    if (SRC.IsCanceled)
             //    {
             //        SRC.IsCanceled = false;
-            //        SelectedPartners = new Unit[1];
+            //SelectedPartners = new Unit[0];
             //        WaitCommand();
             //        return;
             //    }
             //}
 
-            //// 攻撃イベント
-            //Event_Renamed.HandleEvent("攻撃", SelectedUnit.MainPilot().ID, SelectedTarget.MainPilot().ID);
-            //if (SRC.IsScenarioFinished)
-            //{
-            //    SRC.IsScenarioFinished = false;
-            //    SelectedPartners = new Unit[1];
-            //    GUI.UnlockGUI();
-            //    return;
-            //}
+            // 攻撃イベント
+            Event.HandleEvent("攻撃", SelectedUnit.MainPilot().ID, SelectedTarget.MainPilot().ID);
+            if (SRC.IsScenarioFinished)
+            {
+                SRC.IsScenarioFinished = false;
+                SelectedPartners = new Unit[0];
+                GUI.UnlockGUI();
+                return;
+            }
 
-            //if (SRC.IsCanceled)
-            //{
-            //    SRC.IsCanceled = false;
-            //    SelectedPartners = new Unit[1];
-            //    WaitCommand();
-            //    return;
-            //}
+            if (SRC.IsCanceled)
+            {
+                SRC.IsCanceled = false;
+                SelectedPartners = new Unit[0];
+                WaitCommand();
+                return;
+            }
 
             //// 敵がＢＧＭ能力を持つ場合はＢＧＭを変更
             //{
@@ -1294,11 +1294,11 @@ namespace SRCCore.Commands
             //    var withBlock19 = attack_target.CurrentForm();
             //    if (withBlock19.Status == "破壊")
             //    {
-            //        Event_Renamed.HandleEvent("破壊", withBlock19.MainPilot().ID);
+            //        Event.HandleEvent("破壊", withBlock19.MainPilot().ID);
             //    }
             //    else if (withBlock19.Status == "出撃" & withBlock19.HP / (double)withBlock19.MaxHP < attack_target_hp_ratio)
             //    {
-            //        Event_Renamed.HandleEvent("損傷率", withBlock19.MainPilot().ID, 100 * (withBlock19.MaxHP - withBlock19.HP) / withBlock19.MaxHP);
+            //        Event.HandleEvent("損傷率", withBlock19.MainPilot().ID, 100 * (withBlock19.MaxHP - withBlock19.HP) / withBlock19.MaxHP);
             //    }
             //}
 
@@ -1329,11 +1329,11 @@ namespace SRCCore.Commands
             //    {
             //        if (withBlock20.Status == "破壊")
             //        {
-            //            Event_Renamed.HandleEvent("破壊", withBlock20.MainPilot().ID);
+            //            Event.HandleEvent("破壊", withBlock20.MainPilot().ID);
             //        }
             //        else if (withBlock20.Status == "出撃" & withBlock20.HP / (double)withBlock20.MaxHP < defense_target_hp_ratio)
             //        {
-            //            Event_Renamed.HandleEvent("損傷率", withBlock20.MainPilot().ID, 100 * (withBlock20.MaxHP - withBlock20.HP) / withBlock20.MaxHP);
+            //            Event.HandleEvent("損傷率", withBlock20.MainPilot().ID, 100 * (withBlock20.MaxHP - withBlock20.HP) / withBlock20.MaxHP);
             //        }
             //    }
             //}
@@ -1356,11 +1356,11 @@ namespace SRCCore.Commands
             //            {
             //                if (withBlock21.Status == "破壊")
             //                {
-            //                    Event_Renamed.HandleEvent("破壊", withBlock21.MainPilot().ID);
+            //                    Event.HandleEvent("破壊", withBlock21.MainPilot().ID);
             //                }
             //                else if (withBlock21.Status == "出撃" & withBlock21.HP / (double)withBlock21.MaxHP < defense_target2_hp_ratio)
             //                {
-            //                    Event_Renamed.HandleEvent("損傷率", withBlock21.MainPilot().ID, 100 * (withBlock21.MaxHP - withBlock21.HP) / withBlock21.MaxHP);
+            //                    Event.HandleEvent("損傷率", withBlock21.MainPilot().ID, 100 * (withBlock21.MaxHP - withBlock21.HP) / withBlock21.MaxHP);
             //                }
             //            }
             //        }
@@ -1387,7 +1387,7 @@ namespace SRCCore.Commands
             //// 武器の使用後イベント
             //if (SelectedUnit.Status == "出撃" & SelectedWeapon > 0)
             //{
-            //    Event_Renamed.HandleEvent("使用後", SelectedUnit.MainPilot().ID, wname);
+            //    Event.HandleEvent("使用後", SelectedUnit.MainPilot().ID, wname);
             //    if (SRC.IsScenarioFinished)
             //    {
             //        SRC.IsScenarioFinished = false;
@@ -1409,7 +1409,7 @@ namespace SRCCore.Commands
             //{
             //    SaveSelections();
             //    SwapSelections();
-            //    Event_Renamed.HandleEvent("使用後", SelectedUnit.MainPilot().ID, twname);
+            //    Event.HandleEvent("使用後", SelectedUnit.MainPilot().ID, twname);
             //    RestoreSelections();
             //    if (SRC.IsScenarioFinished)
             //    {
@@ -1431,7 +1431,7 @@ namespace SRCCore.Commands
             //// 攻撃後イベント
             //if (SelectedUnit.Status == "出撃" & SelectedTarget.Status == "出撃")
             //{
-            //    Event_Renamed.HandleEvent("攻撃後", SelectedUnit.MainPilot().ID, SelectedTarget.MainPilot().ID);
+            //    Event.HandleEvent("攻撃後", SelectedUnit.MainPilot().ID, SelectedTarget.MainPilot().ID);
             //    if (SRC.IsScenarioFinished)
             //    {
             //        SRC.IsScenarioFinished = false;
@@ -1457,7 +1457,7 @@ namespace SRCCore.Commands
             //    {
             //        if (withBlock22.x != tx | withBlock22.y != ty)
             //        {
-            //            Event_Renamed.HandleEvent("進入", withBlock22.MainPilot().ID, withBlock22.x, withBlock22.y);
+            //            Event.HandleEvent("進入", withBlock22.MainPilot().ID, withBlock22.x, withBlock22.y);
             //            if (SRC.IsScenarioFinished)
             //            {
             //                SRC.IsScenarioFinished = false;
@@ -1506,7 +1506,7 @@ namespace SRCCore.Commands
             //        // 進入イベント
             //        if (SelectedUnitMoveCost > 0)
             //        {
-            //            Event_Renamed.HandleEvent("進入", SelectedUnit.MainPilot().ID, SelectedUnit.x, SelectedUnit.y);
+            //            Event.HandleEvent("進入", SelectedUnit.MainPilot().ID, SelectedUnit.x, SelectedUnit.y);
             //            if (SRC.IsScenarioFinished)
             //            {
             //                SRC.IsScenarioFinished = false;
@@ -1724,7 +1724,7 @@ namespace SRCCore.Commands
             //        // 進入イベント
             //        if (SelectedUnitMoveCost > 0)
             //        {
-            //            Event_Renamed.HandleEvent("進入", SelectedUnit.MainPilot().ID, SelectedUnit.x, SelectedUnit.y);
+            //            Event.HandleEvent("進入", SelectedUnit.MainPilot().ID, SelectedUnit.x, SelectedUnit.y);
             //            if (SRC.IsScenarioFinished)
             //            {
             //                SRC.IsScenarioFinished = false;
