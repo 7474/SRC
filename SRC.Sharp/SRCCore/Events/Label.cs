@@ -58,177 +58,132 @@ namespace SRCCore.Events
                     lnum[2] = GeneralLib.StrToLng(litem[2]).ToString();
                     break;
 
-                //case "損傷率":
-                //    {
-                //        ltype = LabelType.DamageEventLabel;
-                //        is_unit[2] = true;
-                //        is_num[3] = true;
-                //        lnum[3] = GeneralLib.StrToLng(litem[3]).ToString();
-                //        break;
-                //    }
+                case "損傷率":
+                    ltype = LabelType.DamageEventLabel;
+                    is_unit[2] = true;
+                    is_num[3] = true;
+                    lnum[3] = GeneralLib.StrToLng(litem[3]).ToString();
+                    break;
 
-                //case "破壊":
-                //case "マップ攻撃破壊":
-                //    {
-                //        ltype = LabelType.DestructionEventLabel;
-                //        is_unit[2] = true;
-                //        break;
-                //    }
+                case "破壊":
+                case "マップ攻撃破壊":
+                    ltype = LabelType.DestructionEventLabel;
+                    is_unit[2] = true;
+                    break;
 
-                //case "全滅":
-                //    {
-                //        ltype = LabelType.TotalDestructionEventLabel;
-                //        break;
-                //    }
+                case "全滅":
+                    ltype = LabelType.TotalDestructionEventLabel;
+                    break;
 
-                //case "攻撃":
-                //    {
-                //        ltype = LabelType.AttackEventLabel;
-                //        revrersible = true;
-                //        is_unit[2] = true;
-                //        is_unit[3] = true;
-                //        break;
-                //    }
+                case "攻撃":
+                    ltype = LabelType.AttackEventLabel;
+                    revrersible = true;
+                    is_unit[2] = true;
+                    is_unit[3] = true;
+                    break;
 
-                //case "攻撃後":
-                //    {
-                //        ltype = LabelType.AfterAttackEventLabel;
-                //        revrersible = true;
-                //        is_unit[2] = true;
-                //        is_unit[3] = true;
-                //        break;
-                //    }
+                case "攻撃後":
+                    ltype = LabelType.AfterAttackEventLabel;
+                    revrersible = true;
+                    is_unit[2] = true;
+                    is_unit[3] = true;
+                    break;
 
-                //case "会話":
-                //    {
-                //        ltype = LabelType.TalkEventLabel;
-                //        is_unit[2] = true;
-                //        is_unit[3] = true;
-                //        break;
-                //    }
+                case "会話":
+                    ltype = LabelType.TalkEventLabel;
+                    is_unit[2] = true;
+                    is_unit[3] = true;
+                    break;
 
-                //case "接触":
-                //    {
-                //        ltype = LabelType.ContactEventLabel;
-                //        revrersible = true;
-                //        is_unit[2] = true;
-                //        is_unit[3] = true;
-                //        break;
-                //    }
+                case "接触":
+                    ltype = LabelType.ContactEventLabel;
+                    revrersible = true;
+                    is_unit[2] = true;
+                    is_unit[3] = true;
+                    break;
 
-                //case "進入":
-                //    {
-                //        ltype = LabelType.EnterEventLabel;
-                //        is_unit[2] = true;
-                //        if (llen == 4)
-                //        {
-                //            is_num[3] = true;
-                //            is_num[4] = true;
-                //            lnum[3] = GeneralLib.StrToLng(litem[3]).ToString();
-                //            lnum[4] = GeneralLib.StrToLng(litem[4]).ToString();
-                //        }
+                case "進入":
+                    ltype = LabelType.EnterEventLabel;
+                    is_unit[2] = true;
+                    if (llen == 4)
+                    {
+                        is_num[3] = true;
+                        is_num[4] = true;
+                        lnum[3] = GeneralLib.StrToLng(litem[3]).ToString();
+                        lnum[4] = GeneralLib.StrToLng(litem[4]).ToString();
+                    }
+                    break;
 
-                //        break;
-                //    }
+                case "脱出":
+                    ltype = LabelType.EscapeEventLabel;
+                    is_unit[2] = true;
+                    break;
 
-                //case "脱出":
-                //    {
-                //        ltype = LabelType.EscapeEventLabel;
-                //        is_unit[2] = true;
-                //        break;
-                //    }
+                case "収納":
+                    ltype = LabelType.LandEventLabel;
+                    is_unit[2] = true;
+                    break;
 
-                //case "収納":
-                //    {
-                //        ltype = LabelType.LandEventLabel;
-                //        is_unit[2] = true;
-                //        break;
-                //    }
+                case "使用":
+                    ltype = LabelType.UseEventLabel;
+                    is_unit[2] = true;
+                    break;
 
-                //case "使用":
-                //    {
-                //        ltype = LabelType.UseEventLabel;
-                //        is_unit[2] = true;
-                //        break;
-                //    }
+                case "使用後":
+                    ltype = LabelType.AfterUseEventLabel;
+                    is_unit[2] = true;
+                    break;
 
-                //case "使用後":
-                //    {
-                //        ltype = LabelType.AfterUseEventLabel;
-                //        is_unit[2] = true;
-                //        break;
-                //    }
+                case "変形":
+                    ltype = LabelType.TransformEventLabel;
+                    is_unit[2] = true;
+                    break;
 
-                //case "変形":
-                //    {
-                //        ltype = LabelType.TransformEventLabel;
-                //        is_unit[2] = true;
-                //        break;
-                //    }
+                case "合体":
+                    ltype = LabelType.CombineEventLabel;
+                    is_unit[2] = true;
+                    break;
 
-                //case "合体":
-                //    {
-                //        ltype = LabelType.CombineEventLabel;
-                //        is_unit[2] = true;
-                //        break;
-                //    }
-
-                //case "分離":
-                //    {
-                //        ltype = LabelType.SplitEventLabel;
-                //        is_unit[2] = true;
-                //        break;
-                //    }
+                case "分離":
+                    ltype = LabelType.SplitEventLabel;
+                    is_unit[2] = true;
+                    break;
 
                 case "行動終了":
                     ltype = LabelType.FinishEventLabel;
                     is_unit[2] = true;
                     break;
 
-                //case "レベルアップ":
-                //    {
-                //        ltype = LabelType.LevelUpEventLabel;
-                //        is_unit[2] = true;
-                //        break;
-                //    }
+                case "レベルアップ":
+                    ltype = LabelType.LevelUpEventLabel;
+                    is_unit[2] = true;
+                    break;
 
-                //case "勝利条件":
-                //    {
-                //        ltype = LabelType.RequirementEventLabel;
-                //        break;
-                //    }
+                case "勝利条件":
+                    ltype = LabelType.RequirementEventLabel;
+                    break;
 
-                //case "再開":
-                //    {
-                //        ltype = LabelType.ResumeEventLabel;
-                //        break;
-                //    }
+                case "再開":
+                    ltype = LabelType.ResumeEventLabel;
+                    break;
 
-                //case "マップコマンド":
-                //    {
-                //        ltype = LabelType.MapCommandEventLabel;
-                //        is_condition[3] = true;
-                //        break;
-                //    }
+                case "マップコマンド":
+                    ltype = LabelType.MapCommandEventLabel;
+                    is_condition[3] = true;
+                    break;
 
-                //case "ユニットコマンド":
-                //    {
-                //        ltype = LabelType.UnitCommandEventLabel;
-                //        is_condition[4] = true;
-                //        break;
-                //    }
+                case "ユニットコマンド":
+                    ltype = LabelType.UnitCommandEventLabel;
+                    is_condition[4] = true;
+                    break;
 
-                //case "特殊効果":
-                //    {
-                //        ltype = LabelType.EffectEventLabel;
-                //        break;
-                //    }
+                case "特殊効果":
+                    ltype = LabelType.EffectEventLabel;
+                    break;
 
                 default:
-                    {
-                        ltype = LabelType.NormalLabel;
-                        break;
-                    }
+                    ltype = LabelType.NormalLabel;
+                    break;
             }
 
             // 各ラベルについて一致しているかチェック
