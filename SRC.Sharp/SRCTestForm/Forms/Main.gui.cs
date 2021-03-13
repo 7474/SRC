@@ -216,7 +216,128 @@ namespace SRCTestForm
 
         public void MoveUnitBitmap2(Unit u, int wait_time0, int division)
         {
-            throw new NotImplementedException();
+            short xx, yy;
+            short vx, vy;
+            int ret;
+            short i, j;
+            PictureBox pic;
+            int cur_time, start_time = default, wait_time;
+            var PT = default(POINTAPI);
+            var move_route_x = default(short[]);
+            var move_route_y = default(short[]);
+            wait_time = wait_time0 / division;
+            SaveScreen();
+            {
+                var withBlock = MainForm;
+                // UPGRADE_ISSUE: Control picTmp32 は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+                pic = withBlock.picTmp32(0);
+
+                // ユニット画像を作成
+                // UPGRADE_ISSUE: Control picUnitBitmap は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+                // UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+                ret = BitBlt(pic.hDC, 0, 0, 32, 32, withBlock.picUnitBitmap.hDC, 32 * ((int)u.BitmapID % 15), 96 * ((int)u.BitmapID / 15), SRCCOPY);
+
+                // ユニットのいる場所に合わせて表示を変更
+                switch (u.Area ?? "")
+                {
+                    case "空中":
+                        {
+                            // UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+                            ret = MoveToEx(pic.hDC, 0, 28, ref PT);
+                            // UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+                            ret = LineTo(pic.hDC, 31, 28);
+                            break;
+                        }
+
+                    case "水中":
+                        {
+                            // UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+                            ret = MoveToEx(pic.hDC, 0, 3, ref PT);
+                            // UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+                            ret = LineTo(pic.hDC, 31, 3);
+                            break;
+                        }
+
+                    case "地中":
+                        {
+                            // UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+                            ret = MoveToEx(pic.hDC, 0, 28, ref PT);
+                            // UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+                            ret = LineTo(pic.hDC, 31, 28);
+                            // UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+                            ret = MoveToEx(pic.hDC, 0, 3, ref PT);
+                            // UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+                            ret = LineTo(pic.hDC, 31, 3);
+                            break;
+                        }
+
+                    case "宇宙":
+                        {
+                            if (Map.TerrainClass(u.x, u.y) == "月面")
+                            {
+                                // UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+                                ret = MoveToEx(pic.hDC, 0, 28, ref PT);
+                                // UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+                                ret = LineTo(pic.hDC, 31, 28);
+                            }
+
+                            break;
+                        }
+                }
+
+                // 移動経路を検索
+                Map.SearchMoveRoute(ref u.x, ref u.y, ref move_route_x, ref move_route_y);
+                if (wait_time > 0)
+                {
+                    start_time = GeneralLib.timeGetTime();
+                }
+
+                // 移動の始点
+                xx = MapToPixelX(move_route_x[Information.UBound(move_route_x)]);
+                yy = MapToPixelY(move_route_y[Information.UBound(move_route_y)]);
+                i = (short)(Information.UBound(move_route_x) - 1);
+                while (i > 0)
+                {
+                    vx = (short)(MapToPixelX(move_route_x[i]) - xx);
+                    vy = (short)(MapToPixelY(move_route_y[i]) - yy);
+
+                    // 移動の描画
+                    var loopTo = division;
+                    for (j = 1; j <= loopTo; j++)
+                    {
+                        // 画像を消去
+                        // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+                        ret = BitBlt(withBlock.picMain(0).hDC, xx, yy, 32, 32, withBlock.picMain(1).hDC, xx, yy, SRCCOPY);
+
+                        // 座標を移動
+                        xx = (short)(xx + (short)(vx / division));
+                        yy = (short)(yy + (short)(vy / division));
+
+                        // 画像を描画
+                        // UPGRADE_ISSUE: PictureBox プロパティ pic.hDC はアップグレードされませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="CC4C7EC0-C903-48FC-ACCC-81861D12DA4A"' をクリックしてください。
+                        // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+                        ret = BitBlt(withBlock.picMain(0).hDC, xx, yy, 32, 32, pic.hDC, 0, 0, SRCCOPY);
+
+                        // UPGRADE_ISSUE: Control picMain は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
+                        withBlock.picMain(0).Refresh();
+                        if (wait_time > 0)
+                        {
+                            do
+                            {
+                                Application.DoEvents();
+                                cur_time = GeneralLib.timeGetTime();
+                            }
+                            while (start_time + wait_time > cur_time);
+                            start_time = cur_time;
+                        }
+                    }
+
+                    i = (short)(i - 1);
+                }
+            }
+
+            // 画面が書き換えられたことを記録
+            ScreenIsSaved = false;
         }
 
         public void PaintUnitBitmap(Unit u, string smode)
