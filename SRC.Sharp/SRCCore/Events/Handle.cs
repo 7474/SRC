@@ -166,12 +166,9 @@ namespace SRCCore.Events
                     EventQue.Enqueue(string.Join(" ", "ターン ", Args[1], Args[2]));
                     break;
 
-                //case "損傷率":
-                //    {
-                //        // UPGRADE_WARNING: オブジェクト Args() の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                //        EventQue[Information.UBound(EventQue)] = Conversions.ToString(Operators.ConcatenateObject(Operators.ConcatenateObject(Operators.ConcatenateObject("損傷率 ", Args[1]), " "), SrcFormatter.Format(Args[2])));
-                //        break;
-                //    }
+                case "損傷率":
+                    EventQue.Enqueue(string.Join(" ", "損傷率", Args[1], Args[2]));
+                    break;
 
                 case "攻撃":
                     EventQue.Enqueue(string.Join(" ", "攻撃", Args[1], Args[2]));
@@ -181,21 +178,13 @@ namespace SRCCore.Events
                     EventQue.Enqueue(string.Join(" ", "攻撃後", Args[1], Args[2]));
                     break;
 
-                //case "会話":
-                //    {
-                //        // UPGRADE_WARNING: オブジェクト Args(2) の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                //        // UPGRADE_WARNING: オブジェクト Args() の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                //        EventQue[Information.UBound(EventQue)] = Conversions.ToString(Operators.ConcatenateObject(Operators.ConcatenateObject(Operators.ConcatenateObject("会話 ", Args[1]), " "), Args[2]));
-                //        break;
-                //    }
+                case "会話":
+                    EventQue.Enqueue(string.Join(" ", "会話", Args[1], Args[2]));
+                    break;
 
-                //case "接触":
-                //    {
-                //        // UPGRADE_WARNING: オブジェクト Args(2) の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                //        // UPGRADE_WARNING: オブジェクト Args() の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                //        EventQue[Information.UBound(EventQue)] = Conversions.ToString(Operators.ConcatenateObject(Operators.ConcatenateObject(Operators.ConcatenateObject("接触 ", Args[1]), " "), Args[2]));
-                //        break;
-                //    }
+                case "接触":
+                    EventQue.Enqueue(string.Join(" ", "接触", Args[1], Args[2]));
+                    break;
 
                 //case "進入":
                 //    {
@@ -236,12 +225,9 @@ namespace SRCCore.Events
                 //        break;
                 //    }
 
-                //case "収納":
-                //    {
-                //        // UPGRADE_WARNING: オブジェクト Args() の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                //        EventQue[Information.UBound(EventQue)] = Conversions.ToString(Operators.ConcatenateObject("収納 ", Args[1]));
-                //        break;
-                //    }
+                case "収納":
+                    EventQue.Enqueue(string.Join(" ", "収納", Args[1]));
+                    break;
 
                 case "使用":
                     EventQue.Enqueue(string.Join(" ", "使用", Args[1], Args[2]));
@@ -251,12 +237,9 @@ namespace SRCCore.Events
                     EventQue.Enqueue(string.Join(" ", "使用後", Args[1], Args[2]));
                     break;
 
-                //case "行動終了":
-                //    {
-                //        // UPGRADE_WARNING: オブジェクト Args() の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                //        EventQue[Information.UBound(EventQue)] = Conversions.ToString(Operators.ConcatenateObject("行動終了 ", Args[1]));
-                //        break;
-                //    }
+                case "行動終了":
+                    EventQue.Enqueue(string.Join(" ", "行動終了", Args[1]));
+                    break;
 
                 //case "ユニットコマンド":
                 //    {
