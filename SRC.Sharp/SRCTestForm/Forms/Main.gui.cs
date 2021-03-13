@@ -17,6 +17,42 @@ namespace SRCTestForm
                 g.DrawImage(mainBuffer, 0, 0);
             }
         }
+        public void EraseUnitBitmap(int X, int Y, bool do_refresh)
+        {
+            int xx, yy;
+            int ret;
+
+            // 画面外？
+
+            if (!IsInsideWindow(X, Y))
+            {
+                return;
+            }
+
+            // 画面が乱れるので書き換えない？
+            if (GUI.IsPictureVisible)
+            {
+                return;
+            }
+
+            xx = GUI.MapToPixelX(X);
+            yy = GUI.MapToPixelY(Y);
+
+            SaveScreen();
+
+            // 画面表示変更
+            using (var g = Graphics.FromImage(mainBuffer))
+            {
+                var sourceRect = new Rectangle(xx, yy, MapCellPx, MapCellPx);
+                var destRect = new Rectangle((X - 1) * MapCellPx, (Y - 1) * MapCellPx, MapCellPx, MapCellPx);
+                g.DrawImage(picBack.Image, sourceRect, destRect, GraphicsUnit.Pixel);
+
+            }
+            if (do_refresh)
+            {
+                UpdateScreen();
+            }
+        }
 
         public void PaintUnitBitmap(Unit u, string smode)
         {

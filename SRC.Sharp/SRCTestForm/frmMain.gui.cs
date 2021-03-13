@@ -723,7 +723,7 @@ namespace SRCTestForm
 
         public void EraseUnitBitmap(int X, int Y, bool do_refresh)
         {
-            throw new NotImplementedException();
+            MainForm.EraseUnitBitmap(X, Y, do_refresh);
         }
 
         public void MoveUnitBitmap(Unit u, int x1, int y1, int x2, int y2, int wait_time0, int division)
