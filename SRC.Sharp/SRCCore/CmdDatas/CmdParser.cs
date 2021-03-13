@@ -405,17 +405,11 @@ namespace SRCCore.CmdDatas
                     //        break;
                     //    }
 
-                    //case "gameclear":
-                    //    {
-                    //        CmdName = CmdType.GameClearCmd;
-                    //        break;
-                    //    }
+                    case "gameclear":
+                        return new GameClearCmd(src, data);
 
-                    //case "gameover":
-                    //    {
-                    //        CmdName = CmdType.GameOverCmd;
-                    //        break;
-                    //    }
+                    case "gameover":
+                        return new GameOverCmd(src, data);
 
                     //case "freememory":
                     //    {
@@ -685,11 +679,8 @@ namespace SRCCore.CmdDatas
                     //        break;
                     //    }
 
-                    //case "quit":
-                    //    {
-                    //        CmdName = CmdType.QuitCmd;
-                    //        break;
-                    //    }
+                    case "quit":
+                        return new QuitCmd(src, data);
 
                     //case "rankup":
                     //    {
