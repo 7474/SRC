@@ -431,7 +431,7 @@ namespace SRCCore.Commands
             //    }
             //    else
             //    {
-            //        SelectedPartners = new Unit[1];
+            //        SelectedPartners = new Unit[0];
             //        partners = new Unit[1];
             //    }
             //}
@@ -1306,7 +1306,7 @@ namespace SRCCore.Commands
             //{
             //    GUI.UnlockGUI();
             //    SRC.IsScenarioFinished = false;
-            //    SelectedPartners = new Unit[1];
+            //    SelectedPartners = new Unit[0];
             //    return;
             //}
 
@@ -1341,7 +1341,7 @@ namespace SRCCore.Commands
             //if (SRC.IsScenarioFinished)
             //{
             //    SRC.IsScenarioFinished = false;
-            //    SelectedPartners = new Unit[1];
+            //    SelectedPartners = new Unit[0];
             //    return;
             //}
 
@@ -1371,7 +1371,7 @@ namespace SRCCore.Commands
             //if (SRC.IsScenarioFinished)
             //{
             //    SRC.IsScenarioFinished = false;
-            //    SelectedPartners = new Unit[1];
+            //    SelectedPartners = new Unit[0];
             //    GUI.UnlockGUI();
             //    return;
             //}
@@ -1379,7 +1379,7 @@ namespace SRCCore.Commands
             //if (SRC.IsCanceled)
             //{
             //    SRC.IsCanceled = false;
-            //    SelectedPartners = new Unit[1];
+            //    SelectedPartners = new Unit[0];
             //    GUI.UnlockGUI();
             //    return;
             //}
@@ -1391,7 +1391,7 @@ namespace SRCCore.Commands
             //    if (SRC.IsScenarioFinished)
             //    {
             //        SRC.IsScenarioFinished = false;
-            //        SelectedPartners = new Unit[1];
+            //        SelectedPartners = new Unit[0];
             //        GUI.UnlockGUI();
             //        return;
             //    }
@@ -1399,7 +1399,7 @@ namespace SRCCore.Commands
             //    if (SRC.IsCanceled)
             //    {
             //        SRC.IsCanceled = false;
-            //        SelectedPartners = new Unit[1];
+            //        SelectedPartners = new Unit[0];
             //        GUI.UnlockGUI();
             //        return;
             //    }
@@ -1414,7 +1414,7 @@ namespace SRCCore.Commands
             //    if (SRC.IsScenarioFinished)
             //    {
             //        SRC.IsScenarioFinished = false;
-            //        SelectedPartners = new Unit[1];
+            //        SelectedPartners = new Unit[0];
             //        GUI.UnlockGUI();
             //        return;
             //    }
@@ -1422,32 +1422,32 @@ namespace SRCCore.Commands
             //    if (SRC.IsCanceled)
             //    {
             //        SRC.IsCanceled = false;
-            //        SelectedPartners = new Unit[1];
+            //        SelectedPartners = new Unit[0];
             //        GUI.UnlockGUI();
             //        return;
             //    }
             //}
 
-            //// 攻撃後イベント
-            //if (SelectedUnit.Status == "出撃" & SelectedTarget.Status == "出撃")
-            //{
-            //    Event.HandleEvent("攻撃後", SelectedUnit.MainPilot().ID, SelectedTarget.MainPilot().ID);
-            //    if (SRC.IsScenarioFinished)
-            //    {
-            //        SRC.IsScenarioFinished = false;
-            //        SelectedPartners = new Unit[1];
-            //        GUI.UnlockGUI();
-            //        return;
-            //    }
+            // 攻撃後イベント
+            if (SelectedUnit.Status == "出撃" && SelectedTarget.Status == "出撃")
+            {
+                Event.HandleEvent("攻撃後", SelectedUnit.MainPilot().ID, SelectedTarget.MainPilot().ID);
+                if (SRC.IsScenarioFinished)
+                {   
+                    SRC.IsScenarioFinished = false;
+                    SelectedPartners = new Unit[0];
+                    GUI.UnlockGUI();
+                    return;
+                }
 
-            //    if (SRC.IsCanceled)
-            //    {
-            //        SRC.IsCanceled = false;
-            //        SelectedPartners = new Unit[1];
-            //        GUI.UnlockGUI();
-            //        return;
-            //    }
-            //}
+                if (SRC.IsCanceled)
+                {
+                    SRC.IsCanceled = false;
+                    SelectedPartners = new Unit[0];
+                    GUI.UnlockGUI();
+                    return;
+                }
+            }
 
             //// もし敵が移動していれば進入イベント
             //{
@@ -1461,7 +1461,7 @@ namespace SRCCore.Commands
             //            if (SRC.IsScenarioFinished)
             //            {
             //                SRC.IsScenarioFinished = false;
-            //                SelectedPartners = new Unit[1];
+            //                SelectedPartners = new Unit[0];
             //                GUI.UnlockGUI();
             //                return;
             //            }
@@ -1469,7 +1469,7 @@ namespace SRCCore.Commands
             //            if (SRC.IsCanceled)
             //            {
             //                SRC.IsCanceled = false;
-            //                SelectedPartners = new Unit[1];
+            //                SelectedPartners = new Unit[0];
             //                GUI.UnlockGUI();
             //                return;
             //            }
@@ -1490,7 +1490,7 @@ namespace SRCCore.Commands
             //        partners[i].CurrentForm().UseAction();
             //}
 
-            //SelectedPartners = new Unit[1];
+            //SelectedPartners = new Unit[0];
 
             //// ハイパーモード＆ノーマルモードの自動発動をチェック
             //SRC.UList.CheckAutoHyperMode();
@@ -1670,7 +1670,7 @@ namespace SRCCore.Commands
             //    }
             //    else
             //    {
-            //        SelectedPartners = new Unit[1];
+            //        SelectedPartners = new Unit[0];
             //        partners = new Unit[1];
             //    }
 
@@ -1689,7 +1689,7 @@ namespace SRCCore.Commands
             //    if (SRC.IsScenarioFinished)
             //    {
             //        SRC.IsScenarioFinished = false;
-            //        SelectedPartners = new Unit[1];
+            //        SelectedPartners = new Unit[0];
             //        GUI.UnlockGUI();
             //        return;
             //    }
@@ -1697,7 +1697,7 @@ namespace SRCCore.Commands
             //    if (SRC.IsCanceled)
             //    {
             //        SRC.IsCanceled = false;
-            //        SelectedPartners = new Unit[1];
+            //        SelectedPartners = new Unit[0];
             //        WaitCommand();
             //        return;
             //    }
@@ -1712,7 +1712,7 @@ namespace SRCCore.Commands
             //        partners[i].CurrentForm().UseAction();
             //}
 
-            //SelectedPartners = new Unit[1];
+            //SelectedPartners = new Unit[0];
 
             //// ADD START MARGE
             //// 再移動
