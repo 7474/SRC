@@ -728,12 +728,12 @@ namespace SRCTestForm
 
         public void MoveUnitBitmap(Unit u, int x1, int y1, int x2, int y2, int wait_time0, int division)
         {
-            throw new NotImplementedException();
+            MainForm.MoveUnitBitmap(u, x1, y1, x2, y2, wait_time0, division);
         }
 
         public void MoveUnitBitmap2(Unit u, int wait_time0, int division)
         {
-            throw new NotImplementedException();
+            MainForm.MoveUnitBitmap2(u, wait_time0, division);
         }
 
         public int ListBox(string lb_caption, IList<ListBoxItem> list, string lb_info, string lb_mode)
