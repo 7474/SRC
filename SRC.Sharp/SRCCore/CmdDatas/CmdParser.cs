@@ -84,11 +84,8 @@ namespace SRCCore.CmdDatas
                     //        break;
                     //    }
 
-                    //case "cancel":
-                    //    {
-                    //        CmdName = CmdType.CancelCmd;
-                    //        break;
-                    //    }
+                    case "cancel":
+                        return new CancelCmd(src, data);
 
                     case "center":
                         return new CenterCmd(src, data);
@@ -138,11 +135,8 @@ namespace SRCCore.CmdDatas
                     //        break;
                     //    }
 
-                    //case "clearevent":
-                    //    {
-                    //        CmdName = CmdType.ClearEventCmd;
-                    //        break;
-                    //    }
+                    case "clearevent":
+                        return new ClearEventCmd(src, data);
 
                     //case "clearimage":
                     //    {
@@ -405,17 +399,11 @@ namespace SRCCore.CmdDatas
                     //        break;
                     //    }
 
-                    //case "gameclear":
-                    //    {
-                    //        CmdName = CmdType.GameClearCmd;
-                    //        break;
-                    //    }
+                    case "gameclear":
+                        return new GameClearCmd(src, data);
 
-                    //case "gameover":
-                    //    {
-                    //        CmdName = CmdType.GameOverCmd;
-                    //        break;
-                    //    }
+                    case "gameover":
+                        return new GameOverCmd(src, data);
 
                     //case "freememory":
                     //    {
@@ -685,11 +673,8 @@ namespace SRCCore.CmdDatas
                     //        break;
                     //    }
 
-                    //case "quit":
-                    //    {
-                    //        CmdName = CmdType.QuitCmd;
-                    //        break;
-                    //    }
+                    case "quit":
+                        return new QuitCmd(src, data);
 
                     //case "rankup":
                     //    {
@@ -799,11 +784,8 @@ namespace SRCCore.CmdDatas
                     //        break;
                     //    }
 
-                    //case "restoreevent":
-                    //    {
-                    //        CmdName = CmdType.RestoreEventCmd;
-                    //        break;
-                    //    }
+                    case "restoreevent":
+                        return new RestoreEventCmd(src, data);
 
                     //case "ride":
                     //    {
