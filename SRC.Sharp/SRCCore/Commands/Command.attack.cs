@@ -1384,26 +1384,26 @@ namespace SRCCore.Commands
             //    return;
             //}
 
-            //// 武器の使用後イベント
-            //if (SelectedUnit.Status == "出撃" & SelectedWeapon > 0)
-            //{
-            //    Event.HandleEvent("使用後", SelectedUnit.MainPilot().ID, wname);
-            //    if (SRC.IsScenarioFinished)
-            //    {
-            //        SRC.IsScenarioFinished = false;
-            //        SelectedPartners = new Unit[0];
-            //        GUI.UnlockGUI();
-            //        return;
-            //    }
+            // 武器の使用後イベント
+            if (SelectedUnit.Status == "出撃" && SelectedWeapon > 0)
+            {
+                Event.HandleEvent("使用後", SelectedUnit.MainPilot().ID, wname);
+                if (SRC.IsScenarioFinished)
+                {
+                    SRC.IsScenarioFinished = false;
+                    SelectedPartners = new Unit[0];
+                    GUI.UnlockGUI();
+                    return;
+                }
 
-            //    if (SRC.IsCanceled)
-            //    {
-            //        SRC.IsCanceled = false;
-            //        SelectedPartners = new Unit[0];
-            //        GUI.UnlockGUI();
-            //        return;
-            //    }
-            //}
+                if (SRC.IsCanceled)
+                {
+                    SRC.IsCanceled = false;
+                    SelectedPartners = new Unit[0];
+                    GUI.UnlockGUI();
+                    return;
+                }
+            }
 
             //if (SelectedTarget.Status == "出撃" & SelectedTWeapon > 0)
             //{
@@ -1433,7 +1433,7 @@ namespace SRCCore.Commands
             {
                 Event.HandleEvent("攻撃後", SelectedUnit.MainPilot().ID, SelectedTarget.MainPilot().ID);
                 if (SRC.IsScenarioFinished)
-                {   
+                {
                     SRC.IsScenarioFinished = false;
                     SelectedPartners = new Unit[0];
                     GUI.UnlockGUI();
