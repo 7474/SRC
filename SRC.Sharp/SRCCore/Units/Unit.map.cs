@@ -430,20 +430,22 @@ namespace SRCCore.Units
         // ユニットを(new_x,new_y)に移動
         public void Move(int new_x, int new_y, bool without_en_consumption = false, bool by_cancel = false, bool by_teleport_or_jump = false)
         {
+            // TODO 未実装多いよ
             // ユニットをマップからいったん削除
             if (Map.MapDataForUnit[x, y]?.ID == ID)
             {
                 Map.MapDataForUnit[x, y] = null;
             }
 
-            //    if (GUI.IsPictureVisible)
-            //    {
-            //        GUI.EraseUnitBitmap(x, y, false);
-            //    }
-            //    else
-            //    {
-            //        GUI.EraseUnitBitmap(x, y, false);
-            //    }
+            // XXX 何が違うんだ？
+            if (GUI.IsPictureVisible)
+            {
+                GUI.EraseUnitBitmap(x, y, false);
+            }
+            else
+            {
+                GUI.EraseUnitBitmap(x, y, false);
+            }
 
             //    SRC.PList.UpdateSupportMod(this);
 
@@ -650,13 +652,11 @@ namespace SRCCore.Units
             {
                 if (SRC.MoveAnimation && !by_cancel && !by_teleport_or_jump)
                 {
-                    var argu = this;
-                    GUI.MoveUnitBitmap2(argu, 20);
+                    GUI.MoveUnitBitmap2(this, 20);
                 }
                 else
                 {
-                    var argu1 = this;
-                    GUI.PaintUnitBitmap(argu1);
+                    GUI.PaintUnitBitmap(this);
                 }
             }
 
