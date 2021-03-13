@@ -84,11 +84,8 @@ namespace SRCCore.CmdDatas
                     //        break;
                     //    }
 
-                    //case "cancel":
-                    //    {
-                    //        CmdName = CmdType.CancelCmd;
-                    //        break;
-                    //    }
+                    case "cancel":
+                        return new CancelCmd(src, data);
 
                     case "center":
                         return new CenterCmd(src, data);
