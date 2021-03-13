@@ -81,23 +81,19 @@ namespace SRCCore.Events
                 //        break;
                 //    }
 
-                //case "攻撃":
-                //    {
-                //        ltype = LabelType.AttackEventLabel;
-                //        revrersible = true;
-                //        is_unit[2] = true;
-                //        is_unit[3] = true;
-                //        break;
-                //    }
+                case "攻撃":
+                    ltype = LabelType.AttackEventLabel;
+                    revrersible = true;
+                    is_unit[2] = true;
+                    is_unit[3] = true;
+                    break;
 
-                //case "攻撃後":
-                //    {
-                //        ltype = LabelType.AfterAttackEventLabel;
-                //        revrersible = true;
-                //        is_unit[2] = true;
-                //        is_unit[3] = true;
-                //        break;
-                //    }
+                case "攻撃後":
+                    ltype = LabelType.AfterAttackEventLabel;
+                    revrersible = true;
+                    is_unit[2] = true;
+                    is_unit[3] = true;
+                    break;
 
                 //case "会話":
                 //    {
@@ -145,19 +141,15 @@ namespace SRCCore.Events
                 //        break;
                 //    }
 
-                //case "使用":
-                //    {
-                //        ltype = LabelType.UseEventLabel;
-                //        is_unit[2] = true;
-                //        break;
-                //    }
+                case "使用":
+                    ltype = LabelType.UseEventLabel;
+                    is_unit[2] = true;
+                    break;
 
-                //case "使用後":
-                //    {
-                //        ltype = LabelType.AfterUseEventLabel;
-                //        is_unit[2] = true;
-                //        break;
-                //    }
+                case "使用後":
+                    ltype = LabelType.AfterUseEventLabel;
+                    is_unit[2] = true;
+                    break;
 
                 //case "変形":
                 //    {

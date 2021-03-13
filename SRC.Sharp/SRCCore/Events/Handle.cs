@@ -173,21 +173,13 @@ namespace SRCCore.Events
                 //        break;
                 //    }
 
-                //case "攻撃":
-                //    {
-                //        // UPGRADE_WARNING: オブジェクト Args(2) の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                //        // UPGRADE_WARNING: オブジェクト Args() の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                //        EventQue[Information.UBound(EventQue)] = Conversions.ToString(Operators.ConcatenateObject(Operators.ConcatenateObject(Operators.ConcatenateObject("攻撃 ", Args[1]), " "), Args[2]));
-                //        break;
-                //    }
+                case "攻撃":
+                    EventQue.Enqueue(string.Join(" ", "攻撃", Args[1], Args[2]));
+                    break;
 
-                //case "攻撃後":
-                //    {
-                //        // UPGRADE_WARNING: オブジェクト Args(2) の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                //        // UPGRADE_WARNING: オブジェクト Args() の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                //        EventQue[Information.UBound(EventQue)] = Conversions.ToString(Operators.ConcatenateObject(Operators.ConcatenateObject(Operators.ConcatenateObject("攻撃後 ", Args[1]), " "), Args[2]));
-                //        break;
-                //    }
+                case "攻撃後":
+                    EventQue.Enqueue(string.Join(" ", "攻撃後", Args[1], Args[2]));
+                    break;
 
                 //case "会話":
                 //    {
@@ -251,21 +243,13 @@ namespace SRCCore.Events
                 //        break;
                 //    }
 
-                //case "使用":
-                //    {
-                //        // UPGRADE_WARNING: オブジェクト Args(2) の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                //        // UPGRADE_WARNING: オブジェクト Args() の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                //        EventQue[Information.UBound(EventQue)] = Conversions.ToString(Operators.ConcatenateObject(Operators.ConcatenateObject(Operators.ConcatenateObject("使用 ", Args[1]), " "), Args[2]));
-                //        break;
-                //    }
+                case "使用":
+                    EventQue.Enqueue(string.Join(" ", "使用", Args[1], Args[2]));
+                    break;
 
-                //case "使用後":
-                //    {
-                //        // UPGRADE_WARNING: オブジェクト Args(2) の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                //        // UPGRADE_WARNING: オブジェクト Args() の既定プロパティを解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6A50421D-15FE-4896-8A1B-2EC21E9037B2"' をクリックしてください。
-                //        EventQue[Information.UBound(EventQue)] = Conversions.ToString(Operators.ConcatenateObject(Operators.ConcatenateObject(Operators.ConcatenateObject("使用後 ", Args[1]), " "), Args[2]));
-                //        break;
-                //    }
+                case "使用後":
+                    EventQue.Enqueue(string.Join(" ", "使用後", Args[1], Args[2]));
+                    break;
 
                 //case "行動終了":
                 //    {
