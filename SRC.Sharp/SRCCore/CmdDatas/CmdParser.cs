@@ -138,11 +138,8 @@ namespace SRCCore.CmdDatas
                     //        break;
                     //    }
 
-                    //case "clearevent":
-                    //    {
-                    //        CmdName = CmdType.ClearEventCmd;
-                    //        break;
-                    //    }
+                    case "clearevent":
+                        return new ClearEventCmd(src, data);
 
                     //case "clearimage":
                     //    {
@@ -790,11 +787,8 @@ namespace SRCCore.CmdDatas
                     //        break;
                     //    }
 
-                    //case "restoreevent":
-                    //    {
-                    //        CmdName = CmdType.RestoreEventCmd;
-                    //        break;
-                    //    }
+                    case "restoreevent":
+                        return new RestoreEventCmd(src, data);
 
                     //case "ride":
                     //    {

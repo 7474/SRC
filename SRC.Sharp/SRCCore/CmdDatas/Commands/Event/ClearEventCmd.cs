@@ -1,4 +1,5 @@
 ﻿using SRCCore.Events;
+using SRCCore.Exceptions;
 
 namespace SRCCore.CmdDatas.Commands
 {
@@ -13,44 +14,26 @@ namespace SRCCore.CmdDatas.Commands
             switch (ArgNum)
             {
                 case 2:
+                    string arglname = GetArgAsString(2);
+                    var ret = Event.FindLabel(arglname);
+                    if (ret >= 0)
                     {
-                        string arglname = GetArgAsString((short)2);
-                        ret = Event_Renamed.FindLabel(ref arglname);
-                        if (ret > 0)
-                        {
-                            Event_Renamed.ClearLabel(ret);
-                        }
-
-                        break;
+                        Event.ClearLabel(ret);
                     }
+
+                    break;
 
                 case 1:
+                    if (Event.CurrentLabel >= 0)
                     {
-                        if (Event_Renamed.CurrentLabel > 0)
-                        {
-                            Event_Renamed.ClearLabel(Event_Renamed.CurrentLabel);
-                        }
-
-                        break;
+                        Event.ClearLabel(Event.CurrentLabel);
                     }
+                    break;
 
                 default:
-                    {
-                        Event_Renamed.EventErrorMessage = "ClearEventコマンドの引数の数が違います";
-                        ;
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                        /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 160477
-
-
-                        Input:
-                                        Error(0)
-
-                         */
-                        break;
-                    }
+                    throw new EventErrorException(this, "ClearEventコマンドの引数の数が違います");
             }
 
-            ExecClearEventCmdRet = LineNum + 1;
             return EventData.ID + 1;
         }
     }

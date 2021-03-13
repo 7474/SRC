@@ -1,4 +1,5 @@
 ﻿using SRCCore.Events;
+using SRCCore.Exceptions;
 
 namespace SRCCore.CmdDatas.Commands
 {
@@ -12,20 +13,10 @@ namespace SRCCore.CmdDatas.Commands
         {
             if ((int)ArgNum != 2)
             {
-                Event_Renamed.EventErrorMessage = "RestoreEventコマンドの引数の数が違います";
-                ;
-#error Cannot convert ErrorStatementSyntax - see comment for details
-                /* Cannot convert ErrorStatementSyntax, CONVERSION ERROR: Conversion for ErrorStatement not implemented, please report this issue in 'Error(0)' at character 439974
-
-
-                Input:
-                            Error(0)
-
-                 */
+                throw new EventErrorException(this, "RestoreEventコマンドの引数の数が違います");
             }
 
-            string arglname = GetArgAsString(2);
-            Event_Renamed.RestoreLabel(ref arglname);
+            Event.RestoreLabel(GetArgAsString(2));
 
             return EventData.ID + 1;
         }
