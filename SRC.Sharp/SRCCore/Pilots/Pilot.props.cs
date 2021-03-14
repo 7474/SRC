@@ -405,16 +405,8 @@ namespace SRCCore.Pilots
         //    return BitmapRet;
         //}
 
-        //// ＢＧＭ
-        //public string BGM
-        //{
-        //    get
-        //    {
-        //        string BGMRet = default;
-        //        BGMRet = Data.BGM;
-        //        return BGMRet;
-        //    }
-        //}
+        // ＢＧＭ
+        public string BGM => Data.BGM;
 
         //// メッセージタイプ
         //public string MessageType

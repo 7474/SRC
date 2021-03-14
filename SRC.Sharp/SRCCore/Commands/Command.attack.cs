@@ -19,31 +19,26 @@ namespace SRCCore.Commands
             int i, j;
             Unit t;
             int min_range, max_range;
-            var BGM = default(string);
+            var BGM = "";
             GUI.LockGUI();
             var partners = default(Unit[]);
             var currentUnit = SelectedUnit;
-            //// ＢＧＭの設定
-            //string argfname = "ＢＧＭ";
-            //if (currentUnit.IsFeatureAvailable(argfname))
-            //{
-            //    object argIndex1 = "ＢＧＭ";
-            //    string argmidi_name = currentUnit.FeatureData(argIndex1);
-            //    BGM = Sound.SearchMidiFile(argmidi_name);
-            //}
 
-            //if (Strings.Len(BGM) == 0)
-            //{
-            //    string argmidi_name1 = currentUnit.MainPilot().BGM;
-            //    BGM = Sound.SearchMidiFile(argmidi_name1);
-            //    currentUnit.MainPilot().BGM = argmidi_name1;
-            //}
+            // ＢＧＭの設定
+            if (currentUnit.IsFeatureAvailable("ＢＧＭ"))
+            {
+                BGM = Sound.SearchMidiFile(currentUnit.FeatureData("ＢＧＭ"));
+            }
 
-            //if (Strings.Len(BGM) == 0)
-            //{
-            //    string argbgm_name = "default";
-            //    BGM = Sound.BGMName(argbgm_name);
-            //}
+            if (Strings.Len(BGM) == 0)
+            {
+                BGM = Sound.SearchMidiFile(currentUnit.MainPilot().BGM);
+            }
+
+            if (Strings.Len(BGM) == 0)
+            {
+                BGM = Sound.BGMName("default");
+            }
 
             // 武器の選択
             UseSupportAttack = true;
@@ -78,8 +73,7 @@ namespace SRCCore.Commands
             var currentWeapon = currentUnit.Weapon(SelectedWeapon);
 
             //// 武器ＢＧＭの演奏
-            //string argfname1 = "武器ＢＧＭ";
-            //if (currentUnit.IsFeatureAvailable(argfname1))
+            //if (currentUnit.IsFeatureAvailable("武器ＢＧＭ"))
             //{
             //    var loopTo = currentUnit.CountFeature();
             //    for (i = 1; i <= loopTo; i++)
@@ -384,7 +378,7 @@ namespace SRCCore.Commands
             var earnings = false;
             string def_mode = "";
             var partners = default(Unit[]);
-            var BGM = default(string);
+            var BGM = "";
             var is_suiside = default(bool);
             string wname, twname = default;
             int tx, ty;
@@ -535,83 +529,73 @@ namespace SRCCore.Commands
                 return;
             }
 
-            //// 敵がＢＧＭ能力を持つ場合はＢＧＭを変更
-            //{
-            //    var withBlock1 = SelectedTarget;
-            //    string argfname = "ＢＧＭ";
-            //    if (withBlock1.IsFeatureAvailable(argfname) & Strings.InStr(withBlock1.MainPilot().Name, "(ザコ)") == 0)
-            //    {
-            //        object argIndex1 = "ＢＧＭ";
-            //        string argmidi_name = withBlock1.FeatureData(argIndex1);
-            //        BGM = Sound.SearchMidiFile(argmidi_name);
-            //        if (Strings.Len(BGM) > 0)
-            //        {
-            //            Sound.BossBGM = false;
-            //            Sound.ChangeBGM(BGM);
-            //            Sound.BossBGM = true;
-            //        }
-            //    }
-            //}
+            // 敵がＢＧＭ能力を持つ場合はＢＧＭを変更
+            {
+                var tu = SelectedTarget;
+                if (tu.IsFeatureAvailable("ＢＧＭ") && Strings.InStr(tu.MainPilot().Name, "(ザコ)") == 0)
+                {
+                    BGM = Sound.SearchMidiFile(tu.FeatureData("ＢＧＭ"));
+                    if (Strings.Len(BGM) > 0)
+                    {
+                        Sound.BossBGM = false;
+                        Sound.ChangeBGM(BGM);
+                        Sound.BossBGM = true;
+                    }
+                }
+            }
 
-            //// そうではなく、ボス用ＢＧＭが流れていれば味方のＢＧＭに切り替え
-            //if (Strings.Len(BGM) == 0 & Sound.BossBGM)
-            //{
-            //    Sound.BossBGM = false;
-            //    BGM = "";
-            //    {
-            //        var withBlock2 = SelectedUnit;
-            //        string argfname1 = "武器ＢＧＭ";
-            //        if (withBlock2.IsFeatureAvailable(argfname1))
-            //        {
-            //            var loopTo = withBlock2.CountFeature();
-            //            for (i = 1; i <= loopTo; i++)
-            //            {
-            //                string localFeature() { object argIndex1 = i; var ret = withBlock2.Feature(argIndex1); return ret; }
+            // そうではなく、ボス用ＢＧＭが流れていれば味方のＢＧＭに切り替え
+            if (Strings.Len(BGM) == 0 && Sound.BossBGM)
+            {
+                Sound.BossBGM = false;
+                BGM = "";
+                {
+                    var su = SelectedUnit;
+                    //if (su.IsFeatureAvailable("武器ＢＧＭ"))
+                    //{
+                    //    var loopTo = su.CountFeature();
+                    //    for (i = 1; i <= loopTo; i++)
+                    //    {
+                    //        string localFeature() { object argIndex1 = i; var ret = su.Feature(argIndex1); return ret; }
 
-            //                string localFeatureData2() { object argIndex1 = i; var ret = withBlock2.FeatureData(argIndex1); return ret; }
+                    //        string localFeatureData2() { object argIndex1 = i; var ret = su.FeatureData(argIndex1); return ret; }
 
-            //                string localLIndex() { string arglist = hs51a192742c114976b44a246d492333eb(); var ret = GeneralLib.LIndex(arglist, 1); return ret; }
+                    //        string localLIndex() { string arglist = hs51a192742c114976b44a246d492333eb(); var ret = GeneralLib.LIndex(arglist, 1); return ret; }
 
-            //                if (localFeature() == "武器ＢＧＭ" & (localLIndex() ?? "") == (withBlock2.Weapon(SelectedWeapon).Name ?? ""))
-            //                {
-            //                    string localFeatureData() { object argIndex1 = i; var ret = withBlock2.FeatureData(argIndex1); return ret; }
+                    //        if (localFeature() == "武器ＢＧＭ" & (localLIndex() ?? "") == (su.Weapon(SelectedWeapon).Name ?? ""))
+                    //        {
+                    //            string localFeatureData() { object argIndex1 = i; var ret = su.FeatureData(argIndex1); return ret; }
 
-            //                    string localFeatureData1() { object argIndex1 = i; var ret = withBlock2.FeatureData(argIndex1); return ret; }
+                    //            string localFeatureData1() { object argIndex1 = i; var ret = su.FeatureData(argIndex1); return ret; }
 
-            //                    string argmidi_name1 = Strings.Mid(localFeatureData(), Strings.InStr(localFeatureData1(), " ") + 1);
-            //                    BGM = Sound.SearchMidiFile(argmidi_name1);
-            //                    break;
-            //                }
-            //            }
-            //        }
+                    //            string argmidi_name1 = Strings.Mid(localFeatureData(), Strings.InStr(localFeatureData1(), " ") + 1);
+                    //            BGM = Sound.SearchMidiFile(argmidi_name1);
+                    //            break;
+                    //        }
+                    //    }
+                    //}
 
-            //        if (Strings.Len(BGM) == 0)
-            //        {
-            //            string argfname2 = "ＢＧＭ";
-            //            if (withBlock2.IsFeatureAvailable(argfname2))
-            //            {
-            //                object argIndex2 = "ＢＧＭ";
-            //                string argmidi_name2 = withBlock2.FeatureData(argIndex2);
-            //                BGM = Sound.SearchMidiFile(argmidi_name2);
-            //            }
-            //        }
+                    if (Strings.Len(BGM) == 0)
+                    {
+                        if (su.IsFeatureAvailable("ＢＧＭ"))
+                        {
+                            BGM = Sound.SearchMidiFile(su.FeatureData("ＢＧＭ"));
+                        }
+                    }
 
-            //        if (Strings.Len(BGM) == 0)
-            //        {
-            //            string argmidi_name3 = withBlock2.MainPilot().BGM;
-            //            BGM = Sound.SearchMidiFile(argmidi_name3);
-            //            withBlock2.MainPilot().BGM = argmidi_name3;
-            //        }
+                    if (Strings.Len(BGM) == 0)
+                    {
+                        BGM = Sound.SearchMidiFile(su.MainPilot().BGM);
+                    }
 
-            //        if (Strings.Len(BGM) == 0)
-            //        {
-            //            string argbgm_name = "default";
-            //            BGM = Sound.BGMName(argbgm_name);
-            //        }
+                    if (Strings.Len(BGM) == 0)
+                    {
+                        BGM = Sound.BGMName("default");
+                    }
 
-            //        Sound.ChangeBGM(BGM);
-            //    }
-            //}
+                    Sound.ChangeBGM(BGM);
+                }
+            }
 
             //{
             //    var withBlock3 = SelectedUnit;
