@@ -120,7 +120,7 @@ namespace SRCCore.Commands
                 //        case HyperModeCmdID: // ハイパーモード・変身解除
                 //            {
                 //                object argIndex1 = "ノーマルモード";
-                //                if (Strings.InStr(withBlock.FeatureData(argIndex1), "手動解除") > 0)
+                //                if (Strings.InStr(unit.FeatureData(argIndex1), "手動解除") > 0)
                 //                {
                 //                    CancelTransformationCommand();
                 //                }
@@ -132,105 +132,109 @@ namespace SRCCore.Commands
                 //                break;
                 //            }
 
-                //        case GroundCmdID: // 地上
-                //            {
-                //                GUI.LockGUI();
-                //                if (Map.TerrainClass(withBlock.x, withBlock.y) == "水" | Map.TerrainClass(withBlock.x, withBlock.y) == "深水")
-                //                {
-                //                    withBlock.Area = "水上";
-                //                }
-                //                else
-                //                {
-                //                    withBlock.Area = "地上";
-                //                }
+                case GroundCmdID: // 地上
+                    {
+                        GUI.LockGUI();
+                        if (Map.Terrain(unit.x, unit.y).Class == "水" || Map.Terrain(unit.x, unit.y).Class == "深水")
+                        {
+                            unit.Area = "水上";
+                        }
+                        else
+                        {
+                            unit.Area = "地上";
+                        }
 
-                //                withBlock.Update();
-                //                if (withBlock.IsMessageDefined(withBlock.Area))
-                //                {
-                //                    Unit argu1 = null;
-                //                    Unit argu2 = null;
-                //                    GUI.OpenMessageForm(u1: argu1, u2: argu2);
-                //                    string argmsg_mode = "";
-                //                    withBlock.PilotMessage(withBlock.Area, msg_mode: argmsg_mode);
-                //                    GUI.CloseMessageForm();
-                //                }
+                        unit.Update();
+                        // XXX
+                        //if (unit.IsMessageDefined(unit.Area))
+                        //{
+                        //    Unit argu1 = null;
+                        //    Unit argu2 = null;
+                        //    GUI.OpenMessageForm(u1: argu1, u2: argu2);
+                        //    string argmsg_mode = "";
+                        //    unit.PilotMessage(unit.Area, msg_mode: argmsg_mode);
+                        //    GUI.CloseMessageForm();
+                        //}
 
-                //                GUI.PaintUnitBitmap(SelectedUnit);
-                //                CommandState = "ユニット選択";
-                //                GUI.UnlockGUI();
-                //                break;
-                //            }
+                        GUI.PaintUnitBitmap(SelectedUnit);
+                        CommandState = "ユニット選択";
+                        GUI.UnlockGUI();
+                        break;
+                    }
 
-                //        case SkyCmdID: // 空中
-                //            {
-                //                GUI.LockGUI();
-                //                if (Map.TerrainClass(withBlock.x, withBlock.y) == "月面")
-                //                {
-                //                    withBlock.Area = "宇宙";
-                //                }
-                //                else
-                //                {
-                //                    withBlock.Area = "空中";
-                //                }
+                case SkyCmdID: // 空中
+                    {
+                        GUI.LockGUI();
+                        if (Map.Terrain(unit.x, unit.y).Class == "月面")
+                        {
+                            unit.Area = "宇宙";
+                        }
+                        else
+                        {
+                            unit.Area = "空中";
+                        }
 
-                //                withBlock.Update();
-                //                if (withBlock.IsMessageDefined(withBlock.Area))
-                //                {
-                //                    Unit argu11 = null;
-                //                    Unit argu21 = null;
-                //                    GUI.OpenMessageForm(u1: argu11, u2: argu21);
-                //                    string argmsg_mode1 = "";
-                //                    withBlock.PilotMessage(withBlock.Area, msg_mode: argmsg_mode1);
-                //                    GUI.CloseMessageForm();
-                //                }
+                        unit.Update();
+                        // XXX
+                        //if (unit.IsMessageDefined(unit.Area))
+                        //{
+                        //    Unit argu11 = null;
+                        //    Unit argu21 = null;
+                        //    GUI.OpenMessageForm(u1: argu11, u2: argu21);
+                        //    string argmsg_mode1 = "";
+                        //    unit.PilotMessage(unit.Area, msg_mode: argmsg_mode1);
+                        //    GUI.CloseMessageForm();
+                        //}
 
-                //                GUI.PaintUnitBitmap(SelectedUnit);
-                //                CommandState = "ユニット選択";
-                //                GUI.UnlockGUI();
-                //                break;
-                //            }
+                        GUI.PaintUnitBitmap(SelectedUnit);
+                        CommandState = "ユニット選択";
+                        GUI.UnlockGUI();
+                        break;
+                    }
 
-                //        case UndergroundCmdID: // 地中
-                //            {
-                //                GUI.LockGUI();
-                //                withBlock.Area = "地中";
-                //                withBlock.Update();
-                //                if (withBlock.IsMessageDefined(withBlock.Area))
-                //                {
-                //                    Unit argu12 = null;
-                //                    Unit argu22 = null;
-                //                    GUI.OpenMessageForm(u1: argu12, u2: argu22);
-                //                    string argmsg_mode2 = "";
-                //                    withBlock.PilotMessage(withBlock.Area, msg_mode: argmsg_mode2);
-                //                    GUI.CloseMessageForm();
-                //                }
+                case UndergroundCmdID: // 地中
+                    {
+                        GUI.LockGUI();
+                        unit.Area = "地中";
+                        unit.Update();
+                        // XXX
+                        //if (unit.IsMessageDefined(unit.Area))
+                        //{
+                        //    Unit argu12 = null;
+                        //    Unit argu22 = null;
+                        //    GUI.OpenMessageForm(u1: argu12, u2: argu22);
+                        //    string argmsg_mode2 = "";
+                        //    unit.PilotMessage(unit.Area, msg_mode: argmsg_mode2);
+                        //    GUI.CloseMessageForm();
+                        //}
 
-                //                GUI.PaintUnitBitmap(SelectedUnit);
-                //                CommandState = "ユニット選択";
-                //                GUI.UnlockGUI();
-                //                break;
-                //            }
+                        GUI.PaintUnitBitmap(SelectedUnit);
+                        CommandState = "ユニット選択";
+                        GUI.UnlockGUI();
+                        break;
+                    }
 
-                //        case WaterCmdID: // 水中
-                //            {
-                //                GUI.LockGUI();
-                //                withBlock.Area = "水中";
-                //                withBlock.Update();
-                //                if (withBlock.IsMessageDefined(withBlock.Area))
-                //                {
-                //                    Unit argu13 = null;
-                //                    Unit argu23 = null;
-                //                    GUI.OpenMessageForm(u1: argu13, u2: argu23);
-                //                    string argmsg_mode3 = "";
-                //                    withBlock.PilotMessage(withBlock.Area, msg_mode: argmsg_mode3);
-                //                    GUI.CloseMessageForm();
-                //                }
+                case WaterCmdID: // 水中
+                    {
+                        GUI.LockGUI();
+                        unit.Area = "水中";
+                        unit.Update();
+                        // XXX
+                        //if (unit.IsMessageDefined(unit.Area))
+                        //{
+                        //    Unit argu13 = null;
+                        //    Unit argu23 = null;
+                        //    GUI.OpenMessageForm(u1: argu13, u2: argu23);
+                        //    string argmsg_mode3 = "";
+                        //    unit.PilotMessage(unit.Area, msg_mode: argmsg_mode3);
+                        //    GUI.CloseMessageForm();
+                        //}
 
-                //                GUI.PaintUnitBitmap(SelectedUnit);
-                //                CommandState = "ユニット選択";
-                //                GUI.UnlockGUI();
-                //                break;
-                //            }
+                        GUI.PaintUnitBitmap(SelectedUnit);
+                        CommandState = "ユニット選択";
+                        GUI.UnlockGUI();
+                        break;
+                    }
 
                 //        case LaunchCmdID: // 発進
                 //            {
@@ -249,7 +253,7 @@ namespace SRCCore.Commands
                 //                GUI.LockGUI();
 
                 //                // 召喚解除の使用イベント
-                //                Event_Renamed.HandleEvent("使用", withBlock.MainPilot().ID, "召喚解除");
+                //                Event_Renamed.HandleEvent("使用", unit.MainPilot().ID, "召喚解除");
                 //                if (SRC.IsScenarioFinished)
                 //                {
                 //                    SRC.IsScenarioFinished = false;
@@ -264,10 +268,10 @@ namespace SRCCore.Commands
                 //                }
 
                 //                // 召喚ユニットを解放
-                //                withBlock.DismissServant();
+                //                unit.DismissServant();
 
                 //                // 召喚解除の使用後イベント
-                //                Event_Renamed.HandleEvent("使用後", withBlock.CurrentForm().MainPilot().ID, "召喚解除");
+                //                Event_Renamed.HandleEvent("使用後", unit.CurrentForm().MainPilot().ID, "召喚解除");
                 //                if (SRC.IsScenarioFinished)
                 //                {
                 //                    SRC.IsScenarioFinished = false;
@@ -321,7 +325,7 @@ namespace SRCCore.Commands
 
                 //                // ユニットコマンドの使用イベント
                 //                // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-                //                Event_Renamed.HandleEvent("使用", withBlock.MainPilot().ID, GUI.MainForm.mnuUnitCommandItem.Item(idx).Caption);
+                //                Event_Renamed.HandleEvent("使用", unit.MainPilot().ID, GUI.MainForm.mnuUnitCommandItem.Item(idx).Caption);
                 //                if (SRC.IsScenarioFinished)
                 //                {
                 //                    SRC.IsScenarioFinished = false;
@@ -347,10 +351,10 @@ namespace SRCCore.Commands
                 //                }
 
                 //                // ユニットコマンドの使用後イベント
-                //                if (withBlock.CurrentForm().CountPilot() > 0)
+                //                if (unit.CurrentForm().CountPilot() > 0)
                 //                {
                 //                    // UPGRADE_ISSUE: Control mnuUnitCommandItem は、汎用名前空間 Form 内にあるため、解決できませんでした。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="084D22AD-ECB1-400F-B4C7-418ECEC5E36E"' をクリックしてください。
-                //                    Event_Renamed.HandleEvent("使用後", withBlock.CurrentForm().MainPilot().ID, GUI.MainForm.mnuUnitCommandItem.Item(idx).Caption);
+                //                    Event_Renamed.HandleEvent("使用後", unit.CurrentForm().MainPilot().ID, GUI.MainForm.mnuUnitCommandItem.Item(idx).Caption);
                 //                    if (SRC.IsScenarioFinished)
                 //                    {
                 //                        SRC.IsScenarioFinished = false;
@@ -360,13 +364,13 @@ namespace SRCCore.Commands
                 //                }
 
                 //                // ステータスウィンドウを更新
-                //                if (withBlock.CurrentForm().CountPilot() > 0)
+                //                if (unit.CurrentForm().CountPilot() > 0)
                 //                {
-                //                    Status.DisplayUnitStatus(withBlock.CurrentForm());
+                //                    Status.DisplayUnitStatus(unit.CurrentForm());
                 //                }
 
                 //                // 行動終了
-                //                if (withBlock.CurrentForm().UsedAction <= prev_used_action)
+                //                if (unit.CurrentForm().UsedAction <= prev_used_action)
                 //                {
                 //                    if (CommandState == "移動後コマンド選択")
                 //                    {
@@ -462,14 +466,14 @@ namespace SRCCore.Commands
             //    // UPGRADE_NOTE: オブジェクト SelectedTarget をガベージ コレクトするまでこのオブジェクトを破棄することはできません。 詳細については、'ms-help://MS.VSCC.v90/dv_commoner/local/redirect.htm?keyword="6E35BFF6-CD74-4B09-9689-3E1A43DF8969"' をクリックしてください。
             //    SelectedTarget = null;
             //    {
-            //        var withBlock = SelectedUnit;
+            //        var unit = SelectedUnit;
             //        switch (i)
             //        {
             //            case 1:
             //                {
-            //                    if (withBlock.x > 1)
+            //                    if (unit.x > 1)
             //                    {
-            //                        SelectedTarget = Map.MapDataForUnit[withBlock.x - 1, withBlock.y];
+            //                        SelectedTarget = Map.MapDataForUnit[unit.x - 1, unit.y];
             //                    }
 
             //                    break;
@@ -477,9 +481,9 @@ namespace SRCCore.Commands
 
             //            case 2:
             //                {
-            //                    if (withBlock.x < Map.MapWidth)
+            //                    if (unit.x < Map.MapWidth)
             //                    {
-            //                        SelectedTarget = Map.MapDataForUnit[withBlock.x + 1, withBlock.y];
+            //                        SelectedTarget = Map.MapDataForUnit[unit.x + 1, unit.y];
             //                    }
 
             //                    break;
@@ -487,9 +491,9 @@ namespace SRCCore.Commands
 
             //            case 3:
             //                {
-            //                    if (withBlock.y > 1)
+            //                    if (unit.y > 1)
             //                    {
-            //                        SelectedTarget = Map.MapDataForUnit[withBlock.x, withBlock.y - 1];
+            //                        SelectedTarget = Map.MapDataForUnit[unit.x, unit.y - 1];
             //                    }
 
             //                    break;
@@ -497,9 +501,9 @@ namespace SRCCore.Commands
 
             //            case 4:
             //                {
-            //                    if (withBlock.y < Map.MapHeight)
+            //                    if (unit.y < Map.MapHeight)
             //                    {
-            //                        SelectedTarget = Map.MapDataForUnit[withBlock.x, withBlock.y + 1];
+            //                        SelectedTarget = Map.MapDataForUnit[unit.x, unit.y + 1];
             //                    }
 
             //                    break;
