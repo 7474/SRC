@@ -17,6 +17,7 @@ namespace SRCSharpForm
         [STAThread]
         static void Main()
         {
+
             using var loggerFactory = LoggerFactory.Create(builder =>
             {
                 builder
@@ -25,10 +26,18 @@ namespace SRCSharpForm
             });
             Log = loggerFactory.CreateLogger("SRCSharpForm");
 
+            Application.SetUnhandledExceptionMode(UnhandledExceptionMode.ThrowException);
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new SRCSharpForm());
+        }
+
+        private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            Log.LogError(e.ExceptionObject as Exception, "UnhandledException");
         }
     }
 }
