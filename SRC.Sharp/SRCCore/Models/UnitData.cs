@@ -422,7 +422,7 @@ namespace SRCCore.Models
         {
             try
             {
-                var level = colFeature[Index].Level;
+                var level = colFeature[Index]?.Level ?? 0;
                 return level == Constants.DEFAULT_LEVEL ? 0 : level;
             }
             catch
@@ -436,7 +436,7 @@ namespace SRCCore.Models
         {
             try
             {
-                return colFeature[Index].StrData;
+                return colFeature[Index]?.StrData ?? "";
             }
             catch
             {
@@ -449,7 +449,7 @@ namespace SRCCore.Models
         {
             try
             {
-                return colFeature[Index].NecessarySkill;
+                return colFeature[Index]?.NecessarySkill ?? "";
             }
             catch
             {
@@ -468,7 +468,7 @@ namespace SRCCore.Models
         {
             try
             {
-                return colFeature[Index].Level != Constants.DEFAULT_LEVEL;
+                return colFeature[Index]?.Level != Constants.DEFAULT_LEVEL;
             }
             catch
             {

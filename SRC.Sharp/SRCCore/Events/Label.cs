@@ -615,7 +615,7 @@ namespace SRCCore.Events
         {
             try
             {
-                return colEventLabelList[lname].EventDataId;
+                return colEventLabelList[lname]?.EventDataId ?? -1;
             }
             catch
             {

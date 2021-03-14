@@ -14,26 +14,20 @@ namespace SRCCore.VB
 
         public static int ToInteger(string Value)
         {
-            try
+            if (int.TryParse(Value, out int ret))
             {
-                return Convert.ToInt32(Value);
+                return ret;
             }
-            catch
-            {
-                return 0;
-            }
+            return 0;
         }
 
         public static double ToDouble(string Value)
         {
-            try
+            if (double.TryParse(Value, out double ret))
             {
-                return Convert.ToDouble(Value);
+                return ret;
             }
-            catch
-            {
-                return 0d;
-            }
+            return 0d;
         }
     }
 }
