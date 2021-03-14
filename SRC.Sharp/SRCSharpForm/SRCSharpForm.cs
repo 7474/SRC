@@ -21,7 +21,7 @@ namespace SRCSharpForm
             SRC.GUI = new SRCSharpFormGUI(SRC);
         }
 
-        private void LoadEve()
+        private void LoadGameFile()
         {
             using (var fbd = new OpenFileDialog())
             {
@@ -38,7 +38,8 @@ namespace SRCSharpForm
 
         private void SRCSharpForm_Shown(object sender, EventArgs e)
         {
-            LoadEve();
+            // TODO 引数を参照して指定があればそれを読む。
+            LoadGameFile();
         }
     }
 }
